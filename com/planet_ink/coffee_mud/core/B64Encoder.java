@@ -203,21 +203,23 @@ public class B64Encoder
         }
         finally
         {
-            try{ oos.close();   } catch( Exception e ){}
-            try{ gzos.close();  } catch( Exception e ){}
-            try{ b64os.close(); } catch( Exception e ){}
-            try{ baos.close();  } catch( Exception e ){}
+            try{ if(oos!=null)oos.close();   } catch( Exception e ){}
+            try{ if(gzos!=null)gzos.close();  } catch( Exception e ){}
+            try{ if(b64os!=null)b64os.close(); } catch( Exception e ){}
+            try{ if(baos!=null)baos.close();  } catch( Exception e ){}
         }
         
         try 
         {
-            return new String( baos.toByteArray(), PREFERRED_ENCODING );
+        	if(baos!=null)
+	            return new String( baos.toByteArray(), PREFERRED_ENCODING );
         }
         catch (java.io.UnsupportedEncodingException uue)
         {
-            return new String( baos.toByteArray() );
+        	if(baos!=null)
+        		return new String( baos.toByteArray() );
         }
-        
+        return "";
     } 
     
     public static String B64encodeBytes( byte[] source )
@@ -264,18 +266,21 @@ public class B64Encoder
             }
             finally
             {
-                try{ gzos.close();  } catch( Exception e ){}
-                try{ b64os.close(); } catch( Exception e ){}
-                try{ baos.close();  } catch( Exception e ){}
+                try{ if(gzos!=null)gzos.close();  } catch( Exception e ){}
+                try{ if(b64os!=null)b64os.close(); } catch( Exception e ){}
+                try{ if(baos!=null)baos.close();  } catch( Exception e ){}
             }
             try
             {
-                return new String( baos.toByteArray(), PREFERRED_ENCODING );
+            	if(baos!=null)
+	                return new String( baos.toByteArray(), PREFERRED_ENCODING );
             }
             catch (java.io.UnsupportedEncodingException uue)
             {
-                return new String( baos.toByteArray() );
+            	if(baos!=null)
+            		return new String( baos.toByteArray() );
             }
+            return "";
         }
         boolean breakLines = dontBreakLines == 0;
         
@@ -443,9 +448,9 @@ public class B64Encoder
                 {}
                 finally
                 {
-                    try{ baos.close(); } catch( Exception e ){}
-                    try{ gzis.close(); } catch( Exception e ){}
-                    try{ bais.close(); } catch( Exception e ){}
+                    try{ if(baos!=null)baos.close(); } catch( Exception e ){}
+                    try{ if(gzis!=null)gzis.close(); } catch( Exception e ){}
+                    try{ if(bais!=null)bais.close(); } catch( Exception e ){}
                 }
             }
         }
@@ -478,8 +483,8 @@ public class B64Encoder
         }
         finally
         {
-            try{ bais.close(); } catch( Exception e ){}
-            try{ ois.close();  } catch( Exception e ){}
+            try{ if(bais!=null)bais.close(); } catch( Exception e ){}
+            try{ if(ois!=null)ois.close();  } catch( Exception e ){}
         }
         
         return obj;
@@ -503,7 +508,7 @@ public class B64Encoder
         }
         finally
         {
-            try{ bos.close(); } catch( Exception e ){}
+            try{ if(bos!=null)bos.close(); } catch( Exception e ){}
         }
         
         return success;
@@ -526,7 +531,7 @@ public class B64Encoder
         }
         finally
         {
-                try{ bos.close(); } catch( Exception e ){}
+                try{ if(bos!=null)bos.close(); } catch( Exception e ){}
         }
         
         return success;
@@ -567,7 +572,7 @@ public class B64Encoder
         }
         finally
         {
-            try{ bis.close(); } catch( Exception e) {}
+            try{ if(bis!=null)bis.close(); } catch( Exception e) {}
         }
         
         return decodedData;
@@ -597,7 +602,7 @@ public class B64Encoder
         }
         finally
         {
-            try{ bis.close(); } catch( Exception e) {}
+            try{ if(bis!=null)bis.close(); } catch( Exception e) {}
         }
         
         return encodedData;
@@ -613,7 +618,8 @@ public class B64Encoder
         private int     lineLength;
         private boolean breakLines;     // Break lines at less than 80 characters
         
-        public B64InputStream( java.io.InputStream in )
+        @SuppressWarnings("unused")
+		public B64InputStream( java.io.InputStream in )
         {   
             this( in, DECODE );
         }
@@ -749,7 +755,8 @@ public class B64Encoder
         private byte[]  b4; // Scratch used in a few places
         private boolean suspendEncoding;
         
-        public B64OutputStream( java.io.OutputStream out )
+        @SuppressWarnings("unused")
+		public B64OutputStream( java.io.OutputStream out )
         {   
             this( out, ENCODE );
         }
@@ -844,13 +851,15 @@ public class B64Encoder
             buffer = null;
             out    = null;
         }
-        public void suspendEncoding() throws java.io.IOException 
+        @SuppressWarnings("unused")
+		public void suspendEncoding() throws java.io.IOException 
         {
             flushBase64();
             this.suspendEncoding = true;
         }
         
-        public void resumeEncoding()
+        @SuppressWarnings("unused")
+		public void resumeEncoding()
         {
             this.suspendEncoding = false;
         }

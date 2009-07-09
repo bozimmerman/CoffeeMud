@@ -4437,9 +4437,9 @@ public class Import extends StdCommand
 
 					if((S2.You_see()==null)||(!S2.You_see().equals(str)))
 					{
-						if(changing)
-						session.rawPrint("Change '"+S2.name()+"' from '"+S2.You_see()+"', you see, to: '"+str+"'");
-						if((!changing)||(session.confirm("?","Y")))
+						if((changing)&&(session!=null))
+							session.rawPrint("Change '"+S2.name()+"' from '"+S2.You_see()+"', you see, to: '"+str+"'");
+						if((!changing)||((session!=null)&&session.confirm("?","Y")))
 							S2.setYou_see(str);
 					}
 
@@ -4448,9 +4448,9 @@ public class Import extends StdCommand
 
 					if((S2.Third_party_sees()==null)||(!S2.Third_party_sees().equals(str)))
 					{
-						if(changing)
-						session.rawPrint("Change '"+S2.name()+"', others see from '"+S2.Third_party_sees()+"', to: '"+str+"'");
-						if((!changing)||(session.confirm("?","Y")))
+						if((session!=null)&&changing)
+							session.rawPrint("Change '"+S2.name()+"', others see from '"+S2.Third_party_sees()+"', to: '"+str+"'");
+						if((!changing)||((session!=null)&&session.confirm("?","Y")))
 							S2.setThird_party_sees(str);
 					}
 
@@ -4459,9 +4459,9 @@ public class Import extends StdCommand
 
 					if((S2.Target_sees()==null)||(!S2.Target_sees().equals(str)))
 					{
-						if(changing)
-						session.rawPrint("Change '"+S2.name()+"', target sees from '"+S2.Target_sees()+"', to: '"+str+"'");
-						if((!changing)||(session.confirm("?","Y")))
+						if((session!=null)&&changing)
+							session.rawPrint("Change '"+S2.name()+"', target sees from '"+S2.Target_sees()+"', to: '"+str+"'");
+						if((!changing)||((session!=null)&&session.confirm("?","Y")))
 							S2.setTarget_sees(str);
 					}
 
@@ -4470,9 +4470,9 @@ public class Import extends StdCommand
 
 					if((S2.See_when_no_target()==null)||(!S2.See_when_no_target().equals(str)))
 					{
-						if(changing)
-						session.rawPrint("Change '"+S2.name()+"', no target sees from '"+S2.See_when_no_target()+"', to: '"+str+"'");
-						if((!changing)||(session.confirm("?","Y")))
+						if((session!=null)&&changing)
+							session.rawPrint("Change '"+S2.name()+"', no target sees from '"+S2.See_when_no_target()+"', to: '"+str+"'");
+						if((!changing)||((session!=null)&&session.confirm("?","Y")))
 							S2.setSee_when_no_target(str);
 					}
 
@@ -4489,9 +4489,9 @@ public class Import extends StdCommand
 
 					if((S3.You_see()==null)||(!S3.You_see().equals(str)))
 					{
-						if(changing)
-						session.rawPrint("Change '"+S3.name()+"', you see from '"+S3.You_see()+"', to: '"+str+"''");
-						if((!changing)||(session.confirm("?","Y")))
+						if((session!=null)&&changing)
+							session.rawPrint("Change '"+S3.name()+"', you see from '"+S3.You_see()+"', to: '"+str+"''");
+						if((!changing)||((session!=null)&&session.confirm("?","Y")))
 							S3.setYou_see(str);
 					}
 
@@ -4500,9 +4500,9 @@ public class Import extends StdCommand
 
 					if((S3.Third_party_sees()==null)||(!S3.Third_party_sees().equals(str)))
 					{
-						if(changing)
-						session.rawPrint("Change '"+S3.name()+"', others see from '"+S3.Third_party_sees()+"', to: '"+str+"'");
-						if((!changing)||(session.confirm("?","Y")))
+						if((session!=null)&&changing)
+							session.rawPrint("Change '"+S3.name()+"', others see from '"+S3.Third_party_sees()+"', to: '"+str+"'");
+						if((!changing)||((session!=null)&&session.confirm("?","Y")))
 							S3.setThird_party_sees(str);
 					}
 
@@ -4576,7 +4576,7 @@ public class Import extends StdCommand
 					return returnAnError(session,"Area '"+areaName+"' already exists.",compileErrors,commands);
 				else
 				if((!prompt)
-				||(session.confirm("Area: \""+areaName+"\" exists, obliterate first?","N")))
+				||((session!=null)&&(session.confirm("Area: \""+areaName+"\" exists, obliterate first?","N"))))
 				{
 					reLinkTable=new Vector();
 					if(!temporarilyDeleteArea(mob,reLinkTable,areaName))
@@ -4586,7 +4586,7 @@ public class Import extends StdCommand
 					return false;
 			}
 			else
-			if((prompt)&&(!session.confirm("Found area: \""+areaName+"\", is this ok?","Y")))
+			if((prompt)&&((session!=null)&&(!session.confirm("Found area: \""+areaName+"\", is this ok?","Y"))))
 				return false;
 
 			if(session!=null) session.println("Loading and Linking Rooms...");
@@ -5131,8 +5131,9 @@ public class Import extends StdCommand
 												}
 											}
 											if(opExit==null)
-												if((prompt)&&
-												  (!session.confirm(R.roomID()+" links to #"+linkRoomID+". Found "+R2.roomID()+". Link?","Y")))
+												if((prompt)
+												&&(session!=null)
+												&&(!session.confirm(R.roomID()+" links to #"+linkRoomID+". Found "+R2.roomID()+". Link?","Y")))
 													continue;
 											linkRoom=R2;
 											if(opExit!=null) opExit.setTemporaryDoorLink("");
@@ -5493,7 +5494,7 @@ public class Import extends StdCommand
 						MOB MM=(MOB)C.owner();
 						MM.addInventory(I);
 						I.setContainer(C);
-						M.text();
+						MM.text();
 						I.recoverEnvStats();
 						if(I instanceof Container)
 							containerHash.put(itemID,I);

@@ -1146,7 +1146,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			}
 		}
 
-		if((Log.debugChannelOn())&&(CMSecurity.isDebugging("HTTPREQ")))
+		if((Log.debugChannelOn())&&(CMSecurity.isDebugging("HTTPREQ"))&&(replyData!=null))
 			Log.debugOut(getName(), sock.getInetAddress().getHostAddress() + ":" + (command==null?"(null)":command + " " + (request==null?"(null)":request)) +
 					":" + status +" ("+replyData.length+")");
 
@@ -1158,7 +1158,8 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 
 				sout.flush();
 				OutputStream o=sock.getOutputStream();
-				o.write(bout.toByteArray());
+				if(bout!=null)
+					o.write(bout.toByteArray());
 				o.flush();
 				sout.close();
 				o.close();
@@ -1433,6 +1434,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
                                             parms.append("&"+URLEncoder.encode(name, "UTF-8")+"="+URLEncoder.encode(new String(mybuf), "UTF-8"));
                                         }
                                         else
+                                        if(filename!=null)
                                         {
                                             getRequestObjects().put(name,mybuf);
                                             char c3=' ';

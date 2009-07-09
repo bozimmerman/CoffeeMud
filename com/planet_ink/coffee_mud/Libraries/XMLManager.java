@@ -299,7 +299,6 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 				if(curVal!=null)
 					curVal.append(c);
 				else
-				if(key!=null)
 					key.append(c);
 				break;
 			case ' ':

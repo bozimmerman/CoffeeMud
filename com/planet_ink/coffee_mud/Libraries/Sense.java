@@ -500,7 +500,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return true;
 
 		if(!canSee(seer)) return false;
-		if(!isSeen(seen))
+		if((!isSeen(seen))&&(seer!=null))
 		{
 			if((!(seen instanceof MOB))
 			||(seen.envStats().level()>seer.envStats().level())
@@ -984,8 +984,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean canAccess(MOB mob, Area A)
 	{
 		if(A==null) return false;
-		if(((mob==null)&&(!isHidden(A)))
-		||((!isHidden(A))
+		if((isHidden(A)) && (mob==null))
+			return false;
+		if(((!isHidden(A))
 			&&(mob.location()!=null)
 			&&(mob.location().getArea().getTimeObj()==A.getTimeObj()))
 		||(CMSecurity.isASysOp(mob))
@@ -995,9 +996,11 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 	public boolean canAccess(MOB mob, Room R)
 	{
-		if(R==null) return false;
-		if(((mob==null)&&(!isHidden(R)))
-		||((!isHidden(R))
+		if(R==null) 
+			return false;
+		if((isHidden(R)) && (mob==null))
+			return false;
+		if(((!isHidden(R))
 			&&(mob.location()!=null)
 			&&(mob.location().getArea().getTimeObj()==R.getArea().getTimeObj()))
 		||(CMSecurity.isASysOp(mob))

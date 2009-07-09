@@ -45,6 +45,16 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         return nonCrashingMOB;
     }
 
+    protected Item nonCrashingItem=null;
+    protected Item nonCrashingItem(MOB mob){
+    	Item I = mob.fetchInventory(0);
+    	if(I!=null) return I;
+        if(nonCrashingItem!=null)
+            return nonCrashingItem;
+        nonCrashingItem=CMClass.getItem("StdItem");
+        return nonCrashingItem;
+    }
+
     public String rawMaskHelp(){return DEFAULT_MASK_HELP;}
 
     
@@ -3163,9 +3173,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         getMaskCodes();
         CharStats base=null;
         MOB mob=(E instanceof MOB)?(MOB)E:nonCrashingMOB();
-        Item item=(E instanceof Item)?(Item)E:null;
+        Item item=(E instanceof Item)?(Item)E:nonCrashingItem(mob);
         Room R=(E instanceof Area)?outdoorRoom((Area)E):CMLib.map().roomLocation(E);
-
+        if((mob==null)||(item==null)) return false;
 		for(int c=0;c<cset.size();c++)
 		{
 			Vector V=(Vector)cset.elementAt(c);
@@ -3535,7 +3545,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			}
 			case 14: // -clan
 				{
-                    String clanID=(mob!=null)?mob.getClanID():(E instanceof ClanItem)?((ClanItem)E).clanID():"";
+                    String clanID=(E instanceof MOB)?mob.getClanID():(E instanceof ClanItem)?((ClanItem)E).clanID():"";
 					if(clanID.length()==0)
 						return false;
 					boolean found=false;
@@ -3546,7 +3556,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				}
 				break;
 			case 15: // +clan
-                String clanID=(mob!=null)?mob.getClanID():(E instanceof ClanItem)?((ClanItem)E).clanID():"";
+                String clanID=(E instanceof MOB)?mob.getClanID():(E instanceof ClanItem)?((ClanItem)E).clanID():"";
 				if(clanID.length()>0)
 					for(int v=1;v<V.size();v++)
 						if(clanID.equalsIgnoreCase((String)V.elementAt(v)))
@@ -3557,7 +3567,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     return false;
                 break;
             case 50: // -material
-                if(!V.contains(RawMaterial.MATERIAL_DESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8]))
+        		if(!V.contains(RawMaterial.MATERIAL_DESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8]))
                     return false;
                 break;
             case 57: // +wornOn
@@ -3977,26 +3987,24 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                    return false;
                 break;
             case 59: // +value
-                if(mob!=null)
+                if(E instanceof MOB)
                 {
                     if((V.size()>1)&&(CMLib.beanCounter().getTotalAbsoluteValueAllCurrencies(mob)>(((Integer)V.elementAt(1)).intValue())))
                        return false;
                 }
                 else
-                if(item!=null)
                 {
                     if((V.size()>1)&&(item.baseGoldValue()>(((Integer)V.elementAt(1)).intValue())))
                         return false;
                 }
                 break;
             case 60: // -value
-                if(mob!=null)
+                if(E instanceof MOB)
                 {
                     if((V.size()>1)&&(CMLib.beanCounter().getTotalAbsoluteValueAllCurrencies(mob)<(((Integer)V.elementAt(1)).intValue())))
                        return false;
                 }
                 else
-                if(item!=null)
                 {
                     if((V.size()>1)&&(item.baseGoldValue()<(((Integer)V.elementAt(1)).intValue())))
                         return false;
@@ -4050,7 +4058,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				}
 				break;
             case 48: // -worn
-                if(mob!=null)
+                if(E instanceof MOB)
                 {
                     boolean found=false;
                     for(int v=1;v<V.size();v++)

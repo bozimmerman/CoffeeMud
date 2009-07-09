@@ -750,6 +750,7 @@ public class Nanny extends StdBehavior
 	        					dropOffs.addElement(E,O,new Long(time));
 	        			}
 	        			else
+        	    		if(P!=null)
 	        				Log.errOut("Nanny","Unable to parse: "+codes+", specifically: "+P.value);
 	        		}
         		}
@@ -796,6 +797,7 @@ public class Nanny extends StdBehavior
         if(!changedSinceLastSave)
     	for(int m=dropOffs.size()-1;m>=0;m--)
     		if((dropOffs.elementAt(m,1) instanceof MOB)
+    		&&(R!=null)
     		&&(!R.isInhabitant((MOB)dropOffs.elementAt(m,1))))
     		{
     			dropOffs.removeElementsAt(m);
@@ -803,6 +805,7 @@ public class Nanny extends StdBehavior
     		}
     	for(int m=dropOffs.size()-1;m>=0;m--)
     		if((dropOffs.elementAt(m,1) instanceof Item)
+    		&&(R!=null)
     		&&(!R.isContent((Item)dropOffs.elementAt(m,1))))
     		{
     			dropOffs.removeElementsAt(m);
@@ -815,55 +818,61 @@ public class Nanny extends StdBehavior
         	if(ticking instanceof MOB) 
         		mobsToSave.addElement((MOB)ticking);
         	MOB M=null;
-        	for(int i=0;i<R.numInhabitants();i++)
-        	{
-        		M=R.fetchInhabitant(i);
-        		if((M!=null)
-        		&&(M.savable())
-        		&&(CMLib.flags().isMobile(M))
-        		&&(M.getStartRoom()==R)
-        		&&(!mobsToSave.contains(M)))
-        			mobsToSave.addElement(M);
-        	}
-        	for(int m=0;m<dropOffs.size();m++)
-        	{
-        		E=(Environmental)dropOffs.elementAt(m,1);
-        		if((E instanceof MOB)
-        		&&(R.isInhabitant((MOB)E))
-        		&&(!mobsToSave.contains(E)))
-        			mobsToSave.addElement(E);
-        	}
-        	CMLib.database().DBUpdateTheseMOBs(R,mobsToSave);
+    		if(R!=null)
+    		{
+	        	for(int i=0;i<R.numInhabitants();i++)
+	        	{
+	        		M=R.fetchInhabitant(i);
+	        		if((M!=null)
+	        		&&(M.savable())
+	        		&&(CMLib.flags().isMobile(M))
+	        		&&(M.getStartRoom()==R)
+	        		&&(!mobsToSave.contains(M)))
+	        			mobsToSave.addElement(M);
+	        	}
+	        	for(int m=0;m<dropOffs.size();m++)
+	        	{
+	        		E=(Environmental)dropOffs.elementAt(m,1);
+	        		if((E instanceof MOB)
+	        		&&(R.isInhabitant((MOB)E))
+	        		&&(!mobsToSave.contains(E)))
+	        			mobsToSave.addElement(E);
+	        	}
+	        	CMLib.database().DBUpdateTheseMOBs(R,mobsToSave);
+    		}
         	
         	
         	Vector itemsToSave=new Vector();
         	if(ticking instanceof Item) 
         		itemsToSave.addElement((Item)ticking);
         	Item I=null;
-        	for(int i=0;i<R.numItems();i++)
-        	{
-        		I=R.fetchItem(i);
-        		if((I!=null)
-        		&&(I.savable())
-				&&((!CMLib.flags().isGettable(I))||(I.displayText().length()==0))
-        		&&(!itemsToSave.contains(I)))
-        			itemsToSave.addElement(I);
-        	}
-        	for(int m=0;m<dropOffs.size();m++)
-        	{
-        		E=(Environmental)dropOffs.elementAt(m,1);
-        		if((E instanceof Item)
-        		&&(R.isContent((Item)E))
-        		&&(!itemsToSave.contains(E)))
-        			itemsToSave.addElement(E);
-        	}
-        	CMLib.database().DBUpdateTheseItems(R,itemsToSave);
+    		if(R!=null)
+    		{
+	        	for(int i=0;i<R.numItems();i++)
+	        	{
+	        		I=R.fetchItem(i);
+	        		if((I!=null)
+	        		&&(I.savable())
+					&&((!CMLib.flags().isGettable(I))||(I.displayText().length()==0))
+	        		&&(!itemsToSave.contains(I)))
+	        			itemsToSave.addElement(I);
+	        	}
+	        	for(int m=0;m<dropOffs.size();m++)
+	        	{
+	        		E=(Environmental)dropOffs.elementAt(m,1);
+	        		if((E instanceof Item)
+	        		&&(R.isContent((Item)E))
+	        		&&(!itemsToSave.contains(E)))
+	        			itemsToSave.addElement(E);
+	        	}
+	        	CMLib.database().DBUpdateTheseItems(R,itemsToSave);
+    		}
         	if(ticking instanceof Room)
         		CMLib.database().DBUpdateRoom((Room)ticking);
         	changedSinceLastSave=false;
         }
         
-        if((dropOffs.size()>0)&&(ticking instanceof MOB)&&(CMLib.dice().rollPercentage()<10))
+        if((dropOffs.size()>0)&&(ticking instanceof MOB)&&(CMLib.dice().rollPercentage()<10)&&(R!=null))
         {
         	MOB mob=(MOB)ticking;
         	E=(Environmental)dropOffs.elementAt(CMLib.dice().roll(1,dropOffs.size(),-1),1);

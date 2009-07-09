@@ -97,7 +97,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
             scope="";
             resources=Resources.instance();
         }
-        scope=newScope.toUpperCase().trim();
+        else
+	        scope=newScope.toUpperCase().trim();
         if(scope.equalsIgnoreCase("*"))
             resources = Resources.newResources();
         else
@@ -2582,7 +2583,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(!validFunc)
                     logError(scripted,"CALLFUNC","Unknown","Function: "+arg1);
                 else
+                if(found!=null)
                     returnable=!(found.trim().length()==0);
+                else
+                	returnable=false;
                 break;
             }
             case 14: // affected
@@ -4554,6 +4558,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if((E!=null)&&((E instanceof MOB))&&(!((MOB)E).amDead()))
                     results.append(((MOB)E).healthText(null));
                 else
+                if(E!=null)
                     results.append(E.name()+" is dead.");
                 break;
             }
@@ -5988,7 +5993,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 70: // switch
             {
-                if(tt==null) tt=parseBits(script,si,"Cr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cr");
+                	if(tt==null) return null;
+                }
                 String var=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]).trim();
                 DVector V=new DVector(2);
                 V.addElement("",null);
@@ -6030,7 +6038,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     else
                     if(cmd.equals("CASE")&&(depth==0))
                     {
-                        if(tt==null) tt=parseBits(script,si,"Ccr");
+                        if(tt==null){
+                        	tt=parseBits(script,si,"Ccr");
+                        	if(tt==null) return null;
+                        }
                         s2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]).trim();
                         inCase=var.equalsIgnoreCase(s2);
                         matchedCase=matchedCase||inCase;
@@ -6077,7 +6088,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 62: // for x = 1 to 100
             {
-                if(tt==null) tt=parseBits(script,si,"CcccCr");
+                if(tt==null)
+                {
+            		tt=parseBits(script,si,"CcccCr");
+                	if(tt==null) return null;
+                }
                 if(tt[5].length()==0)
                 {
                     logError(scripted,"FOR","Syntax","5 parms required!");
@@ -6229,7 +6244,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 return null;
             case 1: // mpasound
             {
-                if(tt==null) tt=parseBits(script,si,"Cp");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cp");
+                	if(tt==null) return null;
+                }
                 String echo=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
                 //lastKnownLocation.showSource(monster,null,CMMsg.MSG_OK_ACTION,echo);
                 for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -6243,8 +6261,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 4: // mpjunk
             {
-                if(tt==null) tt=parseBits(script,si,"CR");
-                if(tt[1].equals("ALL"))
+                if(tt==null){
+                	tt=parseBits(script,si,"CR");
+                	if(tt==null) return null;
+                }
+                if(tt[1].equals("ALL") && (monster!=null))
                 {
                     while(monster.inventorySize()>0)
                     {
@@ -6264,7 +6285,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     Item I=null;
                     if(E instanceof Item)
                         I=(Item)E;
-                    if(I==null)
+                    if((I==null)&&(monster!=null))
                         I=monster.fetchInventory(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]));
                     if((I==null)&&(scripted instanceof Room))
                         I=((Room)scripted).fetchAnyItem(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]));
@@ -6275,14 +6296,20 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 2: // mpecho
             {
-                if(tt==null) tt=parseBits(script,si,"Cp");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cp");
+                	if(tt==null) return null;
+                }
                 if(lastKnownLocation!=null)
                     lastKnownLocation.show(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]));
                 break;
             }
             case 13: // mpunaffect
             {
-                if(tt==null) tt=parseBits(script,si,"Ccr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Ccr");
+                	if(tt==null) return null;
+                }
                 Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 String which=tt[2];
                 if(newTarget!=null)
@@ -6313,7 +6340,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 3: // mpslay
             {
-                if(tt==null) tt=parseBits(script,si,"Cr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cr");
+                	if(tt==null) return null;
+                }
                 Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((newTarget!=null)&&(newTarget instanceof MOB))
                     CMLib.combat().postDeath(monster,(MOB)newTarget,null);
@@ -6321,7 +6351,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 73: // mpsetinternal
             {
-                if(tt==null) tt=parseBits(script,si,"CCr");
+                if(tt==null){
+                	tt=parseBits(script,si,"CCr");
+                	if(tt==null) return null;
+                }
                 String arg2=tt[1];
                 String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
                 if(arg2.equals("SCOPE"))
@@ -6341,7 +6374,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 74: // mpprompt
             {
-                if(tt==null) tt=parseBits(script,si,"CCCr");
+                if(tt==null){
+                	tt=parseBits(script,si,"CCCr");
+                	if(tt==null) return null;
+                }
                 Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 String var=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
                 String promptStr=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
@@ -6356,7 +6392,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 75: // mpconfirm
             {
-                if(tt==null) tt=parseBits(script,si,"CCCCr");
+                if(tt==null){
+                	tt=parseBits(script,si,"CCCCr");
+                	if(tt==null) return null;
+                }
                 Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 String var=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
                 String defaultVal=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
@@ -6372,7 +6411,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 76: // mpchoose
             {
-                if(tt==null) tt=parseBits(script,si,"CCCCCr");
+                if(tt==null){
+                	tt=parseBits(script,si,"CCCCCr");
+                	if(tt==null) return null;
+                }
                 Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 String var=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
                 String choices=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
@@ -6389,7 +6431,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 16: // mpset
             {
-                if(tt==null) tt=parseBits(script,si,"CCcr");
+                if(tt==null){
+                	tt=parseBits(script,si,"CCcr");
+                	if(tt==null) return null;
+                }
                 Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 String arg2=tt[2];
                 String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
@@ -6499,7 +6544,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 63: // mpargset
             {
-                if(tt==null) tt=parseBits(script,si,"Ccr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Ccr");
+                	if(tt==null) return null;
+                }
                 String arg1=tt[1];
                 String arg2=tt[2];
                 if((arg1.length()!=2)||(!arg1.startsWith("$")))
@@ -6553,7 +6601,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 35: // mpgset
             {
-                if(tt==null) tt=parseBits(script,si,"Cccr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cccr");
+                	if(tt==null) return null;
+                }
                 Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 String arg2=tt[2];
                 String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
@@ -6701,7 +6752,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 11: // mpexp
             {
-                if(tt==null) tt=parseBits(script,si,"Ccr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Ccr");
+                	if(tt==null) return null;
+                }
                 Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 String amtStr=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]).trim();
                 int t=CMath.s_int(amtStr);
@@ -6722,7 +6776,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 59: // mpquestpoints
             {
-                if(tt==null) tt=parseBits(script,si,"Ccr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Ccr");
+                	if(tt==null) return null;
+                }
                 Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]).trim();
                 if(newTarget instanceof MOB)
@@ -6742,7 +6799,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 65: // MPQSET
             {
-                if(tt==null) tt=parseBits(script,si,"Cccr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cccr");
+                	if(tt==null) return null;
+                }
                 String qstr=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
                 String var=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
                 Environmental obj=getArgumentItem(tt[3],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
@@ -6781,7 +6841,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 66: // MPLOG
             {
-                if(tt==null) tt=parseBits(script,si,"CCcr");
+                if(tt==null){
+                	tt=parseBits(script,si,"CCcr");
+                	if(tt==null) return null;
+                }
                 String type=tt[1];
                 String head=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
                 String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
@@ -6796,7 +6859,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 67: // MPCHANNEL
             {
-                if(tt==null) tt=parseBits(script,si,"Ccr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Ccr");
+                	if(tt==null) return null;
+                }
                 String channel=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
                 boolean sysmsg=channel.startsWith("!");
                 if(sysmsg) channel=channel.substring(1);
@@ -6809,7 +6875,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 68: // unload
             {
-                if(tt==null) tt=parseBits(script,si,"Cc");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cc");
+                	if(tt==null) return null;
+                }
                 String scriptname=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
                 if(!new CMFile(Resources.makeFileResourceName(scriptname),null,false,true).exists())
                     logError(scripted,"MPUNLOADSCRIPT","Runtime","File does not exist: "+Resources.makeFileResourceName(scriptname));
@@ -6835,7 +6904,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 60: // trains
             {
-                if(tt==null) tt=parseBits(script,si,"Ccr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Ccr");
+                	if(tt==null) return null;
+                }
                 Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]).trim();
                 if(newTarget instanceof MOB)
@@ -6855,7 +6927,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 61: // pracs
             {
-                if(tt==null) tt=parseBits(script,si,"Ccr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Ccr");
+                	if(tt==null) return null;
+                }
                 Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]).trim();
                 if(newTarget instanceof MOB)
@@ -6875,7 +6950,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 5: // mpmload
             {
-                if(tt==null) tt=parseBits(script,si,"Cr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cr");
+                	if(tt==null) return null;
+                }
                 String name=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
                 Vector Ms=new Vector();
                 MOB m=CMClass.getMOB(name);
@@ -6903,9 +6981,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
             case 6: // mpoload
             {
                 // if not mob
-                if(scripted instanceof MOB)
+                if((scripted instanceof MOB)&&(monster != null))
                 {
-                    if(tt==null) tt=parseBits(script,si,"Cr");
+                    if(tt==null){
+                    	tt=parseBits(script,si,"Cr");
+                    	if(tt==null) return null;
+                    }
                     String name=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
                     int containerIndex=name.toUpperCase().indexOf(" INTO ");
                     Container container=null;
@@ -6971,7 +7052,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 41: // mpoloadroom
             {
-                if(tt==null) tt=parseBits(script,si,"Cr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cr");
+                	if(tt==null) return null;
+                }
                 String name=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
                 if(lastKnownLocation!=null)
                 {
@@ -7032,7 +7116,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 42: // mphide
             {
-                if(tt==null) tt=parseBits(script,si,"Cr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cr");
+                	if(tt==null) return null;
+                }
                 Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if(newTarget!=null)
                 {
@@ -7044,7 +7131,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 58: // mpreset
             {
-                if(tt==null) tt=parseBits(script,si,"Cr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cr");
+                	if(tt==null) return null;
+                }
                 String arg=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
                 if(arg.equalsIgnoreCase("area"))
                 {
@@ -7085,6 +7175,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         tt=parseBits(script,si,"Ccr");
                     else
                         tt=parseBits(script,si,"Cr");
+                	if(tt==null) return null;
                 }
                 String next=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
                 String rest=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
@@ -7125,7 +7216,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 56: // mpstop
             {
-                if(tt==null) tt=parseBits(script,si,"Cr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cr");
+                	if(tt==null) return null;
+                }
                 Vector V=new Vector();
                 String who=tt[1];
                 if(who.equalsIgnoreCase("all"))
@@ -7163,7 +7257,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 43: // mpunhide
             {
-                if(tt==null) tt=parseBits(script,si,"Cr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cr");
+                	if(tt==null) return null;
+                }
                 Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((newTarget!=null)&&(CMath.bset(newTarget.baseEnvStats().disposition(),EnvStats.IS_NOT_SEEN)))
                 {
@@ -7175,7 +7272,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 44: // mpopen
             {
-                if(tt==null) tt=parseBits(script,si,"Cr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cr");
+                	if(tt==null) return null;
+                }
                 Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((newTarget instanceof Exit)&&(((Exit)newTarget).hasADoor()))
                 {
@@ -7194,7 +7294,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 45: // mpclose
             {
-                if(tt==null) tt=parseBits(script,si,"Cr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cr");
+                	if(tt==null) return null;
+                }
                 Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((newTarget instanceof Exit)&&(((Exit)newTarget).hasADoor())&&(((Exit)newTarget).isOpen()))
                 {
@@ -7213,7 +7316,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 46: // mplock
             {
-                if(tt==null) tt=parseBits(script,si,"Cr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cr");
+                	if(tt==null) return null;
+                }
                 Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((newTarget instanceof Exit)&&(((Exit)newTarget).hasALock()))
                 {
@@ -7232,7 +7338,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 47: // mpunlock
             {
-                if(tt==null) tt=parseBits(script,si,"Cr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cr");
+                	if(tt==null) return null;
+                }
                 Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((newTarget instanceof Exit)&&(((Exit)newTarget).isLocked()))
                 {
@@ -7250,12 +7359,18 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 break;
             }
             case 48: // return
-                if(tt==null) tt=parseBits(script,si,"Cr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cr");
+                	if(tt==null) return null;
+                }
                 tickStatus=Tickable.STATUS_END;
                 return varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
             case 7: // mpechoat
             {
-                if(tt==null) tt=parseBits(script,si,"Ccp");
+                if(tt==null){
+                	tt=parseBits(script,si,"Ccp");
+                	if(tt==null) return null;
+                }
                 String parm=tt[1];
                 Environmental newTarget=getArgumentMOB(parm,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((newTarget!=null)&&(newTarget instanceof MOB)&&(lastKnownLocation!=null))
@@ -7305,7 +7420,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 8: // mpechoaround
             {
-                if(tt==null) tt=parseBits(script,si,"Ccp");
+                if(tt==null){
+                	tt=parseBits(script,si,"Ccp");
+                	if(tt==null) return null;
+                }
                 Environmental newTarget=getArgumentMOB(tt[1],source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((newTarget!=null)&&(newTarget instanceof MOB)&&(lastKnownLocation!=null))
                 {
@@ -7315,7 +7433,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 9: // mpcast
             {
-                if(tt==null) tt=parseBits(script,si,"Ccr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Ccr");
+                	if(tt==null) return null;
+                }
                 String cast=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
                 Environmental newTarget=getArgumentItem(tt[2],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 Ability A=null;
@@ -7329,7 +7450,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 30: // mpaffect
             {
-                if(tt==null) tt=parseBits(script,si,"Cccp");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cccp");
+                	if(tt==null) return null;
+                }
                 String cast=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
                 Environmental newTarget=getArgumentItem(tt[2],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 String m2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
@@ -7349,7 +7473,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 31: // mpbehave
             {
-                if(tt==null) tt=parseBits(script,si,"Cccp");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cccp");
+                	if(tt==null) return null;
+                }
                 String cast=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
                 Environmental newTarget=getArgumentItem(tt[2],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 String m2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
@@ -7377,7 +7504,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 72: // mpscript
             {
-                if(tt==null) tt=parseBits(script,si,"Ccp");
+                if(tt==null){
+                	tt=parseBits(script,si,"Ccp");
+                	if(tt==null) return null;
+                }
                 Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 String m2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
                 boolean proceed=true;
@@ -7438,7 +7568,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 32: // mpunbehave
             {
-                if(tt==null) tt=parseBits(script,si,"Ccr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Ccr");
+                	if(tt==null) return null;
+                }
                 String cast=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
                 Environmental newTarget=getArgumentItem(tt[2],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((newTarget!=null)&&(cast!=null))
@@ -7454,7 +7587,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 33: // mptattoo
             {
-                if(tt==null) tt=parseBits(script,si,"Ccr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Ccr");
+                	if(tt==null) return null;
+                }
                 Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 String tattooName=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
                 if((newTarget!=null)&&(tattooName.length()>0)&&(newTarget instanceof MOB))
@@ -7481,7 +7617,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 55: // mpnotrigger
             {
-                if(tt==null) tt=parseBits(script,si,"Ccr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Ccr");
+                	if(tt==null) return null;
+                }
                 String trigger=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
                 String time=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
                 int triggerCode=-1;
@@ -7502,7 +7641,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 54: // mpfaction
             {
-                if(tt==null) tt=parseBits(script,si,"Cccr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cccr");
+                	if(tt==null) return null;
+                }
                 Environmental newTarget=getArgumentMOB(tt[1],source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 String faction=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
                 String range=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]).trim();
@@ -7552,7 +7694,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 49: // mptitle
             {
-                if(tt==null) tt=parseBits(script,si,"Ccr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Ccr");
+                	if(tt==null) return null;
+                }
                 Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 String tattooName=tt[2];
                 if((newTarget!=null)&&(tattooName.length()>0)&&(newTarget instanceof MOB))
@@ -7582,15 +7727,21 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 10: // mpkill
             {
-                if(tt==null) tt=parseBits(script,si,"Cr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cr");
+                	if(tt==null) return null;
+                }
                 Environmental newTarget=getArgumentMOB(tt[1],source,monster,target,primaryItem,secondaryItem,msg,tmp);
-                if((newTarget!=null)&&(newTarget instanceof MOB))
+                if((newTarget!=null)&&(newTarget instanceof MOB)&&(monster!=null))
                     monster.setVictim((MOB)newTarget);
                 break;
             }
             case 51: // mpsetclandata
             {
-                if(tt==null) tt=parseBits(script,si,"Cccr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cccr");
+                	if(tt==null) return null;
+                }
                 Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 String clanID=null;
                 if((newTarget!=null)&&(newTarget instanceof MOB))
@@ -7615,7 +7766,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 52: // mpplayerclass
             {
-                if(tt==null) tt=parseBits(script,si,"Ccr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Ccr");
+                	if(tt==null) return null;
+                }
                 Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((newTarget!=null)&&(newTarget instanceof MOB))
                 {
@@ -7650,6 +7804,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             tt=parseBits(script,si,"Ccr");
                         else
                             tt=parseBits(script,si,"Cr");
+                    	if(tt==null) return null;
                     }
                     String s2=tt[1];
                     if(s2.equalsIgnoreCase("room"))
@@ -7711,7 +7866,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 14: // mpgoto
             {
-                if(tt==null) tt=parseBits(script,si,"Cr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cr");
+                	if(tt==null) return null;
+                }
                 String roomID=tt[1].trim();
                 if((roomID.length()>0)&&(lastKnownLocation!=null))
                 {
@@ -7742,7 +7900,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             case 15: // mpat
             if(lastKnownLocation!=null)
             {
-                if(tt==null) tt=parseBits(script,si,"Ccp");
+                if(tt==null){
+                	tt=parseBits(script,si,"Ccp");
+                	if(tt==null) return null;
+                }
                 Room lastPlace=lastKnownLocation;
                 String roomName=tt[1];
                 if(roomName.length()>0)
@@ -7774,7 +7935,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             break;
             case 17: // mptransfer
             {
-                if(tt==null) tt=parseBits(script,si,"Ccr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Ccr");
+                	if(tt==null) return null;
+                }
                 String mobName=tt[1];
                 String roomName=tt[2].trim();
                 Room newRoom=null;
@@ -7888,7 +8052,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 25: // mpbeacon
             {
-                if(tt==null) tt=parseBits(script,si,"Ccr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Ccr");
+                	if(tt==null) return null;
+                }
                 String roomName=tt[1];
                 Room newRoom=null;
                 if((roomName.length()>0)&&(lastKnownLocation!=null))
@@ -7928,7 +8095,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 18: // mpforce
             {
-                if(tt==null) tt=parseBits(script,si,"Ccp");
+                if(tt==null){
+                	tt=parseBits(script,si,"Ccp");
+                	if(tt==null) return null;
+                }
                 Environmental newTarget=getArgumentMOB(tt[1],source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 String force=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]).trim();
                 if(newTarget!=null)
@@ -7943,7 +8113,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 20: // mpsetvar
             {
-                if(tt==null) tt=parseBits(script,si,"Cccr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cccr");
+                	if(tt==null) return null;
+                }
                 String which=tt[1];
                 Environmental E=getArgumentItem(which,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
@@ -7964,7 +8137,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 36: // mpsavevar
             {
-                if(tt==null) tt=parseBits(script,si,"CcR");
+                if(tt==null){
+                	tt=parseBits(script,si,"CcR");
+                	if(tt==null) return null;
+                }
                 String which=tt[1];
                 String arg2=tt[2];
                 Environmental E=getArgumentItem(which,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
@@ -7993,7 +8169,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 39: // mploadvar
             {
-                if(tt==null) tt=parseBits(script,si,"CcR");
+                if(tt==null){
+                	tt=parseBits(script,si,"CcR");
+                	if(tt==null) return null;
+                }
                 String which=tt[1];
                 String arg2=tt[2];
                 Environmental E=getArgumentItem(which,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
@@ -8019,7 +8198,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 40: // MPM2I2M
             {
-                if(tt==null) tt=parseBits(script,si,"Cccr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cccr");
+                	if(tt==null) return null;
+                }
                 String arg1=tt[1];
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if(E instanceof MOB)
@@ -8056,7 +8238,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 28: // mpdamage
             {
-                if(tt==null) tt=parseBits(script,si,"Ccccr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Ccccr");
+                	if(tt==null) return null;
+                }
                 Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
                 String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
@@ -8118,7 +8303,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 29: // mptrackto
             {
-                if(tt==null) tt=parseBits(script,si,"Cr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cr");
+                	if(tt==null) return null;
+                }
                 String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
                 Ability A=CMClass.getAbility("Skill_Track");
                 if(A!=null)
@@ -8131,7 +8319,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 53: // mpwalkto
             {
-                if(tt==null) tt=parseBits(script,si,"Cr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cr");
+                	if(tt==null) return null;
+                }
                 String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
                 Ability A=CMClass.getAbility("Skill_Track");
                 if(A!=null)
@@ -8144,7 +8335,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 21: //MPENDQUEST
             {
-                if(tt==null) tt=parseBits(script,si,"Cr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cr");
+                	if(tt==null) return null;
+                }
                 String q=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1].trim());
                 Quest Q=getQuest(q);
                 if(Q!=null)
@@ -8173,7 +8367,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 69: // MPSTEPQUEST
             {
-                if(tt==null) tt=parseBits(script,si,"Cr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cr");
+                	if(tt==null) return null;
+                }
                 String qName=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1].trim());
                 Quest Q=getQuest(qName);
                 if(Q!=null) Q.stepQuest();
@@ -8183,7 +8380,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 23: //MPSTARTQUEST
             {
-                if(tt==null) tt=parseBits(script,si,"Cr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cr");
+                	if(tt==null) return null;
+                }
                 String qName=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1].trim());
                 Quest Q=getQuest(qName);
                 if(Q!=null) Q.startQuest();
@@ -8193,7 +8393,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 64: //MPLOADQUESTOBJ
             {
-                if(tt==null) tt=parseBits(script,si,"Cccr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Cccr");
+                	if(tt==null) return null;
+                }
                 String questName=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1].trim());
                 Quest Q=getQuest(questName);
                 if(Q==null)
@@ -8246,7 +8449,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 22: //MPQUESTWIN
             {
-                if(tt==null) tt=parseBits(script,si,"Ccr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Ccr");
+                	if(tt==null) return null;
+                }
                 String whoName=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
                 MOB M=null;
                 if(lastKnownLocation!=null)
@@ -8265,7 +8471,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 24: // MPCALLFUNC
             {
-                if(tt==null) tt=parseBits(script,si,"Ccr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Ccr");
+                	if(tt==null) return null;
+                }
                 String named=tt[1];
                 String parms=tt[2].trim();
                 boolean found=false;
@@ -8343,6 +8552,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         logError(scripted,"MPWHILE","Syntax",e.getMessage());
                         break;
                     }
+                	if(tt==null) return null;
                 }
                 int evalEnd=2;
                 int depth=0;
@@ -8417,7 +8627,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 26: // MPALARM
             {
-                if(tt==null) tt=parseBits(script,si,"Ccp");
+                if(tt==null){
+                	tt=parseBits(script,si,"Ccp");
+                	if(tt==null) return null;
+                }
                 String time=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
                 String parms=tt[2].trim();
                 if(CMath.s_int(time.trim())<=0)
@@ -8438,7 +8651,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 37: // mpenable
             {
-                if(tt==null) tt=parseBits(script,si,"Ccccp");
+                if(tt==null){
+                	tt=parseBits(script,si,"Ccccp");
+                	if(tt==null) return null;
+                }
                 Environmental newTarget=getArgumentMOB(tt[1],source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 String cast=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
                 String p2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
@@ -8478,7 +8694,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 38: // mpdisable
             {
-                if(tt==null) tt=parseBits(script,si,"Ccr");
+                if(tt==null){
+                	tt=parseBits(script,si,"Ccr");
+                	if(tt==null) return null;
+                }
                 Environmental newTarget=getArgumentMOB(tt[1],source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 String cast=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
                 if((newTarget!=null)&&(newTarget instanceof MOB))
@@ -8497,7 +8716,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(cmd.length()>0)
                 {
                     Vector V=CMParms.parse(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s));
-                    if(V.size()>0)
+                    if((V.size()>0)&&(monster!=null))
                         monster.doCommand(V,Command.METAFLAG_MPFORCED);
                 }
                 break;

@@ -298,8 +298,7 @@ public class ProcessSMTPrequest extends Thread
 								if(subject==null) subject="";
 							}
 							
-							if((finalData.length()>0)
-							&&(subject!=null))
+							if((finalData.length()>0) && (subject!=null))
 							{
 								if(subject.toUpperCase().startsWith("MOTD")
 								||subject.toUpperCase().startsWith("MOTM")
@@ -789,8 +788,11 @@ public class ProcessSMTPrequest extends Thread
 		{
 			try
 			{
-				sout.write(("421 You're taking too long.  I'm outa here."+cr).getBytes());
-				sout.flush();
+				if (sout != null)
+				{
+					sout.write(("421 You're taking too long.  I'm outa here."+cr).getBytes());
+					sout.flush();
+				}
 			}
 			catch(Exception e)
 			{

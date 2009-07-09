@@ -628,7 +628,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	        {
 	            if(M.envStats().height()>0)
 	            	response.append("\n\r"+CMStrings.capitalizeFirstLetter(item.name())+" is "+M.envStats().height()+" inches tall and weighs "+weight+" pounds.\n\r");
-	            if(!mob.isMonster())
+	            if((mob==null)||(!mob.isMonster()))
 	            	response.append(CMProps.mxpImage(M," ALIGN=RIGHT H=70 W=70"));
 	            response.append(M.healthText(mob)+"\n\r\n\r");
 	            if(!M.description().equalsIgnoreCase(item.description()))
@@ -649,7 +649,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	            response.append("It is mostly made of a kind of "+RawMaterial.MATERIAL_NOUNDESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8].toLowerCase()+".  ");
 	        else
 	            response.append("It is mostly made of "+RawMaterial.RESOURCE_DESCS[(item.material()&RawMaterial.RESOURCE_MASK)].toLowerCase()+".  ");
-	        if((item instanceof Weapon)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10)) {
+	        if((item instanceof Weapon)&&((mob==null)||mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10)) {
 	            response.append("It is a ");
                 if((item.rawLogicalAnd())&&CMath.bset(item.rawProperLocationBitmap(),Item.WORN_WIELD|Item.WORN_HELD))
                     response.append("two handed ");
@@ -658,7 +658,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	            response.append(CMStrings.capitalizeAndLower(Weapon.CLASS_DESCS[((Weapon)item).weaponClassification()])+" class weapon that does "+CMStrings.capitalizeAndLower(Weapon.TYPE_DESCS[((Weapon)item).weaponType()])+" damage.  ");
 	        }
 	        else
-	        if((item instanceof Armor)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10))
+	        if((item instanceof Armor)&&((mob==null)||mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10))
 	        {
 	            if(item.envStats().height()>0)
 	                response.append(" It is a size "+item.envStats().height()+", and is ");
@@ -1090,7 +1090,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                     &&((mob.location().getExitInDir(d)==exit)))
                         direction=d;
                 mob.tell(exit.viewableText(mob,room).toString());
-                if(isAClearExitView(mob,room,exit)&&(direction>=0))
+                if(isAClearExitView(mob,room,exit)&&(direction>=0)&&(room!=null))
                 {
                     Vector view=null;
                     Vector items=new Vector();
@@ -1432,7 +1432,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 
     public void lookAtExits(Room room, MOB mob)
     {
-        if((mob==null)||(room==null)||(mob.isMonster())) return;
+        if((mob==null)
+        ||(room==null)
+        ||(mob.isMonster())) 
+        	return;
+        
         if(!CMLib.flags().canSee(mob))
         {
             mob.tell("You can't see anything!");
@@ -1454,8 +1458,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             if(Say.length()>0)
             {
                 Dir=CMStrings.padRightPreserve(Directions.getDirectionName(d),5);
-                if((mob!=null)
-                &&(mob.playerStats()!=null)
+                if((mob.playerStats()!=null)
                 &&(room2!=null)
                 &&(!mob.playerStats().hasVisited(room2)))
                     buf.append("^U^<EX^>" + Dir+"^</EX^>:^.^N ^u"+Say+"^.^N\n\r");

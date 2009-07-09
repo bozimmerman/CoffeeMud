@@ -677,7 +677,6 @@ public class StdItem implements Item
 		
 		if((msg.tool()==this)
 		&&(msg.sourceMinor()==CMMsg.TYP_THROW)
-		&&(mob!=null)
 		&&(mob.isMine(this)))
 		{
 			if((envStats().weight()>(mob.maxCarry()/5))
