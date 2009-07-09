@@ -849,7 +849,7 @@ public class CMath
 	                continue;
 	            }
 	            default:
-	                throw new ArithmeticException("'"+c+"' is an illegal expression.");
+	                throw new ArithmeticException("'"+(char)c+"' ("+(int)c+") is an illegal expression.");
 	            }
 	            switch(lastOperation)
 	            {

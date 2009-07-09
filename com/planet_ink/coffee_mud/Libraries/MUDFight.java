@@ -43,6 +43,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
     protected LinkedList<CMath.CompiledOperation> attackAdjustmentFormula = null;
     protected LinkedList<CMath.CompiledOperation>  armorAdjustmentFormula = null;
     protected LinkedList<CMath.CompiledOperation>  attackerFudgeBonusFormula  = null;
+    protected LinkedList<CMath.CompiledOperation>  spellFudgeDamageFormula  = null;
     protected LinkedList<CMath.CompiledOperation>  spellCritChanceFormula = null;
     protected LinkedList<CMath.CompiledOperation>  spellCritDmgFormula = null;
     protected LinkedList<CMath.CompiledOperation> targetedRangedDamageFormula = null;
@@ -67,6 +68,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		staticMeleeDamageFormula=CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_DAMAGEMELEESTATIC));
 		weaponCritChanceFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_CHANCEWEAPONCRIT));
 		weaponCritDmgFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_DAMAGEWEAPONCRIT));
+		spellFudgeDamageFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_DAMAGESPELLFUDGE));
     	return true; 
     }
     
@@ -383,9 +385,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		&&(attacker != target)
 		&&(attacker != null)
 		&&(attacker.isMine(weapon)))
-		{
-			damage += criticalSpellDamage(attacker, target, damage);
-		}
+			damage = modifySpellDamage(attacker, target, damage);
+		
 		CMMsg msg=CMClass.getMsg(attacker,target,weapon,messageCode,CMMsg.MSG_DAMAGE,messageCode,allDisplayMessage);
 		msg.setValue(damage);
         CMLib.color().fixSourceFightColor(msg);
@@ -406,7 +407,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				R.send(target,msg);
 			}
 	}
-	public int criticalSpellDamage(MOB attacker, MOB target, int baseDamage)
+	
+	public int modifySpellDamage(MOB attacker, MOB target, int baseDamage)
 	{
 		int maxInt = attacker.charStats().getMaxStat(CharStats.STAT_INTELLIGENCE);
 		int currInt = attacker.charStats().getStat(CharStats.STAT_INTELLIGENCE);
@@ -429,13 +431,15 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				attacker.envStats().level(),
 				target.envStats().level()
 				};
+		baseDamage = (int)Math.round(CMath.parseMathExpression(spellFudgeDamageFormula, vars, 0.0));
+		vars[0]=baseDamage;
 		int spellCritChancePct = (int)Math.round(CMath.parseMathExpression(spellCritChanceFormula, vars, 0.0));
 		if(CMLib.dice().rollPercentage()<spellCritChancePct)
 		{
 			int spellCritDamageAmt = (int)Math.round(CMath.parseMathExpression(spellCritDmgFormula, vars, 0.0));
-			return spellCritDamageAmt;
+			baseDamage+=spellCritDamageAmt;
 		}
-		return 0;
+		return baseDamage;
 	}
 	
 	public int adjustedDamage(MOB mob, Weapon weapon, MOB target)
