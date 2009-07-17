@@ -89,6 +89,7 @@ public interface WorldMap extends CMLibrary, Runnable
     /************************************************************************/
     public void resetArea(Area area);
     public void resetRoom(Room room);
+    public void resetRoom(Room room, boolean rebuildGrids);
     public Room getStartRoom(Environmental E);
     public Area getStartArea(Environmental E);
     public Room roomLocation(Environmental E);

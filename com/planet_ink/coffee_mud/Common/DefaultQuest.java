@@ -494,12 +494,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                 if(cmd.equals("RESET"))
                 {
                     if(q.room!=null)
-                        CMLib.map().resetRoom(q.room);
+                        CMLib.map().resetRoom(q.room, true);
                     else
                     if(q.roomGroup!=null)
                     {
 	                    for(int r=0;r<q.roomGroup.size();r++)
-	                        CMLib.map().resetRoom((Room)q.roomGroup.elementAt(r));
+	                        CMLib.map().resetRoom((Room)q.roomGroup.elementAt(r), true);
                     }
                     else
                     if(q.area!=null)

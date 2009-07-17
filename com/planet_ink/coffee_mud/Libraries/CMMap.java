@@ -1343,11 +1343,18 @@ public class CMMap extends StdLibrary implements WorldMap
 	public CMMsg resetMsg=null;
 	public void resetRoom(Room room)
 	{
+		resetRoom(room,false);
+	}
+	
+	public void resetRoom(Room room, boolean rebuildGrids)
+	{
 		if(room==null) return;
 		if(room.roomID().length()==0) return;
 		synchronized(("SYNC"+room.roomID()).intern())
 		{
 			room=getRoom(room);
+			if((rebuildGrids)&&(room instanceof GridLocale))
+				((GridLocale)room).clearGrid(null);
 			boolean mobile=room.getMobility();
 			room.toggleMobility(false);
 			if(resetMsg==null) resetMsg=CMClass.getMsg(CMClass.sampleMOB(),room,CMMsg.MSG_ROOMRESET,null);

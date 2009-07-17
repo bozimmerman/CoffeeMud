@@ -7145,13 +7145,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(arg.equalsIgnoreCase("room"))
                 {
                     if(lastKnownLocation!=null)
-                        CMLib.map().resetRoom(lastKnownLocation);
+                        CMLib.map().resetRoom(lastKnownLocation, true);
                 }
                 else
                 {
                     Room R=CMLib.map().getRoom(arg);
                     if(R!=null)
-                        CMLib.map().resetRoom(R);
+                        CMLib.map().resetRoom(R, true);
                     else
                     {
                         Area A=CMLib.map().findArea(arg);

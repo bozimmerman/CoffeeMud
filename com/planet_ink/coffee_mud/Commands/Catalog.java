@@ -223,7 +223,7 @@ public class Catalog extends StdCommand
 						{
 							CMLib.catalog().updateRoomContent(roomID, contents);
 							R.destroy();
-							CMLib.map().resetRoom(CMLib.map().getRoom(roomID));
+							CMLib.map().resetRoom(CMLib.map().getRoom(roomID), true);
 						}
 					}
 				}
@@ -576,7 +576,7 @@ public class Catalog extends StdCommand
 							if(dirty)
 							{
 								CMLib.catalog().updateRoomContent(roomID, contents);
-								CMLib.map().resetRoom(CMLib.map().getRoom(roomID));
+								CMLib.map().resetRoom(CMLib.map().getRoom(roomID), true);
 								R.destroy();
 							}
 						}

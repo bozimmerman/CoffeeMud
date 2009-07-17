@@ -313,7 +313,7 @@ public class Reset extends StdCommand
                     if((S!=null)&&(S.mob()!=null)&&(S.mob().location()!=null)&&(S.mob().location()==mob.location()))
                         S.mob().tell(mob,null,null,"<S-NAME> order(s) this room to normalcy.");
                 }
-    			CMLib.map().resetRoom(mob.location());
+    			CMLib.map().resetRoom(mob.location(), true);
                 mob.tell("Done.");
             }
             else
@@ -628,7 +628,7 @@ public class Reset extends StdCommand
 		    	{
 		    		R=CMLib.map().getRoom(R);
 					R.getArea().setAreaState(Area.STATE_FROZEN);
-					CMLib.map().resetRoom(R);
+					CMLib.map().resetRoom(R, true);
 					boolean somethingDone=false;
 					for(int m=0;m<R.numInhabitants();m++)
 					{
@@ -697,7 +697,7 @@ public class Reset extends StdCommand
 			    	synchronized(("SYNC"+R.roomID()).intern())
 			    	{
 			    		R=CMLib.map().getRoom(R);
-						CMLib.map().resetRoom(R);
+						CMLib.map().resetRoom(R, true);
 						boolean didSomething=false;
 						for(int i=0;i<R.numInhabitants();i++)
 						{
@@ -740,7 +740,7 @@ public class Reset extends StdCommand
 			    	synchronized(("SYNC"+R.roomID()).intern())
 			    	{
 			    		R=CMLib.map().getRoom(R);
-						CMLib.map().resetRoom(R);
+						CMLib.map().resetRoom(R, true);
 						boolean didSomething=false;
 						for(int i=0;i<R.numInhabitants();i++)
 						{
@@ -846,7 +846,7 @@ public class Reset extends StdCommand
 				    	synchronized(("SYNC"+R.roomID()).intern())
 				    	{
 				    		R=CMLib.map().getRoom(R);
-							CMLib.map().resetRoom(R);
+							CMLib.map().resetRoom(R, true);
 							boolean changedMOBS=false;
 							boolean changedItems=false;
 							for(int i=0;i<R.numItems();i++)
@@ -934,7 +934,7 @@ public class Reset extends StdCommand
 				    	synchronized(("SYNC"+R.roomID()).intern())
 				    	{
 				    		R=CMLib.map().getRoom(R);
-							CMLib.map().resetRoom(R);
+							CMLib.map().resetRoom(R, true);
 							boolean changedMOBS=false;
 							boolean changedItems=false;
 							for(int i=0;i<R.numItems();i++)
@@ -1014,7 +1014,7 @@ public class Reset extends StdCommand
 		    	synchronized(("SYNC"+R.roomID()).intern())
 		    	{
 		    		R=CMLib.map().getRoom(R);
-					CMLib.map().resetRoom(R);
+					CMLib.map().resetRoom(R, true);
 					boolean somethingDone=false;
 					mob.tell(R.roomID()+"/"+R.name()+"/"+R.displayText()+"--------------------");
 					for(int i=R.numItems()-1;i>=0;i--)
