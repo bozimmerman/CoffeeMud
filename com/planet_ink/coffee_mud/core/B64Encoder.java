@@ -618,7 +618,6 @@ public class B64Encoder
         private int     lineLength;
         private boolean breakLines;     // Break lines at less than 80 characters
         
-        @SuppressWarnings("unused")
 		public B64InputStream( java.io.InputStream in )
         {   
             this( in, DECODE );
@@ -755,7 +754,6 @@ public class B64Encoder
         private byte[]  b4; // Scratch used in a few places
         private boolean suspendEncoding;
         
-        @SuppressWarnings("unused")
 		public B64OutputStream( java.io.OutputStream out )
         {   
             this( out, ENCODE );
@@ -851,14 +849,12 @@ public class B64Encoder
             buffer = null;
             out    = null;
         }
-        @SuppressWarnings("unused")
 		public void suspendEncoding() throws java.io.IOException 
         {
             flushBase64();
             this.suspendEncoding = true;
         }
         
-        @SuppressWarnings("unused")
 		public void resumeEncoding()
         {
             this.suspendEncoding = false;
