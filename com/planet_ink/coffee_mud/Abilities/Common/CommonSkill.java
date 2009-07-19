@@ -149,6 +149,7 @@ public class CommonSkill extends StdAbility
 		if(ticks<minDuration) ticks=minDuration;
 		return ticks;
 	}
+	
 	protected int addedTickTime(MOB invokerMOB, int baseTickTime)
 	{
 		// common skills tend to SUBTRACT time -- not add to it!
@@ -233,7 +234,6 @@ public class CommonSkill extends StdAbility
 		}
 		return fire;
 	}
-
 	
 	public int[] usageCost(MOB mob, boolean ignoreClassOverride)
 	{
@@ -271,7 +271,11 @@ public class CommonSkill extends StdAbility
 		}
 		return buildCostArray(mob,consumed,minimum);
 	}
-	public int xlevel(MOB mob){ return mob.envStats().level()+(2*getXLEVELLevel(mob));}
+	
+	public int xlevel(MOB mob)
+	{ 
+		return mob.envStats().level()+(2*getXLEVELLevel(mob));
+	}
     
 	public boolean confirmPossibleMaterialLocation(int resource, Room location)
 	{
@@ -292,7 +296,6 @@ public class CommonSkill extends StdAbility
 				return true;
 		return false;
 	}
-	
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

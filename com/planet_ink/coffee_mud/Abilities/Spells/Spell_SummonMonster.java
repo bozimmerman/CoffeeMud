@@ -74,15 +74,16 @@ public class Spell_SummonMonster extends Spell
 		boolean success=proficiencyCheck(mob,0,auto);
 
         Room R=mob.location();
-        MOB monster = determineMonster(mob, mob.envStats().level()+(getXLEVELLevel(mob)+(2*getX1Level(mob))));
-		if((success)&&(monster!=null))
+		if(success)
 		{
 			invoker=mob;
 			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> summon(s) help from the Java Plain....^?");
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
-				beneficialAffect(mob,monster,asLevel,0);
+		        MOB monster = determineMonster(mob, mob.envStats().level()+(getXLEVELLevel(mob)+(2*getX1Level(mob))));
+		        if(monster!=null)
+					beneficialAffect(mob,monster,asLevel,0);
 			}
 		}
 		else
@@ -91,6 +92,12 @@ public class Spell_SummonMonster extends Spell
 		// return whether it worked
 		return success;
 	}
+	
+	public void bringToLife(MOB M)
+	{
+		
+	}
+	
 	public MOB determineMonster(MOB caster, int level)
 	{
 	    Room R=caster.location();
