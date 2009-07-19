@@ -96,6 +96,7 @@ public class Purge extends StdCommand
 		
 		String itemID=CMParms.combine(commands,2);
 		MOB srchMob=mob;
+		Item srchContainer=null;
 		Room srchRoom=mob.location();
 		int x=itemID.indexOf("@");
 		if(x>0)
@@ -110,12 +111,21 @@ public class Purge extends StdCommand
 				MOB M=srchRoom.fetchInhabitant(rest);
 				if(M==null)
 				{
-					mob.tell("MOB '"+rest+"' not found.");
-					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
-					return false;
+					Item I = srchRoom.fetchItem(null, rest);
+					if(I instanceof Container)
+						srchContainer=(Container)I;
+					else
+					{
+						mob.tell("MOB or Container '"+rest+"' not found.");
+						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+						return false;
+					}
 				}
-				srchMob=M;
-				srchRoom=null;
+				else
+				{
+					srchMob=M;
+					srchRoom=null;
+				}
 			}
 		}
 		
@@ -125,7 +135,7 @@ public class Purge extends StdCommand
 		boolean doneSomething=false;
 		Item deadItem=null;
 		if(!allFlag) deadItem=(srchMob==null)?null:srchMob.fetchInventory(null,itemID);
-		if(deadItem==null) deadItem=(srchRoom==null)?null:srchRoom.fetchItem(null,itemID);
+		if(deadItem==null) deadItem=(srchRoom==null)?null:srchRoom.fetchItem(srchContainer,itemID);
 		while(deadItem!=null)
 		{
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,deadItem.name()+" disintegrates!");

@@ -51,6 +51,7 @@ public class Restring extends StdCommand
 		String allWord=CMParms.combine(commands,1);
 		int x=allWord.indexOf("@");
 		MOB srchMob=mob;
+		Item srchContainer=null;
 		Room srchRoom=mob.location();
 		if(x>0)
 		{
@@ -64,23 +65,32 @@ public class Restring extends StdCommand
 				MOB M=srchRoom.fetchInhabitant(rest);
 				if(M==null)
 				{
-					mob.tell("MOB '"+rest+"' not found.");
-					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
-					return false;
+					Item I = srchRoom.fetchItem(null, rest);
+					if(I instanceof Container)
+						srchContainer=(Container)I;
+					else
+					{
+						mob.tell("MOB or Container '"+rest+"' not found.");
+						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+						return false;
+					}
 				}
-				srchMob=M;
-				srchRoom=null;
+				else
+				{
+					srchMob=M;
+					srchRoom=null;
+				}
 			}
 		}
 		Environmental thang=null;
 		if((srchMob!=null)&&(srchRoom!=null))
-			thang=srchRoom.fetchFromMOBRoomFavorsItems(srchMob,null,allWord,Item.WORNREQ_ANY);
+			thang=srchRoom.fetchFromMOBRoomFavorsItems(srchMob,srchContainer,allWord,Item.WORNREQ_ANY);
 		else
 		if(srchMob!=null)
 			thang=srchMob.fetchInventory(allWord);
 		else
 		if(srchRoom!=null)
-			thang=srchRoom.fetchFromRoomFavorItems(null,allWord,Item.WORNREQ_ANY);
+			thang=srchRoom.fetchFromRoomFavorItems(srchContainer,allWord,Item.WORNREQ_ANY);
 		if((thang!=null)&&(thang instanceof Item))
 		{
 			if(!thang.isGeneric())

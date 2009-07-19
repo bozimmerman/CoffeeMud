@@ -52,6 +52,7 @@ public class Modify extends StdCommand
 
 		String itemID=((String)commands.elementAt(2));
 		MOB srchMob=mob;
+		Item srchContainer=null;
 		Room srchRoom=mob.location();
 		int x=itemID.indexOf("@");
 		if(x>0)
@@ -66,12 +67,21 @@ public class Modify extends StdCommand
 				MOB M=srchRoom.fetchInhabitant(rest);
 				if(M==null)
 				{
-					mob.tell("MOB '"+rest+"' not found.");
-					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
-					return;
+					Item I = srchRoom.fetchItem(null, rest);
+					if(I instanceof Container)
+						srchContainer=(Container)I;
+					else
+					{
+						mob.tell("MOB or Container '"+rest+"' not found.");
+						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+						return;
+					}
 				}
-				srchMob=M;
-				srchRoom=null;
+				else
+				{
+					srchMob=M;
+					srchRoom=null;
+				}
 			}
 		}
 		String command="";
@@ -83,13 +93,17 @@ public class Modify extends StdCommand
 
 		Item modItem=null;
 		if((srchMob!=null)&&(srchRoom!=null))
-			modItem=(Item)srchRoom.fetchFromMOBRoomFavorsItems(srchMob,null,itemID,Item.WORNREQ_ANY);
+			modItem=(Item)srchRoom.fetchFromMOBRoomFavorsItems(srchMob,srchContainer,itemID,Item.WORNREQ_ANY);
 		else
 		if(srchMob!=null)
 			modItem=srchMob.fetchInventory(itemID);
 		else
 		if(srchRoom!=null)
-			modItem=srchRoom.fetchAnyItem(itemID);
+		{
+			modItem=srchRoom.fetchItem(srchContainer, itemID);
+			if(modItem==null)
+				modItem=srchRoom.fetchAnyItem(itemID);
+		}
 		if(modItem==null)
 		{
 			mob.tell("I don't see '"+itemID+" here.\n\r");
@@ -1390,6 +1404,7 @@ public class Modify extends StdCommand
 			String allWord=CMParms.combine(commands,1);
 			int x=allWord.indexOf("@");
 			MOB srchMob=mob;
+			Item srchContainer=null;
 			Room srchRoom=mob.location();
 			if(x>0)
 			{
@@ -1403,23 +1418,32 @@ public class Modify extends StdCommand
 					MOB M=srchRoom.fetchInhabitant(rest);
 					if(M==null)
 					{
-						mob.tell("MOB '"+rest+"' not found.");
-						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
-						return false;
+						Item I = srchRoom.fetchItem(null, rest);
+						if(I instanceof Container)
+							srchContainer=(Container)I;
+						else
+						{
+							mob.tell("MOB or Container '"+rest+"' not found.");
+							mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+							return false;
+						}
 					}
-					srchMob=M;
-					srchRoom=null;
+					else
+					{
+						srchMob=M;
+						srchRoom=null;
+					}
 				}
 			}
 			Environmental thang=null;
 			if((srchMob!=null)&&(srchRoom!=null))
-				thang=srchRoom.fetchFromMOBRoomFavorsItems(srchMob,null,allWord,Item.WORNREQ_ANY);
+				thang=srchRoom.fetchFromMOBRoomFavorsItems(srchMob,srchContainer,allWord,Item.WORNREQ_ANY);
 			else
 			if(srchMob!=null)
 				thang=srchMob.fetchInventory(allWord);
 			else
 			if(srchRoom!=null)
-				thang=srchRoom.fetchFromRoomFavorItems(null,allWord,Item.WORNREQ_ANY);
+				thang=srchRoom.fetchFromRoomFavorItems(srchContainer,allWord,Item.WORNREQ_ANY);
 			if((thang!=null)&&(thang instanceof Item))
 			{
 				if(!CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")) 

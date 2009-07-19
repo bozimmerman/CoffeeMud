@@ -134,6 +134,7 @@ public class Create extends StdCommand
 
 		String itemID=CMParms.combine(commands,2);
 		Environmental dest=mob.location();
+		Item setContainer=null;
 		int x=itemID.indexOf("@");
 		if(x>0)
 		{
@@ -145,11 +146,18 @@ public class Create extends StdCommand
 				MOB M=mob.location().fetchInhabitant(rest);
 				if(M==null)
 				{
-					mob.tell("MOB '"+rest+"' not found.");
-					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
-					return;
+					Item I = mob.location().fetchItem(null, rest);
+					if(I instanceof Container)
+						setContainer=(Container)I;
+					else
+					{
+						mob.tell("MOB or Container '"+rest+"' not found.");
+						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+						return;
+					}
 				}
-				dest=M;
+				else
+					dest=M;
 			}
 		}
 		Item newItem=CMClass.getItem(itemID);
@@ -188,12 +196,14 @@ public class Create extends StdCommand
 		if(dest instanceof Room)
 		{
 			((Room)dest).addItem(newItem);
+			newItem.setContainer(setContainer);
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");
 		}
 		else
 		if(dest instanceof MOB)
 		{
 			((MOB)dest).addInventory(newItem);
+			newItem.setContainer(setContainer);
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops into "+dest.name()+"'s arms.");
 		}
 

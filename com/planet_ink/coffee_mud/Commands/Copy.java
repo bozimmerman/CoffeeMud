@@ -60,6 +60,7 @@ public class Copy extends StdCommand
 		}
 		String name=CMParms.combine(commands,0);
 		Environmental dest=mob.location();
+		Item srchContainer=null;
 		int x=name.indexOf("@");
 		if(x>0)
 		{
@@ -71,11 +72,18 @@ public class Copy extends StdCommand
 				MOB M=mob.location().fetchInhabitant(rest);
 				if(M==null)
 				{
-					mob.tell("MOB '"+rest+"' not found.");
-					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
-					return false;
+					Item I = mob.location().fetchItem(null, rest);
+					if(I instanceof Container)
+						srchContainer=(Container)I;
+					else
+					{
+						mob.tell("MOB or Container '"+rest+"' not found.");
+						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+						return false;
+					}
 				}
-				dest=M;
+				else
+					dest=M;
 			}
 		}
 		Environmental E=null;
@@ -99,8 +107,8 @@ public class Copy extends StdCommand
 				}
 			}
 		}
-		if(E==null) E=mob.location().fetchFromRoomFavorItems(null,name,Item.WORNREQ_UNWORNONLY);
-        if(E==null) E=mob.location().fetchFromRoomFavorMOBs(null,name,Item.WORNREQ_UNWORNONLY);
+		if(E==null) E=mob.location().fetchFromRoomFavorItems(srchContainer,name,Item.WORNREQ_UNWORNONLY);
+        if(E==null) E=mob.location().fetchFromRoomFavorMOBs(srchContainer,name,Item.WORNREQ_UNWORNONLY);
 		if(E==null)	E=mob.fetchInventory(name);
 		if(E==null)
 		{

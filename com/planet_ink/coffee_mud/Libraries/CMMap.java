@@ -756,7 +756,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			Room room=(Room)rooms.nextElement();
 			if((room != null) && ((mob==null)||CMLib.flags().canAccess(mob,room)))
 			{
-				found.addAll(anyItems?room.fetchItems(null,srchStr):room.fetchAnyItems(srchStr));
+				found.addAll(anyItems?room.fetchAnyItems(srchStr):room.fetchItems(null,srchStr));
 		    	if((returnFirst)&&(found.size()>0)) return found;
 			}
 	    	if((useTimer)&&((System.currentTimeMillis()-startTime)>delay)) 
