@@ -624,6 +624,7 @@ public class Reset extends StdCommand
 			for(Enumeration r=rooms.elements();r.hasMoreElements();)
 			{
 				Room R=CMLib.map().getRoom((Room)r.nextElement());
+				if(R!=null)
 		    	synchronized(("SYNC"+R.roomID()).intern())
 		    	{
 		    		R=CMLib.map().getRoom(R);
