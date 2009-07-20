@@ -77,7 +77,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	
 	public int getLevelAttack(MOB mob)
 	{
-		return ((mob.baseEnvStats().level()-1)*getAttackBonusNextLevel(mob));
+		return ((mob.baseEnvStats().level()-1)*getAttackBonusNextLevel(mob)) + mob.baseEnvStats().level();
 	}
 
 	public int getLevelMOBArmor(MOB mob)
