@@ -627,6 +627,7 @@ public class Reset extends StdCommand
 		    	synchronized(("SYNC"+R.roomID()).intern())
 		    	{
 		    		R=CMLib.map().getRoom(R);
+		    		if(R==null) continue;
 					R.getArea().setAreaState(Area.STATE_FROZEN);
 					CMLib.map().resetRoom(R, true);
 					boolean somethingDone=false;
