@@ -82,9 +82,48 @@ public class Prayer_SummonElemental extends Prayer
 		}
 	}
 
+	public boolean isAnElemental(MOB mob, MOB invoker)
+	{
+		if((mob==null)||(mob==invoker)||(!mob.isMonster())) return false;
+		Ability A = mob.fetchEffect(ID());
+		if(A==null) return false;
+		if((A.invoker() == invoker)||(A.invoker()==null)) 
+			return true;
+		return false;
+	}
+	
+	public boolean hasAnElemental(MOB mob)
+	{
+		if(mob==null) return false;
+		Room R = mob.location();
+		if(R==null) return false;
+		for(int r=0;r<R.numInhabitants();r++)
+			if(isAnElemental(R.fetchInhabitant(r),mob))
+				return true;
+		HashSet H = mob.getGroupMembers(new HashSet());
+		for(Iterator i=H.iterator();i.hasNext();)
+			if(isAnElemental((MOB)i.next(),mob))
+				return true;
+		return false;
+	}
+
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(hasAnElemental(mob))
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+		if(hasAnElemental(mob))
+		{
+			mob.tell("You already control an elemental.");
+			return false;
+		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

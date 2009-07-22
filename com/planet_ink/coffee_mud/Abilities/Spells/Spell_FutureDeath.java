@@ -62,7 +62,8 @@ public class Spell_FutureDeath extends Spell
 			return false;
 
 		// now see if it worked
-		boolean success=proficiencyCheck(mob,-((target.charStats().getStat(CharStats.STAT_WISDOM)*2)+(levelDiff*5)),auto);
+		levelDiff +=6;
+		boolean success=proficiencyCheck(mob,-((target.charStats().getStat(CharStats.STAT_WISDOM)*2)+(levelDiff*15)),auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
