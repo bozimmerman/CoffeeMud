@@ -42,18 +42,18 @@ public class Stand extends StdCommand
 		throws java.io.IOException
 	{
 		boolean ifnecessary=((commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("IFNECESSARY")));
-
+		Room room = CMLib.map().roomLocation(mob);
 		if(CMLib.flags().isStanding(mob))
 		{
 			if(!ifnecessary)
 				mob.tell("You are already standing!");
 		}
 		else
-		if(mob.location()!=null)
+		if(room!=null)
 		{
 			CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_STAND,mob.amDead()?null:"<S-NAME> stand(s) up.");
-			if(mob.location().okMessage(mob,msg))
-				mob.location().send(mob,msg);
+			if(room.okMessage(mob,msg))
+				room.send(mob,msg);
 		}
 		return false;
 	}
