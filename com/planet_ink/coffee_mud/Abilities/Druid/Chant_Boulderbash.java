@@ -96,8 +96,8 @@ public class Chant_Boulderbash extends Chant
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
-				int maxDie =  adjustedLevel( mob, asLevel );
-				int damage = CMLib.dice().roll(maxDie,6,maxDie);
+				int maxDie =  (adjustedLevel( mob, asLevel )+(2*super.getX1Level(mob))) / 2;
+				int damage = CMLib.dice().roll(maxDie,6,5+(maxDie/6));
 				if((msg.value()>0)||(msg2.value()>0))
 					damage = (int)Math.round(CMath.div(damage,1.5));
 				if(target.location()==mob.location())

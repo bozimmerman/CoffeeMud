@@ -138,4 +138,6 @@ public interface CMFlagLibrary extends CMLibrary
 	public int getHideScore(Environmental seen);
     public boolean canActAtAll(Tickable affecting);
     public boolean canFreelyBehaveNormal(Tickable affecting);
+	public boolean hasAControlledFollower(MOB invoker, Ability A);
+	public boolean isAControlledFollower(MOB invoker, MOB mob, Ability A);
 }

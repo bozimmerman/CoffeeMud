@@ -101,7 +101,7 @@ public class Chant_MeteorStrike extends Chant
 					invoker=mob;
 
 					int damage = 0;
-					int maxDie=adjustedLevel(mob,asLevel);
+					int maxDie =  (adjustedLevel( mob, asLevel )+(2*super.getX1Level(mob))) / 2;
 					damage = CMLib.dice().roll(maxDie,6,30);
 					if(msg.value()>0)
 						damage = (int)Math.round(CMath.div(damage,2.0));

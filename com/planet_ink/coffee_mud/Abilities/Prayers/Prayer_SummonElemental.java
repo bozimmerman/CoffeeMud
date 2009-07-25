@@ -82,36 +82,11 @@ public class Prayer_SummonElemental extends Prayer
 		}
 	}
 
-	public boolean isAnElemental(MOB mob, MOB invoker)
-	{
-		if((mob==null)||(mob==invoker)||(!mob.isMonster())) return false;
-		Ability A = mob.fetchEffect(ID());
-		if(A==null) return false;
-		if((A.invoker() == invoker)||(A.invoker()==null)) 
-			return true;
-		return false;
-	}
-	
-	public boolean hasAnElemental(MOB mob)
-	{
-		if(mob==null) return false;
-		Room R = mob.location();
-		if(R==null) return false;
-		for(int r=0;r<R.numInhabitants();r++)
-			if(isAnElemental(R.fetchInhabitant(r),mob))
-				return true;
-		HashSet H = mob.getGroupMembers(new HashSet());
-		for(Iterator i=H.iterator();i.hasNext();)
-			if(isAnElemental((MOB)i.next(),mob))
-				return true;
-		return false;
-	}
-
     public int castingQuality(MOB mob, Environmental target)
     {
         if(mob!=null)
         {
-            if(hasAnElemental(mob))
+    		if(CMLib.flags().hasAControlledFollower(mob, this))
                 return Ability.QUALITY_INDIFFERENT;
         }
         return super.castingQuality(mob,target);
@@ -119,9 +94,9 @@ public class Prayer_SummonElemental extends Prayer
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(hasAnElemental(mob))
+		if(CMLib.flags().hasAControlledFollower(mob, this))
 		{
-			mob.tell("You already control an elemental.");
+			mob.tell("You can only control one elemental.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

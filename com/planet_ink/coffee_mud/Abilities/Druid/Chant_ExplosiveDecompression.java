@@ -104,7 +104,7 @@ public class Chant_ExplosiveDecompression extends Chant
 								mob.location().send(mob,msg2);
 								invoker=mob;
 							    int numDice = adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob));
-								int damage = CMLib.dice().roll(numDice, 10, 50);
+								int damage = CMLib.dice().roll(numDice, 5, 25);
 								if(msg2.value()>0)
 									damage = (int)Math.round(CMath.div(damage,2.0));
 								CMLib.combat().postDamage(mob,M,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The flaming blast <DAMAGE> <T-NAME>!");

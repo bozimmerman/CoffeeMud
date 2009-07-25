@@ -146,7 +146,7 @@ public class Chant_CaveIn extends Chant
 				if(target instanceof MOB)
 				{
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"A cave-in drops rocks on <T-NAME>!");
-					int maxDie =  (int)Math.round( ((double) adjustedLevel( mob, asLevel ) ) / 3.0);
+					int maxDie =  (adjustedLevel( mob, asLevel )+(2*super.getX1Level(mob))) / 2;
 					int damage = CMLib.dice().roll(maxDie,3,maxDie);
 					if(msg.value()>0)
 						damage = (int)Math.round(CMath.div(damage,1.5));

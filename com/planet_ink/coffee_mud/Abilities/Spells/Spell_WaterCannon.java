@@ -80,7 +80,7 @@ public class Spell_WaterCannon extends Spell
 				invoker=mob;
 
 				int damage = 0;
-				int maxDie=(int)Math.round(CMath.div(adjustedLevel(mob,asLevel),2.0));
+				int maxDie =  (adjustedLevel( mob, asLevel )+(2*super.getX1Level(mob))) / 2;
 				damage += CMLib.dice().roll(maxDie,8,15);
 				mob.location().send(mob,msg2);
 				if((msg2.value()>0)||(msg.value()>0))

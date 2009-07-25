@@ -88,13 +88,20 @@ public class Chant_SummonRockGolem extends Chant
             {
                 if(R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
                     return Ability.QUALITY_INDIFFERENT;
+        		if(CMLib.flags().hasAControlledFollower(mob, this))
+                    return Ability.QUALITY_INDIFFERENT;
             }
         }
         return super.castingQuality(mob,target);
     }
-
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+		if(CMLib.flags().hasAControlledFollower(mob, this))
+		{
+			mob.tell("You can only control one golem.");
+			return false;
+		}
+		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

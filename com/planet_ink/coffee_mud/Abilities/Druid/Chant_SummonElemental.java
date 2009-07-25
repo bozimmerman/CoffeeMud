@@ -79,8 +79,27 @@ public class Chant_SummonElemental extends Chant
 		}
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            Room R=mob.location();
+            if(R!=null)
+            {
+                if(CMLib.flags().hasAControlledFollower(mob,this))
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+		if(CMLib.flags().hasAControlledFollower(mob, this))
+		{
+			mob.tell("You can only control one elemental.");
+			return false;
+		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

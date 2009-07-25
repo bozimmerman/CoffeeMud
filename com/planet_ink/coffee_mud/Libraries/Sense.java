@@ -1214,5 +1214,31 @@ public class Sense extends StdLibrary implements CMFlagLibrary
         return -1;
     }
 
-
+	public boolean isAControlledFollower(MOB invoker, MOB mob, Ability A)
+	{
+		if((mob==null)||(mob==invoker)||(!mob.isMonster())) return false;
+		if(A==null) 
+			return mob.getStartRoom()==null;
+		A = mob.fetchEffect(A.ID());
+		if(A==null) 
+			return false;
+		if((A.invoker() == invoker)||(A.invoker()==null)) 
+			return true;
+		return false;
+	}
+	
+	public boolean hasAControlledFollower(MOB invoker, Ability A)
+	{
+		if(invoker==null) return false;
+		Room R = invoker.location();
+		if(R==null) return false;
+		for(int r=0;r<R.numInhabitants();r++)
+			if(isAControlledFollower(invoker, R.fetchInhabitant(r), A))
+				return true;
+		HashSet H = invoker.getGroupMembers(new HashSet());
+		for(Iterator i=H.iterator();i.hasNext();)
+			if(isAControlledFollower(invoker, (MOB)i.next(), A))
+				return true;
+		return false;
+	}
 }
