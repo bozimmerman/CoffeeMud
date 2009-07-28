@@ -36,14 +36,41 @@ public class ItemRefitter extends StdBehavior
 {
 	public String ID(){return "ItemRefitter";}
 
-	protected int cost(Item item)
+	private LinkedList<CMath.CompiledOperation> costFormula = null;
+	
+	protected double cost(Item item)
 	{
-		int cost=item.envStats().level()*100;
-		if(CMLib.flags().isABonusItems(item))
-			cost+=(item.envStats().level()*100);
-		return cost;
+		if(costFormula != null)
+		{
+			double[] vars = {item.envStats().level(), item.value(), item.usesRemaining(), CMLib.flags().isABonusItems(item)?1.0:0.0,item.baseEnvStats().level(), item.baseGoldValue(),0,0,0,0,0};
+			return CMath.parseMathExpression(costFormula, vars, 0.0);
+		}
+		else
+		{
+			int cost=item.envStats().level()*100;
+			if(CMLib.flags().isABonusItems(item))
+				cost+=(item.envStats().level()*100);
+			return cost;
+		}
 	}
 
+	public void setParms(String parms)
+	{
+		super.setParms(parms);
+		String formulaString = CMParms.getParmStr(parms,"COST","(@x1*100)+(@x4*@x1*100)");
+		costFormula = null;
+		if(formulaString.trim().length()>0)
+		{
+			try
+			{
+				costFormula = CMath.compileMathExpression(formulaString);
+			}
+			catch(Exception e)
+			{
+				Log.errOut(ID(),"Error compiling formula: " + formulaString);
+			}
+		}
+	}
 	public boolean okMessage(Environmental affecting, CMMsg msg)
 	{
 		if(!super.okMessage(affecting,msg))
@@ -61,7 +88,7 @@ public class ItemRefitter extends StdBehavior
 		&&(msg.tool() instanceof Item))
 		{
 			Item tool=(Item)msg.tool();
-			int cost=cost(tool);
+			double cost=cost(tool);
 			if(!(tool instanceof Armor))
 			{
 				CMLib.commands().postSay(observer,source,"I'm sorry, I can't refit that.",true,false);
@@ -100,7 +127,7 @@ public class ItemRefitter extends StdBehavior
 		&&(!(msg.tool() instanceof Coins))
 		&&(msg.tool() instanceof Armor))
 		{
-			int cost=cost((Item)msg.tool());
+			double cost=cost((Item)msg.tool());
 			CMLib.beanCounter().subtractMoney(source,CMLib.beanCounter().getCurrency(observer),(double)cost);
 			String costStr=CMLib.beanCounter().nameCurrencyLong(observer,(double)cost);
 			source.recoverEnvStats();

@@ -34,13 +34,38 @@ import java.util.*;
 public class ItemIdentifier extends StdBehavior
 {
 	public String ID(){return "ItemIdentifier";}
-
-	protected int cost(Item item)
+	
+	private LinkedList<CMath.CompiledOperation> costFormula = null;
+	
+	protected double cost(Item item)
 	{
-		int cost=500+(item.envStats().level()*20);
-		return cost;
+		if(costFormula != null)
+		{
+			double[] vars = {item.envStats().level(), item.value(), item.usesRemaining(), CMLib.flags().isABonusItems(item)?1.0:0.0,item.baseEnvStats().level(), item.baseGoldValue(),0,0,0,0,0};
+			return CMath.parseMathExpression(costFormula, vars, 0.0);
+		}
+		else
+			return 500+(item.envStats().level()*20);
 	}
 
+	public void setParms(String parms)
+	{
+		super.setParms(parms);
+		String formulaString = CMParms.getParmStr(parms,"COST","500 + (@x1 * 20)");
+		costFormula = null;
+		if(formulaString.trim().length()>0)
+		{
+			try
+			{
+				costFormula = CMath.compileMathExpression(formulaString);
+			}
+			catch(Exception e)
+			{
+				Log.errOut(ID(),"Error compiling formula: " + formulaString);
+			}
+		}
+	}
+	
 	public boolean okMessage(Environmental affecting, CMMsg msg)
 	{
 		if(!super.okMessage(affecting,msg))
@@ -57,7 +82,7 @@ public class ItemIdentifier extends StdBehavior
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Item))
 		{
-			int cost=cost((Item)msg.tool());
+			double cost=cost((Item)msg.tool());
 			if(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),observer)<((double)cost))
 			{
 			    String costStr=CMLib.beanCounter().nameCurrencyShort(observer,(double)cost);
@@ -85,7 +110,7 @@ public class ItemIdentifier extends StdBehavior
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Item))
 		{
-			int cost=cost((Item)msg.tool());
+			double cost=cost((Item)msg.tool());
 			CMLib.beanCounter().subtractMoney(source,CMLib.beanCounter().getCurrency(observer),(double)cost);
 			String costStr=CMLib.beanCounter().nameCurrencyLong(observer,(double)cost);
 			source.recoverEnvStats();

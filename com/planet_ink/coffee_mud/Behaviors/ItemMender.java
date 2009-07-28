@@ -36,14 +36,43 @@ public class ItemMender extends StdBehavior
 {
 	public String ID(){return "ItemMender";}
 
-	protected int cost(Item item)
+	private LinkedList<CMath.CompiledOperation> costFormula = null;
+	
+	protected double cost(Item item)
 	{
-		int cost=((100-item.usesRemaining())*2)+item.envStats().level();
-		if(CMLib.flags().isABonusItems(item))
-			cost+=100+(item.envStats().level()*2);
-		return cost;
+		if(costFormula != null)
+		{
+			double[] vars = {item.envStats().level(), item.value(), item.usesRemaining(), CMLib.flags().isABonusItems(item)?1.0:0.0,item.baseEnvStats().level(), item.baseGoldValue(),0,0,0,0,0};
+			return CMath.parseMathExpression(costFormula, vars, 0.0);
+		}
+		else
+		{
+			int cost=(100-item.usesRemaining())+item.envStats().level();
+			if(CMLib.flags().isABonusItems(item))
+				cost+=item.envStats().level();
+			return cost;
+		}
 	}
 
+	public void setParms(String parms)
+	{
+		super.setParms(parms);
+		String formulaString = CMParms.getParmStr(parms,"COST","(100-@x3)+@x1+(@x4*@x1)");
+		costFormula = null;
+		if(formulaString.trim().length()>0)
+		{
+			try
+			{
+				costFormula = CMath.compileMathExpression(formulaString);
+			}
+			catch(Exception e)
+			{
+				Log.errOut(ID(),"Error compiling formula: " + formulaString);
+			}
+		}
+	}
+	
+	
 	public boolean okMessage(Environmental affecting, CMMsg msg)
 	{
 		if(!super.okMessage(affecting,msg))
@@ -60,7 +89,7 @@ public class ItemMender extends StdBehavior
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Item))
 		{
-			int cost=cost((Item)msg.tool());
+			double cost=cost((Item)msg.tool());
 			Item tool=(Item)msg.tool();
 			if(!tool.subjectToWearAndTear())
 			{
@@ -106,7 +135,7 @@ public class ItemMender extends StdBehavior
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Item))
 		{
-			int cost=cost((Item)msg.tool());
+			double cost=cost((Item)msg.tool());
 			CMLib.beanCounter().subtractMoney(source,CMLib.beanCounter().getCurrency(observer),(double)cost);
 			String costStr=CMLib.beanCounter().nameCurrencyLong(observer,(double)cost);
 			source.recoverEnvStats();
