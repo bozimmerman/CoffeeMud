@@ -487,7 +487,7 @@ public class Stat  extends Skills
 			for(int i=0;i<target.inventorySize();i++)
 			{
 				Item I=target.fetchInventory(i);
-				if(I!=null){ recoverMOB(M); testMOB(target,M,I); int diff=CMLib.combat().adjustedAttackBonus(M,null)-base; reportOnDiffMOB(I,diff,str);}
+				if((I!=null)&&(!I.amWearingAt(Item.IN_INVENTORY))){ recoverMOB(M); testMOB(target,M,I); int diff=CMLib.combat().adjustedAttackBonus(M,null)-base; reportOnDiffMOB(I,diff,str);}
 			}
 			recoverMOB(M);
 			for(int i=0;i<target.numAllEffects();i++)

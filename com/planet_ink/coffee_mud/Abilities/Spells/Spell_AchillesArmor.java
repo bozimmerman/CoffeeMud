@@ -125,6 +125,14 @@ public class Spell_AchillesArmor extends Spell
 			}
 			CMLib.combat().postDeath(msg.source(),mob,msg);
 		}
+		if((msg.tool() != null) && (msg.tool() instanceof Ability))
+		{
+			if(msg.tool().ID().equals("Amputation"))
+			{
+				mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,"The armor around <S-NAME> protect(s) <T-NAME>!");
+				return false;
+			}
+		}
 		return super.okMessage(myHost,msg);
 	}
 

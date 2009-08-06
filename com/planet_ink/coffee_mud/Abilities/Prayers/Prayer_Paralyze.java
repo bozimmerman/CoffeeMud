@@ -91,7 +91,7 @@ public class Prayer_Paralyze extends Prayer
 
 
 
-		boolean success=proficiencyCheck(mob,-25-((target.charStats().getStat(CharStats.STAT_WISDOM)*2)+(levelDiff*5)),auto);
+		boolean success=proficiencyCheck(mob,-25+(super.getXLEVELLevel(mob))-((target.charStats().getStat(CharStats.STAT_WISDOM)*2)+(levelDiff*5)),auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,
@@ -106,7 +106,9 @@ public class Prayer_Paralyze extends Prayer
 				mob.location().send(mob,msg2);
 				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
-					success=maliciousAffect(mob,target,asLevel,8-levelDiff,-1);
+					int duration = 8 - levelDiff;
+					if(duration < 2) duration = 2;
+					success=maliciousAffect(mob,target,asLevel,duration,-1);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> can't move!");
 				}
 			}

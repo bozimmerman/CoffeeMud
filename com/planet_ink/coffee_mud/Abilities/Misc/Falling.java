@@ -43,6 +43,7 @@ public class Falling extends StdAbility
 	boolean temporarilyDisable=false;
 	public Room room=null;
 	int damageToTake=0;
+	protected int fallTickDown=1;
 
     protected boolean reversed(){return proficiency()==100;}
 
@@ -117,6 +118,9 @@ public class Falling extends StdAbility
 
 		if(affected==null)
 			return false;
+		if(--fallTickDown>0)
+			return true;
+		fallTickDown=1;
 
 		int direction=Directions.DOWN;
 		String addStr="down";
@@ -178,6 +182,12 @@ public class Falling extends StdAbility
 			{
 				unInvoke();
 				return false;
+			}
+			if(room.numItems()>100)
+			{
+				fallTickDown=CMLib.dice().roll(1,room.numItems()/50,0);
+				if((--fallTickDown)>0)
+					return true;
 			}
 			Room nextRoom=room.getRoomInDir(direction);
 			if(canFallFrom(room,direction))

@@ -101,8 +101,8 @@ public class Spell_Confusion extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,-target.envStats().level(),auto);
-
+		int adjustment=target.envStats().level()-((mob.envStats().level()+super.getXLEVELLevel(mob))/2);
+		boolean success=proficiencyCheck(mob,-adjustment,auto);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

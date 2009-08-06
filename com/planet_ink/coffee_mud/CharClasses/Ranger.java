@@ -172,6 +172,7 @@ public class Ranger extends StdCharClass
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	public String statQualifications(){return "Strength 9+, Intelligence 9+";}
+	public String otherLimitations(){return "Must remain Neutral to avoid chant failure chances.";}
 	public String otherBonuses(){return "When leading animals into battle, will not divide experience among animal followers.  Receives bonus conquest experience.  Benefits from animal followers leveling.";}
     public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg); Druid.doAnimalFollowerLevelingCheck(this,host,msg);}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
@@ -203,6 +204,29 @@ public class Ranger extends StdCharClass
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 
+	public boolean okMessage(Environmental myHost, CMMsg msg)
+	{
+		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
+		MOB myChar=(MOB)myHost;
+		if(!super.okMessage(myChar, msg))
+			return false;
+
+		if(msg.amISource(myChar)
+		&&(!myChar.isMonster())
+		&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
+		&&(msg.tool() instanceof Ability)
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
+		&&(myChar.isMine(msg.tool()))
+		&&(isQualifyingAuthority(myChar,(Ability)msg.tool()))
+		&&(CMLib.dice().rollPercentage()<50))
+		{
+			if(((Ability)msg.tool()).appropriateToMyFactions(myChar))
+				return true;
+			myChar.tell("Extreme emotions disrupt your chant.");
+			return false;
+		}
+		return true;
+	}
 	
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{

@@ -42,6 +42,7 @@ public class Sinking extends StdAbility
 	protected int canTargetCode(){return 0;}
     protected boolean isTreading=false;
 	public Room room=null;
+	protected int sinkTickDown=1;
 
     protected boolean reversed(){return proficiency()==100;}
 
@@ -129,6 +130,10 @@ public class Sinking extends StdAbility
 		if(affected==null)
 			return false;
 
+		if((--sinkTickDown)>0)
+			return true;
+		sinkTickDown=1;
+		
 		int direction=Directions.DOWN;
 		String addStr="down";
 		if(reversed())
@@ -193,6 +198,12 @@ public class Sinking extends StdAbility
 			{
 				unInvoke();
 				return false;
+			}
+			if(room.numItems()>100)
+			{
+				sinkTickDown=CMLib.dice().roll(1,room.numItems()/50,0);
+				if((--sinkTickDown)>0)
+					return true;
 			}
 			Room nextRoom=room.getRoomInDir(direction);
 			if((nextRoom!=null)&&(canSinkFrom(room,direction)))

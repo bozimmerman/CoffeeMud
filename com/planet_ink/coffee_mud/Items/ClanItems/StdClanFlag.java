@@ -100,7 +100,10 @@ public class StdClanFlag extends StdItem implements ClanItem
 				if(R==null)
 					return;
 				if((msg.targetMinor()==CMMsg.TYP_DROP)&&(msg.trailerMsgs()==null))
+				{
 					msg.addTrailerMsg(CMClass.getMsg(msg.source(),this,CMMsg.MSG_LOOK,null));
+	                setRightfulOwner(R);
+				}
 				else
 				if((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 				{
