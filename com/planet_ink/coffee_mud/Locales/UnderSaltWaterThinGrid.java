@@ -38,7 +38,6 @@ public class UnderSaltWaterThinGrid extends UnderWaterThinGrid
 	public UnderSaltWaterThinGrid()
 	{
 		super();
-		baseEnvStats().setSensesMask(baseEnvStats().sensesMask()|EnvStats.CAN_NOT_BREATHE);
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_SWIMMING);
 		baseEnvStats.setWeight(3);
 		setDisplayText("Under the water");

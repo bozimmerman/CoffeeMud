@@ -38,7 +38,6 @@ public class UnderSaltWaterMaze extends UnderWaterMaze
 	public UnderSaltWaterMaze()
 	{
 		super();
-		baseEnvStats().setSensesMask(baseEnvStats().sensesMask()|EnvStats.CAN_NOT_BREATHE);
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_SWIMMING);
 		baseEnvStats.setWeight(3);
 		recoverEnvStats();
@@ -50,10 +49,5 @@ public class UnderSaltWaterMaze extends UnderWaterMaze
 
 	public String getGridChildLocaleID(){return "UnderSaltWater";}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
-	{
-		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
-	}
 	public Vector resourceChoices(){return UnderSaltWater.roomResources;}
 }

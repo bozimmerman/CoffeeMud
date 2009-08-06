@@ -39,7 +39,6 @@ public class UnderWater extends StdRoom implements Drink
 	{
 		super();
 		name="the water";
-		baseEnvStats().setSensesMask(baseEnvStats().sensesMask()|EnvStats.CAN_NOT_BREATHE);
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_SWIMMING);
 		baseEnvStats.setWeight(3);
 		recoverEnvStats();
@@ -54,7 +53,10 @@ public class UnderWater extends StdRoom implements Drink
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(affected instanceof MOB)
+		{
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_BREATHE);
+		}
 	}
 
 	public static void makeSink(Environmental E, Room room, int avg)

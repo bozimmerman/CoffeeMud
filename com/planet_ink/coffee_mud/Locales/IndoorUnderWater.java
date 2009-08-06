@@ -40,7 +40,6 @@ public class IndoorUnderWater extends StdRoom implements Drink
 		super();
 		baseEnvStats.setWeight(3);
 		name="the water";
-		baseEnvStats().setSensesMask(baseEnvStats().sensesMask()|EnvStats.CAN_NOT_BREATHE);
 		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_SWIMMING);
 		recoverEnvStats();
 	}
@@ -53,7 +52,11 @@ public class IndoorUnderWater extends StdRoom implements Drink
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
+		if(affected instanceof MOB)
+		{
+			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_BREATHE);
+		}
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
