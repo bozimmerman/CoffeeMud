@@ -513,9 +513,25 @@ public final class IMC2Driver extends Thread {
         StringTokenizer st = new StringTokenizer(argument, " ");
         if(st.countTokens() < 5)
         {
-            tracef(0, "interpret: bad packet received, discarding");
-            tracef(0, "interpret: argument was '"+argument+"'");
-            imc_stats.sequence_drops++;
+        	if(st.countTokens() == 4)
+        	{
+                String tmp = st.nextToken();
+        		if(tmp.equalsIgnoreCase("autosetup"))
+        		{
+        			// who cares what the server says.
+        			String serverName = st.nextToken();
+        			if(st.nextToken().equalsIgnoreCase("accept"))
+        			{
+        				String networkName = st.nextToken();
+        			}
+        		}
+        	}
+        	else
+        	{
+	            tracef(0, "interpret: bad packet received, discarding");
+	            tracef(0, "interpret: argument was '"+argument+"'");
+	            imc_stats.sequence_drops++;
+        	}
             return null;
         }
 
