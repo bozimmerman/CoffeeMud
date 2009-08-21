@@ -703,7 +703,13 @@ public class Play_Symphony extends Play
 			{
 				MOB M=(MOB)affected;
 				Vector V=CMLib.flags().flaggedAffects(M,toDoVal);
-				for(int v=0;v<V.size();v++){((Ability)V.elementAt(v)).unInvoke(); break;}
+				for(int v=0;v<V.size();v++)
+				{
+					Ability A =(Ability)V.elementAt(v); 
+					A.unInvoke();
+					if(M.fetchEffect(A.ID())==null)
+						break;
+				}
 				return true;
 			}
 		case CODE_SPEEDCOMMONSKILLS:

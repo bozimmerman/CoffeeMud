@@ -558,7 +558,6 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		private String authType="";
 		private String login="";
 		private String password="";
-		public boolean useRelay() {return host.trim().length()>0;}
 		public String getHost(){ return host;}
 		public String getAuthType(){ return authType;}
 		

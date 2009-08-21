@@ -519,11 +519,13 @@ public final class IMC2Driver extends Thread {
         		if(tmp.equalsIgnoreCase("autosetup"))
         		{
         			// who cares what the server says.
+        			/*
         			String serverName = st.nextToken();
         			if(st.nextToken().equalsIgnoreCase("accept"))
         			{
         				String networkName = st.nextToken();
         			}
+        			*/
         		}
         	}
         	else
