@@ -26,7 +26,7 @@ public class Siplet extends Applet
     public final static boolean debugDataOut=false;
     public final static long serialVersionUID=7;
     public static final float VERSION_MAJOR=(float)2.0;
-    public static final long  VERSION_MINOR=7;
+    public static final long  VERSION_MINOR=8;
     protected StringBuffer buf=new StringBuffer("");
     protected String lastURL="coffeemud.net";
     protected int lastPort=23;
@@ -95,7 +95,7 @@ public class Siplet extends Applet
             Thread.sleep(100);
             rawin=sock.getInputStream();
             in=new BufferedReader[1];
-            in[0]=new BufferedReader(new InputStreamReader(sock.getInputStream()));
+            in[0]=new BufferedReader(new InputStreamReader(sock.getInputStream(),"iso-8859-1"));
             out=new DataOutputStream(sock.getOutputStream());
             Telnet=new TelnetFilter(this);
             connected=true;
