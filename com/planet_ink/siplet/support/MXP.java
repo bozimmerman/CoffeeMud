@@ -494,13 +494,16 @@ public class MXP
             if(tagDebug){System.out.println("/TAG/ENDENTITY="+E.name()+"/CLOSE="+close); System.out.flush();}
             if(close.length()>0)
                 buf.insert(oldI,close+">");
-            if((tagDebug)&&(!E.needsText()))
+            if(tagDebug) 
             {
-                if(tagDebugLong)
-                    System.out.println("/TAG>"+substr(buf,0,buf.length()));
-                System.out.println("/TAG/END/!2!/"+substr(buf,oldI+1+close.length(),oldI+40));
-                System.out.flush();
-            }
+				if (!E.needsText()) 
+				{
+				    if(tagDebugLong)
+				        System.out.println("/TAG>"+substr(buf,0,buf.length()));
+				    System.out.println("/TAG/END/!2!/"+substr(buf,oldI+1+close.length(),oldI+40));
+				    System.out.flush();
+				}
+			}
             if(E.needsText())
             {
                 text=buf.substring(E.getBufInsert(),oldI);
