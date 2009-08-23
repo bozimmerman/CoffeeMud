@@ -182,7 +182,7 @@ public class StdArmor extends StdContainer implements Armor
 				else
 				if(wcode==Item.WORN_NECK) devianceAllowed=5000;
 			}
-			if(devianceAllowed>0)
+			if((devianceAllowed>0)&&(!CMSecurity.isDisabled("EQUIPSIZE")))
 			{
 				if(msg.source().envStats().height()<(envStats().height()-devianceAllowed))
 				{
