@@ -116,7 +116,7 @@ public class Spell_Summon extends Spell
             }
 	    }catch(NoSuchElementException nse){}
 
-		if(oldRoom==null)
+		if((oldRoom==null)||(target==null))
 		{
 			mob.tell("You can't seem to fixate on '"+CMParms.combine(commands,0)+"', perhaps they don't exist?");
 			return false;

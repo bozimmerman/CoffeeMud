@@ -182,7 +182,7 @@ public class Thief_TapRoom extends ThiefSkill
 							if(newRoom.getRoomInDir(d)==lastRoom)
 								ok=true;
 						Vector V=getAvailableLine(msg.source());
-						if((!ok)||(V.size()==0)||(lastRoom==null)||(pairA.getParsedText().size()<2))
+						if((!ok)||(V.size()==0)||(lastRoom==null)||(pairA==null)||(pairA.getParsedText().size()<2))
 						{
 							canBeUninvoked=true;
 							unInvoke();
@@ -241,7 +241,7 @@ public class Thief_TapRoom extends ThiefSkill
 							if(p.size()>=2)  R=CMLib.map().getRoom((String)p.elementAt(1));
 							CMMsg msg2=(CMMsg)msg.copyOf();
 							msg2.setOthersMessage("^TFrom "+I.name()+" "+msg2.othersMessage());
-							if(R.okMessage(msg.source(),msg2))
+							if((R!=null)&&(R.okMessage(msg.source(),msg2)))
 								R.sendOthers(msg.source(),msg2);
 						}
 					}
@@ -338,8 +338,8 @@ public class Thief_TapRoom extends ThiefSkill
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
-		CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"":"<S-NAME> lay(s) down "+cups[0].name()+" and <S-IS-ARE> ready to lay down a tap line.");
-		if((success)&&(mob.location().okMessage(mob,msg))&&CMLib.commands().postDrop(mob,cups[0],true,false))
+		CMMsg msg=CMClass.getMsg(mob,target,this,auto?CMMsg.MASK_ALWAYS:CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,auto?"":"<S-NAME> lay(s) down "+(cups!=null?cups[0].name():"")+" and <S-IS-ARE> ready to lay down a tap line.");
+		if((success)&&(mob.location().okMessage(mob,msg))&&((cups==null)||CMLib.commands().postDrop(mob,cups[0],true,false)))
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,target,asLevel,0);
@@ -349,11 +349,13 @@ public class Thief_TapRoom extends ThiefSkill
 			int level=1+(adjustedLevel(mob,asLevel)/5)+(getXLEVELLevel(mob)*5);
 			TR.setInvoker(mob);
 			TR.setMiscText("SRC;"+CMLib.map().getExtendedRoomID(target)+";"+mob.Name()+";"+level+";"+code);
-			cups[0].addNonUninvokableEffect(TR);
+			if(cups!=null)
+				cups[0].addNonUninvokableEffect(TR);
 			TR=(Thief_TapRoom)copyOf();
 			TR.setInvoker(mob);
 			TR.setMiscText("DST;"+CMLib.map().getExtendedRoomID(target)+";"+mob.Name()+";"+level+";"+code);
-			cups[1].addNonUninvokableEffect(TR);
+			if(cups!=null)
+				cups[1].addNonUninvokableEffect(TR);
 			mob.tell("You should now walk to a listening room and put down the last cup.  Your skill will allow you to stretch the line "+level+" rooms.");
 			target.recoverRoomStats();
 		}

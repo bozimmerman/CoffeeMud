@@ -82,7 +82,7 @@ public class Skill_CollectBounty extends StdSkill
 			            return M;
 				}
 		    }
-		    if(legalA!=myArea)
+		    if((legalA!=myArea)&&(legalA!=null))
 		    for(Enumeration e=legalA.getMetroMap();e.hasMoreElements();)
 		    {
 		        Room R=(Room)e.nextElement();

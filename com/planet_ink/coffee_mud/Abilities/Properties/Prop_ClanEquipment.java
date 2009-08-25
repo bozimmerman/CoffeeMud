@@ -363,7 +363,7 @@ public class Prop_ClanEquipment extends Property
                     &&((CMath.bset(msg.targetMajor(),CMMsg.MASK_HANDS))||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MOVE))))
             {
                 CMMsg msg2=CMClass.getMsg(mob,source,this,CMMsg.MSG_CAST_ATTACK_VERBAL_SPELL,null);
-                if(source.location().okMessage(source,msg2))
+                if((source!=null)&&(source.location().okMessage(source,msg2)))
                 {
                     source.location().send(source,msg2);
                     if(msg2.value()<=0)

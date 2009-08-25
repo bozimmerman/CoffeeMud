@@ -92,7 +92,7 @@ public class Thief_Shadowpass extends ThiefSkill
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,R,this,auto?CMMsg.MSG_OK_VISUAL:CMMsg.MSG_DELICATE_HANDS_ACT,"You begin the shadowpass ...",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
-			if((mob.location().okMessage(mob,msg))&&(R.okMessage(mob,msg)))
+			if((mob.location().okMessage(mob,msg))&&(R!=null)&&(R.okMessage(mob,msg)))
 			{
 				mob.location().send(mob,msg);
 				R.send(mob,msg);

@@ -129,7 +129,9 @@ public class Spell_RepairingAura extends Spell
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>, incanting.^?");
             CMMsg msg2=(target==realTarget)?null:CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
-			if(mob.location().okMessage(mob,msg)&&((msg2==null)||mob.location().okMessage(mob,msg2)))
+			if(mob.location().okMessage(mob,msg)
+			&&(realTarget!=null)
+			&&((msg2==null)||mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);
                 if(msg2!=null) mob.location().send(mob,msg2);

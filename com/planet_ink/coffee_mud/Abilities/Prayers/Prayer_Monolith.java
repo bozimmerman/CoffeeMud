@@ -320,15 +320,18 @@ public class Prayer_Monolith extends Prayer
 				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|EnvStats.IS_LIGHTSOURCE);
 				break;
 			}
-			CMMsg msg = CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?I.name()+" appears!":"^S<S-NAME> "+prayForWord(mob)+" to construct "+I.name()+"!^?");
-			if(mob.location().okMessage(mob,msg))
+			if(I!=null)
 			{
-				mob.location().send(mob,msg);
-				CMLib.flags().setGettable(I,false);
-				I.recoverEnvStats();
-				mob.location().addItem(I);
-				theWall=I;
-				beneficialAffect(mob,I,asLevel,0);
+				CMMsg msg = CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?I.name()+" appears!":"^S<S-NAME> "+prayForWord(mob)+" to construct "+I.name()+"!^?");
+				if(mob.location().okMessage(mob,msg))
+				{
+					mob.location().send(mob,msg);
+					CMLib.flags().setGettable(I,false);
+					I.recoverEnvStats();
+					mob.location().addItem(I);
+					theWall=I;
+					beneficialAffect(mob,I,asLevel,0);
+				}
 			}
 		}
 		else

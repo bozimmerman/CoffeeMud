@@ -49,8 +49,9 @@ public class Trap_Ignition extends StdTrap
 			Item I=mob.location().fetchItem(i);
 			if((I!=null)
 			&&(I instanceof Drink)
-			&&(((((Drink)I).containsDrink())&&(((Drink)I).liquidType()==RawMaterial.RESOURCE_LAMPOIL)))
-			   ||(I.material()==RawMaterial.RESOURCE_LAMPOIL))
+			&&(((((Drink)I).containsDrink())
+					&&(((Drink)I).liquidType()==RawMaterial.RESOURCE_LAMPOIL))
+						||(I.material()==RawMaterial.RESOURCE_LAMPOIL)))
 				return I;
 		}
 		return null;

@@ -337,7 +337,7 @@ public class Dance extends StdAbility
 							affectType=affectType|CMMsg.MASK_MALICIOUS;
 						if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
 	
-						if((R!=null)&&(R2!=null)&&(CMLib.flags().canBeSeenBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
+						if((R2!=null)&&(CMLib.flags().canBeSeenBy(invoker,follower)&&(follower.fetchEffect(this.ID())==null)))
 						{
 							CMMsg msg2=CMClass.getMsg(mob,follower,this,affectType,null);
 							CMMsg msg3=msg2;

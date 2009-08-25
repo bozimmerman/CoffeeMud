@@ -159,6 +159,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 				if(playerCorpse)
 					success = CMLib.utensils().resurrect(mob,mob.location(), (DeadBody)body, super.getXPCOSTLevel(mob));
 				else
+				if((nonPlayerData!=null) && (body != null))
 				{
 					String data=nonPlayerData.xml;
 					Environmental object=parseHeavenlyData(data);

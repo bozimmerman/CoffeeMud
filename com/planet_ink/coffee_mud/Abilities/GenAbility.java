@@ -361,6 +361,7 @@ public class GenAbility extends StdAbility
                             Vector V=CMParms.makeVector(afterAffect);
                             P.invoke(mob,V,null,true,asLevel); // spell adder will return addable affects
                             Ability A=null;
+                            if(target!=null)
                             for(int v=0;v<V.size();v+=2)
                             {
                                 A=(Ability)V.elementAt(v);

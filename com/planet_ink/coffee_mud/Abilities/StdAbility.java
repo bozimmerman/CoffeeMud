@@ -577,9 +577,9 @@ public class StdAbility implements Ability
 		if((givenTarget!=null)&&(givenTarget instanceof Item))
 			target=givenTarget;
 
-		if((location!=null)&&(target==null)&&(targetName!=null)&&(targetName.length()>0))
+		if((location!=null)&&(target==null)&&(targetName.length()>0))
 			target=location.fetchFromRoomFavorItems(container,targetName,wornReqCode);
-		if((target==null)&&(targetName!=null)&&(targetName.length()>0))
+		if((target==null)&&(targetName.length()>0))
 		{
 			if(location!=null)
 				target=location.fetchFromMOBRoomFavorsItems(mob,container,targetName,wornReqCode);
@@ -902,7 +902,7 @@ public class StdAbility implements Ability
 		expertise=null;
         if((mob!=null)&&(getXMAXRANGELevel(mob)>0))
             invoker=mob;
-		if(!auto)
+		if((!auto)&&(mob!=null))
 		{
 			isAnAutoEffect=false;
 

@@ -144,7 +144,8 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 						if(CMSecurity.isDebugging("PROPERTY"))
                             Log.debugOut("Lots4Sale",R2.roomID()+" created and put up for sale.");
 						CMLib.database().DBCreateRoom(R2);
-						colorForSale(R2,newTitle.rentalProperty(),true);
+						if(newTitle!=null)
+							colorForSale(R2,newTitle.rentalProperty(),true);
 						R2.getArea().fillInAreaRoom(R2);
 						CMLib.database().DBUpdateExits(R2);
 					}

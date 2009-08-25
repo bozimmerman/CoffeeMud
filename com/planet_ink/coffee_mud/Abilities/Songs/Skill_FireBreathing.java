@@ -107,7 +107,8 @@ public class Skill_FireBreathing extends BardSkill
 				if(target.location()==mob.location())
 					CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The flames <DAMAGE> <T-NAME>!");
 			}
-			fireSource.destroy();
+			if(fireSource!=null)
+				fireSource.destroy();
 		}
 		else
 			return maliciousFizzle(mob,target,"<S-NAME> attempt(s) to breathe fire at <T-NAMESELF>, but only puff(s) smoke.");

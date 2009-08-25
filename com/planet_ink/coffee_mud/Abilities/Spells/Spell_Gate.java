@@ -91,12 +91,13 @@ public class Spell_Gate extends Spell
 			newRoom=target.location();
 		}
 
-		if(newRoom==null)
+		if((newRoom==null) || (target == null))
 		{
 			mob.tell("You can't seem to fixate on '"+CMParms.combine(commands,0)+"', perhaps they don't exist?");
 			return false;
 		}
 
+		
 		int adjustment=target.envStats().level()-(mob.envStats().level()+(2*getXLEVELLevel(mob)));
 		if(target.isMonster()) adjustment=adjustment*3;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

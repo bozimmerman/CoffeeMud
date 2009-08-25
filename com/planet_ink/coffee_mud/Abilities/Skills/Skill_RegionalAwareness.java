@@ -162,17 +162,20 @@ public class Skill_RegionalAwareness extends StdSkill
 									break;
 								}
 						}
-					if((parentDir<0)
-					||(xy[0]<0)||(xy[0]>=diameter)||(xy[1]<0)||(xy[1]>=diameter)
-					||(map[xy[1]][xy[0]]!=' '))
-						closedPaths.add(R);
-					else
+					if(xy!=null)
 					{
-						map[xy[1]][xy[0]]=roomChar(R);
-						rmap[xy[1]][xy[0]]=R;
-					
-						if((R.domainType()&Room.INDOORS)==Room.INDOORS)
+						if((parentDir<0)
+						||(xy[0]<0)||(xy[0]>=diameter)||(xy[1]<0)||(xy[1]>=diameter)
+						||(map[xy[1]][xy[0]]!=' '))
 							closedPaths.add(R);
+						else
+						{
+							map[xy[1]][xy[0]]=roomChar(R);
+							rmap[xy[1]][xy[0]]=R;
+						
+							if((R.domainType()&Room.INDOORS)==Room.INDOORS)
+								closedPaths.add(R);
+						}
 					}
 				}
 				StringBuffer str=new StringBuffer("");

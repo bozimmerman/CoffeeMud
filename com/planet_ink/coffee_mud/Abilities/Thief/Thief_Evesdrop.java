@@ -66,8 +66,11 @@ public class Thief_Evesdrop extends ThiefSkill
 		{
 			CMMsg msg2=(CMMsg)msg.copyOf();
 			String targMsg=msg.targetMessage();
-			int x=(targMsg!=null)?targMsg.toUpperCase().indexOf("TELL(S) YOU"):-1;
-			if(x>=0) targMsg=targMsg.substring(0,x+8)+affected.Name()+targMsg.substring(x+11);
+			if(targMsg != null)
+			{
+				int x=targMsg.toUpperCase().indexOf("TELL(S) YOU");
+				if(x>=0) targMsg=targMsg.substring(0,x+8)+affected.Name()+targMsg.substring(x+11);
+			}
 			msg2.modify(msg.source(),invoker(),msg.tool(),msg.sourceCode(),msg.sourceMessage(),msg.targetCode(),targMsg,CMMsg.NO_EFFECT,null);
 			invoker().executeMsg(invoker(),msg2);
 		}

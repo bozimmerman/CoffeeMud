@@ -68,7 +68,9 @@ public class Prop_ReqStat extends Property
 			return true;
 		int[] comp=null;
 		for(int c=0;c<CharStats.STAT_NAMES.length;c++)
-			if((comp=CMParms.getParmCompare(text(),CharStats.STAT_NAMES[c],mob.charStats().getStat(c)))[1]<0)
+		{
+			comp=CMParms.getParmCompare(text(),CharStats.STAT_NAMES[c],mob.charStats().getStat(c));
+			if(comp[1]<0)
 			{
 				switch(comp[0])
 				{
@@ -85,6 +87,7 @@ public class Prop_ReqStat extends Property
 				}
 				return false;
 			}
+		}
 		return true;
 	}
 	

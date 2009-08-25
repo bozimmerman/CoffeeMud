@@ -73,7 +73,7 @@ public class Skill_Stability extends BardSkill
 			if(roomS!=null)
 				roomS.show((MOB)affected,null,msg.tool(),CMMsg.MSG_OK_VISUAL,"<S-NAME> remain(s) stable despite the <O-NAME>.");
 			if(roomD!=null)
-				roomS.show((MOB)affected,null,msg.tool(),CMMsg.MSG_OK_VISUAL,"<S-NAME> remain(s) stable despite the <O-NAME>.");
+				roomD.show((MOB)affected,null,msg.tool(),CMMsg.MSG_OK_VISUAL,"<S-NAME> remain(s) stable despite the <O-NAME>.");
 			helpProficiency((MOB)affected);
 			return false;
 		}
