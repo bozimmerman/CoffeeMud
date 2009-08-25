@@ -106,7 +106,7 @@ public interface SlaveryLibrary extends CMLibrary
             }
             if(!holdFlag)
             {
-                if((say!=null)&&(sg!=null))
+                if((say!=null)&&(sg!=null)&&(ss!=null))
                 {
                     if(!sg.botherIfAble(ss.substring(1)))
                     {

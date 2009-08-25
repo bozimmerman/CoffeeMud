@@ -60,11 +60,14 @@ public class MazeLayout extends AbstractLayout
 		case Directions.SOUTHEAST: n=new DefaultLayoutNode(new long[]{0,(-diameter+1)/2}); break;
 		case Directions.SOUTHWEST: n=new DefaultLayoutNode(new long[]{diameter+plusX-1,(-diameter+1)/2}); break;
 		}
-		n.flagGateExit(dir);
-		lSet.use(n,LayoutTypes.street);
-		n.flag(LayoutFlags.gate);
-		fillMaze(lSet,n,diameter+plusX,diameter);
-		lSet.fillInFlags();
+		if(n!=null)
+		{
+			n.flagGateExit(dir);
+			lSet.use(n,LayoutTypes.street);
+			n.flag(LayoutFlags.gate);
+			fillMaze(lSet,n,diameter+plusX,diameter);
+			lSet.fillInFlags();
+		}
 		return set;
 	}
 

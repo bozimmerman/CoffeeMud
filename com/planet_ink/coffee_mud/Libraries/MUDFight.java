@@ -445,11 +445,20 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	public int adjustedDamage(MOB mob, Weapon weapon, MOB target)
 	{
 		double damageAmount=0.0;
-		boolean rangedAttack = (weapon!=null)&&((weapon.weaponClassification()==Weapon.CLASS_RANGED)||(weapon.weaponClassification()==Weapon.CLASS_THROWN)); 
+		Environmental useDmg = null;
+		boolean rangedAttack = false;
+		if((weapon!=null)
+		&&((weapon.weaponClassification()==Weapon.CLASS_RANGED)||(weapon.weaponClassification()==Weapon.CLASS_THROWN)))
+		{
+			useDmg = weapon;
+			rangedAttack = true;
+		}
+		else
+			useDmg = mob;
 		if(target!=null)
 		{
 			double[] vars = {
-					rangedAttack?weapon.envStats().damage():mob.envStats().damage(),
+					useDmg.envStats().damage(),
 					mob.charStats().getStat(CharStats.STAT_STRENGTH),
 					mob.envStats().level(),
 					target.envStats().level(),
@@ -468,7 +477,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		else
 		{
 			double[] vars = {
-					rangedAttack?weapon.envStats().damage():mob.envStats().damage(),
+					useDmg.envStats().damage(),
 					mob.charStats().getStat(CharStats.STAT_STRENGTH),
 					mob.envStats().level(),
 					0,

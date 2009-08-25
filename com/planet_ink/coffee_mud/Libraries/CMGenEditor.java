@@ -2708,6 +2708,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                             E.baseCharStats().setClassLevel(C,lvl2);
                         }
                         else
+                        if(highestC!=null)
                         {
                             lvl=mob.session().prompt("Levels to siphon from "+highestC.ID()+" for this class (0)\n\r:",""+0).trim();
                             int lvl2=CMath.s_int(lvl);
@@ -2715,7 +2716,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                             E.baseCharStats().setClassLevel(highestC,highLvl-lvl2);
                             E.baseCharStats().setClassLevel(C,lvl2);
                         }
-
                     }
                     int levels=E.baseCharStats().combinedSubLevels();
                     levels=E.baseEnvStats().level()-levels;
@@ -5491,8 +5491,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             levelSet=(Vector)sets.elementAt(newlevelIndex,2);
         aMAP.defaultProficiency=CMath.s_int(mob.session().prompt("Enter the (default) proficiency level ("+aMAP.defaultProficiency+"): ",aMAP.defaultProficiency+""));
         aMAP.maxProficiency=CMath.s_int(mob.session().prompt("Enter the (maximum) proficiency level ("+aMAP.maxProficiency+"): ",aMAP.maxProficiency+""));
-        aMAP.autoGain=Boolean.valueOf(mob.session().confirm("Is this skill automatically gained"+(aMAP.autoGain?"(Y/n)":"(y/N)")+"?",""+aMAP.autoGain));
-        aMAP.isSecret=Boolean.valueOf(mob.session().confirm("Is this skill secret "+(aMAP.isSecret?"(Y/n)":"(y/N)")+"?",""+aMAP.isSecret));
+        aMAP.autoGain=mob.session().confirm("Is this skill automatically gained"+(aMAP.autoGain?"(Y/n)":"(y/N)")+"?",""+aMAP.autoGain);
+        aMAP.isSecret=mob.session().confirm("Is this skill secret "+(aMAP.isSecret?"(Y/n)":"(y/N)")+"?",""+aMAP.isSecret);
         aMAP.defaultParm=mob.session().prompt("Enter any properties ("+aMAP.defaultParm+")\n\r: ",aMAP.defaultParm);
         String s="?";
         while(s.equalsIgnoreCase("?"))
@@ -5633,6 +5633,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                     }
                 }
                 else
+                if(myLevelSet!=null)
                 {
                     String aID=((AbilityMapper.AbilityMapping)myLevelSet.elementAt(ableIndex)).abilityName;
                     if(genClassAbleMod(mob,levelSets,aID,lvlIndex,ableIndex)!=null)

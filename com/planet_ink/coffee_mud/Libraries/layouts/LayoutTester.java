@@ -23,9 +23,9 @@ public class LayoutTester
 			if(ls.coord()[1]<lowestY) lowestY = ls.coord()[1];
 			if(ls.coord()[0]>highestX) highestX = ls.coord()[0];
 			if(ls.coord()[1]>highestY) highestY = ls.coord()[1];
-			if(!HY.containsKey(ls.coord()[1])) 
-				HY.put(ls.coord()[1], new Vector<LayoutNode>());
-			HY.get(ls.coord()[1]).add(ls);
+			if(!HY.containsKey(Long.valueOf(ls.coord()[1]))) 
+				HY.put(Long.valueOf(ls.coord()[1]), new Vector<LayoutNode>());
+			HY.get(Long.valueOf(ls.coord()[1])).add(ls);
 			
 		}
 		for(long y=lowestY;y<=highestY;y++)

@@ -49,7 +49,7 @@ public class DefaultLayoutNode implements LayoutNode
 				links.remove(key);
 		}
 	}
-	public LayoutNode getLink(int d) { return links.get(d);}
+	public LayoutNode getLink(int d) { return links.get(Integer.valueOf(d));}
 	
 	public boolean isStreetLike() {
 		if(links.size()!=2) return false;

@@ -177,7 +177,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
                 appendReps(reps,say,compress);
 				if(sysmsgs)
 					say.append("^H("+CMClass.classID(item)+")^N ");
-                if((!compress)&&(!mob.isMonster())&&(mob.session().clientTelnetMode(Session.TELNET_MXP)))
+                if((!compress)&&(mob!=null)&&(!mob.isMonster())&&(mob.session().clientTelnetMode(Session.TELNET_MXP)))
                     say.append(CMProps.mxpImage(item," H=10 W=10",""," "));
 				say.append("^I");
 				
@@ -219,7 +219,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
                         {
                             if(!compress) say.append("      ");
                             appendReps(reps2,say,compress);
-                            if((!compress)&&(!mob.isMonster())&&(mob.session().clientTelnetMode(Session.TELNET_MXP)))
+                            if((!compress)&&(mob!=null)&&(!mob.isMonster())&&(mob.session().clientTelnetMode(Session.TELNET_MXP)))
                                 say.append(CMProps.mxpImage(item," H=10 W=10",""," "));
                             say.append("^I");
                             if(compress)say.append(CMLib.flags().colorCodes(item2,mob)+"^I");

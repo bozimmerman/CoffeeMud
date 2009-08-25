@@ -791,7 +791,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						if((skillContents!=null)&&(skillContents.size()>0))
 							contents=(Vector)skillContents.elementAt(CMLib.dice().roll(1,skillContents.size(),-1));
 						if((contents==null)||(contents.size()==0))
-							Log.errOut("MUDPercolator","Tried metacrafting anything, got "+skillContents.size()+" from "+skill.ID());
+							Log.errOut("MUDPercolator","Tried metacrafting anything, got "+((skillContents==null)?"null":Integer.toString(skillContents.size()))+" from "+skill.ID());
 					}
 				}
 			}
@@ -814,7 +814,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								contents.addAll((Vector)e2.nextElement());
 						}
 						if((contents==null)||(contents.size()==0))
-							Log.errOut("MUDPercolator","Tried metacrafting any-"+recipe+", got "+contents.size()+" from "+skill.ID());
+							Log.errOut("MUDPercolator","Tried metacrafting any-"+recipe+", got "+((contents==null)?"null":Integer.toString(contents.size()))+" from "+skill.ID());
 						break;
 					}
 				}

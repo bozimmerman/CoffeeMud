@@ -286,11 +286,12 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 	public void loseExperience(MOB mob, int amount)
 	{
-		if((mob.playerStats()==null)||(mob.soulMate()!=null)) return;
+		if((mob==null)||(mob.playerStats()==null)||(mob.soulMate()!=null)) 
+			return;
 		if(Log.combatChannelOn())
 		{
         	String room=CMLib.map().getExtendedRoomID((mob.location()!=null)?mob.location():null);
-        	String mobName=(mob!=null)?mob.Name():"null";
+        	String mobName=mob.Name();
 	    	Log.killsOut("-EXP",room+":"+mobName+":"+amount);
 		}
         if((mob.getLiegeID().length()>0)&&(amount>2))
@@ -511,7 +512,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
             ||((victim!=null)&&(victim.location()!=null))))
 		{
         	String room=CMLib.map().getExtendedRoomID((mob.location()!=null)?mob.location():victim.location());
-        	String mobName=(mob!=null)?mob.Name():"null";
+        	String mobName=mob.Name();
         	String vicName=(victim!=null)?victim.Name():"null";
 	    	Log.killsOut("+EXP",room+":"+mobName+":"+vicName+":"+amount+":"+homageMessage);
 		}

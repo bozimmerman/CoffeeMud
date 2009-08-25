@@ -1028,7 +1028,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                                 break;
                             }
                         }
-                        return newVal.toString();
+                        return (newVal==null)?oldVal:newVal.toString();
                     }
                 },
                 new AbilityParmEditorImpl("BASE_DAMAGE","Dmg.",PARMTYPE_NUMBER) {

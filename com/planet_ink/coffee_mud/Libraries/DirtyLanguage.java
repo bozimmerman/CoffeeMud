@@ -466,7 +466,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
         if((MORE_CMDS.size()==1)
         &&(((String)MORE_CMDS.firstElement()).equals(combinedWithTabs)))
         {
-            if((autoIgnoreLen>0)&&(str.length()<=autoIgnoreLen))
+            if((autoIgnoreLen>0)&&(str!=null)&&(str.length()<=autoIgnoreLen))
             {
                 if(ignoreSet==null)
                 {

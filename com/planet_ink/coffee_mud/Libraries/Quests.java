@@ -1278,7 +1278,7 @@ public class Quests extends StdLibrary implements QuestManager
                 for(int v=0;v<V.size();v++)
                 {
                     s=((String)V.elementAt(v)).trim();
-                    if(foundQuestScript)
+                    if((foundQuestScript)&&(script!=null))
                         script.append(s+"\n\r");
                     else
                     if(s.startsWith("#"))

@@ -191,7 +191,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 								            }
 							            }
 							            else
-							            if(!S.clientTelnetMode(Session.TELNET_MXP))
+							            if((S!=null)&&(!S.clientTelnetMode(Session.TELNET_MXP)))
 								        {
 							                buf.delete(tagStart,loop+2);
 								            loop=tagStart-1;

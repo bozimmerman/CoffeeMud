@@ -49,19 +49,19 @@ public class BoxCitySquareLayout extends BoxCityLayout
 		n = lSet.getNextNode( center, Directions.NORTH);
 		if(n != null) center.crossLink(n);
 		n2 = lSet.getNextNode( n, Directions.NORTH);
-		if(n2 != null) n.crossLink(n2);
+		if((n2 != null)&&(n!=null)) n.crossLink(n2);
 		n = lSet.getNextNode( center, Directions.SOUTH);
 		if(n != null) center.crossLink(n);
 		n2 = lSet.getNextNode( n, Directions.SOUTH);
-		if(n2 != null) n.crossLink(n2);
+		if((n2 != null)&&(n!=null)) n.crossLink(n2);
 		n = lSet.getNextNode( center, Directions.EAST);
 		if(n != null) center.crossLink(n);
 		n2 = lSet.getNextNode( n, Directions.EAST);
-		if(n2 != null) n.crossLink(n2);
+		if((n2 != null)&&(n!=null)) n.crossLink(n2);
 		n = lSet.getNextNode( center, Directions.WEST);
 		if(n != null) center.crossLink(n);
 		n2 = lSet.getNextNode( n, Directions.WEST);
-		if(n2 != null) n.crossLink(n2);
+		if((n2 != null)&&(n!=null)) n.crossLink(n2);
 		for(long[] sq : square) {
 			n = lSet.getNode(sq);
 			for(int d=0;d<4;d++) {

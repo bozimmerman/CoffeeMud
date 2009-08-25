@@ -1586,7 +1586,7 @@ public class CMMap extends StdLibrary implements WorldMap
             S=CMLib.sessions().elementAt(s);
             M=(S!=null)?S.mob():null;
             R=(M!=null)?M.location():null;
-            if((R!=null)&&(R.getArea()==area))
+            if((R!=null)&&(R.getArea()==area)&&(M!=null))
             {
                 playersHere.addElement(M,getExtendedRoomID(R));
                 if(includeLocalFollowers)
