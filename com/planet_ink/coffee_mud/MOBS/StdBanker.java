@@ -594,6 +594,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							    CMLib.commands().postSay(this,mob,"Ok, your new balance is "+CMLib.beanCounter().nameCurrencyLong(this,coins.getTotalValue())+".",true,false);
 						}
 						else
+						if(depositInventoryItem!=null)
 						    CMLib.commands().postSay(this,mob,"But, your balance is "+CMLib.beanCounter().nameCurrencyLong(this,((Coins)depositInventoryItem).getTotalValue())+".",true,false);
 					}
 					else

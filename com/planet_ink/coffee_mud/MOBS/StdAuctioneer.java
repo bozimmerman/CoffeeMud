@@ -167,12 +167,14 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
     {
         int x=-1;
         if(targetMessage!=null)
-        	x=targetMessage.indexOf('\'');
-        if(x>=0)
         {
-        	int y=targetMessage.indexOf('\'',x+1);
-        	if(y>x)
-        		return targetMessage.substring(x+1,y);
+        	x=targetMessage.indexOf('\'');
+	        if(x>=0)
+	        {
+	        	int y=targetMessage.indexOf('\'',x+1);
+	        	if(y>x)
+	        		return targetMessage.substring(x+1,y);
+	        }
         }
         return null;
     }
@@ -438,6 +440,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						lastMsgData=null;
 	                    CMLib.commands().postSay(this,mob,"I'm confused. Please try to SELL again.",true,false);
 					}
+					else
 					try{
 						double lowestDenom=CMLib.beanCounter().getLowestDenomination(thisData.currency);
 	                    CMLib.commands().postSay(this,mob,"What would you like your opening price to be (in "+CMLib.beanCounter().getDenominationName(thisData.currency, lowestDenom)+"?",true,false);
