@@ -1542,7 +1542,7 @@ public class StdMOB implements MOB
 			if(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 			{
 				int srcCode=msg.sourceMajor();
-
+			    int srcMinor = msg.sourceMinor();
 				if(amDead())
 				{
 					tell("You are DEAD!");
@@ -1591,7 +1591,8 @@ public class StdMOB implements MOB
 				}
 				if(CMath.bset(srcCode,CMMsg.MASK_MOUTH))
 				{
-					if(!CMLib.flags().aliveAwakeMobile(this,false))
+					if(((srcMinor!=CMMsg.TYP_LIST)||mob.amDead()||CMLib.flags().isSleeping(mob))
+					&&(!CMLib.flags().aliveAwakeMobile(this,false)))
 						return false;
 					if(CMath.bset(srcCode,CMMsg.MASK_SOUND))
 					{
