@@ -1614,7 +1614,7 @@
 			
 			<p>
 			<a name="Prop_AbilityImmunity"><B>Prop_AbilityImmunity: Ability Immunity</B></a>
-			<pre>Property   : Prop_AbilityImmunity<BR>Targets    : Anything<BR>Parameters : list of abilities with optional error string, ';' delimited<BR>Example    : Disease_Cold;Disease_Flu;Spell_Fireball<BR>Example    : Disease_Cold=&lt;T-NAME> is immune to<BR>&lt;O-NAME>;Spell_Fireball=&lt;T-NAME> can't be burnt!<BR>Description: <BR>Makes the mob, item, or whatever immune to the listed disease, spell or similar<BR>affects.  </pre>
+			<pre>Property   : Prop_AbilityImmunity<BR>Targets    : Anything<BR>Parameters : (OWNER;) (WEARER;)list of abilities with optional error string,<BR>';' delimited<BR>Example    : OWNER;Disease_Cold;Disease_Flu;Spell_Fireball<BR>Example    : Disease_Cold=&lt;T-NAME> is immune to<BR>&lt;O-NAME>;Spell_Fireball=&lt;T-NAME> can't be burnt!<BR>Description: <BR>Makes the mob, item, or whatever immune to the listed disease, spell or similar<BR>affects.  Items will pass their immunity on to their owners if the OWNER flag is<BR>present, or the wielder if the WIELDER flag is present.   </pre>
 			</P>
 			
 			<p>
