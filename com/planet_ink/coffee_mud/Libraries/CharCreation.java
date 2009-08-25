@@ -749,59 +749,62 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             CMLib.utensils().outfit(mob,mob.baseCharStats().getCurrentClass().outfit(mob));
             mob.setStartRoom(getDefaultStartRoom(mob));
             mob.baseCharStats().setStat(CharStats.STAT_AGE,mob.playerStats().initializeBirthday(0,mob.baseCharStats().getMyRace()));
-            
+
             introText=new CMFile(Resources.buildResourcePath("text")+"newchardone.txt",null,true).text();
         	try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
             session.println(null,null,null,"\n\r\n\r"+introText.toString());
             session.prompt("");
             boolean logoff=false;
-            if(emailPassword)
+            if(!session.killFlag())
             {
-                password="";
-                for(int i=0;i<6;i++)
-                    password+=(char)('a'+CMLib.dice().roll(1,26,-1));
-                mob.playerStats().setPassword(password);
-                CMLib.database().DBUpdatePassword(mob);
-                CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.SYSTEM_MAILBOX),
-                          mob.Name(),
-                          mob.Name(),
-                          "Password for "+mob.Name(),
-                          "Your password for "+mob.Name()+" is: "+mob.playerStats().password()+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.SYSTEM_MUDPORTS)+".\n\rYou may use the PASSWORD command to change it once you are online.",-1);
-                session.println("Your account has been created.  You will receive an email with your password shortly.");
-                try{Thread.sleep(2000);}catch(Exception e){}
-                if(mob.session()==session)
-	                session.logoff(false,false,false);
+	            if(emailPassword)
+	            {
+	                password="";
+	                for(int i=0;i<6;i++)
+	                    password+=(char)('a'+CMLib.dice().roll(1,26,-1));
+	                mob.playerStats().setPassword(password);
+	                CMLib.database().DBUpdatePassword(mob);
+	                CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.SYSTEM_MAILBOX),
+	                          mob.Name(),
+	                          mob.Name(),
+	                          "Password for "+mob.Name(),
+	                          "Your password for "+mob.Name()+" is: "+mob.playerStats().password()+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.SYSTEM_MUDPORTS)+".\n\rYou may use the PASSWORD command to change it once you are online.",-1);
+	                session.println("Your account has been created.  You will receive an email with your password shortly.");
+	                try{Thread.sleep(2000);}catch(Exception e){}
+	                if(mob.session()==session)
+		                session.logoff(false,false,false);
+	            }
+	            else
+	            {
+	            	if(mob.session()==session)
+		                reloadTerminal(mob);
+	                mob.bringToLife(mob.getStartRoom(),true);
+	                mob.location().showOthers(mob,mob.location(),CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,"<S-NAME> appears!");
+	            }
+	            mob.playerStats().leveledDateTime(0);
+	            CMLib.database().DBCreateCharacter(mob);
+	            CMLib.players().addPlayer(mob);
+	
+	            executeScript(mob,(Vector)extraScripts.get("END"));
+	            
+	            if(mob.playerStats()==null) return false;
+	            mob.playerStats().setLastIP(session.getAddress());
+	            Log.sysOut("FrontDoor","Created user: "+mob.Name());
+	            CMProps.addNewUserByIP(session.getAddress());
+	            notifyFriends(mob,"^X"+mob.Name()+" has just been created.^.^?");
+	            if((CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("ALWAYS"))
+	            &&(!CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
+	                mob.setBitmap(mob.getBitmap()|MOB.ATT_PLAYERKILL);
+	            if((CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("NEVER"))
+	            &&(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
+	                mob.setBitmap(mob.getBitmap()-MOB.ATT_PLAYERKILL);
+	            CMLib.database().DBUpdatePlayer(mob);
+	            Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
+	            for(int i=0;i<channels.size();i++)
+	                CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just been created.",true);
+	            CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LOGINS);
+	            CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_NEWPLAYERS);
             }
-            else
-            {
-            	if(mob.session()==session)
-	                reloadTerminal(mob);
-                mob.bringToLife(mob.getStartRoom(),true);
-                mob.location().showOthers(mob,mob.location(),CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,"<S-NAME> appears!");
-            }
-            mob.playerStats().leveledDateTime(0);
-            CMLib.database().DBCreateCharacter(mob);
-            CMLib.players().addPlayer(mob);
-
-            executeScript(mob,(Vector)extraScripts.get("END"));
-            
-            if(mob.playerStats()==null) return false;
-            mob.playerStats().setLastIP(session.getAddress());
-            Log.sysOut("FrontDoor","Created user: "+mob.Name());
-            CMProps.addNewUserByIP(session.getAddress());
-            notifyFriends(mob,"^X"+mob.Name()+" has just been created.^.^?");
-            if((CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("ALWAYS"))
-            &&(!CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
-                mob.setBitmap(mob.getBitmap()|MOB.ATT_PLAYERKILL);
-            if((CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("NEVER"))
-            &&(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
-                mob.setBitmap(mob.getBitmap()-MOB.ATT_PLAYERKILL);
-            CMLib.database().DBUpdatePlayer(mob);
-            Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
-            for(int i=0;i<channels.size();i++)
-                CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just been created.",true);
-            CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LOGINS);
-            CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_NEWPLAYERS);
             if(pendingLogins.containsKey(mob.Name().toUpperCase()))
                pendingLogins.remove(mob.Name().toUpperCase());
             return !logoff;

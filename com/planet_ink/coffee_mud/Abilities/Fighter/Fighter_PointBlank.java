@@ -78,6 +78,7 @@ public class Fighter_PointBlank extends FighterSkill
 				Ability A=(Ability)this.copyOf();
 				A.setSavable(false);
 				msg.target().addEffect(A);
+				msg.target().recoverEnvStats();
 			}
 			else
 			if(((msg.targetMinor()==CMMsg.TYP_REMOVE)
@@ -86,6 +87,7 @@ public class Fighter_PointBlank extends FighterSkill
 			{
 				qualifiedWeapons.removeElement(msg.target());
 				msg.target().delEffect(msg.target().fetchEffect(ID()));
+				msg.target().recoverEnvStats();
 			}
 		}
 	}
@@ -114,7 +116,7 @@ public class Fighter_PointBlank extends FighterSkill
 			&&(((Weapon)w).ammunitionType().length()>0)
 			&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
 			{
-				if((CMLib.dice().rollPercentage()==1)&&(CMLib.dice().rollPercentage()<10))
+				if((CMLib.dice().rollPercentage()<10)&&(mob.isInCombat())&&(mob.rangeToTarget() > 0))
 					helpProficiency(mob);
 				if(!qualifiedWeapons.contains(w))
 				{
@@ -122,6 +124,7 @@ public class Fighter_PointBlank extends FighterSkill
 					Ability A=(Ability)this.copyOf();
 					A.setSavable(false);
 					w.addEffect(A);
+					w.recoverEnvStats();
 				}
 			}
 			for(int i=qualifiedWeapons.size()-1;i>=0;i--)
@@ -132,6 +135,7 @@ public class Fighter_PointBlank extends FighterSkill
 				{
 					qualifiedWeapons.removeElement(I);
 					I.delEffect(I.fetchEffect(ID()));
+					I.recoverEnvStats();
 				}
 			}
 		}
