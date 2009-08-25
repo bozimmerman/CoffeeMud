@@ -159,6 +159,8 @@ public class Spell_TimeStop extends Spell
 					{
 						fixed.addElement(mob2);
 						CMLib.threads().suspendTicking(mob2,-1);
+						if((mob.getVictim()==null)&&(mob.mayIFight(mob2)))
+							mob.setVictim(mob2);
 					}
 				}
 				beneficialAffect(mob,room,asLevel,3);
