@@ -65,7 +65,7 @@ public class PollData extends StdWebMacro
             if((newTitle==null)||(newTitle.length()==0))
                 return "[missing data error]";
 
-            if((last.length()==0)&&(CMLib.polls().getPoll(newTitle)!=null))
+            if((last!=null)&&(last.length()==0)&&(CMLib.polls().getPoll(newTitle)!=null))
                 return "[new title already exists!]";
             Poll P=CMLib.polls().getPoll(last);
             boolean create=false;

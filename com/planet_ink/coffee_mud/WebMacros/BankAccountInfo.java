@@ -72,6 +72,7 @@ public class BankAccountInfo extends StdWebMacro
 		String last=httpReq.getRequestParameter("BANKCHAIN");
 		if(last==null) return " @break@";
 		MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+		if(M==null) return " @break@";
 		String player=httpReq.getRequestParameter("PLAYER");
 		if((player==null)||(player.length()==0))
 			player=httpReq.getRequestParameter("CLAN");
@@ -169,6 +170,14 @@ public class BankAccountInfo extends StdWebMacro
 			}
 		}
 		return "";
-		}finally{if(destroyPlayer){playerM.setLocation(null); playerM.destroy();}}
+		}
+		finally
+		{
+			if((destroyPlayer)&&(playerM!=null))
+			{
+				playerM.setLocation(null); 
+				playerM.destroy();
+			}
+		}
 	}
 }

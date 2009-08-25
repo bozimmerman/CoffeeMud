@@ -789,9 +789,13 @@ public class MUDGrinder extends StdWebMacro
 			String copyThisOne=httpReq.getRequestParameter("COPYROOM");
 			Room copyRoom=CMLib.map().getRoom(copyThisOne);
 			Room newRoom=GrinderRooms.createGridRoom(A,roomID,copyRoom,null,((link!=null)&&(link.length()>0)));
-			if(newRoom==null) httpReq.addRequestParameters("ERRMSG","An error occurred trying to create your room.");
-			Log.sysOut("Grinder",mob.Name()+" added room "+newRoom.roomID());
-			httpReq.addRequestParameters("ROOM",newRoom.roomID());
+			if(newRoom==null) 
+				httpReq.addRequestParameters("ERRMSG","An error occurred trying to create your room.");
+			else
+			{
+				Log.sysOut("Grinder",mob.Name()+" added room "+newRoom.roomID());
+				httpReq.addRequestParameters("ROOM",newRoom.roomID());
+			}
 			httpReq.addRequestParameters("LINK","");
 		}
 		return "";

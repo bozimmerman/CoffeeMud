@@ -465,9 +465,11 @@ public class RoomData extends StdWebMacro
 					{
 						MOB M=R.fetchInhabitant(m);
 	                    if(M!=null)
+	                    {
 	                    	CMLib.catalog().updateCatalogIntegrity(M);
-						if(M.savable())
-							classes.addElement(M);
+							if(M.savable())
+								classes.addElement(M);
+	                    }
 					}
 					moblist=contributeMOBs(classes);
 				}

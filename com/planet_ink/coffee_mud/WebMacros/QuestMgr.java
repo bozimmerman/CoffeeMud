@@ -172,7 +172,7 @@ public class QuestMgr extends StdWebMacro
 		script=script.trim();
 		if((script==null)||(script.trim().length()==0))
 			return "No script was specified.";
-		if(redirect)
+		if((redirect)&&(redirectF!=null))
 		{
 			redirectF.saveText(script+postFix);
 			script=unRedirectedScript;

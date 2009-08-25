@@ -885,7 +885,8 @@ public class CharClassData extends StdWebMacro
 								winnerI=I;
 							}
 						}
-						str.append(winner+"("+winnerI.intValue()+"), ");
+						if(winnerI!=null)
+							str.append(winner+"("+winnerI.intValue()+"), ");
 						domains.remove(winner);
 					}
 				}

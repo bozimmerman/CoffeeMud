@@ -52,9 +52,10 @@ public class BankChainNext extends StdWebMacro
 		}
 		String lastID="";
 		MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+		if(M==null) return " @break@";
 		if((player!=null)&&(player.length()>0))
 		{
-			if(((M==null)||(!M.Name().equalsIgnoreCase(player)))
+			if(((!M.Name().equalsIgnoreCase(player)))
 			&&(!CMSecurity.isAllowedEverywhere(M,"CMDPLAYERS)")))
 				return "";
 			Clan C=CMLib.clans().getClan(player);
@@ -112,7 +113,15 @@ public class BankChainNext extends StdWebMacro
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		return " @break@";
-		}finally{if(destroyPlayer){ playerM.setLocation(null); playerM.destroy();}}
+		}
+		finally
+		{
+			if((destroyPlayer)&&(playerM!=null))
+			{
+				playerM.setLocation(null); 
+				playerM.destroy();
+			}
+		}
 	}
 
 }

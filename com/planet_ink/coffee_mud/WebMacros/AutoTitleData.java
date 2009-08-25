@@ -73,7 +73,7 @@ public class AutoTitleData extends StdWebMacro
             if((newTitle==null)||(newMask==null)||(newTitle.length()==0))
                 return "[missing data error]";
             
-            if((last.length()==0)&&(CMLib.titles().isExistingAutoTitle(newTitle)))
+            if((last!=null)&&((last.length()==0)&&(CMLib.titles().isExistingAutoTitle(newTitle))))
             {
                 CMLib.titles().reloadAutoTitles();
                 return "[new title already exists!]";
@@ -116,7 +116,7 @@ public class AutoTitleData extends StdWebMacro
         if(parms.containsKey("MASK"))
         {
             String mask=httpReq.getRequestParameter("MASK");
-            if((mask==null)&&(last.length()>0))
+            if((mask==null)&&(last!=null)&&(last.length()>0))
                 mask=CMLib.titles().getAutoTitleMask(last);
             if(mask!=null)
                 str.append(CMStrings.replaceAll(mask,"\"","&quot;")+", ");
@@ -136,7 +136,7 @@ public class AutoTitleData extends StdWebMacro
         if(parms.containsKey("ISREQUIRED"))
         {
             String req=httpReq.getRequestParameter("ISREQUIRED");
-            if(req==null) 
+            if((req==null)&&(last!=null)) 
                 req=(last.startsWith("{")&&last.endsWith("}"))?"on":"";
             if(req!=null)
                 str.append((req.equalsIgnoreCase("on")?"CHECKED":"")+", ");
@@ -144,7 +144,7 @@ public class AutoTitleData extends StdWebMacro
         if(parms.containsKey("MASKDESC"))
         {
             String mask=httpReq.getRequestParameter("MASK");
-            if((mask==null)&&(last.length()>0))
+            if((mask==null)&&(last!=null)&&(last.length()>0))
                 mask=CMLib.titles().getAutoTitleMask(last);
             if(mask!=null)
                 str.append(CMLib.masking().maskDesc(mask)+", ");

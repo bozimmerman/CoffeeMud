@@ -150,8 +150,11 @@ public class SocialData extends StdWebMacro
             
             boolean create=false;
             Vector SV=CMLib.socials().getSocialsSet(last);
-            create=(SV==null);
-            Vector OSV=(create)?null:(Vector)SV.clone();
+            Vector OSV=null;
+            if(SV==null)
+            	create=true;
+            else
+            	OSV=(Vector)SV.clone();
             SV=new Vector();
             
             String old=httpReq.getRequestParameter("TITLE");
@@ -408,8 +411,8 @@ public class SocialData extends StdWebMacro
                                     if(S==null) 
                                         S=CMLib.socials().makeDefaultSocial(last,EXTN);
                                     switch(field.charAt(f)) {
-                                        case 'Y': old=""+S.sourceCode(); break;
-                                        case 'O': old=""+S.targetCode(); break;
+                                        case 'Y': old=(S==null)?null:""+S.sourceCode(); break;
+                                        case 'O': old=(S==null)?null:""+S.targetCode(); break;
                                         case 'N': old=null; break;
                                         case 'M': old=null; break;
                                         case 'T': old=null; break;

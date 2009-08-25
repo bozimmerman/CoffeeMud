@@ -333,11 +333,14 @@ public class GrinderMobs
 				StringBuffer str=new StringBuffer("No MOB?!");
 				str.append(" Got: "+mobCode);
 				str.append(", Includes: ");
-				for(int m=0;m<R.numInhabitants();m++)
+				if(R!=null)
 				{
-					MOB M2=R.fetchInhabitant(m);
-					if((M2!=null)&&(M2.savable()))
-					   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
+					for(int m=0;m<R.numInhabitants();m++)
+					{
+						MOB M2=R.fetchInhabitant(m);
+						if((M2!=null)&&(M2.savable()))
+						   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
+					}
 				}
 				return str.toString();
 			}
@@ -443,11 +446,11 @@ public class GrinderMobs
 					if(M instanceof ShopKeeper)
 					{
 						((ShopKeeper)M).setWhatIsSoldMask(0);
-						((ShopKeeper)M).addSoldType(Integer.valueOf(CMath.s_int(old)));
+						((ShopKeeper)M).addSoldType(CMath.s_int(old));
 						int x=1;
 						while(httpReq.getRequestParameter(okparms[o]+x)!=null)
 						{
-							((ShopKeeper)M).addSoldType(Integer.valueOf(CMath.s_int(httpReq.getRequestParameter(okparms[o]+x))));
+							((ShopKeeper)M).addSoldType(CMath.s_int(httpReq.getRequestParameter(okparms[o]+x)));
 							x++;
 						}
 					}

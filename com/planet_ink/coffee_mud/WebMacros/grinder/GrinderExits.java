@@ -187,9 +187,12 @@ public class GrinderExits
 					Exit oldE2=E2;
 					E2=(Exit)E.copyOf();
 					E2.setDisplayText(oldE2.displayText());
-					R2.setRawExit(Directions.getOpDirectionCode(dir),E2);
-					CMLib.database().DBUpdateExits(R2);
-					R.getArea().fillInAreaRoom(R2);
+					if(R2!=null)
+					{
+						R2.setRawExit(Directions.getOpDirectionCode(dir),E2);
+						CMLib.database().DBUpdateExits(R2);
+						R.getArea().fillInAreaRoom(R2);
+					}
 				}
 				R.getArea().fillInAreaRoom(R);
 			}

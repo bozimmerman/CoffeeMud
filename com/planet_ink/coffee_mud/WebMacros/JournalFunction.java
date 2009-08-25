@@ -116,7 +116,7 @@ public class JournalFunction extends StdWebMacro
 			}
 			JournalsLibrary.JournalEntry entry = (JournalsLibrary.JournalEntry)info.elementAt(num);
 			String to=entry.to;
-			if(CMSecurity.isAllowedAnywhere(M,"JOURNALS")||(to.equalsIgnoreCase(M.Name())))
+			if((M!=null)&&(CMSecurity.isAllowedAnywhere(M,"JOURNALS")||(to.equalsIgnoreCase(M.Name()))))
 			{
 				if(parms.containsKey("REPLY"))
 				{
@@ -177,19 +177,20 @@ public class JournalFunction extends StdWebMacro
 	                    if((journal==null) || (journal.length()==0))
 	    					messages.append("Transfer #"+num+" not completed -- No journal!<BR>");
 	                    String realName=null;
-	                    for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().journals();e.hasMoreElements();)
-	                    {
-	                    	JournalsLibrary.CommandJournal CMJ=e.nextElement();
-	                        if(journal.equalsIgnoreCase(CMJ.NAME())
-	                        ||journal.equalsIgnoreCase(CMJ.NAME()+"s"))
-	                        {
-	                            realName="SYSTEM_"+CMJ.NAME()+"S";
-	                            break;
-	                        }
-	                    }
+	                    if(journal!=null)
+		                    for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().journals();e.hasMoreElements();)
+		                    {
+		                    	JournalsLibrary.CommandJournal CMJ=e.nextElement();
+		                        if(journal.equalsIgnoreCase(CMJ.NAME())
+		                        ||journal.equalsIgnoreCase(CMJ.NAME()+"s"))
+		                        {
+		                            realName="SYSTEM_"+CMJ.NAME()+"S";
+		                            break;
+		                        }
+		                    }
 	                    if(realName==null)
 	                        realName=CMLib.database().DBGetRealJournalName(journal);
-	                    if(realName==null)
+	                    if((realName==null)&&(journal!=null))
 	                        realName=CMLib.database().DBGetRealJournalName(journal.toUpperCase());
 	                    if(realName==null)
 	    					messages.append("The journal '"+journal+"' does not presently exist.  Aborted.<BR>");

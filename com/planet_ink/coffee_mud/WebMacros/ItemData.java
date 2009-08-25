@@ -101,7 +101,7 @@ public class ItemData extends StdWebMacro
             playerM=CMLib.players().getLoadPlayer(player);
         else
             R=(Room)httpReq.getRequestObjects().get(last);
-		if((R==null)&&(player==null))
+		if((R==null)&&(player==null)&&(last!=null))
 		{
 			if(!last.equalsIgnoreCase("ANY"))
 			{

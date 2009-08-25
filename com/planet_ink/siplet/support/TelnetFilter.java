@@ -275,8 +275,9 @@ public class TelnetFilter
                     if(lastForeground()==null)setLastForeground(defaultForeground);
                     if(background==null) background=lastBackground();
                     if(foreground==null) foreground=lastForeground();
-                    if((!background.equals(lastBackground()))
-                    ||(!foreground.equals(lastForeground())))
+                    
+                    if((!lastBackground().equals(background))
+                    ||(!lastForeground().equals(foreground)))
                     {
                         str.append(fontOff());
                         setLastBackground(background);

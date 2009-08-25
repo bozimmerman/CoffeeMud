@@ -221,7 +221,7 @@ public class FactionData extends StdWebMacro
                     String value=httpReq.getRequestParameter(prefix+"0");
                     String mask="";
                     int v=0;
-                    if(value==null)
+                    if((value==null)&&(Fset!=null))
                         for(;Fset.hasMoreElements();)
                         {
                             String def=(String)Fset.nextElement();

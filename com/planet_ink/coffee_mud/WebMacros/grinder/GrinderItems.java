@@ -592,7 +592,7 @@ public class GrinderItems
 				{
 					M.addInventory(I);
 					M.recoverEnvStats();
-					if(!mobNum.startsWith("CATALOG-"))
+					if((mobNum==null)||(!mobNum.startsWith("CATALOG-")))
 						M.text();
 					if(R!=null) R.recoverRoomStats();
 				}
@@ -629,7 +629,7 @@ public class GrinderItems
 					M.delInventory(oldI);
 					M.addInventory(I);
 					M.recoverEnvStats();
-					if(!mobNum.startsWith("CATALOG-"))
+					if((mobNum==null)||(!mobNum.startsWith("CATALOG-")))
 						M.text();
                     if(R!=null) R.recoverRoomStats();
 					for(int i=0;i<M.inventorySize();i++)
@@ -680,7 +680,7 @@ public class GrinderItems
     				httpReq.addRequestParameters("MOB",RoomData.getMOBCode(R,M));
                 }
 				httpReq.addRequestParameters("ITEM",RoomData.getItemCode(M,I));
-			    if((mobNum.startsWith("CATALOG-"))||(mobNum.startsWith("NEWCATA-")))
+			    if((mobNum==null)||(mobNum.startsWith("CATALOG-"))||(mobNum.startsWith("NEWCATA-")))
 			    {
 			    	CMLib.catalog().updateCatalog(M);
 			    	M.text();
