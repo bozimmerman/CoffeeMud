@@ -40,21 +40,33 @@ public class Prop_AbilityImmunity extends Property
 	public String accountForYourself() { return "Immunity";	}
 	protected Vector diseases=new Vector();
 	protected Vector messages=new Vector();
+	protected boolean owner = false;
+	protected boolean wearer = false;
 
 	public void setMiscText(String newText)
 	{
         messages=new Vector();
 		diseases=CMParms.parseSemicolons(newText.toUpperCase(),true);
+		owner = false;
+		wearer = false;
 		for(int d=0;d<diseases.size();d++)
 		{
 			String s=(String)diseases.elementAt(d);
-			int x=s.indexOf("=");
-			if(x<0)
-				messages.addElement("");
+			if(s.equalsIgnoreCase("owner"))
+				owner=true;
+			else
+			if(s.equalsIgnoreCase("wearer"))
+				wearer=true;
 			else
 			{
-				diseases.setElementAt(s.substring(0,x).trim(),d);
-				messages.addElement(s.substring(x+1).trim());
+				int x=s.indexOf("=");
+				if(x<0)
+					messages.addElement("");
+				else
+				{
+					diseases.setElementAt(s.substring(0,x).trim(),d);
+					messages.addElement(s.substring(x+1).trim());
+				}
 			}
 		}
 		super.setMiscText(newText);
@@ -65,7 +77,9 @@ public class Prop_AbilityImmunity extends Property
 		if ( (msg.source() != null)
 	    && (msg.target() != null)
 	    && (msg.tool() != null)
-	    && ((msg.amITarget(affected))||((affected instanceof Item)&&(msg.target()==((Item)affected).owner())))
+	    && ((msg.amITarget(affected))
+	    		||(owner && (affected instanceof Item)&&(msg.target()==((Item)affected).owner()))
+	    		||(owner && (affected instanceof Item)&&(msg.target()==((Item)affected).owner())&&(!((Item)affected).amWearingAt(Item.IN_INVENTORY))))
 	    && (msg.tool() instanceof Ability ))
 		{
 			Ability d = (Ability)msg.tool();
