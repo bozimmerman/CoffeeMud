@@ -536,10 +536,13 @@ public class CharGen extends StdCommand
 		                    case 2: R=CMClass.getLocale("CityStreet"); break; 
 			                }
 			                if((++roomRobin)>2) roomRobin=0;
-			                R.addNonUninvokableEffect(CMClass.getAbility("Spell_Light"));
-			                R.setRoomID(c.A.name()+"#"+r.nextInt(Integer.MAX_VALUE));
-			                R.setArea(c.A);
-			                R.recoverEnvStats();
+			                if(R!=null)
+			                {
+				                R.addNonUninvokableEffect(CMClass.getAbility("Spell_Light"));
+				                R.setRoomID(c.A.name()+"#"+r.nextInt(Integer.MAX_VALUE));
+				                R.setArea(c.A);
+				                R.recoverEnvStats();
+			                }
 			                c.A.getTimeObj().setTimeOfDay(CMLib.dice().roll(1,c.A.getTimeObj().getHoursInDay(),-1));
 			                
 			                //Session S=(Session)CMClass.getCommon("FakeSession");
@@ -794,8 +797,11 @@ public class CharGen extends StdCommand
 		                    }
 		                    M1.destroy();
 		                    M2.destroy();
-		                    c.A.delProperRoom(R);
-			                R.destroy();
+		                    if(R!=null)
+		                    {
+			                    c.A.delProperRoom(R);
+				                R.destroy();
+		                    }
 			            }
 			            CMParms.sortVector(medScore);
 			            CMParms.sortVector(medHitPct);

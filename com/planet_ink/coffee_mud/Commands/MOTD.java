@@ -44,8 +44,12 @@ public class MOTD extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		boolean pause=((commands!=null)&&(commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("PAUSE")));
-		if(pause) commands.removeElementAt(commands.size()-1);
+		boolean pause=false;
+		if((commands!=null)&&(commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("PAUSE")))
+		{
+			pause = true;
+			commands.removeElementAt(commands.size()-1);
+		}
 		
 		if((commands!=null)
 		&&(commands.size()>1)

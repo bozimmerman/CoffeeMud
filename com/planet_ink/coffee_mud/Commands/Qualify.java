@@ -265,20 +265,23 @@ public class Qualify  extends Skills
 			}
 		}
 		
-		if(msg.length()==0)
+		if(mob!=null)
 		{
-			if(qual.length()>0)
-				mob.tell("You don't appear to qualify for any '"+qual+"'. Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EXPERTISES, or LANGUAGES.");
+			if(msg.length()==0)
+			{
+				if(qual.length()>0)
+					mob.tell("You don't appear to qualify for any '"+qual+"'. Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EXPERTISES, or LANGUAGES.");
+				else
+					mob.tell("You don't appear to qualify for anything! Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EXPERTISES, or LANGUAGES.");
+			}
 			else
-				mob.tell("You don't appear to qualify for anything! Parameters to the QUALIFY command include SKILLS, THIEF, COMMON, SPELLS, PRAYERS, CHANTS, SONGS, EXPERTISES, or LANGUAGES.");
-		}
-		else
-		if(!mob.isMonster())
-		{
-			mob.session().wraplessPrintln("^!You now qualify for the following unknown abilities:^?"+msg.toString());
-			mob.tell("\n\rUse the GAIN command with your teacher to gain new skills, spells, and expertises.");
-			if(classesFound) 
-				mob.tell("\n\rUse the TRAIN command to train for a new class.");
+			if(!mob.isMonster())
+			{
+				mob.session().wraplessPrintln("^!You now qualify for the following unknown abilities:^?"+msg.toString());
+				mob.tell("\n\rUse the GAIN command with your teacher to gain new skills, spells, and expertises.");
+				if(classesFound) 
+					mob.tell("\n\rUse the TRAIN command to train for a new class.");
+			}
 		}
 		return false;
 	}

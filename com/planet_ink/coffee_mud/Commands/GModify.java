@@ -616,26 +616,28 @@ public class GModify extends StdCommand
 	            {
 	                MOB M=R.fetchInhabitant(m);
 	                if((M!=null)&&(M.savable()))
+	                {
 	                    if(tryModfy(mob,R,M,changes,onfields,noisy))
 	                        savemobs=true;
-	                for(int i=0;i<M.inventorySize();i++)
-	                {
-	                    Item I=M.fetchInventory(i);
-	                    if((I!=null)&&(tryModfy(mob,R,I,changes,onfields,noisy)))
-	                        savemobs=true;
-	                }
-	                if(CMLib.coffeeShops().getShopKeeper(M)!=null)
-	                {
-	                    Vector V=CMLib.coffeeShops().getShopKeeper(M).getShop().getStoreInventory();
-	                    for(int i=0;i<V.size();i++)
-	                    {
-	                        if(V.elementAt(i) instanceof Item)
-	                        {
-	                            Item I=(Item)V.elementAt(i);
-	                            if((I!=null)&&(tryModfy(mob,R,I,changes,onfields,noisy)))
-	                                savemobs=true;
-	                        }
-	                    }
+		                for(int i=0;i<M.inventorySize();i++)
+		                {
+		                    Item I=M.fetchInventory(i);
+		                    if((I!=null)&&(tryModfy(mob,R,I,changes,onfields,noisy)))
+		                        savemobs=true;
+		                }
+		                if(CMLib.coffeeShops().getShopKeeper(M)!=null)
+		                {
+		                    Vector V=CMLib.coffeeShops().getShopKeeper(M).getShop().getStoreInventory();
+		                    for(int i=0;i<V.size();i++)
+		                    {
+		                        if(V.elementAt(i) instanceof Item)
+		                        {
+		                            Item I=(Item)V.elementAt(i);
+		                            if((I!=null)&&(tryModfy(mob,R,I,changes,onfields,noisy)))
+		                                savemobs=true;
+		                        }
+		                    }
+		                }
 	                }
 	            }
 	            if(saveitems) CMLib.database().DBUpdateItems(R);

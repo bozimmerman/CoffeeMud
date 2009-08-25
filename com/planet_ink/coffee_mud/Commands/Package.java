@@ -102,6 +102,8 @@ public class Package extends StdCommand
             if((!mob.isMine(getThis))&&(!Get.get(mob,null,getThis,true,"get",true)))
                 return false;
         }
+        if(getThis==null)
+            return false;
         String name=CMLib.english().cleanArticles(getThis.name());
         CMMsg msg=CMClass.getMsg(mob,getThis,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> package(s) up "+V.size()+" <T-NAMENOART>(s).");
         if(mob.location().okMessage(mob,msg))

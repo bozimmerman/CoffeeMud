@@ -75,7 +75,8 @@ public class Areas extends StdCommand
 	                		if(!CMStrings.parseStringExpression(expression, H,false))
 	                			continue;
 	                	}catch(Exception e){
-	                		mob.tell("There was an error in your AREA qualifier parameters. See help on AREA for more information. The error was: "+e.getMessage());
+	                		if(mob!=null)
+		                		mob.tell("There was an error in your AREA qualifier parameters. See help on AREA for more information. The error was: "+e.getMessage());
 	                		return false;
 	                	}
                 	}
@@ -94,7 +95,7 @@ public class Areas extends StdCommand
 			msg.append(CMStrings.padRight((String)areasVec.elementAt(i),22)+"^N");
 		}
 		msg.append("\n\r\n\r^HEnter 'HELP (AREA NAME) for more information.^?");
-		if(!mob.isMonster())
+		if((mob!=null)&&(!mob.isMonster()))
 			mob.session().colorOnlyPrintln(msg.toString());
 		return false;
 	}

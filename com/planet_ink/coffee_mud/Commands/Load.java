@@ -94,12 +94,15 @@ public class Load extends StdCommand
             			return false;
             		}
             		String[] args=new String[]{name};
-            		java.lang.reflect.Method M=C.getMethod("compile",new Class[]{args.getClass()});
-            		Object returnVal=M.invoke(CO,new Object[]{args});
-            		if((returnVal instanceof Integer)&&(((Integer)returnVal).intValue()<0))
+            		if(C!=null)
             		{
-            			mob.tell("Compile failed, for some reason. :(");
-            			return false;
+	            		java.lang.reflect.Method M=C.getMethod("compile",new Class[]{args.getClass()});
+	            		Object returnVal=M.invoke(CO,new Object[]{args});
+	            		if((returnVal instanceof Integer)&&(((Integer)returnVal).intValue()<0))
+	            		{
+	            			mob.tell("Compile failed, for some reason. :(");
+	            			return false;
+	            		}
             		}
             		name=name.substring(0,name.length()-5)+".class";
             	}

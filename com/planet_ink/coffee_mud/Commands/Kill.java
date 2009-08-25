@@ -115,7 +115,8 @@ public class Kill extends StdCommand
 			if((mob.location().okMessage(mob,CMClass.getMsg(mob,target,CMMsg.MSG_WEAPONATTACK,null)))
 			&&(oldVictim!=target))
 			{
-				if((target.getVictim()==oldVictim.getVictim())
+				if((oldVictim!=null)
+				&&(target.getVictim()==oldVictim.getVictim())
 				&&(target.rangeToTarget()>=0)
 				&&(oldVictim.rangeToTarget()>=0))
 				{

@@ -428,7 +428,7 @@ public class Go extends StdCommand
 				Command C=CMClass.getCommand("Enter");
 				return C.execute(mob,commands,metaFlags);
 			}
-			if(E instanceof Exit)
+			if((E instanceof Exit)&&(R!=null))
 			{
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					if(R.getExitInDir(d)==E)

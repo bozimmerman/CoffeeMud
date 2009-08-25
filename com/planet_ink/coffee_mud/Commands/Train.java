@@ -279,6 +279,7 @@ public class Train extends StdCommand
 					mob.tell("You can only learn that from another "+baseClassName+".");
 	            }
 				else
+				if(theClass!=null)
 	            {
 	                int classLevel=mob.charStats().getClassLevel(theClass);
 	                if(classLevel<0) classLevel=0;
@@ -373,16 +374,19 @@ public class Train extends StdCommand
 			mob.setPractices(mob.getPractices()+5);
 			break;
 		case 106:
-            int classLevel=mob.charStats().getClassLevel(theClass);
-            if(classLevel<0) classLevel=0;
-			mob.tell("You have undergone "+theClass.name(classLevel)+" training!");
-			mob.setTrains(mob.getTrains()-1);
-			mob.baseCharStats().getCurrentClass().endCharacter(mob);
-			mob.baseCharStats().setCurrentClass(theClass);
-			if((!mob.isMonster())&&(mob.soulMate()==null))
-				CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_CLASSCHANGE);
-			mob.recoverCharStats();
-			mob.charStats().getCurrentClass().startCharacter(mob,false,true);
+			if(theClass!=null)
+			{
+	            int classLevel=mob.charStats().getClassLevel(theClass);
+	            if(classLevel<0) classLevel=0;
+				mob.tell("You have undergone "+theClass.name(classLevel)+" training!");
+				mob.setTrains(mob.getTrains()-1);
+				mob.baseCharStats().getCurrentClass().endCharacter(mob);
+				mob.baseCharStats().setCurrentClass(theClass);
+				if((!mob.isMonster())&&(mob.soulMate()==null))
+					CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_CLASSCHANGE);
+				mob.recoverCharStats();
+				mob.charStats().getCurrentClass().startCharacter(mob,false,true);
+			}
 			break;
 		}
 		return false;
