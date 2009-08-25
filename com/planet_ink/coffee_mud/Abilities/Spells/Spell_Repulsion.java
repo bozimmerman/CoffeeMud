@@ -71,6 +71,22 @@ public class Spell_Repulsion extends Spell
 		return super.okMessage(myHost,msg);
 	}
 
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(tickID == Tickable.TICKID_MOB)
+		{
+			Room R=CMLib.map().roomLocation(affected);
+			if((R!=null)
+			&&(invoker!=null)
+			&&((!R.isInhabitant(invoker))||(!invoker.isInCombat())))
+			{
+				unInvoke();
+				return false;
+			}
+		}
+		return super.tick(ticking, tickID);
+	}
+	
 	public void unInvoke()
 	{
 		// undo the affects of this spell
