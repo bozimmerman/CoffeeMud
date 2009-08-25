@@ -203,7 +203,6 @@ public class Bard extends StdCharClass
                             }
                             if(V.elementAt(i) instanceof Drink)
                                 V2.addAll(CMLib.flags().domainAffects((Environmental)V.elementAt(i),Ability.ACODE_POISON));
-                            if(V2!=null)
                             for(int v=0;v<V2.size();v++)
                                 pub=pub||CMath.bset(((Ability)V2.elementAt(v)).flags(),Ability.FLAG_INTOXICATING);
                         }
