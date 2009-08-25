@@ -184,6 +184,7 @@ public class Spell_SummonMonster extends Spell
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
 		R.showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
         MOB victim=caster.getVictim();
+		newMOB.setStartRoom(null); // keep before postFollow for Conquest
         CMLib.commands().postFollow(newMOB,caster,true);
         if(newMOB.amFollowing()!=caster)
             caster.tell(newMOB.name()+" seems unwilling to follow you.");
@@ -193,7 +194,6 @@ public class Spell_SummonMonster extends Spell
             if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
             R.showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) attacking <T-NAMESELF>!");
         }
-		newMOB.setStartRoom(null);
         if(newMOB.amDead()||newMOB.amDestroyed()) 
             return null;
 		return(newMOB);

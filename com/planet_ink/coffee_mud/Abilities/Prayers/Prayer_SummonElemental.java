@@ -191,6 +191,7 @@ public class Prayer_SummonElemental extends Prayer
 		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 		caster.location().recoverRoomStats();
         MOB victim=caster.getVictim();
+		newMOB.setStartRoom(null); // this must be before postFollow due to the effects on conquest.
         CMLib.commands().postFollow(newMOB,caster,true);
         if(newMOB.amFollowing()!=caster)
             caster.tell(newMOB.name()+" seems unwilling to follow you.");
@@ -200,7 +201,6 @@ public class Prayer_SummonElemental extends Prayer
             if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
             newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) attacking <T-NAMESELF>!");
         }
-		newMOB.setStartRoom(null);
 		return(newMOB);
 
 

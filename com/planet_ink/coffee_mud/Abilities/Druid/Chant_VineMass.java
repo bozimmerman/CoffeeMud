@@ -83,7 +83,7 @@ public class Chant_VineMass extends Chant_SummonVine
 			CMLib.beanCounter().clearZeroMoney(newMOB,null);
 			if(victim.getVictim()!=newMOB) victim.setVictim(newMOB);
 			newMOB.setVictim(victim);
-			newMOB.setStartRoom(null);
+			newMOB.setStartRoom(null); // keep before postFollow for Conquest
 			if((i+1)<limit)
 			{
 				beneficialAffect(caster,newMOB,0,0);

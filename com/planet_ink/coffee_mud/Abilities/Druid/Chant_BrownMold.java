@@ -180,7 +180,8 @@ public class Chant_BrownMold extends Chant
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-        CMLib.commands().postFollow(newMOB,caster,true);
+		newMOB.setStartRoom(null); // keep before postFollow for Conquest
+	    CMLib.commands().postFollow(newMOB,caster,true);
         if(newMOB.amFollowing()!=caster)
             caster.tell(newMOB.name()+" seems unwilling to follow you.");
         else
@@ -188,7 +189,6 @@ public class Chant_BrownMold extends Chant
     		if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
     		newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) attacking <T-NAMESELF>!");
         }
-        newMOB.setStartRoom(null);
-		return(newMOB);
+ 		return(newMOB);
 	}
 }

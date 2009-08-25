@@ -169,6 +169,7 @@ public class Chant_SummonRockGolem extends Chant
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
 		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears out of the cave walls!");
         MOB victim=caster.getVictim();
+		newMOB.setStartRoom(null); // keep before postFollow for Conquest
         CMLib.commands().postFollow(newMOB,caster,true);
         if(newMOB.amFollowing()!=caster)
             caster.tell(newMOB.name()+" seems unwilling to follow you.");
@@ -178,7 +179,6 @@ public class Chant_SummonRockGolem extends Chant
             if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
             newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) attacking <T-NAMESELF>!");
         }
-		newMOB.setStartRoom(null);
 		newMOB.addNonUninvokableEffect(this);
 		return(newMOB);
 	}
