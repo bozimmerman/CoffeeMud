@@ -248,20 +248,19 @@ public class QuestBound implements Ability
     {
         if(text().length()>0)
         {
-            Quest Q=null;
             Quest theQ=null;
             for(int q=0;q<CMLib.quests().numQuests();q++)
             {
-                Q=CMLib.quests().fetchQuest(q);
+                Quest Q=CMLib.quests().fetchQuest(q);
                 if((Q!=null)&&(""+Q).equals(text()))
                 { theQ=Q; break;}
             }
-            if((theQ==null)||(!Q.running()))
+            if((theQ==null)||(!theQ.running()))
                 affected.delEffect(this);
             else
             {
-                Log.sysOut("QuestBound",CMMsg.TYPE_DESCS[reason]+" message for "+(affected==null?"null":affected.name())+" caused "+Q.name()+" to reset.");
-                Q.resetQuest(5);
+                Log.sysOut("QuestBound",CMMsg.TYPE_DESCS[reason]+" message for "+(affected==null?"null":affected.name())+" caused "+theQ.name()+" to reset.");
+                theQ.resetQuest(5);
             }
         }
         else

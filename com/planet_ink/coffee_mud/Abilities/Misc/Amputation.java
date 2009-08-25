@@ -448,7 +448,8 @@ public class Amputation extends StdAbility implements Amputator
 			limb.setName("a "+gone);
 			limb.baseEnvStats().setAbility(1);
 			limb.setDisplayText("a bloody "+gone+" is sitting here.");
-			limb.setSecretIdentity(target.name()+"`s bloody "+gone+".");
+			if(target != null)
+				limb.setSecretIdentity(target.name()+"`s bloody "+gone+".");
 			int material=RawMaterial.RESOURCE_MEAT;
 			if((R!=null)&&(R.myResources()!=null)&&(R.myResources().size()>0))
 				for(int r=0;r<R.myResources().size();r++)
@@ -484,7 +485,7 @@ public class Amputation extends StdAbility implements Amputator
                 A.setMiscText(A.text()+((String)theRest.elementAt(i))+";");
         }
 		
-		Injury I=(Injury)target.fetchEffect("Injury");
+		Injury I=(target==null)?null:(Injury)target.fetchEffect("Injury");
 		if(I!=null)
 		{
 		    Vector V=null;

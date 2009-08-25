@@ -80,7 +80,11 @@ public class Age extends StdAbility
 	    	{
 		        MOB M=((CagedAnimal)affected).unCageMe();
 		        if(M!=null)
+		        {
 			        myRace=M.baseCharStats().getMyRace();
+		            M.delEffect(M.fetchEffect(ID()));
+		            M.destroy();
+		        }
 		        else
 		        {
 		            Room R=CMLib.map().roomLocation(affected);
@@ -88,8 +92,6 @@ public class Age extends StdAbility
 		                R.showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" died.");
 		            ((Item)affected).destroy();
 		        }
-	            M.delEffect(M.fetchEffect(ID()));
-	            M.destroy();
 	    	}
 	    	else
 	    	if(affected instanceof MOB)
@@ -310,6 +312,7 @@ public class Age extends StdAbility
                             }
                         }
                         if((newMan.getClanID().length()==0)
+                        &&(liege!=null)
                         &&(liege.getClanID().length()>0))
                             newMan.setClanID(liege.getClanID());
                     }
@@ -334,8 +337,13 @@ public class Age extends StdAbility
 					newMan.setTrains(babe.getTrains());
 					newMan.setWimpHitPoint(babe.getWimpHitPoint());
 					newMan.setWorshipCharID(babe.getWorshipCharID());
-					newMan.playerStats().setPassword(liege.playerStats().password());
-					newMan.playerStats().setEmail(liege.playerStats().getEmail());
+					if(liege!=null)
+					{
+						newMan.playerStats().setPassword(liege.playerStats().password());
+						newMan.playerStats().setEmail(liege.playerStats().getEmail());
+					}
+					else
+						newMan.playerStats().setPassword(babe.Name());
 					newMan.playerStats().setLastUpdated(System.currentTimeMillis());
 					newMan.playerStats().setLastDateTime(System.currentTimeMillis());
 					if(newMan.playerStats().getBirthday()==null)
@@ -360,7 +368,7 @@ public class Age extends StdAbility
 							qualifiedStats.addElement(Integer.valueOf(i));
 					if(qualifiedStats.size()>0)
 					{
-						int stat=qualifiedStats.elementAt(CMLib.dice().roll(1,qualifiedStats.size(),-1));
+						int stat=qualifiedStats.elementAt(CMLib.dice().roll(1,qualifiedStats.size(),-1)).intValue();
 						newMan.baseCharStats().setStat(stat,newMan.baseCharStats().getStat(stat)+1);
 					}
 					for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
@@ -383,7 +391,8 @@ public class Age extends StdAbility
 					CMLib.database().DBCreateCharacter(newMan);
 					CMLib.players().addPlayer(newMan);
 
-					newMan.playerStats().setLastIP(liege.session().getAddress());
+					if((liege != null) && (liege.session() != null))
+						newMan.playerStats().setLastIP(liege.session().getAddress());
 					Log.sysOut("Age","Created user: "+newMan.Name());
 		            CMLib.login().notifyFriends(newMan,"^X"+newMan.Name()+" has just been created.^.^?");
 
@@ -391,9 +400,12 @@ public class Age extends StdAbility
                     for(int i=0;i<channels.size();i++)
                         CMLib.commands().postChannel((String)channels.elementAt(i),newMan.getClanID(),newMan.Name()+" has just been created.",true);
 
-					if(liege!=babe.amFollowing())
-						babe.amFollowing().tell(newMan.Name()+" has just grown up! "+CMStrings.capitalizeAndLower(newMan.baseCharStats().hisher())+" password is the same as "+liege.Name()+"'s.");
-					liege.tell(newMan.Name()+" has just grown up! "+CMStrings.capitalizeAndLower(newMan.baseCharStats().hisher())+" password is the same as "+liege.Name()+"'s.");
+                    if(liege != null)
+                    {
+						if(liege!=babe.amFollowing())
+							babe.amFollowing().tell(newMan.Name()+" has just grown up! "+CMStrings.capitalizeAndLower(newMan.baseCharStats().hisher())+" password is the same as "+liege.Name()+"'s.");
+						liege.tell(newMan.Name()+" has just grown up! "+CMStrings.capitalizeAndLower(newMan.baseCharStats().hisher())+" password is the same as "+liege.Name()+"'s.");
+                    }
 					CMLib.database().DBUpdatePlayer(newMan);
 					newMan.removeFromGame(false);
 					babe.setFollowing(null);
