@@ -74,7 +74,8 @@ public class Chant_SnatchLight extends Chant
 		{
 			MOB mob=invoker;
 			Room R=mob.location();
-			if((R!=null)&&(R.fetchEffect(ID())==null))
+			if(R==null) return true;
+			if(R.fetchEffect(ID())==null)
 			{
 				Ability A=(Ability)copyOf();
 				A.setSavable(false);
