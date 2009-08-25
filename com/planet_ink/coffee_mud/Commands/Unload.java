@@ -145,6 +145,14 @@ public class Unload extends StdCommand
             	}
             	if(saveFirst)
             	{
+                    // important! shutdown their affects!
+                    for(int a=M.numAllEffects()-1;a>=0;a--)
+                    {
+                    	Ability A=M.fetchEffect(a);
+                    	if((A!=null)&&(A.canBeUninvoked()))
+                    		A.unInvoke();
+                    	M.delEffect(A);
+                    }
 					CMLib.database().DBUpdatePlayer(M);
 					CMLib.database().DBUpdateFollowers(M);
             	}

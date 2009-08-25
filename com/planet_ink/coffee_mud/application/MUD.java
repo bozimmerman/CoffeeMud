@@ -663,8 +663,22 @@ public class MUD extends Thread implements MudHost
                 for(int s=0;s<CMLib.sessions().size();s++)
                 {
                     Session S2=CMLib.sessions().elementAt(s);
-                    if((S2!=null)&&(S2.mob()!=null)&&(S2.mob().playerStats()!=null))
-                        S2.mob().playerStats().setLastDateTime(System.currentTimeMillis());
+                    if(S2!=null)
+                    {
+                    	MOB M = S2.mob();
+                    	if((M!=null)&&(M.playerStats()!=null))
+                    	{
+	                        M.playerStats().setLastDateTime(System.currentTimeMillis());
+	                        // important! shutdown their affects!
+	                        for(int a=M.numAllEffects()-1;a>=0;a--)
+	                        {
+	                        	Ability A=M.fetchEffect(a);
+	                        	if((A!=null)&&(A.canBeUninvoked()))
+	                        		A.unInvoke();
+	                        	M.delEffect(A);
+	                        }
+                    	}
+                    }
                 }
             for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_PLAYERS);e.hasMoreElements();)
                 ((PlayerLibrary)e.nextElement()).savePlayers();
