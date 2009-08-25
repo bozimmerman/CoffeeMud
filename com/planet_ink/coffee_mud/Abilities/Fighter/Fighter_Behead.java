@@ -125,7 +125,7 @@ public class Fighter_Behead extends FighterSkill
 			}
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+		if((!super.invoke(mob,commands,givenTarget,auto,asLevel))||(ww==null))
 			return false;
 
 		int levelDiff=target.envStats().level()-(mob.envStats().level()+(2*super.getXLEVELLevel(mob)));

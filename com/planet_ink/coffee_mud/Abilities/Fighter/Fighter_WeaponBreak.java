@@ -123,7 +123,10 @@ public class Fighter_WeaponBreak extends FighterSkill
 			}
 		}
 		else
+		if(hisWeapon != null)
 			return maliciousFizzle(mob,victim,"<S-NAME> attempt(s) to destroy "+hisWeapon.name()+" and fail(s)!");
+		else
+			return maliciousFizzle(mob,victim,"<S-NAME> attempt(s) to destroy <T-YOUPOSS> non-existant weapon and fail(s)!");
 		return success;
 	}
 

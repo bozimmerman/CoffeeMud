@@ -109,7 +109,7 @@ public class Fighter_CoupDeGrace extends FighterSkill
 
 		MOB target=mob.getVictim();
 		int dmg=target.curState().getHitPoints();
-		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+		if((!super.invoke(mob,commands,givenTarget,auto,asLevel))||(ww==null))
 			return false;
 
 		int levelDiff=target.envStats().level()-(mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
