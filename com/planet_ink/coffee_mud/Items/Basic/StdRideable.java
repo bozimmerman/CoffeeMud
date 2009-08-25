@@ -291,6 +291,7 @@ public class StdRideable extends StdContainer implements Rideable
 			{
 				Rider rider=fetchRider(r);
 				if(rider!=null)
+				{
 					if(r>0)
 					{
 						sendBack.append(", ");
@@ -298,6 +299,7 @@ public class StdRideable extends StdContainer implements Rideable
 							sendBack.append("and ");
 					}
 					sendBack.append(rider.name());
+				}
 
 			}
 			return sendBack.toString();
