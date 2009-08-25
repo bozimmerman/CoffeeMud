@@ -92,6 +92,7 @@ public class Taxidermy extends CraftingSkill
 				if(s.length()==0)
 					header=true;
 				else
+				if(V2 != null)
 				{
 					V2.addElement(s);
 					header=false;

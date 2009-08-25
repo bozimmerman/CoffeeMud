@@ -236,6 +236,8 @@ public class AnimalTraining extends CommonSkill
 			}
 			M=((CagedAnimal)taming).unCageMe();
 		}
+		else
+			return false;
 
 		if(((skill instanceof Behavior)&&(M.fetchBehavior(((Behavior)skill).ID())!=null))
 		||(skill instanceof Ability)&&(M.fetchAbility(((Ability)skill).ID())!=null))

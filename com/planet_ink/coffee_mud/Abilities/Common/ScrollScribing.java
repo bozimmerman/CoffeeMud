@@ -257,7 +257,7 @@ public class ScrollScribing extends CraftingSkill implements ItemCraftor
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 
-			if(resourceType>0)
+			if((resourceType>0)&&(data != null))
 				CMLib.materials().destroyResources(mob.location(),data[0][FOUND_AMT],data[0][FOUND_CODE],0,null);
 			
             playSound=null;

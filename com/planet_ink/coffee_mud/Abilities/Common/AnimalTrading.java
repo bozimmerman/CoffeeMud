@@ -124,6 +124,8 @@ public class AnimalTrading extends CommonSkill
 			}
 			M=((CagedAnimal)taming).unCageMe();
 		}
+		else
+			return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

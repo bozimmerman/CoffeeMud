@@ -178,19 +178,19 @@ public class CraftingSkill extends GatheringSkill
         if(I instanceof Armor) {
             layerAtt = new short[1];
             layers = new short[1];
+	        long[] wornLoc = new long[1];
+	        boolean[] logicalAnd = new boolean[1];
+	        double[] hardBonus=new double[]{(double)hardnessMultiplier};
+	        CMLib.ableParms().parseWearLocation(layerAtt,layers,wornLoc,logicalAnd,hardBonus,wearLocation);
+	        if(I instanceof Armor) {
+	            Armor armor = (Armor)I;
+	            armor.setClothingLayer(layers[0]);
+	            armor.setLayerAttributes(layerAtt[0]);
+	        }
+	        I.baseEnvStats().setArmor(I.baseEnvStats().armor()+(int)Math.round(hardBonus[0]));
+	        I.setRawLogicalAnd(logicalAnd[0]);
+	        I.setRawProperLocationBitmap(wornLoc[0]);
         }
-        long[] wornLoc = new long[1];
-        boolean[] logicalAnd = new boolean[1];
-        double[] hardBonus=new double[]{(double)hardnessMultiplier};
-        CMLib.ableParms().parseWearLocation(layerAtt,layers,wornLoc,logicalAnd,hardBonus,wearLocation);
-        if(I instanceof Armor) {
-            Armor armor = (Armor)I;
-            armor.setClothingLayer(layers[0]);
-            armor.setLayerAttributes(layerAtt[0]);
-        }
-        I.baseEnvStats().setArmor(I.baseEnvStats().armor()+(int)Math.round(hardBonus[0]));
-        I.setRawLogicalAnd(logicalAnd[0]);
-        I.setRawProperLocationBitmap(wornLoc[0]);
     }
     
 	protected Vector loadList(StringBuffer str)
@@ -399,15 +399,16 @@ public class CraftingSkill extends GatheringSkill
 		}
 		if(req2Required>0)
 		{
-			if(((req2!=null)&&(data[1][FOUND_AMT]==0))
-			||((req2==null)&&(req2Desc!=null)&&(req2Desc.length()>0)&&(data[1][FOUND_AMT]==0)))
-			{
-				if(req2Desc.equalsIgnoreCase("PRECIOUS"))
-					commonTell(mob,"You need some sort of precious stones to make that.  There is not enough here.  Are you sure you set it all on the ground first?");
-				else
-					commonTell(mob,"You need some "+req2Desc.toLowerCase()+" to make that.  There is not enough here.  Are you sure you set it all on the ground first?");
-				return null;
-			}
+			if(req2Desc != null)
+				if(((req2!=null)&&(data[1][FOUND_AMT]==0))
+				||((req2==null)&&(req2Desc.length()>0)&&(data[1][FOUND_AMT]==0)))
+				{
+					if(req2Desc.equalsIgnoreCase("PRECIOUS"))
+						commonTell(mob,"You need some sort of precious stones to make that.  There is not enough here.  Are you sure you set it all on the ground first?");
+					else
+						commonTell(mob,"You need some "+req2Desc.toLowerCase()+" to make that.  There is not enough here.  Are you sure you set it all on the ground first?");
+					return null;
+				}
 			if(!bundle) req2Required=fixResourceRequirement(data[1][FOUND_CODE],req2Required);
 		}
 
@@ -536,7 +537,7 @@ public class CraftingSkill extends GatheringSkill
 	public Vector craftItem(String recipe)
 	{
 		Vector rscs=myResources();
-		if(rscs.size()==0) rscs=CMParms.makeVector(RawMaterial.RESOURCE_WOOD);
+		if(rscs.size()==0) rscs=CMParms.makeVector(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
 		int material=((Integer)rscs.elementAt(CMLib.dice().roll(1,rscs.size(),-1))).intValue();
 		return craftItem(recipe,material);
 	}
@@ -546,7 +547,7 @@ public class CraftingSkill extends GatheringSkill
 		Vector rscs=myResources();
 		Vector allItemVectorVectors=new Vector();
 		Vector items=null;
-		if(rscs.size()==0) rscs=CMParms.makeVector(RawMaterial.RESOURCE_WOOD);
+		if(rscs.size()==0) rscs=CMParms.makeVector(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
 		for(int r=0;r<rscs.size();r++)
 		{
 			items=craftAllItemsVectors(((Integer)rscs.elementAt(r)).intValue());

@@ -160,6 +160,7 @@ public class Painting extends CommonSkill
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 		}
 		else
+		if(I!=null)
 		{
 			String name=S.prompt("In brief, what is this a painting of?\n\r:");
 			if(name.trim().length()==0) return false;
