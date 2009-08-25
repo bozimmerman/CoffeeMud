@@ -209,8 +209,12 @@ public class MOBloader
         }
         if(D!=null) DB.DBDone(D);
         D=null;
-        mob.setLocation(oldLoc);
-        if(inhab&&(!oldLoc.isInhabitant(mob))) oldLoc.addInhabitant(mob);
+        if(oldLoc!=null)
+        {
+	        mob.setLocation(oldLoc);
+	        if(inhab&&(!oldLoc.isInhabitant(mob))) 
+	        	oldLoc.addInhabitant(mob);
+        }
         // now grab the abilities
         try
         {

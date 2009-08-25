@@ -1323,7 +1323,8 @@ public class CMClass extends ClassLoader
                 if(mainClass==null) mainClass=C;
             }
             Context.exit();
-            if(debugging) Log.debugOut("CMClass","Loaded: "+mainClass.getName());
+            if((debugging)&&(mainClass!=null)) 
+            	Log.debugOut("CMClass","Loaded: "+mainClass.getName());
             return mainClass;
         }
 	    result=finishDefineClass(className,classData,null,resolveIt);

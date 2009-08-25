@@ -333,7 +333,7 @@ public class RoomLoader
                 thisRoom=getRoom(allRooms,roomID);
                 if(thisRoom==null)
                 {
-            		if(!unloadedRooms.contains(roomID))
+            		if((unloadedRooms!=null)&&(!unloadedRooms.contains(roomID)))
 	                    Log.errOut("Room","Couldn't set "+direction+" exit for unknown room '"+roomID+"'");
                 }
                 else
@@ -360,7 +360,7 @@ public class RoomLoader
                     if((direction>255)&&(!(thisRoom instanceof GridLocale)))
                         Log.errOut("Room","Not GridLocale, tried "+direction+" exit for room '"+roomID+"'");
                     else
-                    if(direction>255)
+                    if((direction>255)&&(newRoom!=null))
                     {
                         Vector CEs=CMParms.parseSemicolons(exitMiscText.trim(),true);
                         for(int ces=0;ces<CEs.size();ces++)
