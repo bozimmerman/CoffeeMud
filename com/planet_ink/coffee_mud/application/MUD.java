@@ -673,9 +673,11 @@ public class MUD extends Thread implements MudHost
 	                        for(int a=M.numAllEffects()-1;a>=0;a--)
 	                        {
 	                        	Ability A=M.fetchEffect(a);
-	                        	if((A!=null)&&(A.canBeUninvoked()))
-	                        		A.unInvoke();
-	                        	M.delEffect(A);
+	                        	try {
+		                        	if((A!=null)&&(A.canBeUninvoked()))
+		                        		A.unInvoke();
+		                        	M.delEffect(A);
+	                        	} catch(Exception e) {Log.errOut("MUD",e);}
 	                        }
                     	}
                     }
