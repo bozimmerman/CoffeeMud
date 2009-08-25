@@ -367,7 +367,8 @@ public class DefaultTimeClock implements TimeClock
 							}
 						}
 					}
-					R.recoverRoomStats();
+					if(R!=null)
+						R.recoverRoomStats();
 				}
 	    	}
 	    }catch(java.util.NoSuchElementException x){}

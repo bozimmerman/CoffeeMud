@@ -601,7 +601,8 @@ public class DefaultLawSet implements Law
             if((W.criminal()==mob)
             &&(W.crime().equals(copKillerInfo[Law.BIT_CRIMENAME]))
             &&(W.victim()!=null)
-            &&((behav==null)||(behav.isStillACrime(W,false)))
+            &&(behav!=null)
+            &&(behav.isStillACrime(W,false))
             &&(behav.isAnyOfficer(A,W.victim())))
                 return W;
         }
@@ -618,7 +619,7 @@ public class DefaultLawSet implements Law
             if((W.criminal()==mob)
             &&(W.crime().equals(lawResistInfo[Law.BIT_CRIMENAME]))
             &&(W.victim()!=null)
-            &&((behav==null)||(behav.isStillACrime(W,false)))
+            &&(behav.isStillACrime(W,false))
             &&(behav.isAnyOfficer(A,W.victim())))
                 return W;
         }
