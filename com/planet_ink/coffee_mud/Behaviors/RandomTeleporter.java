@@ -148,7 +148,8 @@ public class RandomTeleporter extends ActiveTicker
 			}
 			Room oldRoom=mob.location();
 			CMLib.tracking().wanderAway(mob,true,false);
-			R.bringMobHere(mob,true);
+			if(R!=null)
+				R.bringMobHere(mob,true);
 			if(mob.location()==oldRoom)
 				tickDown=0;
 		}

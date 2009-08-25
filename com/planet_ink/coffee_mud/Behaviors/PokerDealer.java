@@ -749,7 +749,7 @@ public class PokerDealer extends StdBehavior
                     
                     // if it checks out, we remove the specified cards,
                     // and deal new ones.
-                    if(numbersOK)
+                    if((numbersOK)&&(hand!=null))
                     {
                         Vector cards=hand.getContents();
                         Vector removed=new Vector();
@@ -1336,7 +1336,8 @@ public class PokerDealer extends StdBehavior
                 }
             }
         }
-        hand.sortByValueAceHigh();
+        if(hand!=null)
+	        hand.sortByValueAceHigh();
     }
     
     // deal cards to all players

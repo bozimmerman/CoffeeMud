@@ -105,7 +105,7 @@ public class Concierge extends StdBehavior
 				}
 				rates.removeElementAt(r);
 			}
-		if(stringsToDo!=null)
+		if((stringsToDo!=null)&&(observer!=null))
 		{
 			TrackingLibrary.TrackingFlags flags;
 			flags = new TrackingLibrary.TrackingFlags()

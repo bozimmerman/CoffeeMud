@@ -360,7 +360,9 @@ public class Patroller extends ActiveTicker
 			if(ticking instanceof Item)
 			{
 				Item I=(Item)ticking;
-				if(ticking instanceof Rideable)
+				if((ticking instanceof Rideable)
+				&&(thatRoom!=null)
+				&&(riders!=null))
 				{
 					Exit opExit=thatRoom.getReverseExit(direction);
 					for(int i=0;i<riders.size();i++)
@@ -417,9 +419,10 @@ public class Patroller extends ActiveTicker
 			    tickStatus=Tickable.STATUS_MISC+17;
 				thisRoom.showHappens(CMMsg.MSG_OK_ACTION,I,"<S-NAME> goes "+Directions.getDirectionName(direction)+".");
 			    tickStatus=Tickable.STATUS_MISC+18;
-				thatRoom.bringItemHere(I,-1,false);
+			    if(thatRoom!=null)
+			    	thatRoom.bringItemHere(I,-1,false);
 			    tickStatus=Tickable.STATUS_MISC+19;
-				if(I.owner()==thatRoom)
+				if((I.owner()==thatRoom)&&(thatRoom!=null))
 				{
 				    tickStatus=Tickable.STATUS_MISC+20;
 					thatRoom.showHappens(CMMsg.MSG_OK_ACTION,I,"<S-NAME> arrives from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(direction))+".");

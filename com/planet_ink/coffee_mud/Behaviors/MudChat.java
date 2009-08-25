@@ -150,11 +150,14 @@ public class MudChat extends StdBehavior
 				currentChatPattern=null;
 				break;
 			case '@':
-				otherChatGroup=matchChatGroup(null,str.substring(1).trim(),chatGroups);
-				if(otherChatGroup==null)
-					otherChatGroup=(Vector)chatGroups.elementAt(0);
-				for(int v1=1;v1<otherChatGroup.size();v1++)
-					currentChatGroup.addElement(otherChatGroup.elementAt(v1));
+				if(currentChatGroup!=null)
+				{
+					otherChatGroup=matchChatGroup(null,str.substring(1).trim(),chatGroups);
+					if(otherChatGroup==null)
+						otherChatGroup=(Vector)chatGroups.elementAt(0);
+					for(int v1=1;v1<otherChatGroup.size();v1++)
+						currentChatGroup.addElement(otherChatGroup.elementAt(v1));
+				}
 				break;
 			case '%':
 				{

@@ -439,6 +439,7 @@ public class CombatAbilities extends StdBehavior
 					tryThisOne.setProficiency(50+levelDiff);
 				}
 			}
+			if(target==null) return null;
 			boolean skillUsed=tryThisOne.invoke(mob,CMParms.makeVector(target.name()),null,false,0);
 			if((combatMode==COMBAT_ONLYALWAYS)&&(!skillUsed))
 			{

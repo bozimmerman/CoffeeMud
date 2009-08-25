@@ -96,7 +96,7 @@ public class DoorwayGuardian extends StdBehavior
 		if(dirs!=null)
 		for(Enumeration<Integer> dirE=dirs.elements();dirE.hasMoreElements();)
 		{
-			int dir=dirE.nextElement();
+			int dir=dirE.nextElement().intValue();
 			if(room.getExitInDir(dir)!=null)
 			{
 				Exit[] exits={room.getExitInDir(dir),room.getReverseExit(dir)};
