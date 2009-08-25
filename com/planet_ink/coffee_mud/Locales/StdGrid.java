@@ -670,10 +670,10 @@ public class StdGrid extends StdRoom implements GridLocale
                                 }
 							}
 						}
+						room.clearSky();
+						room.destroy();
+						room.setGridParent(null);
 					}
-					room.clearSky();
-					room.destroy();
-					room.setGridParent(null);
 			    }
 			subMap=null;
 		}

@@ -90,9 +90,12 @@ public class SaltWaterSurface extends WaterSurface
 					sea.rawDoors()[d]=thatSea;
 					sea.setRawExit(d,getRawExit(d));
 					thatSea.rawDoors()[Directions.getOpDirectionCode(d)]=sea;
-					Exit xo=thatRoom.getRawExit(Directions.getOpDirectionCode(d));
-					if((xo==null)||(xo.hasADoor())) xo=upE;
-					thatSea.setRawExit(Directions.getOpDirectionCode(d),xo);
+					if(thatRoom!=null)
+					{
+						Exit xo=thatRoom.getRawExit(Directions.getOpDirectionCode(d));
+						if((xo==null)||(xo.hasADoor())) xo=upE;
+						thatSea.setRawExit(Directions.getOpDirectionCode(d),xo);
+					}
 					((GridLocale)thatSea).clearGrid(null);
 				}
 			}

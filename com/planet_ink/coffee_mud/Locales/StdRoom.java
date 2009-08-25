@@ -384,9 +384,12 @@ public class StdRoom implements Room
 						if((xo==null)||(xo.hasADoor())) xo=dnE;
 						sky.setRawExit(d,dnE);
 						thatSky.rawDoors()[Directions.getOpDirectionCode(d)]=sky;
-						xo=thatRoom.getRawExit(Directions.getOpDirectionCode(d));
-						if((xo==null)||(xo.hasADoor())) xo=dnE;
-						thatSky.setRawExit(Directions.getOpDirectionCode(d),xo);
+						if(thatRoom!=null)
+						{
+							xo=thatRoom.getRawExit(Directions.getOpDirectionCode(d));
+							if((xo==null)||(xo.hasADoor())) xo=dnE;
+							thatSky.setRawExit(Directions.getOpDirectionCode(d),xo);
+						}
 						((GridLocale)thatSky).clearGrid(null);
 					}
 				}
