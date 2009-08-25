@@ -9,14 +9,14 @@
 	<!--
 		function Clicked(action,func)
 		{
-			document.RESOURCES.action='/'+action;
+			document.RESOURCES.action=action;
 			document.RESOURCES.FUNCTION.value=func;
 			document.RESOURCES.submit();
 		}
 		
 		function Clicked2(action,func)
 		{
-			document.UPLOAD.action='/'+action;
+			document.UPLOAD.action=action;
 			document.UPLOAD.FUNCTION.value=func;
 			document.UPLOAD.submit();
 		}

@@ -11,7 +11,7 @@
 	<!--
 		function Clicked(action)
 		{
-			document.ACCESS.action='/'+action;
+			document.ACCESS.action=action;
 			document.ACCESS.submit();
 		}
 	//-->
@@ -27,7 +27,7 @@
 		<br>
 		<a href="/"><FONT COLOR=BLUE>Back to public pages</FONT></A><br>
 		<br>
-		<FORM NAME=LOGIN METHOD=POST ACTION=/access.cmvp TARGET=_top>
+		<FORM NAME=LOGIN METHOD=POST ACTION=access.cmvp TARGET=_top>
 		Please login as your CoffeeMud player to gain access.<BR>
 		If you do not have a player account, click the Back link above and select Play NOW!<P>
 		<TABLE WIDTH=200 BORDER=1>
@@ -39,7 +39,7 @@
 		</CENTER>
 		</FORM>
 	@else@
-		<FORM NAME=ACCESS METHOD=POST ACTION=/access.cmvp TARGET=_top>
+		<FORM NAME=ACCESS METHOD=POST ACTION=access.cmvp TARGET=_top>
 		<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 		<INPUT TYPE=HIDDEN NAME=AUTHPLAYER VALUE="@Authenticate?SETPLAYER@">
 		<INPUT TYPE=HIDDEN NAME=PLAYER VALUE="@PlayerData?NAME@">
