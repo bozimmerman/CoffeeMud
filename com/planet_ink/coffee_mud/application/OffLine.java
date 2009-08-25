@@ -413,6 +413,7 @@ public class OffLine extends Thread implements MudHost
                 {
                     System.out.println("ERROR: Unable to read ini file: '"+iniFile+"'.");
                     System.exit(-1);
+                    return;
                 }
 
                 isOK = true;

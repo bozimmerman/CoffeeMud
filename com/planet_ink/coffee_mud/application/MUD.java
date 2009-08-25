@@ -1168,6 +1168,7 @@ public class MUD extends Thread implements MudHost
 			System.out.println("MUD/ERROR: Unable to read ini file: '"+iniFile+"'.");
 			CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"A terminal error has occured!");
 			System.exit(-1);
+			return;
 		}
         Log.shareWith(MudHost.MAIN_HOST);
 		Log.instance().startLogFiles("mud",page.getInt("NUMLOGS"));
@@ -1188,7 +1189,8 @@ public class MUD extends Thread implements MudHost
 				H.start();
 				if(joinable==null) joinable=H;
 			}
-			try{joinable.join();}catch(Exception e){e.printStackTrace(); Log.errOut(Thread.currentThread().getName(),e); }
+			if(joinable!=null)
+				try{joinable.join();}catch(Exception e){e.printStackTrace(); Log.errOut(Thread.currentThread().getName(),e); }
 			System.gc();
 	        try{Thread.sleep(1000);}catch(Exception e){}
 			System.runFinalization();
