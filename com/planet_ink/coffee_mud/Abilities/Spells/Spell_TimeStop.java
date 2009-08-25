@@ -106,6 +106,17 @@ public class Spell_TimeStop extends Spell
 					msg.source().tell("Nothing just happened.  You didn't do that.");
 				return false;
 			default:
+				if((msg.source() == invoker)
+				&&(msg.target() != invoker)
+				&&(msg.target() instanceof MOB)
+			    &&((CMath.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS))
+			    ||(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+			    ||(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))))
+				{
+					if(invoker.getVictim()==null)
+						invoker.setVictim((MOB)msg.target());
+				}
+				else
 				if((msg.source()!=invoker)
 				   &&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
 				   &&(!CMath.bset(msg.targetCode(),CMMsg.MASK_ALWAYS)))
@@ -177,7 +188,7 @@ public class Spell_TimeStop extends Spell
 						CMLib.threads().suspendTicking(mob2,-1);
 					}
 				}
-				beneficialAffect(mob,room,asLevel,3);
+				beneficialAffect(mob,room,asLevel,2);
 			}
 		}
 		else
