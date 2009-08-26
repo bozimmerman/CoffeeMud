@@ -177,9 +177,6 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		&&(isInHide)
 		&&(((MOB)E).isInCombat()))
 			return false;
-		if((E instanceof Room)
-	    &&(!isInHide))
-			return isHidden(((Room)E).getArea());
 		return isInHide;
 	}
 	public boolean isInvisible(Environmental E)
