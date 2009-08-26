@@ -4932,6 +4932,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                                 { DV.setElementAt(v,2,new Integer(((Integer)DV.elementAt(v,2)).intValue()+1)); done=true; break;}
                             if(!done)
                                 DV.addElement(I,new Integer(1));
+                            else
+                            	I.destroy();
                             mob.tell(I.name()+" added.");
                             updateList=true;
                         }
@@ -5159,6 +5161,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             I=(Item)I.copyOf();
             E.setStat("WEAPONCLASS",I.ID());
             E.setStat("WEAPONXML",I.text());
+            I.destroy();
         }
         else
         {

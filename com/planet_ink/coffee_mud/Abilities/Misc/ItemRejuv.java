@@ -55,6 +55,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 			ability.contents.addElement(item);
 
 			Item newItem=(Item)item.copyOf();
+			newItem.stopTicking();
 			newItem.setContainer(item.container());
 			ability.ccontents.addElement(newItem);
 

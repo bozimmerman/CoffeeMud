@@ -179,6 +179,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			level+=(man/5);
 			level+=(mv/5);
 		}
+		savedI.destroy();
+		I.destroy(); // this was a copy
 		return level;
 	}
 
@@ -216,7 +218,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return RET;
 	}
 
-	private void reportChanges(Item oldI, Item newI, StringBuffer changes,int OTLVL, int TLVL)
+	private void reportChangesDestroyOldI(Item oldI, Item newI, StringBuffer changes,int OTLVL, int TLVL)
 	{
 		if((changes == null)||(oldI==null)) return;
 		Ability[] RET=getTimsAdjResCast(newI,new int[1]);
@@ -231,6 +233,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
             if((!oldI.getStat(oldI.getStatCodes()[i]).equals(newI.getStat(newI.getStatCodes()[i]))))
             	changes.append(oldI.getStatCodes()[i]+"("+oldI.getStat(newI.getStatCodes()[i])+"->"+newI.getStat(newI.getStatCodes()[i])+"), ");
         changes.append("\n\r");
+        oldI.destroy(); // this was a copy
 	}
 	
 	public boolean itemFix(Item I, int lvlOr0, StringBuffer changes)
@@ -257,7 +260,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			I.envStats().setLevel(level);
 			if(CMLib.flags().isCataloged(I))
 				CMLib.catalog().updateCatalog(I);
-			reportChanges(oldI,I,changes,level,level);
+			reportChangesDestroyOldI(oldI,I,changes,level,level);
 			return true;
 		}
 		else
@@ -285,7 +288,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				fixRejuvItem(I);
 				if(CMLib.flags().isCataloged(I))
 					CMLib.catalog().updateCatalog(I);
-				reportChanges(oldI,I,changes,OTLVL,TLVL);
+				reportChangesDestroyOldI(oldI,I,changes,OTLVL,TLVL);
 				return true;
 			}
 			if((TLVL>0)&&(TLVL>Math.round(CMath.mul(lvl,1.1))))
@@ -354,7 +357,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				fixRejuvItem(I);
 				if(CMLib.flags().isCataloged(I))
 					CMLib.catalog().updateCatalog(I);
-				reportChanges(oldI,I,changes,OTLVL,TLVL);
+				reportChangesDestroyOldI(oldI,I,changes,OTLVL,TLVL);
 				return true;
 			}
 		}
@@ -362,8 +365,10 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		{
 			if(CMLib.flags().isCataloged(I))
 				CMLib.catalog().updateCatalog(I);
+			if(oldI!=null) oldI.destroy();
 			return true;
 		}
+		if(oldI!=null) oldI.destroy();
 		return false;
 	}
 

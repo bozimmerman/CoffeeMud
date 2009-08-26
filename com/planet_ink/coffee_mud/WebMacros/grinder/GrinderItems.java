@@ -138,7 +138,11 @@ public class GrinderItems
                 if(I==null) Log.errOut("GrinderItems","Error: bad class id: "+newClassID);
             }
 			
-			if(I==null) return "[error]";
+			if(I==null)
+			{
+				copyItem.destroy();
+				return "[error]";
+			}
 			
 			CatalogLibrary.CataData cataData=null;
 
@@ -571,7 +575,8 @@ public class GrinderItems
                 	CMLib.catalog().updateCatalog(I);
 	                Log.infoOut("GrinderItems",whom.Name()+" updated catalog ITEM "+I.Name());
                 }
-                copyItem=I;
+				copyItem.destroy();
+                copyItem=(Item)I.copyOf();
 			}
 			else
 			if(itemCode.equals("NEW"))
@@ -688,6 +693,7 @@ public class GrinderItems
 			}
 			if(!copyItem.sameAs(I))
 				Log.sysOut("Grinder",whom.Name()+" modified item "+copyItem.Name()+((M!=null)?" on mob "+M.Name():"")+((R!=null)?" in room "+R.roomID():"")+".");
+			copyItem.destroy();
     	}
 		return "";
 	}
