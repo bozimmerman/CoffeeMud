@@ -189,6 +189,7 @@ public class Modify extends StdCommand
 		}
 		if(!copyItem.sameAs(modItem))
 			Log.sysOut("Items",mob.Name()+" modified item "+modItem.ID()+".");
+		copyItem.destroy();
 	}
 
     protected void flunkCmd1(MOB mob)
@@ -222,6 +223,7 @@ public class Modify extends StdCommand
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"There is something different about this place...\n\r");
 				Log.sysOut("Rooms",mob.Name()+" modified room "+mob.location().roomID()+".");
 			}
+			oldRoom.destroy();
 			return;
 		}
 		if(commands.size()<3) { flunkCmd1(mob); return;}
@@ -1051,6 +1053,7 @@ public class Modify extends StdCommand
         CMLib.genEd().modifyPlayer(mob,M);
 		if(!copyMOB.sameAs(M))
 			Log.sysOut("Mobs",mob.Name()+" modified player "+M.Name()+".");
+		copyMOB.destroy();
 	}
 	
 	public void mobs(MOB mob, Vector commands)
@@ -1139,6 +1142,7 @@ public class Modify extends StdCommand
 		}
 		if(!modMOB.sameAs(copyMOB))
 			Log.sysOut("Mobs",mob.Name()+" modified mob "+modMOB.Name()+".");
+		copyMOB.destroy();
 	}
 
 	public boolean errorOut(MOB mob)
@@ -1460,6 +1464,7 @@ public class Modify extends StdCommand
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,thang.name()+" shake(s) under the transforming power.");
 				if(!copyItem.sameAs(thang))
 	                Log.sysOut("CreateEdit",mob.Name()+" modified item "+thang.Name()+" ("+thang.ID()+") in "+CMLib.map().getExtendedRoomID(mob.location())+".");
+				copyItem.destroy();
 			}
 			else
 			if((thang!=null)&&(thang instanceof MOB))
@@ -1489,6 +1494,7 @@ public class Modify extends StdCommand
                 }
 				thang.recoverEnvStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,thang.name()+" shake(s) under the transforming power.");
+				copyMOB.destroy();
 			}
 			else
 			if((Directions.getGoodDirectionCode(allWord)>=0)||(thang instanceof Exit))
@@ -1526,6 +1532,7 @@ public class Modify extends StdCommand
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,thang.name()+" shake(s) under the transforming power.");
 					if(!copyExit.sameAs(thang))
 						Log.sysOut("CreateEdit",mob.Name()+" modified exit "+thang.ID()+".");
+					copyExit.destroy();
 				}
 				else
 				{
