@@ -56,13 +56,20 @@ public class Prop_Artifact extends Property
 			if(x>=0)
 				itemID=miscText.substring(x+1);
 			else
+			if(affected!=null)
 			{
-				if(affected!=null)
-					itemID=""+affected+"_"+Math.random();
-				super.setMiscText(text()+";"+itemID);
+				itemID = affected+"_"+Math.random();
+				miscText += ";" + itemID;
 			}
 		}
 		return itemID;
+	}
+	
+	public String text()
+	{
+		if((miscText==null)||(miscText.length()==0))
+			getItemID();
+		return miscText;
 	}
 
 	public void setMiscText(String text)
