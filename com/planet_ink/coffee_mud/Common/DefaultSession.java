@@ -98,6 +98,7 @@ public class DefaultSession extends Thread implements Session
     public String ID(){return "DefaultSession";}
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultSession();}}
     public void initializeClass(){}
+	public boolean isFake() { return false;}
     public CMObject copyOf(){ try{ Object O=this.clone(); return (CMObject)O;}catch(Exception e){return newInstance();} }
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 

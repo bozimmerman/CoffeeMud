@@ -700,7 +700,7 @@ public class StdMOB implements MOB
 		if((location!=null)&&(location.isInhabitant(this)))
         {
             location().delInhabitant(this);
-            if((mySession!=null)&&(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN)))
+            if((session()!=null)&&(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN)))
                 location().show(this,null,CMMsg.MSG_OK_ACTION,"<S-NAME> vanish(es) in a puff of smoke.");
         }
 		setFollowing(null);
@@ -1073,7 +1073,7 @@ public class StdMOB implements MOB
 	}
 	public Session session()
 	{
-		return mySession;
+		return mySession==null?null:mySession.isFake()?null:mySession;
 	}
 	public void setSession(Session newSession)
 	{
@@ -2741,7 +2741,7 @@ public class StdMOB implements MOB
 
 	public boolean isMonster()
 	{
-	    return (mySession==null);
+	    return (mySession==null)||(mySession.isFake());
 	}
 	public boolean isPossessing()
 	{

@@ -176,6 +176,15 @@ public interface Session extends CMCommon
      */
 	public boolean isLockedUpWriting();
     
+	/**
+	 * Returns true if this session is merely a placeholder,
+	 * and does not represent an actual user connection.  
+	 * Will ensure that the system continues to treat the
+	 * user as a mob.
+	 * @return true if this session is not a connection
+	 */
+	public boolean isFake();
+	
     /**
      * Medium-level text output method.  Does full
      * filtering of special characters and codes.

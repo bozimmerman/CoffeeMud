@@ -52,6 +52,7 @@ public class FakeSession implements Session
     public void start(){}
     public String getTerminalType(){ return "Fake";}
     public void negotiateTelnetMode(int code){}
+	public boolean isFake() { return true;}
     
     public String[] clookup(){return new String[255];}
     
@@ -75,24 +76,24 @@ public class FakeSession implements Session
     }
     public void onlyPrint(String msg){ onlyPrint(msg,false); }
     public void rawOut(String msg){ onlyPrint(msg,false); }
-    public void rawPrintln(String msg){ onlyPrint(msg,false); }
-    public void rawPrintln(String msg, int pageBreak){ onlyPrint(msg,false); }
+    public void rawPrintln(String msg){ onlyPrint(msg+"\n",false); }
+    public void rawPrintln(String msg, int pageBreak){ onlyPrint(msg+"\n",false); }
     public void rawPrint(String msg){ onlyPrint(msg,false); }
     public void rawPrint(String msg, int pageBreak){ onlyPrint(msg,false); }
     public void stdPrint(String msg){ onlyPrint(msg,false); }
     public void stdPrint(Environmental Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg,false); }
-    public void stdPrintln(String msg){ onlyPrint(msg,false); }
-    public void stdPrintln(Environmental Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg,false); }
+    public void stdPrintln(String msg){ onlyPrint(msg+"\n",false); }
+    public void stdPrintln(Environmental Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg+"\n",false); }
     public void out(char[] c){ onlyPrint(new String(c),false); }
     public void print(String msg){ onlyPrint(msg,false); }
     public void print(Environmental Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg,false); }
-    public void println(String msg){ onlyPrint(msg,false); }
-    public void println(Environmental Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg,false); }
-    public void wraplessPrintln(String msg){ onlyPrint(msg,false); }
+    public void println(String msg){ onlyPrint(msg+"\n",false); }
+    public void println(Environmental Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg+"\n",false); }
+    public void wraplessPrintln(String msg){ onlyPrint(msg+"\n",false); }
     public void wraplessPrint(String msg){ onlyPrint(msg,false); }
-    public void colorOnlyPrintln(String msg, boolean noCache){ onlyPrint(msg,false); }
+    public void colorOnlyPrintln(String msg, boolean noCache){ onlyPrint(msg+"\n",false); }
     public void colorOnlyPrint(String msg, boolean noCache){ onlyPrint(msg,false); }
-    public void colorOnlyPrintln(String msg){ onlyPrint(msg,false); }
+    public void colorOnlyPrintln(String msg){ onlyPrint(msg+"\n",false); }
     public void colorOnlyPrint(String msg){ onlyPrint(msg,false); }
     public void setPromptFlag(boolean truefalse){}
     
@@ -133,7 +134,7 @@ public class FakeSession implements Session
     
     public void startBeingSnoopedBy(Session S){}
     public void stopBeingSnoopedBy(Session S){}
-    public boolean amBeingSnoopedBy(Session S){return false;}
+    public boolean amBeingSnoopedBy(Session S){return S==this;}
     public int snoopSuspension(int x){return 0;}
     
     public void cmdExit(MOB mob, Vector commands) throws Exception {}

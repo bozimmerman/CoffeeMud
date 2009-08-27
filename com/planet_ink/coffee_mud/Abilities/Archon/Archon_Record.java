@@ -61,7 +61,10 @@ public class Archon_Record extends ArchonSkill
 
 		if(canBeUninvoked())
 		{
-			if((sess!=null)&&(mob.session()!=null))
+			if(mob.session()==null)
+				mob.setSession(null);
+			else
+			if(sess!=null)
 				mob.session().stopBeingSnoopedBy(sess);
 			sess=null;
 		}
@@ -119,6 +122,9 @@ public class Archon_Record extends ArchonSkill
 					Archon_Record A2=(Archon_Record)copyOf();
 					Session F=(Session)CMClass.getCommon("FakeSession");
                     F.initializeSession(null,filename);
+                    if((target instanceof MOB)
+                    &&(((MOB)target.session()==null)))
+                		target.setSession(F);
 					A2.sess=F;
 	                target.addNonUninvokableEffect(A2);
 	                mob.tell("Enter RECORD "+target.Name()+" again to stop recording.");
