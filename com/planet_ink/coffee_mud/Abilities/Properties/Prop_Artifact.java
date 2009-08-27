@@ -92,8 +92,13 @@ public class Prop_Artifact extends Property
 		nomobs=CMParms.getParmBool(text,"NOMOBS",true);
 		autoreset=CMParms.getParmBool(text,"AUTORESET",false);
 	}
-	
-	public void unInvoke()
+
+	/**
+	 * the purpose of this is to determine if the 
+	 * source of the call to this method includes the
+	 * Destroy command.  If so, we have a winner.
+	 */
+	public void deleteFromDB()
 	{
 		if((affected!=null)&&(getItemID().length()>0))
 		{
@@ -105,6 +110,11 @@ public class Prop_Artifact extends Property
 	    			CMLib.database().DBDeleteData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
 			}catch(Exception e){}
 		}
+	}
+	
+	public void unInvoke()
+	{
+		deleteFromDB();
 		super.unInvoke();
 	}
 
@@ -117,8 +127,8 @@ public class Prop_Artifact extends Property
 			return false;
 		if((msg.target()!=null)
 		&&((msg.target()==affected)
-			||(msg.target()==(((Item)affected).container()))
-			||(msg.target()==(((Item)affected).ultimateContainer()))))
+			||(msg.target()==((Item)affected).container())
+			||(msg.target()==((Item)affected).ultimateContainer())))
 		{
 			if((nomobs)
 			&&(msg.targetMinor()==CMMsg.TYP_GET)
@@ -167,7 +177,9 @@ public class Prop_Artifact extends Property
 				waitToReload=System.currentTimeMillis()+60000;
 				if(!CMLib.threads().isTicking(this,Tickable.TICKID_ITEM_BOUNCEBACK))
 					CMLib.threads().startTickDown(this, Tickable.TICKID_ITEM_BOUNCEBACK,4);
-				affected.destroy();
+				Environmental E = affected;
+				E.delEffect(this);
+				E.destroy();
 			}
 		}
 		return super.okMessage(myHost, msg);
