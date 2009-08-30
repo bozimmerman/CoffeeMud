@@ -732,6 +732,17 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 						}
 					}
 					break;
+					case '\033': // skip escapes
+						if((loop < buf.length()-1) && (buf.charAt(loop+1)=='['))
+						{
+							while((len < buf.length()-1) && (buf.charAt(loop)!='m'))
+							{
+								len++;
+								loop++;
+							}
+							len++; // and one more for the 'm'.
+						}
+						break;
 					case '^':
 					{
 						if((loop<buf.length()-1)&&(S!=null))
