@@ -49,7 +49,7 @@ public class Archon_Stinkify extends ArchonSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		MOB target=getTargetAnywhere(mob,commands,givenTarget,false,true,false);
+		MOB target=getTargetAnywhere(mob,commands,givenTarget,false,true,true);
 		if(target==null) return false;
 		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -64,9 +64,14 @@ public class Archon_Stinkify extends ArchonSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> stinkier!");
-				target.playerStats().adjHygiene(PlayerStats.HYGIENE_DELIMIT+1);
-                Log.sysOut("Stinkify",mob.name()+" stinkied "+target.name()+".");
+				if(target.playerStats()!=null)
+				{
+					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> stinkier!");
+					target.playerStats().adjHygiene(PlayerStats.HYGIENE_DELIMIT+1);
+	                Log.sysOut("Stinkify",mob.name()+" stinkied "+target.name()+".");
+				}
+				else
+					mob.tell(mob,target,null,"<T-NAME> is a mob.  Try a player.");
 			}
 		}
 		else
