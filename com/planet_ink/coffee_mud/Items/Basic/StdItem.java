@@ -576,9 +576,9 @@ public class StdItem implements Item
 
 	public boolean savable(){return CMLib.flags().isSavable(this);}
 
-	protected boolean canWearComplete(MOB mob)
+	protected boolean canWearComplete(MOB mob, long wearWhere)
 	{
-		if(!canWear(mob,0))
+		if(!canWear(mob,wearWhere))
 		{
 			long cantWearAt=whereCantWear(mob);
 			Item alreadyWearing=mob.fetchFirstWornItem(cantWearAt);
@@ -785,7 +785,7 @@ public class StdItem implements Item
 				}
 				return true;
 			}
-			return canWearComplete(mob);
+			return canWearComplete(mob,0);
 		case CMMsg.TYP_WEAR:
 			if(properWornBitmap==0)
 			{
@@ -799,7 +799,7 @@ public class StdItem implements Item
 				mob.tell("That looks too advanced for you.");
 				return false;
 			}
-			return canWearComplete(mob);
+			return canWearComplete(mob,(long)((msg.value()<=0)?0:((long)(1<<msg.value())/2)));
 		case CMMsg.TYP_WIELD:
 			if((!fitsOn(Item.WORN_WIELD))||(properWornBitmap==0))
 			{
@@ -833,7 +833,7 @@ public class StdItem implements Item
 					}
 				}
 			}
-			return canWearComplete(mob);
+			return canWearComplete(mob,0);
 		case CMMsg.TYP_PUSH:
 		case CMMsg.TYP_PULL:
 		    if(msg.source().isMine(this))
