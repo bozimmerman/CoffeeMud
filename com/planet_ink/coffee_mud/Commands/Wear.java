@@ -39,7 +39,7 @@ public class Wear extends StdCommand
 	private String[] access={"WEAR"};
 	public String[] getAccessWords(){return access;}
 
-	public boolean wear(MOB mob, Item item, boolean quiet)
+	public boolean wear(MOB mob, Item item, int locationIndex, boolean quiet)
 	{
 		String str="<S-NAME> put(s) on <T-NAME>.";
 		int msgType=CMMsg.MSG_WEAR;
@@ -55,7 +55,11 @@ public class Wear extends StdCommand
 			str="<S-NAME> wield(s) <T-NAME>.";
 			msgType=CMMsg.MSG_WIELD;
 		}
+		else
+		if(locationIndex!=0)
+			str="<S-NAME> put(s) <T-NAME> on <S-HIS-HER> "+Item.WORN_DESCS[locationIndex].toLowerCase()+".";
 		CMMsg newMsg=CMClass.getMsg(mob,item,null,msgType,quiet?null:str);
+		newMsg.setValue(locationIndex);
 		if(mob.location().okMessage(mob,newMsg))
 		{
 			mob.location().send(mob,newMsg);
@@ -75,8 +79,52 @@ public class Wear extends StdCommand
 		}
 		commands.removeElementAt(0);
 		if(commands.firstElement() instanceof Item)
-			return wear(mob,(Item)commands.firstElement(),((commands.size()>1)&&(commands.lastElement() instanceof String)&&(((String)commands.lastElement()).equalsIgnoreCase("QUIETLY"))));
+		{
+			Item wearWhat = (Item)commands.firstElement();
+			boolean quietly = false;
+			int wearLocationIndex = 0;
+			commands.removeElementAt(0);
+			if(commands.size()>0)
+			{
+				if(commands.firstElement() instanceof Integer)
+				{
+					wearLocationIndex=((Integer)commands.firstElement()).intValue();
+					commands.removeElementAt(0);
+				}
+				if((commands.size()>0)
+				&&(commands.firstElement() instanceof String)
+				&&(CMParms.indexOfIgnoreCase(Item.WORN_DESCS, (String)commands.firstElement())>0))
+					wearLocationIndex=CMParms.indexOfIgnoreCase(Item.WORN_DESCS, (String)commands.firstElement());
+				if((commands.size()>0)
+				&&(commands.lastElement() instanceof String)
+				&&(((String)commands.lastElement()).equalsIgnoreCase("QUIETLY")))
+					quietly=true;
+			}
+			return wear(mob,wearWhat,wearLocationIndex,quietly);
+		}
 
+		// discover if a wear location was specified
+		int wearLocationIndex=0;
+		for(int i=commands.size()-2;i>=1;i--)
+			if(((String)commands.elementAt(i)).equalsIgnoreCase("on"))
+			{
+				String possibleWearLocation = CMParms.combine(commands, i+1).toLowerCase().trim();
+				int possIndex = CMParms.indexOfIgnoreCase(Item.WORN_DESCS, possibleWearLocation);
+				if(possIndex<0)
+					for(int w=0;w<Item.WORN_DESCS.length;w++)
+						if(Item.WORN_DESCS[w].toLowerCase().endsWith(" " + possibleWearLocation))
+						{
+							possIndex=w;
+							break;
+						}
+				if(possIndex>0)
+				{
+					wearLocationIndex=possIndex;
+					while(commands.size()>i)
+						commands.removeElementAt(commands.size()-1);
+					break;
+				}
+			}
 		Vector items=CMLib.english().fetchItemList(mob,mob,null,commands,Item.WORNREQ_UNWORNONLY,true);
 		if(items.size()==0)
 			mob.tell("You don't seem to be carrying that.");
@@ -97,7 +145,7 @@ public class Wear extends StdCommand
 			{
 				I=(Item)items.elementAt(i);
 				if((items.size()==1)||(I.canWear(mob,0)))
-					wear(mob,I,false);
+					wear(mob,I,wearLocationIndex,false);
 			}
 		}
 		return false;

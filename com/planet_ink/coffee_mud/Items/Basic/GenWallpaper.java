@@ -118,7 +118,8 @@ public class GenWallpaper implements Item
 
 	public boolean amWearingAt(long wornCode){if(wornCode==Item.IN_INVENTORY)return true; return false;}
 	public boolean fitsOn(long wornCode){return false;}
-	public void wearIfPossible(MOB mob){}
+	public boolean wearIfPossible(MOB mob){ return false;}
+	public boolean wearIfPossible(MOB mob, long wearCode){ return false;}
 	public void wearAt(long wornCode){}
 	public long rawProperLocationBitmap(){return 0;}
 	public boolean rawLogicalAnd(){return false;}

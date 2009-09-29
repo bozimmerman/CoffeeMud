@@ -260,17 +260,22 @@ public class StdItem implements Item
             }
         }
     }
-	public void wearIfPossible(MOB mob)
+	public boolean wearIfPossible(MOB mob, long wearCode)
+	{
+		if((fitsOn(wearCode))
+		&&(canWear(mob,wearCode)))
+		{
+			wearAt(wearCode);
+			return true;
+		}
+		return false;
+	}
+	public boolean wearIfPossible(MOB mob)
 	{
 		for(int i=0;i<WORN_ORDER.length;i++)
-		{
-			if((fitsOn(WORN_ORDER[i]))
-			&&(canWear(mob,WORN_ORDER[i])))
-			{
-				wearAt(WORN_ORDER[i]);
-				break;
-			}
-		}
+			if(wearIfPossible(mob,WORN_ORDER[i]))
+				return true;
+		return false;
 	}
 	public void wearAt(long wornCode)
 	{
@@ -345,6 +350,8 @@ public class StdItem implements Item
 	public boolean canWear(MOB mob, long where)
 	{
 		if(where==0) return (whereCantWear(mob)==0);
+		if((rawProperLocationBitmap()&where)!=where)
+			return false;
 		return mob.freeWearPositions(where,(short)0,(short)0)>0;
 	}
 
@@ -581,7 +588,8 @@ public class StdItem implements Item
 		if(!canWear(mob,wearWhere))
 		{
 			long cantWearAt=whereCantWear(mob);
-			Item alreadyWearing=mob.fetchFirstWornItem(cantWearAt);
+			if(wearWhere!=0) cantWearAt = cantWearAt & wearWhere;
+			Item alreadyWearing=(cantWearAt==0)?null:mob.fetchFirstWornItem(cantWearAt);
 			if(alreadyWearing!=null)
 			{
 				if((cantWearAt!=Item.WORN_HELD)&&(cantWearAt!=Item.WORN_WIELD))
@@ -617,6 +625,19 @@ public class StdItem implements Item
 						mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+CMLib.flags().wornLocation(cantWearAt)+".");
 					return false;
 				}
+			}
+			else
+			if(wearWhere!=0)
+			{
+				StringBuffer locs=new StringBuffer("");
+				for(int i=0;i<Item.WORN_DESCS.length;i++)
+					if((Item.WORN_CODES[i]&wearWhere)>0)
+						locs.append(", " + Item.WORN_DESCS[i]);
+				if(locs.length()==0)
+					mob.tell("You can't wear that there.");
+				else
+					mob.tell("You can't wear that on your "+locs.toString().substring(1).trim()+".");
+				return false;
 			}
 			else
 			{

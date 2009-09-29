@@ -1570,7 +1570,7 @@ public class CMParms
                 return i;
         return -1;
     }
-
+    
     public static boolean contains(String[] supported, String expertise)
     { return indexOf(supported,expertise)>=0;}
     public static boolean containsIgnoreCase(String[] supported, String expertise)

@@ -236,8 +236,19 @@ public interface Item extends Environmental, Rider, DBIdentifiable
      * only if it is practical for the given mob or player to wear this Item. The mob or
      * player must have the item in his or her inventory first.
      * @param mob the player or mob to put this item  on.
+     * @return true if the item was wearable
      */
-    public void wearIfPossible(MOB mob);
+    public boolean wearIfPossible(MOB mob);
+    /**
+     * Using the canWear method, this method will put the item into a state of being worn
+     * on the given location only if it is practical for the given mob or player to wear 
+     * this Item at the given location. The mob or player must have the item in his or her 
+     * inventory first.
+     * @param mob the player or mob to put this item  on.
+     * @param wearCode the bitmap wear code for the location to attempt
+     * @return true if the item was wearable at the location
+     */
+	public boolean wearIfPossible(MOB mob, long wearCode);
     /**
      * Puts this item into a state of being worn regardless of whether it is practical for
      * the given mob to wear it -- for instance, even if an item is already being worn where

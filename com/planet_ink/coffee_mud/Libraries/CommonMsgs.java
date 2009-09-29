@@ -1394,10 +1394,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
     {
         if(!(msg.target() instanceof Item)) return;
         Item item=(Item)msg.target();
+        long wearLocation = (long)((msg.value()<=0)?0:((long)(1<<msg.value())/2));
         MOB mob=msg.source();
-        if(item.canWear(mob,0))
+        if(item.canWear(mob,wearLocation))
         {
-            item.wearIfPossible(mob);
+            item.wearIfPossible(mob,wearLocation);
             mob.recoverCharStats();
             mob.recoverEnvStats();
             mob.recoverMaxState();
@@ -1408,9 +1409,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         if(!(msg.target() instanceof Item)) return;
         Item item=(Item)msg.target();
         MOB mob=msg.source();
-        if((item.canWear(mob,Item.WORN_WIELD))&&(item.fitsOn(Item.WORN_WIELD)))
+        if(item.wearIfPossible(mob,Item.WORN_WIELD))
         {
-            item.wearAt(Item.WORN_WIELD);
             mob.recoverCharStats();
             mob.recoverEnvStats();
             mob.recoverMaxState();
@@ -1421,9 +1421,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         if(!(msg.target() instanceof Item)) return;
         Item item=(Item)msg.target();
         MOB mob=msg.source();
-        if((item.canWear(mob,Item.WORN_HELD))&&(item.fitsOn(Item.WORN_HELD)))
+        if(item.wearIfPossible(mob,Item.WORN_HELD))
         {
-            item.wearAt(Item.WORN_HELD);
             mob.recoverCharStats();
             mob.recoverEnvStats();
             mob.recoverMaxState();

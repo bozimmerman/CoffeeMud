@@ -3940,12 +3940,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 buf.append("Wear on any one of: ");
             else
                 buf.append("Worn on all of: ");
-            for(int l=0;l<Item.WORN_CODES.length;l++)
+            for(int l=1;l<Item.WORN_CODES.length;l++)
             {
-                long wornCode=1<<l;
-                if((CMLib.flags().wornLocation(wornCode).length()>0)
-                &&((oldWornLocation[0]==wornCode)))
-                    buf.append(CMLib.flags().wornLocation(wornCode)+", ");
+                long wornCode=Item.WORN_CODES[l];
+                if((oldWornLocation[0]&wornCode)>0)
+                    buf.append(Item.WORN_DESCS[l]+", ");
             }
             if(buf.toString().endsWith(", "))
                 mob.tell(buf.substring(0,buf.length()-2));
