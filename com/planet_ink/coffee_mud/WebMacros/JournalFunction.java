@@ -184,7 +184,7 @@ public class JournalFunction extends StdWebMacro
 		                        if(journal.equalsIgnoreCase(CMJ.NAME())
 		                        ||journal.equalsIgnoreCase(CMJ.NAME()+"s"))
 		                        {
-		                            realName="SYSTEM_"+CMJ.NAME()+"S";
+		                            realName=CMJ.JOURNAL_NAME();
 		                            break;
 		                        }
 		                    }

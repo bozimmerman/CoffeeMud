@@ -131,7 +131,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
                 if((num!=null)&&(CMath.isNumber(num)))
                 {
                     thread.status("updating journal "+CMJ.NAME());
-                    Vector items=CMLib.database().DBReadJournalMsgs("SYSTEM_"+CMJ.NAME()+"S");
+                    Vector items=CMLib.database().DBReadJournalMsgs(CMJ.JOURNAL_NAME());
                     if(items!=null)
                     for(int i=items.size()-1;i>=0;i--)
                     {
@@ -143,7 +143,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
                             String from=entry.from;
                             String message=entry.msg;
                             Log.sysOut(Thread.currentThread().getName(),"Expired "+CMJ.NAME()+" from "+from+": "+message);
-                            CMLib.database().DBDeleteJournal("SYSTEM_"+CMJ.NAME()+"S",i);
+                            CMLib.database().DBDeleteJournal(CMJ.JOURNAL_NAME(),i);
                         }
                     }
                     thread.status("command journal sweeping");

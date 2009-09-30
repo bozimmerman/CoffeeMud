@@ -101,7 +101,7 @@ public class CommandJournal extends StdCommand
             if(rest.equalsIgnoreCase(CMJ.NAME())
             ||rest.equalsIgnoreCase(CMJ.NAME()+"s"))
             {
-                realName="SYSTEM_"+CMJ.NAME().toUpperCase()+"S";
+                realName=CMJ.JOURNAL_NAME();
                 break;
             }
         }
@@ -220,8 +220,8 @@ public class CommandJournal extends StdCommand
             mob.tell("This command is not available to you.");
             return false;
         }
-        if((!review(mob,"SYSTEM_"+journal.NAME()+"S",journal.NAME().toLowerCase()+"s",commands,journal.NAME()))
-        &&(!transfer(mob,"SYSTEM_"+journal.NAME()+"S",journal.NAME().toLowerCase()+"s",commands,journal.NAME())))
+        if((!review(mob,journal.JOURNAL_NAME(),journal.NAME().toLowerCase()+"s",commands,journal.NAME()))
+        &&(!transfer(mob,journal.JOURNAL_NAME(),journal.NAME().toLowerCase()+"s",commands,journal.NAME())))
         {
 	        String msgString=CMParms.combine(commands,1);
 	        if((mob.session()!=null)&&(!mob.session().killFlag()))
@@ -236,7 +236,7 @@ public class CommandJournal extends StdCommand
 	            String prePend="";
 	            if(journal.getFlag(JournalsLibrary.JournalFlag.ADDROOM)!=null)
 	                prePend="(^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(mob.location())+"^</LSTROOMID^>) ";
-	            CMLib.database().DBWriteJournal("SYSTEM_"+journal.NAME()+"S",mob.Name(),"ALL",
+	            CMLib.database().DBWriteJournal(journal.JOURNAL_NAME(),mob.Name(),"ALL",
 	            		CMStrings.padRight("^.^N"+msgString+"^.^N",20),
 	                    prePend+msgString,
 	                    -1);

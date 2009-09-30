@@ -62,6 +62,7 @@ public interface JournalsLibrary extends CMLibrary, Runnable
     	}
     	public String NAME(){return name;}
     	public String mask(){return mask;}
+    	public String JOURNAL_NAME(){ return "SYSTEM_"+NAME().toUpperCase().trim()+"S";}
     	public String getFlag(JournalFlag flag){return flags.get(flag);} 
     	public String getScriptFilename(){return flags.get(JournalFlag.SCRIPT);}
     }

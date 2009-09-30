@@ -863,7 +863,7 @@ public class Destroy extends StdCommand
                     mob.tell("Please enter a valid "+CMJ.NAME().toLowerCase()+" number to delete.  Use LIST "+CMJ.NAME()+"S for more information.");
                 else
                 {
-                    CMLib.database().DBDeleteJournal("SYSTEM_"+CMJ.NAME()+"S",which-1);
+                    CMLib.database().DBDeleteJournal(CMJ.JOURNAL_NAME(),which-1);
                     mob.tell(CMJ.NAME().toLowerCase()+" deletion submitted.");
                     
                 }
