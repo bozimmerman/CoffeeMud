@@ -239,7 +239,18 @@ public class Reset extends StdCommand
 		return warning.toString();
 	}
 	
-	public boolean fixMob(MOB M)
+	private void reportChangesDestroyNewM(MOB oldM, MOB newM, StringBuffer changes)
+	{
+		if((changes == null)||(oldM==null)) return;
+		changes.append(newM.name()+":"+newM.baseEnvStats().level()+", ");
+        for(int i=0;i<oldM.getStatCodes().length;i++)
+            if((!oldM.getStat(oldM.getStatCodes()[i]).equals(newM.getStat(newM.getStatCodes()[i]))))
+            	changes.append(oldM.getStatCodes()[i]+"("+oldM.getStat(oldM.getStatCodes()[i])+"->"+newM.getStat(newM.getStatCodes()[i])+"), ");
+        changes.append("\n\r");
+        newM.destroy(); // this was a copy
+	}
+	
+	public boolean fixMob(MOB M, StringBuffer recordedChanges)
 	{
 		MOB M2 = CMLib.leveler().fillOutMOB(M.baseCharStats().getCurrentClass(),M.baseEnvStats().level());
 		if((M.baseEnvStats().attackAdjustment() != M2.baseEnvStats().attackAdjustment())
@@ -247,11 +258,17 @@ public class Reset extends StdCommand
 		||(M.baseEnvStats().damage() != M2.baseEnvStats().damage())
 		||(M.baseEnvStats().speed() != M2.baseEnvStats().speed()))
 		{
+			MOB oldM=M;
+			if(recordedChanges!=null) M=(MOB)M.copyOf();
 			M.baseEnvStats().setAttackAdjustment(M2.baseEnvStats().attackAdjustment());
 			M.baseEnvStats().setArmor(M2.baseEnvStats().armor());
 			M.baseEnvStats().setDamage(M2.baseEnvStats().damage());
 			M.baseEnvStats().setSpeed(M2.baseEnvStats().speed());
 			M.recoverEnvStats();
+			if(recordedChanges!=null){
+				reportChangesDestroyNewM(oldM,M,recordedChanges);
+				return false;
+			}
 			return true;
 		}
 		return false;
@@ -580,6 +597,15 @@ public class Reset extends StdCommand
 		{
 			s="room";
 			if(commands.size()>1) s=(String)commands.elementAt(1);
+			if(mob.session()==null) return false;
+			mob.session().print("working...");
+			StringBuffer recordedChanges=null;
+			for(int i=1;i<commands.size();i++)
+				if(((String)commands.elementAt(i)).equalsIgnoreCase("NOSAVE"))
+				{
+					recordedChanges=new StringBuffer("");
+					break;
+				}
 			Vector rooms=new Vector();
 			if(s.toUpperCase().startsWith("ROOM"))
 				rooms.addElement(mob.location());
@@ -593,21 +619,15 @@ public class Reset extends StdCommand
 			    }catch(NoSuchElementException nse){}
 			}
 			else
-			if(s.toUpperCase().startsWith("WORLD"))
+			if(s.toUpperCase().startsWith("CATALOG"))
 			{
 			    try
 			    {
-			    	for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
-			    	{
-			    		Area A=(Area)e.nextElement();
-			    		for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
-							rooms.addElement(r.nextElement());
-			    	}
 			    	MOB[] mobs=CMLib.catalog().getCatalogMobs();
 			    	for(int m=0;m<mobs.length;m++)
 			    	{
 			    		MOB M=mobs[m];
-			    		if(fixMob(M))
+			    		if(fixMob(M,recordedChanges))
 			    		{
 							mob.tell("Catalog mob "+M.Name()+" done.");
 			    			CMLib.catalog().updateCatalog(M);
@@ -616,11 +636,33 @@ public class Reset extends StdCommand
 			    }catch(NoSuchElementException nse){}
 			}
 			else
+			if(s.toUpperCase().startsWith("WORLD"))
 			{
-				mob.tell("Try ROOM, AREA, or WORLD.");
+			    try
+			    {
+			    	for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+			    	{
+			    		Area A=(Area)e.nextElement();
+						boolean skip=false;
+						for(int i=1;i<commands.size();i++)
+							if(((String)commands.elementAt(i)).equalsIgnoreCase(A.Name())||rest.equalsIgnoreCase(A.Name()))
+							{
+								skip=true;
+								break;
+							}
+						if(skip) continue;
+			    		for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+							rooms.addElement(r.nextElement());
+			    	}
+			    }catch(NoSuchElementException nse){}
+			}
+			else
+			{
+				mob.tell("Try ROOM, AREA, CATALOG, or WORLD.");
 				return false;
 			}
-
+			if(recordedChanges!=null)
+				mob.session().println(".");
 			for(Enumeration r=rooms.elements();r.hasMoreElements();)
 			{
 				Room R=CMLib.map().getRoom((Room)r.nextElement());
@@ -629,6 +671,11 @@ public class Reset extends StdCommand
 		    	{
 		    		R=CMLib.map().getRoom(R);
 		    		if(R==null) continue;
+					if((recordedChanges!=null)&&(recordedChanges.length()>0))
+					{
+						mob.session().rawOut(recordedChanges.toString());
+						recordedChanges.setLength(0);
+					}
 					R.getArea().setAreaState(Area.STATE_FROZEN);
 					CMLib.map().resetRoom(R, true);
 					boolean somethingDone=false;
@@ -638,7 +685,7 @@ public class Reset extends StdCommand
 						if((M.savable())
 						&&(!CMLib.flags().isCataloged(M))
 						&&(M.getStartRoom()==R))
-							somethingDone=fixMob(M) || somethingDone;
+							somethingDone=fixMob(M,recordedChanges) || somethingDone;
 					}
 					if(somethingDone)
 					{
@@ -648,8 +695,12 @@ public class Reset extends StdCommand
                     if(R.getArea().getAreaState()>Area.STATE_ACTIVE)
     					R.getArea().setAreaState(Area.STATE_ACTIVE);
 		    	}
+				if(recordedChanges==null)
+					mob.session().print(".");
 			}
-
+			if((recordedChanges!=null)&&(recordedChanges.length()>0))
+				mob.session().rawOut(recordedChanges.toString());
+			mob.session().println("done!");
 		}
 		else
 		if(s.equalsIgnoreCase("groundlydoors"))
@@ -897,103 +948,153 @@ public class Reset extends StdCommand
 			mob.session().println("done!");
 		}
 		else
-		if(s.equalsIgnoreCase("worlditemfixer"))
+		if(s.equalsIgnoreCase("itemstats"))
 		{
+			s="room";
+			if(commands.size()>1) s=(String)commands.elementAt(1);
+			
 			if(mob.session()==null) return false;
 			mob.session().print("working...");
 			StringBuffer recordedChanges=null;
-			boolean nosave=false;
 			for(int i=1;i<commands.size();i++)
 				if(((String)commands.elementAt(i)).equalsIgnoreCase("NOSAVE"))
 				{
-					nosave=true;
 					recordedChanges=new StringBuffer("");
+					break;
 				}
 			
-			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+			Vector rooms=new Vector();
+			if(s.toUpperCase().startsWith("ROOM"))
+				rooms.addElement(mob.location());
+			else
+			if(s.toUpperCase().startsWith("AREA"))
 			{
+			    try
+			    {
+					for(Enumeration e=mob.location().getArea().getCompleteMap();e.hasMoreElements();)
+						rooms.addElement(e.nextElement());
+			    }catch(NoSuchElementException nse){}
+			}
+			else
+			if(s.toUpperCase().startsWith("CATALOG"))
+			{
+			    try
+			    {
+			    	Item[] items=CMLib.catalog().getCatalogItems();
+			    	for(int i=0;i<items.length;i++)
+			    	{
+			    		Item I=items[i];
+			    		if(CMLib.itemBuilder().itemFix(I,-1,recordedChanges))
+			    		{
+							mob.tell("Catalog item "+I.Name()+" done.");
+			    			CMLib.catalog().updateCatalog(I);
+			    		}
+			    	}
+			    }catch(NoSuchElementException nse){}
+			}
+			else
+			if(s.toUpperCase().startsWith("WORLD"))
+			{
+			    try
+			    {
+			    	for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+			    	{
+			    		Area A=(Area)e.nextElement();
+						boolean skip=false;
+						for(int i=1;i<commands.size();i++)
+							if(((String)commands.elementAt(i)).equalsIgnoreCase(A.Name())||rest.equalsIgnoreCase(A.Name()))
+							{
+								skip=true;
+								commands.removeElementAt(i);
+								break;
+							}
+						if(skip) continue;
+			    		for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+							rooms.addElement(r.nextElement());
+			    	}
+			    }catch(NoSuchElementException nse){}
+			}
+			else
+			{
+				mob.tell("Try ROOM, AREA, CATALOG, or WORLD.");
+				return false;
+			}
+			if(recordedChanges!=null)
+				mob.session().println(".");
+			for(Enumeration r=rooms.elements();r.hasMoreElements();)
+			{
+				Room R=CMLib.map().getRoom((Room)r.nextElement());
+				if((R==null)||(R.getArea()==null)||(R.roomID().length()==0)) continue;
+				Area A=R.getArea();
+				A.setAreaState(Area.STATE_FROZEN);
 				if((recordedChanges!=null)&&(recordedChanges.length()>0))
 				{
 					mob.session().rawOut(recordedChanges.toString());
-					recordedChanges=new StringBuffer("");
+					recordedChanges.setLength(0);
 				}
-				Area A=(Area)a.nextElement();
-				boolean skip=false;
-				for(int i=1;i<commands.size();i++)
-					if(((String)commands.elementAt(i)).equalsIgnoreCase(A.Name())||rest.equalsIgnoreCase(A.Name()))
-						skip=true;
-				if(skip) continue;
-				A.setAreaState(Area.STATE_FROZEN);
-				for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
-				{
-					Room R=(Room)r.nextElement();
-					if(R.roomID().length()>0)
+		    	synchronized(("SYNC"+R.roomID()).intern())
+		    	{
+		    		
+		    		R=CMLib.map().getRoom(R);
+					CMLib.map().resetRoom(R, true);
+					boolean changedMOBS=false;
+					boolean changedItems=false;
+					for(int i=0;i<R.numItems();i++)
 					{
-						for(int i=1;i<commands.size();i++)
-							if(((String)commands.elementAt(i)).equalsIgnoreCase(R.roomID())||rest.equalsIgnoreCase(R.roomID()))
-								skip=true;
-						if(skip) continue;
-				    	synchronized(("SYNC"+R.roomID()).intern())
-				    	{
-				    		R=CMLib.map().getRoom(R);
-							CMLib.map().resetRoom(R, true);
-							boolean changedMOBS=false;
-							boolean changedItems=false;
-							for(int i=0;i<R.numItems();i++)
+						Item I=R.fetchItem(i);
+						if(CMLib.itemBuilder().itemFix(I,-1,recordedChanges))
+							changedItems=true;
+					}
+					for(int m=0;m<R.numInhabitants();m++)
+					{
+						MOB M=R.fetchInhabitant(m);
+						if((M==mob)||(!M.isMonster())) continue;
+						if(!M.savable()) continue;
+						for(int i=0;i<M.inventorySize();i++)
+						{
+							Item I=M.fetchInventory(i);
+							int lvl=-1;
+							if((I.baseEnvStats().level()>M.baseEnvStats().level())
+							||((I.baseEnvStats().level()>91)&&((I.baseEnvStats().level() + (I.baseEnvStats().level()/10))<M.baseEnvStats().level())))
+								lvl=M.baseEnvStats().level();
+							if(CMLib.itemBuilder().itemFix(I,lvl,recordedChanges))
+								changedMOBS=true;
+						}
+						ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
+						if(SK!=null)
+						{
+							Vector V=SK.getShop().getStoreInventory();
+							for(int i=V.size()-1;i>=0;i--)
 							{
-								Item I=R.fetchItem(i);
-								if(CMLib.itemBuilder().itemFix(I,-1,recordedChanges))
-									changedItems=true;
-							}
-							for(int m=0;m<R.numInhabitants();m++)
-							{
-								MOB M=R.fetchInhabitant(m);
-								if((M==mob)||(!M.isMonster())) continue;
-								if(!M.savable()) continue;
-								for(int i=0;i<M.inventorySize();i++)
+								Environmental E=(Environmental)V.elementAt(i);
+								if(E instanceof Item)
 								{
-									Item I=M.fetchInventory(i);
-									int lvl=-1;
-									if((I.baseEnvStats().level()>M.baseEnvStats().level())
-									||((I.baseEnvStats().level()>91)&&((I.baseEnvStats().level() + (I.baseEnvStats().level()/10))<M.baseEnvStats().level())))
-										lvl=M.baseEnvStats().level();
-									if(CMLib.itemBuilder().itemFix(I,lvl,recordedChanges))
-										changedMOBS=true;
-								}
-								ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
-								if(SK!=null)
-								{
-									Vector V=SK.getShop().getStoreInventory();
-									for(int i=V.size()-1;i>=0;i--)
+									Item I=(Item)E;
+									boolean didSomething=false;
+									didSomething=CMLib.itemBuilder().itemFix(I,-1,recordedChanges);
+									changedMOBS=changedMOBS||didSomething;
+									if(didSomething)
 									{
-										Environmental E=(Environmental)V.elementAt(i);
-										if(E instanceof Item)
-										{
-											Item I=(Item)E;
-											boolean didSomething=false;
-											didSomething=CMLib.itemBuilder().itemFix(I,-1,recordedChanges);
-											changedMOBS=changedMOBS||didSomething;
-											if(didSomething)
-											{
-												int numInStock=SK.getShop().numberInStock(I);
-												int stockPrice=SK.getShop().stockPrice(I);
-												SK.getShop().delAllStoreInventory(I);
-												SK.getShop().addStoreInventory(I,numInStock,stockPrice);
-											}
-										}
+										int numInStock=SK.getShop().numberInStock(I);
+										int stockPrice=SK.getShop().stockPrice(I);
+										SK.getShop().delAllStoreInventory(I);
+										SK.getShop().addStoreInventory(I,numInStock,stockPrice);
 									}
 								}
 							}
-							if((changedItems)&&(!nosave))
-								CMLib.database().DBUpdateItems(R);
-							if((changedMOBS)&&(!nosave))
-								CMLib.database().DBUpdateMOBs(R);
-							mob.session().print(".");
-				    	}
+						}
 					}
-				}
+					if((changedItems)&&(recordedChanges==null))
+						CMLib.database().DBUpdateItems(R);
+					if((changedMOBS)&&(recordedChanges==null))
+						CMLib.database().DBUpdateMOBs(R);
+					if(recordedChanges==null)
+						mob.session().print(".");
+		    	}
 				if(A.getAreaState()>Area.STATE_ACTIVE) A.setAreaState(Area.STATE_ACTIVE);
 			}
+			if((recordedChanges!=null)&&(recordedChanges.length()>0))
+				mob.session().rawOut(recordedChanges.toString());
 			mob.session().println("done!");
 		}
         else
@@ -1184,7 +1285,7 @@ public class Reset extends StdCommand
 			mob.tell("Done.");
 		}
 		else
-			mob.tell("'"+s+"' is an unknown reset.  Try ROOM, AREA, MOBSTATS ROOM, MOBSTATS AREA *, MOBSTATS WORLD *, AREARACEMAT *, AREAROOMIDS *, AREAINSTALL.\n\r * = Reset functions which may take a long time to complete.");
+			mob.tell("'"+s+"' is an unknown reset.  Try ROOM, AREA, MOBSTATS ROOM, MOBSTATS AREA *, MOBSTATS WORLD *, MOBSTATS CATALOG *, ITEMSTATS ROOM, ITEMSTATS AREA *, ITEMSTATS WORLD *, ITEMSTATS CATALOG *, AREARACEMAT *, AREAROOMIDS *, AREAINSTALL.\n\r * = Reset functions which may take a long time to complete.");
 		return false;
 	}
 
