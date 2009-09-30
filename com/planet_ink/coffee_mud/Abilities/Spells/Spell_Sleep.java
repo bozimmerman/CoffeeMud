@@ -111,7 +111,7 @@ public class Spell_Sleep extends Spell
 		if(levelDiff<0) levelDiff=0;
 		if(levelDiff>2) levelDiff=2;
 
-		if(target.isInCombat())
+		if((!auto)&&target.isInCombat())
 		{
 			mob.tell(target.name()+" is in combat, and would not be affected.");
 			return false;
