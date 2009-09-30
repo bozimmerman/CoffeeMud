@@ -81,6 +81,18 @@ public class Put extends StdCommand
 			if(C!=null) C.execute(mob,commands,metaFlags);
 			return false;
 		}
+		
+		if(commands.size()>=4)
+		{
+			String s=CMParms.combine(commands, 0).toLowerCase();
+			for(int i=1;i<Item.WORN_DESCS.length;i++)
+				if(s.endsWith(" on "+Item.WORN_DESCS[i].toLowerCase())||s.endsWith(" on my "+Item.WORN_DESCS[i].toLowerCase()))
+				{
+					Command C=CMClass.getCommand("Wear");
+					if(C!=null) C.execute(mob,commands,metaFlags);
+					return false;
+				}
+		}
 
 		if(((String)commands.elementAt(1)).equalsIgnoreCase("on"))
 		{

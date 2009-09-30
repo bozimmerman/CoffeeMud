@@ -105,9 +105,11 @@ public class Wear extends StdCommand
 
 		// discover if a wear location was specified
 		int wearLocationIndex=0;
-		for(int i=commands.size()-2;i>=1;i--)
+		for(int i=commands.size()-2;i>0;i--)
 			if(((String)commands.elementAt(i)).equalsIgnoreCase("on"))
 			{
+				if((i<commands.size()-2)&&((String)commands.elementAt(i+1)).equalsIgnoreCase("my"))
+					commands.removeElementAt(i+1);
 				String possibleWearLocation = CMParms.combine(commands, i+1).toLowerCase().trim();
 				int possIndex = CMParms.indexOfIgnoreCase(Item.WORN_DESCS, possibleWearLocation);
 				if(possIndex<0)
@@ -124,6 +126,12 @@ public class Wear extends StdCommand
 						commands.removeElementAt(commands.size()-1);
 					break;
 				}
+				else
+				{
+					mob.tell("You can't wear anything on your '"+possibleWearLocation+"'");
+					return false;
+				}
+				// will always break out here, one way or the other.
 			}
 		Vector items=CMLib.english().fetchItemList(mob,mob,null,commands,Item.WORNREQ_UNWORNONLY,true);
 		if(items.size()==0)
