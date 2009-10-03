@@ -160,35 +160,42 @@ public class Spell_TimeStop extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Room room=mob.location();
-				fixed=new Vector();
-				HashSet grpMembers = mob.getGroupMembers(new HashSet());
-				for(int m=0;m<room.numInhabitants();m++)
+				if(msg.value()<=0)
 				{
-					MOB mob2=room.fetchInhabitant(m);
-					if((mob2!=mob)&&(mob.mayIFight(mob2)))
+					Room room=mob.location();
+					fixed=new Vector();
+					HashSet grpMembers = mob.getGroupMembers(new HashSet());
+					for(int m=0;m<room.numInhabitants();m++)
 					{
-						msg=CMClass.getMsg(mob,mob2,this,CMMsg.MASK_MALICIOUS|CMMsg.TYP_MIND,null);
-						if(!grpMembers.contains(mob2))
+						MOB mob2=room.fetchInhabitant(m);
+						if((mob2!=mob)&&(mob.mayIFight(mob2)))
 						{
-							if(room.okMessage(mob, msg))
-								room.send(mob, msg);
-							else
-								return beneficialWordsFizzle(mob,null,"<S-NAME> incant(s) for awhile, but the spell fizzles.");
+							msg=CMClass.getMsg(mob,mob2,this,CMMsg.MASK_MALICIOUS|CMMsg.TYP_MIND,null);
+							if(!grpMembers.contains(mob2))
+							{
+								if(room.okMessage(mob, msg))
+								{
+									room.send(mob, msg);
+									if(msg.value()>0)
+										return false;
+								}
+								else
+									return beneficialWordsFizzle(mob,null,"<S-NAME> incant(s) for awhile, but the spell fizzles.");
+							}
 						}
 					}
-				}
-				CMLib.threads().suspendTicking(room,-1);
-				for(int m=0;m<room.numInhabitants();m++)
-				{
-					MOB mob2=room.fetchInhabitant(m);
-					if(mob2!=mob)
+					CMLib.threads().suspendTicking(room,-1);
+					for(int m=0;m<room.numInhabitants();m++)
 					{
-						fixed.addElement(mob2);
-						CMLib.threads().suspendTicking(mob2,-1);
+						MOB mob2=room.fetchInhabitant(m);
+						if(mob2!=mob)
+						{
+							fixed.addElement(mob2);
+							CMLib.threads().suspendTicking(mob2,-1);
+						}
 					}
+					beneficialAffect(mob,room,asLevel,2);
 				}
-				beneficialAffect(mob,room,asLevel,2);
 			}
 		}
 		else
