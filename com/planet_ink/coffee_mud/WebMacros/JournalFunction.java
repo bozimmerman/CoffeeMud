@@ -182,7 +182,8 @@ public class JournalFunction extends StdWebMacro
 		                    {
 		                    	JournalsLibrary.CommandJournal CMJ=e.nextElement();
 		                        if(journal.equalsIgnoreCase(CMJ.NAME())
-		                        ||journal.equalsIgnoreCase(CMJ.NAME()+"s"))
+		                        ||journal.equalsIgnoreCase(CMJ.NAME()+"s")
+		                        ||journal.equalsIgnoreCase(CMJ.JOURNAL_NAME()))
 		                        {
 		                            realName=CMJ.JOURNAL_NAME();
 		                            break;
@@ -194,21 +195,24 @@ public class JournalFunction extends StdWebMacro
 	                        realName=CMLib.database().DBGetRealJournalName(journal.toUpperCase());
 	                    if(realName==null)
 	    					messages.append("The journal '"+journal+"' does not presently exist.  Aborted.<BR>");
-	                    Vector journal2=CMLib.database().DBReadJournalMsgs(last);
-	                    JournalsLibrary.JournalEntry entry2=(JournalsLibrary.JournalEntry)journal2.elementAt(num);
-	                    String from2=(String)entry2.from;
-	                    String to2=(String)entry2.to;
-	                    String subject=(String)entry2.subj;
-	                    String message=(String)entry2.msg;
-	                    CMLib.database().DBDeleteJournal(last,num);
-	                    CMLib.database().DBWriteJournal(realName,
-	                                                      from2,
-	                                                      to2,
-	                                                      subject,
-	                                                      message,-1);
-	                    httpReq.addRequestParameters("JOURNALMESSAGE","");
-	                    httpReq.getRequestObjects().remove("JOURNAL: "+last);
-						messages.append("Message #"+num+" transferred<BR>");
+	                    else
+	                    {
+		                    Vector journal2=CMLib.database().DBReadJournalMsgs(last);
+		                    JournalsLibrary.JournalEntry entry2=(JournalsLibrary.JournalEntry)journal2.elementAt(num);
+		                    String from2=(String)entry2.from;
+		                    String to2=(String)entry2.to;
+		                    String subject=(String)entry2.subj;
+		                    String message=(String)entry2.msg;
+		                    CMLib.database().DBDeleteJournal(last,num);
+		                    CMLib.database().DBWriteJournal(realName,
+		                                                      from2,
+		                                                      to2,
+		                                                      subject,
+		                                                      message,-1);
+		                    httpReq.addRequestParameters("JOURNALMESSAGE","");
+		                    httpReq.getRequestObjects().remove("JOURNAL: "+last);
+							messages.append("Message #"+num+" transferred<BR>");
+	                    }
 	                }
 	            }
 	            else
