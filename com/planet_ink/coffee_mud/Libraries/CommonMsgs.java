@@ -1398,7 +1398,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         MOB mob=msg.source();
         if(item.canWear(mob,wearLocation))
         {
-            item.wearIfPossible(mob,wearLocation);
+        	if(wearLocation<=0)
+        		item.wearIfPossible(mob);
+        	else
+	        	item.wearIfPossible(mob,wearLocation);
             mob.recoverCharStats();
             mob.recoverEnvStats();
             mob.recoverMaxState();

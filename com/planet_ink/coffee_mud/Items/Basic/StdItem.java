@@ -262,6 +262,9 @@ public class StdItem implements Item
     }
 	public boolean wearIfPossible(MOB mob, long wearCode)
 	{
+		if(wearCode<=0)
+			return false;
+		
 		if((fitsOn(wearCode))
 		&&(canWear(mob,wearCode)))
 		{
@@ -273,7 +276,7 @@ public class StdItem implements Item
 	public boolean wearIfPossible(MOB mob)
 	{
 		for(int i=0;i<WORN_ORDER.length;i++)
-			if(wearIfPossible(mob,WORN_ORDER[i]))
+			if((WORN_ORDER[i]>0) && wearIfPossible(mob,WORN_ORDER[i]))
 				return true;
 		return false;
 	}
