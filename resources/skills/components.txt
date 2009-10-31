@@ -23,4 +23,4 @@
 
 
 Thief_Autocaltrops=(inventory:consumed:10:metal:)
-Bandaging=(inventory:consumed:1:cloth:)
+Bandaging=(inventory:consumed:1:CLOTH:)||(held:consumed:5:DUST:-race +elf)
