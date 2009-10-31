@@ -976,7 +976,7 @@ public class StdAbility implements Ability
         &&(mob.soulMate()==null)
         &&(!CMSecurity.isAllowed(mob,mob.location(),"COMPONENTS")))
         {
-            DVector componentsRequirements=(DVector)CMLib.ableMapper().getAbilityComponentMap().get(ID().toUpperCase());
+        	Vector<AbilityComponent> componentsRequirements=(Vector<AbilityComponent>)CMLib.ableMapper().getAbilityComponentMap().get(ID().toUpperCase());
             if(componentsRequirements!=null)
             {
                 Vector components=CMLib.ableMapper().componentCheck(mob,componentsRequirements);

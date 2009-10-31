@@ -127,17 +127,17 @@ public interface AbilityMapper extends CMLibrary
     public int getMaxProficiency(String ID, boolean checkAll, String ability);
 	public int getMaxProficiency(String abilityID);
 	public int getMaxProficiency(MOB mob, boolean checkAll, String ability);
-	public Vector componentCheck(MOB mob, DVector req);
+	public Vector componentCheck(MOB mob, Vector<AbilityComponent> req);
 	public String getAbilityComponentDesc(MOB mob, String AID);
-	public Hashtable getAbilityComponentMap();
-	public String addAbilityComponent(String s, Hashtable to);
+	public Hashtable<String, Vector<AbilityComponent>> getAbilityComponentMap();
+	public String addAbilityComponent(String s, Hashtable<String, Vector<AbilityComponent>> H);
     public String getAbilityComponentCodedString(String AID);
-    public DVector getAbilityComponentDVector(String AID);
-    public String getAbilityComponentDesc(MOB mob, DVector req, int r);
-    public Vector getAbilityComponentDecodedDVectors(DVector req);
+    public Vector<AbilityComponent> getAbilityComponentDVector(String AID);
+    public String getAbilityComponentDesc(MOB mob, Vector<AbilityComponent> req, int r);
+    public Vector getAbilityComponentDecodedDVectors(Vector<AbilityComponent> req);
     public Vector getAbilityComponentDecodedDVectors(String AID);
-    public void setAbilityComponentCodedFromDecodedDVector(DVector decodedDV, DVector codedDV, int row);
-    public DVector getAbilityComponentDecodedDVector(DVector codedDV, int r);
-    public void addBlankAbilityComponent(DVector codedDV);
+    public void setAbilityComponentCodedFromDecodedDVector(DVector decodedDV, Vector<AbilityComponent> codedDV, int row);
+    public DVector getAbilityComponentDecodedDVector(Vector<AbilityComponent> codedDV, int r);
+    public void addBlankAbilityComponent(Vector<AbilityComponent> codedDV);
     public boolean isDomainIncludedInAnyAbility(int domain, int acode);
 }

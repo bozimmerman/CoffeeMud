@@ -482,13 +482,14 @@ public class DVector implements Cloneable, java.io.Serializable
             public Iterator setV(Vector V) {
                 if(V==null) return new Vector().iterator();
                 this.V=V;
-                more=true;
+                more=false;
                 try {
-                    O=V.firstElement();
-                    more=true;
-                } catch(Exception e) {
-                    more=false;
-                }
+                	if(V.size()>0)
+                	{
+	                    O=V.firstElement();
+	                    more=true;
+                	}
+                } catch(Throwable t) {}
                 return this;
             }
             

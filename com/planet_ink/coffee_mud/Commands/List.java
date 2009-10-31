@@ -1303,7 +1303,7 @@ public class List extends StdCommand
         for(Enumeration e=CMLib.ableMapper().getAbilityComponentMap().keys();e.hasMoreElements();)
         {
             String ID=(String)e.nextElement();
-            DVector DV=(DVector)CMLib.ableMapper().getAbilityComponentMap().get(ID);
+            Vector<AbilityComponent> DV=(Vector<AbilityComponent>)CMLib.ableMapper().getAbilityComponentMap().get(ID);
             if(DV!=null)
                 buf.append(CMStrings.padRight(ID,20)+": "+CMLib.ableMapper().getAbilityComponentDesc(null,ID)+"\n\r");
         }

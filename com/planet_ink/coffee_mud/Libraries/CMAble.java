@@ -1292,56 +1292,54 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	}
 
 	// returns Vector of components found if all good, returns Integer of bad row if not.
-	public Vector componentCheck(MOB mob, DVector req)
+	public Vector componentCheck(MOB mob, Vector<AbilityComponent> req)
 	{
 		if((mob==null)||(req==null)||(req.size()==0))
 			return new Vector();
 		boolean currentAND=false;
 		boolean previousValue=true;
 		int amt=0;
-		Object O=null;
-		Integer disp=null;
 		Vector passes=new Vector();
 		Item I=null;
 		Item container=null;
 		Vector thisSet=new Vector();
+		AbilityComponent comp = null;
 		for(int i=0;i<req.size();i++)
 		{
-			currentAND=((Boolean)req.elementAt(i,1)).booleanValue();
+			comp=req.elementAt(i);
+			currentAND=comp.getConnector()==AbilityComponent.CompConnector.AND;
 			if(previousValue&&(!currentAND)) return passes;
 
 			// if they fail the zappermask, its like the req is NOT even there...
-			if((((String)req.elementAt(i,6)).length()>0)
-			&&(!CMLib.masking().maskCheck((String)req.elementAt(i,6),mob,true)))
+			if((comp.getCompiledMask()!=null)
+			&&(!CMLib.masking().maskCheck(comp.getCompiledMask(),mob,true)))
 				continue;
-			amt=((Integer)req.elementAt(i,4)).intValue();
-			O=req.elementAt(i,5);
-			disp=(Integer)req.elementAt(i,2);
+			amt=comp.getAmount();
 			thisSet.clear();
 			for(int ii=0;ii<mob.inventorySize();ii++)
 			{
 				I=mob.fetchInventory(ii);
 				if(I==null) continue;
-				if((O instanceof String)&&(!CMLib.english().containsString(I.name(),(String)O)))
+				if((comp.getType()==AbilityComponent.CompType.STRING)&&(!CMLib.english().containsString(I.name(),comp.getStringType())))
 					continue;
 				else
-				if((O instanceof Integer)&&((!(I instanceof RawMaterial))||(I.material()!=((Integer)O).intValue())))
+				if((comp.getType()==AbilityComponent.CompType.RESOURCE)&&((!(I instanceof RawMaterial))||(I.material()!=comp.getLongType())))
 					continue;
 				else
-				if((O instanceof Long)&&((!(I instanceof RawMaterial))||((I.material()&RawMaterial.MATERIAL_MASK)!=((Long)O).intValue())))
+				if((comp.getType()==AbilityComponent.CompType.MATERIAL)&&((!(I instanceof RawMaterial))||((I.material()&RawMaterial.MATERIAL_MASK)!=comp.getLongType())))
 					continue;
 				container=I.ultimateContainer();
 				if(container==null) container=I;
-				switch(disp.intValue())
-				{
-				case 0: if(!container.amWearingAt(Item.IN_INVENTORY))continue; break;
-				case 1: if(!container.amWearingAt(Item.WORN_HELD))continue; break;
-				case 2: if(container.amWearingAt(Item.IN_INVENTORY))continue; break;
-				}
-                if((!(O instanceof String))
+				if((comp.getLocation()==AbilityComponent.CompLocation.INVENTORY)&&(!container.amWearingAt(Item.IN_INVENTORY)))
+					continue;
+				if((comp.getLocation()==AbilityComponent.CompLocation.HELD)&&(!container.amWearingAt(Item.WORN_HELD)))
+					continue;
+				if((comp.getLocation()==AbilityComponent.CompLocation.WORN)&&(container.amWearingAt(Item.IN_INVENTORY)))
+					continue;
+                if((comp.getType()!=AbilityComponent.CompType.STRING)
                 &&(CMLib.flags().isOnFire(I)||CMLib.flags().enchanted(I)))
                     continue;
-				if(O instanceof String)
+				if(comp.getType()==AbilityComponent.CompType.STRING)
                 {
                     if(I instanceof PackagedItems)
                         I=(Item)CMLib.materials().unbundle(I,amt);
@@ -1361,7 +1359,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 				if(amt<=0)
 				{
 					if(thisSet.size()>0)
-                        thisSet.addElement((Item)req.elementAt(i,3));
+                        thisSet.addElement(Boolean.valueOf(comp.isConsumed()));
 					break;
 				}
 			}
@@ -1373,77 +1371,76 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return passes;
 	}
 
-    public DVector getAbilityComponentDVector(String AID){ return (DVector)getAbilityComponentMap().get(AID.toUpperCase().trim());}
+    public Vector<AbilityComponent> getAbilityComponentDVector(String AID){ return (Vector<AbilityComponent>)getAbilityComponentMap().get(AID.toUpperCase().trim());}
     public Vector getAbilityComponentDecodedDVectors(String AID){ return getAbilityComponentDecodedDVectors(getAbilityComponentDVector(AID));}
-    public DVector getAbilityComponentDecodedDVector(DVector codedDV, int r)
+    public DVector getAbilityComponentDecodedDVector(Vector<AbilityComponent> codedDV, int r)
     {
         DVector curr=new DVector(2);
-        Object O=null;
-        Integer disp=null;
         String itemDesc=null;
-        curr.addElement("ANDOR",(((Boolean)codedDV.elementAt(r,1)).booleanValue()?"&&":"||"));
-        disp=(Integer)codedDV.elementAt(r,2);
-        switch(disp.intValue())
-        {
-        case 1: curr.addElement("DISPOSITION","held"); break;
-        case 2: curr.addElement("DISPOSITION","worn"); break;
-        default: curr.addElement("DISPOSITION","inventory"); break;
-        }
-        if(((Boolean)codedDV.elementAt(r,3)).booleanValue())
+        AbilityComponent comp = codedDV.elementAt(r);
+        curr.addElement("ANDOR",comp.getConnector()==AbilityComponent.CompConnector.AND?"&&":"||");
+        if(comp.getLocation()==AbilityComponent.CompLocation.HELD)
+        	curr.addElement("DISPOSITION","held");
+        else
+        if(comp.getLocation()==AbilityComponent.CompLocation.WORN)
+        	curr.addElement("DISPOSITION","worn");
+        else
+        	curr.addElement("DISPOSITION","inventory");
+        if(comp.isConsumed())
             curr.addElement("FATE","consumed");
         else
             curr.addElement("FATE","kept");
-        curr.addElement("AMOUNT",""+((Integer)codedDV.elementAt(r,4)).toString());
-        O=codedDV.elementAt(r,5);
-        if(O instanceof String)
-            itemDesc=(String)O;
+        curr.addElement("AMOUNT",""+comp.getAmount());
+        if(comp.getType()==AbilityComponent.CompType.STRING)
+            itemDesc=comp.getStringType();
         else
-        if(O instanceof Long)
-            itemDesc=RawMaterial.MATERIAL_DESCS[((Long)O).intValue()>>8].toUpperCase();
+        if(comp.getType()==AbilityComponent.CompType.MATERIAL)
+            itemDesc=RawMaterial.MATERIAL_DESCS[(int)comp.getLongType()>>8].toUpperCase();
         else
-        if(O instanceof Integer)
-            itemDesc=RawMaterial.RESOURCE_DESCS[((Integer)O).intValue()&RawMaterial.RESOURCE_MASK].toUpperCase();
+        if(comp.getType()==AbilityComponent.CompType.RESOURCE)
+            itemDesc=RawMaterial.RESOURCE_DESCS[(int)comp.getLongType()&RawMaterial.RESOURCE_MASK].toUpperCase();
         curr.addElement("COMPONENTID",itemDesc);
-        curr.addElement("MASK",(String)codedDV.elementAt(r,6));
+        curr.addElement("MASK",comp.getMaskStr());
         return curr;
     }
 
-    public void setAbilityComponentCodedFromDecodedDVector(DVector decodedDV, DVector codedDV, int row)
+    public void setAbilityComponentCodedFromDecodedDVector(DVector decodedDV, Vector<AbilityComponent> codedDV, int row)
     {
         String[] s=new String[6];
         for(int i=0;i<6;i++)
             s[i]=(String)decodedDV.elementAt(i,2);
+        AbilityComponent comp = codedDV.elementAt(row);
         if(s[0].equalsIgnoreCase("||"))
-            codedDV.setElementAt(row,1,Boolean.FALSE);
+            comp.setConnector(AbilityComponent.CompConnector.OR);
         else
-            codedDV.setElementAt(row,1,Boolean.TRUE);
+            comp.setConnector(AbilityComponent.CompConnector.AND);
         if(s[1].equalsIgnoreCase("held"))
-            codedDV.setElementAt(row,2,new Integer(1));
+            comp.setLocation(AbilityComponent.CompLocation.HELD);
         else
         if(s[1].equalsIgnoreCase("worn"))
-            codedDV.setElementAt(row,2,new Integer(2));
+            comp.setLocation(AbilityComponent.CompLocation.WORN);
         else
-            codedDV.setElementAt(row,2,new Integer(0));
+            comp.setLocation(AbilityComponent.CompLocation.INVENTORY);
         if(s[2].equalsIgnoreCase("consumed"))
-            codedDV.setElementAt(row,3,Boolean.TRUE);
+            comp.setConsumed(true);
         else
-            codedDV.setElementAt(row,3,Boolean.FALSE);
-        codedDV.setElementAt(row,4,new Integer(CMath.s_int(s[3])));
+            comp.setConsumed(false);
+        comp.setAmount(CMath.s_int(s[3]));
         int depth=CMLib.materials().getResourceCode(s[4],false);
         if(depth>=0)
-            codedDV.setElementAt(row,5,new Integer(depth));
+        	comp.setType(AbilityComponent.CompType.RESOURCE, depth);
         else
         {
             depth=CMLib.materials().getMaterialCode(s[4],false);
             if(depth>=0)
-                codedDV.setElementAt(row,5,new Long(depth));
+            	comp.setType(AbilityComponent.CompType.MATERIAL, depth);
             else
-                codedDV.setElementAt(row,5,s[4].toUpperCase().trim());
+            	comp.setType(AbilityComponent.CompType.STRING, s[4].toUpperCase().trim());
         }
-        codedDV.setElementAt(row,6,s[5]);
+        comp.setMask(s[5]);
     }
 
-    public Vector getAbilityComponentDecodedDVectors(DVector req)
+    public Vector getAbilityComponentDecodedDVectors(Vector<AbilityComponent> req)
     {
         if(req==null) return null;
         Vector V=new Vector();
@@ -1455,9 +1452,16 @@ public class CMAble extends StdLibrary implements AbilityMapper
         return V;
     }
 
-    public void addBlankAbilityComponent(DVector codedDV)
+    public void addBlankAbilityComponent(Vector<AbilityComponent> codedDV)
     {
-        codedDV.addElement(Boolean.TRUE,new Integer(0),Boolean.FALSE,new Integer(1),"resource-material-item name","");
+    	AbilityComponent comp = (AbilityComponent)CMClass.getCommon("DefaultAbilityComponent");
+    	comp.setConnector(AbilityComponent.CompConnector.AND);
+    	comp.setLocation(AbilityComponent.CompLocation.INVENTORY);
+    	comp.setConsumed(false);
+    	comp.setAmount(1);
+    	comp.setType(AbilityComponent.CompType.STRING, "resource-material-item name");
+    	comp.setMask("");
+        codedDV.addElement(comp);
     }
 
     public String getAbilityComponentCodedString(String AID)
@@ -1484,53 +1488,52 @@ public class CMAble extends StdLibrary implements AbilityMapper
         return AID+"="+buf.toString();
     }
 
-    public String getAbilityComponentDesc(MOB mob, DVector req, int r)
+    public String getAbilityComponentDesc(MOB mob, Vector<AbilityComponent> req, int r)
     {
         int amt=0;
-        Object O=null;
-        Integer disp=null;
         String itemDesc=null;
         StringBuffer buf=new StringBuffer("");
-        if(r>0) buf.append((((Boolean)req.elementAt(r,1)).booleanValue()?", and ":", or "));
+        AbilityComponent comp = req.elementAt(r);
+        if(r>0) buf.append(comp.getConnector()==AbilityComponent.CompConnector.AND?", and ":", or ");
         if((mob!=null)
-        &&(((String)req.elementAt(r,6)).length()>0)
-        &&(!CMLib.masking().maskCheck((String)req.elementAt(r,6),mob,true)))
+        &&(comp.getCompiledMask()!=null)
+        &&(!CMLib.masking().maskCheck(comp.getCompiledMask(),mob,true)))
             return "";
         if(mob==null)
         {
-            if(((String)req.elementAt(r,6)).length()>0)
-                buf.append("MASK: "+(String)req.elementAt(r,6)+": ");
+            if(comp.getCompiledMask()!=null)
+                buf.append("MASK: "+comp.getMaskStr()+": ");
         }
-        amt=((Integer)req.elementAt(r,4)).intValue();
-        O=req.elementAt(r,5);
-        disp=(Integer)req.elementAt(r,2);
-        if(O instanceof String)
-            itemDesc=((amt>1)?(amt+" "+((String)O)+"s"):CMLib.english().startWithAorAn((String)O));
+        amt=comp.getAmount();
+        if(comp.getType()==AbilityComponent.CompType.STRING)
+            itemDesc=((amt>1)?(amt+" "+comp.getStringType()+"s"):CMLib.english().startWithAorAn(comp.getStringType()));
         else
-        if(O instanceof Long)
-            itemDesc=amt+((amt>1)?" pounds":" pound")+" of "+RawMaterial.MATERIAL_DESCS[((Long)O).intValue()>>8].toLowerCase();
+        if(comp.getType()==AbilityComponent.CompType.MATERIAL)
+            itemDesc=amt+((amt>1)?" pounds":" pound")+" of "+RawMaterial.MATERIAL_DESCS[(int)comp.getLongType()>>8].toLowerCase();
         else
-        if(O instanceof Integer)
-            itemDesc=amt+((amt>1)?" pounds":" pound")+" of "+RawMaterial.RESOURCE_DESCS[((Integer)O).intValue()&RawMaterial.RESOURCE_MASK].toLowerCase();
-        switch(disp.intValue())
-        {
-        case 0: buf.append(itemDesc); break;
-        case 1: buf.append(itemDesc+" held"); break;
-        case 2: buf.append(itemDesc+" worn or wielded"); break;
-        }
+        if(comp.getType()==AbilityComponent.CompType.RESOURCE)
+            itemDesc=amt+((amt>1)?" pounds":" pound")+" of "+RawMaterial.RESOURCE_DESCS[(int)comp.getLongType()&RawMaterial.RESOURCE_MASK].toLowerCase();
+        if(comp.getLocation()==AbilityComponent.CompLocation.INVENTORY)
+        	buf.append(itemDesc);
+        else
+        if(comp.getLocation()==AbilityComponent.CompLocation.HELD)
+        	buf.append(itemDesc+" held");
+        else
+        if(comp.getLocation()==AbilityComponent.CompLocation.WORN)
+        	buf.append(itemDesc+" worn or wielded");
         return buf.toString();
     }
 
 	public String getAbilityComponentDesc(MOB mob, String AID)
 	{
-		DVector req=getAbilityComponentDVector(AID);
+		Vector<AbilityComponent> req=getAbilityComponentDVector(AID);
 		if(req==null) return null;
 		StringBuffer buf=new StringBuffer("");
 		for(int r=0;r<req.size();r++){ buf.append(getAbilityComponentDesc(mob,req,r));}
 		return buf.toString();
 	}
 
-	public String addAbilityComponent(String s, Hashtable H)
+	public String addAbilityComponent(String s, Hashtable<String, Vector<AbilityComponent>> H)
 	{
 		int x=s.indexOf("=");
 		if(x<0) return "Malformed component line (code 0): "+s;
@@ -1539,17 +1542,20 @@ public class CMAble extends StdLibrary implements AbilityMapper
 
 		String parmS=null;
 		String rsc=null;
-		DVector parm=null;
-		Object[] build=null;
+		Vector<AbilityComponent> parm=null;
+		AbilityComponent build=null;
 		int depth=0;
-		parm=new DVector(6);
+		parm=new Vector<AbilityComponent>();
 		String error=null;
 		while(parms.length()>0)
 		{
-			build=new Object[6];
-			build[0]=Boolean.TRUE;
+			build=(AbilityComponent)CMClass.getCommon("DefaultAbilityComponent");
+			build.setConnector(AbilityComponent.CompConnector.AND);
 			if(parms.startsWith("||"))
-			{ build[0]=Boolean.FALSE; parms=parms.substring(2).trim();}
+			{ 
+				build.setConnector(AbilityComponent.CompConnector.OR); 
+				parms=parms.substring(2).trim();
+			}
 			else
 			if(parms.startsWith("&&"))
 			{ parms=parms.substring(2).trim();}
@@ -1572,54 +1578,71 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			parmS=parms.substring(1,x).trim();
 			parms=parms.substring(x+1).trim();
 
-			build[1]=new Integer(0);
+			build.setLocation(AbilityComponent.CompLocation.INVENTORY);
 			x=parmS.indexOf(":");
-			if(x<0){error="Malformed component line (code 0-1): "+parmS; continue;}
-			if(parmS.substring(0,x).equalsIgnoreCase("held")) build[1]=new Integer(1);
+			if(x<0)
+			{
+				error="Malformed component line (code 0-1): "+parmS; 
+				continue;
+			}
+			if(parmS.substring(0,x).equalsIgnoreCase("held")) 
+				build.setLocation(AbilityComponent.CompLocation.HELD);
 			else
-			if(parmS.substring(0,x).equalsIgnoreCase("worn")) build[1]=new Integer(2);
+			if(parmS.substring(0,x).equalsIgnoreCase("worn")) 
+				build.setLocation(AbilityComponent.CompLocation.WORN);
 			else
 			if((x>0)&&(!parmS.substring(0,x).equalsIgnoreCase("inventory")))
-			{error="Malformed component line (code 0-2): "+parmS; continue;}
+			{
+				error="Malformed component line (code 0-2): "+parmS; 
+				continue;
+			}
 			parmS=parmS.substring(x+1);
 
-			build[2]=Boolean.TRUE;
+			build.setConsumed(true);
 			x=parmS.indexOf(":");
 			if(x<0){error="Malformed component line (code 1-1): "+parmS; continue;}
-			if(parmS.substring(0,x).equalsIgnoreCase("kept")) build[2]=Boolean.FALSE;
+			if(parmS.substring(0,x).equalsIgnoreCase("kept")) 
+				build.setConsumed(false);
 			else
 			if((x>0)&&(!parmS.substring(0,x).equalsIgnoreCase("consumed")))
-			{error="Malformed component line (code 1-2): "+parmS; continue;}
+			{
+				error="Malformed component line (code 1-2): "+parmS; 
+				continue;
+			}
 			parmS=parmS.substring(x+1);
 
-			build[3]=new Integer(1);
+			build.setAmount(1);
 			x=parmS.indexOf(":");
 			if(x<0){error="Malformed component line (code 2-1): "+parmS; continue;}
 			if((x>0)&&(!CMath.isInteger(parmS.substring(0,x))))
-			{error="Malformed component line (code 2-2): "+parmS; continue;}
-			if(x>0) build[3]=new Integer(CMath.s_int(parmS.substring(0,x)));
+			{
+				error="Malformed component line (code 2-2): "+parmS; 
+				continue;
+			}
+			if(x>0) 
+				build.setAmount(CMath.s_int(parmS.substring(0,x)));
 			parmS=parmS.substring(x+1);
 
-			build[4]="";
+			build.setType(AbilityComponent.CompType.STRING, "");
 			x=parmS.indexOf(":");
 			if(x<=0){error="Malformed component line (code 3-1): "+parmS; continue;}
 			rsc=parmS.substring(0,x);
 			depth=CMLib.materials().getResourceCode(rsc,false);
 			if(depth>=0)
-				build[4]=new Integer(depth);
+				build.setType(AbilityComponent.CompType.RESOURCE, Long.valueOf(depth));
 			else
 			{
 				depth=CMLib.materials().getMaterialCode(rsc,false);
 				if(depth>=0)
-					build[4]=new Long(depth);
+					build.setType(AbilityComponent.CompType.MATERIAL, Long.valueOf(depth));
 				else
-					build[4]=rsc.toUpperCase().trim();
+					build.setType(AbilityComponent.CompType.STRING, rsc.toUpperCase().trim());
 			}
 			parmS=parmS.substring(x+1);
 
-			build[5]=parmS;
+			build.setMask(parmS);
 
-			parm.addElement(build[0],build[1],build[2],build[3],build[4],build[5]);
+			parm.addElement(build);
 		}
 		parm.trimToSize();
 		if(error!=null) return error;

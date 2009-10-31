@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /* 
@@ -450,7 +451,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					
 					if(!A.isAutoInvoked())
 					{
-						DVector components=(DVector)CMLib.ableMapper().getAbilityComponentMap().get(A.ID().toUpperCase());
+						Vector<AbilityComponent> components=(Vector<AbilityComponent>)CMLib.ableMapper().getAbilityComponentMap().get(A.ID().toUpperCase());
 						if(components!=null)
 						{
 							prepend.append("\n\rComponent: ");

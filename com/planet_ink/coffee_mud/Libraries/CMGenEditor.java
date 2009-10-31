@@ -5972,7 +5972,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         return true;
     }
 
-    protected boolean modifyComponent(MOB mob, DVector components, int componentIndex)
+    protected boolean modifyComponent(MOB mob, Vector<AbilityComponent> components, int componentIndex)
     throws IOException
     {
         DVector decoded=CMLib.ableMapper().getAbilityComponentDecodedDVector(components,componentIndex);
@@ -6014,7 +6014,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         int showFlag=-1;
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
-        DVector codedDV=CMLib.ableMapper().getAbilityComponentDVector(componentID);
+        Vector<AbilityComponent> codedDV=CMLib.ableMapper().getAbilityComponentDVector(componentID);
         if(codedDV!=null)
         while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
         {

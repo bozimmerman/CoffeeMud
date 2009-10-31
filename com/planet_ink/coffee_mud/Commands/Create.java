@@ -497,7 +497,7 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-        DVector DV=new DVector(6);
+		Vector<AbilityComponent> DV=new Vector<AbilityComponent>();
         CMLib.ableMapper().getAbilityComponentMap().put(skillID.toUpperCase().trim(),DV);
         CMLib.ableMapper().addBlankAbilityComponent(DV);
         CMLib.genEd().modifyComponents(mob,skillID);

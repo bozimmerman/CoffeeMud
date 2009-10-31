@@ -524,6 +524,7 @@ public class CMMap extends StdLibrary implements WorldMap
     {
     	Vector found=new Vector();
 		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
+		if(delay>1000) delay=1000;
 		boolean useTimer = delay>1;
 		long startTime=System.currentTimeMillis();
 		for(;rooms.hasMoreElements();)
@@ -552,6 +553,7 @@ public class CMMap extends StdLibrary implements WorldMap
     {
     	Vector found=new Vector();
 		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
+		if(delay>1000) delay=1000;
 		boolean useTimer = delay>1;
 		long startTime=System.currentTimeMillis();
 		MOB M=null;
@@ -604,6 +606,7 @@ public class CMMap extends StdLibrary implements WorldMap
     {
     	Vector found=new Vector();
 		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
+		if(delay>1000) delay=1000;
 		boolean useTimer = delay>1;
 		long startTime=System.currentTimeMillis();
 		MOB M=null;
@@ -749,6 +752,7 @@ public class CMMap extends StdLibrary implements WorldMap
     {
     	Vector found=new Vector();
 		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
+		if(delay>1000) delay=1000;
 		boolean useTimer = delay>1;
 		long startTime=System.currentTimeMillis();
 		for(;rooms.hasMoreElements();)
