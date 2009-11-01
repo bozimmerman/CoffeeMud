@@ -1053,6 +1053,8 @@ public class Modify extends StdCommand
         CMLib.genEd().modifyPlayer(mob,M);
 		if(!copyMOB.sameAs(M))
 			Log.sysOut("Mobs",mob.Name()+" modified player "+M.Name()+".");
+		copyMOB.setSession(null); // prevents logoffs.
+		copyMOB.setLocation(null);
 		copyMOB.destroy();
 	}
 	
@@ -1471,9 +1473,9 @@ public class Modify extends StdCommand
 			{
 				if(!CMSecurity.isAllowed(mob,mob.location(),"CMDMOBS")) 
                     return errorOut(mob);
-				MOB copyMOB=(MOB)thang.copyOf();
 				if((!thang.isGeneric())&&(((MOB)thang).isMonster()))
 				{
+					MOB copyMOB=(MOB)thang.copyOf();
 					mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
                     CMLib.genEd().modifyStdMob(mob,(MOB)thang);
 					if(!copyMOB.sameAs(thang))
@@ -1487,14 +1489,15 @@ public class Modify extends StdCommand
 				}
 				else
                 {
+					MOB copyMOB=(MOB)thang.copyOf();
 					mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
 					CMLib.genEd().genMiscSet(mob,thang);
 					if(!copyMOB.sameAs(thang))
 	                    Log.sysOut("CreateEdit",mob.Name()+" modified mob "+thang.Name()+" ("+thang.ID()+") in "+CMLib.map().getExtendedRoomID(((MOB)thang).location())+".");
+					copyMOB.destroy();
                 }
 				thang.recoverEnvStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,thang.name()+" shake(s) under the transforming power.");
-				copyMOB.destroy();
 			}
 			else
 			if((Directions.getGoodDirectionCode(allWord)>=0)||(thang instanceof Exit))
