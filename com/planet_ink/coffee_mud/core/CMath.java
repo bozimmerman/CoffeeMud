@@ -738,7 +738,7 @@ public class CMath
                 case '*': finalValue*=curValue; break;
                 case '/':
                 case '\\': finalValue/=curValue; break;
-                case '?': finalValue=((curValue-1.0)*finalValue*rand.nextDouble())+finalValue; break;
+                case '?': finalValue= ((curValue-finalValue+0.5) * rand.nextDouble()) + finalValue; break;
                 }
                 c=st.nextToken();
             }
@@ -905,7 +905,7 @@ public class CMath
     	                case '-': finalValue-=curValue; break;
     	                case '*': finalValue*=curValue; break;
     	                case '/': finalValue/=curValue; break;
-    	                case '?': finalValue=((curValue-1.0)*finalValue*rand.nextDouble())+finalValue; break;
+    	                case '?': finalValue= ((curValue-finalValue+0.5) * rand.nextDouble()) + finalValue; break;
     	                case '<': finalValue = finalValue < curValue? finalValue : curValue; break;
     	                case '>': finalValue = finalValue > curValue? finalValue : curValue; break;
     				}
