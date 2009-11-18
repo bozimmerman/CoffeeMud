@@ -2956,7 +2956,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&(monster.location().getArea().getTimeObj().getTODCode()==TimeClock.TIME_NIGHT))
                     returnable=true;
                 else
-                if((monster.location().getArea().getTimeObj().getTODCode()==CMath.s_int(arg1)))
+                if((monster.location().getArea().getTimeObj().getTimeOfDay()==CMath.s_int(arg1)))
                     returnable=true;
                 else
                     returnable=false;
