@@ -202,10 +202,34 @@ public class Resources
 		}
 	}
 
-	private Object _fetchResource(int x)
+    private int _getResourceIndex(String ID)
+    {
+		// protected elsewhere
+        if(resources.size()==0) return -1;
+        int start=0;
+        int end=resources.size()-1;
+        while(start<=end)
+        {
+            int mid=(end+start)/2;
+            int comp=((String)resources.elementAt(mid,1)).compareToIgnoreCase(ID);
+            if(comp==0)
+                return mid;
+            else
+            if(comp>0)
+                end=mid-1;
+            else
+                start=mid+1;
+
+        }
+        return -1;
+    }
+    
+	public Object _getResource(String ID)
 	{
 		synchronized(resources)
 		{
+			// protected elsewhere
+			int x = _getResourceIndex(ID);
 			if((x<resources.size())&&(x>=0))
 			{
 				if(!compress) return resources.elementAt(x,2);
@@ -215,38 +239,6 @@ public class Resources
 				return resources.elementAt(x,2);
 			}
 			return null;
-		}
-	}
-
-    public int _getResourceIndex(String ID)
-    {
-        synchronized(resources)
-        {
-            if(resources.size()==0) return -1;
-            int start=0;
-            int end=resources.size()-1;
-            while(start<=end)
-            {
-                int mid=(end+start)/2;
-                int comp=((String)resources.elementAt(mid,1)).compareToIgnoreCase(ID);
-                if(comp==0)
-                    return mid;
-                else
-                if(comp>0)
-                    end=mid-1;
-                else
-                    start=mid+1;
-    
-            }
-        }
-        return -1;
-    }
-    
-	public Object _getResource(String ID)
-	{
-		synchronized(resources)
-		{
-            return _fetchResource(_getResourceIndex(ID));
 		}
 	}
 

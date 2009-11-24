@@ -7212,7 +7212,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             genRoomType(mob,R,++showNumber,showFlag);
             genDisplayText(mob,R,++showNumber,showFlag);
             genDescription(mob,R,++showNumber,showFlag);
-            if(mob.location() instanceof GridZones)
+            if(R instanceof GridZones)
             {
                 genGridLocaleX(mob,(GridZones)R,++showNumber,showFlag);
                 genGridLocaleY(mob,(GridZones)R,++showNumber,showFlag);
