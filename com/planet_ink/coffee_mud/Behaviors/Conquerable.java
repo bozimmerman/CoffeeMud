@@ -498,7 +498,7 @@ public class Conquerable extends Arrest
 			if((--checkDown)<=0)
 			{
 				checkDown=CHECKFREQ;
-				// make sure clanitems are truely in the area
+				// make sure clanitems are truly in the area
 				synchronized(clanItems)
 				{
 					for(int i=clanItems.size()-1;i>=0;i--)

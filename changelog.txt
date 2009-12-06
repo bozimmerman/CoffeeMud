@@ -1317,7 +1317,7 @@ to use either one.
    9. ColorSet command now allows black backgrounds.
   10. New Skill: Unbinding
   11. New Archon Item: ArchonManual -- protected from non-archon builders in both the mudgrinder journal browser and command line.
-  12. Factions implemented. FACTIONLIST command added to support them. Documentation is incomplete due to the fact that I'm still working on a command line faction editor. Alignment has been changed to a faction, and is defined in your resources directory in a file called alignment.ini. The resources/data directory also contains a reputation.ini file to use as-is or as a template for your own factions. Until the editor is done, read the ini files carefully for instruction. This is also brought to you, with several additions and a few more corrections from yours truely, by the letter J.
+  12. Factions implemented. FACTIONLIST command added to support them. Documentation is incomplete due to the fact that I'm still working on a command line faction editor. Alignment has been changed to a faction, and is defined in your resources directory in a file called alignment.ini. The resources/data directory also contains a reputation.ini file to use as-is or as a template for your own factions. Until the editor is done, read the ini files carefully for instruction. This is also brought to you, with several additions and a few more corrections from yours truly, by the letter J.
   13. New INI entries: ACCOUNTEXPIRATION, EXPCONTACTLINE, TRIALDAYS, along with a support command: expire. This feature is untested, but looked good. Also brought to you by the letter J.
   14. Zapper supports Faction-based masks, as does start and death room ini entries, btw.
   15. Grids now support 11 directions.
@@ -2023,7 +2023,7 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 33. Clerics can extra xp for Christening children
 34. Trappers get extra xp for selling animals to shops
 35. Druids get extra xp for freeing animals from cities(shops) into the country
-36. Really kindof a bug fix, but CMFS is now TRUELY case-insensitive -- even on unix systems!
+36. Really kindof a bug fix, but CMFS is now TRULY case-insensitive -- even on unix systems!
 37. A surge of new bug-destroying troops was ordered into the code.
 # Build 5.3.0 Released February 22, 2007
 1. New MOB-Type(s) StdAuctioneer/GenAuctioneer to support multi-game-day auctions.

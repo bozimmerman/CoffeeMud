@@ -927,6 +927,7 @@ public class Fey extends StdLanguage
 		hashwords.put("TRIBE","galn'hiete");
         hashwords.put("GANG","galn'hiete");
 		hashwords.put("TRUE","vosalb");
+		hashwords.put("TRULY","vosalb-eh");
 		hashwords.put("TRUELY","vosalb-eh");
 		hashwords.put("TRUTH","vosuu");
 		hashwords.put("TURKEY","oh'heele");
