@@ -63,7 +63,7 @@ public interface SocialsList extends CMLibrary
     
     public void save(MOB whom);
     public Vector getSocialsList();
-    public String getSocialsHelp(MOB mob, String named);
+    public String getSocialsHelp(MOB mob, String named, boolean exact);
     public String getSocialsTable();
     public Social makeDefaultSocial(String name, String type);
     

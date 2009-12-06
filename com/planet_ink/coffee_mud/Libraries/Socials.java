@@ -736,10 +736,9 @@ public class Socials extends StdLibrary implements SocialsList
         return null;
     }
     
-    public String getSocialsHelp(MOB mob, String named)
+    public String getSocialsHelp(MOB mob, String named, boolean exact)
     {
-    	String realName=findSocialName(named,true);
-    	if(realName==null) realName=findSocialName(named,false);
+    	String realName=findSocialName(named,exact);
     	if(realName==null) return null;
     	Vector list=getSocialsSet(realName.toUpperCase());
     	if((list==null)||(list.size()==0)) return null;

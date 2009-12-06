@@ -64,7 +64,23 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
     	completeEduMap.put(def.ID,def);
         return def;
     }
-    public String getExpertiseHelp(String ID){return (ID==null)?null:helpMap.getProperty(ID.toUpperCase());}
+    public String getExpertiseHelp(String ID, boolean exact)
+    {
+    	if(ID==null) return null;
+    	ID=ID.toUpperCase();
+    	if(exact) return helpMap.getProperty(ID);
+    	for(Enumeration<Object> e = helpMap.keys();e.hasMoreElements();)
+    	{
+    		String key = e.nextElement().toString();
+    		if(key.startsWith(ID)) return helpMap.getProperty(key);
+    	}
+    	for(Enumeration<Object> e = helpMap.keys();e.hasMoreElements();)
+    	{
+    		String key = e.nextElement().toString();
+    		if(CMLib.english().containsString(key, ID)) return helpMap.getProperty(key);
+    	}
+    	return null;
+    }
     
     public void delDefinition(String ID){
     	completeEduMap.remove(ID);

@@ -136,7 +136,7 @@ public interface ExpertiseLibrary extends CMLibrary
     public Vector myListableExpertises(MOB mob);
     public int numExpertises();
     public void recompileExpertises();
-    public String getExpertiseHelp(String ID);
+    public String getExpertiseHelp(String ID, boolean exact);
     public String getApplicableExpertise(String ID, int code);
     public int getApplicableExpertiseLevel(String ID, int code, MOB mob);
     public int getExpertiseLevel(MOB mob, String expertise);

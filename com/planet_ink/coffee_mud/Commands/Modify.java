@@ -1184,7 +1184,7 @@ public class Modify extends StdCommand
                 return false;
             }
             String name=CMParms.combine(commands,2);
-            Ability A=CMClass.findAbility(name,Ability.ACODE_COMMON_SKILL,-1);
+            Ability A=CMClass.findAbility(name,Ability.ACODE_COMMON_SKILL,-1,false);
             if(A==null)
             {
                 mob.tell("'"+name+"' is not a valid skill id.");

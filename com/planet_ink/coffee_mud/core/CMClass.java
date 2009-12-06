@@ -609,10 +609,10 @@ public class CMClass extends ClassLoader
 
 	public static Ability findAbility(String calledThis)
 	{
-        return findAbility(calledThis,-1,-1);
+        return findAbility(calledThis,-1,-1,false);
 	}
 
-    public static Ability findAbility(String calledThis, int ofClassDomain, long ofFlags)
+    public static Ability findAbility(String calledThis, int ofClassDomain, long ofFlags, boolean exactOnly)
     {
         Vector ableV;
         Ability A;
@@ -637,7 +637,7 @@ public class CMClass extends ClassLoader
             
         A=(Ability)getGlobal(ableV,calledThis);
         if(A==null) A=(Ability)CMLib.english().fetchEnvironmental(ableV,calledThis,true);
-        if(A==null) A=(Ability)CMLib.english().fetchEnvironmental(ableV,calledThis,false);
+        if((A==null)&&(!exactOnly)) A=(Ability)CMLib.english().fetchEnvironmental(ableV,calledThis,false);
         if(A!=null)A=(Ability)A.newInstance();
         return A;
     }
