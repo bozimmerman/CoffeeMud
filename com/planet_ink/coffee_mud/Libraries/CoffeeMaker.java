@@ -2516,7 +2516,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		str.append(CMLib.xml().convertXMLtoTag("CLRO",mob.getClanRole()));
 		str.append(CMLib.xml().convertXMLtoTag("EMAL",pstats.getEmail()));
 		str.append(CMLib.xml().convertXMLtoTag("PFIL",pfxml.toString()));
-		str.append(CMLib.xml().convertXMLtoTag("SAVE",mob.baseCharStats().getSavesAsString()));
+		str.append(CMLib.xml().convertXMLtoTag("SAVE",mob.baseCharStats().getNonBaseStatsAsString()));
 		str.append(CMLib.xml().convertXMLtoTag("DESC",mob.description()));
 
 		str.append(getExtraEnvPropertiesStr(mob));
@@ -2636,7 +2636,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"EDUS"),true);
 			while(mob.numExpertises()>0)mob.delExpertise(mob.fetchExpertise(0));
 			for(int v=0;v<V9.size();v++) mob.addExpertise((String)V9.elementAt(v));
-			mob.baseCharStats().setSavesFromString(CMLib.xml().getValFromPieces(mblk.contents,"SAVE"));
+			mob.baseCharStats().setNonBaseStatsFromString(CMLib.xml().getValFromPieces(mblk.contents,"SAVE"));
 			mob.setDescription(CMLib.xml().getValFromPieces(mblk.contents,"DESC"));
 			mob.setImage(CMLib.xml().returnXMLValue(buf,"IMG"));
 

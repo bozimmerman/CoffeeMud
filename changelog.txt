@@ -2189,7 +2189,7 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 	running the new build.
 48. CoffeeMud-bug values dropped 700 points in overnight debugging.
 # Build 5.5.5 Release ?
-1. New INI entries: DEFAULTPLAYERFLAGS, FORMULA_* for combat formulas
+1. New INI entries: DEFAULTPLAYERFLAGS, FORMULA_* for combat formulas, RECOVERRATE
 2. New DISABLE flags: AUTODISEASE, WEATHER, WEATHERNOTIFIES, WEATHERCHANGES
 3. RESET MOBSTATS and RESET ITEMSTATS have been documented for normalizing combat stats
 3. Character classes, and mob stats have been rebalanced along pre-3.0 lines.  
@@ -2210,3 +2210,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 12.Behaviors ItemRefitter,ItemMender,ItemIdentifier have COST parameter now.
 13.New DISABLE flag: EQUIPSIZE
 14.WEAR command now supports specified wear locations.
+15.

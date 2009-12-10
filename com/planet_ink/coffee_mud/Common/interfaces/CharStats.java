@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.Common.interfaces;
+import java.util.Arrays;
+
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -185,12 +187,12 @@ public interface CharStats extends CMCommon, CMModifiable
      * Get saving throw and max stat info as an semicolon string list.
      * @return semicolon string
      */
-    public String getSavesAsString();
+    public String getNonBaseStatsAsString();
     /**
      * set saving throw and max stat info from a semicolon string list.
      * @param str semicolon string
      */
-    public void setSavesFromString(String str);
+    public void setNonBaseStatsFromString(String str);
     /**
      * Return the number of a given body part which this mob has.  The
      * racial part number comes from the Race interface BODY_ constants.
@@ -717,4 +719,146 @@ public interface CharStats extends CMCommon, CMModifiable
             -1, // weight adjustment
            };
 
+    /**
+     * Global character stat code data >>> UNUSED <<<
+     * @author bzimmerman
+     */
+	public static final class CODES
+	{
+		private static int[] baseStatCodes = new int[0];
+		private static int[] maxStatCodes = new int[0];
+		private static int numStatCodes = 0;
+		private static int[] savingThrowCodes = new int[0];
+	    private static String[] statAbbreviations=new String[0];
+	    private static String[] statDescriptions=new String[0];
+	    private static String[] statNames=new String[0];
+	    private static String[] statAttributionDescriptions=new String[0];
+	    private static int[] statCMMsgMapping=new int[0];
+		
+		static
+		{
+			for(int i=0;i<6;i++) 
+				addBaseStat(STAT_ABBR[i],STAT_DESCS[i],STAT_NAMES[i],STAT_DESC_ATTS[i],STAT_MSG_MAP[i]);
+			addAllStat(STAT_ABBR[6],STAT_DESCS[6],STAT_NAMES[6],STAT_DESC_ATTS[6],STAT_MSG_MAP[6]);
+			for(int i=7;i<22;i++) 
+				addSavingThrow(STAT_ABBR[i],STAT_DESCS[i],STAT_NAMES[i],STAT_DESC_ATTS[i],STAT_MSG_MAP[i]);
+			for(int i=22;i<28;i++) 
+				addMaxStat(STAT_ABBR[i],STAT_DESCS[i],STAT_NAMES[i],STAT_DESC_ATTS[i],STAT_MSG_MAP[i]);
+			addAllStat(STAT_ABBR[28],STAT_DESCS[28],STAT_NAMES[28],STAT_DESC_ATTS[28],STAT_MSG_MAP[28]);
+			for(int i=29;i<31;i++) 
+				addSavingThrow(STAT_ABBR[i],STAT_DESCS[i],STAT_NAMES[i],STAT_DESC_ATTS[i],STAT_MSG_MAP[i]);
+			for(int i=31;i<NUM_STATS;i++) 
+				addAllStat(STAT_ABBR[i],STAT_DESCS[i],STAT_NAMES[i],STAT_DESC_ATTS[i],STAT_MSG_MAP[i]);
+		}
+		
+		/**
+		 * Returns an array of the numeric codes for all save stats
+		 * @return an array of the numeric codes for all save stats
+		 */
+		public static int[] BASE() { return baseStatCodes;}
+		/**
+		 * Returns an array of the numeric codes for all max stats
+		 * @return an array of the numeric codes for all max stats
+		 */
+		public static int[] MAX() { return maxStatCodes;}
+		/**
+		 * Returns total number of stat codes 0 - this-1
+		 * @return total number of stat codes 0 - this-1
+		 */
+		public static int TOTAL() { return numStatCodes;}
+		/**
+		 * Returns an array of the numeric codes for all save stats
+		 * @return an array of the numeric codes for all save stats
+		 */
+		public static int[] SAVING_THROWS() { return savingThrowCodes;}
+		/**
+		 * Returns the names of the various stats
+		 * @return the names of the various stats
+		 */
+		public static String[] NAMES() { return statNames;}
+		/**
+		 * Returns the descriptions of the various stats
+		 * @return the descriptions of the various stats
+		 */
+		public static String[] DESCS() { return statDescriptions;}
+		/**
+		 * Returns the abbreviations of the various stats
+		 * @return the abbreviations of the various stats
+		 */
+		public static String[] ABBRS() { return statAbbreviations;}
+		/**
+		 * Returns the abbreviation descriptions of the various stats
+		 * @return the abbreviation descriptions of the various stats
+		 */
+		public static String[] ATTDESCS() { return statAttributionDescriptions;}
+		/**
+		 * Returns the CMMsg mappings of the various stats
+		 * @return the CMMsg mappings of the various stats
+		 */
+		public static int[] CMMSGMAP() { return statCMMsgMapping;}
+		/**
+		 * Adds a new base stat to this object for all mobs and players to share
+		 * @param abbr 1-3 letter short code for this stat
+		 * @param desc longer description of this stat
+		 * @param name space-free coded name of this stat
+		 * @param attDesc description of someone with this stat in abundance
+		 * @param cmmsgMap a CMMsg message code that saves with this stat
+		 */
+		public static void addBaseStat(String abbr, String desc, String name, String attDesc, int cmmsgMap)
+		{
+			baseStatCodes=Arrays.copyOf(baseStatCodes, baseStatCodes.length+1);
+			baseStatCodes[baseStatCodes.length-1]=numStatCodes;
+			addAllStat(abbr,desc,name,attDesc,cmmsgMap);
+		}
+		/**
+		 * Adds a new max stat to this object for all mobs and players to share
+		 * @param abbr 1-3 letter short code for this stat
+		 * @param desc longer description of this stat
+		 * @param name space-free coded name of this stat
+		 * @param attDesc description of someone with this stat in abundance
+		 * @param cmmsgMap a CMMsg message code that saves with this stat
+		 */
+		public static void addMaxStat(String abbr, String desc, String name, String attDesc, int cmmsgMap)
+		{
+			maxStatCodes=Arrays.copyOf(maxStatCodes, maxStatCodes.length+1);
+			maxStatCodes[maxStatCodes.length-1]=numStatCodes;
+			addAllStat(abbr,desc,name,attDesc,cmmsgMap);
+		}
+		/**
+		 * Adds a new saving throw stat to this object for all mobs and players to share
+		 * @param abbr 1-3 letter short code for this stat
+		 * @param desc longer description of this stat
+		 * @param name space-free coded name of this stat
+		 * @param attDesc description of someone with this stat in abundance
+		 * @param cmmsgMap a CMMsg message code that saves with this stat
+		 */
+		public static void addSavingThrow(String abbr, String desc, String name, String attDesc, int cmmsgMap)
+		{
+			savingThrowCodes=Arrays.copyOf(savingThrowCodes, savingThrowCodes.length+1);
+			savingThrowCodes[savingThrowCodes.length-1]=numStatCodes;
+			addAllStat(abbr,desc,name,attDesc,cmmsgMap);
+		}
+		/**
+		 * Adds a new miscellaneous stat to this object for all mobs and players to share
+		 * @param abbr 1-3 letter short code for this stat
+		 * @param desc longer description of this stat
+		 * @param name space-free coded name of this stat
+		 * @param attDesc description of someone with this stat in abundance
+		 * @param cmmsgMap a CMMsg message code that saves with this stat
+		 */
+		public static void addAllStat(String abbr, String desc, String name, String attDesc, int cmmsgMap)
+		{
+			numStatCodes++;
+			statAbbreviations=Arrays.copyOf(statAbbreviations, numStatCodes);
+			statAbbreviations[numStatCodes-1]=abbr;
+			statDescriptions=Arrays.copyOf(statDescriptions, numStatCodes);
+			statDescriptions[numStatCodes-1]=desc.toUpperCase().trim();
+			statNames=Arrays.copyOf(statNames, numStatCodes);
+			statNames[numStatCodes-1]=name.toUpperCase().trim().replace(' ','_');
+			statAttributionDescriptions=Arrays.copyOf(statAttributionDescriptions, numStatCodes);
+			statAttributionDescriptions[numStatCodes-1]=attDesc.toUpperCase();
+			statCMMsgMapping=Arrays.copyOf(statCMMsgMapping, numStatCodes);
+			statCMMsgMapping[numStatCodes-1]=cmmsgMap;
+		}
+	}
 }

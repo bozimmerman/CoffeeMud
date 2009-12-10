@@ -114,7 +114,7 @@ public class MOBloader
                 pstats.setEmail(DBConnections.getRes(R,"CMEMAL"));
                 String buf=DBConnections.getRes(R,"CMPFIL");
                 pstats.setXML(buf);
-                stats.setSavesFromString(DBConnections.getRes(R,"CMSAVE"));
+                stats.setNonBaseStatsFromString(DBConnections.getRes(R,"CMSAVE"));
                 Vector V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"TATTS"),true);
                 while(mob.numTattoos()>0)
                     mob.delTattoo(mob.fetchTattoo(0));
@@ -701,7 +701,7 @@ public class MOBloader
                 +", CMCLRO="+mob.getClanRole()
                 +", CMEMAL='"+pstats.getEmail()+"'"
                 +", CMPFIL='"+pfxml.toString()+"'"
-                +", CMSAVE='"+mob.baseCharStats().getSavesAsString()+"'"
+                +", CMSAVE='"+mob.baseCharStats().getNonBaseStatsAsString()+"'"
                 +", CMMXML='"+cleanXML.toString()+"'"
                 +"  WHERE CMUSERID='"+mob.Name()+"'");
         DB.update("UPDATE CMCHAR SET CMDESC='"+mob.description()+"' WHERE CMUSERID='"+mob.Name()+"'");
