@@ -21,7 +21,7 @@ import java.util.*;
 import java.lang.reflect.*;
 /**
  * Portions Copyright (c) 2003 Jeremy Vyska
- * Portions Copyright (c) 2004-2009 Bo Zimmerman
+ * Portions Copyright (c) 2004-2010 Bo Zimmerman
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at

@@ -12,7 +12,7 @@ import com.planet_ink.coffee_mud.core.interfaces.CMObject;
 import com.planet_ink.coffee_mud.core.interfaces.Environmental;
 import com.planet_ink.coffee_mud.core.interfaces.Tickable;
 /* 
-Copyright 2000-2009 Bo Zimmerman
+Copyright 2000-2010 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

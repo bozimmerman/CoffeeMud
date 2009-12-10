@@ -1,24 +1,10 @@
 package com.planet_ink.fakedb;
-import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.*;
-import com.planet_ink.coffee_mud.Abilities.interfaces.*;
-import com.planet_ink.coffee_mud.Areas.interfaces.*;
-import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
-import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
-import com.planet_ink.coffee_mud.Commands.interfaces.*;
-import com.planet_ink.coffee_mud.Common.interfaces.*;
-import com.planet_ink.coffee_mud.Exits.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Locales.interfaces.*;
-import com.planet_ink.coffee_mud.MOBS.interfaces.*;
-import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.*;
-import java.net.*;
 import java.util.*;
 import java.sql.*;
 
 /* 
-   Copyright 2003-2004 Bo Zimmerman
+   Copyright 2003-2010 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -50,7 +36,7 @@ public class DBUpgrade
 	public static void main(String a[]) throws IOException
 	{
 		pl("Welcome to the CoffeeMud Database Upgrade Tool!");
-		pl("(C) 2003-2004 Bo Zimmerman");
+		pl("(C) 2003-2010 Bo Zimmerman");
 		pl("Another product of ...Planet Ink!");
 		pl("");
 		pl("");

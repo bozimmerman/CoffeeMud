@@ -2,7 +2,10 @@ package com.planet_ink.fakedb;
 
 import java.io.InputStream;
 import java.io.Reader;
+import java.sql.NClob;
+import java.sql.RowId;
 import java.sql.SQLException;
+import java.sql.SQLXML;
 import java.util.Map;
 /* 
    Copyright 2001 Thomas Neumann
@@ -544,18 +547,18 @@ class ResultSet implements java.sql.ResultSet
     public int getHoldability() throws SQLException { return 0; }
     public Reader getNCharacterStream(int arg0) throws SQLException { return null; }
     public Reader getNCharacterStream(String arg0) throws SQLException { return null; }
-    //public NClob getNClob(int arg0) throws SQLException { return null; }
-    //public NClob getNClob(String arg0) throws SQLException { return null; }
+    public NClob getNClob(int arg0) throws SQLException { return null; }
+    public NClob getNClob(String arg0) throws SQLException { return null; }
     public String getNString(int arg0) throws SQLException { return null; }
     public String getNString(String arg0) throws SQLException { return null; }
     //public Object getObject(int arg0, Map arg1) throws SQLException { return getString(arg0); }
     public Object getObject(int arg0, Map<String, Class<?>> arg1) throws SQLException { return getString(arg0); }
     public Object getObject(String arg0, Map<String, Class<?>> arg1) throws SQLException { return getObject(findColumn(arg0),arg1); }
     //public Object getObject(String arg0, Map arg1) throws SQLException { return getObject(findColumn(arg0),arg1); }
-    //public RowId getRowId(int arg0) throws SQLException { return null; }
-    //public RowId getRowId(String arg0) throws SQLException { return null; }
-    //public SQLXML getSQLXML(int arg0) throws SQLException { return null; }
-    //public SQLXML getSQLXML(String arg0) throws SQLException { return null;}
+    public RowId getRowId(int arg0) throws SQLException { return null; }
+    public RowId getRowId(String arg0) throws SQLException { return null; }
+    public SQLXML getSQLXML(int arg0) throws SQLException { return null; }
+    public SQLXML getSQLXML(String arg0) throws SQLException { return null;}
     public boolean isClosed() throws SQLException { return false; }
     public void updateAsciiStream(int arg0, InputStream arg1) throws SQLException {}
     public void updateAsciiStream(String arg0, InputStream arg1) throws SQLException {}
@@ -581,18 +584,18 @@ class ResultSet implements java.sql.ResultSet
     public void updateNCharacterStream(String arg0, Reader arg1) throws SQLException {}
     public void updateNCharacterStream(int arg0, Reader arg1, long arg2) throws SQLException {}
     public void updateNCharacterStream(String arg0, Reader arg1, long arg2) throws SQLException {}
-    //public void updateNClob(int arg0, NClob arg1) throws SQLException {}
-    //public void updateNClob(String arg0, NClob arg1) throws SQLException {}
+    public void updateNClob(int arg0, NClob arg1) throws SQLException {}
+    public void updateNClob(String arg0, NClob arg1) throws SQLException {}
     public void updateNClob(int arg0, Reader arg1) throws SQLException {}
     public void updateNClob(String arg0, Reader arg1) throws SQLException {}
     public void updateNClob(int arg0, Reader arg1, long arg2) throws SQLException {}
     public void updateNClob(String arg0, Reader arg1, long arg2)throws SQLException {}
     public void updateNString(int arg0, String arg1) throws SQLException {}
     public void updateNString(String arg0, String arg1) throws SQLException {}
-    //public void updateRowId(int arg0, RowId arg1) throws SQLException {}
-    //public void updateRowId(String arg0, RowId arg1) throws SQLException {}
-    //public void updateSQLXML(int arg0, SQLXML arg1) throws SQLException {}
-    //public void updateSQLXML(String arg0, SQLXML arg1) throws SQLException {}
+    public void updateRowId(int arg0, RowId arg1) throws SQLException {}
+    public void updateRowId(String arg0, RowId arg1) throws SQLException {}
+    public void updateSQLXML(int arg0, SQLXML arg1) throws SQLException {}
+    public void updateSQLXML(String arg0, SQLXML arg1) throws SQLException {}
     public boolean isWrapperFor(Class<?> iface) throws SQLException {return false;}
     public <T> T unwrap(Class<T> iface) throws SQLException {return null;}
 }
