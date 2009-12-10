@@ -193,7 +193,8 @@ public class CMProps extends Properties
     public static final int SYSTEMI_EXPIRE_PLAYER_BODY=56;
     public static final int SYSTEMI_MAXITEMSHOWN=57;
     public static final int SYSTEMI_STARTSTAT=58;
-    public static final int NUMI_SYSTEM=59;
+    public static final int SYSTEMI_RECOVERRATE=59;
+    public static final int NUMI_SYSTEM=60;
 
     public static final int SYSTEMB_MOBCOMPRESS=0;
     public static final int SYSTEMB_ITEMDCOMPRESS=1;
@@ -467,16 +468,14 @@ public class CMProps extends Properties
 
     public static String getVar(int varNum)
     {
-        if((varNum<0)||(varNum>=NUM_SYSTEM)) return "";
-        if(p().sysVars[varNum]==null) return "";
-        return p().sysVars[varNum];
+    	try { return p().sysVars[varNum];} 
+    	catch(Throwable t) { return ""; }
     }
 
     public static int getIntVar(int varNum)
     {
-        if((varNum<0)||(varNum>=NUMI_SYSTEM)) return -1;
-        if(p().sysInts[varNum]==null) return -1;
-        return p().sysInts[varNum].intValue();
+    	try { return p().sysInts[varNum].intValue(); } 
+    	catch(Throwable t) { return -1; }
     }
 
     public static boolean getBoolVar0(int varNum)
@@ -488,9 +487,8 @@ public class CMProps extends Properties
 
     public static boolean getBoolVar(int varNum)
     {
-        if((varNum<0)||(varNum>=NUMB_SYSTEM)) return false;
-        if(p().sysBools[varNum]==null) return false;
-        return p().sysBools[varNum].booleanValue();
+    	try { return p().sysBools[varNum].booleanValue(); } 
+    	catch(Throwable t) { return false; }
     }
 
     public static void setBoolVar(int varNum, boolean val)
@@ -515,6 +513,13 @@ public class CMProps extends Properties
     {
         if((varNum<0)||(varNum>=NUMI_SYSTEM)) return ;
         if(val==null) val="0";
+        p().sysInts[varNum]=new Integer(CMath.s_int(val));
+    }
+
+    public static void setIntVar(int varNum, String val, int defaultValue)
+    {
+        if((varNum<0)||(varNum>=NUMI_SYSTEM)) return ;
+        if((val==null)||(val.length()==0)) val=""+defaultValue;
         p().sysInts[varNum]=new Integer(CMath.s_int(val));
     }
 
@@ -827,6 +832,7 @@ public class CMProps extends Properties
         setIntVar(SYSTEMI_DEFCOMCMDTIME,(int)Math.round(getDouble("DEFCOMCMDTIME")*100.0));
         setIntVar(SYSTEMI_DEFABLETIME,(int)Math.round(getDouble("DEFABLETIME")*100.0));
         setIntVar(SYSTEMI_DEFCOMABLETIME,(int)Math.round(getDouble("DEFCOMABLETIME")*100.0));
+        setIntVar(SYSTEMI_RECOVERRATE,getStr("RECOVERRATE"),1);
 
         V=CMParms.parseCommas(getStr("INJURYSYSTEM"),true);
 

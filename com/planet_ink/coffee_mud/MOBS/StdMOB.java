@@ -91,6 +91,7 @@ public class StdMOB implements MOB
 	protected String databaseID="";
 
     protected int tickCounter=0;
+    protected int recoverTickCounter=1;
     private long expirationDate=0;
     private int manaConsumeCounter=CMLib.dice().roll(1,10,0);
     private double freeActions=0.0;
@@ -2556,7 +2557,11 @@ public class StdMOB implements MOB
 				}
 
 				tickStatus=Tickable.STATUS_ALIVE;
-				curState().recoverTick(this,maxState);
+				if((--recoverTickCounter)<=0)
+				{
+					curState().recoverTick(this,maxState);
+					recoverTickCounter = CMProps.getIntVar(CMProps.SYSTEMI_RECOVERRATE);
+				}
 				if(!isMonster())
                     curState().expendEnergy(this,maxState,false);
 
