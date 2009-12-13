@@ -55,7 +55,7 @@ public class StdCharClass implements CharClass
 	public int getManaDivisor(){return 3;}
 	public int getManaDice(){return 1;}
 	public int getManaDie(){return 6;}
-	protected int maxStatAdj[]={0,0,0,0,0,0};
+	protected int maxStatAdj[]=new int[CharStats.NUM_BASE_STATS];
 	protected Vector outfitChoices=null;
 	public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_ANY;}
