@@ -99,7 +99,8 @@ public class Prop_ReqCapacity extends Property
                     msg.source().tell("No more players can fit in there.");
                     return false;
                 }
-                if((((Room)msg.target()).numInhabitants()-((Room)msg.target()).numPCInhabitants())>=mobCap)
+                if(msg.source().isMonster() 
+                && (((Room)msg.target()).numInhabitants()-((Room)msg.target()).numPCInhabitants())>=mobCap)
                 {
                     msg.source().tell("No more MOBs can fit in there.");
                     return false;
