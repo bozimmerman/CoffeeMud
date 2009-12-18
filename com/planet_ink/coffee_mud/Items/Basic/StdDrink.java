@@ -75,6 +75,18 @@ public class StdDrink extends StdContainer implements Drink,Item
 	public void setLiquidHeld(int amount){amountOfLiquidHeld=amount;}
 	public void setLiquidRemaining(int amount){amountOfLiquidRemaining=amount;}
 
+	protected int totalDrinkContained()
+	{
+		int total = amountOfLiquidRemaining;
+        Vector V=getContents();
+        for(int v=0;v<V.size();v++)
+            if((V.elementAt(v) instanceof Item)
+            &&(V.elementAt(v) instanceof Drink)
+            &&((((Item)V.elementAt(v)).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
+                total += ((Drink)V.elementAt(v)).liquidRemaining();
+        return total;
+	}
+	
 	public boolean containsDrink()
 	{
         if((!CMLib.flags().isGettable(this))
@@ -124,14 +136,14 @@ public class StdDrink extends StdContainer implements Drink,Item
 				mob.tell("You don't have that.");
 				return false;
 			case CMMsg.TYP_FILL:
-				if((liquidRemaining()>=amountOfLiquidHeld)
+				if((totalDrinkContained()>=amountOfLiquidHeld)
 				&&(liquidHeld()<500000))
 				{
 					mob.tell(name()+" is full.");
 					return false;
 				}
                 if((msg.tool() instanceof Container)
-                &&((!(msg.tool() instanceof Drink))||(!((Drink)msg.tool()).containsDrink()))
+                &&((!(msg.tool() instanceof Drink))||((Drink)msg.tool()).liquidRemaining()<=0)
                 &&(msg.tool()!=msg.target()))
                 {
                     Vector V=((Container)msg.tool()).getContents();
@@ -184,7 +196,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 
     public int amountTakenToFillMe(Drink theSource)
     {
-        int amountToTake=amountOfLiquidHeld-amountOfLiquidRemaining;
+        int amountToTake=amountOfLiquidHeld-totalDrinkContained();
         if(amountOfLiquidHeld>=500000)
             amountToTake=theSource.liquidRemaining();
         if(amountToTake>theSource.liquidRemaining())
@@ -219,11 +231,41 @@ public class StdDrink extends StdContainer implements Drink,Item
 					int amountToTake=amountTakenToFillMe(thePuddle);
 					thePuddle.setLiquidRemaining(thePuddle.liquidRemaining()-amountToTake);
 					if(amountOfLiquidRemaining<=0)
+					{
 						setLiquidType(thePuddle.liquidType());
-					if( ( (long)amountOfLiquidRemaining + (long)amountToTake ) <= (long)Integer.MAX_VALUE )
-						amountOfLiquidRemaining+=amountToTake;
-					if(amountOfLiquidRemaining>amountOfLiquidHeld)
-						amountOfLiquidRemaining=amountOfLiquidHeld;
+						if((thePuddle instanceof RawMaterial)&&(((RawMaterial)thePuddle).container()!=null))
+						{
+							Vector V = this.getContents();
+							Drink addHereI = null;
+							for(Enumeration e = V.elements();e.hasMoreElements();)
+							{
+								Item I = (Item)e.nextElement();
+								if((I instanceof Drink) && (I instanceof RawMaterial) && (I.Name().equals(thePuddle.Name())))
+									addHereI=(Drink)I;
+							}
+							if(addHereI==null)
+							{
+								addHereI=(Drink)thePuddle.copyOf();
+								addHereI.setLiquidRemaining(0);
+								((RawMaterial)addHereI).setContainer(this);
+								if(((RawMaterial)thePuddle).owner() instanceof MOB)
+									((MOB)(((RawMaterial)thePuddle).owner())).addInventory((RawMaterial)addHereI);
+								else
+								if(((RawMaterial)thePuddle).owner() instanceof Room)
+									((Room)(((RawMaterial)thePuddle).owner())).addItemRefuse((RawMaterial)addHereI,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+							}
+							addHereI.setLiquidRemaining(addHereI.liquidRemaining() + amountToTake);
+							addHereI.setLiquidHeld(addHereI.liquidHeld() + amountToTake);
+							amountToTake=0;
+						}
+					}
+					if(amountToTake>0)
+					{
+						if( ( (long)amountOfLiquidRemaining + (long)amountToTake ) <= (long)Integer.MAX_VALUE )
+							amountOfLiquidRemaining+=amountToTake;
+						if(amountOfLiquidRemaining>amountOfLiquidHeld)
+							amountOfLiquidRemaining=amountOfLiquidHeld;
+					}
 					if((thePuddle.liquidRemaining()<=0)
                     &&(thePuddle instanceof Item)
 					&&((thePuddle.disappearsAfterDrinking())||(thePuddle instanceof RawMaterial)))
