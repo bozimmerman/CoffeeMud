@@ -113,7 +113,7 @@ public class DefaultFaction implements Faction, MsgListener
     public boolean delFactor(Object[] o){ return factors.remove(o); }
     public Object[] getFactor(int x){ return ((x>=0)&&(x<factors.size()))?(Object[])factors.elementAt(x):null;}
     public Object[] addFactor(double gain, double loss, String mask){
-        Object[] o=new Object[]{new Double(gain),new Double(loss),mask};
+        Object[] o=new Object[]{Double.valueOf(gain),Double.valueOf(loss),mask};
         factors.addElement(o);
         return o;
     }
@@ -121,7 +121,7 @@ public class DefaultFaction implements Faction, MsgListener
     public boolean addRelation(String factionID, double relation) {
         if(relations.containsKey(factionID))
             return false;
-        relations.put(factionID,new Double(relation));
+        relations.put(factionID,Double.valueOf(relation));
         return true;
     }
     public double getRelation(String factionID) {
@@ -199,8 +199,8 @@ public class DefaultFaction implements Faction, MsgListener
             {
                 Vector factor=CMParms.parseSemicolons(words,false);
                 if(factor.size()>2)
-                    factors.add(new Object[]{new Double(CMath.s_double((String)factor.elementAt(0))),
-                                             new Double(CMath.s_double((String)factor.elementAt(1))),
+                    factors.add(new Object[]{Double.valueOf(CMath.s_double((String)factor.elementAt(0))),
+                                             Double.valueOf(CMath.s_double((String)factor.elementAt(1))),
                                              (String)factor.elementAt(2)});
             }
             if(key.startsWith("RELATION"))
@@ -215,7 +215,7 @@ public class DefaultFaction implements Faction, MsgListener
                         factor=CMath.s_pct(amt);
                     else
                         factor=1;
-                    relations.put(who,new Double(factor));
+                    relations.put(who,Double.valueOf(factor));
                 }
             }
             if(key.startsWith("ABILITY"))
@@ -430,7 +430,7 @@ public class DefaultFaction implements Faction, MsgListener
         {
             s=(String)e.nextElement();
             if(CMath.isInteger(s))
-                mine.addElement(new Integer(CMath.s_int(s)));
+                mine.addElement(Integer.valueOf(CMath.s_int(s)));
             else
             if(CMLib.masking().maskCheck(s, mob,false))
             {
@@ -438,7 +438,7 @@ public class DefaultFaction implements Faction, MsgListener
                 for(int j=0;j<V.size();j++)
                 {
                     if(CMath.isInteger((String)V.elementAt(j)))
-                        mine.addElement(new Integer(CMath.s_int((String)V.elementAt(j))));
+                        mine.addElement(Integer.valueOf(CMath.s_int((String)V.elementAt(j))));
                 }
             }
         }

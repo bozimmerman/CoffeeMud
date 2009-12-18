@@ -49,7 +49,7 @@ public class Prayers extends Skills
         String[] domainName=new String[1];
         domainName[0]="";
         level[0]=-1;
-        parseDomainInfo(mob,commands,CMParms.makeVector(new Integer(Ability.ACODE_PRAYER)),level,domain,domainName);
+        parseDomainInfo(mob,commands,CMParms.makeVector(Integer.valueOf(Ability.ACODE_PRAYER)),level,domain,domainName);
         msg.append("\n\r^HYour "+domainName[0].replace('_',' ')+"prayers:^? "+getAbilities(mob,Ability.ACODE_PRAYER,domain[0],true,level[0]));
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString());

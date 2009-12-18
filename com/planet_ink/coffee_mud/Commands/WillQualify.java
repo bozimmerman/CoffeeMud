@@ -64,8 +64,8 @@ public class WillQualify  extends Skills
 					Ability A=CMClass.getAbility(cimable.abilityName);
 					if((A!=null)
                     &&((types.size()==0)
-						||(types.contains(new Integer(A.classificationCode()&Ability.ALL_ACODES)))
-						||(types.contains(new Integer(A.classificationCode()&Ability.ALL_DOMAINS)))))
+						||(types.contains(Integer.valueOf(A.classificationCode()&Ability.ALL_ACODES)))
+						||(types.contains(Integer.valueOf(A.classificationCode()&Ability.ALL_DOMAINS)))))
 					{
 						if ( (++col) > 2) 
 						{
@@ -153,7 +153,7 @@ public class WillQualify  extends Skills
 			int x=CMParms.indexOf(Ability.ACODE_DESCS,str);
 			if(x<0) x=CMParms.indexOf(Ability.ACODE_DESCS,str.replace(' ','_'));
 			if(x>=0)
-				types.addElement(new Integer(x));
+				types.addElement(Integer.valueOf(x));
 			else
 			{
 				x=CMParms.indexOf(Ability.DOMAIN_DESCS,str);
@@ -172,7 +172,7 @@ public class WillQualify  extends Skills
 					types.addElement(str.toUpperCase().trim());
 				}
 				else
-					types.addElement(new Integer(x<<5));
+					types.addElement(Integer.valueOf(x<<5));
 			}
 			commands.removeElementAt(0);
 		}

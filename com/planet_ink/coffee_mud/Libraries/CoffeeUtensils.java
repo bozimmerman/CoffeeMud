@@ -635,7 +635,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
             if(parsed.contains("WORN")) flags|=CMMiscUtils.LOOTFLAG_WORN;
             else
             if(parsed.contains("UNWORN")) flags|=CMMiscUtils.LOOTFLAG_UNWORN;
-            policies.addElement(new Integer(pct),new Integer(flags),compiledMask);
+            policies.addElement(Integer.valueOf(pct),Integer.valueOf(flags),compiledMask);
         }
         return policies;
     }
@@ -651,7 +651,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			item=mob.fetchInventory(i);
 			if((item!=null)&&(!item.amWearingAt(Item.IN_INVENTORY)))
 			{
-				Long oldCode=new Long(item.rawWornCode());
+				Long oldCode=Long.valueOf(item.rawWornCode());
 				item.unWear();
 				if(reWearSet.size()==0)
 					reWearSet.addElement(item,oldCode);

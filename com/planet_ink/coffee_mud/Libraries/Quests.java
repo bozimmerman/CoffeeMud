@@ -243,7 +243,7 @@ public class Quests extends StdLibrary implements QuestManager
                 sets.setElementAt(index,2,newVAL);
             else
             if(!newVAL.equals(oldVal))
-                sets.addElement(var,newVAL,new Integer(-1));
+                sets.addElement(var,newVAL,Integer.valueOf(-1));
             break;
         }
     }
@@ -463,7 +463,7 @@ public class Quests extends StdLibrary implements QuestManager
                         if(str.toUpperCase().startsWith("ANY ")) str=str.substring(4);
                         if(str.toUpperCase().startsWith("RESELECT MASK=")) str=str.substring(14);
                         if(str.toUpperCase().startsWith("MASK=")) str=str.substring(5);
-                        settings.addElement(var,str,new Integer(v));
+                        settings.addElement(var,str,Integer.valueOf(v));
                     }
                     else
                     if((var.equalsIgnoreCase("MOBGROUP"))
@@ -474,22 +474,22 @@ public class Quests extends StdLibrary implements QuestManager
                 if(cmd.equals("GIVE")&&(var.equalsIgnoreCase("BEHAVIOR"))&&(lineV.size()>2)&&(pricingMobIndex<0))
                 {
                     var=((String)lineV.elementAt(2)).toUpperCase();
-                    behaviors.addElement(var,CMParms.combineWithQuotes(lineV,3),new Integer(v));
+                    behaviors.addElement(var,CMParms.combineWithQuotes(lineV,3),Integer.valueOf(v));
                 }
                 if(cmd.equals("GIVE")&&(var.equalsIgnoreCase("AFFECT"))&&(lineV.size()>2)&&(pricingMobIndex<0))
                 {
                     var=((String)lineV.elementAt(2)).toUpperCase();
-                    properties.addElement(var,CMParms.combineWithQuotes(lineV,3),new Integer(v));
+                    properties.addElement(var,CMParms.combineWithQuotes(lineV,3),Integer.valueOf(v));
                 }
                 if(cmd.equals("GIVE")&&(var.equalsIgnoreCase("STAT"))&&(lineV.size()>2))
                 {
                     var=((String)lineV.elementAt(2)).toUpperCase();
                     if((pricingMobIndex<0)||(var.equals("PRICEMASKS")))
-                        stats.addElement(var,CMParms.combineWithQuotes(lineV,3),new Integer(v));
+                        stats.addElement(var,CMParms.combineWithQuotes(lineV,3),Integer.valueOf(v));
                 }
             }
         }
-        encodedData.addElement(new Integer(pricingMobIndex));
+        encodedData.addElement(Integer.valueOf(pricingMobIndex));
         return encodedData;
     }
     
@@ -769,7 +769,7 @@ public class Quests extends StdLibrary implements QuestManager
         int durationIndex=settings.indexOf("DURATION");
         if(durationIndex<0)
         {
-            settings.addElement("DURATION","900",new Integer(-1));
+            settings.addElement("DURATION","900",Integer.valueOf(-1));
             durationIndex=settings.indexOf("DURATION");
         }
         ++showNumber;
@@ -803,11 +803,11 @@ public class Quests extends StdLibrary implements QuestManager
                     if((typeIndex!=2)&&(dateIndex>=0))
                         settings.removeElement("DATE");
                     if((typeIndex==0)&&(waitIndex<0))
-                        settings.addElement("WAIT","100",new Integer(-1));
+                        settings.addElement("WAIT","100",Integer.valueOf(-1));
                     if((typeIndex==1)&&(mudDayIndex<0))
-                        settings.addElement("MUDDAY","1-1",new Integer(-1));
+                        settings.addElement("MUDDAY","1-1",Integer.valueOf(-1));
                     if((typeIndex==2)&&(dateIndex<0))
-                        settings.addElement("DATE","1-1",new Integer(-1));
+                        settings.addElement("DATE","1-1",Integer.valueOf(-1));
                     if(showFlag==showNumber)
                         return showNumber;
                     break;
@@ -849,7 +849,7 @@ public class Quests extends StdLibrary implements QuestManager
                     if(((showFlag<=-999)&&CMLib.genEd().prompt(mob,false,showNumber,showFlag,"Add new mob behavior"))
                     ||(showNumber==showFlag))
                     {
-                        behaviors.addElement("BehaviorID","",new Integer(behaviors.size()));
+                        behaviors.addElement("BehaviorID","",Integer.valueOf(behaviors.size()));
                         b-=1;
                     }
                     else
@@ -907,7 +907,7 @@ public class Quests extends StdLibrary implements QuestManager
                     if(((showFlag<=-999)&&CMLib.genEd().prompt(mob,false,showNumber,showFlag,"Add new mob property"))
                     ||(showNumber==showFlag))
                     {
-                        properties.addElement("AbilityID","",new Integer(properties.size()));
+                        properties.addElement("AbilityID","",Integer.valueOf(properties.size()));
                         p-=1;
                     }
                     else
@@ -1024,7 +1024,7 @@ public class Quests extends StdLibrary implements QuestManager
         if(pndex>=0)
             stats.setElementAt(pndex,2,newVal);
         else
-            stats.addElement("PRICEMASKS",newVal,new Integer(stats.size()));
+            stats.addElement("PRICEMASKS",newVal,Integer.valueOf(stats.size()));
         return showNumber;
     }
 
@@ -1170,7 +1170,7 @@ public class Quests extends StdLibrary implements QuestManager
         if(mndex>=0)
             behaviors.setElementAt(mndex,2,(finalVal.toString().trim().length()==0)?"":("+"+finalVal.toString()));
         else
-            behaviors.addElement(var,(finalVal.toString().trim().length()==0)?"":("+"+finalVal.toString()),new Integer(behaviors.size()));
+            behaviors.addElement(var,(finalVal.toString().trim().length()==0)?"":("+"+finalVal.toString()),Integer.valueOf(behaviors.size()));
         return showNumber;
     }
     
@@ -1307,7 +1307,7 @@ public class Quests extends StdLibrary implements QuestManager
                                 if(!parsePages) break;
                                 String name=s.substring(15).trim();
                                 pageDV=new DVector(4);
-                                pageDV.addElement(new Integer(QuestManager.QM_COMMAND_$TITLE),name,"","");
+                                pageDV.addElement(Integer.valueOf(QuestManager.QM_COMMAND_$TITLE),name,"","");
                                 ((Vector)templatesDV.elementAt(templatesDV.size()-1,4)).addElement(pageDV);
                             }
                             else
@@ -1346,7 +1346,7 @@ public class Quests extends StdLibrary implements QuestManager
                                         pageDV.removeElementsAt(pageDV.size()-1);
                                     }
                                     else
-                                        pageDV.setElementAt(pageDV.size()-1,1,new Integer(code|mask));
+                                        pageDV.setElementAt(pageDV.size()-1,1,Integer.valueOf(code|mask));
                                 }
                             }
                         }
@@ -1370,7 +1370,7 @@ public class Quests extends StdLibrary implements QuestManager
                                     if(s.length()==0)
                                     {
                                         if(((Integer)pageDV.elementAt(pageDV.size()-1,1)).intValue()==QuestManager.QM_COMMAND_$TITLE)
-                                            pageDV.addElement(new Integer(QuestManager.QM_COMMAND_$LABEL),"",s,"");
+                                            pageDV.addElement(Integer.valueOf(QuestManager.QM_COMMAND_$LABEL),"",s,"");
                                         else
                                             pageDV.setElementAt(pageDV.size()-1,3,((String)pageDV.elementAt(pageDV.size()-1,3))+"\n\r\n\r");
                                     }
@@ -1378,7 +1378,7 @@ public class Quests extends StdLibrary implements QuestManager
                                         pageDV.setElementAt(pageDV.size()-1,3,((String)pageDV.elementAt(pageDV.size()-1,3))+s+" ");
                                 }
                                 else
-                                    pageDV.addElement(new Integer(QuestManager.QM_COMMAND_$LABEL),"",s,"");
+                                    pageDV.addElement(Integer.valueOf(QuestManager.QM_COMMAND_$LABEL),"",s,"");
                             }
                         }
                     }

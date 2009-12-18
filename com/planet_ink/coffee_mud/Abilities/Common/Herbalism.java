@@ -167,10 +167,10 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 							{
 							    Integer I=(Integer)usage.get(s.toUpperCase().trim());
 							    if(I==null) 
-							        I=new Integer(0);
+							        I=Integer.valueOf(0);
 							    else
 								    usage.remove(s.toUpperCase().trim());
-							    usage.put(s.toUpperCase().trim(),new Integer(I.intValue()+1));
+							    usage.put(s.toUpperCase().trim(),Integer.valueOf(I.intValue()+1));
 							}
 							buf.append(s+" ");
 						}

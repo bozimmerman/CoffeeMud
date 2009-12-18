@@ -785,11 +785,11 @@ public class ServiceEngine implements ThreadEngine
         {
             if(((Long)DV.elementAt(i,1)).longValue()>lastStart)
             {
-                DV.insertElementAt(i,new Long(lastStart),msg,tock);
+                DV.insertElementAt(i,Long.valueOf(lastStart),msg,tock);
                 return;
             }
         }
-        DV.addElement(new Long(lastStart),msg,tock);
+        DV.addElement(Long.valueOf(lastStart),msg,tock);
     }
 
     public void checkHealth()

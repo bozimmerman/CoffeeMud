@@ -191,7 +191,7 @@ public class CommonSkill extends StdAbility
 	protected int lookingFor(int material, Room fromHere)
 	{
 		Vector V=new Vector();
-		V.addElement(new Integer(material));
+		V.addElement(Integer.valueOf(material));
 		return lookingFor(V,fromHere);
 	}
 
@@ -205,8 +205,8 @@ public class CommonSkill extends StdAbility
 			if((room!=null)&&(exit!=null)&&(exit.isOpen()))
 			{
 				int material=room.myResource();
-				if(materials.contains(new Integer(material&RawMaterial.MATERIAL_MASK)))
-				{possibilities.addElement(new Integer(d));}
+				if(materials.contains(Integer.valueOf(material&RawMaterial.MATERIAL_MASK)))
+				{possibilities.addElement(Integer.valueOf(d));}
 			}
 		}
 		if(possibilities.size()==0)
@@ -280,7 +280,7 @@ public class CommonSkill extends StdAbility
 	public boolean confirmPossibleMaterialLocation(int resource, Room location)
 	{
 		if(location==null) return false;
-		Integer I=new Integer(resource);
+		Integer I=Integer.valueOf(resource);
 		boolean isMaterial=(resource&RawMaterial.RESOURCE_MASK)==0;
 		int roomResourceType=location.myResource();
 		if(((isMaterial&&(resource==(roomResourceType&RawMaterial.MATERIAL_MASK))))

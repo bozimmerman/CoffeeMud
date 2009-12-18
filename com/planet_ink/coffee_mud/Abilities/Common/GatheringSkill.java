@@ -72,7 +72,7 @@ public class GatheringSkill extends CommonSkill
         			str=str.substring(1);
     	            for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
             			if(RawMaterial.MATERIAL_DESCS[i].equalsIgnoreCase(str))
-	    	            	maskV.removeElement(new Integer(RawMaterial.RESOURCE_DATA[i][0]));
+	    	            	maskV.removeElement(Integer.valueOf(RawMaterial.RESOURCE_DATA[i][0]));
     	            found=true;
         		}
         		if(!found)
@@ -83,7 +83,7 @@ public class GatheringSkill extends CommonSkill
         			        if((RawMaterial.RESOURCE_DATA[ii][0]&RawMaterial.MATERIAL_MASK)==(i<<8))
 			                { 
         			            found=true;
-        			            maskV.addElement(new Integer(RawMaterial.RESOURCE_DATA[ii][0]));
+        			            maskV.addElement(Integer.valueOf(RawMaterial.RESOURCE_DATA[ii][0]));
         			        }
         			    break;
         			}
@@ -91,7 +91,7 @@ public class GatheringSkill extends CommonSkill
 	            for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
 	                if(RawMaterial.RESOURCE_DESCS[i].equalsIgnoreCase(str))
 	                { 
-		                maskV.addElement(new Integer(RawMaterial.RESOURCE_DATA[i][0]));
+		                maskV.addElement(Integer.valueOf(RawMaterial.RESOURCE_DATA[i][0]));
 		                break;
 		            }
 	        }
@@ -136,7 +136,7 @@ public class GatheringSkill extends CommonSkill
 				&&(!CMLib.flags().enchanted(I))
 				&&(I.container()==null)
 				&&((I.material()==foundResource)
-					||((foundResource<0)&&maskV.contains(new Integer(I.material())))))
+					||((foundResource<0)&&maskV.contains(Integer.valueOf(I.material())))))
 				{
 				    if((I instanceof Decayable)
 				    &&(((Decayable)I).decayTime()>0)

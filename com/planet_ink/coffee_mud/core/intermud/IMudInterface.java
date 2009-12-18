@@ -442,7 +442,7 @@ public class IMudInterface implements ImudServices, Serializable
 					{
 						Vector whoV2=new Vector();
 						whoV2.addElement(smob.name());
-						whoV2.addElement(new Integer((int)(ses.getIdleMillis()/1000)));
+						whoV2.addElement(Integer.valueOf((int)(ses.getIdleMillis()/1000)));
 						whoV2.addElement(smob.charStats().displayClassLevel(smob,true));
 						whoV.addElement(whoV2);
 					}

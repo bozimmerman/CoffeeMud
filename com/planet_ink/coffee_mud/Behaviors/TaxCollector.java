@@ -134,7 +134,7 @@ public class TaxCollector extends StdBehavior
 					}
 				}
 				if(paid.contains(msg.source())) paid.removeElement(msg.source());
-				paid.addElement(msg.source(),new Long(System.currentTimeMillis()));
+				paid.addElement(msg.source(),Long.valueOf(System.currentTimeMillis()));
 
                 if(owed[OWE_FINES]>0)
                 {
@@ -352,7 +352,7 @@ public class TaxCollector extends StdBehavior
 				    if(say.length()>0)
 				    {
 						CMLib.commands().postSay(mob,M,say.toString()+".  You must pay me immediately or face the consequences.",false,false);
-						demanded.addElement(M,new Long(System.currentTimeMillis()));
+						demanded.addElement(M,Long.valueOf(System.currentTimeMillis()));
 						if(M.isMonster())
 						{
 							Vector V=new Vector();

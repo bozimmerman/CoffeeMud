@@ -308,7 +308,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				&&(CMLib.flags().isInTheGame(this,true)))
 				{
 					timeInterval=timeInterval();
-					L=new Long(System.currentTimeMillis()+timeInterval);
+					L=Long.valueOf(System.currentTimeMillis()+timeInterval);
 					proceed=true;
 					bankTimes.remove(bankChain());
 					bankTimes.put(bankChain(),L);

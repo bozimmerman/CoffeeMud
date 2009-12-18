@@ -243,21 +243,21 @@ public class CMAble extends StdLibrary implements AbilityMapper
 
     public boolean isDomainIncludedInAnyAbility(int domain, int acode)
     {
-        Vector V=(Vector)completeDomainMap.get(new Integer(domain));
+        Vector V=(Vector)completeDomainMap.get(Integer.valueOf(domain));
         if(V==null)
         {
             Ability A=null;
             V=new Vector();
-            completeDomainMap.put(new Integer(domain),V);
+            completeDomainMap.put(Integer.valueOf(domain),V);
             for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
             {
                 A=(Ability)e.nextElement();
                 if(((A.classificationCode()&Ability.ALL_DOMAINS)==domain)
-                &&(!V.contains(new Integer((A.classificationCode()&Ability.ALL_ACODES)))))
-                    V.addElement(new Integer((A.classificationCode()&Ability.ALL_ACODES)));
+                &&(!V.contains(Integer.valueOf((A.classificationCode()&Ability.ALL_ACODES)))))
+                    V.addElement(Integer.valueOf((A.classificationCode()&Ability.ALL_ACODES)));
             }
         }
-        return V.contains(new Integer(acode));
+        return V.contains(Integer.valueOf(acode));
     }
 
     public DVector getClassAllowsList(String classID)
@@ -278,12 +278,12 @@ public class CMAble extends StdLibrary implements AbilityMapper
             	Ix=(Integer)alreadyDone.get(V2.elementAt(v2));
             	if(Ix==null)
             	{
-	                alreadyDone.put(V2.elementAt(v2), new Integer(DV.size()));
-	                DV.addElement(V2.elementAt(v2),new Integer(able.qualLevel));
+	                alreadyDone.put(V2.elementAt(v2), Integer.valueOf(DV.size()));
+	                DV.addElement(V2.elementAt(v2),Integer.valueOf(able.qualLevel));
             	}
             	else
             	if(((Integer)DV.elementAt(Ix.intValue(),2)).intValue()>able.qualLevel)
-            		DV.setElementAt(Ix.intValue(),2,new Integer(able.qualLevel));
+            		DV.setElementAt(Ix.intValue(),2,Integer.valueOf(able.qualLevel));
             }
         }
         return DV;
@@ -362,7 +362,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 				prof=CMath.s_int(s.substring(x+1,s.length()-1));
 				s=s.substring(0,x);
 			}
-			able.skillPreReqs.addElement(s,new Integer(prof));
+			able.skillPreReqs.addElement(s,Integer.valueOf(prof));
 		}
 		ableMap.put(ability,able);
 		int arc_level=getQualifyingLevel("Archon",true,ability);
@@ -371,11 +371,11 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		Integer lowLevel=(Integer)lowestQualifyingLevelMap.get(ability);
 		if((lowLevel==null)
 		||(qualLevel<lowLevel.intValue()))
-			lowestQualifyingLevelMap.put(ability,new Integer(qualLevel));
+			lowestQualifyingLevelMap.put(ability,Integer.valueOf(qualLevel));
 		Integer maxProf=(Integer)maxProficiencyMap.get(ability);
 		if((maxProf==null)
 		||(maxProficiency>maxProf.intValue()))
-			maxProficiencyMap.put(ability,new Integer(maxProficiency));
+			maxProficiencyMap.put(ability,Integer.valueOf(maxProficiency));
 		DVector reV=(DVector)reverseAbilityMap.get(ability);
 		if(reV==null){ reV=new DVector(2); reverseAbilityMap.put(ability,reV);}
 		if(!reV.contains(ID)) reV.addElement(ID, able);
@@ -1428,12 +1428,12 @@ public class CMAble extends StdLibrary implements AbilityMapper
         comp.setAmount(CMath.s_int(s[3]));
         int depth=CMLib.materials().getResourceCode(s[4],false);
         if(depth>=0)
-        	comp.setType(AbilityComponent.CompType.RESOURCE, depth);
+        	comp.setType(AbilityComponent.CompType.RESOURCE, Integer.valueOf(depth));
         else
         {
             depth=CMLib.materials().getMaterialCode(s[4],false);
             if(depth>=0)
-            	comp.setType(AbilityComponent.CompType.MATERIAL, depth);
+            	comp.setType(AbilityComponent.CompType.MATERIAL, Integer.valueOf(depth));
             else
             	comp.setType(AbilityComponent.CompType.STRING, s[4].toUpperCase().trim());
         }

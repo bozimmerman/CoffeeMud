@@ -52,30 +52,30 @@ public class Chant_VineWeave extends Chant
 		}
 		if(((mob.location().myResource()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
 		&&((mob.location().myResource()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_VEGETATION)
-		&&(!mob.location().resourceChoices().contains(new Integer(RawMaterial.RESOURCE_COTTON)))
-		&&(!mob.location().resourceChoices().contains(new Integer(RawMaterial.RESOURCE_SILK)))
-		&&(!mob.location().resourceChoices().contains(new Integer(RawMaterial.RESOURCE_HEMP)))
-		&&(!mob.location().resourceChoices().contains(new Integer(RawMaterial.RESOURCE_VINE)))
-		&&(!mob.location().resourceChoices().contains(new Integer(RawMaterial.RESOURCE_WHEAT)))
-		&&(!mob.location().resourceChoices().contains(new Integer(RawMaterial.RESOURCE_SEAWEED))))
+		&&(!mob.location().resourceChoices().contains(Integer.valueOf(RawMaterial.RESOURCE_COTTON)))
+		&&(!mob.location().resourceChoices().contains(Integer.valueOf(RawMaterial.RESOURCE_SILK)))
+		&&(!mob.location().resourceChoices().contains(Integer.valueOf(RawMaterial.RESOURCE_HEMP)))
+		&&(!mob.location().resourceChoices().contains(Integer.valueOf(RawMaterial.RESOURCE_VINE)))
+		&&(!mob.location().resourceChoices().contains(Integer.valueOf(RawMaterial.RESOURCE_WHEAT)))
+		&&(!mob.location().resourceChoices().contains(Integer.valueOf(RawMaterial.RESOURCE_SEAWEED))))
 		{
 			mob.tell("This magic will not work here.");
 			return false;
 		}
 		int material=RawMaterial.RESOURCE_VINE;
-		if(mob.location().resourceChoices().contains(new Integer(RawMaterial.RESOURCE_VINE)))
+		if(mob.location().resourceChoices().contains(Integer.valueOf(RawMaterial.RESOURCE_VINE)))
 			material=RawMaterial.RESOURCE_VINE;
 		else
-		if(mob.location().resourceChoices().contains(new Integer(RawMaterial.RESOURCE_SILK)))
+		if(mob.location().resourceChoices().contains(Integer.valueOf(RawMaterial.RESOURCE_SILK)))
 			material=RawMaterial.RESOURCE_SILK;
 		else
-		if(mob.location().resourceChoices().contains(new Integer(RawMaterial.RESOURCE_HEMP)))
+		if(mob.location().resourceChoices().contains(Integer.valueOf(RawMaterial.RESOURCE_HEMP)))
 			material=RawMaterial.RESOURCE_HEMP;
 		else
-		if(mob.location().resourceChoices().contains(new Integer(RawMaterial.RESOURCE_WHEAT)))
+		if(mob.location().resourceChoices().contains(Integer.valueOf(RawMaterial.RESOURCE_WHEAT)))
 			material=RawMaterial.RESOURCE_WHEAT;
 		else
-		if(mob.location().resourceChoices().contains(new Integer(RawMaterial.RESOURCE_SEAWEED)))
+		if(mob.location().resourceChoices().contains(Integer.valueOf(RawMaterial.RESOURCE_SEAWEED)))
 			material=RawMaterial.RESOURCE_SEAWEED;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

@@ -266,7 +266,7 @@ public class MXP
             else
             if(code<100)
             {
-                MXPElement replace=(MXPElement)tags.get(new Integer(code));
+                MXPElement replace=(MXPElement)tags.get(Integer.valueOf(code));
                 if((replace!=null)&&(!replace.isDisabled()))
                 {
                     buf.insert(i,replace.getFoldedDefinition(""));
@@ -757,8 +757,8 @@ public class MXP
             if((tag!=null)&&(Util.isInteger(tag))&&(Util.s_int(tag)>19)&&(Util.s_int(tag)<100))
             {
                 int tagNum=Util.s_int(tag);
-                if(tags.containsKey(new Integer(tagNum))) tags.remove(new Integer(tagNum));
-                tags.put(new Integer(tagNum),L);
+                if(tags.containsKey(Integer.valueOf(tagNum))) tags.remove(Integer.valueOf(tagNum));
+                tags.put(Integer.valueOf(tagNum),L);
             }
             return;
         }
@@ -966,7 +966,7 @@ public class MXP
                 if(backColor.length()>0) parms.append(" BACK="+backColor);
                 parms.append(">");
             }
-            MXPElement L=(MXPElement)tags.get(new Integer(number));
+            MXPElement L=(MXPElement)tags.get(Integer.valueOf(number));
             if(L==null) return;
             int newBitmap=L.getBitmap();
             if(gag!=null)

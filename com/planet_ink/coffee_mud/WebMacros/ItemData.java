@@ -69,7 +69,7 @@ public class ItemData extends StdWebMacro
         if(sortedResources.size()==0)
         for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
         {
-            Long L=new Long(RawMaterial.RESOURCE_DATA[r][0]);
+            Long L=Long.valueOf(RawMaterial.RESOURCE_DATA[r][0]);
             String S=RawMaterial.RESOURCE_DESCS[r];
             int putHere=0;
             for(putHere=0;putHere<sortedResources.size();putHere++)

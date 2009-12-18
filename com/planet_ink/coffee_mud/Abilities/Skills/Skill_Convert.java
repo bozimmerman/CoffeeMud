@@ -188,7 +188,7 @@ public class Skill_Convert extends StdSkill
 				mob.location().send(target,msg2);
 				if(dRoom!=null)
 					dRoom.send(target,msg2);
-				convertStack.addElement(target,new Long(System.currentTimeMillis()));
+				convertStack.addElement(target,Long.valueOf(System.currentTimeMillis()));
 				if(mob!=target)
                     if(target.isMonster())
     					CMLib.leveler().postExperience(mob,null,null,1,false);

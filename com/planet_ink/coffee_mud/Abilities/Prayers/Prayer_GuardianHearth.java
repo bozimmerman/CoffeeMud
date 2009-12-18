@@ -57,12 +57,12 @@ public class Prayer_GuardianHearth extends Prayer
 			prots=new HashSet();
 			for(int i=0;i<CharStats.STAT_MSG_MAP.length;i++)
 				if(CharStats.STAT_MSG_MAP[i]>=0)
-				   prots.add(new Integer(CharStats.STAT_MSG_MAP[i]));
+				   prots.add(Integer.valueOf(CharStats.STAT_MSG_MAP[i]));
 		}
 		Room R=(Room)affected;
 		if(((msg.tool() instanceof Trap)
-		||(prots.contains(new Integer(msg.sourceMinor())))
-		||(prots.contains(new Integer(msg.targetMinor()))))
+		||(prots.contains(Integer.valueOf(msg.sourceMinor())))
+		||(prots.contains(Integer.valueOf(msg.targetMinor()))))
 		   &&(msg.target() instanceof MOB)
 		   &&((msg.source()!=msg.target())||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))))
 		{

@@ -222,7 +222,7 @@ public class StdCharClass implements CharClass
 			boolean found=false;
 			for(int s=0;s<set.length;s++)
 				if(set[s]==i) found=true;
-			if(!found) H.add(new Integer(i));
+			if(!found) H.add(Integer.valueOf(i));
 		}
 		return H;
 	}
@@ -235,7 +235,7 @@ public class StdCharClass implements CharClass
 		{
 			HashSet H=new HashSet();
 			for(int s=0;s<set.length;s++)
-				H.add(new Integer(set[s]));
+				H.add(Integer.valueOf(set[s]));
 			return H;
 		}
 		return null;
@@ -281,8 +281,8 @@ public class StdCharClass implements CharClass
 		if((((sourceCode&CMMsg.MINOR_MASK)==CMMsg.TYP_WEAPONATTACK)||((sourceCode&CMMsg.MINOR_MASK)==CMMsg.TYP_THROW))
 		&&(E instanceof Weapon)
 		&&(mob.charStats().getCurrentClass().ID().equals(ID()))
-		&&(((requiredWeaponMaterials()!=null)&&(!requiredWeaponMaterials().contains(new Integer(((Weapon)E).material()&RawMaterial.MATERIAL_MASK))))
-			||((disallowedWeaponClasses(mob)!=null)&&(disallowedWeaponClasses(mob).contains(new Integer(((Weapon)E).weaponClassification())))))
+		&&(((requiredWeaponMaterials()!=null)&&(!requiredWeaponMaterials().contains(Integer.valueOf(((Weapon)E).material()&RawMaterial.MATERIAL_MASK))))
+			||((disallowedWeaponClasses(mob)!=null)&&(disallowedWeaponClasses(mob).contains(Integer.valueOf(((Weapon)E).weaponClassification())))))
 		&&(CMLib.dice().rollPercentage()>(mob.charStats().getStat(getAttackAttribute())*2))
 		&&(mob.fetchWieldedItem()!=null))
 		{
@@ -484,14 +484,14 @@ public class StdCharClass implements CharClass
         {
             aID=(String)data1.elementAt(i,1);
             completeSet.addElement(aID,
-                                   new Integer(CMLib.ableMapper().getQualifyingLevel(ID(),false,aID)),
-                                   new Integer(CMLib.ableMapper().getDefaultProficiency(ID(),false,aID)),
+                                   Integer.valueOf(CMLib.ableMapper().getQualifyingLevel(ID(),false,aID)),
+                                   Integer.valueOf(CMLib.ableMapper().getDefaultProficiency(ID(),false,aID)),
                                    Boolean.valueOf(CMLib.ableMapper().getDefaultGain(ID(),false,aID)),
                                    Boolean.valueOf(CMLib.ableMapper().getSecretSkill(ID(),false,aID)),
                                    CMLib.ableMapper().getDefaultParm(ID(),false,aID),
                                    CMLib.ableMapper().getPreReqStrings(ID(),false,aID),
                                    CMLib.ableMapper().getExtraMask(ID(),false,aID),
-                                   new Integer(CMLib.ableMapper().getMaxProficiency(ID(),false,aID)));
+                                   Integer.valueOf(CMLib.ableMapper().getMaxProficiency(ID(),false,aID)));
         }
 
         if(completeSet.size()>0)
@@ -550,7 +550,7 @@ public class StdCharClass implements CharClass
         Vector firstSet=getSecurityGroups(0);
         Vector cumulativeSet=(Vector)firstSet.clone();
         securitySets.addElement(firstSet);
-        securityLvls.addElement(new Integer(0));
+        securityLvls.addElement(Integer.valueOf(0));
         for(int x=1;x<20000;x++)
         {
             if(!this.name(x).equals(names[nameDex]))
@@ -566,7 +566,7 @@ public class StdCharClass implements CharClass
                 for(int i=0;i<cumulativeSet.size();i++)
                     V.remove(cumulativeSet.elementAt(i));
                 securitySets.addElement(V);
-                securityLvls.addElement(new Integer(x));
+                securityLvls.addElement(Integer.valueOf(x));
                 cumulativeSet.addAll(V);
             }
         }
@@ -666,8 +666,8 @@ public class StdCharClass implements CharClass
 	    &&(msg.target() instanceof Weapon)
 		&&(msg.source().charStats().getCurrentClass().ID().equals(ID()))
 	    &&(!msg.source().isMonster())
-		&&(((requiredWeaponMaterials()!=null)&&(!requiredWeaponMaterials().contains(new Integer(((Weapon)msg.target()).material()&RawMaterial.MATERIAL_MASK))))
-			||((disallowedWeaponClasses(msg.source())!=null)&&(disallowedWeaponClasses(msg.source()).contains(new Integer(((Weapon)msg.target()).weaponClassification()))))))
+		&&(((requiredWeaponMaterials()!=null)&&(!requiredWeaponMaterials().contains(Integer.valueOf(((Weapon)msg.target()).material()&RawMaterial.MATERIAL_MASK))))
+			||((disallowedWeaponClasses(msg.source())!=null)&&(disallowedWeaponClasses(msg.source()).contains(Integer.valueOf(((Weapon)msg.target()).weaponClassification()))))))
 	        msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),null,CMMsg.TYP_OK_VISUAL,"<T-NAME> feel(s) a bit strange in your hands.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 	    if((msg.source()==myHost)
 	    &&(msg.target() instanceof Item)

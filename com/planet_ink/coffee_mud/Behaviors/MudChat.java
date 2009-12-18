@@ -367,7 +367,7 @@ public class MudChat extends StdBehavior
 					finalCommand=CMStrings.replaceAll(finalCommand,"$$","$");
 
 				Vector V=CMParms.parse(finalCommand);
-				V.insertElementAt(new Integer(RESPONSE_DELAY),0);
+				V.insertElementAt(Integer.valueOf(RESPONSE_DELAY),0);
 				for(int f=0;f<responseQue.size();f++)
 				{
 					Vector V1=(Vector)responseQue.elementAt(f);
@@ -634,7 +634,7 @@ public class MudChat extends StdBehavior
 			{
 				Vector que=(Vector)responseQue.elementAt(t);
 				Integer I=(Integer)que.elementAt(0);
-				I=new Integer(I.intValue()-1);
+				I=Integer.valueOf(I.intValue()-1);
 				que.setElementAt(I,0);
 				if(I.intValue()<=0)
 				{

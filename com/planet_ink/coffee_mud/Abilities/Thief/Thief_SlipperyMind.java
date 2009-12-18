@@ -61,7 +61,7 @@ public class Thief_SlipperyMind extends ThiefSkill
 		            F=CMLib.factions().getFaction((String)e.nextElement());
 		            if(F!=null)
 		            {
-		            	oldFactions.addElement(F,new Integer(mob.fetchFaction(F.factionID())));
+		            	oldFactions.addElement(F,Integer.valueOf(mob.fetchFaction(F.factionID())));
 		            	mob.addFaction(F.factionID(),F.middle());
 		            }
 				}

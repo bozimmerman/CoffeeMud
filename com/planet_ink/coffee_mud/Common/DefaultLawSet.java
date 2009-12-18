@@ -452,19 +452,19 @@ public class DefaultLawSet implements Law
         paroleMessages[1]=getInternalStr("PAROLE2MSG");
         paroleMessages[2]=getInternalStr("PAROLE3MSG");
         paroleMessages[3]=getInternalStr("PAROLE4MSG");
-        paroleTimes[0]=new Integer(CMath.s_int(getInternalStr("PAROLE1TIME")));
-        paroleTimes[1]=new Integer(CMath.s_int(getInternalStr("PAROLE2TIME")));
-        paroleTimes[2]=new Integer(CMath.s_int(getInternalStr("PAROLE3TIME")));
-        paroleTimes[3]=new Integer(CMath.s_int(getInternalStr("PAROLE4TIME")));
+        paroleTimes[0]=Integer.valueOf(CMath.s_int(getInternalStr("PAROLE1TIME")));
+        paroleTimes[1]=Integer.valueOf(CMath.s_int(getInternalStr("PAROLE2TIME")));
+        paroleTimes[2]=Integer.valueOf(CMath.s_int(getInternalStr("PAROLE3TIME")));
+        paroleTimes[3]=Integer.valueOf(CMath.s_int(getInternalStr("PAROLE4TIME")));
 
         jailMessages[0]=getInternalStr("JAIL1MSG");
         jailMessages[1]=getInternalStr("JAIL2MSG");
         jailMessages[2]=getInternalStr("JAIL3MSG");
         jailMessages[3]=getInternalStr("JAIL4MSG");
-        jailTimes[0]=new Integer(CMath.s_int(getInternalStr("JAIL1TIME")));
-        jailTimes[1]=new Integer(CMath.s_int(getInternalStr("JAIL2TIME")));
-        jailTimes[2]=new Integer(CMath.s_int(getInternalStr("JAIL3TIME")));
-        jailTimes[3]=new Integer(CMath.s_int(getInternalStr("JAIL4TIME")));
+        jailTimes[0]=Integer.valueOf(CMath.s_int(getInternalStr("JAIL1TIME")));
+        jailTimes[1]=Integer.valueOf(CMath.s_int(getInternalStr("JAIL2TIME")));
+        jailTimes[2]=Integer.valueOf(CMath.s_int(getInternalStr("JAIL3TIME")));
+        jailTimes[3]=Integer.valueOf(CMath.s_int(getInternalStr("JAIL4TIME")));
 
         jailRooms=CMParms.parseSemicolons(getInternalStr("JAIL"),true);
         releaseRooms=CMParms.parseSemicolons(getInternalStr("RELEASEROOM"),true);

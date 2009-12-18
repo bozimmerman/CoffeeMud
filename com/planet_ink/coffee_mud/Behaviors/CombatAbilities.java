@@ -192,10 +192,10 @@ public class CombatAbilities extends StdBehavior
 			else
 			{
 				x=aggro.size();
-				I=new Integer(0);
+				I=Integer.valueOf(0);
 				aggro.addElement(mob,I);
 			}
-			aggro.setElementAt(x,2,new Integer(I.intValue()+amt));
+			aggro.setElementAt(x,2,Integer.valueOf(I.intValue()+amt));
 		}
 	}
 	

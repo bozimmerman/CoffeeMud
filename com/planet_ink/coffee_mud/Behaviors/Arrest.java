@@ -151,7 +151,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
     {
         Double D=(Double)finesAssessed.get(mob);
         if(D!=null) finesAssessed.remove(mob);
-        if(d>0) finesAssessed.put(mob,new Double(d));
+        if(d>0) finesAssessed.put(mob,Double.valueOf(d));
     }
         
     public double finesOwed(MOB mob)
@@ -1182,10 +1182,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
                 CMLib.commands().postSay(judge,criminal,"You are hereby fined "+CMLib.beanCounter().nameCurrencyShort(judge,fines)+", payable to the local tax assessor.",false,false);
                 Double D=(Double)finesAssessed.get(criminal);
                 if(D==null)
-                    D=new Double(0.0);
+                    D=Double.valueOf(0.0);
                 else
                     finesAssessed.remove(criminal);
-                finesAssessed.put(criminal,new Double(D.doubleValue()+fines));
+                finesAssessed.put(criminal,Double.valueOf(D.doubleValue()+fines));
             }
         }
         if((totallyDone)&&(CMath.bset(W.punishment(),Law.PUNISHMENTMASK_DETAIN)))

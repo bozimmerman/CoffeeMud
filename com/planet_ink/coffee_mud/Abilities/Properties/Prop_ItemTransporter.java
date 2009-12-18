@@ -65,11 +65,11 @@ public class Prop_ItemTransporter extends Property
 		{
 			possibilities=new Vector();
 			possiblePossibilities.put(text(),possibilities);
-			lastLook=new Integer(10);
+			lastLook=Integer.valueOf(10);
 			lastLooks.put(text(),lastLook);
 		}
 		else
-			lastLooks.put(text(),new Integer(lastLook.intValue()-1));
+			lastLooks.put(text(),Integer.valueOf(lastLook.intValue()-1));
 		if(possibilities.size()==0)
 		{
 			roomDestination=null;

@@ -453,8 +453,8 @@ public class CMParms
             return "";
         default:
             if(start<0)
-                return new Integer(currOne);
-            return new Integer(currOne+1);
+                return Integer.valueOf(currOne);
+            return Integer.valueOf(currOne+1);
         }
     }
 

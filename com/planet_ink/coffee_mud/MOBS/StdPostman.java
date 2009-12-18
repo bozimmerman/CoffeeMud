@@ -450,7 +450,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
             if((L==null)||(L.longValue()<System.currentTimeMillis()))
             {
                 proceed=(L!=null);
-                L=new Long(System.currentTimeMillis()+postalWaitTime());
+                L=Long.valueOf(System.currentTimeMillis()+postalWaitTime());
                 postalTimes.remove(postalChain()+"/"+postalBranch());
                 postalTimes.put(postalChain()+"/"+postalBranch(),L);
             }

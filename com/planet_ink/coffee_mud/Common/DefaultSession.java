@@ -234,18 +234,18 @@ public class DefaultSession extends Thread implements Session
     {
         if(telnetSupportSet.size()==0)
         {
-            telnetSupportSet.add(new Integer(Session.TELNET_MXP));
-            telnetSupportSet.add(new Integer(Session.TELNET_MSP));
-            telnetSupportSet.add(new Integer(Session.TELNET_TERMTYPE));
-            telnetSupportSet.add(new Integer(Session.TELNET_BINARY));
-            telnetSupportSet.add(new Integer(Session.TELNET_ECHO));
-            telnetSupportSet.add(new Integer(Session.TELNET_LOGOUT));
-            telnetSupportSet.add(new Integer(Session.TELNET_TERMTYPE));
-            telnetSupportSet.add(new Integer(Session.TELNET_NAWS));
-            //telnetSupportSet.add(new Integer(Session.TELNET_COMPRESS2));
-            //telnetSupportSet.add(new Integer(Session.TELNET_LINEMODE));
+            telnetSupportSet.add(Integer.valueOf(Session.TELNET_MXP));
+            telnetSupportSet.add(Integer.valueOf(Session.TELNET_MSP));
+            telnetSupportSet.add(Integer.valueOf(Session.TELNET_TERMTYPE));
+            telnetSupportSet.add(Integer.valueOf(Session.TELNET_BINARY));
+            telnetSupportSet.add(Integer.valueOf(Session.TELNET_ECHO));
+            telnetSupportSet.add(Integer.valueOf(Session.TELNET_LOGOUT));
+            telnetSupportSet.add(Integer.valueOf(Session.TELNET_TERMTYPE));
+            telnetSupportSet.add(Integer.valueOf(Session.TELNET_NAWS));
+            //telnetSupportSet.add(Integer.valueOf(Session.TELNET_COMPRESS2));
+            //telnetSupportSet.add(Integer.valueOf(Session.TELNET_LINEMODE));
         }
-        return telnetSupportSet.contains(new Integer(telnetCode));
+        return telnetSupportSet.contains(Integer.valueOf(telnetCode));
     }
 
     public void setServerTelnetMode(int telnetCode, boolean onOff)
@@ -778,7 +778,7 @@ public class DefaultSession extends Thread implements Session
         			||(terminalType.equalsIgnoreCase("XTERM")))
         			{
         				if(mightSupportTelnetMode(TELNET_ECHO))
-        					telnetSupportSet.remove(new Integer(TELNET_ECHO));
+        					telnetSupportSet.remove(Integer.valueOf(TELNET_ECHO));
         			    changeTelnetMode(rawout,TELNET_ECHO,false);
         			}
         			else

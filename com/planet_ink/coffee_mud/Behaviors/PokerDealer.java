@@ -159,14 +159,14 @@ public class PokerDealer extends StdBehavior
     private static final int PLAYER_BET_ACT_FOLD=2;
     private static final int PLAYER_BET_ACT_RAISE=3;
     private static final Object[][] PLAYER_BET_ACTIONS={
-        {"PASS",new Integer(PLAYER_BET_ACT_PASS)},
-        {"PAS",new Integer(PLAYER_BET_ACT_PASS)},
-        {"CALL",new Integer(PLAYER_BET_ACT_CALL)},
-        {"CAL",new Integer(PLAYER_BET_ACT_CALL)},
-        {"FOLD",new Integer(PLAYER_BET_ACT_FOLD)},
-        {"RAISE",new Integer(PLAYER_BET_ACT_RAISE)},
-        {"RAIS",new Integer(PLAYER_BET_ACT_RAISE)},
-        {"RASE",new Integer(PLAYER_BET_ACT_RAISE)}
+        {"PASS",Integer.valueOf(PLAYER_BET_ACT_PASS)},
+        {"PAS",Integer.valueOf(PLAYER_BET_ACT_PASS)},
+        {"CALL",Integer.valueOf(PLAYER_BET_ACT_CALL)},
+        {"CAL",Integer.valueOf(PLAYER_BET_ACT_CALL)},
+        {"FOLD",Integer.valueOf(PLAYER_BET_ACT_FOLD)},
+        {"RAISE",Integer.valueOf(PLAYER_BET_ACT_RAISE)},
+        {"RAIS",Integer.valueOf(PLAYER_BET_ACT_RAISE)},
+        {"RASE",Integer.valueOf(PLAYER_BET_ACT_RAISE)}
     };
     
 
@@ -550,9 +550,9 @@ public class PokerDealer extends StdBehavior
             
             // if they havn't antied yet
             if(inPot!=null)
-                pot.setElementAt(pot.indexOf(msg.source()),2,new Double(value+inPot.doubleValue()));
+                pot.setElementAt(pot.indexOf(msg.source()),2,Double.valueOf(value+inPot.doubleValue()));
             else
-                pot.addElement(playerDroppingMoney,new Double(value));
+                pot.addElement(playerDroppingMoney,Double.valueOf(value));
         }
         
         // if an archon/sysop speaks, they might be requesting
@@ -599,9 +599,9 @@ public class PokerDealer extends StdBehavior
                                 if(((Integer)scores.elementAt(ii,1)).intValue()>=score)
                                 { insertHere=ii; break;}
                             if(insertHere<0)
-                                scores.addElement(new Integer(score),hand);
+                                scores.addElement(Integer.valueOf(score),hand);
                             else
-                                scores.insertElementAt(insertHere,new Integer(score),hand);
+                                scores.insertElementAt(insertHere,Integer.valueOf(score),hand);
                         }
                         for(int i=0;i<scores.size();i++)
                         {
@@ -854,14 +854,14 @@ public class PokerDealer extends StdBehavior
         DVector matches=new DVector(2);
         for(int c=1;c<cards.size();c++)
         {
-            Integer value=new Integer(((PlayingCard)cards.elementAt(c)).getBitEncodedValue());
+            Integer value=Integer.valueOf(((PlayingCard)cards.elementAt(c)).getBitEncodedValue());
             if(value.intValue()==(((PlayingCard)cards.elementAt(c-1)).getBitEncodedValue()))
             {
                 int index=matches.indexOf(value);
                 if(index>=0)
-                    matches.setElementAt(index,2,new Integer(1+((Integer)matches.elementAt(index,2)).intValue()));
+                    matches.setElementAt(index,2,Integer.valueOf(1+((Integer)matches.elementAt(index,2)).intValue()));
                 else
-                    matches.addElement(value,new Integer(2));
+                    matches.addElement(value,Integer.valueOf(2));
             }
         }
         
@@ -1040,7 +1040,7 @@ public class PokerDealer extends StdBehavior
             }
             int score=determineHand(hand);
             if(score<0) continue;
-            unsortedScores.addElement(mob,new Integer(score));
+            unsortedScores.addElement(mob,Integer.valueOf(score));
         }
         
         // now we have the scores, so sort them

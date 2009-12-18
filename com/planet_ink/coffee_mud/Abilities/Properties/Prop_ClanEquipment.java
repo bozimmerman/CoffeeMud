@@ -119,7 +119,7 @@ public class Prop_ClanEquipment extends Property
             return;
         }
         type=(String)V.elementAt(0);
-        PowerLevel=new Integer((String)V.elementAt(1)).intValue();
+        PowerLevel=Integer.valueOf((String)V.elementAt(1)).intValue();
         clanName=(String)V.elementAt(2);
         clanType=(String)V.elementAt(3);
         secretWord=getWandWord(text); // try to randomize the spell word a

@@ -274,7 +274,7 @@ public class Hireling extends StdBehavior
 				}
 				else
 					CMLib.commands().postSay(observer,source,"My price is "+CMLib.beanCounter().nameCurrencyShort(observer,price())+".  Give me "+CMLib.beanCounter().nameCurrencyShort(observer,(price()-given))+" more and I'll work.",true,false);
-				partials.put(msg.source().Name(),new Double(given));
+				partials.put(msg.source().Name(),Double.valueOf(given));
 			}
 			else
 			{
@@ -284,12 +284,12 @@ public class Hireling extends StdBehavior
 						CMLib.commands().postSay(observer,source,"I'm still working for you.  I'll put that towards an extension though.",true,false);
 					else
 						CMLib.commands().postSay(observer,source,"Sorry, I'm on the job right now.  Give me 1 more coin later on and I'll work.",true,false);
-					partials.put(msg.source().Name(),new Double(given));
+					partials.put(msg.source().Name(),Double.valueOf(given));
 				}
 				else
 				{
 					if(given>price())
-						partials.put(msg.source().Name(),new Double(given-price()));
+						partials.put(msg.source().Name(),Double.valueOf(given-price()));
 					StringBuffer skills=new StringBuffer("");
 					for(int a=0;a<observer.numAbilities();a++)
 					{

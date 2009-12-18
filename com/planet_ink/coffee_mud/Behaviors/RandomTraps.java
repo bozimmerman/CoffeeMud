@@ -153,9 +153,9 @@ public class RandomTraps extends ActiveTicker
 					{
 						restrictedLocales.clear();
 						for(int i=0;i<Room.indoorDomainDescs.length;i++)
-							restrictedLocales.addElement(new Integer(Room.INDOORS+i));
+							restrictedLocales.addElement(Integer.valueOf(Room.INDOORS+i));
 						for(int i=0;i<Room.outdoorDomainDescs.length;i++)
-							restrictedLocales.addElement(new Integer(i));
+							restrictedLocales.addElement(Integer.valueOf(i));
 					}
 					else
 					{
@@ -167,11 +167,11 @@ public class RandomTraps extends ActiveTicker
 								code=Room.INDOORS+i;
 						if(code>=0)
 						{
-							if((c=='+')&&(restrictedLocales.contains(new Integer(code))))
-								restrictedLocales.removeElement(new Integer(code));
+							if((c=='+')&&(restrictedLocales.contains(Integer.valueOf(code))))
+								restrictedLocales.removeElement(Integer.valueOf(code));
 							else
-							if((c=='-')&&(!restrictedLocales.contains(new Integer(code))))
-								restrictedLocales.addElement(new Integer(code));
+							if((c=='-')&&(!restrictedLocales.contains(Integer.valueOf(code))))
+								restrictedLocales.addElement(Integer.valueOf(code));
 						}
 						code=-1;
 						for(int i=0;i<Room.outdoorDomainDescs.length;i++)
@@ -179,11 +179,11 @@ public class RandomTraps extends ActiveTicker
 								code=i;
 						if(code>=0)
 						{
-							if((c=='+')&&(restrictedLocales.contains(new Integer(code))))
-								restrictedLocales.removeElement(new Integer(code));
+							if((c=='+')&&(restrictedLocales.contains(Integer.valueOf(code))))
+								restrictedLocales.removeElement(Integer.valueOf(code));
 							else
-							if((c=='-')&&(!restrictedLocales.contains(new Integer(code))))
-								restrictedLocales.addElement(new Integer(code));
+							if((c=='-')&&(!restrictedLocales.contains(Integer.valueOf(code))))
+								restrictedLocales.addElement(Integer.valueOf(code));
 						}
 
 					}
@@ -204,7 +204,7 @@ public class RandomTraps extends ActiveTicker
 	{
 		if(R==null) return;
 		if((restrictedLocales!=null)
-		&&(restrictedLocales.contains(new Integer(R.domainType()))))
+		&&(restrictedLocales.contains(Integer.valueOf(R.domainType()))))
 		   return;
 
 		if(R instanceof GridLocale)

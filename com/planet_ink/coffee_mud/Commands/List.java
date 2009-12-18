@@ -1214,7 +1214,7 @@ public class List extends StdCommand
 			{
 				Room R=(Room)e.nextElement();
 				if(!(R instanceof GridLocale))
-					if((R.resourceChoices()!=null)&&(R.resourceChoices().contains(new Integer(RawMaterial.RESOURCE_DATA[i][0]))))
+					if((R.resourceChoices()!=null)&&(R.resourceChoices().contains(Integer.valueOf(RawMaterial.RESOURCE_DATA[i][0]))))
 						locales.append(R.ID()+" ");
 			}
 			while(locales.length()>36)

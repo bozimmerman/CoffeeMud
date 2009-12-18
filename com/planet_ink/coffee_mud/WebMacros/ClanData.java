@@ -61,9 +61,9 @@ public class ClanData extends StdWebMacro
                             themembers.addElement(behav);
                             String role=httpReq.getRequestParameter("ROLE"+num);
                             if(role!=null)
-                                theroles.addElement(new Integer(CMath.s_int(role)));
+                                theroles.addElement(Integer.valueOf(CMath.s_int(role)));
                             else
-                                theroles.addElement(new Integer(M.getClanRole()));
+                                theroles.addElement(Integer.valueOf(M.getClanRole()));
                         }
                     }
                     num++;
@@ -145,7 +145,7 @@ public class ClanData extends StdWebMacro
                 while(behav!=null)
                 {
                     if(behav.length()>0)
-                        therelations.addElement(new Integer(CMath.s_int(behav)));
+                        therelations.addElement(Integer.valueOf(CMath.s_int(behav)));
                     num++;
                     behav=httpReq.getRequestParameter("RELATION"+num);
                 }
@@ -156,7 +156,7 @@ public class ClanData extends StdWebMacro
                 {
                     CC=(Clan)e.nextElement();
                     if(CC==C) continue;
-                    therelations.addElement(new Integer(C.getClanRelations(CC.clanID())));
+                    therelations.addElement(Integer.valueOf(C.getClanRelations(CC.clanID())));
                 }
             }
             str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");

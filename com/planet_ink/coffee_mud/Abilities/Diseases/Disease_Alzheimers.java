@@ -98,7 +98,7 @@ public class Disease_Alzheimers extends Disease
 						if((R.getRoomInDir(d)!=null)
 						&&(R.getExitInDir(d)!=null)
 						&&(R.getExitInDir(d).isOpen()))
-							dirs.addElement(new Integer(d));
+							dirs.addElement(Integer.valueOf(d));
 					if(dirs.size()==0) everyTick=0;
 					else
 					{

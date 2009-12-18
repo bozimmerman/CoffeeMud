@@ -506,21 +506,21 @@ public class CMProps extends Properties
     public static void setIntVar(int varNum, int val)
     {
         if((varNum<0)||(varNum>=NUMI_SYSTEM)) return ;
-        p().sysInts[varNum]=new Integer(val);
+        p().sysInts[varNum]=Integer.valueOf(val);
     }
 
     public static void setIntVar(int varNum, String val)
     {
         if((varNum<0)||(varNum>=NUMI_SYSTEM)) return ;
         if(val==null) val="0";
-        p().sysInts[varNum]=new Integer(CMath.s_int(val));
+        p().sysInts[varNum]=Integer.valueOf(CMath.s_int(val));
     }
 
     public static void setIntVar(int varNum, String val, int defaultValue)
     {
         if((varNum<0)||(varNum>=NUMI_SYSTEM)) return ;
         if((val==null)||(val.length()==0)) val=""+defaultValue;
-        p().sysInts[varNum]=new Integer(CMath.s_int(val));
+        p().sysInts[varNum]=Integer.valueOf(CMath.s_int(val));
     }
 
     public static void setVar(int varNum, String val, boolean upperFy)
@@ -582,7 +582,7 @@ public class CMProps extends Properties
         DVector DV=p().newusersByIP;
         synchronized(DV)
         {
-        	DV.addElement(address,new Long(System.currentTimeMillis()+TimeManager.MILI_DAY));
+        	DV.addElement(address,Long.valueOf(System.currentTimeMillis()+TimeManager.MILI_DAY));
         }
     }
 
@@ -614,7 +614,7 @@ public class CMProps extends Properties
     		if(CMath.isInteger(s)){ endVal=CMath.s_int(s); continue;}
     		int x=s.indexOf(" ");
     		if(CMath.isInteger(s.substring(x+1).trim()))
-    			set.addElement(s.substring(0,x).trim().toUpperCase(),new Integer(CMath.s_int(s.substring(x+1).trim())));
+    			set.addElement(s.substring(0,x).trim().toUpperCase(),Integer.valueOf(CMath.s_int(s.substring(x+1).trim())));
     	}
     	return endVal;
     }

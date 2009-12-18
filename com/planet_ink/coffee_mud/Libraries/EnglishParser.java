@@ -655,7 +655,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			}
 		}
 		flags[0]=srchStr;
-		flags[1]=new Integer(occurrance);
+		flags[1]=Integer.valueOf(occurrance);
 		flags[2]=Boolean.valueOf(allFlag);
 		return flags;
 	}
@@ -1747,7 +1747,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		    else
 		        myCurrency=CMLib.beanCounter().getCurrency(mob);
 	    }
-	    return new Object[]{myCurrency,new Double(denomination),new Long(Math.round(b/denomination))};
+	    return new Object[]{myCurrency,Double.valueOf(denomination),Long.valueOf(Math.round(b/denomination))};
 	}
     
     public int calculateMaxToGive(MOB mob, Vector commands, boolean breakPackages, Environmental checkWhat, boolean getOnly)

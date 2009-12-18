@@ -61,9 +61,9 @@ public class LPCData {
                 int x = Integer.parseInt(str);
 
                 if( !flag ) {
-                    return new Integer(x);
+                    return Integer.valueOf(x);
                 }
-                data.setElementAt(new Integer(x), 0);
+                data.setElementAt(Integer.valueOf(x), 0);
                 return data;
             }
             catch( NumberFormatException e ) {
@@ -221,9 +221,9 @@ public class LPCData {
                 throw new I3Exception("Invalid number format: " + tmp);
             }
             if( !flag ) {
-                return new Integer(x);
+                return Integer.valueOf(x);
             }
-            data.setElementAt(new Integer(x), 0);
+            data.setElementAt(Integer.valueOf(x), 0);
             data.setElementAt(str, 1);
             return data;
         }

@@ -266,7 +266,7 @@ public class Chant_WindColor extends Chant
 		Vector V=new Vector();
 		for(int i=0;i<colors.length;i++)
 			if(colors[i]>0)
-				V.addElement(new Integer(i));
+				V.addElement(Integer.valueOf(i));
 		if(V.size()==1)
 			return str.toString()+getColor(((Integer)V.firstElement()).intValue());
 		for(int i=0;i<V.size();i++)

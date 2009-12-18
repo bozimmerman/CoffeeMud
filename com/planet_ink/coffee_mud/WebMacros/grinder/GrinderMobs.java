@@ -132,7 +132,7 @@ public class GrinderMobs
 					Faction F=CMLib.factions().getFaction(whichFaction);
 					if(F!=null)
 					{
-    					int amt=new Integer(howMuch).intValue();
+    					int amt=Integer.valueOf(howMuch).intValue();
     					if(amt<F.minimum()) amt=F.minimum();
     					if(amt>F.maximum()) amt=F.maximum();
     					E.addFaction(F.factionID(),amt);

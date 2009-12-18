@@ -58,7 +58,7 @@ public class Prop_LangTranslator extends Property implements Language
 			else
 			{
 				Ability A=CMClass.getAbility(s);
-				if(A!=null) langs.addElement(A.ID(),new Integer(lastpct));
+				if(A!=null) langs.addElement(A.ID(),Integer.valueOf(lastpct));
 			}
 		}
 	}

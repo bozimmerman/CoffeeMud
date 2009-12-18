@@ -376,7 +376,7 @@ public class CMStrings
     {
     	Hashtable H=new Hashtable();
     	for(int i=0;i<obj.length;i++)
-    		H.put(obj[i],new Integer(i));
+    		H.put(obj[i],Integer.valueOf(i));
     	return H;
     }
     
@@ -659,7 +659,7 @@ public class CMStrings
 		&& (token.type != STRING_EXP_TOKEN_UKNCONST))
 			return null;
 		index[0] = i[0];
-		return new Double(token.numValue);
+		return Double.valueOf(token.numValue);
 	}
 	
 	public static String matchCombinedString(Vector tokens, int[] index, Hashtable variables) throws Exception
@@ -738,31 +738,31 @@ public class CMStrings
 		if(token.value.equals("+"))
 		{
 			index[0] = i[0];
-			return new Double(leftValue.doubleValue() + rightValue.doubleValue());
+			return Double.valueOf(leftValue.doubleValue() + rightValue.doubleValue());
 		}
 		else
 		if(token.value.equals("-")) 
 		{
 			index[0] = i[0];
-			return new Double(leftValue.doubleValue() - rightValue.doubleValue());
+			return Double.valueOf(leftValue.doubleValue() - rightValue.doubleValue());
 		}
 		else
 		if(token.value.equals("*")) 
 		{
 			index[0] = i[0];
-			return new Double(leftValue.doubleValue() * rightValue.doubleValue());
+			return Double.valueOf(leftValue.doubleValue() * rightValue.doubleValue());
 		}
 		else
 		if(token.value.equals("/")) 
 		{
 			index[0] = i[0];
-			return new Double(leftValue.doubleValue() / rightValue.doubleValue());
+			return Double.valueOf(leftValue.doubleValue() / rightValue.doubleValue());
 		}
 		else
 		if(token.value.equals("?")) 
 		{
 			index[0] = i[0];
-			return new Double(Math.round((Math.random() * (rightValue.doubleValue()-leftValue.doubleValue())) + leftValue.doubleValue())) ;
+			return Double.valueOf(Math.round((Math.random() * (rightValue.doubleValue()-leftValue.doubleValue())) + leftValue.doubleValue())) ;
 		}
 		else
 			throw new Exception("Unknown math combiner "+token.value);

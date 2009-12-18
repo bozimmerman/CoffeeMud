@@ -211,7 +211,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 				Room R=(Room)V.elementAt(v);
 				lastCall=System.currentTimeMillis();
 				Integer lastItemNum=(Integer)lastItemNums.get(R);
-				lastItemNums.put(R,new Integer(Prop_RoomForSale.updateLotWithThisData(R,this,false,false,optPlayerList,(lastItemNum==null)?-1:lastItemNum.intValue())));
+				lastItemNums.put(R,Integer.valueOf(Prop_RoomForSale.updateLotWithThisData(R,this,false,false,optPlayerList,(lastItemNum==null)?-1:lastItemNum.intValue())));
 			}
 			lastCall=System.currentTimeMillis();
 			Area A=null;

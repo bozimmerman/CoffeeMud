@@ -57,7 +57,7 @@ public class Skill_Buffoonery extends BardSkill
 
 		for(int i=0;i<pos.length;i++)
 			if(!pos[i])
-				V.addElement(new Long(Item.WORN_ORDER[i]));
+				V.addElement(Long.valueOf(Item.WORN_ORDER[i]));
 		return V;
 	}
 
@@ -191,7 +191,7 @@ public class Skill_Buffoonery extends BardSkill
 						mob.tell(target.name()+" has no free wearing positions!");
 						return false;
 					}
-					if((free.contains(new Long(Item.WORN_WIELD)))
+					if((free.contains(Long.valueOf(Item.WORN_WIELD)))
 					&&((I instanceof Weapon)||(!(I instanceof Armor))))
 						position=Item.WORN_WIELD;
 					else

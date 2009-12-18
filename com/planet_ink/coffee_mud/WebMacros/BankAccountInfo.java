@@ -53,7 +53,7 @@ public class BankAccountInfo extends StdWebMacro
 		}
 		else
 		{
-			Double bal=new Double(B.getBalance(playerM));
+			Double bal=Double.valueOf(B.getBalance(playerM));
 			info.balance=bal.doubleValue();
 			info.debt=B.getDebtInfo(playerM);
 			info.items=B.getDepositedItems(playerM);

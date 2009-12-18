@@ -89,7 +89,7 @@ public class DefaultClan implements Clan
                 lastClanKillRecord=((DatabaseEngine.PlayerData)V.firstElement()).xml;
                 Vector V2=CMParms.parseSemicolons(lastClanKillRecord,true);
                 for(int v=0;v<V2.size();v++)
-                    clanKills.addElement(new Long(CMath.s_long((String)V2.elementAt(v))));
+                    clanKills.addElement(Long.valueOf(CMath.s_long((String)V2.elementAt(v))));
             }
         }
     }
@@ -158,7 +158,7 @@ public class DefaultClan implements Clan
     public void recordClanKill()
     {
         clanKills();
-        clanKills.addElement(new Long(System.currentTimeMillis()));
+        clanKills.addElement(Long.valueOf(System.currentTimeMillis()));
         updateClanKills();
     }
     public int getCurrentClanKills()

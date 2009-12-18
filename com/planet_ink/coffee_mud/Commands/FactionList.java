@@ -77,7 +77,7 @@ public class FactionList extends StdCommand
     public String calcRangeBar(String factionID, int faction) 
     {
 		StringBuffer bar=new StringBuffer();
-        Double fill=new Double(CMath.div(CMLib.factions().getRangePercent(factionID,faction),4));
+        Double fill=Double.valueOf(CMath.div(CMLib.factions().getRangePercent(factionID,faction),4));
         for(int i=0;i<fill.intValue();i++) 
         {
             bar.append("*");

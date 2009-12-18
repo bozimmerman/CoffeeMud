@@ -397,9 +397,9 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						&&(C.availabilityCode()!=0)
 						&&(!CMLib.ableMapper().getSecretSkill(C.ID(),true,A.ID())))
 						{
-							if(!sortedByLevel.containsKey(new Integer(lvl)))
-								sortedByLevel.put(new Integer(lvl),new int[1]);
-							((int[])sortedByLevel.get(new Integer(lvl)))[0]++;
+							if(!sortedByLevel.containsKey(Integer.valueOf(lvl)))
+								sortedByLevel.put(Integer.valueOf(lvl),new int[1]);
+							((int[])sortedByLevel.get(Integer.valueOf(lvl)))[0]++;
 							avail.addElement(C.name(lvl)+"("+lvl+")");
 						}
 					}

@@ -2695,7 +2695,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                             S.setScript(val);
                             E2.addScript(S);
                             runtimeRegisterObject(E2);
-                            questState.addons.addElement(CMParms.makeVector(E2,S),new Integer(questState.preserveState));
+                            questState.addons.addElement(CMParms.makeVector(E2,S),Integer.valueOf(questState.preserveState));
                         }
                     }
                     else
@@ -2862,9 +2862,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         if(reTime)
         {
         	Long ellapsed=(Long)stepEllapsedTimes.get(script);
-        	if(ellapsed==null) ellapsed=new Long(0);
+        	if(ellapsed==null) ellapsed=Long.valueOf(0);
         	stepEllapsedTimes.remove(script);
-        	ellapsed=new Long(ellapsed.longValue()+(System.currentTimeMillis()-lastStartDateTime));
+        	ellapsed=Long.valueOf(ellapsed.longValue()+(System.currentTimeMillis()-lastStartDateTime));
         	stepEllapsedTimes.put(script,ellapsed);
             Q2.resetWaitRemaining(ellapsed.longValue());
             if(Q2.startQuestOnTime())
@@ -2992,7 +2992,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                Integer I=(Integer)questState.stuff.elementAt(i,2);
 	                if(I.intValue()>0)
 	                {
-	                    questState.stuff.setElementAt(i,2,new Integer(I.intValue()-1));
+	                    questState.stuff.setElementAt(i,2,Integer.valueOf(I.intValue()-1));
 	                    continue;
 	                }
 	                Environmental E=(Environmental)questState.stuff.elementAt(i,1);
@@ -3044,7 +3044,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		                Integer I=(Integer)questState.addons.elementAt(i,2);
 		                if(I.intValue()>0)
 		                {
-		                    questState.addons.setElementAt(i,2,new Integer(I.intValue()-1));
+		                    questState.addons.setElementAt(i,2,Integer.valueOf(I.intValue()-1));
 		                    continue;
 		                }
 		                Vector V=(Vector)questState.addons.elementAt(i,1);
@@ -3219,9 +3219,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         synchronized(questState)
         {
 	        for(int q=0;q<questState.stuff.size();q++)
-	            questState.stuff.setElementAt(q,2,new Integer(0));
+	            questState.stuff.setElementAt(q,2,Integer.valueOf(0));
 	        for(int q=0;q<questState.addons.size();q++)
-	            questState.addons.setElementAt(q,2,new Integer(0));
+	            questState.addons.setElementAt(q,2,Integer.valueOf(0));
         }
         cleanQuestStep();
         stoppingQuest=true;
@@ -3500,7 +3500,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         }
         synchronized(questState)
         {
-	        questState.addons.addElement(V,new Integer(questState.preserveState));
+	        questState.addons.addElement(V,Integer.valueOf(questState.preserveState));
         }
     }
 
@@ -3511,7 +3511,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	        int x=questState.stuff.indexOf(object);
 	        if(x<0)
 	        {
-	        	questState.stuff.addElement(object, new Integer(questState.preserveState));
+	        	questState.stuff.addElement(object, Integer.valueOf(questState.preserveState));
 	        	Ability A=CMClass.getAbility("QuestBound");
 	        	A.setMiscText(""+this);
 	        	object.addNonUninvokableEffect(A);
@@ -3520,7 +3520,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	        {
 	            Integer I=(Integer)questState.stuff.elementAt(x,2);
 	            if(I.intValue()<questState.preserveState)
-	                questState.stuff.setElementAt(x,2, new Integer(questState.preserveState));
+	                questState.stuff.setElementAt(x,2, Integer.valueOf(questState.preserveState));
 	        }
         }
     }
@@ -3560,7 +3560,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         }
         synchronized(questState)
         {
-	        questState.addons.addElement(V,new Integer(questState.preserveState));
+	        questState.addons.addElement(V,Integer.valueOf(questState.preserveState));
         }
     }
 
@@ -3595,7 +3595,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         B.registerDefaultQuest(name());
         synchronized(questState)
         {
-	        questState.addons.addElement(V,new Integer(questState.preserveState));
+	        questState.addons.addElement(V,Integer.valueOf(questState.preserveState));
         }
     }
 
@@ -3646,7 +3646,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         }
         synchronized(questState)
         {
-	        questState.addons.addElement(V,new Integer(questState.preserveState));
+	        questState.addons.addElement(V,Integer.valueOf(questState.preserveState));
         }
     }
 

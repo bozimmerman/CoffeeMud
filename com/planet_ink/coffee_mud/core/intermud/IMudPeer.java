@@ -98,7 +98,7 @@ public class IMudPeer implements PersistentPeer
 			try{
                 ByteArrayOutputStream bout=new ByteArrayOutputStream();
 				ObjectOutputStream out=new ObjectOutputStream(bout);
-				out.writeObject(new Integer(((Intermud)myobj).password));
+				out.writeObject(Integer.valueOf(((Intermud)myobj).password));
 				out.writeObject(((Intermud)myobj).banned);
 				out.writeObject(((Intermud)myobj).channels);
 				out.writeObject(((Intermud)myobj).muds);

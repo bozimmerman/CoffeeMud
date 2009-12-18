@@ -248,15 +248,15 @@ public class UnderWater extends StdRoom implements Drink
 	public boolean containsDrink(){return true;}
     public int amountTakenToFillMe(Drink theSource){return 0;}
 	public static final Integer[] resourceList={
-		new Integer(RawMaterial.RESOURCE_SEAWEED),
-		new Integer(RawMaterial.RESOURCE_FISH),
-		new Integer(RawMaterial.RESOURCE_CATFISH),
-		new Integer(RawMaterial.RESOURCE_SALMON),
-		new Integer(RawMaterial.RESOURCE_CARP),
-		new Integer(RawMaterial.RESOURCE_TROUT),
-		new Integer(RawMaterial.RESOURCE_SAND),
-		new Integer(RawMaterial.RESOURCE_CLAY),
-		new Integer(RawMaterial.RESOURCE_LIMESTONE)};
+		Integer.valueOf(RawMaterial.RESOURCE_SEAWEED),
+		Integer.valueOf(RawMaterial.RESOURCE_FISH),
+		Integer.valueOf(RawMaterial.RESOURCE_CATFISH),
+		Integer.valueOf(RawMaterial.RESOURCE_SALMON),
+		Integer.valueOf(RawMaterial.RESOURCE_CARP),
+		Integer.valueOf(RawMaterial.RESOURCE_TROUT),
+		Integer.valueOf(RawMaterial.RESOURCE_SAND),
+		Integer.valueOf(RawMaterial.RESOURCE_CLAY),
+		Integer.valueOf(RawMaterial.RESOURCE_LIMESTONE)};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
 	public Vector resourceChoices(){return UnderWater.roomResources;}
 }

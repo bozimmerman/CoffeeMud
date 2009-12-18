@@ -712,7 +712,7 @@ public class StdMOB implements MOB
 			if(follower!=null)
 			{
 				if((follower.isMonster())&&(!follower.isPossessing()))
-					oldFollowers.addElement(follower,new Integer(fetchFollowerOrder(follower)));
+					oldFollowers.addElement(follower,Integer.valueOf(fetchFollowerOrder(follower)));
 				follower.setFollowing(null);
 				delFollower(follower);
 			}
@@ -1310,7 +1310,7 @@ public class StdMOB implements MOB
 	                if(commandQue.size()>0)
 	                {
 	                	Object O=commandQue.elementAt(0,1);
-	                	Double D=new Double(calculateTickDelay(O,(Vector)doCommand[1],0.0));
+	                	Double D=Double.valueOf(calculateTickDelay(O,(Vector)doCommand[1],0.0));
 	                	if(commandQue.size()>0) commandQue.setElementAt(0,3,D);
 	                }
 	                else
@@ -1434,7 +1434,7 @@ public class StdMOB implements MOB
             next[0]=System.currentTimeMillis()-1;
             int[] seconds=new int[1];
             seconds[0]=-1;
-            commandQue.insertElementAt(0,O,commands,new Double(tickDelay),next,seconds,new Integer(metaFlags));
+            commandQue.insertElementAt(0,O,commands,Double.valueOf(tickDelay),next,seconds,Integer.valueOf(metaFlags));
         }
         dequeCommand();
     }
@@ -1455,7 +1455,7 @@ public class StdMOB implements MOB
             next[0]=System.currentTimeMillis()-1;
             int[] seconds=new int[1];
             seconds[0]=-1;
-            commandQue.addElement(O,commands,new Double(tickDelay),next,seconds,new Integer(metaFlags));
+            commandQue.addElement(O,commands,Double.valueOf(tickDelay),next,seconds,Integer.valueOf(metaFlags));
         }
         dequeCommand();
 	}
@@ -2835,12 +2835,12 @@ public class StdMOB implements MOB
 		{
 			if(followers==null) followers=new DVector(2);
 			if(!followers.contains(follower))
-				followers.addElement(follower,new Integer(order));
+				followers.addElement(follower,Integer.valueOf(order));
 			else
 			{
 				int x=followers.indexOf(follower);
 				if(x>=0)
-					followers.setElementAt(x,2,new Integer(order));
+					followers.setElementAt(x,2,Integer.valueOf(order));
 			}
 		}
 	}

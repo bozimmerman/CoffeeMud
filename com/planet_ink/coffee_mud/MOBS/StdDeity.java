@@ -825,7 +825,7 @@ public class StdDeity extends StdMOB implements Deity
 				{
 					recheck=true;
 					trigTimes.remove(msg.source().Name());
-					trigTimes.put(msg.source().Name(),new Long(System.currentTimeMillis()));
+					trigTimes.put(msg.source().Name(),Long.valueOf(System.currentTimeMillis()));
 					if((checks==null)||(checks.length!=V.size()))
 					{
 						checks=new boolean[V.size()];
@@ -1003,7 +1003,7 @@ public class StdDeity extends StdMOB implements Deity
             for(int d=services.size()-1;d>=0;d--)
                 if(services.elementAt(d,1)==room)
                     return;
-            services.addElement(room,new Integer(0),new Long(System.currentTimeMillis()),parishaners);
+            services.addElement(room,Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),parishaners);
         }
         Room R=null;
         MOB M=null;
@@ -1077,7 +1077,7 @@ public class StdDeity extends StdMOB implements Deity
             for(int d=services.size()-1;d>=0;d--)
                 if(services.elementAt(d,1)==room)
                 {
-                    services.setElementAt(d,2,new Integer(Integer.MAX_VALUE));
+                    services.setElementAt(d,2,Integer.valueOf(Integer.MAX_VALUE));
                     parishaners=(Vector)services.elementAt(d,4);
                 }
         }

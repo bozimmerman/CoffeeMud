@@ -106,14 +106,14 @@ public class StdClanDonationList extends StdClanItem
                                 {
                                     did=true;
                                     Object[] O=new Object[2];
-                                    O[0]=new Long(val);
+                                    O[0]=Long.valueOf(val);
                                     O[1]=set.xml;
                                     sorted.insertElementAt(O,i);
                                 }
                             if(!did) 
                             {
                                 Object[] O=new Object[2];
-                                O[0]=new Long(val);
+                                O[0]=Long.valueOf(val);
                                 O[1]=set.xml;
                                 sorted.addElement(O);
                             }

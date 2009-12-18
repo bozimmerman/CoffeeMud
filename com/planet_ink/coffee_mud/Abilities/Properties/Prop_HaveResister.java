@@ -45,20 +45,20 @@ public class Prop_HaveResister extends Property
     protected int remainingProtection=0;
 
     public static Object[][] stats={
-            {new Integer(CharStats.STAT_SAVE_MAGIC),"magic"},
-            {new Integer(CharStats.STAT_SAVE_GAS),"gas"},
-            {new Integer(CharStats.STAT_SAVE_FIRE),"fire"},
-            {new Integer(CharStats.STAT_SAVE_ELECTRIC),"elec"},
-            {new Integer(CharStats.STAT_SAVE_MIND),"mind"},
-            {new Integer(CharStats.STAT_SAVE_JUSTICE),"justice"},
-            {new Integer(CharStats.STAT_SAVE_COLD),"cold"},
-            {new Integer(CharStats.STAT_SAVE_ACID),"acid"},
-            {new Integer(CharStats.STAT_SAVE_WATER),"water"},
-            {new Integer(CharStats.STAT_SAVE_UNDEAD),"evil"},
-            {new Integer(CharStats.STAT_SAVE_DISEASE),"disease"},
-            {new Integer(CharStats.STAT_SAVE_POISON),"poison"},
-            {new Integer(CharStats.STAT_SAVE_PARALYSIS),"paralyze"},
-            {new Integer(CharStats.STAT_SAVE_TRAPS),"traps"}
+            {Integer.valueOf(CharStats.STAT_SAVE_MAGIC),"magic"},
+            {Integer.valueOf(CharStats.STAT_SAVE_GAS),"gas"},
+            {Integer.valueOf(CharStats.STAT_SAVE_FIRE),"fire"},
+            {Integer.valueOf(CharStats.STAT_SAVE_ELECTRIC),"elec"},
+            {Integer.valueOf(CharStats.STAT_SAVE_MIND),"mind"},
+            {Integer.valueOf(CharStats.STAT_SAVE_JUSTICE),"justice"},
+            {Integer.valueOf(CharStats.STAT_SAVE_COLD),"cold"},
+            {Integer.valueOf(CharStats.STAT_SAVE_ACID),"acid"},
+            {Integer.valueOf(CharStats.STAT_SAVE_WATER),"water"},
+            {Integer.valueOf(CharStats.STAT_SAVE_UNDEAD),"evil"},
+            {Integer.valueOf(CharStats.STAT_SAVE_DISEASE),"disease"},
+            {Integer.valueOf(CharStats.STAT_SAVE_POISON),"poison"},
+            {Integer.valueOf(CharStats.STAT_SAVE_PARALYSIS),"paralyze"},
+            {Integer.valueOf(CharStats.STAT_SAVE_TRAPS),"traps"}
     };
     
 	public void setMiscText(String newText)

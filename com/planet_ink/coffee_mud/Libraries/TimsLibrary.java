@@ -301,7 +301,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 					int highIndex=-1;
 					for(int i=0;i<LVLS.length;i++)
 						if(((highIndex<0)||(LVLS[i]>LVLS[highIndex]))
-						&&(!illegalNums.contains(new Integer(i))))
+						&&(!illegalNums.contains(Integer.valueOf(i))))
 							highIndex=i;
 					if(highIndex<0) break;
 					switch(highIndex)
@@ -316,7 +316,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 							if((I.baseEnvStats().attackAdjustment()==oldAtt)
 							&&(I.baseEnvStats().damage()==oldDam)
 							&&((ADJ==null)||(ADJ.text().equals(s))))
-								illegalNums.addElement(new Integer(0));
+								illegalNums.addElement(Integer.valueOf(0));
 						}
 						else
 						{
@@ -325,28 +325,28 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 							toneDownArmor((Armor)I,ADJ);
 							if((I.baseEnvStats().armor()==oldArm)
 							&&((ADJ==null)||(ADJ.text().equals(s))))
-								illegalNums.addElement(new Integer(0));
+								illegalNums.addElement(Integer.valueOf(0));
 						}
 						break;
 					case 1:
 						if(I.baseEnvStats().ability()>0)
 							I.baseEnvStats().setAbility(I.baseEnvStats().ability()-1);
 						else
-							illegalNums.addElement(new Integer(1));
+							illegalNums.addElement(Integer.valueOf(1));
 						break;
 					case 2:
-						illegalNums.addElement(new Integer(2));
+						illegalNums.addElement(Integer.valueOf(2));
 						// nothing I can do!;
 						break;
 					case 3:
 						if(ADJ==null)
-							illegalNums.addElement(new Integer(3));
+							illegalNums.addElement(Integer.valueOf(3));
 						else
 						{
 							String oldTxt=ADJ.text();
 							toneDownAdjuster(I,ADJ);
 							if(ADJ.text().equals(oldTxt))
-								illegalNums.addElement(new Integer(3));
+								illegalNums.addElement(Integer.valueOf(3));
 						}
 						break;
 					}

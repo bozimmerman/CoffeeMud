@@ -71,12 +71,12 @@ public class Concierge extends StdBehavior
 	    	R=CMLib.map().getRoom(s);
 	    	if(R==null) A=CMLib.map().findArea(s);
 	    	if(A!=null)
-	    		rates.addElement(A,new Double(price));
+	    		rates.addElement(A,Double.valueOf(price));
 	    	else
 	    	if((R!=null)&&(!rates.contains(R)))
-	    		rates.addElement(R,new Double(price));
+	    		rates.addElement(R,Double.valueOf(price));
 	    	else
-	    		rates.addElement(s,new Double(price));
+	    		rates.addElement(s,Double.valueOf(price));
 	    }
 	    basePrice=price;
 	}
@@ -231,7 +231,7 @@ public class Concierge extends StdBehavior
 				owed-=((Coins)msg.tool()).getTotalValue();
 				if(owed>0.0)
 				{
-					destinations.setElementAt(destIndex,3,new Double(owed));
+					destinations.setElementAt(destIndex,3,Double.valueOf(owed));
 					CMLib.commands().postSay(observer,source,"Ok, you still owe "+CMLib.beanCounter().nameCurrencyLong(observer,owed)+".",true,false);
 					return;
 				}
@@ -292,7 +292,7 @@ public class Concierge extends StdBehavior
 	        			return;
         			}
         		int index=destinations.indexOf(msg.source());
-        		Double paid=(index>=0)?(Double)destinations.elementAt(index,3):new Double(0.0);
+        		Double paid=(index>=0)?(Double)destinations.elementAt(index,3):Double.valueOf(0.0);
         		destinations.removeElement(msg.source());
         		double rate=getPrice(E);
         		if(rate<=0.0)

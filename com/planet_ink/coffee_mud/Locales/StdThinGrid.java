@@ -168,19 +168,19 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			int pos=properRoomIndex(x,y);
 			if(pos>=rooms.size())
 			{
-				rooms.addElement(R,new Integer(x),new Integer(y));
+				rooms.addElement(R,Integer.valueOf(x),Integer.valueOf(y));
 				return;
 			}
             long comptotal=(((Integer)rooms.elementAt(pos,2)).longValue()<<31)+((Integer)rooms.elementAt(pos,3)).longValue();
             int comp=comptotal>total?1:(comptotal==total)?0:-1;
 			if(comp==0) return;
 			if(comp>0)
-				rooms.insertElementAt(pos,R,new Integer(x),new Integer(y));
+				rooms.insertElementAt(pos,R,Integer.valueOf(x),Integer.valueOf(y));
 			else
 			if(pos==rooms.size()-1)
-				rooms.addElement(R,new Integer(x),new Integer(y));
+				rooms.addElement(R,Integer.valueOf(x),Integer.valueOf(y));
 			else
-				rooms.insertElementAt(pos+1,R,new Integer(x),new Integer(y));
+				rooms.insertElementAt(pos+1,R,Integer.valueOf(x),Integer.valueOf(y));
 		}
 	}
 

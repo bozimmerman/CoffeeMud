@@ -374,15 +374,15 @@ public class Druid extends StdCharClass
             if((stuff==null)||(System.currentTimeMillis()-((Long)stuff[0]).longValue()>(room.getArea().getTimeObj().getDaysInMonth()*room.getArea().getTimeObj().getHoursInDay()*TimeClock.TIME_MILIS_PER_MUDHOUR)))
             {
                 stuff=new Object[3];
-                stuff[0]=new Long(System.currentTimeMillis());
+                stuff[0]=Long.valueOf(System.currentTimeMillis());
                 animalChecking.remove(host);
                 animalChecking.put(host,stuff);
-                stuff[1]=new Integer(0);
+                stuff[1]=Integer.valueOf(0);
                 stuff[2]=new Vector();
             }
             if((((Integer)stuff[1]).intValue()<19)&&(!((Vector)stuff[2]).contains(""+msg.source())))
             {
-                stuff[1]=new Integer(((Integer)stuff[1]).intValue()+1);
+                stuff[1]=Integer.valueOf(((Integer)stuff[1]).intValue()+1);
                 ((MOB)host).tell("You have freed "+msg.source().name()+" from "+(msg.source().getStartRoom().getArea().name())+".");
                 CMLib.leveler().postExperience((MOB)host,null,null,((Integer)stuff[1]).intValue(),false);
             }

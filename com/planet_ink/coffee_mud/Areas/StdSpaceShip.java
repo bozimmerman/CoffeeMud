@@ -688,7 +688,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 					int newnum=CMath.s_int(R.roomID().substring(Name().length()+1));
 					if(newnum>=highest)	highest=newnum;
 					if(newnum<=lowest) lowest=newnum;
-					allNums.put(new Integer(newnum),R);
+					allNums.put(Integer.valueOf(newnum),R);
 				}
 			}
 	    }catch(NoSuchElementException e){}
@@ -697,7 +697,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		if(lowest>highest) lowest=highest+1;
 		for(int i=lowest;i<=highest+1000;i++)
 		{
-			if((!allNums.containsKey(new Integer(i)))
+			if((!allNums.containsKey(Integer.valueOf(i)))
 			&&(CMLib.map().getRoom(Name()+"#"+i)==null))
 				return Name()+"#"+i;
 		}

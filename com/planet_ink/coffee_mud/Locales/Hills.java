@@ -46,23 +46,23 @@ public class Hills extends StdRoom
 	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 	public static final Integer[] resourceList={
-		new Integer(RawMaterial.RESOURCE_GRAPES),
-		new Integer(RawMaterial.RESOURCE_BERRIES),
-		new Integer(RawMaterial.RESOURCE_BLUEBERRIES),
-		new Integer(RawMaterial.RESOURCE_BLACKBERRIES),
-		new Integer(RawMaterial.RESOURCE_STRAWBERRIES),
-		new Integer(RawMaterial.RESOURCE_RASPBERRIES),
-		new Integer(RawMaterial.RESOURCE_BOYSENBERRIES),
-		new Integer(RawMaterial.RESOURCE_GREENS),
-		new Integer(RawMaterial.RESOURCE_OLIVES),
-		new Integer(RawMaterial.RESOURCE_BEANS),
-		new Integer(RawMaterial.RESOURCE_RICE),
-		new Integer(RawMaterial.RESOURCE_LEATHER),
-		new Integer(RawMaterial.RESOURCE_FEATHERS),
-		new Integer(RawMaterial.RESOURCE_MESQUITE),
-		new Integer(RawMaterial.RESOURCE_EGGS),
-		new Integer(RawMaterial.RESOURCE_HERBS),
-		new Integer(RawMaterial.RESOURCE_POTATOES)
+		Integer.valueOf(RawMaterial.RESOURCE_GRAPES),
+		Integer.valueOf(RawMaterial.RESOURCE_BERRIES),
+		Integer.valueOf(RawMaterial.RESOURCE_BLUEBERRIES),
+		Integer.valueOf(RawMaterial.RESOURCE_BLACKBERRIES),
+		Integer.valueOf(RawMaterial.RESOURCE_STRAWBERRIES),
+		Integer.valueOf(RawMaterial.RESOURCE_RASPBERRIES),
+		Integer.valueOf(RawMaterial.RESOURCE_BOYSENBERRIES),
+		Integer.valueOf(RawMaterial.RESOURCE_GREENS),
+		Integer.valueOf(RawMaterial.RESOURCE_OLIVES),
+		Integer.valueOf(RawMaterial.RESOURCE_BEANS),
+		Integer.valueOf(RawMaterial.RESOURCE_RICE),
+		Integer.valueOf(RawMaterial.RESOURCE_LEATHER),
+		Integer.valueOf(RawMaterial.RESOURCE_FEATHERS),
+		Integer.valueOf(RawMaterial.RESOURCE_MESQUITE),
+		Integer.valueOf(RawMaterial.RESOURCE_EGGS),
+		Integer.valueOf(RawMaterial.RESOURCE_HERBS),
+		Integer.valueOf(RawMaterial.RESOURCE_POTATOES)
 	};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
 	public Vector resourceChoices(){return Hills.roomResources;}

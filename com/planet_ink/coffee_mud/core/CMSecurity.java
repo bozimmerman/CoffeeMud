@@ -693,9 +693,9 @@ public class CMSecurity
         if(CMProps.getIntVar(CMProps.SYSTEMI_JSCRIPTS)!=1)
             return;
         Hashtable approved=CMSecurity.getApprovedJScriptTable();
-        if(approved.containsKey(new Long(hashCode)))
-            approved.remove(new Long(hashCode));
-        approved.put(new Long(hashCode),approver);
+        if(approved.containsKey(Long.valueOf(hashCode)))
+            approved.remove(Long.valueOf(hashCode));
+        approved.put(Long.valueOf(hashCode),approver);
         StringBuffer newApproved=new StringBuffer("");
         for(Enumeration e=approved.keys();e.hasMoreElements();)
         {
@@ -722,7 +722,7 @@ public class CMSecurity
                     String s=(String)jscripts.elementAt(i);
                     int x=s.indexOf("=");
                     if(x>0)
-                        approved.put(new Long(CMath.s_long(s.substring(0,x))),s.substring(x+1));
+                        approved.put(Long.valueOf(CMath.s_long(s.substring(0,x))),s.substring(x+1));
                 }
             }
         }
@@ -736,7 +736,7 @@ public class CMSecurity
         if(CMProps.getIntVar(CMProps.SYSTEMI_JSCRIPTS)==0)
             return false;
         Hashtable approved=CMSecurity.getApprovedJScriptTable();
-        Long hashCode=new Long(script.toString().hashCode());
+        Long hashCode=Long.valueOf(script.toString().hashCode());
         Object approver=approved.get(hashCode);
         if(approver==null)
         {

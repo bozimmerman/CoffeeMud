@@ -438,8 +438,8 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
                 }
                 if(isEmptyCluster(processed,x+(spacing*xadjust),y+(spacing*yadjust)))
                 {
-                    XY.setElementAt(new Integer(x+(spacing*xadjust)),0);
-                    XY.setElementAt(new Integer(y+(spacing*yadjust)),1);
+                    XY.setElementAt(Integer.valueOf(x+(spacing*xadjust)),0);
+                    XY.setElementAt(Integer.valueOf(y+(spacing*yadjust)),1);
                     return;
                 }
             }
@@ -643,8 +643,8 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
                 }
             // nope; nobody can.  It's up to this!
             Vector XY=new Vector();
-            XY.addElement(new Integer(0));
-            XY.addElement(new Integer(0));
+            XY.addElement(Integer.valueOf(0));
+            XY.addElement(Integer.valueOf(0));
             findEmptyCluster(processed,XY);
             room.x=((Integer)XY.elementAt(0)).intValue();
             room.y=((Integer)XY.elementAt(1)).intValue();

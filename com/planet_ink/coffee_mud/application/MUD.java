@@ -487,7 +487,7 @@ public class MUD extends Thread implements MudHost
                     }
                 }catch(java.lang.ArrayIndexOutOfBoundsException e){}
 
-                accessed.addElement(address,new Long(System.currentTimeMillis()));
+                accessed.addElement(address,Long.valueOf(System.currentTimeMillis()));
             }
 
             if(proceed!=0)

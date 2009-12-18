@@ -87,7 +87,7 @@ public class Reset extends StdCommand
 			else
 			if(str.length()==0)
 			{
-				rememberI.put(I.Name(),new Integer(I.material()));
+				rememberI.put(I.Name(),Integer.valueOf(I.material()));
 				return nochange;
 			}
 			if(str.equals("?"))
@@ -103,7 +103,7 @@ public class Reset extends StdCommand
 					{
 						I.setMaterial(RawMaterial.RESOURCE_DATA[ii][0]);
 						mob.tell(lead+"Changed to "+RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK]);
-						rememberI.put(I.Name(),new Integer(I.material()));
+						rememberI.put(I.Name(),Integer.valueOf(I.material()));
 						return 1;
 					}
 				}

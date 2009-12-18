@@ -40,14 +40,14 @@ public class UnderSaltWater extends UnderWater
 
 	public int liquidType(){return RawMaterial.RESOURCE_SALTWATER;}
 	public static final Integer[] resourceList={
-		new Integer(RawMaterial.RESOURCE_SEAWEED),
-		new Integer(RawMaterial.RESOURCE_FISH),
-		new Integer(RawMaterial.RESOURCE_TUNA),
-		new Integer(RawMaterial.RESOURCE_SHRIMP),
-		new Integer(RawMaterial.RESOURCE_SAND),
-		new Integer(RawMaterial.RESOURCE_CLAY),
-		new Integer(RawMaterial.RESOURCE_PEARL),
-		new Integer(RawMaterial.RESOURCE_LIMESTONE)};
+		Integer.valueOf(RawMaterial.RESOURCE_SEAWEED),
+		Integer.valueOf(RawMaterial.RESOURCE_FISH),
+		Integer.valueOf(RawMaterial.RESOURCE_TUNA),
+		Integer.valueOf(RawMaterial.RESOURCE_SHRIMP),
+		Integer.valueOf(RawMaterial.RESOURCE_SAND),
+		Integer.valueOf(RawMaterial.RESOURCE_CLAY),
+		Integer.valueOf(RawMaterial.RESOURCE_PEARL),
+		Integer.valueOf(RawMaterial.RESOURCE_LIMESTONE)};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
 	public Vector resourceChoices(){return UnderWater.roomResources;}
 }

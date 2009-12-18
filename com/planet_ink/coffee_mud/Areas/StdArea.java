@@ -989,10 +989,10 @@ public class StdArea implements Area
 					if((mob!=null)&&(mob.isMonster()))
 					{
 						int lvl=mob.baseEnvStats().level();
-						levelRanges.addElement(new Integer(lvl));
+						levelRanges.addElement(Integer.valueOf(lvl));
 						if((theFaction!=null)&&(mob.fetchFaction(theFaction.factionID())!=Integer.MAX_VALUE))
 						{
-						    alignRanges.addElement(new Integer(mob.fetchFaction(theFaction.factionID())));
+						    alignRanges.addElement(Integer.valueOf(mob.fetchFaction(theFaction.factionID())));
 						    totalAlignments+=mob.fetchFaction(theFaction.factionID());
 						}
 						statData[Area.AREASTAT_POPULATION]++;

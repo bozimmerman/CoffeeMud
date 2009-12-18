@@ -110,7 +110,7 @@ public class Prop_Smell extends Property
 	            }
 	            String finalSmell=CMParms.combine(parsedSmell,0).trim();
 	            if(finalSmell.length()>0)
-	                smells.addElement(finalSmell,new Integer(pct),new Integer(ticks));
+	                smells.addElement(finalSmell,Integer.valueOf(pct),Integer.valueOf(ticks));
 	        }
 	    }
 	    return smells;
@@ -204,7 +204,7 @@ public class Prop_Smell extends Property
 		    {
 		        if(((Integer)sm.elementAt(i,3)).intValue()>0)
 		        {
-		            Integer I=new Integer(((Integer)smells.elementAt(i,3)).intValue()-1);
+		            Integer I=Integer.valueOf(((Integer)smells.elementAt(i,3)).intValue()-1);
 		            if(I.intValue()>0)
 		            {
 		                String smell=(String)sm.elementAt(i,1);

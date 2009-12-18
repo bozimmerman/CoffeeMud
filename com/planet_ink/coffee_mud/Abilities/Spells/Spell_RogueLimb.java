@@ -128,7 +128,7 @@ public class Spell_RogueLimb extends Spell
 					{
 						if((target.charStats().getBodyPart(i)>0)
 						&&(i!=Race.BODY_TORSO))
-							limbs.addElement(new Integer(i));
+							limbs.addElement(Integer.valueOf(i));
 					}
 					String limb=null;
 					if(limbs.size()==0)

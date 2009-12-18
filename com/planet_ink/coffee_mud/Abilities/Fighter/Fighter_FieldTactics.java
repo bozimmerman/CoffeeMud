@@ -42,7 +42,7 @@ public class Fighter_FieldTactics extends FighterSkill
     public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-	private static final Integer[] landClasses = {new Integer(-1)};
+	private static final Integer[] landClasses = {Integer.valueOf(-1)};
 	public Integer[] landClasses(){return landClasses;}
 	protected boolean activated=false;
 	protected boolean hidden=false;

@@ -91,16 +91,16 @@ public class DefaultArrestWarrant implements LegalWarrant
     public int punishment(){ return punishment;}
     public String getPunishmentParm(int code)
     {
-        int index=punishmentParms.indexOf(new Integer(code));
+        int index=punishmentParms.indexOf(Integer.valueOf(code));
         if(index<0) return "";
         return (String)punishmentParms.elementAt(index,2);
     }
     public void addPunishmentParm(int code, String parm)
     {
-        int index=punishmentParms.indexOf(new Integer(code));
+        int index=punishmentParms.indexOf(Integer.valueOf(code));
         if(index>=0)
             punishmentParms.removeElementAt(index);
-        punishmentParms.addElement(new Integer(code),parm);
+        punishmentParms.addElement(Integer.valueOf(code),parm);
     }
     public int jailTime(){ return jailTime;}
     public int state(){ return state;}

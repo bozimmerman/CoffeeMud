@@ -87,7 +87,7 @@ public class MoneyChanger extends StdBehavior
 						if(parm.equalsIgnoreCase("cut"))
 						    cut=val/100.0;
 						else
-						    rates.put(parm,new Double(val/100.0));
+						    rates.put(parm,Double.valueOf(val/100.0));
 					}
 				}
 

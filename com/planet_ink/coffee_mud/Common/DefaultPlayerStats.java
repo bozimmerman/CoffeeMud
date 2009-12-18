@@ -552,15 +552,15 @@ public class DefaultPlayerStats implements PlayerStats
                 if((twin.size()!=2)&&(twin.size()!=3))  continue;
                 if(CMath.s_int((String)twin.firstElement())>=lastNum)
                 {
-                	levelInfo.addElement(new Integer(CMath.s_int((String)twin.firstElement())),
-                                              new Long(CMath.s_long((String)twin.elementAt(1))),
+                	levelInfo.addElement(Integer.valueOf(CMath.s_int((String)twin.firstElement())),
+                                              Long.valueOf(CMath.s_long((String)twin.elementAt(1))),
                                               (twin.size()>2)?(String)twin.elementAt(2):"");
                     lastNum=CMath.s_int((String)twin.firstElement());
                 }
             }
         }
         if(levelInfo.size()==0)
-        	levelInfo.addElement(new Integer(0),new Long(System.currentTimeMillis()),"");
+        	levelInfo.addElement(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"");
         roomSet().parseXML(str);
         String[] codes=getStatCodes();
         for(int i=getSaveStatIndex();i<codes.length;i++)
@@ -574,7 +574,7 @@ public class DefaultPlayerStats implements PlayerStats
     private String getLevelDateTimesStr()
     {
         if(levelInfo.size()==0)
-        	levelInfo.addElement(new Integer(0),new Long(System.currentTimeMillis()),"");
+        	levelInfo.addElement(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"");
         StringBuffer buf=new StringBuffer("");
         for(int ss=0;ss<levelInfo.size();ss++)
         {
@@ -689,7 +689,7 @@ public class DefaultPlayerStats implements PlayerStats
     public long leveledDateTime(int level)
     {
         if(levelInfo.size()==0)
-        	levelInfo.addElement(new Integer(0),new Long(System.currentTimeMillis()),"");
+        	levelInfo.addElement(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"");
         long lowest=((Long)levelInfo.elementAt(0,2)).longValue();
         for(int l=1;l<levelInfo.size();l++)
         {
@@ -703,13 +703,13 @@ public class DefaultPlayerStats implements PlayerStats
     public void setLeveledDateTime(int level, Room R)
     {
         if(levelInfo.size()==0)
-        	levelInfo.addElement(new Integer(0),new Long(System.currentTimeMillis()),"");
+        	levelInfo.addElement(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"");
         long lastTime=0;
         for(int l=0;l<levelInfo.size();l++)
         {
             if(level==((Integer)levelInfo.elementAt(l,1)).intValue())
             {
-            	levelInfo.setElementAt(l,2,new Long(System.currentTimeMillis()));
+            	levelInfo.setElementAt(l,2,Long.valueOf(System.currentTimeMillis()));
             	levelInfo.setElementAt(l,3,CMLib.map().getExtendedRoomID(R));
                 return;
             }
@@ -719,14 +719,14 @@ public class DefaultPlayerStats implements PlayerStats
             else
             if(level<((Integer)levelInfo.elementAt(l,1)).intValue())
             {
-            	levelInfo.insertElementAt(l,new Integer(level),new Long(System.currentTimeMillis()),CMLib.map().getExtendedRoomID(R));
+            	levelInfo.insertElementAt(l,Integer.valueOf(level),Long.valueOf(System.currentTimeMillis()),CMLib.map().getExtendedRoomID(R));
                 return;
             }
             lastTime=((Long)levelInfo.elementAt(l,2)).longValue();
         }
         if((System.currentTimeMillis()-lastTime)<TimeManager.MILI_HOUR)
             return;
-        levelInfo.addElement(new Integer(level),new Long(System.currentTimeMillis()),CMLib.map().getExtendedRoomID(R));
+        levelInfo.addElement(Integer.valueOf(level),Long.valueOf(System.currentTimeMillis()),CMLib.map().getExtendedRoomID(R));
     }
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

@@ -182,7 +182,7 @@ public class Spell_Spellbinding extends Spell
 				mob.tell("You can't bind '"+A.ID()+"'.");
 				return false;
 			}
-			V.addElement(A.ID(),new Integer(25+A.usageCost(mob,true)[Ability.USAGEINDEX_MANA]));
+			V.addElement(A.ID(),Integer.valueOf(25+A.usageCost(mob,true)[Ability.USAGEINDEX_MANA]));
 		}
 		else
 		for(int v=0;v<commands.size();v++)
@@ -196,7 +196,7 @@ public class Spell_Spellbinding extends Spell
 				mob.tell("You can't bind '"+((String)commands.elementAt(v))+"'.");
 				return false;
 			}
-			V.addElement(A.ID(),new Integer(50+A.usageCost(mob,true)[Ability.USAGEINDEX_MANA]));
+			V.addElement(A.ID(),Integer.valueOf(50+A.usageCost(mob,true)[Ability.USAGEINDEX_MANA]));
 		}
 
 		int totalcost=0;

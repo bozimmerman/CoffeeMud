@@ -3016,7 +3016,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(GENITEMCODESHASH.size()==0)
 		{
 			for(int i=0;i<GENITEMCODES.length;i++)
-				GENITEMCODESHASH.put(GENITEMCODES[i],new Integer(i));
+				GENITEMCODESHASH.put(GENITEMCODES[i],Integer.valueOf(i));
 		}
 		if(GENITEMCODESHASH.containsKey(code.toUpperCase()))
 			return ((Integer)GENITEMCODESHASH.get(code.toUpperCase())).intValue();
@@ -3151,7 +3151,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(GENMOBCODESHASH.size()==0)
 		{
 			for(int i=0;i<GENMOBCODES.length;i++)
-				GENMOBCODESHASH.put(GENMOBCODES[i],new Integer(i));
+				GENMOBCODESHASH.put(GENMOBCODES[i],Integer.valueOf(i));
 		}
 		if(GENMOBCODESHASH.containsKey(code.toUpperCase()))
 			return ((Integer)GENMOBCODESHASH.get(code.toUpperCase())).intValue();
@@ -3428,7 +3428,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		   if (mV!=null) {
 			   for (int m=0;m<mV.size();m++) {
 				   XMLLibrary.XMLpiece mblk=(XMLLibrary.XMLpiece) mV.elementAt(m);
-				   mob.addFaction(CMLib.xml().getParmValue(mblk.parms,"ID"),new Integer(mblk.value).intValue());
+				   mob.addFaction(CMLib.xml().getParmValue(mblk.parms,"ID"),Integer.valueOf(mblk.value).intValue());
 			   }
 		   }
 	   }

@@ -124,7 +124,7 @@ public class Fishing extends GatheringSkill
 				}
 				else
 				if((mob.location().resourceChoices()!=null)
-				&&(mob.location().resourceChoices().contains(new Integer(RawMaterial.FISHES[i]))))
+				&&(mob.location().resourceChoices().contains(Integer.valueOf(RawMaterial.FISHES[i]))))
 					maybeFish=true;
 		}
 		if(!maybeFish)

@@ -477,7 +477,7 @@ public class CraftingSkill extends GatheringSkill
 		while(((building==null)||(building.name().endsWith(" bundle")))&&(((++tries)<100)))
 		{
 			Vector V=new Vector();
-			V.addElement(new Integer(material));
+			V.addElement(Integer.valueOf(material));
 			if(recipe!=null) V.addElement(recipe);
 			invoke(mob,V,this,true,-1);
 			if((V.size()>0)&&(V.lastElement() instanceof Item))

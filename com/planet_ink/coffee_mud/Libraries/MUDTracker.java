@@ -611,7 +611,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			if(C!=null)
 			{
 				Vector V=new Vector();
-				V.addElement(new Integer(directionCode));
+				V.addElement(Integer.valueOf(directionCode));
 				V.addElement(Boolean.valueOf(flee));
 				V.addElement(Boolean.valueOf(nolook));
 				V.addElement(Boolean.valueOf(noriders));
@@ -696,7 +696,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			{
 				if((R==from)&&(from.getRoomInDir(Directions.getOpDirectionCode(d))==to))
 				{
-					finalSets.addElement(CMParms.makeVector(new Integer(Directions.getOpDirectionCode(d))));
+					finalSets.addElement(CMParms.makeVector(Integer.valueOf(Directions.getOpDirectionCode(d))));
 					return finalSets;
 				}
 				int dex=radiantTrail.indexOf(R);
@@ -706,7 +706,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 					for(int a=0;a<allTrailsBack.size();a++)
 					{
 						Vector thisTrail=(Vector)allTrailsBack.elementAt(a);
-						thisTrail.addElement(new Integer(Directions.getOpDirectionCode(d)));
+						thisTrail.addElement(Integer.valueOf(Directions.getOpDirectionCode(d)));
 						finalSets.addElement(thisTrail);
 					}
 				}

@@ -582,12 +582,12 @@ public class MOBloader
                 long lastDateTime=CMath.s_long(DBConnections.getRes(R,"CMDATE"));
                 int role=(int)DB.getLongRes(R,"CMCLRO");
                 members.addElement(username);
-                roles.addElement(new Integer(role));
+                roles.addElement(Integer.valueOf(role));
                 MOB M=CMLib.players().getPlayer(username);
                 if((M!=null)&&(M.lastTickedDateTime()>0))
-                    lastDates.addElement(new Long(M.lastTickedDateTime()));
+                    lastDates.addElement(Long.valueOf(M.lastTickedDateTime()));
                 else
-                    lastDates.addElement(new Long(lastDateTime));
+                    lastDates.addElement(Long.valueOf(lastDateTime));
             }
         }catch(Exception sqle)
         {

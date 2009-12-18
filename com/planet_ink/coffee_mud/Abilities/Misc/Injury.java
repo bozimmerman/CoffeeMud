@@ -124,7 +124,7 @@ public class Injury extends StdAbility
     	            int hurt=CMath.s_int((String)V.lastElement());
     	            if(injuries[part]==null)
     	                injuries[part] = new Vector();
-    	            injuries[part].addElement(new Object[]{msg,new Integer(hurt)});
+    	            injuries[part].addElement(new Object[]{msg,Integer.valueOf(hurt)});
 	            }
 	        }
 	    }
@@ -189,7 +189,7 @@ public class Injury extends StdAbility
 		                        }
 		                        else
 		                        {
-		                            O[1]=new Integer(((Integer)O[1]).intValue()-pct);
+		                            O[1]=Integer.valueOf(((Integer)O[1]).intValue()-pct);
 		                            pct=0;
 		                        }
 		                    }
@@ -323,14 +323,14 @@ public class Injury extends StdAbility
 						    {
 						        O=new Object[2];
 						        O[0]=((String)remains.elementAt(chosenOne)).toLowerCase();
-						        O[1]=new Integer(0);
+						        O[1]=Integer.valueOf(0);
 						        bodyVec.addElement(O);
                                 whichInjury=bodyVec.size()-1;
 						    }
 					        O=(Object[])bodyVec.elementAt(whichInjury);
-					        O[1]=new Integer(((Integer)O[1]).intValue()+LimbPct);
+					        O[1]=Integer.valueOf(((Integer)O[1]).intValue()+LimbPct);
 					        if(((Integer)O[1]).intValue()>100)
-					            O[1]=new Integer(100);
+					            O[1]=Integer.valueOf(100);
 					        if((((Integer)O[1]).intValue()>=100)
 							||((BodyPct>5)
 								&&((msg.tool() instanceof Electronics)||(BodyPct>=CMProps.getIntVar(CMProps.SYSTEMI_INJPCTHPAMP)))))

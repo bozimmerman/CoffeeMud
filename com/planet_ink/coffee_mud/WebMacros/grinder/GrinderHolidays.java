@@ -50,7 +50,7 @@ public class GrinderHolidays {
                 sets.setElementAt(index,2,newVAL);
         }
         else
-            sets.addElement(var,newVAL,new Integer(-1));
+            sets.addElement(var,newVAL,Integer.valueOf(-1));
         return newVAL;
     }
 

@@ -107,12 +107,12 @@ public class After extends StdCommand implements Tickable
 		commands.removeElementAt(0);
 		if(commands.size()==0){ mob.tell(afterErr); return false;}
 		Vector V=new Vector();
-		V.addElement(new Long(System.currentTimeMillis()));
-		V.addElement(new Long(time));
+		V.addElement(Long.valueOf(System.currentTimeMillis()));
+		V.addElement(Long.valueOf(time));
 		V.addElement(Boolean.valueOf(every));
 		V.addElement(mob);
 		V.addElement(commands);
-		V.addElement(new Integer(metaFlags));
+		V.addElement(Integer.valueOf(metaFlags));
 		afterCmds.addElement(V);
 		CMLib.threads().startTickDown(this,Tickable.TICKID_AREA,1);
 		mob.tell("Ok.");
@@ -141,7 +141,7 @@ public class After extends StdCommand implements Tickable
 				Integer metaFlag=(Integer)V.elementAt(5);
 				if(every)
 				{
-					V.setElementAt(new Long(System.currentTimeMillis()),0);
+					V.setElementAt(Long.valueOf(System.currentTimeMillis()),0);
 					s++;
 				}
 				else

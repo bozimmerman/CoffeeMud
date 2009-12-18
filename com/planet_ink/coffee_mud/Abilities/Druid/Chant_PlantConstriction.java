@@ -127,9 +127,9 @@ public class Chant_PlantConstriction extends Chant
             {
                 Vector positionChoices=new Vector();
                 if(((MOB)target).getWearPositions(Item.WORN_ARMS)>0)
-                    positionChoices.addElement(new Long(Item.WORN_ARMS));
+                    positionChoices.addElement(Long.valueOf(Item.WORN_ARMS));
                 if(((MOB)target).getWearPositions(Item.WORN_LEGS)>0)
-                    positionChoices.addElement(new Long(Item.WORN_LEGS));
+                    positionChoices.addElement(Long.valueOf(Item.WORN_LEGS));
                 if(positionChoices.size()==0)
                     return Ability.QUALITY_INDIFFERENT;
             }
@@ -154,9 +154,9 @@ public class Chant_PlantConstriction extends Chant
 		}
 		Vector positionChoices=new Vector();
 		if(target.getWearPositions(Item.WORN_ARMS)>0)
-			positionChoices.addElement(new Long(Item.WORN_ARMS));
+			positionChoices.addElement(Long.valueOf(Item.WORN_ARMS));
 		if(target.getWearPositions(Item.WORN_LEGS)>0)
-			positionChoices.addElement(new Long(Item.WORN_LEGS));
+			positionChoices.addElement(Long.valueOf(Item.WORN_LEGS));
 		if(positionChoices.size()==0)
 		{
 			if(!auto)

@@ -923,7 +923,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 }
                 if(pendingLogins.containsKey(mob.Name().toUpperCase()))
                    pendingLogins.remove(mob.Name().toUpperCase());
-                pendingLogins.put(mob.Name().toUpperCase(),new Long(System.currentTimeMillis()));
+                pendingLogins.put(mob.Name().toUpperCase(),Long.valueOf(System.currentTimeMillis()));
 
                 for(int s=0;s<CMLib.sessions().size();s++)
                 {

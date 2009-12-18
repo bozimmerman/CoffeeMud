@@ -89,8 +89,8 @@ public class ResourceOverride extends StdBehavior
 			}
 			if(code>=0)
 			{
-				if(!rscs.contains(new Integer(code)))
-					rscs.add(new Integer(code));
+				if(!rscs.contains(Integer.valueOf(code)))
+					rscs.add(Integer.valueOf(code));
 			}
 			else
 			{
@@ -101,8 +101,8 @@ public class ResourceOverride extends StdBehavior
 					for(int i=0;i<Room.indoorDomainDescs.length;i++)
 						if(which.equalsIgnoreCase(Room.indoorDomainDescs[i]))
 						{ code=Room.INDOORS|i; break;}
-				if(!roomTypes.contains(new Integer(code)))
-					roomTypes.add(new Integer(code));
+				if(!roomTypes.contains(Integer.valueOf(code)))
+					roomTypes.add(Integer.valueOf(code));
 			}
 		}
 	}
@@ -116,7 +116,7 @@ public class ResourceOverride extends StdBehavior
 		{
 			tickDown=2;
 			Room R=(Room)ticking;
-			if(!rscs.contains(new Integer(R.myResource())))
+			if(!rscs.contains(Integer.valueOf(R.myResource())))
 				R.setResource(((Integer)rscs.elementAt(CMLib.dice().roll(1,rscs.size(),-1))).intValue());
 		}
 		else
@@ -129,8 +129,8 @@ public class ResourceOverride extends StdBehavior
 			for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
 			{
 				R=(Room)e.nextElement();
-				if(((roomTypes.size()==0)||(!roomTypes.contains(new Integer(R.domainType()))))
-				&&(!rscs.contains(new Integer(R.myResource()))))
+				if(((roomTypes.size()==0)||(!roomTypes.contains(Integer.valueOf(R.domainType()))))
+				&&(!rscs.contains(Integer.valueOf(R.myResource()))))
 					R.setResource(((Integer)rscs.elementAt(CMLib.dice().roll(1,rscs.size(),-1))).intValue());
 			}
 		}

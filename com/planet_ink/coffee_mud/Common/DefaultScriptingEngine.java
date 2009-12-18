@@ -597,17 +597,17 @@ public class DefaultScriptingEngine implements ScriptingEngine
             if(funcH.size()==0)
             {
                 for(int i=0;i<funcs.length;i++)
-                    funcH.put(funcs[i],new Integer(i+1));
+                    funcH.put(funcs[i],Integer.valueOf(i+1));
                 for(int i=0;i<methods.length;i++)
-                    methH.put(methods[i],new Integer(i+1));
+                    methH.put(methods[i],Integer.valueOf(i+1));
                 for(int i=0;i<progs.length;i++)
-                    progH.put(progs[i],new Integer(i+1));
+                    progH.put(progs[i],Integer.valueOf(i+1));
                 for(int i=0;i<CONNECTORS.length;i++)
-                    connH.put(CONNECTORS[i],new Integer(i));
+                    connH.put(CONNECTORS[i],Integer.valueOf(i));
                 for(int i=0;i<GSTATCODES_ADDITIONAL.length;i++)
-                    gstatH.put(GSTATCODES_ADDITIONAL[i],new Integer(i));
+                    gstatH.put(GSTATCODES_ADDITIONAL[i],Integer.valueOf(i));
                 for(int i=0;i<SIGNS.length;i++)
-                   signH.put(SIGNS[i],new Integer(i));
+                   signH.put(SIGNS[i],Integer.valueOf(i));
             }
         }
         Vector V=new Vector();
@@ -2093,7 +2093,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             {
                 int old=((Integer)stack.lastElement()).intValue();
                 stack.removeElementAt(stack.size()-1);
-                curr=new Integer(CONNECTOR_MAP[old][curr.intValue()]);
+                curr=Integer.valueOf(CONNECTOR_MAP[old][curr.intValue()]);
             }
             stack.addElement(curr);
         }
@@ -4329,7 +4329,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             int z=evaluable.indexOf(")");
             String preFab=(y>=0)?uevaluable.substring(0,y).trim():"";
             Integer funcCode=(Integer)funcH.get(preFab);
-            if(funcCode==null) funcCode=new Integer(0);
+            if(funcCode==null) funcCode=Integer.valueOf(0);
             if(y==0)
             {
                 int depth=0;
@@ -5833,8 +5833,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
             if((methCode==null)&&(cmd.startsWith("MP")))
                 for(int i=0;i<methods.length;i++)
                     if(methods[i].startsWith(cmd))
-                        methCode=new Integer(i);
-            if(methCode==null) methCode=new Integer(0);
+                        methCode=Integer.valueOf(i);
+            if(methCode==null) methCode=Integer.valueOf(0);
             tickStatus=Tickable.STATUS_MISC3+methCode.intValue();
             switch(methCode.intValue())
             {
@@ -7634,8 +7634,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     logError(scripted,"MPNOTRIGGER","RunTime",time+" is not a valid milisecond time.");
                 else
                 {
-                    noTrigger.remove(new Integer(triggerCode));
-                    noTrigger.put(new Integer(triggerCode),new Long(System.currentTimeMillis()+CMath.s_long(time.trim())));
+                    noTrigger.remove(Integer.valueOf(triggerCode));
+                    noTrigger.put(Integer.valueOf(triggerCode),Long.valueOf(System.currentTimeMillis()+CMath.s_long(time.trim())));
                 }
                 break;
             }
@@ -9422,10 +9422,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 }
                 break;
             case 29: // login_prog
-                if(!registeredSpecialEvents.contains(new Integer(CMMsg.TYP_LOGIN)))
+                if(!registeredSpecialEvents.contains(Integer.valueOf(CMMsg.TYP_LOGIN)))
                 {
                     CMLib.map().addGlobalHandler(affecting,CMMsg.TYP_LOGIN);
-                    registeredSpecialEvents.add(new Integer(CMMsg.TYP_LOGIN));
+                    registeredSpecialEvents.add(Integer.valueOf(CMMsg.TYP_LOGIN));
                 }
                 if((msg.sourceMinor()==CMMsg.TYP_LOGIN)&&canTrigger(29)
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB)))
@@ -9441,10 +9441,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 }
                 break;
             case 32: // level_prog
-                if(!registeredSpecialEvents.contains(new Integer(CMMsg.TYP_LEVEL)))
+                if(!registeredSpecialEvents.contains(Integer.valueOf(CMMsg.TYP_LEVEL)))
                 {
                     CMLib.map().addGlobalHandler(affecting,CMMsg.TYP_LEVEL);
-                    registeredSpecialEvents.add(new Integer(CMMsg.TYP_LEVEL));
+                    registeredSpecialEvents.add(Integer.valueOf(CMMsg.TYP_LEVEL));
                 }
                 if((msg.sourceMinor()==CMMsg.TYP_LEVEL)&&canTrigger(32)
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB)))
@@ -9546,10 +9546,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 }
                 break;
             case 33: // channel prog
-                if(!registeredSpecialEvents.contains(new Integer(CMMsg.TYP_CHANNEL)))
+                if(!registeredSpecialEvents.contains(Integer.valueOf(CMMsg.TYP_CHANNEL)))
                 {
                     CMLib.map().addGlobalHandler(affecting,CMMsg.TYP_CHANNEL);
-                    registeredSpecialEvents.add(new Integer(CMMsg.TYP_CHANNEL));
+                    registeredSpecialEvents.add(Integer.valueOf(CMMsg.TYP_CHANNEL));
                 }
                 if(!msg.amISource(monster)
                 &&(CMath.bset(msg.othersMajor(),CMMsg.MASK_CHANNEL))
@@ -9722,11 +9722,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
     protected boolean canTrigger(int triggerCode)
     {
-        Long L=(Long)noTrigger.get(new Integer(triggerCode));
+        Long L=(Long)noTrigger.get(Integer.valueOf(triggerCode));
         if(L==null) return true;
         if(System.currentTimeMillis()<L.longValue())
             return false;
-        noTrigger.remove(new Integer(triggerCode));
+        noTrigger.remove(Integer.valueOf(triggerCode));
         return true;
     }
 
@@ -9771,8 +9771,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if((!mob.amDead())&&canTrigger(16))
                 {
                     int targetTick=-1;
-                    if(delayTargetTimes.containsKey(new Integer(thisScriptIndex)))
-                        targetTick=((Integer)delayTargetTimes.get(new Integer(thisScriptIndex))).intValue();
+                    if(delayTargetTimes.containsKey(Integer.valueOf(thisScriptIndex)))
+                        targetTick=((Integer)delayTargetTimes.get(Integer.valueOf(thisScriptIndex))).intValue();
                     else
                     {
                         if(t==null) t=parseBits(script,0,"CCR");
@@ -9780,20 +9780,20 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         int high=CMath.s_int(t[2]);
                         if(high<low) high=low;
                         targetTick=CMLib.dice().roll(1,high-low+1,low-1);
-                        delayTargetTimes.put(new Integer(thisScriptIndex),new Integer(targetTick));
+                        delayTargetTimes.put(Integer.valueOf(thisScriptIndex),Integer.valueOf(targetTick));
                     }
                     int delayProgCounter=0;
-                    if(delayProgCounters.containsKey(new Integer(thisScriptIndex)))
-                        delayProgCounter=((Integer)delayProgCounters.get(new Integer(thisScriptIndex))).intValue();
+                    if(delayProgCounters.containsKey(Integer.valueOf(thisScriptIndex)))
+                        delayProgCounter=((Integer)delayProgCounters.get(Integer.valueOf(thisScriptIndex))).intValue();
                     else
-                        delayProgCounters.put(new Integer(thisScriptIndex),new Integer(0));
+                        delayProgCounters.put(Integer.valueOf(thisScriptIndex),Integer.valueOf(0));
                     if(delayProgCounter==targetTick)
                     {
                         execute(affecting,mob,mob,mob,defaultItem,null,script,null,newObjs());
                         delayProgCounter=-1;
                     }
-                    delayProgCounters.remove(new Integer(thisScriptIndex));
-                    delayProgCounters.put(new Integer(thisScriptIndex),new Integer(delayProgCounter+1));
+                    delayProgCounters.remove(Integer.valueOf(thisScriptIndex));
+                    delayProgCounters.put(Integer.valueOf(thisScriptIndex),Integer.valueOf(delayProgCounter+1));
                 }
                 break;
             case 7: // fightProg
@@ -9861,8 +9861,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 {
                     if(t==null) t=parseBits(script,0,"CT");
                     int lastTimeProgDone=-1;
-                    if(lastTimeProgsDone.containsKey(new Integer(thisScriptIndex)))
-                        lastTimeProgDone=((Integer)lastTimeProgsDone.get(new Integer(thisScriptIndex))).intValue();
+                    if(lastTimeProgsDone.containsKey(Integer.valueOf(thisScriptIndex)))
+                        lastTimeProgDone=((Integer)lastTimeProgsDone.get(Integer.valueOf(thisScriptIndex))).intValue();
                     int time=mob.location().getArea().getTimeObj().getTimeOfDay();
                     if(lastTimeProgDone!=time)
                     {
@@ -9873,13 +9873,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             {
                                 done=true;
                                 execute(affecting,mob,mob,mob,defaultItem,null,script,""+time,newObjs());
-                                lastTimeProgsDone.remove(new Integer(thisScriptIndex));
-                                lastTimeProgsDone.put(new Integer(thisScriptIndex),new Integer(time));
+                                lastTimeProgsDone.remove(Integer.valueOf(thisScriptIndex));
+                                lastTimeProgsDone.put(Integer.valueOf(thisScriptIndex),Integer.valueOf(time));
                                 break;
                             }
                         }
                         if(!done)
-                            lastTimeProgsDone.remove(new Integer(thisScriptIndex));
+                            lastTimeProgsDone.remove(Integer.valueOf(thisScriptIndex));
                     }
                 }
                 break;
@@ -9889,8 +9889,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 {
                     if(t==null) t=parseBits(script,0,"CT");
                     int lastDayProgDone=-1;
-                    if(lastDayProgsDone.containsKey(new Integer(thisScriptIndex)))
-                        lastDayProgDone=((Integer)lastDayProgsDone.get(new Integer(thisScriptIndex))).intValue();
+                    if(lastDayProgsDone.containsKey(Integer.valueOf(thisScriptIndex)))
+                        lastDayProgDone=((Integer)lastDayProgsDone.get(Integer.valueOf(thisScriptIndex))).intValue();
                     int day=mob.location().getArea().getTimeObj().getDayOfMonth();
                     if(lastDayProgDone!=day)
                     {
@@ -9901,13 +9901,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             {
                                 done=true;
                                 execute(affecting,mob,mob,mob,defaultItem,null,script,null,newObjs());
-                                lastDayProgsDone.remove(new Integer(thisScriptIndex));
-                                lastDayProgsDone.put(new Integer(thisScriptIndex),new Integer(day));
+                                lastDayProgsDone.remove(Integer.valueOf(thisScriptIndex));
+                                lastDayProgsDone.put(Integer.valueOf(thisScriptIndex),Integer.valueOf(day));
                                 break;
                             }
                         }
                         if(!done)
-                            lastDayProgsDone.remove(new Integer(thisScriptIndex));
+                            lastDayProgsDone.remove(Integer.valueOf(thisScriptIndex));
                     }
                 }
                 break;

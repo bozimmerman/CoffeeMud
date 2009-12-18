@@ -113,7 +113,7 @@ public class CharClassData extends StdWebMacro
                 int qlvl=CMLib.ableMapper().getQualifyingLevel(E.ID(), false, aID);
                 if(qlvl>maxLvl) maxLvl=qlvl;
                 if(qlvl<minLvl) minLvl=qlvl;
-                sortedData1.addElement(aID,new Integer(qlvl));
+                sortedData1.addElement(aID,Integer.valueOf(qlvl));
             }
             Integer qLvl=null;
             for(int lvl=minLvl;lvl<=maxLvl;lvl++)
@@ -316,7 +316,7 @@ public class CharClassData extends StdWebMacro
 
                     }
                     if(numNames<=0)
-                        nameSet.addElement(new Integer(0),C.name());
+                        nameSet.addElement(Integer.valueOf(0),C.name());
                     else
                     for(int i=0;i<numNames;i++)
                     {
@@ -328,14 +328,14 @@ public class CharClassData extends StdWebMacro
                             if((name!=null)&&(name.length()>0))
                             {
                                 if(nameSet.size()==0)
-                                    nameSet.addElement(new Integer(minLevel),name);
+                                    nameSet.addElement(Integer.valueOf(minLevel),name);
                                 else
                                 {
                                     boolean added=false;
                                     for(int n=0;n<nameSet.size();n++)
                                         if(minLevel<((Integer)nameSet.elementAt(n,1)).intValue())
                                         {
-                                            nameSet.insertElementAt(n,new Integer(minLevel),name);
+                                            nameSet.insertElementAt(n,Integer.valueOf(minLevel),name);
                                             added=true;
                                             break;
                                         }
@@ -346,15 +346,15 @@ public class CharClassData extends StdWebMacro
                                             break;
                                         }
                                     if(!added)
-                                        nameSet.addElement(new Integer(minLevel),name);
+                                        nameSet.addElement(Integer.valueOf(minLevel),name);
                                 }
                             }
                         }
                     }
                     if(nameSet.size()==0)
-                        nameSet.addElement(new Integer(0),C.name());
+                        nameSet.addElement(Integer.valueOf(0),C.name());
                     else
-                        nameSet.setElementAt(0,1,new Integer(0));
+                        nameSet.setElementAt(0,1,Integer.valueOf(0));
                     int borderSize=1;
                     str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
                     String sfont=(parms.containsKey("FONT"))?("<FONT "+((String)parms.get("FONT"))+">"):"";
@@ -681,14 +681,14 @@ public class CharClassData extends StdWebMacro
                             {
                                 sec=CMParms.combineWithX(CMParms.parseCommas(sec.toUpperCase().trim(),true),",",0);
                                 if(sSet.size()==0)
-                                    sSet.addElement(new Integer(minLevel),sec);
+                                    sSet.addElement(Integer.valueOf(minLevel),sec);
                                 else
                                 {
                                     boolean added=false;
                                     for(int n=0;n<sSet.size();n++)
                                         if(minLevel<((Integer)sSet.elementAt(n,1)).intValue())
                                         {
-                                            sSet.insertElementAt(n,new Integer(minLevel),sec);
+                                            sSet.insertElementAt(n,Integer.valueOf(minLevel),sec);
                                             added=true;
                                             break;
                                         }
@@ -699,7 +699,7 @@ public class CharClassData extends StdWebMacro
                                             break;
                                         }
                                     if(!added)
-                                        sSet.addElement(new Integer(minLevel),sec);
+                                        sSet.addElement(Integer.valueOf(minLevel),sec);
                                 }
                             }
                         }
@@ -862,8 +862,8 @@ public class CharClassData extends StdWebMacro
 							else
 								domain=Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>>5];
 							Integer I=(Integer)domains.get(domain);
-							if(I==null)I=new Integer(0);
-							I=new Integer(I.intValue()+1);
+							if(I==null)I=Integer.valueOf(0);
+							I=Integer.valueOf(I.intValue()+1);
 							domains.remove(domain);
 							domains.put(domain,I);
 						}

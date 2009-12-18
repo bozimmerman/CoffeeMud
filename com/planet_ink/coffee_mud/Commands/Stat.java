@@ -420,7 +420,7 @@ public class Stat  extends Skills
 		{
 			Vector V=new Vector();
 			int mask=Ability.ALL_ACODES;
-			V.addElement(new Integer(ableTypes));
+			V.addElement(Integer.valueOf(ableTypes));
 			str=getAbilities(target,V,mask,false,-1);
 		}
 		else

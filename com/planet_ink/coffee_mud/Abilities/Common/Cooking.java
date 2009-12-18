@@ -190,9 +190,9 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		if((pot instanceof Drink)&&(((Drink)pot).liquidRemaining()>0))
 		{
 			if(pot instanceof RawMaterial)
-				h.put(RawMaterial.RESOURCE_DESCS[((RawMaterial)pot).material()&RawMaterial.RESOURCE_MASK]+"/",new Integer(((Drink)pot).liquidRemaining()/10));
+				h.put(RawMaterial.RESOURCE_DESCS[((RawMaterial)pot).material()&RawMaterial.RESOURCE_MASK]+"/",Integer.valueOf(((Drink)pot).liquidRemaining()/10));
 			else
-				h.put(RawMaterial.RESOURCE_DESCS[((Drink)pot).liquidType()&RawMaterial.RESOURCE_MASK]+"/",new Integer(((Drink)pot).liquidRemaining()/10));
+				h.put(RawMaterial.RESOURCE_DESCS[((Drink)pot).liquidType()&RawMaterial.RESOURCE_MASK]+"/",Integer.valueOf(((Drink)pot).liquidRemaining()/10));
 		}
 		if(pot.owner()==null) return h;
 		Vector V=pot.getContents();
@@ -211,8 +211,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			else
 				ing=I.name();
 			Integer INT=(Integer)h.get(ing+"/"+I.secretIdentity().toUpperCase()+"/"+I.Name().toUpperCase()+"/");
-			if(INT==null) INT=new Integer(0);
-			INT=new Integer(INT.intValue()+1);
+			if(INT==null) INT=Integer.valueOf(0);
+			INT=Integer.valueOf(INT.intValue()+1);
 			h.put(ing+"/"+I.secretIdentity().toUpperCase()+"/"+I.Name().toUpperCase()+"/",INT);
 		}
 		return h;
@@ -266,7 +266,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		}
 		if(NotEnoughForThisRun)
 		{
-			codedList.addElement(new Integer(-amountMade));
+			codedList.addElement(Integer.valueOf(-amountMade));
 			for(int i=0;i<contents.length;i++)
 				if(amounts[i]<0)
 				{
@@ -278,7 +278,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		}
 		else
 		{
-			codedList.addElement(new Integer(amountMade));
+			codedList.addElement(Integer.valueOf(amountMade));
 			for(int i=0;i<contents.length;i++)
 			{
 				String ingredient2=contents[i];

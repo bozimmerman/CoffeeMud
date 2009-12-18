@@ -49,8 +49,8 @@ public class Prop_HaveAdjuster extends Property
     {
         int val=CMParms.getParmPlus(newText,parm);
         if(val==0) return false;
-        addTo.addElement(new Integer(parmCode));
-        addTo.addElement(new Integer(val));
+        addTo.addElement(Integer.valueOf(parmCode));
+        addTo.addElement(Integer.valueOf(val));
         return true;
     }
 
@@ -84,8 +84,8 @@ public class Prop_HaveAdjuster extends Property
         double dval=CMParms.getParmDoublePlus(newText,"spe");
         if(dval!=0)
         {
-            envStatsV.addElement(new Integer(EnvStats.NUM_STATS));
-            envStatsV.addElement(new Double(dval));
+            envStatsV.addElement(Integer.valueOf(EnvStats.NUM_STATS));
+            envStatsV.addElement(Double.valueOf(dval));
         }
         addIfPlussed(newText,"wei",EnvStats.STAT_WEIGHT,envStatsV);
         addIfPlussed(newText,"hei",EnvStats.STAT_HEIGHT,envStatsV);

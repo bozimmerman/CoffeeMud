@@ -87,7 +87,7 @@ public class Disease_FrostBite extends Disease
             Vector choices=new Vector();
             for(int i=0;i<limbsAffectable.length;i++)
                 if(affected.charStats().getBodyPart(limbsAffectable[i])>0)
-                    choices.addElement(new Integer(limbsAffectable[i]));
+                    choices.addElement(Integer.valueOf(limbsAffectable[i]));
             if(choices.size()<=0)
             {
                 where="nowhere";

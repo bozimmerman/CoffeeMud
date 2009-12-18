@@ -47,8 +47,8 @@ public class Shore extends StdRoom
 	public int domainConditions(){return Room.CONDITION_HOT;}
 
 	public static final Integer[] resourceList={
-		new Integer(RawMaterial.RESOURCE_FISH),
-		new Integer(RawMaterial.RESOURCE_SAND)
+		Integer.valueOf(RawMaterial.RESOURCE_FISH),
+		Integer.valueOf(RawMaterial.RESOURCE_SAND)
 	};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
 	public Vector resourceChoices(){return Shore.roomResources;}

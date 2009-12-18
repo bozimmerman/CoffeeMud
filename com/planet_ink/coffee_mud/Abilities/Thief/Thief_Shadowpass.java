@@ -81,7 +81,7 @@ public class Thief_Shadowpass extends ThiefSkill
 			R=R.getRoomInDir(direction);
 			if(!CMLib.flags().canAccess(mob,R)) break;
 			for(int i=0;i<num;i++)
-				trail.addElement(new Integer(direction));
+				trail.addElement(Integer.valueOf(direction));
 		}
 		boolean kaplah=((v==commands.size())&&(R!=null)&&(CMLib.flags().isInDark(R)));
 

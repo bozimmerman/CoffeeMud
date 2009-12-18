@@ -898,7 +898,7 @@ public interface CMMsg extends CMCommon
 	
 	/** Addendum to TYPE_DESCS for codes above the last index (channels only at this point) */
     public static final Object[][] MISC_DESCS={
-        {"CHANNEL",new Integer(2000),new Integer(2047)},
+        {"CHANNEL",Integer.valueOf(2000),Integer.valueOf(2047)},
     };
     
     /** Index string descriptions of all the MINOR_MASK action code TYP_s */

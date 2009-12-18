@@ -40,7 +40,7 @@ public class Skills extends StdCommand
     
     protected boolean parsedOutIndividualSkill(MOB mob, String qual, int acode)
     {
-        return parsedOutIndividualSkill(mob,qual,CMParms.makeVector(new Integer(acode)));
+        return parsedOutIndividualSkill(mob,qual,CMParms.makeVector(Integer.valueOf(acode)));
     }
     
     protected boolean parsedOutIndividualSkill(MOB mob, String qual, Vector acodes)
@@ -50,7 +50,7 @@ public class Skills extends StdCommand
         Ability A=CMClass.findAbility(qual);
         if((A!=null)
         &&(CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))
-        &&(acodes.contains(new Integer(A.classificationCode()&Ability.ALL_ACODES))))
+        &&(acodes.contains(Integer.valueOf(A.classificationCode()&Ability.ALL_ACODES))))
         {
             Ability A2=mob.fetchAbility(A.ID());
             if(A2==null)
@@ -131,7 +131,7 @@ public class Skills extends StdCommand
             mask=Ability.ALL_ACODES|Ability.ALL_DOMAINS;
             ofType=ofType|ofDomain;
         }
-        V.addElement(new Integer(ofType));
+        V.addElement(Integer.valueOf(ofType));
         return getAbilities(able,V,mask,addQualLine,maxLevel);
     }
     
@@ -148,7 +148,7 @@ public class Skills extends StdCommand
             if((thisAbility!=null)
             &&(level>highestLevel)
             &&(level<lowestLevel)
-            &&(ofTypes.contains(new Integer(thisAbility.classificationCode()&mask))))
+            &&(ofTypes.contains(Integer.valueOf(thisAbility.classificationCode()&mask))))
                 highestLevel=level;
         }
         if((maxLevel>=0)&&(maxLevel<highestLevel))
@@ -164,7 +164,7 @@ public class Skills extends StdCommand
                 if(level<0) level=0;
                 if((thisAbility!=null)
                 &&(level==l)
-                &&(ofTypes.contains(new Integer(thisAbility.classificationCode()&mask))))
+                &&(ofTypes.contains(Integer.valueOf(thisAbility.classificationCode()&mask))))
                 {
                     if(thisLine.length()==0)
                         thisLine.append("\n\rLevel ^!"+l+"^?:\n\r");
@@ -192,9 +192,9 @@ public class Skills extends StdCommand
 	{
 		StringBuffer msg=new StringBuffer("");
 		Vector V=new Vector();
-		V.addElement(new Integer(Ability.ACODE_THIEF_SKILL));
-		V.addElement(new Integer(Ability.ACODE_SKILL));
-		V.addElement(new Integer(Ability.ACODE_COMMON_SKILL));
+		V.addElement(Integer.valueOf(Ability.ACODE_THIEF_SKILL));
+		V.addElement(Integer.valueOf(Ability.ACODE_SKILL));
+		V.addElement(Integer.valueOf(Ability.ACODE_COMMON_SKILL));
         String qual=CMParms.combine(commands,1).toUpperCase();
 		if(parsedOutIndividualSkill(mob,qual,V))
 			return true;
@@ -209,7 +209,7 @@ public class Skills extends StdCommand
         {
             mask=mask|Ability.ALL_DOMAINS;
             for(int v=0;v<V.size();v++)
-                V.setElementAt(new Integer(((Integer)V.elementAt(v)).intValue()+domain[0]),v);
+                V.setElementAt(Integer.valueOf(((Integer)V.elementAt(v)).intValue()+domain[0]),v);
         }
         if((domain[0]>=0)||(qual.length()==0))
             msg.append("\n\r^HYour "+domainName[0].replace('_',' ')+"skills:^? "+getAbilities(mob,V,mask,true,level[0]));

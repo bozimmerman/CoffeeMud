@@ -79,15 +79,15 @@ public class CrossBaseClassAbilities extends StdWebMacro
 						if(dex<0)
 						{
 							abilities.addElement(A.ID());
-							levelssum.addElement(new Integer(level));
-							numberare.addElement(new Integer(1));
+							levelssum.addElement(Integer.valueOf(level));
+							numberare.addElement(Integer.valueOf(1));
 						}
 						else
 						{
 							Integer I=(Integer)levelssum.elementAt(dex);
-							levelssum.setElementAt(new Integer(I.intValue()+level),dex);
+							levelssum.setElementAt(Integer.valueOf(I.intValue()+level),dex);
 							Integer I2=(Integer)numberare.elementAt(dex);
-							numberare.setElementAt(new Integer(I2.intValue()+1),dex);
+							numberare.setElementAt(Integer.valueOf(I2.intValue()+1),dex);
 						}
 					}
 				}

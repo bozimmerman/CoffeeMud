@@ -206,7 +206,7 @@ public class RaceData extends StdWebMacro
         {
             for(int i=0;i<E.getStatCodes().length;i++)
                 if(CMath.s_int(E.getStat(E.getStatCodes()[i]))!=0)
-                    theclasses.addElement(E.getStatCodes()[i],new Integer(E.getStat(E.getStatCodes()[i])).toString());
+                    theclasses.addElement(E.getStatCodes()[i],Integer.valueOf(E.getStat(E.getStatCodes()[i])).toString());
         }
         str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
         for(int i=0;i<theclasses.size();i++)

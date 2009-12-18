@@ -628,7 +628,7 @@ public final class IMC2Driver extends Thread {
             Log.errOut("IMC2Driver", e);
         }
 
-        out.i.sequence = new Long(seq).longValue();
+        out.i.sequence = Long.valueOf(seq).longValue();
         return out;
     }
 
@@ -862,7 +862,7 @@ public final class IMC2Driver extends Thread {
     public void imc_register_call_out(int hbeat, String function_name, Object param) {
         Vector call_out = new Vector();
         call_out.add(function_name);
-        call_out.add(new Long(HeartBeat + hbeat));
+        call_out.add(Long.valueOf(HeartBeat + hbeat));
         call_out.add(param);
 
         call_outs.add(call_out);

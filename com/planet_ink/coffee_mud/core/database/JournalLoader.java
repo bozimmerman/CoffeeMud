@@ -131,7 +131,7 @@ public class JournalLoader
 					if((l2==null)||(l2.longValue()<CMath.s_long(compdate)))
 					{
 						if(H.containsKey("ALL")) H.remove("ALL");
-						H.put("ALL",new Long(CMath.s_long(compdate)));
+						H.put("ALL",Long.valueOf(CMath.s_long(compdate)));
 					}
 				}
 				else
@@ -140,14 +140,14 @@ public class JournalLoader
 					if((l2==null)||(l2.longValue()<CMath.s_long(compdate)))
 					{
 						if(H.containsKey(to)) H.remove(to);
-						H.put(to,new Long(CMath.s_long(compdate)));
+						H.put(to,Long.valueOf(CMath.s_long(compdate)));
 					}
 					String from=E.from;
 					l2=(Long)H.get(from); // from
 					if((l2==null)||(l2.longValue()<CMath.s_long(compdate)))
 					{
 						if(H.containsKey(from)) H.remove(from);
-						H.put(from,new Long(CMath.s_long(compdate)));
+						H.put(from,Long.valueOf(CMath.s_long(compdate)));
 					}
 				}
 			}
@@ -371,7 +371,7 @@ public class JournalLoader
 			if((l2==null)||(l2.longValue()<System.currentTimeMillis()))
 			{
 				if(H.containsKey("ALL")) H.remove("ALL");
-				H.put("ALL",new Long(System.currentTimeMillis()));
+				H.put("ALL",Long.valueOf(System.currentTimeMillis()));
 			}
 		}
 		else
@@ -380,13 +380,13 @@ public class JournalLoader
 			if((l2==null)||(l2.longValue()<System.currentTimeMillis()))
 			{
 				if(H.containsKey(to)) H.remove(to);
-				H.put(to,new Long(System.currentTimeMillis()));
+				H.put(to,Long.valueOf(System.currentTimeMillis()));
 			}
 			l2=(Long)H.get(from);
 			if((l2==null)||(l2.longValue()<System.currentTimeMillis()))
 			{
 				if(H.containsKey(from)) H.remove(from);
-				H.put(from,new Long(System.currentTimeMillis()));
+				H.put(from,Long.valueOf(System.currentTimeMillis()));
 			}
 		}
 	}

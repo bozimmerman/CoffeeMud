@@ -55,10 +55,10 @@ public class PollLoader
                 V.addElement(DBConnections.getRes(R,"CMSUBJ"));
                 V.addElement(DBConnections.getRes(R,"CMDESC"));
                 V.addElement(DBConnections.getRes(R,"CMOPTN"));
-                V.addElement(new Long(DBConnections.getLongRes(R,"CMFLAG")));
+                V.addElement(Long.valueOf(DBConnections.getLongRes(R,"CMFLAG")));
                 V.addElement(DBConnections.getRes(R,"CMQUAL"));
                 V.addElement(DBConnections.getRes(R,"CMRESL"));
-                V.addElement(new Long(DBConnections.getLongRes(R,"CMEXPI")));
+                V.addElement(Long.valueOf(DBConnections.getLongRes(R,"CMEXPI")));
             }
         }
         catch(Exception sqle)
@@ -83,9 +83,9 @@ public class PollLoader
             {
                 Vector V=new Vector();
                 V.addElement(DBConnections.getRes(R,"CMNAME"));
-                V.addElement(new Long(DBConnections.getLongRes(R,"CMFLAG")));
+                V.addElement(Long.valueOf(DBConnections.getLongRes(R,"CMFLAG")));
                 V.addElement(DBConnections.getRes(R,"CMQUAL"));
-                V.addElement(new Long(DBConnections.getLongRes(R,"CMEXPI")));
+                V.addElement(Long.valueOf(DBConnections.getLongRes(R,"CMEXPI")));
                 rows.addElement(V);
             }
         }

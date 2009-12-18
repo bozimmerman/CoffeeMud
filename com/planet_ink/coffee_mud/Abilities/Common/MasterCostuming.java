@@ -58,7 +58,7 @@ public class MasterCostuming extends Costuming
             return false;
         }
         if(autoGenerate>0)
-            commands.insertElementAt(new Integer(autoGenerate),0);
+            commands.insertElementAt(Integer.valueOf(autoGenerate),0);
         return super.invoke(mob,commands,givenTarget,auto,asLevel);
 	}
 }

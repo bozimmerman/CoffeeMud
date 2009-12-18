@@ -47,12 +47,12 @@ public class Desert extends StdRoom
 	protected int baseThirst(){return 4;}
 
 	public static final Integer[] resourceList={
-		new Integer(RawMaterial.RESOURCE_CACTUS),
-		new Integer(RawMaterial.RESOURCE_SAND),
-		new Integer(RawMaterial.RESOURCE_LAMPOIL),
-		new Integer(RawMaterial.RESOURCE_PEPPERS),
-		new Integer(RawMaterial.RESOURCE_SCALES),
-		new Integer(RawMaterial.RESOURCE_DATES)
+		Integer.valueOf(RawMaterial.RESOURCE_CACTUS),
+		Integer.valueOf(RawMaterial.RESOURCE_SAND),
+		Integer.valueOf(RawMaterial.RESOURCE_LAMPOIL),
+		Integer.valueOf(RawMaterial.RESOURCE_PEPPERS),
+		Integer.valueOf(RawMaterial.RESOURCE_SCALES),
+		Integer.valueOf(RawMaterial.RESOURCE_DATES)
 	};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
 	public Vector resourceChoices(){return Desert.roomResources;}

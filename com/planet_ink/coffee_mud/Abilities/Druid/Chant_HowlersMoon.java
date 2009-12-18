@@ -151,7 +151,7 @@ public class Chant_HowlersMoon extends Chant
 			&&(room.domainType()!=Room.DOMAIN_OUTDOORS_AIR)
 			&&((exit!=null)&&(exit.isOpen()))
 			&&(opExit!=null)&&(opExit.isOpen()))
-				choices.addElement(new Integer(d));
+				choices.addElement(Integer.valueOf(d));
 		}
 		return choices;
 	}

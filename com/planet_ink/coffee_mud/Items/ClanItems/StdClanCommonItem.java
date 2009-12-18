@@ -139,7 +139,7 @@ public class StdClanCommonItem extends StdClanItem
             if(((x+RawMaterial.MATERIAL_DESCS[i].length())<req.length())
             &&Character.isLetter(req.charAt((x+RawMaterial.MATERIAL_DESCS[i].length()))))
                 continue;
-            V.addElement(new Integer(i<<8));
+            V.addElement(Integer.valueOf(i<<8));
         }
         for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
         {
@@ -150,12 +150,12 @@ public class StdClanCommonItem extends StdClanItem
             if(((x+RawMaterial.RESOURCE_DESCS[i].length())<req.length())
             &&Character.isLetter(req.charAt((x+RawMaterial.RESOURCE_DESCS[i].length()))))
                 continue;
-            V.addElement(new Integer(i));
+            V.addElement(Integer.valueOf(i));
         }
         if((M.location()!=null)
-        &&(V.contains(new Integer(RawMaterial.MATERIAL_METAL)))
+        &&(V.contains(Integer.valueOf(RawMaterial.MATERIAL_METAL)))
         &&(resourceHere(M.location(),RawMaterial.MATERIAL_WOODEN).size()==0))
-            V.addElement(new Integer(RawMaterial.MATERIAL_WOODEN));
+            V.addElement(Integer.valueOf(RawMaterial.MATERIAL_WOODEN));
         return V;
     }
 
@@ -247,7 +247,7 @@ public class StdClanCommonItem extends StdClanItem
                                         M2=(MOB)DV.elementAt(rand,1);
                                     }catch(Exception e){continue;}
                                     if((needs!=null)&&(M2!=null)
-                                    &&(needs.contains(new Integer(RawMaterial.MATERIAL_METAL)))
+                                    &&(needs.contains(Integer.valueOf(RawMaterial.MATERIAL_METAL)))
                                     &&(!fireHere(M2.location()))
                                     &&(resourceHere(M2.location(),RawMaterial.MATERIAL_WOODEN).size()>0))
                                     {

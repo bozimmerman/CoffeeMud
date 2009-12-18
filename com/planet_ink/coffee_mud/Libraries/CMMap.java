@@ -174,7 +174,7 @@ public class CMMap extends StdLibrary implements WorldMap
         if(V==null)
         {
             V=new Vector<WeakReference>();
-            globalHandlers.put(new Integer(category),V);
+            globalHandlers.put(Integer.valueOf(category),V);
         }
         synchronized(V)
         {
@@ -187,7 +187,7 @@ public class CMMap extends StdLibrary implements WorldMap
 
     public void delGlobalHandler(MsgListener E, int category)
     {
-        Vector<WeakReference> V=globalHandlers.get(new Integer(category));
+        Vector<WeakReference> V=globalHandlers.get(Integer.valueOf(category));
         if((E==null)||(V==null)) return;
         synchronized(V)
         {
@@ -317,7 +317,7 @@ public class CMMap extends StdLibrary implements WorldMap
 
     public boolean sendGlobalMessage(MOB host, int category, CMMsg msg)
     {
-        Vector<WeakReference> V=globalHandlers.get(new Integer(category));
+        Vector<WeakReference> V=globalHandlers.get(Integer.valueOf(category));
         if(V==null) return true;
         synchronized(V)
         {

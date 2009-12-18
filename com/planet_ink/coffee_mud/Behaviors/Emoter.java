@@ -146,7 +146,7 @@ public class Emoter extends ActiveTicker
 				thisEmote=CMParms.combine(V,0);
 				if(thisEmote.length()>0)
 				{
-					thisEmoteV.addElement(new Integer(emoteType));
+					thisEmoteV.addElement(Integer.valueOf(emoteType));
 					thisEmoteV.addElement(Boolean.valueOf(broadcast));
 					thisEmoteV.addElement(thisEmote);
 					if(emoteType==EMOTE_SMELL)

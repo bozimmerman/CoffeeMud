@@ -228,9 +228,9 @@ public class GrinderMap extends GrinderFlatMap
 				if (isEmptyCluster(processed, x + (spacing * xadjust),
 				                   y + (spacing * yadjust), z))
 				{
-					XYZ.setElementAt(new Integer(x + (spacing * xadjust)), 0);
-					XYZ.setElementAt(new Integer(y + (spacing * yadjust)), 1);
-					XYZ.setElementAt(new Integer(z), 2);
+					XYZ.setElementAt(Integer.valueOf(x + (spacing * xadjust)), 0);
+					XYZ.setElementAt(Integer.valueOf(y + (spacing * yadjust)), 1);
+					XYZ.setElementAt(Integer.valueOf(z), 2);
 					return;
 				}
 			}
@@ -611,9 +611,9 @@ public class GrinderMap extends GrinderFlatMap
 			}
 			// nope; nobody can.  It's up to this!
 			Vector XYZ = new Vector();
-			XYZ.addElement(new Integer(0));
-			XYZ.addElement(new Integer(0));
-			XYZ.addElement(new Integer(0));
+			XYZ.addElement(Integer.valueOf(0));
+			XYZ.addElement(Integer.valueOf(0));
+			XYZ.addElement(Integer.valueOf(0));
 			findEmptyCluster(processed, XYZ);
 			room.xy[0] = ( (Integer) XYZ.elementAt(0)).intValue();
 			room.xy[1] = ( (Integer) XYZ.elementAt(1)).intValue();

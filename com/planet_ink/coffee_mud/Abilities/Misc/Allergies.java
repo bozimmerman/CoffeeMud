@@ -57,7 +57,7 @@ public class Allergies extends StdAbility
 	    Vector V=CMParms.parse(newText.toUpperCase().trim());
 	    for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
 	        if(V.contains(RawMaterial.RESOURCE_DESCS[i]))
-	            resourceAllergies.add(new Integer(RawMaterial.RESOURCE_DATA[i][0]));
+	            resourceAllergies.add(Integer.valueOf(RawMaterial.RESOURCE_DATA[i][0]));
 	    Race R=null;
         for(Enumeration r=CMClass.races();r.hasMoreElements();)
         {
@@ -98,7 +98,7 @@ public class Allergies extends StdAbility
 		                I=R.fetchItem(i);
 		                if((I!=null)
 		                &&(I.container()==null)
-		                &&(resourceAllergies.contains(new Integer(I.material()))))
+		                &&(resourceAllergies.contains(Integer.valueOf(I.material()))))
 		                    R.show(mob,null,this,CMMsg.TYP_NOISYMOVEMENT,"<S-NAME> sneeze(s)! AAAAACHHHOOOO!");
 		            }
 		            if(R.numInhabitants()>0)
@@ -110,7 +110,7 @@ public class Allergies extends StdAbility
 			                I=M.fetchInventory(i);
 			                if((I!=null)
 			                &&(I.container()==null)
-			                &&(resourceAllergies.contains(new Integer(I.material()))))
+			                &&(resourceAllergies.contains(Integer.valueOf(I.material()))))
 			                    R.show(mob,null,this,CMMsg.TYP_NOISYMOVEMENT,"<S-NAME> sneeze(s)! AAAAACHHHOOOO!");
 			            }
 		            }
@@ -128,7 +128,7 @@ public class Allergies extends StdAbility
 		    if(msg.source()==affected)
 		    {
 		        if((msg.targetMinor()==CMMsg.TYP_EAT)
-		        &&(((msg.target() instanceof Item)&&(resourceAllergies.contains(new Integer(((Item)msg.target()).material()))))
+		        &&(((msg.target() instanceof Item)&&(resourceAllergies.contains(Integer.valueOf(((Item)msg.target()).material()))))
 	                ||((msg.target() instanceof MOB)&&(raceAllergies.contains(((MOB)msg.target()).charStats().getMyRace())))))
 	            {
 	                Ability A=CMClass.getAbility("Poison_Heartstopper");
@@ -136,7 +136,7 @@ public class Allergies extends StdAbility
 	            }
 		        else
 		        if((msg.targetMinor()==CMMsg.TYP_GET)
-		        &&((msg.target() instanceof Item)&&(resourceAllergies.contains(new Integer(((Item)msg.target()).material())))))
+		        &&((msg.target() instanceof Item)&&(resourceAllergies.contains(Integer.valueOf(((Item)msg.target()).material())))))
 		        {
 	                Ability A=CMClass.getAbility("Poison_Hives");
 	                if(A!=null) A.invoke(msg.source(),msg.source(),true,0);

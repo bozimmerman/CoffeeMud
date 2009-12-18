@@ -77,11 +77,11 @@ public class Nanny extends StdBehavior
     		if(payments.elementAt(d,1)==mob)
     		{
     			amt+=((Double)payments.elementAt(d,2)).doubleValue();
-    			payments.setElementAt(d,2,new Double(amt));
+    			payments.setElementAt(d,2,Double.valueOf(amt));
     			return;
     		}
     	}
-    	payments.addElement(mob,new Double(amt));
+    	payments.addElement(mob,Double.valueOf(amt));
     }
     
     public void clearTheSlate(MOB mob)
@@ -747,7 +747,7 @@ public class Nanny extends StdBehavior
 		        				Log.errOut("Nanny","Unable to find "+eName+" for "+oName+"!!");
 	        				else
 	        				if(!dropOffs.contains(E))
-	        					dropOffs.addElement(E,O,new Long(time));
+	        					dropOffs.addElement(E,O,Long.valueOf(time));
 	        			}
 	        			else
         	    		if(P!=null)
@@ -784,7 +784,7 @@ public class Nanny extends StdBehavior
             		{
             			if((E instanceof MOB)&&(((MOB)E).amFollowing()!=null))
             				((MOB)E).setFollowing(null);
-            			dropOffs.addElement(E,owner,new Long(System.currentTimeMillis()));
+            			dropOffs.addElement(E,owner,Long.valueOf(System.currentTimeMillis()));
             			associations.removeElementsAt(a);
     	    			changedSinceLastSave=true;
             		}

@@ -46,11 +46,11 @@ public class Where extends StdCommand
 		{
 			if(((Integer)V.elementAt(v,2)).intValue()>i)
 			{
-				V.insertElementAt(v,area,new Integer(i));
+				V.insertElementAt(v,area,Integer.valueOf(i));
 				return;
 			}
 		}
-		V.addElement(area,new Integer(i));
+		V.addElement(area,Integer.valueOf(i));
 	}
 
 	public boolean canShowTo(MOB showTo, MOB show)

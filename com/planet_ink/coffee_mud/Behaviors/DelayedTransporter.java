@@ -90,7 +90,7 @@ public class DelayedTransporter extends ActiveTicker
 				Integer I=(Integer)transportees.get(inhab.Name());
 				if(I==null)
 				{
-					I=new Integer(0);
+					I=Integer.valueOf(0);
 					transportees.put(inhab.Name(),I);
 				}
 				boolean gone=false;
@@ -108,7 +108,7 @@ public class DelayedTransporter extends ActiveTicker
 					}
 				if(!gone)
 				{
-					I=new Integer(I.intValue()+1);
+					I=Integer.valueOf(I.intValue()+1);
 					transportees.put(inhab.Name(),I);
 				}
 			}

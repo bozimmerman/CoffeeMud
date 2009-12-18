@@ -165,7 +165,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
                 currentSectionReplaceStrs=new Hashtable();
                 currentSectionIgnoreStrs=new HashSet();
                 parserSections.put(s.substring(1,x).toUpperCase(),currentSection);
-                sectionIndexes.addElement(s.substring(1,x).toUpperCase(),new Integer(v));
+                sectionIndexes.addElement(s.substring(1,x).toUpperCase(),Integer.valueOf(v));
                 localDefinitions.clear();
             }
             else
@@ -173,7 +173,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
             {
                 int x=s.indexOf(' ');
                 if(x<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
-                Integer I=new Integer(CMath.s_int(s.substring(x+1).trim()));
+                Integer I=Integer.valueOf(CMath.s_int(s.substring(x+1).trim()));
                 if(currentSection!=null)
                     currentSection.addElement("AUTOIGNORE",I,s.substring(x+1).trim());
             }
@@ -593,7 +593,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
         index=((Integer)fileIndexes.elementAt(index,2)).intValue();
         for(int f=0;f<fileIndexes.size();f++)
             if(((Integer)fileIndexes.elementAt(f,2)).intValue()>index)
-                fileIndexes.setElementAt(f,2,new Integer(((Integer)fileIndexes.elementAt(f,2)).intValue()+1));
+                fileIndexes.setElementAt(f,2,Integer.valueOf(((Integer)fileIndexes.elementAt(f,2)).intValue()+1));
         str=filterString(str);
         String newStr="IGNOREWHOLE \""+str+"\"";
         if(index==fileData.size()-1)

@@ -48,9 +48,9 @@ public class Connection implements java.sql.Connection
 			{
 				Integer conCount=(Integer)references.get(path);
 				if(conCount==null)
-					conCount=new Integer(0);
+					conCount=Integer.valueOf(0);
 				references.remove(path);
-				references.put(path,new Integer(conCount.intValue()+1));
+				references.put(path,Integer.valueOf(conCount.intValue()+1));
 			}
 		}
 
@@ -165,7 +165,7 @@ public class Connection implements java.sql.Connection
 					else
 					{
 						references.remove(oldPath);
-						references.put(oldPath,new Integer(conCount.intValue()-1));
+						references.put(oldPath,Integer.valueOf(conCount.intValue()-1));
 					}
 				}
 			}

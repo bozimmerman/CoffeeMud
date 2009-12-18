@@ -65,7 +65,7 @@ public class Trap_SpikePit extends Trap_RoomPit
 		{
 			if(daggerDamages==null)
 				daggerDamages=new Vector();
-			daggerDamages.addElement(new Integer(I.baseEnvStats().damage()));
+			daggerDamages.addElement(Integer.valueOf(I.baseEnvStats().damage()));
 			I.destroy();
 			I=getDagger(mob);
 		}

@@ -154,9 +154,9 @@ public class DefaultMessage implements CMMsg
     {
         if(MSGTYPE_DESCS.size()!=0) return MSGTYPE_DESCS;
         for(int i=0;i<CMMsg.TYPE_DESCS.length;i++)
-            MSGTYPE_DESCS.put(CMMsg.TYPE_DESCS[i],new Integer(i));
+            MSGTYPE_DESCS.put(CMMsg.TYPE_DESCS[i],Integer.valueOf(i));
         for(int i=0;i<CMMsg.MASK_DESCS.length;i++)
-            MSGTYPE_DESCS.put(CMMsg.MASK_DESCS[i],new Integer((int)CMath.pow(2,11+i)));
+            MSGTYPE_DESCS.put(CMMsg.MASK_DESCS[i],Integer.valueOf((int)CMath.pow(2,11+i)));
         for(int i=0;i<CMMsg.MISC_DESCS.length;i++)
             MSGTYPE_DESCS.put(CMMsg.MISC_DESCS[i][0],CMMsg.MISC_DESCS[i][1]);
         return MSGTYPE_DESCS;
@@ -260,19 +260,19 @@ public class DefaultMessage implements CMMsg
             code2=code2.toUpperCase();
             for(int i=0;i<TYPE_DESCS.length;i++)
                 if(code2.startsWith(TYPE_DESCS[i]))
-                { I=new Integer(i); break;}
+                { I=Integer.valueOf(i); break;}
             if(I==null)
             for(int i=0;i<TYPE_DESCS.length;i++)
                 if(TYPE_DESCS[i].startsWith(code2))
-                { I=new Integer(i); break;}
+                { I=Integer.valueOf(i); break;}
             if(I==null)
             for(int i=0;i<MASK_DESCS.length;i++)
                 if(code2.startsWith(MASK_DESCS[i]))
-                { I=new Integer((int)CMath.pow(2,11+i)); break;}
+                { I=Integer.valueOf((int)CMath.pow(2,11+i)); break;}
             if(I==null)
             for(int i=0;i<MASK_DESCS.length;i++)
                 if(MASK_DESCS[i].startsWith(code2))
-                { I=new Integer((int)CMath.pow(2,11+i)); break;}
+                { I=Integer.valueOf((int)CMath.pow(2,11+i)); break;}
             if(I==null)
             for(int i=0;i<MISC_DESCS.length;i++)
                 if(code2.startsWith((String)MISC_DESCS[i][0]))

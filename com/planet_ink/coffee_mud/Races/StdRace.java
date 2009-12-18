@@ -549,9 +549,9 @@ public class StdRace implements Race
 
 		Integer level=null;
 		if(mob!=null)
-			level=new Integer(mob.envStats().level());
+			level=Integer.valueOf(mob.envStats().level());
 		else
-			level=new Integer(Integer.MAX_VALUE);
+			level=Integer.valueOf(Integer.MAX_VALUE);
 
 		if(racialEffectMap.containsKey(level))
 			return (Vector)racialEffectMap.get(level);
@@ -987,7 +987,7 @@ public class StdRace implements Race
         if((culturalAbilityNames()!=null)
         &&(culturalAbilityProficiencies()!=null))
             for(int i=0;i<culturalAbilityNames().length;i++)
-                ables.addElement(culturalAbilityNames()[i],new Integer(culturalAbilityProficiencies()[i]));
+                ables.addElement(culturalAbilityNames()[i],Integer.valueOf(culturalAbilityProficiencies()[i]));
         return ables;
     }
 	public Vector racialAbilities(MOB mob)
@@ -1013,9 +1013,9 @@ public class StdRace implements Race
 		if(racialAbilityMap==null) return empty;
 		Integer level=null;
 		if(mob!=null)
-			level=new Integer(mob.envStats().level());
+			level=Integer.valueOf(mob.envStats().level());
 		else
-			level=new Integer(Integer.MAX_VALUE);
+			level=Integer.valueOf(Integer.MAX_VALUE);
 		if(racialAbilityMap.containsKey(level))
 			return (Vector)racialAbilityMap.get(level);
 		DVector V=CMLib.ableMapper().getUpToLevelListings(ID(),level.intValue(),true,(mob!=null));

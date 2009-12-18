@@ -73,9 +73,9 @@ public class ItemGenerator extends ActiveTicker
 				{
 					restrictedLocales.clear();
 					for(int i=0;i<Room.indoorDomainDescs.length;i++)
-						restrictedLocales.addElement(new Integer(Room.INDOORS+i));
+						restrictedLocales.addElement(Integer.valueOf(Room.INDOORS+i));
 					for(int i=0;i<Room.outdoorDomainDescs.length;i++)
-						restrictedLocales.addElement(new Integer(i));
+						restrictedLocales.addElement(Integer.valueOf(i));
 				}
 				else
 				{
@@ -87,11 +87,11 @@ public class ItemGenerator extends ActiveTicker
 							code=Room.INDOORS+i;
 					if(code>=0)
 					{
-						if((c=='+')&&(restrictedLocales.contains(new Integer(code))))
-							restrictedLocales.removeElement(new Integer(code));
+						if((c=='+')&&(restrictedLocales.contains(Integer.valueOf(code))))
+							restrictedLocales.removeElement(Integer.valueOf(code));
 						else
-						if((c=='-')&&(!restrictedLocales.contains(new Integer(code))))
-							restrictedLocales.addElement(new Integer(code));
+						if((c=='-')&&(!restrictedLocales.contains(Integer.valueOf(code))))
+							restrictedLocales.addElement(Integer.valueOf(code));
 					}
 					code=-1;
 					for(int i=0;i<Room.outdoorDomainDescs.length;i++)
@@ -99,11 +99,11 @@ public class ItemGenerator extends ActiveTicker
 							code=i;
 					if(code>=0)
 					{
-						if((c=='+')&&(restrictedLocales.contains(new Integer(code))))
-							restrictedLocales.removeElement(new Integer(code));
+						if((c=='+')&&(restrictedLocales.contains(Integer.valueOf(code))))
+							restrictedLocales.removeElement(Integer.valueOf(code));
 						else
-						if((c=='-')&&(!restrictedLocales.contains(new Integer(code))))
-							restrictedLocales.addElement(new Integer(code));
+						if((c=='-')&&(!restrictedLocales.contains(Integer.valueOf(code))))
+							restrictedLocales.addElement(Integer.valueOf(code));
 					}
 
 				}
@@ -131,7 +131,7 @@ public class ItemGenerator extends ActiveTicker
 	{
 		if(newRoom==null) return false;
 		if(restrictedLocales==null) return true;
-		return !restrictedLocales.contains(new Integer(newRoom.domainType()));
+		return !restrictedLocales.contains(Integer.valueOf(newRoom.domainType()));
 	}
 
 	public boolean isStillMaintained(Environmental thang, ShopKeeper SK, Item I)
@@ -244,8 +244,8 @@ public class ItemGenerator extends ActiveTicker
 			}
 			if(items.size()>0)
 			{
-				items.insertElementAt(new Integer(maxValue),0);
-				items.insertElementAt(new Double(totalValue),0);
+				items.insertElementAt(Integer.valueOf(maxValue),0);
+				items.insertElementAt(Double.valueOf(totalValue),0);
 			}
 			Resources.submitResource("ITEMGENERATOR-"+mask.toUpperCase().trim(),items);
 		}

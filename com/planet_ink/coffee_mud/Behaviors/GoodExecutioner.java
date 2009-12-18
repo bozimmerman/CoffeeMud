@@ -87,9 +87,9 @@ public class GoodExecutioner  extends StdBehavior
 			{
 				int x = protectedOnes.indexOf(msg.source().Name());
 				if(x>=0)
-					protectedOnes.setElementAt(x, 2, new Long(System.currentTimeMillis()));
+					protectedOnes.setElementAt(x, 2, Long.valueOf(System.currentTimeMillis()));
 				else
-					protectedOnes.addElement(msg.source().Name(),new Long(System.currentTimeMillis()));
+					protectedOnes.addElement(msg.source().Name(),Long.valueOf(System.currentTimeMillis()));
 			}
 		}
         if((deepBreath==0)||(System.currentTimeMillis()-deepBreath)>6000)

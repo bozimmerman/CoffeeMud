@@ -35,6 +35,6 @@ public class Fighter_ForestTactics extends Fighter_FieldTactics
 {
 	public String ID() { return "Fighter_ForestTactics"; }
 	public String name(){ return "Forest Tactics";}
-	private static final Integer[] landClasses = {new Integer(Room.DOMAIN_OUTDOORS_WOODS)};
+	private static final Integer[] landClasses = {Integer.valueOf(Room.DOMAIN_OUTDOORS_WOODS)};
 	public Integer[] landClasses(){return landClasses;}
 }

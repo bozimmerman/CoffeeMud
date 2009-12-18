@@ -166,7 +166,7 @@ public class BribeGateGuard extends StdBehavior
 			Double D=(Double)H.get(mob.Name());
 			if(D==null)
 			{
-				D=new Double(0.0);
+				D=Double.valueOf(0.0);
 				H.put(mob.Name(),D);
 			}
 			balance=D.doubleValue();
@@ -247,7 +247,7 @@ public class BribeGateGuard extends StdBehavior
 			}
 			Double D=(Double)H.get(mob.Name());
 			if(D!=null)	H.remove(mob.Name());
-			H.put(mob.Name(),new Double(balance.getTotalValue()));
+			H.put(mob.Name(),Double.valueOf(balance.getTotalValue()));
 		}
 	}
 

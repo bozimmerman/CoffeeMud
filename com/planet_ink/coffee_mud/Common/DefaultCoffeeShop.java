@@ -186,7 +186,7 @@ public class DefaultCoffeeShop implements CoffeeShop
                 copy=(Environmental)thisThang.copyOf();
                 ((InnKey)copy).hangOnRack(shopKeeper());
             	CMLib.threads().deleteTick(copy,-1);
-                storeInventory.addElement(copy,new Integer(1),new Integer(-1));
+                storeInventory.addElement(copy,Integer.valueOf(1),Integer.valueOf(-1));
             }
         }
         else
@@ -200,12 +200,12 @@ public class DefaultCoffeeShop implements CoffeeShop
                 if(copy.Name().equals(thisThang.Name()))
                 {
                     Integer I=(Integer)storeInventory.elementAt(e,2);
-                    storeInventory.setElementAt(e,2,new Integer(I.intValue()+number));
-                    if(price>0) storeInventory.setElementAt(e,3,new Integer(price));
+                    storeInventory.setElementAt(e,2,Integer.valueOf(I.intValue()+number));
+                    if(price>0) storeInventory.setElementAt(e,3,Integer.valueOf(price));
                     return copy;
                 }
             }
-            storeInventory.addElement(thisThang,new Integer(number),new Integer(price));
+            storeInventory.addElement(thisThang,Integer.valueOf(number),Integer.valueOf(price));
         }
         if(originalUncopiedThang instanceof Item)
             ((Item)originalUncopiedThang).destroy();
@@ -344,7 +344,7 @@ public class DefaultCoffeeShop implements CoffeeShop
                 possValue--;
                 Environmental copyItem=(Environmental)item.copyOf();
                 if(possValue>=1)
-                    storeInventory.setElementAt(index,2,new Integer(possValue));
+                    storeInventory.setElementAt(index,2,Integer.valueOf(possValue));
                 else
                 {
                     storeInventory.removeElementAt(index);
@@ -368,7 +368,7 @@ public class DefaultCoffeeShop implements CoffeeShop
             Environmental shopItem=(Environmental)shopItems.elementAt(b);
             int num=numberInStock(shopItem);
             int price=stockPrice(shopItem);
-            addBacks.addElement(shopItem,new Integer(num),new Integer(price));
+            addBacks.addElement(shopItem,Integer.valueOf(num),Integer.valueOf(price));
         }
         emptyAllShelves();
         for(int a=0;a<addBacks.size();a++)

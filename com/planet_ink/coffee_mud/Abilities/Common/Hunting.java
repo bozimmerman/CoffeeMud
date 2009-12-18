@@ -60,7 +60,7 @@ public class Hunting extends CommonSkill
 				Room room=activityRoom.getRoomInDir(d);
 				Exit exit=activityRoom.getExitInDir(d);
 				if((room!=null)&&(exit!=null)&&(exit.isOpen()))
-					possibilities.addElement(new Integer(d));
+					possibilities.addElement(Integer.valueOf(d));
 			}
 		}
 		if(possibilities.size()>0)
@@ -83,7 +83,7 @@ public class Hunting extends CommonSkill
 				Room room=found.location().getRoomInDir(d);
 				Exit exit=found.location().getExitInDir(d);
 				if((room!=null)&&(exit!=null)&&(exit.isOpen()))
-					possibilities.addElement(new Integer(d));
+					possibilities.addElement(Integer.valueOf(d));
 			}
 		}
 		if(possibilities.size()>0)

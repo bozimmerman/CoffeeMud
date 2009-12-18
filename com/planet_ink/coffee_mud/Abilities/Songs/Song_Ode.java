@@ -107,14 +107,14 @@ public class Song_Ode extends Song
 				int which=-1;
 				for(int i=0;i<counts.length;i++)
 				{
-					if((counts[i]>high)&&(!V.contains(new Integer(i))))
+					if((counts[i]>high)&&(!V.contains(Integer.valueOf(i))))
 					{
 						high=counts[i];
 						which=i;
 					}
 				}
 				if(which>=0)
-					V.addElement(new Integer(which));
+					V.addElement(Integer.valueOf(which));
 			}
 			Vector V2=new Vector();
 			for(int i=0;i<3;i++)
@@ -303,7 +303,7 @@ public class Song_Ode extends Song
 			{
 				int tick=CMath.s_int(s.substring(0,x));
 				s=s.substring(x+1);
-				benefits.put(new Integer(code),new Integer(tick));
+				benefits.put(Integer.valueOf(code),Integer.valueOf(tick));
 			}
 			x=s.indexOf(";");
 		}

@@ -234,7 +234,7 @@ public class GModify extends StdCommand
             }
             }
             if(matchStart>=0)
-                matches.addElement(field,new Integer(matchStart),new Integer(matchEnd));
+                matches.addElement(field,Integer.valueOf(matchStart),Integer.valueOf(matchEnd));
             if(CMath.bset(lastCode,FLAG_AND))
                 checkedOut=checkedOut&&(matchStart>=0);
             else
@@ -428,7 +428,7 @@ public class GModify extends StdCommand
             {
                 int eq=-1;
                 int divLen=0;
-                Integer code=new Integer(0);
+                Integer code=Integer.valueOf(0);
                 while((divLen==0)&&((++eq)<str.length()))
                     switch(str.charAt(eq))
                     {
@@ -488,10 +488,10 @@ public class GModify extends StdCommand
                 {
                     String attach=val.substring(eq,eq+divBackLen).trim();
                     if(attach.equals("&&"))
-                        code=new Integer(code.intValue()|FLAG_AND);
+                        code=Integer.valueOf(code.intValue()|FLAG_AND);
                     else
                     if(attach.equals("||"))
-                        code=new Integer(code.intValue()|FLAG_OR);
+                        code=Integer.valueOf(code.intValue()|FLAG_OR);
                     str=val.substring(eq+divBackLen);
                     val=val.substring(0,eq);
                 }
@@ -509,9 +509,9 @@ public class GModify extends StdCommand
                     if(cd.length()!=2)
                         break;
                     if(cd.equalsIgnoreCase("ss"))
-                        code=new Integer(code.intValue()|FLAG_SUBSTRING);
+                        code=Integer.valueOf(code.intValue()|FLAG_SUBSTRING);
                     if(cd.equalsIgnoreCase("cs"))
-                        code=new Integer(code.intValue()|FLAG_CASESENSITIVE);
+                        code=Integer.valueOf(code.intValue()|FLAG_CASESENSITIVE);
                     val=val.substring(x2+1);
                 }
                 if(equator.equals("$"))

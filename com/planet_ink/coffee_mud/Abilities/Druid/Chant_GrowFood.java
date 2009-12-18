@@ -70,10 +70,10 @@ public class Chant_GrowFood extends Chant
 		{
 			int code=RawMaterial.RESOURCE_DATA[i][0];
 			if((((code&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION))
-            &&(!CMParms.makeVector(Chant_SummonSeed.NON_SEEDS).contains(new Integer(RawMaterial.RESOURCE_DATA[i][0]))))	
+            &&(!CMParms.makeVector(Chant_SummonSeed.NON_SEEDS).contains(Integer.valueOf(RawMaterial.RESOURCE_DATA[i][0]))))	
 			{
 				String str=RawMaterial.RESOURCE_DESCS[i];
-				choices.addElement(new Integer(code));
+				choices.addElement(Integer.valueOf(code));
 				if((s.length()>0)&&(CMLib.english().containsString(RawMaterial.RESOURCE_DESCS[i],s)))
 					material=code;
 				if(col==4){ buf.append("\n\r"); col=0;}

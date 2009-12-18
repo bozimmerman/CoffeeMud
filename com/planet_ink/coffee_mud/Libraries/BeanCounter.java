@@ -322,7 +322,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		        long number=Math.round(Math.floor(absoluteValue/denom));
 		        if(number>0)
 		        {
-		            V.addElement(new Double(denom));
+		            V.addElement(Double.valueOf(denom));
 		            absoluteValue-=CMath.mul(denom,number);
 		        }
 		    }

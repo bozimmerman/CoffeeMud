@@ -64,7 +64,7 @@ public class Thief_Robbery extends ThiefSkill
 		}
 		if(lastOnes.size()>=50)
 			lastOnes.removeElementAt(0);
-		lastOnes.addElement(target,new Integer(times+1));
+		lastOnes.addElement(target,Integer.valueOf(times+1));
 		return times+1;
 	}
 

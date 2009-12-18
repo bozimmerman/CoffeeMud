@@ -164,7 +164,7 @@ public class Druid_PackCall extends StdAbility
 			Room R=mob.location().getRoomInDir(d);
 			Exit E=mob.location().getExitInDir(d);
 			if((R!=null)&&(E!=null)&&(E.isOpen())&&(d!=Directions.UP))
-				choices.addElement(new Integer(d));
+				choices.addElement(Integer.valueOf(d));
 		}
 
 		if(choices.size()==0)

@@ -99,14 +99,14 @@ public class GrinderClasses
                 if((name!=null)&&(name.length()>0))
                 {
                     if(DV.size()==0)
-                        DV.addElement(new Integer(minLevel),name);
+                        DV.addElement(Integer.valueOf(minLevel),name);
                     else
                     {
                         boolean added=false;
                         for(int n=0;n<DV.size();n++)
                             if(minLevel<((Integer)DV.elementAt(n,1)).intValue())
                             {
-                                DV.insertElementAt(n,new Integer(minLevel),name);
+                                DV.insertElementAt(n,Integer.valueOf(minLevel),name);
                                 added=true;
                                 break;
                             }
@@ -117,11 +117,11 @@ public class GrinderClasses
                                 break;
                             }
                         if(!added)
-                            DV.addElement(new Integer(minLevel),name);
+                            DV.addElement(Integer.valueOf(minLevel),name);
                     }
                 }
             }
-        if(DV.size()==0) DV.addElement(new Integer(0),C.ID());
+        if(DV.size()==0) DV.addElement(Integer.valueOf(0),C.ID());
         C.setStat("NUMNAME",""+DV.size());
         for(int l=0;l<DV.size();l++)
         {
@@ -200,14 +200,14 @@ public class GrinderClasses
                 if((name!=null)&&(name.length()>0))
                 {
                     if(DV.size()==0)
-                        DV.addElement(new Integer(minLevel),name);
+                        DV.addElement(Integer.valueOf(minLevel),name);
                     else
                     {
                         boolean added=false;
                         for(int n=0;n<DV.size();n++)
                             if(minLevel<((Integer)DV.elementAt(n,1)).intValue())
                             {
-                                DV.insertElementAt(n,new Integer(minLevel),name);
+                                DV.insertElementAt(n,Integer.valueOf(minLevel),name);
                                 added=true;
                                 break;
                             }
@@ -218,7 +218,7 @@ public class GrinderClasses
                                 break;
                             }
                         if(!added)
-                            DV.addElement(new Integer(minLevel),name);
+                            DV.addElement(Integer.valueOf(minLevel),name);
                     }
                 }
             }

@@ -2520,7 +2520,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                         String howMuch = mob.session().prompt("How much faction ("+lookedUp.findDefault(E)+")?",
                                    Integer.toString(lookedUp.findDefault(E)));
                         if(CMath.isInteger(howMuch)) {
-                            int value =new Integer(howMuch).intValue();
+                            int value =Integer.valueOf(howMuch).intValue();
                             if(value<lookedUp.minimum()) value=lookedUp.minimum();
                             if(value>lookedUp.maximum()) value=lookedUp.maximum();
                             E.addFaction(lookedUp.factionID(),value);
@@ -3602,7 +3602,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                         if(index<0)
                         {
                             index=members.size();
-                            members.addElement(M.Name(),new Integer(Clan.POS_MEMBER),new Long(M.playerStats().lastDateTime()));
+                            members.addElement(M.Name(),Integer.valueOf(Clan.POS_MEMBER),Long.valueOf(M.playerStats().lastDateTime()));
                         }
 
                         int newRole=-1;
@@ -3626,7 +3626,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                             mob.tell(M.Name()+" added.");
                         else
                             mob.tell(M.Name()+" re-added.");
-                        members.setElementAt(index,2,new Integer(newRole));
+                        members.setElementAt(index,2,Integer.valueOf(newRole));
                     }
                     else
                     {
@@ -4887,9 +4887,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                     boolean done=false;
                     for(int v=0;v<DV.size();v++)
                         if(I.sameAs((Environmental)DV.elementAt(v,1)))
-                        { DV.setElementAt(v,2,new Integer(((Integer)DV.elementAt(v,2)).intValue()+1)); done=true; break;}
+                        { DV.setElementAt(v,2,Integer.valueOf(((Integer)DV.elementAt(v,2)).intValue()+1)); done=true; break;}
                     if(!done)
-                        DV.addElement(I,new Integer(1));
+                        DV.addElement(I,Integer.valueOf(1));
                 }
                 else
                     parts.append("Unknown: "+E.getStat("GETRSCID"+r)+", ");
@@ -4928,9 +4928,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                             boolean done=false;
                             for(int v=0;v<DV.size();v++)
                                 if(I.sameAs((Environmental)DV.elementAt(v,1)))
-                                { DV.setElementAt(v,2,new Integer(((Integer)DV.elementAt(v,2)).intValue()+1)); done=true; break;}
+                                { DV.setElementAt(v,2,Integer.valueOf(((Integer)DV.elementAt(v,2)).intValue()+1)); done=true; break;}
                             if(!done)
-                                DV.addElement(I,new Integer(1));
+                                DV.addElement(I,Integer.valueOf(1));
                             else
                             	I.destroy();
                             mob.tell(I.name()+" added.");
@@ -4946,7 +4946,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                     if(i<2)
                         DV.removeElementAt(partNum);
                     else
-                        DV.setElementAt(partNum,2,new Integer(i-1));
+                        DV.setElementAt(partNum,2,Integer.valueOf(i-1));
                     mob.tell(I.name()+" removed.");
                     updateList=true;
                 }
@@ -5453,8 +5453,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             level=(Integer)sets.elementAt(origLevelIndex,1);
         }
         else
-            level=new Integer(1);
-        level=new Integer(CMath.s_int(mob.session().prompt("Enter the level of this skill ("+level+"): ",""+level)));
+            level=Integer.valueOf(1);
+        level=Integer.valueOf(CMath.s_int(mob.session().prompt("Enter the level of this skill ("+level+"): ",""+level)));
         if(level.intValue()<=0)
         {
             mob.tell("Aborted.");
@@ -5576,7 +5576,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                                );
             for(int i=0;i<=maxAbledLevel;i++)
             {
-                int index=levelSets.indexOf(new Integer(i));
+                int index=levelSets.indexOf(Integer.valueOf(i));
                 if(index<0) continue;
                 Vector set=(Vector)levelSets.elementAt(index,2);
                 for(int s=0;s<set.size();s++)

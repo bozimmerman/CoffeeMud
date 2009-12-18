@@ -52,7 +52,7 @@ public class Qualify  extends Skills
 			mask=Ability.ALL_ACODES|Ability.ALL_DOMAINS;
 			ofType=ofType|ofDomain;
 		}
-		V.addElement(new Integer(ofType));
+		V.addElement(Integer.valueOf(ofType));
 		return getQualifiedAbilities(able,V,mask,prefix,shortOnly);
 	}
 
@@ -73,7 +73,7 @@ public class Qualify  extends Skills
 			&&(level>highestLevel)
 			&&(level<(CMLib.ableMapper().qualifyingClassLevel(able,A)+1))
 			&&(able.fetchAbility(A.ID())==null)
-			&&(ofTypes.contains(new Integer(A.classificationCode()&mask))))
+			&&(ofTypes.contains(Integer.valueOf(A.classificationCode()&mask))))
 				highestLevel=level;
 		}
 		int col=0;
@@ -87,7 +87,7 @@ public class Qualify  extends Skills
 				   &&(CMLib.ableMapper().qualifyingLevel(able,A)==l)
 				   &&(!CMLib.ableMapper().getSecretSkill(able,A.ID()))
 				   &&(able.fetchAbility(A.ID())==null)
-				   &&(ofTypes.contains(new Integer(A.classificationCode()&mask))))
+				   &&(ofTypes.contains(Integer.valueOf(A.classificationCode()&mask))))
 				{
 					if((++col)>2)
 					{

@@ -76,186 +76,186 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	{
 		if(zapCodes.size()==0)
 		{
-			zapCodes.put("-CLASS",new Integer(0));
-			zapCodes.put("-CLASSES",new Integer(0));
-			zapCodes.put("-BASECLASS",new Integer(1));
-			zapCodes.put("-BASECLASSES",new Integer(1));
-			zapCodes.put("-RACE",new Integer(2));
-			zapCodes.put("-RACES",new Integer(2));
-			zapCodes.put("-ALIGNMENT",new Integer(3));
-			zapCodes.put("-ALIGNMENTS",new Integer(3));
-			zapCodes.put("-ALIGN",new Integer(3));
-			zapCodes.put("-GENDER",new Integer(4));
-			zapCodes.put("-GENDERS",new Integer(4));
-			zapCodes.put("-LEVEL",new Integer(5));
-			zapCodes.put("-LEVELS",new Integer(5));
-			zapCodes.put("-CLASSLEVEL",new Integer(6));
-			zapCodes.put("-CLASSLEVELS",new Integer(6));
-			zapCodes.put("-TATTOOS",new Integer(7));
-			zapCodes.put("-TATTOO",new Integer(7));
-			zapCodes.put("+TATTOOS",new Integer(8));
-			zapCodes.put("+TATTOO",new Integer(8));
-			zapCodes.put("-NAME",new Integer(9));
-			zapCodes.put("-NAMES",new Integer(9));
-			zapCodes.put("-PLAYER",new Integer(10));
-			zapCodes.put("-NPC",new Integer(11));
-			zapCodes.put("-MOB",new Integer(11));
-			zapCodes.put("-RACECAT",new Integer(12));
-			zapCodes.put("-RACECATS",new Integer(12));
-			zapCodes.put("+RACECAT",new Integer(13));
-			zapCodes.put("+RACECATS",new Integer(13));
-			zapCodes.put("-CLAN",new Integer(14));
-			zapCodes.put("-CLANS",new Integer(14));
-			zapCodes.put("+CLAN",new Integer(15));
-			zapCodes.put("+CLANS",new Integer(15));
-			zapCodes.put("+NAME",new Integer(16));
-			zapCodes.put("+NAMES",new Integer(16));
-			zapCodes.put("-ANYCLASS",new Integer(17));
-			zapCodes.put("+ANYCLASS",new Integer(18));
-			zapCodes.put("+ADJSTR",new Integer(19));
-			zapCodes.put("+ADJINT",new Integer(20));
-			zapCodes.put("+ADJWIS",new Integer(21));
-			zapCodes.put("+ADJDEX",new Integer(22));
-			zapCodes.put("+ADJCON",new Integer(23));
-			zapCodes.put("+ADJCHA",new Integer(24));
-			zapCodes.put("+ADJSTRENGTH",new Integer(19));
-			zapCodes.put("+ADJINTELLIGENCE",new Integer(20));
-			zapCodes.put("+ADJWISDOM",new Integer(21));
-			zapCodes.put("+ADJDEXTERITY",new Integer(22));
-			zapCodes.put("+ADJCONSTITUTION",new Integer(23));
-			zapCodes.put("+ADJCHARISMA",new Integer(24));
-			zapCodes.put("-ADJSTR",new Integer(25));
-			zapCodes.put("-ADJSTRENGTH",new Integer(25));
-			zapCodes.put("-ADJINT",new Integer(26));
-			zapCodes.put("-ADJINTELLIGENCE",new Integer(26));
-			zapCodes.put("-ADJWIS",new Integer(27));
-			zapCodes.put("-ADJWISDOM",new Integer(27));
-			zapCodes.put("-ADJDEX",new Integer(28));
-			zapCodes.put("-ADJDEXTERITY",new Integer(28));
-			zapCodes.put("-ADJCON",new Integer(29));
-			zapCodes.put("-ADJCONSTITUTION",new Integer(29));
-			zapCodes.put("-ADJCHA",new Integer(30));
-			zapCodes.put("-ADJCHARISMA",new Integer(30));
-			zapCodes.put("-AREA",new Integer(31));
-            zapCodes.put("-AREAS",new Integer(31));
-			zapCodes.put("+AREA",new Integer(32));
-            zapCodes.put("+AREAS",new Integer(32));
-			zapCodes.put("+ITEM",new Integer(33));
-            zapCodes.put("-ITEM",new Integer(33));
-			zapCodes.put("+CLASS",new Integer(34));  // for compiled use ONLY
-			zapCodes.put("+ALIGNMENT",new Integer(35));  // for compiled use ONLY
-			zapCodes.put("+GENDER",new Integer(36));  // for compiled use ONLY
-			zapCodes.put("+LVLGR",new Integer(37));  // for compiled use ONLY
-			zapCodes.put("+LVLGE",new Integer(38));  // for compiled use ONLY
-			zapCodes.put("+LVLLT",new Integer(39));  // for compiled use ONLY
-			zapCodes.put("+LVLLE",new Integer(40));  // for compiled use ONLY
-			zapCodes.put("+LVLEQ",new Integer(41));  // for compiled use ONLY
-			zapCodes.put("+EFFECTS",new Integer(42));
-			zapCodes.put("+EFFECT",new Integer(42));
-			zapCodes.put("-EFFECTS",new Integer(43));
-			zapCodes.put("-EFFECT",new Integer(43));
-			zapCodes.put("-DEITY",new Integer(44));
-			zapCodes.put("+DEITY",new Integer(45));
-			zapCodes.put("-FACTION",new Integer(46));
-			zapCodes.put("+FACTION",new Integer(47));
-            zapCodes.put("+WORN",new Integer(48));
-            zapCodes.put("-WORN",new Integer(48));
-            zapCodes.put("+MATERIAL",new Integer(49));
-            zapCodes.put("-MATERIAL",new Integer(50));
-            zapCodes.put("+RESOURCE",new Integer(51));
-            zapCodes.put("-RESOURCE",new Integer(52));
-            zapCodes.put("-JAVACLASS",new Integer(53));
-            zapCodes.put("+JAVACLASS",new Integer(54));
-            zapCodes.put("+ABILITY",new Integer(55));
-            zapCodes.put("-ABILITY",new Integer(56));
-            zapCodes.put("+ABLE",new Integer(55));
-            zapCodes.put("-ABLE",new Integer(56));
-            zapCodes.put("+WORNON",new Integer(57));
-            zapCodes.put("-WORNON",new Integer(58));
-            zapCodes.put("+VALUE",new Integer(59));
-            zapCodes.put("-VALUE",new Integer(60));
-            zapCodes.put("+WEIGHT",new Integer(61));
-            zapCodes.put("-WEIGHT",new Integer(62));
-            zapCodes.put("+ARMOR",new Integer(63));
-            zapCodes.put("-ARMOR",new Integer(64));
-            zapCodes.put("+DAMAGE",new Integer(65));
-            zapCodes.put("-DAMAGE",new Integer(66));
-            zapCodes.put("+ATTACK",new Integer(67));
-            zapCodes.put("-ATTACK",new Integer(68));
-            zapCodes.put("+DISPOSITION",new Integer(69));
-            zapCodes.put("-DISPOSITION",new Integer(70));
-            zapCodes.put("+SENSES",new Integer(71));
-            zapCodes.put("-SENSES",new Integer(72));
-            zapCodes.put("+HOUR",new Integer(73));
-            zapCodes.put("-HOUR",new Integer(74));
-            zapCodes.put("+SEASON",new Integer(75));
-            zapCodes.put("-SEASON",new Integer(76));
-            zapCodes.put("+MONTH",new Integer(77));
-            zapCodes.put("-MONTH",new Integer(78));
-            zapCodes.put("-SECURITY",new Integer(79));
-            zapCodes.put("+SECURITY",new Integer(80));
-            zapCodes.put("-SECURITIES",new Integer(79));
-            zapCodes.put("+SECURITIES",new Integer(80));
-            zapCodes.put("-SEC",new Integer(79));
-            zapCodes.put("+SEC",new Integer(80));
-            zapCodes.put("-EXPERTISE",new Integer(81));
-            zapCodes.put("+EXPERTISE",new Integer(82));
-            zapCodes.put("-EXPERTISES",new Integer(81));
-            zapCodes.put("+EXPERTISES",new Integer(82));
-            zapCodes.put("-SKILL",new Integer(83));
-            zapCodes.put("+SKILL",new Integer(84));
-            zapCodes.put("-SKILLS",new Integer(83));
-            zapCodes.put("+SKILLS",new Integer(84));
-            zapCodes.put("+QUALLVL",new Integer(85));
-            zapCodes.put("-QUALLVL",new Integer(86));
-			zapCodes.put("+STR",new Integer(87));
-			zapCodes.put("+INT",new Integer(88));
-			zapCodes.put("+WIS",new Integer(89));
-			zapCodes.put("+DEX",new Integer(90));
-			zapCodes.put("+CON",new Integer(91));
-			zapCodes.put("+CHA",new Integer(92));
-			zapCodes.put("+STRENGTH",new Integer(87));
-			zapCodes.put("+INTELLIGENCE",new Integer(88));
-			zapCodes.put("+WISDOM",new Integer(89));
-			zapCodes.put("+DEXTERITY",new Integer(90));
-			zapCodes.put("+CONSTITUTION",new Integer(91));
-			zapCodes.put("+CHARISMA",new Integer(92));
-			zapCodes.put("-STR",new Integer(93));
-			zapCodes.put("-STRENGTH",new Integer(93));
-			zapCodes.put("-INT",new Integer(94));
-			zapCodes.put("-INTELLIGENCE",new Integer(94));
-			zapCodes.put("-WIS",new Integer(95));
-			zapCodes.put("-WISDOM",new Integer(95));
-			zapCodes.put("-DEX",new Integer(96));
-			zapCodes.put("-DEXTERITY",new Integer(96));
-			zapCodes.put("-CON",new Integer(97));
-			zapCodes.put("-CONSTITUTION",new Integer(97));
-			zapCodes.put("-CHA",new Integer(98));
-			zapCodes.put("-CHARISMA",new Integer(98));
-            zapCodes.put("+HOME",new Integer(99));
-            zapCodes.put("-HOME",new Integer(100));
-            zapCodes.put("-SKILLFLAG",new Integer(101));
-            zapCodes.put("+SKILLFLAG",new Integer(102));
-            zapCodes.put("-SKILLFLAGS",new Integer(101));
-            zapCodes.put("+SKILLFLAGS",new Integer(102));
-            zapCodes.put("-MAXCLASSLEVEL",new Integer(103));
-            zapCodes.put("-MAXCLASSLEVELS",new Integer(103));
-            zapCodes.put("+WEATHER",new Integer(104));
-            zapCodes.put("-WEATHER",new Integer(105));
-            zapCodes.put("+DAY",new Integer(106));
-            zapCodes.put("-DAY",new Integer(107));
-            zapCodes.put("+SYSOP",new Integer(108));
-            zapCodes.put("-SYSOP",new Integer(109));
-            zapCodes.put("+SUBOP",new Integer(110));
-            zapCodes.put("-SUBOP",new Integer(111));
-            zapCodes.put("+RACE",new Integer(112));  // for compiled use ONLY
-            zapCodes.put("-QUESTWIN",new Integer(113));
-            zapCodes.put("+QUESTWIN",new Integer(114));
-            zapCodes.put("-GROUPSIZE",new Integer(115));
-            zapCodes.put("+GROUPSIZE",new Integer(116));
-            zapCodes.put("+BASECLASS",new Integer(117));
-            zapCodes.put("-IF",new Integer(118));
-            zapCodes.put("+IF",new Integer(119));
+			zapCodes.put("-CLASS",Integer.valueOf(0));
+			zapCodes.put("-CLASSES",Integer.valueOf(0));
+			zapCodes.put("-BASECLASS",Integer.valueOf(1));
+			zapCodes.put("-BASECLASSES",Integer.valueOf(1));
+			zapCodes.put("-RACE",Integer.valueOf(2));
+			zapCodes.put("-RACES",Integer.valueOf(2));
+			zapCodes.put("-ALIGNMENT",Integer.valueOf(3));
+			zapCodes.put("-ALIGNMENTS",Integer.valueOf(3));
+			zapCodes.put("-ALIGN",Integer.valueOf(3));
+			zapCodes.put("-GENDER",Integer.valueOf(4));
+			zapCodes.put("-GENDERS",Integer.valueOf(4));
+			zapCodes.put("-LEVEL",Integer.valueOf(5));
+			zapCodes.put("-LEVELS",Integer.valueOf(5));
+			zapCodes.put("-CLASSLEVEL",Integer.valueOf(6));
+			zapCodes.put("-CLASSLEVELS",Integer.valueOf(6));
+			zapCodes.put("-TATTOOS",Integer.valueOf(7));
+			zapCodes.put("-TATTOO",Integer.valueOf(7));
+			zapCodes.put("+TATTOOS",Integer.valueOf(8));
+			zapCodes.put("+TATTOO",Integer.valueOf(8));
+			zapCodes.put("-NAME",Integer.valueOf(9));
+			zapCodes.put("-NAMES",Integer.valueOf(9));
+			zapCodes.put("-PLAYER",Integer.valueOf(10));
+			zapCodes.put("-NPC",Integer.valueOf(11));
+			zapCodes.put("-MOB",Integer.valueOf(11));
+			zapCodes.put("-RACECAT",Integer.valueOf(12));
+			zapCodes.put("-RACECATS",Integer.valueOf(12));
+			zapCodes.put("+RACECAT",Integer.valueOf(13));
+			zapCodes.put("+RACECATS",Integer.valueOf(13));
+			zapCodes.put("-CLAN",Integer.valueOf(14));
+			zapCodes.put("-CLANS",Integer.valueOf(14));
+			zapCodes.put("+CLAN",Integer.valueOf(15));
+			zapCodes.put("+CLANS",Integer.valueOf(15));
+			zapCodes.put("+NAME",Integer.valueOf(16));
+			zapCodes.put("+NAMES",Integer.valueOf(16));
+			zapCodes.put("-ANYCLASS",Integer.valueOf(17));
+			zapCodes.put("+ANYCLASS",Integer.valueOf(18));
+			zapCodes.put("+ADJSTR",Integer.valueOf(19));
+			zapCodes.put("+ADJINT",Integer.valueOf(20));
+			zapCodes.put("+ADJWIS",Integer.valueOf(21));
+			zapCodes.put("+ADJDEX",Integer.valueOf(22));
+			zapCodes.put("+ADJCON",Integer.valueOf(23));
+			zapCodes.put("+ADJCHA",Integer.valueOf(24));
+			zapCodes.put("+ADJSTRENGTH",Integer.valueOf(19));
+			zapCodes.put("+ADJINTELLIGENCE",Integer.valueOf(20));
+			zapCodes.put("+ADJWISDOM",Integer.valueOf(21));
+			zapCodes.put("+ADJDEXTERITY",Integer.valueOf(22));
+			zapCodes.put("+ADJCONSTITUTION",Integer.valueOf(23));
+			zapCodes.put("+ADJCHARISMA",Integer.valueOf(24));
+			zapCodes.put("-ADJSTR",Integer.valueOf(25));
+			zapCodes.put("-ADJSTRENGTH",Integer.valueOf(25));
+			zapCodes.put("-ADJINT",Integer.valueOf(26));
+			zapCodes.put("-ADJINTELLIGENCE",Integer.valueOf(26));
+			zapCodes.put("-ADJWIS",Integer.valueOf(27));
+			zapCodes.put("-ADJWISDOM",Integer.valueOf(27));
+			zapCodes.put("-ADJDEX",Integer.valueOf(28));
+			zapCodes.put("-ADJDEXTERITY",Integer.valueOf(28));
+			zapCodes.put("-ADJCON",Integer.valueOf(29));
+			zapCodes.put("-ADJCONSTITUTION",Integer.valueOf(29));
+			zapCodes.put("-ADJCHA",Integer.valueOf(30));
+			zapCodes.put("-ADJCHARISMA",Integer.valueOf(30));
+			zapCodes.put("-AREA",Integer.valueOf(31));
+            zapCodes.put("-AREAS",Integer.valueOf(31));
+			zapCodes.put("+AREA",Integer.valueOf(32));
+            zapCodes.put("+AREAS",Integer.valueOf(32));
+			zapCodes.put("+ITEM",Integer.valueOf(33));
+            zapCodes.put("-ITEM",Integer.valueOf(33));
+			zapCodes.put("+CLASS",Integer.valueOf(34));  // for compiled use ONLY
+			zapCodes.put("+ALIGNMENT",Integer.valueOf(35));  // for compiled use ONLY
+			zapCodes.put("+GENDER",Integer.valueOf(36));  // for compiled use ONLY
+			zapCodes.put("+LVLGR",Integer.valueOf(37));  // for compiled use ONLY
+			zapCodes.put("+LVLGE",Integer.valueOf(38));  // for compiled use ONLY
+			zapCodes.put("+LVLLT",Integer.valueOf(39));  // for compiled use ONLY
+			zapCodes.put("+LVLLE",Integer.valueOf(40));  // for compiled use ONLY
+			zapCodes.put("+LVLEQ",Integer.valueOf(41));  // for compiled use ONLY
+			zapCodes.put("+EFFECTS",Integer.valueOf(42));
+			zapCodes.put("+EFFECT",Integer.valueOf(42));
+			zapCodes.put("-EFFECTS",Integer.valueOf(43));
+			zapCodes.put("-EFFECT",Integer.valueOf(43));
+			zapCodes.put("-DEITY",Integer.valueOf(44));
+			zapCodes.put("+DEITY",Integer.valueOf(45));
+			zapCodes.put("-FACTION",Integer.valueOf(46));
+			zapCodes.put("+FACTION",Integer.valueOf(47));
+            zapCodes.put("+WORN",Integer.valueOf(48));
+            zapCodes.put("-WORN",Integer.valueOf(48));
+            zapCodes.put("+MATERIAL",Integer.valueOf(49));
+            zapCodes.put("-MATERIAL",Integer.valueOf(50));
+            zapCodes.put("+RESOURCE",Integer.valueOf(51));
+            zapCodes.put("-RESOURCE",Integer.valueOf(52));
+            zapCodes.put("-JAVACLASS",Integer.valueOf(53));
+            zapCodes.put("+JAVACLASS",Integer.valueOf(54));
+            zapCodes.put("+ABILITY",Integer.valueOf(55));
+            zapCodes.put("-ABILITY",Integer.valueOf(56));
+            zapCodes.put("+ABLE",Integer.valueOf(55));
+            zapCodes.put("-ABLE",Integer.valueOf(56));
+            zapCodes.put("+WORNON",Integer.valueOf(57));
+            zapCodes.put("-WORNON",Integer.valueOf(58));
+            zapCodes.put("+VALUE",Integer.valueOf(59));
+            zapCodes.put("-VALUE",Integer.valueOf(60));
+            zapCodes.put("+WEIGHT",Integer.valueOf(61));
+            zapCodes.put("-WEIGHT",Integer.valueOf(62));
+            zapCodes.put("+ARMOR",Integer.valueOf(63));
+            zapCodes.put("-ARMOR",Integer.valueOf(64));
+            zapCodes.put("+DAMAGE",Integer.valueOf(65));
+            zapCodes.put("-DAMAGE",Integer.valueOf(66));
+            zapCodes.put("+ATTACK",Integer.valueOf(67));
+            zapCodes.put("-ATTACK",Integer.valueOf(68));
+            zapCodes.put("+DISPOSITION",Integer.valueOf(69));
+            zapCodes.put("-DISPOSITION",Integer.valueOf(70));
+            zapCodes.put("+SENSES",Integer.valueOf(71));
+            zapCodes.put("-SENSES",Integer.valueOf(72));
+            zapCodes.put("+HOUR",Integer.valueOf(73));
+            zapCodes.put("-HOUR",Integer.valueOf(74));
+            zapCodes.put("+SEASON",Integer.valueOf(75));
+            zapCodes.put("-SEASON",Integer.valueOf(76));
+            zapCodes.put("+MONTH",Integer.valueOf(77));
+            zapCodes.put("-MONTH",Integer.valueOf(78));
+            zapCodes.put("-SECURITY",Integer.valueOf(79));
+            zapCodes.put("+SECURITY",Integer.valueOf(80));
+            zapCodes.put("-SECURITIES",Integer.valueOf(79));
+            zapCodes.put("+SECURITIES",Integer.valueOf(80));
+            zapCodes.put("-SEC",Integer.valueOf(79));
+            zapCodes.put("+SEC",Integer.valueOf(80));
+            zapCodes.put("-EXPERTISE",Integer.valueOf(81));
+            zapCodes.put("+EXPERTISE",Integer.valueOf(82));
+            zapCodes.put("-EXPERTISES",Integer.valueOf(81));
+            zapCodes.put("+EXPERTISES",Integer.valueOf(82));
+            zapCodes.put("-SKILL",Integer.valueOf(83));
+            zapCodes.put("+SKILL",Integer.valueOf(84));
+            zapCodes.put("-SKILLS",Integer.valueOf(83));
+            zapCodes.put("+SKILLS",Integer.valueOf(84));
+            zapCodes.put("+QUALLVL",Integer.valueOf(85));
+            zapCodes.put("-QUALLVL",Integer.valueOf(86));
+			zapCodes.put("+STR",Integer.valueOf(87));
+			zapCodes.put("+INT",Integer.valueOf(88));
+			zapCodes.put("+WIS",Integer.valueOf(89));
+			zapCodes.put("+DEX",Integer.valueOf(90));
+			zapCodes.put("+CON",Integer.valueOf(91));
+			zapCodes.put("+CHA",Integer.valueOf(92));
+			zapCodes.put("+STRENGTH",Integer.valueOf(87));
+			zapCodes.put("+INTELLIGENCE",Integer.valueOf(88));
+			zapCodes.put("+WISDOM",Integer.valueOf(89));
+			zapCodes.put("+DEXTERITY",Integer.valueOf(90));
+			zapCodes.put("+CONSTITUTION",Integer.valueOf(91));
+			zapCodes.put("+CHARISMA",Integer.valueOf(92));
+			zapCodes.put("-STR",Integer.valueOf(93));
+			zapCodes.put("-STRENGTH",Integer.valueOf(93));
+			zapCodes.put("-INT",Integer.valueOf(94));
+			zapCodes.put("-INTELLIGENCE",Integer.valueOf(94));
+			zapCodes.put("-WIS",Integer.valueOf(95));
+			zapCodes.put("-WISDOM",Integer.valueOf(95));
+			zapCodes.put("-DEX",Integer.valueOf(96));
+			zapCodes.put("-DEXTERITY",Integer.valueOf(96));
+			zapCodes.put("-CON",Integer.valueOf(97));
+			zapCodes.put("-CONSTITUTION",Integer.valueOf(97));
+			zapCodes.put("-CHA",Integer.valueOf(98));
+			zapCodes.put("-CHARISMA",Integer.valueOf(98));
+            zapCodes.put("+HOME",Integer.valueOf(99));
+            zapCodes.put("-HOME",Integer.valueOf(100));
+            zapCodes.put("-SKILLFLAG",Integer.valueOf(101));
+            zapCodes.put("+SKILLFLAG",Integer.valueOf(102));
+            zapCodes.put("-SKILLFLAGS",Integer.valueOf(101));
+            zapCodes.put("+SKILLFLAGS",Integer.valueOf(102));
+            zapCodes.put("-MAXCLASSLEVEL",Integer.valueOf(103));
+            zapCodes.put("-MAXCLASSLEVELS",Integer.valueOf(103));
+            zapCodes.put("+WEATHER",Integer.valueOf(104));
+            zapCodes.put("-WEATHER",Integer.valueOf(105));
+            zapCodes.put("+DAY",Integer.valueOf(106));
+            zapCodes.put("-DAY",Integer.valueOf(107));
+            zapCodes.put("+SYSOP",Integer.valueOf(108));
+            zapCodes.put("-SYSOP",Integer.valueOf(109));
+            zapCodes.put("+SUBOP",Integer.valueOf(110));
+            zapCodes.put("-SUBOP",Integer.valueOf(111));
+            zapCodes.put("+RACE",Integer.valueOf(112));  // for compiled use ONLY
+            zapCodes.put("-QUESTWIN",Integer.valueOf(113));
+            zapCodes.put("+QUESTWIN",Integer.valueOf(114));
+            zapCodes.put("-GROUPSIZE",Integer.valueOf(115));
+            zapCodes.put("+GROUPSIZE",Integer.valueOf(116));
+            zapCodes.put("+BASECLASS",Integer.valueOf(117));
+            zapCodes.put("-IF",Integer.valueOf(118));
+            zapCodes.put("+IF",Integer.valueOf(119));
 		}
 		return zapCodes;
 	}
@@ -304,21 +304,21 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         for(int d=0;d<Ability.ACODE_DESCS.length;d++)
             if(Ability.ACODE_DESCS[d].equals(str))
             {
-                o=new Integer(d);
+                o=Integer.valueOf(d);
                 break;
             }
         if(o==null)
         for(int d=0;d<Ability.DOMAIN_DESCS.length;d++)
             if(Ability.DOMAIN_DESCS[d].startsWith(str)||Ability.DOMAIN_DESCS[d].endsWith(str))
             {
-                o=new Integer(d<<5);
+                o=Integer.valueOf(d<<5);
                 break;
             }
         if(o==null)
         for(int d=0;d<Ability.FLAG_DESCS.length;d++)
             if(Ability.FLAG_DESCS[d].startsWith(str))
             {
-                o=new Long(1<<d);
+                o=Long.valueOf(1<<d);
                 break;
             }
         if(o==null)
@@ -406,31 +406,31 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		if(str.startsWith(c+">=")&&(CMath.isNumber(str.substring(3).trim())))
 		{
 			entry.addElement(getMaskCodes().get("+LVLGE"));
-			entry.addElement(new Integer(CMath.s_int(str.substring(3).trim())));
+			entry.addElement(Integer.valueOf(CMath.s_int(str.substring(3).trim())));
 		}
 		else
 		if(str.startsWith(c+"<=")&&(CMath.isNumber(str.substring(3).trim())))
 		{
 			entry.addElement(getMaskCodes().get("+LVLLE"));
-			entry.addElement(new Integer(CMath.s_int(str.substring(3).trim())));
+			entry.addElement(Integer.valueOf(CMath.s_int(str.substring(3).trim())));
 		}
 		else
 		if(str.startsWith(c+">")&&(CMath.isNumber(str.substring(2).trim())))
 		{
 			entry.addElement(getMaskCodes().get("+LVLGR"));
-			entry.addElement(new Integer(CMath.s_int(str.substring(2).trim())));
+			entry.addElement(Integer.valueOf(CMath.s_int(str.substring(2).trim())));
 		}
 		else
 		if(str.startsWith(c+"<")&&(CMath.isNumber(str.substring(2).trim())))
 		{
 			entry.addElement(getMaskCodes().get("+LVLLT"));
-			entry.addElement(new Integer(CMath.s_int(str.substring(2).trim())));
+			entry.addElement(Integer.valueOf(CMath.s_int(str.substring(2).trim())));
 		}
 		else
 		if(str.startsWith(c+"=")&&(CMath.isNumber(str.substring(2).trim())))
 		{
 			entry.addElement(getMaskCodes().get("+LVLEQ"));
-			entry.addElement(new Integer(CMath.s_int(str.substring(2).trim())));
+			entry.addElement(Integer.valueOf(CMath.s_int(str.substring(2).trim())));
 		}
 		return entry;
 	}
@@ -2532,7 +2532,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 if(A!=null)
                                 {
                                     entry.addElement(A.ID());
-                                    entry.addElement(new Integer(prof));
+                                    entry.addElement(Integer.valueOf(prof));
                                 }
                             }
                             v=V.size();
@@ -2628,7 +2628,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
                             {
                                 int code=CMLib.utensils().getWornCode(str2.substring(1));
-                                if(code>=0) entry.addElement(new Integer((int)CMath.pow(2,code-1)));
+                                if(code>=0) entry.addElement(Integer.valueOf((int)CMath.pow(2,code-1)));
                             }
                             v=V.size();
                         }
@@ -2652,7 +2652,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
                             {
                                 int code=CMLib.flags().getDispositionCode(str2.substring(1));
-                                if(code>=0) entry.addElement(new Integer((int)CMath.pow(2,code)));
+                                if(code>=0) entry.addElement(Integer.valueOf((int)CMath.pow(2,code)));
                             }
                             v=V.size();
                         }
@@ -2676,7 +2676,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
                             {
                                 int code=CMLib.flags().getSensesCode(str2.substring(1));
-                                if(code>=0) entry.addElement(new Integer((int)CMath.pow(2,code)));
+                                if(code>=0) entry.addElement(Integer.valueOf((int)CMath.pow(2,code)));
                             }
                             v=V.size();
                         }
@@ -2700,10 +2700,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
                             {
                                 if(CMath.isInteger(str2.substring(1).trim()))
-                                    entry.addElement(new Integer(CMath.s_int(str2.substring(1).trim())));
+                                    entry.addElement(Integer.valueOf(CMath.s_int(str2.substring(1).trim())));
                                 else
                                 if(determineSeason(str2.substring(1).trim())>=0)
-                                    entry.addElement(new Integer(determineSeason(str2.substring(1).trim())));
+                                    entry.addElement(Integer.valueOf(determineSeason(str2.substring(1).trim())));
                             }
                             v=V.size();
                         }
@@ -2727,10 +2727,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
                             {
                                 if(CMath.isInteger(str2.substring(1).trim()))
-                                    entry.addElement(new Integer(CMath.s_int(str2.substring(1).trim())));
+                                    entry.addElement(Integer.valueOf(CMath.s_int(str2.substring(1).trim())));
                                 else
                                 if(CMParms.indexOf(Climate.WEATHER_DESCS,str2.substring(1).trim())>=0)
-                                    entry.addElement(new Integer(CMParms.indexOf(Climate.WEATHER_DESCS,str2.substring(1).trim())));
+                                    entry.addElement(Integer.valueOf(CMParms.indexOf(Climate.WEATHER_DESCS,str2.substring(1).trim())));
                             }
                             v=V.size();
                         }
@@ -2756,7 +2756,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             }
                             else
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
-                                entry.addElement(new Integer(CMath.s_int(str2.substring(1).trim())));
+                                entry.addElement(Integer.valueOf(CMath.s_int(str2.substring(1).trim())));
                             v=V.size();
                         }
                     }
@@ -2775,7 +2775,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	                        buf.addElement(entry);
 	                        entry.addElement(zapCodes.get(str));
 	                        entry.addElement(A.ID());
-	                        entry.addElement(new Integer(adjustment));
+	                        entry.addElement(Integer.valueOf(adjustment));
 	                    }
 	                }
                 	break;
@@ -2891,7 +2891,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						Vector entry=new Vector();
 						buf.addElement(entry);
 						entry.addElement(zapCodes.get(str));
-						entry.addElement(new Integer(val));
+						entry.addElement(Integer.valueOf(val));
 						break;
 					}
                 case 118: // -if

@@ -37,7 +37,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class GenCharClass extends StdCharClass
 {
 	protected String ID="GenCharClass";
-    protected Integer[] nameLevels={new Integer(0)};
+    protected Integer[] nameLevels={Integer.valueOf(0)};
 	protected String baseClass="Commoner";
 	protected int hpDivisor=3;
 	protected int hpDice=1;
@@ -99,14 +99,14 @@ public class GenCharClass extends StdCharClass
     {
         if(securityGroups.length==0)
             return super.getSecurityGroups(classLevel);
-        Vector V=(Vector)securityGroupCache.get(new Integer(classLevel));
+        Vector V=(Vector)securityGroupCache.get(Integer.valueOf(classLevel));
         if(V!=null) return V;
         V=new Vector();
         for(int i=securityGroupLevels.length-1;i>=0;i--)
             if((classLevel>=securityGroupLevels[i].intValue())
             &&(i<securityGroups.length))
                 CMParms.addToVector(securityGroups[i],V);
-        securityGroupCache.put(new Integer(classLevel),V);
+        securityGroupCache.put(Integer.valueOf(classLevel),V);
         return V;
     }
 
@@ -425,7 +425,7 @@ public class GenCharClass extends StdCharClass
             names=new String[1];
             names[0]=singleName;
             nameLevels=new Integer[1];
-            nameLevels[0]=new Integer(0);
+            nameLevels[0]=Integer.valueOf(0);
         }
         else
         {
@@ -440,7 +440,7 @@ public class GenCharClass extends StdCharClass
                 if((name.length()==0)||(level<=lastLevel))
                     break;
                 nameSet.addElement(name);
-                levelSet.addElement(new Integer(level));
+                levelSet.addElement(Integer.valueOf(level));
                 lastLevel=level;
                 index++;
             }
@@ -535,7 +535,7 @@ public class GenCharClass extends StdCharClass
 				XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xV.elementAt(x);
 				if((!iblk.tag.equalsIgnoreCase("WCLASS"))||(iblk.contents==null))
 					continue;
-				disallowedWeaponSet.add(new Integer(CMath.s_int(iblk.value)));
+				disallowedWeaponSet.add(Integer.valueOf(CMath.s_int(iblk.value)));
 			}
 		}
 
@@ -550,7 +550,7 @@ public class GenCharClass extends StdCharClass
                 XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xV.elementAt(x);
                 if((!iblk.tag.equalsIgnoreCase("WMAT"))||(iblk.contents==null))
                     continue;
-                requiredWeaponMaterials.add(new Integer(CMath.s_int(iblk.value)));
+                requiredWeaponMaterials.add(Integer.valueOf(CMath.s_int(iblk.value)));
             }
         }
         
@@ -585,7 +585,7 @@ public class GenCharClass extends StdCharClass
             if((groups.length()==0)||(groupLevel<=lastLevel))
                 break;
             groupSet.addElement(CMParms.parse(groups.toUpperCase()));
-            groupLevelSet.addElement(new Integer(groupLevel));
+            groupLevelSet.addElement(Integer.valueOf(groupLevel));
             lastLevel=groupLevel;
             index++;
         }
@@ -791,7 +791,7 @@ public class GenCharClass extends StdCharClass
 				 {
 					disallowedWeaponSet=new HashSet();
 					for(int v=0;v<V.size();v++)
-						disallowedWeaponSet.add(new Integer(CMath.s_int((String)V.elementAt(v))));
+						disallowedWeaponSet.add(Integer.valueOf(CMath.s_int((String)V.elementAt(v))));
 				 }
 				 else
 					 disallowedWeaponSet=null;
@@ -833,14 +833,14 @@ public class GenCharClass extends StdCharClass
                     for(int i=names.length;i<newNames.length;i++)
                     {
                         newNames[i]=names[names.length-1];
-                        newLevels[i]=new Integer(newLevels[i-1].intValue()+1);
+                        newLevels[i]=Integer.valueOf(newLevels[i-1].intValue()+1);
                     }
                     names=newNames;
                     nameLevels=newLevels;
                  }
                  break;
         case 42: if(num<nameLevels.length)
-                    nameLevels[num]=new Integer(CMath.s_int(val));
+                    nameLevels[num]=Integer.valueOf(CMath.s_int(val));
                  break;
         case 43:{  num=CMath.s_int(val);
                    if(num<0) num=0;
@@ -857,9 +857,9 @@ public class GenCharClass extends StdCharClass
                    {
                        newGroups[i]=new Vector();
                        if(i==0)
-                           newLevels[0]=new Integer(0);
+                           newLevels[0]=Integer.valueOf(0);
                        else
-                           newLevels[i]=new Integer(newLevels[i-1].intValue()+1);
+                           newLevels[i]=Integer.valueOf(newLevels[i-1].intValue()+1);
                    }
                    securityGroups=newGroups;
                    securityGroupLevels=newLevels;
@@ -871,7 +871,7 @@ public class GenCharClass extends StdCharClass
                  securityGroupCache.clear();
                  break;
         case 45: if(num<securityGroupLevels.length)
-                    securityGroupLevels[num]=new Integer(CMath.s_int(val));
+                    securityGroupLevels[num]=Integer.valueOf(CMath.s_int(val));
                 securityGroupCache.clear();
                  break;
         case 46: if(CMath.s_int(val)==0)
@@ -886,7 +886,7 @@ public class GenCharClass extends StdCharClass
                  {
                      requiredWeaponMaterials=new HashSet();
                      for(int v=0;v<V.size();v++)
-                         requiredWeaponMaterials.add(new Integer(CMath.s_int((String)V.elementAt(v))));
+                         requiredWeaponMaterials.add(Integer.valueOf(CMath.s_int((String)V.elementAt(v))));
                  }
                  else
                      requiredWeaponMaterials=null;

@@ -276,9 +276,9 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 							{
 								commands.removeElementAt(0);
 								if(types==null) types=new DVector(2);
-								if(!types.contains(new Integer(code)))
+								if(!types.contains(Integer.valueOf(code)))
 								{
-									types.addElement(new Integer(code),new Integer(s));
+									types.addElement(Integer.valueOf(code),Integer.valueOf(s));
 									if(commands.size()>0)
 										cmd=(String)commands.firstElement();
 									else

@@ -121,8 +121,8 @@ class ResultSet implements java.sql.ResultSet
         if((!isNumber(s1))||(!isNumber(s2))) return 0;
         if(isDouble(s1)||(isDouble(s2)))
         {
-            double d1=isDouble(s1)?s_double(s1):new Long(s_long(s1)).doubleValue();
-            double d2=isDouble(s2)?s_double(s2):new Long(s_long(s2)).doubleValue();
+            double d1=isDouble(s1)?s_double(s1):Long.valueOf(s_long(s1)).doubleValue();
+            double d2=isDouble(s2)?s_double(s2):Long.valueOf(s_long(s2)).doubleValue();
             if(d1==d2) return 0;
             if(d1>d2) return 1;
             return -1;

@@ -66,7 +66,7 @@ public class Chant_GrowForest extends Chant
 			if(((code&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
 			&&(code!=RawMaterial.RESOURCE_WOOD))
 			{
-				choices.addElement(new Integer(code));
+				choices.addElement(Integer.valueOf(code));
 				if((s.length()>0)&&(CMLib.english().containsString(RawMaterial.RESOURCE_DESCS[i],s)))
 					material=code;
 			}

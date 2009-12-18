@@ -89,9 +89,9 @@ public class TemporaryImmunity extends StdAbility
 		{
 			str=str.substring(1);
 			if(set.indexOf(str)>=0)
-				set.setElementAt(set.indexOf(str),2,new Long(System.currentTimeMillis()));
+				set.setElementAt(set.indexOf(str),2,Long.valueOf(System.currentTimeMillis()));
 			else
-				set.addElement(str,new Long(System.currentTimeMillis()));
+				set.addElement(str,Long.valueOf(System.currentTimeMillis()));
 		}
 		else
 		{
@@ -102,7 +102,7 @@ public class TemporaryImmunity extends StdAbility
 				String s=(String)V.elementAt(v);
 				int x=s.indexOf("/");
 				if(x>0)
-					set.addElement(s.substring(0,x),new Long(CMath.s_long(s.substring(x+1))));
+					set.addElement(s.substring(0,x),Long.valueOf(CMath.s_long(s.substring(x+1))));
 			}
 		}
 	}

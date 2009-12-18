@@ -98,7 +98,7 @@ public class Chant_Den extends Chant
 		for(int d=0;d<Directions.DIRECTIONS_BASE().length;d++)
 		{
 			if(mob.location().getRoomInDir(Directions.DIRECTIONS_BASE()[d])==null)
-				dirChoices.addElement(new Integer(Directions.DIRECTIONS_BASE()[d]));
+				dirChoices.addElement(Integer.valueOf(Directions.DIRECTIONS_BASE()[d]));
 		}
 		if(dirChoices.size()==0)
 		{
