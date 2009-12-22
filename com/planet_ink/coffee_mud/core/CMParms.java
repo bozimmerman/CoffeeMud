@@ -1452,6 +1452,16 @@ public class CMParms
         return s;
     }
 
+    public static String[] appendToArray(String[] front, String[] back)
+    {
+    	if(back==null) return front;
+    	if(front==null) return back;
+    	if(back.length==0) return front;
+    	String[] newa = Arrays.copyOf(front, front.length + back.length);
+    	for(int i=0;i<back.length;i++)
+    		newa[newa.length-1-i]=back[back.length-1-i];
+    	return newa;
+    }
     
 	public static void addToVector(Vector from, Vector to)
     {

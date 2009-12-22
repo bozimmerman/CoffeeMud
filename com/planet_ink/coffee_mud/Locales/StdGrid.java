@@ -814,43 +814,30 @@ public class StdGrid extends StdRoom implements GridLocale
 	private final static String[] MYCODES={"XSIZE","YSIZE"};
 	public String getStat(String code)
 	{
-		if(super.getStdRoomCodeNum(code)>=0)
-			return super.getStat(code);
 		switch(getStdGridCodeNum(code))
 		{
 		case 0: return Integer.toString(xGridSize());
 		case 1: return Integer.toString(yGridSize());
-        default: return "";
+        default: return super.getStat(code);
         }
 	}
 	public void setStat(String code, String val)
 	{
-		if(super.getStdRoomCodeNum(code)>=0)
-			super.setStat(code, val);
-		else
 		switch(getStdGridCodeNum(code))
 		{
 		case 0: setXGridSize(CMath.s_parseIntExpression(val)); break;
 		case 1: setYGridSize(CMath.s_parseIntExpression(val)); break;
-        default: break;
+        default: super.setStat(code, val); break;
 		}
 	}
 	protected int getStdGridCodeNum(String code){
-		for(int i=0;i<codes.length;i++)
-			if(code.equalsIgnoreCase(codes[i])) return i;
+		for(int i=0;i<MYCODES.length;i++)
+			if(code.equalsIgnoreCase(MYCODES[i])) return i;
 		return -1;
 	}
 	private static String[] codes=null;
-	public String[] getStatCodes()
-	{
-		if(codes!=null) return codes;
-		String[] superCodes=super.getStatCodes();
-		codes=new String[superCodes.length+MYCODES.length];
-		int i=0;
-		for(;i<superCodes.length;i++)
-			codes[i]=superCodes[i];
-		for(int x=0;x<MYCODES.length;i++,x++)
-			codes[i]=MYCODES[x];
-		return codes;
+	public String[] getStatCodes() 
+	{ 
+		return (codes != null) ? codes : (codes =  CMProps.getStatCodesList(CMParms.appendToArray(STDCODES, MYCODES),this));
 	}
 }

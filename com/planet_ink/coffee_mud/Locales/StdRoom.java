@@ -1978,33 +1978,38 @@ public class StdRoom implements Room
     public int numScripts(){return (scripts==null)?0:scripts.size();}
     public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
     
-	public int getSaveStatIndex(){return getStatCodes().length;}
-	private static final String[] CODES={"CLASS","DISPLAY","DESCRIPTION","TEXT"};
-	public String[] getStatCodes(){return CODES;}
+    public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
+	protected static final String[] STDCODES={"CLASS","DISPLAY","DESCRIPTION","TEXT"};
+    private static String[] codes=null;
+    public String[] getStatCodes()
+    {
+        if(codes==null)
+            codes=CMProps.getStatCodesList(STDCODES,this);
+        return codes; 
+    }
     public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
-	protected int getStdRoomCodeNum(String code){
-		for(int i=0;i<CODES.length;i++)
-			if(code.equalsIgnoreCase(CODES[i])) return i;
-		return -1;
-	}
+	protected int getCodeNum(String code){ return CMParms.indexOf(codes, code.toUpperCase());}
 	public String getStat(String code){
-		switch(getStdRoomCodeNum(code))
+		switch(getCodeNum(code))
 		{
 		case 0: return CMClass.classID(this);
 		case 1: return displayText();
 		case 2: return description();
 		case 3: return text();
+        default: return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
-		return "";
 	}
 	public void setStat(String code, String val)
 	{
-		switch(getStdRoomCodeNum(code))
+		switch(getCodeNum(code))
 		{
 		case 0: return;
 		case 1: setDisplayText(val); break;
 		case 2: setDescription(val); break;
 		case 3: setMiscText(val); break;
+        default:
+            CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+            break;
 		}
 	}
     public boolean sameAs(Environmental E)

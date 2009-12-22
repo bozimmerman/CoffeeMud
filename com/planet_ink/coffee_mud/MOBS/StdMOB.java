@@ -3725,7 +3725,7 @@ public class StdMOB implements MOB
 		case 3: setMiscText(val); break;
 		}
 	}
-	public int getSaveStatIndex(){return getStatCodes().length;}
+    public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
 	public String[] getStatCodes(){return CODES;}
     public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	protected int getCodeNum(String code){

@@ -693,12 +693,14 @@ public class Spell_Wish extends Spell
 							{
 								CMLib.leveler().level(MT);
 								MT.recoverEnvStats();
+								MT.setExperience(CMLib.leveler().getLevelExperience(MT.baseEnvStats().level()));
 							}
 						}
 						else
 						while(MT.baseEnvStats().level()>newLevel)
 						{
 							CMLib.leveler().unLevel(MT);
+							MT.setExperience(CMLib.leveler().getLevelExperience(MT.baseEnvStats().level()));
 							MT.recoverEnvStats();
 						}
 					}
@@ -710,7 +712,10 @@ public class Spell_Wish extends Spell
 					wishDrain(mob,baseLoss*levelsLost,true);
 					if((mob!=target)||(level>0))
 					for(int i2=0;i2<levelsLost;i2++)
+					{
 						CMLib.leveler().unLevel(mob);
+						mob.setExperience(CMLib.leveler().getLevelExperience(mob.baseEnvStats().level()));
+					}
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" is now level "+target.envStats().level()+"!");
 				}
 				return true;

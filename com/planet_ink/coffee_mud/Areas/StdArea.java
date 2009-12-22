@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -1634,7 +1635,7 @@ public class StdArea implements Area
 	        return true;
 	}
 
-	public int getSaveStatIndex(){return getStatCodes().length;}
+    public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
 	private static final String[] CODES={"CLASS",
 	    								 "CLIMATE",
 	    								 "DESCRIPTION",
@@ -1647,13 +1648,15 @@ public class StdArea implements Area
                                          "INVRESETRATE",
                                          "IGNOREMASK",
                                          "PRICEMASKS"};
-	public String[] getStatCodes(){return CODES;}
+    private static String[] codes=null;
+    public String[] getStatCodes()
+    {
+        if(codes==null)
+            codes=CMProps.getStatCodesList(CODES,this);
+        return codes; 
+    }
     public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
-	protected int getCodeNum(String code){
-		for(int i=0;i<CODES.length;i++)
-			if(code.equalsIgnoreCase(CODES[i])) return i;
-		return -1;
-	}
+	protected int getCodeNum(String code){ return CMParms.indexOf(codes, code.toUpperCase());}
 	public String getStat(String code){
 		switch(getCodeNum(code))
 		{
@@ -1669,8 +1672,8 @@ public class StdArea implements Area
         case 9: return ""+invResetRate();
         case 10: return ignoreMask();
         case 11: return CMParms.toStringList(itemPricingAdjustments());
+        default: return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
-		return "";
 	}
 	public void setStat(String code, String val)
 	{
@@ -1698,6 +1701,7 @@ public class StdArea implements Area
         case 9: setInvResetRate(CMath.s_parseIntExpression(val)); break;
         case 10: setIgnoreMask(val); break;
         case 11: setItemPricingAdjustments((val.trim().length()==0)?new String[0]:CMParms.toStringArray(CMParms.parseCommas(val,true))); break;
+        default: CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val); break;
 		}
 	}
     public boolean sameAs(Environmental E)
