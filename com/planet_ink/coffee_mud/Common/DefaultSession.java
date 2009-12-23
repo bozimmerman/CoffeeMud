@@ -907,6 +907,7 @@ public class DefaultSession extends Thread implements Session
 		if((in==null)||(out==null))
 			return;
 		int c=read();
+		if(c>255)c=c&0xff;
 		switch(c)
 		{
         case TELNET_IAC:
@@ -1072,7 +1073,7 @@ public class DefaultSession extends Thread implements Session
 			if(c<0)
 				throw new IOException("reset by peer");
 			else
-			if(c==TELNET_IAC)
+			if((c==TELNET_IAC)||((c&0xff)==TELNET_IAC))
 			    handleIAC();
 			else
             if(c=='\033')
