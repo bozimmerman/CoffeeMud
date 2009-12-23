@@ -132,7 +132,9 @@ public class CMProps extends Properties
     public static final int SYSTEM_FORMULA_DAMAGEWEAPONCRIT=74;
     public static final int SYSTEM_FORMULA_NPCHITPOINTS=75;
     public static final int SYSTEM_FORMULA_DAMAGESPELLFUDGE=76;
-    public static final int NUM_SYSTEM=77;
+    public static final int SYSTEM_FORMULA_DAMAGEMELEEFUDGE=77;
+    public static final int SYSTEM_FORMULA_DAMAGERANGEDFUDGE=78;
+    public static final int NUM_SYSTEM=79;
 
     public static final int SYSTEMI_EXPRATE=0;
     public static final int SYSTEMI_SKYSIZE=1;
@@ -873,6 +875,8 @@ public class CMProps extends Properties
         setUpLowVar(SYSTEM_FORMULA_CHANCESPELLCRIT, getStr("FORMULA_CHANCESPELLCRIT","(( ((@x2-10+((@x8-@x9)<10))/5)>0 * ((@x3-10+((@x8-@x9)<10))/5)>0 * ((@x3-10+((@x8-@x9)<10))/5) ))"));
         setUpLowVar(SYSTEM_FORMULA_DAMAGESPELLCRIT, getStr("FORMULA_DAMAGESPELLCRIT","(@x1*( ((@x2-10+((@x8-@x9)<10))/5)>0 * ((@x3-10+((@x8-@x9)<10))/5)>0 * ((@x3-10+((@x8-@x9)<10))/5) )/100.0)+(@x4/2)"));
         setUpLowVar(SYSTEM_FORMULA_DAMAGESPELLFUDGE, getStr("FORMULA_DAMAGESPELLFUDGE","(@x1 - ( ((@x9-@x8)>0<1.0) * @x1 * (((@x9-@x8)<12.0)*((@x9-@x8)<12.0))/120.0))>0"));
+        setUpLowVar(SYSTEM_FORMULA_DAMAGEMELEEFUDGE, getStr("FORMULA_DAMAGEMELEEFUDGE","(@x1 - ( ((@x9-@x8)>0<1.0) * @x1 * (((@x9-@x8)<12.0)*((@x9-@x8)<12.0))/120.0))>0"));
+        setUpLowVar(SYSTEM_FORMULA_DAMAGERANGEDFUDGE, getStr("FORMULA_DAMAGERANGEDFUDGE","(@x1 - ( ((@x9-@x8)>0<1.0) * @x1 * (((@x9-@x8)<12.0)*((@x9-@x8)<12.0))/120.0))>0"));
         setUpLowVar(SYSTEM_FORMULA_DAMAGERANGEDTARGETED, getStr("FORMULA_DAMAGERANGEDTARGETED","((1?@x1)+((@x3-@x4)/2.5)-(0.5*@xx*@x8)+(0.5*@xx*@x9)+(0.2*@xx*@x10)-(0.2*@xx*@x5)-(0.2*@xx*@x6)-(0.2*@xx*@x7))>1"));
         setUpLowVar(SYSTEM_FORMULA_DAMAGERANGEDSTATIC, getStr("FORMULA_DAMAGERANGEDSTATIC","((1?@x1)+((@x3-@x4)/2.5)-(0.2*@xx*@x5)-(0.2*@xx*@x6)-(0.2*@xx*@x7))>1"));
         setUpLowVar(SYSTEM_FORMULA_DAMAGEMELEETARGETED, getStr("FORMULA_DAMAGEMELEETARGETED","((1?@x1)+((@x2-10+@x3-@x4)/5)-(0.5*@xx*@x8)+(0.5*@xx*@x9)+(0.2*@xx*@x10)-(0.2*@xx*@x5)-(0.2*@xx*@x6)-(0.2*@xx*@x7))>1"));

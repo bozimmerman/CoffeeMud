@@ -47,7 +47,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
     protected LinkedList<CMath.CompiledOperation>  spellCritChanceFormula = null;
     protected LinkedList<CMath.CompiledOperation>  spellCritDmgFormula = null;
     protected LinkedList<CMath.CompiledOperation> targetedRangedDamageFormula = null;
+    protected LinkedList<CMath.CompiledOperation> rangedFudgeDamageFormula  = null;
     protected LinkedList<CMath.CompiledOperation> targetedMeleeDamageFormula = null;
+    protected LinkedList<CMath.CompiledOperation> meleeFudgeDamageFormula  = null;
     protected LinkedList<CMath.CompiledOperation> staticRangedDamageFormula = null;
     protected LinkedList<CMath.CompiledOperation> staticMeleeDamageFormula = null;
     protected LinkedList<CMath.CompiledOperation>  weaponCritChanceFormula = null;
@@ -69,6 +71,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		weaponCritChanceFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_CHANCEWEAPONCRIT));
 		weaponCritDmgFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_DAMAGEWEAPONCRIT));
 		spellFudgeDamageFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_DAMAGESPELLFUDGE));
+		meleeFudgeDamageFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_DAMAGEMELEEFUDGE));
+		rangedFudgeDamageFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_DAMAGERANGEDFUDGE));
     	return true; 
     }
     
@@ -521,6 +525,16 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		{
 			int weaponCritDmgAmt = (int)Math.round(CMath.parseMathExpression(weaponCritDmgFormula, vars, 0.0));
 			damageAmount += weaponCritDmgAmt;
+		}
+		if(target != null)
+		{
+			double old = damageAmount;
+			vars[0] = damageAmount;
+			if(rangedAttack)
+				damageAmount = CMath.parseMathExpression(rangedFudgeDamageFormula, vars, 0.0);
+			else
+				damageAmount = CMath.parseMathExpression(meleeFudgeDamageFormula, vars, 0.0);
+			System.out.println(mob.envStats().level()+":"+target.envStats().level()+", " + old+"/"+damageAmount);
 		}
 		return (int)Math.round(damageAmount);
 	}
