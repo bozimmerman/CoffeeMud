@@ -1152,6 +1152,8 @@ public class DefaultSession extends Thread implements Session
                     }
                     default:
                     {
+                    	if(((c>>8)&0xff)>241)
+                    		c=-1;
                         lastWasCR = false;
                         lastWasLF = false;
                         break;
