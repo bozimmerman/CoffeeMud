@@ -256,6 +256,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             zapCodes.put("+BASECLASS",Integer.valueOf(117));
             zapCodes.put("-IF",Integer.valueOf(118));
             zapCodes.put("+IF",Integer.valueOf(119));
+			zapCodes.put("-MOODS",Integer.valueOf(120));
+			zapCodes.put("-MOOD",Integer.valueOf(120));
+			zapCodes.put("+MOODS",Integer.valueOf(121));
+			zapCodes.put("+MOOD",Integer.valueOf(121));
 		}
 		return zapCodes;
 	}
@@ -681,6 +685,38 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("-"))
+								buf.append(str2.substring(1)+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
+				case 120: // -Mood
+					{
+						buf.append((skipFirstWord?"The":"Requires")+" the following mood(s): ");
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							String str2=(String)V.elementAt(v2);
+	                        if(zapCodes.containsKey(str2))
+	                            break;
+	                        if(str2.startsWith("+"))
+								buf.append(str2.substring(1)+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuffer(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+				break;
+				case 121: // +Mood
+					{
+						buf.append("Disallows the following mood(s): ");
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							String str2=(String)V.elementAt(v2);
+	                        if(zapCodes.containsKey(str2))
+	                            break;
+	                        if(str2.startsWith("-"))
 								buf.append(str2.substring(1)+", ");
 						}
 						if(buf.toString().endsWith(", "))
@@ -2424,6 +2460,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     }
                     break;
 				case 7: // -Tattoos
+				case 120: // -Mood
 				case 79: // -security
 				case 81: // -expertise
 				case 14: // -Clan
@@ -2474,6 +2511,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				}
 				case 8: // +Tattoos
+				case 121: // +Mood
 				case 80: // +security
 				case 82: // +expertise
 				case 15: // +Clan
@@ -3380,6 +3418,22 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						if((mob.fetchTattoo((String)V.elementAt(v))!=null)
                         ||((R!=null)&&(R.getArea().getBlurbFlag((String)V.elementAt(v))!=null)))
 						{ return false;}
+				}
+				break;
+			case 120: // -mood
+				{
+					String moodName = "NORMAL";
+					Ability A = mob.fetchEffect("Mood");
+					if((A!=null)&&(A.text().trim().length()>0)) moodName=A.text().toUpperCase().trim();
+					if(!V.contains(moodName)) return false;
+				}
+				break;
+			case 121: // +mood
+				{
+					String moodName = "NORMAL";
+					Ability A = mob.fetchEffect("Mood");
+					if((A!=null)&&(A.text().trim().length()>0)) moodName=A.text().toUpperCase().trim();
+					if(V.contains(moodName)) return false;
 				}
 				break;
 			case 81: // -expertise

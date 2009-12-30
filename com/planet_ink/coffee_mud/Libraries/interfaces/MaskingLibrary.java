@@ -87,6 +87,8 @@ public interface MaskingLibrary extends CMLibrary
         +"-SECURITY +cmdrooms +area cmditems etc..  (create exceptions)<BR>"
         +"+SECURITY (do not <WORD> any or no expertises) <BR>"
         +"+SECURITY -cmdrooms +area cmditems, etc.. (create exceptions) <BR>"
+        +"-MOOD +grumpy +normal (<WORD> all except those with given moods)<BR>"
+        +"+MOOD -grumpy -normal (<WORD> only those with subtracted moods)<BR>"
         +"-LEVEL (<WORD> all levels)  <BR>"
         +"-LEVEL +=1 +>5 +>=7 +<13 +<=20 (create exceptions)  <BR>"
         +"-=1 ->5 ->=7 -<13 -<=20 (<WORD> only listed levels range) <BR>"

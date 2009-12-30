@@ -75,6 +75,7 @@ public class Generate extends StdCommand
         	mob.tell("Generate what? Try GENERATE [TYPE] [ID] (FROM [DATA_FILE_PATH]) ([VAR=VALUE]..) [DIRECTION]");
         	return false;
         }
+        String finalLog = mob.Name()+" called generate command with parms: " + CMParms.combine(commands, 1);
         CMFile file = null;
         if((commands.size()>3)&&((String)commands.elementAt(3)).equalsIgnoreCase("FROM"))
 		{
@@ -249,6 +250,7 @@ public class Generate extends StdCommand
         		mob.tell("Done saving remaining rooms for area '"+A.name()+"'");
 	    		Log.sysOut("Generate",mob.Name()+" generated area "+A.name());
         	}
+		Log.sysOut("Generate",finalLog);
         return true;
     }
     

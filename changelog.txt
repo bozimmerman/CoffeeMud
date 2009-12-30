@@ -2192,7 +2192,7 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 1. New INI entries: DEFAULTPLAYERFLAGS, FORMULA_* for combat formulas, RECOVERRATE
 2. New DISABLE flags: AUTODISEASE, WEATHER, WEATHERNOTIFIES, WEATHERCHANGES
 3. RESET MOBSTATS and RESET ITEMSTATS have been documented for normalizing combat stats
-3. Character classes, and mob stats have been rebalanced along pre-3.0 lines.  
+3. Character classes, and mob stats have been rebalanced along pre-3.0 lines. This makes hl PVP possible. 
    Thieves and Fighters are most altered classes.  
    Mobs are an average of players now.
    Combat Fudge Factors are more strict, effective, and rational.
@@ -2200,7 +2200,7 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
    Use RESET MOBSTATS WORLD command to pull your mobs into compliance.  
      This will, as a side affect, reset all area content to db baseline. 
 4. CoffeeMud now supports critical hits for spells and physical damage: high int supports former, and high dex the later.
-5. New Zappermask: +BASECLASS
+5. New Zappermasks: +BASECLASS, -MOOD, +MOOD
 6. New DEBUG flag: HTTPACCESS, SMTPCLIENT
 7. SMTPSERVERNAME ini entry expanded to allow SMTP auth support.
 8. Siplet now supports multiple windows.
@@ -2208,8 +2208,8 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 10.Rhino (Javascript library) upgraded to 1.7R2
 11.Several new Oracle Prayers added for sensing the skills of others
 12.Behaviors ItemRefitter,ItemMender,ItemIdentifier have COST parameter now.
-13.New DISABLE flags: EQUIPSIZE, AUTOPURGE
+13.New DISABLE flags: EQUIPSIZE, AUTOPURGE, MSSP
 14.WEAR command now supports specified wear locations.
 15.New Locales: CaveGrid, WetCaveGrid
 16.Note (coffeemud.ini): I3EMAIL and I3STATE changed to ADMINEMAIL and MUDSTATE
-17:CoffeeMud now supports MSSP request at login (not the telnet code version -- kept colliding with mccp in tintin)
+17.CoffeeMud now supports MSSP request at login (not the telnet code version -- kept colliding with mccp in tintin)
