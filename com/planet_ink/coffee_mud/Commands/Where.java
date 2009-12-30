@@ -440,9 +440,9 @@ public class Where extends StdCommand
 				{
 					int median=A.getAreaIStats()[Area.AREASTAT_MEDLEVEL];
 					int medianDiff=0;
-					int upperLimit=moblevel/3;
-					if((median<(moblevel+upperLimit))
-					&&((median>=(moblevel-5))))
+					int diffLimit=6;
+					if((median<(moblevel+diffLimit))
+					&&((median>=(moblevel-diffLimit))))
 					{
 						if(mob.envStats().level()>=median)
 							medianDiff=(int)Math.round(9.0*CMath.div(median,moblevel));
