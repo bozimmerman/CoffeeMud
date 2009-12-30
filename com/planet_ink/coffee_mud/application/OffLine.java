@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.LanguageLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -51,6 +52,7 @@ public class OffLine extends Thread implements MudHost
     public int port=5555;
     public int state=0;
     ServerSocket servsock=null;
+    protected final long startupTime = System.currentTimeMillis();
 
     public OffLine()
     {
@@ -470,6 +472,9 @@ public class OffLine extends Thread implements MudHost
     public void setAcceptConnections(boolean truefalse){ acceptConnections=truefalse;}
     public boolean isAcceptingConnections(){ return acceptConnections;}
     public Vector getOverdueThreads(){return new Vector();}
+    public long getUptimeSecs() { return (System.currentTimeMillis()-startupTime)/1000;}
+    public String getLanguage() { return "English";}
+
     public String executeCommand(String cmd)
         throws Exception
     {

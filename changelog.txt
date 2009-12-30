@@ -2210,4 +2210,6 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 12.Behaviors ItemRefitter,ItemMender,ItemIdentifier have COST parameter now.
 13.New DISABLE flags: EQUIPSIZE, AUTOPURGE
 14.WEAR command now supports specified wear locations.
-15.
+15.New Locales: CaveGrid, WetCaveGrid
+16.Note (coffeemud.ini): I3EMAIL and I3STATE changed to ADMINEMAIL and MUDSTATE
+17:CoffeeMud now supports MSSP request at login (not the telnet code version -- kept colliding with mccp in tintin)

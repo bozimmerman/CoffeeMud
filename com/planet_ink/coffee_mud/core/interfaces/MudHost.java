@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.LanguageLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -75,11 +76,22 @@ public interface MudHost
     public String getStatus();
     
     /**
+     * Retreive the number of seconds since startup
+     * @return number of seconds since startup
+     */
+    public long getUptimeSecs();
+    
+    /**
      * Return any internal threads that are a source of troubles
      * @return a list of threads that need service or killing
      */
     public Vector getOverdueThreads();
     
+    /**
+     * Return the viewable name of the language supported by this host.
+     * @return the language supported by this host.
+     */
+    public String getLanguage();
     
     /**
      * Flexible interface for tinkering with mud-host settings.

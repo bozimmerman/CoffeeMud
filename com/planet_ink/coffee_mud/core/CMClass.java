@@ -76,6 +76,15 @@ public class CMClass extends ClassLoader
     public static final int OBJECT_LIBRARY=18;
     public static final int OBJECT_TOTAL=19;
     
+    public static final int[] OBJECTS_ITEMTYPES = new int[]{
+    	CMClass.OBJECT_MISCMAGIC,
+    	CMClass.OBJECT_ITEM,
+    	CMClass.OBJECT_ARMOR,
+    	CMClass.OBJECT_CLANITEMS,
+    	CMClass.OBJECT_MISCMAGIC,
+    	CMClass.OBJECT_MISCTECH,
+    	CMClass.OBJECT_WEAPON};
+    
     public static int longestWebMacro=-1;
     protected Hashtable common=new Hashtable();
     protected Vector races=new Vector();
@@ -233,6 +242,31 @@ public class CMClass extends ClassLoader
         return str.toString();
     }
 
+    public static long numRemainingObjectCounts(int type)
+    {
+    	return OBJECT_CREATIONS[type] - OBJECT_DESTRUCTIONS[type];
+    }
+    
+    public static int numPrototypes(int type)
+    {
+    	Object o = getClassSet(type);
+    	if(o instanceof Set) return ((Set)o).size();
+    	if(o instanceof List) return ((List)o).size();
+    	if(o instanceof Collection) return ((Collection)o).size();
+    	if(o instanceof HashSet) return ((HashSet)o).size();
+    	if(o instanceof Hashtable) return ((Hashtable)o).size();
+    	if(o instanceof Vector) return ((Vector)o).size();
+    	return 0;
+    }
+    
+    public static int numPrototypes(int[] types)
+    {
+    	int total=0;
+    	for(int i=0;i<types.length;i++)
+    		total+=numPrototypes(types[i]);
+    	return total;
+    }
+    
 	public static void addAllItemClassNames(Vector V, boolean NonArchon, boolean NonGeneric, boolean NonStandard)
 	{
 		for(Enumeration i=basicItems();i.hasMoreElements();)

@@ -85,7 +85,7 @@ public class CMProps extends Properties
     public static final int SYSTEM_INIPATH=27;
     public static final int SYSTEM_MUDBINDADDRESS=28;
     public static final int SYSTEM_MUDDOMAIN=29;
-    public static final int SYSTEM_I3EMAIL=30;
+    public static final int SYSTEM_ADMINEMAIL=30;
     public static final int SYSTEM_PREJUDICE=31;
     public static final int SYSTEM_BUDGET=32;
     public static final int SYSTEM_DEVALUERATE=33;
@@ -134,7 +134,8 @@ public class CMProps extends Properties
     public static final int SYSTEM_FORMULA_DAMAGESPELLFUDGE=76;
     public static final int SYSTEM_FORMULA_DAMAGEMELEEFUDGE=77;
     public static final int SYSTEM_FORMULA_DAMAGERANGEDFUDGE=78;
-    public static final int NUM_SYSTEM=79;
+    public static final int SYSTEM_MUDSTATE=79;
+    public static final int NUM_SYSTEM=80;
 
     public static final int SYSTEMI_EXPRATE=0;
     public static final int SYSTEMI_SKYSIZE=1;
@@ -536,7 +537,7 @@ public class CMProps extends Properties
         if(val==null) val="";
         setUpLowVar(varNum,val.toUpperCase());
     }
-
+    
     private static void setUpLowVar(CMProps props, int varNum, String val)
     {
         if((varNum<0)||(varNum>=NUM_SYSTEM)) return ;
@@ -718,7 +719,14 @@ public class CMProps extends Properties
         setVar(SYSTEM_IDLETIMERS,getStr("IDLETIMERS"));
         setVar(SYSTEM_CORPSEGUARD,getStr("CORPSEGUARD"));
         setUpLowVar(SYSTEM_MUDDOMAIN,getStr("DOMAIN"));
-        setVar(SYSTEM_I3EMAIL,getStr("I3EMAIL"));
+        String adminEmail = getStr("ADMINEMAIL");
+        if((adminEmail==null)||(adminEmail.trim().length()==0))
+    		adminEmail = getStr("I3EMAIL");
+        setVar(SYSTEM_ADMINEMAIL,adminEmail);
+        String mudState = getStr("MUDSTATE");
+        if((mudState==null)||(mudState.trim().length()==0))
+        	mudState = getStr("I3STATE");
+        setUpLowVar(SYSTEM_MUDSTATE,mudState);
         setUpLowVar(SYSTEM_I3ROUTERS,getStr("I3ROUTERS"));
         setVar(SYSTEM_PREJUDICE,getStr("PREJUDICE"));
         setUpLowVar(SYSTEM_PRICEFACTORS,getStr("PRICEFACTORS"));

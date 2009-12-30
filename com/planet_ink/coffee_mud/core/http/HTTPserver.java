@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.LanguageLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -47,6 +48,7 @@ public class HTTPserver extends Thread implements MudHost
 	public final static String ServerVersionString = "CoffeeMud HTTPserver/" + HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR;
 
     protected boolean isOK = false;
+    protected final long startupTime = System.currentTimeMillis();
 
     protected boolean isAdminServer = false;
 
@@ -84,6 +86,7 @@ public class HTTPserver extends Thread implements MudHost
 	public MudHost getMUD()	{return mud;}
 	public String getServerDir() {return serverDir;}
 	public String getServerTemplateDir() {return serverTemplateDir;}
+    public long getUptimeSecs() { return (System.currentTimeMillis()-startupTime)/1000;}
 
 	public Properties getCommonPropPage()
 	{
@@ -359,6 +362,16 @@ public class HTTPserver extends Thread implements MudHost
     }
     public void setAcceptConnections(boolean truefalse){ acceptConnections=truefalse;}
     public boolean isAcceptingConnections(){ return acceptConnections;}
+
+    public String getLanguage() 
+    {
+    	String lang = CMProps.instance().getStr("LANGUAGE").toUpperCase().trim();
+    	if(lang.length()==0) return "English";
+    	for(int i=0;i<LanguageLibrary.ISO_LANG_CODES.length;i++)
+    		if(lang.equals(LanguageLibrary.ISO_LANG_CODES[i][0]))
+    			return LanguageLibrary.ISO_LANG_CODES[i][1];
+    	return "English";
+    }
 
     public Vector getOverdueThreads()
     {

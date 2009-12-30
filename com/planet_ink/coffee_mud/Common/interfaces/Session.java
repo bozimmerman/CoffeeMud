@@ -816,6 +816,8 @@ public interface Session extends CMCommon
     public static final int TELNET_TOGGLE_FLOW_CONTROL=33;
     /** TELNET CODE: Linemode*/
     public static final int TELNET_LINEMODE=34;
+    /** TELNET CODE: MSSP Server Status protocol*/
+    public static final int TELNET_MSSP=70;
     /** TELNET CODE: text compression, protocol 1*/
     public static final int TELNET_COMPRESS=85;
     /** TELNET CODE: text compression, protocol 2*/
@@ -854,7 +856,7 @@ public interface Session extends CMCommon
         "40","41","42","43","44","45","46","47","48","49", //40-49
         "50","51","52","53","54","55","56","57","58","59", //50-59
         "60","61","62","63","64","65","66","67","68","69", //60-69
-        "70","71","72","73","74","75","76","77","78","79", //70-79
+        "MSSP","71","72","73","74","75","76","77","78","79", //70-79
         "","","","","","COMPRESS","COMPRESS2","","","", //80-89
         "MSP","MXP","","","","","","","","", //90-99
         "","","","","","","","","","", //100-109

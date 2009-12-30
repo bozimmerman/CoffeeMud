@@ -67,7 +67,7 @@ public class MUD extends Thread implements MudHost
     protected boolean acceptConnections=false;
     protected String host="MyHost";
     protected int port=5555;
-
+    protected final long startupTime = System.currentTimeMillis();
 
     private final static String[] STATE_STRING={"waiting","accepting","allowing"};
     private int state=0;
@@ -350,9 +350,11 @@ public class MUD extends Thread implements MudHost
 			if(page.getBoolean("RUNI3SERVER")&&(tCode==MAIN_HOST))
 			{
                 CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Starting I3");
-				String playstate=page.getStr("I3STATE");
+				String playstate=page.getStr("MUDSTATE");
 				if((playstate==null)||(playstate.length()==0))
-					playstate="Open to the public";
+					playstate=page.getStr("I3STATE");
+				if((playstate==null)||(playstate.length()==0))
+					playstate="Development";
 				IMudInterface imud=new IMudInterface(CMProps.getVar(CMProps.SYSTEM_MUDNAME),
 													 "CoffeeMud v"+CMProps.getVar(CMProps.SYSTEM_MUDVER),
                                                      CMLib.mud(0).getPort(),
@@ -554,6 +556,15 @@ public class MUD extends Thread implements MudHost
         }
 	}
 	
+    public String getLanguage() 
+    {
+    	String lang = CMProps.instance().getStr("LANGUAGE").toUpperCase().trim();
+    	if(lang.length()==0) return "English";
+    	for(int i=0;i<LanguageLibrary.ISO_LANG_CODES.length;i++)
+    		if(lang.equals(LanguageLibrary.ISO_LANG_CODES[i][0]))
+    			return LanguageLibrary.ISO_LANG_CODES[i][1];
+    	return "English";
+    }
 
 	public void run()
 	{
@@ -1239,6 +1250,7 @@ public class MUD extends Thread implements MudHost
 
     public void setAcceptConnections(boolean truefalse){ acceptConnections=truefalse;}
     public boolean isAcceptingConnections(){ return acceptConnections;}
+    public long getUptimeSecs() { return (System.currentTimeMillis()-startupTime)/1000;}
 
     public String executeCommand(String cmd)
         throws Exception

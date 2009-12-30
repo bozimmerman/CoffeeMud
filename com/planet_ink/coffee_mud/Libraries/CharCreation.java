@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import java.util.*;
 
@@ -88,7 +89,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
               ||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("MULTI"))
               ||(thisClass.baseClass().equals(thisClass.ID())
               ||(thisClass.ID().equals("Apprentice"))))
-           &&thisClass.qualifiesForThisClass(mob,true))
+           &&((mob==null)||(thisClass.qualifiesForThisClass(mob,true))))
             return true;
         return false;
     }
@@ -109,6 +110,24 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         return them;
     }
 
+    public Vector raceQualifies(MOB mob, int theme)
+    {
+    	Vector qualRaces = new Vector();
+        HashSet doneRaces=new HashSet();
+        for(Enumeration r=CMClass.races();r.hasMoreElements();)
+        {
+            Race R=(Race)r.nextElement();
+            if(doneRaces.contains(R.ID())) continue;
+            R=CMClass.getRace(R.ID());
+            doneRaces.add(R.ID());
+            if((CMProps.isTheme(R.availabilityCode()))
+            &&(!CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK))
+            &&(CMath.bset(R.availabilityCode(),theme)))
+            	qualRaces.add(R);
+        }
+        return qualRaces;
+    }
+    
     public boolean isOkName(String login)
     {
         if(login.length()>20) return false;
@@ -435,23 +454,15 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
             StringBuffer listOfRaces=new StringBuffer("[");
             boolean tmpFirst = true;
-            HashSet doneRaces=new HashSet();
-            for(Enumeration r=CMClass.races();r.hasMoreElements();)
+            Vector qualRaces = raceQualifies(mob,theme);
+            for(Enumeration r=qualRaces.elements();r.hasMoreElements();)
             {
                 Race R=(Race)r.nextElement();
-                if(doneRaces.contains(R.ID())) continue;
-                R=CMClass.getRace(R.ID());
-                doneRaces.add(R.ID());
-                if((CMProps.isTheme(R.availabilityCode()))
-                &&(!CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK))
-                &&(CMath.bset(R.availabilityCode(),theme)))
-                {
-                    if (!tmpFirst)
-                        listOfRaces.append(", ");
-                    else
-                        tmpFirst = false;
-                    listOfRaces.append("^H"+R.name()+"^N");
-                }
+                if (!tmpFirst)
+                    listOfRaces.append(", ");
+                else
+                    tmpFirst = false;
+                listOfRaces.append("^H"+R.name()+"^N");
             }
             listOfRaces.append("]");
             Race newRace=null;
@@ -856,6 +867,79 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     	} catch(Exception e){}
     }
 
+    private String getMSSPPacket()
+    {
+    	StringBuffer rpt = new StringBuffer("\r\nMSSP-REPLY-START");
+    	rpt.append("\r\n"); rpt.append("PLAYERS");
+    	rpt.append("\r\n"); rpt.append(Integer.toString(CMLib.sessions().size()));
+    	rpt.append("\r\n"); rpt.append("STATUS");
+    	rpt.append("\r\n"); rpt.append(CMProps.getVar(CMProps.SYSTEM_MUDSTATE));
+    	MudHost host = null;
+    	if(CMLib.hosts().size()>0)
+    		host = (MudHost)CMLib.hosts().firstElement();
+    	if(host != null)
+    	{
+        	rpt.append("\r\n"); rpt.append("UPTIME");
+        	rpt.append("\r\n"); rpt.append(Long.toString(host.getUptimeSecs()));
+        	rpt.append("\r\n"); rpt.append("HOSTNAME");
+        	rpt.append("\r\n"); rpt.append(host.getHost());
+        	rpt.append("\r\n"); rpt.append("PORT");
+        	rpt.append("\r\n"); rpt.append(Integer.toString(host.getPort()));
+        	rpt.append("\r\n"); rpt.append("WEBSITE");
+        	rpt.append("\r\n"); rpt.append(("http://"+host.getHost()+":"+CMLib.httpUtils().getWebServerPort()));
+        	rpt.append("\r\n"); rpt.append("LANGUAGE");
+        	rpt.append("\r\n"); rpt.append(host.getLanguage());
+    	}
+    	if(CMLib.intermud().i3online())
+    	{
+        	rpt.append("\r\n"); rpt.append("INTERMUD");
+        	rpt.append("\r\n"); rpt.append("I3");
+    	}
+    	if(CMLib.intermud().imc2online())
+    	{
+        	rpt.append("\r\n"); rpt.append("INTERMUD");
+        	rpt.append("\r\n"); rpt.append("IMC2");
+    	}
+    	rpt.append("\r\n"); rpt.append("FAMILY");
+    	rpt.append("\r\n"); rpt.append("CoffeeMUD");
+    	rpt.append("\r\n"); rpt.append("EMAIL");
+    	rpt.append("\r\n"); rpt.append(CMProps.getVar(CMProps.SYSTEM_ADMINEMAIL));
+    	rpt.append("\r\n"); rpt.append("CODEBASE");
+    	rpt.append("\r\n"); rpt.append(("CoffeeMud v"+CMProps.getVar(CMProps.SYSTEM_MUDVER)));
+    	rpt.append("\r\n"); rpt.append("AREAS");
+    	rpt.append("\r\n"); rpt.append(Integer.toString(CMLib.map().numAreas()));
+    	rpt.append("\r\n"); rpt.append("HELPFILES");
+    	rpt.append("\r\n"); rpt.append(Integer.toString(CMLib.help().getHelpFile().size()));
+    	rpt.append("\r\n"); rpt.append("MOBILES");
+    	rpt.append("\r\n"); rpt.append(Long.toString(CMClass.numRemainingObjectCounts(CMClass.OBJECT_MOB)-CMClass.numPrototypes(CMClass.OBJECT_MOB)));
+    	rpt.append("\r\n"); rpt.append("OBJECTS");
+    	rpt.append("\r\n"); rpt.append(Long.toString(CMClass.numRemainingObjectCounts(CMClass.OBJECT_ITEM)-CMClass.numPrototypes(CMClass.OBJECTS_ITEMTYPES)));
+    	rpt.append("\r\n"); rpt.append("ROOMS");
+    	rpt.append("\r\n"); rpt.append(Long.toString(CMLib.map().numRooms()));
+    	rpt.append("\r\n"); rpt.append("CLASSES");
+    	int numClasses = 0;
+        if(!CMSecurity.isDisabled("CLASSES"))
+        	numClasses=CMLib.login().classQualifies(null, CMProps.getIntVar(CMProps.SYSTEMI_MUDTHEME)&0x07).size();
+    	rpt.append("\r\n"); rpt.append(Long.toString(numClasses));
+    	rpt.append("\r\n"); rpt.append("RACES");
+    	int numRaces = 0;
+        if(!CMSecurity.isDisabled("RACES"))
+        	numRaces=CMLib.login().raceQualifies(null, CMProps.getIntVar(CMProps.SYSTEMI_MUDTHEME)&0x07).size();
+    	rpt.append("\r\n"); rpt.append(Long.toString(numRaces));
+    	rpt.append("\r\n"); rpt.append("SKILLS");
+    	rpt.append("\r\n"); rpt.append(Long.toString(CMLib.ableMapper().numMappedAbilities()));
+    	rpt.append("\r\n"); rpt.append("ANSI");
+    	rpt.append("\r\n"); rpt.append((this!=null?"1":"0"));
+    	rpt.append("\r\n"); rpt.append("MCCP");
+    	rpt.append("\r\n"); rpt.append((!CMSecurity.isDisabled("MCCP")?"1":"0"));
+    	rpt.append("\r\n"); rpt.append("MSP");
+    	rpt.append("\r\n"); rpt.append((!CMSecurity.isDisabled("MSP")?"1":"0"));
+    	rpt.append("\r\n"); rpt.append("MXP");
+    	rpt.append("\r\n"); rpt.append((!CMSecurity.isDisabled("MXP")?"1":"0"));
+    	rpt.append("\r\nMSSP-REPLY-END\r\n");
+    	return rpt.toString();
+    }
+    
     // 0=no login, 1=normal login, 2=swap
     public int login(MOB mob, int attempt)
         throws java.io.IOException
@@ -869,6 +953,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         if(login==null) return 0;
         login=login.trim();
         if(login.length()==0) return 0;
+        if(login.equalsIgnoreCase("MSSP-REQUEST")&&(!CMSecurity.isDisabled("MSSP")))
+        {
+        	mob.session().rawOut(getMSSPPacket());
+            mob.session().logoff(false,false,false);
+        	return 0;
+        }
+        	
         if(login.endsWith(" !"))
         {
             login=login.substring(0,login.length()-2);

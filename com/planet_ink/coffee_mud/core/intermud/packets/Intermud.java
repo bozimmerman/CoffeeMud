@@ -251,8 +251,8 @@ public class Intermud implements Runnable, Persistent, Serializable
                 Log.sysOut("Intermud3","No I3 routers defined in coffeemud.ini file.");
             else
             {
-                if(CMProps.getVar(CMProps.SYSTEM_I3EMAIL).indexOf("@")<0)
-                    Log.errOut("Intermud","Please set I3EMAIL in your coffeemud.ini file.");
+                if(CMProps.getVar(CMProps.SYSTEM_ADMINEMAIL).indexOf("@")<0)
+                    Log.errOut("Intermud","Please set ADMINEMAIL in your coffeemud.ini file.");
                 Vector connectionStatuses=new Vector(name_servers.size());
                 for(int i=0;i<name_servers.size();i++)
                 {
@@ -265,7 +265,7 @@ public class Intermud implements Runnable, Persistent, Serializable
                              n.name + "\",0," + password +
                              "," + muds.getMudListId() + "," + channels.getChannelListId() + "," + intermud.getMudPort() +
                              ",0,0,\""+intermud.getMudVersion()+"\",\""+intermud.getMudVersion()+"\",\""+intermud.getMudVersion()+"\",\"CoffeeMud\"," +
-                             "\""+intermud.getMudState()+"\",\""+CMProps.getVar(CMProps.SYSTEM_I3EMAIL).toLowerCase()+"\",([" +
+                             "\""+intermud.getMudState()+"\",\""+CMProps.getVar(CMProps.SYSTEM_ADMINEMAIL).toLowerCase()+"\",([" +
                              "\"who\":1,\"finger\":1,\"channel\":1,\"tell\":1,\"locate\":1,]),([]),})");
                     }
                     catch(java.io.IOException e)

@@ -96,6 +96,11 @@ public class CMAble extends StdLibrary implements AbilityMapper
 									  String extraMasks)
 	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,100,"",autoGain,false,new Vector(),extraMasks); }
 
+	public int numMappedAbilities()
+	{
+		return reverseAbilityMap.size();
+	}
+	
 	public void delCharAbilityMapping(String ID, String ability)
 	{
 		if(!completeAbleMap.containsKey(ID))

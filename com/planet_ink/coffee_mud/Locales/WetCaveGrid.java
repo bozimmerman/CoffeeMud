@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Libraries.interfaces;
+package com.planet_ink.coffee_mud.Locales;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -12,7 +12,10 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+
 import java.util.*;
+
 /* 
    Copyright 2000-2010 Bo Zimmerman
 
@@ -29,28 +32,19 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("unchecked")
-public interface CharCreationLibrary extends CMLibrary
+public class WetCaveGrid extends StdMaze
 {
-    public void reRollStats(MOB mob, CharStats C);
-    public boolean classOkForMe(MOB mob, CharClass thisClass, int theme);
-    // mob is optional
-    public Vector classQualifies(MOB mob, int theme);
-    // mob is optional
-    public Vector raceQualifies(MOB mob, int theme);
-    public boolean isOkName(String login);
-    public void reloadTerminal(MOB mob);
-    public void showTheNews(MOB mob);
-    public void notifyFriends(MOB mob, String message);
-    public boolean checkExpiration(MOB mob);
-    public boolean createCharacter(MOB mob, String login, Session session)
-        throws java.io.IOException;
-    public int login(MOB mob, int attempt)
-        throws java.io.IOException;
-    public void pageRooms(CMProps page, Hashtable table, String start);
-    public void initStartRooms(CMProps page);
-    public void initDeathRooms(CMProps page);
-    public void initBodyRooms(CMProps page);
-    public Room getDefaultStartRoom(MOB mob);
-    public Room getDefaultDeathRoom(MOB mob);
-    public Room getDefaultBodyRoom(MOB mob);
+	public String ID(){return "WetCaveGrid";}
+	public WetCaveGrid()
+	{
+		super();
+		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_DARK);
+		recoverEnvStats();
+	}
+	public int domainType(){return Room.DOMAIN_INDOORS_CAVE;}
+	public int domainConditions(){return Room.CONDITION_WET;}
+
+	public String getGridChildLocaleID(){return "WetCaveRoom";}
+	public int maxRange(){return 5;}
+	public Vector resourceChoices(){return CaveRoom.roomResources;}
 }
