@@ -363,7 +363,7 @@ public class Test extends StdCommand
                 else
                     C.setYear(NOW.getYear());
                 long millidiff=C.deriveMillisAfter(NOW);
-                System.out.println("MilliDiff="+millidiff);
+                mob.tell("MilliDiff="+millidiff);
                 return true;
             }
             else

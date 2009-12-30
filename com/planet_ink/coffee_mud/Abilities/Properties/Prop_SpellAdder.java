@@ -186,6 +186,8 @@ public class Prop_SpellAdder extends Property
 	        if(R==null) R=CMLib.map().getRandomRoom();
 	        mob=CMLib.map().mobCreated(R);
 	        mob.setName("invoker");
+	        mob.baseEnvStats().setLevel(affected.envStats().level());
+	        mob.envStats().setLevel(affected.envStats().level());
 		}
 		invokerMOB=mob;
 		return invokerMOB;

@@ -293,6 +293,9 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 
     private boolean autoPurge()
     {
+        if(CMSecurity.isDisabled("AUTOPURGE"))
+        	return true;
+        
         long[] levels=new long[2001];
         long[] prePurgeLevels=new long[2001];
         for(int i=0;i<levels.length;i++) levels[i]=0;

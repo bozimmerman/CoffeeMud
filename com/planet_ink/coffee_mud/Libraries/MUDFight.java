@@ -388,7 +388,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		&&(damage>0)
 		&&(attacker != target)
 		&&(attacker != null)
-		&&(attacker.isMine(weapon)))
+		&&(target != null)
+		&&(attacker.isMine(weapon)||(attacker.envStats().level()>1))) // why >1? because quickly made fake-mobs tend to have lvl=1
 			damage = modifySpellDamage(attacker, target, damage);
 		
 		CMMsg msg=CMClass.getMsg(attacker,target,weapon,messageCode,CMMsg.MSG_DAMAGE,messageCode,allDisplayMessage);
@@ -528,13 +529,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 		if(target != null)
 		{
-			double old = damageAmount;
 			vars[0] = damageAmount;
 			if(rangedAttack)
 				damageAmount = CMath.parseMathExpression(rangedFudgeDamageFormula, vars, 0.0);
 			else
 				damageAmount = CMath.parseMathExpression(meleeFudgeDamageFormula, vars, 0.0);
-			System.out.println(mob.envStats().level()+":"+target.envStats().level()+", " + old+"/"+damageAmount);
 		}
 		return (int)Math.round(damageAmount);
 	}
