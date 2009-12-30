@@ -693,14 +693,14 @@ public class Spell_Wish extends Spell
 							{
 								CMLib.leveler().level(MT);
 								MT.recoverEnvStats();
-								MT.setExperience(CMLib.leveler().getLevelExperience(MT.baseEnvStats().level()));
+								MT.setExperience(CMLib.leveler().getLevelExperience(MT.baseEnvStats().level()-1));
 							}
 						}
 						else
 						while(MT.baseEnvStats().level()>newLevel)
 						{
 							CMLib.leveler().unLevel(MT);
-							MT.setExperience(CMLib.leveler().getLevelExperience(MT.baseEnvStats().level()));
+							MT.setExperience(CMLib.leveler().getLevelExperience(MT.baseEnvStats().level()-1));
 							MT.recoverEnvStats();
 						}
 					}
@@ -714,7 +714,7 @@ public class Spell_Wish extends Spell
 					for(int i2=0;i2<levelsLost;i2++)
 					{
 						CMLib.leveler().unLevel(mob);
-						mob.setExperience(CMLib.leveler().getLevelExperience(mob.baseEnvStats().level()));
+						mob.setExperience(CMLib.leveler().getLevelExperience(mob.baseEnvStats().level()-1));
 					}
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" is now level "+target.envStats().level()+"!");
 				}
@@ -790,6 +790,7 @@ public class Spell_Wish extends Spell
 					{
 						baseLoss+=500;
 						CMLib.leveler().unLevel(mob);
+						mob.setExperience(CMLib.leveler().getLevelExperience(mob.baseEnvStats().level()-1));
 					}
 					wishDrain(mob,baseLoss,true);
 					int oldCat=mob.baseCharStats().ageCategory();
@@ -825,6 +826,7 @@ public class Spell_Wish extends Spell
 					CMLib.leveler().unLevel(mob);
 					CMLib.leveler().unLevel(mob);
 					CMLib.leveler().unLevel(mob);
+					mob.setExperience(CMLib.leveler().getLevelExperience(mob.baseEnvStats().level()-1));
 					StringBuffer str=new StringBuffer("");
 					for(int trait=0;trait<CharStats.NUM_BASE_STATS;trait++)
 					{
@@ -891,6 +893,7 @@ public class Spell_Wish extends Spell
 							wishDrain(mob,baseLoss,true);
 							CMLib.leveler().unLevel(mob);
 							CMLib.leveler().unLevel(mob);
+							mob.setExperience(CMLib.leveler().getLevelExperience(mob.baseEnvStats().level()-1));
 						}
 						A=tm.fetchAbility(A.ID());
 						A.setProficiency(100);
@@ -1037,7 +1040,10 @@ public class Spell_Wish extends Spell
 				}
 				wishDrain(mob,baseLoss,true);
 				if(!CMSecurity.isDisabled("LEVELS"))
+				{
 					CMLib.leveler().unLevel(mob);
+					mob.setExperience(CMLib.leveler().getLevelExperience(mob.baseEnvStats().level()-1));
+				}
 				if(foundAttribute<=6)
 					((MOB)target).baseCharStats().setStat(foundAttribute,((MOB)target).baseCharStats().getStat(foundAttribute)+1);
 				else

@@ -512,7 +512,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		                    {
 		                        if(CMLib.beanCounter().modifyLocalBankGold(A,
 		                                owner,
-		                                CMLib.utensils().getFormattedDate(A)+":Withdrawl of "+rent+": Rent for "+ID,
+		                                CMLib.utensils().getFormattedDate(A)+":Withdrawal of "+rent+": Rent for "+ID,
 		                                CMLib.beanCounter().getCurrency(A),
 		                                (double)(-rent)))
 		                        {

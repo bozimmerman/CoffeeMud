@@ -68,8 +68,11 @@ public class Where extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		boolean overrideSet = false;
+        if((commands.size()>1)&&(commands.elementAt(1).equals("!")))
+        	overrideSet=commands.remove(commands.elementAt(1));
 		if((CMSecurity.isAllowed(mob,mob.location(),"WHERE"))
-        &&(!CMParms.combine(commands,1).equalsIgnoreCase("!")))
+        &&(!overrideSet))
 		{
 			StringBuffer lines=new StringBuffer("^x");
 			lines.append(CMStrings.padRight("Name",17)+"| ");

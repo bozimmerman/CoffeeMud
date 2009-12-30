@@ -273,7 +273,7 @@ public class DefaultLawSet implements Law
                     owed-=paid;
                     if((owed>0)&&(!CMLib.beanCounter().modifyLocalBankGold(A,
                                     owner,
-                                    CMLib.utensils().getFormattedDate(A)+": Withdrawl of "+owed+": Taxes on property: "+properties.toString(),
+                                    CMLib.utensils().getFormattedDate(A)+": Withdrawal of "+owed+": Taxes on property: "+properties.toString(),
                                     CMLib.beanCounter().getCurrency(A),
                                    -owed)))
                     {

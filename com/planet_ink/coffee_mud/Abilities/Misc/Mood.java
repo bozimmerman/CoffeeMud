@@ -710,9 +710,12 @@ public class Mood extends StdAbility
 			MOOD=(Ability)copyOf();
 			MOOD.setMiscText("NORMAL");
 		}
+		String moodCode = MOOD.text();
+		if(moodCode.trim().length()==0) moodCode="NORMAL";
+		String moodName = CMLib.english().startWithAorAn(moodCode.toLowerCase());
 		if(entered.trim().length()==0)
 		{
-			mob.tell("You are currently in "+CMLib.english().startWithAorAn(MOOD.text().toLowerCase())+" mood.");
+			mob.tell("You are currently in "+moodName+" mood.");
 			return false;
 		}
         if(entered.equalsIgnoreCase("RANDOM"))
@@ -757,7 +760,7 @@ public class Mood extends StdAbility
     			mob.tell("'"+entered+"' is not a known mood. Choices include: "+choices.substring(2));
 			return false;
 		}
-        if(MOOD.text().equalsIgnoreCase(choice))
+        if(moodCode.equalsIgnoreCase(choice))
         {
             if(origEntered.equalsIgnoreCase("RANDOM"))
                 return false;

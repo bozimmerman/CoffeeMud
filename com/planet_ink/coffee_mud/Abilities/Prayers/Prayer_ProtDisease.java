@@ -77,7 +77,7 @@ public class Prayer_ProtDisease extends Prayer
 			   &&(CMLib.dice().rollPercentage()>50)
 			   &&((msg.targetMinor()==CMMsg.TYP_DISEASE)))
 			{
-				msg.source().location().show(invoker,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> magically repells the disease.");
+				msg.source().location().show(invoker,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> magically repell(s) the disease.");
 				return false;
 			}
 

@@ -149,7 +149,7 @@ public class Prop_Retainable extends Property
 						}
 						boolean paid=CMLib.beanCounter().modifyLocalBankGold(mob.location().getArea(),
 						        owner,
-						        CMLib.utensils().getFormattedDate(mob)+": Withdrawl of "+CMLib.beanCounter().nameCurrencyShort(mob,payAmountPerPayPeriod)+": Payroll: "+Name(),
+						        CMLib.utensils().getFormattedDate(mob)+": Withdrawal of "+CMLib.beanCounter().nameCurrencyShort(mob,payAmountPerPayPeriod)+": Payroll: "+Name(),
 						        CMLib.beanCounter().getCurrency(mob),
 						        (double)(-payAmountPerPayPeriod));
 						if(paid)

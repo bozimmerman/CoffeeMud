@@ -604,7 +604,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			// why was there no okaffect here?
             Room R=source.location();
             if(R!=null)
-			if(R.okMessage(source,msg))
+			if(R.okMessage(source,msg) && (!source.amDead()) && (!source.amDestroyed()))
 				R.send(source,msg);
 		}
 	}
@@ -1618,7 +1618,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         if((rejuv==0)||(rejuv==Integer.MAX_VALUE)) rejuv=mob.envStats().level();
         if(((!mob.isMonster())&&(mob.soulMate()==null))) rejuv=1;
         double[] varVals={
-                mob.envStats().level(),
+                mob.baseEnvStats().level()>mob.envStats().level()?mob.baseEnvStats().level():mob.envStats().level(),
                 (fighting!=null)?fighting.envStats().level():0,
                 rejuv
         };

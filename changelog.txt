@@ -2208,6 +2208,6 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 10.Rhino (Javascript library) upgraded to 1.7R2
 11.Several new Oracle Prayers added for sensing the skills of others
 12.Behaviors ItemRefitter,ItemMender,ItemIdentifier have COST parameter now.
-13.New DISABLE flag: EQUIPSIZE
+13.New DISABLE flags: EQUIPSIZE, AUTOPURGE
 14.WEAR command now supports specified wear locations.
 15.

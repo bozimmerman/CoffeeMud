@@ -141,7 +141,7 @@ public class StdArmor extends StdContainer implements Armor
 			case RawMaterial.MATERIAL_ROCK:
 			case RawMaterial.MATERIAL_PLASTIC:
 			case RawMaterial.MATERIAL_PRECIOUS:
-			case RawMaterial.MATERIAL_GLASS: return name()+" is practically shardes ("+usesRemaining()+"%)";
+			case RawMaterial.MATERIAL_GLASS: return name()+" is practically shards ("+usesRemaining()+"%)";
 			case RawMaterial.MATERIAL_FLESH:
 			case RawMaterial.MATERIAL_LEATHER: return name()+" is badly shredded and ripped ("+usesRemaining()+"%)";
 			case RawMaterial.MATERIAL_METAL:

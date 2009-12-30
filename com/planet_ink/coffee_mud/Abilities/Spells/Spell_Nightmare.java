@@ -196,7 +196,7 @@ public class Spell_Nightmare extends Spell
 				{
 					amountRemaining=100;
 					maliciousAffect(mob,target,asLevel,10,-1);
-					target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> go(es) into the throws of a horrendous nightmare!!");
+					target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> go(es) into the throes of a horrendous nightmare!!");
 				}
 			}
 		}

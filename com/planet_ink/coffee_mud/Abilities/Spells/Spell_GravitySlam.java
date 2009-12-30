@@ -69,7 +69,7 @@ public class Spell_GravitySlam extends Spell
 				invoker=mob;
 
 				int damage = 0;
-				int maxDie =  adjustedLevel(mob,asLevel);
+				int maxDie =  (int)Math.round((adjustedLevel(mob,asLevel)+(2.0*super.getX1Level(mob)))/2.0);
 				if(!CMLib.flags().isInFlight(target))
 					maxDie=maxDie/2;
 				Room R=mob.location();
@@ -80,7 +80,7 @@ public class Spell_GravitySlam extends Spell
 				||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 					maxDie=maxDie/4;
 
-				damage += CMLib.dice().roll(maxDie,10,6);
+				damage += CMLib.dice().roll(maxDie,20,6+maxDie);
 				if(msg.value()>0)
 					damage = (int)Math.round(CMath.div(damage,2.0));
 				if(!CMLib.flags().isInFlight(target))
