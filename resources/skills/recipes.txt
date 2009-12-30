@@ -40,5 +40,6 @@ fettucini	FOOD		28	fish	1	pasta	2	cream	1	herbs	1
 spaghetti and meatballs	FOOD		29	pasta	2	tomatoes	1	beef	1								
 pot roast	FOOD		29	beef	1	potatoes	1	carrots	1	onions	1	herbs	1				
 hot fudge brownies	FOOD		30	cocoa	10	wheat	1	eggs	1	sugar	1	hot fudge	2				
+fried potatoes	FOOD		31	potatoes	1												
 beef and noodles	FOOD		62	beef	1	pasta	1	water	1	carrots	1						
 burrito	FOOD		91	corn tortilla	1	beans	1	cheese	1								
