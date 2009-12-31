@@ -399,7 +399,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
         "EXECMSG_PROG", // 41
         "CNCLMSG_PROG", // 42
         "IMASK_PROG", // 43
-        "KILL_PROG", //44
+        "KILL_PROG" //44
     };
 
     /** String list of all valid mobprog functions for logical expressions or string functions */
@@ -578,6 +578,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
         "MPPROMPT", // 74
         "MPCONFIRM", // 75
         "MPCHOOSE", // 76
+        "MPMONEY", // 77
     };
 
     /** a list of some some extra stat codes for mobs*/

@@ -17,5 +17,6 @@
 % Drum	3	10	20	1	GenDrink		250	
 % Can	1	5	5	1	GenContainer		10	
 % Lamp Post	15	150	250	1	GenItem			Spell_ContinualLight
+% Bullseye Lantern	12	50	15	200	GenLantern			
 % Colossus	75	4000	8000	10000	GenItem	STATUE		Spell_Enlarge
 % Hook-Hand	10	20	5	100	GenLimb			

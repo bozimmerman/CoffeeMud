@@ -34,7 +34,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class GenStaff extends GenWeapon implements Wand
 {
 	public String ID(){	return "GenStaff";}
-	protected String secretWord=StdWand.words[CMLib.dice().roll(1,StdWand.words.length,0)-1];
+	protected String secretWord=CMProps.getSListVar(CMProps.SYSTEML_MAGIC_WORDS)[CMLib.dice().roll(1,CMProps.getSListVar(CMProps.SYSTEML_MAGIC_WORDS).length,0)-1];
 
 	public GenStaff()
 	{

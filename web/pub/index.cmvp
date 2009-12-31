@@ -17,10 +17,11 @@
 </TD><TD VALIGN=TOP>
 <TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
 <TR><TD WIDTH=100% VALIGN=TOP><FONT COLOR=#90ee90><B>
-Server status: <a href="gamestatus.cmvp"><b>@MUDSERVERSTATUS@</B></a>
+Server status: <a href="gamestatus.cmvp"><b>@MUDSERVERSTATUS@</B></a><BR>
+<FONT COLOR=GREEN>Connection: </FONT><FONT COLOR=BLUE>@MudInfo?DOMAIN@:@MudInfo?PORT@</FONT><BR>
 </B></FONT></TD></TR>
 <TR><TD WIDTH=100%><FONT COLOR=ORANGE><B>
-Players currently online: <b>@NUMPLAYERS@</B>
+Players currently online: <FONT COLOR=RED><b>@NUMPLAYERS@</B></FONT>
 </B></FONT></TD></TR>
 <TR><TD WIDTH=100%>
 <BR>

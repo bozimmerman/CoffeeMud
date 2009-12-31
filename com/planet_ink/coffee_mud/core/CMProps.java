@@ -223,6 +223,7 @@ public class CMProps extends Properties
     public static final int SYSTEML_ARMOR_DESCS=8;
     public static final int SYSTEML_EXP_CHART=9;
     public static final int SYSTEML_ARMOR_MISFITS=10;
+    public static final int SYSTEML_MAGIC_WORDS=11;
     public static final String[] SYSTEML_KEYS={
                                     "DAMAGE_WORDS_THRESHOLDS",
                                     "DAMAGE_WORDS",
@@ -235,8 +236,9 @@ public class CMProps extends Properties
                                     "ARMOR_DESCS",
                                     "EXP_CHART",
                                     "ARMOR_MISFITS",
+                                    "MAGIC_WORDS"
     };
-    public static final int NUML_SYSTEM=11;
+    public static final int NUML_SYSTEM=12;
 
     protected String[] sysVars=new String[NUM_SYSTEM];
     protected Integer[] sysInts=new Integer[NUMI_SYSTEM];

@@ -42,6 +42,9 @@ public class Dyeing extends CommonSkill
 
 	protected Item found=null;
 	protected String writing="";
+	protected boolean brightFlag = false;
+	protected boolean lightFlag = false;
+	
 	public Dyeing()
 	{
 		super();
@@ -49,7 +52,7 @@ public class Dyeing extends CommonSkill
 		verb="dyeing";
 	}
 
-	protected String fixColor(String name, String colorWord)
+	protected String fixColor(String name, char colorChar, String colorWord)
 	{
 		int end=name.indexOf("^?");
 		if((end>0)&&(end<=name.length()-3))
@@ -59,7 +62,7 @@ public class Dyeing extends CommonSkill
 				name=name.substring(0,start)
 					 +name.substring(end+3);
 		}
-		colorWord="^"+colorWord.charAt(0)+colorWord+"^?";
+		colorWord="^"+colorChar+colorWord+"^?";
 		Vector V=CMParms.parse(name);
 		for(int v=0;v<V.size();v++)
 		{
@@ -101,8 +104,12 @@ public class Dyeing extends CommonSkill
 					if(!d.endsWith("^?")) desc.append("^?");
 					if(!d.startsWith("^"+writing.charAt(0))) desc.insert(0,"^"+writing.charAt(0));
 					found.setDescription(desc.toString());
-					found.setName(fixColor(found.Name(),writing));
-					found.setDisplayText(fixColor(found.displayText(),writing));
+					String prefix="";
+					if(brightFlag) prefix="bright ";
+					if(lightFlag) prefix="light ";
+					
+					found.setName(fixColor(found.Name(),writing.charAt(0),prefix+writing));
+					found.setDisplayText(fixColor(found.displayText(),writing.charAt(0),prefix+writing));
 					found.text();
 				}
 			}
@@ -138,23 +145,38 @@ public class Dyeing extends CommonSkill
 		}
 		writing=CMParms.combine(commands,0).toLowerCase();
 		boolean darkFlag=false;
+		brightFlag=false;
+		lightFlag=false;
 		if(writing.startsWith("dark "))
 		{
 			darkFlag=true;
 			writing=writing.substring(5).trim();
 		}
+		else
+		if(writing.startsWith("bright "))
+		{
+			brightFlag=true;
+			writing=writing.substring(7).trim();
+		}
+		else
+		if(writing.startsWith("light "))
+		{
+			lightFlag=true;
+			writing=writing.substring(6).trim();
+		}
 		if(" white green blue red yellow cyan purple ".indexOf(" "+writing.trim()+" ")<0)
 		{
-			commonTell(mob,"You can't dye anything '"+writing+"'.  Try white, green, blue, red, yellow, cyan, or purple. You can also prefix the colors with the word 'dark'.");
+			commonTell(mob,"You can't dye anything '"+writing+"'.  Try white, green, blue, red, yellow, cyan, or purple. You can also prefix the colors with the word 'dark', 'light', or 'bright'.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		verb="dyeing "+target.name()+" "+(darkFlag?"dark ":"")+writing;
+		verb="dyeing "+target.name()+" "+(darkFlag?"dark ":brightFlag?"bright ":lightFlag?"light ":"")+writing;
 		displayText="You are "+verb;
 		found=target;
 		if(darkFlag) writing=CMStrings.capitalizeAndLower(writing);
-		if(!proficiencyCheck(mob,0,auto)) writing="";
+		if(!proficiencyCheck(mob,0,auto)) 
+			writing="";
 		int duration=30;
 		if((target.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LEATHER)
 			duration*=2;

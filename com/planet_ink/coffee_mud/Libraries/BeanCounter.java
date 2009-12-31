@@ -632,13 +632,24 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		addMoney(customer,currency,(double)absoluteValue);
 	}
 	
+	public void addMoney(MOB customer, Item container, String currency,int absoluteValue)
+	{  
+		addMoney(customer,container,currency,(double)absoluteValue);
+	}
+	
 	public void addMoney(MOB mob, String currency, double absoluteValue)
+	{
+		addMoney(mob,null,currency,(double)absoluteValue);
+	}
+	
+	public void addMoney(MOB mob, Item container, String currency, double absoluteValue)
 	{
 	    if(mob==null) return;
 		Vector V=makeAllCurrency(currency,absoluteValue);
 	    for(int i=0;i<V.size();i++)
 	    {
 	        Coins C=(Coins)V.elementAt(i);
+	        C.setContainer(container);
 	        mob.addInventory(C);
 	        C.putCoinsBack();
 		}
@@ -685,6 +696,32 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	    }
 		banker.recoverEnvStats();
 		customer.recoverEnvStats();
+	}
+
+	public void dropMoney(Room R, Item container, String currency, double absoluteValue)
+	{
+		Vector V=makeAllCurrency(currency,absoluteValue);
+    	for(Enumeration e=V.elements();e.hasMoreElements();)
+    	{
+    		Coins I = (Coins)e.nextElement();
+    		I.setContainer(container);
+    		R.addItemRefuse(I,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_MONSTER_EQ));
+		    ((Coins)I).putCoinsBack();
+    	}
+	}
+
+	public void removeMoney(Room R, Item container, String currency, double absoluteValue)
+	{
+		double myMoney=getTotalAbsoluteValue(R,container,currency);
+		Vector V=getStandardCurrency(R,container,currency);
+		for(int v=0;v<V.size();v++)
+		    ((Item)V.elementAt(v)).destroy();
+		if(myMoney>=absoluteValue)
+		    myMoney-=absoluteValue;
+		else
+		    myMoney=0.0;
+		if(myMoney>0.0)
+			dropMoney(R,container,currency,myMoney);
 	}
 
 	public void bankLedger(String bankName, String owner, String explanation)
@@ -828,9 +865,13 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	
 	public void subtractMoney(MOB mob, String currency, double absoluteAmount)
 	{
+		subtractMoney(mob,null,getCurrency(mob),absoluteAmount);
+	}
+	public void subtractMoney(MOB mob, Item container, String currency, double absoluteAmount)
+	{
 		if(mob==null) return;
-		double myMoney=getTotalAbsoluteValue(mob,currency);
-		Vector V=getStandardCurrency(mob,currency);
+		double myMoney=getTotalAbsoluteValue(mob,container,currency);
+		Vector V=getStandardCurrency(mob,container,currency);
 		for(int v=0;v<V.size();v++)
 		    ((Item)V.elementAt(v)).destroy();
 		if(myMoney>=absoluteAmount)
@@ -838,7 +879,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		else
 		    myMoney=0.0;
 		if(myMoney>0.0)
-			addMoney(mob,currency,myMoney);
+			addMoney(mob,container,currency,myMoney);
 	}
 
 	public int getMoney(MOB mob)
@@ -917,11 +958,32 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		}
 	}
 
+	public Vector getStandardCurrency(Room R, Item container, String currency)
+	{
+	    Vector V=new Vector();
+		if(R==null) return V;
+		for(int i=0;i<R.numItems();i++)
+		{
+			Item I=R.fetchItem(i);
+			if((I!=null)
+			&&(I instanceof Coins)
+			&&((currency==null)||((Coins)I).getCurrency().equalsIgnoreCase(currency))
+			&&(I.container()==container))
+				V.addElement(I);
+		}
+		return V;
+	}
+
 	public Vector getStandardCurrency(MOB mob, String currency)
+	{
+		return getStandardCurrency(mob, null, currency);
+	}
+	
+	public Vector getStandardCurrency(MOB mob, Item container, String currency)
 	{
 	    Vector V=new Vector();
 		if(mob==null) return V;
-		if(((currency==null)||(currency.equals(getCurrency(mob))))&&(mob.getMoney()>0))
+		if(((currency==null)||(currency.equals(getCurrency(mob))))&&(mob.getMoney()>0)&&(container==null))
 		{
 		    addMoney(mob,getCurrency(mob),(double)mob.getMoney());
 		    mob.setMoney(0);
@@ -932,7 +994,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 			if((I!=null)
 			&&(I instanceof Coins)
 			&&((currency==null)||((Coins)I).getCurrency().equalsIgnoreCase(currency))
-			&&(I.container()==null))
+			&&(I.container()==container))
 				V.addElement(I);
 		}
 		return V;
@@ -982,10 +1044,24 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	    return "";
 	}
 
-	public double getTotalAbsoluteValue(MOB mob, String currency)
+	public double getTotalAbsoluteValue(Room R, Item container, String currency)
 	{
 		double money=0.0;
-	    Vector V=getStandardCurrency(mob,currency);
+	    Vector V=getStandardCurrency(R,container,currency);
+	    for(int v=0;v<V.size();v++)
+			money+=((Coins)V.elementAt(v)).getTotalValue();
+		return money;
+	}
+
+	public double getTotalAbsoluteValue(MOB mob, String currency)
+	{
+		return getTotalAbsoluteValue(mob, null, currency);
+	}
+	
+	public double getTotalAbsoluteValue(MOB mob, Item container, String currency)
+	{
+		double money=0.0;
+	    Vector V=getStandardCurrency(mob,container,currency);
 	    for(int v=0;v<V.size();v++)
 			money+=((Coins)V.elementAt(v)).getTotalValue();
 		return money;

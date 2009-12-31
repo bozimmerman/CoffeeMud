@@ -115,6 +115,7 @@
             <li><a href="#mplog">mplog</a></li>
             <li><a href="#mpm2i2m">mpm2i2m</a></li>
             <li><a href="#mpmload">mpmload</a></li>
+            <li><a href="#mpmoney">mpmoney</a></li>
             <li><a href="#mpnotrigger">mpnotrigger</a></li>
             <li><a href="#mpoload">mpoload</a></li>
             <li><a href="#mpoloadroom">mpoloadroom</a></li>
@@ -2550,7 +2551,8 @@ command. You don't want to give out awards for every little thing
 characters do, nor do you want to give large awards for menial tasks.
 You also will, of course, not want to make it so a mob can accidentally
 give the same award over and over endlessly, or something equally
-abusable.</p>
+abusable.<br />
+      </p>
       <h3><a name="mpfaction">mpfaction</a></h3>
       <p>Usage:</p>
       <pre>mpfaction [target mob] [faction id] [new value, range, or +--change]<br /></pre>
@@ -2769,7 +2771,19 @@ using the Archon EXPORT MOBS command.</p>
       <p>SPECIAL NOTES: Remember that this newly loaded mob may not
 have interacted with the world just yet, so having your mob, for
 example, mpforce it to kill $n will not work, since the new mob has no
-idea who $n is.</p>
+idea who $n is.<br />
+      </p>
+      <h3><a name="mpmoney">mpmoney</a></h3>
+      <p>Usage:</p>
+      <pre>mpmoney [target] +[amount]<br />mpmoney [target] -[amount]<br /></pre>
+      <p>This command changes the amount of money owned by the target.
+This is a
+useful command to use to award players for completing in zone quests,
+etc. that you have set up. &nbsp;The amounts are always as expressed in
+base local currency. &nbsp;You can optionally specify the name of the
+currency as part of the amount.</p>
+      <p>EXAMPLES:</p>
+      <pre>mpmoney $n +500 gold coins<br />mpmoney $n -10 copper<br /></pre>
       <h3><a name="mpnotrigger">mpnotrigger</a></h3>
       <p>Usage:</p>
       <pre>mpnotrigger [trigger name] [time in miliseconds]<br /></pre>

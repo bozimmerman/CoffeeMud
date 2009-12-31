@@ -84,8 +84,7 @@ public class Prop_ClanEquipment extends Property
     protected String clanType="";
     String lastMessage=null;
     protected CharStats EQadjCharStats=null;
-    public static final String[] words={"ZAP","ZAP","ZAP","ZOT","ZIT","ZEK","ZOM","ZUP","ZET","ZYT","ZVP","ZOP","ZYV","ZAL"};
-    protected String secretWord=words[CMLib.dice().roll(1,words.length,0)-1];
+    protected String secretWord=CMProps.getSListVar(CMProps.SYSTEML_MAGIC_WORDS)[CMLib.dice().roll(1,CMProps.getSListVar(CMProps.SYSTEML_MAGIC_WORDS).length,0)-1];
 
     public String accountForYourself()
     {
@@ -227,7 +226,7 @@ public class Prop_ClanEquipment extends Property
         {
             hash=hash*-1;
         }
-        return words[hash%words.length];
+        return CMProps.getSListVar(CMProps.SYSTEML_MAGIC_WORDS)[hash%CMProps.getSListVar(CMProps.SYSTEML_MAGIC_WORDS).length];
     }
 
     /*

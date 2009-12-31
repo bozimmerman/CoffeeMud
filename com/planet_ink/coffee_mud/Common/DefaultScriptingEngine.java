@@ -6774,6 +6774,46 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 }
                 break;
             }
+            case 77: // mpmoney
+            {
+                if(tt==null){
+                	tt=parseBits(script,si,"Ccr");
+                	if(tt==null) return null;
+                }
+                Environmental newTarget=getArgumentMOB(tt[1],source,monster,scripted,primaryItem,secondaryItem,msg,tmp);
+                if(newTarget==null) newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                String amtStr=tt[2];
+                amtStr=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,amtStr).trim();
+                boolean plus=!amtStr.startsWith("-");
+                if(amtStr.startsWith("+")||amtStr.startsWith("-"))
+                	amtStr=amtStr.substring(1).trim();
+                String currency = CMLib.english().numPossibleGoldCurrency(source, amtStr);
+                long amt = CMLib.english().numPossibleGold(source, amtStr);
+                double denomination = CMLib.english().numPossibleGoldDenomination(source, currency, amtStr);
+                Item container = null;
+                if(newTarget instanceof Item)
+                {
+                	container = (newTarget instanceof Container)?(Item)newTarget:null;
+                	newTarget = ((Item)newTarget).owner();
+                }
+                if(newTarget instanceof MOB)
+                {
+                	if(plus)
+	                	CMLib.beanCounter().giveSomeoneMoney((MOB)newTarget, currency, amt * denomination);
+                	else
+	                	CMLib.beanCounter().subtractMoney((MOB)newTarget, currency, amt * denomination);
+                }
+                else
+                {
+                	if(!(newTarget instanceof Room))
+                		newTarget=lastKnownLocation;
+                	if(plus)
+	                	CMLib.beanCounter().dropMoney((Room)newTarget, container, currency, amt * denomination);
+                	else
+	                	CMLib.beanCounter().removeMoney((Room)newTarget, container, currency, amt * denomination);
+                }
+                break;
+            }
             case 59: // mpquestpoints
             {
                 if(tt==null){

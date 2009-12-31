@@ -38,6 +38,14 @@ public class Stat  extends Skills
 	private String[] access={"STAT"};
 	public String[] getAccessWords(){return access;}
 
+    public static final int ABLETYPE_EQUIPMENT=-2;
+    public static final int ABLETYPE_INVENTORY=-3;
+    public static final int ABLETYPE_QUESTWINS=-4;
+    public static final int ABLETYPE_TATTOOS=-5;
+    public static final int ABLETYPE_COMBAT=-6;
+    public static final int ABLETYPE_SCRIPTS=-7;
+    public static final int ABLETYPE_TITLES=-8;
+    
 	public MOB getTarget(MOB mob, String targetName, boolean quiet)
 	{
 		MOB target=null;
@@ -342,37 +350,43 @@ public class Stat  extends Skills
 			String s=((String)commands.elementAt(0)).toUpperCase();
 			if("TATTOOS".equals(s)||"TATTOO".equals(s)||"TATT".equals(s))
 			{
-				ableTypes=-5;
+				ableTypes=ABLETYPE_TATTOOS;
 				commands.removeElementAt(0);
 			}
 			else
 			if("QUESTWINS".equals(s)||"QUESTS".equals(s)||"QUEST".equals(s)||"QUESTWIN".equals(s))
 			{
-				ableTypes=-4;
+				ableTypes=-ABLETYPE_QUESTWINS;
+				commands.removeElementAt(0);
+			}
+			else
+			if("TITLES".equals(s)||"TITLE".equals(s))
+			{
+				ableTypes=-ABLETYPE_TITLES;
 				commands.removeElementAt(0);
 			}
 			else
 			if("EQUIPMENT".equals(s)||"EQ".equals(s)||"EQUIP".equals(s))
 			{
-				ableTypes=-2;
+				ableTypes=ABLETYPE_EQUIPMENT;
 				commands.removeElementAt(0);
 			}
 			else
 			if("COMBAT".equals(s))
 			{
-				ableTypes=-6;
+				ableTypes=ABLETYPE_COMBAT;
 				commands.removeElementAt(0);
 			}
             else
             if("SCRIPTS".equals(s))
             {
-                ableTypes=-7;
+                ableTypes=ABLETYPE_SCRIPTS;
                 commands.removeElementAt(0);
             }
 			else
 			if("INVENTORY".equals(s)||"INVEN".equals(s)||"INV".equals(s))
 			{
-				ableTypes=-3;
+				ableTypes=ABLETYPE_INVENTORY;
 				commands.removeElementAt(0);
 			}
 			else
@@ -424,13 +438,13 @@ public class Stat  extends Skills
 			str=getAbilities(target,V,mask,false,-1);
 		}
 		else
-		if(ableTypes==-2)
+		if(ableTypes==ABLETYPE_EQUIPMENT)
 			str=CMLib.commands().getEquipment(mob,target);
 		else
-		if(ableTypes==-3)
+		if(ableTypes==ABLETYPE_INVENTORY)
 			str=CMLib.commands().getInventory(mob,target);
 		else
-		if(ableTypes==-4)
+		if(ableTypes==ABLETYPE_QUESTWINS)
 		{
 			str.append("Quests won:");
 			StringBuffer won=new StringBuffer("");
@@ -446,8 +460,25 @@ public class Stat  extends Skills
 			str.append(won);
 			str.append("\n\r");
 		}
+		else
+		if(ableTypes==ABLETYPE_TITLES)
+		{
+			str.append("Titles:");
+			StringBuffer ttl=new StringBuffer("");
+			if(target.playerStats()!=null)
+				for(int t=0;t<target.playerStats().getTitles().size();t++)
+				{
+					String title = (String)target.playerStats().getTitles().elementAt(t);
+					ttl.append(" "+title+",");
+				}
+			if(ttl.length()==0)
+				ttl.append(" None!");
+			ttl.deleteCharAt(ttl.length()-1);
+			str.append(ttl);
+			str.append("\n\r");
+		}
         else
-        if(ableTypes==-7)
+        if(ableTypes==ABLETYPE_SCRIPTS)
         {
             str.append("Scripts covered:\n\r");
             for(int q=0;q<target.numScripts();q++)
@@ -464,7 +495,7 @@ public class Stat  extends Skills
             str.append("\n\r");
         }
 		else
-		if(ableTypes==-5)
+		if(ableTypes==ABLETYPE_TATTOOS)
 		{
 			str.append("Tattoos:");
 			for(int q=0;q<target.numTattoos();q++)
@@ -473,7 +504,7 @@ public class Stat  extends Skills
 			str.append("\n\r");
 		}
 		else
-		if(ableTypes==-6)
+		if(ableTypes==ABLETYPE_COMBAT)
 		{
 			str.append("Combat summary:\n\r\n\r");
 			MOB M=CMClass.getMOB("StdMOB");
