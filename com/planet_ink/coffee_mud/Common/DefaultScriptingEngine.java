@@ -8341,6 +8341,51 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 }
                 break;
             }
+            case 78: // mpheal
+            {
+                if(tt==null){
+                	tt=parseBits(script,si,"Cccr");
+                	if(tt==null) return null;
+                }
+                Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
+                String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
+                if((newTarget!=null)&&(arg2.length()>0))
+                {
+                    if(newTarget instanceof MOB)
+                    {
+                        MOB healedM=(MOB)newTarget;
+                        MOB healerM=(MOB)newTarget;
+                        int min=CMath.s_int(arg2.trim());
+                        int max=CMath.s_int(arg3.trim());
+                        if(max<min) max=min;
+                        if(min>0)
+                        {
+                            int amt=(max==min)?min:CMLib.dice().roll(1,max-min,min);
+                            if(amt>0)
+                                CMLib.combat().postHealing(healerM,healedM,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,amt,null);
+                        }
+                    }
+                    else
+                    if(newTarget instanceof Item)
+                    {
+                        Item E=(Item)newTarget;
+                        int min=CMath.s_int(arg2.trim());
+                        int max=CMath.s_int(arg3.trim());
+                        if(max<min) max=min;
+                        if(min>0)
+                        {
+                            int amt=(max==min)?min:CMLib.dice().roll(1,max-min,min);
+                            if(E.subjectToWearAndTear())
+                            {
+                                E.setUsesRemaining(E.usesRemaining()+amt);
+                                if(E.usesRemaining()>100) E.setUsesRemaining(100);
+                            }
+                        }
+                    }
+                }
+                break;
+            }
             case 29: // mptrackto
             {
                 if(tt==null){

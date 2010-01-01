@@ -579,6 +579,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
         "MPCONFIRM", // 75
         "MPCHOOSE", // 76
         "MPMONEY", // 77
+        "MPEEAL", // 78
     };
 
     /** a list of some some extra stat codes for mobs*/

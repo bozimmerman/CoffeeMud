@@ -2216,4 +2216,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 18.STAT command now supports titles.
 19 Dye now supports light and bright colorings. Various other recipes trickled in here and there.
 20.Wand magic words are now from lists.ini -- your places will need to relearn their trigger words.
-21.New Scriptable command: MPMONEY
+21.New Scriptable command: MPMONEY, MPHEAL
