@@ -112,7 +112,7 @@ public class Prayer_ReligiousDoubt extends Prayer
             if(mob.location().okMessage(mob,msg))
             {
                 mob.location().send(mob,msg);
-                mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> is questioning <S-HIS-HER> faith, but does not seem convinced yet.");
+                mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> questioning <S-HIS-HER> faith, but does not seem convinced yet.");
                 beneficialAffect(mob,target,asLevel,(int)(DOUBT_TIME/Tickable.TIME_TICK));
             }
         }

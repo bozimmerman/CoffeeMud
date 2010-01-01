@@ -320,7 +320,7 @@ public class Spell_Wish extends Spell
 			||(myWish.endsWith(" WOULD RECALL "))
 			||(myWish.endsWith(" TO RECALL "))
 			||(myWish.endsWith(" BE RECALLED "))
-			||(myWish.endsWith(" RECALL ")))
+			||(myWish.endsWith(" RECALL ")&&(!myWish.endsWith(" OF RECALL "))))
 			{
 				Room recallRoom=mob.getStartRoom();
 				if((recallRoom==null)&&(target instanceof MOB)&&(((MOB)target).getStartRoom()!=null))

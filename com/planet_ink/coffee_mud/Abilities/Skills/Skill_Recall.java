@@ -88,7 +88,7 @@ public class Skill_Recall extends StdSkill
                     {
                         Room fRecalledRoom=recalledRoom;
                         if(group)fRecalledRoom=follower.location();
-                        msg=CMClass.getMsg(follower,fRecalledRoom,this,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,auto?"<S-NAME> disappear(s) into the Java Plain!":"<S-NAME> is sucked into the vortex created by "+mob.name()+"s recall.");
+                        msg=CMClass.getMsg(follower,fRecalledRoom,this,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,auto?"<S-NAME> disappear(s) into the Java Plain!":"<S-NAME> <S-IS-ARE> sucked into the vortex created by "+mob.name()+"s recall.");
     					if(((follower.location()==fRecalledRoom))
     					&&(fRecalledRoom.isInhabitant(follower))
     					&&(fRecalledRoom.okMessage(follower,msg)||CMSecurity.isAllowed(mob,recalledRoom,"GOTO")))

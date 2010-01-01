@@ -61,7 +61,7 @@ public class Spell_CauseStink extends Spell
 			case 1: str="<S-NAME> emanates an unpleasant odor"; break;
 			case 2: str="<S-NAME> smells like <S-HE-SHE> hasn't bathed in a month!"; break;
 			case 3: str="<S-NAME> smells bad!"; break;
-			case 4: str="<S-NAME> is giving off a horrid odor!"; break;
+			case 4: str="<S-NAME> <S-IS-ARE> giving off a horrid odor!"; break;
 			case 5: str="<S-NAME> really stinks!"; break;
 			case 6: str="Whew! <S-NAME> REALLY stinks!"; break;
 			case 7: str="<S-NAME> has an odor resembling that of a skunk!"; break;

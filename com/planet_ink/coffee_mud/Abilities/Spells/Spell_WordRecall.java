@@ -72,7 +72,7 @@ public class Spell_WordRecall extends Spell
                 {
                     MOB follower=mob.fetchFollower(f);
                     
-                    msg=CMClass.getMsg(follower,recalledRoom,this,verbalCastCode(mob,recalledRoom,auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MSG_LEAVE,verbalCastCode(mob,recalledRoom,auto),auto?"<S-NAME> disappear(s) into the Java Plain!":"<S-NAME> is sucked into the vortex created by "+mob.name()+"s recall.");
+                    msg=CMClass.getMsg(follower,recalledRoom,this,verbalCastCode(mob,recalledRoom,auto),CMMsg.MASK_MAGIC|AUTO|CMMsg.MSG_LEAVE,verbalCastCode(mob,recalledRoom,auto),auto?"<S-NAME> disappear(s) into the Java Plain!":"<S-NAME> <S-IS-ARE> sucked into the vortex created by "+mob.name()+"s recall.");
                     if((follower!=null)
                     &&(follower.isMonster())
                     &&(!follower.isPossessing())
