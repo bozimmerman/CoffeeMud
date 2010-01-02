@@ -2219,3 +2219,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 21.New Scriptable command: MPMONEY, MPHEAL
 22.Remorted chars get a single random max stat bonus point, instead of one to everything.
 23.CharClasses now support max/caps in common skills, crafting skills, non-crafting common skills, and languages.
+24.Injury text is a bit more decorated now. (Thanks gmdenna!)

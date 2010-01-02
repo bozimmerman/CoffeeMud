@@ -63,7 +63,27 @@ public class Injury extends StdAbility
 				    for(int i2=0;i2<V.size();i2++)
 					{
 					    O=(Object[])V.elementAt(i2);
-						buf.append(", "+((String)O[0]).toLowerCase()+" ("+((Integer)O[1]).intValue()+"%)");
+					    String wounds="";
+					    int dmg = ((Integer)O[1]).intValue(); 
+				    	if (dmg<5)
+					    	wounds=("a bruised "); 
+				    	else if (dmg<10)
+					    	wounds=("a scratched "); 
+				    	else if (dmg<20)
+					    	wounds=("a cut "); 
+				    	else if (dmg<30)
+					    	wounds=("a sliced "); 
+				    	else if (dmg<40)
+					    	wounds=("a gashed "); 
+				    	else if (dmg<60)
+					    	wounds=("a bloody "); 
+				    	else if (dmg<75)
+					    	wounds=("a mangled ");
+				    	else if (dmg<100)
+					    	wounds=("a dangling "); 
+				    	else 
+					    	wounds=("a missing "); 
+						buf.append(", "+wounds+((String)O[0]).toLowerCase()+" ("+dmg+"%)");
 					}
 				}
 		}
