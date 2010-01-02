@@ -465,10 +465,15 @@ public class GenRace extends StdRace
 				if((!iblk.tag.equalsIgnoreCase("OFTITEM"))||(iblk.contents==null))
 					continue;
 				Item newOne=CMClass.getItem(CMLib.xml().getValFromPieces(iblk.contents,"OFCLASS"));
-				String idat=CMLib.xml().getValFromPieces(iblk.contents,"OFDATA");
-				newOne.setMiscText(CMLib.xml().restoreAngleBrackets(idat));
-				newOne.recoverEnvStats();
-				outfitChoices.addElement(newOne);
+				if(newOne != null)
+				{
+					String idat=CMLib.xml().getValFromPieces(iblk.contents,"OFDATA");
+					newOne.setMiscText(CMLib.xml().restoreAngleBrackets(idat));
+					newOne.recoverEnvStats();
+					outfitChoices.addElement(newOne);
+				}
+				else
+					Log.errOut("GenRace","Unknown newOne race: " + CMLib.xml().getValFromPieces(iblk.contents,"OFCLASS"));
 			}
 		}
 

@@ -201,7 +201,7 @@ public class Concierge extends StdBehavior
 		if(C==null) return "Umm.. I'm stupid.";
 		String name=to.Name();
 		if(to instanceof Room) name=CMLib.map().getExtendedRoomID((Room)to);
-        TrackingLibrary.TrackingFlags flags = new TrackingLibrary.TrackingFlags();
+        TrackingLibrary.TrackingFlags flags = new TrackingLibrary.TrackingFlags().add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
 		Vector<Room> set=new Vector<Room>();
 		int radius=100;
 		CMLib.tracking().getRadiantRooms(from.location(),set,flags,null,radius,null);

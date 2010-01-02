@@ -797,9 +797,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		{
 			long waitTime = System.currentTimeMillis() - startTime;
 			if(waitTime > (1000 * 60 * (maxMins)))
-				break;
+				return "You can't get there from here.";
 			didSomething=false;
-			for(int r=0;r<foundAt;r++)
+			for(int r=foundAt-1;r>=0;r--)
 			{
 				Room R=(Room)set.elementAt(r);
 				if(getRoomDirection(R,checkR,trailV)>=0)
