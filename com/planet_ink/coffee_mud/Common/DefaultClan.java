@@ -874,6 +874,7 @@ public class DefaultClan implements Clan
             {
                 int highestCleric=0;
                 MOB highestClericM=null;
+                MOB currentHighCleric = getResponsibleMember();
                 int max=topRanks[getGovernment()];
                 for(int j=0;j<members.size();j++)
                 {
@@ -898,12 +899,18 @@ public class DefaultClan implements Clan
                                 highestCleric=M2.envStats().level();
                                 highestClericM=M2;
                             }
-                            if(M2.getClanRole()<Clan.POS_LEADER)
+                            if((M2.getClanRole()<max) && (M2 != currentHighCleric))
                             {
                                 clanAnnounce(M2.Name()+" is now a "+CMLib.clans().getRoleName(getGovernment(),max,true,false)+" of the "+typeName()+" "+name()+".");
                                 Log.sysOut("Clans",M2.Name()+" of clan "+name()+" was autopromoted to "+CMLib.clans().getRoleName(getGovernment(),max,true,false)+".");
-                                M2.setClanRole(Clan.POS_LEADER);
+                                M2.setClanRole(max);
                                 CMLib.database().DBUpdateClanMembership(M2.Name(), name(), max);
+                                
+                                int mid = max-1;
+                                clanAnnounce(currentHighCleric.Name()+" is now a "+CMLib.clans().getRoleName(getGovernment(),mid,true,false)+" of the "+typeName()+" "+name()+".");
+                                Log.sysOut("Clans",currentHighCleric.Name()+" of clan "+name()+" was autodemoted to "+CMLib.clans().getRoleName(getGovernment(),mid,true,false)+".");
+                                currentHighCleric.setClanRole(mid);
+                                CMLib.database().DBUpdateClanMembership(currentHighCleric.Name(), name(), mid);
                             }
                         }
                     }
