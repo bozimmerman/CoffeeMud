@@ -59,6 +59,7 @@ public class GenCharClass extends StdCharClass
 	protected String qualifications="";
     protected String[] xtraValues=null;
 	protected int selectability=0;
+	
     public int getHPDivisor(){return hpDivisor;}
     public int getHPDice(){return hpDice;}
     public int getHPDie(){return hpDie;}
@@ -67,6 +68,16 @@ public class GenCharClass extends StdCharClass
     public int getManaDie(){return manaDie;}
     public int getLevelCap() {return levelCap;}
     
+	protected int maxNonCraftingSkills=0;
+	protected int maxCraftingSkills=0;
+	protected int maxCommonSkills=0;
+	protected int maxLanguages=0;
+	
+	public int maxNonCraftingSkills() { return maxNonCraftingSkills;}
+	public int maxCraftingSkills() { return maxCraftingSkills;}
+	public int maxCommonSkills() { return maxCommonSkills;}
+	public int maxLanguages() { return maxLanguages;}
+	
     // IS *only* used by stdcharclass for weaponliminatations, buildDisallowedWeaponClasses,  buildRequiredWeaponMaterials
     public int allowedWeaponLevel(){return CharClass.WEAPONS_ANY;}
     
@@ -309,6 +320,11 @@ public class GenCharClass extends StdCharClass
 		str.append(CMLib.xml().convertXMLtoTag("STRBON",otherBonuses));
 		str.append(CMLib.xml().convertXMLtoTag("QUAL",qualifications));
 		str.append(CMLib.xml().convertXMLtoTag("PLAYER",""+selectability));
+		str.append(CMLib.xml().convertXMLtoTag("MAXNCS",""+maxNonCraftingSkills));
+		str.append(CMLib.xml().convertXMLtoTag("MAXCRS",""+maxCraftingSkills));
+		str.append(CMLib.xml().convertXMLtoTag("MAXCMS",""+maxCommonSkills));
+		str.append(CMLib.xml().convertXMLtoTag("MAXLGS",""+maxLanguages));
+		
         str.append(CMLib.xml().convertXMLtoTag("HELP",CMLib.xml().parseOutAngleBrackets(helpEntry)));
 		if(adjEStats==null) str.append("<ESTATS/>");
 		else
@@ -478,6 +494,10 @@ public class GenCharClass extends StdCharClass
 		otherLimitations=CMLib.xml().getValFromPieces(classData,"STRLMT");
 		otherBonuses=CMLib.xml().getValFromPieces(classData,"STRBON");
 		qualifications=CMLib.xml().getValFromPieces(classData,"QUAL");
+		maxNonCraftingSkills=CMLib.xml().getIntFromPieces(classData,"MAXNCS");
+		maxCraftingSkills=CMLib.xml().getIntFromPieces(classData,"MAXCRS");
+		maxCommonSkills=CMLib.xml().getIntFromPieces(classData,"MAXCMS");
+		maxLanguages=CMLib.xml().getIntFromPieces(classData,"MAXLGS");
 		helpEntry=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(classData,"HELP"));
 		String s=CMLib.xml().getValFromPieces(classData,"PLAYER");
 		if(CMath.isNumber(s))
@@ -639,7 +659,7 @@ public class GenCharClass extends StdCharClass
 									 "STARTASTATE","NUMNAME","NAMELEVEL","NUMSSET","SSET",
                                      "SSETLEVEL","NUMWMAT","GETWMAT","ARMORMINOR","STATCLASS",
                                      "EVENTCLASS","GETCABLEPREQ","GETCABLEMASK","HELP","LEVELCAP",
-                                     "GETCABLEMAXP"
+                                     "GETCABLEMAXP","MAXNCS","MAXCRS","MAXCMS","MAXLGS"
 									 }; 
     
 	public String getStat(String code)
@@ -718,6 +738,10 @@ public class GenCharClass extends StdCharClass
         case 53: return helpEntry;
         case 54: return ""+levelCap;
 		case 55: return Integer.toString(((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).maxProficiency);
+        case 56: return ""+maxNonCraftingSkills;
+        case 57: return ""+maxCraftingSkills;
+        case 58: return ""+maxCommonSkills;
+        case 59: return ""+maxLanguages;
         default:
             return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
         }
@@ -916,6 +940,10 @@ public class GenCharClass extends StdCharClass
         case 53: helpEntry=val; break;
         case 54: levelCap=CMath.s_int(val); break;
         case 55: tempables[8]=val; break;
+        case 56: maxNonCraftingSkills=CMath.s_int(val); break;
+        case 57: maxCraftingSkills=CMath.s_int(val); break;
+        case 58: maxCommonSkills=CMath.s_int(val); break;
+        case 59: maxLanguages=CMath.s_int(val); break;
         default:
             CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
             break;

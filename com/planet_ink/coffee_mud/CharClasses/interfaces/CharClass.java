@@ -410,6 +410,34 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	public boolean expless();
 
 	/**
+	 * Max number of common gathering/non-crafting skills this class can learn.
+	 * 0 means unlimited.  Skills directly qualified for by the class are excepted.
+	 * @return Max number of common gathering/non-crafting skills this class can learn.
+	 */
+	public int maxNonCraftingSkills();
+
+	/**
+	 * Max number of common crafting skills this class can learn.
+	 * 0 means unlimited.  Skills directly qualified for by the class are excepted.
+	 * @return Max number of common crafting skills this class can learn.
+	 */
+	public int maxCraftingSkills();
+	
+	/**
+	 * Max number of common skills (both crafting and non-crafting) this class can learn.
+	 * 0 means unlimited.  Skills directly qualified for by the class are excepted.
+	 * @return Max number of common skills this class can learn.
+	 */
+	public int maxCommonSkills();
+	
+	/**
+	 * Max number of languages this class can learn.
+	 * 0 means unlimited.  Languages directly qualified for by the class or race are excepted.
+	 * @return Max number of languages this class can learn.
+	 */
+	public int maxLanguages();
+	
+	/**
 	 * A code designating what kind of armor can be used by this class
 	 * without affecting their skills.  The worn locations this coded
 	 * type refers to locations defined by ARMOR_WEARMASK

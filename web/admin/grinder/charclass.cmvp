@@ -290,6 +290,15 @@
             <TD><FONT COLOR=YELLOW>Help Entry: </FONT></TD>
             <TD><TEXTAREA ROWS=10 COLS=55 NAME=GENHELP>@CharClassData?GENHELP@</TEXTAREA></TD>
         </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Maximum Common Skills:</FONT></TD>
+            <TD>
+            	<FONT SIZE=-1 COLOR=YELLOW>Non-Crafting:</FONT><INPUT TYPE=TEXT SIZE=8 NAME=MAXNCS VALUE="@CharClassData?MAXNCS@">
+            	<FONT SIZE=-1 COLOR=YELLOW>Crafting:</FONT><INPUT TYPE=TEXT SIZE=8 NAME=MAXCRS VALUE="@CharClassData?MAXCRS@">
+            	<FONT SIZE=-1 COLOR=YELLOW>All-Common:</FONT><INPUT TYPE=TEXT SIZE=8 NAME=MAXCMS VALUE="@CharClassData?MAXCMS@">
+            	<FONT SIZE=-1 COLOR=YELLOW>Languages:</FONT><INPUT TYPE=TEXT SIZE=8 NAME=MAXLGS VALUE="@CharClassData?MAXLGS@">
+            </TD>
+        </TR>
         <TR VALIGN=TOP>
             <TD VALIGN=TOP><FONT COLOR=YELLOW>Class Abilities: </FONT><BR>
 	        <INPUT TYPE=CHECKBOX NAME=SHOWPREREQS ONCLICK="ReShow();" @if?CheckReqParm?SHOWPREREQS=@ @else@CHECKED@endif@><FONT COLOR=WHITE>Show Pre-Requisites</FONT>&nbsp;<A HREF="javascript:OpenUp('ahelp.cmvp','ABILITY_PREREQS')"><FONT COLOR=WHITE><I>?</I></FONT></a><BR>

@@ -296,6 +296,81 @@ public class CommonSkill extends StdAbility
 				return true;
 		return false;
 	}
+
+	private int[] remainingLearnsFromClassMax(MOB student)
+	{
+		if(student==null) return null;
+		CharClass C=student.charStats().getCurrentClass();
+		boolean crafting = ((classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL);
+		int[] remaining = {C.maxCommonSkills(), crafting?C.maxCraftingSkills():C.maxNonCraftingSkills()};
+		if(remaining[0]==0) remaining[0]=Integer.MAX_VALUE;
+		if(remaining[1]==0) remaining[1]=Integer.MAX_VALUE;
+		DVector culturalAbilitiesDV = student.baseCharStats().getMyRace().culturalAbilities();
+		HashSet culturalAbilities=new HashSet();
+		for(int i=0;i<culturalAbilitiesDV.size();i++)
+			culturalAbilities.add(culturalAbilitiesDV.elementAt(i, 1).toString().toLowerCase());
+		for(int a=0;a<student.numLearnedAbilities();a++)
+		{
+			Ability A=student.fetchAbility(a);
+			if(A instanceof CommonSkill)
+			{
+				if((CMLib.ableMapper().getQualifyingLevel(C.ID(), false, A.ID())>=0)||(culturalAbilities.contains(A.ID().toLowerCase())))
+					continue;
+				remaining[0]--;
+				if(crafting == ((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL))
+					remaining[1]--;
+			}
+		}
+		return remaining;
+	}
+	
+	public boolean canBeLearnedBy(MOB teacher, MOB student)
+	{
+		if(!super.canBeLearnedBy(teacher,student))
+			return false;
+		if(student==null) return true;
+		CharClass C=student.charStats().getCurrentClass();
+		if(CMLib.ableMapper().getQualifyingLevel(C.ID(), false, ID())>=0)
+			return true;
+		boolean crafting = ((classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL);
+		int[] remaining = remainingLearnsFromClassMax(student);
+		if(remaining[0]<=0)
+		{
+			teacher.tell(student.name()+" can not learn any more common skills.");
+			student.tell("You may only learn " + C.maxCommonSkills() + " common skills.");
+			return false;
+		}
+		if(remaining[1]<=0)
+		{
+			teacher.tell(student.name()+" can not learn any more " + (crafting?"":"non-") + "crafting common skills.");
+			student.tell("You may only learn " + (crafting?""+C.maxCraftingSkills()+" ":C.maxNonCraftingSkills()+" non-") + "crafting common skills.");
+			return false;
+		}
+		return true;
+	}
+
+	public void teach(MOB teacher, MOB student)
+	{
+		super.teach(teacher, student);
+		if((student!=null)&&(student.fetchAbility(ID())!=null))
+		{
+			CharClass C=student.charStats().getCurrentClass();
+			if(CMLib.ableMapper().getQualifyingLevel(C.ID(), false, ID())>=0)
+				return;
+			boolean crafting = ((classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL);
+			int[] remaining = remainingLearnsFromClassMax(student);
+			if(remaining[0]<=0)
+				student.tell(student.name()+" may not learn any more common skills.");
+			else
+			if(remaining[0]<Integer.MAX_VALUE/2)
+				student.tell(student.name()+" may learn "+remaining[0]+" more common skills.");
+			if(remaining[1]<=0)
+				student.tell(student.name()+" may not learn any more "+(crafting?"":"non-") +"crafting common skills.");
+			else
+			if(remaining[1]<Integer.MAX_VALUE/2)
+				student.tell(student.name()+" may learn "+remaining[1]+" more "+(crafting?"":"non-") +"crafting common skills.");
+		}
+	}
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

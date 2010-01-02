@@ -5821,7 +5821,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             CMLib.genEd().promptStatInt(mob,me,++showNumber,showFlag,"Levels/Dmg Pt","LVLDAM");
             CMLib.genEd().promptStatInt(mob,me,++showNumber,showFlag,"Moves/Level","LVLMOVE");
             genArmorCode(mob,me,++showNumber,showFlag,"Armor Restr.","ARMOR");
-
+    		
             int armorMinorCode=CMath.s_int(me.getStat("ARMORMINOR"));
             boolean newSpells=CMLib.genEd().prompt(mob,armorMinorCode>0,++showNumber,showFlag,"Armor restricts only spells");
             me.setStat("ARMORMINOR",""+(newSpells?CMMsg.TYP_CAST_SPELL:-1));
@@ -5840,6 +5840,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             genOutfit(mob,me,++showNumber,showFlag);
             genClassBuddy(mob,me,++showNumber,showFlag,"Stat-Modifying Class","STATCLASS");
             genClassBuddy(mob,me,++showNumber,showFlag,"Special Events Class","EVENTCLASS");
+            CMLib.genEd().promptStatInt(mob,me,++showNumber,showFlag,"Max Non-Crafting Skills","MAXNCS");
+            CMLib.genEd().promptStatInt(mob,me,++showNumber,showFlag,"Max Crafting Skills","MAXCRS");
+            CMLib.genEd().promptStatInt(mob,me,++showNumber,showFlag,"Max All-Common Skills","MAXCMS");
+            CMLib.genEd().promptStatInt(mob,me,++showNumber,showFlag,"Max Languages","MAXLGS");
             genClassAbilities(mob,me,++showNumber,showFlag);
             CMLib.genEd().promptStatInt(mob,me,++showNumber,showFlag,"Number of Security Code Sets: ","NUMSSET");
             int numGroups=CMath.s_int(me.getStat("NUMSSET"));

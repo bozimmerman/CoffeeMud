@@ -91,6 +91,7 @@ public class Artisan extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Searching",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Pottery",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"ScrimShaw",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Shearing",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Blacksmithing",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Carpentry",true);

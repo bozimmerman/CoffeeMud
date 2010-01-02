@@ -66,6 +66,10 @@ public class StdCharClass implements CharClass
 	public boolean raceless(){return false;}
 	public boolean leveless(){return false;}
 	public boolean expless(){return false;}
+	public int maxNonCraftingSkills() { return 5;}
+	public int maxCraftingSkills() { return 1;}
+	public int maxCommonSkills() { return 0;}
+	public int maxLanguages() { return 3;}
     private static final Vector empty=new Vector();
     public Vector getSecurityGroups(int classLevel){return empty;}
     public CMObject newInstance(){return this;}
@@ -396,6 +400,10 @@ public class StdCharClass implements CharClass
         CR.setStat("STRBON",""+otherBonuses());
         CR.setStat("PLAYER",""+availabilityCode());
         CR.setStat("HELP",""+CMLib.help().getHelpText(name(),null,false));
+        CR.setStat("MAXNCS",""+maxNonCraftingSkills());
+        CR.setStat("MAXCRS",""+maxCraftingSkills());
+        CR.setStat("MAXCMS",""+maxCommonSkills());
+        CR.setStat("MAXLGS",""+maxLanguages());
 
         StringBuffer quals=new StringBuffer("");
         String q=statQualifications().toUpperCase();

@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Languages;
 import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.Common.CommonSkill;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -299,6 +300,70 @@ public class StdLanguage extends StdAbility implements Language
 		}
 		return super.okMessage(myHost,msg);
 	}
+	
+	private int numLanguagesKnown(MOB student)
+	{
+		int numLanguages=0;
+		if(student==null) return Integer.MAX_VALUE;
+		CharClass C=student.charStats().getCurrentClass();
+		DVector culturalAbilitiesDV = student.baseCharStats().getMyRace().culturalAbilities();
+		HashSet culturalAbilities=new HashSet();
+		for(int i=0;i<culturalAbilitiesDV.size();i++)
+			culturalAbilities.add(culturalAbilitiesDV.elementAt(i, 1).toString().toLowerCase());
+		for(int a=0;a<student.numLearnedAbilities();a++)
+		{
+			Ability A=student.fetchAbility(a);
+			if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
+			&&(!(A instanceof Common))
+			&&(!culturalAbilities.contains(A.ID())))
+			{
+				if((CMLib.ableMapper().getQualifyingLevel(C.ID(), false, A.ID())>=0)||(culturalAbilities.contains(A.ID().toLowerCase())))
+					continue;
+				numLanguages++;
+			}
+		}
+		return numLanguages;
+	}
+	
+	
+	public boolean canBeLearnedBy(MOB teacher, MOB student)
+	{
+		if(!super.canBeLearnedBy(teacher,student))
+			return false;
+		if(student==null) return true;
+		CharClass C=student.charStats().getCurrentClass();
+		if(C.maxLanguages()==0) return true;
+		if(CMLib.ableMapper().getQualifyingLevel(C.ID(), false, ID())>=0)
+			return true;
+		int numLanguages=numLanguagesKnown(student);
+		if((C.maxLanguages()>0)&&(C.maxLanguages()<=numLanguages))
+		{
+			teacher.tell(student.name()+" can not learn any more languages.");
+			student.tell("You may only learn " + C.maxLanguages() + " languages.");
+			return false;
+		}
+		return true;
+	}
+	
+	public void teach(MOB teacher, MOB student)
+	{
+		super.teach(teacher, student);
+		if((student!=null)&&(student.fetchAbility(ID())!=null))
+		{
+			CharClass C=student.charStats().getCurrentClass();
+			if(C.maxLanguages()==0) return;
+			if(CMLib.ableMapper().getQualifyingLevel(C.ID(), false, ID())>=0)
+				return;
+			int numLanguages=numLanguagesKnown(student);
+			int remaining = C.maxLanguages() - numLanguages;
+			if(remaining<=0)
+				student.tell(student.name()+" may not learn any more languages.");
+			else
+			if(remaining<Integer.MAX_VALUE/2)
+				student.tell(student.name()+" may learn "+remaining+" more languages.");
+		}
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!auto)

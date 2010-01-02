@@ -485,6 +485,34 @@ public class CharClassData extends StdWebMacro
                     if(CMath.s_int(old)<0) old="0";
                     str.append(old+", ");
                 }
+                if(parms.containsKey("MAXNCS"))
+                {
+                    String old=httpReq.getRequestParameter("MAXNCS");
+                    if(old==null) old=""+C.maxNonCraftingSkills();
+                    if(CMath.s_int(old)<=0) old="Unlimited";
+                    str.append(old+", ");
+                }
+                if(parms.containsKey("MAXCRS"))
+                {
+                    String old=httpReq.getRequestParameter("MAXCRS");
+                    if(old==null) old=""+C.maxCraftingSkills();
+                    if(CMath.s_int(old)<=0) old="Unlimited";
+                    str.append(old+", ");
+                }
+                if(parms.containsKey("MAXCMS"))
+                {
+                    String old=httpReq.getRequestParameter("MAXCMS");
+                    if(old==null) old=""+C.maxCommonSkills();
+                    if(CMath.s_int(old)<=0) old="Unlimited";
+                    str.append(old+", ");
+                }
+                if(parms.containsKey("MAXLGS"))
+                {
+                    String old=httpReq.getRequestParameter("MAXLGS");
+                    if(old==null) old=""+C.maxLanguages();
+                    if(CMath.s_int(old)<=0) old="Unlimited";
+                    str.append(old+", ");
+                }
                 if(parms.containsKey("LVLDAM"))
                 {
                     String old=httpReq.getRequestParameter("LVLDAM");
