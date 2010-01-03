@@ -1540,6 +1540,26 @@ public class Quests extends StdLibrary implements QuestManager
         return newValue.trim();
     }
     
+    public Vector<Quest> getPlayerPersistantQuests(MOB player)
+    {
+        Vector qVec=new Vector();
+        for(int q=0;q<CMLib.quests().numQuests();q++)
+        {
+            Quest Q=CMLib.quests().fetchQuest(q);
+            if(Q==null) continue;
+            for(int s=0;s<player.numScripts();s++)
+            {
+                ScriptingEngine S=player.fetchScript(s);
+                if(S==null) continue;
+                if((S.defaultQuestName().length()>0)
+                &&(S.defaultQuestName().equalsIgnoreCase(Q.name()))
+                &&(!qVec.contains(Q)))
+                    qVec.addElement(Q);
+            }
+        }
+        return qVec;
+    }
+    
     public Quest questMaker(MOB mob)
     {
         if(mob.isMonster()) return null;

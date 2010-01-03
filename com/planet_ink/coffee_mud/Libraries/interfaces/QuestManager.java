@@ -59,6 +59,7 @@ public interface QuestManager extends CMLibrary
     
     public DVector getQuestTemplate(MOB mob, String fileToGet);
     public Quest questMaker(MOB mob);
+    public Vector<Quest> getPlayerPersistantQuests(MOB player);
 
     public final static int QM_COMMAND_$TITLE=0;
     public final static int QM_COMMAND_$LABEL=1;

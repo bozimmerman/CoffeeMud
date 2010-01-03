@@ -109,23 +109,13 @@ public class Questwins extends StdCommand
         else
 	    if(commands.size()==1)
 	    {
-            Vector qVec=new Vector();
-            for(int q=0;q<CMLib.quests().numQuests();q++)
+            Vector<Quest> qQVec=CMLib.quests().getPlayerPersistantQuests(mob);
+            Vector<String> qVec = new Vector<String>();
+            for(Quest Q : qQVec)
             {
-                Quest Q=CMLib.quests().fetchQuest(q);
-                if(Q==null) continue;
-                for(int s=0;s<mob.numScripts();s++)
-                {
-                    ScriptingEngine S=mob.fetchScript(s);
-                    if(S==null) continue;
-                    if((S.defaultQuestName().length()>0)
-                    &&(S.defaultQuestName().equalsIgnoreCase(Q.name())))
-                    {
-                        String name=Q.displayName().trim().length()>0?Q.displayName():Q.name();
-                        if(!qVec.contains(name))
-                            qVec.addElement(name);
-                    }
-                }
+                String name=Q.displayName().trim().length()>0?Q.displayName():Q.name();
+                if(!qVec.contains(name))
+                    qVec.addElement(name);
             }
             Collections.sort(qVec);
             StringBuffer msg=new StringBuffer("^HQuests you are listed as having accepted:^?^N\n\r");
