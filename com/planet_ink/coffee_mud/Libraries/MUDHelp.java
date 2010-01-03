@@ -878,9 +878,9 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
                             helpFile.load(new ByteArrayInputStream(new CMFile(Resources.buildResourcePath("help")+item,null,true).raw()));
     				}
     			}
-   				///DVector suspiciousPairs=suspiciousTags(helpFile);
+   				//DVector suspiciousPairs=suspiciousTags(helpFile);
    				//for(int d=0;d<suspiciousPairs.size();d++)
-   				//	Sy/stem.out.pr/intln(suspiciousPairs.elementAt(d,1)+": "+suspiciousPairs.elementAt(d,2));
+   				//	Syst/em.out.pri/ntln(suspiciousPairs.elementAt(d,1)+": "+suspiciousPairs.elementAt(d,2));
    				Resources.submitResource("MAIN HELP FILE",helpFile);
     		}
     		return helpFile;

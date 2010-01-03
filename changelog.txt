@@ -2215,8 +2215,9 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 17.CoffeeMud now supports MSSP request at login (not the telnet code version -- kept colliding with mccp in tintin)
 18.STAT command now supports titles.
 19 Dye now supports light and bright colorings. Various other recipes trickled in here and there.
-20.Wand magic words are now from lists.ini -- your places will need to relearn their trigger words.
+20.Wand magic words are now from lists.ini -- your players will need to relearn their trigger words.
 21.New Scriptable command: MPMONEY, MPHEAL
 22.Remorted chars get a single random max stat bonus point, instead of one to everything.
 23.CharClasses now support max/caps in common skills, crafting skills, non-crafting common skills, and languages.
 24.Injury text is a bit more decorated now. (Thanks gmdenna!)
+25.Many many more mxp images scrounged up, and several old ones replaces with better ones.  There is a light at the end of the tunnel!

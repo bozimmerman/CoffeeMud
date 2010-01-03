@@ -1,0 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+<html>
+<head>
+ 	<link rel="grinder icon" href="/images/grinder.ico" >
+	<title>Rebuild Reference Docs</title>
+</head>
+<body BGCOLOR=BLACK>
+<FONT COLOR=WHITE>Done</FONT>
+@RebuildReferenceDocs@
+</FONT>
+</BODY>
+</HTML>
+@endif@

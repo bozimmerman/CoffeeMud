@@ -67,7 +67,7 @@ public class StdCharClass implements CharClass
 	public boolean leveless(){return false;}
 	public boolean expless(){return false;}
 	public int maxNonCraftingSkills() { return 5;}
-	public int maxCraftingSkills() { return 1;}
+	public int maxCraftingSkills() { return 2;}
 	public int maxCommonSkills() { return 0;}
 	public int maxLanguages() { return 3;}
     private static final Vector empty=new Vector();
