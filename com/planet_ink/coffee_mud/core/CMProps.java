@@ -1176,8 +1176,10 @@ public class CMProps extends Properties
         if(O instanceof RawMaterial)
         {
             image=getHashedMXPImage(H,"RESOURCE_"+RawMaterial.RESOURCE_DESCS[(((RawMaterial)O).material()&RawMaterial.RESOURCE_MASK)]);
-            image=getHashedMXPImage(H,"RESOURCE_"+RawMaterial.MATERIAL_DESCS[(((RawMaterial)O).material()&RawMaterial.MATERIAL_MASK)>>8]);
-            if(image==null) image=getHashedMXPImage(H,"RESOURCE_*");
+            if(image==null)
+	            image=getHashedMXPImage(H,"RESOURCE_"+RawMaterial.MATERIAL_DESCS[(((RawMaterial)O).material()&RawMaterial.MATERIAL_MASK)>>8]);
+            if(image==null) 
+            	image=getHashedMXPImage(H,"RESOURCE_*");
         }
         else
         if(O instanceof Key)
