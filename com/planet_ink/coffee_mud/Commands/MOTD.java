@@ -191,15 +191,17 @@ public class MOTD extends StdCommand
                 }
                 
                 Vector<Quest> qQVec=CMLib.quests().getPlayerPersistantQuests(mob);
-                if(qQVec.size()>0)
-                    buf.append("\n\r^HYou are on "+qQVec.size()+" quest(s).  Enter QUESTS to see them!.^?^.\n\r");
-                
 				if(mob.session()!=null)
                     if(buf.length()>0)
                     {
+                        if(qQVec.size()>0)
+                            buf.append("\n\r^HYou are on "+qQVec.size()+" quest(s).  Enter QUESTS to see them!.^?^.\n\r");
                         mob.session().wraplessPrintln("\n\r--------------------------------------\n\r"+buf.toString());
                         if(pause){ mob.session().prompt("\n\rPress ENTER: ",10000); mob.session().println("\n\r");}
                     }
+                    else
+                    if(qQVec.size()>0)
+                        buf.append("\n\r^HYou are on "+qQVec.size()+" quest(s).  Enter QUESTS to see them!.^?^.\n\r");
                     else
                     if(CMParms.combine(commands,1).equalsIgnoreCase("AGAIN"))
                         mob.session().println("No MOTD to re-read.");
