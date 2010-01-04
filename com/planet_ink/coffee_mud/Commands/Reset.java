@@ -377,7 +377,7 @@ public class Reset extends StdCommand
                 mob.tell("Can't reset that trait -- as its not defined.");
         }
         else
-		if(s.equalsIgnoreCase("arearoomids"))
+		if(s.equalsIgnoreCase("arearoomids")&&(CMSecurity.isAllowed(mob, mob.location(), "CMDROOMS")))
 		{
 			Area A=mob.location().getArea();
 			boolean somethingDone=false;
@@ -450,7 +450,7 @@ public class Reset extends StdCommand
             }
         }
         else
-		if(s.equalsIgnoreCase("racestatgains"))
+		if(s.equalsIgnoreCase("racestatgains")&&(CMSecurity.isAllowed(mob,mob.location(),"CMDRACES")))
 		{
 		    for(Enumeration e=CMClass.races();e.hasMoreElements();)
 		    {
@@ -483,7 +483,7 @@ public class Reset extends StdCommand
 		    }
 		}
 		else
-		if(s.equalsIgnoreCase("genraceagingcharts"))
+		if(s.equalsIgnoreCase("genraceagingcharts")&&(CMSecurity.isAllowed(mob,mob.location(),"CMDRACES")))
 		{
 		    for(Enumeration e=CMClass.races();e.hasMoreElements();)
 		    {
@@ -570,7 +570,7 @@ public class Reset extends StdCommand
 		    }
 		}
 		else
-		if(s.equalsIgnoreCase("bankdata"))
+		if(s.equalsIgnoreCase("bankdata")&&(CMSecurity.isASysOp(mob)))
 		{
 			String bank=CMParms.combine(commands,1);
 			if(bank.length()==0){
@@ -593,7 +593,7 @@ public class Reset extends StdCommand
 			mob.tell(V.size()+" records done.");
 		}
 		else
-		if(s.equalsIgnoreCase("mobstats"))
+		if(s.equalsIgnoreCase("mobstats")&&(CMSecurity.isASysOp(mob)))
 		{
 			s="room";
 			if(commands.size()>1) s=(String)commands.elementAt(1);
@@ -703,7 +703,7 @@ public class Reset extends StdCommand
 			mob.session().println("done!");
 		}
 		else
-		if(s.equalsIgnoreCase("groundlydoors"))
+		if(s.equalsIgnoreCase("groundlydoors")&&(CMSecurity.isASysOp(mob)))
 		{
 			if(mob.session()==null) return false;
 			mob.session().print("working...");
@@ -735,7 +735,7 @@ public class Reset extends StdCommand
 			mob.session().println("done!");
 		}
 		else
-		if(s.equalsIgnoreCase("allmobarmorfix"))
+		if(s.equalsIgnoreCase("allmobarmorfix")&&(CMSecurity.isASysOp(mob)))
 		{
 			if(mob.session()==null) return false;
 			mob.session().print("working...");
@@ -778,7 +778,7 @@ public class Reset extends StdCommand
 			mob.session().println("done!");
 		}
 		else
-		if(s.equalsIgnoreCase("goldceilingfixer"))
+		if(s.equalsIgnoreCase("goldceilingfixer")&&(CMSecurity.isASysOp(mob)))
 		{
 			if(mob.session()==null) return false;
 			mob.session().print("working...");
@@ -817,7 +817,7 @@ public class Reset extends StdCommand
 			mob.session().println("done!");
 		}
 		else
-		if(s.equalsIgnoreCase("areainstall"))
+		if(s.equalsIgnoreCase("areainstall")&&(CMSecurity.isASysOp(mob)))
 		{
 			if(mob.session()==null) return false;
 			if(commands.size()<2)
@@ -883,7 +883,7 @@ public class Reset extends StdCommand
 			mob.session().println("done!");
 		}
 		else
-		if(s.equalsIgnoreCase("worldmatconfirm"))
+		if(s.equalsIgnoreCase("worldmatconfirm")&&(CMSecurity.isASysOp(mob)))
 		{
 			if(mob.session()==null) return false;
 			mob.session().print("working...");
@@ -948,7 +948,7 @@ public class Reset extends StdCommand
 			mob.session().println("done!");
 		}
 		else
-		if(s.equalsIgnoreCase("itemstats"))
+		if(s.equalsIgnoreCase("itemstats")&&(CMSecurity.isASysOp(mob)))
 		{
 			s="room";
 			if(commands.size()>1) s=(String)commands.elementAt(1);
@@ -1101,7 +1101,7 @@ public class Reset extends StdCommand
 		if(s.startsWith("clantick"))
 			CMLib.clans().tickAllClans();
         else
-		if(s.equalsIgnoreCase("arearacemat"))
+		if(s.equalsIgnoreCase("arearacemat")&&(CMSecurity.isASysOp(mob)))
 		{
 			// this is just utility code and will change frequently
 			Area A=mob.location().getArea();
