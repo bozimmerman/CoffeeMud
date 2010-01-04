@@ -2188,7 +2188,7 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 	part of the upgrade instructions regarding deleting your old "com" directory before 
 	running the new build.
 48. CoffeeMud-bug values dropped 700 points in overnight debugging.
-# Build 5.5.5 Release ?
+# Build 5.5.5 Release January 3rd, 2010
 1. New INI entries: DEFAULTPLAYERFLAGS, FORMULA_* for combat formulas, RECOVERRATE
 2. New DISABLE flags: AUTODISEASE, WEATHER, WEATHERNOTIFIES, WEATHERCHANGES
 3. RESET MOBSTATS and RESET ITEMSTATS have been documented for normalizing combat stats
