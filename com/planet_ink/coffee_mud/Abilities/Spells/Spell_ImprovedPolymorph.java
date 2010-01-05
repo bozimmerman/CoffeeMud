@@ -140,7 +140,7 @@ public class Spell_ImprovedPolymorph extends Spell
 
 		int targetStatTotal=0;
 		MOB fakeMOB=CMClass.getMOB("StdMOB");
-		for(int s=0;s<CharStats.NUM_BASE_STATS;s++)
+		for(int s: CharStats.CODES.BASE())
 		{
 			targetStatTotal+=target.baseCharStats().getStat(s);
 			fakeMOB.baseCharStats().setStat(s,target.baseCharStats().getStat(s));
@@ -153,7 +153,7 @@ public class Spell_ImprovedPolymorph extends Spell
 		fakeMOB.recoverEnvStats();
 		fakeMOB.recoverMaxState();
 		int fakeStatTotal=0;
-		for(int s=0;s<CharStats.NUM_BASE_STATS;s++)
+		for(int s: CharStats.CODES.BASE())
 			fakeStatTotal+=fakeMOB.charStats().getStat(s);
 
 		int statDiff=targetStatTotal-fakeStatTotal;

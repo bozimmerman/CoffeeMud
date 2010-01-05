@@ -641,18 +641,19 @@ public class StdRace implements Race
 		affectCharStats(fakeMOB,S1);
 		affectCharStats(fakeMOB,S2);
 		affectCharStats(fakeMOB,S3);
-		for(int i=0;i<CharStats.NUM_STATS;i++)
+		for(int i: CharStats.CODES.ALL())
 			if(i!=CharStats.STAT_AGE)
 			{
-				if(i<CharStats.NUM_BASE_STATS)
+				if(CharStats.CODES.isBASE(i))
 				{
+					int max = CharStats.CODES.toMAXBASE(i);
 					if((S2.getStat(i)==S3.getStat(i))
-					&&(S1.getStat(i+CharStats.STAT_MAX_STRENGTH_ADJ)!=0))
+					&&(S1.getStat(max)!=0))
 					{
 						SETSTAT.setStat(i,S2.getStat(i));
-						S1.setStat(CharStats.STAT_MAX_STRENGTH_ADJ+i,0);
-						S2.setStat(CharStats.STAT_MAX_STRENGTH_ADJ+i,0);
-						S3.setStat(CharStats.STAT_MAX_STRENGTH_ADJ+i,0);
+						S1.setStat(max,0);
+						S2.setStat(max,0);
+						S3.setStat(max,0);
 					}
 					else
 						ADJSTAT.setStat(i,S1.getStat(i));
@@ -848,9 +849,9 @@ public class StdRace implements Race
         CharStats ADJSTAT=(CharStats)CMClass.getCommon("DefaultCharStats");
         ADJSTAT.setAllValues(0);
 
-		for(int i=0;i<CharStats.NUM_STATS;i++)
+		for(int i: CharStats.CODES.ALL())
 		{
-			if(i<CharStats.NUM_BASE_STATS)
+			if(CharStats.CODES.isBASE(i))
 			{
 				SETSTAT.setStat(i,(SETSTAT1.getStat(i)+SETSTAT2.getStat(i))/2);
 				int newStat=((ADJSTAT1.getStat(i)+ADJSTAT2.getStat(i))/2);

@@ -2478,14 +2478,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		str.append(CMLib.xml().convertXMLtoTag("NAME",mob.Name()));
 		str.append(CMLib.xml().convertXMLtoTag("PASS",pstats.password()));
 		str.append(CMLib.xml().convertXMLtoTag("CLASS",mob.baseCharStats().getMyClassesStr()));
-		str.append(CMLib.xml().convertXMLtoTag("STR",mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)));
 		str.append(CMLib.xml().convertXMLtoTag("RACE",mob.baseCharStats().getMyRace().ID()));
-		str.append(CMLib.xml().convertXMLtoTag("DEX",mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)));
-		str.append(CMLib.xml().convertXMLtoTag("CON",mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)));
 		str.append(CMLib.xml().convertXMLtoTag("GEND",""+((char)mob.baseCharStats().getStat(CharStats.STAT_GENDER))));
-		str.append(CMLib.xml().convertXMLtoTag("WIS",mob.baseCharStats().getStat(CharStats.STAT_WISDOM)));
-		str.append(CMLib.xml().convertXMLtoTag("INT",mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)));
-		str.append(CMLib.xml().convertXMLtoTag("CHA",mob.baseCharStats().getStat(CharStats.STAT_CHARISMA)));
+		for(int i : CharStats.CODES.BASE())
+			str.append(CMLib.xml().convertXMLtoTag(CMStrings.limit(CharStats.CODES.NAME(i),3),mob.baseCharStats().getStat(i)));
 		str.append(CMLib.xml().convertXMLtoTag("HIT",mob.baseState().getHitPoints()));
 		str.append(CMLib.xml().convertXMLtoTag("LVL",mob.baseCharStats().getMyLevelsStr()));
 		str.append(CMLib.xml().convertXMLtoTag("MANA",mob.baseState().getMana()));
@@ -2580,14 +2576,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			for(int i=0;i<mob.baseCharStats().numClasses();i++)
 				level+=mob.baseCharStats().getClassLevel(mob.baseCharStats().getMyClass(i));
 			mob.baseEnvStats().setLevel(level);
-			mob.baseCharStats().setStat(CharStats.STAT_STRENGTH,CMLib.xml().getIntFromPieces(mblk.contents,"STR"));
 			mob.baseCharStats().setMyRace(CMClass.getRace(CMLib.xml().getValFromPieces(mblk.contents,"RACE")));
-			mob.baseCharStats().setStat(CharStats.STAT_DEXTERITY,CMLib.xml().getIntFromPieces(mblk.contents,"DEX"));
-			mob.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,CMLib.xml().getIntFromPieces(mblk.contents,"CON"));
 			mob.baseCharStats().setStat(CharStats.STAT_GENDER,CMLib.xml().getValFromPieces(mblk.contents,"GEND").charAt(0));
-			mob.baseCharStats().setStat(CharStats.STAT_WISDOM,CMLib.xml().getIntFromPieces(mblk.contents,"WIS"));
-			mob.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,CMLib.xml().getIntFromPieces(mblk.contents,"INT"));
-			mob.baseCharStats().setStat(CharStats.STAT_CHARISMA,CMLib.xml().getIntFromPieces(mblk.contents,"CHA"));
+			for(int i : CharStats.CODES.BASE())
+				mob.baseCharStats().setStat(i,CMLib.xml().getIntFromPieces(mblk.contents,CMStrings.limit(CharStats.CODES.NAME(i),3)));
 			mob.baseState().setHitPoints(CMLib.xml().getIntFromPieces(mblk.contents,"HIT"));
 			mob.baseState().setMana(CMLib.xml().getIntFromPieces(mblk.contents,"MANA"));
 			mob.baseState().setMovement(CMLib.xml().getIntFromPieces(mblk.contents,"MOVE"));
@@ -2806,7 +2798,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	public String getCharStatsStr(CharStats E)
 	{
 		StringBuffer str=new StringBuffer("");
-		for(int i=0;i<CharStats.NUM_STATS;i++)
+		for(int i : CharStats.CODES.ALL())
 			str.append(E.getStat(i)+"|");
 		return str.toString();
 	}

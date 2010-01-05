@@ -300,10 +300,10 @@ public class GrinderPlayers extends GrinderMobs
 					M.setBitmap((int)CMath.unsetb(M.getBitmap(),CMath.pow(2,i)));
 			}
 		}
-		for(int i=0;i<CharStats.STAT_NAMES.length;i++)
+		for(int i : CharStats.CODES.ALL())
 		{
 			CharStats C=M.charStats();
-			String stat=CharStats.STAT_NAMES[i];
+			String stat=CharStats.CODES.NAME(i);
 			if(httpReq.isRequestParameter(stat))
 			{
 				String old=httpReq.getRequestParameter(stat);
@@ -315,10 +315,10 @@ public class GrinderPlayers extends GrinderMobs
 					C.setStat(i,(int)old.charAt(0));
 			}
 		}
-		for(int i=0;i<CharStats.STAT_NAMES.length;i++)
+		for(int i : CharStats.CODES.ALL())
 		{
 			CharStats C=M.baseCharStats();
-			String stat=CharStats.STAT_NAMES[i];
+			String stat=CharStats.CODES.NAME(i);
 			if(httpReq.isRequestParameter("BASE"+stat))
 			{
 				String old=httpReq.getRequestParameter("BASE"+stat);

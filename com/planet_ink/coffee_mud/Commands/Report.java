@@ -75,12 +75,10 @@ public class Report extends Skills
 				StringBuffer stats=new StringBuffer("");
 		        int max=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
 		        CharStats CT=mob.charStats();
-		        stats.append("^cStr: ^w"+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_STRENGTH)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_STRENGTH_ADJ))+", ");
-		        stats.append("^cInt: ^w"+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_INTELLIGENCE)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ))+", ");
-		        stats.append("^cDex: ^w"+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_DEXTERITY)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_DEXTERITY_ADJ))+", ");
-		        stats.append("^cWis: ^w"+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_WISDOM)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_WISDOM_ADJ))+", ");
-		        stats.append("^cCon: ^w"+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_CONSTITUTION)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ))+", ");
-		        stats.append("^cCha: ^w"+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_CHARISMA)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_CHARISMA_ADJ)));
+		        for(int i : CharStats.CODES.BASE())
+			        stats.append("^c" + CMStrings.capitalizeAndLower(CMStrings.limit(CharStats.CODES.NAME(i),3))+": ^w"
+			        		+CMStrings.padRight(Integer.toString(CT.getStat(i)),2)
+			        		+"/"+(max+CT.getStat(CharStats.CODES.toMAXBASE(i)))+", ");
 				say.append("\n\r^NMy stats:^? "+stats.toString());
 			}
             if(s.equalsIgnoreCase("ALL"))

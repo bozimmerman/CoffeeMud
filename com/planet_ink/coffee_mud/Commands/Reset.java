@@ -461,16 +461,13 @@ public class Reset extends StdCommand
 		            ADJSTAT1.setAllValues(0);
 		            CMLib.coffeeMaker().setCharStats(ADJSTAT1,R.getStat("ASTATS"));
 		            boolean save=false;
-		    		for(int i=0;i<CharStats.NUM_STATS;i++)
+		    		for(int i: CharStats.CODES.BASE())
 		    		{
-		    			if(i<CharStats.NUM_BASE_STATS)
-		    			{
-		    				if(ADJSTAT1.getStat(i)>5)
-		    				{
-		    					ADJSTAT1.setStat(i,5);
-		    					save=true;
-		    				}
-		    			}
+	    				if(ADJSTAT1.getStat(i)>5)
+	    				{
+	    					ADJSTAT1.setStat(i,5);
+	    					save=true;
+	    				}
 		    		}
 		    		if(save)
 		    		{

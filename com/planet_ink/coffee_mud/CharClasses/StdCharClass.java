@@ -55,7 +55,7 @@ public class StdCharClass implements CharClass
 	public int getManaDivisor(){return 3;}
 	public int getManaDice(){return 1;}
 	public int getManaDie(){return 6;}
-	protected int maxStatAdj[]=new int[CharStats.NUM_BASE_STATS];
+	protected int maxStatAdj[]=new int[CharStats.CODES.TOTAL()];
 	protected Vector outfitChoices=null;
 	public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_ANY;}
@@ -408,12 +408,12 @@ public class StdCharClass implements CharClass
         StringBuffer quals=new StringBuffer("");
         String q=statQualifications().toUpperCase();
         if(q.length()>0)
-            for(int c=0;c<CharStats.NUM_BASE_STATS;c++)
-                if(CharStats.STAT_DESCS[c].length()>3)
+            for(int c : CharStats.CODES.BASE())
+                if(CharStats.CODES.DESC(c).length()>3)
                 {
-                    int x=q.indexOf(CharStats.STAT_DESCS[c]+" ");
+                    int x=q.indexOf(CharStats.CODES.DESC(c)+" ");
                     if(x<0)
-                        x=q.indexOf(CharStats.STAT_DESCS[c].substring(0,3)+" ");
+                        x=q.indexOf(CharStats.CODES.DESC(c).substring(0,3)+" ");
                     if(x>=0)
                     {
                         String qs=q.substring(q.indexOf(" ",x+1)).trim();
@@ -423,7 +423,7 @@ public class StdCharClass implements CharClass
                             while(Character.isDigit(qs.charAt(spot)))
                                 spot++;
                             if(spot>0)
-                                quals.append("+"+CharStats.STAT_DESCS[c].substring(0,3)+" "+qs.substring(0,spot)+" ");
+                                quals.append("+"+CMStrings.limit(CharStats.CODES.DESC(c),3)+" "+qs.substring(0,spot)+" ");
                         }
                     }
                 }
@@ -459,18 +459,18 @@ public class StdCharClass implements CharClass
         affectCharStats(fakeMOB,S1);
         affectCharStats(fakeMOB,S2);
         affectCharStats(fakeMOB,S3);
-        for(int i=0;i<CharStats.NUM_STATS;i++)
+        for(int i: CharStats.CODES.ALL())
             if(i!=CharStats.STAT_AGE)
             {
-                if(i<CharStats.NUM_BASE_STATS)
+                if(CharStats.CODES.isBASE(i))
                 {
                     if((S2.getStat(i)==S3.getStat(i))
-                    &&(S1.getStat(i+CharStats.STAT_MAX_STRENGTH_ADJ)!=0))
+                    &&(S1.getStat(CharStats.CODES.toMAXBASE(i))!=0))
                     {
                         SETSTAT.setStat(i,S2.getStat(i));
-                        S1.setStat(CharStats.STAT_MAX_STRENGTH_ADJ+i,0);
-                        S2.setStat(CharStats.STAT_MAX_STRENGTH_ADJ+i,0);
-                        S3.setStat(CharStats.STAT_MAX_STRENGTH_ADJ+i,0);
+                        S1.setStat(CharStats.CODES.toMAXBASE(i),0);
+                        S2.setStat(CharStats.CODES.toMAXBASE(i),0);
+                        S3.setStat(CharStats.CODES.toMAXBASE(i),0);
                     }
                     else
                         ADJSTAT.setStat(i,S1.getStat(i));
@@ -639,8 +639,8 @@ public class StdCharClass implements CharClass
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
 		if(affectableStats.getCurrentClass().ID().equals(ID()))
-		for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
-			affectableStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ+i,affectableStats.getStat(CharStats.STAT_MAX_STRENGTH_ADJ+i)+maxStatAdjustments()[i]);
+		for(int i: CharStats.CODES.MAX())
+			affectableStats.setStat(i,affectableStats.getStat(i)+maxStatAdjustments()[i]+maxStatAdjustments()[CharStats.CODES.toMAXBASE(i)]);
 	}
 
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)

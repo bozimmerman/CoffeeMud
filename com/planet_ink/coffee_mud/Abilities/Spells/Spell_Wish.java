@@ -828,14 +828,14 @@ public class Spell_Wish extends Spell
 					CMLib.leveler().unLevel(mob);
 					mob.setExperience(CMLib.leveler().getLevelExperience(mob.baseEnvStats().level()-1));
 					StringBuffer str=new StringBuffer("");
-					for(int trait=0;trait<CharStats.NUM_BASE_STATS;trait++)
+					for(int trait: CharStats.CODES.BASE())
 					{
 						int newVal=C.maxStatAdjustments()[trait];
 						int amountToLose=oldC.maxStatAdjustments()[trait]-newVal;
 						if((amountToLose>0)&&(mob.baseCharStats().getStat(trait)>amountToLose))
 						{
 							mob.baseCharStats().setStat(trait,mob.baseCharStats().getStat(trait)-amountToLose);
-							str.append("\n\rYou lost "+amountToLose+" points of "+CharStats.STAT_DESCS[trait].toLowerCase()+".");
+							str.append("\n\rYou lost "+amountToLose+" points of "+CharStats.CODES.DESC(trait).toLowerCase()+".");
 						}
 					}
 					mob.tell(str.toString()+"\n\r");
@@ -906,9 +906,9 @@ public class Spell_Wish extends Spell
 
 			// attributes will be hairy
 			int foundAttribute=-1;
-			for(int attributes=0;attributes<CharStats.STAT_DESCS.length;attributes++)
+            for(int attributes : CharStats.CODES.ALL())
 			{
-				if(CMLib.english().containsString(myWish,CharStats.STAT_DESCS[attributes]))
+				if(CMLib.english().containsString(myWish,CharStats.CODES.DESC(attributes)))
 				{	foundAttribute=attributes; break;}
 			}
 			if(myWish.indexOf("STRONG")>=0)
@@ -934,6 +934,13 @@ public class Spell_Wish extends Spell
 			if((myWish.indexOf("RESIST")>=0)
 			||(myWish.indexOf("IMMUN")>=0))
 			{
+		        for(int saveStat : CharStats.CODES.SAVING_THROWS())
+					if(myWish.indexOf(" "+CharStats.CODES.DESC(saveStat))>=0)
+						foundAttribute=saveStat;
+		        if(foundAttribute<0)
+		        for(int saveStat : CharStats.CODES.SAVING_THROWS())
+					if(myWish.indexOf(" "+CharStats.CODES.NAME(saveStat))>=0)
+						foundAttribute=saveStat;
 				if(myWish.indexOf(" PARALY")>=0)
 					foundAttribute=CharStats.STAT_SAVE_PARALYSIS;
 				if(myWish.indexOf(" FIRE")>=0)
@@ -987,20 +994,10 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" NO IMMUN")>=0)
 			||(myWish.indexOf(" LOSE ")>=0)))
 			{
-				switch(foundAttribute)
-				{
-				case CharStats.STAT_CHARISMA:
-				case CharStats.STAT_CONSTITUTION:
-				case CharStats.STAT_DEXTERITY:
-				case CharStats.STAT_INTELLIGENCE:
-				case CharStats.STAT_STRENGTH:
-				case CharStats.STAT_WISDOM:
+				if(CharStats.CODES.isBASE(foundAttribute))
 					baseLoss-=1000;
-					break;
-				default:
+				else
 					baseLoss-=10;
-					break;
-				}
 				wishDrain(mob,baseLoss,true);
 				if(foundAttribute<=6)
 					((MOB)target).baseCharStats().setStat(foundAttribute,((MOB)target).baseCharStats().getStat(foundAttribute)-1);
@@ -1008,7 +1005,7 @@ public class Spell_Wish extends Spell
 					((MOB)target).baseCharStats().setStat(foundAttribute,((MOB)target).baseCharStats().getStat(foundAttribute)-33);
 				((MOB)target).recoverCharStats();
 				mob.recoverCharStats();
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,target.name()+" has lost "+CharStats.STAT_DESCS[foundAttribute].toLowerCase()+".");
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,target.name()+" has lost "+CharStats.CODES.DESC(foundAttribute).toLowerCase()+".");
 				return true;
 			}
 
@@ -1050,7 +1047,7 @@ public class Spell_Wish extends Spell
 					((MOB)target).baseCharStats().setStat(foundAttribute,((MOB)target).baseCharStats().getStat(foundAttribute)+33);
 				mob.recoverCharStats();
 				((MOB)target).recoverCharStats();
-				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,target.name()+" has gained "+CharStats.STAT_DESCS[foundAttribute].toLowerCase()+".");
+				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,target.name()+" has gained "+CharStats.CODES.DESC(foundAttribute).toLowerCase()+".");
 				return true;
 			}
 

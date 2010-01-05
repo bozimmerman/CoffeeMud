@@ -44,40 +44,26 @@ public class Prop_HaveResister extends Property
     protected long lastProtection=0;
     protected int remainingProtection=0;
 
-    public static Object[][] stats={
-            {Integer.valueOf(CharStats.STAT_SAVE_MAGIC),"magic"},
-            {Integer.valueOf(CharStats.STAT_SAVE_GAS),"gas"},
-            {Integer.valueOf(CharStats.STAT_SAVE_FIRE),"fire"},
-            {Integer.valueOf(CharStats.STAT_SAVE_ELECTRIC),"elec"},
-            {Integer.valueOf(CharStats.STAT_SAVE_MIND),"mind"},
-            {Integer.valueOf(CharStats.STAT_SAVE_JUSTICE),"justice"},
-            {Integer.valueOf(CharStats.STAT_SAVE_COLD),"cold"},
-            {Integer.valueOf(CharStats.STAT_SAVE_ACID),"acid"},
-            {Integer.valueOf(CharStats.STAT_SAVE_WATER),"water"},
-            {Integer.valueOf(CharStats.STAT_SAVE_UNDEAD),"evil"},
-            {Integer.valueOf(CharStats.STAT_SAVE_DISEASE),"disease"},
-            {Integer.valueOf(CharStats.STAT_SAVE_POISON),"poison"},
-            {Integer.valueOf(CharStats.STAT_SAVE_PARALYSIS),"paralyze"},
-            {Integer.valueOf(CharStats.STAT_SAVE_TRAPS),"traps"}
-    };
-    
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
 		adjCharStats=(CharStats)CMClass.getCommon("DefaultCharStats");
         ignoreCharStats=true;
-        for(int i=0;i<stats.length;i++)
-        {
-            adjCharStats.setStat(((Integer)stats[i][0]).intValue(),getProtection((String)stats[i][1]));
-            if(adjCharStats.getStat(((Integer)stats[i][0]).intValue())!=0)
-                ignoreCharStats=false;
-        }
         parmString=newText;
         int maskindex=newText.toUpperCase().indexOf("MASK=");
         if(maskindex>0)
         {
             maskString=newText.substring(maskindex+5).trim();
             parmString=newText.substring(0,maskindex).trim();
+        }
+        for(int i : CharStats.CODES.SAVING_THROWS())
+        {
+        	if(parmString.toUpperCase().indexOf(CharStats.CODES.NAME(i))>=0)
+	            adjCharStats.setStat(i,getProtection(CharStats.CODES.NAME(i)));
+        	else
+                adjCharStats.setStat(i,getProtection(CMStrings.limit(CharStats.CODES.NAME(i),4)));
+            if(adjCharStats.getStat(i)!=0)
+                ignoreCharStats=false;
         }
 	}
 
@@ -93,8 +79,8 @@ public class Prop_HaveResister extends Property
         if((!ignoreCharStats)
         &&(canResist(affectedMOB))
         &&((maskString.length()==0)||(CMLib.masking().maskCheck(maskString,affectedMOB,false))))
-            for(int i=0;i<stats.length;i++)
-                affectedStats.setStat(((Integer)stats[i][0]).intValue(),affectedStats.getStat(((Integer)stats[i][0]).intValue())+adjCharStats.getStat(((Integer)stats[i][0]).intValue()));
+            for(int i : CharStats.CODES.SAVING_THROWS())
+                affectedStats.setStat(i,affectedStats.getStat(i)+adjCharStats.getStat(i));
 		super.affectCharStats(affectedMOB,affectedStats);
 	}
 

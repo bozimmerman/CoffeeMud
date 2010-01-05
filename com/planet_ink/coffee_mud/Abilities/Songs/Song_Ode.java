@@ -176,7 +176,7 @@ public class Song_Ode extends Song
 					if(ticks>50) ticks=50;
 					if(ticks<=0) ticks=1;
 					int stat=CMath.s_int(chk[2]);
-					if(stat<CharStats.NUM_BASE_STATS)
+					if(CharStats.CODES.isBASE(stat))
 						if(ticks>5) ticks=5;
 					affectableStats.setStat(stat,affectableStats.getStat(stat)+ticks+getXLEVELLevel(invoker()));
 				}

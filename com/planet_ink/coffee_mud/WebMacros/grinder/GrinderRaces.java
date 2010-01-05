@@ -79,12 +79,12 @@ public class GrinderRaces
             String behav=httpReq.getRequestParameter(c+"CSTATS"+num);
             while(behav!=null)
             {
-                if((behav.length()>0) && (CMParms.makeVector(CharStats.STAT_DESCS).contains(behav.toUpperCase().trim())))
+                if((behav.length()>0) && (CMParms.makeVector(CharStats.CODES.NAMES()).contains(behav.toUpperCase().trim())))
                 {
                     int val=CMath.s_int(httpReq.getRequestParameter(c+"CSTATSV"+num));
                     if(val!=0)
                     {
-                        adjCStats.setStat(CMParms.indexOf(CharStats.STAT_DESCS,behav.toUpperCase().trim()), val);
+                        adjCStats.setStat(CMParms.indexOf(CharStats.CODES.NAMES(),behav.toUpperCase().trim()), val);
                         changes = true;
                     }
                 }

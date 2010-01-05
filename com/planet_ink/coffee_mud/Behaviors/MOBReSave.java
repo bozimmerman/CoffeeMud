@@ -54,8 +54,8 @@ public class MOBReSave extends ActiveTicker
 	{
 		super.setParms(newParms);
 		startStats=(CharStats)CMClass.getCommon("DefaultCharStats");
-		for(int c=0;c<CharStats.NUM_STATS;c++)
-			startStats.setStat(c,CMParms.getParmInt(parms,CharStats.STAT_ABBR[c],-1));
+		for(int c: CharStats.CODES.ALL())
+			startStats.setStat(c,CMParms.getParmInt(parms,CharStats.CODES.ABBR(c),-1));
 	}
 	
 	public String getParms() 
@@ -64,8 +64,8 @@ public class MOBReSave extends ActiveTicker
 		MOB M=(MOB)host.get();
 		if(M==null) return super.getParms();
 		StringBuffer rebuiltParms=new StringBuffer(super.rebuildParms());
-		for(int c=0;c<CharStats.NUM_STATS;c++)
-			rebuiltParms.append(" "+CharStats.STAT_ABBR[c]+"="+M.baseCharStats().getStat(c));
+		for(int c: CharStats.CODES.ALL())
+			rebuiltParms.append(" "+CharStats.CODES.ABBR(c)+"="+M.baseCharStats().getStat(c));
 		return rebuiltParms.toString();
 	}
 	public boolean tick(Tickable ticking, int tickID)
@@ -87,7 +87,7 @@ public class MOBReSave extends ActiveTicker
 			{
 				synchronized(startStats)
 				{
-					for(int c=0;c<CharStats.NUM_STATS;c++)
+					for(int c: CharStats.CODES.ALL())
 						if(startStats.getStat(c)>0)
 							mob.baseCharStats().setStat(c,startStats.getStat(c));
 					startStats=null;

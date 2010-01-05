@@ -47,9 +47,8 @@ public class Train extends StdCommand
 		V.addElement("MOVEMENT");
 		V.addElement("GAIN");
 		V.addElement("PRACTICES");
-        for(int i=0;i<CharStats.STAT_DESCS.length;i++)
-            if(i<CharStats.NUM_BASE_STATS)
-            	V.add(CharStats.STAT_DESCS[i]);
+        for(int i: CharStats.CODES.BASE())
+        	V.add(CharStats.CODES.DESC(i));
 		for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 		{
 			CharClass C=(CharClass)c.nextElement();
@@ -82,14 +81,13 @@ public class Train extends StdCommand
 
 		String abilityName=CMParms.combine(commands,0).toUpperCase();
         StringBuffer thingsToTrainFor=new StringBuffer("");
-        for(int i=0;i<CharStats.STAT_DESCS.length;i++)
-            if(i<CharStats.NUM_BASE_STATS)
-                thingsToTrainFor.append(CharStats.STAT_DESCS[i]+", ");
+        for(int i: CharStats.CODES.BASE())
+            thingsToTrainFor.append(CharStats.CODES.DESC(i)+", ");
         
 		int trainsRequired=1;
 		int abilityCode=mob.baseCharStats().getCode(abilityName);
 		int curStat=-1;
-		if((abilityCode>=0)&&(abilityCode<CharStats.NUM_BASE_STATS))
+		if((abilityCode>=0)&&(CharStats.CODES.isBASE(abilityCode)))
 		{
 			CharStats copyStats=(CharStats)mob.baseCharStats().copyOf();
 			mob.charStats().getMyRace().affectCharStats(mob,copyStats);
@@ -106,7 +104,7 @@ public class Train extends StdCommand
 				trainsRequired=3;
 			
 			if(curStat>=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-						 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+abilityCode)))
+						 +mob.charStats().getStat(CharStats.CODES.toMAXBASE(abilityCode))))
 			{
 				mob.tell("You cannot train that any further.");
 				return false;

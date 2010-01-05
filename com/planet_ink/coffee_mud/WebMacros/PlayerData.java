@@ -355,9 +355,9 @@ public class PlayerData extends StdWebMacro
 					str.append((set?"ON":"OFF")+",");
 				}
 			}
-			for(int i=0;i<CharStats.STAT_NAMES.length;i++)
+			for(int i : CharStats.CODES.ALL())
 			{
-				String stat=CharStats.STAT_NAMES[i];
+				String stat=CharStats.CODES.NAME(i);
 				if(!stat.equalsIgnoreCase("GENDER"))
 				{
 					CharStats C=M.charStats();
@@ -366,7 +366,7 @@ public class PlayerData extends StdWebMacro
 						String old=httpReq.getRequestParameter(stat);
 						if((firstTime)||(old.length()==0)) 
 						{
-							if(i>CharStats.NUM_BASE_STATS)
+							if((!CharStats.CODES.isBASE(i))&&(i!=CharStats.STAT_GENDER))
 								old=""+C.getSave(i);
 							else
 								old=""+C.getStat(i);
@@ -375,9 +375,9 @@ public class PlayerData extends StdWebMacro
 					}
 				}
 			}
-			for(int i=0;i<CharStats.STAT_NAMES.length;i++)
+			for(int i : CharStats.CODES.ALL())
 			{
-				String stat=CharStats.STAT_NAMES[i];
+				String stat=CharStats.CODES.NAME(i);
 				if(!stat.equalsIgnoreCase("GENDER"))
 				{
 					CharStats C=M.baseCharStats();

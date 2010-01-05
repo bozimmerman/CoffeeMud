@@ -163,17 +163,8 @@ public class Spell_PhantomHound extends Spell
 				beast.baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK|EnvStats.CAN_SEE_HIDDEN|EnvStats.CAN_SEE_INVISIBLE|EnvStats.CAN_SEE_SNEAKERS);
 				beast.baseCharStats().setMyRace(CMClass.getRace("Dog"));
 				beast.baseCharStats().getMyRace().startRacing(beast,false);
-				beast.baseCharStats().setStat(CharStats.STAT_SAVE_MAGIC,200);
-				beast.baseCharStats().setStat(CharStats.STAT_SAVE_MIND,200);
-				beast.baseCharStats().setStat(CharStats.STAT_SAVE_JUSTICE,200);
-				beast.baseCharStats().setStat(CharStats.STAT_SAVE_PARALYSIS,200);
-				beast.baseCharStats().setStat(CharStats.STAT_SAVE_POISON,200);
-				beast.baseCharStats().setStat(CharStats.STAT_SAVE_UNDEAD,200);
-				beast.baseCharStats().setStat(CharStats.STAT_SAVE_DISEASE,200);
-				beast.baseCharStats().setStat(CharStats.STAT_SAVE_FIRE,200);
-				beast.baseCharStats().setStat(CharStats.STAT_SAVE_ACID,200);
-				beast.baseCharStats().setStat(CharStats.STAT_SAVE_COLD,200);
-				beast.baseCharStats().setStat(CharStats.STAT_SAVE_ELECTRIC,200);
+		        for(int i : CharStats.CODES.SAVING_THROWS())
+					beast.baseCharStats().setStat(i,200);
 				beast.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 				beast.baseEnvStats().setAbility(100);
 				beast.baseState().setMana(100);

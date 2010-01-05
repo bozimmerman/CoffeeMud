@@ -238,7 +238,7 @@ public class Prancer extends StdCharClass
 	    {
 			int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
 			int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-						 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_DEXTERITY));
+						 +mob.charStats().getStat(CharStats.STAT_MAX_DEXTERITY_ADJ));
 			if(dexStat>maxDexStat) dexStat=maxDexStat;
 			int attArmor=(int)Math.round(CMath.div(dexStat,10.0));
 			if(dexStat>=25)attArmor+=2;
@@ -265,7 +265,7 @@ public class Prancer extends StdCharClass
 	    {
 			int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
 			int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-						 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_DEXTERITY));
+						 +mob.charStats().getStat(CharStats.STAT_MAX_DEXTERITY_ADJ));
 			if(dexStat>maxDexStat) dexStat=maxDexStat;
 			int attArmor=((int)Math.round(CMath.div(dexStat,10.0)))+1;
 			if(dexStat>=25)attArmor+=2;

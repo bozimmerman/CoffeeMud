@@ -42,7 +42,7 @@ public class Archon extends StdCharClass
 	public Archon()
 	{
 		super();
-		for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
+		for(int i : CharStats.CODES.BASE())
 			maxStatAdj[i]=7;
     }
     public void initializeClass()

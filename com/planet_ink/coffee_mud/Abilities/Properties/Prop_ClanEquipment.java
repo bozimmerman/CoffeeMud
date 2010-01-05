@@ -275,20 +275,8 @@ public class Prop_ClanEquipment extends Property
     public static void initAdjustments(CharStats adjCharStats)
     {
         // ensure we get no NULL errors
-        adjCharStats.setStat(CharStats.STAT_SAVE_MAGIC,0);
-        adjCharStats.setStat(CharStats.STAT_SAVE_GAS,0);
-        adjCharStats.setStat(CharStats.STAT_SAVE_FIRE,0);
-        adjCharStats.setStat(CharStats.STAT_SAVE_ELECTRIC,0);
-        adjCharStats.setStat(CharStats.STAT_SAVE_MIND,0);
-        adjCharStats.setStat(CharStats.STAT_SAVE_JUSTICE,0);
-        adjCharStats.setStat(CharStats.STAT_SAVE_COLD,0);
-        adjCharStats.setStat(CharStats.STAT_SAVE_ACID,0);
-        adjCharStats.setStat(CharStats.STAT_SAVE_WATER,0);
-        adjCharStats.setStat(CharStats.STAT_SAVE_UNDEAD,0);
-        adjCharStats.setStat(CharStats.STAT_SAVE_DISEASE,0);
-        adjCharStats.setStat(CharStats.STAT_SAVE_POISON,0);
-        adjCharStats.setStat(CharStats.STAT_SAVE_PARALYSIS,0);
-        adjCharStats.setStat(CharStats.STAT_SAVE_TRAPS,0);
+    	for(int i : CharStats.CODES.SAVING_THROWS())
+	        adjCharStats.setStat(i,0);
     }
 
     public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
@@ -304,10 +292,8 @@ public class Prop_ClanEquipment extends Property
         if((affected!=null)&&(affected instanceof Armor)&&(!(affected instanceof Shield))&&(activated)
                 &&(!((Armor)affected).amWearingAt(Item.IN_INVENTORY)))
         {
-            for(int i=0;i<Prop_HaveResister.stats.length;i++)
-                affectedStats.setStat(((Integer)Prop_HaveResister.stats[i][0]).intValue(),affectedStats
-                        .getStat(((Integer)Prop_HaveResister.stats[i][0]).intValue())
-                        +EQadjCharStats.getStat(((Integer)Prop_HaveResister.stats[i][0]).intValue()));
+            for(int i : CharStats.CODES.SAVING_THROWS())
+                affectedStats.setStat(i,affectedStats.getStat(i)+EQadjCharStats.getStat(i));
         }
         super.affectCharStats(affectedMOB,affectedStats);
     }

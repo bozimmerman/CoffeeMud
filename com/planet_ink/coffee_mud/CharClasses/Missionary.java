@@ -137,29 +137,12 @@ public class Missionary extends Cleric
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
-	private static final int[] allSaves={
-		CharStats.STAT_SAVE_ACID,
-		CharStats.STAT_SAVE_COLD,
-		CharStats.STAT_SAVE_DISEASE,
-		CharStats.STAT_SAVE_ELECTRIC,
-		CharStats.STAT_SAVE_FIRE,
-		CharStats.STAT_SAVE_GAS,
-		CharStats.STAT_SAVE_GENERAL,
-		CharStats.STAT_SAVE_JUSTICE,
-		CharStats.STAT_SAVE_MAGIC,
-		CharStats.STAT_SAVE_MIND,
-		CharStats.STAT_SAVE_PARALYSIS,
-		CharStats.STAT_SAVE_POISON,
-		CharStats.STAT_SAVE_UNDEAD,
-		CharStats.STAT_SAVE_WATER,
-		CharStats.STAT_SAVE_TRAPS};
-
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB,affectableStats);
-		for(int i=0;i<allSaves.length;i++)
-			affectableStats.setStat(allSaves[i],
-				affectableStats.getStat(allSaves[i])
+		for(int i : CharStats.CODES.SAVING_THROWS())
+			affectableStats.setStat(i,
+				affectableStats.getStat(i)
 					+(affectableStats.getClassLevel(this)));
 	}
 

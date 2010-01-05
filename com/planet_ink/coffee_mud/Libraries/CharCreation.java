@@ -52,23 +52,23 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
         int points = CMProps.getIntVar(CMProps.SYSTEMI_MAXSTAT);
         // Make sure there are enough points
-        if (points < ((basemin + 1) * CharStats.NUM_BASE_STATS))
-            points = (basemin + 1) * CharStats.NUM_BASE_STATS;
+        if (points < ((basemin + 1) * CharStats.CODES.BASE().length))
+            points = (basemin + 1) * CharStats.CODES.BASE().length;
 
         // Make sure there aren't too many points
-        if (points > (basemax - 1) * CharStats.NUM_BASE_STATS)
-                points = (basemax - 1) * CharStats.NUM_BASE_STATS;
+        if (points > (basemax - 1) * CharStats.CODES.BASE().length)
+                points = (basemax - 1) * CharStats.CODES.BASE().length;
 
-        int[] stats=new int[CharStats.NUM_BASE_STATS];
+        int[] stats=new int[CharStats.CODES.TOTAL()];
         for(int i=0;i<stats.length;i++)
             stats[i]=basemin;
 
         // Subtract stat minimums from point total to get distributable points
-        int pointsLeft = points - (basemin * CharStats.NUM_BASE_STATS);
+        int pointsLeft = points - (basemin * CharStats.CODES.BASE().length);
 
         while (pointsLeft > 0)
         {
-            int whichStat = CMLib.dice().roll(1,CharStats.NUM_BASE_STATS,-1);
+            int whichStat = CharStats.CODES.BASE()[CMLib.dice().roll(1,CharStats.CODES.BASE().length,-1)];
             if(stats[whichStat]<basemax)
             {
                 stats[whichStat]++;
@@ -76,7 +76,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             }
         }
 
-        for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
+		for(int i : CharStats.CODES.BASE())
             C.setStat(i,stats[i]);
     }
 
@@ -581,12 +581,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                     int max=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
                     StringBuffer statstr=new StringBuffer("Your current stats are: \n\r");
                     CharStats CT=mob.charStats();
-                    statstr.append(CMStrings.padRight("Strength",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_STRENGTH)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_STRENGTH_ADJ))+"\n\r");
-                    statstr.append(CMStrings.padRight("Intelligence",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_INTELLIGENCE)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ))+"\n\r");
-                    statstr.append(CMStrings.padRight("Dexterity",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_DEXTERITY)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_DEXTERITY_ADJ))+"\n\r");
-                    statstr.append(CMStrings.padRight("Wisdom",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_WISDOM)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_WISDOM_ADJ))+"\n\r");
-                    statstr.append(CMStrings.padRight("Constitution",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_CONSTITUTION)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ))+"\n\r");
-                    statstr.append(CMStrings.padRight("Charisma",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_CHARISMA)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_CHARISMA_ADJ))+"\n\r");
+            		for(int i : CharStats.CODES.BASE())
+	                    statstr.append(CMStrings.padRight(CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i)),15)
+	                    		+": "+CMStrings.padRight(Integer.toString(CT.getStat(i)),2)+"/"+(max+CT.getStat(CharStats.CODES.toMAXBASE(i)))+"\n\r");
                     statstr.append(CMStrings.padRight("TOTAL POINTS",15)+": "+CMProps.getIntVar(CMProps.SYSTEMI_MAXSTAT)+"/"+(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)*6));
                     session.println(statstr.toString());
                     if(!CMSecurity.isDisabled("CLASSES")

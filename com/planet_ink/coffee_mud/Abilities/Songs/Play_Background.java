@@ -44,21 +44,8 @@ public class Play_Background extends Play
 		{
 			int cha=invoker().charStats().getStat(CharStats.STAT_CHARISMA)/2;
 			int lvl=adjustedLevel(invoker(),0)/3;
-			stats.setStat(CharStats.STAT_SAVE_ACID,stats.getStat(CharStats.STAT_SAVE_ACID)+lvl+cha);
-			stats.setStat(CharStats.STAT_SAVE_COLD,stats.getStat(CharStats.STAT_SAVE_COLD)+lvl+cha);
-			stats.setStat(CharStats.STAT_SAVE_DISEASE,stats.getStat(CharStats.STAT_SAVE_DISEASE)+lvl+cha);
-			stats.setStat(CharStats.STAT_SAVE_ELECTRIC,stats.getStat(CharStats.STAT_SAVE_ELECTRIC)+lvl+cha);
-			stats.setStat(CharStats.STAT_SAVE_FIRE,stats.getStat(CharStats.STAT_SAVE_FIRE)+lvl+cha);
-			stats.setStat(CharStats.STAT_SAVE_GAS,stats.getStat(CharStats.STAT_SAVE_GAS)+lvl+cha);
-			stats.setStat(CharStats.STAT_SAVE_GENERAL,stats.getStat(CharStats.STAT_SAVE_GENERAL)+lvl+cha);
-			stats.setStat(CharStats.STAT_SAVE_JUSTICE,stats.getStat(CharStats.STAT_SAVE_JUSTICE)+lvl+cha);
-			stats.setStat(CharStats.STAT_SAVE_MAGIC,stats.getStat(CharStats.STAT_SAVE_MAGIC)+lvl+cha);
-			stats.setStat(CharStats.STAT_SAVE_MIND,stats.getStat(CharStats.STAT_SAVE_MIND)+lvl+cha);
-			stats.setStat(CharStats.STAT_SAVE_PARALYSIS,stats.getStat(CharStats.STAT_SAVE_PARALYSIS)+lvl+cha);
-			stats.setStat(CharStats.STAT_SAVE_POISON,stats.getStat(CharStats.STAT_SAVE_POISON)+lvl+cha);
-			stats.setStat(CharStats.STAT_SAVE_TRAPS,stats.getStat(CharStats.STAT_SAVE_TRAPS)+lvl+cha);
-			stats.setStat(CharStats.STAT_SAVE_UNDEAD,stats.getStat(CharStats.STAT_SAVE_UNDEAD)+lvl+cha);
-			stats.setStat(CharStats.STAT_SAVE_WATER,stats.getStat(CharStats.STAT_SAVE_WATER)+lvl+cha);
+	        for(int i : CharStats.CODES.SAVING_THROWS())
+				stats.setStat(i,stats.getStat(i)+lvl+cha);
 		}
 	}
 }

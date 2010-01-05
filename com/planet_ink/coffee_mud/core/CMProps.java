@@ -1400,14 +1400,13 @@ public class CMProps extends Properties
                     xtraValues[xtraValues.length-x-1]=val; 
     }
 
-    public static Vector getStatCodeExtentions(CMObject O)
+    public static Vector getStatCodeExtensions(Class<?> C, String ID)
     {
     	String[][] statCodeExtensions = p().statCodeExtensions;
     	if( statCodeExtensions == null) return null;
-    	Vector V=new Vector();
-        String myClassName=O.ID();
+    	Vector<String> V=new Vector<String>();
+        String myClassName=ID;
     	V.addElement(myClassName.toUpperCase());
-        Class<?> C=O.getClass();
         for(;C!=null;C=C.getSuperclass())
         {
             myClassName=C.getName();
@@ -1425,6 +1424,10 @@ public class CMProps extends Properties
         			return CMParms.parseCommas(statCodeExtensions[i][1],true);
         }
     	return null;
+    }
+    public static Vector getStatCodeExtentions(CMObject O)
+    {
+    	return getStatCodeExtensions(O.getClass(),O.ID());
     }
 
     public static String[] getExtraStatCodesHolder(CMObject O)

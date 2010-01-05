@@ -145,12 +145,11 @@ public class CharGen extends StdCommand
 		mob.setName("Average Joe");
 		mob.baseCharStats().setMyRace(CMClass.getRace("Human"));
 		mob.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
+		for(int i : CharStats.CODES.BASE())
+			mob.baseCharStats().setStat(i,10);
 		mob.baseCharStats().setStat(CharStats.STAT_STRENGTH,11);
 		mob.baseCharStats().setStat(CharStats.STAT_WISDOM,11);
-		mob.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,10);
 		mob.baseCharStats().setStat(CharStats.STAT_DEXTERITY,11);
-		mob.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,10);
-		mob.baseCharStats().setStat(CharStats.STAT_CHARISMA,10);
 		mob.baseCharStats().setCurrentClass(C);
 		mob.baseCharStats().setClassLevel(C,1);
 		mob.baseEnvStats().setArmor(100);
@@ -172,9 +171,9 @@ public class CharGen extends StdCommand
 			{
 				int stat=-1;
 				int bestDiff=0;
-				for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
+				for(int i: CharStats.CODES.BASE())
 				{
-					int base = max + mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ + i);
+					int base = max + mob.charStats().getStat(CharStats.CODES.toMAXBASE(i));
 					int diff = base - mob.baseCharStats().getStat(i);
 					if(diff >= bestDiff)
 					{
@@ -183,7 +182,7 @@ public class CharGen extends StdCommand
 					}
 				}
 				if(stat>=0)
-				if(mob.baseCharStats().getStat(stat)<(max+mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ + stat)))
+				if(mob.baseCharStats().getStat(stat)<(max+mob.charStats().getStat(CharStats.CODES.toMAXBASE(stat))))
 					mob.baseCharStats().setStat(stat,mob.baseCharStats().getStat(stat)+1);
 			}
 			if(mob.getExpNeededLevel()==Integer.MAX_VALUE)
@@ -208,12 +207,8 @@ public class CharGen extends StdCommand
 
 	public void averageout(MOB avgMob, int tries)
 	{
-		avgMob.baseCharStats().setStat(CharStats.STAT_STRENGTH,(int)Math.round(CMath.div(avgMob.baseCharStats().getStat(CharStats.STAT_STRENGTH),tries)));
-		avgMob.baseCharStats().setStat(CharStats.STAT_WISDOM,(int)Math.round(CMath.div(avgMob.baseCharStats().getStat(CharStats.STAT_WISDOM),tries)));
-		avgMob.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,(int)Math.round(CMath.div(avgMob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE),tries)));
-		avgMob.baseCharStats().setStat(CharStats.STAT_DEXTERITY,(int)Math.round(CMath.div(avgMob.baseCharStats().getStat(CharStats.STAT_DEXTERITY),tries)));
-		avgMob.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,(int)Math.round(CMath.div(avgMob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION),tries)));
-		avgMob.baseCharStats().setStat(CharStats.STAT_CHARISMA,(int)Math.round(CMath.div(avgMob.baseCharStats().getStat(CharStats.STAT_CHARISMA),tries)));
+		for(int i : CharStats.CODES.BASE())
+			avgMob.baseCharStats().setStat(i,(int)Math.round(CMath.div(avgMob.baseCharStats().getStat(i),tries)));
 		avgMob.baseEnvStats().setArmor((int)Math.round(CMath.div(avgMob.baseEnvStats().armor(),tries)));
 		avgMob.baseState().setHitPoints((int)Math.round(CMath.div(avgMob.baseState().getHitPoints(),tries)));
 		avgMob.baseState().setMovement((int)Math.round(CMath.div(avgMob.baseState().getMovement(),tries)));
@@ -227,12 +222,8 @@ public class CharGen extends StdCommand
 
 	public void addHimIn(MOB avgMob, MOB mob2)
 	{
-		avgMob.baseCharStats().setStat(CharStats.STAT_STRENGTH,avgMob.baseCharStats().getStat(CharStats.STAT_STRENGTH)+mob2.baseCharStats().getStat(CharStats.STAT_STRENGTH));
-		avgMob.baseCharStats().setStat(CharStats.STAT_WISDOM,avgMob.baseCharStats().getStat(CharStats.STAT_WISDOM)+mob2.baseCharStats().getStat(CharStats.STAT_WISDOM));
-		avgMob.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,avgMob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)+mob2.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE));
-		avgMob.baseCharStats().setStat(CharStats.STAT_DEXTERITY,avgMob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)+mob2.baseCharStats().getStat(CharStats.STAT_DEXTERITY));
-		avgMob.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,avgMob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)+mob2.baseCharStats().getStat(CharStats.STAT_CONSTITUTION));
-		avgMob.baseCharStats().setStat(CharStats.STAT_CHARISMA,avgMob.baseCharStats().getStat(CharStats.STAT_CHARISMA)+mob2.baseCharStats().getStat(CharStats.STAT_CHARISMA));
+		for(int i : CharStats.CODES.BASE())
+			avgMob.baseCharStats().setStat(i,avgMob.baseCharStats().getStat(i)+mob2.baseCharStats().getStat(i));
 		avgMob.baseEnvStats().setArmor(avgMob.baseEnvStats().armor()+mob2.baseEnvStats().armor());
 		avgMob.baseState().setHitPoints(avgMob.baseState().getHitPoints()+mob2.baseState().getHitPoints());
 		avgMob.baseState().setMovement(avgMob.baseState().getMovement()+mob2.baseState().getMovement());

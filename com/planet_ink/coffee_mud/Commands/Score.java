@@ -141,12 +141,12 @@ public class Score extends Affect
         CharStats CT=mob.charStats();
         if(parm.equalsIgnoreCase("BASE")) CT=mob.baseCharStats();
         msg.append("^N^!");
-        msg.append(CMStrings.padRight("^<HELP^>Strength^</HELP^>",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_STRENGTH)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_STRENGTH_ADJ))+"\n\r");
-        msg.append(CMStrings.padRight("^<HELP^>Intelligence^</HELP^>",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_INTELLIGENCE)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ))+"\n\r");
-        msg.append(CMStrings.padRight("^<HELP^>Dexterity^</HELP^>",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_DEXTERITY)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_DEXTERITY_ADJ))+"\n\r");
-        msg.append(CMStrings.padRight("^<HELP^>Wisdom^</HELP^>",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_WISDOM)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_WISDOM_ADJ))+"\n\r");
-        msg.append(CMStrings.padRight("^<HELP^>Constitution^</HELP^>",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_CONSTITUTION)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ))+"\n\r");
-        msg.append(CMStrings.padRight("^<HELP^>Charisma^</HELP^>",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_CHARISMA)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_CHARISMA_ADJ))+"\n\r");
+        for(int i : CharStats.CODES.BASE())
+	        msg.append(CMStrings.padRight("^<HELP^>" + CMStrings.capitalizeAndLower(CharStats.CODES.NAME(i))+"^</HELP^>",15)
+	        		+": "
+	        		+CMStrings.padRight(Integer.toString(CT.getStat(i)),2)
+	        		+"/"
+	        		+(max+CT.getStat(CharStats.CODES.toMAXBASE(i)))+"\n\r");
         msg.append("^?\n\r");
 		msg.append("You have ^H"+mob.curState().getHitPoints()+"/"+mob.maxState().getHitPoints()+"^? ^<HELP^>hit points^</HELP^>, ^H");
 		msg.append(mob.curState().getMana()+"/"+mob.maxState().getMana()+"^? ^<HELP^>mana^</HELP^>, and ^H");

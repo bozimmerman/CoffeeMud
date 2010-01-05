@@ -45,15 +45,15 @@ public class Dance_Waltz extends Dance
 		super.affectCharStats(affectedMOB,affectedStats);
 		if(statadd==null)
 		{
-			statadd=new int[CharStats.NUM_BASE_STATS];
+			statadd=new int[CharStats.CODES.TOTAL()];
 			int classLevel=CMLib.ableMapper().qualifyingClassLevel(invoker(),this)+(3*getXLEVELLevel(invoker()));
 			classLevel=(classLevel+1)/9;
 			classLevel++;
 
 			for(int i=0;i<classLevel;i++)
-				statadd[CMLib.dice().roll(1,CharStats.NUM_BASE_STATS,-1)]+=3;
+				statadd[CharStats.CODES.BASE()[CMLib.dice().roll(1,CharStats.CODES.BASE().length,-1)]]+=3;
 		}
-		for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
+		for(int i: CharStats.CODES.BASE())
 			affectedStats.setStat(i,affectedStats.getStat(i)+statadd[i]);
 	}
     

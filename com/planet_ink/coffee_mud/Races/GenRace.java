@@ -172,10 +172,10 @@ public class GenRace extends StdRace
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
 		if(adjStats!=null)
-			for(int i=0;i<CharStats.NUM_STATS;i++)
+			for(int i: CharStats.CODES.ALL())
 				affectableStats.setStat(i,affectableStats.getStat(i)+adjStats.getStat(i));
 		if(setStats!=null)
-			for(int i=0;i<CharStats.NUM_STATS;i++)
+			for(int i: CharStats.CODES.ALL())
 				if(setStats.getStat(i)!=0)
 					affectableStats.setRacialStat(i,setStats.getStat(i));
 	}

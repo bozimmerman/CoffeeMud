@@ -61,21 +61,8 @@ public class Prayer_CurseLuck extends Prayer
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
         int amt=100+(10*super.getXLEVELLevel(invoker()));
-		affectableStats.setStat(CharStats.STAT_SAVE_WATER,-amt);
-		affectableStats.setStat(CharStats.STAT_SAVE_UNDEAD,-amt);
-		affectableStats.setStat(CharStats.STAT_SAVE_TRAPS,-amt);
-		affectableStats.setStat(CharStats.STAT_SAVE_POISON,-amt);
-		affectableStats.setStat(CharStats.STAT_SAVE_PARALYSIS,-amt);
-		affectableStats.setStat(CharStats.STAT_SAVE_MIND,-amt);
-		affectableStats.setStat(CharStats.STAT_SAVE_MAGIC,-amt);
-		affectableStats.setStat(CharStats.STAT_SAVE_JUSTICE,-amt);
-		affectableStats.setStat(CharStats.STAT_SAVE_GENERAL,-amt);
-		affectableStats.setStat(CharStats.STAT_SAVE_GAS,-amt);
-		affectableStats.setStat(CharStats.STAT_SAVE_FIRE,-amt);
-		affectableStats.setStat(CharStats.STAT_SAVE_ELECTRIC,-amt);
-		affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,-amt);
-		affectableStats.setStat(CharStats.STAT_SAVE_COLD,-amt);
-		affectableStats.setStat(CharStats.STAT_SAVE_ACID,-amt);
+        for(int i : CharStats.CODES.SAVING_THROWS())
+			affectableStats.setStat(i,-amt);
 	}
 
 	public boolean okMessage(Environmental host, CMMsg msg)
@@ -90,9 +77,10 @@ public class Prayer_CurseLuck extends Prayer
 			boolean proceed=false;
 			int sm=msg.sourceMinor();
 			int tm=msg.targetMinor();
-			for(int i=0;i<CharStats.STAT_MSG_MAP.length;i++)
-				if((CharStats.STAT_MSG_MAP[i]>=0)
-				&&((sm==CharStats.STAT_MSG_MAP[i])||(tm==CharStats.STAT_MSG_MAP[i])))
+			int[] CMMSGMAP=CharStats.CODES.CMMSGMAP();
+			for(int i : CharStats.CODES.SAVING_THROWS())
+				if((CMMSGMAP[i]>=0)
+				&&((sm==CMMSGMAP[i])||(tm==CMMSGMAP[i])))
 					proceed=true;
 			if((msg.tool() instanceof Trap)||(proceed))
 			{

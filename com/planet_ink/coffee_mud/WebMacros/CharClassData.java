@@ -467,8 +467,8 @@ public class CharClassData extends StdWebMacro
                     String old=httpReq.getRequestParameter("ATTATT");
                     if(old==null) old=""+C.getAttackAttribute();
                     if(CMath.s_int(old)<0) old="0";
-                    for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
-                        str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(CharStats.STAT_NAMES[i]));
+					for(int i : CharStats.CODES.BASE())
+                        str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i)));
                     str.append(", ");
                 }
                 if(parms.containsKey("FSTTRAN"))
@@ -858,9 +858,9 @@ public class CharClassData extends StdWebMacro
 					str.append(C.baseClass()+", ");
 
 				if(parms.containsKey("MAXSTATS"))
-					for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
+					for(int i : CharStats.CODES.BASE())
 						if(C.maxStatAdjustments()[i]!=0)
-							str.append(CMStrings.capitalizeAndLower(CharStats.STAT_DESCS[i])+" ("+(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+C.maxStatAdjustments()[i])+"), ");
+							str.append(CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i))+" ("+(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+C.maxStatAdjustments()[i])+"), ");
 				if(parms.containsKey("PRACS"))
 				{
 					str.append(C.getPracsFirstLevel()+" plus (Wisdom/6)");
@@ -950,7 +950,7 @@ public class CharClassData extends StdWebMacro
 					str.append("("+avgMath(10,ah,90,100)+"/"+avgMath(18,ah,90,100)+"/"+avgMath(maxStrength,ah,90,100)+") ");
 				}
 
-				StringBuffer preReqName=new StringBuffer(CharStats.STAT_DESCS[C.getAttackAttribute()].toLowerCase());
+				StringBuffer preReqName=new StringBuffer(CharStats.CODES.DESC(C.getAttackAttribute()).toLowerCase());
 				preReqName.setCharAt(0,Character.toUpperCase(preReqName.charAt(0)));
 				if(parms.containsKey("PRIME"))
 					str.append(preReqName+", ");

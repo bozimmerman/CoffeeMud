@@ -3065,9 +3065,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		                    	E.recoverEnvStats();
 		                    }
 		                    else
-		                    if((E instanceof MOB)&&(CMStrings.contains(CharStats.STAT_NAMES,stat.toUpperCase().trim())))
+		                    if((E instanceof MOB)&&(CMStrings.contains(CharStats.CODES.NAMES(),stat.toUpperCase().trim())))
 		                    {
-		                    	((MOB)E).baseCharStats().setStat(CMParms.indexOf(CharStats.STAT_NAMES,stat.toUpperCase().trim()),CMath.s_int(parms));
+		                    	((MOB)E).baseCharStats().setStat(CMParms.indexOf(CharStats.CODES.NAMES(),stat.toUpperCase().trim()),CMath.s_int(parms));
 		                    	((MOB)E).recoverCharStats();
 		                    }
 		                    else
@@ -3613,8 +3613,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         if(CMStrings.contains(E.baseEnvStats().getStatCodes(),stat))
         	oldVal=E.baseEnvStats().getStat(stat);
         else
-        if((E instanceof MOB)&&(CMStrings.contains(CharStats.STAT_NAMES,stat)))
-        	oldVal=""+((MOB)E).baseCharStats().getStat(CMParms.indexOf(CharStats.STAT_NAMES,stat));
+        if((E instanceof MOB)&&(CMStrings.contains(CharStats.CODES.NAMES(),stat)))
+        	oldVal=""+((MOB)E).baseCharStats().getStat(CMParms.indexOf(CharStats.CODES.NAMES(),stat));
         else
         if((E instanceof MOB)&&CMStrings.contains(((MOB)E).baseState().getStatCodes(),stat))
         	oldVal=((MOB)E).baseState().getStat(stat);
@@ -3632,9 +3632,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         	E.recoverEnvStats();
         }
         else
-        if((E instanceof MOB)&&(CMStrings.contains(CharStats.STAT_NAMES,stat)))
+        if((E instanceof MOB)&&(CMStrings.contains(CharStats.CODES.NAMES(),stat)))
         {
-        	((MOB)E).baseCharStats().setStat(CMParms.indexOf(CharStats.STAT_NAMES,stat),CMath.s_int(parms));
+        	((MOB)E).baseCharStats().setStat(CMParms.indexOf(CharStats.CODES.NAMES(),stat),CMath.s_int(parms));
         	((MOB)E).recoverCharStats();
         }
         else

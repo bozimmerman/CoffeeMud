@@ -225,7 +225,7 @@ public class Monk extends StdCharClass
 	    {
 			int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
 			int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-						 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_DEXTERITY));
+						 +mob.charStats().getStat(CharStats.STAT_MAX_DEXTERITY_ADJ));
 			if(dexStat>maxDexStat) dexStat=maxDexStat;
 			int attArmor=(int)Math.round(CMath.div(dexStat,9.0));
 			attArmor=attArmor*-1;
@@ -246,7 +246,7 @@ public class Monk extends StdCharClass
 	    {
 			int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
 			int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-						 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_DEXTERITY));
+						 +mob.charStats().getStat(CharStats.STAT_MAX_DEXTERITY_ADJ));
 			if(dexStat>maxDexStat) dexStat=maxDexStat;
 			int attArmor=((int)Math.round(CMath.div(dexStat,9.0)))+1;
 			mob.tell("^NYour dexterity grants you a defensive bonus of ^H"+attArmor+"^?.^N");

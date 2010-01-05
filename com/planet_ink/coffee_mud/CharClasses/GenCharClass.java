@@ -265,10 +265,10 @@ public class GenCharClass extends StdCharClass
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
 		if(adjStats!=null)
-			for(int i=0;i<CharStats.NUM_STATS;i++)
+			for(int i: CharStats.CODES.ALL())
 				affectableStats.setStat(i,affectableStats.getStat(i)+adjStats.getStat(i));
 		if(setStats!=null)
-			for(int i=0;i<CharStats.NUM_STATS;i++)
+			for(int i: CharStats.CODES.ALL())
 				if(setStats.getStat(i)!=0)
 					affectableStats.setStat(i,setStats.getStat(i));
         if(statBuddy!=null)
@@ -770,7 +770,7 @@ public class GenCharClass extends StdCharClass
 		case 5: bonusPracLevel=CMath.s_parseIntExpression(val); break;
 		case 6: manaDivisor=CMath.s_parseIntExpression(val); break;
 		case 7: bonusAttackLevel=CMath.s_parseIntExpression(val); break;
-		case 8: attackAttribute=CMath.s_parseListIntExpression(CharStats.STAT_DESCS,val); break;
+		case 8: attackAttribute=CMath.s_parseListIntExpression(CharStats.CODES.NAMES(),val); break;
 		case 9: trainsFirstLevel=CMath.s_parseIntExpression(val); break;
 		case 10: pracsFirstLevel=CMath.s_parseIntExpression(val); break;
 		case 11: levelsPerBonusDamage=CMath.s_parseIntExpression(val); break;

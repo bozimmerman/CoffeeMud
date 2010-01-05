@@ -67,22 +67,22 @@ public class Prop_ReqStat extends Property
 		if(CMLib.flags().isSneaking(mob)&&(!noSneak))
 			return true;
 		int[] comp=null;
-		for(int c=0;c<CharStats.STAT_NAMES.length;c++)
+		for(int c : CharStats.CODES.ALL())
 		{
-			comp=CMParms.getParmCompare(text(),CharStats.STAT_NAMES[c],mob.charStats().getStat(c));
+			comp=CMParms.getParmCompare(text(),CharStats.CODES.NAME(c),mob.charStats().getStat(c));
 			if(comp[1]<0)
 			{
 				switch(comp[0])
 				{
 				case '=':
 				case '!':
-					mob.tell("You aren't the right "+CMStrings.capitalizeAndLower(CharStats.STAT_NAMES[c])+" to "+msg+".");
+					mob.tell("You aren't the right "+CMStrings.capitalizeAndLower(CharStats.CODES.NAME(c))+" to "+msg+".");
 					break;
 				case '<':
-					mob.tell("You are too "+CMStrings.capitalizeAndLower(CharStats.STAT_DESC_ATTS[c])+" to "+msg+".");
+					mob.tell("You are too "+CMStrings.capitalizeAndLower(CharStats.CODES.ATTDESC(c))+" to "+msg+".");
 					break;
 				case '>':
-					mob.tell("You are not "+CMStrings.capitalizeAndLower(CharStats.STAT_DESC_ATTS[c])+" enough to "+msg+".");
+					mob.tell("You are not "+CMStrings.capitalizeAndLower(CharStats.CODES.ATTDESC(c))+" enough to "+msg+".");
 					break;
 				}
 				return false;

@@ -36,12 +36,12 @@ import org.mozilla.javascript.ScriptableObject;
 @SuppressWarnings("unchecked")
 public class DefaultCharStats implements CharStats
 {
-
     public String ID(){return "DefaultCharStats";}
+    
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultCharStats();}}
     public void initializeClass(){}
 	// competency characteristics
-	protected short[] stats=new short[NUM_STATS];
+	protected short[] stats=new short[CharStats.CODES.instance().total()];
 	protected CharClass[] myClasses=null;
 	protected Integer[] myLevels=null;
 	protected Race myRace=null;
@@ -59,12 +59,12 @@ public class DefaultCharStats implements CharStats
 	}
     public void setAllBaseValues(int def)
     {
-        for(int i=0;i<NUM_BASE_STATS;i++)
+        for(int i : CharStats.CODES.BASE())
             stats[i]=(short)def;
     }
     public void setAllValues(int def)
     {
-        for(int i=0;i<NUM_STATS;i++)
+        for(int i: CharStats.CODES.ALL())
             stats[i]=(short)def;
         unwearableBitmap=0;
     }
@@ -266,19 +266,19 @@ public class DefaultCharStats implements CharStats
 	public String getNonBaseStatsAsString()
 	{
 		StringBuffer str=new StringBuffer("");
-		for(int x=NUM_SAVE_START;x<NUM_STATS;x++)
-			str.append(stats[x]+";");
+		CharStats.CODES C = CharStats.CODES.instance(); 
+		for(int x : C.all())
+			if((!C.isBase(x))&&(x!=CharStats.STAT_GENDER))
+				str.append(stats[x]+";");
 		return str.toString();
 	}
 	public void setNonBaseStatsFromString(String str)
 	{
 		Vector V=CMParms.parseSemicolons(str,false);
-		for(int x=NUM_SAVE_START;x<NUM_STATS;x++)
-		{
-			int vnum=x-NUM_SAVE_START;
-			if((vnum<V.size())&&(vnum>=0))
-				stats[x]=CMath.s_short((String)V.elementAt(vnum));
-		}
+		CharStats.CODES C = CharStats.CODES.instance(); 
+		for(int x : C.all())
+			if((!C.isBase(x))&&(x!=CharStats.STAT_GENDER)&&(V.size()>0))
+				stats[x]=CMath.s_short((String)V.remove(0));
 	}
 	public void setRaceName(String newRaceName){raceName=newRaceName;}
 	public String raceName(){
@@ -671,30 +671,29 @@ public class DefaultCharStats implements CharStats
 	public void setPermanentStat(int abilityCode, int value)
 	{
 		setStat(abilityCode,value);
-		if(abilityCode<NUM_BASE_STATS)
-			setStat(STAT_MAX_STRENGTH_ADJ+abilityCode,
-					value-CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT));
+		if(CharStats.CODES.isBASE(abilityCode))
+			setStat(CharStats.CODES.toMAXBASE(abilityCode),value-CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT));
 	}
 	
 	public int getMaxStat(int abilityCode)
 	{
 		int baseMax = CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
-		return baseMax + getStat(STAT_MAX_STRENGTH_ADJ + abilityCode);
+		return baseMax + getStat(CharStats.CODES.toMAXBASE(abilityCode));
 	}
     
     public void setRacialStat(int abilityCode, int racialMax)
     {
-        if((abilityCode>=NUM_BASE_STATS)||(getStat(abilityCode)==VALUE_ALLSTATS_DEFAULT)) 
+        if((!CharStats.CODES.isBASE(abilityCode))||(getStat(abilityCode)==VALUE_ALLSTATS_DEFAULT)) 
             setPermanentStat(abilityCode,racialMax);
         else
         {
             int baseMax=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
-            int currMax=getStat(STAT_MAX_STRENGTH_ADJ+abilityCode)+baseMax;
+            int currMax=getStat(CharStats.CODES.toMAXBASE(abilityCode))+baseMax;
             if(currMax<=0) currMax=1;
             int curStat=getStat(abilityCode);
             int racialStat=Math.round(((float)curStat/(float)currMax)*(float)racialMax)+Math.round((((float)(currMax-VALUE_ALLSTATS_DEFAULT))/(float)currMax)*(float)racialMax);
             setStat(abilityCode,((racialStat<1)&&(racialMax>0))?1:racialStat);
-            setStat(STAT_MAX_STRENGTH_ADJ+abilityCode,racialMax-baseMax);
+            setStat(CharStats.CODES.toMAXBASE(abilityCode),racialMax-baseMax);
         }
     }
     
@@ -707,8 +706,9 @@ public class DefaultCharStats implements CharStats
 
 	public int getCode(String abilityName)
 	{
-		for(int i=0;i<STAT_DESCS.length;i++)
-			if(STAT_DESCS[i].startsWith(abilityName))
+		String[] DESCS = CODES.DESCS();
+        for(int i : CharStats.CODES.ALL())
+			if(DESCS[i].startsWith(abilityName))
 				return i;
 		return -1;
 	}
@@ -720,22 +720,23 @@ public class DefaultCharStats implements CharStats
 		int dex=CMParms.indexOfIgnoreCase(getStatCodes(),abilityName);
 		if(dex>=0) return Integer.toString(getStat(dex));
 		
-		for(int i=0;i<STAT_DESCS.length;i++)
-			if(STAT_DESCS[i].startsWith(abilityName))
+		String[] DESCS=CODES.DESCS();
+        for(int i : CharStats.CODES.ALL())
+			if(DESCS[i].startsWith(abilityName))
 				return Integer.toString(getStat(i));
 		return null;
 	}
 
 	
-	public String[] getStatCodes() { return CharStats.STAT_NAMES;}
+	public String[] getStatCodes() { return CharStats.CODES.NAMES();}
 	public boolean isStat(String code) { return CMParms.containsIgnoreCase(getStatCodes(),code);}
 	public void setStat(String code, String val) {
 		int dex=CMParms.indexOfIgnoreCase(getStatCodes(),code);
 		if(dex>=0) 
 			setStat(dex,CMath.s_parseIntExpression(val));
 		else
-		for(int i=0;i<STAT_DESCS.length;i++)
-			if(STAT_DESCS[i].startsWith(code))
+        for(int i : CharStats.CODES.ALL())
+			if(CODES.DESC(i).startsWith(code))
 			{
 				setStat(dex,CMath.s_parseIntExpression(val));
 				return;

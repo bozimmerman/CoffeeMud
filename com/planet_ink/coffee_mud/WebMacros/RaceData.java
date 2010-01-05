@@ -146,9 +146,9 @@ public class RaceData extends StdWebMacro
         }
         else
         {
-            for(int i=0;i<CharStats.STAT_DESCS.length;i++)
-                if(CMath.s_int(E.getStat(CharStats.STAT_DESCS[i]))!=0)
-                    theclasses.addElement(CharStats.STAT_DESCS[i],E.getStat(CharStats.STAT_DESCS[i]));
+            for(int i : CharStats.CODES.ALL())
+                if(CMath.s_int(E.getStat(CharStats.CODES.NAME(i)))!=0)
+                    theclasses.addElement(CharStats.CODES.NAME(i),E.getStat(CharStats.CODES.NAME(i)));
         }
         str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
         for(int i=0;i<theclasses.size();i++)
@@ -168,9 +168,9 @@ public class RaceData extends StdWebMacro
         str.append("<TR><TD WIDTH=35%>");
         str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME="+c+"CSTATS"+(theclasses.size()+1)+">");
         str.append("<OPTION SELECTED VALUE=\"\">Select a stat");
-        for(int i=0;i<CharStats.STAT_DESCS.length;i++)
-        	if(!theclasses.contains(CharStats.STAT_DESCS[i]))
-	            str.append("<OPTION VALUE=\""+CharStats.STAT_DESCS[i]+"\">"+CharStats.STAT_DESCS[i]);
+        for(int i : CharStats.CODES.ALL())
+        	if(!theclasses.contains(CharStats.CODES.NAME(i)))
+	            str.append("<OPTION VALUE=\""+CharStats.CODES.NAME(i)+"\">"+CharStats.CODES.DESC(i));
         str.append("</SELECT>");
         str.append("</TD>");
         str.append("<TD WIDTH=65%>");
@@ -773,15 +773,15 @@ public class RaceData extends StdWebMacro
 					mob2.recoverCharStats();
 					mob2.recoverEnvStats();
 					mob2.recoverMaxState();
-                    for(int c=0;c<CharStats.NUM_STATS;c++)
+                    for(int c: CharStats.CODES.ALL())
                     {
                         int oldStat=mob2.charStats().getStat(c);
                         int newStat=mob.charStats().getStat(c);
                         if(oldStat>newStat)
-                            str.append(CharStats.STAT_DESCS[c].toLowerCase()+"-"+(oldStat-newStat)+", ");
+                            str.append(CharStats.CODES.DESC(c).toLowerCase()+"-"+(oldStat-newStat)+", ");
                         else
                         if(newStat>oldStat)
-                            str.append(CharStats.STAT_DESCS[c].toLowerCase()+"+"+(newStat-oldStat)+", ");
+                            str.append(CharStats.CODES.DESC(c).toLowerCase()+"+"+(newStat-oldStat)+", ");
                     }
                 }
 
@@ -1019,7 +1019,7 @@ public class RaceData extends StdWebMacro
 				if(parms.containsKey("CLASSES"))
 				{
 					if(mob==null) mob=makeMOB(R);
-					for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
+					for(int i: CharStats.CODES.BASE())
 						mob.baseCharStats().setStat(i,25);
 					mob.recoverCharStats();
 					for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)

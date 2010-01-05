@@ -65,11 +65,11 @@ public class Prop_AbsorbDamage extends Property
 
 			int immune=text.indexOf("+ALL");
 			int x=-1;
-			for(int i=0;i<CharStats.STAT_MSG_MAP.length;i++)
-				if((CharStats.STAT_MSG_MAP[i]==msg.sourceMinor())
+			for(int i : CharStats.CODES.SAVING_THROWS())
+				if((CharStats.CODES.CMMSGMAP(i)==msg.sourceMinor())
 				&&((msg.tool()==null)||(i!=CharStats.STAT_SAVE_MAGIC)))
 				{
-					x=text.indexOf(CharStats.STAT_NAMES[i]);
+					x=text.indexOf(CharStats.CODES.NAME(i));
 					if(x>0)
 					{
 						if((text.charAt(x-1)=='-')&&(immune>=0))

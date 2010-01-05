@@ -2223,3 +2223,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 25.Many many more mxp images scrounged up, and several old ones replaces with better ones.  There is a light at the end of the tunnel!
 # Build ? Release ?
 1. New Property: Prop_IceBox (thx Robert!)
+2. CharStats can now be customized with EXTVAR_ in coffeemud.ini file.

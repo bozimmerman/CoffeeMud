@@ -2045,8 +2045,8 @@ public class StdMOB implements MOB
 				if((msg.targetMinor()!=CMMsg.TYP_WEAPONATTACK)&&(msg.value()<=0))
 				{
 					int chanceToFail=Integer.MIN_VALUE;
-					for(int c=0;c<CharStats.STAT_MSG_MAP.length;c++)
-						if(msg.targetMinor()==CharStats.STAT_MSG_MAP[c])
+					for(int c : CharStats.CODES.SAVING_THROWS())
+						if(msg.targetMinor()==CharStats.CODES.CMMSGMAP(c))
 						{	chanceToFail=charStats().getSave(c); break;}
 					if(chanceToFail>Integer.MIN_VALUE)
 					{

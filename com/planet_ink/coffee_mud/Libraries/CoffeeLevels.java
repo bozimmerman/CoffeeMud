@@ -42,12 +42,12 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		CharClass charClass = mob.baseCharStats().getCurrentClass();
 		int man2Stat=mob.charStats().getStat(charClass.getAttackAttribute());
 		int maxMan2Stat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+charClass.getAttackAttribute()));
+					 +mob.charStats().getStat(CharStats.CODES.toMAXBASE(charClass.getAttackAttribute())));
 		if(man2Stat>maxMan2Stat) man2Stat=maxMan2Stat;
 
 		int manStat=mob.charStats().getStat(CharStats.STAT_INTELLIGENCE);
 		int maxManStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_INTELLIGENCE));
+					 +mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_INTELLIGENCE)));
 		if(manStat>maxManStat) manStat=maxManStat;
 		int manaGain=(int)Math.floor(CMath.div(manStat,charClass.getManaDivisor())+CMLib.dice().roll(charClass.getManaDice(),charClass.getManaDie(),0));
 		if(man2Stat>17) manaGain=manaGain+((man2Stat-17)/2);
@@ -66,7 +66,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		int rawAttStat = mob.charStats().getStat(charClass.getAttackAttribute()); 
 		int attStat= rawAttStat;
 		int maxAttStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+charClass.getAttackAttribute()));
+					 +mob.charStats().getStat(CharStats.CODES.toMAXBASE(charClass.getAttackAttribute())));
 		if(attStat>=maxAttStat) attStat=maxAttStat;
 		int attGain=(int)Math.floor(CMath.div(attStat,18.0))+charClass.getBonusAttackLevel();
 		if(attStat>=25)attGain+=2;
@@ -102,7 +102,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		if(lvlMul<0.1) lvlMul=.1;
 		int mvStat=mob.charStats().getStat(CharStats.STAT_STRENGTH);
 		int maxMvStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_STRENGTH));
+					 +mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_STRENGTH)));
 		if(mvStat>maxMvStat) mvStat=maxMvStat;
 		int mvGain=(int)Math.round(lvlMul*CMath.mul(CMath.div(mvStat,18.0),charClass.getMovementMultiplier()));
 		return mvGain;
@@ -121,7 +121,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		CharClass charClass = mob.baseCharStats().getCurrentClass();
 		int conStat=mob.charStats().getStat(CharStats.STAT_CONSTITUTION);
 		int maxConStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_CONSTITUTION));
+					 +mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_CONSTITUTION)));
 		if(conStat>maxConStat) conStat=maxConStat;
 		int newHitPointGain=(int)Math.floor(CMath.div(conStat,charClass.getHPDivisor())+CMLib.dice().roll(charClass.getHPDice(),charClass.getHPDie(),0));
 		if(newHitPointGain<=0)
@@ -246,7 +246,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		baseLevelAdjuster(mob,-1);
 		int prac2Stat=mob.charStats().getStat(CharStats.STAT_WISDOM);
 		int maxPrac2Stat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_WISDOM));
+					 +mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_WISDOM)));
 		if(prac2Stat>maxPrac2Stat) prac2Stat=maxPrac2Stat;
 		int practiceGain=(int)Math.floor(CMath.div(prac2Stat,6.0))+curClass.getBonusPracLevel();
 		if(practiceGain<=0)practiceGain=1;
@@ -409,7 +409,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 		int prac2Stat=mob.charStats().getStat(CharStats.STAT_WISDOM);
 		int maxPrac2Stat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_WISDOM));
+					 +mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_WISDOM)));
 		if(prac2Stat>maxPrac2Stat) prac2Stat=maxPrac2Stat;
 		int practiceGain=(int)Math.floor(CMath.div(prac2Stat,6.0))+curClass.getBonusPracLevel();
 		if(practiceGain<=0)practiceGain=1;

@@ -1,6 +1,5 @@
 package com.planet_ink.coffee_mud.Common.interfaces;
-import java.util.Arrays;
-
+import java.util.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -53,11 +52,11 @@ public interface CharStats extends CMCommon, CMModifiable
     /** stat constant for  charisma*/
 	public static final int STAT_WISDOM=5;
     /** constant for number of stat codes 0 - this-1 which are base stats */
-	public static final int NUM_BASE_STATS=6;
+	public static final int DEFAULT_NUM_BASE_STATS=6;
     /** stat constant for  gender*/
 	public static final int STAT_GENDER=6;
     /** constant for first stat code which is a saving throw  */
-	public static final int NUM_SAVE_START=7;
+	public static final int DEFAULT_NUM_SAVE_START=7;
     /** stat constant for  save vs paralysis*/
 	public static final int STAT_SAVE_PARALYSIS=7;
     /** stat constant for  save vs fire*/
@@ -111,7 +110,7 @@ public interface CharStats extends CMCommon, CMModifiable
     /** stat constant for additions/subtractions from base weight */
     public static final int STAT_WEIGHTADJ=32;
     /** constant for total number of stat codes */
-	public final static int NUM_STATS=33;
+	public final static int DEFAULT_NUM_STATS=33;
 
 	/**
      * Copies the internal data of this object into another of kind.
@@ -531,7 +530,7 @@ public interface CharStats extends CMCommon, CMModifiable
 	public String ageName();
 
     /** string array of abbreviations of each stat code, ordered by numeric value */
-    public static final String[] STAT_ABBR=
+    public static final String[] DEFAULT_STAT_ABBR=
     {
         "S",
         "I",
@@ -569,7 +568,7 @@ public interface CharStats extends CMCommon, CMModifiable
     };
 
     /** string array of descriptions of each stat code, ordered by numeric value */
-    public static final String[] STAT_DESCS=
+    public static final String[] DEFAULT_STAT_DESCS=
     {
         "STRENGTH",
         "INTELLIGENCE",
@@ -607,7 +606,7 @@ public interface CharStats extends CMCommon, CMModifiable
     };
 
     /** string array of descriptions of each stat code, ordered by numeric value */
-    public static final String[] STAT_NAMES=
+    public static final String[] DEFAULT_STAT_NAMES=
     {
         "STRENGTH",
         "INTELLIGENCE",
@@ -645,7 +644,7 @@ public interface CharStats extends CMCommon, CMModifiable
     };
 
     /** string array of attributable descriptions of each stat code, ordered by numeric value */
-    public static final String[] STAT_DESC_ATTS=
+    public static final String[] DEFAULT_STAT_DESC_ATTS=
     {
         "STRONG",
         "INTELLIGENT",
@@ -683,7 +682,7 @@ public interface CharStats extends CMCommon, CMModifiable
     };
 
     /** an appropriate CMMsg MSG type to correspond to the given saving throw, indexed as STAT_SAVE_ constant */
-    public static int[] STAT_MSG_MAP= {-1, // strength
+    public static int[] DEFAULT_STAT_MSG_MAP= {-1, // strength
            -1, // intelligence
            -1, // dexterity
            -1, // constitution
@@ -718,4 +717,320 @@ public interface CharStats extends CMCommon, CMModifiable
             -1, // save conversion
             -1, // weight adjustment
            };
+
+    /**
+     * Global character stat code data >>> UNUSED <<<
+     * @author bzimmerman
+     */
+	public class CODES
+	{
+	    @SuppressWarnings("unchecked")
+		public CODES(){
+	        super();
+	        char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
+	        if(insts==null) insts=new CODES[256];
+	        if(insts[c]==null) insts[c]=this;
+
+	        HashSet deletables = new HashSet();
+			Vector rawExtra = CMProps.getStatCodeExtensions(CharStats.class,"CharStats");
+			DVector extra=new DVector(5);
+			if(rawExtra!=null)
+				for(Enumeration e=rawExtra.elements();e.hasMoreElements();)
+				{
+					String p = (String)e.nextElement();
+					int x=p.indexOf('(');
+					if((x>0)&&(p.endsWith(")")))
+					{
+						String stat = p.substring(0,x).toUpperCase().trim();
+						p=p.substring(x+1,p.length()-1).trim();
+						Vector V=CMParms.parseSemicolons(p, false);
+						if(V.size()==4)
+							if(((String)V.firstElement()).equalsIgnoreCase("DELETE"))
+								deletables.add(stat);
+							else
+								extra.addElement(stat,V.firstElement(),V.elementAt(1),
+										((String)V.elementAt(2)).toUpperCase(),((String)V.elementAt(3)).toUpperCase());
+					}
+				}
+	        
+			for(int i=0;i<6;i++) 
+				if(!deletables.contains(DEFAULT_STAT_NAMES[i]))
+					addBaseStat(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
+			if(!deletables.contains(DEFAULT_STAT_NAMES[6]))
+				addAllStat(DEFAULT_STAT_ABBR[6],DEFAULT_STAT_DESCS[6],DEFAULT_STAT_NAMES[6],DEFAULT_STAT_DESC_ATTS[6],DEFAULT_STAT_MSG_MAP[6],false);
+			for(int i=7;i<22;i++) 
+				if(!deletables.contains(DEFAULT_STAT_NAMES[i]))
+					addSavingThrow(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
+			for(int i=22;i<28;i++) 
+				if(!deletables.contains(i-22))
+					addMaxStat(baseStatCodes[i-22],DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
+			if(!deletables.contains(DEFAULT_STAT_NAMES[28]))
+				addAllStat(DEFAULT_STAT_ABBR[28],DEFAULT_STAT_DESCS[28],DEFAULT_STAT_NAMES[28],DEFAULT_STAT_DESC_ATTS[28],DEFAULT_STAT_MSG_MAP[28],false);
+			for(int i=29;i<31;i++) 
+				if(!deletables.contains(DEFAULT_STAT_NAMES[i]))
+					addSavingThrow(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
+			for(int i=31;i<DEFAULT_NUM_STATS;i++) 
+				if(!deletables.contains(DEFAULT_STAT_NAMES[i]))
+					addAllStat(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i],false);
+			for(int x=0;x<extra.size();x++)
+			{
+				String stat=(String)extra.elementAt(x, 1);
+				String type=(String)extra.elementAt(x, 2);
+				String abbr=(String)extra.elementAt(x, 3);
+				String desc=(String)extra.elementAt(x, 4);
+				String adj=(String)extra.elementAt(x, 5);
+				if(type.equalsIgnoreCase("BASE"))
+				{
+					addBaseStat(abbr, desc, stat, adj, -1);
+					int baseStatCode=allStatCodes.length-1;
+					addMaxStat(baseStatCode, "m"+abbr, "MAX "+stat+" ADJ.", "MAX"+stat, "POTENTIALLY "+adj, -1);
+				}
+				else
+				if(type.equalsIgnoreCase("SAVE"))
+					addSavingThrow(abbr,desc,stat,adj,-1);
+				else
+				if(type.equalsIgnoreCase("OTHER"))
+					addAllStat(abbr,desc,stat,adj,-1,false);
+			}
+	    }
+	    private static CODES c(){ return insts[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
+	    public static CODES c(char c){return insts[c];}
+	    public static CODES instance(){
+	    	CODES c=insts[Thread.currentThread().getThreadGroup().getName().charAt(0)];
+	        if(c==null) c=new CODES();
+	        return c;
+	    }
+	    public static void reset() { 
+	    	insts[Thread.currentThread().getThreadGroup().getName().charAt(0)]=null;
+	    	instance();
+	    }
+	    private static CODES[] insts=new CODES[256];
+	    
+		private int[] baseStatCodes = new int[0];
+		private int[] maxStatCodes = new int[0];
+		private int[] MaxBaseCrossCodes = new int[0];
+		private int[] allStatCodes = new int[0];
+		private int[] savingThrowCodes = new int[0];
+		private boolean[] isBaseStatCode = new boolean[0];
+	    private String[] statAbbreviations=new String[0];
+	    private String[] statDescriptions=new String[0];
+	    private String[] statNames=new String[0];
+	    private String[] statAttributionDescriptions=new String[0];
+	    private int[] statCMMsgMapping=new int[0];
+		
+		/**
+		 * Returns an array of the numeric codes for all base stats
+		 * @return an array of the numeric codes for all base stats
+		 */
+		public static int[] BASE() { return c().baseStatCodes;}
+		
+		/**
+		 * Returns an array of the numeric codes for all base stats
+		 * @return an array of the numeric codes for all base stats
+		 */
+		public int[] base() { return baseStatCodes;}
+		/**
+		 * Returns whether the given code is a base stat
+		 * @return whether the given code is a base stat
+		 */
+		public static boolean isBASE(int code) { return c().isBaseStatCode[code];}
+		/**
+		 * Returns whether the given code is a base stat
+		 * @return whether the given code is a base stat
+		 */
+		public boolean isBase(int code) { return isBaseStatCode[code];}
+		/**
+		 * Returns the code for the base code that matches the given max adj code
+		 * Returns the code for the max adj code that matches the given base code
+		 * Returns -1 if the code is not a max adj code.
+		 * @return the translated code
+		 */
+		public static int toMAXBASE(int max) 
+		{
+			CODES c = c();
+			if(max<c.MaxBaseCrossCodes.length)
+				return c.MaxBaseCrossCodes[max];
+			return -1;
+		}
+		/**
+		 * Returns the code for the base code that matches the given max adj code
+		 * Returns the code for the max adj code that matches the given base code
+		 * Returns -1 if the code is not a max adj code.
+		 * @return the translated code
+		 */
+		public int toMaxBase(int max) 
+		{
+			if(max<MaxBaseCrossCodes.length)
+				return MaxBaseCrossCodes[max];
+			return -1;
+		}
+		/**
+		 * Returns an array of the numeric codes for all max stats
+		 * @return an array of the numeric codes for all max stats
+		 */
+		public static int[] MAX() { return c().maxStatCodes;}
+		/**
+		 * Returns an array of the numeric codes for all max stats
+		 * @return an array of the numeric codes for all max stats
+		 */
+		public int[] max() { return maxStatCodes;}
+		/**
+		 * Returns total number of stat codes 0 - this-1
+		 * @return total number of stat codes 0 - this-1
+		 */
+		public static int TOTAL() { return c().allStatCodes.length;}
+		/**
+		 * Returns total number of stat codes 0 - this-1
+		 * @return total number of stat codes 0 - this-1
+		 */
+		public int total() { return allStatCodes.length;}
+		/**
+		 * Returns an array of the numeric codes for all stats
+		 * @return an array of the numeric codes for all stats
+		 */
+		public static int[] ALL() { return c().allStatCodes;}
+		/**
+		 * Returns an array of the numeric codes for all stats
+		 * @return an array of the numeric codes for all stats
+		 */
+		public int[] all() { return allStatCodes;}
+		/**
+		 * Returns an array of the numeric codes for all save stats
+		 * @return an array of the numeric codes for all save stats
+		 */
+		public static int[] SAVING_THROWS() { return c().savingThrowCodes;}
+		/**
+		 * Returns an array of the numeric codes for all save stats
+		 * @return an array of the numeric codes for all save stats
+		 */
+		public int[] saving_throws() { return savingThrowCodes;}
+		/**
+		 * Returns the names of the various stats
+		 * @return the names of the various stats
+		 */
+		public static String[] NAMES() { return c().statNames;}
+		/**
+		 * Returns the name of the stat code
+		 * @param code the stat code
+		 * @return the name of the stat code
+		 */
+		public static String NAME(int code) { return c().statNames[code];}
+		/**
+		 * Returns the descriptions of the various stats
+		 * @return the descriptions of the various stats
+		 */
+		public static String[] DESCS() { return c().statDescriptions;}
+		/**
+		 * Returns the description of the stat code
+		 * @param code the stat code
+		 * @return the description of the stat code
+		 */
+		public static String DESC(int code) { return c().statDescriptions[code];}
+		/**
+		 * Returns the abbreviations of the various stats
+		 * @return the abbreviations of the various stats
+		 */
+		public static String[] ABBRS() { return c().statAbbreviations;}
+		/**
+		 * Returns the abbreviation of the stat code
+		 * @param code the stat code
+		 * @return the abbreviation of the stat code
+		 */
+		public static String ABBR(int code) { return c().statAbbreviations[code];}
+		/**
+		 * Returns the adjective descriptions of the various stats
+		 * @return the adjective descriptions of the various stats
+		 */
+		public static String[] ATTDESCS() { return c().statAttributionDescriptions;}
+		/**
+		 * Returns the adjective description of the stat code
+		 * @param code the stat code
+		 * @return the adjective description of the stat code
+		 */
+		public static String ATTDESC(int code) { return c().statAttributionDescriptions[code];}
+		/**
+		 * Returns the CMMsg mappings of the various stats
+		 * @return the CMMsg mappings of the various stats
+		 */
+		public static int[] CMMSGMAP() { return c().statCMMsgMapping;}
+		/**
+		 * Returns the CMMsg mapping of the stat
+		 * @return the CMMsg mapping of the stat
+		 */
+		public static int CMMSGMAP(int code) { return c().statCMMsgMapping[code];}
+		/**
+		 * Adds a new base stat to this object for all mobs and players to share
+		 * @param abbr 1-3 letter short code for this stat
+		 * @param desc longer description of this stat
+		 * @param name space-free coded name of this stat
+		 * @param attDesc description of someone with this stat in abundance
+		 * @param cmmsgMap a CMMsg message code that saves with this stat
+		 */
+		public void addBaseStat(String abbr, String desc, String name, String attDesc, int cmmsgMap)
+		{
+			baseStatCodes=Arrays.copyOf(baseStatCodes, baseStatCodes.length+1);
+			baseStatCodes[baseStatCodes.length-1]=allStatCodes.length;
+			addAllStat(abbr,desc,name,attDesc,cmmsgMap,true);
+		}
+		/**
+		 * Adds a new max stat to this object for all mobs and players to share
+		 * @param baseCode corresponding base stat code
+		 * @param abbr 1-3 letter short code for this stat
+		 * @param desc longer description of this stat
+		 * @param name space-free coded name of this stat
+		 * @param attDesc description of someone with this stat in abundance
+		 * @param cmmsgMap a CMMsg message code that saves with this stat
+		 */
+		public void addMaxStat(int baseCode, String abbr, String desc, String name, String attDesc, int cmmsgMap)
+		{
+			maxStatCodes=Arrays.copyOf(maxStatCodes, maxStatCodes.length+1);
+			int maxCode = allStatCodes.length;
+			maxStatCodes[maxStatCodes.length-1]=maxCode;
+			
+			addAllStat(abbr,desc,name,attDesc,cmmsgMap,false);
+			
+			MaxBaseCrossCodes=Arrays.copyOf(MaxBaseCrossCodes, allStatCodes.length);
+			MaxBaseCrossCodes[maxCode]=baseCode;
+			MaxBaseCrossCodes[baseCode]=maxCode;
+		}
+		/**
+		 * Adds a new saving throw stat to this object for all mobs and players to share
+		 * @param abbr 1-3 letter short code for this stat
+		 * @param desc longer description of this stat
+		 * @param name space-free coded name of this stat
+		 * @param attDesc description of someone with this stat in abundance
+		 * @param cmmsgMap a CMMsg message code that saves with this stat
+		 */
+		public void addSavingThrow(String abbr, String desc, String name, String attDesc, int cmmsgMap)
+		{
+			savingThrowCodes=Arrays.copyOf(savingThrowCodes, savingThrowCodes.length+1);
+			savingThrowCodes[savingThrowCodes.length-1]=allStatCodes.length;
+			addAllStat(abbr,desc,name,attDesc,cmmsgMap,false);
+		}
+		/**
+		 * Adds a new miscellaneous stat to this object for all mobs and players to share
+		 * @param abbr 1-3 letter short code for this stat
+		 * @param desc longer description of this stat
+		 * @param name space-free coded name of this stat
+		 * @param attDesc description of someone with this stat in abundance
+		 * @param cmmsgMap a CMMsg message code that saves with this stat
+		 */
+		public void addAllStat(String abbr, String desc, String name, String attDesc, int cmmsgMap, boolean base)
+		{
+			allStatCodes=Arrays.copyOf(allStatCodes, allStatCodes.length+1);
+			allStatCodes[allStatCodes.length-1]=allStatCodes.length-1;
+			isBaseStatCode=Arrays.copyOf(isBaseStatCode, allStatCodes.length);
+			isBaseStatCode[allStatCodes.length-1]=base;
+			statAbbreviations=Arrays.copyOf(statAbbreviations, allStatCodes.length);
+			statAbbreviations[allStatCodes.length-1]=abbr;
+			statDescriptions=Arrays.copyOf(statDescriptions, allStatCodes.length);
+			statDescriptions[allStatCodes.length-1]=desc.toUpperCase().trim();
+			statNames=Arrays.copyOf(statNames, allStatCodes.length);
+			statNames[allStatCodes.length-1]=name.toUpperCase().trim().replace(' ','_');
+			statAttributionDescriptions=Arrays.copyOf(statAttributionDescriptions, allStatCodes.length);
+			statAttributionDescriptions[allStatCodes.length-1]=attDesc.toUpperCase();
+			statCMMsgMapping=Arrays.copyOf(statCMMsgMapping, allStatCodes.length);
+			statCMMsgMapping[allStatCodes.length-1]=cmmsgMap;
+		}
+	}
 }

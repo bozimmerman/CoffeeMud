@@ -109,21 +109,16 @@ public class Prop_HaveAdjuster extends Property
             charStatsV.addElement(new Character('R'));
             charStatsV.addElement(CMClass.getRace(val));
         }
-        addIfPlussed(newText,"str",CharStats.STAT_STRENGTH,charStatsV);
-        addIfPlussed(newText,"wis",CharStats.STAT_WISDOM,charStatsV);
-        addIfPlussed(newText,"cha",CharStats.STAT_CHARISMA,charStatsV);
-        addIfPlussed(newText,"con",CharStats.STAT_CONSTITUTION,charStatsV);
-        addIfPlussed(newText,"dex",CharStats.STAT_DEXTERITY,charStatsV);
-        addIfPlussed(newText,"int",CharStats.STAT_INTELLIGENCE,charStatsV);
-        addIfPlussed(newText,"maxstr",CharStats.STAT_MAX_STRENGTH_ADJ,charStatsV);
-        addIfPlussed(newText,"maxwis",CharStats.STAT_MAX_WISDOM_ADJ,charStatsV);
-        addIfPlussed(newText,"maxcha",CharStats.STAT_MAX_CHARISMA_ADJ,charStatsV);
-        addIfPlussed(newText,"maxcon",CharStats.STAT_MAX_CONSTITUTION_ADJ,charStatsV);
-        addIfPlussed(newText,"maxdex",CharStats.STAT_MAX_DEXTERITY_ADJ,charStatsV);
-        addIfPlussed(newText,"maxint",CharStats.STAT_MAX_INTELLIGENCE_ADJ,charStatsV);
-        for(int c=0;c<CharStats.STAT_MSG_MAP.length;c++)
-            if(CharStats.STAT_MSG_MAP[c]!=-1)
-                addIfPlussed(newText,"save"+CharStats.STAT_NAMES[c].toLowerCase().substring(0,3),c,charStatsV);
+		for(int i : CharStats.CODES.BASE())
+		{
+			String name = CMStrings.limit(CharStats.CODES.NAME(i).toLowerCase(),3);
+	        addIfPlussed(newText,name,i,charStatsV);
+	        addIfPlussed(newText,"max"+name,CharStats.CODES.toMAXBASE(i),charStatsV);
+		}
+		int[] CMMSGMAP=CharStats.CODES.CMMSGMAP();
+		for(int c : CharStats.CODES.SAVING_THROWS())
+            if(CMMSGMAP[c]!=-1)
+                addIfPlussed(newText,"save"+CMStrings.limit(CharStats.CODES.NAME(c).toLowerCase(),3),c,charStatsV);
 
         Vector charStateV=new Vector();
         addIfPlussed(newText,"hit",CharState.STAT_HITPOINTS,charStateV);

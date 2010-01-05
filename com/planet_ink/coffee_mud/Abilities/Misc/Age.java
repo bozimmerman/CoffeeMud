@@ -363,7 +363,7 @@ public class Age extends StdAbility
 					CMLib.utensils().outfit(newMan,newMan.baseCharStats().getMyRace().outfit(newMan));
 					CMLib.utensils().outfit(newMan,newMan.baseCharStats().getCurrentClass().outfit(newMan));
 					Vector<Integer> qualifiedStats = new Vector<Integer>();
-					for(int i=CharStats.STAT_MAX_STRENGTH_ADJ;i<CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.NUM_BASE_STATS;i++)
+					for(int i : CharStats.CODES.MAX())
 						if(newMan.baseCharStats().getStat(i)<CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+7)
 							qualifiedStats.addElement(Integer.valueOf(i));
 					if(qualifiedStats.size()>0)
@@ -371,7 +371,7 @@ public class Age extends StdAbility
 						int stat=qualifiedStats.elementAt(CMLib.dice().roll(1,qualifiedStats.size(),-1)).intValue();
 						newMan.baseCharStats().setStat(stat,newMan.baseCharStats().getStat(stat)+1);
 					}
-					for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
+					for(int i : CharStats.CODES.BASE())
 						if(newMan.baseCharStats().getStat(i)<CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT))
 							newMan.baseCharStats().setStat(i,newMan.baseCharStats().getStat(i)+1);
 					newMan.playerStats().setLastDateTime(System.currentTimeMillis());

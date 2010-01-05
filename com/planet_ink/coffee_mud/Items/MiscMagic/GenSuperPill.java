@@ -145,18 +145,12 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 			mob.baseCharStats().setMyRace(CMClass.getRace(val));
 			mob.baseCharStats().getMyRace().startRacing(mob,false);
 		}
-		mob.baseCharStats().setStat(CharStats.STAT_STRENGTH,mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)+CMParms.getParmPlus(readableText,"str"));
-		mob.baseCharStats().setStat(CharStats.STAT_WISDOM,mob.baseCharStats().getStat(CharStats.STAT_WISDOM)+CMParms.getParmPlus(readableText,"wis"));
-		mob.baseCharStats().setStat(CharStats.STAT_CHARISMA,mob.baseCharStats().getStat(CharStats.STAT_CHARISMA)+CMParms.getParmPlus(readableText,"cha"));
-		mob.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)+CMParms.getParmPlus(readableText,"con"));
-		mob.baseCharStats().setStat(CharStats.STAT_DEXTERITY,mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)+CMParms.getParmPlus(readableText,"dex"));
-		mob.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)+CMParms.getParmPlus(readableText,"int"));
-		mob.baseCharStats().setStat(CharStats.STAT_MAX_STRENGTH_ADJ,mob.baseCharStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ)+CMParms.getParmPlus(readableText,"maxstr"));
-		mob.baseCharStats().setStat(CharStats.STAT_MAX_WISDOM_ADJ,mob.baseCharStats().getStat(CharStats.STAT_MAX_WISDOM_ADJ)+CMParms.getParmPlus(readableText,"maxwis"));
-		mob.baseCharStats().setStat(CharStats.STAT_MAX_CHARISMA_ADJ,mob.baseCharStats().getStat(CharStats.STAT_MAX_CHARISMA_ADJ)+CMParms.getParmPlus(readableText,"maxcha"));
-		mob.baseCharStats().setStat(CharStats.STAT_MAX_CONSTITUTION_ADJ,mob.baseCharStats().getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ)+CMParms.getParmPlus(readableText,"maxcon"));
-		mob.baseCharStats().setStat(CharStats.STAT_MAX_DEXTERITY_ADJ,mob.baseCharStats().getStat(CharStats.STAT_MAX_DEXTERITY_ADJ)+CMParms.getParmPlus(readableText,"maxdex"));
-		mob.baseCharStats().setStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ,mob.baseCharStats().getStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ)+CMParms.getParmPlus(readableText,"maxint"));
+		for(int i : CharStats.CODES.BASE())
+		{
+			mob.baseCharStats().setStat(i,mob.baseCharStats().getStat(i)+CMParms.getParmPlus(readableText,CMStrings.limit(CharStats.CODES.NAME(i).toLowerCase(),3)));
+			int max = CharStats.CODES.toMAXBASE(i);
+			mob.baseCharStats().setStat(max,mob.baseCharStats().getStat(max)+CMParms.getParmPlus(readableText,"max"+CMStrings.limit(CharStats.CODES.NAME(i).toLowerCase(),3)));
+		}
 
 		mob.baseState().setHitPoints(mob.baseState().getHitPoints()+CMParms.getParmPlus(readableText,"hit"));
 		mob.curState().setHunger(mob.curState().getHunger()+CMParms.getParmPlus(readableText,"hun"));

@@ -91,11 +91,11 @@ public class Prop_WeaponImmunity extends Property
 
 			boolean immune=flags.containsKey("ALL")&&(((Character)flags.get("ALL")).charValue()=='+');
 			Character foundPlusMinus=null;
-			for(int i=0;i<CharStats.STAT_MSG_MAP.length;i++)
-				if((CharStats.STAT_MSG_MAP[i]==msg.sourceMinor())
+			for(int i : CharStats.CODES.SAVING_THROWS())
+				if((CharStats.CODES.CMMSGMAP(i)==msg.sourceMinor())
 				&&(i!=CharStats.STAT_SAVE_MAGIC))
 				{
-					foundPlusMinus=(Character)flags.get(CharStats.STAT_NAMES[i]);
+					foundPlusMinus=(Character)flags.get(CharStats.CODES.NAME(i));
 					if(foundPlusMinus!=null)
 					{
 						if((foundPlusMinus.charValue()=='-')&&(immune))

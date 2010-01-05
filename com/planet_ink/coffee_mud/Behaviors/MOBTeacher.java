@@ -124,7 +124,7 @@ public class MOBTeacher extends CombatAbilities
 			{
 				boolean someNew=true;
 				CharStats oldBase=(CharStats)mob.baseCharStats().copyOf();
-				for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
+				for(int i: CharStats.CODES.BASE())
 					mob.baseCharStats().setStat(i,100);
                 for(int i=0;i<mob.baseCharStats().numClasses();i++)
                     mob.baseCharStats().setClassLevel(mob.baseCharStats().getMyClass(i),100);

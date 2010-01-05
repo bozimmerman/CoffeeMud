@@ -52,7 +52,7 @@ public class ClassRaceNext extends StdWebMacro
 		}
 		String lastID="";
 		MOB mob=CMClass.getMOB("StdMOB");
-		for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
+		for(int i: CharStats.CODES.BASE())
 			mob.baseCharStats().setStat(i,25);
 		mob.recoverCharStats();
 		mob.recoverEnvStats();

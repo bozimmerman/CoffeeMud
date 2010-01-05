@@ -194,10 +194,10 @@ public class Skill_Chirgury extends StdSkill
 				        baby.setPlayerCorpse(false);
 				        baby.baseEnvStats().setWeight(1);
 				        baby.charStats().setStat(CharStats.STAT_GENDER,(CMLib.dice().rollPercentage()>50)?'F':'M');
-				        for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
+				        for(int i: CharStats.CODES.BASE())
 				            baby.charStats().setStat(i,1);
-				        for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
-				            baby.charStats().setStat(CharStats.STAT_MAX_STRENGTH_ADJ+i,1);
+				        for(int i: CharStats.CODES.MAX())
+				            baby.charStats().setStat(i,1);
 				        baby.charStats().setMyRace(((MOB)target).charStats().getMyRace());
 				        baby.recoverEnvStats();
 				        baby.setDescription(CMStrings.capitalizeAndLower(baby.charStats().hisher())+" body parts can be faintly made out in the twisted and mangled flesh.");
