@@ -395,7 +395,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		CMMsg msg=CMClass.getMsg(attacker,target,weapon,messageCode,CMMsg.MSG_DAMAGE,messageCode,allDisplayMessage);
 		msg.setValue(damage);
         CMLib.color().fixSourceFightColor(msg);
-        Room R=target.location();
+        Room R=(target==null)?null:target.location();
         if(R!=null)
 			if(R.okMessage(target,msg))
 			{
