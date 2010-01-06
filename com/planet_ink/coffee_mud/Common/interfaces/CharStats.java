@@ -719,92 +719,12 @@ public interface CharStats extends CMCommon, CMModifiable
            };
 
     /**
-     * Global character stat code data >>> UNUSED <<<
+     * Global character stat code data collector
+     * TODO: add REPLACE instead of DELETE
      * @author bzimmerman
      */
 	public class CODES
 	{
-	    @SuppressWarnings("unchecked")
-		public CODES(){
-	        super();
-	        char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
-	        if(insts==null) insts=new CODES[256];
-	        if(insts[c]==null) insts[c]=this;
-
-	        HashSet deletables = new HashSet();
-			Vector rawExtra = CMProps.getStatCodeExtensions(CharStats.class,"CharStats");
-			DVector extra=new DVector(5);
-			if(rawExtra!=null)
-				for(Enumeration e=rawExtra.elements();e.hasMoreElements();)
-				{
-					String p = (String)e.nextElement();
-					int x=p.indexOf('(');
-					if((x>0)&&(p.endsWith(")")))
-					{
-						String stat = p.substring(0,x).toUpperCase().trim();
-						p=p.substring(x+1,p.length()-1).trim();
-						Vector V=CMParms.parseSemicolons(p, false);
-						if(V.size()==4)
-							if(((String)V.firstElement()).equalsIgnoreCase("DELETE"))
-								deletables.add(stat);
-							else
-								extra.addElement(stat,V.firstElement(),V.elementAt(1),
-										((String)V.elementAt(2)).toUpperCase(),((String)V.elementAt(3)).toUpperCase());
-					}
-				}
-	        
-			for(int i=0;i<6;i++) 
-				if(!deletables.contains(DEFAULT_STAT_NAMES[i]))
-					addBaseStat(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
-			if(!deletables.contains(DEFAULT_STAT_NAMES[6]))
-				addAllStat(DEFAULT_STAT_ABBR[6],DEFAULT_STAT_DESCS[6],DEFAULT_STAT_NAMES[6],DEFAULT_STAT_DESC_ATTS[6],DEFAULT_STAT_MSG_MAP[6],false);
-			for(int i=7;i<22;i++) 
-				if(!deletables.contains(DEFAULT_STAT_NAMES[i]))
-					addSavingThrow(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
-			int baseCtr=0;
-			for(int i=22;i<28;i++) 
-				if(!deletables.contains(DEFAULT_STAT_NAMES[i-22]))
-					addMaxStat(baseStatCodes[baseCtr++],DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
-			if(!deletables.contains(DEFAULT_STAT_NAMES[28]))
-				addAllStat(DEFAULT_STAT_ABBR[28],DEFAULT_STAT_DESCS[28],DEFAULT_STAT_NAMES[28],DEFAULT_STAT_DESC_ATTS[28],DEFAULT_STAT_MSG_MAP[28],false);
-			for(int i=29;i<31;i++) 
-				if(!deletables.contains(DEFAULT_STAT_NAMES[i]))
-					addSavingThrow(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
-			for(int i=31;i<DEFAULT_NUM_STATS;i++) 
-				if(!deletables.contains(DEFAULT_STAT_NAMES[i]))
-					addAllStat(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i],false);
-			for(int x=0;x<extra.size();x++)
-			{
-				String stat=(String)extra.elementAt(x, 1);
-				String type=(String)extra.elementAt(x, 2);
-				String abbr=(String)extra.elementAt(x, 3);
-				String desc=(String)extra.elementAt(x, 4);
-				String adj=(String)extra.elementAt(x, 5);
-				if(type.equalsIgnoreCase("BASE"))
-				{
-					addBaseStat(abbr, desc, stat, adj, -1);
-					int baseStatCode=allStatCodes.length-1;
-					addMaxStat(baseStatCode, "m"+abbr, "MAX "+stat+" ADJ.", "MAX"+stat, "POTENTIALLY "+adj, -1);
-				}
-				else
-				if(type.equalsIgnoreCase("SAVE"))
-					addSavingThrow(abbr,desc,stat,adj,-1);
-				else
-				if(type.equalsIgnoreCase("OTHER"))
-					addAllStat(abbr,desc,stat,adj,-1,false);
-			}
-	    }
-	    private static CODES c(){ return insts[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
-	    public static CODES c(char c){return insts[c];}
-	    public static CODES instance(){
-	    	CODES c=insts[Thread.currentThread().getThreadGroup().getName().charAt(0)];
-	        if(c==null) c=new CODES();
-	        return c;
-	    }
-	    public static void reset() { 
-	    	insts[Thread.currentThread().getThreadGroup().getName().charAt(0)]=null;
-	    	instance();
-	    }
 	    private static CODES[] insts=new CODES[256];
 	    
 		private int[] baseStatCodes = new int[0];
@@ -818,6 +738,85 @@ public interface CharStats extends CMCommon, CMModifiable
 	    private String[] statNames=new String[0];
 	    private String[] statAttributionDescriptions=new String[0];
 	    private int[] statCMMsgMapping=new int[0];
+	    
+	    @SuppressWarnings("unchecked")
+		public CODES(){
+	        super();
+	        char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
+	        if(insts==null) insts=new CODES[256];
+	        if(insts[c]==null) insts[c]=this;
+
+			Vector rawExtra = CMProps.getStatCodeExtensions(CharStats.class,"CharStats");
+			for(int i=0;i<6;i++)
+				addBaseStat(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
+			addAllStat(DEFAULT_STAT_ABBR[6],DEFAULT_STAT_DESCS[6],DEFAULT_STAT_NAMES[6],DEFAULT_STAT_DESC_ATTS[6],DEFAULT_STAT_MSG_MAP[6],false);
+			for(int i=7;i<22;i++) 
+				addSavingThrow(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
+			int baseCtr=0;
+			for(int i=22;i<28;i++) 
+				addMaxStat(baseStatCodes[baseCtr++],DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
+			addAllStat(DEFAULT_STAT_ABBR[28],DEFAULT_STAT_DESCS[28],DEFAULT_STAT_NAMES[28],DEFAULT_STAT_DESC_ATTS[28],DEFAULT_STAT_MSG_MAP[28],false);
+			for(int i=29;i<31;i++) 
+				addSavingThrow(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
+			for(int i=31;i<DEFAULT_NUM_STATS;i++) 
+				addAllStat(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i],false);
+			for(Enumeration e=rawExtra.elements();e.hasMoreElements();)
+			{
+				String p = (String)e.nextElement();
+				int x=p.indexOf('(');
+				if((x>0)&&(p.endsWith(")")))
+				{
+					String stat = p.substring(0,x).toUpperCase().trim();
+					p=p.substring(x+1,p.length()-1).trim();
+					Vector V=CMParms.parseSemicolons(p, false);
+					if(V.size()!=4) continue;
+					String type=((String)V.firstElement()).toUpperCase().trim();
+					int oldStatCode=-1;
+					if(type.startsWith("REPLACE:"))
+					{
+						String repStat=type.substring(8).trim();
+						oldStatCode=CMParms.indexOf(DEFAULT_STAT_NAMES, repStat);
+						if(oldStatCode<0) oldStatCode=CMParms.indexOf(DEFAULT_STAT_DESCS, repStat);
+						type="REPLACE";
+					}
+					String abbr=(String)V.elementAt(1);
+					String desc=(String)((String)V.elementAt(2)).toUpperCase();
+					String adj=(String)((String)V.elementAt(3)).toUpperCase();
+					if(type.equalsIgnoreCase("BASE"))
+					{
+						addBaseStat(abbr, desc, stat, adj, -1);
+						int baseStatCode=allStatCodes.length-1;
+						addMaxStat(baseStatCode, "m"+abbr, "MAX "+stat+" ADJ.", "MAX"+stat, "POTENTIALLY "+adj, -1);
+					}
+					else
+					if(type.equalsIgnoreCase("SAVE"))
+						addSavingThrow(abbr,desc,stat,adj,-1);
+					else
+					if(type.equalsIgnoreCase("OTHER"))
+						addAllStat(abbr,desc,stat,adj,-1,false);
+					else
+					if(type.equalsIgnoreCase("REPLACE")&&(oldStatCode>=0))
+					{
+					    statAbbreviations[oldStatCode]=abbr;
+					    statDescriptions[oldStatCode]=desc;
+					    statNames[oldStatCode]=stat;
+					    statAttributionDescriptions[oldStatCode]=adj;
+					    statCMMsgMapping[oldStatCode]=-1;
+					}
+				}
+			}
+	    }
+	    private static CODES c(){ return insts[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
+	    public static CODES c(char c){return insts[c];}
+	    public static CODES instance(){
+	    	CODES c=insts[Thread.currentThread().getThreadGroup().getName().charAt(0)];
+	        if(c==null) c=new CODES();
+	        return c;
+	    }
+	    public static void reset() { 
+	    	insts[Thread.currentThread().getThreadGroup().getName().charAt(0)]=null;
+	    	instance();
+	    }
 		
 		/**
 		 * Returns an array of the numeric codes for all base stats

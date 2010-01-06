@@ -1,4 +1,9 @@
 package com.planet_ink.coffee_mud.Items.interfaces;
+import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Vector;
+
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -7,6 +12,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.CharStats.CODES;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -611,6 +617,7 @@ public interface RawMaterial extends Item
 	RESOURCE_TUNA,
 	RESOURCE_CATFISH
 	};
+	
 	public static final int[] BERRIES={
 	RESOURCE_BERRIES,
 	RESOURCE_STRAWBERRIES,
@@ -791,4 +798,181 @@ public interface RawMaterial extends Item
         "sweet berry",//RESOURCE_CRANERRIES  
 		};
     
+    /**
+     * Global character stat code data collector
+     * TODO: add REPLACE instead of DELETE
+     * @author bzimmerman
+     */
+	public class CODES
+	{
+	    @SuppressWarnings("unchecked")
+		public CODES(){
+	        super();
+	        char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
+	        if(insts==null) insts=new CODES[256];
+	        if(insts[c]==null) insts[c]=this;
+
+	        HashSet deletables = new HashSet();
+			Vector rawExtra = CMProps.getStatCodeExtensions(CharStats.class,"RawMaterial");
+			DVector extra=new DVector(5);
+			if(rawExtra!=null)
+				for(Enumeration e=rawExtra.elements();e.hasMoreElements();)
+				{
+					String p = (String)e.nextElement();
+					int x=p.indexOf('(');
+					if((x>0)&&(p.endsWith(")")))
+					{
+						String stat = p.substring(0,x).toUpperCase().trim();
+						p=p.substring(x+1,p.length()-1).trim();
+						Vector V=CMParms.parseSemicolons(p, false);
+						if(V.size()==4)
+							if(((String)V.firstElement()).equalsIgnoreCase("DELETE"))
+								deletables.add(stat);
+							else
+								extra.addElement(stat,V.firstElement(),V.elementAt(1),
+										((String)V.elementAt(2)).toUpperCase(),((String)V.elementAt(3)).toUpperCase());
+					}
+				}
+	        
+			//for(int i=0;i<6;i++) 
+			//	if(!deletables.contains(DEFAULT_STAT_NAMES[i]))
+			//		addBaseStat(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
+			for(int x=0;x<extra.size();x++)
+			{
+				String stat=(String)extra.elementAt(x, 1);
+				String type=(String)extra.elementAt(x, 2);
+				String abbr=(String)extra.elementAt(x, 3);
+				String desc=(String)extra.elementAt(x, 4);
+				String adj=(String)extra.elementAt(x, 5);
+				if(type.equalsIgnoreCase("BASE"))
+				{
+					//addBaseStat(abbr, desc, stat, adj, -1);
+					//int baseStatCode=allStatCodes.length-1;
+					//addMaxStat(baseStatCode, "m"+abbr, "MAX "+stat+" ADJ.", "MAX"+stat, "POTENTIALLY "+adj, -1);
+				}
+				else
+				if(type.equalsIgnoreCase("SAVE"))
+				{
+					//addSavingThrow(abbr,desc,stat,adj,-1);
+				}
+				else
+				if(type.equalsIgnoreCase("OTHER"))
+				{
+					//addAllStat(abbr,desc,stat,adj,-1,false);
+				}
+			}
+	    }
+	    private static CODES c(){ return insts[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
+	    public static CODES c(char c){return insts[c];}
+	    public static CODES instance(){
+	    	CODES c=insts[Thread.currentThread().getThreadGroup().getName().charAt(0)];
+	        if(c==null) c=new CODES();
+	        return c;
+	    }
+	    public static void reset() { 
+	    	insts[Thread.currentThread().getThreadGroup().getName().charAt(0)]=null;
+	    	instance();
+	    }
+	    private static CODES[] insts=new CODES[256];
+	    
+		public int[] allCodes = new int[0];
+		public int[] berries = new int[0];
+		public int[] fishes = new int[0];
+		public int[][] data =  new int[0][0]; 
+		public String[] smells = new String[0];
+		public String[] descs = new String[0];
+		
+		/**
+		 * Returns an array of the numeric codes for the berry resources
+		 * @return an array of the numeric codes for the berry resources
+		 */
+		public static int[] BERRIES() { return c().berries;}
+		
+		/**
+		 * Returns an array of the numeric codes for the berry resources
+		 * @return an array of the numeric codes for the berry resources
+		 */
+		public int[] berries() { return berries;}
+		
+		/**
+		 * Returns an array of the numeric codes for the fishy resources
+		 * @return an array of the numeric codes for the fishy resources
+		 */
+		public static int[] FISHES() { return c().fishes;}
+		
+		/**
+		 * Returns an array of the numeric codes for the fishy resources
+		 * @return an array of the numeric codes for the fishy resources
+		 */
+		public int[] fishes() { return fishes;}
+		/**
+		 * Returns total number of codes 0 - this-1
+		 * @return total number of codes 0 - this-1
+		 */
+		public static int TOTAL() { return c().descs.length;}
+		/**
+		 * Returns total number of codes 0 - this-1
+		 * @return total number of codes 0 - this-1
+		 */
+		public int total() { return descs.length;}
+		
+		/**
+		 * Returns an array of the numeric codes for all resources
+		 * @return an array of the numeric codes for all resources
+		 */
+		public static int[] ALL() { return c().allCodes;}
+		/**
+		 * Returns an array of the numeric codes for all resources
+		 * @return an array of the numeric codes for all resources
+		 */
+		public int[] all() { return allCodes;}
+		/**
+		 * Returns the names of the various resources
+		 * @return the names of the various resources
+		 */
+		public static String[] NAMES() { return c().descs;}
+		/**
+		 * Returns the name of the code
+		 * @param code the code
+		 * @return the name of the code
+		 */
+		public static String NAME(int code) { return c().descs[code];}
+		/**
+		 * Returns the smells of the various resources
+		 * @return the smells of the various resources
+		 */
+		public static String[] SMELLS() { return c().smells;}
+		/**
+		 * Returns the description of the code smell
+		 * @param code the code smell
+		 * @return the description of the code smell
+		 */
+		public static String SMELL(int code) { return c().smells[code];}
+		/**
+		 * Returns the value of the resource
+		 * @return the value of the resource
+		 */
+		public static int VALUE(int code) { return c().data[code][1];}
+		/**
+		 * Returns the frequency of the resource, or how rare it is.
+		 * @return the frequency of the resource
+		 */
+		public static int FREQUENCY(int code) { return c().data[code][2];}
+		/**
+		 * Returns the strength of the resource, from 1-10
+		 * @return the strength of the resource
+		 */
+		public static int STRENGTH(int code) { return c().data[code][3];}
+		/**
+		 * Returns the bouancy of the resource, from 0-20000
+		 * @return the bouancy of the resource
+		 */
+		public static int BOUANCY(int code) { return c().data[code][4];}
+		
+		public void add(int material, String name, String smell, int value, int frequ, int strength, int bouancy, boolean fish, boolean berry)
+		{
+			//allStatCodes=Arrays.copyOf(allStatCodes, allStatCodes.length+1);
+			//allStatCodes[allStatCodes.length-1]=allStatCodes.length-1;
+		}
+	}
 }
