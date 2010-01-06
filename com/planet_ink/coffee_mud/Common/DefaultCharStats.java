@@ -665,7 +665,9 @@ public class DefaultCharStats implements CharStats
 
 	public int getStat(int abilityCode)
 	{
-		return stats[abilityCode];
+        if(abilityCode<stats.length)
+			return stats[abilityCode];
+        return 0;
 	}
 
 	public void setPermanentStat(int abilityCode, int value)
@@ -701,7 +703,8 @@ public class DefaultCharStats implements CharStats
 	{
         if((value>Short.MAX_VALUE)||(value<Short.MIN_VALUE))
             Log.errOut("Value out of range",new Exception("Value out of range: "+value+" for "+abilityCode));
-		stats[abilityCode]=(short)value;
+        if(abilityCode<stats.length)
+			stats[abilityCode]=(short)value;
 	}
 
 	public int getCode(String abilityName)

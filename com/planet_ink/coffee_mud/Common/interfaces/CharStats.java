@@ -761,9 +761,10 @@ public interface CharStats extends CMCommon, CMModifiable
 			for(int i=7;i<22;i++) 
 				if(!deletables.contains(DEFAULT_STAT_NAMES[i]))
 					addSavingThrow(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
+			int baseCtr=0;
 			for(int i=22;i<28;i++) 
-				if(!deletables.contains(i-22))
-					addMaxStat(baseStatCodes[i-22],DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
+				if(!deletables.contains(DEFAULT_STAT_NAMES[i-22]))
+					addMaxStat(baseStatCodes[baseCtr++],DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
 			if(!deletables.contains(DEFAULT_STAT_NAMES[28]))
 				addAllStat(DEFAULT_STAT_ABBR[28],DEFAULT_STAT_DESCS[28],DEFAULT_STAT_NAMES[28],DEFAULT_STAT_DESC_ATTS[28],DEFAULT_STAT_MSG_MAP[28],false);
 			for(int i=29;i<31;i++) 
