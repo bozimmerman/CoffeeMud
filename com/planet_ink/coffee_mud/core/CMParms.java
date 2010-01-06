@@ -1535,6 +1535,14 @@ public class CMParms
         }
         return -1;
     }
+    public static int indexOf(int[] supported, int x)
+    {
+        if(supported==null) return -1;
+        for(int i=0;i<supported.length;i++)
+            if(supported[i]==x)
+                return i;
+        return -1;
+    }
     public static int indexOf(Enumeration supported, Object key)
     {
         if(supported==null) return -1;
@@ -1597,6 +1605,8 @@ public class CMParms
     }
     public static boolean contains(Object[] supported, Object expertise)
     { return indexOf(supported,expertise)>=0;}
+    public static boolean contains(int[] supported, int x)
+    { return indexOf(supported,x)>=0;}
 
     public static boolean startsWith(String[] supported, String expertise)
     {

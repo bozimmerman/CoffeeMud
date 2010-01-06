@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Items.interfaces;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Vector;
 
 import com.planet_ink.coffee_mud.core.interfaces.*;
@@ -61,6 +62,12 @@ public interface RawMaterial extends Item
 
 	public final static int MATERIAL_MASK=255<<8;
 	
+	public final static int MATERIAL_CODES[]={
+		MATERIAL_UNKNOWN,MATERIAL_CLOTH,MATERIAL_LEATHER,MATERIAL_METAL,
+		MATERIAL_MITHRIL,MATERIAL_WOODEN,MATERIAL_GLASS,MATERIAL_VEGETATION,
+		MATERIAL_FLESH,MATERIAL_PAPER,MATERIAL_ROCK,MATERIAL_LIQUID,
+		MATERIAL_PRECIOUS,MATERIAL_ENERGY,MATERIAL_PLASTIC	
+	};
 	
 	public final static String[] MATERIAL_DESCS={
 	"UNKNOWN",
@@ -812,53 +819,53 @@ public interface RawMaterial extends Item
 	        if(insts==null) insts=new CODES[256];
 	        if(insts[c]==null) insts[c]=this;
 
-	        HashSet deletables = new HashSet();
-			Vector rawExtra = CMProps.getStatCodeExtensions(CharStats.class,"RawMaterial");
-			DVector extra=new DVector(5);
-			if(rawExtra!=null)
-				for(Enumeration e=rawExtra.elements();e.hasMoreElements();)
-				{
-					String p = (String)e.nextElement();
-					int x=p.indexOf('(');
-					if((x>0)&&(p.endsWith(")")))
-					{
-						String stat = p.substring(0,x).toUpperCase().trim();
-						p=p.substring(x+1,p.length()-1).trim();
-						Vector V=CMParms.parseSemicolons(p, false);
-						if(V.size()==4)
-							if(((String)V.firstElement()).equalsIgnoreCase("DELETE"))
-								deletables.add(stat);
-							else
-								extra.addElement(stat,V.firstElement(),V.elementAt(1),
-										((String)V.elementAt(2)).toUpperCase(),((String)V.elementAt(3)).toUpperCase());
-					}
-				}
-	        
-			//for(int i=0;i<6;i++) 
-			//	if(!deletables.contains(DEFAULT_STAT_NAMES[i]))
-			//		addBaseStat(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
-			for(int x=0;x<extra.size();x++)
+			Vector rawExtra = CMProps.getStatCodeExtensions(RawMaterial.class,"RawMaterial");
+			for(int i=0;i<RESOURCE_DESCS.length;i++)
 			{
-				String stat=(String)extra.elementAt(x, 1);
-				String type=(String)extra.elementAt(x, 2);
-				String abbr=(String)extra.elementAt(x, 3);
-				String desc=(String)extra.elementAt(x, 4);
-				String adj=(String)extra.elementAt(x, 5);
-				if(type.equalsIgnoreCase("BASE"))
+				int material= RESOURCE_DATA[i][0] & MATERIAL_MASK;
+				add(material, RESOURCE_DESCS[i], RESOURCE_SMELLS[i], 
+						RESOURCE_DATA[i][1], RESOURCE_DATA[i][2], RESOURCE_DATA[i][3], 
+						RESOURCE_DATA[i][4], 
+						CMParms.contains(FISHES, i&material),
+						CMParms.contains(BERRIES, i&material));
+			}
+			for(Enumeration e=rawExtra.elements();e.hasMoreElements();)
+			{
+				String p = (String)e.nextElement();
+				int x=p.indexOf('(');
+				if((x>0)&&(p.endsWith(")")))
 				{
-					//addBaseStat(abbr, desc, stat, adj, -1);
-					//int baseStatCode=allStatCodes.length-1;
-					//addMaxStat(baseStatCode, "m"+abbr, "MAX "+stat+" ADJ.", "MAX"+stat, "POTENTIALLY "+adj, -1);
-				}
-				else
-				if(type.equalsIgnoreCase("SAVE"))
-				{
-					//addSavingThrow(abbr,desc,stat,adj,-1);
-				}
-				else
-				if(type.equalsIgnoreCase("OTHER"))
-				{
-					//addAllStat(abbr,desc,stat,adj,-1,false);
+					String stat = p.substring(0,x).toUpperCase().trim();
+					p=p.substring(x+1,p.length()-1).trim();
+					Vector V=CMParms.parseSemicolons(p, false);
+					if(V.size()!=7) continue;
+					String type="ADD";
+					int oldResourceCode=-1;
+					if(stat.startsWith("REPLACE:"))
+					{
+						String repStat=type.substring(8).trim();
+						int idx=CMParms.indexOf(RESOURCE_DESCS, repStat);
+						if(idx>=0)
+							oldResourceCode=RESOURCE_DATA[idx][0];
+						type="REPLACE";
+					}
+					String matStr=((String)V.elementAt(0)).toUpperCase();
+					String smell=((String)V.elementAt(1)).toUpperCase();
+					int value=CMath.s_int((String)V.elementAt(2));
+					int frequ=CMath.s_int((String)V.elementAt(3));
+					int strength=CMath.s_int((String)V.elementAt(4));
+					int bouancy=CMath.s_int((String)V.elementAt(5));
+					boolean fish=((String)V.elementAt(6)).equalsIgnoreCase("fish");
+					boolean berry=((String)V.elementAt(6)).equalsIgnoreCase("berry");
+					int material = CMParms.indexOfIgnoreCase(MATERIAL_DESCS,matStr);
+					if((material<0)||(material>=MATERIAL_CODES.length)) 
+						continue;
+					material=MATERIAL_CODES[material];
+					if(type.equalsIgnoreCase("ADD"))
+						add(material, stat, smell, value, frequ, strength, bouancy, fish, berry);
+					else
+					if(type.equalsIgnoreCase("REPLACE")&&(oldResourceCode>=0))
+						replace(oldResourceCode, material, stat, smell, value, frequ, strength, bouancy, fish, berry);
 				}
 			}
 	    }
@@ -971,8 +978,64 @@ public interface RawMaterial extends Item
 		
 		public void add(int material, String name, String smell, int value, int frequ, int strength, int bouancy, boolean fish, boolean berry)
 		{
-			//allStatCodes=Arrays.copyOf(allStatCodes, allStatCodes.length+1);
-			//allStatCodes[allStatCodes.length-1]=allStatCodes.length-1;
+			int newResourceCode=allCodes.length & material;
+			allCodes=Arrays.copyOf(allCodes, allCodes.length+1);
+			allCodes[allCodes.length-1]=newResourceCode;
+			if(berry)
+			{
+				berries=Arrays.copyOf(berries, berries.length+1);
+				berries[berries.length-1]=newResourceCode;
+			}
+			if(fish)
+			{
+				fishes=Arrays.copyOf(fishes, fishes.length+1);
+				fishes[fishes.length-1]=newResourceCode;
+			}
+			descs=Arrays.copyOf(descs, descs.length+1);
+			descs[descs.length-1]=name;
+			
+			data=Arrays.copyOf(data, data.length+1);
+			//full code, base value, frequency, strength (1-10), bouancy
+			int[] newRow={newResourceCode,value,frequ,strength,bouancy};
+			data[data.length-1]=newRow;
+		}
+		
+		public void replace(int resourceCode, int material, String name, String smell, int value, int frequ, int strength, int bouancy, boolean fish, boolean berry)
+		{
+			int resourceIndex = resourceCode & RESOURCE_MASK;
+			if((berry)&&(!CMParms.contains(berries, resourceCode)))
+			{
+				berries=Arrays.copyOf(berries, berries.length+1);
+				berries[berries.length-1]=resourceCode;
+			}
+			else
+			if((!berry)&&(CMParms.contains(berries, resourceCode)))
+			{
+				int[] newberries=new int[berries.length-1];
+				int n=0;
+				for(int b=0;b<berries.length;b++)
+					if(berries[b]!=resourceCode)
+						newberries[n++]=berries[b];
+				berries=newberries;
+			}
+			if((fish)&&(!CMParms.contains(fishes, resourceCode)))
+			{
+				fishes=Arrays.copyOf(fishes, fishes.length+1);
+				fishes[fishes.length-1]=resourceCode;
+			}
+			else
+			if((!fish)&&(CMParms.contains(fishes, resourceCode)))
+			{
+				int[] newfishes=new int[fishes.length-1];
+				int n=0;
+				for(int b=0;b<fishes.length;b++)
+					if(fishes[b]!=resourceCode)
+						newfishes[n++]=fishes[b];
+				fishes=newfishes;
+			}
+			descs[resourceIndex]=name;
+			int[] newRow={resourceCode,value,frequ,strength,bouancy};
+			data[resourceIndex]=newRow;
 		}
 	}
 }
