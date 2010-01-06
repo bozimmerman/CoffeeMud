@@ -37,16 +37,19 @@ public class Inventory extends StdCommand
 
 	private String[] access={"INVENTORY","INV","I"};
 	public String[] getAccessWords(){return access;}
-
-
-	public static StringBuffer getInventory(MOB seer, MOB mob, String mask)
+	
+	public static class InventoryList
 	{
-		StringBuffer msg=new StringBuffer("");
-		boolean foundAndSeen=false;
-        boolean foundButUnseen=false;
-		Vector viewItems=new Vector();
-		Hashtable moneyItems=new Hashtable();
-		Vector V=null;
+		public boolean foundAndSeen=false;
+		public boolean foundButUnseen=false;
+		public Vector<Item> viewItems=new Vector<Item>();
+		public Hashtable<String,Vector<Coins>> moneyItems=new Hashtable<String,Vector<Coins>>();
+	}
+	
+	public static InventoryList fetchInventory(MOB seer, MOB mob)
+	{
+		InventoryList lst = new InventoryList();
+		Vector<Coins> coinsV=null;
 		int insertAt=-1;
 		CMLib.beanCounter().getTotalAbsoluteNativeValue(mob);
 		for(int i=0;i<mob.inventorySize();i++)
@@ -57,56 +60,89 @@ public class Inventory extends StdCommand
 			&&(thisItem.amWearingAt(Item.IN_INVENTORY)))
 			{
 				if(CMLib.flags().canBeSeenBy(thisItem,seer))
-					foundAndSeen=true;
+					lst.foundAndSeen=true;
                 else
-                    foundButUnseen=true;
+                	lst.foundButUnseen=true;
 				if((!(thisItem instanceof Coins))||(((Coins)thisItem).getDenomination()==0.0))
-					viewItems.addElement(thisItem);
+					lst.viewItems.addElement(thisItem);
 				else
 				{
-				    V=(Vector)moneyItems.get(((Coins)thisItem).getCurrency());
-				    if(V==null)
+					coinsV=lst.moneyItems.get(((Coins)thisItem).getCurrency());
+				    if(coinsV==null)
 				    {
-				        V=new Vector();
-				        moneyItems.put(((Coins)thisItem).getCurrency(),V);
+				    	coinsV=new Vector<Coins>();
+				        lst.moneyItems.put(((Coins)thisItem).getCurrency(),coinsV);
 				    }
-                    for(insertAt=0;insertAt<V.size();insertAt++)
-                        if(((Coins)V.elementAt(insertAt)).getDenomination()>((Coins)thisItem).getDenomination())
+                    for(insertAt=0;insertAt<coinsV.size();insertAt++)
+                        if(((Coins)coinsV.elementAt(insertAt)).getDenomination()>((Coins)thisItem).getDenomination())
                             break;
-                    if(insertAt>=V.size())
-		                V.addElement(thisItem);
+                    if(insertAt>=coinsV.size())
+                    	coinsV.addElement((Coins)thisItem);
                     else
-                        V.insertElementAt(thisItem,insertAt);
+                    	coinsV.insertElementAt((Coins)thisItem,insertAt);
 				}
 			}
 		}
-		if(((viewItems.size()>0)||(moneyItems.size()>0))
-        &&(!foundAndSeen))
+		return lst;
+	}
+
+	protected static String getShowableMoney(InventoryList list)
+	{
+		StringBuffer msg=new StringBuffer("");
+		if(list.moneyItems.size()>0)
+		{
+		    msg.append("\n\r^HMoney:^N\n\r");
+		    Item I=null;
+			for(Enumeration e=list.moneyItems.keys();e.hasMoreElements();)
+			{
+			    String key=(String)e.nextElement();
+			    Vector<Coins> V=list.moneyItems.get(key);
+                double totalValue=0.0;
+			    for(int v=0;v<V.size();v++)
+			    {
+			        I=(Item)V.elementAt(v);
+			        if(v>0) msg.append(", ");
+                    if(I instanceof Coins)
+                        totalValue+=((Coins)I).getTotalValue();
+			        msg.append(I.name());
+			    }
+                msg.append(" ^N("+CMLib.beanCounter().abbreviatedPrice(key,totalValue)+")");
+			    if(e.hasMoreElements()) msg.append("\n\r");
+			}
+		}
+		return msg.toString();
+	}
+	
+	public static StringBuffer getInventory(MOB seer, MOB mob, String mask)
+	{
+		StringBuffer msg=new StringBuffer("");
+		InventoryList list = fetchInventory(seer,mob);
+		if(((list.viewItems.size()>0)||(list.moneyItems.size()>0))
+        &&(!list.foundAndSeen))
         {
-			viewItems.clear();
-            moneyItems.clear();
-            foundButUnseen=true;
+			list.viewItems.clear();
+			list.moneyItems.clear();
+			list.foundButUnseen=true;
         }
 		else
 		if((mask!=null)&&(mask.trim().length()>0))
 		{
 			mask=mask.trim().toUpperCase();
 			if(!mask.startsWith("all")) mask="all "+mask;
-			V=(Vector)viewItems.clone();
-			viewItems.clear();
+			Vector<Item> V=(Vector<Item>)list.viewItems.clone();
+			list.viewItems.clear();
 			Item I=(V.size()>0)?(Item)V.firstElement():null;
 			while(I!=null)
 			{
 				I=(Item)CMLib.english().fetchEnvironmental(V,mask,false);
 				if(I!=null)
 				{
-					viewItems.addElement(I);
+					list.viewItems.addElement(I);
 					V.remove(I);
 				}
 			}
 		}
-        
-		if((viewItems.size()==0)&&(moneyItems.size()==0))
+		if((list.viewItems.size()==0)&&(list.moneyItems.size()==0))
 		{
 			if((mask!=null)&&(mask.trim().length()>0))
 				msg.append("(nothing like that you can see right now)");
@@ -115,32 +151,12 @@ public class Inventory extends StdCommand
 		}
 		else
 		{
-			if(viewItems.size()>0)
-				msg.append(CMLib.lister().lister(seer,viewItems,true,"MItem","",false,CMath.bset(seer.getBitmap(),MOB.ATT_COMPRESS)));
-            if(foundButUnseen)
+			if(list.viewItems.size()>0)
+				msg.append(CMLib.lister().lister(seer,list.viewItems,true,"MItem","",false,CMath.bset(seer.getBitmap(),MOB.ATT_COMPRESS)));
+            if(list.foundButUnseen)
                 msg.append("(stuff you can't see right now)");
                 
-			if(moneyItems.size()>0)
-			{
-			    msg.append("\n\r^HMoney:^N\n\r");
-			    Item I=null;
-				for(Enumeration e=moneyItems.keys();e.hasMoreElements();)
-				{
-				    String key=(String)e.nextElement();
-				    V=(Vector)moneyItems.get(key);
-                    double totalValue=0.0;
-				    for(int v=0;v<V.size();v++)
-				    {
-				        I=(Item)V.elementAt(v);
-				        if(v>0) msg.append(", ");
-                        if(I instanceof Coins)
-                            totalValue+=((Coins)I).getTotalValue();
-				        msg.append(I.name());
-				    }
-                    msg.append(" ^N("+CMLib.beanCounter().abbreviatedPrice(key,totalValue)+")");
-				    if(e.hasMoreElements()) msg.append("\n\r");
-				}
-			}
+            msg.append(getShowableMoney(list));
 		}
 		return msg;
 	}
