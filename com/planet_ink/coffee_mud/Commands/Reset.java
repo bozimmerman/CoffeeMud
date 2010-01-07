@@ -72,16 +72,16 @@ public class Reset extends StdCommand
 		{
 			if(IT.intValue()==I.material())
 			{
-				mob.tell(lead+I.Name()+" still "+RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK]);
+				mob.tell(lead+I.Name()+" still "+RawMaterial.CODES.NAME(I.material()));
 				return nochange;
 			}
 			I.setMaterial(IT.intValue());
-			mob.tell(lead+I.Name()+" Changed to "+RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK]);
+			mob.tell(lead+I.Name()+" Changed to "+RawMaterial.CODES.NAME(I.material()));
 			return 1;
 		}
 		while(true)
 		{
-			String str=mob.session().prompt(lead+I.Name()+"/"+RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK],"");
+			String str=mob.session().prompt(lead+I.Name()+"/"+RawMaterial.CODES.NAME(I.material()),"");
 			if(str.equalsIgnoreCase("delete"))
 				return -1;
 			else
@@ -94,27 +94,25 @@ public class Reset extends StdCommand
 				mob.tell(I.Name()+"/"+I.displayText()+"/"+I.description());
 			else
 			{
-				String poss="";
-				for(int ii=0;ii<RawMaterial.RESOURCE_DESCS.length;ii++)
+				int materialIndex=CMParms.indexOf(RawMaterial.CODES.NAMES(), str.toUpperCase());
+				if(materialIndex>=0)
 				{
-					if(RawMaterial.RESOURCE_DESCS[ii].startsWith(str.toUpperCase()))
-					   poss=RawMaterial.RESOURCE_DESCS[ii];
-					if(str.equalsIgnoreCase(RawMaterial.RESOURCE_DESCS[ii]))
-					{
-						I.setMaterial(RawMaterial.RESOURCE_DATA[ii][0]);
-						mob.tell(lead+"Changed to "+RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK]);
-						rememberI.put(I.Name(),Integer.valueOf(I.material()));
-						return 1;
-					}
+					I.setMaterial(RawMaterial.CODES.GET(materialIndex));
+					mob.tell(lead+"Changed to "+RawMaterial.CODES.NAME(materialIndex));
+					rememberI.put(I.Name(),Integer.valueOf(I.material()));
+					return 1;
 				}
-				if(poss.length()==0)
+				int possIndex=CMParms.startsWith(RawMaterial.CODES.NAMES(), str.toUpperCase());
+				String poss;
+				if(possIndex<0)
 				{
-					for(int ii=0;ii<RawMaterial.RESOURCE_DESCS.length;ii++)
-					{
-						if(RawMaterial.RESOURCE_DESCS[ii].indexOf(str.toUpperCase())>=0)
-						   poss=RawMaterial.RESOURCE_DESCS[ii];
-					}
+					poss="?";
+					for(String mat : RawMaterial.CODES.NAMES())
+						if(mat.indexOf(str.toUpperCase())>=0)
+						   poss=mat;
 				}
+				else
+					poss=RawMaterial.CODES.NAME(possIndex);
 				mob.tell(lead+"'"+str+"' does not exist.  Try '"+poss+"'.");
 			}
 		}
@@ -152,14 +150,7 @@ public class Reset extends StdCommand
 				if(rightMat<0)
 				{
 					Log.sysOut("Reset","Unconventional material: "+I.description());
-					for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
-					{
-						if(RawMaterial.RESOURCE_DESCS[i].equals(s))
-						{
-							rightMat=RawMaterial.RESOURCE_DATA[i][0];
-							break;
-						}
-					}
+					rightMat = RawMaterial.CODES.FIND_CaseSensitive(s);
 				}
 				if(rightMat<0)
 					Log.sysOut("Reset","Unknown material: "+I.description());
@@ -168,7 +159,7 @@ public class Reset extends StdCommand
 				{
 					if(mob!=null)
 					{
-						if(mob.session().confirm("Change "+I.name()+"/"+I.displayText()+" material to "+RawMaterial.RESOURCE_DESCS[rightMat&RawMaterial.RESOURCE_MASK]+" (y/N)?","N"))
+						if(mob.session().confirm("Change "+I.name()+"/"+I.displayText()+" material to "+RawMaterial.CODES.NAME(rightMat)+" (y/N)?","N"))
 						{
 							I.setMaterial(rightMat);
 							I.setDescription("");
@@ -177,7 +168,7 @@ public class Reset extends StdCommand
 					}
 					else
 					{
-						Log.sysOut("Reset","Changed "+I.name()+"/"+I.displayText()+" material to "+RawMaterial.RESOURCE_DESCS[rightMat&RawMaterial.RESOURCE_MASK]+"!");
+						Log.sysOut("Reset","Changed "+I.name()+"/"+I.displayText()+" material to "+RawMaterial.CODES.NAME(rightMat)+"!");
 						I.setMaterial(rightMat);
 						I.setDescription("");
 						return rightMat;

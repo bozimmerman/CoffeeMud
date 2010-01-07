@@ -342,7 +342,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		building.baseEnvStats().setWeight(amt1+amt2);
 		building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 		building.setMaterial(data[0][FOUND_CODE]);
-		int hardness=RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][3]-6;
+		int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-6;
 		building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness*3));
 		if(building.baseEnvStats().level()<1) building.baseEnvStats().setLevel(1);
 		int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));

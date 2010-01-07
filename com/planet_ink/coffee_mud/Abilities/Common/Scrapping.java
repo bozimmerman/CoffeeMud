@@ -196,7 +196,7 @@ public class Scrapping extends CommonSkill
 		foundShortName="nothing";
         playSound="ripping.wav";
 		if(found!=null)
-			foundShortName=RawMaterial.RESOURCE_DESCS[found.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
+			foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
 		CMMsg msg=CMClass.getMsg(mob,I,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) scrapping "+I.name()+".");
 		if(mob.location().okMessage(mob,msg))
 		{

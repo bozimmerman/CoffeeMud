@@ -83,7 +83,7 @@ public class Druid_KnowPlants extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				StringBuffer str=new StringBuffer("");
-				str.append(I.name()+" is a kind of "+RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK].toLowerCase()+".  ");
+				str.append(I.name()+" is a kind of "+RawMaterial.CODES.NAME(I.material()).toLowerCase()+".  ");
 				if(isPlant(I))
 					str.append("It was summoned by "+I.rawSecretIdentity()+".");
 				else

@@ -68,11 +68,11 @@ public class Chant_SensePlants extends Chant
 		if((okMaterials()!=null)&&(okMaterials().length>0))
 			for(int m=0;m<okMaterials().length;m++)
 				if((R.myResource()&RawMaterial.MATERIAL_MASK)==okMaterials()[m])
-					return "You sense "+RawMaterial.RESOURCE_DESCS[R.myResource()&RawMaterial.RESOURCE_MASK].toLowerCase()+" here.";
+					return "You sense "+RawMaterial.CODES.NAME(R.myResource()).toLowerCase()+" here.";
 		if((okResources()!=null)&&(okResources().length>0))
 			for(int m=0;m<okResources().length;m++)
 				if(R.myResource()==okResources()[m])
-					return "You sense "+RawMaterial.RESOURCE_DESCS[R.myResource()&RawMaterial.RESOURCE_MASK].toLowerCase()+" here.";
+					return "You sense "+RawMaterial.CODES.NAME(R.myResource()).toLowerCase()+" here.";
 		return "";
 	}
 

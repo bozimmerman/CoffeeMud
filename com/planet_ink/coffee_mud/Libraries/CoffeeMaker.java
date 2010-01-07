@@ -3084,8 +3084,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		case 14: if(CMath.isInteger(val)||(val.trim().length()==0))
 					I.setMaterial(CMath.s_int(val)); 
 				 else
-				 if(CMParms.containsIgnoreCase(RawMaterial.RESOURCE_DESCS,val))
-					I.setMaterial(RawMaterial.RESOURCE_DATA[CMParms.indexOfIgnoreCase(RawMaterial.RESOURCE_DESCS,val)][0]); 
+				 {
+					 int rsc=RawMaterial.CODES.FIND_IgnoreCase(val);
+					 if(rsc>=0) I.setMaterial(rsc);
+				 }
 				 break;
 		case 15: {
 					 while(I.numEffects()>0)

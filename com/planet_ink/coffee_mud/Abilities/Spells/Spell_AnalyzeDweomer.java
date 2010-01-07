@@ -119,7 +119,7 @@ public class Spell_AnalyzeDweomer extends Spell
 					if(w.maxRange()>w.minRange())
 						str.append("It has a maximum range of "+w.maxRange()+".  ");
 				}
-				str.append("It is made of "+RawMaterial.RESOURCE_DESCS[target.material()&RawMaterial.RESOURCE_MASK].toLowerCase()+".  ");
+				str.append("It is made of "+RawMaterial.CODES.NAME(target.material()).toLowerCase()+".  ");
 				if(mob.isMonster())
 					CMLib.commands().postSay(mob,null,str.toString().trim(),false,false);
 				else

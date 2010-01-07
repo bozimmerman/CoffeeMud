@@ -414,13 +414,13 @@ public class CraftingSkill extends GatheringSkill
 
 		if(req1Required>data[0][FOUND_AMT])
 		{
-			commonTell(mob,"You need "+req1Required+" pounds of "+RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)].toLowerCase()+" to make that.  There is not enough here.  Are you sure you set it all on the ground first?");
+			commonTell(mob,"You need "+req1Required+" pounds of "+RawMaterial.CODES.NAME(data[0][FOUND_CODE]).toLowerCase()+" to make that.  There is not enough here.  Are you sure you set it all on the ground first?");
 			return null;
 		}
 		data[0][FOUND_AMT]=req1Required;
 		if((req2Required>0)&&(req2Required>data[1][FOUND_AMT]))
 		{
-			commonTell(mob,"You need "+req2Required+" pounds of "+RawMaterial.RESOURCE_DESCS[(data[1][FOUND_CODE]&RawMaterial.RESOURCE_MASK)].toLowerCase()+" to make that.  There is not enough here.  Are you sure you set it all on the ground first?");
+			commonTell(mob,"You need "+req2Required+" pounds of "+RawMaterial.CODES.NAME(data[1][FOUND_CODE]).toLowerCase()+" to make that.  There is not enough here.  Are you sure you set it all on the ground first?");
 			return null;
 		}
 		data[1][FOUND_AMT]=req2Required;

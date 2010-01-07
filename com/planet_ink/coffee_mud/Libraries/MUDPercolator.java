@@ -761,8 +761,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
             	throw new CMException("Unable to metacraft an item without a name, Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
             String materialStr = findOptionalString("material",piece,defined);
             int material=-1;
-            if((materialStr!=null)&&(CMParms.containsIgnoreCase(RawMaterial.RESOURCE_DESCS,materialStr)))
-            	material=RawMaterial.RESOURCE_DATA[CMParms.indexOfIgnoreCase(RawMaterial.RESOURCE_DESCS,materialStr)][0];
+            if(materialStr!=null)
+            {
+            	int materialIndex = CMParms.indexOfIgnoreCase(RawMaterial.CODES.NAMES(),materialStr);
+            	if(materialIndex>=0) material=RawMaterial.CODES.GET(materialIndex);
+            }
             Vector craftors=new Vector();
 			for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
 			{

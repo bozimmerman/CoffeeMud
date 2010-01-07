@@ -1138,7 +1138,7 @@ public class CMProps extends Properties
         else
         if(O instanceof Coins)
         {
-            image=getHashedMXPImage(H,"COINS_"+RawMaterial.RESOURCE_DESCS[(((Coins)O).material()&RawMaterial.RESOURCE_MASK)]);
+            image=getHashedMXPImage(H,"COINS_"+RawMaterial.CODES.NAME(((Coins)O).material()));
             if(image==null) image=getHashedMXPImage(H,"COINS_*");
         }
         else
@@ -1175,7 +1175,7 @@ public class CMProps extends Properties
         else
         if(O instanceof RawMaterial)
         {
-            image=getHashedMXPImage(H,"RESOURCE_"+RawMaterial.RESOURCE_DESCS[(((RawMaterial)O).material()&RawMaterial.RESOURCE_MASK)]);
+            image=getHashedMXPImage(H,"RESOURCE_"+RawMaterial.CODES.NAME(((RawMaterial)O).material()));
             if(image==null)
 	            image=getHashedMXPImage(H,"RESOURCE_"+RawMaterial.MATERIAL_DESCS[(((RawMaterial)O).material()&RawMaterial.MATERIAL_MASK)>>8]);
             if(image==null) 
@@ -1184,7 +1184,7 @@ public class CMProps extends Properties
         else
         if(O instanceof Key)
         {
-            image=getHashedMXPImage(H,"KEY_"+RawMaterial.RESOURCE_DESCS[(((Key)O).material()&RawMaterial.RESOURCE_MASK)]);
+            image=getHashedMXPImage(H,"KEY_"+RawMaterial.CODES.NAME(((Key)O).material()));
             image=getHashedMXPImage(H,"KEY_"+RawMaterial.MATERIAL_DESCS[(((Key)O).material()&RawMaterial.MATERIAL_MASK)>>8]);
             if(image==null) image=getHashedMXPImage(H,"KEY_*");
         }
@@ -1312,7 +1312,7 @@ public class CMProps extends Properties
         if(O instanceof Food)
         {
             image=getHashedMXPImage(H,"FOOD_"+((Food)O).ID().toUpperCase());
-            if(image==null) image=getHashedMXPImage(H,"FOOD_"+RawMaterial.RESOURCE_DESCS[(((Food)O).material()&RawMaterial.RESOURCE_MASK)]);
+            if(image==null) image=getHashedMXPImage(H,"FOOD_"+RawMaterial.CODES.NAME(((Food)O).material()));
             if(image==null) image=getHashedMXPImage(H,"FOOD_"+RawMaterial.MATERIAL_DESCS[(((Food)O).material()&RawMaterial.MATERIAL_MASK)>>8]);
             if(image==null) image=getHashedMXPImage(H,"FOOD_*");
         }
@@ -1320,7 +1320,7 @@ public class CMProps extends Properties
         if(O instanceof Drink)
         {
             image=getHashedMXPImage(H,"DRINK_"+((Drink)O).ID().toUpperCase());
-            if(image==null) image=getHashedMXPImage(H,"DRINK_"+RawMaterial.RESOURCE_DESCS[(((Item)O).material()&RawMaterial.RESOURCE_MASK)]);
+            if(image==null) image=getHashedMXPImage(H,"DRINK_"+RawMaterial.CODES.NAME(((Item)O).material()&RawMaterial.RESOURCE_MASK));
             if(image==null) image=getHashedMXPImage(H,"DRINK_"+RawMaterial.MATERIAL_DESCS[(((Item)O).material()&RawMaterial.MATERIAL_MASK)>>8]);
             if(image==null) image=getHashedMXPImage(H,"DRINK_*");
         }
@@ -1348,7 +1348,7 @@ public class CMProps extends Properties
         if((image==null)&&(O instanceof Item))
         {
             if(image==null) image=getHashedMXPImage(H,"ITEM_"+((Item)O).ID().toUpperCase());
-            image=getHashedMXPImage(H,"ITEM_"+RawMaterial.RESOURCE_DESCS[(((Item)O).material()&RawMaterial.RESOURCE_MASK)]);
+            image=getHashedMXPImage(H,"ITEM_"+RawMaterial.CODES.NAME(((Item)O).material()));
             image=getHashedMXPImage(H,"ITEM_"+RawMaterial.MATERIAL_DESCS[(((Item)O).material()&RawMaterial.MATERIAL_MASK)>>8]);
             if(image==null) image=getHashedMXPImage(H,"ITEM_*");
         }

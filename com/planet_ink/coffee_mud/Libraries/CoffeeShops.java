@@ -118,7 +118,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         if(E instanceof Item)
         {
             Item I=(Item)E;
-            str.append("\n\rMaterial   : "+CMStrings.capitalizeAndLower(RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK].toLowerCase()));
+            str.append("\n\rMaterial   : "+CMStrings.capitalizeAndLower(RawMaterial.CODES.NAME(I.material()).toLowerCase()));
             str.append("\n\rWeight     : "+I.envStats().weight()+" pounds");
             if(I instanceof Weapon)
             {

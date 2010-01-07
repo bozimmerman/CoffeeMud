@@ -228,9 +228,8 @@ public class StdDeity extends StdMOB implements Deity
 					&&((t>>8)<RawMaterial.MATERIAL_MASK))
 						material=RawMaterial.MATERIAL_DESCS[t>>8].toLowerCase();
 					else
-					if(((t&RawMaterial.RESOURCE_MASK)>0)
-					&&((t&RawMaterial.RESOURCE_MASK)<RawMaterial.RESOURCE_DESCS.length))
-						material=RawMaterial.RESOURCE_DESCS[t&RawMaterial.RESOURCE_MASK].toLowerCase();
+					if(RawMaterial.CODES.IS_VALID(t))
+						material=RawMaterial.CODES.NAME(t).toLowerCase();
 					buf.append("the player puts an item made of "+material+" in "+DT.parm2.toLowerCase());
 				}
 				break;
@@ -242,9 +241,8 @@ public class StdDeity extends StdMOB implements Deity
 					&&((t>>8)<RawMaterial.MATERIAL_MASK))
 						material=RawMaterial.MATERIAL_DESCS[t>>8].toLowerCase();
 					else
-					if(((t&RawMaterial.RESOURCE_MASK)>0)
-					&&((t&RawMaterial.RESOURCE_MASK)<RawMaterial.RESOURCE_DESCS.length))
-						material=RawMaterial.RESOURCE_DESCS[t&RawMaterial.RESOURCE_MASK].toLowerCase();
+					if(RawMaterial.CODES.IS_VALID(t))
+						material=RawMaterial.CODES.NAME(t).toLowerCase();
 					buf.append("the player should burn an item made of "+material);
 				}
 				break;
@@ -1405,16 +1403,11 @@ public class StdDeity extends StdMOB implements Deity
 					{
 						DT.triggerCode=TRIGGER_BURNMATERIAL;
 						DT.parm1=CMParms.combine(V,1);
-						boolean found=false;
-						for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
-						{
-							if(RawMaterial.RESOURCE_DESCS[i].startsWith(DT.parm1))
-							{
-								DT.parm1=""+RawMaterial.RESOURCE_DATA[i][0];
-								found=true;
-							}
-						}
-						if(!found)
+						int cd = RawMaterial.CODES.FIND_StartsWith(DT.parm1);
+						boolean found=cd>=0;
+						if(found) 
+							DT.parm1=""+cd;
+						else
 						for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
 						{
 							if(RawMaterial.MATERIAL_DESCS[i].startsWith(DT.parm1))
@@ -1440,15 +1433,11 @@ public class StdDeity extends StdMOB implements Deity
 						}
 						DT.parm1=(String)V.elementAt(1);
 						DT.parm2=CMParms.combine(V,2);
-						boolean found=false;
-						for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
-						{
-							if(RawMaterial.RESOURCE_DESCS[i].startsWith(DT.parm1))
-							{
-								DT.parm1=""+RawMaterial.RESOURCE_DATA[i][0];
-								found=true;
-							}
-						}
+						int cd = RawMaterial.CODES.FIND_StartsWith(DT.parm1);
+						boolean found=cd>=0;
+						if(found)
+							DT.parm1=""+cd;
+						else
 						if(!found)
 						for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
 						{

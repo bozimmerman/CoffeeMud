@@ -103,8 +103,8 @@ public class GenPerfume extends StdPerfume
 		case 4: setThirstQuenched(CMath.s_parseIntExpression(val)); break;
 		case 5: setLiquidHeld(CMath.s_parseIntExpression(val)); break;
 		case 6:{
-				int x=CMath.s_parseListIntExpression(RawMaterial.RESOURCE_DESCS, val);
-				x=((x>=0)&&(x<RawMaterial.RESOURCE_DATA[1][0]))?RawMaterial.RESOURCE_DATA[x][0]:x;
+				int x=CMath.s_parseListIntExpression(RawMaterial.CODES.NAMES(), val);
+				x=((x>=0)&&(x<RawMaterial.RESOURCE_MASK))?RawMaterial.CODES.GET(x):x;
 				setLiquidType(x); 
 				break;
 			   } 

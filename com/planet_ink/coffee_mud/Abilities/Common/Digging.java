@@ -145,7 +145,7 @@ public class Digging extends GatheringSkill
 			found=(Item)CMLib.materials().makeResource(resourceType,Integer.toString(mob.location().domainType()),false,null);
 			foundShortName="nothing";
 			if(found!=null)
-				foundShortName=RawMaterial.RESOURCE_DESCS[found.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
+				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
 		}
 		
 		int duration=getDuration(60,mob,1,15);

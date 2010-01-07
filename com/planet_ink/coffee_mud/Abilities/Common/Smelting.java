@@ -169,26 +169,16 @@ public class Smelting extends CraftingSkill
 		String doneResourceDesc=(String)foundRecipe.elementAt(RCP_FINALNAME);
 		String resourceDesc1=(String)foundRecipe.elementAt(RCP_METALONE);
 		String resourceDesc2=(String)foundRecipe.elementAt(RCP_METALTWO);
-		int resourceCode1=-1;
-		int resourceCode2=-1;
-		int doneResourceCode=-1;
-		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
-		{
-			String desc=RawMaterial.RESOURCE_DESCS[i];
-			if(desc.equalsIgnoreCase(resourceDesc1))
-				resourceCode1=i;
-			if(desc.equalsIgnoreCase(resourceDesc2))
-				resourceCode2=i;
-			if(desc.equalsIgnoreCase(doneResourceDesc))
-				doneResourceCode=i;
-		}
+		int resourceCode1=RawMaterial.CODES.FIND_IgnoreCase(resourceDesc1);
+		int resourceCode2=RawMaterial.CODES.FIND_IgnoreCase(resourceDesc2);
+		int doneResourceCode=RawMaterial.CODES.FIND_IgnoreCase(doneResourceDesc);
 		if((resourceCode1<0)||(resourceCode2<0)||(doneResourceCode<0))
 		{
 			commonTell(mob,"CoffeeMud error in this alloy.  Please let your local Archon know.");
 			return false;
 		}
-		int amountResource1=CMLib.materials().findNumberOfResource(mob.location(),RawMaterial.RESOURCE_DATA[resourceCode1][0]);
-		int amountResource2=CMLib.materials().findNumberOfResource(mob.location(),RawMaterial.RESOURCE_DATA[resourceCode2][0]);
+		int amountResource1=CMLib.materials().findNumberOfResource(mob.location(),RawMaterial.CODES.GET(resourceCode1));
+		int amountResource2=CMLib.materials().findNumberOfResource(mob.location(),RawMaterial.CODES.GET(resourceCode2));
 		if(amountResource1==0)
 		{
 			commonTell(mob,"There is no "+resourceDesc1+" here to make "+doneResourceDesc+" from.  It might need to be put down first.");
@@ -204,11 +194,11 @@ public class Smelting extends CraftingSkill
 		amountMaking=amountResource1;
 		if(amountResource2<amountResource1) amountMaking=amountResource2;
 		if((maxAmount>0)&&(amountMaking>maxAmount)) amountMaking=maxAmount;
-		CMLib.materials().destroyResources(mob.location(),amountMaking,RawMaterial.RESOURCE_DATA[resourceCode1][0],0,null);
-		CMLib.materials().destroyResources(mob.location(),amountMaking,RawMaterial.RESOURCE_DATA[resourceCode2][0],0,null);
+		CMLib.materials().destroyResources(mob.location(),amountMaking,RawMaterial.CODES.GET(resourceCode1),0,null);
+		CMLib.materials().destroyResources(mob.location(),amountMaking,RawMaterial.CODES.GET(resourceCode2),0,null);
 		duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),6);
 		amountMaking+=amountMaking;
-		building=(Item)CMLib.materials().makeResource(RawMaterial.RESOURCE_DATA[doneResourceCode][0],null,false,null);
+		building=(Item)CMLib.materials().makeResource(RawMaterial.CODES.GET(doneResourceCode),null,false,null);
 		startStr="<S-NAME> start(s) smelting "+doneResourceDesc.toLowerCase()+".";
 		displayText="You are smelting "+doneResourceDesc.toLowerCase();
         playSound="sizzling.wav";

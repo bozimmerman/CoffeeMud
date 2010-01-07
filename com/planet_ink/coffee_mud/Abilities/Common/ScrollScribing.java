@@ -235,10 +235,7 @@ public class ScrollScribing extends CraftingSkill implements ItemCraftor
 			int experienceToLose=10;
 			experienceToLose+=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*10;
 			experienceToLose-=CMLib.ableMapper().qualifyingClassLevel(mob,theSpell)*5;
-			int resourceType=-1;
-			for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
-				if(RawMaterial.RESOURCE_DESCS[i].equalsIgnoreCase(ingredient))
-				{ resourceType=RawMaterial.RESOURCE_DATA[i][0]; break;}
+			int resourceType=RawMaterial.CODES.FIND_IgnoreCase(ingredient);
 
 			int[][] data = null;
 			if(resourceType>0)

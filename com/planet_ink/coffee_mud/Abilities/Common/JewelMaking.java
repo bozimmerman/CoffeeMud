@@ -142,7 +142,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 		&&((IE.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_GLASS))
 		{
 			if(!quiet)
-				commonTell(mob,"You don't know how to "+what+" something made of "+RawMaterial.RESOURCE_DESCS[IE.material()&RawMaterial.RESOURCE_MASK].toLowerCase()+".");
+				commonTell(mob,"You don't know how to "+what+" something made of "+RawMaterial.CODES.NAME(IE.material()).toLowerCase()+".");
 			return false;
 		}
 		if(!(IE instanceof Armor))
@@ -267,7 +267,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				return false;
 			building=(Item)thangE;
 			beingDone=new Vector();
-			String materialName=RawMaterial.RESOURCE_DESCS[jewelI.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
+			String materialName=RawMaterial.CODES.NAME(jewelI.material()).toLowerCase();
 			if(word.equals("encrust"))
 			{
 				beingDone.addElement(CMStrings.capitalizeAndLower(building.name())+" is encrusted with bits of "+materialName+".");
@@ -413,9 +413,9 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),4);
 			String itemName=null;
 			if((otherRequired!=null)&&(otherRequired.length()>0)&&(otherRequired.equalsIgnoreCase("PRECIOUS")))
-				itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[1][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
+				itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.CODES.NAME((data[1][FOUND_CODE]))).toLowerCase();
 			else
-				itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
+				itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
 			else
@@ -430,18 +430,18 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			&&(((data[0][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
 			   ||((data[0][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL))
 			&&(((data[1][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PRECIOUS)))
-				building.setDescription(itemName+" made of "+RawMaterial.RESOURCE_DESCS[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK].toLowerCase()+".");
+				building.setDescription(itemName+" made of "+RawMaterial.CODES.NAME(data[0][FOUND_CODE]).toLowerCase()+".");
 			else
 				building.setDescription(itemName+". ");
 			building.baseEnvStats().setWeight(woodRequired);
-			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][RawMaterial.DATA_VALUE])));
+			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			if(data[1][FOUND_CODE]==0)
 				building.setMaterial(data[0][FOUND_CODE]);
 			else
 			{
 				building.setMaterial(data[1][FOUND_CODE]);
-				building.setBaseValue(building.baseGoldValue()+RawMaterial.RESOURCE_DATA[data[1][FOUND_CODE]&RawMaterial.RESOURCE_MASK][RawMaterial.DATA_VALUE]);
+				building.setBaseValue(building.baseGoldValue()+RawMaterial.CODES.VALUE(data[0][FOUND_CODE]));
 			}
 			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 			//int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
@@ -488,7 +488,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 		{
 			messedUp=false;
 			duration=1;
-			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
+			verb="bundling "+RawMaterial.CODES.NAME(building.material()).toLowerCase();
 			startStr="<S-NAME> start(s) "+verb+".";
 			displayText="You are "+verb;
 		}

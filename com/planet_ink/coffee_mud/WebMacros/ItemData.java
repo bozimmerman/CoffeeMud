@@ -36,7 +36,6 @@ import java.util.*;
 public class ItemData extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
-    public static DVector sortedResources=new DVector(2);
 
     private static final String[] okparms={
       "NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
@@ -66,20 +65,6 @@ public class ItemData extends StdWebMacro
     {
         super();
 
-        if(sortedResources.size()==0)
-        for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
-        {
-            Long L=Long.valueOf(RawMaterial.RESOURCE_DATA[r][0]);
-            String S=RawMaterial.RESOURCE_DESCS[r];
-            int putHere=0;
-            for(putHere=0;putHere<sortedResources.size();putHere++)
-                if(S.compareTo((String)sortedResources.elementAt(putHere,2))<0)
-                    break;
-            if(putHere>=sortedResources.size())
-                sortedResources.addElement(L,S);
-            else
-                sortedResources.insertElementAt(putHere,L,S);
-        }
     }
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
@@ -388,12 +373,12 @@ public class ItemData extends StdWebMacro
 					break;
 				case 8: // materials
 					if(firstTime) old=""+I.material();
-					for(int r=0;r<sortedResources.size();r++)
+					for(int r : RawMaterial.CODES.ALL_SBN())
 					{
-						str.append("<OPTION VALUE=\""+((Long)sortedResources.elementAt(r,1)).longValue()+"\"");
-						if(((Long)sortedResources.elementAt(r,1)).intValue()==CMath.s_int(old))
+						str.append("<OPTION VALUE=\""+r+"\"");
+						if(r==CMath.s_int(old))
 							str.append(" SELECTED");
-						str.append(">"+((String)sortedResources.elementAt(r,2)));
+						str.append(">"+RawMaterial.CODES.NAME(r));
 					}
 					break;
 				case 9: // is generic
@@ -625,15 +610,13 @@ public class ItemData extends StdWebMacro
 				case 45: // liquid types
 					if((firstTime)&&(I instanceof Drink))
 						old=""+((Drink)I).liquidType();
-					for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
+					List<Integer> liquids=RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_LIQUID);
+					for(Integer liquid : liquids)
 					{
-						if((RawMaterial.RESOURCE_DATA[r][0]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
-						{
-							str.append("<OPTION VALUE=\""+RawMaterial.RESOURCE_DATA[r][0]+"\"");
-							if(r==CMath.s_int(old))
-								str.append(" SELECTED");
-							str.append(">"+RawMaterial.RESOURCE_DESCS[r]);
-						}
+						str.append("<OPTION VALUE=\""+liquid.intValue()+"\"");
+						if(liquid.intValue()==CMath.s_int(old))
+							str.append(" SELECTED");
+						str.append(">"+RawMaterial.CODES.NAME(liquid.intValue()));
 					}
 					break;
 				case 46: // ammo types

@@ -1815,7 +1815,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		    &&(msg.target() instanceof Item)
 		    &&(laws.bannedSubstances().size()>0))
 		    {
-		        String rsc=RawMaterial.RESOURCE_DESCS[((Item)msg.target()).material()&RawMaterial.RESOURCE_MASK].toUpperCase();
+		        String rsc=RawMaterial.CODES.NAME(((Item)msg.target()).material()).toUpperCase();
 				for(int i=0;i<laws.bannedSubstances().size();i++)
 				{
 					Vector V=(Vector)laws.bannedSubstances().elementAt(i);

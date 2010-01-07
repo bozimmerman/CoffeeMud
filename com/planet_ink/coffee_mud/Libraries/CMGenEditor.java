@@ -1403,29 +1403,27 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         else
         if(E instanceof Drink)
         {
-            mob.session().println(showNumber+". Current liquid type: "+RawMaterial.RESOURCE_DESCS[((Drink)E).liquidType()&RawMaterial.RESOURCE_MASK]);
+            mob.session().println(showNumber+". Current liquid type: "+RawMaterial.CODES.NAME(((Drink)E).liquidType()));
             if((showFlag!=showNumber)&&(showFlag>-999)) return;
             boolean q=false;
             while((mob.session()!=null)&&(!mob.session().killFlag())&&(!q))
             {
-                String newType=mob.session().prompt("Enter a new type (?)\n\r:",RawMaterial.RESOURCE_DESCS[((Drink)E).liquidType()&RawMaterial.RESOURCE_MASK]);
+                String newType=mob.session().prompt("Enter a new type (?)\n\r:",RawMaterial.CODES.NAME(((Drink)E).liquidType()));
                 if(newType.equals("?"))
                 {
                     StringBuffer say=new StringBuffer("");
-                    for(int i=0;i<RawMaterial.RESOURCE_DESCS.length-1;i++)
-                        if((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
-                            say.append(RawMaterial.RESOURCE_DESCS[i]+", ");
+                    List<Integer> liquids = RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_LIQUID);
+                    for(Integer code : liquids)
+                        say.append(RawMaterial.CODES.NAME(code)+", ");
                     mob.tell(say.toString().substring(0,say.length()-2));
                     q=false;
                 }
                 else
                 {
                     q=true;
-                    int newValue=-1;
-                    for(int i=0;i<RawMaterial.RESOURCE_DESCS.length-1;i++)
-                        if((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
-                            if(newType.equalsIgnoreCase(RawMaterial.RESOURCE_DESCS[i]))
-                                newValue=RawMaterial.RESOURCE_DATA[i][0];
+                    int newValue=RawMaterial.CODES.FIND_IgnoreCase(newType);
+                    if((newValue&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LIQUID)
+                    	newValue=-1;
                     if(newValue>=0)
                         ((Drink)E).setLiquidType(newValue);
                     else
@@ -2395,27 +2393,24 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
-        mob.tell(showNumber+". Material Type: '"+RawMaterial.RESOURCE_DESCS[E.material()&RawMaterial.RESOURCE_MASK]+"'.");
+        mob.tell(showNumber+". Material Type: '"+RawMaterial.CODES.NAME(E.material())+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         boolean q=false;
         while((mob.session()!=null)&&(!mob.session().killFlag())&&(!q))
         {
-            String newType=mob.session().prompt("Enter a new material (?)\n\r:",RawMaterial.RESOURCE_DESCS[E.material()&RawMaterial.RESOURCE_MASK]);
+            String newType=mob.session().prompt("Enter a new material (?)\n\r:",RawMaterial.CODES.NAME(E.material()));
             if(newType.equals("?"))
             {
                 StringBuffer say=new StringBuffer("");
-                for(int i=0;i<RawMaterial.RESOURCE_DESCS.length-1;i++)
-                    say.append(RawMaterial.RESOURCE_DESCS[i]+", ");
+                for(String S : RawMaterial.CODES.NAMES())
+                    say.append(S+", ");
                 mob.tell(say.toString().substring(0,say.length()-2));
                 q=false;
             }
             else
             {
                 q=true;
-                int newValue=-1;
-                for(int i=0;i<RawMaterial.RESOURCE_DESCS.length-1;i++)
-                    if(newType.equalsIgnoreCase(RawMaterial.RESOURCE_DESCS[i]))
-                        newValue=RawMaterial.RESOURCE_DATA[i][0];
+                int newValue=RawMaterial.CODES.FIND_IgnoreCase(newType);
                 if(newValue>=0)
                     E.setMaterial(newValue);
                 else
@@ -5986,7 +5981,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
         String choices="Your choices are: ";
-        String allComponents=CMParms.toStringList(RawMaterial.MATERIAL_DESCS)+","+CMParms.toStringList(RawMaterial.RESOURCE_DESCS);
+        String allComponents=CMParms.toStringList(RawMaterial.MATERIAL_DESCS)+","+CMParms.toStringList(RawMaterial.CODES.NAMES());
         while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
         {
             int showNumber=0;

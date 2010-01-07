@@ -76,37 +76,30 @@ public class Spell_AlterSubstance extends Spell
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_UNWORNONLY);
 		if(target==null) return false;
 		int newMaterial=-1;
-		for(int m=0;m<RawMaterial.MATERIAL_DESCS.length;m++)
+		newMaterial=CMParms.indexOfIgnoreCase(RawMaterial.MATERIAL_DESCS, material.toUpperCase().trim());
+		if(newMaterial<0)
+			newMaterial=CMParms.startsWith(RawMaterial.MATERIAL_DESCS, material.toUpperCase().trim());
+		if(newMaterial>=0)
 		{
-			if(CMLib.english().containsString(RawMaterial.MATERIAL_DESCS[m],material))
+			List<Integer> rscs = RawMaterial.CODES.COMPOSE_RESOURCES(newMaterial);
+			if(rscs.size()>0)
 			{
-				for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
-				{
-					int code=RawMaterial.RESOURCE_DATA[r][0];
-					if((code&RawMaterial.MATERIAL_MASK)==(m<<8))
-					{
-						newMaterial=code;
-						material=RawMaterial.RESOURCE_DESCS[r];
-						break;
-					}
-				}
-				if(newMaterial<0)
-				{
-					newMaterial=(m<<8);
-					material=RawMaterial.MATERIAL_DESCS[m];
-				}
-				break;
+				newMaterial=rscs.get(0);
+				material=RawMaterial.CODES.NAME(newMaterial);
+			}
+			else
+			{
+				newMaterial=(newMaterial<<8);
+				material=RawMaterial.MATERIAL_DESCS[newMaterial];
 			}
 		}
-		if(newMaterial<0)
-		for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
+		else
 		{
-			if(CMLib.english().containsString(RawMaterial.RESOURCE_DESCS[r],material))
-			{
-				newMaterial=RawMaterial.RESOURCE_DATA[r][0];
-				material=RawMaterial.RESOURCE_DESCS[r];
-				break;
-			}
+			newMaterial=CMParms.indexOfIgnoreCase(RawMaterial.CODES.NAMES(), material.toUpperCase().trim());
+			if(newMaterial<0)
+				newMaterial=CMParms.startsWith(RawMaterial.CODES.NAMES(), material.toUpperCase().trim());
+			if(newMaterial>=0)
+				material=RawMaterial.CODES.NAME(newMaterial);
 		}
 		if(newMaterial<0)
 		{
@@ -129,7 +122,7 @@ public class Spell_AlterSubstance extends Spell
 				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> change(s) into "+material+"!");
 				oldMaterial=target.material();
 				target.setMaterial(newMaterial);
-				String oldResourceName=RawMaterial.RESOURCE_DESCS[oldMaterial&RawMaterial.RESOURCE_MASK];
+				String oldResourceName=RawMaterial.CODES.NAME(oldMaterial&RawMaterial.RESOURCE_MASK);
 				String oldMaterialName=RawMaterial.MATERIAL_DESCS[(oldMaterial&RawMaterial.MATERIAL_MASK)>>8];
 				String oldName=target.name().toUpperCase();
 				oldName=CMStrings.replaceAll(oldName,oldResourceName,material);

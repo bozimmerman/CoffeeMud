@@ -93,7 +93,7 @@ public class PlantLore extends CommonSkill
 							Room R=(Room)V.elementAt(v);
 							int material=R.myResource()&RawMaterial.MATERIAL_MASK;
 							int resource=R.myResource()&RawMaterial.RESOURCE_MASK;
-							if((resource<0)||(resource>=RawMaterial.RESOURCE_DESCS.length))
+							if(!RawMaterial.CODES.IS_VALID(resource))
 								continue;
 							if((material!=RawMaterial.MATERIAL_VEGETATION)
 							&&(resource!=RawMaterial.RESOURCE_COTTON)
@@ -101,7 +101,7 @@ public class PlantLore extends CommonSkill
 							&&(resource!=RawMaterial.RESOURCE_SAP)
 							&&(material!=RawMaterial.MATERIAL_WOODEN))
 								continue;
-							String resourceStr=RawMaterial.RESOURCE_DESCS[resource];
+							String resourceStr=RawMaterial.CODES.NAME(resource);
 							if(R==room)
 								str.append("You think this spot would be good for "+resourceStr.toLowerCase()+".\n\r");
 							else

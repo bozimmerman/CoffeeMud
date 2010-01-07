@@ -55,38 +55,20 @@ public class ResourceOverride extends StdBehavior
 			if((CMath.s_int(which)>0)||(which.equalsIgnoreCase("0")))
 			   code=CMath.s_int(which);
 	
+			if(code<0) code = RawMaterial.CODES.FIND_IgnoreCase(which);
 			if(code<0)
-			for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
-			{
-				if(RawMaterial.RESOURCE_DESCS[i].equalsIgnoreCase(which))
-					code=RawMaterial.RESOURCE_DATA[i][0];
-			}
+				for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
+				{
+					if(RawMaterial.MATERIAL_DESCS[i].equalsIgnoreCase(which))
+					{ code=RawMaterial.CODES.COMPOSE_RESOURCES(i).get(0); break;}
+				}
+			if(code<0) code = RawMaterial.CODES.FIND_StartsWith(which);
 			if(code<0)
-			for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
-			{
-				if(RawMaterial.MATERIAL_DESCS[i].equalsIgnoreCase(which))
-					for(int i2=0;i2<RawMaterial.RESOURCE_DESCS.length;i2++)
-					{
-						if(CMath.isSet((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK),i))
-						{ code=RawMaterial.RESOURCE_DATA[i][0]; break;}
-					}
-			}
-			if(code<0)
-			for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
-			{
-				if(RawMaterial.RESOURCE_DESCS[i].startsWith(which))
-					code=RawMaterial.RESOURCE_DATA[i][0];
-			}
-			if(code<0)
-			for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
-			{
-				if(RawMaterial.MATERIAL_DESCS[i].startsWith(which))
-					for(int i2=0;i2<RawMaterial.RESOURCE_DESCS.length;i2++)
-					{
-						if(CMath.isSet((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK),i))
-						{ code=RawMaterial.RESOURCE_DATA[i][0]; break;}
-					}
-			}
+				for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
+				{
+					if(RawMaterial.MATERIAL_DESCS[i].startsWith(which))
+					{ code=RawMaterial.CODES.COMPOSE_RESOURCES(i).get(0); break;}
+				}
 			if(code>=0)
 			{
 				if(!rscs.contains(Integer.valueOf(code)))

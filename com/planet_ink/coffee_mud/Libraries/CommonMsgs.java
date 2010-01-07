@@ -648,7 +648,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	        if((mob!=null)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<10))
 	            response.append("It is mostly made of a kind of "+RawMaterial.MATERIAL_NOUNDESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8].toLowerCase()+".  ");
 	        else
-	            response.append("It is mostly made of "+RawMaterial.RESOURCE_DESCS[(item.material()&RawMaterial.RESOURCE_MASK)].toLowerCase()+".  ");
+	            response.append("It is mostly made of "+RawMaterial.CODES.NAME(item.material()).toLowerCase()+".  ");
 	        if((item instanceof Weapon)&&((mob==null)||mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10)) {
 	            response.append("It is a ");
                 if((item.rawLogicalAnd())&&CMath.bset(item.rawProperLocationBitmap(),Item.WORN_WIELD|Item.WORN_HELD))
@@ -745,9 +745,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                     int myResource=((Drink)item).liquidType();
                     l.setMaterial(myResource);
                     ((Drink)l).setLiquidType(myResource);
-                    l.setBaseValue(RawMaterial.RESOURCE_DATA[myResource&RawMaterial.RESOURCE_MASK][1]);
+                    l.setBaseValue(RawMaterial.CODES.VALUE(myResource));
                     l.baseEnvStats().setWeight(1);
-                    String name=RawMaterial.RESOURCE_DESCS[myResource&RawMaterial.RESOURCE_MASK].toLowerCase();
+                    String name=RawMaterial.CODES.NAME(myResource).toLowerCase();
                     l.setName("some "+name);
                     l.setDisplayText("some "+name+" sits here.");
                     l.setDescription("");

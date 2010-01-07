@@ -65,15 +65,12 @@ public class Chant_FindPlant extends Chant
 				for(int m=0;m<okResources().length;m++)
 					if(!allResources.contains(Integer.valueOf(okResources()[m])))
 					   allResources.addElement(Integer.valueOf(okResources()[m]));
-			for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
-			{
-				int cd=RawMaterial.RESOURCE_DATA[i][0];
+			for(int cd : RawMaterial.CODES.ALL())
 				if(okMaterials()!=null)
 					for(int m=0;m<okMaterials().length;m++)
 						if((cd&RawMaterial.MATERIAL_MASK)==okMaterials()[m])
 							if(!allResources.contains(Integer.valueOf(cd)))
 							   allResources.addElement(Integer.valueOf(cd));
-			}
 		}
 		return allResources;
 	}
@@ -168,7 +165,7 @@ public class Chant_FindPlant extends Chant
 		{
 			StringBuffer msg=new StringBuffer("You may search for any of the following: ");
 			for(int i=0;i<allOkResources().size();i++)
-				msg.append(RawMaterial.RESOURCE_DESCS[((Integer)allOkResources().elementAt(i)).intValue()&RawMaterial.RESOURCE_MASK].toLowerCase()+", ");
+				msg.append(RawMaterial.CODES.NAME(((Integer)allOkResources().elementAt(i)).intValue()).toLowerCase()+", ");
 			mob.tell(msg.substring(0,msg.length()-2));
 			return false;
 		}
@@ -176,7 +173,7 @@ public class Chant_FindPlant extends Chant
 		for(int i=0;i<allOkResources().size();i++)
 		{
 			int c=((Integer)allOkResources().elementAt(i)).intValue();
-			String d=RawMaterial.RESOURCE_DESCS[c&RawMaterial.RESOURCE_MASK];
+			String d=RawMaterial.CODES.NAME(c);
 			if(d.equalsIgnoreCase(s))
 			{
 				lookingFor=d.toLowerCase();

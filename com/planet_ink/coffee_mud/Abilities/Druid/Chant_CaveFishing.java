@@ -115,7 +115,7 @@ public class Chant_CaveFishing extends Chant
 					{
 						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Fish start swimming around in "+target.name()+"!");
 						A.previousResource=target.myResource();
-						target.setResource(RawMaterial.FISHES[CMLib.dice().roll(1,RawMaterial.FISHES.length,-1)]);
+						target.setResource(RawMaterial.CODES.FISHES()[CMLib.dice().roll(1,RawMaterial.CODES.FISHES().length,-1)]);
 					}
 				}
 			}

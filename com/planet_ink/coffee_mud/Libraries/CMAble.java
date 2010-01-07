@@ -1403,7 +1403,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
             itemDesc=RawMaterial.MATERIAL_DESCS[(int)comp.getLongType()>>8].toUpperCase();
         else
         if(comp.getType()==AbilityComponent.CompType.RESOURCE)
-            itemDesc=RawMaterial.RESOURCE_DESCS[(int)comp.getLongType()&RawMaterial.RESOURCE_MASK].toUpperCase();
+            itemDesc=RawMaterial.CODES.NAME((int)comp.getLongType()).toUpperCase();
         curr.addElement("COMPONENTID",itemDesc);
         curr.addElement("MASK",comp.getMaskStr());
         return curr;
@@ -1517,7 +1517,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
             itemDesc=amt+((amt>1)?" pounds":" pound")+" of "+RawMaterial.MATERIAL_DESCS[(int)comp.getLongType()>>8].toLowerCase();
         else
         if(comp.getType()==AbilityComponent.CompType.RESOURCE)
-            itemDesc=amt+((amt>1)?" pounds":" pound")+" of "+RawMaterial.RESOURCE_DESCS[(int)comp.getLongType()&RawMaterial.RESOURCE_MASK].toLowerCase();
+            itemDesc=amt+((amt>1)?" pounds":" pound")+" of "+RawMaterial.CODES.NAME((int)comp.getLongType()).toLowerCase();
         if(comp.getLocation()==AbilityComponent.CompLocation.INVENTORY)
         	buf.append(itemDesc);
         else

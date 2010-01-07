@@ -69,31 +69,27 @@ public class GatheringSkill extends CommonSkill
 	            boolean found=false;
         		if(str.startsWith("-"))
         		{
-        			str=str.substring(1);
-    	            for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
-            			if(RawMaterial.MATERIAL_DESCS[i].equalsIgnoreCase(str))
-	    	            	maskV.removeElement(Integer.valueOf(RawMaterial.RESOURCE_DATA[i][0]));
+    	            int rscIndex=CMParms.indexOfIgnoreCase(RawMaterial.CODES.NAMES(), str.substring(1));
+        			if(rscIndex>=0)
+    	            	maskV.removeElement(Integer.valueOf(RawMaterial.CODES.GET(rscIndex)));
     	            found=true;
         		}
         		if(!found)
-        		for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
-        			if(RawMaterial.MATERIAL_DESCS[i].equalsIgnoreCase(str))
-        			{
-        			    for(int ii=0;ii<RawMaterial.RESOURCE_DATA.length;ii++)
-        			        if((RawMaterial.RESOURCE_DATA[ii][0]&RawMaterial.MATERIAL_MASK)==(i<<8))
-			                { 
-        			            found=true;
-        			            maskV.addElement(Integer.valueOf(RawMaterial.RESOURCE_DATA[ii][0]));
-        			        }
-        			    break;
-        			}
-	            if(!found)
-	            for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
-	                if(RawMaterial.RESOURCE_DESCS[i].equalsIgnoreCase(str))
-	                { 
-		                maskV.addElement(Integer.valueOf(RawMaterial.RESOURCE_DATA[i][0]));
-		                break;
-		            }
+        		{
+    	            int matIndex=CMParms.indexOfIgnoreCase(RawMaterial.MATERIAL_DESCS, str);
+    	            if(matIndex>=0)
+    	            {
+    	            	List<Integer> rscs=RawMaterial.CODES.COMPOSE_RESOURCES(matIndex);
+    	            	maskV.addAll(rscs);
+			            found=rscs.size()>0;
+    	            }
+        		}
+        		if(!found)
+        		{
+    	            int rscIndex=CMParms.indexOfIgnoreCase(RawMaterial.CODES.NAMES(), str);
+        			if(rscIndex>=0)
+		                maskV.addElement(Integer.valueOf(RawMaterial.CODES.GET(rscIndex)));
+        		}
 	        }
 	    }
 	    supportedResources.put(ID(),maskV);
@@ -177,7 +173,7 @@ public class GatheringSkill extends CommonSkill
             commonTell(mob,"You could not bundle "+name+" due to "+foundResource+" being an invalid resource code.  Bug it!");
             return false;
         }
-		I.setName("a "+amount+"# "+RawMaterial.RESOURCE_DESCS[foundResource&RawMaterial.RESOURCE_MASK].toLowerCase()+" bundle");
+		I.setName("a "+amount+"# "+RawMaterial.CODES.NAME(foundResource).toLowerCase()+" bundle");
 		I.setDisplayText(I.name()+" is here.");
 		I.baseEnvStats().setWeight(amount);
 		if(R.show(mob,null,I,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> create(s) <O-NAME>."))

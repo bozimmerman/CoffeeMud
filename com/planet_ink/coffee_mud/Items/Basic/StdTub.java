@@ -196,7 +196,7 @@ public class StdTub extends StdRideable implements Drink
 					if((liquidType()==RawMaterial.RESOURCE_SALTWATER)
 					||(liquidType()==RawMaterial.RESOURCE_LAMPOIL))
 					{
-						mob.tell("You don't want to be drinking "+RawMaterial.RESOURCE_DESCS[liquidType()&RawMaterial.RESOURCE_MASK].toLowerCase()+".");
+						mob.tell("You don't want to be drinking "+RawMaterial.CODES.NAME(liquidType()).toLowerCase()+".");
 						return false;
 					}
 					return true;
@@ -222,9 +222,9 @@ public class StdTub extends StdRideable implements Drink
 					}
 					if((liquidRemaining()>0)&&(liquidType()!=thePuddle.liquidType()))
 					{
-						mob.tell("There is still some "+RawMaterial.RESOURCE_DESCS[liquidType()&RawMaterial.RESOURCE_MASK].toLowerCase()
+						mob.tell("There is still some "+RawMaterial.CODES.NAME(liquidType()).toLowerCase()
 								 +" left in "+name()+".  You must empty it before you can fill it with "
-								 +RawMaterial.RESOURCE_DESCS[thePuddle.liquidType()&RawMaterial.RESOURCE_MASK].toLowerCase()+".");
+								 +RawMaterial.CODES.NAME(thePuddle.liquidType()).toLowerCase()+".");
 						return false;
 
 					}

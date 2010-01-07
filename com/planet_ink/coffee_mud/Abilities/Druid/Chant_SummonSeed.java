@@ -56,15 +56,15 @@ public class Chant_SummonSeed extends Chant
 		int material=0;
 		String foundShortName=null;
 		int col=0;
-		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+		List<Integer> codes = RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_VEGETATION);
+		for(Integer code : codes)
 		{
-			String str=RawMaterial.RESOURCE_DESCS[i];
-			if(((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
-            &&(!CMParms.makeVector(NON_SEEDS).contains(Integer.valueOf(RawMaterial.RESOURCE_DATA[i][0]))))	
+			if(!CMParms.makeVector(NON_SEEDS).contains(Integer.valueOf(code.intValue())))	
             {
+				String str=RawMaterial.CODES.NAME(code.intValue());
 				if(str.toUpperCase().equalsIgnoreCase(s))
 				{
-					material=RawMaterial.RESOURCE_DATA[i][0];
+					material=code.intValue();
 					foundShortName=CMStrings.capitalizeAndLower(str);
 					break;
 				}

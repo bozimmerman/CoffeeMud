@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Items.interfaces;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
 
@@ -271,7 +272,7 @@ public interface RawMaterial extends Item
 	public final static int RESOURCE_MASK=255;	
 
 	
-	public final static String[] RESOURCE_DESCS={
+	public final static String[] DEFAULT_RESOURCE_DESCS={
 	"NOTHING", //0
 	"MEAT",  //1
 	"BEEF", //2
@@ -439,14 +440,8 @@ public interface RawMaterial extends Item
     "CRANBERRIES", // 164
 	};
 	
-	public final static int DATA_CODE=0;
-	public final static int DATA_VALUE=1;
-	public final static int DATA_FREQ=2;
-	public final static int DATA_STRENGTH=3;
-	public final static int DATA_BOUANCY=4;
-	
-	public final static int[][] RESOURCE_DATA={ 
-	// full code, base value, frequency, strength (1-10), bouancy
+	public final static int[][] DEFAULT_RESOURCE_DATA={ 
+	// full code, base value, frequency, hardness (1-10), bouancy
 	{RESOURCE_NOTHING,		0,	0,	0,	0}, 
 	{RESOURCE_MEAT,			4,	20,	1,	3000}, 
 	{RESOURCE_BEEF,			6,	20,	1,	3000}, 
@@ -615,7 +610,7 @@ public interface RawMaterial extends Item
 	};
 	
 	
-	public static final int[] FISHES={
+	public static final int[] DEFAULT_FISHES={
 	RESOURCE_FISH,
 	RESOURCE_SALMON,
 	RESOURCE_CARP,
@@ -625,7 +620,7 @@ public interface RawMaterial extends Item
 	RESOURCE_CATFISH
 	};
 	
-	public static final int[] BERRIES={
+	public static final int[] DEFAULT_BERRIES={
 	RESOURCE_BERRIES,
 	RESOURCE_STRAWBERRIES,
 	RESOURCE_BLUEBERRIES,
@@ -637,7 +632,6 @@ public interface RawMaterial extends Item
 	};
 	
 	public final static String[] DEFAULT_RESOURCE_SMELLS={
-		// full code, base value, frequency, strength (1-10), bouancy, smell
 		"",//RESOURCE_NOTHING 
 		"",//RESOURCE_MEAT 
 		"",//RESOURCE_BEEF 
@@ -818,56 +812,70 @@ public interface RawMaterial extends Item
 	        char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
 	        if(insts==null) insts=new CODES[256];
 	        if(insts[c]==null) insts[c]=this;
-
-			Vector rawExtra = CMProps.getStatCodeExtensions(RawMaterial.class,"RawMaterial");
-			for(int i=0;i<RESOURCE_DESCS.length;i++)
-			{
-				int material= RESOURCE_DATA[i][0] & MATERIAL_MASK;
-				add(material, RESOURCE_DESCS[i], DEFAULT_RESOURCE_SMELLS[i], 
-						RESOURCE_DATA[i][1], RESOURCE_DATA[i][2], RESOURCE_DATA[i][3], 
-						RESOURCE_DATA[i][4], 
-						CMParms.contains(FISHES, i&material),
-						CMParms.contains(BERRIES, i&material));
-			}
-			for(Enumeration e=rawExtra.elements();e.hasMoreElements();)
-			{
-				String p = (String)e.nextElement();
-				int x=p.indexOf('(');
-				if((x>0)&&(p.endsWith(")")))
+	        synchronized(this)
+	        {
+				Vector rawExtra = CMProps.getStatCodeExtensions(RawMaterial.class,"RawMaterial");
+				for(int i=0;i<DEFAULT_RESOURCE_DESCS.length;i++)
 				{
-					String stat = p.substring(0,x).toUpperCase().trim();
-					p=p.substring(x+1,p.length()-1).trim();
-					Vector V=CMParms.parseSemicolons(p, false);
-					if(V.size()!=7) continue;
-					String type="ADD";
-					int oldResourceCode=-1;
-					if(stat.startsWith("REPLACE:"))
-					{
-						String repStat=type.substring(8).trim();
-						int idx=CMParms.indexOf(RESOURCE_DESCS, repStat);
-						if(idx>=0)
-							oldResourceCode=RESOURCE_DATA[idx][0];
-						type="REPLACE";
-					}
-					String matStr=((String)V.elementAt(0)).toUpperCase();
-					String smell=((String)V.elementAt(1)).toUpperCase();
-					int value=CMath.s_int((String)V.elementAt(2));
-					int frequ=CMath.s_int((String)V.elementAt(3));
-					int strength=CMath.s_int((String)V.elementAt(4));
-					int bouancy=CMath.s_int((String)V.elementAt(5));
-					boolean fish=((String)V.elementAt(6)).equalsIgnoreCase("fish");
-					boolean berry=((String)V.elementAt(6)).equalsIgnoreCase("berry");
-					int material = CMParms.indexOfIgnoreCase(MATERIAL_DESCS,matStr);
-					if((material<0)||(material>=MATERIAL_CODES.length)) 
-						continue;
-					material=MATERIAL_CODES[material];
-					if(type.equalsIgnoreCase("ADD"))
-						add(material, stat, smell, value, frequ, strength, bouancy, fish, berry);
-					else
-					if(type.equalsIgnoreCase("REPLACE")&&(oldResourceCode>=0))
-						replace(oldResourceCode, material, stat, smell, value, frequ, strength, bouancy, fish, berry);
+					int material= DEFAULT_RESOURCE_DATA[i][0] & MATERIAL_MASK;
+					add(material, DEFAULT_RESOURCE_DESCS[i], DEFAULT_RESOURCE_SMELLS[i], 
+							DEFAULT_RESOURCE_DATA[i][1], DEFAULT_RESOURCE_DATA[i][2], 
+							DEFAULT_RESOURCE_DATA[i][3], DEFAULT_RESOURCE_DATA[i][4], 
+							CMParms.contains(DEFAULT_FISHES, i|material),
+							CMParms.contains(DEFAULT_BERRIES, i|material));
 				}
-			}
+				if(rawExtra!=null)
+				for(Enumeration e=rawExtra.elements();e.hasMoreElements();)
+				{
+					String p = (String)e.nextElement();
+					int x=p.indexOf('(');
+					if((x>0)&&(p.endsWith(")")))
+					{
+						String stat = p.substring(0,x).toUpperCase().trim();
+						p=p.substring(x+1,p.length()-1).trim();
+						Vector V=CMParms.parseSemicolons(p, false);
+						if(V.size()!=7) continue;
+						String type="ADD";
+						int oldResourceCode=-1;
+						if(stat.startsWith("REPLACE:"))
+						{
+							String repStat=type.substring(8).trim();
+							int idx=CMParms.indexOf(DEFAULT_RESOURCE_DESCS, repStat);
+							if(idx>=0)
+								oldResourceCode=DEFAULT_RESOURCE_DATA[idx][0];
+							type="REPLACE";
+						}
+						String matStr=((String)V.elementAt(0)).toUpperCase();
+						String smell=((String)V.elementAt(1)).toUpperCase();
+						int value=CMath.s_int((String)V.elementAt(2));
+						int frequ=CMath.s_int((String)V.elementAt(3));
+						int hardness=CMath.s_int((String)V.elementAt(4));
+						int bouancy=CMath.s_int((String)V.elementAt(5));
+						boolean fish=((String)V.elementAt(6)).equalsIgnoreCase("fish");
+						boolean berry=((String)V.elementAt(6)).equalsIgnoreCase("berry");
+						int material = CMParms.indexOfIgnoreCase(MATERIAL_DESCS,matStr);
+						if((material<0)||(material>=MATERIAL_CODES.length)) 
+							continue;
+						material=MATERIAL_CODES[material];
+						if(type.equalsIgnoreCase("ADD"))
+							add(material, stat, smell, value, frequ, hardness, bouancy, fish, berry);
+						else
+						if(type.equalsIgnoreCase("REPLACE")&&(oldResourceCode>=0))
+							replace(oldResourceCode, material, stat, smell, value, frequ, hardness, bouancy, fish, berry);
+					}
+				}
+				String[] sortedNames = descs.clone();
+				Arrays.sort(sortedNames);
+				Hashtable<String,Integer> previousIndexes = new Hashtable<String,Integer>();
+				for(int ndex = 0; ndex < descs.length; ndex++)
+					previousIndexes.put(descs[ndex], ndex);
+				allCodesSortedByName = new int[allCodes.length];
+				for(int ndex = 0; ndex < sortedNames.length; ndex++)
+	            {
+					int previousIndex = previousIndexes.get(sortedNames[ndex]);
+					allCodesSortedByName[ndex] = allCodes[previousIndex];
+	            }
+	        }
 	    }
 	    private static CODES c(){ return insts[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
 	    public static CODES c(char c){return insts[c];}
@@ -883,6 +891,7 @@ public interface RawMaterial extends Item
 	    private static CODES[] insts=new CODES[256];
 	    
 		public int[] allCodes = new int[0];
+		public int[] allCodesSortedByName=new int[0];
 		public int[] berries = new int[0];
 		public int[] fishes = new int[0];
 		public int[][] data =  new int[0][0]; 
@@ -927,6 +936,11 @@ public interface RawMaterial extends Item
 		 * Returns an array of the numeric codes for all resources
 		 * @return an array of the numeric codes for all resources
 		 */
+		public static int[] ALL_SBN() { return c().allCodesSortedByName;}
+		/**
+		 * Returns an array of the numeric codes for all resources
+		 * @return an array of the numeric codes for all resources
+		 */
 		public static int[] ALL() { return c().allCodes;}
 		/**
 		 * Returns an array of the numeric codes for all resources
@@ -934,16 +948,59 @@ public interface RawMaterial extends Item
 		 */
 		public int[] all() { return allCodes;}
 		/**
+		 * Returns an the numeric codes of the indexes resource code
+		 * @param x the indexed resource code
+		 * @return an the numeric codes of the indexes resource code
+		 */
+		public static int GET(int x) { return c().allCodes[x&RESOURCE_MASK];}
+		/**
 		 * Returns the names of the various resources
 		 * @return the names of the various resources
 		 */
 		public static String[] NAMES() { return c().descs;}
 		/**
+		 * Returns the code of the names resource, or -1
+		 * @return the code of the names resource, or -1
+		 */
+		public static int FIND_CaseSensitive(String rsc) {
+			CODES C=c();
+			int x=CMParms.indexOf(C.descs, rsc);
+			if(x>=0) return C.allCodes[x];
+			return -1;
+		}
+		/**
+		 * Returns the code of the names resource, or -1
+		 * @return the code of the names resource, or -1
+		 */
+		public static int FIND_IgnoreCase(String rsc) {
+			CODES C=c();
+			int x=CMParms.indexOfIgnoreCase(C.descs, rsc);
+			if(x>=0) return C.allCodes[x];
+			return -1;
+		}
+		/**
+		 * Returns the code of the names resource, or -1
+		 * @return the code of the names resource, or -1
+		 */
+		public static int FIND_StartsWith(String rsc) {
+			CODES C=c();
+			int x=CMParms.startsWith(C.descs, rsc);
+			if(x>=0) return C.allCodes[x];
+			return -1;
+		}
+		/**
+		 * Returns whether the code is valid
+		 * @return whether the code is valid
+		 */
+		public static boolean IS_VALID(int code) {
+			return (code>=0) && ((code&RawMaterial.RESOURCE_MASK) < c().total());
+		}
+		/**
 		 * Returns the name of the code
 		 * @param code the code
 		 * @return the name of the code
 		 */
-		public static String NAME(int code) { return c().descs[code];}
+		public static String NAME(int code) { return c().descs[code&RESOURCE_MASK];}
 		/**
 		 * Returns the smells of the various resources
 		 * @return the smells of the various resources
@@ -954,31 +1011,44 @@ public interface RawMaterial extends Item
 		 * @param code the code smell
 		 * @return the description of the code smell
 		 */
-		public static String SMELL(int code) { return c().smells[code];}
+		public static String SMELL(int code) { return c().smells[code&RESOURCE_MASK];}
 		/**
 		 * Returns the value of the resource
 		 * @return the value of the resource
 		 */
-		public static int VALUE(int code) { return c().data[code][1];}
+		public static int VALUE(int code) { return c().data[code&RESOURCE_MASK][1];}
 		/**
 		 * Returns the frequency of the resource, or how rare it is.
 		 * @return the frequency of the resource
 		 */
-		public static int FREQUENCY(int code) { return c().data[code][2];}
+		public static int FREQUENCY(int code) { return c().data[code&RESOURCE_MASK][2];}
 		/**
-		 * Returns the strength of the resource, from 1-10
-		 * @return the strength of the resource
+		 * Returns the hardness of the resource, from 1-10
+		 * @return the hardness of the resource
 		 */
-		public static int STRENGTH(int code) { return c().data[code][3];}
+		public static int HARDNESS(int code) { return c().data[code&RESOURCE_MASK][3];}
 		/**
 		 * Returns the bouancy of the resource, from 0-20000
 		 * @return the bouancy of the resource
 		 */
-		public static int BOUANCY(int code) { return c().data[code][4];}
+		public static int BOUANCY(int code) { return c().data[code&RESOURCE_MASK][4];}
+		/**
+		 * Search and compose a complete list of all resources of the given material
+		 * @param mat the resource code
+		 * @return a complete list of all resources of the given material
+		 */
+		public static List<Integer> COMPOSE_RESOURCES(int mat) {
+			if(mat<=RESOURCE_MASK) mat=mat<<8;
+			List<Integer> rscs=new Vector<Integer>();
+			for(int rsc : c().allCodes)
+				if((rsc&MATERIAL_MASK)==mat)
+					rscs.add(rsc);
+			return rscs;
+		}
 		
-		public void add(int material, String name, String smell, int value, int frequ, int strength, int bouancy, boolean fish, boolean berry)
+		public synchronized void add(int material, String name, String smell, int value, int frequ, int hardness, int bouancy, boolean fish, boolean berry)
 		{
-			int newResourceCode=allCodes.length & material;
+			int newResourceCode=allCodes.length | material;
 			allCodes=Arrays.copyOf(allCodes, allCodes.length+1);
 			allCodes[allCodes.length-1]=newResourceCode;
 			if(berry)
@@ -995,12 +1065,12 @@ public interface RawMaterial extends Item
 			descs[descs.length-1]=name;
 			
 			data=Arrays.copyOf(data, data.length+1);
-			//full code, base value, frequency, strength (1-10), bouancy
-			int[] newRow={newResourceCode,value,frequ,strength,bouancy};
+			//full code, base value, frequency, hardness (1-10), bouancy
+			int[] newRow={newResourceCode,value,frequ,hardness,bouancy};
 			data[data.length-1]=newRow;
 		}
 		
-		public void replace(int resourceCode, int material, String name, String smell, int value, int frequ, int strength, int bouancy, boolean fish, boolean berry)
+		public synchronized void replace(int resourceCode, int material, String name, String smell, int value, int frequ, int hardness, int bouancy, boolean fish, boolean berry)
 		{
 			int resourceIndex = resourceCode & RESOURCE_MASK;
 			if((berry)&&(!CMParms.contains(berries, resourceCode)))
@@ -1034,7 +1104,7 @@ public interface RawMaterial extends Item
 				fishes=newfishes;
 			}
 			descs[resourceIndex]=name;
-			int[] newRow={resourceCode,value,frequ,strength,bouancy};
+			int[] newRow={resourceCode,value,frequ,hardness,bouancy};
 			data[resourceIndex]=newRow;
 		}
 	}

@@ -67,10 +67,10 @@ public class GenCoins extends GenItem implements Coins
 	    ||(CMLib.english().containsString(name(),"dollar")))
 	        setMaterial(RawMaterial.RESOURCE_PAPER);
 	    else
-		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
-		    if(CMLib.english().containsString(name(),RawMaterial.RESOURCE_DESCS[i]))
+		for(String S : RawMaterial.CODES.NAMES())
+		    if(CMLib.english().containsString(name(),S))
 		    {
-		        setMaterial(RawMaterial.RESOURCE_DATA[i][0]);
+		        setMaterial(RawMaterial.CODES.FIND_CaseSensitive(S));
 		        break;
 		    }
 		setDescription(CMLib.beanCounter().getConvertableDescription(getCurrency(),getDenomination()));

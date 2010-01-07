@@ -122,9 +122,10 @@ public class Archon_Metacraft extends ArchonSkill
 		}
 		int material=-1;
 		if(mat!=null)
-		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
-			if(RawMaterial.RESOURCE_DESCS[i].startsWith(mat))
-			{ material=RawMaterial.RESOURCE_DATA[i][0]; break;}
+		{
+			material=CMParms.startsWith(RawMaterial.CODES.NAMES(), mat);
+			if(material>=0) material=RawMaterial.CODES.GET(material);
+		}
 		if((mat!=null)&&(material<0))
 		{
 			mob.tell("'"+mat+"' is not a recognized material.");

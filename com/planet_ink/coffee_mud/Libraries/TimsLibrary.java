@@ -431,7 +431,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 										 long worndata)
 	{
 		Hashtable vals=new Hashtable();
-		int materialvalue=RawMaterial.RESOURCE_DATA[material&RawMaterial.RESOURCE_MASK][1];
+		int materialvalue=RawMaterial.CODES.VALUE(material);
 		int[] castMul=new int[1];
 		Ability[] RET=getTimsAdjResCast(I,castMul);
 		Ability ADJ=RET[0];

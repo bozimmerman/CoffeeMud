@@ -309,7 +309,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 				return false;
 			}
 			duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),4);
-			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
+			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
 			else
@@ -324,7 +324,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			building.baseEnvStats().setWeight(woodRequired);
 			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 			building.setMaterial(data[0][FOUND_CODE]);
-			int hardness=RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][RawMaterial.DATA_STRENGTH]-3;
+			int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-3;
 			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness));
 			if(building.baseEnvStats().level()<1) building.baseEnvStats().setLevel(1);
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
@@ -414,7 +414,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 		{
 			messedUp=false;
 			duration=1;
-			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
+			verb="bundling "+RawMaterial.CODES.NAME(building.material()).toLowerCase();
 			startStr="<S-NAME> start(s) "+verb+".";
 			displayText="You are "+verb;
 		}

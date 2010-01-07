@@ -689,7 +689,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     public String defaultValue(){ return "Spell_ID";}
                 },
                 new AbilityParmEditorImpl("RESOURCE_NAME","Resource",PARMTYPE_CHOICES) {
-                    public void createChoices() { createChoices(RawMaterial.RESOURCE_DESCS);}
+                    public void createChoices() { createChoices(RawMaterial.CODES.NAMES());}
                     public String defaultValue(){ return "IRON";}
                 },
                 new AbilityParmEditorImpl("ITEM_NAME","Item Final Name",PARMTYPE_STRING){
@@ -1138,17 +1138,17 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         value = value.trim();
                         StringBuffer str = new StringBuffer("");
                         str.append("\n\r<INPUT TYPE=RADIO NAME="+fieldName+"_WHICH ");
-                        boolean rsc=(value.trim().length()==0)||CMParms.containsIgnoreCase(RawMaterial.RESOURCE_DESCS,value.toUpperCase().trim());
+                        boolean rsc=(value.trim().length()==0)||CMParms.containsIgnoreCase(RawMaterial.CODES.NAMES(),value.toUpperCase().trim());
                         if(rsc) str.append("CHECKED ");
                         str.append("VALUE=\"RESOURCE\">");
                         str.append("\n\r<SELECT NAME="+fieldName+"_RESOURCE>");
-                        for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
+                        for(String S : RawMaterial.CODES.NAMES())
                         {
-                        	String VALUE = (r==0)?"":RawMaterial.RESOURCE_DESCS[r];
+                        	String VALUE = S.equals("NOTHING")?"":S;
                             str.append("<OPTION VALUE=\""+VALUE+"\"");
                             if(rsc&&(value.equalsIgnoreCase(VALUE)))
                                 str.append(" SELECTED");
-                            str.append(">"+CMStrings.capitalizeAndLower(RawMaterial.RESOURCE_DESCS[r]));
+                            str.append(">"+CMStrings.capitalizeAndLower(S));
                         }
                         str.append("</SELECT>");
                         str.append("<BR>");
@@ -1167,17 +1167,17 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         while(proceed)
                         {
                             proceed = false;
-                            str=CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),true,CMParms.toStringList(RawMaterial.RESOURCE_DESCS)).trim();
+                            str=CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),true,CMParms.toStringList(RawMaterial.CODES.NAMES())).trim();
                             if(str.equals(oldVal)) return oldVal;
-                            for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
-                                if(RawMaterial.RESOURCE_DESCS[r].equalsIgnoreCase(str))
-                                    str=(r>0)?RawMaterial.RESOURCE_DESCS[r]:"";
-                                    if(str.equals(oldVal)) return oldVal;
-                                    if(str.length()==0) return "";
-                                    boolean isResource = CMParms.contains(RawMaterial.RESOURCE_DESCS,str);
-                                    if((!isResource)&&(mob.session()!=null)&&(!mob.session().killFlag()))
-                                        if(!mob.session().confirm("You`ve entered a non-resource item keyword '"+str+"', ok (Y/n)?","Y"))
-                                            proceed = true;
+                            int r=CMParms.indexOfIgnoreCase(RawMaterial.CODES.NAMES(), str);
+                            if(r==0) str="";
+                            else if(r>0) str=RawMaterial.CODES.NAME(r);
+                            if(str.equals(oldVal)) return oldVal;
+                            if(str.length()==0) return "";
+                            boolean isResource = CMParms.contains(RawMaterial.CODES.NAMES(),str);
+                            if((!isResource)&&(mob.session()!=null)&&(!mob.session().killFlag()))
+                                if(!mob.session().confirm("You`ve entered a non-resource item keyword '"+str+"', ok (Y/n)?","Y"))
+                                    proceed = true;
                         }
                         return str;
                     }
@@ -1189,7 +1189,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         if(oldVal.trim().length()==0)
                             return true;
                         if(!oldVal.endsWith("$")) {
-                            return CMParms.contains(RawMaterial.RESOURCE_DESCS,oldVal);
+                            return CMParms.contains(RawMaterial.CODES.NAMES(),oldVal);
                         }
                         return true;
                     }
@@ -1202,9 +1202,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         AbilityParmEditor A = (AbilityParmEditor)CMLib.ableParms().getEditors().get("RESOURCE_OR_KEYWORD");
                         if(oldVal.endsWith("$")) oldVal = oldVal.substring(0,oldVal.length()-1);
                         String value = A.webValue(httpReq,parms,oldVal,fieldName);
-                        for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
-                            if(RawMaterial.RESOURCE_DESCS[r].equalsIgnoreCase(value))
-                                return RawMaterial.RESOURCE_DESCS[r];
+                        int r=CMParms.indexOfIgnoreCase(RawMaterial.CODES.NAMES(), value);
+                        if(r>=0) return RawMaterial.CODES.NAME(r);
                         return (value.trim().length()==0)?"":(value+"$");
                     }
                     public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
@@ -1227,14 +1226,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         {
                             proceed = false;
                             if(oldVal.trim().endsWith("$")) oldVal=oldVal.trim().substring(0,oldVal.trim().length()-1);
-                            str=CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),true,CMParms.toStringList(RawMaterial.RESOURCE_DESCS)).trim();
+                            str=CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),true,CMParms.toStringList(RawMaterial.CODES.NAMES())).trim();
                             if(str.equals(orig)) return orig;
-                            for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
-                                if(RawMaterial.RESOURCE_DESCS[r].equalsIgnoreCase(str))
-                                    str=(r>0)?RawMaterial.RESOURCE_DESCS[r]:"";
+                            int r=CMParms.indexOfIgnoreCase(RawMaterial.CODES.NAMES(), str);
+                            if(r==0) str="";
+                            else if(r>0) str=RawMaterial.CODES.NAME(r);
                             if(str.equals(orig)) return orig;
                             if(str.length()==0) return "";
-                            boolean isResource = CMParms.contains(RawMaterial.RESOURCE_DESCS,str);
+                            boolean isResource = CMParms.contains(RawMaterial.CODES.NAMES(),str);
                             if((!isResource)&&(mob.session()!=null)&&(!mob.session().killFlag()))
                             {
                                 if(!mob.session().confirm("You`ve entered a non-resource item keyword '"+str+"', ok (Y/n)?","Y"))
@@ -1265,7 +1264,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 },
                 new AbilityParmEditorImpl("RESOURCE_OR_MATERIAL","Rsc/Mat",PARMTYPE_CHOICES) {
                     public void createChoices() {
-                        Vector V=CMParms.makeVector(RawMaterial.RESOURCE_DESCS);
+                        Vector V=CMParms.makeVector(RawMaterial.CODES.NAMES());
                         V.addAll(CMParms.makeVector(RawMaterial.MATERIAL_DESCS));
                         createChoices(V);
                     }
@@ -1273,7 +1272,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 },
                 new AbilityParmEditorImpl("OPTIONAL_RESOURCE_OR_MATERIAL","Rsc/Mat",PARMTYPE_CHOICES) {
                     public void createChoices() {
-                        Vector V=CMParms.makeVector(RawMaterial.RESOURCE_DESCS);
+                        Vector V=CMParms.makeVector(RawMaterial.CODES.NAMES());
                         V.addAll(CMParms.makeVector(RawMaterial.MATERIAL_DESCS));
                         V.addElement("");
                         createChoices(V);
@@ -1441,7 +1440,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 },
                 new AbilityParmEditorImpl("RESOURCE_NAME_AMOUNT_MATERIAL_REQUIRED","Resrc/Amt",PARMTYPE_SPECIAL) {
                     public void createChoices() { 
-                        createChoices(RawMaterial.RESOURCE_DESCS); 
+                        createChoices(RawMaterial.CODES.NAMES()); 
                         choices().addElement("","");
                     }
                     public String defaultValue(){ return "";}
@@ -1469,10 +1468,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         }
                         StringBuffer str=new StringBuffer("");
                         str.append("\n\r<SELECT NAME="+fieldName+"_RESOURCE MULTIPLE>");
-                        for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
-                            str.append("<OPTION VALUE=\""+RawMaterial.RESOURCE_DESCS[r]+"\" "
-                                    +((RawMaterial.RESOURCE_DESCS[r].equalsIgnoreCase(rsc))?"SELECTED":"")+">"
-                                    +CMStrings.capitalizeAndLower(RawMaterial.RESOURCE_DESCS[r]));
+                        for(String S : RawMaterial.CODES.NAMES())
+                            str.append("<OPTION VALUE=\""+S+"\" "
+                                    +((S.equalsIgnoreCase(rsc))?"SELECTED":"")+">"
+                                    +CMStrings.capitalizeAndLower(S));
                         str.append("</SELECT>");
                         str.append("&nbsp;&nbsp;Amount: ");
                         str.append("<INPUT TYPE=TEXT NAME="+fieldName+"_AMOUNT VALUE="+amt+">");

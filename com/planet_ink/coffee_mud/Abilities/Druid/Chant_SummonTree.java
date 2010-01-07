@@ -48,7 +48,7 @@ public class Chant_SummonTree extends Chant_SummonPlants
 	{
 		int code=material&RawMaterial.RESOURCE_MASK;
 		Item newItem=CMClass.getBasicItem("GenItem");
-		String name=CMLib.english().startWithAorAn(RawMaterial.RESOURCE_DESCS[code].toLowerCase()+" tree");
+		String name=CMLib.english().startWithAorAn(RawMaterial.CODES.NAME(code).toLowerCase()+" tree");
 		newItem.setName(name);
 		newItem.setDisplayText(newItem.name()+" grows here.");
 		newItem.setDescription("");
@@ -61,7 +61,7 @@ public class Chant_SummonTree extends Chant_SummonPlants
 		Chant_SummonTree newChant=new Chant_SummonTree();
 		newItem.baseEnvStats().setLevel(10+newChant.getX1Level(mob));
 		newItem.setExpirationDate(0);
-		room.showHappens(CMMsg.MSG_OK_ACTION,"a tall, healthy "+RawMaterial.RESOURCE_DESCS[code].toLowerCase()+" tree sprouts up.");
+		room.showHappens(CMMsg.MSG_OK_ACTION,"a tall, healthy "+RawMaterial.CODES.NAME(code).toLowerCase()+" tree sprouts up.");
 		room.recoverEnvStats();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;

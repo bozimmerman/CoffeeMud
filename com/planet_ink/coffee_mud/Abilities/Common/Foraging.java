@@ -143,7 +143,7 @@ public class Foraging extends GatheringSkill
 			found=(Item)CMLib.materials().makeResource(resourceType,Integer.toString(mob.location().domainType()),false,null);
 			foundShortName="nothing";
 			if(found!=null)
-				foundShortName=RawMaterial.RESOURCE_DESCS[found.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
+				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
 		}
 		int duration=getDuration(45,mob,1,10);
 		CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) foraging.");

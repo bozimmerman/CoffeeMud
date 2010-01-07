@@ -190,9 +190,9 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		if((pot instanceof Drink)&&(((Drink)pot).liquidRemaining()>0))
 		{
 			if(pot instanceof RawMaterial)
-				h.put(RawMaterial.RESOURCE_DESCS[((RawMaterial)pot).material()&RawMaterial.RESOURCE_MASK]+"/",Integer.valueOf(((Drink)pot).liquidRemaining()/10));
+				h.put(RawMaterial.CODES.NAME(((RawMaterial)pot).material())+"/",Integer.valueOf(((Drink)pot).liquidRemaining()/10));
 			else
-				h.put(RawMaterial.RESOURCE_DESCS[((Drink)pot).liquidType()&RawMaterial.RESOURCE_MASK]+"/",Integer.valueOf(((Drink)pot).liquidRemaining()/10));
+				h.put(RawMaterial.CODES.NAME(((Drink)pot).liquidType())+"/",Integer.valueOf(((Drink)pot).liquidRemaining()/10));
 		}
 		if(pot.owner()==null) return h;
 		Vector V=pot.getContents();
@@ -201,7 +201,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			Item I=(Item)V.elementAt(v);
 			String ing="Unknown";
 			if(I instanceof RawMaterial)
-				ing=RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK];
+				ing=RawMaterial.CODES.NAME(I.material());
 			else
 			if((((I.material()&RawMaterial.MATERIAL_VEGETATION)>0)
 				||((I.material()&RawMaterial.MATERIAL_LIQUID)>0)
@@ -385,7 +385,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		{
 			Item I=(Item)contents.elementAt(v);
 			if((I instanceof RawMaterial)
-			&&(RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK].equalsIgnoreCase((String)finalRecipe.elementAt(RCP_MAININGR))))
+			&&(RawMaterial.CODES.NAME(I.material()).equalsIgnoreCase((String)finalRecipe.elementAt(RCP_MAININGR))))
 			{
 				if((((RawMaterial)I).domainSource()!=null)
 				&&(!CMath.isNumber(((RawMaterial)I).domainSource()))
@@ -541,12 +541,11 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			if(messedUp)
 				building.setMaterial(RawMaterial.RESOURCE_DUST);
 			else
-			for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
-				if(RawMaterial.RESOURCE_DESCS[i].equalsIgnoreCase(foodType))
-				{
-					building.setMaterial(RawMaterial.RESOURCE_DATA[i][0]);
-					break;
-				}
+			{
+				int code = RawMaterial.CODES.FIND_IgnoreCase(foodType);
+				if(code>=0)
+					building.setMaterial(code);
+			}
 			building.setName(((messedUp)?"ruined ":"")+finalDishName);
 			building.setDisplayText("some "+((messedUp)?"ruined ":"")+finalDishName+" has been left here");
 			building.baseEnvStats().setWeight(building.baseEnvStats().weight()/finalAmount);

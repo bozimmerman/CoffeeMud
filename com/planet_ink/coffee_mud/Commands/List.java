@@ -148,7 +148,7 @@ public class List extends StdCommand
 				lines.append(CMStrings.padRight(thisThang.ID(),15)+": ");
 				String thisRsc="-";
 				if(thisThang.myResource()>=0)
-					thisRsc=RawMaterial.RESOURCE_DESCS[thisThang.myResource()&RawMaterial.RESOURCE_MASK];
+					thisRsc=RawMaterial.CODES.NAME(thisThang.myResource());
 				lines.append(thisRsc+"\n\r");
 			}
 		}
@@ -1192,29 +1192,29 @@ public class List extends StdCommand
 	public String listEnvResources(boolean shortList)
 	{
         if(shortList)
-            return CMParms.toStringList(RawMaterial.RESOURCE_DESCS);
+            return CMParms.toStringList(RawMaterial.CODES.NAMES());
 		StringBuffer str=new StringBuffer("");
-        for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
-            str.append(CMStrings.padRight(CMStrings.capitalizeAndLower(RawMaterial.RESOURCE_DESCS[i].toLowerCase()),16));
+        for(String S : RawMaterial.CODES.NAMES())
+            str.append(CMStrings.padRight(CMStrings.capitalizeAndLower(S.toLowerCase()),16));
 		str.append(CMStrings.padRight("Resource",15)+" ");
 		str.append(CMStrings.padRight("Material",10)+" ");
 		str.append(CMStrings.padRight("Val",3)+" ");
 		str.append(CMStrings.padRight("Freq",4)+" ");
 		str.append(CMStrings.padRight("Str",3)+" ");
 		str.append("Locales\n\r");
-		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+		for(int i : RawMaterial.CODES.ALL())
 		{
-			str.append(CMStrings.padRight(CMStrings.capitalizeAndLower(RawMaterial.RESOURCE_DESCS[i].toLowerCase()),16));
-			str.append(CMStrings.padRight(CMStrings.capitalizeAndLower(RawMaterial.MATERIAL_DESCS[(RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)>>8].toLowerCase()),11));
-			str.append(CMStrings.padRight(""+RawMaterial.RESOURCE_DATA[i][1],4));
-			str.append(CMStrings.padRight(""+RawMaterial.RESOURCE_DATA[i][2],5));
-			str.append(CMStrings.padRight(""+RawMaterial.RESOURCE_DATA[i][3],4));
+			str.append(CMStrings.padRight(CMStrings.capitalizeAndLower(RawMaterial.CODES.NAME(i).toLowerCase()),16));
+			str.append(CMStrings.padRight(CMStrings.capitalizeAndLower(RawMaterial.MATERIAL_DESCS[(i&RawMaterial.MATERIAL_MASK)>>8].toLowerCase()),11));
+			str.append(CMStrings.padRight(""+RawMaterial.CODES.VALUE(i),4));
+			str.append(CMStrings.padRight(""+RawMaterial.CODES.FREQUENCY(i),5));
+			str.append(CMStrings.padRight(""+RawMaterial.CODES.HARDNESS(i),4));
 			StringBuffer locales=new StringBuffer("");
 			for(Enumeration e=CMClass.locales();e.hasMoreElements();)
 			{
 				Room R=(Room)e.nextElement();
 				if(!(R instanceof GridLocale))
-					if((R.resourceChoices()!=null)&&(R.resourceChoices().contains(Integer.valueOf(RawMaterial.RESOURCE_DATA[i][0]))))
+					if((R.resourceChoices()!=null)&&(R.resourceChoices().contains(Integer.valueOf(i))))
 						locales.append(R.ID()+" ");
 			}
 			while(locales.length()>36)

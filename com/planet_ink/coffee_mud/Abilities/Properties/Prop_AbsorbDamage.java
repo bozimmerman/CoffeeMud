@@ -84,7 +84,7 @@ public class Prop_AbsorbDamage extends Property
 			{
 				x=text.indexOf(Weapon.TYPE_DESCS[((Weapon)msg.tool()).weaponType()]);
 				if(x<0) x=(CMLib.flags().isABonusItems(msg.tool()))?text.indexOf("MAGIC"):-1;
-				if(x<0) x=text.indexOf(RawMaterial.RESOURCE_DESCS[((Weapon)msg.tool()).material()&RawMaterial.RESOURCE_MASK]);
+				if(x<0) x=text.indexOf(RawMaterial.CODES.NAME(((Weapon)msg.tool()).material()));
 				if(x>0)
 				{
 					if((text.charAt(x-1)=='-')&&(immune>=0))

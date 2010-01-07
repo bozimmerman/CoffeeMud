@@ -141,16 +141,16 @@ public class StdClanCommonItem extends StdClanItem
                 continue;
             V.addElement(Integer.valueOf(i<<8));
         }
-        for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+        for(String S : RawMaterial.CODES.NAMES())
         {
-            int x=req.indexOf(RawMaterial.RESOURCE_DESCS[i]);
+            int x=req.indexOf(S);
             if(x<0) continue;
             if((x>0)&&Character.isLetter(req.charAt(x-1)))
                 continue;
-            if(((x+RawMaterial.RESOURCE_DESCS[i].length())<req.length())
-            &&Character.isLetter(req.charAt((x+RawMaterial.RESOURCE_DESCS[i].length()))))
+            if(((x+S.length())<req.length())
+            &&Character.isLetter(req.charAt((x+S.length()))))
                 continue;
-            V.addElement(Integer.valueOf(i));
+            V.addElement(RawMaterial.CODES.FIND_CaseSensitive(S));
         }
         if((M.location()!=null)
         &&(V.contains(Integer.valueOf(RawMaterial.MATERIAL_METAL)))

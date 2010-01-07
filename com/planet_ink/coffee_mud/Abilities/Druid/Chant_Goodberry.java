@@ -73,13 +73,7 @@ public class Chant_Goodberry extends Chant
 		return false;
 	}
 
-	public boolean isBerry(Item I)
-	{
-		for(int i=0;i<RawMaterial.BERRIES.length;i++)
-			if(I.material()==RawMaterial.BERRIES[i])
-				return true;
-		return false;
-	}
+	public boolean isBerry(Item I) { return CMParms.contains(RawMaterial.CODES.BERRIES(),I.material()); }
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

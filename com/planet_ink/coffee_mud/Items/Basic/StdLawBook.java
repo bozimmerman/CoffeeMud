@@ -644,17 +644,12 @@ public class StdLawBook extends StdItem
 			{
 				s=mob.session().prompt("\n\rEnter item key words or resource types to make illegal (?)\n\r: ","");
 				if(s.equals("?"))
-				    mob.tell("Valid resources: "+CMParms.toStringList(RawMaterial.RESOURCE_DESCS));
+				    mob.tell("Valid resources: "+CMParms.toStringList(RawMaterial.CODES.NAMES()));
 				else
 				if(s.length()>0)
 				{
 				    s=s.toUpperCase();
-				    boolean resource=false;
-				    for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
-				    {
-				        if(RawMaterial.RESOURCE_DESCS[i].equals(s))
-				            resource=true;
-				    }
+				    boolean resource=RawMaterial.CODES.FIND_CaseSensitive(s)>=0;
 				    if(resource||mob.session().confirm("'"+s+"' is not a known resource.  Add as a key word anyway (y/N)?","N"))
 				    {
 						String[] newValue=modifyLaw(A,B,theLaw,mob,null);

@@ -44,12 +44,17 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		material=material&RawMaterial.MATERIAL_MASK;
 		if((material<0)||(material>=RawMaterial.MATERIAL_DESCS.length))
 			return -1;
-		int d=CMLib.dice().roll(1,RawMaterial.RESOURCE_DATA.length,0);
-		while(d>0)
-		for(int i=0;i<RawMaterial.RESOURCE_DATA.length;i++)
-			if((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)==material)
-				if((--d)==0)
-					return RawMaterial.RESOURCE_DATA[i][0];
+		int rscIndex=CMLib.dice().roll(1,RawMaterial.CODES.ALL().length,-1);
+		int countDown=RawMaterial.CODES.ALL().length;
+		int rsc=0;
+		while(--countDown>=0)
+		{
+			rsc=RawMaterial.CODES.GET(rscIndex);
+			if((rsc&RawMaterial.MATERIAL_MASK)==material)
+				return rsc;
+			if((--rscIndex)<0)
+				rscIndex=RawMaterial.CODES.ALL().length-1;
+		}
 		return -1;
 	}
 
@@ -337,9 +342,8 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
     
     public String getResourceDesc(int MASK)
     {
-        MASK=(MASK&RawMaterial.RESOURCE_MASK);
-        if((MASK>=0)&&(MASK<RawMaterial.RESOURCE_DESCS.length))
-            return RawMaterial.RESOURCE_DESCS[MASK];
+        if(RawMaterial.CODES.IS_VALID(MASK))
+            return RawMaterial.CODES.NAME(MASK);
         return "";
     }
     
@@ -364,17 +368,12 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
     }
     public int getResourceCode(String s, boolean exact)
 	{
-		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
-		{
-			if(s.equalsIgnoreCase(RawMaterial.RESOURCE_DESCS[i]))
-				return RawMaterial.RESOURCE_DATA[i][0];
-		}
+    	int code = RawMaterial.CODES.FIND_IgnoreCase(s);
+    	if(code>=0) return code;
     	if(exact) return -1;
 		s=s.toUpperCase();
-		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
-			if(RawMaterial.RESOURCE_DESCS[i].startsWith(s)||s.startsWith(RawMaterial.RESOURCE_DESCS[i]))
-				return RawMaterial.RESOURCE_DATA[i][0];
-		return -1;
+    	code = RawMaterial.CODES.FIND_StartsWith(s);
+		return code;
 	}
 	
 	public Environmental makeResource(int myResource, String localeCode, boolean noAnimals, String fullName)
@@ -392,9 +391,8 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			||(myResource==RawMaterial.RESOURCE_HIDE)
 			||(myResource==RawMaterial.RESOURCE_FUR))
 			   material=RawMaterial.MATERIAL_LEATHER;
-			for(int i=0;i<RawMaterial.FISHES.length;i++)
-				if(RawMaterial.FISHES[i]==myResource)
-				{ material=RawMaterial.MATERIAL_VEGETATION; break;}
+			if(CMParms.contains(RawMaterial.CODES.FISHES(), myResource))
+				material=RawMaterial.MATERIAL_VEGETATION;
 			if((material==RawMaterial.MATERIAL_LEATHER)
 			||(material==RawMaterial.MATERIAL_FLESH))
 			{
@@ -526,7 +524,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			I.setMaterial(myResource);
 			if(I instanceof Drink)
 				((Drink)I).setLiquidType(myResource);
-			I.setBaseValue(RawMaterial.RESOURCE_DATA[myResource&RawMaterial.RESOURCE_MASK][1]);
+			I.setBaseValue(RawMaterial.CODES.VALUE(myResource));
 			I.baseEnvStats().setWeight(1);
 			if(I instanceof RawMaterial)
 				((RawMaterial)I).setDomainSource(localeCode);
@@ -575,7 +573,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
     
     public void adjustResourceName(Item I)
     {
-        String name=RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
+        String name=RawMaterial.CODES.NAME(I.material()).toLowerCase();
         if((I.material()==RawMaterial.MATERIAL_MITHRIL)
         ||(I.material()==RawMaterial.MATERIAL_METAL))
         {
@@ -628,7 +626,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
         I.setMaterial(type);
         adjustResourceName(I);
 		I.setDescription("");
-		I.setBaseValue(RawMaterial.RESOURCE_DATA[type&RawMaterial.RESOURCE_MASK][1]);
+		I.setBaseValue(RawMaterial.CODES.VALUE(type));
 		I.recoverEnvStats();
 		return I;
 	}
@@ -717,9 +715,9 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	{
 		if((other==null)||(other.length()==0))
 			return null;
-		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
-			if(RawMaterial.RESOURCE_DESCS[i].equalsIgnoreCase(other))
-				return findFirstResource(V,RawMaterial.RESOURCE_DATA[i][0]);
+		int code = RawMaterial.CODES.FIND_IgnoreCase(other);
+		if(code >=0 )
+			return findFirstResource(V,code);
 		return null;
 	}
 	public Item findFirstResource(Room E, int resource){return findFirstResource(getAllItems(E),resource);}

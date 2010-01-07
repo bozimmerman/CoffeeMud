@@ -263,7 +263,7 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 					{
 						Item I=(Item)V.elementAt(v);
 						if(CMLib.english().containsString(I.Name(),ingredient)
-						||(RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK].equalsIgnoreCase(ingredient)))
+						||(RawMaterial.CODES.NAME(I.material()).equalsIgnoreCase(ingredient)))
 						{ ok=true; break;}
 					}
 					if(!ok)
@@ -283,7 +283,7 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 					String ingredient=((String)recipe.elementAt(i)).trim();
 					if(ingredient.length()>0)
 						if(CMLib.english().containsString(I.Name(),ingredient)
-						||(RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK].equalsIgnoreCase(ingredient)))
+						||(RawMaterial.CODES.NAME(I.material()).equalsIgnoreCase(ingredient)))
 						{ ok=true; break;}
 				}
 				if(!ok)

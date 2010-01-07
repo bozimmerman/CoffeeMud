@@ -180,7 +180,7 @@ public class Farming extends GatheringSkill
 				if(plantable(mob,I2))
 				{ 
 					mine=I2; 
-					commands.addElement(RawMaterial.RESOURCE_DESCS[I2.material()&RawMaterial.RESOURCE_MASK]);
+					commands.addElement(RawMaterial.CODES.NAME(I2.material()));
 					break;
 				}
 			}
@@ -190,7 +190,7 @@ public class Farming extends GatheringSkill
 				Item I2=mob.fetchInventory(i);
 				if(plantable(mob,I2))
 				{
-					commands.addElement(RawMaterial.RESOURCE_DESCS[I2.material()&RawMaterial.RESOURCE_MASK]);
+					commands.addElement(RawMaterial.CODES.NAME(I2.material()));
 					mine=(Item)I2.copyOf();
 					if(mob.location().fetchItem(null,mob.location().getContextName(I2))==null)
 						mob.location().addItemRefuse(mine,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_RESOURCE));
@@ -211,31 +211,31 @@ public class Farming extends GatheringSkill
 		}
 		int code=-1;
 		String what=CMParms.combine(commands,0).toUpperCase();
-		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+		for(int cd : RawMaterial.CODES.ALL())
 		{
-			String str=RawMaterial.RESOURCE_DESCS[i].toUpperCase();
+			String str=RawMaterial.CODES.NAME(code).toUpperCase();
 			if((str.equals(what))
-			&&(((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
-			  ||(RawMaterial.RESOURCE_DATA[i][0]==RawMaterial.RESOURCE_COTTON)
-			  ||(RawMaterial.RESOURCE_DATA[i][0]==RawMaterial.RESOURCE_HEMP)
-			  ||((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)))
+			&&(((cd&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
+			  ||(cd==RawMaterial.RESOURCE_COTTON)
+			  ||(cd==RawMaterial.RESOURCE_HEMP)
+			  ||((cd&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)))
 			{
-				code=RawMaterial.RESOURCE_DATA[i][0];
+				code=cd;
 				foundShortName=CMStrings.capitalizeAndLower(str);
 				break;
 			}
 		}
 		if(code<0)
-		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+		for(int cd : RawMaterial.CODES.ALL())
 		{
-			String str=RawMaterial.RESOURCE_DESCS[i].toUpperCase();
+			String str=RawMaterial.CODES.NAME(cd).toUpperCase();
 			if((str.toUpperCase().startsWith(what)||(what.startsWith(str)))
-			&&(((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
-			  ||(RawMaterial.RESOURCE_DATA[i][0]==RawMaterial.RESOURCE_COTTON)
-			  ||(RawMaterial.RESOURCE_DATA[i][0]==RawMaterial.RESOURCE_HEMP)
-			  ||((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)))
+			&&(((cd&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
+			  ||(cd==RawMaterial.RESOURCE_COTTON)
+			  ||(cd==RawMaterial.RESOURCE_HEMP)
+			  ||((cd&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)))
 			{
-				code=RawMaterial.RESOURCE_DATA[i][0];
+				code=cd;
 				foundShortName=CMStrings.capitalizeAndLower(str);
 				break;
 			}

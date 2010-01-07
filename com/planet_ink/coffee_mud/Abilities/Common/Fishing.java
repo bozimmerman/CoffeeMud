@@ -116,15 +116,15 @@ public class Fishing extends GatheringSkill
 		boolean maybeFish=false;
 		if(mob.location()!=null)
 		{
-			for(int i=0;i<RawMaterial.FISHES.length;i++)
-				if(mob.location().myResource()==RawMaterial.FISHES[i])
+			for(int i=0;i<RawMaterial.CODES.FISHES().length;i++)
+				if(mob.location().myResource()==RawMaterial.CODES.FISHES()[i])
 				{
-					foundFish=RawMaterial.FISHES[i];
+					foundFish=RawMaterial.CODES.FISHES()[i];
 					maybeFish=true;
 				}
 				else
 				if((mob.location().resourceChoices()!=null)
-				&&(mob.location().resourceChoices().contains(Integer.valueOf(RawMaterial.FISHES[i]))))
+				&&(mob.location().resourceChoices().contains(Integer.valueOf(RawMaterial.CODES.FISHES()[i]))))
 					maybeFish=true;
 		}
 		if(!maybeFish)
@@ -143,7 +143,7 @@ public class Fishing extends GatheringSkill
 			found=(Item)CMLib.materials().makeResource(foundFish,Integer.toString(mob.location().domainType()),false,null);
 			foundShortName="nothing";
 			if(found!=null)
-				foundShortName=RawMaterial.RESOURCE_DESCS[found.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
+				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
 		}
 		int duration=getDuration(45,mob,1,15);
 		CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) fishing.");

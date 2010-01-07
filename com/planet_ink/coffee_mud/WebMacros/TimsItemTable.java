@@ -165,15 +165,9 @@ public class TimsItemTable extends StdWebMacro
 		if(parms.containsKey("ITEMS"))
 		{
 			int[] materials={RawMaterial.RESOURCE_STEEL,RawMaterial.RESOURCE_IRON,RawMaterial.RESOURCE_OAK,RawMaterial.RESOURCE_LEATHER,RawMaterial.RESOURCE_COTTON};
-			int[] mindexes=new int[materials.length];
-			for(int m=0;m<mindexes.length;m++)
-				for(int i=0;i<RawMaterial.RESOURCE_DATA.length;i++)
-					if(materials[m]==RawMaterial.RESOURCE_DATA[i][0])
-					{ mindexes[m]=i; break;}
-			
 			str.append("<TR><TD>Type</TD><TD>Level</TD>");
 			for(int m=0;m<materials.length;m++)
-				str.append("<TD>"+RawMaterial.RESOURCE_DESCS[mindexes[m]]+"</TD>");
+				str.append("<TD>"+RawMaterial.CODES.NAME(materials[m])+"</TD>");
 			str.append("</TR>");
 			//str.append("<TD>Attack</TD>");
 			//str.append("<TD>Damage</TD>");

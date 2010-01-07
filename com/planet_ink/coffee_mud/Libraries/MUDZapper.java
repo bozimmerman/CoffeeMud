@@ -1377,7 +1377,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             {
                                 int code=CMLib.materials().getResourceCode(str2.substring(1),false);
                                 if(code>=0)
-                                    buf.append(CMStrings.capitalizeAndLower(RawMaterial.RESOURCE_DESCS[code&RawMaterial.RESOURCE_MASK])+", ");
+                                    buf.append(CMStrings.capitalizeAndLower(RawMaterial.CODES.NAME(code))+", ");
                             }
                         }
                         if(buf.toString().endsWith(", "))
@@ -1397,7 +1397,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             {
                                 int code=CMLib.materials().getResourceCode(str2.substring(1),false);
                                 if(code>=0)
-                                    buf.append(CMStrings.capitalizeAndLower(RawMaterial.RESOURCE_DESCS[code&RawMaterial.RESOURCE_MASK])+", ");
+                                    buf.append(CMStrings.capitalizeAndLower(RawMaterial.CODES.NAME(code))+", ");
                             }
                         }
                         if(buf.toString().endsWith(", "))
@@ -2846,7 +2846,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             {
                                 int code=CMLib.materials().getResourceCode(str2.substring(1),false);
                                 if(code>=0)
-                                    entry.addElement(RawMaterial.RESOURCE_DESCS[(code&RawMaterial.RESOURCE_MASK)]);
+                                    entry.addElement(RawMaterial.CODES.NAME(code));
                             }
                             v=V.size();
                         }
@@ -3775,11 +3775,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 }
                 break;
             case 51: // +resource
-                if(V.contains(RawMaterial.RESOURCE_DESCS[(item.material()&RawMaterial.RESOURCE_MASK)]))
+                if(V.contains(RawMaterial.CODES.NAME(item.material())))
                     return false;
                 break;
             case 52: // -resource
-                if(!V.contains(RawMaterial.RESOURCE_DESCS[(item.material()&RawMaterial.RESOURCE_MASK)]))
+                if(!V.contains(RawMaterial.CODES.NAME(item.material())))
                     return false;
                 break;
             case 53: // -JavaClass

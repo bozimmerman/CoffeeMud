@@ -262,10 +262,8 @@ public class Alchemy extends CraftingSkill implements ItemCraftor
 				experienceToLose+=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*10;
 				experienceToLose-=CMLib.ableMapper().qualifyingClassLevel(mob,theSpell)*5;
 			}
-			int resourceType=-1;
-			for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
-				if(RawMaterial.RESOURCE_DESCS[i].equalsIgnoreCase(ingredient))
-				{ resourceType=RawMaterial.RESOURCE_DATA[i][0]; break;}
+			int resourceType=CMParms.indexOfIgnoreCase(RawMaterial.CODES.NAMES(), ingredient);
+			if(resourceType>=0) resourceType=RawMaterial.CODES.GET(resourceType);
 
 			boolean found=false;
 			Vector V=((Container)building).getContents();

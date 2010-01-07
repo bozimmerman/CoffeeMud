@@ -56,7 +56,7 @@ public class Ingredients extends BagOfEndlessness
 		I.setDisplayText(name+" has been left here.");
 		I.setDescription("It looks like "+name);
 		I.setMaterial(type);
-		I.setBaseValue(RawMaterial.RESOURCE_DATA[type&RawMaterial.RESOURCE_MASK][1]);
+		I.setBaseValue(RawMaterial.CODES.VALUE(type&RawMaterial.RESOURCE_MASK));
 		I.baseEnvStats().setWeight(1);
 		I.recoverEnvStats();
 		I.setContainer(this);
@@ -80,11 +80,8 @@ public class Ingredients extends BagOfEndlessness
 		{
 			alreadyFilled=true;
 			if(getContents().size()==0)
-			for(int i=1;i<RawMaterial.RESOURCE_DATA.length;i++)
-			{
-				String name=RawMaterial.RESOURCE_DESCS[i];
-				makeResource(name.toLowerCase(),RawMaterial.RESOURCE_DATA[i][0]);
-			}
+			for(int rsc : RawMaterial.CODES.ALL())
+				makeResource(RawMaterial.CODES.NAME(rsc).toLowerCase(),rsc);
 		}
 		else
 		if(msg.amITarget(this)

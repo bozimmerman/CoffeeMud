@@ -66,21 +66,18 @@ public class Chant_GrowFood extends Chant
 
 		int col=0;
 		StringBuffer buf=new StringBuffer("Food types known:\n\r");
-		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
-		{
-			int code=RawMaterial.RESOURCE_DATA[i][0];
-			if((((code&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION))
-            &&(!CMParms.makeVector(Chant_SummonSeed.NON_SEEDS).contains(Integer.valueOf(RawMaterial.RESOURCE_DATA[i][0]))))	
+		List<Integer> codes = RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_VEGETATION);
+		for(Integer code : codes)
+			if(!CMParms.makeVector(Chant_SummonSeed.NON_SEEDS).contains(Integer.valueOf(code.intValue())))
 			{
-				String str=RawMaterial.RESOURCE_DESCS[i];
-				choices.addElement(Integer.valueOf(code));
-				if((s.length()>0)&&(CMLib.english().containsString(RawMaterial.RESOURCE_DESCS[i],s)))
+				choices.addElement(code);
+				String desc=RawMaterial.CODES.NAME(code.intValue());
+				if((s.length()>0)&&(CMLib.english().containsString(desc,s)))
 					material=code;
 				if(col==4){ buf.append("\n\r"); col=0;}
 				col++;
-				buf.append(CMStrings.padRight(CMStrings.capitalizeAndLower(str),15));
+				buf.append(CMStrings.padRight(CMStrings.capitalizeAndLower(desc),15));
 			}
-		}
 		if(s.equalsIgnoreCase("list"))
 		{
 			mob.tell(buf.toString()+"\n\r\n\r");
@@ -113,7 +110,7 @@ public class Chant_GrowFood extends Chant
 					newItem.setNourishment(1);
 				else
 					newItem.setNourishment(150+(10*super.getX1Level(mob)));
-				String name=RawMaterial.RESOURCE_DESCS[material&RawMaterial.RESOURCE_MASK].toLowerCase();
+				String name=RawMaterial.CODES.NAME(material).toLowerCase();
 				newItem.setMaterial(material);
 				newItem.setBaseValue(1);
 				newItem.baseEnvStats().setWeight(1);

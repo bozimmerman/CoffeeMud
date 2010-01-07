@@ -189,7 +189,7 @@ public class Chant_SummonSapling extends Chant
 		if(level<1) level=1;
 		newMOB.baseEnvStats().setLevel(level);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("TreeGolem"));
-		String resourceName=RawMaterial.RESOURCE_DESCS[material&RawMaterial.RESOURCE_MASK].toLowerCase();
+		String resourceName=RawMaterial.CODES.NAME(material).toLowerCase();
 		String name=resourceName+" sapling";
 		name=CMLib.english().startWithAorAn(name).toLowerCase();
 		newMOB.setName(name);

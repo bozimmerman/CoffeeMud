@@ -94,7 +94,7 @@ public class Cow extends StdMOB implements Drink
 			I.setDisplayText("some milk has been left here.");
 			I.setDescription("It looks like milk");
 			I.setMaterial(RawMaterial.RESOURCE_MILK);
-			I.setBaseValue(RawMaterial.RESOURCE_DATA[RawMaterial.RESOURCE_MILK&RawMaterial.RESOURCE_MASK][1]);
+			I.setBaseValue(RawMaterial.CODES.VALUE(RawMaterial.RESOURCE_MILK));
 			I.baseEnvStats().setWeight(1);
 			I.recoverEnvStats();
 			I.setContainer(container);

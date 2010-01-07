@@ -1608,24 +1608,34 @@ public class CMParms
     public static boolean contains(int[] supported, int x)
     { return indexOf(supported,x)>=0;}
 
-    public static boolean startsWith(String[] supported, String expertise)
+    public static int startsWith(String[] supported, String expertise)
     {
-        if(supported==null) return true;
-        if(expertise==null) return false;
+        if(supported==null) return 0;
+        if(expertise==null) return -1;
         for(int i=0;i<supported.length;i++)
             if(supported[i].startsWith(expertise))
-                return true;
-        return false;
+                return i;
+        return -1;
     }
 
-    public static boolean startsWithIgnoreCase(String[] supported, String expertise)
+    public static int startsWithIgnoreCase(String[] supported, String expertise)
     {
-        if(supported==null) return true;
-        if(expertise==null) return false;
+        if(supported==null) return 0;
+        if(expertise==null) return -1;
         for(int i=0;i<supported.length;i++)
             if(supported[i].toUpperCase().startsWith(expertise.toUpperCase()))
-                return true;
-        return false;
+                return i;
+        return -1;
+    }
+
+    public static boolean startsAnyWith(String[] supported, String expertise)
+    {
+    	return startsWith(supported,expertise)>=0;
+    }
+
+    public static boolean startsAnyWithIgnoreCase(String[] supported, String expertise)
+    {
+    	return startsWithIgnoreCase(supported,expertise)>=0;
     }
 
     public static Vector denumerate(Enumeration e)
