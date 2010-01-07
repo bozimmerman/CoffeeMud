@@ -762,10 +762,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
             String materialStr = findOptionalString("material",piece,defined);
             int material=-1;
             if(materialStr!=null)
-            {
-            	int materialIndex = CMParms.indexOfIgnoreCase(RawMaterial.CODES.NAMES(),materialStr);
-            	if(materialIndex>=0) material=RawMaterial.CODES.GET(materialIndex);
-            }
+            	 material = RawMaterial.CODES.FIND_IgnoreCase(materialStr);
             Vector craftors=new Vector();
 			for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
 			{

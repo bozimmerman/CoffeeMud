@@ -1169,7 +1169,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                             proceed = false;
                             str=CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),true,CMParms.toStringList(RawMaterial.CODES.NAMES())).trim();
                             if(str.equals(oldVal)) return oldVal;
-                            int r=CMParms.indexOfIgnoreCase(RawMaterial.CODES.NAMES(), str);
+                            int r=RawMaterial.CODES.FIND_IgnoreCase(str);
                             if(r==0) str="";
                             else if(r>0) str=RawMaterial.CODES.NAME(r);
                             if(str.equals(oldVal)) return oldVal;
@@ -1202,7 +1202,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         AbilityParmEditor A = (AbilityParmEditor)CMLib.ableParms().getEditors().get("RESOURCE_OR_KEYWORD");
                         if(oldVal.endsWith("$")) oldVal = oldVal.substring(0,oldVal.length()-1);
                         String value = A.webValue(httpReq,parms,oldVal,fieldName);
-                        int r=CMParms.indexOfIgnoreCase(RawMaterial.CODES.NAMES(), value);
+                        int r=RawMaterial.CODES.FIND_IgnoreCase(value);
                         if(r>=0) return RawMaterial.CODES.NAME(r);
                         return (value.trim().length()==0)?"":(value+"$");
                     }
@@ -1228,7 +1228,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                             if(oldVal.trim().endsWith("$")) oldVal=oldVal.trim().substring(0,oldVal.trim().length()-1);
                             str=CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),true,CMParms.toStringList(RawMaterial.CODES.NAMES())).trim();
                             if(str.equals(orig)) return orig;
-                            int r=CMParms.indexOfIgnoreCase(RawMaterial.CODES.NAMES(), str);
+                            int r=RawMaterial.CODES.FIND_IgnoreCase(str);
                             if(r==0) str="";
                             else if(r>0) str=RawMaterial.CODES.NAME(r);
                             if(str.equals(orig)) return orig;

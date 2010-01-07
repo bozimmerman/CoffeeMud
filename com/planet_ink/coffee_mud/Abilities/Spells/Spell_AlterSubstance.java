@@ -95,9 +95,9 @@ public class Spell_AlterSubstance extends Spell
 		}
 		else
 		{
-			newMaterial=CMParms.indexOfIgnoreCase(RawMaterial.CODES.NAMES(), material.toUpperCase().trim());
+			newMaterial=RawMaterial.CODES.FIND_IgnoreCase(material.trim());
 			if(newMaterial<0)
-				newMaterial=CMParms.startsWith(RawMaterial.CODES.NAMES(), material.toUpperCase().trim());
+				newMaterial=RawMaterial.CODES.FIND_StartsWith(material.trim());
 			if(newMaterial>=0)
 				material=RawMaterial.CODES.NAME(newMaterial);
 		}

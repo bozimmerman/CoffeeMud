@@ -963,6 +963,7 @@ public interface RawMaterial extends Item
 		 * @return the code of the names resource, or -1
 		 */
 		public static int FIND_CaseSensitive(String rsc) {
+			if(rsc==null) return -1;
 			CODES C=c();
 			int x=CMParms.indexOf(C.descs, rsc);
 			if(x>=0) return C.allCodes[x];
@@ -973,6 +974,7 @@ public interface RawMaterial extends Item
 		 * @return the code of the names resource, or -1
 		 */
 		public static int FIND_IgnoreCase(String rsc) {
+			if(rsc==null) return -1;
 			CODES C=c();
 			int x=CMParms.indexOfIgnoreCase(C.descs, rsc);
 			if(x>=0) return C.allCodes[x];
@@ -983,8 +985,9 @@ public interface RawMaterial extends Item
 		 * @return the code of the names resource, or -1
 		 */
 		public static int FIND_StartsWith(String rsc) {
+			if(rsc==null) return -1;
 			CODES C=c();
-			int x=CMParms.startsWith(C.descs, rsc);
+			int x=CMParms.startsWith(C.descs, rsc.toUpperCase().trim());
 			if(x>=0) return C.allCodes[x];
 			return -1;
 		}

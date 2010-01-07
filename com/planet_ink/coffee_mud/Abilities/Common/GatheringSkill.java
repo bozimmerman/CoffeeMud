@@ -69,9 +69,9 @@ public class GatheringSkill extends CommonSkill
 	            boolean found=false;
         		if(str.startsWith("-"))
         		{
-    	            int rscIndex=CMParms.indexOfIgnoreCase(RawMaterial.CODES.NAMES(), str.substring(1));
-        			if(rscIndex>=0)
-    	            	maskV.removeElement(Integer.valueOf(RawMaterial.CODES.GET(rscIndex)));
+    	            int rsc=RawMaterial.CODES.FIND_IgnoreCase(str.substring(1));
+        			if(rsc>=0)
+    	            	maskV.removeElement(Integer.valueOf(rsc));
     	            found=true;
         		}
         		if(!found)
@@ -86,9 +86,9 @@ public class GatheringSkill extends CommonSkill
         		}
         		if(!found)
         		{
-    	            int rscIndex=CMParms.indexOfIgnoreCase(RawMaterial.CODES.NAMES(), str);
-        			if(rscIndex>=0)
-		                maskV.addElement(Integer.valueOf(RawMaterial.CODES.GET(rscIndex)));
+    	            int rsc=RawMaterial.CODES.FIND_IgnoreCase(str);
+        			if(rsc>=0)
+		                maskV.addElement(Integer.valueOf(rsc));
         		}
 	        }
 	    }

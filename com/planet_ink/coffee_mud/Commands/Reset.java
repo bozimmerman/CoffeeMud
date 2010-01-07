@@ -94,17 +94,17 @@ public class Reset extends StdCommand
 				mob.tell(I.Name()+"/"+I.displayText()+"/"+I.description());
 			else
 			{
-				int materialIndex=CMParms.indexOf(RawMaterial.CODES.NAMES(), str.toUpperCase());
-				if(materialIndex>=0)
+				int material=RawMaterial.CODES.FIND_CaseSensitive(str.toUpperCase());
+				if(material>=0)
 				{
-					I.setMaterial(RawMaterial.CODES.GET(materialIndex));
-					mob.tell(lead+"Changed to "+RawMaterial.CODES.NAME(materialIndex));
+					I.setMaterial(RawMaterial.CODES.GET(material));
+					mob.tell(lead+"Changed to "+RawMaterial.CODES.NAME(material));
 					rememberI.put(I.Name(),Integer.valueOf(I.material()));
 					return 1;
 				}
-				int possIndex=CMParms.startsWith(RawMaterial.CODES.NAMES(), str.toUpperCase());
+				int possMat=RawMaterial.CODES.FIND_StartsWith(str);
 				String poss;
-				if(possIndex<0)
+				if(possMat<0)
 				{
 					poss="?";
 					for(String mat : RawMaterial.CODES.NAMES())
@@ -112,7 +112,7 @@ public class Reset extends StdCommand
 						   poss=mat;
 				}
 				else
-					poss=RawMaterial.CODES.NAME(possIndex);
+					poss=RawMaterial.CODES.NAME(possMat);
 				mob.tell(lead+"'"+str+"' does not exist.  Try '"+poss+"'.");
 			}
 		}
