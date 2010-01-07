@@ -1,0 +1,3409 @@
+Index: com/planet_ink/coffee_mud/Abilities/Archon/Archon_Metacraft.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Archon/Archon_Metacraft.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Archon/Archon_Metacraft.java	(working copy)
+@@ -122,9 +122,10 @@
+ 		}
+ 		int material=-1;
+ 		if(mat!=null)
+-		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+-			if(RawMaterial.RESOURCE_DESCS[i].startsWith(mat))
+-			{ material=RawMaterial.RESOURCE_DATA[i][0]; break;}
++		{
++			material=CMParms.startsWith(RawMaterial.CODES.NAMES(), mat);
++			if(material>=0) material=RawMaterial.CODES.GET(material);
++		}
+ 		if((mat!=null)&&(material<0))
+ 		{
+ 			mob.tell("'"+mat+"' is not a recognized material.");
+Index: com/planet_ink/coffee_mud/Abilities/Common/Alchemy.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/Alchemy.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/Alchemy.java	(working copy)
+@@ -262,10 +262,8 @@
+ 				experienceToLose+=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*10;
+ 				experienceToLose-=CMLib.ableMapper().qualifyingClassLevel(mob,theSpell)*5;
+ 			}
+-			int resourceType=-1;
+-			for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+-				if(RawMaterial.RESOURCE_DESCS[i].equalsIgnoreCase(ingredient))
+-				{ resourceType=RawMaterial.RESOURCE_DATA[i][0]; break;}
++			int resourceType=CMParms.indexOfIgnoreCase(RawMaterial.CODES.NAMES(), ingredient);
++			if(resourceType>=0) resourceType=RawMaterial.CODES.GET(resourceType);
+ 
+ 			boolean found=false;
+ 			Vector V=((Container)building).getContents();
+Index: com/planet_ink/coffee_mud/Abilities/Common/Armorsmithing.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/Armorsmithing.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/Armorsmithing.java	(working copy)
+@@ -318,7 +318,7 @@
+ 				return false;
+ 			}
+ 			duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),6);
+-			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
++			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.CODES.NAME((data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK))).toLowerCase();
+ 			if(itemName.endsWith("s"))
+ 				itemName="some "+itemName;
+ 			else
+@@ -333,7 +333,7 @@
+ 			building.baseEnvStats().setWeight(woodRequired);
+ 			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
+ 			building.setMaterial(data[0][FOUND_CODE]);
+-			int hardness=RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][3]-6;
++			int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-6;
+ 			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness*3));
+ 			if(building.baseEnvStats().level()<1) building.baseEnvStats().setLevel(1);
+ 			int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
+@@ -368,7 +368,7 @@
+ 		{
+ 			messedUp=false;
+ 			duration=1;
+-			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
++			verb="bundling "+RawMaterial.CODES.NAME(building.material()).toLowerCase();
+ 			startStr="<S-NAME> start(s) "+verb+".";
+ 			displayText="You are "+verb;
+ 		}
+Index: com/planet_ink/coffee_mud/Abilities/Common/Blacksmithing.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/Blacksmithing.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/Blacksmithing.java	(working copy)
+@@ -212,7 +212,7 @@
+ 			return false;
+ 		}
+ 		duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),4);
+-		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
++		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+ 		if(bundling)
+ 			itemName="a "+woodRequired+"# "+itemName;
+ 		else
+@@ -225,7 +225,7 @@
+ 		building.setDisplayText(itemName+" lies here");
+ 		building.setDescription(itemName+". ");
+ 		building.baseEnvStats().setWeight(woodRequired);
+-		building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][RawMaterial.DATA_VALUE])));
++		building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
+ 		building.setMaterial(data[0][FOUND_CODE]);
+ 		building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
+ 		building.setSecretIdentity("This is the work of "+mob.Name()+".");
+@@ -286,7 +286,7 @@
+ 		{
+ 			messedUp=false;
+ 			duration=1;
+-			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
++			verb="bundling "+RawMaterial.CODES.NAME(building.material()).toLowerCase();
+ 			startStr="<S-NAME> start(s) "+verb+".";
+ 			displayText="You are "+verb;
+ 		}
+Index: com/planet_ink/coffee_mud/Abilities/Common/Carpentry.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/Carpentry.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/Carpentry.java	(working copy)
+@@ -309,7 +309,7 @@
+ 				return false;
+ 			}
+ 			duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),4);
+-			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
++			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+ 			if(bundling)
+ 				itemName="a "+woodRequired+"# "+itemName;
+ 			else
+@@ -324,7 +324,7 @@
+ 			building.baseEnvStats().setWeight(woodRequired);
+ 			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
+ 			building.setMaterial(data[0][FOUND_CODE]);
+-			int hardness=RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][RawMaterial.DATA_STRENGTH]-3;
++			int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-3;
+ 			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness));
+ 			if(building.baseEnvStats().level()<1) building.baseEnvStats().setLevel(1);
+ 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
+@@ -414,7 +414,7 @@
+ 		{
+ 			messedUp=false;
+ 			duration=1;
+-			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
++			verb="bundling "+RawMaterial.CODES.NAME(building.material()).toLowerCase();
+ 			startStr="<S-NAME> start(s) "+verb+".";
+ 			displayText="You are "+verb;
+ 		}
+Index: com/planet_ink/coffee_mud/Abilities/Common/Chopping.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/Chopping.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/Chopping.java	(working copy)
+@@ -138,7 +138,7 @@
+ 			found=(Item)CMLib.materials().makeResource(resourceType,Integer.toString(mob.location().domainType()),false,null);
+ 			foundShortName="nothing";
+ 			if(found!=null)
+-				foundShortName=RawMaterial.RESOURCE_DESCS[found.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
++				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
+ 		}
+ 		int duration=getDuration(40,mob,1,15);
+ 		CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) looking for a good tree to chop.");
+Index: com/planet_ink/coffee_mud/Abilities/Common/ClanCrafting.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/ClanCrafting.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/ClanCrafting.java	(working copy)
+@@ -342,7 +342,7 @@
+ 		building.baseEnvStats().setWeight(amt1+amt2);
+ 		building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
+ 		building.setMaterial(data[0][FOUND_CODE]);
+-		int hardness=RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][3]-6;
++		int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-6;
+ 		building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness*3));
+ 		if(building.baseEnvStats().level()<1) building.baseEnvStats().setLevel(1);
+ 		int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
+Index: com/planet_ink/coffee_mud/Abilities/Common/Cobbling.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/Cobbling.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/Cobbling.java	(working copy)
+@@ -305,7 +305,7 @@
+ 				return false;
+ 			}
+ 			duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),4);
+-			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
++			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+ 			if(itemName.endsWith("s"))
+ 				itemName="some "+itemName;
+ 			else
+@@ -320,7 +320,7 @@
+ 			building.baseEnvStats().setWeight(woodRequired);
+ 			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
+ 			building.setMaterial(data[0][FOUND_CODE]);
+-			int hardness=RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][3]-6;
++			int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-6;
+ 			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness*3));
+ 			if(building.baseEnvStats().level()<1) building.baseEnvStats().setLevel(1);
+ 			int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
+@@ -356,7 +356,7 @@
+ 		{
+ 			messedUp=false;
+ 			duration=1;
+-			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
++			verb="bundling "+RawMaterial.CODES.NAME(building.material()).toLowerCase();
+ 			startStr="<S-NAME> start(s) "+verb+".";
+ 			displayText="You are "+verb;
+ 		}
+Index: com/planet_ink/coffee_mud/Abilities/Common/Cooking.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/Cooking.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/Cooking.java	(working copy)
+@@ -190,9 +190,9 @@
+ 		if((pot instanceof Drink)&&(((Drink)pot).liquidRemaining()>0))
+ 		{
+ 			if(pot instanceof RawMaterial)
+-				h.put(RawMaterial.RESOURCE_DESCS[((RawMaterial)pot).material()&RawMaterial.RESOURCE_MASK]+"/",Integer.valueOf(((Drink)pot).liquidRemaining()/10));
++				h.put(RawMaterial.CODES.NAME(((RawMaterial)pot).material())+"/",Integer.valueOf(((Drink)pot).liquidRemaining()/10));
+ 			else
+-				h.put(RawMaterial.RESOURCE_DESCS[((Drink)pot).liquidType()&RawMaterial.RESOURCE_MASK]+"/",Integer.valueOf(((Drink)pot).liquidRemaining()/10));
++				h.put(RawMaterial.CODES.NAME(((Drink)pot).liquidType())+"/",Integer.valueOf(((Drink)pot).liquidRemaining()/10));
+ 		}
+ 		if(pot.owner()==null) return h;
+ 		Vector V=pot.getContents();
+@@ -201,7 +201,7 @@
+ 			Item I=(Item)V.elementAt(v);
+ 			String ing="Unknown";
+ 			if(I instanceof RawMaterial)
+-				ing=RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK];
++				ing=RawMaterial.CODES.NAME(I.material());
+ 			else
+ 			if((((I.material()&RawMaterial.MATERIAL_VEGETATION)>0)
+ 				||((I.material()&RawMaterial.MATERIAL_LIQUID)>0)
+@@ -385,7 +385,7 @@
+ 		{
+ 			Item I=(Item)contents.elementAt(v);
+ 			if((I instanceof RawMaterial)
+-			&&(RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK].equalsIgnoreCase((String)finalRecipe.elementAt(RCP_MAININGR))))
++			&&(RawMaterial.CODES.NAME(I.material()).equalsIgnoreCase((String)finalRecipe.elementAt(RCP_MAININGR))))
+ 			{
+ 				if((((RawMaterial)I).domainSource()!=null)
+ 				&&(!CMath.isNumber(((RawMaterial)I).domainSource()))
+@@ -541,12 +541,11 @@
+ 			if(messedUp)
+ 				building.setMaterial(RawMaterial.RESOURCE_DUST);
+ 			else
+-			for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+-				if(RawMaterial.RESOURCE_DESCS[i].equalsIgnoreCase(foodType))
+-				{
+-					building.setMaterial(RawMaterial.RESOURCE_DATA[i][0]);
+-					break;
+-				}
++			{
++				int code = RawMaterial.CODES.FIND_IgnoreCase(foodType);
++				if(code>=0)
++					building.setMaterial(code);
++			}
+ 			building.setName(((messedUp)?"ruined ":"")+finalDishName);
+ 			building.setDisplayText("some "+((messedUp)?"ruined ":"")+finalDishName+" has been left here");
+ 			building.baseEnvStats().setWeight(building.baseEnvStats().weight()/finalAmount);
+Index: com/planet_ink/coffee_mud/Abilities/Common/Costuming.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/Costuming.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/Costuming.java	(working copy)
+@@ -297,7 +297,7 @@
+ 				return false;
+ 			}
+ 			duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),4);
+-			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
++			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+ 			if(bundling)
+ 				itemName="a "+woodRequired+"# "+itemName;
+ 			else
+@@ -316,7 +316,7 @@
+ 				building.baseEnvStats().setWeight(woodRequired);
+ 			else
+ 				building.baseEnvStats().setWeight(woodRequired/2);
+-			int hardness=RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][RawMaterial.DATA_STRENGTH]-1;
++			int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-1;
+ 			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
+ 			building.setMaterial(data[0][FOUND_CODE]);
+ 			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
+@@ -363,7 +363,7 @@
+ 		{
+ 			messedUp=false;
+ 			duration=1;
+-			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
++			verb="bundling "+RawMaterial.CODES.NAME(building.material()).toLowerCase();
+ 			startStr="<S-NAME> start(s) "+verb+".";
+ 			displayText="You are "+verb;
+ 		}
+Index: com/planet_ink/coffee_mud/Abilities/Common/CraftingSkill.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/CraftingSkill.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/CraftingSkill.java	(working copy)
+@@ -414,13 +414,13 @@
+ 
+ 		if(req1Required>data[0][FOUND_AMT])
+ 		{
+-			commonTell(mob,"You need "+req1Required+" pounds of "+RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)].toLowerCase()+" to make that.  There is not enough here.  Are you sure you set it all on the ground first?");
++			commonTell(mob,"You need "+req1Required+" pounds of "+RawMaterial.CODES.NAME(data[0][FOUND_CODE]).toLowerCase()+" to make that.  There is not enough here.  Are you sure you set it all on the ground first?");
+ 			return null;
+ 		}
+ 		data[0][FOUND_AMT]=req1Required;
+ 		if((req2Required>0)&&(req2Required>data[1][FOUND_AMT]))
+ 		{
+-			commonTell(mob,"You need "+req2Required+" pounds of "+RawMaterial.RESOURCE_DESCS[(data[1][FOUND_CODE]&RawMaterial.RESOURCE_MASK)].toLowerCase()+" to make that.  There is not enough here.  Are you sure you set it all on the ground first?");
++			commonTell(mob,"You need "+req2Required+" pounds of "+RawMaterial.CODES.NAME(data[1][FOUND_CODE]).toLowerCase()+" to make that.  There is not enough here.  Are you sure you set it all on the ground first?");
+ 			return null;
+ 		}
+ 		data[1][FOUND_AMT]=req2Required;
+Index: com/planet_ink/coffee_mud/Abilities/Common/Digging.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/Digging.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/Digging.java	(working copy)
+@@ -145,7 +145,7 @@
+ 			found=(Item)CMLib.materials().makeResource(resourceType,Integer.toString(mob.location().domainType()),false,null);
+ 			foundShortName="nothing";
+ 			if(found!=null)
+-				foundShortName=RawMaterial.RESOURCE_DESCS[found.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
++				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
+ 		}
+ 		
+ 		int duration=getDuration(60,mob,1,15);
+Index: com/planet_ink/coffee_mud/Abilities/Common/Drilling.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/Drilling.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/Drilling.java	(working copy)
+@@ -181,7 +181,7 @@
+ 			found=(Item)CMLib.materials().makeResource(resourceType,Integer.toString(mob.location().domainType()),false,null);
+ 			foundShortName="nothing";
+ 			if(found!=null)
+-				foundShortName=RawMaterial.RESOURCE_DESCS[found.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
++				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
+ 		}
+ 		int duration=getDuration(35,mob,1,10);
+ 		CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) drilling.");
+Index: com/planet_ink/coffee_mud/Abilities/Common/Farming.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/Farming.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/Farming.java	(working copy)
+@@ -180,7 +180,7 @@
+ 				if(plantable(mob,I2))
+ 				{ 
+ 					mine=I2; 
+-					commands.addElement(RawMaterial.RESOURCE_DESCS[I2.material()&RawMaterial.RESOURCE_MASK]);
++					commands.addElement(RawMaterial.CODES.NAME(I2.material()));
+ 					break;
+ 				}
+ 			}
+@@ -190,7 +190,7 @@
+ 				Item I2=mob.fetchInventory(i);
+ 				if(plantable(mob,I2))
+ 				{
+-					commands.addElement(RawMaterial.RESOURCE_DESCS[I2.material()&RawMaterial.RESOURCE_MASK]);
++					commands.addElement(RawMaterial.CODES.NAME(I2.material()));
+ 					mine=(Item)I2.copyOf();
+ 					if(mob.location().fetchItem(null,mob.location().getContextName(I2))==null)
+ 						mob.location().addItemRefuse(mine,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_RESOURCE));
+@@ -211,31 +211,31 @@
+ 		}
+ 		int code=-1;
+ 		String what=CMParms.combine(commands,0).toUpperCase();
+-		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
++		for(int cd : RawMaterial.CODES.ALL())
+ 		{
+-			String str=RawMaterial.RESOURCE_DESCS[i].toUpperCase();
++			String str=RawMaterial.CODES.NAME(code).toUpperCase();
+ 			if((str.equals(what))
+-			&&(((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
+-			  ||(RawMaterial.RESOURCE_DATA[i][0]==RawMaterial.RESOURCE_COTTON)
+-			  ||(RawMaterial.RESOURCE_DATA[i][0]==RawMaterial.RESOURCE_HEMP)
+-			  ||((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)))
++			&&(((cd&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
++			  ||(cd==RawMaterial.RESOURCE_COTTON)
++			  ||(cd==RawMaterial.RESOURCE_HEMP)
++			  ||((cd&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)))
+ 			{
+-				code=RawMaterial.RESOURCE_DATA[i][0];
++				code=cd;
+ 				foundShortName=CMStrings.capitalizeAndLower(str);
+ 				break;
+ 			}
+ 		}
+ 		if(code<0)
+-		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
++		for(int cd : RawMaterial.CODES.ALL())
+ 		{
+-			String str=RawMaterial.RESOURCE_DESCS[i].toUpperCase();
++			String str=RawMaterial.CODES.NAME(cd).toUpperCase();
+ 			if((str.toUpperCase().startsWith(what)||(what.startsWith(str)))
+-			&&(((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
+-			  ||(RawMaterial.RESOURCE_DATA[i][0]==RawMaterial.RESOURCE_COTTON)
+-			  ||(RawMaterial.RESOURCE_DATA[i][0]==RawMaterial.RESOURCE_HEMP)
+-			  ||((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)))
++			&&(((cd&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
++			  ||(cd==RawMaterial.RESOURCE_COTTON)
++			  ||(cd==RawMaterial.RESOURCE_HEMP)
++			  ||((cd&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)))
+ 			{
+-				code=RawMaterial.RESOURCE_DATA[i][0];
++				code=cd;
+ 				foundShortName=CMStrings.capitalizeAndLower(str);
+ 				break;
+ 			}
+Index: com/planet_ink/coffee_mud/Abilities/Common/Fishing.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/Fishing.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/Fishing.java	(working copy)
+@@ -116,15 +116,15 @@
+ 		boolean maybeFish=false;
+ 		if(mob.location()!=null)
+ 		{
+-			for(int i=0;i<RawMaterial.FISHES.length;i++)
+-				if(mob.location().myResource()==RawMaterial.FISHES[i])
++			for(int i=0;i<RawMaterial.CODES.FISHES().length;i++)
++				if(mob.location().myResource()==RawMaterial.CODES.FISHES()[i])
+ 				{
+-					foundFish=RawMaterial.FISHES[i];
++					foundFish=RawMaterial.CODES.FISHES()[i];
+ 					maybeFish=true;
+ 				}
+ 				else
+ 				if((mob.location().resourceChoices()!=null)
+-				&&(mob.location().resourceChoices().contains(Integer.valueOf(RawMaterial.FISHES[i]))))
++				&&(mob.location().resourceChoices().contains(Integer.valueOf(RawMaterial.CODES.FISHES()[i]))))
+ 					maybeFish=true;
+ 		}
+ 		if(!maybeFish)
+@@ -143,7 +143,7 @@
+ 			found=(Item)CMLib.materials().makeResource(foundFish,Integer.toString(mob.location().domainType()),false,null);
+ 			foundShortName="nothing";
+ 			if(found!=null)
+-				foundShortName=RawMaterial.RESOURCE_DESCS[found.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
++				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
+ 		}
+ 		int duration=getDuration(45,mob,1,15);
+ 		CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) fishing.");
+Index: com/planet_ink/coffee_mud/Abilities/Common/Fletching.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/Fletching.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/Fletching.java	(working copy)
+@@ -278,7 +278,7 @@
+ 				return false;
+ 			}
+ 			duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),4);
+-			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
++			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+ 			itemName=CMLib.english().startWithAorAn(itemName);
+ 			building.setName(itemName);
+ 			startStr="<S-NAME> start(s) making "+building.name()+".";
+@@ -328,7 +328,7 @@
+ 		{
+ 			messedUp=false;
+ 			duration=1;
+-			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
++			verb="bundling "+RawMaterial.CODES.NAME(building.material()).toLowerCase();
+ 			startStr="<S-NAME> start(s) "+verb+".";
+ 			displayText="You are "+verb;
+ 		}
+Index: com/planet_ink/coffee_mud/Abilities/Common/Foraging.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/Foraging.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/Foraging.java	(working copy)
+@@ -143,7 +143,7 @@
+ 			found=(Item)CMLib.materials().makeResource(resourceType,Integer.toString(mob.location().domainType()),false,null);
+ 			foundShortName="nothing";
+ 			if(found!=null)
+-				foundShortName=RawMaterial.RESOURCE_DESCS[found.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
++				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
+ 		}
+ 		int duration=getDuration(45,mob,1,10);
+ 		CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) foraging.");
+Index: com/planet_ink/coffee_mud/Abilities/Common/GatheringSkill.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/GatheringSkill.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/GatheringSkill.java	(working copy)
+@@ -69,31 +69,27 @@
+ 	            boolean found=false;
+         		if(str.startsWith("-"))
+         		{
+-        			str=str.substring(1);
+-    	            for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+-            			if(RawMaterial.MATERIAL_DESCS[i].equalsIgnoreCase(str))
+-	    	            	maskV.removeElement(Integer.valueOf(RawMaterial.RESOURCE_DATA[i][0]));
++    	            int rscIndex=CMParms.indexOfIgnoreCase(RawMaterial.CODES.NAMES(), str.substring(1));
++        			if(rscIndex>=0)
++    	            	maskV.removeElement(Integer.valueOf(RawMaterial.CODES.GET(rscIndex)));
+     	            found=true;
+         		}
+         		if(!found)
+-        		for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
+-        			if(RawMaterial.MATERIAL_DESCS[i].equalsIgnoreCase(str))
+-        			{
+-        			    for(int ii=0;ii<RawMaterial.RESOURCE_DATA.length;ii++)
+-        			        if((RawMaterial.RESOURCE_DATA[ii][0]&RawMaterial.MATERIAL_MASK)==(i<<8))
+-			                { 
+-        			            found=true;
+-        			            maskV.addElement(Integer.valueOf(RawMaterial.RESOURCE_DATA[ii][0]));
+-        			        }
+-        			    break;
+-        			}
+-	            if(!found)
+-	            for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+-	                if(RawMaterial.RESOURCE_DESCS[i].equalsIgnoreCase(str))
+-	                { 
+-		                maskV.addElement(Integer.valueOf(RawMaterial.RESOURCE_DATA[i][0]));
+-		                break;
+-		            }
++        		{
++    	            int matIndex=CMParms.indexOfIgnoreCase(RawMaterial.MATERIAL_DESCS, str);
++    	            if(matIndex>=0)
++    	            {
++    	            	List<Integer> rscs=RawMaterial.CODES.COMPOSE_RESOURCES(matIndex);
++    	            	maskV.addAll(rscs);
++			            found=rscs.size()>0;
++    	            }
++        		}
++        		if(!found)
++        		{
++    	            int rscIndex=CMParms.indexOfIgnoreCase(RawMaterial.CODES.NAMES(), str);
++        			if(rscIndex>=0)
++		                maskV.addElement(Integer.valueOf(RawMaterial.CODES.GET(rscIndex)));
++        		}
+ 	        }
+ 	    }
+ 	    supportedResources.put(ID(),maskV);
+@@ -177,7 +173,7 @@
+             commonTell(mob,"You could not bundle "+name+" due to "+foundResource+" being an invalid resource code.  Bug it!");
+             return false;
+         }
+-		I.setName("a "+amount+"# "+RawMaterial.RESOURCE_DESCS[foundResource&RawMaterial.RESOURCE_MASK].toLowerCase()+" bundle");
++		I.setName("a "+amount+"# "+RawMaterial.CODES.NAME(foundResource).toLowerCase()+" bundle");
+ 		I.setDisplayText(I.name()+" is here.");
+ 		I.baseEnvStats().setWeight(amount);
+ 		if(R.show(mob,null,I,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> create(s) <O-NAME>."))
+Index: com/planet_ink/coffee_mud/Abilities/Common/GlassBlowing.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/GlassBlowing.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/GlassBlowing.java	(working copy)
+@@ -200,7 +200,7 @@
+ 			return false;
+ 		}
+ 		duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),4);
+-		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
++		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+ 		if(bundling)
+ 			itemName="a "+woodRequired+"# "+itemName;
+ 		else
+@@ -262,7 +262,7 @@
+ 		{
+ 			messedUp=false;
+ 			duration=1;
+-			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
++			verb="bundling "+RawMaterial.CODES.NAME(building.material()).toLowerCase();
+ 			startStr="<S-NAME> start(s) "+verb+".";
+ 			displayText="You are "+verb;
+ 		}
+Index: com/planet_ink/coffee_mud/Abilities/Common/Herbalism.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/Herbalism.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/Herbalism.java	(working copy)
+@@ -263,7 +263,7 @@
+ 					{
+ 						Item I=(Item)V.elementAt(v);
+ 						if(CMLib.english().containsString(I.Name(),ingredient)
+-						||(RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK].equalsIgnoreCase(ingredient)))
++						||(RawMaterial.CODES.NAME(I.material()).equalsIgnoreCase(ingredient)))
+ 						{ ok=true; break;}
+ 					}
+ 					if(!ok)
+@@ -283,7 +283,7 @@
+ 					String ingredient=((String)recipe.elementAt(i)).trim();
+ 					if(ingredient.length()>0)
+ 						if(CMLib.english().containsString(I.Name(),ingredient)
+-						||(RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK].equalsIgnoreCase(ingredient)))
++						||(RawMaterial.CODES.NAME(I.material()).equalsIgnoreCase(ingredient)))
+ 						{ ok=true; break;}
+ 				}
+ 				if(!ok)
+Index: com/planet_ink/coffee_mud/Abilities/Common/InstrumentMaking.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/InstrumentMaking.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/InstrumentMaking.java	(working copy)
+@@ -206,7 +206,7 @@
+ 			return false;
+ 		}
+ 		duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),4);
+-		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
++		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+ 		if(bundling)
+ 			itemName="a "+woodRequired+"# "+itemName;
+ 		else
+@@ -251,7 +251,7 @@
+ 		{
+ 			messedUp=false;
+ 			duration=1;
+-			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
++			verb="bundling "+RawMaterial.CODES.NAME(building.material()).toLowerCase();
+ 			startStr="<S-NAME> start(s) "+verb+".";
+ 			displayText="You are "+verb;
+ 		}
+Index: com/planet_ink/coffee_mud/Abilities/Common/JewelMaking.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/JewelMaking.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/JewelMaking.java	(working copy)
+@@ -142,7 +142,7 @@
+ 		&&((IE.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_GLASS))
+ 		{
+ 			if(!quiet)
+-				commonTell(mob,"You don't know how to "+what+" something made of "+RawMaterial.RESOURCE_DESCS[IE.material()&RawMaterial.RESOURCE_MASK].toLowerCase()+".");
++				commonTell(mob,"You don't know how to "+what+" something made of "+RawMaterial.CODES.NAME(IE.material()).toLowerCase()+".");
+ 			return false;
+ 		}
+ 		if(!(IE instanceof Armor))
+@@ -267,7 +267,7 @@
+ 				return false;
+ 			building=(Item)thangE;
+ 			beingDone=new Vector();
+-			String materialName=RawMaterial.RESOURCE_DESCS[jewelI.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
++			String materialName=RawMaterial.CODES.NAME(jewelI.material()).toLowerCase();
+ 			if(word.equals("encrust"))
+ 			{
+ 				beingDone.addElement(CMStrings.capitalizeAndLower(building.name())+" is encrusted with bits of "+materialName+".");
+@@ -413,9 +413,9 @@
+ 			duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),4);
+ 			String itemName=null;
+ 			if((otherRequired!=null)&&(otherRequired.length()>0)&&(otherRequired.equalsIgnoreCase("PRECIOUS")))
+-				itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[1][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
++				itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.CODES.NAME((data[1][FOUND_CODE]))).toLowerCase();
+ 			else
+-				itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
++				itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+ 			if(bundling)
+ 				itemName="a "+woodRequired+"# "+itemName;
+ 			else
+@@ -430,18 +430,18 @@
+ 			&&(((data[0][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
+ 			   ||((data[0][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL))
+ 			&&(((data[1][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PRECIOUS)))
+-				building.setDescription(itemName+" made of "+RawMaterial.RESOURCE_DESCS[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK].toLowerCase()+".");
++				building.setDescription(itemName+" made of "+RawMaterial.CODES.NAME(data[0][FOUND_CODE]).toLowerCase()+".");
+ 			else
+ 				building.setDescription(itemName+". ");
+ 			building.baseEnvStats().setWeight(woodRequired);
+-			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][RawMaterial.DATA_VALUE])));
++			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
+ 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
+ 			if(data[1][FOUND_CODE]==0)
+ 				building.setMaterial(data[0][FOUND_CODE]);
+ 			else
+ 			{
+ 				building.setMaterial(data[1][FOUND_CODE]);
+-				building.setBaseValue(building.baseGoldValue()+RawMaterial.RESOURCE_DATA[data[1][FOUND_CODE]&RawMaterial.RESOURCE_MASK][RawMaterial.DATA_VALUE]);
++				building.setBaseValue(building.baseGoldValue()+RawMaterial.CODES.VALUE(data[0][FOUND_CODE]));
+ 			}
+ 			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
+ 			//int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
+@@ -488,7 +488,7 @@
+ 		{
+ 			messedUp=false;
+ 			duration=1;
+-			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
++			verb="bundling "+RawMaterial.CODES.NAME(building.material()).toLowerCase();
+ 			startStr="<S-NAME> start(s) "+verb+".";
+ 			displayText="You are "+verb;
+ 		}
+Index: com/planet_ink/coffee_mud/Abilities/Common/LeatherWorking.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/LeatherWorking.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/LeatherWorking.java	(working copy)
+@@ -337,7 +337,7 @@
+ 				return false;
+ 			}
+ 			duration=getDuration(multiplier*CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),4);
+-			String itemName=(replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)])).toLowerCase();
++			String itemName=(replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE]))).toLowerCase();
+ 			if(bundling)
+ 				itemName="a "+woodRequired+"# "+itemName;
+ 			else
+@@ -356,7 +356,7 @@
+ 			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))*multiplier);
+ 			building.setMaterial(data[0][FOUND_CODE]);
+ 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
+-			int hardness=RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][3]-2;
++			int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-2;
+ 			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(6*hardness));
+ 			int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
+ 			int canContain=CMath.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
+@@ -408,7 +408,7 @@
+ 		{
+ 			messedUp=false;
+ 			duration=1;
+-			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
++			verb="bundling "+RawMaterial.CODES.NAME(building.material()).toLowerCase();
+ 			startStr="<S-NAME> start(s) "+verb+".";
+ 			displayText="You are "+verb;
+ 		}
+Index: com/planet_ink/coffee_mud/Abilities/Common/LockSmith.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/LockSmith.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/LockSmith.java	(working copy)
+@@ -291,7 +291,7 @@
+             if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+                 return false;
+     		CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null);
+-            itemName=(RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]+" key").toLowerCase();
++            itemName=(RawMaterial.CODES.NAME(data[0][FOUND_CODE])+" key").toLowerCase();
+             itemName=CMLib.english().startWithAorAn(itemName);
+             makeResource=data[0][FOUND_CODE];
+         }
+Index: com/planet_ink/coffee_mud/Abilities/Common/MasterLeatherWorking.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/MasterLeatherWorking.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/MasterLeatherWorking.java	(working copy)
+@@ -425,7 +425,7 @@
+ 				return false;
+ 			}
+ 			duration=getDuration(multiplier*CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),4);
+-			String itemName=(prefix+replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)])).toLowerCase();
++			String itemName=(prefix+replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE]))).toLowerCase();
+ 			if(bundling)
+ 				itemName="a "+woodRequired+"# "+itemName;
+ 			else
+@@ -443,7 +443,7 @@
+ 			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))*multiplier);
+ 			building.setMaterial(data[0][FOUND_CODE]);
+ 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
+-			int hardness=RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][3]-2;
++			int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-2;
+ 			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+6*hardness+((multiplier-1)*5));
+ 			int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
+ 			int canContain=CMath.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
+@@ -495,7 +495,7 @@
+ 		{
+ 			messedUp=false;
+ 			duration=1;
+-			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
++			verb="bundling "+RawMaterial.CODES.NAME(building.material()).toLowerCase();
+ 			startStr="<S-NAME> start(s) "+verb+".";
+ 			displayText="You are "+verb;
+ 		}
+Index: com/planet_ink/coffee_mud/Abilities/Common/Mining.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/Mining.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/Mining.java	(working copy)
+@@ -145,7 +145,7 @@
+ 			found=(Item)CMLib.materials().makeResource(resourceType,Integer.toString(mob.location().domainType()),false,null);
+ 			foundShortName="nothing";
+ 			if(found!=null)
+-				foundShortName=RawMaterial.RESOURCE_DESCS[found.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
++				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
+ 		}
+ 		int duration=getDuration(50,mob,1,15);
+ 		CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) mining.");
+Index: com/planet_ink/coffee_mud/Abilities/Common/PaperMaking.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/PaperMaking.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/PaperMaking.java	(working copy)
+@@ -188,7 +188,7 @@
+ 			return false;
+ 		}
+ 		duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),4);
+-		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
++		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+ 		itemName=CMLib.english().startWithAorAn(itemName);
+ 		building.setName(itemName);
+ 		startStr="<S-NAME> start(s) making "+building.name()+".";
+@@ -198,7 +198,7 @@
+ 		building.setDisplayText(itemName+" lies here");
+ 		building.setDescription(itemName+". ");
+ 		building.baseEnvStats().setWeight(woodRequired);
+-		building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][RawMaterial.DATA_VALUE])));
++		building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
+ 		building.setMaterial(data[0][FOUND_CODE]);
+ 		String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
+ 		addSpells(building,spell);
+Index: com/planet_ink/coffee_mud/Abilities/Common/PlantLore.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/PlantLore.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/PlantLore.java	(working copy)
+@@ -93,7 +93,7 @@
+ 							Room R=(Room)V.elementAt(v);
+ 							int material=R.myResource()&RawMaterial.MATERIAL_MASK;
+ 							int resource=R.myResource()&RawMaterial.RESOURCE_MASK;
+-							if((resource<0)||(resource>=RawMaterial.RESOURCE_DESCS.length))
++							if(!RawMaterial.CODES.IS_VALID(resource))
+ 								continue;
+ 							if((material!=RawMaterial.MATERIAL_VEGETATION)
+ 							&&(resource!=RawMaterial.RESOURCE_COTTON)
+@@ -101,7 +101,7 @@
+ 							&&(resource!=RawMaterial.RESOURCE_SAP)
+ 							&&(material!=RawMaterial.MATERIAL_WOODEN))
+ 								continue;
+-							String resourceStr=RawMaterial.RESOURCE_DESCS[resource];
++							String resourceStr=RawMaterial.CODES.NAME(resource);
+ 							if(R==room)
+ 								str.append("You think this spot would be good for "+resourceStr.toLowerCase()+".\n\r");
+ 							else
+Index: com/planet_ink/coffee_mud/Abilities/Common/Pottery.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/Pottery.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/Pottery.java	(working copy)
+@@ -200,7 +200,7 @@
+ 			return false;
+ 		}
+ 		duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),4);
+-		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
++		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+ 		if(bundling)
+ 			itemName="a "+woodRequired+"# "+itemName;
+ 		else
+@@ -258,7 +258,7 @@
+ 		{
+ 			messedUp=false;
+ 			duration=1;
+-			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
++			verb="bundling "+RawMaterial.CODES.NAME(building.material()).toLowerCase();
+ 			startStr="<S-NAME> start(s) "+verb+".";
+ 			displayText="You are "+verb;
+ 		}
+Index: com/planet_ink/coffee_mud/Abilities/Common/Scrapping.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/Scrapping.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/Scrapping.java	(working copy)
+@@ -196,7 +196,7 @@
+ 		foundShortName="nothing";
+         playSound="ripping.wav";
+ 		if(found!=null)
+-			foundShortName=RawMaterial.RESOURCE_DESCS[found.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
++			foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
+ 		CMMsg msg=CMClass.getMsg(mob,I,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) scrapping "+I.name()+".");
+ 		if(mob.location().okMessage(mob,msg))
+ 		{
+Index: com/planet_ink/coffee_mud/Abilities/Common/ScrimShaw.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/ScrimShaw.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/ScrimShaw.java	(working copy)
+@@ -256,7 +256,7 @@
+ 				return false;
+ 			}
+ 			duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),4);
+-			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
++			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+ 			if(bundling)
+ 				itemName="a "+woodRequired+"# "+itemName;
+ 			else
+@@ -268,7 +268,7 @@
+ 			building.setDisplayText(itemName+" lies here");
+ 			building.setDescription(itemName+". ");
+ 			building.baseEnvStats().setWeight(woodRequired);
+-			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][RawMaterial.DATA_VALUE])));
++			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
+ 			building.setMaterial(data[0][FOUND_CODE]);
+ 			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
+ 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
+@@ -345,7 +345,7 @@
+ 		{
+ 			messedUp=false;
+ 			duration=1;
+-			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
++			verb="bundling "+RawMaterial.CODES.NAME(building.material()).toLowerCase();
+ 			startStr="<S-NAME> start(s) "+verb+".";
+ 			displayText="You are "+verb;
+ 		}
+Index: com/planet_ink/coffee_mud/Abilities/Common/ScrollScribing.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/ScrollScribing.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/ScrollScribing.java	(working copy)
+@@ -235,10 +235,7 @@
+ 			int experienceToLose=10;
+ 			experienceToLose+=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*10;
+ 			experienceToLose-=CMLib.ableMapper().qualifyingClassLevel(mob,theSpell)*5;
+-			int resourceType=-1;
+-			for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+-				if(RawMaterial.RESOURCE_DESCS[i].equalsIgnoreCase(ingredient))
+-				{ resourceType=RawMaterial.RESOURCE_DATA[i][0]; break;}
++			int resourceType=RawMaterial.CODES.FIND_IgnoreCase(ingredient);
+ 
+ 			int[][] data = null;
+ 			if(resourceType>0)
+Index: com/planet_ink/coffee_mud/Abilities/Common/Sculpting.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/Sculpting.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/Sculpting.java	(working copy)
+@@ -266,7 +266,7 @@
+ 				return false;
+ 			}
+ 			duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),4);
+-			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
++			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+ 			if(bundling)
+ 				itemName="a "+woodRequired+"# "+itemName;
+ 			else
+@@ -279,7 +279,7 @@
+ 			building.setDisplayText(itemName+" lies here");
+ 			building.setDescription(itemName+". ");
+ 			building.baseEnvStats().setWeight(woodRequired);
+-			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][RawMaterial.DATA_VALUE])));
++			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
+ 			building.setMaterial(data[0][FOUND_CODE]);
+ 			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
+ 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
+@@ -381,7 +381,7 @@
+ 		{
+ 			messedUp=false;
+ 			duration=1;
+-			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
++			verb="bundling "+RawMaterial.CODES.NAME(building.material()).toLowerCase();
+ 			startStr="<S-NAME> start(s) "+verb+".";
+ 			displayText="You are "+verb;
+ 		}
+Index: com/planet_ink/coffee_mud/Abilities/Common/Shipwright.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/Shipwright.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/Shipwright.java	(working copy)
+@@ -263,7 +263,7 @@
+ 				return false;
+ 			}
+ 			duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),6);
+-			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
++			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+ 			if(misctype.equalsIgnoreCase("BUNDLE"))
+ 				itemName="a "+woodRequired+"# "+itemName;
+ 			else
+@@ -312,7 +312,7 @@
+ 		{
+ 			messedUp=false;
+ 			duration=1;
+-			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
++			verb="bundling "+RawMaterial.CODES.NAME(building.material()).toLowerCase();
+ 			startStr="<S-NAME> start(s) "+verb+".";
+ 			displayText="You are "+verb;
+ 		}
+Index: com/planet_ink/coffee_mud/Abilities/Common/Smelting.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/Smelting.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/Smelting.java	(working copy)
+@@ -169,26 +169,16 @@
+ 		String doneResourceDesc=(String)foundRecipe.elementAt(RCP_FINALNAME);
+ 		String resourceDesc1=(String)foundRecipe.elementAt(RCP_METALONE);
+ 		String resourceDesc2=(String)foundRecipe.elementAt(RCP_METALTWO);
+-		int resourceCode1=-1;
+-		int resourceCode2=-1;
+-		int doneResourceCode=-1;
+-		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+-		{
+-			String desc=RawMaterial.RESOURCE_DESCS[i];
+-			if(desc.equalsIgnoreCase(resourceDesc1))
+-				resourceCode1=i;
+-			if(desc.equalsIgnoreCase(resourceDesc2))
+-				resourceCode2=i;
+-			if(desc.equalsIgnoreCase(doneResourceDesc))
+-				doneResourceCode=i;
+-		}
++		int resourceCode1=RawMaterial.CODES.FIND_IgnoreCase(resourceDesc1);
++		int resourceCode2=RawMaterial.CODES.FIND_IgnoreCase(resourceDesc2);
++		int doneResourceCode=RawMaterial.CODES.FIND_IgnoreCase(doneResourceDesc);
+ 		if((resourceCode1<0)||(resourceCode2<0)||(doneResourceCode<0))
+ 		{
+ 			commonTell(mob,"CoffeeMud error in this alloy.  Please let your local Archon know.");
+ 			return false;
+ 		}
+-		int amountResource1=CMLib.materials().findNumberOfResource(mob.location(),RawMaterial.RESOURCE_DATA[resourceCode1][0]);
+-		int amountResource2=CMLib.materials().findNumberOfResource(mob.location(),RawMaterial.RESOURCE_DATA[resourceCode2][0]);
++		int amountResource1=CMLib.materials().findNumberOfResource(mob.location(),RawMaterial.CODES.GET(resourceCode1));
++		int amountResource2=CMLib.materials().findNumberOfResource(mob.location(),RawMaterial.CODES.GET(resourceCode2));
+ 		if(amountResource1==0)
+ 		{
+ 			commonTell(mob,"There is no "+resourceDesc1+" here to make "+doneResourceDesc+" from.  It might need to be put down first.");
+@@ -204,11 +194,11 @@
+ 		amountMaking=amountResource1;
+ 		if(amountResource2<amountResource1) amountMaking=amountResource2;
+ 		if((maxAmount>0)&&(amountMaking>maxAmount)) amountMaking=maxAmount;
+-		CMLib.materials().destroyResources(mob.location(),amountMaking,RawMaterial.RESOURCE_DATA[resourceCode1][0],0,null);
+-		CMLib.materials().destroyResources(mob.location(),amountMaking,RawMaterial.RESOURCE_DATA[resourceCode2][0],0,null);
++		CMLib.materials().destroyResources(mob.location(),amountMaking,RawMaterial.CODES.GET(resourceCode1),0,null);
++		CMLib.materials().destroyResources(mob.location(),amountMaking,RawMaterial.CODES.GET(resourceCode2),0,null);
+ 		duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),6);
+ 		amountMaking+=amountMaking;
+-		building=(Item)CMLib.materials().makeResource(RawMaterial.RESOURCE_DATA[doneResourceCode][0],null,false,null);
++		building=(Item)CMLib.materials().makeResource(RawMaterial.CODES.GET(doneResourceCode),null,false,null);
+ 		startStr="<S-NAME> start(s) smelting "+doneResourceDesc.toLowerCase()+".";
+ 		displayText="You are smelting "+doneResourceDesc.toLowerCase();
+         playSound="sizzling.wav";
+Index: com/planet_ink/coffee_mud/Abilities/Common/Speculate.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/Speculate.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/Speculate.java	(working copy)
+@@ -78,10 +78,10 @@
+ 				if((success)&&(!aborted)&&(room!=null))
+ 				{
+ 					int resource=room.myResource()&RawMaterial.RESOURCE_MASK;
+-					if((resource>0)&&(resource<RawMaterial.RESOURCE_DESCS.length))
++					if(RawMaterial.CODES.IS_VALID(resource))
+ 					{
+ 						StringBuffer str=new StringBuffer("");
+-						String resourceStr=RawMaterial.RESOURCE_DESCS[resource];
++						String resourceStr=RawMaterial.CODES.NAME(resource);
+ 						str.append("You think this spot would be good for "+resourceStr.toLowerCase()+".\n\r");
+ 						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+ 						{
+@@ -91,9 +91,9 @@
+ 							&&(room.getExitInDir(d).isOpen()))
+ 							{
+ 								resource=room2.myResource()&RawMaterial.RESOURCE_MASK;
+-								if((resource>0)&&(resource<RawMaterial.RESOURCE_DESCS.length))
++								if(RawMaterial.CODES.IS_VALID(resource))
+ 								{
+-									resourceStr=RawMaterial.RESOURCE_DESCS[resource];
++									resourceStr=RawMaterial.CODES.NAME(resource);
+ 									str.append("There looks like "+resourceStr.toLowerCase()+" "+Directions.getInDirectionName(d)+".\n\r");
+ 								}
+ 							}
+Index: com/planet_ink/coffee_mud/Abilities/Common/Tailoring.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/Tailoring.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/Tailoring.java	(working copy)
+@@ -297,7 +297,7 @@
+ 				return false;
+ 			}
+ 			duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),4);
+-			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
++			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+ 			if(bundling)
+ 				itemName="a "+woodRequired+"# "+itemName;
+ 			else
+@@ -316,7 +316,7 @@
+ 				building.baseEnvStats().setWeight(woodRequired);
+ 			else
+ 				building.baseEnvStats().setWeight(woodRequired/2);
+-			int hardness=RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][RawMaterial.DATA_STRENGTH]-1;
++			int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-1;
+ 			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
+ 			building.setMaterial(data[0][FOUND_CODE]);
+ 			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
+@@ -363,7 +363,7 @@
+ 		{
+ 			messedUp=false;
+ 			duration=1;
+-			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
++			verb="bundling "+RawMaterial.CODES.NAME(building.material()).toLowerCase();
+ 			startStr="<S-NAME> start(s) "+verb+".";
+ 			displayText="You are "+verb;
+ 		}
+Index: com/planet_ink/coffee_mud/Abilities/Common/Torturesmithing.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/Torturesmithing.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/Torturesmithing.java	(working copy)
+@@ -200,7 +200,7 @@
+ 			return false;
+ 		}
+ 		duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),4);
+-		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
++		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+ 		if(bundling)
+ 			itemName="a "+woodRequired+"# "+itemName;
+ 		else
+@@ -213,13 +213,13 @@
+ 		building.setDisplayText(itemName+" lies here");
+ 		building.setDescription(itemName+". ");
+ 		building.baseEnvStats().setWeight(woodRequired);
+-		building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][RawMaterial.DATA_VALUE])));
++		building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
+ 		building.setMaterial(data[0][FOUND_CODE]);
+ 		building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
+ 		building.setSecretIdentity("This is the work of "+mob.Name()+".");
+ 		int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
+ 		int armordmg=CMath.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
+-		int hardness=RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][RawMaterial.DATA_STRENGTH]-3;
++		int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-3;
+ 		String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
+ 		addSpells(building,spell);
+ 		if(building instanceof Container)
+Index: com/planet_ink/coffee_mud/Abilities/Common/Wainwrighting.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/Wainwrighting.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/Wainwrighting.java	(working copy)
+@@ -207,7 +207,7 @@
+ 			return false;
+ 		}
+ 		duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),4);
+-		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
++		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+ 		if(bundling)
+ 			itemName="a "+woodRequired+"# "+itemName;
+ 		else
+@@ -272,7 +272,7 @@
+ 		{
+ 			messedUp=false;
+ 			duration=1;
+-			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
++			verb="bundling "+RawMaterial.CODES.NAME(building.material()).toLowerCase();
+ 			startStr="<S-NAME> start(s) "+verb+".";
+ 			displayText="You are "+verb;
+ 		}
+Index: com/planet_ink/coffee_mud/Abilities/Common/Weaponsmithing.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/Weaponsmithing.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/Weaponsmithing.java	(working copy)
+@@ -321,18 +321,18 @@
+ 				return false;
+ 			}
+ 			duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),4);
+-			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
++			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+ 			itemName=CMLib.english().startWithAorAn(itemName);
+ 			building.setName(itemName);
+ 			startStr="<S-NAME> start(s) smithing "+building.name()+".";
+ 			displayText="You are smithing "+building.name();
+ 			verb="smithing "+building.name();
+             playSound="tinktinktink2.wav";
+-			int hardness=RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][RawMaterial.DATA_STRENGTH]-6;
++			int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-6;
+ 			building.setDisplayText(itemName+" lies here");
+ 			building.setDescription(itemName+". ");
+ 			building.baseEnvStats().setWeight(woodRequired);
+-			building.setBaseValue((CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))/4)+(woodRequired*(RawMaterial.RESOURCE_DATA[data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK][RawMaterial.DATA_VALUE])));
++			building.setBaseValue((CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))/4)+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
+ 			building.setMaterial(data[0][FOUND_CODE]);
+ 			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness*3));
+ 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
+@@ -361,7 +361,7 @@
+ 		{
+ 			messedUp=false;
+ 			duration=1;
+-			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
++			verb="bundling "+RawMaterial.CODES.NAME(building.material()).toLowerCase();
+ 			startStr="<S-NAME> start(s) "+verb+".";
+ 			displayText="You are "+verb;
+ 		}
+Index: com/planet_ink/coffee_mud/Abilities/Common/Weaving.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Common/Weaving.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Common/Weaving.java	(working copy)
+@@ -336,7 +336,7 @@
+ 				return false;
+ 			}
+ 			duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),4);
+-			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
++			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+ 			if(bundling)
+ 				itemName="a "+woodRequired+"# "+itemName;
+ 			else
+@@ -428,7 +428,7 @@
+ 		{
+ 			messedUp=false;
+ 			duration=1;
+-			verb="bundling "+RawMaterial.RESOURCE_DESCS[building.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
++			verb="bundling "+RawMaterial.CODES.NAME(building.material()).toLowerCase();
+ 			startStr="<S-NAME> start(s) "+verb+".";
+ 			displayText="You are "+verb;
+ 		}
+Index: com/planet_ink/coffee_mud/Abilities/Druid/Chant_CaveFishing.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Druid/Chant_CaveFishing.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Druid/Chant_CaveFishing.java	(working copy)
+@@ -115,7 +115,7 @@
+ 					{
+ 						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Fish start swimming around in "+target.name()+"!");
+ 						A.previousResource=target.myResource();
+-						target.setResource(RawMaterial.FISHES[CMLib.dice().roll(1,RawMaterial.FISHES.length,-1)]);
++						target.setResource(RawMaterial.CODES.FISHES()[CMLib.dice().roll(1,RawMaterial.CODES.FISHES().length,-1)]);
+ 					}
+ 				}
+ 			}
+Index: com/planet_ink/coffee_mud/Abilities/Druid/Chant_FindPlant.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Druid/Chant_FindPlant.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Druid/Chant_FindPlant.java	(working copy)
+@@ -65,15 +65,12 @@
+ 				for(int m=0;m<okResources().length;m++)
+ 					if(!allResources.contains(Integer.valueOf(okResources()[m])))
+ 					   allResources.addElement(Integer.valueOf(okResources()[m]));
+-			for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+-			{
+-				int cd=RawMaterial.RESOURCE_DATA[i][0];
++			for(int cd : RawMaterial.CODES.ALL())
+ 				if(okMaterials()!=null)
+ 					for(int m=0;m<okMaterials().length;m++)
+ 						if((cd&RawMaterial.MATERIAL_MASK)==okMaterials()[m])
+ 							if(!allResources.contains(Integer.valueOf(cd)))
+ 							   allResources.addElement(Integer.valueOf(cd));
+-			}
+ 		}
+ 		return allResources;
+ 	}
+@@ -168,7 +165,7 @@
+ 		{
+ 			StringBuffer msg=new StringBuffer("You may search for any of the following: ");
+ 			for(int i=0;i<allOkResources().size();i++)
+-				msg.append(RawMaterial.RESOURCE_DESCS[((Integer)allOkResources().elementAt(i)).intValue()&RawMaterial.RESOURCE_MASK].toLowerCase()+", ");
++				msg.append(RawMaterial.CODES.NAME(((Integer)allOkResources().elementAt(i)).intValue()).toLowerCase()+", ");
+ 			mob.tell(msg.substring(0,msg.length()-2));
+ 			return false;
+ 		}
+@@ -176,7 +173,7 @@
+ 		for(int i=0;i<allOkResources().size();i++)
+ 		{
+ 			int c=((Integer)allOkResources().elementAt(i)).intValue();
+-			String d=RawMaterial.RESOURCE_DESCS[c&RawMaterial.RESOURCE_MASK];
++			String d=RawMaterial.CODES.NAME(c);
+ 			if(d.equalsIgnoreCase(s))
+ 			{
+ 				lookingFor=d.toLowerCase();
+Index: com/planet_ink/coffee_mud/Abilities/Druid/Chant_Goodberry.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Druid/Chant_Goodberry.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Druid/Chant_Goodberry.java	(working copy)
+@@ -73,13 +73,7 @@
+ 		return false;
+ 	}
+ 
+-	public boolean isBerry(Item I)
+-	{
+-		for(int i=0;i<RawMaterial.BERRIES.length;i++)
+-			if(I.material()==RawMaterial.BERRIES[i])
+-				return true;
+-		return false;
+-	}
++	public boolean isBerry(Item I) { return CMParms.contains(RawMaterial.CODES.BERRIES(),I.material()); }
+ 
+ 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+ 	{
+Index: com/planet_ink/coffee_mud/Abilities/Druid/Chant_GrowClub.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Druid/Chant_GrowClub.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Druid/Chant_GrowClub.java	(working copy)
+@@ -98,7 +98,7 @@
+ 			{
+ 				mob.location().send(mob,msg);
+ 				Weapon newItem=CMClass.getWeapon("GenWeapon");
+-				newItem.setName(RawMaterial.RESOURCE_DESCS[material&RawMaterial.RESOURCE_MASK].toLowerCase()+" club");
++				newItem.setName(RawMaterial.CODES.NAME(material).toLowerCase()+" club");
+ 				newItem.setName(CMLib.english().startWithAorAn(newItem.Name()));
+ 				newItem.setDisplayText(newItem.name()+" sits here");
+ 				newItem.setDescription("It looks like the limb of a tree.");
+Index: com/planet_ink/coffee_mud/Abilities/Druid/Chant_GrowFood.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Druid/Chant_GrowFood.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Druid/Chant_GrowFood.java	(working copy)
+@@ -66,21 +66,18 @@
+ 
+ 		int col=0;
+ 		StringBuffer buf=new StringBuffer("Food types known:\n\r");
+-		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+-		{
+-			int code=RawMaterial.RESOURCE_DATA[i][0];
+-			if((((code&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION))
+-            &&(!CMParms.makeVector(Chant_SummonSeed.NON_SEEDS).contains(Integer.valueOf(RawMaterial.RESOURCE_DATA[i][0]))))	
++		List<Integer> codes = RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_VEGETATION);
++		for(Integer code : codes)
++			if(!CMParms.makeVector(Chant_SummonSeed.NON_SEEDS).contains(Integer.valueOf(code.intValue())))
+ 			{
+-				String str=RawMaterial.RESOURCE_DESCS[i];
+-				choices.addElement(Integer.valueOf(code));
+-				if((s.length()>0)&&(CMLib.english().containsString(RawMaterial.RESOURCE_DESCS[i],s)))
++				choices.addElement(code);
++				String desc=RawMaterial.CODES.NAME(code.intValue());
++				if((s.length()>0)&&(CMLib.english().containsString(desc,s)))
+ 					material=code;
+ 				if(col==4){ buf.append("\n\r"); col=0;}
+ 				col++;
+-				buf.append(CMStrings.padRight(CMStrings.capitalizeAndLower(str),15));
++				buf.append(CMStrings.padRight(CMStrings.capitalizeAndLower(desc),15));
+ 			}
+-		}
+ 		if(s.equalsIgnoreCase("list"))
+ 		{
+ 			mob.tell(buf.toString()+"\n\r\n\r");
+@@ -113,7 +110,7 @@
+ 					newItem.setNourishment(1);
+ 				else
+ 					newItem.setNourishment(150+(10*super.getX1Level(mob)));
+-				String name=RawMaterial.RESOURCE_DESCS[material&RawMaterial.RESOURCE_MASK].toLowerCase();
++				String name=RawMaterial.CODES.NAME(material).toLowerCase();
+ 				newItem.setMaterial(material);
+ 				newItem.setBaseValue(1);
+ 				newItem.baseEnvStats().setWeight(1);
+Index: com/planet_ink/coffee_mud/Abilities/Druid/Chant_GrowForest.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Druid/Chant_GrowForest.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Druid/Chant_GrowForest.java	(working copy)
+@@ -60,17 +60,15 @@
+ 		Vector choices=new Vector();
+ 		String s=CMParms.combine(commands,0);
+ 
+-		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+-		{
+-			int code=RawMaterial.RESOURCE_DATA[i][0];
+-			if(((code&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
+-			&&(code!=RawMaterial.RESOURCE_WOOD))
++		List<Integer> codes = RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_WOODEN);
++		for(Integer code : codes)
++			if(code!=RawMaterial.RESOURCE_WOOD)
+ 			{
+-				choices.addElement(Integer.valueOf(code));
+-				if((s.length()>0)&&(CMLib.english().containsString(RawMaterial.RESOURCE_DESCS[i],s)))
++				choices.addElement(code);
++				String desc=RawMaterial.CODES.NAME(code.intValue());
++				if((s.length()>0)&&(CMLib.english().containsString(desc,s)))
+ 					material=code;
+ 			}
+-		}
+ 		if((material<0)&&(s.length()>0))
+ 		{
+ 			mob.tell("'"+s+"' is not a recognized form of tree!");
+@@ -82,7 +80,7 @@
+ 
+ 		if(material<0) return false;
+ 
+-		String shortName=RawMaterial.RESOURCE_DESCS[material&RawMaterial.RESOURCE_MASK];
++		String shortName=RawMaterial.CODES.NAME(material);
+ 
+ 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+ 			return false;
+Index: com/planet_ink/coffee_mud/Abilities/Druid/Chant_GrowOak.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Druid/Chant_GrowOak.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Druid/Chant_GrowOak.java	(working copy)
+@@ -50,7 +50,7 @@
+ 		int material=RawMaterial.RESOURCE_OAK;
+ 		int code=material&RawMaterial.RESOURCE_MASK;
+ 		Item newItem=CMClass.getBasicItem("GenItem");
+-		String name=CMLib.english().startWithAorAn(RawMaterial.RESOURCE_DESCS[code].toLowerCase()+" tree");
++		String name=CMLib.english().startWithAorAn(RawMaterial.CODES.NAME(code).toLowerCase()+" tree");
+ 		newItem.setName(name);
+ 		newItem.setDisplayText(newItem.name()+" grows here.");
+ 		newItem.setDescription("");
+@@ -63,7 +63,7 @@
+ 		newItem.setMiscText(newItem.text());
+ 		room.addItem(newItem);
+ 		newItem.setExpirationDate(0);
+-		room.showHappens(CMMsg.MSG_OK_ACTION,"a tall, healthy "+RawMaterial.RESOURCE_DESCS[code].toLowerCase()+" tree sprouts up.");
++		room.showHappens(CMMsg.MSG_OK_ACTION,"a tall, healthy "+RawMaterial.CODES.NAME(code).toLowerCase()+" tree sprouts up.");
+ 		room.recoverEnvStats();
+ 		newChant.PlantsLocation=room;
+ 		newChant.hpRemaining=100*(mob.envStats().level()+(2*newChant.getXLEVELLevel(mob))+(10*newChant.getX1Level(mob)));
+Index: com/planet_ink/coffee_mud/Abilities/Druid/Chant_SaplingWorkers.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Druid/Chant_SaplingWorkers.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Druid/Chant_SaplingWorkers.java	(working copy)
+@@ -184,7 +184,7 @@
+ 		if(level<1) level=1;
+ 		newMOB.baseEnvStats().setLevel(level);
+ 		newMOB.baseCharStats().setMyRace(CMClass.getRace("TreeGolem"));
+-		String resourceName=RawMaterial.RESOURCE_DESCS[material&RawMaterial.RESOURCE_MASK].toLowerCase();
++		String resourceName=RawMaterial.CODES.NAME(material).toLowerCase();
+ 		String name=resourceName+" sapling";
+ 		name=CMLib.english().startWithAorAn(name).toLowerCase();
+ 		newMOB.setName(name);
+Index: com/planet_ink/coffee_mud/Abilities/Druid/Chant_SensePlants.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Druid/Chant_SensePlants.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Druid/Chant_SensePlants.java	(working copy)
+@@ -68,11 +68,11 @@
+ 		if((okMaterials()!=null)&&(okMaterials().length>0))
+ 			for(int m=0;m<okMaterials().length;m++)
+ 				if((R.myResource()&RawMaterial.MATERIAL_MASK)==okMaterials()[m])
+-					return "You sense "+RawMaterial.RESOURCE_DESCS[R.myResource()&RawMaterial.RESOURCE_MASK].toLowerCase()+" here.";
++					return "You sense "+RawMaterial.CODES.NAME(R.myResource()).toLowerCase()+" here.";
+ 		if((okResources()!=null)&&(okResources().length>0))
+ 			for(int m=0;m<okResources().length;m++)
+ 				if(R.myResource()==okResources()[m])
+-					return "You sense "+RawMaterial.RESOURCE_DESCS[R.myResource()&RawMaterial.RESOURCE_MASK].toLowerCase()+" here.";
++					return "You sense "+RawMaterial.CODES.NAME(R.myResource()).toLowerCase()+" here.";
+ 		return "";
+ 	}
+ 
+Index: com/planet_ink/coffee_mud/Abilities/Druid/Chant_SummonFood.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Druid/Chant_SummonFood.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Druid/Chant_SummonFood.java	(working copy)
+@@ -72,11 +72,11 @@
+ 			{
+ 				mob.location().send(mob,msg);
+ 				Food newItem=null;
+-				int berryType=RawMaterial.BERRIES[CMLib.dice().roll(1,RawMaterial.BERRIES.length,-1)];
++				int berryType=RawMaterial.CODES.BERRIES()[CMLib.dice().roll(1,RawMaterial.CODES.BERRIES().length,-1)];
+ 				for(int i=0;i<((adjustedLevel(mob,asLevel)/4)+1);i++)
+ 				{
+ 					newItem=(Food)CMClass.getBasicItem("GenFoodResource");
+-					newItem.setName("some "+RawMaterial.RESOURCE_DESCS[berryType&RawMaterial.RESOURCE_MASK].toLowerCase());
++					newItem.setName("some "+RawMaterial.CODES.NAME(berryType).toLowerCase());
+ 					newItem.setDisplayText(CMStrings.capitalizeAndLower(newItem.name())+" are growing here.");
+ 					newItem.setDescription("These little berries look juicy and good.");
+ 					newItem.setMaterial(berryType);
+Index: com/planet_ink/coffee_mud/Abilities/Druid/Chant_SummonSapling.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Druid/Chant_SummonSapling.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Druid/Chant_SummonSapling.java	(working copy)
+@@ -189,7 +189,7 @@
+ 		if(level<1) level=1;
+ 		newMOB.baseEnvStats().setLevel(level);
+ 		newMOB.baseCharStats().setMyRace(CMClass.getRace("TreeGolem"));
+-		String resourceName=RawMaterial.RESOURCE_DESCS[material&RawMaterial.RESOURCE_MASK].toLowerCase();
++		String resourceName=RawMaterial.CODES.NAME(material).toLowerCase();
+ 		String name=resourceName+" sapling";
+ 		name=CMLib.english().startWithAorAn(name).toLowerCase();
+ 		newMOB.setName(name);
+Index: com/planet_ink/coffee_mud/Abilities/Druid/Chant_SummonSeed.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Druid/Chant_SummonSeed.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Druid/Chant_SummonSeed.java	(working copy)
+@@ -56,15 +56,15 @@
+ 		int material=0;
+ 		String foundShortName=null;
+ 		int col=0;
+-		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
++		List<Integer> codes = RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_VEGETATION);
++		for(Integer code : codes)
+ 		{
+-			String str=RawMaterial.RESOURCE_DESCS[i];
+-			if(((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
+-            &&(!CMParms.makeVector(NON_SEEDS).contains(Integer.valueOf(RawMaterial.RESOURCE_DATA[i][0]))))	
++			if(!CMParms.makeVector(NON_SEEDS).contains(Integer.valueOf(code.intValue())))	
+             {
++				String str=RawMaterial.CODES.NAME(code.intValue());
+ 				if(str.toUpperCase().equalsIgnoreCase(s))
+ 				{
+-					material=RawMaterial.RESOURCE_DATA[i][0];
++					material=code.intValue();
+ 					foundShortName=CMStrings.capitalizeAndLower(str);
+ 					break;
+ 				}
+Index: com/planet_ink/coffee_mud/Abilities/Druid/Chant_SummonTree.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Druid/Chant_SummonTree.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Druid/Chant_SummonTree.java	(working copy)
+@@ -48,7 +48,7 @@
+ 	{
+ 		int code=material&RawMaterial.RESOURCE_MASK;
+ 		Item newItem=CMClass.getBasicItem("GenItem");
+-		String name=CMLib.english().startWithAorAn(RawMaterial.RESOURCE_DESCS[code].toLowerCase()+" tree");
++		String name=CMLib.english().startWithAorAn(RawMaterial.CODES.NAME(code).toLowerCase()+" tree");
+ 		newItem.setName(name);
+ 		newItem.setDisplayText(newItem.name()+" grows here.");
+ 		newItem.setDescription("");
+@@ -61,7 +61,7 @@
+ 		Chant_SummonTree newChant=new Chant_SummonTree();
+ 		newItem.baseEnvStats().setLevel(10+newChant.getX1Level(mob));
+ 		newItem.setExpirationDate(0);
+-		room.showHappens(CMMsg.MSG_OK_ACTION,"a tall, healthy "+RawMaterial.RESOURCE_DESCS[code].toLowerCase()+" tree sprouts up.");
++		room.showHappens(CMMsg.MSG_OK_ACTION,"a tall, healthy "+RawMaterial.CODES.NAME(code).toLowerCase()+" tree sprouts up.");
+ 		room.recoverEnvStats();
+ 		newChant.PlantsLocation=room;
+ 		newChant.littlePlants=newItem;
+Index: com/planet_ink/coffee_mud/Abilities/Druid/Druid_KnowPlants.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Druid/Druid_KnowPlants.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Druid/Druid_KnowPlants.java	(working copy)
+@@ -83,7 +83,7 @@
+ 			{
+ 				mob.location().send(mob,msg);
+ 				StringBuffer str=new StringBuffer("");
+-				str.append(I.name()+" is a kind of "+RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK].toLowerCase()+".  ");
++				str.append(I.name()+" is a kind of "+RawMaterial.CODES.NAME(I.material()).toLowerCase()+".  ");
+ 				if(isPlant(I))
+ 					str.append("It was summoned by "+I.rawSecretIdentity()+".");
+ 				else
+Index: com/planet_ink/coffee_mud/Abilities/Misc/Allergies.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Misc/Allergies.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Misc/Allergies.java	(working copy)
+@@ -55,9 +55,9 @@
+ 	    resourceAllergies.clear();
+ 	    raceAllergies.clear();
+ 	    Vector V=CMParms.parse(newText.toUpperCase().trim());
+-	    for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+-	        if(V.contains(RawMaterial.RESOURCE_DESCS[i]))
+-	            resourceAllergies.add(Integer.valueOf(RawMaterial.RESOURCE_DATA[i][0]));
++	    for(String S : RawMaterial.CODES.NAMES())
++	        if(V.contains(S))
++	            resourceAllergies.add(Integer.valueOf(RawMaterial.CODES.FIND_CaseSensitive(S)));
+ 	    Race R=null;
+         for(Enumeration r=CMClass.races();r.hasMoreElements();)
+         {
+@@ -186,13 +186,13 @@
+ 		if(success)
+ 		{
+ 			Vector allChoices=new Vector();
+-		    for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+-		        if(((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LIQUID)
+-		        &&((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ENERGY)
+-		        &&(RawMaterial.RESOURCE_DATA[i][0]!=RawMaterial.RESOURCE_COTTON)
+-		        &&(RawMaterial.RESOURCE_DATA[i][0]!=RawMaterial.RESOURCE_IRON)
+-		        &&(RawMaterial.RESOURCE_DATA[i][0]!=RawMaterial.RESOURCE_WOOD))
+-			        allChoices.addElement(RawMaterial.RESOURCE_DESCS[i]);
++		    for(int code : RawMaterial.CODES.ALL())
++		        if(((code&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LIQUID)
++		        &&((code&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ENERGY)
++		        &&(code!=RawMaterial.RESOURCE_COTTON)
++		        &&(code!=RawMaterial.RESOURCE_IRON)
++		        &&(code!=RawMaterial.RESOURCE_WOOD))
++			        allChoices.addElement(RawMaterial.CODES.NAME(code));
+ 		    Race R=null;
+ 	        for(Enumeration r=CMClass.races();r.hasMoreElements();)
+ 	        {
+Index: com/planet_ink/coffee_mud/Abilities/Misc/Regeneration.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Misc/Regeneration.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Misc/Regeneration.java	(working copy)
+@@ -116,7 +116,7 @@
+ 						if(msg.tool().envStats().level()>=CMath.s_int(lvl))
+ 							hurts=true;
+ 					}
+-					x=text.indexOf(RawMaterial.RESOURCE_DESCS[((Weapon)msg.tool()).material()&RawMaterial.RESOURCE_MASK]);
++					x=text.indexOf(RawMaterial.CODES.NAME(((Weapon)msg.tool()).material()));
+ 					if((x>=0)&&((x==0)||(text.charAt(x-1)=='+')))
+ 						hurts=true;
+ 				}
+Index: com/planet_ink/coffee_mud/Abilities/Prayers/Prayer_CreateIdol.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Prayers/Prayer_CreateIdol.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Prayers/Prayer_CreateIdol.java	(working copy)
+@@ -137,7 +137,7 @@
+ 				mob.location().send(mob,msg);
+ 				Item newItem=CMClass.getBasicItem("GenItem");
+ 				newItem.setBaseValue(1);
+-				String name=CMLib.english().startWithAorAn(RawMaterial.RESOURCE_DESCS[material&RawMaterial.RESOURCE_MASK].toLowerCase()+" idol of "+mob.getWorshipCharID());
++				String name=CMLib.english().startWithAorAn(RawMaterial.CODES.NAME(material).toLowerCase()+" idol of "+mob.getWorshipCharID());
+ 				newItem.setName(name);
+ 				newItem.setDisplayText(name+" sits here.");
+ 				newItem.baseEnvStats().setDisposition(EnvStats.IS_EVIL);
+Index: com/planet_ink/coffee_mud/Abilities/Prayers/Prayer_SenseAllergies.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Prayers/Prayer_SenseAllergies.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Prayers/Prayer_SenseAllergies.java	(working copy)
+@@ -72,7 +72,7 @@
+ 				    Vector V=CMParms.parse(A.text().toUpperCase().trim());
+ 				    for(int i=0;i<V.size();i++)
+ 				    {
+-				    	if(CMParms.contains(RawMaterial.RESOURCE_DESCS, (String)V.elementAt(i)))
++				    	if(CMParms.contains(RawMaterial.CODES.NAMES(), (String)V.elementAt(i)))
+ 				    		allergies.addElement(((String)V.elementAt(i)).toLowerCase());
+ 				    	else
+ 				    	{
+Index: com/planet_ink/coffee_mud/Abilities/Properties/Prop_AbsorbDamage.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Properties/Prop_AbsorbDamage.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Properties/Prop_AbsorbDamage.java	(working copy)
+@@ -84,7 +84,7 @@
+ 			{
+ 				x=text.indexOf(Weapon.TYPE_DESCS[((Weapon)msg.tool()).weaponType()]);
+ 				if(x<0) x=(CMLib.flags().isABonusItems(msg.tool()))?text.indexOf("MAGIC"):-1;
+-				if(x<0) x=text.indexOf(RawMaterial.RESOURCE_DESCS[((Weapon)msg.tool()).material()&RawMaterial.RESOURCE_MASK]);
++				if(x<0) x=text.indexOf(RawMaterial.CODES.NAME(((Weapon)msg.tool()).material()));
+ 				if(x>0)
+ 				{
+ 					if((text.charAt(x-1)=='-')&&(immune>=0))
+Index: com/planet_ink/coffee_mud/Abilities/Properties/Prop_AddDamage.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Properties/Prop_AddDamage.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Properties/Prop_AddDamage.java	(working copy)
+@@ -84,7 +84,7 @@
+ 			{
+ 				x=text.indexOf(Weapon.TYPE_DESCS[((Weapon)msg.tool()).weaponType()]);
+ 				if(x<0) x=(CMLib.flags().isABonusItems(msg.tool()))?text.indexOf("MAGIC"):-1;
+-				if(x<0) x=text.indexOf(RawMaterial.RESOURCE_DESCS[((Weapon)msg.tool()).material()&RawMaterial.RESOURCE_MASK]);
++				if(x<0) x=text.indexOf(RawMaterial.CODES.NAME(((Weapon)msg.tool()).material()));
+ 				if(x>0)
+ 				{
+ 					if((text.charAt(x-1)=='-')&&(immune>=0))
+Index: com/planet_ink/coffee_mud/Abilities/Properties/Prop_CommonTwister.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Properties/Prop_CommonTwister.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Properties/Prop_CommonTwister.java	(working copy)
+@@ -69,7 +69,7 @@
+ 		   ||((affected instanceof MOB)&&(msg.source()==affected))))
+ 		{
+ 			Vector poss=new Vector();
+-			int randomResource=CMLib.dice().roll(1,RawMaterial.RESOURCE_DESCS.length-1,0);
++			int randomResource=CMLib.dice().roll(1,RawMaterial.CODES.TOTAL()-1,0);
+ 			if(text().length()==0)
+ 			{
+ 				Item I=CMLib.materials().makeItemResource(randomResource);
+@@ -118,7 +118,7 @@
+ 			}
+ 			if((newmat.length()>0)&&(msg.target() instanceof Item))
+ 			{
+-				String oldMatName=RawMaterial.RESOURCE_DESCS[((Item)msg.target()).material()&RawMaterial.RESOURCE_MASK].toLowerCase();
++				String oldMatName=RawMaterial.CODES.NAME(((Item)msg.target()).material()).toLowerCase();
+ 				int newMatCode=-1;
+ 				if(newmat.equals("*"))
+ 					newMatCode=randomResource;
+@@ -133,7 +133,7 @@
+ 					if(newMatCode>=0)
+ 					{
+ 						((Item)msg.target()).setMaterial(newMatCode);
+-						String newMatName=RawMaterial.RESOURCE_DESCS[newMatCode&RawMaterial.RESOURCE_MASK].toLowerCase();
++						String newMatName=RawMaterial.CODES.NAME(newMatCode).toLowerCase();
+ 						msg.target().setName(CMStrings.replaceAll(msg.target().name(),oldMatName,newMatName));
+ 						msg.target().setDisplayText(CMStrings.replaceAll(msg.target().name(),oldMatName,newMatName));
+ 						msg.target().setName(CMStrings.replaceAll(msg.target().name(),CMStrings.capitalizeAndLower(oldMatName),CMStrings.capitalizeAndLower(newMatName)));
+Index: com/planet_ink/coffee_mud/Abilities/Properties/Prop_WeaponImmunity.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Properties/Prop_WeaponImmunity.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Properties/Prop_WeaponImmunity.java	(working copy)
+@@ -112,7 +112,7 @@
+ 			    foundPlusMinus=(Character)flags.get(Weapon.TYPE_DESCS[((Weapon)msg.tool()).weaponType()]);
+ 			    foundPlusMinus=(Character)flags.get(Weapon.CLASS_DESCS[((Weapon)msg.tool()).weaponClassification()]);
+ 			    foundPlusMinus=(Character)flags.get((CMLib.flags().isABonusItems(msg.tool()))?"MAGIC":"NONMAGIC");
+-			    foundPlusMinus=(Character)flags.get(RawMaterial.RESOURCE_DESCS[((Weapon)msg.tool()).material()&RawMaterial.RESOURCE_MASK]);
++			    foundPlusMinus=(Character)flags.get(RawMaterial.CODES.NAME(((Weapon)msg.tool()).material()));
+ 				if(foundPlusMinus!=null)
+ 				{
+ 					if((foundPlusMinus.charValue()=='-')&&(immune))
+Index: com/planet_ink/coffee_mud/Abilities/Spells/Spell_AlterSubstance.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Spells/Spell_AlterSubstance.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Spells/Spell_AlterSubstance.java	(working copy)
+@@ -76,38 +76,31 @@
+ 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_UNWORNONLY);
+ 		if(target==null) return false;
+ 		int newMaterial=-1;
+-		for(int m=0;m<RawMaterial.MATERIAL_DESCS.length;m++)
++		newMaterial=CMParms.indexOfIgnoreCase(RawMaterial.MATERIAL_DESCS, material.toUpperCase().trim());
++		if(newMaterial<0)
++			newMaterial=CMParms.startsWith(RawMaterial.MATERIAL_DESCS, material.toUpperCase().trim());
++		if(newMaterial>=0)
+ 		{
+-			if(CMLib.english().containsString(RawMaterial.MATERIAL_DESCS[m],material))
++			List<Integer> rscs = RawMaterial.CODES.COMPOSE_RESOURCES(newMaterial);
++			if(rscs.size()>0)
+ 			{
+-				for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
+-				{
+-					int code=RawMaterial.RESOURCE_DATA[r][0];
+-					if((code&RawMaterial.MATERIAL_MASK)==(m<<8))
+-					{
+-						newMaterial=code;
+-						material=RawMaterial.RESOURCE_DESCS[r];
+-						break;
+-					}
+-				}
+-				if(newMaterial<0)
+-				{
+-					newMaterial=(m<<8);
+-					material=RawMaterial.MATERIAL_DESCS[m];
+-				}
+-				break;
++				newMaterial=rscs.get(0);
++				material=RawMaterial.CODES.NAME(newMaterial);
+ 			}
+-		}
+-		if(newMaterial<0)
+-		for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
+-		{
+-			if(CMLib.english().containsString(RawMaterial.RESOURCE_DESCS[r],material))
++			else
+ 			{
+-				newMaterial=RawMaterial.RESOURCE_DATA[r][0];
+-				material=RawMaterial.RESOURCE_DESCS[r];
+-				break;
++				newMaterial=(newMaterial<<8);
++				material=RawMaterial.MATERIAL_DESCS[newMaterial];
+ 			}
+ 		}
++		else
++		{
++			newMaterial=CMParms.indexOfIgnoreCase(RawMaterial.CODES.NAMES(), material.toUpperCase().trim());
++			if(newMaterial<0)
++				newMaterial=CMParms.startsWith(RawMaterial.CODES.NAMES(), material.toUpperCase().trim());
++			if(newMaterial>=0)
++				material=RawMaterial.CODES.NAME(newMaterial);
++		}
+ 		if(newMaterial<0)
+ 		{
+ 			mob.tell("'"+material+"' is not a known substance!");
+@@ -129,7 +122,7 @@
+ 				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> change(s) into "+material+"!");
+ 				oldMaterial=target.material();
+ 				target.setMaterial(newMaterial);
+-				String oldResourceName=RawMaterial.RESOURCE_DESCS[oldMaterial&RawMaterial.RESOURCE_MASK];
++				String oldResourceName=RawMaterial.CODES.NAME(oldMaterial&RawMaterial.RESOURCE_MASK);
+ 				String oldMaterialName=RawMaterial.MATERIAL_DESCS[(oldMaterial&RawMaterial.MATERIAL_MASK)>>8];
+ 				String oldName=target.name().toUpperCase();
+ 				oldName=CMStrings.replaceAll(oldName,oldResourceName,material);
+Index: com/planet_ink/coffee_mud/Abilities/Spells/Spell_AnalyzeDweomer.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Spells/Spell_AnalyzeDweomer.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Spells/Spell_AnalyzeDweomer.java	(working copy)
+@@ -119,7 +119,7 @@
+ 					if(w.maxRange()>w.minRange())
+ 						str.append("It has a maximum range of "+w.maxRange()+".  ");
+ 				}
+-				str.append("It is made of "+RawMaterial.RESOURCE_DESCS[target.material()&RawMaterial.RESOURCE_MASK].toLowerCase()+".  ");
++				str.append("It is made of "+RawMaterial.CODES.NAME(target.material()).toLowerCase()+".  ");
+ 				if(mob.isMonster())
+ 					CMLib.commands().postSay(mob,null,str.toString().trim(),false,false);
+ 				else
+Index: com/planet_ink/coffee_mud/Abilities/Thief/Thief_Appraise.java
+===================================================================
+--- com/planet_ink/coffee_mud/Abilities/Thief/Thief_Appraise.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Abilities/Thief/Thief_Appraise.java	(working copy)
+@@ -85,13 +85,13 @@
+ 			{
+ 				double deviance=CMath.div(CMLib.dice().roll(1,100,0)+50,100);
+ 				realValue=CMath.mul(realValue,deviance);
+-				materialCode=CMLib.dice().roll(1,RawMaterial.RESOURCE_DESCS.length,-1);
++				materialCode=CMLib.dice().roll(1,RawMaterial.CODES.TOTAL(),-1);
+ 				weight=(int)Math.round(CMath.mul(weight,deviance));
+ 				height=(int)Math.round(CMath.mul(height,deviance));
+ 				allWeight=(int)Math.round(CMath.mul(allWeight,deviance));
+ 			}
+ 			StringBuffer str=new StringBuffer("");
+-			str.append(target.name()+" is made of "+RawMaterial.RESOURCE_DESCS[materialCode&RawMaterial.RESOURCE_MASK]);
++			str.append(target.name()+" is made of "+RawMaterial.CODES.NAME(materialCode));
+ 			str.append(" is worth about "+CMLib.beanCounter().nameCurrencyShort(mob,realValue)+".");
+ 			if(target instanceof Armor)
+ 				str.append("\n\r"+target.name()+" is a size "+height+".");
+Index: com/planet_ink/coffee_mud/Behaviors/Arrest.java
+===================================================================
+--- com/planet_ink/coffee_mud/Behaviors/Arrest.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Behaviors/Arrest.java	(working copy)
+@@ -1815,7 +1815,7 @@
+ 		    &&(msg.target() instanceof Item)
+ 		    &&(laws.bannedSubstances().size()>0))
+ 		    {
+-		        String rsc=RawMaterial.RESOURCE_DESCS[((Item)msg.target()).material()&RawMaterial.RESOURCE_MASK].toUpperCase();
++		        String rsc=RawMaterial.CODES.NAME(((Item)msg.target()).material()).toUpperCase();
+ 				for(int i=0;i<laws.bannedSubstances().size();i++)
+ 				{
+ 					Vector V=(Vector)laws.bannedSubstances().elementAt(i);
+Index: com/planet_ink/coffee_mud/Behaviors/ItemIdentifier.java
+===================================================================
+--- com/planet_ink/coffee_mud/Behaviors/ItemIdentifier.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Behaviors/ItemIdentifier.java	(working copy)
+@@ -118,7 +118,7 @@
+ 			msg.addTrailerMsg(newMsg);
+ 			newMsg=CMClass.getMsg(observer,msg.tool(),null,CMMsg.MSG_EXAMINE,"<S-NAME> examine(s) <T-NAME> very closely.");
+ 			msg.addTrailerMsg(newMsg);
+-			StringBuffer up=new StringBuffer(msg.tool().name()+" is made of "+RawMaterial.RESOURCE_DESCS[((Item)msg.tool()).material()&RawMaterial.RESOURCE_MASK].toLowerCase()+".\n\r");
++			StringBuffer up=new StringBuffer(msg.tool().name()+" is made of "+RawMaterial.CODES.NAME(((Item)msg.tool()).material()).toLowerCase()+".\n\r");
+ 			if((msg.tool() instanceof Armor)&&(msg.tool().envStats().height()>0))
+ 				up.append("It is a size "+msg.tool().envStats().height()+".\n\r");
+ 			int weight=msg.tool().envStats().weight();
+Index: com/planet_ink/coffee_mud/Behaviors/ResourceOverride.java
+===================================================================
+--- com/planet_ink/coffee_mud/Behaviors/ResourceOverride.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Behaviors/ResourceOverride.java	(working copy)
+@@ -55,38 +55,20 @@
+ 			if((CMath.s_int(which)>0)||(which.equalsIgnoreCase("0")))
+ 			   code=CMath.s_int(which);
+ 	
++			if(code<0) code = RawMaterial.CODES.FIND_IgnoreCase(which);
+ 			if(code<0)
+-			for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+-			{
+-				if(RawMaterial.RESOURCE_DESCS[i].equalsIgnoreCase(which))
+-					code=RawMaterial.RESOURCE_DATA[i][0];
+-			}
++				for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
++				{
++					if(RawMaterial.MATERIAL_DESCS[i].equalsIgnoreCase(which))
++					{ code=RawMaterial.CODES.COMPOSE_RESOURCES(i).get(0); break;}
++				}
++			if(code<0) code = RawMaterial.CODES.FIND_StartsWith(which);
+ 			if(code<0)
+-			for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
+-			{
+-				if(RawMaterial.MATERIAL_DESCS[i].equalsIgnoreCase(which))
+-					for(int i2=0;i2<RawMaterial.RESOURCE_DESCS.length;i2++)
+-					{
+-						if(CMath.isSet((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK),i))
+-						{ code=RawMaterial.RESOURCE_DATA[i][0]; break;}
+-					}
+-			}
+-			if(code<0)
+-			for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+-			{
+-				if(RawMaterial.RESOURCE_DESCS[i].startsWith(which))
+-					code=RawMaterial.RESOURCE_DATA[i][0];
+-			}
+-			if(code<0)
+-			for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
+-			{
+-				if(RawMaterial.MATERIAL_DESCS[i].startsWith(which))
+-					for(int i2=0;i2<RawMaterial.RESOURCE_DESCS.length;i2++)
+-					{
+-						if(CMath.isSet((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK),i))
+-						{ code=RawMaterial.RESOURCE_DATA[i][0]; break;}
+-					}
+-			}
++				for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
++				{
++					if(RawMaterial.MATERIAL_DESCS[i].startsWith(which))
++					{ code=RawMaterial.CODES.COMPOSE_RESOURCES(i).get(0); break;}
++				}
+ 			if(code>=0)
+ 			{
+ 				if(!rscs.contains(Integer.valueOf(code)))
+Index: com/planet_ink/coffee_mud/Commands/DrinkCmd.java
+===================================================================
+--- com/planet_ink/coffee_mud/Commands/DrinkCmd.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Commands/DrinkCmd.java	(working copy)
+@@ -68,7 +68,7 @@
+ 		if((thisThang instanceof Drink)
+ 		&&(((Drink)thisThang).liquidRemaining()>0)
+ 		&&(((Drink)thisThang).liquidType()!=RawMaterial.RESOURCE_FRESHWATER))
+-			str="<S-NAME> take(s) a drink of "+RawMaterial.RESOURCE_DESCS[((Drink)thisThang).liquidType()&RawMaterial.RESOURCE_MASK].toLowerCase()+" from <T-NAMESELF>.";
++			str="<S-NAME> take(s) a drink of "+RawMaterial.CODES.NAME(((Drink)thisThang).liquidType()).toLowerCase()+" from <T-NAMESELF>.";
+ 		else
+ 		if(thisThang instanceof Container)
+ 		{
+Index: com/planet_ink/coffee_mud/Commands/List.java
+===================================================================
+--- com/planet_ink/coffee_mud/Commands/List.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Commands/List.java	(working copy)
+@@ -148,7 +148,7 @@
+ 				lines.append(CMStrings.padRight(thisThang.ID(),15)+": ");
+ 				String thisRsc="-";
+ 				if(thisThang.myResource()>=0)
+-					thisRsc=RawMaterial.RESOURCE_DESCS[thisThang.myResource()&RawMaterial.RESOURCE_MASK];
++					thisRsc=RawMaterial.CODES.NAME(thisThang.myResource());
+ 				lines.append(thisRsc+"\n\r");
+ 			}
+ 		}
+@@ -1192,29 +1192,29 @@
+ 	public String listEnvResources(boolean shortList)
+ 	{
+         if(shortList)
+-            return CMParms.toStringList(RawMaterial.RESOURCE_DESCS);
++            return CMParms.toStringList(RawMaterial.CODES.NAMES());
+ 		StringBuffer str=new StringBuffer("");
+-        for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+-            str.append(CMStrings.padRight(CMStrings.capitalizeAndLower(RawMaterial.RESOURCE_DESCS[i].toLowerCase()),16));
++        for(String S : RawMaterial.CODES.NAMES())
++            str.append(CMStrings.padRight(CMStrings.capitalizeAndLower(S.toLowerCase()),16));
+ 		str.append(CMStrings.padRight("Resource",15)+" ");
+ 		str.append(CMStrings.padRight("Material",10)+" ");
+ 		str.append(CMStrings.padRight("Val",3)+" ");
+ 		str.append(CMStrings.padRight("Freq",4)+" ");
+ 		str.append(CMStrings.padRight("Str",3)+" ");
+ 		str.append("Locales\n\r");
+-		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
++		for(int i : RawMaterial.CODES.ALL())
+ 		{
+-			str.append(CMStrings.padRight(CMStrings.capitalizeAndLower(RawMaterial.RESOURCE_DESCS[i].toLowerCase()),16));
+-			str.append(CMStrings.padRight(CMStrings.capitalizeAndLower(RawMaterial.MATERIAL_DESCS[(RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)>>8].toLowerCase()),11));
+-			str.append(CMStrings.padRight(""+RawMaterial.RESOURCE_DATA[i][1],4));
+-			str.append(CMStrings.padRight(""+RawMaterial.RESOURCE_DATA[i][2],5));
+-			str.append(CMStrings.padRight(""+RawMaterial.RESOURCE_DATA[i][3],4));
++			str.append(CMStrings.padRight(CMStrings.capitalizeAndLower(RawMaterial.CODES.NAME(i).toLowerCase()),16));
++			str.append(CMStrings.padRight(CMStrings.capitalizeAndLower(RawMaterial.MATERIAL_DESCS[(i&RawMaterial.MATERIAL_MASK)>>8].toLowerCase()),11));
++			str.append(CMStrings.padRight(""+RawMaterial.CODES.VALUE(i),4));
++			str.append(CMStrings.padRight(""+RawMaterial.CODES.FREQUENCY(i),5));
++			str.append(CMStrings.padRight(""+RawMaterial.CODES.HARDNESS(i),4));
+ 			StringBuffer locales=new StringBuffer("");
+ 			for(Enumeration e=CMClass.locales();e.hasMoreElements();)
+ 			{
+ 				Room R=(Room)e.nextElement();
+ 				if(!(R instanceof GridLocale))
+-					if((R.resourceChoices()!=null)&&(R.resourceChoices().contains(Integer.valueOf(RawMaterial.RESOURCE_DATA[i][0]))))
++					if((R.resourceChoices()!=null)&&(R.resourceChoices().contains(Integer.valueOf(i))))
+ 						locales.append(R.ID()+" ");
+ 			}
+ 			while(locales.length()>36)
+Index: com/planet_ink/coffee_mud/Commands/Reset.java
+===================================================================
+--- com/planet_ink/coffee_mud/Commands/Reset.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Commands/Reset.java	(working copy)
+@@ -72,16 +72,16 @@
+ 		{
+ 			if(IT.intValue()==I.material())
+ 			{
+-				mob.tell(lead+I.Name()+" still "+RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK]);
++				mob.tell(lead+I.Name()+" still "+RawMaterial.CODES.NAME(I.material()));
+ 				return nochange;
+ 			}
+ 			I.setMaterial(IT.intValue());
+-			mob.tell(lead+I.Name()+" Changed to "+RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK]);
++			mob.tell(lead+I.Name()+" Changed to "+RawMaterial.CODES.NAME(I.material()));
+ 			return 1;
+ 		}
+ 		while(true)
+ 		{
+-			String str=mob.session().prompt(lead+I.Name()+"/"+RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK],"");
++			String str=mob.session().prompt(lead+I.Name()+"/"+RawMaterial.CODES.NAME(I.material()),"");
+ 			if(str.equalsIgnoreCase("delete"))
+ 				return -1;
+ 			else
+@@ -94,27 +94,25 @@
+ 				mob.tell(I.Name()+"/"+I.displayText()+"/"+I.description());
+ 			else
+ 			{
+-				String poss="";
+-				for(int ii=0;ii<RawMaterial.RESOURCE_DESCS.length;ii++)
++				int materialIndex=CMParms.indexOf(RawMaterial.CODES.NAMES(), str.toUpperCase());
++				if(materialIndex>=0)
+ 				{
+-					if(RawMaterial.RESOURCE_DESCS[ii].startsWith(str.toUpperCase()))
+-					   poss=RawMaterial.RESOURCE_DESCS[ii];
+-					if(str.equalsIgnoreCase(RawMaterial.RESOURCE_DESCS[ii]))
+-					{
+-						I.setMaterial(RawMaterial.RESOURCE_DATA[ii][0]);
+-						mob.tell(lead+"Changed to "+RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK]);
+-						rememberI.put(I.Name(),Integer.valueOf(I.material()));
+-						return 1;
+-					}
++					I.setMaterial(RawMaterial.CODES.GET(materialIndex));
++					mob.tell(lead+"Changed to "+RawMaterial.CODES.NAME(materialIndex));
++					rememberI.put(I.Name(),Integer.valueOf(I.material()));
++					return 1;
+ 				}
+-				if(poss.length()==0)
++				int possIndex=CMParms.startsWith(RawMaterial.CODES.NAMES(), str.toUpperCase());
++				String poss;
++				if(possIndex<0)
+ 				{
+-					for(int ii=0;ii<RawMaterial.RESOURCE_DESCS.length;ii++)
+-					{
+-						if(RawMaterial.RESOURCE_DESCS[ii].indexOf(str.toUpperCase())>=0)
+-						   poss=RawMaterial.RESOURCE_DESCS[ii];
+-					}
++					poss="?";
++					for(String mat : RawMaterial.CODES.NAMES())
++						if(mat.indexOf(str.toUpperCase())>=0)
++						   poss=mat;
+ 				}
++				else
++					poss=RawMaterial.CODES.NAME(possIndex);
+ 				mob.tell(lead+"'"+str+"' does not exist.  Try '"+poss+"'.");
+ 			}
+ 		}
+@@ -152,14 +150,7 @@
+ 				if(rightMat<0)
+ 				{
+ 					Log.sysOut("Reset","Unconventional material: "+I.description());
+-					for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+-					{
+-						if(RawMaterial.RESOURCE_DESCS[i].equals(s))
+-						{
+-							rightMat=RawMaterial.RESOURCE_DATA[i][0];
+-							break;
+-						}
+-					}
++					rightMat = RawMaterial.CODES.FIND_CaseSensitive(s);
+ 				}
+ 				if(rightMat<0)
+ 					Log.sysOut("Reset","Unknown material: "+I.description());
+@@ -168,7 +159,7 @@
+ 				{
+ 					if(mob!=null)
+ 					{
+-						if(mob.session().confirm("Change "+I.name()+"/"+I.displayText()+" material to "+RawMaterial.RESOURCE_DESCS[rightMat&RawMaterial.RESOURCE_MASK]+" (y/N)?","N"))
++						if(mob.session().confirm("Change "+I.name()+"/"+I.displayText()+" material to "+RawMaterial.CODES.NAME(rightMat)+" (y/N)?","N"))
+ 						{
+ 							I.setMaterial(rightMat);
+ 							I.setDescription("");
+@@ -177,7 +168,7 @@
+ 					}
+ 					else
+ 					{
+-						Log.sysOut("Reset","Changed "+I.name()+"/"+I.displayText()+" material to "+RawMaterial.RESOURCE_DESCS[rightMat&RawMaterial.RESOURCE_MASK]+"!");
++						Log.sysOut("Reset","Changed "+I.name()+"/"+I.displayText()+" material to "+RawMaterial.CODES.NAME(rightMat)+"!");
+ 						I.setMaterial(rightMat);
+ 						I.setDescription("");
+ 						return rightMat;
+Index: com/planet_ink/coffee_mud/core/CMParms.java
+===================================================================
+--- com/planet_ink/coffee_mud/core/CMParms.java	(revision 2765)
++++ com/planet_ink/coffee_mud/core/CMParms.java	(working copy)
+@@ -1608,26 +1608,36 @@
+     public static boolean contains(int[] supported, int x)
+     { return indexOf(supported,x)>=0;}
+ 
+-    public static boolean startsWith(String[] supported, String expertise)
++    public static int startsWith(String[] supported, String expertise)
+     {
+-        if(supported==null) return true;
+-        if(expertise==null) return false;
++        if(supported==null) return 0;
++        if(expertise==null) return -1;
+         for(int i=0;i<supported.length;i++)
+             if(supported[i].startsWith(expertise))
+-                return true;
+-        return false;
++                return i;
++        return -1;
+     }
+ 
+-    public static boolean startsWithIgnoreCase(String[] supported, String expertise)
++    public static int startsWithIgnoreCase(String[] supported, String expertise)
+     {
+-        if(supported==null) return true;
+-        if(expertise==null) return false;
++        if(supported==null) return 0;
++        if(expertise==null) return -1;
+         for(int i=0;i<supported.length;i++)
+             if(supported[i].toUpperCase().startsWith(expertise.toUpperCase()))
+-                return true;
+-        return false;
++                return i;
++        return -1;
+     }
+ 
++    public static boolean startsAnyWith(String[] supported, String expertise)
++    {
++    	return startsWith(supported,expertise)>=0;
++    }
++
++    public static boolean startsAnyWithIgnoreCase(String[] supported, String expertise)
++    {
++    	return startsWithIgnoreCase(supported,expertise)>=0;
++    }
++
+     public static Vector denumerate(Enumeration e)
+     {
+         Vector V=new Vector();
+Index: com/planet_ink/coffee_mud/core/CMProps.java
+===================================================================
+--- com/planet_ink/coffee_mud/core/CMProps.java	(revision 2765)
++++ com/planet_ink/coffee_mud/core/CMProps.java	(working copy)
+@@ -1138,7 +1138,7 @@
+         else
+         if(O instanceof Coins)
+         {
+-            image=getHashedMXPImage(H,"COINS_"+RawMaterial.RESOURCE_DESCS[(((Coins)O).material()&RawMaterial.RESOURCE_MASK)]);
++            image=getHashedMXPImage(H,"COINS_"+RawMaterial.CODES.NAME(((Coins)O).material()));
+             if(image==null) image=getHashedMXPImage(H,"COINS_*");
+         }
+         else
+@@ -1175,7 +1175,7 @@
+         else
+         if(O instanceof RawMaterial)
+         {
+-            image=getHashedMXPImage(H,"RESOURCE_"+RawMaterial.RESOURCE_DESCS[(((RawMaterial)O).material()&RawMaterial.RESOURCE_MASK)]);
++            image=getHashedMXPImage(H,"RESOURCE_"+RawMaterial.CODES.NAME(((RawMaterial)O).material()));
+             if(image==null)
+ 	            image=getHashedMXPImage(H,"RESOURCE_"+RawMaterial.MATERIAL_DESCS[(((RawMaterial)O).material()&RawMaterial.MATERIAL_MASK)>>8]);
+             if(image==null) 
+@@ -1184,7 +1184,7 @@
+         else
+         if(O instanceof Key)
+         {
+-            image=getHashedMXPImage(H,"KEY_"+RawMaterial.RESOURCE_DESCS[(((Key)O).material()&RawMaterial.RESOURCE_MASK)]);
++            image=getHashedMXPImage(H,"KEY_"+RawMaterial.CODES.NAME(((Key)O).material()));
+             image=getHashedMXPImage(H,"KEY_"+RawMaterial.MATERIAL_DESCS[(((Key)O).material()&RawMaterial.MATERIAL_MASK)>>8]);
+             if(image==null) image=getHashedMXPImage(H,"KEY_*");
+         }
+@@ -1312,7 +1312,7 @@
+         if(O instanceof Food)
+         {
+             image=getHashedMXPImage(H,"FOOD_"+((Food)O).ID().toUpperCase());
+-            if(image==null) image=getHashedMXPImage(H,"FOOD_"+RawMaterial.RESOURCE_DESCS[(((Food)O).material()&RawMaterial.RESOURCE_MASK)]);
++            if(image==null) image=getHashedMXPImage(H,"FOOD_"+RawMaterial.CODES.NAME(((Food)O).material()));
+             if(image==null) image=getHashedMXPImage(H,"FOOD_"+RawMaterial.MATERIAL_DESCS[(((Food)O).material()&RawMaterial.MATERIAL_MASK)>>8]);
+             if(image==null) image=getHashedMXPImage(H,"FOOD_*");
+         }
+@@ -1320,7 +1320,7 @@
+         if(O instanceof Drink)
+         {
+             image=getHashedMXPImage(H,"DRINK_"+((Drink)O).ID().toUpperCase());
+-            if(image==null) image=getHashedMXPImage(H,"DRINK_"+RawMaterial.RESOURCE_DESCS[(((Item)O).material()&RawMaterial.RESOURCE_MASK)]);
++            if(image==null) image=getHashedMXPImage(H,"DRINK_"+RawMaterial.CODES.NAME(((Item)O).material()&RawMaterial.RESOURCE_MASK));
+             if(image==null) image=getHashedMXPImage(H,"DRINK_"+RawMaterial.MATERIAL_DESCS[(((Item)O).material()&RawMaterial.MATERIAL_MASK)>>8]);
+             if(image==null) image=getHashedMXPImage(H,"DRINK_*");
+         }
+@@ -1348,7 +1348,7 @@
+         if((image==null)&&(O instanceof Item))
+         {
+             if(image==null) image=getHashedMXPImage(H,"ITEM_"+((Item)O).ID().toUpperCase());
+-            image=getHashedMXPImage(H,"ITEM_"+RawMaterial.RESOURCE_DESCS[(((Item)O).material()&RawMaterial.RESOURCE_MASK)]);
++            image=getHashedMXPImage(H,"ITEM_"+RawMaterial.CODES.NAME(((Item)O).material()));
+             image=getHashedMXPImage(H,"ITEM_"+RawMaterial.MATERIAL_DESCS[(((Item)O).material()&RawMaterial.MATERIAL_MASK)>>8]);
+             if(image==null) image=getHashedMXPImage(H,"ITEM_*");
+         }
+Index: com/planet_ink/coffee_mud/Items/Basic/GenCoins.java
+===================================================================
+--- com/planet_ink/coffee_mud/Items/Basic/GenCoins.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Items/Basic/GenCoins.java	(working copy)
+@@ -67,10 +67,10 @@
+ 	    ||(CMLib.english().containsString(name(),"dollar")))
+ 	        setMaterial(RawMaterial.RESOURCE_PAPER);
+ 	    else
+-		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+-		    if(CMLib.english().containsString(name(),RawMaterial.RESOURCE_DESCS[i]))
++		for(String S : RawMaterial.CODES.NAMES())
++		    if(CMLib.english().containsString(name(),S))
+ 		    {
+-		        setMaterial(RawMaterial.RESOURCE_DATA[i][0]);
++		        setMaterial(RawMaterial.CODES.FIND_CaseSensitive(S));
+ 		        break;
+ 		    }
+ 		setDescription(CMLib.beanCounter().getConvertableDescription(getCurrency(),getDenomination()));
+Index: com/planet_ink/coffee_mud/Items/Basic/GenDrink.java
+===================================================================
+--- com/planet_ink/coffee_mud/Items/Basic/GenDrink.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Items/Basic/GenDrink.java	(working copy)
+@@ -117,8 +117,8 @@
+ 		case 4: setThirstQuenched(CMath.s_parseIntExpression(val)); break;
+ 		case 5: setLiquidHeld(CMath.s_parseIntExpression(val)); break;
+ 		case 6: {
+-			int x=CMath.s_parseListIntExpression(RawMaterial.RESOURCE_DESCS, val);
+-			x=((x>=0)&&(x<RawMaterial.RESOURCE_DATA[1][0]))?RawMaterial.RESOURCE_DATA[x][0]:x;
++			int x=CMath.s_parseListIntExpression(RawMaterial.CODES.NAMES(), val);
++			x=((x>=0)&&(x<RawMaterial.RESOURCE_MASK))?RawMaterial.CODES.GET(x):x;
+ 			setLiquidType(x); break;
+ 		}
+         default:
+Index: com/planet_ink/coffee_mud/Items/Basic/GenPerfume.java
+===================================================================
+--- com/planet_ink/coffee_mud/Items/Basic/GenPerfume.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Items/Basic/GenPerfume.java	(working copy)
+@@ -103,8 +103,8 @@
+ 		case 4: setThirstQuenched(CMath.s_parseIntExpression(val)); break;
+ 		case 5: setLiquidHeld(CMath.s_parseIntExpression(val)); break;
+ 		case 6:{
+-				int x=CMath.s_parseListIntExpression(RawMaterial.RESOURCE_DESCS, val);
+-				x=((x>=0)&&(x<RawMaterial.RESOURCE_DATA[1][0]))?RawMaterial.RESOURCE_DATA[x][0]:x;
++				int x=CMath.s_parseListIntExpression(RawMaterial.CODES.NAMES(), val);
++				x=((x>=0)&&(x<RawMaterial.RESOURCE_MASK))?RawMaterial.CODES.GET(x):x;
+ 				setLiquidType(x); 
+ 				break;
+ 			   } 
+Index: com/planet_ink/coffee_mud/Items/Basic/GenTub.java
+===================================================================
+--- com/planet_ink/coffee_mud/Items/Basic/GenTub.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Items/Basic/GenTub.java	(working copy)
+@@ -99,8 +99,8 @@
+ 		case 6: setThirstQuenched(CMath.s_parseIntExpression(val)); break;
+ 		case 7: setLiquidHeld(CMath.s_parseIntExpression(val)); break;
+ 		case 8:{
+-				int x=CMath.s_parseListIntExpression(RawMaterial.RESOURCE_DESCS, val);
+-				x=((x>=0)&&(x<RawMaterial.RESOURCE_DATA[1][0]))?RawMaterial.RESOURCE_DATA[x][0]:x;
++				int x=CMath.s_parseListIntExpression(RawMaterial.CODES.NAMES(), val);
++				x=((x>=0)&&(x<RawMaterial.RESOURCE_MASK))?RawMaterial.CODES.GET(x):x;
+ 				setLiquidType(x); 
+ 				break;
+ 			   } 
+Index: com/planet_ink/coffee_mud/Items/Basic/StdCoins.java
+===================================================================
+--- com/planet_ink/coffee_mud/Items/Basic/StdCoins.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Items/Basic/StdCoins.java	(working copy)
+@@ -66,10 +66,10 @@
+ 	    ||(CMLib.english().containsString(name(),"dollar")))
+ 	        setMaterial(RawMaterial.RESOURCE_PAPER);
+ 	    else
+-		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+-		    if(CMLib.english().containsString(name(),RawMaterial.RESOURCE_DESCS[i]))
++		for(String S : RawMaterial.CODES.NAMES())
++		    if(CMLib.english().containsString(name(),S))
+ 		    {
+-		        setMaterial(RawMaterial.RESOURCE_DATA[i][0]);
++		        setMaterial(RawMaterial.CODES.FIND_CaseSensitive(S));
+ 		        break;
+ 		    }
+ 		setDescription(CMLib.beanCounter().getConvertableDescription(getCurrency(),getDenomination()));
+Index: com/planet_ink/coffee_mud/Items/Basic/StdDrink.java
+===================================================================
+--- com/planet_ink/coffee_mud/Items/Basic/StdDrink.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Items/Basic/StdDrink.java	(working copy)
+@@ -128,7 +128,7 @@
+ 					if((liquidType()==RawMaterial.RESOURCE_SALTWATER)
+ 					||(liquidType()==RawMaterial.RESOURCE_LAMPOIL))
+ 					{
+-						mob.tell("You don't want to be drinking "+RawMaterial.RESOURCE_DESCS[liquidType()&RawMaterial.RESOURCE_MASK].toLowerCase()+".");
++						mob.tell("You don't want to be drinking "+RawMaterial.CODES.NAME(liquidType()).toLowerCase()+".");
+ 						return false;
+ 					}
+ 					return true;
+@@ -177,9 +177,9 @@
+ 					}
+ 					if((liquidRemaining()>0)&&(liquidType()!=thePuddle.liquidType()))
+ 					{
+-						mob.tell("There is still some "+RawMaterial.RESOURCE_DESCS[liquidType()&RawMaterial.RESOURCE_MASK].toLowerCase()
++						mob.tell("There is still some "+RawMaterial.CODES.NAME(liquidType()).toLowerCase()
+ 								 +" left in "+name()+".  You must empty it before you can fill it with "
+-								 +RawMaterial.RESOURCE_DESCS[thePuddle.liquidType()&RawMaterial.RESOURCE_MASK].toLowerCase()+".");
++								 +RawMaterial.CODES.NAME(thePuddle.liquidType()).toLowerCase()+".");
+ 						return false;
+ 
+ 					}
+Index: com/planet_ink/coffee_mud/Items/Basic/StdLawBook.java
+===================================================================
+--- com/planet_ink/coffee_mud/Items/Basic/StdLawBook.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Items/Basic/StdLawBook.java	(working copy)
+@@ -644,17 +644,12 @@
+ 			{
+ 				s=mob.session().prompt("\n\rEnter item key words or resource types to make illegal (?)\n\r: ","");
+ 				if(s.equals("?"))
+-				    mob.tell("Valid resources: "+CMParms.toStringList(RawMaterial.RESOURCE_DESCS));
++				    mob.tell("Valid resources: "+CMParms.toStringList(RawMaterial.CODES.NAMES()));
+ 				else
+ 				if(s.length()>0)
+ 				{
+ 				    s=s.toUpperCase();
+-				    boolean resource=false;
+-				    for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+-				    {
+-				        if(RawMaterial.RESOURCE_DESCS[i].equals(s))
+-				            resource=true;
+-				    }
++				    boolean resource=RawMaterial.CODES.FIND_CaseSensitive(s)>=0;
+ 				    if(resource||mob.session().confirm("'"+s+"' is not a known resource.  Add as a key word anyway (y/N)?","N"))
+ 				    {
+ 						String[] newValue=modifyLaw(A,B,theLaw,mob,null);
+Index: com/planet_ink/coffee_mud/Items/Basic/StdTub.java
+===================================================================
+--- com/planet_ink/coffee_mud/Items/Basic/StdTub.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Items/Basic/StdTub.java	(working copy)
+@@ -196,7 +196,7 @@
+ 					if((liquidType()==RawMaterial.RESOURCE_SALTWATER)
+ 					||(liquidType()==RawMaterial.RESOURCE_LAMPOIL))
+ 					{
+-						mob.tell("You don't want to be drinking "+RawMaterial.RESOURCE_DESCS[liquidType()&RawMaterial.RESOURCE_MASK].toLowerCase()+".");
++						mob.tell("You don't want to be drinking "+RawMaterial.CODES.NAME(liquidType()).toLowerCase()+".");
+ 						return false;
+ 					}
+ 					return true;
+@@ -222,9 +222,9 @@
+ 					}
+ 					if((liquidRemaining()>0)&&(liquidType()!=thePuddle.liquidType()))
+ 					{
+-						mob.tell("There is still some "+RawMaterial.RESOURCE_DESCS[liquidType()&RawMaterial.RESOURCE_MASK].toLowerCase()
++						mob.tell("There is still some "+RawMaterial.CODES.NAME(liquidType()).toLowerCase()
+ 								 +" left in "+name()+".  You must empty it before you can fill it with "
+-								 +RawMaterial.RESOURCE_DESCS[thePuddle.liquidType()&RawMaterial.RESOURCE_MASK].toLowerCase()+".");
++								 +RawMaterial.CODES.NAME(thePuddle.liquidType()).toLowerCase()+".");
+ 						return false;
+ 
+ 					}
+Index: com/planet_ink/coffee_mud/Items/ClanItems/StdClanCommonItem.java
+===================================================================
+--- com/planet_ink/coffee_mud/Items/ClanItems/StdClanCommonItem.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Items/ClanItems/StdClanCommonItem.java	(working copy)
+@@ -141,16 +141,16 @@
+                 continue;
+             V.addElement(Integer.valueOf(i<<8));
+         }
+-        for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
++        for(String S : RawMaterial.CODES.NAMES())
+         {
+-            int x=req.indexOf(RawMaterial.RESOURCE_DESCS[i]);
++            int x=req.indexOf(S);
+             if(x<0) continue;
+             if((x>0)&&Character.isLetter(req.charAt(x-1)))
+                 continue;
+-            if(((x+RawMaterial.RESOURCE_DESCS[i].length())<req.length())
+-            &&Character.isLetter(req.charAt((x+RawMaterial.RESOURCE_DESCS[i].length()))))
++            if(((x+S.length())<req.length())
++            &&Character.isLetter(req.charAt((x+S.length()))))
+                 continue;
+-            V.addElement(Integer.valueOf(i));
++            V.addElement(RawMaterial.CODES.FIND_CaseSensitive(S));
+         }
+         if((M.location()!=null)
+         &&(V.contains(Integer.valueOf(RawMaterial.MATERIAL_METAL)))
+Index: com/planet_ink/coffee_mud/Items/interfaces/RawMaterial.java
+===================================================================
+--- com/planet_ink/coffee_mud/Items/interfaces/RawMaterial.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Items/interfaces/RawMaterial.java	(working copy)
+@@ -2,6 +2,7 @@
+ import java.util.Arrays;
+ import java.util.Enumeration;
+ import java.util.HashSet;
++import java.util.Hashtable;
+ import java.util.List;
+ import java.util.Vector;
+ 
+@@ -271,7 +272,7 @@
+ 	public final static int RESOURCE_MASK=255;	
+ 
+ 	
+-	public final static String[] RESOURCE_DESCS={
++	public final static String[] DEFAULT_RESOURCE_DESCS={
+ 	"NOTHING", //0
+ 	"MEAT",  //1
+ 	"BEEF", //2
+@@ -439,14 +440,8 @@
+     "CRANBERRIES", // 164
+ 	};
+ 	
+-	public final static int DATA_CODE=0;
+-	public final static int DATA_VALUE=1;
+-	public final static int DATA_FREQ=2;
+-	public final static int DATA_STRENGTH=3;
+-	public final static int DATA_BOUANCY=4;
+-	
+-	public final static int[][] RESOURCE_DATA={ 
+-	// full code, base value, frequency, strength (1-10), bouancy
++	public final static int[][] DEFAULT_RESOURCE_DATA={ 
++	// full code, base value, frequency, hardness (1-10), bouancy
+ 	{RESOURCE_NOTHING,		0,	0,	0,	0}, 
+ 	{RESOURCE_MEAT,			4,	20,	1,	3000}, 
+ 	{RESOURCE_BEEF,			6,	20,	1,	3000}, 
+@@ -615,7 +610,7 @@
+ 	};
+ 	
+ 	
+-	public static final int[] FISHES={
++	public static final int[] DEFAULT_FISHES={
+ 	RESOURCE_FISH,
+ 	RESOURCE_SALMON,
+ 	RESOURCE_CARP,
+@@ -625,7 +620,7 @@
+ 	RESOURCE_CATFISH
+ 	};
+ 	
+-	public static final int[] BERRIES={
++	public static final int[] DEFAULT_BERRIES={
+ 	RESOURCE_BERRIES,
+ 	RESOURCE_STRAWBERRIES,
+ 	RESOURCE_BLUEBERRIES,
+@@ -637,7 +632,6 @@
+ 	};
+ 	
+ 	public final static String[] DEFAULT_RESOURCE_SMELLS={
+-		// full code, base value, frequency, strength (1-10), bouancy, smell
+ 		"",//RESOURCE_NOTHING 
+ 		"",//RESOURCE_MEAT 
+ 		"",//RESOURCE_BEEF 
+@@ -820,15 +814,16 @@
+ 	        if(insts[c]==null) insts[c]=this;
+ 
+ 			Vector rawExtra = CMProps.getStatCodeExtensions(RawMaterial.class,"RawMaterial");
+-			for(int i=0;i<RESOURCE_DESCS.length;i++)
++			for(int i=0;i<DEFAULT_RESOURCE_DESCS.length;i++)
+ 			{
+-				int material= RESOURCE_DATA[i][0] & MATERIAL_MASK;
+-				add(material, RESOURCE_DESCS[i], DEFAULT_RESOURCE_SMELLS[i], 
+-						RESOURCE_DATA[i][1], RESOURCE_DATA[i][2], RESOURCE_DATA[i][3], 
+-						RESOURCE_DATA[i][4], 
+-						CMParms.contains(FISHES, i&material),
+-						CMParms.contains(BERRIES, i&material));
++				int material= DEFAULT_RESOURCE_DATA[i][0] & MATERIAL_MASK;
++				add(material, DEFAULT_RESOURCE_DESCS[i], DEFAULT_RESOURCE_SMELLS[i], 
++						DEFAULT_RESOURCE_DATA[i][1], DEFAULT_RESOURCE_DATA[i][2], 
++						DEFAULT_RESOURCE_DATA[i][3], DEFAULT_RESOURCE_DATA[i][4], 
++						CMParms.contains(DEFAULT_FISHES, i|material),
++						CMParms.contains(DEFAULT_BERRIES, i|material));
+ 			}
++			if(rawExtra!=null)
+ 			for(Enumeration e=rawExtra.elements();e.hasMoreElements();)
+ 			{
+ 				String p = (String)e.nextElement();
+@@ -844,16 +839,16 @@
+ 					if(stat.startsWith("REPLACE:"))
+ 					{
+ 						String repStat=type.substring(8).trim();
+-						int idx=CMParms.indexOf(RESOURCE_DESCS, repStat);
++						int idx=CMParms.indexOf(DEFAULT_RESOURCE_DESCS, repStat);
+ 						if(idx>=0)
+-							oldResourceCode=RESOURCE_DATA[idx][0];
++							oldResourceCode=DEFAULT_RESOURCE_DATA[idx][0];
+ 						type="REPLACE";
+ 					}
+ 					String matStr=((String)V.elementAt(0)).toUpperCase();
+ 					String smell=((String)V.elementAt(1)).toUpperCase();
+ 					int value=CMath.s_int((String)V.elementAt(2));
+ 					int frequ=CMath.s_int((String)V.elementAt(3));
+-					int strength=CMath.s_int((String)V.elementAt(4));
++					int hardness=CMath.s_int((String)V.elementAt(4));
+ 					int bouancy=CMath.s_int((String)V.elementAt(5));
+ 					boolean fish=((String)V.elementAt(6)).equalsIgnoreCase("fish");
+ 					boolean berry=((String)V.elementAt(6)).equalsIgnoreCase("berry");
+@@ -862,12 +857,23 @@
+ 						continue;
+ 					material=MATERIAL_CODES[material];
+ 					if(type.equalsIgnoreCase("ADD"))
+-						add(material, stat, smell, value, frequ, strength, bouancy, fish, berry);
++						add(material, stat, smell, value, frequ, hardness, bouancy, fish, berry);
+ 					else
+ 					if(type.equalsIgnoreCase("REPLACE")&&(oldResourceCode>=0))
+-						replace(oldResourceCode, material, stat, smell, value, frequ, strength, bouancy, fish, berry);
++						replace(oldResourceCode, material, stat, smell, value, frequ, hardness, bouancy, fish, berry);
+ 				}
+ 			}
++			String[] sortedNames = descs.clone();
++			Arrays.sort(sortedNames);
++			Hashtable<String,Integer> previousIndexes = new Hashtable<String,Integer>();
++			for(int ndex = 0; ndex < descs.length; ndex++)
++				previousIndexes.put(descs[ndex], ndex);
++			allCodesSortedByName = new int[allCodes.length];
++			for(int ndex = 0; ndex < sortedNames.length; ndex++)
++            {
++				int previousIndex = previousIndexes.get(sortedNames[ndex]);
++				allCodesSortedByName[ndex] = allCodes[previousIndex];
++            }
+ 	    }
+ 	    private static CODES c(){ return insts[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
+ 	    public static CODES c(char c){return insts[c];}
+@@ -883,6 +889,7 @@
+ 	    private static CODES[] insts=new CODES[256];
+ 	    
+ 		public int[] allCodes = new int[0];
++		public int[] allCodesSortedByName=new int[0];
+ 		public int[] berries = new int[0];
+ 		public int[] fishes = new int[0];
+ 		public int[][] data =  new int[0][0]; 
+@@ -927,6 +934,11 @@
+ 		 * Returns an array of the numeric codes for all resources
+ 		 * @return an array of the numeric codes for all resources
+ 		 */
++		public static int[] ALL_SBN() { return c().allCodesSortedByName;}
++		/**
++		 * Returns an array of the numeric codes for all resources
++		 * @return an array of the numeric codes for all resources
++		 */
+ 		public static int[] ALL() { return c().allCodes;}
+ 		/**
+ 		 * Returns an array of the numeric codes for all resources
+@@ -934,16 +946,59 @@
+ 		 */
+ 		public int[] all() { return allCodes;}
+ 		/**
++		 * Returns an the numeric codes of the indexes resource code
++		 * @param x the indexed resource code
++		 * @return an the numeric codes of the indexes resource code
++		 */
++		public static int GET(int x) { return c().allCodes[x&RESOURCE_MASK];}
++		/**
+ 		 * Returns the names of the various resources
+ 		 * @return the names of the various resources
+ 		 */
+ 		public static String[] NAMES() { return c().descs;}
+ 		/**
++		 * Returns the code of the names resource, or -1
++		 * @return the code of the names resource, or -1
++		 */
++		public static int FIND_CaseSensitive(String rsc) {
++			CODES C=c();
++			int x=CMParms.indexOf(C.descs, rsc);
++			if(x>=0) return C.allCodes[x];
++			return -1;
++		}
++		/**
++		 * Returns the code of the names resource, or -1
++		 * @return the code of the names resource, or -1
++		 */
++		public static int FIND_IgnoreCase(String rsc) {
++			CODES C=c();
++			int x=CMParms.indexOfIgnoreCase(C.descs, rsc);
++			if(x>=0) return C.allCodes[x];
++			return -1;
++		}
++		/**
++		 * Returns the code of the names resource, or -1
++		 * @return the code of the names resource, or -1
++		 */
++		public static int FIND_StartsWith(String rsc) {
++			CODES C=c();
++			int x=CMParms.startsWith(C.descs, rsc);
++			if(x>=0) return C.allCodes[x];
++			return -1;
++		}
++		/**
++		 * Returns whether the code is valid
++		 * @return whether the code is valid
++		 */
++		public static boolean IS_VALID(int code) {
++			return (code>=0) && ((code&RawMaterial.RESOURCE_MASK) < c().total());
++		}
++		/**
+ 		 * Returns the name of the code
+ 		 * @param code the code
+ 		 * @return the name of the code
+ 		 */
+-		public static String NAME(int code) { return c().descs[code];}
++		public static String NAME(int code) { return c().descs[code&RESOURCE_MASK];}
+ 		/**
+ 		 * Returns the smells of the various resources
+ 		 * @return the smells of the various resources
+@@ -954,31 +1009,44 @@
+ 		 * @param code the code smell
+ 		 * @return the description of the code smell
+ 		 */
+-		public static String SMELL(int code) { return c().smells[code];}
++		public static String SMELL(int code) { return c().smells[code&RESOURCE_MASK];}
+ 		/**
+ 		 * Returns the value of the resource
+ 		 * @return the value of the resource
+ 		 */
+-		public static int VALUE(int code) { return c().data[code][1];}
++		public static int VALUE(int code) { return c().data[code&RESOURCE_MASK][1];}
+ 		/**
+ 		 * Returns the frequency of the resource, or how rare it is.
+ 		 * @return the frequency of the resource
+ 		 */
+-		public static int FREQUENCY(int code) { return c().data[code][2];}
++		public static int FREQUENCY(int code) { return c().data[code&RESOURCE_MASK][2];}
+ 		/**
+-		 * Returns the strength of the resource, from 1-10
+-		 * @return the strength of the resource
++		 * Returns the hardness of the resource, from 1-10
++		 * @return the hardness of the resource
+ 		 */
+-		public static int STRENGTH(int code) { return c().data[code][3];}
++		public static int HARDNESS(int code) { return c().data[code&RESOURCE_MASK][3];}
+ 		/**
+ 		 * Returns the bouancy of the resource, from 0-20000
+ 		 * @return the bouancy of the resource
+ 		 */
+-		public static int BOUANCY(int code) { return c().data[code][4];}
++		public static int BOUANCY(int code) { return c().data[code&RESOURCE_MASK][4];}
++		/**
++		 * Search and compose a complete list of all resources of the given material
++		 * @param mat the resource code
++		 * @return a complete list of all resources of the given material
++		 */
++		public static List<Integer> COMPOSE_RESOURCES(int mat) {
++			if(mat<=255) mat=mat<<8;
++			List<Integer> rscs=new Vector<Integer>();
++			for(int rsc : c().allCodes)
++				if((rsc&MATERIAL_MASK)==mat)
++					rscs.add(rsc);
++			return rscs;
++		}
+ 		
+-		public void add(int material, String name, String smell, int value, int frequ, int strength, int bouancy, boolean fish, boolean berry)
++		public void add(int material, String name, String smell, int value, int frequ, int hardness, int bouancy, boolean fish, boolean berry)
+ 		{
+-			int newResourceCode=allCodes.length & material;
++			int newResourceCode=allCodes.length | material;
+ 			allCodes=Arrays.copyOf(allCodes, allCodes.length+1);
+ 			allCodes[allCodes.length-1]=newResourceCode;
+ 			if(berry)
+@@ -995,12 +1063,12 @@
+ 			descs[descs.length-1]=name;
+ 			
+ 			data=Arrays.copyOf(data, data.length+1);
+-			//full code, base value, frequency, strength (1-10), bouancy
+-			int[] newRow={newResourceCode,value,frequ,strength,bouancy};
++			//full code, base value, frequency, hardness (1-10), bouancy
++			int[] newRow={newResourceCode,value,frequ,hardness,bouancy};
+ 			data[data.length-1]=newRow;
+ 		}
+ 		
+-		public void replace(int resourceCode, int material, String name, String smell, int value, int frequ, int strength, int bouancy, boolean fish, boolean berry)
++		public void replace(int resourceCode, int material, String name, String smell, int value, int frequ, int hardness, int bouancy, boolean fish, boolean berry)
+ 		{
+ 			int resourceIndex = resourceCode & RESOURCE_MASK;
+ 			if((berry)&&(!CMParms.contains(berries, resourceCode)))
+@@ -1034,7 +1102,7 @@
+ 				fishes=newfishes;
+ 			}
+ 			descs[resourceIndex]=name;
+-			int[] newRow={resourceCode,value,frequ,strength,bouancy};
++			int[] newRow={resourceCode,value,frequ,hardness,bouancy};
+ 			data[resourceIndex]=newRow;
+ 		}
+ 	}
+Index: com/planet_ink/coffee_mud/Items/MiscMagic/GenPotion.java
+===================================================================
+--- com/planet_ink/coffee_mud/Items/MiscMagic/GenPotion.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Items/MiscMagic/GenPotion.java	(working copy)
+@@ -113,8 +113,8 @@
+ 		case 4: setThirstQuenched(CMath.s_parseIntExpression(val)); break;
+ 		case 5: setLiquidHeld(CMath.s_parseIntExpression(val)); break;
+ 		case 6:{
+-				int x=CMath.s_parseListIntExpression(RawMaterial.RESOURCE_DESCS, val);
+-				x=((x>=0)&&(x<RawMaterial.RESOURCE_DATA[1][0]))?RawMaterial.RESOURCE_DATA[x][0]:x;
++				int x=CMath.s_parseListIntExpression(RawMaterial.CODES.NAMES(), val);
++				x=((x>=0)&&(x<RawMaterial.RESOURCE_MASK))?RawMaterial.CODES.GET(x):x;
+ 				setLiquidType(x); 
+ 				break;
+ 			   } 
+Index: com/planet_ink/coffee_mud/Items/MiscMagic/Ingredients.java
+===================================================================
+--- com/planet_ink/coffee_mud/Items/MiscMagic/Ingredients.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Items/MiscMagic/Ingredients.java	(working copy)
+@@ -56,7 +56,7 @@
+ 		I.setDisplayText(name+" has been left here.");
+ 		I.setDescription("It looks like "+name);
+ 		I.setMaterial(type);
+-		I.setBaseValue(RawMaterial.RESOURCE_DATA[type&RawMaterial.RESOURCE_MASK][1]);
++		I.setBaseValue(RawMaterial.CODES.VALUE(type&RawMaterial.RESOURCE_MASK));
+ 		I.baseEnvStats().setWeight(1);
+ 		I.recoverEnvStats();
+ 		I.setContainer(this);
+@@ -80,11 +80,8 @@
+ 		{
+ 			alreadyFilled=true;
+ 			if(getContents().size()==0)
+-			for(int i=1;i<RawMaterial.RESOURCE_DATA.length;i++)
+-			{
+-				String name=RawMaterial.RESOURCE_DESCS[i];
+-				makeResource(name.toLowerCase(),RawMaterial.RESOURCE_DATA[i][0]);
+-			}
++			for(int rsc : RawMaterial.CODES.ALL())
++				makeResource(RawMaterial.CODES.NAME(rsc).toLowerCase(),rsc);
+ 		}
+ 		else
+ 		if(msg.amITarget(this)
+Index: com/planet_ink/coffee_mud/Items/MiscTech/GenElecContainer.java
+===================================================================
+--- com/planet_ink/coffee_mud/Items/MiscTech/GenElecContainer.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Items/MiscTech/GenElecContainer.java	(working copy)
+@@ -93,8 +93,8 @@
+ 		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
+ 		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
+ 		case 4:{
+-				int x=CMath.s_parseListIntExpression(RawMaterial.RESOURCE_DESCS, val);
+-				x=((x>=0)&&(x<RawMaterial.RESOURCE_DATA[1][0]))?RawMaterial.RESOURCE_DATA[x][0]:x;
++				int x=CMath.s_parseListIntExpression(RawMaterial.CODES.NAMES(), val);
++				x=((x>=0)&&(x<RawMaterial.RESOURCE_MASK))?RawMaterial.CODES.GET(x):x;
+ 				setFuelType(x); 
+ 				break;
+ 			   } 
+Index: com/planet_ink/coffee_mud/Items/MiscTech/GenElecItem.java
+===================================================================
+--- com/planet_ink/coffee_mud/Items/MiscTech/GenElecItem.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Items/MiscTech/GenElecItem.java	(working copy)
+@@ -85,8 +85,8 @@
+ 		switch(getCodeNum(code))
+ 		{
+ 		case 0:{
+-				int x=CMath.s_parseListIntExpression(RawMaterial.RESOURCE_DESCS, val);
+-				x=((x>=0)&&(x<RawMaterial.RESOURCE_DATA[1][0]))?RawMaterial.RESOURCE_DATA[x][0]:x;
++				int x=CMath.s_parseListIntExpression(RawMaterial.CODES.NAMES(), val);
++				x=((x>=0)&&(x<RawMaterial.RESOURCE_MASK))?RawMaterial.CODES.GET(x):x;
+ 				setFuelType(x); 
+ 				break;
+ 			   } 
+Index: com/planet_ink/coffee_mud/Items/MiscTech/GenShipComponent.java
+===================================================================
+--- com/planet_ink/coffee_mud/Items/MiscTech/GenShipComponent.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Items/MiscTech/GenShipComponent.java	(working copy)
+@@ -85,8 +85,8 @@
+ 		switch(getCodeNum(code))
+ 		{
+ 		case 0:{
+-				int x=CMath.s_parseListIntExpression(RawMaterial.RESOURCE_DESCS, val);
+-				x=((x>=0)&&(x<RawMaterial.RESOURCE_DATA[1][0]))?RawMaterial.RESOURCE_DATA[x][0]:x;
++				int x=CMath.s_parseListIntExpression(RawMaterial.CODES.NAMES(), val);
++				x=((x>=0)&&(x<RawMaterial.RESOURCE_MASK))?RawMaterial.CODES.GET(x):x;
+ 				setFuelType(x); 
+ 				break;
+ 			   } 
+Index: com/planet_ink/coffee_mud/Items/MiscTech/GenShipContainer.java
+===================================================================
+--- com/planet_ink/coffee_mud/Items/MiscTech/GenShipContainer.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Items/MiscTech/GenShipContainer.java	(working copy)
+@@ -102,8 +102,8 @@
+ 		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
+ 		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
+ 		case 4:{
+-				int x=CMath.s_parseListIntExpression(RawMaterial.RESOURCE_DESCS, val);
+-				x=((x>=0)&&(x<RawMaterial.RESOURCE_DATA[1][0]))?RawMaterial.RESOURCE_DATA[x][0]:x;
++				int x=CMath.s_parseListIntExpression(RawMaterial.CODES.NAMES(), val);
++				x=((x>=0)&&(x<RawMaterial.RESOURCE_MASK))?RawMaterial.CODES.GET(x):x;
+ 				setFuelType(x); 
+ 				break;
+ 			   } 
+Index: com/planet_ink/coffee_mud/Items/MiscTech/GenShipItem.java
+===================================================================
+--- com/planet_ink/coffee_mud/Items/MiscTech/GenShipItem.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Items/MiscTech/GenShipItem.java	(working copy)
+@@ -86,8 +86,8 @@
+ 		switch(getCodeNum(code))
+ 		{
+ 		case 0:{
+-				int x=CMath.s_parseListIntExpression(RawMaterial.RESOURCE_DESCS, val);
+-				x=((x>=0)&&(x<RawMaterial.RESOURCE_DATA[1][0]))?RawMaterial.RESOURCE_DATA[x][0]:x;
++				int x=CMath.s_parseListIntExpression(RawMaterial.CODES.NAMES(), val);
++				x=((x>=0)&&(x<RawMaterial.RESOURCE_MASK))?RawMaterial.CODES.GET(x):x;
+ 				setFuelType(x); 
+ 				break;
+ 			   } 
+Index: com/planet_ink/coffee_mud/Items/MiscTech/GenSSConsole.java
+===================================================================
+--- com/planet_ink/coffee_mud/Items/MiscTech/GenSSConsole.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Items/MiscTech/GenSSConsole.java	(working copy)
+@@ -102,8 +102,8 @@
+ 		case 4: setRideBasis(CMath.s_parseListIntExpression(Rideable.RIDEABLE_DESCS,val)); break;
+ 		case 5: setRiderCapacity(CMath.s_parseIntExpression(val)); break;
+ 		case 6:{
+-				int x=CMath.s_parseListIntExpression(RawMaterial.RESOURCE_DESCS, val);
+-				x=((x>=0)&&(x<RawMaterial.RESOURCE_DATA[1][0]))?RawMaterial.RESOURCE_DATA[x][0]:x;
++				int x=CMath.s_parseListIntExpression(RawMaterial.CODES.NAMES(), val);
++				x=((x>=0)&&(x<RawMaterial.RESOURCE_MASK))?RawMaterial.CODES.GET(x):x;
+ 				setFuelType(x); 
+ 				break;
+ 			   } 
+Index: com/planet_ink/coffee_mud/Libraries/CMAble.java
+===================================================================
+--- com/planet_ink/coffee_mud/Libraries/CMAble.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Libraries/CMAble.java	(working copy)
+@@ -1403,7 +1403,7 @@
+             itemDesc=RawMaterial.MATERIAL_DESCS[(int)comp.getLongType()>>8].toUpperCase();
+         else
+         if(comp.getType()==AbilityComponent.CompType.RESOURCE)
+-            itemDesc=RawMaterial.RESOURCE_DESCS[(int)comp.getLongType()&RawMaterial.RESOURCE_MASK].toUpperCase();
++            itemDesc=RawMaterial.CODES.NAME((int)comp.getLongType()).toUpperCase();
+         curr.addElement("COMPONENTID",itemDesc);
+         curr.addElement("MASK",comp.getMaskStr());
+         return curr;
+@@ -1517,7 +1517,7 @@
+             itemDesc=amt+((amt>1)?" pounds":" pound")+" of "+RawMaterial.MATERIAL_DESCS[(int)comp.getLongType()>>8].toLowerCase();
+         else
+         if(comp.getType()==AbilityComponent.CompType.RESOURCE)
+-            itemDesc=amt+((amt>1)?" pounds":" pound")+" of "+RawMaterial.RESOURCE_DESCS[(int)comp.getLongType()&RawMaterial.RESOURCE_MASK].toLowerCase();
++            itemDesc=amt+((amt>1)?" pounds":" pound")+" of "+RawMaterial.CODES.NAME((int)comp.getLongType()).toLowerCase();
+         if(comp.getLocation()==AbilityComponent.CompLocation.INVENTORY)
+         	buf.append(itemDesc);
+         else
+Index: com/planet_ink/coffee_mud/Libraries/CMAbleParms.java
+===================================================================
+--- com/planet_ink/coffee_mud/Libraries/CMAbleParms.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Libraries/CMAbleParms.java	(working copy)
+@@ -689,7 +689,7 @@
+                     public String defaultValue(){ return "Spell_ID";}
+                 },
+                 new AbilityParmEditorImpl("RESOURCE_NAME","Resource",PARMTYPE_CHOICES) {
+-                    public void createChoices() { createChoices(RawMaterial.RESOURCE_DESCS);}
++                    public void createChoices() { createChoices(RawMaterial.CODES.NAMES());}
+                     public String defaultValue(){ return "IRON";}
+                 },
+                 new AbilityParmEditorImpl("ITEM_NAME","Item Final Name",PARMTYPE_STRING){
+@@ -1138,17 +1138,17 @@
+                         value = value.trim();
+                         StringBuffer str = new StringBuffer("");
+                         str.append("\n\r<INPUT TYPE=RADIO NAME="+fieldName+"_WHICH ");
+-                        boolean rsc=(value.trim().length()==0)||CMParms.containsIgnoreCase(RawMaterial.RESOURCE_DESCS,value.toUpperCase().trim());
++                        boolean rsc=(value.trim().length()==0)||CMParms.containsIgnoreCase(RawMaterial.CODES.NAMES(),value.toUpperCase().trim());
+                         if(rsc) str.append("CHECKED ");
+                         str.append("VALUE=\"RESOURCE\">");
+                         str.append("\n\r<SELECT NAME="+fieldName+"_RESOURCE>");
+-                        for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
++                        for(String S : RawMaterial.CODES.NAMES())
+                         {
+-                        	String VALUE = (r==0)?"":RawMaterial.RESOURCE_DESCS[r];
++                        	String VALUE = S.equals("NOTHING")?"":S;
+                             str.append("<OPTION VALUE=\""+VALUE+"\"");
+                             if(rsc&&(value.equalsIgnoreCase(VALUE)))
+                                 str.append(" SELECTED");
+-                            str.append(">"+CMStrings.capitalizeAndLower(RawMaterial.RESOURCE_DESCS[r]));
++                            str.append(">"+CMStrings.capitalizeAndLower(S));
+                         }
+                         str.append("</SELECT>");
+                         str.append("<BR>");
+@@ -1167,17 +1167,17 @@
+                         while(proceed)
+                         {
+                             proceed = false;
+-                            str=CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),true,CMParms.toStringList(RawMaterial.RESOURCE_DESCS)).trim();
++                            str=CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),true,CMParms.toStringList(RawMaterial.CODES.NAMES())).trim();
+                             if(str.equals(oldVal)) return oldVal;
+-                            for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
+-                                if(RawMaterial.RESOURCE_DESCS[r].equalsIgnoreCase(str))
+-                                    str=(r>0)?RawMaterial.RESOURCE_DESCS[r]:"";
+-                                    if(str.equals(oldVal)) return oldVal;
+-                                    if(str.length()==0) return "";
+-                                    boolean isResource = CMParms.contains(RawMaterial.RESOURCE_DESCS,str);
+-                                    if((!isResource)&&(mob.session()!=null)&&(!mob.session().killFlag()))
+-                                        if(!mob.session().confirm("You`ve entered a non-resource item keyword '"+str+"', ok (Y/n)?","Y"))
+-                                            proceed = true;
++                            int r=CMParms.indexOfIgnoreCase(RawMaterial.CODES.NAMES(), str);
++                            if(r==0) str="";
++                            else if(r>0) str=RawMaterial.CODES.NAME(r);
++                            if(str.equals(oldVal)) return oldVal;
++                            if(str.length()==0) return "";
++                            boolean isResource = CMParms.contains(RawMaterial.CODES.NAMES(),str);
++                            if((!isResource)&&(mob.session()!=null)&&(!mob.session().killFlag()))
++                                if(!mob.session().confirm("You`ve entered a non-resource item keyword '"+str+"', ok (Y/n)?","Y"))
++                                    proceed = true;
+                         }
+                         return str;
+                     }
+@@ -1189,7 +1189,7 @@
+                         if(oldVal.trim().length()==0)
+                             return true;
+                         if(!oldVal.endsWith("$")) {
+-                            return CMParms.contains(RawMaterial.RESOURCE_DESCS,oldVal);
++                            return CMParms.contains(RawMaterial.CODES.NAMES(),oldVal);
+                         }
+                         return true;
+                     }
+@@ -1202,9 +1202,8 @@
+                         AbilityParmEditor A = (AbilityParmEditor)CMLib.ableParms().getEditors().get("RESOURCE_OR_KEYWORD");
+                         if(oldVal.endsWith("$")) oldVal = oldVal.substring(0,oldVal.length()-1);
+                         String value = A.webValue(httpReq,parms,oldVal,fieldName);
+-                        for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
+-                            if(RawMaterial.RESOURCE_DESCS[r].equalsIgnoreCase(value))
+-                                return RawMaterial.RESOURCE_DESCS[r];
++                        int r=CMParms.indexOfIgnoreCase(RawMaterial.CODES.NAMES(), value);
++                        if(r>=0) return RawMaterial.CODES.NAME(r);
+                         return (value.trim().length()==0)?"":(value+"$");
+                     }
+                     public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+@@ -1227,14 +1226,14 @@
+                         {
+                             proceed = false;
+                             if(oldVal.trim().endsWith("$")) oldVal=oldVal.trim().substring(0,oldVal.trim().length()-1);
+-                            str=CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),true,CMParms.toStringList(RawMaterial.RESOURCE_DESCS)).trim();
++                            str=CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),true,CMParms.toStringList(RawMaterial.CODES.NAMES())).trim();
+                             if(str.equals(orig)) return orig;
+-                            for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
+-                                if(RawMaterial.RESOURCE_DESCS[r].equalsIgnoreCase(str))
+-                                    str=(r>0)?RawMaterial.RESOURCE_DESCS[r]:"";
++                            int r=CMParms.indexOfIgnoreCase(RawMaterial.CODES.NAMES(), str);
++                            if(r==0) str="";
++                            else if(r>0) str=RawMaterial.CODES.NAME(r);
+                             if(str.equals(orig)) return orig;
+                             if(str.length()==0) return "";
+-                            boolean isResource = CMParms.contains(RawMaterial.RESOURCE_DESCS,str);
++                            boolean isResource = CMParms.contains(RawMaterial.CODES.NAMES(),str);
+                             if((!isResource)&&(mob.session()!=null)&&(!mob.session().killFlag()))
+                             {
+                                 if(!mob.session().confirm("You`ve entered a non-resource item keyword '"+str+"', ok (Y/n)?","Y"))
+@@ -1265,7 +1264,7 @@
+                 },
+                 new AbilityParmEditorImpl("RESOURCE_OR_MATERIAL","Rsc/Mat",PARMTYPE_CHOICES) {
+                     public void createChoices() {
+-                        Vector V=CMParms.makeVector(RawMaterial.RESOURCE_DESCS);
++                        Vector V=CMParms.makeVector(RawMaterial.CODES.NAMES());
+                         V.addAll(CMParms.makeVector(RawMaterial.MATERIAL_DESCS));
+                         createChoices(V);
+                     }
+@@ -1273,7 +1272,7 @@
+                 },
+                 new AbilityParmEditorImpl("OPTIONAL_RESOURCE_OR_MATERIAL","Rsc/Mat",PARMTYPE_CHOICES) {
+                     public void createChoices() {
+-                        Vector V=CMParms.makeVector(RawMaterial.RESOURCE_DESCS);
++                        Vector V=CMParms.makeVector(RawMaterial.CODES.NAMES());
+                         V.addAll(CMParms.makeVector(RawMaterial.MATERIAL_DESCS));
+                         V.addElement("");
+                         createChoices(V);
+@@ -1441,7 +1440,7 @@
+                 },
+                 new AbilityParmEditorImpl("RESOURCE_NAME_AMOUNT_MATERIAL_REQUIRED","Resrc/Amt",PARMTYPE_SPECIAL) {
+                     public void createChoices() { 
+-                        createChoices(RawMaterial.RESOURCE_DESCS); 
++                        createChoices(RawMaterial.CODES.NAMES()); 
+                         choices().addElement("","");
+                     }
+                     public String defaultValue(){ return "";}
+@@ -1469,10 +1468,10 @@
+                         }
+                         StringBuffer str=new StringBuffer("");
+                         str.append("\n\r<SELECT NAME="+fieldName+"_RESOURCE MULTIPLE>");
+-                        for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
+-                            str.append("<OPTION VALUE=\""+RawMaterial.RESOURCE_DESCS[r]+"\" "
+-                                    +((RawMaterial.RESOURCE_DESCS[r].equalsIgnoreCase(rsc))?"SELECTED":"")+">"
+-                                    +CMStrings.capitalizeAndLower(RawMaterial.RESOURCE_DESCS[r]));
++                        for(String S : RawMaterial.CODES.NAMES())
++                            str.append("<OPTION VALUE=\""+S+"\" "
++                                    +((S.equalsIgnoreCase(rsc))?"SELECTED":"")+">"
++                                    +CMStrings.capitalizeAndLower(S));
+                         str.append("</SELECT>");
+                         str.append("&nbsp;&nbsp;Amount: ");
+                         str.append("<INPUT TYPE=TEXT NAME="+fieldName+"_AMOUNT VALUE="+amt+">");
+Index: com/planet_ink/coffee_mud/Libraries/CMGenEditor.java
+===================================================================
+--- com/planet_ink/coffee_mud/Libraries/CMGenEditor.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Libraries/CMGenEditor.java	(working copy)
+@@ -1403,29 +1403,27 @@
+         else
+         if(E instanceof Drink)
+         {
+-            mob.session().println(showNumber+". Current liquid type: "+RawMaterial.RESOURCE_DESCS[((Drink)E).liquidType()&RawMaterial.RESOURCE_MASK]);
++            mob.session().println(showNumber+". Current liquid type: "+RawMaterial.CODES.NAME(((Drink)E).liquidType()));
+             if((showFlag!=showNumber)&&(showFlag>-999)) return;
+             boolean q=false;
+             while((mob.session()!=null)&&(!mob.session().killFlag())&&(!q))
+             {
+-                String newType=mob.session().prompt("Enter a new type (?)\n\r:",RawMaterial.RESOURCE_DESCS[((Drink)E).liquidType()&RawMaterial.RESOURCE_MASK]);
++                String newType=mob.session().prompt("Enter a new type (?)\n\r:",RawMaterial.CODES.NAME(((Drink)E).liquidType()));
+                 if(newType.equals("?"))
+                 {
+                     StringBuffer say=new StringBuffer("");
+-                    for(int i=0;i<RawMaterial.RESOURCE_DESCS.length-1;i++)
+-                        if((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
+-                            say.append(RawMaterial.RESOURCE_DESCS[i]+", ");
++                    List<Integer> liquids = RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_LIQUID);
++                    for(Integer code : liquids)
++                        say.append(RawMaterial.CODES.NAME(code)+", ");
+                     mob.tell(say.toString().substring(0,say.length()-2));
+                     q=false;
+                 }
+                 else
+                 {
+                     q=true;
+-                    int newValue=-1;
+-                    for(int i=0;i<RawMaterial.RESOURCE_DESCS.length-1;i++)
+-                        if((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
+-                            if(newType.equalsIgnoreCase(RawMaterial.RESOURCE_DESCS[i]))
+-                                newValue=RawMaterial.RESOURCE_DATA[i][0];
++                    int newValue=RawMaterial.CODES.FIND_IgnoreCase(newType);
++                    if((newValue&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LIQUID)
++                    	newValue=-1;
+                     if(newValue>=0)
+                         ((Drink)E).setLiquidType(newValue);
+                     else
+@@ -2395,27 +2393,24 @@
+         throws IOException
+     {
+         if((showFlag>0)&&(showFlag!=showNumber)) return;
+-        mob.tell(showNumber+". Material Type: '"+RawMaterial.RESOURCE_DESCS[E.material()&RawMaterial.RESOURCE_MASK]+"'.");
++        mob.tell(showNumber+". Material Type: '"+RawMaterial.CODES.NAME(E.material())+"'.");
+         if((showFlag!=showNumber)&&(showFlag>-999)) return;
+         boolean q=false;
+         while((mob.session()!=null)&&(!mob.session().killFlag())&&(!q))
+         {
+-            String newType=mob.session().prompt("Enter a new material (?)\n\r:",RawMaterial.RESOURCE_DESCS[E.material()&RawMaterial.RESOURCE_MASK]);
++            String newType=mob.session().prompt("Enter a new material (?)\n\r:",RawMaterial.CODES.NAME(E.material()));
+             if(newType.equals("?"))
+             {
+                 StringBuffer say=new StringBuffer("");
+-                for(int i=0;i<RawMaterial.RESOURCE_DESCS.length-1;i++)
+-                    say.append(RawMaterial.RESOURCE_DESCS[i]+", ");
++                for(String S : RawMaterial.CODES.NAMES())
++                    say.append(S+", ");
+                 mob.tell(say.toString().substring(0,say.length()-2));
+                 q=false;
+             }
+             else
+             {
+                 q=true;
+-                int newValue=-1;
+-                for(int i=0;i<RawMaterial.RESOURCE_DESCS.length-1;i++)
+-                    if(newType.equalsIgnoreCase(RawMaterial.RESOURCE_DESCS[i]))
+-                        newValue=RawMaterial.RESOURCE_DATA[i][0];
++                int newValue=RawMaterial.CODES.FIND_IgnoreCase(newType);
+                 if(newValue>=0)
+                     E.setMaterial(newValue);
+                 else
+@@ -5986,7 +5981,7 @@
+         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+             showFlag=-999;
+         String choices="Your choices are: ";
+-        String allComponents=CMParms.toStringList(RawMaterial.MATERIAL_DESCS)+","+CMParms.toStringList(RawMaterial.RESOURCE_DESCS);
++        String allComponents=CMParms.toStringList(RawMaterial.MATERIAL_DESCS)+","+CMParms.toStringList(RawMaterial.CODES.NAMES());
+         while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
+         {
+             int showNumber=0;
+Index: com/planet_ink/coffee_mud/Libraries/CoffeeMaker.java
+===================================================================
+--- com/planet_ink/coffee_mud/Libraries/CoffeeMaker.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Libraries/CoffeeMaker.java	(working copy)
+@@ -3084,8 +3084,10 @@
+ 		case 14: if(CMath.isInteger(val)||(val.trim().length()==0))
+ 					I.setMaterial(CMath.s_int(val)); 
+ 				 else
+-				 if(CMParms.containsIgnoreCase(RawMaterial.RESOURCE_DESCS,val))
+-					I.setMaterial(RawMaterial.RESOURCE_DATA[CMParms.indexOfIgnoreCase(RawMaterial.RESOURCE_DESCS,val)][0]); 
++				 {
++					 int rsc=RawMaterial.CODES.FIND_IgnoreCase(val);
++					 if(rsc>=0) I.setMaterial(rsc);
++				 }
+ 				 break;
+ 		case 15: {
+ 					 while(I.numEffects()>0)
+Index: com/planet_ink/coffee_mud/Libraries/CoffeeShops.java
+===================================================================
+--- com/planet_ink/coffee_mud/Libraries/CoffeeShops.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Libraries/CoffeeShops.java	(working copy)
+@@ -118,7 +118,7 @@
+         if(E instanceof Item)
+         {
+             Item I=(Item)E;
+-            str.append("\n\rMaterial   : "+CMStrings.capitalizeAndLower(RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK].toLowerCase()));
++            str.append("\n\rMaterial   : "+CMStrings.capitalizeAndLower(RawMaterial.CODES.NAME(I.material()).toLowerCase()));
+             str.append("\n\rWeight     : "+I.envStats().weight()+" pounds");
+             if(I instanceof Weapon)
+             {
+Index: com/planet_ink/coffee_mud/Libraries/CommonMsgs.java
+===================================================================
+--- com/planet_ink/coffee_mud/Libraries/CommonMsgs.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Libraries/CommonMsgs.java	(working copy)
+@@ -648,7 +648,7 @@
+ 	        if((mob!=null)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<10))
+ 	            response.append("It is mostly made of a kind of "+RawMaterial.MATERIAL_NOUNDESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8].toLowerCase()+".  ");
+ 	        else
+-	            response.append("It is mostly made of "+RawMaterial.RESOURCE_DESCS[(item.material()&RawMaterial.RESOURCE_MASK)].toLowerCase()+".  ");
++	            response.append("It is mostly made of "+RawMaterial.CODES.NAME(item.material()).toLowerCase()+".  ");
+ 	        if((item instanceof Weapon)&&((mob==null)||mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10)) {
+ 	            response.append("It is a ");
+                 if((item.rawLogicalAnd())&&CMath.bset(item.rawProperLocationBitmap(),Item.WORN_WIELD|Item.WORN_HELD))
+@@ -745,9 +745,9 @@
+                     int myResource=((Drink)item).liquidType();
+                     l.setMaterial(myResource);
+                     ((Drink)l).setLiquidType(myResource);
+-                    l.setBaseValue(RawMaterial.RESOURCE_DATA[myResource&RawMaterial.RESOURCE_MASK][1]);
++                    l.setBaseValue(RawMaterial.CODES.VALUE(myResource));
+                     l.baseEnvStats().setWeight(1);
+-                    String name=RawMaterial.RESOURCE_DESCS[myResource&RawMaterial.RESOURCE_MASK].toLowerCase();
++                    String name=RawMaterial.CODES.NAME(myResource).toLowerCase();
+                     l.setName("some "+name);
+                     l.setDisplayText("some "+name+" sits here.");
+                     l.setDescription("");
+Index: com/planet_ink/coffee_mud/Libraries/MUDPercolator.java
+===================================================================
+--- com/planet_ink/coffee_mud/Libraries/MUDPercolator.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Libraries/MUDPercolator.java	(working copy)
+@@ -761,8 +761,11 @@
+             	throw new CMException("Unable to metacraft an item without a name, Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
+             String materialStr = findOptionalString("material",piece,defined);
+             int material=-1;
+-            if((materialStr!=null)&&(CMParms.containsIgnoreCase(RawMaterial.RESOURCE_DESCS,materialStr)))
+-            	material=RawMaterial.RESOURCE_DATA[CMParms.indexOfIgnoreCase(RawMaterial.RESOURCE_DESCS,materialStr)][0];
++            if(materialStr!=null)
++            {
++            	int materialIndex = CMParms.indexOfIgnoreCase(RawMaterial.CODES.NAMES(),materialStr);
++            	if(materialIndex>=0) material=RawMaterial.CODES.GET(materialIndex);
++            }
+             Vector craftors=new Vector();
+ 			for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+ 			{
+Index: com/planet_ink/coffee_mud/Libraries/MUDZapper.java
+===================================================================
+--- com/planet_ink/coffee_mud/Libraries/MUDZapper.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Libraries/MUDZapper.java	(working copy)
+@@ -1377,7 +1377,7 @@
+                             {
+                                 int code=CMLib.materials().getResourceCode(str2.substring(1),false);
+                                 if(code>=0)
+-                                    buf.append(CMStrings.capitalizeAndLower(RawMaterial.RESOURCE_DESCS[code&RawMaterial.RESOURCE_MASK])+", ");
++                                    buf.append(CMStrings.capitalizeAndLower(RawMaterial.CODES.NAME(code))+", ");
+                             }
+                         }
+                         if(buf.toString().endsWith(", "))
+@@ -1397,7 +1397,7 @@
+                             {
+                                 int code=CMLib.materials().getResourceCode(str2.substring(1),false);
+                                 if(code>=0)
+-                                    buf.append(CMStrings.capitalizeAndLower(RawMaterial.RESOURCE_DESCS[code&RawMaterial.RESOURCE_MASK])+", ");
++                                    buf.append(CMStrings.capitalizeAndLower(RawMaterial.CODES.NAME(code))+", ");
+                             }
+                         }
+                         if(buf.toString().endsWith(", "))
+@@ -2846,7 +2846,7 @@
+                             {
+                                 int code=CMLib.materials().getResourceCode(str2.substring(1),false);
+                                 if(code>=0)
+-                                    entry.addElement(RawMaterial.RESOURCE_DESCS[(code&RawMaterial.RESOURCE_MASK)]);
++                                    entry.addElement(RawMaterial.CODES.NAME(code));
+                             }
+                             v=V.size();
+                         }
+@@ -3775,11 +3775,11 @@
+                 }
+                 break;
+             case 51: // +resource
+-                if(V.contains(RawMaterial.RESOURCE_DESCS[(item.material()&RawMaterial.RESOURCE_MASK)]))
++                if(V.contains(RawMaterial.CODES.NAME(item.material())))
+                     return false;
+                 break;
+             case 52: // -resource
+-                if(!V.contains(RawMaterial.RESOURCE_DESCS[(item.material()&RawMaterial.RESOURCE_MASK)]))
++                if(!V.contains(RawMaterial.CODES.NAME(item.material())))
+                     return false;
+                 break;
+             case 53: // -JavaClass
+Index: com/planet_ink/coffee_mud/Libraries/RawCMaterial.java
+===================================================================
+--- com/planet_ink/coffee_mud/Libraries/RawCMaterial.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Libraries/RawCMaterial.java	(working copy)
+@@ -44,12 +44,17 @@
+ 		material=material&RawMaterial.MATERIAL_MASK;
+ 		if((material<0)||(material>=RawMaterial.MATERIAL_DESCS.length))
+ 			return -1;
+-		int d=CMLib.dice().roll(1,RawMaterial.RESOURCE_DATA.length,0);
+-		while(d>0)
+-		for(int i=0;i<RawMaterial.RESOURCE_DATA.length;i++)
+-			if((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)==material)
+-				if((--d)==0)
+-					return RawMaterial.RESOURCE_DATA[i][0];
++		int rscIndex=CMLib.dice().roll(1,RawMaterial.CODES.ALL().length,-1);
++		int countDown=RawMaterial.CODES.ALL().length;
++		int rsc=0;
++		while(--countDown>=0)
++		{
++			rsc=RawMaterial.CODES.GET(rscIndex);
++			if((rsc&RawMaterial.MATERIAL_MASK)==material)
++				return rsc;
++			if((--rscIndex)<0)
++				rscIndex=RawMaterial.CODES.ALL().length-1;
++		}
+ 		return -1;
+ 	}
+ 
+@@ -337,9 +342,8 @@
+     
+     public String getResourceDesc(int MASK)
+     {
+-        MASK=(MASK&RawMaterial.RESOURCE_MASK);
+-        if((MASK>=0)&&(MASK<RawMaterial.RESOURCE_DESCS.length))
+-            return RawMaterial.RESOURCE_DESCS[MASK];
++        if(RawMaterial.CODES.IS_VALID(MASK))
++            return RawMaterial.CODES.NAME(MASK);
+         return "";
+     }
+     
+@@ -364,17 +368,12 @@
+     }
+     public int getResourceCode(String s, boolean exact)
+ 	{
+-		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+-		{
+-			if(s.equalsIgnoreCase(RawMaterial.RESOURCE_DESCS[i]))
+-				return RawMaterial.RESOURCE_DATA[i][0];
+-		}
++    	int code = RawMaterial.CODES.FIND_IgnoreCase(s);
++    	if(code>=0) return code;
+     	if(exact) return -1;
+ 		s=s.toUpperCase();
+-		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+-			if(RawMaterial.RESOURCE_DESCS[i].startsWith(s)||s.startsWith(RawMaterial.RESOURCE_DESCS[i]))
+-				return RawMaterial.RESOURCE_DATA[i][0];
+-		return -1;
++    	code = RawMaterial.CODES.FIND_StartsWith(s);
++		return code;
+ 	}
+ 	
+ 	public Environmental makeResource(int myResource, String localeCode, boolean noAnimals, String fullName)
+@@ -392,9 +391,8 @@
+ 			||(myResource==RawMaterial.RESOURCE_HIDE)
+ 			||(myResource==RawMaterial.RESOURCE_FUR))
+ 			   material=RawMaterial.MATERIAL_LEATHER;
+-			for(int i=0;i<RawMaterial.FISHES.length;i++)
+-				if(RawMaterial.FISHES[i]==myResource)
+-				{ material=RawMaterial.MATERIAL_VEGETATION; break;}
++			if(CMParms.contains(RawMaterial.CODES.FISHES(), myResource))
++				material=RawMaterial.MATERIAL_VEGETATION;
+ 			if((material==RawMaterial.MATERIAL_LEATHER)
+ 			||(material==RawMaterial.MATERIAL_FLESH))
+ 			{
+@@ -526,7 +524,7 @@
+ 			I.setMaterial(myResource);
+ 			if(I instanceof Drink)
+ 				((Drink)I).setLiquidType(myResource);
+-			I.setBaseValue(RawMaterial.RESOURCE_DATA[myResource&RawMaterial.RESOURCE_MASK][1]);
++			I.setBaseValue(RawMaterial.CODES.VALUE(myResource));
+ 			I.baseEnvStats().setWeight(1);
+ 			if(I instanceof RawMaterial)
+ 				((RawMaterial)I).setDomainSource(localeCode);
+@@ -575,7 +573,7 @@
+     
+     public void adjustResourceName(Item I)
+     {
+-        String name=RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
++        String name=RawMaterial.CODES.NAME(I.material()).toLowerCase();
+         if((I.material()==RawMaterial.MATERIAL_MITHRIL)
+         ||(I.material()==RawMaterial.MATERIAL_METAL))
+         {
+@@ -628,7 +626,7 @@
+         I.setMaterial(type);
+         adjustResourceName(I);
+ 		I.setDescription("");
+-		I.setBaseValue(RawMaterial.RESOURCE_DATA[type&RawMaterial.RESOURCE_MASK][1]);
++		I.setBaseValue(RawMaterial.CODES.VALUE(type));
+ 		I.recoverEnvStats();
+ 		return I;
+ 	}
+@@ -717,9 +715,9 @@
+ 	{
+ 		if((other==null)||(other.length()==0))
+ 			return null;
+-		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+-			if(RawMaterial.RESOURCE_DESCS[i].equalsIgnoreCase(other))
+-				return findFirstResource(V,RawMaterial.RESOURCE_DATA[i][0]);
++		int code = RawMaterial.CODES.FIND_IgnoreCase(other);
++		if(code >=0 )
++			return findFirstResource(V,code);
+ 		return null;
+ 	}
+ 	public Item findFirstResource(Room E, int resource){return findFirstResource(getAllItems(E),resource);}
+Index: com/planet_ink/coffee_mud/Libraries/Sense.java
+===================================================================
+--- com/planet_ink/coffee_mud/Libraries/Sense.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Libraries/Sense.java	(working copy)
+@@ -813,7 +813,7 @@
+ 			{
+ 				Item I=(Item)V.elementAt(v);
+ 				totalWeight+=I.baseEnvStats().weight();
+-				totalFloatilla+=totalWeight*RawMaterial.RESOURCE_DATA[I.material()&RawMaterial.RESOURCE_MASK][4];
++				totalFloatilla+=totalWeight*RawMaterial.CODES.BOUANCY(I.material());
+ 			}
+ 			if(E instanceof Container)
+ 			{
+Index: com/planet_ink/coffee_mud/Libraries/TimsLibrary.java
+===================================================================
+--- com/planet_ink/coffee_mud/Libraries/TimsLibrary.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Libraries/TimsLibrary.java	(working copy)
+@@ -431,7 +431,7 @@
+ 										 long worndata)
+ 	{
+ 		Hashtable vals=new Hashtable();
+-		int materialvalue=RawMaterial.RESOURCE_DATA[material&RawMaterial.RESOURCE_MASK][1];
++		int materialvalue=RawMaterial.CODES.VALUE(material);
+ 		int[] castMul=new int[1];
+ 		Ability[] RET=getTimsAdjResCast(I,castMul);
+ 		Ability ADJ=RET[0];
+Index: com/planet_ink/coffee_mud/Locales/StdRoom.java
+===================================================================
+--- com/planet_ink/coffee_mud/Locales/StdRoom.java	(revision 2765)
++++ com/planet_ink/coffee_mud/Locales/StdRoom.java	(working copy)
+@@ -441,8 +441,7 @@
+ 				for(int i=0;i<resourceChoices().size();i++)
+ 				{
+ 					int resource=((Integer)resourceChoices().elementAt(i)).intValue();
+-					int chance=RawMaterial.RESOURCE_DATA[resource&RawMaterial.RESOURCE_MASK][2];
+-					totalChance+=chance;
++					totalChance+=RawMaterial.CODES.FREQUENCY(resource);
+ 				}
+ 				setResource(-1);
+ 				int theRoll=CMLib.dice().roll(1,totalChance,0);
+@@ -450,8 +449,7 @@
+ 				for(int i=0;i<resourceChoices().size();i++)
+ 				{
+ 					int resource=((Integer)resourceChoices().elementAt(i)).intValue();
+-					int chance=RawMaterial.RESOURCE_DATA[resource&RawMaterial.RESOURCE_MASK][2];
+-					totalChance+=chance;
++					totalChance+=RawMaterial.CODES.FREQUENCY(resource);
+ 					if(theRoll<=totalChance)
+ 					{
+ 						setResource(resource);
+Index: com/planet_ink/coffee_mud/MOBS/Cow.java
+===================================================================
+--- com/planet_ink/coffee_mud/MOBS/Cow.java	(revision 2765)
++++ com/planet_ink/coffee_mud/MOBS/Cow.java	(working copy)
+@@ -94,7 +94,7 @@
+ 			I.setDisplayText("some milk has been left here.");
+ 			I.setDescription("It looks like milk");
+ 			I.setMaterial(RawMaterial.RESOURCE_MILK);
+-			I.setBaseValue(RawMaterial.RESOURCE_DATA[RawMaterial.RESOURCE_MILK&RawMaterial.RESOURCE_MASK][1]);
++			I.setBaseValue(RawMaterial.CODES.VALUE(RawMaterial.RESOURCE_MILK));
+ 			I.baseEnvStats().setWeight(1);
+ 			I.recoverEnvStats();
+ 			I.setContainer(container);
+Index: com/planet_ink/coffee_mud/MOBS/StdDeity.java
+===================================================================
+--- com/planet_ink/coffee_mud/MOBS/StdDeity.java	(revision 2765)
++++ com/planet_ink/coffee_mud/MOBS/StdDeity.java	(working copy)
+@@ -228,9 +228,8 @@
+ 					&&((t>>8)<RawMaterial.MATERIAL_MASK))
+ 						material=RawMaterial.MATERIAL_DESCS[t>>8].toLowerCase();
+ 					else
+-					if(((t&RawMaterial.RESOURCE_MASK)>0)
+-					&&((t&RawMaterial.RESOURCE_MASK)<RawMaterial.RESOURCE_DESCS.length))
+-						material=RawMaterial.RESOURCE_DESCS[t&RawMaterial.RESOURCE_MASK].toLowerCase();
++					if(RawMaterial.CODES.IS_VALID(t))
++						material=RawMaterial.CODES.NAME(t).toLowerCase();
+ 					buf.append("the player puts an item made of "+material+" in "+DT.parm2.toLowerCase());
+ 				}
+ 				break;
+@@ -242,9 +241,8 @@
+ 					&&((t>>8)<RawMaterial.MATERIAL_MASK))
+ 						material=RawMaterial.MATERIAL_DESCS[t>>8].toLowerCase();
+ 					else
+-					if(((t&RawMaterial.RESOURCE_MASK)>0)
+-					&&((t&RawMaterial.RESOURCE_MASK)<RawMaterial.RESOURCE_DESCS.length))
+-						material=RawMaterial.RESOURCE_DESCS[t&RawMaterial.RESOURCE_MASK].toLowerCase();
++					if(RawMaterial.CODES.IS_VALID(t))
++						material=RawMaterial.CODES.NAME(t).toLowerCase();
+ 					buf.append("the player should burn an item made of "+material);
+ 				}
+ 				break;
+@@ -1405,16 +1403,11 @@
+ 					{
+ 						DT.triggerCode=TRIGGER_BURNMATERIAL;
+ 						DT.parm1=CMParms.combine(V,1);
+-						boolean found=false;
+-						for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+-						{
+-							if(RawMaterial.RESOURCE_DESCS[i].startsWith(DT.parm1))
+-							{
+-								DT.parm1=""+RawMaterial.RESOURCE_DATA[i][0];
+-								found=true;
+-							}
+-						}
+-						if(!found)
++						int cd = RawMaterial.CODES.FIND_StartsWith(DT.parm1);
++						boolean found=cd>=0;
++						if(found) 
++							DT.parm1=""+cd;
++						else
+ 						for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
+ 						{
+ 							if(RawMaterial.MATERIAL_DESCS[i].startsWith(DT.parm1))
+@@ -1440,15 +1433,11 @@
+ 						}
+ 						DT.parm1=(String)V.elementAt(1);
+ 						DT.parm2=CMParms.combine(V,2);
+-						boolean found=false;
+-						for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+-						{
+-							if(RawMaterial.RESOURCE_DESCS[i].startsWith(DT.parm1))
+-							{
+-								DT.parm1=""+RawMaterial.RESOURCE_DATA[i][0];
+-								found=true;
+-							}
+-						}
++						int cd = RawMaterial.CODES.FIND_StartsWith(DT.parm1);
++						boolean found=cd>=0;
++						if(found)
++							DT.parm1=""+cd;
++						else
+ 						if(!found)
+ 						for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
+ 						{
+Index: com/planet_ink/coffee_mud/WebMacros/ItemData.java
+===================================================================
+--- com/planet_ink/coffee_mud/WebMacros/ItemData.java	(revision 2765)
++++ com/planet_ink/coffee_mud/WebMacros/ItemData.java	(working copy)
+@@ -36,7 +36,6 @@
+ public class ItemData extends StdWebMacro
+ {
+ 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+-    public static DVector sortedResources=new DVector(2);
+ 
+     private static final String[] okparms={
+       "NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
+@@ -66,20 +65,6 @@
+     {
+         super();
+ 
+-        if(sortedResources.size()==0)
+-        for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
+-        {
+-            Long L=Long.valueOf(RawMaterial.RESOURCE_DATA[r][0]);
+-            String S=RawMaterial.RESOURCE_DESCS[r];
+-            int putHere=0;
+-            for(putHere=0;putHere<sortedResources.size();putHere++)
+-                if(S.compareTo((String)sortedResources.elementAt(putHere,2))<0)
+-                    break;
+-            if(putHere>=sortedResources.size())
+-                sortedResources.addElement(L,S);
+-            else
+-                sortedResources.insertElementAt(putHere,L,S);
+-        }
+     }
+ 
+ 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+@@ -388,12 +373,12 @@
+ 					break;
+ 				case 8: // materials
+ 					if(firstTime) old=""+I.material();
+-					for(int r=0;r<sortedResources.size();r++)
++					for(int r : RawMaterial.CODES.ALL_SBN())
+ 					{
+-						str.append("<OPTION VALUE=\""+((Long)sortedResources.elementAt(r,1)).longValue()+"\"");
+-						if(((Long)sortedResources.elementAt(r,1)).intValue()==CMath.s_int(old))
++						str.append("<OPTION VALUE=\""+r+"\"");
++						if(r==CMath.s_int(old))
+ 							str.append(" SELECTED");
+-						str.append(">"+((String)sortedResources.elementAt(r,2)));
++						str.append(">"+RawMaterial.CODES.NAME(r));
+ 					}
+ 					break;
+ 				case 9: // is generic
+@@ -625,15 +610,13 @@
+ 				case 45: // liquid types
+ 					if((firstTime)&&(I instanceof Drink))
+ 						old=""+((Drink)I).liquidType();
+-					for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
++					List<Integer> liquids=RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_LIQUID);
++					for(Integer liquid : liquids)
+ 					{
+-						if((RawMaterial.RESOURCE_DATA[r][0]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
+-						{
+-							str.append("<OPTION VALUE=\""+RawMaterial.RESOURCE_DATA[r][0]+"\"");
+-							if(r==CMath.s_int(old))
+-								str.append(" SELECTED");
+-							str.append(">"+RawMaterial.RESOURCE_DESCS[r]);
+-						}
++						str.append("<OPTION VALUE=\""+liquid.intValue()+"\"");
++						if(liquid.intValue()==CMath.s_int(old))
++							str.append(" SELECTED");
++						str.append(">"+RawMaterial.CODES.NAME(liquid.intValue()));
+ 					}
+ 					break;
+ 				case 46: // ammo types
+Index: com/planet_ink/coffee_mud/WebMacros/TimsItemTable.java
+===================================================================
+--- com/planet_ink/coffee_mud/WebMacros/TimsItemTable.java	(revision 2765)
++++ com/planet_ink/coffee_mud/WebMacros/TimsItemTable.java	(working copy)
+@@ -165,15 +165,9 @@
+ 		if(parms.containsKey("ITEMS"))
+ 		{
+ 			int[] materials={RawMaterial.RESOURCE_STEEL,RawMaterial.RESOURCE_IRON,RawMaterial.RESOURCE_OAK,RawMaterial.RESOURCE_LEATHER,RawMaterial.RESOURCE_COTTON};
+-			int[] mindexes=new int[materials.length];
+-			for(int m=0;m<mindexes.length;m++)
+-				for(int i=0;i<RawMaterial.RESOURCE_DATA.length;i++)
+-					if(materials[m]==RawMaterial.RESOURCE_DATA[i][0])
+-					{ mindexes[m]=i; break;}
+-			
+ 			str.append("<TR><TD>Type</TD><TD>Level</TD>");
+ 			for(int m=0;m<materials.length;m++)
+-				str.append("<TD>"+RawMaterial.RESOURCE_DESCS[mindexes[m]]+"</TD>");
++				str.append("<TD>"+RawMaterial.CODES.NAME(materials[m])+"</TD>");
+ 			str.append("</TR>");
+ 			//str.append("<TD>Attack</TD>");
+ 			//str.append("<TD>Damage</TD>");
+Index: guides/Programming.html
+===================================================================
+--- guides/Programming.html	(revision 2765)
++++ guides/Programming.html	(working copy)
+@@ -19600,7 +19600,7 @@
+       
+       
+       
+-      <pre>    if( ( proficiencyCheck( mob, 0, auto ) )<br />        &amp;&amp; ( foundFish &gt; 0 )<br />      )<br />    {<br />      found = (Item)CMLib.materials().makeResource( foundFish, mob.location().domainType(), false, null );<br />      foundShortName = "nothing";<br />      if( found != null )<br />      {<br />        foundShortName = RawMaterial.RESOURCE_DESCS[ found.material()&amp;RawMaterial.RESOURCE_MASK ].toLowerCase();<br />      }<br />    }<br />       <br /></pre>
++      <pre>    if( ( proficiencyCheck( mob, 0, auto ) )<br />        &amp;&amp; ( foundFish &gt; 0 )<br />      )<br />    {<br />      found = (Item)CMLib.materials().makeResource( foundFish, mob.location().domainType(), false, null );<br />      foundShortName = "nothing";<br />      if( found != null )<br />      {<br />        foundShortName = RawMaterial.CODES.NAME( found.material()).toLowerCase();<br />      }<br />    }<br />       <br /></pre>
+ 
+ 
+ 
+@@ -20453,7 +20453,7 @@
+       
+       
+       
+-      <pre>    completion = CMath.s_int(<br />                              (String)foundRecipe.elementAt( RCP_TICKS )<br />                            )<br />                            - (<br />                                (<br />                                  mob.envStats().level()<br />                                  - CMath.s_int(<br />                                                 (String)foundRecipe.elementAt( RCP_LEVEL )<br />                                               )<br />                                ) * 2<br />                              );<br /><br />    String itemName = replacePercent(<br />                                      (String)foundRecipe.elementAt( RCP_FINALNAME ),<br />                                      RawMaterial.RESOURCE_DESCS[<br />                                        (data[0][FOUND_CODE]&amp;RawMaterial.RESOURCE_MASK)<br />                                                                ]<br />                                    ).toLowerCase();<br /><br />    if( bundling )<br />    {<br />      itemName = "a " + woodRequired + "# " + itemName;<br />    }<br />    else<br />    {<br />      itemName = CMStrings.startWithAorAn( itemName );<br />    }<br /><br />    building.setName( itemName );<br />    startStr = "&lt;S-NAME&gt; start(s) blowing " + building.name() + ".";<br />    displayText = "You are blowing " + building.name();<br />    verb = "blowing " + building.name();<br />    playSound = "fire.wav";<br />    building.setDisplayText( itemName + " is here" );<br />    building.setDescription( itemName + ". " );<br />    building.baseEnvStats().setWeight( woodRequired );<br />    building.setBaseValue( CMath.s_int( (String)foundRecipe.elementAt( RCP_VALUE ) ) );<br />       <br /></pre>
++      <pre>    completion = CMath.s_int(<br />                              (String)foundRecipe.elementAt( RCP_TICKS )<br />                            )<br />                            - (<br />                                (<br />                                  mob.envStats().level()<br />                                  - CMath.s_int(<br />                                                 (String)foundRecipe.elementAt( RCP_LEVEL )<br />                                               )<br />                                ) * 2<br />                              );<br /><br />    String itemName = replacePercent(<br />                                      (String)foundRecipe.elementAt( RCP_FINALNAME ),<br />                                      RawMaterial.CODES.NAME(<br />                                        data[0][FOUND_CODE]<br />                                                                ]<br />                                    ).toLowerCase();<br /><br />    if( bundling )<br />    {<br />      itemName = "a " + woodRequired + "# " + itemName;<br />    }<br />    else<br />    {<br />      itemName = CMStrings.startWithAorAn( itemName );<br />    }<br /><br />    building.setName( itemName );<br />    startStr = "&lt;S-NAME&gt; start(s) blowing " + building.name() + ".";<br />    displayText = "You are blowing " + building.name();<br />    verb = "blowing " + building.name();<br />    playSound = "fire.wav";<br />    building.setDisplayText( itemName + " is here" );<br />    building.setDescription( itemName + ". " );<br />    building.baseEnvStats().setWeight( woodRequired );<br />    building.setBaseValue( CMath.s_int( (String)foundRecipe.elementAt( RCP_VALUE ) ) );<br />       <br /></pre>
+ 
+ 
+ 
+@@ -20612,7 +20612,7 @@
+       
+       
+       
+-      <pre>    messedUp =! proficiencyCheck( mob, 0, auto );<br />    if( completion &lt; 4 )<br />    {<br />      completion = 4;<br />    }<br /><br />    if( bundling )<br />    {<br />      messedUp = false;<br />      completion = 1;<br />      verb = "bundling "<br />             + RawMaterial.RESOURCE_DESCS[<br />             ( building.material()&amp;RawMaterial.RESOURCE_MASK)<br />             ].toLowerCase();<br /><br />      startStr = "&lt;S-NAME&gt; start(s) " + verb + ".";<br />      displayText = "You are " + verb;<br />    }<br />       <br /></pre>
++      <pre>    messedUp =! proficiencyCheck( mob, 0, auto );<br />    if( completion &lt; 4 )<br />    {<br />      completion = 4;<br />    }<br /><br />    if( bundling )<br />    {<br />      messedUp = false;<br />      completion = 1;<br />      verb = "bundling "<br />             + RawMaterial.CODES.NAME(<br />             building.material()<br />             ).toLowerCase();<br /><br />      startStr = "&lt;S-NAME&gt; start(s) " + verb + ".";<br />      displayText = "You are " + verb;<br />    }<br />       <br /></pre>
+ 
+ 
+ 
+Index: resources/help/skill_help.ini
+===================================================================
+--- resources/help/skill_help.ini	(revision 2765)
++++ resources/help/skill_help.ini	(working copy)
+@@ -1849,8 +1849,8 @@
+ DAMPEN_AURAS=<ABILITY>\
+ Usage    : DAMPENAURAS\n\r\
+ Example  : dampenauras\n\r\
+-This skill eliminates any eminations and auras on the thief and his or \
+-her inventory items.  This includes eminations and auras which others \
++This skill eliminates any emanations and auras on the thief and his or \
++her inventory items.  This includes emanations and auras which others \
+ might be using skills to detect (such as magic, goodness, metalicness, \
+ etc).
+ 
