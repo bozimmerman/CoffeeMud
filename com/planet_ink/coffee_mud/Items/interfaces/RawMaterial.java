@@ -636,7 +636,7 @@ public interface RawMaterial extends Item
     RESOURCE_CRANBERRIES
 	};
 	
-	public final static String[] RESOURCE_SMELLS={
+	public final static String[] DEFAULT_RESOURCE_SMELLS={
 		// full code, base value, frequency, strength (1-10), bouancy, smell
 		"",//RESOURCE_NOTHING 
 		"",//RESOURCE_MEAT 
@@ -823,7 +823,7 @@ public interface RawMaterial extends Item
 			for(int i=0;i<RESOURCE_DESCS.length;i++)
 			{
 				int material= RESOURCE_DATA[i][0] & MATERIAL_MASK;
-				add(material, RESOURCE_DESCS[i], RESOURCE_SMELLS[i], 
+				add(material, RESOURCE_DESCS[i], DEFAULT_RESOURCE_SMELLS[i], 
 						RESOURCE_DATA[i][1], RESOURCE_DATA[i][2], RESOURCE_DATA[i][3], 
 						RESOURCE_DATA[i][4], 
 						CMParms.contains(FISHES, i&material),

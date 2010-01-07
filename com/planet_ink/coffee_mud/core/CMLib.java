@@ -298,6 +298,8 @@ public class CMLib
             {}
             else
                 lib.libraries[l].propertiesLoaded();
+        CharStats.CODES.reset();
+        RawMaterial.CODES.reset();
     }
     
     public static void activateLibraries() {

@@ -794,7 +794,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         String s=null;
         Item item=(Item)msg.target();
         if(CMLib.flags().canSmell(msg.source()))
-            s=RawMaterial.RESOURCE_SMELLS[item.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
+            s=RawMaterial.CODES.SMELL(item.material()&RawMaterial.RESOURCE_MASK).toLowerCase();
         if((s!=null)&&(s.length()>0))
             msg.source().tell(msg.source(),item,null,"<T-NAME> has a "+s+" smell.");
     }
