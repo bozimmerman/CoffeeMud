@@ -759,6 +759,7 @@ public interface CharStats extends CMCommon, CMModifiable
 				addSavingThrow(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
 			for(int i=31;i<DEFAULT_NUM_STATS;i++) 
 				addAllStat(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i],false);
+			if(rawExtra!=null)
 			for(Enumeration e=rawExtra.elements();e.hasMoreElements();)
 			{
 				String p = (String)e.nextElement();
