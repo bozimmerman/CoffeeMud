@@ -62,12 +62,12 @@ public class Chant_GrowForest extends Chant
 
 		List<Integer> codes = RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_WOODEN);
 		for(Integer code : codes)
-			if(code!=RawMaterial.RESOURCE_WOOD)
+			if(code.intValue()!=RawMaterial.RESOURCE_WOOD)
 			{
 				choices.addElement(code);
 				String desc=RawMaterial.CODES.NAME(code.intValue());
 				if((s.length()>0)&&(CMLib.english().containsString(desc,s)))
-					material=code;
+					material=code.intValue();
 			}
 		if((material<0)&&(s.length()>0))
 		{

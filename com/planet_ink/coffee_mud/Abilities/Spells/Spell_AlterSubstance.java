@@ -84,7 +84,7 @@ public class Spell_AlterSubstance extends Spell
 			List<Integer> rscs = RawMaterial.CODES.COMPOSE_RESOURCES(newMaterial);
 			if(rscs.size()>0)
 			{
-				newMaterial=rscs.get(0);
+				newMaterial=rscs.get(0).intValue();
 				material=RawMaterial.CODES.NAME(newMaterial);
 			}
 			else

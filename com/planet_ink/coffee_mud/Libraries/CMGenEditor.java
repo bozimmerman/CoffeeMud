@@ -1414,7 +1414,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                     StringBuffer say=new StringBuffer("");
                     List<Integer> liquids = RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_LIQUID);
                     for(Integer code : liquids)
-                        say.append(RawMaterial.CODES.NAME(code)+", ");
+                        say.append(RawMaterial.CODES.NAME(code.intValue())+", ");
                     mob.tell(say.toString().substring(0,say.length()-2));
                     q=false;
                 }
