@@ -166,7 +166,7 @@ public class StdClanCommonItem extends StdClanItem
     	super.affectEnvStats(affected,stats);
     	if((glows)
     	&&(affected instanceof MOB)
-    	&&(!super.amWearingAt(Item.IN_INVENTORY))
+    	&&(!super.amWearingAt(Wearable.IN_INVENTORY))
     	&&(((MOB)affected).location()!=null)
     	&&(((MOB)affected).location().domainType()==Room.DOMAIN_INDOORS_CAVE)
     	&&(((MOB)affected).getStartRoom()!=null)
@@ -362,7 +362,7 @@ public class StdClanCommonItem extends StdClanItem
 							if((I==null)
                             ||(I==this)
                             ||(I instanceof RawMaterial)
-                            ||(!I.amWearingAt(Item.IN_INVENTORY)))
+                            ||(!I.amWearingAt(Wearable.IN_INVENTORY)))
 								I=null;
 						}
 						Vector V=new Vector();

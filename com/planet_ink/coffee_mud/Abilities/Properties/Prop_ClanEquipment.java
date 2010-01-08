@@ -234,7 +234,7 @@ public class Prop_ClanEquipment extends Property
      */
     public void waveIfAble(MOB mob, Environmental afftarget, String message, Wand me)
     {
-        if((mob.isMine(me))&&(afftarget!=null)&&(afftarget instanceof MOB)&&(!me.amWearingAt(Item.IN_INVENTORY)))
+        if((mob.isMine(me))&&(afftarget!=null)&&(afftarget instanceof MOB)&&(!me.amWearingAt(Wearable.IN_INVENTORY)))
         {
             MOB target=null;
             if((mob.location()!=null))
@@ -290,7 +290,7 @@ public class Prop_ClanEquipment extends Property
              */
         }
         if((affected!=null)&&(affected instanceof Armor)&&(!(affected instanceof Shield))&&(activated)
-                &&(!((Armor)affected).amWearingAt(Item.IN_INVENTORY)))
+                &&(!((Armor)affected).amWearingAt(Wearable.IN_INVENTORY)))
         {
             for(int i : CharStats.CODES.SAVING_THROWS())
                 affectedStats.setStat(i,affectedStats.getStat(i)+EQadjCharStats.getStat(i));

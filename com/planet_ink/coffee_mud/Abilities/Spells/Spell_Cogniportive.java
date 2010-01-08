@@ -59,7 +59,7 @@ public class Spell_Cogniportive extends Spell
 				Room room=CMLib.map().roomLocation(owner);
 				if((owner instanceof MOB)
 				&&(((MOB)owner).isMonster())
-				&&(!I.amWearingAt(Item.IN_INVENTORY))
+				&&(!I.amWearingAt(Wearable.IN_INVENTORY))
 				&&((beLoose) || me.sameAs(I))
                 &&(CMLib.law().getLandTitle(room)==null))
 					return CMLib.map().getExtendedRoomID(room);
@@ -89,7 +89,7 @@ public class Spell_Cogniportive extends Spell
 				Room room=CMLib.map().getStartRoom(owner);
 				if((owner instanceof MOB)
 				&&(((MOB)owner).isMonster())
-				&&(I.amWearingAt(Item.IN_INVENTORY))
+				&&(I.amWearingAt(Wearable.IN_INVENTORY))
 				&&((beLoose) || me.sameAs(I))
                 &&(CMLib.law().getLandTitle(room)==null))
 					return CMLib.map().getExtendedRoomID(room);

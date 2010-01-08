@@ -866,7 +866,7 @@ public class MobData extends StdWebMacro
                     	CMLib.catalog().updateCatalogIntegrity(I2);
                         classes.addElement(I2);
                         containers.addElement((I2.container()==null)?"":(Object)I2.container());
-                        beingWorn.addElement(Boolean.valueOf(!I2.amWearingAt(Item.IN_INVENTORY)));
+                        beingWorn.addElement(Boolean.valueOf(!I2.amWearingAt(Wearable.IN_INVENTORY)));
                     }
 				}
 				itemlist=RoomData.contributeItems(classes);

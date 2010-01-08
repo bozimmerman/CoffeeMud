@@ -40,7 +40,7 @@ public class Wemic extends StdRace
 	public int heightVariance(){return 12;}
 	public int lightestWeight(){return 350;}
 	public int weightVariance(){return 100;}
-	public long forbiddenWornBits(){return Item.WORN_WAIST-Item.WORN_LEGS-Item.WORN_FEET;}
+	public long forbiddenWornBits(){return Wearable.WORN_WAIST-Wearable.WORN_LEGS-Wearable.WORN_FEET;}
 	public String racialCategory(){return "Feline";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

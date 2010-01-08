@@ -421,7 +421,7 @@ public class DefaultClan implements Clan
                         ((Item)V.elementAt(v)).setContainer(null);
                 }
                 I.setContainer(null);
-                I.wearAt(Item.IN_INVENTORY);
+                I.wearAt(Wearable.IN_INVENTORY);
                 if(R!=null)
                     R.bringItemHere(I,0,false);
                 else

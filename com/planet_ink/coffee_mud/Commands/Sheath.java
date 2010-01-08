@@ -47,7 +47,7 @@ public class Sheath extends StdCommand
 		{
 			Item I=mob.fetchInventory(i);
 			if((I!=null)
-			&&(!I.amWearingAt(Item.IN_INVENTORY))
+			&&(!I.amWearingAt(Wearable.IN_INVENTORY))
 			&&(I instanceof Container)
 			&&(!(I instanceof Drink))
 			&&(((Container)I).capacity()>0)
@@ -84,12 +84,12 @@ public class Sheath extends StdCommand
 				Item I=mob.fetchInventory(i);
 				if((I!=null)
 				&&(I instanceof Weapon)
-				&&(!I.amWearingAt(Item.IN_INVENTORY)))
+				&&(!I.amWearingAt(Wearable.IN_INVENTORY)))
 				{
-					if(I.amWearingAt(Item.WORN_WIELD))
+					if(I.amWearingAt(Wearable.WORN_WIELD))
 						item1=I;
 					else
-					if(I.amWearingAt(Item.WORN_HELD))
+					if(I.amWearingAt(Wearable.WORN_HELD))
 						item2=I;
 				}
 			}
@@ -151,8 +151,8 @@ public class Sheath extends StdCommand
 			{
 				Item putThis=mob.fetchWornItem(thingToPut+addendumStr);
 				if(putThis==null) break;
-				if(((putThis.amWearingAt(Item.WORN_WIELD))
-				   ||(putThis.amWearingAt(Item.WORN_HELD)))
+				if(((putThis.amWearingAt(Wearable.WORN_WIELD))
+				   ||(putThis.amWearingAt(Wearable.WORN_HELD)))
 				   &&(putThis instanceof Weapon))
 				{
 					if(CMLib.flags().canBeSeenBy(putThis,mob)&&(!items.contains(putThis)))

@@ -67,7 +67,7 @@ public class Spell_MageArmor extends Spell
         {
             if(target instanceof MOB)
             {
-                if(((MOB)target).freeWearPositions(Item.WORN_TORSO,(short)0,(short)0)==0)
+                if(((MOB)target).freeWearPositions(Wearable.WORN_TORSO,(short)0,(short)0)==0)
                     return Ability.QUALITY_INDIFFERENT;
             }
         }
@@ -85,7 +85,7 @@ public class Spell_MageArmor extends Spell
 			return false;
 		}
 
-		if(target.freeWearPositions(Item.WORN_TORSO,(short)0,(short)0)==0)
+		if(target.freeWearPositions(Wearable.WORN_TORSO,(short)0,(short)0)==0)
 		{
 			mob.tell("You are already wearing something on your torso!");
 			return false;
@@ -114,7 +114,7 @@ public class Spell_MageArmor extends Spell
 				theArmor=CMClass.getArmor("GlowingMageArmor");
 				theArmor.setLayerAttributes(Armor.LAYERMASK_SEETHROUGH);
 				mob.addInventory(theArmor);
-				theArmor.wearAt(Item.WORN_TORSO);
+				theArmor.wearAt(Wearable.WORN_TORSO);
 				success=beneficialAffect(mob,target,asLevel,0);
 				mob.location().recoverRoomStats();
 			}

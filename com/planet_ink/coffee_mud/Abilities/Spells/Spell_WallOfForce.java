@@ -67,7 +67,7 @@ public class Spell_WallOfForce extends Spell
 			||((msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 				&&(msg.tool()!=null)
 				&&(msg.tool() instanceof Weapon)
-				&&(!((Weapon)msg.tool()).amWearingAt(Item.IN_INVENTORY))
+				&&(!((Weapon)msg.tool()).amWearingAt(Wearable.IN_INVENTORY))
 				&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED)))
 			{
 				mob.tell("Malice neither escapes nor enters the wall of force.");

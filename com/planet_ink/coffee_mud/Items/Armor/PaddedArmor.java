@@ -39,7 +39,7 @@ public class PaddedArmor extends StdArmor
 		setName("a suit of padded armor");
 		setDisplayText("a suit of padded armor including everything needed to protect the torso, legs, and arms");
 		setDescription("This is a fairly decent looking suit of padded armor");
-		properWornBitmap=Item.WORN_TORSO | Item.WORN_ARMS | Item.WORN_LEGS;
+		properWornBitmap=Wearable.WORN_TORSO | Wearable.WORN_ARMS | Wearable.WORN_LEGS;
 		wornLogicalAnd=true;
 		baseEnvStats().setArmor(12);
 		baseEnvStats().setWeight(30);

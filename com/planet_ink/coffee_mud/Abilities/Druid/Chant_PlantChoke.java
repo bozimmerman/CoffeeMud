@@ -53,7 +53,7 @@ public class Chant_PlantChoke extends Chant
 			I=(Item)affected;
 		super.unInvoke();
 		if((canBeUninvoked())&&(I!=null)&&(I.owner() instanceof MOB)
-		&&(!I.amWearingAt(Item.IN_INVENTORY)))
+		&&(!I.amWearingAt(Wearable.IN_INVENTORY)))
 		{
 			MOB mob=(MOB)I.owner();
 			if((!mob.amDead())
@@ -72,7 +72,7 @@ public class Chant_PlantChoke extends Chant
 		if(affected instanceof Item)
 			I=(Item)affected;
 		if((canBeUninvoked())&&(I!=null)&&(I.owner() instanceof MOB)
-		&&(I.amWearingAt(Item.WORN_NECK)))
+		&&(I.amWearingAt(Wearable.WORN_NECK)))
 		{
 			MOB mob=(MOB)I.owner();
 			if((!mob.amDead())
@@ -89,7 +89,7 @@ public class Chant_PlantChoke extends Chant
 		if((msg.targetMinor()==CMMsg.TYP_REMOVE)
 		&&(msg.target()==affected)
 		&&(affected instanceof Item)
-		&&(((Item)affected).amWearingAt(Item.WORN_NECK)))
+		&&(((Item)affected).amWearingAt(Wearable.WORN_NECK)))
 		{
 			if(CMLib.dice().rollPercentage()>(msg.source().charStats().getStat(CharStats.STAT_STRENGTH)*3))
 			{
@@ -103,7 +103,7 @@ public class Chant_PlantChoke extends Chant
 	public void affectEnvStats(Environmental aff, EnvStats affectableStats)
 	{
 		if((aff instanceof MOB)&&(affected instanceof Item)
-		&&(((Item)affected).amWearingAt(Item.WORN_NECK))
+		&&(((Item)affected).amWearingAt(Wearable.WORN_NECK))
 		&&(((MOB)aff).isMine(affected)))
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_BREATHE);
 	}
@@ -117,7 +117,7 @@ public class Chant_PlantChoke extends Chant
                 return Ability.QUALITY_INDIFFERENT;
             if(target instanceof MOB)
             {
-                if(((MOB)target).getWearPositions(Item.WORN_NECK)==0)
+                if(((MOB)target).getWearPositions(Wearable.WORN_NECK)==0)
                     return Ability.QUALITY_INDIFFERENT;
             }
         }
@@ -140,7 +140,7 @@ public class Chant_PlantChoke extends Chant
 			}
 		}
 
-		if(target.getWearPositions(Item.WORN_NECK)==0)
+		if(target.getWearPositions(Wearable.WORN_NECK)==0)
 		{
 			if(!auto)
 				mob.tell("Ummm, "+target.name()+" doesn't HAVE a neck...");
@@ -167,7 +167,7 @@ public class Chant_PlantChoke extends Chant
 			{
 				mob.location().send(mob,msg);
 				target.giveItem(myPlant);
-				myPlant.setRawWornCode(Item.WORN_NECK);
+				myPlant.setRawWornCode(Wearable.WORN_NECK);
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,myPlant.name()+" jumps up and wraps itself around <S-YOUPOSS> neck!");
 				beneficialAffect(mob,myPlant,asLevel,5);
 			}

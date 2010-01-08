@@ -47,7 +47,7 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		if((!this.amWearingAt(Item.IN_INVENTORY))&&(!this.amWearingAt(Item.WORN_HELD)))
+		if((!this.amWearingAt(Wearable.IN_INVENTORY))&&(!this.amWearingAt(Wearable.WORN_HELD)))
 			affectableStats.setArmor(affectableStats.armor()-envStats().armor()-envStats().ability());
 	}
 
@@ -211,7 +211,7 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 
 		if((msg.targetMinor()==correctTargetMinor())
 		&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
-		&&(!this.amWearingAt(Item.IN_INVENTORY))
+		&&(!this.amWearingAt(Wearable.IN_INVENTORY))
 		&&(mob.isMine(this))
 		&&(rollChance()))
 			CMLib.combat().resistanceMsgs(msg,msg.source(),mob);

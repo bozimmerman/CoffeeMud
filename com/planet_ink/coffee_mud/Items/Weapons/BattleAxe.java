@@ -47,7 +47,7 @@ public class BattleAxe extends Sword
 		baseGoldValue=35;
 		wornLogicalAnd=true;
 		material=RawMaterial.RESOURCE_STEEL;
-		properWornBitmap=Item.WORN_HELD|Item.WORN_WIELD;
+		properWornBitmap=Wearable.WORN_HELD|Wearable.WORN_WIELD;
 		recoverEnvStats();
 		weaponType=Weapon.TYPE_SLASHING;
 		weaponClassification=Weapon.CLASS_AXE;

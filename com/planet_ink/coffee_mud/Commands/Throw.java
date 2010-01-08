@@ -58,7 +58,7 @@ public class Throw extends StdCommand
 			mob.tell("You don't seem to have a '"+what+"'!");
 			return false;
 		}
-		if((!item.amWearingAt(Item.WORN_HELD))&&(!item.amWearingAt(Item.WORN_WIELD)))
+		if((!item.amWearingAt(Wearable.WORN_HELD))&&(!item.amWearingAt(Wearable.WORN_WIELD)))
 		{
 			mob.tell("You aren't holding or wielding "+item.name()+"!");
 			return false;

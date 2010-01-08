@@ -40,7 +40,7 @@ public class EternityLeafShield extends StdShield
 		setDisplayText("a huge and very rigid leaf lays on the ground.");
 		setDescription("a very huge and very rigid leaf");
 		secretIdentity="A shield made from one of the leaves of the Fox god\\`s Eternity Trees.  (Armor:  30)";
-		properWornBitmap=Item.WORN_HELD;
+		properWornBitmap=Wearable.WORN_HELD;
 		wornLogicalAnd=true;
 		baseGoldValue+=15000;
 		baseEnvStats().setArmor(30);

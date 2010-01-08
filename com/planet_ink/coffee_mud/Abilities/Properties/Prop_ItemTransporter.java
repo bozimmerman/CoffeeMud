@@ -213,7 +213,7 @@ public class Prop_ItemTransporter extends Property
 					Item item=roomMover.fetchItem(i);
 					if((item!=null)
 					   &&(item!=container)
-					   &&(item.amWearingAt(Item.IN_INVENTORY))
+					   &&(item.amWearingAt(Wearable.IN_INVENTORY))
 					   &&((item.container()==container)||(ultimateParent(item)==container)))
 					   itemsToMove.addElement(item);
 				}
@@ -229,7 +229,7 @@ public class Prop_ItemTransporter extends Property
 					Item item=mobMover.fetchInventory(i);
 					if((item!=null)
 					   &&(item!=container)
-					   &&(item.amWearingAt(Item.IN_INVENTORY))
+					   &&(item.amWearingAt(Wearable.IN_INVENTORY))
 					   &&((item.container()==container)||(ultimateParent(item)==container)))
 					   itemsToMove.addElement(item);
 				}

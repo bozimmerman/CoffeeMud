@@ -39,7 +39,7 @@ public class GenBelt extends GenArmor
 		setName("a knitted weapon belt");
 		setDisplayText("a knitted weapon belt is crumpled up here.");
 		setDescription("a belt knitted from tough cloth with a simple sheath built in.");
-		properWornBitmap=Item.WORN_WAIST;
+		properWornBitmap=Wearable.WORN_WAIST;
 		wornLogicalAnd=false;
 		baseEnvStats().setArmor(0);
 		baseEnvStats().setWeight(1);

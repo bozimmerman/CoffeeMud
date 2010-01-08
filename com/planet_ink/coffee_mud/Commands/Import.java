@@ -3317,39 +3317,39 @@ public class Import extends StdCommand
 			if(!CMath.isSet(wearFlag,0))
 				CMLib.flags().setGettable(I,false);
 			if(CMath.isSet(wearFlag,1))
-				I.setRawProperLocationBitmap(Item.WORN_LEFT_FINGER|Item.WORN_RIGHT_FINGER|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Wearable.WORN_LEFT_FINGER|Wearable.WORN_RIGHT_FINGER|I.rawProperLocationBitmap());
 			if(CMath.isSet(wearFlag,2))
-				I.setRawProperLocationBitmap(Item.WORN_NECK|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Wearable.WORN_NECK|I.rawProperLocationBitmap());
 			if(CMath.isSet(wearFlag,3))
-				I.setRawProperLocationBitmap(Item.WORN_TORSO|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Wearable.WORN_TORSO|I.rawProperLocationBitmap());
 			if(CMath.isSet(wearFlag,4))
-				I.setRawProperLocationBitmap(Item.WORN_HEAD|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Wearable.WORN_HEAD|I.rawProperLocationBitmap());
 			if(CMath.isSet(wearFlag,5))
-				I.setRawProperLocationBitmap(Item.WORN_LEGS|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Wearable.WORN_LEGS|I.rawProperLocationBitmap());
 			if(CMath.isSet(wearFlag,6))
-				I.setRawProperLocationBitmap(Item.WORN_FEET|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Wearable.WORN_FEET|I.rawProperLocationBitmap());
 			if(CMath.isSet(wearFlag,7))
-				I.setRawProperLocationBitmap(Item.WORN_HANDS|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Wearable.WORN_HANDS|I.rawProperLocationBitmap());
 			if(CMath.isSet(wearFlag,8))
-				I.setRawProperLocationBitmap(Item.WORN_ARMS|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Wearable.WORN_ARMS|I.rawProperLocationBitmap());
 			if(CMath.isSet(wearFlag,9))
-				I.setRawProperLocationBitmap(Item.WORN_HELD|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Wearable.WORN_HELD|I.rawProperLocationBitmap());
 			if(CMath.isSet(wearFlag,10))
-				I.setRawProperLocationBitmap(Item.WORN_ABOUT_BODY|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Wearable.WORN_ABOUT_BODY|I.rawProperLocationBitmap());
 			if(CMath.isSet(wearFlag,11))
-				I.setRawProperLocationBitmap(Item.WORN_WAIST|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Wearable.WORN_WAIST|I.rawProperLocationBitmap());
 			if(CMath.isSet(wearFlag,12))
-				I.setRawProperLocationBitmap(Item.WORN_LEFT_WRIST|Item.WORN_RIGHT_WRIST|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Wearable.WORN_LEFT_WRIST|Wearable.WORN_RIGHT_WRIST|I.rawProperLocationBitmap());
 			if(CMath.isSet(wearFlag,13))
-				I.setRawProperLocationBitmap(Item.WORN_WIELD|Item.WORN_HELD|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD|I.rawProperLocationBitmap());
 			if(CMath.isSet(wearFlag,14))
-				I.setRawProperLocationBitmap(Item.WORN_HELD|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Wearable.WORN_HELD|I.rawProperLocationBitmap());
 			if(CMath.isSet(wearFlag,15))
 				I.setRawLogicalAnd(true);
 			if(CMath.isSet(wearFlag,17))
-				I.setRawProperLocationBitmap(Item.WORN_EARS|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Wearable.WORN_EARS|I.rawProperLocationBitmap());
 			if(CMath.isSet(wearFlag,18)) // ankles
-				I.setRawProperLocationBitmap(Item.WORN_FEET|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Wearable.WORN_FEET|I.rawProperLocationBitmap());
 
 			// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			// the relation of this stuff is vital!  must follow properlocation setting
@@ -3404,7 +3404,7 @@ public class Import extends StdCommand
 			||(objectName.toUpperCase().indexOf("TWO HANDED")>=0)))
 			{
 				I.setRawLogicalAnd(true);
-				I.setRawProperLocationBitmap(Item.WORN_HELD|I.rawProperLocationBitmap());
+				I.setRawProperLocationBitmap(Wearable.WORN_HELD|I.rawProperLocationBitmap());
 			}
 
 			boolean materialchange=false;
@@ -3419,7 +3419,7 @@ public class Import extends StdCommand
 			// correction for certain rings
 			if((((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_CLOTH)
 				||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PAPER))
-			   &&(I.fitsOn(Item.WORN_LEFT_FINGER)))
+			   &&(I.fitsOn(Wearable.WORN_LEFT_FINGER)))
 			{
 				I.setMaterial(RawMaterial.RESOURCE_SILVER);
 				materialchange=true;

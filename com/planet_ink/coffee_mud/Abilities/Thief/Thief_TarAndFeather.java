@@ -50,7 +50,7 @@ public class Thief_TarAndFeather extends ThiefSkill
 	{
 	    if((affected==null)||(!(affected instanceof Item)))
             return;
-	    if((((Item)affected).amWearingAt(Item.IN_INVENTORY))||(((Item)affected).amDestroyed()))
+	    if((((Item)affected).amWearingAt(Wearable.IN_INVENTORY))||(((Item)affected).amDestroyed()))
 	    {
 	        Item I=(Item)affected;
 	        affected.delEffect(this);
@@ -100,7 +100,7 @@ public class Thief_TarAndFeather extends ThiefSkill
 		for(int i=0;i<target.inventorySize();i++)
 		{
 		    Item I=target.fetchInventory(i);
-		    if((I!=null)&&(!I.amWearingAt(Item.IN_INVENTORY))&&(!I.amWearingAt(Item.WORN_FLOATING_NEARBY)))
+		    if((I!=null)&&(!I.amWearingAt(Wearable.IN_INVENTORY))&&(!I.amWearingAt(Wearable.WORN_FLOATING_NEARBY)))
 		    {
 			    mob.tell(target.name()+" must be undressed first.");
 			    return false;
@@ -124,9 +124,9 @@ public class Thief_TarAndFeather extends ThiefSkill
 			    {
 			    	long code = codes.all_ordered()[i];
 			        if((!CMath.bset(target.charStats().getWearableRestrictionsBitmap(),code))
-			        &&(code!=Item.WORN_FLOATING_NEARBY)
-			        &&(code!=Item.WORN_EYES)
-			        &&(code!=Item.WORN_MOUTH))
+			        &&(code!=Wearable.WORN_FLOATING_NEARBY)
+			        &&(code!=Wearable.WORN_EYES)
+			        &&(code!=Wearable.WORN_MOUTH))
 				        wearCode|=code;
 			    }
 			    for(int i=0;i<Race.BODY_WEARGRID.length;i++)

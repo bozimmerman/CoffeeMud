@@ -47,7 +47,7 @@ public class Draw extends Get
 		{
 			Item I=mob.fetchInventory(i);
 			if((I!=null)
-			&&(!I.amWearingAt(Item.IN_INVENTORY))
+			&&(!I.amWearingAt(Wearable.IN_INVENTORY))
 			&&(I instanceof Container)
 			&&(((Container)I).capacity()>0)
 			&&(((Container)I).containTypes()!=Container.CONTAIN_ANYTHING))
@@ -79,7 +79,7 @@ public class Draw extends Get
 			&&(((String)commands.lastElement()).equalsIgnoreCase("HELD")))
 			{
 				commands.removeElementAt(commands.size()-1);
-				if(mob.fetchFirstWornItem(Item.WORN_HELD)!=null)
+				if(mob.fetchFirstWornItem(Wearable.WORN_HELD)!=null)
 					return false;
 			}
 			else
@@ -175,14 +175,14 @@ public class Draw extends Get
 				long wearCode=0;
 				if(container!=null)	wearCode=container.rawWornCode();
 				if((ifNecessary)
-				&&(mob.freeWearPositions(Item.WORN_WIELD,(short)0,(short)0)==0)
-				&&(mob.freeWearPositions(Item.WORN_HELD,(short)0,(short)0)==0))
+				&&(mob.freeWearPositions(Wearable.WORN_WIELD,(short)0,(short)0)==0)
+				&&(mob.freeWearPositions(Wearable.WORN_HELD,(short)0,(short)0)==0))
 					break;
 				if(get(mob,container,getThis,quiet,"draw",false))
 				{
 					if(getThis.container()==null)
 					{
-						if(mob.freeWearPositions(Item.WORN_WIELD,(short)0,(short)0)==0)
+						if(mob.freeWearPositions(Wearable.WORN_WIELD,(short)0,(short)0)==0)
 						{
 							CMMsg newMsg=CMClass.getMsg(mob,getThis,null,CMMsg.MSG_HOLD,null);
 							if(mob.location().okMessage(mob,newMsg))

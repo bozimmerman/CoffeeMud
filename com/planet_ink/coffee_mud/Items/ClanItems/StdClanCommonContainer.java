@@ -78,7 +78,7 @@ public class StdClanCommonContainer extends StdClanContainer
 						while((I==null)&&((++tries)<20))
 						{
 							I=M.fetchInventory(CMLib.dice().roll(1,M.inventorySize(),-1));
-							if((I==null)||(I==this)||(!I.amWearingAt(Item.IN_INVENTORY)))
+							if((I==null)||(I==this)||(!I.amWearingAt(Wearable.IN_INVENTORY)))
 								I=null;
 						}
 						Vector V=new Vector();

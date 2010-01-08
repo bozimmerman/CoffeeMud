@@ -172,7 +172,7 @@ public class Thief_Steal extends ThiefSkill
 			String str=null;
 			int code=CMMsg.MSG_THIEF_ACT;
 			if(!auto)
-				if((stolen!=null)&&(stolen.amWearingAt(Item.IN_INVENTORY)))
+				if((stolen!=null)&&(stolen.amWearingAt(Wearable.IN_INVENTORY)))
 					str="<S-NAME> steal(s) "+stolen.name()+" from <T-NAMESELF>.";
 				else
 				{

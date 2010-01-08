@@ -55,7 +55,7 @@ public class Chant_WarpWood extends Chant
                    &&((item.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
                    &&(item.subjectToWearAndTear()))
                 {
-                    if(item.amWearingAt(Item.IN_INVENTORY))
+                    if(item.amWearingAt(Wearable.IN_INVENTORY))
                         possibilities.addElement(item);
                     else
                         goodPossibilities.addElement(item);

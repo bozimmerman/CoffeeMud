@@ -91,7 +91,7 @@ public class Specialization_Weapon extends StdAbility
 			else
 			if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 			&&(msg.tool() instanceof Weapon)
-			&&(!((Weapon)msg.tool()).amWearingAt(Item.IN_INVENTORY))
+			&&(!((Weapon)msg.tool()).amWearingAt(Wearable.IN_INVENTORY))
 			&&(msg.value()>0))
 				msg.setValue(msg.value()+(this.getDamageBonus(msg.source(),((Weapon)msg.tool()).weaponType())));
 		}

@@ -149,7 +149,7 @@ public class Thief_Footlocks extends ThiefSkill
 		if(success)
 		{
 			Item foots=CMClass.getItem("GenItem");
-			foots.setRawWornCode(Item.WORN_FEET);
+			foots.setRawWornCode(Wearable.WORN_FEET);
 			foots.setName("a pair of footlock blocks");
 			foots.setDisplayText("whats left of some footlocks");
 			CMLib.flags().setRemovable(foots,false);
@@ -166,7 +166,7 @@ public class Thief_Footlocks extends ThiefSkill
 				if((A!=null)&&(msg.value()<=0))
 				{
 					target.addInventory(foots);
-					foots.wearAt(Item.WORN_FEET);
+					foots.wearAt(Wearable.WORN_FEET);
 					if(target.location()!=null) target.location().recoverRoomStats();
 				}
 			}

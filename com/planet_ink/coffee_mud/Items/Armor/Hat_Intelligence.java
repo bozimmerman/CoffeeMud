@@ -40,7 +40,7 @@ public class Hat_Intelligence extends StdArmor
 		setDisplayText("a feathered cap.");
 		setDescription("It looks like a regular cap with long feather.");
 		secretIdentity="Hat of Intelligence (Increases IQ)";
-		properWornBitmap=Item.WORN_HEAD;
+		properWornBitmap=Wearable.WORN_HEAD;
 		wornLogicalAnd=false;
 		baseEnvStats().setArmor(2);
 		baseEnvStats().setWeight(1);

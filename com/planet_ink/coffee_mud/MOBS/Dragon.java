@@ -131,8 +131,8 @@ public class Dragon extends StdMOB
 		Weapon ClawTwo=CMClass.getWeapon("DragonClaw");
 		if(ClawOne!=null)
 		{
-			ClawOne.wearAt(Item.WORN_WIELD);
-			ClawTwo.wearAt(Item.WORN_WIELD);
+			ClawOne.wearAt(Wearable.WORN_WIELD);
+			ClawTwo.wearAt(Wearable.WORN_WIELD);
 			addInventory(ClawOne);
 			addInventory(ClawTwo);
 		}

@@ -176,7 +176,7 @@ public class Equipment extends StdCommand
 	                        {
 	                            String name=thisItem.name();
 	                            if(name.length()>75) name=name.substring(0,75)+"...";
-	                            if(wornCode==Item.WORN_HELD)
+	                            if(wornCode==Wearable.WORN_HELD)
 	                            {
 	                                if(msg.length()==0) msg.append("nothing.");
 	                                if(mob==seer)
@@ -186,7 +186,7 @@ public class Equipment extends StdCommand
 	                                             name.trim() + CMLib.flags().colorCodes(thisItem, seer).toString().trim() + "^N.");                  
 	                            }
 	                            else
-	                            if(wornCode==Item.WORN_WIELD)
+	                            if(wornCode==Wearable.WORN_WIELD)
 	                            {
 	                                if(msg.length()==0) msg.append("nothing.");
 	                                if(mob==seer)
@@ -257,8 +257,8 @@ public class Equipment extends StdCommand
 			}
 			if((allPlaces)&&(shownThisLoc==0))
 			{
-				if(((!paragraphView)&&(wornCode!=Item.WORN_FLOATING_NEARBY))
-	            ||((paragraphView)&&(wornCode!=Item.WORN_WIELD)))
+				if(((!paragraphView)&&(wornCode!=Wearable.WORN_FLOATING_NEARBY))
+	            ||((paragraphView)&&(wornCode!=Wearable.WORN_WIELD)))
 					for(int i=mob.getWearPositions(wornCode)-1;i>=0;i--)
 						msg.append(header+"^?\n\r");
 			}

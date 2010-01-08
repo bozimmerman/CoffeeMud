@@ -823,8 +823,8 @@ public class Test extends StdCommand
                 if(R.okMessage(mobs[0],msg)) R.send(mobs[0],msg);
                 msg=CMClass.getMsg(mobs[1],IS[1],null,CMMsg.MSG_WIELD,"<S-NAME> wield(s) <T-NAMESELF>.");
                 if(R.okMessage(mobs[1],msg)) R.send(mobs[1],msg);
-                if(IS[0].amWearingAt(Item.IN_INVENTORY)){ mob.tell("Error14-1"); return false;}
-                if(!IS[1].amWearingAt(Item.IN_INVENTORY)){ mob.tell("Error14-2"); return false;}
+                if(IS[0].amWearingAt(Wearable.IN_INVENTORY)){ mob.tell("Error14-1"); return false;}
+                if(!IS[1].amWearingAt(Wearable.IN_INVENTORY)){ mob.tell("Error14-2"); return false;}
             }
             if((what.equalsIgnoreCase("all_properties"))
             ||(what.equalsIgnoreCase("Prop_Resistance")))

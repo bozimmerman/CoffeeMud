@@ -39,7 +39,7 @@ public class GreatHelm extends StdArmor
 		setName("a steel Great Helm.");
 		setDisplayText("a steel great helm sits here.");
 		setDescription("This is a steel helmet that completely encloses the head.");
-		properWornBitmap=Item.WORN_HEAD;
+		properWornBitmap=Wearable.WORN_HEAD;
 		wornLogicalAnd=false;
 		baseEnvStats().setArmor(18);
 		baseEnvStats().setWeight(10);

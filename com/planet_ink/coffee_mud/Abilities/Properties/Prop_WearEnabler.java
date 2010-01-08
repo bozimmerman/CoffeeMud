@@ -45,7 +45,7 @@ public class Prop_WearEnabler extends Prop_HaveEnabler
     {
     	if(!layered){ checked=true; disabled=false;}
     	boolean oldDisabled=disabled;
-    	if(A.amWearingAt(Item.IN_INVENTORY))
+    	if(A.amWearingAt(Wearable.IN_INVENTORY))
     	{
     		checked=false;
     		return;
@@ -57,7 +57,7 @@ public class Prop_WearEnabler extends Prop_HaveEnabler
     	{
     		I=mob.fetchInventory(i);
     		if((I instanceof Armor)
-    		&&(!I.amWearingAt(Item.IN_INVENTORY))
+    		&&(!I.amWearingAt(Wearable.IN_INVENTORY))
     		&&((I.rawWornCode()&A.rawWornCode())>0)
     		&&(I!=A))
     		{
@@ -127,8 +127,8 @@ public class Prop_WearEnabler extends Prop_HaveEnabler
 		{
 			myItem=(Item)host;
 
-			boolean worn=(!myItem.amWearingAt(Item.IN_INVENTORY))
-			&&((!myItem.amWearingAt(Item.WORN_FLOATING_NEARBY))||(myItem.fitsOn(Item.WORN_FLOATING_NEARBY)));
+			boolean worn=(!myItem.amWearingAt(Wearable.IN_INVENTORY))
+			&&((!myItem.amWearingAt(Wearable.WORN_FLOATING_NEARBY))||(myItem.fitsOn(Wearable.WORN_FLOATING_NEARBY)));
 			
 			if((lastMOB instanceof MOB)
 			&&(((MOB)lastMOB).location()!=null)

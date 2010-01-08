@@ -39,7 +39,7 @@ public class Shoes extends StdArmor
 		setName("a pair of shoes");
 		setDisplayText("a pair of shoes lies here");
 		setDescription("a well tailored pair of walking shoes.");
-		properWornBitmap=Item.WORN_FEET;
+		properWornBitmap=Wearable.WORN_FEET;
 		wornLogicalAnd=false;
 		baseEnvStats().setArmor(1);
 		baseEnvStats().setWeight(1);

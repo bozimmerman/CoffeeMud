@@ -79,7 +79,7 @@ public class Prop_AbilityImmunity extends Property
 	    && (msg.tool() != null)
 	    && ((msg.amITarget(affected))
 	    		||(owner && (affected instanceof Item)&&(msg.target()==((Item)affected).owner()))
-	    		||(owner && (affected instanceof Item)&&(msg.target()==((Item)affected).owner())&&(!((Item)affected).amWearingAt(Item.IN_INVENTORY))))
+	    		||(owner && (affected instanceof Item)&&(msg.target()==((Item)affected).owner())&&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY))))
 	    && (msg.tool() instanceof Ability ))
 		{
 			Ability d = (Ability)msg.tool();

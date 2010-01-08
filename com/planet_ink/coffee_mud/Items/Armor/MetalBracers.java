@@ -39,7 +39,7 @@ public class MetalBracers extends StdArmor
 		setName("a pair of metal bracers");
 		setDisplayText("a pair of metal bracers lie here.");
 		setDescription("Good and solid protection for your arms.");
-		properWornBitmap=Item.WORN_LEFT_WRIST | Item.WORN_RIGHT_WRIST | Item.WORN_ARMS;
+		properWornBitmap=Wearable.WORN_LEFT_WRIST | Wearable.WORN_RIGHT_WRIST | Wearable.WORN_ARMS;
 		wornLogicalAnd=true;
 		baseEnvStats().setArmor(4);
 		baseEnvStats().setWeight(10);

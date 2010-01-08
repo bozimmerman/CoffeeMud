@@ -56,7 +56,7 @@ public class Fighter_AutoBash extends FighterSkill
 		if(mob.isInCombat()
 		&&(mob.rangeToTarget()==0)
 		&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
-		&&(mob.fetchFirstWornItem(Item.WORN_HELD) instanceof Shield)
+		&&(mob.fetchFirstWornItem(Wearable.WORN_HELD) instanceof Shield)
 		&&(proficiencyCheck(null,0,false)))
 		{
 			Ability A=mob.fetchAbility("Skill_Bash");

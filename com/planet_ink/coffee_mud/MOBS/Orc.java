@@ -47,7 +47,7 @@ public class Orc extends StdMOB
 		Weapon d=CMClass.getWeapon("Dagger");
 		if(d!=null)
 		{
-			d.wearAt(Item.WORN_WIELD);
+			d.wearAt(Wearable.WORN_WIELD);
 			addInventory(d);
 		}
 

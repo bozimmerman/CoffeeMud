@@ -41,7 +41,7 @@ public class Minotaur extends Cow
 	public int heightVariance(){return 12;}
 	public int lightestWeight(){return 450;}
 	public int weightVariance(){return 100;}
-	public long forbiddenWornBits(){return Item.WORN_HEAD;}
+	public long forbiddenWornBits(){return Wearable.WORN_HEAD;}
 	public String racialCategory(){return "Bovine";}
 	
 	private int[] agingChart={0,1,3,15,35,53,70,74,78};

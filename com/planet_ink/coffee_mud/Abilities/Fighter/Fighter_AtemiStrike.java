@@ -70,8 +70,8 @@ public class Fighter_AtemiStrike extends FighterSkill
 		{
 			Item I=mob.fetchInventory(i);
 			if((I!=null)
-			   &&((I.amWearingAt(Item.WORN_WIELD))
-			      ||(I.amWearingAt(Item.WORN_HELD))))
+			   &&((I.amWearingAt(Wearable.WORN_WIELD))
+			      ||(I.amWearingAt(Wearable.WORN_HELD))))
 				return true;
 		}
 		return false;

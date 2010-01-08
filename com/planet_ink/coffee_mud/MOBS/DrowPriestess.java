@@ -54,7 +54,7 @@ public class DrowPriestess extends DrowElf
 		Weapon w=CMClass.getWeapon("Mace");
 		if(w!=null)
 		{
-			w.wearAt(Item.WORN_WIELD);
+			w.wearAt(Wearable.WORN_WIELD);
 			this.addInventory(w);
 		}
 

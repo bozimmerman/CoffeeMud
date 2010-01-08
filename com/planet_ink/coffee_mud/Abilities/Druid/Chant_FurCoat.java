@@ -68,7 +68,7 @@ public class Chant_FurCoat extends Chant
 			return false;
 		if(theArmor==null) return true;
 
-		if((theArmor.amWearingAt(Item.IN_INVENTORY)
+		if((theArmor.amWearingAt(Wearable.IN_INVENTORY)
 		||(theArmor.owner()==null)
 		||(theArmor.owner() instanceof Room)))
 			unInvoke();
@@ -95,7 +95,7 @@ public class Chant_FurCoat extends Chant
             {
                 if(Druid_ShapeShift.isShapeShifted((MOB)target))
                     return Ability.QUALITY_INDIFFERENT;
-                if(((MOB)target).freeWearPositions(Item.WORN_TORSO,(short)-2048,(short)0)<=0)
+                if(((MOB)target).freeWearPositions(Wearable.WORN_TORSO,(short)-2048,(short)0)<=0)
                     return Ability.QUALITY_INDIFFERENT;
             }
         }
@@ -120,7 +120,7 @@ public class Chant_FurCoat extends Chant
 			return false;
 		}
 
-		if(target.freeWearPositions(Item.WORN_TORSO,(short)-2048,(short)0)<=0)
+		if(target.freeWearPositions(Wearable.WORN_TORSO,(short)-2048,(short)0)<=0)
 		{
 			mob.tell("You are already wearing something on your torso!");
 			return false;
@@ -152,7 +152,7 @@ public class Chant_FurCoat extends Chant
 				theArmor.setDescription("The coat is made of thick black fur.");
 				theArmor.setMaterial(RawMaterial.RESOURCE_FUR);
 				theArmor.baseEnvStats().setArmor(2*CMLib.ableMapper().qualifyingClassLevel(mob,this));
-				long wornCode=(Item.WORN_TORSO|Item.WORN_ARMS|Item.WORN_FEET|Item.WORN_WAIST|Item.WORN_LEGS);
+				long wornCode=(Wearable.WORN_TORSO|Wearable.WORN_ARMS|Wearable.WORN_FEET|Wearable.WORN_WAIST|Wearable.WORN_LEGS);
 				theArmor.setRawProperLocationBitmap(wornCode);
 				theArmor.setRawLogicalAnd(true);
 				for(int i=target.inventorySize()-1;i>=0;i--)

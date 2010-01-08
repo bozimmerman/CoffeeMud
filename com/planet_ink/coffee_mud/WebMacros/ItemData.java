@@ -730,7 +730,7 @@ public class ItemData extends StdWebMacro
                     return "false";
 				case 63: // being worn -- pushed back to mob/room
 					if(firstTime)
-						old=I.amWearingAt(Item.IN_INVENTORY)?"":"checked";
+						old=I.amWearingAt(Wearable.IN_INVENTORY)?"":"checked";
 					else
 					if(old.equals("on"))
 						old="checked";

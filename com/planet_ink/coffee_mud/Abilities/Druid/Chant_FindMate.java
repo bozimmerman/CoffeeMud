@@ -73,13 +73,13 @@ public class Chant_FindMate extends Chant
 				{
 					mob.tell("You peer longingly at "+mate.name()+".");
 
-					Item I=mob.fetchFirstWornItem(Item.WORN_WAIST);
+					Item I=mob.fetchFirstWornItem(Wearable.WORN_WAIST);
 					if(I!=null)	CMLib.commands().postRemove(mob,I,false);
-					I=mob.fetchFirstWornItem(Item.WORN_LEGS);
+					I=mob.fetchFirstWornItem(Wearable.WORN_LEGS);
 					if(I!=null)	CMLib.commands().postRemove(mob,I,false);
 
-					if((mob.fetchFirstWornItem(Item.WORN_WAIST)!=null)
-					||(mob.fetchFirstWornItem(Item.WORN_LEGS)!=null))
+					if((mob.fetchFirstWornItem(Wearable.WORN_WAIST)!=null)
+					||(mob.fetchFirstWornItem(Wearable.WORN_LEGS)!=null))
 						unInvoke();
 					mob.doCommand(CMParms.parse("MATE \""+mate.name()+"$\""),Command.METAFLAG_FORCED);
 					unInvoke();
@@ -149,7 +149,7 @@ public class Chant_FindMate extends Chant
 		if(((merace.equals("Human"))
 		   ||(materace.equals("Human"))
 		   ||(merace.equals(materace)))
-		&&(mate.fetchWornItems(Item.WORN_LEGS|Item.WORN_WAIST,(short)-2048,(short)0).size()==0)
+		&&(mate.fetchWornItems(Wearable.WORN_LEGS|Wearable.WORN_WAIST,(short)-2048,(short)0).size()==0)
 		&&(CMLib.flags().canBeSeenBy(mate,forMe)))
 			return true;
 		return false;

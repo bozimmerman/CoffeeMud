@@ -99,9 +99,9 @@ public class Prayer_CurseItem extends Prayer
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_REMOVE:
-			if(!item.amWearingAt(Item.IN_INVENTORY))
+			if(!item.amWearingAt(Wearable.IN_INVENTORY))
 			{
-				if(item.amWearingAt(Item.WORN_WIELD)||item.amWearingAt(Item.WORN_HELD))
+				if(item.amWearingAt(Wearable.WORN_WIELD)||item.amWearingAt(Wearable.WORN_HELD))
 				{
 					mob.tell("You can't seem to let go of "+item.name()+".");
 					return false;

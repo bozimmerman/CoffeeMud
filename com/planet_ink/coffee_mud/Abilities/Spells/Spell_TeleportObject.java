@@ -64,7 +64,7 @@ public class Spell_TeleportObject extends Spell
 			mob.tell("You don't seem to have an item '"+objectName+"'.");
 			return false;
 		}
-		if(target.amWearingAt(Item.IN_INVENTORY))
+		if(target.amWearingAt(Wearable.IN_INVENTORY))
 		{
 			mob.tell("You seem to be wearing or holding the item '"+objectName+"'.");
 			return false;

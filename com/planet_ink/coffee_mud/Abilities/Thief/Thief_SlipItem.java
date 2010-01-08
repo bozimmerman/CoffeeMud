@@ -111,7 +111,7 @@ public class Thief_SlipItem extends ThiefSkill
 			mob.tell(target.name()+" doesn't seem to be wearing '"+itemToSteal+"'.");
 			return false;
 		}
-		if(stolen.amWearingAt(Item.WORN_WIELD))
+		if(stolen.amWearingAt(Wearable.WORN_WIELD))
 		{
 			mob.tell(target.name()+" is wielding "+stolen.name()+"! Try disarm!");
 			return false;
@@ -146,7 +146,7 @@ public class Thief_SlipItem extends ThiefSkill
 		{
 			String str=null;
 			if(!auto)
-				if(!stolen.amWearingAt(Item.IN_INVENTORY))
+				if(!stolen.amWearingAt(Wearable.IN_INVENTORY))
 					str="<S-NAME> slip(s) "+stolen.name()+" off <T-NAMESELF>.";
 				else
 					str="<S-NAME> attempt(s) to slip "+stolen.name()+" off <T-HIM-HER>, but it doesn't appear "+target.charStats().heshe()+" has that in <T-HIS-HER> inventory!";

@@ -38,7 +38,7 @@ public class BandedArmor extends StdArmor
 		setName("a suit of banded armor");
 		setDisplayText("a suit of armor made from metal bands fastened to leather");
 		setDescription("This suit of armor is made from metal bands fastened to leather and will provide protection for the torso, arms, and legs.");
-		properWornBitmap=Item.WORN_TORSO | Item.WORN_ARMS | Item.WORN_LEGS;
+		properWornBitmap=Wearable.WORN_TORSO | Wearable.WORN_ARMS | Wearable.WORN_LEGS;
 		wornLogicalAnd=true;
 		baseEnvStats().setArmor(44);
 		baseEnvStats().setWeight(55);

@@ -56,7 +56,7 @@ public class Prop_ModExperience extends Property
 		&&(((msg.target()==affected)&&(affected instanceof MOB))
 		   ||((affected instanceof Item)
                    &&(msg.source()==((Item)affected).owner())
-                   &&(!((Item)affected).amWearingAt(Item.IN_INVENTORY)))
+                   &&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY)))
 		   ||(affected instanceof Room)
 		   ||(affected instanceof Area)))
 		{

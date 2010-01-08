@@ -54,9 +54,9 @@ public class WeatherAffects extends PuddleMaker
     protected int diseaseDown=0;
     protected int droughtFireChance=0;
     
-    private static final long[] ALL_COVERED_SPOTS={Item.WORN_FEET,Item.WORN_TORSO,Item.WORN_LEGS};
+    private static final long[] ALL_COVERED_SPOTS={Wearable.WORN_FEET,Wearable.WORN_TORSO,Wearable.WORN_LEGS};
     private static long ALL_COVERED_CODE=0;
-    private static final long[] ALL_FROST_SPOTS={Item.WORN_FEET,Item.WORN_HANDS,Item.WORN_HEAD};
+    private static final long[] ALL_FROST_SPOTS={Wearable.WORN_FEET,Wearable.WORN_HANDS,Wearable.WORN_HEAD};
     private static long ALL_FROST_CODE=0;
     static
     {
@@ -359,10 +359,10 @@ public class WeatherAffects extends PuddleMaker
                     for(int i=0;i<M.inventorySize();i++)
                     {
                         I=M.fetchInventory(i);
-                        if((I==null)||(I.amWearingAt(Item.IN_INVENTORY)))
+                        if((I==null)||(I.amWearingAt(Wearable.IN_INVENTORY)))
                            continue;
-                        if(I.amWearingAt(Item.WORN_ABOUT_BODY))
-                            coveredPlaces=coveredPlaces|Item.WORN_TORSO|Item.WORN_LEGS;
+                        if(I.amWearingAt(Wearable.WORN_ABOUT_BODY))
+                            coveredPlaces=coveredPlaces|Wearable.WORN_TORSO|Wearable.WORN_LEGS;
                         for(int l=0;l<ALL_COVERED_SPOTS.length;l++)
                             if(I.amWearingAt(ALL_COVERED_SPOTS[l]))
                                 coveredPlaces=coveredPlaces|ALL_COVERED_SPOTS[l];
@@ -387,7 +387,7 @@ public class WeatherAffects extends PuddleMaker
                     for(int i=0;i<M.inventorySize();i++)
                     {
                         I=M.fetchInventory(i);
-                        if((I==null)||(I.amWearingAt(Item.IN_INVENTORY)))
+                        if((I==null)||(I.amWearingAt(Wearable.IN_INVENTORY)))
                            continue;
                         for(int l=0;l<ALL_FROST_SPOTS.length;l++)
                             if(I.amWearingAt(ALL_FROST_SPOTS[l]))
@@ -772,13 +772,13 @@ public class WeatherAffects extends PuddleMaker
                     {
                         Item I=M.fetchInventory(i);
                         if(I==null) continue;
-                        if((!I.amWearingAt(Item.IN_INVENTORY))
+                        if((!I.amWearingAt(Wearable.IN_INVENTORY))
                         &&(((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL))
                         &&(I.subjectToWearAndTear())
                         &&((CMLib.dice().rollPercentage()>I.envStats().ability()*25)))
                             rustThese.addElement(I);
                         else
-                        if(I.amWearingAt(Item.WORN_ABOUT_BODY)
+                        if(I.amWearingAt(Wearable.WORN_ABOUT_BODY)
                         &&(((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)))
                         {   rustThese.clear();  break;  }
                     }

@@ -74,7 +74,7 @@ public class Skill_Buffoonery extends BardSkill
             Item I=mob.fetchInventory(i);
             if((I!=null)
             &&(CMLib.flags().canBeSeenBy(I,mob))
-            &&(I.amWearingAt(Item.IN_INVENTORY))
+            &&(I.amWearingAt(Wearable.IN_INVENTORY))
             &&(!((((I instanceof Armor)&&(I.baseEnvStats().armor()>1))
                 ||((I instanceof Weapon)&&(I.baseEnvStats().damage()>1))))))
                 return I.Name();
@@ -88,7 +88,7 @@ public class Skill_Buffoonery extends BardSkill
         for(int i=0;i<target.inventorySize();i++)
         {
             Item I2=target.fetchInventory(i);
-            if((!I2.amWearingAt(Item.IN_INVENTORY))
+            if((!I2.amWearingAt(Wearable.IN_INVENTORY))
             &&(((I2 instanceof Weapon)&&(I2.baseEnvStats().damage()>1))
                ||((I2 instanceof Armor)&&(I2.baseEnvStats().armor()>1)))
             &&(I2.container()==null))
@@ -192,9 +192,9 @@ public class Skill_Buffoonery extends BardSkill
 						mob.tell(target.name()+" has no free wearing positions!");
 						return false;
 					}
-					if((free.contains(Long.valueOf(Item.WORN_WIELD)))
+					if((free.contains(Long.valueOf(Wearable.WORN_WIELD)))
 					&&((I instanceof Weapon)||(!(I instanceof Armor))))
-						position=Item.WORN_WIELD;
+						position=Wearable.WORN_WIELD;
 					else
 						position=((Long)free.elementAt(CMLib.dice().roll(1,free.size(),-1))).longValue();
 				}

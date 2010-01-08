@@ -54,7 +54,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 		recoverEnvStats();
 		wornLogicalAnd=true;
 		material=RawMaterial.RESOURCE_OAK;
-		properWornBitmap=Item.WORN_HELD|Item.WORN_WIELD;
+		properWornBitmap=Wearable.WORN_HELD|Wearable.WORN_WIELD;
 		weaponType=TYPE_BASHING;
 		weaponClassification=Weapon.CLASS_STAFF;
 		if(theWand==null)
@@ -94,7 +94,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 						   String message)
 	{
 		if((mob.isMine(this))
-		   &&(!this.amWearingAt(Item.IN_INVENTORY)))
+		   &&(!this.amWearingAt(Wearable.IN_INVENTORY)))
 		{
 			if((mob.location()!=null)&&(afftarget!=null)&&(afftarget instanceof MOB))
 			{
@@ -222,7 +222,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 	public void affectCharState(MOB mob, CharState affectableState)
 	{
 		super.affectCharState(mob,affectableState);
-		if(!amWearingAt(Item.IN_INVENTORY))
+		if(!amWearingAt(Wearable.IN_INVENTORY))
 		{
 			affectableState.setHunger(99999999);
 			affectableState.setThirst(99999999);

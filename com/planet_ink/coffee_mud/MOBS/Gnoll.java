@@ -54,7 +54,7 @@ public class Gnoll extends StdMOB
 		}
 		if(h!=null)
 		{
-			h.wearAt(Item.WORN_WIELD);
+			h.wearAt(Wearable.WORN_WIELD);
 			addInventory(h);
 		}
 

@@ -194,7 +194,7 @@ public class Conquerable extends Arrest
 				Item I=M.fetchInventory(i);
 				if((I!=null)
 				&&(I instanceof ClanItem)
-				&&(!I.amWearingAt(Item.IN_INVENTORY))
+				&&(!I.amWearingAt(Wearable.IN_INVENTORY))
 				&&(((ClanItem)I).ciType()==ClanItem.CI_BANNER))
 					return true;
 			}
@@ -214,7 +214,7 @@ public class Conquerable extends Arrest
 				Item I=M.fetchInventory(i);
 				if((I!=null)
 				&&(I instanceof ClanItem)
-				&&(!I.amWearingAt(Item.IN_INVENTORY))
+				&&(!I.amWearingAt(Wearable.IN_INVENTORY))
 				&&(((ClanItem)I).ciType()==ClanItem.CI_GAVEL))
 					return true;
 			}

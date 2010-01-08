@@ -63,7 +63,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 
 	public void affectCharState(MOB mob, CharState affectableState)
 	{
-		if(!amWearingAt(Item.IN_INVENTORY))
+		if(!amWearingAt(Wearable.IN_INVENTORY))
 		{
 			affectableState.setHunger(99999999);
 			affectableState.setThirst(99999999);
@@ -117,7 +117,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 	{
 		if((mob.isMine(this))
            &&(message!=null)
-		   &&(!this.amWearingAt(Item.IN_INVENTORY)))
+		   &&(!this.amWearingAt(Wearable.IN_INVENTORY)))
 		{
 			if((mob.location()!=null)&&(afftarget!=null)&&(afftarget instanceof MOB))
 			{

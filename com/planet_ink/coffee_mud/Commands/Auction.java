@@ -289,7 +289,7 @@ public class Auction extends Channel implements Tickable
 				mob.tell(E.name()+" will have to be emptied first.");
 				return false;
 			}
-			if(!(((Item)E).amWearingAt(Item.IN_INVENTORY)))
+			if(!(((Item)E).amWearingAt(Wearable.IN_INVENTORY)))
 			{
 				mob.tell(E.name()+" will have to be removed first.");
 				return false;

@@ -675,10 +675,10 @@ public class GrinderItems
 			    &&((httpReq.getRequestParameter("BEINGWORN")).equals("on")))
 				{
 				    // deprecated back to room/mob, where it belongs
-					//if(I.amWearingAt(Item.IN_INVENTORY))
+					//if(I.amWearingAt(Wearable.IN_INVENTORY))
 					//	I.wearEvenIfImpossible(M);
 				}
-				//else I.wearAt(Item.IN_INVENTORY);
+				//else I.wearAt(Wearable.IN_INVENTORY);
                 if((R!=null)&&(playerM==null))
                 {
     				CMLib.database().DBUpdateMOBs(R);

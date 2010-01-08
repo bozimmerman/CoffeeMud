@@ -55,7 +55,7 @@ public class DrowWizard extends DrowElf
 		Weapon mainWeapon = CMClass.getWeapon("Quarterstaff");
 		if(mainWeapon!=null)
 		{
-			mainWeapon.wearAt(Item.WORN_WIELD);
+			mainWeapon.wearAt(Wearable.WORN_WIELD);
 			this.addInventory(mainWeapon);
 		}
 

@@ -47,7 +47,7 @@ public class AngryCitizen extends StdMOB
 		Weapon d=CMClass.getWeapon("ThrowingStone");
 		if(d!=null)
 		{
-			d.wearAt(Item.WORN_WIELD);
+			d.wearAt(Wearable.WORN_WIELD);
 			addInventory(d);
 		}
 

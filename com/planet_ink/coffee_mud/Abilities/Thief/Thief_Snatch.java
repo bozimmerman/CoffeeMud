@@ -57,7 +57,7 @@ public class Thief_Snatch extends ThiefSkill
             Item weapon=mob.fetchWieldedItem();
             if(weapon==null)
                 return Ability.QUALITY_INDIFFERENT;
-            if(mob.freeWearPositions(Item.WORN_HELD,(short)0,(short)0)>0)
+            if(mob.freeWearPositions(Wearable.WORN_HELD,(short)0,(short)0)>0)
                 return Ability.QUALITY_INDIFFERENT;
             if(target instanceof MOB)
             {
@@ -93,7 +93,7 @@ public class Thief_Snatch extends ThiefSkill
 			return false;
 		}
 		else
-		if(mob.freeWearPositions(Item.WORN_HELD,(short)0,(short)0)>0)
+		if(mob.freeWearPositions(Wearable.WORN_HELD,(short)0,(short)0)>0)
 		{
 			mob.tell("Your other hand needs to be free to do a weapon snatch.");
 			return false;
@@ -127,8 +127,8 @@ public class Thief_Snatch extends ThiefSkill
 		boolean success=proficiencyCheck(mob,-levelDiff,auto)&&(hit);
 		if((success)
 		   &&(hisWeapon!=null)
-		   &&((hisWeapon.rawProperLocationBitmap()==Item.WORN_WIELD)
-			  ||(hisWeapon.rawProperLocationBitmap()==Item.WORN_WIELD+Item.WORN_HELD)))
+		   &&((hisWeapon.rawProperLocationBitmap()==Wearable.WORN_WIELD)
+			  ||(hisWeapon.rawProperLocationBitmap()==Wearable.WORN_WIELD+Wearable.WORN_HELD)))
 		{
 			CMMsg msg=CMClass.getMsg(mob.getVictim(),hisWeapon,null,CMMsg.MSG_DROP,null);
 			CMMsg msg2=CMClass.getMsg(mob,null,this,CMMsg.MSG_THIEF_ACT,null);

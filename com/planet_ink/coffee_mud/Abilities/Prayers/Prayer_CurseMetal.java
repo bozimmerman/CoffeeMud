@@ -84,7 +84,7 @@ public class Prayer_CurseMetal extends Prayer
 		{
 			Item item=mob.fetchInventory(i);
 			if((item!=null)
-			   &&(!item.amWearingAt(Item.IN_INVENTORY))
+			   &&(!item.amWearingAt(Wearable.IN_INVENTORY))
 			   &&(CMLib.flags().isMetal(item))
 			   &&(item.container()==null)
 			   &&(!mob.amDead()))

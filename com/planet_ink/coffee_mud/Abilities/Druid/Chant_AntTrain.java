@@ -59,7 +59,7 @@ public class Chant_AntTrain extends Chant
 
 		if(canBeUninvoked())
 		{
-			if(item.amWearingAt(Item.WORN_FLOATING_NEARBY))
+			if(item.amWearingAt(Wearable.WORN_FLOATING_NEARBY))
 			{
 				if(wasntMine)
 					mob.location().show(mob,item,CMMsg.MSG_OK_VISUAL,"<T-NAME> floating near <S-NAME>, is left behind by a departing train of ants.");
@@ -103,7 +103,7 @@ public class Chant_AntTrain extends Chant
 			return false;
 		}
 
-		if(mob.freeWearPositions(Item.WORN_FLOATING_NEARBY,(short)0,(short)0)==0)
+		if(mob.freeWearPositions(Wearable.WORN_FLOATING_NEARBY,(short)0,(short)0)==0)
 		{
 			mob.tell("There is no more room around you to float anything!");
 			return false;
@@ -144,8 +144,8 @@ public class Chant_AntTrain extends Chant
 				long properWornCode=((Item)target).rawProperLocationBitmap();
 				boolean properWornLogical=((Item)target).rawLogicalAnd();
 				((Item)target).setRawLogicalAnd(false);
-				((Item)target).setRawProperLocationBitmap(Item.WORN_FLOATING_NEARBY);
-				((Item)target).wearAt(Item.WORN_FLOATING_NEARBY);
+				((Item)target).setRawProperLocationBitmap(Wearable.WORN_FLOATING_NEARBY);
+				((Item)target).wearAt(Wearable.WORN_FLOATING_NEARBY);
 				((Item)target).setRawLogicalAnd(properWornLogical);
 				((Item)target).setRawProperLocationBitmap(properWornCode);
 				((Item)target).recoverEnvStats();

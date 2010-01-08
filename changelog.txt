@@ -2227,3 +2227,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 2. CharStats can now be customized with EXTVAR_ in coffeemud.ini file.
 3. New Commands (From 4.x snippets): Experience, Wealth (thx again Robert)
 4. RawMaterial can now be customized with EXTVAR_ in coffeemud.ini file.
+5. Wearable can now be customized with EXTVAR_ in coffeemud.ini file.

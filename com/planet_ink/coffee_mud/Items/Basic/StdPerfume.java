@@ -52,7 +52,7 @@ public class StdPerfume extends StdDrink implements Perfume
 		liquidType=RawMaterial.RESOURCE_PERFUME;
 		capacity=0;
 		baseGoldValue=100;
-		setRawProperLocationBitmap(Item.WORN_WIELD|Item.WORN_ABOUT_BODY|Item.WORN_FLOATING_NEARBY|Item.WORN_HELD|Item.WORN_ARMS|Item.WORN_BACK|Item.WORN_EARS|Item.WORN_EYES|Item.WORN_FEET|Item.WORN_HANDS|Item.WORN_HEAD|Item.WORN_LEFT_FINGER|Item.WORN_RIGHT_FINGER|Item.WORN_LEGS|Item.WORN_LEFT_WRIST|Item.WORN_MOUTH|Item.WORN_NECK|Item.WORN_RIGHT_WRIST|Item.WORN_TORSO|Item.WORN_WAIST);
+		setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_ABOUT_BODY|Wearable.WORN_FLOATING_NEARBY|Wearable.WORN_HELD|Wearable.WORN_ARMS|Wearable.WORN_BACK|Wearable.WORN_EARS|Wearable.WORN_EYES|Wearable.WORN_FEET|Wearable.WORN_HANDS|Wearable.WORN_HEAD|Wearable.WORN_LEFT_FINGER|Wearable.WORN_RIGHT_FINGER|Wearable.WORN_LEGS|Wearable.WORN_LEFT_WRIST|Wearable.WORN_MOUTH|Wearable.WORN_NECK|Wearable.WORN_RIGHT_WRIST|Wearable.WORN_TORSO|Wearable.WORN_WAIST);
 		recoverEnvStats();
 	}
 

@@ -1975,7 +1975,7 @@ public class StdMOB implements MOB
 					mob.tell("You are too close to "+target.name()+" to use "+tool.name()+".");
 					if((msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 					&&(tool instanceof Weapon)
-					&&(!((Weapon)tool).amWearingAt(Item.IN_INVENTORY)))
+					&&(!((Weapon)tool).amWearingAt(Wearable.IN_INVENTORY)))
 						CMLib.commands().postRemove(this,(Weapon)msg.tool(),false);
 					return false;
 				}
@@ -2128,7 +2128,7 @@ public class StdMOB implements MOB
 				||(CMSecurity.isAllowed(this,location(),"CMDMOBS")&&(isMonster()))
 				||(CMSecurity.isAllowed(this,location(),"CMDROOMS")&&(isMonster())))
 					return true;
-				if(getWearPositions(Item.WORN_ARMS)==0)
+				if(getWearPositions(Wearable.WORN_ARMS)==0)
 				{
 					msg.source().tell(name()+" is unable to accept that from you.");
 					return false;
@@ -3490,7 +3490,7 @@ public class StdMOB implements MOB
 	{
 		if((charStats().getWearableRestrictionsBitmap()&wornCode)>0)
 			return 0;
-		if(wornCode==Item.WORN_FLOATING_NEARBY)
+		if(wornCode==Wearable.WORN_FLOATING_NEARBY)
 			return 6;
 		int total;
 		int add=0;
@@ -3521,19 +3521,19 @@ public class StdMOB implements MOB
 					else
 					switch((int)wornCode)
 					{
-					case (int)Item.WORN_HANDS:
+					case (int)Wearable.WORN_HANDS:
 						if(total<2)
 							add+=1;
 						else
 							add+=total/2;
 						break;
-					case (int)Item.WORN_WIELD:
-					case (int)Item.WORN_RIGHT_FINGER:
-					case (int)Item.WORN_RIGHT_WRIST:
+					case (int)Wearable.WORN_WIELD:
+					case (int)Wearable.WORN_RIGHT_FINGER:
+					case (int)Wearable.WORN_RIGHT_WRIST:
 						add+=1; break;
-					case (int)Item.WORN_HELD:
-					case (int)Item.WORN_LEFT_FINGER:
-					case (int)Item.WORN_LEFT_WRIST:
+					case (int)Wearable.WORN_HELD:
+					case (int)Wearable.WORN_LEFT_FINGER:
+					case (int)Wearable.WORN_LEFT_WRIST:
 						add+=total-1;
 						break;
 					default:
@@ -3588,8 +3588,8 @@ public class StdMOB implements MOB
         for(int i=0;i<inventorySize();i++)
         {
             Item I=fetchInventory(i);
-            if(I.amWearingAt(Item.IN_INVENTORY)
-            &&((I.container()==null)||(I.ultimateContainer().amWearingAt(Item.IN_INVENTORY)))
+            if(I.amWearingAt(Wearable.IN_INVENTORY)
+            &&((I.container()==null)||(I.ultimateContainer().amWearingAt(Wearable.IN_INVENTORY)))
             &&(!(I instanceof Coins)))
                 return false;
         }
@@ -3612,7 +3612,7 @@ public class StdMOB implements MOB
 		for(int i=0;i<inventorySize();i++)
 		{
 			Item thisItem=fetchInventory(i);
-			if((thisItem!=null)&&(thisItem.amWearingAt(Item.WORN_WIELD)))
+			if((thisItem!=null)&&(thisItem.amWearingAt(Wearable.WORN_WIELD)))
 				return thisItem;
 		}
 		return null;

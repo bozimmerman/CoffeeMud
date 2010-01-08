@@ -165,12 +165,12 @@ public class Goblin extends StdMOB
 		}
 		if(m!=null)
 		{
-			m.wearAt(Item.WORN_WIELD);
+			m.wearAt(Wearable.WORN_WIELD);
 			addInventory(m);
 		}
 		if(c!=null)
 		{
-			c.wearAt(Item.WORN_TORSO);
+			c.wearAt(Wearable.WORN_TORSO);
 			addInventory(c);
 		}
 	}

@@ -41,7 +41,7 @@ public class Wyvern extends StdRace
 	public int heightVariance(){return 40;}
 	public int lightestWeight(){return 1500;}
 	public int weightVariance(){return 500;}
-	public long forbiddenWornBits(){return Item.WORN_HELD|Item.WORN_WIELD|Item.WORN_WAIST;}
+	public long forbiddenWornBits(){return Wearable.WORN_HELD|Wearable.WORN_WIELD|Wearable.WORN_WAIST;}
 	public String racialCategory(){return "Reptile";}
 	private String[]culturalAbilityNames={"Draconic"};
 	private int[]culturalAbilityProficiencies={50};

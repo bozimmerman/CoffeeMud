@@ -109,7 +109,7 @@ public class StdClanItem extends StdItem implements ClanItem
 			I=mob.fetchInventory(i);
 			if((I!=null)
 			&&(I instanceof ClanItem)
-			&&(!I.amWearingAt(Item.IN_INVENTORY)))
+			&&(!I.amWearingAt(Wearable.IN_INVENTORY)))
 				return true;
 		}
 		return false;
@@ -142,7 +142,7 @@ public class StdClanItem extends StdItem implements ClanItem
     			}
     		}
     		else
-    		if((CI.amWearingAt(Item.IN_INVENTORY))
+    		if((CI.amWearingAt(Wearable.IN_INVENTORY))
     		&&(M.isMonster())
     		&&(!wearingAClanItem(M))
     		&&(CMLib.flags().isInTheGame(M,true)))

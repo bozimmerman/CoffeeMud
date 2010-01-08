@@ -273,7 +273,7 @@ public interface SlaveryLibrary extends CMLibrary
                 if((I!=null)&&(CMLib.flags().canBeSeenBy(I,me)))
                 {
                     step=STEP_EVAL;
-                    if(!I.amWearingAt(Item.IN_INVENTORY))
+                    if(!I.amWearingAt(Wearable.IN_INVENTORY))
                     {
                         CMLib.commands().postRemove(me,I,false);
                         return "HOLD";
@@ -312,7 +312,7 @@ public interface SlaveryLibrary extends CMLibrary
                     if((M!=null)&&(M!=me)&&(CMLib.flags().canBeSeenBy(M,me)))
                     {
                         I=M.fetchInventory(null,item);
-                        if((I!=null)&&(!I.amWearingAt(Item.IN_INVENTORY)))
+                        if((I!=null)&&(!I.amWearingAt(Wearable.IN_INVENTORY)))
                         {
                             if(step==STEP_EVAL)
                             {

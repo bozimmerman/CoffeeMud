@@ -45,7 +45,7 @@ public class Prop_WearResister extends Prop_HaveResister
     public void check(MOB mob, Armor A)
     {
     	if(!layered){ checked=true; disabled=false;}
-    	if(A.amWearingAt(Item.IN_INVENTORY))
+    	if(A.amWearingAt(Wearable.IN_INVENTORY))
     	{
     		checked=false;
     		return;
@@ -57,7 +57,7 @@ public class Prop_WearResister extends Prop_HaveResister
     	{
     		I=mob.fetchInventory(i);
     		if((I instanceof Armor)
-    		&&(!I.amWearingAt(Item.IN_INVENTORY))
+    		&&(!I.amWearingAt(Wearable.IN_INVENTORY))
     		&&((I.rawWornCode()&A.rawWornCode())>0)
     		&&(I!=A))
     		{
@@ -102,8 +102,8 @@ public class Prop_WearResister extends Prop_HaveResister
         if(!super.canResist(E))
             return false;
         if(disabled&&checked) return false;
-        if((!((Item)affected).amWearingAt(Item.IN_INVENTORY))
-        &&((!((Item)affected).amWearingAt(Item.WORN_FLOATING_NEARBY))||(((Item)affected).fitsOn(Item.WORN_FLOATING_NEARBY))))
+        if((!((Item)affected).amWearingAt(Wearable.IN_INVENTORY))
+        &&((!((Item)affected).amWearingAt(Wearable.WORN_FLOATING_NEARBY))||(((Item)affected).fitsOn(Wearable.WORN_FLOATING_NEARBY))))
             return true;
         return false;
     }

@@ -470,7 +470,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	/** constant returned by allowedArmorLevel() to designate only metal/stone armors. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedArmorLevel() */
 	public static final int ARMOR_OREONLY=6;
 	/** useful constant for calculating the wear locations to which armor restrictions apply */
-	public static long ARMOR_WEARMASK=Item.WORN_TORSO|Item.WORN_LEGS|Item.WORN_ARMS|Item.WORN_WAIST|Item.WORN_HEAD;
+	public static long ARMOR_WEARMASK=Wearable.WORN_TORSO|Wearable.WORN_LEGS|Wearable.WORN_ARMS|Wearable.WORN_WAIST|Wearable.WORN_HEAD;
 	/** list of string descriptions for the CharClass.ARMOR_* constants, ordered by their value.  @see CharClass */
 	public static final String[] ARMOR_DESCS={
 		"ANY","CLOTH","LEATHER","NONMETAL","VEGAN","METALONLY","OREONLY"

@@ -674,7 +674,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                     if(A.canTarget(Ability.CAN_ITEMS))
                     {
                         Item I=buyer.fetchWieldedItem();
-                        if(I==null) I=buyer.fetchFirstWornItem(Item.WORN_HELD);
+                        if(I==null) I=buyer.fetchFirstWornItem(Wearable.WORN_HELD);
                         if(I==null)
                         {
                             CMLib.commands().postSay(seller,buyer,"You need to be wielding or holding the item you want this cast on.",true,false);
@@ -1047,7 +1047,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             if(A.canTarget(Ability.CAN_ITEMS))
             {
                 Item I=mobFor.fetchWieldedItem();
-                if(I==null) I=mobFor.fetchFirstWornItem(Item.WORN_HELD);
+                if(I==null) I=mobFor.fetchFirstWornItem(Wearable.WORN_HELD);
                 if(I==null) I=mobFor.fetchWornItem("all");
                 if(I==null) I=mobFor.fetchCarried(null,"all");
                 if(I!=null)
@@ -1342,10 +1342,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                     &&(!(E instanceof ClanItem))
                     &&(((((Item)E).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_GLASS)
                     ||((((Item)E).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PRECIOUS)
-                    ||((Item)E).fitsOn(Item.WORN_EARS)
-                    ||((Item)E).fitsOn(Item.WORN_NECK)
-                    ||((Item)E).fitsOn(Item.WORN_RIGHT_FINGER)
-                    ||((Item)E).fitsOn(Item.WORN_LEFT_FINGER)));
+                    ||((Item)E).fitsOn(Wearable.WORN_EARS)
+                    ||((Item)E).fitsOn(Wearable.WORN_NECK)
+                    ||((Item)E).fitsOn(Wearable.WORN_RIGHT_FINGER)
+                    ||((Item)E).fitsOn(Wearable.WORN_LEFT_FINGER)));
         case ShopKeeper.DEAL_ALCHEMIST:
             return (E instanceof Potion);
         case ShopKeeper.DEAL_LANDSELLER:

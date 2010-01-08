@@ -49,7 +49,7 @@ public class Chant_MetalMold extends Chant
             Item item=mobTarget.fetchInventory(i);
             if(item!=null)
             {
-                if(item.amWearingAt(Item.IN_INVENTORY))
+                if(item.amWearingAt(Wearable.IN_INVENTORY))
                     possibilities.addElement(item);
                 else
                     goodPossibilities.addElement(item);

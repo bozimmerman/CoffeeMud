@@ -39,7 +39,7 @@ public class EternityLeafArmor extends StdArmor
 		setName("a suit of Eternity Tree Leaf Armor");
 		setDisplayText("a suit of Eternity tree leaf armor sits here.");
 		setDescription("This suit of armor is made from the leaves of the Eternity Tree, a true gift from the Fox god himself.  (armor:  50, grants a modest degree of stealth, and is as light as cloth.)");
-		properWornBitmap=Item.WORN_TORSO | Item.WORN_ARMS | Item.WORN_LEGS;
+		properWornBitmap=Wearable.WORN_TORSO | Wearable.WORN_ARMS | Wearable.WORN_LEGS;
 		wornLogicalAnd=true;
 		baseGoldValue+=25000;
 		baseEnvStats().setArmor(50);
@@ -53,7 +53,7 @@ public class EternityLeafArmor extends StdArmor
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		if((!this.amWearingAt(Item.IN_INVENTORY))&&(!this.amWearingAt(Item.WORN_HELD)))
+		if((!this.amWearingAt(Wearable.IN_INVENTORY))&&(!this.amWearingAt(Wearable.WORN_HELD)))
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SNEAKING);
 	}
 

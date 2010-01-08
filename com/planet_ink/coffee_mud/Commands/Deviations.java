@@ -287,7 +287,7 @@ public class Deviations extends StdCommand
 				for(int j=0;j<M.inventorySize();j++)
 				{
 					Item Iw=M.fetchInventory(j);
-					if(!(Iw.amWearingAt(Item.IN_INVENTORY)))
+					if(!(Iw.amWearingAt(Wearable.IN_INVENTORY)))
 						reallyWornCount++;
 				}
 				mobResults.append(CMStrings.padRight(""+reallyWornCount,5)+" ");

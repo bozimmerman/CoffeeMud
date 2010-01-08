@@ -41,7 +41,7 @@ public class Animal extends StdRace
 	public int heightVariance(){return 3;}
 	public int lightestWeight(){return 10;}
 	public int weightVariance(){return 20;}
-	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.WORN_HEAD-Item.WORN_FEET-Item.WORN_NECK-Item.WORN_EARS-Item.WORN_EYES;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Wearable.WORN_HEAD-Wearable.WORN_FEET-Wearable.WORN_NECK-Wearable.WORN_EARS-Wearable.WORN_EYES;}
 	public String racialCategory(){return "Unique";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

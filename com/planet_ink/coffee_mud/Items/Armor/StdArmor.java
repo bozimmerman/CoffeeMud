@@ -45,7 +45,7 @@ public class StdArmor extends StdContainer implements Armor
 		setName("a shirt of armor");
 		setDisplayText("a thick armored shirt sits here.");
 		setDescription("Thick padded leather with strips of metal interwoven.");
-		properWornBitmap=Item.WORN_TORSO;
+		properWornBitmap=Wearable.WORN_TORSO;
 		wornLogicalAnd=false;
 		baseEnvStats().setArmor(10);
 		baseEnvStats().setAbility(0);
@@ -152,8 +152,8 @@ public class StdArmor extends StdContainer implements Armor
 		}
 	}
 
-	public final static long strangeDeviations=Item.WORN_FLOATING_NEARBY|Item.WORN_MOUTH|Item.WORN_EYES|Item.WORN_EARS|Item.WORN_NECK;
-	public final static long deviation20=Item.WORN_TORSO|Item.WORN_LEGS|Item.WORN_WAIST|Item.WORN_ARMS|Item.WORN_HANDS|Item.WORN_FEET;
+	public final static long strangeDeviations=Wearable.WORN_FLOATING_NEARBY|Wearable.WORN_MOUTH|Wearable.WORN_EYES|Wearable.WORN_EARS|Wearable.WORN_NECK;
+	public final static long deviation20=Wearable.WORN_TORSO|Wearable.WORN_LEGS|Wearable.WORN_WAIST|Wearable.WORN_ARMS|Wearable.WORN_HANDS|Wearable.WORN_FEET;
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -172,17 +172,17 @@ public class StdArmor extends StdContainer implements Armor
 			{
 				long wcode=rawProperLocationBitmap();
 
-				if(CMath.bset(wcode,Item.WORN_HELD))
-					wcode=wcode-Item.WORN_HELD;
-				if(wcode==Item.WORN_FLOATING_NEARBY) devianceAllowed=-1;
+				if(CMath.bset(wcode,Wearable.WORN_HELD))
+					wcode=wcode-Wearable.WORN_HELD;
+				if(wcode==Wearable.WORN_FLOATING_NEARBY) devianceAllowed=-1;
 				else
-				if(wcode==Item.WORN_MOUTH) devianceAllowed=-1;
+				if(wcode==Wearable.WORN_MOUTH) devianceAllowed=-1;
 				else
-				if(wcode==Item.WORN_EYES) devianceAllowed=1000;
+				if(wcode==Wearable.WORN_EYES) devianceAllowed=1000;
 				else
-				if(wcode==Item.WORN_EARS) devianceAllowed=1000;
+				if(wcode==Wearable.WORN_EARS) devianceAllowed=1000;
 				else
-				if(wcode==Item.WORN_NECK) devianceAllowed=5000;
+				if(wcode==Wearable.WORN_NECK) devianceAllowed=5000;
 			}
 			if((devianceAllowed>0)&&(!CMSecurity.isDisabled("EQUIPSIZE")))
 			{
@@ -211,7 +211,7 @@ public class StdArmor extends StdContainer implements Armor
 		&&(CMLib.flags().canBeSeenBy(this,msg.source())))
 			msg.source().tell(armorHealth());
 		else
-		if((!amWearingAt(Item.IN_INVENTORY))
+		if((!amWearingAt(Wearable.IN_INVENTORY))
 		&&(owner()!=null)
 		&&(owner() instanceof MOB)
 		&&(msg.amITarget(owner()))
@@ -361,7 +361,7 @@ public class StdArmor extends StdContainer implements Armor
 							setUsesRemaining(usesRemaining()-1);
 						break;
 					case Weapon.TYPE_BASHING:
-						if((rawWornCode()==Item.WORN_HEAD)
+						if((rawWornCode()==Wearable.WORN_HEAD)
 						&&(CMLib.dice().rollPercentage()==1)
 						&&(CMLib.dice().rollPercentage()==1)
 						&&((msg.value())>10)
@@ -517,7 +517,7 @@ public class StdArmor extends StdContainer implements Armor
 	{
 		super.recoverEnvStats();
 		if((baseEnvStats().height()==0)
-		   &&(!amWearingAt(Item.IN_INVENTORY))
+		   &&(!amWearingAt(Wearable.IN_INVENTORY))
 		   &&(owner() instanceof MOB))
 			baseEnvStats().setHeight(((MOB)owner()).baseEnvStats().height());
 	}
@@ -526,20 +526,20 @@ public class StdArmor extends StdContainer implements Armor
 	{
 		super.affectEnvStats(affected,affectableStats);
 		
-		if((!amWearingAt(Item.IN_INVENTORY))
-		&&((!amWearingAt(Item.WORN_FLOATING_NEARBY))||(fitsOn(Item.WORN_FLOATING_NEARBY)))
-		&&((!amWearingAt(Item.WORN_HELD))||(this instanceof Shield)))
+		if((!amWearingAt(Wearable.IN_INVENTORY))
+		&&((!amWearingAt(Wearable.WORN_FLOATING_NEARBY))||(fitsOn(Wearable.WORN_FLOATING_NEARBY)))
+		&&((!amWearingAt(Wearable.WORN_HELD))||(this instanceof Shield)))
 		{
 			affectableStats.setArmor(affectableStats.armor()-envStats().armor());
 			if(envStats().armor()!=0)
 			{
-				if(amWearingAt(Item.WORN_TORSO))
+				if(amWearingAt(Wearable.WORN_TORSO))
 					affectableStats.setArmor(affectableStats.armor()-(envStats().ability()*5));
 				else
-				if((amWearingAt(Item.WORN_HEAD))||(this.amWearingAt(Item.WORN_HELD)))
+				if((amWearingAt(Wearable.WORN_HEAD))||(this.amWearingAt(Wearable.WORN_HELD)))
 					affectableStats.setArmor(affectableStats.armor()-(envStats().ability()*2));
 				else
-				if(!amWearingAt(Item.WORN_FLOATING_NEARBY))
+				if(!amWearingAt(Wearable.WORN_FLOATING_NEARBY))
 					affectableStats.setArmor(affectableStats.armor()-envStats().ability());
 			}
 		}
@@ -547,7 +547,7 @@ public class StdArmor extends StdContainer implements Armor
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		if(!amWearingAt(Item.IN_INVENTORY))
+		if(!amWearingAt(Wearable.IN_INVENTORY))
 		switch(material()&RawMaterial.MATERIAL_MASK)
 		{
 		case RawMaterial.MATERIAL_METAL:

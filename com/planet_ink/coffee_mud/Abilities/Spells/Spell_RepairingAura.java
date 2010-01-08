@@ -108,7 +108,7 @@ public class Spell_RepairingAura extends Spell
                 I=M.fetchInventory(i);
                 if((I!=null)&&(I.subjectToWearAndTear())&&(I.fetchEffect(ID())==null))
                 {
-                    if(I.amWearingAt(Item.IN_INVENTORY))
+                    if(I.amWearingAt(Wearable.IN_INVENTORY))
                         inventory.addElement(I);
                     else
                         choices.addElement(I);

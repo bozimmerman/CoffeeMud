@@ -46,7 +46,7 @@ public class WarHammer extends StdWeapon
 		baseEnvStats().setDamage(6);
 		baseGoldValue=25;
 		wornLogicalAnd=true;
-		properWornBitmap=Item.WORN_HELD|Item.WORN_WIELD;
+		properWornBitmap=Wearable.WORN_HELD|Wearable.WORN_WIELD;
 		recoverEnvStats();
 		weaponType=Weapon.TYPE_BASHING;
 		material=RawMaterial.RESOURCE_STEEL;

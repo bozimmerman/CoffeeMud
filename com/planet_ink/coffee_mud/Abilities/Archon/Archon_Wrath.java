@@ -77,7 +77,7 @@ public class Archon_Wrath extends ArchonSkill
 					target.curState().setMana(target.curState().getMana()/2);
 				if(target.curState().getMovement()>2)
 					target.curState().setMovement(target.curState().getMovement()/2);
-				Item I=target.fetchFirstWornItem(Item.WORN_FEET);
+				Item I=target.fetchFirstWornItem(Wearable.WORN_FEET);
 				if(I!=null)
 				{
 					I.unWear();

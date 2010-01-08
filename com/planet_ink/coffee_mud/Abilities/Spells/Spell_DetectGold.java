@@ -96,7 +96,7 @@ public class Spell_DetectGold extends Spell
 			for(int i=0;i<((MOB)E).inventorySize();i++)
 			{
 				Item I=((MOB)E).fetchInventory(i);
-				if(!I.amWearingAt(Item.IN_INVENTORY))
+				if(!I.amWearingAt(Wearable.IN_INVENTORY))
 					metalCheck(mob,I,container,msg);
 			}
 		}

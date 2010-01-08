@@ -80,7 +80,7 @@ public class Prop_WeaponImmunity extends Property
 				M=(MOB)affected;
 			else
 			if((affected instanceof Item)
-			&&(!((Item)affected).amWearingAt(Item.IN_INVENTORY))
+			&&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY))
 			&&(((Item)affected).owner()!=null)
 			&&(((Item)affected).owner() instanceof MOB))
 				M=(MOB)((Item)affected).owner();

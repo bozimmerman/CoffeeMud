@@ -507,11 +507,11 @@ public class StdAbility implements Ability
 						switch(wornReqCode)
 						{
 						case Wearable.FILTER_UNWORNONLY:
-							if(!((Item)target).amWearingAt(Item.IN_INVENTORY))
+							if(!((Item)target).amWearingAt(Wearable.IN_INVENTORY))
 								continue;
 							break;
 						case Wearable.FILTER_WORNONLY:
-							if(((Item)target).amWearingAt(Item.IN_INVENTORY))
+							if(((Item)target).amWearingAt(Wearable.IN_INVENTORY))
 								continue;
 							break;
 						}

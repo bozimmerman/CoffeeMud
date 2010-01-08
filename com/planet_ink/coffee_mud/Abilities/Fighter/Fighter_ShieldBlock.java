@@ -62,7 +62,7 @@ public class Fighter_ShieldBlock extends FighterSkill
 		&&(proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-90+(2*getXLEVELLevel(mob)),false))
 		&&(msg.source().getVictim()==mob))
 		{
-			CMMsg msg2=CMClass.getMsg(msg.source(),mob,mob.fetchFirstWornItem(Item.WORN_HELD),CMMsg.MSG_QUIETMOVEMENT,"<T-NAME> block(s) <S-YOUPOSS> attack with <O-NAME>!");
+			CMMsg msg2=CMClass.getMsg(msg.source(),mob,mob.fetchFirstWornItem(Wearable.WORN_HELD),CMMsg.MSG_QUIETMOVEMENT,"<T-NAME> block(s) <S-YOUPOSS> attack with <O-NAME>!");
 			if(mob.location().okMessage(mob,msg2))
 			{
 				mob.location().send(mob,msg2);
@@ -78,7 +78,7 @@ public class Fighter_ShieldBlock extends FighterSkill
 		super.affectEnvStats(affected,stats);
 		if(affected instanceof MOB)
 		{
-			Item shield=((MOB)affected).fetchFirstWornItem(Item.WORN_HELD);
+			Item shield=((MOB)affected).fetchFirstWornItem(Wearable.WORN_HELD);
 			enabledFlag=(shield instanceof Shield);
 			if(enabledFlag)
 			{

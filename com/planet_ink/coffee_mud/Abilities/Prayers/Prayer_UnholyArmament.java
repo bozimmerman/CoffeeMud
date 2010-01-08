@@ -43,17 +43,17 @@ public class Prayer_UnholyArmament extends Prayer
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 	public static final long[] checkOrder={
-		Item.WORN_WIELD,
-		Item.WORN_TORSO,
-		Item.WORN_LEGS,
-		Item.WORN_WAIST,
-		Item.WORN_HEAD,
-		Item.WORN_ARMS,
-		Item.WORN_FEET,
-		Item.WORN_HANDS,
-		Item.WORN_LEFT_WRIST,
-		Item.WORN_RIGHT_WRIST,
-		Item.WORN_ABOUT_BODY,
+		Wearable.WORN_WIELD,
+		Wearable.WORN_TORSO,
+		Wearable.WORN_LEGS,
+		Wearable.WORN_WAIST,
+		Wearable.WORN_HEAD,
+		Wearable.WORN_ARMS,
+		Wearable.WORN_FEET,
+		Wearable.WORN_HANDS,
+		Wearable.WORN_LEFT_WRIST,
+		Wearable.WORN_RIGHT_WRIST,
+		Wearable.WORN_ABOUT_BODY,
 	};
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
@@ -86,7 +86,7 @@ public class Prayer_UnholyArmament extends Prayer
 					mob.tell("The gods can see that you are already armed.");
 				return false;
 			}
-			if(pos==Item.WORN_WIELD)
+			if(pos==Wearable.WORN_WIELD)
 			{
 				I=CMClass.getWeapon("GenWeapon");
 				I.setName("an unholy blade");
@@ -108,7 +108,7 @@ public class Prayer_UnholyArmament extends Prayer
 				I=CMClass.getArmor("GenArmor");
 				I.setRawProperLocationBitmap(pos);
 				I.baseEnvStats().setLevel(mob.envStats().level());
-				if(pos==Item.WORN_ABOUT_BODY)
+				if(pos==Wearable.WORN_ABOUT_BODY)
 					I.setMaterial(RawMaterial.RESOURCE_COTTON);
 				else
 					I.setMaterial(RawMaterial.RESOURCE_MITHRIL);
@@ -117,56 +117,56 @@ public class Prayer_UnholyArmament extends Prayer
 				I.baseEnvStats().setArmor(CMath.s_int((String)H.get("ARMOR")));
 				I.baseEnvStats().setWeight(CMath.s_int((String)H.get("WEIGHT")));
 				I.setBaseValue(0);
-				if(pos==Item.WORN_TORSO)
+				if(pos==Wearable.WORN_TORSO)
 				{
 					I.setName("an unholy breast plate");
 					I.setDisplayText("a wicked looking breast plate sits here.");
 					I.setDescription("Whatever made this black spiked armor couldn`t have been good.");
 				}
-				if(pos==Item.WORN_HEAD)
+				if(pos==Wearable.WORN_HEAD)
 				{
 					I.setName("an unholy helm");
 					I.setDisplayText("a wicked looking helmet sits here.");
 					I.setDescription("Whatever made this spiked helmet couldn`t have been good.");
 				}
-				if(pos==Item.WORN_ABOUT_BODY)
+				if(pos==Wearable.WORN_ABOUT_BODY)
 				{
 					I.setName("an unholy cape");
 					I.setDisplayText("a torn black cape sits here.");
 					I.setDescription("Whatever made this cape couldn`t have been good.");
 				}
-				if(pos==Item.WORN_ARMS)
+				if(pos==Wearable.WORN_ARMS)
 				{
 					I.setName("some unholy arm cannons");
 					I.setDisplayText("a pair of wicked looking arm cannons sit here.");
 					I.setDescription("Whatever made this couldn`t have been good.");
 				}
-				if((pos==Item.WORN_LEFT_WRIST)
-				||(pos==Item.WORN_RIGHT_WRIST))
+				if((pos==Wearable.WORN_LEFT_WRIST)
+				||(pos==Wearable.WORN_RIGHT_WRIST))
 				{
 					I.setName("an unholy vambrace");
 					I.setDisplayText("a wicked looking spiked vambrace sit here.");
 					I.setDescription("Whatever made this twisted black metal couldn`t have been good.");
 				}
-				if(pos==Item.WORN_HANDS)
+				if(pos==Wearable.WORN_HANDS)
 				{
 					I.setName("a pair of unholy gauntlets");
 					I.setDisplayText("some wicked looking gauntlets sit here.");
 					I.setDescription("Whatever made this twisted black metal couldn`t have been good.");
 				}
-				if(pos==Item.WORN_WAIST)
+				if(pos==Wearable.WORN_WAIST)
 				{
 					I.setName("an unholy girdle");
 					I.setDisplayText("a wicked looking girdle sits here.");
 					I.setDescription("Whatever made this twisted black metal couldn`t have been good.");
 				}
-				if(pos==Item.WORN_LEGS)
+				if(pos==Wearable.WORN_LEGS)
 				{
 					I.setName("a pair of unholy leg cannons");
 					I.setDisplayText("a wicked looking pair of leg cannons sits here.");
 					I.setDescription("Whatever made this twisted and spiked black metal couldn`t have been good.");
 				}
-				if(pos==Item.WORN_FEET)
+				if(pos==Wearable.WORN_FEET)
 				{
 					I.setName("a pair of unholy boots");
 					I.setDisplayText("a wicked looking pair of boots sits here.");

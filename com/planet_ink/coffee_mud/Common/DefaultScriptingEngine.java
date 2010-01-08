@@ -2262,7 +2262,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     returnable=(((MOB)E).fetchWornItem(arg2)!=null);
                 else
                 if(E instanceof Item)
-                    returnable=(CMLib.english().containsString(E.name(),arg2)&&(!((Item)E).amWearingAt(Item.IN_INVENTORY)));
+                    returnable=(CMLib.english().containsString(E.name(),arg2)&&(!((Item)E).amWearingAt(Wearable.IN_INVENTORY)));
                 else
                     returnable=false;
                 break;
@@ -4382,7 +4382,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     for(int i=0;i<((MOB)E).inventorySize();i++)
                     {
                         Item I=((MOB)E).fetchInventory(i);
-                        if((I!=null)&&(I.amWearingAt(Item.IN_INVENTORY))&&(I.container()==null))
+                        if((I!=null)&&(I.amWearingAt(Wearable.IN_INVENTORY))&&(I.container()==null))
                             choices.addElement(I);
                     }
                 }
@@ -4467,12 +4467,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     for(int i=0;i<((MOB)E).inventorySize();i++)
                     {
                         Item I=((MOB)E).fetchInventory(i);
-                        if((I!=null)&&(!I.amWearingAt(Item.IN_INVENTORY))&&(I.container()==null))
+                        if((I!=null)&&(!I.amWearingAt(Wearable.IN_INVENTORY))&&(I.container()==null))
                             choices.addElement(I);
                     }
                 }
                 else
-                if((E instanceof Item)&&(!(((Item)E).amWearingAt(Item.IN_INVENTORY))))
+                if((E instanceof Item)&&(!(((Item)E).amWearingAt(Wearable.IN_INVENTORY))))
                 {
                     choices.addElement(E);
                     if(E instanceof Container)

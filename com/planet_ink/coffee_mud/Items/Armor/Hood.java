@@ -39,7 +39,7 @@ public class Hood extends StdArmor
 		setName("a cloth hood");
 		setDisplayText("a cloth hood sits here.");
 		setDescription("This is a cloth hood that covers the head and shoulders.");
-		properWornBitmap=Item.WORN_HEAD;
+		properWornBitmap=Wearable.WORN_HEAD;
 		wornLogicalAnd=false;
 		baseEnvStats().setArmor(2);
 		baseEnvStats().setWeight(1);

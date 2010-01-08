@@ -98,16 +98,16 @@ public class Tattooing extends CommonSkill
 		
 		int partNum=-1;
 		StringBuffer allParts=new StringBuffer("");
-		long[] tattoable={Item.WORN_ARMS,
-		        		  Item.WORN_LEGS,
-		        		  Item.WORN_HANDS,
-		        		  Item.WORN_HEAD,
-		        		  Item.WORN_FEET,
-		        		  Item.WORN_LEFT_WRIST,
-		        		  Item.WORN_RIGHT_WRIST,
-		        		  Item.WORN_NECK,
-		        		  Item.WORN_BACK,
-		        		  Item.WORN_TORSO};
+		long[] tattoable={Wearable.WORN_ARMS,
+		        		  Wearable.WORN_LEGS,
+		        		  Wearable.WORN_HANDS,
+		        		  Wearable.WORN_HEAD,
+		        		  Wearable.WORN_FEET,
+		        		  Wearable.WORN_LEFT_WRIST,
+		        		  Wearable.WORN_RIGHT_WRIST,
+		        		  Wearable.WORN_NECK,
+		        		  Wearable.WORN_BACK,
+		        		  Wearable.WORN_TORSO};
 		Wearable.CODES codes = Wearable.CODES.instance();
 		for(int i=0;i<codes.total();i++)
 		{

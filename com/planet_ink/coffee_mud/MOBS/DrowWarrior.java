@@ -90,7 +90,7 @@ public class DrowWarrior extends DrowElf
         Armor chainMail = CMClass.getArmor("DrowChainMailArmor");
 		if(chainMail!=null)
 		{
-			chainMail.wearAt(Item.WORN_TORSO);
+			chainMail.wearAt(Wearable.WORN_TORSO);
 			this.addInventory(chainMail);
 		}
 
@@ -127,11 +127,11 @@ public class DrowWarrior extends DrowElf
         }
 		if(mainWeapon!=null)
 		{
-		    mainWeapon.wearAt(Item.WORN_WIELD);
+		    mainWeapon.wearAt(Wearable.WORN_WIELD);
 		    this.addInventory(mainWeapon);
 			if(secondWeapon!=null)
 			{
-				secondWeapon.wearAt(Item.WORN_HELD);
+				secondWeapon.wearAt(Wearable.WORN_HELD);
 				this.addInventory(secondWeapon);
 			}
 		}

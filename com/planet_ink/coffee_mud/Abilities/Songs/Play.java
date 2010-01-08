@@ -97,9 +97,9 @@ public class Play extends StdAbility
 		if((I==null)||(mob==null)) return false;
 		if(I instanceof Rideable)
 			return (((Rideable)I).amRiding(mob)
-					&&(mob.fetchFirstWornItem(Item.WORN_WIELD)==null)
-					&&(mob.fetchFirstWornItem(Item.WORN_HELD)==null));
-		return mob.isMine(I)&&(!I.amWearingAt(Item.IN_INVENTORY));
+					&&(mob.fetchFirstWornItem(Wearable.WORN_WIELD)==null)
+					&&(mob.fetchFirstWornItem(Wearable.WORN_HELD)==null));
+		return mob.isMine(I)&&(!I.amWearingAt(Wearable.IN_INVENTORY));
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -176,7 +176,7 @@ public class Play extends StdAbility
 		&&(instrument!=null))
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
-			&&(instrument.amWearingAt(Item.WORN_MOUTH)))
+			&&(instrument.amWearingAt(Wearable.WORN_MOUTH)))
 			{
 				if(msg.source().location()!=null)
 					msg.source().location().show(msg.source(),null,CMMsg.MSG_NOISE,"<S-NAME> stop(s) playing.");
@@ -186,7 +186,7 @@ public class Play extends StdAbility
 			if(((msg.sourceMinor()==CMMsg.TYP_REMOVE)
 			   ||(msg.sourceMinor()==CMMsg.TYP_WEAR)
 			   ||(msg.sourceMinor()==CMMsg.TYP_WIELD))
-			&&(instrument.amWearingAt(Item.WORN_HELD)))
+			&&(instrument.amWearingAt(Wearable.WORN_HELD)))
 			{
 				if(msg.source().location()!=null)
 					msg.source().location().show(msg.source(),null,CMMsg.MSG_NOISE,"<S-NAME> stop(s) playing.");

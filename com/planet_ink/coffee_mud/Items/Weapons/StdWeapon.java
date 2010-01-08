@@ -49,7 +49,7 @@ public class StdWeapon extends StdItem implements Weapon
 		setDisplayText(" sits here.");
 		setDescription("This is a deadly looking weapon.");
 		wornLogicalAnd=false;
-		properWornBitmap=Item.WORN_HELD|Item.WORN_WIELD;
+		properWornBitmap=Wearable.WORN_HELD|Wearable.WORN_WIELD;
 		baseEnvStats().setAttackAdjustment(0);
 		baseEnvStats().setDamage(0);
 		baseEnvStats().setAbility(0);
@@ -78,7 +78,7 @@ public class StdWeapon extends StdItem implements Weapon
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		if(amWearingAt(Item.WORN_WIELD))
+		if(amWearingAt(Wearable.WORN_WIELD))
 		{
             if(envStats().attackAdjustment()!=0)
     			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(envStats().attackAdjustment()));
@@ -119,7 +119,7 @@ public class StdWeapon extends StdItem implements Weapon
 
 		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.tool()==this)
-		&&(amWearingAt(Item.WORN_WIELD))
+		&&(amWearingAt(Wearable.WORN_WIELD))
 		&&(weaponClassification()!=Weapon.CLASS_NATURAL)
 		&&(weaponType()!=Weapon.TYPE_NATURAL)
 		&&(msg.target()!=null)

@@ -39,7 +39,7 @@ public class LeatherArmor extends StdArmor
 		setName("a suit of leather armor");
 		setDisplayText("a suit of leather armor including a breastplate, arms, and legs.");
 		setDescription("This is a fairly decent looking suit of leather armor.");
-		properWornBitmap=Item.WORN_TORSO | Item.WORN_ARMS | Item.WORN_LEGS;
+		properWornBitmap=Wearable.WORN_TORSO | Wearable.WORN_ARMS | Wearable.WORN_LEGS;
 		wornLogicalAnd=true;
 		baseEnvStats().setArmor(12);
 		baseEnvStats().setWeight(15);

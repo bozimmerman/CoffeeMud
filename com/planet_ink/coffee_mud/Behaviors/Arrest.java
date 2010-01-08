@@ -1489,12 +1489,12 @@ public class Arrest extends StdBehavior implements LegalBehavior
     {
         if((laws.basicCrimes().containsKey("NUDITY"))
         &&(!testMOB.isMonster())
-        &&(testMOB.fetchFirstWornItem(Item.WORN_LEGS)==null)
-        &&(testMOB.getWearPositions(Item.WORN_LEGS)>0)
-        &&(testMOB.fetchFirstWornItem(Item.WORN_WAIST)==null)
-        &&(testMOB.getWearPositions(Item.WORN_WAIST)>0)
-        &&(testMOB.fetchFirstWornItem(Item.WORN_ABOUT_BODY)==null)
-        &&(testMOB.getWearPositions(Item.WORN_ABOUT_BODY)>0))
+        &&(testMOB.fetchFirstWornItem(Wearable.WORN_LEGS)==null)
+        &&(testMOB.getWearPositions(Wearable.WORN_LEGS)>0)
+        &&(testMOB.fetchFirstWornItem(Wearable.WORN_WAIST)==null)
+        &&(testMOB.getWearPositions(Wearable.WORN_WAIST)>0)
+        &&(testMOB.fetchFirstWornItem(Wearable.WORN_ABOUT_BODY)==null)
+        &&(testMOB.getWearPositions(Wearable.WORN_ABOUT_BODY)>0))
         {
             String info[]=(String[])laws.basicCrimes().get("NUDITY");
             fillOutWarrant(testMOB,

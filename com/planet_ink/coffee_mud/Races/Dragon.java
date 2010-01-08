@@ -42,7 +42,7 @@ public class Dragon extends StdRace
 	public int heightVariance(){return 80;}
 	public int lightestWeight(){return 2000;}
 	public int weightVariance(){return 500;}
-	public long forbiddenWornBits(){return Item.WORN_WIELD|Item.WORN_WAIST|Item.WORN_BACK|Item.WORN_ABOUT_BODY|Item.WORN_FEET|Item.WORN_HANDS;}
+	public long forbiddenWornBits(){return Wearable.WORN_WIELD|Wearable.WORN_WAIST|Wearable.WORN_BACK|Wearable.WORN_ABOUT_BODY|Wearable.WORN_FEET|Wearable.WORN_HANDS;}
 	public String racialCategory(){return "Dragon";}
 	private String[]racialAbilityNames={"Dragonbreath","WingFlying"};
 	private int[]racialAbilityLevels={5,1};

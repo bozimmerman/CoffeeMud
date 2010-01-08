@@ -651,7 +651,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	            response.append("It is mostly made of "+RawMaterial.CODES.NAME(item.material()).toLowerCase()+".  ");
 	        if((item instanceof Weapon)&&((mob==null)||mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10)) {
 	            response.append("It is a ");
-                if((item.rawLogicalAnd())&&CMath.bset(item.rawProperLocationBitmap(),Item.WORN_WIELD|Item.WORN_HELD))
+                if((item.rawLogicalAnd())&&CMath.bset(item.rawProperLocationBitmap(),Wearable.WORN_WIELD|Wearable.WORN_HELD))
                     response.append("two handed ");
                 else
                     response.append("one handed ");
@@ -664,7 +664,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	                response.append(" It is a size "+item.envStats().height()+", and is ");
 	            else
 	                response.append(" It is your size, and is ");
-	            response.append(((item.rawProperLocationBitmap()==Item.WORN_HELD)||(item.rawProperLocationBitmap()==(Item.WORN_HELD|Item.WORN_WIELD)))
+	            response.append(((item.rawProperLocationBitmap()==Wearable.WORN_HELD)||(item.rawProperLocationBitmap()==(Wearable.WORN_HELD|Wearable.WORN_WIELD)))
 	            					 ?new StringBuffer("")
 	            					 :new StringBuffer("worn on the "));
 	            Wearable.CODES codes = Wearable.CODES.instance();
@@ -1412,7 +1412,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         if(!(msg.target() instanceof Item)) return;
         Item item=(Item)msg.target();
         MOB mob=msg.source();
-        if(item.wearIfPossible(mob,Item.WORN_WIELD))
+        if(item.wearIfPossible(mob,Wearable.WORN_WIELD))
         {
             mob.recoverCharStats();
             mob.recoverEnvStats();
@@ -1424,7 +1424,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         if(!(msg.target() instanceof Item)) return;
         Item item=(Item)msg.target();
         MOB mob=msg.source();
-        if(item.wearIfPossible(mob,Item.WORN_HELD))
+        if(item.wearIfPossible(mob,Wearable.WORN_HELD))
         {
             mob.recoverCharStats();
             mob.recoverEnvStats();

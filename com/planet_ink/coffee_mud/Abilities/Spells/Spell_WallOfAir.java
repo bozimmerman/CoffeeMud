@@ -62,7 +62,7 @@ public class Spell_WallOfAir extends Spell
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Weapon)
-		&&(!((Weapon)msg.tool()).amWearingAt(Item.IN_INVENTORY))
+		&&(!((Weapon)msg.tool()).amWearingAt(Wearable.IN_INVENTORY))
 		&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED))
 		{
 			mob.location().show(mob,invoker,msg.tool(),CMMsg.MSG_OK_VISUAL,"<S-NAME> fire(s) <O-NAME> at <T-NAME>.  The missile enters the wall of air.");

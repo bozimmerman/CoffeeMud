@@ -46,7 +46,7 @@ public class TwoHandedSword extends Sword
 		baseEnvStats().setDamage(10);
 		baseGoldValue=50;
 		wornLogicalAnd=true;
-		properWornBitmap=Item.WORN_HELD|Item.WORN_WIELD;
+		properWornBitmap=Wearable.WORN_HELD|Wearable.WORN_WIELD;
 		recoverEnvStats();
 		material=RawMaterial.RESOURCE_STEEL;
 		weaponType=TYPE_SLASHING;

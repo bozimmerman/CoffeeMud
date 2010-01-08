@@ -57,7 +57,7 @@ public class Chant_ChargeMetal extends Chant
 		{
 			Item item=mob.fetchInventory(i);
 			if((item!=null)
-			&&(!item.amWearingAt(Item.IN_INVENTORY))
+			&&(!item.amWearingAt(Wearable.IN_INVENTORY))
 			&&(CMLib.flags().isMetal(item))
 			&&(item.container()==null)
 			&&(!mob.amDead()))
@@ -76,7 +76,7 @@ public class Chant_ChargeMetal extends Chant
 		Item I=(Item)affected;
 		if((I.owner()==null)
 		||(!(I.owner() instanceof MOB))
-		||(I.amWearingAt(Item.IN_INVENTORY)))
+		||(I.amWearingAt(Wearable.IN_INVENTORY)))
 			return true;
 
 		MOB mob=(MOB)I.owner();

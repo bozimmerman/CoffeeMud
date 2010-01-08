@@ -94,7 +94,7 @@ public class Give extends StdCommand
 				giveThis=mob.fetchWornItem(thingToGive);
 				if(giveThis!=null)
 				{
-					if((!(giveThis).amWearingAt(Item.WORN_HELD))&&(!(giveThis).amWearingAt(Item.WORN_WIELD)))
+					if((!(giveThis).amWearingAt(Wearable.WORN_HELD))&&(!(giveThis).amWearingAt(Wearable.WORN_WIELD)))
 					{
 						mob.tell("You must remove that first.");
 						return false;

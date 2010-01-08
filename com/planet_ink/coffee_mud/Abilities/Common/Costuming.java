@@ -332,7 +332,7 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
                 ((Weapon)building).setWeaponClassification(Weapon.CLASS_NATURAL);
                 setWeaponTypeClass((Weapon)building,misctype);
 				building.baseEnvStats().setDamage(armordmg);
-				((Weapon)building).setRawProperLocationBitmap(Item.WORN_WIELD|Item.WORN_HELD);
+				((Weapon)building).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
 				((Weapon)building).setRawLogicalAnd((capacity>1));
 			}
 			if(building instanceof Armor)

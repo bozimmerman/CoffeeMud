@@ -91,19 +91,19 @@ public class StdContainer extends StdItem implements Container
 						return false;
 					}
 					else
-					if(newitem.amWearingAt(Item.WORN_WIELD))
+					if(newitem.amWearingAt(Wearable.WORN_WIELD))
 					{
 						mob.tell("You are already wielding that!");
 						return false;
 					}
 					else
-					if(newitem.amWearingAt(Item.WORN_HELD))
+					if(newitem.amWearingAt(Wearable.WORN_HELD))
 					{
 						mob.tell("You are holding that!");
 						return false;
 					}
 					else
-					if(!newitem.amWearingAt(Item.IN_INVENTORY))
+					if(!newitem.amWearingAt(Wearable.IN_INVENTORY))
 					{
 						mob.tell("You are wearing that!");
 						return false;
@@ -148,7 +148,7 @@ public class StdContainer extends StdItem implements Container
 					if(newitem.container()==this)
 					{
 						if((!(CMLib.flags().canBeSeenBy(newitem,mob)||(newitem instanceof Light)))
-						&&(amWearingAt(Item.IN_INVENTORY))
+						&&(amWearingAt(Wearable.IN_INVENTORY))
 						&&((msg.sourceMajor()&CMMsg.MASK_ALWAYS)==0))
 						{
 							mob.tell(mob,newitem,this,"You can't see <T-NAME> in <O-NAME>.");
@@ -434,17 +434,17 @@ public class StdContainer extends StdItem implements Container
 					break;
 				case CONTAIN_CLOTHES:
 					if((E instanceof Armor)
-					&&(((Armor)E).fitsOn(Item.WORN_ABOUT_BODY)
-					   ||((Armor)E).fitsOn(Item.WORN_ARMS)
-					   ||((Armor)E).fitsOn(Item.WORN_LEGS)
-					   ||((Armor)E).fitsOn(Item.WORN_HEAD)
-					   ||((Armor)E).fitsOn(Item.WORN_TORSO)
-					   ||((Armor)E).fitsOn(Item.WORN_WAIST)))
+					&&(((Armor)E).fitsOn(Wearable.WORN_ABOUT_BODY)
+					   ||((Armor)E).fitsOn(Wearable.WORN_ARMS)
+					   ||((Armor)E).fitsOn(Wearable.WORN_LEGS)
+					   ||((Armor)E).fitsOn(Wearable.WORN_HEAD)
+					   ||((Armor)E).fitsOn(Wearable.WORN_TORSO)
+					   ||((Armor)E).fitsOn(Wearable.WORN_WAIST)))
 						return true;
 					break;
 				case CONTAIN_FOOTWEAR:
 					if((E instanceof Armor)
-					&&(((Armor)E).fitsOn(Item.WORN_FEET)))
+					&&(((Armor)E).fitsOn(Wearable.WORN_FEET)))
 						return true;
 					break;
 				case CONTAIN_OTHERWEAPONS:

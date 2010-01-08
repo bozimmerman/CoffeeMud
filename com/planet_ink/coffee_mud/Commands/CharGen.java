@@ -44,17 +44,17 @@ public class CharGen extends StdCommand
 		CharClass C=M.baseCharStats().getCurrentClass();
 		for(long wornCode : Wearable.CODES.ALL())
 		{
-			if((wornCode == Item.IN_INVENTORY) 
-			|| (wornCode == Item.WORN_HELD)
-			|| (wornCode == Item.WORN_MOUTH)) 
+			if((wornCode == Wearable.IN_INVENTORY) 
+			|| (wornCode == Wearable.WORN_HELD)
+			|| (wornCode == Wearable.WORN_MOUTH)) 
 			 	continue;
-			if(wornCode==Item.WORN_WIELD)
+			if(wornCode==Wearable.WORN_WIELD)
 			{
 				Weapon W=CMClass.getWeapon("GenWeapon");
 				W.setWeaponClassification(Weapon.CLASS_SWORD);
 				W.setWeaponType(Weapon.TYPE_SLASHING);
 				W.setMaterial(RawMaterial.RESOURCE_STEEL);
-				W.setRawProperLocationBitmap(Item.WORN_WIELD|Item.WORN_HELD);
+				W.setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
 				W.setRawLogicalAnd(true);
 				switch(C.allowedWeaponLevel())
 				{
@@ -103,7 +103,7 @@ public class CharGen extends StdCommand
 				W.wearIfPossible(M);
 			}
 			else
-			if(wornCode != Item.WORN_FLOATING_NEARBY)
+			if(wornCode != Wearable.WORN_FLOATING_NEARBY)
 			{
 				Armor A=CMClass.getArmor("GenArmor");
 				A.setRawProperLocationBitmap(wornCode);

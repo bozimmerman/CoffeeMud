@@ -41,7 +41,7 @@ public class Monkey extends StdRace
 	public int heightVariance(){return 6;}
 	public int lightestWeight(){return 50;}
 	public int weightVariance(){return 60;}
-	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.WORN_HEAD-Item.WORN_FEET-Item.WORN_NECK-Item.WORN_HELD-Item.WORN_WIELD-Item.WORN_EARS-Item.WORN_EYES;}
+	public long forbiddenWornBits(){return Integer.MAX_VALUE-Wearable.WORN_HEAD-Wearable.WORN_FEET-Wearable.WORN_NECK-Wearable.WORN_HELD-Wearable.WORN_WIELD-Wearable.WORN_EARS-Wearable.WORN_EYES;}
 	public String racialCategory(){return "Primate";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

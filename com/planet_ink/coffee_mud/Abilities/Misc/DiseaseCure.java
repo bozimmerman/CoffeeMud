@@ -88,7 +88,7 @@ public class DiseaseCure extends StdAbility
 						}
 						break;
 					case CMMsg.TYP_WEAR:
-						if(myItem.rawProperLocationBitmap()!=Item.WORN_HELD)
+						if(myItem.rawProperLocationBitmap()!=Wearable.WORN_HELD)
 						{
 							invoke(msg.source(),null,msg.source(),true,0);
 							myItem.destroy();

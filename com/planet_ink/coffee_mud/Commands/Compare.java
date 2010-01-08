@@ -76,10 +76,10 @@ public class Compare extends StdCommand
             }
 		}
 		long compareThisCode = compareThis.rawProperLocationBitmap();
-		if(CMath.bset(compareThisCode,Item.WORN_HELD)
-		&&(!CMath.bset(compareThisCode,Item.WORN_WIELD))
-		&&(compareThisCode!=Item.WORN_HELD))
-			compareThisCode=CMath.unsetb(compareThisCode,Item.WORN_HELD);
+		if(CMath.bset(compareThisCode,Wearable.WORN_HELD)
+		&&(!CMath.bset(compareThisCode,Wearable.WORN_WIELD))
+		&&(compareThisCode!=Wearable.WORN_HELD))
+			compareThisCode=CMath.unsetb(compareThisCode,Wearable.WORN_HELD);
 		Item toThis=null;
 		if(commands.size()==1)
 		{
@@ -92,13 +92,13 @@ public class Compare extends StdCommand
 				&&(I.rawLogicalAnd()==compareThis.rawLogicalAnd()))
 				{
 					long compareThatCode = I.rawProperLocationBitmap();
-					if(CMath.bset(compareThatCode,Item.WORN_HELD)
-					&&(!CMath.bset(compareThatCode,Item.WORN_WIELD))
-					&&(compareThatCode!=Item.WORN_HELD))
-						compareThatCode=CMath.unsetb(compareThatCode,Item.WORN_HELD);
+					if(CMath.bset(compareThatCode,Wearable.WORN_HELD)
+					&&(!CMath.bset(compareThatCode,Wearable.WORN_WIELD))
+					&&(compareThatCode!=Wearable.WORN_HELD))
+						compareThatCode=CMath.unsetb(compareThatCode,Wearable.WORN_HELD);
 					if(compareThisCode==compareThatCode)
 					{
-						if(!I.amWearingAt(Item.IN_INVENTORY))
+						if(!I.amWearingAt(Wearable.IN_INVENTORY))
 						{ toThis=I; break;}
 						if(possible==null) possible=I;
 					}

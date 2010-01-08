@@ -39,7 +39,7 @@ public class EternityBarkArmor extends StdArmor
 		setName("a suit of Eternity Tree Bark Armor");
 		setDisplayText("a suit of Eternity tree bark armor sits here.");
 		setDescription("This suit of armor is made from the bark of the Fox god\\`s Eternity Tree(armor:  100 and as light as leather armor--wearable by theives)");
-		properWornBitmap=Item.WORN_TORSO | Item.WORN_ARMS | Item.WORN_LEGS;
+		properWornBitmap=Wearable.WORN_TORSO | Wearable.WORN_ARMS | Wearable.WORN_LEGS;
 		wornLogicalAnd=true;
 		baseGoldValue+=25000;
 		baseEnvStats().setArmor(100);

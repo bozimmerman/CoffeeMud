@@ -45,7 +45,7 @@ public class LightSource extends StdItem implements Light
 		setDisplayText("an ordinary light source sits here doing nothing.");
 		setDescription("It looks like a light source of some sort.  I`ll bet it would help you see in the dark.");
 
-		properWornBitmap=Item.WORN_HELD;
+		properWornBitmap=Wearable.WORN_HELD;
 		setMaterial(RawMaterial.RESOURCE_OAK);
 		wornLogicalAnd=false;
 		baseGoldValue=5;

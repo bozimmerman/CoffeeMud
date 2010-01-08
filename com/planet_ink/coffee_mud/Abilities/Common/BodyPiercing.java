@@ -117,10 +117,10 @@ public class BodyPiercing extends CommonSkill
 				 			   {"ears","left ear","right ear"},
 							   {"eyebrows"},
 							   {"nipples","belly button"}};
-		long[] piercable={Item.WORN_HEAD,
-		        		  Item.WORN_EARS,
-		        		  Item.WORN_EYES,
-		        		  Item.WORN_TORSO};
+		long[] piercable={Wearable.WORN_HEAD,
+		        		  Wearable.WORN_EARS,
+		        		  Wearable.WORN_EYES,
+		        		  Wearable.WORN_TORSO};
 		String fullPartName=null;
 		Wearable.CODES codes = Wearable.CODES.instance();
 		for(int i=0;i<codes.total();i++)

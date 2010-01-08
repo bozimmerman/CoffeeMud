@@ -212,7 +212,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
                         CMLib.commands().postSay(this,mob,I.name()+" will have to be emptied first.",true,false);
                         return false;
                     }
-                    if(!(I.amWearingAt(Item.IN_INVENTORY)))
+                    if(!(I.amWearingAt(Wearable.IN_INVENTORY)))
                     {
                         CMLib.commands().postSay(this,mob,I.name()+" will have to be removed first.",true,false);
                         return false;

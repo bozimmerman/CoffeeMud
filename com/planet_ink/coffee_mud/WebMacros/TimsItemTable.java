@@ -180,10 +180,10 @@ public class TimsItemTable extends StdWebMacro
 					int armorBonus=0;
 					for(long wornCode : codes.all())
 					{
-						if((wornCode == Item.IN_INVENTORY) 
-						|| (wornCode == Item.WORN_HELD)
-						|| (wornCode == Item.WORN_WIELD)
-						|| (wornCode == Item.WORN_MOUTH)) 
+						if((wornCode == Wearable.IN_INVENTORY) 
+						|| (wornCode == Wearable.WORN_HELD)
+						|| (wornCode == Wearable.WORN_WIELD)
+						|| (wornCode == Wearable.WORN_MOUTH)) 
 						 	continue;
 						Armor A=CMClass.getArmor("GenArmor");
 						A.setRawProperLocationBitmap(wornCode);
@@ -209,7 +209,7 @@ public class TimsItemTable extends StdWebMacro
 					W.setWeaponClassification(Weapon.CLASS_SWORD);
 					W.setWeaponType(Weapon.TYPE_SLASHING);
 					W.setMaterial(materials[m]);
-					W.setRawProperLocationBitmap(Item.WORN_WIELD|Item.WORN_HELD);
+					W.setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
 					W.setRawLogicalAnd(false);
 					W.baseEnvStats().setLevel(level);
 					W.baseEnvStats().setWeight(8);

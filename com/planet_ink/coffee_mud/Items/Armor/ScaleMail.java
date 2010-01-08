@@ -39,7 +39,7 @@ public class ScaleMail extends StdArmor
 		setName("a suit of Scalemail");
 		setDisplayText("a suit of armor made of overlapping leather scales.");
 		setDescription("This suit of armor is made of overlapping leather scales and will provide protection for the torso, arms, and legs.");
-		properWornBitmap=Item.WORN_TORSO | Item.WORN_ARMS | Item.WORN_LEGS;
+		properWornBitmap=Wearable.WORN_TORSO | Wearable.WORN_ARMS | Wearable.WORN_LEGS;
 		wornLogicalAnd=true;
 		baseEnvStats().setArmor(29);
 		baseEnvStats().setWeight(60);

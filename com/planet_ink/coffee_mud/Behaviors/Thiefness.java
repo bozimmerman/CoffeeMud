@@ -92,7 +92,7 @@ public class Thiefness extends CombatAbilities
 						{
 							Item potentialI=victim.fetchInventory(i);
 							if((potentialI!=null)
-							&&(potentialI.amWearingAt(Item.IN_INVENTORY))
+							&&(potentialI.amWearingAt(Wearable.IN_INVENTORY))
 							&&(CMLib.flags().canBeSeenBy(potentialI,mob)))
 								I=potentialI;
 						}

@@ -4118,14 +4118,14 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     for(int v=1;v<V.size();v++)
                     {
                         Item I=mob.fetchInventory((String)V.elementAt(v));
-                        if((I!=null)&&(!I.amWearingAt(Item.IN_INVENTORY)))
+                        if((I!=null)&&(!I.amWearingAt(Wearable.IN_INVENTORY)))
                         { found=true; break;}
                     }
                     if(!found) return false;
                 }
                 else
                 if(E instanceof Item)
-                    if(((Item)E).amWearingAt(Item.IN_INVENTORY))
+                    if(((Item)E).amWearingAt(Wearable.IN_INVENTORY))
                         return false;
                 break;
 			case 34: // +class

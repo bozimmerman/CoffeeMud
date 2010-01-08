@@ -152,7 +152,7 @@ public class Spell_MagicItem extends Spell
 					wand.addNonUninvokableEffect(A);
 				}
 				else
-				if(wand.fitsOn(Item.WORN_HELD)||wand.fitsOn(Item.WORN_WIELD))
+				if(wand.fitsOn(Wearable.WORN_HELD)||wand.fitsOn(Wearable.WORN_WIELD))
 				{
 					Ability A=CMClass.getAbility("Prop_WearSpellCast");
 					A.setMiscText("LAYERED;"+wandThis.ID()+";");

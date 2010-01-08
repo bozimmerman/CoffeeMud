@@ -373,7 +373,7 @@ public class StdDeity extends StdMOB implements Deity
 			if(Blessing.canTarget(Ability.CAN_ITEMS))
 			{
 				Item I=mob.fetchWieldedItem();
-				if(I==null) I=mob.fetchFirstWornItem(Item.WORN_HELD);
+				if(I==null) I=mob.fetchFirstWornItem(Wearable.WORN_HELD);
 				if(I==null) I=mob.fetchWornItem("all");
 				if(I==null) I=mob.fetchCarried(null,"all");
 				if(I==null) return;
@@ -424,7 +424,7 @@ public class StdDeity extends StdMOB implements Deity
 			if(Curse.canTarget(Ability.CAN_ITEMS))
 			{
 				Item I=mob.fetchWieldedItem();
-				if(I==null) I=mob.fetchFirstWornItem(Item.WORN_HELD);
+				if(I==null) I=mob.fetchFirstWornItem(Wearable.WORN_HELD);
 				if(I==null) I=mob.fetchWornItem("all");
 				if(I==null) I=mob.fetchCarried(null,"all");
 				if(I==null) return;

@@ -50,7 +50,7 @@ public class StdSmokable extends StdContainer implements Light
 
 		capacity=0;
 		containType=Container.CONTAIN_SMOKEABLES;
-		properWornBitmap=Item.WORN_MOUTH;
+		properWornBitmap=Wearable.WORN_MOUTH;
 		setMaterial(RawMaterial.RESOURCE_PIPEWEED);
 		wornLogicalAnd=false;
 		baseGoldValue=5;
@@ -128,7 +128,7 @@ public class StdSmokable extends StdContainer implements Light
 			{
 				if(((durationTicks%puffTicks)==0)
 				&&(owner() instanceof MOB)
-				&&(!amWearingAt(Item.IN_INVENTORY)))
+				&&(!amWearingAt(Wearable.IN_INVENTORY)))
 				{
 					MOB mob=(MOB)owner();
 					if((mob.location()!=null)

@@ -90,7 +90,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				if(I.whereCantWear(mob)<=0)
 					I.wearIfPossible(mob);
 				if(((I instanceof Armor)||(I instanceof Weapon))
-				&&(I.amWearingAt(Item.IN_INVENTORY)))
+				&&(I.amWearingAt(Wearable.IN_INVENTORY)))
 					I.destroy();
 			}
 		}
@@ -552,7 +552,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		for(int i=0;i<mob.inventorySize();i++)
 		{
 			Item I=mob.fetchInventory(i);
-			if((I!=null)&&(!I.amWearingAt(Item.IN_INVENTORY)))
+			if((I!=null)&&(!I.amWearingAt(Wearable.IN_INVENTORY)))
 			{
 				boolean ok=armorCheck(mob,I,allowedArmorLevel);
 				if((!ok)&&((I.rawWornCode()&CharClass.ARMOR_WEARMASK)>0))
@@ -627,7 +627,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		for(int i=0;i<mob.inventorySize();i++)
 		{
 			item=mob.fetchInventory(i);
-			if((item!=null)&&(!item.amWearingAt(Item.IN_INVENTORY)))
+			if((item!=null)&&(!item.amWearingAt(Wearable.IN_INVENTORY)))
 			{
 				Long oldCode=Long.valueOf(item.rawWornCode());
 				item.unWear();
@@ -659,10 +659,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			item=(Item)reWearSet.elementAt(r,1);
 			long oldCode=((Long)reWearSet.elementAt(r,2)).longValue();
 			int msgCode=CMMsg.MSG_WEAR;
-			if((oldCode&Item.WORN_WIELD)>0)
+			if((oldCode&Wearable.WORN_WIELD)>0)
 				msgCode=CMMsg.MSG_WIELD;
 			else
-			if((oldCode&Item.WORN_HELD)>0)
+			if((oldCode&Wearable.WORN_HELD)>0)
 				msgCode=CMMsg.MSG_HOLD;
 			CMMsg msg=CMClass.getMsg(mob,item,null,CMMsg.NO_EFFECT,null,msgCode,null,CMMsg.NO_EFFECT,null);
 			if((R.okMessage(mob,msg))
@@ -694,10 +694,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
             if(CMLib.dice().rollPercentage()>((Integer)policies.elementAt(d,1)).intValue())
                 continue;
             int flags=((Integer)policies.elementAt(d,2)).intValue();
-            if(CMath.bset(flags,CMMiscUtils.LOOTFLAG_WORN)&&I.amWearingAt(Item.IN_INVENTORY))
+            if(CMath.bset(flags,CMMiscUtils.LOOTFLAG_WORN)&&I.amWearingAt(Wearable.IN_INVENTORY))
                 continue;
             else
-            if(CMath.bset(flags,CMMiscUtils.LOOTFLAG_UNWORN)&&(!I.amWearingAt(Item.IN_INVENTORY)))
+            if(CMath.bset(flags,CMMiscUtils.LOOTFLAG_UNWORN)&&(!I.amWearingAt(Wearable.IN_INVENTORY)))
                 continue;
             if(CMath.bset(flags,CMMiscUtils.LOOTFLAG_LOSS))
                 return null;

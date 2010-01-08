@@ -79,8 +79,8 @@ public class Chant_Rockfeet extends Chant
         {
             if(target instanceof MOB)
             {
-                if((((MOB)target).getWearPositions(Item.WORN_HANDS)==0)
-                &&(((MOB)target).getWearPositions(Item.WORN_FEET)==0))
+                if((((MOB)target).getWearPositions(Wearable.WORN_HANDS)==0)
+                &&(((MOB)target).getWearPositions(Wearable.WORN_FEET)==0))
                     return Ability.QUALITY_INDIFFERENT;
             }
             Room R=mob.location();
@@ -96,8 +96,8 @@ public class Chant_Rockfeet extends Chant
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if((target.getWearPositions(Item.WORN_HANDS)==0)
-		&&(target.getWearPositions(Item.WORN_FEET)==0))
+		if((target.getWearPositions(Wearable.WORN_HANDS)==0)
+		&&(target.getWearPositions(Wearable.WORN_FEET)==0))
 		{
 			if(!auto)
 				mob.tell(target.name()+" doesn't have hands or feet to affect...");

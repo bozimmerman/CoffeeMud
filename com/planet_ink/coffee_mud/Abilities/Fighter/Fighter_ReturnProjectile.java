@@ -65,13 +65,13 @@ public class Fighter_ReturnProjectile extends FighterSkill
 		&&(mob.rangeToTarget()>0)
 		&&(mob.charStats().getBodyPart(Race.BODY_HAND)>1)
 		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(mob,-85+mob.charStats().getStat(CharStats.STAT_DEXTERITY)+(2*getXLEVELLevel(mob)),false))
-		&&(mob.freeWearPositions(Item.WORN_HELD,(short)0,(short)0)>0))
+		&&(mob.freeWearPositions(Wearable.WORN_HELD,(short)0,(short)0)>0))
 		{
 			Item w=(Item)msg.tool();
 			if((((Weapon)w).weaponClassification()==Weapon.CLASS_THROWN)
 			&&(msg.source().isMine(w)))
 			{
-				if(!w.amWearingAt(Item.IN_INVENTORY))
+				if(!w.amWearingAt(Wearable.IN_INVENTORY))
 					CMLib.commands().postRemove(msg.source(),w,true);
 				CMLib.commands().postDrop(msg.source(),w,true,false);
 			}

@@ -12979,7 +12979,7 @@ com.planet_ink.coffee_mud.Items.Armor.StdArmor:</p>
       
       
       
-      <pre>  public MyNewArmor()<br />  {<br />    super();<br /><br />    setName( "a super bracer" );<br />    setDescription( "A super duper bracer" );<br />    setDisplayText( "Someone left their super bracer here." );<br />    setSecretIdentity( "" );<br /><br />    setMaterial( RawMaterial.RESOURCE_STEEL );<br />    setBaseValue( 100 );<br />    baseEnvStats.setWeight( 5 );<br />    baseEnvStats.setArmor( 5 );<br />    setRawProperLocationBitmap( Item.WORN_LEFT_WRIST|Item.WORN_RIGHT_WRIST );<br />    setRawLogicalAnd( false );<br />    recoverEnvStats();<br />  }<br /></pre>
+      <pre>  public MyNewArmor()<br />  {<br />    super();<br /><br />    setName( "a super bracer" );<br />    setDescription( "A super duper bracer" );<br />    setDisplayText( "Someone left their super bracer here." );<br />    setSecretIdentity( "" );<br /><br />    setMaterial( RawMaterial.RESOURCE_STEEL );<br />    setBaseValue( 100 );<br />    baseEnvStats.setWeight( 5 );<br />    baseEnvStats.setArmor( 5 );<br />    setRawProperLocationBitmap( Wearable.WORN_LEFT_WRIST|Wearable.WORN_RIGHT_WRIST );<br />    setRawLogicalAnd( false );<br />    recoverEnvStats();<br />  }<br /></pre>
 
 
 
@@ -15114,7 +15114,7 @@ to spells such as Polymorph or Wish, but not for player creation), or
       
       
       
-      <pre>  protected long forbiddenWornBits()<br />  {<br />    return Item.WORN_WIELD<br />           |Item.WORN_WAIST<br />           |Item.WORN_ABOUT_BODY<br />           |Item.WORN_FEET<br />           |Item.WORN_HANDS;<br />  }<br /></pre>
+      <pre>  protected long forbiddenWornBits()<br />  {<br />    return Wearable.WORN_WIELD<br />           |Wearable.WORN_WAIST<br />           |Wearable.WORN_ABOUT_BODY<br />           |Wearable.WORN_FEET<br />           |Wearable.WORN_HANDS;<br />  }<br /></pre>
 
 
 

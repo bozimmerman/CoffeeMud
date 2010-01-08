@@ -55,7 +55,7 @@ public class Arquebus extends StdWeapon
 		recoverEnvStats();
 		wornLogicalAnd=true;
 		material=RawMaterial.RESOURCE_IRON;
-		properWornBitmap=Item.WORN_HELD|Item.WORN_WIELD;
+		properWornBitmap=Wearable.WORN_HELD|Wearable.WORN_WIELD;
 		weaponClassification=Weapon.CLASS_RANGED;
 		weaponType=Weapon.TYPE_PIERCING;
 	}

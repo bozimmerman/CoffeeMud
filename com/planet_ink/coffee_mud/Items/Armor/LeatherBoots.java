@@ -39,7 +39,7 @@ public class LeatherBoots extends StdArmor
 		setName("a pair of leather boots");
 		setDisplayText("a pair of leather boots sits here.");
 		setDescription("They look like a rather nice pair of footwear.");
-		properWornBitmap=Item.WORN_FEET;
+		properWornBitmap=Wearable.WORN_FEET;
 		wornLogicalAnd=false;
 		baseEnvStats().setArmor(1);
 		baseEnvStats().setWeight(1);

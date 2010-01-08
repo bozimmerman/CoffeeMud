@@ -39,7 +39,7 @@ public class LeatherBracers extends StdArmor
 		setName("a pair of leather bracers");
 		setDisplayText("a pair of leather bracers are here.");
 		setDescription("Strong enough to protect your forearms against the strongest of feathers...");
-		properWornBitmap=Item.WORN_LEFT_WRIST | Item.WORN_RIGHT_WRIST | Item.WORN_ARMS;
+		properWornBitmap=Wearable.WORN_LEFT_WRIST | Wearable.WORN_RIGHT_WRIST | Wearable.WORN_ARMS;
 		wornLogicalAnd=true;
 		baseEnvStats().setArmor(1);
 		baseEnvStats().setWeight(5);

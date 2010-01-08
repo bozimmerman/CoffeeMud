@@ -139,15 +139,15 @@ public class Kill extends StdCommand
             Item weapon=mob.fetchWieldedItem();
             if(weapon==null)
             {
-                Item possibleOtherWeapon=mob.fetchFirstWornItem(Item.WORN_HELD);
+                Item possibleOtherWeapon=mob.fetchFirstWornItem(Wearable.WORN_HELD);
                 if((possibleOtherWeapon!=null)
                 &&(possibleOtherWeapon instanceof Weapon)
-                &&possibleOtherWeapon.fitsOn(Item.WORN_WIELD)
+                &&possibleOtherWeapon.fitsOn(Wearable.WORN_WIELD)
                 &&(CMLib.flags().canBeSeenBy(possibleOtherWeapon,mob))
                 &&(CMLib.flags().isRemovable(possibleOtherWeapon)))
                 {
                     CMLib.commands().postRemove(mob,possibleOtherWeapon,false);
-                    if(possibleOtherWeapon.amWearingAt(Item.IN_INVENTORY))
+                    if(possibleOtherWeapon.amWearingAt(Wearable.IN_INVENTORY))
                     {
                         Command C=CMClass.getCommand("Wield");
                         if(C!=null) C.execute(mob,(Vector)CMParms.makeVector("WIELD",possibleOtherWeapon),metaFlags);

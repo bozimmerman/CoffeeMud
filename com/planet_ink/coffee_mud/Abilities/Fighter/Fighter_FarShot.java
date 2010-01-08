@@ -132,7 +132,7 @@ public class Fighter_FarShot extends FighterSkill
 			for(int i=qualifiedWeapons.size()-1;i>=0;i--)
 			{
 				Item I=(Item)qualifiedWeapons.elementAt(i);
-				if((I.amWearingAt(Item.IN_INVENTORY))||(I.owner()!=affected))
+				if((I.amWearingAt(Wearable.IN_INVENTORY))||(I.owner()!=affected))
 				{
 					qualifiedWeapons.removeElement(I);
 					I.delEffect(I.fetchEffect(ID()));

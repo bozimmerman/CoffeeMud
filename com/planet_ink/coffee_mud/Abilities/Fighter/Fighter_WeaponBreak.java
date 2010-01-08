@@ -109,8 +109,8 @@ public class Fighter_WeaponBreak extends FighterSkill
 		   &&(hisWeapon!=null)
 		   &&(hisWeapon.envStats().ability()==0)
 		   &&(!CMLib.flags().isABonusItems(hisWeapon))
-		&&((hisWeapon.rawProperLocationBitmap()==Item.WORN_WIELD)
-		   ||(hisWeapon.rawProperLocationBitmap()==Item.WORN_WIELD+Item.WORN_HELD)))
+		&&((hisWeapon.rawProperLocationBitmap()==Wearable.WORN_WIELD)
+		   ||(hisWeapon.rawProperLocationBitmap()==Wearable.WORN_WIELD+Wearable.WORN_HELD)))
 		{
 			String str=auto?hisWeapon.name()+" break(s) in <T-HIS-HER> hands!":"<S-NAME> attack(s) <T-NAMESELF> and destroy(s) "+hisWeapon.name()+"!";
 			hisWeapon.unWear();

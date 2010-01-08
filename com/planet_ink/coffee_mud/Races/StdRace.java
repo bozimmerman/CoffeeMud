@@ -215,7 +215,7 @@ public class StdRace implements Race
             {
                 if((msg.source()==myChar)
                 &&(fertile())
-                &&(msg.source().fetchWornItems(Item.WORN_LEGS|Item.WORN_WAIST,(short)-2048,(short)0).size()==0))
+                &&(msg.source().fetchWornItems(Wearable.WORN_LEGS|Wearable.WORN_WAIST,(short)-2048,(short)0).size()==0))
                 {
                     msg.source().curState().adjFatigue(CharState.FATIGUED_MILLIS,msg.source().maxState());
                     myChar.curState().adjFatigue(CharState.FATIGUED_MILLIS,myChar.maxState());
@@ -233,8 +233,8 @@ public class StdRace implements Race
                 &&(myChar.charStats().getStat(CharStats.STAT_GENDER)==('F'))
                 &&(msg.source().charStats().getStat(CharStats.STAT_GENDER)==('M'))
     			&&(fertile())
-    			&&(myChar.fetchWornItems(Item.WORN_LEGS|Item.WORN_WAIST,(short)-2048,(short)0).size()==0)
-    			&&(msg.source().fetchWornItems(Item.WORN_LEGS|Item.WORN_WAIST,(short)-2048,(short)0).size()==0)
+    			&&(myChar.fetchWornItems(Wearable.WORN_LEGS|Wearable.WORN_WAIST,(short)-2048,(short)0).size()==0)
+    			&&(msg.source().fetchWornItems(Wearable.WORN_LEGS|Wearable.WORN_WAIST,(short)-2048,(short)0).size()==0)
     			&&((ID().equals("Human"))
     			   ||(msg.source().charStats().getMyRace().ID().equals("Human"))
     			   ||(msg.source().charStats().getMyRace().ID().equals(ID())))

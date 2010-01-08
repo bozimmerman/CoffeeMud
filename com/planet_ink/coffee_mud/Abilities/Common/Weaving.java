@@ -373,7 +373,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 						((Weapon)building).setWeaponClassification(cl);
 				}
 				building.baseEnvStats().setDamage(armordmg);
-				((Weapon)building).setRawProperLocationBitmap(Item.WORN_WIELD|Item.WORN_HELD);
+				((Weapon)building).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
 				((Weapon)building).setRawLogicalAnd((capacity>1));
 			}
 			key=null;

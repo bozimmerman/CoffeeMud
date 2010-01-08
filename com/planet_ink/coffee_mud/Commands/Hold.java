@@ -52,14 +52,14 @@ public class Hold extends StdCommand
 			mob.tell("You don't seem to be carrying that.");
 		else
 		for(int i=0;i<items.size();i++)
-			if((items.size()==1)||(((Item)items.elementAt(i)).canWear(mob,Item.WORN_HELD)))
+			if((items.size()==1)||(((Item)items.elementAt(i)).canWear(mob,Wearable.WORN_HELD)))
 			{
 				Item item=(Item)items.elementAt(i);
 				int msgType=CMMsg.MSG_HOLD;
 				String str="<S-NAME> hold(s) <T-NAME>.";
-				if((mob.freeWearPositions(Item.WORN_WIELD,(short)0,(short)0)>0)
-				&&((item.rawProperLocationBitmap()==Item.WORN_WIELD)
-				||(item.rawProperLocationBitmap()==(Item.WORN_HELD|Item.WORN_WIELD))))
+				if((mob.freeWearPositions(Wearable.WORN_WIELD,(short)0,(short)0)>0)
+				&&((item.rawProperLocationBitmap()==Wearable.WORN_WIELD)
+				||(item.rawProperLocationBitmap()==(Wearable.WORN_HELD|Wearable.WORN_WIELD))))
 				{
 					str="<S-NAME> wield(s) <T-NAME>.";
 					msgType=CMMsg.MSG_WIELD;

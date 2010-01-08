@@ -112,20 +112,20 @@ public class Spell_Meld extends Spell
 				return false;
 			}
 			
-			if(shinBone(itemOne,itemTwo,Item.WORN_HEAD,Item.WORN_NECK)
-			   ||shinBone(itemOne,itemTwo,Item.WORN_HEAD,Item.WORN_EARS)
-			   ||shinBone(itemOne,itemTwo,Item.WORN_HEAD,Item.WORN_EYES)
-			   ||shinBone(itemOne,itemTwo,Item.WORN_HEAD,Item.WORN_TORSO)
-			   ||shinBone(itemOne,itemTwo,Item.WORN_NECK,Item.WORN_TORSO)
-			   ||shinBone(itemOne,itemTwo,Item.WORN_TORSO,Item.WORN_ARMS)
-			   ||shinBone(itemOne,itemTwo,Item.WORN_TORSO,Item.WORN_WAIST)
-			   ||shinBone(itemOne,itemTwo,Item.WORN_WAIST,Item.WORN_LEGS)
-			   ||shinBone(itemOne,itemTwo,Item.WORN_ARMS,Item.WORN_LEFT_WRIST)
-			   ||shinBone(itemOne,itemTwo,Item.WORN_ARMS,Item.WORN_HANDS)
-			   ||shinBone(itemOne,itemTwo,Item.WORN_HANDS,Item.WORN_LEFT_WRIST)
-			   ||shinBone(itemOne,itemTwo,Item.WORN_HANDS,Item.WORN_RIGHT_FINGER)
-			   ||shinBone(itemOne,itemTwo,Item.WORN_TORSO,Item.WORN_LEGS)
-			   ||shinBone(itemOne,itemTwo,Item.WORN_LEGS,Item.WORN_FEET))
+			if(shinBone(itemOne,itemTwo,Wearable.WORN_HEAD,Wearable.WORN_NECK)
+			   ||shinBone(itemOne,itemTwo,Wearable.WORN_HEAD,Wearable.WORN_EARS)
+			   ||shinBone(itemOne,itemTwo,Wearable.WORN_HEAD,Wearable.WORN_EYES)
+			   ||shinBone(itemOne,itemTwo,Wearable.WORN_HEAD,Wearable.WORN_TORSO)
+			   ||shinBone(itemOne,itemTwo,Wearable.WORN_NECK,Wearable.WORN_TORSO)
+			   ||shinBone(itemOne,itemTwo,Wearable.WORN_TORSO,Wearable.WORN_ARMS)
+			   ||shinBone(itemOne,itemTwo,Wearable.WORN_TORSO,Wearable.WORN_WAIST)
+			   ||shinBone(itemOne,itemTwo,Wearable.WORN_WAIST,Wearable.WORN_LEGS)
+			   ||shinBone(itemOne,itemTwo,Wearable.WORN_ARMS,Wearable.WORN_LEFT_WRIST)
+			   ||shinBone(itemOne,itemTwo,Wearable.WORN_ARMS,Wearable.WORN_HANDS)
+			   ||shinBone(itemOne,itemTwo,Wearable.WORN_HANDS,Wearable.WORN_LEFT_WRIST)
+			   ||shinBone(itemOne,itemTwo,Wearable.WORN_HANDS,Wearable.WORN_RIGHT_FINGER)
+			   ||shinBone(itemOne,itemTwo,Wearable.WORN_TORSO,Wearable.WORN_LEGS)
+			   ||shinBone(itemOne,itemTwo,Wearable.WORN_LEGS,Wearable.WORN_FEET))
 			{
 
 			}
@@ -138,12 +138,12 @@ public class Spell_Meld extends Spell
 		else
 		if((itemOne instanceof Weapon)||(itemTwo instanceof Weapon))
 		{
-			if(!itemOne.fitsOn(Item.WORN_HELD))
+			if(!itemOne.fitsOn(Wearable.WORN_HELD))
 			{
 				mob.tell(itemOne.name()+" can't be held, and thus can't be melded with "+itemTwo.name()+".");
 				return false;
 			}
-			if(!itemTwo.fitsOn(Item.WORN_HELD))
+			if(!itemTwo.fitsOn(Wearable.WORN_HELD))
 			{
 				mob.tell(itemTwo.name()+" can't be held, and thus can't be melded with "+itemOne.name()+".");
 				return false;
@@ -207,43 +207,43 @@ public class Spell_Meld extends Spell
 						material=((Armor)itemTwo).material();
 
 					long wornLocation=itemOne.rawProperLocationBitmap()|itemTwo.rawProperLocationBitmap();
-					if((wornLocation&Item.WORN_HELD)==(Item.WORN_HELD))
-						wornLocation-=Item.WORN_HELD;
-					if(((wornLocation&Item.WORN_LEFT_FINGER)==(Item.WORN_LEFT_FINGER))
-					   &&((wornLocation&Item.WORN_RIGHT_FINGER)==(Item.WORN_RIGHT_FINGER)))
+					if((wornLocation&Wearable.WORN_HELD)==(Wearable.WORN_HELD))
+						wornLocation-=Wearable.WORN_HELD;
+					if(((wornLocation&Wearable.WORN_LEFT_FINGER)==(Wearable.WORN_LEFT_FINGER))
+					   &&((wornLocation&Wearable.WORN_RIGHT_FINGER)==(Wearable.WORN_RIGHT_FINGER)))
 					{
-						if(((wornLocation&Item.WORN_LEFT_WRIST)==(Item.WORN_LEFT_WRIST))
-						&&((wornLocation&Item.WORN_RIGHT_WRIST)==0))
-						   wornLocation-=Item.WORN_RIGHT_FINGER;
+						if(((wornLocation&Wearable.WORN_LEFT_WRIST)==(Wearable.WORN_LEFT_WRIST))
+						&&((wornLocation&Wearable.WORN_RIGHT_WRIST)==0))
+						   wornLocation-=Wearable.WORN_RIGHT_FINGER;
 						else
-						if(((wornLocation&Item.WORN_RIGHT_WRIST)==(Item.WORN_RIGHT_WRIST))
-						&&((wornLocation&Item.WORN_LEFT_WRIST)==0))
-						   wornLocation-=Item.WORN_LEFT_FINGER;
+						if(((wornLocation&Wearable.WORN_RIGHT_WRIST)==(Wearable.WORN_RIGHT_WRIST))
+						&&((wornLocation&Wearable.WORN_LEFT_WRIST)==0))
+						   wornLocation-=Wearable.WORN_LEFT_FINGER;
 						else
 						{
 							if(CMLib.dice().rollPercentage()>50)
-								wornLocation-=Item.WORN_RIGHT_FINGER;
+								wornLocation-=Wearable.WORN_RIGHT_FINGER;
 							else
-								wornLocation-=Item.WORN_LEFT_FINGER;
+								wornLocation-=Wearable.WORN_LEFT_FINGER;
 						}
 					}
 
-					if(((wornLocation&Item.WORN_LEFT_WRIST)==(Item.WORN_LEFT_WRIST))
-					   &&((wornLocation&Item.WORN_RIGHT_WRIST)==(Item.WORN_RIGHT_WRIST)))
+					if(((wornLocation&Wearable.WORN_LEFT_WRIST)==(Wearable.WORN_LEFT_WRIST))
+					   &&((wornLocation&Wearable.WORN_RIGHT_WRIST)==(Wearable.WORN_RIGHT_WRIST)))
 					{
-						if(((wornLocation&Item.WORN_LEFT_FINGER)==(Item.WORN_LEFT_FINGER))
-						&&((wornLocation&Item.WORN_RIGHT_FINGER)==0))
-						   wornLocation-=Item.WORN_RIGHT_WRIST;
+						if(((wornLocation&Wearable.WORN_LEFT_FINGER)==(Wearable.WORN_LEFT_FINGER))
+						&&((wornLocation&Wearable.WORN_RIGHT_FINGER)==0))
+						   wornLocation-=Wearable.WORN_RIGHT_WRIST;
 						else
-						if(((wornLocation&Item.WORN_RIGHT_FINGER)==(Item.WORN_RIGHT_FINGER))
-						&&((wornLocation&Item.WORN_LEFT_FINGER)==0))
-						   wornLocation-=Item.WORN_LEFT_WRIST;
+						if(((wornLocation&Wearable.WORN_RIGHT_FINGER)==(Wearable.WORN_RIGHT_FINGER))
+						&&((wornLocation&Wearable.WORN_LEFT_FINGER)==0))
+						   wornLocation-=Wearable.WORN_LEFT_WRIST;
 						else
 						{
 							if(CMLib.dice().rollPercentage()>50)
-								wornLocation-=Item.WORN_RIGHT_WRIST;
+								wornLocation-=Wearable.WORN_RIGHT_WRIST;
 							else
-								wornLocation-=Item.WORN_LEFT_WRIST;
+								wornLocation-=Wearable.WORN_LEFT_WRIST;
 						}
 					}
 

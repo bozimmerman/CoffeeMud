@@ -41,7 +41,7 @@ public class StdBoffWeapon extends StdWeapon
 		setDisplayText(" sits here.");
 		setDescription("This is a not so deadly looking weapon.");
 		wornLogicalAnd=false;
-		properWornBitmap=Item.WORN_HELD|Item.WORN_WIELD;
+		properWornBitmap=Wearable.WORN_HELD|Wearable.WORN_WIELD;
 		baseEnvStats().setAttackAdjustment(0);
 		baseEnvStats().setDamage(0);
 		baseEnvStats().setAbility(0);

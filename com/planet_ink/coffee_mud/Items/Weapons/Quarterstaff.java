@@ -48,7 +48,7 @@ public class Quarterstaff extends StdWeapon
 		recoverEnvStats();
 		wornLogicalAnd=true;
 		material=RawMaterial.RESOURCE_OAK;
-		properWornBitmap=Item.WORN_HELD|Item.WORN_WIELD;
+		properWornBitmap=Wearable.WORN_HELD|Wearable.WORN_WIELD;
 		weaponType=TYPE_BASHING;
 		weaponClassification=Weapon.CLASS_STAFF;
 	}

@@ -528,7 +528,7 @@ public class CombatAbilities extends StdBehavior
             I=mob.fetchInventory(i);
             if(I instanceof Wand)
             {
-                if(!I.amWearingAt(Item.IN_INVENTORY))
+                if(!I.amWearingAt(Wearable.IN_INVENTORY))
                     myWand=I;
                 else
                     backupWand=I;
@@ -538,10 +538,10 @@ public class CombatAbilities extends StdBehavior
                 if((((Weapon)I).minRange()>rtt)
                 ||(((Weapon)I).maxRange()<rtt))
                 {
-                    if(I.amWearingAt(Item.WORN_WIELD))
+                    if(I.amWearingAt(Wearable.WORN_WIELD))
                         wieldedItem=I;
                     else
-                    if((wieldMe==null)||(I.amWearingAt(Item.WORN_HELD)))
+                    if((wieldMe==null)||(I.amWearingAt(Wearable.WORN_HELD)))
                         wieldMe=I;
                 }
             }
@@ -628,7 +628,7 @@ public class CombatAbilities extends StdBehavior
 		&&(!victim.amDead())
 		&&((myWand!=null)||(backupWand!=null)))
 		{
-			if((myWand==null)&&(backupWand!=null)&&(backupWand.canWear(mob,Item.WORN_HELD)))
+			if((myWand==null)&&(backupWand!=null)&&(backupWand.canWear(mob,Wearable.WORN_HELD)))
 			{
 				Vector V=new Vector();
 				V.addElement("hold");

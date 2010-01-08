@@ -1335,11 +1335,11 @@ public class CMAble extends StdLibrary implements AbilityMapper
 					continue;
 				container=I.ultimateContainer();
 				if(container==null) container=I;
-				if((comp.getLocation()==AbilityComponent.CompLocation.INVENTORY)&&(!container.amWearingAt(Item.IN_INVENTORY)))
+				if((comp.getLocation()==AbilityComponent.CompLocation.INVENTORY)&&(!container.amWearingAt(Wearable.IN_INVENTORY)))
 					continue;
-				if((comp.getLocation()==AbilityComponent.CompLocation.HELD)&&(!container.amWearingAt(Item.WORN_HELD)))
+				if((comp.getLocation()==AbilityComponent.CompLocation.HELD)&&(!container.amWearingAt(Wearable.WORN_HELD)))
 					continue;
-				if((comp.getLocation()==AbilityComponent.CompLocation.WORN)&&(container.amWearingAt(Item.IN_INVENTORY)))
+				if((comp.getLocation()==AbilityComponent.CompLocation.WORN)&&(container.amWearingAt(Wearable.IN_INVENTORY)))
 					continue;
                 if((comp.getType()!=AbilityComponent.CompType.STRING)
                 &&(CMLib.flags().isOnFire(I)||CMLib.flags().enchanted(I)))

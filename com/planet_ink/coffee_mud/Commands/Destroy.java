@@ -796,7 +796,7 @@ public class Destroy extends StdCommand
 							return false;
 						}
 						else	
-						if((!dropThis.amWearingAt(Item.WORN_HELD))&&(!dropThis.amWearingAt(Item.WORN_WIELD)))
+						if((!dropThis.amWearingAt(Wearable.WORN_HELD))&&(!dropThis.amWearingAt(Wearable.WORN_WIELD)))
 						{
 							mob.tell("You must remove that first.");
 							return false;

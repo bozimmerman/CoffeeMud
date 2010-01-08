@@ -39,7 +39,7 @@ public class GenShirt extends GenArmor
 		setName("a nice tunic");
 		setDisplayText("a plain tunic is folded neatly here.");
 		setDescription("It is a plain buttoned tunic.");
-		properWornBitmap=Item.WORN_TORSO;
+		properWornBitmap=Wearable.WORN_TORSO;
 		wornLogicalAnd=true;
 		baseEnvStats().setArmor(2);
 		baseEnvStats().setWeight(1);

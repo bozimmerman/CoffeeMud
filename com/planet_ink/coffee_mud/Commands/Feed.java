@@ -69,7 +69,7 @@ public class Feed extends StdCommand
 				mob.tell("I don't see "+what+" here.");
 				return false;
 			}
-			if(!item.amWearingAt(Item.IN_INVENTORY))
+			if(!item.amWearingAt(Wearable.IN_INVENTORY))
 			{
 				mob.tell("You might want to remove that first.");
 				return false;

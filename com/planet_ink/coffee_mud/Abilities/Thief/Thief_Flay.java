@@ -53,8 +53,8 @@ public class Thief_Flay extends ThiefSkill
 	    &&msg.amISource((MOB)affected)
 	    &&(msg.targetMinor()==CMMsg.TYP_WEAR)
 	    &&(msg.target() instanceof Item)
-	    &&((CMath.bset(((Item)msg.target()).rawProperLocationBitmap(),Item.WORN_BACK))
-        ||(CMath.bset(((Item)msg.target()).rawProperLocationBitmap(),Item.WORN_TORSO))))
+	    &&((CMath.bset(((Item)msg.target()).rawProperLocationBitmap(),Wearable.WORN_BACK))
+        ||(CMath.bset(((Item)msg.target()).rawProperLocationBitmap(),Wearable.WORN_TORSO))))
 	    {
 	        msg.source().tell("The flayed marks on your back make wearing that too painful.");
 	        return false;
@@ -106,7 +106,7 @@ public class Thief_Flay extends ThiefSkill
 		for(int i=0;i<target.inventorySize();i++)
 		{
 		    Item I=target.fetchInventory(i);
-		    if((I!=null)&&((I.amWearingAt(Item.WORN_BACK))||(I.amWearingAt(Item.WORN_TORSO))))
+		    if((I!=null)&&((I.amWearingAt(Wearable.WORN_BACK))||(I.amWearingAt(Wearable.WORN_TORSO))))
 		    {
 			    mob.tell(target.name()+" must be remove items worn on the torso or back first.");
 			    return false;

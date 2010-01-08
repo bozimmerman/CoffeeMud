@@ -1925,11 +1925,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				if(ILOC!=null)
 					item.setContainer((Item)IIDmap.get(ILOC));
 				else
-				if(item.amWearingAt(Item.WORN_HELD)
+				if(item.amWearingAt(Wearable.WORN_HELD)
 				&&(!item.rawLogicalAnd())
-				&&((item.rawProperLocationBitmap()&Item.WORN_WIELD)>0)
-				&&(M.fetchWornItems(Item.WORN_WIELD,(short)0,(short)0).size()==0))
-					item.wearAt(Item.WORN_WIELD);
+				&&((item.rawProperLocationBitmap()&Wearable.WORN_WIELD)>0)
+				&&(M.fetchWornItems(Wearable.WORN_WIELD,(short)0,(short)0).size()==0))
+					item.wearAt(Wearable.WORN_WIELD);
 			}
 		}
 		if(variableEq) M.flagVariableEq();

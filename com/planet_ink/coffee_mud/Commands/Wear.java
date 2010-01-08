@@ -43,14 +43,14 @@ public class Wear extends StdCommand
 	{
 		String str="<S-NAME> put(s) on <T-NAME>.";
 		int msgType=CMMsg.MSG_WEAR;
-		if(item.rawProperLocationBitmap()==Item.WORN_HELD)
+		if(item.rawProperLocationBitmap()==Wearable.WORN_HELD)
 		{
 			str="<S-NAME> hold(s) <T-NAME>.";
 			msgType=CMMsg.MSG_HOLD;
 		}
 		else
-		if((item.rawProperLocationBitmap()==Item.WORN_WIELD)
-		||(item.rawProperLocationBitmap()==(Item.WORN_HELD|Item.WORN_WIELD)))
+		if((item.rawProperLocationBitmap()==Wearable.WORN_WIELD)
+		||(item.rawProperLocationBitmap()==(Wearable.WORN_HELD|Wearable.WORN_WIELD)))
 		{
 			str="<S-NAME> wield(s) <T-NAME>.";
 			msgType=CMMsg.MSG_WIELD;
@@ -145,7 +145,7 @@ public class Wear extends StdCommand
 			for(int i=items.size()-2;i>=0;i--)
 			{
 				I=(Item)items.elementAt(i);
-				if(I.rawProperLocationBitmap()==Item.WORN_HELD)
+				if(I.rawProperLocationBitmap()==Wearable.WORN_HELD)
 				{
 					items.removeElementAt(i);
 					items.addElement(I);

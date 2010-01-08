@@ -53,7 +53,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 		super.executeMsg(host,msg);
 		if(affected instanceof Item)
 		{
-			if(((Item)affected).amWearingAt(Item.IN_INVENTORY)
+			if(((Item)affected).amWearingAt(Wearable.IN_INVENTORY)
 			||((invoker()!=null)&&(CMLib.flags().isInTheGame(invoker(),false)&&(((Item)affected).owner()!=invoker()))))
 				unInvoke();
 		}
@@ -72,7 +72,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 		&&(((Item)affected).owner() instanceof MOB))
 		{
 			MOB M=(MOB)((Item)affected).owner();
-			if((!M.amDead())&&(CMLib.flags().isInTheGame(M,true))&&(!((Item)affected).amWearingAt(Item.IN_INVENTORY)))
+			if((!M.amDead())&&(CMLib.flags().isInTheGame(M,true))&&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY)))
 				M.tell(M,affected,null,"<T-NAME> no longer feel(s) quite as snuggly tweaked.");
 		}
 		super.unInvoke();
@@ -102,15 +102,15 @@ public class Fighter_ArmorTweaking extends FighterSkill
 
 		Item armor=super.getTarget(mob,null,givenTarget,null,commands,Wearable.FILTER_WORNONLY);
 		if(armor==null) return false;
-		if((!armor.amWearingAt(Item.WORN_ABOUT_BODY))
-		&&(!armor.amWearingAt(Item.WORN_ARMS))
-		&&(!armor.amWearingAt(Item.WORN_BACK))
-		&&(!armor.amWearingAt(Item.WORN_HANDS))
-		&&(!armor.amWearingAt(Item.WORN_HEAD))
-		&&(!armor.amWearingAt(Item.WORN_LEGS))
-		&&(!armor.amWearingAt(Item.WORN_NECK))
-		&&(!armor.amWearingAt(Item.WORN_TORSO))
-		&&(!armor.amWearingAt(Item.WORN_WAIST)))
+		if((!armor.amWearingAt(Wearable.WORN_ABOUT_BODY))
+		&&(!armor.amWearingAt(Wearable.WORN_ARMS))
+		&&(!armor.amWearingAt(Wearable.WORN_BACK))
+		&&(!armor.amWearingAt(Wearable.WORN_HANDS))
+		&&(!armor.amWearingAt(Wearable.WORN_HEAD))
+		&&(!armor.amWearingAt(Wearable.WORN_LEGS))
+		&&(!armor.amWearingAt(Wearable.WORN_NECK))
+		&&(!armor.amWearingAt(Wearable.WORN_TORSO))
+		&&(!armor.amWearingAt(Wearable.WORN_WAIST)))
 		{
 			mob.tell(armor.name()+" can not be tweaked to provide any more benefit.");
 			return false;

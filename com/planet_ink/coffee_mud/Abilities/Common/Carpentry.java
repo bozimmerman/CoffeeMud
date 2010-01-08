@@ -380,7 +380,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			    setWeaponTypeClass((Weapon)building,misctype,Weapon.TYPE_SLASHING);
 				building.baseEnvStats().setAttackAdjustment((abilityCode()+(hardness*5)-1));
 				building.baseEnvStats().setDamage(armordmg+hardness);
-				((Weapon)building).setRawProperLocationBitmap(Item.WORN_WIELD|Item.WORN_HELD);
+				((Weapon)building).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
 				((Weapon)building).setRawLogicalAnd((capacity>1));
                 if(!(building instanceof Container))
                     building.baseEnvStats().setAttackAdjustment(building.baseEnvStats().attackAdjustment()+canContain);

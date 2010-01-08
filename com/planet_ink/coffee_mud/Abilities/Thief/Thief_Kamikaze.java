@@ -60,7 +60,7 @@ public class Thief_Kamikaze extends ThiefSkill
 					Trap T=CMLib.utensils().fetchMyTrap(I);
 					if((T!=null)&&(T.isABomb()))
 					{
-						if(!I.amWearingAt(Item.IN_INVENTORY))
+						if(!I.amWearingAt(Wearable.IN_INVENTORY))
 							CMLib.commands().postRemove(mob,I,true);
 						CMLib.commands().postDrop(mob,I,false,false);
 						if(I.owner() instanceof Room)

@@ -197,7 +197,7 @@ public class Soiled extends StdAbility
 		mob.location().show(mob,msgTarget,CMMsg.MSG_OK_VISUAL,"<T-NAME> has soiled <T-HIM-HERSELF>!");
         if(target instanceof MOB)
         {
-            Item pants=((MOB)target).fetchFirstWornItem(Item.WORN_WAIST);
+            Item pants=((MOB)target).fetchFirstWornItem(Wearable.WORN_WAIST);
             if((pants!=null)&&(pants.fetchEffect(ID())==null))
             {
 			    A=(Ability)copyOf();

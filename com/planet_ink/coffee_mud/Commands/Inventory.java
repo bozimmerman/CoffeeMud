@@ -57,7 +57,7 @@ public class Inventory extends StdCommand
 			Item thisItem=mob.fetchInventory(i);
 			if((thisItem!=null)
 			&&(thisItem.container()==null)
-			&&(thisItem.amWearingAt(Item.IN_INVENTORY)))
+			&&(thisItem.amWearingAt(Wearable.IN_INVENTORY)))
 			{
 				if(CMLib.flags().canBeSeenBy(thisItem,seer))
 					lst.foundAndSeen=true;

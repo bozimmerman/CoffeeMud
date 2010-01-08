@@ -39,7 +39,7 @@ public class StuddedLeatherArmor extends StdArmor
 		setName("suit of studded leather armor");
 		setDisplayText("a suit of leather armor reinforced with decorative studs");
 		setDescription("A suit of studded leather armor including everything to protect the body, legs and arms.");
-		properWornBitmap=Item.WORN_TORSO | Item.WORN_ARMS | Item.WORN_LEGS;
+		properWornBitmap=Wearable.WORN_TORSO | Wearable.WORN_ARMS | Wearable.WORN_LEGS;
 		wornLogicalAnd=true;
 		baseEnvStats().setArmor(22);
 		baseEnvStats().setAbility(0);

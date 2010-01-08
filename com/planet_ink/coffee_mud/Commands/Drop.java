@@ -119,7 +119,7 @@ public class Drop extends StdCommand
 				dropThis=mob.fetchWornItem(whatToDrop);
 				if(dropThis!=null)
 				{
-					if((!dropThis.amWearingAt(Item.WORN_HELD))&&(!dropThis.amWearingAt(Item.WORN_WIELD)))
+					if((!dropThis.amWearingAt(Wearable.WORN_HELD))&&(!dropThis.amWearingAt(Wearable.WORN_WIELD)))
 					{
 						mob.tell("You must remove that first.");
 						return false;

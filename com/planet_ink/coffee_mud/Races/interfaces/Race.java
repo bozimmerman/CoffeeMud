@@ -138,7 +138,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, C
 	 * A bitmap showing which on locations a member of this
 	 * race can not wear clothing, even if the members have one
 	 * or more of the required limbs.  The bitmap is made from
-	 * Item.WORN_* constant values.
+	 * Wearable.WORN_* constant values.
 	 * @see com.planet_ink.coffee_mud.Items.interfaces.Item
 	 * @return the illegal wear location bitmap
 	 */
@@ -376,47 +376,47 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, C
 
 	/** array mapping worn locations to body parts, indexed by body parts. */
 	public final static long[] BODY_WEARVECTOR={
-		Item.WORN_HEAD, // ANTENEA, having any of these removes that pos
-		Item.WORN_EYES, // EYES, having any of these adds this position
-		Item.WORN_EARS, // EARS, gains a wear position here for every 2
-		Item.WORN_HEAD, // HEAD, gains a wear position here for every 1
-		Item.WORN_NECK, // NECK, gains a wear position here for every 1
-		Item.WORN_ARMS, // ARMS, gains a wear position here for every 2
-		Item.WORN_HANDS, // HANDS, gains a wear position here for every 1
-		Item.WORN_TORSO, // TORSO, gains a wear position here for every 1
-		Item.WORN_LEGS, // LEGS, gains a wear position here for every 2
-		Item.WORN_FEET, // FEET, gains a wear position here for every 2
-		Item.WORN_HEAD, // NOSE, No applicable wear position for this body part
-		Item.WORN_HEAD, // GILLS, No applicable wear position for this body part
-		Item.WORN_MOUTH, // MOUTH, gains a wear position here for every 1
-		Item.WORN_WAIST, // WAIST, gains a wear position here for every 1
-		Item.WORN_BACK, // TAIL, having any of these removes that pos
-		Item.WORN_BACK, // WINGS, having any of these removes that pos
+		Wearable.WORN_HEAD, // ANTENEA, having any of these removes that pos
+		Wearable.WORN_EYES, // EYES, having any of these adds this position
+		Wearable.WORN_EARS, // EARS, gains a wear position here for every 2
+		Wearable.WORN_HEAD, // HEAD, gains a wear position here for every 1
+		Wearable.WORN_NECK, // NECK, gains a wear position here for every 1
+		Wearable.WORN_ARMS, // ARMS, gains a wear position here for every 2
+		Wearable.WORN_HANDS, // HANDS, gains a wear position here for every 1
+		Wearable.WORN_TORSO, // TORSO, gains a wear position here for every 1
+		Wearable.WORN_LEGS, // LEGS, gains a wear position here for every 2
+		Wearable.WORN_FEET, // FEET, gains a wear position here for every 2
+		Wearable.WORN_HEAD, // NOSE, No applicable wear position for this body part
+		Wearable.WORN_HEAD, // GILLS, No applicable wear position for this body part
+		Wearable.WORN_MOUTH, // MOUTH, gains a wear position here for every 1
+		Wearable.WORN_WAIST, // WAIST, gains a wear position here for every 1
+		Wearable.WORN_BACK, // TAIL, having any of these removes that pos
+		Wearable.WORN_BACK, // WINGS, having any of these removes that pos
 	};
 	/** 2 dimentional array, indexed first by body_ part constant, with each row
-	 * having two values: the first being the Item.WORN_ location which is affected
+	 * having two values: the first being the Wearable.WORN_ location which is affected
 	 * by having or losing this body part, and then the number of such body parts
 	 * necessary to gain or lose one such wear location.  A value of -1 means N/A
 	 */
 	public final static long[][] BODY_WEARGRID={
-		{Item.WORN_HEAD,-1}, // ANTENEA, having any of these removes that pos
-		{Item.WORN_EYES,2}, // EYES, having any of these adds this position
-		{Item.WORN_EARS,2}, // EARS, gains a wear position here for every 2
-		{Item.WORN_HEAD,1}, // HEAD, gains a wear position here for every 1
-		{Item.WORN_NECK,1}, // NECK, gains a wear position here for every 1
-		{Item.WORN_ARMS,2}, // ARMS, gains a wear position here for every 2
-		{Item.WORN_WIELD|Item.WORN_HELD|Item.WORN_HANDS
-	     |Item.WORN_LEFT_FINGER|Item.WORN_LEFT_WRIST
-		 |Item.WORN_RIGHT_FINGER|Item.WORN_RIGHT_WRIST,1}, // HANDS, gains a wear position here for every 1
+		{Wearable.WORN_HEAD,-1}, // ANTENEA, having any of these removes that pos
+		{Wearable.WORN_EYES,2}, // EYES, having any of these adds this position
+		{Wearable.WORN_EARS,2}, // EARS, gains a wear position here for every 2
+		{Wearable.WORN_HEAD,1}, // HEAD, gains a wear position here for every 1
+		{Wearable.WORN_NECK,1}, // NECK, gains a wear position here for every 1
+		{Wearable.WORN_ARMS,2}, // ARMS, gains a wear position here for every 2
+		{Wearable.WORN_WIELD|Wearable.WORN_HELD|Wearable.WORN_HANDS
+	     |Wearable.WORN_LEFT_FINGER|Wearable.WORN_LEFT_WRIST
+		 |Wearable.WORN_RIGHT_FINGER|Wearable.WORN_RIGHT_WRIST,1}, // HANDS, gains a wear position here for every 1
 			// lots of exceptions apply to the above
-		{Item.WORN_TORSO|Item.WORN_BACK,1}, // TORSO, gains a wear position here for every 1
-		{Item.WORN_LEGS,2}, // LEGS, gains a wear position here for every 2
-		{Item.WORN_FEET,2}, // FEET, gains a wear position here for every 2
+		{Wearable.WORN_TORSO|Wearable.WORN_BACK,1}, // TORSO, gains a wear position here for every 1
+		{Wearable.WORN_LEGS,2}, // LEGS, gains a wear position here for every 2
+		{Wearable.WORN_FEET,2}, // FEET, gains a wear position here for every 2
 		{-1,-1}, // NOSE, No applicable wear position for this body part
 		{-1,-1}, // GILLS, No applicable wear position for this body part
-		{Item.WORN_MOUTH,1}, // MOUTH, gains a wear position here for every 1
-		{Item.WORN_WAIST,1}, // WAIST, gains a wear position here for every 1
+		{Wearable.WORN_MOUTH,1}, // MOUTH, gains a wear position here for every 1
+		{Wearable.WORN_WAIST,1}, // WAIST, gains a wear position here for every 1
 		{-1,-1}, // TAIL, having any of these removes that pos
-		{Item.WORN_BACK,-1}, // WINGS, having any of these removes that pos
+		{Wearable.WORN_BACK,-1}, // WINGS, having any of these removes that pos
 	};
 }

@@ -50,8 +50,8 @@ public class Skill_TwoWeaponFighting extends StdSkill
     protected Weapon getFirstWeapon(MOB mob)
 	{
 		if((lastPrimary!=null)
-		&&(lastPrimary.amWearingAt(Item.WORN_WIELD))
-		&&(!lastPrimary.amWearingAt(Item.WORN_HELD))
+		&&(lastPrimary.amWearingAt(Wearable.WORN_WIELD))
+		&&(!lastPrimary.amWearingAt(Wearable.WORN_HELD))
 		&&(lastPrimary.container()==null))
 			return lastPrimary;
 		Weapon weapon=null;
@@ -59,8 +59,8 @@ public class Skill_TwoWeaponFighting extends StdSkill
 		{
 			Item item=mob.fetchInventory(i);
 			if((item instanceof Weapon)
-			    &&(item.amWearingAt(Item.WORN_WIELD))
-				&&(!item.amWearingAt(Item.WORN_HELD))
+			    &&(item.amWearingAt(Wearable.WORN_WIELD))
+				&&(!item.amWearingAt(Wearable.WORN_HELD))
 			    &&(item.container()==null))
 			{ weapon=(Weapon)item; break; }
 		}
@@ -71,8 +71,8 @@ public class Skill_TwoWeaponFighting extends StdSkill
 	private Weapon getSecondWeapon(MOB mob)
 	{
 		if((lastSecondary!=null)
-		&&(lastSecondary.amWearingAt(Item.WORN_HELD))
-		&&(!lastSecondary.amWearingAt(Item.WORN_WIELD))
+		&&(lastSecondary.amWearingAt(Wearable.WORN_HELD))
+		&&(!lastSecondary.amWearingAt(Wearable.WORN_WIELD))
 		&&(lastSecondary.container()==null))
 			return lastSecondary;
 		Weapon weapon=null;
@@ -80,8 +80,8 @@ public class Skill_TwoWeaponFighting extends StdSkill
 		{
 			Item item=mob.fetchInventory(i);
 			if((item instanceof Weapon)
-			    &&(item.amWearingAt(Item.WORN_HELD))
-				&&(!item.amWearingAt(Item.WORN_WIELD))
+			    &&(item.amWearingAt(Wearable.WORN_HELD))
+				&&(!item.amWearingAt(Wearable.WORN_WIELD))
 			    &&(item.container()==null))
 			{ weapon=(Weapon)item; break; }
 		}
@@ -139,12 +139,12 @@ public class Skill_TwoWeaponFighting extends StdSkill
 				&&(proficiencyCheck(mob,0,false))
 				&&(!mob.getVictim().amDead()))
 				{
-					primaryWeapon.setRawWornCode(Item.WORN_HELD);
-					weapon.setRawWornCode(Item.WORN_WIELD);
+					primaryWeapon.setRawWornCode(Wearable.WORN_HELD);
+					weapon.setRawWornCode(Wearable.WORN_WIELD);
 					mob.recoverEnvStats();
 					CMLib.combat().postAttack(mob,mob.getVictim(),weapon);
-					weapon.setRawWornCode(Item.WORN_HELD);
-					primaryWeapon.setRawWornCode(Item.WORN_WIELD);
+					weapon.setRawWornCode(Wearable.WORN_HELD);
+					primaryWeapon.setRawWornCode(Wearable.WORN_WIELD);
 					mob.recoverEnvStats();
 					if(CMLib.dice().rollPercentage()==1)
 						helpProficiency(mob);

@@ -63,7 +63,7 @@ public class Skill_Bash extends StdSkill
 		for(int i=0;i<mob.inventorySize();i++)
 		{
 			Item I=mob.fetchInventory(i);
-			if((I!=null)&&(I instanceof Shield)&&(!I.amWearingAt(Item.IN_INVENTORY)))
+			if((I!=null)&&(I instanceof Shield)&&(!I.amWearingAt(Wearable.IN_INVENTORY)))
 			{ thisShield=I; break;}
 		}
 		return thisShield;

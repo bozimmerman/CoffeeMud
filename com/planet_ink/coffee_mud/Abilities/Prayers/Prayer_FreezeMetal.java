@@ -65,7 +65,7 @@ public class Prayer_FreezeMetal extends Prayer
 		Item I=(Item)msg.target();
 		if(msg.targetMinor()==CMMsg.TYP_REMOVE)
 		{
-			if(I.amWearingAt(Item.IN_INVENTORY))
+			if(I.amWearingAt(Wearable.IN_INVENTORY))
 				msg.source().tell(affected.name()+" is too cold!");
 			else
 				msg.source().tell(affected.name()+" is frozen stuck!");
@@ -90,7 +90,7 @@ public class Prayer_FreezeMetal extends Prayer
 		{
 			Item item=mob.fetchInventory(i);
 			if((item!=null)
-			   &&(!item.amWearingAt(Item.IN_INVENTORY))
+			   &&(!item.amWearingAt(Wearable.IN_INVENTORY))
 			   &&(CMLib.flags().isMetal(item))
 			   &&(item.container()==null)
 			   &&(!mob.amDead()))

@@ -42,12 +42,12 @@ public class StdItem implements Item
 	protected byte[] 	description=null;
 	protected Item 		myContainer=null;
 	protected int 		myUses=Integer.MAX_VALUE;
-	protected long 		myWornCode=Item.IN_INVENTORY;
+	protected long 		myWornCode=Wearable.IN_INVENTORY;
 	protected String 	miscText="";
 	protected String    imageName=null;
 	protected String	secretIdentity=null;
 	protected boolean	wornLogicalAnd=false;
-	protected long 		properWornBitmap=Item.WORN_HELD;
+	protected long 		properWornBitmap=Wearable.WORN_HELD;
 	protected int		baseGoldValue=0;
 	protected int		material=RawMaterial.RESOURCE_COTTON;
 	protected Environmental owner=null;
@@ -282,7 +282,7 @@ public class StdItem implements Item
 	}
 	public void wearAt(long wornCode)
 	{
-		if(wornCode==Item.IN_INVENTORY)
+		if(wornCode==Wearable.IN_INVENTORY)
 		{
 			unWear();
 			return;
@@ -310,7 +310,7 @@ public class StdItem implements Item
 	{
 		if(toThis.rawLogicalAnd()!=wornLogicalAnd)
 			return false;
-		if((toThis.rawProperLocationBitmap()|Item.WORN_HELD)==(properWornBitmap|Item.WORN_HELD))
+		if((toThis.rawProperLocationBitmap()|Wearable.WORN_HELD)==(properWornBitmap|Wearable.WORN_HELD))
 			return true;
 		return false;
 	}
@@ -372,7 +372,7 @@ public class StdItem implements Item
 
 	public void unWear()
 	{
-		setRawWornCode(Item.IN_INVENTORY);
+		setRawWornCode(Wearable.IN_INVENTORY);
 		recoverEnvStats();
 	}
 
@@ -411,18 +411,18 @@ public class StdItem implements Item
 		{
 			if(CMLib.flags().isLightSource(this))
 			{
-				if(rawWornCode()!=Item.IN_INVENTORY)
+				if(rawWornCode()!=Wearable.IN_INVENTORY)
 					affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_LIGHTSOURCE);
 				if(CMLib.flags().isInDark(affected))
 					affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_DARK);
 			}
-			if((amWearingAt(Item.WORN_MOUTH))&&(affected instanceof MOB))
+			if((amWearingAt(Wearable.WORN_MOUTH))&&(affected instanceof MOB))
 			{
 				if(!(this instanceof Light))
 					affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SPEAK);
 				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_TASTE);
 			}
-			if((!amWearingAt(Item.WORN_FLOATING_NEARBY))
+			if((!amWearingAt(Wearable.WORN_FLOATING_NEARBY))
 			&&((!(affected instanceof MOB))||(((MOB)affected).riding()!=this)))
 				affectableStats.setWeight(affectableStats.weight()+envStats().weight());
 		}
@@ -599,7 +599,7 @@ public class StdItem implements Item
             Wearable.CODES codes = Wearable.CODES.instance();
 			if(alreadyWearing!=null)
 			{
-				if((cantWearAt!=Item.WORN_HELD)&&(cantWearAt!=Item.WORN_WIELD))
+				if((cantWearAt!=Wearable.WORN_HELD)&&(cantWearAt!=Wearable.WORN_WIELD))
 				{
 					if(!CMLib.commands().postRemove(mob,alreadyWearing,false))
 					{
@@ -623,10 +623,10 @@ public class StdItem implements Item
                     &&(layer == layer2)
 				    &&(CMLib.commands().postRemove(mob,alreadyWearing,false)))
 				        return true;
-					if(cantWearAt==Item.WORN_HELD)
+					if(cantWearAt==Wearable.WORN_HELD)
 						mob.tell("You are already holding "+alreadyWearing.name()+".");
 					else
-					if(cantWearAt==Item.WORN_WIELD)
+					if(cantWearAt==Wearable.WORN_WIELD)
 						mob.tell("You are already wielding "+alreadyWearing.name()+".");
 					else
 						mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+codes.name(cantWearAt)+".");
@@ -657,15 +657,15 @@ public class StdItem implements Item
 	
 	protected boolean alreadyWornMsg(MOB mob, Item thisItem)
 	{
-		if(!thisItem.amWearingAt(Item.IN_INVENTORY))
+		if(!thisItem.amWearingAt(Wearable.IN_INVENTORY))
 		{
-			if(thisItem.amWearingAt(Item.WORN_WIELD))
+			if(thisItem.amWearingAt(Wearable.WORN_WIELD))
 				mob.tell(thisItem.name()+" is already being wielded.");
 			else
-			if(thisItem.amWearingAt(Item.WORN_HELD))
+			if(thisItem.amWearingAt(Wearable.WORN_HELD))
 				mob.tell(thisItem.name()+" is already being held.");
 			else
-			if(thisItem.amWearingAt(Item.WORN_FLOATING_NEARBY))
+			if(thisItem.amWearingAt(Wearable.WORN_FLOATING_NEARBY))
 				mob.tell(thisItem.name()+" is floating nearby.");
 			else
 				mob.tell(thisItem.name()+"is already being worn.");
@@ -773,10 +773,10 @@ public class StdItem implements Item
 				return true;
 			break;
 		case CMMsg.TYP_HOLD:
-			if((!fitsOn(Item.WORN_HELD))||(properWornBitmap==0))
+			if((!fitsOn(Wearable.WORN_HELD))||(properWornBitmap==0))
 			{
 				StringBuffer str=new StringBuffer("You can't hold "+name()+".");
-				if(fitsOn(Item.WORN_WIELD))
+				if(fitsOn(Wearable.WORN_WIELD))
 					str.append("Try WIELDing it.");
 				else
 				if(properWornBitmap>0)
@@ -793,13 +793,13 @@ public class StdItem implements Item
 			}
 			if((!rawLogicalAnd())||(properWornBitmap==0))
 			{
-				if(!canWear(mob,Item.WORN_HELD))
+				if(!canWear(mob,Wearable.WORN_HELD))
 				{
-					Item alreadyWearing=mob.fetchFirstWornItem(Item.WORN_HELD);
+					Item alreadyWearing=mob.fetchFirstWornItem(Wearable.WORN_HELD);
 					if(alreadyWearing!=null)
 					{
 						if((!CMLib.commands().postRemove(mob,alreadyWearing,false))
-						||(!canWear(mob,Item.WORN_HELD)))
+						||(!canWear(mob,Wearable.WORN_HELD)))
 						{
 							mob.tell("Your hands are full.");
 							return false;
@@ -829,7 +829,7 @@ public class StdItem implements Item
 			}
 			return canWearComplete(mob,(long)((msg.value()<=0)?0:((long)(1<<msg.value())/2)));
 		case CMMsg.TYP_WIELD:
-			if((!fitsOn(Item.WORN_WIELD))||(properWornBitmap==0))
+			if((!fitsOn(Wearable.WORN_WIELD))||(properWornBitmap==0))
 			{
 				mob.tell("You can't wield "+name()+" as a weapon.");
 				return false;
@@ -843,9 +843,9 @@ public class StdItem implements Item
 			}
 			if((!rawLogicalAnd())||(properWornBitmap==0))
 			{
-				if(!canWear(mob,Item.WORN_WIELD))
+				if(!canWear(mob,Wearable.WORN_WIELD))
 				{
-					Item alreadyWearing=mob.fetchFirstWornItem(Item.WORN_WIELD);
+					Item alreadyWearing=mob.fetchFirstWornItem(Wearable.WORN_WIELD);
 					if(alreadyWearing!=null)
 					{
 						if(!CMLib.commands().postRemove(mob,alreadyWearing,false))
@@ -880,7 +880,7 @@ public class StdItem implements Item
 			{
 				if((!CMLib.flags().canBeSeenBy(this,mob))
 				&&((msg.sourceMajor()&CMMsg.MASK_ALWAYS)==0)
-				&&(amWearingAt(Item.IN_INVENTORY)))
+				&&(amWearingAt(Wearable.IN_INVENTORY)))
 				{
 					mob.tell("You can't see that.");
 					return false;
@@ -939,14 +939,14 @@ public class StdItem implements Item
 			{
 				if((!CMLib.flags().canBeSeenBy(this,mob))
 				   &&((msg.sourceMajor()&CMMsg.MASK_ALWAYS)==0)
-				   &&(amWearingAt(Item.IN_INVENTORY)))
+				   &&(amWearingAt(Wearable.IN_INVENTORY)))
 				{
 					mob.tell("You can't see that.");
 					return false;
 				}
-				if((!amWearingAt(Item.IN_INVENTORY))&&(!CMLib.flags().isRemovable(this)))
+				if((!amWearingAt(Wearable.IN_INVENTORY))&&(!CMLib.flags().isRemovable(this)))
 				{
-					if(amWearingAt(Item.WORN_WIELD)||amWearingAt(Item.WORN_HELD))
+					if(amWearingAt(Wearable.WORN_WIELD)||amWearingAt(Wearable.WORN_HELD))
 					{
 						mob.tell("You can't seem to let go of "+name()+".");
 						return false;

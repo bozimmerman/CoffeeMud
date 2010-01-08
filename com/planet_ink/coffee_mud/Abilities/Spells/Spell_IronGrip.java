@@ -76,7 +76,7 @@ public class Spell_IronGrip extends Spell
 			&&(msg.target()!=null)
 			&&(msg.target() instanceof Item)
 			&&(mob.isMine(msg.target()))
-			&&(((Item)msg.target()).amWearingAt(Item.WORN_WIELD)))
+			&&(((Item)msg.target()).amWearingAt(Wearable.WORN_WIELD)))
 			{
 				mob.location().show(mob,null,msg.target(),CMMsg.MSG_OK_ACTION,"<S-NAME> attempt(s) to let go of <O-NAME>, but <S-HIS-HER> grip is too strong!");
 				if((!mob.isInCombat())&&(CMath.bset(mob.getBitmap(),MOB.ATT_AUTODRAW)))
@@ -93,7 +93,7 @@ public class Spell_IronGrip extends Spell
 			&&(msg.target()!=null)
 			&&(msg.target() instanceof Item)
 			&&(mob.isMine(msg.target()))
-			&&(((Item)msg.target()).amWearingAt(Item.WORN_WIELD)))
+			&&(((Item)msg.target()).amWearingAt(Wearable.WORN_WIELD)))
 			{
 				mob.location().show(mob,null,msg.target(),CMMsg.MSG_OK_ACTION,"<S-NAME> attempt(s) to let go of <O-NAME>, but <S-HIS-HER> grip is too strong!");
 				return false;
@@ -102,7 +102,7 @@ public class Spell_IronGrip extends Spell
 			if((msg.amISource(mob))
 			&&(msg.sourceMinor()==CMMsg.TYP_THROW)
 			&&(msg.tool() instanceof Item)
-            &&(!((Item)msg.tool()).amWearingAt(Item.IN_INVENTORY))
+            &&(!((Item)msg.tool()).amWearingAt(Wearable.IN_INVENTORY))
 			&&(mob.isMine(msg.tool())))
 			{
 				mob.location().show(mob,null,msg.tool(),CMMsg.MSG_OK_ACTION,"<S-NAME> attempt(s) to let go of <O-NAME>, but <S-HIS-HER> grip is too strong!");

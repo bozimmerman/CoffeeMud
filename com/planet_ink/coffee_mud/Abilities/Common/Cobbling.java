@@ -119,7 +119,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 	{
 		if(!super.canMend(mob,E,quiet)) return false;
 		Item IE=(Item)E;
-		if(!IE.fitsOn(Item.WORN_FEET))
+		if(!IE.fitsOn(Wearable.WORN_FEET))
 		{
 			if(!quiet)
 				commonTell(mob,"That's not footwear.  That can't be mended.");
@@ -223,7 +223,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(building==null) return false;
-			if(!building.fitsOn(Item.WORN_FEET))
+			if(!building.fitsOn(Wearable.WORN_FEET))
 			{
 				commonTell(mob,"That's not footwear.  That can't be refitted.");
 				return false;

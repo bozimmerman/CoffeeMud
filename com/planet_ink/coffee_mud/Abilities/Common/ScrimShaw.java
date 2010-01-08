@@ -320,7 +320,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
                 ((Weapon)building).setWeaponClassification(Weapon.CLASS_FLAILED);
                 setWeaponTypeClass((Weapon)building,misctype,Weapon.TYPE_BASHING,Weapon.TYPE_PIERCING);
 				building.baseEnvStats().setDamage(capacity);
-				((Weapon)building).setRawProperLocationBitmap(Item.WORN_WIELD|Item.WORN_HELD);
+				((Weapon)building).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
 				((Weapon)building).setRawLogicalAnd(false);
 			}
 			if(building instanceof Rideable)

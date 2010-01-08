@@ -39,7 +39,7 @@ public class Robes extends StdArmor
 		setName("a set of robes");
 		setDisplayText("a set of robes is folded nice and neatly here.");
 		setDescription("It is a finely crafted set of robes.");
-		properWornBitmap=Item.WORN_TORSO | Item.WORN_ARMS | Item.WORN_LEGS;
+		properWornBitmap=Wearable.WORN_TORSO | Wearable.WORN_ARMS | Wearable.WORN_LEGS;
 		wornLogicalAnd=true;
 		baseEnvStats().setArmor(8);
 		baseEnvStats().setWeight(10);
