@@ -171,15 +171,15 @@ public class TimsItemTable extends StdWebMacro
 			str.append("</TR>");
 			//str.append("<TD>Attack</TD>");
 			//str.append("<TD>Damage</TD>");
+			Wearable.CODES codes = Wearable.CODES.instance();
 			for(int level=1;level<=91;level++)
 			{
 				str.append("<TR><TD>Armor</TD><TD>"+level+"</TD>");
 				for(int m=0;m<materials.length;m++)
 				{
 					int armorBonus=0;
-					for(int pos=0;pos<Item.WORN_CODES.length;pos++)
+					for(long wornCode : codes.all())
 					{
-						long wornCode=Item.WORN_CODES[pos];
 						if((wornCode == Item.IN_INVENTORY) 
 						|| (wornCode == Item.WORN_HELD)
 						|| (wornCode == Item.WORN_WIELD)

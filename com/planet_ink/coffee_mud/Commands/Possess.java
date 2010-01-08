@@ -47,7 +47,7 @@ public class Possess extends StdCommand
 			target=mob.location().fetchInhabitant(targetName);
 			if(target==null)
 			{
-				Environmental t=mob.location().fetchFromRoomFavorItems(null,targetName,Item.WORNREQ_UNWORNONLY);
+				Environmental t=mob.location().fetchFromRoomFavorItems(null,targetName,Wearable.FILTER_UNWORNONLY);
 				if((t!=null)&&(!(t instanceof MOB)))
 				{
 					if(!quiet)

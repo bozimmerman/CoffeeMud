@@ -592,7 +592,7 @@ public class Catalog extends StdCommand
 				if(ID.equalsIgnoreCase("SELF")||ID.equalsIgnoreCase("ME"))
 					thisThang=mob;
 				if(thisThang==null)
-					thisThang=R.fetchFromRoomFavorMOBs(null,ID,Item.WORNREQ_ANY);
+					thisThang=R.fetchFromRoomFavorMOBs(null,ID,Wearable.FILTER_ANY);
 				if(thisThang!=null)
 				{
 				    if(!catalog(R,mob,thisThang))

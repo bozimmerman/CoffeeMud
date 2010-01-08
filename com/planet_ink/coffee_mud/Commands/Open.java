@@ -51,7 +51,7 @@ public class Open extends StdCommand
 		if(dirCode>=0)
 			openThis=mob.location().getExitInDir(dirCode);
 		if(openThis==null)
-			openThis=mob.location().fetchFromMOBRoomItemExit(mob,null,whatToOpen,Item.WORNREQ_ANY);
+			openThis=mob.location().fetchFromMOBRoomItemExit(mob,null,whatToOpen,Wearable.FILTER_ANY);
 
 		if((openThis==null)||(!CMLib.flags().canBeSeenBy(openThis,mob)))
 		{

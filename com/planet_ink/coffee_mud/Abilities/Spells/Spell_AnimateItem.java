@@ -50,7 +50,7 @@ public class Spell_AnimateItem extends Spell
 		}
 		Vector V=new Vector();
 		V.addElement(commands.elementAt(0));
-		Item target=getTarget(mob,mob.location(),givenTarget,V,Item.WORNREQ_ANY);
+		Item target=getTarget(mob,mob.location(),givenTarget,V,Wearable.FILTER_ANY);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

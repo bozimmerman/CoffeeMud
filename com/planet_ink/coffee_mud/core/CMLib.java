@@ -300,6 +300,7 @@ public class CMLib
                 lib.libraries[l].propertiesLoaded();
         CharStats.CODES.reset();
         RawMaterial.CODES.reset();
+        Wearable.CODES.reset();
     }
     
     public static void activateLibraries() {

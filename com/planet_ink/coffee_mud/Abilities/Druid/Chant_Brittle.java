@@ -112,7 +112,7 @@ public class Chant_Brittle extends Chant
 		}
 
 		if(target==null)
-			target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
+			target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 
 		if(target==null) return false;
 

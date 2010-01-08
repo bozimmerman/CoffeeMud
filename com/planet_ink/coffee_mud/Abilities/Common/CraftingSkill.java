@@ -694,7 +694,7 @@ public class CraftingSkill extends GatheringSkill
 			Item I=(Item)allStuff.elementAt(i);
 			buf.append(CMStrings.padRight(I.usesRemaining()+"%",5)+I.name());
 			if(!I.amWearingAt(Item.IN_INVENTORY))
-				buf.append(" ("+CMLib.flags().wornLocation(I.rawWornCode())+")");
+				buf.append(" ("+Wearable.CODES.NAME(I.rawWornCode())+")");
 			if(i<(allStuff.size()-1))
 				buf.append("\n\r");
 		}

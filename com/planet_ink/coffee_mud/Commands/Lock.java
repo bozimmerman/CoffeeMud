@@ -51,7 +51,7 @@ public class Lock extends StdCommand
 		if(dirCode>=0)
 			lockThis=mob.location().getExitInDir(dirCode);
 		if(lockThis==null)
-			lockThis=mob.location().fetchFromMOBRoomItemExit(mob,null,whatTolock,Item.WORNREQ_ANY);
+			lockThis=mob.location().fetchFromMOBRoomItemExit(mob,null,whatTolock,Wearable.FILTER_ANY);
 
 		if((lockThis==null)||(!CMLib.flags().canBeSeenBy(lockThis,mob)))
 		{

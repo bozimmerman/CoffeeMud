@@ -57,7 +57,7 @@ public class Wear extends StdCommand
 		}
 		else
 		if(locationIndex!=0)
-			str="<S-NAME> put(s) <T-NAME> on <S-HIS-HER> "+Item.WORN_DESCS[locationIndex].toLowerCase()+".";
+			str="<S-NAME> put(s) <T-NAME> on <S-HIS-HER> "+Wearable.CODES.NAME(locationIndex).toLowerCase()+".";
 		CMMsg newMsg=CMClass.getMsg(mob,item,null,msgType,quiet?null:str);
 		newMsg.setValue(locationIndex);
 		if(mob.location().okMessage(mob,newMsg))
@@ -77,6 +77,7 @@ public class Wear extends StdCommand
 			mob.tell("Wear what?");
 			return false;
 		}
+		Wearable.CODES codes = Wearable.CODES.instance();
 		commands.removeElementAt(0);
 		if(commands.firstElement() instanceof Item)
 		{
@@ -91,10 +92,16 @@ public class Wear extends StdCommand
 					wearLocationIndex=((Integer)commands.firstElement()).intValue();
 					commands.removeElementAt(0);
 				}
-				if((commands.size()>0)
-				&&(commands.firstElement() instanceof String)
-				&&(CMParms.indexOfIgnoreCase(Item.WORN_DESCS, (String)commands.firstElement())>0))
-					wearLocationIndex=CMParms.indexOfIgnoreCase(Item.WORN_DESCS, (String)commands.firstElement());
+				else
+				if(commands.firstElement() instanceof String)
+				{
+					int newDex = codes.findDex_ignoreCase((String)commands.firstElement());
+					if(newDex>0)
+					{
+						wearLocationIndex=newDex;
+						commands.removeElementAt(0);
+					}
+				}
 				if((commands.size()>0)
 				&&(commands.lastElement() instanceof String)
 				&&(((String)commands.lastElement()).equalsIgnoreCase("QUIETLY")))
@@ -111,14 +118,9 @@ public class Wear extends StdCommand
 				if((i<commands.size()-2)&&((String)commands.elementAt(i+1)).equalsIgnoreCase("my"))
 					commands.removeElementAt(i+1);
 				String possibleWearLocation = CMParms.combine(commands, i+1).toLowerCase().trim();
-				int possIndex = CMParms.indexOfIgnoreCase(Item.WORN_DESCS, possibleWearLocation);
+				int possIndex = CMParms.indexOfIgnoreCase(Wearable.CODES.NAMES(), possibleWearLocation);
 				if(possIndex<0)
-					for(int w=0;w<Item.WORN_DESCS.length;w++)
-						if(Item.WORN_DESCS[w].toLowerCase().endsWith(" " + possibleWearLocation))
-						{
-							possIndex=w;
-							break;
-						}
+					possIndex = Wearable.CODES.FINDDEX_endsWith(" " + possibleWearLocation);
 				if(possIndex>0)
 				{
 					wearLocationIndex=possIndex;
@@ -133,7 +135,7 @@ public class Wear extends StdCommand
 				}
 				// will always break out here, one way or the other.
 			}
-		Vector items=CMLib.english().fetchItemList(mob,mob,null,commands,Item.WORNREQ_UNWORNONLY,true);
+		Vector items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,true);
 		if(items.size()==0)
 			mob.tell("You don't seem to be carrying that.");
 		else

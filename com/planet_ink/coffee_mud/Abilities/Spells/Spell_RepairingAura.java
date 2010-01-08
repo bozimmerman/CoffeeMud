@@ -76,7 +76,7 @@ public class Spell_RepairingAura extends Spell
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_ANY);
+		Environmental target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
 		if(target==null) return false;
 		if(target.fetchEffect(this.ID())!=null)
 		{

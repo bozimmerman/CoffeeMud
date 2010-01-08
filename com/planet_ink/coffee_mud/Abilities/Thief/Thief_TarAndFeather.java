@@ -119,13 +119,15 @@ public class Thief_TarAndFeather extends ThiefSkill
 			{
 			    target.addInventory(I);
 			    long wearCode=0;
-			    for(int i=0;i<Item.WORN_ORDER.length;i++)
+			    Wearable.CODES codes = Wearable.CODES.instance();
+			    for(int i=0;i<codes.all_ordered().length;i++)
 			    {
-			        if((!CMath.bset(target.charStats().getWearableRestrictionsBitmap(),Item.WORN_ORDER[i]))
-			        &&(Item.WORN_ORDER[i]!=Item.WORN_FLOATING_NEARBY)
-			        &&(Item.WORN_ORDER[i]!=Item.WORN_EYES)
-			        &&(Item.WORN_ORDER[i]!=Item.WORN_MOUTH))
-				        wearCode|=Item.WORN_ORDER[i];
+			    	long code = codes.all_ordered()[i];
+			        if((!CMath.bset(target.charStats().getWearableRestrictionsBitmap(),code))
+			        &&(code!=Item.WORN_FLOATING_NEARBY)
+			        &&(code!=Item.WORN_EYES)
+			        &&(code!=Item.WORN_MOUTH))
+				        wearCode|=code;
 			    }
 			    for(int i=0;i<Race.BODY_WEARGRID.length;i++)
 			    {

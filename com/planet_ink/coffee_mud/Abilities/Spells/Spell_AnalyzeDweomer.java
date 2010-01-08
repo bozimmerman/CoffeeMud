@@ -43,7 +43,7 @@ public class Spell_AnalyzeDweomer extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
+		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -65,12 +65,12 @@ public class Spell_AnalyzeDweomer extends Spell
                         str.append("It is worn on any one of the following: ");
                     else
                         str.append("It is worn on all of the following: ");
-                    for(int l=0;l<Item.WORN_CODES.length;l++)
+                    Wearable.CODES codes = Wearable.CODES.instance();
+                    for(long wornCode : codes.all())
                     {
-                        long wornCode=1<<l;
-                        if((CMLib.flags().wornLocation(wornCode).length()>0)
+                        if((codes.name(wornCode).length()>0)
                         &&(((target.rawProperLocationBitmap()&wornCode)==wornCode)))
-                            str.append(CMLib.flags().wornLocation(wornCode).toLowerCase()+" ");
+                            str.append(codes.name(wornCode).toLowerCase()+" ");
                     }
                     str.append(".  ");
                 }

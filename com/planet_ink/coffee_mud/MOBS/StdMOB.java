@@ -467,7 +467,7 @@ public class StdMOB implements MOB
     {
         if(CMSecurity.isAllowed(this,location(),"CARRYALL"))
             return Integer.MAX_VALUE/2;
-        return (2*Item.WORN_ORDER.length)
+        return (2*Wearable.CODES.TOTAL())
                 +(2*charStats().getStat(CharStats.STAT_DEXTERITY))
                 +(2*envStats().level());
     }
@@ -2817,10 +2817,10 @@ public class StdMOB implements MOB
         }
 		return item;
 	}
-	public Item fetchInventory(String itemName){ return fetchFromInventory(null,itemName,Item.WORNREQ_ANY,true,false);}
-	public Item fetchInventory(Item goodLocation, String itemName){ return fetchFromInventory(goodLocation,itemName,Item.WORNREQ_ANY,true,true);}
-	public Item fetchCarried(Item goodLocation, String itemName){ return fetchFromInventory(goodLocation,itemName,Item.WORNREQ_UNWORNONLY,true,true);}
-	public Item fetchWornItem(String itemName){ return fetchFromInventory(null,itemName,Item.WORNREQ_WORNONLY,true,true);}
+	public Item fetchInventory(String itemName){ return fetchFromInventory(null,itemName,Wearable.FILTER_ANY,true,false);}
+	public Item fetchInventory(Item goodLocation, String itemName){ return fetchFromInventory(goodLocation,itemName,Wearable.FILTER_ANY,true,true);}
+	public Item fetchCarried(Item goodLocation, String itemName){ return fetchFromInventory(goodLocation,itemName,Wearable.FILTER_UNWORNONLY,true,true);}
+	public Item fetchWornItem(String itemName){ return fetchFromInventory(null,itemName,Wearable.FILTER_WORNONLY,true,true);}
 	public Vector fetchInventories(String itemName){ 
         Vector V=CMLib.english().fetchEnvironmentals(inventory,itemName,true);
         if((V!=null)&&(V.size()>0)) return V;

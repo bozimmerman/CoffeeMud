@@ -720,7 +720,6 @@ public interface CharStats extends CMCommon, CMModifiable
 
     /**
      * Global character stat code data collector
-     * TODO: add REPLACE instead of DELETE
      * @author bzimmerman
      */
 	public class CODES
@@ -777,7 +776,8 @@ public interface CharStats extends CMCommon, CMModifiable
 						String repStat=type.substring(8).trim();
 						oldStatCode=CMParms.indexOf(DEFAULT_STAT_NAMES, repStat);
 						if(oldStatCode<0) oldStatCode=CMParms.indexOf(DEFAULT_STAT_DESCS, repStat);
-						type="REPLACE";
+						if(oldStatCode>=0)
+							type="REPLACE";
 					}
 					String abbr=(String)V.elementAt(1);
 					String desc=(String)((String)V.elementAt(2)).toUpperCase();

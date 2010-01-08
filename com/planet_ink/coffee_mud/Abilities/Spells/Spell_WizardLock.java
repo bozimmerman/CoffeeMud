@@ -110,7 +110,7 @@ public class Spell_WizardLock extends Spell
 		if(dirCode>=0)
 			target=mob.location().getExitInDir(dirCode);
 		if(target==null)
-			target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
+			target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null) return false;
 
 		if((!(target instanceof Container))&&(!(target instanceof Exit)))

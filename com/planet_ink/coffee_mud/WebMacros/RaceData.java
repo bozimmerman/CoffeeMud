@@ -713,9 +713,12 @@ public class RaceData extends StdWebMacro
                     str.append("</TR></TABLE>, ");
                 }
                 if(parms.containsKey("WEAR"))
-                    for(int b=0;b<Item.WORN_CODES.length;b++)
-                        if(CMath.bset(R.forbiddenWornBits(),Item.WORN_CODES[b]))
-                            str.append(Item.WORN_DESCS[b]+", ");
+                {
+            		Wearable.CODES codes = Wearable.CODES.instance();
+                    for(int b=0;b<codes.total();b++)
+                        if(CMath.bset(R.forbiddenWornBits(),codes.get(b)))
+                            str.append(codes.name(b)+", ");
+                }
                 if(parms.containsKey("RABLE"))
                     str.append(rabilities(R,httpReq,parms,0,(String)parms.get("FONT"))+", ");
                 if(parms.containsKey("CABLE"))
@@ -735,12 +738,13 @@ public class RaceData extends StdWebMacro
                             else
                                 break;
                     }
-                    for(int i=1;i<Item.WORN_CODES.length;i++)
+            		Wearable.CODES codes = Wearable.CODES.instance();
+                    for(int i=1;i<codes.total();i++)
                     {
-                        str.append("<OPTION VALUE="+Item.WORN_CODES[i]+" ");
-                        if(CMath.bset(mask,Item.WORN_CODES[i]))
+                        str.append("<OPTION VALUE="+codes.get(i)+" ");
+                        if(CMath.bset(mask,codes.get(i)))
                             str.append("SELECTED");
-                        str.append(">"+Item.WORN_DESCS[i]);
+                        str.append(">"+codes.name(i));
                     }
                     str.append(", ");
                 }

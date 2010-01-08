@@ -1110,16 +1110,6 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean isChild(Environmental E){ return isBaby(E)||((E instanceof MOB)&&(((MOB)E).isMonster())&&(isAgingThing(E)));}
 	public boolean isBaby(Environmental E){ return ((E instanceof CagedAnimal)&&(isAgingThing(E)));}
 
-	public String wornLocation(long wornCode)
-	{
-		for(int wornNum=0;wornNum<Item.WORN_DESCS.length-1;wornNum++)
-		{
-			if(wornCode==(1<<wornNum))
-				return Item.WORN_DESCS[wornNum+1];
-		}
-		return "";
-	}
-
 	public boolean stillAffectedBy(Environmental obj, Vector oneOf, boolean anyTallF)
 	{
 		for(int a=oneOf.size()-1;a>=0;a--)

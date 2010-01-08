@@ -84,13 +84,13 @@ public class Restring extends StdCommand
 		}
 		Environmental thang=null;
 		if((srchMob!=null)&&(srchRoom!=null))
-			thang=srchRoom.fetchFromMOBRoomFavorsItems(srchMob,srchContainer,allWord,Item.WORNREQ_ANY);
+			thang=srchRoom.fetchFromMOBRoomFavorsItems(srchMob,srchContainer,allWord,Wearable.FILTER_ANY);
 		else
 		if(srchMob!=null)
 			thang=srchMob.fetchInventory(allWord);
 		else
 		if(srchRoom!=null)
-			thang=srchRoom.fetchFromRoomFavorItems(srchContainer,allWord,Item.WORNREQ_ANY);
+			thang=srchRoom.fetchFromRoomFavorItems(srchContainer,allWord,Wearable.FILTER_ANY);
 		if((thang!=null)&&(thang instanceof Item))
 		{
 			if(!thang.isGeneric())

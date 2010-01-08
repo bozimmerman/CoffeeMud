@@ -69,14 +69,14 @@ public class Look extends StdCommand
 				thisThang=mob;
 			
 			if(thisThang==null)
-				thisThang=R.fetchFromMOBRoomFavorsItems(mob,null,ID,Item.WORNREQ_ANY);
+				thisThang=R.fetchFromMOBRoomFavorsItems(mob,null,ID,Wearable.FILTER_ANY);
 			if((thisThang==null)
 			&&(commands.size()>2)
 			&&(((String)commands.elementAt(1)).equalsIgnoreCase("in")))
 			{
 				commands.removeElementAt(1);
 				String ID2=CMParms.combine(commands,1);
-				thisThang=R.fetchFromMOBRoomFavorsItems(mob,null,ID2,Item.WORNREQ_ANY);
+				thisThang=R.fetchFromMOBRoomFavorsItems(mob,null,ID2,Wearable.FILTER_ANY);
 				if((thisThang!=null)&&((!(thisThang instanceof Container))||(((Container)thisThang).capacity()==0)))
 				{
 					mob.tell("That's not a container.");

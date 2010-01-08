@@ -89,7 +89,7 @@ public class Chant_WarpWood extends Chant
 		MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);
 		Item target=getPossibility(mobTarget);
 		if(target==null)
-			target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
+			target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
         if(target==null) 
             return false;
         if(((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)

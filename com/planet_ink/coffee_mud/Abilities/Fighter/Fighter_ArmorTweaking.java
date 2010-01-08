@@ -100,7 +100,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
-		Item armor=super.getTarget(mob,null,givenTarget,null,commands,Item.WORNREQ_WORNONLY);
+		Item armor=super.getTarget(mob,null,givenTarget,null,commands,Wearable.FILTER_WORNONLY);
 		if(armor==null) return false;
 		if((!armor.amWearingAt(Item.WORN_ABOUT_BODY))
 		&&(!armor.amWearingAt(Item.WORN_ARMS))

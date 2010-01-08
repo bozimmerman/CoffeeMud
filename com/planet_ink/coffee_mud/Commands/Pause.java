@@ -89,7 +89,7 @@ public class Pause extends StdCommand
             if(cmd.equalsIgnoreCase("ROOM"))
                 E=mob.location();
             else
-                E=mob.location().fetchFromRoomFavorMOBs(null,cmd,Item.WORNREQ_ANY);
+                E=mob.location().fetchFromRoomFavorMOBs(null,cmd,Wearable.FILTER_ANY);
             if(E==null)
                 mob.tell("'"+cmd+"' is an unknown object here.");
             else

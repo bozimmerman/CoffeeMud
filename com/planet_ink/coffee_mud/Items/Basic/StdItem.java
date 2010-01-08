@@ -251,11 +251,11 @@ public class StdItem implements Item
 	}
     public void wearEvenIfImpossible(MOB mob)
     {
-        for(int i=0;i<WORN_ORDER.length;i++)
+        for(long code : Wearable.CODES.ALL_ORDERED())
         {
-            if(fitsOn(WORN_ORDER[i]))
+            if(fitsOn(code))
             {
-                wearAt(WORN_ORDER[i]);
+                wearAt(code);
                 break;
             }
         }
@@ -275,8 +275,8 @@ public class StdItem implements Item
 	}
 	public boolean wearIfPossible(MOB mob)
 	{
-		for(int i=0;i<WORN_ORDER.length;i++)
-			if((WORN_ORDER[i]>0) && wearIfPossible(mob,WORN_ORDER[i]))
+        for(long code : Wearable.CODES.ALL_ORDERED())
+			if((code>0) && wearIfPossible(mob,code))
 				return true;
 		return false;
 	}
@@ -328,25 +328,28 @@ public class StdItem implements Item
 			layerAtt=((Armor)this).getLayerAttributes();
 		}
 
+		Wearable.CODES codes = Wearable.CODES.instance();
 		if(!wornLogicalAnd)
 		{
-			for(int i=1;i<WORN_CODES.length;i++)
-			{
-				if(fitsOn(WORN_CODES[i]))
+			for(long wornCode : codes.all())
+				if(wornCode != Wearable.IN_INVENTORY)
 				{
-					couldHaveBeenWornAt=WORN_CODES[i];
-					if(mob.freeWearPositions(WORN_CODES[i],layer,layerAtt)>0)
-						return 0;
+					if(fitsOn(wornCode))
+					{
+						couldHaveBeenWornAt=wornCode;
+						if(mob.freeWearPositions(wornCode,layer,layerAtt)>0)
+							return 0;
+					}
 				}
-			}
 			return couldHaveBeenWornAt;
 		}
-		for(int i=1;i<WORN_CODES.length;i++)
-		{
-			if((fitsOn(WORN_CODES[i]))
-			&&(mob.freeWearPositions(WORN_CODES[i],layer,layerAtt)==0))
-				return WORN_CODES[i];
-		}
+		for(long wornCode : codes.all())
+			if(wornCode != Wearable.IN_INVENTORY)
+			{
+				if((fitsOn(wornCode))
+				&&(mob.freeWearPositions(wornCode,layer,layerAtt)==0))
+					return wornCode;
+			}
 		return 0;
 	}
 
@@ -593,19 +596,20 @@ public class StdItem implements Item
 			long cantWearAt=whereCantWear(mob);
 			if(wearWhere!=0) cantWearAt = cantWearAt & wearWhere;
 			Item alreadyWearing=(cantWearAt==0)?null:mob.fetchFirstWornItem(cantWearAt);
+            Wearable.CODES codes = Wearable.CODES.instance();
 			if(alreadyWearing!=null)
 			{
 				if((cantWearAt!=Item.WORN_HELD)&&(cantWearAt!=Item.WORN_WIELD))
 				{
 					if(!CMLib.commands().postRemove(mob,alreadyWearing,false))
 					{
-						mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+CMLib.flags().wornLocation(cantWearAt)+".");
+						mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+codes.name(cantWearAt)+".");
 						return false;
 					}
 					alreadyWearing=mob.fetchFirstWornItem(cantWearAt);
 					if((alreadyWearing!=null)&&(!canWear(mob,0)))
 					{
-						mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+CMLib.flags().wornLocation(cantWearAt)+".");
+						mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+codes.name(cantWearAt)+".");
 						return false;
 					}
 				}
@@ -625,7 +629,7 @@ public class StdItem implements Item
 					if(cantWearAt==Item.WORN_WIELD)
 						mob.tell("You are already wielding "+alreadyWearing.name()+".");
 					else
-						mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+CMLib.flags().wornLocation(cantWearAt)+".");
+						mob.tell("You are already wearing "+alreadyWearing.name()+" on your "+codes.name(cantWearAt)+".");
 					return false;
 				}
 			}
@@ -633,9 +637,9 @@ public class StdItem implements Item
 			if(wearWhere!=0)
 			{
 				StringBuffer locs=new StringBuffer("");
-				for(int i=0;i<Item.WORN_DESCS.length;i++)
-					if((Item.WORN_CODES[i]&wearWhere)>0)
-						locs.append(", " + Item.WORN_DESCS[i]);
+				for(int i=0;i<codes.total();i++)
+					if((codes.get(i)&wearWhere)>0)
+						locs.append(", " + codes.name(i));
 				if(locs.length()==0)
 					mob.tell("You can't wear that there.");
 				else

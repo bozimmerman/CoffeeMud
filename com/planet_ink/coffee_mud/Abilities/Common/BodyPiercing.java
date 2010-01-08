@@ -122,10 +122,11 @@ public class BodyPiercing extends CommonSkill
 		        		  Item.WORN_EYES,
 		        		  Item.WORN_TORSO};
 		String fullPartName=null;
-		for(int i=0;i<Item.WORN_CODES.length;i++)
+		Wearable.CODES codes = Wearable.CODES.instance();
+		for(int i=0;i<codes.total();i++)
 		{
 		    for(int ii=0;ii<piercable.length;ii++)
-		        if(Item.WORN_CODES[i]==piercable[ii])
+		        if(codes.get(i)==piercable[ii])
 		        {
 				    for(int iii=0;iii<piercables[ii].length;iii++)
 				    {
@@ -141,7 +142,7 @@ public class BodyPiercing extends CommonSkill
 		    commonTell(mob,"'"+part+"' is not a valid location.  Valid locations include: "+allParts.toString().substring(2));
 		    return false;
 		}
-		long wornCode=Item.WORN_CODES[partNum];
+		long wornCode=codes.get(partNum);
 		String wornName=fullPartName;
 
 		if((target.getWearPositions(wornCode)<=0)
@@ -167,7 +168,7 @@ public class BodyPiercing extends CommonSkill
 		    }
 		}
 		else
-		if(numTattsDone>=target.getWearPositions(Item.WORN_CODES[partNum]))
+		if(numTattsDone>=target.getWearPositions(codes.get(partNum)))
 		{
 		    commonTell(mob,"That location is already decorated.");
 		    return false;
@@ -176,9 +177,9 @@ public class BodyPiercing extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		if(wornName.toLowerCase().endsWith("s"))
-			writing=Item.WORN_DESCS[partNum].toUpperCase()+":Pierced "+wornName.toLowerCase();
+			writing=codes.name(partNum).toUpperCase()+":Pierced "+wornName.toLowerCase();
 		else
-			writing=Item.WORN_DESCS[partNum].toUpperCase()+":A pierced "+wornName.toLowerCase();
+			writing=codes.name(partNum).toUpperCase()+":A pierced "+wornName.toLowerCase();
 		verb="piercing "+target.name()+" on the "+wornName;
 		displayText="You are "+verb;
 		if(!proficiencyCheck(mob,0,auto)) writing="";

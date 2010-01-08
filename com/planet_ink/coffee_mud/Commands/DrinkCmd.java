@@ -54,7 +54,7 @@ public class DrinkCmd extends StdCommand
 			thisThang=mob.location();
 		else
 		{
-			thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,CMParms.combine(commands,0),Item.WORNREQ_ANY);
+			thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,CMParms.combine(commands,0),Wearable.FILTER_ANY);
 			if((thisThang==null)
 			||((!mob.isMine(thisThang))
 			   &&(!CMLib.flags().canBeSeenBy(thisThang,mob))))

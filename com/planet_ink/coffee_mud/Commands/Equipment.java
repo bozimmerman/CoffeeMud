@@ -54,11 +54,12 @@ public class Equipment extends StdCommand
                             ||((seer!=mob)&&(CMProps.getIntVar(CMProps.SYSTEMI_EQVIEW)>0))
                             ||CMath.bset(seer.getBitmap(),MOB.ATT_COMPRESS);
         HashSet alreadyDone=new HashSet();
-		for(int l=0;l<Item.WORN_ORDER.length;l++)
+		Wearable.CODES codes = Wearable.CODES.instance();
+		for(int l=0;l<codes.all_ordered().length;l++)
 		{
 		    found=0;
-			wornCode=Item.WORN_ORDER[l];
-			wornName=CMLib.flags().wornLocation(wornCode);
+			wornCode=codes.all_ordered()[l];
+			wornName=codes.name(wornCode);
             if(paragraphView)
     			header=" ^!";
             else

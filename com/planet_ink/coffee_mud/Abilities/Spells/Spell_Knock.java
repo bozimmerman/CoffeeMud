@@ -69,7 +69,7 @@ public class Spell_Knock extends Spell
 		if(dirCode>=0)
 			openThis=R.getExitInDir(dirCode);
 		if(openThis==null)
-			openThis=getTarget(mob,R,givenTarget,commands,Item.WORNREQ_ANY);
+			openThis=getTarget(mob,R,givenTarget,commands,Wearable.FILTER_ANY);
 		if(openThis==null) return false;
 
 		if(openThis instanceof Exit)

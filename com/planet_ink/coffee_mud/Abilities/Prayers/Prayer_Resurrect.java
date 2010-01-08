@@ -50,7 +50,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental body=null;
-        body=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_UNWORNONLY);
+        body=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
         DatabaseEngine.PlayerData nonPlayerData=null;
         boolean playerCorpse=false;
         if((body==null)&&(CMSecurity.isASysOp(mob)))

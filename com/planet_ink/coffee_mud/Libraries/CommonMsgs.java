@@ -667,12 +667,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	            response.append(((item.rawProperLocationBitmap()==Item.WORN_HELD)||(item.rawProperLocationBitmap()==(Item.WORN_HELD|Item.WORN_WIELD)))
 	            					 ?new StringBuffer("")
 	            					 :new StringBuffer("worn on the "));
-	            for(int l=0;l<Item.WORN_CODES.length;l++)
+	            Wearable.CODES codes = Wearable.CODES.instance();
+	            for(long wornCode : codes.all())
 	            {
-	                int wornCode=1<<l;
 	                if(CMath.bset(item.rawProperLocationBitmap(),wornCode))
 	                {
-	                	String wornString=CMLib.flags().wornLocation(wornCode);
+	                	String wornString=codes.name(wornCode);
 		                if(wornString.length()>0)
 	 	                {
 		                	response.append(CMStrings.capitalizeAndLower(wornString)+" ");

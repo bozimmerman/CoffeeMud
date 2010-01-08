@@ -141,7 +141,7 @@ public class Prayer_CurseItem extends Prayer
 		if((target==null)&&(mobTarget!=null))
 			target=Prayer_Curse.getSomething(mobTarget,false);
 		if(target==null)
-			target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
+			target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 
 		if(target==null) return false;
 

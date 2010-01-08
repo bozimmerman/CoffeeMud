@@ -77,7 +77,7 @@ public class Chant_Bury extends Chant
 		if((commands.size()==0)&&(!auto)&&(givenTarget==null))
 			target=getBody(mob.location());
 		if(target==null)
-			target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_UNWORNONLY);
+			target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
 
 		if((!(target instanceof DeadBody))

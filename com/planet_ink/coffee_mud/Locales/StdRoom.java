@@ -1584,15 +1584,15 @@ public class StdRoom implements Room
 	}
 	public Item fetchItem(Item goodLocation, String itemID)
 	{
-		Item item=CMLib.english().fetchAvailableItem(contents,itemID,goodLocation,Item.WORNREQ_UNWORNONLY,true);
-		if(item==null) item=CMLib.english().fetchAvailableItem(contents,itemID,goodLocation,Item.WORNREQ_UNWORNONLY,false);
+		Item item=CMLib.english().fetchAvailableItem(contents,itemID,goodLocation,Wearable.FILTER_UNWORNONLY,true);
+		if(item==null) item=CMLib.english().fetchAvailableItem(contents,itemID,goodLocation,Wearable.FILTER_UNWORNONLY,false);
 		return item;
 	}
 	public Vector fetchItems(Item goodLocation, String itemID)
 	{
-		Vector items=CMLib.english().fetchAvailableItems(contents,itemID,goodLocation,Item.WORNREQ_UNWORNONLY,true);
+		Vector items=CMLib.english().fetchAvailableItems(contents,itemID,goodLocation,Wearable.FILTER_UNWORNONLY,true);
 		if(items.size()==0)
-			items=CMLib.english().fetchAvailableItems(contents,itemID,goodLocation,Item.WORNREQ_UNWORNONLY,false);
+			items=CMLib.english().fetchAvailableItems(contents,itemID,goodLocation,Wearable.FILTER_UNWORNONLY,false);
 		return items;
 	}
 	public Vector fetchAnyItems(String itemID)
@@ -1672,7 +1672,7 @@ public class StdRoom implements Room
 		if(newThingName!=null) thingName=newThingName;
 		boolean mineOnly=(mob!=null)&&(thingName.toUpperCase().trim().startsWith("MY "));
 		if(mineOnly) thingName=thingName.trim().substring(3).trim();
-		if((mob!=null)&&(wornReqCode!=Item.WORNREQ_WORNONLY))
+		if((mob!=null)&&(wornReqCode!=Wearable.FILTER_WORNONLY))
 			found=mob.fetchCarried(goodLocation, thingName);
 		if((found==null)&&(!mineOnly))
 		{
@@ -1708,7 +1708,7 @@ public class StdRoom implements Room
 			if(visibleItem!=null)
 				found=visibleItem;
 		}
-		if((mob!=null)&&(found==null)&&(wornReqCode!=Item.WORNREQ_UNWORNONLY))
+		if((mob!=null)&&(found==null)&&(wornReqCode!=Wearable.FILTER_UNWORNONLY))
 			found=mob.fetchWornItem(thingName);
 		if(found==null)
 		{
@@ -1719,7 +1719,7 @@ public class StdRoom implements Room
 	}
 	public Environmental fetchFromRoomFavorItems(Item goodLocation, String thingName, int wornReqCode)
 	{
-		// def was Item.WORNREQ_UNWORNONLY;
+		// def was Wearable.FILTER_UNWORNONLY;
 		String newThingName=CMLib.lang().preItemParser(thingName);
 		if(newThingName!=null) thingName=newThingName;
 		Environmental found=null;
@@ -1750,7 +1750,7 @@ public class StdRoom implements Room
 
 	public Environmental fetchFromRoomFavorMOBs(Item goodLocation, String thingName, int wornReqCode)
 	{
-		// def was Item.WORNREQ_UNWORNONLY;
+		// def was Wearable.FILTER_UNWORNONLY;
 		String newThingName=CMLib.lang().preItemParser(thingName);
 		if(newThingName!=null) thingName=newThingName;
 		Environmental found=null;
@@ -1775,7 +1775,7 @@ public class StdRoom implements Room
 		if(newThingName!=null) thingName=newThingName;
 		boolean mineOnly=(mob!=null)&&(thingName.toUpperCase().trim().startsWith("MY "));
 		if(mineOnly) thingName=thingName.trim().substring(3).trim();
-		if((mob!=null)&&(wornReqCode!=Item.WORNREQ_WORNONLY))
+		if((mob!=null)&&(wornReqCode!=Wearable.FILTER_WORNONLY))
 			found=mob.fetchCarried(goodLocation, thingName);
 		if((found==null)&&(!mineOnly))
 		{
@@ -1794,7 +1794,7 @@ public class StdRoom implements Room
 					found=null;
 			}
 		}
-		if((mob!=null)&&(found==null)&&(wornReqCode!=Item.WORNREQ_UNWORNONLY))
+		if((mob!=null)&&(found==null)&&(wornReqCode!=Wearable.FILTER_UNWORNONLY))
 			found=mob.fetchWornItem(thingName);
         if(found==null)
         for(int d=0;d<exits.length;d++)

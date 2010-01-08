@@ -70,7 +70,7 @@ public class Push extends Go
 		}
 		String whatToOpen=CMParms.combine(commands,1);
 		if(pushThis==null)
-			pushThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatToOpen,Item.WORNREQ_ANY);
+			pushThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatToOpen,Wearable.FILTER_ANY);
 
 		if((pushThis==null)||(!CMLib.flags().canBeSeenBy(pushThis,mob)))
 		{

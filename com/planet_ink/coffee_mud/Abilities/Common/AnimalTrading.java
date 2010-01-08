@@ -101,7 +101,7 @@ public class AnimalTrading extends CommonSkill
 			if(commands.size()>0)
 			{
 				String last=(String)commands.lastElement();
-				Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,last,Item.WORNREQ_ANY);
+				Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,last,Wearable.FILTER_ANY);
 				if((E!=null)
 				&&(E instanceof Item)
 				&&(E instanceof Container)
@@ -116,7 +116,7 @@ public class AnimalTrading extends CommonSkill
 				commonTell(mob,"You don't see anyone called '"+str+"' here.");
 				return false;
 			}
-			taming=mob.location().fetchFromMOBRoomFavorsItems(mob,cage,CMParms.combine(commands,0),Item.WORNREQ_ANY);
+			taming=mob.location().fetchFromMOBRoomFavorsItems(mob,cage,CMParms.combine(commands,0),Wearable.FILTER_ANY);
 			if((taming==null)||(!CMLib.flags().canBeSeenBy(taming,mob))||(!(taming instanceof CagedAnimal)))
 			{
 				commonTell(mob,"You don't see any creatures in "+cage.name()+" called '"+CMParms.combine(commands,0)+"'.");

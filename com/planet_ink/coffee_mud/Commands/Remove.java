@@ -63,7 +63,7 @@ public class Remove extends StdCommand
 			return false;
 		}
 
-		Vector items=CMLib.english().fetchItemList(mob,mob,null,commands,Item.WORNREQ_WORNONLY,false);
+		Vector items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_WORNONLY,false);
 		if(items.size()==0)
 			mob.tell("You don't seem to be wearing that.");
 		else

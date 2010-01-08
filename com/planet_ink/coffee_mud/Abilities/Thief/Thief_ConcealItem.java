@@ -73,7 +73,7 @@ public class Thief_ConcealItem extends ThiefSkill
 			mob.tell("What item would you like to conceal?");
 			return false;
 		}
-		Item item=super.getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_UNWORNONLY);
+		Item item=super.getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(item==null) return false;
 		
 		if((!auto)&&(item.envStats().weight()>((adjustedLevel(mob,asLevel)*2))))

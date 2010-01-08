@@ -45,7 +45,7 @@ public class Prayer_CreateWater extends Prayer
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
+		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null) return false;
 		if((!(target instanceof Drink))||((target.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
 		{

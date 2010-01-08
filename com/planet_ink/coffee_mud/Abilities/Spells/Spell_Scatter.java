@@ -113,7 +113,7 @@ public class Spell_Scatter extends Spell
 		    targets.addElement(target);
 		else
 		{
-			targets=CMLib.english().fetchItemList(mob,mob,null,commands,Item.WORNREQ_ANY,true);
+			targets=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_ANY,true);
 			if(targets.size()==0)
 				mob.tell("You don't seem to be carrying that.");
 		}

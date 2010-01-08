@@ -60,7 +60,7 @@ public class Chant_ControlPlant extends Chant
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		Item myPlant=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
+		Item myPlant=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(myPlant==null) return false;
 
 		if(isPlant(myPlant)==null)

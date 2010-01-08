@@ -79,7 +79,7 @@ public class Spell_ContinualLight extends Spell
 		Environmental target=null;
 		if(commands.size()==0) target=mob;
 		else
-		target=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_UNWORNONLY);
+		target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
 
 		if(target==null) return false;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

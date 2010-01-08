@@ -125,7 +125,7 @@ public class Get extends StdCommand
 		if(commands.size()>0)
 			containerName=(String)commands.lastElement();
 		Vector containerCommands=(Vector)commands.clone();
-		Vector containers=CMLib.english().possibleContainers(mob,commands,Item.WORNREQ_ANY,true);
+		Vector containers=CMLib.english().possibleContainers(mob,commands,Wearable.FILTER_ANY,true);
 		int c=0;
 
 		int maxToGet=CMLib.english().calculateMaxToGive(mob,commands,containers.size()==0,R,true);
@@ -149,13 +149,13 @@ public class Get extends StdCommand
 			{
 				Environmental getThis=null;
 				if((container!=null)&&(mob.isMine(container)))
-				   getThis=R.fetchFromMOBRoomFavorsItems(mob,container,whatToGet+addendumStr,Item.WORNREQ_UNWORNONLY);
+				   getThis=R.fetchFromMOBRoomFavorsItems(mob,container,whatToGet+addendumStr,Wearable.FILTER_UNWORNONLY);
 				else
 				{
 					if(!allFlag)
 						getThis=CMLib.english().possibleRoomGold(mob,R,container,whatToGet);
 					if(getThis==null)
-						getThis=R.fetchFromRoomFavorItems(container,whatToGet+addendumStr,Item.WORNREQ_UNWORNONLY);
+						getThis=R.fetchFromRoomFavorItems(container,whatToGet+addendumStr,Wearable.FILTER_UNWORNONLY);
 				}
 				if(getThis==null) break;
 				if((getThis instanceof Item)
@@ -197,7 +197,7 @@ public class Get extends StdCommand
 				mob.tell("You don't see anything here.");
 			else
 			{
-			    Vector V=CMLib.english().possibleContainers(mob,containerCommands,Item.WORNREQ_ANY,false);
+			    Vector V=CMLib.english().possibleContainers(mob,containerCommands,Wearable.FILTER_ANY,false);
 			    if(V.size()==0)
 					mob.tell("You don't see '"+containerName+"' here.");
 				else

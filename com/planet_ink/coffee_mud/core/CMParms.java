@@ -1543,6 +1543,14 @@ public class CMParms
                 return i;
         return -1;
     }
+    public static int indexOf(long[] supported, long x)
+    {
+        if(supported==null) return -1;
+        for(int i=0;i<supported.length;i++)
+            if(supported[i]==x)
+                return i;
+        return -1;
+    }
     public static int indexOf(Enumeration supported, Object key)
     {
         if(supported==null) return -1;
@@ -1636,6 +1644,36 @@ public class CMParms
     public static boolean startsAnyWithIgnoreCase(String[] supported, String expertise)
     {
     	return startsWithIgnoreCase(supported,expertise)>=0;
+    }
+
+    public static int endsWith(String[] supported, String expertise)
+    {
+        if(supported==null) return 0;
+        if(expertise==null) return -1;
+        for(int i=0;i<supported.length;i++)
+            if(supported[i].endsWith(expertise))
+                return i;
+        return -1;
+    }
+
+    public static int endsWithIgnoreCase(String[] supported, String expertise)
+    {
+        if(supported==null) return 0;
+        if(expertise==null) return -1;
+        for(int i=0;i<supported.length;i++)
+            if(supported[i].toUpperCase().endsWith(expertise.toUpperCase()))
+                return i;
+        return -1;
+    }
+
+    public static boolean endsAnyWith(String[] supported, String expertise)
+    {
+    	return endsWith(supported,expertise)>=0;
+    }
+
+    public static boolean endsAnyWithIgnoreCase(String[] supported, String expertise)
+    {
+    	return endsWithIgnoreCase(supported,expertise)>=0;
     }
 
     public static Vector denumerate(Enumeration e)

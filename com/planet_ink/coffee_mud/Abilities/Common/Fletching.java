@@ -190,7 +190,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			mending=false;
 			messedUp=false;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
-			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORNREQ_UNWORNONLY);
+			building=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(!canMend(mob,building,false)) return false;
 			mending=true;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

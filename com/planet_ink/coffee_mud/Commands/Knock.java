@@ -50,7 +50,7 @@ public class Knock extends StdCommand
 		int dir=CMLib.tracking().findExitDir(mob,mob.location(),knockWhat);
 		if(dir<0)
 		{
-			Environmental getThis=mob.location().fetchFromMOBRoomItemExit(mob,null,knockWhat,Item.WORNREQ_UNWORNONLY);
+			Environmental getThis=mob.location().fetchFromMOBRoomItemExit(mob,null,knockWhat,Wearable.FILTER_UNWORNONLY);
 			if(getThis==null)
 			{
 				mob.tell("You don't see '"+knockWhat.toLowerCase()+"' here.");

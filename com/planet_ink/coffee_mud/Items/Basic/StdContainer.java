@@ -402,7 +402,7 @@ public class StdContainer extends StdItem implements Container
 	{
 		if (!(E instanceof Item)) return false;
 		if(containType==0) return true;
-		for(int i=0;i<20;i++)
+		for(int i=0;i<Container.CONTAIN_DESCS.length;i++)
 			if(CMath.isSet((int)containType,i))
 				switch((int)CMath.pow(2,i))
 				{

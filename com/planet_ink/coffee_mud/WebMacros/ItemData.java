@@ -433,10 +433,11 @@ public class ItemData extends StdWebMacro
 							else
 								break;
 					}
-					for(int i=1;i<Item.WORN_DESCS.length;i++)
+			        Wearable.CODES codes = Wearable.CODES.instance();
+					for(int i=1;i<codes.total();i++)
 					{
-						String climstr=Item.WORN_DESCS[i];
-						int mask=(int)CMath.pow(2,i-1);
+						String climstr=codes.name(i);
+						long mask=codes.get(i);
 						str.append("<OPTION VALUE="+mask);
 						if((climate&mask)>0) str.append(" SELECTED");
 						str.append(">"+climstr);

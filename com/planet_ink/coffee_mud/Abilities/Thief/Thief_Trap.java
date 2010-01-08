@@ -139,7 +139,7 @@ public class Thief_Trap extends ThiefSkill
 			if((dirCode>=0)&&(trapThis==null))
 				trapThis=mob.location().getExitInDir(dirCode);
 			if(trapThis==null)
-				trapThis=this.getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_UNWORNONLY);
+				trapThis=this.getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
 			if(trapThis==null) return false;
 			if((!auto)&&(!theTrap.canSetTrapOn(mob,trapThis)))
 				return false;

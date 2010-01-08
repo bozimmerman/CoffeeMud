@@ -212,7 +212,7 @@ public class Spell_Wish extends Spell
 
 			Vector thangsFound=new Vector();
 			Environmental foundThang=null;
-			Environmental E=mob.location().fetchFromRoomFavorItems(null,objectWish,Item.WORNREQ_UNWORNONLY);
+			Environmental E=mob.location().fetchFromRoomFavorItems(null,objectWish,Wearable.FILTER_UNWORNONLY);
 			foundThang=maybeAdd(E,thangsFound,foundThang);
 			try
 			{
@@ -267,11 +267,11 @@ public class Spell_Wish extends Spell
 			if(wishV.size()>2)
 			{
 				possName=CMParms.combine(wishV,0,2);
-				target=mob.location().fetchFromRoomFavorMOBs(null,possName,Item.WORNREQ_UNWORNONLY);
+				target=mob.location().fetchFromRoomFavorMOBs(null,possName,Wearable.FILTER_UNWORNONLY);
 				if(target==null) target=mob.fetchInventory(possName);
 				if(target==null) possName=((String)wishV.elementAt(0)).trim();
 			}
-			if(target==null) target=mob.location().fetchFromRoomFavorMOBs(null,possName,Item.WORNREQ_UNWORNONLY);
+			if(target==null) target=mob.location().fetchFromRoomFavorMOBs(null,possName,Wearable.FILTER_UNWORNONLY);
 			if(target==null) target=mob.fetchInventory(possName);
 			if((target==null)
 			||(possName.equalsIgnoreCase("FOR"))

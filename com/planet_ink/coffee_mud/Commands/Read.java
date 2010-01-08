@@ -82,10 +82,10 @@ public class Read extends StdCommand
 		int dir=Directions.getGoodDirectionCode(CMParms.combine(commands,0));
 		Environmental thisThang=null;
 		if(dir>=0)	thisThang=mob.location().getExitInDir(dir);
-		thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Item.WORNREQ_ANY);
+		thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Wearable.FILTER_ANY);
 		String theRest=null;
 		if(thisThang==null)
-			thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,CMParms.combine(commands,0),Item.WORNREQ_ANY);
+			thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,CMParms.combine(commands,0),Wearable.FILTER_ANY);
 		else
 		{
 			commands.removeElementAt(commands.size()-1);

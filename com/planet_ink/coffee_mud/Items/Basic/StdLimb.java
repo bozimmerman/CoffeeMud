@@ -68,14 +68,15 @@ public class StdLimb extends StdItem
 		&&(owner() instanceof MOB))
 		{
 			MOB mob=(MOB)owner();
-			for(int w=0;w<Item.WORN_CODES.length;w++)
-				if((amWearingAt(Item.WORN_CODES[w]))
-				&&(Item.WORN_DEPENDENCYGRID[w]>0))
-					for(int w2=0;w2<Item.WORN_CODES.length;w2++)
-						if(!amWearingAt(Item.WORN_CODES[w2])
-						&&(CMath.bset(Item.WORN_DEPENDENCYGRID[w], Item.WORN_CODES[w2])))
+			Wearable.CODES codes = Wearable.CODES.instance();
+			for(int w=0;w<codes.total();w++)
+				if((amWearingAt(codes.get(w)))
+				&&(codes.dependency_masks()[w]>0))
+					for(int w2=0;w2<codes.total();w2++)
+						if(!amWearingAt(codes.get(w2))
+						&&(CMath.bset(codes.dependency_masks()[w], codes.get(w2))))
 						{
-							Item I=mob.fetchFirstWornItem(Item.WORN_CODES[w2]);
+							Item I=mob.fetchFirstWornItem(codes.get(w2));
 							if((I!=null)&&(I!=this))
 							{
 								msg.source().tell(mob,I,null,"You'll need to remove <T-NAMESELF> first.");

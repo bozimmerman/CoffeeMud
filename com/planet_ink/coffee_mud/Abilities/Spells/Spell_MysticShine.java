@@ -64,7 +64,7 @@ public class Spell_MysticShine extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		Environmental target=super.getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
+		Environmental target=super.getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null){
 		    return false;
 		}

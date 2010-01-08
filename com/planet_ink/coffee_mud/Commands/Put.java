@@ -49,7 +49,7 @@ public class Put extends StdCommand
 		commands.removeElementAt(1);
 		commands.removeElementAt(0);
 
-		Vector items=CMLib.english().fetchItemList(mob,mob,null,commands,Item.WORNREQ_UNWORNONLY,true);
+		Vector items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,true);
 		if(items.size()==0)
 			mob.tell("You don't seem to be carrying that.");
 		else
@@ -85,8 +85,9 @@ public class Put extends StdCommand
 		if(commands.size()>=4)
 		{
 			String s=CMParms.combine(commands, 0).toLowerCase();
-			for(int i=1;i<Item.WORN_DESCS.length;i++)
-				if(s.endsWith(" on "+Item.WORN_DESCS[i].toLowerCase())||s.endsWith(" on my "+Item.WORN_DESCS[i].toLowerCase()))
+	        Wearable.CODES codes = Wearable.CODES.instance();
+			for(int i=1;i<codes.total();i++)
+				if(s.endsWith(" on "+codes.name(i).toLowerCase())||s.endsWith(" on my "+codes.name(i).toLowerCase()))
 				{
 					Command C=CMClass.getCommand("Wear");
 					if(C!=null) C.execute(mob,commands,metaFlags);
@@ -115,7 +116,7 @@ public class Put extends StdCommand
 			return false;
 		}
 
-		Environmental container=CMLib.english().possibleContainer(mob,commands,false,Item.WORNREQ_ANY);
+		Environmental container=CMLib.english().possibleContainer(mob,commands,false,Wearable.FILTER_ANY);
 		if((container==null)||(!CMLib.flags().canBeSeenBy(container,mob)))
 		{
 			mob.tell("I don't see a "+(String)commands.lastElement()+" here.");

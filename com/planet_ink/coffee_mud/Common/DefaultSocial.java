@@ -89,7 +89,7 @@ public class DefaultSocial implements Social
 
 		Environmental Target=target;
 		if(Target==null)
-			Target=mob.location().fetchFromRoomFavorMOBs(null,targetStr,Item.WORNREQ_ANY);
+			Target=mob.location().fetchFromRoomFavorMOBs(null,targetStr,Wearable.FILTER_ANY);
 		if((Target!=null)&&(!CMLib.flags().canBeSeenBy(Target,mob)))
 		   Target=null;
 

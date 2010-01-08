@@ -135,7 +135,7 @@ public class Drilling extends GatheringSkill
 		    return false;
 		}
 		
-		Item I=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
+		Item I=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(I==null) return false;
 		if((!(I instanceof Container))
 		||(((Container)I).capacity()<=((Container)I).envStats().weight()))

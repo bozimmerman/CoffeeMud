@@ -42,9 +42,8 @@ public class CharGen extends StdCommand
 	{
 		int level = M.baseEnvStats().level();
 		CharClass C=M.baseCharStats().getCurrentClass();
-		for(int pos=0;pos<Item.WORN_CODES.length;pos++)
+		for(long wornCode : Wearable.CODES.ALL())
 		{
-			long wornCode=Item.WORN_CODES[pos];
 			if((wornCode == Item.IN_INVENTORY) 
 			|| (wornCode == Item.WORN_HELD)
 			|| (wornCode == Item.WORN_MOUTH)) 

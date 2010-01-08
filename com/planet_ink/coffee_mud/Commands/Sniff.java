@@ -59,7 +59,7 @@ public class Sniff extends StdCommand
 				thisThang=mob;
 			
 			if(thisThang==null)
-				thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,ID,Item.WORNREQ_ANY);
+				thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,ID,Wearable.FILTER_ANY);
 			if(thisThang!=null)
 			{
 				String name=" <T-NAMESELF>";

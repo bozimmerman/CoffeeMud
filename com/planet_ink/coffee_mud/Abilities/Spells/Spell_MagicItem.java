@@ -51,7 +51,7 @@ public class Spell_MagicItem extends Spell
 			mob.tell("Enchant which spell onto what?");
 			return false;
 		}
-		Environmental target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Item.WORNREQ_UNWORNONLY);
+		Environmental target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("You don't see '"+((String)commands.lastElement())+"' here.");

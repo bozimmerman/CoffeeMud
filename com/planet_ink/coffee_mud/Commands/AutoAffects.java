@@ -95,7 +95,7 @@ public class AutoAffects extends StdCommand
                 String name=CMParms.combine(commands,1);
                 if(name.length()>0)
                 {
-                    Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,name,Item.WORNREQ_ANY);
+                    Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,name,Wearable.FILTER_ANY);
                     if(E==null)
                         S.colorOnlyPrint("You don't see "+name+" here.");
                     else

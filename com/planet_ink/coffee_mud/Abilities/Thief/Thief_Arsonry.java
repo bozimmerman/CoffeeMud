@@ -88,7 +88,7 @@ public class Thief_Arsonry extends ThiefSkill
 		}
 		else
 		{
-			Item item=getTarget(mob,mob.location(),givenTarget,null,commands,Item.WORNREQ_UNWORNONLY);
+			Item item=getTarget(mob,mob.location(),givenTarget,null,commands,Wearable.FILTER_UNWORNONLY);
 			if(item==null) return false;
 			target=item;
 			targetRoom=mob.location();

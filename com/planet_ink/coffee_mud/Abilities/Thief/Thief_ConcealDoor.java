@@ -85,7 +85,7 @@ public class Thief_ConcealDoor extends ThiefSkill
         Environmental chkE=null;
         String typed=CMParms.combine(commands,0);
         if(Directions.getGoodDirectionCode(typed)<0)
-            chkE=mob.location().fetchFromMOBRoomItemExit(mob,null,typed,Item.WORNREQ_WORNONLY);
+            chkE=mob.location().fetchFromMOBRoomItemExit(mob,null,typed,Wearable.FILTER_WORNONLY);
         else
             chkE=mob.location().getExitInDir(Directions.getGoodDirectionCode(typed));
         if((!(chkE instanceof Exit))||(!CMLib.flags().canBeSeenBy(chkE,mob)))

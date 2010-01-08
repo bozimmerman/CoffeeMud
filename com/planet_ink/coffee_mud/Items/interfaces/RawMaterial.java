@@ -800,8 +800,7 @@ public interface RawMaterial extends Item
 		};
     
     /**
-     * Global character stat code data collector
-     * TODO: add REPLACE instead of DELETE
+     * Global resource/raw material code data collector
      * @author bzimmerman
      */
 	public class CODES
@@ -839,11 +838,13 @@ public interface RawMaterial extends Item
 						int oldResourceCode=-1;
 						if(stat.startsWith("REPLACE:"))
 						{
-							String repStat=type.substring(8).trim();
-							int idx=CMParms.indexOf(DEFAULT_RESOURCE_DESCS, repStat);
+							stat=stat.substring(8);
+							int idx=CMParms.indexOf(DEFAULT_RESOURCE_DESCS, stat);
 							if(idx>=0)
+							{
 								oldResourceCode=DEFAULT_RESOURCE_DATA[idx][0];
-							type="REPLACE";
+								type="REPLACE";
+							}
 						}
 						String matStr=((String)V.elementAt(0)).toUpperCase();
 						String smell=((String)V.elementAt(1)).toUpperCase();

@@ -67,7 +67,7 @@ public class Thief_PlantItem extends ThiefSkill
 		}
 		commands.removeElement(commands.lastElement());
 
-		Item item=super.getTarget(mob,null,givenTarget,commands,Item.WORNREQ_UNWORNONLY);
+		Item item=super.getTarget(mob,null,givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(item==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

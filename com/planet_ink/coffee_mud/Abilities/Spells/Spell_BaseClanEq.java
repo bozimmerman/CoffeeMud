@@ -100,7 +100,7 @@ public class Spell_BaseClanEq extends Spell
 			mob.tell("Use how much clan enchantment power?");
 			return false;
 		}
-		Environmental target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.elementAt(0),Item.WORNREQ_UNWORNONLY);
+		Environmental target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.elementAt(0),Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 		    mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");

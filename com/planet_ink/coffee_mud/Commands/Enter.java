@@ -49,7 +49,7 @@ public class Enter extends Go
 		int dir=Directions.getGoodDirectionCode(enterWhat);
 		if(dir<0)
 		{
-			Environmental getThis=mob.location().fetchFromRoomFavorItems(null,enterWhat,Item.WORNREQ_UNWORNONLY);
+			Environmental getThis=mob.location().fetchFromRoomFavorItems(null,enterWhat,Wearable.FILTER_UNWORNONLY);
 			if(getThis!=null)
 			{
 				if(getThis instanceof Rideable)

@@ -95,7 +95,7 @@ public class Mount extends StdCommand
 		if(recipient==null)
 			recipient=CMLib.english().fetchEnvironmental(possRecipients,CMParms.combine(commands,0),false);
 		if(recipient==null)
-			recipient=mob.location().fetchFromRoomFavorMOBs(null,CMParms.combine(commands,0),Item.WORNREQ_UNWORNONLY);
+			recipient=mob.location().fetchFromRoomFavorMOBs(null,CMParms.combine(commands,0),Wearable.FILTER_UNWORNONLY);
 		if((recipient==null)||(!CMLib.flags().canBeSeenBy(recipient,mob)))
 		{
 			mob.tell("You don't see '"+CMParms.combine(commands,0)+"' here.");

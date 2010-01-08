@@ -121,12 +121,13 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         double hardnessMultiplier = hardBonus[0];
         wornLoc[0] = 0;
         hardBonus[0]=0.0;
-        for(int wo=1;wo<Item.WORN_DESCS.length;wo++)
+        Wearable.CODES codes = Wearable.CODES.instance();
+        for(int wo=1;wo<codes.total();wo++)
         {
-            String WO=Item.WORN_DESCS[wo].toUpperCase();
+            String WO=codes.name(wo).toUpperCase();
             if(wearLocation.equalsIgnoreCase(WO))
             {
-                hardBonus[0]+=Item.WORN_WEIGHTS[wo];
+                hardBonus[0]+=codes.location_strength_points()[wo];
                 wornLoc[0]=CMath.pow(2,wo-1);
                 logicalAnd[0]=false;
             }
@@ -135,7 +136,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         ||(wearLocation.toUpperCase().endsWith("||"+WO)))
                 {
                     if(hardBonus[0]==0.0)
-                        hardBonus[0]+=Item.WORN_WEIGHTS[wo];
+                        hardBonus[0]+=codes.location_strength_points()[wo];
                     wornLoc[0]=wornLoc[0]|CMath.pow(2,wo-1);
                     logicalAnd[0]=false;
                 }
@@ -143,7 +144,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     if((wearLocation.toUpperCase().indexOf(WO+"&&")>=0)
                             ||(wearLocation.toUpperCase().endsWith("&&"+WO)))
                     {
-                        hardBonus[0]+=Item.WORN_WEIGHTS[wo];
+                        hardBonus[0]+=codes.location_strength_points()[wo];
                         wornLoc[0]=wornLoc[0]|CMath.pow(2,wo-1);
                         logicalAnd[0]=true;
                     }
@@ -781,9 +782,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         CMLib.ableParms().parseWearLocation(layerAtt,layers,wornLoc,logicalAnd,hardBonus,value);
                         StringBuffer str = new StringBuffer("");
                         str.append("\n\r<SELECT NAME="+fieldName+"_WORNDATA MULTIPLE>");
-                        for(int i=1;i<Item.WORN_DESCS.length;i++)
+                		Wearable.CODES codes = Wearable.CODES.instance();
+                        for(int i=1;i<codes.total();i++)
                         {
-                            String climstr=Item.WORN_DESCS[i];
+                            String climstr=codes.name(i);
                             int mask=(int)CMath.pow(2,i-1);
                             str.append("<OPTION VALUE="+mask);
                             if((wornLoc[0]&mask)>0) str.append(" SELECTED");
@@ -813,14 +815,15 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                             newVal.append(':');
                         }
                         boolean needLink=false;
-                        for(int wo=1;wo<Item.WORN_DESCS.length;wo++)
+                		Wearable.CODES codes = Wearable.CODES.instance();
+                        for(int wo=1;wo<codes.total();wo++)
                         {
                             if(CMath.bset(wornLoc[0],CMath.pow(2,wo-1)))
                             {
                                 if(needLink)
                                     newVal.append(logicalAnd[0]?"&&":"||");
                                 needLink = true;
-                                newVal.append(Item.WORN_DESCS[wo].toUpperCase());
+                                newVal.append(codes.name(wo).toUpperCase());
                             }
                         }
                         return newVal.toString();
@@ -845,8 +848,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                             V.addElement("N");
                         V.addElement("1");
                         V.addElement("1");
-                        for(int i=0;i<Item.WORN_CODES.length;i++)
-                            if(CMath.bset(wornLoc[0],Item.WORN_CODES[i]))
+                		Wearable.CODES codes = Wearable.CODES.instance();
+                        for(int i=0;i<codes.total();i++)
+                            if(CMath.bset(wornLoc[0],codes.get(i)))
                             {
                                 V.addElement(""+(i+2));
                                 V.addElement(""+(i+2));

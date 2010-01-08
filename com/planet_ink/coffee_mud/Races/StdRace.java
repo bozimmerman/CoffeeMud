@@ -768,23 +768,23 @@ public class StdRace implements Race
 		for(int i=0;i<aging.length;i++)
 		    aging[i]=aging[i]/2;
 
-		int race1worn=CMath.s_int(otherRace.getStat("WEAR"));
-		int race2worn=CMath.s_int(nonHuman.getStat("WEAR"));
-		int finalWear=0;
+		long race1worn=CMath.s_long(otherRace.getStat("WEAR"));
+		long race2worn=CMath.s_long(nonHuman.getStat("WEAR"));
+		long finalWear=0;
 		boolean toggle=false;
-		for(int i=0;i<Item.WORN_DESCS.length;i++)
-			if((!CMath.isSet(race1worn,i))&&(!CMath.isSet(race2worn,i)))
+		for(long wornCode : Wearable.CODES.ALL())
+			if((!CMath.bset(race1worn,wornCode))&&(!CMath.bset(race2worn,wornCode)))
 			{}
 			else
-			if(CMath.isSet(race1worn,i)&&CMath.isSet(race2worn,i))
-				finalWear=finalWear|(int)CMath.pow(2,i);
+			if(CMath.bset(race1worn,wornCode)&&CMath.bset(race2worn,wornCode))
+				finalWear=finalWear|wornCode;
 			else
-			if(CMath.isSet(race1worn,i))
-				finalWear=finalWear|(int)CMath.pow(2,i);
+			if(CMath.bset(race1worn,wornCode))
+				finalWear=finalWear|wornCode;
 			else
 			if(toggle)
 			{
-				finalWear=finalWear|(int)CMath.pow(2,i);
+				finalWear=finalWear|wornCode;
 				toggle=!toggle;
 			}
 

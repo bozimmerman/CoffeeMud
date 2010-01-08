@@ -96,7 +96,7 @@ public class Say extends StdCommand
 					{ whom=""; break;}
 			if(whom.length()>0)
 			{
-				target=R.fetchFromRoomFavorMOBs(null,whom,Item.WORNREQ_ANY);
+				target=R.fetchFromRoomFavorMOBs(null,whom,Wearable.FILTER_ANY);
 				if((toFlag)&&(target==null))
 				    target=mob.fetchInventory(null,whom);
 

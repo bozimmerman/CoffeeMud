@@ -47,17 +47,18 @@ public class Skill_Buffoonery extends BardSkill
 	protected Vector getFreeWearingPositions(MOB target)
 	{
 		Vector V=new Vector();
-		boolean[] pos=new boolean[Item.WORN_ORDER.length];
+		Wearable.CODES codes = Wearable.CODES.instance();
+		boolean[] pos=new boolean[codes.all_ordered().length];
 
 		for(int i=0;i<pos.length;i++)
-			if(target.freeWearPositions(Item.WORN_ORDER[i],(short)0,(short)0)>0)
+			if(target.freeWearPositions(codes.all_ordered()[i],(short)0,(short)0)>0)
 				pos[i]=false;
 			else
 				pos[i]=true;
 
 		for(int i=0;i<pos.length;i++)
 			if(!pos[i])
-				V.addElement(Long.valueOf(Item.WORN_ORDER[i]));
+				V.addElement(Long.valueOf(codes.all_ordered()[i]));
 		return V;
 	}
 

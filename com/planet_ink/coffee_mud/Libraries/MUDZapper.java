@@ -1006,9 +1006,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 break;
                             if(str2.startsWith("+"))
                             {
-                                int code=CMLib.utensils().getWornCode(str2.substring(1));
+                                long code=Wearable.CODES.FIND_endsWith(str2.substring(1));
                                 if(code>=0)
-                                    buf.append(Item.WORN_DESCS[code]+", ");
+                                    buf.append(Wearable.CODES.NAME(code)+", ");
                             }
                         }
                         if(buf.toString().endsWith(", "))
@@ -1026,9 +1026,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 break;
                             if(str2.startsWith("-"))
                             {
-                                int code=CMLib.utensils().getWornCode(str2.substring(1));
+                                long code=Wearable.CODES.FIND_endsWith(str2.substring(1));
                                 if(code>=0)
-                                    buf.append(Item.WORN_DESCS[code]+", ");
+                                    buf.append(Wearable.CODES.NAME(code)+", ");
                             }
                         }
                         if(buf.toString().endsWith(", "))
@@ -2665,8 +2665,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             else
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
                             {
-                                int code=CMLib.utensils().getWornCode(str2.substring(1));
-                                if(code>=0) entry.addElement(Integer.valueOf((int)CMath.pow(2,code-1)));
+                                long code=Wearable.CODES.FIND_endsWith(str2.substring(1));
+                                if(code>=0) entry.addElement(Long.valueOf(code));
                             }
                             v=V.size();
                         }
@@ -3626,14 +3626,14 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 break;
             case 57: // +wornOn
                 for(int v=1;v<V.size();v++)
-                    if((item.rawProperLocationBitmap()&((Integer)V.elementAt(v)).intValue())>0)
+                    if((item.rawProperLocationBitmap()&((Long)V.elementAt(v)).longValue())>0)
                         return false;
                 break;
             case 58: // -wornOn
                 {
                     boolean found=false;
                     for(int v=1;v<V.size();v++)
-                        if((item.rawProperLocationBitmap()&((Integer)V.elementAt(v)).intValue())>0)
+                        if((item.rawProperLocationBitmap()&((Long)V.elementAt(v)).longValue())>0)
                         { found=true; break;}
                     if(!found) return false;
                 }

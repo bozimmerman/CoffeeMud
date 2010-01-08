@@ -65,7 +65,7 @@ public class Examine extends StdCommand
                 thisThang=mob;
             
             if(thisThang==null)
-                thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,ID,Item.WORNREQ_ANY);
+                thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,ID,Wearable.FILTER_ANY);
             int dirCode=-1;
             if(thisThang==null)
             {

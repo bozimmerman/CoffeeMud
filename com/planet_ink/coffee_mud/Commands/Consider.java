@@ -84,7 +84,7 @@ public class Consider extends StdCommand
     		if(ID.equalsIgnoreCase("SELF")||ID.equalsIgnoreCase("ME"))
     			target=mob;
     		if(target==null)
-    			target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,targetName,Item.WORNREQ_ANY);
+    			target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,targetName,Wearable.FILTER_ANY);
     		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
     		{
     			mob.tell("I don't see '"+targetName+"' here.");

@@ -92,7 +92,7 @@ public class Transfer extends At
 		{
                 if(!allFlag)
                 {
-                    Environmental E=curRoom.fetchFromMOBRoomFavorsItems(mob,null,mobname,Item.WORNREQ_UNWORNONLY);
+                    Environmental E=curRoom.fetchFromMOBRoomFavorsItems(mob,null,mobname,Wearable.FILTER_UNWORNONLY);
                     if(E instanceof Item) V.addElement(E);
                 }
                 else

@@ -71,7 +71,7 @@ public class Pull extends Go
 		}
 		String whatToOpen=CMParms.combine(commands,1);
 		if(openThis==null)
-			openThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatToOpen,Item.WORNREQ_ANY);
+			openThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatToOpen,Wearable.FILTER_ANY);
 		if((openThis==null)||(!CMLib.flags().canBeSeenBy(openThis,mob)))
 		{
 			mob.tell("You don't see '"+whatToOpen+"' here.");

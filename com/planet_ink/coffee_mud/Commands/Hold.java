@@ -47,7 +47,7 @@ public class Hold extends StdCommand
 			return false;
 		}
 		commands.removeElementAt(0);
-		Vector items=CMLib.english().fetchItemList(mob,mob,null,commands,Item.WORNREQ_UNWORNONLY,false);
+		Vector items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,false);
 		if(items.size()==0)
 			mob.tell("You don't seem to be carrying that.");
 		else

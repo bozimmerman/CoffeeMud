@@ -65,7 +65,7 @@ public class Fill extends StdCommand
                     commands.removeElementAt(i);
                 }
 			String thingToFillFrom=CMParms.combine(commands,fromDex);
-			fillFromThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFillFrom,Item.WORNREQ_ANY);
+			fillFromThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFillFrom,Wearable.FILTER_ANY);
 			if((fillFromThis==null)||(!CMLib.flags().canBeSeenBy(fillFromThis,mob)))
 			{
 				mob.tell("I don't see "+thingToFillFrom+" here.");

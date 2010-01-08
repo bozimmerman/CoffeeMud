@@ -1852,7 +1852,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         if(E.containTypes()>0)
         {
             canContain="";
-            for(int i=0;i<20;i++)
+            for(int i=0;i<Container.CONTAIN_DESCS.length-1;i++)
                 if(CMath.isSet((int)E.containTypes(),i))
                     canContain+=", "+Container.CONTAIN_DESCS[i+1];
         }
@@ -3935,11 +3935,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 buf.append("Wear on any one of: ");
             else
                 buf.append("Worn on all of: ");
-            for(int l=1;l<Item.WORN_CODES.length;l++)
+    		Wearable.CODES codes = Wearable.CODES.instance();
+            for(int l=1;l<codes.all().length;l++)
             {
-                long wornCode=Item.WORN_CODES[l];
+                long wornCode=codes.all()[l];
                 if((oldWornLocation[0]&wornCode)>0)
-                    buf.append(Item.WORN_DESCS[l]+", ");
+                    buf.append(codes.name(l)+", ");
             }
             if(buf.toString().endsWith(", "))
                 mob.tell(buf.substring(0,buf.length()-2));
@@ -3955,12 +3956,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 mob.tell("1: Able to worn on any ONE of these locations:");
             else
                 mob.tell("1: Must be worn on ALL of these locations:");
-            for(int l=0;l<Item.WORN_CODES.length;l++)
+    		Wearable.CODES codes = Wearable.CODES.instance();
+            for(int l=0;l<codes.total();l++)
             {
-                long wornCode=1<<l;
-                if(CMLib.flags().wornLocation(wornCode).length()>0)
+                long wornCode=codes.get(l);
+                if(codes.name(wornCode).length()>0)
                 {
-                    String header=(l+2)+": ("+CMLib.flags().wornLocation(wornCode)+") : "+(((oldWornLocation[0]&wornCode)==wornCode)?"YES":"NO");
+                    String header=(l+2)+": ("+codes.name(wornCode)+") : "+(((oldWornLocation[0]&wornCode)==wornCode)?"YES":"NO");
                     mob.tell(header);
                 }
             }
@@ -4214,12 +4216,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         int flags=CMath.s_int(E.getStat("WEAR"));
         String newName="?";
+		Wearable.CODES codes = Wearable.CODES.instance();
         while((mob.session()!=null)&&(!mob.session().killFlag())&&(newName.equals("?")))
         {
             StringBuffer wearable=new StringBuffer("");
-            for(int i=1;i<Item.WORN_DESCS.length;i++)
+            for(int i=1;i<codes.total();i++)
                 if(CMath.isSet(flags,i-1))
-                    wearable.append(Item.WORN_DESCS[i]+" ");
+                    wearable.append(codes.name(i)+" ");
 
             mob.tell(showNumber+". UNWearable locations: '"+wearable+"'.");
             if((showFlag!=showNumber)&&(showFlag>-999)) return;
@@ -4228,9 +4231,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             if(newName.length()==0)
                 mob.tell("(no change)");
             else
-            if(CMParms.containsIgnoreCase(Item.WORN_DESCS,newName))
+            if(CMParms.containsIgnoreCase(codes.names(),newName))
             {
-                int bit=CMParms.indexOfIgnoreCase(Item.WORN_DESCS,newName)-1;
+                int bit=CMParms.indexOfIgnoreCase(codes.names(),newName)-1;
                 if(bit>=0)
                 {
                     if(CMath.isSet(flags,bit))
@@ -4243,8 +4246,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             if(newName.equalsIgnoreCase("?"))
             {
                 StringBuffer str=new StringBuffer("Valid values: \n\r");
-                for(int i=0;i<Item.WORN_DESCS.length;i++)
-                    str.append(Item.WORN_DESCS[i]+" ");
+                for(String name : codes.names())
+                    str.append(name+" ");
                 mob.tell(str.toString());
             }
             else

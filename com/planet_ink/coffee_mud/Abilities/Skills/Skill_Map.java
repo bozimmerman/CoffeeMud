@@ -100,7 +100,7 @@ public class Skill_Map extends StdSkill
 			mob.tell("You are too stupid to actually make a map.");
 			return false;
 		}
-		Item target=getTarget(mob,null,givenTarget,commands,Item.WORNREQ_UNWORNONLY);
+		Item target=getTarget(mob,null,givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null)return false;
 
 		Item item=target;

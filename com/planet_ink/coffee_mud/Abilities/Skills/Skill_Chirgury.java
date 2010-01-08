@@ -67,7 +67,7 @@ public class Skill_Chirgury extends StdSkill
 	        return false;
 	    }
 	    
-		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_UNWORNONLY,false,true);
+		Environmental target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY,false,true);
 		if(target==null) return false;
 
 		if((partCode==0)&&((!(target instanceof MOB))||(target.fetchEffect("Pregnancy")==null)))

@@ -193,7 +193,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			key=null;
 			messedUp=false;
 			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
-			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORNREQ_UNWORNONLY);
+			building=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(!canMend(mob,building,false)) return false;
 			mending=true;
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

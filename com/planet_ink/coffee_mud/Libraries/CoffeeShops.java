@@ -129,14 +129,14 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             if(I instanceof Armor)
             {
                 str.append("\n\rWear Info  : Worn on ");
-                for(int l=0;l<Item.WORN_CODES.length;l++)
+                Wearable.CODES codes = Wearable.CODES.instance();
+                for(long wornCode : codes.all())
                 {
-                    int wornCode=1<<l;
-                    if(CMLib.flags().wornLocation(wornCode).length()>0)
+                    if(codes.name(wornCode).length()>0)
                     {
                         if(((I.rawProperLocationBitmap()&wornCode)==wornCode))
                         {
-                            str.append(CMStrings.capitalizeAndLower(CMLib.flags().wornLocation(wornCode))+" ");
+                            str.append(CMStrings.capitalizeAndLower(codes.name(wornCode))+" ");
                             if(I.rawLogicalAnd())
                                 str.append("and ");
                             else

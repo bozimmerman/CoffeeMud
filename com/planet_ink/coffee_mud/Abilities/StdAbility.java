@@ -415,7 +415,7 @@ public class StdAbility implements Ability
 			target=mob.location().fetchInhabitant(targetName);
 			if(target==null)
 			{
-				Environmental t=mob.location().fetchFromRoomFavorItems(null,targetName,Item.WORNREQ_UNWORNONLY);
+				Environmental t=mob.location().fetchFromRoomFavorItems(null,targetName,Wearable.FILTER_UNWORNONLY);
 				if((t!=null)&&(!(t instanceof MOB)))
 				{
 					if(!quiet)
@@ -506,11 +506,11 @@ public class StdAbility implements Ability
 					{
 						switch(wornReqCode)
 						{
-						case Item.WORNREQ_UNWORNONLY:
+						case Wearable.FILTER_UNWORNONLY:
 							if(!((Item)target).amWearingAt(Item.IN_INVENTORY))
 								continue;
 							break;
-						case Item.WORNREQ_WORNONLY:
+						case Wearable.FILTER_WORNONLY:
 							if(((Item)target).amWearingAt(Item.IN_INVENTORY))
 								continue;
 							break;
@@ -586,13 +586,13 @@ public class StdAbility implements Ability
 			else
             switch(wornReqCode)
             {
-            case Item.WORNREQ_ANY:
+            case Wearable.FILTER_ANY:
                 target=mob.fetchInventory(container,targetName);
                 break;
-            case Item.WORNREQ_UNWORNONLY:
+            case Wearable.FILTER_UNWORNONLY:
                 target=mob.fetchCarried(container,targetName);
                 break;
-            case Item.WORNREQ_WORNONLY:
+            case Wearable.FILTER_WORNONLY:
                 target=mob.fetchWornItem(targetName);
                 break;
             }

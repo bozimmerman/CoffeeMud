@@ -107,8 +107,8 @@ public class Copy extends StdCommand
 				}
 			}
 		}
-		if(E==null) E=mob.location().fetchFromRoomFavorItems(srchContainer,name,Item.WORNREQ_UNWORNONLY);
-        if(E==null) E=mob.location().fetchFromRoomFavorMOBs(srchContainer,name,Item.WORNREQ_UNWORNONLY);
+		if(E==null) E=mob.location().fetchFromRoomFavorItems(srchContainer,name,Wearable.FILTER_UNWORNONLY);
+        if(E==null) E=mob.location().fetchFromRoomFavorMOBs(srchContainer,name,Wearable.FILTER_UNWORNONLY);
 		if(E==null)	E=mob.fetchInventory(name);
 		if(E==null)
 		{

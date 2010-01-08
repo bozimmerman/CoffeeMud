@@ -108,14 +108,15 @@ public class Tattooing extends CommonSkill
 		        		  Item.WORN_NECK,
 		        		  Item.WORN_BACK,
 		        		  Item.WORN_TORSO};
-		for(int i=0;i<Item.WORN_DESCS.length;i++)
+		Wearable.CODES codes = Wearable.CODES.instance();
+		for(int i=0;i<codes.total();i++)
 		{
 		    for(int ii=0;ii<tattoable.length;ii++)
-		        if(Item.WORN_CODES[i]==tattoable[ii])
+		        if(codes.get(i)==tattoable[ii])
 		        {
-				    if(Item.WORN_DESCS[i].equalsIgnoreCase(part))
+				    if(codes.name(i).equalsIgnoreCase(part))
 				        partNum=i;
-				    allParts.append(", "+CMStrings.capitalizeAndLower(Item.WORN_DESCS[i].toLowerCase()));
+				    allParts.append(", "+CMStrings.capitalizeAndLower(codes.name(i).toLowerCase()));
 				    break;
 			    }
 		}
@@ -124,8 +125,8 @@ public class Tattooing extends CommonSkill
 		    commonTell(mob,"'"+part+"' is not a valid location.  Valid locations include: "+allParts.toString().substring(2));
 		    return false;
 		}
-		long wornCode=Item.WORN_CODES[partNum];
-		String wornName=Item.WORN_DESCS[partNum];
+		long wornCode=codes.get(partNum);
+		String wornName=codes.name(partNum);
 		
 		MOB target=super.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -162,7 +163,7 @@ public class Tattooing extends CommonSkill
 		    }
 		}
 		else
-		if(numTattsDone>=target.getWearPositions(Item.WORN_CODES[partNum]))
+		if(numTattsDone>=target.getWearPositions(codes.get(partNum)))
 		{
 		    commonTell(mob,"That location is already completely decorated.");
 		    return false;

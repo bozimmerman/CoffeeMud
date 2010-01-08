@@ -563,28 +563,6 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
     
     
-    public String wornList(long wornCode)
-    {
-        StringBuffer buf=new StringBuffer("");
-        for(int wornNum=0;wornNum<Item.WORN_DESCS.length-1;wornNum++)
-        {
-            if(CMath.isSet(wornCode,wornNum))
-                buf.append(Item.WORN_DESCS[wornNum+1]+", ");
-        }
-        String buff=buf.toString();
-        if(buff.endsWith(", ")) buff=buff.substring(0,buff.length()-2).trim();
-        return buff;
-    }
-    
-    public int getWornCode(String name)
-    {
-        name=name.toLowerCase().trim();
-        for(int wornNum=0;wornNum<Item.WORN_DESCS.length;wornNum++)
-            if(Item.WORN_DESCS[wornNum].endsWith(name))
-                return wornNum;
-        return -1;
-    }
-    
     public Vector getDeadBodies(Environmental E)
     {
         if(E instanceof DeadBody)

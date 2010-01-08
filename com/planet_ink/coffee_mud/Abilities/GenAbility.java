@@ -226,7 +226,7 @@ public class GenAbility extends StdAbility
 	    		if(target==null) return false;
 	    		break;
 	    	case Ability.CAN_ITEMS:
-	    		target=super.getTarget(mob, mob.location(), givenTarget, commands, Item.WORNREQ_ANY);
+	    		target=super.getTarget(mob, mob.location(), givenTarget, commands, Wearable.FILTER_ANY);
 	    		if(target==null) return false;
 	    		break;
 	    	case Ability.CAN_ROOMS:
@@ -247,14 +247,14 @@ public class GenAbility extends StdAbility
 	    		if(dirCode>=0)
 	    			openThis=mob.location().getExitInDir(dirCode);
 	    		if(openThis==null)
-	    			openThis=mob.location().fetchFromRoomFavorItems(null, whatToOpen, Item.WORNREQ_ANY);
+	    			openThis=mob.location().fetchFromRoomFavorItems(null, whatToOpen, Wearable.FILTER_ANY);
 	    		if((openThis==null)||(!(openThis instanceof Exit))) return false;
 	    		break;
 	    	}
 	    	case 0:
 	    		break;
 	    	default:
-	    		target=super.getAnyTarget(mob,commands, givenTarget, Item.WORNREQ_ANY);
+	    		target=super.getAnyTarget(mob,commands, givenTarget, Wearable.FILTER_ANY);
 	    		if(target==null) return false;
 	    		break;
 	    	}

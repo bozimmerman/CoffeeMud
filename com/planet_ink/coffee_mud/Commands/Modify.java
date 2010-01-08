@@ -93,7 +93,7 @@ public class Modify extends StdCommand
 
 		Item modItem=null;
 		if((srchMob!=null)&&(srchRoom!=null))
-			modItem=(Item)srchRoom.fetchFromMOBRoomFavorsItems(srchMob,srchContainer,itemID,Item.WORNREQ_ANY);
+			modItem=(Item)srchRoom.fetchFromMOBRoomFavorsItems(srchMob,srchContainer,itemID,Wearable.FILTER_ANY);
 		else
 		if(srchMob!=null)
 			modItem=srchMob.fetchInventory(itemID);
@@ -1443,13 +1443,13 @@ public class Modify extends StdCommand
 			}
 			Environmental thang=null;
 			if((srchMob!=null)&&(srchRoom!=null))
-				thang=srchRoom.fetchFromMOBRoomFavorsItems(srchMob,srchContainer,allWord,Item.WORNREQ_ANY);
+				thang=srchRoom.fetchFromMOBRoomFavorsItems(srchMob,srchContainer,allWord,Wearable.FILTER_ANY);
 			else
 			if(srchMob!=null)
 				thang=srchMob.fetchInventory(allWord);
 			else
 			if(srchRoom!=null)
-				thang=srchRoom.fetchFromRoomFavorItems(srchContainer,allWord,Item.WORNREQ_ANY);
+				thang=srchRoom.fetchFromRoomFavorItems(srchContainer,allWord,Wearable.FILTER_ANY);
 			if((thang!=null)&&(thang instanceof Item))
 			{
 				if(!CMSecurity.isAllowed(mob,mob.location(),"CMDITEMS")) 

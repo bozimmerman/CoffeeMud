@@ -3066,12 +3066,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				  {
 					  I.setRawProperLocationBitmap(0);
 					  Vector V=CMParms.parseCommas(val,true);
+					  Wearable.CODES codes = Wearable.CODES.instance();
 					  for(Enumeration e=V.elements();e.hasMoreElements();)
 					  {
 						  val=(String)e.nextElement();
-						  int wornIndex=CMParms.indexOfIgnoreCase(Item.WORN_DESCS,val);
+						  int wornIndex=codes.findDex_ignoreCase(val);
 						  if(wornIndex>=0)
-							  I.setRawProperLocationBitmap(I.rawProperLocationBitmap()|Item.WORN_CODES[wornIndex]);
+							  I.setRawProperLocationBitmap(I.rawProperLocationBitmap()|codes.get(wornIndex));
 					  }
 				  }
 				  break;

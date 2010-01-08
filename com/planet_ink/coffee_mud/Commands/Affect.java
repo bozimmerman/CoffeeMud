@@ -125,7 +125,7 @@ public class Affect extends StdCommand
                     if((name.equalsIgnoreCase("area")||(name.equalsIgnoreCase("zone"))))
                         E=CMLib.map().areaLocation(mob);
                     else
-    	                E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,name,Item.WORNREQ_ANY);
+    	                E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,name,Wearable.FILTER_ANY);
 	                if(E==null)
 	                    S.colorOnlyPrint("You don't see "+name+" here.\n\r^N");
 	                else

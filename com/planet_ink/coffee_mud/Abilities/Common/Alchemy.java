@@ -195,7 +195,7 @@ public class Alchemy extends CraftingSkill implements ItemCraftor
 		}
 		else
 		{
-			building=getTarget(mob,null,givenTarget,CMParms.parse(pos),Item.WORNREQ_UNWORNONLY);
+			building=getTarget(mob,null,givenTarget,CMParms.parse(pos),Wearable.FILTER_UNWORNONLY);
 			commands.remove(pos);
 			if(building==null) return false;
 			if(!mob.isMine(building))

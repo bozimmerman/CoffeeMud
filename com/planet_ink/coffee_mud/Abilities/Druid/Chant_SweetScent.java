@@ -121,7 +121,7 @@ public class Chant_SweetScent extends Chant
 			return false;
 		}
 
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_UNWORNONLY);
+		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
 		if(!Druid_MyPlants.isMyPlant(target,mob))
 		{

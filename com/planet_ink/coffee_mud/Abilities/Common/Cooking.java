@@ -665,8 +665,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			commonTell(mob,buf.toString()+"\n\rIngredients beginning with the ~ character are optional additives.");
 			return true;
 		}
-		Item possibleContainer=possibleContainer(mob,commands,true,Item.WORNREQ_UNWORNONLY);
-		Item target=getTarget(mob,mob.location(),givenTarget,possibleContainer,commands,Item.WORNREQ_UNWORNONLY);
+		Item possibleContainer=possibleContainer(mob,commands,true,Wearable.FILTER_UNWORNONLY);
+		Item target=getTarget(mob,mob.location(),givenTarget,possibleContainer,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null)
         {
             commonTell(mob,"The syntax for this skill is "+triggerStrings()[0]+" [CONTAINER]");

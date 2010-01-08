@@ -94,7 +94,7 @@ public class Thief_MakeBomb extends ThiefSkill
 				return false;
 			}
 
-			trapThis=this.getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_UNWORNONLY);
+			trapThis=this.getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
 			if(trapThis==null) return false;
 			if((!auto)&&(!theTrap.canSetTrapOn(mob,trapThis)))
 				return false;

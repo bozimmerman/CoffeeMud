@@ -78,7 +78,7 @@ public class Chant_NeutralizePoison extends Chant implements MendingSkill
     
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_UNWORNONLY);
+		Environmental target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

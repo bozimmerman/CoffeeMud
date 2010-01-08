@@ -86,7 +86,7 @@ public class Drop extends StdCommand
         // uncommenting this allows dropping directly from containers
         // "drop all sack" will no longer drop all of your "sack", but will drop 
         // all of the contents of your 1.sack, leaving the sack in inventory.
-		//container=CMLib.english().possibleContainer(mob,commands,true,Item.WORNREQ_UNWORNONLY);
+		//container=CMLib.english().possibleContainer(mob,commands,true,Wearable.FILTER_UNWORNONLY);
 
 
 		int maxToDrop=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);

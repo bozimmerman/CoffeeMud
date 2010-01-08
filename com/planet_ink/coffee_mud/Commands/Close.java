@@ -51,7 +51,7 @@ public class Close extends StdCommand
 		if(dirCode>=0)
 			closeThis=mob.location().getExitInDir(dirCode);
 		if(closeThis==null)
-			closeThis=mob.location().fetchFromMOBRoomItemExit(mob,null,whatToClose,Item.WORNREQ_ANY);
+			closeThis=mob.location().fetchFromMOBRoomItemExit(mob,null,whatToClose,Wearable.FILTER_ANY);
 
 		if((closeThis==null)||(!CMLib.flags().canBeSeenBy(closeThis,mob)))
 		{

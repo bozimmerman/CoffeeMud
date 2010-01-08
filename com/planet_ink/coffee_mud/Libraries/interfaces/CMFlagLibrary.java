@@ -124,7 +124,6 @@ public interface CMFlagLibrary extends CMLibrary
     public int burnStatus(Environmental E);
     public boolean isInTheGame(Environmental E, boolean reqInhabitation);
     public boolean enchanted(Item I);
-    public String wornLocation(long wornCode);
     public boolean stillAffectedBy(Environmental obj, Vector oneOf, boolean anyTallF);
     public String dispositionList(int disposition, boolean useVerbs);
     public String sensesList(int disposition, boolean useVerbs);

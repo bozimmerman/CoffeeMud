@@ -64,6 +64,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		int curArmor=savedI.baseEnvStats().armor()+otherArm;
 		double curAttack=(double)(savedI.baseEnvStats().attackAdjustment()+otherAtt);
 		double curDamage=(double)(savedI.baseEnvStats().damage()+otherDam);
+		Wearable.CODES codes = Wearable.CODES.instance();
 		if(I instanceof Weapon)
 		{
 			double weight=(double)8;
@@ -75,11 +76,11 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		{
 			long worndata=savedI.rawProperLocationBitmap();
 			double weightpts=0;
-			for(int i=0;i<Item.WORN_WEIGHTS.length-1;i++)
+			for(int i=0;i<codes.location_strength_points().length-1;i++)
 			{
 				if(CMath.isSet(worndata,i))
 				{
-					weightpts+=Item.WORN_WEIGHTS[i+1];
+					weightpts+=codes.location_strength_points()[i+1];
 					if(!I.rawLogicalAnd()) break;
 				}
 			}
@@ -642,30 +643,31 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			double totalpts=0.0;
 			double weightpts=0.0;
 			double wornweights=0.0;
-			for(int i=0;i<Item.WORN_WEIGHTS.length-1;i++)
+			Wearable.CODES codes = Wearable.CODES.instance();
+			for(int i=0;i<codes.location_strength_points().length-1;i++)
 			{
 				if(CMath.isSet(worndata,i))
 				{
-					totalpts+=(pts*Item.WORN_WEIGHTS[i+1]);
-					wornweights+=Item.WORN_WEIGHTS[i+1];
+					totalpts+=(pts*codes.location_strength_points()[i+1]);
+					wornweights+=codes.location_strength_points()[i+1];
 					switch(materialCode)
 					{
 					case RawMaterial.MATERIAL_METAL:
 					case RawMaterial.MATERIAL_MITHRIL:
 					case RawMaterial.MATERIAL_PRECIOUS:
-						weightpts+=Item.WORN_WEIGHT_POINTS[i+1][2];
+						weightpts+=codes.material_weight_points()[i+1][2];
 						break;
 					case RawMaterial.MATERIAL_LEATHER:
 					case RawMaterial.MATERIAL_GLASS:
 					case RawMaterial.MATERIAL_PLASTIC:
 					case RawMaterial.MATERIAL_ROCK:
 					case RawMaterial.MATERIAL_WOODEN:
-						weightpts+=Item.WORN_WEIGHT_POINTS[i+1][1];
+						weightpts+=codes.material_weight_points()[i+1][1];
 						break;
 					case RawMaterial.MATERIAL_ENERGY:
 						break;
 					default:
-						weightpts+=Item.WORN_WEIGHT_POINTS[i+1][0];
+						weightpts+=codes.material_weight_points()[i+1][0];
 						break;
 					}
 					if(hands==1) break;
@@ -891,11 +893,12 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		{
 			long worndata=I.rawProperLocationBitmap();
 			double weightpts=0;
-			for(int i=0;i<Item.WORN_WEIGHTS.length-1;i++)
+			Wearable.CODES codes = Wearable.CODES.instance();
+			for(int i=0;i<codes.location_strength_points().length-1;i++)
 			{
 				if(CMath.isSet(worndata,i))
 				{
-					weightpts+=Item.WORN_WEIGHTS[i+1];
+					weightpts+=codes.location_strength_points()[i+1];
 					if(!I.rawLogicalAnd()) break;
 				}
 			}
