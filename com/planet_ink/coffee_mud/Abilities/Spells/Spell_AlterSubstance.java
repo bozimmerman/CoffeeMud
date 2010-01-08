@@ -89,8 +89,8 @@ public class Spell_AlterSubstance extends Spell
 			}
 			else
 			{
-				newMaterial=(newMaterial<<8);
 				material=RawMaterial.MATERIAL_DESCS[newMaterial];
+				newMaterial=(newMaterial<<8);
 			}
 		}
 		else
@@ -122,7 +122,7 @@ public class Spell_AlterSubstance extends Spell
 				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> change(s) into "+material+"!");
 				oldMaterial=target.material();
 				target.setMaterial(newMaterial);
-				String oldResourceName=RawMaterial.CODES.NAME(oldMaterial&RawMaterial.RESOURCE_MASK);
+				String oldResourceName=RawMaterial.CODES.NAME(oldMaterial);
 				String oldMaterialName=RawMaterial.MATERIAL_DESCS[(oldMaterial&RawMaterial.MATERIAL_MASK)>>8];
 				String oldName=target.name().toUpperCase();
 				oldName=CMStrings.replaceAll(oldName,oldResourceName,material);

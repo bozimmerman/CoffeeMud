@@ -224,6 +224,12 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
             int numYSquares=((numXSquares/2)+1);
 			int xsize=grid.length/numXSquares;
             int ysize=grid[0].length/numYSquares;
+            if((xsize<0)||(ysize<0))
+            {
+            	Log.errOut("StdMap","Error finishing " + xsize +"/"+ ysize+"/"+width);
+            	return map;
+            }
+            
 			map=new StringBuffer[xsize+1][ysize+1];
 			for(int y=0;y<grid[0].length;y++)
 			{

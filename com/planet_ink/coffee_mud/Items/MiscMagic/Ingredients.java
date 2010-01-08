@@ -56,7 +56,7 @@ public class Ingredients extends BagOfEndlessness
 		I.setDisplayText(name+" has been left here.");
 		I.setDescription("It looks like "+name);
 		I.setMaterial(type);
-		I.setBaseValue(RawMaterial.CODES.VALUE(type&RawMaterial.RESOURCE_MASK));
+		I.setBaseValue(RawMaterial.CODES.VALUE(type));
 		I.baseEnvStats().setWeight(1);
 		I.recoverEnvStats();
 		I.setContainer(this);

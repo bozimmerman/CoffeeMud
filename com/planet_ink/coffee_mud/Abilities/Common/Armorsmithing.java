@@ -318,7 +318,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 				return false;
 			}
 			duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),6);
-			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.CODES.NAME((data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK))).toLowerCase();
+			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
 			if(itemName.endsWith("s"))
 				itemName="some "+itemName;
 			else

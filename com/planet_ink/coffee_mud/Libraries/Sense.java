@@ -809,11 +809,12 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			if(!V.contains(E)) V.addElement(E);
 			long totalWeight=0;
 			long totalFloatilla=0;
+			RawMaterial.CODES codes = RawMaterial.CODES.instance();
 			for(int v=0;v<V.size();v++)
 			{
 				Item I=(Item)V.elementAt(v);
 				totalWeight+=I.baseEnvStats().weight();
-				totalFloatilla+=totalWeight*RawMaterial.CODES.BOUANCY(I.material());
+				totalFloatilla+=totalWeight*codes.bouancy(I.material());
 			}
 			if(E instanceof Container)
 			{

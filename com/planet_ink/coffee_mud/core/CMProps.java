@@ -1320,7 +1320,7 @@ public class CMProps extends Properties
         if(O instanceof Drink)
         {
             image=getHashedMXPImage(H,"DRINK_"+((Drink)O).ID().toUpperCase());
-            if(image==null) image=getHashedMXPImage(H,"DRINK_"+RawMaterial.CODES.NAME(((Item)O).material()&RawMaterial.RESOURCE_MASK));
+            if(image==null) image=getHashedMXPImage(H,"DRINK_"+RawMaterial.CODES.NAME(((Item)O).material()));
             if(image==null) image=getHashedMXPImage(H,"DRINK_"+RawMaterial.MATERIAL_DESCS[(((Item)O).material()&RawMaterial.MATERIAL_MASK)>>8]);
             if(image==null) image=getHashedMXPImage(H,"DRINK_*");
         }

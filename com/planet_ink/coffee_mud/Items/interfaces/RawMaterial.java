@@ -890,13 +890,13 @@ public interface RawMaterial extends Item
 	    }
 	    private static CODES[] insts=new CODES[256];
 	    
-		public int[] allCodes = new int[0];
-		public int[] allCodesSortedByName=new int[0];
-		public int[] berries = new int[0];
-		public int[] fishes = new int[0];
-		public int[][] data =  new int[0][0]; 
-		public String[] smells = new String[0];
-		public String[] descs = new String[0];
+		private int[] allCodes = new int[0];
+		private int[] allCodesSortedByName=new int[0];
+		private int[] berries = new int[0];
+		private int[] fishes = new int[0];
+		private int[][] data =  new int[0][0]; 
+		private String[] smells = new String[0];
+		private String[] descs = new String[0];
 		
 		/**
 		 * Returns an array of the numeric codes for the berry resources
@@ -945,7 +945,7 @@ public interface RawMaterial extends Item
 		/**
 		 * Returns an array of the numeric codes for all resources
 		 * @return an array of the numeric codes for all resources
-		 */
+		 */ 
 		public int[] all() { return allCodes;}
 		/**
 		 * Returns an the numeric codes of the indexes resource code
@@ -954,10 +954,11 @@ public interface RawMaterial extends Item
 		 */
 		public static int GET(int x) { return c().allCodes[x&RESOURCE_MASK];}
 		/**
-		 * Returns the names of the various resources
-		 * @return the names of the various resources
+		 * Returns an the numeric codes of the indexes resource code
+		 * @param x the indexed resource code
+		 * @return an the numeric codes of the indexes resource code
 		 */
-		public static String[] NAMES() { return c().descs;}
+		public int get(int x) { return allCodes[x&RESOURCE_MASK];}
 		/**
 		 * Returns the code of the names resource, or -1
 		 * @return the code of the names resource, or -1
@@ -999,11 +1000,27 @@ public interface RawMaterial extends Item
 			return (code>=0) && ((code&RawMaterial.RESOURCE_MASK) < c().total());
 		}
 		/**
+		 * Returns the names of the various resources
+		 * @return the names of the various resources
+		 */
+		public static String[] NAMES() { return c().descs;}
+		/**
+		 * Returns the names of the various resources
+		 * @return the names of the various resources
+		 */
+		public String[] names() { return descs;}
+		/**
 		 * Returns the name of the code
 		 * @param code the code
 		 * @return the name of the code
 		 */
 		public static String NAME(int code) { return c().descs[code&RESOURCE_MASK];}
+		/**
+		 * Returns the name of the code
+		 * @param code the code
+		 * @return the name of the code
+		 */
+		public String name(int code) { return descs[code&RESOURCE_MASK];}
 		/**
 		 * Returns the smells of the various resources
 		 * @return the smells of the various resources
@@ -1016,25 +1033,51 @@ public interface RawMaterial extends Item
 		 */
 		public static String SMELL(int code) { return c().smells[code&RESOURCE_MASK];}
 		/**
+		 * Returns the description of the code smell
+		 * @param code the code smell
+		 * @return the description of the code smell
+		 */
+		public String smell(int code) { return smells[code&RESOURCE_MASK];}
+		/**
 		 * Returns the value of the resource
 		 * @return the value of the resource
 		 */
 		public static int VALUE(int code) { return c().data[code&RESOURCE_MASK][1];}
+		/**
+		 * Returns the value of the resource
+		 * @return the value of the resource
+		 */
+		public int value(int code) { return data[code&RESOURCE_MASK][1];}
 		/**
 		 * Returns the frequency of the resource, or how rare it is.
 		 * @return the frequency of the resource
 		 */
 		public static int FREQUENCY(int code) { return c().data[code&RESOURCE_MASK][2];}
 		/**
+		 * Returns the frequency of the resource, or how rare it is.
+		 * @return the frequency of the resource
+		 */
+		public int frequency(int code) { return data[code&RESOURCE_MASK][2];}
+		/**
 		 * Returns the hardness of the resource, from 1-10
 		 * @return the hardness of the resource
 		 */
 		public static int HARDNESS(int code) { return c().data[code&RESOURCE_MASK][3];}
 		/**
+		 * Returns the hardness of the resource, from 1-10
+		 * @return the hardness of the resource
+		 */
+		public int hardness(int code) { return data[code&RESOURCE_MASK][3];}
+		/**
 		 * Returns the bouancy of the resource, from 0-20000
 		 * @return the bouancy of the resource
 		 */
 		public static int BOUANCY(int code) { return c().data[code&RESOURCE_MASK][4];}
+		/**
+		 * Returns the bouancy of the resource, from 0-20000
+		 * @return the bouancy of the resource
+		 */
+		public int bouancy(int code) { return data[code&RESOURCE_MASK][4];}
 		/**
 		 * Search and compose a complete list of all resources of the given material
 		 * @param mat the resource code

@@ -44,16 +44,17 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		material=material&RawMaterial.MATERIAL_MASK;
 		if((material<0)||(material>=RawMaterial.MATERIAL_DESCS.length))
 			return -1;
-		int rscIndex=CMLib.dice().roll(1,RawMaterial.CODES.ALL().length,-1);
-		int countDown=RawMaterial.CODES.ALL().length;
+		RawMaterial.CODES codes = RawMaterial.CODES.instance();
+		int countDown=codes.total();
+		int rscIndex=CMLib.dice().roll(1,countDown,-1);
 		int rsc=0;
 		while(--countDown>=0)
 		{
-			rsc=RawMaterial.CODES.GET(rscIndex);
+			rsc=codes.get(rscIndex);
 			if((rsc&RawMaterial.MATERIAL_MASK)==material)
 				return rsc;
 			if((--rscIndex)<0)
-				rscIndex=RawMaterial.CODES.ALL().length-1;
+				rscIndex=codes.total()-1;
 		}
 		return -1;
 	}

@@ -68,7 +68,7 @@ public class Chant_GrowFood extends Chant
 		StringBuffer buf=new StringBuffer("Food types known:\n\r");
 		List<Integer> codes = RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_VEGETATION);
 		for(Integer code : codes)
-			if(!CMParms.makeVector(Chant_SummonSeed.NON_SEEDS).contains(Integer.valueOf(code.intValue())))
+			if(!CMParms.contains(Chant_SummonSeed.NON_SEEDS,code.intValue()))
 			{
 				choices.addElement(code);
 				String desc=RawMaterial.CODES.NAME(code.intValue());

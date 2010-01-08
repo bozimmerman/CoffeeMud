@@ -116,15 +116,15 @@ public class Fishing extends GatheringSkill
 		boolean maybeFish=false;
 		if(mob.location()!=null)
 		{
-			for(int i=0;i<RawMaterial.CODES.FISHES().length;i++)
-				if(mob.location().myResource()==RawMaterial.CODES.FISHES()[i])
+			for(int fishCode : RawMaterial.CODES.FISHES())
+				if(mob.location().myResource()==fishCode)
 				{
-					foundFish=RawMaterial.CODES.FISHES()[i];
+					foundFish=fishCode;
 					maybeFish=true;
 				}
 				else
 				if((mob.location().resourceChoices()!=null)
-				&&(mob.location().resourceChoices().contains(Integer.valueOf(RawMaterial.CODES.FISHES()[i]))))
+				&&(mob.location().resourceChoices().contains(Integer.valueOf(fishCode))))
 					maybeFish=true;
 		}
 		if(!maybeFish)

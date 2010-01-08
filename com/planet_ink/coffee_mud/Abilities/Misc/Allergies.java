@@ -55,9 +55,10 @@ public class Allergies extends StdAbility
 	    resourceAllergies.clear();
 	    raceAllergies.clear();
 	    Vector V=CMParms.parse(newText.toUpperCase().trim());
-	    for(String S : RawMaterial.CODES.NAMES())
-	        if(V.contains(S))
-	            resourceAllergies.add(Integer.valueOf(RawMaterial.CODES.FIND_CaseSensitive(S)));
+	    RawMaterial.CODES codes = RawMaterial.CODES.instance();
+	    for(int s=0;s<codes.total();s++)
+	        if(V.contains(codes.names()[s]))
+	            resourceAllergies.add(Integer.valueOf(codes.get(s)));
 	    Race R=null;
         for(Enumeration r=CMClass.races();r.hasMoreElements();)
         {

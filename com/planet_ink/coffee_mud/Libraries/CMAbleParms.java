@@ -1138,7 +1138,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         value = value.trim();
                         StringBuffer str = new StringBuffer("");
                         str.append("\n\r<INPUT TYPE=RADIO NAME="+fieldName+"_WHICH ");
-                        boolean rsc=(value.trim().length()==0)||CMParms.containsIgnoreCase(RawMaterial.CODES.NAMES(),value.toUpperCase().trim());
+                        boolean rsc=(value.trim().length()==0)||(RawMaterial.CODES.FIND_IgnoreCase(value)>=0);
                         if(rsc) str.append("CHECKED ");
                         str.append("VALUE=\"RESOURCE\">");
                         str.append("\n\r<SELECT NAME="+fieldName+"_RESOURCE>");

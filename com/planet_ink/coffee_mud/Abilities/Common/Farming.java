@@ -211,9 +211,10 @@ public class Farming extends GatheringSkill
 		}
 		int code=-1;
 		String what=CMParms.combine(commands,0).toUpperCase();
-		for(int cd : RawMaterial.CODES.ALL())
+		RawMaterial.CODES codes = RawMaterial.CODES.instance();
+		for(int cd : codes.all())
 		{
-			String str=RawMaterial.CODES.NAME(code).toUpperCase();
+			String str=codes.name(code).toUpperCase();
 			if((str.equals(what))
 			&&(((cd&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
 			  ||(cd==RawMaterial.RESOURCE_COTTON)
@@ -226,9 +227,9 @@ public class Farming extends GatheringSkill
 			}
 		}
 		if(code<0)
-		for(int cd : RawMaterial.CODES.ALL())
+		for(int cd : codes.all())
 		{
-			String str=RawMaterial.CODES.NAME(cd).toUpperCase();
+			String str=codes.name(cd).toUpperCase();
 			if((str.toUpperCase().startsWith(what)||(what.startsWith(str)))
 			&&(((cd&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
 			  ||(cd==RawMaterial.RESOURCE_COTTON)

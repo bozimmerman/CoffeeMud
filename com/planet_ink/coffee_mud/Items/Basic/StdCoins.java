@@ -66,12 +66,15 @@ public class StdCoins extends StdItem implements Coins
 	    ||(CMLib.english().containsString(name(),"dollar")))
 	        setMaterial(RawMaterial.RESOURCE_PAPER);
 	    else
-		for(String S : RawMaterial.CODES.NAMES())
-		    if(CMLib.english().containsString(name(),S))
-		    {
-		        setMaterial(RawMaterial.CODES.FIND_CaseSensitive(S));
-		        break;
-		    }
+	    {
+	    	RawMaterial.CODES codes = RawMaterial.CODES.instance();
+			for(int s=0;s<codes.total();s++)
+			    if(CMLib.english().containsString(name(),codes.name(s)))
+			    {
+			        setMaterial(codes.get(s));
+			        break;
+			    }
+	    }
 		setDescription(CMLib.beanCounter().getConvertableDescription(getCurrency(),getDenomination()));
 	}
 	public long getNumberOfCoins(){return envStats().ability();}

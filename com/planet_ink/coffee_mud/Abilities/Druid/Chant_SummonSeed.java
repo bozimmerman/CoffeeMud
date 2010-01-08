@@ -59,7 +59,7 @@ public class Chant_SummonSeed extends Chant
 		List<Integer> codes = RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_VEGETATION);
 		for(Integer code : codes)
 		{
-			if(!CMParms.makeVector(NON_SEEDS).contains(Integer.valueOf(code.intValue())))	
+			if(!CMParms.contains(Chant_SummonSeed.NON_SEEDS,code.intValue()))
             {
 				String str=RawMaterial.CODES.NAME(code.intValue());
 				if(str.toUpperCase().equalsIgnoreCase(s))
