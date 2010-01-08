@@ -60,14 +60,14 @@ public class ResourceOverride extends StdBehavior
 				for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
 				{
 					if(RawMaterial.MATERIAL_DESCS[i].equalsIgnoreCase(which))
-					{ code=RawMaterial.CODES.COMPOSE_RESOURCES(i).get(0); break;}
+					{ code=RawMaterial.CODES.COMPOSE_RESOURCES(i).get(0).intValue(); break;}
 				}
 			if(code<0) code = RawMaterial.CODES.FIND_StartsWith(which);
 			if(code<0)
 				for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
 				{
 					if(RawMaterial.MATERIAL_DESCS[i].startsWith(which))
-					{ code=RawMaterial.CODES.COMPOSE_RESOURCES(i).get(0); break;}
+					{ code=RawMaterial.CODES.COMPOSE_RESOURCES(i).get(0).intValue(); break;}
 				}
 			if(code>=0)
 			{

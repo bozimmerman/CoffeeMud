@@ -768,7 +768,11 @@ public interface CharStats extends CMCommon, CMModifiable
 					String stat = p.substring(0,x).toUpperCase().trim();
 					p=p.substring(x+1,p.length()-1).trim();
 					Vector V=CMParms.parseSemicolons(p, false);
-					if(V.size()!=4) continue;
+					if(V.size()!=4)
+					{
+						Log.errOut("CharStats","Bad coffeemud.ini extvar row, requires 4 ; separated entries: "+p);
+						continue;
+					}
 					String type=((String)V.firstElement()).toUpperCase().trim();
 					int oldStatCode=-1;
 					if(type.startsWith("REPLACE:"))
@@ -778,6 +782,11 @@ public interface CharStats extends CMCommon, CMModifiable
 						if(oldStatCode<0) oldStatCode=CMParms.indexOf(DEFAULT_STAT_DESCS, repStat);
 						if(oldStatCode>=0)
 							type="REPLACE";
+						else
+						{
+							Log.errOut("CharStats","Bad coffeemud.ini extvar row, bad stat name: "+repStat);
+							continue;
+						}
 					}
 					String abbr=(String)V.elementAt(1);
 					String desc=(String)((String)V.elementAt(2)).toUpperCase();
@@ -803,7 +812,11 @@ public interface CharStats extends CMCommon, CMModifiable
 					    statAttributionDescriptions[oldStatCode]=adj;
 					    statCMMsgMapping[oldStatCode]=-1;
 					}
+					else
+						Log.errOut("CharStats","Bad coffeemud.ini extvar row, bad type: "+type);
 				}
+				else
+					Log.errOut("CharStats","Bad coffeemud.ini extvar row, no parentesis: "+p);
 			}
 	    }
 	    private static CODES c(){ return insts[Thread.currentThread().getThreadGroup().getName().charAt(0)];}

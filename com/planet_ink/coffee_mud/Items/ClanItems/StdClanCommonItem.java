@@ -152,7 +152,7 @@ public class StdClanCommonItem extends StdClanItem
             if(((x+S.length())<req.length())
             &&Character.isLetter(req.charAt((x+S.length()))))
                 continue;
-            V.addElement(codes.get(s));
+            V.addElement(Integer.valueOf(codes.get(s)));
         }
         if((M.location()!=null)
         &&(V.contains(Integer.valueOf(RawMaterial.MATERIAL_METAL)))

@@ -833,7 +833,10 @@ public interface RawMaterial extends Item
 						String stat = p.substring(0,x).toUpperCase().trim();
 						p=p.substring(x+1,p.length()-1).trim();
 						Vector V=CMParms.parseSemicolons(p, false);
-						if(V.size()!=7) continue;
+						if(V.size()!=7) {
+							Log.errOut("RawMaterial","Bad coffeemud.ini extvar row (requires 7 elements, separated by ;): "+p);
+							continue;
+						}
 						String type="ADD";
 						int oldResourceCode=-1;
 						if(stat.startsWith("REPLACE:"))
@@ -844,6 +847,11 @@ public interface RawMaterial extends Item
 							{
 								oldResourceCode=DEFAULT_RESOURCE_DATA[idx][0];
 								type="REPLACE";
+							}
+							else
+							{
+								Log.errOut("RawMaterial","Unknown replaceable resource in coffeemud.ini: "+stat);
+								continue;
 							}
 						}
 						String matStr=((String)V.elementAt(0)).toUpperCase();
@@ -856,7 +864,10 @@ public interface RawMaterial extends Item
 						boolean berry=((String)V.elementAt(6)).equalsIgnoreCase("berry");
 						int material = CMParms.indexOfIgnoreCase(MATERIAL_DESCS,matStr);
 						if((material<0)||(material>=MATERIAL_CODES.length)) 
+						{
+							Log.errOut("RawMaterial","Unknown material code in coffeemud.ini: "+matStr);
 							continue;
+						}
 						material=MATERIAL_CODES[material];
 						if(type.equalsIgnoreCase("ADD"))
 							add(material, stat, smell, value, frequ, hardness, bouancy, fish, berry);
@@ -864,16 +875,18 @@ public interface RawMaterial extends Item
 						if(type.equalsIgnoreCase("REPLACE")&&(oldResourceCode>=0))
 							replace(oldResourceCode, material, stat, smell, value, frequ, hardness, bouancy, fish, berry);
 					}
+					else
+						Log.errOut("RawMaterial","Bad coffeemud.ini row (no parenthesis): "+p);
 				}
 				String[] sortedNames = descs.clone();
 				Arrays.sort(sortedNames);
 				Hashtable<String,Integer> previousIndexes = new Hashtable<String,Integer>();
 				for(int ndex = 0; ndex < descs.length; ndex++)
-					previousIndexes.put(descs[ndex], ndex);
+					previousIndexes.put(descs[ndex], Integer.valueOf(ndex));
 				allCodesSortedByName = new int[allCodes.length];
 				for(int ndex = 0; ndex < sortedNames.length; ndex++)
 	            {
-					int previousIndex = previousIndexes.get(sortedNames[ndex]);
+					int previousIndex = previousIndexes.get(sortedNames[ndex]).intValue();
 					allCodesSortedByName[ndex] = allCodes[previousIndex];
 	            }
 	        }
@@ -1089,7 +1102,7 @@ public interface RawMaterial extends Item
 			List<Integer> rscs=new Vector<Integer>();
 			for(int rsc : c().allCodes)
 				if((rsc&MATERIAL_MASK)==mat)
-					rscs.add(rsc);
+					rscs.add(Integer.valueOf(rsc));
 			return rscs;
 		}
 		
