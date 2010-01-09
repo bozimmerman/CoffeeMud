@@ -420,65 +420,59 @@ public interface Wearable extends Environmental
 	        if(insts[c]==null) insts[c]=this;
 	        synchronized(this)
 	        {
-				Vector rawExtra = CMProps.getStatCodeExtensions(Wearable.class,"Wearable");
+				String[][] addExtra = CMProps.instance().getStrsStarting("ADDWEARLOC_");
+				String[][] repExtra = CMProps.instance().getStrsStarting("REPLACEWEARLOC_");
 				for(int i=0;i<Wearable.DEFAULT_WORN_CODES.length;i++)
 					add(DEFAULT_WORN_DESCS[i], DEFAULT_WORN_DEPENDENCYGRID[i], 
 						DEFAULT_WORN_WEIGHTS[i], CMParms.indexOf(DEFAULT_WORN_ORDER,DEFAULT_WORN_CODES[i]),
 						DEFAULT_WORN_WEIGHT_POINTS[i][0], DEFAULT_WORN_WEIGHT_POINTS[i][1], DEFAULT_WORN_WEIGHT_POINTS[i][2]);
-				if(rawExtra!=null)
-				for(Enumeration e=rawExtra.elements();e.hasMoreElements();)
+				for(int i=0;i<addExtra.length+repExtra.length;i++)
 				{
-					String p = (String)e.nextElement();
-					int x=p.indexOf('(');
-					if((x>0)&&(p.endsWith(")")))
+					String[] array = (i>=addExtra.length)?repExtra[i-addExtra.length]:addExtra[i];
+					boolean replace = i>=addExtra.length;
+					String stat = array[0].toLowerCase().trim().replace('_',' ');
+					String p=array[1];
+					Vector V=CMParms.parseCommas(p, false);
+					if(V.size()!=6){
+						Log.errOut("Wearable","Bad coffeemud.ini wear loc row (requires 6 elements, separated by ;): "+p);
+						continue;
+					}
+					String type="ADD";
+					int oldLocationCodeIndex=-1;
+					if(replace)
 					{
-						String stat = p.substring(0,x).toLowerCase().trim();
-						p=p.substring(x+1,p.length()-1).trim();
-						Vector V=CMParms.parseSemicolons(p, false);
-						if(V.size()!=6){
-							Log.errOut("Wearable","Bad coffeemud.ini extvar row (requires 7 elements, separated by ;): "+p);
+						int idx=CMParms.indexOf(DEFAULT_WORN_DESCS, stat);
+						if(idx>=0){
+							oldLocationCodeIndex=idx;
+							type="REPLACE";
+						}
+						else
+						{
+							Log.errOut("Wearable","Bad replace worn loc in coffeemud.ini file: "+stat);
 							continue;
 						}
-						String type="ADD";
-						int oldLocationCodeIndex=-1;
-						if(stat.startsWith("replace:"))
-						{
-							stat=stat.substring(8);
-							int idx=CMParms.indexOf(DEFAULT_WORN_DESCS, stat);
-							if(idx>=0){
-								oldLocationCodeIndex=idx;
-								type="REPLACE";
-							}
-							else
-							{
-								Log.errOut("Wearable","Bad replace worn loc in coffeemud.ini file: "+stat);
-								continue;
-							}
-						}
-						String dependencyMaskStr=((String)V.elementAt(0)).toLowerCase();
-						long dependencyMask=0;
-						Vector subLocs = CMParms.parseAny(dependencyMaskStr, "|", true);
-						for(int s=0;s<subLocs.size();s++)
-						{
-							int idx=CMParms.indexOf(DEFAULT_WORN_DESCS, ((String)subLocs.elementAt(s)).toLowerCase());
-							if(idx>=0) 
-								dependencyMask|=DEFAULT_WORN_CODES[idx];
-							else
-								Log.errOut("Wearable","Bad dependency mask in coffeemud.ini file: "+((String)subLocs.elementAt(s)).toLowerCase());
-						}
-						double armorStrength=CMath.s_double((String)V.elementAt(1));
-						int wornOrder=CMath.s_int((String)V.elementAt(2));
-						double clothWeight=CMath.s_double((String)V.elementAt(3));
-						double leatherWeight=CMath.s_double((String)V.elementAt(4));
-						double metalWeight=CMath.s_double((String)V.elementAt(5));
-						if(type.equalsIgnoreCase("ADD"))
-							add(stat, dependencyMask, armorStrength, wornOrder, clothWeight, leatherWeight, metalWeight);
-						else
-						if(type.equalsIgnoreCase("REPLACE")&&(oldLocationCodeIndex>=0))
-							replace(oldLocationCodeIndex, stat, dependencyMask, armorStrength, wornOrder, clothWeight, leatherWeight, metalWeight);
 					}
+					String dependencyMaskStr=((String)V.elementAt(0)).toLowerCase();
+					long dependencyMask=0;
+					Vector subLocs = CMParms.parseAny(dependencyMaskStr, "|", true);
+					for(int s=0;s<subLocs.size();s++)
+					{
+						int idx=CMParms.indexOf(DEFAULT_WORN_DESCS, ((String)subLocs.elementAt(s)).toLowerCase());
+						if(idx>=0) 
+							dependencyMask|=DEFAULT_WORN_CODES[idx];
+						else
+							Log.errOut("Wearable","Bad dependency mask in coffeemud.ini file: "+((String)subLocs.elementAt(s)).toLowerCase());
+					}
+					double armorStrength=CMath.s_double((String)V.elementAt(1));
+					int wornOrder=CMath.s_int((String)V.elementAt(2));
+					double clothWeight=CMath.s_double((String)V.elementAt(3));
+					double leatherWeight=CMath.s_double((String)V.elementAt(4));
+					double metalWeight=CMath.s_double((String)V.elementAt(5));
+					if(type.equalsIgnoreCase("ADD"))
+						add(stat, dependencyMask, armorStrength, wornOrder, clothWeight, leatherWeight, metalWeight);
 					else
-						Log.errOut("Wearable","Bad coffeemud.ini row (no parenthesis): "+p);
+					if(type.equalsIgnoreCase("REPLACE")&&(oldLocationCodeIndex>=0))
+						replace(oldLocationCodeIndex, stat, dependencyMask, armorStrength, wornOrder, clothWeight, leatherWeight, metalWeight);
 				}
 	        }
 	    }
@@ -721,7 +715,9 @@ public interface Wearable extends Environmental
 									 double clothWeight, double leatherWeight, double metalWeight)
 		{
 			if(allCodes.length>61) return;
-			long newCode = 1<<(allCodes.length+1);
+			long newCode = 0;
+			if(allCodes.length>0)
+				newCode = 1<<(allCodes.length-1);
 			allCodes=Arrays.copyOf(allCodes, allCodes.length+1);
 			allCodes[allCodes.length-1]=newCode;
 			descs=Arrays.copyOf(descs, descs.length+1);

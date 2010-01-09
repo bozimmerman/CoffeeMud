@@ -459,20 +459,20 @@ public class StdAbility implements Ability
 	public Environmental getAnyTarget(MOB mob,
 									  Vector commands,
 									  Environmental givenTarget,
-									  int wornReqCode)
-	{ return getAnyTarget(mob,commands,givenTarget,wornReqCode,false,false);}
+									  int wornFilter)
+	{ return getAnyTarget(mob,commands,givenTarget,wornFilter,false,false);}
 
 	public Environmental getAnyTarget(MOB mob,
 						  Vector commands,
 						  Environmental givenTarget,
-						  int wornReqCode,
+						  int wornFilter,
 						  boolean checkOthersInventory)
-	{ return getAnyTarget(mob,commands,givenTarget,wornReqCode,checkOthersInventory,false);}
+	{ return getAnyTarget(mob,commands,givenTarget,wornFilter,checkOthersInventory,false);}
 
 	public Environmental getAnyTarget(MOB mob,
 									  Vector commands,
 									  Environmental givenTarget,
-									  int wornReqCode,
+									  int wornFilter,
 									  boolean checkOthersInventory,
 									  boolean alreadyAffOk)
 	{
@@ -489,9 +489,9 @@ public class StdAbility implements Ability
 		else
 		if(mob.location()!=null)
 		{
-			target=mob.location().fetchFromRoomFavorMOBs(null,targetName, wornReqCode);
+			target=mob.location().fetchFromRoomFavorMOBs(null,targetName, wornFilter);
 			if(target==null)
-				target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,targetName,wornReqCode);
+				target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,targetName,wornFilter);
 			if((target==null)
 			&&(targetName.equalsIgnoreCase("room")
 				||targetName.equalsIgnoreCase("here")
@@ -504,7 +504,7 @@ public class StdAbility implements Ability
 					target=M.fetchInventory(null,targetName);
 					if(target!=null)
 					{
-						switch(wornReqCode)
+						switch(wornFilter)
 						{
 						case Wearable.FILTER_UNWORNONLY:
 							if(!((Item)target).amWearingAt(Wearable.IN_INVENTORY))
@@ -549,13 +549,13 @@ public class StdAbility implements Ability
 		return target;
 	}
 
-	protected static Item possibleContainer(MOB mob, Vector commands, boolean withStuff, int wornReqCode)
+	protected static Item possibleContainer(MOB mob, Vector commands, boolean withStuff, int wornFilter)
 	{
 		if((commands==null)||(commands.size()<2))
 			return null;
 
 		String possibleContainerID=(String)commands.lastElement();
-		Environmental thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID,wornReqCode);
+		Environmental thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID,wornFilter);
 		if((thisThang!=null)
 		&&(thisThang instanceof Item)
 		&&(((Item)thisThang) instanceof Container)
@@ -567,9 +567,9 @@ public class StdAbility implements Ability
 		return null;
 	}
 
-	public Item getTarget(MOB mob, Room location, Environmental givenTarget, Vector commands, int wornReqCode)
-	{ return getTarget(mob,location,givenTarget,null,commands,wornReqCode);}
-	public Item getTarget(MOB mob, Room location, Environmental givenTarget, Item container, Vector commands, int wornReqCode)
+	public Item getTarget(MOB mob, Room location, Environmental givenTarget, Vector commands, int wornFilter)
+	{ return getTarget(mob,location,givenTarget,null,commands,wornFilter);}
+	public Item getTarget(MOB mob, Room location, Environmental givenTarget, Item container, Vector commands, int wornFilter)
 	{
 		String targetName=CMParms.combine(commands,0);
 
@@ -578,13 +578,13 @@ public class StdAbility implements Ability
 			target=givenTarget;
 
 		if((location!=null)&&(target==null)&&(targetName.length()>0))
-			target=location.fetchFromRoomFavorItems(container,targetName,wornReqCode);
+			target=location.fetchFromRoomFavorItems(container,targetName,wornFilter);
 		if((target==null)&&(targetName.length()>0))
 		{
 			if(location!=null)
-				target=location.fetchFromMOBRoomFavorsItems(mob,container,targetName,wornReqCode);
+				target=location.fetchFromMOBRoomFavorsItems(mob,container,targetName,wornFilter);
 			else
-            switch(wornReqCode)
+            switch(wornFilter)
             {
             case Wearable.FILTER_ANY:
                 target=mob.fetchInventory(container,targetName);

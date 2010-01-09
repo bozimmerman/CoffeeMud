@@ -1904,7 +1904,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				Log.errOut("CoffeeMaker","Error parsing 'ITEM DATA' of "+identifier(M,null)+".  Load aborted");
 				return;
 			}
-			int wornCode=CMLib.xml().getIntFromPieces(idat,"IWORN");
+			long wornCode=CMLib.xml().getLongFromPieces(idat,"IWORN");
 			if((newOne instanceof Container)&&(((Container)newOne).capacity()>0))
 				IIDmap.put(CMLib.xml().getValFromPieces(idat,"IID"),newOne);
 			String ILOC=CMLib.xml().getValFromPieces(idat,"ILOC");

@@ -813,7 +813,9 @@ public interface RawMaterial extends Item
 	        if(insts[c]==null) insts[c]=this;
 	        synchronized(this)
 	        {
-				Vector rawExtra = CMProps.getStatCodeExtensions(RawMaterial.class,"RawMaterial");
+				String[][] addExtra = CMProps.instance().getStrsStarting("ADDMATERIAL_");
+				String[][] repExtra = CMProps.instance().getStrsStarting("REPLACEMATERIAL_");
+				
 				for(int i=0;i<DEFAULT_RESOURCE_DESCS.length;i++)
 				{
 					int material= DEFAULT_RESOURCE_DATA[i][0] & MATERIAL_MASK;
@@ -823,60 +825,53 @@ public interface RawMaterial extends Item
 							CMParms.contains(DEFAULT_FISHES, i|material),
 							CMParms.contains(DEFAULT_BERRIES, i|material));
 				}
-				if(rawExtra!=null)
-				for(Enumeration e=rawExtra.elements();e.hasMoreElements();)
+				for(int i=0;i<addExtra.length + repExtra.length;i++)
 				{
-					String p = (String)e.nextElement();
-					int x=p.indexOf('(');
-					if((x>0)&&(p.endsWith(")")))
-					{
-						String stat = p.substring(0,x).toUpperCase().trim();
-						p=p.substring(x+1,p.length()-1).trim();
-						Vector V=CMParms.parseSemicolons(p, false);
-						if(V.size()!=7) {
-							Log.errOut("RawMaterial","Bad coffeemud.ini extvar row (requires 7 elements, separated by ;): "+p);
-							continue;
-						}
-						String type="ADD";
-						int oldResourceCode=-1;
-						if(stat.startsWith("REPLACE:"))
-						{
-							stat=stat.substring(8);
-							int idx=CMParms.indexOf(DEFAULT_RESOURCE_DESCS, stat);
-							if(idx>=0)
-							{
-								oldResourceCode=DEFAULT_RESOURCE_DATA[idx][0];
-								type="REPLACE";
-							}
-							else
-							{
-								Log.errOut("RawMaterial","Unknown replaceable resource in coffeemud.ini: "+stat);
-								continue;
-							}
-						}
-						String matStr=((String)V.elementAt(0)).toUpperCase();
-						String smell=((String)V.elementAt(1)).toUpperCase();
-						int value=CMath.s_int((String)V.elementAt(2));
-						int frequ=CMath.s_int((String)V.elementAt(3));
-						int hardness=CMath.s_int((String)V.elementAt(4));
-						int bouancy=CMath.s_int((String)V.elementAt(5));
-						boolean fish=((String)V.elementAt(6)).equalsIgnoreCase("fish");
-						boolean berry=((String)V.elementAt(6)).equalsIgnoreCase("berry");
-						int material = CMParms.indexOfIgnoreCase(MATERIAL_DESCS,matStr);
-						if((material<0)||(material>=MATERIAL_CODES.length)) 
-						{
-							Log.errOut("RawMaterial","Unknown material code in coffeemud.ini: "+matStr);
-							continue;
-						}
-						material=MATERIAL_CODES[material];
-						if(type.equalsIgnoreCase("ADD"))
-							add(material, stat, smell, value, frequ, hardness, bouancy, fish, berry);
-						else
-						if(type.equalsIgnoreCase("REPLACE")&&(oldResourceCode>=0))
-							replace(oldResourceCode, material, stat, smell, value, frequ, hardness, bouancy, fish, berry);
+					String[] array = (i>=addExtra.length)?repExtra[i-addExtra.length]:addExtra[i];
+					boolean replace = i>=addExtra.length;
+					String stat = array[0].toUpperCase().trim();
+					String p=array[1];
+					Vector V=CMParms.parseCommas(p, false);
+					if(V.size()!=7) {
+						Log.errOut("RawMaterial","Bad coffeemud.ini material row (requires 7 elements, separated by ;): "+p);
+						continue;
 					}
+					String type="ADD";
+					int oldResourceCode=-1;
+					if(replace)
+					{
+						int idx=CMParms.indexOf(DEFAULT_RESOURCE_DESCS, stat);
+						if(idx>=0)
+						{
+							oldResourceCode=DEFAULT_RESOURCE_DATA[idx][0];
+							type="REPLACE";
+						}
+						else
+						{
+							Log.errOut("RawMaterial","Unknown replaceable resource in coffeemud.ini: "+stat);
+							continue;
+						}
+					}
+					String matStr=((String)V.elementAt(0)).toUpperCase();
+					String smell=((String)V.elementAt(1)).toUpperCase();
+					int value=CMath.s_int((String)V.elementAt(2));
+					int frequ=CMath.s_int((String)V.elementAt(3));
+					int hardness=CMath.s_int((String)V.elementAt(4));
+					int bouancy=CMath.s_int((String)V.elementAt(5));
+					boolean fish=((String)V.elementAt(6)).equalsIgnoreCase("fish");
+					boolean berry=((String)V.elementAt(6)).equalsIgnoreCase("berry");
+					int material = CMParms.indexOfIgnoreCase(MATERIAL_DESCS,matStr);
+					if((material<0)||(material>=MATERIAL_CODES.length)) 
+					{
+						Log.errOut("RawMaterial","Unknown material code in coffeemud.ini: "+matStr);
+						continue;
+					}
+					material=MATERIAL_CODES[material];
+					if(type.equalsIgnoreCase("ADD"))
+						add(material, stat, smell, value, frequ, hardness, bouancy, fish, berry);
 					else
-						Log.errOut("RawMaterial","Bad coffeemud.ini row (no parenthesis): "+p);
+					if(type.equalsIgnoreCase("REPLACE")&&(oldResourceCode>=0))
+						replace(oldResourceCode, material, stat, smell, value, frequ, hardness, bouancy, fish, berry);
 				}
 				String[] sortedNames = descs.clone();
 				Arrays.sort(sortedNames);

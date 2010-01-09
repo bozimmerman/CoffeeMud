@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Common.interfaces;
 import java.util.*;
+
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -745,7 +746,8 @@ public interface CharStats extends CMCommon, CMModifiable
 	        if(insts==null) insts=new CODES[256];
 	        if(insts[c]==null) insts[c]=this;
 
-			Vector rawExtra = CMProps.getStatCodeExtensions(CharStats.class,"CharStats");
+			String[][] addExtra = CMProps.instance().getStrsStarting("ADDCHARSTAT_");
+			String[][] repExtra = CMProps.instance().getStrsStarting("REPLACECHARSTAT_");
 			for(int i=0;i<6;i++)
 				addBaseStat(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
 			addAllStat(DEFAULT_STAT_ABBR[6],DEFAULT_STAT_DESCS[6],DEFAULT_STAT_NAMES[6],DEFAULT_STAT_DESC_ATTS[6],DEFAULT_STAT_MSG_MAP[6],false);
@@ -759,65 +761,60 @@ public interface CharStats extends CMCommon, CMModifiable
 				addSavingThrow(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i]);
 			for(int i=31;i<DEFAULT_NUM_STATS;i++) 
 				addAllStat(DEFAULT_STAT_ABBR[i],DEFAULT_STAT_DESCS[i],DEFAULT_STAT_NAMES[i],DEFAULT_STAT_DESC_ATTS[i],DEFAULT_STAT_MSG_MAP[i],false);
-			if(rawExtra!=null)
-			for(Enumeration e=rawExtra.elements();e.hasMoreElements();)
+			for(int i=0;i<addExtra.length+repExtra.length;i++)
 			{
-				String p = (String)e.nextElement();
-				int x=p.indexOf('(');
-				if((x>0)&&(p.endsWith(")")))
+				String[] array = (i>=addExtra.length)?repExtra[i-addExtra.length]:addExtra[i];
+				boolean replace = i>=addExtra.length;
+				String stat = array[0].toUpperCase().trim();
+				String p=array[1];
+				Vector V=CMParms.parseCommas(p, false);
+				if(V.size()!=4)
 				{
-					String stat = p.substring(0,x).toUpperCase().trim();
-					p=p.substring(x+1,p.length()-1).trim();
-					Vector V=CMParms.parseSemicolons(p, false);
-					if(V.size()!=4)
+					Log.errOut("CharStats","Bad coffeemud.ini charstat row, requires 4 ; separated entries: "+p);
+					continue;
+				}
+				String type=((String)V.firstElement()).toUpperCase().trim();
+				int oldStatCode=-1;
+				if(replace)
+				{
+					String repStat=stat;
+					stat=type;
+					oldStatCode=CMParms.indexOf(DEFAULT_STAT_NAMES, repStat);
+					if(oldStatCode<0) oldStatCode=CMParms.indexOf(DEFAULT_STAT_DESCS, repStat);
+					if(oldStatCode>=0)
+						type="REPLACE";
+					else
 					{
-						Log.errOut("CharStats","Bad coffeemud.ini extvar row, requires 4 ; separated entries: "+p);
+						Log.errOut("CharStats","Bad coffeemud.ini charstat row, bad stat name: "+repStat);
 						continue;
 					}
-					String type=((String)V.firstElement()).toUpperCase().trim();
-					int oldStatCode=-1;
-					if(type.startsWith("REPLACE:"))
-					{
-						String repStat=type.substring(8).trim();
-						oldStatCode=CMParms.indexOf(DEFAULT_STAT_NAMES, repStat);
-						if(oldStatCode<0) oldStatCode=CMParms.indexOf(DEFAULT_STAT_DESCS, repStat);
-						if(oldStatCode>=0)
-							type="REPLACE";
-						else
-						{
-							Log.errOut("CharStats","Bad coffeemud.ini extvar row, bad stat name: "+repStat);
-							continue;
-						}
-					}
-					String abbr=(String)V.elementAt(1);
-					String desc=(String)((String)V.elementAt(2)).toUpperCase();
-					String adj=(String)((String)V.elementAt(3)).toUpperCase();
-					if(type.equalsIgnoreCase("BASE"))
-					{
-						addBaseStat(abbr, desc, stat, adj, -1);
-						int baseStatCode=allStatCodes.length-1;
-						addMaxStat(baseStatCode, "m"+abbr, "MAX "+stat+" ADJ.", "MAX"+stat, "POTENTIALLY "+adj, -1);
-					}
-					else
-					if(type.equalsIgnoreCase("SAVE"))
-						addSavingThrow(abbr,desc,stat,adj,-1);
-					else
-					if(type.equalsIgnoreCase("OTHER"))
-						addAllStat(abbr,desc,stat,adj,-1,false);
-					else
-					if(type.equalsIgnoreCase("REPLACE")&&(oldStatCode>=0))
-					{
-					    statAbbreviations[oldStatCode]=abbr;
-					    statDescriptions[oldStatCode]=desc;
-					    statNames[oldStatCode]=stat;
-					    statAttributionDescriptions[oldStatCode]=adj;
-					    statCMMsgMapping[oldStatCode]=-1;
-					}
-					else
-						Log.errOut("CharStats","Bad coffeemud.ini extvar row, bad type: "+type);
+				}
+				String abbr=(String)V.elementAt(1);
+				String desc=(String)((String)V.elementAt(2)).toUpperCase();
+				String adj=(String)((String)V.elementAt(3)).toUpperCase();
+				if(type.equalsIgnoreCase("BASE"))
+				{
+					addBaseStat(abbr, desc, stat, adj, -1);
+					int baseStatCode=allStatCodes.length-1;
+					addMaxStat(baseStatCode, "m"+abbr, "MAX "+stat+" ADJ.", "MAX"+stat, "POTENTIALLY "+adj, -1);
 				}
 				else
-					Log.errOut("CharStats","Bad coffeemud.ini extvar row, no parentesis: "+p);
+				if(type.equalsIgnoreCase("SAVE"))
+					addSavingThrow(abbr,desc,stat,adj,-1);
+				else
+				if(type.equalsIgnoreCase("OTHER"))
+					addAllStat(abbr,desc,stat,adj,-1,false);
+				else
+				if(replace&&(oldStatCode>=0))
+				{
+				    statAbbreviations[oldStatCode]=abbr;
+				    statDescriptions[oldStatCode]=desc;
+				    statNames[oldStatCode]=stat;
+				    statAttributionDescriptions[oldStatCode]=adj;
+				    statCMMsgMapping[oldStatCode]=-1;
+				}
+				else
+					Log.errOut("CharStats","Bad coffeemud.ini charstat row, bad type: "+type);
 			}
 	    }
 	    private static CODES c(){ return insts[Thread.currentThread().getThreadGroup().getName().charAt(0)];}

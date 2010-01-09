@@ -245,8 +245,8 @@ public interface Room extends Environmental, Affectable, Behavable
 	public Vector fetchAnyItems(String itemID);
 	public void bringItemHere(Item item, int expireMins, boolean andRiders);
 
-	public Environmental fetchFromRoomFavorItems(Item goodLocation, String thingName,int wornReqCode);
-	public Environmental fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, int wornReqCode);
-	public Environmental fetchFromRoomFavorMOBs(Item goodLocation, String thingName, int wornReqCode);
-	public Environmental fetchFromMOBRoomFavorsItems(MOB mob, Item goodLocation, String thingName, int wornReqCode);
+	public Environmental fetchFromRoomFavorItems(Item goodLocation, String thingName,int wornFilter);
+	public Environmental fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, int wornFilter);
+	public Environmental fetchFromRoomFavorMOBs(Item goodLocation, String thingName, int wornFilter);
+	public Environmental fetchFromMOBRoomFavorsItems(MOB mob, Item goodLocation, String thingName, int wornFilter);
 }

@@ -2792,7 +2792,7 @@ public class StdMOB implements MOB
 	}
 	public Item fetchFromInventory(Item goodLocation,
                                    String itemName,
-                                   int wornCode,
+                                   int wornFilter,
                                    boolean allowCoins,
                                    boolean respectLocationAndWornCode)
 	{
@@ -2807,8 +2807,8 @@ public class StdMOB implements MOB
         Item item=null;
         if(respectLocationAndWornCode)
         {
-    		item=CMLib.english().fetchAvailableItem(inv,itemName,goodLocation,wornCode,true);
-    		if(item==null) item=CMLib.english().fetchAvailableItem(inv,itemName,goodLocation,wornCode,false);
+    		item=CMLib.english().fetchAvailableItem(inv,itemName,goodLocation,wornFilter,true);
+    		if(item==null) item=CMLib.english().fetchAvailableItem(inv,itemName,goodLocation,wornFilter,false);
         }
         else
         {

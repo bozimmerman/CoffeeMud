@@ -157,7 +157,7 @@ public interface MOB extends Environmental, Rider, DBIdentifiable
 	public void delInventory(Item item);
 	public int inventorySize();
 	public Item fetchInventory(int index);
-	public Item fetchFromInventory(Item goodLocation, String itemName, int wornCode, boolean allowCoins, boolean respectLocationAndWornCode);
+	public Item fetchFromInventory(Item goodLocation, String itemName, int wornFilter, boolean allowCoins, boolean respectLocationAndWornCode);
 	public Item fetchInventory(String itemName);
 	public Vector fetchInventories(String itemName);
 	public Item fetchInventory(Item goodLocation, String itemName);

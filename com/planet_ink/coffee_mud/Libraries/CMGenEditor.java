@@ -3953,7 +3953,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         {
             mob.tell("Wearing parameters\n\r0: Done");
             if(!logicalAnd[0])
-                mob.tell("1: Able to worn on any ONE of these locations:");
+                mob.tell("1: Able to wear on any ONE of these locations:");
             else
                 mob.tell("1: Must be worn on ALL of these locations:");
     		Wearable.CODES codes = Wearable.CODES.instance();
@@ -3973,7 +3973,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                     logicalAnd[0]=!logicalAnd[0];
                 else
                 {
-                    int wornCode=1<<(codeVal-2);
+                    long wornCode=codes.get(codeVal-2);
                     if((oldWornLocation[0]&wornCode)==wornCode)
                         oldWornLocation[0]=(oldWornLocation[0]-wornCode);
                     else

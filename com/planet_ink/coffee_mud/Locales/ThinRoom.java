@@ -225,10 +225,10 @@ public class ThinRoom implements Room {
 	public Vector fetchAnyItems(String itemID) { return new Vector(1);}
 	public Vector fetchItems(Item goodLocation, String itemID) { return new Vector(1);}
 
-	public Environmental fetchFromRoomFavorItems(Item goodLocation, String thingName,int wornReqCode){return null;}
-	public Environmental fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, int wornReqCode){return null;}
-	public Environmental fetchFromRoomFavorMOBs(Item goodLocation, String thingName, int wornReqCode){return null;}
-	public Environmental fetchFromMOBRoomFavorsItems(MOB mob, Item goodLocation, String thingName, int wornReqCode){return null;}
+	public Environmental fetchFromRoomFavorItems(Item goodLocation, String thingName,int wornFilter){return null;}
+	public Environmental fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, int wornFilter){return null;}
+	public Environmental fetchFromRoomFavorMOBs(Item goodLocation, String thingName, int wornFilter){return null;}
+	public Environmental fetchFromMOBRoomFavorsItems(MOB mob, Item goodLocation, String thingName, int wornFilter){return null;}
 
 	public void addEffect(Ability to){}
 	public void addNonUninvokableEffect(Ability to){}

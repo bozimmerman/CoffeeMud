@@ -1090,7 +1090,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return matches;
 	}
 
-	public Environmental fetchAvailable(Vector list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly)
+	public Environmental fetchAvailable(Vector list, String srchStr, Item goodLocation, int wornFilter, boolean exactOnly)
 	{
 		Object[] flags=fetchFlags(srchStr);
 		if(flags==null) return null;
@@ -1116,7 +1116,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						boolean beingWorn=!thisThang.amWearingAt(Wearable.IN_INVENTORY);
 
 						if((thisThang.container()==goodLocation)
-						&&((wornReqCode==Wearable.FILTER_ANY)||(beingWorn&&(wornReqCode==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornReqCode==Wearable.FILTER_UNWORNONLY)))
+						&&((wornFilter==Wearable.FILTER_ANY)||(beingWorn&&(wornFilter==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornFilter==Wearable.FILTER_UNWORNONLY)))
 						&&(thisThang.ID().equalsIgnoreCase(srchStr)
 						   ||(thisThang.Name().equalsIgnoreCase(srchStr))
 						   ||(thisThang.name().equalsIgnoreCase(srchStr))))
@@ -1148,7 +1148,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						boolean beingWorn=!thisThang.amWearingAt(Wearable.IN_INVENTORY);
 
 						if((thisThang.container()==goodLocation)
-						&&((wornReqCode==Wearable.FILTER_ANY)||(beingWorn&&(wornReqCode==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornReqCode==Wearable.FILTER_UNWORNONLY)))
+						&&((wornFilter==Wearable.FILTER_ANY)||(beingWorn&&(wornFilter==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornFilter==Wearable.FILTER_UNWORNONLY)))
 						&&((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
 						   &&((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0)))))
 							if((--myOccurrance)<=0)
@@ -1174,7 +1174,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					    thisThang=(Item)E;
 						boolean beingWorn=!thisThang.amWearingAt(Wearable.IN_INVENTORY);
 						if((thisThang.container()==goodLocation)
-						&&((wornReqCode==Wearable.FILTER_ANY)||(beingWorn&&(wornReqCode==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornReqCode==Wearable.FILTER_UNWORNONLY)))
+						&&((wornFilter==Wearable.FILTER_ANY)||(beingWorn&&(wornFilter==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornFilter==Wearable.FILTER_UNWORNONLY)))
 						&&(containsString(thisThang.displayText(),srchStr)))
 							if((--myOccurrance)<=0)
 								return thisThang;
@@ -1608,7 +1608,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return null;
 	}
 
-	public Vector possibleContainers(MOB mob, Vector commands, int wornReqCode, boolean withContentOnly)
+	public Vector possibleContainers(MOB mob, Vector commands, int wornFilter, boolean withContentOnly)
 	{
 		Vector V=new Vector();
 		if(commands.size()==1)
@@ -1657,7 +1657,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		String addendumStr="";
 		do
 		{
-			Environmental thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID+addendumStr,wornReqCode);
+			Environmental thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID+addendumStr,wornFilter);
 			if((thisThang!=null)
 			&&(thisThang instanceof Item)
 			&&(((Item)thisThang) instanceof Container)
@@ -1682,7 +1682,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return V;
 	}
 
-	public Item possibleContainer(MOB mob, Vector commands, boolean withStuff, int wornReqCode)
+	public Item possibleContainer(MOB mob, Vector commands, boolean withStuff, int wornFilter)
 	{
 		if(commands.size()==1)
 			return null;
@@ -1694,7 +1694,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		    { fromDex=i; containerDex=i+1;  break;}
 		String possibleContainerID=CMParms.combine(commands,containerDex);
 
-		Environmental thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID,wornReqCode);
+		Environmental thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID,wornFilter);
 		if((thisThang!=null)
 		&&(thisThang instanceof Item)
 		&&(((Item)thisThang) instanceof Container)
