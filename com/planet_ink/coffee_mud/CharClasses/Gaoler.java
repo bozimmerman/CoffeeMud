@@ -103,11 +103,6 @@ public class Gaoler extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Amputation",true);
 		
 		// to separate from artisam
-		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"MasterArmorsmithing",0,"",false,true,CMParms.parseSemicolons("Armorsmithing",true),"");
-		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"MasterTailoring",0,"",false,true,CMParms.parseSemicolons("Tailoring",true),"");
-		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"MasterWeaponsmithing",0,"",false,true,CMParms.parseSemicolons("Weaponsmithing;Specialization_*",true),"");
-		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"MasterCostuming",0,"",false,true,CMParms.parseSemicolons("Costuming",true),"");
-		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"MasterLeatherWorking",0,"",false,true,CMParms.parseSemicolons("LeatherWorking",true),"");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Chopping",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Digging",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Drilling",0,"",false,true);

@@ -126,26 +126,36 @@ public class Artisan extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Skill_WandUse",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Speculate",true);
-
-		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Painting",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Painting",true);
 		
-		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Construction",true,CMParms.parseSemicolons("Carpentry",true));
-		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Masonry",true,CMParms.parseSemicolons("Sculpting",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"LockSmith",0,"",true);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Construction",true,CMParms.parseSemicolons("Carpentry",true));
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Masonry",true,CMParms.parseSemicolons("Sculpting",true));
 
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_Cage",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Merchant",true);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Taxidermy",true);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Stability",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_Appraise",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"LockSmith",0,"",false,true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"InstrumentMaking",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_Haggle",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Taxidermy",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Merchant",true);
+        CMLib.ableMapper().addCharAbilityMapping(ID(),20,"MasterTailoring",false,CMParms.parseSemicolons("Tailoring(100)",true),"+DEX 16");
+        
+        CMLib.ableMapper().addCharAbilityMapping(ID(),21,"MasterCostuming",false,CMParms.parseSemicolons("Costuming(100)",true),"+INT 16");
+        
+        CMLib.ableMapper().addCharAbilityMapping(ID(),22,"MasterLeatherWorking",false,CMParms.parseSemicolons("LeatherWorking(100)",true),"+CON 16");
+        
+        CMLib.ableMapper().addCharAbilityMapping(ID(),23,"MasterArmorsmithing",false,CMParms.parseSemicolons("Armorsmithing(100)",true),"+STR 16");
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Skill_Cage",false);
-
-		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Skill_Stability",false);
-
+        CMLib.ableMapper().addCharAbilityMapping(ID(),24,"MasterWeaponsmithing",false,CMParms.parseSemicolons("Weaponsmithing(100);Specialization_*",true),"+STR 16");
+        
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Scrapping",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_Lore",false);
