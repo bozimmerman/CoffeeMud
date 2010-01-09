@@ -89,7 +89,7 @@ public class Spell_TeleportObject extends Spell
 		Vector candidates=CMLib.map().findWorldRoomsLiberally(mob,destinationString,searchWhat,10,600);
 		if(candidates.size()==0)
 		{
-			mob.tell("You don't know of an place called '"+destinationString.toLowerCase()+"'.");
+			mob.tell("You don't know of a place called '"+destinationString.toLowerCase()+"'.");
 			return false;
 		}
 

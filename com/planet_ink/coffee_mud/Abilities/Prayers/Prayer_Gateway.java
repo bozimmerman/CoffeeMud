@@ -92,7 +92,7 @@ public class Prayer_Gateway extends Prayer
 
 		if(newRoom==null)
 		{
-			mob.tell("You don't know of an place called '"+CMParms.combine(commands,0)+"'.");
+			mob.tell("You don't know of a place called '"+CMParms.combine(commands,0)+"'.");
 			return false;
 		}
 

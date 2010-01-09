@@ -76,7 +76,7 @@ public class Chant_DistantGrowth extends Chant
 		if(newRoom==null)
 		{
 			if(anyRoom==null)
-				mob.tell("You don't know of an place called '"+CMParms.combine(commands,0)+"'.");
+				mob.tell("You don't know of a place called '"+CMParms.combine(commands,0)+"'.");
 			else
 			if((anyRoom.domainType()==Room.DOMAIN_OUTDOORS_CITY)
 			||(anyRoom.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT))

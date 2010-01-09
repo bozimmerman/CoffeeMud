@@ -112,7 +112,7 @@ public class Spell_Portal extends Spell
 
 		if(newRoom==null)
 		{
-			mob.tell("You don't know of an place called '"+CMParms.combine(commands,0)+"'.");
+			mob.tell("You don't know of a place called '"+CMParms.combine(commands,0)+"'.");
 			return false;
 		}
 

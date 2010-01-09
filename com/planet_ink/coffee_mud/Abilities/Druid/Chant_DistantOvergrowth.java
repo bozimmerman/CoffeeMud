@@ -72,7 +72,7 @@ public class Chant_DistantOvergrowth extends Chant
 		if(newRoom==null)
 		{
 			if(anyRoom==null)
-				mob.tell("You don't know of an place called '"+CMParms.combine(commands,0)+"'.");
+				mob.tell("You don't know of a place called '"+CMParms.combine(commands,0)+"'.");
 			else
 				mob.tell("There IS such a place, but its not outdoors, so your magic would fail.");
 			return false;

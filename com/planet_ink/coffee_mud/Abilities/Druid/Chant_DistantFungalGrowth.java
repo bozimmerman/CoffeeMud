@@ -72,7 +72,7 @@ public class Chant_DistantFungalGrowth extends Chant
 		if(newRoom==null)
 		{
 			if(anyRoom==null)
-				mob.tell("You don't know of an place called '"+CMParms.combine(commands,0)+"'.");
+				mob.tell("You don't know of a place called '"+CMParms.combine(commands,0)+"'.");
 			else
 			if((anyRoom.domainType()&Room.INDOORS)==0)
 				mob.tell("There IS such a place, but it is outdoors, where your fungus will not grow.");

@@ -73,7 +73,7 @@ public class Chant_DistantIngrowth extends Chant
 		if(newRoom==null)
 		{
 			if(anyRoom==null)
-				mob.tell("You don't know of an place called '"+CMParms.combine(commands,0)+"'.");
+				mob.tell("You don't know of a place called '"+CMParms.combine(commands,0)+"'.");
 			else
 			if(anyRoom.domainType()==Room.DOMAIN_INDOORS_CAVE)
 				mob.tell("There IS such a place, but its in a cave where fungus rule, so your magic would fail.");
