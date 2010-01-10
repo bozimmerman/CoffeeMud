@@ -5453,8 +5453,10 @@ other modifiers) is applied to the value (the Amount Factor), 4)
 several miscellanous flags to define the circumstances under which the
 trigger is applied (the Flags), and 5) a Zapper mask to determine what
 criteria the target of the Trigger must meet for this trigger to apply.
-The valid Triggers include: Murder (and Murder2, ... Murder5), 
-Kill (and Kill2, ... Kill5),
+The valid Triggers include: Murder (and Murder2, ... Murder5) which is
+triggered when the holder of this faction dies,
+Kill (and Kill2, ... Kill5) which is triggered when the holder of this
+faction kills another,
 Time (a change occurs every 40
 seconds or so), a type of skill being used, the domain of a spell being
 cast, a flag associated with a skill being used, or Add Outsider, which
@@ -5473,7 +5475,8 @@ source) does not have standing in this faction, SELFOK, which allows
 the trigger to apply even when the source or target are the same
 person, and JUST100, which overrides the normal modifications of a
 change (based on experience or other factors) and uses 100 points as a
-base amount for the change from this trigger.</p>
+base amount for the change from this trigger.  Change triggers also include
+a mask, which refers to the target of an event, and can prevent the event.</p>
 
 
 
