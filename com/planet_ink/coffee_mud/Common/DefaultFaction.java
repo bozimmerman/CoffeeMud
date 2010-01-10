@@ -615,11 +615,13 @@ public class DefaultFaction implements Faction, MsgListener
     public void executeMsg(Environmental myHost, CMMsg msg)
     {
         if((msg.sourceMinor()==CMMsg.TYP_DEATH)    // A death occured
-        &&(msg.source()==myHost)
+        &&((msg.source()==myHost)||(msg.tool()==myHost))
         &&(msg.tool() instanceof MOB))
         {
             MOB killedM=msg.source();
-            final String[] murders={"MURDER","MURDER2","MURDER3","MURDER4","MURDER5"};
+            final String[] murders=(msg.source()==myHost)
+            						?Faction.FactionChangeEvent.MURDER_TRIGGERS
+            						:Faction.FactionChangeEvent.KILL_TRIGGERS;
             for(int m=0;m<murders.length;m++)
             {
                 FactionChangeEvent eventC=getChangeEvent(murders[m]);
@@ -628,18 +630,8 @@ public class DefaultFaction implements Faction, MsgListener
                     MOB killingBlowM=(MOB)msg.tool();
                     CharClass combatCharClass=CMLib.combat().getCombatDominantClass(killingBlowM,killedM);
                     HashSet combatBeneficiaries=CMLib.combat().getCombatBeneficiaries(killingBlowM,killedM,combatCharClass);
-                    if(combatBeneficiaries.contains(myHost))
-                    {
-                        MOB killerM=(MOB)myHost;
-                        executeChange(killerM,killedM,eventC);
-                    }
-                    if(myHost==msg.source())
-                        for(Iterator i=combatBeneficiaries.iterator();i.hasNext();)
-                        {
-                            MOB killerM=(MOB)i.next();
-                            if(eventC.applies(killerM))
-                                executeChange(killerM,killedM,eventC);
-                        }
+                    for(Iterator i=combatBeneficiaries.iterator();i.hasNext();)
+                        executeChange((MOB)i.next(),killedM,eventC);
                 }
             }
         }
@@ -961,7 +953,7 @@ public class DefaultFaction implements Faction, MsgListener
             IDdomainFilter=-1;
             for(int i=0;i<MISC_TRIGGERS.length;i++)
                 if(MISC_TRIGGERS[i].equalsIgnoreCase(newID))
-                { ID=newID;    return true;}
+                { ID=MISC_TRIGGERS[i];    return true;}
             for(int i=0;i<Ability.ACODE_DESCS.length;i++)
                 if(Ability.ACODE_DESCS[i].equalsIgnoreCase(newID))
                 {    IDclassFilter=i; ID=newID; return true;}
@@ -977,6 +969,9 @@ public class DefaultFaction implements Faction, MsgListener
         }
         public boolean setDirection(String d)
         {
+        	if(CMath.isInteger(d))
+        		direction=CMath.s_int(d);
+        	else
             if(d.startsWith("U")) {
                 direction = CHANGE_DIRECTION_UP;
             }

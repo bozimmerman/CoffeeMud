@@ -261,7 +261,7 @@ public class FactionData extends StdWebMacro
                             str.append("<TR><TD>");
                             str.append("<INPUT TYPE=TEXT NAME="+prefix+showNum+" SIZE=8 VALUE=\""+CMath.s_int(value)+"\">");
                             str.append("</TD><TD>");
-                            str.append("<INPUT TYPE=TEXT NAME="+prefix+"MASK"+showNum+" SIZE=60 MAXLENGTH=255 VALUE=\""+mask+"\">");
+                            str.append("<INPUT TYPE=TEXT NAME="+prefix+"MASK"+showNum+" SIZE=60 MAXLENGTH=255 VALUE=\""+htmlOutgoingFilter(mask)+"\">");
                             str.append("</TD></TR>");
                         }
                         num++;
@@ -317,7 +317,7 @@ public class FactionData extends StdWebMacro
                             str.append("<SELECT NAME=CHANGESDIR"+showNum+">");
                             for(int f=0;f<Faction.FactionChangeEvent.CHANGE_DIRECTION_DESCS.length;f++)
                             {
-                                str.append("<OPTION VALUE=\""+f+"\"");
+                                str.append("<OPTION VALUE=\""+Faction.FactionChangeEvent.CHANGE_DIRECTION_DESCS[f]+"\"");
                                 if(f==CMath.s_int(val))
                                     str.append(" SELECTED");
                                 str.append(">"+CMStrings.capitalizeAndLower(Faction.FactionChangeEvent.CHANGE_DIRECTION_DESCS[f]));
@@ -343,7 +343,7 @@ public class FactionData extends StdWebMacro
                             str.append("</SELECT>");
                             str.append("</TD><TD>");
                             val=""+httpReq.getRequestParameter("CHANGESMASK"+num);
-                            str.append("<INPUT TYPE=TEXT NAME=CHANGESMASK"+showNum+" SIZE=20 MAXLENGTH=255 VALUE=\""+val+"\">");
+                            str.append("<INPUT TYPE=TEXT NAME=CHANGESMASK"+showNum+" SIZE=20 MAXLENGTH=255 VALUE=\""+htmlOutgoingFilter(val)+"\">");
                             str.append("</TD></TR>");
                         }
                         num++;
@@ -414,7 +414,7 @@ public class FactionData extends StdWebMacro
                             gain=CMath.toPct(httpReq.getRequestParameter("ADJFACTORGAIN"+num));
                             loss=CMath.toPct(httpReq.getRequestParameter("ADJFACTORLOSS"+num));
                             str.append("<TR><TD>");
-                            str.append("<INPUT TYPE=TEXT NAME=ADJFACTOR"+showNum+" SIZE=40 MAXLENGTH=255 VALUE=\""+mask+"\">");
+                            str.append("<INPUT TYPE=TEXT NAME=ADJFACTOR"+showNum+" SIZE=40 MAXLENGTH=255 VALUE=\""+htmlOutgoingFilter(mask)+"\">");
                             str.append("</TD><TD>");
                             str.append("<INPUT TYPE=TEXT NAME=ADJFACTORGAIN"+showNum+" SIZE=8 VALUE=\""+gain+"\">");
                             str.append("</TD><TD>");
@@ -639,11 +639,11 @@ public class FactionData extends StdWebMacro
                                 str.append("</TD><TD VALIGN=TOP>");
                                 val=""+httpReq.getRequestParameter("AFFBEHAVPARM"+num);
                                 val=CMStrings.replaceAll(val,"\"","&quot;");
-                                str.append("<INPUT TYPE=TEXT NAME=AFFBEHAVPARM"+showNum+" SIZE=20 VALUE=\""+val+"\">");
+                                str.append("<INPUT TYPE=TEXT NAME=AFFBEHAVPARM"+showNum+" SIZE=20 VALUE=\""+htmlOutgoingFilter(val)+"\">");
                                 str.append("</TD><TD VALIGN=TOP>");
                                 val=""+httpReq.getRequestParameter("AFFBEHAVMASK"+num);
                                 val=CMStrings.replaceAll(val,"\"","&quot;");
-                                str.append("<INPUT TYPE=TEXT NAME=AFFBEHAVMASK"+showNum+" SIZE=20 VALUE=\""+val+"\">");
+                                str.append("<INPUT TYPE=TEXT NAME=AFFBEHAVMASK"+showNum+" SIZE=20 VALUE=\""+htmlOutgoingFilter(val)+"\">");
                                 str.append("</TD></TR>");
                             }
                         }

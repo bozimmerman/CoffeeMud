@@ -125,7 +125,7 @@ public class GrinderFactions {
             if(old.length()>0)
             {
                 old+=";";
-                old+=CMath.s_int(httpReq.getRequestParameter("CHANGESDIR"+num));
+                old+=httpReq.getRequestParameter("CHANGESDIR"+num);
                 old+=";";
                 old+=CMath.toPct(httpReq.getRequestParameter("CHANGESFACTOR"+num));
                 old+=";";

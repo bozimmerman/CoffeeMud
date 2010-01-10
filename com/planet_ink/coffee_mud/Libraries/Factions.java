@@ -109,6 +109,12 @@ public class Factions extends StdLibrary implements FactionManager
                 String CodeName=(FR.codeName().length()>0)?FR.codeName().toUpperCase():FR.name().toUpperCase();
                 if(!hashedFactionRanges.containsKey(CodeName))
                     hashedFactionRanges.put(CodeName,F);
+                String SimpleUniqueCodeName = F.name().toUpperCase()+"."+CodeName;
+                if(!hashedFactionRanges.containsKey(SimpleUniqueCodeName))
+                    hashedFactionRanges.put(SimpleUniqueCodeName,F);
+                String UniqueCodeName = SimpleUniqueCodeName.replace(' ','_');
+                if(!hashedFactionRanges.containsKey(UniqueCodeName))
+                    hashedFactionRanges.put(UniqueCodeName,F);
             }
             factionSet.put(factionID.toUpperCase(),F);
             return F;

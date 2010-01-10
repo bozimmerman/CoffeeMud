@@ -260,6 +260,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			zapCodes.put("-MOOD",Integer.valueOf(120));
 			zapCodes.put("+MOODS",Integer.valueOf(121));
 			zapCodes.put("+MOOD",Integer.valueOf(121));
+			zapCodes.put("-CHANCE",Integer.valueOf(122));
 		}
 		return zapCodes;
 	}
@@ -1713,6 +1714,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					buf.append((skipFirstWord?"A":"Requires a")+" base charisma of at most "+val+".  ");
 					break;
+				case 122: // -chance
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+					buf.append((skipFirstWord?"":"Allowed ")+" "+(100-val)+"% of the time.  ");
+					break;
                 case 55: // +able
                     val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
                     buf.append((skipFirstWord?"A":"Requires a")+" magic/ability of at most "+val+".  ");
@@ -2910,6 +2915,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 96: // -dex
 				case 97: // -con
 				case 98: // -cha
+				case 122: // -chance
                 case 55: // +able
                 case 56: // -able
                 case 59: // +value
@@ -3998,6 +4004,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			case 98: // -cha
 		        base=getBaseCharStats(base,mob);
 				if((V.size()>1)&&(base.getStat(CharStats.STAT_CHARISMA)>(((Integer)V.elementAt(1)).intValue())))
+				   return false;
+				break;
+			case 122: // -chance
+				if((V.size()>1)&&(CMLib.dice().rollPercentage()<(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
             case 55: // +able
