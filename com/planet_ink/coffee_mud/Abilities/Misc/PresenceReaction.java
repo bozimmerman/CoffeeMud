@@ -181,6 +181,7 @@ public class PresenceReaction extends StdAbility
 		if(this.affected instanceof MOB)
 		{
 			MOB affected=(MOB)this.affected;
+			boolean didAnything=unmanagedYet.size()>0;
 			while(unmanagedYet.size()>0)
 			{
 				Object[] thing=unmanagedYet.remove(0);
@@ -220,6 +221,12 @@ public class PresenceReaction extends StdAbility
 					continue;
 				}
 			}
+			if(didAnything)
+			{
+				affected.recoverCharStats();
+				affected.recoverEnvStats();
+				affected.recoverMaxState();
+			}
 			if((affected.location()!=reactToM.location())
 				||(affected.amDead())
 				||(reactToM.amDead())
@@ -238,9 +245,15 @@ public class PresenceReaction extends StdAbility
 	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel)
 	{
 		if(!(target instanceof MOB)) return false;
-		this.reactToM=(MOB)target;
+		PresenceReaction A=(PresenceReaction)this.copyOf();
+		A.reactToM=(MOB)target;
 		for(Object O : commands)
-			this.addAffectOrBehavior((String)O);
-		return true;
+			A.addAffectOrBehavior((String)O);
+		synchronized(mob)
+		{
+			if(mob.fetchEffect(ID())==null)
+				mob.addNonUninvokableEffect(A);
+			return true;
+		}
 	}
 }
