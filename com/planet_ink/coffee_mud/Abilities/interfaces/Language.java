@@ -42,6 +42,12 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public interface Language extends Ability
 {
+	/**
+	 * Returns the name of this language when it is in written form.
+	 * This is usually the same as the spoken form. 
+	 * @return the name of this language when it is in written form.
+	 */
+	public String writtenName();
     /**
      * Returns a Vector of the languages understood by this ability
      * @return vector of language ids supported (usually 1 element == ID())

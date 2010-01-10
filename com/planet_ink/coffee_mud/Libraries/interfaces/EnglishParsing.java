@@ -42,6 +42,7 @@ public interface EnglishParsing extends CMLibrary
     
     public boolean isAnArticle(String s);
     public String cleanArticles(String s);
+    public String stripPunctuation(String str);
     public String insertUnColoredAdjective(String str, String adjective);
     public String startWithAorAn(String str);
     public Object findCommand(MOB mob, Vector commands);

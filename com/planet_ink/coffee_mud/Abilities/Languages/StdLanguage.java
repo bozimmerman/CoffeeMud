@@ -39,6 +39,7 @@ public class StdLanguage extends StdAbility implements Language
 {
 	public String ID() { return "StdLanguage"; }
 	public String name(){ return "Languages";}
+	public String writtenName() { return name();}
 	private static final String[] triggerStrings = {"SPEAK"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
@@ -209,6 +210,52 @@ public class StdLanguage extends StdAbility implements Language
             winner=getMyTranslator(id,mob.fetchInventory(i),winner);
         return winner;
     }
+
+    protected boolean processSourceMessage(CMMsg msg, String str, int numToMess)
+    {
+        String smsg=CMStrings.getSayFromMessage(msg.sourceMessage());
+        if(numToMess>0) smsg=messChars(ID(),smsg,numToMess);
+		msg.modify(msg.source(),
+					  msg.target(),
+					  this,
+					  msg.sourceCode(),
+					  CMStrings.substituteSayInMessage(msg.sourceMessage(),smsg),
+					  msg.targetCode(),
+                      msg.targetMessage(),
+					  msg.othersCode(),
+                      msg.othersMessage());
+		return true;
+    }
+    
+    protected boolean processNonSourceMessages(CMMsg msg, String str, int numToMess)
+    {
+        str=scrambleAll(ID(),str,numToMess);
+		msg.modify(msg.source(),
+					  msg.target(),
+					  this,
+					  msg.sourceCode(),
+					  msg.sourceMessage(),
+					  msg.targetCode(),
+                      CMStrings.substituteSayInMessage(msg.targetMessage(),str),
+					  msg.othersCode(),
+                      CMStrings.substituteSayInMessage(msg.othersMessage(),str));
+		return true;
+    }
+
+    protected boolean tryLinguisticWriting(CMMsg msg)
+    {
+        Ability L=null;
+        for(int i=msg.target().numEffects()-1;i>=0;i--)
+        {
+            L=msg.target().fetchEffect(i);
+            if((L instanceof Language)&&(!L.ID().equals(ID())))
+            {
+                msg.source().tell(msg.target().name()+" is already written in "+L.name()+" and can not have "+writtenName()+" writing added.");
+                return false;
+            }
+        }
+        return true;
+    }
     
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -225,19 +272,11 @@ public class StdLanguage extends StdAbility implements Language
 				if(str==null) str=CMStrings.getSayFromMessage(msg.targetMessage());
 				if(str!=null)
 				{
-	                String smsg=CMStrings.getSayFromMessage(msg.sourceMessage());
 	                int numToMess=(int)Math.round(CMath.mul(numChars(str),CMath.div(100-getProficiency(ID()),100)));
-	                if(numToMess>0) smsg=messChars(ID(),smsg,numToMess);
-	                str=scrambleAll(ID(),str,numToMess);
-					msg.modify(msg.source(),
-								  msg.target(),
-								  this,
-								  msg.sourceCode(),
-								  CMStrings.substituteSayInMessage(msg.sourceMessage(),smsg),
-								  msg.targetCode(),
-                                  CMStrings.substituteSayInMessage(msg.targetMessage(),str),
-								  msg.othersCode(),
-                                  CMStrings.substituteSayInMessage(msg.othersMessage(),str));
+	                if(!processSourceMessage(msg, str, numToMess))
+	                	return false;
+	                if(!processNonSourceMessages(msg,str,numToMess))
+	                	return false;
 	                if(CMLib.flags().aliveAwakeMobile((MOB)affected,true))
 	    				helpProficiency((MOB)affected);
 				}
@@ -249,18 +288,10 @@ public class StdLanguage extends StdAbility implements Language
 	        &&(CMLib.flags().isReadable((Item)msg.target()))
 	        &&(msg.targetMessage()!=null)
 	        &&(msg.targetMessage().length()>0))
-	        {
-	            Ability L=null;
-	            for(int i=msg.target().numEffects()-1;i>=0;i--)
-	            {
-	                L=msg.target().fetchEffect(i);
-	                if((L instanceof Language)&&(!L.ID().equals(ID())))
-	                {
-	                    msg.source().tell(msg.target().name()+" is already written in "+L.name()+" and can not have "+name()+" writing added.");
-	                    return false;
-	                }
-	            }
-	        }
+        	{
+        		if(!tryLinguisticWriting(msg))
+        			return false;
+        	}
 	        else
 			if((msg.target()==affected)&&(msg.source()!=affected))
 				switch(msg.targetMinor())
@@ -389,6 +420,42 @@ public class StdLanguage extends StdAbility implements Language
 		return true;
 	}
 
+	protected boolean translateOthersMessage(CMMsg msg, String sourceWords)
+	{
+		if((msg.othersMessage()!=null)&&(msg.othersMessage().indexOf("'")>0))
+		{
+			String otherMes=msg.othersMessage();
+			if(msg.target()!=null)
+				otherMes=CMLib.coffeeFilter().fullOutFilter(null,(MOB)affected,msg.source(),msg.target(),msg.tool(),otherMes,false);
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,null,msg.othersCode(),CMStrings.substituteSayInMessage(otherMes,sourceWords)+" (translated from "+name()+")",CMMsg.NO_EFFECT,null));
+			return true;
+		}
+		return false;
+	}
+	
+	protected boolean translateTargetMessage(CMMsg msg, String sourceWords)
+	{
+		if(msg.amITarget(affected)&&(msg.targetMessage()!=null))
+		{
+			String otherMes=msg.targetMessage();
+			if(msg.target()!=null)
+				otherMes=CMLib.coffeeFilter().fullOutFilter(null,(MOB)affected,msg.source(),msg.target(),msg.tool(),otherMes,false);
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,null,msg.targetCode(),CMStrings.substituteSayInMessage(otherMes,sourceWords)+" (translated from "+name()+")",CMMsg.NO_EFFECT,null));
+			return true;
+		}
+		return false;
+	}
+
+	protected boolean translateChannelMessage(CMMsg msg, String sourceWords)
+	{
+		if(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
+		{
+			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),CMStrings.substituteSayInMessage(msg.othersMessage(),sourceWords)+" (translated from "+name()+")"));
+			return true;
+		}
+		return false;
+	}
+	
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -409,24 +476,9 @@ public class StdLanguage extends StdAbility implements Language
 				int numToMess=(int)Math.round(CMath.mul(numChars(str),CMath.div(100-getProficiency(ID()),100)));
 				if(numToMess>0)
 					str=messChars(ID(),str,numToMess);
-				if(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),CMStrings.substituteSayInMessage(msg.othersMessage(),str)+" (translated from "+ID()+")"));
-				else
-				if(msg.amITarget(affected)&&(msg.targetMessage()!=null))
-				{
-					String otherMes=msg.targetMessage();
-					if(msg.target()!=null)
-						otherMes=CMLib.coffeeFilter().fullOutFilter(null,(MOB)affected,msg.source(),msg.target(),msg.tool(),otherMes,false);
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,null,msg.targetCode(),CMStrings.substituteSayInMessage(otherMes,str)+" (translated from "+ID()+")",CMMsg.NO_EFFECT,null));
-				}
-				else
-				if((msg.othersMessage()!=null)&&(msg.othersMessage().indexOf("'")>0))
-				{
-					String otherMes=msg.othersMessage();
-					if(msg.target()!=null)
-						otherMes=CMLib.coffeeFilter().fullOutFilter(null,(MOB)affected,msg.source(),msg.target(),msg.tool(),otherMes,false);
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,null,msg.othersCode(),CMStrings.substituteSayInMessage(otherMes,str)+" (translated from "+ID()+")",CMMsg.NO_EFFECT,null));
-				}
+				if(!translateChannelMessage(msg,str))
+					if(!translateTargetMessage(msg,str))
+						translateOthersMessage(msg, str);
 			}
 		}
         else
@@ -496,7 +548,7 @@ public class StdLanguage extends StdAbility implements Language
                 str=scrambleAll(ID(),str,numToMess);
                 msg.source().tell("It says '"+str+"'");
                 if((L!=null)&&(!original.equals(str)))
-                    msg.source().tell("It says '"+original+"' (translated from "+L.name()+").");
+                    msg.source().tell("It says '"+original+"' (translated from "+L.writtenName()+").");
             }
         }
 	}

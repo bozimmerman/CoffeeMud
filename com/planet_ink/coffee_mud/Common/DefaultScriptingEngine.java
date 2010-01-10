@@ -9568,14 +9568,19 @@ public class DefaultScriptingEngine implements ScriptingEngine
             case 43: // imask_prog
                 if((triggerCode!=43)||(msg.amISource(monster)&&canTrigger(43)))
                 {
-                    if(t==null) t=parseBits(script,0,"CT");
+                    if(t==null)
+                    {
+                    	t=parseBits(script,0,"CT");
+                    	for(int i=0;i<t.length;i++)
+                    		t[i]=CMLib.english().stripPunctuation(CMStrings.removeColors(t[i]));
+                    }
                     boolean doIt=false;
                     String str=msg.othersMessage();
                     if(str==null) str=msg.targetMessage();
                     if(str==null) str=msg.sourceMessage();
                     if(str==null) break;
                     str=CMLib.coffeeFilter().fullOutFilter(null,monster,msg.source(),msg.target(),msg.tool(),str,false);
-                    str=CMStrings.removeColors(str);
+                    str=CMLib.english().stripPunctuation(CMStrings.removeColors(str));
                     str=" "+CMStrings.replaceAll(str,"\n\r"," ").toUpperCase().trim()+" ";
                     if((t[1].length()==0)||(t[1].equals("ALL")))
                         doIt=true;
