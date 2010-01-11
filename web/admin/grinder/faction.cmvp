@@ -285,9 +285,23 @@
             <TR>
                 <TD WIDTH=50%><FONT COLOR=WHITE>Ability or Behavior</FONT></TD>
                 <TD WIDTH=25%><FONT COLOR=WHITE>Parameters</FONT></TD>
-                <TD WIDTH=25%><FONT COLOR=WHITE>MOB Mask</FONT></TD>
+                <TD WIDTH=25%><FONT COLOR=WHITE>MOB Mask <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>?</I></FONT></a></FONT></TD>
             </TR>
             @FactionData?AFFECTSBEHAVIORS&FONT=COLOR=WHITE@
+            </TABLE>
+            </TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Reactions: </FONT></TD>
+            <TD>
+            <TABLE WIDTH=100% BORDER=1>
+            <TR>
+                <TD WIDTH=10%><FONT COLOR=WHITE>Range</FONT></TD>
+                <TD WIDTH=20%><FONT COLOR=WHITE>MOB Mask <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>?</I></FONT></a></FONT></TD>
+                <TD WIDTH=50%><FONT COLOR=WHITE>Ability or Behavior</FONT></TD>
+                <TD WIDTH=20%><FONT COLOR=WHITE>Parameters</FONT></TD>
+            </TR>
+            @FactionData?REACTIONS&FONT=COLOR=WHITE@
             </TABLE>
             </TD>
         </TR>

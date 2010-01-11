@@ -455,7 +455,7 @@ public class Factions extends StdLibrary implements FactionManager
                 }
                 if(FR!=null)
                 {
-                    String newName=mob.session().prompt("Enter a new name ("+FR.name()+")\n\r: ");
+                    String newName=mob.session().prompt("Enter a new name ("+FR.name()+")\n\r: ",FR.name());
                     boolean error99=false;
                     if(newName.length()==0)
                         error99=true;
@@ -628,14 +628,14 @@ public class Factions extends StdLibrary implements FactionManager
                 {
                     String mask=mob.session().prompt("Enter a new zapper mask ("+((String)factor[2])+")\n\r: "+((String)factor[2]));
                     double newHigh=((Double)factor[0]).doubleValue();
-                    String newName=mob.session().prompt("Enter gain adjustment ("+CMath.toPct(newHigh)+"): ");
+                    String newName=mob.session().prompt("Enter gain adjustment ("+CMath.toPct(newHigh)+"): ",CMath.toPct(newHigh));
                     if((!CMath.isNumber(newName))&&(!CMath.isPct(newName)))
                         mob.tell("(no change)");
                     else
                         newHigh=CMath.s_pct(newName);
 
                     double newLow=((Double)factor[1]).doubleValue();
-                    newName=mob.session().prompt("Enter loss adjustment ("+CMath.toPct(newLow)+"): ");
+                    newName=mob.session().prompt("Enter loss adjustment ("+CMath.toPct(newLow)+"): ",CMath.toPct(newLow));
                     if((!CMath.isNumber(newName))&&(!CMath.isPct(newName)))
                         mob.tell("(no change)");
                     else
@@ -793,7 +793,7 @@ public class Factions extends StdLibrary implements FactionManager
                 if(CE!=null)
                 {
                     mob.tell("Valid flags include: "+CMParms.toStringList(Faction.FactionChangeEvent.FLAG_DESCS)+"\n\r");
-                    String newFlags=mob.session().prompt("Enter new flag(s) ("+CE.flagCache()+"): "+CE.flagCache());
+                    String newFlags=mob.session().prompt("Enter new flag(s) ("+CE.flagCache()+"): "+CE.flagCache(),CE.flagCache());
                     if((newFlags.length()==0)||(newFlags.equals(CE.flagCache())))
                         mob.tell("(no change)");
                     else
@@ -801,7 +801,7 @@ public class Factions extends StdLibrary implements FactionManager
                 }
                 if(CE!=null)
                 {
-                    String newFlags=mob.session().prompt("Zapper mask ("+CE.zapper()+"): "+CE.zapper());
+                    String newFlags=mob.session().prompt("Zapper mask ("+CE.zapper()+"): "+CE.zapper(),CE.zapper());
                     if((newFlags.length()==0)||(newFlags.equals(CE.zapper())))
                         mob.tell("(no change)");
                     else
@@ -873,7 +873,7 @@ public class Factions extends StdLibrary implements FactionManager
                     boolean cont=false;
                     while((!cont)&&(!mob.session().killFlag()))
                     {
-                        String newFlags=mob.session().prompt("Ability determinate masks or ? ("+CA.abilityFlags()+"): "+CA.abilityFlags());
+                        String newFlags=mob.session().prompt("Ability determinate masks or ? ("+CA.abilityFlags()+"): "+CA.abilityFlags(),CA.abilityFlags());
                         if(newFlags.equalsIgnoreCase("?"))
                         {
                             StringBuffer vals=new StringBuffer("Valid masks: \n\r");
@@ -980,7 +980,8 @@ public class Factions extends StdLibrary implements FactionManager
                         if(ID.equalsIgnoreCase("?"))
                         {
                             StringBuffer vals=new StringBuffer("Valid IDs: \n\r");
-                            vals.append(CMParms.toStringList(CMClass.abilities()));
+                            vals.append(CMParms.toCMObjectStringList(CMClass.abilities()));
+                            vals.append(CMParms.toCMObjectStringList(CMClass.behaviors()));
                             mob.tell(vals.toString());
                             cont=true;
                         }
@@ -1018,7 +1019,7 @@ public class Factions extends StdLibrary implements FactionManager
                     while((cont)&&(!mob.session().killFlag()))
                     {
                         cont=false;
-                        String mask=mob.session().prompt("Enter a new Zapper Mask or ? ("+oldData[1]+")\n\r: ");
+                        String mask=mob.session().prompt("Enter a new Zapper Mask or ? ("+oldData[1]+")\n\r: ",oldData[1]);
                         if(mask.equalsIgnoreCase("?"))
                         {
                             mob.tell(CMLib.masking().maskHelp("\n\r","disallow"));
@@ -1033,7 +1034,7 @@ public class Factions extends StdLibrary implements FactionManager
                     while((cont)&&(!mob.session().killFlag()))
                     {
                         cont=false;
-                        String parms=mob.session().prompt("Enter new "+type+" parameters for "+ID+" or ? ("+oldData[0]+")\n\r: ");
+                        String parms=mob.session().prompt("Enter new "+type+" parameters for "+ID+" or ? ("+oldData[0]+")\n\r: ",oldData[0]);
                         if(parms.equalsIgnoreCase("?"))
                         {
                             mob.tell(CMLib.help().getHelpText(ID,mob,true).toString());
@@ -1156,7 +1157,7 @@ public class Factions extends StdLibrary implements FactionManager
                 {
                     cont=false;
                     
-                    String mask=mob.session().prompt("Enter a new Zapper Mask or ? ("+oldData[1]+")\n\r: ");
+                    String mask=mob.session().prompt("Enter a new Zapper Mask or ? ("+oldData[1]+")\n\r: ",oldData[1]);
                     if(mask.equalsIgnoreCase("?"))
                     {
                         mob.tell(CMLib.masking().maskHelp("\n\r","disallow"));
@@ -1175,9 +1176,9 @@ public class Factions extends StdLibrary implements FactionManager
 	                if(ID.equalsIgnoreCase("?"))
 	                {
 	                    StringBuffer vals=new StringBuffer("Valid IDs: \n\r");
-	                    vals.append(CMParms.toStringList(CMClass.abilities()));
-	                    vals.append(CMParms.toStringList(CMClass.behaviors()));
-	                    vals.append(CMParms.toStringList(CMClass.commands()));
+	                    vals.append(CMParms.toCMObjectStringList(CMClass.abilities()));
+	                    vals.append(CMParms.toCMObjectStringList(CMClass.behaviors()));
+	                    vals.append(CMParms.toCMObjectStringList(CMClass.commands()));
 	                    mob.tell(vals.toString());
 	                    cont=true;
 	                }
@@ -1206,7 +1207,7 @@ public class Factions extends StdLibrary implements FactionManager
                     }
                     else
                     if(!parms.equals(oldData[3]))
-                        newData[4]=parms;
+                        newData[3]=parms;
                 }
                 
                 for(int n=0;n<oldData.length;n++)

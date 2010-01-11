@@ -706,8 +706,8 @@ public class FactionData extends StdWebMacro
                             str.append("<INPUT TYPE=TEXT NAME=REACTIONMASK"+showNum+" SIZE=20 VALUE=\""+htmlOutgoingFilter(val)+"\">");
                             str.append("</TD><TD>");
                             str.append("<SELECT NAME=REACTIONABC"+showNum+">");
-                            name=getAbleBehavCmdName(val,true);
                             val=""+httpReq.getRequestParameter("REACTIONABC"+num);
+                            name=getAbleBehavCmdName(val,true);
                             if(name==null) name="";
                             str.append("<OPTION VALUE=\""+val+"\" SELECTED>"+name);
                             str.append("</SELECT>");
@@ -735,12 +735,12 @@ public class FactionData extends StdWebMacro
                     for(Enumeration e=CMClass.behaviors();e.hasMoreElements();)
                     {
                         Behavior B=(Behavior)e.nextElement();
-                        str.append("<OPTION VALUE=\""+B.ID()+"\">"+B.name());
+                        str.append("<OPTION VALUE=\""+B.ID()+"\">"+CMStrings.limit(B.name(),20));
                     }
                     for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
                     {
                         Ability A=(Ability)e.nextElement();
-                        str.append("<OPTION VALUE=\""+A.ID()+"\">"+A.name());
+                        str.append("<OPTION VALUE=\""+A.ID()+"\">"+CMStrings.limit(A.name(),20));
                     }
                     for(Enumeration e=CMClass.commands();e.hasMoreElements();)
                     {
@@ -810,9 +810,9 @@ public class FactionData extends StdWebMacro
     public String getAbleBehavCmdName(String val, boolean includeCmd)
     {
         Behavior B=CMClass.getBehavior(val);
-        if(B!=null) return B.name();
+        if(B!=null) return CMStrings.limit(B.name(),20);
         Ability A=CMClass.getAbility(val);
-        if(A!=null) return A.name();
+        if(A!=null) return CMStrings.limit(A.name(),20);
         if(!includeCmd) return null;
     	Command C=CMClass.getCommand(val);
     	if(C==null) return null;

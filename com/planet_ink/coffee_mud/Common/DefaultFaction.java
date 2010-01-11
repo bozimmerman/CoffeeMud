@@ -1169,7 +1169,7 @@ public class DefaultFaction implements Faction, MsgListener
         public boolean requiresUpdating() { return factionLastUpdated[0] > lastUpdated; }
     }
     
-    public static class DefaultFactionReactionItem
+    public static class DefaultFactionReactionItem implements Faction.FactionReactionItem
     {
     	private String reactionObjectID="";
     	private String mobMask="";
@@ -1194,15 +1194,15 @@ public class DefaultFaction implements Faction, MsgListener
         	setRangeName(str);
         	
         	x=rest.indexOf(';');
-        	str = key.substring(0,x).trim();
-        	rest = key.substring(x+1);
+        	str = rest.substring(0,x).trim();
+        	rest = rest.substring(x+1);
         	setPresentMOBMask(str);
         	
         	x=rest.indexOf(';');
-        	str = key.substring(0,x).trim();
-        	rest = key.substring(x+1);
+        	str = rest.substring(0,x).trim();
+        	rest = rest.substring(x+1);
         	setReactionObjectID(str);
-        	setParameters(str);
+        	setParameters(rest);
         }
         
     }
