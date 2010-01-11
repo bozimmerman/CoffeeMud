@@ -710,6 +710,24 @@ public class FactionData extends StdWebMacro
                             name=getAbleBehavCmdName(val,true);
                             if(name==null) name="";
                             str.append("<OPTION VALUE=\""+val+"\" SELECTED>"+name);
+                            for(Enumeration e=CMClass.behaviors();e.hasMoreElements();)
+                            {
+                                Behavior B=(Behavior)e.nextElement();
+                                str.append("<OPTION VALUE=\""+B.ID()+"\">"+CMStrings.limit(B.name(),20));
+                            }
+                            for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+                            {
+                                Ability A=(Ability)e.nextElement();
+                                str.append("<OPTION VALUE=\""+A.ID()+"\">"+CMStrings.limit(A.name(),20));
+                            }
+                            for(Enumeration e=CMClass.commands();e.hasMoreElements();)
+                            {
+                                Command C=(Command)e.nextElement();
+                                if((C.getAccessWords()!=null)&&(C.getAccessWords().length>0))
+        	                        str.append("<OPTION VALUE=\""+C.ID()+"\">"+CMStrings.capitalizeAndLower(C.getAccessWords()[0]));
+                                else
+        	                        str.append("<OPTION VALUE=\""+C.ID()+"\">"+C.ID());
+                            }
                             str.append("</SELECT>");
                             str.append("</TD><TD VALIGN=TOP>");
                             val=""+httpReq.getRequestParameter("REACTIONPARM"+num);
