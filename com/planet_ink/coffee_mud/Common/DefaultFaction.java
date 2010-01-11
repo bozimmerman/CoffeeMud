@@ -1175,12 +1175,20 @@ public class DefaultFaction implements Faction, MsgListener
     	private String mobMask="";
     	private String rangeName="";
     	private String parms="";
+    	private Vector compiledMobMask=null;
         public String reactionObjectID(){return reactionObjectID;}
         public void setReactionObjectID(String str){reactionObjectID=str;}
         public String presentMOBMask(){return mobMask;}
-        public void setPresentMOBMask(String str){mobMask=str;}
+        public void setPresentMOBMask(String str){
+        	mobMask=str;
+        	if((str==null)||(str.trim().length()==0))
+        		compiledMobMask=null;
+        	else
+	        	compiledMobMask=CMLib.masking().maskCompile(str);
+        }
+        public Vector getCompiledMobMask(){ return compiledMobMask;}
         public String rangeName(){return rangeName;}
-        public void setRangeName(String str){rangeName=str;}
+        public void setRangeName(String str){rangeName=str.toUpperCase().trim();}
         public String parameters(){return parms;}
         public void setParameters(String str){parms=str;}
         public String toString(){ return rangeName+";"+mobMask+";"+reactionObjectID+";"+parms;}
