@@ -330,7 +330,7 @@ public class Factions extends StdLibrary implements FactionManager
 					if((M!=null)&&(M!=mob)&&(M.isMonster()))
 					{
 				    	for(int d=0;d<reactionSetDV.size();d++)
-				    		if(CMLib.masking().maskCheck((Vector)reactionSetDV.elementAt(d,1),M,false))
+				    		if(CMLib.masking().maskCheck((Vector)reactionSetDV.elementAt(d,1),M,true))
 				    		{
 				    			if(myReactions==null) myReactions=new Vector();
 				    			reactionItem=(Faction.FactionReactionItem)reactionSetDV.elementAt(d,2);
