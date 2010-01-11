@@ -690,6 +690,40 @@ public interface Faction extends CMCommon, MsgListener
     public String[] getAffectBehav(String ID); 
     
     /**
+     * Returns an enumeration of Faction.FactionReaction items associated
+     * with this faction.  These are automatically added to mobs in the presence
+     * of one with this faction.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addReaction(String, String, String, String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#delReaction(Faction.FactionReactionItem)
+     * @return an enumeration of Faction.FactionReaction items
+     */
+    public Enumeration reactions();
+
+    /**
+     * Removes the given reaction from this Faction.  
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addReaction(String, String, String, String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#reactions()
+     * @param item the faction reaction item to remove
+     * @return whether the reaction was found and removed
+     */
+    public boolean delReaction(Faction.FactionReactionItem item);
+    
+    /**
+     * Adds a new reaction to this faction.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#delReaction(Faction.FactionReactionItem)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#reactions()
+     * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
+     * @see com.planet_ink.coffee_mud.Commands.interfaces.Command
+     * @see com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior
+     * @param range the faction range to use as a determinate
+     * @param abilityID the ability/Behavior/or command ID
+     * @param parms the parameters for the new affect or behavior or command
+     * @param mask the zapper mask to check to see which mob qualifies
+     * @return whether the new reaction was successfully added
+     */
+    public boolean addReaction(String range, String mask, String abilityID, String parms);
+    
+    /**
      * Returns an enumeration of Faction.FactionAbilityUsage objects for this Faction.
      * A FactionAbilityUsage object defines restrictions on the use of a mob or players
      * abilities based on values in this faction and other variables.
@@ -1272,6 +1306,84 @@ public interface Faction extends CMCommon, MsgListener
          */
         public String toString();
     }
+    
+    
+    /**
+	 * Adds very temporary affects and behaviors to mobs who match the reaction zapper
+	 * mask, and who are in the same room as someone with standing in this faction.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addReactionItem(String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#reactionItems()
+     * @author Bo Zimmerman
+     *
+     */
+    public static interface FactionReactionItem
+    {
+        /**
+         * The ability/behavior/command id.
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionReactionItem#setReactionObjectID(String)
+         * @return the ability/behavior/command id
+         */
+        public String reactionObjectID();
+        
+        /**
+         * Set the ability/behavior/command id.
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionReactionItem#reactionObjectID(String)
+         * @param str the ability/behavior/command id
+         */
+        public void setReactionObjectID(String str);
+        
+        /**
+         * The ability/behavior/command id.
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionReactionItem#setPresentMOBMask(String)
+         * @return the ability/behavior/command id
+         */
+        public String presentMOBMask();
+        
+        /**
+         * Set the mask to determine which mobs in the players presence will be affected.  This is a zappermask.
+	     * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionReactionItem#presentMOBMask(String)
+         * @param str the mask to determine which mobs in the players presence will be affected
+         */
+        public void setPresentMOBMask(String str);
+        
+        /**
+         * The name of the range which determines which folks with this faction get a reaction
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionReactionItem#setRangeName(String)
+         * @return the range which determines which folks with this faction get a reaction
+         */
+        public String rangeName();
+        
+        /**
+         * Set the name of the range which determines which folks with this faction get a reaction
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionReactionItem#rangeName(String)
+         * @param str the range which determines which folks with this faction get a reaction
+         */
+        public void setRangeName(String str);
+        
+        /**
+         * The parameters for the ability/behavior/command above.
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionReactionItem#setRangeName(String)
+         * @return the parameters for the ability/behavior/command above
+         */
+        public String parameters();
+        
+        /**
+         * Set the parameters for the ability/behavior/command above.
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionReactionItem#rangeName(String)
+         * @param str the parameters for the ability/behavior/command above
+         */
+        public void setParameters(String str);
+        
+        /**
+         * Returns a semicolon-delimited string of the values of this reaction, suitable for
+         * using to create a new one later.
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addReaction(String)
+         * @return a semicolon-delimited string of the values of this reaction
+         */
+        public String toString();
+    }
+    
     /** legacy constant for {@link FactionRange#alignEquiv()} denoting that the range does not reflect alignment */
     public final static int ALIGN_INDIFF=0;
     /** legacy constant for {@link FactionRange#alignEquiv()} denoting that the range reflects evil alignment */
@@ -1327,10 +1439,12 @@ public interface Faction extends CMCommon, MsgListener
     public final static int TAG_SHOWINFACTIONSCMD=17;
     /** index constant for tag names in {@link Faction#TAG_NAMES} denoting the AFFBEHAV tag */
     public final static int TAG_AFFBEHAV_=18;
+    /** index constant for tag names in {@link Faction#TAG_NAMES} denoting the RELATION tag */
+    public final static int TAG_REACTION_=19;
     /** list of valid tag names for internal faction data, retrieved by {@link Faction#getTagValue(String)} */
     public final static String[] TAG_NAMES={"NAME","MINIMUM","MAXIMUM","SCOREDISPLAY",
                                             "SPECIALREPORTED","EDITALONE","DEFAULT","AUTODEFAULTS",
                                             "AUTOCHOICES","CHOICEINTRO","RATEMODIFIER","EXPERIENCE",
                                             "RANGE*","CHANGE*","ABILITY*","FACTOR*","RELATION*",
-                                            "SHOWINFACTIONSCMD","AFFBEHAV*"};
+                                            "SHOWINFACTIONSCMD","AFFBEHAV*","REACTION*"};
 }

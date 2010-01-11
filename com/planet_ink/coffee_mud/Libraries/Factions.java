@@ -390,6 +390,8 @@ public class Factions extends StdLibrary implements FactionManager
             return "behavior";
         if(CMClass.getAbility(ID)!=null)
             return "ability";
+        if(CMClass.getCommand(ID)!=null)
+            return "command";
         return null;
     }
     
@@ -1053,6 +1055,174 @@ public class Factions extends StdLibrary implements FactionManager
                     }
                 }
             }
+
+            // Reaction Command/Affects/Behaviors
+            ++showNumber;
+            while((mob.session()!=null)&&(!mob.session().killFlag())&&(!((showFlag>0)&&(showFlag!=showNumber))))
+            {
+                if((showFlag>0)&&(showFlag!=showNumber)) break;
+                StringBuffer list=new StringBuffer(showNumber+". Reaction Commands/Effects/Behaviors:\n\r");
+                list.append("    #) "
+                        +CMStrings.padRight("Range",15)
+                        +" "+CMStrings.padRight("MOB Mask",18)
+                        +" "+CMStrings.padRight("Able/Beh/Cmd",15)
+                        +" "+CMStrings.padRight("Parameters",18)
+                        +"\n\r");
+                int numReactions=0;
+                StringBuffer choices=new StringBuffer("0\n\r");
+                Vector reactions=new Vector();
+                Faction.FactionReactionItem item=null;
+                for(Enumeration e=me.reactions();e.hasMoreElements();)
+                {
+                    item=(Faction.FactionReactionItem)e.nextElement();
+                    list.append("    "+((char)('A'+numReactions)+") "));
+                    list.append(CMStrings.padRight(item.rangeName(),15)+" ");
+                    list.append(CMStrings.padRight(item.presentMOBMask()+"",18)+" ");
+                    list.append(CMStrings.padRight(item.reactionObjectID()+"",15)+" ");
+                    list.append(CMStrings.padRight(item.parameters()+"",18)+" ");
+                    list.append("\n\r");
+                    choices.append((char)('A'+numReactions));
+                    reactions.addElement(item);
+                    numReactions++;
+                }
+                mob.tell(list.toString());
+                if((showFlag!=showNumber)&&(showFlag>-999)) break;
+                String which=mob.session().choose("Select one to remove or modify, or enter 0 to Add:",choices.toString(),"");
+                if(which.length()!=1)
+                    break;
+                which=which.toUpperCase().trim();
+                item=null;
+                if(!which.equalsIgnoreCase("0"))
+                {
+                    int num=(which.charAt(0)-'A');
+                    if((num<0)||(num>=reactions.size()))
+                        break;
+                    item=(Faction.FactionReactionItem)reactions.elementAt(num);
+                    String type=getWordAffOrBehav(item.reactionObjectID());
+                    if(mob.session().choose("Would you like to M)odify or D)elete this "+type+" (M/d): ","MD","M").toUpperCase().startsWith("D"))
+                    {
+                        me.delReaction(item);
+                        mob.tell(CMStrings.capitalizeAndLower(type)+" deleted.");
+                        item=null;
+                    }
+                }
+                
+                String type="";
+                String[] oldData=new String[]{"","","",""};
+                if(item != null)
+                {
+                    type=getWordAffOrBehav(item.reactionObjectID());
+                    oldData=new String[]{item.rangeName(),item.presentMOBMask(),item.reactionObjectID(),item.parameters()};
+                }
+                
+                String[] newData=new String[4];
+                
+                boolean cont=true;
+                
+                cont=true;
+                while((cont)&&(!mob.session().killFlag()))
+                {
+                    cont=false;
+                    
+                    String rangeCode=mob.session().prompt("Enter a new range code or ? ("+oldData[0]+")\n\r: ",oldData[0]).toUpperCase().trim();
+                    if(rangeCode.equalsIgnoreCase("?"))
+                    {
+                    	StringBuffer str=new StringBuffer("");
+                        for(Enumeration e=me.ranges();e.hasMoreElements();)
+                        {
+                            Faction.FactionRange FR=(Faction.FactionRange)e.nextElement();
+                            str.append(FR.codeName()+" ");
+                        }
+                        mob.tell(str.toString().trim()+"\n\r");
+                        cont=true;
+                    }
+                    else
+                    if(!rangeCode.equals(oldData[0]))
+                    {
+                    	cont=true;
+                        for(Enumeration e=me.ranges();e.hasMoreElements();)
+                            if(((Faction.FactionRange)e.nextElement()).codeName().equalsIgnoreCase(rangeCode))
+                            {
+                                newData[0]=rangeCode;
+                                cont=false;
+                            }
+                        if(cont)
+                        	mob.tell("'"+rangeCode+"' is not a valid range code.  Use ?");
+                    }
+                }
+                
+                cont = true;
+                while((cont)&&(!mob.session().killFlag()))
+                {
+                    cont=false;
+                    
+                    String mask=mob.session().prompt("Enter a new Zapper Mask or ? ("+oldData[1]+")\n\r: ");
+                    if(mask.equalsIgnoreCase("?"))
+                    {
+                        mob.tell(CMLib.masking().maskHelp("\n\r","disallow"));
+                        cont=true;
+                    }
+                    else
+                    if(!mask.equals(oldData[1]))
+                        newData[1]=mask;
+                }
+                
+                cont=true;
+                while((cont)&&(!mob.session().killFlag()))
+                {
+                    cont=false;
+	                String ID=mob.session().prompt("Enter a new Ability, Behavior, or Command ID ("+oldData[2]+")\n\r: ",oldData[2]);
+	                if(ID.equalsIgnoreCase("?"))
+	                {
+	                    StringBuffer vals=new StringBuffer("Valid IDs: \n\r");
+	                    vals.append(CMParms.toStringList(CMClass.abilities()));
+	                    vals.append(CMParms.toStringList(CMClass.behaviors()));
+	                    vals.append(CMParms.toStringList(CMClass.commands()));
+	                    mob.tell(vals.toString());
+	                    cont=true;
+	                }
+	                else
+	                {
+	                    type=getWordAffOrBehav(ID);
+	                    if(type==null)
+	                    {
+	                        mob.tell("'"+ID+" is neither a valid behavior, command, ability ID. Use ? for a list.");
+	                        cont=true;
+	                    }
+	                    else
+	                        newData[2]=ID;
+	                }
+                }
+                
+                cont=true;
+                while((cont)&&(!mob.session().killFlag()))
+                {
+                    cont=false;
+                    String parms=mob.session().prompt("Enter new "+type+" parameters for "+newData[2]+" or ? ("+oldData[3]+")\n\r: ",oldData[3]);
+                    if(parms.equalsIgnoreCase("?"))
+                    {
+                        mob.tell(CMLib.help().getHelpText(newData[3],mob,true).toString());
+                        cont=true;
+                    }
+                    else
+                    if(!parms.equals(oldData[3]))
+                        newData[4]=parms;
+                }
+                
+                for(int n=0;n<oldData.length;n++)
+                	if(newData[n]==null)
+                		newData[n]=oldData[n];
+                if(which.equalsIgnoreCase("0"))
+                	me.addReaction(newData[0], newData[1], newData[2], newData[3]);
+                else
+                {
+                	item.setRangeName(newData[0]);
+                	item.setPresentMOBMask(newData[1]);
+                	item.setReactionObjectID(newData[2]);
+                	item.setParameters(newData[3]);
+                }
+            }
+            
             if(showFlag<-900){ ok=true; break;}
             if(showFlag>0){ showFlag=-1; continue;}
             showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));

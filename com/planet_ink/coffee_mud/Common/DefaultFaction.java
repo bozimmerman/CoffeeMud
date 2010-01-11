@@ -68,6 +68,8 @@ public class DefaultFaction implements Faction, MsgListener
     protected Hashtable relations=new Hashtable();
     protected Vector abilityUsages=new Vector();
     protected Vector choices=new Vector();
+    protected Vector reactions=new Vector();
+    protected Hashtable reactionHash=new Hashtable();
 
     public String factionID(){return ID;}
     public String name(){return name;}
@@ -178,6 +180,8 @@ public class DefaultFaction implements Faction, MsgListener
         factors=new Vector();
         relations=new Hashtable();
         abilityUsages=new Vector();
+        reactions=new Vector();
+        reactionHash=new Hashtable();
         for(Enumeration e=alignProp.keys();e.hasMoreElements();)
         {
             if(debug) Log.sysOut("FACTIONS","Starting Key Loop");
@@ -220,6 +224,11 @@ public class DefaultFaction implements Faction, MsgListener
             }
             if(key.startsWith("ABILITY"))
                 addAbilityUsage(words);
+            if(key.startsWith("REACTION"))
+            {
+            	DefaultFactionReactionItem item = new DefaultFactionReactionItem(words);
+                addReaction(item.rangeName(), item.presentMOBMask(), item.reactionObjectID(), item.parameters());
+            }
         }
     }
 
@@ -336,6 +345,13 @@ public class DefaultFaction implements Faction, MsgListener
             }
             return "";
         }
+        case TAG_REACTION_:
+        {
+            if((numCall<0)||(numCall>=reactions.size()))
+                return ""+reactions.size();
+            Faction.FactionReactionItem item = (Faction.FactionReactionItem)reactions.elementAt(numCall);
+            return item.toString();
+        }
         }
         return "";
     }
@@ -413,6 +429,36 @@ public class DefaultFaction implements Faction, MsgListener
         if(affBehavs.containsKey(ID.toUpperCase().trim()))
             return CMParms.toStringArray(CMParms.makeVector((String[])affBehavs.get(ID.toUpperCase().trim())));
         return null;
+    }
+    
+    public Enumeration reactions(){return  DVector.s_enum(reactions);}
+
+    public Enumeration reactions(String rangeName){return  DVector.s_enum((Vector)reactionHash.get(rangeName.toUpperCase().trim()));}
+
+    public boolean delReaction(Faction.FactionReactionItem item)
+    {
+    	Vector V=(Vector)reactionHash.get(item.rangeName().toUpperCase().trim());
+    	boolean res = reactions.remove(item);
+    	V.remove(item);
+    	if(reactions.size()==0) reactionHash.clear();
+    	return res;
+    }
+    
+    public boolean addReaction(String range, String mask, String abilityID, String parms)
+    {
+    	Vector V=(Vector)reactionHash.get(range.toUpperCase().trim());
+    	if(V==null) {
+    		V=new Vector();
+    		reactionHash.put(range.toUpperCase().trim(), V);
+    	}
+    	DefaultFactionReactionItem item = new DefaultFactionReactionItem();
+    	item.setRangeName(range);
+    	item.setPresentMOBMask(mask);
+    	item.setReactionObjectID(abilityID);
+    	item.setParameters(parms);
+    	reactions.add(item);
+    	V.add(item);
+    	return true;
     }
     
     public FactionChangeEvent getChangeEvent(String key) 
@@ -1123,6 +1169,43 @@ public class DefaultFaction implements Faction, MsgListener
         public boolean requiresUpdating() { return factionLastUpdated[0] > lastUpdated; }
     }
     
+    public static class DefaultFactionReactionItem
+    {
+    	private String reactionObjectID="";
+    	private String mobMask="";
+    	private String rangeName="";
+    	private String parms="";
+        public String reactionObjectID(){return reactionObjectID;}
+        public void setReactionObjectID(String str){reactionObjectID=str;}
+        public String presentMOBMask(){return mobMask;}
+        public void setPresentMOBMask(String str){mobMask=str;}
+        public String rangeName(){return rangeName;}
+        public void setRangeName(String str){rangeName=str;}
+        public String parameters(){return parms;}
+        public void setParameters(String str){parms=str;}
+        public String toString(){ return rangeName+";"+mobMask+";"+reactionObjectID+";"+parms;}
+        public DefaultFactionReactionItem(){}
+
+        public DefaultFactionReactionItem(String key)
+        {
+        	int x=key.indexOf(';');
+        	String str = key.substring(0,x).toUpperCase().trim();
+        	String rest = key.substring(x+1);
+        	setRangeName(str);
+        	
+        	x=rest.indexOf(';');
+        	str = key.substring(0,x).trim();
+        	rest = key.substring(x+1);
+        	setPresentMOBMask(str);
+        	
+        	x=rest.indexOf(';');
+        	str = key.substring(0,x).trim();
+        	rest = key.substring(x+1);
+        	setReactionObjectID(str);
+        	setParameters(str);
+        }
+        
+    }
     
     public static class DefaultFactionAbilityUsage implements Faction.FactionAbilityUsage
     {
