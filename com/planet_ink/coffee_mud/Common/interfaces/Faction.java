@@ -700,6 +700,16 @@ public interface Faction extends CMCommon, MsgListener
     public Enumeration reactions();
 
     /**
+     * Returns an enumeration of Faction.FactionReaction items associated
+     * with this faction and the given range code.  These are automatically 
+     * added to mobs in the presence of one with this faction.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addReaction(String, String, String, String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#delReaction(Faction.FactionReactionItem)
+     * @return an enumeration of Faction.FactionReaction items
+     */
+    public Enumeration reactions(String rangeCode);
+    
+    /**
      * Removes the given reaction from this Faction.  
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addReaction(String, String, String, String)
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#reactions()
@@ -1185,6 +1195,15 @@ public interface Faction extends CMCommon, MsgListener
          * @return an enumeration of specific ticking objects
          */
         public Enumeration tickers();
+        /**
+         * Returns the current set of reaction sets.  This is a 2-dimensional 
+         * dvector where the first dimension is the mob mask, and the second
+         * is a vector of faction.factionreactionitems.
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionReactionItem
+         * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
+         * @return a two dimensional dvector
+         */
+        public DVector reactionSets();
     }
     
     /**
@@ -1333,11 +1352,19 @@ public interface Faction extends CMCommon, MsgListener
         public void setReactionObjectID(String str);
         
         /**
-         * The ability/behavior/command id.
+         * The mask to tell which mobs to apply this reaction to
          * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionReactionItem#setPresentMOBMask(String)
-         * @return the ability/behavior/command id
+         * @return mask to tell which mobs to apply this reaction to
          */
         public String presentMOBMask();
+        
+        
+        /**
+         * The compiled mask to tell which mobs to apply this reaction to
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionReactionItem#setPresentMOBMask(String)
+         * @return the compiled mask to tell which mobs to apply this reaction to
+         */
+        public Vector compiledPresentMOBMask();
         
         /**
          * Set the mask to determine which mobs in the players presence will be affected.  This is a zappermask.

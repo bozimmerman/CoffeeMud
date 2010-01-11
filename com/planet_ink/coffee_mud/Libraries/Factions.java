@@ -39,6 +39,7 @@ public class Factions extends StdLibrary implements FactionManager
     public String ID(){return "Factions";}
 	public Hashtable factionSet = new Hashtable();
 	public Hashtable hashedFactionRanges=new Hashtable();
+	protected Ability presenceReactionPrototype = null;
 	
     public Hashtable factionSet(){return factionSet;}
 	public void clearFactions()
@@ -302,6 +303,44 @@ public class Factions extends StdLibrary implements FactionManager
 		    }
 	    }catch(Exception e){}
 	    return true;
+	}
+	
+	public void handleEntranceReactions(MOB mob, Hashtable factionDataHash, Room R)
+	{
+    	if(presenceReactionPrototype==null)
+    	{
+    		presenceReactionPrototype=CMClass.getAbility("PresenceReaction");
+	    	if(presenceReactionPrototype==null) return;
+    	}
+		
+		MOB M=null;
+		Faction.FactionData data = null;
+		DVector reactionSetDV = null;
+    	Vector myReactions=null;
+    	Faction.FactionReactionItem reactionItem = null;
+		for(Enumeration e=DVector.s_enum(factionDataHash,false);e.hasMoreElements();)
+		{
+			data = (Faction.FactionData)e.nextElement();
+			if((data!=null)
+			&&((reactionSetDV = data.reactionSets())!=null)
+			&&(reactionSetDV.size()!=0))
+				for(int m=0;m<R.numInhabitants();m++)
+				{
+					M=R.fetchInhabitant(m);
+					if((M!=null)&&(M!=mob)&&(M.isMonster()))
+					{
+				    	for(int d=0;d<reactionSetDV.size();d++)
+				    		if(CMLib.masking().maskCheck((Vector)reactionSetDV.elementAt(d,1),M,false))
+				    		{
+				    			if(myReactions==null) myReactions=new Vector();
+				    			reactionItem=(Faction.FactionReactionItem)reactionSetDV.elementAt(d,2);
+				    			myReactions.add(reactionItem.reactionObjectID()+"="+reactionItem.parameters());
+				    		}
+				    	if(myReactions!=null)
+					    	presenceReactionPrototype.invoke(mob,myReactions,M,true,0);
+					}
+				}
+		}
 	}
 	
 	public int getAlignPurity(int faction, int AlignEq) 

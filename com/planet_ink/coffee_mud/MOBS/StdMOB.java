@@ -2298,6 +2298,11 @@ public class StdMOB implements MOB
 					setLiegeID(msg.target().Name());
 				tell(this,msg.target(),msg.tool(),msg.sourceMessage());
 				break;
+			case CMMsg.TYP_ENTER:
+				if((!isMonster())&&(msg.target() instanceof Room))
+					CMLib.factions().handleEntranceReactions(this,(Hashtable)factions,(Room)msg.target());
+				tell(msg.source(),msg.target(),msg.tool(),msg.sourceMessage());
+				break;
 			case CMMsg.TYP_LOOK:
             case CMMsg.TYP_EXAMINE:
                 if(msg.target()==this)
