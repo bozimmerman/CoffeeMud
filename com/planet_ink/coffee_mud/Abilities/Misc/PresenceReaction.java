@@ -155,6 +155,9 @@ public class PresenceReaction extends StdAbility
 						} catch(Exception e){}
 					}
 				}
+				else
+				if(O instanceof Environmental)
+					((Environmental)O).destroy();
 			}
 			managed.clear();
 			affected.delEffect(this);
