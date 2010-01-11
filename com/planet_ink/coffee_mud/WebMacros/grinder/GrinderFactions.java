@@ -228,6 +228,21 @@ public class GrinderFactions {
             num++;
         }
         
+        
+        num=0;
+        for(Enumeration e=F.reactions();e.hasMoreElements();)
+            F.delReaction((Faction.FactionReactionItem)e.nextElement());
+        while(httpReq.getRequestParameter("REACTIONRANGE"+num)!=null)
+        {
+            old=httpReq.getRequestParameter("REACTIONRANGE"+num);
+            String old1=httpReq.getRequestParameter("REACTIONMASK"+num);
+            String old2=httpReq.getRequestParameter("REACTIONABC"+num);
+            String old3=httpReq.getRequestParameter("REACTIONPARM"+num);
+            if(old.length()>0)
+                F.addReaction(old,old1,old2,old3);
+            num++;
+        }
+        
         old=httpReq.getRequestParameter("RATEMODIFIER");
         F.setRateModifier(old==null?0.0:CMath.s_pct(old));
 

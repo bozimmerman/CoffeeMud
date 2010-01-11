@@ -1212,7 +1212,7 @@ public class Factions extends StdLibrary implements FactionManager
                 for(int n=0;n<oldData.length;n++)
                 	if(newData[n]==null)
                 		newData[n]=oldData[n];
-                if(which.equalsIgnoreCase("0"))
+                if(item==null)
                 	me.addReaction(newData[0], newData[1], newData[2], newData[3]);
                 else
                 {

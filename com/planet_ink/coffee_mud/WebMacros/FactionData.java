@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.Command;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -624,15 +625,7 @@ public class FactionData extends StdWebMacro
                             str.append("<TR><TD>");
                             str.append("<SELECT NAME=AFFBEHAV"+showNum+" ONCHANGE=\"DelItem(this);\">");
                             str.append("<OPTION VALUE=\"\">Delete This Row");
-                            String name=null;
-                            Behavior B=CMClass.getBehavior(val);
-                            if(B==null)
-                            {
-                                Ability A=CMClass.getAbility(val);
-                                if(A!=null) name=A.name();
-                            }
-                            else
-                                name=B.name();
+                            String name=getAbleBehavCmdName(val,false);
                             if(name!=null) {
                                 str.append("<OPTION VALUE=\""+val+"\" SELECTED>"+name);
                                 str.append("</SELECT>");
@@ -670,6 +663,99 @@ public class FactionData extends StdWebMacro
                     str.append("<INPUT TYPE=TEXT NAME=AFFBEHAVMASK"+showNum+" SIZE=20 VALUE=\"\">");
                     str.append("</TD></TR>");
                 }
+                
+                if(parms.containsKey("REACTIONS"))
+                {
+                    String rangeCode="";
+                    rangeCode=httpReq.getRequestParameter("REACTIONRANGE0");
+                    if((rangeCode==null)&&(F.reactions().nextElement()!=null))
+                    {
+                        int v=0;
+                        for(Enumeration e=F.reactions();e.hasMoreElements();v++)
+                        {
+                        	Faction.FactionReactionItem item=(Faction.FactionReactionItem)e.nextElement();
+                            httpReq.addRequestParameters("REACTIONRANGE"+v,item.rangeName());
+                            httpReq.addRequestParameters("REACTIONABC"+v,item.reactionObjectID());
+                            httpReq.addRequestParameters("REACTIONPARM"+v,super.htmlOutgoingFilter(item.parameters()));
+                            httpReq.addRequestParameters("REACTIONMASK"+v,super.htmlOutgoingFilter(item.presentMOBMask()));
+                        }
+                    }
+                    
+                    DVector rangeCodes = getRangeCodesNames(F,httpReq);
+                    
+                    int num=0;
+                    int showNum=-1;
+                    while(httpReq.getRequestParameter("REACTIONRANGE"+num)!=null)
+                    {
+                    	rangeCode=httpReq.getRequestParameter("REACTIONRANGE"+num);
+                        if(rangeCode.length()>0)
+                        {
+                            showNum++;
+                            String val=rangeCode;
+                            str.append("<TR><TD>");
+                            str.append("<SELECT NAME=REACTIONRANGE"+showNum+" ONCHANGE=\"DelItem(this);\">");
+                            str.append("<OPTION VALUE=\"\">Delete This Row");
+                            int x=rangeCodes.indexOf(val);
+                            String name="Unknown!";
+                            if(x>=0) name=(String)rangeCodes.elementAt(x, 2);
+                            str.append("<OPTION VALUE=\""+val+"\" SELECTED>"+name);
+                            str.append("</SELECT>");
+                            str.append("</TD><TD VALIGN=TOP>");
+                            val=""+httpReq.getRequestParameter("REACTIONMASK"+num);
+                            val=CMStrings.replaceAll(val,"\"","&quot;");
+                            str.append("<INPUT TYPE=TEXT NAME=REACTIONMASK"+showNum+" SIZE=20 VALUE=\""+htmlOutgoingFilter(val)+"\">");
+                            str.append("</TD><TD>");
+                            str.append("<SELECT NAME=REACTIONABC"+showNum+">");
+                            name=getAbleBehavCmdName(val,true);
+                            val=""+httpReq.getRequestParameter("REACTIONABC"+num);
+                            if(name==null) name="";
+                            str.append("<OPTION VALUE=\""+val+"\" SELECTED>"+name);
+                            str.append("</SELECT>");
+                            str.append("</TD><TD VALIGN=TOP>");
+                            val=""+httpReq.getRequestParameter("REACTIONPARM"+num);
+                            val=CMStrings.replaceAll(val,"\"","&quot;");
+                            str.append("<INPUT TYPE=TEXT NAME=REACTIONPARM"+showNum+" SIZE=20 VALUE=\""+htmlOutgoingFilter(val)+"\">");
+                            str.append("</TD>");
+                            str.append("</TR>");
+                        }
+                        num++;
+                    }
+                    ++showNum;
+                    str.append("<TR><TD>");
+                    str.append("<SELECT NAME=REACTIONRANGE"+showNum+" ONCHANGE=\"AddItem(this);\">");
+                    str.append("<OPTION VALUE=\"\" SELECTED>Select an range");
+                    for(int i=0;i<rangeCodes.size();i++)
+                        str.append("<OPTION VALUE=\""+((String)rangeCodes.elementAt(i, 1))+"\">"+((String)rangeCodes.elementAt(i, 2)));
+                    str.append("</SELECT>");
+                    str.append("</TD><TD VALIGN=TOP>");
+                    str.append("<INPUT TYPE=TEXT NAME=REACTIONMASK"+showNum+" SIZE=20 VALUE=\"\">");
+                    str.append("</TD><TD VALIGN=TOP>");
+                    str.append("<SELECT NAME=REACTIONABC"+showNum+">");
+                    str.append("<OPTION VALUE=\"\" SELECTED>Select an able/behav/cmd");
+                    for(Enumeration e=CMClass.behaviors();e.hasMoreElements();)
+                    {
+                        Behavior B=(Behavior)e.nextElement();
+                        str.append("<OPTION VALUE=\""+B.ID()+"\">"+B.name());
+                    }
+                    for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+                    {
+                        Ability A=(Ability)e.nextElement();
+                        str.append("<OPTION VALUE=\""+A.ID()+"\">"+A.name());
+                    }
+                    for(Enumeration e=CMClass.commands();e.hasMoreElements();)
+                    {
+                        Command C=(Command)e.nextElement();
+                        if((C.getAccessWords()!=null)&&(C.getAccessWords().length>0))
+	                        str.append("<OPTION VALUE=\""+C.ID()+"\">"+CMStrings.capitalizeAndLower(C.getAccessWords()[0]));
+                        else
+	                        str.append("<OPTION VALUE=\""+C.ID()+"\">"+C.ID());
+                    }
+                    str.append("</SELECT>");
+                    str.append("</TD><TD VALIGN=TOP>");
+                    str.append("<INPUT TYPE=TEXT NAME=REACTIONPARM"+showNum+" SIZE=20 VALUE=\"\">");
+                    str.append("</TD></TR>");
+                }
+                
                 if(parms.containsKey("RATEMODIFIER"))
                 {
                     String old=httpReq.getRequestParameter("RATEMODIFIER");
@@ -720,4 +806,42 @@ public class FactionData extends StdWebMacro
         case 3: done.add(val.toUpperCase()); break;
         }
     }
+
+    public String getAbleBehavCmdName(String val, boolean includeCmd)
+    {
+        Behavior B=CMClass.getBehavior(val);
+        if(B!=null) return B.name();
+        Ability A=CMClass.getAbility(val);
+        if(A!=null) return A.name();
+        if(!includeCmd) return null;
+    	Command C=CMClass.getCommand(val);
+    	if(C==null) return null;
+        if((C.getAccessWords()!=null)&&(C.getAccessWords().length>0))
+        	return CMStrings.capitalizeAndLower(C.getAccessWords()[0]);
+        return C.ID();
+    }
+    
+    public DVector getRangeCodesNames(Faction F, ExternalHTTPRequests httpReq)
+    {
+        String oldName=httpReq.getRequestParameter("RANGENAME0");
+        String code=null;
+        DVector codes=new DVector(2);
+        int num=0;
+        if(oldName==null)
+            for(Enumeration e=F.ranges();e.hasMoreElements();)
+            {
+                Faction.FactionRange FR=(Faction.FactionRange)e.nextElement();
+                codes.addElement(FR.codeName(),FR.name());
+		    }
+        else
+        while(httpReq.getRequestParameter("RANGENAME"+num)!=null)
+	    {
+            oldName=httpReq.getRequestParameter("RANGENAME"+num);
+            code=httpReq.getRequestParameter("RANGECODE"+num);
+            codes.addElement(code,oldName);
+            num++;
+	    }
+        return codes;
+    }
+    
 }
