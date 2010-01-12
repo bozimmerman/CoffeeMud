@@ -1153,7 +1153,7 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#makeFactionData(MOB)
      * @author bzimmerman
      */
-    public static interface FactionData
+    public static interface FactionData extends MsgListener
     {
         /**
          * Returns true if this object requires updating by the parent
@@ -1161,6 +1161,14 @@ public interface Faction extends CMCommon, MsgListener
          * @return true if an update is necessary, false otherwise.
          */
         public boolean requiresUpdating();
+        
+        /**
+         * A mirror implementation of Tickable
+         * @see com.planet_ink.coffee_mud.core.interfaces.Tickable
+         * @param ticking the ticking object
+         * @param tickID the id code of the tick being done
+         */
+        public boolean tick(Tickable ticking, int tickID);
         
         /**
          * Returns the actual value that the holding object has in this faction.
@@ -1181,29 +1189,6 @@ public interface Faction extends CMCommon, MsgListener
          * @param tickers a vector of msglisteners
          */
         public void addListenersNTickers(Vector listeners, Vector tickers);
-        
-        /**
-         * Returns an enumeration of specific message listeners for this holder
-         * of the faction.
-         * @return an enumeration of specific message listeners
-         */
-        public Enumeration listeners();
-        
-        /**
-         * Returns an enumeration of specific ticking objects for this holder 
-         * of the faction.
-         * @return an enumeration of specific ticking objects
-         */
-        public Enumeration tickers();
-        /**
-         * Returns the current set of reaction sets.  This is a 2-dimensional 
-         * dvector where the first dimension is the mob mask, and the second
-         * is a vector of faction.factionreactionitems.
-         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionReactionItem
-         * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
-         * @return a two dimensional dvector
-         */
-        public DVector reactionSets();
     }
     
     /**
@@ -1394,7 +1379,6 @@ public interface Faction extends CMCommon, MsgListener
          * @return the parameters for the ability/behavior/command above
          */
         public String parameters();
-        
         /**
          * Set the parameters for the ability/behavior/command above.
          * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionReactionItem#rangeName(String)

@@ -668,7 +668,7 @@ public class FactionData extends StdWebMacro
                 {
                     String rangeCode="";
                     rangeCode=httpReq.getRequestParameter("REACTIONRANGE0");
-                    if((rangeCode==null)&&(F.reactions().nextElement()!=null))
+                    if((rangeCode==null)&&(F.reactions().hasMoreElements()))
                     {
                         int v=0;
                         for(Enumeration e=F.reactions();e.hasMoreElements();v++)

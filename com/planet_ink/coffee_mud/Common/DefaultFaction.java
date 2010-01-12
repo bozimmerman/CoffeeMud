@@ -383,7 +383,7 @@ public class DefaultFaction implements Faction, MsgListener
     
     public FactionData makeFactionData(MOB mob)
     {
-        FactionData data=new DefaultFactionData(factionID(), lastFactionDataChange);
+        FactionData data=new DefaultFactionData();
         Vector V=new Vector();
         String ID=null;
         String[] stuff=null;
@@ -946,7 +946,7 @@ public class DefaultFaction implements Faction, MsgListener
          return changes.remove(eventKey)!=null;
      }
 
-     public static class DefaultFactionChangeEvent implements Faction.FactionChangeEvent
+     public class DefaultFactionChangeEvent implements Faction.FactionChangeEvent
      {
         public String ID="";
         public String flagCache="";
@@ -1093,7 +1093,7 @@ public class DefaultFaction implements Faction, MsgListener
         recalc();
         return true;
     }
-    public static class DefaultFactionRange implements Faction.FactionRange
+    public class DefaultFactionRange implements Faction.FactionRange
     {
         public int low;
         public int high;
@@ -1149,25 +1149,20 @@ public class DefaultFaction implements Faction, MsgListener
     }
     public boolean delAbilityUsage(Faction.FactionAbilityUsage usage){return abilityUsages.remove(usage);}
 
-    public static class DefaultFactionData implements FactionData
+    public class DefaultFactionData implements FactionData
     {
         private boolean noListeners=false;
         private boolean noTickers=false;
         //private boolean noReactions=false;
         private long lastUpdated=System.currentTimeMillis();
-        private long[] factionLastUpdated=new long[0];
         private Vector listeners=new Vector();
         private Vector tickers=listeners;
         private int value=0;
         private DVector currentReactionSets = new DVector(2);
         private Faction.FactionRange currentRange = null;
-        private String factionID = null;
+        private Hashtable<String,String> convertedParameters=new Hashtable<String,String>();
         private boolean erroredOut=false;
-        public DefaultFactionData(String factionID, long[] factionLastUpdated) 
-        { 
-        	this.factionLastUpdated=factionLastUpdated;
-        	this.factionID = factionID;
-        }
+        public DefaultFactionData(){}
         public int value() { return value;}
         public void setValue(int newValue)
         {
@@ -1178,48 +1173,118 @@ public class DefaultFaction implements Faction, MsgListener
         		{
                 	if((currentRange!=null)&&(this.value>=currentRange.low())&&(this.value<=currentRange.high()))
                 		return;
-	        		Faction F = CMLib.factions().getFaction(factionID);
-	        		currentRange = F.fetchRange(value);
+	        		currentRange = fetchRange(value);
 	        		if((currentRange==null)&&(!erroredOut))
 	        		{
-	        			Log.errOut("DefaultFactionData","Faction "+factionID+" does not define a range for "+this.value);
+	        			Log.errOut("DefaultFactionData","Faction "+factionID()+" does not define a range for "+this.value);
 	        			erroredOut=true;
 	        		}
 	        		else
 	        		{
 	        			currentReactionSets=new DVector(2);
-	        			for(Enumeration e=F.reactions();e.hasMoreElements();)
+	        			for(Enumeration e=reactions();e.hasMoreElements();)
 	        			{
-	        				Faction.FactionReactionItem item = (Faction.FactionReactionItem)e.nextElement();
+	        				Faction.FactionReactionItem react = (Faction.FactionReactionItem)e.nextElement();
+	        				if(!react.rangeName().equalsIgnoreCase(currentRange.codeName()))
+	        					continue;
+	        				Faction.FactionReactionItem sampleReact = null;
+	        				Vector reactSet=null;
 	        				for(int r=0;r<currentReactionSets.size();r++)
-	        					if(item.presentMOBMask().trim().equalsIgnoreCase(
-        							((Faction.FactionReactionItem)currentReactionSets.elementAt(r,2)).presentMOBMask().trim()))
+	        				{
+	        					reactSet=(Vector)currentReactionSets.elementAt(r,2);
+	        					sampleReact=(Faction.FactionReactionItem)reactSet.firstElement();
+	        					if(react.presentMOBMask().trim().equalsIgnoreCase(sampleReact.presentMOBMask().trim()))
 	        					{
-	        						((Vector)currentReactionSets.elementAt(r,2)).addElement(item);
-	        						item=null; break;
+	        						reactSet.addElement(react);
+	        						react=null; break;
 	        					}
-	        				if(item!=null)
-	        					currentReactionSets.addElement(item.compiledPresentMOBMask(),CMParms.makeVector(item));
+	        				}
+	        				if(react!=null)
+	        					currentReactionSets.addElement(react.compiledPresentMOBMask(),CMParms.makeVector(react));
 	        			}
 	        			//noReactions=currentReactionSets.size()==0;
 	        		}
+	                noListeners=(listeners.size()==0) && (currentReactionSets.size()==0);
         		}
         	}
         }
-        public Enumeration listeners() { return noListeners?empty:DVector.s_enum(listeners); }
         public Enumeration tickers() { return noTickers?empty:DVector.s_enum(tickers); }
         public DVector reactionSets() { return currentReactionSets; }
         
         public void addListenersNTickers(Vector listeners, Vector tickers) {
             this.listeners=listeners;
             this.tickers=tickers;
-            noListeners=listeners.size()==0;
+            noListeners=(listeners.size()==0) && (currentReactionSets.size()==0);
             noTickers=tickers.size()==0;
         }
-        public boolean requiresUpdating() { return factionLastUpdated[0] > lastUpdated; }
+        public boolean requiresUpdating() { return lastFactionDataChange[0] > lastUpdated; }
+        public String convertedParameters(String s, Environmental myHost) {
+        	if(!convertedParameters.containsKey(s))
+        		convertedParameters.put(s, CMStrings.replaceAll(s,"<TARGET>", myHost.Name()));
+        	return convertedParameters.get(s);
+        }
+    	public void executeMsg(Environmental myHost, CMMsg msg)
+    	{
+    		if(noListeners) return;
+			if((currentReactionSets.size()>0)
+			&&(msg.sourceMinor()==CMMsg.TYP_ENTER)
+			&&(msg.source()==myHost)
+			&&(!msg.source().isMonster())
+			&&(msg.target() instanceof Room))
+			{
+		    	if(presenceReactionPrototype==null)
+		    		if((presenceReactionPrototype=CMClass.getAbility("PresenceReaction"))==null) return;
+				
+				MOB M=null;
+		    	Vector myReactions=null;
+		    	Faction.FactionReactionItem reactionItem = null;
+		    	Room R=(Room)msg.target();
+		    	Vector tempReactSet=null;
+				for(int m=0;m<R.numInhabitants();m++)
+				{
+					M=R.fetchInhabitant(m);
+					if((M!=null)&&(M!=myHost)&&(M.isMonster()))
+					{
+						myReactions = null;
+				    	for(int d=0;d<currentReactionSets.size();d++)
+				    		if(CMLib.masking().maskCheck((Vector)currentReactionSets.elementAt(d,1),M,true))
+				    		{
+				    			if(myReactions==null) myReactions=new Vector();
+				    			tempReactSet=(Vector)currentReactionSets.elementAt(d,2);
+				    			for(Enumeration e=tempReactSet.elements();e.hasMoreElements();)
+				    			{
+					    			reactionItem=(Faction.FactionReactionItem)e.nextElement();
+					    			myReactions.add(reactionItem.reactionObjectID()+"="+convertedParameters(reactionItem.parameters(),myHost));
+				    			}
+				    		}
+				    	if(myReactions!=null)
+					    	presenceReactionPrototype.invoke(M,myReactions,myHost,true,0);
+					}
+				}
+			}
+    		
+            for(Enumeration e2=DVector.s_enum(listeners);e2.hasMoreElements();)
+                ((MsgListener)e2.nextElement()).executeMsg(myHost, msg);
+    	}
+    	public boolean okMessage(Environmental myHost, CMMsg msg)
+    	{
+    		if(noListeners) return true;
+            for(Enumeration e2=DVector.s_enum(listeners);e2.hasMoreElements();)
+                if(!((MsgListener)e2.nextElement()).okMessage(myHost,msg))
+                	return false;
+    		return true;
+    	}
+        public boolean tick(Tickable ticking, int tickID)
+        {
+    		if(noTickers) return true;
+            for(Enumeration e2=DVector.s_enum(listeners);e2.hasMoreElements();)
+                if(!((Tickable)e2.nextElement()).tick(ticking,tickID))
+                	return false;
+        	return true;
+        }
     }
     
-    public static class DefaultFactionReactionItem implements Faction.FactionReactionItem
+    public class DefaultFactionReactionItem implements Faction.FactionReactionItem
     {
     	private String reactionObjectID="";
     	private String mobMask="";
@@ -1240,6 +1305,7 @@ public class DefaultFaction implements Faction, MsgListener
         public String rangeName(){return rangeName;}
         public void setRangeName(String str){rangeName=str.toUpperCase().trim();}
         public String parameters(){return parms;}
+        public String parameters(String name){ return CMStrings.replaceAll(parms,"<TARGET>", name);}
         public void setParameters(String str){parms=str;}
         public String toString(){ return rangeName+";"+mobMask+";"+reactionObjectID+";"+parms;}
         public DefaultFactionReactionItem(){}
@@ -1265,7 +1331,7 @@ public class DefaultFaction implements Faction, MsgListener
         
     }
     
-    public static class DefaultFactionAbilityUsage implements Faction.FactionAbilityUsage
+    public class DefaultFactionAbilityUsage implements Faction.FactionAbilityUsage
     {
         public String ID="";
         public boolean possibleAbilityID=false;

@@ -1518,10 +1518,8 @@ public class StdMOB implements MOB
                 if(!ML.okMessage(this,msg))
                     return false;
                 factionData=(Faction.FactionData)factions.get(factionID);
-                if(factionData!=null)
-                    for(Enumeration e2=factionData.listeners();e2.hasMoreElements();)
-                        if(!((MsgListener)e2.nextElement()).okMessage(myHost,msg))
-                            return false;
+                if((factionData!=null)&&(!factionData.okMessage(myHost,msg)))
+                	return false;
             }
         }
 
@@ -2298,11 +2296,6 @@ public class StdMOB implements MOB
 					setLiegeID(msg.target().Name());
 				tell(this,msg.target(),msg.tool(),msg.sourceMessage());
 				break;
-			case CMMsg.TYP_ENTER:
-				if((!isMonster())&&(msg.target() instanceof Room))
-					CMLib.factions().handleEntranceReactions(this,(Hashtable)factions,(Room)msg.target());
-				tell(msg.source(),msg.target(),msg.tool(),msg.sourceMessage());
-				break;
 			case CMMsg.TYP_LOOK:
             case CMMsg.TYP_EXAMINE:
                 if(msg.target()==this)
@@ -2499,9 +2492,8 @@ public class StdMOB implements MOB
             {
                 ML.executeMsg(this,msg);
                 factionData=(Faction.FactionData)factions.get(factionID);
-                if(factionData!=null)
-                    for(Enumeration e2=factionData.listeners();e2.hasMoreElements();)
-                        ((MsgListener)e2.nextElement()).executeMsg(myHost,msg);
+                if(factionData!=null) 
+                	factionData.executeMsg(myHost, msg);
             }
         }
 	}
@@ -2698,8 +2690,7 @@ public class StdMOB implements MOB
                         else
                             removeFaction(factionID);
                     }
-                    for(Enumeration e2=factionData.tickers();e2.hasMoreElements();)
-                        ((Tickable)e2.nextElement()).tick(ticking,tickID);
+                    factionData.tick(ticking,tickID);
                 }
             }
             
