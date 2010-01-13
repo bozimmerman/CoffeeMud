@@ -631,11 +631,9 @@ public class FactionData extends StdWebMacro
                                 str.append("</SELECT>");
                                 str.append("</TD><TD VALIGN=TOP>");
                                 val=""+httpReq.getRequestParameter("AFFBEHAVPARM"+num);
-                                val=CMStrings.replaceAll(val,"\"","&quot;");
                                 str.append("<INPUT TYPE=TEXT NAME=AFFBEHAVPARM"+showNum+" SIZE=20 VALUE=\""+htmlOutgoingFilter(val)+"\">");
                                 str.append("</TD><TD VALIGN=TOP>");
                                 val=""+httpReq.getRequestParameter("AFFBEHAVMASK"+num);
-                                val=CMStrings.replaceAll(val,"\"","&quot;");
                                 str.append("<INPUT TYPE=TEXT NAME=AFFBEHAVMASK"+showNum+" SIZE=20 VALUE=\""+htmlOutgoingFilter(val)+"\">");
                                 str.append("</TD></TR>");
                             }
@@ -676,8 +674,8 @@ public class FactionData extends StdWebMacro
                         	Faction.FactionReactionItem item=(Faction.FactionReactionItem)e.nextElement();
                             httpReq.addRequestParameters("REACTIONRANGE"+v,item.rangeName());
                             httpReq.addRequestParameters("REACTIONABC"+v,item.reactionObjectID());
-                            httpReq.addRequestParameters("REACTIONPARM"+v,super.htmlOutgoingFilter(item.parameters()));
-                            httpReq.addRequestParameters("REACTIONMASK"+v,super.htmlOutgoingFilter(item.presentMOBMask()));
+                            httpReq.addRequestParameters("REACTIONPARM"+v,item.parameters());
+                            httpReq.addRequestParameters("REACTIONMASK"+v,item.presentMOBMask());
                         }
                     }
                     
@@ -702,7 +700,6 @@ public class FactionData extends StdWebMacro
                             str.append("</SELECT>");
                             str.append("</TD><TD VALIGN=TOP>");
                             val=""+httpReq.getRequestParameter("REACTIONMASK"+num);
-                            val=CMStrings.replaceAll(val,"\"","&quot;");
                             str.append("<INPUT TYPE=TEXT NAME=REACTIONMASK"+showNum+" SIZE=20 VALUE=\""+htmlOutgoingFilter(val)+"\">");
                             str.append("</TD><TD>");
                             str.append("<SELECT NAME=REACTIONABC"+showNum+">");
@@ -731,7 +728,6 @@ public class FactionData extends StdWebMacro
                             str.append("</SELECT>");
                             str.append("</TD><TD VALIGN=TOP>");
                             val=""+httpReq.getRequestParameter("REACTIONPARM"+num);
-                            val=CMStrings.replaceAll(val,"\"","&quot;");
                             str.append("<INPUT TYPE=TEXT NAME=REACTIONPARM"+showNum+" SIZE=20 VALUE=\""+htmlOutgoingFilter(val)+"\">");
                             str.append("</TD>");
                             str.append("</TR>");
