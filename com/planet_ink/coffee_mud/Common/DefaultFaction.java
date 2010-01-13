@@ -1218,11 +1218,6 @@ public class DefaultFaction implements Faction, MsgListener
             noTickers=tickers.size()==0;
         }
         public boolean requiresUpdating() { return lastFactionDataChange[0] > lastUpdated; }
-        public String convertedParameters(String s, Environmental myHost) {
-        	if(!convertedParameters.containsKey(s))
-        		convertedParameters.put(s, CMStrings.replaceAll(s,"<TARGET>", myHost.Name()));
-        	return convertedParameters.get(s);
-        }
     	public void executeMsg(Environmental myHost, CMMsg msg)
     	{
     		if(noListeners) return;
@@ -1254,7 +1249,7 @@ public class DefaultFaction implements Faction, MsgListener
 				    			for(Enumeration e=tempReactSet.elements();e.hasMoreElements();)
 				    			{
 					    			reactionItem=(Faction.FactionReactionItem)e.nextElement();
-					    			myReactions.add(reactionItem.reactionObjectID()+"="+convertedParameters(reactionItem.parameters(),myHost));
+					    			myReactions.add(reactionItem.reactionObjectID()+"="+reactionItem.parameters());
 				    			}
 				    		}
 				    	if(myReactions!=null)
