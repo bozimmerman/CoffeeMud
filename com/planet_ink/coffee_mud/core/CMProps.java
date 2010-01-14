@@ -135,7 +135,8 @@ public class CMProps extends Properties
     public static final int SYSTEM_FORMULA_DAMAGEMELEEFUDGE=77;
     public static final int SYSTEM_FORMULA_DAMAGERANGEDFUDGE=78;
     public static final int SYSTEM_MUDSTATE=79;
-    public static final int NUM_SYSTEM=80;
+    public static final int SYSTEM_AUTOREACTION=80;
+    public static final int NUM_SYSTEM=81;
 
     public static final int SYSTEMI_EXPRATE=0;
     public static final int SYSTEMI_SKYSIZE=1;
@@ -730,6 +731,7 @@ public class CMProps extends Properties
         	mudState = getStr("I3STATE");
         setUpLowVar(SYSTEM_MUDSTATE,mudState);
         setUpLowVar(SYSTEM_I3ROUTERS,getStr("I3ROUTERS"));
+        setVar(SYSTEM_AUTOREACTION,getStr("AUTOREACTION"));
         setVar(SYSTEM_PREJUDICE,getStr("PREJUDICE"));
         setUpLowVar(SYSTEM_PRICEFACTORS,getStr("PRICEFACTORS"));
         setVar(SYSTEM_IGNOREMASK,getStr("IGNOREMASK"));

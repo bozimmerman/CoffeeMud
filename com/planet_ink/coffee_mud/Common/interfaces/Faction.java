@@ -1169,7 +1169,7 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#makeFactionData(MOB)
      * @author bzimmerman
      */
-    public static interface FactionData extends MsgListener
+    public static interface FactionData extends MsgListener, StatsAffecting
     {
         /**
          * Returns true if this object requires updating by the parent
@@ -1187,6 +1187,12 @@ public interface Faction extends CMCommon, MsgListener
         public boolean tick(Tickable ticking, int tickID);
         
         /**
+         * Return the parent faction for which this data stands.
+         * @return this data objects parent faction.
+         */
+        public Faction getFaction();
+        
+        /**
          * Returns the actual value that the holding object has in this faction.
          * @return the faction value
          */
@@ -1200,11 +1206,11 @@ public interface Faction extends CMCommon, MsgListener
         
         /**
          * Clears and re-adds all the necessary message listeners and tickers
-         * for this object.
-         * @param listeners a vector of msglisteners
-         * @param tickers a vector of msglisteners
+         * and stat affecting objects for this faction data reference.
+         * @param abilities a vector of abilities
+         * @param behaviors a vector of behaviors
          */
-        public void addListenersNTickers(Vector listeners, Vector tickers);
+        public void addHandlers(Vector<Ability> abilities, Vector<Behavior> behaviors);
     }
     
     /**

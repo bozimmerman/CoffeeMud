@@ -6684,12 +6684,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 CMLib.leveler().fillOutMOB(me,me.baseEnvStats().level());
             genRejuv(mob,me,++showNumber,showFlag);
             genRace(mob,me,++showNumber,showFlag);
+        	CMLib.factions().updatePlayerFactions(me);
             Faction F=null;
             for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
             {
                 F=(Faction)e.nextElement();
-                if((!F.hasFaction(me))&&(F.findAutoDefault(me)!=Integer.MAX_VALUE))
-                    mob.addFaction(F.factionID(),F.findAutoDefault(me));
                 if(F.showInEditor())
                     genSpecialFaction(mob,me,++showNumber,showFlag,F);
             }
@@ -6778,12 +6777,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             genRace(mob,me,++showNumber,showFlag);
             genCharClass(mob,me,++showNumber,showFlag);
             genCharStats(mob,me,++showNumber,showFlag);
+        	CMLib.factions().updatePlayerFactions(me);
             Faction F=null;
             for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
             {
                 F=(Faction)e.nextElement();
-                if((!F.hasFaction(me))&&(F.findAutoDefault(me)!=Integer.MAX_VALUE))
-                    mob.addFaction(F.factionID(),F.findAutoDefault(me));
                 if(F.showInEditor())
                     genSpecialFaction(mob,me,++showNumber,showFlag,F);
             }
@@ -7112,12 +7110,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             genRace(mob,mme,++showNumber,showFlag);
             genHeight(mob,me,++showNumber,showFlag);
             genWeight(mob,me,++showNumber,showFlag);
+        	CMLib.factions().updatePlayerFactions((MOB)me);
             Faction F=null;
             for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
             {
                 F=(Faction)e.nextElement();
-                if((!F.hasFaction((MOB)me))&&(F.findAutoDefault((MOB)me)!=Integer.MAX_VALUE))
-                    mob.addFaction(F.factionID(),F.findAutoDefault((MOB)me));
                 if(F.showInEditor())
                     genSpecialFaction(mob,(MOB)me,++showNumber,showFlag,F);
             }

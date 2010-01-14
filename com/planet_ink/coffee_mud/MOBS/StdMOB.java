@@ -431,6 +431,8 @@ public class StdMOB implements MOB
 			if(effect!=null)
 				effect.affectEnvStats(this,envStats);
 		}
+		for(Enumeration e=DVector.s_enum(factions,false);e.hasMoreElements();)
+			((Faction.FactionData)e.nextElement()).affectEnvStats(this,envStats);
 		/* the follower light exception*/
 		if(!CMLib.flags().isLightSource(this))
         {
@@ -518,6 +520,8 @@ public class StdMOB implements MOB
 			charStats.getMyClass(c).affectCharStats(this,charStats);
 		charStats.getMyRace().affectCharStats(this,charStats);
 		baseCharStats.getMyRace().agingAffects(this,baseCharStats,charStats);
+		for(Enumeration e=DVector.s_enum(factions,false);e.hasMoreElements();)
+			((Faction.FactionData)e.nextElement()).affectCharStats(this,charStats);
 	    if((playerStats!=null)&&(soulMate==null)&&(playerStats.getHygiene()>=PlayerStats.HYGIENE_DELIMIT))
 	    {
 	        int chaAdjust=(int)(playerStats.getHygiene()/PlayerStats.HYGIENE_DELIMIT);
@@ -603,6 +607,8 @@ public class StdMOB implements MOB
 			if(item!=null)
 				item.affectCharState(this,maxState);
 		}
+		for(Enumeration e=DVector.s_enum(factions,false);e.hasMoreElements();)
+			((Faction.FactionData)e.nextElement()).affectCharState(this,maxState);
 		if(location()!=null)
 			location().affectCharState(this,maxState);
 	}
@@ -801,13 +807,7 @@ public class StdMOB implements MOB
             destroy();
             return;
         }
-		Faction F=null;
-		for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
-		{
-		    F=(Faction)e.nextElement();
-		    if((!F.hasFaction(this))&&(F.findAutoDefault(this)!=Integer.MAX_VALUE))
-		        addFaction(F.factionID(),F.findAutoDefault(this));
-		}
+    	CMLib.factions().updatePlayerFactions(this);
 		if(tickStatus==Tickable.STATUS_NOT)
 		{
 			try{ imMobile=true;
@@ -1508,19 +1508,13 @@ public class StdMOB implements MOB
         }
 
         Faction.FactionData factionData=null;
-        String factionID=null;
-        for(Enumeration e=fetchFactions();e.hasMoreElements();)
+        for(Enumeration e=DVector.s_enum(factions,false);e.hasMoreElements();)
         {
-            factionID=(String)e.nextElement();
-            ML=CMLib.factions().getFaction(factionID);
-            if(ML!=null)
-            {
-                if(!ML.okMessage(this,msg))
-                    return false;
-                factionData=(Faction.FactionData)factions.get(factionID);
-                if((factionData!=null)&&(!factionData.okMessage(myHost,msg)))
-                	return false;
-            }
+        	factionData=(Faction.FactionData)e.nextElement();
+        	if(!factionData.getFaction().okMessage(myHost, msg))
+        		return false;
+        	if(!factionData.okMessage(myHost, msg))
+        		return false;
         }
 
 		MOB mob=msg.source();
@@ -2483,18 +2477,11 @@ public class StdMOB implements MOB
 		}
 
         Faction.FactionData factionData=null;
-        String factionID=null;
-        for(Enumeration e=fetchFactions();e.hasMoreElements();)
+        for(Enumeration e=DVector.s_enum(factions,false);e.hasMoreElements();)
         {
-            factionID=(String)e.nextElement();
-            ML=CMLib.factions().getFaction(factionID);
-            if(ML!=null)
-            {
-                ML.executeMsg(this,msg);
-                factionData=(Faction.FactionData)factions.get(factionID);
-                if(factionData!=null) 
-                	factionData.executeMsg(myHost, msg);
-            }
+        	factionData=(Faction.FactionData)e.nextElement();
+        	factionData.getFaction().executeMsg(myHost, msg);
+        	factionData.executeMsg(myHost, msg);
         }
 	}
 
@@ -2642,7 +2629,7 @@ public class StdMOB implements MOB
             for(e=DVector.s_enum(affects);e.hasMoreElements();c++)
 			{
 				T=(Tickable)e.nextElement();
-				tickStatus=Tickable.STATUS_AFFECT+c;
+				tickStatus=Tickable.STATUS_AFFECT+(c++);
 				if(!T.tick(ticking,tickID))
 					((Ability)T).unInvoke();
 			}
@@ -2653,7 +2640,7 @@ public class StdMOB implements MOB
             for(e=DVector.s_enum(behaviors);e.hasMoreElements();c++)
             {
 				T=(Tickable)e.nextElement();
-				tickStatus=Tickable.STATUS_BEHAVIOR+c;
+				tickStatus=Tickable.STATUS_BEHAVIOR+(c++);
 				if(T!=null) T.tick(ticking,tickID);
 			}
 
@@ -2661,39 +2648,39 @@ public class StdMOB implements MOB
             for(e=DVector.s_enum(scripts);e.hasMoreElements();c++)
             {
                 T=(Tickable)e.nextElement();
-                tickStatus=Tickable.STATUS_SCRIPT+c;
+                tickStatus=Tickable.STATUS_SCRIPT+(c++);
                 if(T!=null) T.tick(ticking,tickID);
 
             }
             e=null;
             
             Faction.FactionData factionData=null;
-            String factionID=null;
-            c=0;
-            for(e=DVector.s_enum(factions,true);e.hasMoreElements();c++)
+            for(e=DVector.s_enum(factions,false);e.hasMoreElements();)
             {
-                factionID=(String)e.nextElement();
-                factionData=(Faction.FactionData)factions.get(factionID);
-                tickStatus=Tickable.STATUS_OTHER;
-                if(factionData!=null)
+                factionData=(Faction.FactionData)e.nextElement();
+                if(isMonster()&&factionData.requiresUpdating())
                 {
-                    if(isMonster()&&factionData.requiresUpdating())
+                	String factionID = factionData.getFaction().factionID();
+                    Faction F=CMLib.factions().getFaction(factionID);
+                    if(F!=null)
                     {
-                        Faction F=CMLib.factions().getFaction(factionID);
-                        if(F!=null)
-                        {
-                            Faction.FactionData newFactionData=F.makeFactionData(this);
-                            newFactionData.setValue(factionData.value());
-                            factions.put(factionID,newFactionData);
-                            factionData=newFactionData;
-                        }
-                        else
-                            removeFaction(factionID);
+                        Faction.FactionData newFactionData=F.makeFactionData(this);
+                        newFactionData.setValue(factionData.value());
+                        factions.put(factionID,newFactionData);
+                        factionData=newFactionData;
                     }
-                    factionData.tick(ticking,tickID);
+                    else
+                        removeFaction(factionID);
                 }
             }
-            
+            c=0;
+            for(e=DVector.s_enum(factions,false);e.hasMoreElements();)
+            {
+                tickStatus=Tickable.STATUS_OTHER+(c++);
+            	if(!((Faction.FactionData)e.nextElement()).tick(ticking, tickID))
+            		return false;
+            }
+
             int num=charStats().numClasses();
 			tickStatus=Tickable.STATUS_CLASS;
 			for(c=0;c<num;c++)
@@ -3417,9 +3404,11 @@ public class StdMOB implements MOB
         if(start<F.minimum()) start=F.minimum();
         Faction.FactionData data=(Faction.FactionData)factions.get(which);
         if(data==null)
+        {
             data=F.makeFactionData(this);
+            factions.put(which,data);
+        }
         data.setValue(start);
-        factions.put(which,data);
     }
     public void adjustFaction(String which, int amount)
     {

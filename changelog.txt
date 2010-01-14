@@ -2232,3 +2232,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 7. New language: Sign Language
 8. New ZapperMask(s): -CHANCE
 9. New Property(s): PresenceReaction (for faction, etc)
+10.New Mage Spell: Awe Other

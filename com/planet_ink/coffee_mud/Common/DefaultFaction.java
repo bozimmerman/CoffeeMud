@@ -98,7 +98,6 @@ public class DefaultFaction implements Faction, MsgListener
     public Enumeration relationFactions(){return  DVector.s_enum(relations,true);}
     public Enumeration abilityUsages(){return  DVector.s_enum(abilityUsages);}
     public Enumeration choices(){return  DVector.s_enum(choices);}
-    private static final Enumeration empty=new Vector().elements();
     public void setLightReactions(boolean truefalse){useLightReactions=truefalse;}
     public boolean useLightReactions(){return useLightReactions;}
 
@@ -388,8 +387,9 @@ public class DefaultFaction implements Faction, MsgListener
     
     public FactionData makeFactionData(MOB mob)
     {
-        FactionData data=new DefaultFactionData();
-        Vector V=new Vector();
+        FactionData data=new DefaultFactionData(this);
+        Vector<Ability> aV=new Vector<Ability>();
+        Vector<Behavior> bV=new Vector<Behavior>();
         String ID=null;
         String[] stuff=null;
         if(mob.isMonster())
@@ -403,18 +403,18 @@ public class DefaultFaction implements Faction, MsgListener
                 if(B!=null)
                 {
                     B.setParms(stuff[0]);
-                    V.addElement(B);
+                    bV.addElement(B);
                 }
                 else
                 {
                     Ability A=CMClass.getAbility(ID);
                     A.setMiscText(stuff[0]);
                     A.setAffectedOne(mob);
-                    V.addElement(A);
+                    aV.addElement(A);
                 }
             }
         }
-        data.addListenersNTickers(V,V);
+        data.addHandlers(aV,bV);
         return data;
     }
     
@@ -1156,19 +1156,21 @@ public class DefaultFaction implements Faction, MsgListener
 
     public class DefaultFactionData implements FactionData
     {
+        private int value=0;
         private boolean noListeners=false;
         private boolean noTickers=false;
-        //private boolean noReactions=false;
+        private boolean noStatAffectors=false;
         private long lastUpdated=System.currentTimeMillis();
-        private Vector listeners=new Vector();
-        private Vector tickers=listeners;
-        private int value=0;
+        private Ability[] myEffects=new Ability[0];
+        private Behavior[] myBehaviors=new Behavior[0];
         private DVector currentReactionSets = new DVector(2);
-        private DVector lightPresenceReactions = new DVector(2);
+        private Ability lightPresenceAbilities[] = new Ability[0];
         private Faction.FactionRange currentRange = null;
         private boolean erroredOut=false;
-        public DefaultFactionData(){}
+        private Faction myFaction;
+        public DefaultFactionData(Faction F){myFaction=F;}
         public int value() { return value;}
+        public Faction getFaction() { return myFaction;}
         public void setValue(int newValue)
         {
         	this.value=newValue;
@@ -1179,13 +1181,15 @@ public class DefaultFaction implements Faction, MsgListener
                 	if((currentRange!=null)&&(this.value>=currentRange.low())&&(this.value<=currentRange.high()))
                 		return;
 	        		currentRange = fetchRange(value);
-	        		if((currentRange==null)&&(!erroredOut))
+	        		if(currentRange==null)
 	        		{
-	        			Log.errOut("DefaultFactionData","Faction "+factionID()+" does not define a range for "+this.value);
+	        			if(!erroredOut)
+		        			Log.errOut("DefaultFactionData","Faction "+factionID()+" does not define a range for "+this.value);
 	        			erroredOut=true;
 	        		}
 	        		else
 	        		{
+	        			erroredOut=false;
 	        			currentReactionSets=new DVector(2);
 	        			for(Enumeration e=reactions();e.hasMoreElements();)
 	        			{
@@ -1209,19 +1213,34 @@ public class DefaultFaction implements Faction, MsgListener
 	        			}
 	        			//noReactions=currentReactionSets.size()==0;
 	        		}
-	                noListeners=(listeners.size()==0) && (currentReactionSets.size()==0);
-	                noTickers=(tickers.size()==0) && ((currentReactionSets.size()==0)||(!useLightReactions()));
+	                noListeners=(myEffects.length==0) && (currentReactionSets.size()==0);
+	                noTickers=(myBehaviors.length==0) && ((currentReactionSets.size()==0)||(!useLightReactions()));
         		}
         	}
         }
-        public Enumeration tickers() { return noTickers?empty:DVector.s_enum(tickers); }
-        public DVector reactionSets() { return currentReactionSets; }
         
-        public void addListenersNTickers(Vector listeners, Vector tickers) {
-            this.listeners=listeners;
-            this.tickers=tickers;
+    	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+    	{
+    		if(!noStatAffectors)
+	    		for(Ability A : myEffects) A.affectEnvStats(affected, affectableStats);
+    	}
+    	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+    	{
+    		if(!noStatAffectors)
+    			for(Ability A : myEffects) A.affectCharStats(affectedMob, affectableStats);
+    	}
+    	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+    	{
+    		if(!noStatAffectors)
+	    		for(Ability A : myEffects) A.affectCharState(affectedMob, affectableMaxState);
+    	}
+        public void addHandlers(Vector<Ability> listeners, Vector<Behavior> tickers) 
+        {
+            this.myEffects=listeners.toArray(new Ability[0]);
+            this.myBehaviors=tickers.toArray(new Behavior[0]);
             noListeners=(listeners.size()==0) && (currentReactionSets.size()==0);
             noTickers=(tickers.size()==0) && ((currentReactionSets.size()==0)||(!useLightReactions()));
+            noStatAffectors=(listeners.size()==0);
         }
         public boolean requiresUpdating() { return lastFactionDataChange[0] > lastUpdated; }
     	public void executeMsg(Environmental myHost, CMMsg msg)
@@ -1241,7 +1260,7 @@ public class DefaultFaction implements Faction, MsgListener
 		    	Faction.FactionReactionItem reactionItem = null;
 		    	Room R=(Room)msg.target();
 		    	Vector tempReactSet=null;
-		    	lightPresenceReactions.clear();
+		    	Vector<Ability> lightPresenceReactions=new Vector<Ability>();
 				for(int m=0;m<R.numInhabitants();m++)
 				{
 					M=R.fetchInhabitant(m);
@@ -1264,41 +1283,48 @@ public class DefaultFaction implements Faction, MsgListener
 				    		{
 				    			Ability A=(Ability)presenceReactionPrototype.copyOf();
 				    			A.invoke(M,myReactions,myHost,false,0);
-				    			lightPresenceReactions.addElement(M,A);
+				    			A.setInvoker(M);
+				    			lightPresenceReactions.addElement(A);
 				    		}
 				    		else
 						    	presenceReactionPrototype.invoke(M,myReactions,myHost,true,0);
 					}
 				}
+				lightPresenceAbilities = lightPresenceReactions.toArray(new Ability[0]);
 			}
     		
-            for(Enumeration e2=DVector.s_enum(listeners);e2.hasMoreElements();)
-                ((MsgListener)e2.nextElement()).executeMsg(myHost, msg);
-            if(useLightReactions())
-            for(int i=0;i<lightPresenceReactions.size();i++)
-                ((MsgListener)lightPresenceReactions.elementAt(i,2)).executeMsg((Environmental)lightPresenceReactions.elementAt(i,1), msg);
+            for(Ability A : myEffects)
+                A.executeMsg(myHost, msg);
+            for(Behavior B : myBehaviors)
+                B.executeMsg(myHost, msg);
+            for(Ability A : lightPresenceAbilities)
+                A.executeMsg(A.invoker(), msg);
     	}
     	public boolean okMessage(Environmental myHost, CMMsg msg)
     	{
     		if(noListeners) return true;
-            for(Enumeration e2=DVector.s_enum(listeners);e2.hasMoreElements();)
-                if(!((MsgListener)e2.nextElement()).okMessage(myHost,msg))
+            for(Ability A : myEffects)
+                if(!A.okMessage(myHost, msg))
                 	return false;
-            if(useLightReactions())
-            for(int i=0;i<lightPresenceReactions.size();i++)
-                if(!((MsgListener)lightPresenceReactions.elementAt(i,2)).okMessage((Environmental)lightPresenceReactions.elementAt(i,1), msg))
+            for(Behavior B : myBehaviors)
+                if(!B.okMessage(myHost, msg))
+                	return false;
+            for(Ability A : lightPresenceAbilities)
+                if(!A.okMessage(A.invoker(), msg))
                 	return false;
     		return true;
     	}
         public boolean tick(Tickable ticking, int tickID)
         {
     		if(noTickers) return true;
-            for(Enumeration e2=DVector.s_enum(listeners);e2.hasMoreElements();)
-                if(!((Tickable)e2.nextElement()).tick(ticking,tickID))
+            for(Ability A : myEffects)
+                if(!A.tick(ticking, tickID))
                 	return false;
-            if(useLightReactions())
-            for(int i=0;i<lightPresenceReactions.size();i++)
-                if(!((Tickable)lightPresenceReactions.elementAt(i,2)).tick((Tickable)lightPresenceReactions.elementAt(i,1), tickID))
+            for(Behavior B : myBehaviors)
+                if(!B.tick(ticking, tickID))
+                	return false;
+            for(Ability A : lightPresenceAbilities)
+                if(!A.tick(A.invoker(), tickID))
                 	return false;
         	return true;
         }

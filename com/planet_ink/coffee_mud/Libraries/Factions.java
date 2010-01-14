@@ -255,7 +255,37 @@ public class Factions extends StdLibrary implements FactionManager
 		}
 		return true;
 	}
-	
+
+    protected Faction makeReactionFaction(Environmental E)
+    {
+    	//TODO: finish
+    	return null;
+    }
+    
+    public void updatePlayerFactions(MOB mob)
+    {
+    	Faction F=null;
+        for(Enumeration e=factionSet().elements();e.hasMoreElements();)
+        {
+            F=(Faction)e.nextElement();
+            if((!F.hasFaction(mob))&&(F.findAutoDefault(mob)!=Integer.MAX_VALUE))
+                mob.addFaction(F.factionID(),F.findAutoDefault(mob));
+        }
+        if(CMProps.getVar(CMProps.SYSTEM_AUTOREACTION).equalsIgnoreCase("AREA"))
+        {
+        	Area A=CMLib.map().areaLocation(mob);
+        	if(A!=null)
+        	{
+	        	String areaCode = A.Name().toUpperCase().trim().replace(' ','_');
+	        	F=getFaction("AREA_"+areaCode);
+	        	if(F==null)
+	        		F=makeReactionFaction(A);
+	            if((F!=null)&&(!F.hasFaction(mob))&&(F.findAutoDefault(mob)!=Integer.MAX_VALUE))
+	                mob.addFaction(F.factionID(),F.findAutoDefault(mob));
+        	}
+        }
+    }
+    
 	public boolean tick(Tickable ticking, int tickID)
 	{
         if(CMLib.sessions().size()==0) 
