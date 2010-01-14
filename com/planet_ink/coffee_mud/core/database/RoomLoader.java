@@ -1220,10 +1220,11 @@ public class RoomLoader
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMAREA")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Updating area "+A.name());
+		boolean ignoreType=CMSecurity.isDisabled("FATAREAS")||CMSecurity.isDisabled("THINAREAS");
 		DB.update(
 		"UPDATE CMAREA SET "
 		+"CMAREA='"+A.Name()+"',"
-		+"CMTYPE='"+A.ID()+"',"
+		+(ignoreType?"":"CMTYPE='"+A.ID()+"',")
 		+"CMCLIM="+A.climateType()+","
 		+"CMSUBS='"+A.getSubOpList()+"',"
 		+"CMDESC='"+A.description()+" ',"

@@ -89,7 +89,26 @@ public class Factions extends StdLibrary implements FactionManager
         return buf.toString();
 	}
 	    
-	
+	private Faction buildFactionFromXML(StringBuffer buf, String factionID)
+	{
+        Faction F=(Faction)CMClass.getCommon("DefaultFaction");
+        F.initializeFaction(buf,factionID);
+        for(Enumeration e=F.ranges();e.hasMoreElements();)
+        {
+            Faction.FactionRange FR=(Faction.FactionRange)e.nextElement();
+            String CodeName=(FR.codeName().length()>0)?FR.codeName().toUpperCase():FR.name().toUpperCase();
+            if(!hashedFactionRanges.containsKey(CodeName))
+                hashedFactionRanges.put(CodeName,F);
+            String SimpleUniqueCodeName = F.name().toUpperCase()+"."+CodeName;
+            if(!hashedFactionRanges.containsKey(SimpleUniqueCodeName))
+                hashedFactionRanges.put(SimpleUniqueCodeName,F);
+            String UniqueCodeName = SimpleUniqueCodeName.replace(' ','_');
+            if(!hashedFactionRanges.containsKey(UniqueCodeName))
+                hashedFactionRanges.put(UniqueCodeName,F);
+        }
+        factionSet.put(factionID.toUpperCase(),F);
+        return F;
+	}
 	
 	public Faction getFaction(String factionID) 
 	{
@@ -100,25 +119,7 @@ public class Factions extends StdLibrary implements FactionManager
 		if(!FILE.exists()) return null;
         StringBuffer buf=FILE.text();
 	    if((buf!=null)&&(buf.length()>0))
-	    {
-            F=(Faction)CMClass.getCommon("DefaultFaction");
-            F.initializeFaction(buf,factionID);
-            for(Enumeration e=F.ranges();e.hasMoreElements();)
-            {
-                Faction.FactionRange FR=(Faction.FactionRange)e.nextElement();
-                String CodeName=(FR.codeName().length()>0)?FR.codeName().toUpperCase():FR.name().toUpperCase();
-                if(!hashedFactionRanges.containsKey(CodeName))
-                    hashedFactionRanges.put(CodeName,F);
-                String SimpleUniqueCodeName = F.name().toUpperCase()+"."+CodeName;
-                if(!hashedFactionRanges.containsKey(SimpleUniqueCodeName))
-                    hashedFactionRanges.put(SimpleUniqueCodeName,F);
-                String UniqueCodeName = SimpleUniqueCodeName.replace(' ','_');
-                if(!hashedFactionRanges.containsKey(UniqueCodeName))
-                    hashedFactionRanges.put(UniqueCodeName,F);
-            }
-            factionSet.put(factionID.toUpperCase(),F);
-            return F;
-	    }
+	    	return buildFactionFromXML(buf, factionID);
         return null;
 	}
 	
@@ -258,8 +259,27 @@ public class Factions extends StdLibrary implements FactionManager
 
     protected Faction makeReactionFaction(Environmental E)
     {
-    	//TODO: finish
-    	return null;
+    	String prefix=(E instanceof Area)?"AREA_":"NAME_";
+    	String codedName=E.Name().toUpperCase().trim().replace(' ','_');
+    	String factionID=prefix+codedName;
+    	Faction templateF=getFaction("factions/"+codedName.toLowerCase()+".ini");
+    	String baseTemplateFilename="examples/areareaction.ini";
+    	if(templateF==null)
+    		templateF=getFaction(baseTemplateFilename);
+    	else
+    		factionSet.remove(templateF.factionID());
+    	if(templateF==null)
+    	{
+    		Log.errOut("Factions","Could not find base template '"+baseTemplateFilename+"'");
+    		return null;
+    	}
+    	StringBuffer buf = rebuildFactionProperties(templateF);
+    	buf = new StringBuffer(CMStrings.replaceAll(buf.toString(),"<NAME>",E.Name()));
+    	buf = new StringBuffer(CMStrings.replaceAll(buf.toString(),"<FACTIONID>",factionID));
+    	Faction F=buildFactionFromXML(buf, factionID);
+    	F.setName(E.name());
+    	factionSet.put(factionID,F);
+    	return F;
     }
     
     public void updatePlayerFactions(MOB mob)
@@ -1272,77 +1292,83 @@ public class Factions extends StdLibrary implements FactionManager
         if(errMsg.length()>0)
             mob.tell(errMsg);
     }
+
+    private StringBuffer rebuildFactionProperties(Faction F)
+    {
+        Vector oldV=Resources.getFileLineVector(Resources.getFileResource(F.factionID(),true));
+        if(oldV.size()<10)
+        {
+
+        }
+        boolean[] defined=new boolean[Faction.TAG_NAMES.length];
+        for(int i=0;i<defined.length;i++) defined[i]=false;
+        for(int v=0;v<oldV.size();v++)
+        {
+            String s=(String)oldV.elementAt(v);
+            if(!(s.trim().startsWith("#")||s.trim().length()==0||(s.indexOf("=")<0)))
+            {
+                String tag=s.substring(0,s.indexOf("=")).trim().toUpperCase();
+                int tagRef=CMLib.factions().isFactionTag(tag);
+                if(tagRef>=0) defined[tagRef]=true;
+            }
+        }
+        boolean[] done=new boolean[Faction.TAG_NAMES.length];
+        for(int i=0;i<done.length;i++) done[i]=false;
+        int lastCommented=-1;
+        String CR="\r\n";
+        StringBuffer buf=new StringBuffer("");
+        for(int v=0;v<oldV.size();v++)
+        {
+            String s=(String)oldV.elementAt(v);
+            if(s.trim().length()==0)
+            {
+                if((lastCommented>=0)&&(!done[lastCommented]))
+                {
+                    done[lastCommented]=true;
+                    buf.append(F.getINIDef(Faction.TAG_NAMES[lastCommented],CR)+CR);
+                    lastCommented=-1;
+                }
+            }
+            else
+            if(s.trim().startsWith("#")||(s.indexOf("=")<0))
+            {
+                buf.append(s+CR);
+                int x=s.indexOf("=");
+                if(x>=0)
+                {
+                    s=s.substring(0,x).trim();
+                    int first=s.length()-1;
+                    for(;first>=0;first--)
+                        if(!Character.isLetterOrDigit(s.charAt(first)))
+                            break;
+                    first=CMLib.factions().isFactionTag(s.substring(first).trim().toUpperCase());
+                    if(first>=0) lastCommented=first;
+                }
+            }
+            else
+            {
+                String tag=s.substring(0,s.indexOf("=")).trim().toUpperCase();
+                int tagRef=CMLib.factions().isFactionTag(tag);
+                if(tagRef<0)
+                    buf.append(s+CR);
+                else
+                if(!done[tagRef])
+                {
+                    done[tagRef]=true;
+                    buf.append(F.getINIDef(tag,CR)+CR);
+                }
+            }
+        }
+        if((lastCommented>=0)&&(!done[lastCommented]))
+            buf.append(F.getINIDef(Faction.TAG_NAMES[lastCommented],CR)+CR);
+        return buf;
+    }
     
     public String resaveFaction(Faction F)
     {
         if((F.factionID().length()>0)&&(CMLib.factions().getFaction(F.factionID())!=null))
         {
-            Vector oldV=Resources.getFileLineVector(Resources.getFileResource(F.factionID(),true));
-            if(oldV.size()<10)
-            {
-    
-            }
-            boolean[] defined=new boolean[Faction.TAG_NAMES.length];
-            for(int i=0;i<defined.length;i++) defined[i]=false;
-            for(int v=0;v<oldV.size();v++)
-            {
-                String s=(String)oldV.elementAt(v);
-                if(!(s.trim().startsWith("#")||s.trim().length()==0||(s.indexOf("=")<0)))
-                {
-                    String tag=s.substring(0,s.indexOf("=")).trim().toUpperCase();
-                    int tagRef=CMLib.factions().isFactionTag(tag);
-                    if(tagRef>=0) defined[tagRef]=true;
-                }
-            }
-            boolean[] done=new boolean[Faction.TAG_NAMES.length];
-            for(int i=0;i<done.length;i++) done[i]=false;
-            int lastCommented=-1;
-            String CR="\r\n";
-            StringBuffer buf=new StringBuffer("");
-            for(int v=0;v<oldV.size();v++)
-            {
-                String s=(String)oldV.elementAt(v);
-                if(s.trim().length()==0)
-                {
-                    if((lastCommented>=0)&&(!done[lastCommented]))
-                    {
-                        done[lastCommented]=true;
-                        buf.append(F.getINIDef(Faction.TAG_NAMES[lastCommented],CR)+CR);
-                        lastCommented=-1;
-                    }
-                }
-                else
-                if(s.trim().startsWith("#")||(s.indexOf("=")<0))
-                {
-                    buf.append(s+CR);
-                    int x=s.indexOf("=");
-                    if(x>=0)
-                    {
-                        s=s.substring(0,x).trim();
-                        int first=s.length()-1;
-                        for(;first>=0;first--)
-                            if(!Character.isLetterOrDigit(s.charAt(first)))
-                                break;
-                        first=CMLib.factions().isFactionTag(s.substring(first).trim().toUpperCase());
-                        if(first>=0) lastCommented=first;
-                    }
-                }
-                else
-                {
-                    String tag=s.substring(0,s.indexOf("=")).trim().toUpperCase();
-                    int tagRef=CMLib.factions().isFactionTag(tag);
-                    if(tagRef<0)
-                        buf.append(s+CR);
-                    else
-                    if(!done[tagRef])
-                    {
-                        done[tagRef]=true;
-                        buf.append(F.getINIDef(tag,CR)+CR);
-                    }
-                }
-            }
-            if((lastCommented>=0)&&(!done[lastCommented]))
-                buf.append(F.getINIDef(Faction.TAG_NAMES[lastCommented],CR)+CR);
+        	StringBuffer buf = rebuildFactionProperties(F);
             Resources.removeResource(F.factionID());
             Resources.submitResource(F.factionID(),buf);
             if(!Resources.saveFileResource(F.factionID()))

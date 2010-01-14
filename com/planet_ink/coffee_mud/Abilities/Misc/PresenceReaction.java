@@ -165,6 +165,89 @@ public class PresenceReaction extends StdAbility
 		return false;
 	}
 	
+	protected boolean initializeManagedObjects(MOB affected)
+	{
+		if(unmanagedYet.size()==0) 
+			return false;
+		boolean didAnything=false;
+		Vector<Object[]> commands = new Vector<Object[]>();
+		while(unmanagedYet.size()>0)
+		{
+			Object[] thing=unmanagedYet.remove(0);
+			if(thing[0] instanceof Ability)
+			{
+				Ability A=(Ability)thing[0];
+				A.setAffectedOne(affected);
+				A.setMiscText((String)thing[1]);
+				managed.add(A);
+				didAnything=true;
+				continue;
+			}
+			if(thing[0] instanceof Behavior)
+			{
+				Behavior B=(Behavior)thing[0];
+				B.startBehavior(affected);
+				B.setParms((String)thing[1]);
+				managed.add(B);
+				didAnything=true;
+				continue;
+			}
+			if(thing[0] instanceof Command)
+			{
+				Command C=(Command)thing[0];
+				if(C.ID().equalsIgnoreCase("Mood"))
+				{
+					previousMood="";
+					Ability A=affected.fetchEffect("Mood");
+					if(A!=null) previousMood=A.text();
+					if(previousMood.trim().length()==0)
+						previousMood="NORMAL";
+				}
+				else
+				{
+					commands.add(thing);
+					continue;
+				}
+				try
+				{
+					String cmdparms=C.getAccessWords()[0]+" "+CMStrings.replaceAll((String)thing[1],"<TARGET>","$"+reactToM.Name()+"$");
+					affected.enqueCommand(CMParms.parse(cmdparms),Command.METAFLAG_FORCED, 0);
+				} catch(Exception e){}
+				managed.add(C);
+				didAnything=true;
+			}
+		}
+		unmanagedYet = commands;
+		if(didAnything)
+		{
+			affected.recoverCharStats();
+			affected.recoverEnvStats();
+			affected.recoverMaxState();
+		}
+		return didAnything;
+	}
+
+	protected void initializeAllManaged(MOB affected)
+	{
+		if(unmanagedYet.size()==0) return;
+		initializeManagedObjects(affected);
+		while(unmanagedYet.size()>0)
+		{
+			Object[] thing=unmanagedYet.remove(0);
+			if(thing[0] instanceof Command)
+			{
+				Command C=(Command)thing[0];
+				try
+				{
+					String cmdparms=C.getAccessWords()[0]+" "+CMStrings.replaceAll((String)thing[1],"<TARGET>","$"+reactToM.Name()+"$");
+					affected.enqueCommand(CMParms.parse(cmdparms),Command.METAFLAG_FORCED, 0);
+				} catch(Exception e){}
+				managed.add(C);
+				continue;
+			}
+		}
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -184,52 +267,6 @@ public class PresenceReaction extends StdAbility
 		if(this.affected instanceof MOB)
 		{
 			MOB affected=(MOB)this.affected;
-			boolean didAnything=unmanagedYet.size()>0;
-			while(unmanagedYet.size()>0)
-			{
-				Object[] thing=unmanagedYet.remove(0);
-				if(thing[0] instanceof Ability)
-				{
-					Ability A=(Ability)thing[0];
-					A.setAffectedOne(affected);
-					A.setMiscText((String)thing[1]);
-					managed.add(A);
-					continue;
-				}
-				if(thing[0] instanceof Behavior)
-				{
-					Behavior B=(Behavior)thing[0];
-					B.startBehavior(affected);
-					B.setParms((String)thing[1]);
-					managed.add(B);
-					continue;
-				}
-				if(thing[0] instanceof Command)
-				{
-					Command C=(Command)thing[0];
-					if(C.ID().equalsIgnoreCase("Mood"))
-					{
-						previousMood="";
-						Ability A=affected.fetchEffect("Mood");
-						if(A!=null) previousMood=A.text();
-						if(previousMood.trim().length()==0)
-							previousMood="NORMAL";
-					}
-					try
-					{
-						String cmdparms=C.getAccessWords()[0]+" "+CMStrings.replaceAll((String)thing[1],"<TARGET>","$"+reactToM.Name()+"$");
-						affected.enqueCommand(CMParms.parse(cmdparms),Command.METAFLAG_FORCED, 0);
-					} catch(Exception e){}
-					managed.add(C);
-					continue;
-				}
-			}
-			if(didAnything)
-			{
-				affected.recoverCharStats();
-				affected.recoverEnvStats();
-				affected.recoverMaxState();
-			}
 			if((affected.location()!=reactToM.location())
 				||(affected.amDead())
 				||(reactToM.amDead())
@@ -238,6 +275,7 @@ public class PresenceReaction extends StdAbility
 				||(!CMLib.flags().isInTheGame(affected, true))
 				||(!CMLib.flags().isInTheGame(reactToM, true)))
 					return shutdownPresence(affected);
+			initializeAllManaged(affected);
 			for(CMObject O : managed)
 				if(O instanceof Tickable)
 					((Tickable)O).tick(ticking, tickID);
@@ -257,7 +295,10 @@ public class PresenceReaction extends StdAbility
 			synchronized(mob)
 			{
 				if(mob.fetchEffect(ID())==null)
+				{
 					mob.addNonUninvokableEffect(A);
+					A.initializeManagedObjects(mob);
+				}
 				return true;
 			}
 		}
@@ -266,7 +307,9 @@ public class PresenceReaction extends StdAbility
 			A.makeLongLasting();
 			A.makeNonUninvokable();
 			A.setAffectedOne(mob);
+			A.initializeManagedObjects(mob);
 			return true;
 		}
+		
 	}
 }

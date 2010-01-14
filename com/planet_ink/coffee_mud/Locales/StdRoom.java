@@ -498,7 +498,11 @@ public class StdRoom implements Room
 				if((!CMLib.flags().allowsMovement(this))||(!getMobility()))
 					return false;
 				if(!mob.isMonster())
+				{
+					if((mob.location()!=null)&&(mob.location().getArea()!=getArea()))
+						CMLib.factions().updatePlayerFactions(mob);
 					giveASky(0);
+				}
 				break;
 			case CMMsg.TYP_AREAAFFECT:
 				// obsolete with the area objects
