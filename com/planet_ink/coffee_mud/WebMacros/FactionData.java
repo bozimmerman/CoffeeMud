@@ -662,6 +662,13 @@ public class FactionData extends StdWebMacro
                     str.append("</TD></TR>");
                 }
                 
+                if(parms.containsKey("USELIGHTREACTIONS"))
+                {
+                    String old=httpReq.getRequestParameter("USELIGHTREACTIONS");
+                    if(old==null) old=F.useLightReactions()?"on":"";
+                    str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
+                }
+                
                 if(parms.containsKey("REACTIONS"))
                 {
                     String rangeCode="";

@@ -734,6 +734,22 @@ public interface Faction extends CMCommon, MsgListener
     public boolean addReaction(String range, String mask, String abilityID, String parms);
     
     /**
+     * Set this faction to use the light-reaction system, which is easier on resources, but
+     * not as powerful.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#useLightReactions()
+     * @param truefalse true to use the light reaction system, false otherwise
+     */
+    public void setLightReactions(boolean truefalse);
+    
+    /**
+     * Return whether this faction uses the light-reaction system, which is easier on resources, but
+     * not as powerful.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#setLightReactions(boolean)
+     * @return true if this faction to use the light-reaction system
+     */
+    public boolean useLightReactions();
+    
+    /**
      * Returns an enumeration of Faction.FactionAbilityUsage objects for this Faction.
      * A FactionAbilityUsage object defines restrictions on the use of a mob or players
      * abilities based on values in this faction and other variables.
@@ -1452,10 +1468,12 @@ public interface Faction extends CMCommon, MsgListener
     public final static int TAG_AFFBEHAV_=18;
     /** index constant for tag names in {@link Faction#TAG_NAMES} denoting the RELATION tag */
     public final static int TAG_REACTION_=19;
+    /** index constant for tag names in {@link Faction#TAG_NAMES} denoting the SCOREDISPLAY tag */
+    public final static int TAG_USELIGHTREACTIONS=20;
     /** list of valid tag names for internal faction data, retrieved by {@link Faction#getTagValue(String)} */
     public final static String[] TAG_NAMES={"NAME","MINIMUM","MAXIMUM","SCOREDISPLAY",
                                             "SPECIALREPORTED","EDITALONE","DEFAULT","AUTODEFAULTS",
                                             "AUTOCHOICES","CHOICEINTRO","RATEMODIFIER","EXPERIENCE",
                                             "RANGE*","CHANGE*","ABILITY*","FACTOR*","RELATION*",
-                                            "SHOWINFACTIONSCMD","AFFBEHAV*","REACTION*"};
+                                            "SHOWINFACTIONSCMD","AFFBEHAV*","REACTION*","USELIGHTREACTIONS"};
 }

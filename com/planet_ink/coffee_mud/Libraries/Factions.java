@@ -1223,6 +1223,10 @@ public class Factions extends StdLibrary implements FactionManager
                 	item.setParameters(newData[3]);
                 }
             }
+            if(me.reactions().hasMoreElements())
+	            me.setLightReactions(CMLib.genEd().prompt(mob,me.useLightReactions(),++showNumber,showFlag,"Use 'Light' Reactions"));
+            else
+            	me.setLightReactions(false);
             
             if(showFlag<-900){ ok=true; break;}
             if(showFlag>0){ showFlag=-1; continue;}

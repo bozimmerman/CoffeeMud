@@ -252,10 +252,20 @@ public class PresenceReaction extends StdAbility
 		A.reactToM=(MOB)target;
 		for(Object O : commands)
 			A.addAffectOrBehavior((String)O);
-		synchronized(mob)
+		if(auto)
 		{
-			if(mob.fetchEffect(ID())==null)
-				mob.addNonUninvokableEffect(A);
+			synchronized(mob)
+			{
+				if(mob.fetchEffect(ID())==null)
+					mob.addNonUninvokableEffect(A);
+				return true;
+			}
+		}
+		else
+		{
+			A.makeLongLasting();
+			A.makeNonUninvokable();
+			A.setAffectedOne(mob);
 			return true;
 		}
 	}

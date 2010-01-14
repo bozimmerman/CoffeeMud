@@ -5674,18 +5674,6 @@ interesting fields to change, which we will now describe.</p>
 
 
 
-              
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      <table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1" cellspacing="1" width="100%">
 
 
 
@@ -5697,7 +5685,8 @@ interesting fields to change, which we will now describe.</p>
 
 
 
-                <tbody>
+			<table style="width: 100%;" bgcolor="yellow" border="1"
+				cellpadding="1" cellspacing="1" width="100%">
 
 
 
@@ -5709,7 +5698,7 @@ interesting fields to change, which we will now describe.</p>
 
 
 
-                  <tr>
+				<tbody>
 
 
 
@@ -5721,7 +5710,7 @@ interesting fields to change, which we will now describe.</p>
 
 
 
-                    <td width="25%"><strong>Property</strong></td>
+					<tr>
 
 
 
@@ -5733,8 +5722,8 @@ interesting fields to change, which we will now describe.</p>
 
 
 
+						<td width="25%"><strong>Property</strong></td>
 
-                    <td width="75%"><strong>Description</strong></td>
 
 
 
@@ -5746,7 +5735,7 @@ interesting fields to change, which we will now describe.</p>
 
 
 
-                  </tr>
+						<td width="75%"><strong>Description</strong></td>
 
 
 
@@ -5758,8 +5747,8 @@ interesting fields to change, which we will now describe.</p>
 
 
 
+					</tr>
 
-                  <tr>
 
 
 
@@ -5771,7 +5760,7 @@ interesting fields to change, which we will now describe.</p>
 
 
 
-                    <td><em>Name</em></td>
+					<tr>
 
 
 
@@ -5783,8 +5772,8 @@ interesting fields to change, which we will now describe.</p>
 
 
 
+						<td><em>Name</em></td>
 
-                    <td>the displayable name of the faction, not to be confused with its official identifier, which you may not change.</td>
 
 
 
@@ -5796,7 +5785,8 @@ interesting fields to change, which we will now describe.</p>
 
 
 
-                  </tr>
+						<td>the displayable name of the faction, not to be confused
+						with its official identifier, which you may not change.</td>
 
 
 
@@ -5808,8 +5798,8 @@ interesting fields to change, which we will now describe.</p>
 
 
 
+					</tr>
 
-                  <tr>
 
 
 
@@ -5821,7 +5811,7 @@ interesting fields to change, which we will now describe.</p>
 
 
 
-                    <td><em>Division/Ranges List</em></td>
+					<tr>
 
 
 
@@ -5833,8 +5823,8 @@ interesting fields to change, which we will now describe.</p>
 
 
 
+						<td><em>Division/Ranges List</em></td>
 
-                    <td>the defined ranges for this faction. See the above discussion on ranges for the meaning of the fields.</td>
 
 
 
@@ -5846,7 +5836,8 @@ interesting fields to change, which we will now describe.</p>
 
 
 
-                  </tr>
+						<td>the defined ranges for this faction. See the above
+						discussion on ranges for the meaning of the fields.</td>
 
 
 
@@ -5858,8 +5849,8 @@ interesting fields to change, which we will now describe.</p>
 
 
 
+					</tr>
 
-                  <tr>
 
 
 
@@ -5871,7 +5862,7 @@ interesting fields to change, which we will now describe.</p>
 
 
 
-                    <td><em>Show In Score</em></td>
+					<tr>
 
 
 
@@ -5883,11 +5874,8 @@ interesting fields to change, which we will now describe.</p>
 
 
 
+						<td><em>Show In Score</em></td>
 
-                    <td>whether this faction is listed with the
-players information when they use the SCORE command. The FACTIONS
-command is always available for a player to list their factions and
-values regardless of whether this setting is true or false.</td>
 
 
 
@@ -5899,7 +5887,10 @@ values regardless of whether this setting is true or false.</td>
 
 
 
-                  </tr>
+						<td>whether this faction is listed with the players
+						information when they use the SCORE command. The FACTIONS command
+						is always available for a player to list their factions and values
+						regardless of whether this setting is true or false.</td>
 
 
 
@@ -5911,8 +5902,8 @@ values regardless of whether this setting is true or false.</td>
 
 
 
+					</tr>
 
-                  <tr>
 
 
 
@@ -5924,7 +5915,7 @@ values regardless of whether this setting is true or false.</td>
 
 
 
-                    <td><em>Show In MOB Editor</em></td>
+					<tr>
 
 
 
@@ -5936,12 +5927,8 @@ values regardless of whether this setting is true or false.</td>
 
 
 
+						<td><em>Show In MOB Editor</em></td>
 
-                    <td>whether this faction gets its very own
-entry in the command-line mob editor, or the MUDGrinder mob editor. The
-Factions field is always listed in the mob editor for changing the
-factions and their values on players and mobs regardless of whether
-this setting is true or false.</td>
 
 
 
@@ -5953,7 +5940,11 @@ this setting is true or false.</td>
 
 
 
-                  </tr>
+						<td>whether this faction gets its very own entry in the
+						command-line mob editor, or the MUDGrinder mob editor. The
+						Factions field is always listed in the mob editor for changing the
+						factions and their values on players and mobs regardless of
+						whether this setting is true or false.</td>
 
 
 
@@ -5965,8 +5956,8 @@ this setting is true or false.</td>
 
 
 
+					</tr>
 
-                  <tr>
 
 
 
@@ -5978,7 +5969,7 @@ this setting is true or false.</td>
 
 
 
-                    <td><em>Automatic assigned values</em></td>
+					<tr>
 
 
 
@@ -5990,18 +5981,8 @@ this setting is true or false.</td>
 
 
 
+						<td><em>Automatic assigned values</em></td>
 
-                    <td>optional field showing which mobs or
-players will automatically be given this faction and some value in it.
-This is a semicolon-delimited list, where each entry begins with the
-value to assign, and is followed by a mask to determine who the value
-gets assigned to. For example: "100 -race +elf ; 500 -race +dwarf"
-would mean that all elf players and mobs receive this faction with a
-value of 100, and all dwarf players and mobs receive this faction with
-a value of 500. If this field is empty, noone is assigned a value
-automatically. If this field only contains a number, or if any entry
-contains only a number (no mask), then everyone will receive this
-faction.</td>
 
 
 
@@ -6013,7 +5994,17 @@ faction.</td>
 
 
 
-                  </tr>
+						<td>optional field showing which mobs or players will
+						automatically be given this faction and some value in it. This is
+						a semicolon-delimited list, where each entry begins with the value
+						to assign, and is followed by a mask to determine who the value
+						gets assigned to. For example: "100 -race +elf ; 500 -race +dwarf"
+						would mean that all elf players and mobs receive this faction with
+						a value of 100, and all dwarf players and mobs receive this
+						faction with a value of 500. If this field is empty, noone is
+						assigned a value automatically. If this field only contains a
+						number, or if any entry contains only a number (no mask), then
+						everyone will receive this faction.</td>
 
 
 
@@ -6025,8 +6016,8 @@ faction.</td>
 
 
 
+					</tr>
 
-                  <tr>
 
 
 
@@ -6038,7 +6029,7 @@ faction.</td>
 
 
 
-                    <td><em>Other default values</em></td>
+					<tr>
 
 
 
@@ -6050,13 +6041,8 @@ faction.</td>
 
 
 
+						<td><em>Other default values</em></td>
 
-                    <td>required field defining the values that
-mobs or players will be assigned whenever this faction is granted to
-them by scripts, triggers, or by some other means. The syntax of this
-field is similar to the "Automatic assigned values" field above. At
-least one entry, however, must be without a mask, so as to make sure
-that a default value exists for every possible player or mob.</td>
 
 
 
@@ -6068,7 +6054,12 @@ that a default value exists for every possible player or mob.</td>
 
 
 
-                  </tr>
+						<td>required field defining the values that mobs or players
+						will be assigned whenever this faction is granted to them by
+						scripts, triggers, or by some other means. The syntax of this
+						field is similar to the "Automatic assigned values" field above.
+						At least one entry, however, must be without a mask, so as to make
+						sure that a default value exists for every possible player or mob.</td>
 
 
 
@@ -6080,8 +6071,8 @@ that a default value exists for every possible player or mob.</td>
 
 
 
+					</tr>
 
-                  <tr>
 
 
 
@@ -6093,7 +6084,7 @@ that a default value exists for every possible player or mob.</td>
 
 
 
-                    <td><em>New player value choice</em></td>
+					<tr>
 
 
 
@@ -6105,13 +6096,8 @@ that a default value exists for every possible player or mob.</td>
 
 
 
+						<td><em>New player value choice</em></td>
 
-                    <td>an optional list of values, semicolon
-delimited, which players will get to choose from when they create their
-characters for the first time. Each value in this list should
-correspond to, or fall into, a different Division/Range listed above.
-If this field is empty, players will not be given this faction at
-creation time.</td>
 
 
 
@@ -6123,7 +6109,12 @@ creation time.</td>
 
 
 
-                  </tr>
+						<td>an optional list of values, semicolon delimited, which
+						players will get to choose from when they create their characters
+						for the first time. Each value in this list should correspond to,
+						or fall into, a different Division/Range listed above. If this
+						field is empty, players will not be given this faction at creation
+						time.</td>
 
 
 
@@ -6135,8 +6126,8 @@ creation time.</td>
 
 
 
+					</tr>
 
-                  <tr>
 
 
 
@@ -6148,7 +6139,7 @@ creation time.</td>
 
 
 
-                    <td><em>Choices introduction text</em></td>
+					<tr>
 
 
 
@@ -6160,9 +6151,8 @@ creation time.</td>
 
 
 
+						<td><em>Choices introduction text</em></td>
 
-                    <td>if the previous field contained entries, then this field will become available. It is the optional filename of a text
-                    file in your Coffeemud/resources directory or folder which describes the choices available to the player.</td>
 
 
 
@@ -6174,7 +6164,10 @@ creation time.</td>
 
 
 
-                  </tr>
+						<td>if the previous field contained entries, then this field
+						will become available. It is the optional filename of a text file
+						in your Coffeemud/resources directory or folder which describes
+						the choices available to the player.</td>
 
 
 
@@ -6186,8 +6179,8 @@ creation time.</td>
 
 
 
+					</tr>
 
-                  <tr>
 
 
 
@@ -6199,7 +6192,7 @@ creation time.</td>
 
 
 
-                    <td><em>Rate Modifier</em></td>
+					<tr>
 
 
 
@@ -6211,9 +6204,8 @@ creation time.</td>
 
 
 
+						<td><em>Rate Modifier</em></td>
 
-                    <td>normally 100%, this field is a fudge factor for all instances where some value is gained or lost in this faction.
-                    Typically gained values can be halfed, doubled, or changed in any other way by modifying this value.</td>
 
 
 
@@ -6225,7 +6217,10 @@ creation time.</td>
 
 
 
-                  </tr>
+						<td>normally 100%, this field is a fudge factor for all
+						instances where some value is gained or lost in this faction.
+						Typically gained values can be halfed, doubled, or changed in any
+						other way by modifying this value.</td>
 
 
 
@@ -6237,8 +6232,8 @@ creation time.</td>
 
 
 
+					</tr>
 
-                  <tr>
 
 
 
@@ -6250,7 +6245,7 @@ creation time.</td>
 
 
 
-                    <td><em>Affect on Experience</em></td>
+					<tr>
 
 
 
@@ -6262,20 +6257,8 @@ creation time.</td>
 
 
 
+						<td><em>Affect on Experience</em></td>
 
-                    <td>whether and/or how values in this faction
-affect the amount of experience gained by players for killing monsters.
-If the value is None, then this faction does not affect experience
-gained by players for killing monsters. Otherwise, the amount of
-faction gained or lost is a function of the base number of experience
-points earned, and modified by the value of this field: Extreme means
-the amount gained or lost is always towards one extreme end of this
-factions Ranges, and always in a direction away from the value that the
-monster had. Higher means the amount is always gained. Lower means the
-amount is always lost. Followhigher means the amount is always gained,
-and in proportion to how high the value of the monsters faction is.
-Followlower means the amount is always lost, and in proportion to how
-low the value of the monsters faction is.</td>
 
 
 
@@ -6287,7 +6270,20 @@ low the value of the monsters faction is.</td>
 
 
 
-                  </tr>
+						<td>whether and/or how values in this faction affect the
+						amount of experience gained by players for killing monsters. If
+						the value is None, then this faction does not affect experience
+						gained by players for killing monsters. Otherwise, the amount of
+						faction gained or lost is a function of the base number of
+						experience points earned, and modified by the value of this field:
+						Extreme means the amount gained or lost is always towards one
+						extreme end of this factions Ranges, and always in a direction
+						away from the value that the monster had. Higher means the amount
+						is always gained. Lower means the amount is always lost.
+						Followhigher means the amount is always gained, and in proportion
+						to how high the value of the monsters faction is. Followlower
+						means the amount is always lost, and in proportion to how low the
+						value of the monsters faction is.</td>
 
 
 
@@ -6299,8 +6295,8 @@ low the value of the monsters faction is.</td>
 
 
 
+					</tr>
 
-                  <tr>
 
 
 
@@ -6312,7 +6308,7 @@ low the value of the monsters faction is.</td>
 
 
 
-                    <td><em>Faction Change Adjustments</em></td>
+					<tr>
 
 
 
@@ -6324,13 +6320,8 @@ low the value of the monsters faction is.</td>
 
 
 
+						<td><em>Faction Change Adjustments</em></td>
 
-                    <td>like the Rate Modifier above, this field
-affects the values of gains and losses in this faction. It allows you
-to change the value of Gains or Losses based on whether the player or
-mob with the faction matches the given Zapper Mask. Both the Gain and
-Loss values should be positive, as they reflect a percentage change in
-the gain, and a percentage change in the loss only.</td>
 
 
 
@@ -6342,7 +6333,12 @@ the gain, and a percentage change in the loss only.</td>
 
 
 
-                  </tr>
+						<td>like the Rate Modifier above, this field affects the
+						values of gains and losses in this faction. It allows you to
+						change the value of Gains or Losses based on whether the player or
+						mob with the faction matches the given Zapper Mask. Both the Gain
+						and Loss values should be positive, as they reflect a percentage
+						change in the gain, and a percentage change in the loss only.</td>
 
 
 
@@ -6354,8 +6350,8 @@ the gain, and a percentage change in the loss only.</td>
 
 
 
+					</tr>
 
-                  <tr>
 
 
 
@@ -6367,7 +6363,7 @@ the gain, and a percentage change in the loss only.</td>
 
 
 
-                    <td><em>Cross-Faction Relations</em></td>
+					<tr>
 
 
 
@@ -6379,12 +6375,8 @@ the gain, and a percentage change in the loss only.</td>
 
 
 
+						<td><em>Cross-Faction Relations</em></td>
 
-                    <td>defines whether and/or how the value of
-other factions may rise or fall when the value of this faction changes.
-Each entry is the name of second faction, along with a positive or
-negative percentage of the value gained or lost in this faction, which
-will then be applied to the second faction.</td>
 
 
 
@@ -6396,7 +6388,11 @@ will then be applied to the second faction.</td>
 
 
 
-                  </tr>
+						<td>defines whether and/or how the value of other factions
+						may rise or fall when the value of this faction changes. Each
+						entry is the name of second faction, along with a positive or
+						negative percentage of the value gained or lost in this faction,
+						which will then be applied to the second faction.</td>
 
 
 
@@ -6408,8 +6404,8 @@ will then be applied to the second faction.</td>
 
 
 
+					</tr>
 
-                  <tr>
 
 
 
@@ -6421,7 +6417,7 @@ will then be applied to the second faction.</td>
 
 
 
-                    <td><em>Change Triggers</em></td>
+					<tr>
 
 
 
@@ -6433,12 +6429,8 @@ will then be applied to the second faction.</td>
 
 
 
+						<td><em>Change Triggers</em></td>
 
-                    <td>the events which cause the value of a
-faction on a player to rise and fall. Usually triggers are applied when
-an action is performed on a target creature by a source creature, both
-of whom have standing in the faction. See the description above for
-more information on the fields defined for each Change Trigger.</td>
 
 
 
@@ -6450,7 +6442,11 @@ more information on the fields defined for each Change Trigger.</td>
 
 
 
-                  </tr>
+						<td>the events which cause the value of a faction on a player
+						to rise and fall. Usually triggers are applied when an action is
+						performed on a target creature by a source creature, both of whom
+						have standing in the faction. See the description above for more
+						information on the fields defined for each Change Trigger.</td>
 
 
 
@@ -6462,8 +6458,8 @@ more information on the fields defined for each Change Trigger.</td>
 
 
 
+					</tr>
 
-                  <tr>
 
 
 
@@ -6475,7 +6471,7 @@ more information on the fields defined for each Change Trigger.</td>
 
 
 
-                    <td><em>Ability Allowances</em></td>
+					<tr>
 
 
 
@@ -6487,16 +6483,8 @@ more information on the fields defined for each Change Trigger.</td>
 
 
 
+						<td><em>Ability Allowances</em></td>
 
-                    <td>this defines the circumstances under which
-a player may always use a particular time of skill, spell, or whatever,
-unimpeded and with full privileges. Each entry contains a list of flags
-to determine which skills, spells, chants, etc are being selected along
-with the range into which a players value in this faction must fall for
-the ability to be used unimpeded and with full privileges. Requirements
-defined by Ability Allowances will typically determine whether
-proficiency is every gained in a skill, and whether certain class
-restrictions are overridden.</td>
 
 
 
@@ -6508,66 +6496,51 @@ restrictions are overridden.</td>
 
 
 
-                  </tr>
+						<td>this defines the circumstances under which a player may
+						always use a particular time of skill, spell, or whatever,
+						unimpeded and with full privileges. Each entry contains a list of
+						flags to determine which skills, spells, chants, etc are being
+						selected along with the range into which a players value in this
+						faction must fall for the ability to be used unimpeded and with
+						full privileges. Requirements defined by Ability Allowances will
+						typically determine whether proficiency is every gained in a
+						skill, and whether certain class restrictions are overridden.</td>
 
 
 
-          <tr>
 
 
 
-            <td>Effects / Behaviors</td>
 
 
 
-            <td>a list of Ability Effects and Behaviors which are
-bestowed to non-player mobs who match the mob masking criteria for each
-item. &nbsp;Parameters for the specified Ability/Behavior may also be
-entered. &nbsp;This is terribly useful to allow mobs with a particular
-to turn nasty when they meet someone who is factioned the wrong way.
-&nbsp;For example, if you have a&nbsp;faction named "Baddies and
-Goodies" and it has a Division/Range with code name BADDY, you may add
-the Behavior Aggressive with parameters: -FACTION +BADDY. &nbsp;This
-will make all the mobs who have the faction to attack the baddies.</td>
 
 
+					</tr>
 
-          </tr>
 
 
+					<tr>
 
 
 
+						<td>Effects / Behaviors</td>
 
 
 
+						<td>a list of Ability Effects and Behaviors which are
+						bestowed to non-player mobs who match the mob masking criteria for
+						each item. &nbsp;Parameters for the specified Ability/Behavior may
+						also be entered. &nbsp;This is terribly useful to allow mobs with
+						a particular faction to turn nasty when they meet someone else. &nbsp;For example, if you have a&nbsp;faction named
+						"Baddies and Goodies" and it has a Division/Range with code name
+						BADDY, you may add the Behavior Aggressive with parameters:
+						-FACTION +BADDY. &nbsp;This will make all the mobs who have the
+						faction to attack the baddies.</td>
 
 
 
-                
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        </tbody>
-              
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      </table>
+					</tr>
 
 
 
@@ -6580,18 +6553,67 @@ will make all the mobs who have the faction to attack the baddies.</td>
 
 
 
-              
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      <p align="left"><strong><a name="quests"><font color="green" size="5">Quests</font></a></strong></p>
+
+
+
+
+
+
+
+
+
+
+					<tr>
+						<td>Reaction Effects</td>
+						<td>a list of host faction ranges which will trigger certain game Commands, Ability Effects
+						and/or Behaviors to appear on certain mobs in the same room as the host, so long
+						as those mobs meet the zapper mask for the given reaction. Parameters for the Command/ 
+						Ability/ Behavior may also be entered.  This is a companion to Effects/Behaviors above, except
+						that the effects happens even to non-factioned mobs surrounding a factioned player/mob, while the
+						above happens to the factioned mob/player.  This system includes two versions: The normal system 
+						which uses more resources, but players with different faction values will conflict when in the 
+						same room, making mob reactions go to the winner.  However, all properties and behaviors will 
+						work as expected. The 'Light' system uses less resources, and allows players with different 
+						faction values to get some functionality when in the same room with each other.  However, 
+						some properties and behaviors may not work as expected. </td>
+					</tr>
+				</tbody>
+
+
+
+
+
+
+
+
+
+
+
+			</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			<p align="left"><strong><a name="quests"><font color="green" size="5">Quests</font></a></strong></p>
 
 
 

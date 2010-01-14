@@ -242,6 +242,8 @@ public class GrinderFactions {
                 F.addReaction(old,old1,old2,old3);
             num++;
         }
+        old=httpReq.getRequestParameter("USELIGHTREACTIONS");
+        F.setLightReactions((old!=null)&&(old.equalsIgnoreCase("on")));
         
         old=httpReq.getRequestParameter("RATEMODIFIER");
         F.setRateModifier(old==null?0.0:CMath.s_pct(old));

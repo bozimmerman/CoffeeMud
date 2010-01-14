@@ -55,6 +55,7 @@ public class DefaultFaction implements Faction, MsgListener
 	protected int highest=Integer.MAX_VALUE;
 	protected int lowest=Integer.MIN_VALUE;
 	protected String experienceFlag="";
+	protected boolean useLightReactions=false;
 	protected boolean showInScore=false;
 	protected boolean showInSpecialReported=false;
 	protected boolean showInEditor=false;
@@ -98,6 +99,8 @@ public class DefaultFaction implements Faction, MsgListener
     public Enumeration abilityUsages(){return  DVector.s_enum(abilityUsages);}
     public Enumeration choices(){return  DVector.s_enum(choices);}
     private static final Enumeration empty=new Vector().elements();
+    public void setLightReactions(boolean truefalse){useLightReactions=truefalse;}
+    public boolean useLightReactions(){return useLightReactions;}
 
     public void setFactionID(String newStr){ID=newStr;}
     public void setName(String newStr){name=newStr;}
@@ -179,6 +182,7 @@ public class DefaultFaction implements Faction, MsgListener
         defaults =CMParms.parseSemicolons(alignProp.getStr("DEFAULT"),true);
         autoDefaults =CMParms.parseSemicolons(alignProp.getStr("AUTODEFAULTS"),true);
         choices =CMParms.parseSemicolons(alignProp.getStr("AUTOCHOICES"),true);
+        useLightReactions=alignProp.getBoolean("USELIGHTREACTIONS");
         ranges=new Hashtable();
         changes=new Hashtable();
         factors=new Vector();
@@ -357,6 +361,7 @@ public class DefaultFaction implements Faction, MsgListener
             Faction.FactionReactionItem item = (Faction.FactionReactionItem)reactions.elementAt(numCall);
             return item.toString();
         }
+        case TAG_USELIGHTREACTIONS: return ""+useLightReactions;
         }
         return "";
     }
@@ -1159,8 +1164,8 @@ public class DefaultFaction implements Faction, MsgListener
         private Vector tickers=listeners;
         private int value=0;
         private DVector currentReactionSets = new DVector(2);
+        private DVector lightPresenceReactions = new DVector(2);
         private Faction.FactionRange currentRange = null;
-        private Hashtable<String,String> convertedParameters=new Hashtable<String,String>();
         private boolean erroredOut=false;
         public DefaultFactionData(){}
         public int value() { return value;}
@@ -1205,6 +1210,7 @@ public class DefaultFaction implements Faction, MsgListener
 	        			//noReactions=currentReactionSets.size()==0;
 	        		}
 	                noListeners=(listeners.size()==0) && (currentReactionSets.size()==0);
+	                noTickers=(tickers.size()==0) && ((currentReactionSets.size()==0)||(!useLightReactions()));
         		}
         	}
         }
@@ -1215,7 +1221,7 @@ public class DefaultFaction implements Faction, MsgListener
             this.listeners=listeners;
             this.tickers=tickers;
             noListeners=(listeners.size()==0) && (currentReactionSets.size()==0);
-            noTickers=tickers.size()==0;
+            noTickers=(tickers.size()==0) && ((currentReactionSets.size()==0)||(!useLightReactions()));
         }
         public boolean requiresUpdating() { return lastFactionDataChange[0] > lastUpdated; }
     	public void executeMsg(Environmental myHost, CMMsg msg)
@@ -1235,6 +1241,7 @@ public class DefaultFaction implements Faction, MsgListener
 		    	Faction.FactionReactionItem reactionItem = null;
 		    	Room R=(Room)msg.target();
 		    	Vector tempReactSet=null;
+		    	lightPresenceReactions.clear();
 				for(int m=0;m<R.numInhabitants();m++)
 				{
 					M=R.fetchInhabitant(m);
@@ -1253,19 +1260,33 @@ public class DefaultFaction implements Faction, MsgListener
 				    			}
 				    		}
 				    	if(myReactions!=null)
-					    	presenceReactionPrototype.invoke(M,myReactions,myHost,true,0);
+				    		if(useLightReactions())
+				    		{
+				    			Ability A=(Ability)presenceReactionPrototype.copyOf();
+				    			A.invoke(M,myReactions,myHost,false,0);
+				    			lightPresenceReactions.addElement(M,A);
+				    		}
+				    		else
+						    	presenceReactionPrototype.invoke(M,myReactions,myHost,true,0);
 					}
 				}
 			}
     		
             for(Enumeration e2=DVector.s_enum(listeners);e2.hasMoreElements();)
                 ((MsgListener)e2.nextElement()).executeMsg(myHost, msg);
+            if(useLightReactions())
+            for(int i=0;i<lightPresenceReactions.size();i++)
+                ((MsgListener)lightPresenceReactions.elementAt(i,2)).executeMsg((Environmental)lightPresenceReactions.elementAt(i,1), msg);
     	}
     	public boolean okMessage(Environmental myHost, CMMsg msg)
     	{
     		if(noListeners) return true;
             for(Enumeration e2=DVector.s_enum(listeners);e2.hasMoreElements();)
                 if(!((MsgListener)e2.nextElement()).okMessage(myHost,msg))
+                	return false;
+            if(useLightReactions())
+            for(int i=0;i<lightPresenceReactions.size();i++)
+                if(!((MsgListener)lightPresenceReactions.elementAt(i,2)).okMessage((Environmental)lightPresenceReactions.elementAt(i,1), msg))
                 	return false;
     		return true;
     	}
@@ -1274,6 +1295,10 @@ public class DefaultFaction implements Faction, MsgListener
     		if(noTickers) return true;
             for(Enumeration e2=DVector.s_enum(listeners);e2.hasMoreElements();)
                 if(!((Tickable)e2.nextElement()).tick(ticking,tickID))
+                	return false;
+            if(useLightReactions())
+            for(int i=0;i<lightPresenceReactions.size();i++)
+                if(!((Tickable)lightPresenceReactions.elementAt(i,2)).tick((Tickable)lightPresenceReactions.elementAt(i,1), tickID))
                 	return false;
         	return true;
         }
