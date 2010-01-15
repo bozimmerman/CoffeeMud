@@ -278,7 +278,7 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
      * @return the default faction mask/value list
      */
-    public Enumeration defaults();
+    public Enumeration<String> defaults();
 
     /**
      * Returns the default faction value that applies to the given mob.
@@ -315,7 +315,7 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#setAutoDefaults(Vector)
      * @return the automatic default faction mask/value list
      */
-    public Enumeration autoDefaults();
+    public Enumeration<String> autoDefaults();
 
     /**
      * Returns the automatic default faction value that applies to the
@@ -364,7 +364,7 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#setChoices(Vector)
      * @return the choosable faction mask/value list
      */
-    public Enumeration choices();
+    public Enumeration<String> choices();
 
     /**
      * Returns a vector of Integer objects representing the choosable
@@ -396,7 +396,7 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionRange
      * @return an enumeration of all available ranges
      */
-    public Enumeration ranges();
+    public Enumeration<Faction.FactionRange> ranges();
 
     /**
      * Returns the Faction.FactionRange object that applies to the given faction
@@ -451,13 +451,13 @@ public interface Faction extends CMCommon, MsgListener
      * Returns an enumeration of change event keys, which are the code names of
      * the triggers that cause faction values to change automatically.
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addChangeEvent(String)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#delChangeEvent(String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#createChangeEvent(String eventID)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#delChangeEvent(Faction.FactionChangeEvent event)
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ALL_CHANGE_EVENT_TYPES()
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#executeChange(MOB, MOB, com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent)
      * @return an enumeration of the event keys (triggers)
      */
-    public Enumeration changeEventKeys();
+    public Enumeration<String> changeEventKeys();
 
     /**
      * Returns a FactionChangeEvent that applies when the given Ability is used
@@ -468,7 +468,7 @@ public interface Faction extends CMCommon, MsgListener
      * @param key the Ability to find a change event for.
      * @return the FactionChangeEvent that applies, or null.
      */
-    public FactionChangeEvent findChangeEvent(Ability key);
+    public FactionChangeEvent[] findAbilityChangeEvents(Ability key);
 
     /**
      * Returns a FactionChangeEvent that applies when the given event name (a trigger
@@ -481,7 +481,7 @@ public interface Faction extends CMCommon, MsgListener
      * @param key the code name of the event that occurred
      * @return the FactionChangeEvent triggered by that event
      */
-    public FactionChangeEvent getChangeEvent(String key);
+    public FactionChangeEvent[] getChangeEvents(String key);
 
     /**
      * Adds a new FactionChangeEvent object to this faction using the given event code
@@ -496,7 +496,7 @@ public interface Faction extends CMCommon, MsgListener
      * @param key the field used to create the new FactionChangeEvent
      * @return the FactionChangeEvent object created and added to this faction, or null
      */
-    public FactionChangeEvent addChangeEvent(String key);
+    public FactionChangeEvent createChangeEvent(String key);
 
     /**
      * Removes a FactionChangeEvent of the given event (trigger) id.
@@ -504,11 +504,22 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#changeEventKeys()
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#MISC_TRIGGERS
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ALL_CHANGE_EVENT_TYPES()
-     * @param eventKey the event id to remove from the list of change events
+     * @param event the event object to remove from the list of change events
      * @return whether the event id was found to remove
      */
-    public boolean delChangeEvent(String eventKey);
+    public boolean delChangeEvent(Faction.FactionChangeEvent event);
 
+
+    /**
+     * Removes all FactionChangeEvents
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#changeEventKeys()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#MISC_TRIGGERS
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ALL_CHANGE_EVENT_TYPES()
+     * @param event the event object to remove from the list of change events
+     * @return whether the event id was found to remove
+     */
+    public void clearChangeEvents();
 
     /**
      * Executes a Faction change event for the given event source and target, and the 
@@ -539,20 +550,20 @@ public interface Faction extends CMCommon, MsgListener
      * to apply on faction gains, a factor to apply on factor drops, and the zapper
      * mask to decide which mobs it applies to (or mob states).
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addFactor(double, double, String)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#delFactor(Object[])
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#delFactor(Faction.FactionZapFactor)
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#findFactor(MOB, boolean)
      * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
      * @return the enumeration of change factor object arrays
      */
-    public Enumeration factors();
+    public Enumeration<Faction.FactionZapFactor> factors();
     
     /**
      * Removes the given change factor from this faction.
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#factors()
-     * @param o the factor to remove
+     * @param f the factor to remove
      * @return whether the given factor was found to remove
      */
-    public boolean delFactor(Object[] o);
+    public boolean delFactor(Faction.FactionZapFactor f);
 
     /**
      * Returns the given enumerated change factor
@@ -560,7 +571,7 @@ public interface Faction extends CMCommon, MsgListener
      * @param x which factor (0-number) to return
      * @return the given factor, or null.
      */
-    public Object[] getFactor(int x);
+    public Faction.FactionZapFactor getFactor(int x);
     
     /**
      * Adds a new change factor to this Faction.  A change factor is a state
@@ -574,7 +585,7 @@ public interface Faction extends CMCommon, MsgListener
      * @param mask the zapper mask to use to determine if this factor applies to a mob
      * @return the newly created factor Object[] array
      */
-    public Object[] addFactor(double gain, double loss, String mask);
+    public Faction.FactionZapFactor addFactor(double gain, double loss, String mask);
     
     /**
      * Returns the applicable change factor for the given mob, and the
@@ -599,7 +610,7 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#getRelation(String)
      * @return an enumeration of faction ids
      */
-    public Enumeration relationFactions();
+    public Enumeration<String> relationFactions();
 
     /**
      * Removes the give faction relation from this faction.  Requires a faction id
@@ -697,7 +708,7 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#delReaction(Faction.FactionReactionItem)
      * @return an enumeration of Faction.FactionReaction items
      */
-    public Enumeration reactions();
+    public Enumeration<Faction.FactionReactionItem> reactions();
 
     /**
      * Returns an enumeration of Faction.FactionReaction items associated
@@ -707,7 +718,7 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#delReaction(Faction.FactionReactionItem)
      * @return an enumeration of Faction.FactionReaction items
      */
-    public Enumeration reactions(String rangeCode);
+    public Enumeration<Faction.FactionReactionItem> reactions(String rangeCode);
     
     /**
      * Removes the given reaction from this Faction.  
@@ -761,7 +772,7 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#canUse(MOB, Ability)
      * @return an enumeration of Faction.FactionAbilityUsage objects for this Faction
      */
-    public Enumeration abilityUsages();
+    public Enumeration<Faction.FactionAbilityUsage> abilityUsages();
     
     /**
      * Returns the list of faction ranges that apply based on Faction.FactionAbilityUsage 
@@ -1029,8 +1040,38 @@ public interface Faction extends CMCommon, MsgListener
         public void setZapper(String newVal);
 
         /**
+         * Returns any trigger parameters defined that modify the way the trigger behaves.
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#setTriggerParameters(String)
+         * @return the trigger parameters
+         */
+        public String triggerParameters();
+
+        /**
+         * Sets any trigger parameters defined that modify the way the trigger behaves.
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#triggerParameters()
+         * @param newVal the trigger parameters
+         */
+        public void setTriggerParameters(String newVal);
+        
+        /**
+         * Returns the internal state variable stored for this change event.
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#setStateVariable(int,Object)
+         * @param x which internal state variable to get
+         * @return the state variable
+         */
+        public Object stateVariable(int x);
+
+        /**
+         * Sets an internal state variable stored for this change event.
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#stateVariable(int)
+         * @param x which internal state variable to set
+         * @param newVal the state variable
+         */
+        public void setStateVariable(int x, Object newVal);
+        
+        /**
          * Returns a semicolon delimited list of all the settings in this change event
-         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addChangeEvent(String)
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#createChangeEvent(String)
          * @return a semicolon delimited list of all the settings in this change event
          */
         public String toString();
@@ -1065,11 +1106,7 @@ public interface Faction extends CMCommon, MsgListener
         /** the code words for the various evaluation flags to decide if this event applies and other things */
         public static final String[] FLAG_DESCS={"OUTSIDER","SELFOK","JUST100"};
         /** some non-ability-related event trigger ids */
-        public static final String[] MISC_TRIGGERS={"MURDER","TIME","ADDOUTSIDER","MURDER2","MURDER3","MURDER4","MURDER5","KILL","KILL2","KILL3","KILL4","KILL5"};
-        /** some murder-related event trigger ids */
-        public static final String[] MURDER_TRIGGERS={"MURDER","MURDER2","MURDER3","MURDER4","MURDER5"};
-        /** some killing-related event trigger ids */
-        public static final String[] KILL_TRIGGERS={"KILL","KILL2","KILL3","KILL4","KILL5"};
+        public static final String[] MISC_TRIGGERS={"MURDER","TIME","ADDOUTSIDER","KILL"};
     }
     
 
@@ -1348,6 +1385,75 @@ public interface Faction extends CMCommon, MsgListener
         public String toString();
     }
     
+    /**
+	 * A factor defines how modifications of faction value, up or down, are modified on a 
+	 * mob by mob basis.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addFactor(String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#factors()
+     * @author Bo Zimmerman
+     *
+     */
+    public static interface FactionZapFactor
+    {
+        /**
+         * Get the gain factor (0-1)
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionZapFactor#setGainFactor(double)
+         * @return the gain factor (0-1)
+         */
+        public double gainFactor();
+        
+        /**
+         * Set the gain factor (0-1)
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionZapFactor#gainFactor()
+         * @param val the gain factor (0-1)
+         */
+        public void setGainFactor(double val);
+        
+        /**
+         * Set the loss factor (0-1)
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionZapFactor#setGainFactor(double)
+         * @return the loss factor (0-1)
+         */
+        public double lossFactor();
+        
+        /**
+         * Set the loss factor (0-1)
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionZapFactor#gainFactor()
+         * @param val the loss factor (0-1)
+         */
+        public void setLossFactor(double val);
+        
+        /**
+         * The mask to tell which mobs to apply this factor to
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionZapFactor#setMOBMask(String)
+         * @return mask to tell which mobs to apply this reaction to
+         */
+        public String MOBMask();
+        
+        
+        /**
+         * The compiled mask to tell which mobs to apply this factor to
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeFactorm#setMOBMask(String)
+         * @return the compiled mask to tell which mobs to apply this reaction to
+         */
+        public Vector compiledMOBMask();
+        
+        /**
+         * Set the mask to determine which mobs in the players presence will be affected.  This is a zappermask.
+	     * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionZapFactor#presentMOBMask(String)
+         * @param str the mask to determine which mobs in the players presence will be affected
+         */
+        public void setMOBMask(String str);
+        
+        /**
+         * Returns a semicolon-delimited string of the values of this factpr, suitable for
+         * using to create a new one later.
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addFactpr(double,double,String)
+         * @return a string of the values of this factor
+         */
+        public String toString();
+    }
     
     /**
 	 * Adds very temporary affects and behaviors to mobs who match the reaction zapper

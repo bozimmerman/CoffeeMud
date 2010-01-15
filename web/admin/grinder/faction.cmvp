@@ -292,7 +292,7 @@
             </TD>
         </TR>
         <TR>
-            <TD><FONT COLOR=YELLOW>Reactions (<FONT COLOR=WHITE SIZE=-2><INPUT NAME=USELIGHTREACTIONS TYPE=CHECKBOX @FactionData?USELIGHTREACTIONS@>'Light'</FONT>): </FONT></TD>
+            <TD><FONT COLOR=YELLOW>Reactions:<BR>(<FONT COLOR=WHITE SIZE=-3><INPUT NAME=USELIGHTREACTIONS TYPE=CHECKBOX @FactionData?USELIGHTREACTIONS@>Light</FONT>) </FONT></TD>
             <TD>
             <TABLE WIDTH=100% BORDER=1>
             <TR>

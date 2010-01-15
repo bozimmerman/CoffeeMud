@@ -20,7 +20,7 @@
                 window.alert('Since Faction IDs are files, it should be given an .extention.');
                 return;
             }
-            if(confirm('Create a file in your resources directory called '+factionid+'?'))
+            if(confirm('Load/Create a file in your resources directory called '+factionid+'?'))
             {
                 var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=550,width=750,alwaysRaised=yes,dependent=yes";
                 w=window.open("faction.cmvp?AUTH=@Authenticate?AUTH@&FACTION="+factionid+action,
@@ -82,7 +82,7 @@
         </TR>
     @back@
     <TR>
-    <TD COLSPAN=4><a href="javascript:if(document.RESOURCES.NEWFACTION.value!='')NewFaction(document.RESOURCES.NEWFACTION.value,'&NEWFACTION='+document.RESOURCES.NEWFACTION.value)"><FONT COLOR=WHITE><B>Create New:</a> <INPUT TYPE=TEXT NAME=NEWFACTION SIZE=70></B></FONT></TD>
+    <TD COLSPAN=4><a href="javascript:if(document.RESOURCES.NEWFACTION.value!='')NewFaction(document.RESOURCES.NEWFACTION.value,'&NEWFACTION='+document.RESOURCES.NEWFACTION.value)"><FONT COLOR=WHITE><B>Load/Create New Faction ini file:</a> <INPUT TYPE=TEXT NAME=NEWFACTION SIZE=70></B></FONT></TD>
     </TR>
     </TABLE>
     <P>

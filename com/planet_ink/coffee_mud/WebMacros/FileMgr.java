@@ -95,7 +95,10 @@ public class FileMgr extends StdWebMacro
         if(M==null) return "[authentication error]";
 		try
 		{
-            CMFile F=new CMFile(path+"/"+file,M,false);
+			String filePath=path;
+			if((filePath.length()>2)&&(!filePath.endsWith("/")))
+				filePath+="/";
+            CMFile F=new CMFile(filePath+file,M,false);
             String last=F.getVFSPathAndName();
 			if(parms.containsKey("DELETE"))
 			{
@@ -110,7 +113,7 @@ public class FileMgr extends StdWebMacro
 				if(s==null) return "File `"+last+"` not updated -- no buffer!";
                 if((!F.canWrite())||(!F.saveText(s)))
                 {
-            		F=new CMFile("::"+path+"/"+file,M,false);
+            		F=new CMFile("::"+filePath+file,M,false);
                     if((F.canWrite())&&(F.saveText(s)))
         				return "File `"+last+"` updated.";
                     return "File `"+last+"` not updated -- error!";
@@ -172,7 +175,7 @@ public class FileMgr extends StdWebMacro
 					return "File exists! Directory not created!";
 				if(!F.mkdir())
 					return "Error creating directory!";
-				return "Created dir //"+path+"/"+file;
+				return "Created dir //"+filePath+file;
 			}
             else
             if(parms.containsKey("DELETEDIR"))

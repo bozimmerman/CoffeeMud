@@ -61,18 +61,19 @@ public class DefaultFaction implements Faction, MsgListener
 	protected boolean showInSpecialReported=false;
 	protected boolean showInEditor=false;
 	protected boolean showInFactionsCommand=true;
-	protected Hashtable ranges=new Hashtable();
-	protected Hashtable affBehavs=new Hashtable();
-	protected Vector defaults=new Vector();
-	protected Vector autoDefaults=new Vector();
+	protected Hashtable<String,FactionRange> ranges=new Hashtable<String,FactionRange>();
+	protected Hashtable<String,String[]> affBehavs=new Hashtable<String,String[]>();
+	protected Vector<String> defaults=new Vector<String>();
+	protected Vector<String> autoDefaults=new Vector<String>();
 	protected double rateModifier=1.0;
-    protected Hashtable changes=new Hashtable();
-    protected Vector factors=new Vector();
-    protected Hashtable relations=new Hashtable();
-    protected Vector abilityUsages=new Vector();
-    protected Vector choices=new Vector();
-    protected Vector reactions=new Vector();
-    protected Hashtable reactionHash=new Hashtable();
+    protected Hashtable<String,FactionChangeEvent[]> changes=new Hashtable();
+    protected Hashtable<String,FactionChangeEvent[]> abilityChangesCache=new Hashtable();
+    protected Vector<Faction.FactionZapFactor> factors=new Vector<Faction.FactionZapFactor>();
+    protected Hashtable<String,Double> relations=new Hashtable<String,Double>();
+    protected Vector<Faction.FactionAbilityUsage> abilityUsages=new Vector<Faction.FactionAbilityUsage>();
+    protected Vector<String> choices=new Vector<String>();
+    protected Vector<Faction.FactionReactionItem> reactions=new Vector();
+    protected Hashtable<String,Vector<Faction.FactionReactionItem>> reactionHash=new Hashtable<String,Vector<Faction.FactionReactionItem>>();
     protected Ability presenceReactionPrototype=null;
 
 
@@ -91,15 +92,15 @@ public class DefaultFaction implements Faction, MsgListener
     public boolean showInSpecialReported(){return showInSpecialReported;}
     public boolean showInEditor(){return showInEditor;}
     public boolean showInFactionsCommand(){return showInFactionsCommand;}
-    public Enumeration ranges(){ return DVector.s_enum(ranges,false); }
-    public Enumeration defaults(){return DVector.s_enum(defaults);}
-    public Enumeration autoDefaults(){return DVector.s_enum(autoDefaults);}
+    public Enumeration<Faction.FactionRange> ranges(){ return DVector.s_enum(ranges,false); }
+    public Enumeration<String> defaults(){return DVector.s_enum(defaults);}
+    public Enumeration<String> autoDefaults(){return DVector.s_enum(autoDefaults);}
     public double rateModifier(){return rateModifier;}
-    public Enumeration changeEventKeys(){return  DVector.s_enum(changes,true);}
-    public Enumeration factors(){return  DVector.s_enum(factors);}
-    public Enumeration relationFactions(){return  DVector.s_enum(relations,true);}
-    public Enumeration abilityUsages(){return  DVector.s_enum(abilityUsages);}
-    public Enumeration choices(){return  DVector.s_enum(choices);}
+    public Enumeration<String> changeEventKeys(){return  DVector.s_enum(changes,true);}
+    public Enumeration<Faction.FactionZapFactor> factors(){return  DVector.s_enum(factors);}
+    public Enumeration<String> relationFactions(){return  DVector.s_enum(relations,true);}
+    public Enumeration<Faction.FactionAbilityUsage> abilityUsages(){return  DVector.s_enum(abilityUsages);}
+    public Enumeration<String> choices(){return  DVector.s_enum(choices);}
     public void setLightReactions(boolean truefalse){useLightReactions=truefalse;}
     public boolean useLightReactions(){return useLightReactions;}
 
@@ -121,10 +122,10 @@ public class DefaultFaction implements Faction, MsgListener
                 ?(Faction.FactionAbilityUsage)abilityUsages.elementAt(x)
                 :null;
     }
-    public boolean delFactor(Object[] o){ return factors.remove(o); }
-    public Object[] getFactor(int x){ return ((x>=0)&&(x<factors.size()))?(Object[])factors.elementAt(x):null;}
-    public Object[] addFactor(double gain, double loss, String mask){
-        Object[] o=new Object[]{Double.valueOf(gain),Double.valueOf(loss),mask};
+    public boolean delFactor(Faction.FactionZapFactor f){ return factors.remove(f); }
+    public Faction.FactionZapFactor getFactor(int x){ return ((x>=0)&&(x<factors.size()))?factors.elementAt(x):null;}
+    public Faction.FactionZapFactor addFactor(double gain, double loss, String mask){
+    	Faction.FactionZapFactor o=new DefaultFactionZapFactor(gain,loss,mask);
         factors.addElement(o);
         return o;
     }
@@ -202,7 +203,7 @@ public class DefaultFaction implements Faction, MsgListener
             if(key.startsWith("RANGE"))
                 addRange(words);
             if(key.startsWith("CHANGE"))
-                addChangeEvent(words);
+                createChangeEvent(words);
             if(key.startsWith("AFFBEHAV"))
             {
                 Object[] O=CMParms.parseSafeSemicolonList(words,false).toArray();
@@ -213,9 +214,9 @@ public class DefaultFaction implements Faction, MsgListener
             {
                 Vector factor=CMParms.parseSemicolons(words,false);
                 if(factor.size()>2)
-                    factors.add(new Object[]{Double.valueOf(CMath.s_double((String)factor.elementAt(0))),
-                                             Double.valueOf(CMath.s_double((String)factor.elementAt(1))),
-                                             (String)factor.elementAt(2)});
+                    factors.add(new DefaultFactionZapFactor(CMath.s_double((String)factor.elementAt(0)),
+                                             CMath.s_double((String)factor.elementAt(1)),
+                                             (String)factor.elementAt(2)));
             }
             if(key.startsWith("RELATION"))
             {
@@ -302,15 +303,21 @@ public class DefaultFaction implements Faction, MsgListener
         }
         case TAG_CHANGE_:
         {
-            if((numCall<0)||(numCall>=changes.size()))
-                return ""+changes.size();
+        	int sz=0;
+        	for(Enumeration<Faction.FactionChangeEvent[]> es=changes.elements();es.hasMoreElements();)
+        		sz+=es.nextElement().length;
+            if((numCall<0)||(numCall>=sz))
+                return ""+sz;
             int i=0;
-            for(Enumeration e=changes.elements();e.hasMoreElements();)
+            for(Enumeration<Faction.FactionChangeEvent[]> e=changes.elements();e.hasMoreElements();)
             {
-                FactionChangeEvent FC=(FactionChangeEvent)e.nextElement();
-                if(i==numCall)
-                    return FC.toString();
-                i++;
+                Faction.FactionChangeEvent[] FCs=e.nextElement();
+                for(int ii=0;ii<FCs.length;ii++)
+                {
+	                if(i==numCall)
+	                    return FCs[ii].toString();
+	                i++;
+                }
             }
             return "";
         }
@@ -324,7 +331,7 @@ public class DefaultFaction implements Faction, MsgListener
         {
             if((numCall<0)||(numCall>=factors.size()))
                 return ""+factors.size();
-            return CMParms.toSemicolonList((Object[])factors.elementAt(numCall));
+            return factors.elementAt(numCall).toString();
         }
         case TAG_RELATION_:
         {
@@ -421,7 +428,7 @@ public class DefaultFaction implements Faction, MsgListener
         return data;
     }
     
-    public Enumeration affectsBehavs(){return  DVector.s_enum(affBehavs,true);}
+    public Enumeration<String> affectsBehavs(){return  DVector.s_enum(affBehavs,true);}
 
     public boolean delAffectBehav(String ID) {
         boolean b=affBehavs.remove(ID.toUpperCase().trim())!=null;
@@ -444,9 +451,9 @@ public class DefaultFaction implements Faction, MsgListener
         return null;
     }
     
-    public Enumeration reactions(){return  DVector.s_enum(reactions);}
+    public Enumeration<Faction.FactionReactionItem> reactions(){return  DVector.s_enum(reactions);}
 
-    public Enumeration reactions(String rangeName){return  DVector.s_enum((Vector)reactionHash.get(rangeName.toUpperCase().trim()));}
+    public Enumeration<Faction.FactionReactionItem> reactions(String rangeName){return  DVector.s_enum((Vector)reactionHash.get(rangeName.toUpperCase().trim()));}
 
     public boolean delReaction(Faction.FactionReactionItem item)
     {
@@ -476,10 +483,10 @@ public class DefaultFaction implements Faction, MsgListener
     	return true;
     }
     
-    public FactionChangeEvent getChangeEvent(String key) 
+    public FactionChangeEvent[] getChangeEvents(String key) 
     {
         if(changes.containsKey(key))
-            return (FactionChangeEvent)changes.get(key);
+            return (FactionChangeEvent[])changes.get(key);
         return null;
     }
 
@@ -507,25 +514,35 @@ public class DefaultFaction implements Faction, MsgListener
     }
 
 
-    public FactionChangeEvent findChangeEvent(Ability key)
+    public FactionChangeEvent[] findAbilityChangeEvents(Ability key)
     {
         if(key==null) return null;
         // Direct ability ID's
-        if(changes.containsKey(key.ID()))
-            return (FactionChangeEvent)changes.get(key.ID().toUpperCase());
+        if(abilityChangesCache.containsKey(key.ID().toUpperCase()))
+            return abilityChangesCache.get(key.ID().toUpperCase());
+        if(changes.containsKey(key.ID().toUpperCase()))
+        {
+        	abilityChangesCache.put(key.ID().toUpperCase(), abilityChangesCache.get(key.ID().toUpperCase()));
+        	return abilityChangesCache.get(key.ID().toUpperCase());
+        }
         // By TYPE or FLAGS
         FactionChangeEvent C =null;
+        Vector<FactionChangeEvent> events=new Vector<FactionChangeEvent>();
         for (Enumeration e=changes.elements();e.hasMoreElements();)
         {
             C= (FactionChangeEvent)e.nextElement();
             if((key.classificationCode()&Ability.ALL_ACODES)==C.IDclassFilter())
-                return C;
+                events.addElement(C);
+            else
             if((key.classificationCode()&Ability.ALL_DOMAINS)==C.IDdomainFilter())
-                return C;
+                events.addElement(C);
+            else
             if((C.IDflagFilter()>0)&&(CMath.bset(key.flags(),C.IDflagFilter())))
-                return C;
+                events.addElement(C);
         }
-        return null;
+        FactionChangeEvent[] evs = events.toArray(new FactionChangeEvent[0]);
+        abilityChangesCache.put(key.ID().toUpperCase(), evs);
+        return evs;
     }
 
     public Faction.FactionRange fetchRange(String codeName)
@@ -659,34 +676,26 @@ public class DefaultFaction implements Faction, MsgListener
 
     public double findFactor(MOB mob, boolean gain)
     {
-        Object[] factor=null;
-        for(int i=0;i<factors.size();i++)
-        {
-            factor=(Object[])factors.elementAt(i);
-            if(CMLib.masking().maskCheck(((String)factor[2]),mob,false))
-            {
-                 if(gain)
-                     return ((Double)factor[0]).doubleValue();
-                 return ((Double)factor[1]).doubleValue();
-             }
-        }
+        for(Faction.FactionZapFactor factor : factors)
+            if(CMLib.masking().maskCheck(factor.compiledMOBMask(),mob,false))
+            	return gain?factor.gainFactor():factor.lossFactor();
         return 1.0;
     }
 
     public void executeMsg(Environmental myHost, CMMsg msg)
     {
+    	FactionChangeEvent[] events;
         if((msg.sourceMinor()==CMMsg.TYP_DEATH)    // A death occured
         &&((msg.source()==myHost)||(msg.tool()==myHost))
         &&(msg.tool() instanceof MOB))
         {
             MOB killedM=msg.source();
-            final String[] murders=(msg.source()==myHost)
-            						?Faction.FactionChangeEvent.MURDER_TRIGGERS
-            						:Faction.FactionChangeEvent.KILL_TRIGGERS;
-            for(int m=0;m<murders.length;m++)
+            events=getChangeEvents((msg.source()==myHost)?"MURDER":"KILL");
+            FactionChangeEvent eventC;
+            for(int e=0;e<events.length;e++)
             {
-                FactionChangeEvent eventC=getChangeEvent(murders[m]);
-                if((eventC!=null)&&eventC.applies(killedM))
+                eventC=events[e];
+                if(eventC.applies(killedM))
                 {
                     MOB killingBlowM=(MOB)msg.tool();
                     CharClass combatCharClass=CMLib.combat().getCombatDominantClass(killingBlowM,killedM);
@@ -700,14 +709,17 @@ public class DefaultFaction implements Faction, MsgListener
         // Ability Watching
         if((msg.tool() instanceof Ability)
         &&(msg.othersMessage()!=null)
-        &&(findChangeEvent((Ability)msg.tool())!=null))
+        &&((events=findAbilityChangeEvents((Ability)msg.tool()))!=null))
         {
-            FactionChangeEvent C=findChangeEvent((Ability)msg.tool());
-            if((msg.target() instanceof MOB)&&(C.applies((MOB)msg.target())))
-                executeChange(msg.source(),(MOB)msg.target(),C);
-            else
-            if (!(msg.target() instanceof MOB))
-                executeChange(msg.source(),null,C);
+        	for(int e=0;e<events.length;e++)
+        	{
+	            FactionChangeEvent C=events[e];
+	            if((msg.target() instanceof MOB)&&(C.applies((MOB)msg.target())))
+	                executeChange(msg.source(),(MOB)msg.target(),C);
+	            else
+	            if (!(msg.target() instanceof MOB))
+	                executeChange(msg.source(),null,C);
+        	}
         }
     }
 
@@ -931,12 +943,10 @@ public class DefaultFaction implements Faction, MsgListener
          return _ALL_TYPES;
      }
 
-     public Faction.FactionChangeEvent addChangeEvent(String key)
+     public Faction.FactionChangeEvent createChangeEvent(String key)
      {
          Faction.FactionChangeEvent event;
-         if(key==null)
-             event=new DefaultFaction.DefaultFactionChangeEvent();
-         else
+         if(key==null) return null;
          if(key.indexOf(';')<0)
          {
              event=new DefaultFaction.DefaultFactionChangeEvent();
@@ -945,28 +955,72 @@ public class DefaultFaction implements Faction, MsgListener
          }
          else
              event=new DefaultFaction.DefaultFactionChangeEvent(key);
-         changes.put(event.eventID().toUpperCase().trim(),event);
+         abilityChangesCache.clear();
+         Faction.FactionChangeEvent[] events=changes.get(event.eventID().toUpperCase().trim());
+         if(events==null)
+        	 events=new Faction.FactionChangeEvent[0];
+         events=Arrays.copyOf(events, events.length+1);
+         events[events.length-1]=event;
+    	 changes.put(event.eventID().toUpperCase().trim(), events);
          return event;
      }
 
-     public boolean delChangeEvent(String eventKey)
+     private boolean replaceEvents(String key, Faction.FactionChangeEvent event, boolean strict)
      {
-         return changes.remove(eventKey)!=null;
+    	 Faction.FactionChangeEvent[] events=changes.get(key);
+    	 if(events==null) return false;
+    	 Faction.FactionChangeEvent[] nevents=new Faction.FactionChangeEvent[events.length-1];
+		 int ne1=0;
+		 boolean done=false;
+    	 for(int x=0;x<events.length;x++)
+    	 {
+    		 if((strict&&(events[x] == event))||((!strict)&&(events[x].toString().equals(event.toString()))))
+    		 {
+    	         abilityChangesCache.clear();
+        		 if(nevents.length==0)
+        			 changes.remove(key);
+        		 else
+	        		 changes.put(key,nevents);
+        		 done=true;
+    		 }
+    		 else
+    			 nevents[ne1++]=events[x];
+    	 }
+    	 return done;
+     }
+     public void clearChangeEvents()
+     {
+         abilityChangesCache.clear();
+         changes.clear();
+     }
+     
+     public boolean delChangeEvent(Faction.FactionChangeEvent event)
+     {
+         abilityChangesCache.clear();
+         for(Enumeration<String> e=changes.keys();e.hasMoreElements();)
+        	 if(replaceEvents(e.nextElement(),event,true))
+        		 return true;
+         for(Enumeration<String> e=changes.keys();e.hasMoreElements();)
+        	 if(replaceEvents(e.nextElement(),event,false))
+        		 return true;
+         return false;
      }
 
      public class DefaultFactionChangeEvent implements Faction.FactionChangeEvent
      {
-        public String ID="";
-        public String flagCache="";
-        public int IDclassFilter=-1;
-        public int IDflagFilter=-1;
-        public int IDdomainFilter=-1;
-        public int direction=0;
-        public double factor=0.0;
-        public String zapper="";
-        public boolean outsiderTargetOK=false;
-        public boolean selfTargetOK=false;
-        public boolean just100=false;
+    	private String ID="";
+        private String flagCache="";
+        private int IDclassFilter=-1;
+        private int IDflagFilter=-1;
+        private int IDdomainFilter=-1;
+        private int direction=0;
+        private double factor=0.0;
+        private String zapper="";
+        private boolean outsiderTargetOK=false;
+        private boolean selfTargetOK=false;
+        private boolean just100=false;
+        private Object[] stateVariables=new Object[0];
+        private String triggerParms="";
 
         public String eventID(){return ID;}
         public String flagCache(){return flagCache;}
@@ -985,7 +1039,10 @@ public class DefaultFaction implements Faction, MsgListener
 
         public String toString()
         {
-            return ID+";"+CHANGE_DIRECTION_DESCS[direction]+";"+((int)Math.round(factor*100.0))+"%;"+flagCache+";"+zapper;
+        	if(triggerParms.trim().length()>0)
+	            return ID+"("+triggerParms.replace(';',',')+");"+CHANGE_DIRECTION_DESCS[direction]+";"+((int)Math.round(factor*100.0))+"%;"+flagCache+";"+zapper;
+        	else
+	            return ID+";"+CHANGE_DIRECTION_DESCS[direction]+";"+((int)Math.round(factor*100.0))+"%;"+flagCache+";"+zapper;
         }
 
         public DefaultFactionChangeEvent(){}
@@ -993,7 +1050,17 @@ public class DefaultFaction implements Faction, MsgListener
         public DefaultFactionChangeEvent(String key)
         {
             Vector v = CMParms.parseSemicolons(key,false);
-            setEventID((String)v.elementAt(0));
+            
+            String trigger =(String)v.elementAt(0);
+            triggerParms="";
+            int x=trigger.indexOf('(');
+            if((x>0)&&(trigger.endsWith(")")))
+            {
+            	setTriggerParameters(trigger.substring(x+1,trigger.length()-1));
+            	trigger=trigger.substring(0,x);
+            }
+            
+            setEventID(trigger);
             setDirection((String)v.elementAt(1));
             String amt=((String)v.elementAt(2)).trim();
             if(amt.endsWith("%"))
@@ -1085,8 +1152,17 @@ public class DefaultFaction implements Faction, MsgListener
             if(zapper==null) return true;
             return CMLib.masking().maskCheck(zapper,mob,false);
         }
+        
+        public String triggerParameters() { return triggerParms;}
+        public void setTriggerParameters(String newVal){triggerParms=newVal;}
+        public Object stateVariable(int x){ return ((x>=0)&&(x<stateVariables.length))?stateVariables[x]:null;}
+        public void setStateVariable(int x, Object newVal)
+        {
+        	if(x<0) return;
+        	if(x>=stateVariables.length) stateVariables=Arrays.copyOf(stateVariables,x+1);
+        	stateVariables[x]=newVal;
+        }
     }
-
 
     public Faction.FactionRange addRange(String key){
         Faction.FactionRange FR=new DefaultFaction.DefaultFactionRange(this,key);
@@ -1331,6 +1407,31 @@ public class DefaultFaction implements Faction, MsgListener
                 	return false;
         	return true;
         }
+    }
+    
+    public class DefaultFactionZapFactor implements Faction.FactionZapFactor
+    {
+    	private double gainF=1.0;
+    	private double lossF=1.0;
+    	private String mask="";
+    	private Vector compiledMask=null;
+    	public DefaultFactionZapFactor(double gain, double loss, String mask)
+    	{
+    		setGainFactor(gain);
+    		setLossFactor(loss);
+    		setMOBMask(mask);
+    	}
+        public double gainFactor() { return gainF;}
+        public void setGainFactor(double val){gainF=val;}
+        public double lossFactor(){return lossF;}
+        public void setLossFactor(double val){lossF=val;}
+        public String MOBMask(){return mask;}
+        public Vector compiledMOBMask(){return compiledMask;}
+        public void setMOBMask(String str){
+        	mask=str;
+        	compiledMask=CMLib.masking().maskCompile(str);
+        }
+        public String toString(){ return gainF+";"+lossF+";"+mask; }
     }
     
     public class DefaultFactionReactionItem implements Faction.FactionReactionItem

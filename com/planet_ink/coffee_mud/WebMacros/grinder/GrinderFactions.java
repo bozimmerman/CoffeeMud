@@ -116,16 +116,18 @@ public class GrinderFactions {
             }
         }
         
-        for(Enumeration e=F.changeEventKeys();e.hasMoreElements();)
-            F.delChangeEvent((String)e.nextElement());
+        F.clearChangeEvents();
         num=0;
         while(httpReq.getRequestParameter("CHANGESTRIGGER"+num)!=null)
         {
             old=httpReq.getRequestParameter("CHANGESTRIGGER"+num);
             if(old.length()>0)
             {
+            	String ctparms=httpReq.getRequestParameter("CHANGESTPARM"+num);
+            	if(ctparms.trim().length()>0)
+            		old+="("+ctparms.trim()+")";
                 old+=";";
-                old+=httpReq.getRequestParameter("CHANGESDIR"+num);
+                old+=Faction.FactionChangeEvent.CHANGE_DIRECTION_DESCS[CMath.s_int(httpReq.getRequestParameter("CHANGESDIR"+num))];
                 old+=";";
                 old+=CMath.toPct(httpReq.getRequestParameter("CHANGESFACTOR"+num));
                 old+=";";
@@ -135,13 +137,13 @@ public class GrinderFactions {
                     old+=" "+httpReq.getRequestParameter("CHANGESFLAGS"+num+"_"+id).toUpperCase();
                 old+=";";
                 old+=httpReq.getRequestParameter("CHANGESMASK"+num);
-                F.addChangeEvent(old);
+                F.createChangeEvent(old);
             }
             num++;
         }
         
-        for(Enumeration e=F.factors();e.hasMoreElements();)
-            F.delFactor((Object[])e.nextElement());
+        for(Enumeration<Faction.FactionZapFactor> e=F.factors();e.hasMoreElements();)
+            F.delFactor(e.nextElement());
         num=0;
         while(httpReq.getRequestParameter("ADJFACTOR"+num)!=null)
         {

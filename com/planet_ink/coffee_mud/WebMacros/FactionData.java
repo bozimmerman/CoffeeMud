@@ -284,18 +284,23 @@ public class FactionData extends StdWebMacro
                         for(Enumeration e=F.changeEventKeys();e.hasMoreElements();v++)
                         {
                             String def=(String)e.nextElement();
-                            Faction.FactionChangeEvent E=(Faction.FactionChangeEvent)F.getChangeEvent(def);
-                            httpReq.addRequestParameters("CHANGESTRIGGER"+v,def);
-                            httpReq.addRequestParameters("CHANGESDIR"+v,""+E.direction());
-                            httpReq.addRequestParameters("CHANGESFACTOR"+v,CMath.toPct(E.factor()));
-                            String id="";
-                            Vector flags=CMParms.parse(E.flagCache());
-                            for(int f=0;f<flags.size();f++)
+                            Faction.FactionChangeEvent[] Es=F.getChangeEvents(def);
+                            for(int e1=0;e1<Es.length;e1++)
                             {
-                                httpReq.addRequestParameters("CHANGESFLAGS"+v+"_"+id,""+((String)flags.elementAt(f)));
-                                id=""+(f+1);
+                            	Faction.FactionChangeEvent E=Es[e1];
+	                            httpReq.addRequestParameters("CHANGESTRIGGER"+v,def);
+	                            httpReq.addRequestParameters("CHANGESDIR"+v,""+E.direction());
+	                            httpReq.addRequestParameters("CHANGESFACTOR"+v,CMath.toPct(E.factor()));
+	                            httpReq.addRequestParameters("CHANGESTPARM"+v,E.triggerParameters());
+	                            String id="";
+	                            Vector flags=CMParms.parse(E.flagCache());
+	                            for(int f=0;f<flags.size();f++)
+	                            {
+	                                httpReq.addRequestParameters("CHANGESFLAGS"+v+"_"+id,""+((String)flags.elementAt(f)));
+	                                id=""+(f+1);
+	                            }
+	                            httpReq.addRequestParameters("CHANGESMASK"+v,E.zapper());
                             }
-                            httpReq.addRequestParameters("CHANGESMASK"+v,E.zapper());
                         }
                     }
                     
@@ -313,6 +318,9 @@ public class FactionData extends StdWebMacro
                             str.append("<OPTION VALUE=\"\">Delete");
                             str.append("<OPTION VALUE=\""+val+"\" SELECTED>"+CMStrings.capitalizeAndLower(val));
                             str.append("</SELECT>");
+                            str.append("<BR>");
+                            val=""+httpReq.getRequestParameter("CHANGESTPARM"+num);
+                            str.append("<INPUT TYPE=TEXT NAME=CHANGESTPARM"+showNum+" SIZE=10 MAXLENGTH=255 VALUE=\""+htmlOutgoingFilter(val)+"\">");
                             str.append("</TD><TD>");
                             val=""+CMath.s_int(httpReq.getRequestParameter("CHANGESDIR"+num));
                             str.append("<SELECT NAME=CHANGESDIR"+showNum+">");
@@ -336,7 +344,7 @@ public class FactionData extends StdWebMacro
                             str.append("<SELECT NAME=CHANGESFLAGS"+showNum+"_ MULTIPLE>");
                             for(int f=0;f<Faction.FactionChangeEvent.FLAG_DESCS.length;f++)
                             {
-                                str.append("<OPTION VALUE=\""+f+"\"");
+                                str.append("<OPTION VALUE=\""+Faction.FactionChangeEvent.FLAG_DESCS[f]+"\"");
                                 if(flags.contains(Faction.FactionChangeEvent.FLAG_DESCS[f]))
                                     str.append(" SELECTED");
                                 str.append(">"+CMStrings.capitalizeAndLower(Faction.FactionChangeEvent.FLAG_DESCS[f]));
@@ -367,6 +375,8 @@ public class FactionData extends StdWebMacro
                         str.append("<OPTION VALUE=\""+A.ID()+"\">"+A.ID());
                     }
                     str.append("</SELECT>");
+                    str.append("<BR>");
+                    str.append("<INPUT TYPE=TEXT NAME=CHANGESTPARM"+showNum+" SIZE=10 MAXLENGTH=255 VALUE=\"\">");
                     str.append("</TD><TD>");
                     str.append("<SELECT NAME=CHANGESDIR"+showNum+">");
                     for(int f=0;f<Faction.FactionChangeEvent.CHANGE_DIRECTION_DESCS.length;f++)

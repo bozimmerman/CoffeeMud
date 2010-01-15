@@ -276,6 +276,7 @@ public class Factions extends StdLibrary implements FactionManager
     	bufStr = CMStrings.replaceAll(bufStr,"<NAME>",Name);
     	bufStr = CMStrings.replaceAll(bufStr,"<FACTIONID>",factionID);
     	bufStr = CMStrings.replaceAll(bufStr,"<CLASSID>",classID);
+    	buf=new StringBuffer(bufStr);
     	Faction F=buildFactionFromXML(buf, factionID);
     	F.setInternalFlags(F.getInternalFlags() | Faction.IFLAG_IGNOREAUTO);
     	F.setInternalFlags(F.getInternalFlags() | Faction.IFLAG_NEVERSAVE);
@@ -356,16 +357,19 @@ public class Factions extends StdLibrary implements FactionManager
 		    Session S=null;
 		    MOB mob=null;
 		    Faction F=null;
-		    Faction.FactionChangeEvent CE=null; 
+		    Faction.FactionChangeEvent[] CEs=null;
+		    Faction.FactionChangeEvent CE=null;
             DVector outSiders=new DVector(2);
             DVector timers=new DVector(2);
             for(Enumeration e=factionSet.elements();e.hasMoreElements();)
             {
                 F=(Faction)e.nextElement();
-                CE=F.getChangeEvent("ADDOUTSIDER");
-                if(CE!=null) outSiders.addElement(CE,F);
-                CE=F.getChangeEvent("TIME");
-                if(CE!=null) timers.addElement(CE,F);
+                CEs=F.getChangeEvents("ADDOUTSIDER");
+                for(int i=0;i<CEs.length;i++)
+                	outSiders.addElement(CEs[i],F);
+                CEs=F.getChangeEvents("TIME");
+                for(int i=0;i<CEs.length;i++)
+                	timers.addElement(CEs[i],F);
             }
             if((outSiders.size()==0)&&(timers.size()==0)) 
                 return true;
@@ -678,20 +682,15 @@ public class Factions extends StdLibrary implements FactionManager
                 list.append("    #) "+CMStrings.padRight("Zapper Mask",31)+CMStrings.padRight("Gain",6)+CMStrings.padRight("Loss",6)+"\n\r");
                 StringBuffer choices=new StringBuffer("");
                 int numFactors=0;
-                for(Enumeration e=me.factors();e.hasMoreElements();)
+                for(Enumeration<Faction.FactionZapFactor> e=me.factors();e.hasMoreElements();)
                 {
-                    Object[] factor=(Object[])e.nextElement();
-                    if(factor.length!=3)
-                        me.delFactor(factor);
-                    else
-                    {
-                        choices.append(((char)('A'+numFactors)));
-                        list.append("    "+(((char)('A'+numFactors))+") "));
-                        list.append(CMStrings.padRight((String)factor[2],30)+" ");
-                        list.append(CMStrings.padRight(""+CMath.toPct(((Double)factor[0]).doubleValue()),5)+" ");
-                        list.append(CMStrings.padRight(""+CMath.toPct(((Double)factor[1]).doubleValue()),5)+"\n\r");
-                        numFactors++;
-                    }
+                    Faction.FactionZapFactor factor=e.nextElement();
+                    choices.append(((char)('A'+numFactors)));
+                    list.append("    "+(((char)('A'+numFactors))+") "));
+                    list.append(CMStrings.padRight(factor.MOBMask(),30)+" ");
+                    list.append(CMStrings.padRight(""+CMath.toPct(factor.gainFactor()),5)+" ");
+                    list.append(CMStrings.padRight(""+CMath.toPct(factor.lossFactor()),5)+"\n\r");
+                    numFactors++;
                 }
                 mob.tell(list.toString());
                 if((showFlag!=showNumber)&&(showFlag>-999)) break;
@@ -701,7 +700,7 @@ public class Factions extends StdLibrary implements FactionManager
                 ||((!which.equalsIgnoreCase("0"))
                     &&((factorNum<0)||(factorNum>=numFactors))))
                     break;
-                Object[] factor=null;
+                Faction.FactionZapFactor factor=null;
                 if(!which.equalsIgnoreCase("0"))
                 {
                     factor=me.getFactor(factorNum);
@@ -717,15 +716,15 @@ public class Factions extends StdLibrary implements FactionManager
                     factor=me.addFactor(1.0,1.0,"");
                 if(factor!=null)
                 {
-                    String mask=mob.session().prompt("Enter a new zapper mask ("+((String)factor[2])+")\n\r: "+((String)factor[2]));
-                    double newHigh=((Double)factor[0]).doubleValue();
+                    String mask=mob.session().prompt("Enter a new zapper mask ("+factor.MOBMask()+")\n\r: ",factor.MOBMask());
+                    double newHigh=factor.gainFactor();
                     String newName=mob.session().prompt("Enter gain adjustment ("+CMath.toPct(newHigh)+"): ",CMath.toPct(newHigh));
                     if((!CMath.isNumber(newName))&&(!CMath.isPct(newName)))
                         mob.tell("(no change)");
                     else
                         newHigh=CMath.s_pct(newName);
 
-                    double newLow=((Double)factor[1]).doubleValue();
+                    double newLow=factor.lossFactor();
                     newName=mob.session().prompt("Enter loss adjustment ("+CMath.toPct(newLow)+"): ",CMath.toPct(newLow));
                     if((!CMath.isNumber(newName))&&(!CMath.isPct(newName)))
                         mob.tell("(no change)");
@@ -808,42 +807,56 @@ public class Factions extends StdLibrary implements FactionManager
                         +" "+CMStrings.padRight("Factor",10)
                         +" "+CMStrings.padRight("Flags",20)
                         +" Mask\n\r");
+                int numChanges=0;
+                StringBuffer choices=new StringBuffer("");
+                Hashtable<Character,Faction.FactionChangeEvent> choicesHashed=new Hashtable<Character,Faction.FactionChangeEvent>(); 
                 for(Enumeration e=me.changeEventKeys();e.hasMoreElements();)
                 {
-                    Faction.FactionChangeEvent CE=(Faction.FactionChangeEvent)me.getChangeEvent((String)e.nextElement());
-                    if(CE!=null)
+                    Faction.FactionChangeEvent[] CEs=me.getChangeEvents((String)e.nextElement());
+                    if(CEs!=null)
                     {
-                        list.append("    ");
-                        list.append(CMStrings.padRight(CE.eventID(),15)+" ");
-                        list.append(CMStrings.padRight(Faction.FactionChangeEvent.CHANGE_DIRECTION_DESCS[CE.direction()],10)+" ");
-                        list.append(CMStrings.padRight(CMath.toPct(CE.factor()),10)+" ");
-                        list.append(CMStrings.padRight(CE.flagCache(),20)+" ");
-                        list.append(CE.zapper()+"\n\r");
+                    	for(int e1=0;e1<CEs.length;e1++)
+                    	{
+                    		Faction.FactionChangeEvent CE=CEs[e1];
+                            choices.append(((char)('A'+numChanges)));
+                            list.append(" "+(((char)('A'+numChanges))+") "));
+                            choicesHashed.put(Character.valueOf((char)('A'+numChanges)), CE);
+	                        if(CE.triggerParameters().trim().length()==0)
+		                        list.append(CMStrings.padRight(CE.eventID(),15)+" ");
+	                        else
+		                        list.append(CMStrings.padRight(CE.eventID()+":"+CE.triggerParameters(),15)+" ");
+	                        list.append(CMStrings.padRight(Faction.FactionChangeEvent.CHANGE_DIRECTION_DESCS[CE.direction()],10)+" ");
+	                        list.append(CMStrings.padRight(CMath.toPct(CE.factor()),10)+" ");
+	                        list.append(CMStrings.padRight(CE.flagCache(),20)+" ");
+	                        list.append(CE.zapper()+"\n\r");
+	                        numChanges++;
+                    	}
                     }
                 }
                 mob.tell(list.toString());
                 if((showFlag!=showNumber)&&(showFlag>-999)) break;
-                String which=mob.session().prompt("Select a trigger ID to add, remove, or modify (?):","");
+                String which=mob.session().prompt("Select a ID to add, remove, or modify:","");
                 which=which.toUpperCase().trim();
-                if(which.length()==0) break;
-                if(which.equalsIgnoreCase("?"))
-                {
-                    mob.tell("Valid triggers: \n\r"+me.ALL_CHANGE_EVENT_TYPES());
-                    continue;
-                }
-                Faction.FactionChangeEvent CE=(Faction.FactionChangeEvent)me.getChangeEvent(which);
+                Faction.FactionChangeEvent CE=choicesHashed.get(Character.valueOf(which.charAt(0)));
                 if(CE==null)
                 {
-                    CE=me.addChangeEvent(which);
+                    String newID=mob.session().prompt("Enter a new change ID (?): ").toUpperCase().trim();
+                    if(newID.length()==0) break;
+                    if(newID.equalsIgnoreCase("?"))
+                    {
+                        mob.tell("Valid triggers: \n\r"+me.ALL_CHANGE_EVENT_TYPES());
+                        continue;
+                    }
+                    CE=me.createChangeEvent(newID);
                     if(CE==null)
                     {
                         mob.tell("That ID is invalid.  Try '?'.");
                         continue;
                     }
                     else
-                    if(!mob.session().confirm("Create a new trigger using ID '"+which+"' (y/N): ","N"))
+                    if(!mob.session().confirm("Create a new trigger using ID '"+newID+"' (y/N): ","N"))
                     {
-                        me.delChangeEvent(CE.eventID());
+                        me.delChangeEvent(CE);
                         CE=null;
                         break;
                     }
@@ -851,11 +864,19 @@ public class Factions extends StdLibrary implements FactionManager
                 else
                 if(mob.session().choose("Would you like to M)odify or D)elete this trigger (M/d): ","MD","M").toUpperCase().startsWith("D"))
                 {
-                    me.delChangeEvent(CE.eventID());
+                    me.delChangeEvent(CE);
                     mob.tell("Trigger deleted.");
                     CE=null;
                 }
 
+                if(CE!=null)
+                {
+                    String newFlags=mob.session().prompt("Trigger parms ("+CE.triggerParameters()+"): ",CE.triggerParameters());
+                    if((newFlags.length()==0)||(newFlags.equals(CE.triggerParameters())))
+                        mob.tell("(no change)");
+                    else
+                        CE.setTriggerParameters(newFlags.trim());
+                }
                 if(CE!=null)
                 {
                     StringBuffer directions=new StringBuffer("Valid directions:\n\r");
