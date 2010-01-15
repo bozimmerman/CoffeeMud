@@ -318,7 +318,7 @@ public class FactionData extends StdWebMacro
                             str.append("<SELECT NAME=CHANGESDIR"+showNum+">");
                             for(int f=0;f<Faction.FactionChangeEvent.CHANGE_DIRECTION_DESCS.length;f++)
                             {
-                                str.append("<OPTION VALUE=\""+Faction.FactionChangeEvent.CHANGE_DIRECTION_DESCS[f]+"\"");
+                                str.append("<OPTION VALUE=\""+f+"\"");
                                 if(f==CMath.s_int(val))
                                     str.append(" SELECTED");
                                 str.append(">"+CMStrings.capitalizeAndLower(Faction.FactionChangeEvent.CHANGE_DIRECTION_DESCS[f]));
@@ -336,7 +336,7 @@ public class FactionData extends StdWebMacro
                             str.append("<SELECT NAME=CHANGESFLAGS"+showNum+"_ MULTIPLE>");
                             for(int f=0;f<Faction.FactionChangeEvent.FLAG_DESCS.length;f++)
                             {
-                                str.append("<OPTION VALUE=\""+Faction.FactionChangeEvent.FLAG_DESCS[f]+"\"");
+                                str.append("<OPTION VALUE=\""+f+"\"");
                                 if(flags.contains(Faction.FactionChangeEvent.FLAG_DESCS[f]))
                                     str.append(" SELECTED");
                                 str.append(">"+CMStrings.capitalizeAndLower(Faction.FactionChangeEvent.FLAG_DESCS[f]));
