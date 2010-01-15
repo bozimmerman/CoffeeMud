@@ -6684,7 +6684,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 CMLib.leveler().fillOutMOB(me,me.baseEnvStats().level());
             genRejuv(mob,me,++showNumber,showFlag);
             genRace(mob,me,++showNumber,showFlag);
-        	CMLib.factions().updatePlayerFactions(me);
+        	CMLib.factions().updatePlayerFactions(me,me.location());
             Faction F=null;
             for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
             {
@@ -6777,7 +6777,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             genRace(mob,me,++showNumber,showFlag);
             genCharClass(mob,me,++showNumber,showFlag);
             genCharStats(mob,me,++showNumber,showFlag);
-        	CMLib.factions().updatePlayerFactions(me);
+        	CMLib.factions().updatePlayerFactions(me,me.location());
             Faction F=null;
             for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
             {
@@ -7110,7 +7110,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             genRace(mob,mme,++showNumber,showFlag);
             genHeight(mob,me,++showNumber,showFlag);
             genWeight(mob,me,++showNumber,showFlag);
-        	CMLib.factions().updatePlayerFactions((MOB)me);
+        	CMLib.factions().updatePlayerFactions((MOB)me,((MOB)me).location());
             Faction F=null;
             for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
             {

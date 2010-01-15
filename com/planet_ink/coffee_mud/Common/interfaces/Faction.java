@@ -830,6 +830,21 @@ public interface Faction extends CMCommon, MsgListener
      */
     public boolean delAbilityUsage(FactionAbilityUsage usage);
     
+    
+    /**
+     * Return the bitmap of internal-use flags for this faction.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#setInternalFlags(long)
+     * @return the bitmap of internal-use flags for this faction.
+     */
+    public long getInternalFlags();
+    
+    /**
+     * Set the bitmap of internal-use flags for this faction.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#getInternalFlags()
+     * @param bitmap the bitmap of internal-use flags for this faction.
+     */
+    public void setInternalFlags(long bitmap);
+    
     /**
      * A Faction Change Event is an event that triggers an automatic change in 
      * a mob or players faction value.  Triggers can be the use of abilities,
@@ -1416,6 +1431,11 @@ public interface Faction extends CMCommon, MsgListener
          */
         public String toString();
     }
+    
+    /** internal flag masks meaning to skip standard auto system, retrieved by {@link Faction#getInternalFlags()} */
+    public static final long IFLAG_IGNOREAUTO=1;
+    /** internal flag masks meaning to never save to a file, retrieved by {@link Faction#getInternalFlags()} */
+    public static final long IFLAG_NEVERSAVE=2;
     
     /** legacy constant for {@link FactionRange#alignEquiv()} denoting that the range does not reflect alignment */
     public final static int ALIGN_INDIFF=0;

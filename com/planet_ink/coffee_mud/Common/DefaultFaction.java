@@ -54,6 +54,7 @@ public class DefaultFaction implements Faction, MsgListener
 	protected int maximum=Integer.MAX_VALUE;
 	protected int highest=Integer.MAX_VALUE;
 	protected int lowest=Integer.MIN_VALUE;
+	protected long internalFlagBitmap=0;
 	protected String experienceFlag="";
 	protected boolean useLightReactions=false;
 	protected boolean showInScore=false;
@@ -77,6 +78,7 @@ public class DefaultFaction implements Faction, MsgListener
 
     public String factionID(){return ID;}
     public String name(){return name;}
+    public long getInternalFlags() { return internalFlagBitmap;}
     public String choiceIntro(){return choiceIntro;}
     public int minimum(){return minimum;}
     public int middle(){return middle;}
@@ -103,6 +105,7 @@ public class DefaultFaction implements Faction, MsgListener
 
     public void setFactionID(String newStr){ID=newStr;}
     public void setName(String newStr){name=newStr;}
+    public void setInternalFlags(long bitmap) { internalFlagBitmap=bitmap;}
     public void setChoiceIntro(String newStr){choiceIntro=newStr;}
     public void setExperienceFlag(String newStr){experienceFlag=newStr;}
     public void setShowInScore(boolean truefalse){showInScore=truefalse;}

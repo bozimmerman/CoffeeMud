@@ -500,7 +500,7 @@ public class StdRoom implements Room
 				if(!mob.isMonster())
 				{
 					if((mob.location()!=null)&&(mob.location().getArea()!=getArea()))
-						CMLib.factions().updatePlayerFactions(mob);
+						CMLib.factions().updatePlayerFactions(mob,this);
 					giveASky(0);
 				}
 				break;

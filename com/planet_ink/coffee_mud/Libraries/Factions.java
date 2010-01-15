@@ -257,13 +257,11 @@ public class Factions extends StdLibrary implements FactionManager
 		return true;
 	}
 
-    protected Faction makeReactionFaction(Environmental E)
+    protected Faction makeReactionFaction(String prefix, String classID, String Name, String baseTemplateFilename)
     {
-    	String prefix=(E instanceof Area)?"AREA_":"NAME_";
-    	String codedName=E.Name().toUpperCase().trim().replace(' ','_');
+    	String codedName=Name.toUpperCase().trim().replace(' ','_');
     	String factionID=prefix+codedName;
     	Faction templateF=getFaction("factions/"+codedName.toLowerCase()+".ini");
-    	String baseTemplateFilename="examples/areareaction.ini";
     	if(templateF==null)
     		templateF=getFaction(baseTemplateFilename);
     	else
@@ -274,34 +272,77 @@ public class Factions extends StdLibrary implements FactionManager
     		return null;
     	}
     	StringBuffer buf = rebuildFactionProperties(templateF);
-    	buf = new StringBuffer(CMStrings.replaceAll(buf.toString(),"<NAME>",E.Name()));
-    	buf = new StringBuffer(CMStrings.replaceAll(buf.toString(),"<FACTIONID>",factionID));
+    	String bufStr = buf.toString();
+    	bufStr = CMStrings.replaceAll(bufStr,"<NAME>",Name);
+    	bufStr = CMStrings.replaceAll(bufStr,"<FACTIONID>",factionID);
+    	bufStr = CMStrings.replaceAll(bufStr,"<CLASSID>",classID);
     	Faction F=buildFactionFromXML(buf, factionID);
-    	F.setName(E.name());
+    	F.setInternalFlags(F.getInternalFlags() | Faction.IFLAG_IGNOREAUTO);
+    	F.setInternalFlags(F.getInternalFlags() | Faction.IFLAG_NEVERSAVE);
     	factionSet.put(factionID,F);
     	return F;
     }
     
-    public void updatePlayerFactions(MOB mob)
+    public void updatePlayerFactions(MOB mob, Room R)
     {
     	Faction F=null;
         for(Enumeration e=factionSet().elements();e.hasMoreElements();)
         {
             F=(Faction)e.nextElement();
-            if((!F.hasFaction(mob))&&(F.findAutoDefault(mob)!=Integer.MAX_VALUE))
+            if((!CMath.bset(F.getInternalFlags(), Faction.IFLAG_IGNOREAUTO))
+            &&(!F.hasFaction(mob))
+            &&(F.findAutoDefault(mob)!=Integer.MAX_VALUE))
                 mob.addFaction(F.factionID(),F.findAutoDefault(mob));
         }
+        if(R==null) return;
         if(CMProps.getVar(CMProps.SYSTEM_AUTOREACTION).equalsIgnoreCase("AREA"))
         {
-        	Area A=CMLib.map().areaLocation(mob);
+        	Area A=R.getArea();
         	if(A!=null)
         	{
 	        	String areaCode = A.Name().toUpperCase().trim().replace(' ','_');
 	        	F=getFaction("AREA_"+areaCode);
 	        	if(F==null)
-	        		F=makeReactionFaction(A);
+	        		F=makeReactionFaction("AREA_",A.ID(),A.Name(),"examples/areareaction.ini");
 	            if((F!=null)&&(!F.hasFaction(mob))&&(F.findAutoDefault(mob)!=Integer.MAX_VALUE))
 	                mob.addFaction(F.factionID(),F.findAutoDefault(mob));
+        	}
+        }
+        else
+        if(CMProps.getVar(CMProps.SYSTEM_AUTOREACTION).equalsIgnoreCase("NAME"))
+        {
+        	for(int i=0;i<R.numInhabitants();i++)
+        	{
+        		MOB M=R.fetchInhabitant(i);
+        		if((M!=null)&&(M!=mob)&&(M.isMonster()))
+        		{
+    	        	String nameCode = M.Name().toUpperCase().trim().replace(' ','_');
+    	        	F=getFaction("NAME_"+nameCode);
+    	        	if(F==null)
+    	        		F=makeReactionFaction("NAME_",M.ID(),M.Name(),"examples/namereaction.ini");
+    	            if((F!=null)&&(!F.hasFaction(mob))&&(F.findAutoDefault(mob)!=Integer.MAX_VALUE))
+    	                mob.addFaction(F.factionID(),F.findAutoDefault(mob));
+        		}
+        	}
+        }
+        else
+        if(CMProps.getVar(CMProps.SYSTEM_AUTOREACTION).equalsIgnoreCase("RACE"))
+        {
+        	HashSet<Race> done=new HashSet<Race>(2);
+        	for(int i=0;i<R.numInhabitants();i++)
+        	{
+        		MOB M=R.fetchInhabitant(i);
+        		if((M!=null)&&(M!=mob)&&(M.isMonster())&&(!done.contains(M.charStats().getMyRace())))
+        		{
+        			Race rR=M.charStats().getMyRace();
+        			done.add(rR);
+    	        	String nameCode = rR.name().toUpperCase().trim().replace(' ','_');
+    	        	F=getFaction("RACE_"+nameCode);
+    	        	if(F==null)
+    	        		F=makeReactionFaction("RACE_",rR.ID(),rR.name(),"examples/racereaction.ini");
+    	            if((F!=null)&&(!F.hasFaction(mob))&&(F.findAutoDefault(mob)!=Integer.MAX_VALUE))
+    	                mob.addFaction(F.factionID(),F.findAutoDefault(mob));
+        		}
         	}
         }
     }
@@ -1366,13 +1407,17 @@ public class Factions extends StdLibrary implements FactionManager
     
     public String resaveFaction(Faction F)
     {
-        if((F.factionID().length()>0)&&(CMLib.factions().getFaction(F.factionID())!=null))
+        if((F.factionID().length()>0)
+        &&(CMLib.factions().getFaction(F.factionID())!=null))
         {
-        	StringBuffer buf = rebuildFactionProperties(F);
-            Resources.removeResource(F.factionID());
-            Resources.submitResource(F.factionID(),buf);
-            if(!Resources.saveFileResource(F.factionID()))
-                return "Faction File '"+F.factionID()+"' could not be modified.  Make sure it is not READ-ONLY.";
+        	if(!CMath.bset(F.getInternalFlags(), Faction.IFLAG_NEVERSAVE))
+        	{
+	        	StringBuffer buf = rebuildFactionProperties(F);
+	            Resources.removeResource(F.factionID());
+	            Resources.submitResource(F.factionID(),buf);
+	            if(!Resources.saveFileResource(F.factionID()))
+	                return "Faction File '"+F.factionID()+"' could not be modified.  Make sure it is not READ-ONLY.";
+        	}
         }
         else
             return "Can not save a blank faction";

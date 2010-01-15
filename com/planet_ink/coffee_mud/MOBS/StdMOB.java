@@ -807,7 +807,7 @@ public class StdMOB implements MOB
             destroy();
             return;
         }
-    	CMLib.factions().updatePlayerFactions(this);
+    	CMLib.factions().updatePlayerFactions(this,location());
 		if(tickStatus==Tickable.STATUS_NOT)
 		{
 			try{ imMobile=true;
