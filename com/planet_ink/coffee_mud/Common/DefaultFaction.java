@@ -688,14 +688,14 @@ public class DefaultFaction implements Faction, MsgListener
         &&(msg.tool() instanceof MOB))
         {
             MOB killedM=msg.source();
+            MOB killingBlowM=(MOB)msg.tool();
             events=getChangeEvents((msg.source()==myHost)?"MURDER":"KILL");
             FactionChangeEvent eventC;
             for(int e=0;e<events.length;e++)
             {
                 eventC=events[e];
-                if(eventC.applies(killedM))
+                if(eventC.applies(killingBlowM,killedM))
                 {
-                    MOB killingBlowM=(MOB)msg.tool();
                     CharClass combatCharClass=CMLib.combat().getCombatDominantClass(killingBlowM,killedM);
                     HashSet combatBeneficiaries=CMLib.combat().getCombatBeneficiaries(killingBlowM,killedM,combatCharClass);
                     for(Iterator i=combatBeneficiaries.iterator();i.hasNext();)
@@ -712,7 +712,7 @@ public class DefaultFaction implements Faction, MsgListener
         	for(int e=0;e<events.length;e++)
         	{
 	            FactionChangeEvent C=events[e];
-	            if((msg.target() instanceof MOB)&&(C.applies((MOB)msg.target())))
+	            if((msg.target() instanceof MOB)&&(C.applies(msg.source(),(MOB)msg.target())))
 	                executeChange(msg.source(),(MOB)msg.target(),C);
 	            else
 	            if (!(msg.target() instanceof MOB))
@@ -1013,13 +1013,16 @@ public class DefaultFaction implements Faction, MsgListener
         private int IDdomainFilter=-1;
         private int direction=0;
         private double factor=0.0;
-        private String zapper="";
+        private String targetZapperStr="";
         private boolean outsiderTargetOK=false;
         private boolean selfTargetOK=false;
         private boolean just100=false;
         private Object[] stateVariables=new Object[0];
+        private Hashtable<String,String> savedTriggerParms=new Hashtable<String,String>();
         private String triggerParms="";
         private Faction myFaction;
+        private Vector compiledTargetZapper=null;
+        private Vector compiledSourceZapper=null;
 
         public String eventID(){return ID;}
         public String flagCache(){return flagCache;}
@@ -1028,20 +1031,35 @@ public class DefaultFaction implements Faction, MsgListener
         public int IDdomainFilter(){return IDdomainFilter;}
         public int direction(){return direction;}
         public double factor(){return factor;}
-        public String zapper(){return zapper;}
+        public String targetZapper(){return targetZapperStr;}
         public boolean outsiderTargetOK(){return outsiderTargetOK;}
         public boolean selfTargetOK(){return selfTargetOK;}
         public boolean just100(){return just100;}
         public void setDirection(int newVal){direction=newVal;}
         public void setFactor(double newVal){factor=newVal;}
-        public void setZapper(String newVal){zapper=newVal;}
+        public void setTargetZapper(String newVal)
+        {
+        	targetZapperStr=newVal;
+        	compiledTargetZapper=null;
+        	if(newVal.trim().length()>0)
+        		compiledTargetZapper=CMLib.masking().maskCompile(newVal);
+        }
+        public Vector compiledTargetZapper(){return compiledTargetZapper;}
+        public Vector compiledSourceZapper(){return compiledSourceZapper;}
+		public String getTriggerParm(String parmName) {
+			if((triggerParms==null)||(triggerParms.length()==0))
+				return "";
+			String S=savedTriggerParms.get(parmName);
+			if(S!=null) return S;
+			return "";
+		}
 
         public String toString()
         {
         	if(triggerParms.trim().length()>0)
-	            return ID+"("+triggerParms.replace(';',',')+");"+CHANGE_DIRECTION_DESCS[direction]+";"+((int)Math.round(factor*100.0))+"%;"+flagCache+";"+zapper;
+	            return ID+"("+triggerParms.replace(';',',')+");"+CHANGE_DIRECTION_DESCS[direction]+";"+((int)Math.round(factor*100.0))+"%;"+flagCache+";"+targetZapperStr;
         	else
-	            return ID+";"+CHANGE_DIRECTION_DESCS[direction]+";"+((int)Math.round(factor*100.0))+"%;"+flagCache+";"+zapper;
+	            return ID+";"+CHANGE_DIRECTION_DESCS[direction]+";"+((int)Math.round(factor*100.0))+"%;"+flagCache+";"+targetZapperStr;
         }
 
         public DefaultFactionChangeEvent(Faction F){myFaction=F;}
@@ -1071,7 +1089,7 @@ public class DefaultFaction implements Faction, MsgListener
             if(v.size()>3)
                 setFlags((String)v.elementAt(3));
             if(v.size()>4)
-                zapper = (String)v.elementAt(4);
+                targetZapperStr = (String)v.elementAt(4);
         }
 
         public boolean setEventID(String newID)
@@ -1147,14 +1165,27 @@ public class DefaultFaction implements Faction, MsgListener
             if(flags.contains("SELFOK")) selfTargetOK=true;
             if(flags.contains("JUST100")) just100=true;
         }
-        public boolean applies(MOB mob)
+        public boolean applies(MOB source, MOB target)
         {
-            if(zapper==null) return true;
-            return CMLib.masking().maskCheck(zapper,mob,false);
+        	if((compiledTargetZapper!=null)
+        	&&(!CMLib.masking().maskCheck(compiledTargetZapper,target,false)))
+        		return false;
+        	if((compiledSourceZapper!=null)
+        	&&(!CMLib.masking().maskCheck(compiledSourceZapper,target,false)))
+        		return false;
+        	return true;
         }
         
         public String triggerParameters() { return triggerParms;}
-        public void setTriggerParameters(String newVal){triggerParms=newVal;}
+        public void setTriggerParameters(String newVal)
+        {
+        	triggerParms=newVal;
+        	savedTriggerParms=CMParms.parseEQParms(newVal);
+        	compiledSourceZapper=null;
+        	String S=savedTriggerParms.get("MASK");
+        	if((S!=null)&&(S.length()>0))
+        		compiledSourceZapper=CMLib.masking().maskCompile(S);
+        }
         public Object stateVariable(int x){ return ((x>=0)&&(x<stateVariables.length))?stateVariables[x]:null;}
         public void setStateVariable(int x, Object newVal)
         {

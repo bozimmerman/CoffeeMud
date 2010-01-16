@@ -1024,20 +1024,38 @@ public interface Faction extends CMCommon, MsgListener
         /**
          * Returns the zapper mask that is used to see if the target of the event qualifies in
          * order to trigger a faction change by this defined event.
-         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#setZapper(String)
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#setTargetZapper(String)
          * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
          * @return the zapper mask string
          */
-        public String zapper();
+        public String targetZapper();
 
+        /**
+         * Returns the zapper mask that is used to see if the target of the event qualifies in
+         * order to trigger a faction change by this defined event.
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#setTargetZapper(String)
+         * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
+         * @return the zapper mask compiled
+         */
+        public Vector compiledTargetZapper();
+        
+        /**
+         * Returns the zapper mask that is used to see if the source of the event qualifies in
+         * order to trigger a faction change by this defined event.
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#setTriggerParameters(String)
+         * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
+         * @return the zapper mask compiled
+         */
+        public Vector compiledSourceZapper();
+        
         /**
          * Sets the zapper mask that is used to see if the target of the event qualifies in
          * order to trigger a faction change by this defined event.
-         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#zapper()
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#targetZapper()
          * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
          * @param newVal the new zapper mask string
          */
-        public void setZapper(String newVal);
+        public void setTargetZapper(String newVal);
 
         /**
          * Returns any trigger parameters defined that modify the way the trigger behaves.
@@ -1046,6 +1064,13 @@ public interface Faction extends CMCommon, MsgListener
          */
         public String triggerParameters();
 
+        /**
+         * Returns the named trigger parameters defined 
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#setTriggerParameters(String)
+         * @return the specific named trigger parameter
+         */
+        public String getTriggerParm(String parmName);
+        
         /**
          * Sets any trigger parameters defined that modify the way the trigger behaves.
          * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#triggerParameters()
@@ -1077,11 +1102,12 @@ public interface Faction extends CMCommon, MsgListener
         public String toString();
 
         /**
-         * Returns whether the given mob is a valid target of this event.
-         * @param mob the mob to evaluate
-         * @return true if this event applies to the target mob, false otherwise
+         * Returns whether the given mob is a valid source and target of this event.
+         * @param mob the source to evaluate
+         * @param mob the target to evaluate
+         * @return true if this event applies to the mobs, false otherwise
          */
-        public boolean applies(MOB mob);
+        public boolean applies(MOB source, MOB target);
         
         /**
          * Return the parent faction for which this data stands.

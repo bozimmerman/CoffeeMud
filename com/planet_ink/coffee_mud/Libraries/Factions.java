@@ -375,8 +375,10 @@ public class Factions extends StdLibrary implements FactionManager
                 	else
                 	{
 	                	int[] ctr=(int[])CEs[i].stateVariable(0);
-	                	if(ctr==null){
-	                		ctr=new int[]{CMath.s_int(CEs[i].triggerParameters())};
+	                	if(ctr==null)
+	                	{
+	                		
+	                		ctr=new int[]{CMath.s_int(CEs[i].getTriggerParm("ROUND"))};
 	                		CEs[i].setStateVariable(0,ctr);
 	                	}
 	                	if((--ctr[0])<=0)
@@ -398,13 +400,13 @@ public class Factions extends StdLibrary implements FactionManager
                     for(int o=0;o<outSiders.size();o++)
 		            {
 		                CE=(Faction.FactionChangeEvent)outSiders.elementAt(o);
-		                if((CE.applies(mob))&&(!CE.getFaction().hasFaction(mob)))
+		                if((CE.applies(mob,mob))&&(!CE.getFaction().hasFaction(mob)))
 		                	CE.getFaction().executeChange(mob,mob,CE);
 		            }
                     for(int o=0;o<timers.size();o++)
                     {
                         CE=(Faction.FactionChangeEvent)timers.elementAt(o);
-		                if((CE.applies(mob))&&(CE.getFaction().hasFaction(mob)))
+		                if((CE.applies(mob,mob))&&(CE.getFaction().hasFaction(mob)))
 		                	CE.getFaction().executeChange(mob,mob,CE);
 		            }
 		        }
@@ -842,7 +844,7 @@ public class Factions extends StdLibrary implements FactionManager
 	                        list.append(CMStrings.padRight(Faction.FactionChangeEvent.CHANGE_DIRECTION_DESCS[CE.direction()],10)+" ");
 	                        list.append(CMStrings.padRight(CMath.toPct(CE.factor()),10)+" ");
 	                        list.append(CMStrings.padRight(CE.flagCache(),20)+" ");
-	                        list.append(CE.zapper()+"\n\r");
+	                        list.append(CE.targetZapper()+"\n\r");
 	                        numChanges++;
                     	}
                     }
@@ -927,11 +929,11 @@ public class Factions extends StdLibrary implements FactionManager
                 }
                 if(CE!=null)
                 {
-                    String newFlags=mob.session().prompt("Zapper mask ("+CE.zapper()+"): "+CE.zapper(),CE.zapper());
-                    if((newFlags.length()==0)||(newFlags.equals(CE.zapper())))
+                    String newFlags=mob.session().prompt("Zapper mask ("+CE.targetZapper()+"): "+CE.targetZapper(),CE.targetZapper());
+                    if((newFlags.length()==0)||(newFlags.equals(CE.targetZapper())))
                         mob.tell("(no change)");
                     else
-                        CE.setZapper(newFlags);
+                        CE.setTargetZapper(newFlags);
                 }
             }
 

@@ -299,7 +299,7 @@ public class FactionData extends StdWebMacro
 	                                httpReq.addRequestParameters("CHANGESFLAGS"+v+"_"+id,""+((String)flags.elementAt(f)));
 	                                id=""+(f+1);
 	                            }
-	                            httpReq.addRequestParameters("CHANGESMASK"+v,E.zapper());
+	                            httpReq.addRequestParameters("CHANGESMASK"+v,E.targetZapper());
 	                            v++;
                             }
                         }
