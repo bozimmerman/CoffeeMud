@@ -377,13 +377,12 @@ public class Factions extends StdLibrary implements FactionManager
 	                	int[] ctr=(int[])CEs[i].stateVariable(0);
 	                	if(ctr==null)
 	                	{
-	                		
 	                		ctr=new int[]{CMath.s_int(CEs[i].getTriggerParm("ROUND"))};
 	                		CEs[i].setStateVariable(0,ctr);
 	                	}
 	                	if((--ctr[0])<=0)
 	                	{
-		                	ctr[0]=CMath.s_int(CEs[i].triggerParameters());
+		                	ctr[0]=CMath.s_int(CEs[i].getTriggerParm("ROUND"));
 		                	timers.addElement(CEs[i]);
 	                	}
                 	}

@@ -1138,7 +1138,7 @@ public interface Faction extends CMCommon, MsgListener
         /** the code words for the various evaluation flags to decide if this event applies and other things */
         public static final String[] FLAG_DESCS={"OUTSIDER","SELFOK","JUST100"};
         /** some non-ability-related event trigger ids */
-        public static final String[] MISC_TRIGGERS={"MURDER","TIME","ADDOUTSIDER","KILL"};
+        public static final String[] MISC_TRIGGERS={"MURDER","TIME","ADDOUTSIDER","KILL","BRIBE","TALK","MUDCHAT"};
     }
     
 
