@@ -281,7 +281,7 @@ public class FactionData extends StdWebMacro
                     if(trigger==null)
                     {
                         int v=0;
-                        for(Enumeration e=F.changeEventKeys();e.hasMoreElements();v++)
+                        for(Enumeration e=F.changeEventKeys();e.hasMoreElements();)
                         {
                             String def=(String)e.nextElement();
                             Faction.FactionChangeEvent[] Es=F.getChangeEvents(def);
@@ -300,6 +300,7 @@ public class FactionData extends StdWebMacro
 	                                id=""+(f+1);
 	                            }
 	                            httpReq.addRequestParameters("CHANGESMASK"+v,E.zapper());
+	                            v++;
                             }
                         }
                     }
