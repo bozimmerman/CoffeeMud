@@ -370,14 +370,21 @@ public class Factions extends StdLibrary implements FactionManager
                 CEs=F.getChangeEvents("TIME");
                 for(int i=0;i<CEs.length;i++)
                 {
-                	int[] ctr=(int[])CEs[i].stateVariable(0);
-                	if(ctr==null){
-                		ctr=new int[]{CMath.s_int(CEs[i].triggerParameters())};
-                		CEs[i].setStateVariable(0,ctr);
+                	if(CEs[i].triggerParameters().length()==0)
+                    	timers.addElement(CEs[i]);
+                	else
+                	{
+	                	int[] ctr=(int[])CEs[i].stateVariable(0);
+	                	if(ctr==null){
+	                		ctr=new int[]{CMath.s_int(CEs[i].triggerParameters())};
+	                		CEs[i].setStateVariable(0,ctr);
+	                	}
+	                	if((--ctr[0])<=0)
+	                	{
+		                	ctr[0]=CMath.s_int(CEs[i].triggerParameters());
+		                	timers.addElement(CEs[i]);
+	                	}
                 	}
-                	if((--ctr[0])>0) continue;
-                	ctr[0]=CMath.s_int(CEs[i].triggerParameters());
-                	timers.addElement(CEs[i]);
                 }
             }
             if((outSiders.size()==0)&&(timers.size()==0)) 
