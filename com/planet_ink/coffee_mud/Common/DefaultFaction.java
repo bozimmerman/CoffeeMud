@@ -485,9 +485,7 @@ public class DefaultFaction implements Faction, MsgListener
     
     public FactionChangeEvent[] getChangeEvents(String key) 
     {
-        if(changes.containsKey(key))
-            return (FactionChangeEvent[])changes.get(key);
-        return null;
+        return (FactionChangeEvent[])changes.get(key);
     }
 
     public Vector findChoices(MOB mob)
@@ -949,12 +947,12 @@ public class DefaultFaction implements Faction, MsgListener
          if(key==null) return null;
          if(key.indexOf(';')<0)
          {
-             event=new DefaultFaction.DefaultFactionChangeEvent();
+             event=new DefaultFaction.DefaultFactionChangeEvent(this);
              if(!event.setEventID(key))
                  return null;
          }
          else
-             event=new DefaultFaction.DefaultFactionChangeEvent(key);
+             event=new DefaultFaction.DefaultFactionChangeEvent(this,key);
          abilityChangesCache.clear();
          Faction.FactionChangeEvent[] events=changes.get(event.eventID().toUpperCase().trim());
          if(events==null)
@@ -1021,6 +1019,7 @@ public class DefaultFaction implements Faction, MsgListener
         private boolean just100=false;
         private Object[] stateVariables=new Object[0];
         private String triggerParms="";
+        private Faction myFaction;
 
         public String eventID(){return ID;}
         public String flagCache(){return flagCache;}
@@ -1045,10 +1044,11 @@ public class DefaultFaction implements Faction, MsgListener
 	            return ID+";"+CHANGE_DIRECTION_DESCS[direction]+";"+((int)Math.round(factor*100.0))+"%;"+flagCache+";"+zapper;
         }
 
-        public DefaultFactionChangeEvent(){}
+        public DefaultFactionChangeEvent(Faction F){myFaction=F;}
 
-        public DefaultFactionChangeEvent(String key)
+        public DefaultFactionChangeEvent(Faction F, String key)
         {
+        	myFaction=F;
             Vector v = CMParms.parseSemicolons(key,false);
             
             String trigger =(String)v.elementAt(0);
@@ -1162,6 +1162,7 @@ public class DefaultFaction implements Faction, MsgListener
         	if(x>=stateVariables.length) stateVariables=Arrays.copyOf(stateVariables,x+1);
         	stateVariables[x]=newVal;
         }
+        public Faction getFaction(){return myFaction;}
     }
 
     public Faction.FactionRange addRange(String key){

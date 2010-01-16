@@ -359,17 +359,26 @@ public class Factions extends StdLibrary implements FactionManager
 		    Faction F=null;
 		    Faction.FactionChangeEvent[] CEs=null;
 		    Faction.FactionChangeEvent CE=null;
-            DVector outSiders=new DVector(2);
-            DVector timers=new DVector(2);
+            Vector<Faction.FactionChangeEvent> outSiders=new Vector<Faction.FactionChangeEvent>();
+            Vector<Faction.FactionChangeEvent> timers=new Vector<Faction.FactionChangeEvent>();
             for(Enumeration e=factionSet.elements();e.hasMoreElements();)
             {
                 F=(Faction)e.nextElement();
                 CEs=F.getChangeEvents("ADDOUTSIDER");
                 for(int i=0;i<CEs.length;i++)
-                	outSiders.addElement(CEs[i],F);
+                	outSiders.addElement(CEs[i]);
                 CEs=F.getChangeEvents("TIME");
                 for(int i=0;i<CEs.length;i++)
-                	timers.addElement(CEs[i],F);
+                {
+                	int[] ctr=(int[])CEs[i].stateVariable(0);
+                	if(ctr==null){
+                		ctr=new int[]{CMath.s_int(CEs[i].triggerParameters())};
+                		CEs[i].setStateVariable(0,ctr);
+                	}
+                	if((--ctr[0])>0) continue;
+                	ctr[0]=CMath.s_int(CEs[i].triggerParameters());
+                	timers.addElement(CEs[i]);
+                }
             }
             if((outSiders.size()==0)&&(timers.size()==0)) 
                 return true;
@@ -381,17 +390,15 @@ public class Factions extends StdLibrary implements FactionManager
 		        {
                     for(int o=0;o<outSiders.size();o++)
 		            {
-		                CE=(Faction.FactionChangeEvent)outSiders.elementAt(o,1);
-                        F=(Faction)outSiders.elementAt(o,2);
-		                if((CE.applies(mob))&&(!F.hasFaction(mob)))
-		                    F.executeChange(mob,mob,CE);
+		                CE=(Faction.FactionChangeEvent)outSiders.elementAt(o);
+		                if((CE.applies(mob))&&(!CE.getFaction().hasFaction(mob)))
+		                	CE.getFaction().executeChange(mob,mob,CE);
 		            }
                     for(int o=0;o<timers.size();o++)
                     {
-                        CE=(Faction.FactionChangeEvent)timers.elementAt(o,1);
-                        F=(Faction)timers.elementAt(o,2);
-		                if((CE.applies(mob))&&(F.hasFaction(mob)))
-		                    F.executeChange(mob,mob,CE);
+                        CE=(Faction.FactionChangeEvent)timers.elementAt(o);
+		                if((CE.applies(mob))&&(CE.getFaction().hasFaction(mob)))
+		                	CE.getFaction().executeChange(mob,mob,CE);
 		            }
 		        }
 		    }

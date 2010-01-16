@@ -1083,6 +1083,12 @@ public interface Faction extends CMCommon, MsgListener
          */
         public boolean applies(MOB mob);
         
+        /**
+         * Return the parent faction for which this data stands.
+         * @return this data objects parent faction.
+         */
+        public Faction getFaction();
+        
         /** a direction constant meaning this event changes the factions value upward */
         public static final int CHANGE_DIRECTION_UP=0;
         /** a direction constant meaning this event changes the factions value downward */
