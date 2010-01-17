@@ -273,14 +273,13 @@ public class Factions extends StdLibrary implements FactionManager
     	Faction templateF=getFaction("factions/"+codedName.toLowerCase()+".ini");
     	if(templateF==null)
     		templateF=getFaction(baseTemplateFilename);
-    	else
-    		factionSet.remove(templateF.factionID());
     	if(templateF==null)
     	{
     		Log.errOut("Factions","Could not find base template '"+baseTemplateFilename+"'");
     		return null;
     	}
     	StringBuffer buf = rebuildFactionProperties(templateF);
+		factionSet.remove(templateF.factionID().toUpperCase().trim());
     	String bufStr = buf.toString();
     	bufStr = CMStrings.replaceAll(bufStr,"<NAME>",Name);
     	bufStr = CMStrings.replaceAll(bufStr,"<FACTIONID>",factionID);

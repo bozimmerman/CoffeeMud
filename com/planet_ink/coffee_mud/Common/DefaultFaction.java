@@ -2,7 +2,6 @@ package com.planet_ink.coffee_mud.Common;
 import com.planet_ink.coffee_mud.core.database.DBInterface;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
-import com.planet_ink.coffee_mud.Abilities.Misc.PresenceReaction;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -792,30 +791,32 @@ public class DefaultFaction implements Faction, MsgListener
 	            		time=Long.valueOf(System.currentTimeMillis());
 	            	if(System.currentTimeMillis()<time.longValue())
 	            		continue;
-	            	Long addTime=(Long)eventC.stateVariable(2);
-	            	if(addTime==null)
+	            	Pattern P=(Pattern)eventC.stateVariable(0);
+	            	if(P==null)
 	            	{
-	            		addTime=Long.valueOf(CMath.s_long(eventC.getTriggerParm("WAIT"))*Tickable.TIME_TICK);
-	            		eventC.setStateVariable(2,addTime);
+	            		String mask=eventC.getTriggerParm("REGEX");
+	            		if((mask==null)||(mask.trim().length()==0))
+	            			mask=".*";
+	            		P=Pattern.compile(mask.toLowerCase());
+	            		eventC.setStateVariable(0,P);
 	            	}
-	            	eventC.setStateVariable(1,Long.valueOf(System.currentTimeMillis()+addTime.longValue()));
-	            	for(MOB target : targets)
-			            if(eventC.applies(msg.source(),target))
-			            {
-			            	Pattern P=(Pattern)eventC.stateVariable(0);
-			            	if(P==null)
-			            	{
-			            		String mask=eventC.getTriggerParm("REGEX");
-			            		if((mask==null)||(mask.trim().length()==0))
-			            			mask=".*";
-			            		P=Pattern.compile(mask.toLowerCase());
-			            		eventC.setStateVariable(0,P);
-			            	}
-			            	M=P.matcher(sayMsg);
-			                if(M.matches())
+	            	M=P.matcher(sayMsg);
+	                if(M.matches())
+	                {
+		            	Long addTime=(Long)eventC.stateVariable(2);
+		            	if(addTime==null)
+		            	{
+		            		addTime=Long.valueOf(CMath.s_long(eventC.getTriggerParm("WAIT"))*Tickable.TIME_TICK);
+		            		eventC.setStateVariable(2,addTime);
+		            	}
+		            	eventC.setStateVariable(1,Long.valueOf(System.currentTimeMillis()+addTime.longValue()));
+		            	for(MOB target : targets)
+				            if(eventC.applies(msg.source(),target))
+				            {
 				                executeChange(msg.source(),target,eventC);
-			                break;
-			            }
+				                break;
+				            }
+	                }
 	            }
             }
             events=getChangeEvents("MUDCHAT");
@@ -1536,59 +1537,72 @@ public class DefaultFaction implements Faction, MsgListener
     	public void executeMsg(Environmental myHost, CMMsg msg)
     	{
     		if(noListeners) return;
-			if((currentReactionSets.size()>0)
-			&&(msg.sourceMinor()==CMMsg.TYP_ENTER)
-			&&(msg.source()==myHost)
-			&&(!msg.source().isMonster())
-			&&(msg.target() instanceof Room))
+			synchronized(lightPresenceAbilities)
 			{
-		    	if(presenceReactionPrototype==null)
-		    		if((presenceReactionPrototype=CMClass.getAbility("PresenceReaction"))==null) return;
-				
-				MOB M=null;
-		    	Vector myReactions=null;
-		    	Faction.FactionReactionItem reactionItem = null;
-		    	Room R=(Room)msg.target();
-		    	Vector tempReactSet=null;
-		    	Vector<Ability> lightPresenceReactions=new Vector<Ability>();
-				for(int m=0;m<R.numInhabitants();m++)
+				if((currentReactionSets.size()>0)
+				&&(msg.sourceMinor()==CMMsg.TYP_ENTER)
+				&&(msg.source()==myHost)
+				&&(!msg.source().isMonster())
+				&&(msg.target() instanceof Room))
 				{
-					M=R.fetchInhabitant(m);
-					if((M!=null)&&(M!=myHost)&&(M.isMonster()))
+			    	if(presenceReactionPrototype==null)
+			    		if((presenceReactionPrototype=CMClass.getAbility("PresenceReaction"))==null) return;
+					
+					MOB M=null;
+			    	Vector myReactions=null;
+			    	Faction.FactionReactionItem reactionItem = null;
+			    	Room R=(Room)msg.target();
+			    	Vector tempReactSet=null;
+			    	Vector<Ability> lightPresenceReactions=new Vector<Ability>();
+					for(int m=0;m<R.numInhabitants();m++)
 					{
-						myReactions = null;
-				    	for(int d=0;d<currentReactionSets.size();d++)
-				    		if(CMLib.masking().maskCheck((Vector)currentReactionSets.elementAt(d,1),M,true))
-				    		{
-				    			if(myReactions==null) myReactions=new Vector();
-				    			tempReactSet=(Vector)currentReactionSets.elementAt(d,2);
-				    			for(Enumeration e=tempReactSet.elements();e.hasMoreElements();)
-				    			{
-					    			reactionItem=(Faction.FactionReactionItem)e.nextElement();
-					    			myReactions.add(reactionItem.reactionObjectID()+"="+reactionItem.parameters());
-				    			}
-				    		}
-				    	if(myReactions!=null)
-				    		if(useLightReactions())
-				    		{
-				    			Ability A=(Ability)presenceReactionPrototype.copyOf();
-				    			A.invoke(M,myReactions,myHost,false,0);
-				    			A.setInvoker(M);
-				    			lightPresenceReactions.addElement(A);
-				    		}
-				    		else
-						    	presenceReactionPrototype.invoke(M,myReactions,myHost,true,0);
+						M=R.fetchInhabitant(m);
+						if((M!=null)&&(M!=myHost)&&(M.isMonster()))
+						{
+							myReactions = null;
+					    	for(int d=0;d<currentReactionSets.size();d++)
+					    		if(CMLib.masking().maskCheck((Vector)currentReactionSets.elementAt(d,1),M,true))
+					    		{
+					    			if(myReactions==null) myReactions=new Vector();
+					    			tempReactSet=(Vector)currentReactionSets.elementAt(d,2);
+					    			for(Enumeration e=tempReactSet.elements();e.hasMoreElements();)
+					    			{
+						    			reactionItem=(Faction.FactionReactionItem)e.nextElement();
+						    			myReactions.add(reactionItem.reactionObjectID()+"="+reactionItem.parameters());
+					    			}
+					    		}
+					    	if(myReactions!=null)
+					    		if(useLightReactions())
+					    		{
+					    			presenceReactionPrototype.invoke(M,myReactions,myHost,false,0);
+					    			if(myReactions.size()==1)
+					    			{
+					    				Ability A=(Ability)myReactions.firstElement();
+						    			A.setInvoker(M);
+						    			lightPresenceReactions.addElement(A);
+					    			}
+					    		}
+					    		else
+							    	presenceReactionPrototype.invoke(M,myReactions,myHost,true,0);
+						}
 					}
+					lightPresenceAbilities = lightPresenceReactions.toArray(new Ability[0]);
 				}
-				lightPresenceAbilities = lightPresenceReactions.toArray(new Ability[0]);
+				else
+				if((lightPresenceAbilities.length>0)
+				&&(msg.sourceMinor()==CMMsg.TYP_LEAVE)
+				&&(msg.source()==myHost)
+				&&(!msg.source().isMonster())
+				&&(msg.target() instanceof Room))
+	    			lightPresenceAbilities=new Ability[0];
+	    		
+	            for(Ability A : lightPresenceAbilities)
+	                A.executeMsg(A.invoker(), msg);
 			}
-    		
             for(Ability A : myEffects)
                 A.executeMsg(myHost, msg);
             for(Behavior B : myBehaviors)
                 B.executeMsg(myHost, msg);
-            for(Ability A : lightPresenceAbilities)
-                A.executeMsg(A.invoker(), msg);
     	}
     	public boolean okMessage(Environmental myHost, CMMsg msg)
     	{
@@ -1599,9 +1613,12 @@ public class DefaultFaction implements Faction, MsgListener
             for(Behavior B : myBehaviors)
                 if(!B.okMessage(myHost, msg))
                 	return false;
-            for(Ability A : lightPresenceAbilities)
-                if(!A.okMessage(A.invoker(), msg))
-                	return false;
+			synchronized(lightPresenceAbilities)
+			{
+	            for(Ability A : lightPresenceAbilities)
+	                if(!A.okMessage(A.invoker(), msg))
+	                	return false;
+			}
     		return true;
     	}
         public boolean tick(Tickable ticking, int tickID)
@@ -1613,9 +1630,12 @@ public class DefaultFaction implements Faction, MsgListener
             for(Behavior B : myBehaviors)
                 if(!B.tick(ticking, tickID))
                 	return false;
-            for(Ability A : lightPresenceAbilities)
-                if(!A.tick(A.invoker(), tickID))
-                	return false;
+			synchronized(lightPresenceAbilities)
+			{
+	            for(Ability A : lightPresenceAbilities)
+	                if(!A.tick(A.invoker(), tickID))
+	                	return false;
+			}
         	return true;
         }
     }

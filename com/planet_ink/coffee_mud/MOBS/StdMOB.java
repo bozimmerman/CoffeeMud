@@ -2495,11 +2495,12 @@ public class StdMOB implements MOB
 		tickStatus=Tickable.STATUS_START;
 		if(tickID==Tickable.TICKID_MOB)
 		{
+			boolean isMonster=isMonster();
 			if(amDead)
 			{
 				boolean isOk=!pleaseDestroy;
 				tickStatus=Tickable.STATUS_DEAD;
-				if(isMonster())
+				if(isMonster)
 				{
 					if((envStats().rejuv()<Integer.MAX_VALUE)
 					&&(baseEnvStats().rejuv()>0))
@@ -2530,7 +2531,7 @@ public class StdMOB implements MOB
 			{
 				// handle variable equipment!
 				if((lastTickedDateTime<0)
-				&&isMonster()
+				&&isMonster
                 &&location().getMobility()
                 &&(location().getArea().getAreaState()<Area.STATE_FROZEN))
 				{
@@ -2546,7 +2547,7 @@ public class StdMOB implements MOB
 					curState().recoverTick(this,maxState);
 					recoverTickCounter = CMProps.getIntVar(CMProps.SYSTEMI_RECOVERRATE);
 				}
-				if(!isMonster())
+				if(!isMonster)
                     curState().expendEnergy(this,maxState,false);
 
 				if((!CMLib.flags().canBreathe(this))&&(!CMLib.flags().isGolem(this)))
@@ -2576,7 +2577,7 @@ public class StdMOB implements MOB
 				}
 
 				tickStatus=Tickable.STATUS_OTHER;
-				if(!isMonster())
+				if(!isMonster)
 				{
 					if(CMLib.flags().isSleeping(this))
 						curState().adjFatigue(-CharState.REST_PER_TICK,maxState());
@@ -2585,7 +2586,7 @@ public class StdMOB implements MOB
 					{
 						curState().adjFatigue(Tickable.TIME_TICK,maxState());
 				        if((curState().getFatigue()>CharState.FATIGUED_MILLIS)
-						&&(!isMonster())
+						&&(!isMonster)
                      	&&(CMLib.dice().rollPercentage()==1)
                      	&&(!CMSecurity.isDisabled("AUTODISEASE")))
                      	{
@@ -2593,7 +2594,7 @@ public class StdMOB implements MOB
                         	if(theYawns!=null) theYawns.invoke(this, this, true,0);
                      	}
 				        if((curState().getFatigue()>(CharState.FATIGUED_EXHAUSTED_MILLIS))
-						&&(!isMonster())
+						&&(!isMonster)
                      	&&(CMLib.dice().rollPercentage()==1))
                      	{
 							location().show(this,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) asleep from exhaustion!!");
@@ -2608,7 +2609,7 @@ public class StdMOB implements MOB
 				if((riding()!=null)&&(CMLib.map().roomLocation(riding())!=location()))
 					setRiding(null);
 
-				if((!isMonster())&&(soulMate()==null))
+				if((!isMonster)&&(soulMate()==null))
 				{
                     CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_TICKSONLINE);
                     if(((++tickCounter)*Tickable.TIME_TICK)>60000)
@@ -2658,7 +2659,7 @@ public class StdMOB implements MOB
             for(e=DVector.s_enum(factions,false);e.hasMoreElements();)
             {
                 factionData=(Faction.FactionData)e.nextElement();
-                if(isMonster()&&factionData.requiresUpdating())
+                if(isMonster&&factionData.requiresUpdating())
                 {
                 	String factionID = factionData.getFaction().factionID();
                     Faction F=CMLib.factions().getFaction(factionID);

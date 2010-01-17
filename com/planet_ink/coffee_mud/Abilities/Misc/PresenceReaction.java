@@ -43,7 +43,7 @@ public class PresenceReaction extends StdAbility
 	protected String previousMood = null;
 	protected String reactToName=null;
 	protected Vector<Object[]> unmanagedYet=new Vector<Object[]>();
-	Vector<CMObject> managed = new Vector<CMObject>();
+	protected Vector<CMObject> managed = new Vector<CMObject>();
 
 	public PresenceReaction()
 	{
@@ -51,6 +51,17 @@ public class PresenceReaction extends StdAbility
 		super.makeLongLasting();
 		super.savable=false;
 		super.canBeUninvoked=false;
+	}
+	protected void cloneFix(Ability E){
+		expertise=null;
+		reactToM=null;
+		previousMood=null;
+		reactToName=null;
+		reactToM=null;
+		affected=null;
+		invoker=null;
+		unmanagedYet=new Vector<Object[]>();
+		managed = new Vector<CMObject>();
 	}
 
 	public void addAffectOrBehavior(String substr)
@@ -176,6 +187,14 @@ public class PresenceReaction extends StdAbility
 			Object[] thing=unmanagedYet.remove(0);
 			if(thing[0] instanceof Ability)
 			{
+				if(((Ability)thing[0]).ID().equalsIgnoreCase("Mood"))
+				{
+					previousMood="";
+					Ability A=affected.fetchEffect("Mood");
+					if(A!=null) previousMood=A.text();
+					if(previousMood.trim().length()==0)
+						previousMood="NORMAL";
+				}
 				Ability A=(Ability)thing[0];
 				A.setAffectedOne(affected);
 				A.setMiscText((String)thing[1]);
@@ -194,27 +213,8 @@ public class PresenceReaction extends StdAbility
 			}
 			if(thing[0] instanceof Command)
 			{
-				Command C=(Command)thing[0];
-				if(C.ID().equalsIgnoreCase("Mood"))
-				{
-					previousMood="";
-					Ability A=affected.fetchEffect("Mood");
-					if(A!=null) previousMood=A.text();
-					if(previousMood.trim().length()==0)
-						previousMood="NORMAL";
-				}
-				else
-				{
-					commands.add(thing);
-					continue;
-				}
-				try
-				{
-					String cmdparms=C.getAccessWords()[0]+" "+CMStrings.replaceAll((String)thing[1],"<TARGET>","$"+reactToM.Name()+"$");
-					affected.enqueCommand(CMParms.parse(cmdparms),Command.METAFLAG_FORCED, 0);
-				} catch(Exception e){}
-				managed.add(C);
-				didAnything=true;
+				commands.add(thing);
+				continue;
 			}
 		}
 		unmanagedYet = commands;
@@ -255,13 +255,10 @@ public class PresenceReaction extends StdAbility
 		if(reactToM==null)
 		{
 			// dont combine this if with the above
-			if(affected instanceof MOB)
-			{
-				if(reactToName!=null)
-					reactToM=((MOB)affected).location().fetchInhabitant(reactToName);
-				if(reactToM==null)
-					return shutdownPresence((MOB)affected);
-			}
+			if((affected instanceof MOB)&&(reactToName!=null))
+				reactToM=((MOB)affected).location().fetchInhabitant(reactToName);
+			if(reactToM==null)
+				return shutdownPresence((MOB)affected);
 		}
 		else
 		if(this.affected instanceof MOB)
@@ -290,6 +287,8 @@ public class PresenceReaction extends StdAbility
 		A.reactToM=(MOB)target;
 		for(Object O : commands)
 			A.addAffectOrBehavior((String)O);
+		commands.clear();
+		commands.addElement(A);
 		if(auto)
 		{
 			synchronized(mob)
@@ -308,7 +307,7 @@ public class PresenceReaction extends StdAbility
 			A.makeNonUninvokable();
 			A.setAffectedOne(mob);
 			A.initializeManagedObjects(mob);
-			return true;
+ 			return true;
 		}
 		
 	}
