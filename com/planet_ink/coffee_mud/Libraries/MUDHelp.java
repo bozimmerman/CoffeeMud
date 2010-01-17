@@ -440,7 +440,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					if(type==Ability.ACODE_PRAYER)
 					{
 					    String rangeDescs=null;
-					    for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
+					    for(Enumeration e=CMLib.factions().factions();e.hasMoreElements();)
 					    {
 					        Faction F=(Faction)e.nextElement();
 					        rangeDescs=F.usageFactorRangeDescription(A);

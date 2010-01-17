@@ -1781,7 +1781,7 @@ public class Quests extends StdLibrary implements QuestManager
                         {
                             String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
                             StringBuffer label=new StringBuffer(((lastLabel==null)?"":lastLabel)+"\n\rChoices: ");
-                            for(Enumeration f=CMLib.factions().factionSet().elements();f.hasMoreElements();)
+                            for(Enumeration f=CMLib.factions().factions();f.hasMoreElements();)
                                 label.append("\""+((Faction)f.nextElement()).name()+"\" ");
                             String s=CMLib.genEd().prompt(mob,showValue,++showNumber,showFlag,parm1Fixed,optionalEntry,false,label.toString(),
                                                             QuestManager.QM_COMMAND_TESTS[inputCode],

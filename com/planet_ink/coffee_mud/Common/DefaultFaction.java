@@ -982,6 +982,7 @@ public class DefaultFaction implements Faction, MsgListener
         		 done=true;
     		 }
     		 else
+    	     if(ne1<nevents.length)
     			 nevents[ne1++]=events[x];
     	 }
     	 return done;

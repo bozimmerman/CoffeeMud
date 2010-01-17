@@ -440,7 +440,7 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("ALIGNMENT"))
 				{
 				    String rangeDesc=null;
-				    for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
+				    for(Enumeration e=CMLib.factions().factions();e.hasMoreElements();)
 				    {
 				        Faction F=(Faction)e.nextElement();
 				        rangeDesc=F.usageFactorRangeDescription(A);

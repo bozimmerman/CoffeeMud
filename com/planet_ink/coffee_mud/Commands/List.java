@@ -437,7 +437,7 @@ public class List extends StdCommand
 	public StringBuffer listLinkages(MOB mob)
 	{
 	    Faction useFaction=null;
-	    for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
+	    for(Enumeration e=CMLib.factions().factions();e.hasMoreElements();)
 	    {
 	        Faction F=(Faction)e.nextElement();
 	        if(F.showInSpecialReported()) useFaction=F;

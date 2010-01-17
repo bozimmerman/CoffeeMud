@@ -425,9 +425,9 @@ public class MobData extends StdWebMacro
 
 			Object[] sortedB=null;
 			Vector sortMeB=new Vector();
-			for(Enumeration fID=CMLib.factions().factionSet().keys();fID.hasMoreElements();)
+			for(Enumeration<Faction> fID=CMLib.factions().factions();fID.hasMoreElements();)
 			{
-				Faction F=CMLib.factions().getFaction((String)fID.nextElement());
+				Faction F=fID.nextElement();
 				if((F!=null)&&(!theclasses.contains(F.factionID())))
 					sortMeB.addElement(F.factionID());
 			}

@@ -1514,16 +1514,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         }catch(CMException ex){
 	                        if(numStr.equalsIgnoreCase("ANY"))
 	                        {
-	                        	int numFactions=CMLib.factions().factionSet().size();
+	                        	int numFactions=CMLib.factions().numFactions();
 	                        	int whichFaction=CMLib.dice().roll(1,numFactions,-1);
 	                        	int curFaction=0;
-	                        	Hashtable factions=(Hashtable)CMLib.factions().factionSet().clone();
-	                        	for(Enumeration e=factions.elements();e.hasMoreElements();)
+	                        	for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();curFaction++)
 	                        	{
 	                        		F=(Faction)e.nextElement();
 	                        		if(curFaction==whichFaction)
 	                        			break;
-	                        		curFaction++;
 	                        	}
 	                        }
 	                        else
@@ -1557,7 +1555,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                    		q.mysteryData.factionGroup.addElement(q.mysteryData.faction);
 	                        if(CMath.isMathExpression(numStr)||numStr.equalsIgnoreCase("ALL"))
 	                        {
-	                        	int numFactions=CMLib.factions().factionSet().size();
+	                        	int numFactions=CMLib.factions().numFactions();
 	                        	if(numStr.equalsIgnoreCase("ALL")) numStr=""+numFactions;
 	                        	int num=CMath.s_parseIntExpression(numStr);
 	                        	if(num>=numFactions) num=numFactions;
@@ -1566,13 +1564,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                        	{
 		                        	int whichFaction=CMLib.dice().roll(1,numFactions,-1);
 		                        	int curFaction=0;
-		                        	Hashtable factions=(Hashtable)CMLib.factions().factionSet().clone();
-		                        	for(Enumeration e=factions.elements();e.hasMoreElements();)
+		                        	for(Enumeration e=CMLib.factions().factions();e.hasMoreElements();curFaction++)
 		                        	{
 		                        		F=(Faction)e.nextElement();
 		                        		if(curFaction==whichFaction)
 		                        			break;
-		                        		curFaction++;
 		                        	}
 		                        	if(!q.mysteryData.factionGroup.contains(F))
 		                        		q.mysteryData.factionGroup.addElement(F);

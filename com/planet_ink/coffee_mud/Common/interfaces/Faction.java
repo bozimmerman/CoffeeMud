@@ -1574,6 +1574,8 @@ public interface Faction extends CMCommon, MsgListener
     public static final long IFLAG_IGNOREAUTO=1;
     /** internal flag masks meaning to never save to a file, retrieved by {@link Faction#getInternalFlags()} */
     public static final long IFLAG_NEVERSAVE=2;
+    /** internal flag masks meaning to skip normal ticking, retrieved by {@link Faction#getInternalFlags()} */
+    public static final long IFLAG_CUSTOMTICK=4;
     
     /** legacy constant for {@link FactionRange#alignEquiv()} denoting that the range does not reflect alignment */
     public final static int ALIGN_INDIFF=0;

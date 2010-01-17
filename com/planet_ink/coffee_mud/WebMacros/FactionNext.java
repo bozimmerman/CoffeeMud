@@ -47,9 +47,12 @@ public class FactionNext extends StdWebMacro
             return "";
         }
         String lastID="";
-        for(Enumeration q=CMLib.factions().factionSet().keys();q.hasMoreElements();)
+        Faction F;
+        String factionID;
+        for(Enumeration q=CMLib.factions().factions();q.hasMoreElements();)
         {
-            String factionID=(String)q.nextElement();
+        	F=(Faction)q.nextElement();
+            factionID=F.factionID().toUpperCase().trim();
             if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!factionID.equalsIgnoreCase(lastID))))
             {
                 httpReq.addRequestParameters("FACTION",factionID);

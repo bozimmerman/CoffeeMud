@@ -484,7 +484,7 @@ public class FactionData extends StdWebMacro
                     str.append("<TR><TD>");
                     str.append("<SELECT NAME=RELATIONS"+showNum+" ONCHANGE=\"AddItem(this);\">");
                     str.append("<OPTION VALUE=\"\">Select a faction");
-                    for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
+                    for(Enumeration e=CMLib.factions().factions();e.hasMoreElements();)
                     {
                         Faction F2=(Faction)e.nextElement();
                         str.append("<OPTION VALUE=\""+F2.factionID()+"\">"+F2.name());

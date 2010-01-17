@@ -694,7 +694,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             Faction F=null;
             Vector mine=null;
             int defaultValue=0;
-            for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
+            for(Enumeration e=CMLib.factions().factions();e.hasMoreElements();)
             {
                 F=(Faction)e.nextElement();
                 mine=F.findChoices(mob);

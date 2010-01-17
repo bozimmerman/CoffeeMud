@@ -37,10 +37,11 @@ import java.util.*;
 public class Factions extends StdLibrary implements FactionManager
 {
     public String ID(){return "Factions";}
-	public Hashtable factionSet = new Hashtable();
-	public Hashtable hashedFactionRanges=new Hashtable();
+	public Hashtable<String,Faction> factionSet = new Hashtable<String,Faction>();
+	public Hashtable<String,Faction> hashedFactionRanges=new Hashtable<String,Faction>();
 	
-    public Hashtable factionSet(){return factionSet;}
+    public Enumeration<Faction> factions(){return DVector.s_enum(factionSet,false);}
+    public int numFactions(){return factionSet.size();}
 	public void clearFactions()
 	{
 	    factionSet.clear();
@@ -54,7 +55,7 @@ public class Factions extends StdLibrary implements FactionManager
             getFaction((String)preLoadFactions.elementAt(i));
     }
 	
-	public Hashtable rangeCodeNames(){ return hashedFactionRanges; }
+	public Hashtable<String,Faction> rangeCodeNames(){ return hashedFactionRanges; }
 	public boolean isRangeCodeName(String key){ return rangeCodeNames().containsKey(key.toUpperCase());}
 	public boolean isFactionedThisWay(MOB mob, String rangeCodeName)
 	{
@@ -106,8 +107,13 @@ public class Factions extends StdLibrary implements FactionManager
             if(!hashedFactionRanges.containsKey(UniqueCodeName))
                 hashedFactionRanges.put(UniqueCodeName,F);
         }
-        factionSet.put(factionID.toUpperCase(),F);
+        addFaction(factionID,F);
         return F;
+	}
+
+	public void addFaction(String factionID, Faction F)
+	{
+        factionSet.put(factionID.toUpperCase().trim(),F);
 	}
 	
 	public Faction getFaction(String factionID) 
@@ -132,26 +138,29 @@ public class Factions extends StdLibrary implements FactionManager
 	
 	public Faction getFactionByName(String factionNamed) 
 	{
+		Faction F;
 	    for(Enumeration e=factionSet.keys();e.hasMoreElements();) 
 	    {
-	        Faction f=(Faction)factionSet.get(e.nextElement());
-	        if(f.name().equalsIgnoreCase(factionNamed)) return f;
+	        F=(Faction)factionSet.get(e.nextElement());
+	        if(F.name().equalsIgnoreCase(factionNamed)) 
+	        	return F;
 	    }
 	    return null;
 	}
 	
 	public boolean removeFaction(String factionID) 
 	{
+		Faction F;
 	    if(factionID==null) 
 	    {
 	        for(Enumeration e=factionSet.keys();e.hasMoreElements();) 
 	        {
-	            Faction f=(Faction)factionSet.get(e.nextElement());
-	            removeFaction(f.factionID());
+	            F=(Faction)factionSet.get(e.nextElement());
+	            removeFaction(F.factionID());
 	        }
 	        return true;
 	    }
-        Faction F=getFactionByName(factionID);
+        F=getFactionByName(factionID);
         if(F==null) F=getFaction(factionID);
         if(F==null) return false;
         Resources.removeResource(F.factionID());
@@ -188,7 +197,7 @@ public class Factions extends StdLibrary implements FactionManager
 	public int getPercent(String factionID, int faction) { Faction f=getFaction(factionID); if(f!=null) return f.asPercent(faction); return 0; }
 	public int getPercentFromAvg(String factionID, int faction) { Faction f=getFaction(factionID); if(f!=null) return f.asPercentFromAvg(faction); return 0; }
 	public Faction.FactionRange getRange(String factionID, int faction) { Faction f=getFaction(factionID); if(f!=null) return f.fetchRange(faction); return null; }
-	public Enumeration getRanges(String factionID) { 
+	public Enumeration<Faction.FactionRange> getRanges(String factionID) { 
         Faction f=getFaction(factionID); 
         if(f!=null) return f.ranges(); 
         return null; 
@@ -280,23 +289,20 @@ public class Factions extends StdLibrary implements FactionManager
     	Faction F=buildFactionFromXML(buf, factionID);
     	F.setInternalFlags(F.getInternalFlags() | Faction.IFLAG_IGNOREAUTO);
     	F.setInternalFlags(F.getInternalFlags() | Faction.IFLAG_NEVERSAVE);
-    	factionSet.put(factionID,F);
+    	F.setInternalFlags(F.getInternalFlags() | Faction.IFLAG_CUSTOMTICK);
+        addFaction(factionID,F);
     	return F;
     }
     
-    public void updatePlayerFactions(MOB mob, Room R)
+    public Faction[] getSpecialFactions(MOB mob, Room R)
     {
-    	Faction F=null;
-        for(Enumeration e=factionSet().elements();e.hasMoreElements();)
-        {
-            F=(Faction)e.nextElement();
-            if((!CMath.bset(F.getInternalFlags(), Faction.IFLAG_IGNOREAUTO))
-            &&(!F.hasFaction(mob))
-            &&(F.findAutoDefault(mob)!=Integer.MAX_VALUE))
-                mob.addFaction(F.factionID(),F.findAutoDefault(mob));
-        }
-        if(R==null) return;
-        if(CMProps.getVar(CMProps.SYSTEM_AUTOREACTION).equalsIgnoreCase("AREA"))
+        if((mob==null)||(R==null))
+        	return null;
+        Faction F=null;
+        String SPECIALTYPE=CMProps.getVar(CMProps.SYSTEM_AUTOREACTION).toUpperCase().trim();
+        if((SPECIALTYPE==null)||(SPECIALTYPE.length()==0))
+        	return null;
+        if(SPECIALTYPE.equals("AREA"))
         {
         	Area A=R.getArea();
         	if(A!=null)
@@ -305,13 +311,14 @@ public class Factions extends StdLibrary implements FactionManager
 	        	F=getFaction("AREA_"+areaCode);
 	        	if(F==null)
 	        		F=makeReactionFaction("AREA_",A.ID(),A.Name(),"examples/areareaction.ini");
-	            if((F!=null)&&(!F.hasFaction(mob))&&(F.findAutoDefault(mob)!=Integer.MAX_VALUE))
-	                mob.addFaction(F.factionID(),F.findAutoDefault(mob));
+	        	if(F==null) return null;
+	        	return new Faction[]{F};
         	}
         }
         else
-        if(CMProps.getVar(CMProps.SYSTEM_AUTOREACTION).equalsIgnoreCase("NAME"))
+        if(SPECIALTYPE.equals("NAME"))
         {
+        	Vector<Faction> Fs=new Vector<Faction>();
         	for(int i=0;i<R.numInhabitants();i++)
         	{
         		MOB M=R.fetchInhabitant(i);
@@ -321,14 +328,17 @@ public class Factions extends StdLibrary implements FactionManager
     	        	F=getFaction("NAME_"+nameCode);
     	        	if(F==null)
     	        		F=makeReactionFaction("NAME_",M.ID(),M.Name(),"examples/namereaction.ini");
-    	            if((F!=null)&&(!F.hasFaction(mob))&&(F.findAutoDefault(mob)!=Integer.MAX_VALUE))
-    	                mob.addFaction(F.factionID(),F.findAutoDefault(mob));
+    	        	if(F!=null)
+    	        		Fs.add(F);
         		}
         	}
+        	if(Fs.size()==0) return null;
+        	return Fs.toArray(new Faction[0]);
         }
         else
-        if(CMProps.getVar(CMProps.SYSTEM_AUTOREACTION).equalsIgnoreCase("RACE"))
+        if(SPECIALTYPE.equals("RACE"))
         {
+        	Vector<Faction> Fs=new Vector<Faction>();
         	HashSet<Race> done=new HashSet<Race>(2);
         	for(int i=0;i<R.numInhabitants();i++)
         	{
@@ -341,9 +351,64 @@ public class Factions extends StdLibrary implements FactionManager
     	        	F=getFaction("RACE_"+nameCode);
     	        	if(F==null)
     	        		F=makeReactionFaction("RACE_",rR.ID(),rR.name(),"examples/racereaction.ini");
-    	            if((F!=null)&&(!F.hasFaction(mob))&&(F.findAutoDefault(mob)!=Integer.MAX_VALUE))
-    	                mob.addFaction(F.factionID(),F.findAutoDefault(mob));
+    	        	if(F!=null)
+    	        		Fs.add(F);
         		}
+        	}
+        	if(Fs.size()==0) return null;
+        	return Fs.toArray(new Faction[0]);
+        }
+        return null;
+    }
+    
+    
+    public void updatePlayerFactions(MOB mob, Room R)
+    {
+        if((mob==null)||(R==null))
+        	return;
+        else
+    	{
+	    	Faction F=null;
+	        for(Enumeration e=factions();e.hasMoreElements();)
+	        {
+	            F=(Faction)e.nextElement();
+	            if(((F.getInternalFlags()&Faction.IFLAG_IGNOREAUTO)==0)
+	            &&(!F.hasFaction(mob))
+	            &&(F.findAutoDefault(mob)!=Integer.MAX_VALUE))
+	                mob.addFaction(F.factionID(),F.findAutoDefault(mob));
+	        }
+    	}
+        Faction[] Fs=getSpecialFactions(mob,R);
+        if(Fs!=null)
+	        for(Faction F : Fs)
+	            if((F!=null)&&(!F.hasFaction(mob))&&(F.findAutoDefault(mob)!=Integer.MAX_VALUE))
+	                mob.addFaction(F.factionID(),F.findAutoDefault(mob));
+    }
+
+    protected void addOutsidersAndTimers(Faction F, Vector<Faction.FactionChangeEvent> outSiders, Vector<Faction.FactionChangeEvent> timers)
+    {
+	    Faction.FactionChangeEvent[] CEs=null;
+        CEs=F.getChangeEvents("ADDOUTSIDER");
+        for(int i=0;i<CEs.length;i++)
+        	outSiders.addElement(CEs[i]);
+        CEs=F.getChangeEvents("TIME");
+        for(int i=0;i<CEs.length;i++)
+        {
+        	if(CEs[i].triggerParameters().length()==0)
+            	timers.addElement(CEs[i]);
+        	else
+        	{
+            	int[] ctr=(int[])CEs[i].stateVariable(0);
+            	if(ctr==null)
+            	{
+            		ctr=new int[]{CMath.s_int(CEs[i].getTriggerParm("ROUND"))};
+            		CEs[i].setStateVariable(0,ctr);
+            	}
+            	if((--ctr[0])<=0)
+            	{
+                	ctr[0]=CMath.s_int(CEs[i].getTriggerParm("ROUND"));
+                	timers.addElement(CEs[i]);
+            	}
         	}
         }
     }
@@ -357,45 +422,38 @@ public class Factions extends StdLibrary implements FactionManager
 		    Session S=null;
 		    MOB mob=null;
 		    Faction F=null;
-		    Faction.FactionChangeEvent[] CEs=null;
 		    Faction.FactionChangeEvent CE=null;
             Vector<Faction.FactionChangeEvent> outSiders=new Vector<Faction.FactionChangeEvent>();
             Vector<Faction.FactionChangeEvent> timers=new Vector<Faction.FactionChangeEvent>();
+            HashSet<Faction> factionsDone=new HashSet<Faction>();
             for(Enumeration e=factionSet.elements();e.hasMoreElements();)
             {
                 F=(Faction)e.nextElement();
-                CEs=F.getChangeEvents("ADDOUTSIDER");
-                for(int i=0;i<CEs.length;i++)
-                	outSiders.addElement(CEs[i]);
-                CEs=F.getChangeEvents("TIME");
-                for(int i=0;i<CEs.length;i++)
+                if((F.getInternalFlags()&Faction.IFLAG_CUSTOMTICK)==0)
                 {
-                	if(CEs[i].triggerParameters().length()==0)
-                    	timers.addElement(CEs[i]);
-                	else
-                	{
-	                	int[] ctr=(int[])CEs[i].stateVariable(0);
-	                	if(ctr==null)
-	                	{
-	                		ctr=new int[]{CMath.s_int(CEs[i].getTriggerParm("ROUND"))};
-	                		CEs[i].setStateVariable(0,ctr);
-	                	}
-	                	if((--ctr[0])<=0)
-	                	{
-		                	ctr[0]=CMath.s_int(CEs[i].getTriggerParm("ROUND"));
-		                	timers.addElement(CEs[i]);
-	                	}
-                	}
+                	addOutsidersAndTimers(F, outSiders, timers);
+                	factionsDone.add(F);
                 }
             }
             if((outSiders.size()==0)&&(timers.size()==0)) 
                 return true;
+            Room R;
+            Faction[] Fs;
 		    for(int s=0;s<CMLib.sessions().size();s++)
 		    {
 		        S=CMLib.sessions().elementAt(s);
 		        mob=(!S.killFlag())?S.mob():null;
-		        if(mob!=null)
+		        R=(mob==null)?null:mob.location();
+		        if(R!=null)
 		        {
+		        	Fs=getSpecialFactions(mob, R);
+		        	if(Fs!=null)
+		        		for(Faction sF : Fs)
+		        			if(!factionsDone.contains(sF))
+			        		{
+		                    	addOutsidersAndTimers(sF, outSiders, timers);
+		                    	factionsDone.add(sF);
+			        		}
                     for(int o=0;o<outSiders.size();o++)
 		            {
 		                CE=(Faction.FactionChangeEvent)outSiders.elementAt(o);
@@ -613,7 +671,7 @@ public class Factions extends StdLibrary implements FactionManager
 
             // show in special reports
             boolean alreadyReporter=false;
-            for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
+            for(Enumeration e=CMLib.factions().factions();e.hasMoreElements();)
             {
                 Faction F2=(Faction)e.nextElement();
                 if(F2.showInSpecialReported()) alreadyReporter=true;
@@ -852,7 +910,8 @@ public class Factions extends StdLibrary implements FactionManager
                 if((showFlag!=showNumber)&&(showFlag>-999)) break;
                 String which=mob.session().prompt("Select a ID to add, remove, or modify:","");
                 which=which.toUpperCase().trim();
-                Faction.FactionChangeEvent CE=choicesHashed.get(Character.valueOf(which.charAt(0)));
+                if(which.length()==0) continue;
+                Faction.FactionChangeEvent CE=(which.length()>0)?choicesHashed.get(Character.valueOf(which.charAt(0))):null;
                 if(CE==null)
                 {
                     String newID=mob.session().prompt("Enter a new change ID (?): ").toUpperCase().trim();
