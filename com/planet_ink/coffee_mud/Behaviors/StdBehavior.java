@@ -84,8 +84,6 @@ public class StdBehavior implements Behavior
     protected void finalize(){CMClass.unbumpCounter(this,CMClass.OBJECT_BEHAVIOR);}
     public void setSavable(boolean truefalse){isSavableBehavior=truefalse;}
     public boolean isSavable(){return isSavableBehavior;}
-	public boolean modifyBehavior(Environmental hostObj, MOB mob, Object O)
-	{ return false; }
 	protected MOB getBehaversMOB(Tickable ticking)
 	{
 		if(ticking==null) return null;

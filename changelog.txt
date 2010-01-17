@@ -2231,7 +2231,10 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 6. Only Artisan's learn the Master common skills now.  Other classes have their common skill levels lowered.
 7. New language: Sign Language
 8. New ZapperMask(s): -CHANCE
-9. New Property(s): PresenceReaction (for faction, etc)
+9. New Property(s): PresenceReaction (for new faction reaction system, etc.)
 10.New Mage Spell: Awe Other
-11.Factions now have new trigger: KILL and new modification system: REACTIONS
-11.CoffeeMud now has an automated MOB reaction system -- see coffeemud.ini under REACTION, and the guide under FACTIONS for more info.
+11.Factions now have new mob modification system similar to affects/behaviors: reactions
+11.New automated MOB reaction system -- see coffeemud.ini under REACTION, and the guide under FACTIONS for more info.
+12.Factions now have lots of new triggers: KILL, BRIBE, TALK, MUDCHAT, ARRESTED
+13.Faction triggers support parameters; see one of the new faction.ini files for details
+

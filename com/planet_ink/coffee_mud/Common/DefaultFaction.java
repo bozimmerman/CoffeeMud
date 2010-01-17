@@ -19,6 +19,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.ByteArrayInputStream;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.lang.reflect.*;
 /**
  * Portions Copyright (c) 2003 Jeremy Vyska
@@ -186,13 +188,13 @@ public class DefaultFaction implements Faction, MsgListener
         autoDefaults =CMParms.parseSemicolons(alignProp.getStr("AUTODEFAULTS"),true);
         choices =CMParms.parseSemicolons(alignProp.getStr("AUTOCHOICES"),true);
         useLightReactions=alignProp.getBoolean("USELIGHTREACTIONS");
-        ranges=new Hashtable();
-        changes=new Hashtable();
-        factors=new Vector();
-        relations=new Hashtable();
-        abilityUsages=new Vector();
-        reactions=new Vector();
-        reactionHash=new Hashtable();
+        ranges=new Hashtable<String,FactionRange>();
+        changes=new Hashtable<String,FactionChangeEvent[]>();
+        factors=new Vector<FactionZapFactor>();
+        relations=new Hashtable<String,Double>();
+        abilityUsages=new Vector<FactionAbilityUsage>();
+        reactions=new Vector<FactionReactionItem>();
+        reactionHash=new Hashtable<String,Vector<FactionReactionItem>>();
         for(Enumeration e=alignProp.keys();e.hasMoreElements();)
         {
             if(debug) Log.sysOut("FACTIONS","Starting Key Loop");
@@ -524,19 +526,22 @@ public class DefaultFaction implements Faction, MsgListener
         	return abilityChangesCache.get(key.ID().toUpperCase());
         }
         // By TYPE or FLAGS
-        FactionChangeEvent C =null;
+        FactionChangeEvent[] Cs =null;
         Vector<FactionChangeEvent> events=new Vector<FactionChangeEvent>();
-        for (Enumeration e=changes.elements();e.hasMoreElements();)
+        for (Enumeration<FactionChangeEvent[]> e=changes.elements();e.hasMoreElements();)
         {
-            C= (FactionChangeEvent)e.nextElement();
-            if((key.classificationCode()&Ability.ALL_ACODES)==C.IDclassFilter())
-                events.addElement(C);
-            else
-            if((key.classificationCode()&Ability.ALL_DOMAINS)==C.IDdomainFilter())
-                events.addElement(C);
-            else
-            if((C.IDflagFilter()>0)&&(CMath.bset(key.flags(),C.IDflagFilter())))
-                events.addElement(C);
+            Cs=e.nextElement();
+            for(FactionChangeEvent C : Cs)
+            {
+	            if((key.classificationCode()&Ability.ALL_ACODES)==C.IDclassFilter())
+	                events.addElement(C);
+	            else
+	            if((key.classificationCode()&Ability.ALL_DOMAINS)==C.IDdomainFilter())
+	                events.addElement(C);
+	            else
+	            if((C.IDflagFilter()>0)&&(CMath.bset(key.flags(),C.IDflagFilter())))
+	                events.addElement(C);
+            }
         }
         FactionChangeEvent[] evs = events.toArray(new FactionChangeEvent[0]);
         abilityChangesCache.put(key.ID().toUpperCase(), evs);
@@ -691,6 +696,7 @@ public class DefaultFaction implements Faction, MsgListener
             MOB killingBlowM=(MOB)msg.tool();
             events=getChangeEvents((msg.source()==myHost)?"MURDER":"KILL");
             FactionChangeEvent eventC;
+            if(events!=null)
             for(int e=0;e<events.length;e++)
             {
                 eventC=events[e];
@@ -703,7 +709,179 @@ public class DefaultFaction implements Faction, MsgListener
                 }
             }
         }
+        
+        if((msg.tool() instanceof Ability)
+        &&(msg.target()==myHost)    // Arrested watching
+        &&(msg.tool().ID().equals("Skill_Handcuff"))
+        &&(msg.source().isMonster()))
+        {
+        	Room R=msg.source().location();
+        	if((R!=null)&&(R.getArea()!=null))
+        	{
+                FactionChangeEvent eventC;
+                events=getChangeEvents("ARRESTED");
+                if(events!=null)
+                {
+    	        	LegalBehavior B=CMLib.law().getLegalBehavior(R);
+    	        	if((B!=null)&&(B.isAnyOfficer(R.getArea(), msg.source())))
+    	        	{
+		                for(int e=0;e<events.length;e++)
+		                {
+		                    eventC=events[e];
+		    	            if(eventC.applies(msg.source(),(MOB)msg.target()))
+				                executeChange(msg.source(),(MOB)msg.target(),eventC);
+		                }
+    	        	}
+                }
+        	}
+        }
+        
+        if((msg.sourceMinor()==CMMsg.TYP_GIVE)    // Bribe watching
+        &&(msg.source()==myHost)
+        &&(msg.tool() instanceof Coins)
+        &&(msg.target() instanceof MOB))
+        {
+            FactionChangeEvent eventC;
+            events=getChangeEvents("BRIBE");
+            if(events!=null)
+            for(int e=0;e<events.length;e++)
+            {
+                eventC=events[e];
+	            if(eventC.applies(msg.source(),(MOB)msg.target()))
+	            {
+	                double amount=CMath.s_double(eventC.getTriggerParm("AMOUNT"));
+	                double pctAmount = CMath.s_pct(eventC.getTriggerParm("PCT"))
+	                				 * CMLib.beanCounter().getTotalAbsoluteNativeValue((MOB)msg.target());
+	                if(pctAmount>amount) amount=pctAmount;
+	                if(amount==0) amount=1.0;
+	                if(((Coins)msg.tool()).getTotalValue()>=amount)
+		                executeChange(msg.source(),(MOB)msg.target(),eventC);
+	            }
+            }
+        }
 
+        if((msg.sourceMinor()==CMMsg.TYP_SPEAK)    // Talk watching
+        &&(msg.othersMessage()!=null)
+        &&(msg.source()==myHost))
+        {
+            FactionChangeEvent eventC;
+            events=getChangeEvents("TALK");
+            if((events!=null)&&(events.length>0))
+            {
+            	Room R=msg.source().location();
+            	Vector<MOB> targets=new Vector<MOB>();
+            	if(msg.target() instanceof MOB)
+            		targets.add((MOB)msg.target());
+            	else
+            	for(int m=0;m<R.numInhabitants();m++)
+            	{
+            		MOB M=R.fetchInhabitant(m);
+            		if((M!=null)&&(M.isMonster())
+            		&&(CMLib.flags().canBeHeardBy(msg.source(),M))
+            		&&(M.amFollowing()!=msg.source()))
+            			targets.add(M);
+            	}
+	            String sayMsg=CMStrings.getSayFromMessage(msg.othersMessage().toLowerCase());
+	            Matcher M=null;
+                if((sayMsg!=null)&&(sayMsg.length()>0)&&(R!=null))
+	            for(int e=0;e<events.length;e++)
+	            {
+	                eventC=events[e];
+	            	Long time=(Long)eventC.stateVariable(1);
+	            	if(time==null)
+	            		time=Long.valueOf(System.currentTimeMillis());
+	            	if(System.currentTimeMillis()<time.longValue())
+	            		continue;
+	            	Long addTime=(Long)eventC.stateVariable(2);
+	            	if(addTime==null)
+	            	{
+	            		addTime=Long.valueOf(CMath.s_long(eventC.getTriggerParm("WAIT"))*Tickable.TIME_TICK);
+	            		eventC.setStateVariable(2,addTime);
+	            	}
+	            	eventC.setStateVariable(1,Long.valueOf(System.currentTimeMillis()+addTime.longValue()));
+	            	for(MOB target : targets)
+			            if(eventC.applies(msg.source(),target))
+			            {
+			            	Pattern P=(Pattern)eventC.stateVariable(0);
+			            	if(P==null)
+			            	{
+			            		String mask=eventC.getTriggerParm("REGEX");
+			            		if((mask==null)||(mask.trim().length()==0))
+			            			mask=".*";
+			            		P=Pattern.compile(mask.toLowerCase());
+			            		eventC.setStateVariable(0,P);
+			            	}
+			            	M=P.matcher(sayMsg);
+			                if(M.matches())
+				                executeChange(msg.source(),target,eventC);
+			                break;
+			            }
+	            }
+            }
+            events=getChangeEvents("MUDCHAT");
+            if((events!=null)&&(events.length>0))
+            {
+            	Room R=msg.source().location();
+            	Vector<MOB> targets=new Vector<MOB>();
+            	if(msg.target() instanceof MOB)
+            		targets.add((MOB)msg.target());
+            	else
+            	for(int m=0;m<R.numInhabitants();m++)
+            	{
+            		MOB M=R.fetchInhabitant(m);
+            		if((M!=null)&&(M.isMonster())
+            		&&(CMLib.flags().canBeHeardBy(msg.source(),M))
+            		&&(M.amFollowing()!=msg.source()))
+            			targets.add(M);
+            	}
+            	boolean foundOne=false;
+            	for(MOB target : targets)
+            	{
+	            	ChattyBehavior mudChatB=null;
+	            	Behavior B=null;
+	            	for(int b=0;b<target.numBehaviors();b++)
+	            	{
+	            		B=target.fetchBehavior(b);
+	            		if(B instanceof ChattyBehavior)
+	            			mudChatB=(ChattyBehavior)B;
+	            	}
+	            	if(mudChatB!=null)
+	            	{
+			            String sayMsg=CMStrings.getSayFromMessage(msg.othersMessage().toLowerCase());
+		                if((sayMsg!=null)&&(sayMsg.length()>0))
+			            for(int e=0;e<events.length;e++)
+			            {
+			                eventC=events[e];
+			            	Long time=(Long)eventC.stateVariable(0);
+			            	if(time==null)
+			            		time=Long.valueOf(System.currentTimeMillis());
+			            	if(System.currentTimeMillis()<time.longValue())
+			            		continue;
+			            	Long addTime=(Long)eventC.stateVariable(1);
+			            	if(addTime==null)
+			            	{
+			            		addTime=Long.valueOf(CMath.s_long(eventC.getTriggerParm("WAIT"))*Tickable.TIME_TICK);
+			            		if(addTime.longValue()<Tickable.TIME_TICK) addTime=Long.valueOf(Tickable.TIME_TICK);
+			            		eventC.setStateVariable(1,addTime);
+			            	}
+			            	eventC.setStateVariable(0,Long.valueOf(System.currentTimeMillis()+addTime.longValue()));
+				            if(eventC.applies(msg.source(),target))
+				            {
+				            	if((mudChatB.getLastRespondedTo()==msg.source())
+				            	&&(mudChatB.getLastThingSaid()!=null)
+				            	&&(!mudChatB.getLastThingSaid().equalsIgnoreCase(sayMsg)))
+				            	{
+				            		executeChange(msg.source(),target,eventC);
+				            		foundOne=true;
+				            	}
+				            }
+			            }
+		                if(foundOne)
+		                	break;
+	            	}
+            	}
+            }
+        }
         // Ability Watching
         if((msg.tool() instanceof Ability)
         &&(msg.othersMessage()!=null)
@@ -1083,14 +1261,14 @@ public class DefaultFaction implements Faction, MsgListener
             setDirection((String)v.elementAt(1));
             String amt=((String)v.elementAt(2)).trim();
             if(amt.endsWith("%"))
-                factor=CMath.s_pct(amt);
+                setFactor(CMath.s_pct(amt));
             else
-                factor=1.0;
+                setFactor(1.0);
 
             if(v.size()>3)
                 setFlags((String)v.elementAt(3));
             if(v.size()>4)
-                targetZapperStr = (String)v.elementAt(4);
+                setTargetZapper((String)v.elementAt(4));
         }
 
         public boolean setEventID(String newID)

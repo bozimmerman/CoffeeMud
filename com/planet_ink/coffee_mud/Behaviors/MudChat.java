@@ -31,7 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("unchecked")
-public class MudChat extends StdBehavior
+public class MudChat extends StdBehavior implements ChattyBehavior
 {
 	public String ID(){return "MudChat";}
 
@@ -51,6 +51,8 @@ public class MudChat extends StdBehavior
 	//----------------------------------------------
 
 	protected MOB lastReactedTo=null;
+	protected MOB lastRespondedTo=null;
+	protected String lastThingSaid=null;
 	protected Vector responseQue=new Vector();
 	protected int tickDown=3;
 	protected final static int TALK_WAIT_DELAY=8;
@@ -85,6 +87,9 @@ public class MudChat extends StdBehavior
         myChatGroup=null;
     }
 
+	public String getLastThingSaid(){ return lastThingSaid;}
+	public MOB getLastRespondedTo(){return lastRespondedTo;}
+    
 	protected static synchronized Vector getChatGroups(String parms)
 	{
 		Vector rsc=null;
@@ -485,8 +490,12 @@ public class MudChat extends StdBehavior
 			return;
 		MOB mob=msg.source();
 		MOB monster=(MOB)affecting;
-		if((!msg.amISource(monster))
-		&&(!mob.isMonster())
+		if((msg.source()==monster)
+		&&(msg.sourceMinor()==CMMsg.TYP_SPEAK)
+		&&(msg.othersMessage()!=null))
+			lastThingSaid=CMStrings.getSayFromMessage(msg.othersMessage());
+		else
+		if((!mob.isMonster())
 		&&(CMLib.flags().canBeHeardBy(mob,monster))
 		&&(CMLib.flags().canBeSeenBy(mob,monster))
 		&&(CMLib.flags().canBeSeenBy(monster,mob)))
@@ -510,7 +519,7 @@ public class MudChat extends StdBehavior
 			&&(msg.targetMessage()!=null)
 			&&((str=CMStrings.getSayFromMessage(msg.sourceMessage()))!=null))
 			{
-				str=" "+str+" ";
+				str=" "+CMLib.english().stripPunctuation(str)+" ";
 				int l=0;
 				for(int i=1;i<myChatGroup.size();i++)
 				{
@@ -538,14 +547,13 @@ public class MudChat extends StdBehavior
 					}
 				}
 			}
-			else
-			if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+			else // dont interrupt another mob
+			if((msg.sourceMinor()==CMMsg.TYP_SPEAK) 
+			&&(mob.isMonster())  // this is another mob (not me) talking
 			&&(CMLib.flags().canBeHeardBy(mob,monster))
-			&&(CMLib.flags().canBeSeenBy(mob,monster))
-			&&(mob.isMonster())
-			&&(msg.source()!=monster))
+			&&(CMLib.flags().canBeSeenBy(mob,monster)))
 			   talkDown=TALK_WAIT_DELAY;
-			else
+			else // dont parse unless we are done waiting
 			if((CMLib.flags().canBeHeardBy(mob,monster))
 			&&(CMLib.flags().canBeSeenBy(mob,monster))
 			&&(CMLib.flags().canBeSeenBy(monster,mob))
@@ -599,6 +607,7 @@ public class MudChat extends StdBehavior
 			if(myResponses!=null)
 			{
 				lastReactedTo=msg.source();
+				lastRespondedTo=msg.source();
 				queResponse(myResponses,monster,mob,rest[0]);
 			}
 		}

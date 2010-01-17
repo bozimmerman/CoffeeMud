@@ -389,9 +389,11 @@ public class Factions extends StdLibrary implements FactionManager
     {
 	    Faction.FactionChangeEvent[] CEs=null;
         CEs=F.getChangeEvents("ADDOUTSIDER");
-        for(int i=0;i<CEs.length;i++)
-        	outSiders.addElement(CEs[i]);
+        if(CEs!=null)
+	        for(int i=0;i<CEs.length;i++)
+	        	outSiders.addElement(CEs[i]);
         CEs=F.getChangeEvents("TIME");
+        if(CEs!=null)
         for(int i=0;i<CEs.length;i++)
         {
         	if(CEs[i].triggerParameters().length()==0)
@@ -401,12 +403,12 @@ public class Factions extends StdLibrary implements FactionManager
             	int[] ctr=(int[])CEs[i].stateVariable(0);
             	if(ctr==null)
             	{
-            		ctr=new int[]{CMath.s_int(CEs[i].getTriggerParm("ROUND"))};
+            		ctr=new int[]{CMath.s_int(CEs[i].getTriggerParm("ROUNDS"))};
             		CEs[i].setStateVariable(0,ctr);
             	}
             	if((--ctr[0])<=0)
             	{
-                	ctr[0]=CMath.s_int(CEs[i].getTriggerParm("ROUND"));
+                	ctr[0]=CMath.s_int(CEs[i].getTriggerParm("ROUNDS"));
                 	timers.addElement(CEs[i]);
             	}
         	}
@@ -435,8 +437,6 @@ public class Factions extends StdLibrary implements FactionManager
                 	factionsDone.add(F);
                 }
             }
-            if((outSiders.size()==0)&&(timers.size()==0)) 
-                return true;
             Room R;
             Faction[] Fs;
 		    for(int s=0;s<CMLib.sessions().size();s++)
@@ -468,7 +468,7 @@ public class Factions extends StdLibrary implements FactionManager
 		            }
 		        }
 		    }
-	    }catch(Exception e){}
+	    }catch(Exception e){ Log.errOut("Factions",e);}
 	    return true;
 	}
 	

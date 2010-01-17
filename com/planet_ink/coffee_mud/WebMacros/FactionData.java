@@ -285,6 +285,7 @@ public class FactionData extends StdWebMacro
                         {
                             String def=(String)e.nextElement();
                             Faction.FactionChangeEvent[] Es=F.getChangeEvents(def);
+                            if(Es!=null)
                             for(int e1=0;e1<Es.length;e1++)
                             {
                             	Faction.FactionChangeEvent E=Es[e1];
