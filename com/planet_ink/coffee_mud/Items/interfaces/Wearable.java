@@ -426,6 +426,9 @@ public interface Wearable extends Environmental
 					add(DEFAULT_WORN_DESCS[i], DEFAULT_WORN_DEPENDENCYGRID[i], 
 						DEFAULT_WORN_WEIGHTS[i], CMParms.indexOf(DEFAULT_WORN_ORDER,DEFAULT_WORN_CODES[i]),
 						DEFAULT_WORN_WEIGHT_POINTS[i][0], DEFAULT_WORN_WEIGHT_POINTS[i][1], DEFAULT_WORN_WEIGHT_POINTS[i][2]);
+				// now, stupid as it is, I have to fix the worn orders
+				allCodesInOrder=Arrays.copyOf(Wearable.DEFAULT_WORN_ORDER, Wearable.DEFAULT_WORN_ORDER.length);
+				
 				for(int i=0;i<addExtra.length+repExtra.length;i++)
 				{
 					String[] array = (i>=addExtra.length)?repExtra[i-addExtra.length]:addExtra[i];

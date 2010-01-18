@@ -773,20 +773,23 @@ public class StdRace implements Race
 		long finalWear=0;
 		boolean toggle=false;
 		for(long wornCode : Wearable.CODES.ALL())
-			if((!CMath.bset(race1worn,wornCode))&&(!CMath.bset(race2worn,wornCode)))
-			{}
-			else
-			if(CMath.bset(race1worn,wornCode)&&CMath.bset(race2worn,wornCode))
-				finalWear=finalWear|wornCode;
-			else
-			if(CMath.bset(race1worn,wornCode))
-				finalWear=finalWear|wornCode;
-			else
-			if(toggle)
-			{
-				finalWear=finalWear|wornCode;
-				toggle=!toggle;
-			}
+            if(wornCode != Wearable.IN_INVENTORY)
+            {
+				if((!CMath.bset(race1worn,wornCode))&&(!CMath.bset(race2worn,wornCode)))
+				{}
+				else
+				if(CMath.bset(race1worn,wornCode)&&CMath.bset(race2worn,wornCode))
+					finalWear=finalWear|wornCode;
+				else
+				if(CMath.bset(race1worn,wornCode))
+					finalWear=finalWear|wornCode;
+				else
+				if(toggle)
+				{
+					finalWear=finalWear|wornCode;
+					toggle=!toggle;
+				}
+            }
 
 		GR.setStat("WEAR",""+finalWear);
 		Weapon W=otherRace.myNaturalWeapon();

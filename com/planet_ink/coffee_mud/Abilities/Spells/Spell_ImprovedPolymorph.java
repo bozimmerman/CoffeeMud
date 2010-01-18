@@ -131,6 +131,12 @@ public class Spell_ImprovedPolymorph extends Spell
 			return false;
 		}
 		
+		if((R!=null)&&(!CMath.bset(R.availabilityCode(),Area.THEME_FANTASY)))
+		{
+			mob.tell("You can't turn "+target.name()+" into a '"+R.name()+"'!");
+			return false;
+		}
+		
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,

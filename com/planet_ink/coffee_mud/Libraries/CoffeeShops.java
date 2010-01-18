@@ -131,19 +131,20 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 str.append("\n\rWear Info  : Worn on ");
                 Wearable.CODES codes = Wearable.CODES.instance();
                 for(long wornCode : codes.all())
-                {
-                    if(codes.name(wornCode).length()>0)
-                    {
-                        if(((I.rawProperLocationBitmap()&wornCode)==wornCode))
-                        {
-                            str.append(CMStrings.capitalizeAndLower(codes.name(wornCode))+" ");
-                            if(I.rawLogicalAnd())
-                                str.append("and ");
-                            else
-                                str.append("or ");
-                        }
-                    }
-                }
+	                if(wornCode != Wearable.IN_INVENTORY)
+	                {
+	                    if(codes.name(wornCode).length()>0)
+	                    {
+	                        if(((I.rawProperLocationBitmap()&wornCode)==wornCode))
+	                        {
+	                            str.append(CMStrings.capitalizeAndLower(codes.name(wornCode))+" ");
+	                            if(I.rawLogicalAnd())
+	                                str.append("and ");
+	                            else
+	                                str.append("or ");
+	                        }
+	                    }
+	                }
                 if(str.toString().endsWith(" and "))
                     str.delete(str.length()-5,str.length());
                 else

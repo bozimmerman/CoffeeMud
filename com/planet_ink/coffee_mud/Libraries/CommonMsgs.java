@@ -669,8 +669,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	            					 :new StringBuffer("worn on the "));
 	            Wearable.CODES codes = Wearable.CODES.instance();
 	            for(long wornCode : codes.all())
-	            {
-	                if(CMath.bset(item.rawProperLocationBitmap(),wornCode))
+	            	if((wornCode != Wearable.IN_INVENTORY)
+	            	&&(CMath.bset(item.rawProperLocationBitmap(),wornCode)))
 	                {
 	                	String wornString=codes.name(wornCode);
 		                if(wornString.length()>0)
@@ -682,7 +682,6 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	                        	response.append("or ");
 	                    }
 	                }
-	            }
 	            if(response.toString().endsWith(" and "))
 	                response.delete(response.length()-5,response.length());
 	            else

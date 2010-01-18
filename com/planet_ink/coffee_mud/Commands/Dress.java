@@ -88,10 +88,11 @@ public class Dress extends StdCommand
 					else
 					{
 	                    for(long wornCode : Wearable.CODES.ALL())
-	                    {
-							if(item.fitsOn(wornCode)&&(wornCode!=Wearable.WORN_HELD))
-							{ item.wearAt(wornCode); break;}
-						}
+		                    if(wornCode != Wearable.IN_INVENTORY)
+		                    {
+								if(item.fitsOn(wornCode)&&(wornCode!=Wearable.WORN_HELD))
+								{ item.wearAt(wornCode); break;}
+							}
 						if(item.amWearingAt(Wearable.IN_INVENTORY))
 							item.wearAt(Wearable.WORN_HELD);
 					}

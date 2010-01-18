@@ -67,11 +67,12 @@ public class Spell_AnalyzeDweomer extends Spell
                         str.append("It is worn on all of the following: ");
                     Wearable.CODES codes = Wearable.CODES.instance();
                     for(long wornCode : codes.all())
-                    {
-                        if((codes.name(wornCode).length()>0)
-                        &&(((target.rawProperLocationBitmap()&wornCode)==wornCode)))
-                            str.append(codes.name(wornCode).toLowerCase()+" ");
-                    }
+                    	if(wornCode!=Wearable.IN_INVENTORY)
+	                    {
+	                        if((codes.name(wornCode).length()>0)
+	                        &&(((target.rawProperLocationBitmap()&wornCode)==wornCode)))
+	                            str.append(codes.name(wornCode).toLowerCase()+" ");
+	                    }
                     str.append(".  ");
                 }
 				if((target instanceof Container)&&(((Container)target).capacity()>0))

@@ -214,7 +214,7 @@ public class Farming extends GatheringSkill
 		RawMaterial.CODES codes = RawMaterial.CODES.instance();
 		for(int cd : codes.all())
 		{
-			String str=codes.name(code).toUpperCase();
+			String str=codes.name(cd).toUpperCase();
 			if((str.equals(what))
 			&&(((cd&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
 			  ||(cd==RawMaterial.RESOURCE_COTTON)
@@ -227,20 +227,20 @@ public class Farming extends GatheringSkill
 			}
 		}
 		if(code<0)
-		for(int cd : codes.all())
-		{
-			String str=codes.name(cd).toUpperCase();
-			if((str.toUpperCase().startsWith(what)||(what.startsWith(str)))
-			&&(((cd&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
-			  ||(cd==RawMaterial.RESOURCE_COTTON)
-			  ||(cd==RawMaterial.RESOURCE_HEMP)
-			  ||((cd&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)))
+			for(int cd : codes.all())
 			{
-				code=cd;
-				foundShortName=CMStrings.capitalizeAndLower(str);
-				break;
+				String str=codes.name(cd).toUpperCase();
+				if((str.toUpperCase().startsWith(what)||(what.startsWith(str)))
+				&&(((cd&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
+				  ||(cd==RawMaterial.RESOURCE_COTTON)
+				  ||(cd==RawMaterial.RESOURCE_HEMP)
+				  ||((cd&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)))
+				{
+					code=cd;
+					foundShortName=CMStrings.capitalizeAndLower(str);
+					break;
+				}
 			}
-		}
 		if(code<0)
 		{
 			commonTell(mob,"You've never heard of '"+CMParms.combine(commands,0)+"'.");
