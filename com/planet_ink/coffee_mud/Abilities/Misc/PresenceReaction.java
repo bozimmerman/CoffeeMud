@@ -155,7 +155,7 @@ public class PresenceReaction extends StdAbility
 			MOB M=(MOB)super.affected;
 			for(CMObject O : managed)
 			{
-				if(O instanceof Command)
+				if((O!=null)&&(O.ID().equals("Mood")))
 				{
 					Command C=(Command)O;
 					if((C.ID().equalsIgnoreCase("Mood"))&&(previousMood!=null)&&(affected instanceof MOB))
@@ -170,9 +170,10 @@ public class PresenceReaction extends StdAbility
 				if(O instanceof Environmental)
 					((Environmental)O).destroy();
 			}
-			managed.clear();
 			affected.delEffect(this);
 		}
+		unmanagedYet.clear();
+		managed.clear();
 		return false;
 	}
 	
@@ -282,6 +283,15 @@ public class PresenceReaction extends StdAbility
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel)
 	{
+		if(target==null)
+		{
+			PresenceReaction A=(PresenceReaction)mob.fetchEffect(ID());
+			if(A!=null) 
+				A.shutdownPresence(mob);
+			if(affected==mob)
+				shutdownPresence(mob);
+			return A!=null;
+		}
 		if(!(target instanceof MOB)) return false;
 		PresenceReaction A=(PresenceReaction)this.copyOf();
 		A.reactToM=(MOB)target;

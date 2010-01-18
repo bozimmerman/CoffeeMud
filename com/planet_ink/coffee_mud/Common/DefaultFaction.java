@@ -1534,6 +1534,39 @@ public class DefaultFaction implements Faction, MsgListener
             noStatAffectors=(listeners.size()==0);
         }
         public boolean requiresUpdating() { return lastFactionDataChange[0] > lastUpdated; }
+        
+        private Ability setPresenceReaction(MOB M, Environmental myHost)
+        {
+	    	Vector myReactions=null;
+	    	Vector tempReactSet=null;
+	    	Faction.FactionReactionItem reactionItem = null;
+	    	for(int d=0;d<currentReactionSets.size();d++)
+	    		if(CMLib.masking().maskCheck((Vector)currentReactionSets.elementAt(d,1),M,true))
+	    		{
+	    			if(myReactions==null) myReactions=new Vector();
+	    			tempReactSet=(Vector)currentReactionSets.elementAt(d,2);
+	    			for(Enumeration e=tempReactSet.elements();e.hasMoreElements();)
+	    			{
+		    			reactionItem=(Faction.FactionReactionItem)e.nextElement();
+		    			myReactions.add(reactionItem.reactionObjectID()+"="+reactionItem.parameters());
+	    			}
+	    		}
+	    	if(myReactions!=null)
+	    		if(useLightReactions())
+	    		{
+	    			presenceReactionPrototype.invoke(M,myReactions,myHost,false,0);
+	    			if(myReactions.size()==1)
+	    			{
+	    				Ability A=(Ability)myReactions.firstElement();
+		    			A.setInvoker(M);
+		    			return A;
+	    			}
+	    		}
+	    		else
+			    	presenceReactionPrototype.invoke(M,myReactions,myHost,true,0);
+	    	return null;
+        }
+        
     	public void executeMsg(Environmental myHost, CMMsg msg)
     	{
     		if(noListeners) return;
@@ -1541,61 +1574,78 @@ public class DefaultFaction implements Faction, MsgListener
 			{
 				if((currentReactionSets.size()>0)
 				&&(msg.sourceMinor()==CMMsg.TYP_ENTER)
-				&&(msg.source()==myHost)
-				&&(!msg.source().isMonster())
 				&&(msg.target() instanceof Room))
 				{
 			    	if(presenceReactionPrototype==null)
 			    		if((presenceReactionPrototype=CMClass.getAbility("PresenceReaction"))==null) return;
-					
-					MOB M=null;
-			    	Vector myReactions=null;
-			    	Faction.FactionReactionItem reactionItem = null;
-			    	Room R=(Room)msg.target();
-			    	Vector tempReactSet=null;
-			    	Vector<Ability> lightPresenceReactions=new Vector<Ability>();
-					for(int m=0;m<R.numInhabitants();m++)
+					if((msg.source()==myHost)
+					&&(!msg.source().isMonster()))
 					{
-						M=R.fetchInhabitant(m);
-						if((M!=null)&&(M!=myHost)&&(M.isMonster()))
+						MOB M=null;
+				    	Room R=(Room)msg.target();
+				    	Vector<Ability> lightPresenceReactions=new Vector<Ability>();
+				    	Ability A=null;
+						for(int m=0;m<R.numInhabitants();m++)
 						{
-							myReactions = null;
-					    	for(int d=0;d<currentReactionSets.size();d++)
-					    		if(CMLib.masking().maskCheck((Vector)currentReactionSets.elementAt(d,1),M,true))
-					    		{
-					    			if(myReactions==null) myReactions=new Vector();
-					    			tempReactSet=(Vector)currentReactionSets.elementAt(d,2);
-					    			for(Enumeration e=tempReactSet.elements();e.hasMoreElements();)
-					    			{
-						    			reactionItem=(Faction.FactionReactionItem)e.nextElement();
-						    			myReactions.add(reactionItem.reactionObjectID()+"="+reactionItem.parameters());
-					    			}
-					    		}
-					    	if(myReactions!=null)
-					    		if(useLightReactions())
-					    		{
-					    			presenceReactionPrototype.invoke(M,myReactions,myHost,false,0);
-					    			if(myReactions.size()==1)
-					    			{
-					    				Ability A=(Ability)myReactions.firstElement();
-						    			A.setInvoker(M);
-						    			lightPresenceReactions.addElement(A);
-					    			}
-					    		}
-					    		else
-							    	presenceReactionPrototype.invoke(M,myReactions,myHost,true,0);
+							M=R.fetchInhabitant(m);
+							if((M!=null)&&(M!=myHost)&&(M.isMonster()))
+							{
+								A=setPresenceReaction(M,myHost);
+								if(A!=null) // means yes, we are using light, and yes, heres a reaction to add
+									lightPresenceReactions.add(A);
+							}
+						}
+						lightPresenceAbilities = lightPresenceReactions.toArray(new Ability[0]);
+					}
+					else
+					if((msg.source().isMonster())
+					&&(msg.target()==CMLib.map().roomLocation(myHost)))
+					{
+						Ability A=setPresenceReaction(msg.source(),myHost);
+						if(A!=null){ // means yes, we are using light, and yes, heres a reaction to add
+							lightPresenceAbilities = Arrays.copyOf(lightPresenceAbilities, lightPresenceAbilities.length+1);
+							lightPresenceAbilities[lightPresenceAbilities.length-1]=A;
 						}
 					}
-					lightPresenceAbilities = lightPresenceReactions.toArray(new Ability[0]);
 				}
 				else
 				if((lightPresenceAbilities.length>0)
 				&&(msg.sourceMinor()==CMMsg.TYP_LEAVE)
-				&&(msg.source()==myHost)
-				&&(!msg.source().isMonster())
 				&&(msg.target() instanceof Room))
-	    			lightPresenceAbilities=new Ability[0];
-	    		
+				{
+					if((msg.source()==myHost)
+					&&(!msg.source().isMonster()))
+					{
+						Room R=(Room)msg.target();
+						MOB M=null;
+						for(int m=0;m<R.numInhabitants();m++)
+						{
+							M=R.fetchInhabitant(m);
+							if((M!=null)&&(M!=myHost)&&(M.isMonster()))
+								presenceReactionPrototype.invoke(M,new Vector(),null,true,0);
+						}
+		    			lightPresenceAbilities=new Ability[0];
+					}
+					else
+					{
+						presenceReactionPrototype.invoke(msg.source(),new Vector(),null,true,0);
+						Ability[] newAbilities = new Ability[lightPresenceAbilities.length];
+		    			int l=0;
+		    			for(int a=0;a<lightPresenceAbilities.length;a++)
+		    				if(lightPresenceAbilities[a].affecting()==null)
+		    				{}
+		    				else
+		    				if(lightPresenceAbilities[a].affecting()==msg.source())
+		    					lightPresenceAbilities[a].invoke(msg.source(),new Vector(),null,true,0);
+		    				else
+		    					newAbilities[l++]=lightPresenceAbilities[a];
+		    			if(l==0)
+			    			lightPresenceAbilities=new Ability[0];
+		    			else
+		    			if(l<lightPresenceAbilities.length)
+							lightPresenceAbilities = Arrays.copyOf(newAbilities, l);
+					}
+				}
 	            for(Ability A : lightPresenceAbilities)
 	                A.executeMsg(A.invoker(), msg);
 			}
