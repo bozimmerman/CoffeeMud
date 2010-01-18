@@ -157,12 +157,13 @@ public class PresenceReaction extends StdAbility
 			{
 				if((O!=null)&&(O.ID().equals("Mood")))
 				{
-					Command C=(Command)O;
-					if((C.ID().equalsIgnoreCase("Mood"))&&(previousMood!=null)&&(affected instanceof MOB))
+					if((previousMood!=null)&&(affected instanceof MOB))
 					{
 						try
 						{
-							C.execute(M,CMParms.parse("MOOD "+previousMood),0);
+							Command C=CMClass.getCommand("Mood");
+							if(C!=null)
+								C.execute(M,CMParms.parse("MOOD "+previousMood),0);
 						} catch(Exception e){}
 					}
 				}
