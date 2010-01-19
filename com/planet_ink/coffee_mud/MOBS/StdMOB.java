@@ -2678,8 +2678,7 @@ public class StdMOB implements MOB
             for(e=DVector.s_enum(factions,false);e.hasMoreElements();)
             {
                 tickStatus=Tickable.STATUS_OTHER+(c++);
-            	if(!((Faction.FactionData)e.nextElement()).tick(ticking, tickID))
-            		return false;
+            	((Faction.FactionData)e.nextElement()).tick(ticking, tickID);
             }
 
             int num=charStats().numClasses();
