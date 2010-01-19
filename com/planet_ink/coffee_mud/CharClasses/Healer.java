@@ -137,6 +137,8 @@ public class Healer extends Cleric
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_DivineConstitution",false,CMParms.parseSemicolons("Prayer_HolyAura;Prayer_DeathsDoor;Prayer_Heal",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_Resurrect",true);
+		
+		// level 30 == healing aura
 	}
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
