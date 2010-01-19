@@ -214,6 +214,8 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 	{
 		synchronized(tickers)
 		{
+if((C!=null)&&(C.clientObject instanceof MOB)&&(!((MOB)C.clientObject).isMonster()))
+	Log.errOut("Tick",new Exception());
 			tickers.removeElement(C);
 			numTickers=tickers.size();
 		}
@@ -293,6 +295,9 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 			{
 				if(!C.clientObject.tick(C.clientObject,C.tickID))
 					return true;
+				else
+				if((C!=null)&&(C.clientObject instanceof MOB)&&(!((MOB)C.clientObject).isMonster()))
+					Log.errOut("TickTicker",new Exception());
 			}
 			catch(Exception t)
 			{
