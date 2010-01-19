@@ -334,11 +334,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	public boolean postHealing(MOB healer,
-									  MOB target,
-									  Environmental tool,
-									  int messageCode,
-									  int healing,
-									  String allDisplayMessage)
+							   MOB target,
+							   Environmental tool,
+							   int messageCode,
+							   int healing,
+							   String allDisplayMessage)
 	{
 		if(healer==null) healer=target;
 		if((healer==null)||(target==null)||(target.location()==null)) return false;
