@@ -222,7 +222,7 @@ public interface MOB extends Environmental, Rider, DBIdentifiable
     /** Manipulation of the factions list */
     public void addFaction(String of, int start);
     public void adjustFaction(String of, int amount);
-    public Enumeration fetchFactions();
+    public Enumeration<String> fetchFactions();
     public Vector fetchFactionRanges();
     public boolean hasFaction(String which);
     public int fetchFaction(String which);

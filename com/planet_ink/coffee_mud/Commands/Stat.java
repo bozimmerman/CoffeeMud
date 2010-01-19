@@ -45,6 +45,24 @@ public class Stat  extends Skills
     public static final int ABLETYPE_COMBAT=-6;
     public static final int ABLETYPE_SCRIPTS=-7;
     public static final int ABLETYPE_TITLES=-8;
+    public static final int ABLETYPE_ROOMSEXPLORED=-9;
+    public static final int ABLETYPE_AREASEXPLORED=-10;
+    public static final int ABLETYPE_WORLDEXPLORED=-11;
+    public static final int ABLETYPE_FACTIONS=-12;
+    
+    public static final String[][] ABLETYPE_DESCS={
+		{"EQUIPMENT","EQ","EQUIP"},
+		{"INVENTORY","INVEN","INV"},
+		{"QUESTWINS","QUESTS","QUEST","QUESTWIN"},
+		{"TATTOOS","TATTOO","TATT"},
+		{"COMBAT"},
+        {"SCRIPTS"},
+		{"TITLES","TITLE"},
+		{"ROOMSEXPLORED"},
+		{"AREASEXPLORED"},
+		{"WORLDEXPLORED"},
+		{"FACTIONS","FACTION"},
+    };
     
 	public MOB getTarget(MOB mob, String targetName, boolean quiet)
 	{
@@ -310,6 +328,18 @@ public class Stat  extends Skills
 		throws java.io.IOException
 	{
 		commands.removeElementAt(0);
+		if((commands.size()>0)
+		&&(commands.firstElement() instanceof String)
+		&&((String)commands.firstElement()).equals("?"))
+		{
+			StringBuffer msg = new StringBuffer("STAT allows the following options: \n\r");
+			msg.append("[MOB/PLAYER NAME], [NUMBER] [DAYS/WEEKS/MONTHS], ");
+			for(int i=0;i<ABLETYPE_DESCS.length;i++)
+				msg.append(ABLETYPE_DESCS[i][0]+", ");
+			msg.append(CMParms.toStringList(Ability.ACODE_DESCS));
+			mob.tell(msg.toString());
+			return false;
+		}
 		if(commands.size()==0) commands.addElement("TODAY");
 		String s1=(commands.size()>0)?((String)commands.elementAt(0)).toUpperCase():"";
 		String s2=(commands.size()>1)?((String)commands.elementAt(1)).toUpperCase():"";
@@ -348,48 +378,15 @@ public class Stat  extends Skills
 		if(commands.size()>1)
 		{
 			String s=((String)commands.elementAt(0)).toUpperCase();
-			if("TATTOOS".equals(s)||"TATTOO".equals(s)||"TATT".equals(s))
-			{
-				ableTypes=ABLETYPE_TATTOOS;
-				commands.removeElementAt(0);
-			}
-			else
-			if("QUESTWINS".equals(s)||"QUESTS".equals(s)||"QUEST".equals(s)||"QUESTWIN".equals(s))
-			{
-				ableTypes=-ABLETYPE_QUESTWINS;
-				commands.removeElementAt(0);
-			}
-			else
-			if("TITLES".equals(s)||"TITLE".equals(s))
-			{
-				ableTypes=-ABLETYPE_TITLES;
-				commands.removeElementAt(0);
-			}
-			else
-			if("EQUIPMENT".equals(s)||"EQ".equals(s)||"EQUIP".equals(s))
-			{
-				ableTypes=ABLETYPE_EQUIPMENT;
-				commands.removeElementAt(0);
-			}
-			else
-			if("COMBAT".equals(s))
-			{
-				ableTypes=ABLETYPE_COMBAT;
-				commands.removeElementAt(0);
-			}
-            else
-            if("SCRIPTS".equals(s))
-            {
-                ableTypes=ABLETYPE_SCRIPTS;
-                commands.removeElementAt(0);
-            }
-			else
-			if("INVENTORY".equals(s)||"INVEN".equals(s)||"INV".equals(s))
-			{
-				ableTypes=ABLETYPE_INVENTORY;
-				commands.removeElementAt(0);
-			}
-			else
+			for(int i=0;i<ABLETYPE_DESCS.length;i++)
+				for(int is=0;is<ABLETYPE_DESCS[i].length;is++)
+					if(s.equals(ABLETYPE_DESCS[i][is]))
+					{
+						ableTypes=-2 -i;
+						commands.removeElementAt(0);
+						break;
+					}
+			if(ableTypes==-1)
 			for(int a=0;a<Ability.ACODE_DESCS.length;a++)
 			{
 				if((Ability.ACODE_DESCS[a]+"S").equals(s)||(Ability.ACODE_DESCS[a]).equals(s))
@@ -502,6 +499,58 @@ public class Stat  extends Skills
 				str.append(" "+target.fetchTattoo(q)+",");
 			str.deleteCharAt(str.length()-1);
 			str.append("\n\r");
+		}
+		else
+		if(ableTypes==ABLETYPE_FACTIONS)
+		{
+			str.append("Factions:\n\r");
+			for(Enumeration<String> f=target.fetchFactions();f.hasMoreElements();)
+			{
+				Faction F=CMLib.factions().getFaction(f.nextElement());
+				if(F!=null)
+					str.append("^W[^H"+F.name()+"^N("+F.factionID()+"): "+target.fetchFaction(F.factionID())+"^W]^N, ");
+			}
+			str.append("\n\r");
+		}
+		else
+		if(ableTypes==ABLETYPE_WORLDEXPLORED)
+		{
+			if(target.playerStats()!=null)
+		        str.append(target.name()+" has explored "+mob.playerStats().percentVisited(mob,null)+"% of the world.\n\r");
+			else
+				str.append("Exploration data is not kept on mobs.\n\r");
+		}
+		else
+		if(ableTypes==ABLETYPE_AREASEXPLORED)
+		{
+			if(target.playerStats()!=null)
+			{
+				for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+				{
+					Area A=(Area)e.nextElement();
+					int pct=mob.playerStats().percentVisited(target, A);
+					if(pct>0) str.append("^H"+A.name()+"^N: "+pct+"%, ");
+				}
+				str=new StringBuffer(str.toString().substring(0,str.toString().length()-2)+"\n\r");
+			}
+			else
+				str.append("Exploration data is not kept on mobs.\n\r");
+		}
+		else
+		if(ableTypes==ABLETYPE_ROOMSEXPLORED)
+		{
+			if(target.playerStats()!=null)
+			{
+				for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
+				{
+					Room R=(Room)e.nextElement();
+					if((R.roomID().length()>0)&&(mob.playerStats().hasVisited(R)))
+						str.append("^H"+R.roomID()+"^N, ");
+				}
+				str=new StringBuffer(str.toString().substring(0,str.toString().length()-2)+"\n\r");
+			}
+			else
+				str.append("Exploration data is not kept on mobs.\n\r");
 		}
 		else
 		if(ableTypes==ABLETYPE_COMBAT)

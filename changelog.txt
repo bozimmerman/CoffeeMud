@@ -2237,4 +2237,6 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 11.New automated MOB reaction system -- see coffeemud.ini under REACTION, and the guide under FACTIONS for more info.
 12.Factions now have lots of new triggers: KILL, BRIBE, TALK, MUDCHAT, ARRESTED
 13.Faction triggers support parameters; see one of the new faction.ini files for details
+14.New Prayer: Divine Constitution
+15.STAT commands now supports: FACTIONS, ROOMSEXPLORED, AREASEXPLORED, WORLDEXPLORED
 

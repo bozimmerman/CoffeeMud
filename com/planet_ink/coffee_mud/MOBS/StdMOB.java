@@ -76,7 +76,7 @@ public class StdMOB implements MOB
 	protected Vector behaviors=new Vector(1);
 	protected Vector tattoos=new Vector(1);
 	protected Vector expertises=new Vector(1);
-    protected Hashtable factions=new Hashtable(1);
+    protected Hashtable<String,Faction.FactionData> factions=new Hashtable<String,Faction.FactionData>(1);
 
 	protected DVector commandQue=new DVector(6);
 
@@ -688,7 +688,7 @@ public class StdMOB implements MOB
         behaviors=new Vector(1);
         tattoos=new Vector(1);
         expertises=new Vector(1);
-        factions=new Hashtable(1);
+        factions=new Hashtable<String, Faction.FactionData>(1);
         commandQue=new DVector(6);
         scripts=new Vector(1);
         curState=maxState;
@@ -3402,7 +3402,7 @@ public class StdMOB implements MOB
         if(F==null) return;
         if(start>F.maximum()) start=F.maximum();
         if(start<F.minimum()) start=F.minimum();
-        Faction.FactionData data=(Faction.FactionData)factions.get(which);
+        Faction.FactionData data=factions.get(which);
         if(data==null)
         {
             data=F.makeFactionData(this);
@@ -3420,13 +3420,13 @@ public class StdMOB implements MOB
         else
             addFaction(which,fetchFaction(which) + amount);
     }
-    public Enumeration fetchFactions()
+    public Enumeration<String> fetchFactions()
     {
-        return ((Hashtable)factions.clone()).keys();
+        return ((Hashtable<String,Faction.FactionData>)factions.clone()).keys();
     }
     public int fetchFaction(String which)
     {
-    	Faction.FactionData data=(Faction.FactionData)factions.get(which.toUpperCase());
+    	Faction.FactionData data=factions.get(which.toUpperCase());
     	if(data == null)  return Integer.MAX_VALUE;
     	return data.value();
     }
