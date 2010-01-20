@@ -1304,11 +1304,10 @@ public class DefaultSession extends Thread implements Session
 	public void showPrompt()
 	{
 	    promptLastShown=System.currentTimeMillis();
-		if(mob()==null) return;
-		if(mob().playerStats()==null) return;
-		StringBuffer buf=new StringBuffer("\n\r");
-		String prompt=mob().playerStats().getPrompt();
-		int c=0;
+	    MOB mob=mob();
+		if(mob==null) return;
+		if(mob.playerStats()==null) return;
+		StringBuffer buf=new StringBuffer("");
 		if(clientTelnetMode(Session.TELNET_MXP))
 		    buf.append("^<!EN Hp '"+mob().curState().getHitPoints()
 					+"'^>^<!EN MaxHp '"+mob().maxState().getHitPoints()
@@ -1319,116 +1318,7 @@ public class DefaultSession extends Thread implements Session
 					+"'^>^<!EN Exp '"+mob().getExperience()
 					+"'^>^<!EN ExpNeed '"+mob().getExpNeededLevel()
 					+"'^>^\n\r\n\r");
-		while(c<prompt.length())
-			if((prompt.charAt(c)=='%')&&(c<(prompt.length()-1)))
-			{
-				switch(prompt.charAt(++c))
-				{
-                case 'a': { buf.append(CMLib.factions().getRangePercent(CMLib.factions().AlignID(),mob.fetchFaction(CMLib.factions().AlignID()))+"%"); c++; break; }
-                case 'A': { Faction.FactionRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),mob.fetchFaction(CMLib.factions().AlignID()));buf.append((FR!=null)?FR.name():""+mob.fetchFaction(CMLib.factions().AlignID())); c++; break;}
-                case 'B': { buf.append("\n\r"); c++; break;}
-                case 'c': { buf.append(mob().inventorySize()); c++; break;}
-                case 'C': { buf.append(mob().maxItems()); c++; break;}
-                case 'd': {   MOB victim=mob().getVictim();
-                              if((mob().isInCombat())&&(victim!=null))
-                                  buf.append(""+mob().rangeToTarget());
-                              c++; break; }
-                case 'e': {   MOB victim=mob().getVictim();
-                              if((mob().isInCombat())&&(victim!=null)&&(CMLib.flags().canBeSeenBy(victim,mob)))
-                                  buf.append(victim.displayName(mob));
-                              c++; break; }
-                case 'E': {   MOB victim=mob().getVictim();
-                              if((mob().isInCombat())&&(victim!=null)&&(!victim.amDead())&&(CMLib.flags().canBeSeenBy(victim,mob)))
-                                  buf.append(victim.healthText(mob())+"\n\r");
-                              c++; break; }
-                case 'g': { buf.append((int)Math.round(Math.floor(CMLib.beanCounter().getTotalAbsoluteNativeValue(mob())/CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(mob()))))); c++; break;}
-                case 'G': { buf.append(CMLib.beanCounter().nameCurrencyShort(mob(),CMLib.beanCounter().getTotalAbsoluteNativeValue(mob()))); c++; break;}
-				case 'h': { buf.append("^<Hp^>"+mob().curState().getHitPoints()+"^</Hp^>"); c++; break;}
-				case 'H': { buf.append("^<MaxHp^>"+mob().maxState().getHitPoints()+"^</MaxHp^>"); c++; break;}
-                case 'I': {   if((CMLib.flags().isCloaked(mob()))
-                              &&(((mob().envStats().disposition()&EnvStats.IS_NOT_SEEN)!=0)))
-                                  buf.append("Wizinvisible");
-                              else
-                              if(CMLib.flags().isCloaked(mob()))
-                                  buf.append("Cloaked");
-                              else
-                              if(!CMLib.flags().isSeen(mob()))
-                                  buf.append("Undetectable");
-                              else
-                              if(CMLib.flags().isInvisible(mob())&&CMLib.flags().isHidden(mob()))
-                                  buf.append("Hidden/Invisible");
-                              else
-                              if(CMLib.flags().isInvisible(mob()))
-                                  buf.append("Invisible");
-                              else
-                              if(CMLib.flags().isHidden(mob()))
-                                  buf.append("Hidden");
-                              c++; break;}
-                case 'K':
-                case 'k': { MOB tank=mob();
-                            if((tank.getVictim()!=null)
-                            &&(tank.getVictim().getVictim()!=null)
-                            &&(tank.getVictim().getVictim()!=mob()))
-                                tank=tank.getVictim().getVictim();
-                            if(((c+1)<prompt.length())&&(tank!=null))
-                                switch(prompt.charAt(c+1))
-                                {
-                                    case 'h': { buf.append(tank.curState().getHitPoints()); c++; break;}
-                                    case 'H': { buf.append(tank.maxState().getHitPoints()); c++; break;}
-                                    case 'm': { buf.append(tank.curState().getMana()); c++; break;}
-                                    case 'M': { buf.append(tank.maxState().getMana()); c++; break;}
-                                    case 'v': { buf.append(tank.curState().getMovement()); c++; break;}
-                                    case 'V': { buf.append(tank.maxState().getMovement()); c++; break;}
-                                    case 'e': {   buf.append(tank.displayName(mob())); c++; break;}
-                                    case 'E': {   if((mob().isInCombat())&&(CMLib.flags().canBeSeenBy(tank,mob)))
-                                                      buf.append(tank.healthText(mob())+"\n\r");
-                                                  c++;
-                                                  break;
-                                              }
-                                }
-                            c++;
-                            break;
-                          }
-				case 'm': { buf.append("^<Mana^>"+mob().curState().getMana()+"^</Mana^>"); c++; break;}
-				case 'M': { buf.append("^<MaxMana^>"+mob().maxState().getMana()+"^</MaxMana^>"); c++; break;}
-                case 'r': {   if(mob().location()!=null)
-                              buf.append(mob().location().displayText());
-                              c++; break; }
-                case 'R': {   if((mob().location()!=null)&&CMSecurity.isAllowed(mob(),mob().location(),"SYSMSGS"))
-                              buf.append(mob().location().roomID());
-                              c++; break; }
-				case 'v': { buf.append("^<Move^>"+mob().curState().getMovement()+"^</Move^>"); c++; break;}
-				case 'V': { buf.append("^<MaxMove^>"+mob().maxState().getMovement()+"^</MaxMove^>"); c++; break;}
-                case 'w': { buf.append(mob().envStats().weight()); c++; break;}
-                case 'W': { buf.append(mob().maxCarry()); c++; break;}
-				case 'x': { buf.append(mob().getExperience()); c++; break;}
-				case 'X': {
-							  if(mob().getExpNeededLevel()==Integer.MAX_VALUE)
-								buf.append("N/A");
-							  else
-								buf.append(mob().getExpNeededLevel());
-							  c++; break;
-						  }
-				case 'z': {      if((mob().location()!=null)&&(CMSecurity.isAllowed(mob(),mob().location(),"SYSMSGS")))
-								  buf.append(mob().location().getArea().name());
-							  c++; break; }
-				case 't': {	  if(mob().location()!=null)
-								  buf.append(CMStrings.capitalizeAndLower(TimeClock.TOD_DESC[mob().location().getArea().getTimeObj().getTODCode()].toLowerCase()));
-							  c++; break;
-						  }
-				case 'T': {	  if(mob().location()!=null)
-								  buf.append(mob().location().getArea().getTimeObj().getTimeOfDay());
-							  c++; break;
-						  }
-				case '@': {	  if(mob().location()!=null)
-								  buf.append(mob().location().getArea().getClimateObj().weatherDescription(mob().location()));
-							  c++; break;
-						  }
-				default:{ buf.append("%"+prompt.charAt(c)); c++; break;}
-				}
-			}
-			else
-				buf.append(prompt.charAt(c++));
+		buf.append(CMLib.utensils().builtPrompt(mob));
 		print("^<Prompt^>"+buf.toString()+"^</Prompt^>^.^N");
 	}
 

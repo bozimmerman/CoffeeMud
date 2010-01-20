@@ -498,6 +498,7 @@ public interface Wearable extends Environmental
 		private double[][] wornWeightPoints = new double[0][0];
 		private double[] armorWeights =  new double[0]; 
 		private String[] descs = new String[0];
+		private String[] updescs = new String[0];
 		/**
 		 * Returns total number of codes 0 - this-1
 		 * @return total number of codes 0 - this-1
@@ -647,7 +648,17 @@ public interface Wearable extends Environmental
 		 * Returns the names of the various locations
 		 * @return the names of the various locations
 		 */
+		public static String[] NAMESUP() { return c().updescs;}
+		/**
+		 * Returns the names of the various locations
+		 * @return the names of the various locations
+		 */
 		public String[] names() { return descs;}
+		/**
+		 * Returns the names of the various locations
+		 * @return the names of the various locations
+		 */
+		public String[] namesup() { return updescs;}
 		/**
 		 * Returns the name of the locations
 		 * @param code the code
@@ -655,17 +666,35 @@ public interface Wearable extends Environmental
 		 */
 		public static String NAME(int code) { return c().descs[code];}
 		/**
+		 * Returns the name of the locations
+		 * @param code the code
+		 * @return the name of the locations
+		 */
+		public static String NAMEUP(int code) { return c().updescs[code];}
+		/**
 		 * Returns the name of the code
 		 * @param code the code
 		 * @return the name of the code
 		 */
 		public String name(int code) { return descs[code]; }
 		/**
+		 * Returns the name of the code
+		 * @param code the code
+		 * @return the name of the code
+		 */
+		public String nameup(int code) { return updescs[code]; }
+		/**
 		 * Returns the name of the locations
 		 * @param code the code
 		 * @return the name of the locations
 		 */
 		public static String NAME(long code) { return c().name(code);}
+		/**
+		 * Returns the name of the locations
+		 * @param code the code
+		 * @return the name of the locations
+		 */
+		public static String NAMEUP(long code) { return c().nameup(code);}
 		/**
 		 * Returns the name of the code
 		 * @param code the code
@@ -675,6 +704,17 @@ public interface Wearable extends Environmental
 			int x=CMParms.indexOf(allCodes, code);
 			if(x>=0)
 				return descs[x];
+			return "";
+		}
+		/**
+		 * Returns the name of the code
+		 * @param code the code
+		 * @return the name of the code
+		 */
+		public String nameup(long code) { 
+			int x=CMParms.indexOf(allCodes, code);
+			if(x>=0)
+				return updescs[x];
 			return "";
 		}
 		/**
@@ -725,6 +765,8 @@ public interface Wearable extends Environmental
 			allCodes[allCodes.length-1]=newCode;
 			descs=Arrays.copyOf(descs, descs.length+1);
 			descs[descs.length-1]=desc;
+			updescs=Arrays.copyOf(updescs, updescs.length+1);
+			updescs[updescs.length-1]=desc.toUpperCase();
 			dependencyMasks=Arrays.copyOf(dependencyMasks, dependencyMasks.length+1);
 			dependencyMasks[dependencyMasks.length-1]=dependencyMask;
 			armorWeights=Arrays.copyOf(armorWeights, armorWeights.length+1);
@@ -757,6 +799,7 @@ public interface Wearable extends Environmental
 		{
 			if(codeIndex<=0) return;
 			descs[codeIndex]=desc;
+			updescs[codeIndex]=desc.toUpperCase();
 			dependencyMasks[codeIndex]=dependencyMask;
 			armorWeights[codeIndex]=armorStrength;
 			double[] newRow={clothWeight,leatherWeight,metalWeight};

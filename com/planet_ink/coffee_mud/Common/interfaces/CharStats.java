@@ -927,6 +927,12 @@ public interface CharStats extends CMCommon, CMModifiable
 		 */
 		public static String NAME(int code) { return c().statNames[code];}
 		/**
+		 * Returns the name of the stat code
+		 * @param code the stat code
+		 * @return the name of the stat code
+		 */
+		public String name(int code) { return statNames[code];}
+		/**
 		 * Returns the descriptions of the various stats
 		 * @return the descriptions of the various stats
 		 */
@@ -938,6 +944,12 @@ public interface CharStats extends CMCommon, CMModifiable
 		 */
 		public static String DESC(int code) { return c().statDescriptions[code];}
 		/**
+		 * Returns the description of the stat code
+		 * @param code the stat code
+		 * @return the description of the stat code
+		 */
+		public String desc(int code) { return statDescriptions[code];}
+		/**
 		 * Returns the abbreviations of the various stats
 		 * @return the abbreviations of the various stats
 		 */
@@ -948,6 +960,12 @@ public interface CharStats extends CMCommon, CMModifiable
 		 * @return the abbreviation of the stat code
 		 */
 		public static String ABBR(int code) { return c().statAbbreviations[code];}
+		/**
+		 * Returns the abbreviation of the stat code
+		 * @param code the stat code
+		 * @return the abbreviation of the stat code
+		 */
+		public String abbr(int code) { return statAbbreviations[code];}
 		/**
 		 * Returns the adjective descriptions of the various stats
 		 * @return the adjective descriptions of the various stats

@@ -41,6 +41,8 @@ public interface CMMiscUtils extends CMLibrary
     public static final int LOOTFLAG_WORN=4;
     public static final int LOOTFLAG_UNWORN=8;
     
+    public String builtPrompt(MOB mob);
+    
     public String getFormattedDate(Environmental E);
     public double memoryUse ( Environmental E, int number );
     public String niceCommaList(Vector V, boolean andTOrF);
