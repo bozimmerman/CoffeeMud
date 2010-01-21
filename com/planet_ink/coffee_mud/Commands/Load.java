@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.*;
 import java.util.*;
 
 /*
@@ -80,6 +81,7 @@ public class Load extends StdCommand
             {
             	if(name.toUpperCase().endsWith(".JAVA"))
             	{
+            		while(name.startsWith("/")) name=name.substring(1);
             		Class<?> C=null;
             		Object CO=null;
             		try{
@@ -88,6 +90,8 @@ public class Load extends StdCommand
             		}catch(Exception e){
             			Log.errOut("Load",e.getMessage());
             		}
+            		ByteArrayOutputStream bout=new ByteArrayOutputStream();
+            		PrintWriter pout=new PrintWriter(new OutputStreamWriter(bout)); 
             		if(CO==null)
             		{
             			mob.tell("Unable to instantiate compiler.  You might try including your Java JDK's lib/tools.jar in your classpath next time you boot the mud.");
@@ -96,11 +100,13 @@ public class Load extends StdCommand
             		String[] args=new String[]{name};
             		if(C!=null)
             		{
-	            		java.lang.reflect.Method M=C.getMethod("compile",new Class[]{args.getClass()});
-	            		Object returnVal=M.invoke(CO,new Object[]{args});
-	            		if((returnVal instanceof Integer)&&(((Integer)returnVal).intValue()<0))
+	            		java.lang.reflect.Method M=C.getMethod("compile",new Class[]{args.getClass(),PrintWriter.class});
+	            		Object returnVal=M.invoke(CO,new Object[]{args,pout});
+	            		if((returnVal instanceof Integer)&&(((Integer)returnVal).intValue()!=0))
 	            		{
-	            			mob.tell("Compile failed, for some reason. :(");
+	            			mob.tell("Compile failed:");
+	            			if(mob.session()!=null)
+	            				mob.session().rawOut(bout.toString());
 	            			return false;
 	            		}
             		}
@@ -137,6 +143,10 @@ public class Load extends StdCommand
 	                    return true;
 	                }
     	        }
+            }
+            catch(java.lang.Error err)
+            {
+    			mob.tell(err.getMessage());
             }
             catch(Throwable t)
             {

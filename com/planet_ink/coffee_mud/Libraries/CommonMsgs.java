@@ -897,7 +897,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             {
                 if(room.getArea()!=null)
                     Say.append("^!Area  :^N("+room.getArea().Name()+")\n\r");
-                Say.append("^!Room ID#^H"+CMLib.map().getExtendedRoomID(room)+"  ^N("+room.ID()+")\n\r");
+                Say.append("^!RoomID:^N"+CMLib.map().getExtendedRoomID(room)+"  ^!("+room.ID()+")^N\n\r");
             }
         }
         if(CMLib.flags().canBeSeenBy(room,mob))
