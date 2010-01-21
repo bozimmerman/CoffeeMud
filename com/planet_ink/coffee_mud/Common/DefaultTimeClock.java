@@ -195,7 +195,7 @@ public class DefaultTimeClock implements TimeClock
 	}
 	public int getMonth(){return month;}
 	public void setMonth(int m){month=m;}
-	public int getMoonPhase(){return (int)Math.round(Math.floor(CMath.mul(CMath.div(getDayOfMonth(),getDaysInMonth()),8.0)));}
+	public int getMoonPhase(){return (int)Math.round(Math.floor(CMath.mul(CMath.div(getDayOfMonth(),getDaysInMonth()+1),8.0)));}
 
 	public int getDayOfMonth(){return day;}
 	public void setDayOfMonth(int d){day=d;}
