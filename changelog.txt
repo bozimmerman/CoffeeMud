@@ -1,4 +1,4 @@
-# Project officially started Sep 1, 2000
+# Project officially started Feb 24, 2000
 # Build 1.0.0.0 - Released Mar 23, 2001
 ! AFFECT AREAS BACKSTAB BASH BERZERK
 BREAK BRIBE BUG BUY CAST CHECK
@@ -2240,4 +2240,6 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 14.New Prayer: Divine Constitution
 15.STAT commands now supports: FACTIONS, ROOMSEXPLORED, AREASEXPLORED, WORLDEXPLORED
 16.PROMPT now supports new syntax to display any personal variables.
-
+17.Abilities/GenAbilities now support delays between allowed invocations
+18.New Thief Skill: Turf War!
+19.

@@ -5896,6 +5896,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             CMLib.genEd().promptStatStr(mob,me,null,++showNumber,showFlag,"Command Words (comma sep)","TRIGSTR",false);
             CMLib.genEd().promptStatStr(mob,me,CMParms.toStringList(Ability.RANGE_CHOICES),++showNumber,showFlag,"Minimum Range","MINRANGE",false);
             CMLib.genEd().promptStatStr(mob,me,CMParms.toStringList(Ability.RANGE_CHOICES),++showNumber,showFlag,"Maximum Range","MAXRANGE",false);
+            CMLib.genEd().promptStatStr(mob,me,null,++showNumber,showFlag,"Ticks Between Casts","TICKSBETWEENCASTS",false);
             CMLib.genEd().promptStatStr(mob,me,null,++showNumber,showFlag,"Affect String","DISPLAY",true);
             CMLib.genEd().promptStatBool(mob,me,++showNumber,showFlag,"Is Auto-invoking","AUTOINVOKE");
             CMLib.genEd().promptStatStr(mob,me,"0,"+CMParms.toStringList(Ability.FLAG_DESCS),++showNumber,showFlag,"Skill Flags (comma sep)","FLAGS",true);

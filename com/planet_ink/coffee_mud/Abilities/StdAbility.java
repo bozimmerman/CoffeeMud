@@ -52,6 +52,9 @@ public class StdAbility implements Ability
 	public boolean putInCommandlist(){return true;}
 	public boolean isAutoInvoked(){return false;}
 	public boolean bubbleAffect(){return false;}
+	public int getTicksBetweenCasts() { return 0;}
+	public long getTimeOfNextCast(){ return 0;}
+	public void setTimeOfNextCast(long absoluteTime){};
 	protected int iniTrainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLTRAINCOST);}
 	protected int iniPracticesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLPRACCOST);}
 	public int trainsRequired(MOB mob)
@@ -85,6 +88,16 @@ public class StdAbility implements Ability
 		return iniPracticesToPractice();
 	}
 	protected int iniPracticesToPractice(){return 1;}
+	public void setTimeOfNextCast(MOB caster)
+	{
+		long newTime=(getTicksBetweenCasts()*Tickable.TIME_TICK);
+		double mul=1.0;
+		mul -= (0.05 * (double)getXLEVELLevel(caster));
+		mul -= (0.1 * (double)getXTIMELevel(caster));
+		newTime=Math.round(CMath.mul(newTime,mul));
+		setTimeOfNextCast(System.currentTimeMillis() +newTime);
+	}
+	
 	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
 	public long flags(){return 0;}
 	protected short[] expertise=null;
@@ -314,7 +327,6 @@ public class StdAbility implements Ability
 				||(mob.isMonster())
 				||(CMLib.ableMapper().qualifiesByLevel(mob,this)));
 	}
-
 
 	public int adjustedLevel(MOB caster, int asLevel)
 	{
@@ -910,6 +922,17 @@ public class StdAbility implements Ability
 			if(!CMLib.flags().aliveAwakeMobile(mob,false))
 				return false;
 
+			if((getTicksBetweenCasts()>0)
+			&&(getTimeOfNextCast()>0)
+			&&(System.currentTimeMillis()<getTimeOfNextCast())
+			&&(mob.location()!=null)&&(mob.location().getArea()!=null))
+			{
+				TimeClock C=mob.location().getArea().getTimeObj();
+				if(C!=null)
+					mob.tell("You must wait "+C.deriveEllapsedTimeString(getTimeOfNextCast()-System.currentTimeMillis())+" before you can do that again.");
+				return false;
+			}
+			
 			if(CMath.bset(usageType(),Ability.USAGE_MOVEMENT)
 			   &&(CMLib.flags().isBound(mob)))
 			{

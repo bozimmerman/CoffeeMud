@@ -65,7 +65,8 @@ public class GenAbility extends StdAbility
     private static final int V_PABL=23;//S
     private static final int V_PDMG=24;//S
     private static final int V_HELP=25;//S
-    private static final int NUM_VS=26;//S
+    private static final int V_TKBC=26;//I
+    private static final int NUM_VS=27;//S
     private static final Object[] makeEmpty()
     {
         Object[] O=new Object[NUM_VS];
@@ -95,6 +96,7 @@ public class GenAbility extends StdAbility
         O[V_PABL]="";
         O[V_PDMG]="1";
         O[V_HELP]="<ABILITY>This ability is not yet documented.";
+        O[V_TKBC]=Integer.valueOf(0);
         return O;
     }
     private static final Object V(String ID, int varNum)
@@ -152,6 +154,10 @@ public class GenAbility extends StdAbility
     protected int canAffectCode(){return ((Integer)V(ID,V_CAFF)).intValue(); }
     protected int canTargetCode(){return ((Integer)V(ID,V_CTAR)).intValue(); }
     public int abstractQuality(){return ((Integer)V(ID,V_QUAL)).intValue();}
+    protected long timeToNextCast = 0;
+	public int ticksBetweenCasts() { return ((Integer)V(ID,V_TKBC)).intValue();}
+	public long getTimeOfNextCast(){ return timeToNextCast; }
+	public void setTimeOfNextCast(long absoluteTime) { timeToNextCast=absoluteTime;}
 
 
     public CMObject newInstance()
@@ -352,6 +358,7 @@ public class GenAbility extends StdAbility
                         else
                             success=beneficialAffect(mob,target,asLevel,0);
                     }
+                    setTimeOfNextCast(mob);
                     String afterAffect=(String)V(ID,V_PAFF);
                     if((afterAffect.length()>0)&&(success))
                     {
@@ -535,7 +542,8 @@ public class GenAbility extends StdAbility
                                          "POSTCASTAFFECT",//24S
                                          "POSTCASTABILITY",//25S
                                          "POSTCASTDAMAGE",//26I
-                                         "HELP"//27I
+                                         "HELP",//27I
+                                         "TICKSBETWEENCASTS"//28I
                                         };
     public String[] getStatCodes(){return CODES;}
     protected int getCodeNum(String code){
@@ -574,6 +582,7 @@ public class GenAbility extends StdAbility
         case 25: return (String)V(ID,V_PABL);
         case 26: return (String)V(ID,V_PDMG);
         case 27: return (String)V(ID,V_HELP);
+        case 28: return ((Integer)V(ID,V_TKBC)).toString();
         default:
         	if(code.equalsIgnoreCase("allxml")) return getAllXML();
         	break;
@@ -636,6 +645,7 @@ public class GenAbility extends StdAbility
         case 25: SV(ID,V_PABL,val); break;
         case 26: SV(ID,V_PDMG,val); break;
         case 27: SV(ID,V_HELP,val); break;
+        case 28: SV(ID,V_TKBC,Integer.valueOf(CMath.s_int(val))); break;
         default:
         	if(code.equalsIgnoreCase("allxml")&&ID.equalsIgnoreCase("GenAbility")) parseAllXML(val);
         	break;

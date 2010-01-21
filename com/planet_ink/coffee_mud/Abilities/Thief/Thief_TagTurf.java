@@ -40,7 +40,7 @@ public class Thief_TagTurf extends ThiefSkill
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
-	private static final String[] triggerStrings = {"TURFTAG","TAGTURF"};
+	private static final String[] triggerStrings = {"TAGTURF","TURFTAG"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
     public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
@@ -50,9 +50,10 @@ public class Thief_TagTurf extends ThiefSkill
 		if(!super.okMessage(host,msg))
 			return false;
 
-		if((!msg.source().Name().equals(text()))
+		if((msg.tool() instanceof Ability)
+		&&(!msg.source().Name().equals(text()))
         &&((msg.source().getClanID().length()==0)||(!msg.source().getClanID().equals(text())))
-		&&(msg.tool() instanceof Ability)
+		&&(!msg.tool().ID().equals("Thief_TurfWar"))
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_THIEF_SKILL))
 		{
 			msg.source().tell("You definitely aren't allowed to do that on "+text()+"'s turf.");
@@ -105,7 +106,7 @@ public class Thief_TagTurf extends ThiefSkill
                 mob.tell("This place has been untagged.");
                 return true;
             }
-			mob.tell("This place has already been tagged.");
+			mob.tell("This place has already been tagged by "+A.text()+".");
 			return false;
 		}
 		if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_CITY)

@@ -185,6 +185,12 @@
             </TD>
         </TR>
         <TR>
+            <TD><FONT COLOR=YELLOW>Ticks Between Casts: </FONT></TD>
+            <TD>
+                <INPUT TYPE=TEXT SIZE=10 MAXLENGTH=20 NAME=TICKSBETWEENCASTS VALUE="@AbilityData?TICKSBETWEENCASTS@">
+            </TD>
+        </TR>
+        <TR>
             <TD><FONT COLOR=YELLOW>Can Affect: </FONT></TD>
             <TD>
                 <SELECT NAME=CANAFFECTMASK MULTIPLE>@AbilityData?CANAFFECTMASK@</SELECT>

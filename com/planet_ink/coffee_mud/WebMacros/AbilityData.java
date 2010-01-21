@@ -139,6 +139,12 @@ public class AbilityData extends StdWebMacro
                         str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.RANGE_CHOICES[i]));
                     str.append(", ");
                 }
+                if(parms.containsKey("TICKSBETWEENCASTS"))
+                {
+                    String old=httpReq.getRequestParameter("TICKSBETWEENCASTS");
+                    if(old==null) old=""+A.getTicksBetweenCasts();
+                    str.append(old+", ");
+                }
                 if(parms.containsKey("DISPLAY")) // affected string
                 {
                     String old=httpReq.getRequestParameter("DISPLAY");

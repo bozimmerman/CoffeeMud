@@ -951,6 +951,12 @@ public class StdMOB implements MOB
 	{
 		MOB myVictim=victim;
 		setVictim(null);
+		for(int f=0;f<numFollowers();f++)
+		{
+			MOB M=fetchFollower(f);
+			if((M!=null)&&(M.isInCombat()))
+				M.makePeace();
+		}
 		if(myVictim!=null)
 		{
 			MOB oldVictim=myVictim.getVictim();

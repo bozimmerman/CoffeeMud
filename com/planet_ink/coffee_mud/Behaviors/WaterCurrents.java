@@ -221,6 +221,7 @@ public class WaterCurrents extends ActiveTicker
 		protected Environmental affected=null;
 		protected int canAffectCode(){return 0;}
 		protected int canTargetCode(){return 0;}
+		public int getTicksBetweenCasts() { return 0;}
 		public boolean canTarget(int can_code){return false;}
 		public boolean canAffect(int can_code){return false;}
 		public double castingTime(MOB mob, Vector cmds){return 0.0;}

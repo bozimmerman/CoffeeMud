@@ -62,6 +62,8 @@ public class GrinderAbilities {
         A.setStat("MINRANGE",(old==null)?"0":old);
         old=httpReq.getRequestParameter("MAXRANGE");
         A.setStat("MAXRANGE",(old==null)?"":old);
+        old=httpReq.getRequestParameter("TICKSBETWEENCASTS");
+        A.setStat("TICKSBETWEENCASTS",(old==null)?"0":old);
         old=httpReq.getRequestParameter("DISPLAY");
         A.setStat("DISPLAY",(old==null)?"DISPLAY":old);
         old=httpReq.getRequestParameter("AUTOINVOKE");

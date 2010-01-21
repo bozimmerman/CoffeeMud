@@ -48,6 +48,7 @@ public class QuestBound implements Ability
 	public double combatCastingTime(MOB mob, Vector cmds){return 0.0;}
 	public int abilityCode(){return 0;}
 	public void setAbilityCode(int newCode){}
+	public int getTicksBetweenCasts() { return 0;}
 	public int adjustedLevel(MOB mob, int asLevel){return -1;}
 	public boolean bubbleAffect(){return false;}
 	public long flags(){return 0;}
