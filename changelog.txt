@@ -2239,4 +2239,5 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 13.Faction triggers support parameters; see one of the new faction.ini files for details
 14.New Prayer: Divine Constitution
 15.STAT commands now supports: FACTIONS, ROOMSEXPLORED, AREASEXPLORED, WORLDEXPLORED
+16.PROMPT now supports new syntax to display any personal variables.
 

@@ -621,18 +621,19 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	public Object[] fetchFlags(String srchStr)
 	{
 		if(srchStr.length()==0) return null;
-		if((srchStr.length()<2)||(srchStr.equalsIgnoreCase("THE")))
+		srchStr=srchStr.toUpperCase();
+		if((srchStr.length()<2)||(srchStr.equals("THE")))
 		   return null;
 		Object[] flags=new Object[3];
 
 		boolean allFlag=false;
-		if(srchStr.toUpperCase().startsWith("ALL "))
+		if(srchStr.startsWith("ALL "))
 		{
 			srchStr=srchStr.substring(4);
 			allFlag=true;
 		}
 		else
-		if(srchStr.equalsIgnoreCase("ALL"))
+		if(srchStr.equals("ALL"))
 			allFlag=true;
 
 		int dot=srchStr.lastIndexOf(".");
