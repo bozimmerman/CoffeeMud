@@ -43,7 +43,6 @@ public class Chant_AcidRain extends Chant
 	protected int canTargetCode(){return Ability.CAN_ROOMS;}
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
     public long flags(){return Ability.FLAG_EARTHBASED;}
-    public Ability lastAcidRain=null;
     
 	public boolean isRaining(Room R)
 	{
@@ -56,6 +55,8 @@ public class Chant_AcidRain extends Chant
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
+		if(!super.tick(ticking, tickID))
+			return false;
 		if((affected!=null)&&(affected instanceof Room))
 		{
 			Room R=(Room)affected;
@@ -123,13 +124,7 @@ public class Chant_AcidRain extends Chant
 							mob.location().show(mob,M,CMMsg.MASK_MALICIOUS|CMMsg.TYP_OK_VISUAL,null);
 					}
 					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Acid rain starts pouring from the sky!");
-					if(lastAcidRain!=null)
-					{
-						lastAcidRain.unInvoke();
-						lastAcidRain=null;
-					}
 					maliciousAffect(mob,target,asLevel,0,-1);
-					lastAcidRain=target.fetchEffect(ID());
 				}
 			}
 		}

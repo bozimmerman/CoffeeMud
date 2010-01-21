@@ -37,7 +37,7 @@ public class Chant extends StdAbility
 {
 	public String ID() { return "Chant"; }
 	public String name(){ return "a Druidic Chant";}
-	public String displayText(){return "(in the natural order)";}
+	public String displayText(){return "("+name()+")";}
     protected boolean renderedMundane=false;
     
     /** codes: -1=do nothing, 1=wind, 2=rain, 4=hot, 8=cold, 16=calm */
