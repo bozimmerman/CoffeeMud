@@ -1118,6 +1118,8 @@ public interface RawMaterial extends Item
 			}
 			descs=Arrays.copyOf(descs, descs.length+1);
 			descs[descs.length-1]=name;
+			smells=Arrays.copyOf(smells, smells.length+1);
+			smells[smells.length-1]=name;
 			
 			data=Arrays.copyOf(data, data.length+1);
 			//full code, base value, frequency, hardness (1-10), bouancy
@@ -1158,6 +1160,7 @@ public interface RawMaterial extends Item
 						newfishes[n++]=fishes[b];
 				fishes=newfishes;
 			}
+			smells[resourceIndex]=smell;
 			descs[resourceIndex]=name;
 			int[] newRow={resourceCode,value,frequ,hardness,bouancy};
 			data[resourceIndex]=newRow;
