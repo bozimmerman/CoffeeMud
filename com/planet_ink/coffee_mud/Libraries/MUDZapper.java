@@ -47,8 +47,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 
     protected Item nonCrashingItem=null;
     protected Item nonCrashingItem(MOB mob){
-    	Item I = mob.fetchInventory(0);
-    	if(I!=null) return I;
+    	if(mob.inventorySize()>0)
+    	{
+	    	Item I = mob.fetchInventory(0);
+	    	if(I!=null) return I;
+    	}
         if(nonCrashingItem!=null)
             return nonCrashingItem;
         nonCrashingItem=CMClass.getItem("StdItem");
