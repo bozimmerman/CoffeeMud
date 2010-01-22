@@ -160,6 +160,31 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		if(!connected) throw new IOException("Unable to connect to '"+domain+"'.");
 	}
 	
+	public boolean emailIfPossible(String from, MOB mob, String subj, String msg)
+	{
+		try
+		{
+	        SMTPLibrary.SMTPClient SC=null;
+	        if(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME).length()>0)
+	            SC=CMLib.smtp().getClient(CMProps.getVar(CMProps.SYSTEM_SMTPSERVERNAME),SMTPLibrary.DEFAULT_PORT);
+	        else
+	            SC=CMLib.smtp().getClient(mob.playerStats().getEmail());
+	
+	        String domain=CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase();
+	        SC.sendMessage(from+"@"+domain,
+	        			   from+"@"+domain,
+	                       mob.playerStats().getEmail(),
+	                       mob.playerStats().getEmail(),
+	                       subj,
+	                       CMLib.coffeeFilter().simpleOutFilter(msg));
+	        return true;
+		}
+		catch(Exception e) {
+			Log.errOut("SMTPClient",e.getMessage());
+			return false;
+		}
+	}
+	
 	public boolean emailIfPossible(String SMTPServerInfo, 
     						       String from,
     						       String replyTo,

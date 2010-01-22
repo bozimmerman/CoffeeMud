@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 
 import com.planet_ink.coffee_mud.Libraries.SMTPclient;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.exceptions.BadEmailAddressException;
 
 public interface SMTPLibrary extends CMLibrary
@@ -18,6 +19,7 @@ public interface SMTPLibrary extends CMLibrary
 	public boolean isValidEmailAddress(String addy);
     public boolean emailIfPossible(String SMTPServerInfo, String from, String replyTo, String to, String subject, String message)
         throws IOException;
+	public boolean emailIfPossible(String from, MOB mob, String subj, String msg);
     public SMTPClient getClient(String SMTPServerInfo, int port)  throws UnknownHostException, IOException;
     public SMTPClient getClient(String emailAddress) throws IOException, BadEmailAddressException;
     

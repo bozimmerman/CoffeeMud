@@ -1031,8 +1031,24 @@ public class DefaultClan implements Clan
                     return true;
                 }
                 setStatus(CLANSTATUS_FADING);
+                for(int j=0;j<members.size();j++)
+                {
+                    String s=(String)members.elementAt(j,1);
+                    int role=((Integer)members.elementAt(j,2)).intValue();
+                    //long lastLogin=((Long)members.elementAt(j,3)).longValue();
+					if(CMLib.clans().getRoleOrder(role)==Clan.POSORDER.length-1)
+					{
+						MOB player=CMLib.players().getLoadPlayer(s);
+						if(player!=null)
+							CMLib.smtp().emailIfPossible("AutoPurge",player,"AutoPurge: "+name(), 
+									""+typeName()+" "+name()+" is in danger of being deleted if at least "+(minimumMembers-activeMembers)
+									+" members do not log on within 24 hours.");
+					}
+                }
+                
                 Log.sysOut("Clans","Clan '"+getName()+" fading with only "+activeMembers+" having logged on lately.");
                 clanAnnounce(""+typeName()+" "+name()+" is in danger of being deleted if more members do not log on within 24 hours.");
+                update();
             }
             else
             switch(getStatus())
