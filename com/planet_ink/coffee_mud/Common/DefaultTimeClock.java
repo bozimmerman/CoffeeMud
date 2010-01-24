@@ -436,8 +436,13 @@ public class DefaultTimeClock implements TimeClock
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		tickStatus=Tickable.STATUS_NOT;
+		boolean timeToTick = ((System.currentTimeMillis()-lastTicked)>Tickable.TIME_MILIS_PER_MUDHOUR);
+		if(((loadName==null)||(loaded))
+		&&(!timeToTick))
+			return true;
 		synchronized(this)
 		{
+			lastTicked=System.currentTimeMillis();
 			if((loadName!=null)&&(!loaded))
 			{
 				loaded=true;
@@ -482,7 +487,7 @@ public class DefaultTimeClock implements TimeClock
 					}
 				}
 			}
-			if((System.currentTimeMillis()-lastTicked)>Tickable.TIME_MILIS_PER_MUDHOUR)
+			if(timeToTick)
 				tickTock(1);
 		}
 		return true;
