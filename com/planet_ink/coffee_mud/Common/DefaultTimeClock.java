@@ -436,12 +436,12 @@ public class DefaultTimeClock implements TimeClock
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		tickStatus=Tickable.STATUS_NOT;
-		boolean timeToTick = ((System.currentTimeMillis()-lastTicked)>Tickable.TIME_MILIS_PER_MUDHOUR);
 		if(((loadName==null)||(loaded))
-		&&(!timeToTick))
+		&&(((System.currentTimeMillis()-lastTicked)<=Tickable.TIME_MILIS_PER_MUDHOUR)))
 			return true;
 		synchronized(this)
 		{
+			boolean timeToTick = ((System.currentTimeMillis()-lastTicked)>Tickable.TIME_MILIS_PER_MUDHOUR);
 			lastTicked=System.currentTimeMillis();
 			if((loadName!=null)&&(!loaded))
 			{
