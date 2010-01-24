@@ -140,7 +140,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         if(getAnEvokeWord(mob,firstWord)!=null)
             return null;
 
-		Social social=CMLib.socials().fetchSocial(commands,true);
+		Social social=CMLib.socials().fetchSocial(commands,true,true);
 		if(social!=null) return social;
 
 		for(int c=0;c<CMLib.channels().getNumChannels();c++)
@@ -197,7 +197,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
             return C;
 
 
-		social=CMLib.socials().fetchSocial(commands,false);
+		social=CMLib.socials().fetchSocial(commands,false,true);
 		if(social!=null)
 		{
 			commands.setElementAt(social.baseName(),0);

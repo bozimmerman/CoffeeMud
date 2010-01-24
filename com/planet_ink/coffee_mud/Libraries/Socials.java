@@ -364,7 +364,22 @@ public class Socials extends StdLibrary implements SocialsList
                         selection=(v+1);
                     if(S.Name().substring(x+1).toUpperCase().trim().equalsIgnoreCase("<T-NAME>"))
                     { 
-                        str.append((v+1)+") Targeted (TARGET)\n\r"); 
+                        str.append((v+1)+") MOB Targeted (MOBTARGET)\n\r"); 
+                        continue;
+                    }
+                    if(S.Name().substring(x+1).toUpperCase().trim().equalsIgnoreCase("<I-NAME>"))
+                    { 
+                        str.append((v+1)+") Room Item Targeted (ITEMTARGET)\n\r"); 
+                        continue;
+                    }
+                    if(S.Name().substring(x+1).toUpperCase().trim().equalsIgnoreCase("<V-NAME>"))
+                    { 
+                        str.append((v+1)+") Inventory Targeted (INVTARGET)\n\r"); 
+                        continue;
+                    }
+                    if(S.Name().substring(x+1).toUpperCase().trim().equalsIgnoreCase("<E-NAME>"))
+                    { 
+                        str.append((v+1)+") Equipment Targeted (EQUIPTARGET)\n\r"); 
                         continue;
                     }
                     str.append((v+1)+") "+S.Name().substring(x+1).toUpperCase().trim()+"\n\r");
@@ -391,12 +406,34 @@ public class Socials extends StdLibrary implements SocialsList
                     break;
                 }
                 String newOne=rest;
-                if(newOne.length()==0)
-                    newOne=mob.session().prompt("\n\rNew target (TARGET,NONE,ALL,SELF): ","").toUpperCase().trim();
-                if(newOne.startsWith("<")||newOne.startsWith(">")||(newOne.startsWith("T-")))
+                while(newOne.length()==0)
+                {
+                    newOne=mob.session().prompt("\n\rNew target (?): ","").toUpperCase().trim();
+                    if(newOne.equals("?"))
+                    {
+                    	mob.session().println("Choices: MOBTARGET, ITEMTARGET, INVTARGET, EQUIPTARGET, NONE, ALL, SELF");
+                    	newOne="";
+                    }
+                }
+                if(newOne.startsWith("<T-")||(newOne.startsWith("T-")))
                     newOne="TNAME";
+                if(newOne.startsWith("<I-")||(newOne.startsWith("I-")))
+                    newOne="INAME";
+                if(newOne.startsWith("<V-")||(newOne.startsWith("V-")))
+                    newOne="VNAME";
+                if(newOne.startsWith("<E-")||(newOne.startsWith("E-")))
+                    newOne="ENAME";
                 if(newOne.equalsIgnoreCase("TNAME")||newOne.equalsIgnoreCase("TARGET")) 
                 	newOne=" <T-NAME>";
+                else
+                if(newOne.equalsIgnoreCase("INAME")||newOne.equalsIgnoreCase("ITEMTARGET")) 
+                	newOne=" <I-NAME>";
+                else
+                if(newOne.equalsIgnoreCase("VNAME")||newOne.equalsIgnoreCase("INVTARGET")) 
+                	newOne=" <V-NAME>";
+                else
+                if(newOne.equalsIgnoreCase("ENAME")||newOne.equalsIgnoreCase("EQUIPTARGET")) 
+                	newOne=" <E-NAME>";
                 else
                 if(newOne.equalsIgnoreCase("NONE")) newOne="";
                 else
@@ -445,7 +482,7 @@ public class Socials extends StdLibrary implements SocialsList
                         if(soc.targetCode()==CMMsg.MSG_OK_ACTION) soc.setTargetCode(CMMsg.MSG_HANDS);
                         modifySocialTargetCode(mob,soc,++showNumber,showFlag);
                     }
-                    if(soc.Name().endsWith(" <T-NAME>")||(soc.Name().endsWith(" ALL")))
+                    if(soc.Name().endsWith(" <T-NAME>")||soc.Name().endsWith(" <I-NAME>")||soc.Name().endsWith(" <V-NAME>")||soc.Name().endsWith(" <E-NAME>")||(soc.Name().endsWith(" ALL")))
                         soc.setSee_when_no_target(CMLib.genEd().prompt(mob,soc.See_when_no_target(),++showNumber,showFlag,"You-see when no target",false,true));
                     soc.setMSPfile(CMLib.genEd().prompt(mob,soc.MSPfile(),++showNumber,showFlag,"Sound file",true,false));
                     resaveSocials=true;
@@ -484,6 +521,17 @@ public class Socials extends StdLibrary implements SocialsList
         return null;
 	}
 	
+    public Social fetchSocial(String baseName, Environmental Target, boolean exactOnly)
+    {
+    	if(Target==null) return fetchSocial(baseName,exactOnly);
+    	if(Target instanceof MOB) return fetchSocial(baseName+" <T-NAME>",exactOnly);
+    	if(!(Target instanceof Item)) return null;
+    	Item I=(Item)Target;
+    	if(I.owner() instanceof Room) return fetchSocial(baseName+" <I-NAME>",exactOnly);
+    	if(!(I.owner() instanceof MOB)) return null;
+    	if(I.amWearingAt(Item.IN_INVENTORY))  return fetchSocial(baseName+" <V-NAME>",exactOnly);
+    	return fetchSocial(baseName+" <E-NAME>",exactOnly);
+    }
 	public Social fetchSocial(String name, boolean exactOnly)
 	{
         Hashtable soc=getSocialHash();
@@ -504,7 +552,7 @@ public class Socials extends StdLibrary implements SocialsList
 		return null;
 	}
 
-	public Social fetchSocial(Vector C, boolean exactOnly)
+	public Social fetchSocial(Vector C, boolean exactOnly, boolean checkItemTargets)
 	{
 		if(C==null) return null;
 		if(C.size()==0) return null;
@@ -512,16 +560,33 @@ public class Socials extends StdLibrary implements SocialsList
 		String socialName=(String)C.elementAt(0);
 		String theRest="";
         Social S=null;
+        boolean tryTargets=false;
 		if(C.size()>1)
 		{
 			String Target=((String)C.elementAt(1)).toUpperCase();
             S=fetchSocial(socialName+" "+Target,true);
             if((S==null)
 			&&((!Target.equals("SELF"))&&(!Target.equals("ALL"))))
-				Target="<T-NAME>";
-			theRest=" "+Target;
+            {
+            	if(checkItemTargets)
+	            	tryTargets=true;
+            	else
+                	theRest=" <T-NAME>";
+            }
+            else
+            if(S==null)
+            	theRest=" <T-NAME>";
 		}
-		if(S==null) S=fetchSocial(socialName+theRest,true);
+		if(S==null){
+			if(!tryTargets)
+				S=fetchSocial(socialName+theRest,true);
+			else
+        	if((S=fetchSocial(socialName+" <T-NAME>",true))==null)
+            	if((S=fetchSocial(socialName+" <I-NAME>",true))==null)
+                	if((S=fetchSocial(socialName+" <E-NAME>",true))==null)
+                    	if((S=fetchSocial(socialName+" <V-NAME>",true))==null)
+                    	{}
+		}
 		if((S==null)&&(!exactOnly))
 		{
             Hashtable soc=getSocialHash();
@@ -545,7 +610,14 @@ public class Socials extends StdLibrary implements SocialsList
 			if(socialName==null) 
 			    socialName=backupSocialName;
 			if(socialName!=null)
-				S=fetchSocial(socialName+theRest,true);
+				if(!tryTargets)
+					S=fetchSocial(socialName+theRest,true);
+				else
+	        	if((S=fetchSocial(socialName+" <T-NAME>",true))==null)
+	            	if((S=fetchSocial(socialName+" <I-NAME>",true))==null)
+	                	if((S=fetchSocial(socialName+" <E-NAME>",true))==null)
+	                    	if((S=fetchSocial(socialName+" <V-NAME>",true))==null)
+	                    	{}
 		}
 		return S;
 	}
@@ -586,7 +658,7 @@ public class Socials extends StdLibrary implements SocialsList
             soc.setOthersCode(CMMsg.MSG_SPEAK);
         }
         else
-        if(type.trim().equals("<T-NAME>"))
+        if(type.trim().endsWith("-NAME>"))
         {
             soc.setYou_see("You "+name.toLowerCase()+" <T-NAME>.");
             soc.setTarget_sees("<S-NAME> "+name.toLowerCase()+"s you.");
@@ -772,6 +844,36 @@ public class Socials extends StdLibrary implements SocialsList
             	help.append("No Target  : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, tgtMOB, null, S.See_when_no_target(), false)+"\n\r");
             	help.append("You see    : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, tgtMOB, null, S.You_see(), false)+"\n\r");
             	help.append("Target sees: "+CMLib.coffeeFilter().fullOutFilter(session, tgtMOB, mob, tgtMOB, null, S.Target_sees(), false)+"\n\r");
+            	help.append("Others see : "+CMLib.coffeeFilter().fullOutFilter(session, othMOB, mob, tgtMOB, null, S.Third_party_sees(), false)+"\n\r");
+            }
+            else
+            if(rest.equals("<I-NAME>"))
+            {
+            	help.append("\n\r");
+            	help.append("^H");
+            	help.append("Target     ^?: ^xroom item^.^N\n\r");
+            	help.append("No Target  : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, tgtMOB, null, S.See_when_no_target(), false)+"\n\r");
+            	help.append("You see    : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, tgtMOB, null, S.You_see(), false)+"\n\r");
+            	help.append("Others see : "+CMLib.coffeeFilter().fullOutFilter(session, othMOB, mob, tgtMOB, null, S.Third_party_sees(), false)+"\n\r");
+            }
+            else
+            if(rest.equals("<V-NAME>"))
+            {
+            	help.append("\n\r");
+            	help.append("^H");
+            	help.append("Target     ^?: ^xinventory item^.^N\n\r");
+            	help.append("No Target  : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, tgtMOB, null, S.See_when_no_target(), false)+"\n\r");
+            	help.append("You see    : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, tgtMOB, null, S.You_see(), false)+"\n\r");
+            	help.append("Others see : "+CMLib.coffeeFilter().fullOutFilter(session, othMOB, mob, tgtMOB, null, S.Third_party_sees(), false)+"\n\r");
+            }
+            else
+            if(rest.equals("<E-NAME>"))
+            {
+            	help.append("\n\r");
+            	help.append("^H");
+            	help.append("Target     ^?: ^xequipped item^.^N\n\r");
+            	help.append("No Target  : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, tgtMOB, null, S.See_when_no_target(), false)+"\n\r");
+            	help.append("You see    : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, tgtMOB, null, S.You_see(), false)+"\n\r");
             	help.append("Others see : "+CMLib.coffeeFilter().fullOutFilter(session, othMOB, mob, tgtMOB, null, S.Third_party_sees(), false)+"\n\r");
             }
             else

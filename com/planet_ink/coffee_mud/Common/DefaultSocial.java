@@ -69,12 +69,32 @@ public class DefaultSocial implements Social
 	public void setSourceCode(int code){sourceCode=code;}
 	public void setOthersCode(int code){othersCode=code;}
 	public void setTargetCode(int code){targetCode=code;}
-	public boolean targetable(){return name().endsWith(" <T-NAME>");}
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
     public String MSPfile(){return MSPfile;}
     public void setMSPfile(String newFile){MSPfile=newFile;}
 	public long expirationDate(){return 0;}
 	public void setExpirationDate(long time){}
+	public boolean targetable(Environmental E)
+	{
+		if(E==null)
+			return name().endsWith("-NAME>");
+		if(E instanceof MOB)
+			return name().endsWith(" <T-NAME>");
+		if((E instanceof Item)&&(((Item)E).container()==null))
+		{
+			Item I=(Item)E;
+			if(I.owner() instanceof Room)
+				return name().endsWith(" <I-NAME>");
+			if(I.owner() instanceof MOB)
+			{
+				if(I.amWearingAt(Item.IN_INVENTORY))
+					return name().endsWith(" <V-NAME>");
+				else
+					return name().endsWith(" <E-NAME>");
+			}
+		}
+		return false;
+	}
 
 	public boolean invoke(MOB mob,
 						  Vector commands,
@@ -89,9 +109,17 @@ public class DefaultSocial implements Social
 
 		Environmental Target=target;
 		if(Target==null)
-			Target=mob.location().fetchFromRoomFavorMOBs(null,targetStr,Wearable.FILTER_ANY);
-		if((Target!=null)&&(!CMLib.flags().canBeSeenBy(Target,mob)))
-		   Target=null;
+		{
+			Target=mob.location().fetchFromMOBRoomFavorsMOBs(mob,null,targetStr,Wearable.FILTER_ANY);
+			if((Target!=null)&&(!CMLib.flags().canBeSeenBy(Target,mob)))
+			   Target=null;
+			else
+			if((Target!=null)&&(!targetable(Target)))
+			{
+				Social S=CMLib.socials().fetchSocial(baseName(),Target, true);
+				if(S!=null) return S.invoke(mob, commands, Target, auto);
+			}
+		}
 
         String mspFile=((MSPfile!=null)&&(MSPfile.length()>0))?CMProps.msp(MSPfile,10):"";
         
@@ -110,7 +138,7 @@ public class DefaultSocial implements Social
 		if((See_when_no_target!=null)&&(See_when_no_target.trim().length()==0)) 
             See_when_no_target=null;
         
-		if((Target==null)&&(targetable()))
+		if(((Target==null)&&(targetable(null)))||((Target!=null)&&(!targetable(Target))))
 		{
 			CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_ALWAYS:0)|sourceCode(),See_when_no_target,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
@@ -226,7 +254,7 @@ public class DefaultSocial implements Social
         
 		CMMsg msg=null;
         if(end.length()==0) mspFile="";
-		if((target==null)&&(targetable()))
+		if(((target==null)&&(targetable(null)))||((target!=null)&&(!targetable(target))))
 			msg=CMClass.getMsg(mob,null,this,srcMask|sourceCode(),str+See_when_no_target+end,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 		else
 		if(target==null)

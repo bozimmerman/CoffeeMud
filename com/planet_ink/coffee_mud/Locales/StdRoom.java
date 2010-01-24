@@ -1774,16 +1774,27 @@ public class StdRoom implements Room
 
 	public Environmental fetchFromMOBRoomFavorsItems(MOB mob, Item goodLocation, String thingName, int wornFilter)
 	{
+		return fetchFromMOBRoom(mob,goodLocation,thingName,wornFilter,true);
+	}
+	public Environmental fetchFromMOBRoomFavorsMOBs(MOB mob, Item goodLocation, String thingName, int wornFilter)
+	{
+		return fetchFromMOBRoom(mob,goodLocation,thingName,wornFilter,false);
+	}
+	private Environmental fetchFromMOBRoom(MOB mob, Item goodLocation, String thingName, int wornFilter, boolean favorItems)
+	{
 		Environmental found=null;
 		String newThingName=CMLib.lang().preItemParser(thingName);
 		if(newThingName!=null) thingName=newThingName;
 		boolean mineOnly=(mob!=null)&&(thingName.toUpperCase().trim().startsWith("MY "));
 		if(mineOnly) thingName=thingName.trim().substring(3).trim();
-		if((mob!=null)&&(wornFilter!=Wearable.FILTER_WORNONLY))
+		if((mob!=null)&&(favorItems)&&(wornFilter!=Wearable.FILTER_WORNONLY))
 			found=mob.fetchCarried(goodLocation, thingName);
 		if((found==null)&&(!mineOnly))
 		{
+			if(favorItems)
 				found=fetchFromRoomFavorItems(goodLocation, thingName,wornFilter);
+			else
+				found=fetchFromRoomFavorMOBs(goodLocation, thingName,wornFilter);
 			if((found!=null)&&(CMLib.flags().canBeSeenBy(found,mob)))
 				return found;
 			while((found!=null)&&(!CMLib.flags().canBeSeenBy(found,mob)))
@@ -1792,12 +1803,17 @@ public class StdRoom implements Room
 				if(!newThingName.equals(thingName))
 				{
 					thingName=newThingName;
-					found=fetchFromRoomFavorItems(goodLocation, thingName,wornFilter);
+					if(favorItems)
+						found=fetchFromRoomFavorItems(goodLocation, thingName,wornFilter);
+					else
+						found=fetchFromRoomFavorMOBs(goodLocation, thingName,wornFilter);
 				}
 				else
 					found=null;
 			}
 		}
+		if((mob!=null)&&(!favorItems)&&(wornFilter!=Wearable.FILTER_WORNONLY))
+			found=mob.fetchCarried(goodLocation, thingName);
 		if((mob!=null)&&(found==null)&&(wornFilter!=Wearable.FILTER_UNWORNONLY))
 			found=mob.fetchWornItem(thingName);
         if(found==null)
@@ -1807,7 +1823,7 @@ public class StdRoom implements Room
 		if(found==null)
 		{
 			newThingName=CMLib.lang().failedItemParser(thingName);
-			if(newThingName!=null) return fetchFromMOBRoomFavorsItems(mob,goodLocation,newThingName,wornFilter); 
+			if(newThingName!=null) return fetchFromMOBRoom(mob,goodLocation,newThingName,wornFilter,favorItems); 
 		}
 		return found;
 	}

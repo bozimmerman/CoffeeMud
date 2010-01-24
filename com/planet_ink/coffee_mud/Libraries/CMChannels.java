@@ -499,8 +499,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
         {
             String msgstr=message.substring(1);
             Vector V=CMParms.parse(msgstr);
-            Social S=CMLib.socials().fetchSocial(V,true);
-            if(S==null) S=CMLib.socials().fetchSocial(V,false);
+            Social S=CMLib.socials().fetchSocial(V,true,false);
+            if(S==null) S=CMLib.socials().fetchSocial(V,false,false);
             if(S!=null)
                 msg=S.makeChannelMsg(mob,channelInt,channelName,V,false);
             else
