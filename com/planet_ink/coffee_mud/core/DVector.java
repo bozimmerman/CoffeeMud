@@ -429,6 +429,30 @@ public class DVector implements Cloneable, java.io.Serializable
         return H2;
     }
     
+	public static HashSet softCopy(HashSet H)
+    {
+        if(H==null) return null;
+        HashSet H2=new HashSet(H.size());
+        for(Iterator i=H.iterator();i.hasNext();)
+            H2.add(i.next());
+        return H2;
+    }
+	
+	public static Enumeration empty_enum() {
+        return new Enumeration() {
+	        public boolean hasMoreElements() { return false;}
+	        public Object nextElement() { return null;}
+        };
+	};
+	
+	public static Iterator empty_iter() {
+        return new Iterator() {
+	        public boolean hasNext() { return false;}
+	        public Object next() { return null;}
+            public void remove() {}
+        };
+	};
+	
 	public static Enumeration s_enum(Vector V) {
         //return ((Vector)V.clone()).elements(); /*
         return new Enumeration() {
@@ -436,6 +460,8 @@ public class DVector implements Cloneable, java.io.Serializable
             public boolean hasMoreElements() { return i.hasNext();}
             public Object nextElement() { return i.next();}
             public Enumeration setV(Vector V) {
+                if((V==null)||(V.size()==0))
+                	return empty_enum();
                 i=s_iter(V);
                 return this;
             }
@@ -480,7 +506,8 @@ public class DVector implements Cloneable, java.io.Serializable
             }
             
             public Iterator setV(Vector V) {
-                if(V==null) return new Vector().iterator();
+                if((V==null)||(V.size()==0)) 
+                	return empty_iter();
                 this.V=V;
                 more=false;
                 try {
@@ -502,24 +529,17 @@ public class DVector implements Cloneable, java.io.Serializable
     }
     
 	public static Enumeration s_enum(Hashtable H, boolean keys) {
-        //return keys?((Hashtable)H.clone()).keys():((Hashtable)H.clone()).elements(); /*
+		/* this is slower -- more than twice as slow, believe it or not! */
+        //return keys?((Hashtable)H.clone()).keys():((Hashtable)H.clone()).elements(); 
+        if((H==null)||(H.size()==0))
+        	return empty_enum();
         Vector V=new Vector(H.size());
-        synchronized(H)
-        {
-            Enumeration e=keys?H.keys():H.elements();
-            for(;e.hasMoreElements();)
-                V.addElement(e.nextElement());
-        }
+    	if(keys)
+    		V.addAll(H.keySet());
+    	else
+        for(Enumeration e=H.elements();e.hasMoreElements();)
+            V.addElement(e.nextElement());
         return s_enum(V);
         //*/
-    }
-    
-	public static HashSet softCopy(HashSet H)
-    {
-        if(H==null) return null;
-        HashSet H2=new HashSet(H.size());
-        for(Iterator i=H.iterator();i.hasNext();)
-            H2.add(i.next());
-        return H2;
     }
 }
