@@ -78,7 +78,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     { return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,false,help);}
     public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, boolean rawPrint)
     throws IOException
-    { return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,false,null,null,null);}
+    { return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,rawPrint,null,null,null);}
     public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, boolean rawPrint, String help)
     throws IOException
     { return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,rawPrint,help,null,null);}
