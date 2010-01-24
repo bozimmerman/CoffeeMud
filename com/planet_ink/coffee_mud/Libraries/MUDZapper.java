@@ -69,7 +69,6 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         if(V==null)
         {
             V=maskCompile(str);
-            V.trimToSize();
             H.put(str.toLowerCase().trim(),V);
         }
         return V;
@@ -2161,7 +2160,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
     {
         int level=minMinLevel;
         Vector cset=preCompiled(text);
-        for(int c=0;c<cset.size();c++)
+        for(int c=1;c<cset.size();c++)
         {
         	Vector V=(Vector)cset.elementAt(c);
             if(V.size()>0)
