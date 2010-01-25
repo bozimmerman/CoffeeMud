@@ -105,7 +105,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 					msg.modify(msg.source(),msg.target(),msg.tool(),
 							   msg.sourceMajor()|CMMsg.TYP_ENTER,msg.sourceMessage(),
 							   msg.targetMajor()|CMMsg.TYP_ENTER,msg.targetMessage(),
-							   msg.othersMajor()|CMMsg.TYP_ENTER,msg.othersMessage());
+							   msg.othersMajor()|CMMsg.TYP_ENTER,null);
 					return true;
 				}
 				msg.source().tell("You cannot sit on "+name()+".");
