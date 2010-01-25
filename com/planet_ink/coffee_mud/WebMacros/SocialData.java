@@ -35,9 +35,9 @@ import java.util.*;
 public class SocialData extends StdWebMacro
 {
     public String name()    {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
-    static String[] BTYPES={"NONE","ALL","SELF","TARGET"};
+    static String[] BTYPES={"NONE","ALL","SELF","TARGETMOB","TARGETITEM","TARGETINV","TARGETEQUIP"};
     static String[] BEXTNS={""," ALL"," SELF"," <T-NAME>"," <I-NAME>"," <V-NAME>"," <E-NAME>"};
-    static String[] BFIELDS={"YOM","YONM","YOM","YTONM"};
+    static String[] BFIELDS={"YOM","YONM","YOM","YTONM","YONM","YONM","YONM"};
     
     static String[] CODESTR={"WORDS","MOVEMENT","SOUND","VISUAL","HANDS"};
     static int[] CODES={CMMsg.MSG_SPEAK,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_NOISE,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_HANDS};

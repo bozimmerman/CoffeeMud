@@ -2243,4 +2243,5 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 17.Abilities/GenAbilities now support delays between allowed invocations
 18.New Thief Skill: Turf War!
 19.Run-time compiled java from LOAD command will now display any compile errors to user.
+20.Socials now support various item-type target options.
 

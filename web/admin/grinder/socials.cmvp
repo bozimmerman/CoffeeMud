@@ -125,13 +125,16 @@
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
     <TABLE WIDTH=100% BORDER=1>
-    <TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Socials Manager</H2></FONT></TD></TR>
+    <TR><TD WIDTH=100% COLSPAN=9 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Socials Manager</H2></FONT></TD></TR>
     <TR>
-    <TD WIDTH=20%><B><FONT COLOR=YELLOW>Name</FONT></b></TD>
-    <TD WIDTH=10%><B><FONT COLOR=YELLOW>No Target</FONT></b></TD>
-    <TD WIDTH=10%><B><FONT COLOR=YELLOW>Target Self</FONT></b></TD>
-    <TD WIDTH=10%><B><FONT COLOR=YELLOW>Target Other</FONT></B></TD>
-    <TD WIDTH=10%><B><FONT COLOR=YELLOW>Target All</FONT></B></TD>
+    <TD WIDTH=12%><B><FONT COLOR=YELLOW>Name</FONT></b></TD>
+    <TD WIDTH=8%><B><FONT COLOR=YELLOW>No Target</FONT></b></TD>
+    <TD WIDTH=8%><B><FONT COLOR=YELLOW>Target Self</FONT></b></TD>
+    <TD WIDTH=8%><B><FONT COLOR=YELLOW>Target MOB</FONT></B></TD>
+    <TD WIDTH=8%><B><FONT COLOR=YELLOW>Target Equip</FONT></B></TD>
+    <TD WIDTH=8%><B><FONT COLOR=YELLOW>Target Item</FONT></B></TD>
+    <TD WIDTH=8%><B><FONT COLOR=YELLOW>Target Inv.</FONT></B></TD>
+    <TD WIDTH=8%><B><FONT COLOR=YELLOW>Target All</FONT></B></TD>
     <TD WIDTH=40%><B><FONT COLOR=YELLOW>MSP File</FONT></B></TD>
     </TR>
     @SocialNext?RESET@
@@ -141,14 +144,17 @@
     <TD><a href="javascript:Social('@SocialID?ENCODED@')"><FONT COLOR=WHITE><B>@SocialID@</B></FONT></a></TD>
     <TD ALIGN=CENTER><FONT COLOR=WHITE>@if?SocialData?ISNONE@Y@else@&nbsp;@endif@</FONT></TD>
     <TD ALIGN=CENTER><FONT COLOR=WHITE>@if?SocialData?ISSELF@Y@else@&nbsp;@endif@</FONT></TD>
-    <TD ALIGN=CENTER><FONT COLOR=WHITE>@if?SocialData?ISTARGET@Y@else@&nbsp;@endif@</FONT></TD>
+    <TD ALIGN=CENTER><FONT COLOR=WHITE>@if?SocialData?ISTARGETMOB@Y@else@&nbsp;@endif@</FONT></TD>
+    <TD ALIGN=CENTER><FONT COLOR=WHITE>@if?SocialData?ISTARGETEQUIP@Y@else@&nbsp;@endif@</FONT></TD>
+    <TD ALIGN=CENTER><FONT COLOR=WHITE>@if?SocialData?ISTARGETITEM@Y@else@&nbsp;@endif@</FONT></TD>
+    <TD ALIGN=CENTER><FONT COLOR=WHITE>@if?SocialData?ISTARGETINV@Y@else@&nbsp;@endif@</FONT></TD>
     <TD ALIGN=CENTER><FONT COLOR=WHITE>@if?SocialData?ISALL@Y@else@&nbsp;@endif@</FONT></TD>
     <TD><FONT COLOR=WHITE>
         @if?SocialData?ISNONE@ 
             @SocialData?SDAT_NONE_M@&nbsp;
         @else@
-            @if?SocialData?ISTARGET@ 
-                @SocialData?SDAT_TARGET_M@&nbsp; 
+            @if?SocialData?ISTARGETMOB@ 
+                @SocialData?SDAT_TARGETMOB_M@&nbsp; 
             @else@
                 @if?SocialData?ISSELF@ 
                     @SocialData?SDAT_SELF_M@&nbsp; 
@@ -156,7 +162,19 @@
                     @if?SocialData?ISALL@ 
                         @SocialData?SDAT_ALL_M@&nbsp; 
                     @else@
-                        &nbsp;
+	                    @if?SocialData?ISTARGETEQUIP@ 
+	                        @SocialData?SDAT_TARGETEQUIP_M@&nbsp; 
+	                    @else@
+		                    @if?SocialData?ISTARGETITEM@ 
+		                        @SocialData?SDAT_TARGETITEM_M@&nbsp; 
+		                    @else@
+			                    @if?SocialData?ISTARGETINV@ 
+			                        @SocialData?SDAT_TARGETINV_M@&nbsp; 
+			                    @else@
+			                        &nbsp;
+			                    @endif@
+		                    @endif@
+	                    @endif@
                     @endif@
                 @endif@
             @endif@
