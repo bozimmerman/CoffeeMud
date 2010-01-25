@@ -157,7 +157,7 @@ public class Get extends StdCommand
 					if(getThis==null)
 					{
 						getThis=R.fetchFromRoomFavorItems(container,whatToGet+addendumStr,Wearable.FILTER_UNWORNONLY);
-if(!mob.isMonster()) Log.debugOut("GETTEST","GET: "+whatToGet+addendumStr+": "+getThis);						
+						//if(!mob.isMonster()) Log.debugOut("GETTEST","GET: "+whatToGet+addendumStr+": "+getThis);						
 					}
 				}
 				if(getThis==null) break;
