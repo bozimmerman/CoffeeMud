@@ -1099,6 +1099,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		srchStr=(String)flags[FLAG_STR];
 		int myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
 		boolean allFlag=((Boolean)flags[FLAG_ALL]).booleanValue();
+Log.debugOut("GETTEST","FETCH1AVAIL: "+srchStr+"/"+myOccurrance+"/"+allFlag+"/"+exactOnly+"/"+list.size());
 
 	    Environmental E=null;
 	    Item thisThang=null;
@@ -1115,7 +1116,6 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				    {
 						thisThang=(Item)E;
 						boolean beingWorn=!thisThang.amWearingAt(Wearable.IN_INVENTORY);
-
 						if((thisThang.container()==goodLocation)
 						&&((wornFilter==Wearable.FILTER_ANY)||(beingWorn&&(wornFilter==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornFilter==Wearable.FILTER_UNWORNONLY)))
 						&&(thisThang.ID().equalsIgnoreCase(srchStr)
@@ -1148,6 +1148,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					    thisThang=(Item)E;
 						boolean beingWorn=!thisThang.amWearingAt(Wearable.IN_INVENTORY);
 
+Log.debugOut("GETTEST","FETCH2AVAIL: "+i+"/"+thisThang.Name()+"/"+srchStr+"/"+allFlag+"/"+containsString(thisThang.Name(),srchStr));
 						if((thisThang.container()==goodLocation)
 						&&((wornFilter==Wearable.FILTER_ANY)||(beingWorn&&(wornFilter==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornFilter==Wearable.FILTER_UNWORNONLY)))
 						&&((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
