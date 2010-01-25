@@ -1148,7 +1148,7 @@ Log.debugOut("GETTEST","FETCH1AVAIL: "+srchStr+"/"+myOccurrance+"/"+allFlag+"/"+
 					    thisThang=(Item)E;
 						boolean beingWorn=!thisThang.amWearingAt(Wearable.IN_INVENTORY);
 
-Log.debugOut("GETTEST","FETCH2AVAIL: "+i+"/"+thisThang.Name()+"/"+srchStr+"/"+allFlag+"/"+containsString(thisThang.Name(),srchStr));
+Log.debugOut("GETTEST","FETCH2AVAIL: "+i+"/"+myOccurrance+"/"+thisThang.Name()+"/"+srchStr+"/"+allFlag+"/"+containsString(thisThang.Name(),srchStr));
 						if((thisThang.container()==goodLocation)
 						&&((wornFilter==Wearable.FILTER_ANY)||(beingWorn&&(wornFilter==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornFilter==Wearable.FILTER_UNWORNONLY)))
 						&&((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
