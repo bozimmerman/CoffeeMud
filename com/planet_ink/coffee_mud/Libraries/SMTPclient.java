@@ -19,7 +19,6 @@ import java.util.*;
 import javax.naming.*;
 import javax.naming.directory.*;
 import com.planet_ink.coffee_mud.core.exceptions.*;
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 
 /* 
