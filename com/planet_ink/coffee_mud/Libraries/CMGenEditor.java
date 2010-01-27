@@ -6843,6 +6843,16 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             fakeMe.setName(oldName);
             CMLib.database().DBDeleteMOB(fakeMe);
             CMLib.database().DBCreateCharacter(me);
+            PlayerStats pstats = me.playerStats();
+            if(pstats != null)
+            {
+            	PlayerAccount account = pstats.getAccount();
+            	if(account != null)
+            	{
+            		account.delPlayer(fakeMe);
+            		account.addNewPlayer(me);
+            	}
+            }
         }
         CMLib.database().DBUpdatePlayer(me);
         CMLib.database().DBUpdateFollowers(me);

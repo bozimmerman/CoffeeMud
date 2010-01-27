@@ -196,13 +196,40 @@ public class DefaultPlayerStats implements PlayerStats
         }
     }
 	public String lastIP(){return lastIP;}
-	public void setLastIP(String ip){lastIP=ip;}
-	public String getEmail(){if(email==null) return ""; return email;}
-	public void setEmail(String newAdd){email=newAdd;}
+	public void setLastIP(String ip)
+	{
+		lastIP=ip;
+		if(account != null)
+			account.setLastIP(ip);
+	}
+	public String getEmail()
+	{
+		if(account != null)
+			return account.getEmail();
+		if(email==null) 
+			return ""; 
+		return email;
+	}
+	public void setEmail(String newAdd)
+	{
+		email=newAdd;
+		if(account != null)
+			account.setEmail(newAdd);
+	}
 	public long lastUpdated(){return lastUpdated;}
-	public void setLastUpdated(long time){lastUpdated=time;}
+	public void setLastUpdated(long time)
+	{
+		lastUpdated=time;
+		if(account != null)
+			account.setLastUpdated(time);
+	}
 	public long lastDateTime(){return LastDateTime;}
-	public void setLastDateTime(long C){ LastDateTime=C;}
+	public void setLastDateTime(long C)
+	{ 
+		LastDateTime=C;
+		if(account != null)
+			account.setLastDateTime(C);
+	}
 	public int getWrap(){return wrap;}
 	public void setWrap(int newWrap){wrap=newWrap;}
 	public int getPageBreak(){return pageBreak;}
@@ -295,8 +322,18 @@ public class DefaultPlayerStats implements PlayerStats
 		return (Vector)gtellStack.clone();
 	}
 	
-	public HashSet getFriends(){return friends;}
-	public HashSet getIgnored(){return ignored;}
+	public HashSet getFriends()
+	{
+		if(account != null)
+			return account.getFriends();
+		return friends;
+	}
+	public HashSet getIgnored()
+	{
+		if(account != null)
+			return account.getIgnored();
+		return ignored;
+	}
 	
     public String[] getAliasNames()
     {

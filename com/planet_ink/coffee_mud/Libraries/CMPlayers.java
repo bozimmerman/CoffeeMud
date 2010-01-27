@@ -191,7 +191,14 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
                 CMLib.database().DBUpdatePlayerAbilities(mob);
                 thread.status("saving "+mob.numFollowers()+" followers of "+mob.Name());
                 CMLib.database().DBUpdateFollowers(mob);
+                PlayerAccount account = mob.playerStats().getAccount();
                 mob.playerStats().setLastUpdated(System.currentTimeMillis());
+                if(account!=null)
+                {
+                    thread.status("saving account "+account.accountName()+" for "+mob.Name());
+                    CMLib.database().DBUpdateAccount(account);
+                    account.setLastUpdated(System.currentTimeMillis());
+                }
                 processed++;
             }
             else

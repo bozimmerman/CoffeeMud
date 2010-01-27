@@ -610,10 +610,17 @@ public class MOBloader
     public void DBUpdate(MOB mob)
     {
         DBUpdateJustMOB(mob);
-        if((mob.Name().length()==0)||(mob.playerStats()==null)) return;
+        PlayerStats pStats = mob.playerStats();
+        if((mob.Name().length()==0)||(pStats==null)) return;
         DBUpdateItems(mob);
         DBUpdateAbilities(mob);
-        mob.playerStats().setLastUpdated(System.currentTimeMillis());
+        pStats.setLastUpdated(System.currentTimeMillis());
+    	PlayerAccount account = pStats.getAccount();
+        if(account != null)
+        {
+        	DBUpdateAccount(account);
+        	account.setLastUpdated(System.currentTimeMillis());
+        }
     }
 
     public void DBUpdatePassword(MOB mob)
@@ -818,6 +825,17 @@ public class MOBloader
         DBUpdateAbilities(mob);
         CMLib.database().DBDeletePlayerJournals(mob.Name());
         CMLib.database().DBDeletePlayerData(mob.Name());
+        PlayerStats pstats = mob.playerStats();
+        if(pstats!=null)
+        {
+        	PlayerAccount account = pstats.getAccount();
+        	if(account != null)
+        	{
+        		account.delPlayer(mob);
+        		DBUpdateAccount(account);
+        		account.setLastUpdated(System.currentTimeMillis());
+        	}
+        }
     }
 
     public void DBUpdateAbilities(MOB mob)
@@ -885,9 +903,30 @@ public class MOBloader
                 +") VALUES ('"+mob.Name()+"','"+pstats.password()+"','"+mob.baseCharStats().getMyClassesStr()
                 +"','"+mob.baseCharStats().getMyRace().ID()+"','"+((char)mob.baseCharStats().getStat(CharStats.STAT_GENDER))
                 +"')");
+    	PlayerAccount account = pstats.getAccount();
+        if(account != null)
+        {
+        	account.addNewPlayer(mob);
+        	DBUpdateAccount(account);
+        	account.setLastUpdated(System.currentTimeMillis());
+        }
     }
 
-    public PlayerAccount DBAcctSearch(String Login)
+    public void DBUpdateAccount(PlayerAccount account)
+    {
+    	if(account == null) return;
+    	String characters = CMParms.toSemicolonList(account.getPlayers());
+        DB.update("UPDATE CMACCT SET CMPASS='"+account.password()+"',  CMCHRS='"+characters+"',  CMAXML='"+account.getXML()+"'  WHERE CMANAM='"+account.accountName()+"'");
+    }
+
+    public void DBCreateAccount(PlayerAccount account)
+    {
+    	if(account == null) return;
+    	String characters = CMParms.toSemicolonList(account.getPlayers());
+        DB.update("INSERT INTO CMACCT (CMANAM, CMPASS, CMCHRS, CMAXML) VALUES ('"+account.accountName()+"','"+account.password()+"','"+characters+"''"+account.getXML()+"')");
+    }
+
+    public PlayerAccount DBReadAccount(String Login)
     {
         DBConnection D=null;
     	PlayerAccount account = null;

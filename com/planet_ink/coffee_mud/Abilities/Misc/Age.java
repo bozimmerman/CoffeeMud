@@ -341,6 +341,7 @@ public class Age extends StdAbility
 					{
 						newMan.playerStats().setPassword(liege.playerStats().password());
 						newMan.playerStats().setEmail(liege.playerStats().getEmail());
+						newMan.playerStats().setAccount(liege.playerStats().getAccount());
 					}
 					else
 						newMan.playerStats().setPassword(babe.Name());

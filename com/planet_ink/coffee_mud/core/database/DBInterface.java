@@ -131,6 +131,15 @@ public class DBInterface implements DatabaseEngine
 	public void DBUpdateFollowers(MOB mob)
 	{MOBloader.DBUpdateFollowers(mob);}
 
+    public void DBUpdateAccount(PlayerAccount account)
+    { MOBloader.DBUpdateAccount(account);}
+    
+    public void DBCreateAccount(PlayerAccount account)
+    { MOBloader.DBCreateAccount(account);}
+    
+    public PlayerAccount DBReadAccount(String Login)
+    { return MOBloader.DBReadAccount(Login);}
+    
     public Vector DBReadAreaData(String areaID, boolean reportStatus)
     {return RoomLoader.DBReadAreaData(areaID,reportStatus);}
     
