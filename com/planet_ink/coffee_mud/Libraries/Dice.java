@@ -176,10 +176,7 @@ public class Dice extends StdLibrary implements DiceLibrary
     {
         if (randomizer == null)
             randomizer = new Random(System.currentTimeMillis());
-        double total = modifier;
-		if(die>0)
-			total += (((double)die-1.0)*(double)number*randomizer.nextDouble())+number;
-        return (int)Math.round(total);
+        return modifier + number + randomizer.nextInt((die * number)-number+1);
     }
 
     public int rollPercentage()

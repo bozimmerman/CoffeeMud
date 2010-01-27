@@ -137,8 +137,10 @@ public class Get extends StdCommand
 		if(whatToGet.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(4);}
 		if(whatToGet.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(0,whatToGet.length()-4);}
 		boolean doneSomething=false;
+boolean isMonster = mob.isMonster();		
 		while((c<containers.size())||(containers.size()==0))
 		{
+if(!isMonster) Log.debugOut("GETTEST","1)"+mob.name()+"/"+containerName+"/"+containers.size()+"/"+c+"/"+maxToGet+"/"+whatToGet+"/"+unmodifiedWhatToGet+"/"+allFlag);
 			Vector V=new Vector();
 			Item container=null;
 			if(containers.size()>0) 
@@ -155,11 +157,9 @@ public class Get extends StdCommand
 					if(!allFlag)
 						getThis=CMLib.english().possibleRoomGold(mob,R,container,whatToGet);
 					if(getThis==null)
-					{
 						getThis=R.fetchFromRoomFavorItems(container,whatToGet+addendumStr,Wearable.FILTER_UNWORNONLY);
-						//if(!mob.isMonster()) Log.debugOut("GETTEST","GET: "+whatToGet+addendumStr+": "+getThis);						
-					}
 				}
+if(!isMonster) Log.debugOut("GETTEST","2)"+container+"/"+addendum+"/"+addendumStr+"/"+getThis+"/"+allFlag+"/VVVVV");
 				if(getThis==null) break;
 				if((getThis instanceof Item)
 				&&((CMLib.flags().canBeSeenBy(getThis,mob)||(getThis instanceof Light)))
@@ -167,12 +167,14 @@ public class Get extends StdCommand
 				&&(!V.contains(getThis)))
 					V.addElement(getThis);
 				addendumStr="."+(++addendum);
+if(!isMonster) Log.debugOut("GETTEST","3)"+container+"/"+addendum+"/"+addendumStr+"/"+getThis+"/"+allFlag+"/"+V.size());
 			}
 			while((allFlag)&&(addendum<=maxToGet));
 
 			for(int i=0;i<V.size();i++)
 			{
 				Item getThis=(Item)V.elementAt(i);
+if(!isMonster) Log.debugOut("GETTEST","4)"+i+"/"+getThis+"/"+container+"/"+quiet);
 				get(mob,container,getThis,quiet,"get",true);
 				if(getThis instanceof Coins)
 					((Coins)getThis).putCoinsBack();

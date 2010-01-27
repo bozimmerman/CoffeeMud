@@ -1728,13 +1728,11 @@ public class StdRoom implements Room
 		if(newThingName!=null) thingName=newThingName;
 		Environmental found=null;
 		Vector V=(Vector)contents.clone();
-		//Log.debugOut("GETTEST","STDROOM: "+V.size()+"/"+contents.size());						
 		for(int e=0;e<exits.length;e++)
 		    if(exits[e]!=null)V.addElement(exits[e]);
 		V.addAll(inhabitants);
 		found=CMLib.english().fetchAvailable(V,thingName,goodLocation,wornFilter,true);
 		if(found==null) found=CMLib.english().fetchAvailable(V,thingName,goodLocation,wornFilter,false);
-		//Log.debugOut("GETTEST","STDROOM: "+goodLocation+"/"+thingName+"/"+wornFilter+"/"+found);
 
 		if((found!=null) // the smurfy well exception
 		&&(found instanceof Item)
