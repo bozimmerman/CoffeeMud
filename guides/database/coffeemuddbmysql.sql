@@ -329,4 +329,15 @@ ALTER TABLE CMGAAC
 	( 
 		UNIQUE KEY (CMGAID)
 	);
+CREATE TABLE CMACCT (
+	CMANAM char (50) ,
+	CMPASS char (50) ,
+	CMCHRS longtext NULL ,
+	CMAXML longtext NULL 
+);
 
+ALTER TABLE CMACCT 
+	ADD 
+	( 
+		UNIQUE KEY (CMANAM)
+	);

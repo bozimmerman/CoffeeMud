@@ -887,6 +887,44 @@ public class MOBloader
                 +"')");
     }
 
+    public PlayerAccount DBAcctSearch(String Login)
+    {
+        DBConnection D=null;
+    	PlayerAccount account = null;
+        try
+        {
+        	// why in the hell is this a memory scan?
+        	// case insensitivity from databases configured almost
+        	// certainly by amateurs is the answer. That, and fakedb 
+        	// doesn't understand 'LIKE'
+            D=DB.DBFetch();
+            ResultSet R=D.query("SELECT * FROM CMACCT");
+            if(R!=null) while(R.next())
+            {
+                String username=DB.getRes(R,"CMANAM");
+                if(Login.equalsIgnoreCase(username))
+                {
+                	account = (PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
+                    String password=DB.getRes(R,"CMPASS");
+                    String chrs=DB.getRes(R,"CMCHRS");
+                    String xml=DB.getRes(R,"CMAXML");
+                    Vector<String> names = new Vector<String>();
+                    if(chrs!=null) names.addAll(CMParms.parseSemicolons(chrs,true));
+                    account.setAccountName(username);
+                    account.setPassword(password);
+                    account.setPlayerNames(names);
+                    account.setXML(xml);
+                }
+            }
+        }
+        catch(Exception sqle)
+        {
+            Log.errOut("MOB",sqle);
+        }
+        if(D!=null) DB.DBDone(D);
+        return account;
+    }
+    
     public boolean DBUserSearch(MOB mob, String Login)
     {
         DBConnection D=null;
@@ -899,6 +937,10 @@ public class MOBloader
         }
         try
         {
+        	// why in the hell is this a memory scan?
+        	// case insensitivity from databases configured almost
+        	// certainly by amateurs is the answer. That, and fakedb 
+        	// doesn't understand 'LIKE'
             D=DB.DBFetch();
             ResultSet R=D.query("SELECT * FROM CMCHAR");
             if(R!=null) while(R.next())

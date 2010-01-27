@@ -61,6 +61,7 @@ public class DefaultPlayerStats implements PlayerStats
 	protected String tranpoofout="";
     protected String announceMsg="";
     protected String notes="";
+    protected PlayerAccount account = null;
 	protected int wrap=78;
 	protected int pageBreak=CMProps.getIntVar(CMProps.SYSTEMI_PAGEBREAK);;
     protected int[] birthday=null;
@@ -728,5 +729,9 @@ public class DefaultPlayerStats implements PlayerStats
             return;
         levelInfo.addElement(Integer.valueOf(level),Long.valueOf(System.currentTimeMillis()),CMLib.map().getExtendedRoomID(R));
     }
+    
+    public PlayerAccount getAccount() { return account;}
+    public void setAccount(PlayerAccount account) { this.account = account;}
+    
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

@@ -224,3 +224,11 @@ CREATE TABLE CMGAAC (
 	CMGAAT varchar (255) NULL ,
 	PRIMARY KEY (CMGAID)
 );
+
+CREATE TABLE CMACCT (
+	CMANAM varchar (50) ,
+	CMPASS varchar (50) ,
+	CMCHRS varchar (255) NULL ,
+	CMAXML varchar (255) NULL ,
+	PRIMARY KEY (CMANAM)
+);

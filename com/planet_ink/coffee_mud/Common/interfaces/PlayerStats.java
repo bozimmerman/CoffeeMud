@@ -37,44 +37,8 @@ import java.util.*;
  * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#playerStats()
  */
 @SuppressWarnings("unchecked")
-public interface PlayerStats extends CMCommon, CMModifiable
+public interface PlayerStats extends CMCommon, CMModifiable, AccountStats
 {
-    /**
-     * Returns the players email address, if available.
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setEmail(String)
-     * 
-     * @return the players email address, if available.
-     */
-	public String getEmail();
-	
-	/**
-     * Sets the players email address, if available.
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getEmail()
-     * 
-	 * @param newAdd the players email address, if available.
-	 */
-	public void setEmail(String newAdd);
-	
-	/**
-	 * The time, in milis since 1970, that the player last logged off.
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setLastDateTime(long)
-     * 
-	 * @return time, in milis since 1970, that the player last logged off.
-	 */
-	public long lastDateTime();
-	
-	/**
-     * Sets the time, in milis since 1970, that the player last logged off.
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#lastDateTime()
-	 * 
-	 * @param C the time, in milis since 1970, that the player last logged off.
-	 */
-    public void setLastDateTime(long C);
-    
     /**
      * The time, in milis since 1970, that the player was last saved.
      * 
@@ -114,24 +78,6 @@ public interface PlayerStats extends CMCommon, CMModifiable
      */
     public void setLeveledDateTime(int level, Room R);
 
-    /**
-     * Returns the players password.
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setPassword(String)
-     * 
-     * @return the players password.
-     */
-	public String password();
-
-	/**
-     * Sets the players password.
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#password()
-     * 
-	 * @param newPassword the players password.
-	 */
-	public void setPassword(String newPassword);
-    
 	/**
 	 * Returns a bitmask of channels turned on/off. (32 channels supported)
      * 
@@ -229,40 +175,6 @@ public interface PlayerStats extends CMCommon, CMModifiable
 	 * @param prompt the custom prompt, an encoded string, or ""
 	 */
 	public void setPrompt(String prompt);
-
-	/**
-	 * Returns the administrative notes entered about this player.
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setNotes(String)
-     * 
-	 * @return the administrative notes entered about this player.
-	 */
-	public String notes();
-
-	/**
-     * Sets the administrative notes entered about this player.
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#notes()
-     * 
-	 * @param newnotes the administrative notes entered about this player.
-	 */
-	public void setNotes(String newnotes);
-	
-	/**
-	 * Returns a modifiable HashSet that contains the set of player
-	 * Names that constitutes this players friends.
-	 * 
-	 * @return a set of player friend names
-	 */
-	public HashSet getFriends();
-
-	/**
-     * Returns a modifiable HashSet that contains the set of player
-     * Names that constitutes this players ignored player list.
-     * 
-	 * @return a set of player ignored player list Names
-	 */
-	public HashSet getIgnored();
 
 	/**
 	 * Returns a Vector of modifiable title definitions.  These are things
@@ -401,24 +313,6 @@ public interface PlayerStats extends CMCommon, CMModifiable
      * @param msg prefix to announcements
      */
     public void setAnnounceMessage(String msg);
-	
-    /**
-     * The last IP address this player logged in from.
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setLastIP(String)
-     * 
-     * @return the last IP address this player logged in from.
-     */
-	public String lastIP();
-
-	/**
-     * Sets the last IP address this player logged in from.
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#lastIP()
-     * 
-	 * @param ip the last IP address this player logged in from.
-	 */
-	public void setLastIP(String ip);
 	
 	/**
 	 * Returns the last MOB player who sent this player a private instant message.
@@ -678,47 +572,20 @@ public interface PlayerStats extends CMCommon, CMModifiable
      * @param name the player whom this player just met.
      */
     public void introduceTo(String name);
-
-    /**
-     * If the ACCOUNT system is used, this returns the time, in milis since
-     * 1970, that this account will expire (meaning the player will no longer
-     * be able to log in)
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setAccountExpiration(long)
-     * 
-     * @return the time, in milis, that this player expires.
-     */
-    public long getAccountExpiration();
-
-    /**
-     * If the ACCOUNT system is used, this sets the time, in milis since
-     * 1970, that this account will expire (meaning the player will no longer
-     * be able to log in)
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getAccountExpiration()
-     * 
-     * @param newVal the time, in milis, that this player expires.
-     */
-    public void setAccountExpiration(long newVal);
     
     /**
-     * Returns an XML representation of all the data in this object, for
-     * persistant storage.
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setXML(String)
-     * 
-     * @return an XML representation of all the data in this object
+     * If the ACCOUNTSYSTEM is used, this will access the account object 
+     * that is shared by all players of this account.
+     * @return the account object
      */
-    public String getXML();
-    
+    public PlayerAccount getAccount();
+
     /**
-     * Restores the data in this object from an XML document.
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getXML()
-     * 
-     * @param str an XML representation of all the data in this object
+     * If the ACCOUNTSYSTEM is used, this will allow you to set the account
+     * object that is shared by all players of this account.
+     * @param account the account object
      */
-    public void setXML(String str);
+    public void setAccount(PlayerAccount account);
     
     /**
      * Whether this object instance is functionally identical to the object passed in.  Works by repeatedly
