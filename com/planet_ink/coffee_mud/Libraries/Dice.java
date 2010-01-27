@@ -176,6 +176,8 @@ public class Dice extends StdLibrary implements DiceLibrary
     {
         if (randomizer == null)
             randomizer = new Random(System.currentTimeMillis());
+        if(die <= 0) return modifier;
+        if(number <= 0) return modifier;
         return modifier + number + randomizer.nextInt((die * number)-number+1);
     }
 
