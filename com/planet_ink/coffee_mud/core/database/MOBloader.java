@@ -1007,7 +1007,8 @@ public class MOBloader
         boolean returnable=false;
         if(mob!=null)
         {
-            if(mob.playerStats()==null) mob.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
+            if(mob.playerStats()==null) 
+            	mob.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
             mob.setName("");
             mob.playerStats().setPassword("");
         }
@@ -1035,8 +1036,10 @@ public class MOBloader
                         // Acct Exp Code
                         String buf=DBConnections.getRes(R,"CMPFIL");
                         {
+                        	PlayerAccount acct = null;
                         	String account = CMLib.xml().returnXMLValue(buf,"ACCOUNT");
-                        	PlayerAccount acct = (account != null)?CMLib.players().getLoadAccount(account):null;
+                        	if((account!=null)&&(account.length()>0))
+                        		acct = CMLib.players().getLoadAccount(account);
                         	if((acct != null)&&(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1))
                         		mob.playerStats().setAccount(acct);
                         	else

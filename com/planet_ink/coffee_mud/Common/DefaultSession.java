@@ -1372,6 +1372,9 @@ public class DefaultSession extends Thread implements Session
 			while((!killFlag)&&((++tries)<5))
 			{
 				MOB newMob=CMClass.getMOB("StdMOB");
+	            if(newMob.playerStats()==null) 
+	            	newMob.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
+				
 				Vector defaultFlagsV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_DEFAULTPLAYERFLAGS).toUpperCase(),true);
 				for(int v=0;v<defaultFlagsV.size();v++)
 				{
@@ -1383,8 +1386,8 @@ public class DefaultSession extends Thread implements Session
 				mob=newMob;
 				status=Session.STATUS_LOGIN;
 				String input=null;
-                int loginAttempt=CMLib.login().login(mob,tries);
-				if(loginAttempt>=1)
+                CharCreationLibrary.LoginResult loginResult=CMLib.login().login(mob,tries);
+				if(loginResult != CharCreationLibrary.LoginResult.NO_LOGIN)
 				{
 					status=Session.STATUS_LOGIN2;
 					if((!killFlag)&&(mob!=null))
@@ -1397,7 +1400,7 @@ public class DefaultSession extends Thread implements Session
                                 .append(((CMath.bset(mob.getBitmap(),MOB.ATT_ANSI)&&clientTelnetMode(Session.TELNET_ANSI)))?" ANSI":"")
                                 .append(", login: "+mob.Name());
 						Log.sysOut("Session",loginMsg.toString());
-                        if(loginAttempt>0)
+						if(loginResult != CharCreationLibrary.LoginResult.NO_LOGIN)
                             if(!CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_LOGIN,CMClass.getMsg(mob,null,CMMsg.MSG_LOGIN,null)))
                                 killFlag=true;
                     }

@@ -341,10 +341,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         return true;
 	}
 	
-    public boolean createCharacter(PlayerAccount acct, MOB mob, String login, Session session)
+    public boolean createCharacter(MOB mob, String login, Session session)
         throws java.io.IOException
     {
     	
+        PlayerAccount acct = mob.playerStats().getAccount();
+        
     	Hashtable extraScripts = getLoginScripts();
         
         login=CMStrings.capitalizeAndLower(login.trim());
@@ -366,8 +368,6 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	        }
 
         mob.setName(login);
-        mob.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
-        mob.playerStats().setAccount(acct);
 
         if((acct==null)||(acct.password().length()==0))
         {
@@ -965,23 +965,27 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     }
     
     // 0=no login, 1=normal login, 2=swap
-    public int login(MOB mob, int attempt)
+    public LoginResult login(MOB mob, int attempt)
         throws java.io.IOException
     {
-        if(mob==null) return 0;
-        if(mob.session()==null) return 0;
+        if(mob==null) 
+        	return LoginResult.NO_LOGIN;
+        if(mob.session()==null) 
+        	return LoginResult.NO_LOGIN;
 
         boolean wizi=false;
 
         String login=mob.session().prompt("name: ");
-        if(login==null) return 0;
+        if(login==null) 
+        	return LoginResult.NO_LOGIN;
         login=login.trim();
-        if(login.length()==0) return 0;
+        if(login.length()==0) 
+        	return LoginResult.NO_LOGIN;
         if(login.equalsIgnoreCase("MSSP-REQUEST")&&(!CMSecurity.isDisabled("MSSP")))
         {
         	mob.session().rawOut(getMSSPPacket());
             mob.session().logoff(false,false,false);
-        	return 0;
+        	return LoginResult.NO_LOGIN;
         }
         	
         if(login.endsWith(" !"))
@@ -998,6 +1002,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         	found = (acct = CMLib.database().DBReadAccount(login))!=null;
         	if(found)
     		{
+        		mob.playerStats().setAccount(acct);
     			//TODO:found = accountLogin(acct,mob,login);
     		}
         }
@@ -1019,7 +1024,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                     mob.session().logoff(false,false,false);
                     if(pendingLogins.containsKey(mob.Name().toUpperCase()))
                        pendingLogins.remove(mob.Name().toUpperCase());
-                    return 0;
+                    return LoginResult.NO_LOGIN;
                 }
                 if(((pstats.getEmail()==null)||(pstats.getEmail().length()==0))
                    &&(!CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("OPTION")))
@@ -1028,7 +1033,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                     if(C!=null)
                     {
                         if(!C.execute(mob,null,0))
-                            return 0;
+                            return LoginResult.NO_LOGIN;
                     }
                     CMLib.database().DBUpdateEmail(mob);
                 }
@@ -1038,14 +1043,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                     mob.session().logoff(false,false,false);
                     if(pendingLogins.containsKey(mob.Name().toUpperCase()))
                        pendingLogins.remove(mob.Name().toUpperCase());
-                    return 0;
+                    return LoginResult.NO_LOGIN;
                 }
-                if(!checkExpiration(mob)) return 0;
+                if(!checkExpiration(mob)) return LoginResult.NO_LOGIN;
                 Long L=(Long)pendingLogins.get(mob.Name().toUpperCase());
                 if((L!=null)&&((System.currentTimeMillis()-L.longValue())<(10*60*1000)))
                 {
                     mob.session().println("A previous login is still pending.  Please be patient.");
-                    return 0;
+                    return LoginResult.NO_LOGIN;
                 }
                 if(pendingLogins.containsKey(mob.Name().toUpperCase()))
                    pendingLogins.remove(mob.Name().toUpperCase());
@@ -1071,7 +1076,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                             mob.session().mob().bringToLife(oldRoom,false);
                             if(pendingLogins.containsKey(mob.Name().toUpperCase()))
                                pendingLogins.remove(mob.Name().toUpperCase());
-                            return 2;
+                            return LoginResult.SESSION_SWAP;
                         }
                     }
                 }
@@ -1094,7 +1099,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                     mob.session().println("The maximum player limit has already been reached for your IP address.");
                     if(pendingLogins.containsKey(mob.Name().toUpperCase()))
                         pendingLogins.remove(mob.Name().toUpperCase());
-                    return 0;
+                    return LoginResult.NO_LOGIN;
                 }
 
                 MOB oldMOB=mob;
@@ -1106,7 +1111,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                     if(mob!=oldMOB)
                         oldMOB.setSession(null);
                     if(loginsDisabled(mob))
-                    	return 0;
+                    	return LoginResult.NO_LOGIN;
                     if(wizi)
                     {
                         Command C=CMClass.getCommand("WizInv");
@@ -1139,7 +1144,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 {
                     CMLib.database().DBReadPlayer(mob);
                     if(loginsDisabled(mob))
-                    	return 0;
+                    	return LoginResult.NO_LOGIN;
                     if(wizi)
                     {
                         Command C=CMClass.getCommand("WizInv");
@@ -1198,7 +1203,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                         mob.session().logoff(false,false,false);
                     }
                 }
-                return 0;
+                return LoginResult.NO_LOGIN;
             }
         }
         else
@@ -1238,29 +1243,31 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             {
                 if(mob.session().confirm("\n\r'"+CMStrings.capitalizeAndLower(login)+"' does not exist.\n\rIs this a new account you would like to create (y/N)?","N"))
                 {
-                	int createSucceeded = 0;//TODO:createAccount(mob,login,mob.session())?1:0; 
+                	LoginResult result = LoginResult.NO_LOGIN;//TODO:createAccount(mob,login,mob.session())?1:0; 
                     if(pendingLogins.containsKey(mob.Name().toUpperCase()))
                         pendingLogins.remove(mob.Name().toUpperCase());
-                    return createSucceeded;
+                    return result;
                 }
             }
             else
             if(mob.session().confirm("\n\r'"+CMStrings.capitalizeAndLower(login)+"' does not exist.\n\rIs this a new character you would like to create (y/N)?","N"))
             {
-            	int createSucceeded = createCharacter(null,mob,login,mob.session())?1:0; 
+            	LoginResult result = LoginResult.NO_LOGIN;
+            	if(createCharacter(mob,login,mob.session()))
+            		result = LoginResult.NORMAL_LOGIN;
                 if(pendingLogins.containsKey(mob.Name().toUpperCase()))
                     pendingLogins.remove(mob.Name().toUpperCase());
-                return createSucceeded;
+                return result;
             }
             if(pendingLogins.containsKey(mob.Name().toUpperCase()))
                pendingLogins.remove(mob.Name().toUpperCase());
-            return 0;
+            return LoginResult.NO_LOGIN;
         }
         if(mob.session()!=null)
             mob.session().println("\n\r");
         if(pendingLogins.containsKey(mob.Name().toUpperCase()))
            pendingLogins.remove(mob.Name().toUpperCase());
-        return 1;
+        return LoginResult.NORMAL_LOGIN;
     }
     
 

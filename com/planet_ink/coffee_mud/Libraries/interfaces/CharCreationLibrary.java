@@ -42,9 +42,9 @@ public interface CharCreationLibrary extends CMLibrary
     public void showTheNews(MOB mob);
     public void notifyFriends(MOB mob, String message);
     public boolean checkExpiration(MOB mob);
-    public boolean createCharacter(PlayerAccount acct, MOB mob, String login, Session session)
+    public boolean createCharacter(MOB mob, String login, Session session)
         throws java.io.IOException;
-    public int login(MOB mob, int attempt)
+    public LoginResult login(MOB mob, int attempt)
         throws java.io.IOException;
     public void pageRooms(CMProps page, Hashtable table, String start);
     public void initStartRooms(CMProps page);
@@ -53,4 +53,9 @@ public interface CharCreationLibrary extends CMLibrary
     public Room getDefaultStartRoom(MOB mob);
     public Room getDefaultDeathRoom(MOB mob);
     public Room getDefaultBodyRoom(MOB mob);
+    
+    public enum LoginResult
+    {
+    	NO_LOGIN, NORMAL_LOGIN, SESSION_SWAP
+    }
 }
