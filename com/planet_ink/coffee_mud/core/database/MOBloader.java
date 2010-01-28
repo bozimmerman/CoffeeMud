@@ -628,7 +628,7 @@ public class MOBloader
         if(mob.Name().length()==0) return;
         PlayerStats pstats=mob.playerStats();
         if(pstats==null) return;
-        DB.update("UPDATE CMCHAR SET  CMPASS='"+pstats.password()+"'  WHERE CMUSERID='"+mob.Name()+"'");
+        DB.update("UPDATE CMCHAR SET CMPASS='"+pstats.password()+"' WHERE CMUSERID='"+mob.Name()+"'");
     }
 
     public void DBUpdateJustMOB(MOB mob)
@@ -925,11 +925,27 @@ public class MOBloader
     	String characters = CMParms.toSemicolonList(account.getPlayers());
         DB.update("INSERT INTO CMACCT (CMANAM, CMPASS, CMCHRS, CMAXML) VALUES ('"+account.accountName()+"','"+account.password()+"','"+characters+"''"+account.getXML()+"')");
     }
+    
+    public PlayerAccount MakeAccount(String username, ResultSet R) throws SQLException
+    {
+    	PlayerAccount account = null;
+    	account = (PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
+        String password=DB.getRes(R,"CMPASS");
+        String chrs=DB.getRes(R,"CMCHRS");
+        String xml=DB.getRes(R,"CMAXML");
+        Vector<String> names = new Vector<String>();
+        if(chrs!=null) names.addAll(CMParms.parseSemicolons(chrs,true));
+        account.setAccountName(username);
+        account.setPassword(password);
+        account.setPlayerNames(names);
+        account.setXML(xml);
+        return account;
+    }
 
     public PlayerAccount DBReadAccount(String Login)
     {
         DBConnection D=null;
-    	PlayerAccount account = null;
+        PlayerAccount account = null;
         try
         {
         	// why in the hell is this a memory scan?
@@ -942,18 +958,7 @@ public class MOBloader
             {
                 String username=DB.getRes(R,"CMANAM");
                 if(Login.equalsIgnoreCase(username))
-                {
-                	account = (PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
-                    String password=DB.getRes(R,"CMPASS");
-                    String chrs=DB.getRes(R,"CMCHRS");
-                    String xml=DB.getRes(R,"CMAXML");
-                    Vector<String> names = new Vector<String>();
-                    if(chrs!=null) names.addAll(CMParms.parseSemicolons(chrs,true));
-                    account.setAccountName(username);
-                    account.setPassword(password);
-                    account.setPlayerNames(names);
-                    account.setXML(xml);
-                }
+                	account = MakeAccount(username,R);
             }
         }
         catch(Exception sqle)
@@ -962,6 +967,38 @@ public class MOBloader
         }
         if(D!=null) DB.DBDone(D);
         return account;
+    }
+    
+    public Vector<PlayerAccount> DBListAccounts(String mask)
+    {
+        DBConnection D=null;
+    	PlayerAccount account = null;
+    	Vector<PlayerAccount> accounts = new Vector<PlayerAccount>();
+    	if(mask!=null) mask=mask.toLowerCase();
+        try
+        {
+        	// why in the hell is this a memory scan?
+        	// case insensitivity from databases configured almost
+        	// certainly by amateurs is the answer. That, and fakedb 
+        	// doesn't understand 'LIKE'
+            D=DB.DBFetch();
+            ResultSet R=D.query("SELECT * FROM CMACCT");
+            if(R!=null) while(R.next())
+            {
+                String username=DB.getRes(R,"CMANAM");
+                if((mask==null)||(mask.length()==0)||(username.toLowerCase().indexOf(mask)>=0))
+                {
+                	account = MakeAccount(username,R);
+                	accounts.add(account);
+                }
+            }
+        }
+        catch(Exception sqle)
+        {
+            Log.errOut("MOB",sqle);
+        }
+        if(D!=null) DB.DBDone(D);
+        return accounts;
     }
     
     public boolean DBUserSearch(MOB mob, String Login)

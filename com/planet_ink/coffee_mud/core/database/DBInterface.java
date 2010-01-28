@@ -140,6 +140,9 @@ public class DBInterface implements DatabaseEngine
     public PlayerAccount DBReadAccount(String Login)
     { return MOBloader.DBReadAccount(Login);}
     
+    public Vector<PlayerAccount> DBListAccounts(String mask)
+    { return MOBloader.DBListAccounts(mask);}
+    
     public Vector DBReadAreaData(String areaID, boolean reportStatus)
     {return RoomLoader.DBReadAreaData(areaID,reportStatus);}
     

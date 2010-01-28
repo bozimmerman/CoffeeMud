@@ -799,6 +799,119 @@ public class List extends StdCommand
 		mob.tell(head.toString());
 	}
 
+	public void listAccounts(MOB mob, Vector commands)
+	{
+		if(commands.size()==0) return;
+		commands.removeElementAt(0);
+		int sortBy=-1;
+		if(commands.size()>0)
+		{
+			String rest=CMParms.combine(commands,0).toUpperCase();
+			sortBy = CMLib.players().getThinSortCode(rest,true);
+			if(sortBy<0)
+			{
+				mob.tell("Unrecognized sort criteria: "+rest);
+				return;
+			}
+		}
+		StringBuffer head=new StringBuffer("");
+		head.append("[");
+		head.append(CMStrings.padRight("Account",10)+" ");
+		head.append(CMStrings.padRight("Last",18)+" ");
+		switch(sortBy){
+			default : head.append(CMStrings.padRight("E-Mail",23)+" "); break;
+			case 7: head.append(CMStrings.padRight("IP Address",23)+" "); break;
+		}
+
+		head.append("] Characters\n\r");
+		Vector<PlayerAccount> allAccounts=CMLib.database().DBListAccounts(null);
+		Vector<PlayerAccount> oldSet=allAccounts;
+		Hashtable<String, PlayerLibrary.ThinPlayer> thinAcctHash=new Hashtable<String, PlayerLibrary.ThinPlayer>();
+		for(PlayerAccount acct : allAccounts)
+		{
+			PlayerLibrary.ThinPlayer selectedU=new PlayerLibrary.ThinPlayer();
+			selectedU.email=acct.getEmail();
+			selectedU.ip=acct.lastIP();
+			selectedU.last=acct.lastDateTime();
+			selectedU.name=acct.accountName();
+			thinAcctHash.put(acct.accountName(), selectedU);
+		}
+		int showBy=sortBy;
+		PlayerLibrary lib=CMLib.players();
+		while((oldSet.size()>0)&&(sortBy>=0)&&(sortBy<=7))
+		{
+			if(oldSet==allAccounts)
+				allAccounts=new Vector<PlayerAccount>();
+			if((sortBy<3)||(sortBy>4))
+			{
+				PlayerAccount selected = oldSet.firstElement();
+				PlayerLibrary.ThinPlayer selectedU=thinAcctHash.get(selected.accountName());
+				for(int u=1;u<oldSet.size();u++)
+				{
+					PlayerAccount acct = oldSet.elementAt(u);
+					PlayerLibrary.ThinPlayer U=thinAcctHash.get(acct.accountName());
+					if(lib.getThinSortValue(selectedU,sortBy).compareTo(lib.getThinSortValue(U,sortBy))>0)
+					   selected=acct;
+				}
+				if(selected!=null)
+				{
+					oldSet.removeElement(selected);
+					allAccounts.addElement(selected);
+				}
+			}
+			else
+			{
+				PlayerAccount selected = oldSet.firstElement();
+				PlayerLibrary.ThinPlayer selectedU=thinAcctHash.get(selected.accountName());
+				for(int u=1;u<oldSet.size();u++)
+				{
+					PlayerAccount acct = oldSet.elementAt(u);
+					PlayerLibrary.ThinPlayer U=thinAcctHash.get(acct.accountName());
+					if(CMath.s_long(lib.getThinSortValue(selectedU,sortBy))>CMath.s_long(lib.getThinSortValue(U,sortBy)))
+					   selected=acct;
+				}
+				if(selected!=null)
+				{
+					oldSet.removeElement(selected);
+					allAccounts.addElement(selected);
+				}
+			}
+		}
+
+		for(int u=0;u<allAccounts.size();u++)
+		{
+			PlayerAccount U=allAccounts.elementAt(u);
+
+			head.append("[");
+			head.append(CMStrings.padRight(U.accountName(),10)+" ");
+			head.append(CMStrings.padRight(CMLib.time().date2String(U.lastDateTime()),18)+" ");
+			String players = CMParms.toStringList(U.getPlayers());
+			Vector<String> pListsV = new Vector<String>();
+			while(players.length()>0)
+			{
+				int x=players.lastIndexOf(',',25);
+				if(x<0) x=players.length();
+				pListsV.addElement(players.substring(0,x));
+				players=players.substring(x).trim();
+				if(players.startsWith(",")) players=players.substring(1).trim();
+			}
+			switch(showBy){
+			default: head.append(CMStrings.padRight(U.getEmail(),23)+" "); break;
+			case 7: head.append(CMStrings.padRight(U.lastIP(),23)+" "); break;
+			}
+			head.append("] ");
+			int len = head.length();
+			for(String s : pListsV)
+			{
+				head.append(CMStrings.padRight(s,25));
+				head.append("\n\r");
+				head.append(CMStrings.repeat(" ", len));
+			}
+			head.append("\n\r");
+		}
+		mob.tell(head.toString());
+	}
+
 	public StringBuffer listRaces(Enumeration these, boolean shortList)
 	{
 		StringBuffer lines=new StringBuffer("");
@@ -1396,6 +1509,7 @@ public class List extends StdCommand
         /*56*/{"RECIPES","LISTADMIN","CMDRECIPES"},
         /*57*/{"HELPFILEREQUESTS","LISTADMIN"},
 		/*58*/{"SCRIPTS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+		/*59*/{"ACCOUNTS","CMDPLAYERS","STAT"},
 	};
 
     public StringBuffer listContent(MOB mob, Vector commands)
@@ -1725,6 +1839,7 @@ public class List extends StdCommand
         case 56: s.wraplessPrintln(listRecipes(mob,CMParms.combine(commands,1))); break;
         case 57: s.wraplessPrint(listHelpFileRequests(mob,CMParms.combine(commands,1))); break;
         case 58: s.wraplessPrintln(listScripts(mob,commands).toString()); break;
+		case 59: listAccounts(mob,commands); break;
         default:
 			s.println("List?!");
 			break;
