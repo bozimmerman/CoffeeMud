@@ -993,7 +993,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
         PlayerAccount acct = null;
         boolean found=false;
-        if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)<=1)
+        if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1)
         {
         	found = (acct = CMLib.database().DBReadAccount(login))!=null;
         	if(found)
