@@ -167,14 +167,13 @@ if(!isMonster) Log.debugOut("GETTEST","2)"+container+"/"+addendum+"/"+addendumSt
 				&&(!V.contains(getThis)))
 					V.addElement(getThis);
 				addendumStr="."+(++addendum);
-if(!isMonster) Log.debugOut("GETTEST","3)"+container+"/"+addendum+"/"+addendumStr+"/"+getThis+"/"+allFlag+"/"+V.size());
+if(!isMonster) Log.debugOut("GETTEST","3)"+container+"/"+addendumStr+"/"+V.size()+"/"+addendum+"/"+maxToGet+"/"+allFlag+"/"+(addendum<=maxToGet)+"/"+((allFlag)&&(addendum<=maxToGet)));
 			}
 			while((allFlag)&&(addendum<=maxToGet));
 
 			for(int i=0;i<V.size();i++)
 			{
 				Item getThis=(Item)V.elementAt(i);
-if(!isMonster) Log.debugOut("GETTEST","4)"+i+"/"+getThis+"/"+container+"/"+quiet);
 				get(mob,container,getThis,quiet,"get",true);
 				if(getThis instanceof Coins)
 					((Coins)getThis).putCoinsBack();
