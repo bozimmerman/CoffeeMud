@@ -200,6 +200,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 return false;
 
         }
+        
         return !CMSecurity.isBanned(login);
     }
 
@@ -328,6 +329,25 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
     
     
+    public boolean selectAccountCharacter(MOB mob)
+    {
+    	PlayerAccount acct = mob.playerStats().getAccount();
+    	Session sess = mob.session();
+    	if((acct==null)||(sess==null)||(sess.killFlag()))
+    		return false;
+    	
+    	boolean charSelected = false;
+    	while((!sess.killFlag())&&(!charSelected))
+    	{
+    		
+    	}
+    	// ...
+    	
+    	Long L=(Long)pendingLogins.remove(acct.accountName().toUpperCase());
+    	if(L!=null) pendingLogins.put(mob.Name().toUpperCase(), L);
+    	return true;
+    }
+    
     public boolean createAccount(PlayerAccount acct, MOB mob, String login, Session session)
 	    throws java.io.IOException
 	{
@@ -338,9 +358,91 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"newacct.txt",null,true).text();
     	try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
         session.println(null,null,null,"\n\r\n\r"+introText.toString());
+        
+        String password = "";
+        while((password.length()==0)&&(!session.killFlag()))
+        {
+            password=session.prompt("\n\rEnter an account password\n\r: ","");
+            if(password.length()==0)
+            {
+            	session.println("\n\rAborting account creation.");
+            	return false;
+            }
+        }
+        executeScript(mob,(Vector)extraScripts.get("PASSWORD"));
+        
+    	String emailAddy = getEmailAddress(session, null);
+    	if(emailAddy == null)
+        {
+        	session.println("\n\rAborting account creation.");
+        	return false;
+        }
+        acct.setAccountName(login);
+        acct.setPassword(password);
+        acct.setEmail(emailAddy);
+        acct.setLastDateTime(System.currentTimeMillis());
+        if(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))
+            acct.setAccountExpiration(System.currentTimeMillis()+(1000l*60l*60l*24l*((long)CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS))));
+        executeScript(mob,(Vector)extraScripts.get("EMAIL"));
+        
+        CMLib.database().DBCreateAccount(acct);
+        StringBuffer doneText=new CMFile(Resources.buildResourcePath("text")+"doneacct.txt",null,true).text();
+    	try { doneText = CMLib.httpUtils().doVirtualPage(doneText);}catch(Exception ex){}
+        session.println(null,null,null,"\n\r\n\r"+doneText.toString());
+        
+        /*
+        String charName = "";
+        while((charName.length()==0)&&(!session.killFlag()))
+        {
+        	charName=session.prompt("\n\rEnter a name for your first character\n\r: ","");
+            if(charName.length()==0)
+            {
+            	session.println("\n\rAborting account creation");
+            	return false;
+            }
+            else
+            if((!isOkName(charName))
+            ||(CMLib.players().getAccount(charName)!=null)
+            ||(CMLib.players().getLoadAccount(charName)!=null))
+            {
+                mob.session().println("That name is not available for new characters.\n\r  Choose another name (no spaces allowed)!\n\r");
+                charName="";
+            }
+        }
+        */
         return true;
 	}
-	
+
+    public String getEmailAddress(Session session, boolean[] emailConfirmation) throws java.io.IOException
+    {
+        boolean emailPassword=((CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("PASS"))
+				 &&(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0));
+
+        boolean emailReq=(!CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("OPTION"));
+        StringBuffer emailIntro=new CMFile(Resources.buildResourcePath("text")+"email.txt",null,true).text();
+    	try { emailIntro = CMLib.httpUtils().doVirtualPage(emailIntro);}catch(Exception ex){}
+    	session.println(null,null,null,emailIntro.toString());
+        while(!session.killFlag())
+        {
+            String newEmail=session.prompt("\n\rEnter your e-mail address:");
+            String confirmEmail=newEmail;
+            if(emailPassword) session.println("This email address will be used to send you a password.");
+            if(emailReq) confirmEmail=session.prompt("Confirm that '"+newEmail+"' is correct by re-entering.\n\rRe-enter:");
+            boolean emailConfirmed=false;
+            if((newEmail.length()>0)&&(newEmail.equalsIgnoreCase(confirmEmail)))
+            	emailConfirmed=CMLib.smtp().isValidEmailAddress(newEmail);
+            
+            if(emailConfirmed||((!emailReq)&&(newEmail.trim().length()==0)))
+            {
+            	if((emailConfirmed)&&(emailConfirmation!=null)&&(emailConfirmation.length>0))
+            		emailConfirmation[0]=true;
+            	return newEmail;
+            }
+            session.println("\n\rThat email address combination was invalid.\n\r");
+        }
+        throw new java.io.IOException("Session is dead!");
+    }
+    
     public boolean createCharacter(MOB mob, String login, Session session)
         throws java.io.IOException
     {
@@ -379,30 +481,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         	mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOFORWARD));
         else
         {
-	        boolean emailReq=(!CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("OPTION"));
-	        StringBuffer emailIntro=new CMFile(Resources.buildResourcePath("text")+"email.txt",null,true).text();
-	    	try { emailIntro = CMLib.httpUtils().doVirtualPage(emailIntro);}catch(Exception ex){}
-	    	session.println(null,null,null,emailIntro.toString());
-	        while(!session.killFlag())
-	        {
-	            String newEmail=session.prompt("\n\rEnter your e-mail address:");
-	            String confirmEmail=newEmail;
-	            if(emailPassword) session.println("This email address will be used to send you a password.");
-	            if(emailReq) confirmEmail=session.prompt("Confirm that '"+newEmail+"' is correct by re-entering.\n\rRe-enter:");
-	            boolean emailConfirmed=false;
-	            if((newEmail.length()>0)&&(newEmail.equalsIgnoreCase(confirmEmail)))
-	            	emailConfirmed=CMLib.smtp().isValidEmailAddress(newEmail);
-	            
-	        	mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOFORWARD));
-	            if(emailConfirmed||((!emailReq)&&(newEmail.trim().length()==0)))
-	            {
-	            	if(emailConfirmed)
-	                	mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOFORWARD));
-	                mob.playerStats().setEmail(newEmail);
-	                break;
-	            }
-	            session.println("\n\rThat email address combination was invalid.\n\r");
-	        }
+        	mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOFORWARD));
+        	boolean[] emailConfirmed = new boolean[]{false};
+        	String emailAddy = getEmailAddress(session, emailConfirmed);
+        	if(emailAddy != null)
+        		mob.playerStats().setEmail(emailAddy);
+        	if(emailConfirmed[0])
+            	mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOFORWARD));
         }
         
         if((mob.playerStats().getEmail()!=null)&&CMSecurity.isBanned(mob.playerStats().getEmail()))
@@ -567,7 +652,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         mob.baseCharStats().setStat(CharStats.STAT_GENDER,Gender.toUpperCase().charAt(0));
         mob.baseCharStats().getMyRace().startRacing(mob,false);
 
-        if((CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))&&(mob.playerStats()!=null))
+        if((CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))&&(mob.playerStats()!=null)&&(acct==null))
             mob.playerStats().setAccountExpiration(System.currentTimeMillis()+(1000l*60l*60l*24l*((long)CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS))));
 
         executeScript(mob,(Vector)extraScripts.get("GENDER"));
@@ -964,7 +1049,6 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     	return rpt.toString();
     }
     
-    // 0=no login, 1=normal login, 2=swap
     public LoginResult login(MOB mob, int attempt)
         throws java.io.IOException
     {
@@ -999,9 +1083,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         boolean found=false;
         if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1)
         {
-        	found = (acct = CMLib.database().DBReadAccount(login))!=null;
-        	if(found)
+        	acct = CMLib.database().DBReadAccount(login);
+        	if(acct!=null)
     		{
+        		found=true;
         		mob.playerStats().setAccount(acct);
         		mob.setName(acct.accountName());
     		}
@@ -1059,8 +1144,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 for(int s=0;s<CMLib.sessions().size();s++)
                 {
                     Session thisSession=CMLib.sessions().elementAt(s);
-                	MOB M=(thisSession==null)?null:thisSession.mob();
-                    if((M!=null)&&(thisSession!=mob.session()))
+                	MOB M=thisSession.mob();
+                    if((M!=null)&&(thisSession!=mob.session())&&(M.playerStats()!=null))
                     {
                     	PlayerStats MPStats=M.playerStats();
                         if(M.Name().equals(mob.Name())
@@ -1104,7 +1189,6 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                         pendingLogins.remove(mob.Name().toUpperCase());
                     return LoginResult.NO_LOGIN;
                 }
-                //TODO: manage account logins here
                 if(acct!=null)
                 	if(!selectAccountCharacter(mob))
                 	{
@@ -1188,7 +1272,6 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 String name=mob.Name();
                 Log.sysOut("FrontDoor","Failed login: "+mob.Name());
                 mob.setName("");
-                mob.setPlayerStats(null);
                 mob.session().println("\n\rInvalid password.\n\r");
                 if(pendingLogins.containsKey(mob.Name().toUpperCase()))
                    pendingLogins.remove(mob.Name().toUpperCase());
@@ -1222,14 +1305,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             {
                 mob.session().print("\n\r'"+CMStrings.capitalizeAndLower(login)+"' is not recognized.\n\r");
                 mob.setName("");
-                mob.setPlayerStats(null);
             }
             else
             if(!isOkName(login))
             {
                 mob.session().println("\n\rThat name is unrecognized.\n\rThat name is also not available for new players.\n\r  Choose another name (no spaces allowed)!\n\r");
                 mob.setName("");
-                mob.setPlayerStats(null);
             }
             else
             if((CMProps.getIntVar(CMProps.SYSTEMI_MUDTHEME)==0)
@@ -1237,7 +1318,6 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             {
                 mob.session().print("\n\r'"+CMStrings.capitalizeAndLower(login)+"' does not exist.\n\rThis server is not accepting new accounts.\n\r\n\r");
                 mob.setName("");
-                mob.setPlayerStats(null);
             }
             else
             if((CMProps.getIntVar(CMProps.SYSTEMI_MAXNEWPERIP)>0)
@@ -1246,7 +1326,6 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             {
                 mob.session().println("\n\rThat name is unrecognized.\n\rAlso, the maximum daily new player limit has already been reached for your location.");
                 mob.setName("");
-                mob.setPlayerStats(null);
             }
             else
             if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1)
@@ -1359,25 +1438,6 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         return room;
     }
 
-    public boolean selectAccountCharacter(MOB mob)
-    {
-    	PlayerAccount acct = mob.playerStats().getAccount();
-    	Session sess = mob.session();
-    	if((acct==null)||(sess==null)||(sess.killFlag()))
-    		return false;
-    	
-    	boolean charSelected = false;
-    	while((!sess.killFlag())&&(!charSelected))
-    	{
-    		
-    	}
-    	// ...
-    	
-    	Long L=(Long)pendingLogins.remove(acct.accountName().toUpperCase());
-    	if(L!=null) pendingLogins.put(mob.Name().toUpperCase(), L);
-    	return true;
-    }
-    
     public Room getDefaultBodyRoom(MOB mob)
     {
         if((mob.getClanID().length()>0)

@@ -1,0 +1,4 @@
+^HYour account has been created!^N
+
+Please write down your login and password.
+
