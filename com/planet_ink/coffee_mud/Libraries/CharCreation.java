@@ -1003,7 +1003,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         	if(found)
     		{
         		mob.playerStats().setAccount(acct);
-    			//TODO:found = accountLogin(acct,mob,login);
+        		mob.setName(acct.accountName());
     		}
         }
         else
@@ -1059,16 +1059,19 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 for(int s=0;s<CMLib.sessions().size();s++)
                 {
                     Session thisSession=CMLib.sessions().elementAt(s);
-                    if((thisSession.mob()!=null)&&(thisSession!=mob.session()))
+                	MOB M=(thisSession==null)?null:thisSession.mob();
+                    if((M!=null)&&(thisSession!=mob.session()))
                     {
-                        if((thisSession.mob().Name().equals(mob.Name())))
+                    	PlayerStats MPStats=M.playerStats();
+                        if(M.Name().equals(mob.Name())
+                        ||((MPStats.getAccount()!=null)&&(MPStats.getAccount().accountName().equals(mob.Name()))))
                         {
-                            Room oldRoom=thisSession.mob().location();
+                            Room oldRoom=M.location();
                             if(oldRoom!=null)
-                            while(oldRoom.isInhabitant(thisSession.mob()))
-                                oldRoom.delInhabitant(thisSession.mob());
-                            mob.session().setMob(thisSession.mob());
-                            thisSession.mob().setSession(mob.session());
+	                            while(oldRoom.isInhabitant(M))
+	                                oldRoom.delInhabitant(M);
+                            mob.session().setMob(M);
+                            M.setSession(mob.session());
                             thisSession.setMob(null);
                             thisSession.logoff(false,false,false);
                             Log.sysOut("FrontDoor","Session swap for "+mob.session().mob().Name()+".");
@@ -1101,7 +1104,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                         pendingLogins.remove(mob.Name().toUpperCase());
                     return LoginResult.NO_LOGIN;
                 }
-
+                //TODO: manage account logins here
+                if(acct!=null)
+                	if(!selectAccountCharacter(mob))
+                	{
+                        if(pendingLogins.containsKey(acct.accountName().toUpperCase()))
+                            pendingLogins.remove(acct.accountName().toUpperCase());
+                        return LoginResult.NO_LOGIN;
+                	}
                 MOB oldMOB=mob;
                 if(CMLib.players().getPlayer(oldMOB.Name())!=null)
                 {
@@ -1349,6 +1359,25 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         return room;
     }
 
+    public boolean selectAccountCharacter(MOB mob)
+    {
+    	PlayerAccount acct = mob.playerStats().getAccount();
+    	Session sess = mob.session();
+    	if((acct==null)||(sess==null)||(sess.killFlag()))
+    		return false;
+    	
+    	boolean charSelected = false;
+    	while((!sess.killFlag())&&(!charSelected))
+    	{
+    		
+    	}
+    	// ...
+    	
+    	Long L=(Long)pendingLogins.remove(acct.accountName().toUpperCase());
+    	if(L!=null) pendingLogins.put(mob.Name().toUpperCase(), L);
+    	return true;
+    }
+    
     public Room getDefaultBodyRoom(MOB mob)
     {
         if((mob.getClanID().length()>0)
