@@ -198,7 +198,8 @@ public class CMProps extends Properties
     public static final int SYSTEMI_MAXITEMSHOWN=57;
     public static final int SYSTEMI_STARTSTAT=58;
     public static final int SYSTEMI_RECOVERRATE=59;
-    public static final int NUMI_SYSTEM=60;
+    public static final int SYSTEMI_COMMONACCOUNTSYSTEM=60;
+    public static final int NUMI_SYSTEM=61;
 
     public static final int SYSTEMB_MOBCOMPRESS=0;
     public static final int SYSTEMB_ITEMDCOMPRESS=1;
@@ -847,6 +848,7 @@ public class CMProps extends Properties
         setIntVar(SYSTEMI_DEFABLETIME,(int)Math.round(getDouble("DEFABLETIME")*100.0));
         setIntVar(SYSTEMI_DEFCOMABLETIME,(int)Math.round(getDouble("DEFCOMABLETIME")*100.0));
         setIntVar(SYSTEMI_RECOVERRATE,getStr("RECOVERRATE"),1);
+        setIntVar(SYSTEMI_COMMONACCOUNTSYSTEM,getStr("COMMONACCOUNTSYSTEM"),1);
 
         V=CMParms.parseCommas(getStr("INJURYSYSTEM"),true);
 

@@ -470,6 +470,7 @@ public class DefaultPlayerStats implements PlayerStats
             +((t.length()>0)?"<INTROS>"+t+"</INTROS>":"")
 			+"<WRAP>"+wrap+"</WRAP>"
 			+"<PAGEBREAK>"+pageBreak+"</PAGEBREAK>"
+			+((account!=null)?("<ACCOUNT>"+account.accountName()+"</ACCOUNT>"):"")
 			+getTitleXML()
             +getAliasXML()
 			+"<ACCTEXP>"+accountExpiration+"</ACCTEXP>"
@@ -527,6 +528,7 @@ public class DefaultPlayerStats implements PlayerStats
 	
 	public void setXML(String str)
 	{
+		account = null;
 		friends=getHashFrom(CMLib.xml().returnXMLValue(str,"FRIENDS"));
 		ignored=getHashFrom(CMLib.xml().returnXMLValue(str,"IGNORED"));
         introductions=getHashFrom(CMLib.xml().returnXMLValue(str,"INTROS"));
@@ -607,6 +609,10 @@ public class DefaultPlayerStats implements PlayerStats
         	if(val==null) val="";
         	setStat(codes[i].toUpperCase(),CMLib.xml().restoreAngleBrackets(val));
         }
+        
+		String accountName = CMLib.xml().returnXMLValue(str,"ACCOUNT");
+		if((accountName != null)&&(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1))
+			account = CMLib.players().getLoadAccount(accountName);
 	}
 
     private String getLevelDateTimesStr()
@@ -672,8 +678,15 @@ public class DefaultPlayerStats implements PlayerStats
 	
 
     // Acct Expire Code
-    public long getAccountExpiration() {return accountExpiration;}
-    public void setAccountExpiration(long newVal){accountExpiration=newVal;}
+    public long getAccountExpiration() {
+    	return  (account != null) ? account.getAccountExpiration() : accountExpiration;
+    }
+    public void setAccountExpiration(long newVal)
+    {
+    	if(account != null)
+    		account.setAccountExpiration(newVal);
+    	accountExpiration=newVal;
+    }
     
     public void addRoomVisit(Room R)
     {

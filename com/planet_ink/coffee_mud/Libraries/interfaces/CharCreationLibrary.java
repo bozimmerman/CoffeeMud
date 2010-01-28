@@ -42,7 +42,7 @@ public interface CharCreationLibrary extends CMLibrary
     public void showTheNews(MOB mob);
     public void notifyFriends(MOB mob, String message);
     public boolean checkExpiration(MOB mob);
-    public boolean createCharacter(MOB mob, String login, Session session)
+    public boolean createCharacter(PlayerAccount acct, MOB mob, String login, Session session)
         throws java.io.IOException;
     public int login(MOB mob, int attempt)
         throws java.io.IOException;

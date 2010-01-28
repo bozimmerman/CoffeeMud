@@ -33,13 +33,10 @@ public class Experience extends StdCommand
 
 	public StringBuffer getScore(MOB mob)
 	{
-
 		StringBuffer msg=new StringBuffer("^N");
-
 
 		if(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION)&&(mob.playerStats()!=null))
             msg.append("Your account is Registered and Active until: "+CMLib.time().date2String(mob.playerStats().getAccountExpiration())+"!\n\r");
-
 
 		if((!CMSecurity.isDisabled("EXPERIENCE"))
 		&&!mob.charStats().getCurrentClass().expless()

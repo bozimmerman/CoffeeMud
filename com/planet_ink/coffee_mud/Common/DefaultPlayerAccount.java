@@ -262,6 +262,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 		names.trimToSize();
 		players = names;
 	}
+	public int numPlayers() { return players.size();}
 	
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

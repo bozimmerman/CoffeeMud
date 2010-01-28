@@ -36,7 +36,8 @@ import java.util.*;
 public class CMPlayers extends StdLibrary implements PlayerLibrary
 {
     public String ID(){return "CMPlayers";}
-    public Vector playersList = new Vector();
+    public Vector<MOB> playersList = new Vector<MOB>();
+    public Vector<PlayerAccount> accountsList = new Vector<PlayerAccount>();
     
     private ThreadEngine.SupportThread thread=null;
     
@@ -49,10 +50,44 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
         {
             if(getPlayer(newOne.Name())!=null) return;
             if(playersList.contains(newOne)) return;
+            PlayerAccount acct = null;
+            if(newOne.playerStats()!=null)
+            	acct=newOne.playerStats().getAccount();
             playersList.add(newOne);
+            if((acct != null)&&(getAccount(acct.accountName())==null)&&(!accountsList.contains(acct)))
+            	accountsList.add(acct);
         }
     }
     public void delPlayer(MOB oneToDel) { synchronized(playersList){playersList.remove(oneToDel);} }
+    public PlayerAccount getLoadAccount(String calledThis)
+    {
+    	PlayerAccount A = getAccount(calledThis);
+    	if(A!=null) return A;
+        return CMLib.database().DBReadAccount(calledThis);
+    }
+    
+    public PlayerAccount getAccount(String calledThis)
+    {
+        synchronized(playersList)
+        {
+        	MOB M=null;
+        	for(PlayerAccount A : accountsList)
+        		if(A.accountName().equalsIgnoreCase(calledThis))
+        			return A;
+            for (Enumeration p=players(); p.hasMoreElements();)
+            {
+                M = (MOB)p.nextElement();
+                if((M.playerStats()!=null)
+                &&(M.playerStats().getAccount()!=null)
+                &&(M.playerStats().getAccount().accountName().equalsIgnoreCase(calledThis)))
+                {
+                	accountsList.add(M.playerStats().getAccount());
+                    return M.playerStats().getAccount();
+                }
+            }
+        }
+        return null;
+    }
     public MOB getPlayer(String calledThis)
     {
         MOB M = null;
@@ -110,6 +145,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 
     
 	public Enumeration players() { return (Enumeration)DVector.s_enum(playersList); }
+	public Enumeration accounts() { return (Enumeration)DVector.s_enum(accountsList); }
 
     public void obliteratePlayer(MOB deadMOB, boolean quiet)
     {

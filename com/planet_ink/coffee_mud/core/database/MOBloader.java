@@ -1034,13 +1034,20 @@ public class MOBloader
                         mob.playerStats().setEmail(email);
                         // Acct Exp Code
                         String buf=DBConnections.getRes(R,"CMPFIL");
-                        if(CMLib.xml().returnXMLValue(buf,"ACCTEXP").length()>0)
-                            mob.playerStats().setAccountExpiration(CMath.s_long(CMLib.xml().returnXMLValue(buf,"ACCTEXP")));
-                        else
                         {
-                            Calendar C=Calendar.getInstance();
-                            C.add(Calendar.DATE,15);
-                            mob.playerStats().setAccountExpiration(C.getTimeInMillis());
+                        	String account = CMLib.xml().returnXMLValue(buf,"ACCOUNT");
+                        	PlayerAccount acct = (account != null)?CMLib.players().getLoadAccount(account):null;
+                        	if((acct != null)&&(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1))
+                        		mob.playerStats().setAccount(acct);
+                        	else
+	                        if(CMLib.xml().returnXMLValue(buf,"ACCTEXP").length()>0)
+	                            mob.playerStats().setAccountExpiration(CMath.s_long(CMLib.xml().returnXMLValue(buf,"ACCTEXP")));
+	                        else
+	                        {
+	                            Calendar C=Calendar.getInstance();
+	                            C.add(Calendar.DATE,15);
+	                            mob.playerStats().setAccountExpiration(C.getTimeInMillis());
+	                        }
                         }
                     }
                     break;

@@ -1,0 +1,3 @@
+^HWelcome to @MudInfo?NAME@!^N
+
+Please create an account with us.  If you already have an account, please use that account to create new characters.

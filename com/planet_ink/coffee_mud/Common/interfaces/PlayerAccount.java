@@ -21,6 +21,13 @@ public interface PlayerAccount extends CMCommon, AccountStats, CMModifiable
 	public Enumeration<MOB> getLoadPlayers();
 	
 	/**
+	 * Returns the number of players this account currently 
+	 * has listed.
+	 * @return the number of players 
+	 */
+	public int numPlayers();
+	
+	/**
 	 * Return an enumeration of the players names
 	 * that belong to this account.
 	 * @return an enumeration of player names
