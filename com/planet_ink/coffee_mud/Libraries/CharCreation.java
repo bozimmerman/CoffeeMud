@@ -328,10 +328,32 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     }
 
     
-    
-    public boolean selectAccountCharacter(MOB mob)
+
+    public boolean createAccountCharacter(PlayerAccount acct, Session session, MOB mob) throws java.io.IOException
     {
-    	PlayerAccount acct = mob.playerStats().getAccount();
+        String charName = "";
+        while((charName.length()==0)&&(!session.killFlag()))
+        {
+        	charName=session.prompt("\n\rEnter a name for your first character\n\r: ","");
+            if(charName.length()==0)
+            {
+            	session.println("\n\rAborting account creation");
+            	return false;
+            }
+            else
+            if((!isOkName(charName))
+            ||(CMLib.players().getAccount(charName)!=null)
+            ||(CMLib.players().getLoadAccount(charName)!=null))
+            {
+                mob.session().println("That name is not available for new characters.\n\r  Choose another name (no spaces allowed)!\n\r");
+                charName="";
+            }
+        }
+        return this.createCharacter(mob, charName, session);
+    }
+    
+    public boolean selectAccountCharacter(PlayerAccount acct, Session session, MOB mob) throws java.io.IOException
+    {
     	Session sess = mob.session();
     	if((acct==null)||(sess==null)||(sess.killFlag()))
     		return false;
@@ -359,16 +381,19 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     	try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
         session.println(null,null,null,"\n\r\n\r"+introText.toString());
         
+        boolean emailPassword=((CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("PASS"))
+				 &&(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0));
         String password = "";
-        while((password.length()==0)&&(!session.killFlag()))
-        {
-            password=session.prompt("\n\rEnter an account password\n\r: ","");
-            if(password.length()==0)
-            {
-            	session.println("\n\rAborting account creation.");
-            	return false;
-            }
-        }
+        if(!emailPassword)
+	        while((password.length()==0)&&(!session.killFlag()))
+	        {
+	            password=session.prompt("\n\rEnter an account password\n\r: ","");
+	            if(password.length()==0)
+	            {
+	            	session.println("\n\rAborting account creation.");
+	            	return false;
+	            }
+	        }
         executeScript(mob,(Vector)extraScripts.get("PASSWORD"));
         
     	String emailAddy = getEmailAddress(session, null);
@@ -390,27 +415,28 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     	try { doneText = CMLib.httpUtils().doVirtualPage(doneText);}catch(Exception ex){}
         session.println(null,null,null,"\n\r\n\r"+doneText.toString());
         
-        /*
-        String charName = "";
-        while((charName.length()==0)&&(!session.killFlag()))
+        if(emailPassword)
         {
-        	charName=session.prompt("\n\rEnter a name for your first character\n\r: ","");
-            if(charName.length()==0)
+            password="";
+            for(int i=0;i<6;i++)
+                password+=(char)('a'+CMLib.dice().roll(1,26,-1));
+            acct.setPassword(password);
+            CMLib.database().DBUpdatePassword(mob);
+            CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.SYSTEM_MAILBOX),
+                      acct.accountName(),
+                      acct.accountName(),
+                      "Password for "+acct.accountName(),
+                      "Your password for "+acct.accountName()+" is: "+acct.password()+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.SYSTEM_MUDPORTS)+".\n\rAfter creating a character, you may use the PASSWORD command to change it once you are online.",-1);
+            session.println("Your account has been created.  You will receive an email with your password shortly.");
+            try{Thread.sleep(2000);}catch(Exception e){}
+            if(mob.session()==session)
             {
-            	session.println("\n\rAborting account creation");
-            	return false;
-            }
-            else
-            if((!isOkName(charName))
-            ||(CMLib.players().getAccount(charName)!=null)
-            ||(CMLib.players().getLoadAccount(charName)!=null))
-            {
-                mob.session().println("That name is not available for new characters.\n\r  Choose another name (no spaces allowed)!\n\r");
-                charName="";
+                session.logoff(false,false,false);
+	            return false;
             }
         }
-        */
-        return true;
+        mob.setName(acct.accountName());
+        return selectAccountCharacter(acct,session,mob);
 	}
 
     public String getEmailAddress(Session session, boolean[] emailConfirmation) throws java.io.IOException
@@ -893,7 +919,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                           mob.Name(),
                           "Password for "+mob.Name(),
                           "Your password for "+mob.Name()+" is: "+mob.playerStats().password()+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.SYSTEM_MUDPORTS)+".\n\rYou may use the PASSWORD command to change it once you are online.",-1);
-                session.println("Your account has been created.  You will receive an email with your password shortly.");
+                session.println("Your character has been created.  You will receive an email with your password shortly.");
                 try{Thread.sleep(2000);}catch(Exception e){}
                 if(mob.session()==session)
 	                session.logoff(false,false,false);
@@ -1190,7 +1216,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                     return LoginResult.NO_LOGIN;
                 }
                 if(acct!=null)
-                	if(!selectAccountCharacter(mob))
+                	if(!selectAccountCharacter(acct,mob.session(),mob))
                 	{
                         if(pendingLogins.containsKey(acct.accountName().toUpperCase()))
                             pendingLogins.remove(acct.accountName().toUpperCase());
