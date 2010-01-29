@@ -93,8 +93,10 @@ public class Empty extends Drop
 		int addendum=1;
 		String addendumStr="";
 		Drink drink=null;
-		do
+		boolean doBugFix = true;
+		while(doBugFix || ((allFlag)&&(addendum<=maxToDrop)))
 		{
+			doBugFix=false;
 			Item dropThis=mob.fetchCarried(null,whatToDrop+addendumStr);
 			if((dropThis==null)
 			&&(V.size()==0)
@@ -125,7 +127,6 @@ public class Empty extends Drop
 				V.addElement(dropThis);
 			addendumStr="."+(++addendum);
 		}
-		while((allFlag)&&(addendum<=maxToDrop));
 
 		String str="<S-NAME> empt(ys) <T-NAME>";
 		if(target instanceof Room) str+=" here.";

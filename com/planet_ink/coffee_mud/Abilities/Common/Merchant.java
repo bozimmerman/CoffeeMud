@@ -508,8 +508,10 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		if(itemName.toUpperCase().endsWith(".ALL")){ allFlag=true; itemName="ALL "+itemName.substring(0,itemName.length()-4);}
 		int addendum=1;
 		String addendumStr="";
-		do
+		boolean doBugFix = true;
+		while(doBugFix || allFlag)
 		{
+			doBugFix=false;
 			Item I=mob.fetchCarried(null,itemName+addendumStr);
 			if(I==null) break;
 			if(target==null)
@@ -521,7 +523,6 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				V.addElement(I);
 			addendumStr="."+(++addendum);
 		}
-		while(allFlag);
 
 		if(V.size()==0)
 		{

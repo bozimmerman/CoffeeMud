@@ -63,8 +63,10 @@ public class Value extends StdCommand
 		if(whatName.toUpperCase().endsWith(".ALL")){ allFlag=true; whatName="ALL "+whatName.substring(0,whatName.length()-4);}
 		int addendum=1;
 		String addendumStr="";
-		do
+		boolean doBugFix = true;
+		while(doBugFix || ((allFlag)&&(addendum<=maxToDo)))
 		{
+			doBugFix=false;
 			Item itemToDo=mob.fetchCarried(null,whatName+addendumStr);
 			if(itemToDo==null) break;
 			if((CMLib.flags().canBeSeenBy(itemToDo,mob))
@@ -72,7 +74,6 @@ public class Value extends StdCommand
 				V.addElement(itemToDo);
 			addendumStr="."+(++addendum);
 		}
-		while((allFlag)&&(addendum<=maxToDo));
 
 		if(V.size()==0)
 			mob.tell("You don't seem to have '"+whatName+"'.");

@@ -3660,8 +3660,10 @@ public class StdMOB implements MOB
 		thisContainer.recoverEnvStats();
 
 		boolean nothingDone=true;
-		do
+		boolean doBugFix = true;
+		while(doBugFix || !nothingDone)
 		{
+			doBugFix=false;
 			nothingDone=true;
 			if(owner instanceof Room)
 			{
@@ -3692,7 +3694,7 @@ public class StdMOB implements MOB
 					}
 				}
 			}
-		}while(!nothingDone);
+		}
 	}
 
 	protected static String[] CODES={"CLASS","LEVEL","ABILITY","TEXT"};

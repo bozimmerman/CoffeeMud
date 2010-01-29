@@ -68,8 +68,10 @@ public class View extends StdCommand
 		if(whatName.toUpperCase().startsWith("ALL.")){ allFlag=true; whatName="ALL "+whatName.substring(4);}
 		if(whatName.toUpperCase().endsWith(".ALL")){ allFlag=true; whatName="ALL "+whatName.substring(0,whatName.length()-4);}
 		int addendum=1;
-		do
+		boolean doBugFix = true;
+		while(doBugFix || ((allFlag)&&(addendum<=maxToDo)))
 		{
+			doBugFix=false;
             ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(shopkeeper);
 			Environmental itemToDo=SK.getShop().getStock(whatName,mob);
 			if(itemToDo==null) break;
@@ -79,7 +81,6 @@ public class View extends StdCommand
 				break;
 			addendum++;
 		}
-		while((allFlag)&&(addendum<=maxToDo));
 
 		if(V.size()==0)
 			mob.tell(mob,shopkeeper,null,"<T-NAME> do(es)n't appear to have any '"+whatName+"' for sale.  Try LIST.");

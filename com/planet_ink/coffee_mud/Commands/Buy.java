@@ -82,8 +82,10 @@ public class Buy extends StdCommand
 		if(whatName.toUpperCase().startsWith("ALL.")){ allFlag=true; whatName="ALL "+whatName.substring(4);}
 		if(whatName.toUpperCase().endsWith(".ALL")){ allFlag=true; whatName="ALL "+whatName.substring(0,whatName.length()-4);}
 		int addendum=1;
-		do
+		boolean doBugFix = true;
+		while(doBugFix || ((allFlag)&&(addendum<=maxToDo)))
 		{
+			doBugFix=false;
             ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(shopkeeper);
 			Environmental itemToDo=SK.getShop().getStock(whatName,mob);
 			if(itemToDo==null) break;
@@ -93,7 +95,6 @@ public class Buy extends StdCommand
 				break;
 			++addendum;
 		}
-		while((allFlag)&&(addendum<=maxToDo));
 		String forName="";
 		if((mobFor!=null)&&(mobFor!=mob))
 		{

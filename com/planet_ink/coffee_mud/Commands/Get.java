@@ -137,18 +137,18 @@ public class Get extends StdCommand
 		if(whatToGet.toUpperCase().startsWith("ALL.")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(4);}
 		if(whatToGet.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToGet="ALL "+whatToGet.substring(0,whatToGet.length()-4);}
 		boolean doneSomething=false;
-boolean isMonster = mob.isMonster();		
 		while((c<containers.size())||(containers.size()==0))
 		{
-if(!isMonster) Log.debugOut("GETTEST","1)"+mob.name()+"/"+containerName+"/"+containers.size()+"/"+c+"/"+maxToGet+"/"+whatToGet+"/"+unmodifiedWhatToGet+"/"+allFlag);
 			Vector V=new Vector();
 			Item container=null;
 			if(containers.size()>0) 
 			    container=(Item)containers.elementAt(c++);
 			int addendum=1;
 			String addendumStr="";
-			do
+			boolean doBugFix = true;
+			while(doBugFix || ((allFlag)&&(addendum<=maxToGet)))
 			{
+				doBugFix=false;
 				Environmental getThis=null;
 				if((container!=null)&&(mob.isMine(container)))
 				   getThis=R.fetchFromMOBRoomFavorsItems(mob,container,whatToGet+addendumStr,Wearable.FILTER_UNWORNONLY);
@@ -159,7 +159,6 @@ if(!isMonster) Log.debugOut("GETTEST","1)"+mob.name()+"/"+containerName+"/"+cont
 					if(getThis==null)
 						getThis=R.fetchFromRoomFavorItems(container,whatToGet+addendumStr,Wearable.FILTER_UNWORNONLY);
 				}
-if(!isMonster) Log.debugOut("GETTEST","2)"+container+"/"+addendum+"/"+addendumStr+"/"+getThis+"/"+allFlag+"/VVVVV");
 				if(getThis==null) break;
 				if((getThis instanceof Item)
 				&&((CMLib.flags().canBeSeenBy(getThis,mob)||(getThis instanceof Light)))
@@ -167,9 +166,7 @@ if(!isMonster) Log.debugOut("GETTEST","2)"+container+"/"+addendum+"/"+addendumSt
 				&&(!V.contains(getThis)))
 					V.addElement(getThis);
 				addendumStr="."+(++addendum);
-if(!isMonster) Log.debugOut("GETTEST","3)"+container+"/"+addendumStr+"/"+V.size()+"/"+addendum+"/"+maxToGet+"/"+allFlag+"/"+(addendum<=maxToGet)+"/"+((allFlag)&&(addendum<=maxToGet)));
 			}
-			while((allFlag)&&(addendum<=maxToGet));
 
 			for(int i=0;i<V.size();i++)
 			{

@@ -73,8 +73,10 @@ public class Display extends StdCommand
 		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
 		if(thingToGive.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(4);}
 		if(thingToGive.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(0,thingToGive.length()-4);}
-		do
+		boolean doBugFix = true;
+		while(doBugFix || ((allFlag)&&(addendum<=maxToGive)))
 		{
+			doBugFix=false;
 			Environmental giveThis=CMLib.english().bestPossibleGold(mob,null,thingToGive);
 			if(giveThis!=null)
 			{
@@ -93,7 +95,6 @@ public class Display extends StdCommand
 				V.addElement(giveThis);
 			addendumStr="."+(++addendum);
 		}
-		while((allFlag)&&(addendum<=maxToGive));
 
 		if(V.size()==0)
 			mob.tell("You don't seem to be carrying that.");

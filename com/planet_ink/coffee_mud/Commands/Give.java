@@ -82,9 +82,11 @@ public class Give extends StdCommand
             if(CMLib.flags().canBeSeenBy(giveThis,mob))
                 V.addElement(giveThis);
         }
+		boolean doBugFix = true;
         if(V.size()==0)
-		do
+		while(doBugFix || ((allFlag)&&(addendum<=maxToGive)))
 		{
+			doBugFix=false;
 			giveThis=mob.fetchCarried(null,thingToGive+addendumStr);
 			if((giveThis==null)
 			&&(V.size()==0)
@@ -116,7 +118,6 @@ public class Give extends StdCommand
             }
             addendumStr="."+(++addendum);
 		}
-		while((allFlag)&&(addendum<=maxToGive));
 
 		if(V.size()==0)
 			mob.tell("You don't seem to be carrying that.");

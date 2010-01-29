@@ -157,8 +157,10 @@ public class Draw extends Get
 			if(containers.size()>0) container=(Item)containers.elementAt(c++);
 			int addendum=1;
 			String addendumStr="";
-			do
+			boolean doBugFix = true;
+			while(doBugFix || allFlag)
 			{
+				doBugFix=false;
 				Environmental getThis=null;
 				if((container!=null)&&(mob.isMine(container)))
 				   getThis=mob.fetchInventory(container,whatToGet+addendumStr);
@@ -167,7 +169,6 @@ public class Draw extends Get
 					V.addElement(getThis);
 				addendumStr="."+(++addendum);
 			}
-			while(allFlag);
 
 			for(int i=0;i<V.size();i++)
 			{

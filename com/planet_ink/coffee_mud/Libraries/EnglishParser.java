@@ -1265,8 +1265,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
 		if(name.toUpperCase().startsWith("ALL.")){ allFlag=true; name="ALL "+name.substring(4);}
 		if(name.toUpperCase().endsWith(".ALL")){ allFlag=true; name="ALL "+name.substring(0,name.length()-4);}
-		do
+		boolean doBugFix = true;
+		while(doBugFix || ((allFlag)&&(addendum<=maxToItem)))
 		{
+			doBugFix=false;
 			Environmental item=null;
 			if(from instanceof MOB)
 			{
@@ -1289,7 +1291,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			if(item==null) break;
 			addendumStr="."+(++addendum);
 		}
-		while((allFlag)&&(addendum<=maxToItem));
+		
 		if(preferredLoc==Wearable.FILTER_WORNONLY)
 		{
 			Vector V2=new Vector();
@@ -1655,8 +1657,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
 		int addendum=1;
 		String addendumStr="";
-		do
+		boolean doBugFix = true;
+		while(doBugFix || ((allFlag)&&(addendum<=maxContained)))
 		{
+			doBugFix=false;
 			Environmental thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID+addendumStr,wornFilter);
 			if((thisThang!=null)
 			&&(thisThang instanceof Item)
@@ -1678,7 +1682,6 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			    return V;
 			addendumStr="."+(++addendum);
 		}
-		while((allFlag)&&(addendum<=maxContained));
 		return V;
 	}
 

@@ -387,8 +387,10 @@ public class Skill_Juggle extends BardSkill
 		if(whatToJuggle.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToJuggle="ALL "+whatToJuggle.substring(0,whatToJuggle.length()-4);}
 		int addendum=1;
 		String addendumStr="";
-		do
+		boolean doBugFix = true;
+		while(doBugFix || ((allFlag)&&(addendum<=maxToJuggle)))
 		{
+			doBugFix=false;
 			Item juggleThis=mob.fetchInventory(null,whatToJuggle+addendumStr);
 			if((juggleThis!=null)&&(!juggleThis.amWearingAt(Wearable.IN_INVENTORY)))
 			{
@@ -408,7 +410,6 @@ public class Skill_Juggle extends BardSkill
 				V.addElement(juggleThis);
 			addendumStr="."+(++addendum);
 		}
-		while((allFlag)&&(addendum<=maxToJuggle));
 
 		if(V.size()==0)
 		{

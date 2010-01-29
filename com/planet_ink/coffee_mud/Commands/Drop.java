@@ -107,9 +107,11 @@ public class Drop extends StdCommand
             if(CMLib.flags().canBeSeenBy(dropThis,mob))
                 V.addElement(dropThis);
         }
+		boolean doBugFix = true;
         if(V.size()==0)
-		do
+		while(doBugFix || ((allFlag)&&(addendum<=maxToDrop)))
 		{
+			doBugFix=false;
             dropThis=mob.fetchCarried(container,whatToDrop+addendumStr);
 			if((dropThis==null)
 			&&(V.size()==0)
@@ -142,7 +144,6 @@ public class Drop extends StdCommand
             }
 			addendumStr="."+(++addendum);
 		}
-		while((allFlag)&&(addendum<=maxToDrop));
 
 		if(V.size()==0)
 			mob.tell("You don't seem to be carrying that.");

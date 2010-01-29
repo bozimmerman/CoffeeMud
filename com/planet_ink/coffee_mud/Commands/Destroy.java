@@ -776,8 +776,10 @@ public class Destroy extends StdCommand
 			if(whatToDrop.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToDrop="ALL "+whatToDrop.substring(0,whatToDrop.length()-4);}
 			int addendum=1;
 			String addendumStr="";
-			do
+			boolean doBugFix = true;
+			while(doBugFix || ((allFlag)&&(addendum<=maxToDrop)))
 			{
+				doBugFix=false;
 				Item dropThis=mob.fetchCarried(null,whatToDrop+addendumStr);
 				if((dropThis==null)
 				&&(V.size()==0)
@@ -817,7 +819,6 @@ public class Destroy extends StdCommand
 					V.addElement(dropThis);
 				addendumStr="."+(++addendum);
 			}
-			while((allFlag)&&(addendum<=maxToDrop));
 
 			boolean didAnything=false;
 			for(int i=0;i<V.size();i++)

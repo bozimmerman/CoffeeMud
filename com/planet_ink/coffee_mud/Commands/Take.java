@@ -103,8 +103,10 @@ public class Take extends StdCommand
 				return false;
 			}
 			
-			do
+			boolean doBugFix = true;
+			while(doBugFix || ((allFlag)&&(addendum<=maxToGive)))
 			{
+				doBugFix=false;
 				Environmental giveThis=CMLib.english().bestPossibleGold(victim,null,thingToGive);
 				
 				if(giveThis!=null)
@@ -129,7 +131,6 @@ public class Take extends StdCommand
 				}
 				addendumStr="."+(++addendum);
 			}
-			while((allFlag)&&(addendum<=maxToGive));
 
 			if(V.size()==0)
 				mob.tell(victim.name()+" does not seem to be carrying that.");

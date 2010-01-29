@@ -142,9 +142,11 @@ public class Put extends StdCommand
             if(CMLib.flags().canBeSeenBy(putThis,mob))
                 V.addElement(putThis);
         }
+		boolean doBugFix = true;
         if(V.size()==0)
-		do
+		while(doBugFix || ((allFlag)&&(addendum<=maxToPut)))
 		{
+			doBugFix=false;
 			putThis=mob.fetchCarried(null,thingToPut+addendumStr);
             if((allFlag)&&(!onlyGoldFlag)&&(putThis instanceof Coins)&&(thingToPut.equalsIgnoreCase("ALL")))
                 putThis=null;
@@ -157,7 +159,6 @@ public class Put extends StdCommand
             }
 			addendumStr="."+(++addendum);
 		}
-		while((allFlag)&&(addendum<=maxToPut));
 
 		if(V.contains(container))
 			V.remove(container);

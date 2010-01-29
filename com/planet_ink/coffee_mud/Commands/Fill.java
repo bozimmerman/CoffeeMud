@@ -85,8 +85,10 @@ public class Fill extends StdCommand
 		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
 		if(thingToFill.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToFill="ALL "+thingToFill.substring(4);}
 		if(thingToFill.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToFill="ALL "+thingToFill.substring(0,thingToFill.length()-4);}
-		do
+		boolean doBugFix = true;
+		while(doBugFix || ((allFlag)&&(maxToFill<addendum)))
 		{
+			doBugFix=false;
 			Item fillThis=mob.fetchInventory(null,thingToFill+addendumStr);
 			if(fillThis==null) break;
 			if((CMLib.flags().canBeSeenBy(fillThis,mob))
@@ -94,7 +96,7 @@ public class Fill extends StdCommand
 				V.addElement(fillThis);
 			addendumStr="."+(++addendum);
 		}
-		while((allFlag)&&(maxToFill<addendum));
+		
 		if(V.size()==0)
 			mob.tell("You don't seem to have '"+thingToFill+"'.");
 		else

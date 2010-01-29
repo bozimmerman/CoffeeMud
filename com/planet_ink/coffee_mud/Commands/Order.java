@@ -67,8 +67,10 @@ public class Order extends StdCommand
 		if(whomToOrder.toUpperCase().endsWith(".ALL")){ allFlag=true; whomToOrder="ALL "+whomToOrder.substring(0,whomToOrder.length()-4);}
 		int addendum=1;
 		String addendumStr="";
-		do
+		boolean doBugFix = true;
+		while(doBugFix || allFlag)
 		{
+			doBugFix=false;
 			MOB target=mob.location().fetchInhabitant(whomToOrder+addendumStr);
 			if(target==null) break;
 			if((CMLib.flags().canBeSeenBy(target,mob))
@@ -77,7 +79,6 @@ public class Order extends StdCommand
 				V.addElement(target);
 			addendumStr="."+(++addendum);
 		}
-		while(allFlag);
 
 		if(V.size()==0)
 		{

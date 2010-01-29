@@ -147,8 +147,10 @@ public class Sheath extends StdCommand
 			boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
 			if(thingToPut.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(4);}
 			if(thingToPut.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(0,thingToPut.length()-4);}
-			do
+			boolean doBugFix = true;
+			while(doBugFix || allFlag)
 			{
+				doBugFix=false;
 				Item putThis=mob.fetchWornItem(thingToPut+addendumStr);
 				if(putThis==null) break;
 				if(((putThis.amWearingAt(Wearable.WORN_WIELD))
@@ -179,7 +181,6 @@ public class Sheath extends StdCommand
 				}
 				addendumStr="."+(++addendum);
 			}
-			while(allFlag);
 		}
 
 		if(items.size()==0)
