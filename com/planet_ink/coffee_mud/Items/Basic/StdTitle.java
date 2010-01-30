@@ -159,7 +159,7 @@ public class StdTitle extends StdItem implements LandTitle
 		updateTitleName();
 	}
 
-	public void updateLot(Vector optPlayerList)
+	public void updateLot(List optPlayerList)
 	{
 		Vector V=getPropertyRooms();
 		for(int v=0;v<V.size();v++)

@@ -739,8 +739,8 @@ public class List extends StdCommand
 		}
 
 		head.append("] Character name\n\r");
-		Vector allUsers=CMLib.database().getExtendedUserList();
-		Vector oldSet=allUsers;
+		java.util.List<PlayerLibrary.ThinPlayer> allUsers=CMLib.database().getExtendedUserList();
+		java.util.List<PlayerLibrary.ThinPlayer> oldSet=allUsers;
 		int showBy=sortBy;
 		PlayerLibrary lib=CMLib.players();
 		while((oldSet.size()>0)&&(sortBy>=0)&&(sortBy<=7))
@@ -748,39 +748,39 @@ public class List extends StdCommand
 			if(oldSet==allUsers) allUsers=new Vector();
 			if((sortBy<3)||(sortBy>4))
 			{
-				PlayerLibrary.ThinPlayer selected=(PlayerLibrary.ThinPlayer)oldSet.firstElement();
+				PlayerLibrary.ThinPlayer selected=(PlayerLibrary.ThinPlayer)oldSet.get(0);
 				for(int u=1;u<oldSet.size();u++)
 				{
-					PlayerLibrary.ThinPlayer U=(PlayerLibrary.ThinPlayer)oldSet.elementAt(u);
+					PlayerLibrary.ThinPlayer U=oldSet.get(u);
 					if(lib.getThinSortValue(selected,sortBy).compareTo(lib.getThinSortValue(U,sortBy))>0)
 					   selected=U;
 				}
 				if(selected!=null)
 				{
-					oldSet.removeElement(selected);
-					allUsers.addElement(selected);
+					oldSet.remove(selected);
+					allUsers.add(selected);
 				}
 			}
 			else
 			{
-				PlayerLibrary.ThinPlayer selected=(PlayerLibrary.ThinPlayer)oldSet.firstElement();
+				PlayerLibrary.ThinPlayer selected=oldSet.get(0);
 				for(int u=1;u<oldSet.size();u++)
 				{
-					PlayerLibrary.ThinPlayer U=(PlayerLibrary.ThinPlayer)oldSet.elementAt(u);
+					PlayerLibrary.ThinPlayer U=oldSet.get(u);
 					if(CMath.s_long(lib.getThinSortValue(selected,sortBy))>CMath.s_long(lib.getThinSortValue(U,sortBy)))
 					   selected=U;
 				}
 				if(selected!=null)
 				{
-					oldSet.removeElement(selected);
-					allUsers.addElement(selected);
+					oldSet.remove(selected);
+					allUsers.add(selected);
 				}
 			}
 		}
 
 		for(int u=0;u<allUsers.size();u++)
 		{
-			PlayerLibrary.ThinPlayer U=(PlayerLibrary.ThinPlayer)allUsers.elementAt(u);
+			PlayerLibrary.ThinPlayer U=allUsers.get(u);
 
 			head.append("[");
 			head.append(CMStrings.padRight(U.race,8)+" ");

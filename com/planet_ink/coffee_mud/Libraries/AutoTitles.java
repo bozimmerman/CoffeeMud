@@ -139,11 +139,11 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 
     public void dispossesTitle(String title)
     {
-        Vector list=CMLib.database().getUserList();
+        List<String> list=CMLib.database().getUserList();
     	String fixedTitle = CMStrings.removeColors(title).replace('\'', '`');
-        for(int v=0;v<list.size();v++)
+        for(String playerName : list)
         {
-            MOB M=CMLib.players().getLoadPlayer((String)list.elementAt(v));
+            MOB M=CMLib.players().getLoadPlayer(playerName);
             if(M.playerStats()!=null)
             {
             	Vector ptV=M.playerStats().getTitles();

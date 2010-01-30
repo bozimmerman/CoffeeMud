@@ -87,7 +87,7 @@ public class DBInterface implements DatabaseEngine
     public DVector worshippers(String deityID)
     {return MOBloader.worshippers(deityID);}
     
-	public Vector getUserList()
+    public List<String> getUserList()
 	{return MOBloader.getUserList();}
 
     public boolean isConnected(){return DB.amIOk();}
@@ -279,9 +279,12 @@ public class DBInterface implements DatabaseEngine
 	public void DBReadPlayer(MOB mob)
 	{MOBloader.DBRead(mob);}
 	
-	public Vector getExtendedUserList()
+    public List<PlayerLibrary.ThinPlayer> getExtendedUserList()
 	{return MOBloader.getExtendedUserList();}
 	
+    public PlayerLibrary.ThinPlayer getThinUser(String name)
+    { return MOBloader.getThinUser(name);}
+    
 	public void DBReadFollowers(MOB mob, boolean bringToLife)
 	{MOBloader.DBReadFollowers(mob, bringToLife);}
 	

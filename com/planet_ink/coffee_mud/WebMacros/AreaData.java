@@ -451,10 +451,9 @@ public class AreaData extends StdWebMacro
 							subOps+=";"+httpReq.getRequestParameter("SUBOPS"+(Integer.toString(i)));
 						else
 							break;
-					Vector V=CMLib.database().getUserList();
-					for(int v=0;v<V.size();v++)
+					List<String> V=CMLib.database().getUserList();
+					for(String cnam : V)
 					{
-						String cnam=(String)V.elementAt(v);
 						str.append("<OPTION VALUE=\""+cnam+"\"");
 						if(subOps.equals(cnam)
 						   ||(subOps.indexOf(";"+cnam)>=0)

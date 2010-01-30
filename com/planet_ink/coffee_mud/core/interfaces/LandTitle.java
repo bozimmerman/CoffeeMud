@@ -12,6 +12,8 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+import java.util.List;
 import java.util.Vector;
 
 /* 
@@ -81,12 +83,12 @@ public interface LandTitle extends Environmental
      * @param optPlayerList - null, or a vector of player names for quick confirms
      * @see LandTitle#updateTitle()
      */
-	public void updateLot(Vector optPlayerList);
+	public void updateLot(List optPlayerList);
     /**
      * Simply resaves the rooms represented by this title to reflect change
      * in ownership or price.  The state of the rooms is not inspected or
      * updated as in updateLot.
-     * @see LandTitle#updateLot(Vector)
+     * @see LandTitle#updateLot(List)
      */
 	public void updateTitle();
     

@@ -88,8 +88,9 @@ public interface DatabaseEngine extends CMLibrary
     public boolean isConnected();
 	public String[] DBFetchEmailData(String name);
 	public String DBEmailSearch(String email);
-	public Vector getExtendedUserList();
-	public Vector getUserList();
+    public List<PlayerLibrary.ThinPlayer> getExtendedUserList();
+    public PlayerLibrary.ThinPlayer getThinUser(String name);
+    public List<String> getUserList();
     public Vector DBScanFollowers(MOB mob);
 	public void DBReadFollowers(MOB mob, boolean bringToLife);
 	public void DBDeleteMOB(MOB mob);

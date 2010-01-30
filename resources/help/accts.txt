@@ -1,0 +1,6 @@
+^ZCOMMANDS^N
+
+[CHARACTER NAME]        : log in as that character.
+RETIRE [CHARACTER NAME] : delete one of your characters
+NEW [CHARACTER NAME]    : create a new character
+QUIT					: log out of the system

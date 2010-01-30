@@ -219,10 +219,9 @@ public class Export extends StdCommand
 				StringBuffer x=new StringBuffer("<PLAYERS>");
 				if(S!=null)
 					S.rawPrint("Reading players...");
-				Vector V=CMLib.database().getUserList();
-				for(int v=0;v<V.size();v++)
+				java.util.List<String> V=CMLib.database().getUserList();
+				for(String name : V)
 				{
-					String name=(String)V.elementAt(v);
 					if(S!=null) S.rawPrint(".");
 					MOB M=CMLib.players().getLoadPlayer(name);
 					if(M!=null)

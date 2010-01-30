@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.Common.interfaces;
 import java.util.Enumeration;
 import java.util.Vector;
 
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.interfaces.CMModifiable;
 
@@ -19,6 +20,13 @@ public interface PlayerAccount extends CMCommon, AccountStats, CMModifiable
 	 * @return an enumeration of player mob objects
 	 */
 	public Enumeration<MOB> getLoadPlayers();
+	
+	/**
+	 * Return an enumeration of the semi-loaded players
+	 * that belong to this account.
+	 * @return an enumeration of thinplayer objects
+	 */
+	public Enumeration<PlayerLibrary.ThinPlayer> getThinPlayers();
 	
 	/**
 	 * Returns the number of players this account currently 
@@ -64,4 +72,26 @@ public interface PlayerAccount extends CMCommon, AccountStats, CMModifiable
 	 * @param names the names of the players
 	 */
 	public void setPlayerNames(Vector<String> names);
+	
+	/**
+	 * Checks whether the given string flag is set for this account.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount#setFlag(String, boolean)
+	 * @param flagName the flag name
+	 * @return true if it is set, false if not
+	 */
+	public boolean isSet(String flagName);
+	
+	/**
+	 * Sets or unsets an account-wide flag.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount#isSet(String)
+	 * @param flagName the flag name
+	 * @param setOrUnset true to set it, false to unset
+	 */
+	public void setFlag(String flagName, boolean setOrUnset);
+	
+	/** Constant for account flags that overrides number of characters limitation */
+	public final static String FLAG_NUMCHARSOVERRIDE="NUMCHARSOVERRIDE";
+	
+	/** list of account flags */
+	public final static String[] FLAG_DESCS = {FLAG_NUMCHARSOVERRIDE};
 }

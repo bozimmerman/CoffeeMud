@@ -39,6 +39,7 @@ public class DefaultPlayerAccount implements PlayerAccount
     protected HashSet friends=new HashSet();
     protected HashSet ignored=new HashSet();
     protected Vector<String> players = new Vector<String>();
+    protected Vector<PlayerLibrary.ThinPlayer> thinPlayers = new Vector<PlayerLibrary.ThinPlayer>();
     protected String accountName = "";
 	protected String lastIP="";
     protected long LastDateTime=System.currentTimeMillis();
@@ -48,6 +49,7 @@ public class DefaultPlayerAccount implements PlayerAccount
     protected String notes="";
     protected long accountExpiration=0;
     protected String[] xtraValues=null;
+    protected HashSet<String> acctFlags = new HashSet<String>();
 
     public DefaultPlayerAccount() {
         super();
@@ -67,6 +69,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 		case 4: return ""+LastDateTime;
 		case 5: return notes;
 		case 6: return ""+accountExpiration;
+		case 7: return CMParms.toStringList(acctFlags);
         default:
             return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -82,6 +85,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 		case 4: LastDateTime=CMath.s_long(val); break;
 		case 5: notes=val; break;
 		case 6: accountExpiration=CMath.s_long(val); break;
+		case 7: acctFlags = CMParms.makeHashSet(CMParms.parseCommas(val,true)); break;
 		default:
             CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
             break;
@@ -185,6 +189,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 		return ((f.length()>0)?"<FRIENDS>"+f+"</FRIENDS>":"")
 			+((i.length()>0)?"<IGNORED>"+i+"</IGNORED>":"")
 			+"<ACCTEXP>"+accountExpiration+"</ACCTEXP>"
+			+"<FLAGS>"+CMParms.toStringList(acctFlags)+"</FLAGS>"
 			+((notes.length()>0)?"<NOTES>"+CMLib.xml().parseOutAngleBrackets(notes)+"</NOTES>":"")
             +rest.toString();
 	}
@@ -202,6 +207,7 @@ public class DefaultPlayerAccount implements PlayerAccount
             setAccountExpiration(C.getTimeInMillis());
         }
         notes=CMLib.xml().returnXMLValue(str,"NOTES");
+        acctFlags=CMParms.makeHashSet(CMParms.parseCommas(CMLib.xml().returnXMLValue("FLAGS"), true));
         if(notes==null) notes="";
         notes=CMLib.xml().restoreAngleBrackets(notes);
 		
@@ -234,6 +240,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 		}
 		catch(Exception e) {}
 		players.add(mob.Name());
+		thinPlayers.clear();
 	}
 	public void delPlayer(MOB mob) 
 	{
@@ -245,8 +252,10 @@ public class DefaultPlayerAccount implements PlayerAccount
 					players.removeElementAt(p);
 		}
 		catch(Exception e) {}
+		thinPlayers.clear();
 	}
-	public Enumeration<MOB> getLoadPlayers() {
+	public Enumeration<MOB> getLoadPlayers() 
+	{
 		Vector<MOB> mobs = new Vector<MOB>(players.size());
 		for(Enumeration<String> e=getPlayers();e.hasMoreElements();)
 		{
@@ -254,6 +263,21 @@ public class DefaultPlayerAccount implements PlayerAccount
 			if(M!=null) mobs.addElement(M);
 		}
 		return mobs.elements();
+	}
+	public Enumeration<PlayerLibrary.ThinPlayer> getThinPlayers() 
+	{
+		synchronized(thinPlayers)
+		{
+			if(thinPlayers.size() != players.size())
+				for(Enumeration<String> e=getPlayers();e.hasMoreElements();)
+				{
+					String name = e.nextElement();
+					PlayerLibrary.ThinPlayer tP = CMLib.database().getThinUser(name);
+					if(tP==null){ tP=new PlayerLibrary.ThinPlayer(); tP.name = name;}
+					thinPlayers.add(tP);
+				}
+		}
+		return ((Vector<PlayerLibrary.ThinPlayer>)thinPlayers.clone()).elements();
 	}
 	public Enumeration<String> getPlayers() {
 		return ((Vector<String>)players.clone()).elements();
@@ -263,6 +287,14 @@ public class DefaultPlayerAccount implements PlayerAccount
 		players = names;
 	}
 	public int numPlayers() { return players.size();}
+	public boolean isSet(String flagName) { return acctFlags.contains(flagName.toUpperCase());}
+	public void setFlag(String flagName, boolean setOrUnset)
+	{
+		if(setOrUnset)
+			acctFlags.add(flagName.toUpperCase());
+		else
+			acctFlags.remove(flagName.toUpperCase());
+	}
 	
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

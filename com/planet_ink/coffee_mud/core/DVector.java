@@ -453,13 +453,13 @@ public class DVector implements Cloneable, java.io.Serializable
         };
 	};
 	
-	public static Enumeration s_enum(Vector V) {
+	public static Enumeration s_enum(List V) {
         //return ((Vector)V.clone()).elements(); /*
         return new Enumeration() {
             Iterator i=null;
             public boolean hasMoreElements() { return i.hasNext();}
             public Object nextElement() { return i.next();}
-            public Enumeration setV(Vector V) {
+            public Enumeration setV(List V) {
                 if((V==null)||(V.size()==0))
                 	return empty_enum();
                 i=s_iter(V);
@@ -469,13 +469,13 @@ public class DVector implements Cloneable, java.io.Serializable
         //*/
     }
     
-	public static Iterator s_iter(Vector V) {
+	public static Iterator s_iter(List V) {
         //return ((Vector)V.clone()).iterator(); /*
         return new Iterator() {
             boolean more=false;
             Object prevO=null;
             Object O=null;
-            Vector V=null;
+            List V=null;
             int c=0;
             
             public boolean hasNext() { return more; }
@@ -484,7 +484,7 @@ public class DVector implements Cloneable, java.io.Serializable
             {
                 try {
                     for(int i=0;i<3;i++)
-                        if(V.elementAt(c-i)==O)
+                        if(V.get(c-i)==O)
                             return c+1-i;
                 } catch(Exception e){}
                 return c;
@@ -496,7 +496,7 @@ public class DVector implements Cloneable, java.io.Serializable
                 prevO=O;
                 try {
                     c=confirmDex(O);
-                    O=V.elementAt(c);
+                    O=V.get(c);
                     more=true;
                 } catch(Exception e) {
                     more=false;
@@ -505,7 +505,7 @@ public class DVector implements Cloneable, java.io.Serializable
                 return prevO;
             }
             
-            public Iterator setV(Vector V) {
+            public Iterator setV(List V) {
                 if((V==null)||(V.size()==0)) 
                 	return empty_iter();
                 this.V=V;
@@ -513,7 +513,7 @@ public class DVector implements Cloneable, java.io.Serializable
                 try {
                 	if(V.size()>0)
                 	{
-	                    O=V.firstElement();
+	                    O=V.get(0);
 	                    more=true;
                 	}
                 } catch(Throwable t) {}
@@ -521,7 +521,7 @@ public class DVector implements Cloneable, java.io.Serializable
             }
             
             public void remove() {
-                try { V.removeElement(prevO); c--; }
+                try { V.remove(prevO); c--; }
                 catch(Exception e){}
             }
         }.setV(V);

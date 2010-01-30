@@ -301,7 +301,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 											LandTitle T,
 											boolean resetRoomName,
                                             boolean clearAllItems,
-                                            Vector optPlayerList,
+                                            List optPlayerList,
 											int lastNumItems)
 	{
         boolean updateItems=false;
@@ -395,7 +395,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
                 if(!playerExists) playerExists=optPlayerList.contains(T.landOwner());
                 if(!playerExists)
                 for(int i=0;i<optPlayerList.size();i++)
-                    if(((String)optPlayerList.elementAt(i)).equalsIgnoreCase(T.landOwner()))
+                    if(((String)optPlayerList.get(i)).equalsIgnoreCase(T.landOwner()))
                     { playerExists=true; break;}
                 if(!playerExists)
 				{
@@ -557,7 +557,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	}
 
 	// update lot, since its called by the savethread, ONLY worries about itself
-	public void updateLot(Vector optPlayerList)
+	public void updateLot(List optPlayerList)
 	{
 		if(affected instanceof Room)
 		{

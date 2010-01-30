@@ -200,7 +200,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 	}
 
 	// update lot, since its called by the savethread, ONLY worries about itself
-	public void updateLot(Vector optPlayerList)
+	public void updateLot(List optPlayerList)
 	{
 		if(((System.currentTimeMillis()-lastCall)>360000)
 		&&(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)))

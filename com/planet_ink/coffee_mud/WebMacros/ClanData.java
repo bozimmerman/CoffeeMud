@@ -106,14 +106,10 @@ public class ClanData extends StdWebMacro
             str.append("<TR><TD WIDTH=35%>");
             str.append("<SELECT ONCHANGE=\"AddMember(this);\" NAME=MEMB"+(themembers.size()+1)+">");
             str.append("<OPTION SELECTED VALUE=\"\">Select a new Member");
-            Vector V=CMLib.database().getUserList();
-            String mem=null;
-            for(int v=0;v<V.size();v++)
-            {
-                mem=(String)V.elementAt(v);
+            List<String> V=CMLib.database().getUserList();
+            for(String mem : V)
                 if(!themembers.contains(mem))
                     str.append("<OPTION VALUE=\""+mem+"\">"+mem);
-            }
             str.append("</SELECT>");
             str.append("</TD>");
             str.append("<TD WIDTH=65% COLSPAN=2>");

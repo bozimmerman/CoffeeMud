@@ -17,6 +17,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.IOException;
 import java.util.*;
+
+import sun.misc.Cache;
 /*
    Copyright 2000-2010 Bo Zimmerman
 
@@ -290,7 +292,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	
     public Enumeration thinPlayers(String sort, Hashtable cache)
     {
-		Vector V=cache==null?null:(Vector)cache.get("PLAYERLISTVECTOR"+sort);
+		List<PlayerLibrary.ThinPlayer> V=(cache==null)?null:(List<PlayerLibrary.ThinPlayer>)cache.get("PLAYERLISTVECTOR"+sort);
 		if(V==null)
 		{
 			V=CMLib.database().getExtendedUserList();
@@ -299,16 +301,16 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			&&(code>=0)
 			&&(V.size()>1))
 			{
-				Vector unV=V;
+				List<PlayerLibrary.ThinPlayer> unV=V;
 				V=new Vector();
 				while(unV.size()>0)
 				{
-					ThinPlayer M=(ThinPlayer)unV.firstElement();
+					ThinPlayer M=unV.get(0);
 					String loweStr=getThinSortValue(M,code);
 					ThinPlayer lowestM=M;
 					for(int i=1;i<unV.size();i++)
 					{
-						M=(ThinPlayer)unV.elementAt(i);
+						M=unV.get(i);
 						String val=getThinSortValue(M,code);
 						if((CMath.isNumber(val)&&CMath.isNumber(loweStr)))
 						{
@@ -325,8 +327,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 							lowestM=M;
 						}
 					}
-					unV.removeElement(lowestM);
-					V.addElement(lowestM);
+					unV.remove(lowestM);
+					V.add(lowestM);
 				}
 			}
 			if(cache!=null)
@@ -395,13 +397,12 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
             }
         }
         thread.status("autopurge process");
-        Vector allUsers=CMLib.database().getExtendedUserList();
+        List<PlayerLibrary.ThinPlayer> allUsers=CMLib.database().getExtendedUserList();
         Vector protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
         if(protectedOnes==null) protectedOnes=new Vector();
 
-        for(int u=0;u<allUsers.size();u++)
+        for(ThinPlayer user : allUsers)
         {
-        	ThinPlayer user=(ThinPlayer)allUsers.elementAt(u);
             String name=user.name;
             int level=user.level;
             long userLastLoginDateTime=user.last;

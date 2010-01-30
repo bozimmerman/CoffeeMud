@@ -146,7 +146,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         for(int v=0;v<V.size();v++)
         {
             String str=(String)V.elementAt(v);
-            if((" YOU SHIT FUCK CUNT ALL FAGGOT ASSHOLE ARSEHOLE PUSSY COCK SLUT BITCH DAMN CRAP GOD JESUS CHRIST NOBODY SOMEBODY MESSIAH ADMIN SYSOP ").indexOf(" "+str+" ")>=0)
+            if(DEFAULT_BADNAMES.indexOf(" "+str+" ")>=0)
                 return false;
         }
         Vector V2=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_BADNAMES),true);
@@ -327,50 +327,132 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         return extraScripts;
     }
 
-    
-
-    public boolean createAccountCharacter(PlayerAccount acct, Session session, MOB mob) throws java.io.IOException
-    {
-        String charName = "";
-        while((charName.length()==0)&&(!session.killFlag()))
-        {
-        	charName=session.prompt("\n\rEnter a name for your first character\n\r: ","");
-            if(charName.length()==0)
-            {
-            	session.println("\n\rAborting account creation");
-            	return false;
-            }
-            else
-            if((!isOkName(charName))
-            ||(CMLib.players().getAccount(charName)!=null)
-            ||(CMLib.players().getLoadAccount(charName)!=null))
-            {
-                mob.session().println("That name is not available for new characters.\n\r  Choose another name (no spaces allowed)!\n\r");
-                charName="";
-            }
-        }
-        return this.createCharacter(mob, charName, session);
-    }
-    
-    public boolean selectAccountCharacter(PlayerAccount acct, Session session, MOB mob) throws java.io.IOException
+    public LoginResult selectAccountCharacter(PlayerAccount acct, Session session, MOB mob) throws java.io.IOException
     {
     	Session sess = mob.session();
     	if((acct==null)||(sess==null)||(sess.killFlag()))
-    		return false;
-    	
+    		return LoginResult.NO_LOGIN;
     	boolean charSelected = false;
+    	boolean showList = true;
     	while((!sess.killFlag())&&(!charSelected))
     	{
-    		
+    		StringBuffer buf = new StringBuffer("");
+    		if(showList)
+    		{
+    			showList = false;
+	    		buf.append("^Z");
+	    		buf.append(CMStrings.padRight("Character",20));
+	    		buf.append(" " + CMStrings.padRight("Race",10));
+	    		buf.append(" " + CMStrings.padRight("Level",5));
+	    		buf.append(" " + CMStrings.padRight("Class",15));
+	    		buf.append("^.^N\n\r");
+	    		for(Enumeration<PlayerLibrary.ThinPlayer> p = acct.getThinPlayers(); p.hasMoreElements();)
+	    		{
+	    			PlayerLibrary.ThinPlayer player = p.nextElement();
+	        		buf.append("^H");
+	        		buf.append(CMStrings.padRight(player.name,20));
+	        		buf.append("^.^N");
+	        		buf.append(" " + CMStrings.padRight(player.race,10));
+	        		buf.append(" " + CMStrings.padRight(""+player.level,5));
+	        		buf.append(" " + CMStrings.padRight(player.charClass,15));
+	        		buf.append("^.^N\n\r");
+	    		}
+	    		sess.println(buf.toString());
+    		}
+    		String s = sess.prompt("^HEnter a name or command (?): ^N", TimeClock.TIME_MILIS_PER_MUDHOUR);
+    		if((s==null)||(s.length()==0)) return LoginResult.NO_LOGIN;
+    		if(s.equalsIgnoreCase("?")||(s.equalsIgnoreCase("HELP")))
+    		{
+    	        StringBuffer introText=new CMFile(Resources.buildResourcePath("help")+"accts.txt",null,true).text();
+    	    	try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
+    	        session.println(null,null,null,"\n\r\n\r"+introText.toString());
+    	        continue;
+    		}
+    		if(s.equalsIgnoreCase("LIST"))
+    		{
+    			showList = true;
+    			continue;
+    		}
+    		if(s.equalsIgnoreCase("QUIT"))
+    		{
+    			if(sess.confirm("Quit -- are you sure (y/N)?", "N"))
+				{
+    	            mob.session().logoff(false,false,false);
+    	            return LoginResult.NO_LOGIN;
+				}
+    			continue;
+    		}
+    		if(s.toUpperCase().startsWith("NEW "))
+    		{
+    			s=s.substring(4).trim();
+                if((!isOkName(s))
+                ||(CMLib.players().getAccount(s)!=null)
+                ||(CMLib.players().getLoadAccount(s)!=null))
+                {
+                    sess.println("\n\rThat name is not available for new characters.\n\r  Choose another name (no spaces allowed)!\n\r");
+                    continue;
+                }
+                if((CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)<=acct.numPlayers())
+                &&(!acct.isSet(PlayerAccount.FLAG_NUMCHARSOVERRIDE)))
+                {
+                	sess.println("You may only have "+CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)+" characters.  Please delete one to create another.");
+                	continue;
+                }
+                String login=CMStrings.capitalizeAndLower(s);
+                if(sess.confirm("Create a new character called '"+login+"' (y/N)?", "N"))
+                {
+                	if(createCharacter(mob, login, sess) == LoginResult.CCREATION_EXIT)
+	            		return LoginResult.CCREATION_EXIT;
+                }
+    			continue;
+    		}
+    		if(s.toUpperCase().startsWith("DELETE "))
+    		{
+    			s=s.substring(4).trim();
+    			PlayerLibrary.ThinPlayer delMe = null;
+        		for(Enumeration<PlayerLibrary.ThinPlayer> p = acct.getThinPlayers(); p.hasMoreElements();)
+        		{
+        			PlayerLibrary.ThinPlayer player = p.nextElement();
+        			if(player.name.equalsIgnoreCase(s))
+        				delMe=player;
+        		}
+    			if(delMe==null)
+    			{
+    				sess.println("The character '"+s+"' is unknown.");
+    				continue;
+    			}
+    			if(sess.confirm("Are you sure you want to retire and delete '"+delMe.name+"' (y/N)?", "N"))
+    			{
+    				MOB M=CMLib.players().getLoadPlayer(delMe.name);
+    				if(M!=null)
+	    				CMLib.players().obliteratePlayer(M, false);
+    				sess.println(delMe.name+" has been deleted.");
+    			}
+    			continue;
+    		}
+			PlayerLibrary.ThinPlayer playMe = null;
+    		for(Enumeration<PlayerLibrary.ThinPlayer> p = acct.getThinPlayers(); p.hasMoreElements();)
+    		{
+    			PlayerLibrary.ThinPlayer player = p.nextElement();
+    			if(player.name.equalsIgnoreCase(s))
+    				playMe=player;
+    		}
+    		if(playMe == null)
+    		{
+    			sess.println("'"+s+"' is an unknown character or command.  Use ? for help.");
+    			continue;
+    		}
+    		mob.setName(playMe.name);
+    		charSelected=true;
     	}
     	// ...
     	
     	Long L=(Long)pendingLogins.remove(acct.accountName().toUpperCase());
     	if(L!=null) pendingLogins.put(mob.Name().toUpperCase(), L);
-    	return true;
+    	return LoginResult.NORMAL_LOGIN;
     }
     
-    public boolean createAccount(PlayerAccount acct, MOB mob, String login, Session session)
+    public LoginResult createAccount(PlayerAccount acct, MOB mob, String login, Session session)
 	    throws java.io.IOException
 	{
     	Hashtable extraScripts = getLoginScripts();
@@ -391,7 +473,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	            if(password.length()==0)
 	            {
 	            	session.println("\n\rAborting account creation.");
-	            	return false;
+	            	return LoginResult.NO_LOGIN;
 	            }
 	        }
         executeScript(mob,(Vector)extraScripts.get("PASSWORD"));
@@ -400,7 +482,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     	if(emailAddy == null)
         {
         	session.println("\n\rAborting account creation.");
-        	return false;
+        	return LoginResult.NO_LOGIN;
         }
         acct.setAccountName(login);
         acct.setPassword(password);
@@ -432,7 +514,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             if(mob.session()==session)
             {
                 session.logoff(false,false,false);
-	            return false;
+	            return LoginResult.NO_LOGIN;
             }
         }
         mob.setName(acct.accountName());
@@ -469,7 +551,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         throw new java.io.IOException("Session is dead!");
     }
     
-    public boolean createCharacter(MOB mob, String login, Session session)
+    public LoginResult createCharacter(MOB mob, String login, Session session)
         throws java.io.IOException
     {
     	
@@ -523,7 +605,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             	session.logoff(false,false,false);
             if(pendingLogins.containsKey(mob.Name().toUpperCase()))
                pendingLogins.remove(mob.Name().toUpperCase());
-            return false;
+            return LoginResult.NO_LOGIN;
         }
 
         Log.sysOut("FrontDoor","Creating user: "+mob.Name());
@@ -937,7 +1019,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
             executeScript(mob,(Vector)extraScripts.get("END"));
             
-            if(mob.playerStats()==null) return false;
+            if(mob.playerStats()==null) return LoginResult.NO_LOGIN;
             mob.playerStats().setLastIP(session.getAddress());
             Log.sysOut("FrontDoor","Created user: "+mob.Name());
             CMProps.addNewUserByIP(session.getAddress());
@@ -957,7 +1039,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         }
         if(pendingLogins.containsKey(mob.Name().toUpperCase()))
            pendingLogins.remove(mob.Name().toUpperCase());
-        return !logoff;
+        if(!logoff)
+        	return LoginResult.CCREATION_EXIT;
+        return LoginResult.NO_LOGIN;
     }
 
     private boolean loginsDisabled(MOB mob)
@@ -1216,12 +1300,15 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                     return LoginResult.NO_LOGIN;
                 }
                 if(acct!=null)
-                	if(!selectAccountCharacter(acct,mob.session(),mob))
+                {
+                	LoginResult result = selectAccountCharacter(acct,mob.session(),mob); 
+                	if(result != LoginResult.NORMAL_LOGIN)
                 	{
                         if(pendingLogins.containsKey(acct.accountName().toUpperCase()))
                             pendingLogins.remove(acct.accountName().toUpperCase());
-                        return LoginResult.NO_LOGIN;
+                        return result;
                 	}
+                }
                 MOB oldMOB=mob;
                 if(CMLib.players().getPlayer(oldMOB.Name())!=null)
                 {
@@ -1358,7 +1445,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             {
                 if(mob.session().confirm("\n\r'"+CMStrings.capitalizeAndLower(login)+"' does not exist.\n\rIs this a new account you would like to create (y/N)?","N"))
                 {
-                	LoginResult result = LoginResult.NO_LOGIN;//TODO:createAccount(mob,login,mob.session())?1:0; 
+                	acct = (PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
+                	LoginResult result = createAccount(acct,mob,login,mob.session()); 
                     if(pendingLogins.containsKey(mob.Name().toUpperCase()))
                         pendingLogins.remove(mob.Name().toUpperCase());
                     return result;
@@ -1368,7 +1456,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             if(mob.session().confirm("\n\r'"+CMStrings.capitalizeAndLower(login)+"' does not exist.\n\rIs this a new character you would like to create (y/N)?","N"))
             {
             	LoginResult result = LoginResult.NO_LOGIN;
-            	if(createCharacter(mob,login,mob.session()))
+            	if(createCharacter(mob,login,mob.session())==LoginResult.CCREATION_EXIT)
             		result = LoginResult.NORMAL_LOGIN;
                 if(pendingLogins.containsKey(mob.Name().toUpperCase()))
                     pendingLogins.remove(mob.Name().toUpperCase());

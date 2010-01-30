@@ -42,7 +42,7 @@ public interface CharCreationLibrary extends CMLibrary
     public void showTheNews(MOB mob);
     public void notifyFriends(MOB mob, String message);
     public boolean checkExpiration(MOB mob);
-    public boolean createCharacter(MOB mob, String login, Session session)
+    public LoginResult createCharacter(MOB mob, String login, Session session)
         throws java.io.IOException;
     public LoginResult login(MOB mob, int attempt)
         throws java.io.IOException;
@@ -54,8 +54,10 @@ public interface CharCreationLibrary extends CMLibrary
     public Room getDefaultDeathRoom(MOB mob);
     public Room getDefaultBodyRoom(MOB mob);
     
+    public final static String DEFAULT_BADNAMES = " LIST DELETE QUIT NEW HERE YOU SHIT FUCK CUNT ALL FAGGOT ASSHOLE ARSEHOLE PUSSY COCK SLUT BITCH DAMN CRAP GOD JESUS CHRIST NOBODY SOMEBODY MESSIAH ADMIN SYSOP ";
+    
     public enum LoginResult
     {
-    	NO_LOGIN, NORMAL_LOGIN, SESSION_SWAP
+    	NO_LOGIN, NORMAL_LOGIN, SESSION_SWAP, CCREATION_EXIT
     }
 }

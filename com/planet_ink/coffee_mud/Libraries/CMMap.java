@@ -1763,7 +1763,7 @@ public class CMMap extends StdLibrary implements WorldMap
         }
         catch(java.util.NoSuchElementException e){}
         thread.status("title sweeping");
-        Vector playerList=CMLib.database().getUserList();
+        List<String> playerList=CMLib.database().getUserList();
         try
         {
             for(Enumeration r=rooms();r.hasMoreElements();)

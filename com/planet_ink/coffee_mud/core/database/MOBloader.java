@@ -311,7 +311,7 @@ public class MOBloader
         // wont add if same name already exists
     }
 
-    public Vector getUserList()
+    public List<String> getUserList()
     {
         DBConnection D=null;
         Vector V=new Vector();
@@ -332,60 +332,86 @@ public class MOBloader
         return V;
     }
 
-    public Vector getExtendedUserList()
+    protected PlayerLibrary.ThinPlayer parseThinUser(ResultSet R)
+    {
+        try
+        {
+	    	PlayerLibrary.ThinPlayer thisUser=new PlayerLibrary.ThinPlayer();
+	        thisUser.name=DBConnections.getRes(R,"CMUSERID");
+	        String cclass=DBConnections.getRes(R,"CMCLAS");
+	        int x=cclass.lastIndexOf(";");
+	        CharClass C=null;
+	        if((x>0)&&(x<cclass.length()-2))
+	        {
+	            C=CMClass.getCharClass(cclass.substring(x+1));
+	            if(C!=null) cclass=C.name();
+	        }
+	        thisUser.charClass=(cclass);
+	        String rrace=DBConnections.getRes(R,"CMRACE");
+	        Race R2=CMClass.getRace(rrace);
+	        if(R2!=null)
+	            thisUser.race=(R2.name());
+	        else
+	            thisUser.race=rrace;
+	        String lvl=DBConnections.getRes(R,"CMLEVL");
+	        x=lvl.indexOf(";");
+	        int level=0;
+	        while(x>=0)
+	        {
+	            level+=CMath.s_int(lvl.substring(0,x));
+	            lvl=lvl.substring(x+1);
+	            x=lvl.indexOf(";");
+	        }
+	        if(lvl.length()>0) level+=CMath.s_int(lvl);
+	        thisUser.level=level;
+	        thisUser.age=(int)DBConnections.getLongRes(R,"CMAGEH");
+	        MOB M=CMLib.players().getPlayer((String)thisUser.name);
+	        if((M!=null)&&(M.lastTickedDateTime()>0))
+	            thisUser.last=M.lastTickedDateTime();
+	        else
+	            thisUser.last=DBConnections.getLongRes(R,"CMDATE");
+	        String lsIP=DBConnections.getRes(R,"CMLSIP");
+	        thisUser.email=DBConnections.getRes(R,"CMEMAL");
+	        thisUser.ip=lsIP;
+	        return thisUser;
+        }catch(Exception e)
+        {
+            Log.errOut("MOBloader",e);
+        }
+        return null;
+    }
+    
+    public PlayerLibrary.ThinPlayer getThinUser(String name)
+    {
+        DBConnection D=null;
+    	PlayerLibrary.ThinPlayer thisUser=null;
+        try
+        {
+            D=DB.DBFetch();
+            ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMUSERID='"+name+"'");
+            if(R!=null) while(R.next())
+            	thisUser=parseThinUser(R);
+        }catch(Exception sqle)
+        {
+            Log.errOut("MOB",sqle);
+        }
+        if(D!=null) DB.DBDone(D);
+        return thisUser;
+    }
+    
+    public List<PlayerLibrary.ThinPlayer> getExtendedUserList()
     {
         DBConnection D=null;
         Vector allUsers=new Vector();
         try
         {
             D=DB.DBFetch();
-            CharClass C=null;
             ResultSet R=D.query("SELECT * FROM CMCHAR");
             if(R!=null) while(R.next())
             {
-            	PlayerLibrary.ThinPlayer thisUser=new PlayerLibrary.ThinPlayer();
-                try
-                {
-                    thisUser.name=DBConnections.getRes(R,"CMUSERID");
-                    String cclass=DBConnections.getRes(R,"CMCLAS");
-                    int x=cclass.lastIndexOf(";");
-                    if((x>0)&&(x<cclass.length()-2))
-                    {
-                        C=CMClass.getCharClass(cclass.substring(x+1));
-                        if(C!=null) cclass=C.name();
-                    }
-                    thisUser.charClass=(cclass);
-                    String rrace=DBConnections.getRes(R,"CMRACE");
-                    Race R2=CMClass.getRace(rrace);
-                    if(R2!=null)
-                        thisUser.race=(R2.name());
-                    else
-                        thisUser.race=rrace;
-                    String lvl=DBConnections.getRes(R,"CMLEVL");
-                    x=lvl.indexOf(";");
-                    int level=0;
-                    while(x>=0)
-                    {
-                        level+=CMath.s_int(lvl.substring(0,x));
-                        lvl=lvl.substring(x+1);
-                        x=lvl.indexOf(";");
-                    }
-                    if(lvl.length()>0) level+=CMath.s_int(lvl);
-                    thisUser.level=level;
-                    thisUser.age=(int)DBConnections.getLongRes(R,"CMAGEH");
-                    MOB M=CMLib.players().getPlayer((String)thisUser.name);
-                    if((M!=null)&&(M.lastTickedDateTime()>0))
-                        thisUser.last=M.lastTickedDateTime();
-                    else
-                        thisUser.last=DBConnections.getLongRes(R,"CMDATE");
-                    String lsIP=DBConnections.getRes(R,"CMLSIP");
-                    thisUser.email=DBConnections.getRes(R,"CMEMAL");
-                    thisUser.ip=lsIP;
+            	PlayerLibrary.ThinPlayer thisUser=parseThinUser(R);
+            	if(thisUser != null)
                     allUsers.addElement(thisUser);
-                }catch(Exception e)
-                {
-                    Log.errOut("MOBloader",e);
-                }
             }
         }catch(Exception sqle)
         {

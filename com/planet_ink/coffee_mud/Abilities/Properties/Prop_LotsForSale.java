@@ -60,7 +60,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		return true;
 	}
 
-	public void updateLot(Vector optPlayerList)
+	public void updateLot(List optPlayerList)
 	{
 		Environmental EV=affected;
 		if(!(EV instanceof Room)) return;
