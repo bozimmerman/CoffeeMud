@@ -683,11 +683,8 @@ public class DefaultClan implements Clan
         for(int i=members.size()-1;i>=0;i--)
         {
             String member=(String)members.elementAt(i,1);
-            if(CMLib.players().getPlayer(member)!=null)
-                continue;
-            if(CMLib.database().DBUserSearch(null,member))
-                continue;
-            members.removeElementAt(i);
+            if(!CMLib.players().playerExists(member))
+	            members.removeElementAt(i);
         }
         return members;
     }

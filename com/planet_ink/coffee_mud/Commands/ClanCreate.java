@@ -68,9 +68,9 @@ public class ClanCreate extends StdCommand
                             return false;
                         }
 						Clan C=CMLib.clans().findClan(doubleCheck);
-						if((CMLib.database().DBUserSearch(null,doubleCheck))
+						if(CMLib.players().playerExists(doubleCheck)
 						||(doubleCheck.equalsIgnoreCase("All")))
-							msg.append("That name is already in use.  You may 'CLANAPPLY' to join them.");
+							msg.append("That name can not be used.");
 						else
 						if(C!=null)
 							msg.append("Clan "+C.clanID()+"  exists already. Type 'CLANLIST' and I'll show you what clans are available.  You may 'CLANAPPLY' to join them.");

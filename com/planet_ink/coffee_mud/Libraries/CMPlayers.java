@@ -122,11 +122,10 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
                 { return mob2;}
             }
 
-            MOB TM=CMClass.getMOB("StdMOB");
-            if(CMLib.database().DBUserSearch(TM,last))
+            if(playerExists(last))
             {
                 M=CMClass.getMOB("StdMOB");
-                M.setName(TM.Name());
+                M.setName(CMStrings.capitalizeAndLower(last));
                 CMLib.database().DBReadPlayer(M);
                 CMLib.database().DBReadFollowers(M,false);
                 if(M.playerStats()!=null)
@@ -140,12 +139,19 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
         			if(A!=null) A.autoInvocation(M);
         		}
             }
-            TM.destroy();
         }
         return M;
     }
 
-    
+    public boolean playerExists(String name)
+    {
+    	if(name==null) return false;
+    	name=CMStrings.capitalizeAndLower(name);
+    	for(Enumeration<MOB> e=players();e.hasMoreElements();)
+    		if(e.nextElement().Name().equals(name))
+    			return true;
+    	return CMLib.database().DBUserSearch(name)!=null;
+    }
 	public Enumeration players() { return (Enumeration)DVector.s_enum(playersList); }
 	public Enumeration accounts() { return (Enumeration)DVector.s_enum(accountsList); }
 

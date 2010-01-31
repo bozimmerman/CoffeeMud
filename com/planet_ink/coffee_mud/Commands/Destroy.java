@@ -98,26 +98,26 @@ public class Destroy extends StdCommand
 			return false;
 		}
 
-		MOB deadMOB=CMClass.getMOB("StdMOB");
-		boolean found=CMLib.database().DBUserSearch(deadMOB,CMParms.combine(commands,2));
+		
+		String name=CMStrings.capitalizeAndLower(CMParms.combine(commands,2));
+		boolean found=CMLib.players().playerExists(name);
 
 		if(!found)
 		{
 			mob.tell("The user '"+CMParms.combine(commands,2)+"' does not exist!\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
-            deadMOB.destroy();
 			return false;
 		}
 
-		if(mob.session().confirm("This will complete OBLITERATE the user '"+deadMOB.Name()+"' forever.  Are you SURE?! (y/N)?","N"))
+		if(mob.session().confirm("This will complete OBLITERATE the user '"+name+"' forever.  Are you SURE?! (y/N)?","N"))
 		{
+			MOB deadMOB=CMLib.players().getLoadPlayer(name);
 			CMLib.players().obliteratePlayer(deadMOB,false);
 			mob.tell("The user '"+CMParms.combine(commands,2)+"' is no more!\n\r");
 			Log.sysOut("Mobs",mob.Name()+" destroyed user "+deadMOB.Name()+".");
-            deadMOB.destroy();
+			deadMOB.destroy();
 			return true;
 		}
-        deadMOB.destroy();
 		return true;
 	}
     

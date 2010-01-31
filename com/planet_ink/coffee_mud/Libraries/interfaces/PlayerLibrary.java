@@ -40,6 +40,7 @@ public interface PlayerLibrary extends CMLibrary, Runnable
     public PlayerAccount getAccount(String calledThis);
     public Enumeration players();
     public void obliteratePlayer(MOB deadMOB, boolean quiet);
+    public boolean playerExists(String name);
     public void forceTick();
     public int savePlayers();
     public Enumeration thinPlayers(String sort, Hashtable cache);
@@ -59,5 +60,15 @@ public interface PlayerLibrary extends CMLibrary, Runnable
     	public long last=0;
     	public String email="";
     	public String ip="";
+    }
+    
+    public static class ThinnerPlayer
+    {
+    	public String name="";
+    	public String password="";
+    	public long expiration=0;
+    	public String accountName="";
+    	public String email="";
+    	public MOB loadedMOB=null;
     }
 }

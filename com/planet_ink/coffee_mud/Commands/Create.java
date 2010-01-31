@@ -238,9 +238,9 @@ public class Create extends StdCommand
 			return;
 		}
 		mobID=CMStrings.capitalizeAndLower(mobID);
-		M=CMClass.getMOB("StdMOB");
-		M.setName(mobID);
-		CMLib.login().createCharacter(M,mobID,mob.session());
+		CMLib.login().createCharacter(null,mobID,mob.session());
+		mob.session().mob().setSession(null);
+		mob.session().setMob(mob);
 		M=CMLib.players().getLoadPlayer(mobID);
 		if(M!=null)
 		{

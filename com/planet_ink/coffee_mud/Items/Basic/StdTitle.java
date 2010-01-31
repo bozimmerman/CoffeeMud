@@ -414,7 +414,7 @@ public class StdTitle extends StdItem implements LandTitle
 							if(n.length()!=0)
 							{
 								String nn=CMStrings.replaceAll(AREA.Name(),"UNNAMED",CMStrings.capitalizeFirstLetter(n.toLowerCase()));
-								if(CMLib.database().DBUserSearch(null,nn))
+								if(CMLib.players().playerExists(nn))
 									msg.source().tell("That name is already taken.  Please enter a different one.");
 								else
 								if(msg.source().session().confirm("If the name '"+nn+"' correct (y/N)?","N",60000))

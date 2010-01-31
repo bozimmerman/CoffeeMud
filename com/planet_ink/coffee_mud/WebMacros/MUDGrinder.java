@@ -206,7 +206,7 @@ public class MUDGrinder extends StdWebMacro
             if(last.length()==0) return "@break@";
             Clan C=CMLib.clans().findClan(last);
             if((C!=null) 
-            ||(CMLib.database().DBUserSearch(null,last))
+            ||CMLib.players().playerExists(last)
             ||(last.equalsIgnoreCase("All")))
                 return "@break@";
             if(!CMSecurity.isAllowedEverywhere(mob,"CMDCLANS")) return "@break@";

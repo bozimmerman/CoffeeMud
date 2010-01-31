@@ -649,12 +649,10 @@ public class MOBloader
         }
     }
 
-    public void DBUpdatePassword(MOB mob)
+    public void DBUpdatePassword(String name, String password)
     {
-        if(mob.Name().length()==0) return;
-        PlayerStats pstats=mob.playerStats();
-        if(pstats==null) return;
-        DB.update("UPDATE CMCHAR SET CMPASS='"+pstats.password()+"' WHERE CMUSERID='"+mob.Name()+"'");
+    	name=CMStrings.capitalizeAndLower(name);
+        DB.update("UPDATE CMCHAR SET CMPASS='"+password+"' WHERE CMUSERID='"+name+"'");
     }
 
     public void DBUpdateJustMOB(MOB mob)
@@ -948,6 +946,7 @@ public class MOBloader
     public void DBCreateAccount(PlayerAccount account)
     {
     	if(account == null) return;
+    	account.setAccountName(CMStrings.capitalizeAndLower(account.accountName()));
     	String characters = CMParms.toSemicolonList(account.getPlayers());
         DB.update("INSERT INTO CMACCT (CMANAM, CMPASS, CMCHRS, CMAXML) VALUES ('"+account.accountName()+"','"+account.password()+"','"+characters+"''"+account.getXML()+"')");
     }
@@ -961,7 +960,7 @@ public class MOBloader
         String xml=DB.getRes(R,"CMAXML");
         Vector<String> names = new Vector<String>();
         if(chrs!=null) names.addAll(CMParms.parseSemicolons(chrs,true));
-        account.setAccountName(username);
+        account.setAccountName(CMStrings.capitalizeAndLower(username));
         account.setPassword(password);
         account.setPlayerNames(names);
         account.setXML(xml);
@@ -979,7 +978,7 @@ public class MOBloader
         	// certainly by amateurs is the answer. That, and fakedb 
         	// doesn't understand 'LIKE'
             D=DB.DBFetch();
-            ResultSet R=D.query("SELECT * FROM CMACCT");
+            ResultSet R=D.query("SELECT * FROM CMACCT WHERE CMANAM='"+CMStrings.capitalizeAndLower(Login)+"'");
             if(R!=null) while(R.next())
             {
                 String username=DB.getRes(R,"CMANAM");
@@ -1027,17 +1026,10 @@ public class MOBloader
         return accounts;
     }
     
-    public boolean DBUserSearch(MOB mob, String Login)
+    public PlayerLibrary.ThinnerPlayer DBUserSearch(String Login)
     {
         DBConnection D=null;
-        boolean returnable=false;
-        if(mob!=null)
-        {
-            if(mob.playerStats()==null) 
-            	mob.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
-            mob.setName("");
-            mob.playerStats().setPassword("");
-        }
+        PlayerLibrary.ThinnerPlayer thinPlayer = null;
         try
         {
         	// why in the hell is this a memory scan?
@@ -1045,41 +1037,34 @@ public class MOBloader
         	// certainly by amateurs is the answer. That, and fakedb 
         	// doesn't understand 'LIKE'
             D=DB.DBFetch();
-            ResultSet R=D.query("SELECT * FROM CMCHAR");
+            ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMUSERID='"+CMStrings.capitalizeAndLower(Login)+"'");
             if(R!=null) while(R.next())
             {
                 String username=DB.getRes(R,"CMUSERID");
-                if(Login.equalsIgnoreCase(username))
+                thinPlayer = new PlayerLibrary.ThinnerPlayer();
+                String password=DB.getRes(R,"CMPASS");
+                String email=DB.getRes(R,"CMEMAL");
+                thinPlayer.name=username;
+                thinPlayer.password=password;
+                thinPlayer.email=email;
+                // Acct Exp Code
+                String buf=DBConnections.getRes(R,"CMPFIL");
                 {
-                    returnable=true;
-                    if(mob!=null)
+                	PlayerAccount acct = null;
+                	thinPlayer.accountName = CMLib.xml().returnXMLValue(buf,"ACCOUNT");
+                	if((thinPlayer.accountName!=null)&&(thinPlayer.accountName.length()>0))
+                		acct = CMLib.players().getLoadAccount(thinPlayer.accountName);
+                	if((acct != null)&&(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1))
+                		thinPlayer.expiration=acct.getAccountExpiration();
+                	else
+                    if(CMLib.xml().returnXMLValue(buf,"ACCTEXP").length()>0)
+                    	thinPlayer.expiration=CMath.s_long(CMLib.xml().returnXMLValue(buf,"ACCTEXP"));
+                    else
                     {
-                        String password=DB.getRes(R,"CMPASS");
-                        String email=DB.getRes(R,"CMEMAL");
-                        mob.setName(username);
-                        mob.playerStats().setPassword(password);
-                        mob.playerStats().setEmail(email);
-                        // Acct Exp Code
-                        String buf=DBConnections.getRes(R,"CMPFIL");
-                        {
-                        	PlayerAccount acct = null;
-                        	String account = CMLib.xml().returnXMLValue(buf,"ACCOUNT");
-                        	if((account!=null)&&(account.length()>0))
-                        		acct = CMLib.players().getLoadAccount(account);
-                        	if((acct != null)&&(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1))
-                        		mob.playerStats().setAccount(acct);
-                        	else
-	                        if(CMLib.xml().returnXMLValue(buf,"ACCTEXP").length()>0)
-	                            mob.playerStats().setAccountExpiration(CMath.s_long(CMLib.xml().returnXMLValue(buf,"ACCTEXP")));
-	                        else
-	                        {
-	                            Calendar C=Calendar.getInstance();
-	                            C.add(Calendar.DATE,15);
-	                            mob.playerStats().setAccountExpiration(C.getTimeInMillis());
-	                        }
-                        }
+                        Calendar C=Calendar.getInstance();
+                        C.add(Calendar.DATE,15);
+                        thinPlayer.expiration=C.getTimeInMillis();
                     }
-                    break;
                 }
             }
         }catch(Exception sqle)
@@ -1087,7 +1072,7 @@ public class MOBloader
             Log.errOut("MOB",sqle);
         }
         if(D!=null) DB.DBDone(D);
-        return returnable;
+        return thinPlayer;
     }
 
     public String[] DBFetchEmailData(String name)

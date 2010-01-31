@@ -421,7 +421,7 @@ public class SMTPserver extends Thread implements Tickable
 							{
 								// add to mailing list
 								CMLib.database().DBDeleteJournal(key);
-								if(CMLib.database().DBUserSearch(null,from))
+								if(CMLib.players().playerExists(from))
 								{
 									lists=getMailingLists(lists);
 									if(lists==null) lists=new Hashtable();

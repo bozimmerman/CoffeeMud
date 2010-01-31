@@ -91,7 +91,7 @@ public class Prayer_Christen extends Prayer
 
 		name=CMStrings.capitalizeAndLower(name);
 
-		if(CMLib.database().DBUserSearch(null,name))
+		if(CMLib.players().playerExists(name))
 		{
 			mob.tell("That name is already taken.  Please choose another.");
 			return false;

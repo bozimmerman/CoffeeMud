@@ -1371,22 +1371,10 @@ public class DefaultSession extends Thread implements Session
 			int tries=0;
 			while((!killFlag)&&((++tries)<5))
 			{
-				MOB newMob=CMClass.getMOB("StdMOB");
-	            if(newMob.playerStats()==null) 
-	            	newMob.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
-				
-				Vector defaultFlagsV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_DEFAULTPLAYERFLAGS).toUpperCase(),true);
-				for(int v=0;v<defaultFlagsV.size();v++)
-				{
-					int x=CMParms.indexOf(MOB.AUTODESC,(String)defaultFlagsV.elementAt(v));
-					if(x>=0)
-						newMob.setBitmap(newMob.getBitmap()|(int)CMath.pow(2,x));
-				}
-				newMob.setSession(this);
-				mob=newMob;
 				status=Session.STATUS_LOGIN;
 				String input=null;
-                CharCreationLibrary.LoginResult loginResult=CMLib.login().login(mob,tries);
+				mob=null;
+                CharCreationLibrary.LoginResult loginResult=CMLib.login().login(this,tries);
 				if(loginResult != CharCreationLibrary.LoginResult.NO_LOGIN)
 				{
 					status=Session.STATUS_LOGIN2;
@@ -1550,10 +1538,7 @@ public class DefaultSession extends Thread implements Session
 					status=Session.STATUS_LOGOUT2;
 				}
 				else
-				{
 					mob=null;
-					newMob.setSession(null);
-				}
 				status=Session.STATUS_LOGOUT;
 			}
 			status=Session.STATUS_LOGOUT3;

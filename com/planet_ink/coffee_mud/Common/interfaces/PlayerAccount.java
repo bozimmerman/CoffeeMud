@@ -91,7 +91,9 @@ public interface PlayerAccount extends CMCommon, AccountStats, CMModifiable
 	
 	/** Constant for account flags that overrides number of characters limitation */
 	public final static String FLAG_NUMCHARSOVERRIDE="NUMCHARSOVERRIDE";
+	/** Constant for account flags that overrides account expiration */
+	public final static String FLAG_NOACCOUNTEXPIRATION="NOACCOUNTEXPIRATION";
 	
 	/** list of account flags */
-	public final static String[] FLAG_DESCS = {FLAG_NUMCHARSOVERRIDE};
+	public final static String[] FLAG_DESCS = {FLAG_NUMCHARSOVERRIDE,FLAG_NOACCOUNTEXPIRATION};
 }

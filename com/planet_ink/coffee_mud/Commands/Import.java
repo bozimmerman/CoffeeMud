@@ -4294,7 +4294,7 @@ public class Import extends StdCommand
                         if(!found)
                             continue;
                     }
-					if(CMLib.database().DBUserSearch(null,M.Name()))
+					if(CMLib.players().playerExists(M.Name()))
 					{
 						if(!prompt)
 						{

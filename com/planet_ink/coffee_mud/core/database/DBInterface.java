@@ -116,8 +116,8 @@ public class DBInterface implements DatabaseEngine
 	public String DBEmailSearch(String email)
 	{ return MOBloader.DBEmailSearch(email);}
 	
-	public void DBUpdatePassword(MOB mob)
-	{ MOBloader.DBUpdatePassword(mob);}
+	public void DBUpdatePassword(String name, String password)
+	{ MOBloader.DBUpdatePassword(name, password);}
 	
 	public String[] DBFetchEmailData(String name)
 	{ return MOBloader.DBFetchEmailData(name);}
@@ -258,8 +258,8 @@ public class DBInterface implements DatabaseEngine
 	public void DBReCreate(Room room, String oldID)
 	{RoomLoader.DBReCreate(room,oldID);}
 	
-	public boolean DBUserSearch(MOB mob, String Login)
-	{return MOBloader.DBUserSearch(mob,Login);}
+	public PlayerLibrary.ThinnerPlayer DBUserSearch(String Login)
+	{return MOBloader.DBUserSearch(Login);}
 	
 	public boolean DBReadUserOnly(MOB mob)
 	{return MOBloader.DBReadUserOnly(mob);}

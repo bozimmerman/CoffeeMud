@@ -232,7 +232,7 @@ public class Email extends StdCommand
             for(int i=0;i<6;i++)
                 password+=(char)('a'+CMLib.dice().roll(1,26,-1));
             pstats.setPassword(password);
-            CMLib.database().DBUpdatePassword(mob);
+            CMLib.database().DBUpdatePassword(mob.Name(),password);
             CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.SYSTEM_MAILBOX),
                       mob.Name(),
                       mob.Name(),

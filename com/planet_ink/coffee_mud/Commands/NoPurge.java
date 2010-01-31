@@ -47,7 +47,7 @@ public class NoPurge extends StdCommand
 			mob.tell("Protect whom?  Enter a player name to protect from autopurge.");
 			return false;
 		}
-		if(!CMLib.database().DBUserSearch(null,protectMe))
+		if(!CMLib.players().playerExists(protectMe))
 		{
 			mob.tell("Protect whom?  '"+protectMe+"' is not a known player.");
 			return false;

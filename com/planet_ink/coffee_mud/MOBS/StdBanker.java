@@ -323,7 +323,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						String name=dat.who;
 						if(!userNames.contains(name))
 						{
-							if(!CMLib.database().DBUserSearch(null,name))
+							if(!CMLib.players().playerExists(name))
 							{
 								if((CMLib.clans().getClan(name))==null)
 									delAllDeposits(name);

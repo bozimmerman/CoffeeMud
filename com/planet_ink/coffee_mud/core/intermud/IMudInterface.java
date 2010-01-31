@@ -291,39 +291,28 @@ public class IMudInterface implements ImudServices, Serializable
 			{
 				LocateQueryPacket lk=(LocateQueryPacket)packet;
 				String stat="online";
+				String name=CMStrings.capitalizeAndLower(lk.user_name);
 				MOB smob=findSessMob(lk.user_name);
-				if(smob==null)
-				for(Enumeration p=CMLib.players().players();p.hasMoreElements();)
-				{
-					MOB M=(MOB)p.nextElement();
-					if(M.Name().equalsIgnoreCase(lk.user_name))
-					{
-						smob=M;
-						stat="exists, but not logged in";
-						break;
-					}
-				}
-                boolean killsmob=false;
-				if(smob==null)
-				{
-					if(CMLib.database().DBUserSearch(null,lk.user_name))
-					{
-						stat="exists, but is not online";
-						smob=CMClass.getMOB("StdMOB");
-						smob.setName(lk.user_name);
-                        killsmob=true;
-					}
-				}
 				if(smob!=null)
 				{
-                    if(CMLib.flags().isCloaked(smob))
-                        stat="exists, but is not online";
-					LocateReplyPacket lpk=new LocateReplyPacket(lk.sender_name,lk.sender_mud,smob.Name(),0,stat);
+					if(CMLib.flags().isCloaked(smob))
+						stat="exists, but not logged in";
+				}
+				else
+				if(CMLib.players().getPlayer(lk.user_name)!=null)
+					stat="exists, but not logged in";
+				else
+				if(CMLib.players().playerExists(lk.user_name))
+					stat="exists, but is not online";
+				else
+					name=null;
+				if(name!=null)
+				{
+					LocateReplyPacket lpk=new LocateReplyPacket(lk.sender_name,lk.sender_mud,name,0,stat);
 					try{
 					lpk.send();
 					}catch(Exception e){Log.errOut("IMudClient",e);}
 				}
-                if(killsmob) destroymob(smob);
 			}
 			break;
 		case Packet.LOCATE_REPLY:

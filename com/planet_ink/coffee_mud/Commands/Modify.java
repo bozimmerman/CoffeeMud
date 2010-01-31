@@ -465,7 +465,7 @@ public class Modify extends StdCommand
 			else
 			if(command.equalsIgnoreCase("ADDSUB"))
 			{
-				if((commands.size()<4)||(!CMLib.database().DBUserSearch(null,restStr)))
+				if((commands.size()<4)||(!CMLib.players().playerExists(restStr)))
 				{
 					mob.tell("Unknown or invalid username given.\n\r");
 					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
@@ -1021,28 +1021,16 @@ public class Modify extends StdCommand
 		}
 
 		String mobID=CMParms.combine(commands,2);
-		MOB M=CMLib.players().getPlayer(mobID);
-		if(M==null)
-			for(Enumeration p=CMLib.players().players();p.hasMoreElements();)
-			{
-				MOB mob2=(MOB)p.nextElement();
-				if(mob2.Name().equalsIgnoreCase(mobID))
-				{ M=mob2; break;}
-			}
-		MOB TM=CMClass.getMOB("StdMOB");
-		if((M==null)&&(CMLib.database().DBUserSearch(TM,mobID)))
+		MOB M=CMLib.players().getLoadPlayer(mobID);
+		if(M!=null)
 		{
-			M=CMClass.getMOB("StdMOB");
-			M.setName(TM.Name());
-			CMLib.database().DBReadPlayer(M);
 			CMLib.database().DBReadFollowers(M,false);
 			if(M.playerStats()!=null)
 				M.playerStats().setLastUpdated(M.playerStats().lastDateTime());
 			M.recoverEnvStats();
 			M.recoverCharStats();
 		}
-        TM.destroy();
-		if(M==null)
+		else
 		{
 			mob.tell("There is no such player as '"+mobID+"'!");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");

@@ -41,11 +41,8 @@ public interface CharCreationLibrary extends CMLibrary
     public void reloadTerminal(MOB mob);
     public void showTheNews(MOB mob);
     public void notifyFriends(MOB mob, String message);
-    public boolean checkExpiration(MOB mob);
-    public LoginResult createCharacter(MOB mob, String login, Session session)
-        throws java.io.IOException;
-    public LoginResult login(MOB mob, int attempt)
-        throws java.io.IOException;
+    public LoginResult createCharacter(PlayerAccount acct, String login, Session session) throws java.io.IOException;
+    public LoginResult login(Session session, int attempt) throws java.io.IOException;
     public void pageRooms(CMProps page, Hashtable table, String start);
     public void initStartRooms(CMProps page);
     public void initDeathRooms(CMProps page);

@@ -65,25 +65,22 @@ public class Friends extends StdCommand
 				mob.tell("Add whom?");
 				return false;
 			}
-			MOB M=CMClass.getMOB("StdMOB");
-			if(name.equalsIgnoreCase("all"))
-				M.setName("All");
+			name=CMStrings.capitalizeAndLower(name);
+			if(name.equals("All"))
+			{}
 			else
-			if(!CMLib.database().DBUserSearch(M,name))
+			if(!CMLib.players().playerExists(name))
 			{
 				mob.tell("No player by that name was found.");
-                M.destroy();
 				return false;
 			}
-			if(h.contains(M.Name()))
+			if(h.contains(name))
 			{
 				mob.tell("That name is already on your list.");
-                M.destroy();
 				return false;
 			}
-			h.add(M.Name());
-			mob.tell("The Player '"+M.Name()+"' has been added to your friends list.");
-            M.destroy();
+			h.add(name);
+			mob.tell("The Player '"+name+"' has been added to your friends list.");
 		}
 		else
 		if(((String)commands.elementAt(1)).equalsIgnoreCase("REMOVE"))

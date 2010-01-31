@@ -279,7 +279,9 @@ public class Age extends StdAbility
                 CMLib.database().DBDeleteData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text());
 
 				Room R=CMLib.map().roomLocation(affected);
-				if((R!=null)&&(affected.Name().indexOf(" ")<0)&&(!CMLib.database().DBUserSearch(null,affected.Name())))
+				if((R!=null)
+				&&(affected.Name().indexOf(" ")<0)
+				&&(CMLib.database().DBUserSearch(affected.Name())==null))
 				{
 					MOB liege=null;
 					if(babe.getLiegeID().length()>0)

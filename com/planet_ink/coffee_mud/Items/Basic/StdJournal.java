@@ -325,7 +325,7 @@ public class StdJournal extends StdItem
 						to=mob.session().prompt("To whom:");
                         if(((!to.toUpperCase().trim().startsWith("MASK=")
                                 ||(!CMSecurity.isAllowed(mob,mob.location(),"JOURNALS")&&(!admin))))
-						&&(!CMLib.database().DBUserSearch(null,to)))
+						&&(!CMLib.players().playerExists(to)))
 						{
 							mob.tell("I'm sorry, there is no such user.");
 							return;

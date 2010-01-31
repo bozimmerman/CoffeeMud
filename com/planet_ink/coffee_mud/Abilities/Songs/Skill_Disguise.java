@@ -259,7 +259,7 @@ public class Skill_Disguise extends BardSkill
 				return false;
 			}
 			else
-			if(CMLib.database().DBUserSearch(null,how))
+			if(CMLib.players().playerExists(how))
 			{
 				mob.tell("You cannot disguise yourself as a player except through Mark Disguise.");
 				return false;

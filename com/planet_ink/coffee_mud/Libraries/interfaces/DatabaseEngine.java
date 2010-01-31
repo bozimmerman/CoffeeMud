@@ -84,7 +84,7 @@ public interface DatabaseEngine extends CMLibrary
 	public void DBDeleteClan(Clan C);
 	public void DBCreateClan(Clan C);
 	public void DBUpdateEmail(MOB mob);
-	public void DBUpdatePassword(MOB mob);
+	public void DBUpdatePassword(String name, String password);
     public boolean isConnected();
 	public String[] DBFetchEmailData(String name);
 	public String DBEmailSearch(String email);
@@ -109,7 +109,7 @@ public interface DatabaseEngine extends CMLibrary
 	public void DBDeletePlayerJournals(String name);
 	public void DBUpdateJournal(String key, String subject, String msg);
 	public boolean DBReadUserOnly(MOB mob);
-	public boolean DBUserSearch(MOB mob, String Login);
+	public PlayerLibrary.ThinnerPlayer DBUserSearch(String Login);
 	public void vassals(MOB mob, String liegeID);
     public DVector worshippers(String deityID);
 	public Vector DBReadAllPlayerData(String playerID);

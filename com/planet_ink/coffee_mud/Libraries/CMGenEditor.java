@@ -978,11 +978,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         mob.tell(showNumber+". Password: ********.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
-        String newName=mob.session().prompt("Enter a new one to reset\n\r:","");
-        if((newName.length()>0)&&(E.playerStats()!=null))
+        String str=mob.session().prompt("Enter a new one to reset\n\r:","");
+        if((str.length()>0)&&(E.playerStats()!=null))
         {
-            E.playerStats().setPassword(newName);
-            CMLib.database().DBUpdatePassword(E);
+            E.playerStats().setPassword(str);
+            CMLib.database().DBUpdatePassword(E.Name(),str);
         }
         else
             mob.tell("(no change)");
@@ -1079,27 +1079,27 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
-        String newName="Q";
-        while((mob.session()!=null)&&(!mob.session().killFlag())&&(newName.length()>0))
+        String str="Q";
+        while((mob.session()!=null)&&(!mob.session().killFlag())&&(str.length()>0))
         {
             mob.tell(showNumber+". Area staff names: "+A.getSubOpList());
             if((showFlag!=showNumber)&&(showFlag>-999)) return;
-            newName=mob.session().prompt("Enter a name to add or remove\n\r:","");
-            if(newName.length()>0)
+            str=mob.session().prompt("Enter a name to add or remove\n\r:","");
+            if(str.length()>0)
             {
-                if(A.amISubOp(newName))
+                if(A.amISubOp(str))
                 {
-                    A.delSubOp(newName);
+                    A.delSubOp(str);
                     mob.tell("Staff removed.");
                 }
                 else
-                if(CMLib.database().DBUserSearch(null,newName))
+                if(CMLib.players().playerExists(str))
                 {
-                    A.addSubOp(newName);
+                    A.addSubOp(str);
                     mob.tell("Staff added.");
                 }
                 else
-                    mob.tell("'"+newName+"' is not recognized as a valid user name.");
+                    mob.tell("'"+str+"' is not recognized as a valid user name.");
             }
         }
     }
@@ -6766,7 +6766,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         {
             int showNumber=0;
             genName(mob,me,++showNumber,showFlag);
-            while((!me.Name().equals(oldName))&&(CMLib.database().DBUserSearch(null,me.Name())))
+            while((!me.Name().equals(oldName))&&(CMLib.players().playerExists(me.Name())))
             {
                 mob.tell("The name given cannot be chosen, as it is already being used.");
                 genName(mob,me,showNumber,showFlag);

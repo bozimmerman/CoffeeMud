@@ -58,7 +58,9 @@ public class Password extends StdCommand
         }
 		pstats.setPassword(nep);
 		mob.tell("Your password has been changed.");
-		CMLib.database().DBUpdatePassword(mob);
+		if(pstats.getAccount()!=null)
+			CMLib.database().DBUpdateAccount(pstats.getAccount());
+		CMLib.database().DBUpdatePassword(mob.Name(),nep);
 		return false;
 	}
 	
