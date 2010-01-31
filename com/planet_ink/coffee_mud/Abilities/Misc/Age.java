@@ -281,7 +281,7 @@ public class Age extends StdAbility
 				Room R=CMLib.map().roomLocation(affected);
 				if((R!=null)
 				&&(affected.Name().indexOf(" ")<0)
-				&&(CMLib.database().DBUserSearch(affected.Name())==null))
+				&&(!CMLib.players().playerExists(affected.Name())))
 				{
 					MOB liege=null;
 					if(babe.getLiegeID().length()>0)

@@ -265,7 +265,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     {
         if(!CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION)) 
         	return false;
-        if((acct!=null)&&(acct.isSet(PlayerAccount.FLAG_NOACCOUNTEXPIRATION)))
+        if((acct!=null)&&(acct.isSet(PlayerAccount.FLAG_NOEXPIRE)))
+        	return false;
+        if((session.mob()!=null)
+        &&((CMSecurity.isASysOp(session.mob()))||(CMSecurity.isAllowedEverywhere(session.mob(), "NOEXPIRE"))))
         	return false;
         if(expiration<=System.currentTimeMillis())
         {
@@ -409,7 +412,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     		}
     		if(s.toUpperCase().startsWith("DELETE "))
     		{
-    			s=s.substring(4).trim();
+    			s=s.substring(7).trim();
     			PlayerLibrary.ThinPlayer delMe = null;
         		for(Enumeration<PlayerLibrary.ThinPlayer> p = acct.getThinPlayers(); p.hasMoreElements();)
         		{
@@ -428,6 +431,79 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     				if(M!=null)
 	    				CMLib.players().obliteratePlayer(M, false);
     				session.println(delMe.name+" has been deleted.");
+    			}
+    			continue;
+    		}
+    		if((s.toUpperCase().startsWith("EXPORT "))&&(acct.isSet(PlayerAccount.FLAG_CANEXPORT)))
+    		{
+    			s=s.substring(7).trim();
+    			PlayerLibrary.ThinPlayer delMe = null;
+        		for(Enumeration<PlayerLibrary.ThinPlayer> p = acct.getThinPlayers(); p.hasMoreElements();)
+        		{
+        			PlayerLibrary.ThinPlayer player = p.nextElement();
+        			if(player.name.equalsIgnoreCase(s))
+        				delMe=player;
+        		}
+    			if(delMe==null)
+    			{
+    				session.println("The character '"+s+"' is unknown.");
+    				continue;
+    			}
+    			if(session.confirm("Are you sure you want to remove character  '"+delMe.name+"' from your account (y/N)?", "N"))
+    			{
+    				String password;
+    				password = session.prompt("Enter a final password for this character: ");
+    				if((password==null)||(password.trim().length()==0))
+    					session.println("Aborted.");
+    				else
+    				{
+	    				MOB M=CMLib.players().getLoadPlayer(delMe.name);
+	    				if(M!=null)
+	    				{
+	    					acct.delPlayer(M);
+	    					M.playerStats().setAccount(null);
+	    					CMLib.database().DBUpdateAccount(acct);
+	    					M.playerStats().setLastDateTime(System.currentTimeMillis());
+	    					M.playerStats().setLastUpdated(System.currentTimeMillis());
+	    					M.playerStats().setPassword(password);
+	    					CMLib.database().DBUpdatePlayer(M);
+		    				session.println(delMe.name+" has been exported from your account.");
+	    				}
+    				}
+    			}
+    			continue;
+    		}
+    		if(s.toUpperCase().startsWith("IMPORT "))
+    		{
+    			s=s.substring(7).trim();
+                if((CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)<=acct.numPlayers())
+                &&(!acct.isSet(PlayerAccount.FLAG_NUMCHARSOVERRIDE)))
+                {
+                	session.println("You may only have "+CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)+" characters.  Please delete one to create another.");
+                	continue;
+                }
+    			PlayerLibrary.ThinnerPlayer newCharT = CMLib.database().DBUserSearch(s); 
+				String password;
+				password = session.prompt("Enter the password for this character: ");
+				if((password==null)||(password.trim().length()==0))
+					session.println("Aborted.");
+				else
+				if((newCharT==null)
+				||(!password.equalsIgnoreCase(newCharT.password))
+				||((newCharT.accountName!=null)&&(newCharT.accountName.length()>0)))
+					session.println("Character name or password is incorrect.");
+				else
+    			if(session.confirm("Are you sure you want to import character  '"+newCharT.name+"' into your account (y/N)?", "N"))
+    			{
+    				MOB M=CMLib.players().getLoadPlayer(newCharT.name);
+    				if(M!=null)
+    				{
+    					acct.addNewPlayer(M);
+    					M.playerStats().setAccount(acct);
+    					CMLib.database().DBUpdateAccount(acct);
+    					CMLib.database().DBUpdatePlayer(M);
+	    				session.println(M.name()+" has been imported into your account.");
+    				}
     			}
     			continue;
     		}
@@ -1246,9 +1322,6 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	                    session.logoff(false,false,false);
 	                    return LoginResult.NO_LOGIN;
 	                }
-	                if(isExpired(acct,session,player.expiration)) 
-	                	return LoginResult.NO_LOGIN;
-	
 	                for(int s=0;s<CMLib.sessions().size();s++)
 	                {
 	                    Session thisSession=CMLib.sessions().elementAt(s);
@@ -1277,6 +1350,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	
 	                if(acct!=null)
 	                {
+		                if(isExpired(acct,session,player.expiration)) 
+		                	return LoginResult.NO_LOGIN;
+		
 	                	LoginResult result = selectAccountCharacter(acct,session); 
 	                	if(result != LoginResult.NORMAL_LOGIN)
 	                        return result;
@@ -1420,6 +1496,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         {
             session.setMob(mob);
             mob.setSession(session);
+            if(isExpired(mob.playerStats().getAccount(),session,mob.playerStats().getAccountExpiration())) 
+            	return LoginResult.NO_LOGIN;
             if(loginsDisabled(mob))
             	return LoginResult.NO_LOGIN;
             if(wiziFlag)
@@ -1455,6 +1533,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         	mob=CMLib.players().getLoadPlayer(login);
         	mob.setSession(session);
         	session.setMob(mob);
+            if(isExpired(mob.playerStats().getAccount(),session,mob.playerStats().getAccountExpiration())) 
+            	return LoginResult.NO_LOGIN;
             if(loginsDisabled(mob))
             	return LoginResult.NO_LOGIN;
             if(wiziFlag)
@@ -1469,6 +1549,27 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             mob.location().showOthers(mob,mob.location(),CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,"<S-NAME> appears!");
             CMLib.database().DBReadFollowers(mob,true);
         }
+        PlayerStats pstats = mob.playerStats();
+        if(((pstats.getEmail()==null)||(pstats.getEmail().length()==0))
+        &&(!CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("OPTION")))
+	    {
+	        Command C=CMClass.getCommand("Email");
+	        if(C!=null)
+	        {
+	            if(!C.execute(mob,null,0))
+	            {
+	    	        session.logoff(false,false,false);
+	                return LoginResult.NO_LOGIN;
+	            }
+	        }
+	        CMLib.database().DBUpdateEmail(mob);
+	    }
+	    if((pstats.getEmail()!=null)&&CMSecurity.isBanned(pstats.getEmail()))
+	    {
+	        session.println("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r");
+	        session.logoff(false,false,false);
+	        return LoginResult.NO_LOGIN;
+	    }
         if((session!=null)&&(mob.playerStats()!=null))
             mob.playerStats().setLastIP(session.getAddress());
         notifyFriends(mob,"^X"+mob.Name()+" has logged on.^.^?");

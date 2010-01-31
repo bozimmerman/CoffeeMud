@@ -1062,7 +1062,7 @@ public class MOBloader
                     else
                     {
                         Calendar C=Calendar.getInstance();
-                        C.add(Calendar.DATE,15);
+                        C.add(Calendar.DATE,CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS));
                         thinPlayer.expiration=C.getTimeInMillis();
                     }
                 }

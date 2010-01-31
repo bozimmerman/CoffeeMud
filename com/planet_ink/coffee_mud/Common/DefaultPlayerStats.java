@@ -537,7 +537,7 @@ public class DefaultPlayerStats implements PlayerStats
         else
         {
             Calendar C=Calendar.getInstance();
-            C.add(Calendar.DATE,15);
+            C.add(Calendar.DATE,CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS));
             setAccountExpiration(C.getTimeInMillis());
         }
 		String oldWrap=CMLib.xml().returnXMLValue(str,"WRAP");

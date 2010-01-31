@@ -203,7 +203,7 @@ public class DefaultPlayerAccount implements PlayerAccount
         else
         {
             Calendar C=Calendar.getInstance();
-            C.add(Calendar.DATE,15);
+            C.add(Calendar.DATE,CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS));
             setAccountExpiration(C.getTimeInMillis());
         }
         notes=CMLib.xml().returnXMLValue(str,"NOTES");

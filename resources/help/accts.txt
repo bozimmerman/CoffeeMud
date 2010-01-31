@@ -3,4 +3,5 @@
 [CHARACTER NAME]        : log in as that character.
 RETIRE [CHARACTER NAME] : delete one of your characters
 NEW [CHARACTER NAME]    : create a new character
+IMPORT [CHARACTER NAME] : import your unlisted characters
 QUIT					: log out of the system
