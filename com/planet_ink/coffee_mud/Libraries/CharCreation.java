@@ -507,13 +507,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     			}
     			continue;
     		}
-			PlayerLibrary.ThinPlayer playMe = null;
-    		for(Enumeration<PlayerLibrary.ThinPlayer> p = acct.getThinPlayers(); p.hasMoreElements();)
-    		{
-    			PlayerLibrary.ThinPlayer player = p.nextElement();
-    			if(player.name.equalsIgnoreCase(s))
-    				playMe=player;
-    		}
+			PlayerLibrary.ThinnerPlayer playMe = CMLib.database().DBUserSearch(s);
     		if(playMe == null)
     		{
     			session.println("'"+s+"' is an unknown character or command.  Use ? for help.");
@@ -525,6 +519,24 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     			session.println("Error loading character '"+s+"'.  Please contact the management.");
     			continue;
     		}
+    		int numAccountOnline=0;
+    		for(int si=0;si<CMLib.sessions().size();si++)
+    		{
+    			Session S=CMLib.sessions().elementAt(si);
+    			if((S!=null)
+    			&&(S.mob()!=null)
+    			&&(S.mob().playerStats()!=null)
+    			&&(S.mob().playerStats().getAccount()==acct))
+    				numAccountOnline++;
+    		}
+            if((CMProps.getIntVar(CMProps.SYSTEMI_MAXCONNSPERACCOUNT)>0)
+            &&(numAccountOnline>=CMProps.getIntVar(CMProps.SYSTEMI_MAXCONNSPERACCOUNT))
+            &&(!CMSecurity.isDisabled("MAXCONNSPERACCOUNT"))
+            &&(!acct.isSet(PlayerAccount.FLAG_MAXCONNSOVERRIDE)))
+            {
+                session.println("You may only have "+CMProps.getIntVar(CMProps.SYSTEMI_MAXCONNSPERACCOUNT)+" of your characters on at one time.");
+    			continue;
+            }
     		charSelected=true;
     	}
     	return LoginResult.NORMAL_LOGIN;
@@ -1326,26 +1338,23 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	                {
 	                    Session thisSession=CMLib.sessions().elementAt(s);
 	                	MOB M=thisSession.mob();
-	                    if((M!=null)&&(thisSession!=session)&&(M.playerStats()!=null))
-	                    {
-	                    	PlayerStats MPStats=M.playerStats();
-	                        if(M.Name().equals(player.name)
-	                        ||((MPStats.getAccount()!=null)&&(MPStats.getAccount().accountName().equals(player.accountName))))
-	                        {
-	                            Room oldRoom=M.location();
-	                            if(oldRoom!=null)
-		                            while(oldRoom.isInhabitant(M))
-		                                oldRoom.delInhabitant(M);
-	                            session.setMob(M);
-	                            M.setSession(session);
-	                            thisSession.setMob(null);
-	                            thisSession.logoff(false,false,false);
-	                            Log.sysOut("FrontDoor","Session swap for "+session.mob().Name()+".");
-	                            reloadTerminal(session.mob());
-	                            session.mob().bringToLife(oldRoom,false);
-	                            return LoginResult.SESSION_SWAP;
-	                        }
-	                    }
+	                    if((M!=null)
+	                    &&(thisSession!=session)
+	                    &&(M.Name().equals(player.name)))
+                        {
+                            Room oldRoom=M.location();
+                            if(oldRoom!=null)
+	                            while(oldRoom.isInhabitant(M))
+	                                oldRoom.delInhabitant(M);
+                            session.setMob(M);
+                            M.setSession(session);
+                            thisSession.setMob(null);
+                            thisSession.logoff(false,false,false);
+                            Log.sysOut("FrontDoor","Session swap for "+session.mob().Name()+".");
+                            reloadTerminal(session.mob());
+                            session.mob().bringToLife(oldRoom,false);
+                            return LoginResult.SESSION_SWAP;
+                        }
 	                }
 	
 	                if(acct!=null)
@@ -1450,7 +1459,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         else
         if((CMProps.getIntVar(CMProps.SYSTEMI_MAXNEWPERIP)>0)
         &&(CMProps.getCountNewUserByIP(session.getAddress())>=CMProps.getIntVar(CMProps.SYSTEMI_MAXNEWPERIP))
-        &&(!CMSecurity.isDisabled("MAXCONNSPERIP")))
+        &&(!CMSecurity.isDisabled("MAXNEWPERIP")))
         {
             session.println("\n\rThat name is unrecognized.\n\rAlso, the maximum daily new player limit has already been reached for your location.");
             return false;

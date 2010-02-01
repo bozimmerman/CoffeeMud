@@ -199,7 +199,8 @@ public class CMProps extends Properties
     public static final int SYSTEMI_STARTSTAT=58;
     public static final int SYSTEMI_RECOVERRATE=59;
     public static final int SYSTEMI_COMMONACCOUNTSYSTEM=60;
-    public static final int NUMI_SYSTEM=61;
+    public static final int SYSTEMI_MAXCONNSPERACCOUNT=61;
+    public static final int NUMI_SYSTEM=62;
 
     public static final int SYSTEMB_MOBCOMPRESS=0;
     public static final int SYSTEMB_ITEMDCOMPRESS=1;
@@ -841,6 +842,7 @@ public class CMProps extends Properties
         setIntVar(SYSTEMI_MUDTHEME,getStr("MUDTHEME"));
         setIntVar(SYSTEMI_TRIALDAYS,getStr("TRIALDAYS"));
         setIntVar(SYSTEMI_MAXCONNSPERIP,getStr("MAXCONNSPERIP"));
+        setIntVar(SYSTEMI_MAXCONNSPERACCOUNT,getStr("MAXCONNSPERACCOUNT"));
         setIntVar(SYSTEMI_MAXNEWPERIP,getStr("MAXNEWPERIP"));
         setIntVar(SYSTEMI_JSCRIPTS,getStr("JSCRIPTS"));
         setIntVar(SYSTEMI_DEFCMDTIME,(int)Math.round(getDouble("DEFCMDTIME")*100.0));
