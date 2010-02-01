@@ -262,7 +262,6 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 							    String msg,
 							    boolean wrapOnly)
 	{
-		if(mob==null) return msg;
 		if(msg==null) return null;
 
 		if(msg.length()==0) return msg;

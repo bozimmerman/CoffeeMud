@@ -333,8 +333,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     {
     	if((acct==null)||(session==null)||(session.killFlag()))
     		return LoginResult.NO_LOGIN;
+        session.setServerTelnetMode(Session.TELNET_ANSI,acct.isSet(PlayerAccount.FLAG_ANSI));
+        session.setClientTelnetMode(Session.TELNET_ANSI,acct.isSet(PlayerAccount.FLAG_ANSI));
     	boolean charSelected = false;
     	boolean showList = true;
+        StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"selchar.txt",null,true).text();
+    	try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
+        session.println(null,null,null,"\n\r\n\r"+introText.toString());
     	while((!session.killFlag())&&(!charSelected))
     	{
     		StringBuffer buf = new StringBuffer("");
@@ -360,11 +365,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	    		}
 	    		session.println(buf.toString());
     		}
-    		String s = session.prompt("^HEnter a name or command (?): ^N", TimeClock.TIME_MILIS_PER_MUDHOUR);
+    		String s = session.prompt("\n\r^HEnter a name or command (?): ^N", TimeClock.TIME_MILIS_PER_MUDHOUR);
     		if((s==null)||(s.length()==0)) return LoginResult.NO_LOGIN;
     		if(s.equalsIgnoreCase("?")||(s.equalsIgnoreCase("HELP")))
     		{
-    	        StringBuffer introText=new CMFile(Resources.buildResourcePath("help")+"accts.txt",null,true).text();
+    	        introText=new CMFile(Resources.buildResourcePath("help")+"accts.txt",null,true).text();
     	    	try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
     	        session.println(null,null,null,"\n\r\n\r"+introText.toString());
     	        continue;
@@ -546,6 +551,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	    throws java.io.IOException
 	{
         login=CMStrings.capitalizeAndLower(login.trim());
+        if(session.confirm("\n\rDo you want ANSI colors (Y/n)?","Y"))
+        	acct.setFlag(PlayerAccount.FLAG_ANSI, true);
+        else
+        {
+        	acct.setFlag(PlayerAccount.FLAG_ANSI, false);
+            session.setServerTelnetMode(Session.TELNET_ANSI,false);
+            session.setClientTelnetMode(Session.TELNET_ANSI,false);
+        }
         
         StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"newacct.txt",null,true).text();
     	try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
@@ -616,9 +629,15 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         while(!session.killFlag())
         {
             String newEmail=session.prompt("\n\rEnter your e-mail address: ");
+            if((emailReq||emailPassword) 
+            && ((newEmail==null)||(newEmail.trim().length()==0)||(!CMLib.smtp().isValidEmailAddress(newEmail))))
+            {
+            	session.println("\n\rA valid email address is required.\n\r");
+            	continue;
+            }
             String confirmEmail=newEmail;
             if(emailPassword) session.println("This email address will be used to send you a password.");
-            if(emailReq) confirmEmail=session.prompt("Confirm that '"+newEmail+"' is correct by re-entering.\n\rRe-enter:");
+            if(emailReq||emailPassword) confirmEmail=session.prompt("Confirm that '"+newEmail+"' is correct by re-entering.\n\rRe-enter: ");
             boolean emailConfirmed=false;
             if((newEmail.length()>0)&&(newEmail.equalsIgnoreCase(confirmEmail)))
             	emailConfirmed=CMLib.smtp().isValidEmailAddress(newEmail);
@@ -697,6 +716,18 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	        executeScript(mob,(Vector)extraScripts.get("EMAIL"));
 	
 	        mob.setBitmap(MOB.ATT_AUTOEXITS|MOB.ATT_AUTOWEATHER);
+	        if(acct!=null)
+	        {
+	        	if(acct.isSet(PlayerAccount.FLAG_ANSI))
+		            mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_ANSI));
+	        	else
+	        	{
+		            mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_ANSI));
+		            session.setServerTelnetMode(Session.TELNET_ANSI,false);
+		            session.setClientTelnetMode(Session.TELNET_ANSI,false);
+	        	}
+	        }
+	        else
 	        if(session.confirm("\n\rDo you want ANSI colors (Y/n)?","Y"))
 	            mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_ANSI));
 	        else
@@ -1290,6 +1321,28 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         		player.expiration=acct.getAccountExpiration();
         		player.password=acct.password();
         	}
+        	else
+        	{
+	            player=CMLib.database().DBUserSearch(login);
+	            if((player != null)&&((player.accountName==null)||(player.accountName.trim().length()==0)))
+	            {
+		            session.print("password for "+player.name+": ");
+		            String password=session.blockingIn();
+		            if(password.equalsIgnoreCase(player.password))
+		            {
+		            	session.println("\n\rThis mud is now using an account system.  "
+		            			+"Please create a new account (with a different name) and use the IMPORT command to add this character to your account.");
+		            }
+		            player = null;
+	            	return LoginResult.NO_LOGIN;
+	            }
+	            else
+	            if(player!=null)
+	            {
+	            	player=null;
+	            	return LoginResult.NO_LOGIN;
+	            }
+        	}
         }
         else
         {
@@ -1446,7 +1499,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         else
         if(!isOkName(login))
         {
-            session.println("\n\rThasessionecognized.\n\rThat name is also not available for new players.\n\r  Choose another name (no spaces allowed)!\n\r");
+            session.println("\n\r'"+CMStrings.capitalizeAndLower(login)+"' is not recognized.\n\rThat name is also not available for new players.\n\r  Choose another name (no spaces allowed)!\n\r");
             return false;
         }
         else

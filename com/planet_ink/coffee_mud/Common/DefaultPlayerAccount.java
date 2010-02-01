@@ -207,7 +207,7 @@ public class DefaultPlayerAccount implements PlayerAccount
             setAccountExpiration(C.getTimeInMillis());
         }
         notes=CMLib.xml().returnXMLValue(str,"NOTES");
-        acctFlags=CMParms.makeHashSet(CMParms.parseCommas(CMLib.xml().returnXMLValue("FLAGS"), true));
+        acctFlags=CMParms.makeHashSet(CMParms.parseCommas(CMLib.xml().returnXMLValue(str,"FLAGS"), true));
         if(notes==null) notes="";
         notes=CMLib.xml().restoreAngleBrackets(notes);
 		

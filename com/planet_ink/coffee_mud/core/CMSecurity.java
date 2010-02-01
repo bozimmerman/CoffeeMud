@@ -795,6 +795,7 @@ public class CMSecurity
     {
         if((login==null)||(login.length()<=0))
             return false;
+        login=login.toUpperCase();
         Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
         if((banned!=null)&&(banned.size()>0))
         for(int b=0;b<banned.size();b++)

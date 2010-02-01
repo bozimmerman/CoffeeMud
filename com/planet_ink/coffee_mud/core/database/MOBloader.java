@@ -948,7 +948,7 @@ public class MOBloader
     	if(account == null) return;
     	account.setAccountName(CMStrings.capitalizeAndLower(account.accountName()));
     	String characters = CMParms.toSemicolonList(account.getPlayers());
-        DB.update("INSERT INTO CMACCT (CMANAM, CMPASS, CMCHRS, CMAXML) VALUES ('"+account.accountName()+"','"+account.password()+"','"+characters+"''"+account.getXML()+"')");
+        DB.update("INSERT INTO CMACCT (CMANAM, CMPASS, CMCHRS, CMAXML) VALUES ('"+account.accountName()+"','"+account.password()+"','"+characters+"','"+account.getXML()+"')");
     }
     
     public PlayerAccount MakeAccount(String username, ResultSet R) throws SQLException
