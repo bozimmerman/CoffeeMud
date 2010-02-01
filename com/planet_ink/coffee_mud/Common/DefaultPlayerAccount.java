@@ -1,5 +1,4 @@
 package com.planet_ink.coffee_mud.Common;
-import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -10,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.StdMOB;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -57,7 +57,7 @@ public class DefaultPlayerAccount implements PlayerAccount
     }
     
 	protected static String[] CODES={"CLASS","FRIENDS","IGNORE","LASTIP","LASTDATETIME",
-									 "NOTES","ACCTEXPIRATION"};
+									 "NOTES","ACCTEXPIRATION","FLAGS","EMAIL"};
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
@@ -70,6 +70,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 		case 5: return notes;
 		case 6: return ""+accountExpiration;
 		case 7: return CMParms.toStringList(acctFlags);
+		case 8: return email;
         default:
             return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -86,6 +87,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 		case 5: notes=val; break;
 		case 6: accountExpiration=CMath.s_long(val); break;
 		case 7: acctFlags = CMParms.makeHashSet(CMParms.parseCommas(val,true)); break;
+		case 8: email=val; break;
 		default:
             CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
             break;
@@ -145,11 +147,6 @@ public class DefaultPlayerAccount implements PlayerAccount
 	public HashSet getHashFrom(String str)
 	{
 		HashSet h=new HashSet();
-		if((str==null)||(str.length()==0)) return h;
-		str=CMStrings.replaceAll(str,"<FRIENDS>","");
-		str=CMStrings.replaceAll(str,"<IGNORED>","");
-		str=CMStrings.replaceAll(str,"</FRIENDS>","");
-		str=CMStrings.replaceAll(str,"</IGNORED>","");
 		int x=str.indexOf(";");
 		while(x>=0)
 		{
@@ -176,8 +173,6 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 	public String getXML()
 	{
-		String f=getPrivateList(getFriends());
-		String i=getPrivateList(getIgnored());
         StringBuffer rest=new StringBuffer("");
         String[] codes=getStatCodes();
         for(int x=getSaveStatIndex();x<codes.length;x++)
@@ -185,38 +180,19 @@ public class DefaultPlayerAccount implements PlayerAccount
         	String code=codes[x].toUpperCase();
         	rest.append("<"+code+">"+CMLib.xml().parseOutAngleBrackets(getStat(code))+"</"+code+">");
         }
-        
-		return ((f.length()>0)?"<FRIENDS>"+f+"</FRIENDS>":"")
-			+((i.length()>0)?"<IGNORED>"+i+"</IGNORED>":"")
-			+"<ACCTEXP>"+accountExpiration+"</ACCTEXP>"
-			+"<FLAGS>"+CMParms.toStringList(acctFlags)+"</FLAGS>"
-			+((notes.length()>0)?"<NOTES>"+CMLib.xml().parseOutAngleBrackets(notes)+"</NOTES>":"")
-            +rest.toString();
+        return rest.toString();
 	}
 
 	public void setXML(String str)
 	{
-		friends=getHashFrom(CMLib.xml().returnXMLValue(str,"FRIENDS"));
-		ignored=getHashFrom(CMLib.xml().returnXMLValue(str,"IGNORED"));
-        if(CMLib.xml().returnXMLValue(str,"ACCTEXP").length()>0)
-            setAccountExpiration(CMath.s_long(CMLib.xml().returnXMLValue(str,"ACCTEXP")));
-        else
-        {
-            Calendar C=Calendar.getInstance();
-            C.add(Calendar.DATE,CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS));
-            setAccountExpiration(C.getTimeInMillis());
-        }
-        notes=CMLib.xml().returnXMLValue(str,"NOTES");
-        acctFlags=CMParms.makeHashSet(CMParms.parseCommas(CMLib.xml().returnXMLValue(str,"FLAGS"), true));
-        if(notes==null) notes="";
-        notes=CMLib.xml().restoreAngleBrackets(notes);
-		
+		Vector<XMLLibrary.XMLpiece> xml = CMLib.xml().parseAllXML(str);
+		XMLLibrary libXML = CMLib.xml();
         String[] codes=getStatCodes();
         for(int i=getSaveStatIndex();i<codes.length;i++)
         {
-        	String val=CMLib.xml().returnXMLValue(str,codes[i].toUpperCase());
+        	String val=libXML.getValFromPieces(xml,codes[i].toUpperCase());
         	if(val==null) val="";
-        	setStat(codes[i].toUpperCase(),CMLib.xml().restoreAngleBrackets(val));
+        	setStat(codes[i].toUpperCase(),libXML.restoreAngleBrackets(val));
         }
 	}
 

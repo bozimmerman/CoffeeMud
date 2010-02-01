@@ -1324,7 +1324,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         	else
         	{
 	            player=CMLib.database().DBUserSearch(login);
-	            if((player != null)&&((player.accountName==null)||(player.accountName.trim().length()==0)))
+	            if((player != null)
+	            &&((player.accountName==null)||(player.accountName.trim().length()==0)||(player.accountName.equalsIgnoreCase(acct.accountName()))))
 	            {
 		            session.print("password for "+player.name+": ");
 		            String password=session.blockingIn();
