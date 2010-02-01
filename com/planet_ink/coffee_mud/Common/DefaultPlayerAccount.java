@@ -63,8 +63,8 @@ public class DefaultPlayerAccount implements PlayerAccount
 		switch(getCodeNum(code))
 		{
 		case 0: return ID();
-		case 1: return "<FRIENDS>"+getPrivateList(getFriends())+"</FRIENDS>";
-		case 2: return "<IGNORED>"+getPrivateList(getIgnored())+"</IGNORED>";
+		case 1: return getPrivateList(getFriends());
+		case 2: return getPrivateList(getIgnored());
 		case 3: return lastIP;
 		case 4: return ""+LastDateTime;
 		case 5: return notes;
@@ -80,8 +80,8 @@ public class DefaultPlayerAccount implements PlayerAccount
 		switch(getCodeNum(code))
 		{
 		case 0: break;
-		case 1: friends=getHashFrom(CMLib.xml().returnXMLValue(val,"FRIENDS")); break;
-		case 2: ignored=getHashFrom(CMLib.xml().returnXMLValue(val,"IGNORED")); break;
+		case 1: friends=getHashFrom(val); break;
+		case 2: ignored=getHashFrom(val); break;
 		case 3: lastIP=val; break;
 		case 4: LastDateTime=CMath.s_long(val); break;
 		case 5: notes=val; break;
@@ -175,10 +175,15 @@ public class DefaultPlayerAccount implements PlayerAccount
 	{
         StringBuffer rest=new StringBuffer("");
         String[] codes=getStatCodes();
-        for(int x=getSaveStatIndex();x<codes.length;x++)
+		XMLLibrary libXML = CMLib.xml();
+        for(int x=0;x<codes.length;x++)
         {
         	String code=codes[x].toUpperCase();
-        	rest.append("<"+code+">"+CMLib.xml().parseOutAngleBrackets(getStat(code))+"</"+code+">");
+        	String value = getStat(code);
+        	if(value.length()==0)
+            	rest.append("<"+code+" />");
+        	else
+	        	rest.append("<"+code+">"+libXML.parseOutAngleBrackets(value)+"</"+code+">");
         }
         return rest.toString();
 	}
@@ -188,7 +193,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 		Vector<XMLLibrary.XMLpiece> xml = CMLib.xml().parseAllXML(str);
 		XMLLibrary libXML = CMLib.xml();
         String[] codes=getStatCodes();
-        for(int i=getSaveStatIndex();i<codes.length;i++)
+        for(int i=0;i<codes.length;i++)
         {
         	String val=libXML.getValFromPieces(xml,codes[i].toUpperCase());
         	if(val==null) val="";

@@ -495,7 +495,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				else
 				if((newCharT==null)
 				||(!password.equalsIgnoreCase(newCharT.password))
-				||((newCharT.accountName!=null)&&(newCharT.accountName.length()>0)))
+				||((newCharT.accountName!=null)
+						&&(newCharT.accountName.length()>0)
+						&&(!newCharT.accountName.equalsIgnoreCase(acct.accountName()))))
 					session.println("Character name or password is incorrect.");
 				else
     			if(session.confirm("Are you sure you want to import character  '"+newCharT.name+"' into your account (y/N)?", "N"))
@@ -586,6 +588,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         acct.setAccountName(login);
         acct.setPassword(password);
         acct.setEmail(emailAddy);
+        acct.setLastIP(session.getAddress());
         acct.setLastDateTime(System.currentTimeMillis());
         if(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))
             acct.setAccountExpiration(System.currentTimeMillis()+(1000l*60l*60l*24l*((long)CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS))));
@@ -1325,7 +1328,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         	{
 	            player=CMLib.database().DBUserSearch(login);
 	            if((player != null)
-	            &&((player.accountName==null)||(player.accountName.trim().length()==0)||(player.accountName.equalsIgnoreCase(acct.accountName()))))
+	            &&((player.accountName==null)
+            		||(player.accountName.trim().length()==0)))
 	            {
 		            session.print("password for "+player.name+": ");
 		            String password=session.blockingIn();
