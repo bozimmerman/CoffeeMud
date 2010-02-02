@@ -415,7 +415,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             	}
     			continue;
     		}
-    		if(s.toUpperCase().startsWith("DELETE "))
+    		if(s.toUpperCase().startsWith("RETIRE "))
     		{
     			s=s.substring(7).trim();
     			PlayerLibrary.ThinPlayer delMe = null;
@@ -514,6 +514,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     			}
     			continue;
     		}
+    		boolean wizi=s.trim().endsWith(" !");
+    		if(wizi) s=s.substring(0,s.length()-2).trim();
 			PlayerLibrary.ThinnerPlayer playMe = CMLib.database().DBUserSearch(s);
     		if(playMe == null)
     		{
@@ -544,7 +546,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 session.println("You may only have "+CMProps.getIntVar(CMProps.SYSTEMI_MAXCONNSPERACCOUNT)+" of your characters on at one time.");
     			continue;
             }
-    		charSelected=true;
+        	LoginResult prelimResults = prelimChecks(session,playMe.name,playMe);
+        	if(prelimResults!=null)
+        		return prelimResults;
+            LoginResult completeResult=completeCharacterLogin(session,playMe.name, wizi);
+            if(completeResult == LoginResult.NO_LOGIN)
+            	continue;
+        	charSelected=true;
     	}
     	return LoginResult.NORMAL_LOGIN;
     }
@@ -1184,6 +1192,44 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         return false;
     }
 
+    public LoginResult prelimChecks(Session session, String login, PlayerLibrary.ThinnerPlayer player)
+    {
+        if(CMSecurity.isBanned(login))
+        {
+            session.println("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r");
+            session.logoff(false,false,false);
+            return LoginResult.NO_LOGIN;
+        }
+        if((player.email!=null)&&CMSecurity.isBanned(player.email))
+        {
+            session.println("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r");
+            session.logoff(false,false,false);
+            return LoginResult.NO_LOGIN;
+        }
+        for(int s=0;s<CMLib.sessions().size();s++)
+        {
+            Session thisSession=CMLib.sessions().elementAt(s);
+        	MOB M=thisSession.mob();
+            if((M!=null)
+            &&(thisSession!=session)
+            &&(M.Name().equals(player.name)))
+            {
+                Room oldRoom=M.location();
+                if(oldRoom!=null)
+                    while(oldRoom.isInhabitant(M))
+                        oldRoom.delInhabitant(M);
+                session.setMob(M);
+                M.setSession(session);
+                thisSession.setMob(null);
+                thisSession.logoff(false,false,false);
+                Log.sysOut("FrontDoor","Session swap for "+session.mob().Name()+".");
+                reloadTerminal(session.mob());
+                session.mob().bringToLife(oldRoom,false);
+                return LoginResult.SESSION_SWAP;
+            }
+        }
+        return null;
+    }
     
     public void notifyFriends(MOB mob, String message)
     {
@@ -1380,41 +1426,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	            String password=session.blockingIn();
 	            if(password.equalsIgnoreCase(player.password))
 	            {
-	                if(CMSecurity.isBanned(login))
-	                {
-	                    session.println("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r");
-	                    session.logoff(false,false,false);
-	                    return LoginResult.NO_LOGIN;
-	                }
-	                if((player.email!=null)&&CMSecurity.isBanned(player.email))
-	                {
-	                    session.println("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r");
-	                    session.logoff(false,false,false);
-	                    return LoginResult.NO_LOGIN;
-	                }
-	                for(int s=0;s<CMLib.sessions().size();s++)
-	                {
-	                    Session thisSession=CMLib.sessions().elementAt(s);
-	                	MOB M=thisSession.mob();
-	                    if((M!=null)
-	                    &&(thisSession!=session)
-	                    &&(M.Name().equals(player.name)))
-                        {
-                            Room oldRoom=M.location();
-                            if(oldRoom!=null)
-	                            while(oldRoom.isInhabitant(M))
-	                                oldRoom.delInhabitant(M);
-                            session.setMob(M);
-                            M.setSession(session);
-                            thisSession.setMob(null);
-                            thisSession.logoff(false,false,false);
-                            Log.sysOut("FrontDoor","Session swap for "+session.mob().Name()+".");
-                            reloadTerminal(session.mob());
-                            session.mob().bringToLife(oldRoom,false);
-                            return LoginResult.SESSION_SWAP;
-                        }
-	                }
 	
+	            	LoginResult prelimResults = prelimChecks(session,login,player);
+	            	if(prelimResults!=null)
+	            		return prelimResults;
+	            	
 	                if(acct!=null)
 	                {
 		                if(isExpired(acct,session,player.expiration)) 
@@ -1424,9 +1440,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	                	if(result != LoginResult.NORMAL_LOGIN)
 	                        return result;
 	                }
-	                LoginResult completeResult=completeCharacterLogin(session,login, wizi);
-	                if(completeResult == LoginResult.NO_LOGIN)
-	                	return completeResult;
+	                else
+	                {
+		                LoginResult completeResult=completeCharacterLogin(session,login, wizi);
+		                if(completeResult == LoginResult.NO_LOGIN)
+		                	return completeResult;
+	                }
 	            }
 	            else
 	            {
