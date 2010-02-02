@@ -129,7 +129,7 @@ public class As extends StdCommand
 		M.setSession(hisSession);
 		mySession.setMob(mob);
         //mySession.initTelnetMode(myBitmap);
-		if(dead) M.removeFromGame(true);
+		if(dead) M.removeFromGame(true,true);
 		return false;
 	}
 	

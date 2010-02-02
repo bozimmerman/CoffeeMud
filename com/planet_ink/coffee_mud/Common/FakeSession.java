@@ -50,6 +50,7 @@ public class FakeSession implements Session
     public boolean isLockedUpWriting(){return false;}
     public void initializeClass(){}
     public void start(){}
+	public void logout(boolean b1){}
     public String getTerminalType(){ return "Fake";}
     public void negotiateTelnetMode(int code){}
 	public boolean isFake() { return true;}
@@ -138,7 +139,7 @@ public class FakeSession implements Session
     public int snoopSuspension(int x){return 0;}
     
     public void cmdExit(MOB mob, Vector commands) throws Exception {}
-    public void logoff(boolean t1, boolean t2, boolean t3){}
+    public void kill(boolean t1, boolean t2, boolean t3){}
     public boolean killFlag(){return false;}
     
     public boolean afkFlag(){return false;}

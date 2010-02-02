@@ -31,28 +31,18 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("unchecked")
-public class Quit extends StdCommand
+public class Logoff extends StdCommand
 {
-	public Quit(){}
+	public Logoff(){}
 
-	private String[] access={"QUIT","QUI","Q"};
+	private String[] access={"LOGOFF","LOGOUT"};
 	public String[] getAccessWords(){return access;}
-
-	public static void dispossess(MOB mob)
-	{
-		if(mob.soulMate()==null)
-		{
-			mob.tell("Huh?");
-			return;
-		}
-        mob.dispossess(true);
-	}
 
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob.soulMate()!=null)
-			dispossess(mob);
+			Quit.dispossess(mob);
 		else
 		if(!mob.isMonster())
 		{
@@ -61,34 +51,25 @@ public class Quit extends StdCommand
             &&(session.getLastPKFight()>0)
             &&((System.currentTimeMillis()-session.getLastPKFight())<(5*60*1000)))
             {
-                mob.tell("You must wait a few more minutes before you are allowed to quit.");
+                mob.tell("You must wait a few more minutes before you are allowed to logout.");
                 return false;
-            }
-            if((session!=null)&&(mob.getAgeHours()<=0)&&(!CMSecurity.isDisabled("QUITREASON")))
-            {
-        		String reason=session.prompt("Since your character is brand new, please leave a short"
-        				 						  +" message as to why you are leaving so soon."
-												  +" Your answers will be kept confidential,"
-												  +" and are for administrative purposes only.\n\r: ","",120000);
-        		Log.sysOut("Quit",mob.Name()+" L.W.O.: "+reason);
             }
 			try
 			{
-				if (session.confirm("\n\rQuit -- are you sure (y/N)?","N"))
+				if (session.confirm("\n\rLogout -- are you sure (y/N)?","N"))
 				{
 		            CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,null);
 		            Room R=mob.location();
 	                if((R!=null)&&(R.okMessage(mob,msg))) 
 	                {
 	                    CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_QUIT, msg);
-	                    session.kill(false,false, false);
+	                    session.logout(true);
 	                }
 				}
 			}
 			catch(Exception e)
 			{
-				if(mob.session()!=null)
-					mob.session().kill(false,false,false);
+				Log.errOut("Logoff",e.getMessage());
 			}
 		}
 		return false;

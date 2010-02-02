@@ -64,7 +64,7 @@ public interface MOB extends Environmental, Rider, DBIdentifiable
 	public boolean isInCombat();
 	public void bringToLife(Room newLocation, boolean resetStats);
 	public void bringToLife();
-	public void removeFromGame(boolean preserveFollowers);
+	public void removeFromGame(boolean preserveFollowers, boolean killSession);
 	public boolean amActive();
 	public MOB getVictim();
 	public void setVictim(MOB mob);

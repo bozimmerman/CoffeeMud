@@ -425,8 +425,8 @@ public class DefaultSession extends Thread implements Session
                 {
                     String name=(mob!=null)?mob.Name():getAddress();
                     Log.errOut("DefaultSession","Kicked out "+name+" due to write-lock ("+out.getClass().getName()+".");
-                    logoff(true,true,true);
-                    logoff(true,true,true);
+                    kill(true,true,true);
+                    kill(true,true,true);
             		CMLib.killThread(this,500,1);
                 }
                 else
@@ -434,7 +434,7 @@ public class DefaultSession extends Thread implements Session
     				writeStartTime=System.currentTimeMillis()+c.length;
     				out.write(c);
     				if(out.checkError())
-                        logoff(true,true,true);
+                        kill(true,true,true);
                 }
 			}
 		}
@@ -648,23 +648,6 @@ public class DefaultSession extends Thread implements Session
 		if((input.length()>0)&&(input.charAt(input.length()-1)=='\\'))
 			return input.substring(0,input.length()-1);
 		return input;
-	}
-
-	public void cmdExit(MOB mob, Vector commands)
-		throws Exception
-	{
-		if (confirm("\n\rQuit -- are you sure (y/N)?","N"))
-		{
-            CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,null);
-            Room R=mob.location();
-            try{
-                if((R!=null)&&(R.okMessage(mob,msg))) {
-                    CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_QUIT, msg);
-                    killFlag=true;
-                }
-            }
-            catch(Exception e){}
-		}
 	}
 
 	public int getColor(char c)
@@ -1274,23 +1257,12 @@ public class DefaultSession extends Thread implements Session
 		return YN;
 	}
 
-	public void logoff(boolean removeMOB, boolean dropSession, boolean killThread)
+	
+	public void kill(boolean removeMOB, boolean dropSession, boolean killThread)
 	{
 		killFlag=true;
-		if(removeMOB) {
-            MOB M=mob;
-            if(M!=null)
-            {
-                boolean inTheGame=CMLib.flags().isInTheGame(M,true);
-                PlayerStats pstats=M.playerStats();
-                if(pstats!=null) {
-                    pstats.setLastDateTime(System.currentTimeMillis());
-                }
-                if(inTheGame)
-    	            CMLib.database().DBUpdateFollowers(M);
-                M.removeFromGame(true);
-            }
-		}
+		if(removeMOB)
+			removeMOBFromGame(false);
         if(dropSession) {
             status=Session.STATUS_LOGOUT3;
             CMLib.sessions().removeElement(this);
@@ -1361,7 +1333,33 @@ public class DefaultSession extends Thread implements Session
 		}
 	}
 
+	private void removeMOBFromGame(boolean killSession)
+	{
+        MOB M=mob;
+        if(M!=null)
+        {
+            boolean inTheGame=CMLib.flags().isInTheGame(M,true);
+            PlayerStats pstats=M.playerStats();
+            if(pstats!=null) {
+                pstats.setLastDateTime(System.currentTimeMillis());
+            }
+            if(inTheGame)
+	            CMLib.database().DBUpdateFollowers(M);
+            M.removeFromGame(true,killSession);
+        }
+	}
 	public int getStatus(){return status;}
+	public void logout(boolean removeMOB)
+	{
+		if((mob==null)||(mob.playerStats()==null))
+			kill(false,false,false);
+		else
+		{
+			if(removeMOB)
+				removeMOBFromGame(false);
+			mob=null;
+		}
+	}
 
 	public void run()
 	{
@@ -1369,15 +1367,23 @@ public class DefaultSession extends Thread implements Session
 		try
 		{
 			int tries=0;
+			PlayerAccount tiedAccount = null;
 			while((!killFlag)&&((++tries)<5))
 			{
 				status=Session.STATUS_LOGIN;
 				String input=null;
 				mob=null;
-                CharCreationLibrary.LoginResult loginResult=CMLib.login().login(this,tries);
+                CharCreationLibrary.LoginResult loginResult;
+                if(tiedAccount!=null)
+	                loginResult=CMLib.login().selectAccountCharacter(tiedAccount,this);
+                else
+	                loginResult=CMLib.login().login(this,tries);
 				if(loginResult != CharCreationLibrary.LoginResult.NO_LOGIN)
 				{
 					status=Session.STATUS_LOGIN2;
+					tries=0;
+					if((mob!=null)&&(mob.playerStats()!=null))
+						tiedAccount=mob.playerStats().getAccount();
 					if((!killFlag)&&(mob!=null))
                     {
 					    StringBuffer loginMsg=new StringBuffer("");
@@ -1589,7 +1595,7 @@ public class DefaultSession extends Thread implements Session
             }
 			Log.sysOut("Session",getAddress()+" logout: "+name);
 			if(mob!=null) CMLib.database().DBUpdateFollowers(mob);
-			if(mob!=null) mob.removeFromGame(true);
+			if(mob!=null) mob.removeFromGame(true,true);
 			if(mob!=null) mob.setSession(null);
 			mob=null;
 		}

@@ -1,4 +1,4 @@
-^ZCOMMANDS^N
+^XCOMMANDS^.^N
 LIST                    : list your characters
 [CHARACTER NAME]        : log in as that character
 RETIRE [CHARACTER NAME] : delete one of your characters

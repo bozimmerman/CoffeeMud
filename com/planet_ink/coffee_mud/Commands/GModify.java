@@ -86,7 +86,7 @@ public class GModify extends StdCommand
     {
         if((mob.session()==null)||(mob.session().killFlag()))
         	return false;
-        try{Thread.sleep(1);}catch(Exception e){mob.session().logoff(false,false,false);return false;}
+        try{Thread.sleep(1);}catch(Exception e){mob.session().kill(false,false,false);return false;}
         boolean didAnything=false;
         if(noisy) gmodifydebugtell(mob,E.name()+"/"+CMClass.classID(E));
         String field=null;

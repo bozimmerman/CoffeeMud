@@ -815,6 +815,7 @@ public class List extends StdCommand
 			}
 		}
 		StringBuffer head=new StringBuffer("");
+		head.append("^X");
 		head.append("[");
 		head.append(CMStrings.padRight("Account",10)+" ");
 		head.append(CMStrings.padRight("Last",18)+" ");
@@ -823,7 +824,7 @@ public class List extends StdCommand
 			case 7: head.append(CMStrings.padRight("IP Address",23)+" "); break;
 		}
 
-		head.append("] Characters\n\r");
+		head.append("] Characters^.^N\n\r");
 		Vector<PlayerAccount> allAccounts=CMLib.database().DBListAccounts(null);
 		Vector<PlayerAccount> oldSet=allAccounts;
 		Hashtable<String, PlayerLibrary.ThinPlayer> thinAcctHash=new Hashtable<String, PlayerLibrary.ThinPlayer>();
@@ -881,33 +882,43 @@ public class List extends StdCommand
 		for(int u=0;u<allAccounts.size();u++)
 		{
 			PlayerAccount U=allAccounts.elementAt(u);
-
-			head.append("[");
-			head.append(CMStrings.padRight(U.accountName(),10)+" ");
-			head.append(CMStrings.padRight(CMLib.time().date2String(U.lastDateTime()),18)+" ");
+			StringBuffer line=new StringBuffer("");
+			line.append("[");
+			line.append(CMStrings.padRight(U.accountName(),10)+" ");
+			line.append(CMStrings.padRight(CMLib.time().date2String(U.lastDateTime()),18)+" ");
 			String players = CMParms.toStringList(U.getPlayers());
 			Vector<String> pListsV = new Vector<String>();
 			while(players.length()>0)
 			{
-				int x=players.lastIndexOf(',',25);
-				if(x<0) x=players.length();
+				int x=players.length();
+				if(players.length()>20)
+				{
+					x=players.lastIndexOf(',',20);
+					if(x<0) x=24;
+				}
 				pListsV.addElement(players.substring(0,x));
 				players=players.substring(x).trim();
 				if(players.startsWith(",")) players=players.substring(1).trim();
 			}
 			switch(showBy){
-			default: head.append(CMStrings.padRight(U.getEmail(),23)+" "); break;
-			case 7: head.append(CMStrings.padRight(U.lastIP(),23)+" "); break;
+			default: line.append(CMStrings.padRight(U.getEmail(),23)+" "); break;
+			case 7: line.append(CMStrings.padRight(U.lastIP(),23)+" "); break;
 			}
-			head.append("] ");
-			int len = head.length();
+			line.append("] ");
+			int len = line.length();
+			head.append(line.toString());
+			boolean notYet = true;
 			for(String s : pListsV)
 			{
-				head.append(CMStrings.padRight(s,25));
+				if(notYet)
+					notYet=false;
+				else
+					head.append(CMStrings.repeat(" ", len));
+				head.append(s);
 				head.append("\n\r");
-				head.append(CMStrings.repeat(" ", len));
 			}
-			head.append("\n\r");
+			if(pListsV.size()==0)
+				head.append("\n\r");
 		}
 		mob.tell(head.toString());
 	}

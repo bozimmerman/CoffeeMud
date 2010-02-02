@@ -4326,7 +4326,7 @@ public class Import extends StdCommand
 					    M.recoverCharStats();
 					}
 					CMLib.database().DBUpdatePlayer(M);
-					M.removeFromGame(false);
+					M.removeFromGame(false,true);
 				}
 				Log.sysOut("Import",mob.Name()+" imported "+areaFileName);
 				if(session!=null) session.println("PLAYER(s) successfully imported!");

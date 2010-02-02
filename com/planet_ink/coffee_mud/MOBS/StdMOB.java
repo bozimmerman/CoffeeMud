@@ -651,8 +651,8 @@ public class StdMOB implements MOB
         if(soulMate()!=null) dispossess(false);
         MOB possessor=CMLib.utensils().getMobPossessingAnother(this);
         if(possessor!=null) possessor.dispossess(false);
-        if(session()!=null){ session().logoff(false,false,false); try{Thread.sleep(1000);}catch(Exception e){}}
-		removeFromGame(session()!=null);
+        if(session()!=null){ session().kill(false,false,false); try{Thread.sleep(1000);}catch(Exception e){}}
+		removeFromGame(session()!=null,true);
 		while(numBehaviors()>0)
 			delBehavior(fetchBehavior(0));
 		while(numEffects()>0)
@@ -701,7 +701,7 @@ public class StdMOB implements MOB
         amDestroyed=true;
 	}
 
-	public void removeFromGame(boolean preserveFollowers)
+	public void removeFromGame(boolean preserveFollowers, boolean killSession)
 	{
 		pleaseDestroy=true;
 		if((location!=null)&&(location.isInhabitant(this)))
@@ -738,8 +738,8 @@ public class StdMOB implements MOB
 					addFollower(newFol, ((Integer)oldFollowers.elementAt(f,2)).intValue());
 				}
 			}
-            if(session()!=null)
-    			session().logoff(false,false,false);
+            if(killSession&&(session()!=null))
+    			session().kill(false,false,false);
 		}
 		setRiding(null);
 	}

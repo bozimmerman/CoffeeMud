@@ -245,7 +245,7 @@ public class Create extends StdCommand
 		if(M!=null)
 		{
 			if(CMLib.flags().isInTheGame(M,true))
-				M.removeFromGame(false);
+				M.removeFromGame(false,true);
             CMLib.genEd().modifyPlayer(mob,M);
 			Log.sysOut("Mobs",mob.Name()+" created player "+M.Name()+".");
 		}

@@ -473,35 +473,29 @@ public interface Session extends CMCommon
 	public int snoopSuspension(int change);
     
     /**
-     * Queries and executes the quit command for the mob.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#logoff(boolean, boolean, boolean)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#killFlag()
-     * @param mob the character quitting (sent in case the session went null)
-     * @param commands any command-line parameters given on quit
-     * @throws Exception any exception generated from trying to quit
-     */
-	public void cmdExit(MOB mob, Vector commands)
-		throws Exception;
-    
-    /**
      * Force the current player to logoff.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#cmdExit(MOB, Vector)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#killFlag()
      * @param removeMOB true to remove the mob from the game
      * @param dropSession true to force closed sockets, and removed session
      * @param killThread true to force a thread death, and false to be more lenient
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#killFlag()
      */
-	public void logoff(boolean removeMOB, boolean dropSession, boolean killThread);
+	public void kill(boolean removeMOB, boolean dropSession, boolean killThread);
     
     /**
      * Returns whether this session is done, or slated to be done.
      * @see com.planet_ink.coffee_mud.Common.interfaces.Session#logoff(boolean, boolean, boolean)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#cmdExit(MOB, Vector)
      * @see com.planet_ink.coffee_mud.Common.interfaces.Session#killFlag()
      * @return true if this session needs to go, false otherwise
      */
 	public boolean killFlag();
     
+	/**
+	 * Allows the user to select a different character, taking them back to the login
+	 * prompt, or to the account character listing screen, whichever is appropriate.
+     * @param removeMOB true to remove the mob from the game
+	 */
+	public void logout(boolean removeMOB);
+	
     /**
      * Returns whether this mob/session is currently Away From Keyboard
      * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setAfkFlag(boolean)

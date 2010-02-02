@@ -410,7 +410,7 @@ public class Age extends StdAbility
 						liege.tell(newMan.Name()+" has just grown up! "+CMStrings.capitalizeAndLower(newMan.baseCharStats().hisher())+" password is the same as "+liege.Name()+"'s.");
                     }
 					CMLib.database().DBUpdatePlayer(newMan);
-					newMan.removeFromGame(false);
+					newMan.removeFromGame(false,true);
 					babe.setFollowing(null);
 					babe.destroy();
 					MOB fol=newMan.amFollowing();
