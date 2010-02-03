@@ -32,52 +32,40 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("unchecked")
-public class ThinPlayerData extends StdWebMacro {
-	
-	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
-	
+public class AccountNext extends StdWebMacro
+{
+	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
 
 		Hashtable parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("PLAYER");
-		if(last==null) return " @break@";
-		StringBuffer str=new StringBuffer("");
-		if(last.length()>0)
-		{
-			String sort=httpReq.getRequestParameter("SORTBY");
-			if(sort==null) sort="";
-			PlayerLibrary.ThinPlayer player = null;
-			Enumeration pe=CMLib.players().thinPlayers(sort, httpReq.getRequestObjects());
-			for(;pe.hasMoreElements();)
-			{
-				PlayerLibrary.ThinPlayer TP=(PlayerLibrary.ThinPlayer)pe.nextElement();
-				if(TP.name.equalsIgnoreCase(last))
-				{
-					player = TP; 
-					break;
-				}
-			}
-			if(player == null) return " @break@";
-			for(Enumeration e=parms.keys();e.hasMoreElements();)
-			{
-				String key=(String)e.nextElement();
-				int x=CMLib.players().getCharThinSortCode(key.toUpperCase().trim(),false);
-				if(x>=0)
-				{
-					String value = CMLib.players().getThinSortValue(player, x);
-					if(PlayerLibrary.CHAR_THIN_SORT_CODES[x].equals("LAST"))
-						value=CMLib.time().date2String(CMath.s_long(value));
-					str.append(value+", ");
-				}
-			}
+		String last=httpReq.getRequestParameter("ACCOUNT");
+		if(parms.containsKey("RESET"))
+		{	
+			if(last!=null) httpReq.removeRequestParameter("ACCOUNT");
+			return "";
 		}
-		String strstr=str.toString();
-		if(strstr.endsWith(", "))
-			strstr=strstr.substring(0,strstr.length()-2);
-        return clearWebMacros(strstr);
+		String lastID="";
+		String sort=httpReq.getRequestParameter("SORTBY");
+		if(sort==null) sort="";
+		Enumeration<PlayerAccount> pe=CMLib.players().accounts(sort,httpReq.getRequestObjects());
+		for(;pe.hasMoreElements();)
+		{
+			PlayerAccount account=pe.nextElement();
+			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!account.accountName().equals(lastID))))
+			{
+				httpReq.addRequestParameters("ACCOUNT",account.accountName());
+				return "";
+			}
+			lastID=account.accountName();
+		}
+		httpReq.addRequestParameters("ACCOUNT","");
+		if(parms.containsKey("EMPTYOK"))
+			return "<!--EMPTY-->";
+		return " @break@";
 	}
 
 }

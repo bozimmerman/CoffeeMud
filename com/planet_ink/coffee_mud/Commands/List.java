@@ -719,7 +719,7 @@ public class List extends StdCommand
 		if(commands.size()>0)
 		{
 			String rest=CMParms.combine(commands,0).toUpperCase();
-			sortBy = CMLib.players().getThinSortCode(rest,true);
+			sortBy = CMLib.players().getCharThinSortCode(rest,true);
 			if(sortBy<0)
 			{
 				mob.tell("Unrecognized sort criteria: "+rest);
@@ -807,7 +807,7 @@ public class List extends StdCommand
 		if(commands.size()>0)
 		{
 			String rest=CMParms.combine(commands,0).toUpperCase();
-			sortBy = CMLib.players().getThinSortCode(rest,true);
+			sortBy = CMLib.players().getCharThinSortCode(rest,true);
 			if(sortBy<0)
 			{
 				mob.tell("Unrecognized sort criteria: "+rest);

@@ -38,17 +38,20 @@ public interface PlayerLibrary extends CMLibrary, Runnable
     public MOB getLoadPlayer(String last);
     public PlayerAccount getLoadAccount(String calledThis);
     public PlayerAccount getAccount(String calledThis);
-    public Enumeration players();
+    public Enumeration<ThinPlayer> players();
+    public Enumeration<PlayerAccount> accounts(String sort, Hashtable cache);
     public void obliteratePlayer(MOB deadMOB, boolean quiet);
     public boolean playerExists(String name);
     public void forceTick();
     public int savePlayers();
     public Enumeration thinPlayers(String sort, Hashtable cache);
-	public int getThinSortCode(String codeName, boolean loose);
+	public int getCharThinSortCode(String codeName, boolean loose);
 	public String getThinSortValue(ThinPlayer player, int code); 
     
-	public static final String[] THIN_SORT_CODES={ "NAME","CLASS","RACE","LEVEL","AGE","LAST","EMAIL","IP"};
-	public static final String[] THIN_SORT_CODES2={ "CHARACTER","CHARCLASS","RACE","LVL","HOURS","DATE","EMAILADDRESS","LASTIP"};
+	public static final String[] CHAR_THIN_SORT_CODES={ "NAME","CLASS","RACE","LEVEL","AGE","LAST","EMAIL","IP"};
+	public static final String[] CHAR_THIN_SORT_CODES2={ "CHARACTER","CHARCLASS","RACE","LVL","HOURS","DATE","EMAILADDRESS","LASTIP"};
+	
+	public static final String[] ACCOUNT_THIN_SORT_CODES={ "NAME","LAST","EMAIL","IP","NUMPLAYERS"};
 	
     public static class ThinPlayer
     {

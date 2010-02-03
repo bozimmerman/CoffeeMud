@@ -32,52 +32,40 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("unchecked")
-public class ThinPlayerData extends StdWebMacro {
-	
+public class AccountData extends StdWebMacro
+{
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
-	
+	public boolean isAdminMacro()	{return true;}
+
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
-			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
-
 		Hashtable parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("PLAYER");
-		if(last==null) return " @break@";
-		StringBuffer str=new StringBuffer("");
+		String last=httpReq.getRequestParameter("ACCOUNT");
+		if(last==null) return "";
 		if(last.length()>0)
 		{
-			String sort=httpReq.getRequestParameter("SORTBY");
-			if(sort==null) sort="";
-			PlayerLibrary.ThinPlayer player = null;
-			Enumeration pe=CMLib.players().thinPlayers(sort, httpReq.getRequestObjects());
-			for(;pe.hasMoreElements();)
-			{
-				PlayerLibrary.ThinPlayer TP=(PlayerLibrary.ThinPlayer)pe.nextElement();
-				if(TP.name.equalsIgnoreCase(last))
-				{
-					player = TP; 
-					break;
-				}
-			}
-			if(player == null) return " @break@";
-			for(Enumeration e=parms.keys();e.hasMoreElements();)
-			{
-				String key=(String)e.nextElement();
-				int x=CMLib.players().getCharThinSortCode(key.toUpperCase().trim(),false);
-				if(x>=0)
-				{
-					String value = CMLib.players().getThinSortValue(player, x);
-					if(PlayerLibrary.CHAR_THIN_SORT_CODES[x].equals("LAST"))
-						value=CMLib.time().date2String(CMath.s_long(value));
-					str.append(value+", ");
-				}
-			}
+			PlayerAccount A = CMLib.players().getLoadAccount(last);
+			if(A==null) return "";
+			if(parms.containsKey("NAME")||parms.containsKey("ACCOUNT"))
+                return clearWebMacros(A.accountName());
+            if(parms.containsKey("CLASS"))
+                return clearWebMacros(A.ID());
+			if(parms.containsKey("LASTIP"))
+				return ""+A.lastIP();
+			if(parms.containsKey("LASTDATETIME"))
+				return ""+CMLib.time().date2String(A.lastDateTime());
+			if(parms.containsKey("EMAIL"))
+				return ""+A.getEmail();
+			if(parms.containsKey("NOTES"))
+				return ""+A.notes();
+			if(parms.containsKey("ACCTEXPIRATION"))
+				return ""+CMLib.time().date2String(A.getAccountExpiration());
+			for(String flag : PlayerAccount.FLAG_DESCS)
+				if(parms.containsKey("IS"+flag))
+					return ""+A.isSet(flag);
+			if(parms.containsKey("IGNORE"))
+				return ""+CMParms.toStringList(A.getIgnored());
 		}
-		String strstr=str.toString();
-		if(strstr.endsWith(", "))
-			strstr=strstr.substring(0,strstr.length()-2);
-        return clearWebMacros(strstr);
+		return "";
 	}
-
 }

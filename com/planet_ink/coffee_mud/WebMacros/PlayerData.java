@@ -102,7 +102,8 @@ public class PlayerData extends StdWebMacro
         "FACTIONNAMES",
         "ACCTEXPUSED",
         "ACCTEXP",
-        "FOLLOWERNAMES"
+        "FOLLOWERNAMES",
+        "ACCOUNT"
 	};
 
 	public static int getBasicCode(String val)
@@ -326,6 +327,10 @@ public class PlayerData extends StdWebMacro
 		    //    str.append(((MOB)V.elementAt(v)).name()).append(", ");
 		    break;
 		}
+		case 65:
+			if((M.playerStats()!=null)&&(M.playerStats().getAccount()!=null))
+				str.append(M.playerStats().getAccount().accountName());
+			break;
 		}
 		return str.toString();
 	}

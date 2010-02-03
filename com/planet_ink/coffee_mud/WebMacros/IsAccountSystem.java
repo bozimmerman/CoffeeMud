@@ -31,53 +31,12 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
-public class ThinPlayerData extends StdWebMacro {
-	
+public class IsAccountSystem extends StdWebMacro
+{
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
-	
+
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
-			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
-
-		Hashtable parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("PLAYER");
-		if(last==null) return " @break@";
-		StringBuffer str=new StringBuffer("");
-		if(last.length()>0)
-		{
-			String sort=httpReq.getRequestParameter("SORTBY");
-			if(sort==null) sort="";
-			PlayerLibrary.ThinPlayer player = null;
-			Enumeration pe=CMLib.players().thinPlayers(sort, httpReq.getRequestObjects());
-			for(;pe.hasMoreElements();)
-			{
-				PlayerLibrary.ThinPlayer TP=(PlayerLibrary.ThinPlayer)pe.nextElement();
-				if(TP.name.equalsIgnoreCase(last))
-				{
-					player = TP; 
-					break;
-				}
-			}
-			if(player == null) return " @break@";
-			for(Enumeration e=parms.keys();e.hasMoreElements();)
-			{
-				String key=(String)e.nextElement();
-				int x=CMLib.players().getCharThinSortCode(key.toUpperCase().trim(),false);
-				if(x>=0)
-				{
-					String value = CMLib.players().getThinSortValue(player, x);
-					if(PlayerLibrary.CHAR_THIN_SORT_CODES[x].equals("LAST"))
-						value=CMLib.time().date2String(CMath.s_long(value));
-					str.append(value+", ");
-				}
-			}
-		}
-		String strstr=str.toString();
-		if(strstr.endsWith(", "))
-			strstr=strstr.substring(0,strstr.length()-2);
-        return clearWebMacros(strstr);
+		return ""+(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1);
 	}
-
 }

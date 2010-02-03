@@ -278,29 +278,52 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return player.name;
 	}
 	
-	public int getThinSortCode(String codeName, boolean loose) 
+	public String getThinSortValue(PlayerAccount account, int code) 
 	{
-		int x=CMParms.indexOf(THIN_SORT_CODES,codeName);
-		if(x<0)x=CMParms.indexOf(THIN_SORT_CODES2,codeName);
+		switch(code) {
+		case 0: return account.accountName();
+		case 1: return Long.toString(account.lastDateTime());
+		case 2: return account.getEmail();
+		case 3: return account.lastIP();
+		case 4: return Integer.toString(account.numPlayers());
+		}
+		return account.accountName();
+	}
+	
+	public int getCharThinSortCode(String codeName, boolean loose) 
+	{
+		int x=CMParms.indexOf(CHAR_THIN_SORT_CODES,codeName);
+		if(x<0)x=CMParms.indexOf(CHAR_THIN_SORT_CODES2,codeName);
 		if(!loose) return x;
 		if(x<0)
-			for(int s=0;s<THIN_SORT_CODES.length;s++)
-				if(THIN_SORT_CODES[s].startsWith(codeName))
+			for(int s=0;s<CHAR_THIN_SORT_CODES.length;s++)
+				if(CHAR_THIN_SORT_CODES[s].startsWith(codeName))
 					x=s;
 		if(x<0)
-			for(int s=0;s<THIN_SORT_CODES2.length;s++)
-				if(THIN_SORT_CODES2[s].startsWith(codeName))
+			for(int s=0;s<CHAR_THIN_SORT_CODES2.length;s++)
+				if(CHAR_THIN_SORT_CODES2[s].startsWith(codeName))
 					x=s;
 		return x;
 	}
 	
-    public Enumeration thinPlayers(String sort, Hashtable cache)
+	public int getAccountThinSortCode(String codeName, boolean loose) 
+	{
+		int x=CMParms.indexOf(ACCOUNT_THIN_SORT_CODES,codeName);
+		if(!loose) return x;
+		if(x<0)
+			for(int s=0;s<ACCOUNT_THIN_SORT_CODES.length;s++)
+				if(ACCOUNT_THIN_SORT_CODES[s].startsWith(codeName))
+					x=s;
+		return x;
+	}
+	
+    public Enumeration<ThinPlayer> thinPlayers(String sort, Hashtable cache)
     {
 		List<PlayerLibrary.ThinPlayer> V=(cache==null)?null:(List<PlayerLibrary.ThinPlayer>)cache.get("PLAYERLISTVECTOR"+sort);
 		if(V==null)
 		{
 			V=CMLib.database().getExtendedUserList();
-			int code=getThinSortCode(sort,false);
+			int code=getCharThinSortCode(sort,false);
 			if((sort.length()>0)
 			&&(code>=0)
 			&&(V.size()>1))
@@ -337,6 +360,53 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			}
 			if(cache!=null)
 				cache.put("PLAYERLISTVECTOR"+sort,V);
+		}
+		return DVector.s_enum(V);
+    }
+
+    public Enumeration<PlayerAccount> accounts(String sort, Hashtable cache)
+    {
+		List<PlayerAccount> V=(cache==null)?null:(List<PlayerAccount>)cache.get("ACCOUNTLISTVECTOR"+sort);
+		if(V==null)
+		{
+			V=CMLib.database().DBListAccounts(null);
+			int code=getAccountThinSortCode(sort,false);
+			if((sort.length()>0)
+			&&(code>=0)
+			&&(V.size()>1))
+			{
+				List<PlayerAccount> unV=V;
+				V=new Vector();
+				while(unV.size()>0)
+				{
+					PlayerAccount A=unV.get(0);
+					String loweStr=getThinSortValue(A,code);
+					PlayerAccount lowestA=A;
+					for(int i=1;i<unV.size();i++)
+					{
+						A=unV.get(i);
+						String val=getThinSortValue(A,code);
+						if((CMath.isNumber(val)&&CMath.isNumber(loweStr)))
+						{
+							if(CMath.s_long(val)<CMath.s_long(loweStr))
+							{
+								loweStr=val;
+								lowestA=A;
+							}
+						}
+						else
+						if(val.compareTo(loweStr)<0)
+						{
+							loweStr=val;
+							lowestA=A;
+						}
+					}
+					unV.remove(lowestA);
+					V.add(lowestA);
+				}
+			}
+			if(cache!=null)
+				cache.put("ACCOUNTLISTVECTOR"+sort,V);
 		}
 		return DVector.s_enum(V);
     }
