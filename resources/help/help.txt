@@ -13,7 +13,7 @@ pray practice cast sing chant
 inventory equipment look compare    
 get put drop give wear wield        ^HOTHER^?
 hold eat drink fill sniff           ! quit password train learn ansi
-lock unlock open close pick         qualify noansi prompt colorset
+lock unlock open close pick         qualify logout prompt colorset
 list buy sell value examine         bug commands help topics assist
                                     
 ^HBASE CLASSES^?
