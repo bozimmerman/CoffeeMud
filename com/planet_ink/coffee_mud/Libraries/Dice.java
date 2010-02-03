@@ -46,6 +46,7 @@ public class Dice extends StdLibrary implements DiceLibrary
     {
     	super();
     	baseNpcHitpointsFormula=CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_NPCHITPOINTS));
+    	randomizer = new Random(System.currentTimeMillis());
     }
     
     public boolean activate()
@@ -174,17 +175,16 @@ public class Dice extends StdLibrary implements DiceLibrary
 	
     public int roll(int number, int die, int modifier)
     {
-        if (randomizer == null)
-            randomizer = new Random(System.currentTimeMillis());
-        if(die <= 0) return modifier;
-        if(number <= 0) return modifier;
-        return modifier + number + randomizer.nextInt((die * number)-number+1);
+    	if(die<=0) 
+    		return modifier;
+    	int total=0;
+        for(int i=0;i<number;i++)
+        	total+=randomizer.nextInt(die)+1;
+        return total + modifier;
     }
 
     public int rollPercentage()
     {
-        if (randomizer == null)
-        	randomizer = new Random(System.currentTimeMillis());
         return (Math.abs(randomizer.nextInt() % 100)) + 1;
     }
 
