@@ -100,7 +100,21 @@ public class Intermud implements Runnable, Persistent, Serializable
      */
     static public String translateName(String mud) {
 		if(!isConnected()) return "";
-        return thread.getMudNameFor(mud);
+        String s=thread.getMudNameFor(mud);
+        if(s!=null) return s;
+        mud = mud.toLowerCase().replace('.', ' ');
+        return mud;
+    }
+
+    /**
+     * Translates a user entered mud name into the mud's
+     * canonical name.
+     * @param mud the user entered mud name
+     * @return the specified mud's canonical name
+     */
+    static public boolean isAPossibleMUDName(String mud) {
+		if(!isConnected()) return false;
+        return thread.getMudNameFor(mud) != null;
     }
 
     /**
@@ -822,7 +836,7 @@ public class Intermud implements Runnable, Persistent, Serializable
                 return str;
             }
         }
-        return mud;
+        return null;
     }
 
     /**

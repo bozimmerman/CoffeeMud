@@ -69,7 +69,7 @@ public class IMudClient implements I3Interface
 			mob.tell("You must specify a mud name.");
 			return;
 		}
-		if(i3online()&&Intermud.isUp(Intermud.translateName(mudName)))
+		if(i3online()&&Intermud.isAPossibleMUDName(mudName))
 		{
 			mudName=Intermud.translateName(mudName);
 			if(!Intermud.isUp(mudName))
@@ -91,7 +91,7 @@ public class IMudClient implements I3Interface
 			imc2.imc_send_who(mob.name(),imc2.getIMC2Mud(mudName).name,"who",mob.envStats().level(),0);
 		else
 		{
-			mob.tell("'"+mudName+" is not a mud name.");
+			mob.tell("'"+mudName+"' is not a mud name.");
 			return;
 		}
 	}
@@ -128,6 +128,11 @@ public class IMudClient implements I3Interface
 		if((channel==null)||(channel.length()==0)||(Intermud.getRemoteChannel(channel).length()==0))
 		{
 			mob.tell("You must specify an InterMud 3 channel name.");
+			return;
+		}
+		if(!Intermud.isAPossibleMUDName(mudName))
+		{
+			mob.tell("'"+mudName+"' is an unknown mud.");
 			return;
 		}
 		mudName=Intermud.translateName(mudName);
@@ -236,9 +241,14 @@ public class IMudClient implements I3Interface
 			mob.tell("You must enter a message!");
 			return;
 		}
-		if(i3online()&&Intermud.isUp(Intermud.translateName(mudName)))
+		if(i3online()&&Intermud.isAPossibleMUDName(mudName))
 		{
 			mudName=Intermud.translateName(mudName);
+			if(!Intermud.isUp(mudName))
+			{
+				mob.tell(mudName+" is not available.");
+				return;
+			}
 			mob.tell("You tell "+tellName+" '"+message+"'");
 			TellPacket tk=new TellPacket();
 			tk.sender_name=mob.Name();
@@ -263,7 +273,7 @@ public class IMudClient implements I3Interface
 		}
 		else
 		{
-			mob.tell(mudName+" is not available.");
+			mob.tell(mudName+" is an unknown mud.");
 			return;
 		}
 	}
@@ -319,6 +329,11 @@ public class IMudClient implements I3Interface
 						if((tellName==null)||(tellName.length()<1))
 						{
 							mob.tell("You must specify someone to emote to.");
+							return;
+						}
+						if(!Intermud.isAPossibleMUDName(mudName))
+						{
+							mob.tell("'"+mudName+"' is an unknown mud.");
 							return;
 						}
 						mudName=Intermud.translateName(mudName);
