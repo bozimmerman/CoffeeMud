@@ -92,8 +92,8 @@ public class DefaultPlayerStats implements PlayerStats
 		switch(getCodeNum(code))
 		{
 		case 0: return ID();
-		case 1: return "<FRIENDS>"+getPrivateList(getFriends())+"</FRIENDS>";
-		case 2: return "<IGNORED>"+getPrivateList(getIgnored())+"</IGNORED>";
+		case 1: return getPrivateList(getFriends());
+		case 2: return getPrivateList(getIgnored());
 		case 3: return getTitleXML();
 		case 4: return getAliasXML();
 		case 5: return lastIP;
@@ -110,7 +110,7 @@ public class DefaultPlayerStats implements PlayerStats
 		case 16: return ""+wrap;
 		case 17: return CMParms.toStringList(birthday);
 		case 18: return ""+accountExpiration;
-		case 19: return "<INTROS>"+getPrivateList(introductions)+"</INTROS>";
+		case 19: return getPrivateList(introductions);
 		case 20: return ""+pageBreak;
         default:
             return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
@@ -121,10 +121,10 @@ public class DefaultPlayerStats implements PlayerStats
 		switch(getCodeNum(code))
 		{
 		case 0: break;
-		case 1: friends=getHashFrom(CMLib.xml().returnXMLValue(val,"FRIENDS")); break;
-		case 2: ignored=getHashFrom(CMLib.xml().returnXMLValue(val,"IGNORED")); break;
-		case 3: setTitleXML(val); break;
-		case 4: setAliasXML(val); break;
+		case 1: friends=getHashFrom(val); break;
+		case 2: ignored=getHashFrom(val); break;
+		case 3: setTitleXML(CMLib.xml().parseAllXML(val)); break;
+		case 4: setAliasXML(CMLib.xml().parseAllXML(val)); break;
 		case 5: lastIP=val; break;
 		case 6: LastDateTime=CMath.s_long(val); break;
 		case 7: channelMask=CMath.s_int(val); break;
@@ -139,7 +139,7 @@ public class DefaultPlayerStats implements PlayerStats
 		case 16: wrap=CMath.s_int(val); break;
 		case 17: setBirthday(val); break;
 		case 18: accountExpiration=CMath.s_long(val); break;
-		case 19: introductions=getHashFrom(CMLib.xml().returnXMLValue(val,"INTROS")); break;
+		case 19: introductions=getHashFrom(val); break;
 		case 20: pageBreak=CMath.s_int(val); break;
 		default:
             CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
@@ -230,12 +230,18 @@ public class DefaultPlayerStats implements PlayerStats
 		if(account != null)
 			account.setLastDateTime(C);
 	}
+	public String password(){return (account!=null)?account.password():Password;}
+	public void setPassword(String newPassword)
+	{
+		Password=newPassword;
+		if(account != null)
+			account.setPassword(newPassword);
+	}
+	
 	public int getWrap(){return wrap;}
 	public void setWrap(int newWrap){wrap=newWrap;}
 	public int getPageBreak(){return pageBreak;}
 	public void setPageBreak(int newBreak){pageBreak=newBreak;}
-	public String password(){return Password;}
-	public void setPassword(String newPassword){Password=newPassword;}
 	public String notes(){return notes;}
 	public void setNotes(String newnotes){notes=newnotes;}
 	public void setChannelMask(int newMask){ channelMask=newMask;}
@@ -498,27 +504,27 @@ public class DefaultPlayerStats implements PlayerStats
 		}
 	}
 	
-	private void setAliasXML(String str)
+	private void setAliasXML(Vector<XMLLibrary.XMLpiece> xml)
 	{
         alias.clear();
         int a=-1;
         while((++a)>=0)
         {
-            String name=CMLib.xml().returnXMLValue(str,"ALIAS"+a);
-            String value=CMLib.xml().returnXMLValue(str,"ALIASV"+a);
+            String name=CMLib.xml().getValFromPieces(xml,"ALIAS"+a);
+            String value=CMLib.xml().getValFromPieces(xml,"ALIASV"+a);
             if((name.length()==0)||(value.length()==0))
                 break;
             alias.addElement(name,value);
         }
 	}
 	
-	private void setTitleXML(String str)
+	private void setTitleXML(Vector<XMLLibrary.XMLpiece> xml)
 	{
 		titles.clear();
 		int t=-1;
 		while((++t)>=0)
 		{
-			String title=CMLib.xml().returnXMLValue(str,"TITLE"+t);
+			String title=CMLib.xml().getValFromPieces(xml,"TITLE"+t);
 			if(title.length()==0)
 			    break;
 		    titles.addElement(title);
@@ -529,55 +535,59 @@ public class DefaultPlayerStats implements PlayerStats
 	public void setXML(String str)
 	{
 		account = null;
-		friends=getHashFrom(CMLib.xml().returnXMLValue(str,"FRIENDS"));
-		ignored=getHashFrom(CMLib.xml().returnXMLValue(str,"IGNORED"));
-        introductions=getHashFrom(CMLib.xml().returnXMLValue(str,"INTROS"));
-        if(CMLib.xml().returnXMLValue(str,"ACCTEXP").length()>0)
-            setAccountExpiration(CMath.s_long(CMLib.xml().returnXMLValue(str,"ACCTEXP")));
+		if(str==null) 
+			return;
+		Vector<XMLLibrary.XMLpiece> xml = CMLib.xml().parseAllXML(str);
+		friends=getHashFrom(CMLib.xml().getValFromPieces(xml,"FRIENDS"));
+		ignored=getHashFrom(CMLib.xml().getValFromPieces(xml,"IGNORED"));
+        introductions=getHashFrom(CMLib.xml().getValFromPieces(xml,"INTROS"));
+        String expStr = CMLib.xml().getValFromPieces(xml,"ACCTEXP");
+        if((expStr!=null)&&(expStr.length()>0))
+            setAccountExpiration(CMath.s_long(expStr));
         else
         {
             Calendar C=Calendar.getInstance();
             C.add(Calendar.DATE,CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS));
             setAccountExpiration(C.getTimeInMillis());
         }
-		String oldWrap=CMLib.xml().returnXMLValue(str,"WRAP");
+		String oldWrap=CMLib.xml().getValFromPieces(xml,"WRAP");
 		if(CMath.isInteger(oldWrap)) wrap=CMath.s_int(oldWrap);
-		String oldBreak=CMLib.xml().returnXMLValue(str,"PAGEBREAK");
+		String oldBreak=CMLib.xml().getValFromPieces(xml,"PAGEBREAK");
 		if(CMath.isInteger(oldBreak)) 
 			pageBreak=CMath.s_int(oldBreak);
 		else
 			pageBreak=CMProps.getIntVar(CMProps.SYSTEMI_PAGEBREAK);
-		setSecurityGroupStr(CMLib.xml().returnXMLValue(str,"SECGRPS"));
-		setAliasXML(str);
-		setTitleXML(str);
-		String bday=CMLib.xml().returnXMLValue(str,"BIRTHDAY");
+		setSecurityGroupStr(CMLib.xml().getValFromPieces(xml,"SECGRPS"));
+		setAliasXML(xml);
+		setTitleXML(xml);
+		String bday=CMLib.xml().getValFromPieces(xml,"BIRTHDAY");
 		setBirthday(bday);
 		
-		poofin=CMLib.xml().returnXMLValue(str,"POOFIN");
+		poofin=CMLib.xml().getValFromPieces(xml,"POOFIN");
 		if(poofin==null) poofin="";
 		poofin=CMLib.xml().restoreAngleBrackets(poofin);
 		
-		poofout=CMLib.xml().returnXMLValue(str,"POOFOUT");
+		poofout=CMLib.xml().getValFromPieces(xml,"POOFOUT");
 		if(poofout==null) poofout="";
 		poofout=CMLib.xml().restoreAngleBrackets(poofout);
 		
-		tranpoofin=CMLib.xml().returnXMLValue(str,"TRANPOOFIN");
+		tranpoofin=CMLib.xml().getValFromPieces(xml,"TRANPOOFIN");
 		if(tranpoofin==null) tranpoofin="";
 		tranpoofin=CMLib.xml().restoreAngleBrackets(tranpoofin);
 		
-		tranpoofout=CMLib.xml().returnXMLValue(str,"TRANPOOFOUT");
+		tranpoofout=CMLib.xml().getValFromPieces(xml,"TRANPOOFOUT");
 		if(tranpoofout==null) tranpoofout="";
 		tranpoofout=CMLib.xml().restoreAngleBrackets(tranpoofout);
 		
-        announceMsg=CMLib.xml().returnXMLValue(str,"ANNOUNCE");
+        announceMsg=CMLib.xml().getValFromPieces(xml,"ANNOUNCE");
         if(announceMsg==null) announceMsg="";
         announceMsg=CMLib.xml().restoreAngleBrackets(announceMsg);
         
-        notes=CMLib.xml().returnXMLValue(str,"NOTES");
+        notes=CMLib.xml().getValFromPieces(xml,"NOTES");
         if(notes==null) notes="";
         notes=CMLib.xml().restoreAngleBrackets(notes);
 		
-        String dates=CMLib.xml().returnXMLValue(str,"DATES");
+        String dates=CMLib.xml().getValFromPieces(xml,"DATES");
         if(dates==null) dates="";
         // now parse all the level date/times
         int lastNum=Integer.MIN_VALUE;
@@ -601,16 +611,20 @@ public class DefaultPlayerStats implements PlayerStats
         }
         if(levelInfo.size()==0)
         	levelInfo.addElement(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"");
-        roomSet().parseXML(str);
+        String roomSetStr = CMLib.xml().getValFromPieces(xml,"AREAS");
+        if(roomSetStr!=null)
+	        roomSet().parseXML("<AREAS>"+str+"</AREAS>");
+        else
+	        roomSet().parseXML("<AREAS />");
         String[] codes=getStatCodes();
         for(int i=getSaveStatIndex();i<codes.length;i++)
         {
-        	String val=CMLib.xml().returnXMLValue(str,codes[i].toUpperCase());
+        	String val=CMLib.xml().getValFromPieces(xml,codes[i].toUpperCase());
         	if(val==null) val="";
         	setStat(codes[i].toUpperCase(),CMLib.xml().restoreAngleBrackets(val));
         }
         
-		String accountName = CMLib.xml().returnXMLValue(str,"ACCOUNT");
+		String accountName = CMLib.xml().getValFromPieces(xml,"ACCOUNT");
 		if((accountName != null)&&(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1))
 			account = CMLib.players().getLoadAccount(accountName);
 	}
