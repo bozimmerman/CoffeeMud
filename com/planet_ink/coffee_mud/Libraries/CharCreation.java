@@ -1483,10 +1483,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             {
             	if(login!=null) pendingLogins.remove(login.toUpperCase().trim());
             	if(acct!=null) pendingLogins.remove(acct.accountName().toUpperCase().trim());
-            	if(player!=null) pendingLogins.remove(player.name.toUpperCase().trim());
-            	if((player!=null)&&(player.accountName!=null)) pendingLogins.remove(player.accountName.toUpperCase().trim());
-            	if((player.loadedMOB!=null)&&(player.loadedMOB.playerStats()!=null)&&(player.loadedMOB.playerStats().getAccount()!=null))
-            		pendingLogins.remove(player.loadedMOB.playerStats().getAccount().accountName().toUpperCase().trim());
+            	if(player!=null)
+            	{
+	            	pendingLogins.remove(player.name.toUpperCase().trim());
+	            	if(player.accountName!=null) pendingLogins.remove(player.accountName.toUpperCase().trim());
+	            	if((player.loadedMOB!=null)&&(player.loadedMOB.playerStats()!=null)&&(player.loadedMOB.playerStats().getAccount()!=null))
+	            		pendingLogins.remove(player.loadedMOB.playerStats().getAccount().accountName().toUpperCase().trim());
+            	}
             }
         }
         else

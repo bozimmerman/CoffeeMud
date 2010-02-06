@@ -56,7 +56,7 @@ public class Logoff extends StdCommand
             }
 			try
 			{
-				if (session.confirm("\n\rLogout -- are you sure (y/N)?","N"))
+				if ((session != null)&& (session.confirm("\n\rLogout -- are you sure (y/N)?","N")))
 				{
 		            CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,null);
 		            Room R=mob.location();
