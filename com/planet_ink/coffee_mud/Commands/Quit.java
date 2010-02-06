@@ -74,7 +74,7 @@ public class Quit extends StdCommand
             }
 			try
 			{
-				if (session.confirm("\n\rQuit -- are you sure (y/N)?","N"))
+				if ((session!=null)&&(session.confirm("\n\rQuit -- are you sure (y/N)?","N")))
 				{
 		            CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,null);
 		            Room R=mob.location();
