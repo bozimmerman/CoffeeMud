@@ -486,18 +486,18 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
         if(victim!=null)
         {
-            int levelLimit=CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE);
-            int levelDiff=victim.envStats().level()-mob.envStats().level();
+            double levelLimit=CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE);
+            double levelDiff=victim.envStats().level()-mob.envStats().level();
 
             if(levelDiff<(-levelLimit) )
                 amount=0;
             else
             if(levelLimit>0)
             {
-                double levelFactor=CMath.div(levelDiff,levelLimit);
-                if( levelFactor > (double)levelLimit )
-                    levelFactor = (double)levelLimit;
-                amount=(int)Math.round( ((double)amount) + CMath.mul( levelFactor, amount ) );
+                double levelFactor=levelDiff / levelLimit;
+                if( levelFactor > levelLimit )
+                    levelFactor = levelLimit;
+                amount+=(int)Math.round(levelFactor *  (double)amount);
             }
         }
 
