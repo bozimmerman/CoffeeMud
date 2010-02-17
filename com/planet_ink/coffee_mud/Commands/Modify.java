@@ -376,6 +376,35 @@ public class Modify extends StdCommand
 		Log.sysOut("Rooms",mob.Name()+" modified room "+mob.location().roomID()+".");
 	}
 
+	public void accounts(MOB mob, Vector commands)
+		throws IOException
+	{
+		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around the heavens.");
+		if(commands.size()==2)
+		{
+			PlayerAccount acc=mob.playerStats().getAccount();
+	        CMLib.genEd().modifyAccount(mob,acc);
+			return;
+		}
+		if(commands.size()<3) 
+		{ 
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ACCOUNT ([NAME])\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			return;
+		}
+		String accountName=CMStrings.capitalizeAndLower(CMParms.combine(commands, 2));
+	    PlayerAccount theAccount = CMLib.players().getLoadAccount(accountName);
+	    if(theAccount==null)
+	    {
+			mob.tell("There is no account called '"+accountName+"'!\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			return;
+	    }
+        CMLib.genEd().modifyAccount(mob,theAccount);
+		mob.location().recoverRoomStats();
+		Log.sysOut("Modify",mob.Name()+" modified account "+theAccount.accountName()+".");
+	}
+
 	public void areas(MOB mob, Vector commands)
 		throws IOException
 	{
@@ -1199,6 +1228,12 @@ public class Modify extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS")) return errorOut(mob);
 			rooms(mob,commands);
+		}
+        else
+		if((commandType.equals("ACCOUNT"))&&(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")) return errorOut(mob);
+			accounts(mob,commands);
 		}
 		else
 		if(commandType.equals("RACE"))

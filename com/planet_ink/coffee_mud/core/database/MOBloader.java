@@ -943,6 +943,12 @@ public class MOBloader
         DB.update("UPDATE CMACCT SET CMPASS='"+account.password()+"',  CMCHRS='"+characters+"',  CMAXML='"+account.getXML()+"'  WHERE CMANAM='"+account.accountName()+"'");
     }
 
+    public void DBDeleteAccount(PlayerAccount account)
+    {
+    	if(account == null) return;
+        DB.update("DELETE FROM CMACCT WHERE CMANAM='"+account.accountName()+"'");
+    }
+
     public void DBCreateAccount(PlayerAccount account)
     {
     	if(account == null) return;

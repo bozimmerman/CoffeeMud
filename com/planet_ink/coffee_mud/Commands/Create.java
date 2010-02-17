@@ -306,6 +306,45 @@ public class Create extends StdCommand
 		Log.sysOut("Rooms",mob.Name()+" created room "+thisRoom.roomID()+".");
 	}
 	
+	public void accounts(MOB mob, Vector commands)
+	{
+		if(commands.size()<4)
+		{
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is CREATE ACCOUNT [NAME] [PASSWORD]\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			return;
+		}
+
+		PlayerAccount thisAcct=null;
+		String AcctName=CMStrings.capitalizeAndLower((String)commands.elementAt(2));
+		String password=CMStrings.capitalizeAndLower(CMParms.combine(commands,3));
+		thisAcct=CMLib.players().getLoadAccount(AcctName);
+		if(thisAcct!=null)
+		{
+			mob.tell("Account '"+AcctName+"' already exists!\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			return;
+		}
+		if(!CMLib.login().isOkName(AcctName))
+		{
+			mob.tell("Name '"+AcctName+"' is not permitted.\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			return;
+		}
+		thisAcct=(PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
+		thisAcct.setAccountName(AcctName);
+		thisAcct.setAccountExpiration(0);
+        if(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))
+        	thisAcct.setAccountExpiration(System.currentTimeMillis()+(1000l*60l*60l*24l*((long)CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS))));
+		thisAcct.setLastDateTime(System.currentTimeMillis());
+		thisAcct.setLastUpdated(System.currentTimeMillis());
+		thisAcct.setPassword(password);
+		CMLib.database().DBCreateAccount(thisAcct);
+
+		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A new soul descends from the heavens and dissipates.\n\r");
+		Log.sysOut("Create",mob.Name()+" created account "+thisAcct.accountName()+".");
+	}
+	
 	public MOB getNewCatalogMob(String mobID)
 	{
 		MOB newMOB=CMLib.catalog().getCatalogMob(mobID);
@@ -796,6 +835,13 @@ public class Create extends StdCommand
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			rooms(mob,commands);
+		}
+		else
+		if((commandType.equals("ACCOUNT"))&&(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")) return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			accounts(mob,commands);
 		}
 		else
 		if(commandType.equals("SOCIAL"))

@@ -294,6 +294,9 @@ public class DBInterface implements DatabaseEngine
 	public void DBDeleteMOB(MOB mob)
 	{MOBloader.DBDelete(mob);}
 	
+    public void DBDeleteAccount(PlayerAccount account)
+    { MOBloader.DBDeleteAccount(account);}
+	
 	public void DBCreateCharacter(MOB mob)
 	{MOBloader.DBCreateCharacter(mob);}
 

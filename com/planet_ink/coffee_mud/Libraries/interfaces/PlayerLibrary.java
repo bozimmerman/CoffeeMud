@@ -41,6 +41,7 @@ public interface PlayerLibrary extends CMLibrary, Runnable
     public Enumeration<ThinPlayer> players();
     public Enumeration<PlayerAccount> accounts(String sort, Hashtable cache);
     public void obliteratePlayer(MOB deadMOB, boolean quiet);
+    public void obliterateAccountOnly(PlayerAccount deadAccount);
     public boolean playerExists(String name);
     public void forceTick();
     public int savePlayers();

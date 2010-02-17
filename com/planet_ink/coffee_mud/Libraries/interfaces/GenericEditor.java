@@ -37,6 +37,7 @@ public interface GenericEditor extends CMLibrary
     
     public void modifyGenArea(MOB mob, Area myArea) throws IOException;
     public void modifyRoom(MOB mob, Room R) throws IOException;
+    public void modifyAccount(MOB mob, PlayerAccount A) throws IOException;
     public void modifyStdItem(MOB mob, Item thang) throws IOException;
     public void modifyStdMob(MOB mob, MOB thang) throws IOException;
     public void modifyComponents(MOB mob, String componentID) throws IOException;

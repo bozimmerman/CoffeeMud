@@ -64,6 +64,7 @@ public interface DatabaseEngine extends CMLibrary
     public void DBUpdatePlayerItems(MOB mob);
     public void DBUpdateAccount(PlayerAccount account);
     public void DBCreateAccount(PlayerAccount account);
+    public void DBDeleteAccount(PlayerAccount account);
     public PlayerAccount DBReadAccount(String Login);
     public Vector<PlayerAccount> DBListAccounts(String mask);
 	public void DBUpdateMOB(String roomID, MOB mob);

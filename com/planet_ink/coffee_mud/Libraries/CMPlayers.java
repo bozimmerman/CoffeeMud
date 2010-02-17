@@ -214,6 +214,35 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
         deadMOB.destroy();
     }
     
+    public void obliterateAccountOnly(PlayerAccount deadAccount)
+    {
+    	deadAccount = getLoadAccount(deadAccount.accountName());
+    	if(deadAccount==null) return;
+    	accountsList.remove(deadAccount);
+        StringBuffer newNoPurge=new StringBuffer("");
+        Vector protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
+        boolean somethingDone=false;
+        if((protectedOnes!=null)&&(protectedOnes.size()>0))
+        {
+            for(int b=0;b<protectedOnes.size();b++)
+            {
+                String B=(String)protectedOnes.elementAt(b);
+                if(!B.equalsIgnoreCase(deadAccount.accountName()))
+                    newNoPurge.append(B+"\n");
+                else
+                    somethingDone=true;
+            }
+            if(somethingDone)
+            {
+                Resources.updateResource("protectedplayers.ini",newNoPurge);
+                Resources.saveFileResource("::protectedplayers.ini");
+            }
+        }
+
+        CMLib.database().DBDeleteAccount(deadAccount);
+        Log.sysOut("Scoring",deadAccount.accountName()+" has been deleted.");
+    }
+    
     public int savePlayers()
     {
         int processed=0;

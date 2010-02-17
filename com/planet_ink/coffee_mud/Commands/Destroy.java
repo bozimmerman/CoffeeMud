@@ -88,6 +88,41 @@ public class Destroy extends StdCommand
 	}
 
 
+	public void accounts(MOB mob, Vector commands)
+	throws IOException
+	{
+		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around the heavens.");
+		if(commands.size()<3) 
+		{ 
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is DESTROY ACCOUNT ([NAME])\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			return;
+		}
+		String accountName=CMStrings.capitalizeAndLower(CMParms.combine(commands, 2));
+	    PlayerAccount theAccount = CMLib.players().getLoadAccount(accountName);
+	    if(theAccount==null)
+	    {
+			mob.tell("There is no account called '"+accountName+"'!\n\r");
+			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+			return;
+	    }
+	    String playerList = CMParms.toStringList(theAccount.getPlayers());
+		if(mob.session().confirm("This will complete OBLITERATE the account '"+theAccount.accountName()+"' and players '"+playerList+"' forever.  Are you SURE?! (y/N)?","N"))
+		{
+			for(Enumeration<String> p=theAccount.getPlayers();p.hasMoreElements();)
+			{
+				MOB deadMOB=CMLib.players().getLoadPlayer(p.nextElement());
+				CMLib.players().obliteratePlayer(deadMOB,false);
+				mob.tell("The user '"+CMParms.combine(commands,2)+"' is no more!\n\r");
+				Log.sysOut("Mobs",mob.Name()+" destroyed user "+deadMOB.Name()+".");
+				deadMOB.destroy();
+			}
+		    CMLib.players().obliterateAccountOnly(theAccount);
+			mob.location().recoverRoomStats();
+			Log.sysOut("Destroy",mob.Name()+" destroyed account "+theAccount.accountName()+" and players '"+playerList+"'.");
+		}
+	}
+
 	public static boolean players(MOB mob, Vector commands)
 		throws IOException
 	{
@@ -944,6 +979,13 @@ public class Destroy extends StdCommand
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")) return errorOut(mob);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
 			players(mob,commands);
+		}
+		else
+		if((commandType.equals("ACCOUNT"))&&(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1))
+		{
+			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDPLAYERS")) return errorOut(mob);
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+			accounts(mob,commands);
 		}
 		else
 		if(commandType.equals("SOCIAL"))
