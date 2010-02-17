@@ -401,7 +401,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 if((CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)<=acct.numPlayers())
                 &&(!acct.isSet(PlayerAccount.FLAG_NUMCHARSOVERRIDE)))
                 {
-                	session.println("You may only have "+CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)+" characters.  Please delete one to create another.");
+                	session.println("You may only have "+CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)+" characters.  Please retire one to create another.");
                 	continue;
                 }
             	if(newCharactersAllowed(s,session))
@@ -415,7 +415,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             	}
     			continue;
     		}
-    		if(s.toUpperCase().startsWith("RETIRE "))
+    		if(s.toUpperCase().startsWith("RETIRE ")||s.toUpperCase().startsWith("DELETE "))
     		{
     			s=s.substring(7).trim();
     			PlayerLibrary.ThinPlayer delMe = null;
