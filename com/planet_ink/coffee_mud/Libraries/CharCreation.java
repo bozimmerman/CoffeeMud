@@ -1338,9 +1338,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
         String login;
         if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1)
-        	login=session.prompt("account: ");
+        	login=session.prompt("\n\raccount name: ");
         else
-        	login=session.prompt("name: ");
+        	login=session.prompt("\n\rname: ");
         if(login==null) 
         	return LoginResult.NO_LOGIN;
         login=login.trim();
