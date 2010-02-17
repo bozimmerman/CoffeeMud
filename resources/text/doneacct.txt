@@ -1,4 +1,4 @@
 ^HYour account has been created!^N
 
-Please write down your login and password.
+Please write down your new account name and password.
 
