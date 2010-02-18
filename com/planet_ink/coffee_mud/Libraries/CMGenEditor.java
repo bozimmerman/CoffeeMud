@@ -7256,7 +7256,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             A.setAccountName(prompt(mob,A.accountName(),++showNumber,showFlag,"Name",true,false,null));
         	genEmail(mob, A, ++showNumber, showFlag);
             if(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))
-	            if((showFlag<=0)||(showFlag==++showNumber))
+            {
+            	++showNumber;
+	            if((showFlag<=0)||(showFlag==showNumber))
 	            {
 		            mob.tell(showNumber+". Expires: "+CMLib.time().date2String(A.getAccountExpiration()));
 		            if((showFlag==showNumber)||(showFlag<=-999))
@@ -7268,6 +7270,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			            	mob.tell("(no change)");
 		            }
 	            }
+            }
             promptStatStr(mob,A,++showNumber,showFlag,"Flags (?): ","FLAGS");
             promptStatStr(mob,A,++showNumber,showFlag,"Notes: ","NOTES");
             for(int x=A.getSaveStatIndex();x<A.getStatCodes().length;x++)
