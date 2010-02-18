@@ -7253,11 +7253,23 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         while(!ok)
         {
             int showNumber=0;
-        	//protected static String[] CODES={"CLASS","FRIENDS","IGNORE","LASTIP","LASTDATETIME", "NOTES","ACCTEXPIRATION","FLAGS","EMAIL"};
-            //promptStatStr(mob,A,++showNumber,showFlag,"Name: ","NAME");
+            A.setAccountName(prompt(mob,A.accountName(),++showNumber,showFlag,"Name",true,false,null));
         	genEmail(mob, A, ++showNumber, showFlag);
+            if(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))
+	            if((showFlag<=0)||(showFlag==++showNumber))
+	            {
+		            mob.tell(showNumber+". Expires: "+CMLib.time().date2String(A.getAccountExpiration()));
+		            if((showFlag==showNumber)||(showFlag<=-999))
+		            {
+			            String s=mob.session().prompt("Enter a new value\n\r:","");
+			            if(s.length()>0) 
+			            	A.setAccountExpiration(CMLib.time().string2Millis(s));
+			            else 
+			            	mob.tell("(no change)");
+		            }
+	            }
+            promptStatStr(mob,A,++showNumber,showFlag,"Flags (?): ","FLAGS");
             promptStatStr(mob,A,++showNumber,showFlag,"Notes: ","NOTES");
-            //promptStatInt(mob,A,++showNumber,showFlag,"Number of Class Names: ","NUMNAME");
             for(int x=A.getSaveStatIndex();x<A.getStatCodes().length;x++)
                 A.setStat(A.getStatCodes()[x],prompt(mob,A.getStat(A.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(A.getStatCodes()[x])));
             if(showFlag<-900){ ok=true; break;}
