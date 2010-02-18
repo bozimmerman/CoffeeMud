@@ -59,7 +59,8 @@ public interface DatabaseEngine extends CMLibrary
 	public void DBUpdateRoom(Room room);
     public RoomnumberSet DBReadAreaRoomList(String areaName, boolean reportStatus);
 	public void DBUpdatePlayer(MOB mob);
-    public void DBUpdatePlayerStatsOnly(MOB mob);
+    public void DBUpdatePlayerPlayerStats(MOB mob);
+    public void DBUpdatePlayerMOBOnly(MOB mob);
     public void DBUpdatePlayerAbilities(MOB mob);
     public void DBUpdatePlayerItems(MOB mob);
     public void DBUpdateAccount(PlayerAccount account);

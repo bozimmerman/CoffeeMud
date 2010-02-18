@@ -655,6 +655,42 @@ public class MOBloader
         DB.update("UPDATE CMCHAR SET CMPASS='"+password+"' WHERE CMUSERID='"+name+"'");
     }
 
+    private String getPlayerStatsXML(MOB mob)
+    {
+        PlayerStats pstats=mob.playerStats();
+        if(pstats==null) return "";
+        StringBuffer pfxml=new StringBuffer(pstats.getXML());
+        if(mob.numTattoos()>0)
+        {
+            pfxml.append("<TATTS>");
+            for(int i=0;i<mob.numTattoos();i++)
+                pfxml.append(mob.fetchTattoo(i)+";");
+            pfxml.append("</TATTS>");
+        }
+        if(mob.numExpertises()>0)
+        {
+            pfxml.append("<EDUS>");
+            for(int i=0;i<mob.numExpertises();i++)
+                pfxml.append(mob.fetchExpertise(i)+";");
+            pfxml.append("</EDUS>");
+        }
+        pfxml.append(CMLib.xml().convertXMLtoTag("IMG",mob.rawImage()));
+        return pfxml.toString();
+    }
+    
+    public void DBUpdateJustPlayerStats(MOB mob)
+    {
+        if(mob.Name().length()==0)
+        {
+            DBCreateCharacter(mob);
+            return;
+        }
+        PlayerStats pstats=mob.playerStats();
+        if(pstats==null) return;
+        String pfxml=getPlayerStatsXML(mob);
+        DB.update("UPDATE CMCHAR SET CMPFIL='"+pfxml.toString()+"' WHERE CMUSERID='"+mob.Name()+"'");
+    }
+    
     public void DBUpdateJustMOB(MOB mob)
     {
         if(mob.Name().length()==0)
@@ -673,22 +709,7 @@ public class MOBloader
         	||CMath.bset(mob.location().getArea().flags(),Area.FLAG_INSTANCE_CHILD)))
         	strOtherRoomID=strStartRoomID;
         
-        StringBuffer pfxml=new StringBuffer(pstats.getXML());
-        if(mob.numTattoos()>0)
-        {
-            pfxml.append("<TATTS>");
-            for(int i=0;i<mob.numTattoos();i++)
-                pfxml.append(mob.fetchTattoo(i)+";");
-            pfxml.append("</TATTS>");
-        }
-        if(mob.numExpertises()>0)
-        {
-            pfxml.append("<EDUS>");
-            for(int i=0;i<mob.numExpertises();i++)
-                pfxml.append(mob.fetchExpertise(i)+";");
-            pfxml.append("</EDUS>");
-        }
-        pfxml.append(CMLib.xml().convertXMLtoTag("IMG",mob.rawImage()));
+        String pfxml=getPlayerStatsXML(mob);
         StringBuffer cleanXML=new StringBuffer();
         cleanXML.append(CMLib.coffeeMaker().getFactionXML(mob));
         DB.update("UPDATE CMCHAR SET  CMPASS='"+pstats.password()+"'"

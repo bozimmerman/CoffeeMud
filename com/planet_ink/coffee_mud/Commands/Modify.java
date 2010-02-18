@@ -380,29 +380,54 @@ public class Modify extends StdCommand
 		throws IOException
 	{
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around the heavens.");
+		PlayerAccount theAccount = null;
+		String oldName = null;
 		if(commands.size()==2)
 		{
-			PlayerAccount acc=mob.playerStats().getAccount();
-	        CMLib.genEd().modifyAccount(mob,acc);
-			return;
+			theAccount=mob.playerStats().getAccount();
+			oldName=theAccount.accountName();
+	        CMLib.genEd().modifyAccount(mob,theAccount);
 		}
+		else
 		if(commands.size()<3) 
 		{ 
 			mob.tell("You have failed to specify the proper fields.\n\rThe format is MODIFY ACCOUNT ([NAME])\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
-		String accountName=CMStrings.capitalizeAndLower(CMParms.combine(commands, 2));
-	    PlayerAccount theAccount = CMLib.players().getLoadAccount(accountName);
-	    if(theAccount==null)
-	    {
-			mob.tell("There is no account called '"+accountName+"'!\n\r");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
-			return;
-	    }
-        CMLib.genEd().modifyAccount(mob,theAccount);
-		mob.location().recoverRoomStats();
-		Log.sysOut("Modify",mob.Name()+" modified account "+theAccount.accountName()+".");
+		else
+		{
+			String accountName=CMStrings.capitalizeAndLower(CMParms.combine(commands, 2));
+		    theAccount = CMLib.players().getLoadAccount(accountName);
+		    if(theAccount==null)
+		    {
+				mob.tell("There is no account called '"+accountName+"'!\n\r");
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+				return;
+		    }
+			oldName=theAccount.accountName();
+	        CMLib.genEd().modifyAccount(mob,theAccount);
+			mob.location().recoverRoomStats();
+		}
+		if(theAccount != null)
+		{
+			Log.sysOut("Modify",mob.Name()+" modified account "+theAccount.accountName()+".");
+	        if(!oldName.equals(theAccount.accountName()))
+	        {
+	        	PlayerAccount acc = (PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
+	        	acc.setAccountName(oldName);
+	        	CMLib.database().DBDeleteAccount(acc);
+	        	CMLib.database().DBCreateAccount(theAccount);
+	        	for(Enumeration<String> es=theAccount.getPlayers();es.hasMoreElements();)
+	        	{
+	        		String playerName=es.nextElement();
+	        		MOB playerM=CMLib.players().getLoadPlayer(playerName);
+	        		if((playerM!=null)&&(!CMLib.flags().isInTheGame(playerM,true)))
+	        			CMLib.database().DBUpdatePlayerPlayerStats(playerM);
+	        	}
+	        }
+        	CMLib.database().DBUpdateAccount(theAccount);
+		}
 	}
 
 	public void areas(MOB mob, Vector commands)

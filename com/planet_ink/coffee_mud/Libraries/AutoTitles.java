@@ -165,7 +165,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 	                {
 		                ptV.removeElementAt(pdex);
 		                if(!CMLib.flags().isInTheGame(M,true))
-		                    CMLib.database().DBUpdatePlayerStatsOnly(M);
+		                    CMLib.database().DBUpdatePlayerPlayerStats(M);
 	                }
 	            }
             }
@@ -191,7 +191,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
             if(M.playerStats()!=null)
             {
                 if((evaluateAutoTitles(M))&&(!CMLib.flags().isInTheGame(M,true)))
-                    CMLib.database().DBUpdatePlayerStatsOnly(M);
+                    CMLib.database().DBUpdatePlayerPlayerStats(M);
             }
         }
     }

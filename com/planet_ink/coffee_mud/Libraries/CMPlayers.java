@@ -253,7 +253,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
             {
             	CMLib.factions().updatePlayerFactions(mob,mob.location());
                 thread.status("just saving "+mob.Name());
-                CMLib.database().DBUpdatePlayerStatsOnly(mob);
+                CMLib.database().DBUpdatePlayerMOBOnly(mob);
                 if((mob.Name().length()==0)||(mob.playerStats()==null))
                     continue;
                 thread.status("saving "+mob.Name()+", "+mob.inventorySize()+" items");
@@ -278,7 +278,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
                ||(mob.playerStats().lastUpdated()<mob.playerStats().lastDateTime())))
             {
                 thread.status("just saving "+mob.Name());
-                CMLib.database().DBUpdatePlayerStatsOnly(mob);
+                CMLib.database().DBUpdatePlayerMOBOnly(mob);
                 if((mob.Name().length()==0)||(mob.playerStats()==null))
                     continue;
                 thread.status("just saving "+mob.Name()+", "+mob.inventorySize()+" items");
@@ -702,7 +702,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
                 if(M.playerStats()!=null)
                 {
                     if((CMLib.titles().evaluateAutoTitles(M))&&(!CMLib.flags().isInTheGame(M,true)))
-                        CMLib.database().DBUpdatePlayerStatsOnly(M);
+                        CMLib.database().DBUpdatePlayerMOBOnly(M);
                 }
             }
             autoPurge();

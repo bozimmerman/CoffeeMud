@@ -7243,35 +7243,32 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         }
     }
     
+    protected void genAccountExpiration(MOB mob, AccountStats A, int showNumber, int showFlag) throws IOException
+    { 
+        if((showFlag>0)&&(showFlag!=showNumber)) return;
+        mob.tell(showNumber+". Expires: "+CMLib.time().date2String(A.getAccountExpiration()));
+        if((showFlag!=showNumber)&&(showFlag>-999)) return;
+        String s=mob.session().prompt("Enter a new value\n\r:","");
+        if(s.length()>0) 
+        	A.setAccountExpiration(CMLib.time().string2Millis(s));
+        else 
+        	mob.tell("(no change)");
+    }
+
     public void modifyAccount(MOB mob, PlayerAccount A) throws IOException
     {
         int showFlag=-1;
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
         boolean ok=false;
-        String oldName=A.accountName();
         while(!ok)
         {
             int showNumber=0;
-            A.setAccountName(prompt(mob,A.accountName(),++showNumber,showFlag,"Name",true,false,null));
+            A.setAccountName(CMStrings.capitalizeAndLower(prompt(mob,A.accountName(),++showNumber,showFlag,"Name",true,false,null)));
         	genEmail(mob, A, ++showNumber, showFlag);
             if(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))
-            {
-            	++showNumber;
-	            if((showFlag<=0)||(showFlag==showNumber))
-	            {
-		            mob.tell(showNumber+". Expires: "+CMLib.time().date2String(A.getAccountExpiration()));
-		            if((showFlag==showNumber)||(showFlag<=-999))
-		            {
-			            String s=mob.session().prompt("Enter a new value\n\r:","");
-			            if(s.length()>0) 
-			            	A.setAccountExpiration(CMLib.time().string2Millis(s));
-			            else 
-			            	mob.tell("(no change)");
-		            }
-	            }
-            }
-            promptStatStr(mob,A,++showNumber,showFlag,"Flags (?): ","FLAGS");
+            	genAccountExpiration(mob,A,++showNumber,showFlag);
+            promptStatStr(mob,A,CMParms.toStringList(PlayerAccount.FLAG_DESCS),++showNumber,showFlag,"Flags (?):","FLAGS",true);
             promptStatStr(mob,A,++showNumber,showFlag,"Notes: ","NOTES");
             for(int x=A.getSaveStatIndex();x<A.getStatCodes().length;x++)
                 A.setStat(A.getStatCodes()[x],prompt(mob,A.getStat(A.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(A.getStatCodes()[x])));

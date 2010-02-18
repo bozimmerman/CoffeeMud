@@ -93,7 +93,7 @@ public class PlayerOnline extends StdWebMacro
 	                        if(M.rawImage().length()>0)
 	                        {
 	                            M.setImage("");
-	                            CMLib.database().DBUpdatePlayerStatsOnly(M);
+	                            CMLib.database().DBUpdatePlayerMOBOnly(M);
 	                        }
 	                    }
 	                    if(canBan&&(parms.containsKey("BANBYEMAIL")))
@@ -114,7 +114,7 @@ public class PlayerOnline extends StdWebMacro
 	                            if(buf.length>MAX_IMAGE_SIZE) return "File `"+file+"` not uploaded -- size exceeds "+MAX_IMAGE_SIZE+" byte limit!";
 	                            String encoded=B64Encoder.B64encodeBytes(buf);
 	                            M.setImage("PlayerPortrait?PLAYER="+M.Name()+"&FILENAME="+M.Name()+System.currentTimeMillis()+file);
-	                            CMLib.database().DBUpdatePlayerStatsOnly(M);
+	                            CMLib.database().DBUpdatePlayerMOBOnly(M);
 	                            CMLib.database().DBReCreateData(M.Name(),"CMPORTRAIT","CMPORTRAIT-"+M.Name(),encoded);
 	                            Resources.submitResource("CMPORTRAIT-"+M.Name(),buf);
 	                            return "Image successfully uploaded.";
