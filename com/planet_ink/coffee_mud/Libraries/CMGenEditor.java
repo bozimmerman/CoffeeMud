@@ -6766,11 +6766,30 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         {
             int showNumber=0;
             genName(mob,me,++showNumber,showFlag);
-            while((!me.Name().equals(oldName))&&(CMLib.players().playerExists(me.Name())))
+            while((!me.Name().equals(oldName))&&(CMLib.players().playerExists(me.Name()))
+            &&(mob.session()!=null)&&(!mob.session().killFlag()))
             {
                 mob.tell("The name given cannot be chosen, as it is already being used.");
                 genName(mob,me,showNumber,showFlag);
             }
+            if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1)
+            {
+            	String oldAccountName = ((mob.playerStats()!=null)&&(mob.playerStats().getAccount()!=null))?mob.playerStats().getAccount().accountName():"";
+            	String accountName =CMStrings.capitalizeAndLower(prompt(mob,oldAccountName,++showNumber,showFlag,"Name",true,false,null));
+	            while((!accountName.equals(oldAccountName))&&(CMLib.players().getLoadAccount(accountName)==null)
+	            &&(mob.session()!=null)&&(!mob.session().killFlag()))
+	            {
+	                mob.tell("The account can not be used, as it does not exist.");
+	                accountName =CMStrings.capitalizeAndLower(prompt(mob,oldAccountName,showNumber,showFlag,"Name",true,false,null));
+	            }
+	            if(!oldAccountName.equals(accountName))
+	            	mob.playerStats().setAccount(CMLib.players().getLoadAccount(accountName));
+	            if(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))
+	            	genAccountExpiration(mob,mob.playerStats().getAccount(),++showNumber,showFlag);
+            }
+            else
+            if(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))
+            	genAccountExpiration(mob,mob.playerStats(),++showNumber,showFlag);
             genPassword(mob,me,++showNumber,showFlag);
 
             genDescription(mob,me,++showNumber,showFlag);
@@ -7261,10 +7280,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
         boolean ok=false;
+        String oldName=A.accountName();
         while(!ok)
         {
             int showNumber=0;
             A.setAccountName(CMStrings.capitalizeAndLower(prompt(mob,A.accountName(),++showNumber,showFlag,"Name",true,false,null)));
+            while((!A.accountName().equals(oldName))&&(CMLib.players().getLoadAccount(A.accountName())!=null)
+            &&(mob.session()!=null)&&(!mob.session().killFlag()))
+            {
+                mob.tell("The name given cannot be chosen, as it is already being used.");
+                A.setAccountName(CMStrings.capitalizeAndLower(prompt(mob,A.accountName(),showNumber,showFlag,"Name",true,false,null)));
+            }
         	genEmail(mob, A, ++showNumber, showFlag);
             if(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))
             	genAccountExpiration(mob,A,++showNumber,showFlag);
