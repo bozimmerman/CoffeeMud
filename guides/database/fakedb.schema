@@ -184,3 +184,9 @@ CMDTYP integer NULL
 CMMODD integer NULL
 CMWHOM string NULL
 CMDATA string NULL
+
+CMACCT
+CMANAM string KEY
+CMPASS string NULL
+CMCHRS string NULL
+CMAXML string NULL

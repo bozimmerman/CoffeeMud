@@ -6774,22 +6774,32 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             }
             if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1)
             {
-            	String oldAccountName = ((mob.playerStats()!=null)&&(mob.playerStats().getAccount()!=null))?mob.playerStats().getAccount().accountName():"";
-            	String accountName =CMStrings.capitalizeAndLower(prompt(mob,oldAccountName,++showNumber,showFlag,"Name",true,false,null));
+            	String oldAccountName = ((me.playerStats()!=null)&&(me.playerStats().getAccount()!=null))?me.playerStats().getAccount().accountName():"";
+            	String accountName =CMStrings.capitalizeAndLower(prompt(mob,oldAccountName,++showNumber,showFlag,"Account",true,false,null));
 	            while((!accountName.equals(oldAccountName))&&(CMLib.players().getLoadAccount(accountName)==null)
 	            &&(mob.session()!=null)&&(!mob.session().killFlag()))
 	            {
 	                mob.tell("The account can not be used, as it does not exist.");
-	                accountName =CMStrings.capitalizeAndLower(prompt(mob,oldAccountName,showNumber,showFlag,"Name",true,false,null));
+	                accountName =CMStrings.capitalizeAndLower(prompt(mob,oldAccountName,showNumber,showFlag,"Account",true,false,null));
 	            }
 	            if(!oldAccountName.equals(accountName))
-	            	mob.playerStats().setAccount(CMLib.players().getLoadAccount(accountName));
+	            {
+	            	PlayerAccount newAccount = CMLib.players().getLoadAccount(accountName);
+	            	me.playerStats().setAccount(newAccount);
+	            	newAccount.addNewPlayer(me);
+	            	PlayerAccount oldAccount = CMLib.players().getLoadAccount(oldAccountName);
+	            	if(oldAccount!=null)
+	            	{
+	            		oldAccount.delPlayer(me);
+	            		CMLib.database().DBUpdateAccount(oldAccount);
+	            	}
+	            }
 	            if(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))
-	            	genAccountExpiration(mob,mob.playerStats().getAccount(),++showNumber,showFlag);
+	            	genAccountExpiration(mob,me.playerStats().getAccount(),++showNumber,showFlag);
             }
             else
             if(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))
-            	genAccountExpiration(mob,mob.playerStats(),++showNumber,showFlag);
+            	genAccountExpiration(mob,me.playerStats(),++showNumber,showFlag);
             genPassword(mob,me,++showNumber,showFlag);
 
             genDescription(mob,me,++showNumber,showFlag);
@@ -7280,21 +7290,22 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
         boolean ok=false;
-        String oldName=A.accountName();
         while(!ok)
         {
             int showNumber=0;
-            A.setAccountName(CMStrings.capitalizeAndLower(prompt(mob,A.accountName(),++showNumber,showFlag,"Name",true,false,null)));
-            while((!A.accountName().equals(oldName))&&(CMLib.players().getLoadAccount(A.accountName())!=null)
+            String acctName=CMStrings.capitalizeAndLower(prompt(mob,A.accountName(),++showNumber,showFlag,"Name",true,false,null));
+            while((!acctName.equals(A.accountName()))
+            &&(CMLib.players().getLoadAccount(acctName)!=null)
             &&(mob.session()!=null)&&(!mob.session().killFlag()))
             {
                 mob.tell("The name given cannot be chosen, as it is already being used.");
-                A.setAccountName(CMStrings.capitalizeAndLower(prompt(mob,A.accountName(),showNumber,showFlag,"Name",true,false,null)));
+                acctName=CMStrings.capitalizeAndLower(prompt(mob,acctName,showNumber,showFlag,"Name",true,false,null));
             }
+            A.setAccountName(acctName);
         	genEmail(mob, A, ++showNumber, showFlag);
             if(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))
             	genAccountExpiration(mob,A,++showNumber,showFlag);
-            promptStatStr(mob,A,CMParms.toStringList(PlayerAccount.FLAG_DESCS),++showNumber,showFlag,"Flags (?):","FLAGS",true);
+            promptStatStr(mob,A,CMParms.toStringList(PlayerAccount.FLAG_DESCS),++showNumber,showFlag,"Flags (?)","FLAGS",true);
             promptStatStr(mob,A,++showNumber,showFlag,"Notes: ","NOTES");
             for(int x=A.getSaveStatIndex();x<A.getStatCodes().length;x++)
                 A.setStat(A.getStatCodes()[x],prompt(mob,A.getStat(A.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(A.getStatCodes()[x])));

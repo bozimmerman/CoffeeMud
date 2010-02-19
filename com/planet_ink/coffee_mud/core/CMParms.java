@@ -222,6 +222,24 @@ public class CMParms
         return V;
     }
 
+    public static Vector parseCommadFlags(String s, String[] flags)
+    {
+        Vector V=new Vector();
+        if((s==null)||(s.length()==0)) return V;
+        int x=s.indexOf(",");
+        while(x>=0)
+        {
+            String s2=s.substring(0,x).trim();
+            s=s.substring(x+1).trim();
+            if((s2.length()>0)&&(CMParms.containsIgnoreCase(flags, s2)))
+                V.addElement(flags[CMParms.indexOfIgnoreCase(flags, s2)]);
+            x=s.indexOf(",");
+        }
+        if((s.length()>0)&&(CMParms.containsIgnoreCase(flags, s)))
+            V.addElement(flags[CMParms.indexOfIgnoreCase(flags, s)]);
+        return V;
+    }
+
     public static Vector parseTabs(String s, boolean ignoreNulls)
     {
         Vector V=new Vector();

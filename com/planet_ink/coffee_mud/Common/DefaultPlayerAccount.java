@@ -86,7 +86,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 		case 4: LastDateTime=CMath.s_long(val); break;
 		case 5: notes=val; break;
 		case 6: accountExpiration=CMath.s_long(val); break;
-		case 7: acctFlags = CMParms.makeHashSet(CMParms.parseCommas(val,true)); break;
+		case 7: acctFlags = CMParms.makeHashSet(CMParms.parseCommadFlags(val.toUpperCase(),PlayerAccount.FLAG_DESCS)); break;
 		case 8: email=val; break;
 		default:
             CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
