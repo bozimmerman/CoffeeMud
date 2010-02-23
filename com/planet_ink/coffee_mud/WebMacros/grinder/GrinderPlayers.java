@@ -103,7 +103,8 @@ public class GrinderPlayers extends GrinderMobs
         "TITLES",
         "FACTIONNAMES",
         "ACCTEXPUSED",
-        "ACCTEXP"
+        "ACCTEXP",
+        "ACCOUNT"
 	};
 	
 	public static int getBasicCode(String val)
@@ -226,7 +227,32 @@ public class GrinderPlayers extends GrinderMobs
 			case 60: break; // CAN'T do titles here!!
 			case 61: break; // dont do faction lists here
 			case 62: break; // dont do accountexpiration flag here.
-			case 63: if(M.playerStats()!=null) M.playerStats().setAccountExpiration(CMLib.time().string2Millis(old)); break;
+			case 63: if(M.playerStats()!=null)
+						M.playerStats().setAccountExpiration(CMLib.time().string2Millis(old));
+					 break;
+			case 64: 
+			{
+				if(M.playerStats()!=null)
+				{
+					String oldAccountName =(M.playerStats().getAccount()!=null) ? M.playerStats().getAccount().accountName() : ""; 
+		            if(!old.equals(oldAccountName))
+		            {
+		            	PlayerAccount newAccount = CMLib.players().getLoadAccount(old);
+		            	if(newAccount != null)
+		            	{
+			            	M.playerStats().setAccount(newAccount);
+			            	newAccount.addNewPlayer(M);
+			            	PlayerAccount oldAccount = (oldAccountName.length()>0)?CMLib.players().getLoadAccount(oldAccountName):null;
+			            	if(oldAccount!=null)
+			            	{
+			            		oldAccount.delPlayer(M);
+			            		CMLib.database().DBUpdateAccount(oldAccount);
+			            	}
+		            	}
+		            }
+				}
+				break;
+			}
 			}
 		}
 		if(M.playerStats()!=null)
