@@ -63,6 +63,31 @@ public class AccountData extends StdWebMacro
 			for(String flag : PlayerAccount.FLAG_DESCS)
 				if(parms.containsKey("IS"+flag))
 					return ""+A.isSet(flag);
+            if(parms.containsKey("FLAGS"))
+            {
+                String old=httpReq.getRequestParameter("FLAGS");
+                Vector set=null;
+                if(old==null)
+                {
+                    String matList=A.getStat("FLAG");
+                    set=CMParms.parseCommas(matList,true);
+                }
+                else
+                {
+                    String id="";
+                    set=new Vector();
+                    for(int i=0;httpReq.isRequestParameter("FLAG"+id);id=""+(++i))
+                        set.addElement(httpReq.getRequestParameter("FLAG"+id));
+                }
+                StringBuffer str=new StringBuffer("");
+                for(int i=0;i<PlayerAccount.FLAG_DESCS.length;i++)
+                {
+                    str.append("<OPTION VALUE=\""+PlayerAccount.FLAG_DESCS[i]+"\"");
+                    if(set.contains(PlayerAccount.FLAG_DESCS[i])) str.append(" SELECTED");
+                    str.append(">"+CMStrings.capitalizeAndLower(PlayerAccount.FLAG_DESCS[i]));
+                }
+                str.append(", ");
+            }
 			if(parms.containsKey("IGNORE"))
 				return ""+CMParms.toStringList(A.getIgnored());
 		}

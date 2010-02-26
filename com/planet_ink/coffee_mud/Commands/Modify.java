@@ -414,17 +414,20 @@ public class Modify extends StdCommand
 			Log.sysOut("Modify",mob.Name()+" modified account "+theAccount.accountName()+".");
 	        if(!oldName.equals(theAccount.accountName()))
 	        {
-	        	PlayerAccount acc = (PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
-	        	acc.setAccountName(oldName);
-	        	CMLib.database().DBDeleteAccount(acc);
-	        	CMLib.database().DBCreateAccount(theAccount);
+            	Vector<MOB> V=new Vector<MOB>();
 	        	for(Enumeration<String> es=theAccount.getPlayers();es.hasMoreElements();)
 	        	{
 	        		String playerName=es.nextElement();
 	        		MOB playerM=CMLib.players().getLoadPlayer(playerName);
 	        		if((playerM!=null)&&(!CMLib.flags().isInTheGame(playerM,true)))
-	        			CMLib.database().DBUpdatePlayerPlayerStats(playerM);
+	        			V.addElement(playerM);
 	        	}
+	        	PlayerAccount acc = (PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
+	        	acc.setAccountName(oldName);
+	        	CMLib.database().DBDeleteAccount(acc);
+	        	CMLib.database().DBCreateAccount(theAccount);
+	        	for(MOB playerM : V)
+        			CMLib.database().DBUpdatePlayerPlayerStats(playerM);
 	        }
         	CMLib.database().DBUpdateAccount(theAccount);
 		}

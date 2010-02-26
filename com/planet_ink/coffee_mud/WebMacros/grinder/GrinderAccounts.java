@@ -31,7 +31,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class GrinderAccounts
 {
     public String name()    {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
@@ -43,6 +42,7 @@ public class GrinderAccounts
         if(last.length()>0)
         {
             PlayerAccount A=CMLib.players().getLoadAccount(last);
+        	String newName=A.accountName();
             if(A!=null)
             {
                 String str=null;
@@ -52,10 +52,7 @@ public class GrinderAccounts
                 {
                 	str=CMStrings.capitalizeAndLower(str);
                     if(CMLib.players().getLoadAccount(str)==null)
-                    {
-                    	String oldName=A.accountName();
-                    	A.setAccountName(str);
-                    }
+                    	newName=str;
                     else
                     	err="Account name '"+str+"' already exists";
                 }
@@ -63,7 +60,45 @@ public class GrinderAccounts
                 if(str!=null) A.setEmail(str);
                 str=httpReq.getRequestParameter("NOTES");
                 if(str!=null) A.setNotes(str);
-                if(err.length()>0) return err;
+                str=httpReq.getRequestParameter("EXPIRATION");
+                if(str!=null)
+                {
+                	if(!CMLib.time().isValidDateString(str))
+                		err="Invalid date string given.";
+                	else
+                	{
+	                	Calendar C=CMLib.time().string2Date(str);
+	                	A.setAccountExpiration(C.getTimeInMillis());
+                	}
+                }
+                String id="";
+                StringBuffer flags=new StringBuffer("");
+                for(int i=0;httpReq.isRequestParameter("FLAG"+id);id=""+(++i))
+                	flags.append(httpReq.getRequestParameter("FLAG"+id)+",");
+                A.setStat("FLAGS",flags.toString());
+                if(err.length()>0) 
+                	return err;
+                else
+                if(!newName.equalsIgnoreCase(A.accountName()))
+                {
+                	Vector<MOB> V=new Vector<MOB>();
+		        	for(Enumeration<String> es=A.getPlayers();es.hasMoreElements();)
+		        	{
+		        		String playerName=es.nextElement();
+		        		MOB playerM=CMLib.players().getLoadPlayer(playerName);
+		        		if((playerM!=null)&&(!CMLib.flags().isInTheGame(playerM,true)))
+		        			V.addElement(playerM);
+		        	}
+                	CMLib.database().DBDeleteAccount(A);
+	            	A.setAccountName(newName);
+	            	CMLib.database().DBCreateAccount(A);
+		        	for(MOB playerM : V)
+	        			CMLib.database().DBUpdatePlayerPlayerStats(playerM);
+                }
+                else
+                {
+	            	CMLib.database().DBUpdateAccount(A);
+                }
             }
         }
         return "";

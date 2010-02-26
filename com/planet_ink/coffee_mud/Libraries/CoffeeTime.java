@@ -226,6 +226,46 @@ public class CoffeeTime extends StdLibrary implements TimeManager
         return D;
     }
 
+    public boolean isValidDateString(String TheDate)
+    {
+        if(TheDate==null)
+            return false;
+        if(TheDate.trim().length()==0)
+            return false;
+        // for those stupid SQLServer date formats, clean them up!
+        if((TheDate.indexOf(".")==19)
+        ||((TheDate.indexOf("-")==4)&&(TheDate.indexOf(":")==13)))
+        {
+            //String TheOldDate=TheDate;
+        	if(!CMath.isInteger(TheDate.substring(11,13)))
+        		return false;
+        	if(!CMath.isInteger(TheDate.substring(14,16)))
+        		return false;
+        	if(!CMath.isInteger(TheDate.substring(0,4)))
+        		return false;
+        	if(!CMath.isInteger(TheDate.substring(5,7)))
+        		return false;
+        	if(!CMath.isInteger(TheDate.substring(8,10)))
+        		return false;
+        }
+        else
+        {
+            // If it has no time, give it one!
+            if((TheDate.indexOf(":")<0)
+            &&(TheDate.indexOf("AM")<0)
+            &&(TheDate.indexOf("PM")<0))
+                TheDate=TheDate+" 5:00 PM";
+            try
+            {
+                DateFormat fmt=DateFormat.getDateTimeInstance(DateFormat.SHORT,DateFormat.SHORT);
+                fmt.parse(TheDate);
+            }
+            catch(ParseException e)
+            { return false; }
+        }
+        return true;
+    }
+    
     private void confirmDateAMPM(String TheDate, Calendar D)
     {
         try

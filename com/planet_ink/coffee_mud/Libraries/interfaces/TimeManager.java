@@ -60,6 +60,15 @@ public interface TimeManager extends CMLibrary
     public String getMonthName(int Number, boolean GiveShort);
     
     /**
+     * Returns whether the given string would parse to a valid
+     * date.  If true is returned, the change of getting a valid
+     * date from string2Date is much higher.
+     * @param TheDate the strong to parse
+     * @return true if its possibly valid, false definitely not
+     */
+    public boolean isValidDateString(String TheDate);
+    
+    /**
      * Converts a string of some form into a Calendar object.
      * 
      * <br><br><b>Usage:</b> Calendar.S2Date(GetRes(Results,"StartDateTime"));
