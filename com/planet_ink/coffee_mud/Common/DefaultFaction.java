@@ -1646,9 +1646,9 @@ public class DefaultFaction implements Faction, MsgListener
 							lightPresenceAbilities = Arrays.copyOf(newAbilities, l);
 					}
 				}
-	            for(Ability A : lightPresenceAbilities)
-	                A.executeMsg(A.invoker(), msg);
 			}
+            for(Ability A : lightPresenceAbilities)
+                A.executeMsg(A.invoker(), msg);
             for(Ability A : myEffects)
                 A.executeMsg(myHost, msg);
             for(Behavior B : myBehaviors)
@@ -1663,12 +1663,9 @@ public class DefaultFaction implements Faction, MsgListener
             for(Behavior B : myBehaviors)
                 if(!B.okMessage(myHost, msg))
                 	return false;
-			synchronized(lightPresenceAbilities)
-			{
-	            for(Ability A : lightPresenceAbilities)
-	                if(!A.okMessage(A.invoker(), msg))
-	                	return false;
-			}
+            for(Ability A : lightPresenceAbilities)
+                if(!A.okMessage(A.invoker(), msg))
+                	return false;
     		return true;
     	}
         public boolean tick(Tickable ticking, int tickID)
@@ -1680,12 +1677,9 @@ public class DefaultFaction implements Faction, MsgListener
             for(Behavior B : myBehaviors)
                 if(!B.tick(ticking, tickID))
                 	return false;
-			synchronized(lightPresenceAbilities)
-			{
-	            for(Ability A : lightPresenceAbilities)
-	                if(!A.tick(A.invoker(), tickID))
-	                	return false;
-			}
+            for(Ability A : lightPresenceAbilities)
+                if(!A.tick(A.invoker(), tickID))
+                	return false;
         	return true;
         }
     }
