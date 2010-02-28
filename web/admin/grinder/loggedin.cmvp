@@ -98,6 +98,10 @@
     	<BR>
     	@endif@
     	@if?CheckAuthCode?AUTH_STAT=true&AUTH_CMDPLAYERS=true&AUTH_LISTADMIN=true@
+	    	@if?IsAccountSystem@
+		    	<A href="javascript:Clicked('accounts.cmvp')"><FONT COLOR=WHITE>Account Manager</FONT></a>
+		    	<BR>
+		    @endif@
     	<A href="javascript:Clicked('players.cmvp')"><FONT COLOR=WHITE>Player Manager</FONT></a>
     	<BR>
     	@endif@

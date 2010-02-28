@@ -213,7 +213,7 @@ public class MobData extends StdWebMacro
 					str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
 				else
 					str.append("<OPTION VALUE=\""+X.ID+"\" SELECTED>"+X.name);
-				str.append("</SELECT>,&nbsp;");
+				str.append("</SELECT>,&nbsp; ");
 			}
 			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=EXPER"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select an Expertise");
@@ -895,7 +895,7 @@ public class MobData extends StdWebMacro
                         String name=CMLib.english().getContextName(classes,C2);
                         str.append("<OPTION "+((C2==C)?"SELECTED":"")+" VALUE=\""+name+"\">"+name+" ("+C2.ID()+")");
                     }
-                str.append("</SELECT>&nbsp;&nbsp;");
+                str.append("</SELECT>&nbsp;&nbsp; ");
                 str.append("<INPUT TYPE=CHECKBOX NAME=ITEMWORN"+(i+1)+" "+(W.booleanValue()?"CHECKED":"")+">Worn/Wielded");
                 str.append("</FONT></TD>");
 				str.append("<TD WIDTH=10%>");
@@ -1141,21 +1141,21 @@ public class MobData extends StdWebMacro
 				if(old.toUpperCase().startsWith("M"))
 				{
 					str.append("<INPUT TYPE=RADIO NAME=GENDER CHECKED VALUE=M>Male");
-					str.append("&nbsp;&nbsp;<INPUT TYPE=RADIO NAME=GENDER VALUE=F>Female");
-					str.append("&nbsp;&nbsp;<INPUT TYPE=RADIO NAME=GENDER VALUE=N>Neuter");
+					str.append("&nbsp;&nbsp; <INPUT TYPE=RADIO NAME=GENDER VALUE=F>Female");
+					str.append("&nbsp;&nbsp; <INPUT TYPE=RADIO NAME=GENDER VALUE=N>Neuter");
 				}
 				else
 				if(old.toUpperCase().startsWith("F"))
 				{
 					str.append("<INPUT TYPE=RADIO NAME=GENDER VALUE=M>Male");
-					str.append("&nbsp;&nbsp;<INPUT TYPE=RADIO CHECKED NAME=GENDER VALUE=F>Female");
-					str.append("&nbsp;&nbsp;<INPUT TYPE=RADIO NAME=GENDER VALUE=N>Neuter");
+					str.append("&nbsp;&nbsp; <INPUT TYPE=RADIO CHECKED NAME=GENDER VALUE=F>Female");
+					str.append("&nbsp;&nbsp; <INPUT TYPE=RADIO NAME=GENDER VALUE=N>Neuter");
 				}
 				else
 				{
 					str.append("<INPUT TYPE=RADIO NAME=GENDER VALUE=M>Male");
-					str.append("&nbsp;&nbsp;<INPUT TYPE=RADIO NAME=GENDER VALUE=F>Female");
-					str.append("&nbsp;&nbsp;<INPUT CHECKED TYPE=RADIO NAME=GENDER VALUE=N>Neuter");
+					str.append("&nbsp;&nbsp; <INPUT TYPE=RADIO NAME=GENDER VALUE=F>Female");
+					str.append("&nbsp;&nbsp; <INPUT CHECKED TYPE=RADIO NAME=GENDER VALUE=N>Neuter");
 				}
 				break;
 			case 10: // height

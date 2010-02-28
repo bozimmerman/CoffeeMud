@@ -31,46 +31,12 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
-public class AccountPlayerNext extends StdWebMacro
+public class IsExpirationSystem extends StdWebMacro
 {
-	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
-			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
-
-		Hashtable parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("PLAYER");
-		if(parms.containsKey("RESET"))
-		{	
-			if(last!=null) httpReq.removeRequestParameter("PLAYER");
-			return "";
-		}
-		String accountName=httpReq.getRequestParameter("ACCOUNT");
-		if(accountName==null) return "";
-		PlayerAccount account=CMLib.players().getLoadAccount(accountName);
-		if(account==null) return "";
-		
-		String lastID="";
-		String sort=httpReq.getRequestParameter("SORTBY");
-		if(sort==null) sort="";
-		Enumeration pe=account.getThinPlayers();
-		for(;pe.hasMoreElements();)
-		{
-			PlayerLibrary.ThinPlayer user=(PlayerLibrary.ThinPlayer)pe.nextElement();
-			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!user.name.equals(lastID))))
-			{
-				httpReq.addRequestParameters("PLAYER",user.name);
-				return "";
-			}
-			lastID=user.name;
-		}
-		httpReq.addRequestParameters("PLAYER","");
-		if(parms.containsKey("EMPTYOK"))
-			return "<!--EMPTY-->";
-		return " @break@";
+		return ""+CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION);
 	}
-
 }

@@ -1,0 +1,219 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_STAT=true&AUTH_CMDPLAYERS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<html>
+<head>
+ 	<link rel="grinder icon" href="/images/grinder.ico" >
+	<title>Account Information</title>
+	<script language=JavaScript>
+	<!--
+		function Delete()
+		{
+			if(confirm('Delete this acount and all of it\'s players?! Confirm!'))
+			{
+				if(confirm('Press OK to Delete this account!'))
+				{
+					document.RESOURCES.action='accountdo.cmvp';
+					document.RESOURCES.FUNCTION.value='DELETE';
+					document.RESOURCES.ACCOUNT.value='@AccountID@';
+					document.RESOURCES.submit();
+				}
+			}
+		}
+		function Edit()
+		{
+			document.RESOURCES.action='account.cmvp';
+			document.RESOURCES.FUNCTION.value='EDIT';
+			document.RESOURCES.ACTION.value='FIRSTTIME';
+			document.RESOURCES.ACCOUNT.value='@AccountID@';
+			document.RESOURCES.submit();
+		}
+		function EditDone()
+		{
+			if(confirm('Submit your changes to this account?'))
+			{
+				document.RESOURCES.action='accountdo.cmvp';
+				document.RESOURCES.FUNCTION.value='EDITACCOUNT';
+				document.RESOURCES.ACTION.value='';
+				document.RESOURCES.ACCOUNT.value='@AccountID@';
+				document.RESOURCES.submit();
+			}
+		}
+		function Boot()
+		{
+			if(confirm('Boot this accounts players off the system?'))
+			{
+				document.RESOURCES.action='accountdo.cmvp';
+				document.RESOURCES.FUNCTION.value='BOOT';
+				document.RESOURCES.ACCOUNT.value='@AccountID@';
+				document.RESOURCES.submit();
+			}
+		}
+		function BanIP()
+		{
+			if(confirm('Ban this account\'s last IP Address?'))
+			{
+				document.RESOURCES.action='accountdo.cmvp';
+				document.RESOURCES.FUNCTION.value='BANBYIP';
+				document.RESOURCES.ACCOUNT.value='@AccountID@';
+				document.RESOURCES.submit();
+			}
+		}
+		function Ban()
+		{
+			if(confirm('Ban this Account?'))
+			{
+				document.RESOURCES.action='accountdo.cmvp';
+				document.RESOURCES.FUNCTION.value='BANBYNAME';
+				document.RESOURCES.ACCOUNT.value='@AccountID@';
+				document.RESOURCES.submit();
+			}
+		}
+		function BanEmail()
+		{
+			if(confirm('Ban this Email Address?'))
+			{
+				document.RESOURCES.action='accountdo.cmvp';
+				document.RESOURCES.FUNCTION.value='BANBYEMAIL';
+				document.RESOURCES.ACCOUNT.value='@AccountID@';
+				document.RESOURCES.submit();
+			}
+		}
+		function ReShow()
+		{
+			document.RESOURCES.FUNCTION.value='EDIT';
+			document.RESOURCES.ACCOUNT.value='@AccountID@';
+			document.RESOURCES.action='/grinder/account.cmvp';
+			document.RESOURCES.submit();
+		}
+		function Cancel()
+		{
+			document.location.href='account.cmvp?AUTH=@Authenticate?AUTH@&ACCOUNT=@AccountID@';
+		}
+	//-->
+	</script>
+</head>
+<body BGCOLOR=BLACK>
+<FORM NAME=RESOURCES TARGET=_top METHOD=POST ACTION="account.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=ACCOUNT VALUE="">
+<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
+<INPUT TYPE=HIDDEN NAME=ITEM VALUE="">
+<INPUT TYPE=HIDDEN NAME=ACTION VALUE="">
+@if?!CheckReqParm?FUNCTION=EDIT@
+	<TABLE WIDTH=100% BORDER=0>
+	<TR>
+	<TD WIDTH=20% ALIGN=CENTER>
+	@if?CheckAuthCode?AUTH_CMDPLAYERS=true@
+		<INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();">
+	@endif@
+	</TD>
+	<TD WIDTH=20% ALIGN=CENTER>
+	@if?AccountOnline?=true@ 
+		@if?CheckAuthCode?AUTH_BOOT=true@
+			<INPUT TYPE=BUTTON NAME=BOOT VALUE="Boot Account" ONCLICK="Boot();">
+		@endif@ 
+	@endif@
+	@if?CheckAuthCode?AUTH_CMDPLAYERS=true@
+		<INPUT TYPE=BUTTON NAME=EDIT VALUE="Edit" ONCLICK="Edit();">
+	@endif@
+	</TD>
+	<TD WIDTH=20% ALIGN=CENTER>
+	@if?CheckAuthCode?AUTH_BAN=true@
+		<INPUT TYPE=BUTTON NAME=BOOT VALUE="Ban Account" ONCLICK="Ban();">
+	@endif@
+	</TD>
+	<TD WIDTH=20% ALIGN=CENTER>
+	@if?CheckAuthCode?AUTH_BAN=true@
+		<INPUT TYPE=BUTTON NAME=BOOT VALUE="Ban IP Address" ONCLICK="BanIP();">
+	@endif@
+	</TD>
+	<TD WIDTH=20% ALIGN=CENTER>
+	<INPUT TYPE=BUTTON NAME=BACK VALUE="Close" ONCLICK="javascript:window.close();">
+	</TD>
+	</TR>
+	</TABLE>
+@endif@
+<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
+<TR>
+	<TD WIDTH=33%><FONT COLOR=YELLOW>Name: </FONT></TD>
+	<TD WIDTH=66%>
+		@if?CheckReqParm?FUNCTION=EDIT@
+			<INPUT TYPE=TEXT NAME=NAME SIZE=20 MAXLENGTH=50 VALUE="@AccountData?NAME@">
+		@else@
+			<FONT COLOR=WHITE>@AccountData?NAME@</FONT>&nbsp;
+		@endif@
+		@if?AccountOnline?=true@<FONT COLOR=YELLOW>&nbsp;&nbsp;&nbsp; *ONLINE*</FONT>@endif@
+	</TD>
+</TR>
+<TR>
+	<TD WIDTH=33%><FONT COLOR=YELLOW>Last IP: </FONT></TD>
+	<TD WIDTH=66%>
+		@if?CheckReqParm?FUNCTION=EDIT@
+			<INPUT TYPE=TEXT NAME=LASTIP SIZE=20 MAXLENGTH=20 VALUE="@AccountData?LASTIP@">
+		@else@
+			<FONT COLOR=WHITE>@AccountData?LASTIP@</FONT>&nbsp;
+		@endif@
+	</TD>
+</TR>
+<TR>
+	<TD WIDTH=33%><FONT COLOR=YELLOW>Last Date: </FONT></TD>
+	<TD WIDTH=66%>
+		@if?CheckReqParm?FUNCTION=EDIT@
+			<INPUT TYPE=TEXT NAME=LASTDATETIME SIZE=20 MAXLENGTH=20 VALUE="@AccountData?LASTDATETIME@">
+		@else@
+			<FONT COLOR=WHITE>@AccountData?LASTDATETIME@</FONT>&nbsp;
+		@endif@
+	</TD>
+</TR>
+<TR>
+	<TD WIDTH=33%><FONT COLOR=YELLOW>Email: </FONT></TD>
+	<TD WIDTH=66%>
+		<INPUT TYPE=TEXT NAME=EMAIL @if?!CheckReqParm?FUNCTION=EDIT@READONLY style="border: 0; color: white; background-color: black;"@endif@ SIZE=60 VALUE="@AccountData?EMAIL@">
+	</TD>
+</TR>
+@if?IsExpirationSystem@
+<TR>
+	<TD WIDTH=33%><FONT COLOR=YELLOW>Expires: </FONT></TD>
+	<TD WIDTH=66%>
+		@if?CheckReqParm?FUNCTION=EDIT@
+			<INPUT TYPE=TEXT NAME=ACCTEXPIRATION SIZE=20 MAXLENGTH=20 VALUE="@AccountData?ACCTEXPIRATION@">
+		@else@
+			<FONT COLOR=WHITE>@AccountData?ACCTEXPIRATION@</FONT>&nbsp;
+		@endif@
+	</TD>
+</TR>
+@endif@
+<TR>
+	<TD WIDTH=33%><FONT COLOR=YELLOW>Notes: </FONT></TD>
+	<TD WIDTH=66%>
+		@if?CheckReqParm?FUNCTION=EDIT@
+        	<TEXTAREA ROWS=10 COLS=55 NAME=NOTES>@AccountData?NOTES@</TEXTAREA>
+		@else@
+			<FONT COLOR=WHITE>@AccountData?NOTES@</FONT>&nbsp;
+		@endif@
+	</TD>
+</TR>
+<TR>
+	<TD WIDTH=33%><FONT COLOR=YELLOW>Player List: </FONT></TD>
+	<TD WIDTH=66%>
+		<FONT COLOR=WHITE>@AccountPlayerNext?RESET@ @loop@ @AccountPlayerNext@ @PlayerID@&nbsp;@back@</FONT>
+	</TD>
+</TR>
+</TABLE>
+@if?CheckReqParm?FUNCTION=EDIT@
+<BR>
+<TABLE WIDTH=100% BORDER=0>
+<TR>
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Finished" ONCLICK="EditDone();"></TD>
+    <TD ALIGN=CENTER><BR></TD>
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Cancel();"></TD>
+</TR>
+@endif@
+</TABLE>
+</FORM>
+</BODY>
+</HTML>
+@endif@
+@endif@

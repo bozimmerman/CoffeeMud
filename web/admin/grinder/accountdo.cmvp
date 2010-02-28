@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_STAT=true&AUTH_CMDPLAYERS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+ 	<link rel="grinder icon" href="/images/grinder.ico" >
+</head>
+<body BGCOLOR=BLACK>
+@if?CheckReqParm?FUNCTION=DELETE@ @MUDGrinder?DELACCOUNT@ 
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+window.close();
+//-->
+</SCRIPT>
+@endif@
+@if?CheckReqParm?FUNCTION=BOOT@ @AccountOnline?BOOT@ 
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+alert('Account @AccountID@ has been booted from the system.');
+document.location.href='account.cmvp?AUTH=@Authenticate?AUTH@&ACCOUNT=@AccountID@';
+//-->
+</SCRIPT>
+@endif@
+@if?CheckReqParm?FUNCTION=BANBYNAME@ @AccountOnline?BANBYNAME@ 
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+alert('Account @AccountID@ has been banned.');
+document.location.href='account.cmvp?AUTH=@Authenticate?AUTH@&ACCOUNT=@AccountID@';
+//-->
+</SCRIPT>
+@endif@
+@if?CheckReqParm?FUNCTION=BANBYEMAIL@ @AccountOnline?BANBYEMAIL@ 
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+alert('Account Email Address has been banned.');
+document.location.href='account.cmvp?AUTH=@Authenticate?AUTH@&ACCOUNT=@AccountID@';
+//-->
+</SCRIPT>
+@endif@
+@if?CheckReqParm?FUNCTION=BANBYIP@ @AccountOnline?BANBYIP@ 
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+alert('Account IP Address has been banned.');
+document.location.href='account.cmvp?AUTH=@Authenticate?AUTH@&ACCOUNT=@AccountID@';
+//-->
+</SCRIPT>
+@endif@
+@if?CheckReqParm?FUNCTION=EDITACCOUNT@
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+var msg ='@MUDGrinder?EDITACCOUNT@';
+if(msg != '')
+{
+	alert(msg);
+	document.location.href='account.cmvp?AUTH=@Authenticate?AUTH@&ACCOUNT=@AccountID@&FUNCTION=EDIT';
+}
+else
+{
+	alert('Account successfully modified.');
+	document.location.href='account.cmvp?AUTH=@Authenticate?AUTH@&ACCOUNT=@AccountID@';
+}
+//-->
+</SCRIPT>
+@endif@
+</BODY>
+</HTML>
+@endif@
+@endif@

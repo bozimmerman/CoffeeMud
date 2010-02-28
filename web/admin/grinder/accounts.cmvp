@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_STAT=true&AUTH_LISTADMIN=true&AUTH_CMDPLAYERS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+ 	<link rel="grinder icon" href="/images/grinder.ico" >
+	<title>Players List</title>
+	<script language=JavaScript>
+	<!--
+		function Sort(action)
+		{
+			document.RESOURCES.SORTBY.value=action;
+			document.RESOURCES.action='/grinder/accounts.cmvp';
+			document.RESOURCES.submit();
+		}
+		function Account(action)
+		{
+			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+			w=window.open("account.cmvp?AUTH=@Authenticate?AUTH@&ACCOUNT="+action,"Account",strFeatures, false);
+		}
+		function Clicked(action)
+		{
+			document.RESOURCES.action=action;
+			document.RESOURCES.submit();
+		}
+		function Player(action)
+		{
+			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+			w=window.open("player.cmvp?AUTH=@Authenticate?AUTH@&PLAYER="+action,"Player",strFeatures, false);
+		}
+		
+	//-->
+	</script>
+</head>
+<body BGCOLOR=BLACK>
+	<TABLE WIDTH=100% BORDER=0><TR>
+	<TD WIDTH=33% ALIGN=LEFT VALIGN=TOP></TD>
+	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP>
+		<IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0">
+	</TD>
+	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP>
+		<TABLE WIDTH=50% BORDER=1>
+		<TR><TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK SIZE=-1><B>Menu</B></FONT></TD></TR>
+		<TR><TD><a href="javascript:Clicked('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
+		
+		@if?CheckAuthCode?AUTH_BAN=true@
+			<TR><TD><a href="javascript:Clicked('banners.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>Banned List</B></FONT></A></TD></TR>
+		@endif@
+		
+		<TR><TD><a href="javascript:Sort('@RequestParameter?SORTBY@');"><FONT COLOR=WHITE SIZE=-1><B>Refresh Page</B></FONT></A></TD></TR>
+		</TABLE>
+	</TD>
+	</TR>
+	</TABLE>
+<CENTER>
+<FORM NAME=RESOURCES TARGET=_top METHOD=POST ACTION="accounts.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=SORTBY VALUE="">
+	<TABLE WIDTH=100% BORDER=1>
+	<TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Account Manager</H2></FONT></TD></TR>
+	<TR>
+	<TD WIDTH=30%><B><a href="javascript:Sort('NAME')"><FONT COLOR=YELLOW>Name</FONT></a></B></TD>
+	@if?IsExpirationSystem@
+		<TD WIDTH=20%><B><a href="javascript:Sort('ACCOUNTEXPIRATION')"><FONT COLOR=YELLOW>Expires</FONT></a></B></TD>
+	@else@
+		<TD WIDTH=20%><B><a href="javascript:Sort('LASTDATETIME')"><FONT COLOR=YELLOW>Last On</FONT></a></B></TD>
+	@endif@
+	<TD WIDTH=15%><B><a href="javascript:Sort('EMAIL')"><FONT COLOR=YELLOW>Email</FONT></a></B></TD>
+	<TD WIDTH=35%><B><FONT COLOR=YELLOW>Players</FONT></B></TD>
+	</TR>
+	@AccountNext?RESET@
+	@loop@
+	<TR>
+	@AccountNext@
+	<TD><a href="javascript:Account('@AccountID@')"><FONT COLOR=WHITE><B>@AccountID@</B></FONT></a>@if?AccountOnline@<FONT COLOR=YELLOW> *</FONT>@endif@</TD>
+	@if?IsExpirationSystem@
+		<TD><FONT COLOR=WHITE>@AccountData?ACCOUNTEXPIRATION@</FONT></TD>
+	@else@
+		<TD><FONT COLOR=WHITE>@AccountData?LASTDATETIME@</FONT></TD>
+	@endif@
+	<TD><FONT COLOR=WHITE>@AccountData?EMAIL@</FONT></TD>
+	<TD><FONT COLOR=WHITE>
+		@AccountPlayerNext?RESET@
+		@loop@
+			@AccountPlayerNext@
+			<a href="javascript:Player('@PlayerID@')"><FONT COLOR=WHITE><B>@PlayerID@</B></FONT></a>@if?PlayerOnline@<FONT COLOR=YELLOW> *</FONT>@endif@&nbsp;
+		@back@
+	</FONT></TD>
+	</TR>
+	@back@
+	</TABLE>
+	<P>
+	<TABLE WIDTH=100% BORDER=0>
+	<TR>
+	<TD WIDTH=33% ALIGN=CENTER>
+	</TD>
+	<TD WIDTH=33% ALIGN=CENTER>
+		<INPUT TYPE=BUTTON NAME=REFRESH VALUE="REFRESH" ONCLICK="Sort('@RequestParameter?SORTBY@');">
+	</TD>
+	<TD WIDTH=33% ALIGN=CENTER>
+	</TD>
+	</TR>
+	</TABLE>
+	<CENTER>
+	</CENTER>
+</FORM>
+</BODY>
+</HTML>
+@endif@
+@endif@

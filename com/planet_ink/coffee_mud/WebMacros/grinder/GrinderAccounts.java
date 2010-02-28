@@ -94,6 +94,7 @@ public class GrinderAccounts
 	            	CMLib.database().DBCreateAccount(A);
 		        	for(MOB playerM : V)
 	        			CMLib.database().DBUpdatePlayerPlayerStats(playerM);
+		        	httpReq.addRequestParameters("ACCOUNT", newName);
                 }
                 else
                 {

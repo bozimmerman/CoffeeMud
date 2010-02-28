@@ -127,6 +127,45 @@ public class MUDGrinder extends StdWebMacro
 			return "The area "+A.Name()+" has been successfully deleted.";
 		}
         else
+        if(parms.containsKey("EDITACCOUNT"))
+        {
+            MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+            if(mob==null) return "@break@";
+            String last=httpReq.getRequestParameter("ACCOUNT");
+            if(last==null) return "@break@";
+            if(last.length()==0) return "@break@";
+            PlayerAccount A=CMLib.players().getLoadAccount(last);
+            if(A==null) return "@break@";
+            if(!CMSecurity.isAllowedEverywhere(mob,"CMDPLAYERS")) return "@break@";
+            String err=new GrinderAccounts().runMacro(httpReq,parm);
+            if(err.length()>0) return err;
+            Log.sysOut("Grinder",mob.Name()+" modified account "+A.accountName());
+            return "";
+        }
+        else
+        if(parms.containsKey("DELACCOUNT"))
+        {
+            MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+            if(mob==null) return "@break@";
+            String last=httpReq.getRequestParameter("ACCOUNT");
+            if(last==null) return "@break@";
+            if(last.length()==0) return "@break@";
+            PlayerAccount A=CMLib.players().getLoadAccount(last);
+            if(A==null) return "@break@";
+            if(!CMSecurity.isAllowedEverywhere(mob,"CMDPLAYERS")) return "@break@";
+    	    String playerList = CMParms.toStringList(A.getPlayers());
+			for(Enumeration<String> p=A.getPlayers();p.hasMoreElements();)
+			{
+				MOB deadMOB=CMLib.players().getLoadPlayer(p.nextElement());
+				CMLib.players().obliteratePlayer(deadMOB,false);
+				Log.sysOut("Grinder",mob.Name()+" destroyed user "+deadMOB.Name()+".");
+				deadMOB.destroy();
+			}
+		    CMLib.players().obliterateAccountOnly(A);
+			Log.sysOut("Grinder",mob.Name()+" destroyed account "+A.accountName()+" and players '"+playerList+"'.");
+            return "";
+        }
+		else
         if(parms.containsKey("DELCATALOGMOB"))
         {
             MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
