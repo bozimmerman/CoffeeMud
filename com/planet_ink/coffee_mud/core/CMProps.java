@@ -200,7 +200,8 @@ public class CMProps extends Properties
     public static final int SYSTEMI_RECOVERRATE=59;
     public static final int SYSTEMI_COMMONACCOUNTSYSTEM=60;
     public static final int SYSTEMI_MAXCONNSPERACCOUNT=61;
-    public static final int NUMI_SYSTEM=62;
+    public static final int SYSTEMI_EXVIEW=62;
+    public static final int NUMI_SYSTEM=63;
 
     public static final int SYSTEMB_MOBCOMPRESS=0;
     public static final int SYSTEMB_ITEMDCOMPRESS=1;
@@ -776,21 +777,32 @@ public class CMProps extends Properties
         else
             setIntVar(SYSTEMI_MANACONSUMEAMT,CMath.s_int(getStr("MANACONSUMEAMT").trim()));
         String s=getStr("COMBATSYSTEM");
-        if(s.equalsIgnoreCase("queue"))
+        if("queue".equalsIgnoreCase(s))
             setIntVar(SYSTEMI_COMBATSYSTEM,CombatLibrary.COMBAT_QUEUE);
         else
-        if(s.equalsIgnoreCase("manual"))
+        if("manual".equalsIgnoreCase(s))
             setIntVar(SYSTEMI_COMBATSYSTEM,CombatLibrary.COMBAT_MANUAL);
         else
             setIntVar(SYSTEMI_COMBATSYSTEM,CombatLibrary.COMBAT_DEFAULT);
         s=getStr("EQVIEW");
-        if(s.equalsIgnoreCase("paragraph"))
+        if("paragraph".equalsIgnoreCase(s))
             setIntVar(SYSTEMI_EQVIEW,2);
         else
-        if(s.equalsIgnoreCase("mixed"))
+        if("mixed".equalsIgnoreCase(s))
             setIntVar(SYSTEMI_EQVIEW,1);
         else
             setIntVar(SYSTEMI_EQVIEW,0);
+        s=getStr("EXVIEW");
+        if("brief".equalsIgnoreCase(s))
+            setIntVar(SYSTEMI_EXVIEW,3);
+        else
+        if("paragraph".equalsIgnoreCase(s))
+            setIntVar(SYSTEMI_EXVIEW,1);
+        else
+        if("mixed".equalsIgnoreCase(s))
+            setIntVar(SYSTEMI_EXVIEW,2);
+        else
+            setIntVar(SYSTEMI_EXVIEW,0);
 
         s=getStr("EXPIRATIONS");
         Vector V=CMParms.parseCommas(s,false);

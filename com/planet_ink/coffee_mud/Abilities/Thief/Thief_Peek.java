@@ -105,7 +105,7 @@ public class Thief_Peek extends ThiefSkill
 			{
 				msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_OK_VISUAL,auto?"":"<S-NAME> peek(s) at <T-NAME>s inventory.",CMMsg.MSG_OK_VISUAL,str,(str==null)?CMMsg.NO_EFFECT:CMMsg.MSG_OK_VISUAL,str);
 				mob.location().send(mob,msg);
-				StringBuffer msg2=CMLib.commands().getInventory(mob,target);
+				StringBuilder msg2=CMLib.commands().getInventory(mob,target);
 				if(msg2.length()==0)
 					mob.tell(target.charStats().HeShe()+" is carrying:\n\rNothing!\n\r");
 				else

@@ -49,7 +49,7 @@ public class BehaviorData extends StdWebMacro
 				StringBuffer str=new StringBuffer("");
 				if(parms.containsKey("HELP"))
 				{
-					StringBuffer s=CMLib.help().getHelpText("BEHAVIOR_"+B.ID(),null,true);
+					StringBuilder s=CMLib.help().getHelpText("BEHAVIOR_"+B.ID(),null,true);
 					if(s==null)	s=CMLib.help().getHelpText(B.ID(),null,true);
 					int limit=70;
 					if(parms.containsKey("LIMIT")) limit=CMath.s_int((String)parms.get("LIMIT"));

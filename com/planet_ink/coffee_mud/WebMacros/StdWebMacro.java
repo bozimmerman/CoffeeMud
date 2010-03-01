@@ -220,13 +220,13 @@ public class StdWebMacro implements WebMacro
         return s.toString();
     }
     
-	protected StringBuffer helpHelp(StringBuffer s){return helpHelp(s,70);}
-	protected StringBuffer helpHelp(StringBuffer s, int limit)
+	protected StringBuilder helpHelp(StringBuilder s){return helpHelp(s,70);}
+	protected StringBuilder helpHelp(StringBuilder s, int limit)
 	{
 		if(s!=null)
 		{
             String[] lookup=CMLib.color().standardHTMLlookups();
-			s=new StringBuffer(s.toString());
+			s=new StringBuilder(s.toString());
 			int x=s.toString().indexOf("\n\r");
 			while(x>=0){	s.replace(x,x+2,"<BR>"); x=s.toString().indexOf("\n\r");}
 			x=s.toString().indexOf("\r\n");
@@ -311,7 +311,7 @@ public class StdWebMacro implements WebMacro
 			}
 			return s;
 		}
-		return new StringBuffer("");
+		return new StringBuilder("");
 	}
 	
 	protected DVector parseOrderedParms(String parm)

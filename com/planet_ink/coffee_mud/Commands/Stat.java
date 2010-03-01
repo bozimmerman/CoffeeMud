@@ -332,7 +332,7 @@ public class Stat  extends Skills
 		&&(commands.firstElement() instanceof String)
 		&&((String)commands.firstElement()).equals("?"))
 		{
-			StringBuffer msg = new StringBuffer("STAT allows the following options: \n\r");
+			StringBuilder msg = new StringBuilder("STAT allows the following options: \n\r");
 			msg.append("[MOB/PLAYER NAME], [NUMBER] [DAYS/WEEKS/MONTHS], ");
 			for(int i=0;i<ABLETYPE_DESCS.length;i++)
 				msg.append(ABLETYPE_DESCS[i][0]+", ");
@@ -426,7 +426,7 @@ public class Stat  extends Skills
 			return false;
 		}
 
-		StringBuffer str=new StringBuffer("");
+		StringBuilder str=new StringBuilder("");
 		if(ableTypes>=0)
 		{
 			Vector V=new Vector();
@@ -531,7 +531,7 @@ public class Stat  extends Skills
 					int pct=mob.playerStats().percentVisited(target, A);
 					if(pct>0) str.append("^H"+A.name()+"^N: "+pct+"%, ");
 				}
-				str=new StringBuffer(str.toString().substring(0,str.toString().length()-2)+"\n\r");
+				str=new StringBuilder(str.toString().substring(0,str.toString().length()-2)+"\n\r");
 			}
 			else
 				str.append("Exploration data is not kept on mobs.\n\r");
@@ -547,7 +547,7 @@ public class Stat  extends Skills
 					if((R.roomID().length()>0)&&(mob.playerStats().hasVisited(R)))
 						str.append("^H"+R.roomID()+"^N, ");
 				}
-				str=new StringBuffer(str.toString().substring(0,str.toString().length()-2)+"\n\r");
+				str=new StringBuilder(str.toString().substring(0,str.toString().length()-2)+"\n\r");
 			}
 			else
 				str.append("Exploration data is not kept on mobs.\n\r");
@@ -672,7 +672,7 @@ public class Stat  extends Skills
 		test.affectEnvStats(target,M.envStats());
 		test.affectCharState(target,M.maxState());
 	}
-	public void reportOnDiffMOB(Environmental test, int diff, StringBuffer str)
+	public void reportOnDiffMOB(Environmental test, int diff, StringBuilder str)
 	{
 		if(diff>0)
 			str.append("^C"+CMStrings.padRight(test.Name(),40)+": ^W+"+diff+"\n\r");

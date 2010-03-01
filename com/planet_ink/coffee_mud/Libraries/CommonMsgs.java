@@ -78,31 +78,31 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		return false;
 	}
 
-	public StringBuffer getScore(MOB mob)
+	public StringBuilder getScore(MOB mob)
 	{
 		Vector V=new Vector();
 		forceStandardCommand(mob,"Score",V);
-		if((V.size()==1)&&(V.firstElement() instanceof StringBuffer))
-			return (StringBuffer)V.firstElement();
-		return new StringBuffer("");
+		if((V.size()==1)&&(V.firstElement() instanceof StringBuilder))
+			return (StringBuilder)V.firstElement();
+		return new StringBuilder("");
 	}
-	public StringBuffer getEquipment(MOB viewer, MOB mob)
+	public StringBuilder getEquipment(MOB viewer, MOB mob)
 	{
 		Vector V=new Vector();
 		V.addElement(viewer);
 		forceStandardCommand(mob,"Equipment",V);
-		if((V.size()>1)&&(V.elementAt(1) instanceof StringBuffer))
-			return (StringBuffer)V.elementAt(1);
-		return new StringBuffer("");
+		if((V.size()>1)&&(V.elementAt(1) instanceof StringBuilder))
+			return (StringBuilder)V.elementAt(1);
+		return new StringBuilder("");
 	}
-	public StringBuffer getInventory(MOB viewer, MOB mob)
+	public StringBuilder getInventory(MOB viewer, MOB mob)
 	{
 		Vector V=new Vector();
 		V.addElement(viewer);
 		forceStandardCommand(mob,"Inventory",V);
-		if((V.size()>1)&&(V.elementAt(1) instanceof StringBuffer))
-			return (StringBuffer)V.elementAt(1);
-		return new StringBuffer("");
+		if((V.size()>1)&&(V.elementAt(1) instanceof StringBuilder))
+			return (StringBuilder)V.elementAt(1);
+		return new StringBuilder("");
 	}
 
 	public void postChannel(MOB mob,
@@ -580,7 +580,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 
     public String examineItemString(MOB mob, Item item)
     {
-        StringBuffer response=new StringBuffer("");
+        StringBuilder response=new StringBuilder("");
         String level=null;
         if((mob!=null)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<10))
         {
@@ -665,8 +665,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	            else
 	                response.append(" It is your size, and is ");
 	            response.append(((item.rawProperLocationBitmap()==Wearable.WORN_HELD)||(item.rawProperLocationBitmap()==(Wearable.WORN_HELD|Wearable.WORN_WIELD)))
-	            					 ?new StringBuffer("")
-	            					 :new StringBuffer("worn on the "));
+	            					 ?new StringBuilder("")
+	            					 :new StringBuilder("worn on the "));
 	            Wearable.CODES codes = Wearable.CODES.instance();
 	            for(long wornCode : codes.all())
 	            	if((wornCode != Wearable.IN_INVENTORY)
@@ -711,7 +711,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             return;
         }
 
-        StringBuffer buf=new StringBuffer("");
+        StringBuilder buf=new StringBuilder("");
         if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
             buf.append(item.ID()+"\n\rRejuv :"+item.baseEnvStats().rejuv()
 		                    +"\n\rType  :"+item.ID()
@@ -812,7 +812,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
     protected void handleBeingRoomSniffed(CMMsg msg)
     {
         Room room=(Room)msg.target();
-        StringBuffer smell=new StringBuffer("");
+        StringBuilder smell=new StringBuilder("");
         switch(room.domainType())
         {
         case Room.DOMAIN_INDOORS_UNDERWATER:
@@ -878,16 +878,16 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 
     protected void handleBeingRoomLookedAt(CMMsg msg)
     {
-
         MOB mob=msg.source();
-        if(mob.session()==null) return; // no need for monsters to build all this data
+        if(mob.session()==null) 
+        	return; // no need for monsters to build all this data
 
         Room room=(Room)msg.target();
         int lookCode=LOOK_LONG;
         if(msg.targetMinor()!=CMMsg.TYP_EXAMINE)
             lookCode=(msg.sourceMessage()==null)?LOOK_BRIEFOK:LOOK_NORMAL;
 
-        StringBuffer Say=new StringBuffer("");
+        StringBuilder Say=new StringBuilder("");
         boolean compress=CMath.bset(mob.getBitmap(),MOB.ATT_COMPRESS);
         if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
         {
@@ -905,9 +905,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             Say.append("^O^<RName^>" + room.roomTitle(mob)+"^</RName^>"+CMLib.flags().colorCodes(room,mob)+"^L\n\r");
             if((lookCode!=LOOK_BRIEFOK)||(!CMath.bset(mob.getBitmap(),MOB.ATT_BRIEF)))
             {
+                String roomDesc=room.roomDescription(mob);
                 if(lookCode==LOOK_LONG)
                 {
-                    String roomDesc=room.roomDescription(mob);
                     Vector keyWords=null;
                     String word=null;
                     int x=0;
@@ -950,10 +950,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                             }
                         }
                     }
-                    Say.append("^L^<RDesc^>"+roomDesc+"^</RDesc^>");
                 }
-                else
-                    Say.append("^L^<RDesc^>" + room.roomDescription(mob)+"^</RDesc^>");
+                if((CMProps.getIntVar(CMProps.SYSTEMI_EXVIEW)==1)||(CMProps.getIntVar(CMProps.SYSTEMI_EXVIEW)==2))
+                	roomDesc += getRoomExitsParagraph(mob,room);
+                Say.append("^L^<RDesc^>" + roomDesc+"^</RDesc^>");
+                
                 if((!mob.isMonster())&&(mob.session().clientTelnetMode(Session.TELNET_MXP)))
                     Say.append(CMProps.mxpImage(room," ALIGN=RIGHT H=70 W=70"));
                 if(compress)
@@ -978,7 +979,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             }
         }
 
-        StringBuffer itemStr=CMLib.lister().lister(mob,viewItems,false,"RItem"," \"*\"",lookCode==LOOK_LONG,compress);
+        StringBuilder itemStr=CMLib.lister().lister(mob,viewItems,false,"RItem"," \"*\"",lookCode==LOOK_LONG,compress);
         if(itemStr.length()>0)
             Say.append(itemStr);
 
@@ -1033,7 +1034,72 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         }
     }
 
+    private static String getRoomExitsParagraph(MOB mob, Room room)
+    {
+    	if(room == null || mob == null)
+	    	return "";
+    	StringBuilder str = new StringBuilder("");
+    	Vector<Integer> exitDirs=new Vector<Integer>();
+    	Room R;
+    	Exit E;
+    	for(int dir : Directions.DIRECTIONS_BASE())
+    	{
+    		E = room.getExitInDir(dir);
+    		R = room.getRoomInDir(dir);
+            if((R!=null)&&(E!=null)&&(CMLib.flags().canBeSeenBy(E,mob)))
+            	exitDirs.add(Integer.valueOf(dir));
+    	}
+    	String title = room.displayText();
+    	// do continues first
+    	Vector<Integer> continues = new Vector<Integer>();
+    	for(int i=exitDirs.size()-1;i>=0;i--)
+    	{
+    		R = room.getRoomInDir(exitDirs.elementAt(i).intValue());
+    		if((R!=null)&&(R.displayText().equalsIgnoreCase(title)))
+				continues.addElement(exitDirs.remove(i));
+    	}
+    	
+    	if(continues.size()>0)
+    	{
+			str.append("  ^L"+CMStrings.capitalizeFirstLetter(room.roomTitle(mob)).trim()+" continues ");
+			if(continues.size()==1)
+				str.append(Directions.getInDirectionName(continues.firstElement().intValue())+".");
+			else
+			{
+				for(int i=0;i<continues.size()-1;i++)
+					str.append(Directions.getDirectionName(continues.elementAt(i)).toLowerCase().trim()+", ");
+				str.append("and "+Directions.getInDirectionName(continues.lastElement().intValue()).trim()+".");
+			}
+    	}
+    	boolean style=CMLib.dice().rollPercentage()>50;
+    	if(exitDirs.size()>0)
+    	{
+			str.append("  ^L"+CMStrings.capitalizeFirstLetter(getExitFragment(mob,room,exitDirs.firstElement().intValue(),style)).trim());
+	    	if(exitDirs.size()>1)
+	    	{
+	    		str.append("^L, ");
+				for(int i=1;i<exitDirs.size()-1;i++)
+					str.append(getExitFragment(mob,room,exitDirs.elementAt(i).intValue(),style).trim()+"^L, ");
+				str.append("and "+getExitFragment(mob,room,exitDirs.lastElement().intValue(),style).trim());
+	    	}
+	    	str.append("^L.");
+    	}
+    	return str.toString();
+    }
 
+    private static String getExitFragment(MOB mob, Room room, int dir, boolean style)
+    {
+    	if(room==null) return "";
+    	Exit exit = room.getExitInDir(dir);
+    	if(exit == null) return "";
+    	if(style)
+			return Directions.getInDirectionName(dir)
+				   + " is " +exit.viewableText(mob, room.getRoomInDir(dir));
+    	else
+    		return exit.viewableText(mob, room.getRoomInDir(dir)).toString().trim()
+    			   +" is " + Directions.getInDirectionName(dir);
+    }
+    	
     private static boolean isAClearExitView(MOB mob, Room room, Exit exit)
     {
         if((room!=null)
@@ -1122,7 +1188,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                             if(E!=null) items.addElement(E);
                         }
                     }
-                    StringBuffer seenThatWay=CMLib.lister().lister(msg.source(),items,true,"","",false,true);
+                    StringBuilder seenThatWay=CMLib.lister().lister(msg.source(),items,true,"","",false,true);
                     if(seenThatWay.length()>0)
                         mob.tell("Yonder, you can also see: "+seenThatWay.toString());
                 }
@@ -1146,7 +1212,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         MOB viewermob=msg.source();
         MOB viewedmob=(MOB)msg.target();
         boolean longlook=msg.targetMinor()==CMMsg.TYP_EXAMINE;
-        StringBuffer myDescription=new StringBuffer("");
+        StringBuilder myDescription=new StringBuilder("");
         if(CMLib.flags().canBeSeenBy(viewedmob,viewermob))
         {
             if(CMath.bset(viewermob.getBitmap(),MOB.ATT_SYSOPMSGS))
@@ -1211,7 +1277,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             myDescription.append(viewedmob.healthText(viewermob)+"\n\r\n\r");
             myDescription.append(viewedmob.description()+"\n\r\n\r");
 
-            StringBuffer eq=CMLib.commands().getEquipment(viewermob,viewedmob);
+            StringBuilder eq=CMLib.commands().getEquipment(viewermob,viewedmob);
             if(eq.length() > 0)
             {
                 if((CMProps.getIntVar(CMProps.SYSTEMI_EQVIEW)>1)
@@ -1443,13 +1509,13 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             return;
         }
 
-        StringBuffer buf=new StringBuffer("^DObvious exits:^.^N\n\r");
+        StringBuilder buf=new StringBuilder("^DObvious exits:^.^N\n\r");
         String Dir=null;
         for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
         {
             Exit exit=room.getExitInDir(d);
             Room room2=room.getRoomInDir(d);
-            StringBuffer Say=new StringBuffer("");
+            StringBuilder Say=new StringBuilder("");
             if(exit!=null)
                 Say=exit.viewableText(mob, room2);
             else
@@ -1472,7 +1538,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             I=room.fetchItem(i);
             if((I instanceof Exit)&&(((Exit)I).doorName().length()>0))
             {
-                StringBuffer Say=((Exit)I).viewableText(mob, room);
+                StringBuilder Say=((Exit)I).viewableText(mob, room);
                 if(Say.length()>5)
                     buf.append("^D^<MEX^>" + ((Exit)I).doorName()+"^</MEX^>:^.^N ^d"+Say+"^.^N\n\r");
                 else
@@ -1488,7 +1554,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         if((mob==null)||(room==null)||(mob.isMonster())) return;
         if(!CMLib.flags().canSee(mob)) return;
 
-        StringBuffer buf=new StringBuffer("^D[Exits: ");
+        StringBuilder buf=new StringBuilder("^D[Exits: ");
         for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
         {
             Exit exit=room.getExitInDir(d);

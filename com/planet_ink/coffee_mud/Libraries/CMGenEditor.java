@@ -2963,7 +2963,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                             {
                                 parms=chosenOne.getParms();
                                 parms=mob.session().prompt("Enter any behavior parameters (?)\n\r:"+parms);
-                                if(parms.equals("?")){ StringBuffer s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true); if(s2!=null) mob.tell(s2.toString()); else mob.tell("no help!");}
+                                if(parms.equals("?")){ StringBuilder s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true); if(s2!=null) mob.tell(s2.toString()); else mob.tell("no help!");}
                             }
                             chosenOne.setParms(parms.trim());
                             if(!alreadyHasIt)
@@ -3040,7 +3040,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                             {
                                 parms=chosenOne.text();
                                 parms=mob.session().prompt("Enter any effect parameters (?)\n\r:"+parms);
-                                if(parms.equals("?")){ StringBuffer s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true); if(s2!=null) mob.tell(s2.toString()); else mob.tell("no help!");}
+                                if(parms.equals("?")){ StringBuilder s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true); if(s2!=null) mob.tell(s2.toString()); else mob.tell("no help!");}
                             }
                             chosenOne.setMiscText(parms.trim());
                             mob.tell(chosenOne.ID()+" added.");
@@ -3533,7 +3533,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                                 {
                                     parms=chosenOne.text();
                                     parms=mob.session().prompt("Enter any effect parameters (?)\n\r:"+parms);
-                                    if(parms.equals("?")){ StringBuffer s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true); if(s2!=null) mob.tell(s2.toString()); else mob.tell("no help!");}
+                                    if(parms.equals("?")){ StringBuilder s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true); if(s2!=null) mob.tell(s2.toString()); else mob.tell("no help!");}
                                 }
                                 chosenOne.setMiscText(parms.trim());
                             }

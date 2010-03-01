@@ -880,8 +880,8 @@ public class Quests extends StdLibrary implements QuestManager
                     showNumber--;
                     continue;
                 }
-                StringBuffer help=CMLib.help().getHelpText(behavior,mob,true);
-                if(help==null) help=new StringBuffer("No help on '"+behavior+"'");
+                StringBuilder help=CMLib.help().getHelpText(behavior,mob,true);
+                if(help==null) help=new StringBuilder("No help on '"+behavior+"'");
                 parms=CMLib.genEd().prompt(mob,parms,showNumber,showFlag,"Behavior Parameters",help.toString());
                 behaviors.setElementAt(b,1,behavior);
                 behaviors.setElementAt(b,2,parms);
@@ -938,8 +938,8 @@ public class Quests extends StdLibrary implements QuestManager
                     showNumber--;
                     continue;
                 }
-                StringBuffer help=CMLib.help().getHelpText(propertyID,mob,true);
-                if(help==null) help=new StringBuffer("No help on '"+propertyID+"'");
+                StringBuilder help=CMLib.help().getHelpText(propertyID,mob,true);
+                if(help==null) help=new StringBuilder("No help on '"+propertyID+"'");
                 parms=CMLib.genEd().prompt(mob,parms,showNumber,showFlag,"Ability Parameters",help.toString());
                 properties.setElementAt(p,1,propertyID);
                 properties.setElementAt(p,2,parms);

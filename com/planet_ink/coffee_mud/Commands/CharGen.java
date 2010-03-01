@@ -1014,7 +1014,7 @@ public class CharGen extends StdCommand
 				avgMob.bringToLife(mob.location(),true);
 			else
 			{
-				StringBuffer msg=CMLib.commands().getScore(avgMob);
+				StringBuilder msg=CMLib.commands().getScore(avgMob);
 				if(!mob.isMonster())
 					mob.session().wraplessPrintln(msg.toString());
 		        avgMob.destroy();

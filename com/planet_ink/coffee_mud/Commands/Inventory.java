@@ -88,7 +88,7 @@ public class Inventory extends StdCommand
 
 	protected static String getShowableMoney(InventoryList list)
 	{
-		StringBuffer msg=new StringBuffer("");
+		StringBuilder msg=new StringBuilder("");
 		if(list.moneyItems.size()>0)
 		{
 		    msg.append("\n\r^HMoney:^N\n\r");
@@ -113,9 +113,9 @@ public class Inventory extends StdCommand
 		return msg.toString();
 	}
 	
-	public static StringBuffer getInventory(MOB seer, MOB mob, String mask)
+	public static StringBuilder getInventory(MOB seer, MOB mob, String mask)
 	{
-		StringBuffer msg=new StringBuffer("");
+		StringBuilder msg=new StringBuilder("");
 		InventoryList list = fetchInventory(seer,mob);
 		if(((list.viewItems.size()>0)||(list.moneyItems.size()>0))
         &&(!list.foundAndSeen))
@@ -170,7 +170,7 @@ public class Inventory extends StdCommand
 			commands.addElement(getInventory((MOB)commands.firstElement(),mob,null));
 			return true;
 		}
-		StringBuffer msg=getInventory(mob,mob,CMParms.combine(commands,1));
+		StringBuilder msg=getInventory(mob,mob,CMParms.combine(commands,1));
 		if(msg.length()==0)
 			mob.tell("^HYou are carrying:\n\r^!Nothing!^?\n\r");
 		else

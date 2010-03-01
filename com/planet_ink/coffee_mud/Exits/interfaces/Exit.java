@@ -182,7 +182,7 @@ public interface Exit extends Environmental
 	 * @param myRoom the room from which the mob sees the exit
 	 * @return the description of this exit from the given player pov
 	 */
-	public StringBuffer viewableText(MOB mob, Room myRoom);
+	public StringBuilder viewableText(MOB mob, Room myRoom);
 	
 	/**
 	 * Returns the short name of this door, e.g. gate, door, portal, etc..

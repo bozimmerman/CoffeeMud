@@ -64,10 +64,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		return CMClass.getAbility(helpStr)!=null;
     }
     
-    public StringBuffer getHelpText(String helpStr, MOB forMOB, boolean favorAHelp)
+    public StringBuilder getHelpText(String helpStr, MOB forMOB, boolean favorAHelp)
     {
         if(helpStr.length()==0) return null;
-        StringBuffer thisTag=null;
+        StringBuilder thisTag=null;
         if(favorAHelp)
         {
             if(getArcHelpFile().size()>0)
@@ -158,7 +158,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
     	else
     		getHelpFile().put(ID.toUpperCase(),text);
     }
-	private void appendAllowed(StringBuffer prepend, String ID)
+	private void appendAllowed(StringBuilder prepend, String ID)
 	{
 		Vector allows=CMLib.ableMapper().getAbilityAllowsList(ID);
 		ExpertiseLibrary.ExpertiseDefinition def=null;
@@ -242,7 +242,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			}
 			else
 				currencies.addElement(CMLib.beanCounter().getCurrency(forMOB.location()));
-			StringBuffer help=new StringBuffer("");
+			StringBuilder help=new StringBuilder("");
 			if(worldCurrency)
 				help.append("\n\r"+CMStrings.padRight("World Currencies",20)+":");
 			for(Enumeration e=currencies.elements();e.hasMoreElements();)
@@ -283,7 +283,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				def=(ExpertiseLibrary.ExpertiseDefinition)e.nextElement();
 				if(def.name.toUpperCase().replace(' ','_').equals(tag.toUpperCase()))
 				{
-					StringBuffer prepend=new StringBuffer("");
+					StringBuilder prepend=new StringBuilder("");
 					prepend.append("\n\rExpertise: "+def.name);
 					prepend.append("\n\rRequires : "+CMLib.masking().maskDesc(def.allRequirements(),true));
 					appendAllowed(prepend,def.ID);
@@ -350,7 +350,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				&&(!helpedPreviously.contains(A)))
 				{
 					helpedPreviously.addElement(A);
-					StringBuffer prepend=new StringBuffer("");
+					StringBuilder prepend=new StringBuilder("");
 					type=(A.classificationCode()&Ability.ALL_ACODES);
 					prepend.append("\n\r");
 					switch(type)
@@ -552,9 +552,9 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		return str;
 	}
 
-	public StringBuffer getHelpText(String helpStr, Properties rHelpFile, MOB forMOB)
+	public StringBuilder getHelpText(String helpStr, Properties rHelpFile, MOB forMOB)
 	{ return getHelpText(helpStr,rHelpFile,forMOB,false);}
-	public StringBuffer getHelpText(String helpStr, Properties rHelpFile, MOB forMOB, boolean noFix)
+	public StringBuilder getHelpText(String helpStr, Properties rHelpFile, MOB forMOB, boolean noFix)
 	{
 		helpStr=helpStr.toUpperCase().trim();
 		if(helpStr.indexOf(" ")>=0)
@@ -671,7 +671,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			        {
 			            Coins C2=CMLib.beanCounter().makeCurrency(currency,denom,1);
 			            if((C2!=null)&&(C2.description().length()>0))
-			                return new StringBuffer(C2.name()+" is "+C2.description().toLowerCase());
+			                return new StringBuilder(C2.name()+" is "+C2.description().toLowerCase());
 			        }
 			    }
 			}
@@ -749,14 +749,14 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		// the area exception
 		if((thisTag==null)||(thisTag.length()==0))
 			if(CMLib.map().getArea(helpStr.trim())!=null)
-				return CMLib.map().getArea(helpStr.trim()).getAreaStats();
+				return new StringBuilder(CMLib.map().getArea(helpStr.trim()).getAreaStats().toString());
 		if((thisTag==null)||(thisTag.length()==0))
 			return null;
-		if(noFix) return new StringBuffer(thisTag);
-		return new StringBuffer(fixHelp(helpStr,thisTag,forMOB));
+		if(noFix) return new StringBuilder(thisTag);
+		return new StringBuilder(fixHelp(helpStr,thisTag,forMOB));
 	}
 
-	public StringBuffer getHelpList(String helpStr, 
+	public StringBuilder getHelpList(String helpStr, 
                         	       Properties rHelpFile1, 
                         	       Properties rHelpFile2, 
                         	       MOB forMOB)
@@ -782,7 +782,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			    matches.addElement(key.toUpperCase());
 		}
 		if(matches.size()==0)
-		    return new StringBuffer("");
+		    return new StringBuilder("");
 		return CMLib.lister().fourColumns(matches);
 	}
 	

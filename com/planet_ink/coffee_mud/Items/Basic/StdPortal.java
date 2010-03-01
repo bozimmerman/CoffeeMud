@@ -196,16 +196,16 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	public boolean isReadable(){return false;}
 	public void setReadable(boolean isTrue){}
 
-	private static final StringBuffer empty=new StringBuffer("");
+	private static final StringBuilder empty=new StringBuilder("");
 	
-	public StringBuffer viewableText(MOB mob, Room myRoom)
+	public StringBuilder viewableText(MOB mob, Room myRoom)
 	{
 		Vector V=CMParms.parseSemicolons(readableText(),true);
 		Room room=myRoom;
 		if(V.size()>0)
 		    room=CMLib.map().getRoom((String)V.elementAt(CMLib.dice().roll(1,V.size(),-1)));
 		if(room==null) return empty;
-		StringBuffer Say=new StringBuffer("");
+		StringBuilder Say=new StringBuilder("");
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 		{
 			if(room==null)

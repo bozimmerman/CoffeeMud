@@ -455,9 +455,9 @@ public class StdExit implements Exit
 		return true;
 	}
 
-	public StringBuffer viewableText(MOB mob, Room room)
+	public StringBuilder viewableText(MOB mob, Room room)
 	{
-		StringBuffer Say=new StringBuffer("");
+		StringBuilder Say=new StringBuilder("");
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
 		{
 			if(room==null)

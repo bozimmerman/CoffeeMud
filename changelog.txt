@@ -2249,3 +2249,5 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
  b.For transition muds: char selection IMPORT command lets players import their old chars to new accounts.
  c.EXPIRATION system works with accounts, when common account system is enabled. 
 22.New command: LOGOUT/LOGOFF -- exits back to login prompt/char selection
+23.New INI entry: EXVIEW, for selecting types of exit views for the players
+

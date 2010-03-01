@@ -47,16 +47,16 @@ public class Help extends StdCommand
 			mob.tell("No help is available.");
 			return false;
 		}
-		StringBuffer thisTag=null;
+		StringBuilder thisTag=null;
 		if(helpStr.length()==0)
-			thisTag=Resources.getFileResource("help/help.txt",true);
+			thisTag=new StringBuilder(Resources.getFileResource("help/help.txt",true));
 		else
 			thisTag=CMLib.help().getHelpText(helpStr,CMLib.help().getHelpFile(),mob);
 		if((thisTag==null)&&(CMSecurity.isAllowed(mob,mob.location(),"AHELP")))
 			thisTag=CMLib.help().getHelpText(helpStr,CMLib.help().getArcHelpFile(),mob);
 		if(thisTag==null)
 		{
-			StringBuffer thisList=
+			StringBuilder thisList=
 	    		CMLib.help().getHelpList(
 		        helpStr,
 		        CMLib.help().getHelpFile(),

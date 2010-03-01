@@ -34,9 +34,9 @@ import java.util.*;
 public interface CommonCommands extends CMLibrary
 {
     public boolean forceStandardCommand(MOB mob, String command, Vector parms);
-    public StringBuffer getScore(MOB mob);
-    public StringBuffer getEquipment(MOB viewer, MOB mob);
-    public StringBuffer getInventory(MOB viewer, MOB mob);
+    public StringBuilder getScore(MOB mob);
+    public StringBuilder getEquipment(MOB viewer, MOB mob);
+    public StringBuilder getInventory(MOB viewer, MOB mob);
     public void postChannel(MOB mob, String channelName, String message, boolean systemMsg);
     public void postChannel(String channelName, String clanID, String message, boolean systemMsg);
     public boolean postDrop(MOB mob, Environmental dropThis, boolean quiet, boolean optimized);

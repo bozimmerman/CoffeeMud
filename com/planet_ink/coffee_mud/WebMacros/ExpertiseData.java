@@ -52,7 +52,7 @@ public class ExpertiseData extends StdWebMacro
 				StringBuffer str=new StringBuffer("");
 				if(parms.containsKey("HELP"))
 				{
-					StringBuffer s=CMLib.help().getHelpText(E.ID,null,false);
+					StringBuilder s=CMLib.help().getHelpText(E.ID,null,false);
 					if(s==null)
 						s=CMLib.help().getHelpText(E.name,null,false);
 					int limit=70;
@@ -68,11 +68,11 @@ public class ExpertiseData extends StdWebMacro
 					if(s!=null) 
 					{
 						if(s.toUpperCase().trim().startsWith("<EXPERTISE>"))s=s.trim().substring(11);
-						str.append(helpHelp(new StringBuffer(s))+", ");
+						str.append(helpHelp(new StringBuilder(s))+", ");
 					}
 					else
 					{
-						StringBuffer s2=CMLib.help().getHelpText(E.ID,null,false);
+						StringBuilder s2=CMLib.help().getHelpText(E.ID,null,false);
 						if(s2==null)
 							s2=CMLib.help().getHelpText(E.name,null,false);
 						str.append(helpHelp(s2));

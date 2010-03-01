@@ -35,12 +35,12 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public interface HelpLibrary extends CMLibrary
 {
-    public StringBuffer getHelpText(String helpStr, MOB forMOB, boolean favorAHelp);
+    public StringBuilder getHelpText(String helpStr, MOB forMOB, boolean favorAHelp);
     public Vector getTopics(boolean archonHelp, boolean standardHelp);
     public String getActualUsage(Ability A, int which, MOB forMOB);
     public String fixHelp(String tag, String str, MOB forMOB);
-    public StringBuffer getHelpText(String helpStr, Properties rHelpFile, MOB forMOB);
-    public StringBuffer getHelpList(String helpStr,  Properties rHelpFile1, Properties rHelpFile2, MOB forMOB);
+    public StringBuilder getHelpText(String helpStr, Properties rHelpFile, MOB forMOB);
+    public StringBuilder getHelpList(String helpStr,  Properties rHelpFile1, Properties rHelpFile2, MOB forMOB);
     public Properties getArcHelpFile();
     public Properties getHelpFile();
     public void unloadHelpFile(MOB mob);

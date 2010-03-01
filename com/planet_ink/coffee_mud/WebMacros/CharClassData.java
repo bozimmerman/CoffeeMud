@@ -841,7 +841,7 @@ public class CharClassData extends StdWebMacro
                 /******************************************************/
 				if(parms.containsKey("HELP"))
 				{
-					StringBuffer s=CMLib.help().getHelpText(C.ID(),null,false);
+					StringBuilder s=CMLib.help().getHelpText(C.ID(),null,false);
 					if(s==null)
 						s=CMLib.help().getHelpText(C.name(),null,false);
 					if(s!=null)

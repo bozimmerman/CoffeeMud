@@ -122,7 +122,7 @@ public class Skills extends StdCommand
     }
     
     
-    protected StringBuffer getAbilities(MOB able, int ofType, int ofDomain, boolean addQualLine, int maxLevel)
+    protected StringBuilder getAbilities(MOB able, int ofType, int ofDomain, boolean addQualLine, int maxLevel)
     {
         Vector V=new Vector();
         int mask=Ability.ALL_ACODES;
@@ -135,11 +135,11 @@ public class Skills extends StdCommand
         return getAbilities(able,V,mask,addQualLine,maxLevel);
     }
     
-    protected StringBuffer getAbilities(MOB able, Vector ofTypes, int mask, boolean addQualLine, int maxLevel)
+    protected StringBuilder getAbilities(MOB able, Vector ofTypes, int mask, boolean addQualLine, int maxLevel)
     {
         int highestLevel=0;
         int lowestLevel=able.envStats().level()+1;
-        StringBuffer msg=new StringBuffer("");
+        StringBuilder msg=new StringBuilder("");
         for(int a=0;a<able.numAbilities();a++)
         {
             Ability thisAbility=able.fetchAbility(a);
@@ -155,7 +155,7 @@ public class Skills extends StdCommand
             highestLevel=maxLevel;
         for(int l=0;l<=highestLevel;l++)
         {
-            StringBuffer thisLine=new StringBuffer("");
+        	StringBuilder thisLine=new StringBuilder("");
             int col=0;
             for(int a=0;a<able.numAbilities();a++)
             {
@@ -190,7 +190,7 @@ public class Skills extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		StringBuffer msg=new StringBuffer("");
+		StringBuilder msg=new StringBuilder("");
 		Vector V=new Vector();
 		V.addElement(Integer.valueOf(Ability.ACODE_THIEF_SKILL));
 		V.addElement(Integer.valueOf(Ability.ACODE_SKILL));

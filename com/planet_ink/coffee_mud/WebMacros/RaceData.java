@@ -580,7 +580,7 @@ public class RaceData extends StdWebMacro
 				StringBuffer str=new StringBuffer("");
 				if(parms.containsKey("HELP"))
 				{
-					StringBuffer s=CMLib.help().getHelpText(R.ID(),null,false);
+					StringBuilder s=CMLib.help().getHelpText(R.ID(),null,false);
 					if(s==null)
 						s=CMLib.help().getHelpText(R.name(),null,false);
 					if(s!=null)

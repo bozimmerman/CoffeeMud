@@ -90,7 +90,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
         return reps;
     }
     
-    public void appendReps(int reps, StringBuffer say, boolean compress)
+    public void appendReps(int reps, StringBuilder say, boolean compress)
     {
         if(compress)
         {
@@ -131,7 +131,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
         }
         if((restV.size()==0)&&(!otherItemsHere)) return "";
         if(otherItemsHere) restV.addElement("other");
-        StringBuffer theRest=new StringBuffer("");
+        StringBuilder theRest=new StringBuilder("");
         for(int o=0;o<restV.size();o++)
         {
             theRest.append(restV.elementAt(o));
@@ -143,7 +143,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
         return "^IThere are also "+theRest.toString()+" items here.^N"+(compress?"":"\n\r");
     }
     
-    public StringBuffer lister(MOB mob, 
+    public StringBuilder lister(MOB mob, 
                                Vector things,
                                boolean useName, 
                                String tag,
@@ -152,7 +152,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
                                boolean compress)
 	{
 	    boolean nameTagParm=((tagParm!=null)&&(tagParm.indexOf("*")>=0));
-		StringBuffer say=new StringBuffer("");
+		StringBuilder say=new StringBuilder("");
         Environmental item=null;
         boolean sysmsgs=(mob!=null)?CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS):false;
         int numShown=0;
@@ -237,41 +237,41 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		return say;
 	}
 	
-	public StringBuffer reallyList(Hashtable these, int ofType)
+	public StringBuilder reallyList(Hashtable these, int ofType)
 	{
 		return reallyList(these,ofType,null);
 	}
-	public StringBuffer reallyList(Hashtable these)
+	public StringBuilder reallyList(Hashtable these)
 	{
 		return reallyList(these,-1,null);
 	}
-	public StringBuffer reallyList(Hashtable these, Room likeRoom)
+	public StringBuilder reallyList(Hashtable these, Room likeRoom)
 	{
 		return reallyList(these,-1,likeRoom);
 	}
-	public StringBuffer reallyList(Vector these, int ofType)
+	public StringBuilder reallyList(Vector these, int ofType)
 	{
 		return reallyList(these.elements(),ofType,null);
 	}
-	public StringBuffer reallyList(Enumeration these, int ofType)
+	public StringBuilder reallyList(Enumeration these, int ofType)
 	{
 		return reallyList(these,ofType,null);
 	}
-	public StringBuffer reallyList(Vector these)
+	public StringBuilder reallyList(Vector these)
 	{
 		return reallyList(these.elements(),-1,null);
 	}
-	public StringBuffer reallyList(Enumeration these)
+	public StringBuilder reallyList(Enumeration these)
 	{
 		return reallyList(these,-1,null);
 	}
-	public StringBuffer reallyList(Vector these, Room likeRoom)
+	public StringBuilder reallyList(Vector these, Room likeRoom)
 	{
 		return reallyList(these.elements(),-1,likeRoom);
 	}
-	public StringBuffer reallyList(Hashtable these, int ofType, Room likeRoom)
+	public StringBuilder reallyList(Hashtable these, int ofType, Room likeRoom)
 	{
-		StringBuffer lines=new StringBuffer("");
+		StringBuilder lines=new StringBuilder("");
 		if(these.size()==0) return lines;
 		int column=0;
 		for(Enumeration e=these.keys();e.hasMoreElements();)
@@ -319,13 +319,13 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		return lines;
 	}
 
-	public StringBuffer reallyList(Vector these, int ofType, Room likeRoom)
+	public StringBuilder reallyList(Vector these, int ofType, Room likeRoom)
 	{ return reallyList(these.elements(),ofType,likeRoom);}
-	public StringBuffer reallyList(Enumeration these, Room likeRoom)
+	public StringBuilder reallyList(Enumeration these, Room likeRoom)
 	{ return reallyList(these,-1,likeRoom);}
-	public StringBuffer reallyList(Enumeration these, int ofType, Room likeRoom)
+	public StringBuilder reallyList(Enumeration these, int ofType, Room likeRoom)
 	{
-		StringBuffer lines=new StringBuffer("");
+		StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements()) return lines;
 		int column=0;
 		for(Enumeration e=these;e.hasMoreElements();)
@@ -371,9 +371,9 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		lines.append("\n\r");
 		return lines;
 	}
-	public StringBuffer reallyList2Cols(Enumeration these, int ofType, Room likeRoom)
+	public StringBuilder reallyList2Cols(Enumeration these, int ofType, Room likeRoom)
 	{
-		StringBuffer lines=new StringBuffer("");
+		StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements()) return lines;
 		int column=0;
 		for(Enumeration e=these;e.hasMoreElements();)
@@ -420,11 +420,11 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		return lines;
 	}
 	
-	public StringBuffer fourColumns(Vector reverseList)
+	public StringBuilder fourColumns(Vector reverseList)
 	{ return fourColumns(reverseList,null);}
-	public StringBuffer fourColumns(Vector reverseList, String tag)
+	public StringBuilder fourColumns(Vector reverseList, String tag)
 	{
-		StringBuffer topicBuffer=new StringBuffer("");
+		StringBuilder topicBuffer=new StringBuilder("");
 		int col=0;
 		String s=null;
 		for(int i=0;i<reverseList.size();i++)

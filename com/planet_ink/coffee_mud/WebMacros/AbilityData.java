@@ -371,7 +371,7 @@ public class AbilityData extends StdWebMacro
 	            
 				if(parms.containsKey("HELP"))
 				{
-					StringBuffer s=CMLib.help().getHelpText(A.ID(),null,false);
+					StringBuilder s=CMLib.help().getHelpText(A.ID(),null,false);
 					if(s==null)
 						s=CMLib.help().getHelpText(A.Name(),null,false);
 					int limit=70;

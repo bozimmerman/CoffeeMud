@@ -32,9 +32,9 @@ public class Wealth extends Inventory
 	public String[] getAccessWords(){return access;}
 
 
-	public static StringBuffer getInventory(MOB seer, MOB mob, String mask)
+	public static StringBuilder getInventory(MOB seer, MOB mob, String mask)
 	{
-		StringBuffer msg=new StringBuffer("");
+		StringBuilder msg=new StringBuilder("");
 		InventoryList list = fetchInventory(seer,mob);
 		if(list.moneyItems.size()==0)
 			msg.append("\n\r^HMoney:^N None!\n\r");
@@ -53,7 +53,7 @@ public class Wealth extends Inventory
 			commands.addElement(getInventory((MOB)commands.firstElement(),mob,null));
 			return true;
 		}
-		StringBuffer msg=getInventory(mob,mob,CMParms.combine(commands,1));
+		StringBuilder msg=getInventory(mob,mob,CMParms.combine(commands,1));
 		if(msg.length()==0)
 			mob.tell("You have no money on you.");
 		else

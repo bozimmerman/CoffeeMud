@@ -34,21 +34,21 @@ public interface ListingLibrary extends CMLibrary
 
     public String itemSeenString(MOB viewer, Environmental item, boolean useName, boolean longLook, boolean sysMsgs);
     public int getReps(Environmental item, Vector theRest, MOB mob, boolean useName, boolean longLook);
-    public void appendReps(int reps, StringBuffer say, boolean compress);
-    public StringBuffer lister(MOB mob, Vector things, boolean useName, String tag, String tagParm, boolean longLook, boolean compress);
-    public StringBuffer reallyList(Hashtable these, int ofType);
-    public StringBuffer reallyList(Hashtable these);
-    public StringBuffer reallyList(Hashtable these, Room likeRoom);
-    public StringBuffer reallyList(Vector these, int ofType);
-    public StringBuffer reallyList(Enumeration these, int ofType);
-    public StringBuffer reallyList(Vector these);
-    public StringBuffer reallyList(Enumeration these);
-    public StringBuffer reallyList(Vector these, Room likeRoom);
-    public StringBuffer reallyList(Hashtable these, int ofType, Room likeRoom);
-    public StringBuffer reallyList(Vector these, int ofType, Room likeRoom);
-    public StringBuffer reallyList(Enumeration these, Room likeRoom);
-    public StringBuffer reallyList(Enumeration these, int ofType, Room likeRoom);
-    public StringBuffer reallyList2Cols(Enumeration these, int ofType, Room likeRoom);
-    public StringBuffer fourColumns(Vector reverseList);
-    public StringBuffer fourColumns(Vector reverseList, String tag);
+    public void appendReps(int reps, StringBuilder say, boolean compress);
+    public StringBuilder lister(MOB mob, Vector things, boolean useName, String tag, String tagParm, boolean longLook, boolean compress);
+    public StringBuilder reallyList(Hashtable these, int ofType);
+    public StringBuilder reallyList(Hashtable these);
+    public StringBuilder reallyList(Hashtable these, Room likeRoom);
+    public StringBuilder reallyList(Vector these, int ofType);
+    public StringBuilder reallyList(Enumeration these, int ofType);
+    public StringBuilder reallyList(Vector these);
+    public StringBuilder reallyList(Enumeration these);
+    public StringBuilder reallyList(Vector these, Room likeRoom);
+    public StringBuilder reallyList(Hashtable these, int ofType, Room likeRoom);
+    public StringBuilder reallyList(Vector these, int ofType, Room likeRoom);
+    public StringBuilder reallyList(Enumeration these, Room likeRoom);
+    public StringBuilder reallyList(Enumeration these, int ofType, Room likeRoom);
+    public StringBuilder reallyList2Cols(Enumeration these, int ofType, Room likeRoom);
+    public StringBuilder fourColumns(Vector reverseList);
+    public StringBuilder fourColumns(Vector reverseList, String tag);
 }
