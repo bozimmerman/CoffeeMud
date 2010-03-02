@@ -241,7 +241,7 @@ public class PresenceReaction extends StdAbility
 				Command C=(Command)thing[0];
 				try
 				{
-					String cmdparms=C.getAccessWords()[0]+" "+CMStrings.replaceAll((String)thing[1],"<TARGET>","$"+reactToM.Name()+"$");
+					String cmdparms=C.getAccessWords()[0]+" "+CMStrings.replaceAll((String)thing[1],"<TARGET>",reactToM.Name());
 					affected.enqueCommand(CMParms.parse(cmdparms),Command.METAFLAG_FORCED, 0);
 				} catch(Exception e){}
 				managed.add(C);
