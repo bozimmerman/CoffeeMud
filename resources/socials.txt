@@ -1,6 +1,4 @@
 ss	AARGH	AAAAAARRRRRRGGGGGGHHHHHH!!!!!!	<S-NAME> throws back <S-HIS-HER> head and howls in profound frustration!			
-ss	AARGH <E-NAME>	You scream your frustration at <T-NAME>!	<S-NAME> howls in frustration at <T-NAME>!		You get even MORE frustrated when you can't find what is frustrating you!	
-ss	AARGH <I-NAME>	You howl your frustration at <T-NAME>!	<S-NAME> howls in frustration at <T-NAME>!		You get even MORE frustrated when you can't see what's frustrating you!	
 ss	AARGH <T-NAME>	You scream your frustration and grab for <T-HIS-HER> throat with both hands!	<S-NAME> howls in frustration, and leaps for <T-NAMESELF>, trying to throttle <T-HIM-HER>!	<S-NAME> grabs for your throat with two hands, howling in frustration!	You get even MORE frustrated when you can't find anyone to throttle!	
 ss	AARGH SELF	You scream in frustration at your own stupidity!	<S-NAME> screams in frustration at <S-HIS-HER> own stupidity!			
 ww	ACCEPT	You accept the proferred apology graciously.	<S-NAME> graciously accepts the proferred apology.			
@@ -689,6 +687,8 @@ ww	TOAST SELF	You grin evilly and toast yourself.	<S-NAME> grins evilly and toas
 mo	TONGUE	You slowly give your tongue a nice workout.				
 mt	TONGUE <T-NAME>	Mmmm... you give <T-NAMESELF> a good working over with your tongue...	<S-NAME> slides <S-HIS-HER> tongue over <T-NAMESELF>'s body...	<S-NAME> wraps <S-HIS-HER> tongue around you, moving it across your young, nubile flesh...	Never around when required...	
 mo	TONGUE SELF	You slowly tongue yourself.	<S-NAME> slowly tongues <S-HIM-HERSELF>... ICK.			
+ov	TOUCH <E-NAME>	You touch <T-NAME>.	<S-NAME> touch(es) <T-NAMESELF>.	<S-NAME> touchs you.	Touch Who?	
+ov	TOUCH <I-NAME>	You touch <T-NAME>.	<S-NAME> touchs <T-NAMESELF>.	<S-NAME> touchs you.	Touch who?	
 mv	TOUCH <T-NAME>	You touch <T-NAME>.	<S-NAME> touches <T-NAMESELF>.	<S-NAME> touches you.	Touch...?	
 mv	TOUT	You stick out your tongue.	<S-NAME> sticks out <S-HIS-HER> tongue.  How rude!			
 mv	TOUT <T-NAME>	You stick your tongue out at <T-NAME>.	<S-NAME> sticks <S-HIS-HER> tongue out at <T-NAME>.	<S-NAME> sticks <S-HIS-HER> tongue out at <T-NAME>.	Are you sure you wish to stick your tongue out without an audience?	
@@ -719,6 +719,8 @@ ov	WHAP	Whap who?
 ot	WHAP <T-NAME>	You whap <T-NAMESELF> upside the head!	With a resounding WHAP!, <S-NAME> reprimands <T-NAMESELF>.	HEY!  <S-NAME> whaps you upside the head!	Whiff...	
 mv	WHAP SELF	Ow! You give yourself a resounding whap upside the head.	Biff!  <S-NAME> whaps <S-HIM-HERSELF> upside the head!			
 mo	WHEW	That was a close call. You better check your pants.	WHEW! <S-NAME> just survived a close call! Don`t ask about <S-HIS-HER> pants.			whew.wav
+ms	WHIMPER	You whimper.	<S-NAME> whimpers softly.			
+os	WHIMPER <T-NAME>	You whimper at <T-NAME>.	<S-NAME> whimpers softly at <T-NAMESELF>.	<S-NAME> whimpers softly at you.	Whimper at whom?	
 ww	WHINE	You whine to anyone who will listen to you.	<S-NAME> whines pathetically to anyone who will listen.			
 ww	WHINE <T-NAME>	You whine to <T-HIM-HER>, hoping desperately that at least <T-HE-SHE> will give a damn.	<S-NAME> whines pathetically to <T-NAMESELF>.	<S-NAME> whines pathetically to you.  What a loser!	They really don't care.	
 ww	WHINE SELF	You whine to yourself, probably the only one who will listen.	<S-NAME> whines to <S-HIM-HERSELF>.  At least <S-HE-SHE> isn't bitching to YOU.			
