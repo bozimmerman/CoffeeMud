@@ -1817,6 +1817,13 @@ public class StdMOB implements MOB
 								return false;
 							}
 							else
+							if((msg.target() instanceof MOB)
+							&&(((MOB)msg.target()).amFollowing()==msg.source())
+							&&(msg.source().isFollowedBy((MOB)msg.target())))
+							{
+								// should work.
+							}
+							else
 							if((!((msg.target() instanceof MOB)
 							&&(((MOB)msg.target()).getLiegeID().equals(Name()))))
 							&&(!msg.target().Name().equals(getLiegeID())))

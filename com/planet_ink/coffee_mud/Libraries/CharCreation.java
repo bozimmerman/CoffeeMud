@@ -193,15 +193,6 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 return false;
         }
 
-        for(Enumeration e=CMLib.players().players();e.hasMoreElements();)
-        {
-            MOB tm=(MOB)e.nextElement();
-            if((CMLib.english().containsString(tm.ID(),login))
-            ||(CMLib.english().containsString(tm.Name(),login)))
-                return false;
-
-        }
-        
         return !CMSecurity.isBanned(login);
     }
 
@@ -391,9 +382,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     		if(s.toUpperCase().startsWith("NEW "))
     		{
     			s=s.substring(4).trim();
-                if((!isOkName(s))
-                ||(CMLib.players().getAccount(s)!=null)
-                ||(CMLib.players().getLoadAccount(s)!=null))
+                if((!isOkName(s))||(CMLib.players().playerExists(s)))
                 {
                 	session.println("\n\rThat name is not available for new characters.\n\r  Choose another name (no spaces allowed)!\n\r");
                     continue;
@@ -1529,7 +1518,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             return false;
         }
         else
-        if(!isOkName(login))
+        if((!isOkName(login))||CMLib.players().playerExists(login))
         {
             session.println("\n\r'"+CMStrings.capitalizeAndLower(login)+"' is not recognized.\n\rThat name is also not available for new players.\n\r  Choose another name (no spaces allowed)!\n\r");
             return false;

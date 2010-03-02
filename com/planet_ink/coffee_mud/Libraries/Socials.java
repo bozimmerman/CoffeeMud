@@ -457,7 +457,8 @@ public class Socials extends StdLibrary implements SocialsList
                 {
                     soc=makeDefaultSocial(name,newOne);
                     addSocial(soc);
-                    socials.add(soc);
+                    if(!socials.contains(soc))
+	                    socials.add(soc);
                     resaveSocials=true;
                 }
             }
@@ -488,7 +489,17 @@ public class Socials extends StdLibrary implements SocialsList
                     resaveSocials=true;
                     if(showFlag<-900){ ok=true; break;}
                     if(showFlag>0){ showFlag=-1; continue;}
-                    showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
+                    String input = mob.session().prompt("Edit which (or DELETE)? ","");
+                    showFlag=CMath.s_int(input);
+                    if((input!=null)&&(input.equalsIgnoreCase("DELETE")))
+                    {
+                    	remove(soc.Name());
+                    	socials.remove(soc);
+                    	mob.session().rawOut("\n\rSocial variation '"+soc.Name()+"' deleted.\n\r");
+                        showFlag=-1;
+                        ok=true;
+                    }
+                    else
                     if(showFlag<=0)
                     {
                         showFlag=-1;
