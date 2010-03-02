@@ -1604,23 +1604,6 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             mob.bringToLife(mob.location(),false);
             CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LOGINS);
             mob.location().showOthers(mob,mob.location(),CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,"<S-NAME> appears!");
-            for(int f=0;f<mob.numFollowers();f++)
-            {
-                MOB follower=mob.fetchFollower(f);
-                Room R=follower.location();
-                if((follower!=null)
-                &&(follower.isMonster())
-                &&(!follower.isPossessing())
-                &&((R==null)||(!R.isInhabitant(follower))))
-                {
-                    if(R==null) R=mob.location();
-                    follower.setLocation(R);
-                    follower.setFollowing(mob); // before for bestow names sake
-                    follower.bringToLife(R,false);
-                    follower.setFollowing(mob);
-                    R.showOthers(follower,R,CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,"<S-NAME> appears!");
-                }
-            }
         }
         else
         {
@@ -1641,7 +1624,23 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             mob.bringToLife(mob.location(),true);
             CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LOGINS);
             mob.location().showOthers(mob,mob.location(),CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,"<S-NAME> appears!");
-            CMLib.database().DBReadFollowers(mob,true);
+        }
+        for(int f=0;f<mob.numFollowers();f++)
+        {
+            MOB follower=mob.fetchFollower(f);
+            Room R=follower.location();
+            if((follower!=null)
+            &&(follower.isMonster())
+            &&(!follower.isPossessing())
+            &&((R==null)||(!R.isInhabitant(follower))))
+            {
+                if(R==null) R=mob.location();
+                follower.setLocation(R);
+                follower.setFollowing(mob); // before for bestow names sake
+                follower.bringToLife(R,false);
+                follower.setFollowing(mob);
+                R.showOthers(follower,R,CMMsg.MASK_ALWAYS|CMMsg.MSG_ENTER,"<S-NAME> appears!");
+            }
         }
         PlayerStats pstats = mob.playerStats();
         if(((pstats.getEmail()==null)||(pstats.getEmail().length()==0))
