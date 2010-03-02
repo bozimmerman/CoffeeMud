@@ -577,7 +577,14 @@ public class Construction extends CraftingSkill
 		String dirName=(String)commands.lastElement();
 		dir=Directions.getGoodDirectionCode(dirName);
 		if((doingCode==BUILD_DEMOLISH)&&(dirName.equalsIgnoreCase("roof")))
-		   dir=-1;
+		{
+			if(mob.location().domainType() == Room.DOMAIN_INDOORS_CAVE)
+			{
+				commonTell(mob,"A cave can not have its roof demolished.");
+				return false;
+			}
+			dir=-1;
+		}
 		else
 		if(((dir<0)||(dir>3))
 		   &&(data[doingCode][DAT_REQDIR].equals("1")))
