@@ -406,14 +406,20 @@ public class Socials extends StdLibrary implements SocialsList
                     break;
                 }
                 String newOne=rest;
-                while(newOne.length()==0)
+                if(newOne.length()==0)
                 {
-                    newOne=mob.session().prompt("\n\rNew target (?): ","").toUpperCase().trim();
-                    if(newOne.equals("?"))
-                    {
-                    	mob.session().println("Choices: MOBTARGET, ITEMTARGET, INVTARGET, EQUIPTARGET, NONE, ALL, SELF");
-                    	newOne="";
-                    }
+                	newOne="?";
+	                while((newOne.equals("?"))&&(!mob.session().killFlag()))
+	                {
+	                    newOne=mob.session().prompt("\n\rNew target (?): ","").toUpperCase().trim();
+	                    if(newOne.equals("?"))
+	                    	mob.session().println("Choices: MOBTARGET, ITEMTARGET, INVTARGET, EQUIPTARGET, NONE, ALL, SELF");
+	                }
+	                if(newOne.trim().length()==0)
+	                {
+	                	pickNewSocial=true;
+	                	continue;
+	                }
                 }
                 if(newOne.startsWith("<T-")||(newOne.startsWith("T-")))
                     newOne="TNAME";

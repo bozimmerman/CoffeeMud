@@ -688,7 +688,7 @@ mo	TONGUE	You slowly give your tongue a nice workout.
 mt	TONGUE <T-NAME>	Mmmm... you give <T-NAMESELF> a good working over with your tongue...	<S-NAME> slides <S-HIS-HER> tongue over <T-NAMESELF>'s body...	<S-NAME> wraps <S-HIS-HER> tongue around you, moving it across your young, nubile flesh...	Never around when required...	
 mo	TONGUE SELF	You slowly tongue yourself.	<S-NAME> slowly tongues <S-HIM-HERSELF>... ICK.			
 ov	TOUCH <E-NAME>	You touch <T-NAME>.	<S-NAME> touch(es) <T-NAMESELF>.	<S-NAME> touchs you.	Touch Who?	
-ov	TOUCH <I-NAME>	You touch <T-NAME>.	<S-NAME> touchs <T-NAMESELF>.	<S-NAME> touchs you.	Touch who?	
+ww	TOUCH <I-NAME>	You are touching <T-NAME>.	<S-NAME> touch(es) <T-NAMESELF>	<S-NAME> touchs you.	Room Touch	
 mv	TOUCH <T-NAME>	You touch <T-NAME>.	<S-NAME> touches <T-NAMESELF>.	<S-NAME> touches you.	Touch...?	
 mv	TOUT	You stick out your tongue.	<S-NAME> sticks out <S-HIS-HER> tongue.  How rude!			
 mv	TOUT <T-NAME>	You stick your tongue out at <T-NAME>.	<S-NAME> sticks <S-HIS-HER> tongue out at <T-NAME>.	<S-NAME> sticks <S-HIS-HER> tongue out at <T-NAME>.	Are you sure you wish to stick your tongue out without an audience?	

@@ -341,23 +341,23 @@
                 <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
                 <TR>
                     <TD WIDTH=20%><FONT COLOR=YELLOW>You See: </FONT></TD>
-                    <TD WIDTH=80%><INPUT TYPE=TEXT SIZE=75 NAME=SDAT_TARGETEQUIP_Y VALUE="@SocialData?SDAT_TARGETEQUIP_Y@"></TD>
+                    <TD WIDTH=80%><INPUT TYPE=TEXT SIZE=75 NAME=SDAT_TARGETITEM_Y VALUE="@SocialData?SDAT_TARGETITEM_Y@"></TD>
                 </TR>
                 <TR>
                     <TD><FONT COLOR=YELLOW>You Do: </FONT></TD>
-                    <TD><SELECT NAME=SDAT_TARGETEQUIP_YC>@SocialData?SDAT_TARGETEQUIP_YC@</SELECT></TD>
+                    <TD><SELECT NAME=SDAT_TARGETITEM_YC>@SocialData?SDAT_TARGETITEM_YC@</SELECT></TD>
                 </TR>
                 <TR>
                     <TD><FONT COLOR=YELLOW>Others See: </FONT></TD>
-                    <TD><INPUT TYPE=TEXT SIZE=75 NAME=SDAT_TARGETEQUIP_O VALUE="@SocialData?SDAT_TARGETEQUIP_O@"></TD>
+                    <TD><INPUT TYPE=TEXT SIZE=75 NAME=SDAT_TARGETITEM_O VALUE="@SocialData?SDAT_TARGETITEM_O@"></TD>
                 </TR>
                 <TR>
                     <TD><FONT COLOR=YELLOW>Others/Target: </FONT></TD>
-                    <TD><SELECT NAME=SDAT_TARGETEQUIP_OC>@SocialData?SDAT_TARGETEQUIP_OC@</SELECT></TD>
+                    <TD><SELECT NAME=SDAT_TARGETITEM_OC>@SocialData?SDAT_TARGETITEM_OC@</SELECT></TD>
                 </TR>
                 <TR>
                     <TD><FONT COLOR=YELLOW>MSP Filename: </FONT></TD>
-                    <TD><INPUT TYPE=TEXT SIZE=40 NAME=SDAT_TARGETEQUIP_M VALUE="@SocialData?SDAT_TARGETEQUIP_M@"></TD>
+                    <TD><INPUT TYPE=TEXT SIZE=40 NAME=SDAT_TARGETITEM_M VALUE="@SocialData?SDAT_TARGETITEM_M@"></TD>
                 </TR>
                 </TABLE>
                 @endif@
