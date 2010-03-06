@@ -473,9 +473,14 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
         HashSet group=mob.getGroupMembers(new HashSet());
         CharClass charClass=null;
         Race charRace=null;
+        int highestLevelAlly = 0;
+        int level;
         for(Iterator i=group.iterator();i.hasNext();)
         {
         	MOB allyMOB=(MOB)i.next();
+        	level = allyMOB.envStats().level();
+        	if((highestLevelAlly < level)&&(allyMOB.location()==mob.location()))
+        		highestLevelAlly = level;
         	charClass = allyMOB.charStats().getCurrentClass();
         	charRace = allyMOB.charStats().getMyRace();
         	if(charClass != null)
@@ -492,13 +497,13 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
             if(levelDiff<(-levelLimit) )
                 amount=0;
             else
-            if(levelLimit>0)
-            {
+            if((levelLimit>0)&&((highestLevelAlly - mob.envStats().level())<=levelLimit))
+        	{
                 double levelFactor=levelDiff / levelLimit;
                 if( levelFactor > levelLimit )
                     levelFactor = levelLimit;
                 amount+=(int)Math.round(levelFactor *  (double)amount);
-            }
+        	}
         }
 
         return amount;
