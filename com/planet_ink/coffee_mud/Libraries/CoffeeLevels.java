@@ -470,17 +470,23 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
     public int adjustedExperience(MOB mob, MOB victim, int amount)
     {
+        int highestLevelPC = 0;
+        Room R=mob.location();
+        if(R!=null)
+        	for(int m=0;m<R.numInhabitants();m++)
+        	{
+        		MOB M=R.fetchInhabitant(m);
+        		if((M!=null)&&(M!=mob)&&(M!=victim)&&(!M.isMonster())&&(M.envStats().level()>highestLevelPC))
+        			highestLevelPC = M.envStats().level();
+        	}
+        	
         HashSet group=mob.getGroupMembers(new HashSet());
         CharClass charClass=null;
         Race charRace=null;
-        int highestLevelAlly = 0;
-        int level;
+        
         for(Iterator i=group.iterator();i.hasNext();)
         {
         	MOB allyMOB=(MOB)i.next();
-        	level = allyMOB.envStats().level();
-        	if((highestLevelAlly < level)&&(allyMOB.location()==mob.location()))
-        		highestLevelAlly = level;
         	charClass = allyMOB.charStats().getCurrentClass();
         	charRace = allyMOB.charStats().getMyRace();
         	if(charClass != null)
@@ -497,7 +503,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
             if(levelDiff<(-levelLimit) )
                 amount=0;
             else
-            if((levelLimit>0)&&((highestLevelAlly - mob.envStats().level())<=levelLimit))
+            if((levelLimit>0)&&((highestLevelPC - mob.envStats().level())<=levelLimit))
         	{
                 double levelFactor=levelDiff / levelLimit;
                 if( levelFactor > levelLimit )
