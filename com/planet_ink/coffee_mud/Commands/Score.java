@@ -39,10 +39,10 @@ public class Score extends Affect
 	private String[] access={"SCORE","SC"};
 	public String[] getAccessWords(){return access;}
 
-    public StringBuffer getScore(MOB mob){return getScore(mob,"");}
-	public StringBuffer getScore(MOB mob, String parm)
+    public StringBuilder getScore(MOB mob){return getScore(mob,"");}
+	public StringBuilder getScore(MOB mob, String parm)
 	{
-		StringBuffer msg=new StringBuffer("^N");
+		StringBuilder msg=new StringBuilder("^N");
 
 		int classLevel=mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
 		if((!CMSecurity.isDisabled("CLASSES"))
@@ -81,7 +81,7 @@ public class Score extends Affect
 		&&(classLevel<mob.envStats().level()))
 		{
 			msg.append("You also have levels in: ");
-			StringBuffer classList=new StringBuffer("");
+			StringBuilder classList=new StringBuilder("");
 			for(int c=0;c<mob.charStats().numClasses()-1;c++)
 			{
 				CharClass C=mob.charStats().getMyClass(c);
@@ -266,7 +266,7 @@ public class Score extends Affect
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		StringBuffer msg=getScore(mob);
+		StringBuilder msg=getScore(mob);
 		if(commands.size()==0)
 		{
 			commands.addElement(msg);

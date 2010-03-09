@@ -38,11 +38,11 @@ public class Equipment extends StdCommand
 	private String[] access={"EQUIPMENT","EQ","EQUIP"};
 	public String[] getAccessWords(){return access;}
 
-	public static StringBuffer getEquipment(MOB seer, MOB mob, boolean allPlaces)
+	public static StringBuilder getEquipment(MOB seer, MOB mob, boolean allPlaces)
 	{
-		StringBuffer msg=new StringBuffer("");
+		StringBuilder msg=new StringBuilder("");
 		if(CMLib.flags().isSleeping(seer))
-			return new StringBuffer("(nothing you can see right now)");
+			return new StringBuilder("(nothing you can see right now)");
 
 	    long wornCode=0;
 	    String header=null;
