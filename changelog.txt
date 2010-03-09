@@ -2245,7 +2245,7 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 19.Run-time compiled java from LOAD command will now display any compile errors to user.
 20.Socials now support various item-type target options.
 21.New Multi-Character account system -- see COMMONACCOUNTSYSTEM in ini file.
- a.Can now LIST ACCOUNTS
+ a.Can now LIST, CREATE, DESTROY, and MODIFY ACCOUNTS
  b.For transition muds: char selection IMPORT command lets players import their old chars to new accounts.
  c.EXPIRATION system works with accounts, when common account system is enabled. 
 22.New command: LOGOUT/LOGOFF -- exits back to login prompt/char selection
