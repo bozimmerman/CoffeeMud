@@ -1067,7 +1067,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			else
 			{
 				for(int i=0;i<continues.size()-1;i++)
-					str.append(Directions.getDirectionName(continues.elementAt(i)).toLowerCase().trim()+", ");
+					str.append(Directions.getDirectionName(continues.elementAt(i).intValue()).toLowerCase().trim()+", ");
 				str.append("and "+Directions.getInDirectionName(continues.lastElement().intValue()).trim()+".");
 			}
     	}
