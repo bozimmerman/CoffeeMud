@@ -438,7 +438,8 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
     public void runtimeRegisterBehavior(Environmental behaving, String behaviorID, String parms, boolean give);
     
     /**
-     * Registers the given player name as having won this quest.
+     * Registers the given player name as having won this quest.  The name
+     * may be prefixed with a "-" to undeclare the winner (for player deletes).
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getWinners()
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getWinnerStr()
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#wasWinner(String)

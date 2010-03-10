@@ -3322,6 +3322,24 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         name=name.trim();
         if(name.length()==0) return;
         Quest Q=getMainQuestObject();
+        if(name.startsWith("-"))
+        {
+        	name=name.substring(1);
+            if(Q.wasWinner(name))
+            {
+                Vector V=Q.getWinners();
+                for(int i=0;i<V.size();i++)
+                {
+                    if(((String)V.elementAt(i)).equalsIgnoreCase(name))
+                    {
+                    	V.removeElementAt(i);
+                    	break;
+                    }
+                }
+                CMLib.database().DBUpdateQuest(Q);
+            }
+        }
+        else
         if(!Q.wasWinner(name))
         {
             Q.getWinners().addElement(name);

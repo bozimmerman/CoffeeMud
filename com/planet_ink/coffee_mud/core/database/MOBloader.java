@@ -881,6 +881,12 @@ public class MOBloader
         		account.setLastUpdated(System.currentTimeMillis());
         	}
         }
+        for(int q=0;q<CMLib.quests().numQuests();q++)
+        {
+        	Quest Q=CMLib.quests().fetchQuest(q);
+        	if(Q.wasWinner(mob.Name()))
+        		Q.declareWinner("-"+mob.Name());
+        }
     }
 
     public void DBUpdateAbilities(MOB mob)
