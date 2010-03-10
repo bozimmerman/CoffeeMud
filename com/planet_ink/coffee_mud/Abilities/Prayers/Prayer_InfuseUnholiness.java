@@ -43,6 +43,9 @@ public class Prayer_InfuseUnholiness extends Prayer
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
+    protected int serviceRunning=0;
+    public int abilityCode(){return serviceRunning;}
+    public void setAbilityCode(int newCode){serviceRunning=newCode;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -65,6 +68,29 @@ public class Prayer_InfuseUnholiness extends Prayer
 
 	}
 
+	public boolean okMessage(Environmental myHost, CMMsg msg)
+	{
+		if(serviceRunning==0)
+			return super.okMessage(myHost, msg);
+		if(((msg.targetCode() & CMMsg.MASK_MALICIOUS)==CMMsg.MASK_MALICIOUS)
+		&&(msg.target() instanceof MOB))
+		{
+			if(msg.source().getWorshipCharID().equalsIgnoreCase(((MOB)msg.target()).getWorshipCharID()))
+			{
+				msg.source().tell("Not right now -- you're in a service.");
+				msg.source().makePeace();
+				((MOB)msg.target()).makePeace();
+				return false;
+			}
+		}
+		if((msg.sourceMinor() == CMMsg.TYP_LEAVE)&&(msg.source().isMonster()))
+		{
+			msg.source().tell("Not right now -- you're in a service.");
+			return false;
+		}
+		return super.okMessage(myHost, msg);
+	}
+	
     public int castingQuality(MOB mob, Environmental target)
     {
         if(mob!=null)

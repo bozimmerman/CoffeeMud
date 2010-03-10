@@ -60,8 +60,8 @@ public class StdDeity extends StdMOB implements Deity
 	protected Hashtable trigCurseTimes=new Hashtable();
     protected Hashtable trigServiceParts=new Hashtable();
     protected Hashtable trigServiceTimes=new Hashtable();
-    protected DVector services=new DVector(4);
-	protected int checkDown=0;
+    protected Vector<WorshipService> services=new Vector<WorshipService>();
+	protected int rebukeCheckDown=0;
 	protected boolean norecurse=false;
     protected MOB blacklist=null;
     protected int blackmarks=0;
@@ -81,6 +81,15 @@ public class StdDeity extends StdMOB implements Deity
 		baseEnvStats().setDamage(1000);
 		baseCharStats().setMyRace(CMClass.getRace("Spirit"));
 		recoverEnvStats();
+	}
+	
+	private class WorshipService
+	{
+		MOB cleric = null;
+		Room room = null;
+		boolean serviceCompleted = false;
+		long startTime = System.currentTimeMillis();
+		Vector<MOB> parishaners = new Vector<MOB>();
 	}
 
     protected void cloneFix(MOB E)
@@ -998,10 +1007,18 @@ public class StdDeity extends StdMOB implements Deity
         Vector parishaners=new Vector();
         synchronized(services)
         {
-            for(int d=services.size()-1;d>=0;d--)
-                if(services.elementAt(d,1)==room)
-                    return;
-            services.addElement(room,Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),parishaners);
+            for(Enumeration<WorshipService> e = DVector.s_enum(services);e.hasMoreElements();)
+            	if(e.nextElement().room==room)
+            		return;
+            WorshipService service = new WorshipService();
+            service.room=room;
+            service.parishaners = parishaners;
+            service.startTime = System.currentTimeMillis();
+            service.cleric = mob;
+            service.serviceCompleted = false;
+            services.add(service);
+            Ability A=CMLib.law().getClericInfusion(room);
+            if(A!=null) A.setAbilityCode(1);
         }
         Room R=null;
         MOB M=null;
@@ -1051,15 +1068,18 @@ public class StdDeity extends StdMOB implements Deity
         {
             for(int d=services.size()-1;d>=0;d--)
             {
-                if((System.currentTimeMillis()-(((Long)services.elementAt(d,3)).longValue()))>(1000*60*30))
+            	WorshipService service = services.elementAt(d);
+                if(System.currentTimeMillis()-service.startTime>(1000*60*30))
                 {
-                    undoService((Vector)services.elementAt(d,4));
-                    services.removeElementsAt(d);
+                    undoService(service.parishaners);
+                    services.removeElementAt(d);
+                    Ability A=CMLib.law().getClericInfusion(service.room);
+                    if(A!=null) A.setAbilityCode(0);
                 }
                 else
-                if((services.elementAt(d,1) instanceof Room)
-                &&(((Room)services.elementAt(d,1)).getArea()==room.getArea())
-                &&(((Integer)services.elementAt(d,2)).intValue()>2))
+                if((service.room != null)
+                &&(service.room.getArea()==room.getArea())
+                &&(service.serviceCompleted))
                     return true;
             }
         }
@@ -1069,18 +1089,21 @@ public class StdDeity extends StdMOB implements Deity
     public boolean finishService(MOB mob, Room room)
     {
         if((mob==null)||(room==null)) return false;
-        Vector parishaners=new Vector();
-        synchronized(services)
-        {
-            for(int d=services.size()-1;d>=0;d--)
-                if(services.elementAt(d,1)==room)
-                {
-                    services.setElementAt(d,2,Integer.valueOf(Integer.MAX_VALUE));
-                    parishaners=(Vector)services.elementAt(d,4);
-                }
-        }
         MOB M=null;
         int totalLevels=0;
+        WorshipService service = null;
+        synchronized(services)
+        {
+            for(WorshipService s : services)
+                if((s.room==room) && (s.cleric == mob))
+                	service = s;
+            if(service == null)
+                for(WorshipService s : services)
+                    if(s.room==room)
+                    	service = s;
+        }
+        if(service == null) return false;
+        service.serviceCompleted = true;
         for(int m=0;m<room.numInhabitants();m++)
         {
             M=room.fetchInhabitant(m);
@@ -1096,9 +1119,40 @@ public class StdDeity extends StdMOB implements Deity
                 if(A!=null) A.makeLongLasting();
             }
         }
-        undoService(parishaners);
+        undoService(service.parishaners);
         int exp=(int)Math.round(CMath.div(totalLevels,mob.envStats().level())*10.0);
         CMLib.leveler().postExperience(mob,null,null,exp,false);
+        trigServiceParts.remove(mob.Name());
+        trigServiceTimes.remove(mob.Name());
+        return true;
+    }
+
+    public boolean cancelService(WorshipService service)
+    {
+        if(service == null) return false;
+        Room room = service.room;
+        MOB mob = service.cleric;
+        MOB M=null;
+        for(int m=0;m<room.numInhabitants();m++)
+        {
+            M=room.fetchInhabitant(m);
+            if(M==null) continue;
+            if(M.getWorshipCharID().equals(Name()))
+            {
+                Ability A=M.fetchEffect("Skill_Convert");
+                if(A!=null) A.unInvoke();
+            }
+        }
+		room.showHappens(CMMsg.MASK_ALWAYS, "The service conducted by "+mob.Name()+" has been cancelled.");
+		if(mob.location()!=room)
+			mob.tell("Your service has been cancelled.");
+        undoService(service.parishaners);
+        synchronized(services)
+        {
+        	services.remove(service);
+            Ability A=CMLib.law().getClericInfusion(service.room);
+            if(A!=null) A.setAbilityCode(0);
+        }
         trigServiceParts.remove(mob.Name());
         trigServiceTimes.remove(mob.Name());
         return true;
@@ -1109,9 +1163,9 @@ public class StdDeity extends StdMOB implements Deity
 		if(!super.tick(ticking,tickID))
 			return false;
 		if((tickID==Tickable.TICKID_MOB)
-		&&((--checkDown)<0))
+		&&((--rebukeCheckDown)<0))
 		{
-			checkDown=10;
+			rebukeCheckDown=10;
 			for(Enumeration p=CMLib.players().players();p.hasMoreElements();)
 			{
 				MOB M=(MOB)p.nextElement();
@@ -1214,8 +1268,18 @@ public class StdDeity extends StdMOB implements Deity
                 L=(Long)trigServiceTimes.get(key);
                 if((L!=null)&&(L.longValue()<curTime))
                 {
-                    trigServiceTimes.remove(key);
-                    trigServiceParts.remove(key);
+                    synchronized(services)
+                    {
+                    	WorshipService service = null;
+                    	for(int s=services.size()-1;s>=0;s--)
+                    	{
+                    		service = services.elementAt(s);
+                    		if((service.cleric!=null)
+                    		&&(service.cleric.Name().equalsIgnoreCase(key))
+                    		&&(!service.serviceCompleted))
+                    			cancelService(service);
+                    	}
+                    }
                 }
             }
 		}
