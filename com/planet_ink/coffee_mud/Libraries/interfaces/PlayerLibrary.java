@@ -38,6 +38,7 @@ public interface PlayerLibrary extends CMLibrary, Runnable
     public MOB getLoadPlayer(String last);
     public PlayerAccount getLoadAccount(String calledThis);
     public PlayerAccount getAccount(String calledThis);
+    public boolean accountExists(String name);
     public Enumeration<ThinPlayer> players();
     public Enumeration<PlayerAccount> accounts(String sort, Hashtable cache);
     public void obliteratePlayer(MOB deadMOB, boolean quiet);

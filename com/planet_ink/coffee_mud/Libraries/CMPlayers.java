@@ -141,6 +141,13 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
         return M;
     }
 
+    public boolean accountExists(String name)
+    {
+    	if(name==null) return false;
+    	name=CMStrings.capitalizeAndLower(name);
+    	return getLoadAccount(name)!=null;
+    }
+    
     public boolean playerExists(String name)
     {
     	if(name==null) return false;

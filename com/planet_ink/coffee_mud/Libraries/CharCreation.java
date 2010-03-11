@@ -357,7 +357,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	    		session.println(buf.toString());
     		}
     		String s = session.prompt("\n\r^HEnter a name or command (?): ^N", TimeClock.TIME_MILIS_PER_MUDHOUR);
-    		if((s==null)||(s.length()==0)) return LoginResult.NO_LOGIN;
+    		if(s==null) return LoginResult.NO_LOGIN;
+    		if(s.trim().length()==0) continue;
     		if(s.equalsIgnoreCase("?")||(s.equalsIgnoreCase("HELP")))
     		{
     	        introText=new CMFile(Resources.buildResourcePath("help")+"accts.txt",null,true).text();
@@ -379,9 +380,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				}
     			continue;
     		}
-    		if(s.toUpperCase().startsWith("NEW "))
+    		if(s.toUpperCase().startsWith("NEW ")||s.equalsIgnoreCase("new"))
     		{
-    			s=s.substring(4).trim();
+    			s=s.substring(3).trim();
+    			if(s.length()==0)
+    			{
+    				s=session.prompt("\n\rPlease enter a name for your character: ","");
+    				if(s.length()==0) continue;
+    			}
                 if((!isOkName(s))||(CMLib.players().playerExists(s)))
                 {
                 	session.println("\n\rThat name is not available for new characters.\n\r  Choose another name (no spaces allowed)!\n\r");
@@ -393,7 +399,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 	session.println("You may only have "+CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)+" characters.  Please retire one to create another.");
                 	continue;
                 }
-            	if(newCharactersAllowed(s,session))
+            	if(newCharactersAllowed(s,session,true))
             	{
             		String login=CMStrings.capitalizeAndLower(s);
 	                if(session.confirm("Create a new character called '"+login+"' (y/N)?", "N"))
@@ -1372,13 +1378,16 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	            {
 		            session.print("password for "+player.name+": ");
 		            String password=session.blockingIn();
+		            boolean done = true;
 		            if(password.equalsIgnoreCase(player.password))
 		            {
 		            	session.println("\n\rThis mud is now using an account system.  "
-		            			+"Please create a new account (with a different name) and use the IMPORT command to add this character to your account.");
+		            			+"Please create a new account and use the IMPORT command to add your character(s) to your account.");
+		            	done = !session.confirm("Would you like to create your new master account and call it '"+player.name+"' (y/N)? ", "N");
 		            }
 		            player = null;
-	            	return LoginResult.NO_LOGIN;
+		            if(done)
+		            	return LoginResult.NO_LOGIN;
 	            }
 	            else
 	            if(player!=null)
@@ -1483,7 +1492,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         }
         else
         {
-        	if(newCharactersAllowed(login,session))
+        	if(newCharactersAllowed(login,session,!(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1)))
         	{
 	            if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1)
 	            {
@@ -1510,7 +1519,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         return LoginResult.NORMAL_LOGIN;
     }
 
-    public boolean newCharactersAllowed(String login, Session session)
+    public boolean newCharactersAllowed(String login, Session session, boolean checkPlayerName)
     {
         if(CMSecurity.isDisabled("NEWPLAYERS"))
         {
@@ -1518,7 +1527,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             return false;
         }
         else
-        if((!isOkName(login))||CMLib.players().playerExists(login))
+        if((!isOkName(login))
+        || (checkPlayerName && CMLib.players().playerExists(login))
+        || (!checkPlayerName && CMLib.players().accountExists(login)))
         {
             session.println("\n\r'"+CMStrings.capitalizeAndLower(login)+"' is not recognized.\n\rThat name is also not available for new players.\n\r  Choose another name (no spaces allowed)!\n\r");
             return false;

@@ -42,6 +42,10 @@ public class NoANSI extends StdCommand
 	{
 		if(!mob.isMonster())
 		{
+			PlayerAccount acct = null;
+			if(mob.playerStats()!=null)
+				acct = mob.playerStats().getAccount();
+			if(acct != null) acct.setFlag(PlayerAccount.FLAG_ANSI, false);
 			if(CMath.bset(mob.getBitmap(),MOB.ATT_ANSI))
 			{
 				mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_ANSI));

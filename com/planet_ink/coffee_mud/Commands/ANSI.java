@@ -42,6 +42,10 @@ public class ANSI extends StdCommand
 	{
 		if(!mob.isMonster())
 		{
+			PlayerAccount acct = null;
+			if(mob.playerStats()!=null)
+				acct = mob.playerStats().getAccount();
+			if(acct != null) acct.setFlag(PlayerAccount.FLAG_ANSI, true);
 			if(!CMath.bset(mob.getBitmap(),MOB.ATT_ANSI))
 			{
 				mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_ANSI));
