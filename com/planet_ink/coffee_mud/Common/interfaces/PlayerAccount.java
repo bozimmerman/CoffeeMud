@@ -56,6 +56,13 @@ public interface PlayerAccount extends CMCommon, AccountStats, CMModifiable
 	public void delPlayer(MOB mob);
 
 	/**
+	 * Returns whether the name is a player on this account 
+	 * @param name the name to check
+	 * @return true if it exists and false otherwise
+	 */
+	public boolean isPlayer(String name);
+	
+	/**
 	 * Returns this accounts name
 	 * @return this accounts name
 	 */

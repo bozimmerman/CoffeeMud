@@ -223,6 +223,13 @@ public class DefaultPlayerAccount implements PlayerAccount
 		players.add(mob.Name());
 		thinPlayers.clear();
 	}
+	
+	public boolean isPlayer(String name) 
+	{
+		if(name==null) return false;
+		return players.contains(CMStrings.capitalizeAndLower(name));
+	}
+	
 	public void delPlayer(MOB mob) 
 	{
 		players.remove(mob.Name());

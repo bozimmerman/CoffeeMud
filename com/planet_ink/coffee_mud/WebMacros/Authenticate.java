@@ -137,7 +137,32 @@ public class Authenticate extends StdWebMacro
 	{
 		String login=httpReq.getRequestParameter("LOGIN");
 		if((login!=null)&&(login.length()>0))
+		{
+			if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>0)
+			{
+				PlayerAccount acct = CMLib.players().getLoadAccount(login);
+				if(acct != null)
+				{
+					MOB highestM = null;
+					if(acct.isPlayer(login))
+						highestM=CMLib.players().getLoadPlayer(login);
+					else
+					for(Enumeration<MOB> m = acct.getLoadPlayers();m.hasMoreElements();)
+					{
+						MOB M=m.nextElement();
+						if((highestM==null)
+						||((M!=null)&&(M.baseEnvStats().level()>highestM.baseEnvStats().level())))
+							highestM = M;
+					}
+					if(highestM!=null)
+					{
+						httpReq.addRequestParameters("LOGIN", highestM.Name());
+						return highestM.Name();
+					}
+				}
+			}
 			return login;
+		}
 		String auth=httpReq.getRequestParameter("AUTH");
 		if(auth==null) return "";
 		if(auth.indexOf("-")>=0) auth=auth.substring(0,auth.indexOf("-"));
