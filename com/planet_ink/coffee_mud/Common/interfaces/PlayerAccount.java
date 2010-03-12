@@ -99,7 +99,9 @@ public interface PlayerAccount extends CMCommon, AccountStats, CMModifiable
 	public final static String FLAG_MAXCONNSOVERRIDE="MAXCONNSOVERRIDE";
 	/** Constant for account flags that overrides account expiration */
 	public final static String FLAG_ANSI="ANSI";
+	/** Constant for account flags that overrides account expiration */
+	public final static String FLAG_ACCOUNTMENUSOFF="ACCOUNTMENUSOFF";
 	
 	/** list of account flags */
-	public final static String[] FLAG_DESCS = {FLAG_NUMCHARSOVERRIDE,FLAG_NOEXPIRE,FLAG_CANEXPORT,FLAG_MAXCONNSOVERRIDE,FLAG_ANSI};
+	public final static String[] FLAG_DESCS = {FLAG_NUMCHARSOVERRIDE,FLAG_NOEXPIRE,FLAG_CANEXPORT,FLAG_MAXCONNSOVERRIDE,FLAG_ANSI,FLAG_ACCOUNTMENUSOFF};
 }

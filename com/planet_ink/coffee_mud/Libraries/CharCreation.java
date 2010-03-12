@@ -327,7 +327,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         session.setServerTelnetMode(Session.TELNET_ANSI,acct.isSet(PlayerAccount.FLAG_ANSI));
         session.setClientTelnetMode(Session.TELNET_ANSI,acct.isSet(PlayerAccount.FLAG_ANSI));
     	boolean charSelected = false;
-    	boolean showList = true;
+    	boolean showList = acct.isSet(PlayerAccount.FLAG_ACCOUNTMENUSOFF);
         StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"selchar.txt",null,true).text();
     	try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
         session.println(null,null,null,"\n\r\n\r"+introText.toString());
@@ -355,23 +355,40 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	        		buf.append("^.^N\n\r");
 	    		}
 	    		session.println(buf.toString());
+    			buf.setLength(0);
     		}
-    		String s = session.prompt("\n\r^HEnter a name or command (?): ^N", TimeClock.TIME_MILIS_PER_MUDHOUR);
+    		if(!acct.isSet(PlayerAccount.FLAG_ACCOUNTMENUSOFF))
+    		{
+	    		buf.append(" ^XAccount Menu^.^N\n\r");
+	    		buf.append(" ^XL^.^w)^Hist characters\n\r");
+	    		buf.append(" ^XN^.^w)^Hew character\n\r");
+	    		buf.append(" ^XI^.^w)^Hmport character\n\r");
+	    		if(acct.isSet(PlayerAccount.FLAG_CANEXPORT))
+		    		buf.append(" ^XE^.^w)^Hxport character\n\r");
+	    		buf.append(" ^XD^.^w)^Helete/Retire character\n\r");
+	    		buf.append(" ^XH^.^w)^Help\n\r");
+	    		buf.append(" ^XM^.^w)^Henu OFF\n\r");
+	    		buf.append(" ^XQ^.^w)^Huit (logout)\n\r");
+	    		buf.append("\n\r^H ^w(^HEnter your character name to login^w)^H");
+	    		session.println(buf.toString());
+    			buf.setLength(0);
+    		}
+    		String s = session.prompt("\n\r^wCommand or Name ^H(?)^w: ^N", TimeClock.TIME_MILIS_PER_MUDHOUR);
     		if(s==null) return LoginResult.NO_LOGIN;
     		if(s.trim().length()==0) continue;
-    		if(s.equalsIgnoreCase("?")||(s.equalsIgnoreCase("HELP")))
+    		if(s.equalsIgnoreCase("?")||(s.equalsIgnoreCase("HELP"))||s.equalsIgnoreCase("H"))
     		{
     	        introText=new CMFile(Resources.buildResourcePath("help")+"accts.txt",null,true).text();
     	    	try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
     	        session.println(null,null,null,"\n\r\n\r"+introText.toString());
     	        continue;
     		}
-    		if(s.equalsIgnoreCase("LIST"))
+    		if(s.equalsIgnoreCase("LIST")||s.equalsIgnoreCase("L"))
     		{
     			showList = true;
     			continue;
     		}
-    		if(s.equalsIgnoreCase("QUIT"))
+    		if(s.equalsIgnoreCase("QUIT")||s.equalsIgnoreCase("Q"))
     		{
     			if(session.confirm("Quit -- are you sure (y/N)?", "N"))
 				{
@@ -380,9 +397,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				}
     			continue;
     		}
-    		if(s.toUpperCase().startsWith("NEW ")||s.equalsIgnoreCase("new"))
+    		if(s.toUpperCase().startsWith("NEW ")||s.equalsIgnoreCase("NEW")||s.equalsIgnoreCase("N"))
     		{
-    			s=s.substring(3).trim();
+    			if(s.length()>=3)
+	    			s=s.substring(3).trim();
+    			else
+    				s=s.substring(1).trim();
     			if(s.length()==0)
     			{
     				s=session.prompt("\n\rPlease enter a name for your character: ","");
@@ -410,9 +430,26 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             	}
     			continue;
     		}
-    		if(s.toUpperCase().startsWith("RETIRE ")||s.toUpperCase().startsWith("DELETE "))
+    		if(s.equalsIgnoreCase("MENU")||s.equalsIgnoreCase("M"))
     		{
-    			s=s.substring(7).trim();
+    			if(acct.isSet(PlayerAccount.FLAG_ACCOUNTMENUSOFF)&&(session.confirm("Turn menus back on (y/N)?", "N")))
+    				acct.setFlag(PlayerAccount.FLAG_ACCOUNTMENUSOFF, false);
+    			else
+    			if(!acct.isSet(PlayerAccount.FLAG_ACCOUNTMENUSOFF)&&(session.confirm("Turn menus off (y/N)?", "N")))
+    				acct.setFlag(PlayerAccount.FLAG_ACCOUNTMENUSOFF, true);
+    			continue;
+    		}
+    		if(s.toUpperCase().startsWith("RETIRE ")||s.toUpperCase().startsWith("DELETE ")||s.equalsIgnoreCase("D"))
+    		{
+    			if(s.length()>=7)
+	    			s=s.substring(7).trim();
+    			else
+    				s=s.substring(1).trim();
+    			if(s.length()==0)
+    			{
+    				s=session.prompt("\n\rPlease enter the name of the character: ","");
+    				if(s.length()==0) continue;
+    			}
     			PlayerLibrary.ThinPlayer delMe = null;
         		for(Enumeration<PlayerLibrary.ThinPlayer> p = acct.getThinPlayers(); p.hasMoreElements();)
         		{
@@ -434,9 +471,17 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     			}
     			continue;
     		}
-    		if((s.toUpperCase().startsWith("EXPORT "))&&(acct.isSet(PlayerAccount.FLAG_CANEXPORT)))
+    		if((s.toUpperCase().startsWith("EXPORT "))&&(acct.isSet(PlayerAccount.FLAG_CANEXPORT))||s.equalsIgnoreCase("E"))
     		{
-    			s=s.substring(7).trim();
+    			if(s.length()>=7)
+	    			s=s.substring(7).trim();
+    			else
+    				s=s.substring(1).trim();
+    			if(s.length()==0)
+    			{
+    				s=session.prompt("\n\rPlease enter the name of the character: ","");
+    				if(s.length()==0) continue;
+    			}
     			PlayerLibrary.ThinPlayer delMe = null;
         		for(Enumeration<PlayerLibrary.ThinPlayer> p = acct.getThinPlayers(); p.hasMoreElements();)
         		{
@@ -473,9 +518,17 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     			}
     			continue;
     		}
-    		if(s.toUpperCase().startsWith("IMPORT "))
+    		if(s.toUpperCase().startsWith("IMPORT ")||s.equalsIgnoreCase("I"))
     		{
-    			s=s.substring(7).trim();
+    			if(s.length()>=7)
+	    			s=s.substring(7).trim();
+    			else
+    				s=s.substring(1).trim();
+    			if(s.length()==0)
+    			{
+    				s=session.prompt("\n\rPlease enter the name of the character: ","");
+    				if(s.length()==0) continue;
+    			}
                 if((CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)<=acct.numPlayers())
                 &&(!acct.isSet(PlayerAccount.FLAG_NUMCHARSOVERRIDE)))
                 {
