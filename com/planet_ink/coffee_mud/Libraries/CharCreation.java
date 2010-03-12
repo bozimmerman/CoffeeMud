@@ -564,7 +564,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     		}
     		boolean wizi=s.trim().endsWith(" !");
     		if(wizi) s=s.substring(0,s.length()-2).trim();
-			PlayerLibrary.ThinnerPlayer playMe = CMLib.database().DBUserSearch(s);
+			PlayerLibrary.ThinnerPlayer playMe = null;
+			if(acct.isPlayer(s))
+				playMe = CMLib.database().DBUserSearch(s);
     		if(playMe == null)
     		{
     			session.println("'"+s+"' is an unknown character or command.  Use ? for help.");
