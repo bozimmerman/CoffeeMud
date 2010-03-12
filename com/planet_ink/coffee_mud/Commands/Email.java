@@ -73,7 +73,7 @@ public class Email extends StdCommand
                             mymsgs.addElement(thismsg);
                             messages.append(CMStrings.padRight(""+mymsgs.size(),4)
                                     +CMStrings.padRight((thismsg.from),16)
-                                    +CMStrings.padRight(CMLib.time().date2String(CMath.s_long(thismsg.date)),21)
+                                    +CMStrings.padRight(CMLib.time().date2String(thismsg.date),21)
                                     +(thismsg.subj)
                                     +"\n\r");
                         }
@@ -107,8 +107,7 @@ public class Email extends StdCommand
                     	JournalsLibrary.JournalEntry thismsg=(JournalsLibrary.JournalEntry)mymsgs.elementAt(num-1);
                         String key=thismsg.key;
                         String from=thismsg.from;
-                        String date=thismsg.date;
-                        date=CMLib.time().date2String(CMath.s_long(date));
+                        String date=CMLib.time().date2String(thismsg.date);
                         String subj=thismsg.subj;
                         String message=thismsg.msg;
                         messages=new StringBuffer("");

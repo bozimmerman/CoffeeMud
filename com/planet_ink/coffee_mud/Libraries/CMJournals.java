@@ -136,7 +136,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
                     for(int i=items.size()-1;i>=0;i--)
                     {
                     	JournalEntry entry=(JournalEntry)items.elementAt(i);
-                        long compdate=CMath.s_long(entry.update);
+                        long compdate=entry.update;
                         compdate=compdate+Math.round(CMath.mul(TimeManager.MILI_DAY,CMath.s_double(num)));
                         if(System.currentTimeMillis()>compdate)
                         {

@@ -411,7 +411,7 @@ public class SMTPserver extends Thread implements Tickable
 						String to=msg.to;
 						if(to.equalsIgnoreCase("ALL"))
 						{
-							long date=CMath.s_long(msg.update);
+							long date=msg.update;
 							String from=msg.from;
 							String key=msg.key;
 							String subj=msg.subj;
@@ -578,7 +578,7 @@ public class SMTPserver extends Thread implements Tickable
 			String key=mail.key;
 			String from=mail.from;
 			String to=mail.to;
-			long date=CMath.s_long(mail.update);
+			long date=mail.update;
 			String subj=mail.subj;
 			String msg=mail.msg.trim();
 

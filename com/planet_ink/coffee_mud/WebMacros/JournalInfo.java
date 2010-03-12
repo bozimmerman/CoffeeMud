@@ -80,7 +80,7 @@ public class JournalInfo extends StdWebMacro
                 return clearWebMacros(entry.from);
 			else
 			if(parms.containsKey("DATE"))
-				return CMLib.time().date2String(CMath.s_long(entry.date));
+				return CMLib.time().date2String(entry.date);
 			else
 			if(parms.containsKey("TO"))
             {

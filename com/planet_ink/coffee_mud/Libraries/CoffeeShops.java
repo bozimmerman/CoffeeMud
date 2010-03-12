@@ -1545,8 +1545,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	        if((ofLike instanceof String)&&(!((String)ofLike).equals(key)))
 	        	continue;
             AuctionData data=new AuctionData();
-            String start=(String)auctionData.date;
-            data.start=CMath.s_long(start);
+            data.start=auctionData.date;
             data.tickDown=CMath.s_long(to);
             String xml=(String)auctionData.msg;
             Vector xmlV=CMLib.xml().parseAllXML(xml);

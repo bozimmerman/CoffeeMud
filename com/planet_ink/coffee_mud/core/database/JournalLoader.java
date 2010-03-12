@@ -115,7 +115,7 @@ public class JournalLoader
 				if((l!=null)&&(l2!=null)) return l.longValue()>l2.longValue()?l.longValue():l2.longValue();
 				return 0;
 			}
-			Vector V=DBReadJournalMsgs(Journal);
+			Vector<JournalsLibrary.JournalEntry> V=DBReadJournalMsgs(Journal);
 			H=new Hashtable();
 			TABLE.put(Journal,H);
 			if(V==null) return 0;
@@ -124,30 +124,30 @@ public class JournalLoader
 			{
 				JournalsLibrary.JournalEntry E=(JournalsLibrary.JournalEntry)V.elementAt(v);
 				String to=E.to;
-				String compdate=E.update;
+				long compdate=E.update;
 				if(to.equalsIgnoreCase("all"))
 				{
 					Long l2=(Long)H.get("ALL");
-					if((l2==null)||(l2.longValue()<CMath.s_long(compdate)))
+					if((l2==null)||(l2.longValue()<compdate))
 					{
 						if(H.containsKey("ALL")) H.remove("ALL");
-						H.put("ALL",Long.valueOf(CMath.s_long(compdate)));
+						H.put("ALL",Long.valueOf(compdate));
 					}
 				}
 				else
 				{
 					Long l2=(Long)H.get(to);
-					if((l2==null)||(l2.longValue()<CMath.s_long(compdate)))
+					if((l2==null)||(l2.longValue()<compdate))
 					{
 						if(H.containsKey(to)) H.remove(to);
-						H.put(to,Long.valueOf(CMath.s_long(compdate)));
+						H.put(to,Long.valueOf(compdate));
 					}
 					String from=E.from;
 					l2=(Long)H.get(from); // from
-					if((l2==null)||(l2.longValue()<CMath.s_long(compdate)))
+					if((l2==null)||(l2.longValue()<compdate))
 					{
 						if(H.containsKey(from)) H.remove(from);
-						H.put(from,Long.valueOf(CMath.s_long(compdate)));
+						H.put(from,Long.valueOf(compdate));
 					}
 				}
 			}
@@ -185,9 +185,50 @@ public class JournalLoader
 		return journals;
 	}
 	
-	public synchronized Vector DBReadJournalMsgs(String Journal)
+	protected JournalsLibrary.JournalEntry DBReadJournalEntry(ResultSet R)
 	{
-		Vector journal=new Vector();
+		JournalsLibrary.JournalEntry entry=new JournalsLibrary.JournalEntry();
+		entry.key=DBConnections.getRes(R,"CMJKEY");
+		entry.from=DBConnections.getRes(R,"CMFROM");
+		String dateStr = DBConnections.getRes(R,"CMDATE");
+		entry.to=DBConnections.getRes(R,"CMTONM");
+		entry.subj=DBConnections.getRes(R,"CMSUBJ");
+		entry.msg=DBConnections.getRes(R,"CMMSGT");
+		
+		int datestrdex=dateStr.indexOf("/");
+		if(datestrdex>=0)
+		{
+			entry.update=CMath.s_long(dateStr.substring(datestrdex+1));
+			entry.date=CMath.s_long(dateStr.substring(0,datestrdex));
+		}
+		else
+		{
+			entry.date=CMath.s_long(dateStr);
+			entry.update=entry.date;
+		}
+		
+		String subject=entry.subj;
+		if((subject.toUpperCase().startsWith("MOTD"))
+		||(subject.toUpperCase().startsWith("MOTM"))
+		||(subject.toUpperCase().startsWith("MOTY")))
+		{
+			char c=subject.toUpperCase().charAt(3);
+			subject=subject.substring(4);
+			entry.subj=subject;
+			long last=entry.date;
+			if(c=='D') last=last+TimeManager.MILI_DAY;
+			else
+			if(c=='M') last=last+TimeManager.MILI_MONTH;
+			else
+			if(c=='Y') last=last+TimeManager.MILI_YEAR;
+			entry.update=last;
+		}
+		return entry;
+	}
+	
+	public synchronized Vector<JournalsLibrary.JournalEntry> DBReadJournalMsgs(String Journal)
+	{
+		Vector<JournalsLibrary.JournalEntry> journal=new Vector<JournalsLibrary.JournalEntry>();
 		//Resources.submitResource("JOURNAL_"+Journal);
 		DBConnection D=null;
 		try
@@ -197,39 +238,7 @@ public class JournalLoader
 			ResultSet R=D.query(str);
 			while(R.next())
 			{
-				JournalsLibrary.JournalEntry entry=new JournalsLibrary.JournalEntry();
-				entry.key=DBConnections.getRes(R,"CMJKEY");
-				entry.from=DBConnections.getRes(R,"CMFROM");
-				entry.date=DBConnections.getRes(R,"CMDATE");
-				entry.to=DBConnections.getRes(R,"CMTONM");
-				entry.subj=DBConnections.getRes(R,"CMSUBJ");
-				entry.msg=DBConnections.getRes(R,"CMMSGT");
-				
-				int datestrdex=entry.date.indexOf("/");
-				if(datestrdex>=0)
-				{
-					entry.update=entry.date.substring(datestrdex+1);
-					entry.date=entry.date.substring(0,datestrdex);
-				}
-				else
-					entry.update=entry.date;
-				
-				String subject=entry.subj;
-				if((subject.toUpperCase().startsWith("MOTD"))
-				||(subject.toUpperCase().startsWith("MOTM"))
-				||(subject.toUpperCase().startsWith("MOTY")))
-				{
-					char c=subject.toUpperCase().charAt(3);
-					subject=subject.substring(4);
-					entry.subj=subject;
-					long last=CMath.s_long(entry.date);
-					if(c=='D') last=last+TimeManager.MILI_DAY;
-					else
-					if(c=='M') last=last+TimeManager.MILI_MONTH;
-					else
-					if(c=='Y') last=last+TimeManager.MILI_YEAR;
-					entry.update=""+last;
-				}
+				JournalsLibrary.JournalEntry entry = DBReadJournalEntry(R); 
 				journal.addElement(entry);
 			}
 			DB.DBDone(D);
@@ -240,40 +249,7 @@ public class JournalLoader
 			if(D!=null) DB.DBDone(D);
 			return null;
 		}
-			
-		Vector oldJournal=journal;
-		journal=new Vector();
-		while(oldJournal.size()>0)
-		{
-			JournalsLibrary.JournalEntry useEntry=null;
-			long byDate=Long.MAX_VALUE;
-			for(int j=0;j<oldJournal.size();j++)
-			{
-				JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)oldJournal.elementAt(j);
-				String datestr=entry.date;
-				long date=0;
-				if(datestr.indexOf("/")>=0)
-					date=CMath.s_long(datestr.substring(0,datestr.indexOf("/")));
-				else
-					date=CMath.s_long(datestr);
-				
-				if(date<byDate)
-				{
-					byDate=date;
-					useEntry=entry;
-				}
-			}
-			if(useEntry!=null)
-			{
-				oldJournal.removeElement(useEntry);
-				journal.addElement(useEntry);
-			}
-			else
-			{
-				journal.addElement(oldJournal.elementAt(0));
-				oldJournal.removeElementAt(0);
-			}
-		}
+		Collections.sort(journal);
 		return journal;
 	}
 
@@ -341,18 +317,7 @@ public class JournalLoader
 	
 	public synchronized void DBDelete(String Journal, int which)
 	{
-		if(which<0)
-		{
-			Vector journal=DBReadJournalMsgs(Journal);
-			if((journal==null)||(journal.size()==0)) return;
-			DB.update("DELETE FROM CMJRNL WHERE CMJRNL='"+Journal+"'");
-		}
-		else
-		if(which==Integer.MAX_VALUE)
-		{
-			DB.update("DELETE FROM CMJRNL WHERE CMJRNL='"+Journal+"'");
-		}
-		else
+		if((which >=0)&&(which < Integer.MAX_VALUE))
 		{
 			Vector journal=DBReadJournalMsgs(Journal);
 			if(journal==null) return;
@@ -360,6 +325,11 @@ public class JournalLoader
 			JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)journal.elementAt(which);
 			String oldkey=entry.key;
 			DB.update("DELETE FROM CMJRNL WHERE CMJKEY='"+oldkey+"'");
+		}
+		else
+		if(which==Integer.MAX_VALUE)
+		{
+			DB.update("DELETE FROM CMJRNL WHERE CMJRNL='"+Journal+"'");
 		}
 	}
 	
@@ -401,13 +371,11 @@ public class JournalLoader
 		String date=System.currentTimeMillis()+"";
 		if(which>=0)
 		{
-			Vector journal=DBReadJournalMsgs(Journal);
+			Vector<JournalsLibrary.JournalEntry> journal=DBReadJournalMsgs(Journal);
 			if(journal==null) return;
 			if(which>=journal.size()) return;
 			JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)journal.elementAt(which);
-			String olddate=entry.date;
-			int olddatedex=olddate.indexOf("/");
-			if(olddatedex>=0) olddate=olddate.substring(0,olddatedex);
+			long olddate=entry.date;
 			String oldkey=entry.key;
 			String oldmsg=entry.msg;
 			message=oldmsg+JournalsLibrary.JOURNAL_BOUNDARY

@@ -73,11 +73,11 @@ public class MOTD extends StdCommand
 				{
 					JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)journal.elementAt(which);
 					String from=entry.from;
-					long last=CMath.s_long(entry.date);
+					long last=entry.date;
 					String to=entry.to;
 					String subject=entry.subj;
 					String message=entry.msg;
-					long compdate=CMath.s_long(entry.update);
+					long compdate=entry.update;
                     if(compdate>mob.playerStats().lastDateTime())
                     {
     					boolean allMine=to.equalsIgnoreCase(mob.Name())
@@ -161,7 +161,7 @@ public class MOTD extends StdCommand
                     	JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)items.elementAt(i);
                         String from=entry.from;
                         String message=entry.msg;
-                        long compdate=CMath.s_long(entry.update);
+                        long compdate=entry.update;
                         if(compdate>mob.playerStats().lastDateTime())
                         {
                             buf.append("\n\rNEW "+CMJ.NAME()+" from "+from+": "+message+"\n\r");

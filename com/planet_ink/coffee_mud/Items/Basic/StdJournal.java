@@ -436,11 +436,11 @@ public class StdJournal extends StdItem
 			{
 				JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)journal.elementAt(j);
 				String from=entry.from;
-				String date=entry.date;
+				long date=entry.date;
 				String to=entry.to;
 				String subject=entry.subj;
 				// message is 5, but dont matter.
-				String compdate=entry.update;
+				long compdate=entry.update;
 				StringBuffer selection=new StringBuffer("");
                 boolean mayRead=(to.equals("ALL")
                                 ||to.equalsIgnoreCase(reader.Name())
@@ -452,7 +452,7 @@ public class StdJournal extends StdItem
                 }
 				if(mayRead)
 				{
-					if(CMath.s_long(compdate)>lastTimeDate)
+					if(compdate>lastTimeDate)
 					    selection.append("*");
 					else
 					if(newOnly)
@@ -463,7 +463,7 @@ public class StdJournal extends StdItem
 								   +((shortFormat)?"":""
 								   +CMStrings.padRight(from,10)+" "
 								   +CMStrings.padRight(to,10)+" ")
-								   +CMStrings.padRight(CMLib.time().date2String(CMath.s_long(date)),19)+" "
+								   +CMStrings.padRight(CMLib.time().date2String(date),19)+" "
 								   +CMStrings.padRight(subject,25+(shortFormat?22:0))+"\n\r");
 					selections.addElement(selection);
 				}
@@ -495,7 +495,7 @@ public class StdJournal extends StdItem
 		{
 			JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)journal.elementAt(which);
 			String from=entry.from;
-			String date=entry.date;
+			long date=entry.date;
 			String to=entry.to;
 			String subject=entry.subj;
 			String message=entry.msg;
@@ -525,7 +525,7 @@ public class StdJournal extends StdItem
 				buf.append("\n\r^<JRNL \""+name()+"\"^>"+CMStrings.padRight((which+1)+"",3)+"^</JRNL^>)\n\r"
 						   +"FROM: "+from
 						   +"\n\rTO  : "+to
-						   +"\n\rDATE: "+CMLib.time().date2String(CMath.s_long(date))
+						   +"\n\rDATE: "+CMLib.time().date2String(date)
 						   +"\n\rSUBJ: "+subject
 						   +"\n\r"+message);
 		}

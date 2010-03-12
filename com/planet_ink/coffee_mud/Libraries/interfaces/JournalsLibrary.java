@@ -38,15 +38,20 @@ public interface JournalsLibrary extends CMLibrary, Runnable
     
 	public static final String JOURNAL_BOUNDARY="%0D^w---------------------------------------------^N%0D";
 	
-	public static class JournalEntry
+	public static class JournalEntry implements Comparable<JournalEntry>
 	{
 		public String key;
 		public String from;
-		public String date;
+		public long date;
 		public String to;
 		public String subj;
 		public String msg;
-		public String update;
+		public long update;
+		public int compareTo(JournalEntry o) {
+			if(date < o.date) return -1;
+			if(date > o.date) return 1;
+			return 0;
+		}
 	}
 	
     public static class CommandJournal
