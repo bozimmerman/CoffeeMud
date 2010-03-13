@@ -47,6 +47,9 @@ public interface JournalsLibrary extends CMLibrary, Runnable
 		public String subj;
 		public String msg;
 		public long update;
+		public String parent;
+		public long attributes;
+		public String data;
 		public int compareTo(JournalEntry o) {
 			if(date < o.date) return -1;
 			if(date > o.date) return 1;
