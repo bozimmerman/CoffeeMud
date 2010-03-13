@@ -62,6 +62,7 @@ public class JournalFunction extends StdWebMacro
 			{
 				if(!CMLib.players().playerExists(to))
 					return "Post not submitted -- TO user does not exist.  Try 'All'.";
+				to=CMStrings.capitalizeAndLower(to);
 			}
             else
             if(last.equalsIgnoreCase(CMProps.getVar(CMProps.SYSTEM_MAILBOX))
