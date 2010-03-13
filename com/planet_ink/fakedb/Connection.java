@@ -28,7 +28,8 @@ public class Connection implements java.sql.Connection
    private boolean closed=false;
    private String oldPath="";
 
-   static private void log(String x) {
+   static private void log(String x) 
+   {
       System.err.println("Connection: "+x);
    }
 
@@ -37,36 +38,39 @@ public class Connection implements java.sql.Connection
    public Connection(String path) throws java.sql.SQLException
    {
 	  
-      try {
+      try 
+      {
          path=(new java.io.File(path)).getCanonicalPath();
-      } catch (java.io.IOException e) {}
+      } 
+      catch (java.io.IOException e) {}
 	  
-		oldPath=path;
-		if(!closed)
-		{
-			synchronized(references)
-			{
-				Integer conCount=(Integer)references.get(path);
-				if(conCount==null)
-					conCount=Integer.valueOf(0);
-				references.remove(path);
-				references.put(path,Integer.valueOf(conCount.intValue()+1));
-			}
-		}
+	  oldPath=path;
+	  if(!closed)
+	  {
+		  synchronized(references)
+		  {
+			  Integer conCount=(Integer)references.get(path);
+			  if(conCount==null)
+				  conCount=Integer.valueOf(0);
+			  references.remove(path);
+			  references.put(path,Integer.valueOf(conCount.intValue()+1));
+		  }
+	  }
 
       synchronized (databases) 
 	  {
-         WeakReference ref=(WeakReference)databases.get(path);
-         Backend       backend=null;
-         if (ref!=null)
-            backend=(Backend)ref.get();
-         if (backend==null) {
-            backend=new Backend();
-            if (!backend.open(new java.io.File(path)))
-               throw new java.sql.SQLException("unable to open database");
-            databases.put(path,new WeakReference(backend));
-         }
-         this.backend=backend;
+          WeakReference ref=(WeakReference)databases.get(path);
+          Backend       backend=null;
+          if (ref!=null)
+             backend=(Backend)ref.get();
+          if (backend==null) 
+          {
+             backend=new Backend();
+             if (!backend.open(new java.io.File(path)))
+                throw new java.sql.SQLException("unable to open database");
+             databases.put(path,new WeakReference(backend));
+          }
+          this.backend=backend;
       }
    }
 
@@ -74,76 +78,126 @@ public class Connection implements java.sql.Connection
    {
       return new Statement(this);
    }
-   public java.sql.Statement createStatement(int a,int b) throws java.sql.SQLException
-   { return createStatement(); }
-   public java.sql.Statement createStatement(int a,int b,int c) throws java.sql.SQLException
-   { return createStatement(); }
+   
+   public java.sql.Statement createStatement(int a, int b) throws java.sql.SQLException
+   { 
+	   return createStatement(); 
+   }
+   
+   public java.sql.Statement createStatement(int a, int b, int c) throws java.sql.SQLException
+   { 
+	   return createStatement(); 
+   }
 
    public java.sql.PreparedStatement prepareStatement(String sql) throws java.sql.SQLException
    {
       log("prepareStatement");
       return null;
    }
+   
    public java.sql.PreparedStatement prepareStatement(String sql,int a) throws java.sql.SQLException
-   { return prepareStatement(sql); }
+   { 
+	   return prepareStatement(sql); 
+   }
+   
    public java.sql.PreparedStatement prepareStatement(String sql,int[] a) throws java.sql.SQLException
-   { return prepareStatement(sql); }
+   { 
+	   return prepareStatement(sql); 
+   }
+   
    public java.sql.PreparedStatement prepareStatement(String sql,String[] a) throws java.sql.SQLException
-   { return prepareStatement(sql); }
+   { 
+	   return prepareStatement(sql); 
+   }
+   
    public java.sql.PreparedStatement prepareStatement(String sql,int a,int b) throws java.sql.SQLException
-   { return prepareStatement(sql); }
+   { 
+	   return prepareStatement(sql); 
+   }
+   
    public java.sql.PreparedStatement prepareStatement(String sql,int a,int[] b) throws java.sql.SQLException
-   { return prepareStatement(sql); }
+   { 
+	   return prepareStatement(sql); 
+   }
+   
    public java.sql.PreparedStatement prepareStatement(String sql,int a,int b,int c) throws java.sql.SQLException
-   { return prepareStatement(sql); }
+   { 
+	   return prepareStatement(sql); 
+   }
 
    public java.sql.CallableStatement prepareCall(String sql) throws java.sql.SQLException
    {
       log("prepareCall");
       throw new java.sql.SQLException("Callable statments not suppoted.", "S1C00");
    }
+   
    public java.sql.CallableStatement prepareCall(String sql,int a,int b) throws java.sql.SQLException
-   { return prepareCall(sql); }
+   { 
+	   return prepareCall(sql); 
+   }
+   
    public java.sql.CallableStatement prepareCall(String sql,int a,int b,int c) throws java.sql.SQLException
-   { return prepareCall(sql); }
+   { 
+	   return prepareCall(sql); 
+   }
+   
    public int getHoldability()
-   {  return ResultSet.HOLD_CURSORS_OVER_COMMIT;  }
+   {  
+	   return ResultSet.HOLD_CURSORS_OVER_COMMIT;  
+   }
+   
    public java.sql.Savepoint setSavepoint()
 	   throws java.sql.SQLException
-   {  throw new java.sql.SQLException("Savepoints not supported");  }
+   {  
+	   throw new java.sql.SQLException("Savepoints not supported");  
+   }
+   
    public java.sql.Savepoint setSavepoint(String S)
 	   throws java.sql.SQLException
-   {  throw new java.sql.SQLException("Savepoints not supported");  }
+   {  
+	   throw new java.sql.SQLException("Savepoints not supported");  
+   }
+   
    public void rollback(java.sql.Savepoint saved)
 	   throws java.sql.SQLException
-   {  throw new java.sql.SQLException("Savepoints not supported");  }
+   {  
+	   throw new java.sql.SQLException("Savepoints not supported");  
+   }
+   
    public void releaseSavepoint(java.sql.Savepoint saved)
 	   throws java.sql.SQLException
-   {  throw new java.sql.SQLException("Savepoints not supported");  }
+   {  
+	   throw new java.sql.SQLException("Savepoints not supported");  
+   }
 
    public String nativeSQL(String sql) throws java.sql.SQLException
    {
       return sql;
    }
+   
    public void setAutoCommit(boolean autoCommit) throws java.sql.SQLException
    {
       log("setAutoCommit");
       if (!autoCommit)
-	  throw new java.sql.SQLException("Cannot disable AUTO_COMMIT", "08003");
+    	  throw new java.sql.SQLException("Cannot disable AUTO_COMMIT", "08003");
       return;
    }
+   
    public boolean getAutoCommit() throws java.sql.SQLException
    {
-		return true;
+	  return true;
    }
+   
    public void commit() throws java.sql.SQLException
    {
 		//log("commit");
    }
+   
    public void rollback() throws java.sql.SQLException
    {
 		//log("rollback");
    }
+   
    public void close() throws java.sql.SQLException
    {
 		if(!closed)
@@ -157,7 +211,7 @@ public class Connection implements java.sql.Connection
 					if(conCount.intValue()==1)
 					{
 						if(backend!=null)
-							backend.clearRelations();
+							backend.clearFakeTables();
 						backend=null;
 						references.remove(oldPath);
 						databases.remove(oldPath);
@@ -171,6 +225,7 @@ public class Connection implements java.sql.Connection
 			}
 		}
    }
+   
    public boolean isClosed() throws java.sql.SQLException
    {
 		return closed;
@@ -181,61 +236,124 @@ public class Connection implements java.sql.Connection
       log("getMetaData");
       return null;
    }
+   
    public void setReadOnly (boolean readOnly) throws java.sql.SQLException
    {
       log("setReadOnly");
    }
+   
    public boolean isReadOnly() throws java.sql.SQLException
    {
       return false;
    }
+   
    public void setCatalog(String Catalog) throws java.sql.SQLException
    {
       log("setCatalog");
    }
+   
    public String getCatalog() throws java.sql.SQLException
-   { return "FAKEDB";  }
+   { 
+	   return "FAKEDB";  
+   }
    
    public void setTransactionIsolation(int level) throws java.sql.SQLException
    {
       log("setTransactionIsolation");
       throw new java.sql.SQLException("Transaction Isolation Levels are not supported.", "S1C00");
    }
+   
    public int getTransactionIsolation() throws java.sql.SQLException
    {
       return java.sql.Connection.TRANSACTION_NONE;
    }
+   
    public java.sql.SQLWarning getWarnings() throws java.sql.SQLException
    {
       log("getWarnings");
       return null;
    }
+   
    public void clearWarnings() throws java.sql.SQLException
    {
       log("clearWarnings");
    }
 
-
    public void setHoldability(int holdability) throws java.sql.SQLException
-      {}
+   {}
+   
    public java.util.Map getTypeMap() throws java.sql.SQLException
-      { return new java.util.HashMap(); }
+   { 
+	   return new java.util.HashMap(); 
+   }
 
-   public Array createArrayOf(String arg0, Object[] arg1) throws SQLException { return null; }
-   public Blob createBlob() throws SQLException { return null; }
-   public Clob createClob() throws SQLException { return null; }
-   public NClob createNClob() throws SQLException { return null; }
-   public SQLXML createSQLXML() throws SQLException { return null; }
-   public Struct createStruct(String arg0, Object[] arg1) throws SQLException { return null; }
-   public Properties getClientInfo() throws SQLException { return null; }
-   public String getClientInfo(String arg0) throws SQLException { return null; }
-   public boolean isValid(int arg0) throws SQLException { return false; }
-   public void setClientInfo(Properties arg0) throws SQLClientInfoException { }
-   public void setClientInfo(String arg0, String arg1) throws SQLClientInfoException { }
+   public Array createArrayOf(String arg0, Object[] arg1) throws SQLException 
+   { 
+	   return null; 
+   }
+   
+   public Blob createBlob() throws SQLException
+   { 
+	   return null; 
+   }
+   
+   public Clob createClob() throws SQLException
+   { 
+	   return null; 
+   }
+   
+   public NClob createNClob() throws SQLException
+   { 
+	   return null; 
+   }
+   
+   public SQLXML createSQLXML() throws SQLException
+   { 
+	   return null; 
+   }
+   
+   public Struct createStruct(String arg0, Object[] arg1) throws SQLException
+   { 
+	   return null; 
+   }
+   
+   public Properties getClientInfo() throws SQLException
+   { 
+	   return null; 
+   }
+   
+   public String getClientInfo(String arg0) throws SQLException
+   { 
+	   return null; 
+   }
+   
+   public boolean isValid(int arg0) throws SQLException 
+   { 
+	   return false; 
+   }
+   
+   public void setClientInfo(Properties arg0) throws SQLClientInfoException 
+   { 
+   }
+   
+   public void setClientInfo(String arg0, String arg1) throws SQLClientInfoException 
+   { 
+   }
+   
    //public void setTypeMap(Map arg0) throws SQLException { }
-   public void setTypeMap(Map<String, Class<?>> arg0) throws SQLException { }
-   public boolean isWrapperFor(Class<?> iface) throws SQLException { return false;}
-   public <T> T unwrap(Class<T> iface) throws SQLException { return null; }
+   public void setTypeMap(Map<String, Class<?>> arg0) throws SQLException 
+   { 
+   }
+   
+   public boolean isWrapperFor(Class<?> iface) throws SQLException 
+   { 
+	   return false;
+   }
+   
+   public <T> T unwrap(Class<T> iface) throws SQLException 
+   { 
+	   return null; 
+   }
 
    // JDK 1.4 stuff
 /*

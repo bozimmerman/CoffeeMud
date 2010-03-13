@@ -23,10 +23,20 @@ import java.util.Map;
    limitations under the License.
 */
 @SuppressWarnings("unchecked")
-class ResultSet implements java.sql.ResultSet
+public class ResultSet implements java.sql.ResultSet
 {
+   public static class FakeCondition
+   {
+	   public int conditionIndex;
+	   public String conditionValue;
+	   public boolean eq=true;
+	   public boolean lt=false;
+	   public boolean gt=false;
+   }
+   
+   
    private Statement statement;
-   private Backend.Relation relation;
+   private Backend.FakeTable relation;
    private java.util.Iterator iter;
    private int currentRow=0;
    private int conditionIndex;
@@ -39,7 +49,7 @@ class ResultSet implements java.sql.ResultSet
    private boolean nullFlag = false;
 
    ResultSet(Statement s,
-             Backend.Relation r,
+             Backend.FakeTable r,
              int ci,
              String cv,
              String comp) 
@@ -53,7 +63,7 @@ class ResultSet implements java.sql.ResultSet
       lt=(comp.indexOf("<")>=0);
       gt=(comp.indexOf(">")>=0) ;
 	  currentRow=0;
-      values=new String[r.attributes.length];
+      values=new String[r.columns.length];
       nullIndicators=new boolean[values.length];
 
       if ((ci<0)&&(cv!=null)) {
@@ -155,7 +165,7 @@ class ResultSet implements java.sql.ResultSet
              ||((gt)&&(sc>0)))
              {
                  currentRow++;
-                 return relation.getRecord(nullIndicators,values,(Backend.RecordInfo)relation.index.get(key));
+                 return relation.getRecord(nullIndicators, values, (Backend.RecordInfo)relation.index.get(key));
              }
              continue;
          }
@@ -366,7 +376,7 @@ class ResultSet implements java.sql.ResultSet
 
    public int findColumn(String columnName) throws java.sql.SQLException
    {
-      return relation.findAttribute(columnName);
+      return relation.findColumn(columnName);
    }
 
 
