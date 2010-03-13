@@ -1,0 +1,11 @@
+coffeemuddb2.sql - schema for older versions of Microsoft SQL Server
+coffeemuddbaccess.sql - schema for Microsoft ACCESS (yea, I know -- but this was the first DB supported)
+coffeemuddbderby.sql - schema for IBM Cloudscape/Derby database
+coffeemuddbh.sql - schema for HSQLDB database
+coffeemuddbMSSQL2005.sql - schema for Microsoft SQL Server 2005 and later
+coffeemuddbmysql.sql - schema for MySQL (All Versions)
+coffeemuddboracle.sql - schema for Oracle database
+coffeemuddbpsql.sql - schema for PostgreSQL database
+coffeemudibmdb2.sql - schema for IBM DB2 database
+coffeemuddb.sql - generic schema for an unknown database type
+fakedb.schema   - schema for built-in "fakedb" database.  See also /resources/fakedb  

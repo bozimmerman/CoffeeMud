@@ -40,6 +40,7 @@ public class JournalLoader
 	{
 		DB=newDB;
 	}
+	
 	public synchronized int DBCount(String Journal, String from, String to)
 	{
 		int ct=0;
@@ -193,6 +194,9 @@ public class JournalLoader
 		String dateStr = DBConnections.getRes(R,"CMDATE");
 		entry.to=DBConnections.getRes(R,"CMTONM");
 		entry.subj=DBConnections.getRes(R,"CMSUBJ");
+		entry.parent=DBConnections.getRes(R,"CMPART");
+		entry.attributes=CMath.s_long(DBConnections.getRes(R,"CMATTR"));
+		entry.subj=DBConnections.getRes(R,"CMDATA");
 		entry.msg=DBConnections.getRes(R,"CMMSGT");
 		
 		int datestrdex=dateStr.indexOf("/");
@@ -204,17 +208,20 @@ public class JournalLoader
 		else
 		{
 			entry.date=CMath.s_long(dateStr);
-			entry.update=entry.date;
+			long realUpdate=CMath.s_long(DBConnections.getRes(R,"CMUPTM"));
+			if(realUpdate > entry.date)
+				entry.update=realUpdate;
+			else
+				entry.update=entry.date;
 		}
 		
-		String subject=entry.subj;
-		if((subject.toUpperCase().startsWith("MOTD"))
-		||(subject.toUpperCase().startsWith("MOTM"))
-		||(subject.toUpperCase().startsWith("MOTY")))
+		String subject=entry.subj.toUpperCase();
+		if((subject.startsWith("MOTD"))
+		||(subject.startsWith("MOTM"))
+		||(subject.startsWith("MOTY")))
 		{
-			char c=subject.toUpperCase().charAt(3);
-			subject=subject.substring(4);
-			entry.subj=subject;
+			char c=subject.charAt(3);
+			entry.subj=entry.subj.substring(4);
 			long last=entry.date;
 			if(c=='D') last=last+TimeManager.MILI_DAY;
 			else
