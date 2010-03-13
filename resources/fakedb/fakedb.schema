@@ -124,10 +124,10 @@ CMFROM string NULL
 CMDATE string NULL
 CMTONM string NULL
 CMSUBJ string NULL
-CMPART string NULL,
-CMATTR integer,
-CMDATA string NULL,
-CMUPTM integer NULL,
+CMPART string NULL
+CMATTR integer
+CMDATA string NULL
+CMUPTM integer NULL
 CMMSGT string NULL
 
 CMCLAN
