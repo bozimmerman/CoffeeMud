@@ -34,6 +34,8 @@ public class Backend
       String  name;
       int     type;
       boolean canNull;
+      boolean isKey;
+      int     keyNum;
    }
    
    /**
@@ -49,6 +51,54 @@ public class Backend
       }
    }
 
+	  public static boolean isNumber(String s)
+	  {
+	      try{ Double.parseDouble(s); return true;}
+	      catch(Exception e){ return false;}
+	  }
+	  
+	  public static double s_double(String DOUBLE)
+	  {
+	      double sdouble=0;
+	      try{ sdouble=Double.parseDouble(DOUBLE); }
+	      catch(Exception e){ return 0;}
+	      return sdouble;
+	  }
+	  
+	  public static long s_long(String LONG)
+	  {
+	      long slong=0;
+	      try{ slong=Long.parseLong(LONG); }
+	      catch(Exception e){ return 0;}
+	      return slong;
+	  }
+	  
+	  public static boolean isDouble(String DBL)
+	  {
+		  if(!isNumber(DBL))
+			  return false;
+		  return DBL.indexOf('.')>=0;
+	  }
+	  
+	  public static int numCompare(String s1, String s2)
+	  {
+	      if((s1==null)||(s2==null)) return 0;
+	      if((!isNumber(s1))||(!isNumber(s2))) return 0;
+	      if(isDouble(s1)||(isDouble(s2)))
+	      {
+	          double d1=isDouble(s1)?s_double(s1):Long.valueOf(s_long(s1)).doubleValue();
+	          double d2=isDouble(s2)?s_double(s2):Long.valueOf(s_long(s2)).doubleValue();
+	          if(d1==d2) return 0;
+	          if(d1>d2) return 1;
+	          return -1;
+	      }
+	      long l1=s_long(s1);
+	      long l2=s_long(s2);
+	      if(l1==l2) return 0;
+	      if(l1>l2) return 1;
+	      return -1;
+	  }
+	  
    /**
     * 
     */
@@ -61,6 +111,50 @@ public class Backend
 	   fakeTables=new HashMap<String,FakeTable>();
    }
    
+   public static enum ConnectorType { AND, OR }
+   
+   public class FakeCondition
+   {
+	   public int conditionIndex;
+	   public String conditionValue;
+	   public boolean eq=true;
+	   public boolean lt=false;
+	   public boolean gt=false;
+	   public boolean not=false;
+	   public ConnectorType connector = ConnectorType.AND;
+	   public List<FakeCondition> contains = null;
+	   public boolean compareValue(String subKey)
+	   {
+		   if(subKey==null) subKey="";
+           int nc=(lt||gt)?numCompare(subKey,conditionValue):0;
+           int sc=(lt||gt)?subKey.compareTo(conditionValue):0;
+           if(!(((eq)&&(subKey.equals(conditionValue)))
+           ||((lt)&&(nc<0))
+           ||((gt)&&(nc>0))
+           ||((lt)&&(sc<0))
+           ||((gt)&&(sc>0))))
+               return false;
+           return true;
+	   }
+   }
+   
+   public interface FakeConditionResponder
+   {
+	   public void callBack(FakeKey key, boolean[] nullIndicators, String[] values, RecordInfo info) throws Exception;
+   }
+
+   
+   public static class FakeKey implements Comparable
+   {
+	   public String[] s=null;
+		public int compareTo(Object o) {
+			if(o==this) return 0;
+			if(hashCode()<o.hashCode()) return -1;
+			return 1;
+		}
+	   
+   }
+   
    /**
     * 
     */
@@ -71,12 +165,19 @@ public class Backend
       int              fileSize;
       byte[]           fileBuffer;
 
-      FakeColumn[]     columns;
-      int[]            keys;
-      Map              index=new TreeMap();
+      private FakeColumn[]     columns;
+      private Map<String,Integer> columnHash = new Hashtable<String,Integer>();
+      private int[]            keys;
+      private TreeMap<FakeKey,Backend.RecordInfo> index=new TreeMap<FakeKey,Backend.RecordInfo>();
 
-      FakeTable(File name) { fileName=name; }
+      FakeTable(File name) 
+      { 
+    	  fileName=name; 
+      }
 
+      protected int numColumns(){ return columns.length;}
+      protected TreeMap<FakeKey,Backend.RecordInfo> indexMap() { return index;}
+      
       /**
        * 
        * @param name
@@ -84,11 +185,8 @@ public class Backend
        */
       protected int findColumn(String name) 
       {
-         // might even be faster than using a hashtable (overhead for Integer etc.) when only a
-         // few attributes are present...
-         for (int index=0;index<columns.length;++index)
-            if (columns[index].name.equals(name))
-               return index;
+    	 if((name!=null)&&(columnHash.containsKey(name)))
+    		 return columnHash.get(name).intValue();
          return -1;
       }
 	  
@@ -110,8 +208,9 @@ public class Backend
 		     file=null;
 	     }
 	     columns=null;
+	     columnHash = null;
 	     keys=null;
-	     index=new TreeMap();
+	     index=new TreeMap<FakeKey,Backend.RecordInfo>();
 	  }
 	  
       /**
@@ -120,7 +219,6 @@ public class Backend
        */
       protected void open() throws IOException
       {
-         StringBuffer key=new StringBuffer();
          file=new RandomAccessFile(fileName,"rw");
          fileSize=0;
          fileBuffer=new byte[4096];
@@ -184,8 +282,8 @@ public class Backend
             // Build index string
             if (!skip) 
             {
-               key.setLength(0);
                int current=-1,currentPos=ofs;
+               String[] key = new String[keys.length];
                for (int index=0;index<keys.length;index++) 
                {
                   while (current<keys[index]) 
@@ -194,14 +292,18 @@ public class Backend
                     	 currentPos++;
                      currentPos++; current++;
                   }
+                  StringBuilder keyData = new StringBuilder(); 
                   for (int sub=currentPos;;++sub) 
                   {
                      char c=(char)(fileBuffer[sub]&0xFF);
-                     key.append(c);
                      if (c==0x0A) break;
+                     keyData.append(c);
                   }
+                  key[index]=keyData.toString();
                }
-               this.index.put(key.toString(),new RecordInfo(fileSize,size));
+               FakeKey f = new FakeKey();
+               f.s=key;
+               index.put(f,new RecordInfo(fileSize,size));
             } 
             else 
             	skipped+=size;
@@ -225,9 +327,9 @@ public class Backend
          File tempFileName2=new File(fileName.getName()+".cpy");
          RandomAccessFile tempOut=new RandomAccessFile(tempFileName,"rw");
          int newFileSize=0;
-         for (Iterator iter=index.keySet().iterator();iter.hasNext();) 
+         for (Iterator<FakeKey> iter=index.keySet().iterator();iter.hasNext();) 
          {
-            String key=(String)iter.next();
+            FakeKey key=iter.next();
             RecordInfo info=(RecordInfo)index.get(key);
             file.seek(info.offset);
             file.readFully(fileBuffer,0,info.size);
@@ -336,7 +438,7 @@ public class Backend
        * @param values
        * @return
        */
-      protected synchronized boolean insertRecord(String key, boolean[] nullIndicators, String[] values)
+      protected synchronized boolean insertRecord(FakeKey key, boolean[] nullIndicators, String[] values)
       {
          try 
          {
@@ -420,117 +522,141 @@ public class Backend
        * @param value
        * @return
        */
-      protected synchronized int deleteRecord(int key, String value)
+      protected synchronized int deleteRecord(List<FakeCondition> conditions)
       {
-         int count=0;
+		 int[] count={0};
          try 
          {
-            byte[] mark=new byte[1]; mark[0]=(byte)'*';
-            if (key<0) 
-            {
-               for (Iterator iter=index.keySet().iterator();iter.hasNext();) 
-               {
-	                String current=(String)iter.next();
-					if(!current.startsWith(value)) 
-						continue;
-					RecordInfo info=(RecordInfo)index.get(current);
+        	FakeConditionResponder responder = new FakeConditionResponder()
+        	{
+        		public int[] count;
+                public FakeConditionResponder init(int[] c) { count=c; return this;}
+                
+				public void callBack(FakeKey key, boolean[] nullIndicators, String[] values, RecordInfo info) throws Exception 
+				{
 					file.seek(info.offset);
-					file.write(mark);
-					count++;
-					iter.remove();
-               }
-            } 
-            else 
-            {
-               boolean[] nullIndicators=new boolean[columns.length];
-               String[] values=new String[columns.length];
-               for (Iterator iter=index.values().iterator();iter.hasNext();) 
-               {
-                  RecordInfo info=(RecordInfo)iter.next();
-                  getRecord(nullIndicators,values,info);
-                  if (nullIndicators[key]) 
-                	  continue;
-                  if (!values[key].equals(value)) 
-                	  continue;
-                  file.seek(info.offset);
-                  file.write(mark);
-                  count++;
-                  iter.remove();
-               }
-            }
+					file.write(new byte[]{(byte)'*'});
+					index.remove(key);
+					count[0]++;
+				}
+        	}.init(count);
+        	recordIterator(conditions,responder);
          } 
-         catch (IOException e)
-         { 
-        	 return -1; 
-         }
-         return count;
+		 catch (Exception e)
+		 { 
+			 e.printStackTrace(); return -1; 
+		 }
+         return count[0];
+      }
+      
+      public boolean recordCompare(FakeKey rowKeyData, RecordInfo info, List<FakeCondition> conditions, boolean[] dataLoaded, boolean[] nullIndicators, String[] values)
+      {
+    	  boolean lastOne = true;
+    	  ConnectorType connector = ConnectorType.AND;
+    	  for(FakeCondition cond : conditions)
+    	  {
+    		  boolean thisOne = false;
+    		  if(cond.contains!=null)
+    			  thisOne = recordCompare(rowKeyData,info,cond.contains,dataLoaded,nullIndicators,values);
+    		  else
+    		  {
+    			  FakeColumn column = columns[cond.conditionIndex];
+    			  if(column.isKey)
+    				  thisOne = cond.compareValue(rowKeyData.s[column.keyNum]);
+    			  else
+    			  {
+	            	 if(!dataLoaded[0])
+	            		 dataLoaded[0] = getRecord(nullIndicators,values,info);
+	            	 if(dataLoaded[0])
+	            	 {
+		                 if (nullIndicators[cond.conditionIndex])
+		                	  thisOne = false;
+		                 else
+		                 if(cond.not)
+		                	  thisOne = !cond.compareValue(values[cond.conditionIndex]);
+		                 else
+		                	  thisOne = cond.compareValue(values[cond.conditionIndex]);
+	            	 }
+    			  }
+    		  }
+    		  if(connector == ConnectorType.OR)
+    			  lastOne = lastOne || thisOne;
+    		  else
+    			  lastOne = lastOne && thisOne;
+    		  connector = cond.connector;
+    	  }
+    	  return lastOne;
+      }
+
+      /**
+       * 
+       * @param conditions
+       * @param callBack
+       */
+      public void recordIterator(List<FakeCondition> conditions, FakeConditionResponder callBack) throws Exception
+      {
+    	  TreeMap<FakeKey,Backend.RecordInfo> safeIndex = (TreeMap<FakeKey,Backend.RecordInfo>)index.clone();
+    	  boolean[] dataLoaded=new boolean[1];
+    	  boolean[] nullIndicators=new boolean[columns.length];
+    	  String[] values=new String[columns.length];
+          for (Iterator<FakeKey> iter=safeIndex.keySet().iterator();iter.hasNext();) 
+          {
+        	  FakeKey current=iter.next();
+             RecordInfo info=(RecordInfo)safeIndex.get(current);
+             dataLoaded[0]=false;
+             if(recordCompare(current,info,conditions,dataLoaded,nullIndicators,values))
+             {
+            	 if(!dataLoaded[0])
+            		 dataLoaded[0] = getRecord(nullIndicators,values,info);
+            	 if(dataLoaded[0])
+	            	 callBack.callBack(current, nullIndicators, values, info);
+             }
+          }
       }
       
       /**
        * 
        * @param key
        * @param value
-       * @param attributes
+       * @param columns
        * @param newValues
        * @return
        */
-      protected synchronized int updateRecord(int key, String value, int[] attributes, String[] newValues)
+      protected synchronized int updateRecord(List<FakeCondition> conditions, int[] columns, String[] newValues)
       {
-         int count=0;
+   		 int[] count={0};
          try 
          {
-            boolean[] nullIndicators=new boolean[this.columns.length];
-            String[] values=new String[this.columns.length];
-            byte[] mark=new byte[1]; 
-            mark[0]=(byte)'*';
-            if (key<0) 
-            {
-               for (Iterator iter=index.keySet().iterator();iter.hasNext();) 
-               {
-                  String current=(String)iter.next();
-				  if(!current.startsWith(value)) 
-					  continue;
-				  RecordInfo info=(RecordInfo)index.get(current);
-				  getRecord(nullIndicators,values,info);
-				  for (int sub=0; sub<attributes.length; sub++) 
-				  {
-				     nullIndicators[attributes[sub]]=false;
-				     values[attributes[sub]]=newValues[sub];
-				  }
-				  insertRecord(current, nullIndicators, values);
-				  file.seek(info.offset);
-				  file.write(mark);
-				  count++;
-               }
-            } 
-            else 
-            {
-               for (Iterator iter=index.keySet().iterator();iter.hasNext();) 
-               {
-                  String current=(String)iter.next();
-                  RecordInfo info=(RecordInfo)index.get(current);
-                  getRecord(nullIndicators, values, info);
-                  if (nullIndicators[key]) 
-                	  continue;
-                  if (!values[key].equals(value)) 
-                	  continue;
-                  for (int sub=0; sub<attributes.length; sub++) 
-                  {
-                     nullIndicators[attributes[sub]]=false;
-                     values[attributes[sub]]=newValues[sub];
-                  }
-                  insertRecord(current, nullIndicators, values);
-                  file.seek(info.offset);
-                  file.write(mark);
-                  count++;
-               }
-            }
+        	FakeConditionResponder responder = new FakeConditionResponder()
+        	{
+        		public int[] count;
+                public int[] newCols;
+                public String[] newValues;
+                public FakeConditionResponder init(int[] c, int[] a, String[] n) { count=c; newCols=a; newValues=n; return this;}
+                
+				public void callBack(FakeKey key, boolean[] nullIndicators, String[] values, RecordInfo info) throws Exception 
+				{
+					for (int sub=0; sub<newCols.length; sub++) 
+					{
+					   nullIndicators[newCols[sub]]=false;
+					   values[newCols[sub]]=newValues[sub];
+					   for(int k=0;k<keys.length;k++)
+						   if(keys[k]==newCols[sub])
+							   key.s[k]=newValues[sub];
+					}
+					insertRecord(key, nullIndicators, values);
+					file.seek(info.offset);
+					file.write(new byte[]{(byte)'*'});
+					count[0]++;
+				}
+        	}.init(count, columns, newValues);
+        	recordIterator(conditions,responder);
          } 
-		 catch (IOException e) 
+		 catch (Exception e)
 		 { 
 			 e.printStackTrace(); return -1; 
 		 }
-         return count;
+         return count[0];
       }
    }
 
@@ -610,6 +736,8 @@ public class Backend
             else 
             if (columnModifier.equals("KEY")) 
             {
+               info.isKey = true;
+               info.keyNum = keys.size();
                keys.add(columnName);
             } 
             else 
@@ -619,11 +747,13 @@ public class Backend
 
          FakeTable fakeTable=new FakeTable(new File(basePath,"fakedb.data."+fakeTableName));
          fakeTable.columns=new FakeColumn[columns.size()];
+         fakeTable.columnHash = new Hashtable<String,Integer>();
          int index=0;
          for (Iterator iter=columns.iterator();iter.hasNext();++index) 
          {
             FakeColumn current=(FakeColumn)iter.next();
             fakeTable.columns[index]=current;
+            fakeTable.columnHash.put(current.name, Integer.valueOf(index));
          }
          index=0;
          fakeTable.keys=new int[keys.size()];
@@ -667,46 +797,36 @@ public class Backend
     */
    protected java.sql.ResultSet constructScan(Statement s,
 		                                      String tableName,
-		                                      String conditionVar,
-		                                      String conditionValue,
-		                                      String orderVar,
-		                                      String comparitor) 
+		                                      List<Backend.FakeCondition> conditions,
+		                                      String orderVar) 
    throws java.sql.SQLException
    {
-      FakeTable relation=(FakeTable)fakeTables.get(tableName);
-      if (relation==null) throw new java.sql.SQLException("unknown relation "+tableName);
+      FakeTable table=(FakeTable)fakeTables.get(tableName);
+      if (table==null) throw new java.sql.SQLException("unknown relation "+tableName);
 
-      int    conditionIndex=-1;
-      if (conditionVar!=null) 
-      {
-         int index=relation.findColumn(conditionVar);
-         if (index<0) throw new java.sql.SQLException("unknown column "+conditionVar);
-         if (relation.keys.length>0)
-            if (index==relation.keys[0])
-               { conditionVar+="\n"; index=-1; }
-         if (index>=0) conditionIndex=index;
-      }
+      int conditionIndex=-1;
       if (orderVar!=null) 
       {
-         int index=relation.findColumn(orderVar);
-         if (index<0) throw new java.sql.SQLException("unknown column "+conditionVar);
-         if ((relation.keys.length==0)||((relation.keys[0]!=index)&&((conditionVar==null)||(conditionIndex>=0)||(relation.keys.length<2)||(relation.keys[1]!=index))))
+    	  //TODO: implement order by -- this is a black hold.
+         int index=table.findColumn(orderVar);
+         if (index<0) throw new java.sql.SQLException("unknown column "+orderVar);
+         if ((table.keys.length==0)||((table.keys[0]!=index)&&((orderVar==null)||(conditionIndex>=0)||(table.keys.length<2)||(table.keys[1]!=index))))
             throw new java.sql.SQLException("order by "+orderVar+" not supported");
       }
-      return new ResultSet(s,relation,conditionIndex,conditionValue,comparitor);
+      return new ResultSet(s,table,conditions);
    }
    
    /**
     * 
-    * @param relationName
+    * @param tableName
     * @param columns
     * @param dataValues
     * @throws java.sql.SQLException
     */
-   protected void insertValues(String relationName, String[] columns, String[] dataValues) throws java.sql.SQLException
+   protected void insertValues(String tableName, String[] columns, String[] dataValues) throws java.sql.SQLException
    {
-      FakeTable fakeTable=(FakeTable)fakeTables.get(relationName);
-      if (fakeTable==null) throw new java.sql.SQLException("unknown relation "+relationName);
+      FakeTable fakeTable=(FakeTable)fakeTables.get(tableName);
+      if (fakeTable==null) throw new java.sql.SQLException("unknown relation "+tableName);
 
       boolean[] nullIndicators=new boolean[fakeTable.columns.length];
       String[] values=new String[fakeTable.columns.length];
@@ -721,67 +841,78 @@ public class Backend
          nullIndicators[id]=false;
          values[id]=dataValues[index];
       }
-      StringBuffer key=new StringBuffer();
+      String[] keys=new String[fakeTable.keys.length];
       for (int index=0;index<fakeTable.keys.length;index++) 
       {
          int id=fakeTable.keys[index];
-         if (nullIndicators[id]) throw new java.sql.SQLException("keys may not be NULL");
-         key.append(values[id]); key.append((char)0x0A);
+         if (nullIndicators[id]) 
+        	 throw new java.sql.SQLException("keys may not be NULL");
+         keys[index]=values[id];
       }
-      if (!fakeTable.insertRecord(key.toString(),nullIndicators,values))
+      FakeKey f = new FakeKey();
+      f.s=keys;
+      if (!fakeTable.insertRecord(f,nullIndicators,values))
          throw new java.sql.SQLException("unable to insert record");
    }
    
    /**
     * 
-    * @param relationName
+    * @param tableName
     * @param conditionVar
     * @param conditionValue
     * @throws java.sql.SQLException
     */
-   protected void deleteRecord(String relationName, String conditionVar, String conditionValue) throws java.sql.SQLException
+   protected void deleteRecord(String tableName, List<FakeCondition> conditions) throws java.sql.SQLException
    {
-      FakeTable fakeTable=(FakeTable)fakeTables.get(relationName);
+      FakeTable fakeTable=(FakeTable)fakeTables.get(tableName);
       if (fakeTable==null) 
-    	  throw new java.sql.SQLException("unknown relation "+relationName);
+    	  throw new java.sql.SQLException("unknown relation "+tableName);
 
-      int conditionIndex=fakeTable.findColumn(conditionVar);
-      if (conditionIndex<0) 
-    	  throw new java.sql.SQLException("unknown column "+conditionVar);
-      if ((fakeTable.keys.length>0)&&(fakeTable.keys[0]==conditionIndex))
-      { 
-    	  conditionIndex=-1; 
-    	  conditionValue+="\n"; 
-      }
-      fakeTable.deleteRecord(conditionIndex,conditionValue);
+      fakeTable.deleteRecord(conditions);
    }
    
    /**
     * 
-    * @param relationName
+    * @param tableName
     * @param conditionVar
     * @param conditionValue
     * @param varNames
     * @param values
     * @throws java.sql.SQLException
     */
-   protected void updateRecord(String relationName, String conditionVar, String conditionValue, String[] varNames, String[] values) throws java.sql.SQLException
+   protected void updateRecord(String tableName, List<FakeCondition> conditions, String[] varNames, String[] values) throws java.sql.SQLException
    {
-      FakeTable fakeTable=(FakeTable)fakeTables.get(relationName);
-      if (fakeTable==null) throw new java.sql.SQLException("unknown relation "+relationName);
+      FakeTable fakeTable=(FakeTable)fakeTables.get(tableName);
+      if (fakeTable==null) 
+    	  throw new java.sql.SQLException("unknown relation "+tableName);
 
-      int conditionIndex=fakeTable.findColumn(conditionVar);
-      if (conditionIndex<0) 
-    	  throw new java.sql.SQLException("unknown column "+conditionVar);
-      if ((fakeTable.keys.length>0)&&(fakeTable.keys[0]==conditionIndex))
-      { 
-    	  conditionIndex=-1; 
-    	  conditionValue+="\n"; 
-      }
       int[] vars=new int[varNames.length];
       for (int index=0;index<vars.length;index++)
          if ((vars[index]=fakeTable.findColumn(varNames[index]))<0)
             throw new java.sql.SQLException("unknown column "+varNames[index]);
-      fakeTable.updateRecord(conditionIndex, conditionValue, vars, values);
+      fakeTable.updateRecord(conditions, vars, values);
    }
+   
+   public FakeCondition buildFakeCondition(String tableName, String columnName, String comparitor, String value) throws java.sql.SQLException
+   {
+      FakeTable fakeTable=(FakeTable)fakeTables.get(tableName);
+      if (fakeTable==null) throw new java.sql.SQLException("unknown table "+tableName);
+      FakeCondition fake = new FakeCondition();
+      if(columnName==null)
+	  {
+    	  fake.conditionIndex = 0;
+    	  fake.conditionValue="";
+    	  return fake;
+	  }
+      if((fake.conditionIndex = fakeTable.findColumn(columnName))<0)
+	      throw new java.sql.SQLException("unknown column "+tableName+"."+columnName);
+	  fake.conditionValue = value;
+	  comparitor=comparitor.trim();
+	  fake.not=comparitor.startsWith("!");
+      fake.eq=(comparitor.indexOf("=")>=0);
+      fake.lt=(comparitor.indexOf("<")>=0);
+      fake.gt=(comparitor.indexOf(">")>=0);
+      return fake;
+   }
+   
 }

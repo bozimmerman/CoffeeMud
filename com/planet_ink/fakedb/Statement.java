@@ -1,6 +1,8 @@
 package com.planet_ink.fakedb;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /* 
    Copyright 2001 Thomas Neumann
@@ -82,6 +84,114 @@ public class Statement implements java.sql.Statement
    public boolean isWrapperFor(Class<?> arg0) throws SQLException { return false; }
    public <T> T unwrap(Class<T> arg0) throws SQLException { return null; }
    
+   public String parseWhereClause(String tableName, String sql, List<Backend.FakeCondition> conditions) throws java.sql.SQLException
+   {
+	   int s=0;
+	   final String eow1=" \t!=><";
+	   java.util.Stack<List<Backend.FakeCondition>> parenStack = new java.util.Stack<List<Backend.FakeCondition>>(); 
+	   while(s<sql.length())
+	   {
+		   while((s < sql.length())&&(sql.charAt(s)==' '||sql.charAt(s)=='\t'))
+			   s++;
+		   if(s>=sql.length()) break;
+		   Backend.FakeCondition condition = null;
+		   if(sql.charAt(s)=='(')
+		   {
+			   condition = connection.getBackend().buildFakeCondition(tableName, null, null, null); 
+			   conditions.add(condition);
+			   parenStack.push(conditions);
+			   condition.contains = new ArrayList<Backend.FakeCondition>();
+			   conditions = condition.contains;
+			   s++;
+			   continue;
+		   }
+		   else
+		   if(sql.charAt(s)==')')
+		   {
+			   if(parenStack.size()==0)
+				   throw new java.sql.SQLException("Unexpected end parenthesis "+sql);
+			   conditions = parenStack.pop();
+			   condition = conditions.get(conditions.size()-1);
+			   s++;
+		   }
+		   else
+		   {
+			   int e=s;
+			   while((e < sql.length())&&(eow1.indexOf(sql.charAt(e))<0))
+				   e++;
+			   String columnName = sql.substring(s,e);
+			   if(e>=sql.length())
+				   throw new java.sql.SQLException("Unexpected end of where clause in "+sql);
+			   s=e;
+			   while((e < sql.length())&&(eow1.indexOf(sql.charAt(e))>0))
+				   e++;
+			   String comparitor = sql.substring(s,e).trim();
+			   if(e>=sql.length()||comparitor.length()==0)
+				   throw new java.sql.SQLException("Unexpected end of where clause in "+sql);
+			   s=e;
+			   while((sql.charAt(s)==' '||sql.charAt(s)=='\t')&&(s < sql.length()))
+				   s++;
+			   if(s>=sql.length())
+				   throw new java.sql.SQLException("Unexpected end of where clause in "+sql);
+			   String value;
+			   e=s;
+			   if(sql.charAt(s)=='\'')
+			   {
+				   e++;
+				   StringBuilder str = new StringBuilder("");
+				   while((e < sql.length())&&(sql.charAt(e)!='\''))
+				   {
+					   if(sql.charAt(e)=='\\')
+						   e++;
+					   if(e<sql.length())
+						   str.append(sql.charAt(e));
+					   e++;
+				   }
+				   if(e>=sql.length())
+					   throw new java.sql.SQLException("Unexpected end of where clause in "+sql);
+				   e++;
+				   value=str.toString();
+			   }
+			   else
+			   {
+				   while((e < sql.length())&&(sql.charAt(e)!=' ')&&(sql.charAt(e)!='\t'))
+					   e++;
+				   value=sql.substring(s,e);
+			   }
+			   s=e;
+			   condition = connection.getBackend().buildFakeCondition(tableName, columnName, comparitor, value); 
+			   conditions.add(condition);
+		   }
+		   while((s < sql.length())&&(sql.charAt(s)==' '||sql.charAt(s)=='\t'))
+			   s++;
+		   if(s>=sql.length()) break;
+		   int e=s;
+		   while((e < sql.length())&&(sql.charAt(e)!=' ')&&(sql.charAt(e)!='\t'))
+			   e++;
+		   if(e>=sql.length()) break;
+		   if(condition==null) continue;
+		   String peeker = sql.substring(s,e);
+		   if(peeker.equalsIgnoreCase("AND"))
+		   {
+			   s=e;
+			   condition.connector = Backend.ConnectorType.AND;
+		   }
+		   else
+		   if(peeker.equalsIgnoreCase("OR"))
+		   {
+			   s=e;
+			   condition.connector = Backend.ConnectorType.OR;
+		   }
+		   else
+			   break;
+	   }
+	   if(parenStack.size()>0)
+		   throw new java.sql.SQLException("Unended parenthesis "+sql);
+	   if(s>=sql.length()) return "";
+	   return sql.substring(s);
+
+   }
+   
    public java.sql.ResultSet executeQuery(String sql) throws java.sql.SQLException
    {
       try {
@@ -97,39 +207,18 @@ public class Statement implements java.sql.Statement
         	 throw new java.sql.SQLException("third token not from");
          sql=split(sql,token);
 
-         String relationName=token[0];
-         String conditionVar=null,
-                conditionValue=null,
-                orderVar=null,
-                comparitor="=";
-
+         String tableName=token[0];
+         List<Backend.FakeCondition> conditions = new ArrayList<Backend.FakeCondition>();
+         String orderVar=null;
          if (sql.length()>0) 
          {
             sql=split(sql,token);
             if (token[0].equalsIgnoreCase("where")) 
             {
-               sql=split(sql,token);
-               int e=token[0].indexOf(">=");
-               if(e<0)e=token[0].indexOf("<=");
-               if(e<0)e=token[0].indexOf("<>");
-               if(e<0)e=token[0].indexOf("=");
-               if(e<0)e=token[0].indexOf("<");
-               if(e<0)e=token[0].indexOf(">");
-               if (e<0) throw new java.sql.SQLException("no comparitor");
-               int len=1;
-               if((e<token[0].length()-1)
-               &&((token[0].charAt(e+1)=='=')
-                   ||(token[0].charAt(e+1)=='>')))
-	                   len=2;
-               comparitor=token[0].substring(e,e+len);
-               conditionVar=token[0].substring(0,e);
-               conditionValue=token[0].substring(e+len);
-               if ((conditionValue.length()>0)&&(conditionValue.charAt(0)=='\''))
-                  conditionValue=conditionValue.substring(1,conditionValue.length()-1);
-
-               if (sql.length()>0)
-                  sql=split(sql,token); else
-                  token[0]=null;
+                parseWhereClause(tableName, sql, conditions);
+                if(conditions.size()==0)
+             	   throw new java.sql.SQLException("no more where clause!");
+                sql=split(sql,token);
             }
             if ((token[0]!=null)&&(token[0].equalsIgnoreCase("order"))) 
             {
@@ -141,7 +230,7 @@ public class Statement implements java.sql.Statement
             if (sql.length()>0) throw new java.sql.SQLException("extra garbage");
          }
 
-         return connection.getBackend().constructScan(this,relationName,conditionVar,conditionValue,orderVar,comparitor);
+         return connection.getBackend().constructScan(this,tableName,conditions,orderVar);
       } catch (java.sql.SQLException e) {
          log("unsupported SQL in executeQuery: "+sql);
          throw e;
@@ -206,7 +295,7 @@ public class Statement implements java.sql.Statement
             if (!token[0].equalsIgnoreCase("into")) 
             	throw new java.sql.SQLException("no into token");
             sql=split(sql,token);
-            String relationName=token[0];
+            String tableName=token[0];
             sql=skipWS(sql);
             if ((sql.length()<0)||(sql.charAt(0)!='(')) 
             	throw new java.sql.SQLException("no open paren");
@@ -259,13 +348,13 @@ public class Statement implements java.sql.Statement
             {
                throw new java.sql.SQLException("something very bad");
             }
-            connection.getBackend().insertValues(relationName, (String[])attributes.toArray(new String[0]),(String[])values.toArray(new String[0]));
+            connection.getBackend().insertValues(tableName, (String[])attributes.toArray(new String[0]),(String[])values.toArray(new String[0]));
          } 
          else 
          if (token[0].equalsIgnoreCase("update")) 
          {
             sql=split(sql,token);
-            String relationName=token[0];
+            String tableName=token[0];
             sql=split(sql,token);
             if (!token[0].equalsIgnoreCase("set")) 
             	throw new java.sql.SQLException("no set");
@@ -326,15 +415,11 @@ public class Statement implements java.sql.Statement
                if ((sql.length()>0)&&(sql.charAt(0)==',')) 
             	   sql=skipWS(sql.substring(1));
             }
-
-            int split=sql.indexOf('=');
-            if (split<0) 
-            	throw new java.sql.SQLException("no equal sign again");
-            String conditionVar=sql.substring(0,split);
-            String conditionValue=sql.substring(split+1);
-            if ((conditionValue.length()>0)&&(conditionValue.charAt(0)=='\''))
-               conditionValue=conditionValue.substring(1,conditionValue.length()-1);
-            connection.getBackend().updateRecord(relationName, conditionVar, conditionValue, (String[])attributes.toArray(new String[0]), (String[])values.toArray(new String[0]));
+            List<Backend.FakeCondition> conditions = new ArrayList<Backend.FakeCondition>();
+            parseWhereClause(tableName, sql, conditions);
+            if(conditions.size()==0)
+         	   throw new java.sql.SQLException("no more where clause!");
+            connection.getBackend().updateRecord(tableName, conditions, (String[])attributes.toArray(new String[0]), (String[])values.toArray(new String[0]));
          } 
          else 
          if (token[0].equalsIgnoreCase("delete")) 
@@ -343,19 +428,16 @@ public class Statement implements java.sql.Statement
             if (!token[0].equalsIgnoreCase("from")) 
             	throw new java.sql.SQLException("no from clause");
             sql=split(sql,token);
-            String relationName=token[0];
+            String tableName=token[0];
             sql=split(sql,token);
             if (!token[0].equalsIgnoreCase("where")) 
             	throw new java.sql.SQLException("no other where clause");
             sql=skipWS(sql);
-            int split=sql.indexOf('=');
-            if (split<0) 
-            	throw new java.sql.SQLException("no another equal sign");
-            String conditionVar=sql.substring(0,split);
-            String conditionValue=sql.substring(split+1);
-            if ((conditionValue.length()>0)&&(conditionValue.charAt(0)=='\''))
-               conditionValue=conditionValue.substring(1,conditionValue.length()-1);
-            connection.getBackend().deleteRecord(relationName,conditionVar,conditionValue);
+            List<Backend.FakeCondition> conditions = new ArrayList<Backend.FakeCondition>();
+            parseWhereClause(tableName, sql, conditions);
+            if(conditions.size()==0)
+         	   throw new java.sql.SQLException("no more where clause!");
+            connection.getBackend().deleteRecord(tableName,conditions);
          } 
          else 
         	 throw new java.sql.SQLException("no delete");

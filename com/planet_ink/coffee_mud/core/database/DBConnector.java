@@ -84,6 +84,7 @@ public class DBConnector
 		}
 		catch(Exception e)
 		{
+			e.printStackTrace();
 		}
 		return recordCount;
 	}

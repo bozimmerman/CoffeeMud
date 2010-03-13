@@ -6,7 +6,12 @@ import java.sql.NClob;
 import java.sql.RowId;
 import java.sql.SQLException;
 import java.sql.SQLXML;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+
+import com.planet_ink.fakedb.Backend.FakeCondition;
+import com.planet_ink.fakedb.Backend.RecordInfo;
 /* 
    Copyright 2001 Thomas Neumann
 
@@ -22,171 +27,54 @@ import java.util.Map;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class ResultSet implements java.sql.ResultSet
 {
-   public static class FakeCondition
-   {
-	   public int conditionIndex;
-	   public String conditionValue;
-	   public boolean eq=true;
-	   public boolean lt=false;
-	   public boolean gt=false;
-   }
-   
-   
    private Statement statement;
-   private Backend.FakeTable relation;
-   private java.util.Iterator iter;
+   private Backend.FakeTable fakeTable;
+   private java.util.Iterator<Backend.FakeKey> iter;
    private int currentRow=0;
-   private int conditionIndex;
-   private String conditionValue;
-   private boolean eq=true;
-   private boolean lt=false;
-   private boolean gt=false;
+   private List<FakeCondition> conditions;
    private final String[] values;
    private final boolean[] nullIndicators;
    private boolean nullFlag = false;
 
    ResultSet(Statement s,
              Backend.FakeTable r,
-             int ci,
-             String cv,
-             String comp) 
+             List<FakeCondition> conditions) 
    {
       statement=s;
-      relation=r;
-      conditionIndex=ci;
-      conditionValue=cv;
-      comp=comp.trim();
-      eq=(comp.indexOf("=")>=0);
-      lt=(comp.indexOf("<")>=0);
-      gt=(comp.indexOf(">")>=0) ;
+      fakeTable=r;
+      this.conditions = conditions;
 	  currentRow=0;
-      values=new String[r.columns.length];
+      values=new String[r.numColumns()];
       nullIndicators=new boolean[values.length];
-
-      if ((ci<0)&&(cv!=null)) {
-         iter=r.index.keySet().iterator();
-      } else {
-         iter=r.index.values().iterator();
-      }
+      iter = r.indexMap().keySet().iterator();
    }
 
    public java.sql.Statement getStatement() throws java.sql.SQLException { return statement; }
 
-    public static boolean isNumber(String s)
-    {
-        if(s==null) return false;
-        s=s.trim();
-        if(s.length()==0) return false;
-        if((s.length()>1)&&(s.startsWith("-")))
-            s=s.substring(1);
-        for(int i=0;i<s.length();i++)
-            if("0123456789.,".indexOf(s.charAt(i))<0)
-                return false;
-        return true;
-    }
-    
-    public static double s_double(String DOUBLE)
-    {
-        double sdouble=0;
-        try{ sdouble=Double.parseDouble(DOUBLE); }
-        catch(Exception e){ return 0;}
-        return sdouble;
-    }
-    
-    public static long s_long(String LONG)
-    {
-        long slong=0;
-        try{ slong=Long.parseLong(LONG); }
-        catch(Exception e){ return 0;}
-        return slong;
-    }
-    
-    public static boolean isDouble(String DBL)
-    {
-        if(DBL.length()==0) return false;
-        if(DBL.startsWith("-")&&(DBL.length()>1))
-            DBL=DBL.substring(1);
-        boolean alreadyDot=false;
-        for(int i=0;i<DBL.length();i++)
-            if(!Character.isDigit(DBL.charAt(i)))
-            {
-                if(DBL.charAt(i)=='.')
-                {
-                    if(alreadyDot)
-                        return false;
-                    alreadyDot=true;
-                }
-                else
-                    return false;
-            }
-        return alreadyDot;
-    }
-    
-    public int numCompare(String s1, String s2)
-    {
-        if((s1==null)||(s2==null)) return 0;
-        if((!isNumber(s1))||(!isNumber(s2))) return 0;
-        if(isDouble(s1)||(isDouble(s2)))
-        {
-            double d1=isDouble(s1)?s_double(s1):Long.valueOf(s_long(s1)).doubleValue();
-            double d2=isDouble(s2)?s_double(s2):Long.valueOf(s_long(s2)).doubleValue();
-            if(d1==d2) return 0;
-            if(d1>d2) return 1;
-            return -1;
-        }
-        long l1=s_long(s1);
-        long l2=s_long(s2);
-        if(l1==l2) return 0;
-        if(l1>l2) return 1;
-        return -1;
-    }
-    
-   public boolean next() throws java.sql.SQLException
+  public boolean next() throws java.sql.SQLException
    {
       while (true) 
       {
          if (!iter.hasNext()) return false;
-         if ((conditionIndex<0)&&(conditionValue!=null)) 
+         Backend.FakeKey key=iter.next();
+         RecordInfo info=(RecordInfo)fakeTable.indexMap().get(key);
+         if (conditions.size()>0) 
          {
-             String key=(String)iter.next();
-             String subKey=key;
-             int x=subKey.indexOf("\n");
-             if(x>0)subKey=subKey.substring(0,x);
-             int nc=(lt||gt)?numCompare(subKey,conditionValue):0;
-             int sc=(lt||gt)?subKey.compareTo(conditionValue):0;
-             if(((eq)&&(subKey.equals(conditionValue)))
-             ||((eq)&&(key.startsWith(conditionValue+"\n")))
-             ||((lt)&&(nc<0))
-             ||((gt)&&(nc>0))
-             ||((lt)&&(sc<0))
-             ||((gt)&&(sc>0)))
-             {
-                 currentRow++;
-                 return relation.getRecord(nullIndicators, values, (Backend.RecordInfo)relation.index.get(key));
-             }
-             continue;
+             boolean[] dataLoaded = new boolean[1];
+             dataLoaded[0]=false;
+             if(!fakeTable.recordCompare(key,info,conditions,dataLoaded,nullIndicators,values))
+            	 continue;
+        	 currentRow++;
+        	 if(!dataLoaded[0])
+        		 dataLoaded[0]=fakeTable.getRecord(nullIndicators, values, info);
+        	 if(!dataLoaded[0])
+    			 return false;
+        	 return true;
          }
-        if (!relation.getRecord(nullIndicators,values,(Backend.RecordInfo)iter.next())) 
-			return false;
-        if (conditionIndex>=0) 
-        {
-           if (nullIndicators[conditionIndex]) 
-               continue;
-           String subKey=values[conditionIndex];
-           int nc=(lt||gt)?numCompare(subKey,conditionValue):0;
-           int sc=(lt||gt)?subKey.compareTo(conditionValue):0;
-           if(!(((eq)&&(subKey.equals(conditionValue)))
-           ||((lt)&&(nc<0))
-           ||((gt)&&(nc>0))
-           ||((lt)&&(sc<0))
-           ||((gt)&&(sc>0))))
-               continue;
-        }
-		currentRow++;
-        return true;
+    	 currentRow++;
+         return fakeTable.getRecord(nullIndicators, values, info);
       }
    }
    public void close() throws java.sql.SQLException
@@ -376,7 +264,7 @@ public class ResultSet implements java.sql.ResultSet
 
    public int findColumn(String columnName) throws java.sql.SQLException
    {
-      return relation.findColumn(columnName);
+      return fakeTable.findColumn(columnName);
    }
 
 
@@ -520,21 +408,19 @@ public class ResultSet implements java.sql.ResultSet
 	   try{
 		   while(next());
 	   }
-	   catch(java.sql.SQLException sqle){}
+	   catch(java.sql.SQLException sqle){
+		   sqle.printStackTrace();
+	   }
 	   afterLast=true;
 	   return true;
    }
    public boolean isLast() { return false; }
    public void beforeFirst() throws java.sql.SQLException 
    { 
-	   if(relation==null)
+	   if(fakeTable==null)
 		   throw new java.sql.SQLException(); 
-      if ((conditionIndex<0)&&(conditionValue!=null)) {
-         iter=relation.index.keySet().iterator();
-      } else {
-         iter=relation.index.values().iterator();
-      }
-	  currentRow=0;
+	   iter = fakeTable.indexMap().keySet().iterator();
+	   currentRow=0;
    }
    public boolean isBeforeFirst() { return (currentRow==0); }
    public void afterLast(){ last(); }
