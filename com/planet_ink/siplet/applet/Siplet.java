@@ -23,7 +23,7 @@ limitations under the License.
 */
 public class Siplet extends Applet
 {
-    public final static boolean debugDataOut=false;
+    public final static boolean debugDataOut=true;
     public final static long serialVersionUID=7;
     public static final float VERSION_MAJOR=(float)2.0;
     public static final long  VERSION_MINOR=8;

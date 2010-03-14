@@ -18,12 +18,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class MXP
 {
-    public final static boolean tagDebug=false;
-    public final static boolean tagDebugLong=false;
-    public final static boolean entityDebug=false;
+    public final static boolean tagDebug=true;
+    public final static boolean tagDebugLong=true;
+    public final static boolean entityDebug=true;
 
     private int defaultMode=0;
     public static final int MODE_LINE_OPEN=0;
@@ -266,7 +265,7 @@ public class MXP
             else
             if(code<100)
             {
-                MXPElement replace=(MXPElement)tags.get(Integer.valueOf(code));
+                MXPElement replace=(MXPElement)tags.get(new Integer(code));
                 if((replace!=null)&&(!replace.isDisabled()))
                 {
                     buf.insert(i,replace.getFoldedDefinition(""));
@@ -757,8 +756,8 @@ public class MXP
             if((tag!=null)&&(Util.isInteger(tag))&&(Util.s_int(tag)>19)&&(Util.s_int(tag)<100))
             {
                 int tagNum=Util.s_int(tag);
-                if(tags.containsKey(Integer.valueOf(tagNum))) tags.remove(Integer.valueOf(tagNum));
-                tags.put(Integer.valueOf(tagNum),L);
+                if(tags.containsKey(new Integer(tagNum))) tags.remove(new Integer(tagNum));
+                tags.put(new Integer(tagNum),L);
             }
             return;
         }
@@ -966,7 +965,7 @@ public class MXP
                 if(backColor.length()>0) parms.append(" BACK="+backColor);
                 parms.append(">");
             }
-            MXPElement L=(MXPElement)tags.get(Integer.valueOf(number));
+            MXPElement L=(MXPElement)tags.get(new Integer(number));
             if(L==null) return;
             int newBitmap=L.getBitmap();
             if(gag!=null)

@@ -158,7 +158,7 @@ public class DefaultSession extends Thread implements Session
 				try{Thread.sleep(50);}catch(Exception e){}
 			}
 			if(clientTelnetMode(Session.TELNET_MXP))
-				print("\n\033[6z\n<SUPPORT IMAGE IMAGE.URL>\n");
+				print("\n\033[6z\n^<SUPPORT IMAGE IMAGE.URL^>\n");
 			preliminaryRead(500);
 			if(introTextStr!=null)
                 print(introTextStr);
@@ -182,7 +182,7 @@ public class DefaultSession extends Thread implements Session
                                 choices.addElement(files[f].getName());
                         if(choices.size()>0) introFilename=(String)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
                     }
-                    println("\n\r\n\r\n\r<IMAGE '"+introFilename+"' URL='"+paths[0]+"' H=400 W=400>\n\r\n\r");
+                    println("\n\r\n\r\n\r^<IMAGE '"+introFilename+"' URL='"+paths[0]+"' H=400 W=400^>\n\r\n\r");
                 }
             }
             preliminaryRead(100);
