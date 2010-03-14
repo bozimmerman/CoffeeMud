@@ -7,6 +7,7 @@ import java.sql.RowId;
 import java.sql.SQLException;
 import java.sql.SQLXML;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -35,25 +36,31 @@ public class ResultSet implements java.sql.ResultSet
    private int currentRow=0;
    private List<FakeCondition> conditions;
    private final String[] values;
+   private final int[] showCols;
+   private final Map<String,Integer> showColMap=new Hashtable<String,Integer>();
    private final boolean[] nullIndicators;
    private boolean nullFlag = false;
 
-   ResultSet(Statement s,
-             Backend.FakeTable r,
+   ResultSet(Statement stmt,
+             Backend.FakeTable table,
+             int[] showCols,
              List<FakeCondition> conditions) 
    {
-      statement=s;
-      fakeTable=r;
+      statement=stmt;
+      fakeTable=table;
       this.conditions = conditions;
 	  currentRow=0;
-      values=new String[r.numColumns()];
+      values=new String[table.numColumns()];
+      this.showCols = showCols;
+      for(int s=0;s<showCols.length;s++)
+    	  showColMap.put(table.getColumnName(showCols[s]), Integer.valueOf(s));
       nullIndicators=new boolean[values.length];
-      iter = r.indexMap().keySet().iterator();
+      iter = table.indexMap().keySet().iterator();
    }
 
    public java.sql.Statement getStatement() throws java.sql.SQLException { return statement; }
 
-  public boolean next() throws java.sql.SQLException
+   public boolean next() throws java.sql.SQLException
    {
       while (true) 
       {
@@ -86,10 +93,17 @@ public class ResultSet implements java.sql.ResultSet
    }
    public String getString(int columnIndex) throws java.sql.SQLException
    {
-      if ((columnIndex<0)||(columnIndex>=nullIndicators.length)||(nullIndicators[columnIndex])) {
+      if ((columnIndex<1)||(columnIndex>showCols.length))
+      {
          nullFlag=true;
          return null;
       } 
+      columnIndex=showCols[columnIndex-1];
+      if(nullIndicators[columnIndex])
+      {
+          nullFlag=true;
+          return null;
+      }
       nullFlag=false;
       return values[columnIndex];
    }
@@ -264,10 +278,10 @@ public class ResultSet implements java.sql.ResultSet
 
    public int findColumn(String columnName) throws java.sql.SQLException
    {
-      return fakeTable.findColumn(columnName);
+	  if(!showColMap.containsKey(columnName))
+		  return -1;
+	  return showColMap.get(columnName)+1;
    }
-
-
 
    public String getString(String columnName) throws java.sql.SQLException
       { return getString(findColumn(columnName)); }

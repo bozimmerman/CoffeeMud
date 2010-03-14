@@ -190,6 +190,19 @@ public class Backend
          return -1;
       }
 	  
+      
+      /**
+       * 
+       * @param name
+       * @return
+       */
+      protected String getColumnName(int index) 
+      {
+    	 if((index<0)||(index>columns.length))
+    		 return null;
+    	 return columns[index].name;
+      }
+      
       /**
        * 
        */
@@ -676,9 +689,9 @@ public class Backend
          if (fakeTableName==null) 
         	 break;
          if (fakeTableName.length()==0) 
-        	 throw new IOException("Can not read schema: relationName is null");
+        	 throw new IOException("Can not read schema: tableName is null");
          if (fakeTables.get(fakeTableName)!=null) 
-        	 throw new IOException("Can not read schema: relationName is missing: "+fakeTableName);
+        	 throw new IOException("Can not read schema: tableName is missing: "+fakeTableName);
 
          List columns=new LinkedList();
          List keys=new LinkedList();
@@ -797,23 +810,47 @@ public class Backend
     */
    protected java.sql.ResultSet constructScan(Statement s,
 		                                      String tableName,
+		                                      List<String> cols,
 		                                      List<Backend.FakeCondition> conditions,
 		                                      String orderVar) 
    throws java.sql.SQLException
    {
       FakeTable table=(FakeTable)fakeTables.get(tableName);
-      if (table==null) throw new java.sql.SQLException("unknown relation "+tableName);
-
-      int conditionIndex=-1;
+      if (table==null) throw new java.sql.SQLException("unknown table "+tableName);
+      int[] showCols;
+      if((cols.size()==0)||(cols.contains("*")))
+      {
+    	  showCols=new int[table.numColumns()];
+    	  for(int i=0;i<showCols.length;i++)
+    		  showCols[i]=i;
+      }
+      else
+      {
+    	  int index = 0;
+    	  showCols=new int[cols.size()];
+	      for(String col : cols)
+	      {
+	    	  showCols[index]=table.findColumn(col);
+	    	  if(showCols[index]<0)
+	         	 throw new java.sql.SQLException("unknown column "+tableName+"."+col);
+	    	  index++;
+	      }
+      }
+      
       if (orderVar!=null) 
       {
-    	  //TODO: implement order by -- this is a black hold.
+    	  //TODO: implement order by -- this is a black hole.
          int index=table.findColumn(orderVar);
-         if (index<0) throw new java.sql.SQLException("unknown column "+orderVar);
-         if ((table.keys.length==0)||((table.keys[0]!=index)&&((orderVar==null)||(conditionIndex>=0)||(table.keys.length<2)||(table.keys[1]!=index))))
-            throw new java.sql.SQLException("order by "+orderVar+" not supported");
+         if (index<0) 
+        	 throw new java.sql.SQLException("unknown column "+orderVar);
+         if ((table.keys.length==0)
+         || ((table.keys[0]!=index)
+            &&((orderVar==null)||(conditions.size()>=0)||(table.keys.length<2)||(table.keys[1]!=index))))
+        	 	throw new java.sql.SQLException("order by "+orderVar+" not supported");
       }
-      return new ResultSet(s,table,conditions);
+      
+      
+      return new ResultSet(s,table,showCols,conditions);
    }
    
    /**
@@ -826,7 +863,7 @@ public class Backend
    protected void insertValues(String tableName, String[] columns, String[] dataValues) throws java.sql.SQLException
    {
       FakeTable fakeTable=(FakeTable)fakeTables.get(tableName);
-      if (fakeTable==null) throw new java.sql.SQLException("unknown relation "+tableName);
+      if (fakeTable==null) throw new java.sql.SQLException("unknown table "+tableName);
 
       boolean[] nullIndicators=new boolean[fakeTable.columns.length];
       String[] values=new String[fakeTable.columns.length];
@@ -866,7 +903,7 @@ public class Backend
    {
       FakeTable fakeTable=(FakeTable)fakeTables.get(tableName);
       if (fakeTable==null) 
-    	  throw new java.sql.SQLException("unknown relation "+tableName);
+    	  throw new java.sql.SQLException("unknown table "+tableName);
 
       fakeTable.deleteRecord(conditions);
    }
@@ -884,7 +921,7 @@ public class Backend
    {
       FakeTable fakeTable=(FakeTable)fakeTables.get(tableName);
       if (fakeTable==null) 
-    	  throw new java.sql.SQLException("unknown relation "+tableName);
+    	  throw new java.sql.SQLException("unknown table "+tableName);
 
       int[] vars=new int[varNames.length];
       for (int index=0;index<vars.length;index++)

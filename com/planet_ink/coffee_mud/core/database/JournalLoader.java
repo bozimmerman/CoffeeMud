@@ -293,26 +293,7 @@ public class JournalLoader
 		try
 		{
 			D=DB.DBFetch();
-			if((D.catalog()!=null)&&(D.catalog().equals("FAKEDB")))
-			{
-				Vector keys=new Vector();
-				ResultSet R=D.query("SELECT * FROM CMJRNL");
-				while(R.next())
-				{
-					String playerID2=DBConnections.getRes(R,"CMJKEY");
-					String section2=DBConnections.getRes(R,"CMTONM");
-					if(section2.equalsIgnoreCase(name))
-						keys.addElement(playerID2);
-				}
-				for(int i=0;i<keys.size();i++)
-				{
-					DB.DBDone(D);
-					D=DB.DBFetch();
-					D.update("DELETE FROM CMJRNL WHERE CMJKEY='"+((String)keys.elementAt(i))+"'",0);
-				}
-			}
-			else
-				D.update("DELETE FROM CMJRNL WHERE CMTONM='"+name+"'",0);
+			D.update("DELETE FROM CMJRNL WHERE CMTONM='"+name+"'",0);
 		}
 		catch(Exception sqle)
 		{
