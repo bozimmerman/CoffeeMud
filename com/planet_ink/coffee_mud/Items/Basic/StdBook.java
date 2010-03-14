@@ -172,7 +172,7 @@ public class StdBook extends StdItem
 						return;
 					}
 
-					CMLib.database().DBWriteJournal(Name(),mob.Name(),to,subject,message,-1);
+					CMLib.database().DBWriteJournal(Name(),mob.Name(),to,subject,message);
 					mob.tell("Chapter added.");
 				}
 				return;

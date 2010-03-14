@@ -662,7 +662,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                       acct.accountName(),
                       acct.accountName(),
                       "Password for "+acct.accountName(),
-                      "Your password for "+acct.accountName()+" is: "+acct.password()+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.SYSTEM_MUDPORTS)+".\n\rAfter creating a character, you may use the PASSWORD command to change it once you are online.",-1);
+                      "Your password for "+acct.accountName()+" is: "+acct.password()+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.SYSTEM_MUDPORTS)+".\n\rAfter creating a character, you may use the PASSWORD command to change it once you are online.");
             session.println("Your account has been created.  You will receive an email with your password shortly.");
             try{Thread.sleep(2000);}catch(Exception e){}
             session.kill(false,false,false);
@@ -1176,7 +1176,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	                          mob.Name(),
 	                          mob.Name(),
 	                          "Password for "+mob.Name(),
-	                          "Your password for "+mob.Name()+" is: "+mob.playerStats().password()+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.SYSTEM_MUDPORTS)+".\n\rYou may use the PASSWORD command to change it once you are online.",-1);
+	                          "Your password for "+mob.Name()+" is: "+mob.playerStats().password()+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.SYSTEM_MUDPORTS)+".\n\rYou may use the PASSWORD command to change it once you are online.");
 	                session.println("Your character has been created.  You will receive an email with your password shortly.");
 	                try{Thread.sleep(2000);}catch(Exception e){}
 	                if(mob==session.mob())

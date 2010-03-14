@@ -449,7 +449,7 @@ public class SMTPserver extends Thread implements Tickable
 												subscribedMsg="You are now subscribed to "+name+". To unsubscribe, send an email with a subject of unsubscribe.";
 											subscribeTitle=CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(subscribeTitle,"<NAME>",name),false);
 											subscribedMsg=CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(subscribedMsg,"<NAME>",name),false);
-											CMLib.database().DBWriteJournal(name,name,from,subscribeTitle,subscribedMsg,-1);
+											CMLib.database().DBWriteJournal(name,name,from,subscribeTitle,subscribedMsg);
 										}
 									}
 								}
@@ -479,7 +479,7 @@ public class SMTPserver extends Thread implements Tickable
 												unsubscribedMsg="You are no longer subscribed to "+name+". To subscribe again, send an email with a subject of subscribe.";
 											unsubscribeTitle=CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(unsubscribeTitle,"<NAME>",name),false);
 											unsubscribedMsg=CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(unsubscribedMsg,"<NAME>",name),false);
-											CMLib.database().DBWriteJournal(name,name,from,unsubscribeTitle,unsubscribedMsg,-1);
+											CMLib.database().DBWriteJournal(name,name,from,unsubscribeTitle,unsubscribedMsg);
 										}
 									}
 							}
@@ -497,7 +497,7 @@ public class SMTPserver extends Thread implements Tickable
 											{
 												String to2=(String)mylist.elementAt(i);
 												if(CMProps.getBoolVar(CMProps.SYSTEMB_EMAILFORWARDING))
-													CMLib.database().DBWriteJournal(name,from,to2,subj,s,-1);
+													CMLib.database().DBWriteJournal(name,from,to2,subj,s);
 											}
 										}
 										else

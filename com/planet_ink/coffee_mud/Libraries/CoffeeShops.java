@@ -1523,8 +1523,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 											data.auctioningM.Name(),
 											""+data.tickDown,
 											CMStrings.limit(data.auctioningI.name(),38),
-											xml.toString(),
-											-1);
+											xml.toString());
         else
         	CMLib.database().DBUpdateJournal(data.auctionDBKey, data.auctioningI.Name(),xml.toString());
 	}

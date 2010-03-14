@@ -82,7 +82,7 @@ public class JournalFunction extends StdWebMacro
                 if(count>=CMProps.getIntVar(CMProps.SYSTEMI_MAXMAILBOX))
                     return "Post not submitted -- Mailbox is full!";
             }
-			CMLib.database().DBWriteJournal(last,from,to,subject,text,-1);
+			CMLib.database().DBWriteJournal(last,from,to,subject,text);
 			httpReq.getRequestObjects().remove("JOURNAL: "+last);
 			return "Post submitted.";
 		}
@@ -126,7 +126,7 @@ public class JournalFunction extends StdWebMacro
 						messages.append("Reply to #"+num+" not submitted -- No text!<BR>");
 					else
 					{
-						CMLib.database().DBWriteJournal(last,from,"","",text,num);
+						CMLib.database().DBWriteJournalReply(last,entry.key,from,"","",text);
 						httpReq.getRequestObjects().remove("JOURNAL: "+last);
 						messages.append("Reply to #"+num+" submitted<BR>");
 					}
@@ -149,7 +149,7 @@ public class JournalFunction extends StdWebMacro
 			                                                  M.Name(),
 			                                                  toM.Name(),
 			                                                  "RE: "+entry.subj,
-			                                                  replyMsg,-1);
+			                                                  replyMsg);
 			                httpReq.getRequestObjects().remove("JOURNAL: "+last);
 							messages.append("Email to #"+num+" queued<BR>");
 		                }
@@ -209,7 +209,7 @@ public class JournalFunction extends StdWebMacro
 		                                                      from2,
 		                                                      to2,
 		                                                      subject,
-		                                                      message,-1);
+		                                                      message);
 		                    httpReq.addRequestParameters("JOURNALMESSAGE","");
 		                    httpReq.getRequestObjects().remove("JOURNAL: "+last);
 							messages.append("Message #"+num+" transferred<BR>");

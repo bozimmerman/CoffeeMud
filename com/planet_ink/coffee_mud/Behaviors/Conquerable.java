@@ -282,7 +282,7 @@ public class Conquerable extends Arrest
 	            for(int i=0;i<channels.size();i++)
 	                CMLib.commands().postChannel((String)channels.elementAt(i),"ALL",holdingClan+" has lost control of "+myArea.name()+".",false);
 				if(journalName.length()>0)
-					CMLib.database().DBWriteJournal(journalName,"Conquest","ALL",holdingClan+" loses control of "+myArea.name()+".","See the subject line.",-1);
+					CMLib.database().DBWriteJournal(journalName,"Conquest","ALL",holdingClan+" loses control of "+myArea.name()+".","See the subject line.");
 			}
 			Law laws=getLaws(myArea,false);
 			if(laws.lawIsActivated())
@@ -559,7 +559,7 @@ public class Conquerable extends Arrest
                             for(int i=0;i<channels.size();i++)
                                 CMLib.commands().postChannel((String)channels.elementAt(i),"ALL","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+".",false);
                             if(journalName.length()>0)
-                                CMLib.database().DBWriteJournal(journalName,"Conquest","ALL","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+".","See the subject line.",-1);
+                                CMLib.database().DBWriteJournal(journalName,"Conquest","ALL","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+".","See the subject line.");
                             if((prevHoldingClan.length()>0)
                             &&(!holdingClan.equalsIgnoreCase(prevHoldingClan))
                             &&(CMLib.clans().getClan(prevHoldingClan)!=null)
@@ -857,7 +857,7 @@ public class Conquerable extends Arrest
             for(int i=0;i<channels.size();i++)
                 CMLib.commands().postChannel((String)channels.elementAt(i),"ALL",holdingClan+" gains control of "+myArea.name()+".",false);
 			if(journalName.length()>0)
-				CMLib.database().DBWriteJournal(journalName,"Conquest","ALL",holdingClan+" gains control of "+myArea.name()+".","See the subject line.",-1);
+				CMLib.database().DBWriteJournal(journalName,"Conquest","ALL",holdingClan+" gains control of "+myArea.name()+".","See the subject line.");
             conquestDate=System.currentTimeMillis();
 		}
 	}

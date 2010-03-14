@@ -103,7 +103,8 @@ public interface DatabaseEngine extends CMLibrary
 	public Vector DBReadJournals();
 	public Vector DBReadJournalMsgs(String Journal);
 	public int DBCountJournal(String Journal, String from, String to);
-	public void DBWriteJournal(String Journal, String from, String to, String subject, String message, int which);
+	public void DBWriteJournal(String Journal, String from, String to, String subject, String message);
+	public void DBWriteJournalReply(String Journal, String key, String from, String to, String subject, String message);
 	public void DBDeleteJournal(String Journal, int which);
 	public void DBDeleteJournal(String oldkey);
     public String DBGetRealJournalName(String possibleName);

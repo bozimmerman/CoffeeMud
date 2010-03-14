@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -222,8 +223,14 @@ public class DBInterface implements DatabaseEngine
 	public long DBReadNewJournalDate(String Journal, String name)
 	{ return JournalLoader.DBReadNewJournalDate(Journal, name);}
 	
-	public void DBWriteJournal(String Journal, String from, String to, String subject, String message, int which)
-	{JournalLoader.DBWrite(Journal,from,to,subject,message,which);}
+	public void DBWriteJournal(String Journal, String from, String to, String subject, String message)
+	{JournalLoader.DBWrite(Journal,from,to,subject,message);}
+	
+	public void DBWrite(String Journal, JournalsLibrary.JournalEntry entry)
+	{JournalLoader.DBWrite(Journal, entry);}
+	
+	public void DBWriteJournalReply(String Journal, String key, String from, String to, String subject, String message)
+	{JournalLoader.DBWriteJournalReply(Journal, key, from, to, subject, message);}
 	
 	public void DBUpdateJournal(String key, String subject, String msg)
 	{JournalLoader.DBUpdateJournal(key,subject,msg);}

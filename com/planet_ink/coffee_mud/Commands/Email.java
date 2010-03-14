@@ -187,11 +187,7 @@ public class Email extends StdCommand
                     return false;
                 }
                 message+="\n\r\n\rThis message was sent through the "+CMProps.getVar(CMProps.SYSTEM_MUDNAME)+" mail server at "+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN)+", port"+CMProps.getVar(CMProps.SYSTEM_MUDPORTS)+".  Please contact the administrators regarding any abuse of this system.\n\r";
-                CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.SYSTEM_MAILBOX),
-                          mob.Name(),
-                          M.Name(),
-                          subject,
-                          message,-1);
+                CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.SYSTEM_MAILBOX), mob.Name(), M.Name(), subject, message);
                 mob.tell("Your email has been sent.");
                 return true;
             }
@@ -236,7 +232,7 @@ public class Email extends StdCommand
                       mob.Name(),
                       mob.Name(),
                       "Password for "+mob.Name(),
-                      "Your new password for "+mob.Name()+" is: "+pstats.password()+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.SYSTEM_MUDPORTS)+".\n\rYou may use the PASSWORD command to change it once you are online.",-1);
+                      "Your new password for "+mob.Name()+" is: "+pstats.password()+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.SYSTEM_MUDPORTS)+".\n\rYou may use the PASSWORD command to change it once you are online.");
             mob.tell("You will receive an email with your new password shortly.  Goodbye.");
             if(mob.session()!=null)
             {

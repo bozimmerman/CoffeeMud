@@ -125,7 +125,7 @@ public class CommandJournal extends StdCommand
                                           from2,
                                           to,
                                           subject,
-                                          message,-1);
+                                          message);
         mob.tell("Message transferred.");
         return true;
     }
@@ -238,8 +238,7 @@ public class CommandJournal extends StdCommand
 	                prePend="(^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(mob.location())+"^</LSTROOMID^>) ";
 	            CMLib.database().DBWriteJournal(journal.JOURNAL_NAME(),mob.Name(),"ALL",
 	            		CMStrings.padRight("^.^N"+msgString+"^.^N",20),
-	                    prePend+msgString,
-	                    -1);
+	                    prePend+msgString);
 	            mob.tell("Your "+journal.NAME().toLowerCase()+" message has been sent.  Thank you.");
 	            if(journal.getFlag(JournalsLibrary.JournalFlag.CHANNEL)!=null)
 	                CMLib.commands().postChannel(journal.getFlag(JournalsLibrary.JournalFlag.CHANNEL).toUpperCase().trim(),"",mob.Name()+" posted to "+journal.NAME()+": "+CMParms.combine(commands,1),true);

@@ -347,7 +347,7 @@ public class ProcessSMTPrequest extends Thread
 																			  from,
 																			  "ALL",
 																			  CMLib.coffeeFilter().fullInFilter(subject,false),
-																			  CMLib.coffeeFilter().fullInFilter(fdat,false),-1);
+																			  CMLib.coffeeFilter().fullInFilter(fdat,false));
 										}
 										else
 										{
@@ -355,7 +355,7 @@ public class ProcessSMTPrequest extends Thread
 																			  from,
 																			  (String)to.elementAt(i),
 	                                                                          CMLib.coffeeFilter().fullInFilter(subject,false),
-																			  CMLib.coffeeFilter().fullInFilter(finalData.toString(),false),-1);
+																			  CMLib.coffeeFilter().fullInFilter(finalData.toString(),false));
 										}
 									}
 								}

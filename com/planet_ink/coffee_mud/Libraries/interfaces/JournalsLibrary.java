@@ -40,21 +40,22 @@ public interface JournalsLibrary extends CMLibrary, Runnable
 	
 	public static class JournalEntry implements Comparable<JournalEntry>
 	{
-		public String key;
+		public String key=null;
 		public String from;
-		public long date;
 		public String to;
 		public String subj;
 		public String msg;
-		public long update;
-		public String parent;
-		public long attributes;
-		public String data;
+		public long date=0;
+		public long update=0;
+		public String parent="";
+		public long attributes=0;
+		public String data="";
 		public int compareTo(JournalEntry o) {
 			if(date < o.date) return -1;
 			if(date > o.date) return 1;
 			return 0;
 		}
+		public StringBuffer derivedBuildMessage=null;
 	}
 	
     public static class CommandJournal

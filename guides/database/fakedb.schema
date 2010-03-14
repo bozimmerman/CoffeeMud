@@ -125,7 +125,7 @@ CMDATE string NULL
 CMTONM string NULL
 CMSUBJ string NULL
 CMPART string NULL
-CMATTR integer
+CMATTR integer NULL
 CMDATA string NULL
 CMUPTM integer NULL
 CMMSGT string NULL

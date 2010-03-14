@@ -112,13 +112,13 @@ public class StdJournal extends StdItem
 					if(s.equalsIgnoreCase("ALL")||s.equalsIgnoreCase("OLD"))
 					    all=true;
 				}
-				Vector read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
+				JournalsLibrary.JournalEntry read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
 				boolean megaRepeat=true;
 				while(megaRepeat)
 				{
 				    megaRepeat=false;
-					String from=(String)read.firstElement();
-					StringBuffer entry=(StringBuffer)read.lastElement();
+					String from=read.from;
+					StringBuffer entry=read.derivedBuildMessage;
 					boolean mineAble=false;
 					if(entry.charAt(0)=='#')
 					{
@@ -178,7 +178,7 @@ public class StdJournal extends StdItem
 								    {
 								        which++;
 										read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
-										entry=(StringBuffer)read.lastElement();
+										entry=read.derivedBuildMessage;
 										if(entry.toString().trim().length()>0)
 										{
 											if(entry.charAt(0)=='#')
@@ -207,8 +207,8 @@ public class StdJournal extends StdItem
 											CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.SYSTEM_MAILBOX),
 																			  mob.Name(),
 																			  M.Name(),
-																			  "RE: "+((String)read.elementAt(1)),
-																			  replyMsg,-1);
+																			  "RE: "+read.subj,
+																			  replyMsg);
 											mob.tell("Email queued.");
 										}
 										else
@@ -253,7 +253,7 @@ public class StdJournal extends StdItem
 																			  entry2.from,
 																			  entry2.to,
 																			  entry2.subj,
-																			  entry2.msg,-1);
+																			  entry2.msg);
 											msg.setValue(-1);
 								        }
 										mob.tell("Message transferred.");
@@ -274,7 +274,7 @@ public class StdJournal extends StdItem
 									String replyMsg=mob.session().prompt("Enter your response\n\r: ");
 									if(replyMsg.trim().length()>0)
 									{
-										CMLib.database().DBWriteJournal(Name(),mob.Name(),"","",replyMsg,which-1);
+										CMLib.database().DBWriteJournalReply(Name(),read.key,mob.Name(),"","",replyMsg);
 										mob.tell("Reply added.");
 									}
 									else
@@ -355,7 +355,7 @@ public class StdJournal extends StdItem
 						return;
 					}
 
-					CMLib.database().DBWriteJournal(Name(),mob.Name(),to,subject,message,-1);
+					CMLib.database().DBWriteJournal(Name(),mob.Name(),to,subject,message);
 					mob.tell("Journal entry added.");
 				}
 				return;
@@ -400,10 +400,9 @@ public class StdJournal extends StdItem
 		super.executeMsg(myHost,msg);
 	}
 
-	public Vector DBRead(MOB reader, String Journal, int which, long lastTimeDate, boolean newOnly, boolean all)
+	public JournalsLibrary.JournalEntry DBRead(MOB reader, String Journal, int which, long lastTimeDate, boolean newOnly, boolean all)
 	{
 		StringBuffer buf=new StringBuffer("");
-		Vector reply=new Vector();
 		Vector journal=CMLib.database().DBReadJournalMsgs(Journal);
 		boolean shortFormat=readableText().toUpperCase().indexOf("SHORTLIST")>=0;
 		if((which<0)||(journal==null)||(which>=journal.size()))
@@ -417,19 +416,24 @@ public class StdJournal extends StdItem
 			buf.append("-------------------------------------------------------------------------\n\r");
 			if(journal==null)
 			{
-				reply.addElement("");
-				reply.addElement("");
-				reply.addElement(buf);
-				return reply;
+				JournalsLibrary.JournalEntry fakeEntry = new JournalsLibrary.JournalEntry();
+				fakeEntry.key="";
+				fakeEntry.from="";
+				fakeEntry.subj="";
+				fakeEntry.derivedBuildMessage=buf;
+				return fakeEntry;
 			}
 		}
 
+		JournalsLibrary.JournalEntry fakeEntry = new JournalsLibrary.JournalEntry();
 		if((which<0)||(which>=journal.size()))
 		{
 			if(journal.size()>0)
 			{
-				reply.addElement(((JournalsLibrary.JournalEntry)journal.firstElement()).from);
-				reply.addElement(((JournalsLibrary.JournalEntry)journal.firstElement()).subj);
+				JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)journal.firstElement();
+				fakeEntry.key=entry.key;
+				fakeEntry.from=entry.from;
+				fakeEntry.subj=entry.subj;
 			}
 			Vector selections=new Vector();
 			for(int j=0;j<journal.size();j++)
@@ -500,8 +504,9 @@ public class StdJournal extends StdItem
 			String subject=entry.subj;
 			String message=entry.msg;
 			
-			reply.addElement(entry.from);
-			reply.addElement(entry.subj);
+			fakeEntry.key=entry.key;
+			fakeEntry.from=entry.from;
+			fakeEntry.subj=entry.subj;
 			
             boolean allMine=(to.equalsIgnoreCase(reader.Name())
                             ||from.equalsIgnoreCase(reader.Name()));
@@ -529,10 +534,8 @@ public class StdJournal extends StdItem
 						   +"\n\rSUBJ: "+subject
 						   +"\n\r"+message);
 		}
-		while(reply.size()<2)
-			reply.addElement("");
-		reply.addElement(buf);
-		return reply;
+		fakeEntry.derivedBuildMessage=buf;
+		return fakeEntry;
 	}
 
 	private String getParm(String parmName)

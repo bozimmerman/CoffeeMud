@@ -77,8 +77,7 @@ public class Export extends StdCommand
 			        mob.Name(),
 			        mob.Name(),
 			        "Exported XML",
-			        xml,
-			        -1);
+			        xml);
 			if(S!=null) mob.tell("XML emailed to "+mob.playerStats().getEmail());
 		}
 		else
