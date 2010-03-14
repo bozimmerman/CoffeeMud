@@ -142,15 +142,15 @@ public class Sessions extends StdLibrary implements SessionsList
                     if(time>(check*10))
                     {
                         String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
-                        if((S.previousCMD()==null)||(S.previousCMD().size()==0))
+                        if((S.previousCMD()==null)||(S.previousCMD().size()==0)||(S.getStatus()==Session.STATUS_LOGIN))
                             Log.errOut(thread.getName(),"Kicking out: "+((S.mob()==null)?"Unknown":S.mob().Name())+" who has spent "+time+" millis out-game.");
                         else
                         {
                             Log.errOut(thread.getName(),"KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);
                             Log.errOut(thread.getName(),"STATUS  was :"+S.getStatus()+", LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
+                            if(S instanceof Thread)
+                                thread.debugDumpStack((Thread)S);
                         }
-                        if(S instanceof Thread)
-                            thread.debugDumpStack((Thread)S);
                         thread.status("killing session ");
                         stopSessionAtAllCosts(S);
                         thread.status("checking player sessions.");
@@ -183,12 +183,17 @@ public class Sessions extends StdLibrary implements SessionsList
                 if(time>(60000))
                 {
                     String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
-                    Log.errOut(thread.getName(),"KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);
+                    if(S.getStatus()==Session.STATUS_LOGIN)
+                        Log.errOut(thread.getName(),"Kicking out login session after "+time+" millis.");
+                    else
+                    {
+	                    Log.errOut(thread.getName(),"KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);
+	                    if(S instanceof Thread)
+	                        thread.debugDumpStack((Thread)S);
+                    }
                     if((S.getStatus()!=1)||((S.previousCMD()!=null)&&(S.previousCMD().size()>0)))
-                    Log.errOut(thread.getName(),"STATUS  was :"+S.getStatus()+", LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
+                    	Log.errOut(thread.getName(),"STATUS  was :"+S.getStatus()+", LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
                     thread.status("killing session ");
-                    if(S instanceof Thread)
-                        thread.debugDumpStack((Thread)S);
                     stopSessionAtAllCosts(S);
                     thread.status("checking player sessions");
                 }
