@@ -172,6 +172,7 @@ public class FakeSession implements Session
     public long getLastNPCFight(){return 0;}
     public void setLastNPCFight(){}
     public long lastLoopTime(){return 0;}
+	public void updateLoopTime(){}
     public Vector getLastMsgs(){return new Vector();}
     
     public void setServerTelnetMode(int telnetCode, boolean onOff){}

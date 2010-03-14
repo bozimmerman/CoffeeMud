@@ -697,11 +697,20 @@ public interface Session extends CMCommon
      * Returns the last time in milliseconds that this session began its input loop.
      * Is typically only held up by executing a user command, so it is an accurate
      * gauge of a locked up user command.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#updateLoopTime()
      * 
      * @return the last time in milliseconds that this session began its input loop
      */
     public long lastLoopTime();
     
+    /**
+     * Sets the last time in milliseconds that this session began its input loop.
+     * Is typically only held up by executing a user command, so it is an accurate
+     * gauge of a locked up user command.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#lastLoopTime()
+     */
+	public void updateLoopTime();
+	
     /**
      * Returns a Vector of the last several message strings received by this user.
      * All are already previously filtered and parsed and ready to display.

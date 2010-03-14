@@ -329,6 +329,7 @@ public class DefaultSession extends Thread implements Session
     public long getMillisOnline(){ return System.currentTimeMillis()-onlineTime;}
 
 	public long lastLoopTime(){ return lastLoopTop;}
+	public void updateLoopTime(){ lastLoopTop=System.currentTimeMillis();}
     public long getLastPKFight(){return lastPKFight;}
     public void setLastPKFight(){lastPKFight=System.currentTimeMillis();}
     public long getLastNPCFight(){return lastNPCFight;}
