@@ -1308,7 +1308,13 @@ public class DefaultSession extends Thread implements Session
 				status=Session.STATUS_LOGOUT8;
 				if(sock!=null) sock.shutdownOutput();
 				status=Session.STATUS_LOGOUT9;
-				if(out!=null) out.close();
+				if(out!=null){
+					try{
+						out.write(' ');
+						out.flush();
+					} catch(Exception e){}
+					out.close();
+				}
 				status=Session.STATUS_LOGOUT10;
                 if(sock!=null) sock.close();
 				status=Session.STATUS_LOGOUT11;
@@ -1543,6 +1549,7 @@ public class DefaultSession extends Thread implements Session
 						}
 					}
 					status=Session.STATUS_LOGOUT2;
+					previousCmd.removeAllElements(); // will let system know you are back in login menu
 				}
 				else
 					mob=null;
@@ -1552,12 +1559,12 @@ public class DefaultSession extends Thread implements Session
 		}
 		catch(SocketException e)
 		{
-			if(!Log.isMaskedErrMsg(e.getMessage()))
+			if(!Log.isMaskedErrMsg(e.getMessage())&&((!killFlag)||(sock.isConnected())))
 				errorOut(e);
 		}
 		catch(Exception t)
 		{
-			if(!Log.isMaskedErrMsg(t.getMessage()))
+			if(!Log.isMaskedErrMsg(t.getMessage())&&((!killFlag)||(sock.isConnected())))
 				errorOut(t);
 		}
 		status=Session.STATUS_LOGOUT3;

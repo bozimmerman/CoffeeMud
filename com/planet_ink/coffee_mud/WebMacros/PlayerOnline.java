@@ -51,8 +51,7 @@ public class PlayerOnline extends StdWebMacro
 			if(parms.size()==0)
 			{
 				MOB M = CMLib.players().getPlayer(last);
-				if((M==null)||(M.session()==null)) return "false";
-				return "true";
+				return String.valueOf((M!=null)&&(M.session()!=null)&&(!M.session().killFlag()));
 			} 
 			else 
 			{

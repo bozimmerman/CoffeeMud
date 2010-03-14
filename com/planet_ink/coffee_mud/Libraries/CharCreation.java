@@ -373,6 +373,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	    		session.println(buf.toString());
     			buf.setLength(0);
     		}
+    		if(!session.killFlag())
+    			session.updateLoopTime();
     		String s = session.prompt("\n\r^wCommand or Name ^H(?)^w: ^N", TimeClock.TIME_MILIS_PER_MUDHOUR);
     		if(s==null) return LoginResult.NO_LOGIN;
     		if(s.trim().length()==0) continue;
@@ -424,6 +426,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             		String login=CMStrings.capitalizeAndLower(s);
 	                if(session.confirm("Create a new character called '"+login+"' (y/N)?", "N"))
 	                {
+	            		if(!session.killFlag())
+	            			session.updateLoopTime();
 	                	if(createCharacter(acct, login, session) == LoginResult.CCREATION_EXIT)
 		            		return LoginResult.CCREATION_EXIT;
 	                }
