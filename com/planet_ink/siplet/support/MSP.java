@@ -18,12 +18,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class MSP
 {
 
     public MSP(){super();}
 
-    private static Hashtable cache=new Hashtable();
+	private static Hashtable cache=new Hashtable();
 
     private String defMusicPath=null;
     private String defSoundPath=null;
