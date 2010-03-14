@@ -114,9 +114,10 @@ public class Sessions extends StdLibrary implements SessionsList
         ||(CMSecurity.isDisabled("SESSIONTHREAD")))
             return;
         thread.status("checking player sessions.");
-        for(int s=0;s<size();s++)
+        for(int s=size()-1;s>=0;s--)
         {
             Session S=elementAt(s);
+            if(S==null) continue;
             long time=System.currentTimeMillis()-S.lastLoopTime();
             if(time>0)
             {
@@ -142,7 +143,7 @@ public class Sessions extends StdLibrary implements SessionsList
                     {
                         String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
                         if((S.previousCMD()==null)||(S.previousCMD().size()==0))
-                            Log.errOut(thread.getName(),"Kicking out: "+((S.mob()==null)?"Unknown":S.mob().Name())+" who has spent "+time+" millis in creation (probably).");
+                            Log.errOut(thread.getName(),"Kicking out: "+((S.mob()==null)?"Unknown":S.mob().Name())+" who has spent "+time+" millis out-game.");
                         else
                         {
                             Log.errOut(thread.getName(),"KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);

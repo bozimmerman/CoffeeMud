@@ -20,9 +20,9 @@ limitations under the License.
 */
 public class MXP
 {
-    public final static boolean tagDebug=true;
-    public final static boolean tagDebugLong=true;
-    public final static boolean entityDebug=true;
+    public final static boolean tagDebug=false;
+    public final static boolean tagDebugLong=false;
+    public final static boolean entityDebug=false;
 
     private int defaultMode=0;
     public static final int MODE_LINE_OPEN=0;
