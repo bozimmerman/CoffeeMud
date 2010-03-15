@@ -614,6 +614,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     public LoginResult createAccount(PlayerAccount acct, String login, Session session)
 	    throws java.io.IOException
 	{
+        Log.sysOut("FrontDoor","Creating account: "+acct.accountName());
         login=CMStrings.capitalizeAndLower(login.trim());
         if(session.confirm("\n\rDo you want ANSI colors (Y/n)?","Y"))
         	acct.setFlag(PlayerAccount.FLAG_ANSI, true);
@@ -670,6 +671,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             session.println("Your account has been created.  You will receive an email with your password shortly.");
             try{Thread.sleep(2000);}catch(Exception e){}
             session.kill(false,false,false);
+            Log.sysOut("FrontDoor","Created account: "+acct.accountName());
+            session.setAccount(null);
             return LoginResult.NO_LOGIN;
         }
         else
@@ -679,7 +682,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         	try { doneText = CMLib.httpUtils().doVirtualPage(doneText);}catch(Exception ex){}
             session.println(null,null,null,"\n\r\n\r"+doneText.toString());
         }
-        return selectAccountCharacter(acct,session);
+        session.setAccount(acct);
+        Log.sysOut("FrontDoor","Created account: "+acct.accountName());
+        return LoginResult.ACCOUNT_LOGIN;
 	}
 
     public String getEmailAddress(Session session, boolean[] emailConfirmation) throws java.io.IOException
@@ -1390,6 +1395,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
         boolean wizi=false;
 
+        session.setAccount(null);
+        
         String login;
         if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1)
         	login=session.prompt("\n\raccount name: ");
@@ -1497,10 +1504,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	                {
 		                if(isExpired(acct,session,player.expiration)) 
 		                	return LoginResult.NO_LOGIN;
-		
-	                	LoginResult result = selectAccountCharacter(acct,session); 
-	                	if(result != LoginResult.NORMAL_LOGIN)
-	                        return result;
+		                session.setAccount(acct);
+		                return LoginResult.ACCOUNT_LOGIN;
 	                }
 	                else
 	                {
@@ -1558,8 +1563,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	                if(session.confirm("\n\r'"+CMStrings.capitalizeAndLower(login)+"' does not exist.\n\rIs this a new account you would like to create (y/N)?","N"))
 	                {
 	                	acct = (PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
-	                	LoginResult result = createAccount(acct,login,session); 
-	                    return result;
+	                	return createAccount(acct,login,session);
 	                }
 	            }
 	            else

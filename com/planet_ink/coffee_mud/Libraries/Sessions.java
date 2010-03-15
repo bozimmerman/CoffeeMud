@@ -121,7 +121,7 @@ public class Sessions extends StdLibrary implements SessionsList
             long time=System.currentTimeMillis()-S.lastLoopTime();
             if(time>0)
             {
-                if((S.mob()!=null))
+                if((S.mob()!=null)||(S.getStatus()==Session.STATUS_ACCOUNTMENU))
                 {
                     long check=60000;
 
@@ -133,7 +133,7 @@ public class Sessions extends StdLibrary implements SessionsList
                        ||((String)S.previousCMD().firstElement()).equalsIgnoreCase("MERGE")))
                         check=check*600;
                     else
-                    if(CMSecurity.isAllowed(S.mob(),S.mob().location(),"CMDROOMS"))
+                    if((S.mob()!=null)&&(CMSecurity.isAllowed(S.mob(),S.mob().location(),"CMDROOMS")))
                         check=check*15;
                     else
                     if(S.getStatus()==Session.STATUS_LOGIN)
@@ -142,7 +142,7 @@ public class Sessions extends StdLibrary implements SessionsList
                     if(time>(check*10))
                     {
                         String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
-                        if((S.previousCMD()==null)||(S.previousCMD().size()==0)||(S.getStatus()==Session.STATUS_LOGIN))
+                        if((S.previousCMD()==null)||(S.previousCMD().size()==0)||(S.getStatus()==Session.STATUS_LOGIN)||(S.getStatus()==Session.STATUS_ACCOUNTMENU))
                             Log.errOut(thread.getName(),"Kicking out: "+((S.mob()==null)?"Unknown":S.mob().Name())+" who has spent "+time+" millis out-game.");
                         else
                         {

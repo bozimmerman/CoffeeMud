@@ -56,6 +56,6 @@ public interface CharCreationLibrary extends CMLibrary
     
     public enum LoginResult
     {
-    	NO_LOGIN, NORMAL_LOGIN, SESSION_SWAP, CCREATION_EXIT
+    	NO_LOGIN, NORMAL_LOGIN, ACCOUNT_LOGIN, SESSION_SWAP, CCREATION_EXIT
     }
 }

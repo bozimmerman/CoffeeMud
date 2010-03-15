@@ -3,6 +3,8 @@ package com.planet_ink.coffee_mud.Common;
 import java.io.ByteArrayOutputStream;
 import java.net.Socket;
 import java.util.Vector;
+
+import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount;
 import com.planet_ink.coffee_mud.Common.interfaces.Session;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.CMClass;
@@ -154,6 +156,7 @@ public class FakeSession implements Session
     public Vector previousCMD() { return inputV;}
     public MOB mob() { return mob;}
     public void setMob(MOB newmob){ mob=newmob;}
+	public void setAccount(PlayerAccount account){}
     
     public String makeEscape(int c){return "";}
     public int getColor(char c){return ' ';}

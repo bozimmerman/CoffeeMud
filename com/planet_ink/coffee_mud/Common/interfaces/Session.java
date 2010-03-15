@@ -569,6 +569,13 @@ public interface Session extends CMCommon
 	public void setMob(MOB newmob);
     
     /**
+     * Sets the player acount attached to this session object.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#mob()
+     * @param newmob the player account attached to this session object.
+     */
+	public void setAccount(PlayerAccount account);
+	
+    /**
      * Converts a character after the ^ sign (usually a color code)
      * into an appropriate telnet escape sequence string for output.
      * @see com.planet_ink.coffee_mud.Common.interfaces.Session#getColor(char)
@@ -925,39 +932,41 @@ public interface Session extends CMCommon
     /** Status value constant possibly returned by getStatus method */
 	public static final int STATUS_LOGIN=1;
     /** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGIN1=2;
+	public static final int STATUS_ACCOUNTMENU=2;
     /** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGIN2=3;
+	public static final int STATUS_LOGIN1=3;
     /** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGOUT=4;
+	public static final int STATUS_LOGIN2=4;
     /** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGOUT1=5;
+	public static final int STATUS_LOGOUT=5;
     /** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGOUT2=6;
+	public static final int STATUS_LOGOUT1=6;
     /** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGOUT3=7;
+	public static final int STATUS_LOGOUT2=7;
     /** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGOUT4=8;
+	public static final int STATUS_LOGOUT3=8;
     /** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGOUT5=9;
+	public static final int STATUS_LOGOUT4=9;
     /** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGOUT6=10;
+	public static final int STATUS_LOGOUT5=10;
     /** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGOUT7=11;
+	public static final int STATUS_LOGOUT6=11;
     /** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGOUT8=12;
+	public static final int STATUS_LOGOUT7=12;
     /** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGOUT9=13;
+	public static final int STATUS_LOGOUT8=13;
     /** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGOUT10=14;
+	public static final int STATUS_LOGOUT9=14;
     /** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGOUT11=15;
+	public static final int STATUS_LOGOUT10=15;
     /** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGOUT12=16;
+	public static final int STATUS_LOGOUT11=16;
     /** Status value constant possibly returned by getStatus method */
-	public static final int STATUS_LOGOUTFINAL=17;
+	public static final int STATUS_LOGOUT12=17;
+    /** Status value constant possibly returned by getStatus method */
+	public static final int STATUS_LOGOUTFINAL=18;
     /** Status strings indexed by the various STATUS_ constants.  Descriptive strings */
-	public static final String[] STATUS_STR={"OPEN","LOGIN-S","LOGIN-1","LOGIN-2",
+	public static final String[] STATUS_STR={"OPEN","LOGIN-S","ACCOUNTMENU","LOGIN-1","LOGIN-2",
 											"LOGOUT-S","LOGOUT-1","LOGOUT-2","LOGOUT-3",
 											"LOGOUT-4","LOGOUT-5","LOGOUT-6","LOGOUT-7",
 											"LOGOUT-8","LOGOUT-9","LOGOUT-10","LOGOUT-11",

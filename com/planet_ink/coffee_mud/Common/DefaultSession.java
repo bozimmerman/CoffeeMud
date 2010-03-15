@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary.LoginResult;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -44,6 +45,7 @@ public class DefaultSession extends Thread implements Session
     protected PrintWriter out;
     protected OutputStream rawout;
 	protected MOB mob;
+	protected PlayerAccount acct=null;
 	protected boolean killFlag=false;
 	protected boolean needPrompt=false;
 	protected boolean afkFlag=false;
@@ -339,7 +341,10 @@ public class DefaultSession extends Thread implements Session
     public String getTerminalType(){ return terminalType;}
 	public MOB mob(){return mob;}
 	public void setMob(MOB newmob)
-	{ mob=newmob;}
+	{ 
+		mob=newmob;
+	}
+	public void setAccount(PlayerAccount account){acct=account;}
 	public int getWrap(){return ((mob!=null)&&(mob.playerStats()!=null))?mob.playerStats().getWrap():78;}
 	public int getPageBreak(){return ((mob!=null)&&(mob.playerStats()!=null))?mob.playerStats().getPageBreak():-1;}
 	public boolean killFlag(){return killFlag;}
@@ -1374,23 +1379,32 @@ public class DefaultSession extends Thread implements Session
 		try
 		{
 			int tries=0;
-			PlayerAccount tiedAccount = null;
 			while((!killFlag)&&((++tries)<5))
 			{
 				status=Session.STATUS_LOGIN;
 				String input=null;
 				mob=null;
-                CharCreationLibrary.LoginResult loginResult;
-                if(tiedAccount!=null)
-	                loginResult=CMLib.login().selectAccountCharacter(tiedAccount,this);
-                else
+                CharCreationLibrary.LoginResult loginResult=null;
+                if(acct==null)
 	                loginResult=CMLib.login().login(this,tries);
+                if((acct!=null)||(loginResult==LoginResult.ACCOUNT_LOGIN))
+                {
+                	try
+                	{
+                		status=Session.STATUS_ACCOUNTMENU;
+    	                loginResult=CMLib.login().selectAccountCharacter(acct,this);
+                	}
+                	finally
+                	{
+                		status=Session.STATUS_LOGIN;
+                	}
+                }
 				if(loginResult != CharCreationLibrary.LoginResult.NO_LOGIN)
 				{
 					status=Session.STATUS_LOGIN2;
 					tries=0;
 					if((mob!=null)&&(mob.playerStats()!=null))
-						tiedAccount=mob.playerStats().getAccount();
+						acct=mob.playerStats().getAccount();
 					if((!killFlag)&&(mob!=null))
                     {
 					    StringBuffer loginMsg=new StringBuffer("");
@@ -1612,6 +1626,7 @@ public class DefaultSession extends Thread implements Session
 		killFlag=true;
 		waiting=false;
 		needPrompt=false;
+		acct=null;
 		snoops.clear();
 
 		closeSocks();
