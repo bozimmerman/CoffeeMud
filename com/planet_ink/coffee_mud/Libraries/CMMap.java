@@ -1144,6 +1144,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				synchronized(("SYNC"+R.roomID()).intern())
 				{
 					R=getRoom(R);
+					if(R==null) continue;
 					boolean changes=false;
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
