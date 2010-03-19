@@ -280,7 +280,7 @@ public class ResultSet implements java.sql.ResultSet
    {
 	  if(!showColMap.containsKey(columnName))
 		  return -1;
-	  return showColMap.get(columnName)+1;
+	  return showColMap.get(columnName).intValue()+1;
    }
 
    public String getString(String columnName) throws java.sql.SQLException

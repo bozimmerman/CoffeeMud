@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<link rel="coffeemud icon" href="images/coffeemud.ico" >
+	<!-- tell spiders to sod off -->
+	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
+	<title>Forums</title>
+	<script language=JavaScript>
+	<!--
+	//-->
+	</SCRIPT>
+</head>
+
+<body>
+<TABLE WIDTH=100% BORDER=0 CELLSPACING=1 CELLPADDING=1>
+<TR BGCOLOR=BLACK>
+	<TD WIDTH=60% COLSPAN=2><FONT COLOR=WHITE SIZE=-1>Forum</FONT></TD>
+	<TD WIDTH=30%><FONT COLOR=WHITE SIZE=-1>Last Post</FONT></TD>
+	<TD WIDTH=5%><FONT COLOR=WHITE SIZE=-1>Threads</FONT></TD>
+	<TD WIDTH=5%><FONT COLOR=WHITE SIZE=-1>Posts</FONT></TD>
+</TR>
+	<TR>
+	<TD WIDTH=5%><!--IMAGE GOES HERE--></TD>
+	<TD WIDTH=55%><FONT COLOR=WHITE SIZE=-1>Forum</FONT></TD>
+	<TD WIDTH=30%><FONT COLOR=WHITE SIZE=-1>Last Post</FONT></TD>
+	<TD WIDTH=5%><FONT COLOR=WHITE SIZE=-1>Threads</FONT></TD>
+	<TD WIDTH=5%><FONT COLOR=WHITE SIZE=-1>Posts</FONT></TD>
+	</TR>
+</TABLE>
+</body>
+</html>

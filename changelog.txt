@@ -2222,7 +2222,7 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 23.CharClasses now support max/caps in common skills, crafting skills, non-crafting common skills, and languages.
 24.Injury text is a bit more decorated now. (Thanks gmdenna!)
 25.Many many more mxp images scrounged up, and several old ones replaces with better ones.  There is a light at the end of the tunnel!
-# Build ? Release ?
+# Build ? Release ?  * Database Schema Changed!
 1. New Property (From 5.x snippets): Prop_IceBox (thx Robert!)
 2. CharStats can now be customized with ADDCHARSTAT_ in coffeemud.ini file.
 3. New Commands (From 4.x snippets): Experience, Wealth (thx again Robert)
@@ -2251,4 +2251,3 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 22.New command: LOGOUT/LOGOFF -- exits back to login prompt/char selection
 23.New INI entry: EXVIEW, for selecting types of exit views for the players
 24.XP Bonuses for killing HL targets will only apply if player/mob close to highest level players level.
-
