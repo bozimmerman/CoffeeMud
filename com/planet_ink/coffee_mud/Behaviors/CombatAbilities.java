@@ -38,7 +38,7 @@ public class CombatAbilities extends StdBehavior
 	public String ID(){return "CombatAbilities";}
 
 	public int combatMode=0;
-	public DVector aggro=null;
+	public Hashtable<MOB,int[]> aggro=null;
 	public short chkDown=0;
 	public Vector skillsNever=null;
 	public Vector skillsAlways=null;
@@ -180,22 +180,38 @@ public class CombatAbilities extends StdBehavior
 		}
 	}
 
-	public void adjustAggro(MOB mob, int amt)
+	public void adjustAggro(MOB hostM, MOB attackerM, int amt)
 	{
-		if(aggro==null) aggro=new DVector(2);
+		if(aggro==null) aggro=new Hashtable<MOB,int[]>();
 		synchronized(aggro)
 		{
-			Integer I=null;
-			int x=aggro.indexOf(mob);
-			if(x>=0) 
-				I=(Integer)aggro.elementAt(x,2);
-			else
+			int[] I = aggro.get(attackerM);
+			if(I==null)
 			{
-				x=aggro.size();
-				I=Integer.valueOf(0);
-				aggro.addElement(mob,I);
+				I=new int[]{0};
+				aggro.put(attackerM, I);
 			}
-			aggro.setElementAt(x,2,Integer.valueOf(I.intValue()+amt));
+			I[0]+=amt;
+			MOB curVictim=hostM.getVictim();
+			if((curVictim==attackerM)
+			||(curVictim==null)
+			||(!aggro.containsKey(curVictim)))
+				return;
+			int vicAmt=aggro.get(curVictim)[0];
+			if((I[0]>(vicAmt*1.5))
+			&&(I[0]>hostM.maxState().getHitPoints()/10)
+			&&(!attackerM.amDead())
+			&&(attackerM.isInCombat()))
+			{
+	            if((hostM.getGroupMembers(new HashSet()).contains(attackerM))
+	            ||(!CMLib.flags().canBeSeenBy(attackerM, hostM)))
+	            	I[0]=0;
+	            else
+	            {
+					hostM.setVictim(attackerM);
+					aggro.clear();
+	            }
+			}
 		}
 	}
 	
@@ -217,12 +233,12 @@ public class CombatAbilities extends StdBehavior
 					&&(msg.source()==mob.getVictim()))
 						physicalDamageTaken+=msg.value();
 					if(msg.target()==host)
-						adjustAggro(msg.source(),msg.value()*2);
+						adjustAggro(mob,msg.source(),msg.value()*2);
 					else
 					{
 						if((victim==msg.source())
 						||(msg.source().getGroupMembers(new HashSet()).contains(victim)))
-							adjustAggro(msg.source(),msg.value());
+							adjustAggro(mob,msg.source(),msg.value());
 					}
 				}
 				else
@@ -232,7 +248,7 @@ public class CombatAbilities extends StdBehavior
 				{
 					if((msg.target()==victim)
 					||(msg.source().getGroupMembers(new HashSet()).contains(victim)))
-						adjustAggro(msg.source(),msg.value()*2);
+						adjustAggro(mob,msg.source(),msg.value()*2);
 				}
 				else
 				if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
@@ -247,7 +263,7 @@ public class CombatAbilities extends StdBehavior
 					{
 						int level=CMLib.ableMapper().qualifyingLevel(msg.source(),(Ability)msg.tool());
 						if(level<=0) level=CMLib.ableMapper().lowestQualifyingLevel(msg.tool().ID());
-						if(level>0) adjustAggro(msg.source(),level);
+						if(level>0) adjustAggro(mob,msg.source(),level);
 					}
 				}
 			}
@@ -483,7 +499,12 @@ public class CombatAbilities extends StdBehavior
 		if(!mob.isInCombat())
 		{ 
 		    if(aggro!=null)
-		        aggro=null;
+		    {
+		    	synchronized(aggro)
+		    	{
+			        aggro=null;
+		    	}
+		    }
 		    if((preCastSet < Integer.MAX_VALUE) && (preCastSet >0) && ((--preCastDown)<=0))
 		    {
 		    	preCastDown=preCastSet;
@@ -583,29 +604,30 @@ public class CombatAbilities extends StdBehavior
 		{
 			synchronized(aggro)
 			{
-				int windex=-1;
 				int winAmt=0;
+				MOB winMOB = null;
 				int vicAmt=0;
 				int minAmt=mob.maxState().getHitPoints()/10;
-				for(int a=0;a<aggro.size();a++)
+				if(aggro.containsKey(victim))
+					vicAmt = aggro.get(victim)[0];
+				int[] amt = null;
+				for(MOB M : aggro.keySet())
 				{
-					if(aggro.elementAt(a,1)==victim)
-						vicAmt=((Integer)aggro.elementAt(a,2)).intValue();
-					else
-					if((((Integer)aggro.elementAt(a,2)).intValue()>winAmt)
-					&&(CMLib.flags().canBeSeenBy((MOB)aggro.elementAt(a,1),mob)))
+					amt = aggro.get(M);
+					if((amt[0]>winAmt)
+					&&(CMLib.flags().canBeSeenBy(M,mob)))
 					{
-						winAmt=((Integer)aggro.elementAt(a,2)).intValue();
-						windex=a;
+						winAmt=amt[0];
+						winMOB=M;
 					}
 				}
 				if((winAmt>minAmt)
 				&&(winAmt>(vicAmt+(vicAmt/2)))
-				&&(!((MOB)aggro.elementAt(windex,1)).amDead())
-				&&(((MOB)aggro.elementAt(windex,1)).isInCombat())
-                &&(!mob.getGroupMembers(new HashSet()).contains((MOB)aggro.elementAt(windex,1))))
+				&&(!winMOB.amDead())
+				&&(winMOB.isInCombat())
+	            &&(!mob.getGroupMembers(new HashSet()).contains(winMOB)))
 				{
-					mob.setVictim((MOB)aggro.elementAt(windex,1));
+					mob.setVictim(winMOB);
 					victim=mob.getVictim();
 					aggro.clear();
 				}
