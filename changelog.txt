@@ -2251,3 +2251,5 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 22.New command: LOGOUT/LOGOFF -- exits back to login prompt/char selection
 23.New INI entry: EXVIEW, for selecting types of exit views for the players
 24.XP Bonuses for killing HL targets will only apply if player/mob close to highest level players level.
+25.(Pending) New Forum system -- see FORUMJOURNALS entry in the coffeemud.ini file
+
