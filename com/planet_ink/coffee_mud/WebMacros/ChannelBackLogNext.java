@@ -50,12 +50,7 @@ public class ChannelBackLogNext extends StdWebMacro
 		if(channel==null) return " @break@";
 		int channelInt=CMLib.channels().getChannelIndex(channel);
 		if(channelInt<0) return " @break@";
-		String login=Authenticate.getLogin(httpReq);
-        String password=Authenticate.getPassword(httpReq);
-        MOB mob=null;
-        if(Authenticate.authenticated(httpReq,login,password))
-            mob=CMLib.players().getLoadPlayer(login);
-        
+		MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 		if(mob!=null)
 		{
 			if(CMLib.channels().mayReadThisChannel(mob,channelInt,true))

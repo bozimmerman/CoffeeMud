@@ -41,7 +41,7 @@ public class QuestMgr extends StdWebMacro
 	{
 		Hashtable parms=parseParms(parm);
 		Quest Q=null;
-        MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+		MOB M = Authenticate.getAuthenticatedMob(httpReq);
         String name=(M==null)?"Someone":M.Name();
 		if(parms.containsKey("CREATE"))
 		{

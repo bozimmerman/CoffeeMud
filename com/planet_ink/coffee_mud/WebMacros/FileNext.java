@@ -43,7 +43,7 @@ public class FileNext extends StdWebMacro
 		String path=httpReq.getRequestParameter("PATH");
 		if(path==null) path="";
 		String last=httpReq.getRequestParameter("FILE");
-        MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+		MOB M = Authenticate.getAuthenticatedMob(httpReq);
         if(M==null) return "[authentication error]";
 		if(parms.containsKey("RESET"))
 		{	

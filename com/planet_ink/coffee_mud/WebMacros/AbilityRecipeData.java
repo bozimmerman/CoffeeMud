@@ -171,7 +171,7 @@ public class AbilityRecipeData extends StdWebMacro
                         String oldVal = (String)dataRow.elementAt(c,2);
                         dataRow.setElementAt(c,2,editor.webValue(httpReq,parms,oldVal,"DATA_"+row+"_"+c));
                     }
-                    MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+            		MOB M = Authenticate.getAuthenticatedMob(httpReq);
                     if(M==null) return " @break@";
                     boolean saveToVFS = CMath.s_bool(httpReq.getRequestParameter("SAVETOVFS"));
                     if(CMSecurity.isAllowedAnywhere(M,"CMDRECIPES"))
@@ -187,7 +187,7 @@ public class AbilityRecipeData extends StdWebMacro
                         recipeData.dataRows().removeElementAt(row-1);
                     else
                         return " @break@";
-                    MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+            		MOB M = Authenticate.getAuthenticatedMob(httpReq);
                     if(M==null) return " @break@";
                     boolean saveToVFS = CMath.s_bool(httpReq.getRequestParameter("SAVETOVFS"));
                     if(CMSecurity.isAllowedAnywhere(M,"CMDRECIPES"))

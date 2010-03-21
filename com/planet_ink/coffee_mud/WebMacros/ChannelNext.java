@@ -45,12 +45,7 @@ public class ChannelNext extends StdWebMacro
 			if(last!=null) httpReq.removeRequestParameter("CHANNEL");
 			return "";
 		}
-		String login=Authenticate.getLogin(httpReq);
-        String password=Authenticate.getPassword(httpReq);
-        MOB mob=null;
-        
-		if(Authenticate.authenticated(httpReq,login,password))
-            mob=CMLib.players().getLoadPlayer(login);
+		MOB mob = Authenticate.getAuthenticatedMob(httpReq);
         if(mob!=null)
 		{
 			String lastID="";

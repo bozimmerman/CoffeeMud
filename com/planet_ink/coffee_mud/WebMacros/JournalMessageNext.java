@@ -37,34 +37,14 @@ public class JournalMessageNext extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public static HashSet getProtectedJournals()
-	{
-	    Item I=null;
-	    HashSet H=new HashSet();
-	    for(Enumeration e=CMClass.basicItems();e.hasMoreElements();)
-	    {
-	        I=(Item)e.nextElement();
-	        if((I instanceof ArchonOnly)
-	        &&(!I.isGeneric()))
-	            H.add(I.Name().toUpperCase().trim());
-	    }
-	    return H;
-	}
-	public static boolean isProtectedJournal(String journal)
-	{
-	    if(getProtectedJournals().contains(journal.toUpperCase().trim()))
-	        return true;
-	    return false;
-	}
-
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
 		String journal=httpReq.getRequestParameter("JOURNAL");
 		if(journal==null) return " @break@";
-		if(isProtectedJournal(journal))
+		if(CMLib.journals().isArchonJournalName(journal))
 		{
-			MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+			MOB M = Authenticate.getAuthenticatedMob(httpReq);
 			if((M==null)||(!CMSecurity.isASysOp(M)))
 			    return " @break@";
 		}
@@ -87,7 +67,7 @@ public class JournalMessageNext extends StdWebMacro
 			}
 			return "";
 		}
-        MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+		MOB M = Authenticate.getAuthenticatedMob(httpReq);
         boolean priviledged=CMSecurity.isAllowedAnywhere(M,"JOURNALS")&&(!parms.contains("NOPRIV"));
         cardinal++;
         while(true)

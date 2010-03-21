@@ -40,12 +40,9 @@ public class RebuildReferenceDocs extends StdWebMacro
     
     public String runMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException
     {
-		String login=Authenticate.getLogin(httpReq);
-		if(!Authenticate.authenticated(httpReq,login,Authenticate.getPassword(httpReq)))
-	        return "[Unauthorized]";
-		MOB M=CMLib.players().getLoadPlayer(login);
+		MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		if(M==null)
-	        return "[Unknown]";
+	        return "[Unauthorized]";
 		if(!CMSecurity.isASysOp(M))
 	        return "[Unallowed]";
     	CMFile sourcesF = new CMFile("/web/admin/work",M,true);

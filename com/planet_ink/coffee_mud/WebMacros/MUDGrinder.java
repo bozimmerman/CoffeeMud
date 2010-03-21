@@ -110,7 +110,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("AREALIST"))
 		{
-			MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
 			Area pickedA=getLoggedArea(httpReq,mob);
 			return GrinderAreas.getAreaList(pickedA,mob);
@@ -118,7 +118,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("DELAREA"))
 		{
-			MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
 			Area A=getLoggedArea(httpReq,mob);
 			if(A==null) return "@break@";
@@ -129,7 +129,7 @@ public class MUDGrinder extends StdWebMacro
         else
         if(parms.containsKey("EDITACCOUNT"))
         {
-            MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
             if(mob==null) return "@break@";
             String last=httpReq.getRequestParameter("ACCOUNT");
             if(last==null) return "@break@";
@@ -145,7 +145,7 @@ public class MUDGrinder extends StdWebMacro
         else
         if(parms.containsKey("DELACCOUNT"))
         {
-            MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
             if(mob==null) return "@break@";
             String last=httpReq.getRequestParameter("ACCOUNT");
             if(last==null) return "@break@";
@@ -168,7 +168,7 @@ public class MUDGrinder extends StdWebMacro
 		else
         if(parms.containsKey("DELCATALOGMOB"))
         {
-            MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
             if(mob==null) return "@break@";
             String last=httpReq.getRequestParameter("DELMOB");
             if(last==null) return "@break@";
@@ -187,7 +187,7 @@ public class MUDGrinder extends StdWebMacro
         else
         if(parms.containsKey("DELCATALOGITEM"))
         {
-            MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
             if(mob==null) return "@break@";
             String last=httpReq.getRequestParameter("DELITEM");
             if(last==null) return "@break@";
@@ -206,7 +206,7 @@ public class MUDGrinder extends StdWebMacro
         else
         if(parms.containsKey("DELCLAN"))
         {
-            MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
             if(mob==null) return "@break@";
             String last=httpReq.getRequestParameter("CLAN");
             if(last==null) return "@break@";
@@ -221,7 +221,7 @@ public class MUDGrinder extends StdWebMacro
         else
         if(parms.containsKey("EDITCLAN"))
         {
-            MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
             if(mob==null) return "@break@";
             String last=httpReq.getRequestParameter("CLAN");
             if(last==null) return "@break@";
@@ -238,7 +238,7 @@ public class MUDGrinder extends StdWebMacro
 		else
         if(parms.containsKey("ADDCLAN"))
         {
-            MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+            MOB mob = Authenticate.getAuthenticatedMob(httpReq);
             if(mob==null) return "@break@";
             String last=httpReq.getRequestParameter("NEWCLANID");
             if(last==null) return "@break@";
@@ -261,7 +261,7 @@ public class MUDGrinder extends StdWebMacro
         else
 		if(parms.containsKey("IMPORTAREA"))
 		{
-			MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
             String file=httpReq.getRequestParameter("FILE");
             if(file==null) file="";
@@ -288,7 +288,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("ADDAREA"))
 		{
-            MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+            MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			String AREA=httpReq.getRequestParameter("AREA");
 			if(AREA==null) return "false";
 			if(AREA.length()==0) return "false";
@@ -311,7 +311,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITAREA"))
 		{
-            MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+            MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			String AREA=httpReq.getRequestParameter("AREA");
 			if(AREA==null) return "";
 			if(AREA.length()==0) return "";
@@ -324,7 +324,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("DELEXIT"))
 		{
-			MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
 			Room R=CMLib.map().getRoom(httpReq.getRequestParameter("ROOM"));
 			if(R==null) return "@break@";
@@ -337,7 +337,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITEXIT"))
 		{
-			MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
 			Room R=CMLib.map().getRoom(httpReq.getRequestParameter("ROOM"));
 			if(R==null) return "@break@";
@@ -365,7 +365,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("LINKEXIT"))
 		{
-			MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
 			Room R=CMLib.map().getRoom(httpReq.getRequestParameter("ROOM"));
 			if(R==null) return "@break@";
@@ -382,7 +382,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("LINKAREA"))
 		{
-			MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
 			Room R=CMLib.map().getRoom(httpReq.getRequestParameter("ROOM"));
 			if(R==null) return "@break@";
@@ -404,7 +404,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITROOM"))
 		{
-			MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
 			Room R=CMLib.map().getRoom(httpReq.getRequestParameter("ROOM"));
 			if(R==null) return "@break@";
@@ -414,7 +414,7 @@ public class MUDGrinder extends StdWebMacro
         else
         if(parms.contains("DELHOLIDAY"))
         {
-            MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+            MOB mob = Authenticate.getAuthenticatedMob(httpReq);
             if(mob==null) return "@break@";
             String last=httpReq.getRequestParameter("HOLIDAY");
             if(last==null) return " @break@";
@@ -427,7 +427,7 @@ public class MUDGrinder extends StdWebMacro
         else
         if(parms.contains("EDITHOLIDAY"))
         {
-            MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+            MOB mob = Authenticate.getAuthenticatedMob(httpReq);
             if(mob==null) return "@break@";
             String last=httpReq.getRequestParameter("HOLIDAY");
             if(last==null) return " @break@";
@@ -442,7 +442,7 @@ public class MUDGrinder extends StdWebMacro
         else
         if(parms.contains("DELRACE"))
         {
-            MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+            MOB mob = Authenticate.getAuthenticatedMob(httpReq);
             if(mob==null) return "@break@";
             Race R=null;
             String last=httpReq.getRequestParameter("RACE");
@@ -463,7 +463,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.contains("EDITRACE"))
 		{
-            MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+            MOB mob = Authenticate.getAuthenticatedMob(httpReq);
             if(mob==null) return "@break@";
             Race R=null;
             Race oldR=null;
@@ -502,7 +502,7 @@ public class MUDGrinder extends StdWebMacro
         else
         if(parms.contains("DELCLASS"))
         {
-            MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+            MOB mob = Authenticate.getAuthenticatedMob(httpReq);
             if(mob==null) return "@break@";
             CharClass C=null;
             String last=httpReq.getRequestParameter("CLASS");
@@ -524,7 +524,7 @@ public class MUDGrinder extends StdWebMacro
         else
         if(parms.contains("EDITCLASS"))
         {
-            MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+            MOB mob = Authenticate.getAuthenticatedMob(httpReq);
             if(mob==null) return "@break@";
             CharClass C=null;
             CharClass oldC=null;
@@ -563,7 +563,7 @@ public class MUDGrinder extends StdWebMacro
         else
         if(parms.contains("DELFACTION"))
         {
-            MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+            MOB mob = Authenticate.getAuthenticatedMob(httpReq);
             if(mob==null) return "@break@";
             Faction F=null;
             String last=httpReq.getRequestParameter("FACTION");
@@ -580,7 +580,7 @@ public class MUDGrinder extends StdWebMacro
         else
         if(parms.contains("EDITFACTION"))
         {
-            MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+            MOB mob = Authenticate.getAuthenticatedMob(httpReq);
             if(mob==null) return "@break@";
             Faction F=null;
             String last=httpReq.getRequestParameter("FACTION");
@@ -611,7 +611,7 @@ public class MUDGrinder extends StdWebMacro
         else
         if(parms.contains("DELABILITY"))
         {
-            MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+            MOB mob = Authenticate.getAuthenticatedMob(httpReq);
             if(mob==null) return "@break@";
             Ability A=null;
             String last=httpReq.getRequestParameter("ABILITY");
@@ -630,7 +630,7 @@ public class MUDGrinder extends StdWebMacro
         else
         if(parms.contains("EDITABILITY"))
         {
-            MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+            MOB mob = Authenticate.getAuthenticatedMob(httpReq);
             if(mob==null) return "@break@";
             Ability A=null;
             Ability oldA=null;
@@ -663,7 +663,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITITEM"))
 		{
-			MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
             String player=httpReq.getRequestParameter("PLAYER");
             MOB playerM=(player!=null)?CMLib.players().getLoadPlayer(player):null;
@@ -676,7 +676,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITMOB"))
 		{
-			MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
             String roomID=httpReq.getRequestParameter("ROOM");
 			Room R=CMLib.map().getRoom(roomID);
@@ -687,7 +687,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("EDITPLAYER"))
 		{
-			MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
 			MOB M=CMLib.players().getLoadPlayer(httpReq.getRequestParameter("PLAYER"));
 			if(M==null) return "@break@";
@@ -697,7 +697,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("DELROOM"))
 		{
-			MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
 			Room R=CMLib.map().getRoom(httpReq.getRequestParameter("ROOM"));
 			if(R==null) return "@break@";
@@ -715,7 +715,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("RESETROOM"))
 		{
-			MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
 			Room R=CMLib.map().getRoom(httpReq.getRequestParameter("ROOM"));
 			if(R==null) return "@break@";
@@ -725,7 +725,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("ADDROOM"))
 		{
-			MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
 			String link=httpReq.getRequestParameter("LINK");
 			Room R=CMLib.map().getRoom(httpReq.getRequestParameter("ROOM"));
@@ -746,7 +746,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("PAINTROOMS"))
 		{
-			MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
 			String AREA=httpReq.getRequestParameter("AREA");
 			if(AREA==null) return "@break@";
@@ -825,7 +825,7 @@ public class MUDGrinder extends StdWebMacro
 		else
 		if(parms.containsKey("ADDGRIDROOM"))
 		{
-			MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+			MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 			if(mob==null) return "@break@";
 			String AREA=httpReq.getRequestParameter("AREA");
 			if(AREA==null) return "false";

@@ -30,6 +30,9 @@ import java.util.*;
 */
 public interface JournalsLibrary extends CMLibrary, Runnable
 {
+	public HashSet<String> getArchonJournalNames();
+	public boolean isArchonJournalName(String journal);
+	
     public int loadCommandJournals(String list);
     public Enumeration<CommandJournal> commandJournals();
     public CommandJournal getCommandJournal(String named);

@@ -46,8 +46,8 @@ public class JournalFunction extends StdWebMacro
 			info=CMLib.database().DBReadJournalMsgs(last);
 			httpReq.getRequestObjects().put("JOURNAL: "+last,info);
 		}
-		MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
-		if(JournalMessageNext.isProtectedJournal(last))
+		MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		if(CMLib.journals().isArchonJournalName(last))
 		{
 			if((M==null)||(!CMSecurity.isASysOp(M)))
 			    return " @break@";

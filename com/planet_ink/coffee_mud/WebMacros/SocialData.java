@@ -68,7 +68,7 @@ public class SocialData extends StdWebMacro
         }
         if(parms.containsKey("TOVFS"))
         {
-            MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+            MOB M = Authenticate.getAuthenticatedMob(httpReq);
             if(M==null) return "[authentication error]";
             CMFile lf=new CMFile("///resources/socials.txt",M,true);
             if(!lf.exists()) return "No local file.";
@@ -87,7 +87,7 @@ public class SocialData extends StdWebMacro
         }
         if(parms.containsKey("TOLFS"))
         {
-            MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+            MOB M = Authenticate.getAuthenticatedMob(httpReq);
             if(M==null) return "[authentication error]";
             CMFile lf=new CMFile("::/resources/socials.txt",M,true);
             if(!lf.exists()) return "No vfs file.";
@@ -106,7 +106,7 @@ public class SocialData extends StdWebMacro
         }
         if(parms.containsKey("NOVFS"))
         {
-            MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+            MOB M = Authenticate.getAuthenticatedMob(httpReq);
             if(M==null) return "[authentication error]";
             CMFile vf=new CMFile("::/resources/socials.txt",M,false);
             if(vf.exists()) 
@@ -117,7 +117,7 @@ public class SocialData extends StdWebMacro
         }
         if(parms.containsKey("NOLFS"))
         {
-            MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+            MOB M = Authenticate.getAuthenticatedMob(httpReq);
             if(M==null) return "[authentication error]";
             CMFile vf=new CMFile("///resources/socials.txt",M,false);
             if(vf.exists()) 
@@ -144,7 +144,7 @@ public class SocialData extends StdWebMacro
         
         if(parms.containsKey("EDIT"))
         {
-            MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+            MOB M = Authenticate.getAuthenticatedMob(httpReq);
             if(M==null) return "[authentication error]";
             if(!CMSecurity.isAllowed(M,M.location(),"CMDSOCIALS")) return "[authentication error]";
             
@@ -250,7 +250,7 @@ public class SocialData extends StdWebMacro
         else
         if(parms.containsKey("DELETE"))
         {
-            MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+            MOB M = Authenticate.getAuthenticatedMob(httpReq);
             if(M==null) return "[authentication error]";
             if(!CMSecurity.isAllowed(M,M.location(),"CMDSOCIALS")) return "[authentication error]";
             if(last==null) return " @break@";

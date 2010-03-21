@@ -71,7 +71,7 @@ public class BankAccountInfo extends StdWebMacro
 		Hashtable parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("BANKCHAIN");
 		if(last==null) return " @break@";
-		MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+		MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		if(M==null) return " @break@";
 		String player=httpReq.getRequestParameter("PLAYER");
 		if((player==null)||(player.length()==0))

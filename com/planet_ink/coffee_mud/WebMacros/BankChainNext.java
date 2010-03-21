@@ -51,7 +51,7 @@ public class BankChainNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+		MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		if(M==null) return " @break@";
 		if((player!=null)&&(player.length()>0))
 		{

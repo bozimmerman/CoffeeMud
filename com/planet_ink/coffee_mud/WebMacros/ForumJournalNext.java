@@ -33,10 +33,12 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("unchecked")
-public class JournalNext extends StdWebMacro
+public class ForumJournalNext extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
+	public static MOB guestM = null;
+	
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
@@ -47,23 +49,34 @@ public class JournalNext extends StdWebMacro
 			httpReq.getRequestObjects().remove("JOURNALLIST");
 			return "";
 		}
+		MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		if(M==null)
+		{
+			if(guestM==null)
+			{
+				guestM=CMClass.getMOB("StdMOB");
+				guestM.baseEnvStats().setLevel(0);
+				guestM.envStats().setLevel(0);
+				guestM.setName("guest");
+			}
+			M=guestM;
+		}
 		
 		Vector journals=(Vector)httpReq.getRequestObjects().get("JOURNALLIST");
 		if(journals==null)
 		{
-			journals=CMLib.database().DBReadJournals();
-			for(Enumeration e=CMLib.journals().commandJournals();e.hasMoreElements();)
+			journals=new Vector();
+			for(Enumeration e=CMLib.journals().forumJournals();e.hasMoreElements();)
 			{
-				CommandJournal CJ=(CommandJournal)e.nextElement();
+				JournalsLibrary.ForumJournal CJ=(JournalsLibrary.ForumJournal)e.nextElement();
 				if((!journals.contains(CJ.NAME().toUpperCase()))
-				&&(!journals.contains(CJ.JOURNAL_NAME())))
-					journals.add(CJ.JOURNAL_NAME());
+				&&(CMLib.masking().maskCheck(CJ.readMask(), M, true)))
+					journals.add(CJ.NAME());
 			}
 			httpReq.getRequestObjects().put("JOURNALLIST",journals);
 		}
 		String lastID="";
 		HashSet<String> H=CMLib.journals().getArchonJournalNames();
-		MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		for(int j=0;j<journals.size();j++)
 		{
 			String B=(String)journals.elementAt(j);

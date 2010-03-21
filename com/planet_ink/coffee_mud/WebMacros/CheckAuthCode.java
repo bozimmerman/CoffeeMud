@@ -37,12 +37,9 @@ public class CheckAuthCode extends StdWebMacro
 
 	public Hashtable getAuths(ExternalHTTPRequests httpReq)
 	{
-		String login=Authenticate.getLogin(httpReq);
-		if(!Authenticate.authenticated(httpReq,login,Authenticate.getPassword(httpReq)))
-			return null;
-		MOB mob=CMLib.players().getLoadPlayer(login);
+		MOB mob = Authenticate.getAuthenticatedMob(httpReq);
 		if(mob==null) return null;
-		Hashtable auths=(Hashtable)httpReq.getRequestObjects().get("AUTHS_"+login.toUpperCase().trim());
+		Hashtable auths=(Hashtable)httpReq.getRequestObjects().get("AUTHS_"+mob.Name().toUpperCase().trim());
 		if(auths==null)
 		{
 			auths=new Hashtable();
@@ -88,7 +85,7 @@ public class CheckAuthCode extends StdWebMacro
 			Vector V=CMSecurity.getSecurityCodes(mob,R);
 			for(int v=0;v<V.size();v++)
 				auths.put("AUTH_"+((String)V.elementAt(v)),"true");
-			httpReq.getRequestObjects().put("AUTHS_"+login.toUpperCase().trim(),auths);
+			httpReq.getRequestObjects().put("AUTHS_"+mob.Name().toUpperCase().trim(),auths);
 		}
 		return auths;
 	}

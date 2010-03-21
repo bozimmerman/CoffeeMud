@@ -157,6 +157,32 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
         return forumJournals.size();
     }
     
+	public HashSet<String> getArchonJournalNames()
+	{
+		HashSet<String> H = (HashSet<String>)Resources.getResource("ARCHON_ONLY_JOURNALS");
+		if(H == null)
+		{
+		    Item I=null;
+		    H=new HashSet<String>();
+		    for(Enumeration e=CMClass.basicItems();e.hasMoreElements();)
+		    {
+		        I=(Item)e.nextElement();
+		        if((I instanceof ArchonOnly)
+		        &&(!I.isGeneric()))
+		            H.add(I.Name().toUpperCase().trim());
+		    }
+		    Resources.submitResource("ARCHON_ONLY_JOURNALS", H);
+		}
+	    return H;
+	}
+	
+	public boolean isArchonJournalName(String journal)
+	{
+	    if(getArchonJournalNames().contains(journal.toUpperCase().trim()))
+	        return true;
+	    return false;
+	}
+
     public String getScriptValue(MOB mob, String journal, String oldValue) 
     {
     	CommandJournal CMJ=getCommandJournal(journal);
@@ -183,9 +209,9 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
     
     public CommandJournal getCommandJournal(String named) { return commandJournals.get(named.toUpperCase().trim());}
     
-    public void commandJournalSweep()
+    public void expirationJournalSweep()
     {
-        thread.status("command journal sweeping");
+        thread.status("expiration journal sweeping");
         try
         {
             for(Enumeration<CommandJournal> e=commandJournals();e.hasMoreElements();)
@@ -211,6 +237,34 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
                         }
                     }
                     thread.status("command journal sweeping");
+                }
+            }
+        }catch(NoSuchElementException nse){}
+        try
+        {
+            for(Enumeration<ForumJournal> e=forumJournals();e.hasMoreElements();)
+            {
+            	ForumJournal FMJ=e.nextElement();
+                String num=FMJ.getFlag(CommandJournalFlags.EXPIRE);
+                if((num!=null)&&(CMath.isNumber(num)))
+                {
+                    thread.status("updating journal "+FMJ.NAME());
+                    Vector items=CMLib.database().DBReadJournalMsgs(FMJ.NAME());
+                    if(items!=null)
+                    for(int i=items.size()-1;i>=0;i--)
+                    {
+                    	JournalEntry entry=(JournalEntry)items.elementAt(i);
+                        long compdate=entry.update;
+                        compdate=compdate+Math.round(CMath.mul(TimeManager.MILI_DAY,CMath.s_double(num)));
+                        if(System.currentTimeMillis()>compdate)
+                        {
+                            String from=entry.from;
+                            String message=entry.msg;
+                            Log.sysOut(Thread.currentThread().getName(),"Expired "+FMJ.NAME()+" from "+from+": "+message);
+                            CMLib.database().DBDeleteJournal(FMJ.NAME(),i);
+                        }
+                    }
+                    thread.status("forum journal sweeping");
                 }
             }
         }catch(NoSuchElementException nse){}
@@ -251,7 +305,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
         if((!CMSecurity.isDisabled("SAVETHREAD"))
         &&(!CMSecurity.isDisabled("JOURNALTHREAD")))
         {
-            commandJournalSweep();
+            expirationJournalSweep();
         }
     }
 }

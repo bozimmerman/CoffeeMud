@@ -48,22 +48,16 @@ public class JournalInfo extends StdWebMacro
 			info=CMLib.database().DBReadJournalMsgs(last);
 			httpReq.getRequestObjects().put("JOURNAL: "+last,info);
 		}
-		MOB M=null;
-		if(JournalMessageNext.isProtectedJournal(last))
-		{
-			M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
-			if((M==null)||(!CMSecurity.isASysOp(M)))
-			    return " @break@";
-		}
+		MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		if((CMLib.journals().isArchonJournalName(last))&&((M==null)||(!CMSecurity.isASysOp(M))))
+		    return " @break@";
+		
 		if(parms.containsKey("COUNT"))
 			return ""+info.size();
 		String lastlast=httpReq.getRequestParameter("JOURNALMESSAGE");
 		int num=0;
 		if(lastlast!=null) num=CMath.s_int(lastlast);
 		if((num<0)||(num>=info.size()))	return " @break@";
-		
-		if(M==null)
-			M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
         boolean priviledged=CMSecurity.isAllowedAnywhere(M,"JOURNALS")&&(!parms.contains("NOPRIV"));
         JournalsLibrary.JournalEntry entry = (JournalsLibrary.JournalEntry)info.elementAt(num);
 		String to=entry.to;
