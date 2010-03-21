@@ -36,7 +36,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 {
     public String ID(){return "CMJournals";}
     public final int QUEUE_SIZE=100;
-    protected Hashtable<String,CommandJournal> journals=new Hashtable<String,CommandJournal>();
+    protected Hashtable<String,CommandJournal> commandJournals=new Hashtable<String,CommandJournal>();
+    protected Hashtable<String,ForumJournal> forumJournals=new Hashtable<String,ForumJournal>();
     public final Vector emptyVector=new Vector(1);
     
     private ThreadEngine.SupportThread thread=null;
@@ -44,7 +45,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
     
     public int loadCommandJournals(String list)
     {
-        clearJournals();
+        clearCommandJournals();
         while(list.length()>0)
         {
             int x=list.indexOf(",");
@@ -61,14 +62,14 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
                 list=list.substring(x+1);
             }
             x=item.indexOf(" ");
-            Hashtable<JournalFlag,String> flags=new Hashtable<JournalFlag,String>();
+            Hashtable<CommandJournalFlags,String> flags=new Hashtable<CommandJournalFlags,String>();
             String mask="";
             if(x>0)
             {
                 mask=item.substring(x+1).trim();
-                for(int pf=0;pf<JournalFlag.values().length;pf++)
+                for(int pf=0;pf<CommandJournalFlags.values().length;pf++)
                 {
-                	String flag = JournalFlag.values()[pf].toString();
+                	String flag = CommandJournalFlags.values()[pf].toString();
                     int keyx=mask.toUpperCase().indexOf(flag);
                     if(keyx>=0)
                     {
@@ -80,7 +81,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
                             if((parm.length()==0)||(parm.startsWith("=")))
                             {
                             	if(parm.startsWith("=")) parm=parm.substring(1);
-                                flags.put(JournalFlag.values()[pf],parm);
+                                flags.put(CommandJournalFlags.values()[pf],parm);
                                 mask=mask.substring(0,keyx).trim()+" "+mask.substring(keyy).trim();
                             }
                         }
@@ -88,9 +89,72 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
                 }
                 item=item.substring(0,x);
             }
-            journals.put(item.toUpperCase().trim(),new CommandJournal(item.toUpperCase().trim(),mask,flags));
+            commandJournals.put(item.toUpperCase().trim(),new CommandJournal(item.toUpperCase().trim(),mask,flags));
         }
-        return journals.size();
+        return commandJournals.size();
+    }
+    
+    
+    public int loadForumJournals(String list)
+    {
+        clearForumJournals();
+        while(list.length()>0)
+        {
+            int x=list.indexOf(",");
+            String item=null;
+            if(x<0)
+            {
+                item=list.trim();
+                list="";
+            }
+            else
+            {
+                item=list.substring(0,x).trim();
+                list=list.substring(x+1);
+            }
+            Hashtable<ForumJournalFlags,String> flags=new Hashtable<ForumJournalFlags,String>();
+            x=item.indexOf('=');
+            if(x > 0)
+            {
+            	int y=x;
+            	while((y>0)&&(!Character.isWhitespace(item.charAt(y))))
+            		y--;
+            	String rest = item.toUpperCase().substring(y+1).trim();
+            	item=item.substring(0,y);
+            	Vector<Integer> flagDexes = new Vector<Integer>();
+                x=rest.indexOf('=');
+                while(x > 0)
+                {
+                	y=x;
+                	while((y>0)&&(!Character.isWhitespace(rest.charAt(y))))
+                		y--;
+                	if(y>0)
+                	{
+                		try {
+	                		ForumJournalFlags.valueOf(rest.substring(y,x).toUpperCase().trim());
+	                		flagDexes.addElement(Integer.valueOf(y));
+                		} catch(Exception e){}
+                	}
+                	x=rest.indexOf('=',x+1);
+                }
+                flagDexes.addElement(Integer.valueOf(rest.length()));
+                int lastStart=0;
+                for(Integer flagDex : flagDexes)
+                {
+                	String piece = rest.substring(lastStart,flagDex.intValue());
+                	lastStart=flagDex.intValue();
+                	x=piece.indexOf('=');
+                	try {
+	            		ForumJournalFlags flagVar = ForumJournalFlags.valueOf(piece.substring(0,x).toUpperCase().trim());
+	            		String flagVal = piece.substring(x+1);
+	                    flags.put(flagVar, flagVal);
+                	}
+                	catch(Exception e){}
+                }
+            }
+            forumJournals.put(item.toUpperCase().trim(),new ForumJournal(item.trim(),flags));
+        }
+        return forumJournals.size();
     }
     
     public String getScriptValue(MOB mob, String journal, String oldValue) 
@@ -113,21 +177,21 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
         return oldValue;
     }
     
-    public int getNumCommandJournals() { return journals.size();    }
+    public int getNumCommandJournals() { return commandJournals.size();    }
     
-    public Enumeration<CommandJournal> journals(){ return (Enumeration<CommandJournal>)DVector.s_enum(journals,false);}
+    public Enumeration<CommandJournal> commandJournals(){ return (Enumeration<CommandJournal>)DVector.s_enum(commandJournals,false);}
     
-    public CommandJournal getCommandJournal(String named) { return journals.get(named.toUpperCase().trim());}
+    public CommandJournal getCommandJournal(String named) { return commandJournals.get(named.toUpperCase().trim());}
     
     public void commandJournalSweep()
     {
         thread.status("command journal sweeping");
         try
         {
-            for(Enumeration<CommandJournal> e=journals();e.hasMoreElements();)
+            for(Enumeration<CommandJournal> e=commandJournals();e.hasMoreElements();)
             {
             	CommandJournal CMJ=e.nextElement();
-                String num=CMJ.getFlag(JournalFlag.EXPIRE);
+                String num=CMJ.getFlag(CommandJournalFlags.EXPIRE);
                 if((num!=null)&&(CMath.isNumber(num)))
                 {
                     thread.status("updating journal "+CMJ.NAME());
@@ -161,12 +225,23 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
         return true;
     }
     
-    private void clearJournals() {
-    	journals=new Hashtable<String,CommandJournal>();
+    private void clearCommandJournals() {
+    	commandJournals=new Hashtable<String,CommandJournal>();
+    }
+    
+    public int getNumForumJournals() { return forumJournals.size();    }
+    
+    public Enumeration<ForumJournal> forumJournals(){ return (Enumeration<ForumJournal>)DVector.s_enum(forumJournals,false);}
+    
+    public ForumJournal getForumJournal(String named) { return forumJournals.get(named.toUpperCase().trim());}
+    
+    private void clearForumJournals() {
+    	forumJournals=new Hashtable<String,ForumJournal>();
     }
     
     public boolean shutdown() {
-        clearJournals();
+    	clearCommandJournals();
+    	clearForumJournals();
         thread.shutdown();
         return true;
     }

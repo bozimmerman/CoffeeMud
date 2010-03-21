@@ -624,7 +624,7 @@ public class List extends StdCommand
 	{
 		StringBuffer buf=new StringBuffer("");
         String journal=null;
-        for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().journals();e.hasMoreElements();)
+        for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
         {
         	JournalsLibrary.CommandJournal CMJ=e.nextElement();
             if((CMJ.NAME()+"S").startsWith(partialjournal.toUpperCase().trim()))
@@ -1364,7 +1364,7 @@ public class List extends StdCommand
 				||CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN"))
 				{ V.addElement(cmd[0]); break;}
 		}
-        for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().journals();e.hasMoreElements();)
+        for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
         {
         	JournalsLibrary.CommandJournal CMJ=e.nextElement();
 	        if((CMSecurity.isAllowed(mob,mob.location(),CMJ.NAME()))
@@ -1388,7 +1388,7 @@ public class List extends StdCommand
 				||CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN"))
 				{ return i;}
 		}
-        for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().journals();e.hasMoreElements();)
+        for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
         {
         	JournalsLibrary.CommandJournal CMJ=e.nextElement();
             if((CMJ.NAME()+"S").startsWith(s)
@@ -1411,7 +1411,7 @@ public class List extends StdCommand
 				||CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN"))
 				{ return i;}
 		}
-        for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().journals();e.hasMoreElements();)
+        for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
         {
         	JournalsLibrary.CommandJournal CMJ=e.nextElement();
             if((CMSecurity.isAllowed(mob,mob.location(),CMJ.NAME()))

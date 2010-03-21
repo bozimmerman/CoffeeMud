@@ -179,7 +179,7 @@ public class JournalFunction extends StdWebMacro
 	    					messages.append("Transfer #"+num+" not completed -- No journal!<BR>");
 	                    String realName=null;
 	                    if(journal!=null)
-		                    for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().journals();e.hasMoreElements();)
+		                    for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 		                    {
 		                    	JournalsLibrary.CommandJournal CMJ=e.nextElement();
 		                        if(journal.equalsIgnoreCase(CMJ.NAME())

@@ -11,7 +11,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary;
-import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalFlag;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.CommandJournalFlags;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -141,10 +141,10 @@ public class MOTD extends StdCommand
                 }
                 
                 Vector<JournalsLibrary.CommandJournal> myEchoableCommandJournals=new Vector<JournalsLibrary.CommandJournal>();
-                for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().journals();e.hasMoreElements();)
+                for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
                 {
                 	JournalsLibrary.CommandJournal CMJ=e.nextElement();
-                    if((CMJ.getFlag(JournalsLibrary.JournalFlag.ADMINECHO)!=null)
+                    if((CMJ.getFlag(JournalsLibrary.CommandJournalFlags.ADMINECHO)!=null)
                     &&((CMSecurity.isAllowed(mob,mob.location(),CMJ.NAME()))
                             ||CMSecurity.isAllowed(mob,mob.location(),"KILL"+CMJ.NAME()+"S")
                             ||CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN")))

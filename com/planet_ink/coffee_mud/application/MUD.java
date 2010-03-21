@@ -270,7 +270,10 @@ public class MUD extends Thread implements MudHost
                 												page.getStr("ICHANNELS"),
                 												page.getStr("IMC2CHANNELS"));
             if((tCode==MAIN_HOST)||(privacyV.contains("JOURNALS")))
+            {
                 numJournalsLoaded=CMLib.journals().loadCommandJournals(page.getStr("COMMANDJOURNALS"));
+                numJournalsLoaded+=CMLib.journals().loadForumJournals(page.getStr("FORUMJOURNALS"));
+            }
     		Log.sysOut(Thread.currentThread().getName(),"Channels loaded   : "+(numChannelsLoaded+numJournalsLoaded));
         }
 

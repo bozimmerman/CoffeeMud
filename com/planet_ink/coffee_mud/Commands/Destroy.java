@@ -885,7 +885,7 @@ public class Destroy extends StdCommand
 		{
 			commandType=((String)commands.elementAt(1)).toUpperCase();
 		}
-        for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().journals();e.hasMoreElements();)
+        for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
         {
         	JournalsLibrary.CommandJournal CMJ=e.nextElement();
             if((CMJ.NAME().equals(commandType))

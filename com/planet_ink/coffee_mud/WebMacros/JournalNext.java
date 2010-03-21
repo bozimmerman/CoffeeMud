@@ -52,7 +52,7 @@ public class JournalNext extends StdWebMacro
 		if(journals==null)
 		{
 			journals=CMLib.database().DBReadJournals();
-			for(Enumeration e=CMLib.journals().journals();e.hasMoreElements();)
+			for(Enumeration e=CMLib.journals().commandJournals();e.hasMoreElements();)
 			{
 				CommandJournal CJ=(CommandJournal)e.nextElement();
 				if((!journals.contains(CJ.NAME().toUpperCase()))

@@ -167,10 +167,12 @@ public class INIModify extends StdWebMacro
 				if(modified(modified,"CHANNELS")
 				||(modified(modified,"ICHANNELS"))
                 ||(modified(modified,"COMMANDJOURNALS"))
+                ||(modified(modified,"FORUMJOURNALS"))
 				||(modified(modified,"IMC2CHANNELS")))
 				{
 					CMLib.channels().loadChannels(ipage.getStr("CHANNELS"),ipage.getStr("ICHANNELS"),ipage.getStr("IMC2CHANNELS"));
                     CMLib.journals().loadCommandJournals(ipage.getStr("COMMANDJOURNALS"));
+                    CMLib.journals().loadForumJournals(ipage.getStr("FORUMJOURNALS"));
 				}
                 CMLib.time().globalClock().initializeINIClock(ipage);
 			}

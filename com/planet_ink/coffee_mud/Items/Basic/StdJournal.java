@@ -228,7 +228,7 @@ public class StdJournal extends StdItem
 								    if(journal.length()>0)
 								    {
                                         String realName=null;
-                                        for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().journals();e.hasMoreElements();)
+                                        for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
                                         {
                                         	JournalsLibrary.CommandJournal CMJ=e.nextElement();
                                             if(journal.equalsIgnoreCase(CMJ.NAME())

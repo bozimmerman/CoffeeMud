@@ -495,6 +495,14 @@
 		<P>
 		<A HREF="javascript:openUp('ZAPPERMASKS')">Click here for ZAPPERMASKS help</a>
 		<P>
+		<HR>
+		<FONT SIZE=5 COLOR=WHITE><B>Forum Journals:</B></FONT><BR>
+		<TEXTAREA COLS=80 ROWS=3 NAME=FORUMJOURNALS>@INIValue?MASK=FORUMJOURNALS&VALUE@</TEXTAREA>
+		<P>
+		<FONT COLOR=WHITE>@INIValue?MASK=FORUMJOURNALS&INIHELP@</FONT>
+		<P>
+		<A HREF="javascript:openUp('ZAPPERMASKS')">Click here for ZAPPERMASKS help</a>
+		<P>
 	@endif@
 	@if?CheckReqParm?INIPAGE=ABILITIES@
 		<TABLE WIDTH=100% BORDER=1>

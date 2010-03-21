@@ -31,13 +31,18 @@ import java.util.*;
 public interface JournalsLibrary extends CMLibrary, Runnable
 {
     public int loadCommandJournals(String list);
-    public Enumeration<CommandJournal> journals();
+    public Enumeration<CommandJournal> commandJournals();
     public CommandJournal getCommandJournal(String named);
     public int getNumCommandJournals();
     public String getScriptValue(MOB mob, String journal, String oldValue);
     
+    public int loadForumJournals(String list);
+    public Enumeration<ForumJournal> forumJournals();
+    public ForumJournal getForumJournal(String named);
+    public int getNumForumJournals();
+    
 	public static final String JOURNAL_BOUNDARY="%0D^w---------------------------------------------^N%0D";
-	
+
 	public static class JournalEntry implements Comparable<JournalEntry>
 	{
 		public String key=null;
@@ -62,8 +67,8 @@ public interface JournalsLibrary extends CMLibrary, Runnable
     {
     	protected String name="";
     	protected String mask="";
-    	protected Hashtable<JournalFlag,String> flags=new Hashtable<JournalFlag,String>(1);
-    	public CommandJournal(String name, String mask, Hashtable<JournalFlag,String> flags)
+    	protected Hashtable<CommandJournalFlags,String> flags=new Hashtable<CommandJournalFlags,String>(1);
+    	public CommandJournal(String name, String mask, Hashtable<CommandJournalFlags,String> flags)
     	{
     		this.name=name;
     		this.mask=mask;
@@ -72,11 +77,47 @@ public interface JournalsLibrary extends CMLibrary, Runnable
     	public String NAME(){return name;}
     	public String mask(){return mask;}
     	public String JOURNAL_NAME(){ return "SYSTEM_"+NAME().toUpperCase().trim()+"S";}
-    	public String getFlag(JournalFlag flag){return flags.get(flag);} 
-    	public String getScriptFilename(){return flags.get(JournalFlag.SCRIPT);}
+    	public String getFlag(CommandJournalFlags flag){return flags.get(flag);} 
+    	public String getScriptFilename(){return flags.get(CommandJournalFlags.SCRIPT);}
     }
     
-    public static enum JournalFlag {
+    public static enum CommandJournalFlags {
         CHANNEL,ADDROOM,EXPIRE,ADMINECHO,CONFIRM,SCRIPT;
     };
+    
+    public static class ForumJournal
+    {
+    	protected String name="";
+    	protected String readMask="";
+    	protected String postMask="";
+    	protected String replyMask="";
+    	protected String adminMask="";
+    	protected Hashtable<ForumJournalFlags,String> flags=new Hashtable<ForumJournalFlags,String>(1);
+    	public ForumJournal(String name, Hashtable<ForumJournalFlags,String> flags)
+    	{
+    		this.name=name;
+    		String mask;
+    		
+    		mask=flags.remove(ForumJournalFlags.READ);
+    		this.readMask=(mask != null)?mask:"";
+    		mask=flags.remove(ForumJournalFlags.POST);
+    		this.postMask=(mask != null)?mask:"";
+    		mask=flags.remove(ForumJournalFlags.REPLY);
+    		this.replyMask=(mask != null)?mask:"";
+    		mask=flags.remove(ForumJournalFlags.ADMIN);
+    		this.adminMask=(mask != null)?mask:"";
+    		this.flags=flags;
+    	}
+    	public String NAME(){return name;}
+    	public String readMask(){return readMask;}
+    	public String postMask(){return postMask;}
+    	public String replyMask(){return replyMask;}
+    	public String adminMask(){return adminMask;}
+    	public String getFlag(CommandJournalFlags flag){return flags.get(flag);} 
+    }
+    
+    public static enum ForumJournalFlags {
+        EXPIRE,READ,POST,REPLY,ADMIN;
+    };
+    
 }
