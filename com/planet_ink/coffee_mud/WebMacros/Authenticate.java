@@ -150,18 +150,23 @@ public class Authenticate extends StdWebMacro
 
     public static MOB getAuthenticatedMob(ExternalHTTPRequests httpReq)
     {
+    	if(httpReq.getRequestObjects().containsKey("AUTHENTICATED_USER"))
+    		return (MOB)httpReq.getRequestObjects().get("AUTHENTICATED_USER");
+    	MOB mob=null;
     	String login = getLogin(httpReq);
-    	if((login == null)||(login.length()==0))
-    		return null;
-    	String password = getPassword(httpReq);
-		MOB mob=CMLib.players().getLoadPlayer(login);
-		if((mob!=null)
-		&&(mob.playerStats()!=null)
-		&&(mob.playerStats().password().equalsIgnoreCase(password))
-		&&(mob.Name().trim().length()>0)
-		&&(!CMSecurity.isBanned(mob.Name())))
-			return mob;
-		return null;
+    	if((login != null)&&(login.length()>0))
+    	{
+	    	String password = getPassword(httpReq);
+			mob=CMLib.players().getLoadPlayer(login);
+			if((mob==null)
+			||(mob.playerStats()==null)
+			||(!mob.playerStats().password().equalsIgnoreCase(password))
+			||(mob.Name().trim().length()==0)
+			||(CMSecurity.isBanned(mob.Name())))
+				mob=null;
+    	}
+		httpReq.getRequestObjects().put("AUTHENTICATED_USER",mob);
+		return mob;
     }
     
 	public static String getLogin(ExternalHTTPRequests httpReq)
