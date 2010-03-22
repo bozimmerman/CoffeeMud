@@ -38,6 +38,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
     public final int QUEUE_SIZE=100;
     protected Hashtable<String,CommandJournal> commandJournals=new Hashtable<String,CommandJournal>();
     protected Hashtable<String,ForumJournal> forumJournals=new Hashtable<String,ForumJournal>();
+    protected Hashtable<String,JournalSummaryStats> journalSummaryStats=new Hashtable<String,JournalSummaryStats>();
     public final Vector emptyVector=new Vector(1);
     
     private ThreadEngine.SupportThread thread=null;
@@ -48,17 +49,22 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
     	ForumJournal journal = getForumJournal(journalName);
     	if(journal == null)
     		return null;
-    	if(journal.getJournalSummaryStats() == null)
+    	JournalSummaryStats stats = (JournalSummaryStats)journalSummaryStats.get(journalName.toUpperCase().trim());
+    	if(stats == null)
     	{
-    		synchronized(journal)
+    		synchronized(journal.NAME().intern())
     		{
-    			JournalSummaryStats stats = new JournalSummaryStats();
-    			stats.name = journal.NAME();
-    			CMLib.database().DBReadJournalSummaryStats(stats);
-    			journal.setJournalSummaryStats(stats);
+    	    	stats = (JournalSummaryStats)journalSummaryStats.get(journalName.toUpperCase().trim());
+    	    	if(stats == null)
+    	    	{
+	    			stats = new JournalSummaryStats();
+	    			stats.name = journal.NAME();
+	    			CMLib.database().DBReadJournalSummaryStats(stats);
+	    			journalSummaryStats.put(journalName.toUpperCase().trim(), stats);
+    	    	}
     		}
     	}
-    	return journal.getJournalSummaryStats();
+    	return stats;
     }
     
     public int loadCommandJournals(String list)
@@ -309,6 +315,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
     
     private void clearForumJournals() {
     	forumJournals=new Hashtable<String,ForumJournal>();
+    	journalSummaryStats=new Hashtable<String,JournalSummaryStats>();
     }
     
     public boolean shutdown() {

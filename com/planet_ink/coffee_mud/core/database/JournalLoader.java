@@ -363,7 +363,8 @@ public class JournalLoader
 		else
 			stats.latest = null;
 		stats.imagePath="";
-		stats.intro="[This is the journal description.  To change it, create a journal entry addressed to JOURNALINTRO.]";
+		stats.shortIntro="[This is the short journal description.  To change it, create a journal entry addressed to JOURNALINTRO.]";
+		stats.longIntro="[This is the long journal description.  To change it, create a journal entry addressed to JOURNALINTRO.]";
 		try
 		{
 			if(D==null) 
@@ -375,10 +376,12 @@ public class JournalLoader
 				if(entry != null)
 				{
 					stats.introKey=entry.key;
-					stats.intro=entry.msg;
-					stats.imagePath=entry.subj;
+					stats.longIntro=entry.msg;
+					stats.shortIntro=entry.subj;
+					stats.imagePath=entry.data;
 				}
 			}
+			R.close();
 		}
 		catch(Exception sqle)
 		{

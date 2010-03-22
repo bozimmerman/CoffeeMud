@@ -52,7 +52,8 @@ public interface JournalsLibrary extends CMLibrary, Runnable
 		public int threads =0;
 		public int posts = 0;
 		public String imagePath = "";
-		public String intro = "";
+		public String shortIntro = "";
+		public String longIntro = "";
 		public String introKey = "";
 		public JournalEntry latest = null;
 	}
@@ -110,7 +111,6 @@ public interface JournalsLibrary extends CMLibrary, Runnable
     	private String postMask="";
     	private String replyMask="";
     	private String adminMask="";
-    	private JournalSummaryStats stats = null;
     	private Hashtable<ForumJournalFlags,String> flags=new Hashtable<ForumJournalFlags,String>(1);
     	
     	public ForumJournal(String name, Hashtable<ForumJournalFlags,String> flags)
@@ -134,8 +134,6 @@ public interface JournalsLibrary extends CMLibrary, Runnable
     	public String replyMask(){return replyMask;}
     	public String adminMask(){return adminMask;}
     	public String getFlag(CommandJournalFlags flag){return flags.get(flag);} 
-    	public JournalSummaryStats getJournalSummaryStats(){return stats;}
-    	public void setJournalSummaryStats(JournalSummaryStats stats){this.stats=stats;}
     }
     
     public static enum ForumJournalFlags {
