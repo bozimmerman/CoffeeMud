@@ -46,6 +46,17 @@ public interface JournalsLibrary extends CMLibrary, Runnable
     
 	public static final String JOURNAL_BOUNDARY="%0D^w---------------------------------------------^N%0D";
 
+	public static class JournalSummaryStats
+	{
+		public String name = "";
+		public int threads =0;
+		public int posts = 0;
+		public String imagePath = "";
+		public String intro = "";
+		public String introKey = "";
+		public JournalEntry latest = null;
+	}
+	
 	public static class JournalEntry implements Comparable<JournalEntry>
 	{
 		public String key=null;
@@ -64,13 +75,17 @@ public interface JournalsLibrary extends CMLibrary, Runnable
 			return 0;
 		}
 		public StringBuffer derivedBuildMessage=null;
+		
+		public final static long ATTRIBUTE_JOURNALINTRO=1;
+		
 	}
 	
     public static class CommandJournal
     {
-    	protected String name="";
-    	protected String mask="";
-    	protected Hashtable<CommandJournalFlags,String> flags=new Hashtable<CommandJournalFlags,String>(1);
+    	private String name="";
+    	private String mask="";
+    	private Hashtable<CommandJournalFlags,String> flags=new Hashtable<CommandJournalFlags,String>(1);
+    	
     	public CommandJournal(String name, String mask, Hashtable<CommandJournalFlags,String> flags)
     	{
     		this.name=name;
@@ -90,12 +105,14 @@ public interface JournalsLibrary extends CMLibrary, Runnable
     
     public static class ForumJournal
     {
-    	protected String name="";
-    	protected String readMask="";
-    	protected String postMask="";
-    	protected String replyMask="";
-    	protected String adminMask="";
-    	protected Hashtable<ForumJournalFlags,String> flags=new Hashtable<ForumJournalFlags,String>(1);
+    	private String name="";
+    	private String readMask="";
+    	private String postMask="";
+    	private String replyMask="";
+    	private String adminMask="";
+    	private JournalSummaryStats stats = null;
+    	private Hashtable<ForumJournalFlags,String> flags=new Hashtable<ForumJournalFlags,String>(1);
+    	
     	public ForumJournal(String name, Hashtable<ForumJournalFlags,String> flags)
     	{
     		this.name=name;
@@ -117,6 +134,8 @@ public interface JournalsLibrary extends CMLibrary, Runnable
     	public String replyMask(){return replyMask;}
     	public String adminMask(){return adminMask;}
     	public String getFlag(CommandJournalFlags flag){return flags.get(flag);} 
+    	public JournalSummaryStats getJournalSummaryStats(){return stats;}
+    	public void setJournalSummaryStats(JournalSummaryStats stats){this.stats=stats;}
     }
     
     public static enum ForumJournalFlags {

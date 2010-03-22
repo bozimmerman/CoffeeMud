@@ -205,6 +205,9 @@ public class DBInterface implements DatabaseEngine
 	public void DBDeleteJournal(String oldkey)
 	{JournalLoader.DBDelete(oldkey);}
     
+	public void DBReadJournalSummaryStats(JournalsLibrary.JournalSummaryStats stats)
+	{JournalLoader.DBReadJournalSummaryStats(stats);}
+    
     public String DBGetRealJournalName(String possibleName)
     { return JournalLoader.DBGetRealName(possibleName);}
     

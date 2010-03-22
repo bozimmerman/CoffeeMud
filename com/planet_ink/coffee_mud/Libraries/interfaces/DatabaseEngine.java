@@ -101,6 +101,7 @@ public interface DatabaseEngine extends CMLibrary
 	public void DBDeleteArea(Area A);
 	public void DBUpdateArea(String keyName,Area A);
 	public Vector DBReadJournals();
+	public void DBReadJournalSummaryStats(JournalsLibrary.JournalSummaryStats stats);
 	public Vector DBReadJournalMsgs(String Journal);
 	public int DBCountJournal(String Journal, String from, String to);
 	public void DBWriteJournal(String Journal, String from, String to, String subject, String message);

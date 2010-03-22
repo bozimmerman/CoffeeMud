@@ -43,6 +43,24 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
     private ThreadEngine.SupportThread thread=null;
     public ThreadEngine.SupportThread getSupportThread() { return thread;}
     
+    public JournalSummaryStats getJournalStats(String journalName)
+    {
+    	ForumJournal journal = getForumJournal(journalName);
+    	if(journal == null)
+    		return null;
+    	if(journal.getJournalSummaryStats() == null)
+    	{
+    		synchronized(journal)
+    		{
+    			JournalSummaryStats stats = new JournalSummaryStats();
+    			stats.name = journal.NAME();
+    			CMLib.database().DBReadJournalSummaryStats(stats);
+    			journal.setJournalSummaryStats(stats);
+    		}
+    	}
+    	return journal.getJournalSummaryStats();
+    }
+    
     public int loadCommandJournals(String list)
     {
         clearCommandJournals();

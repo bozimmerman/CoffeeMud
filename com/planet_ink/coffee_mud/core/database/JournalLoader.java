@@ -328,6 +328,66 @@ public class JournalLoader
 		
 	}
 	
+	public void DBReadJournalSummaryStats(JournalsLibrary.JournalSummaryStats stats)
+	{
+		DBConnection D=null;
+		String topKey = null;
+		try
+		{
+			D=DB.DBFetch();
+			ResultSet R=D.query("SELECT * FROM CMJRNL WHERE CMJRNL='"+stats.name+"' AND CMTONM='ALL'");
+			long topTime = 0;
+			while(R.next())
+			{
+				String key=R.getString("CMJKEY");
+				String parentKey=R.getString("CMPART");
+				long updateTime=R.getLong("CMUPTM");
+				stats.posts++;
+				if((parentKey!=null)&&(parentKey.length()>0))
+					stats.threads++;
+				else
+				if(updateTime>topTime)
+				{
+					topTime=updateTime;
+					topKey=key;
+				}
+			}
+			R.close();
+		}
+		catch(Exception sqle)
+		{
+			Log.errOut("JournalLoader",sqle.getMessage());
+		}
+		if(topKey != null)
+			stats.latest = DBReadJournalEntry(stats.name, topKey);
+		else
+			stats.latest = null;
+		stats.imagePath="";
+		stats.intro="[This is the journal description.  To change it, create a journal entry addressed to JOURNALINTRO.]";
+		try
+		{
+			if(D==null) 
+				D=DB.DBFetch();
+			ResultSet R=D.query("SELECT * FROM CMJRNL WHERE CMJRNL='"+stats.name+"' AND CMTONM='JOURNALINTRO'");
+			if(R.next())
+			{
+				JournalsLibrary.JournalEntry entry = this.DBReadJournalEntry(R);
+				if(entry != null)
+				{
+					stats.introKey=entry.key;
+					stats.intro=entry.msg;
+					stats.imagePath=entry.subj;
+				}
+			}
+		}
+		catch(Exception sqle)
+		{
+			Log.errOut("JournalLoader",sqle.getMessage());
+		}
+		if(D!=null) DB.DBDone(D);
+	}
+
+	
 	public synchronized void DBDelete(String Journal, int which)
 	{
 		if((which >=0)&&(which < Integer.MAX_VALUE))
