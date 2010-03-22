@@ -44,6 +44,9 @@ public interface JournalsLibrary extends CMLibrary, Runnable
     public ForumJournal getForumJournal(String named);
     public int getNumForumJournals();
     
+    public JournalSummaryStats getJournalStats(String journalName);
+    public void clearJournalSummaryStats(String journalName);
+    
 	public static final String JOURNAL_BOUNDARY="%0D^w---------------------------------------------^N%0D";
 
 	public static class JournalSummaryStats

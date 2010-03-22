@@ -67,6 +67,17 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
     	return stats;
     }
     
+    public void clearJournalSummaryStats(String journalName)
+    {
+    	ForumJournal journal = getForumJournal(journalName);
+    	if(journal == null)
+    		return;
+		synchronized(journal.NAME().intern())
+		{
+			journalSummaryStats.remove(journalName.toUpperCase().trim());
+		}
+    }
+    
     public int loadCommandJournals(String list)
     {
         clearCommandJournals();
