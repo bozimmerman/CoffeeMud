@@ -605,7 +605,9 @@ public class SMTPserver extends Thread implements Tickable
 			}
 
 			// check email age
-			if((usePrivateRules)&&(deleteEmailIfOld(key, date, getEmailDays())))
+			if((usePrivateRules)
+			&&(!CMath.bset(mail.attributes, JournalsLibrary.JournalEntry.ATTRIBUTE_PROTECTED))
+			&&(deleteEmailIfOld(key, date, getEmailDays())))
 				continue;
 			
 			if(CMath.bset(toM.getBitmap(),MOB.ATT_AUTOFORWARD)) // forwarding OFF
@@ -625,7 +627,8 @@ public class SMTPserver extends Thread implements Tickable
 			}
 			catch(BadEmailAddressException be)
 			{
-				if(!usePrivateRules)
+				if((!usePrivateRules)
+				&&(!CMath.bset(mail.attributes, JournalsLibrary.JournalEntry.ATTRIBUTE_PROTECTED)))
 				{
 					// email is a goner if its a list
 					CMLib.database().DBDeleteJournal(key);
@@ -641,7 +644,8 @@ public class SMTPserver extends Thread implements Tickable
 					oldEmailComplaints.add(toM.Name());
 					Log.errOut("SMTPServer","Unable to find '"+toM.playerStats().getEmail()+"' for '"+toM.name()+"'.");
 				}
-				deleteEmailIfOld(key, date,getFailureDays());
+				if(!CMath.bset(mail.attributes, JournalsLibrary.JournalEntry.ATTRIBUTE_PROTECTED))
+					deleteEmailIfOld(key, date,getFailureDays());
 				continue;
 			}
 
