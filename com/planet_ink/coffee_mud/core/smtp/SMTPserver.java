@@ -663,7 +663,7 @@ public class SMTPserver extends Thread implements Tickable
 				if(deleteEmailIfOld(key, date,getFailureDays()))
 					Log.errOut("SMTPServer","Permanently unable to send to '"+toM.playerStats().getEmail()+"' for user '"+toM.name()+"': "+ioe.getMessage()+".");
 				else
-					Log.errOut("SMTPServer","Failure to send to '"+toM.playerStats().getEmail()+"' for user '"+toM.name()+".");
+					Log.errOut("SMTPServer","Failure to send to '"+toM.playerStats().getEmail()+"' for user '"+toM.name()+"'.");
 			}
 
 			// kaplah! On to next...

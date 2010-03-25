@@ -119,15 +119,15 @@ CMTECH integer NULL
 
 CMJRNL
 CMJKEY string KEY
-CMJRNL string NULL
+CMJRNL string KEY
 CMFROM string NULL
 CMDATE string NULL
-CMTONM string NULL
+CMTONM string KEY
 CMSUBJ string NULL
 CMPART string NULL
 CMATTR integer NULL
 CMDATA string NULL
-CMUPTM integer NULL
+CMUPTM integer KEY
 CMMSGT string NULL
 
 CMCLAN

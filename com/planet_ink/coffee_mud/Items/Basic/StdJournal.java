@@ -37,7 +37,6 @@ import java.io.IOException;
 public class StdJournal extends StdItem
 {
 	public String ID(){	return "StdJournal";}
-	protected long lastDBScan=0;
 	protected MOB lastReadTo=null;
 	protected long[] lastDateRead={-1,0};
 	
