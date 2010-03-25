@@ -144,7 +144,7 @@
 						<TR>
 							<TD WIDTH=20%><FONT COLOR=YELLOW>Message: </FONT>
 							</TD>
-							<TD WIDTH=80%><FONT COLOR=WHITE>#@RequestParameter?JOURNALMESSAGE@</FONT></TD>
+							<TD WIDTH=80%><FONT COLOR=WHITE>#@RequestParameter?JOURNALCARDINAL@</FONT></TD>
 						</TR>
 						<TR>
 							<TD><FONT COLOR=YELLOW>From: </FONT></TD>
@@ -225,7 +225,7 @@
 							<TR>
 								<TD WIDTH=20%><FONT COLOR=YELLOW>Message: </FONT>
 								</TD>
-								<TD WIDTH=80%><FONT COLOR=WHITE>#@RequestParameter?JOURNALMESSAGE@</FONT></TD>
+								<TD WIDTH=80%><FONT COLOR=WHITE>#@RequestParameter?JOURNALCARDINAL@</FONT></TD>
 							</TR>
 							<TR>
 								<TD><FONT COLOR=YELLOW>From: </FONT></TD>
@@ -289,7 +289,7 @@
                                     <TR>
                                         <TD WIDTH=20%><FONT COLOR=YELLOW>Message: </FONT>
                                         </TD>
-                                        <TD WIDTH=80%><FONT COLOR=WHITE>#@RequestParameter?JOURNALMESSAGE@</FONT></TD>
+                                        <TD WIDTH=80%><FONT COLOR=WHITE>#@RequestParameter?JOURNALCARDINAL@</FONT></TD>
                                     </TR>
                                     <TR>
                                         <TD><FONT COLOR=YELLOW>From: </FONT></TD>
