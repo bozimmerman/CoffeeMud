@@ -577,7 +577,7 @@ public class Reset extends StdCommand
 				Item I=(Item)CMClass.getItem("GenItem").copyOf();
 				CMLib.database().DBCreateData(name,bank,""+I,classID+";"+data);
 			}
-			CMLib.database().DBDeleteJournal(bank,Integer.MAX_VALUE);
+			CMLib.database().DBDeleteJournal(bank,null); // banks are no longer journaled
 			mob.tell(V.size()+" records done.");
 		}
 		else

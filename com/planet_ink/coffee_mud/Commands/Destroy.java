@@ -895,11 +895,14 @@ public class Destroy extends StdCommand
                 int which=-1;
                 if(commands.size()>2)
                     which=CMath.s_int((String)commands.elementAt(2));
-                if(which<=0)
+                Vector<JournalsLibrary.JournalEntry> entries = CMLib.database().DBReadJournalMsgs(CMJ.JOURNAL_NAME());
+                
+                if((which<=0)||(which>entries.size()))
                     mob.tell("Please enter a valid "+CMJ.NAME().toLowerCase()+" number to delete.  Use LIST "+CMJ.NAME()+"S for more information.");
                 else
                 {
-                    CMLib.database().DBDeleteJournal(CMJ.JOURNAL_NAME(),which-1);
+                	JournalsLibrary.JournalEntry entry = entries.elementAt(which-1);
+                    CMLib.database().DBDeleteJournal(CMJ.JOURNAL_NAME(),entry.key);
                     mob.tell(CMJ.NAME().toLowerCase()+" deletion submitted.");
                     
                 }
@@ -1149,7 +1152,7 @@ public class Destroy extends StdCommand
             else
             if(mob.session().confirm("This will destroy all "+CMLib.database().DBCountJournal(name,null,null)+" messages.  Are you SURE (y/N)? ","N"))
             {
-                CMLib.database().DBDeleteJournal(name,Integer.MAX_VALUE);
+                CMLib.database().DBDeleteJournal(name,null);
                 mob.tell("It is done.");
             }
         }

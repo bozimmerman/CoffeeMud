@@ -161,7 +161,7 @@ public class JournalFunction extends StdWebMacro
 						messages.append("Can not delete #"+num+"-- required logged in user.<BR>");
 					else
 					{
-						CMLib.database().DBDeleteJournal(last,num);
+						CMLib.database().DBDeleteJournal(last,entry.key);
 						httpReq.addRequestParameters("JOURNALMESSAGE","");
 						httpReq.getRequestObjects().remove("JOURNAL: "+last);
 						messages.append("Message #"+num+" deleted.<BR>");
@@ -204,7 +204,7 @@ public class JournalFunction extends StdWebMacro
 		                    String to2=(String)entry2.to;
 		                    String subject=(String)entry2.subj;
 		                    String message=(String)entry2.msg;
-		                    CMLib.database().DBDeleteJournal(last,num);
+		                    CMLib.database().DBDeleteJournal(last,entry2.key);
 		                    CMLib.database().DBWriteJournal(realName,
 		                                                      from2,
 		                                                      to2,

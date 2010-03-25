@@ -99,6 +99,8 @@ public class Statement implements java.sql.Statement
             	 e++;
          if((e>=sql.length())||(sql.charAt(e)!=','))
         	 return sql.substring(e);
+         while(sql.charAt(e)==',')
+        	 e++;
          s=e;
       }
       return "";

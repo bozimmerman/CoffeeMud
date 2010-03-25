@@ -38,18 +38,37 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
     public final int QUEUE_SIZE=100;
     protected Hashtable<String,CommandJournal> commandJournals=new Hashtable<String,CommandJournal>();
     protected Hashtable<String,ForumJournal> forumJournals=new Hashtable<String,ForumJournal>();
-    protected Hashtable<String,JournalSummaryStats> journalSummaryStats=new Hashtable<String,JournalSummaryStats>();
     public final Vector emptyVector=new Vector(1);
     
     private ThreadEngine.SupportThread thread=null;
     public ThreadEngine.SupportThread getSupportThread() { return thread;}
+    
+    protected Hashtable<String,JournalSummaryStats> getSummaryStats()
+    {
+		Hashtable<String,JournalSummaryStats> journalSummaryStats;
+		journalSummaryStats= (Hashtable<String,JournalSummaryStats>)Resources.getResource("FORUM_JOURNAL_STATS");
+    	if(journalSummaryStats == null)
+    	{
+    		synchronized("FORUM_JOURNAL_STATS".intern())
+    		{
+    			journalSummaryStats= (Hashtable<String,JournalSummaryStats>)Resources.getResource("FORUM_JOURNAL_STATS");
+				if(journalSummaryStats==null)
+				{
+					journalSummaryStats=new Hashtable<String,JournalSummaryStats>();
+					Resources.submitResource("FORUM_JOURNAL_STATS", journalSummaryStats);
+				}
+    		}
+    	}
+    	return journalSummaryStats;
+    }
     
     public JournalSummaryStats getJournalStats(String journalName)
     {
     	ForumJournal journal = getForumJournal(journalName);
     	if(journal == null)
     		return null;
-    	JournalSummaryStats stats = (JournalSummaryStats)journalSummaryStats.get(journalName.toUpperCase().trim());
+		Hashtable<String,JournalSummaryStats> journalSummaryStats=getSummaryStats();
+		JournalSummaryStats stats = (JournalSummaryStats)journalSummaryStats.get(journalName.toUpperCase().trim());
     	if(stats == null)
     	{
     		synchronized(journal.NAME().intern())
@@ -72,6 +91,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
     	ForumJournal journal = getForumJournal(journalName);
     	if(journal == null)
     		return;
+		Hashtable<String,JournalSummaryStats> journalSummaryStats=getSummaryStats();
 		synchronized(journal.NAME().intern())
 		{
 			journalSummaryStats.remove(journalName.toUpperCase().trim());
@@ -268,7 +288,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
                             String from=entry.from;
                             String message=entry.msg;
                             Log.sysOut(Thread.currentThread().getName(),"Expired "+CMJ.NAME()+" from "+from+": "+message);
-                            CMLib.database().DBDeleteJournal(CMJ.JOURNAL_NAME(),i);
+                            CMLib.database().DBDeleteJournal(CMJ.JOURNAL_NAME(),entry.key);
                         }
                     }
                     thread.status("command journal sweeping");
@@ -289,15 +309,18 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
                     for(int i=items.size()-1;i>=0;i--)
                     {
                     	JournalEntry entry=(JournalEntry)items.elementAt(i);
-                        long compdate=entry.update;
-                        compdate=compdate+Math.round(CMath.mul(TimeManager.MILI_DAY,CMath.s_double(num)));
-                        if(System.currentTimeMillis()>compdate)
-                        {
-                            String from=entry.from;
-                            String message=entry.msg;
-                            Log.sysOut(Thread.currentThread().getName(),"Expired "+FMJ.NAME()+" from "+from+": "+message);
-                            CMLib.database().DBDeleteJournal(FMJ.NAME(),i);
-                        }
+                    	if(!CMath.bset(entry.attributes, JournalEntry.ATTRIBUTE_PROTECTED))
+                    	{
+	                        long compdate=entry.update;
+	                        compdate=compdate+Math.round(CMath.mul(TimeManager.MILI_DAY,CMath.s_double(num)));
+	                        if(System.currentTimeMillis()>compdate)
+	                        {
+	                            String from=entry.from;
+	                            String message=entry.msg;
+	                            Log.sysOut(Thread.currentThread().getName(),"Expired "+FMJ.NAME()+" from "+from+": "+message);
+	                            CMLib.database().DBDeleteJournal(FMJ.NAME(),entry.key);
+	                        }
+                    	}
                     }
                     thread.status("forum journal sweeping");
                 }
@@ -326,7 +349,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
     
     private void clearForumJournals() {
     	forumJournals=new Hashtable<String,ForumJournal>();
-    	journalSummaryStats=new Hashtable<String,JournalSummaryStats>();
+    	Resources.removeResource("FORUM_JOURNAL_STATS");
     }
     
     public boolean shutdown() {

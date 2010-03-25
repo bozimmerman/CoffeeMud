@@ -128,7 +128,7 @@ public class BribeGateGuard extends StdBehavior
 		// return the balance in int form
 		if(surviveReboot)
 		{
-			Vector V =CMLib.database().DBReadJournalMsgs(gates());
+			Vector V =CMLib.database().DBReadJournalMsgs("BRIBEGATE_"+gates());
 			Vector mine = new Vector();
 			for (int v = 0; v < V.size(); v++)
 			{
@@ -199,7 +199,7 @@ public class BribeGateGuard extends StdBehavior
 		// kill the journal entries for that mob
 		if(surviveReboot)
 		{
-			Vector V = CMLib.database().DBReadJournalMsgs(gates());
+			Vector V = CMLib.database().DBReadJournalMsgs("BRIBEGATE_"+gates());
 			Vector mine = new Vector();
 			for (int v = 0; v < V.size(); v++)
 			{
@@ -213,8 +213,7 @@ public class BribeGateGuard extends StdBehavior
 				JournalsLibrary.JournalEntry V2 = (JournalsLibrary.JournalEntry)mine.elementAt(v);
 				String fullName = V2.subj;
 				if (fullName.equals("COINS")) {
-				  CMLib.database().DBDeleteJournal( ( V2.key),
-				                               Integer.MAX_VALUE);
+				  CMLib.database().DBDeleteJournal("BRIBEGATE_"+gates(), V2.key);
 				}
 			}
 		}
@@ -233,7 +232,7 @@ public class BribeGateGuard extends StdBehavior
 		// write an entry for that mob
 		if(surviveReboot)
 		{
-			CMLib.database().DBWriteJournal(gates(), mob.Name(), CMClass.classID(balance),
+			CMLib.database().DBWriteJournal("BRIBEGATE_"+gates(), mob.Name(), CMClass.classID(balance),
 			                            "COINS", CMLib.coffeeMaker().getPropertiesStr(balance, true));
 		}
 		else

@@ -120,7 +120,7 @@ public class CommandJournal extends StdCommand
         String to=(String)entry2.to;
         String subject=(String)entry2.subj;
         String message=(String)entry2.msg;
-        CMLib.database().DBDeleteJournal(journalID,count-1);
+        CMLib.database().DBDeleteJournal(journalID,entry2.key);
         CMLib.database().DBWriteJournal(realName,
                                           from2,
                                           to,

@@ -37,6 +37,10 @@ import java.io.IOException;
 public class StdJournal extends StdItem
 {
 	public String ID(){	return "StdJournal";}
+	protected long lastDBScan=0;
+	protected MOB lastReadTo=null;
+	protected long[] lastDateRead={-1,0};
+	
 	public StdJournal()
 	{
 		super();
@@ -47,9 +51,6 @@ public class StdJournal extends StdItem
 		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMREADABLE);
 		recoverEnvStats();
 	}
-
-	protected MOB lastReadTo=null;
-	protected long lastDateRead=-1;
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -248,7 +249,7 @@ public class StdJournal extends StdItem
 								        {
 											Vector journal2=CMLib.database().DBReadJournalMsgs(Name());
 											JournalsLibrary.JournalEntry entry2=(JournalsLibrary.JournalEntry)journal2.elementAt(which-1);
-											CMLib.database().DBDeleteJournal(Name(),which-1);
+											CMLib.database().DBDeleteJournal(Name(),entry2.key);
 											CMLib.database().DBWriteJournal(realName,
 																			  entry2.from,
 																			  entry2.to,
@@ -264,9 +265,15 @@ public class StdJournal extends StdItem
 								else
 								if(s.equalsIgnoreCase("D"))
 								{
-									CMLib.database().DBDeleteJournal(Name(),which-1);
-									msg.setValue(-1);
-									mob.tell("Entry deleted.");
+									read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
+									if(read != null)
+									{
+										CMLib.database().DBDeleteJournal(Name(),read.key);
+										msg.setValue(-1);
+										mob.tell("Entry deleted.");
+									}
+									else
+										mob.tell("Failed to delete entry.");
 								}
 								else
 								if(s.equalsIgnoreCase("R"))
@@ -310,7 +317,7 @@ public class StdJournal extends StdItem
 				   &&(!mob.isMonster()))
 				{
 					if(mob.session().confirm("Delete all journal entries? Are you sure (y/N)?","N"))
-						CMLib.database().DBDeleteJournal(name(),-1);
+						CMLib.database().DBDeleteJournal(name(),null);
 				}
 				else
 				if(!mob.isMonster())
@@ -372,13 +379,14 @@ public class StdJournal extends StdItem
 		&&(msg.source().playerStats()!=null)
 		&&(CMLib.masking().maskCheck(getReadReq(),msg.source(),true)))
 		{
-			long lastDate=CMLib.database().DBReadNewJournalDate(Name(),msg.source().Name());
-			if((lastDate>msg.source().playerStats().lastDateTime())
-			&&((lastDate!=lastDateRead)||(msg.source()!=lastReadTo)))
+
+			long[] newestDate=CMLib.database().DBJournalLatestDateNewerThan(Name(),msg.source().Name(),msg.source().playerStats().lastDateTime());
+			if((newestDate[0]>0)
+			&&((newestDate[0]!=lastDateRead[0])||(msg.source()!=lastReadTo)))
 			{
 				lastReadTo=msg.source();
-				lastDateRead=lastDate;
-				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,name()+" has new messages.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+				lastDateRead=newestDate;
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,name()+" has "+newestDate[1]+" new messages.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 			}
 		}
 		else
@@ -388,13 +396,13 @@ public class StdJournal extends StdItem
 		&&(msg.source().playerStats()!=null)
 		&&(CMLib.masking().maskCheck(getReadReq(),msg.source(),true)))
 		{
-			long lastDate=CMLib.database().DBReadNewJournalDate(Name(),msg.source().Name());
-			if((lastDate>msg.source().playerStats().lastDateTime())
-			&&((lastDate!=lastDateRead)||(msg.source()!=lastReadTo)))
+			long[] newestDate=CMLib.database().DBJournalLatestDateNewerThan(Name(),msg.source().Name(),msg.source().playerStats().lastDateTime());
+			if((newestDate[0]>0)
+			&&((newestDate[0]!=lastDateRead[0])||(msg.source()!=lastReadTo)))
 			{
 				lastReadTo=msg.source();
-				lastDateRead=lastDate;
-				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,name()+" has new messages.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+				lastDateRead=newestDate;
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,name()+" has "+newestDate[1]+" new messages.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 			}
 		}
 		super.executeMsg(myHost,msg);

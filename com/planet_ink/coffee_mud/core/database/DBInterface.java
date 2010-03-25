@@ -210,21 +210,30 @@ public class DBInterface implements DatabaseEngine
     
     public String DBGetRealJournalName(String possibleName)
     { return JournalLoader.DBGetRealName(possibleName);}
-    
-	public void DBDeleteJournal(String Journal, int which)
-	{JournalLoader.DBDelete(Journal,which);}
+
+	public void DBDeleteJournal(String Journal, String msgKeyOrNull)
+	{JournalLoader.DBDelete(Journal, msgKeyOrNull);}
 	
 	public Vector DBReadJournals()
 	{return JournalLoader.DBReadJournals();}
 	
-	public Vector DBReadJournalMsgs(String Journal)
+	public Vector<JournalsLibrary.JournalEntry> DBReadJournalMsgs(String Journal)
 	{return JournalLoader.DBReadJournalMsgs(Journal);}
+	
+	public Vector<JournalsLibrary.JournalEntry> DBReadJournalMsgsNewerThan(String Journal, String to, long olderDate)
+	{return JournalLoader.DBReadJournalMsgsNewerThan(Journal, to, olderDate);}
+	
+	public Vector<JournalsLibrary.JournalEntry> DBReadJournalMsgsOlderThan(String Journal, String to, long newerDate)
+	{return JournalLoader.DBReadJournalMsgsOlderThan(Journal, to, newerDate);}
 	
 	public int DBCountJournal(String Journal, String from, String to)
 	{ return JournalLoader.DBCount(Journal,from,to);}
 	
-	public long DBReadNewJournalDate(String Journal, String name)
-	{ return JournalLoader.DBReadNewJournalDate(Journal, name);}
+	public long[] DBJournalLatestDateNewerThan(String Journal, String to, long olderTime)
+	{ return JournalLoader.DBJournalLatestDateNewerThan(Journal, to, olderTime);}
+	
+	public void DBWriteJournal(String Journal, JournalsLibrary.JournalEntry entry)
+	{JournalLoader.DBWrite(Journal,entry);}
 	
 	public void DBWriteJournal(String Journal, String from, String to, String subject, String message)
 	{JournalLoader.DBWrite(Journal,from,to,subject,message);}

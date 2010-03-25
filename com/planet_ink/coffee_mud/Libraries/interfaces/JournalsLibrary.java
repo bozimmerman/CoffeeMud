@@ -80,7 +80,7 @@ public interface JournalsLibrary extends CMLibrary, Runnable
 		}
 		public StringBuffer derivedBuildMessage=null;
 		
-		public final static long ATTRIBUTE_JOURNALINTRO=1;
+		public final static long ATTRIBUTE_PROTECTED=1;
 		
 	}
 	
