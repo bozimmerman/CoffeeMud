@@ -39,6 +39,7 @@ public interface JournalsLibrary extends CMLibrary, Runnable
     public int getNumCommandJournals();
     public String getScriptValue(MOB mob, String journal, String oldValue);
     
+    public boolean canReadMessage(JournalEntry entry, String srchMatch, MOB readerM, boolean ignorePrivileges);
     public int loadForumJournals(String list);
     public Enumeration<ForumJournal> forumJournals();
     public ForumJournal getForumJournal(String named);

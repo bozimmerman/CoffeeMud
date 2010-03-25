@@ -1062,6 +1062,7 @@ public class MOBloader
     public PlayerLibrary.ThinnerPlayer DBUserSearch(String Login)
     {
         DBConnection D=null;
+        String buf=null;
         PlayerLibrary.ThinnerPlayer thinPlayer = null;
         try
         {
@@ -1081,30 +1082,31 @@ public class MOBloader
                 thinPlayer.password=password;
                 thinPlayer.email=email;
                 // Acct Exp Code
-                String buf=DBConnections.getRes(R,"CMPFIL");
-                {
-                	PlayerAccount acct = null;
-                	thinPlayer.accountName = CMLib.xml().returnXMLValue(buf,"ACCOUNT");
-                	if((thinPlayer.accountName!=null)&&(thinPlayer.accountName.length()>0))
-                		acct = CMLib.players().getLoadAccount(thinPlayer.accountName);
-                	if((acct != null)&&(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1))
-                		thinPlayer.expiration=acct.getAccountExpiration();
-                	else
-                    if(CMLib.xml().returnXMLValue(buf,"ACCTEXP").length()>0)
-                    	thinPlayer.expiration=CMath.s_long(CMLib.xml().returnXMLValue(buf,"ACCTEXP"));
-                    else
-                    {
-                        Calendar C=Calendar.getInstance();
-                        C.add(Calendar.DATE,CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS));
-                        thinPlayer.expiration=C.getTimeInMillis();
-                    }
-                }
+                buf=DBConnections.getRes(R,"CMPFIL");
             }
         }catch(Exception sqle)
         {
             Log.errOut("MOB",sqle);
         }
         if(D!=null) DB.DBDone(D);
+        if((buf!=null)&&(thinPlayer!=null))
+        {
+        	PlayerAccount acct = null;
+        	thinPlayer.accountName = CMLib.xml().returnXMLValue(buf,"ACCOUNT");
+        	if((thinPlayer.accountName!=null)&&(thinPlayer.accountName.length()>0))
+        		acct = CMLib.players().getLoadAccount(thinPlayer.accountName);
+        	if((acct != null)&&(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>1))
+        		thinPlayer.expiration=acct.getAccountExpiration();
+        	else
+            if(CMLib.xml().returnXMLValue(buf,"ACCTEXP").length()>0)
+            	thinPlayer.expiration=CMath.s_long(CMLib.xml().returnXMLValue(buf,"ACCTEXP"));
+            else
+            {
+                Calendar C=Calendar.getInstance();
+                C.add(Calendar.DATE,CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS));
+                thinPlayer.expiration=C.getTimeInMillis();
+            }
+        }
         return thinPlayer;
     }
 

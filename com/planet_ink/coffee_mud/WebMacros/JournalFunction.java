@@ -34,20 +34,48 @@ public class JournalFunction extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
+	public JournalsLibrary.JournalEntry getNextEntry(Vector<JournalsLibrary.JournalEntry> info, String key)
+	{
+		if(info==null)
+			return null;
+		for(Enumeration<JournalsLibrary.JournalEntry> e=info.elements();e.hasMoreElements();)
+		{
+			JournalsLibrary.JournalEntry entry = e.nextElement();
+			if((key == null)||(key.length()==0))
+				return entry;
+			if(entry.key.equalsIgnoreCase(key))
+			{
+				if(e.hasMoreElements())
+					return e.nextElement();
+				return null;
+			}
+		}
+		return null;
+	}
+	
+	public JournalsLibrary.JournalEntry getEntry(Vector<JournalsLibrary.JournalEntry> info, String key)
+	{
+		if(info==null)
+			return null;
+		if(key==null)
+			return null;
+		for(Enumeration<JournalsLibrary.JournalEntry> e=info.elements();e.hasMoreElements();)
+		{
+			JournalsLibrary.JournalEntry entry = e.nextElement();
+			if(entry.key.equalsIgnoreCase(key))
+				return entry;
+		}
+		return null;
+	}
+	
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("JOURNAL");
-		if(last==null) return "Function not performed -- no Journal specified.";
+		String journalName=httpReq.getRequestParameter("JOURNAL");
+		if(journalName==null) return "Function not performed -- no Journal specified.";
 		
-		Vector info=(Vector)httpReq.getRequestObjects().get("JOURNAL: "+last);
-		if(info==null)
-		{
-			info=CMLib.database().DBReadJournalMsgs(last);
-			httpReq.getRequestObjects().put("JOURNAL: "+last,info);
-		}
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);
-		if(CMLib.journals().isArchonJournalName(last))
+		if(CMLib.journals().isArchonJournalName(journalName))
 		{
 			if((M==null)||(!CMSecurity.isASysOp(M)))
 			    return " @break@";
@@ -65,7 +93,7 @@ public class JournalFunction extends StdWebMacro
 				to=CMStrings.capitalizeAndLower(to);
 			}
             else
-            if(last.equalsIgnoreCase(CMProps.getVar(CMProps.SYSTEM_MAILBOX))
+            if(journalName.equalsIgnoreCase(CMProps.getVar(CMProps.SYSTEM_MAILBOX))
             &&(!CMSecurity.isAllowedEverywhere(M,"JOURNALS")))
                 return "Post not submitted -- You are not authorized to send email to ALL.";
 			String subject=httpReq.getRequestParameter("SUBJECT");
@@ -74,69 +102,92 @@ public class JournalFunction extends StdWebMacro
 			String text=httpReq.getRequestParameter("NEWTEXT");
 			if(text.length()==0)
 				return "Post not submitted -- No text!";
-            if(last.equalsIgnoreCase(CMProps.getVar(CMProps.SYSTEM_MAILBOX))
+            if(journalName.equalsIgnoreCase(CMProps.getVar(CMProps.SYSTEM_MAILBOX))
             &&(CMProps.getIntVar(CMProps.SYSTEMI_MAXMAILBOX)>0)
             &&(!to.equalsIgnoreCase("ALL")))
             {
-                int count=CMLib.database().DBCountJournal(last,null,to);
+                int count=CMLib.database().DBCountJournal(journalName,null,to);
                 if(count>=CMProps.getIntVar(CMProps.SYSTEMI_MAXMAILBOX))
                     return "Post not submitted -- Mailbox is full!";
             }
-			CMLib.database().DBWriteJournal(last,from,to,subject,text);
-			httpReq.getRequestObjects().remove("JOURNAL: "+last);
+			CMLib.database().DBWriteJournal(journalName,from,to,subject,text);
+			httpReq.getRequestObjects().remove("JOURNAL: "+journalName);
 			return "Post submitted.";
 		}
-		String lastlast=httpReq.getRequestParameter("JOURNALMESSAGE");
-		int num=(parms.containsKey("EVERYTHING"))?info.size():0;
+		Vector<JournalsLibrary.JournalEntry> info=(Vector<JournalsLibrary.JournalEntry>)httpReq.getRequestObjects().get("JOURNAL: "+journalName);
+		if(info==null)
+		{
+			info=CMLib.database().DBReadJournalMsgs(journalName);
+			httpReq.getRequestObjects().put("JOURNAL: "+journalName,info);
+		}
+		String msgKey=httpReq.getRequestParameter("JOURNALMESSAGE");
+		int cardinalNumber = CMath.s_int(httpReq.getRequestParameter("JOURNALCARDINAL"));
+        String srch=httpReq.getRequestParameter("JOURNALMESSAGESEARCH");
+        if(srch!=null) 
+        	srch=srch.toLowerCase();
+		boolean doThemAll=parms.containsKey("EVERYTHING");
+		if(doThemAll)
+		{
+			JournalsLibrary.JournalEntry entry = getNextEntry(info, null);
+			if(entry==null)
+				msgKey="";
+			else
+				msgKey=entry.key;
+			cardinalNumber=1;
+		}
 		StringBuffer messages=new StringBuffer("");
-		String textFieldAddendum="";
-		boolean keepProcessing=true;
+		boolean keepProcessing=((msgKey!=null)&&(msgKey.length()>0));
 		while(keepProcessing)
 		{
-			if(parms.containsKey("EVERYTHING"))
+			if(doThemAll)
 			{
-				num--;
 				parms.clear();
 				parms.put("EVERYTHING","EVERYTHING");
-				String fate=httpReq.getRequestParameter("FATE"+num);
-				String replyemail=httpReq.getRequestParameter("REPLYEMAIL"+num);
+				String fate=httpReq.getRequestParameter("FATE"+msgKey);
+				String replyemail=httpReq.getRequestParameter("REPLYEMAIL"+msgKey);
 				if((fate!=null)&&(fate.length()>0)&&(CMStrings.isUpperCase(fate)))
 					parms.put(fate,fate);
 				if((replyemail!=null)&&(replyemail.length()>0)&&(CMStrings.isUpperCase(replyemail)))
 					parms.put(replyemail,replyemail);
-				keepProcessing=num>=0;
-				if(parms.size()==1) continue;
-				textFieldAddendum=Integer.toString(num);
+				if(parms.size()==1)
+				{
+					JournalsLibrary.JournalEntry entry = getNextEntry(info, msgKey);
+					while((entry!=null) && (!CMLib.journals().canReadMessage(entry,srch,M,parms.contains("NOPRIV"))))
+						entry = getNextEntry(info, entry.key);
+
+					if(entry==null)
+						keepProcessing=false;
+					else
+						msgKey=entry.key;
+					continue;
+				}
 			}
 			else 
-			{
 				keepProcessing=false;
-				if(lastlast!=null) num=CMath.s_int(lastlast);
-				if((num<0)||(num>=info.size()))
-					return "Function not performed -- illegal journal message specified.<BR>";
-			}
-			JournalsLibrary.JournalEntry entry = (JournalsLibrary.JournalEntry)info.elementAt(num);
+			JournalsLibrary.JournalEntry entry = getEntry(info, msgKey);
+			if(entry == null)
+				return "Function not performed -- illegal journal message specified.<BR>";
 			String to=entry.to;
 			if((M!=null)&&(CMSecurity.isAllowedAnywhere(M,"JOURNALS")||(to.equalsIgnoreCase(M.Name()))))
 			{
 				if(parms.containsKey("REPLY"))
 				{
-					String text=httpReq.getRequestParameter("NEWTEXT"+textFieldAddendum);
+					String text=httpReq.getRequestParameter("NEWTEXT"+msgKey);
 					if((text==null)||(text.length()==0))
-						messages.append("Reply to #"+num+" not submitted -- No text!<BR>");
+						messages.append("Reply to #"+cardinalNumber+" not submitted -- No text!<BR>");
 					else
 					{
-						CMLib.database().DBWriteJournalReply(last,entry.key,from,"","",text);
-						httpReq.getRequestObjects().remove("JOURNAL: "+last);
-						messages.append("Reply to #"+num+" submitted<BR>");
+						CMLib.database().DBWriteJournalReply(journalName,entry.key,from,"","",text);
+						httpReq.getRequestObjects().remove("JOURNAL: "+journalName);
+						messages.append("Reply to #"+cardinalNumber+" submitted<BR>");
 					}
 				}
 	            else
 	            if(parms.containsKey("EMAIL"))
 	            {
-	                String replyMsg=httpReq.getRequestParameter("NEWTEXT"+textFieldAddendum);
+	                String replyMsg=httpReq.getRequestParameter("NEWTEXT"+msgKey);
 	                if(replyMsg.length()==0)
-						messages.append("Email to #"+num+" not submitted -- No text!<BR>");
+						messages.append("Email to #"+cardinalNumber+" not submitted -- No text!<BR>");
 	                else
 	                {
 		                String toName=entry.from;
@@ -150,21 +201,21 @@ public class JournalFunction extends StdWebMacro
 			                                                  toM.Name(),
 			                                                  "RE: "+entry.subj,
 			                                                  replyMsg);
-			                httpReq.getRequestObjects().remove("JOURNAL: "+last);
-							messages.append("Email to #"+num+" queued<BR>");
+			                httpReq.getRequestObjects().remove("JOURNAL: "+journalName);
+							messages.append("Email to #"+cardinalNumber+" queued<BR>");
 		                }
 	                }
 	            }
 				if(parms.containsKey("DELETE"))
 				{
 					if(M==null)	
-						messages.append("Can not delete #"+num+"-- required logged in user.<BR>");
+						messages.append("Can not delete #"+cardinalNumber+"-- required logged in user.<BR>");
 					else
 					{
-						CMLib.database().DBDeleteJournal(last,entry.key);
+						CMLib.database().DBDeleteJournal(journalName,entry.key);
 						httpReq.addRequestParameters("JOURNALMESSAGE","");
-						httpReq.getRequestObjects().remove("JOURNAL: "+last);
-						messages.append("Message #"+num+" deleted.<BR>");
+						httpReq.getRequestObjects().remove("JOURNAL: "+journalName);
+						messages.append("Message #"+cardinalNumber+" deleted.<BR>");
 					}
 				}
 				else
@@ -172,11 +223,9 @@ public class JournalFunction extends StdWebMacro
 	            {
 	                if(parms.containsKey("TRANSFER"))
 	                {
-	                    String journal=httpReq.getRequestParameter("NEWJOURNAL"+textFieldAddendum);
+	                    String journal=httpReq.getRequestParameter("NEWJOURNAL"+msgKey);
 	                    if((journal==null) || (journal.length()==0))
-	                        journal=httpReq.getRequestParameter("NEWJOURNAL"+textFieldAddendum+lastlast);
-	                    if((journal==null) || (journal.length()==0))
-	    					messages.append("Transfer #"+num+" not completed -- No journal!<BR>");
+	    					messages.append("Transfer #"+cardinalNumber+" not completed -- No journal!<BR>");
 	                    String realName=null;
 	                    if(journal!=null)
 		                    for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
@@ -198,26 +247,27 @@ public class JournalFunction extends StdWebMacro
 	    					messages.append("The journal '"+journal+"' does not presently exist.  Aborted.<BR>");
 	                    else
 	                    {
-		                    Vector journal2=CMLib.database().DBReadJournalMsgs(last);
-		                    JournalsLibrary.JournalEntry entry2=(JournalsLibrary.JournalEntry)journal2.elementAt(num);
-		                    String from2=(String)entry2.from;
-		                    String to2=(String)entry2.to;
-		                    String subject=(String)entry2.subj;
-		                    String message=(String)entry2.msg;
-		                    CMLib.database().DBDeleteJournal(last,entry2.key);
-		                    CMLib.database().DBWriteJournal(realName,
-		                                                      from2,
-		                                                      to2,
-		                                                      subject,
-		                                                      message);
+		                    CMLib.database().DBDeleteJournal(journalName,entry.key);
+		                    CMLib.database().DBWriteJournal(realName,entry);
 		                    httpReq.addRequestParameters("JOURNALMESSAGE","");
-		                    httpReq.getRequestObjects().remove("JOURNAL: "+last);
-							messages.append("Message #"+num+" transferred<BR>");
+		                    httpReq.getRequestObjects().remove("JOURNAL: "+journalName);
+							messages.append("Message #"+cardinalNumber+" transferred<BR>");
 	                    }
 	                }
 	            }
 	            else
-					messages.append("You are not allowed to perform this function on message #"+num+".<BR>");
+					messages.append("You are not allowed to perform this function on message #"+cardinalNumber+".<BR>");
+			}
+			if(keepProcessing)
+			{
+				cardinalNumber++;
+				entry = getNextEntry(info, msgKey);
+				while((entry!=null) && (!CMLib.journals().canReadMessage(entry,srch,M,parms.contains("NOPRIV"))))
+					entry = getNextEntry(info, entry.key);
+				if(entry==null)
+					keepProcessing=false;
+				else
+					msgKey=entry.key;
 			}
 		}
         return messages.toString();

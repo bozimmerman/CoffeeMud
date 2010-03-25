@@ -14,9 +14,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-
-
-
 /* 
    Copyright 2000-2010 Bo Zimmerman
 
@@ -37,6 +34,25 @@ public class JournalMessageNext extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
+	public JournalsLibrary.JournalEntry getNextEntry(Vector<JournalsLibrary.JournalEntry> info, String key)
+	{
+		if(info==null)
+			return null;
+		for(Enumeration<JournalsLibrary.JournalEntry> e=info.elements();e.hasMoreElements();)
+		{
+			JournalsLibrary.JournalEntry entry = e.nextElement();
+			if((key == null)||(key.length()==0))
+				return entry;
+			if(entry.key.equalsIgnoreCase(key))
+			{
+				if(e.hasMoreElements())
+					return e.nextElement();
+				return null;
+			}
+		}
+		return null;
+	}
+	
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
@@ -49,64 +65,46 @@ public class JournalMessageNext extends StdWebMacro
 			    return " @break@";
 		}
 		
-		Vector info=(Vector)httpReq.getRequestObjects().get("JOURNAL: "+journal);
+		String page=httpReq.getRequestParameter("JOURNALPAGE");
+		if((page==null)||(page.trim().length()==0))
+			page="0";
+		
+		Vector<JournalsLibrary.JournalEntry> info=(Vector<JournalsLibrary.JournalEntry>)httpReq.getRequestObjects().get("JOURNAL: "+journal);
 		if(info==null)
 		{
 			info=CMLib.database().DBReadJournalMsgs(journal);
 			httpReq.getRequestObjects().put("JOURNAL: "+journal,info);
 		}
         String srch=httpReq.getRequestParameter("JOURNALMESSAGESEARCH");
-        if(srch!=null) srch=srch.toLowerCase();
+        if(srch!=null) 
+        	srch=srch.toLowerCase();
 		String last=httpReq.getRequestParameter("JOURNALMESSAGE");
 		int cardinal=CMath.s_int(httpReq.getRequestParameter("JOURNALCARDINAL"));
 		if(parms.containsKey("RESET"))
 		{	
-			if(last!=null){
+			if(last!=null)
+			{
 				httpReq.removeRequestParameter("JOURNALMESSAGE");
 				httpReq.removeRequestParameter("JOURNALCARDINAL");
 			}
 			return "";
 		}
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);
-        boolean priviledged=CMSecurity.isAllowedAnywhere(M,"JOURNALS")&&(!parms.contains("NOPRIV"));
         cardinal++;
+        JournalsLibrary.JournalEntry entry = null;
         while(true)
         {
-            if(last==null) 
-                last="0";
-            else
-    		if(CMath.s_int(last)>=info.size())
+        	entry = getNextEntry(info,last);
+    		if(entry==null)
     		{
     			httpReq.addRequestParameters("JOURNALMESSAGE","");
     			if(parms.containsKey("EMPTYOK"))
     				return "<!--EMPTY-->";
     			return " @break@";
     		}
-            else
-                last=""+(CMath.s_int(last)+1);
-            if(CMath.s_int(last)>=info.size())
-            {
-                httpReq.addRequestParameters("JOURNALMESSAGE","");
-                if(parms.containsKey("EMPTYOK"))
-                    return "<!--EMPTY-->";
-                return " @break@";
-            }
-            JournalsLibrary.JournalEntry E=(JournalsLibrary.JournalEntry)info.elementAt(CMath.s_int(last));
-            String to=E.to;
-            if((srch!=null)
-            &&(srch.length()>0)
-            &&((to.toLowerCase().indexOf(srch)<0)
-            &&(E.from.toLowerCase().indexOf(srch)<0)
-            &&(E.subj.toLowerCase().indexOf(srch)<0)
-            &&(E.msg.toLowerCase().indexOf(srch)<0)))
-                continue;
-            
-            if(to.equalsIgnoreCase("all")
-            ||((M!=null)
-                &&(priviledged
-                    ||to.equalsIgnoreCase(M.Name())
-                    ||(to.toUpperCase().trim().startsWith("MASK=")&&(CMLib.masking().maskCheck(to.trim().substring(5),M,true))))))
-                break;
+    		last=entry.key;
+            if(CMLib.journals().canReadMessage(entry,srch,M,parms.contains("NOPRIV")))
+            	break;
         }
 		
 		httpReq.addRequestParameters("JOURNALCARDINAL",""+cardinal);

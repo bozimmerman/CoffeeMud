@@ -114,7 +114,7 @@ public class StdJournal extends StdItem
 				}
 				JournalsLibrary.JournalEntry read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
 				boolean megaRepeat=true;
-				while(megaRepeat)
+				while((megaRepeat) && (read!=null))
 				{
 				    megaRepeat=false;
 					String from=read.from;
@@ -202,7 +202,7 @@ public class StdJournal extends StdItem
 									if(!mob.session().choose("Send email to "+M.Name()+" (Y/n)?","YN\n","Y").equalsIgnoreCase("N"))
 									{
 										String replyMsg=mob.session().prompt("Enter your email response\n\r: ");
-										if(replyMsg.trim().length()>0)
+										if((replyMsg.trim().length()>0) && (read != null))
 										{
 											CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.SYSTEM_MAILBOX),
 																			  mob.Name(),
@@ -277,16 +277,19 @@ public class StdJournal extends StdItem
 								else
 								if(s.equalsIgnoreCase("R"))
 								{
-									String replyMsg=mob.session().prompt("Enter your response\n\r: ");
-									if(replyMsg.trim().length()>0)
+									if(read != null)
 									{
-										CMLib.database().DBWriteJournalReply(Name(),read.key,mob.Name(),"","",replyMsg);
-										mob.tell("Reply added.");
-									}
-									else
-									{
-										mob.tell("Aborted.");
-										repeat=true;
+										String replyMsg=mob.session().prompt("Enter your response\n\r: ");
+										if(replyMsg.trim().length()>0)
+										{
+											CMLib.database().DBWriteJournalReply(Name(),read.key,mob.Name(),"","",replyMsg);
+											mob.tell("Reply added.");
+										}
+										else
+										{
+											mob.tell("Aborted.");
+											repeat=true;
+										}
 									}
 								}
 							}

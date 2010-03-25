@@ -623,6 +623,7 @@ public class CombatAbilities extends StdBehavior
 				}
 				if((winAmt>minAmt)
 				&&(winAmt>(vicAmt+(vicAmt/2)))
+				&&(winMOB!=null)
 				&&(!winMOB.amDead())
 				&&(winMOB.isInCombat())
 	            &&(!mob.getGroupMembers(new HashSet()).contains(winMOB)))

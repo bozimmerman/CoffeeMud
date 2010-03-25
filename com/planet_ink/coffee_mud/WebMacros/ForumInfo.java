@@ -14,8 +14,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-
-
 /* 
    Copyright 2000-2010 Bo Zimmerman
 
@@ -40,16 +38,19 @@ public class ForumInfo extends StdWebMacro
 	{
 		Hashtable parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("JOURNAL");
-		if(last==null) return " @break@";
+		if(last==null) 
+			return " @break@";
 		
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		if((CMLib.journals().isArchonJournalName(last))&&((M==null)||(!CMSecurity.isASysOp(M))))
 		    return " @break@";
 		JournalsLibrary.ForumJournal journal = CMLib.journals().getForumJournal(last);
-		if(journal == null) return " @break@";
+		if(journal == null) 
+			return " @break@";
 		
 		JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(last);
-		if(journal == null) return " @break@";
+		if(journal == null) 
+			return " @break@";
 		
 		if(parms.containsKey("POSTS"))
 			return ""+stats.posts;

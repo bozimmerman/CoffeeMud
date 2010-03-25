@@ -149,6 +149,29 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
         return commandJournals.size();
     }
     
+    public boolean canReadMessage(JournalEntry entry, String srchMatch, MOB readerM, boolean ignorePrivileges)
+    {
+    	if(entry==null)
+    		return false;
+        String to=entry.to;
+        if((srchMatch!=null)
+        &&(srchMatch.length()>0)
+        &&((to.toLowerCase().indexOf(srchMatch)<0)
+        &&(entry.from.toLowerCase().indexOf(srchMatch)<0)
+        &&(entry.subj.toLowerCase().indexOf(srchMatch)<0)
+        &&(entry.msg.toLowerCase().indexOf(srchMatch)<0)))
+        	return false;
+        boolean priviledged=false;
+        if(readerM!=null)
+        	priviledged=CMSecurity.isAllowedAnywhere(readerM,"JOURNALS")&&(!ignorePrivileges);
+        if(to.equalsIgnoreCase("all")
+        ||((readerM!=null)
+            &&(priviledged
+                ||to.equalsIgnoreCase(readerM.Name())
+                ||(to.toUpperCase().trim().startsWith("MASK=")&&(CMLib.masking().maskCheck(to.trim().substring(5),readerM,true))))))
+        	return true;
+        return false;
+    }
     
     public int loadForumJournals(String list)
     {

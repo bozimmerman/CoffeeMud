@@ -36,6 +36,21 @@ public class JournalInfo extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
+	public JournalsLibrary.JournalEntry getEntry(Vector<JournalsLibrary.JournalEntry> info, String key)
+	{
+		if(info==null)
+			return null;
+		if(key==null)
+			return null;
+		for(Enumeration<JournalsLibrary.JournalEntry> e=info.elements();e.hasMoreElements();)
+		{
+			JournalsLibrary.JournalEntry entry = e.nextElement();
+			if(entry.key.equalsIgnoreCase(key))
+				return entry;
+		}
+		return null;
+	}
+	
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
@@ -54,12 +69,11 @@ public class JournalInfo extends StdWebMacro
 		
 		if(parms.containsKey("COUNT"))
 			return ""+info.size();
-		String lastlast=httpReq.getRequestParameter("JOURNALMESSAGE");
-		int num=0;
-		if(lastlast!=null) num=CMath.s_int(lastlast);
-		if((num<0)||(num>=info.size()))	return " @break@";
+		String msgKey=httpReq.getRequestParameter("JOURNALMESSAGE");
+        JournalsLibrary.JournalEntry entry = getEntry(info,msgKey);
+		if(entry==null)	
+			return " @break@";
         boolean priviledged=CMSecurity.isAllowedAnywhere(M,"JOURNALS")&&(!parms.contains("NOPRIV"));
-        JournalsLibrary.JournalEntry entry = (JournalsLibrary.JournalEntry)info.elementAt(num);
 		String to=entry.to;
 		if(to.equalsIgnoreCase("all")
         ||((M!=null)
