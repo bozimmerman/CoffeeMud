@@ -50,29 +50,55 @@ public class JournalInfo extends StdWebMacro
 		}
 		return null;
 	}
+
+	public Vector getMsgs(ExternalHTTPRequests httpReq, String journalName, String page)
+	{
+		Vector info=(Vector)httpReq.getRequestObjects().get("JOURNAL: "+journalName+": "+page);
+		if(info==null)
+		{
+			info=CMLib.database().DBReadJournalMsgsNewerThan(journalName, null, CMath.s_long(page));
+			httpReq.getRequestObjects().put("JOURNAL: "+journalName+": "+page,info);
+		}
+		return info;
+	}
 	
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("JOURNAL");
-		if(last==null) return " @break@";
-		
-		Vector info=(Vector)httpReq.getRequestObjects().get("JOURNAL: "+last);
-		if(info==null)
-		{
-			info=CMLib.database().DBReadJournalMsgs(last);
-			httpReq.getRequestObjects().put("JOURNAL: "+last,info);
-		}
-		MOB M = Authenticate.getAuthenticatedMob(httpReq);
-		if((CMLib.journals().isArchonJournalName(last))&&((M==null)||(!CMSecurity.isASysOp(M))))
-		    return " @break@";
+		String journalName=httpReq.getRequestParameter("JOURNAL");
+		if(journalName==null) return " @break@";
+		String page=httpReq.getRequestParameter("JOURNALPAGE");
+		if((page==null)||(page.trim().length()==0))
+			page="0";
 		
 		if(parms.containsKey("COUNT"))
-			return ""+info.size();
+			return ""+getMsgs(httpReq,journalName,page).size();
+		
+		MOB M = Authenticate.getAuthenticatedMob(httpReq);
+		if((CMLib.journals().isArchonJournalName(journalName))&&((M==null)||(!CMSecurity.isASysOp(M))))
+		    return " @break@";
+		
 		String msgKey=httpReq.getRequestParameter("JOURNALMESSAGE");
-        JournalsLibrary.JournalEntry entry = getEntry(info,msgKey);
+		String cardinal=httpReq.getRequestParameter("JOURNALCARDINAL");
+        JournalsLibrary.JournalEntry entry=null;
+        if(msgKey.equalsIgnoreCase("FORUMLATEST"))
+        {
+        	JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(journalName);
+        	if(stats!=null)
+        	{
+        		entry=stats.latest;
+        		if(entry != null)
+	        		httpReq.addRequestParameters("JOURNALMESSAGE", entry.key);
+        	}
+        }
+        else
+	        entry= getEntry(getMsgs(httpReq,journalName,page),msgKey);
+        if(parms.containsKey("ISMESSAGE"))
+        	return String.valueOf(entry!=null);
 		if(entry==null)	
 			return " @break@";
+		if(cardinal!=null)
+			entry.cardinal=CMath.s_int(cardinal);
         boolean priviledged=CMSecurity.isAllowedAnywhere(M,"JOURNALS")&&(!parms.contains("NOPRIV"));
 		String to=entry.to;
 		if(to.equalsIgnoreCase("all")
@@ -87,8 +113,72 @@ public class JournalInfo extends StdWebMacro
 			if(parms.containsKey("FROM"))
                 return clearWebMacros(entry.from);
 			else
+			if(parms.containsKey("MSGICON"))
+                return clearWebMacros(entry.msgIcon);
+			else
+			if(parms.containsKey("MSGTYPEICON"))
+			{
+				if(entry.attributes==0)
+					return "images/doc.jpg";
+				if(CMath.bset(entry.attributes, JournalsLibrary.JournalEntry.ATTRIBUTE_STUCKY))
+					return "images/doclock.jpg";
+				if(CMath.bset(entry.attributes, JournalsLibrary.JournalEntry.ATTRIBUTE_PROTECTED))
+					return "images/docstar.jpg";
+				return "images/docunknown.jpg";
+			}
+			else
+			if(parms.containsKey("CARDINAL"))
+                return clearWebMacros(entry.cardinal+"");
+			else
 			if(parms.containsKey("DATE"))
 				return CMLib.time().date2String(entry.date);
+			else
+			if(parms.containsKey("DATEPOSTED"))
+			{
+				Calendar meC=Calendar.getInstance();
+				Calendar C=Calendar.getInstance();
+				meC.setTimeInMillis(entry.update);
+				if(Calendar.getInstance().get(Calendar.YEAR)!=meC.get(Calendar.YEAR))
+					return CMLib.time().date2Date2String(entry.update);
+				String dateString = CMLib.time().date2MonthDateString(entry.date, false);
+				String todayString = CMLib.time().date2MonthDateString(System.currentTimeMillis(), false);
+				if(dateString.equals(todayString))
+					return "Today";
+				C.add(Calendar.DATE, -1);
+				String yesterdayString = CMLib.time().date2MonthDateString(C.getTimeInMillis(), false);
+				if(dateString.equals(yesterdayString))
+					return "Yesterday";
+				return dateString;
+			}
+			else
+			if(parms.containsKey("TIMEPOSTED"))
+			{
+				return CMLib.time().date2APTimeString(entry.date);
+			}
+			else
+			if(parms.containsKey("DATEUPDATED"))
+			{
+				Calendar meC=Calendar.getInstance();
+				Calendar C=Calendar.getInstance();
+				meC.setTimeInMillis(entry.update);
+				if(Calendar.getInstance().get(Calendar.YEAR)!=meC.get(Calendar.YEAR))
+					return CMLib.time().date2Date2String(entry.update);
+				String dateString = CMLib.time().date2MonthDateString(entry.update, false);
+				String todayString = CMLib.time().date2MonthDateString(System.currentTimeMillis(), false);
+				if(dateString.equals(todayString))
+					return "Today";
+				C.add(Calendar.DATE, -1);
+				String yesterdayString = CMLib.time().date2MonthDateString(C.getTimeInMillis(), false);
+				if(dateString.equals(yesterdayString))
+					return "Yesterday";
+				return dateString;
+				
+			}
+			else
+			if(parms.containsKey("TIMEUPDATED"))
+			{
+				return CMLib.time().date2APTimeString(entry.update);
+			}
 			else
 			if(parms.containsKey("TO"))
             {

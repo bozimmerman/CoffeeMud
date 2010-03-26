@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<link rel="coffeemud icon" href="images/coffeemud.ico" >
+	<!-- tell spiders to sod off -->
+	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
+	<title>Forums</title>
+	<script language=JavaScript>
+	<!--
+	//-->
+	</SCRIPT>
+</head>
+
+<body>
+<script language="JavaScript" type="text/javascript" src="textedit/wysiwyg.js"></script>
+<FORM NAME=FORUM TARGET=_top METHOD=POST ACTION="forum.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=JOURNAL VALUE="@RequestParameter?JOURNAL@">
+<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
+<TR BGCOLOR=BLACK HEIGHT=20>
+	<TD COLSPAN=2>
+		<TABLE WIDTH=100% BORDER=0><TR>
+		<TD WIDTH=50%><FONT COLOR=WHITE SIZE=-1><B>Post New Thread</B></FONT></TD>
+		<TD WIDTH=50% AlIGN=RIGHT><FONT COLOR=WHITE SIZE=-1><B>Forum : @JournalName@</B></FONT></TD>
+		</TR></TABLE>
+	</TD>
+</TR>
+<TR BGCOLOR=LIGHTGREY><TD COLSPAN=2>&nbsp;</TD></TR>
+<TR BGCOLOR=LIGHTGREY VALIGN=BOTTOM>
+	<TD ALIGN=LEFT VALIGN=BOTTOM>&nbsp;&nbsp;<FONT SIZE=6><B>Subject:</B></FONT></TD>
+	<TD ALIGN=LEFT VALIGN=BOTTOM><INPUT TYPE=TEXT NAME=SUBJECT SIZE=60></TD>
+</TR>
+<TR BGCOLOR=LIGHTGREY><TD COLSPAN=2>&nbsp;</TD></TR>
+<TR BGCOLOR=LIGHTGREY VALIGN=TOP>
+	<TD ALIGN=LEFT WIDTH=200px VALIGN=TOP>&nbsp;&nbsp;<FONT SIZE=6><B>Message:</B></FONT></TD>
+	<TD ALIGN=LEFT VALIGN=TOP>
+		<textarea id="textarea1" name="test1" style="height: 170px; width: 500px;"></textarea>
+		<script language="javascript1.2">
+			generate_wysiwyg('textarea1');
+		</script>
+	</TD>
+</TR>
+<TR BGCOLOR=LIGHTGREY><TD COLSPAN=2>&nbsp;</TD></TR>
+<TR BGCOLOR=BLACK HEIGHT=20>
+	<TD COLSPAN=2>&nbsp;</TD>
+</TR>
+</TABLE>
+</FORM>
+</body>
+</html>

@@ -28,7 +28,6 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 public class CoffeeTime extends StdLibrary implements TimeManager
 {
     public String ID(){return "CoffeeTime";}
-    
     protected TimeClock globalClock=null;
     /**
      * Returns the numeric representation of the month
@@ -39,35 +38,14 @@ public class CoffeeTime extends StdLibrary implements TimeManager
      */
     public String month2MM(String Month)
     {
-        if (Month.equals("January"))
-            return "01";
-        if (Month.equals("February"))
-            return "02";
-        if (Month.equals("March"))
-            return "03";
-        if (Month.equals("April"))
-            return "04";
-        if (Month.equals("May"))
-            return "05";
-        if (Month.equals("June"))
-            return "06";
-        if (Month.equals("July"))
-            return "07";
-        if (Month.equals("August"))
-            return "08";
-        if (Month.equals("September"))
-            return "09";
-        if (Month.equals("October"))
-            return "10";
-        if (Month.equals("November"))
-            return "11";
-        if (Month.equals("December"))
-            return "12";
-
+    	for(int m=0;m<MONTHS.length;m++)
+    		if(Month.equals(MONTHS[m]))
+    			if(m<9)
+	    			return "0"+(m+1);
+    			else
+    				return String.valueOf(m+1);
         return "01";
     }
-
-
 
     /**
      * Return the name of the month, given a number
@@ -77,44 +55,18 @@ public class CoffeeTime extends StdLibrary implements TimeManager
      * @param GiveShort Give abbreviation if true
      * @return String Month name
      */
-    public String getMonthName(int Number, boolean GiveShort)
+    public String getMonthName(int number, boolean giveShort)
     {
-        if(Number>12)Number=Number%12;
+    	if(number<=0)
+    		number=1;
+    	else
+        if(number>12)
+        	number=(number%12)+1;
 
-        if(!GiveShort)
-            switch(Number)
-            {
-                case 1: return "January";
-                case 2: return "February";
-                case 3: return "March";
-                case 4: return "April";
-                case 5: return "May";
-                case 6: return "June";
-                case 7: return "July";
-                case 8: return "August";
-                case 9: return "September";
-                case 10: return "October";
-                case 11: return "November";
-                case 12: return "December";
-            }
+        if(!giveShort)
+        	return MONTHS[number-1];
         else
-            switch(Number)
-            {
-                case 1: return "Jan";
-                case 2: return "Feb";
-                case 3: return "Mar";
-                case 4: return "Apr";
-                case 5: return "May";
-                case 6: return "Jun";
-                case 7: return "Jul";
-                case 8: return "Aug";
-                case 9: return "Sep";
-                case 10: return "Oct";
-                case 11: return "Nov";
-                case 12: return "Dec";
-            }
-
-        return "";
+        	return SHORTMONTHS[number-1];
     }
 
 
@@ -432,46 +384,30 @@ public class CoffeeTime extends StdLibrary implements TimeManager
         return theID;
     }
 
-
     /**
-     * Returns the month for a given date
+     * Returns the month name for a given date
      *
      * <br><br><b>Usage:</b> String ENDMM=d2MMString();
      * @param time The time in miliseconds
      * @return String The month name
      **/
-    public String date2MonthString(long time)
+    public String date2MonthString(long time, boolean shortName)
     {
         Calendar C=makeCalendar(time);
-        switch (C.get(Calendar.MONTH)+1)
-        {
-            case 1:
-                return "January";
-            case 2:
-                return "February";
-            case 3:
-                return "March";
-            case 4:
-                return "April";
-            case 5:
-                return "May";
-            case 6:
-                return "June";
-            case 7:
-                return "July";
-            case 8:
-                return "August";
-            case 9:
-                return "September";
-            case 10:
-                return "October";
-            case 11:
-                return "November";
-            case 12:
-                return "December";
-            default:
-                return "January";
-        }
+        return getMonthName(C.get(Calendar.MONTH)+1,shortName);
+    }
+
+    /**
+     * Returns the month/day string for a given date
+     *
+     * <br><br><b>Usage:</b> String ENDMM=d2MMString();
+     * @param time The time in miliseconds
+     * @return String The month/day name
+     **/
+    public String date2MonthDateString(long time, boolean shortName)
+    {
+        Calendar C=makeCalendar(time);
+        return getMonthName(C.get(Calendar.MONTH)+1,shortName) + C.get(Calendar.DAY_OF_MONTH);
     }
 
     /**
@@ -528,7 +464,32 @@ public class CoffeeTime extends StdLibrary implements TimeManager
     **/
     public String date2HRString(long time)
     {
-        Calendar C=makeCalendar(time);
+    	return date2HRString(makeCalendar(time));
+    }
+
+
+    /**
+    * Returns the Minutes portion of a given Time
+    *
+    * <br><br><b>Usage:</b> String ENDMIN=T2MINString();
+    * @param time The time in miliseconds
+    * @return String The minutes
+    **/
+    public String date2MINString(long time)
+    {
+    	return date2MINString(makeCalendar(time));
+    }
+
+
+    /**
+    * Returns the Hours portion of a given Time
+    *
+    * <br><br><b>Usage:</b> String ENDHR=T2HRString();
+    * @param time The time in miliseconds
+    * @return String The hour
+    **/
+    public String date2HRString(Calendar C)
+    {
         int IntHour = C.get(Calendar.HOUR);
         if (IntHour==0)
             IntHour=12;
@@ -547,9 +508,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
     * @param time The time in miliseconds
     * @return String The minutes
     **/
-    public String date2MINString(long time)
+    public String date2MINString(Calendar C)
     {
-        Calendar C=makeCalendar(time);
         int IntMin = C.get(Calendar.MINUTE);
         int remainder = IntMin % 5;
         if (remainder != 0)
@@ -568,7 +528,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
             StrMin = "0" + StrMin;
         return StrMin;
     }
-
+    
     /**
      *  Returns the time zone of the server
      *
@@ -590,22 +550,43 @@ public class CoffeeTime extends StdLibrary implements TimeManager
     /**
      * Returns the Minutes portion of a given Time
      *
-     * <br><br><b>Usage:</b> String ST_AMPM=T2_AMPMString();
+     * <br><br><b>Usage:</b> String ST_AMPM=date2AMPMString(time);
      * @param time The time in miliseconds
      * @return String AM or PM stamp
      **/
     public String date2AMPMString(long time)
     {
-        String AMPM;
-        Calendar C=makeCalendar(time);
-        if (C.get(Calendar.AM_PM)==Calendar.PM)
-            AMPM="PM";
-        else
-            AMPM="AM";
-
-        return AMPM;
+    	return date2AMPMString(makeCalendar(time));
     }
 
+    /**
+     * Returns the Minutes portion of a given Time
+     *
+     * <br><br><b>Usage:</b> String ST_AMPM=date2AMPMString(time);
+     * @param time The time in miliseconds
+     * @return String AM or PM stamp
+     **/
+    public String date2AMPMString(Calendar C)
+    {
+        if (C.get(Calendar.AM_PM)==Calendar.PM)
+            return "PM";
+        else
+        	return "AM";
+    }
+
+    /**
+     * Returns the time portion of a given Time
+     *
+     * <br><br><b>Usage:</b> String ST_AMPM=date2APTimeString(time);
+     * @param time The time in ampm format
+     * @return String AM or PM stamp
+     **/
+    public String date2APTimeString(long time)
+    {
+        Calendar C=makeCalendar(time);
+        return date2HRString(C)+":"+date2MINString(C)+" "+date2AMPMString(C);
+    }
+    
     private Calendar makeCalendar(long time)
     {
         Calendar C=Calendar.getInstance();
@@ -685,7 +666,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
      * Converts a given date into a string of form:
      * MM/DD/YY
      *
-     * <br><br><b>Usage:</b> d2D2String()
+     * <br><br><b>Usage:</b> date2Date2String()
      * @param time The time in miliseconds
      * @return String Formatted date
      */

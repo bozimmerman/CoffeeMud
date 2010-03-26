@@ -27,6 +27,7 @@ public class Statement implements java.sql.Statement
    }
 
    private Connection connection;
+   public String lastSQL="null";
 
    Statement(Connection c) { connection=c; }
 
@@ -151,6 +152,9 @@ public class Statement implements java.sql.Statement
 			   if(e>=sql.length())
 				   throw new java.sql.SQLException("Unexpected end of where clause in "+sql);
 			   s=e;
+			   while((s < sql.length())&&(sql.charAt(s)==' '||sql.charAt(s)=='\t'))
+				   s++;
+			   e=s;
 			   while((e < sql.length())&&(eow1.indexOf(sql.charAt(e))>0))
 				   e++;
 			   String comparitor = sql.substring(s,e).trim();
@@ -226,6 +230,7 @@ public class Statement implements java.sql.Statement
    
    public java.sql.ResultSet executeQuery(String sql) throws java.sql.SQLException
    {
+	  lastSQL=sql;
       try {
          String[] token=new String[1];
          sql=split(sql,token);
@@ -311,6 +316,7 @@ public class Statement implements java.sql.Statement
    }
    public int executeUpdate(String sql) throws java.sql.SQLException
    {
+	  lastSQL=sql;
       //log("executeUpdate"+sql);
 
       // insert into x (a,b,c) values (a,b,c)

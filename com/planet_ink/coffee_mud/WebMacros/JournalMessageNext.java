@@ -56,9 +56,11 @@ public class JournalMessageNext extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
-		String journal=httpReq.getRequestParameter("JOURNAL");
-		if(journal==null) return " @break@";
-		if(CMLib.journals().isArchonJournalName(journal))
+		String journalName=httpReq.getRequestParameter("JOURNAL");
+		if(journalName==null) 
+			return " @break@";
+		
+		if(CMLib.journals().isArchonJournalName(journalName))
 		{
 			MOB M = Authenticate.getAuthenticatedMob(httpReq);
 			if((M==null)||(!CMSecurity.isASysOp(M)))
@@ -69,11 +71,11 @@ public class JournalMessageNext extends StdWebMacro
 		if((page==null)||(page.trim().length()==0))
 			page="0";
 		
-		Vector<JournalsLibrary.JournalEntry> info=(Vector<JournalsLibrary.JournalEntry>)httpReq.getRequestObjects().get("JOURNAL: "+journal);
+		Vector<JournalsLibrary.JournalEntry> info=(Vector<JournalsLibrary.JournalEntry>)httpReq.getRequestObjects().get("JOURNAL: "+journalName+": "+page);
 		if(info==null)
 		{
-			info=CMLib.database().DBReadJournalMsgs(journal);
-			httpReq.getRequestObjects().put("JOURNAL: "+journal,info);
+			info=CMLib.database().DBReadJournalMsgsNewerThan(journalName, null, CMath.s_long(page));
+			httpReq.getRequestObjects().put("JOURNAL: "+journalName+": "+page,info);
 		}
         String srch=httpReq.getRequestParameter("JOURNALMESSAGESEARCH");
         if(srch!=null) 
@@ -106,7 +108,7 @@ public class JournalMessageNext extends StdWebMacro
             if(CMLib.journals().canReadMessage(entry,srch,M,parms.contains("NOPRIV")))
             	break;
         }
-		
+        entry.cardinal=cardinal;
 		httpReq.addRequestParameters("JOURNALCARDINAL",""+cardinal);
 		httpReq.addRequestParameters("JOURNALMESSAGE",last);
 		return "";

@@ -60,13 +60,15 @@ public class JournalLoader
 					   continue;
 					ct++;
 				}
-				DB.DBDone(D);
 			}
 			catch(Exception sqle)
 			{
 				Log.errOut("Journal",sqle);
-				if(D!=null) DB.DBDone(D);
 				return ct;
+			}
+			finally
+			{
+				if(D!=null) DB.DBDone(D);
 			}
 			return ct;
 		}
@@ -87,17 +89,18 @@ public class JournalLoader
                 realName=DBConnections.getRes(R,"CMJRNL");
                 if(realName.length()==0)
                 {
-                    DB.DBDone(D);
                     return realName=null;
                 }
             }
-            DB.DBDone(D);
         }
         catch(Exception sqle)
         {
             Log.errOut("Journal",sqle);
-            if(D!=null) DB.DBDone(D);
         }
+		finally
+		{
+			if(D!=null) DB.DBDone(D);
+		}
         return realName;
     }
 	
@@ -118,11 +121,13 @@ public class JournalLoader
 				if(date>newest[0])
 					newest[0]=date;
 			}
-			DB.DBDone(D);
 		}
 		catch(Exception sqle)
 		{
 			Log.errOut("Journal",sqle);
+		}
+		finally
+		{
 			if(D!=null) DB.DBDone(D);
 		}
 		return newest;
@@ -149,13 +154,15 @@ public class JournalLoader
 				    	journals.addElement(which);
 				}
 			}
-			DB.DBDone(D);
 		}
 		catch(Exception sqle)
 		{
 			Log.errOut("Journal",sqle);
-			if(D!=null) DB.DBDone(D);
 			return null;
+		}
+		finally
+		{
+			if(D!=null) DB.DBDone(D);
 		}
 		return journals;
 	}
@@ -219,18 +226,22 @@ public class JournalLoader
 			String str="SELECT * FROM CMJRNL WHERE CMJRNL='"+Journal+"' AND CMUPTM < " + newerDate;
 			if(to != null) str +=" AND CMTONM='"+to+"'";
 			ResultSet R=D.query(str);
+			int cardinal=0;
 			while(R.next())
 			{
 				JournalsLibrary.JournalEntry entry = DBReadJournalEntry(R); 
+				entry.cardinal = ++cardinal;
 				journal.addElement(entry);
 			}
-			DB.DBDone(D);
 		}
 		catch(Exception sqle)
 		{
 			Log.errOut("Journal",sqle);
-			if(D!=null) DB.DBDone(D);
 			return null;
+		}
+		finally
+		{
+			if(D!=null) DB.DBDone(D);
 		}
 		Collections.sort(journal);
 		return journal;
@@ -247,18 +258,22 @@ public class JournalLoader
 			String str="SELECT * FROM CMJRNL WHERE CMJRNL='"+Journal+"' AND CMUPTM > " + olderDate;
 			if(to != null) str +=" AND CMTONM='"+to+"'";
 			ResultSet R=D.query(str);
+			int cardinal=0;
 			while(R.next())
 			{
 				JournalsLibrary.JournalEntry entry = DBReadJournalEntry(R); 
+				entry.cardinal = ++cardinal;
 				journal.addElement(entry);
 			}
-			DB.DBDone(D);
 		}
 		catch(Exception sqle)
 		{
 			Log.errOut("Journal",sqle);
-			if(D!=null) DB.DBDone(D);
 			return null;
+		}
+		finally
+		{
+			if(D!=null) DB.DBDone(D);
 		}
 		Collections.sort(journal);
 		return journal;
@@ -277,18 +292,22 @@ public class JournalLoader
 				D=DB.DBFetch();
 				String str="SELECT * FROM CMJRNL WHERE CMJRNL='"+Journal+"'";
 				ResultSet R=D.query(str);
+				int cardinal=0;
 				while(R.next())
 				{
-					JournalsLibrary.JournalEntry entry = DBReadJournalEntry(R); 
+					JournalsLibrary.JournalEntry entry = DBReadJournalEntry(R);
+					entry.cardinal = ++cardinal;
 					journal.addElement(entry);
 				}
-				DB.DBDone(D);
 			}
 			catch(Exception sqle)
 			{
 				Log.errOut("Journal",sqle);
-				if(D!=null) DB.DBDone(D);
 				return null;
+			}
+			finally
+			{
+				if(D!=null) DB.DBDone(D);
 			}
 			Collections.sort(journal);
 			return journal;
@@ -311,13 +330,15 @@ public class JournalLoader
 					JournalsLibrary.JournalEntry entry = DBReadJournalEntry(R);
 					return entry;
 				}
-				DB.DBDone(D);
 			}
 			catch(Exception sqle)
 			{
 				Log.errOut("Journal",sqle);
-				if(D!=null) DB.DBDone(D);
 				return null;
+			}
+			finally
+			{
+				if(D!=null) DB.DBDone(D);
 			}
 			return null;
 		}
@@ -362,8 +383,10 @@ public class JournalLoader
 		{
 			Log.errOut("JournalLoader",sqle.getMessage());
 		}
-		if(D!=null) DB.DBDone(D);
-		
+		finally
+		{
+			if(D!=null) DB.DBDone(D);
+		}
 	}
 	
 	public void DBReadJournalSummaryStats(JournalsLibrary.JournalSummaryStats stats)
@@ -425,7 +448,10 @@ public class JournalLoader
 		{
 			Log.errOut("JournalLoader",sqle.getMessage());
 		}
-		if(D!=null) DB.DBDone(D);
+		finally
+		{
+			if(D!=null) DB.DBDone(D);
+		}
 	}
 
 	

@@ -9,38 +9,70 @@
 	<title>Forums</title>
 	<script language=JavaScript>
 	<!--
-		function DoForum(which)
+		function DoForum(journal)
 		{
-			alert('Not yet implemented')
+			document.FORUM.action="forum.cmvp";
+			document.FORUM.JOURNAL.value=journal;
+			document.FORUM.submit();
+		}
+		function DoMessage(journal,msg)
+		{
+			document.FORUM.action="forum.cmvp";
+			document.FORUM.JOURNAL.value=journal;
+			document.FORUM.JOURNALMESSAGE.value=msg;
+			document.FORUM.submit();
 		}
 	//-->
 	</SCRIPT>
 </head>
 
 <body>
+<FORM NAME=FORUM TARGET=_top METHOD=POST ACTION="forums.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=JOURNAL VALUE="">
+<INPUT TYPE=HIDDEN NAME=JOURNALMESSAGE VALUE="">
 <TABLE WIDTH=100% BORDER=0 CELLSPACING=1 CELLPADDING=1>
-<TR BGCOLOR=BLACK>
-	<TD WIDTH=60% COLSPAN=2><FONT COLOR=WHITE SIZE=-1><B>Forum</B></FONT></TD>
-	<TD WIDTH=30% ALIGN=CENTER><FONT COLOR=WHITE SIZE=-1><B>Last Post</B></FONT></TD>
-	<TD WIDTH=5% ALIGN=CENTER><FONT COLOR=WHITE SIZE=-1><B>Threads</B></FONT></TD>
-	<TD WIDTH=5% ALIGN=CENTER><FONT COLOR=WHITE SIZE=-1><B>Posts</B></FONT></TD>
+<TR BGCOLOR=BLACK HEIGHT=20>
+	<TD COLSPAN=2><FONT COLOR=WHITE SIZE=-1><B>Forum</B></FONT></TD>
+	<TD WIDTH=230px ALIGN=CENTER><FONT COLOR=WHITE SIZE=-1><B>Last Post</B></FONT></TD>
+	<TD WIDTH=60px ALIGN=CENTER><FONT COLOR=WHITE SIZE=-1><B>Threads</B></FONT></TD>
+	<TD WIDTH=60px ALIGN=CENTER><FONT COLOR=WHITE SIZE=-1><B>Posts</B></FONT></TD>
 </TR>
 @ForumJournalNext?RESET@
 @loop@
 	@ForumJournalNext@
 	<TR>
-	<TD WIDTH=5% BGCOLOR=LIGHTGREY><IMG WIDTH=90 HEIGHT=90 SRC=@ForumInfo?IMAGEPATH@></TD>
-	<TD WIDTH=55% BGCOLOR=LIGHTGREY>
-		<a href="DoForum('@JournalName@');"><B><FONT COLOR=BLACK>@JournalName@</FONT></B></a><BR>
+	<TD WIDTH=40px VALIGN=CENTER ALIGN=CENTER BGCOLOR=LIGHTGREY><IMG WIDTH=30 HEIGHT=30 SRC=@ForumInfo?IMAGEPATH@></TD>
+	<TD BGCOLOR=LIGHTGREY>
+		<a href="javascript:DoForum('@JournalName@');"><B><FONT COLOR=BLACK>@JournalName@</FONT></B></a><BR>
 		<FONT COLOR=BLACK SIZE=-1>@ForumInfo?SHORTDESC@</FONT>
 		</TD>
-	<TD WIDTH=30% VALIGN=CENTER BGCOLOR=LIGHTBLUE>
-		<FONT COLOR=BLACK SIZE=-1>Last Post</FONT>
+	<TD VALIGN=CENTER ALIGN=LEFT BGCOLOR=LIGHTBLUE>
+		@AddRequestParameter?JOURNALMESSAGE=FORUMALATEST@
+		@if?JournalInfo?ISMESSAGE@
+			<TABLE WIDTH=100% BORDER=0 CELLSPAN=0 CELLPADDING=0>
+			<TR><TD COLSPAN=2>
+				<FONT COLOR=BLACK SIZE=-1>
+				@AddRequestParameter?SUBJ=@@JournalInfo?SUBJECT@@ @
+				<a href="javascript:DoMessage('@JournalName@');"><B><FONT COLOR=BLACK>@JournalName@</FONT></B></a><BR>
+				@RequestParameter?SUBJECT&ELLIPSE=27@
+				</a>
+				</FONT>
+				</TD>
+			</TR><TR>
+				<TD ALIGN=LEFT><FONT COLOR=BLACK SIZE=-2>by @JournalInfo?FROM@</FONT></TD>
+				<TD ALIGN=RIGHT>
+					<FONT COLOR=BLACK SIZE=-2>@JournalInfo?DATEUPDATED@</FONT>
+					<FONT COLOR=DARKGREY SIZE=-2>@JournalInfo?TIMEUPDATED@</FONT>
+				</TD>
+			</TR></TABLE>
+		@endif@
 	</TD>
-	<TD WIDTH=5% VALIGN=CENTER ALIGN=CENTER BGCOLOR=LIGHTGREY><FONT COLOR=BLACK SIZE=-1>@ForumInfo?THREADS@</FONT></TD>
-	<TD WIDTH=5% VALIGN=CENTER ALIGN=CENTER BGCOLOR=LIGHTBLUE><FONT COLOR=BLACK SIZE=-1>@ForumInfo?POSTS@</FONT></TD>
+	<TD VALIGN=CENTER ALIGN=CENTER BGCOLOR=LIGHTGREY><FONT COLOR=BLACK SIZE=-1>@ForumInfo?THREADS@</FONT></TD>
+	<TD VALIGN=CENTER ALIGN=CENTER BGCOLOR=LIGHTBLUE><FONT COLOR=BLACK SIZE=-1>@ForumInfo?POSTS@</FONT></TD>
 	</TR>
 @back@
 </TABLE>
+</FORM>
 </body>
 </html>

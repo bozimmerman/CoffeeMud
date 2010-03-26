@@ -13,6 +13,7 @@
 			document.JOURNAL.action=action;
 			document.JOURNAL.JOURNAL.value='';
 			document.JOURNAL.JOURNALMESSAGE.value='';
+			document.JOURNAL.JOURNALCARDINAL.value='';
 			document.JOURNAL.FUNCTION.value='';
 			document.JOURNAL.submit();
 		}
@@ -21,22 +22,25 @@
 			document.JOURNAL.JOURNAL.value=journal;
 			document.JOURNAL.JOURNALMESSAGE.value='';
             document.JOURNAL.JOURNALMESSAGESEARCH.value='';
+			document.JOURNAL.JOURNALCARDINAL.value='';
 			document.JOURNAL.FUNCTION.value='';
 			document.JOURNAL.action="journal.cmvp#"+journal;
 			document.JOURNAL.submit();
 		}
-		function Clicked2(journal,message)
+		function Clicked2(journal,message,cardinal)
 		{
 			document.JOURNAL.JOURNAL.value=journal;
 			document.JOURNAL.JOURNALMESSAGE.value=message;
+			document.JOURNAL.JOURNALCARDINAL.value=cardinal;
 			document.JOURNAL.FUNCTION.value='';
 			document.JOURNAL.action="journal.cmvp#"+journal;
 			document.JOURNAL.submit();
 		}
-		function Clicked3(journal,message,action)
+		function Clicked3(journal,message,action,cardinal)
 		{
 			document.JOURNAL.JOURNAL.value=journal;
 			document.JOURNAL.JOURNALMESSAGE.value=message;
+			document.JOURNAL.JOURNALCARDINAL.value=cardinal;
 			document.JOURNAL.FUNCTION.value=action;
 			document.JOURNAL.action="journal.cmvp#"+journal;
 			document.JOURNAL.submit();
@@ -58,7 +62,7 @@
 		<TABLE WIDTH=50% BORDER=1>
 		<TR><TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK SIZE=-1><B>Menu</B></FONT></TD></TR>
 		<TR><TD><a href="javascript:Clicked('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
-		<TR><TD><a href="javascript:Clicked2('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@');"><FONT COLOR=WHITE SIZE=-1><B>Refresh Page</B></FONT></A></TD></TR>
+		<TR><TD><a href="javascript:Clicked2('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','@RequestParameter?JOURNALCARDINAL@');"><FONT COLOR=WHITE SIZE=-1><B>Refresh Page</B></FONT></A></TD></TR>
 		</TABLE>
 	</TD>
 	</TR>
@@ -68,12 +72,13 @@
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=JOURNAL VALUE="@RequestParameter?JOURNAL@">
 <INPUT TYPE=HIDDEN NAME=JOURNALMESSAGE VALUE="@RequestParameter?JOURNALMESSAGE@">
+<INPUT TYPE=HIDDEN NAME=JOURNALCARDINAL VALUE="@RequestParameter?JOURNALCARDINAL@">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
 <TABLE WIDTH=100% BORDER=1>
 	<TR><TD WIDTH=100% COLSPAN=2 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Journal Browser<a href="javascript:sfideas();"><FONT COLOR=WHITE>.</FONT></a></H2></FONT></TD></TR>
 		@AddRequestParameter?OLDJOURNAL=@@RequestParameter?JOURNAL@@ @
 		@if?CheckReqParm?JOURNAL=@
-		<INPUT TYPE=HIDDEN NAME=JOURNALMESSAGESEARCH VALUE="@RequestParameter?JOURNALMESSAGESEARCH@">
+			<INPUT TYPE=HIDDEN NAME=JOURNALMESSAGESEARCH VALUE="@RequestParameter?JOURNALMESSAGESEARCH@">
 		@endif@
 		@AddRequestParameter?OLDMESSAGE=@@RequestParameter?JOURNALMESSAGE@@ @
 		@JournalNext?RESET@
@@ -99,27 +104,25 @@
 				<CENTER><FONT COLOR=RED><B>@JournalFunction?NEWPOST@</B></FONT></CENTER>
 				@endif@
 				@AddRequestParameter?OLDMESSAGE=@@RequestParameter?JOURNALMESSAGE@@ @
+				@AddRequestParameter?OLDCARDINAL=@@RequestParameter?JOURNALCARDINAL@@ @
 			
 				@JournalMessageNext?RESET@
 				<UL>
 				@loop@
 					@JournalMessageNext@
-					<LI><a href="javascript:Clicked2('@JournalName@','@RequestParameter?JOURNALMESSAGE@')">
-					<FONT COLOR=YELLOW>
-					@AddRequestParameter?DISPLAYMSGNUM=@@RequestParameter?JOURNALMESSAGE@@ @
-					@AddRequestParameter?DISPLAYMSGNUM=++@
-					@RequestParameter?DISPLAYMSGNUM@
-					</FONT>
+					<LI><a href="javascript:Clicked2('@JournalName@','@RequestParameter?JOURNALMESSAGE@','@RequestParameter?JOURNALCARDINAL@')">
+					<FONT COLOR=YELLOW>@RequestParameter?JOURNALCARDINAL@</FONT>
 					<FONT COLOR=WHITE>. @JournalInfo?SUBJECT@
 					</FONT>
 					</a>
 				@back@
 				</UL>
 				<BR><INPUT TYPE=TEXT NAME=JOURNALMESSAGESEARCH SIZE=10 VALUE="@RequestParameter?JOURNALMESSAGESEARCH@">
-				<INPUT TYPE=BUTTON NAME=SEARCH VALUE="Filter" ONCLICK="Clicked2('@JournalName@','');">
+				<INPUT TYPE=BUTTON NAME=SEARCH VALUE="Filter" ONCLICK="Clicked2('@JournalName@','','');">
 				</TD>
 				<TD WIDTH=70% VALIGN=TOP>
 				@AddRequestParameter?JOURNALMESSAGE=@@RequestParameter?OLDMESSAGE@@ @
+				@AddRequestParameter?JOURNALCARDINAL=@@RequestParameter?OLDCARDINAL@@ @
 				@AddRequestParameter?JOURNAL=@@RequestParameter?OLDJOURNAL@@ @
 				
 				@if?!CheckReqParm?JOURNAL=@
@@ -137,14 +140,14 @@
 						</TABLE>
 						<TEXTAREA NAME=NEWTEXT ROWS=10 COLS=60 WRAP=VIRTUAL></TEXTAREA>
 						<BR>
-						<INPUT TYPE=BUTTON NAME=SUBMITPOST VALUE="Submit Post" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','NEWPOST');">
+						<INPUT TYPE=BUTTON NAME=SUBMITPOST VALUE="Submit Post" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','NEWPOST','');">
 					@else@
 					@if?CheckReqParm?FUNCTION=POSTREPLY@
 						<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
 						<TR>
 							<TD WIDTH=20%><FONT COLOR=YELLOW>Message: </FONT>
 							</TD>
-							<TD WIDTH=80%><FONT COLOR=WHITE>#@RequestParameter?JOURNALCARDINAL@</FONT></TD>
+							<TD WIDTH=80%><FONT COLOR=WHITE>#@JournalInfo?CARDINAL@</FONT></TD>
 						</TR>
 						<TR>
 							<TD><FONT COLOR=YELLOW>From: </FONT></TD>
@@ -178,12 +181,12 @@
 						<TABLE WIDTH=100% BORDER=0>
 						<TR>
 						<TD WIDTH=33% ALIGN=LEFT>
-							<INPUT TYPE=BUTTON NAME=SUBMITPOST VALUE="Submit" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','REPLY');">
+							<INPUT TYPE=BUTTON NAME=SUBMITPOST VALUE="Submit" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','REPLY','@RequestParameter?JOURNALCARDINAL@');">
 						</TD>
 						<TD WIDTH=33% ALIGN=LEFT>
 						</TD>
 						<TD WIDTH=33% ALIGN=LEFT>
-							<INPUT TYPE=BUTTON NAME=SUBMITPOST VALUE="Cancel" ONCLICK="Clicked2('@JournalName@','@RequestParameter?JOURNALMESSAGE@');">
+							<INPUT TYPE=BUTTON NAME=SUBMITPOST VALUE="Cancel" ONCLICK="Clicked2('@JournalName@','@RequestParameter?JOURNALMESSAGE@','@RequestParameter?JOURNALCARDINAL@');">
 						</TD>
 						</TR>
 						</TABLE>
@@ -207,12 +210,12 @@
 						<TABLE WIDTH=100% BORDER=0>
 						<TR>
 						<TD WIDTH=33% ALIGN=LEFT>
-							<INPUT TYPE=BUTTON NAME=SUBMITPOST VALUE="Submit" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','EMAIL');">
+							<INPUT TYPE=BUTTON NAME=SUBMITPOST VALUE="Submit" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','EMAIL','@RequestParameter?JOURNALCARDINAL@');">
 						</TD>
 						<TD WIDTH=33% ALIGN=LEFT>
 						</TD>
 						<TD WIDTH=33% ALIGN=LEFT>
-							<INPUT TYPE=BUTTON NAME=SUBMITPOST VALUE="Cancel" ONCLICK="Clicked2('@JournalName@','@RequestParameter?JOURNALMESSAGE@');">
+							<INPUT TYPE=BUTTON NAME=SUBMITPOST VALUE="Cancel" ONCLICK="Clicked2('@JournalName@','@RequestParameter?JOURNALMESSAGE@','@RequestParameter?JOURNALCARDINAL@');">
 						</TD>
 						</TR>
 						</TABLE>
@@ -225,7 +228,7 @@
 							<TR>
 								<TD WIDTH=20%><FONT COLOR=YELLOW>Message: </FONT>
 								</TD>
-								<TD WIDTH=80%><FONT COLOR=WHITE>#@RequestParameter?JOURNALCARDINAL@</FONT></TD>
+								<TD WIDTH=80%><FONT COLOR=WHITE>#@JournalInfo?CARDINAL@</FONT></TD>
 							</TR>
 							<TR>
 								<TD><FONT COLOR=YELLOW>From: </FONT></TD>
@@ -251,7 +254,7 @@
 							<TR VALIGN=TOP>
 							<TD WIDTH=51% ALIGN=LEFT VALIGN=TOP>
 								@if?CheckAuthCode?AUTH_JOURNALS=true@
-								<INPUT TYPE=BUTTON NAME=TRANSFER VALUE="Transfer TO:" ONCLICK="if(document.JOURNAL.NEWJOURNAL.selectedIndex>=0)Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','TRANSFER');">
+								<INPUT TYPE=BUTTON NAME=TRANSFER VALUE="Transfer TO:" ONCLICK="if(document.JOURNAL.NEWJOURNAL.selectedIndex>=0)Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','TRANSFER','@RequestParameter?JOURNALCARDINAL@');">
 								@AddRequestParameter?THISJOURNAL=@@RequestParameter?JOURNAL@@ @
 								<SELECT NAME=NEWJOURNAL>
 								@JournalNext?RESET@
@@ -264,32 +267,33 @@
 								@endif@
 							</TD>
 							<TD WIDTH=17% ALIGN=CENTER VALIGN=TOP>
-								<INPUT TYPE=BUTTON NAME=REPLY VALUE="Reply" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','POSTREPLY');">
+								<INPUT TYPE=BUTTON NAME=REPLY VALUE="Reply" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','POSTREPLY','@RequestParameter?JOURNALCARDINAL@');">
 							</TD>
 							<TD WIDTH=17% ALIGN=CENTER VALIGN=TOP>
 							@if?JournalInfo?EMAILALLOWED@
-								<INPUT TYPE=BUTTON NAME=EMAIL VALUE="Email" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','POSTEMAIL');">
+								<INPUT TYPE=BUTTON NAME=EMAIL VALUE="Email" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','POSTEMAIL','@RequestParameter?JOURNALCARDINAL@');">
 							@endif@
 							</TD>
 							<TD WIDTH=17% ALIGN=CENTER VALIGN=TOP>
-								<INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="if(confirm('Delete this message?'))Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','DELETE');">
+								<INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="if(confirm('Delete this message?'))Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','DELETE','@RequestParameter?JOURNALCARDINAL@');">
 							</TD>
 							</TR>
 							</TABLE>
 						@else@
-							<INPUT TYPE=BUTTON NAME=ADDNEW VALUE="Compose New Message" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','POSTNEW');">
+							<INPUT TYPE=BUTTON NAME=ADDNEW VALUE="Compose New Message" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','POSTNEW','');">
 							@if?!CheckReqParm?FUNCTION=SHOWALL@
-                                <INPUT TYPE=BUTTON NAME=SHOWALLBUTT VALUE="Show All Messages" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','','SHOWALL');">
+                                <INPUT TYPE=BUTTON NAME=SHOWALLBUTT VALUE="Show All Messages" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','','SHOWALL','');">
                             @else@
                                 <HR>
                                 @JournalMessageNext?RESET@
                                 @loop@
                                     @JournalMessageNext@
+                                    <INPUT TYPE=HIDDEN NAME="CARDINAL@RequestParameter?JOURNALMESSAGE@" VALUE="@RequestParameter?JOURNALCARDINAL@" CHECKED>
                                     <TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
                                     <TR>
                                         <TD WIDTH=20%><FONT COLOR=YELLOW>Message: </FONT>
                                         </TD>
-                                        <TD WIDTH=80%><FONT COLOR=WHITE>#@RequestParameter?JOURNALCARDINAL@</FONT></TD>
+                                        <TD WIDTH=80%><FONT COLOR=WHITE>#@JournalInfo?CARDINAL@</FONT></TD>
                                     </TR>
                                     <TR>
                                         <TD><FONT COLOR=YELLOW>From: </FONT></TD>
@@ -314,10 +318,10 @@
                                     <TD WIDTH=35% ALIGN=LEFT VALIGN=TOP>
                                         @if?CheckAuthCode?AUTH_JOURNALS=true@
                                         <FONT COLOR=WHITE SIZE=-1>
-                                        <INPUT TYPE=RADIO NAME=FATE@RequestParameter?JOURNALMESSAGE@ VALUE="" CHECKED>
+                                        <INPUT TYPE=RADIO NAME="FATE@RequestParameter?JOURNALMESSAGE@" VALUE="" CHECKED>
                                         Leave Here
                                         <BR>
-                                        <INPUT TYPE=RADIO NAME=FATE@RequestParameter?JOURNALMESSAGE@ VALUE="TRANSFER">
+                                        <INPUT TYPE=RADIO NAME="FATE@RequestParameter?JOURNALMESSAGE@" VALUE="TRANSFER">
                                         Transfer:
                                         @AddRequestParameter?THISJOURNAL=@@RequestParameter?JOURNAL@@ @
                                         <SELECT NAME=NEWJOURNAL@RequestParameter?JOURNALMESSAGE@>
@@ -330,24 +334,24 @@
                                         @AddRequestParameter?JOURNAL=@@RequestParameter?THISJOURNAL@@ @
                                         @endif@
                                         <BR>
-                                        <INPUT TYPE=RADIO NAME=FATE@RequestParameter?JOURNALMESSAGE@ VALUE="DELETE">
+                                        <INPUT TYPE=RADIO NAME="FATE@RequestParameter?JOURNALMESSAGE@" VALUE="DELETE">
                                         Delete
                                     </TD>
                                     <TD WIDTH=65% ALIGN=CENTER VALIGN=TOP>
                                         <FONT COLOR=WHITE SIZE=-1>
-                                        <INPUT TYPE=RADIO NAME=REPLYEMAIL@RequestParameter?JOURNALMESSAGE@ VALUE="" CHECKED>No Reply/Email
-                                        <INPUT TYPE=RADIO NAME=REPLYEMAIL@RequestParameter?JOURNALMESSAGE@ VALUE="REPLY">Reply
+                                        <INPUT TYPE=RADIO NAME="REPLYEMAIL@RequestParameter?JOURNALMESSAGE@" VALUE="" CHECKED>No Reply/Email
+                                        <INPUT TYPE=RADIO NAME="REPLYEMAIL@RequestParameter?JOURNALMESSAGE@" VALUE="REPLY">Reply
 	                                    @if?JournalInfo?EMAILALLOWED@
-	                                        <INPUT TYPE=RADIO NAME=REPLYEMAIL@RequestParameter?JOURNALMESSAGE@ VALUE="EMAIL">Email
+	                                        <INPUT TYPE=RADIO NAME="REPLYEMAIL@RequestParameter?JOURNALMESSAGE@" VALUE="EMAIL">Email
 	                                    @endif@
-	                                    <TEXTAREA NAME=NEWTEXT@RequestParameter?JOURNALMESSAGE@ COLS=50 ROWS=3 WRAP></TEXTAREA>
+	                                    <TEXTAREA NAME="NEWTEXT@RequestParameter?JOURNALMESSAGE@" COLS=50 ROWS=3 WRAP></TEXTAREA>
                                     </TD>
                                     </TR>
                                     </TABLE>
                                     <HR>
                                 @back@
                                 <CENTER>
-                                <INPUT TYPE=BUTTON NAME=PROCESSALL Value="Submit All" ONCLICK="if(window.confirm('Submit all changes above?')) Clicked3('@RequestParameter?JOURNAL@','','EVERYTHING');">
+                                <INPUT TYPE=BUTTON NAME=PROCESSALL Value="Submit All" ONCLICK="if(window.confirm('Submit all changes above?')) Clicked3('@RequestParameter?JOURNAL@','','EVERYTHING','');">
                                 </CENTER>
                             @endif@
 						@endif@
@@ -367,7 +371,7 @@
 	<TD WIDTH=100% ALIGN=CENTER>
 	@AddRequestParameter?JOURNALMESSAGE=@@RequestParameter?OLDMESSAGE@@ @
 	@AddRequestParameter?JOURNAL=@@RequestParameter?OLDJOURNAL@@ @
-	<INPUT TYPE=BUTTON NAME=REFRESH VALUE="REFRESH" ONCLICK="Clicked2('@JournalName@','@RequestParameter?JOURNALMESSAGE@');">
+	<INPUT TYPE=BUTTON NAME=REFRESH VALUE="REFRESH" ONCLICK="Clicked2('@JournalName@','@RequestParameter?JOURNALMESSAGE@','@RequestParameter?JOURNALCARDINAL@');">
 	</TD>
 	</TR>
 	</TABLE>

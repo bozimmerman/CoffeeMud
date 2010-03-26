@@ -74,6 +74,9 @@ public interface JournalsLibrary extends CMLibrary, Runnable
 		public String parent="";
 		public long attributes=0;
 		public String data="";
+		public int cardinal=0;
+		public String msgIcon="";
+		public int replies=0;
 		public int compareTo(JournalEntry o) {
 			if(date < o.date) return -1;
 			if(date > o.date) return 1;
@@ -81,6 +84,7 @@ public interface JournalsLibrary extends CMLibrary, Runnable
 		}
 		public StringBuffer derivedBuildMessage=null;
 		
+		public final static long ATTRIBUTE_STUCKY=2;
 		public final static long ATTRIBUTE_PROTECTED=1;
 		
 	}

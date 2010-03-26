@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+<title>openWYSIWYG | Select Color</title>
+</head>
+<script language="JavaScript" type="text/javascript">
+
+var qsParm = new Array();
+
+
+/* ---------------------------------------------------------------------- *\
+  Function    : retrieveWYSIWYG()
+  Description : Retrieves the textarea ID for which the link will be inserted into.
+\* ---------------------------------------------------------------------- */
+function retrieveWYSIWYG() {
+  var query = window.location.search.substring(1);
+  var parms = query.split('&');
+  for (var i=0; i<parms.length; i++) {
+    var pos = parms[i].indexOf('=');
+    if (pos > 0) {
+       var key = parms[i].substring(0,pos);
+       var val = parms[i].substring(pos+1);
+       qsParm[key] = val;
+    }
+  }
+}
+
+
+function insertHyperLink() {
+  var hyperLink = document.getElementById('linkType').value + document.getElementById('url').value;
+  window.opener.document.getElementById('wysiwyg' + qsParm['wysiwyg']).contentWindow.document.execCommand("CreateLink", false, hyperLink);
+  window.close();
+}
+
+</script>
+<body bgcolor="#EEEEEE" marginwidth="0" marginheight="0" topmargin="0" leftmargin="0" onLoad="retrieveWYSIWYG();">
+
+<table border="0" cellpadding="0" cellspacing="0" style="padding: 10px;"><tr><td>
+
+<span style="font-family: arial, verdana, helvetica; font-size: 11px; font-weight: bold;">Insert Hyperlink:</span>
+<table width="280" border="0" cellpadding="0" cellspacing="0" style="background-color: #F7F7F7; border: 2px solid #FFFFFF; padding: 5px;">
+ <tr>
+  <td style="padding-bottom: 2px; width: 50px; font-family: arial, verdana, helvetica; font-size: 11px;">Type:</td>
+	<td style="padding-bottom: 2px;">
+	<select name="linkType" id="linkType" style="margin-right: 10px; font-size: 10px;">
+	 <option value="http://">http:</option>
+	 <option value="https://">https:</option>
+	 <option value="mailto:">mailto:</option>
+	</select>
+	</td>	
+ </tr>
+ <tr>
+  <td style="padding-bottom: 2px; padding-top: 0px; font-family: arial, verdana, helvetica; font-size: 11px;">URL:</td>
+	<td style="padding-bottom: 2px; padding-top: 0px;"><input type="text" name="url" id="url" value=""  style="font-size: 10px; width: 100%;"></td>
+ </tr>
+</table>	
+
+<div align="right" style="padding-top: 5px;"><input type="submit" value="  Submit  " onClick="insertHyperLink();" style="font-size: 12px;" >&nbsp;<input type="submit" value="  Cancel  " onClick="window.close();" style="font-size: 12px;" ></div>
+
+</tr></td</table>
+
+</body>
+</html>

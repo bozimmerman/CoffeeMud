@@ -32,28 +32,22 @@ import java.net.URLEncoder;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
-public class RequestParameterEncoded extends StdWebMacro
+public class RequestParameterEncoded extends RequestParameter
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		String str="";
-		Hashtable parms=parseParms(parm);
-		for(Enumeration e=parms.keys();e.hasMoreElements();)
+		
+		String str=super.runMacro(httpReq, parm);
+		try
 		{
-			String key=(String)e.nextElement();
-			try
-			{
-				if(httpReq.isRequestParameter(key))
-					str+=URLEncoder.encode(httpReq.getRequestParameter(key),"UTF-8");
-			}  
-			catch(java.io.UnsupportedEncodingException ex)
-			{
-				Log.errOut(name(),"Wrong Encoding");
-			}
+			str+=URLEncoder.encode(str,"UTF-8");
+		}  
+		catch(java.io.UnsupportedEncodingException ex)
+		{
+			Log.errOut(name(),"Wrong Encoding");
 		}
-        return clearWebMacros(str);
+		return str;
 	}
 }
