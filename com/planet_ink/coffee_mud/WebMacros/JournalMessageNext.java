@@ -94,7 +94,7 @@ public class JournalMessageNext extends StdWebMacro
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);
         cardinal++;
         JournalsLibrary.JournalEntry entry = null;
-        while(true)
+        while((entry==null)||(!CMLib.journals().canReadMessage(entry,srch,M,parms.contains("NOPRIV"))))
         {
         	entry = getNextEntry(info,last);
     		if(entry==null)
@@ -105,8 +105,6 @@ public class JournalMessageNext extends StdWebMacro
     			return " @break@";
     		}
     		last=entry.key;
-            if(CMLib.journals().canReadMessage(entry,srch,M,parms.contains("NOPRIV")))
-            	break;
         }
         entry.cardinal=cardinal;
 		httpReq.addRequestParameters("JOURNALCARDINAL",""+cardinal);
