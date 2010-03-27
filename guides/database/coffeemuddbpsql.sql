@@ -210,6 +210,8 @@ CREATE TABLE CMJRNL (
 	CMATTR int NULL,
 	CMDATA varchar (255) NULL ,
 	CMUPTM bigint NULL,
+	CMIMGP varchar (50) NULL,
+	CMVIEW int NULL,
 	CMMSGT text NULL 
 );
 

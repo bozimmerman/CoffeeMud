@@ -183,6 +183,8 @@ CREATE TABLE CMJRNL (
 	CMATTR int,
 	CMDATA varchar (255) ,
 	CMUPTM integer(8),
+	CMIMGP varchar (50),
+	CMVIEW int,
 	CMMSGT CLOB ,
 	PRIMARY KEY (CMJKEY)
 );

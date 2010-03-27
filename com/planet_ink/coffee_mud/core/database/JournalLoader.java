@@ -178,10 +178,12 @@ public class JournalLoader
 		entry.parent=DBConnections.getRes(R,"CMPART");
 		entry.attributes=CMath.s_long(DBConnections.getRes(R,"CMATTR"));
 		entry.data=DBConnections.getRes(R,"CMDATA");
-		String uptm=DBConnections.getRes(R,"CMUPTM");
+		entry.update=CMath.s_long(DBConnections.getRes(R,"CMUPTM"));
+		entry.msgIcon=DBConnections.getRes(R, "CMIMGP");
+		entry.views=CMath.s_int(DBConnections.getRes(R, "CMVIEW"));
 		entry.msg=DBConnections.getRes(R,"CMMSGT");
 		
-		int datestrdex=dateStr.indexOf("/");
+		int datestrdex=dateStr.indexOf('/');
 		if(datestrdex>=0)
 		{
 			entry.update=CMath.s_long(dateStr.substring(datestrdex+1));
@@ -190,10 +192,7 @@ public class JournalLoader
 		else
 		{
 			entry.date=CMath.s_long(dateStr);
-			long realUpdate=CMath.s_long(uptm);
-			if(realUpdate > entry.date)
-				entry.update=realUpdate;
-			else
+			if(entry.update<entry.date)
 				entry.update=entry.date;
 		}
 		
@@ -369,6 +368,16 @@ public class JournalLoader
 	public void DBUpdateJournal(String key, String subject, String msg)
 	{
 		DB.update("UPDATE CMJRNL SET CMSUBJ='"+subject+"', CMMSGT='"+msg+"' WHERE CMJKEY='"+key+"'");
+	}
+	
+	public void DBTouchJournalMessage(String key)
+	{
+		DB.update("UPDATE CMJRNL SET CMUPTM="+System.currentTimeMillis()+" WHERE CMJKEY='"+key+"'");
+	}
+	
+	public void DBViewJournalMessage(String key, int views)
+	{
+		DB.update("UPDATE CMJRNL SET CMVIEW="+views+" WHERE CMJKEY='"+key+"'");
 	}
 	
 	public void DBDeletePlayerData(String name)

@@ -185,6 +185,8 @@ CREATE TABLE CMJRNL (
 	CMATTR integer NULL,
 	CMDATA varchar (255) NULL ,
 	CMUPTM long NULL,
+	CMIMGP varchar (50) NULL,
+	CMVIEW integer NULL,
 	CMMSGT memo NULL,
 PRIMARY KEY (CMJKEY) 
 );

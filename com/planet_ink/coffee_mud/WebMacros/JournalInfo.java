@@ -212,6 +212,7 @@ public class JournalInfo extends StdWebMacro
 	                s=colorwebifyOnly(new StringBuffer(s)).toString();
 	                s=clearWebMacros(s);
 				}
+				CMLib.database().DBViewJournalMessage(entry.key, ++entry.views);
                 return s;
 			}
             if(parms.containsKey("EMAILALLOWED"))

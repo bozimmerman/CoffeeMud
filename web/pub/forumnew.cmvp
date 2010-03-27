@@ -18,6 +18,7 @@
 <FORM NAME=FORUM TARGET=_top METHOD=POST ACTION="forum.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=JOURNAL VALUE="@RequestParameter?JOURNAL@">
+<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="NEWPOST">
 <TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
 <TR BGCOLOR=BLACK HEIGHT=20>
 	<TD COLSPAN=2>
@@ -36,9 +37,9 @@
 <TR BGCOLOR=LIGHTGREY VALIGN=TOP>
 	<TD ALIGN=LEFT WIDTH=200px VALIGN=TOP>&nbsp;&nbsp;<FONT SIZE=6><B>Message:</B></FONT></TD>
 	<TD ALIGN=LEFT VALIGN=TOP>
-		<textarea id="textarea1" name="test1" style="height: 170px; width: 500px;"></textarea>
+		<textarea id="NEWTEXT" name="NEWTEXT" style="height: 170px; width: 500px;"></textarea>
 		<script language="javascript1.2">
-			generate_wysiwyg('textarea1');
+			generate_wysiwyg('NEWTEXT');
 		</script>
 	</TD>
 </TR>

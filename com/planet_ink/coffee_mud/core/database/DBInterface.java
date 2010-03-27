@@ -247,6 +247,12 @@ public class DBInterface implements DatabaseEngine
 	public void DBUpdateJournal(String key, String subject, String msg)
 	{JournalLoader.DBUpdateJournal(key,subject,msg);}
 	
+	public void DBViewJournalMessage(String key, int views)
+	{JournalLoader.DBViewJournalMessage(key, views);}
+	
+	public void DBTouchJournalMessage(String key)
+	{JournalLoader.DBTouchJournalMessage(key);}
+	
 	public void DBCreateRoom(Room room)
 	{RoomLoader.DBCreate(room);}
 	

@@ -77,6 +77,7 @@ public interface JournalsLibrary extends CMLibrary, Runnable
 		public int cardinal=0;
 		public String msgIcon="";
 		public int replies=0;
+		public int views=0;
 		public int compareTo(JournalEntry o) {
 			if(date < o.date) return -1;
 			if(date > o.date) return 1;
@@ -127,13 +128,13 @@ public interface JournalsLibrary extends CMLibrary, Runnable
     		String mask;
     		
     		mask=flags.remove(ForumJournalFlags.READ);
-    		this.readMask=(mask != null)?mask:"";
+    		this.readMask=(mask != null)?mask.trim():"";
     		mask=flags.remove(ForumJournalFlags.POST);
-    		this.postMask=(mask != null)?mask:"";
+    		this.postMask=(mask != null)?mask.trim():"";
     		mask=flags.remove(ForumJournalFlags.REPLY);
-    		this.replyMask=(mask != null)?mask:"";
+    		this.replyMask=(mask != null)?mask.trim():"";
     		mask=flags.remove(ForumJournalFlags.ADMIN);
-    		this.adminMask=(mask != null)?mask:"";
+    		this.adminMask=(mask != null)?mask.trim():"";
     		this.flags=flags;
     	}
     	public String NAME(){return name;}
@@ -142,6 +143,31 @@ public interface JournalsLibrary extends CMLibrary, Runnable
     	public String replyMask(){return replyMask;}
     	public String adminMask(){return adminMask;}
     	public String getFlag(CommandJournalFlags flag){return flags.get(flag);} 
+    	public boolean maskCheck(MOB M, String mask)
+    	{
+    		if(mask.length()>0)
+    		{
+    			if(M==null) return false;
+    			return CMLib.masking().maskCheck(mask, M, true);
+    		}
+    		return true;
+    	}
+    	public boolean authorizationCheck(MOB M, ForumJournalFlags fl)
+    	{
+    		if(!maskCheck(M,readMask))
+    			return false;
+    		if(fl==ForumJournalFlags.READ)
+    			return true;
+    		if(fl==ForumJournalFlags.POST)
+    			return maskCheck(M,postMask);
+    		else
+    		if(fl==ForumJournalFlags.REPLY)
+    			return maskCheck(M,replyMask);
+    		else
+    		if(fl==ForumJournalFlags.ADMIN)
+    			return maskCheck(M,adminMask);
+    		return false;
+    	}
     }
     
     public static enum ForumJournalFlags {

@@ -250,6 +250,8 @@ CREATE TABLE CMJRNL (
 	CMATTR int NULL,
 	CMDATA char (255) NULL ,
 	CMUPTM bigint NULL,
+	CMIMGP char (50) NULL,
+	CMVIEW integer NULL,
 	CMMSGT text NULL 
 );
 
