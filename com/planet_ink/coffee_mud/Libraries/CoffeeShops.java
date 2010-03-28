@@ -1652,7 +1652,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		}catch(Exception e){}
 	}
 
-    public void cancelAuction(Auctioneer.AuctionData data)
+    public void cancelAuction(String auctionHouse, Auctioneer.AuctionData data)
     {
     	data.auctioningM.giveItem(data.auctioningI);
     	if(data.highBidderM!=null)
@@ -1661,7 +1661,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	    	auctionNotify(M,"The auction for "+data.auctioningI.Name()+" was closed early.  You have been refunded your max bid.",data.auctioningI.Name());
 	    	CMLib.coffeeShops().returnMoney(M,data.currency,data.highBid);
         }
-    	CMLib.database().DBDeleteJournal(data.auctionDBKey);
+    	CMLib.database().DBDeleteJournal(auctionHouse, data.auctionDBKey);
         data.auctioningM.tell("Auction ended.");
     }
 }

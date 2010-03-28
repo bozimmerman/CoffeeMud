@@ -102,6 +102,8 @@ public interface DatabaseEngine extends CMLibrary
 	public void DBUpdateArea(String keyName,Area A);
 	public Vector DBReadJournals();
 	public void DBReadJournalSummaryStats(JournalsLibrary.JournalSummaryStats stats);
+	public void DBUpdateMessageReplies(String key, int numReplies);
+	public JournalsLibrary.JournalEntry DBReadJournalEntry(String Journal, String Key);
 	public Vector<JournalsLibrary.JournalEntry> DBReadJournalMsgs(String Journal);
 	public Vector<JournalsLibrary.JournalEntry> DBReadJournalMsgsOlderThan(String Journal, String to, long newerDate);
 	public Vector<JournalsLibrary.JournalEntry> DBReadJournalMsgsNewerThan(String Journal, String to, long olderDate);
@@ -110,7 +112,6 @@ public interface DatabaseEngine extends CMLibrary
 	public void DBWriteJournal(String Journal, String from, String to, String subject, String message);
 	public void DBWriteJournalReply(String Journal, String key, String from, String to, String subject, String message);
 	public void DBDeleteJournal(String Journal, String msgKeyOrNull);
-	public void DBDeleteJournal(String oldkey);
     public String DBGetRealJournalName(String possibleName);
 	public long[] DBJournalLatestDateNewerThan(String Journal, String to, long olderTime);
 	public void DBDeletePlayerJournals(String name);

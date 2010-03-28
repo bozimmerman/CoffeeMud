@@ -202,9 +202,6 @@ public class DBInterface implements DatabaseEngine
 	public void DBDeletePlayerJournals(String name)
 	{JournalLoader.DBDeletePlayerData(name);}
 	
-	public void DBDeleteJournal(String oldkey)
-	{JournalLoader.DBDelete(oldkey);}
-    
 	public void DBReadJournalSummaryStats(JournalsLibrary.JournalSummaryStats stats)
 	{JournalLoader.DBReadJournalSummaryStats(stats);}
     
@@ -216,6 +213,12 @@ public class DBInterface implements DatabaseEngine
 	
 	public Vector DBReadJournals()
 	{return JournalLoader.DBReadJournals();}
+	
+	public JournalsLibrary.JournalEntry DBReadJournalEntry(String Journal, String Key)
+	{ return JournalLoader.DBReadJournalEntry(Journal, Key);}
+	
+	public void DBUpdateMessageReplies(String key, int numReplies)
+	{ JournalLoader.DBUpdateMessageReplies(key, numReplies);}
 	
 	public Vector<JournalsLibrary.JournalEntry> DBReadJournalMsgs(String Journal)
 	{return JournalLoader.DBReadJournalMsgs(Journal);}

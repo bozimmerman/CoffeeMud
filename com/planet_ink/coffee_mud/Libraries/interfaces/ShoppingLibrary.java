@@ -63,6 +63,6 @@ public interface ShoppingLibrary extends CMLibrary
     public Vector getAuctions(Object ofLike, String auctionHouse);
 	public Auctioneer.AuctionData getEnumeratedAuction(String named, String auctionHouse);
 	public void auctionNotify(MOB M, String resp, String regardingItem);
-    public void cancelAuction(Auctioneer.AuctionData data);
+    public void cancelAuction(String auctionHouse, Auctioneer.AuctionData data);
 	public void saveAuction(Auctioneer.AuctionData data, String auctionHouse, boolean updateOnly);
 }

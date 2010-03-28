@@ -254,6 +254,13 @@ public class JournalFunction extends StdWebMacro
 						if((forum!=null)&&(!forum.authorizationCheck(M, ForumJournalFlags.ADMIN)))
 							return "Email not submitted -- Unauthorized.";
 						CMLib.database().DBDeleteJournal(journalName,entry.key);
+						if((entry.parent!=null)&&(entry.parent.length()>0))
+						{
+							// this constitutes a threaded reply -- update the counter
+							JournalsLibrary.JournalEntry parentEntry=CMLib.database().DBReadJournalEntry(journalName, entry.parent);
+							if(parentEntry!=null)
+								CMLib.database().DBUpdateMessageReplies(parentEntry.key,parentEntry.replies-1);
+						}
 						httpReq.addRequestParameters("JOURNALMESSAGE","");
 						httpReq.getRequestObjects().remove("JOURNAL: "+journalName+": "+page);
 						messages.append("Message #"+cardinalNumber+" deleted.<BR>");

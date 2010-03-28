@@ -145,7 +145,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	                            data.auctioningM.giveItem(data.auctioningI);
                                 if(!CMLib.flags().isInTheGame(data.auctioningM,true))
                                     CMLib.database().DBUpdatePlayerItems(data.auctioningM);
-                                CMLib.coffeeShops().cancelAuction(data);
+                                CMLib.coffeeShops().cancelAuction(auctionHouse(), data);
 							}
 						}
 					}
@@ -480,7 +480,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						else
 						if(data.auctioningM==mob)
 						{
-							CMLib.coffeeShops().cancelAuction(data);
+							CMLib.coffeeShops().cancelAuction(auctionHouse(), data);
 			                CMLib.commands().postSay(this,mob,"Your auction for "+data.auctioningI.name()+" has been canceled.",true,false);
 						}
 						else
@@ -500,7 +500,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
                             CMLib.coffeeShops().purchaseItems(data.auctioningI,CMParms.makeVector(data.auctioningI),this,mob);
     						if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
     							mob.location().recoverRoomStats();
-					    	CMLib.database().DBDeleteJournal(data.auctionDBKey);
+					    	CMLib.database().DBDeleteJournal(auctionHouse(),data.auctionDBKey);
 						}
 						else
 						if(System.currentTimeMillis()<data.tickDown)
@@ -512,7 +512,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
                             CMLib.coffeeShops().auctionNotify(data.auctioningM,"Your auction for "+data.auctioningI.name()+" sold to "+mob.Name()+" for "+CMLib.beanCounter().nameCurrencyShort(data.currency,data.buyOutPrice)+", after the house took a cut of "+CMLib.beanCounter().nameCurrencyShort(data.currency,houseCut)+".",data.auctioningI.Name());
 				            CMLib.beanCounter().subtractMoney(mob,data.currency,data.buyOutPrice);
                             CMLib.coffeeShops().purchaseItems(data.auctioningI,CMParms.makeVector(data.auctioningI),this,mob);
-					    	CMLib.database().DBDeleteJournal(data.auctionDBKey);
+					    	CMLib.database().DBDeleteJournal(auctionHouse(),data.auctionDBKey);
 						}
 					}
 					else
@@ -535,7 +535,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						else
 						if(data.auctioningM==mob)
 						{
-							CMLib.coffeeShops().cancelAuction(data);
+							CMLib.coffeeShops().cancelAuction(auctionHouse(), data);
 			                CMLib.commands().postSay(this,mob,"Your auction for "+data.auctioningI.name()+" has been canceled.",true,false);
 						}
 						else

@@ -56,7 +56,8 @@ public class Email extends StdCommand
             String name=CMParms.combine(commands,1);
             if(name.equalsIgnoreCase("BOX"))
             {
-                Vector msgs=CMLib.database().DBReadJournalMsgs(CMProps.getVar(CMProps.SYSTEM_MAILBOX));
+            	String journalName=CMProps.getVar(CMProps.SYSTEM_MAILBOX);
+                Vector<JournalsLibrary.JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(journalName);
                 while((mob.session()!=null)&&(!mob.session().killFlag()))
                 {
                     Vector mymsgs=new Vector();
@@ -64,7 +65,7 @@ public class Email extends StdCommand
                     messages.append("^X### "+CMStrings.padRight("From",15)+" "+CMStrings.padRight("Date",20)+" Subject^?^.\n\r");
                     for(int num=0;num<msgs.size();num++)
                     {
-                    	JournalsLibrary.JournalEntry thismsg=(JournalsLibrary.JournalEntry)msgs.elementAt(num);
+                    	JournalsLibrary.JournalEntry thismsg=msgs.elementAt(num);
                         String to=(String)thismsg.to;
                         if(to.equalsIgnoreCase("ALL")
                         ||to.equalsIgnoreCase(mob.Name())
@@ -139,7 +140,7 @@ public class Email extends StdCommand
                         else
                         if(s.equalsIgnoreCase("D"))
                         {
-                            CMLib.database().DBDeleteJournal(key);
+                            CMLib.database().DBDeleteJournal(journalName,key);
                             msgs.remove(thismsg);
                             mob.tell("Deleted.");
                             break;

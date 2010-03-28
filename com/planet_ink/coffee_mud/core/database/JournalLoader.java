@@ -223,7 +223,8 @@ public class JournalLoader
 		try
 		{
 			D=DB.DBFetch();
-			String str="SELECT * FROM CMJRNL WHERE CMJRNL='"+Journal+"' AND CMUPTM < " + newerDate;
+			String str="SELECT * FROM CMJRNL WHERE CMUPTM < " + newerDate;
+			if(Journal!=null) str +=" AND CMJRNL='"+Journal+"'";
 			if(to != null) str +=" AND CMTONM='"+to+"'";
 			ResultSet R=D.query(str);
 			int cardinal=0;
@@ -255,7 +256,8 @@ public class JournalLoader
 		try
 		{
 			D=DB.DBFetch();
-			String str="SELECT * FROM CMJRNL WHERE CMJRNL='"+Journal+"' AND CMUPTM > " + olderDate;
+			String str="SELECT * FROM CMJRNL WHERE CMUPTM > " + olderDate;
+			if(Journal!=null) str +=" AND CMJRNL='"+Journal+"'";
 			if(to != null) str +=" AND CMTONM='"+to+"'";
 			ResultSet R=D.query(str);
 			int cardinal=0;
@@ -361,11 +363,6 @@ public class JournalLoader
 		return -1;
 	}
 	
-	public void DBDelete(String oldkey)
-	{
-		DB.update("DELETE FROM CMJRNL WHERE CMJKEY='"+oldkey+"'");
-	}
-	
 	public void DBUpdateJournal(String key, String subject, String msg)
 	{
 		DB.update("UPDATE CMJRNL SET CMSUBJ='"+subject+"', CMMSGT='"+msg+"' WHERE CMJKEY='"+key+"'");
@@ -374,6 +371,11 @@ public class JournalLoader
 	public void DBTouchJournalMessage(String key)
 	{
 		DB.update("UPDATE CMJRNL SET CMUPTM="+System.currentTimeMillis()+" WHERE CMJKEY='"+key+"'");
+	}
+	
+	public void DBUpdateMessageReplies(String key, int numReplies)
+	{
+		DB.update("UPDATE CMJRNL SET CMREPL="+numReplies+" WHERE CMJKEY='"+key+"'");
 	}
 	
 	public void DBViewJournalMessage(String key, int views)
@@ -387,11 +389,38 @@ public class JournalLoader
 		try
 		{
 			D=DB.DBFetch();
-			D.update("DELETE FROM CMJRNL WHERE CMTONM='"+name+"'",0);
+			Vector<String> deletableEntriesV=new Vector<String>();
+			Vector<String[]> notifiableParentsV=new Vector<String[]>();
+			//Resources.submitResource("JOURNAL_"+Journal);
+			String str="SELECT * FROM CMJRNL WHERE CMTONM='"+name+"'";
+			ResultSet R=D.query(str);
+			while(R.next())
+			{
+				String journalName=R.getString("CMJRNL");
+				if((CMLib.journals().getForumJournal(journalName)!=null)
+				||(CMLib.journals().getCommandJournal(journalName)!=null))
+					continue;
+				String key=R.getString("CMJKEY");
+				String parent=R.getString("CMPART");
+				if((parent!=null)&&(parent.length()>0))
+					notifiableParentsV.add(new String[]{journalName,parent});
+				deletableEntriesV.add(key);
+			}
+			for(String[] parentKey : notifiableParentsV)
+			{
+				if(!deletableEntriesV.contains(parentKey[0]))
+				{
+					JournalsLibrary.JournalEntry parentEntry=DBReadJournalEntry(parentKey[0], parentKey[1]);
+					if(parentEntry!=null)
+						DBUpdateMessageReplies(parentEntry.key,parentEntry.replies-1);
+				}
+			}
+			for(String s : deletableEntriesV)
+				D.update("DELETE FROM CMJRNL WHERE CMJKEY='"+s+"' OR CMPART='"+s+"'",0);
 		}
 		catch(Exception sqle)
 		{
-			Log.errOut("JournalLoader",sqle.getMessage());
+			Log.errOut("Journal",sqle);
 		}
 		finally
 		{
@@ -472,7 +501,7 @@ public class JournalLoader
 		{
 			if(key!=null)
 			{
-				DB.update("DELETE FROM CMJRNL WHERE CMJKEY='"+key+"'");
+				DB.update("DELETE FROM CMJRNL WHERE CMJKEY='"+key+"' OR CMPART='"+key+"'");
 			}
 			else
 			{
@@ -496,11 +525,12 @@ public class JournalLoader
 			long now=System.currentTimeMillis();
 			String oldkey=entry.key;
 			String oldmsg=entry.msg;
+			int replies = entry.replies+1;
 			message=oldmsg+JournalsLibrary.JOURNAL_BOUNDARY
 			 +"^yReply from^N: "+from+"%0D"
 			 +"^yDate/Time ^N: "+CMLib.time().date2String(now)+"%0D"
 			 +message;
-			DB.update("UPDATE CMJRNL SET CMUPTM="+now+", CMMSGT='"+message+"' WHERE CMJKEY='"+oldkey+"'");
+			DB.update("UPDATE CMJRNL SET CMUPTM="+now+", CMMSGT='"+message+"', CMREPL="+replies+" WHERE CMJKEY='"+oldkey+"'");
 		}
 	}
 	
@@ -548,6 +578,9 @@ public class JournalLoader
 			+"CMATTR, "
 			+"CMDATA, "
 			+"CMUPTM, "
+			+"CMIMGP, "
+			+"CMVIEW, "
+			+"CMREPL, "
 			+"CMMSGT "
 			+") VALUES ('"
 			+entry.key
@@ -560,7 +593,17 @@ public class JournalLoader
 			+"',"+entry.attributes
 			+",'"+entry.data
 			+"',"+entry.update
+			+"','"+entry.msgIcon
+			+"',"+entry.views
+			+","+entry.replies
 			+",'"+entry.msg+"')");
+			if((entry.parent!=null)&&(entry.parent.length()>0))
+			{
+				// this constitutes a threaded reply -- update the counter
+				JournalsLibrary.JournalEntry parentEntry=DBReadJournalEntry(Journal, entry.parent);
+				if(parentEntry!=null)
+					DBUpdateMessageReplies(parentEntry.key,parentEntry.replies+1);
+			}
 			if(System.currentTimeMillis()==now) // ensures unique keys.
 				try{Thread.sleep(1);}catch(Exception e){}
 		}

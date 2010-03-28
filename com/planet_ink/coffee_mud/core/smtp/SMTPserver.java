@@ -399,12 +399,12 @@ public class SMTPserver extends Thread implements Tickable
 			if(journals!=null)
 			for(int j=0;j<journals.size();j++)
 			{
-				String name=(String)journals.elementAt(j,1);
-				if(isAForwardingJournal(name))
+				String journalName=(String)journals.elementAt(j,1);
+				if(isAForwardingJournal(journalName))
 				{
-					boolean keepall=isAKeepAllJournal(name);
+					boolean keepall=isAKeepAllJournal(journalName);
 					// Vector mailingList=?
-					Vector msgs=CMLib.database().DBReadJournalMsgs(name);
+					Vector msgs=CMLib.database().DBReadJournalMsgs(journalName);
 					for(int m=0;m<msgs.size();m++)
 					{
 						JournalsLibrary.JournalEntry msg=(JournalsLibrary.JournalEntry)msgs.elementAt(m);
@@ -420,16 +420,16 @@ public class SMTPserver extends Thread implements Tickable
 							||(s.equalsIgnoreCase("subscribe")))
 							{
 								// add to mailing list
-								CMLib.database().DBDeleteJournal(key);
+								CMLib.database().DBDeleteJournal(journalName,key);
 								if(CMLib.players().playerExists(from))
 								{
 									lists=getMailingLists(lists);
 									if(lists==null) lists=new Hashtable();
-									Vector mylist=(Vector)lists.get(name);
+									Vector mylist=(Vector)lists.get(journalName);
 									if(mylist==null)
 									{
 										mylist=new Vector();
-										lists.put(name,mylist);
+										lists.put(journalName,mylist);
 									}
 									boolean found=false;
 									for(int l=0;l<mylist.size();l++)
@@ -446,10 +446,10 @@ public class SMTPserver extends Thread implements Tickable
 												subscribeTitle="Subscribed";
 											String subscribedMsg=page.getStr("SUBSCRIBEDMSG");
 											if((subscribedMsg==null)||(subscribedMsg.length()==0))
-												subscribedMsg="You are now subscribed to "+name+". To unsubscribe, send an email with a subject of unsubscribe.";
-											subscribeTitle=CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(subscribeTitle,"<NAME>",name),false);
-											subscribedMsg=CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(subscribedMsg,"<NAME>",name),false);
-											CMLib.database().DBWriteJournal(name,name,from,subscribeTitle,subscribedMsg);
+												subscribedMsg="You are now subscribed to "+journalName+". To unsubscribe, send an email with a subject of unsubscribe.";
+											subscribeTitle=CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(subscribeTitle,"<NAME>",journalName),false);
+											subscribedMsg=CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(subscribedMsg,"<NAME>",journalName),false);
+											CMLib.database().DBWriteJournal(journalName,journalName,from,subscribeTitle,subscribedMsg);
 										}
 									}
 								}
@@ -459,10 +459,10 @@ public class SMTPserver extends Thread implements Tickable
 							||(s.equalsIgnoreCase("unsubscribe")))
 							{
 								// remove from mailing list
-								CMLib.database().DBDeleteJournal(key);
+								CMLib.database().DBDeleteJournal(journalName,key);
 								lists=getMailingLists(lists);
 								if(lists==null) continue;
-								Vector mylist=(Vector)lists.get(name);
+								Vector mylist=(Vector)lists.get(journalName);
 								if(mylist==null) continue;
 								for(int l=mylist.size()-1;l>=0;l--)
 									if(((String)mylist.elementAt(l)).equalsIgnoreCase(from))
@@ -476,10 +476,10 @@ public class SMTPserver extends Thread implements Tickable
 												unsubscribeTitle="Subscribed";
 											String unsubscribedMsg=page.getStr("UNSUBSCRIBEDMSG");
 											if((unsubscribedMsg==null)||(unsubscribedMsg.length()==0))
-												unsubscribedMsg="You are no longer subscribed to "+name+". To subscribe again, send an email with a subject of subscribe.";
-											unsubscribeTitle=CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(unsubscribeTitle,"<NAME>",name),false);
-											unsubscribedMsg=CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(unsubscribedMsg,"<NAME>",name),false);
-											CMLib.database().DBWriteJournal(name,name,from,unsubscribeTitle,unsubscribedMsg);
+												unsubscribedMsg="You are no longer subscribed to "+journalName+". To subscribe again, send an email with a subject of subscribe.";
+											unsubscribeTitle=CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(unsubscribeTitle,"<NAME>",journalName),false);
+											unsubscribedMsg=CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(unsubscribedMsg,"<NAME>",journalName),false);
+											CMLib.database().DBWriteJournal(journalName,journalName,from,unsubscribeTitle,unsubscribedMsg);
 										}
 									}
 							}
@@ -490,29 +490,29 @@ public class SMTPserver extends Thread implements Tickable
 									lists=getMailingLists(lists);
 									if(lists!=null)
 									{
-										Vector mylist=(Vector)lists.get(name);
+										Vector mylist=(Vector)lists.get(journalName);
 										if((mylist!=null)&&(mylist.contains(from)))
 										{
 											for(int i=0;i<mylist.size();i++)
 											{
 												String to2=(String)mylist.elementAt(i);
 												if(CMProps.getBoolVar(CMProps.SYSTEMB_EMAILFORWARDING))
-													CMLib.database().DBWriteJournal(name,from,to2,subj,s);
+													CMLib.database().DBWriteJournal(journalName,from,to2,subj,s);
 											}
 										}
 										else
-											CMLib.database().DBDeleteJournal(key);
+											CMLib.database().DBDeleteJournal(journalName,key);
 									}
 								}
 								if(!keepall)
-									CMLib.database().DBDeleteJournal(key);
+									CMLib.database().DBDeleteJournal(journalName,key);
 								else
 								{
 									Calendar IQE=Calendar.getInstance();
                                     IQE.setTimeInMillis(date);
 									IQE.add(Calendar.DATE,getJournalDays());
 									if(IQE.getTimeInMillis()<System.currentTimeMillis())
-										CMLib.database().DBDeleteJournal(msg.key);
+										CMLib.database().DBDeleteJournal(journalName,msg.key);
 								}
 							}
 						}
@@ -527,16 +527,16 @@ public class SMTPserver extends Thread implements Tickable
 				if((mailboxName()!=null)&&(mailboxName().length()>0))
 				{
 					Vector emails=CMLib.database().DBReadJournalMsgs(mailboxName());
-					processEmails(emails,null,true);
+					processEmails(mailboxName(), emails,null,true);
 				}
 				if(journals!=null)
 					for(int j=0;j<journals.size();j++)
 					{
-						String name=(String)journals.elementAt(j,1);
-						if(isAForwardingJournal(name))
+						String journalName=(String)journals.elementAt(j,1);
+						if(isAForwardingJournal(journalName))
 						{
-							Vector emails=CMLib.database().DBReadJournalMsgs(name);
-							processEmails(emails,name,false);
+							Vector emails=CMLib.database().DBReadJournalMsgs(journalName);
+							processEmails(journalName, emails,journalName,false);
 						}
 					}
 			}
@@ -553,7 +553,7 @@ public class SMTPserver extends Thread implements Tickable
 		return true;
 	}
 
-	public boolean deleteEmailIfOld(String key, long date, int days)
+	public boolean deleteEmailIfOld(String journalName, String key, long date, int days)
 	{
 		Calendar IQE=Calendar.getInstance();
         IQE.setTimeInMillis(date);
@@ -561,13 +561,14 @@ public class SMTPserver extends Thread implements Tickable
 		if(IQE.getTimeInMillis()<System.currentTimeMillis())
 		{
 			// email is a goner
-			CMLib.database().DBDeleteJournal(key);
+			CMLib.database().DBDeleteJournal(journalName, key);
 			return true;
 		}
 		return false;
 	}
 	
-	public void processEmails(Vector emails,
+	public void processEmails(String journalName,
+							  Vector emails,
 							  String overrideReplyTo,
 							  boolean usePrivateRules)
 	{
@@ -591,7 +592,7 @@ public class SMTPserver extends Thread implements Tickable
 			if(toM==null)
 			{
 				Log.errOut("SMTPServer","Invalid to address '"+to+"' in email: "+msg);
-				CMLib.database().DBDeleteJournal(key);
+				CMLib.database().DBDeleteJournal(journalName,key);
 				continue;
 			}
 
@@ -600,14 +601,14 @@ public class SMTPserver extends Thread implements Tickable
 			&&(toM.playerStats().getIgnored().contains(from)))
 			{
 				// email is ignored
-				CMLib.database().DBDeleteJournal(key);
+				CMLib.database().DBDeleteJournal(journalName,key);
 				continue;
 			}
 
 			// check email age
 			if((usePrivateRules)
 			&&(!CMath.bset(mail.attributes, JournalsLibrary.JournalEntry.ATTRIBUTE_PROTECTED))
-			&&(deleteEmailIfOld(key, date, getEmailDays())))
+			&&(deleteEmailIfOld(journalName, key, date, getEmailDays())))
 				continue;
 			
 			if(CMath.bset(toM.getBitmap(),MOB.ATT_AUTOFORWARD)) // forwarding OFF
@@ -631,7 +632,7 @@ public class SMTPserver extends Thread implements Tickable
 				&&(!CMath.bset(mail.attributes, JournalsLibrary.JournalEntry.ATTRIBUTE_PROTECTED)))
 				{
 					// email is a goner if its a list
-					CMLib.database().DBDeleteJournal(key);
+					CMLib.database().DBDeleteJournal(journalName,key);
 					continue;
 				}
 				// otherwise it has its n days
@@ -645,7 +646,7 @@ public class SMTPserver extends Thread implements Tickable
 					Log.errOut("SMTPServer","Unable to find '"+toM.playerStats().getEmail()+"' for '"+toM.name()+"'.");
 				}
 				if(!CMath.bset(mail.attributes, JournalsLibrary.JournalEntry.ATTRIBUTE_PROTECTED))
-					deleteEmailIfOld(key, date,getFailureDays());
+					deleteEmailIfOld(journalName, key, date,getFailureDays());
 				continue;
 			}
 
@@ -659,12 +660,12 @@ public class SMTPserver extends Thread implements Tickable
 							   subj,
 							   CMLib.coffeeFilter().simpleOutFilter(msg));
 				//this email is HISTORY!
-				CMLib.database().DBDeleteJournal(key);
+				CMLib.database().DBDeleteJournal(journalName, key);
 			}
 			catch(java.io.IOException ioe)
 			{
 				// it has FAILUREDAYS days to get better.
-				if(deleteEmailIfOld(key, date,getFailureDays()))
+				if(deleteEmailIfOld(journalName, key, date,getFailureDays()))
 					Log.errOut("SMTPServer","Permanently unable to send to '"+toM.playerStats().getEmail()+"' for user '"+toM.name()+"': "+ioe.getMessage()+".");
 				else
 					Log.errOut("SMTPServer","Failure to send to '"+toM.playerStats().getEmail()+"' for user '"+toM.name()+"'.");
