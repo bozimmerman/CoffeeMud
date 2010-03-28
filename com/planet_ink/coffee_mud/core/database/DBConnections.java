@@ -211,7 +211,7 @@ public class DBConnections
 					Connections.addElement(ThisDB);
 				}catch(Exception e){
 					if((e.getMessage()==null)||(e.getMessage().indexOf("java.io.EOFException")<0))
-						Log.errOut("DBConnections",e.getMessage());
+						Log.errOut("DBConnections",e);
 					ThisDB=null;
 				}
 			if((ThisDB==null)&&(reuse))

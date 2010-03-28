@@ -11,8 +11,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
-import com.planet_ink.fakedb.Backend.FakeCondition;
-import com.planet_ink.fakedb.Backend.RecordInfo;
+import com.planet_ink.fakedb.Backend.*;
 /* 
    Copyright 2001 Thomas Neumann
 
@@ -32,30 +31,34 @@ public class ResultSet implements java.sql.ResultSet
 {
    private Statement statement;
    private Backend.FakeTable fakeTable;
-   private java.util.Iterator<Backend.FakeKey> iter;
+   private java.util.Iterator<Backend.RecordInfo> iter;
    private int currentRow=0;
    private List<FakeCondition> conditions;
-   private final String[] values;
+   private final ComparableValue[] values;
    private final int[] showCols;
+   private final int[] orderByKeyDexCols;
+   private final String[] orderByConditions;
    private final Map<String,Integer> showColMap=new Hashtable<String,Integer>();
-   private final boolean[] nullIndicators;
-   private boolean nullFlag = false;
+   private boolean wasNullFlag = false;
 
    ResultSet(Statement stmt,
              Backend.FakeTable table,
              int[] showCols,
-             List<FakeCondition> conditions) 
+             List<FakeCondition> conditions,
+             int[] orderByKeyDexCols,
+             String[] orderByConditions) 
    {
       statement=stmt;
       fakeTable=table;
       this.conditions = conditions;
 	  currentRow=0;
-      values=new String[table.numColumns()];
+      this.values=new ComparableValue[table.numColumns()];
       this.showCols = showCols;
       for(int s=0;s<showCols.length;s++)
     	  showColMap.put(table.getColumnName(showCols[s]), Integer.valueOf(s));
-      nullIndicators=new boolean[values.length];
-      iter = table.indexMap().keySet().iterator();
+      this.orderByKeyDexCols=orderByKeyDexCols;
+      this.orderByConditions=orderByConditions;
+      iter = table.indexIterator(this.orderByKeyDexCols,this.orderByConditions);
    }
 
    public java.sql.Statement getStatement() throws java.sql.SQLException { return statement; }
@@ -65,23 +68,22 @@ public class ResultSet implements java.sql.ResultSet
       while (true) 
       {
          if (!iter.hasNext()) return false;
-         Backend.FakeKey key=iter.next();
-         RecordInfo info=(RecordInfo)fakeTable.indexMap().get(key);
+         Backend.RecordInfo rowInfo=iter.next();
          if (conditions.size()>0) 
          {
              boolean[] dataLoaded = new boolean[1];
              dataLoaded[0]=false;
-             if(!fakeTable.recordCompare(key,info,conditions,dataLoaded,nullIndicators,values))
+             if(!fakeTable.recordCompare(rowInfo,conditions,dataLoaded,values))
             	 continue;
         	 currentRow++;
         	 if(!dataLoaded[0])
-        		 dataLoaded[0]=fakeTable.getRecord(nullIndicators, values, info);
+        		 dataLoaded[0]=fakeTable.getRecord(values, rowInfo);
         	 if(!dataLoaded[0])
     			 return false;
         	 return true;
          }
     	 currentRow++;
-         return fakeTable.getRecord(nullIndicators, values, info);
+         return fakeTable.getRecord(values, rowInfo);
       }
    }
    public void close() throws java.sql.SQLException
@@ -89,46 +91,55 @@ public class ResultSet implements java.sql.ResultSet
    }
    public boolean wasNull() throws java.sql.SQLException
    {
-       return nullFlag;
+       return wasNullFlag;
    }
-   public String getString(int columnIndex) throws java.sql.SQLException
+   
+   private Object getProperValue(int columnIndex)
    {
+  	  wasNullFlag=false;
       if ((columnIndex<1)||(columnIndex>showCols.length))
       {
-         nullFlag=true;
-         return null;
+    	 wasNullFlag=true;
+    	 return null;
       } 
       columnIndex=showCols[columnIndex-1];
-      if(nullIndicators[columnIndex])
+      Object v=values[columnIndex].getValue(); 
+      if(v == null)
       {
-          nullFlag=true;
-          return null;
+    	  wasNullFlag=true;
+    	  return null;
       }
-      nullFlag=false;
-      return values[columnIndex];
+	  return v;
+   }
+   
+   public String getString(int columnIndex) throws java.sql.SQLException
+   {
+	  Object o = getProperValue(columnIndex);
+	  if(o==null) return null;
+	  return o.toString();
    }
    public java.sql.Array getArray(int columnIndex) throws java.sql.SQLException
    {
-      //String s=getString(columnIndex);
-      if (nullFlag) return null;
+	  Object o = getProperValue(columnIndex);
+	  if(o==null) return null;
       throw new java.sql.SQLException();
    }
    public java.sql.Blob getBlob(int columnIndex) throws java.sql.SQLException
    {
-      //String s=getString(columnIndex);
-      if (nullFlag) return null;
+	  Object o = getProperValue(columnIndex);
+	  if(o==null) return null;
       throw new java.sql.SQLException();
    }
    public java.sql.Clob getClob(int columnIndex) throws java.sql.SQLException
    {
-      //String s=getString(columnIndex);
-      if (nullFlag) return null;
+	  Object o = getProperValue(columnIndex);
+	  if(o==null) return null;
       throw new java.sql.SQLException();
    }
    public java.sql.Ref getRef(int columnIndex) throws java.sql.SQLException
    {
-      //String s=getString(columnIndex);
-      if (nullFlag) return null;
+	  Object o = getProperValue(columnIndex);
+	  if(o==null) return null;
       throw new java.sql.SQLException();
    }
 
@@ -143,58 +154,58 @@ public class ResultSet implements java.sql.ResultSet
    }
    public byte getByte(int columnIndex) throws java.sql.SQLException
    {
-      String s=getString(columnIndex);
-      if (nullFlag) return 0;
+	  Object o = getProperValue(columnIndex);
+	  if(o==null) return 0;
+	  if(o instanceof Integer) return ((Integer)o).byteValue();
+	  if(o instanceof Long) return ((Long)o).byteValue();
       try {
-         return Byte.parseByte(s);
+         return Byte.parseByte(o.toString());
       } catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
    public short getShort(int columnIndex) throws java.sql.SQLException
    {
-      String s=getString(columnIndex);
-      if (nullFlag) return 0;
-      try {
-         return Short.parseShort(s);
-      } catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
+	  return (short)getLong(columnIndex);
    }
    public int getInt(int columnIndex) throws java.sql.SQLException
    {
-      String s=getString(columnIndex);
-      if (nullFlag) return 0;
-      try {
-         return Integer.parseInt(s);
-      } catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
+	  return (int)getLong(columnIndex);
    }
    public long getLong(int columnIndex) throws java.sql.SQLException
    {
-      String s=getString(columnIndex);
-      if (nullFlag) return 0;
+	  Object o = getProperValue(columnIndex);
+	  if(o==null) return 0;
+	  if(o instanceof Integer) return ((Integer)o).longValue();
+	  if(o instanceof Long) return ((Long)o).longValue();
       try {
-         return Long.parseLong(s);
+         return Long.parseLong(o.toString());
       } catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
    public float getFloat(int columnIndex) throws java.sql.SQLException
    {
-      String s=getString(columnIndex);
-      if (nullFlag) return 0;
+	  Object o = getProperValue(columnIndex);
+	  if(o==null) return 0;
+	  if(o instanceof Integer) return ((Integer)o).floatValue();
+	  if(o instanceof Long) return ((Long)o).floatValue();
       try {
-         return Float.parseFloat(s);
+         return Float.parseFloat(o.toString());
       } catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
    public double getDouble(int columnIndex) throws java.sql.SQLException
    {
-      String s=getString(columnIndex);
-      if (nullFlag) return 0;
+	  Object o = getProperValue(columnIndex);
+	  if(o==null) return 0;
+	  if(o instanceof Integer) return ((Integer)o).doubleValue();
+	  if(o instanceof Long) return ((Long)o).doubleValue();
       try {
-         return Double.parseDouble(s);
+         return Double.parseDouble(o.toString());
       } catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
    public java.math.BigDecimal getBigDecimal(int columnIndex) throws java.sql.SQLException
    {
-      String s=getString(columnIndex);
-      if (nullFlag) return new java.math.BigDecimal(0);
+	  Object o = getProperValue(columnIndex);
+	  if(o==null) return new java.math.BigDecimal(0);
       try {
-         return new java.math.BigDecimal(s);
+         return new java.math.BigDecimal(o.toString());
       } catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
    /**
@@ -202,42 +213,46 @@ public class ResultSet implements java.sql.ResultSet
     */
    public java.math.BigDecimal getBigDecimal(int columnIndex, int scale) throws java.sql.SQLException
    {
-      String s=getString(columnIndex);
-      if (nullFlag) { java.math.BigDecimal v=new java.math.BigDecimal(0); v.setScale(scale); return v; }
-      try {
-         java.math.BigDecimal v=new java.math.BigDecimal(s); v.setScale(scale); return v;
-      } catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
+	  java.math.BigDecimal decimal = getBigDecimal(columnIndex);
+	  decimal.setScale(scale);
+	  return decimal;
    }
    public byte[] getBytes(int columnIndex) throws java.sql.SQLException
    {
-      String s=getString(columnIndex);
-      if (nullFlag) return null;
+	  Object o = getProperValue(columnIndex);
+	  if(o==null) return null;
       try {
-         return s.getBytes();
+         return o.toString().getBytes();
       } catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
    public java.sql.Date getDate(int columnIndex) throws java.sql.SQLException
    {
-      String s=getString(columnIndex);
-      if (nullFlag) return null;
+	  Object o = getProperValue(columnIndex);
+	  if(o==null) return null;
+	  if(o instanceof Integer) return new java.sql.Date(((Integer)o).longValue());
+	  if(o instanceof Long) return new java.sql.Date(((Long)o).longValue());
       try {
-         return java.sql.Date.valueOf(s);
+         return java.sql.Date.valueOf(o.toString());
       } catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
    public java.sql.Time getTime(int columnIndex) throws java.sql.SQLException
    {
-      String s=getString(columnIndex);
-      if (nullFlag) return null;
+	  Object o = getProperValue(columnIndex);
+	  if(o==null) return null;
+	  if(o instanceof Integer) return new java.sql.Time(((Integer)o).longValue());
+	  if(o instanceof Long) return new java.sql.Time(((Long)o).longValue());
       try {
-         return java.sql.Time.valueOf(s);
+         return java.sql.Time.valueOf(o.toString());
       } catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
    public java.sql.Timestamp getTimestamp(int columnIndex) throws java.sql.SQLException
    {
-      String s=getString(columnIndex);
-      if (nullFlag) return null;
+	  Object o = getProperValue(columnIndex);
+	  if(o==null) return null;
+	  if(o instanceof Integer) return new java.sql.Timestamp(((Integer)o).longValue());
+	  if(o instanceof Long) return new java.sql.Timestamp(((Long)o).longValue());
       try {
-         return java.sql.Timestamp.valueOf(s);
+         return java.sql.Timestamp.valueOf(o.toString());
       } catch (NumberFormatException e) { throw new java.sql.SQLException(e.getMessage()); }
    }
    public java.io.InputStream getAsciiStream(int columnIndex) throws java.sql.SQLException
@@ -254,23 +269,24 @@ public class ResultSet implements java.sql.ResultSet
    public java.io.InputStream getBinaryStream(int columnIndex) throws java.sql.SQLException
    {
       byte b[] = getBytes(columnIndex);
-      if (nullFlag) return null;
+      if (b==null) return null;
       return new java.io.ByteArrayInputStream(b);
    }
    public java.io.Reader getCharacterStream(int columnIndex) throws java.sql.SQLException
    {
       String s=getString(columnIndex);
-      if (nullFlag) return null;
+      if(s==null) return null;
       return new java.io.CharArrayReader(s.toCharArray());
    }
    public Object getObject(int columnIndex) throws java.sql.SQLException
    {
-      return getString(columnIndex);
+	  Object o = getProperValue(columnIndex);
+	  return o;
    }
    public java.net.URL getURL(int columnIndex) throws java.sql.SQLException
    {
       String s=getString(columnIndex);
-      if (nullFlag) return null;
+      if(s==null) return null;
       try {
          return new java.net.URL(s);
       } catch (java.net.MalformedURLException e) { throw new java.sql.SQLException(e.getMessage()); }
@@ -433,8 +449,8 @@ public class ResultSet implements java.sql.ResultSet
    { 
 	   if(fakeTable==null)
 		   throw new java.sql.SQLException(); 
-	   iter = fakeTable.indexMap().keySet().iterator();
-	   currentRow=0;
+      iter = fakeTable.indexIterator(this.orderByKeyDexCols,this.orderByConditions);
+	  currentRow=0;
    }
    public boolean isBeforeFirst() { return (currentRow==0); }
    public void afterLast(){ last(); }

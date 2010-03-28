@@ -181,6 +181,7 @@ public class JournalLoader
 		entry.update=CMath.s_long(DBConnections.getRes(R,"CMUPTM"));
 		entry.msgIcon=DBConnections.getRes(R, "CMIMGP");
 		entry.views=CMath.s_int(DBConnections.getRes(R, "CMVIEW"));
+		entry.replies=CMath.s_int(DBConnections.getRes(R, "CMREPL"));
 		entry.msg=DBConnections.getRes(R,"CMMSGT");
 		
 		int datestrdex=dateStr.indexOf('/');

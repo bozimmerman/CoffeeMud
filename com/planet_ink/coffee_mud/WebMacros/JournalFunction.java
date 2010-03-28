@@ -107,6 +107,7 @@ public class JournalFunction extends StdWebMacro
 			if(subject.length()==0)
 				return "Post not submitted -- No subject!";
 			String parent=httpReq.getRequestParameter("PARENT");
+			String icon=httpReq.getRequestParameter("MSGICON");
 			Vector<String> flags=CMParms.parseCommas(httpReq.getRequestParameter("FLAGS"), true);
 			if((flags.size()>0)&&(forum!=null)&&(!forum.authorizationCheck(M, ForumJournalFlags.ADMIN)))
 				return "Post not submitted -- Unauthorized flags.";
@@ -128,6 +129,7 @@ public class JournalFunction extends StdWebMacro
             msg.date=System.currentTimeMillis();
             msg.update=System.currentTimeMillis();
             msg.parent=(parent==null)?"":parent;
+            msg.msgIcon=(icon==null)?"":icon;
             if(flags.contains("STUCKY"))
 	            msg.attributes|=JournalsLibrary.JournalEntry.ATTRIBUTE_STUCKY;
             if(flags.contains("PROTECTED"))

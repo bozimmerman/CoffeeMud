@@ -1350,7 +1350,8 @@ public class StdArea implements Area
 		String roomID=getProperRoomnumbers().random();
 		Room R=CMLib.map().getRoom(roomID);
 		if(R instanceof GridLocale) return ((GridLocale)R).getRandomGridChild();
-		if(R==null) Log.errOut("StdArea","Unable to random-find: "+roomID);
+		if(R==null) 
+			Log.errOut("StdArea","Unable to random-find: "+roomID);
 		return R;
 	}
 	public Room getRandomMetroRoom()

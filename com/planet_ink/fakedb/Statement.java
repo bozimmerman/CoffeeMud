@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.planet_ink.fakedb.Backend.ComparableValue;
+
 /* 
    Copyright 2001 Thomas Neumann
 
@@ -246,7 +248,8 @@ public class Statement implements java.sql.Statement
          sql=split(sql,token);
          String tableName=token[0];
          List<Backend.FakeCondition> conditions = new ArrayList<Backend.FakeCondition>();
-         String orderVar=null;
+         String[] orderVars=null;
+         String[] orderConditions=null;
          if (sql.length()>0) 
          {
             sql=split(sql,token);
@@ -262,12 +265,22 @@ public class Statement implements java.sql.Statement
                sql=split(sql,token);
                if (!token[0].equalsIgnoreCase("by")) throw new java.sql.SQLException("no by token");
                sql=split(sql,token);
-               orderVar=token[0];
+               orderVars=new String[]{token[0]};
+               orderConditions=new String[1];
+               if (sql.length()>0) 
+               {
+	               split(sql,token);
+	               if(token[0].equalsIgnoreCase("ASC")||token[0].equalsIgnoreCase("DESC"))
+	               {
+	            	   orderConditions=new String[]{token[0].toUpperCase().trim()};
+		               sql=split(sql,token);
+	               }
+               }
             }
             if (sql.length()>0) throw new java.sql.SQLException("extra garbage: "+sql);
          }
 
-         return connection.getBackend().constructScan(this,tableName,cols,conditions,orderVar);
+         return connection.getBackend().constructScan(this,tableName,cols,conditions,orderVars,orderConditions);
       } catch (java.sql.SQLException e) {
          log("unsupported SQL in executeQuery: "+sql);
          throw e;
@@ -339,7 +352,7 @@ public class Statement implements java.sql.Statement
             	throw new java.sql.SQLException("no open paren");
             sql=sql.substring(1);
 
-            java.util.List attributes=new java.util.LinkedList();
+            java.util.List<String> columnList=new java.util.LinkedList();
             while (true) 
             {
                sql=skipWS(sql);
@@ -348,7 +361,7 @@ public class Statement implements java.sql.Statement
                if ((index<0)||(index2<index)) index=index2;
                if (index<0) 
             	   throw new java.sql.SQLException("no comma");
-               attributes.add(sql.substring(0,index).trim());
+               columnList.add(sql.substring(0,index).trim());
                char c=sql.charAt(index);
                sql=skipWS(sql.substring(index+1));
                if (c==')') 
@@ -363,14 +376,14 @@ public class Statement implements java.sql.Statement
             	throw new java.sql.SQLException("no value open paren");
             sql=sql.substring(1);
 
-            java.util.List values=new java.util.LinkedList();
+            java.util.List<String> valuesList=new java.util.LinkedList<String>();
             while (true) 
             {
                sql=skipWS(sql);
                String[] r=parseVal(sql);
                String val=r[1];
                sql=skipWS(r[0]);
-               values.add(val);
+               valuesList.add(val);
                if (sql.length()==0) 
             	   throw new java.sql.SQLException("no sql again");
                char c=sql.charAt(0);
@@ -382,11 +395,15 @@ public class Statement implements java.sql.Statement
             }
             if ((sql.length()>0)&&(sql.charAt(0)==';')) 
             	sql=skipWS(sql.substring(1));
-            if ((sql.length()>0)||(attributes.size()!=values.size())) 
+            if ((sql.length()>0)||(columnList.size()!=valuesList.size())) 
             {
                throw new java.sql.SQLException("something very bad");
             }
-            connection.getBackend().insertValues(tableName, (String[])attributes.toArray(new String[0]),(String[])values.toArray(new String[0]));
+            ComparableValue[] values = new ComparableValue[valuesList.size()];
+            for(int i=0;i<valuesList.size();i++)
+            	values[i]=new ComparableValue(valuesList.get(i));
+            String[] columns=(String[])columnList.toArray(new String[0]);
+            connection.getBackend().insertValues(tableName, columns,values);
          } 
          else 
          if (token[0].equalsIgnoreCase("update")) 
@@ -397,8 +414,8 @@ public class Statement implements java.sql.Statement
             if (!token[0].equalsIgnoreCase("set")) 
             	throw new java.sql.SQLException("no set");
 
-            java.util.List attributes=new java.util.LinkedList();
-            java.util.List values=new java.util.LinkedList();
+            java.util.List<String> columnList=new java.util.LinkedList();
+            java.util.List<String> valueList=new java.util.LinkedList();
             StringBuffer buffer=new StringBuffer();
             while (true) 
             {
@@ -438,16 +455,16 @@ public class Statement implements java.sql.Statement
                     	 c=sql.charAt(++sub);
                      buffer.append(c);
                   }
-                  attributes.add(attr);
-                  values.add(buffer.toString());
+                  columnList.add(attr);
+                  valueList.add(buffer.toString());
                   sql=sql.substring(sub+1);
                } 
                else 
                {
                   String[] r=parseVal(sql);
                   sql=r[0];
-                  attributes.add(attr);
-                  values.add(r[1]);
+                  columnList.add(attr);
+                  valueList.add(r[1]);
                }
                sql=skipWS(sql);
                if ((sql.length()>0)&&(sql.charAt(0)==',')) 
@@ -457,7 +474,11 @@ public class Statement implements java.sql.Statement
             sql=parseWhereClause(tableName, sql, conditions);
             if(conditions.size()==0)
          	   throw new java.sql.SQLException("no more where clause!");
-            connection.getBackend().updateRecord(tableName, conditions, (String[])attributes.toArray(new String[0]), (String[])values.toArray(new String[0]));
+            ComparableValue[] values=new ComparableValue[valueList.size()];
+            for(int i=0;i<valueList.size();i++)
+            	values[i]=new ComparableValue(valueList.get(i));
+            String[] columns=(String[])columnList.toArray(new String[0]);
+            connection.getBackend().updateRecord(tableName, conditions, columns, values);
          } 
          else 
          if (token[0].equalsIgnoreCase("delete")) 
