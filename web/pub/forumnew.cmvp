@@ -9,6 +9,11 @@
 	<title>Forums</title>
 	<script language=JavaScript>
 	<!--
+		function Cancel()
+		{
+			document.FORUM.FUNCTION.value='';
+			document.FORUM.submit();
+		}
 	//-->
 	</SCRIPT>
 </head>
@@ -19,6 +24,7 @@
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=JOURNAL VALUE="@RequestParameter?JOURNAL@">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="NEWPOST">
+<INPUT TYPE=HIDDEN NAME=JOURNALPAGE VALUE="@RequestParameter?JOURNALPAGE@">
 <TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
 <TR BGCOLOR=BLACK HEIGHT=20>
 	<TD COLSPAN=2>
@@ -67,6 +73,21 @@
 		<script language="javascript1.2">
 			generate_wysiwyg('NEWTEXT');
 		</script>
+	</TD>
+</TR>
+<TR BGCOLOR=LIGHTGREY><TD COLSPAN=2>&nbsp;</TD></TR>
+<TR BGCOLOR=LIGHTGREY>
+	<TD>&nbsp;</TD>
+	<TD>
+	<TABLE WIDTH=600px BORDER=0 CELLSPACING=0 CELLPADDING=0>
+	<TR>
+		<TD WIDTH=25%>&nbsp;</TD>
+		<TD WIDTH=25% ALIGN=CENTER><INPUT TYPE=SUBMIT STYLE="width: 5em" VALUE=Post ONCLICK="Submit();"></TD>
+		<TD WIDTH=25% ALIGN=CENTER><INPUT TYPE=BUTTON STYLE="width: 5em" VALUE=Cancel ONCLICK="Cancel();"></TD>
+		<TD WIDTH=25%>&nbsp;</TD>
+	</TR>
+	</TABLE>
+	&nbsp;
 	</TD>
 </TR>
 <TR BGCOLOR=LIGHTGREY><TD COLSPAN=2>&nbsp;</TD></TR>

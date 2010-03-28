@@ -51,42 +51,46 @@ public class RequestParameter extends StdWebMacro
 		for(Enumeration e=parms.keys();e.hasMoreElements();)
 		{
 			String key=(String)e.nextElement();
+			if(!modifiers.contains(key))
+				if(httpReq.isRequestParameter(key))
+					str+=httpReq.getRequestParameter(key);
+		}
+		for(Enumeration e=parms.keys();e.hasMoreElements();)
+		{
+			String key=(String)e.nextElement();
 			if(modifiers.contains(key))
 			{
 				int num = 0;
-				if(key==MODIFIER.UPPERCASE.name())
+				if(key.equals(MODIFIER.UPPERCASE.name()))
 					str=str.toUpperCase();
 				else
-				if(key==MODIFIER.LOWERCASE.name())
+				if(key.equals(MODIFIER.LOWERCASE.name()))
 					str=str.toLowerCase();
 				else
-				if(key==MODIFIER.TRIM.name())
+				if(key.equals(MODIFIER.TRIM.name()))
 					str=str.trim();
 				else
-				if(key==MODIFIER.LEFT.name())
+				if(key.equals(MODIFIER.LEFT.name()))
 				{
 					num = CMath.s_int((String)parms.get(MODIFIER.LEFT.name()));
 					if((num >0)&& (num < str.length()))
 						str=str.substring(0,num);
 				}
 				else
-				if(key==MODIFIER.RIGHT.name())
+				if(key.equals(MODIFIER.RIGHT.name()))
 				{
 					num = CMath.s_int((String)parms.get(MODIFIER.RIGHT.name()));
 					if((num >0)&& (num < str.length()))
 						str=str.substring(str.length()-num);
 				}
 				else
-				if(key==MODIFIER.ELLIPSE.name())
+				if(key.equals(MODIFIER.ELLIPSE.name()))
 				{
 					num = CMath.s_int((String)parms.get(MODIFIER.ELLIPSE.name()));
 					if((num >0)&& (num < str.length()))
 						str=str.substring(0,num)+"...";
 				}
 			}
-			else
-			if(httpReq.isRequestParameter(key))
-				str+=httpReq.getRequestParameter(key);
 		}
 		str=clearWebMacros(str);
 		return str;

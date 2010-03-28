@@ -248,6 +248,38 @@ public class JournalLoader
 		return journal;
 	}
 	
+	public Vector<JournalsLibrary.JournalEntry> DBReadJournalPageMsgs(String Journal, String parent, long newerDate, int limit)
+	{
+		Vector<JournalsLibrary.JournalEntry> journal=new Vector<JournalsLibrary.JournalEntry>();
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			String str="SELECT * FROM CMJRNL WHERE CMUPTM > " + newerDate;
+			if(Journal!=null) str += " AND CMJRNL='"+Journal+"'";
+			if(parent != null) str += " AND CMPART='"+parent+"'";
+			str += " ORDER BY CMUPTM DESC";
+			ResultSet R=D.query(str);
+			int cardinal=0;
+			while(R.next() && (cardinal < limit))
+			{
+				JournalsLibrary.JournalEntry entry = DBReadJournalEntry(R); 
+				entry.cardinal = ++cardinal;
+				journal.addElement(entry);
+			}
+		}
+		catch(Exception sqle)
+		{
+			Log.errOut("Journal",sqle);
+			return null;
+		}
+		finally
+		{
+			if(D!=null) DB.DBDone(D);
+		}
+		return journal;
+	}
+	
 	public Vector<JournalsLibrary.JournalEntry> DBReadJournalMsgsNewerThan(String Journal, String to, long olderDate)
 	{
 		Vector<JournalsLibrary.JournalEntry> journal=new Vector<JournalsLibrary.JournalEntry>();
@@ -375,7 +407,7 @@ public class JournalLoader
 	
 	public void DBUpdateMessageReplies(String key, int numReplies)
 	{
-		DB.update("UPDATE CMJRNL SET CMREPL="+numReplies+" WHERE CMJKEY='"+key+"'");
+		DB.update("UPDATE CMJRNL SET CMUPTM="+System.currentTimeMillis()+", CMREPL="+numReplies+" WHERE CMJKEY='"+key+"'");
 	}
 	
 	public void DBViewJournalMessage(String key, int views)
@@ -443,13 +475,14 @@ public class JournalLoader
 				String parentKey=R.getString("CMPART");
 				long updateTime=R.getLong("CMUPTM");
 				stats.posts++;
-				if((parentKey!=null)&&(parentKey.length()>0))
-					stats.threads++;
-				else
-				if(updateTime>topTime)
+				if((parentKey==null)||(parentKey.length()==0))
 				{
-					topTime=updateTime;
-					topKey=key;
+					stats.threads++;
+					if(updateTime>topTime)
+					{
+						topTime=updateTime;
+						topKey=key;
+					}
 				}
 			}
 			R.close();
@@ -593,7 +626,7 @@ public class JournalLoader
 			+"',"+entry.attributes
 			+",'"+entry.data
 			+"',"+entry.update
-			+"','"+entry.msgIcon
+			+",'"+entry.msgIcon
 			+"',"+entry.views
 			+","+entry.replies
 			+",'"+entry.msg+"')");

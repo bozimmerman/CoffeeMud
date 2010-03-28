@@ -56,8 +56,14 @@ public class JournalInfo extends StdWebMacro
 		Vector info=(Vector)httpReq.getRequestObjects().get("JOURNAL: "+journalName+": "+page);
 		if(info==null)
 		{
-			info=CMLib.database().DBReadJournalMsgsNewerThan(journalName, null, CMath.s_long(page));
-			httpReq.getRequestObjects().put("JOURNAL: "+journalName+": "+page,info);
+			if((page==null)||(page.length()==0))
+				info=CMLib.database().DBReadJournalMsgs(journalName);
+			else
+			{
+				int limit = CMProps.getIntVar(CMProps.SYSTEMI_JOURNALLIMIT);
+				if(limit<=0) limit=Integer.MAX_VALUE;
+				info=CMLib.database().DBReadJournalPageMsgs(journalName, "", CMath.s_long(page), limit);
+			}
 		}
 		return info;
 	}
@@ -68,8 +74,9 @@ public class JournalInfo extends StdWebMacro
 		String journalName=httpReq.getRequestParameter("JOURNAL");
 		if(journalName==null) return " @break@";
 		String page=httpReq.getRequestParameter("JOURNALPAGE");
-		if((page==null)||(page.trim().length()==0))
-			page="0";
+		
+		if(parms.containsKey("UNPAGEDCOUNT"))
+			return ""+getMsgs(httpReq,journalName,null).size();
 		
 		if(parms.containsKey("COUNT"))
 			return ""+getMsgs(httpReq,journalName,page).size();
@@ -132,6 +139,12 @@ public class JournalInfo extends StdWebMacro
 			else
 			if(parms.containsKey("DATE"))
 				return CMLib.time().date2String(entry.date);
+			else
+			if(parms.containsKey("REPLIES"))
+                return clearWebMacros(entry.replies+"");
+			else
+			if(parms.containsKey("VIEWS"))
+                return clearWebMacros(entry.views+"");
 			else
 			if(parms.containsKey("DATEPOSTED"))
 			{

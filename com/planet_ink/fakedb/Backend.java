@@ -83,28 +83,36 @@ public class Backend
 			   reverseSorted=new Backend.RecordInfo[record.indexedData.length][];
 		   }
 	   }
-	   public synchronized Iterator<Backend.RecordInfo> iterator(int sortIndex, boolean descending)
+	   public synchronized Iterator<RecordInfo> iterator(int sortIndex, boolean descending)
 	   {
 		   Iterator iter = null;
 		   if(sortIndex<0)
 			   iter = Arrays.asList(unsortedRecords.toArray()).iterator();
 		   else
 		   {
-			   Backend.RecordInfo[][] whichList=descending?reverseSorted:forwardSorted;
+			   RecordInfo[][] whichList=descending?reverseSorted:forwardSorted;
 			   if((whichList == null)||(sortIndex<0)||(sortIndex>=whichList.length))
 				   iter=empty.iterator();
 			   else
-			   if(whichList[sortIndex]!=null)
-				   iter=Arrays.asList(whichList[sortIndex]).iterator();
-			   else
+			   synchronized(whichList)
 			   {
-			       TreeMap map=new TreeMap();
-			       for(Backend.RecordInfo info : unsortedRecords)
-			    	   map.put(info.indexedData[sortIndex],info);
-			       if(!descending)
-					   whichList[sortIndex]=(Backend.RecordInfo[])map.entrySet().toArray();
-			       else
-					   whichList[sortIndex]=(Backend.RecordInfo[])map.descendingMap().entrySet().toArray();
+				   if(whichList[sortIndex]!=null)
+					   iter=Arrays.asList(whichList[sortIndex]).iterator();
+				   else
+				   {
+				       TreeMap<ComparableValue,RecordInfo> map=new TreeMap<ComparableValue,RecordInfo>();
+				       for(RecordInfo info : unsortedRecords)
+				    	   map.put(info.indexedData[sortIndex],info);
+				       whichList[sortIndex]=new RecordInfo[map.size()];
+				       int index=0;
+				       if(!descending)
+				    	   for(RecordInfo info : map.values())
+							   whichList[sortIndex][index++]=info;
+				       else
+				    	   for(RecordInfo info : map.descendingMap().values())
+							   whichList[sortIndex][index++]=info;
+				       iter=Arrays.asList(whichList[sortIndex]).iterator();
+				   }
 			   }
 		   }
 		   return (Iterator<Backend.RecordInfo>) iter;
@@ -180,7 +188,14 @@ public class Backend
 		   if((v==null)&&(to==null)) return 0;
 		   if(v==null) return -1;
 		   if(to==null) return 1;
-		   return v.compareTo(to);
+		   try
+		   {
+			   return v.compareTo(to);
+		   }
+		   catch(Exception e)
+		   {
+			   return 0;
+		   }
 	   }
    }
    
@@ -228,7 +243,8 @@ public class Backend
     	 if((orderByIndexDex==null)||(orderByIndexDex.length==0))
     		 return rowRecords.iterator(-1,false);
     	 boolean descending = (orderByConditions!=null) && "DESC".equals(orderByConditions[0]);
-    	 return rowRecords.iterator(orderByIndexDex[0], descending);
+    	 FakeColumn col = columns[orderByIndexDex[0]];
+    	 return rowRecords.iterator(col.indexNumber, descending);
       }
       
       /**

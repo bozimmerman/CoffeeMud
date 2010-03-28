@@ -67,7 +67,8 @@ public class ResultSet implements java.sql.ResultSet
    {
       while (true) 
       {
-         if (!iter.hasNext()) return false;
+         if (!iter.hasNext()) 
+        	 return false;
          Backend.RecordInfo rowInfo=iter.next();
          if (conditions.size()>0) 
          {

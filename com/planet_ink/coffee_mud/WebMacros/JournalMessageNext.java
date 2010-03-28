@@ -68,13 +68,18 @@ public class JournalMessageNext extends StdWebMacro
 		}
 		
 		String page=httpReq.getRequestParameter("JOURNALPAGE");
-		if((page==null)||(page.trim().length()==0))
-			page="0";
 		
 		Vector<JournalsLibrary.JournalEntry> info=(Vector<JournalsLibrary.JournalEntry>)httpReq.getRequestObjects().get("JOURNAL: "+journalName+": "+page);
 		if(info==null)
 		{
-			info=CMLib.database().DBReadJournalMsgsNewerThan(journalName, null, CMath.s_long(page));
+			if((page==null)||(page.length()==0))
+				info=CMLib.database().DBReadJournalMsgs(journalName);
+			else
+			{
+				int limit = CMProps.getIntVar(CMProps.SYSTEMI_JOURNALLIMIT);
+				if(limit<=0) limit=Integer.MAX_VALUE;
+				info=CMLib.database().DBReadJournalPageMsgs(journalName, "", CMath.s_long(page), limit);
+			}
 			httpReq.getRequestObjects().put("JOURNAL: "+journalName+": "+page,info);
 		}
         String srch=httpReq.getRequestParameter("JOURNALMESSAGESEARCH");
