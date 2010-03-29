@@ -50,6 +50,7 @@ public class DefaultPlayerAccount implements PlayerAccount
     protected long accountExpiration=0;
     protected String[] xtraValues=null;
     protected HashSet<String> acctFlags = new HashSet<String>();
+    protected volatile MOB fakePlayerM=null;
 
     public DefaultPlayerAccount() {
         super();
@@ -162,6 +163,23 @@ public class DefaultPlayerAccount implements PlayerAccount
 
 	public HashSet getFriends(){return friends;}
 	public HashSet getIgnored(){return ignored;}
+	public MOB getAccountMob()
+	{
+		if(fakePlayerM!=null)
+			return fakePlayerM;
+		synchronized(this)
+		{
+			if(fakePlayerM!=null)
+				return fakePlayerM;
+			fakePlayerM=CMClass.getMOB("StdMOB");
+			fakePlayerM.setName(accountName());
+			fakePlayerM.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
+			fakePlayerM.playerStats().setAccount(this);
+			fakePlayerM.baseEnvStats().setLevel(1);
+			fakePlayerM.recoverEnvStats();
+			return fakePlayerM;
+		}
+	}
 	
 	protected String getPrivateList(HashSet h)
 	{
@@ -171,6 +189,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 			list.append(((String)e.next())+";");
 		return list.toString();
 	}
+	
 	public String getXML()
 	{
         StringBuffer rest=new StringBuffer("");
@@ -213,6 +232,8 @@ public class DefaultPlayerAccount implements PlayerAccount
 	{
 		if(players.contains(mob.Name()))
 			return;
+		if(mob==fakePlayerM)
+			return;
 		try
 		{
 			for(int p=0;p<players.size();p++)
@@ -232,6 +253,8 @@ public class DefaultPlayerAccount implements PlayerAccount
 	
 	public void delPlayer(MOB mob) 
 	{
+		if(mob==fakePlayerM)
+			return;
 		players.remove(mob.Name());
 		try
 		{

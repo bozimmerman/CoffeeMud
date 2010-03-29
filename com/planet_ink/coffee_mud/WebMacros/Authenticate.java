@@ -162,11 +162,21 @@ public class Authenticate extends StdWebMacro
     	{
 	    	String password = getPassword(httpReq);
 			mob=CMLib.players().getLoadPlayer(login);
-			if((mob==null)
-			||(mob.playerStats()==null)
-			||(!mob.playerStats().password().equalsIgnoreCase(password))
+			if((mob==null)||(mob.playerStats()==null))
+			{
+				PlayerAccount acct=CMLib.players().getAccount(login);
+				if((acct!=null)
+				&&(acct.password().equalsIgnoreCase(password))
+				&&(!CMSecurity.isBanned(acct.accountName())))
+					mob=acct.getAccountMob();
+				else
+					mob=null;
+			}
+			else
+			if((!mob.playerStats().password().equalsIgnoreCase(password))
 			||(mob.Name().trim().length()==0)
-			||(CMSecurity.isBanned(mob.Name())))
+			||(CMSecurity.isBanned(mob.Name()))
+			||((mob.playerStats().getAccount()!=null)&&(CMSecurity.isBanned(mob.playerStats().getAccount().accountName()))))
 				mob=null;
     	}
     	if(mob!=null)
