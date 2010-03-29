@@ -51,9 +51,9 @@ public class JournalInfo extends StdWebMacro
 		return null;
 	}
 
-	public Vector getMsgs(ExternalHTTPRequests httpReq, String journalName, String page)
+	public Vector getMsgs(ExternalHTTPRequests httpReq, String journalName, String parent, String page)
 	{
-		Vector info=(Vector)httpReq.getRequestObjects().get("JOURNAL: "+journalName+": "+page);
+		Vector info=(Vector)httpReq.getRequestObjects().get("JOURNAL: "+journalName+": "+parent+": "+page);
 		if(info==null)
 		{
 			if((page==null)||(page.length()==0))
@@ -64,6 +64,7 @@ public class JournalInfo extends StdWebMacro
 				if(limit<=0) limit=Integer.MAX_VALUE;
 				info=CMLib.database().DBReadJournalPageMsgs(journalName, "", CMath.s_long(page), limit);
 			}
+			httpReq.getRequestObjects().put("JOURNAL: "+journalName+": "+parent+": "+page, info);
 		}
 		return info;
 	}
@@ -74,12 +75,17 @@ public class JournalInfo extends StdWebMacro
 		String journalName=httpReq.getRequestParameter("JOURNAL");
 		if(journalName==null) return " @break@";
 		String page=httpReq.getRequestParameter("JOURNALPAGE");
+		String parent=httpReq.getRequestParameter("JOURNALPARENT");
+		if(parent==null) parent="";
+		
+		if(parms.containsKey("NOWTIMESTAMP"))
+			return ""+System.currentTimeMillis();
 		
 		if(parms.containsKey("UNPAGEDCOUNT"))
-			return ""+getMsgs(httpReq,journalName,null).size();
+			return ""+getMsgs(httpReq,journalName,parent,null).size();
 		
 		if(parms.containsKey("COUNT"))
-			return ""+getMsgs(httpReq,journalName,page).size();
+			return ""+getMsgs(httpReq,journalName,parent,page).size();
 		
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		if((CMLib.journals().isArchonJournalName(journalName))&&((M==null)||(!CMSecurity.isASysOp(M))))
@@ -99,7 +105,7 @@ public class JournalInfo extends StdWebMacro
         	}
         }
         else
-	        entry= getEntry(getMsgs(httpReq,journalName,page),msgKey);
+	        entry= getEntry(getMsgs(httpReq,journalName,parent,page),msgKey);
         if(parms.containsKey("ISMESSAGE"))
         	return String.valueOf(entry!=null);
 		if(entry==null)	
@@ -126,12 +132,12 @@ public class JournalInfo extends StdWebMacro
 			if(parms.containsKey("MSGTYPEICON"))
 			{
 				if(entry.attributes==0)
-					return "images/doc.jpg";
+					return "images/doc.gif";
 				if(CMath.bset(entry.attributes, JournalsLibrary.JournalEntry.ATTRIBUTE_STUCKY))
-					return "images/doclock.jpg";
+					return "images/doclock.gif";
 				if(CMath.bset(entry.attributes, JournalsLibrary.JournalEntry.ATTRIBUTE_PROTECTED))
-					return "images/docstar.jpg";
-				return "images/docunknown.jpg";
+					return "images/docstar.gif";
+				return "images/docunknown.gif";
 			}
 			else
 			if(parms.containsKey("CARDINAL"))
@@ -225,7 +231,8 @@ public class JournalInfo extends StdWebMacro
 	                s=colorwebifyOnly(new StringBuffer(s)).toString();
 	                s=clearWebMacros(s);
 				}
-				CMLib.database().DBViewJournalMessage(entry.key, ++entry.views);
+				if((entry.parent==null)||(entry.parent.length()==0))
+					CMLib.database().DBViewJournalMessage(entry.key, ++entry.views);
                 return s;
 			}
             if(parms.containsKey("EMAILALLOWED"))

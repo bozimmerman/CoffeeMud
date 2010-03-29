@@ -68,8 +68,10 @@ public class JournalMessageNext extends StdWebMacro
 		}
 		
 		String page=httpReq.getRequestParameter("JOURNALPAGE");
+		String parent=httpReq.getRequestParameter("JOURNALPARENT");
+		if(parent==null) parent="";
 		
-		Vector<JournalsLibrary.JournalEntry> info=(Vector<JournalsLibrary.JournalEntry>)httpReq.getRequestObjects().get("JOURNAL: "+journalName+": "+page);
+		Vector<JournalsLibrary.JournalEntry> info=(Vector<JournalsLibrary.JournalEntry>)httpReq.getRequestObjects().get("JOURNAL: "+journalName+": "+parent+": "+page);
 		if(info==null)
 		{
 			if((page==null)||(page.length()==0))
@@ -78,9 +80,9 @@ public class JournalMessageNext extends StdWebMacro
 			{
 				int limit = CMProps.getIntVar(CMProps.SYSTEMI_JOURNALLIMIT);
 				if(limit<=0) limit=Integer.MAX_VALUE;
-				info=CMLib.database().DBReadJournalPageMsgs(journalName, "", CMath.s_long(page), limit);
+				info=CMLib.database().DBReadJournalPageMsgs(journalName, parent, CMath.s_long(page), limit);
 			}
-			httpReq.getRequestObjects().put("JOURNAL: "+journalName+": "+page,info);
+			httpReq.getRequestObjects().put("JOURNAL: "+journalName+": "+parent+": "+page,info);
 		}
         String srch=httpReq.getRequestParameter("JOURNALMESSAGESEARCH");
         if(srch!=null) 

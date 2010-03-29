@@ -20,48 +20,61 @@
 
 <body>
 <script language="JavaScript" type="text/javascript" src="textedit/wysiwyg.js"></script>
-<FORM NAME=FORUM TARGET=_top METHOD=POST ACTION="forum.cmvp">
+@if?CheckReqParm?JOURNALMESSAGE=@
+	<FORM NAME=FORUM TARGET=_top METHOD=POST ACTION="forum.cmvp">
+@else@
+	<FORM NAME=FORUM TARGET=_top METHOD=POST ACTION="forummsg.cmvp">
+	<INPUT TYPE=HIDDEN NAME=JOURNALMESSAGE VALUE="@RequestParameter?JOURNALMESSAGE@">
+	<INPUT TYPE=HIDDEN NAME=PARENT VALUE="@RequestParameter?JOURNALMESSAGE@">
+@endif@
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=JOURNAL VALUE="@RequestParameter?JOURNAL@">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="NEWPOST">
 <INPUT TYPE=HIDDEN NAME=JOURNALPAGE VALUE="@RequestParameter?JOURNALPAGE@">
+<INPUT TYPE=HIDDEN NAME=DATE VALUE="@JournalInfo?NOWTIMESTAMP@">
 <TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
 <TR BGCOLOR=BLACK HEIGHT=20>
 	<TD COLSPAN=2>
 		<TABLE WIDTH=100% BORDER=0><TR>
-		<TD WIDTH=50%><FONT COLOR=WHITE SIZE=-1><B>Post New Thread</B></FONT></TD>
+		@if?CheckReqParm?JOURNALMESSAGE=@
+			<TD WIDTH=50%><FONT COLOR=WHITE SIZE=-1><B>Post New Thread</B></FONT></TD>
+		@else@
+			<TD WIDTH=50%><FONT COLOR=WHITE SIZE=-1><B>Post Reply to @JournalInfo?SUBJECT@</B></FONT></TD>
+		@endif@
 		<TD WIDTH=50% AlIGN=RIGHT><FONT COLOR=WHITE SIZE=-1><B>Forum : @JournalName@</B></FONT></TD>
 		</TR></TABLE>
 	</TD>
 </TR>
 <TR BGCOLOR=LIGHTGREY><TD COLSPAN=2>&nbsp;</TD></TR>
+@if?CheckReqParm?JOURNALMESSAGE=@
 <TR BGCOLOR=LIGHTGREY VALIGN=BOTTOM>
 	<TD ALIGN=LEFT VALIGN=BOTTOM>&nbsp;&nbsp;<FONT SIZE=6><B>Subject:</B></FONT></TD>
 	<TD ALIGN=LEFT VALIGN=BOTTOM><INPUT TYPE=TEXT NAME=SUBJECT SIZE=60></TD>
 </TR>
+@endif@
 <TR BGCOLOR=LIGHTGREY>
 	<TD>&nbsp;</TD>
 	<TD>
 	<TABLE WIDTH=600px BORDER=0 CELLSPACING=0 CELLPADDING=0>
 	<TR>
 	<TD><FONT SIZE=-2 COLOR=BLACK><INPUT CHECKED TYPE=RADIO NAME=MSGICON VALUE=""><B>No Icon</B></FONT></TD>
-	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley0.jpg"><IMG SRC="images/smiley0.jpg"></TD>
-	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley1.jpg"><IMG SRC="images/smiley1.jpg"></TD>
-	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley2.jpg"><IMG SRC="images/smiley2.jpg"></TD>
-	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley3.jpg"><IMG SRC="images/smiley3.jpg"></TD>
-	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley4.jpg"><IMG SRC="images/smiley4.jpg"></TD>
-	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley5.jpg"><IMG SRC="images/smiley5.jpg"></TD>
-	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley6.jpg"><IMG SRC="images/smiley6.jpg"></TD>
+	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley0.gif"><IMG SRC="images/smiley0.gif"></TD>
+	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley1.gif"><IMG SRC="images/smiley1.gif"></TD>
+	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley2.gif"><IMG SRC="images/smiley2.gif"></TD>
+	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley3.gif"><IMG SRC="images/smiley3.gif"></TD>
+	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley4.gif"><IMG SRC="images/smiley4.gif"></TD>
+	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley5.gif"><IMG SRC="images/smiley5.gif"></TD>
+	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley6.gif"><IMG SRC="images/smiley6.gif"></TD>
 	</TR>
 	<TR>
 	<TD>&nbsp;</TD>
-	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley7.jpg"><IMG SRC="images/smiley7.jpg"></TD>
-	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley8.jpg"><IMG SRC="images/smiley8.jpg"></TD>
-	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley9.jpg"><IMG SRC="images/smiley9.jpg"></TD>
-	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley10.jpg"><IMG SRC="images/smiley10.jpg"></TD>
-	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley11.jpg"><IMG SRC="images/smiley11.jpg"></TD>
-	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley12.jpg"><IMG SRC="images/smiley12.jpg"></TD>
-	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley13.jpg"><IMG SRC="images/smiley13.jpg"></TD>
+	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley7.gif"><IMG SRC="images/smiley7.gif"></TD>
+	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley8.gif"><IMG SRC="images/smiley8.gif"></TD>
+	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley9.gif"><IMG SRC="images/smiley9.gif"></TD>
+	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley10.gif"><IMG SRC="images/smiley10.gif"></TD>
+	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley11.gif"><IMG SRC="images/smiley11.gif"></TD>
+	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley12.gif"><IMG SRC="images/smiley12.gif"></TD>
+	<TD><INPUT TYPE=RADIO NAME=MSGICON VALUE="images/smiley13.gif"><IMG SRC="images/smiley13.gif"></TD>
 	</TR>
 	</TABLE>
 	</TD>
@@ -69,7 +82,7 @@
 <TR BGCOLOR=LIGHTGREY VALIGN=TOP>
 	<TD ALIGN=LEFT WIDTH=200px VALIGN=TOP>&nbsp;&nbsp;<FONT SIZE=6><B>Message:</B></FONT></TD>
 	<TD ALIGN=LEFT VALIGN=TOP>
-		<textarea id="NEWTEXT" name="NEWTEXT" style="height: 170px; width: 500px;"></textarea>
+		<textarea id="NEWTEXT" name="NEWTEXT" style="height: 170px; width: 500px;">@RequestParameter?QUOTEDTEXT@</textarea>
 		<script language="javascript1.2">
 			generate_wysiwyg('NEWTEXT');
 		</script>

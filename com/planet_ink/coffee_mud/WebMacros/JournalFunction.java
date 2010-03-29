@@ -83,7 +83,7 @@ public class JournalFunction extends StdWebMacro
 			if((M==null)||(!CMSecurity.isASysOp(M)))
 			    return " @break@";
 		}
-		String from="Unknown";
+		String from="Anonymous";
 		if(M!=null) from=M.Name();
 		if(parms.containsKey("NEWPOST"))
 		{
@@ -102,9 +102,11 @@ public class JournalFunction extends StdWebMacro
             &&(!CMSecurity.isAllowedEverywhere(M,"JOURNALS")))
                 return "Post not submitted -- You are not authorized to send email to ALL.";
 			String subject=httpReq.getRequestParameter("SUBJECT");
-			if(subject.length()==0)
-				return "Post not submitted -- No subject!";
+			if(subject==null) subject="";
 			String parent=httpReq.getRequestParameter("PARENT");
+			if((subject.length()==0)&&(parent==null))
+				return "Post not submitted -- No subject!";
+			String date=httpReq.getRequestParameter("DATE");
 			String icon=httpReq.getRequestParameter("MSGICON");
 			Vector<String> flags=CMParms.parseCommas(httpReq.getRequestParameter("FLAGS"), true);
 			if((flags.size()>0)&&(forum!=null)&&(!forum.authorizationCheck(M, ForumJournalFlags.ADMIN)))
@@ -124,7 +126,10 @@ public class JournalFunction extends StdWebMacro
             msg.from=from;
             msg.subj=subject;
             msg.msg=text;
-            msg.date=System.currentTimeMillis();
+            if((date!=null) && (CMath.isLong(date)))
+            	msg.date = CMath.s_long(date);
+            else
+	            msg.date=System.currentTimeMillis();
             msg.update=System.currentTimeMillis();
             msg.parent=(parent==null)?"":parent;
             msg.msgIcon=(icon==null)?"":icon;
@@ -134,8 +139,16 @@ public class JournalFunction extends StdWebMacro
 	            msg.attributes|=JournalsLibrary.JournalEntry.ATTRIBUTE_PROTECTED;
             msg.data="";
             msg.to=to;
+            // check for dups
+            Vector<JournalsLibrary.JournalEntry> chckEntries = CMLib.database().DBReadJournalMsgsNewerThan(journalName, to, msg.date-1);
+            for(JournalsLibrary.JournalEntry entry : chckEntries)
+            	if((entry.date == msg.date)
+            	&&(entry.from.equals(msg.from))
+            	&&(entry.subj.equals(msg.subj))
+            	&&(entry.parent.equals(msg.parent)))
+            		return "";
 			CMLib.database().DBWriteJournal(journalName,msg);
-			httpReq.getRequestObjects().remove("JOURNAL: "+journalName+": "+page);
+			httpReq.getRequestObjects().remove("JOURNAL: "+journalName+": "+parent+": "+page);
 			JournalsLibrary.JournalSummaryStats stats = null;
 			if(forum!=null)
 				stats=CMLib.journals().getJournalStats(journalName);
@@ -154,7 +167,9 @@ public class JournalFunction extends StdWebMacro
 				stats.latest=msg;
 			return "Post submitted.";
 		}
-		Vector<JournalsLibrary.JournalEntry> info=(Vector<JournalsLibrary.JournalEntry>)httpReq.getRequestObjects().get("JOURNAL: "+journalName+": "+page);
+		String parent=httpReq.getRequestParameter("JOURNALPARENT");
+		if(parent==null) parent="";
+		Vector<JournalsLibrary.JournalEntry> info=(Vector<JournalsLibrary.JournalEntry>)httpReq.getRequestObjects().get("JOURNAL: "+journalName+": "+parent+": "+page);
 		if(info==null)
 		{
 			if((page==null)||(page.length()==0))
@@ -165,7 +180,7 @@ public class JournalFunction extends StdWebMacro
 				if(limit<=0) limit=Integer.MAX_VALUE;
 				info=CMLib.database().DBReadJournalPageMsgs(journalName, "", CMath.s_long(page), limit);
 			}
-			httpReq.getRequestObjects().put("JOURNAL: "+journalName+": "+page,info);
+			httpReq.getRequestObjects().put("JOURNAL: "+journalName+": "+parent+": "+page,info);
 		}
 		String msgKey=httpReq.getRequestParameter("JOURNALMESSAGE");
 		int cardinalNumber = CMath.s_int(httpReq.getRequestParameter("JOURNALCARDINAL"));
@@ -234,7 +249,7 @@ public class JournalFunction extends StdWebMacro
 					else
 					{
 						CMLib.database().DBWriteJournalReply(journalName,entry.key,from,"","",text);
-						httpReq.getRequestObjects().remove("JOURNAL: "+journalName+": "+page);
+						httpReq.getRequestObjects().remove("JOURNAL: "+journalName+": "+parent+": "+page);
 						messages.append("Reply to #"+cardinalNumber+" submitted<BR>");
 					}
 				}
@@ -259,7 +274,7 @@ public class JournalFunction extends StdWebMacro
 			                                                  toM.Name(),
 			                                                  "RE: "+entry.subj,
 			                                                  replyMsg);
-			                httpReq.getRequestObjects().remove("JOURNAL: "+journalName+": "+page);
+			                httpReq.getRequestObjects().remove("JOURNAL: "+journalName+": "+parent+": "+page);
 							messages.append("Email to #"+cardinalNumber+" queued<BR>");
 		                }
 	                }
@@ -281,7 +296,7 @@ public class JournalFunction extends StdWebMacro
 								CMLib.database().DBUpdateMessageReplies(parentEntry.key,parentEntry.replies-1);
 						}
 						httpReq.addRequestParameters("JOURNALMESSAGE","");
-						httpReq.getRequestObjects().remove("JOURNAL: "+journalName+": "+page);
+						httpReq.getRequestObjects().remove("JOURNAL: "+journalName+": "+parent+": "+page);
 						messages.append("Message #"+cardinalNumber+" deleted.<BR>");
 					}
 				}
@@ -319,7 +334,7 @@ public class JournalFunction extends StdWebMacro
 		                    CMLib.database().DBDeleteJournal(journalName,entry.key);
 		                    CMLib.database().DBWriteJournal(realName,entry);
 		                    httpReq.addRequestParameters("JOURNALMESSAGE","");
-		                    httpReq.getRequestObjects().remove("JOURNAL: "+journalName+": "+page);
+		                    httpReq.getRequestObjects().remove("JOURNAL: "+journalName+": "+parent+": "+page);
 							messages.append("Message #"+cardinalNumber+" transferred<BR>");
 	                    }
 	                }

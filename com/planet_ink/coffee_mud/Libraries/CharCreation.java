@@ -1318,71 +1318,71 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     {
     	StringBuffer rpt = new StringBuffer("\r\nMSSP-REPLY-START");
     	rpt.append("\r\n"); rpt.append("PLAYERS");
-    	rpt.append("\r\n"); rpt.append(Integer.toString(CMLib.sessions().size()));
+    	rpt.append("\t"); rpt.append(Integer.toString(CMLib.sessions().size()));
     	rpt.append("\r\n"); rpt.append("STATUS");
-    	rpt.append("\r\n"); rpt.append(CMProps.getVar(CMProps.SYSTEM_MUDSTATE));
+    	rpt.append("\t"); rpt.append(CMProps.getVar(CMProps.SYSTEM_MUDSTATE));
     	MudHost host = null;
     	if(CMLib.hosts().size()>0)
     		host = (MudHost)CMLib.hosts().firstElement();
     	if(host != null)
     	{
         	rpt.append("\r\n"); rpt.append("UPTIME");
-        	rpt.append("\r\n"); rpt.append(Long.toString(host.getUptimeSecs()));
+        	rpt.append("\t"); rpt.append(Long.toString(host.getUptimeSecs()));
         	rpt.append("\r\n"); rpt.append("HOSTNAME");
-        	rpt.append("\r\n"); rpt.append(host.getHost());
+        	rpt.append("\t"); rpt.append(host.getHost());
         	rpt.append("\r\n"); rpt.append("PORT");
-        	rpt.append("\r\n"); rpt.append(Integer.toString(host.getPort()));
+        	rpt.append("\t"); rpt.append(Integer.toString(host.getPort()));
         	rpt.append("\r\n"); rpt.append("WEBSITE");
-        	rpt.append("\r\n"); rpt.append(("http://"+host.getHost()+":"+CMLib.httpUtils().getWebServerPort()));
+        	rpt.append("\t"); rpt.append(("http://"+host.getHost()+":"+CMLib.httpUtils().getWebServerPort()));
         	rpt.append("\r\n"); rpt.append("LANGUAGE");
-        	rpt.append("\r\n"); rpt.append(host.getLanguage());
+        	rpt.append("\t"); rpt.append(host.getLanguage());
     	}
     	if(CMLib.intermud().i3online())
     	{
         	rpt.append("\r\n"); rpt.append("INTERMUD");
-        	rpt.append("\r\n"); rpt.append("I3");
+        	rpt.append("\t"); rpt.append("I3");
     	}
     	if(CMLib.intermud().imc2online())
     	{
         	rpt.append("\r\n"); rpt.append("INTERMUD");
-        	rpt.append("\r\n"); rpt.append("IMC2");
+        	rpt.append("\t"); rpt.append("IMC2");
     	}
     	rpt.append("\r\n"); rpt.append("FAMILY");
-    	rpt.append("\r\n"); rpt.append("CoffeeMUD");
+    	rpt.append("\t"); rpt.append("CoffeeMUD");
     	rpt.append("\r\n"); rpt.append("EMAIL");
-    	rpt.append("\r\n"); rpt.append(CMProps.getVar(CMProps.SYSTEM_ADMINEMAIL));
+    	rpt.append("\t"); rpt.append(CMProps.getVar(CMProps.SYSTEM_ADMINEMAIL));
     	rpt.append("\r\n"); rpt.append("CODEBASE");
-    	rpt.append("\r\n"); rpt.append(("CoffeeMud v"+CMProps.getVar(CMProps.SYSTEM_MUDVER)));
+    	rpt.append("\t"); rpt.append(("CoffeeMud v"+CMProps.getVar(CMProps.SYSTEM_MUDVER)));
     	rpt.append("\r\n"); rpt.append("AREAS");
-    	rpt.append("\r\n"); rpt.append(Integer.toString(CMLib.map().numAreas()));
+    	rpt.append("\t"); rpt.append(Integer.toString(CMLib.map().numAreas()));
     	rpt.append("\r\n"); rpt.append("HELPFILES");
-    	rpt.append("\r\n"); rpt.append(Integer.toString(CMLib.help().getHelpFile().size()));
+    	rpt.append("\t"); rpt.append(Integer.toString(CMLib.help().getHelpFile().size()));
     	rpt.append("\r\n"); rpt.append("MOBILES");
-    	rpt.append("\r\n"); rpt.append(Long.toString(CMClass.numRemainingObjectCounts(CMClass.OBJECT_MOB)-CMClass.numPrototypes(CMClass.OBJECT_MOB)));
+    	rpt.append("\t"); rpt.append(Long.toString(CMClass.numRemainingObjectCounts(CMClass.OBJECT_MOB)-CMClass.numPrototypes(CMClass.OBJECT_MOB)));
     	rpt.append("\r\n"); rpt.append("OBJECTS");
-    	rpt.append("\r\n"); rpt.append(Long.toString(CMClass.numRemainingObjectCounts(CMClass.OBJECT_ITEM)-CMClass.numPrototypes(CMClass.OBJECTS_ITEMTYPES)));
+    	rpt.append("\t"); rpt.append(Long.toString(CMClass.numRemainingObjectCounts(CMClass.OBJECT_ITEM)-CMClass.numPrototypes(CMClass.OBJECTS_ITEMTYPES)));
     	rpt.append("\r\n"); rpt.append("ROOMS");
-    	rpt.append("\r\n"); rpt.append(Long.toString(CMLib.map().numRooms()));
+    	rpt.append("\t"); rpt.append(Long.toString(CMLib.map().numRooms()));
     	rpt.append("\r\n"); rpt.append("CLASSES");
     	int numClasses = 0;
         if(!CMSecurity.isDisabled("CLASSES"))
         	numClasses=CMLib.login().classQualifies(null, CMProps.getIntVar(CMProps.SYSTEMI_MUDTHEME)&0x07).size();
-    	rpt.append("\r\n"); rpt.append(Long.toString(numClasses));
+    	rpt.append("\t"); rpt.append(Long.toString(numClasses));
     	rpt.append("\r\n"); rpt.append("RACES");
     	int numRaces = 0;
         if(!CMSecurity.isDisabled("RACES"))
         	numRaces=CMLib.login().raceQualifies(null, CMProps.getIntVar(CMProps.SYSTEMI_MUDTHEME)&0x07).size();
-    	rpt.append("\r\n"); rpt.append(Long.toString(numRaces));
+    	rpt.append("\t"); rpt.append(Long.toString(numRaces));
     	rpt.append("\r\n"); rpt.append("SKILLS");
-    	rpt.append("\r\n"); rpt.append(Long.toString(CMLib.ableMapper().numMappedAbilities()));
+    	rpt.append("\t"); rpt.append(Long.toString(CMLib.ableMapper().numMappedAbilities()));
     	rpt.append("\r\n"); rpt.append("ANSI");
-    	rpt.append("\r\n"); rpt.append((this!=null?"1":"0"));
+    	rpt.append("\t"); rpt.append((this!=null?"1":"0"));
     	rpt.append("\r\n"); rpt.append("MCCP");
-    	rpt.append("\r\n"); rpt.append((!CMSecurity.isDisabled("MCCP")?"1":"0"));
+    	rpt.append("\t"); rpt.append((!CMSecurity.isDisabled("MCCP")?"1":"0"));
     	rpt.append("\r\n"); rpt.append("MSP");
-    	rpt.append("\r\n"); rpt.append((!CMSecurity.isDisabled("MSP")?"1":"0"));
+    	rpt.append("\t"); rpt.append((!CMSecurity.isDisabled("MSP")?"1":"0"));
     	rpt.append("\r\n"); rpt.append("MXP");
-    	rpt.append("\r\n"); rpt.append((!CMSecurity.isDisabled("MXP")?"1":"0"));
+    	rpt.append("\t"); rpt.append((!CMSecurity.isDisabled("MXP")?"1":"0"));
     	rpt.append("\r\nMSSP-REPLY-END\r\n");
     	return rpt.toString();
     }

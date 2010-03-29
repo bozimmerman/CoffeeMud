@@ -8,6 +8,7 @@ import com.planet_ink.fakedb.Backend.ComparableValue;
 
 /* 
    Copyright 2001 Thomas Neumann
+   Copyright 2009-2010 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -24,7 +25,8 @@ import com.planet_ink.fakedb.Backend.ComparableValue;
 @SuppressWarnings("unchecked")
 public class Statement implements java.sql.Statement
 {
-   static private void log(String x) {
+   static private void log(String x) 
+   {
       System.err.println("Statement: "+x);
    }
 
@@ -124,7 +126,8 @@ public class Statement implements java.sql.Statement
 	   {
 		   while((s < sql.length())&&(sql.charAt(s)==' '||sql.charAt(s)=='\t'))
 			   s++;
-		   if(s>=sql.length()) break;
+		   if(s>=sql.length()) 
+			   break;
 		   Backend.FakeCondition condition = null;
 		   if(sql.charAt(s)=='(')
 		   {
@@ -198,11 +201,13 @@ public class Statement implements java.sql.Statement
 		   }
 		   while((s < sql.length())&&(sql.charAt(s)==' '||sql.charAt(s)=='\t'))
 			   s++;
-		   if(s>=sql.length()) break;
+		   if(s>=sql.length()) 
+			   break;
 		   int e=s;
 		   while((e < sql.length())&&(sql.charAt(e)!=' ')&&(sql.charAt(e)!='\t'))
 			   e++;
-		   if(condition==null) continue;
+		   if(condition==null) 
+			   continue;
 		   String peeker = sql.substring(s,e);
 		   if(peeker.equalsIgnoreCase(")"))
 		   {
@@ -225,7 +230,8 @@ public class Statement implements java.sql.Statement
 	   }
 	   if(parenStack.size()>0)
 		   throw new java.sql.SQLException("Unended parenthesis "+sql);
-	   if(s>=sql.length()) return "";
+	   if(s>=sql.length()) 
+		   return "";
 	   return sql.substring(s);
 
    }
@@ -233,7 +239,8 @@ public class Statement implements java.sql.Statement
    public java.sql.ResultSet executeQuery(String sql) throws java.sql.SQLException
    {
 	  lastSQL=sql;
-      try {
+      try 
+      {
          String[] token=new String[1];
          sql=split(sql,token);
          if (!token[0].equalsIgnoreCase("select")) 
@@ -263,7 +270,8 @@ public class Statement implements java.sql.Statement
             if ((token[0]!=null)&&(token[0].equalsIgnoreCase("order"))) 
             {
                sql=split(sql,token);
-               if (!token[0].equalsIgnoreCase("by")) throw new java.sql.SQLException("no by token");
+               if (!token[0].equalsIgnoreCase("by")) 
+            	   throw new java.sql.SQLException("no by token");
                sql=split(sql,token);
                orderVars=new String[]{token[0]};
                orderConditions=new String[1];
@@ -277,49 +285,69 @@ public class Statement implements java.sql.Statement
 	               }
                }
             }
-            if (sql.length()>0) throw new java.sql.SQLException("extra garbage: "+sql);
+            if (sql.length()>0) 
+            	throw new java.sql.SQLException("extra garbage: "+sql);
          }
 
          return connection.getBackend().constructScan(this,tableName,cols,conditions,orderVars,orderConditions);
-      } catch (java.sql.SQLException e) {
+      } 
+      catch (java.sql.SQLException e) 
+      {
          log("unsupported SQL in executeQuery: "+sql);
          throw e;
       }
    }
+   
    private static String skipWS(String sql)
    {
       int index;
-      for (index=0;index<sql.length();index++) {
+      for (index=0;index<sql.length();index++) 
+      {
          char c=sql.charAt(index);
-         if ((c!=' ')&&(c!='\t')&&(c!='\r')&&(c!='\n')) break;
+         if ((c!=' ')&&(c!='\t')&&(c!='\r')&&(c!='\n')) 
+        	 break;
       }
-      if (index==0) return sql; 
+      if (index==0) 
+    	  return sql; 
       return sql.substring(index);
    }
+   
    private static String[] parseVal(String sql)
    {
       String[] result=new String[2];
       sql=skipWS(sql);
-      if (sql.length()==0) {
+      if (sql.length()==0) 
+      {
          result[0]=result[1]="";
-      } else if (sql.charAt(0)=='\'') {
+      } 
+      else 
+      if (sql.charAt(0)=='\'') 
+      {
          StringBuffer buffer=new StringBuffer();
          int index;
-         for (index=1;index<sql.length();++index) {
+         for (index=1;index<sql.length();++index) 
+         {
             char c=sql.charAt(index);
-            if (c=='\'') break;
-            if (c=='\\') c=sql.charAt(++index);
+            if (c=='\'') 
+            	break;
+            if (c=='\\') 
+            	c=sql.charAt(++index);
             buffer.append(c);
          }
-         if (index>=sql.length()) index=sql.length()-1;
+         if (index>=sql.length()) 
+        	 index=sql.length()-1;
          result[0]=sql.substring(index+1);
          result[1]=buffer.toString();
-      } else {
+      } 
+      else 
+      {
          StringBuffer buffer=new StringBuffer();
          int index;
-         for (index=0;index<sql.length();++index) {
+         for (index=0;index<sql.length();++index) 
+         {
             char c=sql.charAt(index);
-            if ((c==' ')||(c==',')||(c==')')) break;
+            if ((c==' ')||(c==',')||(c==')')) 
+            	break;
             buffer.append(c);
          }
          result[0]=sql.substring(index);
@@ -327,6 +355,7 @@ public class Statement implements java.sql.Statement
       }
       return result;
    }
+   
    public int executeUpdate(String sql) throws java.sql.SQLException
    {
 	  lastSQL=sql;
@@ -337,7 +366,8 @@ public class Statement implements java.sql.Statement
       // delete from x where x=y
 
       String originalSql=sql;
-      try {
+      try 
+      {
          String[] token=new String[1];
          sql=split(sql,token);
          if (token[0].equalsIgnoreCase("insert")) 
@@ -399,11 +429,7 @@ public class Statement implements java.sql.Statement
             {
                throw new java.sql.SQLException("something very bad");
             }
-            ComparableValue[] values = new ComparableValue[valuesList.size()];
-            for(int i=0;i<valuesList.size();i++)
-            	values[i]=new ComparableValue(valuesList.get(i));
-            String[] columns=(String[])columnList.toArray(new String[0]);
-            connection.getBackend().insertValues(tableName, columns,values);
+            connection.getBackend().insertValues(tableName, columnList.toArray(new String[0]),valuesList.toArray(new String[0]));
          } 
          else 
          if (token[0].equalsIgnoreCase("update")) 
@@ -474,10 +500,8 @@ public class Statement implements java.sql.Statement
             sql=parseWhereClause(tableName, sql, conditions);
             if(conditions.size()==0)
          	   throw new java.sql.SQLException("no more where clause!");
-            ComparableValue[] values=new ComparableValue[valueList.size()];
-            for(int i=0;i<valueList.size();i++)
-            	values[i]=new ComparableValue(valueList.get(i));
-            String[] columns=(String[])columnList.toArray(new String[0]);
+            String[] values=valueList.toArray(new String[0]);
+            String[] columns=columnList.toArray(new String[0]);
             connection.getBackend().updateRecord(tableName, conditions, columns, values);
          } 
          else 
@@ -501,7 +525,8 @@ public class Statement implements java.sql.Statement
          else 
         	 throw new java.sql.SQLException("no delete");
          return 1;
-      } catch (java.sql.SQLException e) 
+      } 
+      catch (java.sql.SQLException e) 
       {
          e.printStackTrace();
          log("unsupported SQL in executeUpdate: "+originalSql);
@@ -568,17 +593,22 @@ public class Statement implements java.sql.Statement
    {
       return null;
    }
+   
    public void clearWarnings() throws java.sql.SQLException
    {
    }
+   
+   
    public void setCursorName(String Name) throws java.sql.SQLException
    {
    }
+   
    public boolean execute(String sql) throws java.sql.SQLException
    {
       log("execute "+sql);
       return false;
    }
+   
    public boolean execute(String sql,int a) throws java.sql.SQLException
    { 
 	   return execute(sql); 
@@ -632,14 +662,19 @@ public class Statement implements java.sql.Statement
    public int getFetchDirection() throws java.sql.SQLException { return 0; }
 
    public void addBatch(String a) throws java.sql.SQLException {}
+   
    public void clearBatch() throws java.sql.SQLException {}
+   
    public int[] executeBatch() throws java.sql.SQLException { return null; }
 
    public void setFetchSize(int i) throws java.sql.SQLException {}
+   
    public int getFetchSize() throws java.sql.SQLException { return 0; }
 
    public int getResultSetConcurrency() throws java.sql.SQLException { return 0; }
+   
    public int getResultSetType() throws java.sql.SQLException { return 0; }
+   
    public java.sql.ResultSet getGeneratedKeys() throws java.sql.SQLException { return null; }
 
 }

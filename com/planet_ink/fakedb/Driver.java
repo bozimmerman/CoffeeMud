@@ -4,6 +4,7 @@ import java.util.Properties;
 
 /* 
    Copyright 2001 Thomas Neumann
+   Copyright 2009-2010 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -54,7 +55,7 @@ public class Driver implements java.sql.Driver
 
    public int getMajorVersion() 
    { 
-	   return 1; 
+	   return 3; 
    }
    
    public int getMinorVersion() 

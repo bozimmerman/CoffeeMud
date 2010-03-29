@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.ForumJournalFlags;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -47,6 +48,18 @@ public class ForumInfo extends StdWebMacro
 		JournalsLibrary.ForumJournal journal = CMLib.journals().getForumJournal(last);
 		if(journal == null) 
 			return " @break@";
+		
+		if(parms.containsKey("CANADMIN"))
+			return ""+journal.authorizationCheck(M, ForumJournalFlags.ADMIN);
+		
+		if(parms.containsKey("CANPOST"))
+			return ""+journal.authorizationCheck(M, ForumJournalFlags.POST);
+		
+		if(parms.containsKey("CANREAD"))
+			return ""+journal.authorizationCheck(M, ForumJournalFlags.READ);
+		
+		if(parms.containsKey("CANREPLY"))
+			return ""+journal.authorizationCheck(M, ForumJournalFlags.REPLY);
 		
 		JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(last);
 		if(journal == null) 

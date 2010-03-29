@@ -257,8 +257,14 @@ public class JournalLoader
 			D=DB.DBFetch();
 			String str="SELECT * FROM CMJRNL WHERE CMUPTM > " + newerDate;
 			if(Journal!=null) str += " AND CMJRNL='"+Journal+"'";
-			if(parent != null) str += " AND CMPART='"+parent+"'";
-			str += " ORDER BY CMUPTM DESC";
+			if(parent != null) 
+			{
+				str += " AND CMPART='"+parent+"' ORDER BY CMUPTM";
+				if(parent.length()>0)
+					str += " ASC";
+				else
+					str += " DESC";
+			}
 			ResultSet R=D.query(str);
 			int cardinal=0;
 			while(R.next() && (cardinal < limit))
@@ -496,8 +502,8 @@ public class JournalLoader
 		else
 			stats.latest = null;
 		stats.imagePath="";
-		stats.shortIntro="[This is the short journal description.  To change it, create a journal entry addressed to JOURNALINTRO.]";
-		stats.longIntro="[This is the long journal description.  To change it, create a journal entry addressed to JOURNALINTRO.]";
+		stats.shortIntro="[This is the short journal description.]";
+		stats.longIntro="[This is the long journal description.    To change it, use forum Admin, or create a journal entry addressed to JOURNALINTRO with updatetime 0.]";
 		try
 		{
 			if(D==null) 
