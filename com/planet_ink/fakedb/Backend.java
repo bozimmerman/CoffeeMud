@@ -532,19 +532,14 @@ public class Backend
                 else 
                	 buffer.append(c);
              }
-             try
+        	 if(buffer.toString().equals("null"))
+        		 return new ComparableValue(null);
+        	 else
+             switch(colType)
              {
-	             switch(colType)
-	             {
-	             case FakeColumn.TYPE_INTEGER: return new ComparableValue(Integer.valueOf(buffer.toString()));
-	             case FakeColumn.TYPE_LONG: return new ComparableValue(Long.valueOf(buffer.toString()));
-	             default: return new ComparableValue(buffer.toString());
-	             }
-             }
-             catch(Exception e)
-             {
-            	 e.printStackTrace();
-            	 return new ComparableValue(null);
+             case FakeColumn.TYPE_INTEGER: return new ComparableValue(Integer.valueOf(buffer.toString()));
+             case FakeColumn.TYPE_LONG: return new ComparableValue(Long.valueOf(buffer.toString()));
+             default: return new ComparableValue(buffer.toString());
              }
           }
       }
@@ -1151,6 +1146,9 @@ public class Backend
       FakeColumn col = fakeTable.columns[fake.conditionIndex];
       if(col == null)
 	      throw new java.sql.SQLException("bad column "+tableName+"."+columnName);
+      if((value==null)||value.equals("null"))
+    	  fake.conditionValue=new ComparableValue(null);
+      else
       switch(col.type)
       {
       case FakeColumn.TYPE_INTEGER:
