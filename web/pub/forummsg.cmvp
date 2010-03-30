@@ -137,7 +137,7 @@
 	</TD>
 </TR>
 <TR BGCOLOR=LIGHTBLUE>
-	<TD><FONT COLOR=BLUE>@JournalInfo?FROM@</FONT></TD>
+	<TD VALIGN=TOP><FONT COLOR=BLUE>@JournalInfo?FROM@</FONT></TD>
 	<TD><FONT COLOR=BLACK SIZE=-1>
 	    @AddRequestParameter?MSGICON=@@JournalInfo?MSGICON@@ @
 		@if?CheckReqParm?!MSGICON=@
@@ -199,7 +199,7 @@
 		</TD>
 	</TR>
 	<TR BGCOLOR=@RequestParameter?BGCOLOR@>
-		<TD><FONT COLOR=BLUE>@JournalInfo?FROM@</FONT></TD>
+		<TD VALIGN=TOP><FONT COLOR=BLUE>@JournalInfo?FROM@</FONT></TD>
 		<TD><FONT COLOR=BLACK SIZE=-1>
 		    @AddRequestParameter?MSGICON=@@JournalInfo?MSGICON@@ @
 			@if?CheckReqParm?!MSGICON=@
