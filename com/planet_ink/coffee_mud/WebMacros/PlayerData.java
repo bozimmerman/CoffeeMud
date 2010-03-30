@@ -346,7 +346,14 @@ public class PlayerData extends StdWebMacro
 		if(last.length()>0)
 		{
 			MOB M=CMLib.players().getLoadPlayer(last);
-			if(M==null) return " @break@";
+			if(M==null)
+			{
+				MOB authM=Authenticate.getAuthenticatedMob(httpReq);
+				if((authM!=null)&&(authM.Name().equalsIgnoreCase(last)))
+					M=authM;
+				else
+					return " @break@";
+			}
 
 			boolean firstTime=(!httpReq.isRequestParameter("ACTION"))
 							||(httpReq.getRequestParameter("ACTION")).equals("FIRSTTIME");

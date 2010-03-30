@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.ForumJournalFlags;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -120,6 +121,28 @@ public class JournalInfo extends StdWebMacro
                ||to.equalsIgnoreCase(M.Name())
                ||(to.toUpperCase().trim().startsWith("MASK=")&&(CMLib.masking().maskCheck(to.trim().substring(5),M,true))))))
 		{
+			if(parms.containsKey("CANEDIT"))
+			{
+				JournalsLibrary.ForumJournal forum = CMLib.journals().getForumJournal(journalName);
+				if(M==null) return "false";
+                return String.valueOf(
+                		entry.from.equals(M.Name())
+                		|| priviledged
+                		|| (forum!=null && forum.authorizationCheck(M, ForumJournalFlags.ADMIN))
+                		);
+			}
+			else
+			if(parms.containsKey("QUOTEDTEXT") && httpReq.isRequestParameter("QUOTEDMESSAGE"))
+			{
+				String quotedMessage=httpReq.getRequestParameter("QUOTEDMESSAGE");
+				if((quotedMessage==null)||(quotedMessage.length()==0))
+					return "";
+				JournalsLibrary.JournalEntry quotedEntry =CMLib.database().DBReadJournalEntry(journalName, quotedMessage);
+				return "<BLOCKQUOTE><FONT SIZE=-1>Quoted from "+quotedEntry.from
+					+" &nbsp;("+CMLib.time().date2String(quotedEntry.date)+"):</FONT><HR>"
+				    + "<I>"+quotedEntry.msg + "</I></BLOCKQUOTE><P>";
+			}
+			else
 			if(parms.containsKey("KEY"))
                 return clearWebMacros(entry.key);
 			else

@@ -112,7 +112,7 @@ public class JournalFunction extends StdWebMacro
 			if((flags.size()>0)&&(forum!=null)&&(!forum.authorizationCheck(M, ForumJournalFlags.ADMIN)))
 				return "Post not submitted -- Unauthorized flags.";
 			String text=httpReq.getRequestParameter("NEWTEXT");
-			if(text.length()==0)
+			if((text==null)||(text.length()==0))
 				return "Post not submitted -- No text!";
             if(journalName.equalsIgnoreCase(CMProps.getVar(CMProps.SYSTEM_MAILBOX))
             &&(CMProps.getIntVar(CMProps.SYSTEMI_MAXMAILBOX)>0)
@@ -148,6 +148,7 @@ public class JournalFunction extends StdWebMacro
             	&&(entry.parent.equals(msg.parent)))
             		return "";
 			CMLib.database().DBWriteJournal(journalName,msg);
+			CMLib.journals().clearJournalSummaryStats(journalName);
 			httpReq.getRequestObjects().remove("JOURNAL: "+journalName+": "+parent+": "+page);
 			JournalsLibrary.JournalSummaryStats stats = null;
 			if(forum!=null)
@@ -230,6 +231,8 @@ public class JournalFunction extends StdWebMacro
 			else 
 				keepProcessing=false;
 			JournalsLibrary.JournalEntry entry = getEntry(info, msgKey);
+			if((entry==null)&&parms.containsKey("DELETEREPLY"))
+				entry=CMLib.database().DBReadJournalEntry(journalName, msgKey);
 			if(entry == null)
 				return "Function not performed -- illegal journal message specified.<BR>";
 			if(!doThemAll)
@@ -249,6 +252,7 @@ public class JournalFunction extends StdWebMacro
 					else
 					{
 						CMLib.database().DBWriteJournalReply(journalName,entry.key,from,"","",text);
+						CMLib.journals().clearJournalSummaryStats(journalName);
 						httpReq.getRequestObjects().remove("JOURNAL: "+journalName+": "+parent+": "+page);
 						messages.append("Reply to #"+cardinalNumber+" submitted<BR>");
 					}
@@ -279,7 +283,7 @@ public class JournalFunction extends StdWebMacro
 		                }
 	                }
 	            }
-				if(parms.containsKey("DELETE"))
+				if(parms.containsKey("DELETE")||parms.containsKey("DELETEREPLY"))
 				{
 					if(M==null)	
 						messages.append("Can not delete #"+cardinalNumber+"-- required logged in user.<BR>");
@@ -288,16 +292,30 @@ public class JournalFunction extends StdWebMacro
 						if((forum!=null)&&(!forum.authorizationCheck(M, ForumJournalFlags.ADMIN)))
 							return "Delete not authorized.";
 						CMLib.database().DBDeleteJournal(journalName,entry.key);
-						if((entry.parent!=null)&&(entry.parent.length()>0))
+						if(parms.containsKey("DELETEREPLY")&&(entry.parent!=null)&&(entry.parent.length()>0))
 						{
 							// this constitutes a threaded reply -- update the counter
 							JournalsLibrary.JournalEntry parentEntry=CMLib.database().DBReadJournalEntry(journalName, entry.parent);
 							if(parentEntry!=null)
 								CMLib.database().DBUpdateMessageReplies(parentEntry.key,parentEntry.replies-1);
+							httpReq.addRequestParameters("JOURNALMESSAGE",entry.parent);
+							if(cardinalNumber==0) cardinalNumber=entry.cardinal;
+							if(cardinalNumber==0)
+								messages.append("Reply deleted.<BR>");
+							else
+								messages.append("Reply #"+cardinalNumber+" deleted.<BR>");
 						}
-						httpReq.addRequestParameters("JOURNALMESSAGE","");
+						else
+						{
+							if(cardinalNumber==0) cardinalNumber=entry.cardinal;
+							if(cardinalNumber==0)
+								messages.append("Message deleted.<BR>");
+							else
+								messages.append("Message #"+cardinalNumber+" deleted.<BR>");
+							httpReq.addRequestParameters("JOURNALMESSAGE","");
+						}
+						CMLib.journals().clearJournalSummaryStats(journalName);
 						httpReq.getRequestObjects().remove("JOURNAL: "+journalName+": "+parent+": "+page);
-						messages.append("Message #"+cardinalNumber+" deleted.<BR>");
 					}
 				}
 				else
@@ -331,8 +349,10 @@ public class JournalFunction extends StdWebMacro
 	    					messages.append("The journal '"+journal+"' does not presently exist.  Aborted.<BR>");
 	                    else
 	                    {
+            				CMLib.journals().clearJournalSummaryStats(journalName);
 		                    CMLib.database().DBDeleteJournal(journalName,entry.key);
 		                    CMLib.database().DBWriteJournal(realName,entry);
+	        				CMLib.journals().clearJournalSummaryStats(realName);
 		                    httpReq.addRequestParameters("JOURNALMESSAGE","");
 		                    httpReq.getRequestObjects().remove("JOURNAL: "+journalName+": "+parent+": "+page);
 							messages.append("Message #"+cardinalNumber+" transferred<BR>");

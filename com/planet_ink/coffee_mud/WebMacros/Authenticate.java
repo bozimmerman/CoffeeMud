@@ -93,12 +93,21 @@ public class Authenticate extends StdWebMacro
 	public static boolean authenticated(ExternalHTTPRequests httpReq, String login, String password)
 	{
 		MOB mob=CMLib.players().getLoadPlayer(login);
-		if(mob==null) return false;
-		if((mob.playerStats()!=null)
+		if((mob!=null)
+		&&(mob.playerStats()!=null)
 		&&(mob.playerStats().password().equalsIgnoreCase(password))
 		&&(mob.Name().trim().length()>0)
 		&&(!CMSecurity.isBanned(mob.Name())))
 			return true;
+		if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>0)
+		{
+			PlayerAccount acct=CMLib.players().getLoadAccount(login);
+			if((acct!=null)
+			&&(acct.password().equalsIgnoreCase(password))
+			&&(!CMSecurity.isBanned(acct.accountName())))
+				return true;
+		}
+			
 		return false;
 	}
 
@@ -164,11 +173,16 @@ public class Authenticate extends StdWebMacro
 			mob=CMLib.players().getLoadPlayer(login);
 			if((mob==null)||(mob.playerStats()==null))
 			{
-				PlayerAccount acct=CMLib.players().getAccount(login);
-				if((acct!=null)
-				&&(acct.password().equalsIgnoreCase(password))
-				&&(!CMSecurity.isBanned(acct.accountName())))
-					mob=acct.getAccountMob();
+				if(CMProps.getIntVar(CMProps.SYSTEMI_COMMONACCOUNTSYSTEM)>0)
+				{
+					PlayerAccount acct=CMLib.players().getLoadAccount(login);
+					if((acct!=null)
+					&&(acct.password().equalsIgnoreCase(password))
+					&&(!CMSecurity.isBanned(acct.accountName())))
+						mob=acct.getAccountMob();
+					else
+						mob=null;
+				}
 				else
 					mob=null;
 			}

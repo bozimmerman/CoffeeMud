@@ -410,7 +410,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     				s=session.prompt("\n\rPlease enter a name for your character: ","");
     				if(s.length()==0) continue;
     			}
-                if((!isOkName(s))||(CMLib.players().playerExists(s)))
+                if((!isOkName(s))
+                ||(CMLib.players().playerExists(s))
+                ||(CMLib.players().accountExists(s)&&(!s.equalsIgnoreCase(acct.accountName()))))
                 {
                 	session.println("\n\rThat name is not available for new characters.\n\r  Choose another name (no spaces allowed)!\n\r");
                     continue;

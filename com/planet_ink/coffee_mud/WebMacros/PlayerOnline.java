@@ -56,6 +56,12 @@ public class PlayerOnline extends StdWebMacro
 			else 
 			{
 				MOB M=CMLib.players().getLoadPlayer(last);
+				if(M==null)
+				{
+					MOB authM=Authenticate.getAuthenticatedMob(httpReq);
+					if((authM!=null)&&(authM.Name().equalsIgnoreCase(last)))
+						M=authM;
+				}
 				if(M!=null)
 				{
 	                String login=Authenticate.getLogin(httpReq);

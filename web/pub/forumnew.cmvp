@@ -6,26 +6,55 @@
 	<!-- tell spiders to sod off -->
 	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
 	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="forums.css">
 	<title>Forums</title>
 	<script language=JavaScript>
 	<!--
 		function Cancel()
 		{
+			@if?CheckReqParm?JOURNALMESSAGE=@
+			document.FORUM.action='forum.cmvp';
+			@else@
+			document.FORUM.action='forummsg.cmvp';
+			@endif@
 			document.FORUM.FUNCTION.value='';
 			document.FORUM.submit();
 		}
+		function Submit()
+		{
+			@if?CheckReqParm?JOURNALMESSAGE=@
+				@if?!Authenticate@
+					if(!window.confirm('Confirm: Post this new thread anonymously?'))
+						return;
+				@else@
+					if(!window.confirm('Confirm: Post this new thread?'))
+						return;
+				@endif@
+				document.FORUM.action='forum.cmvp';
+			@else@
+				@if?!Authenticate@
+					if(!window.confirm('Confirm: Post this response anonymously?'))
+						return;
+				@else@
+					if(!window.confirm('Confirm: Post this response?'))
+						return;
+				@endif@
+				document.FORUM.action='forummsg.cmvp';
+			@endif@
+			updateTextArea('NEWTEXT');
+			document.FORUM.submit();
+		}
+		
 	//-->
 	</SCRIPT>
 </head>
 
 <body>
 <script language="JavaScript" type="text/javascript" src="textedit/wysiwyg.js"></script>
-@if?CheckReqParm?JOURNALMESSAGE=@
-	<FORM NAME=FORUM TARGET=_top METHOD=POST ACTION="forum.cmvp">
-@else@
-	<FORM NAME=FORUM TARGET=_top METHOD=POST ACTION="forummsg.cmvp">
-	<INPUT TYPE=HIDDEN NAME=JOURNALMESSAGE VALUE="@RequestParameter?JOURNALMESSAGE@">
-	<INPUT TYPE=HIDDEN NAME=PARENT VALUE="@RequestParameter?JOURNALMESSAGE@">
+<FORM NAME=FORUM TARGET=_top METHOD=POST ACTION="forumnew.cmvp">
+@if?CheckReqParm?!JOURNALMESSAGE=@
+<INPUT TYPE=HIDDEN NAME=JOURNALMESSAGE VALUE="@RequestParameter?JOURNALMESSAGE@">
+<INPUT TYPE=HIDDEN NAME=PARENT VALUE="@RequestParameter?JOURNALMESSAGE@">
 @endif@
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=JOURNAL VALUE="@RequestParameter?JOURNAL@">
@@ -33,15 +62,38 @@
 <INPUT TYPE=HIDDEN NAME=JOURNALPAGE VALUE="@RequestParameter?JOURNALPAGE@">
 <INPUT TYPE=HIDDEN NAME=DATE VALUE="@JournalInfo?NOWTIMESTAMP@">
 <TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
+	<TR>
+	<TD WIDTH=10px>&nbsp;</TD>
+	<TD><a href="@if?!Authenticate?SETPLAYER@index.cmvp@else@access.cmvp@endif@?AUTH=@Authenticate?AUTH@">
+		<IMG BORDER=0 SRC=images/cm50.gif>
+		</a>
+	</TD>
+	<TD ALIGN=RIGHT VALIGN=TOP>
+		<FONT COLOR=BLACK SIZE=-1>
+	@if?!Authenticate?SETPLAYER@ 
+		Login<INPUT TYPE=TEXT SIZE=10 VALUE="" NAME=LOGIN>&nbsp;
+		Password<INPUT TYPE=PASSWORD NAME=PASSWORD SIZE=10 VALUE="">
+		<INPUT TYPE=SUBMIT VALUE=Login>
+	@else@
+		Logged in as <B>@PlayerData?NAME@</B>
+	@endif@
+	</TD>
+	</TR>
+</TABLE>
+<BR>
+<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
 <TR BGCOLOR=BLACK HEIGHT=20>
 	<TD COLSPAN=2>
 		<TABLE WIDTH=100% BORDER=0><TR>
+		<TD>
 		@if?CheckReqParm?JOURNALMESSAGE=@
-			<TD WIDTH=50%><FONT COLOR=WHITE SIZE=-1><B>Post New Thread</B></FONT></TD>
+			<FONT COLOR=WHITE SIZE=-1><B>Post New Thread</B></FONT>
 		@else@
-			<TD WIDTH=50%><FONT COLOR=WHITE SIZE=-1><B>Post Reply to @JournalInfo?SUBJECT@</B></FONT></TD>
+			<FONT COLOR=WHITE SIZE=-1><B>Post Reply to @JournalInfo?SUBJECT@</B></FONT>
 		@endif@
-		<TD WIDTH=50% AlIGN=RIGHT><FONT COLOR=WHITE SIZE=-1><B>Forum : @JournalName@</B></FONT></TD>
+		</TD>
+		<TD ALIGN=CENTER>&nbsp;@if?!Authenticate@&nbsp;&nbsp;<FONT COLOR=LIGHTBLUE SIZE=-1><B>*** Posting Anonymously ***</B></FONT>@endif@</TD>
+		<TD AlIGN=RIGHT><FONT COLOR=WHITE SIZE=-1><B>Forum : @JournalName@</B></FONT></TD>
 		</TR></TABLE>
 	</TD>
 </TR>
@@ -49,7 +101,7 @@
 @if?CheckReqParm?JOURNALMESSAGE=@
 <TR BGCOLOR=LIGHTGREY VALIGN=BOTTOM>
 	<TD ALIGN=LEFT VALIGN=BOTTOM>&nbsp;&nbsp;<FONT SIZE=6><B>Subject:</B></FONT></TD>
-	<TD ALIGN=LEFT VALIGN=BOTTOM><INPUT TYPE=TEXT NAME=SUBJECT SIZE=60></TD>
+	<TD ALIGN=LEFT VALIGN=BOTTOM><INPUT TYPE=TEXT NAME=SUBJECT SIZE=60 VALUE="@RequestParameter?SUBJECT@"></TD>
 </TR>
 @endif@
 <TR BGCOLOR=LIGHTGREY>
@@ -82,7 +134,7 @@
 <TR BGCOLOR=LIGHTGREY VALIGN=TOP>
 	<TD ALIGN=LEFT WIDTH=200px VALIGN=TOP>&nbsp;&nbsp;<FONT SIZE=6><B>Message:</B></FONT></TD>
 	<TD ALIGN=LEFT VALIGN=TOP>
-		<textarea id="NEWTEXT" name="NEWTEXT" style="height: 170px; width: 500px;">@RequestParameter?QUOTEDTEXT@</textarea>
+<textarea id="NEWTEXT" name="NEWTEXT" style="height: 170px; width: 500px;">@if?CheckReqParm?!NEWTEXT=@ @RequestParameter?NEWTEXT@ @else@ @if?CheckReqParm?!QUOTEDMESSAGE=@ @JournalInfo?QUOTEDTEXT@ @endif@ @endif@</textarea>
 		<script language="javascript1.2">
 			generate_wysiwyg('NEWTEXT');
 		</script>
@@ -95,7 +147,7 @@
 	<TABLE WIDTH=600px BORDER=0 CELLSPACING=0 CELLPADDING=0>
 	<TR>
 		<TD WIDTH=25%>&nbsp;</TD>
-		<TD WIDTH=25% ALIGN=CENTER><INPUT TYPE=SUBMIT STYLE="width: 5em" VALUE=Post ONCLICK="Submit();"></TD>
+		<TD WIDTH=25% ALIGN=CENTER><INPUT TYPE=BUTTON STYLE="width: 5em" VALUE=Post ONCLICK="Submit();"></TD>
 		<TD WIDTH=25% ALIGN=CENTER><INPUT TYPE=BUTTON STYLE="width: 5em" VALUE=Cancel ONCLICK="Cancel();"></TD>
 		<TD WIDTH=25%>&nbsp;</TD>
 	</TR>

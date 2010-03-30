@@ -63,10 +63,8 @@
 			<BR>
 			<A href="javascript:Clicked('picture.cmvp')"><FONT SIZE=5 COLOR=BLACK><B>Character Portrait</B></FONT></a>
 			<BR>
-			@if?CheckAuthCode?ANYMODAREAS=true@
 			<A href="javascript:Clicked('forums.cmvp')"><FONT SIZE=5 COLOR=BLACK><B>Forums</B></FONT></a>
 			<BR>
-			@endif@
 			<A href="javascript:Clicked('index.cmvp')"><FONT SIZE=5 COLOR=BLACK><B>Public Pages</B></FONT></a>
 			<BR>
 		</TD></TR>
