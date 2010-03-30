@@ -138,9 +138,10 @@ public class JournalInfo extends StdWebMacro
 				if((quotedMessage==null)||(quotedMessage.length()==0))
 					return "";
 				JournalsLibrary.JournalEntry quotedEntry =CMLib.database().DBReadJournalEntry(journalName, quotedMessage);
-				return "<BLOCKQUOTE><FONT SIZE=-1>Quoted from "+quotedEntry.from
+				return "<P><BLOCKQUOTE style=\"border : solid #000 1px; padding : 3px; margin-left: 1em; margin-bottom:0.2em; background: #f9f9f9 none; color: #000;\">"
+				    +"<FONT SIZE=-1>Quoted from "+quotedEntry.from
 					+" &nbsp;("+CMLib.time().date2String(quotedEntry.date)+"):</FONT><HR>"
-				    + "<I>"+quotedEntry.msg + "</I></BLOCKQUOTE><P>";
+				    + "<I>"+quotedEntry.msg + "</I></BLOCKQUOTE></P>";
 			}
 			else
 			if(parms.containsKey("KEY"))
