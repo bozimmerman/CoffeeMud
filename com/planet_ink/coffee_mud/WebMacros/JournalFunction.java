@@ -148,25 +148,35 @@ public class JournalFunction extends StdWebMacro
             	&&(entry.parent.equals(msg.parent)))
             		return "";
 			CMLib.database().DBWriteJournal(journalName,msg);
-			CMLib.journals().clearJournalSummaryStats(journalName);
 			httpReq.getRequestObjects().remove("JOURNAL: "+journalName+": "+parent+": "+page);
-			JournalsLibrary.JournalSummaryStats stats = null;
-			if(forum!=null)
-				stats=CMLib.journals().getJournalStats(journalName);
 			if(parent!=null)
-			{
 				CMLib.database().DBTouchJournalMessage(parent);
-				if(stats!=null)
-				{
-					JournalsLibrary.JournalEntry parentEntry = CMLib.database().DBReadJournalEntry(journalName, parent);
-					if(parentEntry!=null)
-						stats.latest=parentEntry;
-				}
-			}
-			else
-			if(stats!=null)
-				stats.latest=msg;
+			CMLib.journals().clearJournalSummaryStats(journalName);
 			return "Post submitted.";
+		}
+		else
+		if(parms.containsKey("ADMINSUBMIT"))
+		{
+			if(forum==null)
+				return "Changes not submitted -- Unsupported.";
+			else
+			if(!forum.authorizationCheck(M, ForumJournalFlags.ADMIN))
+				return "Changes not submitted -- Unauthorized.";
+			String longDesc=httpReq.getRequestParameter("LONGDESC");
+			String shortDesc=httpReq.getRequestParameter("SHORTDESC");
+			String imgPath=httpReq.getRequestParameter("IMGPATH");
+			JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(journalName);
+			if(stats == null)
+				return "Changes not submitted -- No Stats!";
+			if(longDesc!=null)
+				stats.longIntro=longDesc;
+			if(shortDesc!=null)
+				stats.shortIntro=shortDesc;
+			if(imgPath!=null)
+				stats.imagePath=imgPath;
+			CMLib.database().DBUpdateJournalStats(journalName, stats);
+			CMLib.journals().clearJournalSummaryStats(journalName);
+			return "Changed applied.";
 		}
 		String parent=httpReq.getRequestParameter("JOURNALPARENT");
 		if(parent==null) parent="";

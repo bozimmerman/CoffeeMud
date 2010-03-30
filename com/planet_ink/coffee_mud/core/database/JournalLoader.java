@@ -406,6 +406,26 @@ public class JournalLoader
 		DB.update("UPDATE CMJRNL SET CMSUBJ='"+subject+"', CMMSGT='"+msg+"' WHERE CMJKEY='"+key+"'");
 	}
 	
+	public void DBUpdateJournal(String Journal, JournalsLibrary.JournalEntry entry)
+	{
+		DB.update("UPDATE CMJRNL SET "
+				 +"CMFROM='"+entry.from+"', "
+				 +"CMDATE="+entry.date+" , "
+				 +"CMTONM='"+entry.to+"' "
+				 +"CMSUBJ='"+entry.subj+"' "
+				 +"CMPART='"+entry.parent+"' "
+				 +"CMATTR="+entry.attributes+" "
+				 +"CMDATA='"+entry.data+"' "
+				 +"WHERE CMJRNL='"+Journal+"' AND CMJKEY='"+entry.key+"'");
+		DB.update("UPDATE CMJRNL SET "
+				 +"CMUPTM="+entry.update+", "
+				 +"CMIMGP='"+entry.msgIcon+"', "
+				 +"CMVIEW="+entry.views+", "
+				 +"CMREPL="+entry.replies+", "
+				 +"CMMSGT='"+entry.msg+"' "
+				 +"WHERE CMJRNL='"+Journal+"' AND CMJKEY='"+entry.key+"'");
+	}
+	
 	public void DBTouchJournalMessage(String key)
 	{
 		DB.update("UPDATE CMJRNL SET CMUPTM="+System.currentTimeMillis()+" WHERE CMJKEY='"+key+"'");
@@ -459,6 +479,51 @@ public class JournalLoader
 		catch(Exception sqle)
 		{
 			Log.errOut("Journal",sqle);
+		}
+		finally
+		{
+			if(D!=null) DB.DBDone(D);
+		}
+	}
+	
+	public void DBUpdateJournalStats(String Journal, JournalsLibrary.JournalSummaryStats stats)
+	{
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			ResultSet R=D.query("SELECT * FROM CMJRNL WHERE CMJRNL='"+stats.name+"' AND CMTONM='JOURNALINTRO'");
+			JournalsLibrary.JournalEntry entry = null;
+			if(R.next())
+				entry = this.DBReadJournalEntry(R);
+			R.close();
+			if(entry!=null)
+			{
+				entry.subj = stats.shortIntro;
+				entry.msg = stats.longIntro;
+				entry.data=stats.imagePath;
+				entry.attributes = JournalsLibrary.JournalEntry.ATTRIBUTE_PROTECTED;
+				entry.date=-1;
+				entry.update=-1;
+				DBUpdateJournal(Journal,entry);
+			}
+			else
+			{
+				entry = new JournalsLibrary.JournalEntry();
+				entry.subj =stats.shortIntro;
+				entry.msg =stats.longIntro;
+				entry.data=stats.imagePath;
+				entry.to="JOURNALINTRO";
+				entry.from="";
+				entry.attributes = JournalsLibrary.JournalEntry.ATTRIBUTE_PROTECTED;
+				entry.date=-1;
+				entry.update=-1;
+				this.DBWrite(Journal, entry);
+			}
+		}
+		catch(Exception sqle)
+		{
+			Log.errOut("JournalLoader",sqle.getMessage());
 		}
 		finally
 		{

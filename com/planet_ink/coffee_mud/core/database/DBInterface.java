@@ -202,6 +202,12 @@ public class DBInterface implements DatabaseEngine
 	public void DBDeletePlayerJournals(String name)
 	{JournalLoader.DBDeletePlayerData(name);}
 	
+	public void DBUpdateJournal(String Journal, JournalsLibrary.JournalEntry entry)
+	{JournalLoader.DBUpdateJournal(Journal,entry);}
+	
+	public void DBUpdateJournalStats(String Journal, JournalsLibrary.JournalSummaryStats stats)
+	{JournalLoader.DBUpdateJournalStats(Journal,stats);}
+	
 	public void DBReadJournalSummaryStats(JournalsLibrary.JournalSummaryStats stats)
 	{JournalLoader.DBReadJournalSummaryStats(stats);}
     

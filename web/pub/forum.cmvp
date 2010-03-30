@@ -18,7 +18,9 @@
 		}
 		function DoAdmin(which)
 		{
-			alert('Not yet implemented')
+			document.FORUM.action="forumadmin.cmvp";
+			document.FORUM.JOURNALMESSAGE.value='';
+			document.FORUM.submit();
 		}
 		function NewMessage(which)
 		{
@@ -65,6 +67,9 @@
 <BR><BR>
 @if?CheckReqParm?FUNCTION=DELETE@
 <CENTER><FONT COLOR=RED><B>@JournalFunction?DELETE@</B></FONT></CENTER>
+@endif@
+@if?CheckReqParm?FUNCTION=ADMINSUBMIT@
+<CENTER><FONT COLOR=RED><B>@JournalFunction?ADMINSUBMIT@</B></FONT></CENTER>
 @endif@
 @if?CheckReqParm?FUNCTION=NEWPOST@
 <CENTER><FONT COLOR=RED><B>@JournalFunction?NEWPOST@</B></FONT></CENTER>

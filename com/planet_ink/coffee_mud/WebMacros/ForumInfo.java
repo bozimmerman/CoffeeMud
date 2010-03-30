@@ -61,6 +61,18 @@ public class ForumInfo extends StdWebMacro
 		if(parms.containsKey("CANREPLY"))
 			return ""+journal.authorizationCheck(M, ForumJournalFlags.REPLY);
 		
+		if(parms.containsKey("ADMINMASK"))
+			return ""+journal.adminMask();
+		
+		if(parms.containsKey("READMASK"))
+			return ""+journal.readMask();
+		
+		if(parms.containsKey("POSTMASK"))
+			return ""+journal.postMask();
+		
+		if(parms.containsKey("REPLYMASK"))
+			return ""+journal.replyMask();
+		
 		JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(last);
 		if(journal == null) 
 			return " @break@";

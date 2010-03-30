@@ -35,6 +35,7 @@
 		{
 			if(window.confirm('Confirm: Delete this reply?'))
 			{
+				document.FORUM.action='forummsg.cmvp';
 				document.FORUM.JOURNALMESSAGE.value=which;
 				document.FORUM.FUNCTION.value='DELETEREPLY';
 				document.FORUM.submit();

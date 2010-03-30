@@ -1,8 +1,8 @@
 /* WYSIWYG EDITOR */
 
 /* Toolbar */
-.toolbar1   { border: 1px solid #666666; height: 26px; background-image: url(../icons/background_silver.jpg); }
-.toolbar2   { border: 1px solid #666666; height: 24px; background-image: url(../icons/background_silver.jpg); border-bottom: 0px; border-top: 0px; }
+.toolbar1   { border: 1px solid #666666; height: 26px; background-image: url(icons/background_silver.jpg); }
+.toolbar2   { border: 1px solid #666666; height: 24px; background-image: url(icons/background_silver.jpg); border-bottom: 0px; border-top: 0px; }
 
 /* Command Buttons */
 .button     { width: 20px; height: 20px; border: 0px solid transparent; margin: 1px; padding: 0px; background: transparent; }
