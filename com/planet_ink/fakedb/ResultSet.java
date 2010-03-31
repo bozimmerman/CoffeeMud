@@ -70,7 +70,7 @@ public class ResultSet implements java.sql.ResultSet
       for(int s=0;s<showCols.length;s++)
     	  if(showCols[s]==FakeColumn.INDEX_COUNT)
     	  {
-	    	  showColMap.put("COUNT", FakeColumn.INDEX_COUNT);
+	    	  showColMap.put("COUNT", Integer.valueOf(FakeColumn.INDEX_COUNT));
 	          int ct = 0;
 	          while(iter.hasNext())
 	          {
