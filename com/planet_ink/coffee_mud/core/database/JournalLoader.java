@@ -274,10 +274,10 @@ public class JournalLoader
 			String str="SELECT * FROM CMJRNL WHERE CMUPTM > " + newerDate;
 			if((Journal!=null)&&(Journal.length()>0))
 				str += " AND CMJRNL='"+Journal+"'";
-			if((searchStr!=null)&&(searchStr.length()>0))
-				str += " AND (CMSUBJ LIKE '%"+searchStr+"%' OR CMMSGT LIKE '%"+searchStr+"%')";
 			if(parent != null)
 				str += " AND CMPART='"+parent+"'";
+			if((searchStr!=null)&&(searchStr.length()>0))
+				str += " AND (CMSUBJ LIKE '%"+searchStr+"%' OR CMMSGT LIKE '%"+searchStr+"%')";
 			str += " ORDER BY CMUPTM";
 			if((parent==null)||(parent.length()>0))
 				str += " ASC";
