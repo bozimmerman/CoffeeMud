@@ -17,25 +17,55 @@
 		}
 		function DoReply(which)
 		{
+			if(abort) return;
+			abort=true;
+			document.FORUM.FUNCTION.value='REPLY';
+			document.FORUM.JOURNALPARENT.value='';
 			document.FORUM.action="forumnew.cmvp";
 			document.FORUM.submit();
 		}
 		function QuoteReply(which)
 		{
+			if(abort) return;
+			abort=true;
+			document.FORUM.FUNCTION.value='REPLY';
+			document.FORUM.JOURNALPARENT.value='';
 			document.FORUM.action="forumnew.cmvp";
 			document.FORUM.QUOTEDMESSAGE.value=which;
 			document.FORUM.submit();
 		}
+		function EditMsg(which)
+		{
+			if(abort) return; abort=true;
+			document.FORUM.action="forumnew.cmvp";
+			document.FORUM.JOURNALPARENT.value='';
+			document.FORUM.FUNCTION.value='EDITPOST';
+			document.FORUM.JOURNALMESSAGE.value=which;
+			document.FORUM.submit();
+		}
+		function EditReply(which)
+		{
+			if(abort) return; abort=true;
+			document.FORUM.action="forumnew.cmvp";
+			document.FORUM.JOURNALPARENT.value=document.FORUM.JOURNALMESSAGE.value;
+			document.FORUM.FUNCTION.value='EDITPOST';
+			document.FORUM.JOURNALMESSAGE.value=which;
+			document.FORUM.submit();
+		}
 		function Cancel(which)
 		{
+			if(abort) return; abort=true;
 			document.FORUM.action="forum.cmvp";
 			document.FORUM.submit();
 		}
 		function DeleteReply(which)
 		{
+			if(abort) return;
 			if(window.confirm('Confirm: Delete this reply?'))
 			{
+				abort=true;
 				document.FORUM.action='forummsg.cmvp';
+				document.FORUM.JOURNALPARENT.value=document.FORUM.JOURNALMESSAGE.value;
 				document.FORUM.JOURNALMESSAGE.value=which;
 				document.FORUM.FUNCTION.value='DELETEREPLY';
 				document.FORUM.submit();
@@ -47,13 +77,12 @@
 			if(window.confirm('Confirm: Delete this post and all responses?'))
 			{
 				abort=true;
+				document.FORUM.JOURNALPARENT.value='';
 				document.FORUM.action='forum.cmvp';
 				document.FORUM.JOURNALMESSAGE.value=which;
 				document.FORUM.FUNCTION.value='DELETE';
 				document.FORUM.submit();
 			}
-			else
-				abort=false;
 		}
 	//-->
 	</SCRIPT>
@@ -64,11 +93,14 @@
 @if?CheckReqParm?FUNCTION=DELETEREPLY@ 
 	@AddRequestParameter?DELMSG=@@JournalFunction?DELETEREPLY@@ @
 @endif@
+@if?CheckReqParm?FUNCTION=EDIT@ 
+	@AddRequestParameter?DELMSG=@@JournalFunction?EDIT@@ @
+@endif@
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=JOURNAL VALUE="@RequestParameter?JOURNAL@">
-<INPUT TYPE=HIDDEN NAME=JOURNALMESSAGE VALUE="@RequestParameter?JOURNALMESSAGE@">
+<INPUT TYPE=HIDDEN NAME=JOURNALMESSAGE VALUE="@JournalInfo?KEY@">
 <INPUT TYPE=HIDDEN NAME=JOURNALPAGE VALUE="@RequestParameter?JOURNALPAGE@">
-<INPUT TYPE=HIDDEN NAME=PARENT VALUE="@RequestParameter?JOURNALMESSAGE@">
+<INPUT TYPE=HIDDEN NAME=JOURNALPARENT VALUE="">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
 <INPUT TYPE=HIDDEN NAME=QUOTEDMESSAGE VALUE="">
 <TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
@@ -95,6 +127,9 @@
 <CENTER><FONT COLOR=RED><B>@JournalFunction?NEWPOST@</B></FONT></CENTER>
 @endif@
 @if?CheckReqParm?FUNCTION=DELETEREPLY@
+	<CENTER><FONT COLOR=RED><B>@RequestParameter?DELMSG@</B></FONT></CENTER>
+@endif@
+@if?CheckReqParm?FUNCTION=EDIT@
 	<CENTER><FONT COLOR=RED><B>@RequestParameter?DELMSG@</B></FONT></CENTER>
 @endif@
 <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0 BGCOLOR=LIGHTGREY>
@@ -213,8 +248,8 @@
 		<TR VALIGN=CENTER HEIGHT=15>
 			<TD ALIGN=RIGHT><FONT COLOR=WHITE SIZE=-1>&nbsp;</FONT></TD>
 			@if?JournalInfo?CANEDIT@
-				<TD WIDTH=60px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:EditMsg('@JournalInfo?KEY@')">
-				<a href="javascript:EditMsg('@JournalInfo?KEY@')" style="text-decoration:none">
+				<TD WIDTH=60px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:EditReply('@JournalInfo?KEY@')">
+				<a href="javascript:EditReply('@JournalInfo?KEY@')" style="text-decoration:none">
 					<FONT COLOR=@RequestParameter?BGCOLOR@ SIZE=-1>
 					&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 SRC=images/docgear.gif>&nbsp;&nbsp;<B>Edit</B>
 					</FONT>
@@ -223,7 +258,7 @@
 				</TD>
 			@endif@
 			@if?ForumInfo?CANADMIN@
-				<TD WIDTH=60px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:DeleteMsg('@JournalInfo?KEY@')">
+				<TD WIDTH=60px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:DeleteReply('@JournalInfo?KEY@')">
 				<a href="javascript:DeleteReply('@JournalInfo?KEY@')" style="text-decoration:none">
 					<FONT COLOR=@RequestParameter?BGCOLOR@ SIZE=-1>
 					&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 SRC=images/docx.gif>&nbsp;&nbsp;<B>Delete</B>

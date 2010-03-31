@@ -18,11 +18,16 @@
 		}
 		function Submit(which)
 		{
-			updateTextArea('SHORTDESC');
-			updateTextArea('LONGDESC');
-			document.FORUM.action="forum.cmvp";
-			document.FORUM.FUNCTION.value="ADMINSUBMIT";
-			document.FORUM.submit();
+			if(abort) return; 
+			if(window.confirm('Confirm: Subject changes?'))
+			{
+				abort=true;
+				updateTextArea('SHORTDESC');
+				updateTextArea('LONGDESC');
+				document.FORUM.action="forum.cmvp";
+				document.FORUM.FUNCTION.value="ADMINSUBMIT";
+				document.FORUM.submit();
+			}
 		}
 	//-->
 	</SCRIPT>

@@ -189,7 +189,7 @@ public class JournalFunction extends StdWebMacro
 			{
 				int limit = CMProps.getIntVar(CMProps.SYSTEMI_JOURNALLIMIT);
 				if(limit<=0) limit=Integer.MAX_VALUE;
-				info=CMLib.database().DBReadJournalPageMsgs(journalName, "", CMath.s_long(page), limit);
+				info=CMLib.database().DBReadJournalPageMsgs(journalName, parent, CMath.s_long(page), limit);
 			}
 			httpReq.getRequestObjects().put("JOURNAL: "+journalName+": "+parent+": "+page,info);
 		}
@@ -309,6 +309,7 @@ public class JournalFunction extends StdWebMacro
 							if(parentEntry!=null)
 								CMLib.database().DBUpdateMessageReplies(parentEntry.key,parentEntry.replies-1);
 							httpReq.addRequestParameters("JOURNALMESSAGE",entry.parent);
+							httpReq.addRequestParameters("JOURNALPARENT","");
 							if(cardinalNumber==0) cardinalNumber=entry.cardinal;
 							if(cardinalNumber==0)
 								messages.append("Reply deleted.<BR>");
@@ -327,6 +328,39 @@ public class JournalFunction extends StdWebMacro
 						CMLib.journals().clearJournalSummaryStats(journalName);
 						httpReq.getRequestObjects().remove("JOURNAL: "+journalName+": "+parent+": "+page);
 					}
+				}
+				else
+				if(parms.containsKey("EDIT"))
+				{
+					if(M==null)	
+						messages.append("Can not edit #"+cardinalNumber+"-- required logged in user.<BR>");
+					else
+					if((entry.to.equals(M.Name()))
+					||((forum!=null)&&(!forum.authorizationCheck(M, ForumJournalFlags.ADMIN)))
+					||CMSecurity.isAllowedAnywhere(M,"JOURNALS"))
+					{
+						String text=httpReq.getRequestParameter("NEWTEXT"+fieldSuffix);
+						if((text==null)||(text.length()==0))
+							messages.append("Edit to #"+cardinalNumber+" not submitted -- No text!<BR>");
+						else
+						{
+							CMLib.database().DBUpdateJournal(entry.key, entry.subj, text);
+							if(cardinalNumber==0) cardinalNumber=entry.cardinal;
+							if(cardinalNumber==0)
+								messages.append("Message modified.<BR>");
+							else
+								messages.append("Message #"+cardinalNumber+" modified.<BR>");
+							if((entry.parent!=null)&&(entry.parent.length()>0))
+							{
+								httpReq.addRequestParameters("JOURNALMESSAGE",entry.parent);
+								httpReq.addRequestParameters("JOURNALPARENT","");
+							}
+            				CMLib.journals().clearJournalSummaryStats(journalName);
+							httpReq.getRequestObjects().remove("JOURNAL: "+journalName+": "+parent+": "+page);
+						}
+					}
+					else
+						return "Delete not authorized.";
 				}
 				else
 	            if(CMSecurity.isAllowedAnywhere(M,"JOURNALS"))

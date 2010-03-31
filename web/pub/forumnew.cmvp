@@ -18,6 +18,7 @@
 			document.FORUM.action='forummsg.cmvp';
 			@endif@
 			document.FORUM.FUNCTION.value='';
+			document.FORUM.JOURNALPARENT.value='';
 			document.FORUM.submit();
 		}
 		function Submit()
@@ -32,12 +33,18 @@
 				@endif@
 				document.FORUM.action='forum.cmvp';
 			@else@
-				@if?!Authenticate@
-					if(!window.confirm('Confirm: Post this response anonymously?'))
-						return;
+				@if?CheckReqParm?FUNCTION=REPLY@
+					@if?!Authenticate@
+						if(!window.confirm('Confirm: Post this response anonymously?'))
+							return;
+					@else@
+						if(!window.confirm('Confirm: Post this response?'))
+							return;
+					@endif@
 				@else@
-					if(!window.confirm('Confirm: Post this response?'))
+					if(!window.confirm('Confirm: Post these changes?'))
 						return;
+					document.FORUM.FUNCTION.value='EDIT';
 				@endif@
 				document.FORUM.action='forummsg.cmvp';
 			@endif@
@@ -54,7 +61,8 @@
 <FORM NAME=FORUM TARGET=_top METHOD=POST ACTION="forumnew.cmvp">
 @if?CheckReqParm?!JOURNALMESSAGE=@
 <INPUT TYPE=HIDDEN NAME=JOURNALMESSAGE VALUE="@RequestParameter?JOURNALMESSAGE@">
-<INPUT TYPE=HIDDEN NAME=PARENT VALUE="@RequestParameter?JOURNALMESSAGE@">
+<INPUT TYPE=HIDDEN NAME=JOURNALPARENT VALUE="@RequestParameter?JOURNALPARENT@">
+<INPUT TYPE=HIDDEN NAME=PARENT VALUE="@RequestParameter?JOURNALMESSAGE@"> <!-- for responses -->
 @endif@
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=JOURNAL VALUE="@RequestParameter?JOURNAL@">
@@ -89,7 +97,11 @@
 		@if?CheckReqParm?JOURNALMESSAGE=@
 			<FONT COLOR=WHITE SIZE=-1><B>Post New Thread</B></FONT>
 		@else@
-			<FONT COLOR=WHITE SIZE=-1><B>Post Reply to @JournalInfo?SUBJECT@</B></FONT>
+			@if?CheckReqParm?FUNCTION=REPLY@
+				<FONT COLOR=WHITE SIZE=-1><B>Post Reply to @JournalInfo?SUBJECT@</B></FONT>
+			@else@
+				<FONT COLOR=WHITE SIZE=-1><B>Modify message: @JournalInfo?SUBJECT@</B></FONT>
+			@endif@
 		@endif@
 		</TD>
 		<TD ALIGN=CENTER>&nbsp;@if?!Authenticate@&nbsp;&nbsp;<FONT COLOR=LIGHTBLUE SIZE=-1><B>*** Posting Anonymously ***</B></FONT>@endif@</TD>
@@ -134,7 +146,7 @@
 <TR BGCOLOR=LIGHTGREY VALIGN=TOP>
 	<TD ALIGN=LEFT WIDTH=200px VALIGN=TOP>&nbsp;&nbsp;<FONT SIZE=6><B>Message:</B></FONT></TD>
 	<TD ALIGN=LEFT VALIGN=TOP>
-<textarea id="NEWTEXT" name="NEWTEXT" style="height: 170px; width: 500px;">@if?CheckReqParm?!NEWTEXT=@ @RequestParameter?NEWTEXT@ @else@ @if?CheckReqParm?!QUOTEDMESSAGE=@ @JournalInfo?QUOTEDTEXT@ @endif@ @endif@</textarea>
+<textarea id="NEWTEXT" name="NEWTEXT" style="height: 170px; width: 500px;">@if?CheckReqParm?!NEWTEXT=@ @RequestParameter?NEWTEXT@ @else@ @if?CheckReqParm?!QUOTEDMESSAGE=@ @JournalInfo?QUOTEDTEXT@ @else@ @if?CheckReqParm?FUNCTION=EDITPOST@ @JournalInfo?MESSAGE@ @endif@ @endif@ @endif@</textarea>
 		<script language="javascript1.2">
 			generate_wysiwyg('NEWTEXT');
 		</script>
