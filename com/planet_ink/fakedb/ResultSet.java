@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import com.planet_ink.fakedb.Backend.*;
 /* 
@@ -41,6 +42,14 @@ public class ResultSet implements java.sql.ResultSet
    private final String[] orderByConditions;
    private final Map<String,Integer> showColMap=new Hashtable<String,Integer>();
    private boolean wasNullFlag = false;
+   private Object countValue = null;
+   private static final List<RecordInfo> fakeList = new Vector<RecordInfo>(1);
+   static
+   {
+	   RecordInfo info = new RecordInfo(0,0);
+	   info.indexedData=new ComparableValue[0];
+	   fakeList.add(info);
+   }
 
    ResultSet(Statement stmt,
              Backend.FakeTable table,
@@ -55,11 +64,24 @@ public class ResultSet implements java.sql.ResultSet
 	  currentRow=0;
       this.values=new ComparableValue[table.numColumns()];
       this.showCols = showCols;
-      for(int s=0;s<showCols.length;s++)
-    	  showColMap.put(table.getColumnName(showCols[s]), Integer.valueOf(s));
       this.orderByKeyDexCols=orderByKeyDexCols;
       this.orderByConditions=orderByConditions;
-      iter = table.indexIterator(this.orderByKeyDexCols,this.orderByConditions);
+      this.iter = table.indexIterator(this.orderByKeyDexCols,this.orderByConditions);
+      for(int s=0;s<showCols.length;s++)
+    	  if(showCols[s]==FakeColumn.INDEX_COUNT)
+    	  {
+	    	  showColMap.put("COUNT", FakeColumn.INDEX_COUNT);
+	          int ct = 0;
+	          while(iter.hasNext())
+	          {
+	        	  iter.next();
+	        	  ct++;
+	          }
+	          countValue=Integer.valueOf(ct);
+	          iter=fakeList.iterator();
+    	  }
+    	  else
+	    	  showColMap.put(table.getColumnName(showCols[s]), Integer.valueOf(s));
    }
 
    public java.sql.Statement getStatement() throws java.sql.SQLException { return statement; }
@@ -71,6 +93,11 @@ public class ResultSet implements java.sql.ResultSet
          if (!iter.hasNext()) 
         	 return false;
          Backend.RecordInfo rowInfo=iter.next();
+         if(countValue!=null)
+         {
+        	 currentRow++;
+        	 return true;
+         }
          if (conditions.size()>0) 
          {
              boolean[] dataLoaded = new boolean[1];
@@ -105,6 +132,8 @@ public class ResultSet implements java.sql.ResultSet
     	 return null;
       } 
       columnIndex=showCols[columnIndex-1];
+      if(columnIndex==FakeColumn.INDEX_COUNT)
+    	  return this.countValue;
       Object v=values[columnIndex].getValue(); 
       if(v == null)
       {
@@ -298,7 +327,7 @@ public class ResultSet implements java.sql.ResultSet
    {
 	  if(!showColMap.containsKey(columnName))
 		  return -1;
-	  return showColMap.get(columnName).intValue()+1;
+	  return showColMap.get(columnName).intValue() + 1;
    }
 
    public String getString(String columnName) throws java.sql.SQLException

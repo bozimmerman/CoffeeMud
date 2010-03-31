@@ -147,6 +147,12 @@ public class DBConnector
 	public String getResQuietly(ResultSet Results, String Field)
 	{ return DBConnections.getResQuietly(Results, Field);}
 
+	public String injectionClean(String s)
+	{
+		if(s==null) return null;
+		return s.replace('\'', '`');
+	}
+	
 	/** 
  	 * When reading a database table, this routine will read in
 	 * the given Field NAME, returning the value.  The value

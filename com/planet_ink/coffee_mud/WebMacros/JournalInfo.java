@@ -52,8 +52,11 @@ public class JournalInfo extends StdWebMacro
 		return null;
 	}
 
-	public Vector getMsgs(ExternalHTTPRequests httpReq, String journalName, String parent, String page)
+	public Vector getMsgs(ExternalHTTPRequests httpReq, String journalName)
 	{
+		String page=httpReq.getRequestParameter("JOURNALPAGE");
+		String parent=httpReq.getRequestParameter("JOURNALPARENT");
+		if(parent==null) parent="";
 		Vector info=(Vector)httpReq.getRequestObjects().get("JOURNAL: "+journalName+": "+parent+": "+page);
 		if(info==null)
 		{
@@ -61,9 +64,11 @@ public class JournalInfo extends StdWebMacro
 				info=CMLib.database().DBReadJournalMsgs(journalName);
 			else
 			{
+				String search=httpReq.getRequestParameter("DBSEARCH");
+				if(search==null) search="";
 				int limit = CMProps.getIntVar(CMProps.SYSTEMI_JOURNALLIMIT);
 				if(limit<=0) limit=Integer.MAX_VALUE;
-				info=CMLib.database().DBReadJournalPageMsgs(journalName, parent, CMath.s_long(page), limit);
+				info=CMLib.database().DBReadJournalPageMsgs(journalName, parent, search, CMath.s_long(page), limit);
 			}
 			httpReq.getRequestObjects().put("JOURNAL: "+journalName+": "+parent+": "+page, info);
 		}
@@ -76,18 +81,21 @@ public class JournalInfo extends StdWebMacro
 		String journalName=httpReq.getRequestParameter("JOURNAL");
 		if(journalName==null) 
 			return " @break@";
-		String page=httpReq.getRequestParameter("JOURNALPAGE");
-		String parent=httpReq.getRequestParameter("JOURNALPARENT");
-		if(parent==null) parent="";
 		
 		if(parms.containsKey("NOWTIMESTAMP"))
 			return ""+System.currentTimeMillis();
 		
 		if(parms.containsKey("UNPAGEDCOUNT"))
-			return ""+getMsgs(httpReq,journalName,parent,null).size();
+		{
+			String page=httpReq.getRequestParameter("JOURNALPAGE");
+			httpReq.removeRequestParameter("JOURNALPAGE");
+			int ct= getMsgs(httpReq,journalName).size();
+			httpReq.addRequestParameters("JOURNALPAGE",page);
+			return String.valueOf(ct);
+		}
 		
 		if(parms.containsKey("COUNT"))
-			return ""+getMsgs(httpReq,journalName,parent,page).size();
+			return ""+getMsgs(httpReq,journalName).size();
 		
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		if((CMLib.journals().isArchonJournalName(journalName))&&((M==null)||(!CMSecurity.isASysOp(M))))
@@ -96,7 +104,6 @@ public class JournalInfo extends StdWebMacro
 		String msgKey=httpReq.getRequestParameter("JOURNALMESSAGE");
 		String cardinal=httpReq.getRequestParameter("JOURNALCARDINAL");
         JournalsLibrary.JournalEntry entry=null;
-        Vector info = null;
         if(msgKey.equalsIgnoreCase("FORUMLATEST"))
         {
         	JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(journalName);
@@ -108,10 +115,7 @@ public class JournalInfo extends StdWebMacro
         	}
         }
         else
-        {
-        	info = getMsgs(httpReq,journalName,parent,page);
-	        entry= getEntry(info,msgKey);
-        }
+	        entry= getEntry(getMsgs(httpReq,journalName),msgKey);
         if(parms.containsKey("ISMESSAGE"))
         	return String.valueOf(entry!=null);
 		if(entry==null)	

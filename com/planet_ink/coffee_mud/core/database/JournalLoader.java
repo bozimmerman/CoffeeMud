@@ -44,6 +44,10 @@ public class JournalLoader
 	public int DBCount(String Journal, String from, String to)
 	{
 		if(Journal==null) return 0;
+		Journal = DB.injectionClean(Journal);
+		from = DB.injectionClean(from);
+		to = DB.injectionClean(to);
+		
 		synchronized(Journal.toUpperCase().intern())
 		{
 			int ct=0;
@@ -78,6 +82,8 @@ public class JournalLoader
 	
     public String DBGetRealName(String possibleName)
     {
+    	possibleName = DB.injectionClean(possibleName);
+		
         DBConnection D=null;
         String realName=null;
         try
@@ -106,6 +112,9 @@ public class JournalLoader
 	
 	public long[] DBJournalLatestDateNewerThan(String Journal, String to, long olderTime)
 	{
+		Journal = DB.injectionClean(Journal);
+		to = DB.injectionClean(to);
+		
 		DBConnection D=null;
 		long[] newest=new long[]{0,0};
 		try
@@ -217,6 +226,9 @@ public class JournalLoader
 	
 	public Vector<JournalsLibrary.JournalEntry> DBReadJournalMsgsOlderThan(String Journal, String to, long newerDate)
 	{
+		Journal = DB.injectionClean(Journal);
+		to = DB.injectionClean(to);
+		
 		Vector<JournalsLibrary.JournalEntry> journal=new Vector<JournalsLibrary.JournalEntry>();
 		//Resources.submitResource("JOURNAL_"+Journal);
 		DBConnection D=null;
@@ -248,23 +260,30 @@ public class JournalLoader
 		return journal;
 	}
 	
-	public Vector<JournalsLibrary.JournalEntry> DBReadJournalPageMsgs(String Journal, String parent, long newerDate, int limit)
+	public Vector<JournalsLibrary.JournalEntry> DBReadJournalPageMsgs(String Journal, String parent, String searchStr, long newerDate, int limit)
 	{
+		Journal = DB.injectionClean(Journal);
+		parent = DB.injectionClean(parent);
+		searchStr = DB.injectionClean(searchStr);
+		
 		Vector<JournalsLibrary.JournalEntry> journal=new Vector<JournalsLibrary.JournalEntry>();
 		DBConnection D=null;
 		try
 		{
 			D=DB.DBFetch();
 			String str="SELECT * FROM CMJRNL WHERE CMUPTM > " + newerDate;
-			if(Journal!=null) str += " AND CMJRNL='"+Journal+"'";
-			if(parent != null) 
-			{
-				str += " AND CMPART='"+parent+"' ORDER BY CMUPTM";
-				if(parent.length()>0)
-					str += " ASC";
-				else
-					str += " DESC";
-			}
+			if((Journal!=null)&&(Journal.length()>0))
+				str += " AND CMJRNL='"+Journal+"'";
+			if((searchStr!=null)&&(searchStr.length()>0))
+				str += " AND (CMSUBJ LIKE '%"+searchStr+"%' OR CMMSGT LIKE '%"+searchStr+"%')";
+			if(parent != null)
+				str += " AND CMPART='"+parent+"'";
+			str += " ORDER BY CMUPTM";
+			if((parent==null)||(parent.length()>0))
+				str += " ASC";
+			else
+				str += " DESC";
+			
 			ResultSet R=D.query(str);
 			int cardinal=0;
 			while(R.next() && (cardinal < limit))
@@ -288,8 +307,10 @@ public class JournalLoader
 	
 	public Vector<JournalsLibrary.JournalEntry> DBReadJournalMsgsNewerThan(String Journal, String to, long olderDate)
 	{
+		Journal = DB.injectionClean(Journal);
+		to = DB.injectionClean(to);
+		
 		Vector<JournalsLibrary.JournalEntry> journal=new Vector<JournalsLibrary.JournalEntry>();
-		//Resources.submitResource("JOURNAL_"+Journal);
 		DBConnection D=null;
 		try
 		{
@@ -321,6 +342,8 @@ public class JournalLoader
 	
 	public Vector<JournalsLibrary.JournalEntry> DBReadJournalMsgs(String Journal)
 	{
+		Journal = DB.injectionClean(Journal);
+		
 		if(Journal==null) return new Vector<JournalsLibrary.JournalEntry>();
 		synchronized(Journal.toUpperCase().intern())
 		{
@@ -356,6 +379,9 @@ public class JournalLoader
 
 	public JournalsLibrary.JournalEntry DBReadJournalEntry(String Journal, String Key)
 	{
+		Journal = DB.injectionClean(Journal);
+		Key = DB.injectionClean(Key);
+		
 		if(Journal==null) return null;
 		synchronized(Journal.toUpperCase().intern())
 		{
@@ -386,6 +412,10 @@ public class JournalLoader
 
 	public int getFirstMsgIndex(Vector journal, String from, String to, String subj)
 	{
+		from = DB.injectionClean(from);
+		to = DB.injectionClean(to);
+		subj = DB.injectionClean(subj);
+		
 		if(journal==null) return -1;
 		for(int i=0;i<journal.size();i++)
 		{
@@ -403,11 +433,25 @@ public class JournalLoader
 	
 	public void DBUpdateJournal(String key, String subject, String msg)
 	{
+		key = DB.injectionClean(key);
+		subject = DB.injectionClean(subject);
+		msg = DB.injectionClean(msg);
+		
 		DB.update("UPDATE CMJRNL SET CMSUBJ='"+subject+"', CMMSGT='"+msg+"' WHERE CMJKEY='"+key+"'");
 	}
 	
 	public void DBUpdateJournal(String Journal, JournalsLibrary.JournalEntry entry)
 	{
+		Journal = DB.injectionClean(Journal);
+		entry.data = DB.injectionClean(entry.data);
+		entry.from = DB.injectionClean(entry.from);
+		entry.key = DB.injectionClean(entry.key);
+		entry.msg = DB.injectionClean(entry.msg);
+		entry.msgIcon = DB.injectionClean(entry.msgIcon);
+		entry.parent = DB.injectionClean(entry.parent);
+		entry.subj = DB.injectionClean(entry.subj);
+		entry.to = DB.injectionClean(entry.to);
+		
 		DB.update("UPDATE CMJRNL SET "
 				 +"CMFROM='"+entry.from+"', "
 				 +"CMDATE="+entry.date+" , "
@@ -428,21 +472,25 @@ public class JournalLoader
 	
 	public void DBTouchJournalMessage(String key)
 	{
+		key = DB.injectionClean(key);
 		DB.update("UPDATE CMJRNL SET CMUPTM="+System.currentTimeMillis()+" WHERE CMJKEY='"+key+"'");
 	}
 	
 	public void DBUpdateMessageReplies(String key, int numReplies)
 	{
+		key = DB.injectionClean(key);
 		DB.update("UPDATE CMJRNL SET CMUPTM="+System.currentTimeMillis()+", CMREPL="+numReplies+" WHERE CMJKEY='"+key+"'");
 	}
 	
 	public void DBViewJournalMessage(String key, int views)
 	{
+		key = DB.injectionClean(key);
 		DB.update("UPDATE CMJRNL SET CMVIEW="+views+" WHERE CMJKEY='"+key+"'");
 	}
 	
 	public void DBDeletePlayerData(String name)
 	{
+		name = DB.injectionClean(name);
 		DBConnection D=null;
 		try
 		{
@@ -488,6 +536,13 @@ public class JournalLoader
 	
 	public void DBUpdateJournalStats(String Journal, JournalsLibrary.JournalSummaryStats stats)
 	{
+		Journal = DB.injectionClean(Journal);
+		stats.imagePath = DB.injectionClean(stats.imagePath);
+		stats.introKey = DB.injectionClean(stats.introKey);
+		stats.longIntro = DB.injectionClean(stats.longIntro);
+		stats.name = DB.injectionClean(stats.name);
+		stats.shortIntro = DB.injectionClean(stats.shortIntro);
+		
 		DBConnection D=null;
 		try
 		{
@@ -533,6 +588,12 @@ public class JournalLoader
 	
 	public void DBReadJournalSummaryStats(JournalsLibrary.JournalSummaryStats stats)
 	{
+		stats.imagePath = DB.injectionClean(stats.imagePath);
+		stats.introKey = DB.injectionClean(stats.introKey);
+		stats.longIntro = DB.injectionClean(stats.longIntro);
+		stats.name = DB.injectionClean(stats.name);
+		stats.shortIntro = DB.injectionClean(stats.shortIntro);
+		
 		DBConnection D=null;
 		String topKey = null;
 		try
@@ -600,6 +661,9 @@ public class JournalLoader
 	
 	public void DBDelete(String Journal, String key)
 	{
+		Journal = DB.injectionClean(Journal);
+		key = DB.injectionClean(key);
+		
 		if(Journal==null) return;
 		synchronized(Journal.toUpperCase().intern())
 		{
@@ -621,6 +685,13 @@ public class JournalLoader
 									String subject, 
 									String message)
 	{
+		Journal = DB.injectionClean(Journal);
+		key = DB.injectionClean(key);
+		from = DB.injectionClean(from);
+		to = DB.injectionClean(to);
+		subject = DB.injectionClean(subject);
+		message = DB.injectionClean(message);
+		
 		if(Journal==null) return;
 		synchronized(Journal.toUpperCase().intern())
 		{
@@ -644,6 +715,12 @@ public class JournalLoader
 						String subject,
 						String message)
 	{
+		Journal = DB.injectionClean(Journal);
+		from = DB.injectionClean(from);
+		to = DB.injectionClean(to);
+		subject = DB.injectionClean(subject);
+		message = DB.injectionClean(message);
+		
 		JournalsLibrary.JournalEntry entry = new JournalsLibrary.JournalEntry();
 		entry.key=null;
 		entry.from=from;
@@ -657,6 +734,16 @@ public class JournalLoader
 	
 	public void DBWrite(String Journal, JournalsLibrary.JournalEntry entry)
 	{
+		Journal = DB.injectionClean(Journal);
+		entry.data = DB.injectionClean(entry.data);
+		entry.from = DB.injectionClean(entry.from);
+		entry.key = DB.injectionClean(entry.key);
+		entry.msg = DB.injectionClean(entry.msg);
+		entry.msgIcon = DB.injectionClean(entry.msgIcon);
+		entry.parent = DB.injectionClean(entry.parent);
+		entry.subj = DB.injectionClean(entry.subj);
+		entry.to = DB.injectionClean(entry.to);
+		
 		if(Journal==null) return;
 		synchronized(Journal.toUpperCase().intern())
 		{

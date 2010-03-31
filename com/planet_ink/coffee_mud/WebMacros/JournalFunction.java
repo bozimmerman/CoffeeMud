@@ -37,8 +37,7 @@ public class JournalFunction extends StdWebMacro
 
 	public JournalsLibrary.JournalEntry getNextEntry(Vector<JournalsLibrary.JournalEntry> info, String key)
 	{
-		if(info==null)
-			return null;
+		if(info==null) return null;
 		for(Enumeration<JournalsLibrary.JournalEntry> e=info.elements();e.hasMoreElements();)
 		{
 			JournalsLibrary.JournalEntry entry = e.nextElement();
@@ -180,6 +179,8 @@ public class JournalFunction extends StdWebMacro
 		}
 		String parent=httpReq.getRequestParameter("JOURNALPARENT");
 		if(parent==null) parent="";
+		String dbsearch=httpReq.getRequestParameter("DBSEARCH");
+		if(dbsearch==null) dbsearch="";
 		Vector<JournalsLibrary.JournalEntry> info=(Vector<JournalsLibrary.JournalEntry>)httpReq.getRequestObjects().get("JOURNAL: "+journalName+": "+parent+": "+page);
 		if(info==null)
 		{
@@ -189,7 +190,7 @@ public class JournalFunction extends StdWebMacro
 			{
 				int limit = CMProps.getIntVar(CMProps.SYSTEMI_JOURNALLIMIT);
 				if(limit<=0) limit=Integer.MAX_VALUE;
-				info=CMLib.database().DBReadJournalPageMsgs(journalName, parent, CMath.s_long(page), limit);
+				info=CMLib.database().DBReadJournalPageMsgs(journalName, parent, dbsearch, CMath.s_long(page), limit);
 			}
 			httpReq.getRequestObjects().put("JOURNAL: "+journalName+": "+parent+": "+page,info);
 		}

@@ -40,6 +40,8 @@ public class Backend
       public static final int TYPE_INTEGER=1;
       public static final int TYPE_STRING=2;
       public static final int TYPE_LONG=3;
+      
+      public static final int INDEX_COUNT=Integer.MAX_VALUE;
    }
    
    
@@ -86,6 +88,8 @@ public class Backend
    {
 	   public int conditionIndex;
 	   public ComparableValue conditionValue;
+	   public String lowStr=null;
+	   public boolean like=false;
 	   public boolean eq=false;
 	   public boolean lt=false;
 	   public boolean gt=false;
@@ -94,7 +98,40 @@ public class Backend
 	   public List<FakeCondition> contains = null;
 	   public boolean compareValue(ComparableValue subKey)
 	   {
-		   if(subKey==null) subKey=new ComparableValue(null);
+		   if(subKey==null) 
+			   subKey=new ComparableValue(null);
+		   if(like && conditionValue.getValue() instanceof String)
+		   {
+			   if(lowStr==null)
+				   lowStr=((String)conditionValue.getValue()).toLowerCase();
+			   boolean chk=false;
+			   if(lowStr.length()==0)
+				   chk=conditionValue.equals(subKey);
+			   else
+			   if(subKey.equals(null) || (!(subKey.getValue() instanceof String)))
+				   chk=false;
+			   else
+			   {
+				   String s=((String)subKey.getValue()).toLowerCase();
+				   int x=lowStr.indexOf('%');
+				   if((x<0)||(lowStr.length()==1))
+					   chk=lowStr.equals(s);
+				   else
+				   if(x==0)
+				   {
+					   if(lowStr.charAt(lowStr.length()-1)=='%')
+						   chk=(s.indexOf(lowStr.substring(1,lowStr.length()-1))>=0);
+					   else
+						   chk=s.startsWith(lowStr.substring(1));
+				   }
+				   else
+				   if(lowStr.charAt(lowStr.length()-1)=='%')
+					   chk = s.endsWith(lowStr.substring(0,lowStr.length()-1));
+				   else
+					   chk = s.startsWith(lowStr.substring(0,x)) && s.endsWith(lowStr.substring(x+1));
+			   }
+			   return not?!chk:chk;
+		   }
            int sc=(lt||gt)?subKey.compareTo(conditionValue):0;
            if(!(((eq)&&(subKey.equals(conditionValue)))
            ||((lt)&&(sc<0))
@@ -979,9 +1016,14 @@ public class Backend
     	  showCols=new int[cols.size()];
 	      for(String col : cols)
 	      {
-	    	  showCols[index]=table.findColumn(col);
-	    	  if(showCols[index]<0)
-	         	 throw new java.sql.SQLException("unknown column "+tableName+"."+col);
+	    	  if(col.toLowerCase().startsWith("count("))
+	    		  showCols[index]=FakeColumn.INDEX_COUNT;
+	    	  else
+		      {
+		    	  showCols[index]=table.findColumn(col);
+		    	  if(showCols[index]<0)
+		         	 throw new java.sql.SQLException("unknown column "+tableName+"."+col);
+		      }
 	    	  index++;
 	      }
       }
@@ -1173,6 +1215,14 @@ public class Backend
     	  fake.conditionValue = new ComparableValue(value);
     	  break;
       }
+      if(comparitor.equalsIgnoreCase("like"))
+      {
+    	  if((col.type!=FakeColumn.TYPE_STRING)
+    	  &&(col.type!=FakeColumn.TYPE_UNKNOWN))
+    	      throw new java.sql.SQLException("can't do like comparison on "+tableName+"."+columnName);
+    	  fake.like=true;
+      }
+      else
       for(char c : comparitor.toCharArray())
     	  switch(c)
     	  {
