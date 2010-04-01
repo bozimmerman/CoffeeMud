@@ -10,6 +10,7 @@
 	<title>Forums</title>
 	<script language=JavaScript>
 	<!--
+		var abort=false;
 		function Cancel()
 		{
 			@if?CheckReqParm?JOURNALMESSAGE=@

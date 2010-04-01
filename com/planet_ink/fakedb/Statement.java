@@ -160,9 +160,26 @@ public class Statement implements java.sql.Statement
 			   while((s < sql.length())&&(sql.charAt(s)==' '||sql.charAt(s)=='\t'))
 				   s++;
 			   e=s;
-			   while((e < sql.length())&&(eow1.indexOf(sql.charAt(e))>0))
-				   e++;
-			   String comparitor = sql.substring(s,e).trim();
+			   String comparitor;
+			   if((e < sql.length()-5)
+			   &&(Character.toLowerCase(sql.charAt(e))=='l')
+			   &&(Character.toLowerCase(sql.charAt(e+1))=='i')
+			   &&(Character.toLowerCase(sql.charAt(e+2))=='k')
+			   &&(Character.toLowerCase(sql.charAt(e+3))=='e')
+			   &&(Character.toLowerCase(sql.charAt(e+4))==' '))
+			   {
+				   comparitor="like";
+				   e+=5;
+			   }
+			   else
+			   if((e < sql.length())&&(eow1.indexOf(sql.charAt(e))>0))
+			   {
+				   while((e < sql.length())&&(eow1.indexOf(sql.charAt(e))>0))
+					   e++;
+				   comparitor = sql.substring(s,e).trim();
+			   }
+			   else
+				   throw new java.sql.SQLException("Illegal comparator "+sql);
 			   if(e>=sql.length()||comparitor.length()==0)
 				   throw new java.sql.SQLException("Unexpected end of where clause in "+sql);
 			   s=e;

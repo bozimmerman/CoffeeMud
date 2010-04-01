@@ -34,39 +34,6 @@ import java.util.*;
 public class JournalFunction extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
-
-	public JournalsLibrary.JournalEntry getNextEntry(Vector<JournalsLibrary.JournalEntry> info, String key)
-	{
-		if(info==null) return null;
-		for(Enumeration<JournalsLibrary.JournalEntry> e=info.elements();e.hasMoreElements();)
-		{
-			JournalsLibrary.JournalEntry entry = e.nextElement();
-			if((key == null)||(key.length()==0))
-				return entry;
-			if(entry.key.equalsIgnoreCase(key))
-			{
-				if(e.hasMoreElements())
-					return e.nextElement();
-				return null;
-			}
-		}
-		return null;
-	}
-	
-	public JournalsLibrary.JournalEntry getEntry(Vector<JournalsLibrary.JournalEntry> info, String key)
-	{
-		if(info==null)
-			return null;
-		if(key==null)
-			return null;
-		for(Enumeration<JournalsLibrary.JournalEntry> e=info.elements();e.hasMoreElements();)
-		{
-			JournalsLibrary.JournalEntry entry = e.nextElement();
-			if(entry.key.equalsIgnoreCase(key))
-				return entry;
-		}
-		return null;
-	}
 	
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
@@ -147,7 +114,7 @@ public class JournalFunction extends StdWebMacro
             	&&(entry.parent.equals(msg.parent)))
             		return "";
 			CMLib.database().DBWriteJournal(journalName,msg);
-			httpReq.getRequestObjects().remove("JOURNAL: "+journalName+": "+parent+": "+page);
+			JournalInfo.clearJournalCache(httpReq, journalName);
 			if(parent!=null)
 				CMLib.database().DBTouchJournalMessage(parent);
 			CMLib.journals().clearJournalSummaryStats(journalName);
@@ -181,19 +148,7 @@ public class JournalFunction extends StdWebMacro
 		if(parent==null) parent="";
 		String dbsearch=httpReq.getRequestParameter("DBSEARCH");
 		if(dbsearch==null) dbsearch="";
-		Vector<JournalsLibrary.JournalEntry> info=(Vector<JournalsLibrary.JournalEntry>)httpReq.getRequestObjects().get("JOURNAL: "+journalName+": "+parent+": "+page);
-		if(info==null)
-		{
-			if((page==null)||(page.length()==0))
-				info=CMLib.database().DBReadJournalMsgs(journalName);
-			else
-			{
-				int limit = CMProps.getIntVar(CMProps.SYSTEMI_JOURNALLIMIT);
-				if(limit<=0) limit=Integer.MAX_VALUE;
-				info=CMLib.database().DBReadJournalPageMsgs(journalName, parent, dbsearch, CMath.s_long(page), limit);
-			}
-			httpReq.getRequestObjects().put("JOURNAL: "+journalName+": "+parent+": "+page,info);
-		}
+		List<JournalsLibrary.JournalEntry> msgs=JournalInfo.getMessages(httpReq, journalName);
 		String msgKey=httpReq.getRequestParameter("JOURNALMESSAGE");
 		int cardinalNumber = CMath.s_int(httpReq.getRequestParameter("JOURNALCARDINAL"));
         String srch=httpReq.getRequestParameter("JOURNALMESSAGESEARCH");
@@ -202,7 +157,7 @@ public class JournalFunction extends StdWebMacro
 		boolean doThemAll=parms.containsKey("EVERYTHING");
 		if(doThemAll)
 		{
-			JournalsLibrary.JournalEntry entry = getNextEntry(info, null);
+			JournalsLibrary.JournalEntry entry = JournalInfo.getNextEntry(msgs, null);
 			if(entry==null)
 				msgKey="";
 			else
@@ -227,9 +182,9 @@ public class JournalFunction extends StdWebMacro
 					parms.put(replyemail,replyemail);
 				if(parms.size()==1)
 				{
-					JournalsLibrary.JournalEntry entry = getNextEntry(info, msgKey);
+					JournalsLibrary.JournalEntry entry = JournalInfo.getNextEntry(msgs, msgKey);
 					while((entry!=null) && (!CMLib.journals().canReadMessage(entry,srch,M,parms.contains("NOPRIV"))))
-						entry = getNextEntry(info, entry.key);
+						entry = JournalInfo.getNextEntry(msgs, entry.key);
 
 					if(entry==null)
 						keepProcessing=false;
@@ -241,7 +196,7 @@ public class JournalFunction extends StdWebMacro
 			}
 			else 
 				keepProcessing=false;
-			JournalsLibrary.JournalEntry entry = getEntry(info, msgKey);
+			JournalsLibrary.JournalEntry entry = JournalInfo.getEntry(msgs, msgKey);
 			if((entry==null)&&parms.containsKey("DELETEREPLY"))
 				entry=CMLib.database().DBReadJournalEntry(journalName, msgKey);
 			if(entry == null)
@@ -289,7 +244,7 @@ public class JournalFunction extends StdWebMacro
 			                                                  toM.Name(),
 			                                                  "RE: "+entry.subj,
 			                                                  replyMsg);
-			                httpReq.getRequestObjects().remove("JOURNAL: "+journalName+": "+parent+": "+page);
+			    			JournalInfo.clearJournalCache(httpReq, journalName);
 							messages.append("Email to #"+cardinalNumber+" queued<BR>");
 		                }
 	                }
@@ -327,7 +282,7 @@ public class JournalFunction extends StdWebMacro
 							httpReq.addRequestParameters("JOURNALMESSAGE","");
 						}
 						CMLib.journals().clearJournalSummaryStats(journalName);
-						httpReq.getRequestObjects().remove("JOURNAL: "+journalName+": "+parent+": "+page);
+						JournalInfo.clearJournalCache(httpReq, journalName);
 					}
 				}
 				else
@@ -357,7 +312,7 @@ public class JournalFunction extends StdWebMacro
 								httpReq.addRequestParameters("JOURNALPARENT","");
 							}
             				CMLib.journals().clearJournalSummaryStats(journalName);
-							httpReq.getRequestObjects().remove("JOURNAL: "+journalName+": "+parent+": "+page);
+            				JournalInfo.clearJournalCache(httpReq, journalName);
 						}
 					}
 					else
@@ -399,7 +354,7 @@ public class JournalFunction extends StdWebMacro
 		                    CMLib.database().DBWriteJournal(realName,entry);
 	        				CMLib.journals().clearJournalSummaryStats(realName);
 		                    httpReq.addRequestParameters("JOURNALMESSAGE","");
-		                    httpReq.getRequestObjects().remove("JOURNAL: "+journalName+": "+parent+": "+page);
+		        			JournalInfo.clearJournalCache(httpReq, journalName);
 							messages.append("Message #"+cardinalNumber+" transferred<BR>");
 	                    }
 	                }
@@ -410,9 +365,9 @@ public class JournalFunction extends StdWebMacro
 			if(keepProcessing)
 			{
 				cardinalNumber++;
-				entry = getNextEntry(info, msgKey);
+				entry = JournalInfo.getNextEntry(msgs, msgKey);
 				while((entry!=null) && (!CMLib.journals().canReadMessage(entry,srch,M,parms.contains("NOPRIV"))))
-					entry = getNextEntry(info, entry.key);
+					entry = JournalInfo.getNextEntry(msgs, entry.key);
 				if(entry==null)
 					keepProcessing=false;
 				else

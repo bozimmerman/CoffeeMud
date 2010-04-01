@@ -33,25 +33,6 @@ import java.util.*;
 public class JournalMessageNext extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
-
-	public JournalsLibrary.JournalEntry getNextEntry(Vector<JournalsLibrary.JournalEntry> info, String key)
-	{
-		if(info==null)
-			return null;
-		for(Enumeration<JournalsLibrary.JournalEntry> e=info.elements();e.hasMoreElements();)
-		{
-			JournalsLibrary.JournalEntry entry = e.nextElement();
-			if((key == null)||(key.length()==0))
-				return entry;
-			if(entry.key.equalsIgnoreCase(key))
-			{
-				if(e.hasMoreElements())
-					return e.nextElement();
-				return null;
-			}
-		}
-		return null;
-	}
 	
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
@@ -67,25 +48,6 @@ public class JournalMessageNext extends StdWebMacro
 			    return " @break@";
 		}
 		
-		String page=httpReq.getRequestParameter("JOURNALPAGE");
-		String parent=httpReq.getRequestParameter("JOURNALPARENT");
-		if(parent==null) parent="";
-		String dbsearch=httpReq.getRequestParameter("DBSEARCH");
-		if(dbsearch==null) dbsearch="";
-		
-		Vector<JournalsLibrary.JournalEntry> info=(Vector<JournalsLibrary.JournalEntry>)httpReq.getRequestObjects().get("JOURNAL: "+journalName+": "+parent+": "+page);
-		if(info==null)
-		{
-			if((page==null)||(page.length()==0))
-				info=CMLib.database().DBReadJournalMsgs(journalName);
-			else
-			{
-				int limit = CMProps.getIntVar(CMProps.SYSTEMI_JOURNALLIMIT);
-				if(limit<=0) limit=Integer.MAX_VALUE;
-				info=CMLib.database().DBReadJournalPageMsgs(journalName, parent, dbsearch, CMath.s_long(page), limit);
-			}
-			httpReq.getRequestObjects().put("JOURNAL: "+journalName+": "+parent+": "+page,info);
-		}
         String srch=httpReq.getRequestParameter("JOURNALMESSAGESEARCH");
         if(srch!=null) 
         	srch=srch.toLowerCase();
@@ -103,9 +65,10 @@ public class JournalMessageNext extends StdWebMacro
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);
         cardinal++;
         JournalsLibrary.JournalEntry entry = null;
+        List<JournalsLibrary.JournalEntry> msgs = JournalInfo.getMessages(httpReq, journalName);
         while((entry==null)||(!CMLib.journals().canReadMessage(entry,srch,M,parms.contains("NOPRIV"))))
         {
-        	entry = getNextEntry(info,last);
+        	entry = JournalInfo.getNextEntry(msgs,last);
     		if(entry==null)
     		{
     			httpReq.addRequestParameters("JOURNALMESSAGE","");
