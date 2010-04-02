@@ -155,7 +155,19 @@
 		</script>
 	</TD>
 </TR>
-<TR BGCOLOR=LIGHTGREY><TD COLSPAN=2>&nbsp;</TD></TR>
+<TR BGCOLOR=LIGHTGREY><TD COLSPAN=2 ALIGN=CENTER>
+	@if?ForumInfo?CANADMIN@
+		<FONT COLOR=BLACK SIZE=-1>
+		@if?CheckReqParm?!JOURNALMESSAGE=@ 
+		<INPUT TYPE=CHECKBOX NAME=ISSTUCKY @if?JournalInfo?ISSTUCKY@checked@endif@>Sticky
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		@endif@
+		<INPUT TYPE=CHECKBOX NAME=ISPROTECTED @if?JournalInfo?ISPROTECTED@checked@endif@>Protected
+		</FONT>
+	@endif@
+	&nbsp;
+	</TD>
+</TR>
 <TR BGCOLOR=LIGHTGREY>
 	<TD>&nbsp;</TD>
 	<TD>

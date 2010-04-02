@@ -256,8 +256,8 @@ public class DBInterface implements DatabaseEngine
 	public void DBWriteJournalReply(String Journal, String key, String from, String to, String subject, String message)
 	{JournalLoader.DBWriteJournalReply(Journal, key, from, to, subject, message);}
 	
-	public void DBUpdateJournal(String key, String subject, String msg)
-	{JournalLoader.DBUpdateJournal(key,subject,msg);}
+	public void DBUpdateJournal(String key, String subject, String msg, long newAttributes)
+	{JournalLoader.DBUpdateJournal(key,subject,msg,newAttributes);}
 	
 	public void DBViewJournalMessage(String key, int views)
 	{JournalLoader.DBViewJournalMessage(key, views);}

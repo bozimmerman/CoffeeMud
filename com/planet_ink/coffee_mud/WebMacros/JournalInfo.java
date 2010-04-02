@@ -77,8 +77,9 @@ public class JournalInfo extends StdWebMacro
 		else
 		if(parent==null) 
 			parent="";
-		
-		Vector<JournalsLibrary.JournalEntry> msgs=(Vector<JournalsLibrary.JournalEntry>)httpReq.getRequestObjects().get("JOURNAL: "+journalName+": "+parent+": "+dbsearch+": "+page);
+
+		String httpkey="JOURNAL: "+journalName+": "+parent+": "+dbsearch+": "+page;
+		Vector<JournalsLibrary.JournalEntry> msgs=(Vector<JournalsLibrary.JournalEntry>)httpReq.getRequestObjects().get(httpkey);
 		if(msgs==null)
 		{
 			if((page==null)||(page.length()==0))
@@ -109,19 +110,20 @@ public class JournalInfo extends StdWebMacro
 							msgs.add(CMLib.database().DBReadJournalEntry(journalName, key));
 				}
 			}
-			httpReq.getRequestObjects().put("JOURNAL: "+journalName+": "+parent+": "+dbsearch+": "+page,msgs);
+			httpReq.getRequestObjects().put(httpkey,msgs);
 		}
 		return msgs;
 	}
 	
 	public static void clearJournalCache(ExternalHTTPRequests httpReq, String journalName)
 	{
-		String page=httpReq.getRequestParameter("JOURNALPAGE");
-		if((page!=null)&&(page.length()==0)) page="0";
-		String parent=httpReq.getRequestParameter("JOURNALPARENT");
-		if(parent==null) parent="";
-		String dbsearch=httpReq.getRequestParameter("DBSEARCH");
-		httpReq.getRequestObjects().remove("JOURNAL: "+journalName+": "+parent+": "+dbsearch+": "+page);
+		Hashtable h = (Hashtable)httpReq.getRequestObjects().clone();
+		for(Enumeration e=h.keys();e.hasMoreElements();)
+		{
+			Object o=e.nextElement();
+			if((o!=null)&&(o.toString().startsWith("JOURNAL: "+journalName+": ")))
+				httpReq.getRequestObjects().remove(o.toString());
+		}
 	}
 	
 	public static JournalsLibrary.JournalEntry getNextEntry(List<JournalsLibrary.JournalEntry> info, String key)
@@ -229,6 +231,12 @@ public class JournalInfo extends StdWebMacro
 			else
 			if(parms.containsKey("FROM"))
                 return clearWebMacros(entry.from);
+			else
+			if(parms.containsKey("ISSTICKY")||parms.containsKey("ISSTUCKY"))
+                return String.valueOf(CMath.bset(entry.attributes, JournalsLibrary.JournalEntry.ATTRIBUTE_STUCKY));
+			else
+			if(parms.containsKey("ISPROTECTED"))
+                return String.valueOf(CMath.bset(entry.attributes, JournalsLibrary.JournalEntry.ATTRIBUTE_PROTECTED));
 			else
 			if(parms.containsKey("MSGICON"))
                 return clearWebMacros(entry.msgIcon);

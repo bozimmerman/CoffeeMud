@@ -1525,7 +1525,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 											CMStrings.limit(data.auctioningI.name(),38),
 											xml.toString());
         else
-        	CMLib.database().DBUpdateJournal(data.auctionDBKey, data.auctioningI.Name(),xml.toString());
+        	CMLib.database().DBUpdateJournal(data.auctionDBKey, data.auctioningI.Name(),xml.toString(), 0);
 	}
 
     public Vector getAuctions(Object ofLike, String auctionHouse)

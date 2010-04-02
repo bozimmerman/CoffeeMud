@@ -436,13 +436,13 @@ public class JournalLoader
 		return -1;
 	}
 	
-	public void DBUpdateJournal(String key, String subject, String msg)
+	public void DBUpdateJournal(String key, String subject, String msg, long newAttributes)
 	{
 		key = DB.injectionClean(key);
 		subject = DB.injectionClean(subject);
 		msg = DB.injectionClean(msg);
 		
-		DB.update("UPDATE CMJRNL SET CMSUBJ='"+subject+"', CMMSGT='"+msg+"' WHERE CMJKEY='"+key+"'");
+		DB.update("UPDATE CMJRNL SET CMSUBJ='"+subject+"', CMMSGT='"+msg+"', CMATTR="+newAttributes+" WHERE CMJKEY='"+key+"'");
 	}
 	
 	public void DBUpdateJournal(String Journal, JournalsLibrary.JournalEntry entry)

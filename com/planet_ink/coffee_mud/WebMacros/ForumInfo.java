@@ -49,7 +49,7 @@ public class ForumInfo extends StdWebMacro
 		if(journal == null) 
 			return " @break@";
 		
-		if(parms.containsKey("CANADMIN"))
+		if(parms.containsKey("CANADMIN")||parms.containsKey("ISADMIN"))
 			return ""+journal.authorizationCheck(M, ForumJournalFlags.ADMIN);
 		
 		if(parms.containsKey("CANPOST"))

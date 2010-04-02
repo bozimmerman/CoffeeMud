@@ -264,6 +264,7 @@ public class JournalFunction extends StdWebMacro
 							JournalsLibrary.JournalEntry parentEntry=CMLib.database().DBReadJournalEntry(journalName, entry.parent);
 							if(parentEntry!=null)
 								CMLib.database().DBUpdateMessageReplies(parentEntry.key,parentEntry.replies-1);
+							JournalInfo.clearJournalCache(httpReq, journalName);
 							httpReq.addRequestParameters("JOURNALMESSAGE",entry.parent);
 							httpReq.addRequestParameters("JOURNALPARENT","");
 							if(cardinalNumber==0) cardinalNumber=entry.cardinal;
@@ -279,10 +280,10 @@ public class JournalFunction extends StdWebMacro
 								messages.append("Message deleted.<BR>");
 							else
 								messages.append("Message #"+cardinalNumber+" deleted.<BR>");
+							JournalInfo.clearJournalCache(httpReq, journalName);
 							httpReq.addRequestParameters("JOURNALMESSAGE","");
 						}
 						CMLib.journals().clearJournalSummaryStats(journalName);
-						JournalInfo.clearJournalCache(httpReq, journalName);
 					}
 				}
 				else
@@ -300,19 +301,30 @@ public class JournalFunction extends StdWebMacro
 							messages.append("Edit to #"+cardinalNumber+" not submitted -- No text!<BR>");
 						else
 						{
-							CMLib.database().DBUpdateJournal(entry.key, entry.subj, text);
+							long attributes=0;
+							if((forum!=null)&&(forum.authorizationCheck(M, ForumJournalFlags.ADMIN)))
+							{
+								String ISSTUCKY=httpReq.getRequestParameter("ISSTICKY"+fieldSuffix);
+								if(ISSTUCKY==null) ISSTUCKY=httpReq.getRequestParameter("ISSTUCKY"+fieldSuffix);
+								if((ISSTUCKY!=null)&&(ISSTUCKY.equalsIgnoreCase("on")))
+									attributes|=JournalsLibrary.JournalEntry.ATTRIBUTE_STUCKY;
+								String ISPROTECTED=httpReq.getRequestParameter("ISPROTECTED"+fieldSuffix);
+								if((ISPROTECTED!=null)&&(ISPROTECTED.equalsIgnoreCase("on")))
+									attributes|=JournalsLibrary.JournalEntry.ATTRIBUTE_PROTECTED;
+							}
+							CMLib.database().DBUpdateJournal(entry.key, entry.subj, text, attributes);
 							if(cardinalNumber==0) cardinalNumber=entry.cardinal;
 							if(cardinalNumber==0)
 								messages.append("Message modified.<BR>");
 							else
 								messages.append("Message #"+cardinalNumber+" modified.<BR>");
+            				JournalInfo.clearJournalCache(httpReq, journalName);
 							if((entry.parent!=null)&&(entry.parent.length()>0))
 							{
 								httpReq.addRequestParameters("JOURNALMESSAGE",entry.parent);
 								httpReq.addRequestParameters("JOURNALPARENT","");
 							}
             				CMLib.journals().clearJournalSummaryStats(journalName);
-            				JournalInfo.clearJournalCache(httpReq, journalName);
 						}
 					}
 					else
@@ -353,8 +365,8 @@ public class JournalFunction extends StdWebMacro
 		                    CMLib.database().DBDeleteJournal(journalName,entry.key);
 		                    CMLib.database().DBWriteJournal(realName,entry);
 	        				CMLib.journals().clearJournalSummaryStats(realName);
-		                    httpReq.addRequestParameters("JOURNALMESSAGE","");
 		        			JournalInfo.clearJournalCache(httpReq, journalName);
+		                    httpReq.addRequestParameters("JOURNALMESSAGE","");
 							messages.append("Message #"+cardinalNumber+" transferred<BR>");
 	                    }
 	                }

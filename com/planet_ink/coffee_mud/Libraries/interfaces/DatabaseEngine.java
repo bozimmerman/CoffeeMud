@@ -118,7 +118,7 @@ public interface DatabaseEngine extends CMLibrary
     public String DBGetRealJournalName(String possibleName);
 	public long[] DBJournalLatestDateNewerThan(String Journal, String to, long olderTime);
 	public void DBDeletePlayerJournals(String name);
-	public void DBUpdateJournal(String key, String subject, String msg);
+	public void DBUpdateJournal(String key, String subject, String msg, long newAttributes);
 	public void DBViewJournalMessage(String key, int views);
 	public void DBTouchJournalMessage(String key);
 	public boolean DBReadUserOnly(MOB mob);
