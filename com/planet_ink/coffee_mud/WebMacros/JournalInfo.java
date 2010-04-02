@@ -56,9 +56,22 @@ public class JournalInfo extends StdWebMacro
 	public static List<JournalsLibrary.JournalEntry> getMessages(ExternalHTTPRequests httpReq, String journalName)
 	{
 		String page=httpReq.getRequestParameter("JOURNALPAGE");
-		if((page!=null)&&(page.length()==0)) page="0";
+		String mpage=httpReq.getRequestParameter("MESSAGEPAGE");
 		String parent=httpReq.getRequestParameter("JOURNALPARENT");
 		String dbsearch=httpReq.getRequestParameter("DBSEARCH");
+		if((parent!=null)&&(parent.length()>0))
+			page=mpage;
+		if(page!=null)
+		{
+			if(page.length()==0) 
+				page="0";
+			else
+			{
+				int x=page.lastIndexOf(',');
+				if(x>0)
+					page=page.substring(x+1);
+			}
+		}
 		if((dbsearch!=null)&&(dbsearch.length()>0))
 			parent=null;
 		else
@@ -139,6 +152,9 @@ public class JournalInfo extends StdWebMacro
 		
 		if(parms.containsKey("NOWTIMESTAMP"))
 			return ""+System.currentTimeMillis();
+		
+		if(parms.containsKey("JOURNALLIMIT"))
+			return ""+CMProps.getIntVar(CMProps.SYSTEMI_JOURNALLIMIT);
 		
 		if(parms.containsKey("UNPAGEDCOUNT"))
 		{
@@ -285,6 +301,11 @@ public class JournalInfo extends StdWebMacro
 			if(parms.containsKey("TIMEUPDATED"))
 			{
 				return CMLib.time().date2APTimeString(entry.update);
+			}
+			else
+			if(parms.containsKey("UPDATED"))
+			{
+				return String.valueOf(entry.update);
 			}
 			else
 			if(parms.containsKey("TO"))

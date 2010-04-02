@@ -271,7 +271,12 @@ public class JournalLoader
 		try
 		{
 			D=DB.DBFetch();
-			String str="SELECT * FROM CMJRNL WHERE CMUPTM > " + newerDate;
+			String str="SELECT * FROM CMJRNL WHERE";
+			if((parent==null)||(parent.length()>0)||(newerDate==0))
+				str+=" CMUPTM > " + newerDate;
+			else
+				str+=" CMUPTM < " + newerDate;
+			
 			if((Journal!=null)&&(Journal.length()>0))
 				str += " AND CMJRNL='"+Journal+"'";
 			if(parent != null)
