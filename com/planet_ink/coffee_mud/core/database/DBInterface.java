@@ -235,9 +235,6 @@ public class DBInterface implements DatabaseEngine
 	public Vector<JournalsLibrary.JournalEntry> DBReadJournalPageMsgs(String Journal, String parent, String searchStr, long newerDate, int limit)
 	{ return JournalLoader.DBReadJournalPageMsgs(Journal, parent, searchStr, newerDate, limit);}
 	
-	public Vector<JournalsLibrary.JournalEntry> DBReadJournalMsgsOlderThan(String Journal, String to, long newerDate)
-	{return JournalLoader.DBReadJournalMsgsOlderThan(Journal, to, newerDate);}
-	
 	public int DBCountJournal(String Journal, String from, String to)
 	{ return JournalLoader.DBCount(Journal,from,to);}
 	

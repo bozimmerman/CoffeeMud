@@ -108,7 +108,6 @@ public interface DatabaseEngine extends CMLibrary
 	public JournalsLibrary.JournalEntry DBReadJournalEntry(String Journal, String Key);
 	public Vector<JournalsLibrary.JournalEntry> DBReadJournalPageMsgs(String Journal, String parent, String searchStr, long newerDate, int limit);
 	public Vector<JournalsLibrary.JournalEntry> DBReadJournalMsgs(String Journal);
-	public Vector<JournalsLibrary.JournalEntry> DBReadJournalMsgsOlderThan(String Journal, String to, long newerDate);
 	public Vector<JournalsLibrary.JournalEntry> DBReadJournalMsgsNewerThan(String Journal, String to, long olderDate);
 	public int DBCountJournal(String Journal, String from, String to);
 	public void DBWriteJournal(String Journal, JournalsLibrary.JournalEntry entry);

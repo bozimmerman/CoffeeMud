@@ -224,42 +224,6 @@ public class JournalLoader
 		return entry;
 	}
 	
-	public Vector<JournalsLibrary.JournalEntry> DBReadJournalMsgsOlderThan(String Journal, String to, long newerDate)
-	{
-		Journal = DB.injectionClean(Journal);
-		to = DB.injectionClean(to);
-		
-		Vector<JournalsLibrary.JournalEntry> journal=new Vector<JournalsLibrary.JournalEntry>();
-		//Resources.submitResource("JOURNAL_"+Journal);
-		DBConnection D=null;
-		try
-		{
-			D=DB.DBFetch();
-			String str="SELECT * FROM CMJRNL WHERE CMUPTM < " + newerDate;
-			if(Journal!=null) str +=" AND CMJRNL='"+Journal+"'";
-			if(to != null) str +=" AND CMTONM='"+to+"'";
-			ResultSet R=D.query(str);
-			int cardinal=0;
-			while(R.next())
-			{
-				JournalsLibrary.JournalEntry entry = DBReadJournalEntry(R); 
-				entry.cardinal = ++cardinal;
-				journal.addElement(entry);
-			}
-		}
-		catch(Exception sqle)
-		{
-			Log.errOut("Journal",sqle);
-			return null;
-		}
-		finally
-		{
-			if(D!=null) DB.DBDone(D);
-		}
-		Collections.sort(journal);
-		return journal;
-	}
-	
 	public Vector<JournalsLibrary.JournalEntry> DBReadJournalPageMsgs(String Journal, String parent, String searchStr, long newerDate, int limit)
 	{
 		Journal = DB.injectionClean(Journal);
