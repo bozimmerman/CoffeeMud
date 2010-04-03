@@ -42,7 +42,7 @@ public class RequestParameterEncoded extends RequestParameter
 		String str=super.runMacro(httpReq, parm);
 		try
 		{
-			str+=URLEncoder.encode(str,"UTF-8");
+			str=URLEncoder.encode(str,"UTF-8");
 		}  
 		catch(java.io.UnsupportedEncodingException ex)
 		{
