@@ -215,6 +215,9 @@
 		<TD VALIGN=CENTER ALIGN=CENTER BGCOLOR=LIGHTBLUE><FONT COLOR=BLACK SIZE=-1>@JournalInfo?VIEWS@</FONT></TD>
 	</TR>
 	@AddRequestParameter?LASTENTRYTIME=@@JournalInfo?UPDATED@@ @
+	@if?JournalInfo?ISLASTENTRY@
+		@AddRequestParameter?LASTENTRYTIME=@
+	@endif@
 @back@
 
 @AddRequestParameter?JOURNALLIMIT=@@JournalInfo?JOURNALLIMIT@@ @

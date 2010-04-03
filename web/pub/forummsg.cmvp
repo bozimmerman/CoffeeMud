@@ -309,6 +309,9 @@
 			<TD WIDTH=20px>&nbsp;</TD>
 			@endif@
 			@AddRequestParameter?LASTENTRYTIME=@@JournalInfo?UPDATED@@ @
+			@if?JournalInfo?ISLASTENTRY@
+				@AddRequestParameter?LASTENTRYTIME=@
+			@endif@
 		</TR>
 		</TABLE>
 		</TD>

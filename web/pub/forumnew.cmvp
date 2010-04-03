@@ -14,9 +14,14 @@
 		function Cancel()
 		{
 			@if?CheckReqParm?JOURNALMESSAGE=@
-			document.FORUM.action='forum.cmvp';
+				document.FORUM.action='forum.cmvp';
 			@else@
-			document.FORUM.action='forummsg.cmvp';
+				document.FORUM.action='forummsg.cmvp';
+				@if?CheckReqParm?JOURNALPARENT=@
+					document.FORUM.JOURNALMESSAGE.value=document.FORUM.PARENT.value;
+				@else@
+					document.FORUM.JOURNALMESSAGE.value=document.FORUM.JOURNALPARENT.value;
+				@endif@
 			@endif@
 			document.FORUM.FUNCTION.value='';
 			document.FORUM.JOURNALPARENT.value='';
@@ -158,7 +163,7 @@
 <TR BGCOLOR=LIGHTGREY><TD COLSPAN=2 ALIGN=CENTER>
 	@if?ForumInfo?CANADMIN@
 		<FONT COLOR=BLACK SIZE=-1>
-		@if?CheckReqParm?!JOURNALMESSAGE=@ 
+		@if?CheckReqParm?JOURNALPARENT=@ 
 		<INPUT TYPE=CHECKBOX NAME=ISSTUCKY @if?JournalInfo?ISSTUCKY@checked@endif@>Sticky
 		&nbsp;&nbsp;&nbsp;&nbsp;
 		@endif@

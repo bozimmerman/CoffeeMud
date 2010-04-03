@@ -59,7 +59,8 @@ public interface JournalsLibrary extends CMLibrary, Runnable
 		public String shortIntro = "";
 		public String longIntro = "";
 		public String introKey = "";
-		public JournalEntry latest = null;
+		public String latestKey = "";
+		public List<String> stuckyKeys=null;
 	}
 	
 	public static class JournalEntry implements Comparable<JournalEntry>
@@ -78,6 +79,7 @@ public interface JournalsLibrary extends CMLibrary, Runnable
 		public String msgIcon="";
 		public int replies=0;
 		public int views=0;
+		public boolean isLastEntry=false;
 		public int compareTo(JournalEntry o) {
 			if(date < o.date) return -1;
 			if(date > o.date) return 1;

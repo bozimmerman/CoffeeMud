@@ -77,7 +77,6 @@ public class JournalInfo extends StdWebMacro
 		else
 		if(parent==null) 
 			parent="";
-
 		String httpkey="JOURNAL: "+journalName+": "+parent+": "+dbsearch+": "+page;
 		Vector<JournalsLibrary.JournalEntry> msgs=(Vector<JournalsLibrary.JournalEntry>)httpReq.getRequestObjects().get(httpkey);
 		if(msgs==null)
@@ -86,9 +85,24 @@ public class JournalInfo extends StdWebMacro
 				msgs=CMLib.database().DBReadJournalMsgs(journalName);
 			else
 			{
+				JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(journalName);
+				long pageDate = CMath.s_long(page);
 				int limit = CMProps.getIntVar(CMProps.SYSTEMI_JOURNALLIMIT);
 				if(limit<=0) limit=Integer.MAX_VALUE;
-				msgs=CMLib.database().DBReadJournalPageMsgs(journalName, parent, dbsearch, CMath.s_long(page), limit);
+				msgs = new Vector<JournalsLibrary.JournalEntry>(limit);
+				if((pageDate <= 0) 
+				&& (stats.stuckyKeys!=null) 
+			    && ((dbsearch==null)||(dbsearch.length()==0)) 
+			    && ((parent != null)&&(parent.length()==0)))
+				{
+					for(String stuckyKey : stats.stuckyKeys)
+					{
+						JournalsLibrary.JournalEntry entry = CMLib.database().DBReadJournalEntry(journalName, stuckyKey);
+						if(entry != null)
+							msgs.add(entry);
+					}
+				}
+				msgs.addAll(CMLib.database().DBReadJournalPageMsgs(journalName, parent, dbsearch, pageDate, limit));
 				if((dbsearch!=null)&&(dbsearch.length()>0)) // parent filtering
 				{
 					HashSet<String> parentKeys=new HashSet<String>();
@@ -180,9 +194,9 @@ public class JournalInfo extends StdWebMacro
         if(msgKey.equalsIgnoreCase("FORUMLATEST"))
         {
         	JournalsLibrary.JournalSummaryStats stats = CMLib.journals().getJournalStats(journalName);
-        	if(stats!=null)
+        	if((stats!=null)&&(stats.latestKey!=null)&&(stats.latestKey.length()>0))
         	{
-        		entry=stats.latest;
+        		entry=CMLib.database().DBReadJournalEntry(journalName, stats.latestKey);
         		if(entry != null)
 	        		httpReq.addRequestParameters("JOURNALMESSAGE", entry.key);
         	}
@@ -229,6 +243,9 @@ public class JournalInfo extends StdWebMacro
 			if(parms.containsKey("KEY"))
                 return clearWebMacros(entry.key);
 			else
+			if(parms.containsKey("ISLASTENTRY"))
+                return String.valueOf(entry.isLastEntry);
+			else
 			if(parms.containsKey("FROM"))
                 return clearWebMacros(entry.from);
 			else
@@ -246,7 +263,7 @@ public class JournalInfo extends StdWebMacro
 				if(entry.attributes==0)
 					return "images/doc.gif";
 				if(CMath.bset(entry.attributes, JournalsLibrary.JournalEntry.ATTRIBUTE_STUCKY))
-					return "images/doclock.gif";
+					return "images/doclocked.gif";
 				if(CMath.bset(entry.attributes, JournalsLibrary.JournalEntry.ATTRIBUTE_PROTECTED))
 					return "images/docstar.gif";
 				return "images/docunknown.gif";

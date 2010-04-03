@@ -255,12 +255,30 @@ public class JournalLoader
 			
 			ResultSet R=D.query(str);
 			int cardinal=0;
-			while(R.next() && (cardinal < limit))
+			JournalsLibrary.JournalEntry entry; 
+			while((cardinal < limit) && R.next())
 			{
-				JournalsLibrary.JournalEntry entry = DBReadJournalEntry(R); 
+				entry = DBReadJournalEntry(R); 
+				if((parent!=null)&&(CMath.bset(entry.attributes,JournalsLibrary.JournalEntry.ATTRIBUTE_STUCKY)))
+					continue;
 				entry.cardinal = ++cardinal;
 				journal.addElement(entry);
 			}
+			if((journal.size()>0)&&(parent!=null)) // set last entry -- make sure its not stucky
+			{
+				journal.lastElement().isLastEntry=true;
+				while(R.next())
+				{
+					long attributes=R.getLong("CMATTR");
+					if(CMath.bset(attributes,JournalsLibrary.JournalEntry.ATTRIBUTE_STUCKY))
+						continue;
+					journal.lastElement().isLastEntry=false;
+					break;
+				}
+			}
+			else
+			if((journal.size()>0)&&(!R.next()))
+				journal.lastElement().isLastEntry=true;
 		}
 		catch(Exception sqle)
 		{
@@ -568,22 +586,27 @@ public class JournalLoader
 		try
 		{
 			D=DB.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMJRNL WHERE CMJRNL='"+stats.name+"' AND CMTONM='ALL'");
+			ResultSet R=D.query("SELECT * FROM CMJRNL WHERE CMJRNL='"+stats.name+"' AND CMTONM='ALL' AND CMPART=''");
 			long topTime = 0;
 			while(R.next())
 			{
 				String key=R.getString("CMJKEY");
-				String parentKey=R.getString("CMPART");
 				long updateTime=R.getLong("CMUPTM");
+				long attributes=R.getLong("CMATTR");
+				int replies=R.getInt("CMREPL");
 				stats.posts++;
-				if((parentKey==null)||(parentKey.length()==0))
+				stats.threads++;
+				stats.posts+=replies;
+				if(updateTime>topTime)
 				{
-					stats.threads++;
-					if(updateTime>topTime)
-					{
-						topTime=updateTime;
-						topKey=key;
-					}
+					topTime=updateTime;
+					topKey=key;
+				}
+				if(CMath.bset(attributes,JournalsLibrary.JournalEntry.ATTRIBUTE_STUCKY))
+				{
+					if(stats.stuckyKeys==null)
+						stats.stuckyKeys=new Vector<String>();
+					stats.stuckyKeys.add(key);
 				}
 			}
 			R.close();
@@ -593,9 +616,9 @@ public class JournalLoader
 			Log.errOut("JournalLoader",sqle.getMessage());
 		}
 		if(topKey != null)
-			stats.latest = DBReadJournalEntry(stats.name, topKey);
+			stats.latestKey = topKey;
 		else
-			stats.latest = null;
+			stats.latestKey = null;
 		stats.imagePath="";
 		stats.shortIntro="[This is the short journal description.]";
 		stats.longIntro="[This is the long journal description.    To change it, use forum Admin, or create a journal entry addressed to JOURNALINTRO with updatetime 0.]";
