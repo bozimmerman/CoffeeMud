@@ -92,19 +92,28 @@ public class MudChat extends StdBehavior implements ChattyBehavior
     
 	protected static synchronized Vector getChatGroups(String parms)
 	{
+		unprotectedChatGroupLoad("chat.dat");
+		return unprotectedChatGroupLoad(parms);
+	}
+
+	protected static Vector unprotectedChatGroupLoad(String parms)
+	{
 		Vector rsc=null;
 		String filename="chat.dat";
 		int x=parms.indexOf("=");
 		if(x>0)	filename=parms.substring(0,x);
-		rsc=(Vector)Resources.getResource("MUDCHAT GROUPS-"+filename);
-		if(rsc==null)
+		rsc=(Vector)Resources.getResource("MUDCHAT GROUPS-"+filename.toLowerCase());
+		if(rsc!=null) return rsc;
+		synchronized(("MUDCHAT GROUPS-"+filename.toLowerCase()).intern())
 		{
+			rsc=(Vector)Resources.getResource("MUDCHAT GROUPS-"+filename.toLowerCase());
+			if(rsc!=null) return rsc;
 			rsc=loadChatData(filename,new Vector());
-			Resources.submitResource("MUDCHAT GROUPS-"+filename,rsc);
+			Resources.submitResource("MUDCHAT GROUPS-"+filename.toLowerCase(),rsc);
+			return rsc;
 		}
-		return rsc;
 	}
-
+	
 	public Vector externalFiles()
 	{
 		int x=parms.indexOf("=");
@@ -160,8 +169,9 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 					otherChatGroup=matchChatGroup(null,str.substring(1).trim(),chatGroups);
 					if(otherChatGroup==null)
 						otherChatGroup=(Vector)chatGroups.elementAt(0);
-					for(int v1=1;v1<otherChatGroup.size();v1++)
-						currentChatGroup.addElement(otherChatGroup.elementAt(v1));
+					if(otherChatGroup != currentChatGroup)
+						for(int v1=1;v1<otherChatGroup.size();v1++)
+							currentChatGroup.addElement(otherChatGroup.elementAt(v1));
 				}
 				break;
 			case '%':
