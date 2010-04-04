@@ -185,6 +185,7 @@ CREATE TABLE CMJRNL (
 	CMUPTM integer(8),
 	CMIMGP varchar (50),
 	CMVIEW int,
+	CMREPL int,
 	CMMSGT CLOB ,
 	PRIMARY KEY (CMJKEY)
 );

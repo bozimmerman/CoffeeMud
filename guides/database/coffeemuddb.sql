@@ -252,6 +252,7 @@ CREATE TABLE CMJRNL (
 	CMUPTM bigint NULL,
 	CMIMGP char (50) NULL,
 	CMVIEW integer NULL,
+	CMREPL integer NULL,
 	CMMSGT text NULL 
 );
 

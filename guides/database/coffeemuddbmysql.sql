@@ -260,6 +260,7 @@ CREATE TABLE CMJRNL (
 	CMUPTM bigint NULL,
 	CMIMGP varchar (50) NULL,
 	CMVIEW int NULL,
+	CMREPL int NULL,
 	CMMSGT longtext NULL 
 );
 
