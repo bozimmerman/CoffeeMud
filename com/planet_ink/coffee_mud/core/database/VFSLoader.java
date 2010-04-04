@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.core.database;
+import com.planet_ink.coffee_mud.core.CMFile.CMVFSFile;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -32,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class VFSLoader
 {
 	protected DBConnector DB=null;
@@ -41,10 +41,10 @@ public class VFSLoader
 		DB=newDB;
 	}
     
-    public Vector DBReadDirectory()
+    public CMFile.CMVFSDir DBReadDirectory()
     {
         DBConnection D=null;
-        Vector rows=new Vector();
+        CMFile.CMVFSDir root=new CMFile.CMVFSDir(null,"",CMFile.VFS_MASK_DIRECTORY,System.currentTimeMillis(),"SYS");
         try
         {
             D=DB.DBFetch();
@@ -55,8 +55,7 @@ public class VFSLoader
                 int mask = (int)DBConnections.getLongRes(R,"CMDTYP");
                 long time = DBConnections.getLongRes(R,"CMMODD");
                 String author = DBConnections.getRes(R,"CMWHOM");
-                CMFile.CMVFSFile file = new CMFile.CMVFSFile(fname,mask,time,author);
-                rows.addElement(file);
+                root.add(new CMFile.CMVFSFile(fname,mask,time,author));
             }
         }
         catch(Exception sqle)
@@ -66,7 +65,7 @@ public class VFSLoader
         }
         DB.DBDone(D);
         // log comment
-        return rows;
+        return root;
     }
     
     public CMFile.CMVFSFile DBRead(String filename)

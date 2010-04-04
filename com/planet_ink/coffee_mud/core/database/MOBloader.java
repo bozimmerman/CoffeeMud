@@ -47,7 +47,7 @@ public class MOBloader
         {
             D=DB.DBFetch();
             ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMUSERID='"+mob.Name()+"'");
-            while(R.next())
+            if(R.next())
             {
                 CharStats stats=mob.baseCharStats();
                 CharState state=mob.baseState();
@@ -130,14 +130,22 @@ public class MOBloader
                         pstats.initializeBirthday((int)Math.round(CMath.div(mob.getAgeHours(),60.0)),stats.getMyRace()));
                 mob.setImage(CMLib.xml().returnXMLValue(buf,"IMG"));
                 Vector CleanXML=CMLib.xml().parseAllXML(DBConnections.getRes(R,"CMMXML"));
+                R.close();
+                DB.DBDone(D);
+                D=null;
                 CMLib.coffeeMaker().setFactionFromXML(mob,CleanXML);
                 found=true;
             }
-        }catch(Exception sqle)
+        }
+        catch(Exception sqle)
         {
             Log.errOut("MOB",sqle);
         }
-        if(D!=null) DB.DBDone(D);
+        finally
+        {
+        	if(D!=null) 
+        		DB.DBDone(D);
+        }
         return found;
     }
 

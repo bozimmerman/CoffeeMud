@@ -174,6 +174,8 @@ public class DBUpgrade
 								if(line.toUpperCase().startsWith("INT")
 								||line.toUpperCase().startsWith("NUMB")
 								||line.toUpperCase().startsWith("DOUB")
+								||line.toUpperCase().startsWith("LONG")
+								||line.toUpperCase().startsWith("TIME")
 								||line.toUpperCase().startsWith("FLOAT"))
 									table.addElement('#'+name);
 								else
@@ -560,7 +562,7 @@ public class DBUpgrade
 		}
 		catch(Exception ce)
 		{
-			pl("Oops.. something bad happened!");
+			pl("\n\nOops.. something bad happened!");
 			pl(ce.getMessage());
 			pl("Fix it and run this again!");
 			return;
@@ -640,7 +642,7 @@ public class DBUpgrade
 		}
 		catch(Exception ce)
 		{
-			pl("Oops.. something bad happened!");
+			pl("\n\nOops.. something bad happened!");
 			pl(ce.getMessage());
 			pl("Probably out of luck -- was a good try though!");
 			return;

@@ -63,6 +63,9 @@ public class DBConnection
 	/** parent container of this connection **/
 	private DBConnections myParent=null;	
 	
+	/** for tracking the last sql statement made */
+	protected String lastSQL = "";
+	
 	/** 
 	 * construction
 	 * 
@@ -168,7 +171,10 @@ public class DBConnection
 			try
 			{
 				if(!Opener.equals(""))
+				{
+					lastSQL=Opener;
 					myStatement.executeUpdate(Opener);
+				}
 			}
 			catch(SQLException e)
 			{
@@ -202,6 +208,7 @@ public class DBConnection
 			{
 				myStatement=null;
 				sqlserver=true;
+				lastSQL=SQL;
 				myPreparedStatement=myConnection.prepareStatement(SQL);
 				sqlserver=false;
 			}
@@ -234,7 +241,10 @@ public class DBConnection
 		{
 			if(!Closer.equals(""))
 				if(myStatement!=null)
+				{
+					lastSQL=Closer;
 					myStatement.executeUpdate(Closer);
+				}
 			if(myConnection!=null)
 				myConnection.commit();
 		}
@@ -256,6 +266,7 @@ public class DBConnection
 	public ResultSet query(String queryString)
 		throws SQLException
 	{
+		lastSQL=queryString;
 		ResultSet R=null;
 		if((inUse)&&(ready())) 
 		{
@@ -306,6 +317,7 @@ public class DBConnection
 	public int update(String updateString, int retryNum)
 		throws SQLException
 	{
+		lastSQL=updateString;
 		int responseCode=-1;
 		if((inUse)&&(ready()))
 		{

@@ -40,7 +40,7 @@ public class CMFile
     public static final int VFS_MASK_MASKSAVABLE=1+2+4;
 
     //private static final int VFS_MASK_BINARY=1;
-    private static final int VFS_MASK_DIRECTORY=2;
+    public static final int VFS_MASK_DIRECTORY=2;
     private static final int VFS_MASK_HIDDEN=4;
     private static final int VFS_MASK_ISLOCAL=8;
     private static final int VFS_MASK_NOWRITEVFS=16;
@@ -54,7 +54,7 @@ public class CMFile
     @SuppressWarnings("unused")
 	private static final String outCharSet = Charset.defaultCharset().name();
     
-    private static Vector[] vfs=new Vector[256];
+    private static CMVFSDir[] vfs=new CMVFSDir[256];
     private boolean logErrors=false;
 
     private int vfsBits=0;
@@ -78,22 +78,197 @@ public class CMFile
     public CMFile (String currentPath, String filename, MOB user, boolean pleaseLogErrors, boolean forceAllow)
     { super(); buildCMFile(incorporateBaseDir(currentPath,filename),user,pleaseLogErrors,forceAllow); }
 
-    public static class CMVFSFile {
-    	public String filename;
+    public static class CMVFSFile 
+    {
+    	public String fName;
+    	public String uName;
+    	public String path;
     	public int mask;
     	public long modifiedDateTime;
     	public String author;
     	public Object data = null;
-    	public CMVFSFile(String filename, int mask, long modifiedDateTime, String author) {
-    		this.filename=filename;
+    	
+    	public CMVFSFile(String path, int mask, long modifiedDateTime, String author) 
+    	{
+    		this.path=path;
+	    	this.fName=path;
+    		int x=path.lastIndexOf('/');
+    		if(x==path.length()-1) x=path.lastIndexOf('/',path.length()-2);
+    		if(x>=0) this.fName=path.substring(x+1);
+    		while(this.fName.startsWith("/")) this.fName=this.fName.substring(1);
+    		while(this.fName.endsWith("/")) this.fName=this.fName.substring(0,this.fName.length()-1);
+    		this.uName=this.fName.toUpperCase();
     		this.mask=mask;
     		this.modifiedDateTime=modifiedDateTime;
     		this.author=author;
     	}
+    	
+    	public void copyInto(CMVFSFile f2)
+    	{
+    		f2.author=author;
+    		f2.data=data;
+    		f2.fName=fName;
+    		f2.mask=mask;
+    		f2.modifiedDateTime=modifiedDateTime;
+    		f2.path=path;
+    		f2.uName=uName;
+    		if((this instanceof CMVFSDir)&&(f2 instanceof CMVFSDir))
+    		{
+    			((CMVFSDir)f2).parent=((CMVFSDir)this).parent;
+    			if((((CMVFSDir)this).files!=null)
+    			&&(((CMVFSDir)this).files.length>0)
+    			&&(((CMVFSDir)f2).files==null))
+    				((CMVFSDir)f2).files=((CMVFSDir)this).files;
+    		}
+    	}
     }
     
-    private static Vector vfsV() {
-        return vfs[Thread.currentThread().getThreadGroup().getName().charAt(0)];
+    public static class CMVFSDir extends CMVFSFile
+    {
+    	private CMVFSFile[] files=null;
+    	public CMVFSDir parent=null;
+    	
+    	private static Comparator<CMVFSFile> fcomparator=new Comparator<CMVFSFile>() {
+			public int compare(CMVFSFile arg0, CMVFSFile arg1) { return arg0.uName.compareTo(arg1.uName); }
+    	};
+    	
+    	public CMVFSDir(CMVFSDir parent, String path, int mask, long modifiedDateTime, String author)
+    	{
+    		super(path,mask,modifiedDateTime,author);
+    		this.parent=parent;
+    	}
+
+    	public synchronized CMVFSDir fetchSubDir(String path, boolean create)
+    	{
+    		String[] ppath=path.split("/");
+    		CMVFSDir currDir=this;
+    		for(String p : ppath)
+    			if(p.length()>0)
+    			{
+    	    		synchronized(currDir)
+    	    		{
+	    				CMVFSDir key = new CMVFSDir(currDir,currDir.path+p+"/",VFS_MASK_DIRECTORY,System.currentTimeMillis(),"SYS");
+	    				int dex = -1;
+	    				if(currDir.files!=null)
+	    					dex=Arrays.binarySearch(currDir.files, key, fcomparator);
+	    				if(dex>=0)
+	    				{
+	    					if(currDir.files[dex] instanceof CMVFSDir)
+	    					{
+		    					currDir=(CMVFSDir)currDir.files[dex];
+		    					continue;
+	    					}
+	    					return null; // found a step, but its a file, not a subdir
+	    				}
+	    				else
+	    				if(!create)
+	    					return null;
+	    				if(currDir.files==null) currDir.files=new CMVFSFile[0];
+	    				currDir.files=Arrays.copyOf(currDir.files, currDir.files.length+1);
+	    				currDir.files[currDir.files.length-1]=key;
+	    	    		Arrays.sort(currDir.files,fcomparator);
+	    	    		currDir=key;
+    	    		}
+    			}
+    		return currDir;
+    	}
+
+    	public boolean add(CMVFSFile f)
+    	{
+    		int x=f.path.lastIndexOf('/');
+    		if(x==f.path.length()-1)
+    			x=f.path.lastIndexOf('/',x-1);
+    		CMVFSDir subDir=this;
+    		if(x>0)
+    			subDir=fetchSubDir(f.path.substring(0,x),true);
+    		if(subDir!=null)
+    		synchronized(subDir)
+    		{
+        		if(subDir.files==null) subDir.files=new CMVFSFile[0];
+        		CMVFSFile old = subDir.get(f.uName);
+        		if(old!=null)
+        			f.copyInto(old);
+        		else
+        		{
+        			subDir.files=Arrays.copyOf(subDir.files, subDir.files.length+1);
+    	    		if(CMath.bset(f.mask, CMFile.VFS_MASK_DIRECTORY))
+    	    		{
+    	    			CMVFSDir d = new CMVFSDir(subDir,f.path,f.mask,f.modifiedDateTime,f.author);
+    	    			f.copyInto(d);
+    	    			f=d;
+    	    		}
+    	    		subDir.files[subDir.files.length-1]=f;
+        		}
+        		Arrays.sort(subDir.files,fcomparator);
+    		}
+    		else
+    			return false;
+    		return true;
+    	}
+    	
+    	public boolean delete(CMVFSFile file)
+    	{
+    		CMVFSDir dir = vfsV();
+    		if(dir==null) return false;
+    		int x=file.path.lastIndexOf('/');
+    		CMVFSDir subDir=dir;
+    		if(x>0)
+    			subDir=dir.fetchSubDir(file.path.substring(0,x),true);
+    		synchronized(subDir)
+    		{
+	    		if((x==file.path.length()-1)&&(subDir.parent!=null))
+	    		{
+	    			if(subDir.parent.files!=null)
+	    			{
+	    	    		List<CMVFSFile> list = Arrays.asList(subDir.parent.files);
+	    	    		if(!list.remove(subDir))
+	    	    			return false;
+	    	    		subDir.parent.files = list.toArray(new CMVFSFile[0]);
+	    	    		return true;
+	    			}
+	    			else
+	    				return false;
+	    		}
+	    		else
+	    		{
+		    		List<CMVFSFile> list = new Vector();
+		    		list.addAll(Arrays.asList(subDir.files));
+		    		if(!list.remove(file))
+		    			return false;
+		    		subDir.files = list.toArray(new CMVFSFile[0]);
+		    		return true;
+	    		}
+    		}
+    	}
+    	
+    	private synchronized CMVFSFile get(String fileName)
+    	{
+    		if(files==null) return null;
+    		CMVFSFile key = new CMVFSFile(fileName, 0, 0, "");
+			int dex = Arrays.binarySearch(files, key, fcomparator);
+			if(dex>=0) return files[dex];
+			return null;
+    	}
+    	
+    	public synchronized CMVFSFile fetch(String filePath)
+    	{
+    		if(files==null) return null;
+    		int x=filePath.lastIndexOf('/');
+    		CMVFSDir dir = this;
+    		if(x>=0)
+    			dir = this.fetchSubDir(filePath.substring(0,x), false);
+    		if(dir==null) return null;
+    		if(x==filePath.length()-1) return dir;
+    		String fileName=(x<0)?filePath:filePath.substring(x+1).trim();
+    		if(fileName.length()==0)
+    			return dir;
+    		return dir.get(fileName);
+    	}
+    }
+    
+    private static CMVFSDir vfsV() 
+    {
+    	return vfs[Thread.currentThread().getThreadGroup().getName().charAt(0)];
     }
     
     private void buildCMFile(String absolutePath, MOB user, boolean pleaseLogErrors, boolean forceAllow)
@@ -262,7 +437,7 @@ public class CMFile
     public boolean exists(){ return !(CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADVFS)&&CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADLOCAL));}
     public boolean isFile(){return canRead()&&(!CMath.bset(vfsBits,CMFile.VFS_MASK_DIRECTORY));}
     public long lastModified(){return modifiedDateTime;}
-    public String author(){return ((author!=null))?author:"unknown";}
+    public String author(){return ((author!=null))?author:"SYS_UNK";}
     public boolean isLocalFile(){return CMath.bset(vfsBits,CMFile.VFS_MASK_ISLOCAL);}
     public boolean isVFSFile(){return (!CMath.bset(vfsBits,CMFile.VFS_MASK_ISLOCAL));}
     public boolean canVFSEquiv(){return (!CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADVFS));}
@@ -294,17 +469,7 @@ public class CMFile
         if(!isDirectory()) return true;
         if((localFile!=null)&&(localFile.isDirectory())&&(localFile.list().length>0))
             return false;
-        CMVFSFile file=null;
-        Vector vfs=getVFSDirectory();
-        String name=getVFSPathAndName().toUpperCase()+"/";
-        for(Enumeration e=vfs.elements();e.hasMoreElements();)
-        {
-            file=(CMVFSFile)e.nextElement();
-            if(((file.filename).toUpperCase().startsWith(name))
-            &&(!((file.filename).toUpperCase().equals(name))))
-                return false;
-        }
-        return true;
+        return getVFSDirectory().fetchSubDir(getVFSPathAndName().toUpperCase(), false)!=null;
     }
 
     public boolean deleteLocal()
@@ -328,8 +493,8 @@ public class CMFile
         	CMVFSFile info=getVFSInfo(name);
             if(info==null)
             	return false;
-            CMLib.database().DBDeleteVFSFile(info.filename);
-            getVFSDirectory().remove(info);
+            CMLib.database().DBDeleteVFSFile(info.path);
+            getVFSDirectory().delete(info);
             return true;
         }
         return false;
@@ -596,14 +761,14 @@ public class CMFile
             CMVFSFile info=getVFSInfo(filename);
             if(info!=null)
             {
-                filename=info.filename;
-                if(vfs!=null) vfsV().removeElement(info);
+                filename=info.path;
+            	getVFSDirectory().delete(info);
                 CMLib.database().DBDeleteVFSFile(filename);
             }
             if(vfsBits<0) vfsBits=0;
             vfsBits=CMath.unsetb(vfsBits,CMFile.VFS_MASK_NOREADVFS);
             info = new CMVFSFile(filename,vfsBits&VFS_MASK_MASKSAVABLE,System.currentTimeMillis(),author());
-            vfsV().addElement(info);
+            getVFSDirectory().add(info);
             CMLib.database().DBCreateVFSFile(filename,vfsBits,author(),O);
             return true;
         }
@@ -681,14 +846,14 @@ public class CMFile
             CMVFSFile info=getVFSInfo(filename);
             if(info!=null)
             {
-                filename=info.filename;
-                if(vfsV()!=null) vfsV().removeElement(info);
+                filename=info.path;
+                if(vfsV()!=null) vfsV().delete(info);
                 CMLib.database().DBDeleteVFSFile(filename);
             }
             if(vfsBits<0) vfsBits=0;
             vfsBits=CMath.unsetb(vfsBits,CMFile.VFS_MASK_NOREADVFS);
             info=new CMVFSFile(filename,vfsBits&VFS_MASK_MASKSAVABLE,System.currentTimeMillis(),author());
-            vfsV().addElement(info);
+            vfsV().add(info);
             CMLib.database().DBCreateVFSFile(filename,vfsBits,author(),O);
             return true;
         }
@@ -753,7 +918,7 @@ public class CMFile
             vfsBits=CMath.unsetb(vfsBits,CMFile.VFS_MASK_NOWRITEVFS);
             vfsBits=vfsBits|CMFile.VFS_MASK_DIRECTORY;
             info=new CMVFSFile(filename,vfsBits&VFS_MASK_MASKSAVABLE,System.currentTimeMillis(),author());
-            vfsV().addElement(info);
+            vfsV().add(info);
             CMLib.database().DBCreateVFSFile(filename,vfsBits,author(),new StringBuffer(""));
             return true;
         }
@@ -803,87 +968,45 @@ public class CMFile
 
     private static CMVFSFile getVFSInfo(String filename)
     {
-        Vector vfs=getVFSDirectory();
+        CMVFSDir vfs=getVFSDirectory();
         if(vfs==null) return null;
-        filename=vfsifyFilename(filename);
-        String filenameAsDir=filename+"/";
-        CMVFSFile file=null;
-        String fnam=null;
-        for(Enumeration e=vfs.elements();e.hasMoreElements();)
-        {
-            file=(CMVFSFile)e.nextElement();
-            fnam=file.filename;
-            if(fnam.equalsIgnoreCase(filename)||fnam.equalsIgnoreCase(filenameAsDir))
-                return file;
-        }
-        return null;
+        return vfs.fetch(vfsifyFilename(filename));
     }
 
     private static Object getVFSData(String filename)
     {
-        Vector vfs=getVFSDirectory();
-        if(vfs==null) return null;
-        filename=vfsifyFilename(filename);
-        CMVFSFile file=null;
-        for(Enumeration e=vfs.elements();e.hasMoreElements();)
+        CMVFSFile file=getVFSInfo(filename);
+        if(file!=null)
         {
-            file=(CMVFSFile)e.nextElement();
-            if((file.filename).equalsIgnoreCase(filename))
-            {
-            	CMVFSFile V=CMLib.database().DBReadVFSFile(file.filename);
-                if((V!=null)&&(V.data != null))
-                    return V.data;
-            }
+        	CMVFSFile f=CMLib.database().DBReadVFSFile(file.path);
+            if((f!=null)&&(f.data != null))
+                return f.data;
         }
         return null;
     }
 
     private static boolean doesFilenameExistInVFS(String filename)
     {
-    	CMVFSFile file=null;
-        if(filename.length()==0) return true;
-        Vector vfs=getVFSDirectory();
-        if(vfs==null) return false;
-        for(Enumeration e=vfs.elements();e.hasMoreElements();)
-        {
-            file=(CMVFSFile)e.nextElement();
-            if(((file.filename).equalsIgnoreCase(filename))
-            ||((file.filename).equalsIgnoreCase(filename+"/")))
-                return true;
-        }
-        return false;
+    	return getVFSInfo(filename)!=null;
     }
 
     private static boolean doesExistAsPathInVFS(String filename)
     {
-    	CMVFSFile file=null;
-        Vector vfs=getVFSDirectory();
-        if(vfs==null) return false;
-        filename=vfsifyFilename(filename).toUpperCase()+"/";
-        for(Enumeration e=vfs.elements();e.hasMoreElements();)
-        {
-            file=(CMVFSFile)e.nextElement();
-            if((file.filename).toUpperCase().startsWith(filename))
-                return true;
-        }
-        return false;
+    	CMVFSFile file=getVFSInfo(filename);
+    	if(file==null) return false;
+    	if((file instanceof CMVFSDir)||(CMath.bset(file.mask, CMFile.VFS_MASK_DIRECTORY)))
+    		return true;
+    	return false;
     }
 
     public boolean isVFSDirectory()
     {
-    	CMVFSFile file=null;
-        Vector vfs=getVFSDirectory();
-        if(vfs==null) return false;
-        String dir=getVFSPathAndName().toUpperCase();
+        String dir=getVFSPathAndName().toLowerCase();
         if(!dir.endsWith("/")) dir+="/";
-        for(Enumeration e=vfs.elements();e.hasMoreElements();)
-        {
-            file=(CMVFSFile)e.nextElement();
-            if((file.filename).toUpperCase().equals(dir))
-                return true;
-        }
-        return false;
+    	CMVFSFile file=getVFSInfo(dir);
+    	return (file instanceof CMVFSDir);
     }
+    
     public boolean isLocalDirectory()
     {
     	return (localFile!=null)&&(localFile.isDirectory());
@@ -896,46 +1019,25 @@ public class CMFile
         String prefix=demandLocal?"//":(demandVFS?"::":"");
         Vector dir=new Vector();
         Vector fcheck=new Vector();
-        CMVFSFile info=null;
         String thisDir=getVFSPathAndName();
-        Vector vfs=getVFSDirectory();
+        CMVFSDir vfs=getVFSDirectory();
         String vfsSrchDir=thisDir+"/";
         if(thisDir.length()==0) vfsSrchDir="";
         if(!demandLocal)
-        for(int v=0;v<vfs.size();v++)
         {
-            info=(CMVFSFile)vfs.elementAt(v);
-            String totalVFSString=info.filename;
-            if((thisDir.length()==0)
-            ||totalVFSString.toUpperCase().startsWith(vfsSrchDir.toUpperCase())) // SOMETHING in this vfs dir
-            {
-                String entryName=totalVFSString.substring(vfsSrchDir.length());
-                if(entryName.length()==0) continue;
-                int x=entryName.indexOf("/");
-                if(x>0) // this entry is a dir in our dir!
-                {
-                    entryName=entryName.substring(0,x);
-                    String thisPath=(thisDir.length()>0)?thisDir+"/"+entryName:entryName;
-                    CMFile CF=new CMFile(prefix+thisPath,accessor,false);
-                    if((CF.canRead())
-                    &&(!fcheck.contains(entryName.toUpperCase())))
-                    {
-                        fcheck.addElement(entryName.toUpperCase());
-                        dir.addElement(CF);
-                    }
-                }
-                else
-                {
-                    String thisPath=(vfsSrchDir.length()>0)?vfsSrchDir+entryName:entryName;
-                    CMFile CF=new CMFile(prefix+thisPath,accessor,false);
-                    if((CF.canRead())
-                    &&(!fcheck.contains(entryName.toUpperCase())))
-                    {
-                        fcheck.addElement(entryName.toUpperCase());
-                        dir.addElement(CF);
-                    }
-                }
-            }
+        	if(vfsSrchDir.length()>0)
+        		vfs=vfs.fetchSubDir(vfsSrchDir, false);
+        	if((vfs!=null)&&(vfs.files!=null)&&(vfs.files.length>0))
+        		for(CMVFSFile file : vfs.files)
+	        	{
+	                CMFile CF=new CMFile(prefix+file.path,accessor,false);
+	                if((CF.canRead())
+	                &&(!fcheck.contains(file.uName)))
+	                {
+	                    fcheck.addElement(file.uName);
+	                    dir.addElement(CF);
+	                }
+	        	}
         }
 
         if(!demandVFS)
@@ -964,12 +1066,12 @@ public class CMFile
         return finalDir;
     }
 
-    public static Vector getVFSDirectory()
+    public static CMVFSDir getVFSDirectory()
     {
-        Vector vvfs=vfsV();
+    	CMVFSDir vvfs=vfsV();
         if(vvfs==null)
         {
-            if(CMLib.database()==null) return new Vector();
+            if(CMLib.database()==null) return new CMVFSDir(null,"",CMFile.VFS_MASK_DIRECTORY,System.currentTimeMillis(),"SYS");
             char threadCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
             if(threadCode==MudHost.MAIN_HOST)
         		vvfs=vfs[threadCode]=CMLib.database().DBReadVFSDirectory();
@@ -986,40 +1088,6 @@ public class CMFile
                 }
                 else
                     vvfs=vfs[threadCode]=vfs[MudHost.MAIN_HOST]=CMLib.database().DBReadVFSDirectory();
-            }
-            HashSet dirs=new HashSet();
-            String fname=null;
-            int x=0;
-            for(int v=0;v<vvfs.size();v++)
-            {
-                fname=vfsifyFilename(((CMVFSFile)vvfs.firstElement()).filename);
-                x=fname.indexOf("/");
-                while(x>=0)
-                {
-                    if((x>0)&&(!dirs.contains(fname.substring(0,x+1))))
-                        dirs.add(fname.substring(0,x+1));
-                    x=fname.indexOf("/",x+1);
-                }
-            }
-            String file=null;
-            String filenameAsDir=null;
-            boolean found=false;
-            for(Iterator i=dirs.iterator();i.hasNext();)
-            {
-                filenameAsDir=(String)i.next();
-                file=(filenameAsDir.endsWith("/"))?filenameAsDir.substring(0,filenameAsDir.length()-1):filenameAsDir;
-                found=false;
-                for(Enumeration e=vvfs.elements();e.hasMoreElements();)
-                {
-                    fname=((CMVFSFile)e.nextElement()).filename;
-                    if(fname.equalsIgnoreCase(file)||fname.equalsIgnoreCase(filenameAsDir))
-                    { found=true; break;}
-                }
-                if(!found)
-                {
-                    CMVFSFile info = new CMVFSFile(filenameAsDir,VFS_MASK_DIRECTORY,System.currentTimeMillis(),"");
-                    vvfs.addElement(info);
-                }
             }
         }
         return vvfs;

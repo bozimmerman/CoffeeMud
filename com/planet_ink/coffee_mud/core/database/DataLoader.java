@@ -322,7 +322,11 @@ public class DataLoader
 		{
 			Log.errOut("DataLoader",sqle);
 		}
-		if(D!=null) DB.DBDone(D);
+		finally
+		{
+			if(D!=null) 
+				DB.DBDone(D);
+		}
 	}
 
 	public void DBDeletePlayer(String playerID)

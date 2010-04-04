@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.core.database;
+import com.planet_ink.coffee_mud.core.CMFile.CMVFSFile;
 import com.planet_ink.coffee_mud.core.http.ProcessHTTPrequest;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -443,7 +444,7 @@ public class DBInterface implements DatabaseEngine
     public Vector DBReadPoll(String name)
     {return PollLoader.DBRead(name);}
 
-    public Vector DBReadVFSDirectory()
+    public CMFile.CMVFSDir DBReadVFSDirectory()
     { return VFSLoader.DBReadDirectory();}
     public CMFile.CMVFSFile DBReadVFSFile(String filename)
     { return VFSLoader.DBRead(filename);}

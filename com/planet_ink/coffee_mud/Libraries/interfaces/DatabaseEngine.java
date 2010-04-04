@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.Libraries.interfaces;
+import com.planet_ink.coffee_mud.core.CMFile.CMVFSFile;
 import com.planet_ink.coffee_mud.core.database.DBConnector;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -160,7 +161,7 @@ public interface DatabaseEngine extends CMLibrary
     public void DBDeletePoll(String name);
     public Vector DBReadPollList();
     public Vector DBReadPoll(String name);
-    public Vector DBReadVFSDirectory();
+    public CMFile.CMVFSDir DBReadVFSDirectory();
     public CMFile.CMVFSFile DBReadVFSFile(String filename);
     public void DBCreateVFSFile(String filename, int bits, String creator, Object data);
     public void DBDeleteVFSFile(String filename);
