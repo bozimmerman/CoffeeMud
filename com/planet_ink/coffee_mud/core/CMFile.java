@@ -220,7 +220,8 @@ public class CMFile
 	    		{
 	    			if(subDir.parent.files!=null)
 	    			{
-	    	    		List<CMVFSFile> list = Arrays.asList(subDir.parent.files);
+	    	    		List<CMVFSFile> list = new Vector<CMVFSFile>();
+	    	    		list.addAll(Arrays.asList(subDir.parent.files));
 	    	    		if(!list.remove(subDir))
 	    	    			return false;
 	    	    		subDir.parent.files = list.toArray(new CMVFSFile[0]);

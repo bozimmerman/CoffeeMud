@@ -61,6 +61,7 @@ public class Shell extends StdCommand
     private class cp_options
     {
     	boolean recurse=false;
+    	boolean forceOverwrites=false;
     	boolean preservePaths=false;
     	public cp_options(Vector cmds)
     	{
@@ -75,6 +76,10 @@ public class Shell extends StdCommand
         			case 'r':
         			case 'R':
         				recurse=true;
+        				break;
+        			case 'f':
+        			case 'F':
+        				forceOverwrites=true;
         				break;
         			case 'p':
         			case 'P':
@@ -719,6 +724,7 @@ public class Shell extends StdCommand
             {
                 mob.tell("^xError  : source and destination must be specified!^N");
                 mob.tell("^xOptions: -r = recurse into directories.^N");
+                mob.tell("^x       : -f = force overwrites.^N");
                 mob.tell("^x       : -p = preserve paths.^N");
                 return false;
             }
@@ -786,11 +792,11 @@ public class Shell extends StdCommand
                     mob.tell("^xError: destination must be a directory!^N"); 
                     return false;
                 }
-                if(DF.mustOverwrite()){ mob.tell("^xError: destination "+desc(DF)+" already exists!^N"); return false;}
+                if(DF.mustOverwrite() && (!opts.forceOverwrites)){ mob.tell("^xError: destination "+desc(DF)+" already exists!^N"); return false;}
                 if(!DF.canWrite()){ mob.tell("^xError: access denied to destination "+desc(DF)+"!^N"); return false;}
                 if((SF.isDirectory())&&(opts.recurse))
                 {
-	                if(!DF.mkdir())
+	                if((!DF.mustOverwrite())&&(!DF.mkdir()))
 	                    mob.tell("^xWarning: failed to mkdir "+desc(DF)+" ^N");
 	                else
 	                    mob.tell(desc(SF)+" copied to "+desc(DF));
