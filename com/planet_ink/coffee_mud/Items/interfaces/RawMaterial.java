@@ -269,6 +269,8 @@ public interface RawMaterial extends Item
 	public final static int RESOURCE_CHEESE=MATERIAL_VEGETATION|162;
 	public final static int RESOURCE_BEANS=MATERIAL_VEGETATION|163;
     public final static int RESOURCE_CRANBERRIES=MATERIAL_VEGETATION|164;
+    public final static int RESOURCE_DRAGONBLOOD=MATERIAL_LIQUID|165;
+    public final static int RESOURCE_DRAGONMEAT=MATERIAL_FLESH|166;
 	public final static int RESOURCE_MASK=255;	
 
 	
@@ -438,6 +440,8 @@ public interface RawMaterial extends Item
 	"CHEESE",//162
 	"BEANS",//163
     "CRANBERRIES", // 164
+    "DRAGONBLOOD", // 165
+    "DRAGONMEAT", // 166
 	};
 	
 	public final static String[] DEFAULT_RESOURCE_EFFECTS={
@@ -606,6 +610,8 @@ public interface RawMaterial extends Item
 	"",//162
 	"",//163
     "", // 164
+	"Prop_UseSpellCast2(Prayer_MinorInfusion)", //165
+	"", //166
 	};
 		
 	public final static int[][] DEFAULT_RESOURCE_DATA={ 
@@ -775,6 +781,8 @@ public interface RawMaterial extends Item
 	{RESOURCE_CHEESE,		25,	0,	1,	640}, 
 	{RESOURCE_BEANS,		1,	15,	1,	750}, 
     {RESOURCE_CRANBERRIES,  10, 1,  1,  750},
+	{RESOURCE_DRAGONMEAT,	40,	20,	1,	3000}, 
+	{RESOURCE_DRAGONBLOOD,	10,	100,0,	1025},
 	};
 	
 	
@@ -965,6 +973,8 @@ public interface RawMaterial extends Item
 		"mild cheesy",
 		"",
         "sweet berry",//RESOURCE_CRANERRIES  
+		"mild salty",//RESOURCE_DRAGONBLOOD
+		"mild salty",//RESOURCE_DRAGONMEAT
 		};
     
     /**

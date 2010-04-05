@@ -119,9 +119,9 @@ public class Draconian extends StdRace
 					("a strip of "+name().toLowerCase()+" scales",RawMaterial.RESOURCE_SCALES));
 				for(int i=0;i<5;i++)
 					resources.addElement(makeResource
-					("a pound of "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_MEAT));
+					("a pound of "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_DRAGONMEAT));
 				resources.addElement(makeResource
-				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
+				("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_DRAGONBLOOD));
 			}
 		}
 		return resources;
