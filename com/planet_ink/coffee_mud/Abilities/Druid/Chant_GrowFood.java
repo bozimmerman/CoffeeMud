@@ -117,6 +117,7 @@ public class Chant_GrowFood extends Chant
 				newItem.setName("a pound of "+name);
 				newItem.setDisplayText("some "+name+" sits here.");
 				newItem.setDescription("");
+				CMLib.materials().addEffectsToResource(newItem);
 				newItem.recoverEnvStats();
 				newItem.setMiscText(newItem.text());
 				mob.location().addItemRefuse(newItem,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_RESOURCE));

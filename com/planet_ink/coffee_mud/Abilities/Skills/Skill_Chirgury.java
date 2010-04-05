@@ -162,6 +162,7 @@ public class Skill_Chirgury extends StdSkill
 					    meat.setDisplayText("the "+parts[partCode].toLowerCase()+" of "+target.Name()+" lie here.");
 				    else
 					    meat.setDisplayText("the "+parts[partCode].toLowerCase()+" of "+target.Name()+" lies here.");
+					CMLib.materials().addEffectsToResource(meat);
 				    meat.recoverEnvStats();
 				    meat.text();
 				    for(int i=0;i<amt;i++)

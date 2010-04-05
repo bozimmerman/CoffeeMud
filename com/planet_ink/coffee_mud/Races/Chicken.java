@@ -132,6 +132,7 @@ public class Chicken extends StdRace
                 I.setMaterial(RawMaterial.RESOURCE_EGGS);
                 I.setDescription("It looks like a chicken egg!");
                 I.baseEnvStats().setWeight(1);
+        		CMLib.materials().addEffectsToResource(I);
                 ((MOB)ticking).addInventory((Item)I.copyOf());
             }
             if((((MOB)ticking).inventorySize()>5)

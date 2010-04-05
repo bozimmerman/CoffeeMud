@@ -96,6 +96,7 @@ public class Cow extends StdMOB implements Drink
 			I.setMaterial(RawMaterial.RESOURCE_MILK);
 			I.setBaseValue(RawMaterial.CODES.VALUE(RawMaterial.RESOURCE_MILK));
 			I.baseEnvStats().setWeight(1);
+			CMLib.materials().addEffectsToResource(I);
 			I.recoverEnvStats();
 			I.setContainer(container);
 			if(container.owner()!=null)

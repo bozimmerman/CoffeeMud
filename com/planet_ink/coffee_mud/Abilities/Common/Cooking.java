@@ -499,6 +499,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
             playSound=defaultDrinkSound;
             building.setMaterial(liquidType);
             drink.setLiquidType(liquidType);
+    		CMLib.materials().addEffectsToResource((Item)drink);
 		}
 		else
 		if(CMClass.getItem(foodType)!=null)

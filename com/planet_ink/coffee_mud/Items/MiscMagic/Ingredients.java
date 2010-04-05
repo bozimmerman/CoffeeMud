@@ -58,6 +58,7 @@ public class Ingredients extends BagOfEndlessness
 		I.setMaterial(type);
 		I.setBaseValue(RawMaterial.CODES.VALUE(type));
 		I.baseEnvStats().setWeight(1);
+		CMLib.materials().addEffectsToResource(I);
 		I.recoverEnvStats();
 		I.setContainer(this);
 		if(I instanceof Decayable)

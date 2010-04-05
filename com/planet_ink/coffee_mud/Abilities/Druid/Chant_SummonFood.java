@@ -82,6 +82,7 @@ public class Chant_SummonFood extends Chant
 					newItem.setMaterial(berryType);
 					newItem.setNourishment(150+(10*super.getX1Level(mob)));
 					newItem.setBaseValue(1);
+					CMLib.materials().addEffectsToResource(newItem);
 					newItem.setMiscText(newItem.text());
 					mob.location().addItemRefuse(newItem,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_RESOURCE));
 				}

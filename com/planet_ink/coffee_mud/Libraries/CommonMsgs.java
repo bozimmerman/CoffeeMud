@@ -8,7 +8,6 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
-import com.planet_ink.coffee_mud.Items.Basic.GenLiquidResource;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -740,7 +739,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                 Vector newItems=new Vector();
                 if((item instanceof Drink)&&(((Drink)item).liquidRemaining()>0))
                 {
-                    GenLiquidResource l=new GenLiquidResource();
+                    RawMaterial l=(RawMaterial)CMClass.getItem("GenLiquidResource");
                     int myResource=((Drink)item).liquidType();
                     l.setMaterial(myResource);
                     ((Drink)l).setLiquidType(myResource);
@@ -750,6 +749,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                     l.setName("some "+name);
                     l.setDisplayText("some "+name+" sits here.");
                     l.setDescription("");
+            		CMLib.materials().addEffectsToResource(l);
                     l.recoverEnvStats();
                     newItems.addElement(l);
                 }

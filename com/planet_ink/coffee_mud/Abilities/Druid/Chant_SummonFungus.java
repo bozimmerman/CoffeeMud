@@ -122,6 +122,7 @@ public class Chant_SummonFungus extends Chant_SummonPlants
 		newItem.baseEnvStats().setLevel(10+newChant.getX1Level(mob));
 		newItem.baseEnvStats().setWeight(1);
 		newItem.setExpirationDate(0);
+		CMLib.materials().addEffectsToResource(newItem);
 		room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" sprouts up here.");
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;

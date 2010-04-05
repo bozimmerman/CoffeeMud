@@ -377,7 +377,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		return code;
 	}
 	
-    public void addEffectsToResource(RawMaterial I)
+    public void addEffectsToResource(Item I)
     {
     	if(I==null) return;
     	Ability[] As=RawMaterial.CODES.EFFECTA(I.material());
@@ -542,6 +542,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				((RawMaterial)I).setDomainSource(localeCode);
             adjustResourceName(I);
 			I.setDescription("");
+			addEffectsToResource(I);
 			I.recoverEnvStats();
 			return I;
 		}
@@ -639,6 +640,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
         adjustResourceName(I);
 		I.setDescription("");
 		I.setBaseValue(RawMaterial.CODES.VALUE(type));
+		addEffectsToResource(I);
 		I.recoverEnvStats();
 		return I;
 	}
