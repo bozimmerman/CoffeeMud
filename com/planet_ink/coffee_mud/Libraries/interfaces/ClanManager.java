@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -119,7 +120,7 @@ public interface ClanManager extends CMLibrary
      * @param members
      * @return
      */
-    public boolean isFamilyOfMembership(MOB M, DVector members);
+    public boolean isFamilyOfMembership(MOB M, List<MemberRecord> members);
     
     /**
      * 

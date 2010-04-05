@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -80,7 +81,7 @@ public interface DatabaseEngine extends CMLibrary
 	public void DBReCreate(Room room, String oldID);
 	public void DBDeleteRoom(Room room);
 	public void DBReadPlayer(MOB mob);
-	public void DBClanFill(String clan, Vector members, Vector roles, Vector lastDates);
+	public Vector<MemberRecord> DBClanMembers(String clan);
 	public void DBUpdateClanMembership(String name, String clan, int role);
 	public void DBReadAllClans();
 	public void DBUpdateClan(Clan C);

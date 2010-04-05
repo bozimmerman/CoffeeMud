@@ -111,22 +111,28 @@ public class Spell_HeatMetal extends Spell
 			return;
 		}
 
-		if(canBeUninvoked())
+		
 		if(affected instanceof MOB)
 		{
-			for(int i=0;i<affectedItems.size();i++)
+			Vector affectedItems=this.affectedItems;
+			if(canBeUninvoked())
 			{
-				Item I=(Item)affectedItems.elementAt(i);
-				Ability A=I.fetchEffect(this.ID());
-				while(A!=null)
+				super.unInvoke();
+				for(int i=0;i<affectedItems.size();i++)
 				{
-					I.delEffect(A);
-					A=I.fetchEffect(this.ID());
+					Item I=(Item)affectedItems.elementAt(i);
+					Ability A=I.fetchEffect(this.ID());
+					while(A!=null)
+					{
+						I.delEffect(A);
+						A=I.fetchEffect(this.ID());
+					}
+	
 				}
-
 			}
 		}
-		super.unInvoke();
+		else
+			super.unInvoke();
 	}
 
 

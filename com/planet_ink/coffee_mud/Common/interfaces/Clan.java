@@ -368,7 +368,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, CMModifiable
 	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area
 	 * @return a vector of area objects
 	 */
-	public Vector getControlledAreas();
+	public Vector<Area> getControlledAreas();
 
 	/**
 	 * Sets the tax rate for this clan.
@@ -384,24 +384,22 @@ public interface Clan extends Cloneable, Tickable, CMCommon, CMModifiable
 	public double getTaxes();
 	/**
 	 * Returns the set of members, where
-	 * each row represents a member, and the columns are
-	 * name, role, last login date
+	 * each row represents a MemberRecord
 	 * @see Clan#getMemberList(int)
-	 * @see com.planet_ink.coffee_mud.core.DVector
+	 * @see Clan.MemberRecord
 	 * @return the membership
 	 */
-	public DVector getMemberList();
+	public Vector<MemberRecord> getMemberList();
 	/**
 	 * Returns the set of members, where
-	 * each row represents a member, and the columns are
-	 * name, role, last login date.  Will filter by the
-	 * given Clan.POS_* constant.
+	 * each row represents a MemberRecord.
+	 * Will filter by the given Clan.POS_* constant.
 	 * @see Clan
-	 * @see com.planet_ink.coffee_mud.core.DVector
+	 * @see Clan.MemberRecord
 	 * @param PosFilter
 	 * @return the membership
 	 */
-	public DVector getMemberList(int PosFilter);
+	public Vector<MemberRecord> getMemberList(int PosFilter);
 
 	/**
 	 * Returns the highest ranking member of this clan.
@@ -525,6 +523,22 @@ public interface Clan extends Cloneable, Tickable, CMCommon, CMModifiable
          */
         public DVector votes=null;
     }
+    
+    /**
+     * A internal membership record, as returned by the database 
+     * @author Bo Zimmerman
+     */
+    public class MemberRecord
+    {
+    	public String name;
+    	public int role;
+    	public long timestamp;
+    	public MemberRecord(String name, int role, long timestamp) {
+    		this.name=name; this.role=role; this.timestamp=timestamp;
+    	}
+    	public String toString() { return name;}
+    }
+    
     /** Vote just started constant for the Clan.ClanVote.voteStatus member. @see Clan.ClanVote#voteStatus */
 	public final static int VSTAT_STARTED=0;
     /** Vote has failed constant for the Clan.ClanVote.voteStatus member. @see Clan.ClanVote#voteStatus */

@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -95,13 +96,16 @@ public class Spell_Torture extends Spell
 				    roll=CMLib.dice().roll(1,10,0);
 				else
 				{
-				    DVector V=C.getMemberList();
-				    String name=(String)V.elementAt(CMLib.dice().roll(1,V.size(),-1),1);
-				    if(name.equals(mob.Name()))
-				        roll=CMLib.dice().roll(1,10,0);
-				    else
-						mob.location().show(mob,null,CMMsg.MSG_SPEAK,
-						"<S-NAME> mutters that "+name+" is a part of his clan, called "+mob.getClanID()+".");
+					List<MemberRecord> V=C.getMemberList();
+					if(V.size()>0)
+					{
+					    String name=V.get(CMLib.dice().roll(1,V.size(),-1)).name;
+					    if(name.equals(mob.Name()))
+					        roll=CMLib.dice().roll(1,10,0);
+					    else
+							mob.location().show(mob,null,CMMsg.MSG_SPEAK,
+							"<S-NAME> mutters that "+name+" is a part of his clan, called "+mob.getClanID()+".");
+					}
 				}
 			}
 	        break;

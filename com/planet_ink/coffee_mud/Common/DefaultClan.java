@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -437,11 +438,10 @@ public class DefaultClan implements Clan
 
     public void destroyClan()
     {
-        DVector members=getMemberList();
-        for(int m=0;m<members.size();m++)
+    	List<MemberRecord> members=getMemberList();
+        for(MemberRecord member : members)
         {
-            String member=(String)members.elementAt(m,1);
-            MOB M=CMLib.players().getLoadPlayer(member);
+            MOB M=CMLib.players().getLoadPlayer(member.name);
             if(M!=null)
             {
                 M.setClanID("");
@@ -586,20 +586,16 @@ public class DefaultClan implements Clan
     private String crewList(int posType)
     {
         StringBuffer list=new StringBuffer("");
-        DVector Members = getMemberList(posType);
-        if(Members.size()>1)
+        List<MemberRecord> members = getMemberList(posType);
+        if(members.size()>1)
         {
-            for(int j=0;j<(Members.size() - 1);j++)
-            {
-                list.append(Members.elementAt(j,1)+", ");
-            }
-            list.append("and "+Members.elementAt(Members.size()-1,1));
+            for(int j=0;j<(members.size() - 1);j++)
+                list.append(members.get(j).name+", ");
+            list.append("and "+members.get(members.size()-1).name);
         }
         else
-        if(Members.size()>0)
-        {
-            list.append((String)Members.elementAt(0,1));
-        }
+        if(members.size()>0)
+            list.append(members.get(0).name);
         return list.toString();
     }
 
@@ -676,30 +672,18 @@ public class DefaultClan implements Clan
         return -1;
     }
 
-    public DVector getRealMemberList(int PosFilter)
+    public List<MemberRecord> getRealMemberList(int PosFilter)
     {
-        DVector members=getMemberList(PosFilter);
+    	List<MemberRecord> members=getMemberList(PosFilter);
         if(members==null) return null;
-        for(int i=members.size()-1;i>=0;i--)
-        {
-            String member=(String)members.elementAt(i,1);
-            if(!CMLib.players().playerExists(member))
-	            members.removeElementAt(i);
-        }
+        List<MemberRecord> realMembers=new Vector<MemberRecord>();
+        for(MemberRecord member : members)
+            if(CMLib.players().playerExists(member.name))
+            	realMembers.add(member);
         return members;
     }
 
-    public int getSize()
-    {
-        Vector members=new Vector();
-        return getSize(members);
-    }
-
-    public int getSize(Vector members)
-    {
-        CMLib.database().DBClanFill(clanID(), members, new Vector(), new Vector());
-        return members.size();
-    }
+    public int getSize() { return getMemberList(-1).size();}
 
     public String name() {return clanName;}
     public String getName() {return clanName;}
@@ -716,7 +700,8 @@ public class DefaultClan implements Clan
     public String getClanClass(){return clanClass;}
     public void setClanClass(String newClass){clanClass=newClass;}
 
-    public String getPolitics() {
+    public String getPolitics() 
+    {
         StringBuffer str=new StringBuffer("");
         str.append("<POLITICS>");
         str.append(CMLib.xml().convertXMLtoTag("GOVERNMENT",""+getGovernment()));
@@ -743,6 +728,7 @@ public class DefaultClan implements Clan
         str.append("</POLITICS>");
         return str.toString();
     }
+    
     public void setPolitics(String politics)
     {
         relations.clear();
@@ -790,24 +776,19 @@ public class DefaultClan implements Clan
     public String getDonation() { return clanDonationRoom; }
     public void setDonation(String newDonation) { clanDonationRoom=newDonation; }
 
-    public DVector getMemberList()
+    public Vector<MemberRecord> getMemberList()
     {
         return getMemberList(-1);
     }
 
-    public DVector getMemberList(int PosFilter)
+    public Vector<MemberRecord> getMemberList(int PosFilter)
     {
-        DVector filteredMembers=new DVector(3);
-        Vector members=new Vector();
-        Vector roles=new Vector();
-        Vector lastDates=new Vector();
-        CMLib.database().DBClanFill(clanID(), members, roles, lastDates);
-        for(int s=0;s<members.size();s++)
-        {
-            int posFilter=((Integer)roles.elementAt(s)).intValue();
-            if((posFilter==PosFilter)||(PosFilter<0))
-                filteredMembers.addElement(members.elementAt(s),roles.elementAt(s),lastDates.elementAt(s));
-        }
+    	Vector<MemberRecord> members;
+        members = CMLib.database().DBClanMembers(clanID());
+        Vector<MemberRecord> filteredMembers=new Vector<MemberRecord>();
+        for(MemberRecord member : members)
+            if((member.role==PosFilter)||(PosFilter<0))
+                filteredMembers.add(member);
         return filteredMembers;
     }
 
@@ -815,16 +796,16 @@ public class DefaultClan implements Clan
     {
         int realmembers=0;
         int bosses=0;
-        DVector members=getMemberList();
-        for(int m=0;m<members.size();m++)
+        List<MemberRecord> members=getMemberList();
+        for(MemberRecord member : members)
         {
-            if(((Integer)members.elementAt(m,2)).intValue()==POS_BOSS)
+            if(member.role==POS_BOSS)
             {
                 realmembers++;
                 bosses++;
             }
             else
-            if(((Integer)members.elementAt(m,2)).intValue()!=POS_APPLICANT)
+            if(member.role!=POS_APPLICANT)
                 realmembers++;
         }
         int numVotes=bosses;
@@ -854,16 +835,16 @@ public class DefaultClan implements Clan
         if(tickID!=Tickable.TICKID_CLAN)
             return true;
         try{
-            DVector members=getMemberList();
+        	List<MemberRecord> members=getMemberList();
             int activeMembers=0;
             long deathMilis=CMProps.getIntVar(CMProps.SYSTEMI_DAYSCLANDEATH)*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*Tickable.TIME_TICK;
             int[] numTypes=new int[POSORDER.length];
-            for(int j=0;j<members.size();j++)
+            for(MemberRecord member : members)
             {
-                long lastLogin=((Long)members.elementAt(j,3)).longValue();
+                long lastLogin=member.timestamp;
                 if(((System.currentTimeMillis()-lastLogin)<deathMilis)||(deathMilis==0))
                     activeMembers++;
-                numTypes[CMLib.clans().getRoleOrder(((Integer)members.elementAt(j,2)).intValue())]++;
+                numTypes[CMLib.clans().getRoleOrder(member.role)]++;
             }
 
             // handle any necessary promotions
@@ -873,18 +854,18 @@ public class DefaultClan implements Clan
                 MOB highestClericM=null;
                 MOB currentHighCleric = getResponsibleMember();
                 int max=topRanks[getGovernment()];
-                for(int j=0;j<members.size();j++)
+                for(MemberRecord member : members)
                 {
-                    long lastLogin=((Long)members.elementAt(j,3)).longValue();
+                    long lastLogin=member.timestamp;
                     if(((System.currentTimeMillis()-lastLogin)<deathMilis)||(deathMilis==0))
                     {
-                        String s=(String)members.elementAt(j,1);
-                        MOB M2=CMLib.players().getLoadPlayer(s);
+                        String name = member.name;
+                        MOB M2=CMLib.players().getLoadPlayer(name);
                         if((M2==null)||(M2.getClanRole()==Clan.POS_APPLICANT)) continue;
                         if(M2.charStats().getCurrentClass().baseClass().equals("Cleric")
                             ||CMSecurity.isASysOp(M2))
                         {
-                            if((CMLib.clans().getRoleOrder(((Integer)members.elementAt(j,2)).intValue())==max)
+                            if((CMLib.clans().getRoleOrder(member.role)==max)
                             &&(M2.envStats().level()>=highestCleric))
                             {
                                 highestCleric=M2.envStats().level();
@@ -917,12 +898,8 @@ public class DefaultClan implements Clan
                     Log.sysOut("Clans","Clan '"+getName()+" deleted for lack of clerics.");
                     destroyClan();
                     StringBuffer buf=new StringBuffer("");
-                    for(int j=0;j<members.size();j++)
-                    {
-                        String s=(String)members.elementAt(j,1);
-                        long lastLogin=((Long)members.elementAt(j,3)).longValue();
-                        buf.append(s+" on "+CMLib.time().date2String(lastLogin)+"  ");
-                    }
+                    for(MemberRecord member : members)
+                        buf.append(member.name+" on "+CMLib.time().date2String(member.timestamp)+"  ");
                     Log.sysOut("Clans","Clan '"+getName()+" had the following membership: "+buf.toString());
                     return true;
                 }
@@ -934,13 +911,13 @@ public class DefaultClan implements Clan
                     highestClericM.setClanRole(max);
                     CMLib.database().DBUpdateClanMembership(highestClericM.Name(), name(), max);
                 }
-                for(int j=0;j<members.size();j++)
+                for(MemberRecord member : members)
                 {
-                    long lastLogin=((Long)members.elementAt(j,3)).longValue();
+                    long lastLogin=member.timestamp;
                     if(((System.currentTimeMillis()-lastLogin)<deathMilis)||(deathMilis==0))
                     {
-                        String s=(String)members.elementAt(j,1);
-                        MOB M2=CMLib.players().getLoadPlayer(s);
+                        String name = member.name;
+                        MOB M2=CMLib.players().getLoadPlayer(name);
                         if((M2==null)||(M2.getClanRole()==Clan.POS_APPLICANT)) continue;
                         if(!M2.getWorshipCharID().equals(highestClericM.getWorshipCharID()))
                         {
@@ -961,19 +938,19 @@ public class DefaultClan implements Clan
                 int maxRank=topRanks[getGovernment()];
                 if(highest<CMLib.clans().getRoleOrder(maxRank))
                 {
-                    for(int i=0;i<members.size();i++)
+                    for(MemberRecord member : members)
                     {
-                        if(CMLib.clans().getRoleOrder(((Integer)members.elementAt(i,2)).intValue())==highest)
+                        if(CMLib.clans().getRoleOrder(member.role)==highest)
                         {
-                            String s=(String)members.elementAt(i,1);
-                            MOB M2=CMLib.players().getLoadPlayer(s);
+                            String name = member.name;
+                            MOB M2=CMLib.players().getLoadPlayer(name);
                             if(M2!=null)
                             {
                                 int newRank = getTopRank(M2);
-                                clanAnnounce(s+" is now a "+CMLib.clans().getRoleName(getGovernment(),newRank,true,false)+" of the "+typeName()+" "+name()+".");
-                                Log.sysOut("Clans",s+" of clan "+name()+" was autopromoted to "+CMLib.clans().getRoleName(getGovernment(),newRank,true,false)+".");
+                                clanAnnounce(name+" is now a "+CMLib.clans().getRoleName(getGovernment(),newRank,true,false)+" of the "+typeName()+" "+name()+".");
+                                Log.sysOut("Clans",name+" of clan "+name()+" was autopromoted to "+CMLib.clans().getRoleName(getGovernment(),newRank,true,false)+".");
                                 M2.setClanRole(newRank);
-                                CMLib.database().DBUpdateClanMembership(s, name(), newRank);
+                                CMLib.database().DBUpdateClanMembership(name, name(), newRank);
                             }
                             break;
                         }
@@ -989,19 +966,19 @@ public class DefaultClan implements Clan
                 int maxRank=topRanks[getGovernment()];
                 if(highest<CMLib.clans().getRoleOrder(maxRank)-1)
                 {
-                    for(int i=0;i<members.size();i++)
+                    for(MemberRecord member : members)
                     {
-                        if(CMLib.clans().getRoleOrder(((Integer)members.elementAt(i,2)).intValue())==highest)
+                        if(CMLib.clans().getRoleOrder(member.role)==highest)
                         {
-                            String s=(String)members.elementAt(i,1);
-                            MOB M2=CMLib.players().getLoadPlayer(s);
+                            String name = member.name;
+                            MOB M2=CMLib.players().getLoadPlayer(name);
                             if(M2!=null)
                             {
                                 int newRank = getTopRank(M2);
-                                clanAnnounce(s+" is now a "+CMLib.clans().getRoleName(getGovernment(),newRank,true,false)+" of the "+typeName()+" "+name()+".");
-                                Log.sysOut("Clans",s+" of clan "+name()+" was autopromoted to "+CMLib.clans().getRoleName(getGovernment(),newRank,true,false)+".");
+                                clanAnnounce(name+" is now a "+CMLib.clans().getRoleName(getGovernment(),newRank,true,false)+" of the "+typeName()+" "+name()+".");
+                                Log.sysOut("Clans",name+" of clan "+name()+" was autopromoted to "+CMLib.clans().getRoleName(getGovernment(),newRank,true,false)+".");
                                 M2.setClanRole(newRank);
-                                CMLib.database().DBUpdateClanMembership(s, name(), newRank);
+                                CMLib.database().DBUpdateClanMembership(name, name(), newRank);
                             }
                             break;
                         }
@@ -1018,24 +995,20 @@ public class DefaultClan implements Clan
                     Log.sysOut("Clans","Clan '"+getName()+" deleted with only "+activeMembers+" having logged on lately.");
                     destroyClan();
                     StringBuffer buf=new StringBuffer("");
-                    for(int j=0;j<members.size();j++)
-                    {
-                        String s=(String)members.elementAt(j,1);
-                        long lastLogin=((Long)members.elementAt(j,3)).longValue();
-                        buf.append(s+" on "+CMLib.time().date2String(lastLogin)+"  ");
-                    }
+                    for(MemberRecord member : members)
+                        buf.append(member.name+" on "+CMLib.time().date2String(member.timestamp)+"  ");
                     Log.sysOut("Clans","Clan '"+getName()+" had the following membership: "+buf.toString());
                     return true;
                 }
                 setStatus(CLANSTATUS_FADING);
-                for(int j=0;j<members.size();j++)
+                for(MemberRecord member : members)
                 {
-                    String s=(String)members.elementAt(j,1);
-                    int role=((Integer)members.elementAt(j,2)).intValue();
+                    String name = member.name;
+                    int role=member.role;
                     //long lastLogin=((Long)members.elementAt(j,3)).longValue();
 					if(CMLib.clans().getRoleOrder(role)==Clan.POSORDER.length-1)
 					{
-						MOB player=CMLib.players().getLoadPlayer(s);
+						MOB player=CMLib.players().getLoadPlayer(name);
 						if(player!=null)
 							CMLib.smtp().emailIfPossible("AutoPurge",player,"AutoPurge: "+name(), 
 									""+typeName()+" "+name()+" is in danger of being deleted if at least "+(minimumMembers-activeMembers)
@@ -1342,15 +1315,17 @@ public class DefaultClan implements Clan
     public MOB getResponsibleMember()
     {
         MOB mob=null;
-        DVector DV=getMemberList();
+        List<MemberRecord> members=getMemberList();
         int newPos=-1;
-        for(int i=0;i<DV.size();i++)
-            if(((Integer)DV.elementAt(i,2)).intValue()>newPos)
+        String memberName = null;
+        for(MemberRecord member : members)
+            if(member.role>newPos)
             {
-                mob=CMLib.players().getLoadPlayer((String)DV.elementAt(i,1));
-                if(mob!=null)
-                    break;
+            	newPos = member.role;
+            	memberName = member.name;
             }
+        if(memberName != null)
+        	mob=CMLib.players().getLoadPlayer(memberName);
         return mob;
     }
 
@@ -1383,11 +1358,12 @@ public class DefaultClan implements Clan
                  list.append("\""+((Environmental)areas.elementAt(i)).name()+"\" ");
              return list.toString().trim();
         }
-        case 15: {
-                 DVector members=getMemberList();
+        case 15: 
+        {
+        	List<MemberRecord> members=getMemberList();
                  StringBuffer list=new StringBuffer("");
-                 for(int i=0;i<members.size();i++)
-                     list.append("\""+((String)members.elementAt(i,1))+"\" ");
+                 for(MemberRecord member : members)
+                     list.append("\""+member.name+"\" ");
                  return list.toString().trim();
         }
         case 16: {

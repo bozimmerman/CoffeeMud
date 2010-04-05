@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -97,8 +98,8 @@ public class DBInterface implements DatabaseEngine
 	public void DBReadAllClans()
 	{ ClanLoader.DBRead();}
 	
-	public void DBClanFill(String clan, Vector members, Vector roles, Vector lastDates)
-	{ MOBloader.DBClanFill(clan,members,roles,lastDates);}
+	public Vector<MemberRecord> DBClanMembers(String clan)
+	{ return MOBloader.DBClanMembers(clan);}
 	
 	public void DBUpdateClanMembership(String name, String clan, int role)
 	{ MOBloader.DBUpdateClan(name,clan,role);}

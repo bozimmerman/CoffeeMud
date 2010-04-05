@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -14,6 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.util.List;
 
 /* 
    Copyright 2000-2010 Bo Zimmerman
@@ -61,16 +63,16 @@ public class ClanReject extends StdCommand
 				}
 				if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANREJECT,false))
 				{
-					DVector apps=C.getMemberList(Clan.POS_APPLICANT);
+					List<MemberRecord> apps=C.getMemberList(Clan.POS_APPLICANT);
 					if(apps.size()<1)
 					{
 						mob.tell("There are no applicants to your "+C.typeName()+".");
 						return false;
 					}
 					qual=CMStrings.capitalizeAndLower(qual);
-					for(int q=0;q<apps.size();q++)
+					for(MemberRecord member : apps)
 					{
-						if(((String)apps.elementAt(q,1)).equalsIgnoreCase(qual))
+						if(member.name.equalsIgnoreCase(qual))
 						{
 							found=true;
 						}

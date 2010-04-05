@@ -18,13 +18,16 @@
 			@else@
 				document.FORUM.action='forummsg.cmvp';
 				@if?CheckReqParm?JOURNALPARENT=@
-					document.FORUM.JOURNALMESSAGE.value=document.FORUM.PARENT.value;
+					if(document.FORUM.PARENT!=null)
+						document.FORUM.JOURNALMESSAGE.value=document.FORUM.PARENT.value;
 				@else@
-					document.FORUM.JOURNALMESSAGE.value=document.FORUM.JOURNALPARENT.value;
+					if(document.FORUM.JOURNALPARENT!=null)
+						document.FORUM.JOURNALMESSAGE.value=document.FORUM.JOURNALPARENT.value;
 				@endif@
 			@endif@
 			document.FORUM.FUNCTION.value='';
-			document.FORUM.JOURNALPARENT.value='';
+			if(document.FORUM.JOURNALPARENT!=null)
+				document.FORUM.JOURNALPARENT.value='';
 			document.FORUM.submit();
 		}
 		function Submit()
@@ -160,13 +163,13 @@
 		</script>
 	</TD>
 </TR>
-<TR BGCOLOR=LIGHTGREY><TD COLSPAN=2 ALIGN=CENTER>
+<TR BGCOLOR=LIGHTGREY><TD>&nbsp;</TD><TD ALIGN=LEFT>
 	@if?ForumInfo?CANADMIN@
 		<FONT COLOR=BLACK SIZE=-1>
-		@if?CheckReqParm?JOURNALPARENT=@ 
-		<INPUT TYPE=CHECKBOX NAME=ISSTUCKY @if?JournalInfo?ISSTUCKY@checked@endif@>Sticky
-		&nbsp;&nbsp;&nbsp;&nbsp;
-		@endif@
+		@if?CheckReqParm?JOURNALPARENT=@ @if?CheckReqParm?!FUNCTION=REPLY@ 
+			<INPUT TYPE=CHECKBOX NAME=ISSTUCKY @if?JournalInfo?ISSTUCKY@checked@endif@>Sticky
+			&nbsp;&nbsp;&nbsp;&nbsp;
+		@endif@ @endif@
 		<INPUT TYPE=CHECKBOX NAME=ISPROTECTED @if?JournalInfo?ISPROTECTED@checked@endif@>Protected
 		</FONT>
 	@endif@

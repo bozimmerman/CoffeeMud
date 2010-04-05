@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -72,11 +73,11 @@ public class ClanData extends StdWebMacro
             }
             else
             {
-                DVector members=C.getMemberList();
-                for(int d=0;d<members.size();d++)
+            	List<MemberRecord> members=C.getMemberList();
+				for(MemberRecord member : members)
                 {
-                    themembers.addElement(((String)members.elementAt(d,1)));
-                    theroles.addElement(((Integer)members.elementAt(d,2)));
+                    themembers.addElement(member.name);
+                    theroles.addElement(Integer.valueOf(member.role));
                 }
             }
             str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
@@ -343,16 +344,16 @@ public class ClanData extends StdWebMacro
                     str.append(""+C.getMemberList().size()+", ");
 				if(parms.containsKey("MEMBERNEXT"))
 				{
-					String member=httpReq.getRequestParameter("CLANMEMBER");
+					String cmember=httpReq.getRequestParameter("CLANMEMBER");
 					String lastID="";
 					String posFilter=httpReq.getRequestParameter("CLANPOSFILTER");
                     if(posFilter==null) posFilter=(String)parms.get("CLANPOSFILTER");
 					if(posFilter==null) posFilter="";
-					DVector members=C.getMemberList((posFilter.length()>0)?CMath.s_int(posFilter):-1);
-					for(int x=0;x<members.size();x++)
+					List<MemberRecord> members=C.getMemberList((posFilter.length()>0)?CMath.s_int(posFilter):-1);
+					for(MemberRecord member : members)
 					{
-						String name=(String)members.elementAt(x,1);
-						if((member==null)||((member.length()>0)&&(member.equals(lastID))&&(!name.equals(lastID))))
+						String name=member.name;
+						if((cmember==null)||((cmember.length()>0)&&(cmember.equals(lastID))&&(!name.equals(lastID))))
 						{
 							httpReq.addRequestParameters("CLANMEMBER",name);
 							return "";
@@ -371,17 +372,17 @@ public class ClanData extends StdWebMacro
 				}
                 if(parms.containsKey("MEMBERPOS"))
                 {
-                    String member=httpReq.getRequestParameter("CLANMEMBER");
-                    if(member!=null)
+                    String cmember=httpReq.getRequestParameter("CLANMEMBER");
+                    if(cmember!=null)
                     {
-                        DVector members=C.getMemberList();
-                        for(int x=0;x<members.size();x++)
+                    	List<MemberRecord> members=C.getMemberList();
+    					for(MemberRecord member : members)
                         {
-                            String name=(String)members.elementAt(x,1);
-                            if(name.equals(member))
+                            String name=member.name;
+                            if(name.equals(cmember))
                             {
-                                Integer I=(Integer)members.elementAt(x,2);
-                                str.append(CMStrings.capitalizeAndLower(CMLib.clans().getRoleName(C.getGovernment(),I.intValue(),true,false))+", ");
+                                int i = member.role;
+                                str.append(CMStrings.capitalizeAndLower(CMLib.clans().getRoleName(C.getGovernment(),i,true,false))+", ");
                                 break;
                             }
                         }

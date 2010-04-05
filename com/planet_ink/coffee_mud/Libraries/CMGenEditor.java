@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -3557,13 +3558,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         String behave="NO";
-        DVector members=E.getMemberList();
-        DVector membersCopy=members.copyOf();
+        Vector<MemberRecord> members=E.getMemberList();
+        List<MemberRecord> membersCopy=(List<MemberRecord>)members.clone();
         while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
         {
             String memberStr="";
-            for(int m=0;m<members.size();m++)
-                memberStr+=((String)members.elementAt(m,1))+" ("+CMLib.clans().getRoleName(E.getGovernment(),((Integer)members.elementAt(m,2)).intValue(),true,false)+"), ";
+            for(Clan.MemberRecord member : members)
+                memberStr+=member.name+" ("+CMLib.clans().getRoleName(E.getGovernment(),member.role,true,false)+"), ";
             if(memberStr.length()>0)
                 memberStr=memberStr.substring(0,memberStr.length()-2);
             mob.tell(showNumber+". Clan Members : '"+memberStr+"'.");
@@ -3573,11 +3574,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             {
                 int chosenOne=-1;
                 for(int m=0;m<members.size();m++)
-                    if(behave.equalsIgnoreCase((String)members.elementAt(m,1)))
+                    if(behave.equalsIgnoreCase(members.elementAt(m).name))
                         chosenOne=m;
                 if(chosenOne>=0)
                 {
-                    mob.tell((String)members.elementAt(chosenOne,1)+" removed.");
+                    mob.tell(members.elementAt(chosenOne).name+" removed.");
                     members.removeElementAt(chosenOne);
                 }
                 else
@@ -3587,23 +3588,23 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                     {
                         int oldNum=-1;
                         for(int m=0;m<membersCopy.size();m++)
-                            if(behave.equalsIgnoreCase((String)membersCopy.elementAt(m,1)))
+                            if(behave.equalsIgnoreCase(membersCopy.get(m).name))
                             {
                                 oldNum=m;
-                                members.addElement(membersCopy.elementAt(m,1),membersCopy.elementAt(m,2),membersCopy.elementAt(m,3));
+                                members.addElement(membersCopy.get(m));
                                 break;
                             }
                         int index=oldNum;
                         if(index<0)
                         {
                             index=members.size();
-                            members.addElement(M.Name(),Integer.valueOf(Clan.POS_MEMBER),Long.valueOf(M.playerStats().lastDateTime()));
+                            members.addElement(new MemberRecord(M.name(),Clan.POS_MEMBER,M.playerStats().lastDateTime()));
                         }
 
                         int newRole=-1;
                         while((mob.session()!=null)&&(!mob.session().killFlag())&&(newRole<0))
                         {
-                            String newRoleStr=mob.session().prompt("Enter this members role (?) '"+CMLib.clans().getRoleName(E.getGovernment(),((Integer)members.elementAt(index,2)).intValue(),true,false)+"': ","");
+                            String newRoleStr=mob.session().prompt("Enter this members role (?) '"+CMLib.clans().getRoleName(E.getGovernment(),members.get(index).role,true,false)+"': ","");
                             StringBuffer roles=new StringBuffer();
                             for(int i=0;i<Clan.ROL_DESCS[E.getGovernment()].length;i++)
                             {
@@ -3621,7 +3622,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                             mob.tell(M.Name()+" added.");
                         else
                             mob.tell(M.Name()+" re-added.");
-                        members.setElementAt(index,2,Integer.valueOf(newRole));
+                        members.elementAt(index).role=newRole;
                     }
                     else
                     {
@@ -3631,7 +3632,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 // first add missing ones
                 for(int m=0;m<members.size();m++)
                 {
-                    String newName=(String)members.elementAt(m,1);
+                    String newName=members.get(m).name;
                     if(!membersCopy.contains(newName))
                     {
                         MOB M=CMLib.players().getLoadPlayer(newName);
@@ -3645,10 +3646,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                                 M.setClanRole(Clan.POS_APPLICANT);
                                 oldC.updateClanPrivileges(M);
                             }
-                            Integer role=(Integer)members.elementAt(m,2);
-                            CMLib.database().DBUpdateClanMembership(M.Name(), E.clanID(), role.intValue());
+                            int role=members.get(m).role;
+                            CMLib.database().DBUpdateClanMembership(M.Name(), E.clanID(), role);
                             M.setClanID(E.clanID());
-                            M.setClanRole(role.intValue());
+                            M.setClanRole(role);
                             E.updateClanPrivileges(M);
                         }
                     }
@@ -3656,11 +3657,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 // now adjust changed roles
                 for(int m=0;m<members.size();m++)
                 {
-                    String newName=(String)members.elementAt(m,1);
+                    String newName=members.get(m).name;
                     if(membersCopy.contains(newName))
                     {
                         MOB M=CMLib.players().getLoadPlayer(newName);
-                        int newRole=((Integer)members.elementAt(m,2)).intValue();
+                        int newRole=members.get(m).role;
                         if((M!=null)&&(newRole!=M.getClanRole()))
                         {
                             CMLib.database().DBUpdateClanMembership(M.Name(), E.clanID(), newRole);
@@ -3672,7 +3673,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 // now remove old members
                 for(int m=0;m<membersCopy.size();m++)
                 {
-                    String newName=(String)membersCopy.elementAt(m,1);
+                    String newName=membersCopy.get(m).name;
                     if(!members.contains(newName))
                     {
                         MOB M=CMLib.players().getLoadPlayer(newName);

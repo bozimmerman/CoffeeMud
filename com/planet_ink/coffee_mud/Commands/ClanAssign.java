@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -14,6 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.util.List;
 
 /*
    Copyright 2000-2010 Bo Zimmerman
@@ -68,7 +70,7 @@ public class ClanAssign extends StdCommand
 				}
 				if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANASSIGN,false))
 				{
-					DVector members=C.getMemberList();
+					List<MemberRecord> members=C.getMemberList();
 					if(members.size()<1)
 					{
 						mob.tell("There are no members in your "+C.typeName()+"");
@@ -81,9 +83,9 @@ public class ClanAssign extends StdCommand
 						return false;
 					}
 					qual=CMStrings.capitalizeAndLower(qual);
-					for(int q=0;q<members.size();q++)
+					for(MemberRecord member : members)
 					{
-						if(((String)members.elementAt(q,1)).equalsIgnoreCase(qual))
+						if(member.name.equalsIgnoreCase(qual))
 						{
 							found=true;
 						}
@@ -106,16 +108,16 @@ public class ClanAssign extends StdCommand
 						    int oldPos=M.getClanRole();
 							int maxInNewPos=Clan.ROL_MAX[C.getGovernment()][CMLib.clans().getIntFromRole(newPos)];
 							Vector currentMembersInNewPosV=new Vector();
-							for(int i=0;i<members.size();i++)
-								if(((Integer)members.elementAt(i,2)).intValue()==newPos)
-									currentMembersInNewPosV.addElement(members.elementAt(i,1));
+							for(MemberRecord member : members)
+								if(member.role==newPos)
+									currentMembersInNewPosV.addElement(member.name);
 							if(CMLib.clans().getRoleOrder(oldPos)==Clan.POSORDER.length-1)
 							{ // If you WERE already the highest order.. you must be being demoted.
 								// so we check to see if there will be any other high officers left
 							    int numMembers=0;
-								for(int i=0;i<members.size();i++)
-								    if(!M.Name().equalsIgnoreCase((String)members.elementAt(i,1)))
-										if(((Integer)members.elementAt(i,2)).intValue()==oldPos)
+								for(MemberRecord member : members)
+								    if(!M.Name().equalsIgnoreCase(member.name))
+										if(member.role==oldPos)
 											numMembers++;
 								if(numMembers==0)
 								{

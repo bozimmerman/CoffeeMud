@@ -603,8 +603,9 @@ public class MOBloader
         DB.update("UPDATE CMCHAR SET  CMEMAL='"+pstats.getEmail()+"'  WHERE CMUSERID='"+mob.Name()+"'");
     }
 
-    public void DBClanFill(String clan, Vector members, Vector roles, Vector lastDates)
+    public Vector<Clan.MemberRecord> DBClanMembers(String clan)
     {
+    	Vector<Clan.MemberRecord> members = new Vector<Clan.MemberRecord>();
         DBConnection D=null;
         try
         {
@@ -615,19 +616,22 @@ public class MOBloader
                 String username=DB.getRes(R,"CMUSERID");
                 long lastDateTime=CMath.s_long(DBConnections.getRes(R,"CMDATE"));
                 int role=(int)DB.getLongRes(R,"CMCLRO");
-                members.addElement(username);
-                roles.addElement(Integer.valueOf(role));
+                Clan.MemberRecord member = new Clan.MemberRecord(username,role,lastDateTime);
+                members.addElement(member);
                 MOB M=CMLib.players().getPlayer(username);
                 if((M!=null)&&(M.lastTickedDateTime()>0))
-                    lastDates.addElement(Long.valueOf(M.lastTickedDateTime()));
-                else
-                    lastDates.addElement(Long.valueOf(lastDateTime));
+                    member.timestamp=M.lastTickedDateTime();
             }
-        }catch(Exception sqle)
+        }
+        catch(Exception sqle)
         {
             Log.errOut("MOB",sqle);
         }
-        if(D!=null) DB.DBDone(D);
+        finally
+        {
+	        if(D!=null) DB.DBDone(D);
+        }
+        return members;
     }
 
     public void DBUpdateClan(String name, String clan, int role)

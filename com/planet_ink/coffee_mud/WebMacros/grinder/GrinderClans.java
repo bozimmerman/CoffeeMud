@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -39,7 +40,7 @@ public class GrinderClans
     public static String membersList(Clan C, ExternalHTTPRequests httpReq)
     {
         Vector newMembersNames=new Vector();
-        DVector DV=C.getMemberList();
+        List<MemberRecord> DV=C.getMemberList();
         if(httpReq.isRequestParameter("MEMB1"))
         {
             int num=1;
@@ -68,11 +69,11 @@ public class GrinderClans
                 num++;
                 aff=httpReq.getRequestParameter("MEMB"+num);
             }
-            for(int d=0;d<DV.size();d++)
+			for(MemberRecord member : DV)
             {
-                if(!newMembersNames.contains((String)DV.elementAt(d,1)))
+                if(!newMembersNames.contains(member.name))
                 {
-                    MOB M=CMLib.players().getLoadPlayer((String)DV.elementAt(d,1));
+                    MOB M=CMLib.players().getLoadPlayer(member.name);
                     if(M!=null) C.delMember(M);
                 }
             }
