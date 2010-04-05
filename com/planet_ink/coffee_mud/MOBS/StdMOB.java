@@ -1031,9 +1031,10 @@ public class StdMOB implements MOB
 		makePeace();
 		setRiding(null);
         synchronized(commandQue){commandQue.clear();}
+        Ability A=null;
 		for(int a=numEffects()-1;a>=0;a--)
 		{
-			Ability A=fetchEffect(a);
+			A=fetchEffect(a);
 			if(A!=null) A.unInvoke();
 		}
 		setLocation(null);

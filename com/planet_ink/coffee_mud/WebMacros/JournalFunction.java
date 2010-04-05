@@ -72,6 +72,13 @@ public class JournalFunction extends StdWebMacro
 			String parent=httpReq.getRequestParameter("PARENT");
 			if((subject.length()==0)&&(parent==null))
 				return "Post not submitted -- No subject!";
+			if((parent!=null)&&(parent.length()>0)&&(subject.length()==0))
+			{
+				JournalsLibrary.JournalEntry parentEntry = null;
+				parentEntry=CMLib.database().DBReadJournalEntry(journalName, parent);
+				if(parentEntry!=null)
+					subject="RE: "+parentEntry.subj;
+			}
 			String date=httpReq.getRequestParameter("DATE");
 			String icon=httpReq.getRequestParameter("MSGICON");
 			Vector<String> flags=CMParms.parseCommas(httpReq.getRequestParameter("FLAGS"), true);
