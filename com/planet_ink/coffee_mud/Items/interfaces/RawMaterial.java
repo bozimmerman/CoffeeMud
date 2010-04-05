@@ -909,6 +909,7 @@ public interface RawMaterial extends Item
 		private String[] smells = new String[0];
 		private String[] descs = new String[0];
 		private String[] effects = new String[0];
+		private Ability[][] effectAs = new Ability[0][];
 		
 		/**
 		 * Returns an array of the numeric codes for the berry resources
@@ -1121,6 +1122,59 @@ public interface RawMaterial extends Item
 			return rscs;
 		}
 		
+		/**
+		 * Parses, if necessary, EFFECT strings into ability objects,
+		 * complete with parms, ready for copying.
+		 * @param code the material/resource code
+		 * @return an ability, if any.
+		 */
+		@SuppressWarnings("unchecked")
+		public static Ability[] EFFECTA(int code)
+		{
+			CODES c=c();
+			int cd=code&RESOURCE_MASK;
+			Ability[] As = c.effectAs[cd];
+			if(As!=null) return As;
+			synchronized(c.effectAs)
+			{
+				As = c.effectAs[cd];
+				if(As!=null) return As;
+		    	Vector effectsV=CMParms.parseSafeSemicolonList(c.effect(code),true);
+		    	if(effectsV.size()==0)
+		    		c.effectAs[cd]=new Ability[0];
+		    	else
+		    	{
+					String abilityID;
+					String parms;
+					Vector<Ability> listA=new Vector<Ability>();
+			    	for(Enumeration e=effectsV.elements();e.hasMoreElements();)
+			    	{
+			    		abilityID=(String)e.nextElement();
+			    		parms="";
+			    		if(abilityID.charAt(abilityID.length()-1)==')')
+			    		{
+			    			int x=abilityID.indexOf('(');
+			    			if(x>0)
+			    			{
+			    				parms=abilityID.substring(x+1,abilityID.length()-1);
+			    				abilityID=abilityID.substring(0,x);
+			    			}
+			    		}
+			    		Ability A=CMClass.getAbility(abilityID);
+			    		if(A==null)
+			    			Log.errOut("RawMaterial","Unknown ability "+abilityID+" in "+c.effect(code));
+			    		else
+			    		{
+			    			A.setMiscText(parms);
+			    			listA.add(A);
+			    		}
+			    	}
+			    	c.effectAs[cd]=listA.toArray(new Ability[0]);
+		    	}
+			}
+			return c.effectAs[cd];
+		}
+		
 		public synchronized void add(int material, String name, String smell, int value, int frequ, int hardness, int bouancy, boolean fish, boolean berry, String abilityID)
 		{
 			int newResourceCode=allCodes.length | material;
@@ -1144,6 +1198,8 @@ public interface RawMaterial extends Item
 			
 			effects=Arrays.copyOf(effects, effects.length+1);
 			effects[effects.length-1]=abilityID;
+			effectAs=Arrays.copyOf(effectAs, effectAs.length+1);
+			effectAs[effectAs.length-1]=null;
 			
 			data=Arrays.copyOf(data, data.length+1);
 			//full code, base value, frequency, hardness (1-10), bouancy
@@ -1186,6 +1242,7 @@ public interface RawMaterial extends Item
 			}
 			smells[resourceIndex]=smell;
 			effects[resourceIndex]=abilityID;
+			effectAs[resourceIndex]=null;
 			descs[resourceIndex]=name;
 			int[] newRow={resourceCode,value,frequ,hardness,bouancy};
 			data[resourceIndex]=newRow;

@@ -377,6 +377,17 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		return code;
 	}
 	
+    public void addEffectsToResource(RawMaterial I)
+    {
+    	if(I==null) return;
+    	Ability[] As=RawMaterial.CODES.EFFECTA(I.material());
+    	if((As==null)||(As.length==0)) 
+    		return;
+    	for(Ability A : As)
+    		if(I.fetchEffect(A.ID())==null)
+    			I.addNonUninvokableEffect((Ability)A.copyOf());
+    }
+    
 	public Environmental makeResource(int myResource, String localeCode, boolean noAnimals, String fullName)
 	{
 		if(myResource<0)

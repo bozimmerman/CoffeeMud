@@ -1167,6 +1167,7 @@ public class CMParms
 
     public static Vector parseSafeSemicolonList(String list, boolean ignoreNulls)
     {
+    	if(list==null) return new Vector();
         StringBuffer buf1=new StringBuffer(list);
         int lastDex=0;
         Vector V=new Vector();
