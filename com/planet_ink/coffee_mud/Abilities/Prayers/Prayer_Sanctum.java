@@ -155,10 +155,14 @@ public class Prayer_Sanctum extends Prayer
 				if((target instanceof Room)
 				&&(CMLib.law().doesOwnThisProperty(mob,((Room)target))))
 				{
-                    if((mob.getClanID().length()>0)&&(CMLib.law().doesOwnThisProperty(mob.getClanID(),((Room)target))))
-                        setMiscText(mob.getClanID());
-                    if((mob.getClanID().length()>0)
-                    &&(CMLib.law().doesOwnThisProperty(mob.getClanID(),((Room)target))))
+					String clanID=mob.getClanID();
+					if((mob.amFollowing()!=null)&&(clanID.length()==0))
+						clanID=mob.amFollowing().getClanID();
+                	if((clanID.length()>0)
+                    &&(CMLib.law().doesOwnThisProperty(clanID,((Room)target))))
+                        setMiscText(clanID);
+                	
+                    if((clanID.length()>0)&&(CMLib.law().doesOwnThisProperty(clanID,((Room)target))))
                         beneficialAffect(mob,target,asLevel,0);
                     else
                     {

@@ -131,14 +131,17 @@ public class Prayer_SanctifyRoom extends Prayer
 				if((target instanceof Room)
 				&&(CMLib.law().doesOwnThisProperty(mob,((Room)target))))
 				{
+					String clanID=mob.getClanID();
+					if((mob.amFollowing()!=null)&&(clanID.length()==0))
+						clanID=mob.amFollowing().getClanID();
+                	if((clanID.length()>0)
+                    &&(CMLib.law().doesOwnThisProperty(clanID,((Room)target))))
+                        setMiscText(clanID);
                     
-                    if((mob.getClanID().length()>0)&&(CMLib.law().doesOwnThisProperty(mob.getClanID(),((Room)target))))
-                        setMiscText(mob.getClanID());
-                    
-                    if((mob.getClanID().length()>0)
-                    &&(CMLib.law().doesOwnThisProperty(mob.getClanID(),((Room)target)))
-                    &&(CMLib.clans().getClan(mob.getClanID())!=null)
-                    &&(!CMLib.clans().getClan(mob.getClanID()).getMorgue().equals(CMLib.map().getExtendedRoomID((Room)target))))
+                    if((clanID.length()>0)
+                    &&(CMLib.law().doesOwnThisProperty(clanID,((Room)target)))
+                    &&(CMLib.clans().getClan(clanID)!=null)
+                    &&(!CMLib.clans().getClan(clanID).getMorgue().equals(CMLib.map().getExtendedRoomID((Room)target))))
                         beneficialAffect(mob,target,asLevel,0);
                     else
                     {

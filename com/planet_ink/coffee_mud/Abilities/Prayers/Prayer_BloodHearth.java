@@ -108,8 +108,12 @@ public class Prayer_BloodHearth extends Prayer
 				&&((CMLib.law().doesOwnThisProperty(mob,((Room)target)))
                     ||((mob.getClanID().length()>0)&&(CMLib.law().doesOwnThisProperty(mob.getClanID(),((Room)target))))))
 				{
-                    if((mob.getClanID().length()>0)&&(CMLib.law().doesOwnThisProperty(mob.getClanID(),((Room)target))))
-                        setMiscText(mob.getClanID());
+					String clanID=mob.getClanID();
+					if((mob.amFollowing()!=null)&&(clanID.length()==0))
+						clanID=mob.amFollowing().getClanID();
+                	if((clanID.length()>0)
+                    &&(CMLib.law().doesOwnThisProperty(clanID,((Room)target))))
+                        setMiscText(clanID);
 					target.addNonUninvokableEffect((Ability)this.copyOf());
 					CMLib.database().DBUpdateRoom((Room)target);
 				}
