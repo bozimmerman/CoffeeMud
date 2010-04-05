@@ -2252,5 +2252,7 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 23.New INI entry: EXVIEW, for selecting types of exit views for the players
 24.XP Bonuses for killing HL targets will only apply if player/mob close to highest level players level.
 25.New Forum system -- see FORUMJOURNALS entry in the coffeemud.ini file
-26.BIG fakedb upgrade: indexing, multi-keys, ORDER BY, LIKE, COUNT, complex WHERE cond. support, optomizing. Real DB is still better.
+26.BIG fakedb upgrade: indexing, multi-keys, ORDER BY, LIKE, COUNT, complex WHERE conditions, optomizations. ** Real DB is still better.
+27.Raw material resources can now have eat/drink effects
+28.New/Old Spell returns: Shrink Mouth (whatever happened to it, anyway?)
 
