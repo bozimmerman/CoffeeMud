@@ -10,6 +10,7 @@
 	<title>Forums</title>
 	<script language=JavaScript>
 	<!--
+		var abort=false;
 		function Cancel(which)
 		{
 			document.FORUM.action="forum.cmvp";
