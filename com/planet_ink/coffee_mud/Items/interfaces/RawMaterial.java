@@ -823,7 +823,8 @@ public interface RawMaterial extends Item
 							DEFAULT_RESOURCE_DATA[i][1], DEFAULT_RESOURCE_DATA[i][2], 
 							DEFAULT_RESOURCE_DATA[i][3], DEFAULT_RESOURCE_DATA[i][4], 
 							CMParms.contains(DEFAULT_FISHES, i|material),
-							CMParms.contains(DEFAULT_BERRIES, i|material));
+							CMParms.contains(DEFAULT_BERRIES, i|material),
+							"");
 				}
 				for(int i=0;i<addExtra.length + repExtra.length;i++)
 				{
@@ -832,8 +833,8 @@ public interface RawMaterial extends Item
 					String stat = array[0].toUpperCase().trim();
 					String p=array[1];
 					Vector V=CMParms.parseCommas(p, false);
-					if(V.size()!=7) {
-						Log.errOut("RawMaterial","Bad coffeemud.ini material row (requires 7 elements, separated by ;): "+p);
+					if(V.size()!=8) {
+						Log.errOut("RawMaterial","Bad coffeemud.ini material row (requires 8 elements, separated by ,): "+p);
 						continue;
 					}
 					String type="ADD";
@@ -860,6 +861,7 @@ public interface RawMaterial extends Item
 					int bouancy=CMath.s_int((String)V.elementAt(5));
 					boolean fish=((String)V.elementAt(6)).equalsIgnoreCase("fish");
 					boolean berry=((String)V.elementAt(6)).equalsIgnoreCase("berry");
+					String abilityID=(String)V.elementAt(7);
 					int material = CMParms.indexOfIgnoreCase(MATERIAL_DESCS,matStr);
 					if((material<0)||(material>=MATERIAL_CODES.length)) 
 					{
@@ -868,10 +870,10 @@ public interface RawMaterial extends Item
 					}
 					material=MATERIAL_CODES[material];
 					if(type.equalsIgnoreCase("ADD"))
-						add(material, stat, smell, value, frequ, hardness, bouancy, fish, berry);
+						add(material, stat, smell, value, frequ, hardness, bouancy, fish, berry, abilityID);
 					else
 					if(type.equalsIgnoreCase("REPLACE")&&(oldResourceCode>=0))
-						replace(oldResourceCode, material, stat, smell, value, frequ, hardness, bouancy, fish, berry);
+						replace(oldResourceCode, material, stat, smell, value, frequ, hardness, bouancy, fish, berry, abilityID);
 				}
 				String[] sortedNames = descs.clone();
 				Arrays.sort(sortedNames);
@@ -906,6 +908,7 @@ public interface RawMaterial extends Item
 		private int[][] data =  new int[0][0]; 
 		private String[] smells = new String[0];
 		private String[] descs = new String[0];
+		private String[] effects = new String[0];
 		
 		/**
 		 * Returns an array of the numeric codes for the berry resources
@@ -1048,6 +1051,23 @@ public interface RawMaterial extends Item
 		 */
 		public String smell(int code) { return smells[code&RESOURCE_MASK];}
 		/**
+		 * Returns the smells of the various resources
+		 * @return the smells of the various resources
+		 */
+		public static String[] EFFECTS() { return c().effects;}
+		/**
+		 * Returns the description of the code smell
+		 * @param code the code smell
+		 * @return the description of the code smell
+		 */
+		public static String EFFECT(int code) { return c().effects[code&RESOURCE_MASK];}
+		/**
+		 * Returns the description of the code smell
+		 * @param code the code smell
+		 * @return the description of the code smell
+		 */
+		public String effect(int code) { return effects[code&RESOURCE_MASK];}
+		/**
 		 * Returns the value of the resource
 		 * @return the value of the resource
 		 */
@@ -1101,7 +1121,7 @@ public interface RawMaterial extends Item
 			return rscs;
 		}
 		
-		public synchronized void add(int material, String name, String smell, int value, int frequ, int hardness, int bouancy, boolean fish, boolean berry)
+		public synchronized void add(int material, String name, String smell, int value, int frequ, int hardness, int bouancy, boolean fish, boolean berry, String abilityID)
 		{
 			int newResourceCode=allCodes.length | material;
 			allCodes=Arrays.copyOf(allCodes, allCodes.length+1);
@@ -1118,8 +1138,12 @@ public interface RawMaterial extends Item
 			}
 			descs=Arrays.copyOf(descs, descs.length+1);
 			descs[descs.length-1]=name;
+			
 			smells=Arrays.copyOf(smells, smells.length+1);
 			smells[smells.length-1]=name;
+			
+			effects=Arrays.copyOf(effects, effects.length+1);
+			effects[effects.length-1]=abilityID;
 			
 			data=Arrays.copyOf(data, data.length+1);
 			//full code, base value, frequency, hardness (1-10), bouancy
@@ -1127,7 +1151,7 @@ public interface RawMaterial extends Item
 			data[data.length-1]=newRow;
 		}
 		
-		public synchronized void replace(int resourceCode, int material, String name, String smell, int value, int frequ, int hardness, int bouancy, boolean fish, boolean berry)
+		public synchronized void replace(int resourceCode, int material, String name, String smell, int value, int frequ, int hardness, int bouancy, boolean fish, boolean berry, String abilityID)
 		{
 			int resourceIndex = resourceCode & RESOURCE_MASK;
 			if((berry)&&(!CMParms.contains(berries, resourceCode)))
@@ -1161,6 +1185,7 @@ public interface RawMaterial extends Item
 				fishes=newfishes;
 			}
 			smells[resourceIndex]=smell;
+			effects[resourceIndex]=abilityID;
 			descs[resourceIndex]=name;
 			int[] newRow={resourceCode,value,frequ,hardness,bouancy};
 			data[resourceIndex]=newRow;

@@ -437,7 +437,7 @@ public interface Wearable extends Environmental
 					String p=array[1];
 					Vector V=CMParms.parseCommas(p, false);
 					if(V.size()!=6){
-						Log.errOut("Wearable","Bad coffeemud.ini wear loc row (requires 6 elements, separated by ;): "+p);
+						Log.errOut("Wearable","Bad coffeemud.ini wear loc row (requires 6 elements, separated by ,): "+p);
 						continue;
 					}
 					String type="ADD";
