@@ -2255,4 +2255,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 26.BIG fakedb upgrade: indexing, multi-keys, ORDER BY, LIKE, COUNT, complex WHERE conditions, optomizations. ** Real DB is still better.
 27.Raw material resources can now have effects (for eat/drink/whatever)
 28.CL Editor for weapons/armor will now automatically rebalance damage/value/etc whenever level is changed.
-
+29.Web Catalog: can substitute a user-selectable column (damage, basegold, etc) and sort by it. 

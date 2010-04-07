@@ -47,7 +47,7 @@ public class CatalogMobNext extends StdWebMacro
 			           ,"CATALOG_MOB_CLASS"
 	};
     
-    public static String getCataStat(MOB M, CatalogLibrary.CataData data, int x)
+    public static String getCataStat(MOB M, CatalogLibrary.CataData data, int x, String optionalColumn)
     {
     	if((M==null)||(data==null)) 
     		return "";
@@ -60,6 +60,19 @@ public class CatalogMobNext extends StdWebMacro
     	case 4: return M.baseCharStats().genderName();
     	case 5: return ""+M.baseEnvStats().level();
     	case 6: return M.ID();
+    	default:
+    		if((optionalColumn!=null)&&(optionalColumn.length()>0))
+    		{
+    			if(M.isStat(optionalColumn))
+    				return M.getStat(optionalColumn);
+    			if(M.baseEnvStats().isStat(optionalColumn))
+    				return M.baseEnvStats().getStat(optionalColumn);
+    			if(M.baseCharStats().isStat(optionalColumn))
+    				return M.baseCharStats().getStat(optionalColumn);
+    			if(M.baseState().isStat(optionalColumn))
+    				return M.baseState().getStat(optionalColumn);
+    		}
+    		break;
     	}
     	return "";
     }
@@ -68,12 +81,20 @@ public class CatalogMobNext extends StdWebMacro
     {
         Hashtable parms=parseParms(parm);
         String last=httpReq.getRequestParameter("MOB");
+        String optCol=httpReq.getRequestParameter("OPTIONALCOLUMN");
+        final String optionalColumn;
+        if(optCol==null)
+        	optionalColumn="";
+        else
+        	optionalColumn=optCol.trim().toUpperCase();
         if(parms.containsKey("RESET"))
         {   
             if(last!=null)
                 httpReq.removeRequestParameter("MOB");
             for(int d=0;d<DATA.length;d++)
 	            httpReq.removeRequestParameter(DATA[d]);
+            if(optionalColumn.length()>0)
+	            httpReq.removeRequestParameter("CATALOG_MOB_"+optionalColumn);
             return "";
         }
         String lastID="";
@@ -85,7 +106,7 @@ public class CatalogMobNext extends StdWebMacro
         if((sortBy!=null)&&(sortBy.length()>0))
         {
         	final int sortIndex=CMParms.indexOf(DATA, "CATALOG_MOB_"+sortBy.toUpperCase());
-        	if(sortIndex>=0)
+        	if((sortIndex>=0)||(sortBy.equalsIgnoreCase(optionalColumn)))
         	{
             	String[] sortedNames=(String[])httpReq.getRequestObjects().get("CATALOG_MOB_"+sortBy.toUpperCase());
             	if(sortedNames!=null)
@@ -102,8 +123,8 @@ public class CatalogMobNext extends StdWebMacro
 						public int compare(Object o1, Object o2) {
 							Object[] O1=(Object[])o1;
 							Object[] O2=(Object[])o2;
-							String s1=getCataStat((MOB)O1[1],(CatalogLibrary.CataData)O1[2],sortIndex);
-							String s2=getCataStat((MOB)O2[1],(CatalogLibrary.CataData)O2[2],sortIndex);
+							String s1=getCataStat((MOB)O1[1],(CatalogLibrary.CataData)O1[2],sortIndex,optionalColumn);
+							String s2=getCataStat((MOB)O2[1],(CatalogLibrary.CataData)O2[2],sortIndex,optionalColumn);
 							if(CMath.isNumber(s1)&&CMath.isNumber(s2))
 								return Double.valueOf(CMath.s_double(s1)).compareTo(Double.valueOf(CMath.s_double(s2)));
 							else
@@ -126,7 +147,9 @@ public class CatalogMobNext extends StdWebMacro
                 if(M==null) continue;
                 httpReq.addRequestParameters("MOB",name);
                 for(int d=0;d<DATA.length;d++)
-                    httpReq.addRequestParameters(DATA[d],getCataStat(M,data,d));
+                    httpReq.addRequestParameters(DATA[d],getCataStat(M,data,d,null));
+                if(optionalColumn.length()>0)
+                    httpReq.addRequestParameters("CATALOG_MOB_"+optionalColumn,getCataStat(M,data,-1,optionalColumn));
                 return "";
             }
             lastID=name;
@@ -134,6 +157,8 @@ public class CatalogMobNext extends StdWebMacro
         httpReq.addRequestParameters("MOB","");
         for(int d=0;d<DATA.length;d++)
             httpReq.addRequestParameters(DATA[d],"");
+        if(optionalColumn.length()>0)
+	        httpReq.addRequestParameters("CATALOG_MOB_"+optionalColumn,"");
         if(parms.containsKey("EMPTYOK"))
             return "<!--EMPTY-->";
         return " @break@";
