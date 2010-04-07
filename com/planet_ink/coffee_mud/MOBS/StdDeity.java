@@ -1054,10 +1054,14 @@ public class StdDeity extends StdMOB implements Deity
     protected void undoService(Vector V)
     {
         MOB M=null;
+        Ability A=null;
         for(int m=0;m<V.size();m++)
         {
             M=(MOB)V.elementAt(m);
             if(M==null) continue;
+            A=M.fetchEffect("Skill_Track");
+            if(A!=null) A.unInvoke();
+            M.delEffect(A);
             CMLib.tracking().wanderAway(M,false,true);
         }
     }
