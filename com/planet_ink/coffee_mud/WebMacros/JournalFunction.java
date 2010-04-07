@@ -40,7 +40,6 @@ public class JournalFunction extends StdWebMacro
 		Hashtable parms=parseParms(parm);
 		String journalName=httpReq.getRequestParameter("JOURNAL");
 		if(journalName==null) return "Function not performed -- no Journal specified.";
-		String page=httpReq.getRequestParameter("JOURNALPAGE");
 		
 		JournalsLibrary.ForumJournal forum = CMLib.journals().getForumJournal(journalName);
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);
@@ -226,7 +225,7 @@ public class JournalFunction extends StdWebMacro
 					{
 						CMLib.database().DBWriteJournalReply(journalName,entry.key,from,"","",text);
 						CMLib.journals().clearJournalSummaryStats(journalName);
-						httpReq.getRequestObjects().remove("JOURNAL: "+journalName+": "+parent+": "+page);
+						JournalInfo.clearJournalCache(httpReq, journalName);
 						messages.append("Reply to #"+cardinalNumber+" submitted<BR>");
 					}
 				}

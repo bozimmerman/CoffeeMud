@@ -1081,7 +1081,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 								buf.append(mob.getExpNeededLevel());
 							  c++; break;
 						  }
-				case 'z': {      if((mob.location()!=null)&&(CMSecurity.isAllowed(mob,mob.location(),"SYSMSGS")))
+				case 'z': {   if(mob.location()!=null)
 								  buf.append(mob.location().getArea().name());
 							  c++; break; }
 				case 't': {	  if(mob.location()!=null)

@@ -2255,4 +2255,5 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 26.BIG fakedb upgrade: indexing, multi-keys, ORDER BY, LIKE, COUNT, complex WHERE conditions, optomizations. ** Real DB is still better.
 27.Raw material resources can now have eat/drink effects
 28.New/Old Spell returns: Shrink Mouth (whatever happened to it, anyway?)
+29.CL Editor for weapons/armor will now automatically rebalance damage/value/etc whenever level is changed.
 

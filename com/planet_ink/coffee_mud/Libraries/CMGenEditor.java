@@ -6470,7 +6470,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             genName(mob,me,++showNumber,showFlag);
             genDisplayText(mob,me,++showNumber,showFlag);
             genDescription(mob,me,++showNumber,showFlag);
+            int oldLevel = me.baseEnvStats().level();
             genLevel(mob,me,++showNumber,showFlag);
+            if(me.baseEnvStats().level() != oldLevel)
+            	CMLib.itemBuilder().balanceItemByLevel(me);
             genAttack(mob,me,++showNumber,showFlag);
             genDamage(mob,me,++showNumber,showFlag);
             genMaterialCode(mob,me,++showNumber,showFlag);
@@ -6532,7 +6535,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             genName(mob,me,++showNumber,showFlag);
             genDisplayText(mob,me,++showNumber,showFlag);
             genDescription(mob,me,++showNumber,showFlag);
+            int oldLevel = me.baseEnvStats().level();
             genLevel(mob,me,++showNumber,showFlag);
+            if(me.baseEnvStats().level() != oldLevel)
+            	CMLib.itemBuilder().balanceItemByLevel(me);
             genMaterialCode(mob,me,++showNumber,showFlag);
             genWornLocation(mob,me,++showNumber,showFlag);
             genLayer(mob,me,++showNumber,showFlag);

@@ -405,7 +405,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			hands=I.rawLogicalAnd()?2:1;
 			weaponClass=((Weapon)I).weaponClassification();
 		}
-		Hashtable H=timsItemAdjustments(I,I.envStats().level(),I.material(),hands,weaponClass,I.maxRange(),I.rawProperLocationBitmap());
+		Hashtable H=timsItemAdjustments(I,I.baseEnvStats().level(),I.material(),hands,weaponClass,I.maxRange(),I.rawProperLocationBitmap());
 		if(I instanceof Weapon)
 		{
 			I.baseEnvStats().setDamage(CMath.s_int((String)H.get("DAMAGE")));

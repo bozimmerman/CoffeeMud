@@ -20,8 +20,8 @@ Small % Chair	1	15	15	5	GenChair	CHAIR	1		0
 Small % Bench	1	20	20	10	GenChair	CHAIR	2		0	
 Small % Bed	1	25	30	15	GenBed	BED	1		0	
 Small % Box	1	15	15	5	GenContainer		25		0	
-% Club	2	15	10	200	GenWeapon	BLUNT	1	10	-20	
-% Mace	3	20	20	528	GenWeapon	BLUNT	1	8	0	
+% Club	2	15	10	200	GenWeapon	BLUNT	1	5	-20	
+% Mace	3	20	20	528	GenWeapon	BLUNT	1	5	0	
 % Bookshelf	3	30	10	15	GenContainer		10		384	
 % Scroll Case	3	30	10	10	GenContainer		3		256	
 a Pair of % Sabots	3	20	10	15	GenShoes	2:FEET	0	2	0	
@@ -70,12 +70,12 @@ Four Poster % Bed	30	150	200	1500	GenBed	BED	4		0
 % Couch	10	80	120	200	GenChair	CHAIR	3		0	
 % Sofa	16	90	100	250	GenChair	CHAIR	4		0	
 % Peg Leg	10	30	10	100	GenLimb					
-Solid % Club	16	85	50	350	GenWeapon	BLUNT	1	20	-20	
+Solid % Club	16	85	50	350	GenWeapon	BLUNT	1	12	-20	
 Solid % Mace	20	95	60	1028	GenWeapon	BLUNT	1	16	0	
 Solid % Quarterstaff	22	105	75	667	GenWeapon	STAFF	2	27	0	
-Ornate % Club	32	130	100	650	GenWeapon	BLUNT	1	40	-20	
-Ornate % Mace	40	160	120	2056	GenWeapon	BLUNT	1	29	0	
-Ornate % Quarterstaff	55	180	150	1376	GenWeapon	STAFF	2	47	0	
+Ornate % Club	32	130	100	650	GenWeapon	BLUNT	1	16	-20	
+Ornate % Mace	40	160	120	2056	GenWeapon	BLUNT	1	22	0	
+Ornate % Quarterstaff	55	180	150	1376	GenWeapon	STAFF	2	55	0	
 The % Club	64	150	200	1300	GenWeapon	BLUNT	1	40	-20	
-The % Mace	70	180	240	4000	GenWeapon	BLUNT	1	29	0	
-The % Quarterstaff	80	270	300	2700	GenWeapon	STAFF	2	47	0	
+The % Mace	70	180	240	4000	GenWeapon	BLUNT	1	35	0	
+The % Quarterstaff	80	270	300	2700	GenWeapon	STAFF	2	80	0	
