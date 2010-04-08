@@ -96,8 +96,8 @@ public class JournalFunction extends StdWebMacro
             }
             JournalsLibrary.JournalEntry msg = new JournalsLibrary.JournalEntry();
             msg.from=from;
-            msg.subj=subject;
-            msg.msg=text;
+            msg.subj=clearWebMacros(subject);
+            msg.msg=clearWebMacros(text);
             if((date!=null) && (CMath.isLong(date)))
             	msg.date = CMath.s_long(date);
             else
@@ -141,11 +141,11 @@ public class JournalFunction extends StdWebMacro
 			if(stats == null)
 				return "Changes not submitted -- No Stats!";
 			if(longDesc!=null)
-				stats.longIntro=longDesc;
+				stats.longIntro=clearWebMacros(longDesc);
 			if(shortDesc!=null)
-				stats.shortIntro=shortDesc;
+				stats.shortIntro=clearWebMacros(shortDesc);
 			if(imgPath!=null)
-				stats.imagePath=imgPath;
+				stats.imagePath=clearWebMacros(imgPath);
 			CMLib.database().DBUpdateJournalStats(journalName, stats);
 			CMLib.journals().clearJournalSummaryStats(journalName);
 			return "Changed applied.";
@@ -223,7 +223,7 @@ public class JournalFunction extends StdWebMacro
 						messages.append("Reply to #"+cardinalNumber+" not submitted -- No text!<BR>");
 					else
 					{
-						CMLib.database().DBWriteJournalReply(journalName,entry.key,from,"","",text);
+						CMLib.database().DBWriteJournalReply(journalName,entry.key,from,"","",clearWebMacros(text));
 						CMLib.journals().clearJournalSummaryStats(journalName);
 						JournalInfo.clearJournalCache(httpReq, journalName);
 						messages.append("Reply to #"+cardinalNumber+" submitted<BR>");
@@ -249,7 +249,7 @@ public class JournalFunction extends StdWebMacro
 			                                                  M.Name(),
 			                                                  toM.Name(),
 			                                                  "RE: "+entry.subj,
-			                                                  replyMsg);
+			                                                  clearWebMacros(replyMsg));
 			    			JournalInfo.clearJournalCache(httpReq, journalName);
 							messages.append("Email to #"+cardinalNumber+" queued<BR>");
 		                }
@@ -318,7 +318,7 @@ public class JournalFunction extends StdWebMacro
 								if((ISPROTECTED!=null)&&(ISPROTECTED.equalsIgnoreCase("on")))
 									attributes|=JournalsLibrary.JournalEntry.ATTRIBUTE_PROTECTED;
 							}
-							CMLib.database().DBUpdateJournal(entry.key, entry.subj, text, attributes);
+							CMLib.database().DBUpdateJournal(entry.key, entry.subj, clearWebMacros(text), attributes);
 							if(cardinalNumber==0) cardinalNumber=entry.cardinal;
 							if(cardinalNumber==0)
 								messages.append("Message modified.<BR>");
