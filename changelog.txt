@@ -2222,7 +2222,7 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 23.CharClasses now support max/caps in common skills, crafting skills, non-crafting common skills, and languages.
 24.Injury text is a bit more decorated now. (Thanks gmdenna!)
 25.Many many more mxp images scrounged up, and several old ones replaces with better ones.  There is a light at the end of the tunnel!
-# Build ? Release ?  * Database Schema Changed!
+# Build 5.6 Release ?  * Database Schema Changed!
 1. New Property (From 5.x snippets): Prop_IceBox (thx Robert!)
 2. CharStats can now be customized with ADDCHARSTAT_ in coffeemud.ini file.
 3. New Commands (From 4.x snippets): Experience, Wealth (thx again Robert)
