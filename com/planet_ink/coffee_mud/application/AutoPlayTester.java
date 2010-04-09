@@ -4,19 +4,45 @@ import java.io.*;
 import java.net.*;
 import java.util.regex.*;
 
-public class AutoPlayer 
+public class AutoPlayTester
 {
 	private BufferedReader 			in = null;
-	@SuppressWarnings("unused")
-	private BufferedOutputStream 	out = null;
+	private BufferedWriter		 	out = null;
 	private LinkedList<String> 		buffer = new LinkedList<String>();
+	@SuppressWarnings("unused")
+	private boolean 				mudUsesAccountSystem=false;
 	
 	public LinkedList<String> bufferFill() throws IOException
 	{
-		String s;
 		LinkedList<String> temp = new LinkedList<String>();
-		while((s=in.readLine()) != null)
-			temp.add(globalReactionary(s));
+		int c;
+		StringBuffer buf=new StringBuffer("");
+		int lastc=0;
+		
+		try
+		{
+			while((c=in.read()) >=0)
+			{
+				if(c==13 || c==10)
+				{
+					if((c==13 && lastc != 10)
+					||(c==10 && lastc != 13))
+					{
+						temp.add(globalReactionary(buf.toString()));
+						buf.setLength(0);
+					}
+				}
+				else
+					buf.append((char)c);
+				lastc=c;
+			}
+		}
+		catch(Exception e)
+		{
+			
+		}
+		if(buf.length()>0)
+			temp.add(globalReactionary(buf.toString()));
 		return temp;
 	}
 	
@@ -29,6 +55,7 @@ public class AutoPlayer
 
 	public String globalReactionary(String s)
 	{
+		System.out.println(s);
 		return s;
 	}
 	
@@ -54,14 +81,26 @@ public class AutoPlayer
 		throw new IOException("wait for "+regEx+" timed out.");
 	}
 	
+	public void writeln(String s) throws IOException
+	{
+		try{Thread.sleep(1000);}catch(Exception e){}
+		out.write(s+"\n");
+		out.flush();
+	}
+	
 	public boolean login(String host, int port, String username)
 	{
 		try
 		{
-			Socket s=new Socket(host,port);
-			in = new BufferedReader(new InputStreamReader(s.getInputStream()));
-			out = new BufferedOutputStream(s.getOutputStream());
-			
+			Socket sock=new Socket(host,port);
+			sock.setSoTimeout(1000);
+			in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+			out = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
+			String s = waitFor("(?>Name|Account name).*");
+			if(!s.toLowerCase().startsWith("Name"))
+				mudUsesAccountSystem = true;
+			writeln("Zac");
+			s=waitFor("(?>Password.*|(.+does not exist.))");
 		}
 		catch(java.io.IOException e)
 		{
@@ -73,10 +112,10 @@ public class AutoPlayer
 	public static void main(String[] args)
 	{
 		System.out.println("Not yet implemented.");
-		AutoPlayer player = new AutoPlayer();
+		AutoPlayTester player = new AutoPlayTester();
 		String name="boobie";
 		String host="localhost";
-		int port = 23;
+		int port = 5555;
 		if(!player.login(host,port,name))
 			System.err.println("Failed login");
 		else
