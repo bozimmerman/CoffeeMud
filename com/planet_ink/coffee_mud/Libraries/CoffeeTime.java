@@ -407,7 +407,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
     public String date2MonthDateString(long time, boolean shortName)
     {
         Calendar C=makeCalendar(time);
-        return getMonthName(C.get(Calendar.MONTH)+1,shortName) + C.get(Calendar.DAY_OF_MONTH);
+        return getMonthName(C.get(Calendar.MONTH)+1,shortName) + " " + C.get(Calendar.DAY_OF_MONTH);
     }
 
     /**
