@@ -112,11 +112,11 @@ into your database right away. If so, you should enter:</p>
       <p>This will tell you how to import *.CMARE files, which are
 CoffeeMud formatted area files. Other formats are supported as well.
 &nbsp;Another way to quickly see some content in your mud is to enter
-is long command:</p>
+this long command:</p>
       <p><span style="font-family: monospace;">generate area
 grid_dungeon areasize=50 areaname=KoboldKingdom level_range=1?10
 aggrochance=30 theme=kobolds south</span></p>
-      <p><span style="font-family: monospace;" />This will generate a
+      <p>This will generate a
 random 50 room dungeon based on the "kobolds" theme to the south of
 your current room.</p>
       <p>If you'd like to actually learn how to use the CoffeeMud
@@ -1309,31 +1309,17 @@ on a Windows machine</a></h3>
       <ul>
         <li>
           <p>Go to <a href="http://www.mysql.com">www.mysql.com</a>,
-click on Downloads (one of the tabs at the very top), scroll down under
-"MySQL database server &amp; Standard Clients:" and click on MySQL 4.0
--- Production release (recommended). Scroll down to "Windows
-downloads", you will see Windows 95/98/NT/2000/XP, and click on the
-"Pick a mirror" link to the right, and choose a place to download
-from.. You will be prompted to save a file called
-"mysql-4.0.1.2-win.zip" (or whatever the newest version is). Save that
-to a temp folder (WARNING, the file is about 21 megs!).</p>
+click on Downloads (one of the tabs at the very top). Download the latest generally available production version.</p>
         </li>
         <li>
           <p>Go back to the Downloads tab, this time scroll down to
-"Application Programming Interfaces (APIs), and click on "MySQL
-Connector /J -- for connecting to MySQL from Java". On the next screen,
-click on "MySQL Connector /J3.0 -- production release". On the next
-page, click on the download link for "Source and Binaries (zip)" ( be
-SURE to get the ZIP file, not the (tar.gz)!) The file name should be
-"mysql-connector-java-3.0.7-stable.zip". Again, save this file to your
-temp folder as well.</p>
+MYSQL Connectors.  Download the latest Connector/J, or whatever they are calling their JDBC Driver at the time.</p>
         </li>
         <li>
-          <p>Locate the mysql-4.0.1.2-win.zip file you downloaded and
+          <p>Locate the mysql zip file you downloaded and
 unzip it ( if you don't know how to do that..I don't think running a
 mud should be on your list of priorities...) and run the setup.exe file
-there. Just hit Next for all the prompts, and it should install to <code>c:\mysql</code>
-by default.</p>
+there. Just hit Next for all the prompts.</p>
         </li>
         <li>
           <p>Go to your coffeemud folder, open the <code>guides\database
@@ -1342,31 +1328,21 @@ and you will see a file called "coffeemuddbmysql.sql". Open that file
 with a text editor or notepad etc... (you might want to make a backup
 copy first...) Now, add the following:</p>
           <pre># Connection: SQL<br /># Host: localhost<br /># Saved: 2003-04-01 00:29:14<br />#<br /># Connection: SQL<br /># Host: localhost<br /># Saved: 2003-04-01 00:27:39<br />#<br />use coffeemud &lt;----ADD THIS LINE!<br />CREATE TABLE CMCHAB (<br />CMUSERID char (50) NULL ,<br />CMABID char (50) NULL ,<br />CMABPF int NULL ,<br />CMABTX text NULL<br />etc..<br />etc..<br /></pre>
-          <p>Now copy the edited coffeemuddbmysql.sql to your <code>c:\mysql\bin</code>
-folder.</p>
+          <p>Now copy the edited coffeemuddbmysql.sql to your <code>c:\program files\mysql\bin</code>
+folder (or wherever you installed mysql).</p>
         </li>
         <li>
-          <p>Now, open a DOS window (Start &gt; Run &gt; type "command"
-and hit enter) and type cd c:\mysql\bin and hit Enter. Your prompt
-should now be c:\mysql\bin&gt; then type "mysqld" (notice the d on the
-end..?). After a few moments, it should start up the mysql server. You
-wont get a new window or icon or anything, I check it by doing
-CTRL-ALT-DEL and see if Mysqld is listed in the Close Program Window.
-If it's there, you're in business, and MySQL is running in the
-background. You should now be back to the c:\mysql\bin&gt; prompt. Type
+          <p>Now, open a DOS window (Start &gt; Run &gt; type "cmd"
+and hit enter) and type cd c:\program files\mysql&lt;tab&gt;\bin and hit Enter. Type
 "mysql" and enter. You should get a Welcome to the MySQL monitor etc.
 etc. etc.. and now the prompt should simply say "mysql&gt;" . Now type
 "create database coffeemud;" (please note the semi-colon";"!!!) and hit
 enter. You should get "Query OK, 1 row affected &lt;0.11sec)" or
-something like that... then type "\q" and that should quit you out of
+something like that... then type "use coffeemud&quot; and hit enter.  Next enter &quot;source coffeemuddbmysql.sql&quot;  and hit enter.  After a moment or two, it will be done.  Lastly, enter &quot;\q&quot;, that should quit you out of
 the monitor.</p>
         </li>
         <li>
-          <p>Now that your out of the monitor, you should be back to
-the c:\mysql\bin&gt; prompt. Now type "mysql &lt; coffeemuddbmysql.sql"
-(without the quotes of course) and hit enter... again, after a moment
-or 2, it SHOULD return you to the c:\mysql\bin&gt; prompt. Go ahead and
-close that window now. In theory, you should now have mysql running and
+          <p>If all went well, you should now have mysql running and
 a coffeemud database all set for it to access.</p>
         </li>
         <li>
@@ -1379,8 +1355,8 @@ section that says:</p>
         </li>
         <li>
           <p>Go back to the other file you downloaded in STEP 2,
-mysql-connector-java-3.0.7-stable.zip, and now extract that into a temp
-folder. Inside, there should be a "mysql-connector-java-3.0.7-stable"
+mysql-connector-java-???.zip, and now extract that into a temp
+folder. Inside, there should be a "mysql-connector-java-???"
 folder and inside that, a "com" folder, and inside THAT, a "mysql"
 folder. Copy the mysql folder over into your <code>c:\coffeemud\com</code>
 folder. So now inside <code>c:\coffeemud\com</code>, there should be 2
