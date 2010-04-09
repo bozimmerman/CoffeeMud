@@ -48,17 +48,30 @@ public class JournalNext extends StdWebMacro
 			return "";
 		}
 		
-		Vector journals=(Vector)httpReq.getRequestObjects().get("JOURNALLIST");
+		Vector<String> journals=(Vector)httpReq.getRequestObjects().get("JOURNALLIST");
 		if(journals==null)
 		{
-			journals=CMLib.database().DBReadJournals();
+			Vector<String> rawJournals=CMLib.database().DBReadJournals();
 			for(Enumeration e=CMLib.journals().commandJournals();e.hasMoreElements();)
 			{
 				CommandJournal CJ=(CommandJournal)e.nextElement();
-				if((!journals.contains(CJ.NAME().toUpperCase()))
-				&&(!journals.contains(CJ.JOURNAL_NAME())))
-					journals.add(CJ.JOURNAL_NAME());
+				if((!rawJournals.contains(CJ.NAME().toUpperCase()))
+				&&(!rawJournals.contains(CJ.JOURNAL_NAME())))
+					rawJournals.add(CJ.JOURNAL_NAME());
 			}
+			Collections.sort(rawJournals);
+			journals=new Vector<String>();
+			String s;
+			for(Iterator<String> i=rawJournals.iterator();i.hasNext();)
+			{
+				s=i.next();
+				if(s.startsWith("SYSTEM_"))
+				{
+					journals.add(s);
+					i.remove();
+				}
+			}
+			journals.addAll(rawJournals);
 			httpReq.getRequestObjects().put("JOURNALLIST",journals);
 		}
 		String lastID="";

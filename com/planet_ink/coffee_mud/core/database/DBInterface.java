@@ -219,7 +219,7 @@ public class DBInterface implements DatabaseEngine
 	public void DBDeleteJournal(String Journal, String msgKeyOrNull)
 	{JournalLoader.DBDelete(Journal, msgKeyOrNull);}
 	
-	public Vector DBReadJournals()
+	public Vector<String> DBReadJournals()
 	{return JournalLoader.DBReadJournals();}
 	
 	public JournalsLibrary.JournalEntry DBReadJournalEntry(String Journal, String Key)
