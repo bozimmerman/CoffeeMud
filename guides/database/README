@@ -1,7 +1,7 @@
-coffeemuddb2.sql - schema for older versions of Microsoft SQL Server
+coffeemuddbmssql.sql - schema for older versions of Microsoft SQL Server
 coffeemuddbaccess.sql - schema for Microsoft ACCESS (yea, I know -- but this was the first DB supported)
 coffeemuddbderby.sql - schema for IBM Cloudscape/Derby database
-coffeemuddbh.sql - schema for HSQLDB database
+coffeemuddbhsql.sql - schema for HSQLDB database
 coffeemuddbmysql.sql - schema for MySQL (All Versions)
 coffeemuddboracle.sql - schema for Oracle database
 coffeemuddbpsql.sql - schema for PostgreSQL database

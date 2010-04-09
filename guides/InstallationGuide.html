@@ -1193,14 +1193,14 @@ others. While this document cannot cover the step by step installation
 instructions for each of these systems, it can be pointed out that
 everything you need has been provided. Inside the "guides/database/"
 directory of your CoffeeMud package, you will find several files:
-"coffeemuddb.sql", "coffeemuddb2.sql", "coffeemuddbaccess.sql",
+"coffeemuddb.sql", "coffeemuddbmssql.sql", "coffeemuddbaccess.sql",
 "coffeemudibmdb2.sql", "coffeemuddbmysql.sql", "coffeemuddbpsql.sql",
-"coffeemuddbh.sql", "coffeemuddderby.sql", and "fakedb.schema". The
+"coffeemuddbhsql.sql", "coffeemuddderby.sql", and "fakedb.schema". The
 first five are SQL Scripts which can be used to create the necessary
-tables in Microsoft SQL Server ("coffeemuddb2.sql"), MySQL
+tables in Microsoft SQL Server ("coffeemuddbmssql.sql"), MySQL
 ("coffeemuddbmysql.sql"), Access ("coffeemuddbaccess.sql"), PostgreSQL
 ("coffeemuddbpsql.sql"), Derby ("coffeemuddbderby.sql"), HSQLDB
-("coffeemuddbh.sql"), IBM DB2 ("coffeemudibmdb2.sql")and some of the
+("coffeemuddbhsql.sql"), IBM DB2 ("coffeemudibmdb2.sql")and some of the
 others. The last is a copy of the same fakedb file from your
 "resources/fakedb" directory, in case it becomes corrupted. Although
 the manner in which the SQL Scripts are used may differ from system to
@@ -1259,7 +1259,7 @@ sql script.</p>
         </li>
         <li>
           <p>Repeat steps 5 and 6 for the remaining CREATE TABLE blocks
-in the coffeemuddb2.sql file.</p>
+in the coffeemuddbmssql.sql file.</p>
         </li>
         <li>
           <p>Now go to your Windows Control Panel (under XP, switch to
@@ -1440,7 +1440,7 @@ database. The final parameter of the URL is the name of the database</p>
           <pre>Type: HSQL Database Engine Standalone<br />Driver: org.hsqldb.jdbcDriver<br />URL: jdbc:hsqldb:file:coffeemud<br />User: &lt;whatever you want&gt;<br />Password: &lt;whatever you want&gt;<br /></pre>
           <p>Now that the values have been filled in click ok.</p>
           <p>The tables necessary for CoffeeMUD can be setup by:</p>
-          <pre>Open File Menu.<br />Select Open Script.<br />Find and open the coffeemuddbh.sql file in the CoffeeMUD\guides\database directory.<br />The script will then be loaded into the program.<br />Click the Execute button.<br />The system should return with and update count of 0.<br /></pre>
+          <pre>Open File Menu.<br />Select Open Script.<br />Find and open the coffeemuddbhsql.sql file in the CoffeeMUD\guides\database directory.<br />The script will then be loaded into the program.<br />Click the Execute button.<br />The system should return with and update count of 0.<br /></pre>
           <p>Now to shutdown the database and exit this utility:</p>
           <pre>Open Command Menu.<br />Select SHUTDOWN.<br />Click the Execute Button.<br />Open the File Menu.<br />Select Exit.<br /></pre>
           <p>The coffeemud database will exist in the folder where the
