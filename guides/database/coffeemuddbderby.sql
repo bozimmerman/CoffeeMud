@@ -3,7 +3,7 @@ CMFNAM varchar (255) NOT NULL,
 CMDTYP integer NOT NULL,
 CMMODD bigint NOT NULL,
 CMWHOM varchar (50),
-CMDATA long varchar,
+CMDATA CLOB,
 PRIMARY KEY (CMFNAM)
 );
 
@@ -11,14 +11,14 @@ CREATE TABLE CMCHAB (
 CMUSERID varchar (50) NOT NULL,
 CMABID varchar (50) NOT NULL,
 CMABPF integer,
-CMABTX long varchar,
+CMABTX CLOB,
 PRIMARY KEY (CMUSERID, CMABID)
 );
 
 CREATE TABLE CMSTAT (
 	CMSTRT bigint NOT NULL,
 	CMENDT bigint NOT NULL,
-	CMDATA long varchar,
+	CMDATA CLOB,
 PRIMARY KEY (CMSTRT)
 );
 	
@@ -26,11 +26,11 @@ CREATE TABLE CMPOLL (
 	CMNAME varchar (100) NOT NULL,
 	CMBYNM varchar (100)  ,
 	CMSUBJ varchar (255)  ,
-	CMDESC long varchar  ,
-	CMOPTN long varchar  ,
+	CMDESC CLOB  ,
+	CMOPTN CLOB  ,
 	CMFLAG integer  ,
 	CMQUAL varchar (255)  ,
-	CMRESL long varchar ,
+	CMRESL CLOB ,
 	CMEXPI bigint ,
 	PRIMARY KEY (CMNAME)
 );
@@ -78,9 +78,9 @@ CMLSIP varchar (100),
 CMCLAN varchar (100),
 CMCLRO integer,
 CMEMAL varchar (255),
-CMPFIL long varchar,
+CMPFIL CLOB,
 CMSAVE varchar (150),
-CMMXML long varchar,
+CMMXML CLOB,
 PRIMARY KEY (CMUSERID)
 );
 
@@ -88,7 +88,7 @@ CREATE TABLE CMCHFO (
 CMUSERID varchar (50) NOT NULL,
 CMFONM integer NOT NULL,
 CMFOID varchar (50),
-CMFOTX long varchar,
+CMFOTX CLOB,
 CMFOLV integer,
 CMFOAB integer,
 PRIMARY KEY (CMUSERID, CMFONM)
@@ -98,7 +98,7 @@ CREATE TABLE CMCHIT (
 CMUSERID varchar (50) NOT NULL,
 CMITNM varchar (100) NOT NULL,
 CMITID varchar (50),
-CMITTX long varchar,
+CMITTX CLOB,
 CMITLO varchar (100),
 CMITWO integer,
 CMITUR integer,
@@ -112,7 +112,7 @@ CREATE TABLE CMROCH (
 CMROID varchar (50) NOT NULL,
 CMCHNM varchar (100) NOT NULL,
 CMCHID varchar (50),
-CMCHTX long varchar,
+CMCHTX CLOB,
 CMCHLV integer,
 CMCHAB integer,
 CMCHRE integer,
@@ -124,7 +124,7 @@ CREATE TABLE CMROEX (
 CMROID varchar (50) NOT NULL,
 CMDIRE integer NOT NULL,
 CMEXID varchar (50),
-CMEXTX long varchar,
+CMEXTX CLOB,
 CMNRID varchar (50),
 PRIMARY KEY (CMROID, CMDIRE)
 );
@@ -134,7 +134,7 @@ CMROID varchar (50) NOT NULL,
 CMITNM varchar (100) NOT NULL,
 CMITID varchar (50),
 CMITLO varchar (100),
-CMITTX long varchar,
+CMITTX CLOB,
 CMITRE integer,
 CMITUR integer,
 CMITLV integer,
@@ -148,16 +148,16 @@ CMROID varchar (50) NOT NULL,
 CMLOID varchar (50),
 CMAREA varchar (50),
 CMDESC1 varchar (255),
-CMDESC2 long varchar,
-CMROTX long varchar,
+CMDESC2 CLOB,
+CMROTX CLOB,
 PRIMARY KEY (CMROID)
 );
 
 CREATE TABLE CMQUESTS (
 CMQUESID varchar (50) NOT NULL,
 CMQUTYPE varchar (50),
-CMQSCRPT long varchar,
-CMQWINNS long varchar,
+CMQSCRPT CLOB,
+CMQWINNS CLOB,
 PRIMARY KEY (CMQUESID)
 );
 
@@ -166,8 +166,8 @@ CMAREA varchar (50) NOT NULL,
 CMTYPE varchar (50) NOT NULL,
 CMCLIM integer,
 CMSUBS varchar (100),
-CMDESC long varchar,
-CMROTX long varchar, 
+CMDESC CLOB,
+CMROTX CLOB, 
 CMTECH integer,
 PRIMARY KEY (CMAREA)
 );
@@ -187,7 +187,7 @@ CREATE TABLE CMJRNL (
 	CMIMGP varchar (50),
 	CMVIEW integer,
 	CMREPL integer,
-	CMMSGT long varchar,
+	CMMSGT CLOB,
 PRIMARY KEY (CMJKEY) 
 );
 
@@ -199,9 +199,9 @@ CREATE INDEX CMJRNLCMUPTM on CMJRNL (CMUPTM ASC);
 CREATE TABLE CMCLAN (
 	CMCLID varchar (100) NOT NULL,
 	CMTYPE integer NOT NULL,
-	CMDESC long varchar,
+	CMDESC CLOB,
 	CMACPT varchar (255),
-	CMPOLI long varchar,
+	CMPOLI CLOB,
 	CMRCLL varchar (50),
 	CMDNAT varchar (50),
 	CMSTAT integer ,
@@ -214,30 +214,30 @@ CREATE TABLE CMPDAT (
 	CMPLID varchar (100) NOT NULL,
 	CMSECT varchar (100) NOT NULL,
 	CMPKEY varchar (100) NOT NULL,
-	CMPDAT long varchar,
+	CMPDAT CLOB,
 	PRIMARY KEY (CMPLID,CMSECT,CMPKEY)
 );
 
 CREATE TABLE CMGRAC (
 	CMRCID varchar (50) NOT NULL,
-	CMRDAT long varchar,
+	CMRDAT CLOB,
 	PRIMARY KEY (CMRCID)
 );
 
 CREATE TABLE CMCCAC (
 	CMCCID varchar (50) NOT NULL,
-	CMCDAT long varchar,
+	CMCDAT CLOB,
 	PRIMARY KEY (CMCCID)
 );
 CREATE TABLE CMGAAC (
 	CMGAID varchar (50) NOT NULL,
-	CMGAAT long varchar,
+	CMGAAT CLOB,
 	PRIMARY KEY (CMGAID)
 );
 CREATE TABLE CMACCT (
 	CMANAM varchar (50) NOT NULL,
 	CMPASS varchar (50) NOT NULL,
-	CMCHRS long varchar ,
-	CMAXML long varchar ,
+	CMCHRS CLOB ,
+	CMAXML CLOB ,
 	PRIMARY KEY (CMANAM)
 );
