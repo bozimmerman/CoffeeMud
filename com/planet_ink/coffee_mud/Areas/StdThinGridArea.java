@@ -80,7 +80,7 @@ public class StdThinGridArea extends StdGridArea
 	public Enumeration getProperMap(){return DVector.s_enum(properRooms);}
 	public Vector getMetroCollection()
 	{
-		int minimum=(properRoomIDSet.roomCountAllAreas()/10);
+		int minimum=(properRoomIDSet==null)?0:(properRoomIDSet.roomCountAllAreas()/10);
 		if(getCachedRoomnumbers().roomCountAllAreas()<minimum)
 		{
 			for(int r=0;r<minimum;r++)

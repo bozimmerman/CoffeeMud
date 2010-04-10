@@ -85,7 +85,7 @@ public class StdThinArea extends StdArea
 	public Enumeration getCompleteMap(){return new CompleteRoomEnumerator(this);}
 	public Vector getMetroCollection()
 	{
-		int minimum=(properRoomIDSet.roomCountAllAreas()/10);
+		int minimum=(properRoomIDSet==null)?0:(properRoomIDSet.roomCountAllAreas()/10);
 		if(getCachedRoomnumbers().roomCountAllAreas()<minimum)
 		{
 			for(int r=0;r<minimum;r++)

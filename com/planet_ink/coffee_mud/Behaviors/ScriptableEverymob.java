@@ -36,6 +36,7 @@ public class ScriptableEverymob extends StdBehavior
 {
     public String ID(){return "ScriptableEverymob";}
     protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;}
+    private boolean started=false;
 
     private void giveUpTheScript(Area metroA, MOB M)
     {
@@ -75,18 +76,30 @@ public class ScriptableEverymob extends StdBehavior
     
     private void giveEveryoneTheScript(Environmental forMe)
     {
-        Enumeration rooms=determineRooms(forMe);
-        Area A=determineArea(forMe);
-        if((A!=null)&&(rooms!=null))
-        {
-            Room R=null;
-            for(;rooms.hasMoreElements();)
-            {
-                R=(Room)rooms.nextElement();
-                for(int m=0;m<R.numInhabitants();m++)
-                    giveUpTheScript(A,R.fetchInhabitant(m));
-            }
-        }
+    	if((CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
+    	&&(!started))
+    	{
+	    	started = true;
+	        Enumeration rooms=determineRooms(forMe);
+	        Area A=determineArea(forMe);
+	        if((A!=null)&&(rooms!=null))
+	        {
+	            Room R=null;
+	            for(;rooms.hasMoreElements();)
+	            {
+	                R=(Room)rooms.nextElement();
+	                for(int m=0;m<R.numInhabitants();m++)
+	                    giveUpTheScript(A,R.fetchInhabitant(m));
+	            }
+	        }
+    	}
+    }
+    
+    public boolean tick(Tickable ticking, int tickID)
+    {
+    	if((!started)&&(ticking instanceof Environmental))
+    		giveEveryoneTheScript((Environmental)ticking);
+    	return super.tick(ticking, tickID);
     }
     
     public void startBehavior(Environmental forMe)
