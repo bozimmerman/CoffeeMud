@@ -232,7 +232,7 @@ public class MOBloader
             {
                 String abilityID=DBConnections.getRes(R,"CMABID");
                 int proficiency=(int)DBConnections.getLongRes(R,"CMABPF");
-                if(proficiency==Integer.MIN_VALUE)
+                if((proficiency==Integer.MIN_VALUE)||(proficiency==Integer.MIN_VALUE+1))
                 {
                     if(abilityID.equalsIgnoreCase("ScriptingEngine"))
                     {
@@ -940,7 +940,7 @@ public class MOBloader
             if((thisBehavior!=null)&&(thisBehavior.isSavable()))
             {
                 String str="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
-                +") values ('"+mob.Name()+"','"+thisBehavior.ID()+"',"+Integer.MIN_VALUE+",'"+thisBehavior.getParms()+"'"
+                +") values ('"+mob.Name()+"','"+thisBehavior.ID()+"',"+(Integer.MIN_VALUE+1)+",'"+thisBehavior.getParms()+"'"
                 +")";
                 statements.addElement(str);
             }
@@ -949,7 +949,7 @@ public class MOBloader
         if(scriptStuff.length()>0)
         {
             String str="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
-            +") values ('"+mob.Name()+"','ScriptingEngine',"+Integer.MIN_VALUE+",'"+scriptStuff+"'"
+            +") values ('"+mob.Name()+"','ScriptingEngine',"+(Integer.MIN_VALUE+1)+",'"+scriptStuff+"'"
             +")";
             statements.addElement(str);
         }
