@@ -38,6 +38,9 @@ public class DBConnection
 	/** Connection object being used*/
 	private Connection myConnection=null;
 	
+	/** (new) resultset being used currently */
+	private ResultSet myResultSet=null;
+	
 	/** (new) statement object being used currently */
 	private Statement myStatement=null;
 	
@@ -245,6 +248,21 @@ public class DBConnection
 					lastSQL=Closer;
 					myStatement.executeUpdate(Closer);
 				}
+			if(myResultSet!=null)
+			{
+				myResultSet.close();
+				myResultSet=null;
+			}
+			if(myPreparedStatement!=null)
+			{
+				myPreparedStatement.close();
+				myPreparedStatement=null;
+			}
+			if(myStatement!=null)
+			{
+				myStatement.close();
+				myStatement=null;
+			}
 			if(myConnection!=null)
 				myConnection.commit();
 		}
@@ -303,6 +321,7 @@ public class DBConnection
 		useTime=System.currentTimeMillis();
 		if(myParent!=null) 
 			myParent.clearErrors();
+		myResultSet=R;
 		return R;
 	}
 	

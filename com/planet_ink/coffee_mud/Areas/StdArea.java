@@ -44,7 +44,7 @@ public class StdArea implements Area
 	protected String imageName="";
 	protected int techLevel=0;
 	protected int climateID=Area.CLIMASK_NORMAL;
-	protected Vector properRooms=new Vector();
+	protected Vector<Room> properRooms=new Vector<Room>();
     protected Vector blurbFlags=new Vector(1);
 	//protected Vector metroRooms=new Vector();
 	protected long tickStatus=Tickable.STATUS_NOT;
@@ -242,7 +242,7 @@ public class StdArea implements Area
 			Room R=null;
 			for(int p=properRooms.size()-1;p>=0;p--)
 			{
-				R=(Room)properRooms.elementAt(p);
+				R=properRooms.elementAt(p);
 				if(R.roomID().length()>0)
 					set.add(R.roomID());
 			}
@@ -1136,7 +1136,7 @@ public class StdArea implements Area
 			while(start<=end)
 			{
 	            mid=(end+start)/2;
-	            int comp=((Room)properRooms.elementAt(mid)).roomID().compareToIgnoreCase(roomID);
+	            int comp=properRooms.elementAt(mid).roomID().compareToIgnoreCase(roomID);
 	            if(comp==0) return mid;
 	            else
 	            if(comp>0)
@@ -1175,7 +1175,7 @@ public class StdArea implements Area
         	if(properRooms.size()>0)
         	{
         		insertAt=getProperIndex(R);
-	            int comp=((Room)properRooms.elementAt(insertAt)).roomID().compareToIgnoreCase(roomID);
+	            int comp=properRooms.elementAt(insertAt).roomID().compareToIgnoreCase(roomID);
 	            if(comp==0) return;
                 addMetroRoom(R);
 				if(comp>0)
@@ -1311,9 +1311,9 @@ public class StdArea implements Area
 	        while(start<=end)
 	        {
 	            int mid=(end+start)/2;
-	            int comp=((Room)properRooms.elementAt(mid)).roomID().compareToIgnoreCase(roomID);
+	            int comp=properRooms.elementAt(mid).roomID().compareToIgnoreCase(roomID);
 	            if(comp==0)
-	                return (Room)properRooms.elementAt(mid);
+	                return properRooms.elementAt(mid);
 	            else
 	            if(comp>0)
 	                end=mid-1;
@@ -1372,11 +1372,11 @@ public class StdArea implements Area
 
 	public Enumeration getProperMap()
 	{
-		Vector V=(Vector)properRooms.clone();
+		Vector<Room> V=(Vector<Room>)properRooms.clone();
 		Room R=null;
 		for(int v=V.size()-1;v>=0;v--)
 		{
-			R=(Room)V.elementAt(v);
+			R=V.elementAt(v);
 			if(R instanceof GridLocale)
 				V.addAll(((GridLocale)R).getAllRooms());
 		}
@@ -1411,11 +1411,11 @@ public class StdArea implements Area
     }
 	public Vector getMetroCollection()
 	{
-		Vector V=(Vector)properRooms.clone();
+		Vector<Room> V=(Vector<Room>)properRooms.clone();
 		Room R=null;
 		for(int v=V.size()-1;v>=0;v--)
 		{
-			R=(Room)V.elementAt(v);
+			R=V.elementAt(v);
 			if(R instanceof GridLocale)
 				V.addAll(((GridLocale)R).getAllRooms());
 		}
