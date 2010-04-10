@@ -830,8 +830,7 @@ public class CMSecurity
                 if((!B.equals(unBanMe))&&(B.trim().length()>0))
                     newBanned.append(B+"\n");
             }
-            Resources.updateResource("banned.ini",newBanned);
-            Resources.saveFileResource("::banned.ini");
+            Resources.updateFileResource("::banned.ini",newBanned);
         }
     }
     
@@ -847,8 +846,7 @@ public class CMSecurity
                 if(((b+1)!=unBanMe)&&(B.trim().length()>0))
                     newBanned.append(B+"\n");
             }
-            Resources.updateResource("banned.ini",newBanned);
-            Resources.saveFileResource("::banned.ini");
+            Resources.updateFileResource("::banned.ini",newBanned);
         }
     }
     
@@ -866,8 +864,7 @@ public class CMSecurity
         }
         StringBuffer str=Resources.getFileResource("banned.ini",false);
         if(banMe.trim().length()>0) str.append(banMe+"\n");
-        Resources.updateResource("banned.ini",str);
-        Resources.saveFileResource("::banned.ini");
+        Resources.updateFileResource("::banned.ini",str);
         return -1;
     }
 }

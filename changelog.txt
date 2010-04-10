@@ -2256,3 +2256,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 27.Raw material resources can now have effects (for eat/drink/whatever)
 28.CL Editor for weapons/armor will now automatically rebalance damage/value/etc whenever level is changed.
 29.Web Catalog: can substitute a user-selectable column (damage, basegold, etc) and sort by it. 
+30.Two new NOCACHE entries in coffeemud.ini file: FILERESOURCES, CATALOG (for you memory conscious people)

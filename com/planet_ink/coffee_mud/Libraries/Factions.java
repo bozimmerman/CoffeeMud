@@ -1507,9 +1507,7 @@ public class Factions extends StdLibrary implements FactionManager
         	if(!CMath.bset(F.getInternalFlags(), Faction.IFLAG_NEVERSAVE))
         	{
 	        	StringBuffer buf = rebuildFactionProperties(F);
-	            Resources.removeResource(F.factionID());
-	            Resources.submitResource(F.factionID(),buf);
-	            if(!Resources.saveFileResource(F.factionID()))
+	            if(!Resources.updateFileResource(F.factionID(),buf))
 	                return "Faction File '"+F.factionID()+"' could not be modified.  Make sure it is not READ-ONLY.";
         	}
         }

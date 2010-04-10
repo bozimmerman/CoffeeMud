@@ -208,10 +208,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
                     somethingDone=true;
             }
             if(somethingDone)
-            {
-                Resources.updateResource("protectedplayers.ini",newNoPurge);
-                Resources.saveFileResource("::protectedplayers.ini");
-            }
+                Resources.updateFileResource("::protectedplayers.ini",newNoPurge);
         }
 
         CMLib.database().DBDeleteMOB(deadMOB);
@@ -240,10 +237,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
                     somethingDone=true;
             }
             if(somethingDone)
-            {
-                Resources.updateResource("protectedplayers.ini",newNoPurge);
-                Resources.saveFileResource("::protectedplayers.ini");
-            }
+                Resources.updateFileResource("::protectedplayers.ini",newNoPurge);
         }
 
         CMLib.database().DBDeleteAccount(deadAccount);
@@ -570,8 +564,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
                         if((M!=null)&&(M.playerStats()!=null))
                         {
                             warnStr.append(M.name()+" "+M.playerStats().getEmail()+" "+System.currentTimeMillis()+"\n");
-                            Resources.updateResource("warnedplayers.ini",warnStr);
-                            Resources.saveFileResource("::warnedplayers.ini");
+                            Resources.updateFileResource("::warnedplayers.ini",warnStr);
                             if(CMSecurity.isDebugging("AUTOPURGE"))
                                 Log.debugOut(thread.getName(),name+" is now warned.");
                             warnPrePurge(M,userLastLoginDateTime-purgePriorDateTime);

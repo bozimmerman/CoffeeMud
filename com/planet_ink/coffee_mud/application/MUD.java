@@ -148,6 +148,8 @@ public class MUD extends Thread implements MudHost
 		Vector nocache=CMParms.parseCommas(page.getStr("NOCACHE").toUpperCase(),true);
 		CMProps.setBoolVar(CMProps.SYSTEMB_MOBNOCACHE,nocache.contains("GENMOBS"));
 		CMProps.setBoolVar(CMProps.SYSTEMB_ROOMDNOCACHE,nocache.contains("ROOMDESC"));
+		CMProps.setBoolVar(CMProps.SYSTEMB_FILERESOURCENOCACHE, nocache.contains("FILERESOURCES"));
+		CMProps.setBoolVar(CMProps.SYSTEMB_CATALOGNOCACHE, nocache.contains("CATALOG"));
 
 		DBConnector currentDBconnector=null;
         String dbClass=page.getStr("DBCLASS");

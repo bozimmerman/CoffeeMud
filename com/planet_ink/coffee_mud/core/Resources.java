@@ -63,11 +63,10 @@ public class Resources
     public static Vector findResourceKeys(String srch){return r()._findResourceKeys(srch);}
     public static Object getResource(String ID){return r()._getResource(ID);}
     public static void submitResource(String ID, Object obj){r()._submitResource(ID,obj);}
-    public static void updateResource(String ID, Object obj){r()._updateResource(ID,obj);}
     public static boolean isFileResource(String filename){return r()._isFileResource(filename);}
     public static StringBuffer getFileResource(String filename, boolean reportErrors){return r()._getFileResource(filename,reportErrors);}
-    public static boolean saveFileResource(String filename){return r()._saveFileResource(filename);}
     public static boolean saveFileResource(String filename, MOB whom, StringBuffer myRsc){return r()._saveFileResource(filename,whom,myRsc);}
+    public static boolean updateFileResource(String filename, Object obj){return r()._updateFileResource(filename,obj);}
     public static boolean findRemoveProperty(CMFile F, String match){return r()._findRemoveProperty(F,match);}
 
     public static String getLineMarker(StringBuffer buf)
@@ -303,15 +302,16 @@ public class Resources
         }
 	}
 
-	public void _updateResource(String ID, Object obj)
+	private Object _updateResource(String ID, Object obj)
 	{
 		synchronized(resources)
 		{
             int index=_getResourceIndex(ID);
-            if(index<0) return;
+            if(index<0) return null;
             Object prepared=prepareObject(obj);
 			resources.setElementAt(index,2,prepared);
             resources.setElementAt(index,3,new Boolean(prepared!=obj));
+            return prepared;
 		}
 	}
 
@@ -334,26 +334,37 @@ public class Resources
 	    	return true;
 	    return false;
 	}
-    
+
+	public StringBuffer _toStringBuffer(Object o)
+	{
+		if(o!=null)
+		{
+			if(o instanceof StringBuffer)
+				return (StringBuffer)o;
+			else
+			if(o instanceof String)
+				return new StringBuffer((String)o);
+		}
+		return null;
+	}
+	
 	public StringBuffer _getFileResource(String filename, boolean reportErrors)
 	{
 		Object rsc=_getResource(filename);
-		if(rsc!=null)
-		{
-			if(rsc instanceof StringBuffer)
-				return (StringBuffer)rsc;
-			else
-			if(rsc instanceof String)
-				return new StringBuffer((String)rsc);
-		}
-
+		if(rsc != null)
+			return _toStringBuffer(rsc);
 		StringBuffer buf=new CMFile(makeFileResourceName(filename),null,reportErrors).text();
-		_submitResource(filename,buf);
+    	if(!CMProps.getBoolVar(CMProps.SYSTEMB_FILERESOURCENOCACHE))
+			_submitResource(filename,buf);
 		return buf;
 	}
 
-    public boolean _saveFileResource(String filename)
-    {return _saveFileResource(filename,null,_getFileResource(CMFile.vfsifyFilename(filename),false));}
+    public boolean _updateFileResource(String filename, Object obj)
+    {
+    	if(!CMProps.getBoolVar(CMProps.SYSTEMB_FILERESOURCENOCACHE))
+	    	_updateResource(CMFile.vfsifyFilename(filename), obj);
+    	return _saveFileResource(filename,null,_toStringBuffer(obj));
+    }
 
 	public boolean _saveFileResource(String filename, MOB whom, StringBuffer myRsc)
 	{

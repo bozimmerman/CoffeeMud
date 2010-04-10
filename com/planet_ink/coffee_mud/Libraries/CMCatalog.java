@@ -767,7 +767,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
         public double rate=0.0;
         public volatile int deathPickup=0;
         public Vector<WeakReference> refs=new Vector<WeakReference>(1);
-        public boolean noRefs = CMSecurity.isDisabled("CATALOGCACHE");
+        public boolean noRefs = CMProps.getBoolVar(CMProps.SYSTEMB_CATALOGNOCACHE) 
+        						|| CMSecurity.isDisabled("CATALOGCACHE");
         
         public CataDataImpl(String catadata)
         {

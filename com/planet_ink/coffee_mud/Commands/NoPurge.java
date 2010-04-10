@@ -66,8 +66,7 @@ public class NoPurge extends StdCommand
 		mob.tell("The player '"+protectMe+"' is now protected from autopurge.");
 		StringBuffer str=Resources.getFileResource("protectedplayers.ini",false);
 		if(protectMe.trim().length()>0) str.append(protectMe+"\n");
-		Resources.updateResource("protectedplayers.ini",str);
-		Resources.saveFileResource("::protectedplayers.ini");
+		Resources.updateFileResource("::protectedplayers.ini",str);
 		return false;
 	}
 	

@@ -549,7 +549,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		    	pData.key="RENTAL INFO/"+owner;
 		    	pData.xml=reparse.toString();
 		    	pDataV.setElementAt(pData,0);
-		        Resources.updateResource("RENTAL INFO/"+owner,pDataV);
+		    	Resources.removeResource("RENTAL INFO/"+owner);
+		        Resources.submitResource("RENTAL INFO/"+owner,pDataV);
 	        }
 		    return needsToPay;
         }

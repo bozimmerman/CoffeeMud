@@ -214,7 +214,9 @@ public class CMProps extends Properties
     public static final int SYSTEMB_MUDSHUTTINGDOWN=8;
     public static final int SYSTEMB_ACCOUNTEXPIRATION=9;
     public static final int SYSTEMB_INTRODUCTIONSYSTEM=10;
-    public static final int NUMB_SYSTEM=11;
+    public static final int SYSTEMB_FILERESOURCENOCACHE=11;
+    public static final int SYSTEMB_CATALOGNOCACHE=12;
+    public static final int NUMB_SYSTEM=13;
 
     public static final int SYSTEML_DAMAGE_WORDS_THRESHOLDS=0;
     public static final int SYSTEML_DAMAGE_WORDS=1;
@@ -628,11 +630,12 @@ public class CMProps extends Properties
     	return endVal;
     }
 
-    public static String getListValue(String key) {
-        final String listFileName="resources/lists.ini";
+    public static String getListValue(String key) 
+    {
+        final String listFileName=CMProps.p().getProperty("LISTFILE");
         synchronized(listFileName.intern())
         {
-            Properties rawListData=(Properties)Resources.getResource(listFileName);
+            Properties rawListData=(Properties)Resources.getResource("PROPS: " + listFileName);
             if(rawListData==null)
             {
                 rawListData=new Properties();
@@ -643,7 +646,7 @@ public class CMProps extends Properties
                         rawListData.load(new ByteArrayInputStream(F.raw()));
                     } catch(IOException e){}
                 }
-                Resources.submitResource(listFileName, rawListData);
+                Resources.submitResource("PROPS: " + listFileName, rawListData);
             }
             return rawListData.getProperty(key);
         }

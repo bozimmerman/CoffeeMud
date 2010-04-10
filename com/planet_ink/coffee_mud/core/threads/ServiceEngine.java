@@ -71,6 +71,7 @@ public class ServiceEngine implements ThreadEngine
 	{
 		Tick tock=null;
         Tick almostTock=null;
+		ThreadGroup grp=null;
         char threadGroupNum=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		for(Enumeration v=tickGroups();v.hasMoreElements();)
 		{
@@ -80,11 +81,17 @@ public class ServiceEngine implements ThreadEngine
 				if((tock==null)
 	            &&(almostTock.TICK_TIME==TICK_TIME)
 	            &&(!almostTock.solitaryTicker)
-	            &&(almostTock.numTickers()<TickableGroup.MAX_TICK_CLIENTS)
-	            &&(almostTock.getThreadGroup().getName().charAt(0)==threadGroupNum))
-					tock=almostTock;
-	        	if(almostTock.contains(E,tickID)) 
-	        		return null;
+	            &&(almostTock.numTickers()<TickableGroup.MAX_TICK_CLIENTS))
+				{
+					grp = almostTock.getThreadGroup();
+					if((grp!=null)
+		            &&(grp.getName().charAt(0)==threadGroupNum))
+					{
+						tock=almostTock;
+			        	if(almostTock.contains(E,tickID)) 
+			        		return null;
+					}
+				}
 			}
 		}
 

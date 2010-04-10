@@ -1017,8 +1017,7 @@ public class Destroy extends StdCommand
 						if(((b+1)!=which)&&(B.trim().length()>0))
 							newNoPurge.append(B+"\n");
 					}
-				Resources.updateResource("protectedplayers.ini",newNoPurge);
-				Resources.saveFileResource("::protectedplayers.ini");
+				Resources.updateFileResource("::protectedplayers.ini",newNoPurge);
 				mob.tell("Ok.");
 			}
 		}
