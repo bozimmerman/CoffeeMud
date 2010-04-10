@@ -72,7 +72,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 	    String code1=null;
 	    String code2=null;
 	    boolean bold=(code.indexOf(";1;")>0)||(code.indexOf("[1;")>0);
-	    for(int i=0;i<=9;i++)
+	    for(int i=0;i<COLOR_CODELETTERSINCARDINALORDER.length;i++)
 	    {
 	        if((code1==null)&&(code.indexOf(""+(40+i))>0))
 	            code1="^"+Character.toUpperCase(COLOR_CODELETTERSINCARDINALORDER[i].charAt(0));
