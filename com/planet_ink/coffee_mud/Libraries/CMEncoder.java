@@ -33,7 +33,7 @@ public class CMEncoder extends StdLibrary implements TextEncoders
         super();
     }
 
-    public String decompressString(byte[] b)
+    public synchronized String decompressString(byte[] b)
     {
         try
         {
@@ -50,13 +50,13 @@ public class CMEncoder extends StdLibrary implements TextEncoders
         }
         catch (Exception ex)
         {
-            Log.errOut(Thread.currentThread().getName(), "Error occur during decompression.");
+            Log.errOut(Thread.currentThread().getName(), "Error occurred during decompression: "+ex.getMessage());
             encodeBuffer=new byte[65536];
             return "";
         }
     }
 
-    public byte[] compressString(String s)
+    public synchronized byte[] compressString(String s)
     {
         byte[] result = null;
 
@@ -79,7 +79,7 @@ public class CMEncoder extends StdLibrary implements TextEncoders
         }
         catch (Exception ex)
         {
-            Log.errOut("MUD", "Error occur during compression");
+            Log.errOut("MUD", "Error occurred during compression: "+ex.getMessage());
             encodeBuffer=new byte[65536];
         }
 
