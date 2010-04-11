@@ -30,6 +30,7 @@
 		{
 			if(abort) return; abort=true;
 			document.FORUM.action="forumnew.cmvp";
+			document.FORUM.FUNCTION.value='NEWPOST';
 			document.FORUM.JOURNALMESSAGE.value='';
 			document.FORUM.JOURNALPAGE.value='';
 			document.FORUM.submit();

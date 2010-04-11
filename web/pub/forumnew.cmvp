@@ -32,6 +32,7 @@
 		}
 		function Submit()
 		{
+			document.FORUM.FUNCTION.value='NEWPOST';
 			@if?CheckReqParm?JOURNALMESSAGE=@
 				@if?!Authenticate@
 					if(!window.confirm('Confirm: Post this new thread anonymously?'))
@@ -76,7 +77,7 @@
 @endif@
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=JOURNAL VALUE="@RequestParameter?JOURNAL@">
-<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="NEWPOST">
+<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="@RequestParameter?FUNCTION@">
 <INPUT TYPE=HIDDEN NAME=JOURNALPAGE VALUE="@RequestParameter?JOURNALPAGE@">
 <INPUT TYPE=HIDDEN NAME=MESSAGEPAGE VALUE="@RequestParameter?MESSAGEPAGE@">
 <INPUT TYPE=HIDDEN NAME=DATE VALUE="@JournalInfo?NOWTIMESTAMP@">
