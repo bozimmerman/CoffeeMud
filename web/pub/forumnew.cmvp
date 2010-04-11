@@ -157,7 +157,7 @@
 <TR BGCOLOR=LIGHTGREY VALIGN=TOP>
 	<TD ALIGN=LEFT WIDTH=200px VALIGN=TOP>&nbsp;&nbsp;<FONT SIZE=6><B>Message:</B></FONT></TD>
 	<TD ALIGN=LEFT VALIGN=TOP>
-<textarea id="NEWTEXT" name="NEWTEXT" style="height: 170px; width: 500px;">@if?CheckReqParm?!NEWTEXT=@ @RequestParameter?NEWTEXT@ @else@ @if?CheckReqParm?!QUOTEDMESSAGE=@ @JournalInfo?QUOTEDTEXT@ @else@ @if?CheckReqParm?FUNCTION=EDITPOST@ @JournalInfo?MESSAGE@ @endif@ @endif@ @endif@</textarea>
+<textarea id="NEWTEXT" name="NEWTEXT" style="height: 170px; width: 500px;">@if?CheckReqParm?!NEWTEXT=@ @RequestParameter?NEWTEXT@ @else@ @if?CheckReqParm?!QUOTEDMESSAGE=@ @JournalInfo?QUOTEDTEXT@<BR> @else@ @if?CheckReqParm?FUNCTION=EDITPOST@ @JournalInfo?MESSAGE@ @endif@ @endif@ @endif@</textarea>
 		<script language="javascript1.2">
 			generate_wysiwyg('NEWTEXT');
 		</script>
