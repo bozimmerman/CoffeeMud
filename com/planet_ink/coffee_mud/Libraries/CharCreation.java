@@ -602,6 +602,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 session.println("You may only have "+CMProps.getIntVar(CMProps.SYSTEMI_MAXCONNSPERACCOUNT)+" of your characters on at one time.");
     			continue;
             }
+            playMe.loadedMOB=realMOB;
         	LoginResult prelimResults = prelimChecks(session,playMe.name,playMe);
         	if(prelimResults!=null)
         		return prelimResults;
@@ -1273,7 +1274,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         	MOB M=thisSession.mob();
             if((M!=null)
             &&(thisSession!=session)
-            &&(M.Name().equals(player.name)))
+            &&(M==player.loadedMOB))
             {
                 Room oldRoom=M.location();
                 if(oldRoom!=null)
