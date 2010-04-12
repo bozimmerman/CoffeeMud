@@ -134,7 +134,7 @@ public class CMProps extends Properties
     public static final int SYSTEM_FORMULA_DAMAGESPELLFUDGE=76;
     public static final int SYSTEM_FORMULA_DAMAGEMELEEFUDGE=77;
     public static final int SYSTEM_FORMULA_DAMAGERANGEDFUDGE=78;
-    public static final int SYSTEM_MUDSTATE=79;
+    //public static final int SYSTEM_MUDSTATE=79;
     public static final int SYSTEM_AUTOREACTION=80;
     public static final int NUM_SYSTEM=81;
 
@@ -201,7 +201,8 @@ public class CMProps extends Properties
     public static final int SYSTEMI_COMMONACCOUNTSYSTEM=60;
     public static final int SYSTEMI_MAXCONNSPERACCOUNT=61;
     public static final int SYSTEMI_EXVIEW=62;
-    public static final int NUMI_SYSTEM=63;
+    public static final int SYSTEMI_MUDSTATE=63;
+    public static final int NUMI_SYSTEM=64;
 
     public static final int SYSTEMB_MOBCOMPRESS=0;
     public static final int SYSTEMB_ITEMDCOMPRESS=1;
@@ -732,10 +733,6 @@ public class CMProps extends Properties
         if((adminEmail==null)||(adminEmail.trim().length()==0))
     		adminEmail = getStr("I3EMAIL");
         setVar(SYSTEM_ADMINEMAIL,adminEmail);
-        String mudState = getStr("MUDSTATE");
-        if((mudState==null)||(mudState.trim().length()==0))
-        	mudState = getStr("I3STATE");
-        setUpLowVar(SYSTEM_MUDSTATE,mudState);
         setUpLowVar(SYSTEM_I3ROUTERS,getStr("I3ROUTERS"));
         setVar(SYSTEM_AUTOREACTION,getStr("AUTOREACTION"));
         setVar(SYSTEM_PREJUDICE,getStr("PREJUDICE"));
@@ -899,6 +896,7 @@ public class CMProps extends Properties
             setIntVar(SYSTEMI_STARTMOVE,CMath.s_int(stateVar));
 
         setIntVar(SYSTEMI_MAXITEMSHOWN,getStr("MAXITEMSHOWN"));
+        setIntVar(SYSTEMI_MUDSTATE,getStr("MUDSTATE"));
         
         setUpLowVar(SYSTEM_FORMULA_ATTACKADJUSTMENT, getStr("FORMULA_ATTACKADJUSTMENT","(50+@x1+(((@x2-9)/5)*((@x3-9)/5)*((@x3-9)/5))+@x4)-(0.15*@xx*@x5)-(0.15*@xx*@x6)-(0.3*@xx*@x7)"));
         setUpLowVar(SYSTEM_FORMULA_ARMORADJUSTMENT, getStr("FORMULA_ARMORADJUSTMENT","(@x1-( (((@x2-9)/5)*((@x3-9)/5)*((@x3-9)/5*@x8)) +(@x4*@x8)-(0.15*@xx>0*@x5)-(0.15*@xx>0*@x6)-(0.3*@xx>0*@x7)*@x9))-100"));

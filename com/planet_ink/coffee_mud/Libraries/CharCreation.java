@@ -1323,7 +1323,16 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     	rpt.append("\r\n"); rpt.append("PLAYERS");
     	rpt.append("\t"); rpt.append(Integer.toString(CMLib.sessions().size()));
     	rpt.append("\r\n"); rpt.append("STATUS");
-    	rpt.append("\t"); rpt.append(CMProps.getVar(CMProps.SYSTEM_MUDSTATE));
+    	rpt.append("\t");
+    	switch(CMProps.getIntVar(CMProps.SYSTEMI_MUDSTATE))
+    	{
+    	case 0: rpt.append("Alpha"); break; 
+    	case 1: rpt.append("Closed Beta"); break; 
+    	case 2: rpt.append("Open Beta"); break; 
+    	case 3: rpt.append("Live"); break;
+    	default : rpt.append("Live"); break;
+    	}
+    	
     	MudHost host = null;
     	if(CMLib.hosts().size()>0)
     		host = (MudHost)CMLib.hosts().firstElement();
