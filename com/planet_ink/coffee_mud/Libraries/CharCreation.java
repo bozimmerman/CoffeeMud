@@ -88,21 +88,58 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
            &&(!CMath.bset(thisClass.availabilityCode(),Area.THEME_SKILLONLYMASK))
            &&((mob==null)||(thisClass.qualifiesForThisClass(mob,true))))
         {
-           if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO"))
-           ||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("MULTI"))
-           ||(thisClass.baseClass().equals(thisClass.ID()))
-           ||(thisClass.ID().equals("Apprentice")))
-        	   return true;
-           if(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-"))
-		   {
-               if((mob!=null)
-               &&(mob.baseCharStats().getCurrentClass().ID().equalsIgnoreCase("StdCharClass")))
-            	   return thisClass.ID().equals("Apprentice");
-               if((mob!=null)
-               &&(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-NO"))
-               &&(!mob.baseCharStats().getCurrentClass().ID().equalsIgnoreCase("Apprentice")))
-            	   return false;
-		   }
+           if(mob == null)
+           {
+               if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("SUB"))
+               ||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-SUB")))
+               {
+                   if((thisClass.baseClass().equals(thisClass.ID()))
+	               ||(thisClass.ID().equals("Apprentice")))
+                	   return true;
+               }
+               else
+	               return true;
+           }
+           else
+           if(mob.baseCharStats().getCurrentClass().ID().equalsIgnoreCase("StdCharClass"))
+           {
+               if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO"))
+               ||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("MULTI")))
+            	   return true;
+               if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("SUB"))
+               &&((thisClass.baseClass().equals(thisClass.ID()))
+	               ||(thisClass.ID().equals("Apprentice"))))
+                	   return true;
+               if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-"))
+               &&(thisClass.ID().equals("Apprentice")))
+            	   return true;
+           }
+           else
+           if(mob.baseCharStats().getCurrentClass().ID().equalsIgnoreCase("Apprentice"))
+           {
+               if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO"))
+               ||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-NO"))
+               ||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("MULTI"))
+               ||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-MULTI")))
+            	   return true;
+               if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("SUB")
+            	   ||CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-SUB"))
+               &&((thisClass.baseClass().equals(thisClass.ID()))
+	               ||(thisClass.ID().equals("Apprentice"))))
+                	   return true;
+           }
+           else
+           {
+               if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("MULTI"))
+               ||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-MULTI")))
+            	   return true;
+               if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("SUB") 
+        		   || CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-SUB"))
+               &&(mob.baseCharStats().getCurrentClass().baseClass().equals(thisClass.ID())
+                   ||mob.baseCharStats().getCurrentClass().baseClass().equals("Commoner")
+	               ||(thisClass.ID().equals("Apprentice"))))
+                	   return true;
+           }
         }
         return false;
     }
