@@ -553,7 +553,15 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		case CMMsg.TYP_READ:
 			if(CMLib.flags().canBeSeenBy(this,mob))
 			{
-                int cols=(mob.session()==null)?80:(mob.session().getWrap()+2);
+				int cols = 80;
+				if(mob.session()!=null)
+				{
+					cols=mob.session().getWrap();
+					if(cols==0)
+						cols=254;
+					else
+						cols += 2;
+				}
 				StringBuffer map[][]=getMyMappedRoom(cols);
 				if((CMLib.flags().isReadable(this))
 				&&(map!=null)
