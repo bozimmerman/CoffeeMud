@@ -508,9 +508,9 @@ public class CMParms
                         text=text.substring(x);
                         x=0;
                         while((x<text.length())
-                            &&((Character.isLetterOrDigit(text.charAt(x)))
+                            &&((!Character.isWhitespace(text.charAt(x)))
                             ||((endWithQuote)&&(text.charAt(x)!='\"'))))
-                            x++;
+	                            x++;
                         return text.substring(0,x).trim();
                     }
 
