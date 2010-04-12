@@ -86,12 +86,24 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         if((CMProps.isTheme(thisClass.availabilityCode()))
            &&(CMath.bset(thisClass.availabilityCode(),theme))
            &&(!CMath.bset(thisClass.availabilityCode(),Area.THEME_SKILLONLYMASK))
-           &&((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO"))
-              ||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("MULTI"))
-              ||(thisClass.baseClass().equals(thisClass.ID())
-              ||(thisClass.ID().equals("Apprentice"))))
            &&((mob==null)||(thisClass.qualifiesForThisClass(mob,true))))
-            return true;
+        {
+           if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO"))
+           ||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("MULTI"))
+           ||(thisClass.baseClass().equals(thisClass.ID()))
+           ||(thisClass.ID().equals("Apprentice")))
+        	   return true;
+           if(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-"))
+		   {
+               if((mob!=null)
+               &&(mob.baseCharStats().getCurrentClass().ID().equalsIgnoreCase("StdCharClass")))
+            	   return thisClass.ID().equals("Apprentice");
+               if((mob!=null)
+               &&(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-NO"))
+               &&(!mob.baseCharStats().getCurrentClass().ID().equalsIgnoreCase("Apprentice")))
+            	   return false;
+		   }
+        }
         return false;
     }
 

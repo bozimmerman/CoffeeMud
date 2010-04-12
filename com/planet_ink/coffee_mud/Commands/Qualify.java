@@ -156,8 +156,10 @@ public class Qualify  extends Skills
 			}
 		}
 		boolean classesFound=false;
-		if((!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO"))
-		&&(mob!=null)
+		if((mob!=null)
+		&&(!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO"))
+		&&((!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-NO"))
+			||(mob.baseCharStats().getCurrentClass().ID().equalsIgnoreCase("Apprentice")))
 		&&(showAll||("CLASSES".startsWith(qual))))
 		{
 			int col=0;

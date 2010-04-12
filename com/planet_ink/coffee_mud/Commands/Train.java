@@ -114,6 +114,8 @@ public class Train extends StdCommand
             abilityCode=-1;
 		CharClass theClass=null;
 		if((!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO"))
+		&&((!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-NO"))
+			||((mob!=null)&&(mob.baseCharStats().getCurrentClass().ID().equalsIgnoreCase("Apprentice"))))
 		&&(!CMSecurity.isDisabled("CLASSTRAINING"))
 		&&(abilityCode<0))
 		{
@@ -270,7 +272,8 @@ public class Train extends StdCommand
 			&&(!mob.charStats().getCurrentClass().baseClass().equals("Commoner"))
 			&&(teacher.charStats().getClassLevel(theClass)<1))
 		    {
-				if((!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("MULTI")))
+				if((!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("MULTI"))
+				&&(!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-MULTI")))
 	            {
 	                CharClass C=CMClass.getCharClass(mob.charStats().getCurrentClass().baseClass());
 	                String baseClassName=(C!=null)?C.name():mob.charStats().getCurrentClass().baseClass();

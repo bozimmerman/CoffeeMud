@@ -184,8 +184,10 @@ public class StdCharClass implements CharClass
 					mob.tell("But you are already a "+name()+"!");
 				return false;
 			}
-			if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO"))
-			&&(!mob.charStats().getCurrentClass().baseClass().equals("StdCharClass")))
+			if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO")
+				||CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-NO"))
+			&&(!mob.charStats().getCurrentClass().baseClass().equals("StdCharClass"))
+			&&(!mob.charStats().getCurrentClass().baseClass().equals("Apprentice")))
 			{
 				if(!quiet)
 					mob.tell("You should be happy to be a "+name()+"!");
@@ -193,6 +195,7 @@ public class StdCharClass implements CharClass
 			}
 			else
 			if((!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("MULTI"))
+			&&(!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-MULTI"))
 			&&(!mob.charStats().getCurrentClass().baseClass().equals(baseClass()))
 			&&(!mob.charStats().getCurrentClass().baseClass().equals("StdCharClass"))
 			&&((!mob.charStats().getCurrentClass().baseClass().equals("Commoner"))||(baseClass().equals("StdCharClass"))))
