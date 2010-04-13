@@ -206,27 +206,30 @@ public class SkyWatcher extends StdCharClass
 	public String statQualifications(){return "Constitution 9+, Intelligence 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)<=8)
+		if(mob != null)
 		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Constitution to become a SkyWatcher.");
-			return false;
-		}
-		if(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)<=8)
-		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Intelligence to become a SkyWatcher.");
-			return false;
-		}
-		if(!(mob.charStats().getMyRace().racialCategory().equals("Human"))
-		&& !(mob.charStats().getMyRace().racialCategory().equals("Humanoid"))
-		&& !(mob.charStats().getMyRace().racialCategory().equals("Elf"))
-		&& !(mob.charStats().getMyRace().racialCategory().equals("Dwarf"))
-		&& !(mob.charStats().getMyRace().racialCategory().equals("Giant-kin")))
-		{
-			if(!quiet)
-				mob.tell("You must be Human, Elf, Dwarf, Giant-kin, or Half Elf to be a SkyWatcher");
-			return false;
+			if(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)<=8)
+			{
+				if(!quiet)
+					mob.tell("You need at least a 9 Constitution to become a SkyWatcher.");
+				return false;
+			}
+			if(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)<=8)
+			{
+				if(!quiet)
+					mob.tell("You need at least a 9 Intelligence to become a SkyWatcher.");
+				return false;
+			}
+			if(!(mob.charStats().getMyRace().racialCategory().equals("Human"))
+			&& !(mob.charStats().getMyRace().racialCategory().equals("Humanoid"))
+			&& !(mob.charStats().getMyRace().racialCategory().equals("Elf"))
+			&& !(mob.charStats().getMyRace().racialCategory().equals("Dwarf"))
+			&& !(mob.charStats().getMyRace().racialCategory().equals("Giant-kin")))
+			{
+				if(!quiet)
+					mob.tell("You must be Human, Elf, Dwarf, Giant-kin, or Half Elf to be a SkyWatcher");
+				return false;
+			}
 		}
 		return super.qualifiesForThisClass(mob,quiet);
 	}

@@ -32,7 +32,7 @@ import java.util.*;
 public interface CharCreationLibrary extends CMLibrary
 {
     public void reRollStats(MOB mob, CharStats C);
-    public boolean classOkForMe(MOB mob, CharClass thisClass, int theme);
+    public boolean canChangeToThisClass(MOB mob, CharClass thisClass, int theme);
     // mob is optional
     public Vector classQualifies(MOB mob, int theme);
     // mob is optional

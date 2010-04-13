@@ -127,17 +127,20 @@ public class Apprentice extends StdCharClass
 	public String statQualifications(){return "Wisdom 5+, Intelligence 5+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<=4)
+		if(mob != null)
 		{
-			if(!quiet)
-				mob.tell("You need at least a 5 Wisdom to become a Apprentice.");
-			return false;
-		}
-		if(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)<=4)
-		{
-			if(!quiet)
-				mob.tell("You need at least a 5 Intelligence to become a Apprentice.");
-			return false;
+			if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<=4)
+			{
+				if(!quiet)
+					mob.tell("You need at least a 5 Wisdom to become a Apprentice.");
+				return false;
+			}
+			if(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)<=4)
+			{
+				if(!quiet)
+					mob.tell("You need at least a 5 Intelligence to become a Apprentice.");
+				return false;
+			}
 		}
 		return super.qualifiesForThisClass(mob,quiet);
 	}

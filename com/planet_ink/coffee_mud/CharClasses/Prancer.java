@@ -157,28 +157,30 @@ public class Prancer extends StdCharClass
 	public String statQualifications(){return "Charisma 9+, Strength 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA) <= 8)
+		if(mob != null)
 		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Charisma to become a Dancer.");
-			return false;
+			if(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA) <= 8)
+			{
+				if(!quiet)
+					mob.tell("You need at least a 9 Charisma to become a Dancer.");
+				return false;
+			}
+			if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH) <= 8)
+			{
+				if(!quiet)
+					mob.tell("You need at least a 9 Strength to become a Dancer.");
+				return false;
+			}
+			if((!(mob.charStats().getMyRace().racialCategory().equals("Human")))
+			&&(!(mob.charStats().getMyRace().racialCategory().equals("Humanoid")))
+			&&(!(mob.charStats().getMyRace().racialCategory().equals("Elf")))
+			&&(!(mob.charStats().getMyRace().racialCategory().equals("Halfling"))))
+			{
+				if(!quiet)
+					mob.tell("You must be Human, Elf, Halfling, or Half Elf to be a Dancer");
+				return false;
+			}
 		}
-		if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH) <= 8)
-		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Strength to become a Dancer.");
-			return false;
-		}
-		if((!(mob.charStats().getMyRace().racialCategory().equals("Human")))
-		&&(!(mob.charStats().getMyRace().racialCategory().equals("Humanoid")))
-		&&(!(mob.charStats().getMyRace().racialCategory().equals("Elf")))
-		&&(!(mob.charStats().getMyRace().racialCategory().equals("Halfling"))))
-		{
-			if(!quiet)
-				mob.tell("You must be Human, Elf, Halfling, or Half Elf to be a Dancer");
-			return false;
-		}
-
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 	public String otherLimitations(){return "";}

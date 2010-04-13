@@ -81,66 +81,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             C.setStat(i,stats[i]);
     }
 
-    public boolean classOkForMe(MOB mob, CharClass thisClass, int theme)
+    public boolean canChangeToThisClass(MOB mob, CharClass thisClass, int theme)
     {
         if((CMProps.isTheme(thisClass.availabilityCode()))
-           &&(CMath.bset(thisClass.availabilityCode(),theme))
-           &&(!CMath.bset(thisClass.availabilityCode(),Area.THEME_SKILLONLYMASK))
-           &&((mob==null)||(thisClass.qualifiesForThisClass(mob,true))))
-        {
-           if(mob == null)
-           {
-               if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("SUB"))
-               ||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-SUB")))
-               {
-                   if((thisClass.baseClass().equals(thisClass.ID()))
-	               ||(thisClass.ID().equals("Apprentice")))
-                	   return true;
-               }
-               else
-	               return true;
-           }
-           else
-           if(mob.baseCharStats().getCurrentClass().ID().equalsIgnoreCase("StdCharClass"))
-           {
-               if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO"))
-               ||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("MULTI")))
-            	   return true;
-               if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("SUB"))
-               &&((thisClass.baseClass().equals(thisClass.ID()))
-	               ||(thisClass.ID().equals("Apprentice"))))
-                	   return true;
-               if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-"))
-               &&(thisClass.ID().equals("Apprentice")))
-            	   return true;
-           }
-           else
-           if(mob.baseCharStats().getCurrentClass().ID().equalsIgnoreCase("Apprentice"))
-           {
-               if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO"))
-               ||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-NO"))
-               ||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("MULTI"))
-               ||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-MULTI")))
-            	   return true;
-               if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("SUB")
-            	   ||CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-SUB"))
-               &&((thisClass.baseClass().equals(thisClass.ID()))
-	               ||(thisClass.ID().equals("Apprentice"))))
-                	   return true;
-           }
-           else
-           {
-               if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("MULTI"))
-               ||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-MULTI")))
-            	   return true;
-               if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("SUB") 
-        		   || CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-SUB"))
-               &&(mob.baseCharStats().getCurrentClass().baseClass().equals(thisClass.ID())
-                   ||mob.baseCharStats().getCurrentClass().baseClass().equals("Commoner")
-	               ||(thisClass.ID().equals("Apprentice"))))
-                	   return true;
-           }
-        }
+        &&((theme<0)||(CMath.bset(thisClass.availabilityCode(),theme)))
+        &&(!CMath.bset(thisClass.availabilityCode(),Area.THEME_SKILLONLYMASK))
+        &&((mob==null)||(thisClass.qualifiesForThisClass(mob,true))))
+        	return true;
         return false;
     }
 
@@ -154,7 +101,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             if(doneClasses.contains(C.ID())) continue;
             C=CMClass.getCharClass(C.ID());
             doneClasses.add(C.ID());
-            if(classOkForMe(mob,C,theme))
+            if(canChangeToThisClass(mob,C,theme))
                 them.addElement(C);
         }
         return them;
@@ -1049,7 +996,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	                statstr.append(CMStrings.padRight("TOTAL POINTS",15)+": "+CMProps.getIntVar(CMProps.SYSTEMI_MAXSTAT)+"/"+(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)*6));
 	                session.println(statstr.toString());
 	                if(!CMSecurity.isDisabled("CLASSES")
-	                &&!mob.baseCharStats().getMyRace().classless())
+	                &&!mob.baseCharStats().getMyRace().classless()
+	                &&((V.size()!=1)||(!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-"))))
 	                	session.println("\n\rThis would qualify you for ^H"+classes.toString()+"^N.");
 	
 	                if(!session.confirm("^!Would you like to re-roll (y/N)?^N","N"))
@@ -1115,7 +1063,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	                        break;
 	                    }
 	                }
-	                if((newClass!=null)&&(classOkForMe(mob,newClass,theme)))
+	                if((newClass!=null)&&(canChangeToThisClass(mob,newClass,theme)))
 	                {
 	                	StringBuilder str=CMLib.help().getHelpText(newClass.ID().toUpperCase(),mob,false);
 	                    if(str!=null) session.println("\n\r^N"+str.toString()+"\n\r");

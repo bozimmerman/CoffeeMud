@@ -200,13 +200,16 @@ public class GenCharClass extends StdCharClass
 	{
 		if(!super.qualifiesForThisClass(mob,quiet))
 			return false;
-		if((!mob.isMonster())&&(mob.baseEnvStats().level()>0))
+		if(mob != null)
 		{
-			if(!CMLib.masking().maskCheck(qualifications,mob,true))
+			if((!mob.isMonster())&&(mob.baseEnvStats().level()>0))
 			{
-				if(!quiet)
-					mob.tell("You must meet the following qualifications to be a "+name()+":\n"+statQualifications());
-				return false;
+				if(!CMLib.masking().maskCheck(qualifications,mob,true))
+				{
+					if(!quiet)
+						mob.tell("You must meet the following qualifications to be a "+name()+":\n"+statQualifications());
+					return false;
+				}
 			}
 		}
 		return true;

@@ -198,17 +198,20 @@ public class Minstrel extends StdCharClass
 	public String statQualifications(){return "Charisma 9+, Intelligence 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA) <= 8)
+		if(mob != null)
 		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Charisma to become a Minstrel.");
-			return false;
-		}
-		if(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE) <= 8)
-		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Intelligence to become a Minstrel.");
-			return false;
+			if(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA) <= 8)
+			{
+				if(!quiet)
+					mob.tell("You need at least a 9 Charisma to become a Minstrel.");
+				return false;
+			}
+			if(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE) <= 8)
+			{
+				if(!quiet)
+					mob.tell("You need at least a 9 Intelligence to become a Minstrel.");
+				return false;
+			}
 		}
 		return super.qualifiesForThisClass(mob,quiet);
 	}

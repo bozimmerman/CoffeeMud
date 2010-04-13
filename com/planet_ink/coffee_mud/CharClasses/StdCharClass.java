@@ -170,42 +170,93 @@ public class StdCharClass implements CharClass
 	{ return duration;}
 
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
-	public boolean tick(Tickable myChar, int tickID){
+	
+	public boolean tick(Tickable myChar, int tickID)
+	{
 		return true;
 	}
 
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
+        if(mob == null)
+        {
+            if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("SUB"))
+            ||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-SUB")))
+            {
+                if((baseClass().equals(ID()))||(ID().equals("Apprentice")))
+             	   return true;
+            }
+            else
+               return true;
+            return false;
+        }
+        else
 		if((!mob.isMonster())&&(mob.baseEnvStats().level()>0))
 		{
-			if(mob.charStats().getCurrentClass().ID().equals(ID()))
+			CharClass curClass = (mob==null)?null:mob.baseCharStats().getCurrentClass();
+			if(curClass.ID().equals(ID()))
 			{
 				if(!quiet)
 					mob.tell("But you are already a "+name()+"!");
 				return false;
 			}
-			if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO")
-				||CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-NO"))
-			&&(!mob.charStats().getCurrentClass().baseClass().equals("StdCharClass"))
-			&&(!mob.charStats().getCurrentClass().baseClass().equals("Apprentice")))
+			if(curClass.ID().equalsIgnoreCase("StdCharClass"))
 			{
+				if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO"))
+				||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("MULTI")))
+					return true;
+				if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("SUB"))
+				&&((baseClass().equals(ID()))
+					||(ID().equals("Apprentice"))))
+						return true;
+				if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-"))
+				&&(ID().equals("Apprentice")))
+					return true;
 				if(!quiet)
-					mob.tell("You should be happy to be a "+name()+"!");
+					mob.tell("You can't train to be a "+name()+"!");
 				return false;
 			}
 			else
-			if((!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("MULTI"))
-			&&(!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-MULTI"))
-			&&(!mob.charStats().getCurrentClass().baseClass().equals(baseClass()))
-			&&(!mob.charStats().getCurrentClass().baseClass().equals("StdCharClass"))
-			&&((!mob.charStats().getCurrentClass().baseClass().equals("Commoner"))||(baseClass().equals("StdCharClass"))))
+			if(curClass.ID().equalsIgnoreCase("Apprentice"))
 			{
-				if(!quiet)
-					mob.tell("You must be a "+baseClass()+" type to become a "+name()+".");
+				if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO"))
+				||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-NO"))
+				||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("MULTI"))
+				||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-MULTI")))
+					return true;
+				if(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("SUB")
+				||CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-SUB"))
+				{
+					if((baseClass().equals(ID()))||(baseClass().equals(curClass.baseClass())))
+						return true;
+					if(!quiet)
+						mob.tell("You must be a "+baseClass()+" type to become a "+name()+".");
+				}
 				return false;
 			}
+			else
+			{
+				if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("MULTI"))
+				||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-MULTI")))
+					return true;
+				else
+				if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO"))
+				||(CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-NO")))
+					mob.tell("You should be happy to be a "+curClass.name()+".");
+				else
+				if((CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("SUB") 
+				|| CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-SUB")))
+				{
+					if(curClass.baseClass().equals(baseClass())
+					||curClass.baseClass().equals("Commoner"))
+						return true;
+					if(!quiet)
+						mob.tell("You must be a "+baseClass()+" type to become a "+name()+".");
+		        }
+			}
+			return false;
 		}
-		return true;
+        return true;
 	}
 	public String weaponLimitations()
 	{ return WEAPONS_LONGDESC[allowedWeaponLevel()];}

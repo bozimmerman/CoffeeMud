@@ -157,9 +157,6 @@ public class Qualify  extends Skills
 		}
 		boolean classesFound=false;
 		if((mob!=null)
-		&&(!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO"))
-		&&((!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-NO"))
-			||(mob.baseCharStats().getCurrentClass().ID().equalsIgnoreCase("Apprentice")))
 		&&(showAll||("CLASSES".startsWith(qual))))
 		{
 			int col=0;
@@ -168,9 +165,8 @@ public class Qualify  extends Skills
 			{
 				CharClass C=(CharClass)c.nextElement();
 				StringBuffer thisLine=new StringBuffer("");
-				if(CMProps.isTheme(C.availabilityCode())
-				&&(mob.charStats().getCurrentClass()!=C)
-				&&(C.qualifiesForThisClass(mob,true)))
+				if((mob.charStats().getCurrentClass()!=C)
+				&&(CMLib.login().canChangeToThisClass(mob, C, -1)))
 				{
 					if((++col)>2)
 					{

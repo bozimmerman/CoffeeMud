@@ -161,11 +161,14 @@ public class Thief extends StdCharClass
 	public String statQualifications(){return "Dexterity 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<=8)
+		if(mob != null)
 		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Dexterity to become a Thief.");
-			return false;
+			if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<=8)
+			{
+				if(!quiet)
+					mob.tell("You need at least a 9 Dexterity to become a Thief.");
+				return false;
+			}
 		}
 		return super.qualifiesForThisClass(mob,quiet);
 	}

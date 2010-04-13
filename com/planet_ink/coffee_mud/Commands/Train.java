@@ -113,11 +113,7 @@ public class Train extends StdCommand
         else
             abilityCode=-1;
 		CharClass theClass=null;
-		if((!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("NO"))
-		&&((!CMProps.getVar(CMProps.SYSTEM_MULTICLASS).startsWith("APP-NO"))
-			||((mob!=null)&&(mob.baseCharStats().getCurrentClass().ID().equalsIgnoreCase("Apprentice"))))
-		&&(!CMSecurity.isDisabled("CLASSTRAINING"))
-		&&(abilityCode<0))
+		if((!CMSecurity.isDisabled("CLASSTRAINING"))&&(abilityCode<0))
 		{
 			for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 			{

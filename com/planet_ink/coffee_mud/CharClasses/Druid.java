@@ -278,24 +278,27 @@ public class Druid extends StdCharClass
 	public String statQualifications(){return "Constitution 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)<=8)
+		if(mob != null)
 		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Constitution to become a Druid.");
-			return false;
-		}
-		if(!(mob.charStats().getMyRace().racialCategory().equals("Human"))
-		&& !(mob.charStats().getMyRace().racialCategory().equals("Humanoid"))
-		&& !(mob.charStats().getMyRace().racialCategory().equals("Elf"))
-		&& !(mob.charStats().getMyRace().racialCategory().equals("Vegetation"))
-		&& !(mob.charStats().getMyRace().racialCategory().equals("Dwarf"))
-		&& !(mob.charStats().getMyRace().racialCategory().equals("Giant-kin"))
-		&& !(mob.charStats().getMyRace().racialCategory().equals("Golbinoids"))
-		&& !(mob.charStats().getMyRace().racialCategory().equals("HalfElf")))
-		{
-			if(!quiet)
-				mob.tell("You must be Human, Elf, Dwarf, Golbinoid, Giant-kin, or Half Elf to be a Druid");
-			return false;
+			if(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)<=8)
+			{
+				if(!quiet)
+					mob.tell("You need at least a 9 Constitution to become a Druid.");
+				return false;
+			}
+			if(!(mob.charStats().getMyRace().racialCategory().equals("Human"))
+			&& !(mob.charStats().getMyRace().racialCategory().equals("Humanoid"))
+			&& !(mob.charStats().getMyRace().racialCategory().equals("Elf"))
+			&& !(mob.charStats().getMyRace().racialCategory().equals("Vegetation"))
+			&& !(mob.charStats().getMyRace().racialCategory().equals("Dwarf"))
+			&& !(mob.charStats().getMyRace().racialCategory().equals("Giant-kin"))
+			&& !(mob.charStats().getMyRace().racialCategory().equals("Golbinoids"))
+			&& !(mob.charStats().getMyRace().racialCategory().equals("HalfElf")))
+			{
+				if(!quiet)
+					mob.tell("You must be Human, Elf, Dwarf, Golbinoid, Giant-kin, or Half Elf to be a Druid");
+				return false;
+			}
 		}
 		return super.qualifiesForThisClass(mob,quiet);
 	}

@@ -177,30 +177,30 @@ public class Ranger extends StdCharClass
     public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg); Druid.doAnimalFollowerLevelingCheck(this,host,msg);}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)<=8)
+		if(mob != null)
 		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Strength to become a Ranger.");
-			return false;
+			if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)<=8)
+			{
+				if(!quiet)
+					mob.tell("You need at least a 9 Strength to become a Ranger.");
+				return false;
+			}
+			if(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)<=8)
+			{
+				if(!quiet)
+					mob.tell("You need at least a 9 Intelligence to become a Ranger.");
+				return false;
+			}
+			if(!(mob.charStats().getMyRace().racialCategory().equals("Human"))
+			&& !(mob.charStats().getMyRace().racialCategory().equals("Humanoid"))
+			&& !(mob.charStats().getMyRace().racialCategory().equals("Troll-kin"))
+			&& !(mob.charStats().getMyRace().racialCategory().equals("Elf")))
+			{
+				if(!quiet)
+					mob.tell("You need to be Human, Elf, or Half Elf to be a Ranger.");
+				return false;
+			}
 		}
-
-		if(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)<=8)
-		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Intelligence to become a Ranger.");
-			return false;
-		}
-
-		if(!(mob.charStats().getMyRace().racialCategory().equals("Human"))
-		&& !(mob.charStats().getMyRace().racialCategory().equals("Humanoid"))
-		&& !(mob.charStats().getMyRace().racialCategory().equals("Troll-kin"))
-		&& !(mob.charStats().getMyRace().racialCategory().equals("Elf")))
-		{
-			if(!quiet)
-				mob.tell("You need to be Human, Elf, or Half Elf to be a Ranger.");
-			return false;
-		}
-
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 

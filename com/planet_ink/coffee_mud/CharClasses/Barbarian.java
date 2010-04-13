@@ -151,18 +151,21 @@ public class Barbarian extends StdCharClass
     public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg);}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)<=8)
+		if(mob != null)
 		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Strength to become a Barbarian.");
-			return false;
-		}
-
-		if(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)<=8)
-		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Constitution to become a Barbarian.");
-			return false;
+			if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)<=8)
+			{
+				if(!quiet)
+					mob.tell("You need at least a 9 Strength to become a Barbarian.");
+				return false;
+			}
+	
+			if(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)<=8)
+			{
+				if(!quiet)
+					mob.tell("You need at least a 9 Constitution to become a Barbarian.");
+				return false;
+			}
 		}
 		return super.qualifiesForThisClass(mob,quiet);
 	}

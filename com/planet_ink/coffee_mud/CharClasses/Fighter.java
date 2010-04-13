@@ -145,11 +145,14 @@ public class Fighter extends StdCharClass
 	public String statQualifications(){return "Strength 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)<=8)
+		if(mob != null)
 		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Strength to become a Fighter.");
-			return false;
+			if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)<=8)
+			{
+				if(!quiet)
+					mob.tell("You need at least a 9 Strength to become a Fighter.");
+				return false;
+			}
 		}
 		return super.qualifiesForThisClass(mob,quiet);
 	}

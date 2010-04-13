@@ -247,11 +247,14 @@ public class Cleric extends StdCharClass
 	public String statQualifications(){return "Wisdom 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<=8)
+		if(mob != null)
 		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Wisdom to become a Cleric.");
-			return false;
+			if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<=8)
+			{
+				if(!quiet)
+					mob.tell("You need at least a 9 Wisdom to become a Cleric.");
+				return false;
+			}
 		}
 		return super.qualifiesForThisClass(mob,quiet);
 	}

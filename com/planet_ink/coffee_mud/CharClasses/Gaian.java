@@ -185,28 +185,31 @@ public class Gaian extends StdCharClass
 	public String statQualifications(){return "Constitution 9+, Wisdom 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)<=8)
+		if(mob != null)
 		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Constitution to become a Gaian.");
-			return false;
-		}
-		if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<=8)
-		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Wisdom to become a Gaian.");
-			return false;
-		}
-		if(!(mob.charStats().getMyRace().racialCategory().equals("Human"))
-		&& !(mob.charStats().getMyRace().racialCategory().equals("Elf"))
-		&& !(mob.charStats().getMyRace().racialCategory().equals("Vegetation"))
-		&& !(mob.charStats().getMyRace().racialCategory().equals("Humanoid"))
-		&& !(mob.charStats().getMyRace().racialCategory().equals("Halfling"))
-		&& !(mob.charStats().getMyRace().racialCategory().equals("Dwarf")))
-		{
-			if(!quiet)
-				mob.tell("You must be Human, Elf, Dwarf, Halfling, or Half Elf to be a Gaian");
-			return false;
+			if(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)<=8)
+			{
+				if(!quiet)
+					mob.tell("You need at least a 9 Constitution to become a Gaian.");
+				return false;
+			}
+			if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<=8)
+			{
+				if(!quiet)
+					mob.tell("You need at least a 9 Wisdom to become a Gaian.");
+				return false;
+			}
+			if(!(mob.charStats().getMyRace().racialCategory().equals("Human"))
+			&& !(mob.charStats().getMyRace().racialCategory().equals("Elf"))
+			&& !(mob.charStats().getMyRace().racialCategory().equals("Vegetation"))
+			&& !(mob.charStats().getMyRace().racialCategory().equals("Humanoid"))
+			&& !(mob.charStats().getMyRace().racialCategory().equals("Halfling"))
+			&& !(mob.charStats().getMyRace().racialCategory().equals("Dwarf")))
+			{
+				if(!quiet)
+					mob.tell("You must be Human, Elf, Dwarf, Halfling, or Half Elf to be a Gaian");
+				return false;
+			}
 		}
 		return super.qualifiesForThisClass(mob,quiet);
 	}

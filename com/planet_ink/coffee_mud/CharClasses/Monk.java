@@ -146,27 +146,30 @@ public class Monk extends StdCharClass
 	public String statQualifications(){return "Strength 9+, Dexterity 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)<=8)
+		if(mob != null)
 		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Strength to become a Monk.");
-			return false;
-		}
-
-		if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<=8)
-		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Dexterity to become a Monk.");
-			return false;
-		}
-		if(!(mob.charStats().getMyRace().racialCategory().equals("Human"))
-		&& !(mob.charStats().getMyRace().racialCategory().equals("Humanoid"))
-		&& !(mob.charStats().getMyRace().racialCategory().equals("Elf"))
-		&& !(mob.charStats().getMyRace().racialCategory().equals("Goblinoids")))
-		{
-			if(!quiet)
-				mob.tell("You must be Human, Elf, Goblinoid, or Half Elf to be a Monk");
-			return false;
+			if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)<=8)
+			{
+				if(!quiet)
+					mob.tell("You need at least a 9 Strength to become a Monk.");
+				return false;
+			}
+	
+			if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<=8)
+			{
+				if(!quiet)
+					mob.tell("You need at least a 9 Dexterity to become a Monk.");
+				return false;
+			}
+			if(!(mob.charStats().getMyRace().racialCategory().equals("Human"))
+			&& !(mob.charStats().getMyRace().racialCategory().equals("Humanoid"))
+			&& !(mob.charStats().getMyRace().racialCategory().equals("Elf"))
+			&& !(mob.charStats().getMyRace().racialCategory().equals("Goblinoids")))
+			{
+				if(!quiet)
+					mob.tell("You must be Human, Elf, Goblinoid, or Half Elf to be a Monk");
+				return false;
+			}
 		}
 		return super.qualifiesForThisClass(mob,quiet);
 	}

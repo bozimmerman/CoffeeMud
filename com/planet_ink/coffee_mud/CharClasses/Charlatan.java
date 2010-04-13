@@ -144,27 +144,29 @@ public class Charlatan extends StdCharClass
 	public String statQualifications(){return "Charisma 9+, Wisdom 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA) <= 8)
+		if(mob != null)
 		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Charisma to become a Charlatan.");
-			return false;
+			if(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA) <= 8)
+			{
+				if(!quiet)
+					mob.tell("You need at least a 9 Charisma to become a Charlatan.");
+				return false;
+			}
+			if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM) <= 8)
+			{
+				if(!quiet)
+					mob.tell("You need at least a 9 Wisdom to become a Charlatan.");
+				return false;
+			}
+			if((!(mob.charStats().getMyRace().racialCategory().equals("Human")))
+			&&(!(mob.charStats().getMyRace().racialCategory().equals("Humanoid")))
+			&&(!(mob.charStats().getMyRace().ID().equals("HalfElf"))))
+			{
+				if(!quiet)
+					mob.tell("You must be Human, or Half Elf to be a Charlatan");
+				return false;
+			}
 		}
-		if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM) <= 8)
-		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Wisdom to become a Charlatan.");
-			return false;
-		}
-		if((!(mob.charStats().getMyRace().racialCategory().equals("Human")))
-		&&(!(mob.charStats().getMyRace().racialCategory().equals("Humanoid")))
-		&&(!(mob.charStats().getMyRace().ID().equals("HalfElf"))))
-		{
-			if(!quiet)
-				mob.tell("You must be Human, or Half Elf to be a Charlatan");
-			return false;
-		}
-
 		return super.qualifiesForThisClass(mob,quiet);
 	}
     

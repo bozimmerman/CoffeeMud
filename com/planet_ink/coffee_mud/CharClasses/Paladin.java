@@ -198,27 +198,29 @@ public class Paladin extends StdCharClass
 	public String statQualifications(){return "Strength 9+, Wisdom 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH) <= 8)
+		if(mob != null)
 		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Strength to become a Paladin.");
-			return false;
+			if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH) <= 8)
+			{
+				if(!quiet)
+					mob.tell("You need at least a 9 Strength to become a Paladin.");
+				return false;
+			}
+	
+			if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM) <= 8)
+			{
+				if(!quiet)
+					mob.tell("You need at least a 9 Wisdom to become a Paladin.");
+				return false;
+			}
+	
+			if(!(mob.charStats().getMyRace().ID().equals("Human")))
+			{
+				if(!quiet)
+					mob.tell("You need to be Human to become a Paladin.");
+				return false;
+			}
 		}
-
-		if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM) <= 8)
-		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Wisdom to become a Paladin.");
-			return false;
-		}
-
-		if(!(mob.charStats().getMyRace().ID().equals("Human")))
-		{
-			if(!quiet)
-				mob.tell("You need to be Human to become a Paladin.");
-			return false;
-		}
-
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 

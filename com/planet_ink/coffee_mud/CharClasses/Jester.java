@@ -159,28 +159,30 @@ public class Jester extends StdCharClass
 	public String statQualifications(){return "Charisma 9+, Dexterity 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
-		if(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA) <= 8)
+		if(mob != null)
 		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Charisma to become a Jester.");
-			return false;
+			if(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA) <= 8)
+			{
+				if(!quiet)
+					mob.tell("You need at least a 9 Charisma to become a Jester.");
+				return false;
+			}
+			if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY) <= 8)
+			{
+				if(!quiet)
+					mob.tell("You need at least a 9 Dexterity to become a Jester.");
+				return false;
+			}
+			if((!(mob.charStats().getMyRace().ID().equals("Human")))
+			&&(!(mob.charStats().getMyRace().ID().equals("Gnome")))
+			&&(!(mob.charStats().getMyRace().ID().equals("Halfling")))
+			&&(!(mob.charStats().getMyRace().ID().equals("HalfElf"))))
+			{
+				if(!quiet)
+					mob.tell("You must be Human, Gnome, Halfling, or Half Elf to be a Jester");
+				return false;
+			}
 		}
-		if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY) <= 8)
-		{
-			if(!quiet)
-				mob.tell("You need at least a 9 Dexterity to become a Jester.");
-			return false;
-		}
-		if((!(mob.charStats().getMyRace().ID().equals("Human")))
-		&&(!(mob.charStats().getMyRace().ID().equals("Gnome")))
-		&&(!(mob.charStats().getMyRace().ID().equals("Halfling")))
-		&&(!(mob.charStats().getMyRace().ID().equals("HalfElf"))))
-		{
-			if(!quiet)
-				mob.tell("You must be Human, Gnome, Halfling, or Half Elf to be a Jester");
-			return false;
-		}
-
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
