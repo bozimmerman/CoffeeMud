@@ -561,12 +561,11 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
                     for(int b=0;b<warnedOnes.size();b++)
                     {
                         String B=((String)warnedOnes.elementAt(b)).trim();
-                        int lastSpace=B.lastIndexOf(" ");
-                        long warningDateTime=CMath.s_long(B.substring(lastSpace+1).trim());
-                        if(B.trim().length()>0)
+                        if((B.trim().length()>0)
+                        &&(B.toUpperCase().startsWith(name.toUpperCase()+" ")))
                         {
-                            if(B.toUpperCase().startsWith(name.toUpperCase()+" "))
-                            	foundWarningDateTime=warningDateTime;
+                            int lastSpace=B.lastIndexOf(" ");
+                            foundWarningDateTime=CMath.s_long(B.substring(lastSpace+1).trim());
                             if(System.currentTimeMillis() < purgeDateTime + (10 * TimeManager.MILI_DAY))
 	                            warnStr.append(B+"\n");
                         }
