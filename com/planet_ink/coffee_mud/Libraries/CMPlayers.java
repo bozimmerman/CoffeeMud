@@ -519,7 +519,11 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
             if(level>levels.length)
             {
             	if(levels[levels.length-1]==0)
+            	{
+                    if(CMSecurity.isDebugging("AUTOPURGE"))
+                        Log.debugOut(thread.getName(),name+" last on "+CMLib.time().date2String(userLastLoginDateTime)+".  Nothing will be done about it.");
             		continue;
+            	}
                 purgeDateTime=userLastLoginDateTime + levels[levels.length-1];
                 warnDateTime=userLastLoginDateTime + prePurgeLevels[prePurgeLevels.length-1];
             }
@@ -527,7 +531,11 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
             if(level>=0)
             {
             	if(levels[level]==0)
+            	{
+                    if(CMSecurity.isDebugging("AUTOPURGE"))
+                        Log.debugOut(thread.getName(),name+" last on "+CMLib.time().date2String(userLastLoginDateTime)+".  Nothing will be done about it.");
             		continue;
+            	}
                 purgeDateTime=userLastLoginDateTime + levels[level];
                 warnDateTime=userLastLoginDateTime + prePurgeLevels[level];
             }
