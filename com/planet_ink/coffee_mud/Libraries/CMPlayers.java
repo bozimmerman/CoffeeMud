@@ -567,7 +567,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
                         {
                             if(B.toUpperCase().startsWith(name.toUpperCase()+" "))
                             	foundWarningDateTime=warningDateTime;
-                            if(System.currentTimeMillis() < purgeDateTime + TimeManager.MILI_DAY)
+                            if(System.currentTimeMillis() < purgeDateTime + (10 * TimeManager.MILI_DAY))
 	                            warnStr.append(B+"\n");
                         }
                     }
