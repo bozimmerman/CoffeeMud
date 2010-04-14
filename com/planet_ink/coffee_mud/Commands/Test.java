@@ -52,6 +52,18 @@ public class Test extends StdCommand
         return semiSpellList;
     }
 
+    public static final String[] maliciousspells={"Spell_Blindness","Spell_Mute"};
+    public static String maliciousSemiSpellList=null;
+    public static String maliciousSemiSpellList()
+    {
+        if(maliciousSemiSpellList!=null) return maliciousSemiSpellList;
+        StringBuffer str=new StringBuffer("");
+        for(int i=0;i<maliciousspells.length;i++)
+            str.append(maliciousspells[i]+";");
+        maliciousSemiSpellList=str.toString();
+        return maliciousSemiSpellList;
+    }
+
     public boolean isAllAdjusted(MOB mob)
     {
         if(mob.envStats().ability()<10)
@@ -739,13 +751,15 @@ public class Test extends StdCommand
             {
                 reset(mobs,backups,R,IS,R2);
                 Ability FightSpellCast=CMClass.getAbility("Prop_FightSpellCast");
-                FightSpellCast.setMiscText(semiSpellList());
+                FightSpellCast.setMiscText(maliciousSemiSpellList());
                 //mob.tell("Test#11-1: "+FightSpellCast.accountForYourself());
                 IS=giveTo(CMClass.getWeapon("Sword"),FightSpellCast,mobs[0],null,1);
                 if(effectCheck(mobs[1])){ mob.tell("Error11-1"); return false;}
                 if(effectCheck(mobs[0])){ mob.tell("Error11-2"); return false;}
                 for(int i=0;i<100;i++)
                 {
+                	mobs[1].curState().setHitPoints(1000);
+                	mobs[0].curState().setHitPoints(1000);
                     CMLib.combat().postAttack(mobs[0],mobs[1],mobs[0].fetchWieldedItem());
                     if(effectCheck(mobs[1]))
                         break;
@@ -754,14 +768,16 @@ public class Test extends StdCommand
                 R.recoverRoomStats();
                 
                 reset(mobs,backups,R,IS,R2);
-                FightSpellCast.setMiscText(semiSpellList()+"MASK=-RACE +Human");
+                FightSpellCast.setMiscText(maliciousSemiSpellList()+"MASK=-RACE +Human");
                 //mob.tell("Test#11-2: "+FightSpellCast.accountForYourself());
-                IS=giveTo(CMClass.getWeapon("Sword"),FightSpellCast,mobs[0],null,1);
+                IS=giveTo(CMClass.getWeapon("Sword"),FightSpellCast,mobs[1],null,1);
                 if(effectCheck(mobs[1])){ mob.tell("Error11-4"); return false;}
                 if(effectCheck(mobs[0])){ mob.tell("Error11-5"); return false;}
                 for(int i=0;i<100;i++)
                 {
-                    CMLib.combat().postAttack(mobs[0],mobs[1],mobs[0].fetchWieldedItem());
+                	mobs[1].curState().setHitPoints(1000);
+                	mobs[0].curState().setHitPoints(1000);
+                    CMLib.combat().postAttack(mobs[1],mobs[0],mobs[1].fetchWieldedItem());
                     if(effectCheck(mobs[1]))
                         break;
                 }
@@ -769,13 +785,15 @@ public class Test extends StdCommand
                 R.recoverRoomStats();
                 
                 reset(mobs,backups,R,IS,R2);
-                FightSpellCast.setMiscText(semiSpellList()+"MASK=-RACE +Dwarf");
+                FightSpellCast.setMiscText(maliciousSemiSpellList()+"MASK=-RACE +Dwarf");
                 //mob.tell("Test#11-3: "+FightSpellCast.accountForYourself());
                 IS=giveTo(CMClass.getWeapon("Sword"),FightSpellCast,mobs[0],null,1);
                 if(effectCheck(mobs[1])){ mob.tell("Error11-7"); return false;}
                 if(effectCheck(mobs[0])){ mob.tell("Error11-8"); return false;}
                 for(int i=0;i<100;i++)
                 {
+                	mobs[1].curState().setHitPoints(1000);
+                	mobs[0].curState().setHitPoints(1000);
                     CMLib.combat().postAttack(mobs[0],mobs[1],mobs[0].fetchWieldedItem());
                     if(effectCheck(mobs[1]))
                         break;
