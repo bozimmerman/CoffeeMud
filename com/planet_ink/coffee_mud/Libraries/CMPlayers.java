@@ -622,6 +622,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
         String to=mob.Name();
         String subj=CMProps.SYSTEM_MUDNAME+" Autopurge Warning: "+to;
         String textTimeLeft="";
+        if(timeLeft<0)
+        	timeLeft = 1000*60*60*24;
         if(timeLeft>(1000*60*60*24*2))
         {
             int days=(int)CMath.div((double)timeLeft,1000*60*60*24);
@@ -632,6 +634,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
             int hours=(int)CMath.div((double)timeLeft,1000*60*60);
             textTimeLeft = hours + " hours";
         }
+        
         String msg="Your character, "+to+", is going to be autopurged by the system in "+textTimeLeft+".  If you would like to keep this character active, please re-login.  This is an automated message, please do not reply.";
 
         SMTPLibrary.SMTPClient SC=null;
