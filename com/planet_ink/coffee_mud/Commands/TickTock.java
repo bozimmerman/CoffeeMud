@@ -61,7 +61,14 @@ public class TickTock extends StdCommand
                 {
                     CMLibrary lib=(CMLibrary)e.nextElement();
                     if((lib.getSupportThread()!=null)&&(s.equalsIgnoreCase(lib.getSupportThread().getName())))
-                        lib.getSupportThread().interrupt();
+                    {
+                    	if(lib instanceof Runnable)
+	                        ((Runnable)lib).run();
+                    	else
+                    		lib.getSupportThread().interrupt();
+                        mob.tell("Done.");
+                        return false;
+                    }
                 }
     			mob.tell("Ticktock what?  Enter a number of mud-hours, or clanticks, or thread id.");
             }

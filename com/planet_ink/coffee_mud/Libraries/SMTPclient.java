@@ -281,8 +281,14 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 										 String mockto_address,
 										 String subject, 
 										 String message)
-	throws IOException
+		throws IOException
 	{
+    	if(CMSecurity.isDisabled("SMTPCLIENT"))
+    	{
+    		Log.debugOut("SMTPclient", "Message not sent: "+froaddress+"/"+reply_address+"/"+to_address+"/"+mockto_address+"/"+subject+"/"+message);
+    		return;
+    	}
+    	
 		String rstr;
 		String sstr;
 		boolean debug = CMSecurity.isDebugging("SMTPCLIENT");
