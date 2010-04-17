@@ -324,16 +324,23 @@ public class GrinderItems
 				case 40: // map areas
 					if(I instanceof com.planet_ink.coffee_mud.Items.interfaces.Map)
 					{
+						Vector<String> V=new Vector<String>();
 						if(httpReq.isRequestParameter("MAPAREAS"))
 						{
-							old=";"+httpReq.getRequestParameter("MAPAREAS");
+							old=httpReq.getRequestParameter("MAPAREAS").trim();
+							if(old.length()>0)
+								V.add(old);
 							for(int i=1;;i++)
 								if(httpReq.isRequestParameter("MAPAREAS"+(Integer.toString(i))))
-									old+=";"+httpReq.getRequestParameter("MAPAREAS"+(Integer.toString(i)));
+								{
+									old=httpReq.getRequestParameter("MAPAREAS"+(Integer.toString(i))).trim();
+									if(old.length()>0)
+										V.add(old);
+								}
 								else
 									break;
 						}
-						old=old+";";
+						old = CMParms.toSemicolonList(V);
 						CMLib.flags().setReadable(I,false);
 						I.setReadableText(old);
 					}
