@@ -266,9 +266,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         return false;
     }
 
-    private void executeScript(MOB mob, Vector scripts) {
+    private void executeScript(MOB mob, Vector scripts) 
+    {
         if(scripts==null) return;
-        for(int s=0;s<scripts.size();s++) {
+        for(int s=0;s<scripts.size();s++) 
+        {
             String script=(String)scripts.elementAt(s);
             ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
             S.setSavable(false);

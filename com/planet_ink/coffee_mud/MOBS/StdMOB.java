@@ -2707,24 +2707,28 @@ public class StdMOB implements MOB
 				try
 				{
 					String tattoo=null;
+					int spaceDex=0;
 					for(int t=0;t<numTattoos();t++)
 					{
 						tattoo=fetchTattoo(t);
 						if((tattoo!=null)
 						&&(tattoo.length()>0)
 						&&(Character.isDigit(tattoo.charAt(0)))
-						&&(tattoo.indexOf(" ")>0)
-						&&(CMath.isNumber(tattoo.substring(0,tattoo.indexOf(" ")))))
+						&&(tattoo.indexOf(' ')>0))
 						{
-							String tat=tattoo.substring(tattoo.indexOf(" ")+1).trim();
-							int timeDown=CMath.s_int(tattoo.substring(0,tattoo.indexOf(" ")));
-							if(timeDown==1)
+							spaceDex=tattoo.indexOf(' ');
+							if(CMath.isNumber(tattoo.substring(0,spaceDex)))
 							{
-								tattoos.removeElementAt(t);
-								t--;
+								String tat=tattoo.substring(spaceDex+1).trim();
+								int timeDown=CMath.s_int(tattoo.substring(0,spaceDex));
+								if(timeDown==1)
+								{
+									tattoos.removeElementAt(t);
+									t--;
+								}
+								else
+									tattoos.setElementAt((timeDown-1)+" "+tat,t);
 							}
-							else
-								tattoos.setElementAt((timeDown-1)+" "+tat,t);
 						}
 					}
 				}

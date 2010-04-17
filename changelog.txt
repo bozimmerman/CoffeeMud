@@ -2260,3 +2260,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 31.Internal: slight improvement to db connection management that should improve memory use.
 32.MUDSTATE variable in coffeemud.ini file has changed.  Please update your ini files!
 33.CLASSSYSTEM has been expanded with another apprentice-based set of choices.
+34.New command: MPRUN -- for Archons to run Scriptable scripts, and for use in automated testing.
