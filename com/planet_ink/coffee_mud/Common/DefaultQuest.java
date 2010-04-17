@@ -2321,8 +2321,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                        }
                             questifyScriptableBehavs(q.mob);
 	                        runtimeRegisterObject(q.mob);
-	                        q.room.recoverRoomStats();
-	                        q.room.showHappens(CMMsg.MSG_OK_ACTION,null);
+	                        if(q.room!=null)
+	                        {
+		                        q.room.recoverRoomStats();
+		                        q.room.showHappens(CMMsg.MSG_OK_ACTION,null);
+	                        }
                             if(q.mob!=null)
                                 q.mob.setStartRoom(null); // necessary to tell qm to clean him UP!
                         }
@@ -2691,7 +2694,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                             S.setScript(val);
                             E2.addScript(S);
                             runtimeRegisterObject(E2);
-                            questState.addons.addElement(CMParms.makeVector(E2,S),Integer.valueOf(questState.preserveState));
+            	        	synchronized(questState)
+            	        	{
+	                            questState.addons.addElement(CMParms.makeVector(E2,S),Integer.valueOf(questState.preserveState));
+            	        	}
                         }
                     }
                     else
