@@ -232,6 +232,9 @@ public class DefaultSocial implements Social
 				target.setName(targetStr);
 				((MOB)target).setLocation(CMLib.map().getRandomRoom());
 			}
+			else
+			if((target!=null)&&(!CMLib.flags().isInTheGame(target, true)))
+				target=null;
 			if((target!=null)&&(!CMLib.flags().isSeen(target)))
 				target=null;
 		}
