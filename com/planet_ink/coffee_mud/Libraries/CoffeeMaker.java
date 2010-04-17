@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLpiece;
 
 /*
    Copyright 2000-2010 Bo Zimmerman
@@ -569,6 +570,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					Environmental Env=(Environmental)V.elementAt(b);
 					itemstr.append("<SHITEM>");
 					itemstr.append(CMLib.xml().convertXMLtoTag("SICLASS",CMClass.classID(Env)));
+					itemstr.append(CMLib.xml().convertXMLtoTag("SITYPE",CMClass.getType(Env)));
 					itemstr.append(CMLib.xml().convertXMLtoTag("SISTOCK",((ShopKeeper)E).getShop().numberInStock(Env)));
 					itemstr.append(CMLib.xml().convertXMLtoTag("SIPRICE",((ShopKeeper)E).getShop().stockPrice(Env)));
 					itemstr.append(CMLib.xml().convertXMLtoTag("SIDATA",getPropertiesStr(Env,true)));
@@ -1958,6 +1960,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				continue;
 			}
 			String itemi=CMLib.xml().getValFromPieces(iblk.contents,"SICLASS");
+			XMLpiece x=CMLib.xml().getPieceFromPieces(iblk.contents,"SITYPE");
+			int itemtype=-1;
+			if((x!=null)&&(x.value!=null))
+				itemtype=CMath.s_int(x.value);
 			int numStock=CMLib.xml().getIntFromPieces(iblk.contents,"SISTOCK");
 			String prc=CMLib.xml().getValFromPieces(iblk.contents,"SIPRICE");
 			int stockPrice=-1;
@@ -1965,7 +1971,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				stockPrice=CMath.s_int(prc);
 			Environmental newOne=null;
 			Vector idat=CMLib.xml().getRealContentsFromPieces(iblk.contents,"SIDATA");
-			if((iblk.value.indexOf("<ABLTY>")>=0)||(iblk.value.indexOf("&lt;ABLTY&gt;")>=0))
+			if(itemtype>=0)
+				newOne=(Environmental)CMClass.getByType(itemi, itemtype);
+			if((newOne==null)&&((iblk.value.indexOf("<ABLTY>")>=0)||(iblk.value.indexOf("&lt;ABLTY&gt;")>=0)))
 				newOne=CMClass.getMOB(itemi);
 			if(newOne==null) newOne=CMClass.getUnknown(itemi);
 			if(newOne==null)

@@ -179,6 +179,57 @@ public class CMClass extends ClassLoader
         return false;
     }
 
+    public static CMObject getByType(String ID, int type)
+    {
+        switch(type)
+        {
+            case OBJECT_RACE: return CMClass.getRace(ID);
+            case OBJECT_CHARCLASS: return CMClass.getCharClass(ID);
+            case OBJECT_MOB: return CMClass.getMOB(ID);
+            case OBJECT_ABILITY: return CMClass.getAbility(ID);
+            case OBJECT_LOCALE: return CMClass.getLocale(ID);
+            case OBJECT_EXIT: return CMClass.getExit(ID);
+            case OBJECT_ITEM: return CMClass.getBasicItem(ID);
+            case OBJECT_BEHAVIOR: return CMClass.getBehavior(ID);
+            case OBJECT_CLAN: return CMClass.getCommon(ID);
+            case OBJECT_WEAPON: return CMClass.getWeapon(ID);
+            case OBJECT_ARMOR: return CMClass.getAreaType(ID);
+            case OBJECT_MISCMAGIC: return CMClass.getMiscMagic(ID);
+            case OBJECT_AREA: return CMClass.getAreaType(ID);
+            case OBJECT_COMMAND: return CMClass.getCommand(ID);
+            case OBJECT_CLANITEMS: return CMClass.getClanItem(ID);
+            case OBJECT_MISCTECH: return CMClass.getMiscMagic(ID);
+            case OBJECT_WEBMACROS: return CMClass.getWebMacro(ID);
+            case OBJECT_COMMON: return CMClass.getCommon(ID);
+            case OBJECT_LIBRARY: return CMClass.getLibrary(ID);
+        }
+        return null;
+    }
+
+    public static int getType(Object O)
+    {
+    	if(O instanceof Race) return OBJECT_RACE;
+    	if(O instanceof CharClass) return OBJECT_CHARCLASS;
+    	if(O instanceof Ability) return OBJECT_ABILITY;
+    	if(O instanceof Room) return OBJECT_LOCALE;
+    	if(O instanceof MOB) return OBJECT_MOB;
+    	if(O instanceof Exit) return OBJECT_EXIT;
+    	if(O instanceof Behavior) return OBJECT_BEHAVIOR;
+    	if(O instanceof WebMacro) return OBJECT_WEBMACROS;
+    	if(O instanceof Area) return OBJECT_AREA;
+    	if(O instanceof CMLibrary) return OBJECT_LIBRARY;
+    	if(O instanceof CMCommon) return OBJECT_COMMON;
+    	if(O instanceof Electronics) return OBJECT_MISCTECH;
+    	if(O instanceof Command) return OBJECT_COMMAND;
+    	if(O instanceof Clan) return OBJECT_CLAN;
+    	if(O instanceof ClanItem) return OBJECT_CLANITEMS;
+    	if(O instanceof MiscMagic) return OBJECT_MISCMAGIC;
+    	if(O instanceof Armor) return OBJECT_ARMOR;
+    	if(O instanceof Weapon) return OBJECT_WEAPON;
+    	if(O instanceof Item) return OBJECT_ITEM;
+    	return -1;
+    }
+
     public static void unbumpCounter(Object O, int which)
     {
         if(KEEP_OBJECT_CACHE)
@@ -220,6 +271,7 @@ public class CMClass extends ClassLoader
     public static Exit getExit(String calledThis) { return (Exit)getNewGlobal(c().exits,calledThis);}
     public static MOB getMOB(String calledThis) { return (MOB)getNewGlobal(c().MOBs,calledThis); }
     public static Weapon getWeapon(String calledThis) { return (Weapon)getNewGlobal(c().weapons,calledThis); }
+    public static ClanItem getClanItem(String calledThis) { return (ClanItem)getNewGlobal(c().clanItems,calledThis); }
     public static Item getMiscMagic(String calledThis) { return (Item)getNewGlobal(c().miscMagic,calledThis); }
     public static Item getMiscTech(String calledThis) { return (Item)getNewGlobal(c().miscTech,calledThis);}
     public static Armor getArmor(String calledThis) { return (Armor)getNewGlobal(c().armor,calledThis); }
