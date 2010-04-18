@@ -53,6 +53,6 @@ public class Prop_RoomUnmappable extends Property
 
     public void affectEnvStats(Environmental affected, EnvStats affectableStats)
     {
-        affectableStats.setDisposition(affectableStats.disposition()|bitStream);
+        affectableStats.setSensesMask(affectableStats.disposition()|bitStream);
     }
 }
