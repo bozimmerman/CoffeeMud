@@ -185,7 +185,7 @@ public class Artisan extends StdCharClass
 		return super.tick(ticking,tickID);
 	}
 
-	public String statQualifications(){return "Strength 9+, Dexterity 9+";}
+	public String getStatQualDesc(){return "Strength 9+, Dexterity 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob != null)
@@ -217,5 +217,5 @@ public class Artisan extends StdCharClass
 		return outfitChoices;
 	}
 
-	public String otherBonuses(){return "Gains experience when using common skills.";}
+	public String getOtherBonusDesc(){return "Gains experience when using common skills.";}
 }

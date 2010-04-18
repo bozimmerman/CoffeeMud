@@ -1232,4 +1232,82 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				return true;
 		return false;
 	}
+	
+	public String describeDisposition(MOB mob)
+	{
+		StringBuilder str=new StringBuilder("");
+		if(CMLib.flags().isClimbing(mob))
+			str.append("climbing, ");
+		if((mob.envStats().disposition()&EnvStats.IS_EVIL)>0)
+			str.append("evil, ");
+		if(CMLib.flags().isFalling(mob))
+			str.append("falling, ");
+		if(CMLib.flags().isBound(mob))
+			str.append("bound, ");
+		if(CMLib.flags().isFlying(mob))
+			str.append("flies, ");
+		if((mob.envStats().disposition()&EnvStats.IS_GOOD)>0)
+			str.append("good, ");
+		if(CMLib.flags().isHidden(mob))
+			str.append("hidden, ");
+		if(CMLib.flags().isInDark(mob))
+			str.append("darkness, ");
+		if(CMLib.flags().isInvisible(mob))
+			str.append("invisible, ");
+		if(CMLib.flags().isGlowing(mob))
+			str.append("glowing, ");
+		if(CMLib.flags().isCloaked(mob))
+			str.append("cloaked, ");
+		if(!CMLib.flags().isSeen(mob))
+			str.append("unseeable, ");
+		if(CMLib.flags().isSitting(mob))
+			str.append("crawls, ");
+		if(CMLib.flags().isSleeping(mob))
+			str.append("sleepy, ");
+		if(CMLib.flags().isSneaking(mob))
+			str.append("sneaks, ");
+		if(CMLib.flags().isSwimming(mob))
+			str.append("swims, ");
+		if(str.toString().endsWith(", "))
+			return str.toString().substring(0,str.length()-2);
+		return str.toString();
+	}
+	
+	public String describeSenses(MOB mob)
+	{
+		StringBuilder str=new StringBuilder("");
+		if(!CMLib.flags().canHear(mob))
+			str.append("deaf, ");
+		if(!CMLib.flags().canSee(mob))
+			str.append("blind, ");
+		if(!CMLib.flags().canMove(mob))
+			str.append("can't move, ");
+		if(CMLib.flags().canSeeBonusItems(mob))
+			str.append("detect magic, ");
+		if(CMLib.flags().canSeeEvil(mob))
+			str.append("detect evil, ");
+		if(CMLib.flags().canSeeGood(mob))
+			str.append("detect good, ");
+		if(CMLib.flags().canSeeHidden(mob))
+			str.append("see hidden, ");
+		if(CMLib.flags().canSeeInDark(mob))
+			str.append("darkvision, ");
+		if(CMLib.flags().canSeeInfrared(mob))
+			str.append("infravision, ");
+		if(CMLib.flags().canSeeInvisible(mob))
+			str.append("see invisible, ");
+		if(CMLib.flags().canSeeMetal(mob))
+			str.append("metalvision, ");
+		if(CMLib.flags().canSeeSneakers(mob))
+			str.append("see sneaking, ");
+		if(!CMLib.flags().canSmell(mob))
+			str.append("can't smell, ");
+		if(!CMLib.flags().canSpeak(mob))
+			str.append("can't speak, ");
+		if(!CMLib.flags().canTaste(mob))
+			str.append("can't eat, ");
+		if(str.toString().endsWith(", "))
+			return str.toString().substring(0,str.length()-2);
+		return str.toString();
+	}
 }

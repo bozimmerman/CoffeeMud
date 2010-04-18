@@ -79,6 +79,11 @@ public class StdRace implements Race
 	protected int[] culturalAbilityProficiencies(){return null;}
 	protected boolean uncharmable(){return false;}
 	protected boolean destroyBodyAfterUse(){return false;}
+	protected String baseStatChgDesc = null;
+	protected String sensesChgDesc = null;
+	protected String dispChgDesc = null;
+	protected String abilitiesDesc = null;
+	protected String languagesDesc = null;
 
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
@@ -1039,8 +1044,134 @@ public class StdRace implements Race
 		return finalV;
 	}
 
+	public String getStatAdjDesc()
+	{
+		makeStatChgDesc();
+		return baseStatChgDesc;
+	}
+	public String getSensesChgDesc()
+	{
+		makeStatChgDesc();
+		return sensesChgDesc;
+	}
+	public String getDispositionChgDesc()
+	{
+		makeStatChgDesc();
+		return dispChgDesc;
+	}
+	public String getTrainAdjDesc()
+	{
+		if(trainsAtFirstLevel()>0)
+			return "trains+"+trainsAtFirstLevel();
+		if(trainsAtFirstLevel()<0)
+			return "trains"+trainsAtFirstLevel();
+		return "";
+	}
+	public String getPracAdjDesc()
+	{
+		if(practicesAtFirstLevel()>0)
+			return "practices+"+practicesAtFirstLevel();
+		if(practicesAtFirstLevel()<0)
+			return "practices"+practicesAtFirstLevel();
+		return "";
+	}
+	public String getAbilitiesDesc()
+	{
+		makeStatChgDesc();
+		return abilitiesDesc;
+	}
+	public String getLanguagesDesc()
+	{
+		makeStatChgDesc();
+		return languagesDesc;
+	}
 	public String racialParms(){ return "";}
 	public void setRacialParms(String parms){}
+	
+	protected void clrStatChgDesc()
+	{ 
+		baseStatChgDesc=null;
+		dispChgDesc=null;
+		sensesChgDesc=null;
+		abilitiesDesc = null;
+		languagesDesc = null;
+	}
+	protected void makeStatChgDesc()
+	{
+		if((baseStatChgDesc == null)
+		||(dispChgDesc==null)
+		||(sensesChgDesc==null))
+		{
+			StringBuilder str=new StringBuilder("");
+			MOB mob=CMClass.getMOB("StdMOB");
+			mob.setSession(null);
+			mob.baseCharStats().setMyRace(this);
+			startRacing(mob,false);
+			mob.recoverCharStats();
+			mob.recoverCharStats();
+			mob.recoverEnvStats();
+			mob.recoverMaxState();
+			MOB mob2=CMClass.getMOB("StdMOB");
+			mob2.setSession(null);
+			mob2.baseCharStats().setMyRace(new StdRace());
+			mob2.recoverCharStats();
+			mob2.recoverEnvStats();
+			mob2.recoverMaxState();
+            for(int c: CharStats.CODES.ALL())
+            {
+                int oldStat=mob2.charStats().getStat(c);
+                int newStat=mob.charStats().getStat(c);
+                if(oldStat>newStat)
+                    str.append(CharStats.CODES.DESC(c).toLowerCase()+"-"+(oldStat-newStat)+", ");
+                else
+                if(newStat>oldStat)
+                    str.append(CharStats.CODES.DESC(c).toLowerCase()+"+"+(newStat-oldStat)+", ");
+            }
+            dispChgDesc=CMLib.flags().describeDisposition(mob);
+            sensesChgDesc=CMLib.flags().describeSenses(mob);
+            mob.destroy();
+            mob2.destroy();
+            baseStatChgDesc=str.toString();
+            if(baseStatChgDesc.endsWith(", "))
+            	baseStatChgDesc=baseStatChgDesc.substring(0,baseStatChgDesc.length()-2);
+            StringBuilder astr=new StringBuilder("");
+            StringBuilder lstr=new StringBuilder("");
+            Vector ables=racialAbilities(null);
+            if(ables==null) ables=new Vector();
+            else ables=(Vector)ables.clone();
+            DVector cables=culturalAbilities();
+            Ability A=null;
+            if(cables!=null)
+            {
+                for(int c=0;c<cables.size();c++)
+                {
+                    A=CMClass.getAbility((String)cables.elementAt(c,1));
+                    if(A!=null)
+                    {
+                        A.setProficiency(((Integer)cables.elementAt(c,2)).intValue());
+                        ables.addElement(A);
+                    }
+                }
+            }
+    		for(Enumeration e=ables.elements();e.hasMoreElements();)
+    		{
+    			A=(Ability)e.nextElement();
+    			str = ((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)?lstr:astr;
+    			if(A.proficiency()<=0)
+    				str.append(A.name()+", ");
+    			else
+    				str.append(A.name()+"("+A.proficiency()+"%), ");
+    		}
+    		abilitiesDesc=astr.toString();
+    		if(abilitiesDesc.endsWith(", "))
+    			abilitiesDesc=abilitiesDesc.substring(0,abilitiesDesc.length()-2);
+    		languagesDesc=lstr.toString();
+    		if(languagesDesc.endsWith(", "))
+    			languagesDesc=languagesDesc.substring(0,languagesDesc.length()-2);
+		}
+	}
+	
+	
 	protected static String[] CODES={"CLASS","PARMS"};
     public int getSaveStatIndex(){return getStatCodes().length;}
 	public String getStat(String code){

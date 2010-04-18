@@ -34,7 +34,7 @@ public class Assassin extends Thief
 	public String ID(){return "Assassin";}
 	public String name(){return "Assassin";}
 	public int availabilityCode(){return Area.THEME_FANTASY;}
-	public String statQualifications(){return "Dexterity 9+ Wisdom 9+";}
+	public String getStatQualDesc(){return "Dexterity 9+ Wisdom 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<=8)
@@ -51,7 +51,7 @@ public class Assassin extends Thief
 		}
 		return super.qualifiesForThisClass(mob,quiet);
 	}
-	public String otherBonuses()
+	public String getOtherBonusDesc()
 	{
 		return "Strong resistance to all poisons at 21st level.";
 	}

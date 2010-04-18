@@ -320,6 +320,46 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, C
 	 * @param charStats temporary charstats changes
 	 */
 	public void agingAffects(MOB mob, CharStats baseStats, CharStats charStats);
+	
+	/**
+	 * Returns a list of the stat adjustments made by this race
+	 * @return a list of the stat adjustments made by this race
+	 */
+	public String getStatAdjDesc();
+	/**
+	 * Returns the adjustment to practices made by this race (or nothing)
+	 * @return the adjustment to practices made by this race (or nothing)
+	 */
+	public String getPracAdjDesc();
+	/**
+	 * Returns the adjustment to trains made by this race (or nothing)
+	 * @return the adjustment to trains made by this race (or nothing)
+	 */
+	public String getTrainAdjDesc();
+	/**
+	 * Returns the list of modifications to senses done by this race
+	 * or nothing.
+	 * @return the list of modifications to senses done by this race
+	 */
+	public String getSensesChgDesc();
+	/**
+	 * Returns the list of modifications to disposition done by this race
+	 * or nothing.
+	 * @return the list of modifications to disposition done by this race
+	 */
+	public String getDispositionChgDesc();
+	/**
+	 * Returns the list of racial abilities granted to those of this race
+	 * or nothing.
+	 * @return the list of racial abilities granted to those of this race
+	 */
+	public String getAbilitiesDesc();
+	/**
+	 * Returns the list of racial languages granted to those of this race
+	 * or nothing.
+	 * @return the list of racial languages granted to those of this race
+	 */
+	public String getLanguagesDesc();
 
 	/** body part constant representing antenea*/
 	public final static int BODY_ANTENEA=0;

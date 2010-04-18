@@ -192,7 +192,7 @@ public class Delver extends StdCharClass
 			return true;
 		return false;
 	}
-	public String statQualifications(){return "Constitution 9+, Strength 9+";}
+	public String getStatQualDesc(){return "Constitution 9+, Strength 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob != null)
@@ -226,8 +226,8 @@ public class Delver extends StdCharClass
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 
-	public String otherLimitations(){return "Must remain Neutral to avoid skill and chant failure chances.";}
-	public String otherBonuses(){return "Can create a druidic connection with an area.  Benefits from freeing animals from cities.";}
+	public String getOtherLimitsDesc(){return "Must remain Neutral to avoid skill and chant failure chances.";}
+	public String getOtherBonusDesc(){return "Can create a druidic connection with an area.  Benefits from freeing animals from cities.";}
 
 	public Vector outfit(MOB myChar)
 	{

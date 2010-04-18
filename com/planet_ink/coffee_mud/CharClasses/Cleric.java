@@ -244,7 +244,7 @@ public class Cleric extends StdCharClass
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
-	public String statQualifications(){return "Wisdom 9+";}
+	public String getStatQualDesc(){return "Wisdom 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob != null)
@@ -259,7 +259,7 @@ public class Cleric extends StdCharClass
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 
-	public String otherLimitations(){return "Using prayers outside your alignment introduces failure chance.";}
+	public String getOtherLimitsDesc(){return "Using prayers outside your alignment introduces failure chance.";}
 
 	protected int holyQuality(Ability A)
 	{

@@ -154,7 +154,7 @@ public class Prancer extends StdCharClass
         Bard.visitationBonusMessage(host,msg);
     }
     
-	public String statQualifications(){return "Charisma 9+, Strength 9+";}
+	public String getStatQualDesc(){return "Charisma 9+, Strength 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob != null)
@@ -183,7 +183,7 @@ public class Prancer extends StdCharClass
 		}
 		return super.qualifiesForThisClass(mob,quiet);
 	}
-	public String otherLimitations(){return "";}
+	public String getOtherLimitsDesc(){return "";}
 	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
@@ -258,7 +258,7 @@ public class Prancer extends StdCharClass
 
     public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(host,mob,victim,amount,5.0);}
     
-	public String otherBonuses(){return "Receives defensive bonus for high dexterity.  Receives group bonus combat experience when in an intelligent group, and more for a group of players.  Receives exploration and pub-finding experience based on danger level.";}
+	public String getOtherBonusDesc(){return "Receives defensive bonus for high dexterity.  Receives group bonus combat experience when in an intelligent group, and more for a group of players.  Receives exploration and pub-finding experience based on danger level.";}
 
 	public void level(MOB mob, Vector newAbilityIDs)
 	{

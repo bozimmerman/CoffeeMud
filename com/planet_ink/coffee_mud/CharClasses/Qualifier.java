@@ -50,7 +50,7 @@ public class Qualifier extends StdCharClass
 
 	public int availabilityCode(){return 0;}
 
-	public String statQualifications(){return "Must be granted by an Archon.";}
+	public String getStatQualDesc(){return "Must be granted by an Archon.";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(!quiet)

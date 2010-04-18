@@ -213,7 +213,7 @@ public class Gaoler extends StdCharClass
         }
     }
 
-	public String statQualifications(){return "Strength 9+, Dexterity 9+";}
+	public String getStatQualDesc(){return "Strength 9+, Dexterity 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob != null)
@@ -245,5 +245,5 @@ public class Gaoler extends StdCharClass
 		return outfitChoices;
 	}
 
-	public String otherBonuses(){return "Gains experience when using certain skills.  Screams of flayed, amputated, tattooed, body pierced, or chirguried victims grants xp/hr.";}
+	public String getOtherBonusDesc(){return "Gains experience when using certain skills.  Screams of flayed, amputated, tattooed, body pierced, or chirguried victims grants xp/hr.";}
 }

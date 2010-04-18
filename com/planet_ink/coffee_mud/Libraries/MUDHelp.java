@@ -65,27 +65,30 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
     }
     
     public StringBuilder getHelpText(String helpStr, MOB forMOB, boolean favorAHelp)
+    { return getHelpText(helpStr, forMOB, favorAHelp, false);}
+    
+    public StringBuilder getHelpText(String helpStr, MOB forMOB, boolean favorAHelp, boolean noFix)
     {
         if(helpStr.length()==0) return null;
         StringBuilder thisTag=null;
         if(favorAHelp)
         {
             if(getArcHelpFile().size()>0)
-                thisTag=getHelpText(helpStr,getArcHelpFile(),forMOB);
+                thisTag=getHelpText(helpStr,getArcHelpFile(),forMOB,noFix);
             if(thisTag==null)
             {
                 if(getHelpFile().size()==0) return null;
-                thisTag=getHelpText(helpStr,getHelpFile(),forMOB);
+                thisTag=getHelpText(helpStr,getHelpFile(),forMOB,noFix);
             }
         }
         else
         {
             if(getHelpFile().size()>0)
-                thisTag=getHelpText(helpStr,getHelpFile(),forMOB);
+                thisTag=getHelpText(helpStr,getHelpFile(),forMOB,noFix);
             if(thisTag==null)
             {
                 if(getArcHelpFile().size()==0) return null;
-                thisTag=getHelpText(helpStr,getArcHelpFile(),forMOB);
+                thisTag=getHelpText(helpStr,getArcHelpFile(),forMOB,noFix);
             }
         }
         return thisTag;
@@ -223,6 +226,18 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		}
 	}
 	
+	protected String columnHelper(String word, String msg, int wrap)
+	{
+		StringBuilder prepend = new StringBuilder("");
+		String[] maxStats = CMLib.coffeeFilter().wrapOnlyFilter(msg,wrap-12);
+		for(String s : maxStats)
+		{
+			prepend.append(CMStrings.padRight(word, 12)).append(s).append("\n\r");
+			word=" ";
+		}
+		return prepend.toString();
+	}
+	
 	public String fixHelp(String tag, String str, MOB forMOB)
 	{
 		boolean worldCurrency=str.startsWith("<CURRENCIES>");
@@ -289,6 +304,77 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					appendAllowed(prepend,def.ID);
 					str=prepend.toString()+"\n\r"+str;
 				}
+			}
+		}
+		if(str.startsWith("<CHARCLASS>"))
+		{
+			str=str.substring(11);
+			CharClass C = CMClass.findCharClass(tag);
+			if(C==null) C=CMClass.findCharClass(tag.replace('_',' '));
+			if(C!=null)
+			{
+				StringBuilder prepend=new StringBuilder("");
+				int wrap = 0;
+				if((forMOB!=null)&&(forMOB.session()!=null))
+					wrap=forMOB.session().getWrap();
+				if(wrap <=0 ) wrap=78;
+				prepend.append("^HChar Class: ^N"+C.name()+" ^H(^N"+C.baseClass()+"^H)^N");
+				prepend.append("\n\r");
+				prepend.append(columnHelper("^HMax-Stats :^N",C.getMaxStatDesc(),wrap));
+				prepend.append(columnHelper("^HQualifiers:^N",C.getStatQualDesc(),wrap));
+				prepend.append("^H"+CMStrings.padRight("Prime Stat: ^N"+C.getPrimeStatDesc(),(wrap/2)));
+				prepend.append("^HAttack Pts: ^N"+C.getAttackDesc());
+				prepend.append("\n\r");
+				prepend.append("^H"+CMStrings.padRight("Practices : ^N"+C.getPracticeDesc(),(wrap/2)));
+				prepend.append("^HTrains    : ^N"+C.getTrainDesc());
+				prepend.append("\n\r");
+				prepend.append("^H"+CMStrings.padRight("Hit Points: ^N"+C.getHitPointDesc(),(wrap/2)));
+				prepend.append("^HMana      : ^N"+C.getManaDesc());
+				prepend.append("\n\r");
+				prepend.append("^H"+CMStrings.padRight("Movement  : ^N"+C.getMovementDesc(),(wrap/2)));
+				prepend.append("^HDamage Pts: ^N"+C.getDamageDesc());
+				prepend.append("\n\r");
+				prepend.append("^HWeapons   : ^N"+C.getWeaponLimitDesc());
+				prepend.append("\n\r");
+				prepend.append("^HArmor     : ^N"+C.getArmorLimitDesc());
+				prepend.append("\n\r");
+				prepend.append(columnHelper("^HBonuses   :^N",C.getOtherBonusDesc(),wrap));
+				prepend.append(columnHelper("^HLimits    :^N",C.getOtherLimitsDesc(),wrap));
+				prepend.append("^HDesc.     : ^N");
+				str=prepend.toString()+"\n\r"+str;
+			}
+		}
+		if(str.startsWith("<RACE>"))
+		{
+			str=str.substring(6);
+			Race R=CMClass.findRace(tag);
+			if(R==null) R=CMClass.findRace(tag.replace('_',' '));
+			if(R!=null)
+			{
+				StringBuilder prepend=new StringBuilder("");
+				int wrap = 0;
+				if((forMOB!=null)&&(forMOB.session()!=null))
+					wrap=forMOB.session().getWrap();
+				if(wrap <=0 ) wrap=78;
+				prepend.append("^HRace Name : ^N"+R.name()+" ^H(^N"+R.racialCategory()+"^H)^N");
+				prepend.append("\n\r");
+				
+				String s=R.getStatAdjDesc();
+				if(R.getTrainAdjDesc().length()>0)
+					s+=((s.length()>0)?", ":"")+R.getTrainAdjDesc();
+				if(R.getPracAdjDesc().length()>0)
+					s+=((s.length()>0)?", ":"")+R.getPracAdjDesc();
+				prepend.append(columnHelper("^HStat Mods.:^N",s,wrap));
+				s=R.getSensesChgDesc();
+				if(R.getDispositionChgDesc().length()>0)
+					s+=((s.length()>0)?", ":"")+R.getDispositionChgDesc();
+				if(R.getAbilitiesDesc().length()>0)
+					s+=((s.length()>0)?", ":"")+R.getAbilitiesDesc();
+				prepend.append(columnHelper("^HAbilities :^N",s,wrap));
+				prepend.append(columnHelper("^HLanguages :^N",R.getLanguagesDesc(),wrap));
+				prepend.append(columnHelper("^HLife Exp. :^N",R.getAgingChart()[Race.AGE_ANCIENT]+" years",wrap));
+				prepend.append("^HDesc.     : ^N");
+				str=prepend.toString()+"\n\r"+str;
 			}
 		}
 		if(str.startsWith("<ABILITY>"))
@@ -563,10 +649,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 
         CharClass C=CMClass.findCharClass(helpStr.toUpperCase());
         if((C!=null)&&(C.isGeneric()))
-            thisTag=C.getStat("HELP");
+            thisTag="<CHARCLASS>"+C.getStat("HELP");
         Race R=CMClass.findRace(helpStr.toUpperCase());
         if((R!=null)&&(R.isGeneric()))
-            thisTag=R.getStat("HELP");
+            thisTag="<RACE>"+R.getStat("HELP");
 		
 		boolean found=false;
         if(thisTag==null) thisTag=rHelpFile.getProperty(helpStr);

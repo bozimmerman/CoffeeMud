@@ -157,7 +157,7 @@ public class Shaman extends Cleric
 		return true;
 	}
 
-	public String statQualifications(){return "Wisdom 9+ Constitution 9+";}
+	public String getStatQualDesc(){return "Wisdom 9+ Constitution 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<=8)
@@ -175,8 +175,8 @@ public class Shaman extends Cleric
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 
-	public String otherBonuses(){return "Never fumbles neutral prayers, receives smallest prayer fumble chance, and receives 1pt/level of acid damage reduction.";}
-	public String otherLimitations(){return "Using non-neutral prayers introduces small failure chance.  Vulnerable to electric attacks.";}
+	public String getOtherBonusDesc(){return "Never fumbles neutral prayers, receives smallest prayer fumble chance, and receives 1pt/level of acid damage reduction.";}
+	public String getOtherLimitsDesc(){return "Using non-neutral prayers introduces small failure chance.  Vulnerable to electric attacks.";}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

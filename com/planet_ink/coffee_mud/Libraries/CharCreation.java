@@ -1067,8 +1067,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	                }
 	                if((newClass!=null)&&(canChangeToThisClass(mob,newClass,theme)))
 	                {
-	                	StringBuilder str=CMLib.help().getHelpText(newClass.ID().toUpperCase(),mob,false);
-	                    if(str!=null) session.println("\n\r^N"+str.toString()+"\n\r");
+	                	StringBuilder str=CMLib.help().getHelpText(newClass.ID().toUpperCase(),mob,false,false);
+	                    if(str!=null){
+	                    	session.println("\n\r^N"+str.toString()+"\n\r");
+	                    }
 	                    if(!session.confirm("^NIs ^H"+newClass.name()+"^N correct (Y/n)?","Y"))
 	                        newClass=null;
 	                }

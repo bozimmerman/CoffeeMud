@@ -142,8 +142,8 @@ public class GenCharClass extends StdCharClass
 	public int getLevelsPerBonusDamage(){ return levelsPerBonusDamage;}
 	public int getMovementMultiplier(){return movementMultiplier;}
 	public int allowedArmorLevel(){return allowedArmorLevel;}
-	public String otherLimitations(){return otherLimitations;}
-	public String otherBonuses(){return otherBonuses;}
+	public String getOtherLimitsDesc(){return otherLimitations;}
+	public String getOtherBonusDesc(){return otherBonuses;}
 	public int availabilityCode(){return selectability;}
 
     public GenCharClass()
@@ -153,7 +153,7 @@ public class GenCharClass extends StdCharClass
         xtraValues=CMProps.getExtraStatCodesHolder(this);
     }
 
-	public String weaponLimitations()
+	public String getWeaponLimitDesc()
 	{
 	    StringBuffer str=new StringBuffer("");
 		if((disallowedWeaponClasses(null)!=null)&&(disallowedWeaponClasses(null).size()>0))
@@ -207,14 +207,14 @@ public class GenCharClass extends StdCharClass
 				if(!CMLib.masking().maskCheck(qualifications,mob,true))
 				{
 					if(!quiet)
-						mob.tell("You must meet the following qualifications to be a "+name()+":\n"+statQualifications());
+						mob.tell("You must meet the following qualifications to be a "+name()+":\n"+getStatQualDesc());
 					return false;
 				}
 			}
 		}
 		return true;
 	}
-	public String statQualifications(){return CMLib.masking().maskDesc(qualifications);}
+	public String getStatQualDesc(){return CMLib.masking().maskDesc(qualifications);}
 
     protected String getCharClassLocatorID(CharClass C)
     {

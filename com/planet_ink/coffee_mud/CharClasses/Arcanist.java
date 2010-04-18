@@ -142,7 +142,7 @@ public class Arcanist extends Thief
 	}
 
 
-	public String statQualifications(){return "Dexterity 9+, Intelligence 9+";}
+	public String getStatQualDesc(){return "Dexterity 9+, Intelligence 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<=8)
@@ -159,7 +159,7 @@ public class Arcanist extends Thief
 		}
 		return super.qualifiesForThisClass(mob,quiet);
 	}
-	public String otherBonuses()
+	public String getOtherBonusDesc()
 	{
 		return "Magic resistance, 1%/level.  Huge discounts when buying potions after 5th level.  Ability to memorize spells learned through SpellCraft.";
 	}

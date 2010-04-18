@@ -274,7 +274,7 @@ public class Bard extends StdCharClass
 			return true;
 		return super.weaponCheck(mob,sourceCode,E);
 	}
-	public String statQualifications(){return "Charisma 9+";}
+	public String getStatQualDesc(){return "Charisma 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob != null)
@@ -299,8 +299,8 @@ public class Bard extends StdCharClass
 		}
 		return super.qualifiesForThisClass(mob,quiet);
 	}
-	public String otherLimitations(){return "";}
-	public String otherBonuses(){return "Receives group bonus combat experience when in an intelligent group, and more for a group with players.  Receives exploration and pub-finding experience based on danger level.";}
+	public String getOtherLimitsDesc(){return "";}
+	public String getOtherBonusDesc(){return "Receives group bonus combat experience when in an intelligent group, and more for a group with players.  Receives exploration and pub-finding experience based on danger level.";}
 	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)

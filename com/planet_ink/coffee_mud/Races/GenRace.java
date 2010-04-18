@@ -433,7 +433,7 @@ public class GenRace extends StdRace
 		Vector aV=CMParms.parseCommas(aging,true);
 		for(int v=0;v<aV.size();v++)
 		    getAgingChart()[v]=CMath.s_int((String)aV.elementAt(v));
-
+		clrStatChgDesc();
 		// now RESOURCES!
 		Vector xV=CMLib.xml().getRealContentsFromPieces(raceData,"RESOURCES");
 		resourceChoices=null;
@@ -710,10 +710,10 @@ public class GenRace extends StdRace
 					bodyMask()[v]=CMath.s_int((String)V.elementAt(v));
 			break;
 		}
-		case 14: adjEStats=null;if(val.length()>0){adjEStats=(EnvStats)CMClass.getCommon("DefaultEnvStats"); adjEStats.setAllValues(0); CMLib.coffeeMaker().setEnvStats(adjEStats,val);}break;
-		case 15: adjStats=null;if(val.length()>0){adjStats=(CharStats)CMClass.getCommon("DefaultCharStats"); adjStats.setAllValues(0); CMLib.coffeeMaker().setCharStats(adjStats,val);}break;
-		case 16: setStats=null;if(val.length()>0){setStats=(CharStats)CMClass.getCommon("DefaultCharStats"); setStats.setAllValues(0); CMLib.coffeeMaker().setCharStats(setStats,val);}break;
-		case 17: adjState=null;if(val.length()>0){adjState=(CharState)CMClass.getCommon("DefaultCharState"); adjState.setAllValues(0); CMLib.coffeeMaker().setCharState(adjState,val);}break;
+		case 14: adjEStats=null;clrStatChgDesc();if(val.length()>0){adjEStats=(EnvStats)CMClass.getCommon("DefaultEnvStats"); adjEStats.setAllValues(0); CMLib.coffeeMaker().setEnvStats(adjEStats,val);}break;
+		case 15: adjStats=null;clrStatChgDesc();if(val.length()>0){adjStats=(CharStats)CMClass.getCommon("DefaultCharStats"); adjStats.setAllValues(0); CMLib.coffeeMaker().setCharStats(adjStats,val);}break;
+		case 16: setStats=null;clrStatChgDesc();if(val.length()>0){setStats=(CharStats)CMClass.getCommon("DefaultCharStats"); setStats.setAllValues(0); CMLib.coffeeMaker().setCharStats(setStats,val);}break;
+		case 17: adjState=null;clrStatChgDesc();if(val.length()>0){adjState=(CharState)CMClass.getCommon("DefaultCharState"); adjState.setAllValues(0); CMLib.coffeeMaker().setCharState(adjState,val);}break;
 		case 18: if(CMath.s_int(val)==0) resourceChoices=null; else resourceChoices=new Vector(CMath.s_int(val)); break;
 		case 19: {   if(resourceChoices==null) resourceChoices=new Vector();
 					 if(num>=resourceChoices.size())
@@ -834,7 +834,7 @@ public class GenRace extends StdRace
 		    		break;
 				 }
 		case 40: disableFlags=CMath.s_int(val); break;
-		case 41: startAdjState=null;if(val.length()>0){startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0); CMLib.coffeeMaker().setCharState(startAdjState,val);}break;
+		case 41: startAdjState=null;clrStatChgDesc();if(val.length()>0){startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0); CMLib.coffeeMaker().setCharState(startAdjState,val);}break;
 		case 42:
 		{
 			eventBuddy=CMClass.getRace(val);

@@ -347,32 +347,85 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * imposed by this class upon its members.
 	 * @return a text description of weapon retrictions
 	 */
-	public String weaponLimitations();
+	public String getWeaponLimitDesc();
 	/**
 	 * Returns a text description of any armor restrictions
 	 * imposed by this class upon its members.
 	 * @return a text description of armor retrictions
 	 */
-	public String armorLimitations();
+	public String getArmorLimitDesc();
 	/**
 	 * Returns a text description of any misc restrictions
 	 * imposed by this class upon its members.
 	 * @return a text description of misc retrictions
 	 */
-	public String otherLimitations();
+	public String getOtherLimitsDesc();
 	/**
 	 * Returns a text description of any bonus properties
 	 * granted by this class to its members.
 	 * @return a text description of bonus properties
 	 */
-	public String otherBonuses();
+	public String getOtherBonusDesc();
 	/**
 	 * Returns a text description of the stat qualifications
 	 * required to become a member of this character class
 	 * @return a txt description of stat qualifications
 	 */
-	public String statQualifications();
-    
+	public String getStatQualDesc();
+	/**
+	 * Returns a text description of the attack bonuses
+	 * gained by members of this class.
+	 * @return a text description of the attack bonuses
+	 */
+	public String getAttackDesc();
+	/**
+	 * Returns the prime statistic of this class
+	 * @return the prime statistic of this class
+	 */
+	public String getPrimeStatDesc();
+	/**
+	 * Returns a text description of the movement bonuses
+	 * gained by members of this class.
+	 * @return a text description of the movement bonuses
+	 */
+	public String getMovementDesc();
+	/**
+	 * Returns a text description of the mana bonuses
+	 * gained by members of this class.
+	 * @return a text description of the mana bonuses
+	 */
+	public String getManaDesc();
+	/**
+	 * Returns a text description of the hit point bonuses
+	 * gained by members of this class.
+	 * @return a text description of the hit point bonuses
+	 */
+	public String getHitPointDesc();
+	/**
+	 * Returns a text description of the damage bonuses
+	 * gained by members of this class.
+	 * @return a text description of the damage bonuses
+	 */
+	public String getDamageDesc();
+	/**
+	 * Returns a text description of the train bonuses
+	 * gained by members of this class.
+	 * @return a text description of the train bonuses
+	 */
+	public String getTrainDesc();
+	/**
+	 * Returns a text description of the practice bonuses
+	 * gained by members of this class.
+	 * @return a text description of the practice bonuses
+	 */
+	public String getPracticeDesc();
+	/**
+	 * Returns the list of max stats for members of this
+	 * class.
+	 * @return the max stat values for this class.
+	 */
+	public String getMaxStatDesc();
+	
     /**
      * Returns the highest class level that can be achieved
      * by a player who has this class.  Once this level is

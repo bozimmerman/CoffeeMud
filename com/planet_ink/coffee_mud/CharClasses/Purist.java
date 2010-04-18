@@ -154,7 +154,7 @@ public class Purist extends Cleric
 		return true;
 	}
 
-	public String statQualifications(){return "Wisdom 9+ Charisma 9+";}
+	public String getStatQualDesc(){return "Wisdom 9+ Charisma 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<=8)
@@ -172,8 +172,8 @@ public class Purist extends Cleric
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 
-	public String otherBonuses(){return "Receives 1pt/level cold damage reduction.";}
-	public String otherLimitations(){return "Always fumbles evil prayers, and fumbles all prayers when alignment is below pure neutral.  Qualifies and receives good prayers, and bonus damage from good spells.  Using non-aligned prayers introduces failure chance.  Vulnerable to fire attacks.";}
+	public String getOtherBonusDesc(){return "Receives 1pt/level cold damage reduction.";}
+	public String getOtherLimitsDesc(){return "Always fumbles evil prayers, and fumbles all prayers when alignment is below pure neutral.  Qualifies and receives good prayers, and bonus damage from good spells.  Using non-aligned prayers introduces failure chance.  Vulnerable to fire attacks.";}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

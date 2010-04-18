@@ -333,7 +333,7 @@ public class Mage extends StdCharClass
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
-	public String statQualifications(){return "Intelligence 9+";}
+	public String getStatQualDesc(){return "Intelligence 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob != null)

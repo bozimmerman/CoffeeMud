@@ -195,7 +195,7 @@ public class Minstrel extends StdCharClass
 			return true;
 		return super.weaponCheck(mob,sourceCode,E);
 	}
-	public String statQualifications(){return "Charisma 9+, Intelligence 9+";}
+	public String getStatQualDesc(){return "Charisma 9+, Intelligence 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob != null)
@@ -225,8 +225,8 @@ public class Minstrel extends StdCharClass
 
     public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(host,mob,victim,amount,5.0);}
     
-	public String otherLimitations(){return "";}
-	public String otherBonuses(){return "Receives group bonus combat experience when in an intelligent group, and more for a group of players.  Receives exploration and pub-finding experience based on danger level.";}
+	public String getOtherLimitsDesc(){return "";}
+	public String getOtherBonusDesc(){return "Receives group bonus combat experience when in an intelligent group, and more for a group of players.  Receives exploration and pub-finding experience based on danger level.";}
 	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)

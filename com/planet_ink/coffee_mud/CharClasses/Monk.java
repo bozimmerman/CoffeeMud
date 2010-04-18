@@ -143,7 +143,7 @@ public class Monk extends StdCharClass
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
-	public String statQualifications(){return "Strength 9+, Dexterity 9+";}
+	public String getStatQualDesc(){return "Strength 9+, Dexterity 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob != null)
@@ -188,7 +188,7 @@ public class Monk extends StdCharClass
 	}
 
     public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg);}
-	public String otherBonuses(){return "Receives defensive bonus for high dexterity.  Receives unarmed attack bonus.  Receives bonus attack when unarmed.  Has Slow Fall ability.  Receives trap avoidance.  Receives bonus conquest experience.";}
+	public String getOtherBonusDesc(){return "Receives defensive bonus for high dexterity.  Receives unarmed attack bonus.  Receives bonus attack when unarmed.  Has Slow Fall ability.  Receives trap avoidance.  Receives bonus conquest experience.";}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

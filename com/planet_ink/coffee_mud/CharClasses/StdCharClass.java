@@ -258,14 +258,70 @@ public class StdCharClass implements CharClass
 		}
         return true;
 	}
-	public String weaponLimitations()
+	public String getWeaponLimitDesc()
 	{ return WEAPONS_LONGDESC[allowedWeaponLevel()];}
-	public String armorLimitations()
+	public String getArmorLimitDesc()
 	{ return ARMOR_LONGDESC[allowedArmorLevel()];}
-	public String otherLimitations(){return "";}
-	public String otherBonuses(){return "";}
-	public String statQualifications(){return "";}
-
+	public String getOtherLimitsDesc(){return "";}
+	public String getOtherBonusDesc(){return "";}
+	public String getStatQualDesc(){return "";}
+	public String getMaxStatDesc()
+	{
+		StringBuilder str=new StringBuilder("");
+		for(int i : CharStats.CODES.BASE())
+			if(maxStatAdjustments()[i]!=0)
+				str.append(CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i))+" ("+(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+maxStatAdjustments()[i])+"), ");
+		str.append("Others ("+CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+")");
+		return str.toString();
+	}
+	public String getPracticeDesc()
+	{
+		StringBuilder str=new StringBuilder("");
+		str.append(getPracsFirstLevel()+" +(Wisdom/6)");
+		if(getBonusPracLevel()>0)
+			str.append("+"+getBonusPracLevel());
+		else
+		if(getBonusPracLevel()<0)
+			str.append(""+getBonusPracLevel());
+		return str.toString()+" per level";
+	}
+	public String getTrainDesc() 
+	{ 
+		return getTrainsFirstLevel()+" +1 per level";
+	}
+	public String getDamageDesc()
+	{
+		return "+1 damage per "+getLevelsPerBonusDamage()+" level(s)";
+	}
+	public String getHitPointDesc()
+	{
+		return CMProps.getIntVar(CMProps.SYSTEMI_STARTHP)+" +(Con/"+getHPDivisor()+")+"+getHPDice()+"d"+getHPDie()+" per level";
+	}
+	public String getManaDesc()
+	{
+		return CMProps.getIntVar(CMProps.SYSTEMI_STARTMANA)+" +(Int/"+getManaDivisor()+")+"+getManaDice()+"d"+getManaDie()+" per level";
+	}
+	public String getMovementDesc()
+	{
+		return CMProps.getIntVar(CMProps.SYSTEMI_STARTMOVE)+" +(Str/18)X"+getMovementMultiplier()+" per level";
+	}
+	public String getPrimeStatDesc()
+	{
+		return CMStrings.capitalizeAndLower(CharStats.CODES.DESC(getAttackAttribute()));
+	}
+	public String getAttackDesc()
+	{
+		StringBuilder str=new StringBuilder("");
+		str.append("+("+getPrimeStatDesc().substring(0,3)+"/18)");
+		if(getBonusAttackLevel()>0)
+			str.append("+"+getBonusAttackLevel());
+		else
+		if(getBonusAttackLevel()<0)
+			str.append(""+getBonusAttackLevel());
+		str.append(" per level");
+		return str.toString();
+	}
+	
 	protected HashSet buildDisallowedWeaponClasses(){return buildDisallowedWeaponClasses(allowedWeaponLevel());}
 	protected HashSet buildDisallowedWeaponClasses(int lvl)
 	{
@@ -450,8 +506,8 @@ public class StdCharClass implements CharClass
         CR.setStat("ARMOR",""+allowedArmorLevel());
         //CR.setStat("STRWEAP",""+this.allowedArmorLevel());
         //CR.setStat("STRARM",""+this.allowedArmorLevel());
-        CR.setStat("STRLMT",""+otherLimitations());
-        CR.setStat("STRBON",""+otherBonuses());
+        CR.setStat("STRLMT",""+getOtherLimitsDesc());
+        CR.setStat("STRBON",""+getOtherBonusDesc());
         CR.setStat("PLAYER",""+availabilityCode());
         CR.setStat("HELP",""+CMLib.help().getHelpText(name(),null,false));
         CR.setStat("MAXNCS",""+maxNonCraftingSkills());
@@ -460,7 +516,7 @@ public class StdCharClass implements CharClass
         CR.setStat("MAXLGS",""+maxLanguages());
 
         StringBuffer quals=new StringBuffer("");
-        String q=statQualifications().toUpperCase();
+        String q=getStatQualDesc().toUpperCase();
         if(q.length()>0)
             for(int c : CharStats.CODES.BASE())
                 if(CharStats.CODES.DESC(c).length()>3)

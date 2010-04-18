@@ -182,7 +182,7 @@ public class Gaian extends StdCharClass
 			return true;
 		return false;
 	}
-	public String statQualifications(){return "Constitution 9+, Wisdom 9+";}
+	public String getStatQualDesc(){return "Constitution 9+, Wisdom 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob != null)
@@ -214,8 +214,8 @@ public class Gaian extends StdCharClass
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 
-	public String otherLimitations(){return "Must remain Neutral to avoid skill and chant failure chances.";}
-	public String otherBonuses(){return "Attains Greenskin (sunlight based bonuses/penalties) at level 5.  At level 30, becomes totally undetectable in wilderness settings while hidden.  Can create a druidic connection with an area.  Benefits from animal/plant/stone followers leveling.  Benefits from freeing animals from cities.";}
+	public String getOtherLimitsDesc(){return "Must remain Neutral to avoid skill and chant failure chances.";}
+	public String getOtherBonusDesc(){return "Attains Greenskin (sunlight based bonuses/penalties) at level 5.  At level 30, becomes totally undetectable in wilderness settings while hidden.  Can create a druidic connection with an area.  Benefits from animal/plant/stone followers leveling.  Benefits from freeing animals from cities.";}
 
     public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Druid.doAnimalFollowerLevelingCheck(this,host,msg);  Druid.doAnimalFreeingCheck(this,host,msg);}
     

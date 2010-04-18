@@ -127,8 +127,8 @@ public class Trapper extends Thief
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_DeathTrap",true);
 	}
-    public String otherBonuses(){return "Benefits from animal followers leveling.  Gets experience for selling foreign unconjured animals of comparable level.";}
-	public String otherLimitations(){return "Sneak and Hide attempts will fail outside of the wild.";}
+    public String getOtherBonusDesc(){return "Benefits from animal followers leveling.  Gets experience for selling foreign unconjured animals of comparable level.";}
+	public String getOtherLimitsDesc(){return "Sneak and Hide attempts will fail outside of the wild.";}
     public void executeMsg(Environmental host, CMMsg msg)
     { 
         super.executeMsg(host,msg); 
@@ -198,7 +198,7 @@ public class Trapper extends Thief
 		return super.okMessage(myHost,msg);
 	}
 
-	public String statQualifications(){return "Dexterity 9+, Constitution 9+";}
+	public String getStatQualDesc(){return "Dexterity 9+, Constitution 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<=8)

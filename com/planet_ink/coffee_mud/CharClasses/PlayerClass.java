@@ -51,7 +51,7 @@ public class PlayerClass extends StdCharClass
 
 	public int availabilityCode(){return 0;}
 
-	public String statQualifications(){return "";}
+	public String getStatQualDesc(){return "";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(!quiet)

@@ -134,7 +134,7 @@ public class Burglar extends Thief
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_ContractHit",true);
 	}
-	public String statQualifications(){return "Dexterity 9+ Charisma 9+";}
+	public String getStatQualDesc(){return "Dexterity 9+ Charisma 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<=8)

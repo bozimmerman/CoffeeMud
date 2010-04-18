@@ -171,9 +171,9 @@ public class Ranger extends StdCharClass
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
-	public String statQualifications(){return "Strength 9+, Intelligence 9+";}
-	public String otherLimitations(){return "Must remain Neutral to avoid chant failure chances.";}
-	public String otherBonuses(){return "When leading animals into battle, will not divide experience among animal followers.  Receives bonus conquest experience.  Benefits from animal followers leveling.";}
+	public String getStatQualDesc(){return "Strength 9+, Intelligence 9+";}
+	public String getOtherLimitsDesc(){return "Must remain Neutral to avoid chant failure chances.";}
+	public String getOtherBonusDesc(){return "When leading animals into battle, will not divide experience among animal followers.  Receives bonus conquest experience.  Benefits from animal followers leveling.";}
     public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg); Druid.doAnimalFollowerLevelingCheck(this,host,msg);}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{

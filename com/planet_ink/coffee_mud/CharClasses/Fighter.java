@@ -142,7 +142,7 @@ public class Fighter extends StdCharClass
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
-	public String statQualifications(){return "Strength 9+";}
+	public String getStatQualDesc(){return "Strength 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob != null)
@@ -179,7 +179,7 @@ public class Fighter extends StdCharClass
 	}
 
     public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg);}
-    public String otherBonuses(){return "Receives bonus conquest experience.";}
+    public String getOtherBonusDesc(){return "Receives bonus conquest experience.";}
     public static void conquestExperience(CharClass C, Environmental host, CMMsg msg)
     {
         if((msg.targetMinor()==CMMsg.TYP_AREAAFFECT)

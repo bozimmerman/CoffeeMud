@@ -169,7 +169,7 @@ public class Beastmaster extends StdCharClass
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
 
-	public String statQualifications(){return "Constitution 9+, Dexterity 9+";}
+	public String getStatQualDesc(){return "Constitution 9+, Dexterity 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob != null)
@@ -225,8 +225,8 @@ public class Beastmaster extends StdCharClass
 	}
     public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Druid.doAnimalFollowerLevelingCheck(this,host,msg);  Druid.doAnimalFreeingCheck(this,host,msg);}
  
-	public String otherLimitations(){return "Must remain Neutral to avoid skill and chant failure chances.";}
-	public String otherBonuses(){return "When leading animals into battle, will not divide experience among animal followers.  Can create a druidic connection with an area.  Benefits from animal/plant/stone followers leveling.  Benefits from freeing animals from cities.";}
+	public String getOtherLimitsDesc(){return "Must remain Neutral to avoid skill and chant failure chances.";}
+	public String getOtherBonusDesc(){return "When leading animals into battle, will not divide experience among animal followers.  Can create a druidic connection with an area.  Benefits from animal/plant/stone followers leveling.  Benefits from freeing animals from cities.";}
 
     public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, HashSet followers)
 	{

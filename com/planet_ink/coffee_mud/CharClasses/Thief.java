@@ -158,7 +158,7 @@ public class Thief extends StdCharClass
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
-	public String statQualifications(){return "Dexterity 9+";}
+	public String getStatQualDesc(){return "Dexterity 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob != null)
@@ -230,5 +230,5 @@ public class Thief extends StdCharClass
 		super.executeMsg(myHost,msg);
 	}
 
-	public String otherBonuses(){return "Bonus experience for using certain skills.";}
+	public String getOtherBonusDesc(){return "Bonus experience for using certain skills.";}
 }

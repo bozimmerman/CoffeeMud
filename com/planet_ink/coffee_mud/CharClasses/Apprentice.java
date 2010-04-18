@@ -124,7 +124,7 @@ public class Apprentice extends StdCharClass
         return super.tick(ticking,tickID);
     }
     
-	public String statQualifications(){return "Wisdom 5+, Intelligence 5+";}
+	public String getStatQualDesc(){return "Wisdom 5+, Intelligence 5+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob != null)
@@ -156,5 +156,5 @@ public class Apprentice extends StdCharClass
 		return outfitChoices;
 	}
 	
-	public String otherBonuses(){return "Gains lots of xp for training to a new class.";}
+	public String getOtherBonusDesc(){return "Gains lots of xp for training to a new class.";}
 }

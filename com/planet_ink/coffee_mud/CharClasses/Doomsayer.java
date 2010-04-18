@@ -143,7 +143,7 @@ public class Doomsayer extends Cleric
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
-	public String statQualifications(){return "Wisdom 9+ Strength 9+";}
+	public String getStatQualDesc(){return "Wisdom 9+ Strength 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<=8)
@@ -161,8 +161,8 @@ public class Doomsayer extends Cleric
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 
-	public String otherBonuses(){return "Receives 1 pt damage reduction/level from fire attacks.";}
-	public String otherLimitations(){return "Always fumbles good prayers, and fumbles all prayers when alignment is above 500.  Qualifies and receives evil prayers.  Using non-aligned prayers introduces failure chance.  Vulnerable to cold attacks.";}
+	public String getOtherBonusDesc(){return "Receives 1 pt damage reduction/level from fire attacks.";}
+	public String getOtherLimitsDesc(){return "Always fumbles good prayers, and fumbles all prayers when alignment is above 500.  Qualifies and receives evil prayers.  Using non-aligned prayers introduces failure chance.  Vulnerable to cold attacks.";}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

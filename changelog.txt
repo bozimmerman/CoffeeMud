@@ -2261,3 +2261,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 32.MUDSTATE variable in coffeemud.ini file has changed.  Please update your ini files!
 33.CLASSSYSTEM has been expanded with another apprentice-based set of choices.
 34.New command: MPRUN -- for Archons to run Scriptable scripts, and for use in automated testing.
+35.Help on classes and races give much of same details as found on web now.

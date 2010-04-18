@@ -131,6 +131,8 @@ public interface CMFlagLibrary extends CMLibrary
     public int getSensesCode(String name);
     public String getAbilityType(Ability A);
     public String getAbilityDomain(Ability A);
+	public String describeSenses(MOB mob);
+	public String describeDisposition(MOB mob);
     public int getAbilityType(String name);
     public int getAbilityDomain(String name);
 	public int getDetectScore(MOB seer);

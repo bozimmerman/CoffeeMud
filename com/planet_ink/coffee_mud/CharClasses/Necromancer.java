@@ -152,7 +152,7 @@ public class Necromancer extends Cleric
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
-	public String statQualifications(){return "Wisdom 9+ Constitution 9+";}
+	public String getStatQualDesc(){return "Wisdom 9+ Constitution 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<=8)
@@ -170,8 +170,8 @@ public class Necromancer extends Cleric
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 
-	public String otherBonuses(){return "Can sense deaths at Necromancer level 15, and becomes a Lich upon death at 30.  Undead followers will not drain experience.";}
-	public String otherLimitations(){return "Always fumbles good prayers.  Qualifies and receives evil prayers.  Using non-aligned prayers introduces failure chance.";}
+	public String getOtherBonusDesc(){return "Can sense deaths at Necromancer level 15, and becomes a Lich upon death at 30.  Undead followers will not drain experience.";}
+	public String getOtherLimitsDesc(){return "Always fumbles good prayers.  Qualifies and receives evil prayers.  Using non-aligned prayers introduces failure chance.";}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

@@ -161,7 +161,7 @@ public class Templar extends Cleric
 		return super.tick(myChar,tickID);
 	}
 
-	public String statQualifications(){return "Wisdom 9+ Strength 9+";}
+	public String getStatQualDesc(){return "Wisdom 9+ Strength 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<=8)
@@ -179,8 +179,8 @@ public class Templar extends Cleric
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 
-	public String otherBonuses(){return "Receives Aura of Strife which increases in power.";}
-	public String otherLimitations(){return "Always fumbles good prayers.  Using non-evil prayers introduces failure chance.";}
+	public String getOtherBonusDesc(){return "Receives Aura of Strife which increases in power.";}
+	public String getOtherLimitsDesc(){return "Always fumbles good prayers.  Using non-evil prayers introduces failure chance.";}
 
 	public Vector outfit(MOB myChar)
 	{

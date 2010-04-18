@@ -146,7 +146,7 @@ public class Missionary extends Cleric
 					+(affectableStats.getClassLevel(this)));
 	}
 
-	public String statQualifications(){return "Wisdom 9+ Dexterity 9+";}
+	public String getStatQualDesc(){return "Wisdom 9+ Dexterity 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<=8)
@@ -164,8 +164,8 @@ public class Missionary extends Cleric
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 
-	public String otherBonuses(){return "Never fumbles neutral prayers, and receives 1pt/level luck bonus to all saving throws per level.  Receives 1pt/level electricity damage reduction.";}
-	public String otherLimitations(){return "Using non-neutral prayers introduces failure chance.  Vulnerable to acid attacks.";}
+	public String getOtherBonusDesc(){return "Never fumbles neutral prayers, and receives 1pt/level luck bonus to all saving throws per level.  Receives 1pt/level electricity damage reduction.";}
+	public String getOtherLimitsDesc(){return "Using non-neutral prayers introduces failure chance.  Vulnerable to acid attacks.";}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

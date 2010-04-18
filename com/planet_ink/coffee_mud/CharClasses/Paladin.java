@@ -176,8 +176,8 @@ public class Paladin extends StdCharClass
 	}
 
     public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg);}
-	public String otherLimitations(){return "Must remain good to avoid spell/skill failure chance.";}
-    public String otherBonuses(){return "Receives bonus conquest experience.";}
+	public String getOtherLimitsDesc(){return "Must remain good to avoid spell/skill failure chance.";}
+    public String getOtherBonusDesc(){return "Receives bonus conquest experience.";}
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!(myHost instanceof MOB)) return super.okMessage(myHost,msg);
@@ -195,7 +195,7 @@ public class Paladin extends StdCharClass
 		return super.okMessage(myChar, msg);
 	}
 
-	public String statQualifications(){return "Strength 9+, Wisdom 9+";}
+	public String getStatQualDesc(){return "Strength 9+, Wisdom 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob != null)

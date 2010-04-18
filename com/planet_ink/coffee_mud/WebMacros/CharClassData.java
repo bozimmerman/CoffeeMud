@@ -558,13 +558,13 @@ public class CharClassData extends StdWebMacro
                 if(parms.containsKey("STRLMT"))
                 {
                     String old=httpReq.getRequestParameter("STRLMT");
-                    if(old==null) old=""+C.otherLimitations();
+                    if(old==null) old=""+C.getOtherLimitsDesc();
                     str.append(old+", ");
                 }
                 if(parms.containsKey("STRBON"))
                 {
                     String old=httpReq.getRequestParameter("STRBON");
-                    if(old==null) old=""+C.otherBonuses();
+                    if(old==null) old=""+C.getOtherBonusDesc();
                     str.append(old+", ");
                 }
                 if(parms.containsKey("QUAL"))
@@ -841,11 +841,13 @@ public class CharClassData extends StdWebMacro
                 /******************************************************/
 				if(parms.containsKey("HELP"))
 				{
-					StringBuilder s=CMLib.help().getHelpText(C.ID(),null,false);
+					StringBuilder s=CMLib.help().getHelpText(C.ID(),null,false,true);
 					if(s==null)
-						s=CMLib.help().getHelpText(C.name(),null,false);
+						s=CMLib.help().getHelpText(C.name(),null,false,true);
 					if(s!=null)
 					{
+						if(s.toString().startsWith("<CHARCLASS>"))
+							s=new StringBuilder(s.toString().substring(11));
 						int limit=70;
 						if(parms.containsKey("LIMIT")) limit=CMath.s_int((String)parms.get("LIMIT"));
 						str.append(helpHelp(s,limit));
@@ -853,28 +855,16 @@ public class CharClassData extends StdWebMacro
 				}
 				if(parms.containsKey("PLAYABLE"))
 					str.append(Area.THEME_PHRASE_EXT[C.availabilityCode()]+", ");
-
 				if(parms.containsKey("BASECLASS"))
 					str.append(C.baseClass()+", ");
-
 				if(parms.containsKey("MAXSTATS"))
-					for(int i : CharStats.CODES.BASE())
-						if(C.maxStatAdjustments()[i]!=0)
-							str.append(CMStrings.capitalizeAndLower(CharStats.CODES.DESC(i))+" ("+(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+C.maxStatAdjustments()[i])+"), ");
+					str.append(C.getMaxStatDesc()+", ");
 				if(parms.containsKey("PRACS"))
-				{
-					str.append(C.getPracsFirstLevel()+" plus (Wisdom/6)");
-					if(C.getBonusPracLevel()>0)
-						str.append("+"+C.getBonusPracLevel());
-					else
-					if(C.getBonusPracLevel()<0)
-						str.append(""+C.getBonusPracLevel());
-					str.append(" per level after first, ");
-				}
+					str.append(C.getPracticeDesc()+", ");
 				if(parms.containsKey("TRAINS"))
-					str.append(C.getTrainsFirstLevel()+" plus 1 per level after first, ");
+					str.append(C.getTrainDesc()+", ");
 				if(parms.containsKey("DAMAGE"))
-					str.append("An extra point of damage per "+C.getLevelsPerBonusDamage()+" level(s), ");
+					str.append(C.getDamageDesc()+", ");
 				if(parms.containsKey("QUALDOMAINLIST"))
 				{
 					Hashtable domains=new Hashtable();
@@ -920,11 +910,11 @@ public class CharClassData extends StdWebMacro
 				}
 
 				if(parms.containsKey("HITPOINTS"))
-					str.append(CMProps.getIntVar(CMProps.SYSTEMI_STARTHP)+" at first, plus (Constitution/"+C.getHPDivisor()+")+"+C.getHPDice()+"d"+C.getHPDie()+" per level thereafter, ");
+					str.append(C.getHitPointDesc()+", ");
 				if(parms.containsKey("MANA"))
-					str.append(CMProps.getIntVar(CMProps.SYSTEMI_STARTMANA)+" plus (Intelligence/"+C.getManaDivisor()+")+"+C.getManaDice()+"d"+C.getManaDie()+" per level after first, ");
+					str.append(C.getManaDesc()+", ");
 				if(parms.containsKey("MOVEMENT"))
-					str.append(CMProps.getIntVar(CMProps.SYSTEMI_STARTMOVE)+" plus ((Strength/18)*"+C.getMovementMultiplier()+") per level after first, ");
+					str.append(C.getMovementDesc()+", ");
 
 				if(parms.containsKey("AVGHITPOINTS"))
 				{
@@ -950,35 +940,27 @@ public class CharClassData extends StdWebMacro
 					str.append("("+avgMath(10,ah,90,100)+"/"+avgMath(18,ah,90,100)+"/"+avgMath(maxStrength,ah,90,100)+") ");
 				}
 
-				StringBuffer preReqName=new StringBuffer(CharStats.CODES.DESC(C.getAttackAttribute()).toLowerCase());
-				preReqName.setCharAt(0,Character.toUpperCase(preReqName.charAt(0)));
 				if(parms.containsKey("PRIME"))
-					str.append(preReqName+", ");
+					str.append(C.getPrimeStatDesc()+", ");
+				
 				if(parms.containsKey("ATTACK"))
-				{
-					str.append("("+preReqName+"/18)");
-					if(C.getBonusAttackLevel()>0)
-						str.append("+"+C.getBonusAttackLevel());
-					else
-					if(C.getBonusAttackLevel()<0)
-						str.append(""+C.getBonusAttackLevel());
-					str.append(" per level after first, ");
-				}
+					str.append(C.getAttackDesc()+", ");
+				
 				if(parms.containsKey("WEAPONS"))
-					if(C.weaponLimitations().length()>0)
-						str.append(C.weaponLimitations()+", ");
+					if(C.getWeaponLimitDesc().length()>0)
+						str.append(C.getWeaponLimitDesc()+", ");
 					else
 						str.append("Any, ");
 				if(parms.containsKey("ARMORLIMITS"))
-					if(C.armorLimitations().length()>0)
-						str.append(C.armorLimitations()+", ");
+					if(C.getArmorLimitDesc().length()>0)
+						str.append(C.getArmorLimitDesc()+", ");
 					else
 						str.append("Any, ");
 				if(parms.containsKey("LIMITS"))
                 {
                     StringBuffer limits = new StringBuffer("");
-					if(C.otherLimitations().length()>0)
-                        limits.append("  "+C.otherLimitations());
+					if(C.getOtherLimitsDesc().length()>0)
+                        limits.append("  "+C.getOtherLimitsDesc());
                     if(C.getLevelCap()>0)
                         limits.append("  A player may not gain more than "+C.getLevelCap()+" levels in this class.");
                     if(limits.length()==0)
@@ -987,13 +969,13 @@ public class CharClassData extends StdWebMacro
                         str.append(limits.toString().trim()).append(", ");
                 }
 				if(parms.containsKey("BONUSES"))
-					if(C.otherBonuses().length()>0)
-						str.append(C.otherBonuses()+", ");
+					if(C.getOtherBonusDesc().length()>0)
+						str.append(C.getOtherBonusDesc()+", ");
 					else
 						str.append("None, ");
 				if(parms.containsKey("QUALS"))
-					if(C.statQualifications().length()>0)
-						str.append(C.statQualifications()+", ");
+					if(C.getStatQualDesc().length()>0)
+						str.append(C.getStatQualDesc()+", ");
 				if(parms.containsKey("STARTINGEQ"))
 				{
 					if(C.outfit(null)!=null)

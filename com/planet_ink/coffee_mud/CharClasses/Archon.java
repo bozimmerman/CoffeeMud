@@ -106,7 +106,7 @@ public class Archon extends StdCharClass
 
 	public int availabilityCode(){return 0;}
 
-	public String statQualifications(){return "Must be granted by another Archon.";}
+	public String getStatQualDesc(){return "Must be granted by another Archon.";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(!quiet)

@@ -152,7 +152,7 @@ public class Oracle extends Cleric
 		return true;
 	}
 
-	public String statQualifications(){return "Wisdom 9+ Intelligence 9+";}
+	public String getStatQualDesc(){return "Wisdom 9+ Intelligence 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<=8)
@@ -170,8 +170,8 @@ public class Oracle extends Cleric
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 
-	public String otherBonuses(){return "Receives a non-class skill at 30th level, and every Oracle level thereafter.";}
-	public String otherLimitations(){return "Always fumbles evil prayers.  Qualifies and receives good prayers.  Using non-aligned prayers introduces failure chance.";}
+	public String getOtherBonusDesc(){return "Receives a non-class skill at 30th level, and every Oracle level thereafter.";}
+	public String getOtherLimitsDesc(){return "Always fumbles evil prayers.  Qualifies and receives good prayers.  Using non-aligned prayers introduces failure chance.";}
 
 	protected int numNonQualified(MOB mob)
 	{

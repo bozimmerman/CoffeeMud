@@ -182,7 +182,7 @@ public class Healer extends Cleric
 		}
 	}
 	
-	public String statQualifications(){return "Wisdom 9+ Charisma 9+";}
+	public String getStatQualDesc(){return "Wisdom 9+ Charisma 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<=8)
@@ -200,8 +200,8 @@ public class Healer extends Cleric
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 
-	public String otherBonuses(){return "All healing prayers give bonus healing.  Attains healing aura after 30th level.";}
-	public String otherLimitations(){return "Always fumbles evil prayers.  Qualifies and receives good prayers.  Using non-aligned prayers introduces failure chance.";}
+	public String getOtherBonusDesc(){return "All healing prayers give bonus healing.  Attains healing aura after 30th level.";}
+	public String getOtherLimitsDesc(){return "Always fumbles evil prayers.  Qualifies and receives good prayers.  Using non-aligned prayers introduces failure chance.";}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

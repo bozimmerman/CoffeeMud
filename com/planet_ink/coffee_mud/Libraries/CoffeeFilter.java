@@ -88,6 +88,173 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		return buf.toString();
 	}
 	
+	public String[] wrapOnlyFilter(String msg, int wrap)
+	{
+		int loop=0;
+		StringBuilder buf=new StringBuilder(msg);
+		int len=(wrap>0)?wrap:Integer.MAX_VALUE;
+		int lastSpace=0;
+		int firstAlpha=-1;
+		int amperStop = -1;
+
+		while(buf.length()>loop)
+		{
+			int lastSp=-1;
+			while((loop<len)&&(buf.length()>loop))
+			{
+				switch(buf.charAt(loop))
+				{
+				case ' ':
+					{
+						if(lastSp>lastSpace)
+							lastSpace=lastSp;
+						lastSp=loop;
+					}
+					break;
+				case (char)13:
+					{
+						if(((loop<buf.length()-1)&&((buf.charAt(loop+1))!=10))
+						&&((loop>0)&&((buf.charAt(loop-1))!=10)))
+							buf.insert(loop+1,(char)10);
+						if(wrap>0) len=loop+wrap;
+						lastSpace=loop;
+					}
+					break;
+				case (char)10:
+					{
+						if(wrap>0) len=loop+wrap;
+						lastSpace=loop;
+					}
+					break;
+				case '`': break;
+				case '!':
+					if((loop<buf.length()-10)
+					&&(buf.charAt(loop+1)=='!')
+					&&((buf.substring(loop+2,loop+7).equalsIgnoreCase("sound"))
+					   ||(buf.substring(loop+2,loop+7).equalsIgnoreCase("music"))))
+					{
+						int x=buf.indexOf("(",loop+7);
+						int y=buf.indexOf(")",loop+7);
+						if((x>=0)&&(y>=x))
+						{
+							buf.delete(loop,y+1);
+							loop--;
+						}
+					}
+					break;
+				case '>': break;
+				case '"': break;
+				case '&':
+					if(loop < amperStop)
+						break;
+					else
+					if(loop<buf.length()-3)
+					{
+						if(buf.substring(loop,loop+3).equalsIgnoreCase("lt;"))
+							buf.replace(loop,loop+3,"<");
+						else
+						if(buf.substring(loop,loop+3).equalsIgnoreCase("gt;"))
+							buf.replace(loop,loop+3,">");
+					}
+					break;
+				case '%':
+					if(loop<buf.length()-2)
+					{
+						int dig1=hexStr.indexOf(buf.charAt(loop+1));
+						int dig2=hexStr.indexOf(buf.charAt(loop+2));
+						if((dig1>=0)&&(dig2>=0))
+						{
+							buf.setCharAt(loop,(char)((dig1*16)+dig2));
+							buf.deleteCharAt(loop+1);
+							if((buf.charAt(loop))==13)
+								buf.setCharAt(loop+1,(char)10);
+							else
+								buf.deleteCharAt(loop+1);
+						}
+					}
+					break;
+				case '(': break;
+				case '\\':
+					if(loop<buf.length()-1)
+					{
+						switch(buf.charAt(loop+1))
+						{
+						case 'n':
+						case 'r':
+							{
+							buf.setCharAt(loop,(char)13);
+							if((loop>=buf.length()-2)||((loop<buf.length()-2)&&((buf.charAt(loop+2))!=10)))
+								buf.setCharAt(loop+1,(char)10);
+							else
+							if(loop<buf.length()-2)
+								buf.deleteCharAt(loop+1);
+							}
+							break;
+						case '\'':
+						case '`':
+							{
+							buf.setCharAt(loop,'\'');
+							buf.deleteCharAt(loop+1);
+							}
+							break;
+						}
+					}
+					break;
+				case '<': break;
+				case '\033': // skip escapes
+					if((loop < buf.length()-1) && (buf.charAt(loop+1)=='['))
+					{
+						while((len < buf.length()-1) && (buf.charAt(loop)!='m'))
+						{
+							len++;
+							loop++;
+						}
+						len++; // and one more for the 'm'.
+					}
+					break;
+				case '^':
+				{
+					len++;
+					loop++;
+					break;
+				}
+				default:
+					if((firstAlpha < 0)&&(Character.isLetter(buf.charAt(loop))))
+						firstAlpha = loop;
+					break;
+				}
+				loop++;
+			}
+
+			if((len<buf.length())
+			&&(loop!=lastSp)
+			&&(lastSp>=0)
+			&&(loop>=0)
+			&&(loop<buf.length())
+			&&(buf.charAt(loop)!=13)
+			&&(buf.charAt(loop)!=10))
+			{
+				amperStop=loop;
+				if(buf.charAt(lastSp+1)==' ')
+				{
+					buf.setCharAt(lastSp,(char)13);
+					buf.setCharAt(lastSp+1,(char)10);
+				}
+				else
+				{
+					buf.setCharAt(lastSp,(char)13);
+					buf.insert(lastSp,(char)10);
+				}
+				loop=lastSp+2;
+			}
+			if(wrap>0)len=loop+wrap;
+		}
+
+		if(firstAlpha<0) firstAlpha=0;
+		if(firstAlpha<buf.length())
+			buf.setCharAt(firstAlpha,Character.toUpperCase(buf.charAt(firstAlpha)));
+		return buf.toString().split("\n\r");
+	}
     
 	// no word-wrapping, text filtering or ('\','n') -> '\n' translations
 	// (it's not a member of the interface either so probably shouldn't be public)

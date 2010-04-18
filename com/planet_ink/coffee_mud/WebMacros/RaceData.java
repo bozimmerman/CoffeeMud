@@ -494,28 +494,6 @@ public class RaceData extends StdWebMacro
         return str;
     }
 
-    protected Vector allAbles(Race R)
-    {
-        Vector ables=R.racialAbilities(null);
-        if(ables==null) ables=new Vector();
-        else ables=(Vector)ables.clone();
-        DVector cables=R.culturalAbilities();
-        Ability A=null;
-        if(cables!=null)
-        {
-            for(int c=0;c<cables.size();c++)
-            {
-                A=CMClass.getAbility((String)cables.elementAt(c,1));
-                if(A!=null)
-                {
-                    A.setProficiency(((Integer)cables.elementAt(c,2)).intValue());
-                    ables.addElement(A);
-                }
-            }
-        }
-        return ables;
-    }
-
     private MOB makeMOB(Race R)
     {
 		MOB mob=CMClass.getMOB("StdMOB");
@@ -580,11 +558,13 @@ public class RaceData extends StdWebMacro
 				StringBuffer str=new StringBuffer("");
 				if(parms.containsKey("HELP"))
 				{
-					StringBuilder s=CMLib.help().getHelpText(R.ID(),null,false);
+					StringBuilder s=CMLib.help().getHelpText(R.ID(),null,false,true);
 					if(s==null)
-						s=CMLib.help().getHelpText(R.name(),null,false);
+						s=CMLib.help().getHelpText(R.name(),null,false,true);
 					if(s!=null)
 					{
+						if(s.toString().startsWith("<RACE>"))
+							s=new StringBuilder(s.toString().substring(6));
 						int limit=70;
 						if(parms.containsKey("LIMIT")) limit=CMath.s_int((String)parms.get("LIMIT"));
 						str.append(helpHelp(s,limit));
@@ -768,26 +748,8 @@ public class RaceData extends StdWebMacro
 					str.append(R.myNaturalWeapon().name()+", ");
 
 				MOB mob=null;
-
                 if(parms.containsKey("STATS"))
-                {
-					mob=makeMOB(R);
-					MOB mob2=makeMOB(R);
-					mob2.baseCharStats().setMyRace(CMClass.getRace("StdRace"));
-					mob2.recoverCharStats();
-					mob2.recoverEnvStats();
-					mob2.recoverMaxState();
-                    for(int c: CharStats.CODES.ALL())
-                    {
-                        int oldStat=mob2.charStats().getStat(c);
-                        int newStat=mob.charStats().getStat(c);
-                        if(oldStat>newStat)
-                            str.append(CharStats.CODES.DESC(c).toLowerCase()+"-"+(oldStat-newStat)+", ");
-                        else
-                        if(newStat>oldStat)
-                            str.append(CharStats.CODES.DESC(c).toLowerCase()+"+"+(newStat-oldStat)+", ");
-                    }
-                }
+                	str.append(R.getStatAdjDesc()+", ");
 
                 if(parms.containsKey("ESTATS")||parms.containsKey("CSTATS")||parms.containsKey("ASTATS")||parms.containsKey("ASTATE")||parms.containsKey("STARTASTATE"))
                 {
@@ -883,106 +845,22 @@ public class RaceData extends StdWebMacro
                 }
 
 				if(parms.containsKey("SENSES"))
-				{
-					if(mob==null) mob=makeMOB(R);
-					if(!CMLib.flags().canHear(mob))
-						str.append("deaf, ");
-					if(!CMLib.flags().canSee(mob))
-						str.append("blind, ");
-					if(!CMLib.flags().canMove(mob))
-						str.append("can't move, ");
-					if(CMLib.flags().canSeeBonusItems(mob))
-						str.append("detect magic, ");
-					if(CMLib.flags().canSeeEvil(mob))
-						str.append("detect evil, ");
-					if(CMLib.flags().canSeeGood(mob))
-						str.append("detect good, ");
-					if(CMLib.flags().canSeeHidden(mob))
-						str.append("see hidden, ");
-					if(CMLib.flags().canSeeInDark(mob))
-						str.append("darkvision, ");
-					if(CMLib.flags().canSeeInfrared(mob))
-						str.append("infravision, ");
-					if(CMLib.flags().canSeeInvisible(mob))
-						str.append("see invisible, ");
-					if(CMLib.flags().canSeeMetal(mob))
-						str.append("metalvision, ");
-					if(CMLib.flags().canSeeSneakers(mob))
-						str.append("see sneaking, ");
-					if(!CMLib.flags().canSmell(mob))
-						str.append("can't smell, ");
-					if(!CMLib.flags().canSpeak(mob))
-						str.append("can't speak, ");
-					if(!CMLib.flags().canTaste(mob))
-						str.append("can't eat, ");
-				}
+					if(R.getSensesChgDesc().length()>0)
+						str.append(R.getSensesChgDesc()+", ");
 				if(parms.containsKey("DISPOSITIONS"))
-				{
-					if(mob==null) mob=makeMOB(R);
-					if(CMLib.flags().isClimbing(mob))
-						str.append("climbing, ");
-					if((mob.envStats().disposition()&EnvStats.IS_EVIL)>0)
-						str.append("evil, ");
-					if(CMLib.flags().isFalling(mob))
-						str.append("falling, ");
-					if(CMLib.flags().isBound(mob))
-						str.append("bound, ");
-					if(CMLib.flags().isFlying(mob))
-						str.append("flies, ");
-					if((mob.envStats().disposition()&EnvStats.IS_GOOD)>0)
-						str.append("good, ");
-					if(CMLib.flags().isHidden(mob))
-						str.append("hidden, ");
-					if(CMLib.flags().isInDark(mob))
-						str.append("darkness, ");
-					if(CMLib.flags().isInvisible(mob))
-						str.append("invisible, ");
-					if(CMLib.flags().isGlowing(mob))
-						str.append("glowing, ");
-					if(CMLib.flags().isCloaked(mob))
-						str.append("cloaked, ");
-					if(!CMLib.flags().isSeen(mob))
-						str.append("unseeable, ");
-					if(CMLib.flags().isSitting(mob))
-						str.append("crawls, ");
-					if(CMLib.flags().isSleeping(mob))
-						str.append("sleepy, ");
-					if(CMLib.flags().isSneaking(mob))
-						str.append("sneaks, ");
-					if(CMLib.flags().isSwimming(mob))
-						str.append("swims, ");
-				}
+					if(R.getDispositionChgDesc().length()>0)
+						str.append(R.getDispositionChgDesc()+", ");
 				if(parms.containsKey("TRAINS"))
-				{
-					if(mob==null) mob=makeMOB(R);
-					if(mob.getTrains()>0)
-						str.append("trains+"+mob.getTrains()+", ");
-				}
+					if(R.getTrainAdjDesc().length()>0)
+						str.append(R.getTrainAdjDesc()+", ");
 				if(parms.containsKey("EXPECTANCY"))
 					str.append(""+R.getAgingChart()[Race.AGE_ANCIENT]+", ");
 				if(parms.containsKey("PRACS"))
-				{
-					if(mob==null) mob=makeMOB(R);
-					if(mob.getPractices()>0)
-						str.append("practices+"+mob.getPractices()+", ");
-				}
+					if(R.getPracAdjDesc().length()>0)
+						str.append(R.getPracAdjDesc()+", ");
 				if(parms.containsKey("ABILITIES"))
-				{
-                    Vector ables=allAbles(R);
-                    Ability A=null;
-					for(int i=0;i<ables.size();i++)
-					{
-						A=(Ability)ables.elementAt(i);
-						if((A!=null)&&(((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_LANGUAGE)))
-						{
-							if(A.proficiency()==0)
-								str.append(A.Name()+", ");
-							else
-								str.append(A.Name()+"("+A.proficiency()+"%), ");
-						}
-					}
-
-				}
+					if(R.getAbilitiesDesc().length()>0)
+						str.append(R.getAbilitiesDesc()+", ");
 				if(parms.containsKey("EFFECTS"))
 				{
 					Vector ables=R.racialEffects(null);
@@ -994,22 +872,9 @@ public class RaceData extends StdWebMacro
 					}
 				}
                 if(parms.containsKey("LANGS"))
-                {
-                    Vector ables=allAbles(R);
-                    Ability A=null;
-                    for(int i=0;i<ables.size();i++)
-                    {
-                        A=(Ability)ables.elementAt(i);
-                        if((A!=null)&&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)))
-                        {
-                            if(A.proficiency()==0)
-                                str.append(A.Name()+", ");
-                            else
-                                str.append(A.Name()+"("+A.proficiency()+"%), ");
-                        }
-                    }
-
-                }
+					if(R.getLanguagesDesc().length()>0)
+						str.append(R.getLanguagesDesc()+", ");
+                
 				if(parms.containsKey("STARTINGEQ"))
 				{
 					if(R.outfit(null)!=null)

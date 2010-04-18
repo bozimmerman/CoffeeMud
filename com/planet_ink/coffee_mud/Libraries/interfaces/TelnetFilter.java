@@ -56,6 +56,7 @@ public interface TelnetFilter extends CMLibrary
     // no word-wrapping, text filtering or ('\','n') -> '\n' translations
     // (it's not a member of the interface either so probably shouldn't be public)
     public String colorOnlyFilter(String msg, Session S);
+	public String[] wrapOnlyFilter(String msg, int wrap);
     public String getLastWord(StringBuffer buf, int lastSp, int lastSpace);
     public String fullOutFilter(Session S,
                                 MOB mob,

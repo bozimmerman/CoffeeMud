@@ -1079,7 +1079,8 @@ application is running.</td>
           <tr>
             <td valign="top">doneacct.txt<br />
             </td>
-            <td valign="top">A file shown after account creation, but before character creation.<br />
+            <td valign="top">A file shown after account creation, but
+before character creation.<br />
             </td>
           </tr>
           <tr>
@@ -1142,7 +1143,8 @@ RULES command.<br />
           <tr>
             <td valign="top">selchar.txt<br />
             </td>
-            <td valign="top">A text file shown on account char selection.<br />
+            <td valign="top">A text file shown on account char
+selection.<br />
             </td>
           </tr>
           <tr>
@@ -1309,11 +1311,13 @@ on a Windows machine</a></h3>
       <ul>
         <li>
           <p>Go to <a href="http://www.mysql.com">www.mysql.com</a>,
-click on Downloads (one of the tabs at the very top). Download the latest generally available production version.</p>
+click on Downloads (one of the tabs at the very top). Download the
+latest generally available production version.</p>
         </li>
         <li>
           <p>Go back to the Downloads tab, this time scroll down to
-MYSQL Connectors.  Download the latest Connector/J, or whatever they are calling their JDBC Driver at the time.</p>
+MYSQL Connectors. Download the latest Connector/J, or whatever they are
+calling their JDBC Driver at the time.</p>
         </li>
         <li>
           <p>Locate the mysql zip file you downloaded and
@@ -1328,17 +1332,21 @@ and you will see a file called "coffeemuddbmysql.sql". Open that file
 with a text editor or notepad etc... (you might want to make a backup
 copy first...) Now, add the following:</p>
           <pre># Connection: SQL<br /># Host: localhost<br /># Saved: 2003-04-01 00:29:14<br />#<br /># Connection: SQL<br /># Host: localhost<br /># Saved: 2003-04-01 00:27:39<br />#<br />use coffeemud &lt;----ADD THIS LINE!<br />CREATE TABLE CMCHAB (<br />CMUSERID char (50) NULL ,<br />CMABID char (50) NULL ,<br />CMABPF int NULL ,<br />CMABTX text NULL<br />etc..<br />etc..<br /></pre>
-          <p>Now copy the edited coffeemuddbmysql.sql to your <code>c:\program files\mysql\bin</code>
+          <p>Now copy the edited coffeemuddbmysql.sql to your <code>c:\program
+files\mysql\bin</code>
 folder (or wherever you installed mysql).</p>
         </li>
         <li>
           <p>Now, open a DOS window (Start &gt; Run &gt; type "cmd"
-and hit enter) and type cd c:\program files\mysql&lt;tab&gt;\bin and hit Enter. Type
+and hit enter) and type cd c:\program files\mysql&lt;tab&gt;\bin and
+hit Enter. Type
 "mysql" and enter. You should get a Welcome to the MySQL monitor etc.
 etc. etc.. and now the prompt should simply say "mysql&gt;" . Now type
 "create database coffeemud;" (please note the semi-colon";"!!!) and hit
 enter. You should get "Query OK, 1 row affected &lt;0.11sec)" or
-something like that... then type "use coffeemud&quot; and hit enter.  Next enter &quot;source coffeemuddbmysql.sql&quot;  and hit enter.  After a moment or two, it will be done.  Lastly, enter &quot;\q&quot;, that should quit you out of
+something like that... then type "use coffeemud" and hit enter. Next
+enter "source coffeemuddbmysql.sql" and hit enter. After a moment or
+two, it will be done. Lastly, enter "\q", that should quit you out of
 the monitor.</p>
         </li>
         <li>
@@ -1356,16 +1364,22 @@ section that says:</p>
         <li>
           <p>Go back to the other file you downloaded in STEP 2,
 mysql-connector-java-???.zip, and now extract that into a temp
-folder. Inside, there should be a "mysql-connector-java-???"
-folder and inside that, a "com" folder, and inside THAT, a "mysql"
-folder. Copy the mysql folder over into your <code>c:\coffeemud\com</code>
-folder. So now inside <code>c:\coffeemud\com</code>, there should be 2
-folders, one called <code>mysql</code>, and one called <code>planet_ink</code>.</p>
+folder. Inside, there should be a "mysql-connector-java-???.jar" file.
+Copy the jar file over into your <code>c:\coffeemud\lib</code>
+folder.&nbsp;<code />.</p>
         </li>
+        <li>Open up the mud.bat file and add the name of the JAR file
+above to the classpath string. &nbsp;For example:</li>
+        <ul>
+          <li><span style="font-family: monospace;">java -classpath
+".;.\lib\js.jar;.\lib\jzlib.jar;.\lib\</span><span
+ style="font-family: monospace;">mysql-connector-java-5.1.6-bin.jar</span><span
+ style="font-family: monospace;">" -Xms64m ....</span></li>
+          <li>** Your version of the connector jar file may vary!</li>
+        </ul>
         <li>
           <p>Now, with mysqld still running in the background, just
-launch the mud.bat AS IT IS to start the mud..( I didnt have to make
-ANY changes in there for this to work, hopefully the same for you...)</p>
+launch the mud.bat.</p>
         </li>
       </ul>
       <h3><a name="mysqllinux">Installing and using MySQL with
@@ -1380,9 +1394,20 @@ Make sure mysqld is being run at boot time, and not by the root user.</p>
           <p>Download and install the mysql jdbc api from <a
  href="http://www.mysql.com/downloads/api-jdbc-stable.html">http://www.mysql.com/downloads/api-jdbc-stable.html</a>.
 Extract the .tar.gz file to a temporary directory. Then copy the
-extracted /com/mysql/ directory (not just its contents) into
-/CoffeeMud/com/.</p>
+extracted driver JAR file into your <span
+ style="font-family: monospace;">/CoffeeMud/lib</span> directory.</p>
         </li>
+        <li>Open up the mudUNIX.sh file and add the name of the JAR
+file above to the classpath string. &nbsp;For example:</li>
+        <ul>
+          <li><span style="font-family: monospace;">nohup java
+-classpath
+".:./lib/js.jar:./lib/jzlib.jar:./lib/mysql-connector-java-5.1.6-bin.jar"
+-Xms65535000 ....</span></li>
+          <li>** Your version of the connector jar file may vary!<span
+ style="font-family: monospace;"><br />
+            </span></li>
+        </ul>
         <li>
           <p>Create a coffeemud database from the shell as root type,
 "mysqladmin create coffeemud" (in this example we name the db
