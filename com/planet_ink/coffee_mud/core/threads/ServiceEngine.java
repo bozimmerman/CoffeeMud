@@ -73,6 +73,7 @@ public class ServiceEngine implements ThreadEngine
         Tick almostTock=null;
 		ThreadGroup grp=null;
         char threadGroupNum=Thread.currentThread().getThreadGroup().getName().charAt(0);
+        System.out.print(threadGroupNum);
 		for(Iterator<Tick> e=tickGroups();e.hasNext();)
 		{
 			almostTock=e.next();
