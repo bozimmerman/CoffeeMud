@@ -1016,7 +1016,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				XMLLibrary.XMLpiece ablk=(XMLLibrary.XMLpiece)rV.elementAt(r);
 				if((!ablk.tag.equalsIgnoreCase("AROOM"))||(ablk.contents==null))
 					return unpackErr("Area","??"+ablk.tag);
-				if(S!=null) S.rawPrint(".");
+				//if(S!=null) S.rawPrint(".");
 				String err=unpackRoomFromXML(ablk.contents,true);
 				if(err.length()>0) return err;
 			}
@@ -1065,7 +1065,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					synchronized(("SYNC"+R.roomID()).intern())
 					{
 						R=CMLib.map().getRoom(R);
-						if(S!=null) S.rawPrint(".");
+						//if(S!=null) S.rawPrint(".");
 						if((R!=null)&&(R.roomID()!=null)&&(R.roomID().length()>0))
 							buf.append(getRoomXML(R,custom,files,true)+"\n\r");
 					}
@@ -1373,7 +1373,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)iV.elementAt(i);
 			if((!iblk.tag.equalsIgnoreCase("ITEM"))||(iblk.contents==null))
 				return unpackErr("Items","??"+iblk.tag);
-			if(S!=null) S.rawPrint(".");
+			//if(S!=null) S.rawPrint(".");
 			String itemClass=CMLib.xml().getValFromPieces(iblk.contents,"ICLAS");
 			Item newItem=CMClass.getItem(itemClass);
 			if((newItem instanceof ArchonOnly)

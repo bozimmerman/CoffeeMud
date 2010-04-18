@@ -836,6 +836,32 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		if((thisTag==null)||(thisTag.length()==0))
 			if(CMLib.map().getArea(helpStr.trim())!=null)
 				return new StringBuilder(CMLib.map().getArea(helpStr.trim()).getAreaStats().toString());
+		
+		// internal exceptions
+		if((thisTag==null)||(thisTag.length()==0))
+		{
+			String s=CMLib.channels().getChannelName(helpStr.trim());
+			boolean no=false;
+			if(((s==null)||(s.length()==0))
+			&&(helpStr.toLowerCase().startsWith("no")))
+			{
+				s=CMLib.channels().getChannelName(helpStr.trim().substring(2));
+				no=true;
+			}
+			if((s!=null)&&(s.length()>0))
+			{
+				if(no)
+			        thisTag=rHelpFile.getProperty("NOCHANNEL");
+				else
+			        thisTag=rHelpFile.getProperty("CHANNEL");
+				thisTag=CMStrings.replaceAll(thisTag,"[CHANNEL]",s.toUpperCase());
+				thisTag=CMStrings.replaceAll(thisTag,"[channel]",s.toLowerCase());
+				String extra = no?"":CMLib.channels().getExtraChannelDesc(s);
+				thisTag=CMStrings.replaceAll(thisTag,"[EXTRA]",extra);
+				return new StringBuilder(thisTag);
+			}
+		}
+		
 		if((thisTag==null)||(thisTag.length()==0))
 			return null;
 		if(noFix) return new StringBuilder(thisTag);

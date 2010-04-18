@@ -221,7 +221,7 @@ public class Export extends StdCommand
 				java.util.List<String> V=CMLib.database().getUserList();
 				for(String name : V)
 				{
-					if(S!=null) S.rawPrint(".");
+					//if(S!=null) S.rawPrint(".");
 					MOB M=CMLib.players().getLoadPlayer(name);
 					if(M!=null)
 					{
@@ -320,7 +320,7 @@ public class Export extends StdCommand
 				for(Enumeration r=area.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
-					if(S!=null) S.rawPrint(".");
+					//if(S!=null) S.rawPrint(".");
 					buf.append(CMLib.coffeeMaker().getRoomMobs(R,custom,files,found).toString());
 				}
 				xml=buf.toString()+"</MOBS>";
@@ -337,7 +337,7 @@ public class Export extends StdCommand
 					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 					{
 						Room R=(Room)r.nextElement();
-						if(S!=null) S.rawPrint(".");
+						//if(S!=null) S.rawPrint(".");
 						buf.append(CMLib.coffeeMaker().getRoomMobs(R,custom,files,found).toString());
 					}
 			    }catch(NoSuchElementException e){}
@@ -383,7 +383,7 @@ public class Export extends StdCommand
 				for(Enumeration r=area.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
-					if(S!=null) S.rawPrint(".");
+					//if(S!=null) S.rawPrint(".");
 					buf.append(CMLib.coffeeMaker().getRoomItems(R,found,files,type).toString());
 				}
 				xml=buf.toString()+"</ITEMS>";
@@ -400,7 +400,7 @@ public class Export extends StdCommand
 					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 					{
 						Room R=(Room)r.nextElement();
-						if(S!=null) S.rawPrint(".");
+						//if(S!=null) S.rawPrint(".");
 						buf.append(CMLib.coffeeMaker().getRoomItems(R,found,files,type).toString());
 					}
 			    }catch(NoSuchElementException e){}

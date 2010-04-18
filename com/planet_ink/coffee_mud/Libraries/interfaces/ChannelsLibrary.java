@@ -47,6 +47,7 @@ public interface ChannelsLibrary extends CMLibrary
     public int getChannelCodeNumber(String channelName);
     public String getChannelName(String channelName);
     public Vector getFlaggedChannelNames(ChannelFlag flag);
+	public String getExtraChannelDesc(String channelName);
     public String[][] imc2ChannelsArray();
     public String[][] iChannelsArray();
     public String[] getChannelNames();
