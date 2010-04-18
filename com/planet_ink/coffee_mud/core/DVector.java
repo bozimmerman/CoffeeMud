@@ -530,7 +530,8 @@ public class DVector implements Cloneable, java.io.Serializable
         //*/
     }
     
-	public static Enumeration s_enum(Hashtable H, boolean keys) {
+	public static Enumeration s_enum(Hashtable H, boolean keys) 
+	{
 		/* this is slower -- more than twice as slow, believe it or not! */
         //return keys?((Hashtable)H.clone()).keys():((Hashtable)H.clone()).elements(); 
         if((H==null)||(H.size()==0))

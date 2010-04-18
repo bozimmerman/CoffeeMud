@@ -58,7 +58,8 @@ public class TockClient implements Comparable<TockClient>
 		return false;
 	}
 	
-	public int compareTo(TockClient arg0) {
+	public int compareTo(TockClient arg0) 
+	{
 		long hc0=(clientObject==null)?0:clientObject.hashCode();
 		long hc1=(arg0.clientObject==null)?0:arg0.clientObject.hashCode();
 		if(hc0>hc1) return 1;
