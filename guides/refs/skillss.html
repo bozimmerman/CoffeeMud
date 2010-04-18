@@ -8,7 +8,7 @@
 	<body>
 		<center><table width=90% cellpadding=10 cellspacing=0 border=1 bordercolor=gray><tr><td width=100% colspan=2 bgcolor=#DFDFDF align=left> 
 		<h1>Player Spells Reference</h1>
-		<h2> CoffeeMud 5.5 </h2>
+		<h2> CoffeeMud 5.6 </h2>
 		</td></tr><tr><td width=20% valign=top align=left>
 		<a href="skills.html"><B>Skills</B></a><BR>
 		<a href="skillsp.html"><B>Prayers</B></a><BR>
@@ -65,6 +65,9 @@
 			&nbsp;
 			
 				<li><a href="#Spell_Awe">Awe</a>
+			&nbsp;
+			
+				<li><a href="#Spell_AweOther">Awe Other</a>
 			&nbsp;
 			
 				<li><a href="#Spell_BigMouth">Big Mouth</a>
@@ -784,6 +787,9 @@
 				<li><a href="#Spell_Shrink">Shrink</a>
 			&nbsp;
 			
+				<li><a href="#Spell_ShrinkMouth">Shrink Mouth</a>
+			&nbsp;
+			
 				<li><a href="#Spell_Silence">Silence</a>
 			&nbsp;
 			
@@ -993,6 +999,8 @@
 				<pre><BR>Spell    : Augury<BR>Domain   : Divination<BR>Available: Oracle(9) Numerous Classes(6) <BR>Allows   : Ranged Divining I, Reduced Divining I, Power Divining I<BR>Allows   : Extended Divining I<BR>Use Cost : Mana (50) <BR>Quality  : Circumstantial<BR>Targets  : <BR>Range    : Touch, or not applicable<BR>Commands : CAST, CA, C<BR>Usage    : CAST "AUGURY" [DIRECTION]<BR>Example  : cast "augury" north<BR>This spell divines the wisdom of travelling in a particular direction.</pre></P>  <P> 
 				<br><a name="Spell_Awe"><B>Awe (Spell_Awe)</B></a>
 				<pre><BR>Spell    : Awe<BR>Domain   : Enchantment/charm<BR>Available: Numerous Classes(9) <BR>Allows   : Ranged Enchanting I, Reduced Enchanting I, Power Enchanting I<BR>Allows   : Extended Enchanting I<BR>Use Cost : Mana (50) <BR>Quality  : Always Beneficial<BR>Targets  : Caster only<BR>Range    : Touch, or not applicable<BR>Commands : CAST, CA, C<BR>Usage    : CAST AWE [TARGET NAME] <BR>Example  : cast "awe" bob<BR>This spell allows the target becomes so awe-inspiring that theres a chance<BR>lower level agressive creatures won't initiate combat against him or her, though<BR>they can, of course, fight back.  Creatures which are extremely below the caster in<BR>level will always fall prey to this spell.</pre></P>  <P> 
+				<br><a name="Spell_AweOther"><B>Awe Other (Spell_AweOther)</B></a>
+				<pre><BR>Spell    : Awe Other<BR>Domain   : Enchantment/charm<BR>Available: Enchanter(21) <BR>Allows   : Ranged Enchanting I, Reduced Enchanting I, Power Enchanting I<BR>Allows   : Extended Enchanting I<BR>Use Cost : Mana (50) <BR>Quality  : Malicious<BR>Targets  : Creatures <BR>Range    : Touch, or not applicable<BR>Commands : CAST, CA, C<BR>Usage    : CAST AWE [TARGET NAME] [OTHER NAME]<BR>Example  : cast "awe" bob "an orc"<BR>This spell forces the target to become in awe of of whoever the caster wishes.<BR>This will prevent the target creature from initiating combat against the "other"<BR>creature named by the caster, though they can, of course, fight back.</pre></P>  <P> 
 				<br><a name="Spell_BigMouth"><B>Big Mouth (Spell_BigMouth)</B></a>
 				<pre><BR>Spell    : Big Mouth<BR>Domain   : Transmutation<BR>Available: Transmuter(24) <BR>Allows   : Ranged Transmuting I, Reduced Transmuting I, Power Transmuting I<BR>Allows   : Extended Transmuting I<BR>Use Cost : Mana (50) <BR>Quality  : Sometimes Beneficial<BR>Targets  : Caster only<BR>Range    : Touch, or not applicable<BR>Commands : CAST, CA, C<BR>Usage    : CAST "BIG MOUTH"<BR>Example  : cast "big mouth"<BR>This spell causes the caster's mouth to grow to an enormous size, allowing the<BR>caster to EAT any creature that is half his weight or smaller.  Eaten creatures<BR>face a horrible digestive fate!</pre></P>  <P> 
 				<br><a name="Spell_Blademouth"><B>Blademouth (Spell_Blademouth)</B></a>
@@ -1052,7 +1060,7 @@
 				<br><a name="Spell_ClarifyScroll"><B>Clarify Scroll (Spell_ClarifyScroll)</B></a>
 				<pre><BR>Spell    : Clarify Scroll<BR>Domain   : Enchantment/charm<BR>Available: Arcanist(4) Numerous Classes(17) <BR>Allows   : Ranged Enchanting I, Reduced Enchanting I, Power Enchanting I<BR>Allows   : Extended Enchanting I<BR>Use Cost : Mana (50) <BR>Quality  : Circumstantial<BR>Targets  : Items <BR>Range    : Touch, or not applicable<BR>Commands : CAST, CA, C<BR>Usage    : CAST "CLARIFY SCROLL" [TARGET NAME] <BR>Example  : cast "clarify scroll" scroll<BR>When cast on a magical scroll, the letters and symbols on the paper gain new<BR>clarity.  The scroll then may be re-used more often.</pre></P>  <P> 
 				<br><a name="Spell_Clog"><B>Shrink Mouth (Spell_Clog)</B></a>
-				<pre><BR>Spell    : Shrink Mouth<BR>Domain   : Transmutation<BR>Available: Numerous Classes(2) <BR>Allows   : Ranged Transmuting I, Reduced Transmuting I, Power Transmuting I<BR>Allows   : Extended Transmuting I<BR>Use Cost : Mana (50) <BR>Quality  : Malicious<BR>Targets  : Creatures <BR>Range    : Touch, or not applicable<BR>Commands : CAST, CA, C<BR>Usage    : CAST "SHRINK MOUTH" [TARGET NAME] <BR>Example  : cast "shrink mouth" dragon<BR>This spell causes the targets mouth to pucker up. The target remains able to<BR>use any breath weapons, but is unable to put anything into its mouth.</pre></P>  <P> 
+				<pre><BR>Spell    : Shrink Mouth<BR>Domain   : Transmutation<BR>Allows   : Ranged Transmuting I, Reduced Transmuting I, Power Transmuting I<BR>Allows   : Extended Transmuting I<BR>Use Cost : Mana (50) <BR>Quality  : Malicious<BR>Targets  : Creatures <BR>Range    : Touch, or not applicable<BR>Commands : CAST, CA, C<BR><BR>Spell    : Shrink Mouth<BR>Domain   : Transmutation<BR>Available: Numerous Classes(2) <BR>Allows   : Ranged Transmuting I, Reduced Transmuting I, Power Transmuting I<BR>Allows   : Extended Transmuting I<BR>Use Cost : Mana (50) <BR>Quality  : Malicious<BR>Targets  : Creatures <BR>Range    : Touch, or not applicable<BR>Commands : CAST, CA, C<BR>Usage    : CAST "SHRINK MOUTH" [TARGET NAME] <BR>Example  : cast "shrink mouth" dragon<BR>This spell causes the targets mouth to pucker up. The target remains able to<BR>use any breath weapons, but is unable to put anything into its mouth.</pre></P>  <P> 
 				<br><a name="Spell_Clone"><B>Clone (Spell_Clone)</B></a>
 				<pre><BR>Spell    : Clone<BR>Domain   : Transmutation<BR>Available: Transmuter(30) <BR>Allows   : Ranged Transmuting I, Reduced Transmuting I, Power Transmuting I<BR>Allows   : Extended Transmuting I<BR>Use Cost : Mana (200) <BR>Quality  : Circumstantial<BR>Targets  : Creatures <BR>Range    : Touch, or not applicable<BR>Commands : CAST, CA, C<BR>Usage    : CAST "CLONE"<BR>Example  : cast "clone"<BR>This spell causes the caster to split into two different but identical people. <BR>There is a 50% chance, however, that the clone will turn out with an opposed<BR>alignment to the caster.  In this case, the clone will become aggressive to the<BR>caster immediately.</pre></P>  <P> 
 				<br><a name="Spell_Cloudkill"><B>Cloudkill (Spell_Cloudkill)</B></a>
@@ -1471,6 +1479,8 @@
 				<pre><BR>Spell    : Shove<BR>Domain   : Invocation/evocation<BR>Available: Evoker(22) <BR>Allows   : Ranged In/Evoking I, Reduced In/Evoking I, Power In/Evoking I<BR>Allows   : Extended In/Evoking I<BR>Use Cost : Mana (50) <BR>Quality  : Malicious<BR>Targets  : <BR>Range    : Touch - Range 4<BR>Commands : CAST, CA, C<BR>Usage    : CAST SHOVE [MOB NAME] [DIRECTION]<BR>Example  : cast "shove" orc east<BR>Causes a powerful force to pick up the victim and carry them to an adjacent<BR>room or area and drop them off there.</pre></P>  <P> 
 				<br><a name="Spell_Shrink"><B>Shrink (Spell_Shrink)</B></a>
 				<pre><BR>Spell    : Shrink<BR>Domain   : Transmutation<BR>Available: Numerous Classes(2) <BR>Allows   : Ranged Transmuting I, Reduced Transmuting I, Power Transmuting I<BR>Allows   : Extended Transmuting I<BR>Use Cost : Mana (50) <BR>Quality  : Malicious<BR>Targets  : Items Creatures <BR>Range    : Touch, or not applicable<BR>Commands : CAST, CA, C<BR>Usage    : CAST "SHRINK" [TARGET NAME]<BR>Example  : cast "shrink" orc<BR>Allows the caster to cause a monster or item to shrink to 10% of its previous<BR>size.  Mass does not change, and neither does the size of the items carried. <BR>Dexterity, however, goes up tremendously, at the cost of some Strength.</pre></P>  <P> 
+				<br><a name="Spell_ShrinkMouth"><B>Shrink Mouth (Spell_ShrinkMouth)</B></a>
+				<pre><BR>Spell    : Shrink Mouth<BR>Domain   : Transmutation<BR>Allows   : Ranged Transmuting I, Reduced Transmuting I, Power Transmuting I<BR>Allows   : Extended Transmuting I<BR>Use Cost : Mana (50) <BR>Quality  : Malicious<BR>Targets  : Creatures <BR>Range    : Touch, or not applicable<BR>Commands : CAST, CA, C<BR><BR>Spell    : Shrink Mouth<BR>Domain   : Transmutation<BR>Available: Numerous Classes(2) <BR>Allows   : Ranged Transmuting I, Reduced Transmuting I, Power Transmuting I<BR>Allows   : Extended Transmuting I<BR>Use Cost : Mana (50) <BR>Quality  : Malicious<BR>Targets  : Creatures <BR>Range    : Touch, or not applicable<BR>Commands : CAST, CA, C<BR>Usage    : CAST "SHRINK MOUTH" [TARGET NAME] <BR>Example  : cast "shrink mouth" dragon<BR>This spell causes the targets mouth to pucker up. The target remains able to<BR>use any breath weapons, but is unable to put anything into its mouth.</pre></P>  <P> 
 				<br><a name="Spell_Silence"><B>Silence (Spell_Silence)</B></a>
 				<pre><BR>Spell    : Silence<BR>Domain   : Alteration<BR>Available: Numerous Classes(14) <BR>Allows   : Ranged Altering I, Reduced Altering I, Power Altering I<BR>Allows   : Extended Altering I<BR>Use Cost : Mana (50) <BR>Quality  : Malicious<BR>Targets  : Rooms <BR>Range    : Touch, or not applicable<BR>Commands : CAST, CA, C<BR>Usage    : CAST SILENCE<BR>Example  : cast silence<BR>When cast, this spell causes the entire room or place around the caster to<BR>become entirely quiet.  Speaking, verbal spellcasting, and noisemaking becomes<BR>impossible.</pre></P>  <P> 
 				<br><a name="Spell_Siphon"><B>Siphon (Spell_Siphon)</B></a>
