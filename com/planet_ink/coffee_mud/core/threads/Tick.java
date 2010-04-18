@@ -102,9 +102,9 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 		{
 			LinkedList<TockClient> localItems=null;
 			TockClient C;
-			for(Iterator e=tickers.iterator();e.hasNext();)
+			for(Iterator<TockClient> e=tickers.iterator();e.hasNext();)
 			{
-				C=(TockClient)e.next();
+				C=e.next();
 				switch(itemTypes)
 				{
 				case 0:
@@ -267,7 +267,7 @@ public class Tick extends Thread implements TickableGroup, Cloneable
                 &&(!CMLib.threads().isAllSuspended()))
 				{
                     TockClient client=null;
-					for(Iterator<TockClient> i=tickers.iterator();i.hasNext();)
+					for(Iterator<TockClient> i=tickers();i.hasNext();)
 					{
 						client=i.next();
 						lastClient=client;

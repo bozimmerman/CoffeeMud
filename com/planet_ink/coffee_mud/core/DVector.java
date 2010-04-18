@@ -469,9 +469,10 @@ public class DVector implements Cloneable, java.io.Serializable
         //*/
     }
     
-	public static Iterator s_iter(List V) {
-        //return ((Vector)V.clone()).iterator(); /*
-        return new Iterator() {
+	public static Iterator s_iter(List V) 
+	{
+        return new Iterator() 
+        {
             boolean more=false;
             Object prevO=null;
             Object O=null;
@@ -490,7 +491,8 @@ public class DVector implements Cloneable, java.io.Serializable
                 return c;
             }
             
-            public Object next() {
+            public Object next() 
+            {
                 if(!more) 
                     throw new java.util.NoSuchElementException("");
                 prevO=O;
