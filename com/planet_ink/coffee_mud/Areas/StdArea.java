@@ -984,6 +984,8 @@ public class StdArea implements Area
 			for(Enumeration r=getProperMap();r.hasMoreElements();)
 			{
 				R=(Room)r.nextElement();
+				if(R instanceof GridLocale)
+					statData[Area.AREASTAT_VISITABLEROOMS]--;
 				for(int i=0;i<R.numInhabitants();i++)
 				{
 					mob=R.fetchInhabitant(i);
