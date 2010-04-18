@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.threads.Tick;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -52,7 +53,7 @@ public interface ThreadEngine extends CMLibrary, Runnable
     public void rejuv(Room here, int tickID);
 	public String systemReport(String itemCode);
 	public boolean isTicking(Tickable E, int tickID);
-	public Enumeration tickGroups();
+	public  Iterator<Tick> tickGroups();
     public String getTickStatusSummary(Tickable obj);
     public String getServiceThreadSummary(Thread T);
     public Vector getNamedTickingObjects(String name);

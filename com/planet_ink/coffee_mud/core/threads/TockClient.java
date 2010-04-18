@@ -29,7 +29,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class TockClient
+public class TockClient implements Comparable<TockClient>
 {
 	public Tickable clientObject;
 	public int tickID=0;
@@ -49,5 +49,22 @@ public class TockClient
 		tickDown=newTickDown;
 		clientObject=newClientObject;
 		tickID=newTickID;
+	}
+
+	public boolean equals(Object obj)
+	{
+		if(obj instanceof TockClient)
+			return compareTo((TockClient)obj)==0;
+		return false;
+	}
+	
+	public int compareTo(TockClient arg0) {
+		long hc0=(clientObject==null)?0:clientObject.hashCode();
+		long hc1=(arg0.clientObject==null)?0:arg0.clientObject.hashCode();
+		if(hc0>hc1) return 1;
+		if(hc0<hc1) return -1;
+		if(tickID>arg0.tickID) return 1;
+		if(tickID<arg0.tickID) return -1;
+		return 0;
 	}
 }
