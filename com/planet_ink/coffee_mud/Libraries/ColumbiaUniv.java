@@ -37,7 +37,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 {
     public String ID(){return "ColumbiaUniv";}
 								
-	protected Hashtable completeEduMap=new Hashtable();
+	protected Hashtable<String,ExpertiseLibrary.ExpertiseDefinition> completeEduMap=new Hashtable<String,ExpertiseLibrary.ExpertiseDefinition>();
     protected Hashtable[] completeUsageMap=new Hashtable[ExpertiseLibrary.NUM_XFLAGS];
     protected Properties helpMap=new Properties();
     protected DVector rawDefinitions=new DVector(7);
@@ -61,7 +61,9 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
     	def.qpCost=qpCost;
     	def.expCost=expCost;
     	def.timeCost=timeCost;
-    	completeEduMap.put(def.ID,def);
+    	Hashtable<String,ExpertiseLibrary.ExpertiseDefinition> newEduMap=(Hashtable<String,ExpertiseLibrary.ExpertiseDefinition>)completeEduMap.clone();
+    	newEduMap.put(def.ID,def);
+    	completeEduMap=newEduMap;
         return def;
     }
     public String getExpertiseHelp(String ID, boolean exact)
@@ -82,29 +84,32 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
     	return null;
     }
     
-    public void delDefinition(String ID){
-    	completeEduMap.remove(ID);
+    public void delDefinition(String ID)
+    {
+    	Hashtable<String,ExpertiseLibrary.ExpertiseDefinition> newEduMap = (Hashtable<String,ExpertiseLibrary.ExpertiseDefinition>)completeEduMap.clone();
+    	newEduMap.remove(ID);
+    	completeEduMap = newEduMap;
     }
-    public Enumeration definitions(){ return DVector.s_enum(completeEduMap,false);}
+    public Enumeration<ExpertiseDefinition> definitions(){ return completeEduMap.elements();}
     public ExpertiseDefinition getDefinition(String ID){ return (ID==null)?null:(ExpertiseDefinition)completeEduMap.get(ID.trim().toUpperCase());}
     public ExpertiseDefinition findDefinition(String ID, boolean exactOnly)
     {
         ExpertiseDefinition D=getDefinition(ID);
         if(D!=null) return D;
-        for(Enumeration e=definitions();e.hasMoreElements();)
+        for(Enumeration<ExpertiseDefinition> e=definitions();e.hasMoreElements();)
         {
-            D=(ExpertiseDefinition)e.nextElement();
+            D=e.nextElement();
             if(D.name.equalsIgnoreCase(ID)) return D;
         }
         if(exactOnly) return null;
-        for(Enumeration e=definitions();e.hasMoreElements();)
+        for(Enumeration<ExpertiseDefinition> e=definitions();e.hasMoreElements();)
         {
-            D=(ExpertiseDefinition)e.nextElement();
+            D=e.nextElement();
             if(D.ID.startsWith(ID)) return D;
         }
-        for(Enumeration e=definitions();e.hasMoreElements();)
+        for(Enumeration<ExpertiseDefinition> e=definitions();e.hasMoreElements();)
         {
-            D=(ExpertiseDefinition)e.nextElement();
+            D=e.nextElement();
             if(CMLib.english().containsString(D.name,ID)) return D;
         }
         return null;

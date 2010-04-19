@@ -40,11 +40,14 @@ public class Factions extends StdLibrary implements FactionManager
 	public Hashtable<String,Faction> factionSet = new Hashtable<String,Faction>();
 	public Hashtable<String,Faction> hashedFactionRanges=new Hashtable<String,Faction>();
 	
-    public Enumeration<Faction> factions(){return DVector.s_enum(factionSet,false);}
+    public Enumeration<Faction> factions()
+    {
+    	return factionSet.elements();
+    }
     public int numFactions(){return factionSet.size();}
 	public void clearFactions()
 	{
-	    factionSet.clear();
+	    factionSet=new Hashtable<String,Faction>();
 	    hashedFactionRanges.clear();
 	}
     public void reloadFactions(String factionList)
@@ -113,7 +116,9 @@ public class Factions extends StdLibrary implements FactionManager
 
 	public void addFaction(String factionID, Faction F)
 	{
-        factionSet.put(factionID.toUpperCase().trim(),F);
+		Hashtable<String,Faction> newFactionSet = (Hashtable<String,Faction>)factionSet.clone();
+        newFactionSet.put(factionID.toUpperCase().trim(),F);
+        factionSet=newFactionSet;
 	}
 	
 	public Faction getFaction(String factionID) 
@@ -151,12 +156,14 @@ public class Factions extends StdLibrary implements FactionManager
 	public boolean removeFaction(String factionID) 
 	{
 		Faction F;
+        Hashtable<String,Faction> newFactionSet = (Hashtable<String,Faction>)factionSet.clone();
 	    if(factionID==null) 
 	    {
-	        for(Enumeration e=factionSet.keys();e.hasMoreElements();) 
+	        for(Enumeration<Faction> e=newFactionSet.elements();e.hasMoreElements();) 
 	        {
-	            F=(Faction)factionSet.get(e.nextElement());
-	            removeFaction(F.factionID());
+	            F=e.nextElement();
+	            if(F!=null)
+		            removeFaction(F.factionID());
 	        }
 	        return true;
 	    }
@@ -164,7 +171,8 @@ public class Factions extends StdLibrary implements FactionManager
         if(F==null) F=getFaction(factionID);
         if(F==null) return false;
         Resources.removeResource(F.factionID());
-        factionSet.remove(F.factionID().toUpperCase());
+        newFactionSet.remove(F.factionID().toUpperCase());
+        factionSet=newFactionSet;
         return true;
 	}
 	
@@ -175,9 +183,9 @@ public class Factions extends StdLibrary implements FactionManager
 	    msg.append("+--------------------------------+-----------------------------------------+\n\r");
 	    msg.append("| ^HFaction Name^N                   | ^HFaction INI Source File (Faction ID)^N    |\n\r");
 	    msg.append("+--------------------------------+-----------------------------------------+\n\r");
-	    for(Enumeration e=factionSet.keys();e.hasMoreElements();) 
+	    for(Enumeration<Faction> e=factionSet.elements();e.hasMoreElements();) 
 	    {
-	        Faction f=(Faction)factionSet.get(e.nextElement());
+	        Faction f=e.nextElement();
 	        msg.append("| ");
 	        msg.append(CMStrings.padRight(f.name(),30));
 	        msg.append(" | ");
@@ -279,7 +287,8 @@ public class Factions extends StdLibrary implements FactionManager
     		return null;
     	}
     	StringBuffer buf = rebuildFactionProperties(templateF);
-		factionSet.remove(templateF.factionID().toUpperCase().trim());
+    	Hashtable<String,Faction> newFactionSet=(Hashtable<String,Faction>)factionSet.clone();
+    	newFactionSet.remove(templateF.factionID().toUpperCase().trim());
     	String bufStr = buf.toString();
     	bufStr = CMStrings.replaceAll(bufStr,"<NAME>",Name);
     	bufStr = CMStrings.replaceAll(bufStr,"<FACTIONID>",factionID);
@@ -289,7 +298,8 @@ public class Factions extends StdLibrary implements FactionManager
     	F.setInternalFlags(F.getInternalFlags() | Faction.IFLAG_IGNOREAUTO);
     	F.setInternalFlags(F.getInternalFlags() | Faction.IFLAG_NEVERSAVE);
     	F.setInternalFlags(F.getInternalFlags() | Faction.IFLAG_CUSTOMTICK);
-        addFaction(factionID,F);
+    	newFactionSet.put(factionID,F);
+        factionSet=newFactionSet;
     	return F;
     }
     

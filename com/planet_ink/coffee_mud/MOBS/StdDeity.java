@@ -1007,8 +1007,8 @@ public class StdDeity extends StdMOB implements Deity
         Vector parishaners=new Vector();
         synchronized(services)
         {
-            for(Enumeration<WorshipService> e = DVector.s_enum(services);e.hasMoreElements();)
-            	if(e.nextElement().room==room)
+            for(WorshipService w : services)
+            	if(w.room==room)
             		return;
             WorshipService service = new WorshipService();
             service.room=room;
@@ -1051,11 +1051,11 @@ public class StdDeity extends StdMOB implements Deity
         }
     }
 
-    protected void undoService(Vector V)
+    protected void undoService(Vector<MOB> V)
     {
         MOB M=null;
         Ability A=null;
-        for(int m=0;m<V.size();m++)
+        for(int m=V.size()-1;m>=0;m--)
         {
             M=(MOB)V.elementAt(m);
             if(M==null) continue;
@@ -1272,18 +1272,22 @@ public class StdDeity extends StdMOB implements Deity
                 L=(Long)trigServiceTimes.get(key);
                 if((L!=null)&&(L.longValue()<curTime))
                 {
+                	LinkedList<WorshipService> delThese = null; 
                     synchronized(services)
                     {
-                    	WorshipService service = null;
-                    	for(int s=services.size()-1;s>=0;s--)
-                    	{
-                    		service = services.elementAt(s);
+                    	for(WorshipService service : services)
                     		if((service.cleric!=null)
                     		&&(service.cleric.Name().equalsIgnoreCase(key))
                     		&&(!service.serviceCompleted))
-                    			cancelService(service);
-                    	}
+                    		{
+                    			if(delThese == null)
+                    				delThese = new LinkedList<WorshipService>();
+                    			delThese.add(service);
+                    		}
                     }
+                    if(delThese != null)
+	                    for(WorshipService w : delThese)
+	            			cancelService(w);
                 }
             }
 		}
