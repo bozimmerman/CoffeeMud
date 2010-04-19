@@ -73,7 +73,6 @@ public class ServiceEngine implements ThreadEngine
         Tick almostTock=null;
 		ThreadGroup grp=null;
         char threadGroupNum=Thread.currentThread().getThreadGroup().getName().charAt(0);
-        System.out.print(threadGroupNum);
 		for(Iterator<Tick> e=tickGroups();e.hasNext();)
 		{
 			almostTock=e.next();
@@ -117,6 +116,15 @@ public class ServiceEngine implements ThreadEngine
 		if((tickID&65536)==65536)
 			tock.solitaryTicker=true;
 		tock.addTicker(client);
+		if(!tock.contains(E, tickID))
+		{
+			System.out.println("!:"+E.hashCode()+"/"+tickID);
+			for(Iterator<TockClient> i=tock.tickers();i.hasNext();)
+			{
+				TockClient C=i.next();
+				System.out.println("has: "+C.clientObject.hashCode()+"/"+C.tickID);
+			}
+		}
 	}
 
 	public boolean deleteTick(Tickable E, int tickID)
