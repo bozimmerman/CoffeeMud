@@ -184,7 +184,7 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 		TreeSet<TockClient> newTickers=(TreeSet<TockClient>)tickers.clone();
 		if(!newTickers.contains(C))
 		{
-			tickers.add(C);
+			newTickers.add(C);
 			tickers=newTickers;
 		}
 	}
