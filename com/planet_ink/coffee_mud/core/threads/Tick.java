@@ -52,7 +52,7 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 	private static volatile int tickObjReference=0;
 	
     private volatile long SUBTRACT_TIME=0;
-    private volatile TreeSet<TockClient> tickers;
+    private volatile TreeSet<TockClient> tickers=new TreeSet<TockClient>();;
     
 	public Tick(long sleep)
 	{
@@ -79,7 +79,6 @@ public class Tick extends Thread implements TickableGroup, Cloneable
         tickObjectCounter=tickObjReference++;
 		myEngine=theEngine;
         TICK_TIME=sleep;
-        tickers=new TreeSet<TockClient>();
 	}
 
 	public Tick copyOf()
