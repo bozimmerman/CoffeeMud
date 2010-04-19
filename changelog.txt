@@ -2263,3 +2263,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 34.New command: MPRUN -- for Archons to run Scriptable scripts, and for use in automated testing.
 35.Help on classes and races give much of same details as found on web now.
 36.Channel HELP entries are automatically generated.
+37.CoffeeMud's bugs were all cured, at public expense.
