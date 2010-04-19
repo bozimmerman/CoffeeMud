@@ -37,151 +37,29 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class Tick extends Thread implements TickableGroup, Cloneable
 {
-	public long lastStart=0;
-	public long lastStop=0;
-	public long milliTotal=0;
-	public long tickTotal=0;
-	public ThreadEngine myEngine=null;
-	public boolean solitaryTicker=false;
-	private static int tickObjReference=0;
-    private int tickObjectCounter=0;
-    public long TICK_TIME=Tickable.TIME_TICK;
-    private long SUBTRACT_TIME=0;
-	protected TreeSet<TockClient> tickers=new TreeSet<TockClient>();
-	protected boolean shutdown=false;
-	
-	public Tick(ThreadEngine theEngine, long sleep)
-	{
-		super("Tick."+(tickObjReference+1));
-        tickObjectCounter=tickObjReference++;
-		myEngine=theEngine;
-        TICK_TIME=sleep;
-	}
-
-	public Tick copyOf()
-	{
-		try{
-			Tick T=(Tick)this.clone();
-			T.tickers=(TreeSet<TockClient>)tickers.clone();
-			return T;
-		}
-		catch(Exception e){}
-		return this;
-	}
-	
-	public TockClient fetchTicker(int i)
-	{
-		synchronized(tickers)
-		{
-			int x=0;
-			for(TockClient C : tickers)
-				if(i==(x++))
-					return C;
-			return null;
-		}
-	}
-	
-	public Iterator<TockClient> tickers(){return ((TreeSet<TockClient>)tickers.clone()).iterator();}
-	public int numTickers(){return tickers.size();}
-	public Iterator<TockClient> getTickSet(Tickable T, int tickID)
-	{
-		synchronized(tickers)
-		{
-			LinkedList<TockClient> subSet = new LinkedList<TockClient>();
-			if(tickID >= 0)
-				subSet.addAll(tickers.subSet(new TockClient(T,0,-1), true, new TockClient(T,0,Integer.MAX_VALUE), true));
-			else
-				subSet.addAll(tickers.subSet(new TockClient(T,0,tickID), true, new TockClient(T,0,tickID), true));
-			return subSet.iterator();
-		}
-	}
-	
-	public Iterator<TockClient> getLocalItems(int itemTypes, Room R)
-	{
-		synchronized(tickers)
-		{
-			LinkedList<TockClient> localItems=null;
-			TockClient C;
-			for(Iterator<TockClient> e=tickers.iterator();e.hasNext();)
-			{
-				C=e.next();
-				switch(itemTypes)
-				{
-				case 0:
-					if(C.clientObject instanceof MOB)
-					{
-						if(((MOB)C.clientObject).getStartRoom()==R)
-                        {
-                            if(localItems==null) localItems=new LinkedList<TockClient>();
-							localItems.add(C);
-                        }
-					}
-					else
-					if((C.clientObject instanceof ItemTicker)
-					&&((((ItemTicker)C.clientObject).properLocation()==R)))
-                    {
-                        if(localItems==null) localItems=new LinkedList<TockClient>();
-						localItems.add(C);
-                    }
-					break;
-				case 1:
-					if((C.clientObject instanceof ItemTicker)
-					&&((((ItemTicker)C.clientObject).properLocation()==R)))
-                    {
-                        if(localItems==null) localItems=new LinkedList<TockClient>();
-						localItems.add(C);
-                    }
-					break;
-				case 2:
-					if((C.clientObject instanceof MOB)
-					&&(((MOB)C.clientObject).getStartRoom()==R))
-                    {
-                        if(localItems==null) localItems=new LinkedList<TockClient>();
-						localItems.add(C);
-                    }
-					break;
-				}
-			}
-			if(localItems == null) return null;
-			return localItems.iterator();
-		}
-	}
-	
-	
-	public boolean contains(Tickable T, int tickID)
-	{
-		synchronized(tickers)
-		{
-			if(tickID >= 0)
-				return tickers.contains(new TockClient(T,0,tickID));
-			return tickers.subSet(new TockClient(T,0,-1), true, new TockClient(T,0,Integer.MAX_VALUE), true).size()>0;
-		}
-	}
+	private final ThreadEngine myEngine;
+    public final long TICK_TIME;
+    private final int tickObjectCounter;
     
-    public int getCounter(){return tickObjectCounter;}
+	public volatile long lastStart=0;
+	public volatile long lastStop=0;
+	public volatile long milliTotal=0;
+	public volatile long tickTotal=0;
+	public volatile boolean solitaryTicker=false;
+    public volatile boolean awake=false;
+    public volatile TockClient lastClient=null;
+
+	private static volatile int tickObjReference=0;
+	
+    private volatile long SUBTRACT_TIME=0;
+    private volatile TreeSet<TockClient> tickers;
     
-	public void delTicker(TockClient C)
-	{
-		synchronized(tickers)
-		{
-			tickers.remove(C);
-		}
-	}
-	public void addTicker(TockClient C)
-	{
-		synchronized(tickers)
-		{
-    		if((C==null)||(C.clientObject==null)) return;
-    		tickers.add(C);
-		}
-	}
-
-
 	public Tick(long sleep)
 	{
         super("Tick."+(tickObjReference+1));
         tickObjectCounter=tickObjReference++;
         TICK_TIME=sleep;
+        myEngine=null;
 		this.start();
 	}
 
@@ -191,17 +69,133 @@ public class Tick extends Thread implements TickableGroup, Cloneable
         setDaemon(true);
         tickObjectCounter=tickObjReference++;
         TICK_TIME=sleep;
+        myEngine=null;
 		this.start();
 	}
+	
+	public Tick(ThreadEngine theEngine, long sleep)
+	{
+		super("Tick."+(tickObjReference+1));
+        tickObjectCounter=tickObjReference++;
+		myEngine=theEngine;
+        TICK_TIME=sleep;
+        tickers=new TreeSet<TockClient>();
+	}
 
-	public boolean awake=false;
-	public TockClient lastClient=null;
+	public Tick copyOf()
+	{
+		try
+		{
+			Tick T=(Tick)this.clone();
+			T.tickers=(TreeSet<TockClient>)tickers.clone();
+			return T;
+		}
+		catch(Exception e){}
+		return this;
+	}
+	
+	public TockClient fetchTickerByIndex(int i)
+	{
+		int x=0;
+		for(TockClient C : tickers)
+			if(i==(x++))
+				return C;
+		return null;
+	}
+	
+	public Iterator<TockClient> tickers(){return tickers.iterator();}
+	public int numTickers(){return tickers.size();}
+	public Iterator<TockClient> getTickSet(Tickable T, int tickID)
+	{
+		LinkedList<TockClient> subSet = new LinkedList<TockClient>();
+		if(tickID >= 0)
+			subSet.addAll(tickers.subSet(new TockClient(T,0,-1), true, new TockClient(T,0,Integer.MAX_VALUE), true));
+		else
+			subSet.addAll(tickers.subSet(new TockClient(T,0,tickID), true, new TockClient(T,0,tickID), true));
+		return subSet.iterator();
+	}
+	
+	public Iterator<TockClient> getLocalItems(int itemTypes, Room R)
+	{
+		LinkedList<TockClient> localItems=null;
+		TockClient C;
+		for(Iterator<TockClient> e=tickers.iterator();e.hasNext();)
+		{
+			C=e.next();
+			switch(itemTypes)
+			{
+			case 0:
+				if(C.clientObject instanceof MOB)
+				{
+					if(((MOB)C.clientObject).getStartRoom()==R)
+                    {
+                        if(localItems==null) localItems=new LinkedList<TockClient>();
+						localItems.add(C);
+                    }
+				}
+				else
+				if((C.clientObject instanceof ItemTicker)
+				&&((((ItemTicker)C.clientObject).properLocation()==R)))
+                {
+                    if(localItems==null) localItems=new LinkedList<TockClient>();
+					localItems.add(C);
+                }
+				break;
+			case 1:
+				if((C.clientObject instanceof ItemTicker)
+				&&((((ItemTicker)C.clientObject).properLocation()==R)))
+                {
+                    if(localItems==null) localItems=new LinkedList<TockClient>();
+					localItems.add(C);
+                }
+				break;
+			case 2:
+				if((C.clientObject instanceof MOB)
+				&&(((MOB)C.clientObject).getStartRoom()==R))
+                {
+                    if(localItems==null) localItems=new LinkedList<TockClient>();
+					localItems.add(C);
+                }
+				break;
+			}
+		}
+		if(localItems == null) return null;
+		return localItems.iterator();
+	}
+	
+	
+	public boolean contains(Tickable T, int tickID)
+	{
+		if(tickID >= 0)
+			return tickers.contains(new TockClient(T,0,tickID));
+		return tickers.subSet(new TockClient(T,0,-1), true, new TockClient(T,0,Integer.MAX_VALUE), true).size()>0;
+	}
+    
+    public int getCounter(){return tickObjectCounter;}
+    
+	public void delTicker(TockClient C)
+	{
+		TreeSet<TockClient> newTickers=(TreeSet<TockClient>)tickers.clone();
+		if(newTickers.remove(C))
+			tickers=newTickers;
+	}
+	public void addTicker(TockClient C)
+	{
+		TreeSet<TockClient> newTickers=(TreeSet<TockClient>)tickers.clone();
+		if(!newTickers.contains(C))
+		{
+			tickers.add(C);
+			tickers=newTickers;
+		}
+	}
+	
     public Tickable lastTicked()
     {
         return lastClient!=null?lastClient.clientObject:null;
     }
 
-    public String getStatus() {
+    public String getStatus() 
+    {
     	Tickable lastTicked = lastTicked();
     	if((lastTicked==null)||(myEngine==null))
     		return "Asleep or Shutdown";
@@ -242,7 +236,6 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 	public void run()
 	{
 		lastStart=System.currentTimeMillis();
-		shutdown=false;
 		while(true)
 		{
 			try
@@ -296,6 +289,5 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 				break;
 			}
 		}
-		shutdown=true;
 	}
 }

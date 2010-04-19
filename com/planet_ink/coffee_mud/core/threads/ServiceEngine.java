@@ -47,23 +47,24 @@ public class ServiceEngine implements ThreadEngine
     private ThreadEngine.SupportThread thread=null;
     public void propertiesLoaded(){}
 	protected LinkedList<Tick> ticks=new LinkedList<Tick>();
-	public Iterator<Tick> tickGroups(){return ((LinkedList<Tick>)ticks.clone()).iterator();}
+	public Iterator<Tick> tickGroups(){return ticks.iterator();}
     private boolean isSuspended=false;
 	
     public ThreadEngine.SupportThread getSupportThread() { return thread;}
     
 	public void delTickGroup(Tick tock)
 	{
-		synchronized(ticks)
-		{
-			ticks.remove(tock);
-		}
+		LinkedList<Tick> newTicks = (LinkedList<Tick>)ticks.clone();
+		if(newTicks.remove(tock))
+			ticks=newTicks;
 	}
 	public void addTickGroup(Tick tock)
 	{
-		synchronized(ticks)
+		LinkedList<Tick> newTicks = (LinkedList<Tick>)ticks.clone();
+		if(!newTicks.contains(tock))
 		{
-			ticks.add(tock);
+			newTicks.add(tock);
+			ticks=newTicks;
 		}
 	}
 	
@@ -539,7 +540,7 @@ public class ServiceEngine implements ThreadEngine
 		Tick almostTock=(Tick)ticks.get(group);
 		
 		if(client>=almostTock.numTickers()) return "";
-		TockClient C=almostTock.fetchTicker(client);
+		TockClient C=almostTock.fetchTickerByIndex(client);
 		if(C==null) return "";
 
 		if(which.toLowerCase().startsWith("tickername"))
@@ -607,11 +608,7 @@ public class ServiceEngine implements ThreadEngine
 		while(ticks.size()>0)
 		{
 			//Log.sysOut("ServiceEngine","Shutting down all tick "+which+"/"+numTicks+"...");
-			Tick tock=null;
-			synchronized(ticks)
-			{
-				tock=ticks.getFirst();
-			}
+			Tick tock=ticks.getFirst();
 			if(tock!=null)
 			{
 				CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...shutting down Service Engine: killing Tick#" + tock.getCounter()+": "+tock.getStatus());
