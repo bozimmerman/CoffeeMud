@@ -67,7 +67,7 @@ public class ServiceEngine implements ThreadEngine
 		}
 	}
 	
-	public Tick confirmAndGetTickThread(Tickable E, long TICK_TIME, int tickID)
+	public Tick getAvailTickThread(Tickable E, long TICK_TIME, int tickID)
 	{
 		Tick tock=null;
         Tick almostTock=null;
@@ -78,6 +78,8 @@ public class ServiceEngine implements ThreadEngine
 			almostTock=e.next();
 			if(almostTock!=null)
 			{
+	        	if(almostTock.contains(E,tickID)) 
+	        		return null;
 				if((tock==null)
 	            &&(almostTock.TICK_TIME==TICK_TIME)
 	            &&(!almostTock.solitaryTicker)
@@ -88,8 +90,6 @@ public class ServiceEngine implements ThreadEngine
 		            &&(grp.getName().charAt(0)==threadGroupNum))
 					{
 						tock=almostTock;
-			        	if(almostTock.contains(E,tickID)) 
-			        		return null;
 					}
 				}
 			}
@@ -109,22 +109,13 @@ public class ServiceEngine implements ThreadEngine
                               long TICK_TIME,
 							  int numTicks)
 	{
-		Tick tock=confirmAndGetTickThread(E,TICK_TIME,tickID);
+		Tick tock=getAvailTickThread(E,TICK_TIME,tickID);
 		if(tock==null) return;
 
 		TockClient client=new TockClient(E,numTicks,tickID);
 		if((tickID&65536)==65536)
 			tock.solitaryTicker=true;
 		tock.addTicker(client);
-		if(!tock.contains(E, tickID))
-		{
-			System.out.println("!:"+E.hashCode()+"/"+tickID);
-			for(Iterator<TockClient> i=tock.tickers();i.hasNext();)
-			{
-				TockClient C=i.next();
-				System.out.println("has: "+C.clientObject.hashCode()+"/"+C.tickID);
-			}
-		}
 	}
 
 	public boolean deleteTick(Tickable E, int tickID)

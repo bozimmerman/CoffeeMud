@@ -31,9 +31,9 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class TockClient implements Comparable<TockClient>
 {
-	public Tickable clientObject;
-	public int tickID=0;
-	public int reTickDown=0;
+	public final Tickable clientObject;
+	public final int tickID;
+	public final int reTickDown;
 	public int tickDown=0;
 	public boolean suspended=false;
 	public long lastStart=0;
