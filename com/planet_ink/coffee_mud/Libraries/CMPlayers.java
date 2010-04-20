@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.exceptions.BadEmailAddressException;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -36,8 +37,8 @@ import java.util.*;
 public class CMPlayers extends StdLibrary implements PlayerLibrary
 {
     public String ID(){return "CMPlayers";}
-    public Vector<MOB> playersList = new Vector<MOB>();
-    public Vector<PlayerAccount> accountsList = new Vector<PlayerAccount>();
+    public Vector<MOB> 				playersList		= new Vector<MOB>();
+    public Vector<PlayerAccount> 	accountsList	= new Vector<PlayerAccount>();
     
     private ThreadEngine.SupportThread thread=null;
     
@@ -53,12 +54,27 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
             PlayerAccount acct = null;
             if(newOne.playerStats()!=null)
             	acct=newOne.playerStats().getAccount();
-            playersList.add(newOne);
-            if((acct != null)&&(getAccount(acct.accountName())==null)&&(!accountsList.contains(acct)))
-            	accountsList.add(acct);
+            
+        	Vector<MOB> newPlayerList = (Vector<MOB>)playersList.clone(); 
+        	newPlayerList.add(newOne);
+            playersList = newPlayerList;
+            
+            if((acct == null)||(getAccount(acct.accountName())!=null)||accountsList.contains(acct))
+            	return;
+            Vector<PlayerAccount> newAccountsList = (Vector<PlayerAccount>)accountsList.clone();
+            newAccountsList.add(acct);
+        	accountsList = newAccountsList;
         }
     }
-    public void delPlayer(MOB oneToDel) { synchronized(playersList){playersList.remove(oneToDel);} }
+    public void delPlayer(MOB oneToDel) 
+    { 
+    	synchronized(playersList)
+    	{
+        	Vector<MOB> newPlayerList = (Vector<MOB>)playersList.clone(); 
+        	newPlayerList.remove(oneToDel);
+    		playersList = newPlayerList;
+    	} 
+    }
     public PlayerAccount getLoadAccount(String calledThis)
     {
     	PlayerAccount A = getAccount(calledThis);
@@ -74,6 +90,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
         	for(PlayerAccount A : accountsList)
         		if(A.accountName().equalsIgnoreCase(calledThis))
         			return A;
+        	
             for (Enumeration p=players(); p.hasMoreElements();)
             {
                 M = (MOB)p.nextElement();
@@ -81,7 +98,9 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
                 &&(M.playerStats().getAccount()!=null)
                 &&(M.playerStats().getAccount().accountName().equalsIgnoreCase(calledThis)))
                 {
-                	accountsList.add(M.playerStats().getAccount());
+                    Vector<PlayerAccount> newAccountsList = (Vector<PlayerAccount>)accountsList.clone();
+                    newAccountsList.add(M.playerStats().getAccount());
+                	accountsList = newAccountsList;
                     return M.playerStats().getAccount();
                 }
             }
@@ -157,8 +176,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
     			return true;
     	return CMLib.database().DBUserSearch(name)!=null;
     }
-	public Enumeration players() { return (Enumeration)DVector.s_enum(playersList); }
-	public Enumeration accounts() { return (Enumeration)DVector.s_enum(accountsList); }
+	public Enumeration<MOB> players() { return playersList.elements(); }
+	public Enumeration<PlayerAccount> accounts() { return accountsList.elements(); }
 
     public void obliteratePlayer(MOB deadMOB, boolean quiet)
     {
@@ -222,7 +241,11 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
     {
     	deadAccount = getLoadAccount(deadAccount.accountName());
     	if(deadAccount==null) return;
-    	accountsList.remove(deadAccount);
+    	
+        Vector<PlayerAccount> newAccountsList = (Vector<PlayerAccount>)accountsList.clone();
+        newAccountsList.remove(deadAccount);
+    	accountsList = newAccountsList;
+    	
         StringBuffer newNoPurge=new StringBuffer("");
         Vector protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
         boolean somethingDone=false;
@@ -349,17 +372,18 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	
     public Enumeration<ThinPlayer> thinPlayers(String sort, Hashtable cache)
     {
-		List<PlayerLibrary.ThinPlayer> V=(cache==null)?null:(List<PlayerLibrary.ThinPlayer>)cache.get("PLAYERLISTVECTOR"+sort);
+		Vector<PlayerLibrary.ThinPlayer> V=(cache==null)?null:(Vector<PlayerLibrary.ThinPlayer>)cache.get("PLAYERLISTVECTOR"+sort);
 		if(V==null)
 		{
-			V=CMLib.database().getExtendedUserList();
+			V=new Vector<PlayerLibrary.ThinPlayer>();
+			V.addAll(CMLib.database().getExtendedUserList());
 			int code=getCharThinSortCode(sort,false);
 			if((sort.length()>0)
 			&&(code>=0)
 			&&(V.size()>1))
 			{
 				List<PlayerLibrary.ThinPlayer> unV=V;
-				V=new Vector();
+				V=new Vector<PlayerLibrary.ThinPlayer>();
 				while(unV.size()>0)
 				{
 					ThinPlayer M=unV.get(0);
@@ -391,22 +415,23 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			if(cache!=null)
 				cache.put("PLAYERLISTVECTOR"+sort,V);
 		}
-		return DVector.s_enum(V);
+		return V.elements();
     }
 
     public Enumeration<PlayerAccount> accounts(String sort, Hashtable cache)
     {
-		List<PlayerAccount> V=(cache==null)?null:(List<PlayerAccount>)cache.get("ACCOUNTLISTVECTOR"+sort);
+		Vector<PlayerAccount> V=(cache==null)?null:(Vector<PlayerAccount>)cache.get("ACCOUNTLISTVECTOR"+sort);
 		if(V==null)
 		{
-			V=CMLib.database().DBListAccounts(null);
+			V=new Vector<PlayerAccount>();
+			V.addAll(CMLib.database().DBListAccounts(null));
 			int code=getAccountThinSortCode(sort,false);
 			if((sort.length()>0)
 			&&(code>=0)
 			&&(V.size()>1))
 			{
-				List<PlayerAccount> unV=V;
-				V=new Vector();
+				Vector<PlayerAccount> unV=V;
+				V=new Vector<PlayerAccount>();
 				while(unV.size()>0)
 				{
 					PlayerAccount A=unV.get(0);
@@ -438,7 +463,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			if(cache!=null)
 				cache.put("ACCOUNTLISTVECTOR"+sort,V);
 		}
-		return DVector.s_enum(V);
+		return V.elements();
     }
 
     private boolean autoPurge()

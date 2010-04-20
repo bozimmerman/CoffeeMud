@@ -36,20 +36,22 @@ import java.util.*;
 public class CMMap extends StdLibrary implements WorldMap
 {
     public String ID(){return "CMMap";}
-	public Vector areasList = new Vector();
-	//public Vector roomsList = new Vector();
-	public Vector deitiesList = new Vector();
-    public Vector postOfficeList=new Vector();
-    public Vector auctionHouseList=new Vector();
-    public Vector bankList=new Vector();
-	public final int QUADRANT_WIDTH=10;
-	public Vector space=new Vector();
-    public Hashtable<Integer,Vector<WeakReference>> globalHandlers=new Hashtable<Integer,Vector<WeakReference>>();
-    public Vector sortedAreas=null;
+	public Vector 				areasList 		 = new Vector();
+    public Vector 				sortedAreas	     = null;
+    
+	public Vector<Deity>		deitiesList 	 = new Vector<Deity>();
+    public Vector<PostOffice> 	postOfficeList	 = new Vector<PostOffice>();
+    public Vector<Auctioneer> 	auctionHouseList = new Vector<Auctioneer>();
+    public Vector<Banker> 		bankList		 = new Vector<Banker>();
+	public Vector 				space			 = new Vector();
+    public Hashtable<Integer,Vector<WeakReference>> 
+    							globalHandlers	 = new Hashtable<Integer,Vector<WeakReference>>();
+	public final int 			QUADRANT_WIDTH	 = 10;
+    public static MOB 			deityStandIn	 = null;
+    public long 				lastVReset		 = 0;
+    
     private ThreadEngine.SupportThread thread=null;
-    public long lastVReset=0;
-    public static MOB deityStandIn=null;
-
+    
     public ThreadEngine.SupportThread getSupportThread() { return thread;}
     
     protected int getGlobalIndex(Vector list, String name)
@@ -148,7 +150,7 @@ public class CMMap extends StdLibrary implements WorldMap
     {
 		return areasList.elements();
 	}
-	public Enumeration roomIDs(){ return new WorldMap.CompleteRoomIDEnumerator(this);}
+	public Enumeration<String> roomIDs(){ return new WorldMap.CompleteRoomIDEnumerator(this);}
 	public Area getFirstArea()
 	{
 		if (areas().hasMoreElements())
@@ -422,9 +424,9 @@ public class CMMap extends StdLibrary implements WorldMap
         return null;
     }
     
-    public Vector findRooms(Enumeration rooms, MOB mob, String srchStr, boolean displayOnly, int timePct)
+    public Vector<Room> findRooms(Enumeration rooms, MOB mob, String srchStr, boolean displayOnly, int timePct)
     { 
-    	Vector roomsV=new Vector();
+    	Vector<Room> roomsV=new Vector<Room>();
 		if((srchStr.charAt(0)=='#')&&(mob!=null)&&(mob.location()!=null))
 			addWorldRoomsLiberally(roomsV,getRoom(mob.location().getArea().Name()+srchStr));
 		else
@@ -446,9 +448,9 @@ public class CMMap extends StdLibrary implements WorldMap
     	return null;
     }
     
-    public Vector findRooms(Enumeration rooms, MOB mob, String srchStr, boolean displayOnly, boolean returnFirst, int timePct)
+    public Vector<Room> findRooms(Enumeration rooms, MOB mob, String srchStr, boolean displayOnly, boolean returnFirst, int timePct)
     {
-    	Vector foundRooms=new Vector();
+    	Vector<Room> foundRooms=new Vector<Room>();
     	Vector completeRooms=new Vector();
 		try { completeRooms=CMParms.makeVector(rooms); }catch(NoSuchElementException nse){}
 		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
@@ -512,7 +514,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	    }catch(NoSuchElementException nse){}
     }
 
-    public Vector findInhabitants(Enumeration rooms, MOB mob, String srchStr, int timePct)
+    public Vector<MOB> findInhabitants(Enumeration rooms, MOB mob, String srchStr, int timePct)
     { return findInhabitants(rooms,mob,srchStr,false,timePct);}
     public MOB findFirstInhabitant(Enumeration rooms, MOB mob, String srchStr, int timePct)
     { 
@@ -520,9 +522,9 @@ public class CMMap extends StdLibrary implements WorldMap
     	if(found.size()>0) return (MOB)found.firstElement();
     	return null;
     }
-    public Vector findInhabitants(Enumeration rooms, MOB mob, String srchStr, boolean returnFirst, int timePct)
+    public Vector<MOB> findInhabitants(Enumeration rooms, MOB mob, String srchStr, boolean returnFirst, int timePct)
     {
-    	Vector found=new Vector();
+    	Vector<MOB> found=new Vector<MOB>();
 		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
 		if(delay>1000) delay=1000;
 		boolean useTimer = delay>1;
@@ -549,9 +551,9 @@ public class CMMap extends StdLibrary implements WorldMap
     	if(found.size()>0) return (Item)found.firstElement();
     	return null;
     }
-    public Vector findInventory(Enumeration rooms, MOB mob, String srchStr, boolean returnFirst, int timePct)
+    public Vector<Item> findInventory(Enumeration rooms, MOB mob, String srchStr, boolean returnFirst, int timePct)
     {
-    	Vector found=new Vector();
+    	Vector<Item> found=new Vector<Item>();
 		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
 		if(delay>1000) delay=1000;
 		boolean useTimer = delay>1;
@@ -586,7 +588,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
     	return found;
     }
-    public Vector findShopStock(Enumeration rooms, MOB mob, String srchStr, int timePct)
+    public Vector<Environmental> findShopStock(Enumeration rooms, MOB mob, String srchStr, int timePct)
     { return findShopStock(rooms,mob,srchStr,false,false,timePct);}
     public Environmental findFirstShopStock(Enumeration rooms, MOB mob, String srchStr, int timePct)
     { 
@@ -594,17 +596,17 @@ public class CMMap extends StdLibrary implements WorldMap
     	if(found.size()>0) return (Environmental)found.firstElement();
     	return null;
     }
-    public Vector findShopStockers(Enumeration rooms, MOB mob, String srchStr, int timePct)
+    public Vector<Environmental> findShopStockers(Enumeration rooms, MOB mob, String srchStr, int timePct)
     { return findShopStock(rooms,mob,srchStr,false,true,timePct);}
     public Environmental findFirstShopStocker(Enumeration rooms, MOB mob, String srchStr, int timePct)
     { 
-    	Vector found=findShopStock(rooms,mob,srchStr,true,true,timePct);
+    	Vector<Environmental> found=findShopStock(rooms,mob,srchStr,true,true,timePct);
     	if(found.size()>0) return (Environmental)found.firstElement();
     	return null;
     }
-    public Vector findShopStock(Enumeration rooms, MOB mob, String srchStr, boolean returnFirst, boolean returnStockers, int timePct)
+    public Vector<Environmental> findShopStock(Enumeration rooms, MOB mob, String srchStr, boolean returnFirst, boolean returnStockers, int timePct)
     {
-    	Vector found=new Vector();
+    	Vector<Environmental> found=new Vector<Environmental>();
 		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
 		if(delay>1000) delay=1000;
 		boolean useTimer = delay>1;
@@ -744,13 +746,13 @@ public class CMMap extends StdLibrary implements WorldMap
     { return findRoomItems(rooms,mob,srchStr,anyItems,false,timePct);}
     public Item findFirstRoomItem(Enumeration rooms, MOB mob, String srchStr, boolean anyItems, int timePct)
     { 
-    	Vector found=findRoomItems(rooms,mob,srchStr,anyItems,true,timePct);
+    	Vector<Item> found=findRoomItems(rooms,mob,srchStr,anyItems,true,timePct);
     	if(found.size()>0) return (Item)found.firstElement();
     	return null;
     }
-    public Vector findRoomItems(Enumeration rooms, MOB mob, String srchStr, boolean anyItems, boolean returnFirst, int timePct)
+    public Vector<Item> findRoomItems(Enumeration rooms, MOB mob, String srchStr, boolean anyItems, boolean returnFirst, int timePct)
     {
-    	Vector found=new Vector();
+    	Vector<Item> found=new Vector<Item>();
 		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
 		if(delay>1000) delay=1000;
 		boolean useTimer = delay>1;
@@ -802,8 +804,8 @@ public class CMMap extends StdLibrary implements WorldMap
     }
 
 	public Room getRoom(String calledThis){ return getRoom(null,calledThis); }
-	public Enumeration rooms(){ return new AreaEnumerator(false); }
-    public Enumeration roomsFilled(){ return new AreaEnumerator(true); }
+	public Enumeration<Room> rooms(){ return new AreaEnumerator(false); }
+    public Enumeration<Room> roomsFilled(){ return new AreaEnumerator(true); }
 	public Room getRandomRoom()
 	{
 		Room R=null;
@@ -827,92 +829,111 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	public int numDeities() { return deitiesList.size(); }
+	
 	public void addDeity(Deity newOne)
 	{
 		if (!deitiesList.contains(newOne))
-			deitiesList.add(newOne);
+		{
+			Vector<Deity> newDeitiesList = (Vector<Deity>)deitiesList.clone();
+			newDeitiesList.add(newOne);
+			deitiesList = newDeitiesList;
+		}
 	}
+	
 	public void delDeity(Deity oneToDel)
 	{
-		deitiesList.remove(oneToDel);
+        if (deitiesList.contains(oneToDel))
+        {
+			Vector<Deity> newDeitiesList = (Vector<Deity>)deitiesList.clone();
+			newDeitiesList.remove(oneToDel);
+			deitiesList = newDeitiesList;
+        }
 	}
+	
 	public Deity getDeity(String calledThis)
 	{
-		Deity D = null;
-		for (Enumeration i=deities(); i.hasMoreElements();)
-		{
-			D = (Deity)i.nextElement();
+		for (Deity D : deitiesList)
 			if (D.Name().equalsIgnoreCase(calledThis))
 				return D;
-		}
 		return null;
 	}
-	public Enumeration deities() { return deitiesList.elements(); }
+	public Enumeration<Deity> deities() { return deitiesList.elements(); }
 
     public int numPostOffices() { return postOfficeList.size(); }
     public void addPostOffice(PostOffice newOne)
     {
-        if (!postOfficeList.contains(newOne))
-            postOfficeList.add(newOne);
+        if(!postOfficeList.contains(newOne))
+        {
+			Vector<PostOffice> newPostOfficeList = (Vector<PostOffice>)postOfficeList.clone();
+			newPostOfficeList.add(newOne);
+    		postOfficeList = newPostOfficeList;
+        }
     }
     public void delPostOffice(PostOffice oneToDel)
     {
-        postOfficeList.remove(oneToDel);
+        if (postOfficeList.contains(oneToDel))
+        {
+			Vector<PostOffice> newPostOfficeList = (Vector<PostOffice>)postOfficeList.clone();
+			newPostOfficeList.remove(oneToDel);
+			postOfficeList = newPostOfficeList;
+        }
     }
     public PostOffice getPostOffice(String chain, String areaNameOrBranch)
     {
-        PostOffice P = null;
-        for (Enumeration i=postOffices(); i.hasMoreElements();)
-        {
-            P = (PostOffice)i.nextElement();
+        for (PostOffice P : postOfficeList)
             if((P.postalChain().equalsIgnoreCase(chain))
             &&(P.postalBranch().equalsIgnoreCase(areaNameOrBranch)))
                 return P;
-        }
+        
         Area A=findArea(areaNameOrBranch);
-        if(A==null) return null;
-        for (Enumeration i=postOffices(); i.hasMoreElements();)
-        {
-            P = (PostOffice)i.nextElement();
+        if(A==null) 
+        	return null;
+        
+        for (PostOffice P : postOfficeList)
             if((P.postalChain().equalsIgnoreCase(chain))
             &&(getStartArea(P)==A))
                 return P;
-        }
         return null;
     }
-    public Enumeration postOffices() { return DVector.s_enum(postOfficeList); }
+    public Enumeration<PostOffice> postOffices() { return postOfficeList.elements(); }
 
-    public Enumeration auctionHouses() { return DVector.s_enum(auctionHouseList); }
+    public Enumeration<Auctioneer> auctionHouses() { return auctionHouseList.elements(); }
     
     public int numAuctionHouses() { return auctionHouseList.size(); }
+    
     public void addAuctionHouse(Auctioneer newOne)
     {
         if (!auctionHouseList.contains(newOne))
-        	auctionHouseList.add(newOne);
+        {
+    		Vector<Auctioneer> newAuctionHouseList = (Vector<Auctioneer>)auctionHouseList.clone();
+    		newAuctionHouseList.add(newOne);
+        	auctionHouseList=newAuctionHouseList;
+        }
     }
     public void delAuctionHouse(Auctioneer oneToDel)
     {
-    	auctionHouseList.remove(oneToDel);
+        if (auctionHouseList.contains(oneToDel))
+        {
+			Vector<Auctioneer> newAuctionHouseList = (Vector<Auctioneer>)auctionHouseList.clone();
+			newAuctionHouseList.remove(oneToDel);
+	    	auctionHouseList=newAuctionHouseList;
+        }
     }
     public Auctioneer getAuctionHouse(String chain, String areaNameOrBranch)
     {
-    	Auctioneer C = null;
-        for (Enumeration i=auctionHouses(); i.hasMoreElements();)
-        {
-            C = (Auctioneer)i.nextElement();
+        for (Auctioneer C : auctionHouseList)
             if((C.auctionHouse().equalsIgnoreCase(chain))
             &&(C.auctionHouse().equalsIgnoreCase(areaNameOrBranch)))
                 return C;
-        }
+        
         Area A=findArea(areaNameOrBranch);
         if(A==null) return null;
-        for (Enumeration i=auctionHouses(); i.hasMoreElements();)
-        {
-            C = (Auctioneer)i.nextElement();
+        
+        for (Auctioneer C : auctionHouseList)
             if((C.auctionHouse().equalsIgnoreCase(chain))
             &&(getStartArea(C)==A))
                 return C;
-        }
+        
         return null;
     }
 
@@ -920,47 +941,50 @@ public class CMMap extends StdLibrary implements WorldMap
     public void addBank(Banker newOne)
     {
         if (!bankList.contains(newOne))
-        	bankList.add(newOne);
+        {
+    		Vector<Banker> newBankList = (Vector<Banker>)bankList.clone();
+    		newBankList.add(newOne);
+        	bankList=newBankList;
+        }
     }
     public void delBank(Banker oneToDel)
     {
-    	bankList.remove(oneToDel);
+        if (bankList.contains(oneToDel))
+        {
+			Vector<Banker> newBankList = (Vector<Banker>)bankList.clone();
+	    	bankList.remove(oneToDel);
+	    	bankList=newBankList;
+        }
     }
     public Banker getBank(String chain, String areaNameOrBranch)
     {
-    	Banker B = null;
-        for (Enumeration i=banks(); i.hasMoreElements();)
-        {
-            B = (Banker)i.nextElement();
+        for (Banker B : bankList)
             if((B.bankChain().equalsIgnoreCase(chain))
             &&(B.bankChain().equalsIgnoreCase(areaNameOrBranch)))
                 return B;
-        }
+        
         Area A=findArea(areaNameOrBranch);
-        if(A==null) return null;
-        for (Enumeration i=banks(); i.hasMoreElements();)
-        {
-            B = (Banker)i.nextElement();
+        if(A==null) 
+        	return null;
+        
+        for (Banker B : bankList)
             if((B.bankChain().equalsIgnoreCase(chain))
             &&(getStartArea(B)==A))
                 return B;
-        }
         return null;
     }
-    public Enumeration banks() { return DVector.s_enum(bankList); }
-	public Iterator bankChains(Area AreaOrNull)
+    
+    public Enumeration<Banker> banks() { return bankList.elements();}
+    
+	public Iterator<String> bankChains(Area AreaOrNull)
 	{
-		HashSet H=new HashSet();
-		Banker B=null;
-		for(Enumeration e=banks();e.hasMoreElements();)
-		{
-			B=(Banker)e.nextElement();
+		HashSet<String> H=new HashSet<String>();
+        for (Banker B : bankList)
 			if((!H.contains(B.bankChain()))
 			&&((AreaOrNull==null)
 				||(getStartArea(B)==AreaOrNull)
 				||(AreaOrNull.isChild(getStartArea(B)))))
 					H.add(B.bankChain());
-		}
 		return H.iterator();
 	}
 

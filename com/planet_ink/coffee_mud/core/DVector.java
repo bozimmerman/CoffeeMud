@@ -530,6 +530,60 @@ public class DVector implements Cloneable, java.io.Serializable
         //*/
     }
     
+	public static Enumeration m_enum(Iterator[] V) {
+        return new Enumeration() {
+            Iterator i=null;
+            public boolean hasMoreElements() { return i.hasNext();}
+            public Object nextElement() { return i.next();}
+            public Enumeration setSets(Iterator[] V) {
+                if((V==null)||(V.length==0))
+                	return empty_enum();
+                i=m_iter(V);
+                return this;
+            }
+        }.setSets(V);
+    }
+    
+	public static Iterator m_iter(Iterator[] esets) 
+	{
+        return new Iterator() 
+        {
+            Iterator[] S=null;
+            int dex=0;
+            
+            public boolean hasNext() 
+            { 
+            	while((dex<S.length)&&(!S[dex].hasNext()))
+            		dex++;
+            	if(dex>=S.length)
+            		return false;
+            	return true;
+            }
+            
+            public Object next() 
+            {
+            	if(dex>=S.length)
+            		throw new NoSuchElementException();
+            	return S[dex].next();
+            }
+            
+            public Iterator setSets(Iterator[] esets) 
+            {
+                if((esets==null)||(esets.length==0)) 
+                	return empty_iter();
+                S=esets;
+                hasNext();
+                return this;
+            }
+            
+            public void remove() {
+            	if(dex>=S.length)
+            		throw new NoSuchElementException();
+            	S[dex].remove();
+            }
+        }.setSets(esets);
+    }
+	
 	public static Enumeration s_enum(Hashtable H, boolean keys) 
 	{
 		/* this is slower -- more than twice as slow, believe it or not! */

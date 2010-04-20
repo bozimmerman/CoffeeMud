@@ -144,7 +144,9 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
                 }
                 item=item.substring(0,x);
             }
-            commandJournals.put(item.toUpperCase().trim(),new CommandJournal(item.toUpperCase().trim(),mask,flags));
+            Hashtable<String,CommandJournal> newCommandJournals = (Hashtable<String,CommandJournal>)commandJournals.clone();
+            newCommandJournals.put(item.toUpperCase().trim(),new CommandJournal(item.toUpperCase().trim(),mask,flags));
+            commandJournals = newCommandJournals;
         }
         return commandJournals.size();
     }
@@ -230,7 +232,9 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
                 	catch(Exception e){}
                 }
             }
-            forumJournals.put(item.toUpperCase().trim(),new ForumJournal(item.trim(),flags));
+            Hashtable<String, ForumJournal> newForumJournals=(Hashtable<String, ForumJournal>)forumJournals.clone();
+            newForumJournals.put(item.toUpperCase().trim(),new ForumJournal(item.trim(),flags));
+            forumJournals=newForumJournals;
         }
         return forumJournals.size();
     }
@@ -283,7 +287,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
     
     public int getNumCommandJournals() { return commandJournals.size();    }
     
-    public Enumeration<CommandJournal> commandJournals(){ return (Enumeration<CommandJournal>)DVector.s_enum(commandJournals,false);}
+    public Enumeration<CommandJournal> commandJournals(){ return commandJournals.elements();}
     
     public CommandJournal getCommandJournal(String named) { return commandJournals.get(named.toUpperCase().trim());}
     
@@ -366,7 +370,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
     
     public int getNumForumJournals() { return forumJournals.size();    }
     
-    public Enumeration<ForumJournal> forumJournals(){ return (Enumeration<ForumJournal>)DVector.s_enum(forumJournals,false);}
+    public Enumeration<ForumJournal> forumJournals(){ return forumJournals.elements();}
     
     public ForumJournal getForumJournal(String named) { return forumJournals.get(named.toUpperCase().trim());}
     

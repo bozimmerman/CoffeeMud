@@ -36,12 +36,15 @@ import java.util.*;
 public class CMAble extends StdLibrary implements AbilityMapper
 {
     public String ID(){return "CMAble";}
-	public Hashtable completeAbleMap=new Hashtable();
-	public Hashtable lowestQualifyingLevelMap=new Hashtable();
-	public Hashtable maxProficiencyMap=new Hashtable();
-	public Hashtable allows=new Hashtable();
-    public Hashtable completeDomainMap=new Hashtable();
-    public Hashtable reverseAbilityMap=new Hashtable();
+    
+	public Hashtable<String, Hashtable<String, AbilityMapping>> 
+												completeAbleMap 			= new Hashtable<String, Hashtable<String, AbilityMapping>>();
+	public Hashtable<String, Integer> 			lowestQualifyingLevelMap	= new Hashtable<String, Integer>();
+	public Hashtable<String, Integer>			maxProficiencyMap			= new Hashtable<String, Integer>();
+	public Hashtable<String, Object>			allows						= new Hashtable<String, Object>();
+    public Hashtable<Integer, TreeSet<Integer>> completeDomainMap			= new Hashtable<Integer,TreeSet<Integer>>();
+    public TreeMap<String, TreeMap<String, AbilityMapping>> 
+    											reverseAbilityMap			= new TreeMap<String, TreeMap<String, AbilityMapping>>();
 
 	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
@@ -103,37 +106,43 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	
 	public void delCharAbilityMapping(String ID, String ability)
 	{
-		if(!completeAbleMap.containsKey(ID))
-			completeAbleMap.put(ID,new Hashtable());
-		Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
-		if(ableMap.containsKey(ability))
-			ableMap.remove(ability);
-		DVector reV=(DVector)reverseAbilityMap.get(ability);
-		if(reV!=null) reV.removeElement(ID);
+		if(completeAbleMap.containsKey(ID))
+		{
+			Hashtable<String, AbilityMapping> ableMap = completeAbleMap.get(ID);
+			if(ableMap.containsKey(ability))
+				ableMap.remove(ability);
+		}
+		TreeMap<String,AbilityMapping> revT=reverseAbilityMap.get(ability);
+		if(revT!=null) revT.remove(ID);
 	}
 	public void delCharMappings(String ID)
 	{
 		if(completeAbleMap.containsKey(ID))
-			completeAbleMap.remove(ID);
-		for(Enumeration e=reverseAbilityMap.keys();e.hasMoreElements();)
 		{
-			String ability=(String)e.nextElement();
-			DVector reV=(DVector)reverseAbilityMap.get(ability);
-			reV.removeElement(ID);
+			Hashtable<String, Hashtable<String, AbilityMapping>> newCompleteAbleMap = (Hashtable<String, Hashtable<String, AbilityMapping>>)completeAbleMap.clone();
+			newCompleteAbleMap.remove(ID);
+			completeAbleMap = newCompleteAbleMap;
+		}
+		for(String ability : reverseAbilityMap.keySet())
+		{
+			TreeMap<String,AbilityMapping> revT=reverseAbilityMap.get(ability);
+			if(revT!=null) revT.remove(ID);
 		}
 	}
 
 	public Enumeration getClassAbles(String ID, boolean addAll)
 	{
 		if(!completeAbleMap.containsKey(ID))
-			completeAbleMap.put(ID,new Hashtable());
-		Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
-		Hashtable allAbleMap=(Hashtable)completeAbleMap.get("All");
-		if((!addAll)||(allAbleMap==null)) return DVector.s_enum(ableMap, false);
-		Vector V=new Vector();
-		V.addAll(ableMap.values());
-		V.addAll(allAbleMap.values());
-		return V.elements();
+		{
+			Hashtable<String, Hashtable<String, AbilityMapping>> newCompleteAbleMap = (Hashtable<String, Hashtable<String, AbilityMapping>>)completeAbleMap.clone();
+			newCompleteAbleMap.put(ID,new Hashtable<String, AbilityMapping>());
+			completeAbleMap = newCompleteAbleMap;
+		}
+		Hashtable<String, AbilityMapping> ableMap=completeAbleMap.get(ID);
+		Hashtable<String, AbilityMapping> allAbleMap=completeAbleMap.get("All");
+		if((!addAll)||(allAbleMap==null)) 
+			return ableMap.elements();
+		return DVector.m_enum(new Iterator[]{ableMap.values().iterator(),allAbleMap.values().iterator()});
 	}
 	
 	public void addCharAbilityMapping(String ID,
@@ -203,6 +212,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	public void addPreRequisites(String ID, Vector preReqSkillsList, String extraMask)
 	{
 		if(preReqSkillsList==null) return;
+		Hashtable<String, Object> newAllows = (Hashtable<String, Object>)allows.clone();
 		for(int v=0;v<preReqSkillsList.size();v++)
 		{
 			String s=(String)preReqSkillsList.elementAt(v);
@@ -212,14 +222,14 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			if((s.indexOf("*")>=0)||(s.indexOf(",")>=0))
 			{
 				String ID2=ID;
-				while(allows.contains("*"+ID2))
+				while(newAllows.contains("*"+ID2))
 					ID2="*"+ID2;
-				allows.put("*"+ID2,s);
+				newAllows.put("*"+ID2,s);
 			}
 			else
 			{
-				Vector V=(Vector)allows.get(s);
-				if(V==null){ V=new Vector(); allows.put(s,V);}
+				Vector V=(Vector)newAllows.get(s);
+				if(V==null){ V=new Vector(); newAllows.put(s,V);}
 				if(!V.contains(ID))V.addElement(ID);
 			}
 		}
@@ -232,35 +242,41 @@ public class CMAble extends StdLibrary implements AbilityMapper
 				if((s.indexOf("*")>=0)||(s.indexOf(",")>=0))
 				{
 					String ID2=ID;
-					while(allows.contains("*"+ID2))
+					while(newAllows.contains("*"+ID2))
 						ID2="*"+ID2;
-					allows.put("*"+ID2,s);
+					newAllows.put("*"+ID2,s);
 				}
 				else
 				{
-					Vector V=(Vector)allows.get(s);
-					if(V==null){ V=new Vector(); allows.put(s,V);}
-					if(!V.contains(ID))V.addElement(ID);
+					Vector V=(Vector)newAllows.get(s);
+					if(V==null)
+						V=new Vector();
+					else
+						V=(Vector)V.clone();
+					if(!V.contains(ID))
+						V.addElement(ID);
+					newAllows.put(s,V);
 				}
 			}
 		}
+		allows=newAllows;
 	}
 
     public boolean isDomainIncludedInAnyAbility(int domain, int acode)
     {
-        Vector V=(Vector)completeDomainMap.get(Integer.valueOf(domain));
+        TreeSet<Integer> V=(TreeSet<Integer>)completeDomainMap.get(Integer.valueOf(domain));
         if(V==null)
         {
             Ability A=null;
-            V=new Vector();
-            completeDomainMap.put(Integer.valueOf(domain),V);
+            V=new TreeSet<Integer>();
             for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
             {
                 A=(Ability)e.nextElement();
                 if(((A.classificationCode()&Ability.ALL_DOMAINS)==domain)
                 &&(!V.contains(Integer.valueOf((A.classificationCode()&Ability.ALL_ACODES)))))
-                    V.addElement(Integer.valueOf((A.classificationCode()&Ability.ALL_ACODES)));
+                    V.add(Integer.valueOf((A.classificationCode()&Ability.ALL_ACODES)));
             }
+            completeDomainMap.put(Integer.valueOf(domain),V);
         }
         return V.contains(Integer.valueOf(acode));
     }
@@ -320,8 +336,12 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			}
 		}
 		if(remove!=null)
+		{
+			Hashtable<String,Object> newAllows =(Hashtable<String,Object>)allows.clone(); 
 			for(int r=0;r<remove.size();r++)
-				allows.remove(remove.elementAt(r));
+				newAllows.remove(remove.elementAt(r));
+			allows=newAllows;
+		}
 		return (Vector)allows.get(ableID);
 	}
 
@@ -340,8 +360,15 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		delCharAbilityMapping(ID,ability);
 		
     	if(CMSecurity.isDisabled("ABILITY_"+ID.toUpperCase())) return;
-    	
 		Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
+		if(ableMap == null)
+			ableMap=new Hashtable<String,AbilityMapping>();
+		else
+			ableMap=(Hashtable<String,AbilityMapping>)ableMap.clone();
+		Hashtable<String, Hashtable<String, AbilityMapping>> newCompleteAbleMap = (Hashtable<String, Hashtable<String, AbilityMapping>>)completeAbleMap.clone();
+		newCompleteAbleMap.put(ID,ableMap);
+		completeAbleMap = newCompleteAbleMap;
+		
 		AbilityMapping able=new AbilityMapping();
 		able.abilityName=ability;
 		able.qualLevel=qualLevel;
@@ -357,33 +384,46 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		able.skillPreReqs=new DVector(2);
 		addPreRequisites(ability,preReqSkillsList,extraMask);
 		if(preReqSkillsList!=null)
-		for(int v=0;v<preReqSkillsList.size();v++)
-		{
-			String s=(String)preReqSkillsList.elementAt(v);
-			int prof=0;
-			int x=s.indexOf("(");
-			if((x>=0)&&(s.endsWith(")")))
+			for(int v=0;v<preReqSkillsList.size();v++)
 			{
-				prof=CMath.s_int(s.substring(x+1,s.length()-1));
-				s=s.substring(0,x);
+				String s=(String)preReqSkillsList.elementAt(v);
+				int prof=0;
+				int x=s.indexOf("(");
+				if((x>=0)&&(s.endsWith(")")))
+				{
+					prof=CMath.s_int(s.substring(x+1,s.length()-1));
+					s=s.substring(0,x);
+				}
+				able.skillPreReqs.addElement(s,Integer.valueOf(prof));
 			}
-			able.skillPreReqs.addElement(s,Integer.valueOf(prof));
-		}
 		ableMap.put(ability,able);
+
+		// archons get everything
 		int arc_level=getQualifyingLevel("Archon",true,ability);
 		if((arc_level<0)||((qualLevel>=0)&&(qualLevel<arc_level)))
 			addCharAbilityMapping("Archon",qualLevel,ability,true);
+		
+		// set lowest level map
 		Integer lowLevel=(Integer)lowestQualifyingLevelMap.get(ability);
 		if((lowLevel==null)
 		||(qualLevel<lowLevel.intValue()))
 			lowestQualifyingLevelMap.put(ability,Integer.valueOf(qualLevel));
+		
+		// and max proficiency maps
 		Integer maxProf=(Integer)maxProficiencyMap.get(ability);
 		if((maxProf==null)
 		||(maxProficiency>maxProf.intValue()))
 			maxProficiencyMap.put(ability,Integer.valueOf(maxProficiency));
-		DVector reV=(DVector)reverseAbilityMap.get(ability);
-		if(reV==null){ reV=new DVector(2); reverseAbilityMap.put(ability,reV);}
-		if(!reV.contains(ID)) reV.addElement(ID, able);
+		
+		// and the reverse lookup map
+		TreeMap<String, AbilityMapping> revT = reverseAbilityMap.get(ability);
+		if(revT==null)
+		{
+			revT = new TreeMap<String, AbilityMapping>();
+			reverseAbilityMap.put(ability,revT);
+		}
+		if(!revT.containsKey(ID)) 
+			revT.put(ID, able);
 	}
 
 	public boolean qualifiesByAnyCharClass(String abilityID)

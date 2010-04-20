@@ -54,34 +54,34 @@ public interface WorldMap extends CMLibrary, Runnable
     /**							 ROOMS		    							*/
     /************************************************************************/
     public int numRooms();
-	public Enumeration roomIDs();
+	public Enumeration<String> roomIDs();
     public String getExtendedRoomID(Room R);
     public Room getRoom(Room room);
     public Room getRoom(String calledThis);
     public Room getRoom(Vector roomSet, String calledThis);
 	public Room getRoom(Hashtable hashedRoomSet, String areaName, String calledThis);
-    public Enumeration rooms();
-    public Enumeration roomsFilled();
+    public Enumeration<Room> rooms();
+    public Enumeration<Room> roomsFilled();
     public Room getRandomRoom();
     public void renameRooms(Area A, String oldName, Vector allMyDamnRooms);
     public void obliterateRoom(Room deadRoom);
     public Room findConnectingRoom(Room room);
     public int getRoomDir(Room from, Room to);
-	public Vector findWorldRoomsLiberally(MOB mob, String cmd, String srchWhatAERIPMVK, int timePct, int maxSeconds);
+	public Vector<Room> findWorldRoomsLiberally(MOB mob, String cmd, String srchWhatAERIPMVK, int timePct, int maxSeconds);
 	public Room findWorldRoomLiberally(MOB mob, String cmd, String srchWhatAERIPMVK, int timePct, int maxSeconds);
-	public Vector findAreaRoomsLiberally(MOB mob, Area A, String cmd, String srchWhatAERIPMVK, int timePct);
+	public Vector<Room> findAreaRoomsLiberally(MOB mob, Area A, String cmd, String srchWhatAERIPMVK, int timePct);
 	public Room findAreaRoomLiberally(MOB mob, Area A, String cmd, String srchWhatAERIPMVK, int timePct);
-    public Vector findRooms(Enumeration rooms, MOB mob, String srchStr, boolean displayOnly, int timePct);
+    public Vector<Room> findRooms(Enumeration rooms, MOB mob, String srchStr, boolean displayOnly, int timePct);
     public Room findFirstRoom(Enumeration rooms, MOB mob, String srchStr, boolean displayOnly, int timePct);
     public MOB findFirstInhabitant(Enumeration rooms, MOB mob, String srchStr, int timePct);
-    public Vector findInhabitants(Enumeration rooms, MOB mob, String srchStr, int timePct);
-    public Vector findRoomItems(Enumeration rooms, MOB mob, String srchStr, boolean anyItems, int timePct);
+    public Vector<MOB> findInhabitants(Enumeration rooms, MOB mob, String srchStr, int timePct);
+    public Vector<Item> findRoomItems(Enumeration rooms, MOB mob, String srchStr, boolean anyItems, int timePct);
     public Item findFirstRoomItem(Enumeration rooms, MOB mob, String srchStr, boolean anyItems, int timePct);
-    public Vector findShopStock(Enumeration rooms, MOB mob, String srchStr, int timePct);
+    public Vector<Environmental> findShopStock(Enumeration rooms, MOB mob, String srchStr, int timePct);
     public Environmental findFirstShopStock(Enumeration rooms, MOB mob, String srchStr, int timePct);
-    public Vector findShopStockers(Enumeration rooms, MOB mob, String srchStr, int timePct);
+    public Vector<Environmental> findShopStockers(Enumeration rooms, MOB mob, String srchStr, int timePct);
     public Environmental findFirstShopStocker(Enumeration rooms, MOB mob, String srchStr, int timePct);
-    public Vector findInventory(Enumeration rooms, MOB mob, String srchStr, int timePct);
+    public Vector<Item> findInventory(Enumeration rooms, MOB mob, String srchStr, int timePct);
     public Item findFirstInventory(Enumeration rooms, MOB mob, String srchStr, int timePct);
     
     /************************************************************************/
@@ -108,23 +108,23 @@ public interface WorldMap extends CMLibrary, Runnable
     public void addDeity(Deity newOne);
     public void delDeity(Deity oneToDel);
     public Deity getDeity(String calledThis);
-    public Enumeration deities();
+    public Enumeration<Deity> deities();
     public int numPostOffices();
     public void addPostOffice(PostOffice newOne);
     public void delPostOffice(PostOffice oneToDel);
     public PostOffice getPostOffice(String chain, String areaNameOrBranch);
-    public Enumeration postOffices();
+    public Enumeration<PostOffice> postOffices();
     public int numBanks();
     public void addBank(Banker newOne);
     public void delBank(Banker oneToDel);
     public Banker getBank(String chain, String areaNameOrBranch);
-    public Enumeration banks();
-	public Iterator bankChains(Area AreaOrNull);
+    public Enumeration<Banker> banks();
+	public Iterator<String> bankChains(Area AreaOrNull);
     public int numAuctionHouses();
     public void addAuctionHouse(Auctioneer newOne);
     public void delAuctionHouse(Auctioneer oneToDel);
     public Auctioneer getAuctionHouse(String chain, String areaNameOrBranch);
-    public Enumeration auctionHouses();
+    public Enumeration<Auctioneer> auctionHouses();
     
     /************************************************************************/
     /**							 SPACE METHODS 								*/
