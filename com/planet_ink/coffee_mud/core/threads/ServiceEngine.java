@@ -54,18 +54,24 @@ public class ServiceEngine implements ThreadEngine
     
 	public void delTickGroup(Tick tock)
 	{
-		LinkedList<Tick> newTicks = (LinkedList<Tick>)ticks.clone();
-		if(newTicks.remove(tock))
-			ticks=newTicks;
+    	synchronized(this)
+    	{
+			LinkedList<Tick> newTicks = (LinkedList<Tick>)ticks.clone();
+			if(newTicks.remove(tock))
+				ticks=newTicks;
+    	}
 	}
 	public void addTickGroup(Tick tock)
 	{
-		LinkedList<Tick> newTicks = (LinkedList<Tick>)ticks.clone();
-		if(!newTicks.contains(tock))
-		{
-			newTicks.add(tock);
-			ticks=newTicks;
-		}
+    	synchronized(this)
+    	{
+			LinkedList<Tick> newTicks = (LinkedList<Tick>)ticks.clone();
+			if(!newTicks.contains(tock))
+			{
+				newTicks.add(tock);
+				ticks=newTicks;
+			}
+    	}
 	}
 	
 	public Tick getAvailTickThread(Tickable E, long TICK_TIME, int tickID)

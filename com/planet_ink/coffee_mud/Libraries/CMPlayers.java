@@ -38,7 +38,9 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 {
     public String ID(){return "CMPlayers";}
     public Vector<MOB> 				playersList		= new Vector<MOB>();
+    public Object					playersSync		= new Object();
     public Vector<PlayerAccount> 	accountsList	= new Vector<PlayerAccount>();
+    public Object					accountsSync	= new Object();
     
     private ThreadEngine.SupportThread thread=null;
     
@@ -55,20 +57,26 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
             if(newOne.playerStats()!=null)
             	acct=newOne.playerStats().getAccount();
             
-        	Vector<MOB> newPlayerList = (Vector<MOB>)playersList.clone(); 
-        	newPlayerList.add(newOne);
-            playersList = newPlayerList;
+            synchronized(playersSync)
+            {
+	        	Vector<MOB> newPlayerList = (Vector<MOB>)playersList.clone(); 
+	        	newPlayerList.add(newOne);
+	            playersList = newPlayerList;
+            }
             
             if((acct == null)||(getAccount(acct.accountName())!=null)||accountsList.contains(acct))
             	return;
-            Vector<PlayerAccount> newAccountsList = (Vector<PlayerAccount>)accountsList.clone();
-            newAccountsList.add(acct);
-        	accountsList = newAccountsList;
+            synchronized(accountsSync)
+            {
+	            Vector<PlayerAccount> newAccountsList = (Vector<PlayerAccount>)accountsList.clone();
+	            newAccountsList.add(acct);
+	        	accountsList = newAccountsList;
+            }
         }
     }
     public void delPlayer(MOB oneToDel) 
     { 
-    	synchronized(playersList)
+    	synchronized(playersSync)
     	{
         	Vector<MOB> newPlayerList = (Vector<MOB>)playersList.clone(); 
         	newPlayerList.remove(oneToDel);
@@ -84,25 +92,25 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
     
     public PlayerAccount getAccount(String calledThis)
     {
-        synchronized(playersList)
+    	MOB M=null;
+    	for(PlayerAccount A : accountsList)
+    		if(A.accountName().equalsIgnoreCase(calledThis))
+    			return A;
+    	
+        for (Enumeration p=players(); p.hasMoreElements();)
         {
-        	MOB M=null;
-        	for(PlayerAccount A : accountsList)
-        		if(A.accountName().equalsIgnoreCase(calledThis))
-        			return A;
-        	
-            for (Enumeration p=players(); p.hasMoreElements();)
+            M = (MOB)p.nextElement();
+            if((M.playerStats()!=null)
+            &&(M.playerStats().getAccount()!=null)
+            &&(M.playerStats().getAccount().accountName().equalsIgnoreCase(calledThis)))
             {
-                M = (MOB)p.nextElement();
-                if((M.playerStats()!=null)
-                &&(M.playerStats().getAccount()!=null)
-                &&(M.playerStats().getAccount().accountName().equalsIgnoreCase(calledThis)))
+                synchronized(accountsSync)
                 {
-                    Vector<PlayerAccount> newAccountsList = (Vector<PlayerAccount>)accountsList.clone();
-                    newAccountsList.add(M.playerStats().getAccount());
-                	accountsList = newAccountsList;
-                    return M.playerStats().getAccount();
+	                Vector<PlayerAccount> newAccountsList = (Vector<PlayerAccount>)accountsList.clone();
+	                newAccountsList.add(M.playerStats().getAccount());
+	            	accountsList = newAccountsList;
                 }
+                return M.playerStats().getAccount();
             }
         }
         return null;
@@ -242,9 +250,12 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
     	deadAccount = getLoadAccount(deadAccount.accountName());
     	if(deadAccount==null) return;
     	
-        Vector<PlayerAccount> newAccountsList = (Vector<PlayerAccount>)accountsList.clone();
-        newAccountsList.remove(deadAccount);
-    	accountsList = newAccountsList;
+        synchronized(accountsSync)
+        {
+	        Vector<PlayerAccount> newAccountsList = (Vector<PlayerAccount>)accountsList.clone();
+	        newAccountsList.remove(deadAccount);
+	    	accountsList = newAccountsList;
+        }
     	
         StringBuffer newNoPurge=new StringBuffer("");
         Vector protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));

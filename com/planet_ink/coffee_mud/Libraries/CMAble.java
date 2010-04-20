@@ -39,9 +39,11 @@ public class CMAble extends StdLibrary implements AbilityMapper
     
 	public Hashtable<String, Hashtable<String, AbilityMapping>> 
 												completeAbleMap 			= new Hashtable<String, Hashtable<String, AbilityMapping>>();
+	public Object								completeAbleMapSync		    = new Object();
 	public Hashtable<String, Integer> 			lowestQualifyingLevelMap	= new Hashtable<String, Integer>();
 	public Hashtable<String, Integer>			maxProficiencyMap			= new Hashtable<String, Integer>();
 	public Hashtable<String, Object>			allows						= new Hashtable<String, Object>();
+	public Object								allowsSync				    = new Object();
     public Hashtable<Integer, TreeSet<Integer>> completeDomainMap			= new Hashtable<Integer,TreeSet<Integer>>();
     public TreeMap<String, TreeMap<String, AbilityMapping>> 
     											reverseAbilityMap			= new TreeMap<String, TreeMap<String, AbilityMapping>>();
@@ -119,9 +121,12 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	{
 		if(completeAbleMap.containsKey(ID))
 		{
-			Hashtable<String, Hashtable<String, AbilityMapping>> newCompleteAbleMap = (Hashtable<String, Hashtable<String, AbilityMapping>>)completeAbleMap.clone();
-			newCompleteAbleMap.remove(ID);
-			completeAbleMap = newCompleteAbleMap;
+			synchronized(completeAbleMapSync)
+			{
+				Hashtable<String, Hashtable<String, AbilityMapping>> newCompleteAbleMap = (Hashtable<String, Hashtable<String, AbilityMapping>>)completeAbleMap.clone();
+				newCompleteAbleMap.remove(ID);
+				completeAbleMap = newCompleteAbleMap;
+			}
 		}
 		for(String ability : reverseAbilityMap.keySet())
 		{
@@ -134,9 +139,12 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	{
 		if(!completeAbleMap.containsKey(ID))
 		{
-			Hashtable<String, Hashtable<String, AbilityMapping>> newCompleteAbleMap = (Hashtable<String, Hashtable<String, AbilityMapping>>)completeAbleMap.clone();
-			newCompleteAbleMap.put(ID,new Hashtable<String, AbilityMapping>());
-			completeAbleMap = newCompleteAbleMap;
+			synchronized(completeAbleMapSync)
+			{
+				Hashtable<String, Hashtable<String, AbilityMapping>> newCompleteAbleMap = (Hashtable<String, Hashtable<String, AbilityMapping>>)completeAbleMap.clone();
+				newCompleteAbleMap.put(ID,new Hashtable<String, AbilityMapping>());
+				completeAbleMap = newCompleteAbleMap;
+			}
 		}
 		Hashtable<String, AbilityMapping> ableMap=completeAbleMap.get(ID);
 		Hashtable<String, AbilityMapping> allAbleMap=completeAbleMap.get("All");
@@ -212,33 +220,15 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	public void addPreRequisites(String ID, Vector preReqSkillsList, String extraMask)
 	{
 		if(preReqSkillsList==null) return;
-		Hashtable<String, Object> newAllows = (Hashtable<String, Object>)allows.clone();
-		for(int v=0;v<preReqSkillsList.size();v++)
+		synchronized(allowsSync)
 		{
-			String s=(String)preReqSkillsList.elementAt(v);
-			int x=s.indexOf("(");
-			if((x>=0)&&(s.endsWith(")")))
-				s=s.substring(0,x);
-			if((s.indexOf("*")>=0)||(s.indexOf(",")>=0))
+			Hashtable<String, Object> newAllows = (Hashtable<String, Object>)allows.clone();
+			for(int v=0;v<preReqSkillsList.size();v++)
 			{
-				String ID2=ID;
-				while(newAllows.contains("*"+ID2))
-					ID2="*"+ID2;
-				newAllows.put("*"+ID2,s);
-			}
-			else
-			{
-				Vector V=(Vector)newAllows.get(s);
-				if(V==null){ V=new Vector(); newAllows.put(s,V);}
-				if(!V.contains(ID))V.addElement(ID);
-			}
-		}
-		if((extraMask!=null)&&(extraMask.trim().length()>0))
-		{
-			Vector preReqsOf=CMLib.masking().getAbilityEduReqs(extraMask);
-			for(int v=0;v<preReqsOf.size();v++)
-			{
-				String s=(String)preReqsOf.elementAt(v);
+				String s=(String)preReqSkillsList.elementAt(v);
+				int x=s.indexOf("(");
+				if((x>=0)&&(s.endsWith(")")))
+					s=s.substring(0,x);
 				if((s.indexOf("*")>=0)||(s.indexOf(",")>=0))
 				{
 					String ID2=ID;
@@ -249,17 +239,38 @@ public class CMAble extends StdLibrary implements AbilityMapper
 				else
 				{
 					Vector V=(Vector)newAllows.get(s);
-					if(V==null)
-						V=new Vector();
-					else
-						V=(Vector)V.clone();
-					if(!V.contains(ID))
-						V.addElement(ID);
-					newAllows.put(s,V);
+					if(V==null){ V=new Vector(); newAllows.put(s,V);}
+					if(!V.contains(ID))V.addElement(ID);
 				}
 			}
+			if((extraMask!=null)&&(extraMask.trim().length()>0))
+			{
+				Vector preReqsOf=CMLib.masking().getAbilityEduReqs(extraMask);
+				for(int v=0;v<preReqsOf.size();v++)
+				{
+					String s=(String)preReqsOf.elementAt(v);
+					if((s.indexOf("*")>=0)||(s.indexOf(",")>=0))
+					{
+						String ID2=ID;
+						while(newAllows.contains("*"+ID2))
+							ID2="*"+ID2;
+						newAllows.put("*"+ID2,s);
+					}
+					else
+					{
+						Vector V=(Vector)newAllows.get(s);
+						if(V==null)
+							V=new Vector();
+						else
+							V=(Vector)V.clone();
+						if(!V.contains(ID))
+							V.addElement(ID);
+						newAllows.put(s,V);
+					}
+				}
+			}
+			allows=newAllows;
 		}
-		allows=newAllows;
 	}
 
     public boolean isDomainIncludedInAnyAbility(int domain, int acode)
@@ -337,10 +348,13 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		if(remove!=null)
 		{
-			Hashtable<String,Object> newAllows =(Hashtable<String,Object>)allows.clone(); 
-			for(int r=0;r<remove.size();r++)
-				newAllows.remove(remove.elementAt(r));
-			allows=newAllows;
+			synchronized(allowsSync)
+			{
+				Hashtable<String,Object> newAllows =(Hashtable<String,Object>)allows.clone(); 
+				for(int r=0;r<remove.size();r++)
+					newAllows.remove(remove.elementAt(r));
+				allows=newAllows;
+			}
 		}
 		return (Vector)allows.get(ableID);
 	}
@@ -361,13 +375,16 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		
     	if(CMSecurity.isDisabled("ABILITY_"+ID.toUpperCase())) return;
 		Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
-		if(ableMap == null)
-			ableMap=new Hashtable<String,AbilityMapping>();
-		else
-			ableMap=(Hashtable<String,AbilityMapping>)ableMap.clone();
-		Hashtable<String, Hashtable<String, AbilityMapping>> newCompleteAbleMap = (Hashtable<String, Hashtable<String, AbilityMapping>>)completeAbleMap.clone();
-		newCompleteAbleMap.put(ID,ableMap);
-		completeAbleMap = newCompleteAbleMap;
+		synchronized(completeAbleMapSync)
+		{
+			if(ableMap == null)
+				ableMap=new Hashtable<String,AbilityMapping>();
+			else
+				ableMap=(Hashtable<String,AbilityMapping>)ableMap.clone();
+			Hashtable<String, Hashtable<String, AbilityMapping>> newCompleteAbleMap = (Hashtable<String, Hashtable<String, AbilityMapping>>)completeAbleMap.clone();
+			newCompleteAbleMap.put(ID,ableMap);
+			completeAbleMap = newCompleteAbleMap;
+		}
 		
 		AbilityMapping able=new AbilityMapping();
 		able.abilityName=ability;

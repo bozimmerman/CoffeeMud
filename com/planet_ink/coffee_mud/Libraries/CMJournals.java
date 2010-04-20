@@ -144,9 +144,12 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
                 }
                 item=item.substring(0,x);
             }
-            Hashtable<String,CommandJournal> newCommandJournals = (Hashtable<String,CommandJournal>)commandJournals.clone();
-            newCommandJournals.put(item.toUpperCase().trim(),new CommandJournal(item.toUpperCase().trim(),mask,flags));
-            commandJournals = newCommandJournals;
+            synchronized(this)
+            {
+	            Hashtable<String,CommandJournal> newCommandJournals = (Hashtable<String,CommandJournal>)commandJournals.clone();
+	            newCommandJournals.put(item.toUpperCase().trim(),new CommandJournal(item.toUpperCase().trim(),mask,flags));
+	            commandJournals = newCommandJournals;
+            }
         }
         return commandJournals.size();
     }
@@ -232,9 +235,12 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
                 	catch(Exception e){}
                 }
             }
-            Hashtable<String, ForumJournal> newForumJournals=(Hashtable<String, ForumJournal>)forumJournals.clone();
-            newForumJournals.put(item.toUpperCase().trim(),new ForumJournal(item.trim(),flags));
-            forumJournals=newForumJournals;
+            synchronized(this)
+            {
+	            Hashtable<String, ForumJournal> newForumJournals=(Hashtable<String, ForumJournal>)forumJournals.clone();
+	            newForumJournals.put(item.toUpperCase().trim(),new ForumJournal(item.trim(),flags));
+	            forumJournals=newForumJournals;
+            }
         }
         return forumJournals.size();
     }

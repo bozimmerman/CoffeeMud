@@ -562,7 +562,7 @@ public class DVector implements Cloneable, java.io.Serializable
             
             public Object next() 
             {
-            	if(dex>=S.length)
+            	if(!hasNext())
             		throw new NoSuchElementException();
             	return S[dex].next();
             }

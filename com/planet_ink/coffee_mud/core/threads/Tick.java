@@ -174,18 +174,24 @@ public class Tick extends Thread implements TickableGroup, Cloneable
     
 	public void delTicker(TockClient C)
 	{
-		TreeSet<TockClient> newTickers=(TreeSet<TockClient>)tickers.clone();
-		if(newTickers.remove(C))
-			tickers=newTickers;
+    	synchronized(this)
+    	{
+			TreeSet<TockClient> newTickers=(TreeSet<TockClient>)tickers.clone();
+			if(newTickers.remove(C))
+				tickers=newTickers;
+    	}
 	}
 	public void addTicker(TockClient C)
 	{
-		TreeSet<TockClient> newTickers=(TreeSet<TockClient>)tickers.clone();
-		if(!newTickers.contains(C))
-		{
-			newTickers.add(C);
-			tickers=newTickers;
-		}
+    	synchronized(this)
+    	{
+			TreeSet<TockClient> newTickers=(TreeSet<TockClient>)tickers.clone();
+			if(!newTickers.contains(C))
+			{
+				newTickers.add(C);
+				tickers=newTickers;
+			}
+    	}
 	}
 	
     public Tickable lastTicked()
