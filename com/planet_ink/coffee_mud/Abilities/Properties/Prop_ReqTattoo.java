@@ -117,8 +117,8 @@ public class Prop_ReqTattoo extends Property
 			{
 				char c=s.charAt(0);
 				boolean found=((c=='+')||(c=='-'))?
-					(mob.fetchTattoo(s.substring(1))!=null)
-					:(mob.fetchTattoo(s)!=null);
+					(mob.findTattoo(s.substring(1))!=null)
+					:(mob.findTattoo(s)!=null);
 				switch(allFlag)
 				{
 				case 0: // +NONE -- HAS/LACKS ALL

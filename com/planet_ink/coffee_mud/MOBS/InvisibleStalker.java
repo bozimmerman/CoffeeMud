@@ -38,7 +38,7 @@ public class InvisibleStalker extends StdMOB
 		super();
 		Random randomizer = new Random(System.currentTimeMillis());
 
-		Username="an Invisible Stalker";
+		username="an Invisible Stalker";
 		setDescription("A shimmering blob of energy.");
 		setDisplayText("An invisible stalker hunts here.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);

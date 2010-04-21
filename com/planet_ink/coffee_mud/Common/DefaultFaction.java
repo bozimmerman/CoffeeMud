@@ -45,43 +45,43 @@ public class DefaultFaction implements Faction, MsgListener
     public void initializeClass(){}
     public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-	protected String ID="";
-	protected String name="";
-	protected String choiceIntro="";
-	protected long[] lastFactionDataChange=new long[1];
-	protected int minimum=Integer.MIN_VALUE;
-	protected int middle=0;
-	protected int difference;
-	protected int maximum=Integer.MAX_VALUE;
-	protected int highest=Integer.MAX_VALUE;
-	protected int lowest=Integer.MIN_VALUE;
-	protected long internalFlagBitmap=0;
-	protected String experienceFlag="";
-	protected boolean useLightReactions=false;
-	protected boolean showInScore=false;
-	protected boolean showInSpecialReported=false;
-	protected boolean showInEditor=false;
-	protected boolean showInFactionsCommand=true;
-	protected Vector<String> defaults=new Vector<String>();
-	protected Vector<String> autoDefaults=new Vector<String>();
-	protected Hashtable<String,FactionRange> ranges=new Hashtable<String,FactionRange>();
-    protected Object rangesSync = new Object();
-	protected Hashtable<String,String[]> affBehavs=new Hashtable<String,String[]>();
-    protected Object affBehavsSync = new Object();
-	protected double rateModifier=1.0;
-    protected Hashtable<String,FactionChangeEvent[]> changes=new Hashtable();
-    protected Object changesSync = new Object();
-    protected Hashtable<String,FactionChangeEvent[]> abilityChangesCache=new Hashtable();
-    protected Vector<Faction.FactionZapFactor> factors=new Vector<Faction.FactionZapFactor>();
-    protected Object factorsSync = new Object();
-    protected Hashtable<String,Double> relations=new Hashtable<String,Double>();
-    protected Object relationsSync = new Object();
-    protected Vector<Faction.FactionAbilityUsage> abilityUsages=new Vector<Faction.FactionAbilityUsage>();
-    protected Object abilityUsagesSync = new Object();
-    protected Vector<String> choices=new Vector<String>();
-    protected Object choicesSync = new Object();
-    protected Vector<Faction.FactionReactionItem> reactions=new Vector();
-    protected Object reactionsSync = new Object();
+	protected String 	ID="";
+	protected String 	name="";
+	protected String 	choiceIntro="";
+	protected long[] 	lastFactionDataChange=new long[1];
+	protected int 		minimum=Integer.MIN_VALUE;
+	protected int 		middle=0;
+	protected int 		difference;
+	protected int 		maximum=Integer.MAX_VALUE;
+	protected int 		highest=Integer.MAX_VALUE;
+	protected int 		lowest=Integer.MIN_VALUE;
+	protected long 		internalFlagBitmap=0;
+	protected String 	experienceFlag="";
+	protected boolean 	useLightReactions=false;
+	protected boolean 	showInScore=false;
+	protected boolean 	showInSpecialReported=false;
+	protected boolean 	showInEditor=false;
+	protected boolean 	showInFactionsCommand=true;
+	protected Vector<String> 						defaults=new Vector<String>();
+	protected Vector<String> 						autoDefaults=new Vector<String>();
+	protected Hashtable<String,FactionRange> 		ranges=new Hashtable<String,FactionRange>();
+    protected Object 								rangesSync = new Object();
+	protected Hashtable<String,String[]> 			affBehavs=new Hashtable<String,String[]>();
+    protected Object 								affBehavsSync = new Object();
+	protected double 								rateModifier=1.0;
+    protected Hashtable<String,FactionChangeEvent[]>changes=new Hashtable();
+    protected Object 								changesSync = new Object();
+    protected Hashtable<String,FactionChangeEvent[]>abilityChangesCache=new Hashtable();
+    protected Vector<Faction.FactionZapFactor> 		factors=new Vector<Faction.FactionZapFactor>();
+    protected Object 								factorsSync = new Object();
+    protected Hashtable<String,Double> 				relations=new Hashtable<String,Double>();
+    protected Object 								relationsSync = new Object();
+    protected Vector<Faction.FactionAbilityUsage> 	abilityUsages=new Vector<Faction.FactionAbilityUsage>();
+    protected Object 								abilityUsagesSync = new Object();
+    protected Vector<String> 						choices=new Vector<String>();
+    protected Object 								choicesSync = new Object();
+    protected Vector<Faction.FactionReactionItem> 	reactions=new Vector();
+    protected Object 								reactionsSync = new Object();
     protected volatile Hashtable<String,Vector<Faction.FactionReactionItem>> reactionHash=new Hashtable<String,Vector<Faction.FactionReactionItem>>();
     public Enumeration<Faction.FactionReactionItem> reactions(){return reactions.elements();}
     public Enumeration<Faction.FactionReactionItem> reactions(String rangeName)
@@ -453,36 +453,42 @@ public class DefaultFaction implements Faction, MsgListener
         return rawTagName+"="+getTagValue(tag)+delimeter;
     }
     
-    public FactionData makeFactionData(MOB mob)
+    public void updateFactionData(MOB mob, FactionData data)
     {
-        FactionData data=new DefaultFactionData(this);
+		data.resetFactionData(this);
         Vector<Ability> aV=new Vector<Ability>();
         Vector<Behavior> bV=new Vector<Behavior>();
         String ID=null;
         String[] stuff=null;
         if(mob.isMonster())
-        for(Enumeration e=affectsBehavs();e.hasMoreElements();)
-        {
-            ID=(String)e.nextElement();
-            stuff=getAffectBehav(ID);
-            if(CMLib.masking().maskCheck(stuff[1],mob,true))
-            {
-                Behavior B=CMClass.getBehavior(ID);
-                if(B!=null)
-                {
-                    B.setParms(stuff[0]);
-                    bV.addElement(B);
-                }
-                else
-                {
-                    Ability A=CMClass.getAbility(ID);
-                    A.setMiscText(stuff[0]);
-                    A.setAffectedOne(mob);
-                    aV.addElement(A);
-                }
-            }
-        }
+	        for(Enumeration e=affectsBehavs();e.hasMoreElements();)
+	        {
+	            ID=(String)e.nextElement();
+	            stuff=getAffectBehav(ID);
+	            if(CMLib.masking().maskCheck(stuff[1],mob,true))
+	            {
+	                Behavior B=CMClass.getBehavior(ID);
+	                if(B!=null)
+	                {
+	                    B.setParms(stuff[0]);
+	                    bV.addElement(B);
+	                }
+	                else
+	                {
+	                    Ability A=CMClass.getAbility(ID);
+	                    A.setMiscText(stuff[0]);
+	                    A.setAffectedOne(mob);
+	                    aV.addElement(A);
+	                }
+	            }
+	        }
         data.addHandlers(aV,bV);
+    }
+    
+    public FactionData makeFactionData(MOB mob)
+    {
+        FactionData data=new DefaultFactionData(this);
+        updateFactionData(mob,data);
         return data;
     }
     
@@ -1576,19 +1582,43 @@ public class DefaultFaction implements Faction, MsgListener
 
     public class DefaultFactionData implements FactionData
     {
-        private int value=0;
-        private boolean noListeners=false;
-        private boolean noTickers=false;
-        private boolean noStatAffectors=false;
-        private long lastUpdated=System.currentTimeMillis();
-        private Ability[] myEffects=new Ability[0];
-        private Behavior[] myBehaviors=new Behavior[0];
-        private DVector currentReactionSets = new DVector(2);
-        private Ability lightPresenceAbilities[] = new Ability[0];
-        private Faction.FactionRange currentRange = null;
-        private boolean erroredOut=false;
-        private Faction myFaction;
-        public DefaultFactionData(Faction F){myFaction=F;}
+        private int 		value;
+        private boolean 	noListeners;
+        private boolean 	noTickers;
+        private boolean 	noStatAffectors;
+        private long 		lastUpdated;
+        private Ability[] 	myEffects;
+        private Behavior[] 	myBehaviors;
+        private DVector 	currentReactionSets;
+        private Ability 	lightPresenceAbilities[];
+        private Faction.FactionRange currentRange;
+        private boolean 	erroredOut;
+        private Faction 	myFaction;
+        public  boolean 	isReset = false;
+        
+        public DefaultFactionData(Faction F)
+        {
+        	resetFactionData(F);
+        }
+        public void resetFactionData(Faction F)
+        {
+        	if(!isReset)
+        	{
+	        	myFaction=F;
+	            value=0;
+	            noListeners=false;
+	            noTickers=false;
+	            noStatAffectors=false;
+	            lastUpdated=System.currentTimeMillis();
+	            myEffects=new Ability[0];
+	            myBehaviors=new Behavior[0];
+	            currentReactionSets = new DVector(2);
+	            lightPresenceAbilities = new Ability[0];
+	            currentRange = null;
+	            erroredOut=false;
+	            isReset = true;
+        	}
+        }
         public int value() { return value;}
         public Faction getFaction() { return myFaction;}
         public void setValue(int newValue)
@@ -1661,6 +1691,7 @@ public class DefaultFaction implements Faction, MsgListener
             noListeners=(listeners.size()==0) && (currentReactionSets.size()==0);
             noTickers=(tickers.size()==0) && ((currentReactionSets.size()==0)||(!useLightReactions()));
             noStatAffectors=(listeners.size()==0);
+            isReset = false;
         }
         public boolean requiresUpdating() { return lastFactionDataChange[0] > lastUpdated; }
         

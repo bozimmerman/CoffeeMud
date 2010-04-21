@@ -41,7 +41,7 @@ public class GenPostman extends StdPostman
     public GenPostman()
     {
         super();
-        Username="a generic postman";
+        username="a generic postman";
         setDescription("He looks bored and slow.");
         setDisplayText("A generic postman stands here.");
     }

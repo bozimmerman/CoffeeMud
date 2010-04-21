@@ -227,16 +227,17 @@ public class Equipment extends StdCommand
 			{
 				double numTattoosTotal=0;
 			    wornName=wornName.toUpperCase();
-				for(int i=0;i<mob.numTattoos();i++)
-				{
-				    tat=mob.fetchTattoo(i).toUpperCase();
-				    if((tat.startsWith(wornName+":"))) numTattoosTotal+=1.0;
-				}
+		        for(Enumeration<MOB.Tattoo> e=mob.tattoos();e.hasMoreElements();)
+		        {
+		        	MOB.Tattoo T = e.nextElement();
+		        	if(T.tattooName.startsWith(wornName+":"))
+		        		numTattoosTotal+=1.0;
+		        }
 				int numTattoosToShow=(int)Math.round(Math.ceil(CMath.mul(numTattoosTotal,CMath.div(emptySlots,numLocations))));
-				for(int i=0;i<mob.numTattoos();i++)
-				{
-				    tat=mob.fetchTattoo(i).toUpperCase();
-				    if((tat.startsWith(wornName+":"))
+		        for(Enumeration<MOB.Tattoo> e=mob.tattoos();e.hasMoreElements();)
+		        {
+		        	MOB.Tattoo T = e.nextElement();
+		        	if((T.tattooName.startsWith(wornName+":"))
 				    &&((--numTattoosToShow)>=0))
 				    {
                         if(paragraphView)

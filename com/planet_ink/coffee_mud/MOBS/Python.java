@@ -36,7 +36,7 @@ public class Python extends StdMOB
 	public Python()
 	{
 		super();
-		Username="a python";
+		username="a python";
 		setDescription("A humungous snake that is known for squeezing you to DEATH.");
 		setDisplayText("A python wants to give you a hug.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);

@@ -3195,7 +3195,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 }
                 else
                 if((E!=null)&&(E instanceof MOB))
-                    returnable=(((MOB)E).fetchTattoo(arg2)!=null);
+                    returnable=(((MOB)E).findTattoo(arg2)!=null);
                 else
                     returnable=false;
                 break;
@@ -7638,20 +7638,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     MOB themob=(MOB)newTarget;
                     boolean tattooMinus=tattooName.startsWith("-");
                     if(tattooMinus) tattooName=tattooName.substring(1);
-                    String tattoo=tattooName;
-                    if((tattoo.length()>0)
-                    &&(Character.isDigit(tattoo.charAt(0)))
-                    &&(tattoo.indexOf(" ")>0)
-                    &&(CMath.isNumber(tattoo.substring(0,tattoo.indexOf(" ")).trim())))
-                        tattoo=tattoo.substring(tattoo.indexOf(" ")+1).trim();
-                    if(themob.fetchTattoo(tattoo)!=null)
+                    MOB.Tattoo pT=CMLib.database().parseTattoo(tattooName);
+                    MOB.Tattoo T=themob.findTattoo(pT.tattooName);
+                    if(T!=null)
                     {
                         if(tattooMinus)
-                            themob.delTattoo(tattooName);
+                            themob.delTattoo(T);
                     }
                     else
                     if(!tattooMinus)
-                        themob.addTattoo(tattooName);
+                        themob.addTattoo(pT);
                 }
                 break;
             }

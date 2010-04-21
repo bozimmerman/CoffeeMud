@@ -44,7 +44,7 @@ public class MPRun extends StdCommand
     public boolean execute(MOB mob, Vector commands, int metaFlags)
         throws java.io.IOException
     {
-    	if(mob.fetchTattoo("SYSTEM_MPRUNDOWN")!=null)
+    	if(mob.findTattoo("SYSTEM_MPRUNDOWN")!=null)
 			return CMLib.commands().handleUnknownCommand(mob, commands);
     	MOB checkMOB=mob;
     	if(commands.size()>1)
@@ -56,13 +56,13 @@ public class MPRun extends StdCommand
     			checkMOB=CMLib.players().getLoadPlayer(firstParm.substring(0,x));
     			if(checkMOB==null)
     			{
-    				mob.addTattoo(Tickable.TICKS_PER_RLMIN+" SYSTEM_MPRUNDOWN");
+    				mob.addTattoo(new MOB.Tattoo("SYSTEM_MPRUNDOWN",(int)Tickable.TICKS_PER_RLMIN));
     				return CMLib.commands().handleUnknownCommand(mob, commands);
     			}
     			String pw=firstParm.substring(x+1);
     			if(!pw.equalsIgnoreCase(checkMOB.playerStats().password()))
     			{
-    				mob.addTattoo((2 * Tickable.TICKS_PER_RLMIN)+" SYSTEM_MPRUNDOWN");
+    				mob.addTattoo(new MOB.Tattoo("SYSTEM_MPRUNDOWN",(int)(2 * Tickable.TICKS_PER_RLMIN)));
     				return CMLib.commands().handleUnknownCommand(mob, commands);
     			}
     			commands.removeElementAt(1);

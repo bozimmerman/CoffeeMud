@@ -2732,11 +2732,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
         {
             String tattoostr="";
-            for(int b=0;b<E.numTattoos();b++)
-            {
-                String B=E.fetchTattoo(b);
-                if(B!=null) tattoostr+=B+", ";
-            }
+            for(Enumeration<MOB.Tattoo> e=E.tattoos();e.hasMoreElements();)
+                tattoostr+=e.nextElement().tattooName+", ";
             if(tattoostr.length()>0)
                 tattoostr=tattoostr.substring(0,tattoostr.length()-2);
             if((tattoostr.length()>60)&&((showFlag!=showNumber)&&(showFlag>-999)))
@@ -2746,21 +2743,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             behave=mob.session().prompt("Enter a tattoo to add/remove\n\r:","");
             if(behave.length()>0)
             {
-                String tattoo=behave;
-                if((tattoo.length()>0)
-                &&(Character.isDigit(tattoo.charAt(0)))
-                &&(tattoo.indexOf(" ")>0)
-                &&(CMath.isNumber(tattoo.substring(0,tattoo.indexOf(" ")))))
-                    tattoo=tattoo.substring(tattoo.indexOf(" ")+1).trim();
-                if(E.fetchTattoo(tattoo)!=null)
+                MOB.Tattoo pT=CMLib.database().parseTattoo(behave);
+                MOB.Tattoo T=E.findTattoo(pT.tattooName);
+                if(T!=null)
                 {
-                    mob.tell(tattoo.trim().toUpperCase()+" removed.");
-                    E.delTattoo(behave);
+                    mob.tell(pT.tattooName.trim().toUpperCase()+" removed.");
+                    E.delTattoo(T);
                 }
                 else
                 {
                     mob.tell(behave.trim().toUpperCase()+" added.");
-                    E.addTattoo(behave);
+                    E.addTattoo(pT);
                 }
             }
             else

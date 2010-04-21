@@ -38,7 +38,7 @@ public class Cheetah extends StdMOB
 		super();
 		Random randomizer = new Random(System.currentTimeMillis());
 
-		Username="a cheetah";
+		username="a cheetah";
 		setDescription("A medium-sized, lightly built cat with sand covered fur and black spot.");
 		setDisplayText("A cheetah stalks its prey.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);

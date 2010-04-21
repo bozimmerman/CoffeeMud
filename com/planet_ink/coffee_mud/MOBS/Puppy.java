@@ -38,7 +38,7 @@ public class Puppy extends StdMOB
 		super();
 		Random randomizer = new Random(System.currentTimeMillis());
 
-		Username="a puppy";
+		username="a puppy";
 		setDescription("It\\`s small, cute, and furry with four legs, just like a puppy ought to be.");
 		setDisplayText("A puppy scurries nearby.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);

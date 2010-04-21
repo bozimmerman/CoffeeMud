@@ -38,7 +38,7 @@ public class Dog extends StdMOB
 		super();
 		Random randomizer = new Random(System.currentTimeMillis());
 
-		Username="a dog";
+		username="a dog";
 		setDescription("It\\`s furry with four legs, just like a dog ought to be.");
 		setDisplayText("A dog scurries nearby.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);

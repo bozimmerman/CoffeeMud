@@ -278,11 +278,8 @@ public class PlayerData extends StdWebMacro
 		}
 		case 58: 
 		{
-			for(int t=0;t<M.numTattoos();t++)
-			{
-				String E=M.fetchTattoo(t);
-				  str.append(E+", ");
-			}
+			for(Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();)
+			  str.append(e.nextElement().toString()+", ");
 			break;
 		}
 		case 59: 

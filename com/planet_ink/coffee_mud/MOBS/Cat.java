@@ -42,7 +42,7 @@ public class Cat extends StdMOB
         
 		Random randomizer = new Random(System.currentTimeMillis());
 
-		Username="a cat";
+		username="a cat";
 		setDescription("It\\`s furry with four legs, and a long fluffy tail.");
 		setDisplayText("A cat calmly watches you.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);

@@ -37,7 +37,7 @@ public class GenMob extends StdMOB
 	public GenMob()
 	{
 		super();
-		Username="a generic mob";
+		username="a generic mob";
 		setDescription("");
 		setDisplayText("A generic mob stands here.");
 

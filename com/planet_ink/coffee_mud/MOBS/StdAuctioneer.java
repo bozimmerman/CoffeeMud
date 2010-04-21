@@ -41,7 +41,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
     public StdAuctioneer()
     {
         super();
-        Username="an auctioneer";
+        username="an auctioneer";
         setDescription("He talks faster than you!");
         setDisplayText("The local auctioneer is here calling prices.");
         CMLib.factions().setAlignment(this,Faction.ALIGN_GOOD);

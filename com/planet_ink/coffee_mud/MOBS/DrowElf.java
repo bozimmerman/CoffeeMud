@@ -55,7 +55,7 @@ public class DrowElf extends StdMOB
 			sex = "female";
 
 		// ===== set the basics
-		Username="a Drow Elf";
+		username="a Drow Elf";
 		setDescription("a " + sex + " Drow Fighter");
 		setDisplayText("The drow is armored in black chain mail and carrying a nice arsenal of weapons");
 

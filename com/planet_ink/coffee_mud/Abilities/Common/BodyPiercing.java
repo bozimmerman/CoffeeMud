@@ -61,7 +61,7 @@ public class BodyPiercing extends CommonSkill
 				else
 				{
 					commonEmote(mob,"<S-NAME> complete(s) the piercing on "+target.name()+".");
-				    target.addTattoo(writing);
+				    target.addTattoo(new MOB.Tattoo(writing));
 				}
 			}
 		}
@@ -153,10 +153,10 @@ public class BodyPiercing extends CommonSkill
 		}
 		
 	    int numTattsDone=0;
-		for(int i=0;i<target.numTattoos();i++)
-		{
-		    String tat=target.fetchTattoo(i);
-		    if(tat.toUpperCase().startsWith(wornName.toUpperCase()+":"))
+        for(Enumeration<MOB.Tattoo> e=target.tattoos();e.hasMoreElements();)
+        {
+            MOB.Tattoo T=e.nextElement();
+		    if(T.tattooName.startsWith(wornName.toUpperCase()+":"))
 	            numTattsDone++;
 		}
 		if("REMOVE".equals(command))
@@ -192,7 +192,7 @@ public class BodyPiercing extends CommonSkill
 		{
 			mob.location().send(mob,msg);
 			if("REMOVE".equals(command))
-			    target.delTattoo(writing);
+			    target.delTattoo(target.findTattoo(writing));
 			else
 			{
 				beneficialAffect(mob,mob,asLevel,duration);

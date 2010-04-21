@@ -3431,7 +3431,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				{
 					boolean found=false;
 					for(int v=1;v<V.size();v++)
-						if((mob.fetchTattoo((String)V.elementAt(v))!=null)
+						if((mob.findTattoo((String)V.elementAt(v))!=null)
                         ||((room!=null)&&(room.getArea().getBlurbFlag((String)V.elementAt(v))!=null)))
 						{ found=true; break;}
 
@@ -3441,7 +3441,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			case 8: // +tattoo
 				{
 					for(int v=1;v<V.size();v++)
-						if((mob.fetchTattoo((String)V.elementAt(v))!=null)
+						if((mob.findTattoo((String)V.elementAt(v))!=null)
                         ||((room!=null)&&(room.getArea().getBlurbFlag((String)V.elementAt(v))!=null)))
 						{ return false;}
 				}

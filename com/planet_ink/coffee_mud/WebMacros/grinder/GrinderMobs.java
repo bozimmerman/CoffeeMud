@@ -517,9 +517,10 @@ public class GrinderMobs
 				case 40: // tattoos
 					{
 						Vector V=CMParms.parseSemicolons(old,true);
-						while(M.numTattoos()>0) M.delTattoo(M.fetchTattoo(0));
+						for(Enumeration<MOB.Tattoo> e=M.tattoos();e.hasMoreElements();)
+							M.delTattoo(e.nextElement());
 						for(int v=0;v<V.size();v++)
-							M.addTattoo((String)V.elementAt(v));
+							M.addTattoo(CMLib.database().parseTattoo((String)V.elementAt(v)));
 					}
 					break;
 				case 41: // expertises

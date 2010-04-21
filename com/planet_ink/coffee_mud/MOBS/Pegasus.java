@@ -39,7 +39,7 @@ public class Pegasus extends StdRideable
         super();
         randomizer = new Random(System.currentTimeMillis());
 
-        Username="a Pegasus";
+        username="a Pegasus";
         setDescription("a beautiful, white stallion with wings.");
         setDisplayText("A Pegasus flaps its wings.");
         CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);

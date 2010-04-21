@@ -48,7 +48,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	public StdShopKeeper()
 	{
 		super();
-		Username="a shopkeeper";
+		username="a shopkeeper";
 		setDescription("He\\`s pleased to be of assistance.");
 		setDisplayText("A shopkeeper is waiting to serve you.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_GOOD);

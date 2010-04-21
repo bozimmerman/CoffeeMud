@@ -38,7 +38,7 @@ public class FireGiant extends StdMOB
 		super();
 		Random randomizer = new Random(System.currentTimeMillis());
 
-		Username="a Fire Giant";
+		username="a Fire Giant";
 		setDescription("A tall humanoid standing about 18 feet tall, 12 foot chest, coal black skin and fire red-orange hair.");
 		setDisplayText("A Fire Giant ponders killing you.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);

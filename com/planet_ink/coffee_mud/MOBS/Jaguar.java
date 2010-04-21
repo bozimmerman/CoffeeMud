@@ -38,7 +38,7 @@ public class Jaguar extends StdMOB
 		super();
 		Random randomizer = new Random(System.currentTimeMillis());
 
-		Username="a jaguar";
+		username="a jaguar";
 		setDescription("A powerful cat with a deep chest and muscular limbs.  It\\`s covered in light yellow fur with black spots.");
 		setDisplayText("A jaguar prowls quietly.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);

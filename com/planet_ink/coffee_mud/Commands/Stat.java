@@ -495,8 +495,8 @@ public class Stat  extends Skills
 		if(ableTypes==ABLETYPE_TATTOOS)
 		{
 			str.append("Tattoos:");
-			for(int q=0;q<target.numTattoos();q++)
-				str.append(" "+target.fetchTattoo(q)+",");
+	        for(Enumeration<MOB.Tattoo> e=target.tattoos();e.hasMoreElements();)
+				str.append(" "+e.nextElement().tattooName+",");
 			str.deleteCharAt(str.length()-1);
 			str.append("\n\r");
 		}

@@ -41,7 +41,7 @@ public class GenBanker extends StdBanker
 	public GenBanker()
 	{
 		super();
-		Username="a generic banker";
+		username="a generic banker";
 		setDescription("He looks like he wants your money.");
 		setDisplayText("A generic banker stands here.");
 		baseEnvStats().setAbility(11); // his only off-default

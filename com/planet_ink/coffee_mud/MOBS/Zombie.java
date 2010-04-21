@@ -37,7 +37,7 @@ public class Zombie extends Undead
 	{
 
 		super();
-		Username="a zombie";
+		username="a zombie";
 		setDescription("decayed and rotting, a dead body has been brought back to life...");
 		setDisplayText("a skeleton slowly moves about.");
 		setMoney(10);

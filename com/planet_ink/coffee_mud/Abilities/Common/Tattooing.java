@@ -61,7 +61,7 @@ public class Tattooing extends CommonSkill
 				else
 				{
 					commonEmote(mob,"<S-NAME> complete(s) the tattoo on "+target.name()+".");
-				    target.addTattoo(writing);
+				    target.addTattoo(new MOB.Tattoo(writing));
 				}
 			}
 		}
@@ -143,20 +143,20 @@ public class Tattooing extends CommonSkill
 		}
 		
 	    int numTattsDone=0;
-	    int tatToRemove=-1;
-		for(int i=0;i<target.numTattoos();i++)
-		{
-		    String tat=target.fetchTattoo(i);
-		    if(tat.toUpperCase().startsWith(wornName.toUpperCase()+":"))
+	    MOB.Tattoo tatToRemove=null;
+        for(Enumeration<MOB.Tattoo> e=target.tattoos();e.hasMoreElements();)
+        {
+            MOB.Tattoo T=e.nextElement();
+		    if(T.tattooName.startsWith(wornName.toUpperCase()+":"))
 		    {
 	            numTattsDone++;
-	            if(tat.toUpperCase().substring(wornName.length()+1).toUpperCase().startsWith("A TATTOO OF"))
-		            tatToRemove=i;
+	            if(T.tattooName.substring(wornName.length()+1).toUpperCase().startsWith("A TATTOO OF"))
+		            tatToRemove=T;
 		    }
 		}
 		if("REMOVE".startsWith(message.toUpperCase()))
 		{
-		    if(tatToRemove<0)
+		    if(tatToRemove==null)
 		    {
 			    commonTell(mob,"There is no tattoo there to remove.");
 			    return false;
@@ -185,7 +185,7 @@ public class Tattooing extends CommonSkill
 		{
 			mob.location().send(mob,msg);
 			if("REMOVE".startsWith(message.toUpperCase()))
-			    target.delTattoo(target.fetchTattoo(tatToRemove));
+			    target.delTattoo(tatToRemove);
 			else
 			{
 				beneficialAffect(mob,mob,asLevel,duration);

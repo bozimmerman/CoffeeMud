@@ -36,7 +36,7 @@ public class Mouse extends StdMOB
 	public Mouse()
 	{
 		super();
-		Username="a mouse";
+		username="a mouse";
 		setDescription("The little mouse is a small white rodent.");
 		setDisplayText("A little mouse tries to scurry out of your way.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);

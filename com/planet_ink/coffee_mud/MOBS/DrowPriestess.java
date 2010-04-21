@@ -47,7 +47,7 @@ public class DrowPriestess extends DrowElf
         magicResistance = 50 + baseEnvStats().level() * 2;
 
 		// ===== set the basics
-		Username="a Drow priestess";
+		username="a Drow priestess";
 		setDescription("a Drow priestess");
 		setDisplayText("A Drow priestess wants to see you dead.");
 

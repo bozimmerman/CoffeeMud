@@ -36,7 +36,7 @@ public class AngryCitizen extends StdMOB
 	public AngryCitizen()
 	{
 		super();
-		Username="an angry citizen";
+		username="an angry citizen";
 		setDescription("He\\`s dirty, cranky, and very hickish.");
 		setDisplayText("An angry citizen stands here shouting.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);

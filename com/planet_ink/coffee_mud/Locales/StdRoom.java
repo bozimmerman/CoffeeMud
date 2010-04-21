@@ -124,15 +124,6 @@ public class StdRoom implements Room
 	
 	public boolean isGeneric(){return false;}
 	
-	public void resetVectors()
-	{
-	    affects=DVector.softCopy(affects);
-	    behaviors=DVector.softCopy(behaviors);
-	    contents=DVector.softCopy(contents);
-	    inhabitants=DVector.softCopy(inhabitants);
-        scripts=DVector.softCopy(scripts);
-	}
-	
 	protected void cloneFix(Room E)
 	{
 		baseEnvStats=(EnvStats)E.baseEnvStats().copyOf();

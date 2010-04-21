@@ -36,7 +36,7 @@ public class Buck extends Deer
 	public Buck()
 	{
 		super();
-		Username="a buck";
+		username="a buck";
 		setDescription("A nervous, but beautifully graceful creation.");
 		setDisplayText("A buck looks up as you happen along.");
 	}

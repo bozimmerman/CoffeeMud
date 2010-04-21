@@ -36,7 +36,7 @@ public class Buffalo extends StdMOB
 	public Buffalo()
 	{
 		super();
-		Username="a buffalo";
+		username="a buffalo";
 		setDescription("A large lumbering beast that looks too slow to get out of your way.");
 		setDisplayText("A huge buffalo grazes here.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);

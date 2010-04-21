@@ -116,10 +116,10 @@ public class MOBloader
                 pstats.setXML(buf);
                 stats.setNonBaseStatsFromString(DBConnections.getRes(R,"CMSAVE"));
                 Vector V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"TATTS"),true);
-                while(mob.numTattoos()>0)
-                    mob.delTattoo(mob.fetchTattoo(0));
+                for(Enumeration<MOB.Tattoo> e=mob.tattoos();e.hasMoreElements();)
+                	mob.delTattoo(e.nextElement());
                 for(int v=0;v<V9.size();v++)
-                    mob.addTattoo((String)V9.elementAt(v));
+                    mob.addTattoo(parseTattoo((String)V9.elementAt(v)));
                 V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"EDUS"),true);
                 while(mob.numExpertises()>0)
                     mob.delExpertise(mob.fetchExpertise(0));
@@ -429,6 +429,25 @@ public class MOBloader
         return allUsers;
     }
 
+    public MOB.Tattoo parseTattoo(String tattoo)
+    {
+    	if(tattoo==null)
+    		return new MOB.Tattoo("");
+    	int tickDown = 0;
+        if((tattoo.length()>0)
+        &&(Character.isDigit(tattoo.charAt(0))))
+        {
+        	int x=tattoo.indexOf(' ');
+        	if((x>0)
+        	&&(CMath.isNumber(tattoo.substring(0,x).trim())))
+        	{
+        		tickDown=CMath.s_int(tattoo.substring(0,x));
+                tattoo=tattoo.substring(x+1).trim();
+        	}
+        }
+    	return new MOB.Tattoo(tattoo, tickDown);
+    }
+    
     public void vassals(MOB mob, String liegeID)
     {
         DBConnection D=null;
@@ -672,11 +691,11 @@ public class MOBloader
         PlayerStats pstats=mob.playerStats();
         if(pstats==null) return "";
         StringBuffer pfxml=new StringBuffer(pstats.getXML());
-        if(mob.numTattoos()>0)
+        if(mob.tattoos().hasMoreElements())
         {
             pfxml.append("<TATTS>");
-            for(int i=0;i<mob.numTattoos();i++)
-                pfxml.append(mob.fetchTattoo(i)+";");
+            for(Enumeration<MOB.Tattoo> e=mob.tattoos();e.hasMoreElements();)
+                pfxml.append(e.nextElement().toString()+";");
             pfxml.append("</TATTS>");
         }
         if(mob.numExpertises()>0)

@@ -36,7 +36,7 @@ public class Teacher extends StdMOB
 	public Teacher()
 	{
 		super();
-		Username="Cornelius, Knower of All Things";
+		username="Cornelius, Knower of All Things";
 		setDescription("He looks wise beyond his years.");
 		setDisplayText("Cornelius is standing here contemplating your ignorance.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_GOOD);

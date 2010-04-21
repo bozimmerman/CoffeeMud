@@ -166,6 +166,7 @@ public interface DatabaseEngine extends CMLibrary
     public CMFile.CMVFSFile DBReadVFSFile(String filename);
     public void DBCreateVFSFile(String filename, int bits, String creator, Object data);
     public void DBDeleteVFSFile(String filename);
+    public MOB.Tattoo parseTattoo(String tattoo);
     
     public static class PlayerData
     {

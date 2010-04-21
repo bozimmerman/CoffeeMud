@@ -41,7 +41,7 @@ public class GiantScorpion extends StdMOB
 		super();
 		Random randomizer = new Random(System.currentTimeMillis());
 
-		Username="a Giant Scorpion";
+		username="a Giant Scorpion";
 		setDescription("The giant scorpion has a green carapace and yellowish green legs and pincers. The segmented tail is black, with a vicious stinger on the end.");
 		setDisplayText("A mean Giant Scorpion hunts.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);

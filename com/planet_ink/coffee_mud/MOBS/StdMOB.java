@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Tattoo;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
@@ -36,94 +37,101 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 @SuppressWarnings("unchecked")
 public class StdMOB implements MOB
 {
-	private static final Vector empty=new Vector();
-
 	public String ID(){return "StdMOB";}
-	public String Username="";
+	
+	public String 		username="";
 
-    protected String clanID=null;
-    protected int clanRole=0;
+    protected String 	clanID=null;
+    protected int 		clanRole=0;
 
 	protected CharStats baseCharStats=(CharStats)CMClass.getCommon("DefaultCharStats");
 	protected CharStats charStats=(CharStats)CMClass.getCommon("DefaultCharStats");
 
-	protected EnvStats envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
-	protected EnvStats baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+	protected EnvStats 	envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+	protected EnvStats 	baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
 
 	protected PlayerStats playerStats=null;
 
-	protected boolean amDead=false;
-	protected Room location=null;
-	protected Room lastLocation=null;
-	protected Rideable riding=null;
+	protected boolean 	amDead=false;
+	protected Room 		location=null;
+	protected Room 		lastLocation=null;
+	protected Rideable 	riding=null;
 
-	protected Session mySession=null;
-	protected boolean pleaseDestroy=false;
-	protected byte[] description=null;
-	protected String displayText="";
-	protected String imageName=null;
-	protected byte[] miscText=null;
-    protected String[] xtraValues=null;
+	protected Session 	mySession=null;
+	protected boolean 	pleaseDestroy=false;
+	protected byte[] 	description=null;
+	protected String 	displayText="";
+	protected String 	imageName=null;
+	protected byte[] 	miscText=null;
+    protected String[] 	xtraValues=null;
 
-	protected long tickStatus=Tickable.STATUS_NOT;
+	protected long 		tickStatus=Tickable.STATUS_NOT;
 
 	/* containers of items and attributes*/
-	protected Vector inventory=new Vector(1);
-	protected DVector followers=null;
-	protected Vector scripts=new Vector(1);
-	protected Vector abilities=new Vector(1);
-	protected Vector affects=new Vector(1);
-	protected Vector behaviors=new Vector(1);
-	protected Vector tattoos=new Vector(1);
-	protected Vector expertises=new Vector(1);
-    protected Hashtable<String,Faction.FactionData> factions=new Hashtable<String,Faction.FactionData>(1);
-
-	protected DVector commandQue=new DVector(6);
+	protected Vector<Item>		inventory	= new Vector<Item>(1);
+    protected Object 			invSync		= new Object();
+	protected Vector<Ability>	abilities	= new Vector<Ability>(1);
+    protected Object 			abilitySync	= new Object();
+	protected Vector<Ability> 	affects		= new Vector<Ability>(1);
+    protected Object 			affectSync 	= new Object();
+	protected Vector<Behavior>	behaviors	= new Vector<Behavior>(1);
+    protected Object 			behaviorSync= new Object();
+	protected Vector<Tattoo>	tattoos		= new Vector<Tattoo>(1);
+    protected Object 			tattooSync	= new Object();
+	protected Vector<String>	expertises	= new Vector<String>(1);
+    protected Object 			experSync	= new Object();
+	protected DVector 			followers	= null;
+	protected LinkedList<QMCommand> 
+								commandQue	= new LinkedList<QMCommand>();
+	protected Vector<ScriptingEngine>
+								scripts		= new Vector(1);
+    protected Object 			scriptSync	= new Object();
+    protected Hashtable<String,Faction.FactionData> 
+    							factions	= new Hashtable<String,Faction.FactionData>(1);
+    protected Object 			factionSync = new Object();
 
 	// gained attributes
-	protected int Experience=0;
-	protected int Practices=0;
-	protected int Trains=0;
-	protected long AgeHours=0;
-	protected int Money=0;
-	protected double moneyVariation=0.0;
-	protected int attributesBitmap=MOB.ATT_NOTEACH;
-	protected String databaseID="";
+	protected int 		experience=0;
+	protected int 		practices=0;
+	protected int 		trains=0;
+	protected long 		ageHours=0;
+	protected int 		money=0;
+	protected double 	moneyVariation=0.0;
+	protected int 		attributesBitmap=MOB.ATT_NOTEACH;
+	protected String 	databaseID="";
 
-    protected int tickCounter=0;
-    protected int recoverTickCounter=1;
-    private long expirationDate=0;
-    private int manaConsumeCounter=CMLib.dice().roll(1,10,0);
-    private double freeActions=0.0;
+    protected int 		tickCounter=0;
+    protected int 		recoverTickCounter=1;
+    private long 		expirationDate=0;
+    private int 		manaConsumeCounter=CMLib.dice().roll(1,10,0);
+    private double 		freeActions=0.0;
 
     // the core state values
-    public CharState curState=(CharState)CMClass.getCommon("DefaultCharState");
-    public CharState maxState=(CharState)CMClass.getCommon("DefaultCharState");
-    public CharState baseState=(CharState)CMClass.getCommon("DefaultCharState");
-    private long lastTickedDateTime=0;
-    private long lastCommandTime=System.currentTimeMillis();
+    public CharState 	curState=(CharState)CMClass.getCommon("DefaultCharState");
+    public CharState 	maxState=(CharState)CMClass.getCommon("DefaultCharState");
+    public CharState 	baseState=(CharState)CMClass.getCommon("DefaultCharState");
+    private long 		lastTickedDateTime=0;
+    private long 		lastCommandTime=System.currentTimeMillis();
+
+    protected Room 		startRoomPossibly=null;
+    protected String 	worshipCharID="";
+    protected String 	liegeID="";
+    protected int 		wimpHitPoint=0;
+    protected int 		questPoint=0;
+    protected MOB 		victim=null;
+    protected MOB 		amFollowing=null;
+    protected MOB 		soulMate=null;
+    protected int 		atRange=-1;
+    protected long 		peaceTime=0;
+    protected boolean 	amDestroyed=false;
+    protected boolean 	kickFlag=false;
+    protected boolean 	imMobile=false;
+
     public long lastTickedDateTime(){return lastTickedDateTime;}
     public void flagVariableEq(){lastTickedDateTime=-2;}
-
-    protected Room startRoomPossibly=null;
-    protected int Alignment=0;
-    protected String WorshipCharID="";
-    protected String LiegeID="";
-    protected int WimpHitPoint=0;
-    protected int QuestPoint=0;
-    protected int DeityIndex=-1;
-    protected MOB victim=null;
-    protected MOB amFollowing=null;
-    protected MOB soulMate=null;
-    protected int atRange=-1;
-    protected long peaceTime=0;
-    protected boolean amDestroyed=false;
-    protected boolean kickFlag=false;
-    protected boolean imMobile=false;
-
-    public long getAgeHours(){return AgeHours;}
-	public int getPractices(){return Practices;}
-	public int getExperience(){return Experience;}
+    public long getAgeHours(){return ageHours;}
+	public int getPractices(){return practices;}
+	public int getExperience(){return experience;}
 	public int getExpNextLevel(){return CMLib.leveler().getLevelExperience(baseEnvStats().level());}
 	public int getExpPrevLevel()
 	{
@@ -157,16 +165,16 @@ public class StdMOB implements MOB
 			ExpNextLevel=getExperience()+1000;
 		return ExpNextLevel-getExperience();
 	}
-	public int getTrains(){return Trains;}
-	public int getMoney(){return Money;}
+	public int getTrains(){return trains;}
+	public int getMoney(){return money;}
     public double getMoneyVariation() { return moneyVariation;}
 	public int getBitmap(){return attributesBitmap;}
-	public void setAgeHours(long newVal){ AgeHours=newVal;}
-	public void setExperience(int newVal){ Experience=newVal; }
+	public void setAgeHours(long newVal){ ageHours=newVal;}
+	public void setExperience(int newVal){ experience=newVal; }
 	public void setExpNextLevel(int newVal){}
-	public void setPractices(int newVal){ Practices=newVal;}
-	public void setTrains(int newVal){ Trains=newVal;}
-	public void setMoney(int newVal){ Money=newVal;}
+	public void setPractices(int newVal){ practices=newVal;}
+	public void setTrains(int newVal){ trains=newVal;}
+	public void setMoney(int newVal){ money=newVal;}
     public void setMoneyVariation(double newVal){moneyVariation=newVal;}
 	public void setBitmap(int newVal){ attributesBitmap=newVal;}
     public String getFactionListing()
@@ -180,14 +188,14 @@ public class StdMOB implements MOB
         return msg.toString();
     }
 
-	public String getLiegeID(){return LiegeID;}
-	public String getWorshipCharID(){return WorshipCharID;}
-	public int getWimpHitPoint(){return WimpHitPoint;}
-	public int getQuestPoint(){return QuestPoint;}
-	public void setLiegeID(String newVal){LiegeID=newVal;}
-	public void setWorshipCharID(String newVal){ WorshipCharID=newVal;}
-	public void setWimpHitPoint(int newVal){ WimpHitPoint=newVal;}
-	public void setQuestPoint(int newVal){ QuestPoint=newVal;}
+	public String getLiegeID(){return liegeID;}
+	public String getWorshipCharID(){return worshipCharID;}
+	public int getWimpHitPoint(){return wimpHitPoint;}
+	public int getQuestPoint(){return questPoint;}
+	public void setLiegeID(String newVal){liegeID=newVal;}
+	public void setWorshipCharID(String newVal){ worshipCharID=newVal;}
+	public void setWimpHitPoint(int newVal){ wimpHitPoint=newVal;}
+	public void setQuestPoint(int newVal){ questPoint=newVal;}
 	public Deity getMyDeity()
 	{
 		if(getWorshipCharID().length()==0) return null;
@@ -226,15 +234,15 @@ public class StdMOB implements MOB
 
 	public String Name()
 	{
-		return Username;
+		return username;
 	}
 	public void setName(String newName){
-		Username=newName;
+		username=newName;
 	}
 	public String name()
 	{
 		if(envStats().newName()!=null) return envStats().newName();
-		return Username;
+		return username;
 	}
 	public String titledName()
 	{
@@ -302,40 +310,35 @@ public class StdMOB implements MOB
 
 		pleaseDestroy=false;
 
-		inventory=new Vector(1);
+		inventory=new Vector<Item>(1);
 		followers=null;
-		abilities=new Vector(1);
-		affects=new Vector(1);
-		behaviors=new Vector(1);
-		scripts=new Vector(1);
-		Item I2=null;
+		abilities=new Vector<Ability>(1);
+		affects=new Vector<Ability>(1);
+		behaviors=new Vector<Behavior>(1);
+		scripts=new Vector<ScriptingEngine>(1);
 		Item I=null;
 		for(int i=0;i<E.inventorySize();i++)
 		{
-			I2=E.fetchInventory(i);
-			if(I2!=null)
-			{
-				I=(Item)I2.copyOf();
-				I.setOwner(this);
-				inventory.addElement(I);
-			}
+			I=E.fetchInventory(i);
+			if(I!=null)
+				addInventory((Item)I.copyOf());
 		}
 		for(int i=0;i<inventorySize();i++)
 		{
-			I2=fetchInventory(i);
-			if((I2!=null)
-			&&(I2.container()!=null)
-			&&(!isMine(I2.container())))
+			I=fetchInventory(i);
+			if((I!=null)
+			&&(I.container()!=null)
+			&&(!isMine(I.container())))
 				for(int ii=0;ii<E.inventorySize();ii++)
-					if((E.fetchInventory(ii)==I2.container())&&(ii<inventorySize()))
-					{ I2.setContainer(fetchInventory(ii)); break;}
+					if((E.fetchInventory(ii)==I.container())&&(ii<inventorySize()))
+					{ I.setContainer(fetchInventory(ii)); break;}
 		}
 		Ability A=null;
 		for(int i=0;i<E.numLearnedAbilities();i++)
 		{
 			A=E.fetchAbility(i);
 			if(A!=null)
-				abilities.addElement(A.copyOf());
+				addAbility((Ability)A.copyOf());
 		}
 		for(int i=0;i<E.numEffects();i++)
 		{
@@ -346,8 +349,8 @@ public class StdMOB implements MOB
 		for(int i=0;i<E.numBehaviors();i++)
 		{
 			Behavior B=E.fetchBehavior(i);
-			if(B!=null)
-				behaviors.addElement(B.copyOf());
+			if(B!=null) // iteration during a clone would just be messed up.
+				behaviors.addElement((Behavior)B.copyOf()); 
 		}
 		ScriptingEngine S=null;
         for(int i=0;i<E.numScripts();i++)
@@ -373,18 +376,6 @@ public class StdMOB implements MOB
 		{
 			return this.newInstance();
 		}
-	}
-	public void resetVectors()
-	{
-	    inventory=DVector.softCopy(inventory);
-	    followers=DVector.softCopy(followers);
-	    abilities=DVector.softCopy(abilities);
-	    affects=DVector.softCopy(affects);
-	    behaviors=DVector.softCopy(behaviors);
-	    tattoos=DVector.softCopy(tattoos);
-	    expertises=DVector.softCopy(expertises);
-	    factions=DVector.softCopy(factions);
-	    commandQue=DVector.softCopy(commandQue);
 	}
 	public boolean isGeneric(){return false;}
 	public EnvStats envStats()
@@ -431,7 +422,7 @@ public class StdMOB implements MOB
 			if(effect!=null)
 				effect.affectEnvStats(this,envStats);
 		}
-		for(Enumeration e=DVector.s_enum(factions,false);e.hasMoreElements();)
+		for(Enumeration e=factions.elements();e.hasMoreElements();)
 			((Faction.FactionData)e.nextElement()).affectEnvStats(this,envStats);
 		/* the follower light exception*/
 		if(!CMLib.flags().isLightSource(this))
@@ -520,7 +511,7 @@ public class StdMOB implements MOB
 			charStats.getMyClass(c).affectCharStats(this,charStats);
 		charStats.getMyRace().affectCharStats(this,charStats);
 		baseCharStats.getMyRace().agingAffects(this,baseCharStats,charStats);
-		for(Enumeration e=DVector.s_enum(factions,false);e.hasMoreElements();)
+		for(Enumeration e=factions.elements();e.hasMoreElements();)
 			((Faction.FactionData)e.nextElement()).affectCharStats(this,charStats);
 	    if((playerStats!=null)&&(soulMate==null)&&(playerStats.getHygiene()>=PlayerStats.HYGIENE_DELIMIT))
 	    {
@@ -607,7 +598,7 @@ public class StdMOB implements MOB
 			if(item!=null)
 				item.affectCharState(this,maxState);
 		}
-		for(Enumeration e=DVector.s_enum(factions,false);e.hasMoreElements();)
+		for(Enumeration e=factions.elements();e.hasMoreElements();)
 			((Faction.FactionData)e.nextElement()).affectCharState(this,maxState);
 		if(location()!=null)
 			location().affectCharState(this,maxState);
@@ -681,19 +672,19 @@ public class StdMOB implements MOB
         riding=null;
         mySession=null;
         imageName=null;
-        inventory=new Vector(1);
+        inventory=new Vector<Item>(1);
         followers=null;
-        abilities=new Vector(1);
-        affects=new Vector(1);
-        behaviors=new Vector(1);
-        tattoos=new Vector(1);
-        expertises=new Vector(1);
+        abilities=new Vector<Ability>(1);
+        affects=new Vector<Ability>(1);
+        behaviors=new Vector<Behavior>(1);
+        tattoos=new Vector<Tattoo>(1);
+        expertises=new Vector<String>(1);
         factions=new Hashtable<String, Faction.FactionData>(1);
-        commandQue=new DVector(6);
-        scripts=new Vector(1);
+        commandQue=new LinkedList<QMCommand>();
+        scripts=new Vector<ScriptingEngine>(1);
         curState=maxState;
-        WorshipCharID="";
-        LiegeID="";
+        worshipCharID="";
+        liegeID="";
         victim=null;
         amFollowing=null;
         soulMate=null;
@@ -783,7 +774,7 @@ public class StdMOB implements MOB
 			setLocation(CMLib.map().getStartRoom(this));
 			if(location()==null)
 			{
-				Log.errOut("StdMOB",Username+" cannot get a location.");
+				Log.errOut("StdMOB",username+" cannot get a location.");
 				return;
 			}
 		}
@@ -1289,36 +1280,36 @@ public class StdMOB implements MOB
 	{
         while((!pleaseDestroy)&&((session()==null)||(!session().killFlag())))
         {
-        	Object[] doCommand=null;
+        	QMCommand doCommand=null;
             synchronized(commandQue)
             {
                 if(commandQue.size()==0) return false;
-                Object[] ROW=commandQue.elementsAt(0);
-                double diff=actions()-((Double)ROW[2]).doubleValue();
+                QMCommand cmd=commandQue.getFirst();
+                double diff=actions()-cmd.tickDelay;
 				if(diff>=0.0)
                 {
                     long nextTime=lastCommandTime
-                                 +Math.round(((Double)ROW[2]).doubleValue()
+                                 +Math.round(cmd.tickDelay
                                              /envStats().speed()
                                              *TIME_TICK_DOUBLE);
                     if((System.currentTimeMillis()<nextTime)&&(session()!=null))
                         return false;
-					ROW=commandQue.removeElementsAt(0);
+					cmd=commandQue.removeFirst();
                     setActions(diff);
-                    doCommand=ROW;
+                    doCommand=cmd;
                 }
             }
             if(doCommand!=null)
             {
                 lastCommandTime=System.currentTimeMillis();
-                doCommand(doCommand[0],(Vector)doCommand[1],((Integer)doCommand[5]).intValue());
+                doCommand(doCommand.commandObj,doCommand.commandVector,doCommand.metaFlags);
                 synchronized(commandQue)
                 {
 	                if(commandQue.size()>0)
 	                {
-	                	Object O=commandQue.elementAt(0,1);
-	                	Double D=Double.valueOf(calculateTickDelay(O,(Vector)doCommand[1],0.0));
-	                	if(commandQue.size()>0) commandQue.setElementAt(0,3,D);
+	                	QMCommand cmd = commandQue.getFirst();
+	                	Object O=cmd.commandObj;
+	                	cmd.tickDelay = calculateTickDelay(O,cmd.commandVector,0.0);
 	                }
 	                else
 	                	return false;
@@ -1326,26 +1317,30 @@ public class StdMOB implements MOB
                 }
             }
 
+            QMCommand cmd=null;
             synchronized(commandQue)
             {
                 if(commandQue.size()==0) return false;
-                Object[] ROW=commandQue.elementsAt(0);
-                if(System.currentTimeMillis()<((long[])ROW[3])[0])
+                cmd=commandQue.getFirst();
+                if(System.currentTimeMillis()<cmd.nextCheck)
                     return false;
-                double diff=actions()-((Double)ROW[2]).doubleValue();
-                Object O=ROW[0];
-                Vector commands=(Vector)ROW[1];
-                ((long[])ROW[3])[0]=((long[])ROW[3])[0]+1000;
-                ((int[])ROW[4])[0]+=1;
-                int secondsElapsed=((int[])ROW[4])[0];
-                int metaFlags=((Integer)ROW[5]).intValue();
+            }
+            if(cmd != null)
+            {
+                double diff=actions()-cmd.tickDelay;
+                Object O=cmd.commandObj;
+                Vector commands=(Vector)cmd.commandVector;
+                cmd.nextCheck=cmd.nextCheck+1000;
+                cmd.seconds+=1;
+                int secondsElapsed=cmd.seconds;
+                int metaFlags=cmd.metaFlags;
                 try
                 {
 	                if(O instanceof Command)
 	                {
 	                    if(!((Command)O).preExecute(this,commands,metaFlags,secondsElapsed,-diff))
 	                    {
-	                        commandQue.removeElementsAt(0);
+	                        commandQue.remove(cmd);
 	                        return true;
 	                    }
 	                }
@@ -1354,7 +1349,7 @@ public class StdMOB implements MOB
 	                {
 	                    if(!CMLib.english().preEvoke(this,commands,secondsElapsed,-diff))
 	                    {
-	                        commandQue.removeElementsAt(0);
+	                        commandQue.remove(cmd);
 	                        return true;
 	                    }
 	                }
@@ -1437,11 +1432,14 @@ public class StdMOB implements MOB
         else
         synchronized(commandQue)
         {
-            long[] next=new long[1];
-            next[0]=System.currentTimeMillis()-1;
-            int[] seconds=new int[1];
-            seconds[0]=-1;
-            commandQue.insertElementAt(0,O,commands,Double.valueOf(tickDelay),next,seconds,Integer.valueOf(metaFlags));
+        	QMCommand cmd = new QMCommand();
+        	cmd.nextCheck=System.currentTimeMillis()-1;
+        	cmd.seconds=-1;
+        	cmd.tickDelay=tickDelay;
+        	cmd.metaFlags=metaFlags;
+        	cmd.commandObj=O;
+        	cmd.commandVector=commands;
+            commandQue.addFirst(cmd);
         }
         dequeCommand();
     }
@@ -1458,15 +1456,18 @@ public class StdMOB implements MOB
         else
         synchronized(commandQue)
         {
-            long[] next=new long[1];
-            next[0]=System.currentTimeMillis()-1;
-            int[] seconds=new int[1];
-            seconds[0]=-1;
-            commandQue.addElement(O,commands,Double.valueOf(tickDelay),next,seconds,Integer.valueOf(metaFlags));
+        	QMCommand cmd = new QMCommand();
+        	cmd.nextCheck=System.currentTimeMillis()-1;
+        	cmd.seconds=-1;
+        	cmd.tickDelay=tickDelay;
+        	cmd.metaFlags=metaFlags;
+        	cmd.commandObj=O;
+        	cmd.commandVector=commands;
+            commandQue.addLast(cmd);
         }
         dequeCommand();
 	}
-
+	
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((getMyDeity()!=null)&&(!getMyDeity().okMessage(this,msg)))
@@ -1515,7 +1516,7 @@ public class StdMOB implements MOB
         }
 
         Faction.FactionData factionData=null;
-        for(Enumeration e=DVector.s_enum(factions,false);e.hasMoreElements();)
+        for(Enumeration e=factions.elements();e.hasMoreElements();)
         {
         	factionData=(Faction.FactionData)e.nextElement();
         	if(!factionData.getFaction().okMessage(myHost, msg))
@@ -2491,7 +2492,7 @@ public class StdMOB implements MOB
 		}
 
         Faction.FactionData factionData=null;
-        for(Enumeration e=DVector.s_enum(factions,false);e.hasMoreElements();)
+        for(Enumeration e=factions.elements();e.hasMoreElements();)
         {
         	factionData=(Faction.FactionData)e.nextElement();
         	factionData.getFaction().executeMsg(myHost, msg);
@@ -2641,7 +2642,7 @@ public class StdMOB implements MOB
             Tickable T=null;
             int c=0;
             Enumeration e=null;
-            for(e=DVector.s_enum(affects);e.hasMoreElements();c++)
+            for(e=affects.elements();e.hasMoreElements();c++)
 			{
 				T=(Tickable)e.nextElement();
 				tickStatus=Tickable.STATUS_AFFECT+(c++);
@@ -2652,7 +2653,7 @@ public class StdMOB implements MOB
             manaConsumeCounter=CMLib.commands().tickManaConsumption(this,manaConsumeCounter);
 
             c=0;
-            for(e=DVector.s_enum(behaviors);e.hasMoreElements();c++)
+            for(e=behaviors.elements();e.hasMoreElements();c++)
             {
 				T=(Tickable)e.nextElement();
 				tickStatus=Tickable.STATUS_BEHAVIOR+(c++);
@@ -2660,7 +2661,7 @@ public class StdMOB implements MOB
 			}
 
             c=0;
-            for(e=DVector.s_enum(scripts);e.hasMoreElements();c++)
+            for(e=scripts.elements();e.hasMoreElements();c++)
             {
                 T=(Tickable)e.nextElement();
                 tickStatus=Tickable.STATUS_SCRIPT+(c++);
@@ -2670,26 +2671,29 @@ public class StdMOB implements MOB
             e=null;
             
             Faction.FactionData factionData=null;
-            for(e=DVector.s_enum(factions,false);e.hasMoreElements();)
+            if(isMonster)
             {
-                factionData=(Faction.FactionData)e.nextElement();
-                if(isMonster&&factionData.requiresUpdating())
-                {
-                	String factionID = factionData.getFaction().factionID();
-                    Faction F=CMLib.factions().getFaction(factionID);
-                    if(F!=null)
-                    {
-                        Faction.FactionData newFactionData=F.makeFactionData(this);
-                        newFactionData.setValue(factionData.value());
-                        factions.put(factionID,newFactionData);
-                        factionData=newFactionData;
-                    }
-                    else
-                        removeFaction(factionID);
-                }
+	            for(e=factions.elements();e.hasMoreElements();)
+	            {
+	                factionData=(Faction.FactionData)e.nextElement();
+	                if(factionData.requiresUpdating())
+	                {
+	                	String factionID = factionData.getFaction().factionID();
+	                    Faction F=CMLib.factions().getFaction(factionID);
+	                    if(F!=null)
+	                    {
+	                    	int oldValue = factionData.value();
+	                    	F.updateFactionData(this, factionData);
+	                    	factionData.setValue(oldValue);
+	                    }
+	                    else
+	                        removeFaction(factionID);
+	                }
+	            }
             }
+            
             c=0;
-            for(e=DVector.s_enum(factions,false);e.hasMoreElements();)
+            for(e=factions.elements();e.hasMoreElements();)
             {
                 tickStatus=Tickable.STATUS_OTHER+(c++);
             	((Faction.FactionData)e.nextElement()).tick(ticking, tickID);
@@ -2702,42 +2706,16 @@ public class StdMOB implements MOB
 			tickStatus=Tickable.STATUS_RACE;
 			charStats().getMyRace().tick(ticking,tickID);
 			tickStatus=Tickable.STATUS_END;
-			synchronized(tattoos)
-			{
-				try
+			
+			for(Tattoo tattoo: tattoos)
+				if((tattoo!=null)
+				&&(tattoo.tickDown>0))
 				{
-					String tattoo=null;
-					int spaceDex=0;
-					for(int t=0;t<numTattoos();t++)
-					{
-						tattoo=fetchTattoo(t);
-						if((tattoo!=null)
-						&&(tattoo.length()>0)
-						&&(Character.isDigit(tattoo.charAt(0)))
-						&&(tattoo.indexOf(' ')>0))
-						{
-							spaceDex=tattoo.indexOf(' ');
-							if(CMath.isNumber(tattoo.substring(0,spaceDex)))
-							{
-								String tat=tattoo.substring(spaceDex+1).trim();
-								int timeDown=CMath.s_int(tattoo.substring(0,spaceDex));
-								if(timeDown==1)
-								{
-									tattoos.removeElementAt(t);
-									t--;
-								}
-								else
-									tattoos.setElementAt((timeDown-1)+" "+tat,t);
-							}
-						}
-					}
+					if(tattoo.tickDown==1)
+						delTattoo(tattoo);
+					else
+						tattoo.tickDown--;
 				}
-				catch(Exception ex)
-				{
-					Log.errOut("StdMOB","Ticking tattoos.");
-					Log.errOut("StdMOB",ex);
-				}
-			}
 		}
 
 		if(lastTickedDateTime>=0) lastTickedDateTime=System.currentTimeMillis();
@@ -2770,12 +2748,23 @@ public class StdMOB implements MOB
 	public void addInventory(Item item)
 	{
 		item.setOwner(this);
-		inventory.addElement(item);
+		synchronized(invSync)
+		{
+			Vector<Item> newInventory=(Vector<Item>)inventory.clone();
+			newInventory.addElement(item);
+			inventory=newInventory;
+		}
 		item.recoverEnvStats();
 	}
+	
 	public void delInventory(Item item)
 	{
-		inventory.removeElement(item);
+		synchronized(invSync)
+		{
+			Vector<Item> newInventory=(Vector<Item>)inventory.clone();
+			newInventory.removeElement(item);
+			inventory=newInventory;
+		}
 		item.recoverEnvStats();
 	}
 	public int inventorySize()
@@ -2800,7 +2789,7 @@ public class StdMOB implements MOB
 	    Vector inv=inventory;
 	    if(!allowCoins)
 	    {
-	        inv=(Vector)inventory.clone();
+	        inv=(Vector)inv.clone();
 	        for(int v=inv.size()-1;v>=0;v--)
 	            if(inv.elementAt(v) instanceof Coins)
 	                inv.removeElementAt(v);
@@ -2822,7 +2811,9 @@ public class StdMOB implements MOB
 	public Item fetchInventory(Item goodLocation, String itemName){ return fetchFromInventory(goodLocation,itemName,Wearable.FILTER_ANY,true,true);}
 	public Item fetchCarried(Item goodLocation, String itemName){ return fetchFromInventory(goodLocation,itemName,Wearable.FILTER_UNWORNONLY,true,true);}
 	public Item fetchWornItem(String itemName){ return fetchFromInventory(null,itemName,Wearable.FILTER_WORNONLY,true,true);}
-	public Vector fetchInventories(String itemName){ 
+	
+	public Vector fetchInventories(String itemName)
+	{ 
         Vector V=CMLib.english().fetchEnvironmentals(inventory,itemName,true);
         if((V!=null)&&(V.size()>0)) return V;
         V=CMLib.english().fetchEnvironmentals(inventory,itemName,false);
@@ -2834,7 +2825,8 @@ public class StdMOB implements MOB
 	{
 		if(follower!=null)
 		{
-			if(followers==null) followers=new DVector(2);
+			if(followers==null) 
+				followers=new DVector(2);
 			if(!followers.contains(follower))
 				followers.addElement(follower,Integer.valueOf(order));
 			else
@@ -2848,7 +2840,9 @@ public class StdMOB implements MOB
 
 	public void delFollower(MOB follower)
 	{
-		if((follower!=null)&&(followers!=null)&&(followers.contains(follower)))
+		if((follower!=null)
+		&&(followers!=null)
+		&&(followers.contains(follower)))
 		{
 			followers.removeElement(follower);
 			if(followers.size()==0) followers=null;
@@ -2856,23 +2850,27 @@ public class StdMOB implements MOB
 	}
 	public int numFollowers()
 	{
-		if(followers==null) return 0;
+		if(followers==null) 
+			return 0;
 		return followers.size();
 	}
 	public int fetchFollowerOrder(MOB thisOne)
 	{
 		try
 		{
-			if(followers==null) return -1;
+			if(followers==null) 
+				return -1;
 			int x=followers.indexOf(thisOne);
-			if(x>=0) return ((Integer)followers.elementAt(x,2)).intValue();
+			if(x>=0) 
+				return ((Integer)followers.elementAt(x,2)).intValue();
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return -1;
 	}
 	public MOB fetchFollower(String named)
 	{
-		if(followers==null) return null;
+		if(followers==null) 
+			return null;
 		MOB mob=(MOB)CMLib.english().fetchEnvironmental(followers.getDimensionVector(1),named,true);
 		if(mob==null)
 			mob=(MOB)CMLib.english().fetchEnvironmental(followers.getDimensionVector(1),named, false);
@@ -2882,7 +2880,8 @@ public class StdMOB implements MOB
 	{
 		try
 		{
-			if(followers==null) return null;
+			if(followers==null) 
+				return null;
 			return (MOB)followers.elementAt(index,1);
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
@@ -2890,7 +2889,8 @@ public class StdMOB implements MOB
 	}
 	public boolean isFollowedBy(MOB thisOne)
 	{
-		if(followers==null) return false;
+		if(followers==null) 
+			return false;
 		if(followers.contains(thisOne))
 			return true;
 		return false;
@@ -3026,17 +3026,21 @@ public class StdMOB implements MOB
 			if((A!=null)&&(A.ID().equals(to.ID())))
 				return;
 		}
-		abilities.addElement(to);
+		synchronized(abilitySync)
+		{
+			Vector<Ability> newAbilities=(Vector<Ability>)abilities.clone();
+			newAbilities.addElement(to);
+			abilities=newAbilities;
+		}
 	}
 	public void delAbility(Ability to)
 	{
-	    int size=abilities.size();
-		abilities.removeElement(to);
-        if(abilities.size()<size)
-        {
-            if(abilities.size()==0)
-                abilities=new Vector(1);
-        }
+		synchronized(abilitySync)
+		{
+			Vector<Ability> newAbilities=(Vector<Ability>)abilities.clone();
+			newAbilities.removeElement(to);
+			abilities=newAbilities;
+		}
 	}
 	public int numLearnedAbilities()
 	{
@@ -3093,38 +3097,54 @@ public class StdMOB implements MOB
 		if(fetchEffect(to.ID())!=null) return;
 		to.makeNonUninvokable();
 		to.makeLongLasting();
-		affects.addElement(to);
-		to.setAffectedOne(this);
+		synchronized(affectSync)
+		{
+			Vector<Ability> newAffects=(Vector<Ability>)affects.clone();
+			newAffects.addElement(to);
+			to.setAffectedOne(this);
+			affects=newAffects;
+		}
 	}
 	public void addPriorityEffect(Ability to)
 	{
 		if(to==null) return;
 		if(fetchEffect(to.ID())!=null) return;
-		if(affects.size()==0)
-			affects.addElement(to);
-		else
-			affects.insertElementAt(to,0);
-		to.setAffectedOne(this);
+		synchronized(affectSync)
+		{
+			Vector<Ability> newAffects=(Vector<Ability>)affects.clone();
+			if(newAffects.size()==0)
+				newAffects.addElement(to);
+			else
+				newAffects.insertElementAt(to,0);
+			affects=newAffects;
+			to.setAffectedOne(this);
+		}
 	}
 	public void addEffect(Ability to)
 	{
 		if(to==null) return;
-		if(fetchEffect(to.ID())!=null) return;
-		affects.addElement(to);
-		to.setAffectedOne(this);
+		if(fetchEffect(to.ID())!=null) 
+			return;
+		synchronized(affectSync)
+		{
+			Vector<Ability> newAffects=(Vector<Ability>)affects.clone();
+			newAffects.addElement(to);
+			affects=newAffects;
+			to.setAffectedOne(this);
+		}
 	}
 	public void delEffect(Ability to)
 	{
-		int size=affects.size();
-		affects.removeElement(to);
-		if(affects.size()<size)
+		synchronized(affectSync)
 		{
-			to.setAffectedOne(null);
-            if(affects.size()==0)
-                affects=new Vector(1);
-        }
+			Vector<Ability> newAffects=(Vector<Ability>)affects.clone();
+			if(newAffects.removeElement(to))
+			{
+				to.setAffectedOne(null);
+				affects=newAffects;
+			}
+		}
 	}
-    protected Vector cloneEffects(){return (Vector)((affects.size()==0)?null:affects.clone());}
 
 	public int numAllEffects()
 	{
@@ -3165,18 +3185,22 @@ public class StdMOB implements MOB
 	{
 		if(to==null) return;
 		if(fetchBehavior(to.ID())!=null) return;
-		to.startBehavior(this);
-		behaviors.addElement(to);
+		synchronized(behaviorSync)
+		{
+			Vector<Behavior> newBehaviors=(Vector<Behavior>)behaviors.clone();
+			to.startBehavior(this);
+			newBehaviors.addElement(to);
+			behaviors=newBehaviors;
+		}
 	}
 	public void delBehavior(Behavior to)
 	{
-	    int size=behaviors.size();
-		behaviors.removeElement(to);
-        if(behaviors.size()<size)
-        {
-            if(behaviors.size()==0)
-                behaviors=new Vector(1);
-        }
+		synchronized(behaviorSync)
+		{
+			Vector<Behavior> newBehaviors=(Vector<Behavior>)behaviors.clone();
+			if(newBehaviors.removeElement(to))
+				behaviors=newBehaviors;
+		}
 	}
 	public int numBehaviors()
 	{
@@ -3220,26 +3244,40 @@ public class StdMOB implements MOB
 	/** Manipulation of the expertise list */
 	public void addExpertise(String of)
 	{
-		if(expertises==null) expertises=new Vector();
-		if(fetchExpertise(of)==null) {
-			expertises.addElement(of);
+		if(fetchExpertise(of)!=null)
+			return;
+		synchronized(experSync)
+		{
+			Vector<String> newExpertises=(Vector<String>)expertises.clone();
+			newExpertises.add(of);
+			expertises=newExpertises;
 			clearExpertiseCache();
 		}
 	}
 	public void delExpertise(String of)
 	{
 		of=fetchExpertise(of);
-		if(of!=null){
-		    expertises.removeElement(of);
-			clearExpertiseCache();
+		if(of!=null)
+		{
+			synchronized(experSync)
+			{
+				Vector<String> newExpertises=(Vector<String>)expertises.clone();
+				if(newExpertises.remove(of))
+				{
+					expertises=newExpertises;
+					clearExpertiseCache();
+				}
+			}
 		}
 	}
-	public int numExpertises(){return (expertises==null)?0:expertises.size();}
+	public int numExpertises(){return expertises.size();}
+	
 	public Enumeration uniqueExpertises()
 	{
 		try{
-			if((expertises==null)||(expertises.size()==0)) return empty.elements();
-			Vector exCopy=(Vector)expertises.clone();
+			if(expertises.size()==0) 
+				return expertises.elements();
+			Vector<String> exCopy=(Vector<String>)expertises.clone();
 			String exper=null, experRoot=null, expTest=null;
 			int num=-1,end=-1,num2=-1;
 			HashSet remove=new HashSet();
@@ -3327,8 +3365,8 @@ public class StdMOB implements MOB
     public void addScript(ScriptingEngine S)
     {
         if(S==null) return;
-        if(scripts==null) scripts=new Vector(1);
-        if(!scripts.contains(S)) {
+        if(!scripts.contains(S)) 
+        {
             ScriptingEngine S2=null;
             for(int s=0;s<scripts.size();s++)
             {
@@ -3336,79 +3374,67 @@ public class StdMOB implements MOB
                 if((S2!=null)&&(S2.getScript().equalsIgnoreCase(S.getScript())))
                     return;
             }
-            scripts.addElement(S);
+            synchronized(scriptSync)
+            {
+            	Vector<ScriptingEngine> newScripts=(Vector<ScriptingEngine>)scripts.clone();
+    	        newScripts.addElement(S);
+    	        scripts=newScripts;
+            }
         }
     }
     public void delScript(ScriptingEngine S)
     {
-        if(scripts!=null)
+        if(S==null) return;
+        synchronized(scriptSync)
         {
-            if(S==null) return;
-            scripts.removeElement(S);
-            if(scripts.size()==0)
-                scripts=new Vector(1);
+        	Vector<ScriptingEngine> newScripts=(Vector<ScriptingEngine>)scripts.clone();
+        	newScripts.removeElement(S);
+	        scripts=newScripts;
         }
     }
     public int numScripts(){return (scripts==null)?0:scripts.size();}
     public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
 
 	/** Manipulation of the tatoo list */
-	public void addTattoo(String of)
+	public void addTattoo(Tattoo of)
 	{
-		if(tattoos==null) tattoos=new Vector();
-		if(of==null) return;
-		of=of.toUpperCase().trim();
-		if(of.length()==0) return;
-		if((fetchTattoo(of)==null)&&(of!=null))
-			tattoos.addElement(of);
-	}
-	public void delTattoo(String of)
-	{
-		if((tattoos==null)||(of==null))
+		if((of==null)
+		||(of.tattooName==null)
+		||(of.tattooName.length()==0)
+		||findTattoo(of.tattooName)!=null)
 			return;
-		synchronized(tattoos)
+		synchronized(tattooSync)
 		{
-	        of=of.toUpperCase().trim();
-			of=fetchTattoo(of);
-			if(of!=null) tattoos.removeElement(of);
+			Vector<Tattoo> newTattoos=(Vector<Tattoo>)tattoos.clone();
+			newTattoos.addElement(of);
+			tattoos=newTattoos;
 		}
 	}
-	public int numTattoos(){return (tattoos==null)?0:tattoos.size();}
-	public String fetchTattoo(int x){try{return (String)tattoos.elementAt(x);}catch(Exception e){} return null;}
-	public String fetchTattoo(String of)
+	public void delTattoo(Tattoo of)
 	{
-
-		try{
-			if((of==null)||(of.length()==0)) return null;
-			int x=0;
-			while(Character.isDigit(of.charAt(x))) x++;
-			if(x<of.length())
-			{
-				if(of.charAt(x)==' ')
-					x++;
-				else
-					x=0;
-			}
-			of=of.substring(x).trim().toUpperCase();
-			String s=null;
-			for(int i=0;i<numTattoos();i++)
-			{
-				s=fetchTattoo(i);
-				if((s!=null)&&(s.endsWith(of)))
-				{
-					x=0;
-					while(Character.isDigit(s.charAt(x))) x++;
-					if(x<s.length())
-					{
-						if(s.charAt(x)==' ')
-							x++;
-						else
-							x=0;
-					}
-					if(s.substring(x).trim().equals(of)) return s;
-				}
-			}
-		}catch(Exception e){}
+		if((of==null)
+		||(of.tattooName==null)
+		||(of.tattooName.length()==0))
+			return;
+		Tattoo tat = findTattoo(of.tattooName); 
+		if(tat==null)
+			return;
+		synchronized(tattooSync)
+		{
+			Vector<Tattoo> newTattoos=(Vector<Tattoo>)tattoos.clone();
+			newTattoos.remove(tat);
+			tattoos=newTattoos;
+		}
+	}
+	public Enumeration<Tattoo> tattoos() { return tattoos.elements();}
+	public Tattoo findTattoo(String of)
+	{
+		if((of==null)||(of.length()==0)) 
+			return null;
+		of=of.toUpperCase().trim();
+		for(Tattoo s : tattoos)
+			if(s.tattooName.equals(of))
+				return s;
 		return null;
 	}
 
@@ -3424,7 +3450,12 @@ public class StdMOB implements MOB
         if(data==null)
         {
             data=F.makeFactionData(this);
-            factions.put(which,data);
+            synchronized(factionSync)
+            {
+            	Hashtable<String,Faction.FactionData> newFactions = (Hashtable<String,Faction.FactionData>)factions.clone();
+            	newFactions.put(which,data);
+	            factions = newFactions;
+            }
         }
         data.setValue(start);
     }
@@ -3440,7 +3471,7 @@ public class StdMOB implements MOB
     }
     public Enumeration<String> fetchFactions()
     {
-        return ((Hashtable<String,Faction.FactionData>)factions.clone()).keys();
+        return factions.keys();
     }
     public int fetchFaction(String which)
     {
@@ -3450,7 +3481,12 @@ public class StdMOB implements MOB
     }
     public void removeFaction(String which)
     {
-        factions.remove(which.toUpperCase());
+    	synchronized(factionSync)
+    	{
+	    	Hashtable<String,Faction.FactionData> newFactions = (Hashtable<String,Faction.FactionData>)factions.clone();
+	    	newFactions.remove(which.toUpperCase());
+	        factions = newFactions;
+    	}
     }
     public void copyFactions(MOB source)
     {
@@ -3638,8 +3674,10 @@ public class StdMOB implements MOB
 		else
 		if(env instanceof Ability)
 		{
-			if(abilities.contains(env)) return true;
-			if(affects.contains(env)) return true;
+			if(abilities.contains(env)) 
+				return true;
+			if(affects.contains(env)) 
+				return true;
 			return false;
 		}
 		return false;

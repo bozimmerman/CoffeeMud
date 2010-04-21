@@ -83,6 +83,8 @@ public class DBInterface implements DatabaseEngine
     public boolean shutdown(){ return true;}
     public void propertiesLoaded(){}
     public ThreadEngine.SupportThread getSupportThread() { return null;}
+    public MOB.Tattoo parseTattoo(String tattoo)
+    {return MOBloader.parseTattoo(tattoo);}
     
 	public void vassals(MOB mob, String liegeID)
 	{MOBloader.vassals(mob,liegeID);}

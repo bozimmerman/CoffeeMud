@@ -59,7 +59,14 @@ public class Prop_Tattoo extends Property
 			MOB M=(MOB)affected;
 			Vector V=CMParms.parseSemicolons(text,true);
 			for(int v=0;v<V.size();v++)
-				M.addTattoo((String)V.elementAt(v));
+			{
+				String s=(String)V.elementAt(v);
+				int x=s.indexOf(' ');
+				if((x>0)&&(CMath.isNumber(s.substring(0,x))))
+					M.addTattoo(new MOB.Tattoo(s.substring(x+1).trim(),CMath.s_int(s.substring(0,x))));
+				else
+					M.addTattoo(new MOB.Tattoo(s));
+			}
 		}
 		savable=false;
 	}

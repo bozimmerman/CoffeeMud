@@ -36,7 +36,7 @@ public class Assassin extends GenMob
 	public Assassin()
 	{
 		super();
-		Username="an assassin";
+		username="an assassin";
 		setDescription("He`s all dressed in black, and has eyes as cold as ice.");
 		setDisplayText("An assassin stands here.");
 		Race R=CMClass.getRace("Human");

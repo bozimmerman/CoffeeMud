@@ -37,7 +37,7 @@ public class GenRideable extends StdRideable
 	public GenRideable()
 	{
 		super();
-		Username="a generic horse";
+		username="a generic horse";
 		setDescription("");
 		setDisplayText("A generic horse stands here.");
 		baseEnvStats().setAbility(11); // his only off-default

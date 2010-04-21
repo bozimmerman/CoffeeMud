@@ -39,7 +39,7 @@ public class Minotaur extends StdMOB
 		super();
 		Random randomizer = new Random(System.currentTimeMillis());
 
-		Username="a minotaur";
+		username="a minotaur";
 		setDescription("A tall humanoid with the head of a bull, and the body of a very muscular man.  It\\`s covered in red fur.");
 		setDisplayText("A minotaur glares at you.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);

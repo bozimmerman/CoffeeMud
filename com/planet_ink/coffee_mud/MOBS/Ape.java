@@ -36,7 +36,7 @@ public class Ape extends StdMOB
 	public Ape()
 	{
 		super();
-		Username="an ape";
+		username="an ape";
 		setDescription("The ape is big, the ape is black, the ape means business..");
 		setDisplayText("An ape sits here watching you.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);

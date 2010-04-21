@@ -36,7 +36,7 @@ public class Bull extends StdMOB
 	public Bull()
 	{
 		super();
-		Username="a bull";
+		username="a bull";
 		setDescription("A large lumbering beast that looks too slow to get out of your way.");
 		setDisplayText("An old bull doesn`t look happy to see you.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);

@@ -95,6 +95,18 @@ public interface Faction extends CMCommon, MsgListener
     public FactionData makeFactionData(MOB mob);
     
     /**
+     * Updates the given FactionData object that the given mob to store his faction
+     * information in.  It will contain all the affects and behaviors, 
+     * and other information necessary to maintain a relationship between
+     * the given mob and this faction.
+     * Any parameters should be set on the affects or behaviors before returning them.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionData
+     * @param mob the mob to generate affects and behaviors for
+     * @param data the old faction data object
+     */
+    public void updateFactionData(MOB mob, FactionData data);
+    
+    /**
      * Checks to see if the given mob has this faction.  Same as checking if
      * mob.fetchFaction(this.factionID())!=Integer.MAX_VALUE.
      * @param mob the mob to check
@@ -1255,6 +1267,12 @@ public interface Faction extends CMCommon, MsgListener
      */
     public static interface FactionData extends MsgListener, StatsAffecting
     {
+        /**
+         * Cleans out the internal data structures of this faction
+         * to denote that a new context is entered.  Is called by the constructor.
+         * @param Faction the faction to which this data belongs.
+         */
+        public void resetFactionData(Faction F);
         /**
          * Returns true if this object requires updating by the parent
          * faction for some reason.

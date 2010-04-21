@@ -37,7 +37,7 @@ public class Gnoll extends StdMOB
 	public Gnoll()
 	{
 		super();
-		Username="a Gnoll";
+		username="a Gnoll";
 		setDescription("a 7 foot tall creature with a body resembling a large human and the head of a hyena.");
 		setDisplayText("A nasty Gnoll stands here.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);

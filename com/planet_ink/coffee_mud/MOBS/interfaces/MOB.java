@@ -77,8 +77,6 @@ public interface MOB extends Environmental, Rider, DBIdentifiable
 	public boolean mayPhysicallyAttack(MOB mob);
 	public long peaceTime();
 	
-	public void resetVectors();
-
 	/** Primary mob communication */
 	public void tell(MOB source, Environmental target, Environmental tool, String msg);
 	public void tell(String msg);
@@ -213,11 +211,10 @@ public interface MOB extends Environmental, Rider, DBIdentifiable
 	public String fetchExpertise(String of);
     
 	/** Manipulation of the tatoo list */
-	public void addTattoo(String of);
-	public void delTattoo(String of);
-	public int numTattoos();
-	public String fetchTattoo(int x);
-	public String fetchTattoo(String of);
+	public void addTattoo(Tattoo of);
+	public void delTattoo(Tattoo of);
+	public Enumeration<Tattoo> tattoos();
+	public Tattoo findTattoo(String of);
 
     /** Manipulation of the factions list */
     public void addFaction(String of, int start);
@@ -230,6 +227,25 @@ public interface MOB extends Environmental, Rider, DBIdentifiable
     public void removeFaction(String which);
     public void copyFactions(MOB source);
     
+    public static class Tattoo
+    {
+    	public int tickDown=0;
+    	public String tattooName;
+    	public Tattoo(String name) { tattooName = name.toUpperCase().trim(); }
+    	public Tattoo(String name, int down) { tattooName = name.toUpperCase().trim(); tickDown=down;}
+    	public String toString() { return ((tickDown>0)?(tickDown+" "):"")+tattooName; }
+    }
+    
+	public static class QMCommand
+	{
+		public Object 	commandObj = null;
+		public Vector 	commandVector = null;
+		public double 	tickDelay = 0.0;
+		public long 	nextCheck=System.currentTimeMillis()-1;
+		public int 		seconds=-1;
+		public int		metaFlags=0;
+	}
+
 	public static final int ATT_AUTOGOLD=1;
 	public static final int ATT_AUTOLOOT=2;
 	public static final int ATT_AUTOEXITS=4;

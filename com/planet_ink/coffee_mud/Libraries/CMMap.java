@@ -1365,7 +1365,6 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		room.clearSky();
 		CMLib.threads().clearDebri(room,0);
-		room.resetVectors();
 	}
 
 
@@ -1736,12 +1735,6 @@ public class CMMap extends StdLibrary implements WorldMap
             Room R=null;
             Vector roomsToGo=new Vector();
             CMMsg expireMsg=CMClass.getMsg(expireM,R,null,CMMsg.MSG_EXPIRE,null);
-            boolean vResetTime=false;
-            if((System.currentTimeMillis()-lastVReset)>(12 * 60 * 60 * 1000))
-            {
-                vResetTime=true;
-                lastVReset=System.currentTimeMillis();
-            }
             for(Enumeration r=rooms();r.hasMoreElements();)
             {
                 R=(Room)r.nextElement();
@@ -1773,12 +1766,7 @@ public class CMMap extends StdLibrary implements WorldMap
                         &&(M.expirationDate()!=0)
                         &&(currentTime>M.expirationDate()))
                             stuffToGo.add(M);
-                        if(vResetTime && (M!=null) && (M.isMonster()))
-                            M.resetVectors();
                     }
-                    
-                    if(R.numPCInhabitants()==0)
-                        R.resetVectors();
                 }
                 if(stuffToGo.size()>0)
                 {
@@ -1796,8 +1784,6 @@ public class CMMap extends StdLibrary implements WorldMap
                     }
                     stuffToGo.clear();
                 }
-                if(vResetTime&&(R.numPCInhabitants()==0))
-                    R.resetVectors();
             }
             for(int r=0;r<roomsToGo.size();r++)
             {

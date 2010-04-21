@@ -39,7 +39,7 @@ public class HeavenlyServent extends StdMOB
 
 		Random randomizer = new Random(System.currentTimeMillis());
 
-		Username="an archon servant";
+		username="an archon servant";
 		setDescription("An angelic form in gowns of white, with golden hair, and an ever present smile.");
 		setDisplayText("A servant of the Archons is running errands.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
