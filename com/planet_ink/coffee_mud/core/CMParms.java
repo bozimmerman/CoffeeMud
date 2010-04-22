@@ -1417,14 +1417,6 @@ public class CMParms
             V.addElement(O[s]);
         return V;
     }
-    public static Vector makeVector(Enumeration e)
-    {
-        Vector V=new Vector();
-        if(e!=null)
-        for(;e.hasMoreElements();)
-            V.addElement(e.nextElement());
-        return V;
-    }
     public static Vector makeVector(String[] O)
     {
         Vector V=new Vector(O!=null?O.length:0);
@@ -1461,6 +1453,32 @@ public class CMParms
     public static HashSet makeHashSet(Enumeration E)
     {
         HashSet V=new HashSet();
+        if(E!=null)
+        for(;E.hasMoreElements();)
+            V.add(E.nextElement());
+        return V;
+    }
+    public static HashSet makeHashSet(Iterator E)
+    {
+        HashSet V=new HashSet();
+        if(E!=null)
+        for(;E.hasNext();)
+            V.add(E.next());
+        return V;
+    }
+    
+    public static Vector makeVector(Iterator E)
+    {
+    	Vector V=new Vector();
+        if(E!=null)
+        for(;E.hasNext();)
+            V.add(E.next());
+        return V;
+    }
+    
+    public static Vector makeVector(Enumeration E)
+    {
+    	Vector V=new Vector();
         if(E!=null)
         for(;E.hasMoreElements();)
             V.add(E.nextElement());
@@ -1521,6 +1539,20 @@ public class CMParms
         if(from!=null)
         for(int i=0;i<from.size();i++)
             to.add(from.get(i));
+    }
+    
+	public static void addToVector(Iterator from, List to)
+    {
+        if(from!=null)
+        for(;from.hasNext();)
+            to.add(from.next());
+    }
+    
+	public static void addToVector(Enumeration from, List to)
+    {
+        if(from!=null)
+        for(;from.hasMoreElements();)
+            to.add(from.nextElement());
     }
     
 	public static void delFromVector(List del, List from)

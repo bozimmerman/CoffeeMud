@@ -15,6 +15,8 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 /* 
@@ -94,7 +96,7 @@ public interface CoffeeShop extends CMCommon
      * Will only return one of each item, even if multiple are available.
      * @return a Vector of objects for sale.
      */
-    public Vector getStoreInventory();
+    public Iterator<Environmental> getStoreInventory();
     
     /**
      * Returns a Vector of all the Environmental objects this shop has for sale
@@ -103,7 +105,7 @@ public interface CoffeeShop extends CMCommon
      * @param srchStr the item to hunt for.
      * @return a Vector of objects for sale.
      */
-    public Vector getStoreInventory(String srchStr);
+    public Iterator<Environmental> getStoreInventory(String srchStr);
     
     /**
      * Returns a Vector of all the Environmental objects this shop has in its base
@@ -113,7 +115,7 @@ public interface CoffeeShop extends CMCommon
      * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#DEAL_INVENTORYONLY
      * @return a Vector of objects in base inventory
      */
-    public Vector getBaseInventory();
+    public Iterator<Environmental> getBaseInventory();
     
     /**
      * Clears both the base and stock/store inventories.
@@ -240,7 +242,7 @@ public interface CoffeeShop extends CMCommon
      * the shopkeeper.
      * @param shopItems the items for inventory
      */
-    public void resubmitInventory(Vector shopItems);
+    public void resubmitInventory(List<Environmental> shopItems);
     
     /**
      * Initializes this shop object with its host ShopKeeper

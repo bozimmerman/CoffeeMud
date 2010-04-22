@@ -308,9 +308,11 @@ public class List extends StdCommand
 		ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(E);
 		if(SK!=null)
 		{
-			Vector V=SK.getShop().getStoreInventory();
-			for(int v=0;v<V.size();v++)
-				addScripts(DV,R,SK,M,I,(Environmental)V.elementAt(v));
+			for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+			{
+				Environmental E2=(Environmental)i.next();
+				addScripts(DV,R,SK,M,I,E2);
+			}
 		}
 	}
 	

@@ -125,12 +125,12 @@ public class Thief_IdentifyBombs extends ThiefSkill
 					return E.name()+" is carrying a bomb.";
 				}
 			}
-			if(CMLib.coffeeShops().getShopKeeper(E)!=null)
+			ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(E);
+			if(SK!=null)
 			{
-				Vector V=CMLib.coffeeShops().getShopKeeper(E).getShop().getStoreInventory();
-				for(int v=0;v<V.size();v++)
-				{
-					Environmental E2=(Environmental)V.elementAt(v);
+	            for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+	            {
+	                Environmental E2=(Environmental)i.next();
 					if(E2 instanceof Item)
 						if(trapCheck(E2).length()>0)
 						{

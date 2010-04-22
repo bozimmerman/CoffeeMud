@@ -400,7 +400,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			case CMMsg.TYP_LIST:
 			{
 				super.executeMsg(myHost,msg);
-                Vector inventory=getShop().getStoreInventory();
+                Vector inventory=CMParms.makeVector(getShop().getStoreInventory());
 				String forMask=CMLib.coffeeShops().getListForMask(msg.targetMessage());
                 String s=CMLib.coffeeShops().getListInventory(merchantM,mob,inventory,0,this,forMask);
                 if(s.length()>0)

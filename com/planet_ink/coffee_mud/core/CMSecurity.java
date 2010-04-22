@@ -163,14 +163,13 @@ public class CMSecurity
         if((mob.playerStats()==null)
         ||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
             return DIRSV;
-        Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
-        CMParms.addToVector(mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()),V);
-        if(V.size()==0) return DIRSV;
         boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
         String set=null;
-        for(int v=0;v<V.size();v++)
-        {
-            set=((String)V.elementAt(v)).toUpperCase();
+		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
+				 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
+		for(Iterator g=DVector.m_iter(allGroups);g.hasNext();)
+		{
+			set=((String)g.next()).toUpperCase();
             if(set.startsWith("FS:"))
             {
                 set=set.substring(3).trim();
@@ -281,14 +280,13 @@ public class CMSecurity
 		if((mob.playerStats()==null)
 		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
 			return false;
-        Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
-        CMParms.addToVector(mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()),V);
-        if(V.size()==0) return false;
         boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
         String set=null;
-        for(int v=0;v<V.size();v++)
-        {
-            set=((String)V.elementAt(v)).toUpperCase();
+		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
+				 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
+		for(Iterator g=DVector.m_iter(allGroups);g.hasNext();)
+		{
+			set=((String)g.next()).toUpperCase();
             if(set.startsWith("FS:"))
             {
                 set=set.substring(3).trim();
@@ -342,9 +340,6 @@ public class CMSecurity
 		if((mob.playerStats()==null)
 		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
 			return false;
-        Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
-        CMParms.addToVector(mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()),V);
-        if(V.size()==0) return false;
         path=CMFile.vfsifyFilename(path.trim()).toUpperCase();
         if(path.equals("/")||path.equals(".")) path="";
         String areaPath=("AREA "+path).trim();
@@ -352,9 +347,11 @@ public class CMSecurity
         boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
         String set=null;
         String setSlash=null;
-        for(int v=0;v<V.size();v++)
-        {
-            set=((String)V.elementAt(v)).toUpperCase();
+		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
+				 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
+		for(Iterator g=DVector.m_iter(allGroups);g.hasNext();)
+		{
+			set=((String)g.next()).toUpperCase();
             if(set.startsWith("FS:"))
                 set=set.substring(3).trim();
             else
@@ -407,17 +404,16 @@ public class CMSecurity
 		if((mob.playerStats()==null)
 		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
 			return false;
-        Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
-        CMParms.addToVector(mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()),V);
-        if(V.size()==0) return false;
         path=CMFile.vfsifyFilename(path.trim()).toUpperCase();
         if(path.equals("/")||path.equals(".")) path="";
         boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
-        String set=null;
         String setSlash=null;
-        for(int v=0;v<V.size();v++)
-        {
-            set=((String)V.elementAt(v)).toUpperCase();
+        String set=null;
+		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
+				 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
+		for(Iterator g=DVector.m_iter(allGroups);g.hasNext();)
+		{
+			set=((String)g.next()).toUpperCase();
             if(set.startsWith("FS:"))
                 set=set.substring(3).trim();
             else
@@ -505,15 +501,14 @@ public class CMSecurity
 		if((mob.playerStats()==null)
 		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
 			return false;
-		Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
-        CMParms.addToVector(mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()),V);
-		if(V.size()==0) return false;
-		
 		boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
 		
-		for(int v=0;v<V.size();v++)
+        String set=null;
+		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
+				 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
+		for(Iterator g=DVector.m_iter(allGroups);g.hasNext();)
 		{
-			String set=(String)V.elementAt(v);
+			set=(String)g.next();
 			if(set.startsWith(code)||(subop&&set.startsWith("AREA "+code)))
 			   return true;
 			HashSet H=(HashSet)i().groups.get(set);
@@ -539,15 +534,14 @@ public class CMSecurity
 		if((mob.playerStats()==null)
 		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
 			return false;
-        Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
-        CMParms.addToVector(mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()),V);
-		if(V.size()==0) return false;
-		
 		boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
 		
-		for(int v=0;v<V.size();v++)
+        String set=null;
+		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
+				 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
+		for(Iterator g=DVector.m_iter(allGroups);g.hasNext();)
 		{
-			String set=(String)V.elementAt(v);
+			set=(String)g.next();
 			if(set.equals(code)||((subop)&&(set.equals("AREA "+code))))
 			   return true;
 			HashSet H=(HashSet)i().groups.get(set);
@@ -568,13 +562,11 @@ public class CMSecurity
 		if((mob.playerStats()==null)
 		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
 			return false;
-        Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
-        CMParms.addToVector(mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()),V);
-		if(V.size()==0) return false;
-		
-		for(int v=0;v<V.size();v++)
+		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
+							 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
+		for(Iterator g=DVector.m_iter(allGroups);g.hasNext();)
 		{
-			String set=(String)V.elementAt(v);
+			String set=(String)g.next();
 			if(set.startsWith(code))
 			   return true;
 			HashSet H=(HashSet)i().groups.get(set);
@@ -593,9 +585,12 @@ public class CMSecurity
 			boolean subop=((Area)e.nextElement()).amISubOp(mob.Name());
 			if(!subop) continue;
 		
-			for(int v=0;v<V.size();v++)
+	        String set=null;
+			allGroups=new Iterator[]{mob.playerStats().getSecurityGroups().iterator(),
+					 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
+			for(Iterator g=DVector.m_iter(allGroups);g.hasNext();)
 			{
-				String set=(String)V.elementAt(v);
+				set=(String)g.next();
 				if(set.startsWith("AREA "+code))
 				   return true;
 				HashSet H=(HashSet)i().groups.get(set);
@@ -619,13 +614,12 @@ public class CMSecurity
 		if((mob.playerStats()==null)
 		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
 			return false;
-        Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
-        CMParms.addToVector(mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()),V);
-		if(V.size()==0) return false;
-		
-		for(int v=0;v<V.size();v++)
+        String set=null;
+		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
+				 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
+		for(Iterator g=DVector.m_iter(allGroups);g.hasNext();)
 		{
-			String set=(String)V.elementAt(v);
+			set=(String)g.next();
 			if(set.equals(code)) return true;
 			HashSet H=(HashSet)i().groups.get(set);
 			if(H!=null)
@@ -643,13 +637,12 @@ public class CMSecurity
 		if((mob.playerStats()==null)
 		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
 			return false;
-        Vector V=(Vector)mob.playerStats().getSecurityGroups().clone();
-        CMParms.addToVector(mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()),V);
-		if(V.size()==0) return false;
-		
-		for(int v=0;v<V.size();v++)
+        String set=null;
+		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
+				 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
+		for(Iterator g=DVector.m_iter(allGroups);g.hasNext();)
 		{
-			String set=(String)V.elementAt(v);
+			set=(String)g.next();
 			if(set.equals(code))
 			   return true;
 			HashSet H=(HashSet)i().groups.get(set);
@@ -664,9 +657,11 @@ public class CMSecurity
 			boolean subop=((Area)e.nextElement()).amISubOp(mob.Name());
 			if(!subop) continue;
 		
-			for(int v=0;v<V.size();v++)
+			allGroups=new Iterator[]{mob.playerStats().getSecurityGroups().iterator(),
+					 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
+			for(Iterator g=DVector.m_iter(allGroups);g.hasNext();)
 			{
-				String set=(String)V.elementAt(v);
+				set=(String)g.next();
 				if(set.equals("AREA "+code)) return true;
 				HashSet H=(HashSet)i().groups.get(set);
 				if(H!=null)

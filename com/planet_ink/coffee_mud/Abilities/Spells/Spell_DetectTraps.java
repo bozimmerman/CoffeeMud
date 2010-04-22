@@ -109,12 +109,12 @@ public class Spell_DetectTraps extends Spell
 				if(trapCheck(I).length()>0)
 					return E.name()+" is carrying something trapped.";
 			}
-			if(CMLib.coffeeShops().getShopKeeper(E)!=null)
+			ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(E);
+			if(SK!=null)
 			{
-				Vector V=CMLib.coffeeShops().getShopKeeper(E).getShop().getStoreInventory();
-				for(int v=0;v<V.size();v++)
+				for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 				{
-					Environmental E2=(Environmental)V.elementAt(v);
+					Environmental E2=(Environmental)i.next();
 					if(E2 instanceof Item)
 						if(trapCheck(E2).length()>0)
 							return E.name()+" has something trapped in stock.";

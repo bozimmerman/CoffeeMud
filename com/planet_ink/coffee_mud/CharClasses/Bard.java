@@ -189,21 +189,21 @@ public class Bard extends StdCharClass
                     if((M instanceof ShopKeeper)
                     &&(M.getStartRoom()==R))
                     {
-                        Vector V=((ShopKeeper)M).getShop().getBaseInventory();
                         Vector V2=new Vector();
-                        for(int i=0;i<V.size();i++)
-                        {
-                            if(V.elementAt(i) instanceof Potion)
+        				for(Iterator<Environmental> i=((ShopKeeper)M).getShop().getBaseInventory();i.hasNext();)
+        				{
+        					Environmental O=(Environmental)i.next();
+                            if(O instanceof Potion)
                             {
-                                V2.addAll(((Potion)V.elementAt(i)).getSpells());
+                                V2.addAll(((Potion)O).getSpells());
                                 for(int v=V2.size()-1;v>=0;v--)
                                     if((((Ability)V2.elementAt(v)).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_POISON)
                                         V2.removeElementAt(v);
 
 
                             }
-                            if(V.elementAt(i) instanceof Drink)
-                                V2.addAll(CMLib.flags().domainAffects((Environmental)V.elementAt(i),Ability.ACODE_POISON));
+                            if(O instanceof Drink)
+                                V2.addAll(CMLib.flags().domainAffects((Environmental)O,Ability.ACODE_POISON));
                             for(int v=0;v<V2.size();v++)
                                 pub=pub||CMath.bset(((Ability)V2.elementAt(v)).flags(),Ability.FLAG_INTOXICATING);
                         }

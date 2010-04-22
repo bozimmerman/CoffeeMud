@@ -54,12 +54,12 @@ public class MobData extends StdWebMacro
       "TIMELISTPCT","LIVECUT","TIMECUT","MAXDAYS",
       "MINDAYS","ISAUCTION","DEITYID","VARMONEY"};
     
-	public static int getShopCardinality(ShopKeeper E, Environmental O)
+	public static int getShopCardinality(ShopKeeper SK, Environmental O)
 	{
-		Vector V=E.getShop().getStoreInventory();
-		for(int i=0;i<V.size();i++)
-			if(O==(V.elementAt(i)))
-				return i;
+		int x=0;
+		for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();x++)
+			if(O==i.next())
+				return x;
 		return -1;
 	}
 
@@ -658,7 +658,8 @@ public class MobData extends StdWebMacro
 				String MATCHING=httpReq.getRequestParameter("SHP"+num);
 				String theparm=httpReq.getRequestParameter("SDATA"+num);
 				String theprice=httpReq.getRequestParameter("SPRIC"+num);
-				Vector inventory=E.getShop().getStoreInventory();
+				Vector inventory=new Vector();
+				CMParms.addToVector(E.getShop().getStoreInventory(),inventory);
 				while((MATCHING!=null)&&(theparm!=null))
 				{
 					if(CMath.isNumber(MATCHING))
@@ -721,12 +722,11 @@ public class MobData extends StdWebMacro
 			}
 			else
 			{
-				Vector V=E.getShop().getStoreInventory();
 				Vector itemClasses=new Vector();
 				Vector mobClasses=new Vector();
-				for(int b=0;b<V.size();b++)
+				for(Iterator<Environmental> i=E.getShop().getStoreInventory();i.hasNext();)
 				{
-					Environmental O=(Environmental)V.elementAt(b);
+					Environmental O=(Environmental)i.next();
 					if(O instanceof Item) itemClasses.addElement(O);
 					if(O instanceof MOB) mobClasses.addElement(O);
                     if(O!=null) CMLib.catalog().updateCatalogIntegrity(O);
@@ -746,8 +746,9 @@ public class MobData extends StdWebMacro
 				str.append("<TR><TD WIDTH=50%>");
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=SHP"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
-				if(E.getShop().getStoreInventory().contains(O))
-					str.append("<OPTION SELECTED VALUE=\""+(getShopCardinality(E,O)+1)+"\">"+O.Name()+" ("+O.ID()+")");
+				int shopIndex=getShopCardinality(E,O);
+				if(shopIndex>=0)
+					str.append("<OPTION SELECTED VALUE=\""+(shopIndex+1)+"\">"+O.Name()+" ("+O.ID()+")");
 				else
                 if(CMLib.flags().isCataloged(O))
                     str.append("<OPTION SELECTED VALUE=\"CATALOG-"+O.Name()+"\">"+O.Name()+" (Cataloged)");

@@ -342,11 +342,10 @@ public class Where extends StdCommand
 											}
 										}
 										ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
-										Vector V=(SK!=null)?SK.getShop().getStoreInventory():null;
-										if(V!=null)
-										for(int i=0;i<V.size();i++)
-										{
-											Environmental E=(Environmental)V.elementAt(i);
+										if(SK!=null)
+							            for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+							            {
+							                Environmental E=(Environmental)i.next();
                                             if((zapperMask)&&(E instanceof Item)&&(itemOnly))
                                             {
                                                 if(CMLib.masking().maskCheck(compiledZapperMask,E,true))

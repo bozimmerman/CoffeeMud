@@ -197,7 +197,6 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
 		Environmental E=null;
 		ShopKeeper SK=null;
         Vector shops=null;
-        Vector shopItems=null;
         Environmental shopItem=null;
         Vector<RoomContent> content =new Vector<RoomContent>();
 		if(R!=null)
@@ -210,10 +209,9 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
                 if(E==null) continue;
                 SK=CMLib.coffeeShops().getShopKeeper(E);
                 if(SK==null) continue;
-                shopItems=SK.getShop().getStoreInventory();
-                for(int b=0;b<shopItems.size();b++)
+                for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
                 {
-                    shopItem=(Environmental)shopItems.elementAt(b);
+                    shopItem=(Environmental)i.next();
                     content.addElement(new RoomContentImpl(shopItem,SK));
                 }
             }
@@ -567,12 +565,11 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
     {
         boolean isMob=(cataE instanceof MOB);
         Environmental E=null;
-        int i=0;
-        Vector V=SK.getShop().getStoreInventory();
         boolean changes=false;
-        for(i=0;i<V.size();i++)
+        Vector<Environmental> newShop=new Vector<Environmental>();
+        for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
         {
-            E=(Environmental)V.elementAt(i);
+            E=(Environmental)i.next();
             if(!ignored.contains(E))
             {
             	ignored.add(E);
@@ -585,9 +582,10 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
 	            &&(cataE.Name().equalsIgnoreCase(E.Name())))
 	            { E.setMiscText(E.text()); changes=true;}
             }
+            newShop.add(E);
         }
         if(changes)
-        	SK.getShop().resubmitInventory(V);
+        	SK.getShop().resubmitInventory(newShop);
     }
     
     public CataData getCatalogData(Environmental E) {

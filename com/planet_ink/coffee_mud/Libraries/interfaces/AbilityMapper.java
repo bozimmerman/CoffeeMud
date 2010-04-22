@@ -93,7 +93,7 @@ public interface AbilityMapper extends CMLibrary
 	public boolean classOnly(MOB mob, String classID, String abilityID);
 	public boolean availableToTheme(String abilityID, int theme, boolean publicly);
 	public int numMappedAbilities();
-	public Vector getAbilityAllowsList(String ableID);
+	public Iterator<String> getAbilityAllowsList(String ableID);
     public DVector getClassAllowsList(String ID);
     public Vector getLevelListings(String ID, boolean checkAll, int level);
     public DVector getUpToLevelListings(String ID, int level, boolean ignoreAll, boolean gainedOnly);

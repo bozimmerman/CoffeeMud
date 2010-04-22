@@ -564,17 +564,16 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(E instanceof ShopKeeper)
 			{
 				text.append(CMLib.xml().convertXMLtoTag("SELLCD",((ShopKeeper)E).getWhatIsSoldMask()));
-				Vector V=((ShopKeeper)E).getShop().getStoreInventory();
 				StringBuffer itemstr=new StringBuffer("");
-				for(int b=0;b<V.size();b++)
-				{
-					Environmental Env=(Environmental)V.elementAt(b);
+	            for(Iterator<Environmental> i=((ShopKeeper)E).getShop().getStoreInventory();i.hasNext();)
+	            {
+	                Environmental E2=(Environmental)i.next();
 					itemstr.append("<SHITEM>");
-					itemstr.append(CMLib.xml().convertXMLtoTag("SICLASS",CMClass.classID(Env)));
-					itemstr.append(CMLib.xml().convertXMLtoTag("SITYPE",CMClass.getType(Env)));
-					itemstr.append(CMLib.xml().convertXMLtoTag("SISTOCK",((ShopKeeper)E).getShop().numberInStock(Env)));
-					itemstr.append(CMLib.xml().convertXMLtoTag("SIPRICE",((ShopKeeper)E).getShop().stockPrice(Env)));
-					itemstr.append(CMLib.xml().convertXMLtoTag("SIDATA",getPropertiesStr(Env,true)));
+					itemstr.append(CMLib.xml().convertXMLtoTag("SICLASS",CMClass.classID(E2)));
+					itemstr.append(CMLib.xml().convertXMLtoTag("SITYPE",CMClass.getType(E2)));
+					itemstr.append(CMLib.xml().convertXMLtoTag("SISTOCK",((ShopKeeper)E).getShop().numberInStock(E2)));
+					itemstr.append(CMLib.xml().convertXMLtoTag("SIPRICE",((ShopKeeper)E).getShop().stockPrice(E2)));
+					itemstr.append(CMLib.xml().convertXMLtoTag("SIDATA",getPropertiesStr(E2,true)));
 					itemstr.append("</SHITEM>");
 				}
 				text.append(CMLib.xml().convertXMLtoTag("STORE",itemstr.toString()));
@@ -1486,10 +1485,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				}
 				if(CMLib.coffeeShops().getShopKeeper(M)!=null)
 				{
-					Vector V=CMLib.coffeeShops().getShopKeeper(M).getShop().getStoreInventory();
-					for(int v=0;v<V.size();v++)
-					{
-						Environmental E=(Environmental)V.elementAt(v);
+		            for(Iterator<Environmental> i=CMLib.coffeeShops().getShopKeeper(M).getShop().getStoreInventory();i.hasNext();)
+		            {
+		                Environmental E=(Environmental)i.next();
 						if(E instanceof Item)
 							buf.append(getUniqueItemXML((Item)E,type,found,files));
 					}
@@ -2000,9 +1998,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				variableEq=true;
 			shopmob.getShop().addStoreInventory(newOne,numStock,stockPrice);
 		}
-		for(int i=0;i<shopmob.getShop().getStoreInventory().size();i++)
+		for(Iterator<Environmental> i=shopmob.getShop().getStoreInventory();i.hasNext();)
 		{
-			Environmental stE=(Environmental)shopmob.getShop().getStoreInventory().elementAt(i);
+			Environmental stE=i.next();
 			if(stE instanceof Item)
 			{
 				Item item=(Item)stE;
@@ -2069,9 +2067,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			}
 			if(E instanceof ShopKeeper)
 			{
-				Vector V=((ShopKeeper)E).getShop().getStoreInventory();
-				for(int b=0;b<V.size();b++)
-					((ShopKeeper)E).getShop().delAllStoreInventory(((Environmental)V.elementAt(b)));
+				for(Iterator<Environmental> i=((ShopKeeper)E).getShop().getStoreInventory();i.hasNext();)
+					((ShopKeeper)E).getShop().delAllStoreInventory(i.next());
 			}
 			if(E instanceof Deity)
 			{
@@ -2776,9 +2773,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 		if(E instanceof ShopKeeper)
 		{
-		    Vector shop=((ShopKeeper)E).getShop().getStoreInventory();
-		    for(int i=0;i<shop.size();i++)
-		        fillFileSet((Environmental)shop.elementAt(i),H);
+		    for(Iterator<Environmental> i=((ShopKeeper)E).getShop().getStoreInventory();i.hasNext();)
+		        fillFileSet(i.next(),H);
 		}
 	}
 

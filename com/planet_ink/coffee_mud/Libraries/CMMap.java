@@ -617,7 +617,6 @@ public class CMMap extends StdLibrary implements WorldMap
 		HashSet stocks=new HashSet(1);
 		HashSet areas=new HashSet();
 		ShopKeeper SK=null;
-		Vector V;
 		if(rooms==null)
 		{
 			for(Enumeration e=CMLib.players().players();e.hasMoreElements();)
@@ -626,15 +625,18 @@ public class CMMap extends StdLibrary implements WorldMap
 				if(M!=null)
 				{
 					SK=CMLib.coffeeShops().getShopKeeper(M);
-					if((SK!=null)&&(!stocks.contains(SK))){
+					if((SK!=null)&&(!stocks.contains(SK)))
+					{
 						stocks.add(SK);
-						V=SK.getShop().getStoreInventory(srchStr);
-						if(V.size()>0) {
-							if(returnFirst) return (returnStockers)?CMParms.makeVector(M):V;
+						Iterator<Environmental> ei=SK.getShop().getStoreInventory(srchStr);
+						if(ei.hasNext()) 
+						{
+							if(returnFirst)
+								return (returnStockers)?CMParms.makeVector(M):CMParms.makeVector(ei);
 							if(returnStockers)
 								found.add(M);
 							else
-								found.addAll(V);
+								CMParms.addToVector(ei,found);
 						}
 					}
 					for(int i=0;i<M.inventorySize();i++)
@@ -645,13 +647,15 @@ public class CMMap extends StdLibrary implements WorldMap
 							SK=CMLib.coffeeShops().getShopKeeper(I);
 							if((SK!=null)&&(!stocks.contains(SK))){
 								stocks.add(SK);
-								V=SK.getShop().getStoreInventory(srchStr);
-								if(V.size()>0) {
-									if(returnFirst) return (returnStockers)?CMParms.makeVector(I):V;
+								Iterator<Environmental> ei=SK.getShop().getStoreInventory(srchStr);
+								if(ei.hasNext()) 
+								{
+									if(returnFirst)
+										return (returnStockers)?CMParms.makeVector(I):CMParms.makeVector(ei);
 									if(returnStockers)
 										found.add(I);
 									else
-										found.addAll(V);
+										CMParms.addToVector(ei, found);
 								}
 							}
 						}
@@ -672,13 +676,15 @@ public class CMMap extends StdLibrary implements WorldMap
 				SK=CMLib.coffeeShops().getShopKeeper(room);
 				if((SK!=null)&&(!stocks.contains(SK))) {
 					stocks.add(SK);
-					V=SK.getShop().getStoreInventory(srchStr);
-					if(V.size()>0) {
-						if(returnFirst) return (returnStockers)?CMParms.makeVector(room):V;
+					Iterator<Environmental> ei=SK.getShop().getStoreInventory(srchStr);
+					if(ei.hasNext()) 
+					{
+						if(returnFirst)
+							return (returnStockers)?CMParms.makeVector(room):CMParms.makeVector(ei);
 						if(returnStockers)
 							found.add(room);
 						else
-							found.addAll(V);
+							CMParms.addToVector(ei, found);
 					}
 				}
 				for(int m=0;m<room.numInhabitants();m++)
@@ -689,13 +695,15 @@ public class CMMap extends StdLibrary implements WorldMap
 						SK=CMLib.coffeeShops().getShopKeeper(M);
 						if((SK!=null)&&(!stocks.contains(SK))){
 							stocks.add(SK);
-							V=SK.getShop().getStoreInventory(srchStr);
-							if(V.size()>0) {
-								if(returnFirst) return (returnStockers)?CMParms.makeVector(M):V;
+							Iterator<Environmental> ei=SK.getShop().getStoreInventory(srchStr);
+							if(ei.hasNext()) 
+							{
+								if(returnFirst)
+									return (returnStockers)?CMParms.makeVector(M):CMParms.makeVector(ei);
 								if(returnStockers)
 									found.add(M);
 								else
-									found.addAll(V);
+									CMParms.addToVector(ei, found);
 							}
 						}
 					}
@@ -708,13 +716,15 @@ public class CMMap extends StdLibrary implements WorldMap
 						SK=CMLib.coffeeShops().getShopKeeper(I);
 						if((SK!=null)&&(!stocks.contains(SK))){
 							stocks.add(SK);
-							V=SK.getShop().getStoreInventory(srchStr);
-							if(V.size()>0) {
-								if(returnFirst) return (returnStockers)?CMParms.makeVector(I):V;
+							Iterator<Environmental> ei=SK.getShop().getStoreInventory(srchStr);
+							if(ei.hasNext()) 
+							{
+								if(returnFirst)
+									return (returnStockers)?CMParms.makeVector(I):CMParms.makeVector(ei);
 								if(returnStockers)
 									found.add(I);
 								else
-									found.addAll(V);
+									CMParms.addToVector(ei, found);
 							}
 						}
 					}
@@ -730,13 +740,15 @@ public class CMMap extends StdLibrary implements WorldMap
 			if((SK!=null)&&(!stocks.contains(SK)))
 			{
 				stocks.add(SK);
-				V=SK.getShop().getStoreInventory(srchStr);
-				if(V.size()>0) {
-					if(returnFirst) return (returnStockers)?CMParms.makeVector(A):V;
+				Iterator<Environmental> ei=SK.getShop().getStoreInventory(srchStr);
+				if(ei.hasNext()) 
+				{
+					if(returnFirst)
+						return (returnStockers)?CMParms.makeVector(A):CMParms.makeVector(ei);
 					if(returnStockers)
 						found.add(A);
 					else
-						found.addAll(V);
+						CMParms.addToVector(ei, found);
 				}
 			}
 		}

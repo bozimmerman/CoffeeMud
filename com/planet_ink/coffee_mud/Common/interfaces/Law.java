@@ -384,16 +384,16 @@ public interface Law extends CMCommon
     public Vector judgeNames();
     
     /**
-     * Returns a vector of all old LegalWarrant objects for all
+     * Returns a list of all old LegalWarrant objects for all
      * criminals and crimes since the last MUD reboot.  These are
      * kept track of so the punishments can be escalated properly.
      * 
      * @see com.planet_ink.coffee_mud.Common.interfaces.LegalWarrant
      * @see com.planet_ink.coffee_mud.Common.interfaces.Law#getOldWarrant(MOB, String, boolean)
      * 
-     * @return a vector of old warrant objects
+     * @return a list of old warrant objects
      */
-    public Vector oldWarrants();
+    public List<LegalWarrant> oldWarrants();
     
     /**
      * Returns an old warrant object matching the given criteria.
@@ -411,15 +411,15 @@ public interface Law extends CMCommon
     public LegalWarrant getOldWarrant(MOB criminal, String crime, boolean pull);
     
     /**
-     * Returns a Vector of all current LegalWarrant objects still considered
+     * Returns a list of all current LegalWarrant objects still considered
      * to be active and relevant.  Officers can act on these.
      * 
      * @see com.planet_ink.coffee_mud.Common.interfaces.LegalWarrant
      * @see com.planet_ink.coffee_mud.Common.interfaces.Law#getWarrant(MOB, int)
      * 
-     * @return a vector of legal warrants
+     * @return a list of legal warrants
      */
-    public Vector warrants();
+    public List<LegalWarrant> warrants();
     
     /**
      * Returns a iterated LegalWarrant object for the given mob.

@@ -85,9 +85,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
         Law laws=getLaws(myArea,false);
         boolean debugging=CMSecurity.isDebugging("ARREST");
         if(laws!=null)
-            for(int i=0;i<laws.warrants().size();i++)
-            {
-                LegalWarrant W=(LegalWarrant)laws.warrants().elementAt(i);
+			for(LegalWarrant W : laws.warrants())
                 if(isStillACrime(W,debugging))
                 {
                     Vector V2=new Vector();
@@ -99,7 +97,6 @@ public class Arrest extends StdBehavior implements LegalBehavior
                     V2.addElement(fixCharge(W));
                     V.addElement(V2);
                 }
-            }
         return V;
     }
     
@@ -192,14 +189,11 @@ public class Arrest extends StdBehavior implements LegalBehavior
         if(!theLawIsEnabled()) return V;
         Law laws=getLaws(myArea,false);
         boolean debugging=CMSecurity.isDebugging("ARREST");
-        for(int i=0;i<laws.warrants().size();i++)
-        {
-            LegalWarrant W=(LegalWarrant)laws.warrants().elementAt(i);
+		for(LegalWarrant W : laws.warrants())
             if((isStillACrime(W,debugging))
             &&((searchStr==null)||(CMLib.english().containsString(W.criminal().name(),searchStr)))
             &&(!V.contains(W.criminal())))
                 V.addElement(W.criminal());
-        }
         return V;
     }
 	
@@ -209,12 +203,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
         if(!theLawIsEnabled()) return V;
         Law laws=getLaws(myArea,false);
         boolean debugging=CMSecurity.isDebugging("ARREST");
-        for(int i=0;i<laws.warrants().size();i++)
-        {
-            LegalWarrant W=(LegalWarrant)laws.warrants().elementAt(i);
+		for(LegalWarrant W : laws.warrants())
             if((isStillACrime(W,debugging))&&((accused==null)||(W.criminal()==accused)))
                 V.addElement(W);
-        }
         return V;
     }
     
@@ -223,7 +214,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
         if(!theLawIsEnabled()) return false;
         if((laws!=null)&&(!laws.warrants().contains(W)))
         {
-            laws.warrants().addElement(W);
+            laws.warrants().add(W);
         	if(W.criminal()!=null)
         	{
 	            Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.WARRANTS);
@@ -254,7 +245,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
         Law laws=getLaws(myArea,false);
         if((laws!=null)&&(laws.warrants().contains(W)))
         {
-            laws.warrants().removeElement(W);
+            laws.warrants().remove(W);
             return true;
         }
         return false;
@@ -280,17 +271,14 @@ public class Arrest extends StdBehavior implements LegalBehavior
                 {   info=(String[])laws.abilityCrimes().get(brokenLaw);   break; }
             }
             if(info==null) return false;
-            for(int i=0;i<laws.warrants().size();i++)
-            {
-                LegalWarrant W=(LegalWarrant)laws.warrants().elementAt(i);
+			for(LegalWarrant W : laws.warrants())
                 if((isStillACrime(W,debugging))
                 &&(W.criminal()==accused)
                 &&(W.crime().equalsIgnoreCase(info[Law.BIT_CRIMENAME])))
                 {
-                    laws.warrants().removeElement(W);
+                    laws.warrants().remove(W);
                     return true;
                 }
-            }
         }
         return false;
     }
@@ -647,13 +635,11 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		return true;
 	}
 
-    public Vector getRelevantWarrants(Vector warrants, LegalWarrant W, MOB criminal)
+    public Vector getRelevantWarrants(List<LegalWarrant> warrants, LegalWarrant W, MOB criminal)
     {
         Vector V=new Vector();
         if(W!=null) V.addElement(W);
-        for(int w2=0;w2<warrants.size();w2++)
-        {
-            LegalWarrant W2=(LegalWarrant)warrants.elementAt(w2);
+		for(LegalWarrant W2 : warrants)
             if((W2.criminal()==criminal)
             &&(W2!=W)
             &&((W==null)
@@ -661,7 +647,6 @@ public class Arrest extends StdBehavior implements LegalBehavior
                 ||(!CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SEPARATE))
                 ||(W2.crime().equalsIgnoreCase(W.crime()))))
                 V.addElement(W2);
-        }
         return V;
     }
     
@@ -765,16 +750,13 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	public boolean isBusyWithJustice(Law laws, MOB M)
 	{
-		for(int w=0;w<laws.warrants().size();w++)
-		{
-			LegalWarrant W=(LegalWarrant)laws.warrants().elementAt(w);
+		for(LegalWarrant W : laws.warrants())
 			if(W.arrestingOfficer()!=null)
 			{
 				if(W.criminal()==M) return true;
 				else
 				if(W.arrestingOfficer()==M) return true;
 			}
-		}
 		return false;
 	}
 
@@ -953,37 +935,36 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	public void fileAllWarrants(Law laws, LegalWarrant W1, MOB mob)
 	{
-		LegalWarrant W=null;
-		Vector V=new Vector();
-        if((W1!=null)&&(CMath.bset(W1.punishment(),Law.PUNISHMENTMASK_SEPARATE)))
-        {
-            for(int i=0;(W=laws.getWarrant(mob,i))!=null;i++)
-                if((W.criminal()==mob)&&(W1.crime().equalsIgnoreCase(W.crime())))
-                    V.addElement(W);
-        }
-        else
-		for(int i=0;(W=laws.getWarrant(mob,i))!=null;i++)
-			if(W.criminal()==mob)
-				V.addElement(W);
-		for(int v=0;v<V.size();v++)
+		
+		Vector<LegalWarrant> V=new Vector<LegalWarrant>();
 		{
-			W=(LegalWarrant)V.elementAt(v);
-			laws.warrants().removeElement(W);
+			LegalWarrant W=null;
+	        if((W1!=null)&&(CMath.bset(W1.punishment(),Law.PUNISHMENTMASK_SEPARATE)))
+	        {
+	            for(int i=0;(W=laws.getWarrant(mob,i))!=null;i++)
+	                if((W.criminal()==mob)&&(W1.crime().equalsIgnoreCase(W.crime())))
+	                    V.addElement(W);
+	        }
+	        else
+			for(int i=0;(W=laws.getWarrant(mob,i))!=null;i++)
+				if(W.criminal()==mob)
+					V.addElement(W);
+		}
+		for(LegalWarrant W : V)
+		{
+			laws.warrants().remove(W);
 			if(W.crime()!=null)
 			{
 				boolean found=false;
-				for(int w=0;w<laws.oldWarrants().size();w++)
-				{
-					LegalWarrant oW=(LegalWarrant)laws.oldWarrants().elementAt(w);
+				for(LegalWarrant oW : laws.oldWarrants())
 					if((oW.criminal()==mob)
 					&&(oW.crime()!=null)
 					&&(oW.crime().equals(W.crime())))
 						found=true;
-				}
 				if(!found)
 				{
 					W.setOffenses(W.offenses()+1);
-					laws.oldWarrants().addElement(W);
+					laws.oldWarrants().add(W);
 				}
 			}
 		}
@@ -1589,11 +1570,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					name=msg.sourceMessage().substring(x+16,y).trim();
 				else
 					name=msg.sourceMessage().substring(x+16).trim();
-				Vector warrs=(Vector)laws.warrants().clone();
 				if(name.length()>0)
-				for(int i=warrs.size()-1;i>=0;i--)
+				for(LegalWarrant W : laws.warrants())
 				{
-					LegalWarrant W=(LegalWarrant)warrs.elementAt(i);
 					if((W.criminal()!=null)&&(CMLib.english().containsString(W.criminal().Name(),name)))
 					{
 						Ability A=W.criminal().fetchEffect("Prisoner");
@@ -1602,7 +1581,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						{
 							if(W.arrestingOfficer()!=null)
 								dismissOfficer(W.arrestingOfficer());
-							laws.warrants().removeElement(W);
+							laws.warrants().remove(W);
 						}
 						else
 						{
@@ -1620,15 +1599,14 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		&&(laws.basicCrimes().containsKey("MURDER")))
 		{
 			MOB criminal=(MOB)msg.tool();
-			for(int i=laws.warrants().size()-1;i>=0;i--)
+			for(LegalWarrant W : laws.warrants())
 			{
-				LegalWarrant W=(LegalWarrant)laws.warrants().elementAt(i);
 				if((W.victim()!=null)
 				&&(W.criminal()!=null)
 				&&(W.victim()==msg.source())
                 &&(!CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SEPARATE))
 				&&(W.criminal()==criminal))
-					laws.warrants().removeElement(W);
+					laws.warrants().remove(W);
 			}
 			String[] bits=(String[])laws.basicCrimes().get("MURDER");
 			fillOutWarrant(criminal,
@@ -1753,9 +1731,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				String[] assaultInfo=(String[])laws.basicCrimes().get("ASSAULT");
 				String[] murderInfo=(String[])laws.basicCrimes().get("MURDER");
 				if((assaultInfo!=null)&&(murderInfo!=null))
-				for(int i=laws.warrants().size()-1;i>=0;i--)
-				{
-					LegalWarrant W=(LegalWarrant)laws.warrants().elementAt(i);
+				for(LegalWarrant W : laws.warrants())
 					if(targetIsOfficer
 					&&(W.criminal()==msg.source())
 					&&(W.arrestingOfficer()!=null)
@@ -1776,7 +1752,6 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					&&(W.crime().equals(murderInfo[Law.BIT_CRIMENAME]))
 					&&(isStillACrime(W,false)))
 						turnAbout=true;
-				}
 				if(justResisting)
 				{
 					if(laws.basicCrimes().containsKey("RESISTINGARREST"))
@@ -1922,10 +1897,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		laws.propertyTaxTick(myArea,debugging);
 
 		HashSet handled=new HashSet();
-		Vector warrs=(Vector)laws.warrants().clone();
-		for(int w=0;w<warrs.size();w++)
+		for(LegalWarrant W : laws.warrants())
 		{
-			LegalWarrant W=(LegalWarrant)warrs.elementAt(w);
 			if((W.criminal()==null)||(W.criminal().location()==null))
             {
                 if(debugging) Log.debugOut("Arrest","Tick: "+W.crime()+": Criminal or Location is null. Skipping.");
@@ -1943,8 +1916,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					W.setArrestingOfficer(myArea,null);
 				}
 				W.setOffenses(W.offenses()+1);
-				laws.oldWarrants().addElement(W);
-				laws.warrants().removeElement(W);
+				laws.oldWarrants().add(W);
+				laws.warrants().remove(W);
                 if(debugging) Log.debugOut("Arrest","Tick: "+W.crime()+": No longer a crime.");
 				continue;
 			}

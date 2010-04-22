@@ -84,23 +84,19 @@ public class ExpertiseData extends StdWebMacro
 				if(parms.containsKey("REQUIRES")) str.append(CMLib.masking().maskDesc(E.allRequirements())+", ");
 				if(parms.containsKey("ALLOWS"))
 				{
-					Vector allows=CMLib.ableMapper().getAbilityAllowsList(E.ID);
-					if((allows!=null)&&(allows.size()>0))
+					ExpertiseLibrary.ExpertiseDefinition def=null;
+					Ability A=null;
+					for(Iterator<String> i=CMLib.ableMapper().getAbilityAllowsList(E.ID);i.hasNext();)
 					{
-						ExpertiseLibrary.ExpertiseDefinition def=null;
-						Ability A=null;
-						for(int a=0;a<allows.size();a++)
+						String allowStr=i.next();
+						def=CMLib.expertises().getDefinition(allowStr);
+						if(def!=null)
+							str.append(def.name+", ");
+						else
 						{
-							String allowStr=(String)allows.elementAt(a);
-							def=CMLib.expertises().getDefinition(allowStr);
-							if(def!=null)
-								str.append(def.name+", ");
-							else
-							{
-								A=CMClass.getAbility(allowStr);
-								if(A!=null)
-									str.append(A.Name()+", ");
-							}
+							A=CMClass.getAbility(allowStr);
+							if(A!=null)
+								str.append(A.Name()+", ");
 						}
 					}
 				}

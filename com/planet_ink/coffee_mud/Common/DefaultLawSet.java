@@ -17,10 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.Properties;
-import java.util.Vector;
+import java.util.*;
 
 /*
    Copyright 2000-2010 Bo Zimmerman
@@ -79,8 +76,8 @@ public class DefaultLawSet implements Law
 
     private boolean activated=true;
 
-    private Vector oldWarrants=new Vector();
-    private Vector warrants=new Vector();
+    private SVector<LegalWarrant> oldWarrants=new SVector<LegalWarrant>();
+    private SVector<LegalWarrant> warrants=new SVector<LegalWarrant>();
 
     private boolean arrestMobs=false;
 
@@ -121,8 +118,8 @@ public class DefaultLawSet implements Law
     public Vector judgeNames(){ return judgeNames;}
     public String[] messages(){ return messages;}
 
-    public Vector oldWarrants(){ return oldWarrants;}
-    public Vector warrants(){ return warrants;}
+    public List<LegalWarrant> oldWarrants(){ return oldWarrants;}
+    public List<LegalWarrant> warrants(){ return warrants;}
 
     public boolean arrestMobs(){ return arrestMobs;}
 

@@ -164,18 +164,20 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
     }
 	private void appendAllowed(StringBuilder prepend, String ID)
 	{
-		Vector allows=CMLib.ableMapper().getAbilityAllowsList(ID);
+		List<String> allows=new SVector<String>();
+		for(Iterator<String> i=CMLib.ableMapper().getAbilityAllowsList(ID);i.hasNext();)
+			allows.add(i.next());
 		ExpertiseLibrary.ExpertiseDefinition def=null;
 		Ability A=null;
-		if((allows!=null)&&(allows.size()>0))
+		if(allows.size()>0)
 		{
 			prepend.append("\n\rAllows   : ");
-            String test1=null;
+			String test1=null;
             String test2=null;
             boolean roman=false;
-            for(int a=0;a<allows.size();a++)
+            for(int a0=0;a0<allows.size();a0++)
             {
-                test1=(String)allows.elementAt(a);
+            	test1=allows.get(a0);
                 int x=test1.length();
                 roman=!Character.isDigit(test1.charAt(x-1));
                 while(((Character.isDigit(test1.charAt(x-1))&&(!roman))
@@ -185,20 +187,20 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
                 if((x>0)&&(x<test1.length()))
                 {
                     test1=test1.substring(0,x);
-                    for(int a1=allows.size()-1;a1>=(a+1);a1--)
+                    for(int a1=allows.size()-1;a1>=(a0+1);a1--)
                     {
-                        test2=(String)allows.elementAt(a1);
+                        test2=(String)allows.get(a1);
                         if(test2.startsWith(test1)
                         &&(((!roman)&&CMath.isInteger(test2.substring(x)))
                            ||(roman&&CMath.isRomanNumeral(test2.substring(x)))))
-                            allows.removeElementAt(a1);
+                            allows.remove(a1);
                     }
                 }
             }
 			int lastLine=11;
 			for(int a=0;a<allows.size();a++)
 			{
-				String allowStr=(String)allows.elementAt(a);
+				String allowStr=(String)allows.get(a);
 				def=CMLib.expertises().getDefinition(allowStr);
 				if(def!=null)
 				{

@@ -390,9 +390,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			        {
 			            rivals=new Vector();
 			            CoffeeShop shop = ((ShopKeeper)mob).getShop();
-			            for(int v=0;v<shop.getBaseInventory().size();v++)
+			            for(Iterator<Environmental> i=shop.getBaseInventory();i.hasNext();)
 			            {
-			                Environmental E=(Environmental)shop.getBaseInventory().elementAt(v);
+			                Environmental E=(Environmental)i.next();
 			                if((E.baseEnvStats().rejuv()>0)&&(E.baseEnvStats().rejuv()<Integer.MAX_VALUE))
 			                    rivals.addElement(E);
 			            }

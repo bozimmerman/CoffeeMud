@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class StdInnKey extends StdKey implements InnKey
 {
 	public String ID(){	return "StdInnKey";}
@@ -71,18 +70,20 @@ public class StdInnKey extends StdKey implements InnKey
 		return true;
 	}
 
-	public void hangOnRack(ShopKeeper sk)
+	public void hangOnRack(ShopKeeper SK)
 	{
 		if(myShopkeeper==null)
 		{
-			myShopkeeper=sk;
+			myShopkeeper=SK;
 			int y=0;
-			Vector V=sk.getShop().getStoreInventory();
-			for(int v=0;v<V.size();v++)
-				if(V.elementAt(v) instanceof InnKey)
+            for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+            {
+                Environmental E=(Environmental)i.next();
+				if(E instanceof InnKey)
 					y++;
+            }
 			setName("key to room "+(y+1));
-			setDescription("The key goes to room "+(y+1)+", but will expire soon, so you better use it quickly! Give the key to your innkeeper, "+sk.name()+", when you leave.");
+			setDescription("The key goes to room "+(y+1)+", but will expire soon, so you better use it quickly! Give the key to your innkeeper, "+SK.name()+", when you leave.");
 			setMiscText("INN"+(y+1));
 		}
 	}

@@ -83,13 +83,12 @@ public class Prayer_DailyBread extends Prayer
 			ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(target);
 			if(SK!=null)
 			{
-				Vector inv=SK.getShop().getStoreInventory();
-				for(int i=0;i<inv.size();i++)
-				{
-					Item I=(Item)inv.elementAt(i);
-					if((I!=null)&&(I instanceof Food))
+    			for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+    			{
+    				Environmental E2=(Environmental)i.next();
+					if((E2!=null)&&(E2 instanceof Food))
 					{
-						Bread=(Item)I.copyOf();
+						Bread=(Item)E2.copyOf();
 						target.addInventory(Bread);
 						break;
 					}

@@ -683,9 +683,10 @@ public class GrinderMobs
 				if((M instanceof ShopKeeper)
 				&&(httpReq.isRequestParameter("SHP1")))
 				{
-					ShopKeeper K=(ShopKeeper)M;
-					Vector inventory=K.getShop().getStoreInventory();
-					K.getShop().emptyAllShelves();
+					ShopKeeper SK=(ShopKeeper)M;
+					Vector inventory=new Vector();
+					CMParms.addToVector(SK.getShop().getStoreInventory(), inventory);
+					SK.getShop().emptyAllShelves();
 
 					int num=1;
 					String MATCHING=httpReq.getRequestParameter("SHP"+num);
@@ -697,7 +698,7 @@ public class GrinderMobs
 						{
 							Environmental O=(Environmental)inventory.elementAt(CMath.s_int(MATCHING)-1);
 							if(O!=null)
-								K.getShop().addStoreInventory(O,CMath.s_int(theparm),CMath.s_int(theprice));
+								SK.getShop().addStoreInventory(O,CMath.s_int(theparm),CMath.s_int(theprice));
 						}
 						else
 				        if(MATCHING.startsWith("CATALOG-"))
@@ -706,7 +707,7 @@ public class GrinderMobs
 				            if(O==null) 
 				                O=RoomData.getItemFromAnywhere(null,MATCHING);
                             if(O!=null)
-                                K.getShop().addStoreInventory((Environmental)O.copyOf(),CMath.s_int(theparm),CMath.s_int(theprice));
+                                SK.getShop().addStoreInventory((Environmental)O.copyOf(),CMath.s_int(theparm),CMath.s_int(theprice));
 				        }
 				        else
 						if(MATCHING.indexOf("@")>0)
@@ -721,7 +722,7 @@ public class GrinderMobs
 							if(O==null)
 								O=RoomData.getItemFromAnywhere(null,MATCHING);
 							if(O!=null)
-								K.getShop().addStoreInventory((Environmental)O.copyOf(),CMath.s_int(theparm),CMath.s_int(theprice));
+								SK.getShop().addStoreInventory((Environmental)O.copyOf(),CMath.s_int(theparm),CMath.s_int(theprice));
 						}
 						else
 						{
@@ -742,7 +743,7 @@ public class GrinderMobs
 							if(O==null)
 								O=RoomData.getItemFromAnywhere(null,MATCHING);
 							if(O!=null)
-								K.getShop().addStoreInventory((Environmental)O.copyOf(),CMath.s_int(theparm),CMath.s_int(theprice));
+								SK.getShop().addStoreInventory((Environmental)O.copyOf(),CMath.s_int(theparm),CMath.s_int(theprice));
 						}
 						num++;
 						MATCHING=httpReq.getRequestParameter("SHP"+num);

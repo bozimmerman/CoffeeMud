@@ -626,14 +626,15 @@ public class GModify extends StdCommand
 		                    if((I!=null)&&(tryModfy(mob,R,I,changes,onfields,noisy)))
 		                        savemobs=true;
 		                }
-		                if(CMLib.coffeeShops().getShopKeeper(M)!=null)
+		                ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
+		                if(SK!=null)
 		                {
-		                    Vector V=CMLib.coffeeShops().getShopKeeper(M).getShop().getStoreInventory();
-		                    for(int i=0;i<V.size();i++)
-		                    {
-		                        if(V.elementAt(i) instanceof Item)
+		        			for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+		        			{
+		        				Environmental E2=(Environmental)i.next();
+		                        if(E2 instanceof Item)
 		                        {
-		                            Item I=(Item)V.elementAt(i);
+		                            Item I=(Item)E2;
 		                            if((I!=null)&&(tryModfy(mob,R,I,changes,onfields,noisy)))
 		                                savemobs=true;
 		                        }

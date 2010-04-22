@@ -3163,10 +3163,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	        if(E.isSold(newValue))
 	        {
 	        	E.addSoldType(-newValue);
-	            Vector V=E.getShop().getStoreInventory();
-	            for(int b=0;b<V.size();b++)
-	                if(!E.doISellThis((Environmental)V.elementAt(b)))
-	                    E.getShop().delAllStoreInventory((Environmental)V.elementAt(b));
+	            for(Iterator<Environmental> i=E.getShop().getStoreInventory();i.hasNext();)
+	            {
+	            	Environmental E2=i.next();
+	                if(!E.doISellThis(E2));
+	                    E.getShop().delAllStoreInventory(E2);
+	            }
 	        }
 	        else
 	            E.addSoldType(newValue);
@@ -3181,10 +3183,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         while(itemstr.length()>0)
         {
             String inventorystr="";
-            Vector V=E.getShop().getStoreInventory();
-            for(int b=0;b<V.size();b++)
+            for(Iterator<Environmental> i=E.getShop().getStoreInventory();i.hasNext();)
             {
-                Environmental E2=(Environmental)V.elementAt(b);
+                Environmental E2=(Environmental)i.next();
                 if(E2.isGeneric())
                     inventorystr+=E2.name()+" ("+E.getShop().numberInStock(E2)+"), ";
                 else

@@ -220,8 +220,8 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			}
 			else
 			{
-				Vector V=(Vector)allows.get(s);
-				if(V==null){ V=new Vector(); allows.put(s,V);}
+				SVector V=(SVector)allows.get(s);
+				if(V==null){ V=new SVector(); allows.put(s,V);}
 				if(!V.contains(ID))V.addElement(ID);
 			}
 		}
@@ -240,14 +240,14 @@ public class CMAble extends StdLibrary implements AbilityMapper
 				}
 				else
 				{
-					Vector V=(Vector)allows.get(s);
+					SVector V=(SVector)allows.get(s);
 					if(V==null)
-						V=new Vector();
-					else
-						V=(Vector)V.clone();
+					{
+						V=new SVector();
+						allows.put(s,V);
+					}
 					if(!V.contains(ID))
 						V.addElement(ID);
-					allows.put(s,V);
 				}
 			}
 		}
@@ -278,20 +278,20 @@ public class CMAble extends StdLibrary implements AbilityMapper
         SHashtable alreadyDone=new SHashtable();
         DVector DV=new DVector(2);
     	AbilityMapping able=null;
-        Vector V2=null;
+        List<String> V2=null;
         Integer Ix=null;
         for(int a=0;a<ABLES.size();a++)
         {
-            V2=getAbilityAllowsList((String)ABLES.elementAt(a,1));
             if((V2==null)||(V2.size()==0)) continue;
             able=(AbilityMapping)ABLES.elementAt(a,2);
-            for(int v2=0;v2<V2.size();v2++)
+            for(Iterator<String> i=getAbilityAllowsList((String)ABLES.elementAt(a,1));i.hasNext();)
             {
-            	Ix=(Integer)alreadyDone.get(V2.elementAt(v2));
+            	String s = i.next();
+            	Ix=(Integer)alreadyDone.get(s);
             	if(Ix==null)
             	{
-	                alreadyDone.put(V2.elementAt(v2), Integer.valueOf(DV.size()));
-	                DV.addElement(V2.elementAt(v2),Integer.valueOf(able.qualLevel));
+	                alreadyDone.put(s, Integer.valueOf(DV.size()));
+	                DV.addElement(s,Integer.valueOf(able.qualLevel));
             	}
             	else
             	if(((Integer)DV.elementAt(Ix.intValue(),2)).intValue()>able.qualLevel)
@@ -301,7 +301,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
         return DV;
     }
 
-	public Vector getAbilityAllowsList(String ableID)
+	public Iterator<String> getAbilityAllowsList(String ableID)
 	{
 		String KEYID=null;
 		String abilityID=null;
@@ -331,7 +331,8 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			for(int r=0;r<remove.size();r++)
 				allows.remove(remove.elementAt(r));
 		}
-		return (Vector)allows.get(ableID);
+		SVector<String> set = (SVector<String>)allows.get(ableID); 
+		return (set==null)?new SVector<String>(1).iterator():set.iterator();
 	}
 
 	public void addCharAbilityMapping(String ID,

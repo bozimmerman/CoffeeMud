@@ -903,10 +903,9 @@ public class Reset extends StdCommand
 								ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 								if(SK!=null)
 								{
-									Vector V=SK.getShop().getStoreInventory();
-									for(int i=V.size()-1;i>=0;i--)
-									{
-										Environmental E=(Environmental)V.elementAt(i);
+						            for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+						            {
+						                Environmental E=(Environmental)i.next();
 										if(E instanceof Item)
 										{
 											Item I=(Item)E;
@@ -1052,10 +1051,9 @@ public class Reset extends StdCommand
 						ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 						if(SK!=null)
 						{
-							Vector V=SK.getShop().getStoreInventory();
-							for(int i=V.size()-1;i>=0;i--)
-							{
-								Environmental E=(Environmental)V.elementAt(i);
+				            for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+				            {
+				                Environmental E=(Environmental)i.next();
 								if(E instanceof Item)
 								{
 									Item I=(Item)E;
@@ -1222,10 +1220,9 @@ public class Reset extends StdCommand
 						ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 						if(SK!=null)
 						{
-							Vector V=SK.getShop().getStoreInventory();
-							for(int i=V.size()-1;i>=0;i--)
-							{
-								Environmental E=(Environmental)V.elementAt(i);
+				            for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+				            {
+				                Environmental E=(Environmental)i.next();
 								if(E instanceof Item)
 								{
 									Item I=(Item)E;

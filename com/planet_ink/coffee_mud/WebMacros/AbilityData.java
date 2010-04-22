@@ -457,23 +457,19 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("ALLOWS"))
 				{
-					Vector allows=CMLib.ableMapper().getAbilityAllowsList(A.ID());
 					Ability A2=null;
-					if((allows!=null)&&(allows.size()>0))
+					ExpertiseLibrary.ExpertiseDefinition def=null;
+					for(Iterator<String> i=CMLib.ableMapper().getAbilityAllowsList(A.ID());i.hasNext();)
 					{
-						ExpertiseLibrary.ExpertiseDefinition def=null;
-						for(int a=0;a<allows.size();a++)
+						String allowStr=i.next();
+						def=CMLib.expertises().getDefinition(allowStr);
+						if(def!=null)
+							str.append(def.name+", ");
+						else
 						{
-							String allowStr=(String)allows.elementAt(a);
-							def=CMLib.expertises().getDefinition(allowStr);
-							if(def!=null)
-								str.append(def.name+", ");
-							else
-							{
-								A2=CMClass.getAbility(allowStr);
-								if(A2!=null)
-									str.append(A2.Name()+", ");
-							}
+							A2=CMClass.getAbility(allowStr);
+							if(A2!=null)
+								str.append(A2.Name()+", ");
 						}
 					}
 				}

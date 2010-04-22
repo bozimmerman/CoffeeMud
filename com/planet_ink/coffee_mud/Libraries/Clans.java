@@ -38,7 +38,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class Clans extends StdLibrary implements ClanManager
 {
-	public Hashtable all=new Hashtable();
+	public SHashtable<String,Clan> all=new SHashtable<String,Clan>();
 
     public String ID(){return "Clans";}
 	public boolean shutdown()
@@ -255,7 +255,7 @@ public class Clans extends StdLibrary implements ClanManager
 	}
 
     public int numClans(){return all.size();}
-    public Enumeration allClans(){return ((Hashtable)(all.clone())).elements();}
+    public Enumeration allClans(){return all.elements();}
 	public String translatePrize(int trophy)
 	{
 	    String prizeStr="";

@@ -121,18 +121,20 @@ public class Deviations extends StdCommand
 						&&(!alreadyDone(I,check)))
 							check.addElement(I);
 					}
-					ShopKeeper sk=CMLib.coffeeShops().getShopKeeper(M);
-					if(sk!=null)
+					ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
+					if(SK!=null)
 					{
-						Vector V=sk.getShop().getBaseInventory();
-						for(int i=0;i<V.size();i++)
-							if(V.elementAt(i) instanceof Item)
+	        			for(Iterator<Environmental> i=SK.getShop().getBaseInventory();i.hasNext();)
+	        			{
+	        				Environmental E2=(Environmental)i.next();
+							if(E2 instanceof Item)
 							{
-								Item I=(Item)V.elementAt(i);
+								Item I=(Item)E2;
 								if(((I instanceof Armor)||(I instanceof Weapon))
 								&&(!alreadyDone(I,check)))
 									check.addElement(I);
 							}
+	        			}
 					}
 				}
 			}
