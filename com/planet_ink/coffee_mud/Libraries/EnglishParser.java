@@ -662,7 +662,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return flags;
 	}
 
-	public Environmental fetchEnvironmental(Vector list, String srchStr, boolean exactOnly)
+	public Environmental fetchEnvironmental(Collection list, String srchStr, boolean exactOnly)
 	{
 		Object[] flags=fetchFlags(srchStr);
 		if(flags==null) return null;
@@ -677,9 +677,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			if(srchStr.endsWith("$")) srchStr=srchStr.substring(0,srchStr.length()-1);
 			try
 			{
-				for(int i=0;i<list.size();i++)
+				for(Object O : list)
 				{
-					thisThang=(Environmental)list.elementAt(i);
+					thisThang=(Environmental)O;
 					if(thisThang.ID().equalsIgnoreCase(srchStr)
 					   ||thisThang.name().equalsIgnoreCase(srchStr)
 					   ||thisThang.Name().equalsIgnoreCase(srchStr))
@@ -695,9 +695,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
 			try
 			{
-                for(int i=0;i<list.size();i++)
-                {
-                    thisThang=(Environmental)list.elementAt(i);
+				for(Object O : list)
+				{
+					thisThang=(Environmental)O;
 					if((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
 					   &&((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0))))
 						if((--myOccurrance)<=0)
@@ -708,9 +708,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
 			try
 			{
-				for(int i=0;i<list.size();i++)
+				for(Object O : list)
 				{
-					thisThang=(Environmental)list.elementAt(i);
+					thisThang=(Environmental)O;
 					if((!(thisThang instanceof Ability))
 					&&(containsString(thisThang.displayText(),srchStr)
                         ||((thisThang instanceof MOB)&&containsString(((MOB)thisThang).genericName(),srchStr))))
@@ -723,7 +723,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return null;
 	}
 
-	public Vector fetchEnvironmentals(Vector list, String srchStr, boolean exactOnly)
+	public Vector fetchEnvironmentals(Collection list, String srchStr, boolean exactOnly)
 	{
 		Object[] flags=fetchFlags(srchStr);
 		Vector matches=new Vector(1);
@@ -739,9 +739,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			if(srchStr.endsWith("$")) srchStr=srchStr.substring(0,srchStr.length()-1);
 			try
 			{
-				for(int i=0;i<list.size();i++)
+				for(Object O : list)
 				{
-					thisThang=(Environmental)list.elementAt(i);
+					thisThang=(Environmental)O;
 					if(thisThang.ID().equalsIgnoreCase(srchStr)
 					   ||thisThang.name().equalsIgnoreCase(srchStr)
 					   ||thisThang.Name().equalsIgnoreCase(srchStr))
@@ -757,9 +757,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
 			try
 			{
-                for(int i=0;i<list.size();i++)
-                {
-                    thisThang=(Environmental)list.elementAt(i);
+				for(Object O : list)
+				{
+					thisThang=(Environmental)O;
 					if((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
 					   &&((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0))))
 						if((--myOccurrance)<=0)
@@ -772,9 +772,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
 				try
 				{
-					for(int i=0;i<list.size();i++)
+					for(Object O : list)
 					{
-						thisThang=(Environmental)list.elementAt(i);
+						thisThang=(Environmental)O;
 						if((!(thisThang instanceof Ability))
 						&&(containsString(thisThang.displayText(),srchStr)
 	                        ||((thisThang instanceof MOB)&&containsString(((MOB)thisThang).genericName(),srchStr))))
@@ -840,45 +840,43 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
     public int getContextNumber(Object[] list, Environmental E){ return getContextNumber(CMParms.makeVector(list),E);}
-    public int getContextNumber(Vector list, Environmental E)
+    public int getContextNumber(Collection list, Environmental E)
     {
         if(list==null) return 0;
-        Vector V=(Vector)list.clone();
         int context=1;
-        for(int v=0;v<V.size();v++)
-            if((((Environmental)V.elementAt(v)).Name().equalsIgnoreCase(E.Name()))
-            ||(((Environmental)V.elementAt(v)).name().equalsIgnoreCase(E.name())))
+        for(Object O : list)
+            if((((Environmental)O).Name().equalsIgnoreCase(E.Name()))
+            ||(((Environmental)O).name().equalsIgnoreCase(E.name())))
             {
-                if(V.elementAt(v)==E)
+                if(O==E)
                     return context<2?0:context;
-                if((!(V.elementAt(v) instanceof Item))
+                if((!(O instanceof Item))
                 ||(!(E instanceof Item))
-                ||(((Item)E).container()==((Item)V.elementAt(v)).container()))
+                ||(((Item)E).container()==((Item)O).container()))
                     context++;
             }
         return -1;
     }
     public int getContextSameNumber(Object[] list, Environmental E){ return getContextSameNumber(CMParms.makeVector(list),E);}
-    public int getContextSameNumber(Vector list, Environmental E)
+    public int getContextSameNumber(Collection list, Environmental E)
     {
         if(list==null) return 0;
-        Vector V=(Vector)list.clone();
         int context=1;
-        for(int v=0;v<V.size();v++)
-            if((((Environmental)V.elementAt(v)).Name().equalsIgnoreCase(E.Name()))
-            ||(((Environmental)V.elementAt(v)).name().equalsIgnoreCase(E.name())))
+        for(Object O : list)
+            if((((Environmental)O).Name().equalsIgnoreCase(E.Name()))
+            ||(((Environmental)O).name().equalsIgnoreCase(E.name())))
             {
-                if(E.sameAs((Environmental)V.elementAt(v)))
+                if(E.sameAs((Environmental)O))
                     return context<2?0:context;
-                if((!(V.elementAt(v) instanceof Item))
+                if((!(O instanceof Item))
                 ||(!(E instanceof Item))
-                ||(((Item)E).container()==((Item)V.elementAt(v)).container()))
+                ||(((Item)E).container()==((Item)O).container()))
                     context++;
             }
         return -1;
     }
     public String getContextName(Object[] list, Environmental E){ return getContextName(CMParms.makeVector(list),E);}
-    public String getContextName(Vector list, Environmental E)
+    public String getContextName(Collection list, Environmental E)
     {
         if(list==null) return E.name();
         int number=getContextNumber(list,E);
@@ -888,7 +886,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
     }
 
     public String getContextSameName(Object[] list, Environmental E){ return getContextName(CMParms.makeVector(list),E);}
-    public String getContextSameName(Vector list, Environmental E)
+    public String getContextSameName(Collection list, Environmental E)
     {
         if(list==null) return E.name();
         int number=getContextSameNumber(list,E);
@@ -948,7 +946,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return null;
 	}
 
-	public Item fetchAvailableItem(Vector list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly)
+	public Item fetchAvailableItem(Collection list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly)
 	{
 		Object[] flags=fetchFlags(srchStr);
 		if(flags==null) return null;
@@ -956,16 +954,16 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		srchStr=(String)flags[FLAG_STR];
 		int myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
 		boolean allFlag=((Boolean)flags[FLAG_ALL]).booleanValue();
-
+		Item thisThang=null;
 		if(exactOnly)
 		{
 			try
 			{
 				if(srchStr.startsWith("$")) srchStr=srchStr.substring(1);
 				if(srchStr.endsWith("$")) srchStr=srchStr.substring(0,srchStr.length()-1);
-				for(int i=0;i<list.size();i++)
+				for(Object O : list)
 				{
-					Item thisThang=(Item)list.elementAt(i);
+					thisThang=(Item)O;
 					boolean beingWorn=!thisThang.amWearingAt(Wearable.IN_INVENTORY);
 
 					if((thisThang.container()==goodLocation)
@@ -984,9 +982,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		{
 			try
 			{
-				for(int i=0;i<list.size();i++)
+				for(Object O : list)
 				{
-					Item thisThang=(Item)list.elementAt(i);
+					thisThang=(Item)O;
 					boolean beingWorn=!thisThang.amWearingAt(Wearable.IN_INVENTORY);
 
 					if((thisThang.container()==goodLocation)
@@ -1001,10 +999,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
 			try
 			{
-                Item thisThang=null;
-				for(int i=0;i<list.size();i++)
+				for(Object O : list)
 				{
-					thisThang=(Item)list.elementAt(i);
+					thisThang=(Item)O;
 					boolean beingWorn=!thisThang.amWearingAt(Wearable.IN_INVENTORY);
 					if((thisThang.container()==goodLocation)
 					&&((wornReqCode==Wearable.FILTER_ANY)||(beingWorn&&(wornReqCode==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornReqCode==Wearable.FILTER_UNWORNONLY)))
@@ -1018,7 +1015,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return null;
 	}
 
-	public Vector fetchAvailableItems(Vector list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly)
+	public Vector fetchAvailableItems(Collection list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly)
 	{
 		Vector matches=new Vector();
 		Object[] flags=fetchFlags(srchStr);
@@ -1027,16 +1024,16 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		srchStr=(String)flags[FLAG_STR];
 		int myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
 		boolean allFlag=((Boolean)flags[FLAG_ALL]).booleanValue();
-
+		Item thisThang=null;
 		if(exactOnly)
 		{
 			try
 			{
 				if(srchStr.startsWith("$")) srchStr=srchStr.substring(1);
 				if(srchStr.endsWith("$")) srchStr=srchStr.substring(0,srchStr.length()-1);
-				for(int i=0;i<list.size();i++)
+				for(Object O : list)
 				{
-					Item thisThang=(Item)list.elementAt(i);
+					thisThang=(Item)O;
 					boolean beingWorn=!thisThang.amWearingAt(Wearable.IN_INVENTORY);
 
 					if((thisThang.container()==goodLocation)
@@ -1055,9 +1052,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		{
 			try
 			{
-				for(int i=0;i<list.size();i++)
+				for(Object O : list)
 				{
-					Item thisThang=(Item)list.elementAt(i);
+					thisThang=(Item)O;
 					boolean beingWorn=!thisThang.amWearingAt(Wearable.IN_INVENTORY);
 
 					if((thisThang.container()==goodLocation)
@@ -1074,10 +1071,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
 				try
 				{
-	                Item thisThang=null;
-					for(int i=0;i<list.size();i++)
+					for(Object O : list)
 					{
-						thisThang=(Item)list.elementAt(i);
+						thisThang=(Item)O;
 						boolean beingWorn=!thisThang.amWearingAt(Wearable.IN_INVENTORY);
 						if((thisThang.container()==goodLocation)
 						&&((wornReqCode==Wearable.FILTER_ANY)||(beingWorn&&(wornReqCode==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornReqCode==Wearable.FILTER_UNWORNONLY)))
@@ -1092,7 +1088,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return matches;
 	}
 
-	public Environmental fetchAvailable(Vector list, String srchStr, Item goodLocation, int wornFilter, boolean exactOnly)
+	public Environmental fetchAvailable(Collection list, String srchStr, Item goodLocation, int wornFilter, boolean exactOnly)
 	{
 		Object[] flags=fetchFlags(srchStr);
 		if(flags==null) return null;
@@ -1109,9 +1105,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			{
 				if(srchStr.startsWith("$")) srchStr=srchStr.substring(1);
 				if(srchStr.endsWith("$")) srchStr=srchStr.substring(0,srchStr.length()-1);
-				for(int i=0;i<list.size();i++)
+				for(Object O : list)
 				{
-				    E=(Environmental)list.elementAt(i);
+				    E=(Environmental)O;
 				    if(E instanceof Item)
 				    {
 						thisThang=(Item)E;
@@ -1140,9 +1136,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		{
 			try
 			{
-				for(int i=0;i<list.size();i++)
+				for(Object O : list)
 				{
-					E=(Environmental)list.elementAt(i);
+				    E=(Environmental)O;
 					if(E instanceof Item)
 					{
 					    thisThang=(Item)E;
@@ -1167,9 +1163,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
 			try
 			{
-				for(int i=0;i<list.size();i++)
+				for(Object O : list)
 				{
-					E=(Environmental)list.elementAt(i);
+				    E=(Environmental)O;
 					if(E instanceof Item)
 					{
 					    thisThang=(Item)E;
@@ -1807,9 +1803,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
                         commands.addElement(toWhat.name());
                     else
                     {
-                        Object o=commands.firstElement();
+                        Object O=commands.firstElement();
                         commands.clear();
-                        commands.addElement(o);
+                        commands.addElement(O);
                         commands.addElement(toWhat.name());
                     }
                 }

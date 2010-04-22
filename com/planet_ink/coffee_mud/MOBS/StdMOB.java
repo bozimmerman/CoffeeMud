@@ -69,8 +69,7 @@ public class StdMOB implements MOB
 	protected long 		tickStatus=Tickable.STATUS_NOT;
 
 	/* containers of items and attributes*/
-	protected Vector<Item>		inventory	= new Vector<Item>(1);
-    protected Object 			invSync		= new Object();
+	protected SVector<Item>		inventory	= new SVector<Item>(1);
 	protected Vector<Ability>	abilities	= new Vector<Ability>(1);
     protected Object 			abilitySync	= new Object();
 	protected Vector<Ability> 	affects		= new Vector<Ability>(1);
@@ -311,7 +310,7 @@ public class StdMOB implements MOB
 
 		pleaseDestroy=false;
 
-		inventory=new Vector<Item>(1);
+		inventory=new SVector<Item>(1);
 		followers=null;
 		abilities=new Vector<Ability>(1);
 		affects=new Vector<Ability>(1);
@@ -673,7 +672,7 @@ public class StdMOB implements MOB
         riding=null;
         mySession=null;
         imageName=null;
-        inventory=new Vector<Item>(1);
+        inventory=new SVector<Item>(1);
         followers=null;
         abilities=new Vector<Ability>(1);
         affects=new Vector<Ability>(1);
@@ -2749,23 +2748,13 @@ public class StdMOB implements MOB
 	public void addInventory(Item item)
 	{
 		item.setOwner(this);
-		synchronized(invSync)
-		{
-			Vector<Item> newInventory=(Vector<Item>)inventory.clone();
-			newInventory.addElement(item);
-			inventory=newInventory;
-		}
+		inventory.addElement(item);
 		item.recoverEnvStats();
 	}
 	
 	public void delInventory(Item item)
 	{
-		synchronized(invSync)
-		{
-			Vector<Item> newInventory=(Vector<Item>)inventory.clone();
-			newInventory.removeElement(item);
-			inventory=newInventory;
-		}
+		inventory.removeElement(item);
 		item.recoverEnvStats();
 	}
 	public int inventorySize()
@@ -2787,10 +2776,10 @@ public class StdMOB implements MOB
                                    boolean allowCoins,
                                    boolean respectLocationAndWornCode)
 	{
-	    Vector inv=inventory;
+	    SVector inv=inventory;
 	    if(!allowCoins)
 	    {
-	        inv=(Vector)inv.clone();
+	        inv=(SVector)inv.clone();
 	        for(int v=inv.size()-1;v>=0;v--)
 	            if(inv.elementAt(v) instanceof Coins)
 	                inv.removeElementAt(v);
