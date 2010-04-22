@@ -22,6 +22,7 @@ package com.planet_ink.coffee_mud.core.intermud.net;
 import com.planet_ink.coffee_mud.core.intermud.server.ServerUser;
 import com.planet_ink.coffee_mud.core.intermud.server.Server;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.collections.*;
 
 import java.io.*;
 import java.net.Socket;

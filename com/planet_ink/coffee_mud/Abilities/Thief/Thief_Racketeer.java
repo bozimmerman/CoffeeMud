@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.CMMsg;
 import com.planet_ink.coffee_mud.Items.interfaces.Coins;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 
 /*

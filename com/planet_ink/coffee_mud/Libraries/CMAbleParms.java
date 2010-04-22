@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMappi
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityParameters.AbilityParmEditor;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
