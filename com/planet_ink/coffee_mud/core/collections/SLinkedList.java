@@ -1,0 +1,329 @@
+package com.planet_ink.coffee_mud.core.collections;
+
+import java.io.Serializable;
+import java.util.*;
+
+/*
+Copyright 2000-2010 Bo Zimmerman
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Collection<K>, Deque<K>, List<K>, Queue<K>
+{
+	private static final long serialVersionUID = -4174213459327144771L;
+	private LinkedList<K> L;
+	
+	public SLinkedList()
+	{
+		L=new LinkedList<K>();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized void add(int arg0, K arg1) {
+		L=(LinkedList<K>)L.clone();
+		L.add(arg0, arg1);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized boolean add(K arg0) {
+		L=(LinkedList<K>)L.clone();
+		return L.add(arg0);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized boolean addAll(Collection<? extends K> arg0) {
+		L=(LinkedList<K>)L.clone();
+		return L.addAll(arg0);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized boolean addAll(int arg0, Collection<? extends K> arg1) {
+		L=(LinkedList<K>)L.clone();
+		return L.addAll(arg0, arg1);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized void addFirst(K arg0) {
+		L=(LinkedList<K>)L.clone();
+		L.addFirst(arg0);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized void addLast(K arg0) {
+		L=(LinkedList<K>)L.clone();
+		L.addLast(arg0);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized void clear() {
+		L=(LinkedList<K>)L.clone();
+		L.clear();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Object clone() {
+		SLinkedList<K> SL=new SLinkedList<K>();
+		SL.L=(LinkedList<K>)L.clone();
+		return SL;
+	}
+
+	@Override
+	public boolean contains(Object arg0) {
+		return L.contains(arg0);
+	}
+
+	@Override
+	public Iterator<K> descendingIterator() {
+		return new ReadOnlyIterator<K>(L.descendingIterator());
+	}
+
+	@Override
+	public K element() {
+		return L.element();
+	}
+
+	@Override
+	public K get(int arg0) {
+		return L.get(arg0);
+	}
+
+	@Override
+	public K getFirst() {
+		return L.getFirst();
+	}
+
+	@Override
+	public K getLast() {
+		return L.getLast();
+	}
+
+	@Override
+	public int indexOf(Object arg0) {
+		return L.indexOf(arg0);
+	}
+
+	@Override
+	public int lastIndexOf(Object arg0) {
+		return L.lastIndexOf(arg0);
+	}
+
+	@Override
+	public ListIterator<K> listIterator(int arg0) {
+		return new ReadOnlyListIterator<K>(L.listIterator(arg0));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized boolean offer(K arg0) {
+		L=(LinkedList<K>)L.clone();
+		return L.offer(arg0);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized boolean offerFirst(K arg0) {
+		L=(LinkedList<K>)L.clone();
+		return L.offerFirst(arg0);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized boolean offerLast(K arg0) {
+		L=(LinkedList<K>)L.clone();
+		return L.offerLast(arg0);
+	}
+
+	@Override
+	public K peek() {
+		return L.peek();
+	}
+
+	@Override
+	public K peekFirst() {
+		return L.peekFirst();
+	}
+
+	@Override
+	public K peekLast() {
+		return L.peekLast();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized K poll() {
+		L=(LinkedList<K>)L.clone();
+		return L.poll();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized K pollFirst() {
+		L=(LinkedList<K>)L.clone();
+		return L.pollFirst();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized K pollLast() {
+		L=(LinkedList<K>)L.clone();
+		return L.pollLast();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized K pop() {
+		L=(LinkedList<K>)L.clone();
+		return L.pop();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized void push(K arg0) {
+		L=(LinkedList<K>)L.clone();
+		L.push(arg0);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized K remove() {
+		L=(LinkedList<K>)L.clone();
+		return L.remove();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized K remove(int arg0) {
+		L=(LinkedList<K>)L.clone();
+		return L.remove(arg0);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized boolean remove(Object arg0) {
+		L=(LinkedList<K>)L.clone();
+		return L.remove(arg0);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized K removeFirst() {
+		L=(LinkedList<K>)L.clone();
+		return L.removeFirst();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized boolean removeFirstOccurrence(Object arg0) {
+		L=(LinkedList<K>)L.clone();
+		return L.removeFirstOccurrence(arg0);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized K removeLast() {
+		L=(LinkedList<K>)L.clone();
+		return L.removeLast();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized boolean removeLastOccurrence(Object arg0) {
+		L=(LinkedList<K>)L.clone();
+		return L.removeLastOccurrence(arg0);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized K set(int arg0, K arg1) {
+		L=(LinkedList<K>)L.clone();
+		return L.set(arg0, arg1);
+	}
+
+	@Override
+	public int size() {
+		return L.size();
+	}
+
+	@Override
+	public Object[] toArray() {
+		return L.toArray();
+	}
+
+	@Override
+	public <T> T[] toArray(T[] arg0) {
+		return L.toArray(arg0);
+	}
+
+	@Override
+	public Iterator<K> iterator() {
+		return new ReadOnlyIterator<K>(L.iterator());
+	}
+
+	@Override
+	public boolean equals(Object arg0) {
+		return this==arg0;
+	}
+
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+
+	@Override
+	public ListIterator<K> listIterator() {
+		return new ReadOnlyListIterator<K>(L.listIterator());
+	}
+
+	@Override
+	public List<K> subList(int arg0, int arg1) {
+		return new ReadOnlyList<K>(L.subList(arg0, arg1));
+	}
+
+	@Override
+	public boolean containsAll(Collection<?> c) {
+		return L.containsAll(c);
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return L.isEmpty();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized boolean removeAll(Collection<?> c) {
+		L=(LinkedList<K>)L.clone();
+		return L.removeAll(c);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized boolean retainAll(Collection<?> c) {
+		L=(LinkedList<K>)L.clone();
+		return L.retainAll(c);
+	}
+
+	@Override
+	public String toString() {
+		return super.toString();
+	}
+
+}

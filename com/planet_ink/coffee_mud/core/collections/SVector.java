@@ -25,8 +25,7 @@ limitations under the License.
  */
 public class SVector<T> implements Serializable, Cloneable, Iterable<T>, Collection<T>, List<T>, RandomAccess 
 {
-
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 6687178785122561992L;
 	private Vector<T> V;
 
 	public SVector()
@@ -45,7 +44,7 @@ public class SVector<T> implements Serializable, Cloneable, Iterable<T>, Collect
 	@SuppressWarnings("unchecked")
 	@Override
 	public synchronized Object clone() {
-		SVector<T> SV=(SVector<T>)this.clone();
+		SVector<T> SV=new SVector<T>();
 		SV.V=(Vector<T>)V.clone();
 		return SV;
 	}
@@ -173,7 +172,7 @@ public class SVector<T> implements Serializable, Cloneable, Iterable<T>, Collect
 
 	@Override
 	public String toString() {
-		return V.toString();
+		return super.toString();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -283,16 +282,16 @@ public class SVector<T> implements Serializable, Cloneable, Iterable<T>, Collect
 
 	@Override
 	public Iterator<T> iterator() {
-		return V.iterator();
+		return new ReadOnlyIterator<T>(V.iterator());
 	}
 
 	@Override
 	public ListIterator<T> listIterator() {
-		return V.listIterator();
+		return new ReadOnlyListIterator<T>(V.listIterator());
 	}
 
 	@Override
 	public ListIterator<T> listIterator(int index) {
-		return V.listIterator();
+		return new ReadOnlyListIterator<T>(V.listIterator());
 	}
 }
