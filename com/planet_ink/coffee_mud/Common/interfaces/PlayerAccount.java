@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Common.interfaces;
 
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Vector;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary;

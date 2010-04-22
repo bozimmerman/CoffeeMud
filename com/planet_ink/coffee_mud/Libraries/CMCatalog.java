@@ -822,15 +822,16 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
         	return set.random();
         }
         
-        public String mostPopularArea() {
+        public String mostPopularArea() 
+        {
         	RoomnumberSet set=getLocations();
-        	Enumeration e=set.getAreaNames();
-        	if(!e.hasMoreElements()) return "";
-        	String maxArea=(String)e.nextElement();
+        	Iterator<String> e=set.getAreaNames();
+        	if(!e.hasNext()) return "";
+        	String maxArea=(String)e.next();
         	int maxCount=set.roomCount(maxArea);
-        	for(;e.hasMoreElements();) 
+        	for(;e.hasNext();) 
         	{
-        		String area=(String)e.nextElement();
+        		String area=(String)e.next();
         		int count=set.roomCount(area);
         		if(count>maxCount)
         		{

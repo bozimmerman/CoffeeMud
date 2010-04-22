@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
+import java.util.Map.Entry;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
@@ -35,7 +36,7 @@ limitations under the License.
 @SuppressWarnings("unchecked")
 public class DefaultRoomnumberSet implements RoomnumberSet
 {
-    public DVector root=new DVector(2);
+    public STreeMap<String,CMIntegerGrouper> root=new STreeMap<String,CMIntegerGrouper>();
     public String ID(){return "DefaultRoomnumberSet";}
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultRoomnumberSet();}}
@@ -43,43 +44,43 @@ public class DefaultRoomnumberSet implements RoomnumberSet
     public CMObject copyOf()
     {
         DefaultRoomnumberSet R=new DefaultRoomnumberSet();
-        R.root=new DVector(2);
+        R.root=new STreeMap<String,CMIntegerGrouper>();
         CMIntegerGrouper CI=null;
-        for(int r=0;r<root.size();r++)
+        for(String area : root.keySet())
         {
-        	CI=((CMIntegerGrouper)root.elementAt(r,2));
-            R.root.addElement(root.elementAt(r,1),CI==null?null:CI.copyOf());
+        	CI=root.get(area);
+            R.root.put(area,CI);
         }
         return R;
     }
-    public void add(RoomnumberSet set)
+    public synchronized void add(RoomnumberSet set)
     {
     	CMIntegerGrouper his=null;
     	CMIntegerGrouper mine=null;
     	String arName=null;
-    	for(Enumeration v=set.getAreaNames();v.hasMoreElements();)
+    	for(Iterator<String> v=set.getAreaNames();v.hasNext();)
     	{
-    		arName=(String)v.nextElement();
+    		arName=(String)v.next();
     		his=set.getGrouper(arName);
     		mine=set.getGrouper(arName);
     		if(mine==null)
     		{
     			if(his!=null)
 	    			mine=(CMIntegerGrouper)his.copyOf();
-    			root.addElement(arName.toUpperCase(),mine);
+    			root.put(arName.toUpperCase(),mine);
     		}
     		else
     			mine.add(his);
     	}
     }
     
-    public void remove(String str)
+    public synchronized void remove(String str)
     {
         String areaName=str.toUpperCase().trim();
         if(areaName.length()==0) return;
         
         String theRest=null;
-        long roomNum=-1;
+        long roomNum=0;
         int x=areaName.indexOf("#");
         CMIntegerGrouper CI=null;
         if(x<=0)
@@ -110,21 +111,14 @@ public class DefaultRoomnumberSet implements RoomnumberSet
         if(CI==null) return;
         CI.remove(roomNum);
         if(CI.roomCount()==0)
-        	root.removeElement(areaName.toUpperCase());
+        	root.remove(areaName.toUpperCase());
     }
     
     public int roomCountAllAreas()
     {
     	int total=0;
-    	CMIntegerGrouper CMI=null;
-    	for(int i=0;i<root.size();i++)
-    	{
-            CMI=(CMIntegerGrouper)root.elementAt(i,2);
-            if(CMI==null) 
-            	total++;
-            else
-	            total+=CMI.roomCount();
-    	}
+    	for(CMIntegerGrouper CMI : root.values())
+            total+=CMI.roomCount();
     	return total;
     }
     
@@ -135,59 +129,28 @@ public class DefaultRoomnumberSet implements RoomnumberSet
             areaName=areaName.substring(0,x).toUpperCase();
         else
             areaName=areaName.toUpperCase();
-        int start=0;
-        int end=root.size()-1;
-        int comp=-1;
-        int mid=-1;
-        while(start<=end)
-        {
-            mid=(end+start)/2;
-            comp=areaName.compareTo((String)root.elementAt(mid,1));
-            if(comp==0)
-            {
-                if(root.elementAt(mid,2)!=null)
-                {
-                	CMIntegerGrouper CMI=(CMIntegerGrouper)root.elementAt(mid,2);
-                	if(CMI==null) return 1;
-                    return CMI.roomCount();
-                }
-                return 0;
-            }
-            else
-            if(comp<0)
-                end=mid-1;
-            else
-                start=mid+1;
-        }
-        return 0;
+    	CMIntegerGrouper CMI=(CMIntegerGrouper)root.get(areaName);
+    	if(CMI!=null)
+    		return CMI.roomCount();
+    	return 0;
     }
     
     public String random()
     {
-    	int total=0;
-    	CMIntegerGrouper CMI=null;
-    	for(int i=0;i<root.size();i++)
-    	{
-            CMI=(CMIntegerGrouper)root.elementAt(i,2);
-            if(CMI==null)
-            	total++;
-            else
-	            total+=CMI.roomCount();
-    	}
+    	int total=roomCountAllAreas();
     	if(total<=0) return null;
     	int which=CMLib.dice().roll(1,total,-1);
     	total=0;
         String roomID=null;
-    	for(int i=0;i<root.size();i++)
+        CMIntegerGrouper CMI = null;
+    	for(Entry<String,CMIntegerGrouper> set : root.entrySet())
     	{
-            CMI=(CMIntegerGrouper)root.elementAt(i,2);
-            if(CMI==null)
-            	total++;
-            else
+            CMI=set.getValue();
+            if(CMI!=null)
 	    		total+=CMI.roomCount();
     		if(which<total)
     		{
-    			roomID=(String)root.elementAt(i,1);
+    			roomID=set.getKey();
     			break;
     		}
     	}
@@ -238,60 +201,23 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		return prefix+"#"+firstID+"#("+secondID+","+thirdID+")";
     }
     
-    public Enumeration getAreaNames(){ return ((Vector)root.getDimensionVector(1).clone()).elements();}
+    public Iterator<String> getAreaNames(){ return root.keySet().iterator();}
     
     private boolean isGrouper(String areaName)
     {
-    	areaName=areaName.toUpperCase();
-        int start=0;
-        int end=root.size()-1;
-        int comp=-1;
-        int mid=-1;
-        while(start<=end)
-        {
-            mid=(end+start)/2;
-            comp=areaName.compareTo((String)root.elementAt(mid,1));
-            if(comp==0) return true;
-            else
-            if(comp<0)
-                end=mid-1;
-            else
-                start=mid+1;
-        }
-        return false;
+    	return root.containsKey(areaName.toUpperCase());
     }
     
     public CMIntegerGrouper getGrouper(String areaName)
     {
-    	areaName=areaName.toUpperCase();
-        int start=0;
-        int end=root.size()-1;
-        int comp=-1;
-        int mid=-1;
-        while(start<=end)
-        {
-            mid=(end+start)/2;
-            comp=areaName.compareTo((String)root.elementAt(mid,1));
-            if(comp==0)
-            {
-                if(root.elementAt(mid,2)!=null)
-                    return ((CMIntegerGrouper)root.elementAt(mid,2));
-                return null;
-            }
-            else
-            if(comp<0)
-                end=mid-1;
-            else
-                start=mid+1;
-        }
-        return null;
+    	return root.get(areaName.toUpperCase());
     }
     
     public boolean contains(String str)
     {
     	if(str==null) return false;
         String theRest=null;
-        long roomNum=-1;
+        long roomNum=0;
         int origX=str.indexOf("#");
         int x=origX;
         if(x>0)
@@ -325,11 +251,11 @@ public class DefaultRoomnumberSet implements RoomnumberSet
     public String xml()
     {
         StringBuffer str=new StringBuffer("<AREAS>");
-        for(int i=0;i<root.size();i++)
+        for(Entry<String,CMIntegerGrouper> set : root.entrySet())
         {
-            str.append("<AREA><ID>"+(String)root.elementAt(i,1)+"</ID>");
-            if(root.elementAt(i,2)!=null)
-                str.append("<NUMS>"+((CMIntegerGrouper)root.elementAt(i,2)).text()+"</NUMS>");
+            str.append("<AREA><ID>"+set.getKey()+"</ID>");
+            if(set.getValue()!=null)
+                str.append("<NUMS>"+set.getValue().text()+"</NUMS>");
             str.append("</AREA>");
         }
         return str.toString()+"</AREAS>";
@@ -349,23 +275,23 @@ public class DefaultRoomnumberSet implements RoomnumberSet
                 XMLLibrary.XMLpiece ablk=(XMLLibrary.XMLpiece)xV.elementAt(x);
                 if((ablk.tag.equalsIgnoreCase("AREA"))&&(ablk.contents!=null))
                 {
-                    ID=CMLib.xml().getValFromPieces(ablk.contents,"ID");
+                    ID=CMLib.xml().getValFromPieces(ablk.contents,"ID").toUpperCase();
                     NUMS=CMLib.xml().getValFromPieces(ablk.contents,"NUMS");
                     if((NUMS!=null)&&(NUMS.length()>0))
-                        root.addElement(ID,((CMIntegerGrouper)CMClass.getCommon("DefaultCMIntegerGrouper")).parseText(NUMS));
+                        root.put(ID,((CMIntegerGrouper)CMClass.getCommon("DefaultCMIntegerGrouper")).parseText(NUMS));
                     else
-                        root.addElement(ID,null);
+                        root.put(ID,null);
                 }
             }
     }
     
-    public void add(String str)
+    public synchronized void add(String str)
     {
         String areaName=str.toUpperCase().trim();
         if(areaName.length()==0) return;
         
         String theRest=null;
-        long roomNum=-1;
+        long roomNum=0;
         int x=areaName.indexOf("#");
         if(x>0)
         {
@@ -387,57 +313,20 @@ public class DefaultRoomnumberSet implements RoomnumberSet
             if(CMath.isInteger(theRest))
                 roomNum=Integer.parseInt(theRest.substring(x+1).trim());
         }
-        int start=0;
-        int end=root.size()-1;
-        int comp=-1;
-        int mid=-1;
-        int lastStart=0;
-        int lastEnd=root.size()-1;
-        while(start<=end)
+        CMIntegerGrouper CI = root.get(areaName);
+        if(CI==null)
         {
-            mid=(end+start)/2;
-            comp=areaName.compareTo((String)root.elementAt(mid,1));
-            if(comp==0)
-                break;
-            else
-            if(comp<0)
-            {
-                lastEnd=end;
-                end=mid-1;
-            }
-            else
-            {
-                lastStart=start;
-                start=mid+1;
-            }
+        	CI=(CMIntegerGrouper)CMClass.getCommon("DefaultCMIntegerGrouper");
+        	root.put(areaName,CI);
         }
-        if(comp==0)
-        {
-            if(root.elementAt(mid,2)!=null)
-                ((CMIntegerGrouper)root.elementAt(mid,2)).add(roomNum);
-        }
-        else
-        {
-            if(mid<0)
-                root.addElement(areaName,((CMIntegerGrouper)CMClass.getCommon("DefaultCMIntegerGrouper")).add(roomNum));
-            else
-            {
-                for(comp=lastStart;comp<=lastEnd;comp++)
-                    if(areaName.compareTo((String)root.elementAt(comp,1))<0)
-                    {
-                        root.insertElementAt(comp,areaName,((CMIntegerGrouper)CMClass.getCommon("DefaultCMIntegerGrouper")).add(roomNum));
-                        return;
-                    }
-                root.addElement(areaName,((CMIntegerGrouper)CMClass.getCommon("DefaultCMIntegerGrouper")).add(roomNum));
-            }
-        }
+        CI.add(roomNum);
     }
     
     public Enumeration getRoomIDs(){return new RoomnumberSetEnumeration();}
     
     private class RoomnumberSetEnumeration implements Enumeration
     {
-    	Enumeration areaNames=null;
+    	Iterator<String> areaNames=null;
     	String areaName=null;
     	long[] nums=null;
     	String nextID=null;
@@ -458,9 +347,9 @@ public class DefaultRoomnumberSet implements RoomnumberSet
     		if(nums==null)
     		{
     			nextID=null;
-    			if((areaNames==null)||(!areaNames.hasMoreElements()))
+    			if((areaNames==null)||(!areaNames.hasNext()))
     				return;
-    			areaName=(String)areaNames.nextElement();
+    			areaName=areaNames.next();
     			CMIntegerGrouper grp=getGrouper(areaName);
     			if(grp==null){ nextID=areaName; return;}
     			nums=grp.allRoomNums();

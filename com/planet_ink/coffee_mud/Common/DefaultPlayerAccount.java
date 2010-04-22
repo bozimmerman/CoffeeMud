@@ -39,8 +39,8 @@ public class DefaultPlayerAccount implements PlayerAccount
     public String ID(){return "DefaultPlayerAccount";}
     protected HashSet friends=new HashSet();
     protected HashSet ignored=new HashSet();
-    protected Vector<String> players = new Vector<String>();
-    protected Vector<PlayerLibrary.ThinPlayer> thinPlayers = new Vector<PlayerLibrary.ThinPlayer>();
+    protected SVector<String> players = new SVector<String>();
+    protected SVector<PlayerLibrary.ThinPlayer> thinPlayers = new SVector<PlayerLibrary.ThinPlayer>();
     protected String accountName = "";
 	protected String lastIP="";
     protected long LastDateTime=System.currentTimeMillis();
@@ -237,8 +237,8 @@ public class DefaultPlayerAccount implements PlayerAccount
 			return;
 		try
 		{
-			for(int p=0;p<players.size();p++)
-				if(players.elementAt(p).equalsIgnoreCase(mob.Name()))
+			for(String name : players)
+				if(name.equalsIgnoreCase(mob.Name()))
 					return;
 		}
 		catch(Exception e) {}
@@ -259,9 +259,9 @@ public class DefaultPlayerAccount implements PlayerAccount
 		players.remove(mob.Name());
 		try
 		{
-			for(int p=players.size()-1;p>=0;p--)
-				if(players.elementAt(p).equalsIgnoreCase(mob.Name()))
-					players.removeElementAt(p);
+			for(String name : players)
+				if(name.equalsIgnoreCase(mob.Name()))
+					players.remove(name);
 		}
 		catch(Exception e) {}
 		thinPlayers.clear();
@@ -289,14 +289,14 @@ public class DefaultPlayerAccount implements PlayerAccount
 					thinPlayers.add(tP);
 				}
 		}
-		return ((Vector<PlayerLibrary.ThinPlayer>)thinPlayers.clone()).elements();
+		return thinPlayers.elements();
 	}
 	public Enumeration<String> getPlayers() {
-		return ((Vector<String>)players.clone()).elements();
+		return players.elements();
 	}
 	public void setPlayerNames(Vector<String> names) {
-		names.trimToSize();
-		players = names;
+		if(names != null)
+			players = new SVector<String>(names);
 	}
 	public int numPlayers() { return players.size();}
 	public boolean isSet(String flagName) { return acctFlags.contains(flagName.toUpperCase());}

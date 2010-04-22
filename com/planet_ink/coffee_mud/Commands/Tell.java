@@ -58,7 +58,7 @@ public class Tell extends StdCommand
 		   &&(CMath.isNumber(CMParms.combine(commands,1)))
 		   &&(mob.playerStats()!=null))
 		{
-			Vector V=mob.playerStats().getTellStack();
+			java.util.List<String> V=mob.playerStats().getTellStack();
 			if((V.size()==0)
 			||(CMath.bset(metaFlags,Command.METAFLAG_AS))
 	        ||(CMath.bset(metaFlags,Command.METAFLAG_POSSESSED)))
@@ -71,7 +71,7 @@ public class Tell extends StdCommand
 		        try {
     		        if(S!=null) S.snoopSuspension(1);
     				for(int i=V.size()-num;i<V.size();i++)
-    					mob.tell((String)V.elementAt(i));
+    					mob.tell((String)V.get(i));
 		        } finally {
 		            if(S!=null) S.snoopSuspension(-1);
 		        }

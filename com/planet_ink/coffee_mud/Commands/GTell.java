@@ -54,7 +54,7 @@ public class GTell extends StdCommand
 		&&(CMath.isNumber(CMParms.combine(commands,2))))
 		&&(mob.playerStats()!=null))
 		{
-			Vector V=mob.playerStats().getGTellStack();
+			java.util.List<String> V=mob.playerStats().getGTellStack();
 			if(V.size()==0)
 				mob.tell("No telling.");
 			else
@@ -62,7 +62,7 @@ public class GTell extends StdCommand
 				int num=CMath.s_int(CMParms.combine(commands,2));
 				if(num>V.size()) num=V.size();
 				for(int i=V.size()-num;i<V.size();i++)
-					mob.tell((String)V.elementAt(i));
+					mob.tell((String)V.get(i));
 			}
 			return false;
 		}

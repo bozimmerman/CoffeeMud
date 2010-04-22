@@ -307,9 +307,9 @@ public class DefaultPlayerStats implements PlayerStats
 		tellStack.addElement(msg);
 	}
 	
-	public Vector getTellStack()
+	public List<String> getTellStack()
 	{
-		return (Vector)tellStack.clone();
+		return new ReadOnlyList(tellStack);
 	}
     public RoomnumberSet roomSet()
     {
@@ -324,9 +324,9 @@ public class DefaultPlayerStats implements PlayerStats
 		gtellStack.addElement(msg);
 	}
 	
-	public Vector getGTellStack()
+	public List<String> getGTellStack()
 	{
-		return (Vector)gtellStack.clone();
+		return new ReadOnlyList(gtellStack);
 	}
 	
 	public HashSet getFriends()

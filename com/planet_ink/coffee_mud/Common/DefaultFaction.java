@@ -492,11 +492,7 @@ public class DefaultFaction implements Faction, MsgListener
     {
     	SVector<Faction.FactionReactionItem> V=(SVector<Faction.FactionReactionItem>)reactionHash.get(item.rangeName().toUpperCase().trim());
     	if(V!=null)
-    	{
-    		V=(SVector<Faction.FactionReactionItem>)V.clone();
     		V.remove(item);
-    		reactionHash.put(item.rangeName().toUpperCase().trim(),V);
-    	}
     	boolean res = reactions.remove(item);
     	if(reactions.size()==0) reactionHash.clear();
         lastFactionDataChange[0]=System.currentTimeMillis();

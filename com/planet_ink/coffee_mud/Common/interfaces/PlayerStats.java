@@ -198,14 +198,14 @@ public interface PlayerStats extends CMCommon, CMModifiable, AccountStats
     public String getActiveTitle();
 
     /**
-     * Returns a Vector of the last few string messages sent and received to and
+     * Returns a List of the last few string messages sent and received to and
      * from this player.
      * 
      * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#addTellStack(String)
      * 
-     * @return a Vector of strings, the last few tell messages
+     * @return a List of strings, the last few tell messages
      */
-	public Vector getTellStack();
+	public List<String> getTellStack();
 	
 	/**
 	 * Adds a new string message to the tell stack.
@@ -217,14 +217,14 @@ public interface PlayerStats extends CMCommon, CMModifiable, AccountStats
     public void addTellStack(String msg);
     
     /**
-     * Returns a Vector of the last few string messages sent and received to and
+     * Returns a List of the last few string messages sent and received to and
      * from this players group.
      * 
      * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#addGTellStack(String)
      * 
-     * @return a Vector of strings, the last few gtell messages
+     * @return a List of strings, the last few gtell messages
      */
-    public Vector getGTellStack();
+    public List<String> getGTellStack();
 
     /**
      * Adds a new string message to the gtell stack.
