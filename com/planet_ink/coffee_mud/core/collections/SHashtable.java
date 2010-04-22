@@ -40,7 +40,7 @@ public class SHashtable<K,F> implements java.util.Map<K,F>, java.lang.Cloneable,
 	@Override
 	public synchronized Object clone() {
 		SHashtable<F,K> SH=new SHashtable<F,K>();
-		SH.H=(Hashtable<F,K>)H;
+		SH.H=(Hashtable<F,K>)H.clone();
 		return SH;
 	}
 
@@ -122,7 +122,7 @@ public class SHashtable<K,F> implements java.util.Map<K,F>, java.lang.Cloneable,
 
 	@Override
 	public synchronized Collection<F> values() {
-		return H.values();
+		return new ReadOnlyCollection<F>(H.values());
 	}
 	@SuppressWarnings("unchecked")
 	@Override
