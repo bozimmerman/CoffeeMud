@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.core;
 import java.util.*;
 
+import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.interfaces.CMObject;
 import com.planet_ink.coffee_mud.core.interfaces.Environmental;
 
@@ -49,11 +50,15 @@ public class CMParms
     }
     
     
-	public static void sortVector(Vector V) {
+	public static void sortVector(List V) {
         Vector V2=new Vector(new TreeSet(V));
         V.clear();
         V.addAll(V2);
-        V.trimToSize();
+        if(V instanceof Vector)
+        	((Vector)V).trimToSize();
+        else
+        if(V instanceof SVector)
+        	((SVector)V).trimToSize();
     }
 
     public static String combineAfterIndexWithQuotes(Vector commands, String match)
@@ -853,11 +858,11 @@ public class CMParms
         return h;
     }
 
-    public static Hashtable parseEQParms(Vector parms, int start, int end)
+    public static Hashtable parseEQParms(List parms, int start, int end)
     {
         Hashtable h=new Hashtable();
-    	for(int x=0;x<parms.size();x++)
-    		h.putAll(parseEQParms((String)parms.elementAt(x)));
+    	for(Object O : parms)
+    		h.putAll(parseEQParms((String)O));
         return h;
     }
     
@@ -1049,7 +1054,7 @@ public class CMParms
         return defaultValue;
     }
 
-    public static String[] toStringArray(Vector V)
+    public static String[] toStringArray(List V)
     {
         if((V==null)||(V.size()==0)){
             String[] s=new String[0];
@@ -1057,7 +1062,7 @@ public class CMParms
         }
         String[] s=new String[V.size()];
         for(int v=0;v<V.size();v++)
-            s[v]=V.elementAt(v).toString();
+            s[v]=V.get(v).toString();
         return s;
     }
 
@@ -1070,7 +1075,7 @@ public class CMParms
         return s;
     }
 
-    public static long[] toLongArray(Vector V)
+    public static long[] toLongArray(List V)
     {
         if((V==null)||(V.size()==0)){
             long[] s=new long[0];
@@ -1078,10 +1083,10 @@ public class CMParms
         }
         long[] s=new long[V.size()];
         for(int v=0;v<V.size();v++)
-            s[v]=CMath.s_long(V.elementAt(v).toString());
+            s[v]=CMath.s_long(V.get(v).toString());
         return s;
     }
-    public static int[] toIntArray(Vector V)
+    public static int[] toIntArray(List V)
     {
         if((V==null)||(V.size()==0)){
             int[] s=new int[0];
@@ -1089,7 +1094,7 @@ public class CMParms
         }
         int[] s=new int[V.size()];
         for(int v=0;v<V.size();v++)
-            s[v]=CMath.s_int(V.elementAt(v).toString());
+            s[v]=CMath.s_int(V.get(v).toString());
         return s;
     }
 
@@ -1129,15 +1134,15 @@ public class CMParms
         return str.toString();
     }
     
-    public static String toSemicolonList(Vector bytes)
+    public static String toSemicolonList(List bytes)
     {
         StringBuffer str=new StringBuffer("");
         for(int b=0;b<bytes.size();b++)
-            str.append(bytes.elementAt(b)+(b<(bytes.size()-1)?";":""));
+            str.append(bytes.get(b)+(b<(bytes.size()-1)?";":""));
         return str.toString();
     }
 
-    public static String toSafeSemicolonList(Vector list)
+    public static String toSafeSemicolonList(List list)
     {
         return toSafeSemicolonList(list.toArray());
     }
@@ -1201,7 +1206,7 @@ public class CMParms
         return new byte[0];
     }
 
-    public static String[] toStringArray(HashSet V)
+    public static String[] toStringArray(Set V)
     {
         if((V==null)||(V.size()==0)){
             String[] s=new String[0];
@@ -1353,19 +1358,19 @@ public class CMParms
     }
 
 
-    public static String toStringList(Vector V)
+    public static String toStringList(List V)
     {
         if((V==null)||(V.size()==0)){
             return "";
         }
         StringBuffer s=new StringBuffer("");
         for(int v=0;v<V.size();v++)
-            s.append(", "+V.elementAt(v).toString());
+            s.append(", "+V.get(v).toString());
         if(s.length()==0) return "";
         return s.toString().substring(2);
     }
 
-    public static String toStringList(HashSet V)
+    public static String toStringList(Set V)
     {
         if((V==null)||(V.size()==0)){
             return "";
@@ -1377,13 +1382,13 @@ public class CMParms
         return s.toString().substring(2);
     }
 
-    public static boolean equalVectors(Vector V1, Vector V2)
+    public static boolean equalVectors(List V1, List V2)
     {
         if((V1==null)&&(V2==null)) return true;
         if((V1==null)||(V2==null)) return false;
         if(V1.size()!=V2.size()) return false;
         for(int v=0;v<V1.size();v++)
-            if(!V1.elementAt(v).equals(V2.elementAt(v)))
+            if(!V1.get(v).equals(V2.get(v)))
                 return false;
         return true;
     }
@@ -1483,18 +1488,18 @@ public class CMParms
     public static HashSet makeHashSet(Object O, Object O2, Object O3, Object O4)
     {HashSet H=new HashSet(); H.add(O); H.add(O2); H.add(O3); H.add(O4); return H;}
 
-    public static String[] toStringArray(Hashtable V)
+    public static String[] toStringArray(Map H)
     {
-        if((V==null)||(V.size()==0)){
+        if((H==null)||(H.size()==0)){
             String[] s=new String[0];
             return s;
         }
-        String[] s=new String[V.size()];
+        String[] s=new String[H.size()];
         int v=0;
-        for(Enumeration e=V.keys();e.hasMoreElements();)
+        for(Object O : H.keySet())
         {
-            String KEY=(String)e.nextElement();
-            s[v]=(String)V.get(KEY);
+            String KEY=(String)O;
+            s[v]=(String)H.get(KEY);
             v++;
         }
         return s;
@@ -1511,51 +1516,51 @@ public class CMParms
     	return newa;
     }
     
-	public static void addToVector(Vector from, Vector to)
+	public static void addToVector(List from, List to)
     {
         if(from!=null)
         for(int i=0;i<from.size();i++)
-            to.addElement(from.elementAt(i));
+            to.add(from.get(i));
     }
     
-	public static void delFromVector(Vector del, Vector from)
+	public static void delFromVector(List del, List from)
     {
         if(del!=null)
         for(int i=0;i<del.size();i++)
-            from.removeElement(del.elementAt(i));
+            from.remove(del.get(i));
     }
 
-    public static boolean vectorOfStringContainsIgnoreCase(Vector V, String s)
+    public static boolean vectorOfStringContainsIgnoreCase(List V, String s)
     {
         for(int v=0;v<V.size();v++)
-            if(s.equalsIgnoreCase((String)V.elementAt(v)))
+            if(s.equalsIgnoreCase((String)V.get(v)))
                 return true;
         return false;
     }
 
-    public static String toStringList(Hashtable V)
+    public static String toStringList(Map V)
     {
         if((V==null)||(V.size()==0)){
             return "";
         }
         StringBuffer s=new StringBuffer("");
-        for(Enumeration e=V.keys();e.hasMoreElements();)
+        for(Object O : V.keySet())
         {
-            String KEY=(String)e.nextElement();
+            String KEY=(String)O;
             s.append(KEY+"="+(V.get(KEY).toString())+"/");
         }
         return s.toString();
     }
 
 
-    public static Vector copyVector(Vector V)
+    public static Vector copyVector(List V)
     {
         Vector V2=new Vector();
         for(int v=0;v<V.size();v++)
         {
-            Object h=V.elementAt(v);
-            if(h instanceof Vector)
-                V2.addElement(copyVector((Vector)h));
+            Object h=V.get(v);
+            if(h instanceof List)
+                V2.addElement(copyVector((List)h));
             else
                 V2.addElement(h);
         }

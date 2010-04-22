@@ -37,20 +37,16 @@ import java.util.*;
 public class CMMap extends StdLibrary implements WorldMap
 {
     public String ID(){return "CMMap";}
-	public Vector 				areasList 		 = new Vector();
-    public Vector 				sortedAreas	     = null;
+	public SVector<Area>		areasList 		 = new SVector<Area>();
+    public SVector<Area>		sortedAreas	     = null;
     
-	public Vector<Deity>		deitiesList 	 = new Vector<Deity>();
-	public Object				dietiesSync		 = new Object();
-    public Vector<PostOffice> 	postOfficeList	 = new Vector<PostOffice>();
-	public Object				postOfficeSync	 = new Object();
-    public Vector<Auctioneer> 	auctionHouseList = new Vector<Auctioneer>();
-	public Object				auctionHouseSync = new Object();
-    public Vector<Banker> 		bankList		 = new Vector<Banker>();
-	public Object				bankSync 		 = new Object();
-	public Vector 				space			 = new Vector();
-    public Hashtable<Integer,Vector<WeakReference>> 
-    							globalHandlers	 = new Hashtable<Integer,Vector<WeakReference>>();
+	public SVector<Deity>		deitiesList 	 = new SVector<Deity>();
+    public SVector<PostOffice> 	postOfficeList	 = new SVector<PostOffice>();
+    public SVector<Auctioneer> 	auctionHouseList = new SVector<Auctioneer>();
+    public SVector<Banker> 		bankList		 = new SVector<Banker>();
+	public SVector 				space			 = new SVector();
+    public SHashtable<Integer,Vector<WeakReference>> 
+    							globalHandlers	 = new SHashtable<Integer,Vector<WeakReference>>();
 	public final int 			QUADRANT_WIDTH	 = 10;
     public static MOB 			deityStandIn	 = null;
     public long 				lastVReset		 = 0;
@@ -98,7 +94,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		if(sortedAreas==null)
 		{
-			Vector V=new Vector();
+			SVector V=new SVector<Area>();
 			Area A=null;
 			for(Enumeration e=areas();e.hasMoreElements();)
 			{
@@ -838,27 +834,12 @@ public class CMMap extends StdLibrary implements WorldMap
 	public void addDeity(Deity newOne)
 	{
 		if (!deitiesList.contains(newOne))
-		{
-        	synchronized(dietiesSync)
-        	{
-				Vector<Deity> newDeitiesList = (Vector<Deity>)deitiesList.clone();
-				newDeitiesList.add(newOne);
-				deitiesList = newDeitiesList;
-        	}
-		}
+			deitiesList.add(newOne);
 	}
 	
 	public void delDeity(Deity oneToDel)
 	{
-        if (deitiesList.contains(oneToDel))
-        {
-        	synchronized(dietiesSync)
-        	{
-				Vector<Deity> newDeitiesList = (Vector<Deity>)deitiesList.clone();
-				newDeitiesList.remove(oneToDel);
-				deitiesList = newDeitiesList;
-        	}
-        }
+		deitiesList.remove(oneToDel);
 	}
 	
 	public Deity getDeity(String calledThis)
@@ -874,26 +855,11 @@ public class CMMap extends StdLibrary implements WorldMap
     public void addPostOffice(PostOffice newOne)
     {
         if(!postOfficeList.contains(newOne))
-        {
-        	synchronized(postOfficeSync)
-        	{
-				Vector<PostOffice> newPostOfficeList = (Vector<PostOffice>)postOfficeList.clone();
-				newPostOfficeList.add(newOne);
-	    		postOfficeList = newPostOfficeList;
-        	}
-        }
+			postOfficeList.add(newOne);
     }
     public void delPostOffice(PostOffice oneToDel)
     {
-        if (postOfficeList.contains(oneToDel))
-        {
-        	synchronized(postOfficeSync)
-        	{
-				Vector<PostOffice> newPostOfficeList = (Vector<PostOffice>)postOfficeList.clone();
-				newPostOfficeList.remove(oneToDel);
-				postOfficeList = newPostOfficeList;
-        	}
-        }
+		postOfficeList.remove(oneToDel);
     }
     public PostOffice getPostOffice(String chain, String areaNameOrBranch)
     {
@@ -922,25 +888,12 @@ public class CMMap extends StdLibrary implements WorldMap
     {
         if (!auctionHouseList.contains(newOne))
         {
-        	synchronized(auctionHouseSync)
-        	{
-	    		Vector<Auctioneer> newAuctionHouseList = (Vector<Auctioneer>)auctionHouseList.clone();
-	    		newAuctionHouseList.add(newOne);
-	        	auctionHouseList=newAuctionHouseList;
-        	}
+    		auctionHouseList.add(newOne);
         }
     }
     public void delAuctionHouse(Auctioneer oneToDel)
     {
-        if (auctionHouseList.contains(oneToDel))
-        {
-        	synchronized(auctionHouseSync)
-        	{
-				Vector<Auctioneer> newAuctionHouseList = (Vector<Auctioneer>)auctionHouseList.clone();
-				newAuctionHouseList.remove(oneToDel);
-		    	auctionHouseList=newAuctionHouseList;
-        	}
-        }
+		auctionHouseList.remove(oneToDel);
     }
     public Auctioneer getAuctionHouse(String chain, String areaNameOrBranch)
     {
@@ -964,26 +917,11 @@ public class CMMap extends StdLibrary implements WorldMap
     public void addBank(Banker newOne)
     {
         if (!bankList.contains(newOne))
-        {
-        	synchronized(bankSync)
-        	{
-	    		Vector<Banker> newBankList = (Vector<Banker>)bankList.clone();
-	    		newBankList.add(newOne);
-	        	bankList=newBankList;
-        	}
-        }
+    		bankList.add(newOne);
     }
     public void delBank(Banker oneToDel)
     {
-        if (bankList.contains(oneToDel))
-        {
-        	synchronized(bankSync)
-        	{
-				Vector<Banker> newBankList = (Vector<Banker>)bankList.clone();
-		    	bankList.remove(oneToDel);
-		    	bankList=newBankList;
-        	}
-        }
+    	bankList.remove(oneToDel);
     }
     public Banker getBank(String chain, String areaNameOrBranch)
     {
@@ -1710,7 +1648,7 @@ public class CMMap extends StdLibrary implements WorldMap
     public boolean shutdown() {
         areasList.clear();
         deitiesList.clear();
-        space=new Vector();
+        space=new SVector();
         globalHandlers.clear();
         thread.shutdown();
         return true;

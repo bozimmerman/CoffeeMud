@@ -38,8 +38,8 @@ import java.util.*;
 public class Factions extends StdLibrary implements FactionManager
 {
     public String ID(){return "Factions";}
-	public Hashtable<String,Faction> factionSet = new Hashtable<String,Faction>();
-	public Hashtable<String,Faction> hashedFactionRanges=new Hashtable<String,Faction>();
+	public SHashtable<String,Faction> factionSet = new SHashtable<String,Faction>();
+	public SHashtable<String,Faction> hashedFactionRanges=new SHashtable<String,Faction>();
 	
     public Enumeration<Faction> factions()
     {
@@ -48,7 +48,7 @@ public class Factions extends StdLibrary implements FactionManager
     public int numFactions(){return factionSet.size();}
 	public void clearFactions()
 	{
-	    factionSet=new Hashtable<String,Faction>();
+	    factionSet.clear();
 	    hashedFactionRanges.clear();
 	}
     public void reloadFactions(String factionList)
@@ -59,7 +59,7 @@ public class Factions extends StdLibrary implements FactionManager
             getFaction((String)preLoadFactions.elementAt(i));
     }
 	
-	public Hashtable<String,Faction> rangeCodeNames(){ return hashedFactionRanges; }
+	public java.util.Map<String,Faction> rangeCodeNames(){ return hashedFactionRanges; }
 	public boolean isRangeCodeName(String key){ return rangeCodeNames().containsKey(key.toUpperCase());}
 	public boolean isFactionedThisWay(MOB mob, String rangeCodeName)
 	{
@@ -117,12 +117,7 @@ public class Factions extends StdLibrary implements FactionManager
 
 	public void addFaction(String factionID, Faction F)
 	{
-    	synchronized(this)
-    	{
-			Hashtable<String,Faction> newFactionSet = (Hashtable<String,Faction>)factionSet.clone();
-	        newFactionSet.put(factionID.toUpperCase().trim(),F);
-	        factionSet=newFactionSet;
-    	}
+        factionSet.put(factionID.toUpperCase().trim(),F);
 	}
 	
 	public Faction getFaction(String factionID) 
@@ -160,26 +155,21 @@ public class Factions extends StdLibrary implements FactionManager
 	public boolean removeFaction(String factionID) 
 	{
 		Faction F;
-    	synchronized(this)
-    	{
-	        Hashtable<String,Faction> newFactionSet = (Hashtable<String,Faction>)factionSet.clone();
-		    if(factionID==null) 
-		    {
-		        for(Enumeration<Faction> e=newFactionSet.elements();e.hasMoreElements();) 
-		        {
-		            F=e.nextElement();
-		            if(F!=null)
-			            removeFaction(F.factionID());
-		        }
-		        return true;
-		    }
-	        F=getFactionByName(factionID);
-	        if(F==null) F=getFaction(factionID);
-	        if(F==null) return false;
-	        Resources.removeResource(F.factionID());
-	        newFactionSet.remove(F.factionID().toUpperCase());
-	        factionSet=newFactionSet;
-    	}
+	    if(factionID==null) 
+	    {
+	        for(Enumeration<Faction> e=factionSet.elements();e.hasMoreElements();) 
+	        {
+	            F=e.nextElement();
+	            if(F!=null)
+		            removeFaction(F.factionID());
+	        }
+	        return true;
+	    }
+        F=getFactionByName(factionID);
+        if(F==null) F=getFaction(factionID);
+        if(F==null) return false;
+        Resources.removeResource(F.factionID());
+        factionSet.remove(F.factionID().toUpperCase());
         return true;
 	}
 	
@@ -294,23 +284,18 @@ public class Factions extends StdLibrary implements FactionManager
     		return null;
     	}
     	StringBuffer buf = rebuildFactionProperties(templateF);
-    	synchronized(this)
-    	{
-	    	Hashtable<String,Faction> newFactionSet=(Hashtable<String,Faction>)factionSet.clone();
-	    	newFactionSet.remove(templateF.factionID().toUpperCase().trim());
-	    	String bufStr = buf.toString();
-	    	bufStr = CMStrings.replaceAll(bufStr,"<NAME>",Name);
-	    	bufStr = CMStrings.replaceAll(bufStr,"<FACTIONID>",factionID);
-	    	bufStr = CMStrings.replaceAll(bufStr,"<CLASSID>",classID);
-	    	buf=new StringBuffer(bufStr);
-	    	Faction F=buildFactionFromXML(buf, factionID);
-	    	F.setInternalFlags(F.getInternalFlags() | Faction.IFLAG_IGNOREAUTO);
-	    	F.setInternalFlags(F.getInternalFlags() | Faction.IFLAG_NEVERSAVE);
-	    	F.setInternalFlags(F.getInternalFlags() | Faction.IFLAG_CUSTOMTICK);
-	    	newFactionSet.put(factionID,F);
-	        factionSet=newFactionSet;
-	    	return F;
-    	}
+    	factionSet.remove(templateF.factionID().toUpperCase().trim());
+    	String bufStr = buf.toString();
+    	bufStr = CMStrings.replaceAll(bufStr,"<NAME>",Name);
+    	bufStr = CMStrings.replaceAll(bufStr,"<FACTIONID>",factionID);
+    	bufStr = CMStrings.replaceAll(bufStr,"<CLASSID>",classID);
+    	buf=new StringBuffer(bufStr);
+    	Faction F=buildFactionFromXML(buf, factionID);
+    	F.setInternalFlags(F.getInternalFlags() | Faction.IFLAG_IGNOREAUTO);
+    	F.setInternalFlags(F.getInternalFlags() | Faction.IFLAG_NEVERSAVE);
+    	F.setInternalFlags(F.getInternalFlags() | Faction.IFLAG_CUSTOMTICK);
+    	factionSet.put(factionID,F);
+    	return F;
     }
     
     public Faction[] getSpecialFactions(MOB mob, Room R)

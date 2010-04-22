@@ -38,7 +38,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 {
     public String ID(){return "ColumbiaUniv";}
 								
-	protected Hashtable<String,ExpertiseLibrary.ExpertiseDefinition> completeEduMap=new Hashtable<String,ExpertiseLibrary.ExpertiseDefinition>();
+	protected SHashtable<String,ExpertiseLibrary.ExpertiseDefinition> completeEduMap=new SHashtable<String,ExpertiseLibrary.ExpertiseDefinition>();
     protected Hashtable[] completeUsageMap=new Hashtable[ExpertiseLibrary.NUM_XFLAGS];
     protected Properties helpMap=new Properties();
     protected DVector rawDefinitions=new DVector(7);
@@ -62,12 +62,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
     	def.qpCost=qpCost;
     	def.expCost=expCost;
     	def.timeCost=timeCost;
-    	synchronized(this)
-    	{
-	    	Hashtable<String,ExpertiseLibrary.ExpertiseDefinition> newEduMap=(Hashtable<String,ExpertiseLibrary.ExpertiseDefinition>)completeEduMap.clone();
-	    	newEduMap.put(def.ID,def);
-	    	completeEduMap=newEduMap;
-    	}
+    	completeEduMap.put(def.ID,def);
         return def;
     }
     public String getExpertiseHelp(String ID, boolean exact)
@@ -90,12 +85,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
     
     public void delDefinition(String ID)
     {
-    	synchronized(this)
-    	{
-	    	Hashtable<String,ExpertiseLibrary.ExpertiseDefinition> newEduMap = (Hashtable<String,ExpertiseLibrary.ExpertiseDefinition>)completeEduMap.clone();
-	    	newEduMap.remove(ID);
-	    	completeEduMap = newEduMap;
-    	}
+    	completeEduMap.remove(ID);
     }
     public Enumeration<ExpertiseDefinition> definitions(){ return completeEduMap.elements();}
     public ExpertiseDefinition getDefinition(String ID){ return (ID==null)?null:(ExpertiseDefinition)completeEduMap.get(ID.trim().toUpperCase());}

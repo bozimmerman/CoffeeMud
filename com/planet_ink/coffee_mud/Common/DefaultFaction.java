@@ -63,31 +63,23 @@ public class DefaultFaction implements Faction, MsgListener
 	protected boolean 	showInSpecialReported=false;
 	protected boolean 	showInEditor=false;
 	protected boolean 	showInFactionsCommand=true;
-	protected Vector<String> 						defaults=new Vector<String>();
-	protected Vector<String> 						autoDefaults=new Vector<String>();
-	protected Hashtable<String,FactionRange> 		ranges=new Hashtable<String,FactionRange>();
-    protected Object 								rangesSync = new Object();
-	protected Hashtable<String,String[]> 			affBehavs=new Hashtable<String,String[]>();
-    protected Object 								affBehavsSync = new Object();
+	protected SVector<String> 						defaults=new SVector<String>();
+	protected SVector<String> 						autoDefaults=new SVector<String>();
+	protected SHashtable<String,FactionRange> 		ranges=new SHashtable<String,FactionRange>();
+	protected SHashtable<String,String[]> 			affBehavs=new SHashtable<String,String[]>();
 	protected double 								rateModifier=1.0;
-    protected Hashtable<String,FactionChangeEvent[]>changes=new Hashtable();
-    protected Object 								changesSync = new Object();
-    protected Hashtable<String,FactionChangeEvent[]>abilityChangesCache=new Hashtable();
-    protected Vector<Faction.FactionZapFactor> 		factors=new Vector<Faction.FactionZapFactor>();
-    protected Object 								factorsSync = new Object();
-    protected Hashtable<String,Double> 				relations=new Hashtable<String,Double>();
-    protected Object 								relationsSync = new Object();
-    protected Vector<Faction.FactionAbilityUsage> 	abilityUsages=new Vector<Faction.FactionAbilityUsage>();
-    protected Object 								abilityUsagesSync = new Object();
-    protected Vector<String> 						choices=new Vector<String>();
-    protected Object 								choicesSync = new Object();
-    protected Vector<Faction.FactionReactionItem> 	reactions=new Vector();
-    protected Object 								reactionsSync = new Object();
-    protected volatile Hashtable<String,Vector<Faction.FactionReactionItem>> reactionHash=new Hashtable<String,Vector<Faction.FactionReactionItem>>();
+    protected SHashtable<String,FactionChangeEvent[]>changes=new SHashtable();
+    protected SHashtable<String,FactionChangeEvent[]>abilityChangesCache=new SHashtable();
+    protected SVector<Faction.FactionZapFactor> 	factors=new SVector<Faction.FactionZapFactor>();
+    protected SHashtable<String,Double>				relations=new SHashtable<String,Double>();
+    protected SVector<Faction.FactionAbilityUsage> 	abilityUsages=new SVector<Faction.FactionAbilityUsage>();
+    protected SVector<String> 						choices=new SVector<String>();
+    protected SVector<Faction.FactionReactionItem> 	reactions=new SVector();
+    protected SHashtable<String,SVector<Faction.FactionReactionItem>> reactionHash=new SHashtable<String,SVector<Faction.FactionReactionItem>>();
     public Enumeration<Faction.FactionReactionItem> reactions(){return reactions.elements();}
     public Enumeration<Faction.FactionReactionItem> reactions(String rangeName)
     {
-    	Vector<Faction.FactionReactionItem> V=(Vector<Faction.FactionReactionItem>)reactionHash.get(rangeName.toUpperCase().trim());
+    	SVector<Faction.FactionReactionItem> V=(SVector<Faction.FactionReactionItem>)reactionHash.get(rangeName.toUpperCase().trim());
     	if(V!=null) return V.elements();
     	return new Vector().elements();
     }
@@ -131,9 +123,9 @@ public class DefaultFaction implements Faction, MsgListener
     public void setShowInSpecialReported(boolean truefalse){showInSpecialReported=truefalse;}
     public void setShowInEditor(boolean truefalse){showInEditor=truefalse;}
     public void setShowInFactionsCommand(boolean truefalse){showInFactionsCommand=truefalse;}
-    public void setChoices(Vector v){choices=(v==null)?new Vector():v;}
-    public void setAutoDefaults(Vector v){autoDefaults=(v==null)?new Vector():v;}
-    public void setDefaults(Vector v){defaults=(v==null)?new Vector():v;}
+    public void setChoices(Vector v){choices=new SVector(v);}
+    public void setAutoDefaults(Vector v){autoDefaults=new SVector(v);}
+    public void setDefaults(Vector v){defaults=new SVector(v);}
     public void setRateModifier(double d){rateModifier=d;}
     
     public Faction.FactionAbilityUsage getAbilityUsage(int x)
@@ -144,40 +136,25 @@ public class DefaultFaction implements Faction, MsgListener
     }
     public boolean delFactor(Faction.FactionZapFactor f)
     { 
-    	synchronized(factorsSync)
-    	{
-	    	Vector<Faction.FactionZapFactor> newFactors = (Vector<Faction.FactionZapFactor>) factors.clone();
-	    	if(!newFactors.remove(f))
-	    		return false;
-	        newFactors.trimToSize();
-	        factors=newFactors;
-    	}
+    	if(!factors.remove(f))
+    		return false;
+        factors.trimToSize();
         return true;
     }
     public Faction.FactionZapFactor getFactor(int x){ return ((x>=0)&&(x<factors.size()))?factors.elementAt(x):null;}
     
     public Faction.FactionZapFactor addFactor(double gain, double loss, String mask)
     {
-    	synchronized(factorsSync)
-    	{
-	    	Faction.FactionZapFactor o=new DefaultFactionZapFactor(gain,loss,mask);
-	    	Vector<Faction.FactionZapFactor> newFactors = (Vector<Faction.FactionZapFactor>) factors.clone();
-	        newFactors.addElement(o);
-	        newFactors.trimToSize();
-	        factors=newFactors;
-	        return o;
-    	}
+    	Faction.FactionZapFactor o=new DefaultFactionZapFactor(gain,loss,mask);
+        factors.addElement(o);
+        factors.trimToSize();
+        return o;
     }
     
     public boolean delRelation(String factionID) 
     { 
-    	synchronized(relationsSync)
-    	{
-	    	Hashtable<String,Double> newRelations=(Hashtable<String,Double>)relations.clone();
-	    	if(newRelations.remove(factionID)==null)
-	    		return false;
-	    	relations=newRelations;
-    	}
+    	if(relations.remove(factionID)==null)
+    		return false;
     	return true;
     }
     
@@ -185,12 +162,7 @@ public class DefaultFaction implements Faction, MsgListener
     {
         if(relations.containsKey(factionID))
             return false;
-    	synchronized(relationsSync)
-    	{
-	    	Hashtable<String,Double> newRelations=(Hashtable<String,Double>)relations.clone();
-	    	newRelations.put(factionID,Double.valueOf(relation));
-	    	relations=newRelations;
-    	}
+    	relations.put(factionID,Double.valueOf(relation));
         return true;
     }
     
@@ -241,17 +213,17 @@ public class DefaultFaction implements Faction, MsgListener
         showInFactionsCommand=alignProp.getBoolean("SHOWINFACTIONSCMD");
         showInSpecialReported=alignProp.getBoolean("SPECIALREPORTED");
         showInEditor=alignProp.getBoolean("EDITALONE");
-        defaults =CMParms.parseSemicolons(alignProp.getStr("DEFAULT"),true);
-        autoDefaults =CMParms.parseSemicolons(alignProp.getStr("AUTODEFAULTS"),true);
-        choices =CMParms.parseSemicolons(alignProp.getStr("AUTOCHOICES"),true);
+        defaults=new SVector(CMParms.parseSemicolons(alignProp.getStr("DEFAULT"),true));
+        autoDefaults =new SVector(CMParms.parseSemicolons(alignProp.getStr("AUTODEFAULTS"),true));
+        choices =new SVector(CMParms.parseSemicolons(alignProp.getStr("AUTOCHOICES"),true));
         useLightReactions=alignProp.getBoolean("USELIGHTREACTIONS");
-        ranges=new Hashtable<String,FactionRange>();
-        changes=new Hashtable<String,FactionChangeEvent[]>();
-        factors=new Vector<FactionZapFactor>();
-        relations=new Hashtable<String,Double>();
-        abilityUsages=new Vector<FactionAbilityUsage>();
-        reactions=new Vector<FactionReactionItem>();
-        reactionHash=new Hashtable<String,Vector<FactionReactionItem>>();
+        ranges=new SHashtable<String,FactionRange>();
+        changes=new SHashtable<String,FactionChangeEvent[]>();
+        factors=new SVector<FactionZapFactor>();
+        relations=new SHashtable<String,Double>();
+        abilityUsages=new SVector<FactionAbilityUsage>();
+        reactions=new SVector<FactionReactionItem>();
+        reactionHash=new SHashtable<String,SVector<FactionReactionItem>>();
         for(Enumeration e=alignProp.keys();e.hasMoreElements();)
         {
             if(debug) Log.sysOut("FACTIONS","Starting Key Loop");
@@ -495,30 +467,18 @@ public class DefaultFaction implements Faction, MsgListener
     
     public boolean delAffectBehav(String ID) 
     {
-    	synchronized(affBehavsSync)
-    	{
-	        Hashtable<String,String[]> newBehavs=(Hashtable<String,String[]>)affBehavs.clone();
-	        boolean b=newBehavs.remove(ID.toUpperCase().trim())!=null;
-	        if(b)
-	        {
-	        	lastFactionDataChange[0]=System.currentTimeMillis();
-	        	affBehavs=newBehavs;
-	        }
-	        return b;
-    	}
+        boolean b=affBehavs.remove(ID.toUpperCase().trim())!=null;
+        if(b)
+        	lastFactionDataChange[0]=System.currentTimeMillis();
+        return b;
     }
     
     public boolean addAffectBehav(String ID, String parms, String gainMask) {
         if(affBehavs.containsKey(ID.toUpperCase().trim())) return false;
         if((CMClass.getBehavior(ID)==null)&&(CMClass.getAbility(ID)==null))
             return false;
-    	synchronized(affBehavsSync)
-    	{
-	        Hashtable<String,String[]> newBehavs=(Hashtable<String,String[]>)affBehavs.clone();
-	        newBehavs.put(ID.toUpperCase().trim(),new String[]{parms,gainMask});
-	        lastFactionDataChange[0]=System.currentTimeMillis();
-	        affBehavs=newBehavs;
-    	}
+        affBehavs.put(ID.toUpperCase().trim(),new String[]{parms,gainMask});
+        lastFactionDataChange[0]=System.currentTimeMillis();
         return true;
     }
     
@@ -530,47 +490,36 @@ public class DefaultFaction implements Faction, MsgListener
     
     public boolean delReaction(Faction.FactionReactionItem item)
     {
-    	synchronized(reactionsSync)
+    	SVector<Faction.FactionReactionItem> V=(SVector<Faction.FactionReactionItem>)reactionHash.get(item.rangeName().toUpperCase().trim());
+    	if(V!=null)
     	{
-	    	Vector<Faction.FactionReactionItem> newReactions=(Vector<Faction.FactionReactionItem>)reactions.clone();
-	    	Vector<Faction.FactionReactionItem> V=(Vector<Faction.FactionReactionItem>)reactionHash.get(item.rangeName().toUpperCase().trim());
-	    	if(V!=null)
-	    	{
-	    		V=(Vector<Faction.FactionReactionItem>)V.clone();
-	    		V.remove(item);
-	    		reactionHash.put(item.rangeName().toUpperCase().trim(),V);
-	    	}
-	    	boolean res = newReactions.remove(item);
-	    	if(newReactions.size()==0) reactionHash.clear();
-	        lastFactionDataChange[0]=System.currentTimeMillis();
-	        if(res)
-		        reactions=newReactions;
-	    	return res;
+    		V=(SVector<Faction.FactionReactionItem>)V.clone();
+    		V.remove(item);
+    		reactionHash.put(item.rangeName().toUpperCase().trim(),V);
     	}
+    	boolean res = reactions.remove(item);
+    	if(reactions.size()==0) reactionHash.clear();
+        lastFactionDataChange[0]=System.currentTimeMillis();
+    	return res;
     }
     
     public boolean addReaction(String range, String mask, String abilityID, String parms)
     {
-    	Vector<Faction.FactionReactionItem> V=(Vector<Faction.FactionReactionItem>)reactionHash.get(range.toUpperCase().trim());
+    	SVector<Faction.FactionReactionItem> V=(SVector<Faction.FactionReactionItem>)reactionHash.get(range.toUpperCase().trim());
     	DefaultFactionReactionItem item = new DefaultFactionReactionItem();
     	item.setRangeName(range);
     	item.setPresentMOBMask(mask);
     	item.setReactionObjectID(abilityID);
     	item.setParameters(parms);
-    	synchronized(reactionsSync)
+    	if(V==null) 
     	{
-	    	Vector<Faction.FactionReactionItem> newReactions=(Vector<Faction.FactionReactionItem>)reactions.clone();
-	    	if(V==null) 
-	    		V=new Vector<Faction.FactionReactionItem>();
-	    	else
-	    		V=(Vector<Faction.FactionReactionItem>)V.clone();
-	    	V.add(item);
-			reactionHash.put(range.toUpperCase().trim(), V);
-	    	newReactions.add(item);
-	        lastFactionDataChange[0]=System.currentTimeMillis();
-	        reactions=newReactions;
-	    	return true;
+    		V=new SVector<Faction.FactionReactionItem>();
+    		reactionHash.put(range.toUpperCase().trim(), V);
     	}
+    	V.add(item);
+    	reactions.add(item);
+        lastFactionDataChange[0]=System.currentTimeMillis();
+    	return true;
     }
     
     public FactionChangeEvent[] getChangeEvents(String key) 
@@ -1215,80 +1164,62 @@ public class DefaultFaction implements Faction, MsgListener
          }
          else
              event=new DefaultFaction.DefaultFactionChangeEvent(this,key);
-     	 synchronized(changesSync)
-    	 {
-	         Hashtable<String,Faction.FactionChangeEvent[]> newChanges=(Hashtable<String,Faction.FactionChangeEvent[]>)changes.clone();
-	         abilityChangesCache.clear();
-	         Faction.FactionChangeEvent[] events=newChanges.get(event.eventID().toUpperCase().trim());
-	         if(events==null)
-	        	 events=new Faction.FactionChangeEvent[0];
-	         events=Arrays.copyOf(events, events.length+1);
-	         events[events.length-1]=event;
-	         newChanges.put(event.eventID().toUpperCase().trim(), events);
-	         changes=newChanges;
-	         return event;
-    	 }
+         abilityChangesCache.clear();
+         Faction.FactionChangeEvent[] events=changes.get(event.eventID().toUpperCase().trim());
+         if(events==null)
+        	 events=new Faction.FactionChangeEvent[0];
+         events=Arrays.copyOf(events, events.length+1);
+         events[events.length-1]=event;
+         changes.put(event.eventID().toUpperCase().trim(), events);
+         return event;
      }
 
      private boolean replaceEvents(String key, Faction.FactionChangeEvent event, boolean strict)
      {
-     	 synchronized(changesSync)
+    	 Faction.FactionChangeEvent[] events=changes.get(key);
+    	 if(events==null) return false;
+    	 Faction.FactionChangeEvent[] nevents=new Faction.FactionChangeEvent[events.length-1];
+		 int ne1=0;
+		 boolean done=false;
+    	 for(int x=0;x<events.length;x++)
     	 {
-	         Hashtable<String,Faction.FactionChangeEvent[]> newChanges=(Hashtable<String,Faction.FactionChangeEvent[]>)changes.clone();
-	    	 Faction.FactionChangeEvent[] events=newChanges.get(key);
-	    	 if(events==null) return false;
-	    	 Faction.FactionChangeEvent[] nevents=new Faction.FactionChangeEvent[events.length-1];
-			 int ne1=0;
-			 boolean done=false;
-	    	 for(int x=0;x<events.length;x++)
-	    	 {
-	    		 if((strict&&(events[x] == event))||((!strict)&&(events[x].toString().equals(event.toString()))))
-	    		 {
-	        		 if(nevents.length==0)
-	        			 newChanges.remove(key);
-	        		 else
-	        			 newChanges.put(key,nevents);
-	        		 done=true;
-	    		 }
-	    		 else
-	    	     if(ne1<nevents.length)
-	    			 nevents[ne1++]=events[x];
-	    	 }
-	    	 if(done)
-	    	 {
-	    		 changes=newChanges;
-		         abilityChangesCache.clear();
-	    	 }
-	    	 return done;
+    		 if((strict&&(events[x] == event))||((!strict)&&(events[x].toString().equals(event.toString()))))
+    		 {
+        		 if(nevents.length==0)
+        			 changes.remove(key);
+        		 else
+        			 changes.put(key,nevents);
+        		 done=true;
+    		 }
+    		 else
+    	     if(ne1<nevents.length)
+    			 nevents[ne1++]=events[x];
     	 }
+    	 if(done)
+	         abilityChangesCache.clear();
+    	 return done;
      }
      public void clearChangeEvents()
      {
          abilityChangesCache.clear();
-         changes=new Hashtable<String,Faction.FactionChangeEvent[]>();
+         changes.clear();
      }
      
      public boolean delChangeEvent(Faction.FactionChangeEvent event)
      {
-     	 synchronized(changesSync)
-    	 {
-	         Hashtable<String,Faction.FactionChangeEvent[]> newChanges=(Hashtable<String,Faction.FactionChangeEvent[]>)changes.clone();
-	         for(Enumeration<String> e=newChanges.keys();e.hasMoreElements();)
-	        	 if(replaceEvents(e.nextElement(),event,true))
-	        	 {
-	        		 changes=newChanges;
-	                 abilityChangesCache.clear();
-	        		 return true;
-	        	 }
-	         for(Enumeration<String> e=newChanges.keys();e.hasMoreElements();)
-	        	 if(replaceEvents(e.nextElement(),event,false))
-	        	 {
-	        		 changes=newChanges;
-	                 abilityChangesCache.clear();
-	        		 return true;
-	        	 }
-	         return false;
-    	 }
+         for(Enumeration<String> e=changes.keys();e.hasMoreElements();)
+        	 if(replaceEvents(e.nextElement(),event,true))
+        	 {
+                 abilityChangesCache.clear();
+        		 return true;
+        	 }
+         for(Enumeration<String> e=changes.keys();e.hasMoreElements();)
+        	 if(replaceEvents(e.nextElement(),event,false))
+        	 {
+                 abilityChangesCache.clear();
+        		 return true;
+        	 }
+         return false;
      }
 
      public class DefaultFactionChangeEvent implements Faction.FactionChangeEvent
@@ -1485,27 +1416,17 @@ public class DefaultFaction implements Faction, MsgListener
 
     public Faction.FactionRange addRange(String key)
     {
-    	synchronized(rangesSync)
-    	{
-	        Faction.FactionRange FR=new DefaultFaction.DefaultFactionRange(this,key);
-	        Hashtable<String,Faction.FactionRange> newRanges = (Hashtable<String,Faction.FactionRange>)ranges.clone();
-	        newRanges.put(FR.codeName().toUpperCase().trim(),FR);
-	        ranges=newRanges;
-	        recalc();
-	        return FR;
-    	}
+        Faction.FactionRange FR=new DefaultFaction.DefaultFactionRange(this,key);
+        ranges.put(FR.codeName().toUpperCase().trim(),FR);
+        recalc();
+        return FR;
     }
     public boolean delRange(FactionRange FR)
     {
         if(!ranges.containsKey(FR.codeName().toUpperCase().trim())) return false;
-    	synchronized(rangesSync)
-    	{
-	        Hashtable<String,Faction.FactionRange> newRanges = (Hashtable<String,Faction.FactionRange>)ranges.clone();
-	        newRanges.remove(FR.codeName().toUpperCase().trim());
-	        ranges=newRanges;
-	        recalc();
-	        return true;
-    	}
+        ranges.remove(FR.codeName().toUpperCase().trim());
+        recalc();
+        return true;
     }
     public class DefaultFactionRange implements Faction.FactionRange
     {
@@ -1559,26 +1480,16 @@ public class DefaultFaction implements Faction, MsgListener
         Faction.FactionAbilityUsage usage=
             (key==null)?new DefaultFaction.DefaultFactionAbilityUsage()
                        : new DefaultFaction.DefaultFactionAbilityUsage(key);
-    	synchronized(abilityUsagesSync)
-    	{
-	        Vector<Faction.FactionAbilityUsage> newUsages = (Vector<Faction.FactionAbilityUsage>)abilityUsages.clone();
-	        newUsages.addElement(usage);
-	        newUsages.trimToSize();
-	        abilityUsages = newUsages;
-	        return usage;
-    	}
+        abilityUsages.addElement(usage);
+        abilityUsages.trimToSize();
+        return usage;
     }
     public boolean delAbilityUsage(Faction.FactionAbilityUsage usage)
     {
-    	synchronized(abilityUsagesSync)
-    	{
-	        Vector<Faction.FactionAbilityUsage> newUsages = (Vector<Faction.FactionAbilityUsage>)abilityUsages.clone();
-	    	if(!newUsages.remove(usage))
-	    		return false;
-	        newUsages.trimToSize();
-	        abilityUsages = newUsages;
-	        return true;
-    	}
+    	if(!abilityUsages.remove(usage))
+    		return false;
+    	abilityUsages.trimToSize();
+        return true;
     }
 
     public class DefaultFactionData implements FactionData

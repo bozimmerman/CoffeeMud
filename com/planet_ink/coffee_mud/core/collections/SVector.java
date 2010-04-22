@@ -33,6 +33,14 @@ public class SVector<T> implements Serializable, Cloneable, Iterable<T>, Collect
 		V=new Vector<T>();
 	}
 	
+	public SVector(Vector<T> V)
+	{
+		if(V==null)
+			V=new Vector<T>(1);
+		else
+			this.V=V;
+	}
+	
 	public SVector(int size)
 	{
 		V=new Vector<T>(size);

@@ -53,7 +53,7 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 	private static volatile int tickObjReference=0;
 	
     private volatile long SUBTRACT_TIME=0;
-    private volatile TreeSet<TockClient> tickers=new TreeSet<TockClient>();;
+    private volatile STreeSet<TockClient> tickers=new STreeSet<TockClient>();;
     
 	public Tick(long sleep)
 	{
@@ -87,7 +87,7 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 		try
 		{
 			Tick T=(Tick)this.clone();
-			T.tickers=(TreeSet<TockClient>)tickers.clone();
+			T.tickers=(STreeSet<TockClient>)tickers.clone();
 			return T;
 		}
 		catch(Exception e){}
@@ -175,24 +175,12 @@ public class Tick extends Thread implements TickableGroup, Cloneable
     
 	public void delTicker(TockClient C)
 	{
-    	synchronized(this)
-    	{
-			TreeSet<TockClient> newTickers=(TreeSet<TockClient>)tickers.clone();
-			if(newTickers.remove(C))
-				tickers=newTickers;
-    	}
+		tickers.remove(C);
 	}
 	public void addTicker(TockClient C)
 	{
-    	synchronized(this)
-    	{
-			TreeSet<TockClient> newTickers=(TreeSet<TockClient>)tickers.clone();
-			if(!newTickers.contains(C))
-			{
-				newTickers.add(C);
-				tickers=newTickers;
-			}
-    	}
+		if(!tickers.contains(C))
+			tickers.add(C);
 	}
 	
     public Tickable lastTicked()

@@ -37,8 +37,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 {
     public String ID(){return "CMJournals";}
     public final int QUEUE_SIZE=100;
-    protected Hashtable<String,CommandJournal> commandJournals=new Hashtable<String,CommandJournal>();
-    protected Hashtable<String,ForumJournal> forumJournals=new Hashtable<String,ForumJournal>();
+    protected SHashtable<String,CommandJournal> commandJournals=new SHashtable<String,CommandJournal>();
+    protected SHashtable<String,ForumJournal> forumJournals=new SHashtable<String,ForumJournal>();
     public final Vector emptyVector=new Vector(1);
     
     private ThreadEngine.SupportThread thread=null;
@@ -145,12 +145,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
                 }
                 item=item.substring(0,x);
             }
-            synchronized(this)
-            {
-	            Hashtable<String,CommandJournal> newCommandJournals = (Hashtable<String,CommandJournal>)commandJournals.clone();
-	            newCommandJournals.put(item.toUpperCase().trim(),new CommandJournal(item.toUpperCase().trim(),mask,flags));
-	            commandJournals = newCommandJournals;
-            }
+            commandJournals.put(item.toUpperCase().trim(),new CommandJournal(item.toUpperCase().trim(),mask,flags));
         }
         return commandJournals.size();
     }
@@ -236,12 +231,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
                 	catch(Exception e){}
                 }
             }
-            synchronized(this)
-            {
-	            Hashtable<String, ForumJournal> newForumJournals=(Hashtable<String, ForumJournal>)forumJournals.clone();
-	            newForumJournals.put(item.toUpperCase().trim(),new ForumJournal(item.trim(),flags));
-	            forumJournals=newForumJournals;
-            }
+            forumJournals.put(item.toUpperCase().trim(),new ForumJournal(item.trim(),flags));
         }
         return forumJournals.size();
     }
@@ -372,7 +362,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
     }
     
     private void clearCommandJournals() {
-    	commandJournals=new Hashtable<String,CommandJournal>();
+    	commandJournals=new SHashtable<String,CommandJournal>();
     }
     
     public int getNumForumJournals() { return forumJournals.size();    }
@@ -382,7 +372,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
     public ForumJournal getForumJournal(String named) { return forumJournals.get(named.toUpperCase().trim());}
     
     private void clearForumJournals() {
-    	forumJournals=new Hashtable<String,ForumJournal>();
+    	forumJournals=new SHashtable<String,ForumJournal>();
     	Resources.removeResource("FORUM_JOURNAL_STATS");
     }
     

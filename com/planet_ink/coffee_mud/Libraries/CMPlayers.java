@@ -38,51 +38,28 @@ import java.util.*;
 public class CMPlayers extends StdLibrary implements PlayerLibrary
 {
     public String ID(){return "CMPlayers";}
-    public Vector<MOB> 				playersList		= new Vector<MOB>();
-    public Object					playersSync		= new Object();
-    public Vector<PlayerAccount> 	accountsList	= new Vector<PlayerAccount>();
-    public Object					accountsSync	= new Object();
+    public SVector<MOB> 			playersList	= new SVector<MOB>();
+    public SVector<PlayerAccount> 	accountsList	= new SVector<PlayerAccount>();
     
     private ThreadEngine.SupportThread thread=null;
     
     public ThreadEngine.SupportThread getSupportThread() { return thread;}
     
     public int numPlayers() { return playersList.size(); }
-    public void addPlayer(MOB newOne)
+    public synchronized void addPlayer(MOB newOne)
     {
-        synchronized(playersList)
-        {
-            if(getPlayer(newOne.Name())!=null) return;
-            if(playersList.contains(newOne)) return;
-            PlayerAccount acct = null;
-            if(newOne.playerStats()!=null)
-            	acct=newOne.playerStats().getAccount();
-            
-            synchronized(playersSync)
-            {
-	        	Vector<MOB> newPlayerList = (Vector<MOB>)playersList.clone(); 
-	        	newPlayerList.add(newOne);
-	            playersList = newPlayerList;
-            }
-            
-            if((acct == null)||(getAccount(acct.accountName())!=null)||accountsList.contains(acct))
-            	return;
-            synchronized(accountsSync)
-            {
-	            Vector<PlayerAccount> newAccountsList = (Vector<PlayerAccount>)accountsList.clone();
-	            newAccountsList.add(acct);
-	        	accountsList = newAccountsList;
-            }
-        }
+        if(getPlayer(newOne.Name())!=null) return;
+        if(playersList.contains(newOne)) return;
+        PlayerAccount acct = null;
+        if(newOne.playerStats()!=null)
+        	acct=newOne.playerStats().getAccount();
+    	playersList.add(newOne);
+        addAccount(acct);
     }
-    public void delPlayer(MOB oneToDel) 
+    
+    public synchronized void delPlayer(MOB oneToDel) 
     { 
-    	synchronized(playersSync)
-    	{
-        	Vector<MOB> newPlayerList = (Vector<MOB>)playersList.clone(); 
-        	newPlayerList.remove(oneToDel);
-    		playersList = newPlayerList;
-    	} 
+    	playersList.remove(oneToDel);
     }
     public PlayerAccount getLoadAccount(String calledThis)
     {
@@ -90,44 +67,36 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
     	if(A!=null) return A;
         return CMLib.database().DBReadAccount(calledThis);
     }
-    
+    public synchronized void addAccount(PlayerAccount acct)
+    {
+    	if(acct==null) return;
+        if(getAccount(acct.accountName())!=null) return;
+        if(accountsList.contains(acct)) return;
+        accountsList.add(acct);
+    }
     public PlayerAccount getAccount(String calledThis)
     {
-    	MOB M=null;
+    	calledThis=CMStrings.capitalizeAndLower(calledThis);
     	for(PlayerAccount A : accountsList)
-    		if(A.accountName().equalsIgnoreCase(calledThis))
+    		if(A.accountName().equals(calledThis))
     			return A;
     	
-        for (Enumeration p=players(); p.hasMoreElements();)
-        {
-            M = (MOB)p.nextElement();
+        for (MOB M : playersList)
             if((M.playerStats()!=null)
             &&(M.playerStats().getAccount()!=null)
-            &&(M.playerStats().getAccount().accountName().equalsIgnoreCase(calledThis)))
+            &&(M.playerStats().getAccount().accountName().equals(calledThis)))
             {
-                synchronized(accountsSync)
-                {
-	                Vector<PlayerAccount> newAccountsList = (Vector<PlayerAccount>)accountsList.clone();
-	                newAccountsList.add(M.playerStats().getAccount());
-	            	accountsList = newAccountsList;
-                }
+                addAccount(M.playerStats().getAccount());
                 return M.playerStats().getAccount();
             }
-        }
         return null;
     }
     public MOB getPlayer(String calledThis)
     {
-        MOB M = null;
-        synchronized(playersList)
-        {
-            for (Enumeration p=players(); p.hasMoreElements();)
-            {
-                M = (MOB)p.nextElement();
-                if (M.Name().equalsIgnoreCase(calledThis))
-                    return M;
-            }
-        }
+    	calledThis=CMStrings.capitalizeAndLower(calledThis);
+        for (MOB M : playersList)
+            if (M.Name().equals(calledThis))
+                return M;
         return null;
     }
 
@@ -135,36 +104,24 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
     {
         if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
             return null;
-        MOB M=null;
-        synchronized(playersList)
+        MOB M=getPlayer(last);
+        if(M!=null) return M;
+        if(playerExists(last))
         {
-            M=getPlayer(last);
-            if(M!=null) return M;
-
-            for(Enumeration p=players();p.hasMoreElements();)
-            {
-                MOB mob2=(MOB)p.nextElement();
-                if(mob2.Name().equalsIgnoreCase(last))
-                { return mob2;}
-            }
-
-            if(playerExists(last))
-            {
-                M=CMClass.getMOB("StdMOB");
-                M.setName(CMStrings.capitalizeAndLower(last));
-                CMLib.database().DBReadPlayer(M);
-                CMLib.database().DBReadFollowers(M,false);
-                if(M.playerStats()!=null)
-                    M.playerStats().setLastUpdated(M.playerStats().lastDateTime());
-                M.recoverEnvStats();
-                M.recoverCharStats();
-                Ability A=null;
-        		for(int a=0;a<M.numLearnedAbilities();a++)
-        		{
-        			A=M.fetchAbility(a);
-        			if(A!=null) A.autoInvocation(M);
-        		}
-            }
+            M=CMClass.getMOB("StdMOB");
+            M.setName(CMStrings.capitalizeAndLower(last));
+            CMLib.database().DBReadPlayer(M);
+            CMLib.database().DBReadFollowers(M,false);
+            if(M.playerStats()!=null)
+                M.playerStats().setLastUpdated(M.playerStats().lastDateTime());
+            M.recoverEnvStats();
+            M.recoverCharStats();
+            Ability A=null;
+    		for(int a=0;a<M.numLearnedAbilities();a++)
+    		{
+    			A=M.fetchAbility(a);
+    			if(A!=null) A.autoInvocation(M);
+    		}
         }
         return M;
     }
@@ -180,8 +137,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
     {
     	if(name==null) return false;
     	name=CMStrings.capitalizeAndLower(name);
-    	for(Enumeration<MOB> e=players();e.hasMoreElements();)
-    		if(e.nextElement().Name().equals(name))
+    	for(MOB M: playersList)
+    		if(M.Name().equals(name))
     			return true;
     	return CMLib.database().DBUserSearch(name)!=null;
     }
@@ -246,17 +203,11 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
         deadMOB.destroy();
     }
     
-    public void obliterateAccountOnly(PlayerAccount deadAccount)
+    public synchronized void obliterateAccountOnly(PlayerAccount deadAccount)
     {
     	deadAccount = getLoadAccount(deadAccount.accountName());
     	if(deadAccount==null) return;
-    	
-        synchronized(accountsSync)
-        {
-	        Vector<PlayerAccount> newAccountsList = (Vector<PlayerAccount>)accountsList.clone();
-	        newAccountsList.remove(deadAccount);
-	    	accountsList = newAccountsList;
-        }
+        accountsList.remove(deadAccount);
     	
         StringBuffer newNoPurge=new StringBuffer("");
         Vector protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
@@ -282,9 +233,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
     public int savePlayers()
     {
         int processed=0;
-        for(Enumeration p=players();p.hasMoreElements();)
+        for(MOB mob : playersList)
         {
-            MOB mob=(MOB)p.nextElement();
             if(!mob.isMonster())
             {
             	CMLib.factions().updatePlayerFactions(mob,mob.location());
@@ -739,15 +689,12 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
         &&(!CMSecurity.isDisabled("PLAYERTHREAD")))
         {
             thread.status("checking player titles.");
-            for(Enumeration e=players();e.hasMoreElements();)
-            {
-                MOB M=(MOB)e.nextElement();
+            for(MOB M : playersList)
                 if(M.playerStats()!=null)
                 {
                     if((CMLib.titles().evaluateAutoTitles(M))&&(!CMLib.flags().isInTheGame(M,true)))
                         CMLib.database().DBUpdatePlayerMOBOnly(M);
                 }
-            }
             autoPurge();
             if(!CMSecurity.isSaveFlag("NOPLAYERS"))
                 savePlayers();

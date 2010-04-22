@@ -47,7 +47,7 @@ public class ServiceEngine implements ThreadEngine
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
     private ThreadEngine.SupportThread thread=null;
     public void propertiesLoaded(){}
-	protected LinkedList<Tick> ticks=new LinkedList<Tick>();
+	protected SLinkedList<Tick> ticks=new SLinkedList<Tick>();
 	public Iterator<Tick> tickGroups(){return ticks.iterator();}
     private boolean isSuspended=false;
 	
@@ -55,24 +55,12 @@ public class ServiceEngine implements ThreadEngine
     
 	public void delTickGroup(Tick tock)
 	{
-    	synchronized(this)
-    	{
-			LinkedList<Tick> newTicks = (LinkedList<Tick>)ticks.clone();
-			if(newTicks.remove(tock))
-				ticks=newTicks;
-    	}
+		ticks.remove(tock);
 	}
 	public void addTickGroup(Tick tock)
 	{
-    	synchronized(this)
-    	{
-			LinkedList<Tick> newTicks = (LinkedList<Tick>)ticks.clone();
-			if(!newTicks.contains(tock))
-			{
-				newTicks.add(tock);
-				ticks=newTicks;
-			}
-    	}
+		if(!ticks.contains(tock))
+			ticks.add(tock);
 	}
 	
 	public Tick getAvailTickThread(Tickable E, long TICK_TIME, int tickID)
