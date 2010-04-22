@@ -64,10 +64,10 @@ public class TempThreadTester
 				}
 			}
 		};
-		//new Thread(r0).start();
-		//new Thread(r2).start();
-		//new Thread(r2).start();
-		//new Thread(r1).start();
-		//try{Thread.sleep(30000);}catch(Exception e){}
+		new Thread(r0).start();
+		new Thread(r2).start();
+		new Thread(r2).start();
+		new Thread(r1).start();
+		try{Thread.sleep(30000);}catch(Exception e){}
 	}
 }

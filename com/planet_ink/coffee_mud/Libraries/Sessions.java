@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.SessionsList;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ThreadEngine;
 import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.coffee_mud.core.CMSecurity;
-import com.planet_ink.coffee_mud.core.DVector;
+import com.planet_ink.coffee_mud.core.collections.DVector;
 import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.core.interfaces.MudHost;
 
