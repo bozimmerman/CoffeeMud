@@ -21,6 +21,7 @@ public class SHashtable<K,F> implements java.util.Map<K,F>, java.lang.Cloneable,
 	private Hashtable<K,F> H;
 	public SHashtable()
 	{
+		super();
 		H=new Hashtable<K,F>();
 	}
 	@SuppressWarnings("unchecked")
@@ -38,26 +39,26 @@ public class SHashtable<K,F> implements java.util.Map<K,F>, java.lang.Cloneable,
 		return SH;
 	}
 
-	public boolean contains(Object arg0) {
+	public synchronized boolean contains(Object arg0) {
 		return H.contains(arg0);
 	}
 
 	@Override
-	public boolean containsKey(Object arg0) {
+	public synchronized boolean containsKey(Object arg0) {
 		return H.containsKey(arg0);
 	}
 
 	@Override
-	public boolean containsValue(Object arg0) {
+	public synchronized boolean containsValue(Object arg0) {
 		return H.containsValue(arg0);
 	}
 
-	public Enumeration<F> elements() {
+	public synchronized Enumeration<F> elements() {
 		return H.elements();
 	}
 
 	@Override
-	public Set<java.util.Map.Entry<K, F>> entrySet() {
+	public synchronized Set<java.util.Map.Entry<K, F>> entrySet() {
 		return H.entrySet();
 	}
 
@@ -67,7 +68,7 @@ public class SHashtable<K,F> implements java.util.Map<K,F>, java.lang.Cloneable,
 	}
 
 	@Override
-	public F get(Object arg0) {
+	public synchronized F get(Object arg0) {
 		return H.get(arg0);
 	}
 
@@ -77,16 +78,16 @@ public class SHashtable<K,F> implements java.util.Map<K,F>, java.lang.Cloneable,
 	}
 
 	@Override
-	public boolean isEmpty() {
+	public synchronized boolean isEmpty() {
 		return H.isEmpty();
 	}
 
-	public Enumeration<K> keys() {
+	public synchronized Enumeration<K> keys() {
 		return H.keys();
 	}
 
 	@Override
-	public Set<K> keySet() {
+	public synchronized Set<K> keySet() {
 		return H.keySet();
 	}
 
@@ -105,7 +106,7 @@ public class SHashtable<K,F> implements java.util.Map<K,F>, java.lang.Cloneable,
 	}
 
 	@Override
-	public int size() {
+	public synchronized int size() {
 		return H.size();
 	}
 
@@ -115,7 +116,7 @@ public class SHashtable<K,F> implements java.util.Map<K,F>, java.lang.Cloneable,
 	}
 
 	@Override
-	public Collection<F> values() {
+	public synchronized Collection<F> values() {
 		return H.values();
 	}
 	@SuppressWarnings("unchecked")

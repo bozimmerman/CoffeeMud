@@ -37,7 +37,7 @@ public class SVector<T> implements Serializable, Cloneable, Iterable<T>, Collect
 	{
 		V=new Vector<T>(size);
 	}
-	public int capacity() {
+	public synchronized int capacity() {
 		return V.capacity();
 	}
 
@@ -50,12 +50,12 @@ public class SVector<T> implements Serializable, Cloneable, Iterable<T>, Collect
 	}
 
 	@Override
-	public boolean contains(Object o) {
+	public synchronized boolean contains(Object o) {
 		return V.contains(o);
 	}
 
 	@Override
-	public boolean containsAll(Collection<?> c) {
+	public synchronized boolean containsAll(Collection<?> c) {
 		return V.containsAll(c);
 	}
 
@@ -65,61 +65,61 @@ public class SVector<T> implements Serializable, Cloneable, Iterable<T>, Collect
 		V.copyInto(anArray);
 	}
 
-	public T elementAt(int index) {
+	public synchronized T elementAt(int index) {
 		return V.elementAt(index);
 	}
 
-	public Enumeration<T> elements() {
+	public synchronized Enumeration<T> elements() {
 		return V.elements();
 	}
 
-	public void ensureCapacity(int minCapacity) {
+	public synchronized void ensureCapacity(int minCapacity) {
 		V.ensureCapacity(minCapacity);
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public synchronized boolean equals(Object o) {
 		return o==this;
 	}
 
-	public T firstElement() {
+	public synchronized T firstElement() {
 		return V.firstElement();
 	}
 
 	@Override
-	public T get(int index) {
+	public synchronized T get(int index) {
 		return V.get(index);
 	}
 
 	@Override
-	public int hashCode() {
+	public synchronized int hashCode() {
 		return super.hashCode();
 	}
 
-	public int indexOf(Object o, int index) {
+	public synchronized int indexOf(Object o, int index) {
 		return V.indexOf(o, index);
 	}
 
 	@Override
-	public int indexOf(Object o) {
+	public synchronized int indexOf(Object o) {
 		return V.indexOf(o);
 	}
 
 	@Override
-	public boolean isEmpty() {
+	public synchronized boolean isEmpty() {
 		return V.isEmpty();
 	}
 
-	public T lastElement() {
+	public synchronized T lastElement() {
 		return V.lastElement();
 	}
 
-	public int lastIndexOf(Object o, int index) {
+	public synchronized int lastIndexOf(Object o, int index) {
 		return V.lastIndexOf(o, index);
 	}
 
 	@Override
-	public int lastIndexOf(Object o) {
+	public synchronized int lastIndexOf(Object o) {
 		return V.lastIndexOf(o);
 	}
 
@@ -150,17 +150,17 @@ public class SVector<T> implements Serializable, Cloneable, Iterable<T>, Collect
 	}
 
 	@Override
-	public int size() {
+	public synchronized int size() {
 		return V.size();
 	}
 
 	@Override
-	public List<T> subList(int fromIndex, int toIndex) {
+	public synchronized List<T> subList(int fromIndex, int toIndex) {
 		return V.subList(fromIndex, toIndex);
 	}
 
 	@Override
-	public Object[] toArray() {
+	public synchronized Object[] toArray() {
 		return V.toArray();
 	}
 
@@ -171,7 +171,7 @@ public class SVector<T> implements Serializable, Cloneable, Iterable<T>, Collect
 	}
 
 	@Override
-	public String toString() {
+	public synchronized String toString() {
 		return super.toString();
 	}
 
@@ -281,17 +281,17 @@ public class SVector<T> implements Serializable, Cloneable, Iterable<T>, Collect
 	}
 
 	@Override
-	public Iterator<T> iterator() {
+	public synchronized Iterator<T> iterator() {
 		return new ReadOnlyIterator<T>(V.iterator());
 	}
 
 	@Override
-	public ListIterator<T> listIterator() {
+	public synchronized ListIterator<T> listIterator() {
 		return new ReadOnlyListIterator<T>(V.listIterator());
 	}
 
 	@Override
-	public ListIterator<T> listIterator(int index) {
+	public synchronized ListIterator<T> listIterator(int index) {
 		return new ReadOnlyListIterator<T>(V.listIterator());
 	}
 }

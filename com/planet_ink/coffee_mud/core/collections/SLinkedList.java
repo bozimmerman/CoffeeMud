@@ -79,54 +79,54 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Object clone() {
+	public synchronized Object clone() {
 		SLinkedList<K> SL=new SLinkedList<K>();
 		SL.L=(LinkedList<K>)L.clone();
 		return SL;
 	}
 
 	@Override
-	public boolean contains(Object arg0) {
+	public synchronized boolean contains(Object arg0) {
 		return L.contains(arg0);
 	}
 
 	@Override
-	public Iterator<K> descendingIterator() {
+	public synchronized Iterator<K> descendingIterator() {
 		return new ReadOnlyIterator<K>(L.descendingIterator());
 	}
 
 	@Override
-	public K element() {
+	public synchronized K element() {
 		return L.element();
 	}
 
 	@Override
-	public K get(int arg0) {
+	public synchronized K get(int arg0) {
 		return L.get(arg0);
 	}
 
 	@Override
-	public K getFirst() {
+	public synchronized K getFirst() {
 		return L.getFirst();
 	}
 
 	@Override
-	public K getLast() {
+	public synchronized K getLast() {
 		return L.getLast();
 	}
 
 	@Override
-	public int indexOf(Object arg0) {
+	public synchronized int indexOf(Object arg0) {
 		return L.indexOf(arg0);
 	}
 
 	@Override
-	public int lastIndexOf(Object arg0) {
+	public synchronized int lastIndexOf(Object arg0) {
 		return L.lastIndexOf(arg0);
 	}
 
 	@Override
-	public ListIterator<K> listIterator(int arg0) {
+	public synchronized ListIterator<K> listIterator(int arg0) {
 		return new ReadOnlyListIterator<K>(L.listIterator(arg0));
 	}
 
@@ -152,17 +152,17 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@Override
-	public K peek() {
+	public synchronized K peek() {
 		return L.peek();
 	}
 
 	@Override
-	public K peekFirst() {
+	public synchronized K peekFirst() {
 		return L.peekFirst();
 	}
 
 	@Override
-	public K peekLast() {
+	public synchronized K peekLast() {
 		return L.peekLast();
 	}
 
@@ -258,22 +258,22 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@Override
-	public int size() {
+	public synchronized int size() {
 		return L.size();
 	}
 
 	@Override
-	public Object[] toArray() {
+	public synchronized Object[] toArray() {
 		return L.toArray();
 	}
 
 	@Override
-	public <T> T[] toArray(T[] arg0) {
+	public synchronized <T> T[] toArray(T[] arg0) {
 		return L.toArray(arg0);
 	}
 
 	@Override
-	public Iterator<K> iterator() {
+	public synchronized Iterator<K> iterator() {
 		return new ReadOnlyIterator<K>(L.iterator());
 	}
 
@@ -288,22 +288,22 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@Override
-	public ListIterator<K> listIterator() {
+	public synchronized ListIterator<K> listIterator() {
 		return new ReadOnlyListIterator<K>(L.listIterator());
 	}
 
 	@Override
-	public List<K> subList(int arg0, int arg1) {
+	public synchronized List<K> subList(int arg0, int arg1) {
 		return new ReadOnlyList<K>(L.subList(arg0, arg1));
 	}
 
 	@Override
-	public boolean containsAll(Collection<?> c) {
+	public synchronized boolean containsAll(Collection<?> c) {
 		return L.containsAll(c);
 	}
 
 	@Override
-	public boolean isEmpty() {
+	public synchronized boolean isEmpty() {
 		return L.isEmpty();
 	}
 
