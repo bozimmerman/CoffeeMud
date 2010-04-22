@@ -24,6 +24,11 @@ public class SHashtable<K,F> implements java.util.Map<K,F>, java.lang.Cloneable,
 		super();
 		H=new Hashtable<K,F>();
 	}
+	public SHashtable(int size)
+	{
+		super();
+		H=new Hashtable<K,F>(size);
+	}
 	@SuppressWarnings("unchecked")
 	@Override
 	public synchronized void clear() {

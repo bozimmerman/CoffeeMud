@@ -70,25 +70,18 @@ public class StdMOB implements MOB
 
 	/* containers of items and attributes*/
 	protected SVector<Item>		inventory	= new SVector<Item>(1);
-	protected Vector<Ability>	abilities	= new Vector<Ability>(1);
-    protected Object 			abilitySync	= new Object();
-	protected Vector<Ability> 	affects		= new Vector<Ability>(1);
-    protected Object 			affectSync 	= new Object();
-	protected Vector<Behavior>	behaviors	= new Vector<Behavior>(1);
-    protected Object 			behaviorSync= new Object();
-	protected Vector<Tattoo>	tattoos		= new Vector<Tattoo>(1);
-    protected Object 			tattooSync	= new Object();
-	protected Vector<String>	expertises	= new Vector<String>(1);
-    protected Object 			experSync	= new Object();
+	protected SVector<Ability>	abilities	= new SVector<Ability>(1);
+	protected SVector<Ability> 	affects		= new SVector<Ability>(1);
+	protected SVector<Behavior>	behaviors	= new SVector<Behavior>(1);
+	protected SVector<Tattoo>	tattoos		= new SVector<Tattoo>(1);
+	protected SVector<String>	expertises	= new SVector<String>(1);
 	protected DVector 			followers	= null;
 	protected LinkedList<QMCommand> 
 								commandQue	= new LinkedList<QMCommand>();
-	protected Vector<ScriptingEngine>
-								scripts		= new Vector(1);
-    protected Object 			scriptSync	= new Object();
-    protected Hashtable<String,Faction.FactionData> 
-    							factions	= new Hashtable<String,Faction.FactionData>(1);
-    protected Object 			factionSync = new Object();
+	protected SVector<ScriptingEngine>
+								scripts		= new SVector(1);
+    protected SHashtable<String,Faction.FactionData> 
+    							factions	= new SHashtable<String,Faction.FactionData>(1);
 
 	// gained attributes
 	protected int 		experience=0;
@@ -299,7 +292,7 @@ public class StdMOB implements MOB
 	protected void cloneFix(MOB E)
 	{
 		if(E==null) return;
-		affects=new Vector(1);
+		affects=new SVector(1);
 		baseEnvStats=(EnvStats)E.baseEnvStats().copyOf();
 		envStats=(EnvStats)E.envStats().copyOf();
 		baseCharStats=(CharStats)E.baseCharStats().copyOf();
@@ -312,10 +305,10 @@ public class StdMOB implements MOB
 
 		inventory=new SVector<Item>(1);
 		followers=null;
-		abilities=new Vector<Ability>(1);
-		affects=new Vector<Ability>(1);
-		behaviors=new Vector<Behavior>(1);
-		scripts=new Vector<ScriptingEngine>(1);
+		abilities=new SVector<Ability>(1);
+		affects=new SVector<Ability>(1);
+		behaviors=new SVector<Behavior>(1);
+		scripts=new SVector<ScriptingEngine>(1);
 		Item I=null;
 		for(int i=0;i<E.inventorySize();i++)
 		{
@@ -674,14 +667,14 @@ public class StdMOB implements MOB
         imageName=null;
         inventory=new SVector<Item>(1);
         followers=null;
-        abilities=new Vector<Ability>(1);
-        affects=new Vector<Ability>(1);
-        behaviors=new Vector<Behavior>(1);
-        tattoos=new Vector<Tattoo>(1);
-        expertises=new Vector<String>(1);
-        factions=new Hashtable<String, Faction.FactionData>(1);
+        abilities=new SVector<Ability>(1);
+        affects=new SVector<Ability>(1);
+        behaviors=new SVector<Behavior>(1);
+        tattoos=new SVector<Tattoo>(1);
+        expertises=new SVector<String>(1);
+        factions=new SHashtable<String, Faction.FactionData>(1);
         commandQue=new LinkedList<QMCommand>();
-        scripts=new Vector<ScriptingEngine>(1);
+        scripts=new SVector<ScriptingEngine>(1);
         curState=maxState;
         worshipCharID="";
         liegeID="";
@@ -3016,21 +3009,11 @@ public class StdMOB implements MOB
 			if((A!=null)&&(A.ID().equals(to.ID())))
 				return;
 		}
-		synchronized(abilitySync)
-		{
-			Vector<Ability> newAbilities=(Vector<Ability>)abilities.clone();
-			newAbilities.addElement(to);
-			abilities=newAbilities;
-		}
+		abilities.addElement(to);
 	}
 	public void delAbility(Ability to)
 	{
-		synchronized(abilitySync)
-		{
-			Vector<Ability> newAbilities=(Vector<Ability>)abilities.clone();
-			newAbilities.removeElement(to);
-			abilities=newAbilities;
-		}
+		abilities.removeElement(to);
 	}
 	public int numLearnedAbilities()
 	{
@@ -3087,53 +3070,31 @@ public class StdMOB implements MOB
 		if(fetchEffect(to.ID())!=null) return;
 		to.makeNonUninvokable();
 		to.makeLongLasting();
-		synchronized(affectSync)
-		{
-			Vector<Ability> newAffects=(Vector<Ability>)affects.clone();
-			newAffects.addElement(to);
-			to.setAffectedOne(this);
-			affects=newAffects;
-		}
+		affects.addElement(to);
+		to.setAffectedOne(this);
 	}
 	public void addPriorityEffect(Ability to)
 	{
 		if(to==null) return;
 		if(fetchEffect(to.ID())!=null) return;
-		synchronized(affectSync)
-		{
-			Vector<Ability> newAffects=(Vector<Ability>)affects.clone();
-			if(newAffects.size()==0)
-				newAffects.addElement(to);
-			else
-				newAffects.insertElementAt(to,0);
-			affects=newAffects;
-			to.setAffectedOne(this);
-		}
+		if(affects.size()==0)
+			affects.addElement(to);
+		else
+			affects.insertElementAt(to,0);
+		to.setAffectedOne(this);
 	}
 	public void addEffect(Ability to)
 	{
 		if(to==null) return;
 		if(fetchEffect(to.ID())!=null) 
 			return;
-		synchronized(affectSync)
-		{
-			Vector<Ability> newAffects=(Vector<Ability>)affects.clone();
-			newAffects.addElement(to);
-			affects=newAffects;
-			to.setAffectedOne(this);
-		}
+		affects.addElement(to);
+		to.setAffectedOne(this);
 	}
 	public void delEffect(Ability to)
 	{
-		synchronized(affectSync)
-		{
-			Vector<Ability> newAffects=(Vector<Ability>)affects.clone();
-			if(newAffects.removeElement(to))
-			{
-				to.setAffectedOne(null);
-				affects=newAffects;
-			}
-		}
+		if(affects.removeElement(to))
+			to.setAffectedOne(null);
 	}
 
 	public int numAllEffects()
@@ -3175,22 +3136,12 @@ public class StdMOB implements MOB
 	{
 		if(to==null) return;
 		if(fetchBehavior(to.ID())!=null) return;
-		synchronized(behaviorSync)
-		{
-			Vector<Behavior> newBehaviors=(Vector<Behavior>)behaviors.clone();
-			to.startBehavior(this);
-			newBehaviors.addElement(to);
-			behaviors=newBehaviors;
-		}
+		to.startBehavior(this);
+		behaviors.addElement(to);
 	}
 	public void delBehavior(Behavior to)
 	{
-		synchronized(behaviorSync)
-		{
-			Vector<Behavior> newBehaviors=(Vector<Behavior>)behaviors.clone();
-			if(newBehaviors.removeElement(to))
-				behaviors=newBehaviors;
-		}
+		behaviors.removeElement(to);
 	}
 	public int numBehaviors()
 	{
@@ -3236,28 +3187,16 @@ public class StdMOB implements MOB
 	{
 		if(fetchExpertise(of)!=null)
 			return;
-		synchronized(experSync)
-		{
-			Vector<String> newExpertises=(Vector<String>)expertises.clone();
-			newExpertises.add(of);
-			expertises=newExpertises;
-			clearExpertiseCache();
-		}
+		expertises.add(of);
+		clearExpertiseCache();
 	}
 	public void delExpertise(String of)
 	{
 		of=fetchExpertise(of);
 		if(of!=null)
 		{
-			synchronized(experSync)
-			{
-				Vector<String> newExpertises=(Vector<String>)expertises.clone();
-				if(newExpertises.remove(of))
-				{
-					expertises=newExpertises;
-					clearExpertiseCache();
-				}
-			}
+			if(expertises.remove(of))
+				clearExpertiseCache();
 		}
 	}
 	public int numExpertises(){return expertises.size();}
@@ -3357,30 +3296,16 @@ public class StdMOB implements MOB
         if(S==null) return;
         if(!scripts.contains(S)) 
         {
-            ScriptingEngine S2=null;
-            for(int s=0;s<scripts.size();s++)
-            {
-                S2=(ScriptingEngine)scripts.elementAt(s);
-                if((S2!=null)&&(S2.getScript().equalsIgnoreCase(S.getScript())))
+            for(ScriptingEngine S2 : scripts)
+                if(S2.getScript().equalsIgnoreCase(S.getScript()))
                     return;
-            }
-            synchronized(scriptSync)
-            {
-            	Vector<ScriptingEngine> newScripts=(Vector<ScriptingEngine>)scripts.clone();
-    	        newScripts.addElement(S);
-    	        scripts=newScripts;
-            }
+	        scripts.addElement(S);
         }
     }
     public void delScript(ScriptingEngine S)
     {
         if(S==null) return;
-        synchronized(scriptSync)
-        {
-        	Vector<ScriptingEngine> newScripts=(Vector<ScriptingEngine>)scripts.clone();
-        	newScripts.removeElement(S);
-	        scripts=newScripts;
-        }
+    	scripts.removeElement(S);
     }
     public int numScripts(){return (scripts==null)?0:scripts.size();}
     public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
@@ -3393,12 +3318,7 @@ public class StdMOB implements MOB
 		||(of.tattooName.length()==0)
 		||findTattoo(of.tattooName)!=null)
 			return;
-		synchronized(tattooSync)
-		{
-			Vector<Tattoo> newTattoos=(Vector<Tattoo>)tattoos.clone();
-			newTattoos.addElement(of);
-			tattoos=newTattoos;
-		}
+		tattoos.addElement(of);
 	}
 	public void delTattoo(Tattoo of)
 	{
@@ -3409,12 +3329,7 @@ public class StdMOB implements MOB
 		Tattoo tat = findTattoo(of.tattooName); 
 		if(tat==null)
 			return;
-		synchronized(tattooSync)
-		{
-			Vector<Tattoo> newTattoos=(Vector<Tattoo>)tattoos.clone();
-			newTattoos.remove(tat);
-			tattoos=newTattoos;
-		}
+		tattoos.remove(tat);
 	}
 	public Enumeration<Tattoo> tattoos() { return tattoos.elements();}
 	public Tattoo findTattoo(String of)
@@ -3440,12 +3355,7 @@ public class StdMOB implements MOB
         if(data==null)
         {
             data=F.makeFactionData(this);
-            synchronized(factionSync)
-            {
-            	Hashtable<String,Faction.FactionData> newFactions = (Hashtable<String,Faction.FactionData>)factions.clone();
-            	newFactions.put(which,data);
-	            factions = newFactions;
-            }
+        	factions.put(which,data);
         }
         data.setValue(start);
     }
@@ -3471,12 +3381,7 @@ public class StdMOB implements MOB
     }
     public void removeFaction(String which)
     {
-    	synchronized(factionSync)
-    	{
-	    	Hashtable<String,Faction.FactionData> newFactions = (Hashtable<String,Faction.FactionData>)factions.clone();
-	    	newFactions.remove(which.toUpperCase());
-	        factions = newFactions;
-    	}
+    	factions.remove(which.toUpperCase());
     }
     public void copyFactions(MOB source)
     {
