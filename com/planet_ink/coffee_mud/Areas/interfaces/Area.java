@@ -169,10 +169,9 @@ public interface Area extends Environmental, Economics
      * to an area in order to display them in the HELP entry for an area.
      * This method returns the name of an enumerated flag.
 	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getBlurbFlag(String)
-     * @param which the index into the list of flag definition names
-     * @return the flag definition name, call getBlurbFlag(String) for the value
+     * @return enumeration of blurb flag keys, call getBlurbFlag(String) for the value
      */
-    public String getBlurbFlag(int which);
+    public Enumeration<String> areaBlurbFlags();
     /**
      * A blurb flag is a run-time modifiable set of strings that can be added
      * to an area in order to display them in the HELP entry for an area.

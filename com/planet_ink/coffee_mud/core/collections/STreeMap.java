@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.NavigableMap;
@@ -12,6 +13,7 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.Vector;
 /*
 Copyright 2000-2010 Bo Zimmerman
 
@@ -38,6 +40,23 @@ public class STreeMap<K,V> implements Serializable, Map<K,V>, NavigableMap<K,V>,
 	public STreeMap(Comparator<K> comp)
 	{
 		T=new TreeMap<K,V>(comp);
+	}
+	@SuppressWarnings("unchecked")
+	public synchronized TreeMap<K,V> toTreeMap() {
+		return (TreeMap<K,V>)T.clone();
+	}
+	public synchronized Vector<String> toStringVector(String divider) {
+		Vector<String> V=new Vector<String>(size());
+		for(Object S : navigableKeySet())
+			if(S!=null)
+			{
+				Object O = get(S);
+				if(O==null)
+					V.add(S.toString() + divider);
+				else
+					V.add(S.toString() + divider + O.toString());
+			}
+		return V;
 	}
 	@Override
 	public synchronized java.util.Map.Entry<K, V> ceilingEntry(K key) {

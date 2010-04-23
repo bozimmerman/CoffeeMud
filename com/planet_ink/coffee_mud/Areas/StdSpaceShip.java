@@ -35,26 +35,30 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 {
-	public long[] coordinates=new long[3];
-	public long[] coordinates(){return coordinates;}
-	public void setCoords(long[] coords){coordinates=coords;}
-	public double[] direction=new double[2];
-	public double[] direction(){return direction;}
-	public void setDirection(double[] dir){direction=dir;}
-	public long velocity=0;
-	public long velocity(){return velocity;}
-	public void setVelocity(long v){velocity=v;}
-	public long accelleration=0;
-	public long accelleration(){return accelleration;}
-	public void setAccelleration(long v){accelleration=v;}
-    public void initializeClass(){}
 	protected static Climate climateObj=null;
-    protected String[] xtraValues=null;
-	protected Vector parents=null;
-    protected Vector parentsToLoad=new Vector();
-    protected Vector blurbFlags=new Vector();
-    protected String imageName="";
-	protected RoomnumberSet properRoomIDSet=null;
+	
+	public long[] 				coordinates=new long[3];
+	public double[] 			direction=new double[2];
+	public long 				velocity=0;
+	public long 				accelleration=0;
+    protected String[]  		xtraValues=null;
+	protected Vector<Area>		parents=null;
+    protected Vector<String> 	parentsToLoad=new Vector<String>();
+    protected STreeMap<String,String>
+    							blurbFlags=new STreeMap<String,String>();
+    protected String 			imageName="";
+	protected RoomnumberSet 	properRoomIDSet=null;
+	protected TimeClock 		localClock=(TimeClock)CMClass.getCommon("DefaultTimeClock");
+	protected String 			currency="";
+	private long 				expirationDate=0;
+	public SpaceObject 			spaceTarget=null;
+	public SpaceObject 			spaceSource=null;
+	public SpaceObject 			orbiting=null;
+	protected boolean 			amDestroyed=false;
+	
+    public void initializeClass(){}
+	public long[] coordinates(){return coordinates;}
+	public double[] direction(){return direction;}
 	public void setClimateObj(Climate obj){climateObj=obj;}
 	public Climate getClimateObj()
 	{
@@ -66,27 +70,26 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		}
 		return climateObj;
 	}
-	protected TimeClock localClock=(TimeClock)CMClass.getCommon("DefaultTimeClock");
 	public TimeClock getTimeObj(){return localClock;}
 	public void setTimeObj(TimeClock obj){localClock=obj;}
-	protected String currency="";
 	public void setCurrency(String newCurrency){currency=newCurrency;}
 	public String getCurrency(){return currency;}
-	private long expirationDate=0;
 	public long expirationDate(){return expirationDate;}
 	public void setExpirationDate(long time){expirationDate=time;}
 	public long flags(){return 0;}
 	
-	public SpaceObject spaceTarget=null;
 	public SpaceObject knownTarget(){return spaceTarget;}
 	public void setKnownTarget(SpaceObject O){spaceTarget=O;}
-	public SpaceObject spaceSource=null;
 	public SpaceObject knownSource(){return spaceSource;}
 	public void setKnownSource(SpaceObject O){spaceSource=O;}
-	public SpaceObject orbiting=null;
 	public SpaceObject orbiting(){return orbiting;}
 	public void setOrbiting(SpaceObject O){orbiting=O;}
-	protected boolean amDestroyed=false;
+	public void setCoords(long[] coords){coordinates=coords;}
+	public void setDirection(double[] dir){direction=dir;}
+	public long velocity(){return velocity;}
+	public void setVelocity(long v){velocity=v;}
+	public long accelleration(){return accelleration;}
+	public void setAccelleration(long v){accelleration=v;}
     
     public void destroy()
     {
@@ -334,50 +337,33 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		return true;
 	}
 
-    protected Vector allBlurbFlags()
+    protected Enumeration<String> allBlurbFlags()
     {
-        Vector V=(Vector)blurbFlags.clone();
-        String flag=null;
-        Area A=null;
-        int num=0;
-        for(Enumeration e=getParents();e.hasMoreElements();)
-        {
-            A=(Area)e.nextElement();
-            num=A.numBlurbFlags();
-            for(int x=0;x<num;x++)
-            {
-                flag=A.getBlurbFlag(x);
-                V.addElement(flag+" "+A.getBlurbFlag(flag));
-            }
-        }
-        return V;
+    	MultiEnumeration<String> multiEnum = new MultiEnumeration<String>(areaBlurbFlags());
+        for(Enumeration<Area> e=getParents();e.hasMoreElements();)
+        	multiEnum.addEnumeration(e.nextElement().areaBlurbFlags());
+        return multiEnum;
     }
-    
+
     public String getBlurbFlag(String flag)
     {
         if((flag==null)||(flag.trim().length()==0))
             return null;
-        flag=flag.toUpperCase().trim()+" ";
-        Vector V=allBlurbFlags();
-        for(int i=0;i<V.size();i++)
-            if(((String)V.elementAt(i)).startsWith(flag))
-                return ((String)V.elementAt(i)).substring(flag.length());
-        return null;
+        return blurbFlags.get(flag.toUpperCase().trim());
     }
-    public int numAllBlurbFlags(){return allBlurbFlags().size();}
     public int numBlurbFlags(){return blurbFlags.size();}
-    public String getBlurbFlag(int which)
+    public int numAllBlurbFlags()
     {
-        if(which<0) return null;
-        Vector V=allBlurbFlags();
-        if(which>=V.size()) return null;
-        try{
-            String s=(String)V.elementAt(which);
-            int x=s.indexOf(' ');
-            return s.substring(0,x).trim();
-        }catch(Exception e){}
-        return null;
+    	int num=numBlurbFlags();
+        for(Enumeration<Area> e = getParents(); e.hasMoreElements();)
+        	num += e.nextElement().numAllBlurbFlags();
+    	return num;
     }
+    public Enumeration<String> areaBlurbFlags()
+    {
+    	return new IteratorEnumeration<String>(blurbFlags.keySet().iterator());
+    }
+    
     public void addBlurbFlag(String flagPlusDesc)
     {
         if(flagPlusDesc==null) return;
@@ -385,10 +371,10 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
         if(flagPlusDesc.length()==0) return;
         int x=flagPlusDesc.indexOf(' ');
         String flag=null;
-        if(x>=0) 
+        if(x>=0)
         {
             flag=flagPlusDesc.substring(0,x).toUpperCase();
-            flagPlusDesc=flagPlusDesc.substring(x);
+            flagPlusDesc=flagPlusDesc.substring(x).trim();
         }
         else
         {
@@ -396,22 +382,14 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
             flagPlusDesc="";
         }
         if(getBlurbFlag(flag)==null)
-            blurbFlags.addElement((flag+" "+flagPlusDesc).trim());
+            blurbFlags.put(flag,flagPlusDesc);
     }
     public void delBlurbFlag(String flagOnly)
     {
         if(flagOnly==null) return;
         flagOnly=flagOnly.toUpperCase().trim();
         if(flagOnly.length()==0) return;
-        flagOnly+=" ";
-        try{
-            for(int v=0;v<blurbFlags.size();v++)
-                if(((String)blurbFlags.elementAt(v)).startsWith(flagOnly))
-                {
-                    blurbFlags.removeElementAt(v);
-                    return;
-                }
-        }catch(Exception e){}
+        blurbFlags.remove(flagOnly);
     }
     
 	public void executeMsg(Environmental myHost, CMMsg msg)
@@ -1050,7 +1028,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		case 2: return description();
 		case 3: return text();
 		case 4: return ""+getTechLevel();
-        case 5: return ""+CMLib.xml().getXMLList(blurbFlags);
+        case 5: return ""+CMLib.xml().getXMLList(blurbFlags.toStringVector(" "));
 		}
 		return "";
 	}
@@ -1071,7 +1049,19 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
             if(val.startsWith("-"))
                 delBlurbFlag(val.substring(1));
             else
-                blurbFlags=CMLib.xml().parseXMLList(val);
+            {
+                blurbFlags=new STreeMap<String,String>();
+            	Vector V=CMLib.xml().parseXMLList(val);
+            	for(int v=0;v<V.size();v++)
+            	{
+            		String s=(String)V.elementAt(v);
+            		int x=s.indexOf(' ');
+            		if(x<0)
+            			blurbFlags.put(s,"");
+            		else
+            			blurbFlags.put(s.substring(0,x),s.substring(x+1));
+            	}
+            }
             break;
         }
 		}

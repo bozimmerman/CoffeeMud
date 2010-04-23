@@ -29,6 +29,30 @@ public class SHashtable<K,F> implements java.util.Map<K,F>, java.io.Serializable
 		super();
 		H=new Hashtable<K,F>(size);
 	}
+	public SHashtable(Hashtable<K,F> H)
+	{
+		super();
+		this.H=H;
+	}
+	@SuppressWarnings("unchecked")
+	public synchronized Hashtable<K,F> toHashtable() {
+		return (Hashtable<K,F>)H.clone();
+	}
+	public synchronized Vector<String> toStringVector(String divider) 
+	{
+		Vector<String> V=new Vector<String>(size());
+		for(Object S : keySet())
+			if(S!=null)
+			{
+				Object O = get(S);
+				if(O==null)
+					V.add(S.toString() + divider);
+				else
+					V.add(S.toString() + divider + O.toString());
+			}
+		return V;
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public synchronized void clear() {

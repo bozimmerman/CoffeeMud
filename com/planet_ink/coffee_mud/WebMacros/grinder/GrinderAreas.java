@@ -205,8 +205,8 @@ public class GrinderAreas
                 DOUBLE=httpReq.getRequestParameter("BLURBFLAG"+num);
                 MASK=httpReq.getRequestParameter("BLURB"+num);
             }
-            for(int x=A.numBlurbFlags()-1;x>=0;x--)
-                A.delBlurbFlag(A.getBlurbFlag(x));
+            for(Enumeration<String> f=A.areaBlurbFlags();f.hasMoreElements();)
+                A.delBlurbFlag(f.nextElement());
             for(int v=0;v<prics.size();v++)
                 A.addBlurbFlag((String)prics.elementAt(v));
         }

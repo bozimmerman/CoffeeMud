@@ -31,6 +31,16 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 		T=new TreeSet<K>(comp);
 	}
 	@SuppressWarnings("unchecked")
+	public synchronized TreeSet<K> toTreeSet() {
+		return (TreeSet<K>)T.clone();
+	}
+	public synchronized Vector<K> toVector() {
+		Vector<K> V=new Vector<K>(size());
+		for(Iterator<K> s=T.iterator();s.hasNext();)
+			V.add(s.next());
+		return V;
+	}
+	@SuppressWarnings("unchecked")
 	@Override
 	public synchronized boolean add(K e) {
 		T=(TreeSet<K>)T.clone();

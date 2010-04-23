@@ -29,6 +29,16 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 	
 	@SuppressWarnings("unchecked")
+	public synchronized LinkedList<K> toLinkedList() {
+		return (LinkedList<K>)L.clone();
+	}
+	public synchronized Vector<K> toVector() {
+		Vector<K> V=new Vector<K>(size());
+		for(Iterator<K> s=L.iterator();s.hasNext();)
+			V.add(s.next());
+		return V;
+	}
+	@SuppressWarnings("unchecked")
 	@Override
 	public synchronized void add(int arg0, K arg1) {
 		L=(LinkedList<K>)L.clone();

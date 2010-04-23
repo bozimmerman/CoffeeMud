@@ -238,7 +238,7 @@ public class StdThinInstance extends StdThinArea
         			newA.properRooms=new STreeMap<String, Room>(new Area.RoomIDComparator());
         			newA.properRoomIDSet = null;
         			newA.metroRoomIDSet = null;
-        		    newA.blurbFlags=new Vector(1);
+        		    newA.blurbFlags=new STreeMap<String,String>();
         			newA.setName((++instanceCounter)+"_"+Name());
         			newA.flags |= Area.FLAG_INSTANCE_CHILD;
         			for(Enumeration e=getProperRoomnumbers().getRoomIDs();e.hasMoreElements();)

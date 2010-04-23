@@ -392,9 +392,9 @@ public class AreaData extends StdWebMacro
                     int num=1;
                     if(!httpReq.isRequestParameter("IPRIC"+num))
                     {
-                        for(int p=0;p<A.numBlurbFlags();p++)
+                        for(Enumeration<String> f=A.areaBlurbFlags();f.hasMoreElements();)
                         {
-                            String flag=A.getBlurbFlag(p);
+                            String flag=f.nextElement();
                             theprices.addElement(flag);
                             themasks.addElement(A.getBlurbFlag(flag));
                         }

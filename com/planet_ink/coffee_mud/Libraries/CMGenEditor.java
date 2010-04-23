@@ -3356,7 +3356,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 mob.tell(header+"''.");
             else
             if(numFlags==1)
-                mob.tell(header+"'"+E.getBlurbFlag(0)+": "+E.getBlurbFlag(E.getBlurbFlag(0))+"'.");
+            {
+            	String flag = E.areaBlurbFlags().nextElement();
+                mob.tell(header+"'"+flag+": "+E.getBlurbFlag(flag)+"'.");
+            }
             else
                 mob.tell(header+numFlags+" defined..");
             return;
@@ -3365,8 +3368,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
         {
             mob.tell(header+"\n\r");
-            for(int p=0;p<E.numBlurbFlags();p++)
-                mob.tell((E.getBlurbFlag(p))+": "+E.getBlurbFlag(E.getBlurbFlag(p)));
+            for(Enumeration<String> f = E.areaBlurbFlags();f.hasMoreElements();)
+            {
+            	String flag = f.nextElement();
+                mob.tell(flag+": "+E.getBlurbFlag(flag));
+            }
             String newValue=mob.session().prompt("Enter flag to remove, or A to add:\n\r:","");
             if(E.getBlurbFlag(newValue.toUpperCase().trim())!=null)
             {

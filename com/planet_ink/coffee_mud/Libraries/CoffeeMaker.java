@@ -220,9 +220,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			str.append(CMLib.xml().convertXMLtoTag("CURRENCY",myArea.getCurrency()));
             Vector V=new Vector();
             String flag=null;
-            for(int i=0;i<myArea.numBlurbFlags();i++)
+            for(Enumeration<String> f=myArea.areaBlurbFlags();f.hasMoreElements();)
             {
-                flag=myArea.getBlurbFlag(i);
+                flag=f.nextElement();
                 V.addElement((flag+" "+myArea.getBlurbFlag(flag)).trim());
             }
             str.append(CMLib.xml().convertXMLtoTag("BLURBS",CMLib.xml().getXMLList(V)));
@@ -1752,8 +1752,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
                     ((Area)E).addChildToLoad(CMLib.xml().getValFromPieces(ablk.contents,"CHILDNAMED"));
                 }
             }
-            for(int x=((Area)E).numBlurbFlags()-1;x>=0;x--)
-                ((Area)E).delBlurbFlag(((Area)E).getBlurbFlag(x));
+            for(Enumeration<String> f=((Area)E).areaBlurbFlags();f.hasMoreElements();)
+            	((Area)E).delBlurbFlag(f.nextElement());
             Vector VB=CMLib.xml().parseXMLList(CMLib.xml().getValFromPieces(V,"BLURBS"));
             for(int i=0;i<VB.size();i++)
                 ((Area)E).addBlurbFlag((String)VB.elementAt(i));

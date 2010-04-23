@@ -45,20 +45,21 @@ public class StdArea implements Area
 	protected String 		imageName="";
 	protected int 			techLevel=0;
 	protected int 			climateID=Area.CLIMASK_NORMAL;
-    protected Vector 		blurbFlags=new Vector(1);
 	protected long 			tickStatus=Tickable.STATUS_NOT;
 	protected long 			expirationDate=0;
     protected long 			lastPlayerTime=System.currentTimeMillis();
     protected int 			flag=Area.STATE_ACTIVE;
+    protected STreeMap<String,String> 		
+    						blurbFlags=new STreeMap<String,String>();
 	protected STreeMap<String, Room>
 							properRooms=new STreeMap<String, Room>(new RoomIDComparator());
 	protected RoomnumberSet properRoomIDSet=null;
 	protected RoomnumberSet metroRoomIDSet=null;
 
-    protected Vector 		children=null;
-    protected Vector 		parents=null;
-    protected Vector 		childrenToLoad=new Vector(1);
-    protected Vector 		parentsToLoad=new Vector(1);
+    protected Vector<Area>	children=null;
+    protected Vector<Area>	parents=null;
+    protected Vector<String>childrenToLoad=new Vector<String>(1);
+    protected Vector<String>parentsToLoad=new Vector<String>(1);
 
     protected String[] 		xtraValues=null;
 	protected String 		author="";
@@ -88,50 +89,33 @@ public class StdArea implements Area
 	}
 	public String getCurrency(){return currency;}
 
-    protected Vector allBlurbFlags()
+    protected Enumeration<String> allBlurbFlags()
     {
-        Vector V=(Vector)blurbFlags.clone();
-        String flag=null;
-        Area A=null;
-        int num=0;
-        for(Enumeration e=getParents();e.hasMoreElements();)
-        {
-            A=(Area)e.nextElement();
-            num=A.numBlurbFlags();
-            for(int x=0;x<num;x++)
-            {
-                flag=A.getBlurbFlag(x);
-                V.addElement(flag+" "+A.getBlurbFlag(flag));
-            }
-        }
-        return V;
+    	MultiEnumeration<String> multiEnum = new MultiEnumeration<String>(areaBlurbFlags());
+        for(Enumeration<Area> e=getParents();e.hasMoreElements();)
+        	multiEnum.addEnumeration(e.nextElement().areaBlurbFlags());
+        return multiEnum;
     }
 
     public String getBlurbFlag(String flag)
     {
         if((flag==null)||(flag.trim().length()==0))
             return null;
-        flag=flag.toUpperCase().trim()+" ";
-        Vector V=allBlurbFlags();
-        for(int i=0;i<V.size();i++)
-            if(((String)V.elementAt(i)).startsWith(flag))
-                return ((String)V.elementAt(i)).substring(flag.length());
-        return null;
+        return blurbFlags.get(flag.toUpperCase().trim());
     }
     public int numBlurbFlags(){return blurbFlags.size();}
-    public int numAllBlurbFlags(){return allBlurbFlags().size();}
-    public String getBlurbFlag(int which)
+    public int numAllBlurbFlags()
     {
-        if(which<0) return null;
-        Vector V=allBlurbFlags();
-        if(which>=V.size()) return null;
-        try{
-            String s=(String)V.elementAt(which);
-            int x=s.indexOf(' ');
-            return s.substring(0,x).trim();
-        }catch(Exception e){}
-        return null;
+    	int num=numBlurbFlags();
+        for(Enumeration<Area> e = getParents(); e.hasMoreElements();)
+        	num += e.nextElement().numAllBlurbFlags();
+    	return num;
     }
+    public Enumeration<String> areaBlurbFlags()
+    {
+    	return new IteratorEnumeration<String>(blurbFlags.keySet().iterator());
+    }
+    
     public void addBlurbFlag(String flagPlusDesc)
     {
         if(flagPlusDesc==null) return;
@@ -150,22 +134,14 @@ public class StdArea implements Area
             flagPlusDesc="";
         }
         if(getBlurbFlag(flag)==null)
-            blurbFlags.addElement((flag+" "+flagPlusDesc).trim());
+            blurbFlags.put(flag,flagPlusDesc);
     }
     public void delBlurbFlag(String flagOnly)
     {
         if(flagOnly==null) return;
         flagOnly=flagOnly.toUpperCase().trim();
         if(flagOnly.length()==0) return;
-        flagOnly+=" ";
-        try{
-            for(int v=0;v<blurbFlags.size();v++)
-                if(((String)blurbFlags.elementAt(v)).startsWith(flagOnly))
-                {
-                    blurbFlags.removeElementAt(v);
-                    return;
-                }
-        }catch(Exception e){}
+        blurbFlags.remove(flagOnly);
     }
 
 	public long expirationDate(){return expirationDate;}
@@ -398,12 +374,12 @@ public class StdArea implements Area
 
 		parents=null;
 		if(E.parents!=null)
-			parents=(Vector)E.parents.clone();
+			parents=(Vector<Area>)E.parents.clone();
 		children=null;
 		if(E.children!=null)
-			children=(Vector)E.children.clone();
+			children=(Vector<Area>)E.children.clone();
 		if(E.blurbFlags!=null)
-			blurbFlags=(Vector)E.blurbFlags.clone();
+			blurbFlags=E.blurbFlags.copyOf();
 		affects=new Vector(1);
 		behaviors=new Vector(1);
         scripts=new Vector(1);
@@ -1078,13 +1054,11 @@ public class StdArea implements Area
 			if(theFaction!=null) s.append("Avg. "+CMStrings.padRight(theFaction.name(),10)+": "+theFaction.fetchRangeName(statData[Area.AREASTAT_AVGALIGN])+"\n\r");
 			if(theFaction!=null) s.append("Med. "+CMStrings.padRight(theFaction.name(),10)+": "+theFaction.fetchRangeName(statData[Area.AREASTAT_MEDALIGN])+"\n\r");
             try{
-                String flag=null;
-                int num=numAllBlurbFlags();
                 boolean blurbed=false;
-                for(int i=0;i<num;i++)
+                String flag=null;
+                for(Enumeration<String> f= allBlurbFlags();f.hasMoreElements();)
                 {
-                    flag=this.getBlurbFlag(i);
-                    if(flag!=null) flag=getBlurbFlag(flag);
+                    flag=getBlurbFlag(f.nextElement());
                     if(flag!=null)
                     {
                         if(!blurbed){blurbed=true; s.append("\n\r");}
@@ -1597,7 +1571,7 @@ public class StdArea implements Area
 		case 2: return description();
 		case 3: return text();
 		case 4: return ""+getTechLevel();
-        case 5: return ""+CMLib.xml().getXMLList(blurbFlags);
+        case 5: return ""+CMLib.xml().getXMLList(blurbFlags.toStringVector(" "));
         case 6: return prejudiceFactors();
         case 7: return budget();
         case 8: return devalueRate();
@@ -1624,7 +1598,19 @@ public class StdArea implements Area
             if(val.startsWith("-"))
                 delBlurbFlag(val.substring(1));
             else
-                blurbFlags=CMLib.xml().parseXMLList(val);
+            {
+                blurbFlags=new STreeMap<String,String>();
+            	Vector V=CMLib.xml().parseXMLList(val);
+            	for(int v=0;v<V.size();v++)
+            	{
+            		String s=(String)V.elementAt(v);
+            		int x=s.indexOf(' ');
+            		if(x<0)
+            			blurbFlags.put(s,"");
+            		else
+            			blurbFlags.put(s.substring(0,x),s.substring(x+1));
+            	}
+            }
             break;
         }
         case 6: setPrejudiceFactors(val); break;

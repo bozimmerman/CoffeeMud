@@ -50,6 +50,11 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, Lis
 	}
 
 	@SuppressWarnings("unchecked")
+	public synchronized Vector<T> toVector() {
+		return (Vector<T>)V.clone();
+	}
+	
+	@SuppressWarnings("unchecked")
 	public synchronized SVector<T> copyOf() {
 		SVector<T> SV=new SVector<T>();
 		SV.V=(Vector<T>)V.clone();
