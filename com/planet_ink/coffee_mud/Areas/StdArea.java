@@ -287,7 +287,11 @@ public class StdArea implements Area
     public void setAreaState(int newState)
     {
         if((newState==0)&&(!CMLib.threads().isTicking(this,Tickable.TICKID_AREA)))
+        {
             CMLib.threads().startTickDown(this,Tickable.TICKID_AREA,1);
+            if(!CMLib.threads().isTicking(this, Tickable.TICKID_AREA))
+            	Log.errOut("StdArea","Area "+name()+" failed to start ticking.");
+        }
         flag=newState;
     }
     public int getAreaState(){return flag;}

@@ -122,7 +122,6 @@ public class ServiceEngine implements ThreadEngine
 		{
 			almostTock=e.next();
 			set=almostTock.getTickSet(E,tickID);
-			if(set!=null)
 			for(;set.hasNext();)
 				almostTock.delTicker((TockClient)set.next());
 		}
@@ -137,7 +136,8 @@ public class ServiceEngine implements ThreadEngine
 		{
 			almostTock=e.next();
 			set=almostTock.getTickSet(E,tickID);
-			if(set!=null) return true;
+			if(set.hasNext()) 
+				return true;
 		}
 		return false;
 	}
@@ -155,7 +155,6 @@ public class ServiceEngine implements ThreadEngine
 		{
 			almostTock=e.next();
 			set=almostTock.getTickSet(E,tickID);
-			if(set!=null)
 			for(;set.hasNext();)
 				((TockClient)set.next()).suspended=suspend;
 		}
@@ -169,7 +168,8 @@ public class ServiceEngine implements ThreadEngine
 		{
 			almostTock=e.next();
 			set=almostTock.getTickSet(E,tickID);
-			if((set!=null)&&(set.hasNext())) return true;
+			if(set.hasNext() && ((TockClient)set.next()).suspended)
+				return true;
 		}
 		return false;
 	}
