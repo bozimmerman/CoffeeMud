@@ -80,11 +80,15 @@ public class DefaultRoomnumberSet implements RoomnumberSet
         if(areaName.length()==0) return;
         
         String theRest=null;
-        long roomNum=0;
+        long roomNum=-1;
         int x=areaName.indexOf("#");
         CMIntegerGrouper CI=null;
         if(x<=0)
+        {
         	CI=getGrouper(areaName);
+        	if(CI==null)
+        		root.remove(areaName);
+        }
         else
         if(x>0)
         {
@@ -118,7 +122,10 @@ public class DefaultRoomnumberSet implements RoomnumberSet
     {
     	int total=0;
     	for(CMIntegerGrouper CMI : root.values())
-            total+=CMI.roomCount();
+            if(CMI==null)
+            	total++;
+            else
+	            total+=CMI.roomCount();
     	return total;
     }
     
@@ -146,7 +153,9 @@ public class DefaultRoomnumberSet implements RoomnumberSet
     	for(Entry<String,CMIntegerGrouper> set : root.entrySet())
     	{
             CMI=set.getValue();
-            if(CMI!=null)
+            if(CMI==null)
+            	total++;
+            else
 	    		total+=CMI.roomCount();
     		if(which<total)
     		{
@@ -291,7 +300,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
         if(areaName.length()==0) return;
         
         String theRest=null;
-        long roomNum=0;
+        long roomNum=-1;
         int x=areaName.indexOf("#");
         if(x>0)
         {
@@ -316,10 +325,12 @@ public class DefaultRoomnumberSet implements RoomnumberSet
         CMIntegerGrouper CI = root.get(areaName);
         if(CI==null)
         {
-        	CI=(CMIntegerGrouper)CMClass.getCommon("DefaultCMIntegerGrouper");
+        	if(roomNum>=0)
+	        	CI=(CMIntegerGrouper)CMClass.getCommon("DefaultCMIntegerGrouper");
         	root.put(areaName,CI);
         }
-        CI.add(roomNum);
+        if(roomNum>=0)
+	        CI.add(roomNum);
     }
     
     public Enumeration getRoomIDs(){return new RoomnumberSetEnumeration();}

@@ -323,7 +323,7 @@ public class MUD extends Thread implements MudHost
     		if(!CMLib.map().roomIDs().hasMoreElements())
     		{
     			Log.sysOut("NO MAPPED ROOM?!  I'll make ya one!");
-    			String id="START";
+    			String id="START";//New Area#0";
     			Area newArea=CMClass.getAreaType("StdArea");
     			newArea.setName("New Area");
     			CMLib.map().addArea(newArea);
