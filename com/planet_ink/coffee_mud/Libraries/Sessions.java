@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.ThreadEngine;
 import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.coffee_mud.core.CMSecurity;
 import com.planet_ink.coffee_mud.core.collections.DVector;
+import com.planet_ink.coffee_mud.core.collections.SVector;
 import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.core.interfaces.MudHost;
 
@@ -25,12 +26,11 @@ import com.planet_ink.coffee_mud.core.interfaces.MudHost;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class Sessions extends StdLibrary implements SessionsList
 {
     public String ID(){return "Sessions";}
     private ThreadEngine.SupportThread thread=null;
-    public Vector all=new Vector();
+    public SVector<Session> all=new SVector<Session>();
     
     public ThreadEngine.SupportThread getSupportThread() { return thread;}
     
@@ -54,7 +54,7 @@ public class Sessions extends StdLibrary implements SessionsList
 	{
 		all.removeElement(S);
 	}
-    public Enumeration sessions() { return ((Vector)all.clone()).elements();}
+    public Enumeration<Session> sessions() { return all.elements();}
     
     public void stopSessionAtAllCosts(Session S)
     {
@@ -87,9 +87,8 @@ public class Sessions extends StdLibrary implements SessionsList
     public Session findPlayerOnline(String srchStr, boolean exactOnly)
     {
         // then look for players
-		for(int s=0;s<size();s++)
+		for(Session thisSession : all)
 		{
-			Session thisSession=elementAt(s);
 			if((thisSession.mob()!=null) && (!thisSession.killFlag())
 			&&(thisSession.mob().location()!=null)
 			&&(thisSession.mob().name().equalsIgnoreCase(srchStr)))
@@ -97,9 +96,8 @@ public class Sessions extends StdLibrary implements SessionsList
 		}
 		// keep looking for players
 		if(!exactOnly)
-			for(int s=0;s<size();s++)
+			for(Session thisSession : all)
 			{
-				Session thisSession=elementAt(s);
 				if((thisSession.mob()!=null)&&(!thisSession.killFlag())
 				&&(thisSession.mob().location()!=null)
 				&&(CMLib.english().containsString(thisSession.mob().name(),srchStr)))
@@ -114,10 +112,8 @@ public class Sessions extends StdLibrary implements SessionsList
         ||(CMSecurity.isDisabled("SESSIONTHREAD")))
             return;
         thread.status("checking player sessions.");
-        for(int s=size()-1;s>=0;s--)
+		for(Session S : all)
         {
-            Session S=elementAt(s);
-            if(S==null) continue;
             long time=System.currentTimeMillis()-S.lastLoopTime();
             if(time>0)
             {

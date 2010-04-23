@@ -31,5 +31,5 @@ public interface SessionsList extends CMLibrary, Runnable
     public void removeElement(Session S);
     public void stopSessionAtAllCosts(Session S);
     public Session findPlayerOnline(String srchStr, boolean exactOnly);
-    public Enumeration sessions();
+    public Enumeration<Session> sessions();
 }
