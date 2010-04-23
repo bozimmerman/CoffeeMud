@@ -298,13 +298,13 @@ public class ItemGenerator extends ActiveTicker
 				if(I!=null)
 				{
 
-					if((maxDups<Integer.MAX_VALUE)&&(maxDups>=0))
+					if((maxDups<Integer.MAX_VALUE)&&(maxDups>0))
 					{
 						int numDups=0;
 						for(int m=0;m<maintained.size();m++)
 							if(I.sameAs((Item)maintained.elementAt(m)))
 								numDups++;
-						if(numDups>=maxDups)
+						if((maxDups>0)&&(numDups>=maxDups))
 							return true;
 					}
 
