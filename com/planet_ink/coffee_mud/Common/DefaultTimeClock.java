@@ -321,7 +321,7 @@ public class DefaultTimeClock implements TimeClock
 	    	{
 	    		Area A=(Area)a.nextElement();
 				if(A.getTimeObj()==this)
-				for(Enumeration r=A.getProperMap();r.hasMoreElements();)
+				for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if((R!=null)&&((R.numInhabitants()>0)||(R.numItems()>0)))

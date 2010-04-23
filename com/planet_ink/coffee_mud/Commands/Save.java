@@ -111,7 +111,7 @@ public class Save extends StdCommand
 				if((mob.session()!=null)&&(mob.session().confirm("Doing this assumes every item in every room in this area is correctly placed.  Are you sure (N/y)?","N")))
 				{
 					Area A=mob.location().getArea();
-					for(Enumeration e=A.getProperMap();e.hasMoreElements();)
+					for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
 						clearSaveAndRestart((Room)e.nextElement(),1);
 					mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes the area.\n\r");
 				}

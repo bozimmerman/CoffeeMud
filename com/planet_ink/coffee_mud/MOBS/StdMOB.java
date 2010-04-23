@@ -2772,7 +2772,7 @@ public class StdMOB implements MOB
 	    SVector inv=inventory;
 	    if(!allowCoins)
 	    {
-	        inv=(SVector)inv.clone();
+	        inv=inv.copyOf();
 	        for(int v=inv.size()-1;v>=0;v--)
 	            if(inv.elementAt(v) instanceof Coins)
 	                inv.removeElementAt(v);
@@ -3206,7 +3206,7 @@ public class StdMOB implements MOB
 		try{
 			if(expertises.size()==0) 
 				return expertises.elements();
-			Vector<String> exCopy=(Vector<String>)expertises.clone();
+			SVector<String> exCopy=expertises.copyOf();
 			String exper=null, experRoot=null, expTest=null;
 			int num=-1,end=-1,num2=-1;
 			HashSet remove=new HashSet();

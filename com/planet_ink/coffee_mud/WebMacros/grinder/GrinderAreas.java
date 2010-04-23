@@ -121,7 +121,7 @@ public class GrinderAreas
 		if(!className.equalsIgnoreCase(CMClass.classID(A)))
 		{
 			allMyDamnRooms=new Vector();
-			for(Enumeration r=A.getProperMap();r.hasMoreElements();)
+			for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 				allMyDamnRooms.addElement(r.nextElement());
 			Area oldA=A;
 			A=CMClass.getAreaType(className);

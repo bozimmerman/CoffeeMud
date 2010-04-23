@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -41,25 +42,26 @@ public class PollLoader
 	{
 		DB=newDB;
 	}
-    public Vector DBRead(String name)
+    public DatabaseEngine.PollData DBRead(String name)
     {
         DBConnection D=null;
-        Vector V=new Vector();
         try
         {
             D=DB.DBFetch();
             ResultSet R=D.query("SELECT * FROM CMPOLL WHERE CMNAME='"+name+"'");
             while(R.next())
             {
-                V.addElement(DBConnections.getRes(R,"CMNAME"));
-                V.addElement(DBConnections.getRes(R,"CMBYNM"));
-                V.addElement(DBConnections.getRes(R,"CMSUBJ"));
-                V.addElement(DBConnections.getRes(R,"CMDESC"));
-                V.addElement(DBConnections.getRes(R,"CMOPTN"));
-                V.addElement(Long.valueOf(DBConnections.getLongRes(R,"CMFLAG")));
-                V.addElement(DBConnections.getRes(R,"CMQUAL"));
-                V.addElement(DBConnections.getRes(R,"CMRESL"));
-                V.addElement(Long.valueOf(DBConnections.getLongRes(R,"CMEXPI")));
+            	DatabaseEngine.PollData data = new DBInterface.PollData();
+            	data.name=DBConnections.getRes(R,"CMNAME");
+            	data.byName=DBConnections.getRes(R,"CMBYNM");
+            	data.subject=DBConnections.getRes(R,"CMSUBJ");
+            	data.description=DBConnections.getRes(R,"CMDESC");
+            	data.options=DBConnections.getRes(R,"CMOPTN");
+            	data.flag=DBConnections.getLongRes(R,"CMFLAG");
+	            data.qual=DBConnections.getRes(R,"CMQUAL");
+	            data.results=DBConnections.getRes(R,"CMRESL");
+	            data.expiration=DBConnections.getLongRes(R,"CMEXPI");
+	            return data;
             }
         }
         catch(Exception sqle)
@@ -68,11 +70,11 @@ public class PollLoader
         }
         if(D!=null) DB.DBDone(D);
         // log comment
-        return V;
+        return null;
     }
 
     
-    public Vector DBReadList()
+    public List<DatabaseEngine.PollData> DBReadList()
     {
         DBConnection D=null;
         Vector rows=new Vector();
@@ -82,12 +84,12 @@ public class PollLoader
             ResultSet R=D.query("SELECT * FROM CMPOLL");
             while(R.next())
             {
-                Vector V=new Vector();
-                V.addElement(DBConnections.getRes(R,"CMNAME"));
-                V.addElement(Long.valueOf(DBConnections.getLongRes(R,"CMFLAG")));
-                V.addElement(DBConnections.getRes(R,"CMQUAL"));
-                V.addElement(Long.valueOf(DBConnections.getLongRes(R,"CMEXPI")));
-                rows.addElement(V);
+            	DatabaseEngine.PollData data = new DBInterface.PollData();
+            	data.name=DBConnections.getRes(R,"CMNAME");
+            	data.flag=DBConnections.getLongRes(R,"CMFLAG");
+	            data.qual=DBConnections.getRes(R,"CMQUAL");
+	            data.expiration=DBConnections.getLongRes(R,"CMEXPI");
+                rows.addElement(data);
             }
         }
         catch(Exception sqle)

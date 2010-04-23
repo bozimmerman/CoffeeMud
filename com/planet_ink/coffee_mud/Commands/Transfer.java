@@ -118,7 +118,7 @@ public class Transfer extends At
 						V.addElement(M);
 				}
 			if(V.size()==0)
-				for(Enumeration r=mob.location().getArea().getProperMap();r.hasMoreElements();)
+				for(Enumeration<Room> r=mob.location().getArea().getProperMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					MOB M=null;

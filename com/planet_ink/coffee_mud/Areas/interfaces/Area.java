@@ -246,7 +246,7 @@ public interface Area extends Environmental, Economics
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
 	 * @return an enumerator of Room objects
 	 */
-	public Enumeration getProperMap();
+	public Enumeration<Room> getProperMap();
     /**
      * Returns an enumerator for all previously loaded rooms that
      * properly belongs to this area, along with their skys or underwater
@@ -255,7 +255,7 @@ public interface Area extends Environmental, Economics
      * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
      * @return an enumerator of Room objects
      */
-	public Enumeration getFilledProperMap();
+	public Enumeration<Room> getFilledProperMap();
 	/**
      * Designates that the given roomID belongs to this Area.
      * @param roomID the roomID of a room which should belong to this Area.
@@ -274,7 +274,7 @@ public interface Area extends Environmental, Economics
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
 	 * @return an enumerator of Room objects
 	 */
-	public Enumeration getCompleteMap();
+	public Enumeration<Room> getCompleteMap();
 	/**
 	 * Returns a RoomnumberSet for all rooms that properly belong to this area, including
 	 * those not yet loaded.
@@ -313,7 +313,7 @@ public interface Area extends Environmental, Economics
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
 	 * @return an enumerator of Room objects
 	 */
-	public Enumeration getMetroMap();
+	public Enumeration<Room> getMetroMap();
     /**
      * Designates that a given Room object belongs to one of this areas
      * children.
@@ -359,13 +359,6 @@ public interface Area extends Environmental, Economics
 	 * @return a random Room object from this or a child area
 	 */
 	public Room getRandomMetroRoom();
-	/**
-	 * Returns a collection of all of this areas rooms which have been loaded, and all rooms
-	 * of all child areas which have been loaded, excluding those not yet cached.
-	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
-	 * @return a vector of Room objects
-	 */
-	public Vector getMetroCollection();
 	/**
 	 * Generates a new RoomID for a new Room in this area.  
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
@@ -468,12 +461,12 @@ public interface Area extends Environmental, Economics
      */
     public void addParentToLoad(String str);
     /**
-     * An Enumerated list of Area objects representing the Children Areas of this
+     * An enumerator list of Area objects representing the Children Areas of this
      * Area.
      * A Child Area inherets certain behaviors and property effects from its parents
-     * @return an enumeration of Area objects
+     * @return an enumerator of Area objects
      */
-    public Enumeration getChildren();
+    public Enumeration<Area> getChildren();
     /**
      * Returns a semicolon delimited list of Area names representing the Children Areas of this
      * Area.
@@ -541,12 +534,12 @@ public interface Area extends Environmental, Economics
      */
     public boolean canChild(Area newChild);
     /**
-     * An Enumerated list of Area objects representing the Parent Areas of this
+     * An enumerator list of Area objects representing the Parent Areas of this
      * Area.
      * A Parent Area passes down certain behaviors and property effects to its children
-     * @return an enumeration of Area objects
+     * @return an enumerator of Area objects
      */
-    public Enumeration getParents();
+    public Enumeration<Area> getParents();
     /**
      * Returns a semicolon delimited list of Area names representing the Parent Areas of this
      * Area.
@@ -619,32 +612,6 @@ public interface Area extends Environmental, Economics
      * @return whether the Area named MAY BE designated as a parent of this Area
      */
     public boolean canParent(Area newParent);
-    /**
-     * @author Owner
-     * This class implements the getCompleteMap() method by enumerating through
-     * the complete list of roomIDs for this area and loading any rooms not yet
-     * loaded, all at enumeration-time.
-     */
-    public class CompleteRoomEnumerator implements Enumeration
-    {
-    	Enumeration roomEnumerator=null;
-    	Area area=null;
-    	public CompleteRoomEnumerator(Area myArea){
-    		area=myArea;
-    		roomEnumerator=area.getProperRoomnumbers().getRoomIDs();
-    	}
-    	public boolean hasMoreElements(){return roomEnumerator.hasMoreElements();}
-    	public Room nextElement()
-    	{
-    		String roomID=(String)roomEnumerator.nextElement();
-    		if(roomID==null) return null;
-			Room R=area.getRoom(roomID);
-			if(R==null) return nextElement();
-			if(R.expirationDate()!=0)
-				R.setExpirationDate(R.expirationDate()+(1000*60*10));
-			return CMLib.map().getRoom(R);
-    	}
-    }
     
     public final static String[] THEME_DESCS={"FANTASY","TECH","HEROIC","SKILLONLY"};
 	/**	Bitmap flag meaning that the object supports magic.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getTechLevel() */
@@ -753,5 +720,81 @@ public interface Area extends Environmental, Economics
     public final static int STATE_STOPPED=3;
 	/**	Amount of time of player absence before an area automatically goes from Active to passive */
     public final static long TIME_PASSIVE_LAPSE=60*1000*30; // 30 mins
+    
+    /**
+     * @author Owner
+     * This enumerator is for loading any rooms not yet
+     * loaded, all at enumeration-time.
+     */
+    public class RoomIDEnumerator implements Enumeration<Room>
+    {
+    	private Enumeration<String> roomIDEnumerator=null;
+    	private Area area=null;
+    	
+    	public RoomIDEnumerator(Area myArea)
+    	{
+    		area=myArea;
+    		roomIDEnumerator=area.getProperRoomnumbers().getRoomIDs();
+    	}
+    	public boolean hasMoreElements(){return roomIDEnumerator.hasMoreElements();}
+    	public Room nextElement()
+    	{
+    		String roomID=(String)roomIDEnumerator.nextElement();
+    		if(roomID==null) return null;
+			Room R=area.getRoom(roomID);
+			if(R==null) return nextElement();
+			if(R.expirationDate()!=0)
+				R.setExpirationDate(R.expirationDate()+(1000*60*10));
+			return CMLib.map().getRoom(R);
+    	}
+    }
+
+    /**
+     * @author Owner
+     * This class implements the getCompleteMap() method by enumerating through
+     * the complete list of roomIDs for this area and loading any rooms not yet
+     * loaded, all at enumeration-time.
+     */
+    public class CompleteRoomEnumerator implements Enumeration<Room>
+    {
+    	private MultiEnumeration<Room> roomEnumerators=null;
+    	
+    	public CompleteRoomEnumerator(MultiEnumeration<Room> enums){
+    		roomEnumerators=enums;
+    	}
+    	public CompleteRoomEnumerator(Enumeration<Room> enu){
+    		roomEnumerators=new MultiEnumeration<Room>(enu);
+    	}
+    	public boolean hasMoreElements(){return roomEnumerators.hasMoreElements();}
+    	public Room nextElement()
+    	{
+    		Room room=roomEnumerators.nextElement();
+    		if(room instanceof GridLocale)
+    			roomEnumerators.addEnumeration(new IteratorEnumeration<Room>(((GridLocale) room).getAllRooms().iterator()));
+    		return room;
+    	}
+    }
+    
+    /**
+     * Comparator for tree sets, comparing room ids of rooms
+     * @author Bo Zimmerman
+     */
+    public static class RoomIDComparator implements Comparator<String> 
+    {
+		public int compare(String arg0, String arg1) {
+			return arg0.compareToIgnoreCase(arg1);
+		}
+    }
+    
+    /**
+     * Comparator for tree sets, comparing room ids of rooms
+     * @author Bo Zimmerman
+     */
+    public static class RoomComparator implements Comparator<Room> 
+    {
+		public int compare(Room arg0, Room arg1) {
+			return arg0.roomID().compareToIgnoreCase(arg1.roomID());
+		}
+    }
     
 }

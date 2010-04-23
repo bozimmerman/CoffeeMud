@@ -37,22 +37,22 @@ import java.util.*;
 public class StdRoom implements Room
 {
 	public String ID(){return "StdRoom";}
-	protected String myID="";
-	protected String name="the room";
-	protected String displayText="Standard Room";
-	protected String imageName=null;
-	protected byte[] description=null;
-	protected Area myArea=null;
-	protected EnvStats envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
-	protected EnvStats baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
-	public Exit[] exits=new Exit[Directions.NUM_DIRECTIONS()];
-	public Room[] doors=new Room[Directions.NUM_DIRECTIONS()];
-    protected String[] xtraValues=null;
-	protected Vector affects=null;
-	protected Vector behaviors=null;
-    protected Vector scripts=null;
-	protected Vector contents=new Vector(1);
-	protected Vector inhabitants=new Vector(1);
+	protected String 	myID="";
+	protected String 	name="the room";
+	protected String 	displayText="Standard Room";
+	protected String 	imageName=null;
+	protected byte[] 	description=null;
+	protected Area 		myArea=null;
+	protected EnvStats 	envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+	protected EnvStats 	baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+	public Exit[] 		exits=new Exit[Directions.NUM_DIRECTIONS()];
+	public Room[] 		doors=new Room[Directions.NUM_DIRECTIONS()];
+    protected String[] 	xtraValues=null;
+	protected SVector<Ability> 			affects=null;
+	protected SVector<Behavior> 		behaviors=null;
+    protected SVector<ScriptingEngine>  scripts=null;
+	protected SVector<Item> 			contents=new SVector(1);
+	protected SVector<MOB> 				inhabitants=new SVector(1);
 	protected boolean mobility=true;
 	protected GridLocale gridParent=null;
 	protected long tickStatus=Tickable.STATUS_NOT;
@@ -130,8 +130,8 @@ public class StdRoom implements Room
 		baseEnvStats=(EnvStats)E.baseEnvStats().copyOf();
 		envStats=(EnvStats)E.envStats().copyOf();
 
-		contents=new Vector(1);
-		inhabitants=new Vector(1);
+		contents=new SVector(1);
+		inhabitants=new SVector(1);
 		affects=null;
 		behaviors=null;
         scripts=null;
@@ -1220,13 +1220,9 @@ public class StdRoom implements Room
 	{
 		if((Log.debugChannelOn())&&(CMSecurity.isDebugging("MESSAGES")))
 			Log.debugOut("StdRoom",((msg.source()!=null)?msg.source().ID():"null")+":"+msg.sourceCode()+":"+msg.sourceMessage()+"/"+((msg.target()!=null)?msg.target().ID():"null")+":"+msg.targetCode()+":"+msg.targetMessage()+"/"+((msg.tool()!=null)?msg.tool().ID():"null")+"/"+msg.othersCode()+":"+msg.othersMessage());
-		Vector inhabs=(Vector)inhabitants.clone();
-		for(int i=0;i<inhabs.size();i++)
-		{
-			MOB otherMOB=(MOB)inhabs.elementAt(i);
+		for(MOB otherMOB : inhabitants)
 			if((otherMOB!=null)&&(otherMOB!=source))
 				otherMOB.executeMsg(otherMOB,msg);
-		}
 		executeMsg(source,msg);
 	}
 
@@ -1472,8 +1468,8 @@ public class StdRoom implements Room
         affects=null;
         behaviors=null;
         scripts=null;
-        contents=new Vector(1);
-        inhabitants=new Vector(1);
+        contents=new SVector(1);
+        inhabitants=new SVector(1);
         gridParent=null;
         amDestroyed=true;
 	}
@@ -1719,7 +1715,7 @@ public class StdRoom implements Room
 		String newThingName=CMLib.lang().preItemParser(thingName);
 		if(newThingName!=null) thingName=newThingName;
 		Environmental found=null;
-		Vector V=(Vector)contents.clone();
+		SVector V=contents.copyOf();
 		for(int e=0;e<exits.length;e++)
 		    if(exits[e]!=null)V.addElement(exits[e]);
 		V.addAll(inhabitants);
@@ -1750,10 +1746,11 @@ public class StdRoom implements Room
 		String newThingName=CMLib.lang().preItemParser(thingName);
 		if(newThingName!=null) thingName=newThingName;
 		Environmental found=null;
-		Vector V=(Vector)inhabitants.clone();
+		SVector V=inhabitants.copyOf();
 		V.addAll(contents);
 		for(int e=0;e<exits.length;e++)
-		    if(exits[e]!=null)V.addElement(exits[e]);
+		    if(exits[e]!=null)
+		    	V.addElement(exits[e]);
 		found=CMLib.english().fetchAvailable(V,thingName,goodLocation,wornFilter,true);
 		if(found==null) found=CMLib.english().fetchAvailable(V,thingName,goodLocation,wornFilter,false);
 		if(found==null)
@@ -1841,7 +1838,7 @@ public class StdRoom implements Room
 	{
 		if(to==null) return;
 		if(fetchEffect(to.ID())!=null) return;
-		if(affects==null) affects=new Vector(1);
+		if(affects==null) affects=new SVector(1);
 		if(affects.contains(to)) return;
 		affects.addElement(to);
 		to.setAffectedOne(this);
@@ -1850,7 +1847,7 @@ public class StdRoom implements Room
 	{
 		if(to==null) return;
 		if(fetchEffect(to.ID())!=null) return;
-		if(affects==null) affects=new Vector(1);
+		if(affects==null) affects=new SVector(1);
 		to.makeNonUninvokable();
 		to.makeLongLasting();
 		affects.addElement(to);
@@ -1859,13 +1856,11 @@ public class StdRoom implements Room
 	public void delEffect(Ability to)
 	{
 		if(affects==null) return;
-		int size=affects.size();
-		affects.removeElement(to);
-		if(affects.size()<size)
+		if(affects.remove(to))
 		{
 			to.setAffectedOne(null);
 			if(affects.size()==0)
-			    affects=new Vector(1);
+			    affects=new SVector(1);
 		}
 	}
 	public int numEffects()
@@ -1900,7 +1895,7 @@ public class StdRoom implements Room
 	public void addBehavior(Behavior to)
 	{
 		if(to==null) return;
-		if(behaviors==null) behaviors=new Vector(1);
+		if(behaviors==null) behaviors=new SVector(1);
 		for(int b=0;b<numBehaviors();b++)
 		{
 			Behavior B=fetchBehavior(b);
@@ -1915,12 +1910,10 @@ public class StdRoom implements Room
 	public void delBehavior(Behavior to)
 	{
 		if(behaviors==null) return;
-		int size=behaviors.size();
-		behaviors.removeElement(to);
-		if(behaviors.size()<size)
+		if(behaviors.remove(to))
 		{
     		if(behaviors.size()==0)
-    		    behaviors=new Vector(1);
+    		    behaviors=new SVector(1);
             if(((behaviors==null)||(behaviors.size()==0))&&((scripts==null)||(scripts.size()==0)))
     			CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
 		}
@@ -1955,9 +1948,10 @@ public class StdRoom implements Room
     /** Manipulation of the scripts list */
     public void addScript(ScriptingEngine S)
     {
-        if(scripts==null) scripts=new Vector(1);
+        if(scripts==null) scripts=new SVector(1);
         if(S==null) return;
-        if(!scripts.contains(S)) {
+        if(!scripts.contains(S)) 
+        {
             ScriptingEngine S2=null;
             for(int s=0;s<scripts.size();s++)
             {
@@ -1974,12 +1968,10 @@ public class StdRoom implements Room
     {
         if(scripts!=null)
         {
-            int size=scripts.size();
-            scripts.removeElement(S);
-            if(scripts.size()<size)
+            if(scripts.remove(S))
             {
                 if(scripts.size()==0)
-                    scripts=new Vector(1);
+                    scripts=new SVector(1);
                 if(((behaviors==null)||(behaviors.size()==0))&&((scripts==null)||(scripts.size()==0)))
                     CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
             }

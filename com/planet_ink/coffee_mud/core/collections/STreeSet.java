@@ -18,7 +18,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-public class STreeSet<K> implements Serializable, Cloneable, Iterable<K>, Collection<K>, NavigableSet<K>, Set<K>, SortedSet<K>
+public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, NavigableSet<K>, Set<K>, SortedSet<K>
 {
 	private static final long serialVersionUID = -6713012858869312626L;
 	private TreeSet<K> T;
@@ -53,8 +53,8 @@ public class STreeSet<K> implements Serializable, Cloneable, Iterable<K>, Collec
 		T.clear();
 	}
 	@SuppressWarnings("unchecked")
-	@Override
-	public synchronized Object clone() {
+	public synchronized STreeSet<K> copyOf() 
+	{
 		STreeSet<K> TS=new STreeSet<K>();
 		TS.T=(TreeSet<K>)T.clone();
 		return TS;

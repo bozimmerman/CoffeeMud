@@ -135,7 +135,8 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		SHashtable<String, AbilityMapping> allAbleMap=completeAbleMap.get("All");
 		if((!addAll)||(allAbleMap==null)) 
 			return ableMap.elements();
-		return DVector.m_enum(new Iterator[]{ableMap.values().iterator(),allAbleMap.values().iterator()});
+		Iterator[] iters=new Iterator[]{ableMap.values().iterator(),allAbleMap.values().iterator()};
+		return new IteratorEnumeration(new MultiIterator(iters));
 	}
 	
 	public void addCharAbilityMapping(String ID,

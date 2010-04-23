@@ -192,7 +192,7 @@ public class Where extends StdCommand
                     who=who.substring(10).trim();
                 }
 
-                Enumeration r=(roomOnly||exitOnly)?CMLib.map().rooms():CMLib.map().roomsFilled();
+				Enumeration<Room> r=(roomOnly||exitOnly)?CMLib.map().rooms():CMLib.map().roomsFilled();
                 if(who.toUpperCase().startsWith("AREA ")||areaFlag)
                     r=(roomOnly||exitOnly)?mob.location().getArea().getProperMap():mob.location().getArea().getFilledProperMap();
                 if(who.toUpperCase().startsWith("AREA "))

@@ -1601,16 +1601,17 @@ public class List extends StdCommand
 
     public void listPolls(MOB mob, Vector commands)
     {
-        Vector V=CMLib.polls().getPollList();
-        if(V.size()==0)
+        Iterator<Poll> i=CMLib.polls().getPollList();
+        if(!i.hasNext())
             mob.tell("\n\rNo polls available.  Fix that by entering CREATE POLL!");
         else
         {
             StringBuffer str=new StringBuffer("");
-            for(int v=0;v<V.size();v++)
+            int v=1;
+            for(;i.hasNext();v++)
             {
-                Poll P=(Poll)V.elementAt(v);
-                str.append(CMStrings.padRight(""+(v+1),2)+": "+P.getName());
+                Poll P=(Poll)i.next();
+                str.append(CMStrings.padRight(""+v,2)+": "+P.getName());
                 if(!CMath.bset(P.getFlags(),Poll.FLAG_ACTIVE))
                     str.append(" (inactive)");
                 else

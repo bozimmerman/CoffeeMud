@@ -1157,27 +1157,27 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                 mob.tell(exit.viewableText(mob,room).toString());
                 if(isAClearExitView(mob,room,exit)&&(direction>=0)&&(room!=null))
                 {
-                    Vector view=null;
+                	List<Room> view=null;
                     Vector items=new Vector();
                     if(room.getGridParent()!=null)
                         view=room.getGridParent().getAllRooms();
                     else
                     {
                         view=new Vector();
-                        view.addElement(room);
+                        view.add(room);
                         for(int i=0;i<5;i++)
                         {
                             room=room.getRoomInDir(direction);
                             if(room==null) break;
                             Exit E=room.getExitInDir(direction);
                             if((isAClearExitView(mob,room,E)))
-                                view.addElement(room);
+                                view.add(room);
                         }
                     }
                     Environmental E=null;
                     for(int r=0;r<view.size();r++)
                     {
-                        room=(Room)view.elementAt(r);
+                        room=(Room)view.get(r);
                         for(int i=0;i<room.numItems();i++)
                         {
                             E=room.fetchItem(i);

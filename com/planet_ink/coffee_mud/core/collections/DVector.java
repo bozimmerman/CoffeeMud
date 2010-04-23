@@ -33,25 +33,24 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class DVector implements Cloneable, java.io.Serializable
 {
-	public static final long serialVersionUID=0;
-	public static final Enumeration emptyEnumeration=new Vector().elements();
-    public static final Iterator emptyIterator=new Vector().iterator();
-	protected int dimensions=1;
-	private Vector stuff=new Vector(1);
-	private final static int MAX_SIZE=9;
+	public static final long 	serialVersionUID=43353454350L;
+	protected int 				dimensions=1;
+	private SVector<Object[]> 	stuff=new SVector<Object[]>(1);
+	private final static int 	MAX_SIZE=9;
+	
 	public DVector(int dim)
 	{
 		if(dim<1) throw new java.lang.IndexOutOfBoundsException();
 		if(dim>MAX_SIZE) throw new java.lang.IndexOutOfBoundsException();
 		dimensions=dim;
-		stuff=new Vector(1);
+		stuff=new SVector<Object[]>(1);
 	}
     public DVector(int dim, int startingSize)
     {
         if(dim<1) throw new java.lang.IndexOutOfBoundsException();
 		if(dim>MAX_SIZE) throw new java.lang.IndexOutOfBoundsException();
         dimensions=dim;
-        stuff=new Vector(startingSize);
+        stuff=new SVector<Object[]>(startingSize);
     }
 	
 	public void clear()
@@ -77,13 +76,13 @@ public class DVector implements Cloneable, java.io.Serializable
             int x=0;
             if(O==null)
             {
-                for(Enumeration e=stuff.elements();e.hasMoreElements();x++)
-                    if((((Object[])e.nextElement())[0])==null)
+                for(Enumeration<Object[]> e=stuff.elements();e.hasMoreElements();x++)
+                    if(e.nextElement()[0]==null)
                         return x;
             }
             else
-            for(Enumeration e=stuff.elements();e.hasMoreElements();x++)
-                if(O.equals(((Object[])e.nextElement())[0]))
+            for(Enumeration<Object[]> e=stuff.elements();e.hasMoreElements();x++)
+                if(O.equals(e.nextElement()[0]))
                     return x;
         }
 		return -1;
@@ -93,7 +92,7 @@ public class DVector implements Cloneable, java.io.Serializable
 		synchronized(stuff)
 		{
 			if((x<0)||(x>=stuff.size())) throw new java.lang.IndexOutOfBoundsException();
-            return (Object[])stuff.elementAt(x);
+            return stuff.elementAt(x);
 		}
 	}
 	
@@ -102,7 +101,7 @@ public class DVector implements Cloneable, java.io.Serializable
 		synchronized(stuff)
 		{
 			if((x<0)||(x>=stuff.size())) throw new java.lang.IndexOutOfBoundsException();
-            Object[] O=(Object[])stuff.elementAt(x);
+            Object[] O=stuff.elementAt(x);
             stuff.removeElementAt(x);
 			return O;
 		}
@@ -115,8 +114,8 @@ public class DVector implements Cloneable, java.io.Serializable
 		{
 			synchronized(stuff)
 			{
-			    for(Enumeration s=stuff.elements();s.hasMoreElements();)
-			        V.stuff.addElement(((Object[])s.nextElement()).clone());
+			    for(Enumeration<Object[]> s=stuff.elements();s.hasMoreElements();)
+			        V.stuff.addElement(s.nextElement().clone());
 			}
 		}
 		return V;
@@ -132,19 +131,19 @@ public class DVector implements Cloneable, java.io.Serializable
 			synchronized(stuff)
 			{
 				Object O=null;
-			    for(Enumeration s=stuff.elements();s.hasMoreElements();)
+			    for(Enumeration<Object[]> s=stuff.elements();s.hasMoreElements();)
 			    {
-			    	O=((Object[])s.nextElement())[dim];
+			    	O=(s.nextElement())[dim];
 			    	if(!sorted.contains(O))
 				        sorted.add(O);
 			    }
-			    Vector newStuff = new Vector(stuff.size());
+			    SVector<Object[]> newStuff = new SVector<Object[]>(stuff.size());
 			    for(Iterator i=sorted.iterator();i.hasNext();)
 			    {
 			    	O=i.next();
-				    for(Enumeration s=stuff.elements();s.hasMoreElements();)
+				    for(Enumeration<Object[]> s=stuff.elements();s.hasMoreElements();)
 				    {
-				    	Object[] Os=(Object[])s.nextElement();
+				    	Object[] Os=s.nextElement();
 				    	if(O==Os[dim]) newStuff.addElement(Os);
 				    }
 			    }
@@ -172,86 +171,12 @@ public class DVector implements Cloneable, java.io.Serializable
             stuff.addElement(O);
         }
     }
-    
-    public void addElements(Object[] O)
-    {
-        if(dimensions!=O.length) throw new java.lang.IndexOutOfBoundsException();
-        synchronized(stuff)
-        {
-            stuff.addElement((Object[])O.clone());
-        }
-    }
-    
-	public void addElement(Object O)
+	public void addElement(Object... Os)
 	{
-		if(dimensions!=1) throw new java.lang.IndexOutOfBoundsException();
+		if(dimensions!=Os.length) throw new java.lang.IndexOutOfBoundsException();
 		synchronized(stuff)
 		{
-			stuff.addElement(new Object[]{O});
-		}
-	}
-	public void addElement(Object O, Object O1)
-	{
-		if(dimensions!=2) throw new java.lang.IndexOutOfBoundsException();
-		synchronized(stuff)
-		{
-            stuff.addElement(new Object[]{O,O1});
-		}
-	}
-	public void addElement(Object O, Object O1, Object O2)
-	{
-		if(dimensions!=3) throw new java.lang.IndexOutOfBoundsException();
-		synchronized(stuff)
-		{
-            stuff.addElement(new Object[]{O,O1,O2});
-		}
-	}
-	public void addElement(Object O, Object O1, Object O2, Object O3)
-	{
-		if(dimensions!=4) throw new java.lang.IndexOutOfBoundsException();
-		synchronized(stuff)
-		{
-            stuff.addElement(new Object[]{O,O1,O2,O3});
-		}
-	}
-	public void addElement(Object O, Object O1, Object O2, Object O3, Object O4)
-	{
-		if(dimensions!=5) throw new java.lang.IndexOutOfBoundsException();
-		synchronized(stuff)
-		{
-            stuff.addElement(new Object[]{O,O1,O2,O3,O4});
-		}
-	}
-	public void addElement(Object O, Object O1, Object O2, Object O3, Object O4, Object O5)
-	{
-		if(dimensions!=6) throw new java.lang.IndexOutOfBoundsException();
-		synchronized(stuff)
-		{
-            stuff.addElement(new Object[]{O,O1,O2,O3,O4,O5});
-		}
-	}
-	public void addElement(Object O, Object O1, Object O2, Object O3, Object O4, Object O5, Object O6)
-	{
-		if(dimensions!=7) throw new java.lang.IndexOutOfBoundsException();
-		synchronized(stuff)
-		{
-            stuff.addElement(new Object[]{O,O1,O2,O3,O4,O5,O6});
-		}
-	}
-	public void addElement(Object O, Object O1, Object O2, Object O3, Object O4, Object O5, Object O6, Object O7)
-	{
-		if(dimensions!=8) throw new java.lang.IndexOutOfBoundsException();
-		synchronized(stuff)
-		{
-            stuff.addElement(new Object[]{O,O1,O2,O3,O4,O5,O6,O7});
-		}
-	}
-	public void addElement(Object O, Object O1, Object O2, Object O3, Object O4, Object O5, Object O6, Object O7, Object O8)
-	{
-		if(dimensions!=9) throw new java.lang.IndexOutOfBoundsException();
-		synchronized(stuff)
-		{
-            stuff.addElement(new Object[]{O,O1,O2,O3,O4,O5,O6,O7,O8});
+            stuff.addElement(Os);
 		}
 	}
 	public boolean contains(Object O){
@@ -262,8 +187,8 @@ public class DVector implements Cloneable, java.io.Serializable
         synchronized(stuff)
         {
             if(S==null) return indexOf(null)>=0;
-    	    for(Enumeration e=stuff.elements();e.hasMoreElements();)
-    	        if(S.equalsIgnoreCase(((Object[])e.nextElement())[0].toString()))
+    	    for(Enumeration<Object[]> e=stuff.elements();e.hasMoreElements();)
+    	        if(S.equalsIgnoreCase(e.nextElement()[0].toString()))
     	            return true;
         }
 	    return false;
@@ -289,23 +214,23 @@ public class DVector implements Cloneable, java.io.Serializable
 	}
     public Vector getDimensionVector(int dim)
     {
-        Vector V=new Vector(stuff.size());
+        Vector V=new Vector<Object>(stuff.size());
         synchronized(stuff)
         {
             if(dimensions<dim) throw new java.lang.IndexOutOfBoundsException();
-            for(Enumeration e=stuff.elements();e.hasMoreElements();)
-                V.addElement(((Object[])e.nextElement())[dim-1]);
+            for(Enumeration<Object[]> e=stuff.elements();e.hasMoreElements();)
+                V.addElement(e.nextElement()[dim-1]);
         }
         return V;
     }
     public Vector getRowVector(int row)
     {
-		Vector V=new Vector(dimensions);
+    	Vector V=new Vector<Object>(dimensions);
 		synchronized(stuff)
 		{
             Object[] O=elementsAt(row);
 			for(int v=0;v<O.length;v++)
-				V.addElement(O[v]);
+				V.add(O[v]);
 		}
 		return V;
     }
@@ -314,7 +239,7 @@ public class DVector implements Cloneable, java.io.Serializable
 		synchronized(stuff)
 		{
 			if(dimensions<dim) throw new java.lang.IndexOutOfBoundsException();
-			return ((Object[])stuff.elementAt(i))[dim-1];
+			return (stuff.elementAt(i))[dim-1];
 		}
 	}
 	
@@ -323,281 +248,16 @@ public class DVector implements Cloneable, java.io.Serializable
 		if(dimensions<dim) throw new java.lang.IndexOutOfBoundsException();
 		synchronized(stuff)
 		{
-            ((Object[])stuff.elementAt(index))[dim-1]=O;
-		}
-	}
-    public void insertElementAt(int here, Object O)
-    {
-        if(dimensions!=1) throw new java.lang.IndexOutOfBoundsException();
-        synchronized(stuff)
-        {
-            stuff.insertElementAt(new Object[]{O},here);
-        }
-    }
-	public void insertElementAt(int here, Object O, Object O1)
-	{
-		if(dimensions!=2) throw new java.lang.IndexOutOfBoundsException();
-		synchronized(stuff)
-		{
-            stuff.insertElementAt(new Object[]{O,O1},here);
-		}
-	}
-	public void insertElementAt(int here, Object O, Object O1, Object O2)
-	{
-		if(dimensions!=3) throw new java.lang.IndexOutOfBoundsException();
-		synchronized(stuff)
-		{
-            stuff.insertElementAt(new Object[]{O,O1,O2},here);
-		}
-	}
-	public void insertElementAt(int here, Object O, Object O1, Object O2, Object O3)
-	{
-		if(dimensions!=4) throw new java.lang.IndexOutOfBoundsException();
-		synchronized(stuff)
-		{
-            stuff.insertElementAt(new Object[]{O,O1,O2,O3},here);
-		}
-	}
-	public void insertElementAt(int here, Object O, Object O1, Object O2, Object O3, Object O4)
-	{
-		if(dimensions!=5) throw new java.lang.IndexOutOfBoundsException();
-		synchronized(stuff)
-		{
-            stuff.insertElementAt(new Object[]{O,O1,O2,O3,O4},here);
-		}
-	}
-	public void insertElementAt(int here, Object O, Object O1, Object O2, Object O3, Object O4, Object O5)
-	{
-		if(dimensions!=6) throw new java.lang.IndexOutOfBoundsException();
-		synchronized(stuff)
-		{
-            stuff.insertElementAt(new Object[]{O,O1,O2,O3,O4,O5},here);
-		}
-	}
-	public void insertElementAt(int here, Object O, Object O1, Object O2, Object O3, Object O4, Object O5, Object O6)
-	{
-		if(dimensions!=7) throw new java.lang.IndexOutOfBoundsException();
-		synchronized(stuff)
-		{
-            stuff.insertElementAt(new Object[]{O,O1,O2,O3,O4,O5,O6},here);
-		}
-	}
-	public void insertElementAt(int here, Object O, Object O1, Object O2, Object O3, Object O4, Object O5, Object O6, Object O7)
-	{
-		if(dimensions!=8) throw new java.lang.IndexOutOfBoundsException();
-		synchronized(stuff)
-		{
-            stuff.insertElementAt(new Object[]{O,O1,O2,O3,O4,O5,O6,O7},here);
+            stuff.elementAt(index)[dim-1]=O;
 		}
 	}
 	
-	public void insertElementAt(int here, Object O, Object O1, Object O2, Object O3, Object O4, Object O5, Object O6, Object O7, Object O8)
+	public void insertElementAt(int here, Object... Os)
 	{
-		if(dimensions!=9) throw new java.lang.IndexOutOfBoundsException();
+		if(dimensions!=Os.length) throw new java.lang.IndexOutOfBoundsException();
 		synchronized(stuff)
 		{
-            stuff.insertElementAt(new Object[]{O,O1,O2,O3,O4,O5,O6,O7,O8},here);
+            stuff.insertElementAt(Os,here);
 		}
 	}
-	
-	public static Vector softCopy(Vector V)
-    {
-        if(V==null) return null;
-        Vector V2=new Vector(V.size());
-        for(Enumeration e=V.elements();e.hasMoreElements();)
-            V2.addElement(e.nextElement());
-        return V2;
-    }
-    
-    public static DVector softCopy(DVector DV)
-    {
-        if(DV==null) return null;
-        DVector DV2=new DVector(DV.dimensions);
-        DV2.stuff=softCopy(DV.stuff);
-        return DV2;
-    }
-    
-	public static Hashtable softCopy(Hashtable H)
-    {
-        if(H==null) return null;
-        Hashtable H2=new Hashtable(H.size());
-        Object key=null;
-        for(Enumeration e=H.keys();e.hasMoreElements();)
-        {
-            key=e.nextElement();
-            H2.put(key, H.get(key));
-        }
-        return H2;
-    }
-    
-	public static HashSet softCopy(HashSet H)
-    {
-        if(H==null) return null;
-        HashSet H2=new HashSet(H.size());
-        for(Iterator i=H.iterator();i.hasNext();)
-            H2.add(i.next());
-        return H2;
-    }
-	
-	public static Enumeration empty_enum() {
-        return new Enumeration() {
-	        public boolean hasMoreElements() { return false;}
-	        public Object nextElement() { return null;}
-        };
-	};
-	
-	public static Iterator empty_iter() {
-        return new Iterator() {
-	        public boolean hasNext() { return false;}
-	        public Object next() { return null;}
-            public void remove() {}
-        };
-	};
-	
-	public static Enumeration s_enum(List V) {
-        //return ((Vector)V.clone()).elements(); /*
-        return new Enumeration() {
-            Iterator i=null;
-            public boolean hasMoreElements() { return i.hasNext();}
-            public Object nextElement() { return i.next();}
-            public Enumeration setV(List V) {
-                if((V==null)||(V.size()==0))
-                	return empty_enum();
-                i=s_iter(V);
-                return this;
-            }
-        }.setV(V);
-        //*/
-    }
-    
-	public static Iterator s_iter(List V) 
-	{
-        return new Iterator() 
-        {
-            boolean more=false;
-            Object prevO=null;
-            Object O=null;
-            List V=null;
-            int c=0;
-            
-            public boolean hasNext() { return more; }
-            
-            public int confirmDex(Object O)
-            {
-                try {
-                    for(int i=0;i<3;i++)
-                        if(V.get(c-i)==O)
-                            return c+1-i;
-                } catch(Exception e){}
-                return c;
-            }
-            
-            public Object next() 
-            {
-                if(!more) 
-                    throw new java.util.NoSuchElementException("");
-                prevO=O;
-                try {
-                    c=confirmDex(O);
-                    O=V.get(c);
-                    more=true;
-                } catch(Exception e) {
-                    more=false;
-                    O=null;
-                }
-                return prevO;
-            }
-            
-            public Iterator setV(List V) {
-                if((V==null)||(V.size()==0)) 
-                	return empty_iter();
-                this.V=V;
-                more=false;
-                try {
-                	if(V.size()>0)
-                	{
-	                    O=V.get(0);
-	                    more=true;
-                	}
-                } catch(Throwable t) {}
-                return this;
-            }
-            
-            public void remove() {
-                try { V.remove(prevO); c--; }
-                catch(Exception e){}
-            }
-        }.setV(V);
-        //*/
-    }
-    
-	public static Enumeration m_enum(Iterator[] V) {
-        return new Enumeration() {
-            Iterator i=null;
-            public boolean hasMoreElements() { return i.hasNext();}
-            public Object nextElement() { return i.next();}
-            public Enumeration setSets(Iterator[] V) {
-                if((V==null)||(V.length==0))
-                	return empty_enum();
-                i=m_iter(V);
-                return this;
-            }
-        }.setSets(V);
-    }
-    
-	public static Iterator m_iter(Iterator[] esets) 
-	{
-        return new Iterator() 
-        {
-            Iterator[] S=null;
-            int dex=0;
-            
-            public boolean hasNext() 
-            { 
-            	while((dex<S.length)&&(!S[dex].hasNext()))
-            		dex++;
-            	if(dex>=S.length)
-            		return false;
-            	return true;
-            }
-            
-            public Object next() 
-            {
-            	if(!hasNext())
-            		throw new NoSuchElementException();
-            	return S[dex].next();
-            }
-            
-            public Iterator setSets(Iterator[] esets) 
-            {
-                if((esets==null)||(esets.length==0)) 
-                	return empty_iter();
-                S=esets;
-                hasNext();
-                return this;
-            }
-            
-            public void remove() {
-            	if(dex>=S.length)
-            		throw new NoSuchElementException();
-            	S[dex].remove();
-            }
-        }.setSets(esets);
-    }
-	
-	public static Enumeration s_enum(Hashtable H, boolean keys) 
-	{
-		/* this is slower -- more than twice as slow, believe it or not! */
-        //return keys?((Hashtable)H.clone()).keys():((Hashtable)H.clone()).elements(); 
-        if((H==null)||(H.size()==0))
-        	return empty_enum();
-        Vector V=new Vector(H.size());
-    	if(keys)
-    		V.addAll(H.keySet());
-    	else
-        for(Enumeration e=H.elements();e.hasMoreElements();)
-            V.addElement(e.nextElement());
-        return s_enum(V);
-        //*/
-    }
 }

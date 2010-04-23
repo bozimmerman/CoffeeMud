@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.Area.CompleteRoomEnumerator;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
@@ -37,40 +38,39 @@ import java.util.*;
 public class StdArea implements Area
 {
 	public String ID(){	return "StdArea";}
-	public long flags(){return 0;}
-	protected String name="the area";
-	protected String description="";
-	protected String miscText="";
-	protected String archPath="";
-	protected String imageName="";
-	protected int techLevel=0;
-	protected int climateID=Area.CLIMASK_NORMAL;
-	protected Vector<Room> properRooms=new Vector<Room>();
-    protected Vector blurbFlags=new Vector(1);
-	//protected Vector metroRooms=new Vector();
-	protected long tickStatus=Tickable.STATUS_NOT;
-	protected long expirationDate=0;
-    protected long lastPlayerTime=System.currentTimeMillis();
-    protected int flag=Area.STATE_ACTIVE;
+	protected String 		name="the area";
+	protected String 		description="";
+	protected String 		miscText="";
+	protected String 		archPath="";
+	protected String 		imageName="";
+	protected int 			techLevel=0;
+	protected int 			climateID=Area.CLIMASK_NORMAL;
+    protected Vector 		blurbFlags=new Vector(1);
+	protected long 			tickStatus=Tickable.STATUS_NOT;
+	protected long 			expirationDate=0;
+    protected long 			lastPlayerTime=System.currentTimeMillis();
+    protected int 			flag=Area.STATE_ACTIVE;
+	protected STreeMap<String, Room>
+							properRooms=new STreeMap<String, Room>(new RoomIDComparator());
 	protected RoomnumberSet properRoomIDSet=null;
 	protected RoomnumberSet metroRoomIDSet=null;
 
-    protected Vector children=null;
-    protected Vector parents=null;
-    protected Vector childrenToLoad=new Vector(1);
-    protected Vector parentsToLoad=new Vector(1);
+    protected Vector 		children=null;
+    protected Vector 		parents=null;
+    protected Vector 		childrenToLoad=new Vector(1);
+    protected Vector 		parentsToLoad=new Vector(1);
 
-	protected EnvStats envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
-	protected EnvStats baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
-    protected String[] xtraValues=null;
+    protected String[] 		xtraValues=null;
+	protected String 		author="";
+	protected String 		currency="";
 	
-	protected String author="";
-	public void setAuthorID(String authorID){author=authorID;}
-	public String getAuthorID(){return author;}
-	
-	protected String currency="";
+	protected EnvStats 		envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+	protected EnvStats 		baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
 	
     public void initializeClass(){}
+	public long flags(){return 0;}
+	public void setAuthorID(String authorID){author=authorID;}
+	public String getAuthorID(){return author;}
 	public void setCurrency(String newCurrency)
 	{
         if(currency.length()>0)
@@ -240,13 +240,9 @@ public class StdArea implements Area
 		RoomnumberSet set=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
 		synchronized(properRooms)
 		{
-			Room R=null;
-			for(int p=properRooms.size()-1;p>=0;p--)
-			{
-				R=properRooms.elementAt(p);
+			for(Room R : properRooms.values())
 				if(R.roomID().length()>0)
 					set.add(R.roomID());
-			}
 		}
 		return set;
 	}
@@ -871,7 +867,7 @@ public class StdArea implements Area
 
 	public void fillInAreaRooms()
 	{
-		for(Enumeration r=getProperMap();r.hasMoreElements();)
+		for(Enumeration<Room> r=getProperMap();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
 			R.clearSky();
@@ -881,7 +877,7 @@ public class StdArea implements Area
 					((GridLocale)R).buildGrid();
 			}
 		}
-		for(Enumeration r=getProperMap();r.hasMoreElements();)
+		for(Enumeration<Room> r=getProperMap();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
 			R.clearSky();
@@ -986,7 +982,7 @@ public class StdArea implements Area
 			long totalAlignments=0;
 	        Room R=null;
 	        MOB mob=null;
-			for(Enumeration r=getProperMap();r.hasMoreElements();)
+			for(Enumeration<Room> r=getProperMap();r.hasMoreElements();)
 			{
 				R=(Room)r.nextElement();
 				if(R instanceof GridLocale)
@@ -1130,32 +1126,7 @@ public class StdArea implements Area
 		}
 	}
 	public void setProperRoomnumbers(RoomnumberSet set){ properRoomIDSet=set;}
-	protected int getProperIndex(Room R)
-	{
-		if(properRooms.size()==0) return -1;
-		if(R.roomID().length()==0) return 0;
-		String roomID=R.roomID();
-		synchronized(properRooms)
-		{
-			int start=0;
-			int end=properRooms.size()-1;
-			int mid=0;
-			while(start<=end)
-			{
-	            mid=(end+start)/2;
-	            int comp=properRooms.elementAt(mid).roomID().compareToIgnoreCase(roomID);
-	            if(comp==0) return mid;
-	            else
-	            if(comp>0)
-	                end=mid-1;
-	            else
-	                start=mid+1;
-			}
-			if(end<0) return 0;
-			if(start>=properRooms.size()) return properRooms.size()-1;
-			return mid;
-		}
-	}
+	
     public void addProperRoom(Room R)
     {
         if(R==null) return;
@@ -1166,7 +1137,6 @@ public class StdArea implements Area
         }
         synchronized(properRooms)
         {
-        	int insertAt=0;
     		String roomID=R.roomID();
             if(roomID.length()==0)
             {
@@ -1179,27 +1149,10 @@ public class StdArea implements Area
                 }
                 return;
             }
-        	if(properRooms.size()>0)
-        	{
-        		insertAt=getProperIndex(R);
-	            int comp=properRooms.elementAt(insertAt).roomID().compareToIgnoreCase(roomID);
-	            if(comp==0) return;
-                addMetroRoom(R);
-				if(comp>0)
-					properRooms.insertElementAt(R,insertAt);
-				else
-				if(insertAt==properRooms.size()-1)
-					properRooms.addElement(R);
-				else
-					properRooms.insertElementAt(R,insertAt+1);
-                addProperRoomnumber(roomID);
-        	}
-        	else
-        	{
-        		properRooms.addElement(R);
-                addProperRoomnumber(roomID);
-                addMetroRoom(R);
-        	}
+            if(!properRooms.containsKey(R.roomID()))
+	            properRooms.put(R.roomID(),R);
+            addProperRoomnumber(roomID);
+            addMetroRoom(R);
         }
     }
 
@@ -1277,7 +1230,7 @@ public class StdArea implements Area
         if(R==null) return false;
         if(R.roomID().length()>0)
         	return getProperRoomnumbers().contains(R.roomID());
-        return properRooms.contains(R);
+        return properRooms.containsValue(R);
     }
     public void delProperRoom(Room R)
     {
@@ -1285,24 +1238,27 @@ public class StdArea implements Area
         if(R instanceof GridLocale)
             ((GridLocale)R).clearGrid(null);
         if(properRooms!=null)
-        synchronized(properRooms)
-        {
-        	if(R.roomID().length()==0)
-        	{
-        		if((R.getGridParent()!=null)&&(R.getGridParent().roomID().length()>0))
-        		{
-        			String id=R.getGridParent().getGridChildCode(R);
-        			delProperRoomnumber(id);
-        			delMetroRoom(R);
-        		}
-        	}
-        	else
-            if(properRooms.removeElement(R))
-            {
-	            delMetroRoom(R);
-	            delProperRoomnumber(R.roomID());
-            }
-        }
+	        synchronized(properRooms)
+	        {
+	        	if(R.roomID().length()==0)
+	        	{
+	        		if((R.getGridParent()!=null)&&(R.getGridParent().roomID().length()>0))
+	        		{
+	        			String id=R.getGridParent().getGridChildCode(R);
+	        			delProperRoomnumber(id);
+	        			delMetroRoom(R);
+	        		}
+	        	}
+	        	else
+	        	{
+	        		R=properRooms.remove(R.roomID());
+		            if(R!=null)
+		            {
+			            delMetroRoom(R);
+			            delProperRoomnumber(R.roomID());
+		            }
+	        	}
+	        }
     }
 
     public Room getRoom(String roomID)
@@ -1313,22 +1269,8 @@ public class StdArea implements Area
         {
     		if(roomID.toUpperCase().startsWith(Name().toUpperCase()+"#"))
 	    		roomID=Name()+roomID.substring(Name().length()); // for case sensitive situations
-	        int start=0;
-	        int end=properRooms.size()-1;
-	        while(start<=end)
-	        {
-	            int mid=(end+start)/2;
-	            int comp=properRooms.elementAt(mid).roomID().compareToIgnoreCase(roomID);
-	            if(comp==0)
-	                return properRooms.elementAt(mid);
-	            else
-	            if(comp>0)
-	                end=mid-1;
-	            else
-	                start=mid+1;
-	        }
+    		return properRooms.get(roomID);
         }
-        return null;
     }
 
 	public int metroSize()
@@ -1377,22 +1319,14 @@ public class StdArea implements Area
 		return R;
 	}
 
-	public Enumeration getProperMap()
+	public Enumeration<Room> getProperMap()
 	{
-		Vector<Room> V=(Vector<Room>)properRooms.clone();
-		Room R=null;
-		for(int v=V.size()-1;v>=0;v--)
-		{
-			R=V.elementAt(v);
-			if(R instanceof GridLocale)
-				V.addAll(((GridLocale)R).getAllRooms());
-		}
-		return V.elements();
+		return new CompleteRoomEnumerator(new IteratorEnumeration<Room>(properRooms.values().iterator()));
 	}
 
-    public Enumeration getFilledProperMap()
+    public Enumeration<Room> getFilledProperMap()
     {
-        Enumeration r=getProperMap();
+    	Enumeration<Room> r=getProperMap();
         Vector V=new Vector();
         Room R=null;
         Room R2=null;
@@ -1416,24 +1350,14 @@ public class StdArea implements Area
         }
         return V.elements();
     }
-	public Vector getMetroCollection()
+	public Enumeration<Room> getCompleteMap(){return getProperMap();}
+	public Enumeration<Room> getMetroMap()
 	{
-		Vector<Room> V=(Vector<Room>)properRooms.clone();
-		Room R=null;
-		for(int v=V.size()-1;v>=0;v--)
-		{
-			R=V.elementAt(v);
-			if(R instanceof GridLocale)
-				V.addAll(((GridLocale)R).getAllRooms());
-		}
-		V.ensureCapacity(metroSize());
+		MultiEnumeration<Room> multiEnumerator = new MultiEnumeration<Room>(new IteratorEnumeration<Room>(properRooms.values().iterator()));
 		for(int c=getNumChildren()-1;c>=0;c--)
-			V.addAll(getChild(c).getMetroCollection());
-		return V;
-
+			multiEnumerator.addEnumeration(getChild(c).getMetroMap());
+		return new CompleteRoomEnumerator(multiEnumerator);
 	}
-	public Enumeration getCompleteMap(){return getProperMap();}
-	public Enumeration getMetroMap(){return getMetroCollection().elements();}
 	public Vector getSubOpVectorList()
 	{
 		return subOps;
@@ -1457,7 +1381,7 @@ public class StdArea implements Area
 			}
 		}
 	}
-	public Enumeration getChildren() { initChildren(); return children.elements(); }
+	public Enumeration<Area> getChildren() { initChildren(); return children.elements(); }
 	public String getChildrenList() {
 	        initChildren();
 	        StringBuffer str=new StringBuffer("");
@@ -1550,7 +1474,7 @@ public class StdArea implements Area
 	                }
 	        }
 	}
-	public Enumeration getParents() { initParents(); return parents.elements(); }
+	public Enumeration<Area> getParents() { initParents(); return parents.elements(); }
     public Vector getParentsRecurse()
     {
         Vector V=new Vector();

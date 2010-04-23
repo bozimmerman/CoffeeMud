@@ -15,7 +15,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-public class SHashtable<K,F> implements java.util.Map<K,F>, java.lang.Cloneable, java.io.Serializable
+public class SHashtable<K,F> implements java.util.Map<K,F>, java.io.Serializable
 {
 	private static final long serialVersionUID = 6687178785122561993L;
 	private Hashtable<K,F> H;
@@ -37,8 +37,8 @@ public class SHashtable<K,F> implements java.util.Map<K,F>, java.lang.Cloneable,
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
-	public synchronized Object clone() {
+	public synchronized SHashtable<F,K> copyOf() 
+	{
 		SHashtable<F,K> SH=new SHashtable<F,K>();
 		SH.H=(Hashtable<F,K>)H.clone();
 		return SH;

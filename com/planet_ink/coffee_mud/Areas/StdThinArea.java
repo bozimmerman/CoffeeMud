@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.Area.CompleteRoomEnumerator;
+import com.planet_ink.coffee_mud.Areas.interfaces.Area.RoomIDEnumerator;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
@@ -75,7 +76,7 @@ public class StdThinArea extends StdArea
     	}
     	return R;
     }
-	public Enumeration getProperMap(){return DVector.s_enum(properRooms);}
+	public Enumeration<Room> getProperMap(){return new IteratorEnumeration<Room>(properRooms.values().iterator());}
     public boolean isRoom(String roomID){ return getProperRoomnumbers().contains(roomID); }
     public boolean isRoom(Room R)
     {
@@ -83,15 +84,18 @@ public class StdThinArea extends StdArea
     	if(R.roomID().length()==0) return super.isRoom(R);
     	return isRoom(R.roomID());
     }
-	public Enumeration getCompleteMap(){return new CompleteRoomEnumerator(this);}
-	public Vector getMetroCollection()
+	public Enumeration<Room> getCompleteMap(){return new CompleteRoomEnumerator(new RoomIDEnumerator(this));}
+	public Enumeration<Room> getMetroMap()
 	{
-		int minimum=(properRoomIDSet==null)?0:(properRoomIDSet.roomCountAllAreas()/10);
+		int minimum=getProperRoomnumbers().roomCountAllAreas()/10;
 		if(getCachedRoomnumbers().roomCountAllAreas()<minimum)
 		{
 			for(int r=0;r<minimum;r++)
 				getRandomProperRoom();
 		}
-		return super.getMetroCollection();
+		MultiEnumeration<Room> multiEnumerator = new MultiEnumeration<Room>(new RoomIDEnumerator(this));
+		for(int c=getNumChildren()-1;c>=0;c--)
+			multiEnumerator.addEnumeration(getChild(c).getMetroMap());
+		return new CompleteRoomEnumerator(multiEnumerator);
 	}
 }

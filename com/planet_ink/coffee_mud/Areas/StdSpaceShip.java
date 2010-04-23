@@ -439,7 +439,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
         }
 	}
 
-	public Enumeration getCompleteMap(){return getProperMap();}
+	public Enumeration<Room> getCompleteMap(){return getProperMap();}
 	public Vector getMetroCollection(){return (Vector)myRooms.clone();}
 	
 	public int[] addMaskAndReturn(int[] one, int[] two)
@@ -575,7 +575,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		int airLockDir=-1;
 		Room backupRoom=null;
 		int backupDir=-1;
-		for(Enumeration e=getProperMap();e.hasMoreElements();)
+		for(Enumeration<Room> e=getProperMap();e.hasMoreElements();)
 		{
 			Room R2=(Room)e.nextElement();
 			if(R2!=null)
@@ -634,7 +634,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 			if(I.Name().equals(Name()))
 				I.destroy();
 		}
-		for(Enumeration e=getProperMap();e.hasMoreElements();)
+		for(Enumeration<Room> e=getProperMap();e.hasMoreElements();)
 		{
 			Room R=(Room)e.nextElement();
 			if(R!=null)
@@ -874,7 +874,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public int numberOfProperIDedRooms()
 	{
 		int num=0;
-		for(Enumeration e=getProperMap();e.hasMoreElements();)
+		for(Enumeration<Room> e=getProperMap();e.hasMoreElements();)
 		{
 			Room R=(Room)e.nextElement();
 			if(R.roomID().length()>0)
@@ -898,19 +898,19 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	}
 	public void setProperRoomnumbers(RoomnumberSet set){ properRoomIDSet=set;}
 	public RoomnumberSet getMetroRoomnumbers(){return getProperRoomnumbers();}
-	public Enumeration getMetroMap(){return getProperMap();}
+	public Enumeration<Room> getMetroMap(){return getProperMap();}
 	public void addMetroRoomnumber(String roomID){}
 	public void delMetroRoomnumber(String roomID){}
 	public void addMetroRoom(Room R){}
 	public void delMetroRoom(Room R){}
-	public Enumeration getProperMap()
+	public Enumeration<Room> getProperMap()
 	{
 		synchronized(myRooms)
 		{
 			return myRooms.elements();
 		}
 	}
-	public Enumeration getFilledProperMap() { return getProperMap();}
+	public Enumeration<Room> getFilledProperMap() { return getProperMap();}
 	public Vector getSubOpVectorList(){	return new Vector();}
 
     public void addChildToLoad(String str){}
@@ -918,7 +918,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 
 	// Children
 	public void initChildren() {}
-	public Enumeration getChildren() {return new Vector().elements(); }
+	public Enumeration<Area> getChildren() {return new Vector().elements(); }
 	public String getChildrenList() { return "";}
 	public int getNumChildren() { return 0; }
 	public Area getChild(int num) { return null; }
@@ -941,12 +941,12 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	                }
 	        }
 	}
-	public Enumeration getParents() { initParents(); return parents.elements(); }
+	public Enumeration<Area> getParents() { initParents(); return parents.elements(); }
     public Vector getParentsRecurse()
     {
         Vector V=new Vector();
         Area A=null;
-        for(Enumeration e=getParents();e.hasMoreElements();)
+        for(Enumeration<Area> e=getParents();e.hasMoreElements();)
         {
             A=(Area)e.nextElement();
             V.addElement(A);
@@ -957,10 +957,10 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public String getParentsList() {
 	        initParents();
 	        StringBuffer str=new StringBuffer("");
-	        for(Enumeration e=getParents(); e.hasMoreElements();) {
-	                Area A=(Area)e.nextElement();
-	                if(str.length()>0) str.append(";");
-	                str.append(A.name());
+	        for(Enumeration<Area> e=getParents(); e.hasMoreElements();) {
+                Area A=(Area)e.nextElement();
+                if(str.length()>0) str.append(";");
+                str.append(A.name());
 	        }
 	        return str.toString();
 	}

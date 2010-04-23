@@ -30,15 +30,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public interface PollManager extends CMLibrary
 {
     public void addPoll(Poll P);
     public void removePoll(Poll P);
     public Poll getPoll(String named);
     public Poll getPoll(int x);
-    public Vector[] getMyPolls(MOB mob, boolean login);
-    public Vector getPollList();
+    public List<Poll>[] getMyPollTypes(MOB mob, boolean login);
+    public Iterator<Poll> getPollList();
     public void processVote(Poll P, MOB mob);
     public void modifyVote(Poll P, MOB mob) throws java.io.IOException;
     public void processResults(Poll P, MOB mob);

@@ -1552,12 +1552,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 		if(room instanceof GridLocale)
 		{
-			Vector exits=((GridLocale)room).outerExits();
 			HashSet done=new HashSet();
 			int ordinal=0;
-			for(int v=0;v<exits.size();v++)
+			for(Iterator<WorldMap.CrossExit> i=((GridLocale)room).outerExits();i.hasNext();)
 			{
-				WorldMap.CrossExit CE=(WorldMap.CrossExit)exits.elementAt(v);
+				WorldMap.CrossExit CE=i.next();
 				Room R=CMLib.map().getRoom(CE.destRoomID);
 				if(R==null) continue;
 				if(R.getGridParent()!=null) R=R.getGridParent();
@@ -1565,9 +1564,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				{
 					done.add(R.roomID());
 					HashSet oldStrs=new HashSet();
-					for(int v2=0;v2<exits.size();v2++)
+					for(Iterator<WorldMap.CrossExit> i2=((GridLocale)room).outerExits();i.hasNext();)
 					{
-						WorldMap.CrossExit CE2=(WorldMap.CrossExit)exits.elementAt(v2);
+						WorldMap.CrossExit CE2=i2.next();
 						if((CE2.destRoomID.equals(R.roomID())
 						||(CE2.destRoomID.startsWith(R.roomID()+"#("))))
 						{

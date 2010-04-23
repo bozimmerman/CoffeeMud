@@ -48,9 +48,9 @@ public class PollNext extends StdWebMacro
             return "";
         }
         String lastID="";
-        for(Enumeration q=CMLib.polls().getPollList().elements();q.hasMoreElements();)
+        for(Iterator<Poll> q=CMLib.polls().getPollList();q.hasNext();)
         {
-            Poll poll=(Poll)q.nextElement();
+            Poll poll=(Poll)q.next();
             if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!poll.getName().equalsIgnoreCase(lastID))))
             {
                 httpReq.addRequestParameters("POLL",poll.getName());

@@ -27,7 +27,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-public class STreeMap<K,V> implements Serializable, Cloneable, Map<K,V>, NavigableMap<K,V>, SortedMap<K,V> 
+public class STreeMap<K,V> implements Serializable, Map<K,V>, NavigableMap<K,V>, SortedMap<K,V> 
 {
 	private static final long serialVersionUID = -6713012858839312626L;
 	private TreeMap<K,V> T;
@@ -57,8 +57,8 @@ public class STreeMap<K,V> implements Serializable, Cloneable, Map<K,V>, Navigab
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
-	public synchronized Object clone() {
+	public synchronized STreeMap<K,V> copyOf() 
+	{
 		STreeMap<K,V> SH=new STreeMap<K,V>();
 		SH.T=(TreeMap<K,V>)T.clone();
 		return SH;

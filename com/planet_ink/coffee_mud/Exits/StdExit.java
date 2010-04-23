@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class StdExit implements Exit
 {
 	public String ID(){	return "StdExit";}
@@ -43,9 +42,9 @@ public class StdExit implements Exit
 	protected boolean isLocked=false;
 	protected String miscText="";
 	protected String imageName=null;
-	protected Vector affects=null;
-	protected Vector behaviors=null;
-    protected Vector scripts=null;
+	protected SVector<Ability> affects=null;
+	protected SVector<Behavior> behaviors=null;
+    protected SVector<ScriptingEngine> scripts=null;
     protected boolean amDestroyed=false;
     protected short usage=0;
     
@@ -664,7 +663,7 @@ public class StdExit implements Exit
 	{
 		if(to==null) return;
 		if(fetchEffect(to.ID())!=null) return;
-		if(affects==null) affects=new Vector(1);
+		if(affects==null) affects=new SVector<Ability>(1);
 		to.makeNonUninvokable();
 		to.makeLongLasting();
 		affects.addElement(to);
@@ -674,16 +673,14 @@ public class StdExit implements Exit
 	{
 		if(to==null) return;
 		if(fetchEffect(to.ID())!=null) return;
-		if(affects==null) affects=new Vector(1);
+		if(affects==null) affects=new SVector<Ability>(1);
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
 	public void delEffect(Ability to)
 	{
 		if(affects==null) return;
-		int size=affects.size();
-		affects.removeElement(to);
-		if(affects.size()<size)
+		if(affects.remove(to))
 			to.setAffectedOne(null);
 	}
 	public int numEffects()
@@ -718,7 +715,7 @@ public class StdExit implements Exit
 	public void addBehavior(Behavior to)
 	{
 		if(behaviors==null)
-			behaviors=new Vector(1);
+			behaviors=new SVector<Behavior>(1);
 		if(to==null) return;
 		for(int b=0;b<numBehaviors();b++)
 		{
@@ -772,7 +769,7 @@ public class StdExit implements Exit
     /** Manipulation of the scripts list */
     public void addScript(ScriptingEngine S)
     {
-        if(scripts==null) scripts=new Vector(1);
+        if(scripts==null) scripts=new SVector<ScriptingEngine>(1);
         if(S==null) return;
         if(!scripts.contains(S)) {
             ScriptingEngine S2=null;
@@ -791,12 +788,10 @@ public class StdExit implements Exit
     {
         if(scripts!=null)
         {
-            int size=scripts.size();
-            scripts.removeElement(S);
-            if(scripts.size()<size)
+            if(scripts.remove(S))
             {
                 if(scripts.size()==0)
-                    scripts=new Vector(1);
+                    scripts=new SVector<ScriptingEngine>(1);
                 if(((behaviors==null)||(behaviors.size()==0))&&((scripts==null)||(scripts.size()==0)))
                     CMLib.threads().deleteTick(this,Tickable.TICKID_EXIT_BEHAVIOR);
             }

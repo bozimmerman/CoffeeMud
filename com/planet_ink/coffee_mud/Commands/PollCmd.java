@@ -42,7 +42,7 @@ public class PollCmd extends StdCommand
         throws java.io.IOException
     {
         if((mob==null)||mob.isMonster()) return false;
-        Vector[] mypolls=CMLib.polls().getMyPolls(mob,(commands==null));
+        java.util.List<Poll>[] mypolls=CMLib.polls().getMyPollTypes(mob,(commands==null));
         
         if((mypolls[0].size()==0)&&(mypolls[2].size()==0))
         {
@@ -60,9 +60,8 @@ public class PollCmd extends StdCommand
             }
         }
         
-        for(int i=0;i<mypolls[0].size();i++)
+        for(Poll P : mypolls[0])
         {
-            Poll P=(Poll)mypolls[0].elementAt(i);
             CMLib.polls().processVote(P, mob);
             if(P.mayISeeResults(mob))
             {
@@ -78,9 +77,8 @@ public class PollCmd extends StdCommand
                 mob.tell("\n\r^HResults from "+mypolls[2].size()+" poll(s) <-IS-ARE> still available.^N\n\r");
             return true;
         }
-        for(int i=0;i<mypolls[1].size();i++)
+        for(Poll P : mypolls[1])
         {
-            Poll P=(Poll)mypolls[1].elementAt(i);
             CMLib.polls().processVote(P, mob);
             if(P.mayISeeResults(mob))
             {
@@ -91,15 +89,16 @@ public class PollCmd extends StdCommand
             
         if(mypolls[2].size()>0)
             mob.tell("\n\r^HPrevious polling results:^N\n\r");
-        for(int i=0;i<mypolls[2].size();i++)
+        int i=0;
+        for(Poll P : mypolls[2])
         {
-            Poll P=(Poll)mypolls[2].elementAt(i);
             if(P.mayISeeResults(mob))
             {
                 CMLib.polls().processResults(P, mob);
                 if(i<mypolls[2].size()-1)
                     mob.session().prompt("Press ENTER to continue:\n\r");
             }
+            i++;
         }
         return false;
     }

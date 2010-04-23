@@ -56,7 +56,7 @@ public class GrinderFlatMap
 		area=A;
 		areaMap=new Vector();
 		hashRooms=new Hashtable();
-		Enumeration r=A.getProperMap();
+		Enumeration<Room> r=A.getProperMap();
 		Room R=null;
 		boundsXYXY=xyxy;
 

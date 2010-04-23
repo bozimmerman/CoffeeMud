@@ -42,19 +42,19 @@ public class MUDFight extends StdLibrary implements CombatLibrary
     public String[][] hitWordIndex=null;
     public String[][] hitWordsChanged=null;
     protected LinkedList<CMath.CompiledOperation> attackAdjustmentFormula = null;
-    protected LinkedList<CMath.CompiledOperation>  armorAdjustmentFormula = null;
-    protected LinkedList<CMath.CompiledOperation>  attackerFudgeBonusFormula  = null;
-    protected LinkedList<CMath.CompiledOperation>  spellFudgeDamageFormula  = null;
-    protected LinkedList<CMath.CompiledOperation>  spellCritChanceFormula = null;
-    protected LinkedList<CMath.CompiledOperation>  spellCritDmgFormula = null;
+    protected LinkedList<CMath.CompiledOperation> armorAdjustmentFormula = null;
+    protected LinkedList<CMath.CompiledOperation> attackerFudgeBonusFormula  = null;
+    protected LinkedList<CMath.CompiledOperation> spellFudgeDamageFormula  = null;
+    protected LinkedList<CMath.CompiledOperation> spellCritChanceFormula = null;
+    protected LinkedList<CMath.CompiledOperation> spellCritDmgFormula = null;
     protected LinkedList<CMath.CompiledOperation> targetedRangedDamageFormula = null;
     protected LinkedList<CMath.CompiledOperation> rangedFudgeDamageFormula  = null;
     protected LinkedList<CMath.CompiledOperation> targetedMeleeDamageFormula = null;
     protected LinkedList<CMath.CompiledOperation> meleeFudgeDamageFormula  = null;
     protected LinkedList<CMath.CompiledOperation> staticRangedDamageFormula = null;
     protected LinkedList<CMath.CompiledOperation> staticMeleeDamageFormula = null;
-    protected LinkedList<CMath.CompiledOperation>  weaponCritChanceFormula = null;
-    protected LinkedList<CMath.CompiledOperation>  weaponCritDmgFormula = null;
+    protected LinkedList<CMath.CompiledOperation> weaponCritChanceFormula = null;
+    protected LinkedList<CMath.CompiledOperation> weaponCritDmgFormula = null;
     
     private static final int ATTACK_ADJUSTMENT = 50;
 
@@ -108,7 +108,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
     			h=new HashSet();
             else
                 h=caster.getGroupMembers(new HashSet());
-			for(Iterator e=((HashSet)h.clone()).iterator();e.hasNext();)
+			for(Iterator e=h.iterator();e.hasNext();)
 			{
 				MOB M=(MOB)e.next();
 				if(M.location()!=caster.location())

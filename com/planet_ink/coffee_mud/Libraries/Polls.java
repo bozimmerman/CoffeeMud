@@ -40,30 +40,28 @@ limitations under the License.
 public class Polls extends StdLibrary implements PollManager
 {
     public String ID(){return "Polls";}
+    public SVector<Poll> pollCache=null;
     
-    public Vector pollCache=null;
     public boolean shutdown(){
         pollCache=null;
         return true;
     }
     
-    public void addPoll(Poll P){if(getCache()!=null) getCache().addElement(P);}
-    public void removePoll(Poll P){if(getCache()!=null) getCache().removeElement(P);}
+    public void addPoll(Poll P){if(getCache()!=null) getCache().add(P);}
+    public void removePoll(Poll P){if(getCache()!=null) getCache().add(P);}
     
-    public synchronized Vector getCache()
+    public synchronized List<Poll> getCache()
     {
         if(CMSecurity.isDisabled("POLLCACHE")) 
             return null;
         if(pollCache==null) 
         {
-            pollCache=new Vector();
-            Vector list=CMLib.database().DBReadPollList();
-            Vector V=null;
+            pollCache=new SVector<Poll>();
+            List<DatabaseEngine.PollData> list=CMLib.database().DBReadPollList();
             Poll P=null;
-            for(int l=0;l<list.size();l++)
+            for(DatabaseEngine.PollData data : list)
             {
-                V=(Vector)list.elementAt(l);
-                P=loadPollByName((String)V.firstElement());
+                P=loadPollByName(data.name);
                 if(P!=null)
                     pollCache.addElement(P);
             }
@@ -72,16 +70,12 @@ public class Polls extends StdLibrary implements PollManager
     }
     public Poll getPoll(String named)
     {
-        Vector V=getCache();
+        List<Poll> V=getCache();
         if(V!=null)
         {
-            Poll P=null;
-            for(int c=0;c<V.size();c++)
-            {
-                P=(Poll)V.elementAt(c);
+            for(Poll P : V)
                 if(P.getName().equalsIgnoreCase(named))
                     return P;
-            }
         }
         else
         {
@@ -94,63 +88,58 @@ public class Polls extends StdLibrary implements PollManager
     public Poll getPoll(int x)
     {
         if(x<0) return null;
-        Vector V=getPollList();
-        if(x<V.size())
+        Iterator<Poll> i=getPollList();
+        if((x>=0)&&(i.hasNext()))
         {
-            Poll P=(Poll)V.elementAt(x);
-            if(loadPollIfNecessary(P))
+            Poll P=i.next();
+            if((x==0)&&(loadPollIfNecessary(P)))
                 return P;
+            x--;
         }
         return null;
     }
     
-    public Vector[] getMyPolls(MOB mob, boolean login)
+    public List<Poll>[] getMyPollTypes(MOB mob, boolean login)
     {
-        Vector V=getPollList();
-        Vector list[]=new Vector[3];
+    	Iterator<Poll> i=getPollList();
+    	List<Poll> list[]=new List[3];
         for(int l=0;l<3;l++)
-            list[l]=new Vector();
-        
-        Poll P=null;
-        for(int v=0;v<V.size();v++)
+            list[l]=new Vector<Poll>();
+        for(;i.hasNext();)
         {
-            P=(Poll)V.elementAt(v);
+        	Poll P = i.next();
             if(loadPollIfNecessary(P))
             {
                 if((P.mayIVote(mob))&&(login)&&(CMath.bset(P.getFlags(),Poll.FLAG_NOTATLOGIN)))
-                    list[1].addElement(P);
+                    list[1].add(P);
                 else
                 if(P.mayIVote(mob))
-                    list[0].addElement(P);
+                    list[0].add(P);
                 else
                 if(P.mayISeeResults(mob))
-                    list[2].addElement(P);
+                    list[2].add(P);
             }
         }
         return list;
     }
     
-    public Vector getPollList()
+    public Iterator<Poll> getPollList()
     {
-        Vector V=getCache();
-        if(V!=null) 
-            return ((Vector)V.clone());
-        V=CMLib.database().DBReadPollList();
-        Vector list=new Vector();
-        Vector V2=null;
-        Poll P=null;
-        for(int v=0;v<V.size();v++)
+    	List<Poll> L=getCache();
+        if(L!=null) return L.iterator();
+        List<DatabaseEngine.PollData> V=CMLib.database().DBReadPollList();
+        List<Poll> list=new Vector<Poll>();
+        for(DatabaseEngine.PollData data : V)
         {
-            V2=(Vector)V.elementAt(v);
-            P=(Poll)CMClass.getCommon("DefaultPoll");
-            P.setName((String)V2.elementAt(0));
-            P.setFlags(((Long)V2.elementAt(1)).longValue());
-            P.setQualZapper((String)V2.elementAt(2));
-            P.setExpiration(((Long)V2.elementAt(3)).longValue());
+            Poll P=(Poll)CMClass.getCommon("DefaultPoll");
+            P.setName(data.name);
+            P.setFlags(data.flag);
+            P.setQualZapper(data.qual);
+            P.setExpiration(data.expiration);
             P.setLoaded(false);
-            list.addElement(P);
+            list.add(P);
         }
-        return list;
+        return list.iterator();
     }
     
     public void processVote(Poll P, MOB mob)
@@ -365,15 +354,15 @@ public class Polls extends StdLibrary implements PollManager
     public boolean loadPollIfNecessary(Poll P) 
     {
         if(P.loaded()) return true;
-        Vector V=CMLib.database().DBReadPoll(P.getName());
-        if((V==null)||(V.size()==0)) return false;
-        P.setName((String)V.elementAt(0));
-        P.setAuthor((String)V.elementAt(1));
-        P.setSubject((String)V.elementAt(2));
-        P.setDescription((String)V.elementAt(3));
+        DatabaseEngine.PollData data =CMLib.database().DBReadPoll(P.getName());
+        if(data==null) return false;
+        P.setName(data.name);
+        P.setAuthor(data.byName);
+        P.setSubject(data.subject);
+        P.setDescription(data.description);
         Vector options=new Vector();
         P.setOptions(options);
-        String optionsXML=(String)V.elementAt(4);
+        String optionsXML=data.options;
         Vector V2=CMLib.xml().parseAllXML(optionsXML);
         XMLLibrary.XMLpiece OXV=CMLib.xml().getPieceFromPieces(V2,"OPTIONS");
         if((OXV!=null)&&(OXV.contents!=null)&&(OXV.contents.size()>0))
@@ -387,11 +376,11 @@ public class Polls extends StdLibrary implements PollManager
             );
             options.addElement(PO);
         }
-        P.setFlags(((Long)V.elementAt(5)).longValue());
-        P.setQualZapper((String)V.elementAt(6));
+        P.setFlags(data.flag);
+        P.setQualZapper(data.qual);
         Vector results=new Vector();
         P.setResults(results);
-        String resultsXML=(String)V.elementAt(7);
+        String resultsXML=data.results;
         V2=CMLib.xml().parseAllXML(resultsXML);
         OXV=CMLib.xml().getPieceFromPieces(V2,"RESULTS");
         if((OXV!=null)&&(OXV.contents!=null)&&(OXV.contents.size()>0))
@@ -406,7 +395,7 @@ public class Polls extends StdLibrary implements PollManager
                     CMLib.xml().getValFromPieces(XP.contents,"ANS"));
             results.addElement(PR);
         }
-        P.setExpiration(((Long)V.elementAt(8)).longValue());
+        P.setExpiration(data.expiration);
         P.setLoaded(true);
         return true;
     }

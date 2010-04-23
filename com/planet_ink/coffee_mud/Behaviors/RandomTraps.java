@@ -210,12 +210,12 @@ public class RandomTraps extends ActiveTicker
 
 		if(R instanceof GridLocale)
 		{
-			Vector map=((GridLocale)R).getAllRooms();
+			List<Room> map=((GridLocale)R).getAllRooms();
 			if(map.size()==0)
 				elligible.addElement(R);
 			else
-			for(Enumeration m=((GridLocale)R).getAllRooms().elements();m.hasMoreElements();)
-				elligible.addElement(m.nextElement());
+			for(Iterator<Room> m=((GridLocale)R).getAllRooms().iterator();m.hasNext();)
+				elligible.addElement(m.next());
 		}
 		else
 			elligible.addElement(R);

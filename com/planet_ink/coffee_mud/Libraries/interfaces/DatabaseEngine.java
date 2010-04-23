@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries.interfaces;
 import com.planet_ink.coffee_mud.core.CMFile.CMVFSFile;
+import com.planet_ink.coffee_mud.core.database.DBConnections;
 import com.planet_ink.coffee_mud.core.database.DBConnector;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -161,8 +162,8 @@ public interface DatabaseEngine extends CMLibrary
     public void DBUpdatePoll(String OldName, String name, String player, String subject, String description, String optionXML, int flag, String qualZapper, String results, long expiration);
     public void DBUpdatePollResults(String name, String results);
     public void DBDeletePoll(String name);
-    public Vector DBReadPollList();
-    public Vector DBReadPoll(String name);
+    public List<PollData> DBReadPollList();
+    public PollData DBReadPoll(String name);
     public CMFile.CMVFSDir DBReadVFSDirectory();
     public CMFile.CMVFSFile DBReadVFSFile(String filename);
     public void DBCreateVFSFile(String filename, int bits, String creator, Object data);
@@ -175,6 +176,20 @@ public interface DatabaseEngine extends CMLibrary
     	public String section="";
     	public String key="";
     	public String xml="";
+    }
+    
+    public static class PollData
+    {
+    	public String name="";
+    	public long flag=0;
+    	public String byName="";
+    	public String subject="";
+    	public String description="";
+    	public String options="";
+    	public String qual="";
+        public String results="";
+    	public long expiration=0;
+    	
     }
     
 }

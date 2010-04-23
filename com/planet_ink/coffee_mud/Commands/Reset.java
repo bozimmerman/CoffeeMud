@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.util.List;
 
 /* 
    Copyright 2000-2010 Bo Zimmerman
@@ -190,7 +191,7 @@ public class Reset extends StdCommand
 		Room R=null;
 		StringBuffer warning=new StringBuffer("");
 		String roomWarning=null; 
-		for(Enumeration e=A.getProperMap();e.hasMoreElements();)
+		for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
 		{
 			R=(Room)e.nextElement();
 			roomWarning=resetWarning(mob,R);
@@ -220,10 +221,10 @@ public class Reset extends StdCommand
 		}
 		if(R instanceof GridLocale)
 		{
-			Vector rooms=((GridLocale)R).getAllRooms();
+			List<Room> rooms=((GridLocale)R).getAllRooms();
 			for(int r=0;r<rooms.size();r++)
 			{
-				String s=resetWarning(mob,(Room)rooms.elementAt(r));
+				String s=resetWarning(mob,(Room)rooms.get(r));
 				if(s!=null) warning.append(s);
 			}
 		}
@@ -299,7 +300,7 @@ public class Reset extends StdCommand
             if(s.equalsIgnoreCase("area"))
             {
                 Area A=mob.location().getArea();
-                for(Enumeration e=A.getProperMap();e.hasMoreElements();)
+                for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
                     CMLib.threads().rejuv((Room)e.nextElement(),tickID);
                 mob.tell("Done.");
             }

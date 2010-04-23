@@ -1094,8 +1094,8 @@ public class CMMap extends StdLibrary implements WorldMap
 
     public static class AreaEnumerator implements Enumeration
     {
-        private Enumeration curAreaEnumeration=null;
-        private Enumeration curRoomEnumeration=null;
+        private Enumeration<Area> curAreaEnumeration=null;
+        private Enumeration<Room> curRoomEnumeration=null;
         private boolean addSkys = false;
         public AreaEnumerator(boolean includeSkys) {
             addSkys = includeSkys;
@@ -1192,7 +1192,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				A.delEffect(A1);
 			}
 		}
-		for(Enumeration e=A.getProperMap();e.hasMoreElements();)
+		for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
 		{
 			Room R=(Room)e.nextElement();
 			emptyRoom(R,null);
@@ -1434,7 +1434,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	protected Room addWorldRoomsLiberally(Vector rooms, Area area)
 	{ return addWorldRoomsLiberally(rooms,area.getRandomProperRoom()); }
 	
-	protected Enumeration rightLiberalMap(Area A) {
+	protected Enumeration<Room> rightLiberalMap(Area A) {
 		if(A==null) return roomsFilled();
 		return A.getProperMap();
 	}
@@ -1623,7 +1623,7 @@ public class CMMap extends StdLibrary implements WorldMap
             Room R=M.location();
             R.delInhabitant(M);
         }
-        for(Enumeration r=area.getProperMap();r.hasMoreElements();)
+        for(Enumeration<Room> r=area.getProperMap();r.hasMoreElements();)
             resetRoom((Room)r.nextElement());
         area.fillInAreaRooms();
         for(int p=0;p<playersHere.size();p++)

@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /* 
@@ -104,16 +105,14 @@ public class Link extends At
 		GridLocale hereGL=(mob.location().getGridParent()!=null)?mob.location().getGridParent():null;
 		int hereX=(hereGL!=null)?hereGL.getGridChildX(mob.location()):-1;
 		int hereY=(hereGL!=null)?hereGL.getGridChildY(mob.location()):-1;
-		Vector hereSet=(hereGL!=null)?hereGL.outerExits():null;
 		GridLocale thereGL=(room.getGridParent()!=null)?room.getGridParent():null;
 		int thereX=(thereGL!=null)?thereGL.getGridChildX(room):-1;
 		int thereY=(thereGL!=null)?thereGL.getGridChildY(room):-1;
-		Vector thereSet=(thereGL!=null)?thereGL.outerExits():null;
 		if(hereGL!=null)
 		{
-			for(int v=0;v<hereSet.size();v++)
+			for(Iterator<WorldMap.CrossExit> hereIter=hereGL.outerExits();hereIter.hasNext();)
 			{
-				CE=(WorldMap.CrossExit)hereSet.elementAt(v);
+				CE=hereIter.next();
 				if((CE.out)
 				&&(CE.dir==direction)
 				&&(CE.x==hereX)&&(CE.y==hereY))
@@ -136,9 +135,9 @@ public class Link extends At
 		}
 		if(thereGL!=null)
 		{
-			for(int v=0;v<thereSet.size();v++)
+			for(Iterator<WorldMap.CrossExit> thereIter=thereGL.outerExits();thereIter.hasNext();)
 			{
-				CE=(WorldMap.CrossExit)thereSet.elementAt(v);
+				CE=thereIter.next();
 				if((!CE.out)
 				&&(CE.dir==direction)
 				&&(CE.destRoomID.equals(CMLib.map().getExtendedRoomID(mob.location()))))
@@ -151,9 +150,9 @@ public class Link extends At
 			||(thereGL==room.rawDoors()[opDir])
 			||(thereGL.isMyGridChild(room.rawDoors()[opDir])))
 			{
-				for(int v=0;v<thereSet.size();v++)
+				for(Iterator<WorldMap.CrossExit> thereIter=thereGL.outerExits();thereIter.hasNext();)
 				{
-					CE=(WorldMap.CrossExit)thereSet.elementAt(v);
+					CE=thereIter.next();
 					if((CE.out)
 					&&(CE.dir==opDir)
 					&&(CE.x==thereX)&&(CE.y==thereY))
@@ -164,9 +163,9 @@ public class Link extends At
 				if(hereGL!=null)
 				{
 					room.rawDoors()[opDir]=hereGL;
-					for(int v=0;v<hereSet.size();v++)
+					for(Iterator<WorldMap.CrossExit> hereIter=hereGL.outerExits();hereIter.hasNext();)
 					{
-						CE=(WorldMap.CrossExit)hereSet.elementAt(v);
+						CE=hereIter.next();
 						if((!CE.out)
 						&&(CE.dir==opDir)
 						&&(CE.destRoomID.equals(CMLib.map().getExtendedRoomID(room))))
@@ -186,9 +185,9 @@ public class Link extends At
 			if(hereGL!=null)
 			{
 				room.rawDoors()[opDir]=hereGL;
-				for(int v=0;v<hereSet.size();v++)
+				for(Iterator<WorldMap.CrossExit> hereIter=hereGL.outerExits();hereIter.hasNext();)
 				{
-					CE=(WorldMap.CrossExit)hereSet.elementAt(v);
+					CE=hereIter.next();
 					if((!CE.out)
 					&&(CE.dir==opDir)
 					&&(CE.destRoomID.equals(room.roomID())))

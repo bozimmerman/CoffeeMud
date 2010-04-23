@@ -38,28 +38,28 @@ public class StdItem implements Item
 {
 	public String ID(){	return "StdItem";}
 
-	protected String 	name="an ordinary item";
-	protected String	displayText="a nondescript item sits here doing nothing.";
-	protected byte[] 	description=null;
-	protected Item 		myContainer=null;
-	protected int 		myUses=Integer.MAX_VALUE;
-	protected long 		myWornCode=Wearable.IN_INVENTORY;
-	protected String 	miscText="";
-	protected String    imageName=null;
-	protected String	secretIdentity=null;
-	protected boolean	wornLogicalAnd=false;
-	protected long 		properWornBitmap=Wearable.WORN_HELD;
-	protected int		baseGoldValue=0;
-	protected int		material=RawMaterial.RESOURCE_COTTON;
+	protected String 		name="an ordinary item";
+	protected String		displayText="a nondescript item sits here doing nothing.";
+	protected byte[] 		description=null;
+	protected Item 			myContainer=null;
+	protected int 			myUses=Integer.MAX_VALUE;
+	protected long 			myWornCode=Wearable.IN_INVENTORY;
+	protected String 		miscText="";
+	protected String    	imageName=null;
+	protected String		secretIdentity=null;
+	protected boolean		wornLogicalAnd=false;
+	protected long 			properWornBitmap=Wearable.WORN_HELD;
+	protected int			baseGoldValue=0;
+	protected int			material=RawMaterial.RESOURCE_COTTON;
 	protected Environmental owner=null;
-	protected String[] xtraValues=null;
-	protected long dispossessionTime=0;
-	protected long tickStatus=Tickable.STATUS_NOT;
-	protected String databaseID="";
+	protected String[] 		xtraValues=null;
+	protected long 			dispossessionTime=0;
+	protected long 			tickStatus=Tickable.STATUS_NOT;
+	protected String 		databaseID="";
 
-	protected Vector affects=null;
-	protected Vector behaviors=null;
-    protected Vector scripts=null;
+	protected SVector<Ability> 			affects=null;
+	protected SVector<Behavior> 		behaviors=null;
+    protected SVector<ScriptingEngine>  scripts=null;
 
 	protected EnvStats envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
 	protected EnvStats baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
@@ -497,13 +497,12 @@ public class StdItem implements Item
 		else
 		if(tickID!=Tickable.TICKID_CLANITEM)
 		{
-            Vector aff=cloneEffects();
-            if(aff!=null)
+            if(affects!=null)
             {
                 Ability A=null;
-                for(int a=0;a<aff.size();a++)
+                for(int a=0;a<affects.size();a++)
     			{
-    				A=(Ability)aff.elementAt(a);
+    				A=(Ability)affects.elementAt(a);
     				tickStatus=Tickable.STATUS_AFFECT+a;
     				if(!A.tick(ticking,tickID))
     					A.unInvoke();
@@ -1057,8 +1056,6 @@ public class StdItem implements Item
 		return false;
 	}
 
-    protected Vector cloneEffects(){return (Vector)(((affects==null)||(affects.size()==0))?null:affects.clone());}
-    
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		// the order that these things are checked in should
@@ -1271,7 +1268,7 @@ public class StdItem implements Item
 	{
 		if(to==null) return;
 		if(fetchEffect(to.ID())!=null) return;
-		if(affects==null) affects=new Vector(1);
+		if(affects==null) affects=new SVector<Ability>(1);
 		to.makeNonUninvokable();
 		to.makeLongLasting();
 		affects.addElement(to);
@@ -1281,21 +1278,15 @@ public class StdItem implements Item
 	{
 		if(to==null) return;
 		if(fetchEffect(to.ID())!=null) return;
-		if(affects==null) affects=new Vector(1);
+		if(affects==null) affects=new SVector<Ability>(1);
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
 	public void delEffect(Ability to)
 	{
 		if(affects==null) return;
-		int size=affects.size();
-		affects.removeElement(to);
-		if(affects.size()<size)
-		{
+		if(affects.remove(to))
 			to.setAffectedOne(null);
-    		if(affects.size()==0)
-    		    affects=new Vector(1);
-		}
 	}
 	public int numEffects()
 	{
@@ -1329,7 +1320,7 @@ public class StdItem implements Item
 	public void addBehavior(Behavior to)
 	{
 		if(to==null) return;
-		if(behaviors==null) behaviors=new Vector(1);
+		if(behaviors==null) behaviors=new SVector<Behavior>(1);
 		for(int b=0;b<numBehaviors();b++)
 		{
 			Behavior B=fetchBehavior(b);
@@ -1346,14 +1337,10 @@ public class StdItem implements Item
 	public void delBehavior(Behavior to)
 	{
 		if(behaviors==null) return;
-		int size=behaviors.size();
-		behaviors.removeElement(to);
-		if(behaviors.size()<size)
+		if(behaviors.remove(to))
 		{
             if(((behaviors==null)||(behaviors.size()==0))&&((scripts==null)||(scripts.size()==0)))
                 CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
-    		if(behaviors.size()==0)
-    			behaviors=new Vector(1);
 		}
 	}
 	public int numBehaviors()
@@ -1386,9 +1373,11 @@ public class StdItem implements Item
     /** Manipulation of the scripts list */
     public void addScript(ScriptingEngine S)
     {
-        if(scripts==null) scripts=new Vector(1);
+        if(scripts==null) 
+        	scripts=new SVector<ScriptingEngine>(1);
         if(S==null) return;
-        if(!scripts.contains(S)) {
+        if(!scripts.contains(S)) 
+        {
             ScriptingEngine S2=null;
             for(int s=0;s<scripts.size();s++)
             {
@@ -1405,12 +1394,10 @@ public class StdItem implements Item
     {
         if(scripts!=null)
         {
-            int size=scripts.size();
-            scripts.removeElement(S);
-            if(scripts.size()<size)
+            if(scripts.remove(S))
             {
                 if(scripts.size()==0)
-                    scripts=new Vector(1);
+                    scripts=new SVector(1);
                 if(((behaviors==null)||(behaviors.size()==0))&&((scripts==null)||(scripts.size()==0)))
                     CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
             }

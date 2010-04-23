@@ -3554,7 +3554,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         String behave="NO";
         Vector<MemberRecord> members=E.getMemberList();
-        List<MemberRecord> membersCopy=(List<MemberRecord>)members.clone();
+        Vector<MemberRecord> membersCopy=(Vector<MemberRecord>)members.clone();
         while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
         {
             String memberStr="";

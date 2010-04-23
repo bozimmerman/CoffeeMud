@@ -14,6 +14,8 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
@@ -33,15 +35,14 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public interface GridLocale extends Room, GridZones
 {
 	public String getGridChildLocaleID();
 	public Room prepareGridLocale(Room fromRoom, Room toRoom, int direction);
 	public void buildGrid();
 	public void clearGrid(Room bringBackHere);
-	public Vector getAllRooms();
-	public Vector outerExits();
+	public List<Room> getAllRooms();
+	public Iterator<WorldMap.CrossExit> outerExits();
 	public void addOuterExit(WorldMap.CrossExit x);
 	public void delOuterExit(WorldMap.CrossExit x);
 }

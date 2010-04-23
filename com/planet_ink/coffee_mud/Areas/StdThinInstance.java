@@ -235,7 +235,7 @@ public class StdThinInstance extends StdThinArea
         		if(myDex<0)
         		{
         			StdThinInstance newA=(StdThinInstance)this.copyOf();
-        			newA.properRooms=new Vector<Room>(1);
+        			newA.properRooms=new STreeMap<String, Room>(new Area.RoomIDComparator());
         			newA.properRoomIDSet = null;
         			newA.metroRoomIDSet = null;
         		    newA.blurbFlags=new Vector(1);

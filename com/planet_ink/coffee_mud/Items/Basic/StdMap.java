@@ -174,18 +174,18 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 			&&(UP.roomID().length()==0)
 			&&(UP instanceof GridLocale))
 			{
-				Vector V=((GridLocale)UP).getAllRooms();
+				List<Room> V=((GridLocale)UP).getAllRooms();
 				for(int v=0;v<V.size();v++)
-					mapRooms.remove(V.elementAt(v));
+					mapRooms.remove(V.get(v));
 			}
 			Room DOWN=R.rawDoors()[Directions.DOWN];
 			if((DOWN!=null)
 			&&(DOWN.roomID().length()==0)
 			&&(DOWN instanceof GridLocale))
 			{
-				Vector V=((GridLocale)DOWN).getAllRooms();
+				List<Room> V=((GridLocale)DOWN).getAllRooms();
 				for(int v=0;v<V.size();v++)
-					mapRooms.remove(V.elementAt(v));
+					mapRooms.remove(V.get(v));
 			}
 		}
 	}

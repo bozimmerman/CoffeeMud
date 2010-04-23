@@ -35,7 +35,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class Tick extends Thread implements TickableGroup, Cloneable
 {
 	private final ThreadEngine myEngine;
@@ -87,7 +86,7 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 		try
 		{
 			Tick T=(Tick)this.clone();
-			T.tickers=(STreeSet<TockClient>)tickers.clone();
+			T.tickers=tickers.copyOf();
 			return T;
 		}
 		catch(Exception e){}

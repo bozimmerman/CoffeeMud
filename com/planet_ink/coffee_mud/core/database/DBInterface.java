@@ -443,9 +443,9 @@ public class DBInterface implements DatabaseEngine
     {PollLoader.DBUpdate(name,results);}
     public void DBDeletePoll(String name)
     {PollLoader.DBDelete(name);}
-    public Vector DBReadPollList()
+    public List<PollData> DBReadPollList()
     {return PollLoader.DBReadList();}
-    public Vector DBReadPoll(String name)
+    public PollData DBReadPoll(String name)
     {return PollLoader.DBRead(name);}
 
     public CMFile.CMVFSDir DBReadVFSDirectory()

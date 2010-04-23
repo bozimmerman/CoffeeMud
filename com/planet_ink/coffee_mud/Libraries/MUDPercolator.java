@@ -42,7 +42,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 {
     public String ID(){return "MUDPercolator";}
 
-    private Hashtable<String,Class<LayoutManager>> mgrs = new Hashtable<String,Class<LayoutManager>>();
+    private SHashtable<String,Class<LayoutManager>> mgrs = new SHashtable<String,Class<LayoutManager>>();
     
     public LayoutManager getLayoutManager(String named) 
     {

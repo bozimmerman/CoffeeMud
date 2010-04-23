@@ -167,7 +167,7 @@ public class CMSecurity
         String set=null;
 		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
 				 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
-		for(Iterator g=DVector.m_iter(allGroups);g.hasNext();)
+		for(Iterator g=new MultiIterator(allGroups);g.hasNext();)
 		{
 			set=((String)g.next()).toUpperCase();
             if(set.startsWith("FS:"))
@@ -284,7 +284,7 @@ public class CMSecurity
         String set=null;
 		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
 				 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
-		for(Iterator g=DVector.m_iter(allGroups);g.hasNext();)
+		for(Iterator g=new MultiIterator(allGroups);g.hasNext();)
 		{
 			set=((String)g.next()).toUpperCase();
             if(set.startsWith("FS:"))
@@ -349,7 +349,7 @@ public class CMSecurity
         String setSlash=null;
 		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
 				 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
-		for(Iterator g=DVector.m_iter(allGroups);g.hasNext();)
+		for(Iterator g=new MultiIterator(allGroups);g.hasNext();)
 		{
 			set=((String)g.next()).toUpperCase();
             if(set.startsWith("FS:"))
@@ -411,7 +411,7 @@ public class CMSecurity
         String set=null;
 		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
 				 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
-		for(Iterator g=DVector.m_iter(allGroups);g.hasNext();)
+		for(Iterator g=new MultiIterator(allGroups);g.hasNext();)
 		{
 			set=((String)g.next()).toUpperCase();
             if(set.startsWith("FS:"))
@@ -506,7 +506,7 @@ public class CMSecurity
         String set=null;
 		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
 				 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
-		for(Iterator g=DVector.m_iter(allGroups);g.hasNext();)
+		for(Iterator g=new MultiIterator(allGroups);g.hasNext();)
 		{
 			set=(String)g.next();
 			if(set.startsWith(code)||(subop&&set.startsWith("AREA "+code)))
@@ -539,7 +539,7 @@ public class CMSecurity
         String set=null;
 		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
 				 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
-		for(Iterator g=DVector.m_iter(allGroups);g.hasNext();)
+		for(Iterator g=new MultiIterator(allGroups);g.hasNext();)
 		{
 			set=(String)g.next();
 			if(set.equals(code)||((subop)&&(set.equals("AREA "+code))))
@@ -564,7 +564,7 @@ public class CMSecurity
 			return false;
 		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
 							 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
-		for(Iterator g=DVector.m_iter(allGroups);g.hasNext();)
+		for(Iterator g=new MultiIterator(allGroups);g.hasNext();)
 		{
 			String set=(String)g.next();
 			if(set.startsWith(code))
@@ -588,7 +588,7 @@ public class CMSecurity
 	        String set=null;
 			allGroups=new Iterator[]{mob.playerStats().getSecurityGroups().iterator(),
 					 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
-			for(Iterator g=DVector.m_iter(allGroups);g.hasNext();)
+			for(Iterator g=new MultiIterator(allGroups);g.hasNext();)
 			{
 				set=(String)g.next();
 				if(set.startsWith("AREA "+code))
@@ -617,7 +617,7 @@ public class CMSecurity
         String set=null;
 		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
 				 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
-		for(Iterator g=DVector.m_iter(allGroups);g.hasNext();)
+		for(Iterator g=new MultiIterator(allGroups);g.hasNext();)
 		{
 			set=(String)g.next();
 			if(set.equals(code)) return true;
@@ -640,7 +640,7 @@ public class CMSecurity
         String set=null;
 		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
 				 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
-		for(Iterator g=DVector.m_iter(allGroups);g.hasNext();)
+		for(Iterator g=new MultiIterator(allGroups);g.hasNext();)
 		{
 			set=(String)g.next();
 			if(set.equals(code))
@@ -659,7 +659,7 @@ public class CMSecurity
 		
 			allGroups=new Iterator[]{mob.playerStats().getSecurityGroups().iterator(),
 					 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
-			for(Iterator g=DVector.m_iter(allGroups);g.hasNext();)
+			for(Iterator g=new MultiIterator(allGroups);g.hasNext();)
 			{
 				set=(String)g.next();
 				if(set.equals("AREA "+code)) return true;

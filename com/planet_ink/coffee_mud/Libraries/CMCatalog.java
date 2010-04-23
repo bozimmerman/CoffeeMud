@@ -139,12 +139,12 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
         }
     }
     
-    public String[] makeCatalogNames(Vector catalog)
+    public String[] makeCatalogNames(Vector<Environmental> catalog)
     {
     	String[] names=new String[catalog.size()];
     	int x=0;
-    	for(Iterator i=DVector.s_iter(catalog);i.hasNext();)
-    		names[x++]=((Environmental)i.next()).Name();
+    	for(Environmental E : catalog)
+    		names[x++]=E.Name();
     	return names;
     }
     
@@ -746,9 +746,10 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
     
     public static class RoomContentImpl implements RoomContent
     {
-    	private Environmental obj=null;
-    	private boolean dirty=false;
-    	private Environmental holder=null;
+    	private Environmental 	obj=null;
+    	private boolean 		dirty=false;
+    	private Environmental 	holder=null;
+    	
     	public RoomContentImpl(Environmental E){ obj=E;}
     	public RoomContentImpl(Environmental E, Environmental E2){ obj=E; holder=E2;}
     	public Environmental E(){return obj;}
@@ -760,12 +761,13 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
     
     public static class CataDataImpl implements CataData 
     {
-        public Vector lmaskV=null;
-        public String lmaskStr=null;
-        public boolean live=false;
-        public double rate=0.0;
+        public Vector 		lmaskV=null;
+        public String 		lmaskStr=null;
+        public boolean 		live=false;
+        public double 		rate=0.0;
         public volatile int deathPickup=0;
-        public Vector<WeakReference> refs=new Vector<WeakReference>(1);
+        public SVector<WeakReference> 
+        					refs=new SVector<WeakReference>(1);
         public boolean noRefs = CMProps.getBoolVar(CMProps.SYSTEMB_CATALOGNOCACHE) 
         						|| CMSecurity.isDisabled("CATALOGCACHE");
         
@@ -872,7 +874,6 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
 	        		if((o==null)||o.amDestroyed()||(!CMLib.flags().isCataloged(o)))
 	        			refs.removeElementAt(r);
 	        	}
-	        	refs=DVector.softCopy(refs);
         	} catch(ArrayIndexOutOfBoundsException ex){}
         }
         

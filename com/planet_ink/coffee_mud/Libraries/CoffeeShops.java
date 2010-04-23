@@ -1111,7 +1111,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 }
             }
             else
-            for(Enumeration r=myArea.getProperMap();r.hasMoreElements();)
+            for(Enumeration<Room> r=myArea.getProperMap();r.hasMoreElements();)
             {
                 Room R=(Room)r.nextElement();
                 LandTitle A=CMLib.law().getLandTitle(R);

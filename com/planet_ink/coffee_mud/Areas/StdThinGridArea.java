@@ -78,16 +78,19 @@ public class StdThinGridArea extends StdGridArea
     	if(R.roomID().length()==0) return false;
     	return isRoom(R.roomID());
     }
-	public Enumeration getProperMap(){return DVector.s_enum(properRooms);}
-	public Vector getMetroCollection()
+	public Enumeration<Room> getProperMap(){return new IteratorEnumeration<Room>(properRooms.values().iterator());}
+	public Enumeration<Room> getMetroMap()
 	{
-		int minimum=(properRoomIDSet==null)?0:(properRoomIDSet.roomCountAllAreas()/10);
+		int minimum=getProperRoomnumbers().roomCountAllAreas()/10;
 		if(getCachedRoomnumbers().roomCountAllAreas()<minimum)
 		{
 			for(int r=0;r<minimum;r++)
 				getRandomProperRoom();
 		}
-		return super.getMetroCollection();
+		MultiEnumeration<Room> multiEnumerator = new MultiEnumeration<Room>(new RoomIDEnumerator(this));
+		for(int c=getNumChildren()-1;c>=0;c--)
+			multiEnumerator.addEnumeration(getChild(c).getMetroMap());
+		return new CompleteRoomEnumerator(multiEnumerator);
 	}
-	public Enumeration getCompleteMap(){return new CompleteRoomEnumerator(this);}
+	public Enumeration<Room> getCompleteMap(){return new CompleteRoomEnumerator(new RoomIDEnumerator(this));}
 }

@@ -78,8 +78,8 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
-	public synchronized Object clone() {
+	public synchronized SLinkedList<K> copyOf() 
+	{
 		SLinkedList<K> SL=new SLinkedList<K>();
 		SL.L=(LinkedList<K>)L.clone();
 		return SL;

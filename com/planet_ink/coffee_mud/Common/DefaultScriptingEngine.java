@@ -2727,7 +2727,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     arg3=arg3.substring(1).trim();
                     MASK=CMLib.masking().maskCompile(arg3);
                 }
-                for(Enumeration e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
+                for(Enumeration<Room> e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
                 {
                     Room R=(Room)e.nextElement();
                     for(int m=0;m<R.numInhabitants();m++)
@@ -4923,7 +4923,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     arg1=arg1.substring(1).trim();
                     MASK=CMLib.masking().maskCompile(arg1);
                 }
-                for(Enumeration e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
+                for(Enumeration<Room> e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
                 {
                     Room R=(Room)e.nextElement();
                     for(int m=0;m<R.numInhabitants();m++)
@@ -7229,7 +7229,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(next.equalsIgnoreCase("area"))
                 {
                     if(lastKnownLocation!=null)
-                        for(Enumeration e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
+                        for(Enumeration<Room> e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
                             CMLib.threads().rejuv((Room)e.nextElement(),tickID);
                 }
                 else

@@ -23,7 +23,7 @@ limitations under the License.
  * and removes by copying the underlying vector whenever those
  * operations are done.
  */
-public class SVector<T> implements Serializable, Cloneable, Iterable<T>, Collection<T>, List<T>, RandomAccess 
+public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, List<T>, RandomAccess 
 {
 	private static final long serialVersionUID = 6687178785122561992L;
 	private Vector<T> V;
@@ -50,8 +50,7 @@ public class SVector<T> implements Serializable, Cloneable, Iterable<T>, Collect
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
-	public synchronized Object clone() {
+	public synchronized SVector<T> copyOf() {
 		SVector<T> SV=new SVector<T>();
 		SV.V=(Vector<T>)V.clone();
 		return SV;
