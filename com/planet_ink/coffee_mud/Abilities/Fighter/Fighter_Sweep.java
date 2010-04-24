@@ -58,6 +58,7 @@ public class Fighter_Sweep extends FighterSkill
 		if((mob!=null)&&(target!=null))
 		{
 			HashSet h=properTargets(mob,target,false);
+			if(h.size()<2) return Ability.QUALITY_INDIFFERENT;
 			for(Iterator e=((HashSet)h.clone()).iterator();e.hasNext();)
 			{
 				MOB m=(MOB)e.next();
