@@ -916,9 +916,17 @@ public class CMProps extends Properties
         setUpLowVar(SYSTEM_FORMULA_NPCHITPOINTS, getStr("FORMULA_NPCHITPOINTS","3 + @x1 + (@x1 * @x2)"));
         
         Directions.instance().reInitialize(getInt("DIRECTIONS"));
-
+        
         resetSecurityVars();
         statCodeExtensions = getStrsStarting("EXTVAR_");
+
+        // initialized elsewhere
+        if(getVar(CMProps.SYSTEM_MAILBOX)==null)
+        {
+        	setVar(SYSTEM_MAILBOX, "");
+            setIntVar(SYSTEMI_MAXMAILBOX,0);
+    		setBoolVar(SYSTEMB_EMAILFORWARDING,false);
+        }
 
         CMLib.propertiesLoaded();
     }
