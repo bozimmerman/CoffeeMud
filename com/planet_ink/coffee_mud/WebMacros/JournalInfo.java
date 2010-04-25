@@ -90,7 +90,7 @@ public class JournalInfo extends StdWebMacro
 				long pageDate = CMath.s_long(page);
 				int limit = CMProps.getIntVar(CMProps.SYSTEMI_JOURNALLIMIT);
 				if(limit<=0) limit=Integer.MAX_VALUE;
-				msgs = new Vector<JournalsLibrary.JournalEntry>(limit);
+				msgs = new Vector<JournalsLibrary.JournalEntry>();
 				if((pageDate <= 0) 
 				&& (stats.stuckyKeys!=null) 
 			    && ((dbsearch==null)||(dbsearch.length()==0)) 

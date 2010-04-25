@@ -128,7 +128,8 @@ public class StdWand extends StdItem implements Wand
 						   String message)
 	{
 		if((mob.isMine(this))
-		   &&(!this.amWearingAt(Wearable.IN_INVENTORY)))
+		   &&(!this.amWearingAt(Wearable.IN_INVENTORY))
+		   &&(message != null))
 		{
 			Environmental target=null;
 			if((mob.location()!=null))
