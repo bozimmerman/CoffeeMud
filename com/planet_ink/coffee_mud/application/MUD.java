@@ -350,75 +350,12 @@ public class MUD extends Thread implements MudHost
     		if(CMLib.quests().numQuests()>0)
     			Log.sysOut(Thread.currentThread().getName(),"Quests loaded     : "+CMLib.quests().numQuests());
         }
+        
+		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Starting I3");
+		startIntermud3();
 
-		try
-		{
-			if(page.getBoolean("RUNI3SERVER")&&(tCode==MAIN_HOST))
-			{
-                CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Starting I3");
-				String playstate=page.getStr("MUDSTATE");
-				if((playstate==null)||(playstate.length()==0))
-					playstate=page.getStr("I3STATE");
-				if((playstate==null)||(!CMath.isInteger(playstate)))
-					playstate="Development";
-				else
-				switch(CMath.s_int(playstate.trim()))
-				{
-				case 0: playstate = "MudLib Development"; break;
-				case 1: playstate = "Restricted Access"; break;
-				case 2: playstate = "Beta Testing"; break;
-				case 3: playstate = "Open for public"; break;
-				default: playstate = "MudLib Development"; break;
-				}
-				IMudInterface imud=new IMudInterface(CMProps.getVar(CMProps.SYSTEM_MUDNAME),
-													 "CoffeeMud v"+CMProps.getVar(CMProps.SYSTEM_MUDVER),
-                                                     CMLib.mud(0).getPort(),
-													 playstate,
-													 CMLib.channels().iChannelsArray());
-				imserver=new Server();
-				int i3port=page.getInt("I3PORT");
-				if(i3port==0) i3port=27766;
-				Server.start(CMProps.getVar(CMProps.SYSTEM_MUDNAME),i3port,imud);
-			}
-		}
-		catch(Exception e)
-		{
-			if(imserver!=null) Server.shutdown();
-			imserver=null;
-		}
-
-
-		try
-		{
-			if(page.getBoolean("RUNIMC2CLIENT")&&(tCode==MAIN_HOST))
-			{
-                CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Starting IMC2");
-				imc2server=new IMC2Driver();
-				if(!imc2server.imc_startup(false,
-										page.getStr("IMC2LOGIN").trim(),
-										CMProps.getVar(CMProps.SYSTEM_MUDNAME),
-										page.getStr("IMC2MYEMAIL").trim(),
-										page.getStr("IMC2MYWEB").trim(),
-										page.getStr("IMC2HUBNAME").trim(),
-										page.getInt("IMC2HUBPORT"),
-										page.getStr("IMC2PASS1").trim(),
-										page.getStr("IMC2PASS2").trim(),
-										imc2server.buildChannelMap(page.getStr("IMC2CHANNELS").trim())))
-				{
-					Log.errOut(Thread.currentThread().getName(),"IMC2 Failed to start!");
-					imc2server=null;
-				}
-				else
-				{
-					CMLib.intermud().registerIMC2(imc2server);
-					imc2server.start();
-				}
-			}
-		}
-		catch(Exception e)
-		{
-			Log.errOut("IMC2",e.getMessage());
-		}
+        CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Starting IMC2");
+		startIntermud2();
 
         if(tCode!=MAIN_HOST)
         {
@@ -926,6 +863,84 @@ public class MUD extends Thread implements MudHost
 	}
 
 
+	public static void startIntermud3()
+	{
+        char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
+		CMProps page=CMProps.instance();
+		try
+		{
+			if(page.getBoolean("RUNI3SERVER")&&(tCode==MAIN_HOST))
+			{
+				if(imserver!=null) Server.shutdown();
+				imserver=null;
+				String playstate=page.getStr("MUDSTATE");
+				if((playstate==null)||(playstate.length()==0))
+					playstate=page.getStr("I3STATE");
+				if((playstate==null)||(!CMath.isInteger(playstate)))
+					playstate="Development";
+				else
+				switch(CMath.s_int(playstate.trim()))
+				{
+				case 0: playstate = "MudLib Development"; break;
+				case 1: playstate = "Restricted Access"; break;
+				case 2: playstate = "Beta Testing"; break;
+				case 3: playstate = "Open for public"; break;
+				default: playstate = "MudLib Development"; break;
+				}
+				IMudInterface imud=new IMudInterface(CMProps.getVar(CMProps.SYSTEM_MUDNAME),
+													 "CoffeeMud v"+CMProps.getVar(CMProps.SYSTEM_MUDVER),
+		                                             CMLib.mud(0).getPort(),
+													 playstate,
+													 CMLib.channels().iChannelsArray());
+				imserver=new Server();
+				int i3port=page.getInt("I3PORT");
+				if(i3port==0) i3port=27766;
+				Server.start(CMProps.getVar(CMProps.SYSTEM_MUDNAME),i3port,imud);
+			}
+		}
+		catch(Exception e)
+		{
+			if(imserver!=null) Server.shutdown();
+			imserver=null;
+		}
+	}
+	
+	public static void startIntermud2()
+	{
+        char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
+		CMProps page=CMProps.instance();
+		try
+		{
+			if(page.getBoolean("RUNIMC2CLIENT")&&(tCode==MAIN_HOST))
+			{
+				imc2server=new IMC2Driver();
+				if(!imc2server.imc_startup(false,
+										page.getStr("IMC2LOGIN").trim(),
+										CMProps.getVar(CMProps.SYSTEM_MUDNAME),
+										page.getStr("IMC2MYEMAIL").trim(),
+										page.getStr("IMC2MYWEB").trim(),
+										page.getStr("IMC2HUBNAME").trim(),
+										page.getInt("IMC2HUBPORT"),
+										page.getStr("IMC2PASS1").trim(),
+										page.getStr("IMC2PASS2").trim(),
+										imc2server.buildChannelMap(page.getStr("IMC2CHANNELS").trim())))
+				{
+					Log.errOut(Thread.currentThread().getName(),"IMC2 Failed to start!");
+					imc2server=null;
+				}
+				else
+				{
+					CMLib.intermud().registerIMC2(imc2server);
+					imc2server.start();
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			Log.errOut("IMC2",e.getMessage());
+		}
+	}
+	
 	public void interrupt()
 	{
 		if(servsock!=null)
@@ -1273,6 +1288,21 @@ public class MUD extends Thread implements MudHost
         Vector V=CMParms.parse(cmd);
         if(V.size()==0) throw new CMException("Unknown command!");
         String word=(String)V.firstElement();
+        if(word.equalsIgnoreCase("START")&&(V.size()>1))
+        {
+        	String what=(String)V.elementAt(1);
+        	if(what.equalsIgnoreCase("I3"))
+        	{
+        		startIntermud3();
+        		return "Done";
+        	}
+        	else
+        	if(what.equalsIgnoreCase("IMC2"))
+        	{
+        		startIntermud2();
+	    		return "Done";
+        	}
+        }
         throw new CMException("Unknown command: "+word);
         //return "OK";
     }

@@ -42,7 +42,9 @@ public class IMC2 extends StdCommand
 	public void IMC2Error(MOB mob)
 	{
 		if(CMSecurity.isAllowed(mob,mob.location(),"IMC2"))
-			mob.tell("Try IMC2 LIST, IMC2 INFO [MUD], IMC2 LOCATE, or IMC2 CHANNELS.");
+			mob.tell("Try IMC2 LIST, IMC2 INFO [MUD], IMC2 LOCATE, IMC2 RESTART, or IMC2 CHANNELS.");
+		else
+			mob.tell("Try IMC2 LIST, IMC2 INFO [MUD], IMC2 LOCATE");
 	}
 
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
@@ -69,11 +71,18 @@ public class IMC2 extends StdCommand
 		if(str.equalsIgnoreCase("locate"))
 			CMLib.intermud().i3locate(mob,CMParms.combine(commands,1));
 		else
-		if(str.equalsIgnoreCase("channels"))
+		if(str.equalsIgnoreCase("channels") && CMSecurity.isAllowed(mob,mob.location(),"IMC2"))
 			CMLib.intermud().giveIMC2ChannelsList(mob);
 		else
 		if(str.equalsIgnoreCase("info"))
 			CMLib.intermud().imc2mudInfo(mob,CMParms.combine(commands,1));
+		else
+		if(str.equalsIgnoreCase("restart") && CMSecurity.isAllowed(mob,mob.location(),"IMC2"))
+		{
+			try {
+				mob.tell(CMLib.hosts().elementAt(0).executeCommand("START IMC2"));
+			}catch(Exception e){ Log.errOut("IMC2Cmd",e);}
+		}
 		else
 			IMC2Error(mob);
 

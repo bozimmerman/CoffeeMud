@@ -42,7 +42,7 @@ public class CMLib
 {
     static final long serialVersionUID=42;
     public String getClassName(){return "CMLib";}
-    private static final Vector mudThreads=new Vector();
+    private static final SVector<MudHost> mudThreads=new SVector();
     private static CMLib[] libs=new CMLib[256];
     public CMLib(){
         super();
@@ -121,7 +121,7 @@ public class CMLib
     public static CMSecurity security(){return CMSecurity.instance();}
     public static Directions directions(){return Directions.instance();}
     public static Log log(){return Log.instance();}
-    public static Vector hosts(){return mudThreads;}
+    public static SVector<MudHost> hosts(){return mudThreads;}
     public static MudHost mud(int port){
         if(mudThreads.size()==0)
             return null;
