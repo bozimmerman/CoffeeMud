@@ -2268,4 +2268,5 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 # Build 5.6.2 Release 4/25/2010 * Bug Fix build only
 # Build 5.6.3 Release ?/?/2010
  1.Can now enter I3 RESTART or IMC2 RESTART to reconnect to the intermuds
- 2.
+ 2.New language: Undercommon
+ 
