@@ -1346,6 +1346,41 @@ public class DefaultSession extends Thread implements Session
 		}
 	}
 
+	private void preLogout(MOB M)
+	{
+		if(M==null) return;
+        boolean inTheGame=CMLib.flags().isInTheGame(M,true);
+		
+        while((getLastPKFight()>0)
+        &&((System.currentTimeMillis()-getLastPKFight())<(2*60*1000))
+        &&(mob!=null))
+        { try{Thread.sleep(1000);}catch(Exception e){}}
+		String name=M.Name();
+		if(name.trim().length()==0) name="Unknown";
+        if((M.isInCombat())&&(M.location()!=null))
+        {
+            CMLib.commands().postFlee(mob,"NOWHERE");
+            M.makePeace();
+        }
+        if(!CMLib.flags().isCloaked(M))
+        {
+            Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOGOFFS);
+            for(int i=0;i<channels.size();i++)
+                CMLib.commands().postChannel((String)channels.elementAt(i),M.getClanID(),name+" has logged out",true);
+        }
+        CMLib.login().notifyFriends(M,"^X"+M.Name()+" has logged off.^.^?");
+            
+		// the player quit message!
+        LoginLogoutThread LT=new LoginLogoutThread(M,CMMsg.MSG_QUIT);
+        LT.initialize();
+        LT.start();
+		if(M.playerStats()!=null)
+			M.playerStats().setLastDateTime(System.currentTimeMillis());
+		Log.sysOut("Session","Logout: "+name);
+		if(inTheGame)
+			CMLib.database().DBUpdateFollowers(M);
+	}
+	
 	private void removeMOBFromGame(boolean killSession)
 	{
         MOB M=mob;
@@ -1368,6 +1403,7 @@ public class DefaultSession extends Thread implements Session
 			kill(false,false,false);
 		else
 		{
+			preLogout(mob);
 			if(removeMOB)
 				removeMOBFromGame(false);
 			mob=null;
@@ -1382,193 +1418,200 @@ public class DefaultSession extends Thread implements Session
 			int tries=0;
 			while((!killFlag)&&((++tries)<5))
 			{
-				status=Session.STATUS_LOGIN;
-				String input=null;
-				mob=null;
-                CharCreationLibrary.LoginResult loginResult=null;
-                if(acct==null)
-	                loginResult=CMLib.login().login(this,tries);
-                if((acct!=null)||(loginResult==LoginResult.ACCOUNT_LOGIN))
-                {
-                	try
-                	{
-                		status=Session.STATUS_ACCOUNTMENU;
-    	                loginResult=CMLib.login().selectAccountCharacter(acct,this);
-                	}
-                	finally
-                	{
-                		status=Session.STATUS_LOGIN;
-                	}
-                }
-				if(loginResult != CharCreationLibrary.LoginResult.NO_LOGIN)
+				try
 				{
-					status=Session.STATUS_LOGIN2;
-					tries=0;
-					if((mob!=null)&&(mob.playerStats()!=null))
-						acct=mob.playerStats().getAccount();
-					if((!killFlag)&&(mob!=null))
-                    {
-					    StringBuffer loginMsg=new StringBuffer("");
-					    loginMsg.append(getAddress())
-					            .append(" "+terminalType)
-					            .append(((CMath.bset(mob.getBitmap(),MOB.ATT_MXP)&&clientTelnetMode(Session.TELNET_MXP)))?" MXP":"")
-					            .append((clientTelnetMode(Session.TELNET_COMPRESS)||clientTelnetMode(Session.TELNET_COMPRESS2))?" CMP":"")
-                                .append(((CMath.bset(mob.getBitmap(),MOB.ATT_ANSI)&&clientTelnetMode(Session.TELNET_ANSI)))?" ANSI":"")
-                                .append(", login: "+mob.Name());
-						Log.sysOut("Session",loginMsg.toString());
-						if(loginResult != CharCreationLibrary.LoginResult.NO_LOGIN)
-                            if(!CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_LOGIN,CMClass.getMsg(mob,null,CMMsg.MSG_LOGIN,null)))
-                                killFlag=true;
-                    }
-					needPrompt=true;
-					Vector CMDS=null;
-					while((!killFlag)&&(mob!=null))
+					status=Session.STATUS_LOGIN;
+					String input=null;
+					mob=null;
+	                CharCreationLibrary.LoginResult loginResult=null;
+	                if(acct==null)
+		                loginResult=CMLib.login().login(this,tries);
+	                if((acct!=null)||(loginResult==LoginResult.ACCOUNT_LOGIN))
+	                {
+	                	try
+	                	{
+	                		status=Session.STATUS_ACCOUNTMENU;
+	    	                loginResult=CMLib.login().selectAccountCharacter(acct,this);
+	                	}
+	                	finally
+	                	{
+	                		status=Session.STATUS_LOGIN;
+	                	}
+	                }
+					if(loginResult != CharCreationLibrary.LoginResult.NO_LOGIN)
 					{
-                        while((!killFlag)
-                        &&(mob!=null)
-                        &&(CMLib.threads().isAllSuspended())
-                        &&(!CMSecurity.isASysOp(mob)))
-                            try{Thread.sleep(2000);}catch(Exception e){}
-						status=Session.STATUS_OK;
-						lastLoopTop=System.currentTimeMillis();
-						waiting=true;
-						if(suspendCommandLine)
+						status=Session.STATUS_LOGIN2;
+						tries=0;
+						if((mob!=null)&&(mob.playerStats()!=null))
+							acct=mob.playerStats().getAccount();
+						if((!killFlag)&&(mob!=null))
+	                    {
+						    StringBuffer loginMsg=new StringBuffer("");
+						    loginMsg.append(getAddress())
+						            .append(" "+terminalType)
+						            .append(((CMath.bset(mob.getBitmap(),MOB.ATT_MXP)&&clientTelnetMode(Session.TELNET_MXP)))?" MXP":"")
+						            .append((clientTelnetMode(Session.TELNET_COMPRESS)||clientTelnetMode(Session.TELNET_COMPRESS2))?" CMP":"")
+	                                .append(((CMath.bset(mob.getBitmap(),MOB.ATT_ANSI)&&clientTelnetMode(Session.TELNET_ANSI)))?" ANSI":"")
+	                                .append(", login: "+mob.Name());
+							Log.sysOut("Session",loginMsg.toString());
+							if(loginResult != CharCreationLibrary.LoginResult.NO_LOGIN)
+	                            if(!CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_LOGIN,CMClass.getMsg(mob,null,CMMsg.MSG_LOGIN,null)))
+	                                killFlag=true;
+	                    }
+						needPrompt=true;
+						Vector CMDS=null;
+						while((!killFlag)&&(mob!=null))
 						{
-							input=null;
-							try{Thread.sleep(100);}catch(Exception e){}
-						}
-						else
-							input=readlineContinue();
-						if(input!=null)
-						{
-							lastKeystroke=System.currentTimeMillis();
-							if(input.trim().length()>0)
-								prevMsgs.add(input);
-							setAfkFlag(false);
-							CMDS=CMParms.parse(input);
-							if(CMDS.size()>0)
+	                        while((!killFlag)
+	                        &&(mob!=null)
+	                        &&(CMLib.threads().isAllSuspended())
+	                        &&(!CMSecurity.isASysOp(mob)))
+	                            try{Thread.sleep(2000);}catch(Exception e){}
+							status=Session.STATUS_OK;
+							lastLoopTop=System.currentTimeMillis();
+							waiting=true;
+							if(suspendCommandLine)
 							{
-								waiting=false;
-                                String firstWord=(String)CMDS.firstElement();
-                                PlayerStats pstats=mob.playerStats();
-                                String alias=(pstats!=null)?pstats.getAlias(firstWord):"";
-                                Vector ALL_CMDS=new Vector();
-                                boolean echoOn=false;
-                                if(alias.length()>0)
-                                {
-                                    CMDS.removeElementAt(0);
-                                    Vector all_stuff=CMParms.parseSquiggleDelimited(alias,true);
-                                    for(int a=0;a<all_stuff.size();a++)
-                                    {
-                                        Vector THIS_CMDS=(Vector)CMDS.clone();
-                                        ALL_CMDS.addElement(THIS_CMDS);
-                                        Vector preCommands=CMParms.parse((String)all_stuff.elementAt(a));
-                                        for(int v=preCommands.size()-1;v>=0;v--)
-                                            THIS_CMDS.insertElementAt(preCommands.elementAt(v),0);
-                                    }
-                                    echoOn=true;
-                                }
-                                else
-                                    ALL_CMDS.addElement(CMDS);
-                                for(int v=0;v<ALL_CMDS.size();v++)
-                                {
-                                    CMDS=(Vector)ALL_CMDS.elementAt(v);
-    								setPreviousCmd(CMDS);
-    								milliTotal+=(lastStop-lastStart);
-
-    								if(snoops.size()>0)
-                                    {
-                                        String msgColored=CMStrings.replaceAll(input,"\n\r",CMLib.coffeeFilter().colorOnlyFilter("\n\r^Z"+((mob==null)?"?":mob.Name())+":^N ",this));
-    									for(int s=0;s<snoops.size();s++)
-    										((Session)snoops.elementAt(s)).rawPrintln(msgColored);
-                                    }
-
-    								lastStart=System.currentTimeMillis();
-                                    if(echoOn) rawPrintln(CMParms.combineWithQuotes(CMDS,0));
-                                    Vector MORE_CMDS=CMLib.lang().preCommandParser(CMDS);
-                                    for(int m=0;m<MORE_CMDS.size();m++)
-                                    	if(mob!=null)
-		    								mob.enqueCommand((Vector)MORE_CMDS.elementAt(m),metaFlags(),0);
-    								lastStop=System.currentTimeMillis();
-                                }
-							}
-							needPrompt=true;
-						}
-						if(mob==null) break;
-                        while((!killFlag)&&(mob!=null)&&(mob.dequeCommand()));
-
-						if(((System.currentTimeMillis()-lastBlahCheck)>=60000)
-						&&(mob()!=null))
-						{
-							lastBlahCheck=System.currentTimeMillis();
-							Vector V=CMParms.parse(CMProps.getVar(CMProps.SYSTEM_IDLETIMERS));
-							if((V.size()>0)
-							&&(!CMSecurity.isAllowed(mob(),mob().location(),"IDLEOK"))
-							&&(CMath.s_int((String)V.firstElement())>0))
-							{
-								int minsIdle=(int)(getIdleMillis()/60000);
-								if(minsIdle>=CMath.s_int((String)V.firstElement()))
-								{
-									println("\n\r^ZYou are being logged out!^?");
-									setKillFlag(true);
-								}
-								else
-								if(minsIdle>=CMath.s_int((String)V.lastElement()))
-								{
-									int remain=CMath.s_int((String)V.firstElement())-minsIdle;
-									println(mob(),null,null,"\n\r^ZIf you don't do something, you will be logged out in "+remain+" minute(s)!^?");
-								}
-							}
-
-							if(!afkFlag())
-							{
-								if(getIdleMillis()>=600000)
-									setAfkFlag(true);
+								input=null;
+								try{Thread.sleep(100);}catch(Exception e){}
 							}
 							else
-							if((getIdleMillis()>=10800000)&&(!killFlag()))
+								input=readlineContinue();
+							if(input!=null)
 							{
-								if((!CMLib.flags().isSleeping(mob))
-								&&(mob().fetchEffect("Disease_Blahs")==null)
-								&&(!CMSecurity.isDisabled("AUTODISEASE")))
+								lastKeystroke=System.currentTimeMillis();
+								if(input.trim().length()>0)
+									prevMsgs.add(input);
+								setAfkFlag(false);
+								CMDS=CMParms.parse(input);
+								if(CMDS.size()>0)
 								{
-									Ability A=CMClass.getAbility("Disease_Blahs");
-									if(A!=null) A.invoke(mob,mob,true,0);
+									waiting=false;
+	                                String firstWord=(String)CMDS.firstElement();
+	                                PlayerStats pstats=mob.playerStats();
+	                                String alias=(pstats!=null)?pstats.getAlias(firstWord):"";
+	                                Vector ALL_CMDS=new Vector();
+	                                boolean echoOn=false;
+	                                if(alias.length()>0)
+	                                {
+	                                    CMDS.removeElementAt(0);
+	                                    Vector all_stuff=CMParms.parseSquiggleDelimited(alias,true);
+	                                    for(int a=0;a<all_stuff.size();a++)
+	                                    {
+	                                        Vector THIS_CMDS=(Vector)CMDS.clone();
+	                                        ALL_CMDS.addElement(THIS_CMDS);
+	                                        Vector preCommands=CMParms.parse((String)all_stuff.elementAt(a));
+	                                        for(int v=preCommands.size()-1;v>=0;v--)
+	                                            THIS_CMDS.insertElementAt(preCommands.elementAt(v),0);
+	                                    }
+	                                    echoOn=true;
+	                                }
+	                                else
+	                                    ALL_CMDS.addElement(CMDS);
+	                                for(int v=0;v<ALL_CMDS.size();v++)
+	                                {
+	                                    CMDS=(Vector)ALL_CMDS.elementAt(v);
+	    								setPreviousCmd(CMDS);
+	    								milliTotal+=(lastStop-lastStart);
+	
+	    								if(snoops.size()>0)
+	                                    {
+	                                        String msgColored=CMStrings.replaceAll(input,"\n\r",CMLib.coffeeFilter().colorOnlyFilter("\n\r^Z"+((mob==null)?"?":mob.Name())+":^N ",this));
+	    									for(int s=0;s<snoops.size();s++)
+	    										((Session)snoops.elementAt(s)).rawPrintln(msgColored);
+	                                    }
+	
+	    								lastStart=System.currentTimeMillis();
+	                                    if(echoOn) rawPrintln(CMParms.combineWithQuotes(CMDS,0));
+	                                    Vector MORE_CMDS=CMLib.lang().preCommandParser(CMDS);
+	                                    for(int m=0;m<MORE_CMDS.size();m++)
+	                                    	if(mob!=null)
+			    								mob.enqueCommand((Vector)MORE_CMDS.elementAt(m),metaFlags(),0);
+	    								lastStop=System.currentTimeMillis();
+	                                }
+								}
+								needPrompt=true;
+							}
+							if(mob==null) break;
+	                        while((!killFlag)&&(mob!=null)&&(mob.dequeCommand()));
+	
+							if(((System.currentTimeMillis()-lastBlahCheck)>=60000)
+							&&(mob()!=null))
+							{
+								lastBlahCheck=System.currentTimeMillis();
+								Vector V=CMParms.parse(CMProps.getVar(CMProps.SYSTEM_IDLETIMERS));
+								if((V.size()>0)
+								&&(!CMSecurity.isAllowed(mob(),mob().location(),"IDLEOK"))
+								&&(CMath.s_int((String)V.firstElement())>0))
+								{
+									int minsIdle=(int)(getIdleMillis()/60000);
+									if(minsIdle>=CMath.s_int((String)V.firstElement()))
+									{
+										println("\n\r^ZYou are being logged out!^?");
+										setKillFlag(true);
+									}
+									else
+									if(minsIdle>=CMath.s_int((String)V.lastElement()))
+									{
+										int remain=CMath.s_int((String)V.firstElement())-minsIdle;
+										println(mob(),null,null,"\n\r^ZIf you don't do something, you will be logged out in "+remain+" minute(s)!^?");
+									}
+								}
+	
+								if(!afkFlag())
+								{
+									if(getIdleMillis()>=600000)
+										setAfkFlag(true);
 								}
 								else
-								if((CMLib.flags().isSleeping(mob))
-								&&(mob().fetchEffect("Disease_Narcolepsy")==null)
-								&&(!CMSecurity.isDisabled("AUTODISEASE")))
+								if((getIdleMillis()>=10800000)&&(!killFlag()))
 								{
-									Ability A=CMClass.getAbility("Disease_Narcolepsy");
-									if(A!=null) A.invoke(mob,mob,true,0);
+									if((!CMLib.flags().isSleeping(mob))
+									&&(mob().fetchEffect("Disease_Blahs")==null)
+									&&(!CMSecurity.isDisabled("AUTODISEASE")))
+									{
+										Ability A=CMClass.getAbility("Disease_Blahs");
+										if(A!=null) A.invoke(mob,mob,true,0);
+									}
+									else
+									if((CMLib.flags().isSleeping(mob))
+									&&(mob().fetchEffect("Disease_Narcolepsy")==null)
+									&&(!CMSecurity.isDisabled("AUTODISEASE")))
+									{
+										Ability A=CMClass.getAbility("Disease_Narcolepsy");
+										if(A!=null) A.invoke(mob,mob,true,0);
+									}
 								}
 							}
-						}
-						if((needPrompt)&&(waiting))
-						{
-						    if((mob!=null)&&(mob.isInCombat()))
-						    {
-						        if(((System.currentTimeMillis()-promptLastShown)>=Tickable.TIME_TICK)
-						        ||(input!=null))
-						        {
+							if((needPrompt)&&(waiting))
+							{
+							    if((mob!=null)&&(mob.isInCombat()))
+							    {
+							        if(((System.currentTimeMillis()-promptLastShown)>=Tickable.TIME_TICK)
+							        ||(input!=null))
+							        {
+										showPrompt();
+										needPrompt=false;
+							        }
+							    }
+							    else
+							    {
 									showPrompt();
 									needPrompt=false;
-						        }
-						    }
-						    else
-						    {
-								showPrompt();
-								needPrompt=false;
-						    }
+							    }
+							}
 						}
+						status=Session.STATUS_LOGOUT2;
+						previousCmd.removeAllElements(); // will let system know you are back in login menu
 					}
-					status=Session.STATUS_LOGOUT2;
-					previousCmd.removeAllElements(); // will let system know you are back in login menu
+					else
+						mob=null;
 				}
-				else
-					mob=null;
-				status=Session.STATUS_LOGOUT;
+				finally
+				{
+					status=Session.STATUS_LOGOUT;
+					preLogout(mob);
+				}
 			}
 			status=Session.STATUS_LOGOUT3;
 		}
@@ -1584,44 +1627,10 @@ public class DefaultSession extends Thread implements Session
 		}
 		status=Session.STATUS_LOGOUT3;
 
-        if(mob!=null)
-        {
-            while((getLastPKFight()>0)
-            &&((System.currentTimeMillis()-getLastPKFight())<(2*60*1000))
-            &&(mob!=null))
-            { try{Thread.sleep(1000);}catch(Exception e){}}
-        }
-		if(mob!=null)
-		{
-			String name=mob.Name();
-			if(name.trim().length()==0) name="Unknown";
-            if((mob.isInCombat())&&(mob.location()!=null))
-            {
-                CMLib.commands().postFlee(mob,"NOWHERE");
-                mob.makePeace();
-            }
-            if(!CMLib.flags().isCloaked(mob))
-            {
-                Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOGOFFS);
-	            for(int i=0;i<channels.size();i++)
-	                CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),name+" has logged out",true);
-            }
-            CMLib.login().notifyFriends(mob,"^X"+mob.Name()+" has logged off.^.^?");
-	            
-			// the player quit message!
-            loginLogoutThread LT=new loginLogoutThread(mob,CMMsg.MSG_QUIT);
-            LT.initialize();
-            LT.start();
-			if(mob.playerStats()!=null)
-            {
-				mob.playerStats().setLastDateTime(System.currentTimeMillis());
-            }
-			Log.sysOut("Session",getAddress()+" logout: "+name);
-			if(mob!=null) CMLib.database().DBUpdateFollowers(mob);
-			if(mob!=null) mob.removeFromGame(true,true);
-			if(mob!=null) mob.setSession(null);
-			mob=null;
-		}
+		if(mob!=null) mob.removeFromGame(true,true);
+		if(mob!=null) mob.setSession(null);
+		mob=null;
+		Log.sysOut("Session","Logout: "+getAddress());
 
 		status=Session.STATUS_LOGOUT4;
 		killFlag=true;
@@ -1642,12 +1651,12 @@ public class DefaultSession extends Thread implements Session
 		status=Session.STATUS_LOGOUTFINAL;
 	}
 
-    private static class loginLogoutThread extends Thread implements Tickable
+    public static class LoginLogoutThread extends Thread implements Tickable
     {
         public String name(){return (theMOB==null)?"Dead LLThread":"LLThread for "+theMOB.Name();}
         public boolean tick(Tickable ticking, int tickID){return false;}
         public String ID(){return name();}
-        public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new loginLogoutThread();}}
+        public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new LoginLogoutThread();}}
         public void initializeClass(){}
         public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
         public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
@@ -1655,8 +1664,8 @@ public class DefaultSession extends Thread implements Session
         private MOB theMOB=null;
         private int msgCode=-1;
         private HashSet skipRooms=new HashSet();
-        private loginLogoutThread(){}
-        public loginLogoutThread(MOB mob, int msgC)
+        private LoginLogoutThread(){}
+        public LoginLogoutThread(MOB mob, int msgC)
         {
             theMOB=mob;
             msgCode=msgC;
