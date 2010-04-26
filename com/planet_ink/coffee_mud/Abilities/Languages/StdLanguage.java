@@ -104,7 +104,7 @@ public class StdLanguage extends StdAbility implements Language
 			String[] choices=null;
 			try{ choices=(String[])translationVector(language).elementAt(word.length()-1);}catch(Exception e){}
 			if(choices==null) choices=(String[])translationVector(language).lastElement();
-			return choices[CMLib.dice().roll(1,choices.length,-1)];
+			return choices[CMath.abs(word.toLowerCase().hashCode()) % choices.length];
 		}
 		return word;
 	}
