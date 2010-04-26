@@ -208,10 +208,10 @@ public class Intermud implements Runnable, Persistent, Serializable
         }
         catch( PersistenceException e ) {
             password = -1;
-            channels = new ChannelList(-1);
-            muds = new MudList(-1);
 			Log.errOut("Intermud",e);
         }
+        channels = new ChannelList(-1);
+        muds = new MudList(-1);
         save_thread = new SaveThread(this);
         save_thread.setDaemon(true);
         save_thread.start();
