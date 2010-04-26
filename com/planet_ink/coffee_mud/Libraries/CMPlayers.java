@@ -563,7 +563,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
                         {
                             int lastSpace=B.lastIndexOf(" ");
                             foundWarningDateTime=CMath.s_long(B.substring(lastSpace+1).trim());
-                            if(System.currentTimeMillis() < purgeDateTime + (10 * TimeManager.MILI_DAY))
+                            if((foundWarningDateTime > 0) && (System.currentTimeMillis() < foundWarningDateTime + (10 * TimeManager.MILI_DAY)))
 	                            warnStr.append(B+"\n");
                         }
                     }
