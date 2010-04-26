@@ -70,8 +70,10 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
     public synchronized void addAccount(PlayerAccount acct)
     {
     	if(acct==null) return;
-        if(getAccount(acct.accountName())!=null) return;
         if(accountsList.contains(acct)) return;
+    	for(PlayerAccount A : accountsList) // dont consolodate this.
+    		if(A.accountName().equals(acct.accountName()))
+    			return;
         accountsList.add(acct);
     }
     public PlayerAccount getAccount(String calledThis)
