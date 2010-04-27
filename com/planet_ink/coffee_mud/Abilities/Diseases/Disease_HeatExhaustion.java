@@ -45,7 +45,7 @@ public class Disease_HeatExhaustion extends Disease
 
     protected int DISEASE_TICKS(){return 300;}
     protected int DISEASE_DELAY(){return 3;}
-    protected String DISEASE_DONE(){return "You head stops spinning.";}
+    protected String DISEASE_DONE(){return "Your head stops spinning.";}
     protected String DISEASE_START(){return "^G<S-NAME> <S-IS-ARE> overcome by the heat.^?";}
     protected String DISEASE_AFFECT(){return "";}
     public int abilityCode(){return 0;}

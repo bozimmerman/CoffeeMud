@@ -248,6 +248,8 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 
 	protected static Vector matchChatGroup(MOB meM, String myName, Vector chatGroups)
 	{
+		if(myName.equalsIgnoreCase("default"))
+			return (Vector)chatGroups.firstElement();
 		for(int i=1;i<chatGroups.size();i++)
 		{
 			Vector V=(Vector)chatGroups.elementAt(i);
