@@ -69,7 +69,11 @@ public class Chant_AcidRain extends Chant
 				{
 					if(CMLib.dice().rollPercentage()>M.charStats().getSave(CharStats.STAT_SAVE_ACID))
 						CMLib.combat().postDamage(invoker(),M,this,CMLib.dice().roll(1,M.envStats().level()+(2*super.getXLEVELLevel(invoker())),1),CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The acid rain <DAMAGE> <T-NAME>!");
-	                if((!M.isInCombat())&&(M!=invoker)&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
+	                if((!M.isInCombat())
+	                &&(M!=invoker)
+	                &&(M.location()!=null)
+	                &&(M.location().isInhabitant(invoker))
+	                &&(CMLib.flags().canBeSeenBy(invoker,M)))
 	                    CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
 				}
 			}

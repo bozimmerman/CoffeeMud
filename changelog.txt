@@ -2269,4 +2269,5 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 # Build 5.6.3 Release ?/?/2010
  1.Can now enter I3 RESTART or IMC2 RESTART to reconnect to the intermuds
  2.New language: Undercommon
+ 3.New property/skill: TemporaryAffects (for timer-dependent behaviors/properties)
  
