@@ -1495,12 +1495,12 @@ public class DefaultSession extends Thread implements Session
 	                                if(alias.length()>0)
 	                                {
 	                                    CMDS.removeElementAt(0);
-	                                    Vector all_stuff=CMParms.parseSquiggleDelimited(alias,true);
-	                                    for(int a=0;a<all_stuff.size();a++)
+	                                    Vector<String> all_stuff=CMParms.parseSquiggleDelimited(alias,true);
+	                                    for(String stuff : all_stuff)
 	                                    {
 	                                        Vector THIS_CMDS=(Vector)CMDS.clone();
 	                                        ALL_CMDS.addElement(THIS_CMDS);
-	                                        Vector preCommands=CMParms.parse((String)all_stuff.elementAt(a));
+	                                        Vector preCommands=CMParms.parse(stuff);
 	                                        for(int v=preCommands.size()-1;v>=0;v--)
 	                                            THIS_CMDS.insertElementAt(preCommands.elementAt(v),0);
 	                                    }

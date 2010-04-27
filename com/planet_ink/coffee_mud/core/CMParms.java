@@ -329,7 +329,7 @@ public class CMParms
         return V;
     }
 
-    public static Vector parseSquiggleDelimited(String s, boolean ignoreNulls)
+    public static Vector<String> parseSquiggleDelimited(String s, boolean ignoreNulls)
     {
         Vector V=new Vector();
         if((s==null)||(s.length()==0)) return V;

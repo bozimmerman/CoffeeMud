@@ -5422,10 +5422,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                         E.setStat("NUMREFF","");
                     for(int i=0;i<data.size();i++)
                     {
-                        Vector V=CMParms.parseSquiggleDelimited((String)data.elementAt(i),false);
-                        E.setStat("GETREFF"+i,((String)V.elementAt(0)));
-                        E.setStat("GETREFFLVL"+i,((String)V.elementAt(1)));
-                        E.setStat("GETREFFPARM"+i,((String)V.elementAt(2)));
+                        Vector<String> V=CMParms.parseSquiggleDelimited((String)data.elementAt(i),false);
+                        E.setStat("GETREFF"+i,V.elementAt(0));
+                        E.setStat("GETREFFLVL"+i,V.elementAt(1));
+                        E.setStat("GETREFFPARM"+i,V.elementAt(2));
                     }
                 }
             }
