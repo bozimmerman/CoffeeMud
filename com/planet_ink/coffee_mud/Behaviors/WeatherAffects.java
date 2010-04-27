@@ -434,7 +434,11 @@ public class WeatherAffects extends PuddleMaker
                         if(C.weatherType(R)!=Climate.WEATHER_THUNDERSTORM)
                         {
                             if((R.domainType()&Room.INDOORS)>0)
-                                S.mob().tell("^JA thunderous rumble and CRACK of lightning can be heard outside.^?"+CMProps.msp("thunder.wav",40));
+                            {
+                            	if((R.getArea()!=null) 
+                            	&& CMath.div(R.getArea().getAreaIStats()[Area.AREASTAT_INDOORROOMS],R.getArea().properSize())<0.90)
+	                                S.mob().tell("^JA thunderous rumble and CRACK of lightning can be heard outside.^?"+CMProps.msp("thunder.wav",40));
+                            }
                             else
                                 S.mob().tell("^JA thunderous rumble and CRACK of lightning can be heard.^?"+CMProps.msp("thunder.wav",40));
                         }

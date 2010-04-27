@@ -963,6 +963,8 @@ public class StdArea implements Area
 				R=(Room)r.nextElement();
 				if(R instanceof GridLocale)
 					statData[Area.AREASTAT_VISITABLEROOMS]--;
+                if((R.domainType()&Room.INDOORS)>0)
+					statData[Area.AREASTAT_INDOORROOMS]++;
 				for(int i=0;i<R.numInhabitants();i++)
 				{
 					mob=R.fetchInhabitant(i);
