@@ -2270,4 +2270,5 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
  1.Can now enter I3 RESTART or IMC2 RESTART to reconnect to the intermuds
  2.New language: Undercommon
  3.New property/skill: TemporaryAffects (for timer-dependent behaviors/properties)
+ 4.New property: Prop_LanguageSpeaker
  

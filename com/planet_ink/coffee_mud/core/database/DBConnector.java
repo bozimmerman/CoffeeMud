@@ -34,15 +34,15 @@ import java.sql.SQLException;
 */
 public class DBConnector
 {
-	private DBConnections DBs=null;
-	private String DBClass="";
-	private String DBService="";
-	private String DBUser="";
-	private String DBPass="";
-	private boolean DBReuse=false;
+	private DBConnections dbConnections=null;
+	private String dbClass="";
+	private String dbService="";
+	private String dbUser="";
+	private String dbPass="";
+	private boolean dbReuse=false;
 	private int numConnections=0;
-	private boolean DoErrorQueueing=false;
-	private boolean NewErrorQueueing=false;
+	private boolean doErrorQueueing=false;
+	private boolean newErrorQueueing=false;
 	
 	public DBConnector (){super();}
 	
@@ -56,23 +56,23 @@ public class DBConnector
 						boolean NEWRetryErrorQueue)
 	{
 		super();
-		DBClass=NEWDBClass;
-		DBService=NEWDBService;
-		DBUser=NEWDBUser;
-		DBPass=NEWDBPass;
+		dbClass=NEWDBClass;
+		dbService=NEWDBService;
+		dbUser=NEWDBUser;
+		dbPass=NEWDBPass;
 		numConnections=NEWnumConnections;
-		DoErrorQueueing=NEWDoErrorQueueing;
-		NewErrorQueueing=NEWRetryErrorQueue;
-		DBReuse=NEWReuse;
+		doErrorQueueing=NEWDoErrorQueueing;
+		newErrorQueueing=NEWRetryErrorQueue;
+		dbReuse=NEWReuse;
 	}
 	public void reconnect()
 	{
-		if(DBs!=null){ DBs.deregisterDriver(); DBs.killConnections();}
-		DBs=new DBConnections(DBClass,DBService,DBUser,DBPass,numConnections,DBReuse,DoErrorQueueing);
-		if(DBs.amIOk()&&NewErrorQueueing) DBs.retryQueuedErrors();
+		if(dbConnections!=null){ dbConnections.deregisterDriver(); dbConnections.killConnections();}
+		dbConnections=new DBConnections(dbClass,dbService,dbUser,dbPass,numConnections,dbReuse,doErrorQueueing);
+		if(dbConnections.amIOk()&&newErrorQueueing) dbConnections.retryQueuedErrors();
 	}
 	
-	public String service(){ return DBService;}
+	public String service(){ return dbService;}
 	
 	public int getRecordCount(DBConnection D, ResultSet R)
 	{
@@ -92,14 +92,14 @@ public class DBConnector
 	
 	public boolean deregisterDriver()
     { 
-		if(DBs!=null) return DBs.deregisterDriver();
+		if(dbConnections!=null) return dbConnections.deregisterDriver();
 		return false;
 	}
 	
-	public int update(String[] updateStrings){ return (DBs!=null)?DBs.update(updateStrings):0;}
-	public int update(String updateString){ return (DBs!=null)?DBs.update(new String[]{updateString}):0;}
+	public int update(String[] updateStrings){ return (dbConnections!=null)?dbConnections.update(updateStrings):0;}
+	public int update(String updateString){ return (dbConnections!=null)?dbConnections.update(new String[]{updateString}):0;}
 	
-	public int queryRows(String queryString){ return (DBs!=null)?DBs.queryRows(queryString):0;}
+	public int queryRows(String queryString){ return (dbConnections!=null)?dbConnections.queryRows(queryString):0;}
 
 	/** 
 	 * Fetch a single, not in use DBConnection object. 
@@ -109,10 +109,10 @@ public class DBConnector
 	 * <br><br><b>Usage: DB=DBFetch();</b> 
 	 * @return DBConnection	The DBConnection to use
 	 */
-	public DBConnection DBFetch(){return (DBs!=null)?DBs.DBFetch():null;}
+	public DBConnection DBFetch(){return (dbConnections!=null)?dbConnections.DBFetch():null;}
 	
-    public int numConnectionsMade(){return (DBs!=null)?DBs.numConnectionsMade():0;}
-	public int numDBConnectionsInUse(){ return (DBs!=null)?DBs.numInUse():0;}
+    public int numConnectionsMade(){return (dbConnections!=null)?dbConnections.numConnectionsMade():0;}
+	public int numDBConnectionsInUse(){ return (dbConnections!=null)?dbConnections.numInUse():0;}
 	
 	/** 
 	 * Fetch a single, not in use DBConnection object. 
@@ -123,14 +123,14 @@ public class DBConnector
 	 * @param SQL	The prepared statement SQL
 	 * @return DBConnection	The DBConnection to use
 	 */
-	public DBConnection DBFetchPrepared(String SQL){ return (DBs!=null)?DBs.DBFetchPrepared(SQL):null;}
+	public DBConnection DBFetchPrepared(String SQL){ return (dbConnections!=null)?dbConnections.DBFetchPrepared(SQL):null;}
 	/** 
 	 * Return a DBConnection object fetched with DBFetch()
 	 * 
 	 * <br><br><b>Usage:</b> 
 	 * @param D	The Database connection to return to the pool
 	 */
-	public void DBDone(DBConnection D){ if(DBs!=null) DBs.DBDone(D);}
+	public void DBDone(DBConnection D){ if(dbConnections!=null) dbConnections.DBDone(D);}
 
 	/** 
 	 * When reading a database table, this routine will read in
@@ -186,14 +186,14 @@ public class DBConnector
 	 * 
 	 * <br><br><b>Usage:</b> killConnections();
 	 */
-	public void killConnections(){ if(DBs!=null) DBs.killConnections();}
+	public void killConnections(){ if(dbConnections!=null) dbConnections.killConnections();}
 	
 	/** 
 	 * Return the happiness level of the connections
 	 * <br><br><b>Usage:</b> amIOk()
 	 * @return boolean	true if ok, false if not ok
 	 */
-	public boolean amIOk(){ return (DBs!=null)?DBs.amIOk():false;}
+	public boolean amIOk(){ return (dbConnections!=null)?dbConnections.amIOk():false;}
 	
 	/** 
 	 * Queue up a failed write/update for later processing.
@@ -204,7 +204,7 @@ public class DBConnector
 	 * @param count	The number of tries so far
 	 */
 	public void enQueueError(String SQLString, String SQLError, String count)
-	{ if(DBs!=null)DBs.enQueueError(SQLString, SQLError,count);}
+	{ if(dbConnections!=null)dbConnections.enQueueError(SQLString, SQLError,count);}
 	
 	
 	/** 
@@ -213,7 +213,7 @@ public class DBConnector
 	 * <br><br><b>Usage:</b> RetryQueuedErrors();
 	 */
 	public void retryQueuedErrors()
-	{ if(DBs!=null)DBs.retryQueuedErrors();}
+	{ if(dbConnections!=null)dbConnections.retryQueuedErrors();}
 	
 	/** list the connections 
 	 * 
@@ -221,7 +221,7 @@ public class DBConnector
 	 * @param out	place to send the list out to
 	 */
 	public void listConnections(PrintStream out)
-	{ if(DBs!=null)DBs.listConnections(out);}
+	{ if(dbConnections!=null)dbConnections.listConnections(out);}
 	
 	/** return a status string, or "" if everything is ok.
 	 * 
@@ -230,10 +230,10 @@ public class DBConnector
 	 */
 	public StringBuffer errorStatus()
 	{ 
-        if(DBs==null) return new StringBuffer("Not connected.");
-		StringBuffer status=DBs.errorStatus();
+        if(dbConnections==null) return new StringBuffer("Not connected.");
+		StringBuffer status=dbConnections.errorStatus();
 		if(status.length()==0)
-			return new StringBuffer("OK! Connections in use="+DBs.numInUse()+"/"+DBs.numConnectionsMade());
-		return new StringBuffer("<BR>"+status.toString().replaceAll("\n","<BR>")+"Connections in use="+DBs.numInUse()+"/"+DBs.numConnectionsMade());
+			return new StringBuffer("OK! Connections in use="+dbConnections.numInUse()+"/"+dbConnections.numConnectionsMade());
+		return new StringBuffer("<BR>"+status.toString().replaceAll("\n","<BR>")+"Connections in use="+dbConnections.numInUse()+"/"+dbConnections.numConnectionsMade());
 	}
 }

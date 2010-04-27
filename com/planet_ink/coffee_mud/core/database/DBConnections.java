@@ -38,13 +38,13 @@ import java.sql.*;
 @SuppressWarnings("unchecked")
 public class DBConnections
 {
-	protected String DBClass="";
+	protected String dbClass="";
 	/** the odbc service*/
-	protected String DBService="";
+	protected String dbService="";
 	/** the odbc login user */
-	protected String DBUser="";
+	protected String dbUser="";
 	/** the odbc password */
-	protected String DBPass="";
+	protected String dbPass="";
 	/** number of connections to make*/
 	protected int maxConnections=0;
 	/** the disconnected flag */
@@ -58,9 +58,9 @@ public class DBConnections
 	/** Object to synchronize around on error handling*/
 	protected boolean errorQueingEnabled=false;
 	/** the database connnections */
-	protected Vector Connections;
+	protected SVector<DBConnection> connections;
 	/** set this to true once, cuz it makes it all go away. **/
-	protected boolean YOU_ARE_DONE=false;
+	protected boolean shutdown=false;
 	/** whether to reuse connections */
 	protected boolean reuse=false;
 	/** last time resetconnections called (or resetconnections) */
@@ -88,13 +88,13 @@ public class DBConnections
 						 boolean NEWreuse,
 						 boolean DoErrorQueueing)
 	{
-		DBClass=NEWDBClass;
-		DBService=NEWDBService;
-		DBUser=NEWDBUser;
-		DBPass=NEWDBPass;
+		dbClass=NEWDBClass;
+		dbService=NEWDBService;
+		dbUser=NEWDBUser;
+		dbPass=NEWDBPass;
 		reuse=NEWreuse;
 		maxConnections=NEWnumConnections;
-		Connections = new Vector();
+		connections = new SVector<DBConnection>();
 		errorQueingEnabled=DoErrorQueueing;
 	}
 
@@ -157,14 +157,14 @@ public class DBConnections
 	 */
 	public int numConnectionsMade()
 	{
-		return Connections.size();
+		return connections.size();
 	}
 
 	public int numInUse()
 	{
 		int num=0;
-		for(int i=0;i<Connections.size();i++)
-			if(((DBConnection)Connections.elementAt(i)).inUse())
+		for(int i=0;i<connections.size();i++)
+			if(((DBConnection)connections.elementAt(i)).inUse())
 				num++;
 		return num;
 	}
@@ -197,7 +197,7 @@ public class DBConnections
 		DBConnection ThisDB=null;
 		while(ThisDB==null)
 		{
-			if(YOU_ARE_DONE)
+			if(shutdown)
 			{
 				// can't throw without declaring, so this is the only way.
 				int x=1;
@@ -206,10 +206,10 @@ public class DBConnections
 				// this should create a division by zero error.
 			}
 
-			if(Connections.size()<maxConnections)
+			if(connections.size()<maxConnections)
 				try{
-					ThisDB=new DBConnection(this,DBClass,DBService,DBUser,DBPass,reuse);
-					Connections.addElement(ThisDB);
+					ThisDB=new DBConnection(this,dbClass,dbService,dbUser,dbPass,reuse);
+					connections.addElement(ThisDB);
 				}catch(Exception e){
 					if((e.getMessage()==null)||(e.getMessage().indexOf("java.io.EOFException")<0))
 						Log.errOut("DBConnections",e);
@@ -218,10 +218,10 @@ public class DBConnections
 			if((ThisDB==null)&&(reuse))
 			{
 				try{
-					for(int i=0;i<Connections.size();i++)
-						if(((DBConnection)Connections.elementAt(i)).use(""))
+					for(DBConnection conn : connections)
+						if(conn.use(""))
 						{
-							ThisDB=((DBConnection)Connections.elementAt(i));
+							ThisDB=conn;
 							break;
 						}
 				}catch(Exception e){}
@@ -238,31 +238,31 @@ public class DBConnections
 				{
 					if(consecutiveFailures>50)
 					{
-						if(Connections.size()==0)
+						if(connections.size()==0)
 							disconnected=true;
 						else
 							lockedUp=true;
 						consecutiveFailures=0;
 					}
 				}
-				if(Connections.size()>=maxConnections)
+				if(connections.size()>=maxConnections)
 				{
 					int inuse=0;
-					for(int i=0;i<Connections.size();i++)
-						if(((DBConnection)Connections.elementAt(i)).inUse())
+					for(DBConnection conn : connections)
+						if(conn.inUse())
 							inuse++;
 					if(consecutiveFailures==180)
 					{
-						Log.errOut("DBConnections","Serious failure obtaining DBConnection ("+inuse+"/"+Connections.size()+" in use).");
+						Log.errOut("DBConnections","Serious failure obtaining DBConnection ("+inuse+"/"+connections.size()+" in use).");
 						if(inuse==0)
 							resetConnections();
 					}
 					else
 					if(consecutiveFailures==90)
-						Log.errOut("DBConnections","Moderate failure obtaining DBConnection ("+inuse+"/"+Connections.size()+" in use).");
+						Log.errOut("DBConnections","Moderate failure obtaining DBConnection ("+inuse+"/"+connections.size()+" in use).");
 					else
 					if(consecutiveFailures==30)
-						Log.errOut("DBConnections","Minor failure obtaining DBConnection("+inuse+"/"+Connections.size()+" in use).");
+						Log.errOut("DBConnections","Minor failure obtaining DBConnection("+inuse+"/"+connections.size()+" in use).");
 					try
 					{
 						Thread.sleep(Math.round(Math.random()*500));
@@ -302,12 +302,7 @@ public class DBConnections
 		if(D==null) return;
 		D.doneUsing("");
 		if(!D.ready())
-		{
-			synchronized(Connections)
-			{
-				Connections.remove(D);
-			}
-		}
+			connections.remove(D);
 	}
 
 
@@ -413,7 +408,7 @@ public class DBConnections
 	{
 		try
 		{
-			YOU_ARE_DONE=true;
+			shutdown=true;
 			return true;
 		}
 		catch(Exception ce)
@@ -438,20 +433,17 @@ public class DBConnections
 	 */
 	public void killConnections()
 	{
-		synchronized(Connections)
+		synchronized(connections)
 		{
-			while(Connections.size()>0)
-			{
-				DBConnection DB=(DBConnection)Connections.elementAt(0);
-				Connections.removeElement(DB);
-				DB.close();
-			}
+			for(DBConnection conn : connections)
+				conn.close();
+			connections.removeAllElements();
 		}
 		try
 		{
 	        java.util.Properties p = new java.util.Properties();
-	        p.put("user",DBUser);
-	        p.put("password",DBPass);
+	        p.put("user",dbUser);
+	        p.put("password",dbPass);
 	        p.put("shutdown", "true");
 	        //DriverManager.getConnection(DBService,p);
 		}
@@ -696,23 +688,24 @@ public class DBConnections
 		if((lockedUp)||(disconnected))
 			out.println("** Database is reporting a down status! **");
 
-		for(int p=0;p<Connections.size();p++)
+		int p=1;
+		for(DBConnection conn : connections)
 		{
-			DBConnection DB=(DBConnection)Connections.elementAt(p);
 			String OKString="OK";
-			if((DB.isProbablyDead())&&(DB.isProbablyLockedUp()))
-				OKString="Completely dead"+(DB.inSQLServerCommunication()?" (SERVER COMM)":"")+".";
+			if((conn.isProbablyDead())&&(conn.isProbablyLockedUp()))
+				OKString="Completely dead"+(conn.inSQLServerCommunication()?" (SERVER COMM)":"")+".";
 			else
-			if(DB.isProbablyDead())
-				OKString="Dead"+(DB.inSQLServerCommunication()?" (SERVER COMM)":"")+".";
+			if(conn.isProbablyDead())
+				OKString="Dead"+(conn.inSQLServerCommunication()?" (SERVER COMM)":"")+".";
 			else
-			if(DB.isProbablyLockedUp())
-				OKString="Locked up"+(DB.inSQLServerCommunication()?" (SERVER COMM)":"")+".";
-			out.println(Integer.toString(p+1)
-						+". Connected="+DB.ready()
-						+", In use="+DB.inUse()
+			if(conn.isProbablyLockedUp())
+				OKString="Locked up"+(conn.inSQLServerCommunication()?" (SERVER COMM)":"")+".";
+			out.println(Integer.toString(p)
+						+". Connected="+conn.ready()
+						+", In use="+conn.inUse()
 						+", Status="+OKString
 						);
+			p++;
 		}
 		out.println("\n");
 	}
@@ -720,7 +713,7 @@ public class DBConnections
 	public void reportError()
 	{
 		consecutiveErrors++;
-		double size=(double)Connections.size();
+		double size=(double)connections.size();
 		double down=(double)consecutiveErrors;
 		if((down/size)>.25)
 		{
@@ -749,11 +742,8 @@ public class DBConnections
 		if(disconnected)
 			status.append("#101 DBCONNECTIONS REPORTING A DISCONNECTED STATE\n");
 		if((lockedUp)||(disconnected))
-		for(int c=0;c<Connections.size();c++)
-		{
-			DBConnection DBConnect=(DBConnection)Connections.elementAt(c);
-			DBDone(DBConnect);
-		}
+			for(DBConnection conn : connections)
+				DBDone(conn);
 		return status;
 	}
 }
