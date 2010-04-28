@@ -235,7 +235,7 @@ public class Hireling extends StdBehavior
 				||(msg.sourceMessage().toUpperCase().indexOf("WORK")>0)
 				||(msg.sourceMessage().toUpperCase().indexOf("AVAILABLE")>0))
 			&&(onTheJobUntil==0))
-				CMLib.commands().postSay(observer,null,"I'm for hire.  Just give me "+CMLib.beanCounter().nameCurrencyShort(observer,price())+" and I'll work for you for "+gamehours()+" 'hours'.",false,false);
+				CMLib.commands().postSay(observer,null,"I'm for hire.  Just give me "+CMLib.beanCounter().nameCurrencyShort(observer,price())+" and I'll work for you for "+gamehours()+" \"hours\".",false,false);
 			else
 			if(((msg.sourceMessage().toUpperCase().indexOf(" FIRED")>0))
 			&&((workingFor!=null)&&(msg.source().Name().equals(workingFor)))
@@ -313,7 +313,7 @@ public class Hireling extends StdBehavior
 					onTheJobUntil+=(minutes()*TimeManager.MILI_MINUTE);
 					CMLib.commands().postFollow(observer,source,false);
 					observer.setFollowing(source);
-					CMLib.commands().postSay(observer,source,"Ok.  You've got me for at least "+gamehours()+" 'hours'.  My skills include: "+skills.substring(2)+".  I'll follow you.  Just ORDER me to do what you want.",true,false);
+					CMLib.commands().postSay(observer,source,"Ok.  You've got me for at least "+gamehours()+" \"hours\".  My skills include: "+skills.substring(2)+".  I'll follow you.  Just ORDER me to do what you want.",true,false);
 				}
 			}
 		}
