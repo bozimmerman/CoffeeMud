@@ -932,7 +932,8 @@ public class StdArea implements Area
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return new int[Area.AREASTAT_NUMBER];
 		int[] statData=(int[])Resources.getResource("STATS_"+Name().toUpperCase());
-		if(statData!=null) return statData;
+		if(statData!=null) 
+			return statData;
 		synchronized(("STATS_"+Name()).intern())
 		{
 			Resources.removeResource("HELP_"+Name().toUpperCase());

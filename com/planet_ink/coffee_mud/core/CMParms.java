@@ -214,7 +214,7 @@ public class CMParms
     	return parseAny(s,',',ignoreNulls);
     }
 
-    public static Vector parseCommandFlags(String s, String[] flags)
+    public static Vector<String> parseCommandFlags(String s, String[] flags)
     {
         if((s==null)||(s.length()==0)) return new Vector<String>(1);
         Vector<String> V=parseCommas(s,true);
