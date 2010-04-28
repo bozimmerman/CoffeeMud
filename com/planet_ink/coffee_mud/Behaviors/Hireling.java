@@ -44,7 +44,7 @@ public class Hireling extends StdBehavior
 	protected long onTheJobUntil=0;
 	protected double price=100.0;
 	protected int minutes=30;
-	protected Vector zapperMask=null;
+	protected String zapperMask=null;
 
 	public void setPrice(String s)
 	{
@@ -84,7 +84,7 @@ public class Hireling extends StdBehavior
 				setMinutes(newParms.substring(dex+1,dex2));
 				String s=getParms().substring(dex2+1);
 				if(s.trim().length()>0)
-					zapperMask=CMLib.masking().maskCompile(s);
+					zapperMask=s.trim();
 			}
 			else
 			{
@@ -103,7 +103,7 @@ public class Hireling extends StdBehavior
 
 	protected int minutes() { return minutes;}
 
-	protected Vector zapper() { return zapperMask;}
+	protected String zapper() { return zapperMask;}
 
 	protected double gamehours()
 	{
