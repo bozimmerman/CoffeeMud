@@ -274,7 +274,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
             return "Error: Expertise num ("+((String)parts.elementAt(1))+") malformed: "+ID+"="+row;
         levels=CMath.s_int((String)parts.elementAt(1));
         flags.clear();
-        flags.addAll(CMParms.parseAny(((String)parts.elementAt(2)).toUpperCase(),"|",true));
+        flags.addAll(CMParms.parseAny(((String)parts.elementAt(2)).toUpperCase(),'|',true));
         
         skillMask=(String)parts.elementAt(3);
         if(skillMask.length()==0)

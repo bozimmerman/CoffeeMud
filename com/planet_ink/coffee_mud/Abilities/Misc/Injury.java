@@ -135,7 +135,7 @@ public class Injury extends StdAbility
 	    for(int s=0;s<sets.size();s++)
 	    {
 	        String set=(String)sets.elementAt(s);
-	        Vector V=CMParms.parseAny(set,":",false);
+	        Vector<String> V=CMParms.parseAny(set,':',false);
 	        if(V.size()==3)
 	        {
 	            int part=CMath.s_int((String)V.firstElement());

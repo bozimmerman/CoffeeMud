@@ -747,6 +747,54 @@ public class Test extends StdCommand
                     str.append(" SNOOPED ");
                 mob.tell(str.toString());
             }
+            if(what.equalsIgnoreCase("cmparms"))
+            {
+            	Vector V=CMParms.parseAny("blah~BLAH~BLAH!",'~',true);
+            	if(V.size()!=3){ mob.tell("Error cmparms-1"); return false;}
+            	if(!CMParms.combineWithX(V, "~", 0).equals("blah~BLAH~BLAH!~")){ mob.tell("Error cmparms-2"); return false;}
+            	
+            	V=CMParms.parseAny("blah~~",'~',true);
+            	if(V.size()!=1){ mob.tell("Error cmparms-3"); return false;}
+            	if(!V.firstElement().equals("blah")){ mob.tell("Error cmparms-4"); return false;}
+            	
+            	V=CMParms.parseAny("blah~~",'~',false);
+            	if(V.size()!=3){ mob.tell("Error cmparms-5"); return false;}
+            	if(!CMParms.combineWithX(V, "~", 0).equals("blah~~~")){ mob.tell("Error cmparms-6"); return false;}
+            	
+            	V=CMParms.parseAny("blah~~BLAH~~BLAH!","~~",true);
+            	if(V.size()!=3){ mob.tell("Error cmparms-7"); return false;}
+            	if(!CMParms.combineWithX(V, "~~", 0).equals("blah~~BLAH~~BLAH!~~")){ mob.tell("Error cmparms-8"); return false;}
+            	
+            	V=CMParms.parseAny("blah~~~~","~~",true);
+            	if(V.size()!=1){ mob.tell("Error cmparms-9"); return false;}
+            	if(!V.firstElement().equals("blah")){ mob.tell("Error cmparms-10"); return false;}
+            	
+            	V=CMParms.parseAny("blah~~~~","~~",false);
+            	if(V.size()!=3){ mob.tell("Error cmparms-11"); return false;}
+            	if(!CMParms.combineWithX(V, "~~", 0).equals("blah~~~~~~")){ mob.tell("Error cmparms-12"); return false;}
+            	
+            	V=CMParms.parseSentences("blah. blahblah. poo");
+            	if(V.size()!=3){ mob.tell("Error cmparms-13"); return false;}
+            	if(!V.firstElement().equals("blah.")){ mob.tell("Error cmparms-14:"+V.firstElement()); return false;}
+            	if(!V.elementAt(1).equals("blahblah.")){ mob.tell("Error cmparms-15:"+V.elementAt(1)); return false;}
+            	if(!V.elementAt(2).equals("poo")){ mob.tell("Error cmparms-16:"+V.elementAt(2)); return false;}
+            	
+            	V=CMParms.parseAny("blah~BLAH~BLAH!~",'~',true);
+            	if(V.size()!=3){ mob.tell("Error cmparms-17"); return false;}
+            	if(!CMParms.combineWithX(V, "~", 0).equals("blah~BLAH~BLAH!~")){ mob.tell("Error cmparms-18"); return false;}
+            	
+            	V=CMParms.parseAny("blah~~BLAH~~BLAH!~~","~~",true);
+            	if(V.size()!=3){ mob.tell("Error cmparms-19"); return false;}
+            	if(!CMParms.combineWithX(V, "~~", 0).equals("blah~~BLAH~~BLAH!~~")){ mob.tell("Error cmparms-20"); return false;}
+            	
+            	V=CMParms.parseAny("blah~BLAH~BLAH!~",'~',false);
+            	if(V.size()!=4){ mob.tell("Error cmparms-21"); return false;}
+            	if(!CMParms.combineWithX(V, "~", 0).equals("blah~BLAH~BLAH!~~")){ mob.tell("Error cmparms-22"); return false;}
+            	
+            	V=CMParms.parseAny("blah~~BLAH~~BLAH!~~","~~",false);
+            	if(V.size()!=4){ mob.tell("Error cmparms-23"); return false;}
+            	if(!CMParms.combineWithX(V, "~~", 0).equals("blah~~BLAH~~BLAH!~~~~")){ mob.tell("Error cmparms-24"); return false;}
+            }
             if((what.equalsIgnoreCase("all_properties"))
             ||(what.equalsIgnoreCase("Prop_FightSpellCast")))
             {

@@ -198,7 +198,7 @@ public class Intermud implements Runnable, Persistent, Serializable
         for(int v=0;v<V.size();v++)
         {
             s=(String)V.elementAt(v);
-            Vector V2=CMParms.parseAny(s,":",true);
+            Vector<String> V2=CMParms.parseAny(s,':',true);
             if(V2.size()>=3)
                 name_servers.addElement(new NameServer((String)V2.firstElement(),CMath.s_int((String)V2.elementAt(1)), (String)V2.elementAt(2)));
         }

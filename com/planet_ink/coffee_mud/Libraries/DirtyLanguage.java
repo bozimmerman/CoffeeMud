@@ -349,7 +349,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	
     public boolean insertExpansion(Vector MORE_CMDS, String str, int m, int strLen, boolean nothingDone)
     {
-        Vector expansion=CMParms.parseAny(CMStrings.replaceAll(str,"\\t","\t"),"\n",false);
+        Vector<String> expansion=CMParms.parseAny(CMStrings.replaceAll(str,"\\t","\t"),'\n',false);
         MORE_CMDS.setElementAt(expansion.elementAt(0),m);
         String expStr=(String)expansion.elementAt(0);
         if(expStr.length()<=strLen) nothingDone=false;

@@ -209,178 +209,138 @@ public class CMParms
         return commands;
     }
 
-    public static Vector parseCommas(String s, boolean ignoreNulls)
+    public static Vector<String> parseCommas(String s, boolean ignoreNulls)
     {
-        Vector V=new Vector();
-        if((s==null)||(s.length()==0)) return V;
-        int x=s.indexOf(",");
-        while(x>=0)
+    	return parseAny(s,',',ignoreNulls);
+    }
+
+    public static Vector parseCommandFlags(String s, String[] flags)
+    {
+        if((s==null)||(s.length()==0)) return new Vector<String>(1);
+        Vector<String> V=parseCommas(s,true);
+        Vector<String> finalV=new Vector<String>(V.size());
+        for(String flag : V)
         {
-            String s2=s.substring(0,x).trim();
-            s=s.substring(x+1).trim();
-            if((!ignoreNulls)||(s2.length()>0))
-                V.addElement(s2);
-            x=s.indexOf(",");
+        	int index=CMParms.indexOfIgnoreCase(flags, flag);
+        	if(index>=0)
+        		finalV.addElement(flags[index]);
         }
-        if((!ignoreNulls)||(s.trim().length()>0))
-            V.addElement(s.trim());
         return V;
     }
 
-    public static Vector parseCommadFlags(String s, String[] flags)
+    public static Vector<String> parseTabs(String s, boolean ignoreNulls)
     {
-        Vector V=new Vector();
-        if((s==null)||(s.length()==0)) return V;
-        int x=s.indexOf(",");
-        while(x>=0)
-        {
-            String s2=s.substring(0,x).trim();
-            s=s.substring(x+1).trim();
-            if((s2.length()>0)&&(CMParms.containsIgnoreCase(flags, s2)))
-                V.addElement(flags[CMParms.indexOfIgnoreCase(flags, s2)]);
-            x=s.indexOf(",");
-        }
-        if((s.length()>0)&&(CMParms.containsIgnoreCase(flags, s)))
-            V.addElement(flags[CMParms.indexOfIgnoreCase(flags, s)]);
-        return V;
+    	return parseAny(s,'\t',ignoreNulls);
     }
 
-    public static Vector parseTabs(String s, boolean ignoreNulls)
+    public static Vector<String> parseAny(String s, String delimeter, boolean ignoreNulls)
     {
-        Vector V=new Vector();
+    	Vector<String> V=new Vector<String>(1);
         if((s==null)||(s.length()==0)) return V;
-        int x=s.indexOf("\t");
-        while(x>=0)
+        if((delimeter==null)||(delimeter.length()==0))
         {
-            String s2=s.substring(0,x).trim();
-            s=s.substring(x+1).trim();
-            if((!ignoreNulls)||(s2.length()>0))
-                V.addElement(s2);
-            x=s.indexOf("\t");
+        	V.add(s);
+        	return V;
         }
-        if((!ignoreNulls)||(s.trim().length()>0))
-            V.addElement(s.trim());
-        return V;
-    }
-
-    public static Vector parseAny(String s, String delimeter, boolean ignoreNulls)
-    {
-        Vector V=new Vector();
-        if((s==null)||(s.length()==0)) return V;
-        int x=s.indexOf(delimeter);
-        while(x>=0)
-        {
-            String s2=s.substring(0,x).trim();
-            s=s.substring(x+delimeter.length()).trim();
-            if((!ignoreNulls)||(s2.length()>0))
-                V.addElement(s2);
-            x=s.indexOf(delimeter);
-        }
-        if((!ignoreNulls)||(s.trim().length()>0))
-            V.addElement(s.trim());
+    	int last=0;
+    	char firstChar=delimeter.charAt(0);
+    	for(int i=0;i<s.length()-delimeter.length()+1;i++)
+    		if((s.charAt(i)==firstChar)
+    		&&(s.substring(i,i+delimeter.length()).equals(delimeter)))
+    		{
+    			String sub=s.substring(last,i).trim();
+    			last=i+delimeter.length();
+    			i+=delimeter.length()-1;
+    			if(!ignoreNulls||(sub.length()>0))
+	    			V.add(sub);
+    		}
+    	String sub = (last>=s.length())?"":s.substring(last,s.length()).trim();
+		if(!ignoreNulls||(sub.length()>0))
+			V.add(sub);
         return V;
     }
     public static Vector parseAnyWords(String s, String delimeter, boolean ignoreNulls)
     {
-        Vector V=new Vector();
+    	Vector<String> V=new Vector<String>(1);
         if((s==null)||(s.length()==0)) return V;
-        delimeter=delimeter.toUpperCase();
-        int x=s.toUpperCase().indexOf(delimeter);
-        while(x>=0)
+        if((delimeter==null)||(delimeter.length()==0))
         {
-            String s2=s.substring(0,x).trim();
-            s=s.substring(x+delimeter.length()).trim();
-            if((!ignoreNulls)||(s2.length()>0))
-                V.addElement(s2);
-            x=s.indexOf(delimeter);
+        	V.add(s);
+        	return V;
         }
-        if((!ignoreNulls)||(s.trim().length()>0))
-            V.addElement(s.trim());
+    	int last=0;
+    	delimeter=delimeter.toUpperCase();
+    	char firstChar=delimeter.charAt(0);
+    	String tests=s.toUpperCase();
+    	for(int i=0;i<tests.length()-delimeter.length()+1;i++)
+    		if((tests.charAt(i)==firstChar)
+    		&&(tests.substring(i,i+delimeter.length()).equals(delimeter)))
+    		{
+    			String sub=s.substring(last,i).trim();
+    			last=i+delimeter.length();
+    			i+=delimeter.length()-1;
+    			if(!ignoreNulls||(sub.length()>0))
+	    			V.add(sub);
+    		}
+    	String sub = (last>=s.length())?"":s.substring(last,s.length()).trim();
+		if(!ignoreNulls||(sub.length()>0))
+			V.add(sub);
         return V;
     }
 
-    public static Vector parseSquiggles(String s)
+    public static Vector<String> parseAny(String s, char delimiter, boolean ignoreNulls)
     {
-        Vector V=new Vector();
+    	Vector<String> V=new Vector<String>(1);
         if((s==null)||(s.length()==0)) return V;
-        int x=s.indexOf("~");
-        while(x>=0)
-        {
-            String s2=s.substring(0,x).trim();
-            s=s.substring(x+1).trim();
-            V.addElement(s2);
-            x=s.indexOf("~");
-        }
+    	int last=0;
+    	for(int i=0;i<s.length();i++)
+    		if(s.charAt(i)==delimiter)
+    		{
+    			String sub=s.substring(last,i).trim();
+    			last=i+1;
+    			if(!ignoreNulls||(sub.length()>0))
+	    			V.add(sub);
+    		}
+    	String sub = (last>=s.length())?"":s.substring(last,s.length()).trim();
+		if(!ignoreNulls||(sub.length()>0))
+			V.add(sub);
         return V;
     }
-
-    public static Vector parseSentences(String s)
+    public static Vector<String> parseSquiggles(String s)
     {
-        Vector V=new Vector();
+    	return parseAny(s,'~',false);
+    }
+    public static Vector<String> parseSentences(String s)
+    {
+    	Vector<String> V=new Vector<String>(1);
         if((s==null)||(s.length()==0)) return V;
-        int x=s.indexOf(".");
-        while(x>=0)
-        {
-            String s2=s.substring(0,x+1);
-            s=s.substring(x+1);
-            V.addElement(s2);
-            x=s.indexOf(".");
-        }
+    	int last=0;
+    	for(int i=0;i<s.length();i++)
+    		if(s.charAt(i)=='.')
+    		{
+    			String sub=s.substring(last,i+1).trim();
+    			last=i+1;
+    			V.add(sub);
+    		}
+    	String sub = (last>=s.length())?"":s.substring(last,s.length()).trim();
+		if(sub.length()>0)
+			V.add(sub);
         return V;
     }
 
     public static Vector<String> parseSquiggleDelimited(String s, boolean ignoreNulls)
     {
-        Vector V=new Vector();
-        if((s==null)||(s.length()==0)) return V;
-        int x=s.indexOf("~");
-        while(x>=0)
-        {
-            String s2=s.substring(0,x).trim();
-            s=s.substring(x+1).trim();
-            if((s2.length()>0)||(!ignoreNulls))
-                V.addElement(s2);
-            x=s.indexOf("~");
-        }
-        if((s.length()>0)||(!ignoreNulls))
-            V.addElement(s);
-        return V;
+    	return parseAny(s,'~',ignoreNulls);
     }
 
-    public static Vector parseSemicolons(String s, boolean ignoreNulls)
+    public static Vector<String> parseSemicolons(String s, boolean ignoreNulls)
     {
-        Vector V=new Vector();
-        if((s==null)||(s.length()==0)) return V;
-        int x=s.indexOf(";");
-        while(x>=0)
-        {
-            String s2=s.substring(0,x).trim();
-            s=s.substring(x+1).trim();
-            if((!ignoreNulls)||(s2.length()>0))
-                V.addElement(s2);
-            x=s.indexOf(";");
-        }
-        if((!ignoreNulls)||(s.trim().length()>0))
-            V.addElement(s.trim());
-        return V;
+    	return parseAny(s,';',ignoreNulls);
     }
 
-    public static Vector parseSpaces(String s, boolean ignoreNulls)
+    public static Vector<String> parseSpaces(String s, boolean ignoreNulls)
     {
-        Vector V=new Vector();
-        if((s==null)||(s.length()==0)) return V;
-        int x=s.indexOf(" ");
-        while(x>=0)
-        {
-            String s2=s.substring(0,x).trim();
-            s=s.substring(x+1).trim();
-            if((!ignoreNulls)||(s2.length()>0))
-                V.addElement(s2);
-            x=s.indexOf(" ");
-        }
-        if((!ignoreNulls)||(s.trim().length()>0))
-            V.addElement(s.trim());
-        return V;
+    	return parseAny(s,' ',ignoreNulls);
     }
 
     public static int numBits(String s)

@@ -458,7 +458,7 @@ public interface Wearable extends Environmental
 					}
 					String dependencyMaskStr=((String)V.elementAt(0)).toLowerCase();
 					long dependencyMask=0;
-					Vector subLocs = CMParms.parseAny(dependencyMaskStr, "|", true);
+					Vector<String> subLocs = CMParms.parseAny(dependencyMaskStr, '|', true);
 					for(int s=0;s<subLocs.size();s++)
 					{
 						int idx=CMParms.indexOf(DEFAULT_WORN_DESCS, ((String)subLocs.elementAt(s)).toLowerCase());
