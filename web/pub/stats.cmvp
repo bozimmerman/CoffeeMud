@@ -148,6 +148,9 @@
 	<TR>
 		<TD WIDTH=20%><FONT COLOR=BLUE>Combat Info: </FONT></TD>
 		<TD WIDTH=20%><BR></TD>
+		@if?!CheckAuthCode?AUTH_STAT=true&AUTH_CMDPLAYERS=true@
+		<TD WIDTH=60% COLSPAN=7><BR></TD>
+		@else@
 		<TD WIDTH=20% ALIGN=RIGHT><FONT COLOR=BLUE>Save Vs:&nbsp;&nbsp;&nbsp;</FONT></TD>
 		<TD WIDTH=7%><FONT COLOR=BLUE>Fire</FONT></TD>
 		<TD WIDTH=7%><FONT COLOR=BLACK>@PlayerData?FIRE@</FONT></TD>
@@ -155,6 +158,7 @@
 		<TD WIDTH=7%><FONT COLOR=BLACK>@PlayerData?COLD@</FONT></TD>
 		<TD WIDTH=7%><FONT COLOR=BLUE>Water</FONT></TD>
 		<TD WIDTH=7%><FONT COLOR=BLACK>@PlayerData?WATER@</FONT></TD>
+		@endif@
 	</TR>
 	<TR>
 		<TD WIDTH=20%><FONT COLOR=BLUE>Attack: </FONT></TD>
@@ -162,13 +166,23 @@
 			<FONT COLOR=BLACK>@PlayerData?ATTACKNAME@</FONT>
 			<FONT COLOR=BLUE><B>&nbsp;X&nbsp;</B>
 			<FONT COLOR=BLACK>@PlayerData?SPEEDNAME@</FONT>
+		@if?!CheckAuthCode?AUTH_STAT=true&AUTH_CMDPLAYERS=true@
+		<TD WIDTH=40% COLSPAN=6>
+			<FONT COLOR=BLUE>Defence: </FONT>
+			<FONT COLOR=BLACK>@PlayerData?ARMORNAME@</FONT>
+			<FONT COLOR=BLUE>/ Wimpy: </FONT><FONT COLOR=BLACK>@PlayerData?WIMP@</FONT>
+		</TD>
+		@else@
 		<TD WIDTH=7%><FONT COLOR=BLUE>Para</FONT></TD>
 		<TD WIDTH=7%><FONT COLOR=BLACK>@PlayerData?PARALYSIS@</FONT></TD>
 		<TD WIDTH=7%><FONT COLOR=BLUE>Dise</FONT></TD>
 		<TD WIDTH=7%><FONT COLOR=BLACK>@PlayerData?DISEASE@</FONT></TD>
 		<TD WIDTH=7%><FONT COLOR=BLUE>Magic</FONT></TD>
 		<TD WIDTH=7%><FONT COLOR=BLACK>@PlayerData?MAGIC@</FONT></TD>
+		@endif@
 	</TR>
+	@if?!CheckAuthCode?AUTH_STAT=true&AUTH_CMDPLAYERS=true@
+	@else@
 	<TR>
 		<TD WIDTH=20%><FONT COLOR=BLUE>Damage: </FONT></TD>
 		<TD WIDTH=40% COLSPAN=2><FONT COLOR=BLACK>@PlayerData?DAMAGENAME@</FONT></TD>
@@ -192,6 +206,7 @@
 		<TD WIDTH=7%><FONT COLOR=BLUE>Mind</FONT></TD>
 		<TD WIDTH=7%><FONT COLOR=BLACK>@PlayerData?MIND@</FONT></TD>
 	</TR>
+	@endif@
 	</TABLE>
 	</TD>
 </TR>
