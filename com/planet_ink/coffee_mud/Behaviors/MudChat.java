@@ -346,7 +346,8 @@ public class MudChat extends StdBehavior implements ChattyBehavior
         ChattyGroup chatGrp=getMyBaseChatGroup(forMe,chatGroups);
         if((addedChatEntries==null)||(addedChatEntries.length==0)) 
         	return chatGrp;
-        List<ChattyEntry> newEntries = Arrays.asList(addedChatEntries);
+        List<ChattyEntry> newEntries = new ArrayList<ChattyEntry>();
+        newEntries.addAll(Arrays.asList(addedChatEntries));
         newEntries.addAll(Arrays.asList(chatGrp.entries));
         chatGrp=chatGrp.clone();
         chatGrp.entries = newEntries.toArray(new ChattyEntry[0]);
