@@ -42,55 +42,74 @@ public class Hireling extends StdBehavior
 	protected Hashtable partials=new Hashtable();
 	protected String workingFor="";
 	protected long onTheJobUntil=0;
-	protected int dex=-1;
-	protected int dex2=-1;
+	protected double price=100.0;
+	protected int minutes=30;
+	protected Vector zapperMask=null;
 
+	public void setPrice(String s)
+	{
+		price=100.0;
+		if(CMath.isNumber(s))
+		{
+			if(CMath.isDouble(s))
+				price=CMath.s_double(s);
+			else
+				price=(double)CMath.s_long(s);
+		}
+	}
+	
+	public void setMinutes(String s)
+	{
+		minutes=30;
+		if(CMath.isNumber(s))
+		{
+			if(CMath.isDouble(s))
+				minutes=(int)Math.round(CMath.s_double(s));
+			else
+				minutes=(int)CMath.s_long(s);
+		}
+	}
+	
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
-		dex=newParms.indexOf(";");
-		if(dex>=0)
-			dex2=newParms.indexOf(";",dex+1);
-		else
-			dex2=-1;
-	}
-
-	protected double price()
-	{
-		double price=100.0;
-		if(dex>=0)
-			price=(double)CMath.s_int(getParms().substring(0,dex));
-		return price;
-	}
-
-	protected int minutes()
-	{
-		int mins=30;
+		int dex=newParms.indexOf(";");
+		zapperMask=null;
 		if(dex>=0)
 		{
+			int dex2=newParms.indexOf(";",dex+1);
 			if(dex2>dex)
-				mins = CMath.s_int(getParms().substring(dex+1,dex2));
+			{
+				setPrice(newParms.substring(0,dex));
+				setMinutes(newParms.substring(dex+1,dex2));
+				String s=getParms().substring(dex2+1);
+				if(s.trim().length()>0)
+					zapperMask=CMLib.masking().maskCompile(s);
+			}
 			else
-				mins = CMath.s_int(getParms().substring(dex + 1));
+			{
+				setPrice(newParms.substring(0,dex));
+				setMinutes(newParms.substring(dex));
+			}
 		}
-		return mins;
+		else
+		{
+			setPrice(newParms);
+			setMinutes("30");
+		}
 	}
+
+	protected double price() { return price;}
+
+	protected int minutes() { return minutes;}
+
+	protected Vector zapper() { return zapperMask;}
 
 	protected double gamehours()
 	{
 		double d=CMath.div(((long)minutes() * 60L * 1000L),Tickable.TIME_MILIS_PER_MUDHOUR);
 		long d2=Math.round(d*10.0);
 		return CMath.div(d2,10.0);
-	}
-
-	protected String zapper()
-	{
-		if(dex>=0)
-		{
-			if (dex2 > dex)
-				return getParms().substring(dex2+1);
-		}
-		return "";
 	}
 
 	public void allDone(MOB observer)
