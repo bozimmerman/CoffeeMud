@@ -45,6 +45,8 @@ public interface MaskingLibrary extends CMLibrary
 	public Vector maskCompile(String text);
     public boolean maskCheck(Vector cset, Environmental E, boolean actual);
     public boolean maskCheck(String text, Environmental E, boolean actual);
+	public boolean maskCheck(Vector cset, PlayerLibrary.ThinPlayer E);
+    public boolean maskCheck(String text, PlayerLibrary.ThinPlayer E);
     public boolean syntaxCheck(String text, Vector errorSink);
     public int minMaskLevel(String text, int minMinLevel);
 
@@ -106,9 +108,9 @@ public interface MaskingLibrary extends CMLibrary
         +"+DEITY (do not <WORD> anyone, even non deity worshipping people) <BR>"
         +"+DEITY -Apollo \"-rothon The Great\" etc.. (create deity exceptions) <BR>"
         +"-ANYCLASS (<WORD> all multi-class combinations)  <BR>"
-        +"-ANYCLASS +thief +mage +ranger (exceptions, allow any levels) <BR>"
+        +"-ANYCLASS +thief +mage +ranger (exceptions, allow any class) <BR>"
         +"+ANYCLASS (do not <WORD> all multi-class combinations)  <BR>"
-        +"+ANYCLASS -thief -mage -ranger (exceptions, disallow any levels) <BR>"
+        +"+ANYCLASS -thief -mage -ranger (exceptions, disallow any class) <BR>"
         +"-STR X (<WORD> those with strength greater than X)  <BR>"
         +"+STR X (<WORD> those with strength less than X)  <BR>"
         +"-INT X (<WORD> those with intelligence greater than X)  <BR>"

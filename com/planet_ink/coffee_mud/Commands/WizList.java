@@ -45,19 +45,30 @@ public class WizList extends StdCommand
 		StringBuffer head=new StringBuffer("");
 		boolean isArchonLooker=CMSecurity.isASysOp(mob);
 		head.append("^x[");
+		head.append(CMStrings.padRight("Class",16)+" ");
 		head.append(CMStrings.padRight("Race",8)+" ");
 		head.append(CMStrings.padRight("Lvl",4)+" ");
 		if(isArchonLooker)
 			head.append(CMStrings.padRight("Last",18)+" ");
-		head.append("] Archon Character Name^.^?\n\r");
-		mob.tell("^x["+CMStrings.centerPreserve("The Archons of "+CMProps.getVar(CMProps.SYSTEM_MUDNAME),head.length()-10)+"]^.^?");
+		head.append("] Character Name^.^?\n\r");
+		mob.tell("^x["+CMStrings.centerPreserve("The Administrators of "+CMProps.getVar(CMProps.SYSTEM_MUDNAME),head.length()-10)+"]^.^?");
 		java.util.List<PlayerLibrary.ThinPlayer> allUsers=CMLib.database().getExtendedUserList();
-        CharClass C=CMClass.getCharClass("Archon");
+		String mask=CMProps.getVar(CMProps.SYSTEM_WIZLISTMASK);
+		if(mask.length()==0) mask="-ANYCLASS +Archon";
+		Vector compiledMask=CMLib.masking().maskCompile(mask);
 		for(PlayerLibrary.ThinPlayer U : allUsers)
 		{
-			if(U.charClass.equals("Archon"))
+	        CharClass C;
+	        MOB player = CMLib.players().getPlayer(U.name);
+	        if(player != null)
+	        	C=player.charStats().getCurrentClass();
+	        else
+	        	C=CMClass.getCharClass(U.charClass);
+			if(((player!=null)&&(CMLib.masking().maskCheck(compiledMask, player, true)))
+			||(CMLib.masking().maskCheck(compiledMask, U)))
 			{
 				head.append("[");
+				head.append(CMStrings.padRight(C.name(),16)+" ");
 				head.append(CMStrings.padRight(U.race,8)+" ");
                 if((C==null)||(!C.leveless()))
     				head.append(CMStrings.padRight(""+U.level,4)+" ");
@@ -65,7 +76,7 @@ public class WizList extends StdCommand
                     head.append(CMStrings.padRight("    ",4)+" ");
                 if(isArchonLooker)
 					head.append(CMStrings.padRight(CMLib.time().date2String(U.last),18)+" ");
-				head.append("] "+CMStrings.padRight(U.name,25));
+				head.append("] "+U.name);
 				head.append("\n\r");
 			}
 		}

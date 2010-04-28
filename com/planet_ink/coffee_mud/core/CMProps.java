@@ -135,7 +135,7 @@ public class CMProps extends Properties
     public static final int SYSTEM_FORMULA_DAMAGESPELLFUDGE=76;
     public static final int SYSTEM_FORMULA_DAMAGEMELEEFUDGE=77;
     public static final int SYSTEM_FORMULA_DAMAGERANGEDFUDGE=78;
-    //public static final int SYSTEM_MUDSTATE=79;
+    public static final int SYSTEM_WIZLISTMASK=79;
     public static final int SYSTEM_AUTOREACTION=80;
     public static final int NUM_SYSTEM=81;
 
@@ -736,6 +736,7 @@ public class CMProps extends Properties
         setVar(SYSTEM_ADMINEMAIL,adminEmail);
         setUpLowVar(SYSTEM_I3ROUTERS,getStr("I3ROUTERS"));
         setVar(SYSTEM_AUTOREACTION,getStr("AUTOREACTION"));
+        setVar(SYSTEM_WIZLISTMASK,getStr("WIZLISTMASK"));
         setVar(SYSTEM_PREJUDICE,getStr("PREJUDICE"));
         setUpLowVar(SYSTEM_PRICEFACTORS,getStr("PRICEFACTORS"));
         setVar(SYSTEM_IGNOREMASK,getStr("IGNOREMASK"));

@@ -4239,4 +4239,331 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return true;
 	}
 
+    public boolean maskCheck(String text, PlayerLibrary.ThinPlayer E){ return maskCheck(preCompiled(text),E);}
+	public boolean maskCheck(Vector cset, PlayerLibrary.ThinPlayer E)
+	{
+		if(E==null) return true;
+		if((cset==null)||(cset.size()<2)) return true;
+        getMaskCodes();
+        //boolean[] flags=(boolean[])cset.firstElement();
+		for(int c=1;c<cset.size();c++)
+		{
+			Vector V=(Vector)cset.elementAt(c);
+            try
+            {
+			if(V.size()>0)
+			switch(((Integer)V.firstElement()).intValue())
+			{
+            case 108: // +sysop
+                if(CMSecurity.isASysOp(E))
+                    return true;
+                break;
+            case 109: // -sysop
+                if(CMSecurity.isASysOp(E))
+                    return false;
+                break;
+            case 110: // +subop
+                if(CMSecurity.isASysOp(E))
+                	return true;
+                for(Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
+                	if(e.nextElement().amISubOp(E.name))
+                    return true;
+                break;
+            case 111: // -subop
+                if(CMSecurity.isASysOp(E))
+                	return false;
+                for(Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
+                	if(e.nextElement().amISubOp(E.name))
+                    return false;
+                break;
+			case 0: // -class
+			{
+				CharClass C=CMClass.getCharClass(E.charClass);
+				if((C==null)||(!V.contains(C.name())))
+					return false;
+				break;
+			}
+			case 1: // -baseclass
+			{
+				CharClass C=CMClass.getCharClass(E.charClass);
+				if((C==null)||(!V.contains(C.baseClass())))
+					return false;
+				break;
+			}
+			case 117: // +baseclass
+			{
+				CharClass C=CMClass.getCharClass(E.charClass);
+				if((C!=null)&&(V.contains(C.baseClass())))
+					return false;
+				break;
+			}
+			case 2: // -race
+			{
+				Race R=CMClass.getRace(E.race); 
+				if((R==null)||(!V.contains(R.name())))
+					return false;
+				break;
+			}
+			case 5: // -level
+				{
+					int level=E.level;
+					boolean found=false;
+					for(int v=1;v<V.size();v+=2)
+						if((v+1)<V.size())
+						switch(((Integer)V.elementAt(v)).intValue())
+						{
+							case 37: // +lvlgr
+								if(level>((Integer)V.elementAt(v+1)).intValue())
+								   found=true;
+								break;
+							case 38: // +lvlge
+								if(level>=((Integer)V.elementAt(v+1)).intValue())
+								   found=true;
+								break;
+							case 39: // +lvlt
+								if(level<((Integer)V.elementAt(v+1)).intValue())
+								   found=true;
+								break;
+							case 40: // +lvlle
+								if(level<=((Integer)V.elementAt(v+1)).intValue())
+								   found=true;
+								break;
+							case 41: // +lvleq
+								if(level==((Integer)V.elementAt(v+1)).intValue())
+								   found=true;
+								break;
+						}
+					if(!found) return false;
+				}
+				break;
+	            case 113: // -questwin
+	            {
+	                boolean found=false;
+	                for(int v=1;v<V.size();v++)
+	                {
+	                    Quest Q=CMLib.quests().fetchQuest((String)V.elementAt(v));
+	                    if((Q!=null)&&(Q.wasWinner(E.name)))
+	                    { found=true; break;}
+	                }
+	                if(!found) return false;
+	            }
+	            break;
+	        case 114: // +questwin
+            {
+                for(int v=1;v<V.size();v++)
+                {
+                    Quest Q=CMLib.quests().fetchQuest((String)V.elementAt(v));
+                    if((Q!=null)&&(Q.wasWinner(E.name)))
+                    { return false;}
+                }
+            }
+            break;
+			case 9: // -names
+				{
+					boolean found=false;
+					String name=E.name;
+					for(int v=1;v<V.size();v++)
+						if(name.equalsIgnoreCase((String)V.elementAt(v)))
+						{ found=true; break;}
+					if(!found) return false;
+				}
+				break;
+			case 11: // -npc
+				break; // always true
+			case 12: // -racecat
+			{
+				Race R=CMClass.getRace(E.race); 
+				if((R==null)||(!V.contains(R.racialCategory())))
+					return false;
+				break;
+			}
+            case 112: // +race
+            {
+				Race R=CMClass.getRace(E.race); 
+                if((R!=null)&&(V.contains(R.name())))
+                	return false;
+                break;
+            }
+			case 13: // +racecat
+			{
+				Race R=CMClass.getRace(E.race); 
+                if((R!=null)&&(V.contains(R.racialCategory())))
+					return false;
+				break;
+			}
+            case 53: // -JavaClass
+                {
+                    boolean found=false;
+                    for(int v=1;v<V.size();v++)
+                        if("StdMOB".equalsIgnoreCase((String)V.elementAt(v)))
+                        { found=true; break;}
+                    if(!found) return false;
+                }
+                break;
+            case 54: // +JavaClass
+                    for(int v=1;v<V.size();v++)
+                        if("StdMOB".equalsIgnoreCase((String)V.elementAt(v)))
+                        { return false;}
+                break;
+			case 16: // +name
+				{
+					String name=E.name;
+					for(int v=1;v<V.size();v++)
+                        if(name.equalsIgnoreCase((String)V.elementAt(v)))
+						{ return false;}
+				}
+				break;
+			case 17: // -anyclass
+				{
+					boolean found=false;
+					CharClass C=CMClass.getCharClass(E.charClass);
+					if(C!=null)
+					for(int v=1;v<V.size();v++)
+						if(C.name().equalsIgnoreCase((String)V.elementAt(v)))
+						{ found=true; break;}
+					if(!found) return false;
+				}
+				break;
+			case 18: // +anyclass
+			{
+				CharClass C=CMClass.getCharClass(E.charClass);
+				if(C!=null)
+					for(int v=1;v<V.size();v++)
+						if(C.name().equalsIgnoreCase((String)V.elementAt(v)))
+						{ return false; }
+				break;
+			}
+			case 3: // -alignment
+			case 4: // -gender
+			case 6: // -classlevel
+            case 103: // -maxclasslevel
+			case 7: // -tattoo
+			case 8: // +tattoo
+			case 120: // -mood
+			case 121: // +mood
+			case 81: // -expertise
+			case 82: // +expertise
+			case 83: // -skill
+            case 101: // -skillflag
+			case 84: // +skill
+            case 102: // +skillflag
+			case 79: // -security
+			case 80: // +security
+			case 10: // -player
+			case 14: // -clan
+			case 15: // +clan
+            case 49: // +material
+            case 50: // -material
+            case 57: // +wornOn
+            case 58: // -wornOn
+            case 69: // +disposition
+            case 70: // -disposition
+            case 71: // +senses
+            case 72: // -senses
+            case 73: // +HOUR
+            case 74: // -HOUR
+            case 75: // +season
+            case 76: // -season
+            case 104: // +weather
+            case 105: // -weather
+            case 77: // +month
+            case 78: // -month
+            case 106: // +day
+            case 107: // -day
+            case 85: // +quallvl
+            case 86: // -quallvl
+            case 51: // +resource
+            case 52: // -resource
+			case 44: // -deity
+			case 45: // +deity
+			case 43: // -effects
+			case 46: // -faction
+			case 47: // +faction
+			case 42: // +effects
+			case 19: // +adjstr
+			case 20: // +adjint
+			case 21: // +adjwis
+			case 22: // +adjdex
+			case 23: // -adjcha
+			case 24: // +adjcha
+			case 25: // -adjstr
+			case 26: // -adjint
+			case 27: // -adjwis
+			case 28: // -adjdex
+			case 29: // -adjcon
+			case 30: // -adjcha
+			case 87: // +str
+			case 88: // +int
+			case 89: // +wis
+			case 90: // +dex
+			case 91: // +con
+			case 92: // +cha
+			case 93: // -str
+			case 94: // -int
+			case 95: // -wis
+			case 96: // -dex
+			case 97: // -con
+			case 98: // -cha
+            case 55: // +able
+            case 56: // -able
+            case 61: // +weight
+            case 62: // -weight
+            case 63: // +armor
+            case 64: // -armor
+            case 65: // +damage
+            case 66: // -damage
+            case 67: // +attack
+            case 68: // -attack
+            case 59: // +value
+            case 60: // -value
+			case 31: // -area
+			case 32: // +area
+            case 100: // -home
+            case 99: // +home
+			case 33: // -item
+            case 48: // -worn
+			case 35: // +alignment
+			case 36: // +gender
+			case 116: // +groupsize
+			case 115: // -groupsize
+			case 118: // -if
+			case 119: // +if
+				return false;
+			case 37: // +lvlgr
+				if((V.size()>1)&&((E.level)>((Integer)V.elementAt(1)).intValue()))
+				   return false;
+				break;
+			case 38: // +lvlge
+				if((V.size()>1)&&((E.level)>=((Integer)V.elementAt(1)).intValue()))
+				   return false;
+				break;
+			case 39: // +lvlt
+				if((V.size()>1)&&((E.level)<((Integer)V.elementAt(1)).intValue()))
+				   return false;
+				break;
+			case 40: // +lvlle
+				if((V.size()>1)&&((E.level)<=((Integer)V.elementAt(1)).intValue()))
+				   return false;
+				break;
+			case 41: // +lvleq
+				if((V.size()>1)&&((E.level)==((Integer)V.elementAt(1)).intValue()))
+				   return false;
+				break;
+			case 122: // -chance
+				if((V.size()>1)&&(CMLib.dice().rollPercentage()<(((Integer)V.elementAt(1)).intValue())))
+				   return false;
+				break;
+			case 34: // +class
+			{
+				CharClass C=CMClass.getCharClass(E.charClass);
+				if(C!=null)
+				if(V.contains(C.name()))
+					return false;
+				break;
+			}
+			}
+            }catch(NullPointerException n){}
+		}
+		return true;
+	}
 }

@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -139,6 +140,11 @@ public class CMSecurity
 				||((mob.soulMate()!=null)
 					&&(CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS))
 					&&(isASysOp(mob.soulMate())));
+	}
+	
+	public static boolean isASysOp(PlayerLibrary.ThinPlayer mob)
+	{
+		return CMLib.masking().maskCheck(i().compiledSysop,mob);
 	}
 	
 	
