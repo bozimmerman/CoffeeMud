@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.util.Map;
 
 /*
    Copyright 2000-2010 Bo Zimmerman
@@ -1227,13 +1228,23 @@ public class StdArea implements Area
 	        		}
 	        	}
 	        	else
+        		if(properRooms.get(R.roomID())==R)
 	        	{
-	        		R=properRooms.remove(R.roomID());
-		            if(R!=null)
-		            {
-			            delMetroRoom(R);
-			            delProperRoomnumber(R.roomID());
-		            }
+	        		properRooms.remove(R.roomID());
+		            delMetroRoom(R);
+		            delProperRoomnumber(R.roomID());
+	        	}
+	        	else
+        		if(properRooms.containsValue(R))
+	        	{
+	        		for(Map.Entry<String,Room> entry : properRooms.entrySet())
+	        			if(entry.getValue()==R)
+	        			{
+	        				properRooms.remove(entry.getKey());
+				            delProperRoomnumber(entry.getKey());
+	        			}
+		            delProperRoomnumber(R.roomID());
+		            delMetroRoom(R);
 	        	}
 	        }
     }
