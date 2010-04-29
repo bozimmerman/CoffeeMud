@@ -73,7 +73,7 @@ public class Server {
 		catch(Exception e)
 		{
 			thread=null;
-			Log.errOut("I3Server",e.getMessage());
+			Log.errOut("I3Server",e);
 		}
     }
 

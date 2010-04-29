@@ -150,16 +150,16 @@ public class ServerThread extends Thread {
             listen_thread = new ListenThread(port);
         }
         catch( java.io.IOException e ) {
-            Log.errOut("I3Server",e.getMessage());
+            Log.errOut("I3Server",e);
 			return;
         }
 		
         try {
             Intermud.setup(intermuds,
-                           (PersistentPeer)Class.forName("com.planet_ink.coffee_mud.core.intermud.IMudPeer").newInstance());
+                           (PersistentPeer)Class.forName("com.planet_ink.coffee_mud.core.intermud.i3.IMudPeer").newInstance());
         }
         catch( Exception e ) {
-            Log.errOut("I3Server",e.getMessage());
+            Log.errOut("I3Server",e);
 			return;
         }
 		
@@ -234,7 +234,7 @@ public class ServerThread extends Thread {
                         break;
                     }
                     try {
-                        new_user = (ServerUser)copyObject("com.planet_ink.coffee_mud.core.intermud.IMudUser");
+                        new_user = (ServerUser)copyObject("com.planet_ink.coffee_mud.core.intermud.i3.IMudUser");
                     }
                     catch( ObjectLoadException e ) {
                         continue;
