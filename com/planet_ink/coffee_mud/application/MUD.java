@@ -1,16 +1,8 @@
 package com.planet_ink.coffee_mud.application;
-import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.*;
-import com.planet_ink.coffee_mud.core.database.*;
-import com.planet_ink.coffee_mud.core.http.*;
-import com.planet_ink.coffee_mud.core.threads.*;
-import com.planet_ink.coffee_mud.core.smtp.*;
-import com.planet_ink.coffee_mud.core.intermud.*;
-import com.planet_ink.coffee_mud.core.intermud.i3.*;
-import com.planet_ink.coffee_mud.core.intermud.imc2.*;
-import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -23,6 +15,20 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+
+import com.planet_ink.coffee_mud.core.database.DBConnector;
+import com.planet_ink.coffee_mud.core.database.DBConnection;
+import com.planet_ink.coffee_mud.core.database.DBInterface;
+import com.planet_ink.coffee_mud.core.http.HTTPserver;
+import com.planet_ink.coffee_mud.core.http.ProcessHTTPrequest;
+import com.planet_ink.coffee_mud.core.threads.ServiceEngine;
+import com.planet_ink.coffee_mud.core.threads.Tick;
+import com.planet_ink.coffee_mud.core.smtp.SMTPserver;
+import com.planet_ink.coffee_mud.core.intermud.IMudClient;
+import com.planet_ink.coffee_mud.core.intermud.cm1.CM1Server;
+import com.planet_ink.coffee_mud.core.intermud.i3.IMudInterface;
+import com.planet_ink.coffee_mud.core.intermud.imc2.IMC2Driver;
+import com.planet_ink.coffee_mud.core.intermud.i3.server.I3Server;
 
 import java.io.PrintWriter; // for writing to sockets
 import java.io.IOException;
@@ -55,7 +61,8 @@ public class MUD extends Thread implements MudHost
 
     protected static boolean bringDown=false;
     private static String execExternalCommand=null;
-    private static I3Server imserver=null;
+    private static I3Server i3server=null;
+    private static CM1Server cm1server=null;
     private static IMC2Driver imc2server=null;
     private static Vector webServers=new Vector();
     private static SMTPserver smtpServerThread=null;
@@ -358,6 +365,9 @@ public class MUD extends Thread implements MudHost
         CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Starting IMC2");
 		startIntermud2();
 
+        CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Starting CM1");
+		MUD.startCM1();
+		
         if(tCode!=MAIN_HOST)
         {
             CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Waiting for HOST0");
@@ -728,11 +738,20 @@ public class MUD extends Thread implements MudHost
 
 		}
 
-		if(imserver!=null)
+		if(cm1server!=null)
+		{
+			CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...CM1Server");
+			cm1server.shutdown();
+			cm1server=null;
+			if(S!=null)S.println("CM1Server stopped");
+			Log.sysOut(Thread.currentThread().getName(),"CM1Server stopped");
+		}
+
+		if(i3server!=null)
 		{
 			CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...I3Server");
 			I3Server.shutdown();
-			imserver=null;
+			i3server=null;
 			if(S!=null)S.println("I3Server stopped");
 			Log.sysOut(Thread.currentThread().getName(),"I3Server stopped");
 		}
@@ -872,8 +891,8 @@ public class MUD extends Thread implements MudHost
 		{
 			if(page.getBoolean("RUNI3SERVER")&&(tCode==MAIN_HOST))
 			{
-				if(imserver!=null) I3Server.shutdown();
-				imserver=null;
+				if(i3server!=null) I3Server.shutdown();
+				i3server=null;
 				String playstate=page.getStr("MUDSTATE");
 				if((playstate==null)||(playstate.length()==0))
 					playstate=page.getStr("I3STATE");
@@ -893,7 +912,7 @@ public class MUD extends Thread implements MudHost
 		                                             CMLib.mud(0).getPort(),
 													 playstate,
 													 CMLib.channels().iChannelsArray());
-				imserver=new I3Server();
+				i3server=new I3Server();
 				int i3port=page.getInt("I3PORT");
 				if(i3port==0) i3port=27766;
 				I3Server.start(CMProps.getVar(CMProps.SYSTEM_MUDNAME),i3port,imud);
@@ -901,8 +920,31 @@ public class MUD extends Thread implements MudHost
 		}
 		catch(Exception e)
 		{
-			if(imserver!=null) I3Server.shutdown();
-			imserver=null;
+			if(i3server!=null) I3Server.shutdown();
+			i3server=null;
+		}
+	}
+	
+	public static void startCM1()
+	{
+        char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
+		CMProps page=CMProps.instance();
+		try
+		{
+			if(page.getBoolean("RUNCM1SERVER")&&(tCode==MAIN_HOST))
+			{
+				if(cm1server!=null) cm1server.shutdown();
+				cm1server=null;
+				int cm1port=page.getInt("CM1PORT");
+				if(cm1port==0) cm1port=27733;
+				cm1server=new CM1Server("CM1Server"+tCode,cm1port);
+				cm1server.start();
+			}
+		}
+		catch(Exception e)
+		{
+			if(cm1server!=null) cm1server.shutdown();
+			cm1server=null;
 		}
 	}
 	

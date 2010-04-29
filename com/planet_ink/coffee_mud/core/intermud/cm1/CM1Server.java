@@ -36,6 +36,7 @@ import java.nio.channels.*;
 */
 public class CM1Server extends Thread
 {
+	private String		name = "";
 	private int 		port = 27755;
 	private boolean 	shutdownRequested = false;
 	private boolean 	isShutdown = false;
@@ -46,6 +47,7 @@ public class CM1Server extends Thread
 	public CM1Server(String serverName, int serverPort)
 	{
 		super("CM1:"+serverName+":"+serverPort);
+		name=serverName;
 		this.port=serverPort;
 		shutdownRequested = false;
 	}
@@ -60,6 +62,7 @@ public class CM1Server extends Thread
 				ServerSocket serverSocket = servChan.socket();
 				servSelector = Selector.open();
 				serverSocket.bind (new InetSocketAddress (port));
+				Log.sysOut("CM1Server","Started "+name+" on port "+port);
 				servChan.configureBlocking (false);
 				servChan.register (servSelector, SelectionKey.OP_ACCEPT);
 				while (!shutdownRequested)
@@ -87,8 +90,10 @@ public class CM1Server extends Thread
 				    	  ByteBuffer buffer = ByteBuffer.allocate(1);
 				          while (socketChannel.read (buffer) > 0) {
 				             buffer.flip();
+				             socketChannel.write(buffer);
 				             buffer.clear();
 				          }
+				          
 				      }
 				      it.remove();
 				   }
@@ -118,7 +123,7 @@ public class CM1Server extends Thread
 		handlers.remove(handler);
 	}
 	
-	public void shutdown(Session S)
+	public void shutdown()
 	{
 		shutdownRequested = true;
 		long time = System.currentTimeMillis();
