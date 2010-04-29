@@ -43,19 +43,19 @@ public class AreaScriptData extends AreaScriptNext
 		if((area==null)||(area.length()==0)) return "@break@";
 		String script=httpReq.getRequestParameter("AREASCRIPT");
 		if((script==null)||(script.length()==0)) return "@break@";
-		TreeMap<String,ArrayList<ArrayList<String>>> list = getAreaScripts(httpReq,area);
-		ArrayList<ArrayList<String>> subList = list.get(script);
+		TreeMap<String,ArrayList<AreaScriptInstance>> list = getAreaScripts(httpReq,area);
+		ArrayList<AreaScriptInstance> subList = list.get(script);
 		if(subList == null) return " @break@";
-		ArrayList<String> entry = null;
+		AreaScriptInstance entry = null;
 		String last=httpReq.getRequestParameter("AREASCRIPTHOST");
 		if((last!=null)&&(last.length()>0))
 		{
-			for(ArrayList<String> hostList : subList)
+			for(AreaScriptInstance inst : subList)
 			{
-				String hostName = CMParms.combineWith(hostList, '.',2, hostList.size()-1);
+				String hostName = CMParms.combineWith(inst.path, '.',0, inst.path.size()) + "." + inst.fileName;
 				if(hostName.equalsIgnoreCase(last));
 				{
-					entry=hostList;
+					entry=inst;
 					break;
 				}
 			}
@@ -71,9 +71,9 @@ public class AreaScriptData extends AreaScriptNext
 				return "";
 			}
 			String lastID="";
-			for(ArrayList<String> hostList : subList)
+			for(AreaScriptInstance inst : subList)
 			{
-				String hostName = CMParms.combineWith(hostList, '.',2, hostList.size()-1);
+				String hostName = CMParms.combineWith(inst.path, '.',0, inst.path.size()) + "." + inst.fileName;
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!hostName.equals(lastID))))
 				{
 					httpReq.addRequestParameters("AREASCRIPTHOST",hostName);
@@ -93,25 +93,25 @@ public class AreaScriptData extends AreaScriptNext
 			str.append(subList.size()+", ");
 		
 		if(parms.containsKey("FILE") && (entry != null))
-			str.append(entry.get(entry.size()-1)+", ");
+			str.append(entry.fileName+", ");
 		
-		if(parms.containsKey("ROOM") && (entry != null))
-			str.append(entry.get(2)+", ");
+		if(parms.containsKey("ROOM") && (entry != null) && (entry.path.size()>1))
+			str.append(entry.path.get(1)+", ");
 		
 		if(parms.containsKey("AREA") && (entry != null))
-			str.append(entry.get(1)+", ");
+			str.append(entry.path.get(0)+", ");
 		
 		if(parms.containsKey("SCRIPTKEY") && (entry != null))
-			str.append(entry.get(0)+", ");
+			str.append(entry.instanceKey+", ");
 		
 		if(parms.containsKey("CLEARRESOURCE") && (entry != null))
-			Resources.removeResource(entry.get(0));
+			Resources.removeResource(entry.instanceKey);
 		
 		if(parms.containsKey("ISCUSTOM") && (entry != null))
-			str.append(entry.get(entry.size()-2).equalsIgnoreCase("Custom")+", ");
+			str.append(entry.key.equalsIgnoreCase("Custom")+", ");
 		
 		if(parms.containsKey("ISFILE") && (entry != null))
-			str.append(!entry.get(entry.size()-2).equalsIgnoreCase("Custom")+", ");
+			str.append(!entry.key.equalsIgnoreCase("Custom")+", ");
 		
 		String strstr=str.toString();
 		if(strstr.endsWith(", "))

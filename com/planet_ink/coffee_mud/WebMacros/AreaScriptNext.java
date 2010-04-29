@@ -37,27 +37,39 @@ public class AreaScriptNext extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 	public boolean isAdminMacro()	{return true;}
+	
+	protected class AreaScriptInstance
+	{
+		public ArrayList<String> path;
+		public String instanceKey;
+		public String fileName;
+		public String key;
+		public AreaScriptInstance(String instanceKey, ArrayList<String> path,
+								  String key, String fileName)
+		{
+			this.path=path;
+			this.instanceKey=instanceKey;
+			this.fileName=fileName;
+			this.key=key;
+		}
+	};
 
-	public void addScript(TreeMap<String,ArrayList<ArrayList<String>>> list, 
+	public void addScript(TreeMap<String,ArrayList<AreaScriptInstance>> list, 
 			ArrayList<String> prefix, String scriptKey, String immediateHost, String key, String file)
 	{
-		ArrayList<String> next= new ArrayList<String>();
-		next.add(scriptKey);
-		for(String s : prefix)
-			next.add(s);
+		ArrayList<String> next=(ArrayList<String>)prefix.clone();
 		if(immediateHost!=null)
 			next.add(immediateHost);
-		next.add(file);
-		ArrayList<ArrayList<String>> subList =list.get(key);
+		ArrayList<AreaScriptInstance> subList =list.get(key);
 		if(subList == null)
 		{
-			subList = new ArrayList<ArrayList<String>>();
+			subList = new ArrayList<AreaScriptInstance>();
 			list.put(key,subList);
 		}
-		subList.add(next);
+		subList.add(new AreaScriptInstance(scriptKey, next, key, file));
 	}
 	
-	public void addScripts(TreeMap<String,ArrayList<ArrayList<String>>> list, ArrayList<String> prefix, Environmental E)
+	public void addScripts(TreeMap<String,ArrayList<AreaScriptInstance>> list, ArrayList<String> prefix, Environmental E)
 	{
 		if(E==null) return;
 		for(int b=0;b<E.numBehaviors();b++)
@@ -65,6 +77,7 @@ public class AreaScriptNext extends StdWebMacro
 			Behavior B=E.fetchBehavior(b);
 			if(B instanceof ScriptingEngine)
 			{
+				if(!B.isSavable()) continue;
 				ScriptingEngine SE=(ScriptingEngine)B;
 				Vector files=B.externalFiles();
 				for(int f=0;f<files.size();f++)
@@ -77,6 +90,7 @@ public class AreaScriptNext extends StdWebMacro
 		for(int s=0;s<E.numScripts();s++)
 		{
 			ScriptingEngine SE=E.fetchScript(s);
+			if(!SE.isSavable()) continue;
 			Vector files=SE.externalFiles();
 			for(int f=0;f<files.size();f++)
 				addScript(list, prefix, SE.getScriptResourceKey(),null,((String)files.elementAt(f)).toLowerCase(), (String)files.elementAt(f));
@@ -86,7 +100,7 @@ public class AreaScriptNext extends StdWebMacro
 		}
 	}
 	
-	public void addShopScripts(TreeMap<String,ArrayList<ArrayList<String>>> list, ArrayList<String> prefix, Environmental E)
+	public void addShopScripts(TreeMap<String,ArrayList<AreaScriptInstance>> list, ArrayList<String> prefix, Environmental E)
 	{
 		if(E==null) return;
 		ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(E);
@@ -102,26 +116,30 @@ public class AreaScriptNext extends StdWebMacro
 		}
 	}
 	
-	public TreeMap<String,ArrayList<ArrayList<String>>> getAreaScripts(ExternalHTTPRequests httpReq, String area)
+	public TreeMap<String,ArrayList<AreaScriptInstance>> getAreaScripts(ExternalHTTPRequests httpReq, String area)
 	{
-		TreeMap<String,ArrayList<ArrayList<String>>> list;
-		list = (TreeMap<String,ArrayList<ArrayList<String>>>)httpReq.getRequestObjects().get("AREA_"+area+" SCRIPTSLIST");
+		TreeMap<String,ArrayList<AreaScriptInstance>> list;
+		list = (TreeMap<String,ArrayList<AreaScriptInstance>>)httpReq.getRequestObjects().get("AREA_"+area+" SCRIPTSLIST");
 		if(list == null)
 		{
-			list=new TreeMap<String,ArrayList<ArrayList<String>>>();
+			list=new TreeMap<String,ArrayList<AreaScriptInstance>>();
 			Area A=CMLib.map().getArea(area);
 			if(A==null) A=CMLib.map().findArea(area);
 			if(A==null) return list;
 			Room R=null;
 			MOB M=null;
 			Item I=null;
+			ArrayList<String> prefix = new ArrayList<String>();
+			prefix.add(A.name());
+			addScripts(list,prefix,A);
+			addShopScripts(list,prefix,A);
 			for(Enumeration<String> e=A.getProperRoomnumbers().getRoomIDs();e.hasMoreElements();)
 			{
 				R=CMLib.map().getRoom(e.nextElement());
 				if(R==null) continue;
 				CMLib.map().resetRoom(R);
 				
-				ArrayList<String> prefix = new ArrayList<String>();
+				prefix = new ArrayList<String>();
 				prefix.add(A.name());
 				prefix.add(CMLib.map().getExtendedRoomID(R));
 				addScripts(list,prefix,R);
@@ -167,7 +185,7 @@ public class AreaScriptNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		TreeMap<String,ArrayList<ArrayList<String>>> list = getAreaScripts(httpReq,area);
+		TreeMap<String,ArrayList<AreaScriptInstance>> list = getAreaScripts(httpReq,area);
 		for(String scriptName : list.keySet())
 		{
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!scriptName.equals(lastID))))
