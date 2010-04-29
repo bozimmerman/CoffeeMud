@@ -68,6 +68,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
     {
         return engine().externalFiles();
     }
+    public String getScriptResourceKey()
+    {
+    	return engine().getScriptResourceKey();
+    }
 
     public String getParms() { return engine().getScript();}
     public String[] parseEval(String evaluable) throws ScriptParseException { return engine().parseEval(evaluable);}

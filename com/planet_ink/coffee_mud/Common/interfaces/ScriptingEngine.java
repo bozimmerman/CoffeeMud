@@ -146,6 +146,14 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
      */
     public String getScript();
     
+
+    /**
+     * Returns the hey used to cache the script or load commands in here.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#getScript()
+     * @return the key to the script or load command(s)
+     */
+    public String getScriptResourceKey();
+    
     /**
      * Sets the script or load command(s).
      * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#getScript()

@@ -8810,24 +8810,25 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
     protected static final Vector empty=new Vector();
 
+    public String getScriptResourceKey()
+    {
+        if(getScript().length()>100)
+            return "PARSEDPRG: "+getScript().substring(0,100)+getScript().length()+getScript().hashCode();
+        else
+            return "PARSEDPRG: "+getScript();
+    }
+    
     protected Vector getScripts()
     {
         if(CMSecurity.isDisabled("SCRIPTABLE")||CMSecurity.isDisabled("SCRIPTING"))
             return empty;
-        Vector scripts=null;
-        if(getScript().length()>100)
-            scripts=(Vector)Resources.getResource("PARSEDPRG: "+getScript().substring(0,100)+getScript().length()+getScript().hashCode());
-        else
-            scripts=(Vector)Resources.getResource("PARSEDPRG: "+getScript());
+        Vector scripts=(Vector)Resources.getResource(getScriptResourceKey());
         if(scripts==null)
         {
             String scr=getScript();
             scr=CMStrings.replaceAll(scr,"`","'");
             scripts=parseScripts(scr);
-            if(getScript().length()>100)
-                Resources.submitResource("PARSEDPRG: "+getScript().substring(0,100)+getScript().length()+getScript().hashCode(),scripts);
-            else
-                Resources.submitResource("PARSEDPRG: "+getScript(),scripts);
+            Resources.submitResource(getScriptResourceKey(),scripts);
         }
         return scripts;
     }

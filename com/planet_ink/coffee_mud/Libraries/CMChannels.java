@@ -285,7 +285,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				array[num][0]=iname.trim();
 				array[num][1]=name.trim();
 				array[num][2]=mask;
-                array[num][3]=CMParms.combine(flags,0);
+                array[num][3]=CMParms.combine(flags);
 				num++;
 			}
 		}
@@ -306,7 +306,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				array[num][0]=iname.trim();
 				array[num][1]=name.trim();
 				array[num][2]=mask;
-                array[num][3]=CMParms.combine(flags,0);
+                array[num][3]=CMParms.combine(flags);
 				num++;
 			}
 		}

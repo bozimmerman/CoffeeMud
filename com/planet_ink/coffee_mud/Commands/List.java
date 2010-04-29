@@ -323,8 +323,8 @@ public class List extends StdCommand
 		if(cmds.size()==0)
 			return new StringBuffer("List what script details? Try LIST SCRIPTS (COUNT/DETAILS/CUSTOM)");
 		String rest=CMParms.combine(cmds,0);
-		Room R=null;
 		DVector scriptTree=new DVector(6);
+		Room R=null;
 		MOB M=null;
 		Item I=null;
 		for(Enumeration e=CMLib.map().roomsFilled();e.hasMoreElements();)

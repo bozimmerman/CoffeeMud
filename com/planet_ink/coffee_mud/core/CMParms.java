@@ -27,28 +27,54 @@ public class CMParms
     private static CMParms inst=new CMParms();
     public static CMParms instance(){return inst;}
 
-    public static String combine(Vector commands, int startAt, int endAt)
+    public static String combine(List<?> commands)
     {
-        StringBuffer Combined=new StringBuffer("");
+    	StringBuilder combined=new StringBuilder("");
         if(commands!=null)
-        for(int commandIndex=startAt;commandIndex<endAt;commandIndex++)
-            Combined.append(commands.elementAt(commandIndex).toString()+" ");
-        return Combined.toString().trim();
+        for(Object o : commands)
+            combined.append(o.toString()+" ");
+        return combined.toString().trim();
     }
 
-    public static String combineWithQuotes(Vector commands, int startAt, int endAt)
+    public static String combine(List<?> commands, int startAt)
+    {
+    	StringBuilder combined=new StringBuilder("");
+        if(commands!=null)
+        for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
+            combined.append(commands.get(commandIndex).toString()+" ");
+        return combined.toString().trim();
+    }
+
+    public static String combine(List commands, int startAt, int endAt)
+    {
+    	StringBuilder combined=new StringBuilder("");
+        if(commands!=null)
+        for(int commandIndex=startAt;commandIndex<endAt;commandIndex++)
+        	combined.append(commands.get(commandIndex).toString()+" ");
+        return combined.toString().trim();
+    }
+
+    public static String combineWith(List commands, char withChar, int startAt, int endAt)
+    {
+    	StringBuilder combined=new StringBuilder("");
+        if(commands!=null)
+        for(int commandIndex=startAt;commandIndex<endAt;commandIndex++)
+        	combined.append(commands.get(commandIndex).toString()+withChar);
+        return combined.toString().trim();
+    }
+
+    public static String combineWithQuotes(List commands, int startAt, int endAt)
     {
         StringBuffer Combined=new StringBuffer("");
         if(commands!=null)
         for(int commandIndex=startAt;commandIndex<endAt;commandIndex++)
         {
-            String s=commands.elementAt(commandIndex).toString();
+            String s=commands.get(commandIndex).toString();
             if(s.indexOf(" ")>=0) s="\""+s+"\"";
             Combined.append(s+" ");
         }
         return Combined.toString().trim();
     }
-    
     
 	public static void sortVector(List V) {
         Vector V2=new Vector(new TreeSet(V));
@@ -104,16 +130,7 @@ public class CMParms
         return Combined.toString().trim();
     }
 
-    public static String combine(Vector<?> commands, int startAt)
-    {
-        StringBuffer combined=new StringBuffer("");
-        if(commands!=null)
-        for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
-            combined.append(commands.elementAt(commandIndex).toString()+" ");
-        return combined.toString().trim();
-    }
-
-    public static String combine(HashSet<?> flags, int startAt)
+    public static String combine(Set<?> flags)
     {
         StringBuffer combined=new StringBuffer("");
         if(flags!=null)
