@@ -1,10 +1,10 @@
 package com.planet_ink.coffee_mud.core.intermud;
 import com.planet_ink.coffee_mud.core.http.ProcessHTTPrequest;
 import com.planet_ink.coffee_mud.core.intermud.imc2.*;
-import com.planet_ink.coffee_mud.core.intermud.packets.*;
-import com.planet_ink.coffee_mud.core.intermud.persist.*;
-import com.planet_ink.coffee_mud.core.intermud.server.*;
-import com.planet_ink.coffee_mud.core.intermud.net.*;
+import com.planet_ink.coffee_mud.core.intermud.i3.packets.*;
+import com.planet_ink.coffee_mud.core.intermud.i3.persist.*;
+import com.planet_ink.coffee_mud.core.intermud.i3.server.*;
+import com.planet_ink.coffee_mud.core.intermud.i3.net.*;
 import com.planet_ink.coffee_mud.core.intermud.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
