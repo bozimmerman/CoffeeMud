@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Behaviors;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.ScriptParseException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -33,11 +34,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 @SuppressWarnings("unchecked")
-public class ScriptableEverymob extends StdBehavior
+public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 {
     public String ID(){return "ScriptableEverymob";}
     protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;}
     private boolean started=false;
+    private Scriptable sampleB=null;
 
     private void giveUpTheScript(Area metroA, MOB M)
     {
@@ -53,6 +55,7 @@ public class ScriptableEverymob extends StdBehavior
         S.setSavable(false);
         M.addBehavior(S);
         S.setSavable(false);
+        sampleB=S;
     }
     
     private Area determineArea(Environmental forMe)
@@ -115,4 +118,60 @@ public class ScriptableEverymob extends StdBehavior
             giveUpTheScript(determineArea(host),msg.source());
         super.executeMsg(host,msg);
     }
+	public String defaultQuestName() {
+		return (sampleB==null)?"":sampleB.defaultQuestName();
+	}
+	public void dequeResponses() {
+		if(sampleB!=null) sampleB.dequeResponses();
+	}
+	public boolean endQuest(Environmental hostObj, MOB mob, String quest) {
+		return (sampleB==null)?false:sampleB.endQuest(hostObj, mob, quest);
+	}
+	public boolean eval(Environmental scripted, MOB source,
+			Environmental target, MOB monster, Item primaryItem,
+			Item secondaryItem, String msg, Object[] tmp, String[][] eval,
+			int startEval) {
+		return (sampleB==null)?false:sampleB.eval(scripted, source, target, monster, primaryItem, secondaryItem, msg, tmp, eval, startEval);
+	}
+	public String execute(Environmental scripted, MOB source,
+			Environmental target, MOB monster, Item primaryItem,
+			Item secondaryItem, DVector script, String msg, Object[] tmp) {
+		return (sampleB==null)?"":sampleB.execute(scripted, source, target, monster, primaryItem, secondaryItem, script, msg, tmp);
+	}
+	public String getLocalVarXML() {
+		return (sampleB==null)?"":sampleB.getLocalVarXML();
+	}
+	public MOB getMakeMOB(Tickable ticking) {
+		return (sampleB==null)?null:sampleB.getMakeMOB(ticking);
+	}
+	public String getScript() {
+		return (sampleB==null)?"":sampleB.getScript();
+	}
+	public String getScriptResourceKey() {
+		return (sampleB==null)?"":sampleB.getScriptResourceKey();
+	}
+	public String getVar(String context, String variable) {
+		return (sampleB==null)?"":sampleB.getVar(context, variable);
+	}
+	public String getVarScope() {
+		return (sampleB==null)?"":sampleB.getVarScope();
+	}
+	public boolean isVar(String context, String variable) {
+		return (sampleB==null)?false:sampleB.isVar(context, variable);
+	}
+	public String[] parseEval(String evaluable) throws ScriptParseException {
+		return (sampleB==null)?new String[0]:sampleB.parseEval(evaluable);
+	}
+	public void setLocalVarXML(String xml) {
+		if(sampleB!=null) sampleB.setLocalVarXML(xml);
+	}
+	public void setScript(String newParms) {
+		if(sampleB!=null) sampleB.setScript(newParms);
+	}
+	public void setVar(String context, String variable, String value) {
+		if(sampleB!=null) sampleB.setVar(context, variable, value);
+	}
+	public void setVarScope(String scope) {
+		if(sampleB!=null) sampleB.setVarScope(scope);
+	}
 }
