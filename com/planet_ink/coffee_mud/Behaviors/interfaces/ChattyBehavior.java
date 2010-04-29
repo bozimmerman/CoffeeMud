@@ -113,6 +113,6 @@ public interface ChattyBehavior extends Behavior
 		public ChattyEntry[] entries = null;
 		public ChattyGroup(String[] names, Vector[] masks)
 		{ groupNames=names; groupMasks=masks;}
-		public ChattyGroup clone(){ return this.clone();}
+		public ChattyGroup clone(){ try{return (ChattyGroup)super.clone();}catch(Exception e){return this;}}
 	}
 }
