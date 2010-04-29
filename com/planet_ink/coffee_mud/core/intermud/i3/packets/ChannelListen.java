@@ -73,7 +73,7 @@ public class ChannelListen extends Packet  {
     public String toString() {
         NameServer n = Intermud.getNameServer();
 		String str=
-			 "({\"channel-listen\",5,\"" + Server.getMudName() + "\",0,\""+n.name+"\",0,\"" + channel + "\"," +
+			 "({\"channel-listen\",5,\"" + I3Server.getMudName() + "\",0,\""+n.name+"\",0,\"" + channel + "\"," +
                onoff + ",})";
 		return str;
     }

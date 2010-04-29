@@ -104,18 +104,18 @@ public class ChannelPacket extends Packet  {
     public String toString() {
 		String str=null;
         if(type==CHAN_TARGET)
-			 str="({\"channel-t\",5,\"" + Server.getMudName() + "\",\"" +
+			 str="({\"channel-t\",5,\"" + I3Server.getMudName() + "\",\"" +
              sender_name + "\",0,0,\"" + channel + "\",\"" +
              target_mud + "\",\"" + target_name + "\",\"" +
              message + "\",\"" + message_target + "\",\"" +
              sender_visible_name + "\",\"" + target_visible_name + "\",})";
         else
         if(type==CHAN_EMOTE)
-			 str="({\"channel-e\",5,\"" + Server.getMudName() + "\",\"" +
+			 str="({\"channel-e\",5,\"" + I3Server.getMudName() + "\",\"" +
              sender_name + "\",0,0,\"" + channel + "\",\"" +
              sender_visible_name + "\",\"" + message + "\",})";
         else
-			 str="({\"channel-m\",5,\"" + Server.getMudName() + "\",\"" +
+			 str="({\"channel-m\",5,\"" + I3Server.getMudName() + "\",\"" +
                sender_name + "\",0,0,\"" + channel + "\",\"" +
                sender_visible_name + "\",\"" + message + "\",})";
 		return str;

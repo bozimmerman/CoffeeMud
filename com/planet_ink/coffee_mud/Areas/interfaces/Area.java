@@ -772,6 +772,8 @@ public interface Area extends Environmental, Economics
     		Room room=roomEnumerators.nextElement();
     		if(room instanceof GridLocale)
     			roomEnumerators.addEnumeration(new IteratorEnumeration<Room>(((GridLocale) room).getAllRooms().iterator()));
+    		if((room == null) && (hasMoreElements()))
+    			return nextElement();
     		return room;
     	}
     }

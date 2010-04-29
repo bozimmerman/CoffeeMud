@@ -55,7 +55,7 @@ public class MUD extends Thread implements MudHost
 
     protected static boolean bringDown=false;
     private static String execExternalCommand=null;
-    private static Server imserver=null;
+    private static I3Server imserver=null;
     private static IMC2Driver imc2server=null;
     private static Vector webServers=new Vector();
     private static SMTPserver smtpServerThread=null;
@@ -731,7 +731,7 @@ public class MUD extends Thread implements MudHost
 		if(imserver!=null)
 		{
 			CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...I3Server");
-			Server.shutdown();
+			I3Server.shutdown();
 			imserver=null;
 			if(S!=null)S.println("I3Server stopped");
 			Log.sysOut(Thread.currentThread().getName(),"I3Server stopped");
@@ -872,7 +872,7 @@ public class MUD extends Thread implements MudHost
 		{
 			if(page.getBoolean("RUNI3SERVER")&&(tCode==MAIN_HOST))
 			{
-				if(imserver!=null) Server.shutdown();
+				if(imserver!=null) I3Server.shutdown();
 				imserver=null;
 				String playstate=page.getStr("MUDSTATE");
 				if((playstate==null)||(playstate.length()==0))
@@ -893,15 +893,15 @@ public class MUD extends Thread implements MudHost
 		                                             CMLib.mud(0).getPort(),
 													 playstate,
 													 CMLib.channels().iChannelsArray());
-				imserver=new Server();
+				imserver=new I3Server();
 				int i3port=page.getInt("I3PORT");
 				if(i3port==0) i3port=27766;
-				Server.start(CMProps.getVar(CMProps.SYSTEM_MUDNAME),i3port,imud);
+				I3Server.start(CMProps.getVar(CMProps.SYSTEM_MUDNAME),i3port,imud);
 			}
 		}
 		catch(Exception e)
 		{
-			if(imserver!=null) Server.shutdown();
+			if(imserver!=null) I3Server.shutdown();
 			imserver=null;
 		}
 	}

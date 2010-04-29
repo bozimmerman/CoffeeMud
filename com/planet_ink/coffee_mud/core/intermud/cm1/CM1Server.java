@@ -34,7 +34,7 @@ import java.nio.channels.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Server extends Thread
+public class CM1Server extends Thread
 {
 	private int 		port = 27755;
 	private boolean 	shutdownRequested = false;
@@ -43,7 +43,7 @@ public class Server extends Thread
 	private ServerSocketChannel	servChan = null;
 	private SLinkedList<RequestHandler> handlers = new SLinkedList<RequestHandler>();
 	
-	public Server(String serverName, int serverPort)
+	public CM1Server(String serverName, int serverPort)
 	{
 		super("CM1:"+serverName+":"+serverPort);
 		this.port=serverPort;

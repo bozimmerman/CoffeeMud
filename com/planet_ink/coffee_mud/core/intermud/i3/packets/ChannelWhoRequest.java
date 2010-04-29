@@ -62,7 +62,7 @@ public class ChannelWhoRequest extends Packet {
     }
 
     public String toString() {
-		String str="({\"chan-who-req\",5,\"" + Server.getMudName() +
+		String str="({\"chan-who-req\",5,\"" + I3Server.getMudName() +
                "\",\"" + sender_name + "\",\"" + target_mud + "\",0,\"" + channel + "\",})";
 		return str;
     }

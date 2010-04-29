@@ -19,7 +19,7 @@
 
 package com.planet_ink.coffee_mud.core.intermud.i3.net;
 
-import com.planet_ink.coffee_mud.core.intermud.i3.server.Server;
+import com.planet_ink.coffee_mud.core.intermud.i3.server.I3Server;
 import com.planet_ink.coffee_mud.core.intermud.i3.server.ServerUser;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -84,7 +84,7 @@ public abstract class Interactive implements ServerUser {
      * @return the Interactive object for the specified name or null if no such user exists
      */
     static public Interactive findUser(String nom) {
-        ServerUser[] users = Server.getInteractives();
+        ServerUser[] users = I3Server.getInteractives();
         int i;
 
         try {

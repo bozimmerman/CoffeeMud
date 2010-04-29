@@ -42,7 +42,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @author George Reese
  * @version 1.0
  */
-public class Server {
+public class I3Server {
     static private ServerThread thread = null;
     static private boolean started = false;
 

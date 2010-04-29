@@ -67,7 +67,7 @@ public class ChannelWhoReply extends Packet {
     }
 
     public String toString() {
-		String str = "({\"chan-who-reply\",5,\"" + Server.getMudName() +
+		String str = "({\"chan-who-reply\",5,\"" + I3Server.getMudName() +
 		         "\",0,\"" + target_mud + "\",\"" + target_name + "\",\"" + channel + "\",({";
 		int i;
 

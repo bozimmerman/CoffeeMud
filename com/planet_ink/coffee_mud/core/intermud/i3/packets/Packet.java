@@ -67,7 +67,7 @@ public class Packet {
 
     public Packet() {
         super();
-        sender_mud = Server.getMudName();
+        sender_mud = I3Server.getMudName();
     }
 
     public Packet(Vector v) {

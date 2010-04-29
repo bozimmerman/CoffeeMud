@@ -78,7 +78,7 @@ public class ChannelUserReply extends Packet {
     	case 'F': genderCode=1; break;
     	case 'N': genderCode=2; break;
     	}
-		String str="({\"chan-user-req\",5,\"" + Server.getMudName() +
+		String str="({\"chan-user-req\",5,\"" + I3Server.getMudName() +
         "\",0,\"" + target_mud + "\",0,\"" + userRequested 
         + "\",\"" + userVisibleName 
         + "\"," + genderCode + ",})";

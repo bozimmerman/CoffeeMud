@@ -50,7 +50,7 @@ import java.util.Hashtable;
  * executed in the thread's run() method.
  * @author George Reese (borg@imaginary.com)
  * @version 1.0
- * @see com.planet_ink.coffee_mud.core.intermud.i3.server.Server
+ * @see com.planet_ink.coffee_mud.core.intermud.i3.server.I3Server
  */
 @SuppressWarnings("unchecked")
 public class ServerThread extends Thread {

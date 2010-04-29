@@ -1,5 +1,5 @@
 package com.planet_ink.coffee_mud.core.intermud.i3.packets;
-import com.planet_ink.coffee_mud.core.intermud.i3.server.Server;
+import com.planet_ink.coffee_mud.core.intermud.i3.server.I3Server;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -64,11 +64,11 @@ public class WhoPacket extends Packet {
     public String toString() {
 		if(type==Packet.WHO_REQUEST)
 		{
-			return "({\"who-req\",5,\"" + Server.getMudName() +
+			return "({\"who-req\",5,\"" + I3Server.getMudName() +
 			       "\",\"" + sender_name + "\",\"" + target_mud +
 			       "\",0,})";
 		}
-		String str = "({\"who-reply\",5,\"" + Server.getMudName() +
+		String str = "({\"who-reply\",5,\"" + I3Server.getMudName() +
 	             "\",0,\"" + target_mud + "\",\"" + target_name + "\",({";
 		int i;
 

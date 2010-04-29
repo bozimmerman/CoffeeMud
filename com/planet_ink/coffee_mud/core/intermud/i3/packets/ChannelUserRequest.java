@@ -60,7 +60,7 @@ public class ChannelUserRequest extends Packet {
     }
 
     public String toString() {
-		String str="({\"chan-user-req\",5,\"" + Server.getMudName() +
+		String str="({\"chan-user-req\",5,\"" + I3Server.getMudName() +
                "\",0,\"" + target_mud + "\",0,\"" + userToRequest + "\",})";
 		return str;
     }

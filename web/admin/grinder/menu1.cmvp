@@ -50,6 +50,8 @@
 		@if?CheckAuthCode?AUTH_EXPORT=true@
 		<INPUT TYPE=BUTTON NAME=EXPORT VALUE="Export Data" ONCLICK="Clicked('/AreaXML');">
 		@endif@
+		<INPUT TYPE=BUTTON NAME=SCRIPTS VALUE="Scripts" ONCLICK="Clicked('/grinder/editareascripts.cmvp');">
+		<P>
 		<INPUT TYPE=BUTTON NAME=LOGOUT VALUE="Main Menu" ONCLICK="Clicked('/grinder/loggedin.cmvp');">
 	</TD>
 </TR>

@@ -877,7 +877,18 @@ public class ServiceEngine implements ThreadEngine
                 for(Iterator e=almostTock.tickers();e.hasNext();)
                     objs.addElement(e.next());
             }catch(NoSuchElementException e){}
-            almostTock.shutdown();
+            try
+            {
+	            almostTock.shutdown();
+            }
+            catch(java.lang.ThreadDeath d)
+            {
+            	Log.errOut("ThreadDeath killing Tick#"+almostTock.getId());
+            }
+            catch(Throwable t)
+            {
+            	Log.errOut("Error "+t.getMessage()+" killing Tick#"+almostTock.getId());
+            }
             if(CMLib.threads() instanceof ServiceEngine)
                 ((ServiceEngine)CMLib.threads()).delTickGroup(almostTock);
             for(int i=0;i<objs.size();i++)

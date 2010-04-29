@@ -254,6 +254,9 @@ public class DBConnections
 					if(consecutiveFailures==180)
 					{
 						Log.errOut("DBConnections","Serious failure obtaining DBConnection ("+inuse+"/"+connections.size()+" in use).");
+						for(DBConnection conn : connections)
+							if(conn.inUse())
+								Log.errOut("DBConnections","Last SQL was: "+conn.lastSQL);
 						if(inuse==0)
 							resetConnections();
 					}

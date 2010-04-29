@@ -120,7 +120,7 @@ public class TellPacket extends Packet {
      * @return the mud mode string for this packet
      */
     public String toString() {
-        return "({\"tell\",5,\"" + Server.getMudName() +
+        return "({\"tell\",5,\"" + I3Server.getMudName() +
                "\",\"" + sender_name + "\",\"" + target_mud +
                "\",\"" + target_name + "\",\"" +
                sender_visible_name + "\",\"" + message + "\",})";

@@ -68,7 +68,7 @@ public class LocateReplyPacket extends Packet {
         type = Packet.LOCATE_REPLY;
         target_mud = mud;
         target_name = to_whom;
-        located_mud_name = Server.getMudName();
+        located_mud_name = I3Server.getMudName();
         located_visible_name = who;
         idle_time = idl;
         status = stat;
@@ -83,7 +83,7 @@ public class LocateReplyPacket extends Packet {
     }
 
     public String toString() {
-        return "({\"locate-reply\",5,\"" + Server.getMudName() +
+        return "({\"locate-reply\",5,\"" + I3Server.getMudName() +
                "\",0,\"" + target_mud + "\",\"" + target_name +
                "\",\"" + located_mud_name + "\",\"" +
                located_visible_name + "\"," + idle_time + ",\"" +
