@@ -15,6 +15,9 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.net.*;
+import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
+import java.nio.channels.spi.SelectorProvider;
 import java.io.*;
 import java.util.concurrent.atomic.*;
 
@@ -33,77 +36,36 @@ import java.util.concurrent.atomic.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class RequestHandler extends Thread
+public class RequestHandler implements Runnable
 {
 	private static AtomicInteger counter = new AtomicInteger();
-	private BufferedReader br;
-	private BufferedWriter bw;
-	private Server myServer;
-	private boolean shutdownRequested = false;
-	private boolean isShutdown = false;
-	private long idleTime = System.currentTimeMillis();
-	public RequestHandler(Server server, Socket sock) throws IOException
+	private String runnableName;
+	private boolean isRunning = false;
+	//private long idleTime = System.currentTimeMillis();
+	private SocketChannel chan;
+	
+	public RequestHandler(SelectorProvider provider, SocketChannel chan) throws IOException
 	{
-		super("CM1ReqHndler#"+counter.incrementAndGet());
-		sock.setSoTimeout(30000);
-		myServer=server;
-		br = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-		bw = new BufferedWriter(new OutputStreamWriter(sock.getOutputStream()));
+		super();
+		runnableName="CM1ReqHndler#"+counter.incrementAndGet();
+		this.chan=chan;
 	}
 	
 	public void sendGreeting(String msg) throws IOException 
 	{
-		bw.write(msg+"\n");
+		System.out.println(runnableName);
 	}
 	
 	public void shutdown(Session S)
 	{
-		shutdownRequested = true;
 		long time = System.currentTimeMillis();
-		while((System.currentTimeMillis()-time<30000) && (!isShutdown))
-		{
-			this.interrupt();
+		if(chan != null)
+			try {chan.close();}catch(Exception e){}
+		while((System.currentTimeMillis()-time<30000) && (isRunning))
 			try {Thread.sleep(1000);}catch(Exception e){}
-			if((br != null)&&(!isShutdown))
-				try {br.close();}catch(Exception e){}
-			if((bw != null)&&(!isShutdown))
-				try {bw.close();}catch(Exception e){}
-			try {Thread.sleep(1000);}catch(Exception e){}
-		}
-	}
-	
-	public boolean isShutdown()
-	{
-		return isShutdown;
 	}
 	
 	public void run()
 	{
-		try
-		{
-			while(!shutdownRequested)
-			{
-				if((System.currentTimeMillis()-idleTime)> 300000)
-					break;
-				try
-				{
-					String s = br.readLine();
-					bw.write("You said "+s);
-				}
-				catch(java.net.SocketTimeoutException se)
-				{} // just eat it, our idle timer is our friend.
-			}
-		}
-		catch(Throwable t)
-		{
-			Log.errOut("CM1ReqHndlr",t);
-		}
-		finally
-		{
-			isShutdown = true;
-			try {br.close();}catch(Exception e){}
-			try {bw.close();}catch(Exception e){}
-			myServer.registerLostHandler(this);
-		}
 	}
 }

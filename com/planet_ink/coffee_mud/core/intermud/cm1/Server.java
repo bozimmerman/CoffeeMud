@@ -16,6 +16,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.net.*;
 import java.io.*;
+import java.nio.*;
+import java.nio.channels.*;
 
 /* 
    Copyright 2000-2010 Bo Zimmerman
@@ -34,17 +36,16 @@ import java.io.*;
 */
 public class Server extends Thread
 {
-	private int 			port = 27755;
-	private String 			name = "CoffeeMud1";
+	private int 		port = 27755;
+	private boolean 	shutdownRequested = false;
+	private boolean 	isShutdown = false;
+	private Selector	servSelector = null;
+	private ServerSocketChannel	servChan = null;
 	private SLinkedList<RequestHandler> handlers = new SLinkedList<RequestHandler>();
-	private boolean 		shutdownRequested = false;
-	private boolean 		isShutdown = false;
-	private ServerSocket 	servSock = null;
 	
 	public Server(String serverName, int serverPort)
 	{
 		super("CM1:"+serverName+":"+serverPort);
-		this.name=serverName;
 		this.port=serverPort;
 		shutdownRequested = false;
 	}
@@ -55,24 +56,42 @@ public class Server extends Thread
 		{
 			try
 			{
-				servSock = new ServerSocket(port);
-				while(!shutdownRequested)
+				servChan = ServerSocketChannel.open();
+				ServerSocket serverSocket = servChan.socket();
+				servSelector = Selector.open();
+				serverSocket.bind (new InetSocketAddress (port));
+				servChan.configureBlocking (false);
+				servChan.register (servSelector, SelectionKey.OP_ACCEPT);
+				while (!shutdownRequested)
 				{
-					Socket sock = servSock.accept();
-					RequestHandler handler = null;
-					try
-					{
-						handler = new RequestHandler(this,sock);
-						handler.sendGreeting("Connected to "+name+", port "+port);
-						handlers.add(handler);
-						handler.start();
-					}
-					catch(IOException ioe)
-					{
-						Log.errOut("CM1Server",ioe.getMessage());
-						if(handler!=null)
-							handlers.remove(handler);
-					}
+				   int n = servSelector.select();
+				   if (n == 0) continue;
+				   
+				   Iterator<SelectionKey> it = servSelector.selectedKeys().iterator();
+				   while (it.hasNext()) 
+				   {
+				      SelectionKey key = it.next();
+				      if (key.isAcceptable()) 
+				      {
+				         ServerSocketChannel server = (ServerSocketChannel) key.channel();
+				         SocketChannel channel = server.accept();
+				         if (channel != null) 
+				         {
+				            channel.configureBlocking (false);
+				            channel.register (servSelector, SelectionKey.OP_READ);
+				         } 
+				         //sayHello (channel);
+				      }
+				      if (key.isReadable()) {
+				    	  SocketChannel socketChannel = (SocketChannel) key.channel();
+				    	  ByteBuffer buffer = ByteBuffer.allocate(1);
+				          while (socketChannel.read (buffer) > 0) {
+				             buffer.flip();
+				             buffer.clear();
+				          }
+				      }
+				      it.remove();
+				   }
 				}
 			}
 			catch(Throwable t)
@@ -81,10 +100,12 @@ public class Server extends Thread
 			}
 			finally
 			{
-				if(servSock != null)
-					try {servSock.close();}catch(Exception e){}
+				if(servSelector != null)
+					try {servSelector.close();}catch(Exception e){}
+				if(servChan != null)
+					try {servChan.close();}catch(Exception e){}
 				for(RequestHandler handler : handlers)
-					try{ handler.interrupt();}catch(Exception e){}
+					try{ handler.shutdown(null);}catch(Exception e){}
 				handlers.clear();
 				Log.sysOut("CM1Server is shutdown");
 			}
@@ -105,8 +126,11 @@ public class Server extends Thread
 		{
 			this.interrupt();
 			try {Thread.sleep(1000);}catch(Exception e){}
-			if((servSock != null)&&(!isShutdown))
-				try {servSock.close();}catch(Exception e){}
+			if(servSelector != null)
+				try {servSelector.close();}catch(Exception e){}
+			try {Thread.sleep(1000);}catch(Exception e){}
+			if((servChan != null)&&(!isShutdown))
+				try {servChan.close();}catch(Exception e){}
 			try {Thread.sleep(1000);}catch(Exception e){}
 		}
 	}
