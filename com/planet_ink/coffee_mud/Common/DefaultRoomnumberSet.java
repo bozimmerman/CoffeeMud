@@ -333,9 +333,9 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 	        CI.add(roomNum);
     }
     
-    public Enumeration getRoomIDs(){return new RoomnumberSetEnumeration();}
+    public Enumeration<String> getRoomIDs(){return new RoomnumberSetEnumeration();}
     
-    private class RoomnumberSetEnumeration implements Enumeration
+    private class RoomnumberSetEnumeration implements Enumeration<String>
     {
     	Iterator<String> areaNames=null;
     	String areaName=null;
@@ -347,7 +347,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
     		if(nextID==null) getNextID();
     		return nextID!=null;
     	}
-    	public Object nextElement(){
+    	public String nextElement(){
     		if(nextID==null) getNextID();
     		String next=nextID;
     		nextID=null;

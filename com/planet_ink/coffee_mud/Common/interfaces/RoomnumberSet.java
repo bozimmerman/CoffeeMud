@@ -41,7 +41,6 @@ import java.util.*;
  * Stores the internal numbers using CMIntegerGrouper
  * @see com.planet_ink.coffee_mud.Common.interfaces.CMIntegerGrouper
  */
-@SuppressWarnings("unchecked")
 public interface RoomnumberSet extends CMCommon
 {
     /**
@@ -107,7 +106,7 @@ public interface RoomnumberSet extends CMCommon
      * Returns an enumerator for all room ids in this object
      * @return an enumerator for all room ids in this object
      */
-    public Enumeration getRoomIDs();
+    public Enumeration<String> getRoomIDs();
 
     /**
      * Returns an enumerator for all area names in this object

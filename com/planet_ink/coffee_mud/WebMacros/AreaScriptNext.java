@@ -115,9 +115,12 @@ public class AreaScriptNext extends StdWebMacro
 			Room R=null;
 			MOB M=null;
 			Item I=null;
-			for(Enumeration e=CMLib.map().roomsFilled();e.hasMoreElements();)
+			for(Enumeration<String> e=A.getProperRoomnumbers().getRoomIDs();e.hasMoreElements();)
 			{
-				R=(Room)e.nextElement(); if(R==null) continue;
+				R=CMLib.map().getRoom(e.nextElement());
+				if(R==null) continue;
+				CMLib.map().resetRoom(R);
+				
 				ArrayList<String> prefix = new ArrayList<String>();
 				prefix.add(A.name());
 				prefix.add(CMLib.map().getExtendedRoomID(R));
