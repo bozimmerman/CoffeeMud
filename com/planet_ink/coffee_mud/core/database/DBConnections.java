@@ -163,8 +163,8 @@ public class DBConnections
 	public int numInUse()
 	{
 		int num=0;
-		for(int i=0;i<connections.size();i++)
-			if(((DBConnection)connections.elementAt(i)).inUse())
+		for(DBConnection conn : connections)
+			if(conn.inUse())
 				num++;
 		return num;
 	}
