@@ -42,7 +42,7 @@ public class CM1Server extends Thread
 	private boolean 	isShutdown = false;
 	private Selector	servSelector = null;
 	private ServerSocketChannel	servChan = null;
-	private SLinkedList<RequestHandler> handlers = new SLinkedList<RequestHandler>();
+	private STreeMap<SocketChannel,RequestHandler> handlers = new STreeMap<SocketChannel,RequestHandler>();
 	
 	public CM1Server(String serverName, int serverPort)
 	{
@@ -82,21 +82,25 @@ public class CM1Server extends Thread
 				         {
 				            channel.configureBlocking (false);
 				            channel.register (servSelector, SelectionKey.OP_READ);
+				            RequestHandler handler=new RequestHandler(channel);
+				            handlers.put(channel,handler);
 				         } 
 				         //sayHello (channel);
 				      }
-				      if (key.isReadable()) {
-				    	  SocketChannel socketChannel = (SocketChannel) key.channel();
-				    	  ByteBuffer buffer = ByteBuffer.allocate(1);
-				          while (socketChannel.read (buffer) > 0) {
-				             buffer.flip();
-				             socketChannel.write(buffer);
-				             buffer.clear();
-				          }
-				          
+				      if (key.isReadable()) 
+				      {
+				    	  RequestHandler handler = handlers.get(key.channel());
+				    	  new Thread(handler).start();
 				      }
 				      it.remove();
-				   }
+				    }
+					for(SocketChannel schan : handlers.navigableKeySet())
+						try
+						{
+							RequestHandler handler=handlers.get(schan);
+							if(handler!=null)handler.shutdown();
+						}
+						catch(Exception e){}
 				}
 			}
 			catch(Throwable t)
@@ -109,18 +113,18 @@ public class CM1Server extends Thread
 					try {servSelector.close();}catch(Exception e){}
 				if(servChan != null)
 					try {servChan.close();}catch(Exception e){}
-				for(RequestHandler handler : handlers)
-					try{ handler.shutdown(null);}catch(Exception e){}
+				for(SocketChannel schan : handlers.navigableKeySet())
+					try
+					{
+						RequestHandler handler=handlers.get(schan);
+						if(handler!=null)handler.shutdown();
+					}
+					catch(Exception e){}
 				handlers.clear();
 				Log.sysOut("CM1Server is shutdown");
 			}
 		}
 		isShutdown = true;
-	}
-	
-	public void registerLostHandler(RequestHandler handler)
-	{
-		handlers.remove(handler);
 	}
 	
 	public void shutdown()

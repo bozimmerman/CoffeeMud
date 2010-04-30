@@ -39,33 +39,66 @@ import java.util.concurrent.atomic.*;
 public class RequestHandler implements Runnable
 {
 	private static AtomicInteger counter = new AtomicInteger();
-	private String runnableName;
+	private final String runnableName;
 	private boolean isRunning = false;
-	//private long idleTime = System.currentTimeMillis();
-	private SocketChannel chan;
+	private long idleTime = System.currentTimeMillis();
+	private final SocketChannel chan;
 	
-	public RequestHandler(SelectorProvider provider, SocketChannel chan) throws IOException
+	public RequestHandler(SocketChannel chan) throws IOException
 	{
 		super();
 		runnableName="CM1ReqHndler#"+counter.incrementAndGet();
 		this.chan=chan;
 	}
 	
-	public void sendGreeting(String msg) throws IOException 
+	public void sendMsg(String msg) throws IOException 
 	{
-		System.out.println(runnableName);
+		byte[] bytes = (msg+"\n").getBytes();
+		ByteBuffer buf = ByteBuffer.allocate(bytes.length);
+		buf.put(bytes);
+		buf.flip();
+		chan.write(buf);
 	}
 	
-	public void shutdown(Session S)
+	public void shutdown()
 	{
 		long time = System.currentTimeMillis();
-		if(chan != null)
-			try {chan.close();}catch(Exception e){}
+		try {chan.close();}catch(Exception e){}
 		while((System.currentTimeMillis()-time<30000) && (isRunning))
 			try {Thread.sleep(1000);}catch(Exception e){}
+	}
+
+	public boolean needsClosing()
+	{
+		if((System.currentTimeMillis() - idleTime) > 10 * 60 * 1000)
+			return true;
+		if((!chan.isOpen()) || (!chan.isConnected()) || (!chan.isRegistered()))
+			return true;
+		return false;
 	}
 	
 	public void run()
 	{
+		isRunning=true;
+		try
+		{
+	    	  ByteBuffer buffer = ByteBuffer.allocate(1);
+	          while (chan.read (buffer) > 0) 
+	          {
+	             buffer.flip();
+	             chan.write(buffer);
+	             buffer.clear();
+	          }
+		}
+		catch(Exception e)
+		{
+			Log.errOut("CM1Hndlr",runnableName+": "+e.getMessage());
+			Log.errOut("CM1Hndlr",e);
+		}
+		finally
+		{
+			idleTime=System.currentTimeMillis();
+			isRunning=false;
+		}
 	}
 }
