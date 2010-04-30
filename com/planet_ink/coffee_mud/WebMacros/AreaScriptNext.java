@@ -80,10 +80,11 @@ public class AreaScriptNext extends StdWebMacro
 				if(!B.isSavable()) continue;
 				ScriptingEngine SE=(ScriptingEngine)B;
 				Vector files=B.externalFiles();
+				if(files!=null)
 				for(int f=0;f<files.size();f++)
 					addScript(list, prefix, SE.getScriptResourceKey(),B.ID(),((String)files.elementAt(f)).toLowerCase(), (String)files.elementAt(f));
 				String nonFiles=((ScriptingEngine)B).getVar("*","COFFEEMUD_SYSTEM_INTERNAL_NONFILENAME_SCRIPT");
-				if(nonFiles.trim().length()>0)
+				if((nonFiles!=null)&&(nonFiles.trim().length()>0))
 					addScript(list, prefix, SE.getScriptResourceKey(), B.ID(),"Custom",nonFiles);
 			}
 		}
@@ -140,7 +141,8 @@ public class AreaScriptNext extends StdWebMacro
 				//System.out.println(roomID);
 				R=CMLib.map().getRoom(roomID);
 				if(R==null) continue;
-				CMLib.map().resetRoom(R);
+				//CMLib.map().resetRoom(R);
+				R=CMLib.map().getRoom(R);
 				
 				prefix = new ArrayList<String>();
 				prefix.add(A.name());
@@ -195,6 +197,7 @@ public class AreaScriptNext extends StdWebMacro
 			{
 				httpReq.addRequestParameters("AREASCRIPT",scriptName);
 				last=scriptName;
+				return "";
 			}
 			lastID=scriptName;
 		}

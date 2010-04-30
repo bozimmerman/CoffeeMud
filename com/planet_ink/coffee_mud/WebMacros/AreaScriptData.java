@@ -78,6 +78,7 @@ public class AreaScriptData extends AreaScriptNext
 				{
 					httpReq.addRequestParameters("AREASCRIPTHOST",hostName);
 					last=hostName;
+					return "";
 				}
 				lastID=hostName;
 			}
