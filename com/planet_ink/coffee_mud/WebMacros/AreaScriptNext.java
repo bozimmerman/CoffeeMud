@@ -133,9 +133,12 @@ public class AreaScriptNext extends StdWebMacro
 			prefix.add(A.name());
 			addScripts(list,prefix,A);
 			addShopScripts(list,prefix,A);
+			String roomID=null;
 			for(Enumeration<String> e=A.getProperRoomnumbers().getRoomIDs();e.hasMoreElements();)
 			{
-				R=CMLib.map().getRoom(e.nextElement());
+				roomID=e.nextElement();
+				//System.out.println(roomID);
+				R=CMLib.map().getRoom(roomID);
 				if(R==null) continue;
 				CMLib.map().resetRoom(R);
 				

@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?ANYMODAREAS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+ 	<link rel="grinder icon" href="/images/grinder.ico" >
+	<title>Clans List</title>
+	<script language=JavaScript>
+	<!--
+		function Script(action)
+		{
+			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+			w=window.open("clan.cmvp?AUTH=@Authenticate?AUTH@&CLAN="+action,
+				"Clan",strFeatures, false);
+		}
+		function Clicked(action)
+		{
+			document.RESOURCES.action=action;
+			document.RESOURCES.submit();
+		}
+		function Refresh()
+		{
+			document.RESOURCES.action='editareascriptslist.cmvp';
+			document.RESOURCES.submit();
+		}
+	//-->
+	</script>
+</head>
+<body BGCOLOR=BLACK>
+<CENTER>
+<FORM NAME=RESOURCES TARGET=_top METHOD=POST ACTION="editareascriptslist.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+	<TABLE WIDTH=100% BORDER=1>
+	<TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ @AreaName@ Script Manager</H2></FONT></TD></TR>
+	<TR>
+	<TD WIDTH=90%><B><FONT COLOR=YELLOW>Path</FONT></b></TD>
+	<TD WIDTH=10%><B><FONT COLOR=YELLOW>#</FONT></B></TD>
+	</TR>
+	@AreaScriptNext?RESET@
+	@loop@
+	@AreaScriptNext@
+	<TR>
+	<TD><a href="javascript:AreaScript('@AreaScriptKey@')"><FONT COLOR=WHITE><B>@AreaScriptKey@</B></FONT></a></TD>
+	<TD><FONT COLOR=WHITE>@AreaScriptData?NUMHOSTS@</FONT></TD>
+	</TR>
+	@back@
+	</TABLE>
+	<P>
+	<TABLE WIDTH=100% BORDER=0>
+	<TR>
+	<TD WIDTH=33% ALIGN=CENTER>
+	</TD>
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=REFRESH VALUE="Refresh" ONCLICK="Refresh();"></TD>
+	<TD WIDTH=33% ALIGN=CENTER>
+	</TD>
+	</TR>
+	</TABLE>
+	<CENTER>
+	</CENTER>
+</FORM>
+</BODY>
+</HTML>
+@endif@
+@endif@
