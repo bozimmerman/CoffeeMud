@@ -21,7 +21,7 @@ limitations under the License.
 public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, NavigableSet<K>, Set<K>, SortedSet<K>
 {
 	private static final long serialVersionUID = -6713012858869312626L;
-	private TreeSet<K> T;
+	private volatile TreeSet<K> T;
 	public STreeSet()
 	{
 		T=new TreeSet<K>();

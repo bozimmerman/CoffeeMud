@@ -32,7 +32,7 @@ limitations under the License.
 public class STreeMap<K,V> implements Serializable, Map<K,V>, NavigableMap<K,V>, SortedMap<K,V> 
 {
 	private static final long serialVersionUID = -6713012858839312626L;
-	private TreeMap<K,V> T;
+	private volatile TreeMap<K,V> T;
 	public STreeMap()
 	{
 		T=new TreeMap<K,V>();

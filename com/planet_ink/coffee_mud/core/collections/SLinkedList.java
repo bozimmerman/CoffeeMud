@@ -21,7 +21,7 @@ limitations under the License.
 public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Collection<K>, Deque<K>, List<K>, Queue<K>
 {
 	private static final long serialVersionUID = -4174213459327144771L;
-	private LinkedList<K> L;
+	private volatile LinkedList<K> L;
 	
 	public SLinkedList()
 	{

@@ -18,7 +18,7 @@ limitations under the License.
 public class SHashtable<K,F> implements java.util.Map<K,F>, java.io.Serializable
 {
 	private static final long serialVersionUID = 6687178785122561993L;
-	private Hashtable<K,F> H;
+	private volatile Hashtable<K,F> H;
 	public SHashtable()
 	{
 		super();

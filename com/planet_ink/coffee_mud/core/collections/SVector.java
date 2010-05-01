@@ -26,7 +26,7 @@ limitations under the License.
 public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, List<T>, RandomAccess 
 {
 	private static final long serialVersionUID = 6687178785122561992L;
-	private Vector<T> V;
+	private volatile Vector<T> V;
 
 	public SVector()
 	{
