@@ -141,7 +141,7 @@ public class ItemData extends StdWebMacro
 						for(int m=0;m<R.numInhabitants();m++)
 						{
 							MOB M2=R.fetchInhabitant(m);
-							if((M2!=null)&&(M2.savable()))
+							if((M2!=null)&&(M2.isSavable()))
 							   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
 						}
 	                    return clearWebMacros(str);
@@ -956,7 +956,8 @@ public class ItemData extends StdWebMacro
 					httpReq.addRequestParameters(okparms[o],old.equals("checked")?"on":old);
 			}
 			str.append(ExitData.dispositions(I,firstTime,httpReq,parms));
-			str.append(AreaData.affectsNBehaves(I,httpReq,parms,1));
+			str.append(AreaData.affects(I,httpReq,parms,1));
+			str.append(AreaData.behaves(I,httpReq,parms,1));
 			if(oldI!=null){
 			    I.setContainer(oldI.container());
 			    I.setRawWornCode(oldI.rawWornCode());

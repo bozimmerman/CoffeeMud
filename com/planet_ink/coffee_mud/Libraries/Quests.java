@@ -1430,7 +1430,7 @@ public class Quests extends StdLibrary implements QuestManager
         for(int i=0;i<R.numInhabitants();i++)
         {
             M=R.fetchInhabitant(i);
-            if((M!=null)&&(M.savable())) 
+            if((M!=null)&&(M.isSavable())) 
             {
                 choices.addElement(M);
                 choiceDescs.append(M.name()+", ");
@@ -1497,7 +1497,7 @@ public class Quests extends StdLibrary implements QuestManager
         for(int i=0;i<R.numItems();i++)
         {
             I=R.fetchItem(i);
-            if((I!=null)&&(I.container()==null)&&(I.savable())) 
+            if((I!=null)&&(I.container()==null)&&(I.isSavable())) 
             {
                 choices.addElement(I);
                 choiceDescs.append(I.name()+", ");
@@ -1548,12 +1548,12 @@ public class Quests extends StdLibrary implements QuestManager
         {
             Quest Q=CMLib.quests().fetchQuest(q);
             if(Q==null) continue;
-            for(int s=0;s<player.numScripts();s++)
-            {
-                ScriptingEngine S=player.fetchScript(s);
-                if(S==null) continue;
-                if((S.defaultQuestName().length()>0)
-                &&(S.defaultQuestName().equalsIgnoreCase(Q.name()))
+    		for(Enumeration<ScriptingEngine> e=player.scripts();e.hasMoreElements();)
+    		{
+    			ScriptingEngine SE=e.nextElement();
+                if(SE==null) continue;
+                if((SE.defaultQuestName().length()>0)
+                &&(SE.defaultQuestName().equalsIgnoreCase(Q.name()))
                 &&(!qVec.contains(Q)))
                     qVec.addElement(Q);
             }

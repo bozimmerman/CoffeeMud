@@ -51,7 +51,7 @@ public class GrinderAreas
 		return AreaList.toString();
 	}
 
-	public static String doAffectsNBehavs(Environmental E, ExternalHTTPRequests httpReq, Hashtable parms)
+	public static String doBehavs(ActiveEnvironmental E, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		while(E.numBehaviors()>0)
 			E.delBehavior(E.fetchBehavior(0));
@@ -76,6 +76,11 @@ public class GrinderAreas
 				theparm=httpReq.getRequestParameter("BDATA"+num);
 			}
 		}
+		return "";
+	}
+	
+	public static String doAffectsNBehavs(Environmental E, ExternalHTTPRequests httpReq, Hashtable parms)
+	{
 		while(E.numEffects()>0)
 			E.delEffect(E.fetchEffect(0));
 		if(httpReq.isRequestParameter("AFFECT1"))
@@ -178,9 +183,8 @@ public class GrinderAreas
 
 		// modify subop list
 		String subOps=httpReq.getRequestParameter("SUBOPS");
-		Vector V=A.getSubOpVectorList();
-		for(int v=0;v<V.size();v++)
-			A.delSubOp((String)V.elementAt(v));
+		for(Enumeration<String> s=A.subOps();s.hasMoreElements();)
+			A.delSubOp(s.nextElement());
 		if((subOps!=null)&&(subOps.length()>0))
 		{
 			A.addSubOp(subOps);

@@ -243,13 +243,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         return buf;
     }
 
-    private void questifyScriptableBehavs(Environmental E)
+    private void questifyScriptableBehavs(ActiveEnvironmental E)
     {
     	if(E==null) return;
     	Behavior B=null;
-    	for(int b=0;b<E.numBehaviors();b++)
-    	{
-    		B=E.fetchBehavior(b);
+		for(Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
+		{
+			B=e.nextElement();
     		if(B instanceof ScriptingEngine)
     			((ScriptingEngine)B).registerDefaultQuest(this.name());
     	}
@@ -2602,7 +2602,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         for(int i=0;i<toSet.size();i++)
                         {
                             Environmental E2=(Environmental)toSet.elementAt(i);
-                            runtimeRegisterBehavior(E2,B.ID(),CMParms.combineWithQuotes(p,3),true);
+                            if(E2 instanceof ActiveEnvironmental)
+                            	runtimeRegisterBehavior((ActiveEnvironmental)E2,B.ID(),CMParms.combineWithQuotes(p,3),true);
                         }
                     }
                     else
@@ -2688,17 +2689,20 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         for(int i=0;i<toSet.size();i++)
                         {
                             Environmental E2=(Environmental)toSet.elementAt(i);
-                            ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
-                            S.setSavable(savable);
-                            S.registerDefaultQuest(name());
-                            S.setVarScope(scope);
-                            S.setScript(val);
-                            E2.addScript(S);
-                            runtimeRegisterObject(E2);
-            	        	synchronized(questState)
-            	        	{
-	                            questState.addons.addElement(CMParms.makeVector(E2,S),Integer.valueOf(questState.preserveState));
-            	        	}
+                            if(E2 instanceof ActiveEnvironmental)
+                            {
+	                            ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+	                            S.setSavable(savable);
+	                            S.registerDefaultQuest(name());
+	                            S.setVarScope(scope);
+	                            S.setScript(val);
+	                            ((ActiveEnvironmental)E2).addScript(S);
+	                            runtimeRegisterObject(E2);
+	            	        	synchronized(questState)
+	            	        	{
+		                            questState.addons.addElement(CMParms.makeVector(E2,S),Integer.valueOf(questState.preserveState));
+	            	        	}
+                            }
                         }
                     }
                     else
@@ -2805,7 +2809,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         for(int i=0;i<toSet.size();i++)
                         {
                             Environmental E2=(Environmental)toSet.elementAt(i);
-                            runtimeRegisterBehavior(E2,B.ID(),CMParms.combineWithQuotes(p,3),false);
+                            if(E2 instanceof ActiveEnvironmental)
+                            	runtimeRegisterBehavior((ActiveEnvironmental)E2,B.ID(),CMParms.combineWithQuotes(p,3),false);
                         }
                     }
                     else
@@ -3014,7 +3019,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                    MOB M=(MOB)E;
 	                    ScriptingEngine B=(ScriptingEngine)((MOB)E).fetchBehavior("Scriptable");
 	                    if(B!=null)
-	                        B.endQuest(E,M,name());
+	                        B.endQuest(M,M,name());
 	                    Room R=M.getStartRoom();
 	                    if((R==null)||(CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_UNSAVABLE)))
 	                    {
@@ -3084,17 +3089,21 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		                else
 		                if(O instanceof Behavior)
 		                {
-		                    Behavior B=E.fetchBehavior(((Behavior)O).ID());
-		                    if((E instanceof MOB)&&(B instanceof ScriptingEngine))
-		                        ((ScriptingEngine)B).endQuest(E,(MOB)E,name());
-		                    if((V.size()>2)&&(V.elementAt(2) instanceof String))
-		                    {
-		                        if(B==null){ B=(Behavior)O; E.addBehavior(B);}
-		                        B.setParms((String)V.elementAt(2));
-		                    }
-		                    else
-		                    if(B!=null)
-		                        E.delBehavior(B);
+		                	if(E instanceof ActiveEnvironmental)
+		                	{
+		                		ActiveEnvironmental BB=(ActiveEnvironmental)E;
+			                    Behavior B=BB.fetchBehavior(((Behavior)O).ID());
+			                    if((E instanceof MOB)&&(B instanceof ScriptingEngine))
+			                        ((ScriptingEngine)B).endQuest((ActiveEnvironmental)E,(MOB)E,name());
+			                    if((V.size()>2)&&(V.elementAt(2) instanceof String))
+			                    {
+			                        if(B==null){ B=(Behavior)O; BB.addBehavior(B);}
+			                        B.setParms((String)V.elementAt(2));
+			                    }
+			                    else
+			                    if(B!=null)
+			                        BB.delBehavior(B);
+		                	}
 		                }
 		                else
 		                if(O instanceof ScriptingEngine)
@@ -3102,7 +3111,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		                    ScriptingEngine S=(ScriptingEngine)O;
 		                    if((E instanceof MOB)&&(!S.isSavable()))
 		                    {
-		                        S.endQuest(E,(MOB)E,name());
+		                        S.endQuest((MOB)E,(MOB)E,name());
 		                        ((MOB)E).delScript(S);
 		                    }
 		                }
@@ -3585,7 +3594,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         }
     }
 
-    public void runtimeRegisterBehavior(Environmental behaving, String behaviorID, String parms, boolean give)
+    public void runtimeRegisterBehavior(ActiveEnvironmental behaving, String behaviorID, String parms, boolean give)
     {
         if(behaving==null) return;
         runtimeRegisterObject(behaving);

@@ -460,7 +460,7 @@ public class Age extends StdAbility
             &&(msg.targetMinor()==CMMsg.TYP_EXAMINE))
             {
                 if((((affected instanceof Item)&&(affected instanceof CagedAnimal))
-                    ||((affected instanceof MOB)&&(!((MOB)affected).savable())))
+                    ||((affected instanceof MOB)&&(!((MOB)affected).isSavable())))
                 &&(affected.description().toUpperCase().indexOf(msg.source().name().toUpperCase())>=0))
                 {
                     if(divisor==0.0)
@@ -485,7 +485,7 @@ public class Age extends StdAbility
 			&&((msg.target()==affected)||(msg.tool()==affected))
             &&(CMLib.flags().isInTheGame(affected,true)))
 			{
-				Behavior B=affected.fetchBehavior("Emoter");
+				Behavior B=((Item)affected).fetchBehavior("Emoter");
 				Item baby=(Item)affected;
 				if(B==null)
 				{

@@ -51,7 +51,7 @@ public class GlowingMageArmor extends StdArmor
 	}
 
 
-	public boolean savable(){return false;}
+	public boolean isSavable(){return false;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

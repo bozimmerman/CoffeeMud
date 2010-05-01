@@ -37,7 +37,7 @@ public class Fighterness extends CombatAbilities
 	public String ID(){return "Fighterness";}
 
 
-	public void startBehavior(Environmental forMe)
+	public void startBehavior(ActiveEnvironmental forMe)
 	{
 		super.startBehavior(forMe);
 		if(!(forMe instanceof MOB)) return;

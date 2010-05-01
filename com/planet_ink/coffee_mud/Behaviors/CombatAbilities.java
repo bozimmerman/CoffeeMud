@@ -272,7 +272,7 @@ public class CombatAbilities extends StdBehavior
 		super.executeMsg(host,msg);
 	}
 	
-	public void startBehavior(Environmental forMe)
+	public void startBehavior(ActiveEnvironmental forMe)
 	{
 		super.startBehavior(forMe);
 		skillsNever=null;
@@ -308,9 +308,9 @@ public class CombatAbilities extends StdBehavior
 	{
         // insures we only try this once!
 		Behavior B;
-        for(int b=0;b<mob.numBehaviors();b++)
-        {
-            B=mob.fetchBehavior(b);
+		for(Enumeration<Behavior> e=mob.behaviors();e.hasMoreElements();)
+		{
+			B=e.nextElement();
             if((B==null)||(B==this))
             	return true;
             else

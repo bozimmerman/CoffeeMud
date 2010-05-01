@@ -56,9 +56,9 @@ public class EvilExecutioner  extends StdBehavior
         if(CMLib.flags().isBoundOrHeld(M)) return false;
         if((!M.isMonster())&&(!doPlayers))
             return false;
-        for(int b=0;b<M.numBehaviors();b++)
-        {
-            Behavior B=M.fetchBehavior(b);
+		for(Enumeration<Behavior> e=M.behaviors();e.hasMoreElements();)
+		{
+			Behavior B=e.nextElement();
             if((B!=null)&&(B.grantsAggressivenessTo(M)))
                 return true;
         }

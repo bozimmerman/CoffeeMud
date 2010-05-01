@@ -882,9 +882,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	public boolean isTroubleMaker(MOB M)
 	{
 		if(M==null) return false;
-		for(int b=0;b<M.numBehaviors();b++)
+		for(Enumeration<Behavior> e=M.behaviors();e.hasMoreElements();)
 		{
-			Behavior B=M.fetchBehavior(b);
+			Behavior B=e.nextElement();
 			if((B!=null)&&(CMath.bset(B.flags(),Behavior.FLAG_TROUBLEMAKING)))
 				return true;
 		}

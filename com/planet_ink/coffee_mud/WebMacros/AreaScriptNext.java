@@ -69,12 +69,12 @@ public class AreaScriptNext extends StdWebMacro
 		subList.add(new AreaScriptInstance(scriptKey, next, key, file));
 	}
 	
-	public void addScripts(TreeMap<String,ArrayList<AreaScriptInstance>> list, ArrayList<String> prefix, Environmental E)
+	public void addScripts(TreeMap<String,ArrayList<AreaScriptInstance>> list, ArrayList<String> prefix, ActiveEnvironmental E)
 	{
 		if(E==null) return;
-		for(int b=0;b<E.numBehaviors();b++)
+		for(Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
 		{
-			Behavior B=E.fetchBehavior(b);
+			Behavior B=e.nextElement();
 			if(B instanceof ScriptingEngine)
 			{
 				if(!B.isSavable()) continue;
@@ -88,9 +88,9 @@ public class AreaScriptNext extends StdWebMacro
 					addScript(list, prefix, SE.getScriptResourceKey(), B.ID(),"Custom",nonFiles);
 			}
 		}
-		for(int s=0;s<E.numScripts();s++)
+		for(Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();)
 		{
-			ScriptingEngine SE=E.fetchScript(s);
+			ScriptingEngine SE=e.nextElement();
 			if(!SE.isSavable()) continue;
 			Vector files=SE.externalFiles();
 			for(int f=0;f<files.size();f++)
@@ -101,7 +101,7 @@ public class AreaScriptNext extends StdWebMacro
 		}
 	}
 	
-	public void addShopScripts(TreeMap<String,ArrayList<AreaScriptInstance>> list, ArrayList<String> prefix, Environmental E)
+	public void addShopScripts(TreeMap<String,ArrayList<AreaScriptInstance>> list, ArrayList<String> prefix, ActiveEnvironmental E)
 	{
 		if(E==null) return;
 		ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(E);
@@ -112,7 +112,8 @@ public class AreaScriptNext extends StdWebMacro
 				Environmental E2=(Environmental)i.next();
 				ArrayList<String> newPrefix=(ArrayList<String>)prefix.clone();
 				newPrefix.add(E2.name());
-				addScripts(list,newPrefix,E2);
+				if(E2 instanceof ActiveEnvironmental)
+					addScripts(list,newPrefix,(ActiveEnvironmental)E2);
 			}
 		}
 	}

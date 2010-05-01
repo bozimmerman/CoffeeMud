@@ -131,7 +131,7 @@ public class DeityData extends StdWebMacro
                             for(int m=0;m<R.numInhabitants();m++)
                             {
                                 MOB M=R.fetchInhabitant(m);
-                                if(M.savable())
+                                if(M.isSavable())
                                     classes.addElement(M);
                             }
                             RoomData.contributeMOBs(classes);

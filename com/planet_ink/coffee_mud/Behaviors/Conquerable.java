@@ -175,7 +175,7 @@ public class Conquerable extends Arrest
         noMultiFollows=new Vector();
 	}
 
-	public void startBehavior(Environmental E)
+	public void startBehavior(ActiveEnvironmental E)
 	{
 		super.startBehavior(E);
 		CMLib.map().addGlobalHandler(this, CMMsg.TYP_CLANEVENT);

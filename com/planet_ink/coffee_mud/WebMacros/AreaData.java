@@ -38,7 +38,7 @@ public class AreaData extends StdWebMacro
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
 
-	public static StringBuffer affectsNBehaves(Environmental E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+	public static StringBuffer behaves(ActiveEnvironmental E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("BEHAVIORS"))
@@ -65,9 +65,9 @@ public class AreaData extends StdWebMacro
 				}
 			}
 			else
-			for(int b=0;b<E.numBehaviors();b++)
+			for(Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
 			{
-				Behavior B=E.fetchBehavior(b);
+				Behavior B=e.nextElement();
 				if((B!=null)&&(B.isSavable()))
 				{
 					theclasses.addElement(CMClass.classID(B));
@@ -117,6 +117,12 @@ public class AreaData extends StdWebMacro
 			str.append("</TD></TR>");
 			str.append("</TABLE>");
 		}
+		return str;
+	}
+	
+	public static StringBuffer affects(Environmental E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+	{
+		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("AFFECTS"))
 		{
 			Vector theclasses=new Vector();
@@ -144,7 +150,7 @@ public class AreaData extends StdWebMacro
 			for(int a=0;a<E.numEffects();a++)
 			{
 				Ability Able=E.fetchEffect(a);
-				if((Able!=null)&&(Able.savable()))
+				if((Able!=null)&&(Able.isSavable()))
 				{
 					theclasses.addElement(CMClass.classID(Able));
 					String t=Able.text();
@@ -439,7 +445,8 @@ public class AreaData extends StdWebMacro
 				if(parms.containsKey("TESTSTUFF"))
 					str.append(A.text());
 
-				str.append(AreaData.affectsNBehaves(A,httpReq,parms,1));
+				str.append(AreaData.affects(A,httpReq,parms,1));
+				str.append(AreaData.behaves(A,httpReq,parms,1));
 
 				if(parms.containsKey("SUBOPS"))
 				{

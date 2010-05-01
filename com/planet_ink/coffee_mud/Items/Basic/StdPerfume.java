@@ -115,12 +115,10 @@ public class StdPerfume extends StdDrink implements Perfume
 			{
 				// the order that these things are checked in should
 				// be holy, and etched in stone.
-				for(int b=0;b<numBehaviors();b++)
-				{
-					Behavior B=fetchBehavior(b);
-					if(B!=null)
-						B.executeMsg(this,msg);
-				}
+				if(behaviors != null)
+					for(Behavior B : behaviors)
+						if(B!=null)
+							B.executeMsg(this,msg);
 
 				for(int a=0;a<numEffects();a++)
 				{

@@ -503,7 +503,8 @@ public class PlayerData extends StdWebMacro
 			str.append(MobData.itemList(M,M,httpReq,parms,0));
 			str.append(MobData.abilities(M,httpReq,parms,0));
 			str.append(MobData.factions(M,httpReq,parms,0));
-			str.append(AreaData.affectsNBehaves(M,httpReq,parms,0));
+			str.append(AreaData.affects(M,httpReq,parms,0));
+			str.append(AreaData.behaves(M,httpReq,parms,0));
 			str.append(ExitData.dispositions(M,firstTime,httpReq,parms));
 			str.append(MobData.senses(M,firstTime,httpReq,parms));
 			String strstr=str.toString();

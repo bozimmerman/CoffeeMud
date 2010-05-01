@@ -38,7 +38,7 @@ public class FaithHelper extends StdBehavior
 
 	protected boolean mobKiller=false;
 
-	public void startBehavior(Environmental forMe)
+	public void startBehavior(ActiveEnvironmental forMe)
 	{
 		super.startBehavior(forMe);
 		if(forMe instanceof MOB)

@@ -43,8 +43,6 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{ return (E!=null)&&(!isSleeping(E))&&((E.envStats().sensesMask()&EnvStats.CAN_NOT_SEE)==0); }
 	public boolean canBeLocated(Environmental E)
 	{ return (E!=null)&&(!isSleeping(E))&&((E.envStats().sensesMask()&EnvStats.SENSE_UNLOCATABLE)==0); }
-    public boolean isSavable(Environmental E)
-    { return (E==null)||((E.envStats().disposition()&EnvStats.IS_UNSAVABLE)==0); }
 	public boolean canSeeHidden(MOB E)
 	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_HIDDEN)==EnvStats.CAN_SEE_HIDDEN); }
 	public boolean canSeeInvisible(MOB E)
@@ -93,6 +91,26 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{ return (E!=null)&&((E.baseEnvStats().disposition()&EnvStats.IS_CATALOGED)==EnvStats.IS_CATALOGED); }
 	public boolean hasSeenContents(Environmental E)
 	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.SENSE_CONTENTSUNSEEN)==0); }
+    public boolean isSavable(Environmental E)
+    { return (E==null)||((E.envStats().disposition()&EnvStats.IS_UNSAVABLE)==0); }
+	public void setSavable(Environmental E, boolean truefalse)
+	{
+		if(E==null) return;
+		if(CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_UNSAVABLE))
+		{
+			if(truefalse)
+			{
+				E.baseEnvStats().setDisposition(CMath.unsetb(E.baseEnvStats().disposition(),EnvStats.IS_UNSAVABLE));
+				E.envStats().setDisposition(CMath.unsetb(E.envStats().disposition(),EnvStats.IS_UNSAVABLE));
+			}
+		}
+		else
+		if(!truefalse)
+		{
+			E.baseEnvStats().setDisposition(CMath.setb(E.baseEnvStats().disposition(),EnvStats.IS_UNSAVABLE));
+			E.envStats().setDisposition(CMath.setb(E.envStats().disposition(),EnvStats.IS_UNSAVABLE));
+		}
+	}
 	public void setReadable(Item I, boolean truefalse)
 	{
 		if(I==null) return;
@@ -853,25 +871,25 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 
-	public boolean isMobile(Environmental E)
+	public boolean isMobile(ActiveEnvironmental E)
 	{
 		if(E!=null)
-			for(int b=0;b<E.numBehaviors();b++)
+			for(Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
 			{
-				Behavior B=E.fetchBehavior(b);
+				Behavior B=e.nextElement();
 				if((B!=null)&&(CMath.bset(B.flags(),Behavior.FLAG_MOBILITY)))
 					return true;
 			}
 		return false;
 	}
 
-	public Vector flaggedBehaviors(Environmental E, long flag)
+	public Vector<Behavior> flaggedBehaviors(ActiveEnvironmental E, long flag)
 	{
 		Vector V=new Vector();
 		if(E!=null)
-			for(int b=0;b<E.numBehaviors();b++)
+			for(Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
 			{
-				Behavior B=E.fetchBehavior(b);
+				Behavior B=e.nextElement();
 				if((B!=null)&&(CMath.bset(B.flags(),flag)))
 				{ V.addElement(B);}
 			}

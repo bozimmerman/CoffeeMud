@@ -288,7 +288,8 @@ public class DefaultSocial implements Social
     protected boolean amDestroyed=false;
     public void destroy(){amDestroyed=true;}
     public boolean amDestroyed(){return amDestroyed;}
-    public boolean savable(){return true;}
+    public boolean isSavable(){return true;}
+	public void setSavable(boolean truefalse){}
 
     public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS","NAME"};
@@ -382,14 +383,5 @@ public class DefaultSocial implements Social
 	public int numEffects(){ return 0;}
 	public Ability fetchEffect(int index){return null;}
 	public Ability fetchEffect(String ID){return null;}
-	public void addBehavior(Behavior to){}
-	public void delBehavior(Behavior to){}
-	public int numBehaviors(){return 0;}
-	public Behavior fetchBehavior(int index){return null;}
-	public Behavior fetchBehavior(String ID){return null;}
-    public void addScript(ScriptingEngine S){}
-    public void delScript(ScriptingEngine S) {}
-    public int numScripts(){return 0;}
-    public ScriptingEngine fetchScript(int x){ return null;}
 	public boolean isGeneric(){return false;}
 }

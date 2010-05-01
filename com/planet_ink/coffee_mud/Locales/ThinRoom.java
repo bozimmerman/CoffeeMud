@@ -43,7 +43,8 @@ public class ThinRoom implements Room {
 	public String displayText(){return "";}
 	public int maxRange(){return 5;}
 	public int minRange(){return 0;}
-	public boolean savable(){ return false;}
+	public boolean isSavable(){ return false;}
+	public void setSavable(boolean truefalse){}
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
 	protected String roomID="";
 	protected Area myArea=null;
@@ -240,11 +241,13 @@ public class ThinRoom implements Room {
 	public void addBehavior(Behavior to){}
 	public void delBehavior(Behavior to){}
 	public int numBehaviors(){return 0;}
+    public Enumeration<Behavior> behaviors() { return new EmptyEnumeration<Behavior>();}
 	public Behavior fetchBehavior(int index){return null;}
 	public Behavior fetchBehavior(String ID){return null;}
     public void addScript(ScriptingEngine S){}
     public void delScript(ScriptingEngine S) {}
     public int numScripts(){return 0;}
+    public Enumeration<ScriptingEngine> scripts() { return new EmptyEnumeration<ScriptingEngine>();}
     public ScriptingEngine fetchScript(int x){ return null;}
 	public boolean isGeneric(){return false;}
 	public int getSaveStatIndex(){return getStatCodes().length;}

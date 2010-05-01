@@ -26,8 +26,8 @@ limitations under the License.
 * @author Bo Zimmerman
 *
 */
-public interface Affectable {
-
+public interface Affectable 
+{
 	/**
      * Object containing a set of base, unmodified, mostly numeric fields.  The values on the fields
      * in this object will be as they were set by the builder. This object is used as a basis for
@@ -71,7 +71,7 @@ public interface Affectable {
      * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#baseEnvStats()
      * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#envStats()
      * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#addEffect(Ability)
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#addBehavior(Behavior)
+     * @see com.planet_ink.coffee_mud.core.interfaces.ActiveEnvironmental#addBehavior(Behavior)
      * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats
      */
 	public void recoverEnvStats();
@@ -125,5 +125,4 @@ public interface Affectable {
      * @return the ability object effecting this object
      */
 	public Ability fetchEffect(String ID);
-
 }

@@ -798,7 +798,7 @@ public class MOBloader
         for(int i=0;i<mob.inventorySize();i++)
         {
             Item thisItem=mob.fetchInventory(i);
-            if((thisItem!=null)&&(!done.contains(""+thisItem))&&(thisItem.savable()))
+            if((thisItem!=null)&&(!done.contains(""+thisItem))&&(thisItem.isSavable()))
             {
             	CMLib.catalog().updateCatalogIntegrity(thisItem);
                 String str="INSERT INTO CMCHIT (CMUSERID, CMITNM, CMITID, CMITTX, CMITLO, CMITWO, "
@@ -930,13 +930,13 @@ public class MOBloader
         for(int a=0;a<mob.numLearnedAbilities();a++)
         {
             Ability thisAbility=mob.fetchAbility(a);
-            if((thisAbility!=null)&&(thisAbility.savable()))
+            if((thisAbility!=null)&&(thisAbility.isSavable()))
             {
                 int proficiency=thisAbility.proficiency();
                 Ability effectA=mob.fetchEffect(thisAbility.ID());
                 if(effectA!=null)
                 {
-                    if((effectA.savable())&&(!effectA.canBeUninvoked())&&(!effectA.isAutoInvoked())) proficiency=proficiency-200;
+                    if((effectA.isSavable())&&(!effectA.canBeUninvoked())&&(!effectA.isAutoInvoked())) proficiency=proficiency-200;
                 }
                 H.add(thisAbility.ID());
                 String str="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
@@ -947,20 +947,20 @@ public class MOBloader
         for(int a=0;a<mob.numEffects();a++)
         {
             Ability thisAffect=mob.fetchEffect(a);
-            if((thisAffect!=null)&&(!H.contains(thisAffect.ID()))&&(thisAffect.savable())&&(!thisAffect.canBeUninvoked()))
+            if((thisAffect!=null)&&(!H.contains(thisAffect.ID()))&&(thisAffect.isSavable())&&(!thisAffect.canBeUninvoked()))
             {
                 String str="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
                 +") values ('"+mob.Name()+"','"+thisAffect.ID()+"',"+Integer.MAX_VALUE+",'"+thisAffect.text()+"')";
                 statements.addElement(str);
             }
         }
-        for(int b=0;b<mob.numBehaviors();b++)
-        {
-            Behavior thisBehavior=mob.fetchBehavior(b);
-            if((thisBehavior!=null)&&(thisBehavior.isSavable()))
+		for(Enumeration<Behavior> e=mob.behaviors();e.hasMoreElements();)
+		{
+			Behavior B=e.nextElement();
+            if((B!=null)&&(B.isSavable()))
             {
                 String str="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
-                +") values ('"+mob.Name()+"','"+thisBehavior.ID()+"',"+(Integer.MIN_VALUE+1)+",'"+thisBehavior.getParms()+"'"
+                +") values ('"+mob.Name()+"','"+B.ID()+"',"+(Integer.MIN_VALUE+1)+",'"+B.getParms()+"'"
                 +")";
                 statements.addElement(str);
             }

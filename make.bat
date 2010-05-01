@@ -80,6 +80,6 @@ GOTO :FINISH
 
 :DOCS
 
-%Java_Home%\bin\javadoc -d .\docs -J-Xmx256m -subpackages com.planet_ink.coffee_mud 
+%Java_Home%\bin\javadoc -d .\docs -J-Xmx512m -subpackages com.planet_ink.coffee_mud 
 
 :FINISH

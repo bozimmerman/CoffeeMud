@@ -57,7 +57,7 @@ public interface GenericBuilder extends CMLibrary
     public String getPropertiesStr(Environmental E, boolean fromTop);
     public String getOrdPropertiesStr(Environmental E);
     public String getGenMobAbilities(MOB M);
-    public String getGenScripts(Environmental E, boolean includeVars);
+    public String getGenScripts(ActiveEnvironmental E, boolean includeVars);
     public String getGenMobInventory(MOB M);
     public String getGenPropertiesStr(Environmental E);
     public String unpackErr(String where, String msg);
@@ -92,7 +92,7 @@ public interface GenericBuilder extends CMLibrary
     public void setPropertiesStr(Environmental E, Vector V, boolean fromTop);
     public void setOrdPropertiesStr(Environmental E, Vector V);
     public void setGenMobAbilities(MOB M, Vector buf);
-    public void setGenScripts(Environmental E, Vector buf, boolean restoreVars);
+    public void setGenScripts(ActiveEnvironmental E, Vector buf, boolean restoreVars);
     public void setGenMobInventory(MOB M, Vector buf);
     public void populateShops(Environmental E, Vector buf);
     public void setGenPropertiesStr(Environmental E, Vector buf);

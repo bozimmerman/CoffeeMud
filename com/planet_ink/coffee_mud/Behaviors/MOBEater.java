@@ -56,7 +56,7 @@ public class MOBEater extends ActiveTicker
 	    pctAcidHp=CMParms.getParmInt(parms,"acidpct",50);
 	}
 
-	public void startBehavior(Environmental forMe)
+	public void startBehavior(ActiveEnvironmental forMe)
 	{
         if(Stomach==null)
     		Stomach = CMClass.getLocale("StdRoom");

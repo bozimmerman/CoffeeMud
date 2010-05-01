@@ -98,9 +98,9 @@ public class Spell_Augury extends Spell
 				{
 					MOB mon=room.fetchInhabitant(m);
 					if(mon!=null)
-						for(int b=0;b<mon.numBehaviors();b++)
+						for(Enumeration<Behavior> e=mob.behaviors();e.hasMoreElements();)
 						{
-							Behavior B=mon.fetchBehavior(b);
+							Behavior B=e.nextElement();
 							if((B!=null)&&(B.grantsAggressivenessTo(mob)))
 							{
 								aggressiveMonster=true;

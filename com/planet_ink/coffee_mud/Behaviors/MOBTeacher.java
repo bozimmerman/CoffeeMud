@@ -43,7 +43,7 @@ public class MOBTeacher extends CombatAbilities
 	protected boolean noExpertises=false; // doubles as a "done ticking" flag
 	protected int tickDownToKnowledge=4;
 
-	public void startBehavior(Environmental forMe)
+	public void startBehavior(ActiveEnvironmental forMe)
 	{
 		if(forMe instanceof MOB)
 			myMOB=(MOB)forMe;

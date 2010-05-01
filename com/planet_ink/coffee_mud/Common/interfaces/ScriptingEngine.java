@@ -67,7 +67,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
      * @param tmp miscellaneous local variables
      * @return N/A
      */
-    public String execute(Environmental scripted,
+    public String execute(ActiveEnvironmental scripted,
                           MOB source,
                           Environmental target,
                           MOB monster,
@@ -117,7 +117,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
      * @param startEval while line to start evaluating on.
      * @return true if the expression is true, false otherwise.
      */
-    public boolean eval(Environmental scripted,
+    public boolean eval(ActiveEnvironmental scripted,
                         MOB source,
                         Environmental target,
                         MOB monster,
@@ -136,7 +136,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
      * @param quest the name of the quest being ended
      * @return true if a quest ending trigger was found and run
      */
-    public boolean endQuest(Environmental hostObj, MOB mob, String quest);
+    public boolean endQuest(ActiveEnvironmental hostObj, MOB mob, String quest);
 
     /**
      * Returns the script or load command(s).
@@ -299,7 +299,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
     {
         private int tickDelay=0;
         /** (host) the object being scripted */
-        public Environmental h=null;
+        public ActiveEnvironmental h=null;
         /** (source) the source of the event */
         public MOB s=null;
         /** (target) the target of the event */
@@ -327,7 +327,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
          * @param ticks how many ticks to wait before executing the script
          * @param msg a string associated with this event
          */
-        public ScriptableResponse(Environmental host,
+        public ScriptableResponse(ActiveEnvironmental host,
                                   MOB source,
                                   Environmental target,
                                   MOB monster,

@@ -389,7 +389,7 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
      * a quest-specific object thats being added to the map, so that it
      * can be cleaned up later.  Ditto for abilities, affects, and behaviors.
      * this method should only be used WHILE a quest script is being interpreted
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterBehavior(Environmental, String, String, boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterBehavior(ActiveEnvironmental, String, String, boolean)
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterEffect(Environmental, String, String, boolean)
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterObject(Environmental)
      * @param mob the mob receiving the ability
@@ -403,7 +403,7 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
      * that is being added to the map, so that it can be cleaned up later.
      * this method should only be used WHILE a quest script is being interpreted
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterAbility(MOB, String, String, boolean)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterBehavior(Environmental, String, String, boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterBehavior(ActiveEnvironmental, String, String, boolean)
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterEffect(Environmental, String, String, boolean)
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
      * @param object the object added to the map
@@ -415,7 +415,7 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
      * called to add an effect to the given object.
      * this method should only be used WHILE a quest script is being interpreted
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterAbility(MOB, String, String, boolean)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterBehavior(Environmental, String, String, boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterBehavior(ActiveEnvironmental, String, String, boolean)
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterObject(Environmental)
      * @param affected the object receiving the effect
      * @param abilityID the id of the effect
@@ -436,7 +436,7 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
      * @param parms any behavior parameters
      * @param give false to remove this behavior, true to replace an existing one
      */
-    public void runtimeRegisterBehavior(Environmental behaving, String behaviorID, String parms, boolean give);
+    public void runtimeRegisterBehavior(ActiveEnvironmental behaving, String behaviorID, String parms, boolean give);
     
     /**
      * Registers the given player name as having won this quest.  The name

@@ -36,12 +36,12 @@ import java.util.*;
 public class GenWallpaper implements Item
 {
 	public String ID(){	return "GenWallpaper";}
-	protected String 	name="some wallpaper";
-	protected byte[] 	description=null;
-	protected String	readableText="";
-	protected EnvStats envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
-	protected boolean destroyed=false;
-	protected Environmental owner=null;
+	protected String 		name="some wallpaper";
+	protected byte[] 		description=null;
+	protected String		readableText="";
+	protected EnvStats 		envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+	protected boolean 		destroyed=false;
+	protected ItemPossessor owner=null;
 	//protected String databaseID="";
 
     public GenWallpaper()
@@ -108,8 +108,8 @@ public class GenWallpaper implements Item
 	}
 
     public int recursiveWeight(){return envStats().weight();}
-	public Environmental owner(){return owner;}
-	public void setOwner(Environmental E)
+	public ItemPossessor owner(){return owner;}
+	public void setOwner(ItemPossessor E)
 	{ owner=E;}
 	public long expirationDate(){return 0;}
 	public void setExpirationDate(long time){}
@@ -202,7 +202,8 @@ public class GenWallpaper implements Item
 	public void setContainer(Item newContainer){}
 	public int usesRemaining(){return Integer.MAX_VALUE;}
 	public void setUsesRemaining(int newUses){}
-	public boolean savable(){return CMLib.flags().isSavable(this);}
+	public boolean isSavable(){return CMLib.flags().isSavable(this);}
+	public void setSavable(boolean truefalse){ CMLib.flags().setSavable(this, truefalse);}
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		MOB mob=msg.source();
@@ -288,17 +289,19 @@ public class GenWallpaper implements Item
 	public int numEffects(){return 0;}
 	public Ability fetchEffect(int index){return null;}
 	public Ability fetchEffect(String ID){return null;}
+	public int maxRange(){return 0;}
+	public int minRange(){return 0;}
 	public void addBehavior(Behavior to){}
 	public void delBehavior(Behavior to){}
 	public int numBehaviors(){return 0;}
+    public Enumeration<Behavior> behaviors() { return new EmptyEnumeration<Behavior>();}
 	public Behavior fetchBehavior(int index){return null;}
 	public Behavior fetchBehavior(String ID){return null;}
     public void addScript(ScriptingEngine S){}
     public void delScript(ScriptingEngine S) {}
     public int numScripts(){return 0;}
+    public Enumeration<ScriptingEngine> scripts() { return new EmptyEnumeration<ScriptingEngine>();}
     public ScriptingEngine fetchScript(int x){ return null;}
-	public int maxRange(){return 0;}
-	public int minRange(){return 0;}
 
     public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS","NAME","DESCRIPTION","ISREADABLE","READABLETEXT"};

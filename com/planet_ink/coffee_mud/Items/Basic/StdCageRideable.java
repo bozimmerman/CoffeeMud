@@ -64,12 +64,10 @@ public class StdCageRideable extends StdRideable
                 CMLib.commands().handleBeingLookedAt(msg);
                 isOpen=wasOpen;
             }
-			for(int b=0;b<numBehaviors();b++)
-			{
-				Behavior B=fetchBehavior(b);
-				if(B!=null)
-					B.executeMsg(this,msg);
-			}
+            if(behaviors!=null)
+	    		for(Behavior B : behaviors)
+					if(B!=null)
+						B.executeMsg(this,msg);
 
 			for(int a=0;a<numEffects();a++)
 			{

@@ -80,7 +80,7 @@ public class Practice extends StdCommand
 			mob.tell("You don't seem to know "+abilityName+".");
 			return false;
 		}
-		if(!myAbility.savable())
+		if(!myAbility.isSavable())
 		{
 			mob.tell(abilityName+" cannot be practiced, as it is a native skill.");
 			return false;

@@ -39,7 +39,7 @@ public class Clericness extends CombatAbilities
 
 	boolean confirmedSetup=false;
 
-	public void startBehavior(Environmental forMe)
+	public void startBehavior(ActiveEnvironmental forMe)
 	{
 		super.startBehavior(forMe);
 		if(!(forMe instanceof MOB)) return;

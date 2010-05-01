@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_mud.core.interfaces;
 
+import java.util.Enumeration;
+
 import com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior;
 import com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine;
 
@@ -24,8 +26,8 @@ limitations under the License.
 * @author Bo Zimmerman
 *
 */
-public interface Behavable {
-
+public interface ActiveEnvironmental extends Environmental
+{
     /**
      * Add a new behavior to this object.  After calling this method,
      * recoverEnvStats() should be called next in case this behavior object modifies the stats.
@@ -71,6 +73,12 @@ public interface Behavable {
      */
 	public Behavior fetchBehavior(String ID);
 
+	/**
+	 * Returns an enumerator of all the behaviors on this object.
+     * @see com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior
+	 * @return an enumerator of all the behaviors on this object.
+	 */
+	public Enumeration<Behavior> behaviors();
 
     /**
      * Add a new runnable script to this object.  Objects which are
@@ -102,4 +110,12 @@ public interface Behavable {
      * @return the scripting engine
      */
     public ScriptingEngine fetchScript(int x);
+    
+	/**
+	 * Returns an enumerator of all the scripts on this object.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine
+	 * @return an enumerator of all the scripts on this object.
+	 */
+	public Enumeration<ScriptingEngine> scripts();
+	
 }

@@ -799,9 +799,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                         A.unInvoke();
                 }
             }
-            for(int b=0;b<oldR.numBehaviors();b++)
-            {
-                Behavior B=oldR.fetchBehavior(b);
+			for(Enumeration<Behavior> e=oldR.behaviors();e.hasMoreElements();)
+			{
+				Behavior B=e.nextElement();
                 if(B!=null)
                     oldBehavsNEffects.addElement(B);
             }
@@ -828,7 +828,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             while(oldR.numInhabitants()>(skip))
             {
                 MOB M=oldR.fetchInhabitant(skip);
-                if(M.savable())
+                if(M.isSavable())
                 {
                     if(!allmobs.contains(M))
                         allmobs.addElement(M);
@@ -2895,7 +2895,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         }
     }
 
-    public void genBehaviors(MOB mob, Environmental E, int showNumber, int showFlag)
+    public void genBehaviors(MOB mob, ActiveEnvironmental E, int showNumber, int showFlag)
         throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2903,9 +2903,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
         {
             String behaviorstr="";
-            for(int b=0;b<E.numBehaviors();b++)
-            {
-                Behavior B=E.fetchBehavior(b);
+			for(Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
+			{
+				Behavior B=e.nextElement();
                 if((B!=null)&&(B.isSavable()))
                 {
                     behaviorstr+=B.ID();
@@ -2927,9 +2927,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 else
                 {
                     Behavior chosenOne=null;
-                    for(int b=0;b<E.numBehaviors();b++)
-                    {
-                        Behavior B=E.fetchBehavior(b);
+        			for(Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
+        			{
+        				Behavior B=e.nextElement();
                         if((B!=null)&&(B.ID().equalsIgnoreCase(behave)))
                             chosenOne=B;
                     }
@@ -2944,9 +2944,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                         if(chosenOne!=null)
                         {
                             boolean alreadyHasIt=false;
-                            for(int b=0;b<E.numBehaviors();b++)
-                            {
-                                Behavior B=E.fetchBehavior(b);
+                			for(Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
+                			{
+                				Behavior B=e.nextElement();
                                 if((B!=null)&&(B.ID().equals(chosenOne.ID())))
                                 {
                                     alreadyHasIt=true;
@@ -2992,7 +2992,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             for(int b=0;b<E.numEffects();b++)
             {
                 Ability A=E.fetchEffect(b);
-                if((A!=null)&&(A.savable()))
+                if((A!=null)&&(A.isSavable()))
                 {
                     affectstr+=A.ID();
                     if(A.text().trim().length()>0)
@@ -3420,7 +3420,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             for(int a=0;a<E.numLearnedAbilities();a++)
             {
                 Ability A=E.fetchAbility(a);
-                if((A!=null)&&(A.savable()))
+                if((A!=null)&&(A.isSavable()))
                     abilitiestr+=A.ID()+", ";
             }
             if(abilitiestr.length()>0)
@@ -3490,7 +3490,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             for(int b=0;b<V.size();b++)
             {
                 Ability A=(Ability)V.elementAt(b);
-                if((A!=null)&&(A.savable()))
+                if((A!=null)&&(A.isSavable()))
                 {
                     affectstr+=A.ID();
                     if(A.text().trim().length()>0)
@@ -3714,7 +3714,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             for(int a=0;a<E.numBlessings();a++)
             {
                 Ability A=E.fetchBlessing(a);
-                if((A!=null)&&(A.savable()))
+                if((A!=null)&&(A.isSavable()))
                     abilitiestr+=A.ID()+", ";
             }
             if(abilitiestr.length()>0)
@@ -3783,7 +3783,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             for(int a=0;a<E.numCurses();a++)
             {
                 Ability A=E.fetchCurse(a);
-                if((A!=null)&&(A.savable()))
+                if((A!=null)&&(A.isSavable()))
                     abilitiestr+=A.ID()+", ";
             }
             if(abilitiestr.length()>0)
@@ -3852,7 +3852,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             for(int a=0;a<E.numPowers();a++)
             {
                 Ability A=E.fetchPower(a);
-                if((A!=null)&&(A.savable()))
+                if((A!=null)&&(A.isSavable()))
                     abilitiestr+=A.ID()+", ";
             }
             if(abilitiestr.length()>0)
@@ -6233,10 +6233,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
         {
             String behaviorstr="";
-            for(int b=0;b<E.numScripts();b++)
-            {
-                ScriptingEngine B=E.fetchScript(b);
-                if(B!=null) behaviorstr+=(b+1)+":"+B.defaultQuestName()+", ";
+            int b=1;
+    		for(Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();b++)
+    		{
+    			ScriptingEngine SE=e.nextElement();
+                if(SE!=null) behaviorstr+=b+":"+SE.defaultQuestName()+", ";
             }
             if(behaviorstr.length()>0)
                 behaviorstr=behaviorstr.substring(0,behaviorstr.length()-2);
@@ -7179,7 +7180,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             genMoney(mob,mme,++showNumber,showFlag);
             mme.setMoneyVariation(CMath.s_double(prompt(mob,""+mme.getMoneyVariation(),++showNumber,showFlag,"Money Variation")));
             genAbilities(mob,mme,++showNumber,showFlag);
-            genBehaviors(mob,me,++showNumber,showFlag);
+            if(me instanceof ActiveEnvironmental)
+	            genBehaviors(mob,(ActiveEnvironmental)me,++showNumber,showFlag);
             genAffects(mob,me,++showNumber,showFlag);
             if(!(me instanceof Auctioneer))
             {

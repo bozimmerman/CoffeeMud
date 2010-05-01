@@ -774,8 +774,9 @@ public class StdGrid extends StdRoom implements GridLocale
 
 		for(int a=0;a<numEffects();a++)
 			gc.addEffect((Ability)fetchEffect(a).copyOf());
-		for(int b=0;b<numBehaviors();b++)
-			gc.addBehavior((Behavior)fetchBehavior(b).copyOf());
+		if(behaviors != null)
+			for(Behavior B : behaviors)
+				gc.addBehavior((Behavior)B.copyOf());
 		return gc;
 	}
 

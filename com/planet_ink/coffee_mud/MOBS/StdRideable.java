@@ -97,16 +97,16 @@ public class StdRideable extends StdMOB implements Rideable
 		return true;
 	}
 	
-	public boolean savable()
+	public boolean isSavable()
 	{
 		Rider R=null;
 		for(int r=0;r<numRiders();r++)
 		{
 			R=fetchRider(r);
-			if(!R.savable())
+			if(!R.isSavable())
 				return false;
 		}
-		return super.savable();
+		return super.isSavable();
 	}
 	
 	// common item/mob stuff

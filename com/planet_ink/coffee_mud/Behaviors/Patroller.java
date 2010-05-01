@@ -376,7 +376,7 @@ public class Patroller extends ActiveTicker
                             mob.setRiding((Rideable)ticking);
 							// overboard check
 							if(mob.isMonster() 
-							&& mob.savable()
+							&& mob.isSavable()
 							&& (mob.location() != thisRoom)
 							&& CMLib.flags().isInTheGame(R,true))
 								thisRoom.bringMobHere((MOB)R,false);

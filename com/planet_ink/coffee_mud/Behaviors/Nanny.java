@@ -825,7 +825,7 @@ public class Nanny extends StdBehavior
 	        	{
 	        		M=R.fetchInhabitant(i);
 	        		if((M!=null)
-	        		&&(M.savable())
+	        		&&(M.isSavable())
 	        		&&(CMLib.flags().isMobile(M))
 	        		&&(M.getStartRoom()==R)
 	        		&&(!mobsToSave.contains(M)))
@@ -853,7 +853,7 @@ public class Nanny extends StdBehavior
 	        	{
 	        		I=R.fetchItem(i);
 	        		if((I!=null)
-	        		&&(I.savable())
+	        		&&(I.isSavable())
 					&&((!CMLib.flags().isGettable(I))||(I.displayText().length()==0))
 	        		&&(!itemsToSave.contains(I)))
 	        			itemsToSave.addElement(I);

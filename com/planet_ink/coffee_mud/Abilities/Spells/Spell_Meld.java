@@ -96,7 +96,7 @@ public class Spell_Meld extends Spell
 			return false;
 		}
 
-		Environmental melded=null;
+		Item melded=null;
 
 		if((itemOne instanceof Armor)&&(itemTwo instanceof Armor))
 		{
@@ -343,14 +343,14 @@ public class Spell_Meld extends Spell
 						if((aff!=null)&&(melded.fetchEffect(aff.ID())==null))
 							melded.addEffect(aff);
 					}
-					for(int a=0;a<itemOne.numBehaviors();a++)
+					for(Enumeration<Behavior> e=itemOne.behaviors();e.hasMoreElements();)
 					{
-						Behavior B=itemOne.fetchBehavior(a);
+						Behavior B=e.nextElement();
 						if(B!=null)	melded.addBehavior(B);
 					}
-					for(int a=0;a<itemTwo.numBehaviors();a++)
+					for(Enumeration<Behavior> e=itemTwo.behaviors();e.hasMoreElements();)
 					{
-						Behavior B=itemTwo.fetchBehavior(a);
+						Behavior B=e.nextElement();
 						if(B!=null)	melded.addBehavior(B);
 					}
 					melded.recoverEnvStats();

@@ -39,7 +39,7 @@ public class MoneyChanger extends StdBehavior
 	public Hashtable rates=new Hashtable();
 	public double cut=0.05;
 
-	public void startBehavior(Environmental forMe)
+	public void startBehavior(ActiveEnvironmental forMe)
 	{
 		if(forMe==null) return;
 		if(!(forMe instanceof MOB)) return;

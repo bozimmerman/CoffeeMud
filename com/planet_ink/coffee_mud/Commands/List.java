@@ -274,12 +274,12 @@ public class List extends StdCommand
 
 	}
 	
-	public void addScripts(DVector DV, Room R, ShopKeeper SK, MOB M, Item I, Environmental E)
+	public void addScripts(DVector DV, Room R, ShopKeeper SK, MOB M, Item I, ActiveEnvironmental E)
 	{
 		if(E==null) return;
-		for(int b=0;b<E.numBehaviors();b++)
+		for(Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
 		{
-			Behavior B=E.fetchBehavior(b);
+			Behavior B=e.nextElement();
 			if(B instanceof ScriptingEngine)
 			{
 				Vector files=B.externalFiles();
@@ -290,9 +290,9 @@ public class List extends StdCommand
 					DV.addElement("*Custom*"+nonFiles.trim(),E,R,M,I,B);
 			}
 		}
-		for(int s=0;s<E.numScripts();s++)
+		for(Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();)
 		{
-			ScriptingEngine SE=E.fetchScript(s);
+			ScriptingEngine SE=e.nextElement();
 			Vector files=SE.externalFiles();
 			for(int f=0;f<files.size();f++)
 				DV.addElement(files.elementAt(f),E,R,M,I,SE);
@@ -311,7 +311,8 @@ public class List extends StdCommand
 			for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 			{
 				Environmental E2=(Environmental)i.next();
-				addScripts(DV,R,SK,M,I,E2);
+				if(E2 instanceof ActiveEnvironmental)
+					addScripts(DV,R,SK,M,I,(ActiveEnvironmental)E2);
 			}
 		}
 	}

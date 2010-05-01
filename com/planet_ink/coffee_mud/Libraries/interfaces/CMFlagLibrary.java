@@ -38,7 +38,6 @@ public interface CMFlagLibrary extends CMLibrary
     
     public boolean canSee(MOB E);
     public boolean canBeLocated(Environmental E);
-    public boolean isSavable(Environmental E);
     public boolean canSeeHidden(MOB E);
     public boolean canSeeInvisible(MOB E);
     public boolean canSeeEvil(MOB E);
@@ -62,6 +61,8 @@ public interface CMFlagLibrary extends CMLibrary
     public boolean isDroppable(Item I);
     public boolean isCataloged(Environmental E);
     public boolean isRemovable(Item I);
+    public boolean isSavable(Environmental E);
+    public void setSavable(Environmental E, boolean truefalse);
     public boolean hasSeenContents(Environmental E);
     public void setReadable(Item I, boolean truefalse);
     public void setGettable(Item I, boolean truefalse);
@@ -107,12 +108,12 @@ public interface CMFlagLibrary extends CMLibrary
     public boolean isInFlight(Environmental E);
     public boolean isAnimalIntelligence(MOB E);
     public boolean isVegetable(MOB E);
-    public boolean isMobile(Environmental E);
+    public boolean isMobile(ActiveEnvironmental E);
     public boolean isAggressiveTo(MOB M, MOB toM);
     public boolean isPossiblyAggressive(MOB M);
 	public boolean isChild(Environmental E);
 	public boolean isBaby(Environmental E);
-    public Vector flaggedBehaviors(Environmental E, long flag);
+    public Vector<Behavior> flaggedBehaviors(ActiveEnvironmental E, long flag);
     public Vector flaggedAnyAffects(Environmental E, long flag);
     public Vector flaggedAffects(Environmental E, long flag);
     public Vector flaggedAbilities(MOB E, long flag);

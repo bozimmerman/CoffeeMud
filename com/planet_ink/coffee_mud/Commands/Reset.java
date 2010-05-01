@@ -672,7 +672,7 @@ public class Reset extends StdCommand
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						MOB M=R.fetchInhabitant(m);
-						if((M.savable())
+						if((M.isSavable())
 						&&(!CMLib.flags().isCataloged(M))
 						&&(M.getStartRoom()==R))
 							somethingDone=fixMob(M,recordedChanges) || somethingDone;
@@ -898,7 +898,7 @@ public class Reset extends StdCommand
 							{
 								MOB M=R.fetchInhabitant(m);
 								if(M==mob) continue;
-								if(!M.savable()) continue;
+								if(!M.isSavable()) continue;
 								for(int i=0;i<M.inventorySize();i++)
 									changedMOBS=changedMOBS||(rightImportMat(null,M.fetchInventory(i),false)>=0);
 								ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
@@ -1038,7 +1038,7 @@ public class Reset extends StdCommand
 					{
 						MOB M=R.fetchInhabitant(m);
 						if((M==mob)||(!M.isMonster())) continue;
-						if(!M.savable()) continue;
+						if(!M.isSavable()) continue;
 						for(int i=0;i<M.inventorySize();i++)
 						{
 							Item I=M.fetchInventory(i);
@@ -1130,7 +1130,7 @@ public class Reset extends StdCommand
 					{
 						MOB M=R.fetchInhabitant(m);
 						if(M==mob) continue;
-						if(!M.savable()) continue;
+						if(!M.isSavable()) continue;
 						Race R2=(Race)rememberM.get(M.Name());
 						if(R2!=null)
 						{
@@ -1251,9 +1251,9 @@ public class Reset extends StdCommand
 							somethingDone=true;
 							M.delAbility(M.fetchAbility("Chopping"));
 						}
-						for(int i=0;i<M.numBehaviors();i++)
+						for(Enumeration<Behavior> e=M.behaviors();e.hasMoreElements();)
 						{
-							Behavior B=M.fetchBehavior(i);
+							Behavior B=e.nextElement();
 							if((B.ID().equalsIgnoreCase("Mobile"))
 							&&(B.getParms().trim().length()>0))
 							{

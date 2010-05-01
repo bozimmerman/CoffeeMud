@@ -37,28 +37,47 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 {
 	protected static Climate climateObj=null;
 	
-	public long[] 				coordinates=new long[3];
-	public double[] 			direction=new double[2];
-	public long 				velocity=0;
-	public long 				accelleration=0;
-    protected String[]  		xtraValues=null;
-	protected Vector<Area>		parents=null;
-    protected Vector<String> 	parentsToLoad=new Vector<String>();
+	public long[] 			coordinates=new long[3];
+	public double[] 		direction=new double[2];
+	public long 			velocity=0;
+	public long 			accelleration=0;
+    protected String[]  	xtraValues=null;
+	protected Vector<Area>	parents=null;
+    protected Vector<String>parentsToLoad=new Vector<String>();
     protected STreeMap<String,String>
-    							blurbFlags=new STreeMap<String,String>();
-    protected String 			imageName="";
-	protected RoomnumberSet 	properRoomIDSet=null;
-	protected TimeClock 		localClock=(TimeClock)CMClass.getCommon("DefaultTimeClock");
-	protected String 			currency="";
-	private long 				expirationDate=0;
-	public SpaceObject 			spaceTarget=null;
-	public SpaceObject 			spaceSource=null;
-	public SpaceObject 			orbiting=null;
-	protected boolean 			amDestroyed=false;
+    						blurbFlags=new STreeMap<String,String>();
+    protected String 		imageName="";
+	protected RoomnumberSet properRoomIDSet=null;
+	protected TimeClock 	localClock=(TimeClock)CMClass.getCommon("DefaultTimeClock");
+	protected String 		currency="";
+	private long 			expirationDate=0;
+	public SpaceObject 		spaceTarget=null;
+	public SpaceObject 		spaceSource=null;
+	public SpaceObject 		orbiting=null;
+	protected boolean 		amDestroyed=false;
 	
+	protected String 		name="a space ship";
+	protected Room 			savedDock=null;
+	protected String 		description="";
+	protected String 		miscText="";
+	protected Vector 		myRooms=new Vector();
+	protected int 			flag=Area.STATE_ACTIVE;
+	protected long 			tickStatus=Tickable.STATUS_NOT;
+	protected String 		author=""; // will be used for owner, I guess.
+	protected SVector<Ability> 
+							affects=new SVector<Ability>(1);
+	protected SVector<Behavior> 
+							behaviors=new SVector<Behavior>(1);
+    protected SVector<ScriptingEngine> 
+    						scripts=new SVector<ScriptingEngine>(1);
+	protected EnvStats 		envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+	protected EnvStats 		baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+
+    
     public void initializeClass(){}
 	public long[] coordinates(){return coordinates;}
 	public double[] direction(){return direction;}
+	protected Room getDock(){ return CMLib.map().getRoom(savedDock);}
 	public void setClimateObj(Climate obj){climateObj=obj;}
 	public Climate getClimateObj()
 	{
@@ -70,6 +89,8 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		}
 		return climateObj;
 	}
+	public void setAuthorID(String authorID){author=authorID;}
+	public String getAuthorID(){return author;}
 	public TimeClock getTimeObj(){return localClock;}
 	public void setTimeObj(TimeClock obj){localClock=obj;}
 	public void setCurrency(String newCurrency){currency=newCurrency;}
@@ -113,26 +134,14 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
         amDestroyed=true;
     }
     public boolean amDestroyed(){return amDestroyed;}
-    public boolean savable(){return ((!amDestroyed) && (!CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD)));}
+    public boolean isSavable()
+    {
+    	return ((!amDestroyed) 
+    			&& (!CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD))
+    			&& (CMLib.flags().isSavable(this)));
+    }
+	public void setSavable(boolean truefalse){}
 	public String ID(){	return "StdSpaceShip";}
-	protected String name="a space ship";
-	protected Room savedDock=null;
-	protected Room getDock(){ return CMLib.map().getRoom(savedDock);}
-	protected String description="";
-	protected String miscText="";
-	protected Vector myRooms=new Vector();
-	protected int flag=Area.STATE_ACTIVE;
-	protected long tickStatus=Tickable.STATUS_NOT;
-	protected String author=""; // will be used for owner, I guess.
-	public void setAuthorID(String authorID){author=authorID;}
-	public String getAuthorID(){return author;}
-
-	protected EnvStats envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
-	protected EnvStats baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
-
-	protected Vector affects=new Vector(1);
-	protected Vector behaviors=new Vector(1);
-    protected Vector scripts=new Vector(1);
 	public int climateType(){return Area.CLIMASK_NORMAL;}
 	public void setClimateType(int newClimateType){}
 
@@ -217,15 +226,15 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		baseEnvStats=(EnvStats)E.baseEnvStats().copyOf();
 		envStats=(EnvStats)E.envStats().copyOf();
 
-		affects=new Vector(1);
-		behaviors=new Vector(1);
-        scripts=new Vector(1);
+		affects=new SVector<Ability>(1);
+		behaviors=new SVector<Behavior>(1);
+        scripts=new SVector<ScriptingEngine>(1);
 		parents=null;
 		if(E.parents!=null)
 			parents=(Vector)E.parents.clone();
-		for(int b=0;b<E.numBehaviors();b++)
+		for(Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
 		{
-			Behavior B=E.fetchBehavior(b);
+			Behavior B=e.nextElement();
 			if(B!=null)
 				behaviors.addElement(B);
 		}
@@ -233,14 +242,14 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		{
 			Ability A=E.fetchEffect(a);
 			if(A!=null)
-				affects.addElement(A.copyOf());
+				affects.addElement((Ability)A.copyOf());
 		}
-        ScriptingEngine S=null;
-        for(int i=0;i<E.numScripts();i++)
-        {
-            S=E.fetchScript(i);
-            if(S!=null)
-                addScript((ScriptingEngine)S.copyOf());
+        ScriptingEngine SE=null;
+		for(Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();)
+		{
+			SE=e.nextElement();
+            if(SE!=null)
+                addScript((ScriptingEngine)SE.copyOf());
         }
 		setTimeObj((TimeClock)CMClass.getCommon("DefaultTimeClock"));
 	}
@@ -438,20 +447,14 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		if(tickID==Tickable.TICKID_AREA)
 		{
 			getTimeObj().tick(this,tickID);
-			for(int b=0;b<numBehaviors();b++)
-			{
-				tickStatus=Tickable.STATUS_BEHAVIOR+b;
-				Behavior B=fetchBehavior(b);
+			tickStatus=Tickable.STATUS_BEHAVIOR;
+			for(Behavior B : behaviors)
 				if(B!=null)
 					B.tick(ticking,tickID);
-			}
-            for(int s=0;s<numScripts();s++)
-            {
-                ScriptingEngine S=fetchScript(s);
-                tickStatus=Tickable.STATUS_SCRIPT+s;
-                if(S!=null) 
-                    S.tick(ticking,tickID);
-            }
+            tickStatus=Tickable.STATUS_SCRIPT;
+            for(ScriptingEngine SE : scripts)
+                if(SE!=null) 
+                    SE.tick(ticking,tickID);
 
 			int a=0;
 			while(a<numEffects())
@@ -704,6 +707,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	{
 		return behaviors.size();
 	}
+    public Enumeration<Behavior> behaviors() { return behaviors.elements();}
 	public int maxRange(){return Integer.MAX_VALUE;}
 	public int minRange(){return Integer.MIN_VALUE;}
 
@@ -733,29 +737,21 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
     /** Manipulation of the scripts list */
     public void addScript(ScriptingEngine S)
     {
-        if(scripts==null) scripts=new Vector(1);
         if(S==null) return;
-        if(!scripts.contains(S)) {
-            ScriptingEngine S2=null;
-            for(int s=0;s<scripts.size();s++)
-            {
-                S2=(ScriptingEngine)scripts.elementAt(s);
-                if((S2!=null)&&(S2.getScript().equalsIgnoreCase(S.getScript())))
-                    return;
-            }
+        if(!scripts.contains(S)) 
+        {
+            for(ScriptingEngine S2 : scripts)
+	            if((S2!=null)&&(S2.getScript().equalsIgnoreCase(S.getScript())))
+	                return;
             scripts.addElement(S);
         }
     }
     public void delScript(ScriptingEngine S)
     {
-        if(scripts!=null)
-        {
-            scripts.removeElement(S);
-            if(scripts.size()==0)
-                scripts=new Vector(1);
-        }
+        scripts.removeElement(S);
     }
     public int numScripts(){return (scripts==null)?0:scripts.size();}
+    public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?new EmptyEnumeration<ScriptingEngine>():scripts.elements();}
     public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
     
     public void addProperRoom(Room R)
@@ -889,7 +885,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		}
 	}
 	public Enumeration<Room> getFilledProperMap() { return getProperMap();}
-	public Vector getSubOpVectorList(){	return new Vector();}
+	public Enumeration<String> subOps(){ return new EmptyEnumeration<String>();}
 
     public void addChildToLoad(String str){}
     public void addParentToLoad(String str) { parentsToLoad.addElement(str);}

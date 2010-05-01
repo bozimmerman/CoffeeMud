@@ -215,7 +215,7 @@ public class StdWeapon extends StdItem implements Weapon
 					for(int a=0;a<numEffects();a++)
 					{
 						Ability A=fetchEffect(a);
-						if((A!=null)&&(!A.savable())&&(A.invoker()==null))
+						if((A!=null)&&(!A.isSavable())&&(A.invoker()==null))
 						{
 							recover=true;
 							delEffect(A);
@@ -242,7 +242,7 @@ public class StdWeapon extends StdItem implements Weapon
 								for(int a=0;a<I.numEffects();a++)
 								{
 									Ability A=I.fetchEffect(a);
-									if((A!=null)&&(A.savable())&&(fetchEffect(A.ID())==null))
+									if((A!=null)&&(A.isSavable())&&(fetchEffect(A.ID())==null))
 									{
 										A=(Ability)A.copyOf();
 										A.setInvoker(null);

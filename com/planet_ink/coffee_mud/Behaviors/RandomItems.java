@@ -384,7 +384,7 @@ public class RandomItems extends ActiveTicker
 							for(int m=0;m<room.numInhabitants();m++)
 							{
 								MOB M=room.fetchInhabitant(m);
-								if((M.savable())&&(M.getStartRoom().getArea().inMyMetroArea(room.getArea())))
+								if((M.isSavable())&&(M.getStartRoom().getArea().inMyMetroArea(room.getArea())))
 									inhabs.addElement(M);
 							}
 							if(inhabs.size()>0)

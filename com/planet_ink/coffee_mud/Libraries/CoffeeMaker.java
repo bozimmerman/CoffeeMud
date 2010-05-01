@@ -187,8 +187,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				return CMLib.xml().convertXMLtoTag("XGRID",((GridLocale)E).xGridSize())
 					  +CMLib.xml().convertXMLtoTag("YGRID",((GridLocale)E).yGridSize())
 					  +getExtraEnvPropertiesStr(E)
-                      +getGenScripts(E,false);
-			return getExtraEnvPropertiesStr(E)+getGenScripts(E,false);
+                      +getGenScripts((Room)E,false);
+			return getExtraEnvPropertiesStr(E)+getGenScripts((Room)E,false);
 		}
 		else
 		if(E instanceof Area)
@@ -215,7 +215,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		    }
 		    str.append(CMLib.xml().convertXMLtoTag("CHILDREN",childrenstr.toString()));
 		    str.append(getExtraEnvPropertiesStr(E));
-            str.append(getGenScripts(E,false));
+            str.append(getGenScripts((Area)E,false));
 			str.append(CMLib.xml().convertXMLtoTag("AUTHOR",myArea.getAuthorID()));
 			str.append(CMLib.xml().convertXMLtoTag("CURRENCY",myArea.getCurrency()));
             Vector V=new Vector();
@@ -268,7 +268,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		for(int b=0;b<M.numLearnedAbilities();b++)
 		{
 			Ability A=M.fetchAbility(b);
-			if((A!=null)&&(A.savable()))
+			if((A!=null)&&(A.isSavable()))
 			{
 				abilitystr.append("<ABLTY>");
 				abilitystr.append(CMLib.xml().convertXMLtoTag("ACLASS",CMClass.classID(A)));
@@ -280,20 +280,20 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		return (CMLib.xml().convertXMLtoTag("ABLTYS",abilitystr.toString()));
 	}
 
-    public String getGenScripts(Environmental E, boolean includeVars)
+    public String getGenScripts(ActiveEnvironmental E, boolean includeVars)
     {
         StringBuffer scriptstr=new StringBuffer("");
-        for(int b=0;b<E.numScripts();b++)
-        {
-            ScriptingEngine S=E.fetchScript(b);
-            if((S!=null)&&(S.isSavable()))
+		for(Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();)
+		{
+			ScriptingEngine SE=e.nextElement();
+            if((SE!=null)&&(SE.isSavable()))
             {
                 scriptstr.append("<SCRPT>");
-                scriptstr.append(CMLib.xml().convertXMLtoTag("SCRIPT",CMLib.xml().parseOutAngleBrackets(S.getScript())));
-                scriptstr.append(CMLib.xml().convertXMLtoTag("SQN",""+S.defaultQuestName()));
-                scriptstr.append(CMLib.xml().convertXMLtoTag("SSCOP",S.getVarScope()));
-                if((includeVars)&&(S.getVarScope().equals("*")))
-                    scriptstr.append(CMLib.xml().convertXMLtoTag("SSVAR",S.getLocalVarXML()));
+                scriptstr.append(CMLib.xml().convertXMLtoTag("SCRIPT",CMLib.xml().parseOutAngleBrackets(SE.getScript())));
+                scriptstr.append(CMLib.xml().convertXMLtoTag("SQN",""+SE.defaultQuestName()));
+                scriptstr.append(CMLib.xml().convertXMLtoTag("SSCOP",SE.getVarScope()));
+                if((includeVars)&&(SE.getVarScope().equals("*")))
+                    scriptstr.append(CMLib.xml().convertXMLtoTag("SSVAR",SE.getLocalVarXML()));
                 scriptstr.append("</SCRPT>");
             }
         }
@@ -308,7 +308,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		for(int b=0;b<M.inventorySize();b++)
 		{
 			Item I=M.fetchInventory(b);
-			if((I!=null)&&(I.savable()))
+			if((I!=null)&&(I.isSavable()))
 			{
 				itemstr.append("<ITEM>");
 				itemstr.append(CMLib.xml().convertXMLtoTag("ICLASS",CMClass.classID(I)));
@@ -1190,7 +1190,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
         for(int i=0;i<mobs.size();i++)
         {
             MOB mob=(MOB)mobs.elementAt(i);
-            if(mob.savable())
+            if(mob.isSavable())
             {
                 Vector dups=(Vector)found.get(mob.Name()+mob.displayText());
                 if(dups==null)
@@ -1470,13 +1470,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		for(int i=0;i<items.size();i++)
 		{
 			Item item=(Item)items.elementAt(i);
-            if(item.savable())
+            if(item.isSavable())
     			buf.append(getUniqueItemXML(item,type,found,files));
 		}
 		for(int m=0;m<mobs.size();m++)
 		{
 			MOB M=(MOB)mobs.elementAt(m);
-			if((M!=null)&&(M.savable()))
+			if((M!=null)&&(M.isSavable()))
 			{
 				for(int i=0;i<M.inventorySize();i++)
 				{
@@ -1634,7 +1634,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				{
 					buf.append("<RITEM>");
 					Item item=(Item)items.elementAt(i);
-                    if(item.savable())
+                    if(item.isSavable())
                     {
     					buf.append(CMLib.xml().convertXMLtoTag("ICLAS",CMClass.classID(item)));
     					if(((item instanceof Container)&&(((Container)item).capacity()>0))
@@ -1711,7 +1711,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(E instanceof Room)
 		{
 			setExtraEnvProperties(E,V);
-            setGenScripts(E,V,false);
+            setGenScripts((Room)E,V,false);
 			if(E instanceof GridLocale)
 			{
 				((GridLocale)E).setXGridSize(CMLib.xml().getIntFromPieces(V,"XGRID"));
@@ -1763,7 +1763,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				((GridZones)E).setYGridSize(CMLib.xml().getIntFromPieces(V,"YGRID"));
 			}
 			setExtraEnvProperties(E,V);
-            setGenScripts(E,V,false);
+            setGenScripts((Area)E,V,false);
 		}
 		else
 		if(E instanceof Ability)
@@ -1832,7 +1832,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 	}
 
-    public void setGenScripts(Environmental E, Vector buf, boolean restoreVars)
+    public void setGenScripts(ActiveEnvironmental E, Vector buf, boolean restoreVars)
     {
         Vector V=CMLib.xml().getRealContentsFromPieces(buf,"SCRPTS");
         if(V==null) return;
@@ -2085,18 +2085,22 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(aff!=null)
 				E.delEffect(aff);
 		}
-		while(E.numBehaviors()>0)
+		if(E instanceof ActiveEnvironmental)
 		{
-			Behavior behav=E.fetchBehavior(0);
-			if(behav!=null)
-				E.delBehavior(behav);
+			ActiveEnvironmental B=(ActiveEnvironmental)E;
+			while(B.numBehaviors()>0)
+			{
+				Behavior behav=B.fetchBehavior(0);
+				if(behav!=null)
+					B.delBehavior(behav);
+			}
+	        while(B.numScripts()>0)
+	        {
+	            ScriptingEngine scrpt=B.fetchScript(0);
+	            if(scrpt!=null)
+	                B.delScript(scrpt);
+	        }
 		}
-        while(E.numScripts()>0)
-        {
-            ScriptingEngine scrpt=E.fetchScript(0);
-            if(scrpt!=null)
-                E.delScript(scrpt);
-        }
 
 		if(E instanceof MOB)
 		{
@@ -2704,25 +2708,28 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 		text.append(CMLib.xml().convertXMLtoTag("IMG",E.rawImage()));
 
-		StringBuffer behaviorstr=new StringBuffer("");
-		for(int b=0;b<E.numBehaviors();b++)
+		if(E instanceof ActiveEnvironmental)
 		{
-			Behavior B=E.fetchBehavior(b);
-			if(B!=null)
+			StringBuffer behaviorstr=new StringBuffer("");
+			for(Enumeration<Behavior> e=((ActiveEnvironmental)E).behaviors();e.hasMoreElements();)
 			{
-				behaviorstr.append("<BHAVE>");
-				behaviorstr.append(CMLib.xml().convertXMLtoTag("BCLASS",CMClass.classID(B)));
-				behaviorstr.append(CMLib.xml().convertXMLtoTag("BPARMS",CMLib.xml().parseOutAngleBrackets(B.getParms())));
-				behaviorstr.append("</BHAVE>");
+				Behavior B=e.nextElement();
+				if(B!=null)
+				{
+					behaviorstr.append("<BHAVE>");
+					behaviorstr.append(CMLib.xml().convertXMLtoTag("BCLASS",CMClass.classID(B)));
+					behaviorstr.append(CMLib.xml().convertXMLtoTag("BPARMS",CMLib.xml().parseOutAngleBrackets(B.getParms())));
+					behaviorstr.append("</BHAVE>");
+				}
 			}
+			text.append(CMLib.xml().convertXMLtoTag("BEHAVES",behaviorstr.toString()));
 		}
-		text.append(CMLib.xml().convertXMLtoTag("BEHAVES",behaviorstr.toString()));
 
 		StringBuffer affectstr=new StringBuffer("");
 		for(int a=0;a<E.numEffects();a++)
 		{
 			Ability A=E.fetchEffect(a);
-			if((A!=null)&&(A.savable()))
+			if((A!=null)&&(A.isSavable()))
 			{
 				affectstr.append("<AFF>");
 				affectstr.append(CMLib.xml().convertXMLtoTag("ACLASS",CMClass.classID(A)));
@@ -2749,21 +2756,25 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	public void fillFileSet(Environmental E, HashSet H)
 	{
 	    if(E==null) return;
-		for(int b=0;b<E.numBehaviors();b++)
-		{
-			Behavior B=E.fetchBehavior(b);
-			if(B!=null) fillFileSet(B.externalFiles(),H);
-		}
+	    if(E instanceof ActiveEnvironmental)
+	    {
+	    	ActiveEnvironmental AE=(ActiveEnvironmental)E;
+			for(Enumeration<Behavior> e=AE.behaviors();e.hasMoreElements();)
+			{
+				Behavior B=e.nextElement();
+				if(B!=null) fillFileSet(B.externalFiles(),H);
+			}
+			for(Enumeration<ScriptingEngine> e=AE.scripts();e.hasMoreElements();)
+			{
+				ScriptingEngine SE=e.nextElement();
+	            if(SE!=null) fillFileSet(SE.externalFiles(),H);
+	        }
+	    }
 		for(int a=0;a<E.numEffects();a++)
 		{
 			Ability A=E.fetchEffect(a);
-			if((A!=null)&&(A.savable())) fillFileSet(A.externalFiles(),H);
+			if((A!=null)&&(A.isSavable())) fillFileSet(A.externalFiles(),H);
 		}
-        for(int m=0;m<E.numScripts();m++)
-        {
-            ScriptingEngine S=E.fetchScript(m);
-            if(S!=null) fillFileSet(S.externalFiles(),H);
-        }
 		if(E instanceof MOB)
 		{
 		    MOB M=(MOB)E;
@@ -2816,7 +2827,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		text.append(CMLib.xml().convertXMLtoTag("DISP",E.displayText()));
 		text.append(CMLib.xml().convertXMLtoTag("PROP",getEnvStatsStr(E.baseEnvStats())));
 		text.append(getExtraEnvPropertiesStr(E));
-        text.append(getGenScripts(E,false));
+		if(E instanceof ActiveEnvironmental)
+	        text.append(getGenScripts((ActiveEnvironmental)E,false));
 		return text.toString();
 	}
 
@@ -2899,7 +2911,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		E.setDisplayText(CMLib.xml().getValFromPieces(buf,"DISP"));
 		setEnvStats(E.baseEnvStats(),CMLib.xml().getValFromPieces(buf,"PROP"));
 		setExtraEnvProperties(E,buf);
-        setGenScripts(E,buf,false);
+		if(E instanceof ActiveEnvironmental)
+			setGenScripts((ActiveEnvironmental)E,buf,false);
 	}
 
     public String identifier(Environmental E, Environmental parent)
@@ -2954,24 +2967,25 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			Log.errOut("CoffeeMaker","Error parsing 'BEHAVES' of "+identifier(E,null)+".  Load aborted");
 			return;
 		}
-		for(int i=0;i<V.size();i++)
-		{
-			XMLLibrary.XMLpiece ablk=(XMLLibrary.XMLpiece)V.elementAt(i);
-			if((!ablk.tag.equalsIgnoreCase("BHAVE"))||(ablk.contents==null))
+		if(E instanceof ActiveEnvironmental)
+			for(int i=0;i<V.size();i++)
 			{
-				Log.errOut("CoffeeMaker","Error parsing 'BHAVE' of "+identifier(E,null)+".  Load aborted");
-				return;
+				XMLLibrary.XMLpiece ablk=(XMLLibrary.XMLpiece)V.elementAt(i);
+				if((!ablk.tag.equalsIgnoreCase("BHAVE"))||(ablk.contents==null))
+				{
+					Log.errOut("CoffeeMaker","Error parsing 'BHAVE' of "+identifier(E,null)+".  Load aborted");
+					return;
+				}
+				Behavior newOne=CMClass.getBehavior(CMLib.xml().getValFromPieces(ablk.contents,"BCLASS"));
+				String bparms=CMLib.xml().getValFromPieces(ablk.contents,"BPARMS");
+				if(newOne==null)
+				{
+					Log.errOut("CoffeeMaker","Unknown behavior "+CMLib.xml().getValFromPieces(ablk.contents,"BCLASS")+" on "+identifier(E,null)+", skipping.");
+					continue;
+				}
+				newOne.setParms(CMLib.xml().restoreAngleBrackets(bparms));
+				((ActiveEnvironmental)E).addBehavior(newOne);
 			}
-			Behavior newOne=CMClass.getBehavior(CMLib.xml().getValFromPieces(ablk.contents,"BCLASS"));
-			String bparms=CMLib.xml().getValFromPieces(ablk.contents,"BPARMS");
-			if(newOne==null)
-			{
-				Log.errOut("CoffeeMaker","Unknown behavior "+CMLib.xml().getValFromPieces(ablk.contents,"BCLASS")+" on "+identifier(E,null)+", skipping.");
-				continue;
-			}
-			newOne.setParms(CMLib.xml().restoreAngleBrackets(bparms));
-			E.addBehavior(newOne);
-		}
         if(E instanceof Area)
         	addAutoPropsToAreaIfNecessary((Area)E);
 

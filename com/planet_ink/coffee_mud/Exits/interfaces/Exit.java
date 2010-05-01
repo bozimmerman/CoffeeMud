@@ -34,7 +34,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * travel when trying to get from one Room to another.
  * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
  */
-public interface Exit extends Environmental
+public interface Exit extends Environmental, ActiveEnvironmental
 {
     /**
      * Returns whether this exit is OPEN and may be travelled through

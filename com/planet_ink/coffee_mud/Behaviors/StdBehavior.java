@@ -81,10 +81,12 @@ public class StdBehavior implements Behavior
 		}
 	}
     public void registerDefaultQuest(String questName){}
-	public void startBehavior(Environmental forMe){}
+	public void startBehavior(ActiveEnvironmental forMe){}
     protected void finalize(){CMClass.unbumpCounter(this,CMClass.OBJECT_BEHAVIOR);}
     public void setSavable(boolean truefalse){isSavableBehavior=truefalse;}
     public boolean isSavable(){return isSavableBehavior;}
+    public boolean amDestroyed(){ return false;}
+    public void destroy() {parms="";}
 	protected MOB getBehaversMOB(Tickable ticking)
 	{
 		if(ticking==null) return null;
@@ -136,7 +138,7 @@ public class StdBehavior implements Behavior
 	}
 
 	public boolean canImprove(int can_code){return CMath.bset(canImproveCode(),can_code);}
-	public boolean canImprove(Environmental E)
+	public boolean canImprove(ActiveEnvironmental E)
 	{
 		if((E==null)&&(canImproveCode()==0)) return true;
 		if(E==null) return false;

@@ -32,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("unchecked")
-public interface Room extends Environmental, Affectable, Behavable
+public interface Room extends Environmental, Affectable, ActiveEnvironmental, ItemPossessor
 {
 	public String roomID();
 	public void setRoomID(String newRoomID);
@@ -234,7 +234,6 @@ public interface Room extends Environmental, Affectable, Behavable
 	public String getContextName(Environmental E);
 	
 	public void addItem(Item item);
-	public void addItemRefuse(Item item, int expireMins);
 	public void delItem(Item item);
 	public int numItems();
 	public boolean isContent(Item item);
@@ -243,6 +242,7 @@ public interface Room extends Environmental, Affectable, Behavable
 	public Item fetchAnyItem(String itemID);
 	public Vector fetchItems(Item goodLocation, String itemID);
 	public Vector fetchAnyItems(String itemID);
+	public void addItemRefuse(Item item, int expireMins);
 	public void bringItemHere(Item item, int expireMins, boolean andRiders);
 
 	public Environmental fetchFromRoomFavorItems(Item goodLocation, String thingName,int wornFilter);

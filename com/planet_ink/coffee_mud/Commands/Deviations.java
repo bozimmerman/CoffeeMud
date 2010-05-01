@@ -94,7 +94,7 @@ public class Deviations extends StdCommand
 			for(int m=0;m<R.numInhabitants();m++)
 			{
 				MOB M=R.fetchInhabitant(m);
-				if((M!=null)&&(M.savable())&&(!alreadyDone(M,check)))
+				if((M!=null)&&(M.isSavable())&&(!alreadyDone(M,check)))
 					check.addElement(M);
 			}
 		}

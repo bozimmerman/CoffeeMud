@@ -870,9 +870,9 @@ public class DefaultFaction implements Faction, MsgListener
             	{
 	            	ChattyBehavior mudChatB=null;
 	            	Behavior B=null;
-	            	for(int b=0;b<target.numBehaviors();b++)
-	            	{
-	            		B=target.fetchBehavior(b);
+	    			for(Enumeration<Behavior> e=target.behaviors();e.hasMoreElements();)
+	    			{
+	    				B=e.nextElement();
 	            		if(B instanceof ChattyBehavior)
 	            			mudChatB=(ChattyBehavior)B;
 	            	}

@@ -40,7 +40,7 @@ import java.util.*;
  * @author Bo Zimmerman
  *
  */
-public interface Environmental extends Tickable, Affectable, StatsAffecting, MsgListener, CMObject, CMModifiable, Behavable
+public interface Environmental extends Tickable, Affectable, StatsAffecting, MsgListener, CMContingent, CMModifiable
 {
     /**
      * The displayable name of this object.  May be modified by envStats() object. Is
@@ -91,26 +91,6 @@ public interface Environmental extends Tickable, Affectable, StatsAffecting, Msg
      * @param newDescription the basic detail description of this object
      */
 	public void setDescription(String newDescription);
-
-    /**
-     * Utterly and permanently destroy this object, not only removing it from the map, but
-     * causing this object to be collected as garbage by Java.  Containers, rooms. and mobs who have
-     * their destroy() method called will also call the destroy() methods on all items and other
-     * objects listed as content, recursively.
-     */
-    public void destroy();
-    /**
-     * Whether, if this object is in a room, whether it is appropriate to save this object to
-     * the database as a permanent feature of its container.  It always returns true except
-     * under unique circumstances.
-     * @return true, usually.
-     */
-    public boolean savable();
-    /**
-     * Whether the destroy() method has been previousy called on this object.
-     * @return whether the object is destroy()ed.
-     */
-    public boolean amDestroyed();
 
     /**
      * Returns the fully qualified and determined name of the image file displayed for this

@@ -76,9 +76,9 @@ public class ResetWhole extends StdBehavior
 				for(Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
-					for(int b=0;b<R.numBehaviors();b++)
+					for(Enumeration<Behavior> e=R.behaviors();e.hasMoreElements();)
 					{
-						Behavior B=R.fetchBehavior(b);
+						Behavior B=e.nextElement();
 						if((B!=null)&&(B.ID().equals(ID())))
 						{ R=null; break;}
 					}

@@ -288,7 +288,7 @@ public class WaterCurrents extends ActiveTicker
 		public int castingQuality(MOB mob, Environmental target){return Ability.QUALITY_INDIFFERENT;}
 
 		public int classificationCode(){ return Ability.ACODE_PROPERTY;}
-		public boolean savable(){ return savable;}
+		public boolean isSavable(){ return savable;}
 		public void setSavable(boolean truefalse)	{ savable=truefalse; }
         protected boolean amDestroyed=false;
         public void destroy(){amDestroyed=true;}
@@ -414,15 +414,7 @@ public class WaterCurrents extends ActiveTicker
 		public int numEffects(){ return 0;}
 		public Ability fetchEffect(int index){return null;}
 		public Ability fetchEffect(String ID){return null;}
-		public void addBehavior(Behavior to){}
-		public void delBehavior(Behavior to){}
-		public int numBehaviors(){return 0;}
-		public Behavior fetchBehavior(int index){return null;}
-		public Behavior fetchBehavior(String ID){return null;}
-        public void addScript(ScriptingEngine S){}
-        public void delScript(ScriptingEngine S) {}
-        public int numScripts(){return 0;}
-        public ScriptingEngine fetchScript(int x){ return null;}
+		
 		public boolean isGeneric(){return false;}
 	}
 }

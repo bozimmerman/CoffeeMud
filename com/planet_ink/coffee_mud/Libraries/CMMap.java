@@ -48,8 +48,8 @@ public class CMMap extends StdLibrary implements WorldMap
     public SVector<Auctioneer> 	auctionHouseList = new SVector<Auctioneer>();
     public SVector<Banker> 		bankList		 = new SVector<Banker>();
 	public SVector<SpaceObject>	space			 = new SVector<SpaceObject>();
-	public STreeMap<String,SVector<WeakReference<ScriptingEngine>>>
-								scriptsMap		 = new STreeMap<String,SVector<WeakReference<ScriptingEngine>>>();
+	public STreeMap<String,SVector<WeakReference<ActiveEnvironmental>>>
+								scriptHostMap	 = new STreeMap<String,SVector<WeakReference<ActiveEnvironmental>>>();
     public SHashtable<Integer,SVector<WeakReference<MsgListener>>> 
     							globalHandlers	 = new SHashtable<Integer,SVector<WeakReference<MsgListener>>>();
     private ThreadEngine.SupportThread 
@@ -1077,7 +1077,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		for(int a=0;a<R.numEffects();a++)
 		{
 			Ability A=R.fetchEffect(a);
-			if((A!=null)&&(!A.savable()))
+			if((A!=null)&&(!A.isSavable()))
 				return false;
 		}
 		return true;
@@ -1286,7 +1286,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			if(bringBackHere!=null)
 				bringBackHere.bringMobHere(M,false);
 			else
-			if(!M.savable())
+			if(!M.isSavable())
 				continue;
 			else
 			if((M.getStartRoom()==null)
@@ -1646,6 +1646,81 @@ public class CMMap extends StdLibrary implements WorldMap
 			return false;
 		return true;
 	}
+
+	private void cleanScriptHosts(SVector<WeakReference<ActiveEnvironmental>> hosts, ActiveEnvironmental oneToDel)
+	{
+		for(WeakReference<ActiveEnvironmental> W : hosts)
+			if((W.get()==oneToDel)||(W.get().amDestroyed()))
+				hosts.remove(W);
+	}
+	
+    public void addScriptHost(String area, ActiveEnvironmental host)
+    {
+    	if((area==null) || (host == null))
+    		return;
+    	boolean isAScriptHost = false;
+    	for(Enumeration<Behavior> e = host.behaviors();e.hasMoreElements();)
+    	{
+    		Behavior B=e.nextElement();
+    		if((B!=null) && B.isSavable() && (B instanceof ScriptingEngine))
+    		{ isAScriptHost=true; break;}
+    	}
+    	for(Enumeration<ScriptingEngine> e = host.scripts();e.hasMoreElements();)
+    	{
+    		ScriptingEngine SE=e.nextElement();
+    		if((SE!=null) && SE.isSavable() && (SE instanceof ScriptingEngine))
+    		{ isAScriptHost=true; break;}
+    	}
+    	if(!isAScriptHost) 
+    		return;
+    	synchronized(("SCRIPT_HOST_FOR: "+area.toUpperCase()).intern())
+    	{
+	    	SVector<WeakReference<ActiveEnvironmental>> hosts = scriptHostMap.get(area.toUpperCase());
+	    	if(hosts == null)
+	    	{
+	    		hosts=new SVector<WeakReference<ActiveEnvironmental>>();
+	    		scriptHostMap.put(area.toUpperCase(), hosts);
+	    	}
+	    	cleanScriptHosts(hosts, null);
+	    	hosts.add(new WeakReference<ActiveEnvironmental>(host));
+    	}
+    }
+    public void delScriptHost(String area, ActiveEnvironmental oneToDel)
+    {
+    	if((area==null) || (oneToDel == null))
+    		return;
+    	synchronized(("SCRIPT_HOST_FOR: "+area.toUpperCase()).intern())
+    	{
+	    	SVector<WeakReference<ActiveEnvironmental>> hosts = scriptHostMap.get(area.toUpperCase());
+	    	if(hosts==null) return;
+	    	cleanScriptHosts(hosts, oneToDel);
+    	}
+    }
+    public Enumeration<ActiveEnvironmental> scriptHosts(String area)
+    {
+    	final Vector<Enumeration<WeakReference<ActiveEnvironmental>>> V = new Vector<Enumeration<WeakReference<ActiveEnvironmental>>>();
+    	if(area == null)
+    		for(String areaKey : scriptHostMap.keySet())
+    	    	V.add(scriptHostMap.get(areaKey.toUpperCase()).elements());
+    	else
+    	{
+	    	SVector<WeakReference<ActiveEnvironmental>> hosts = scriptHostMap.get(area.toUpperCase());
+	    	if(hosts==null) return new EmptyEnumeration<ActiveEnvironmental>();
+    	}
+    	if(V.size()==0) return new EmptyEnumeration<ActiveEnvironmental>();
+    	final MultiEnumeration<WeakReference<ActiveEnvironmental>> me = new MultiEnumeration<WeakReference<ActiveEnvironmental>>(V.toArray(new Enumeration[0]));
+    	return new Enumeration<ActiveEnvironmental>()
+    	{
+			public boolean hasMoreElements() { return me.hasMoreElements();}
+			public ActiveEnvironmental nextElement() {
+				WeakReference<ActiveEnvironmental> W = me.nextElement();
+				ActiveEnvironmental E = W.get();
+				if(((E==null) || (E.amDestroyed())) && hasMoreElements())
+					return nextElement();
+				return E;
+			}
+    	};
+    }
     
     public boolean activate() 
     {

@@ -74,7 +74,7 @@ public class Spell_EnchantWand extends Spell
             Ability A=mob.fetchAbility(a);
             if((A!=null)
             &&(A instanceof Spell)
-            &&((!A.savable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
+            &&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
             &&(A.name().equalsIgnoreCase(spellName))
             &&(!A.ID().equals(this.ID())))
                 wandThis=(Spell)A;
@@ -85,7 +85,7 @@ public class Spell_EnchantWand extends Spell
             Ability A=mob.fetchAbility(a);
             if((A!=null)
             &&(A instanceof Spell)
-            &&((!A.savable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
+            &&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
             &&(CMLib.english().containsString(A.name(),spellName))
             &&(!A.ID().equals(this.ID())))
                 wandThis=(Spell)A;

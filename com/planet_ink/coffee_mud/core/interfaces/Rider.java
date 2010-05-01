@@ -35,7 +35,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @author Bo Zimmerman
  *
  */
-public interface Rider extends Environmental
+public interface Rider extends ActiveEnvironmental
 {
     /**
      * Sets the Rideable upon which this Rider is Riding.

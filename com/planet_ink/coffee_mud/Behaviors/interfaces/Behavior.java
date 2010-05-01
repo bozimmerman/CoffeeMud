@@ -43,17 +43,17 @@ import java.util.Vector;
  * @see com.planet_ink.coffee_mud.core.interfaces.Tickable
  */
 @SuppressWarnings("unchecked")
-public interface Behavior extends Tickable, MsgListener, CMObject, CMModifiable
+public interface Behavior extends Tickable, MsgListener, CMContingent, CMModifiable
 {
 	/**
-	 * Called after a behavior is added to an Environmental object.
+	 * Called after a behavior is added to a Behavable object.
 	 * The point is to do any initializing.  This method assumes
 	 * setParms() has already been called as well.
-	 * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#addBehavior(Behavior)
+	 * @see com.planet_ink.coffee_mud.core.interfaces.ActiveEnvironmental#addBehavior(Behavior)
 	 * @see Behavior#setParms(String)
 	 * @param forMe the object to which this behavior has been added
 	 */
-	public void startBehavior(Environmental forMe);
+	public void startBehavior(ActiveEnvironmental forMe);
 
 	/**
 	 * Called after a behavior is added to an Environmental object.
@@ -110,15 +110,7 @@ public interface Behavior extends Tickable, MsgListener, CMObject, CMModifiable
 	 * @see Behavior#isSavable()
 	 * @param truefalse whether this behavior can be saved as part of its host.
 	 */
-
     public void setSavable(boolean truefalse);
-	/**
-	 * Returns whether this behavior can be saved as a permanent aspect of
-	 * its host.
-	 * @see Behavior#setSavable(boolean)
-	 * @return truefalse whether this behavior can be saved as part of its host.
-	 */
-    public boolean isSavable();
 
     /**
      * Returns whether this behavior is capable of enhancing the given type
@@ -128,7 +120,7 @@ public interface Behavior extends Tickable, MsgListener, CMObject, CMModifiable
      * @param E the object to evaluate for this behavior
      * @return whether the given object can be enhanced by this behavior
      */
-	public boolean canImprove(Environmental E);
+	public boolean canImprove(ActiveEnvironmental E);
 
     /**
      * Returns whether this behavior is capable of enhancing the given type
@@ -158,15 +150,15 @@ public interface Behavior extends Tickable, MsgListener, CMObject, CMModifiable
 	 */
 	public boolean grantsAggressivenessTo(MOB M);
 
-	/** constant mask for the canImprove() and canImproveCode() methods.  Means it can improve mobs @see Behavior#canImprove(Environmental) */
+	/** constant mask for the canImprove() and canImproveCode() methods.  Means it can improve mobs @see Behavior#canImprove(Behavable) */
 	public static final int CAN_MOBS=1;
-	/** constant mask for the canImprove() and canImproveCode() methods.  Means it can improve items @see Behavior#canImprove(Environmental) */
+	/** constant mask for the canImprove() and canImproveCode() methods.  Means it can improve items @see Behavior#canImprove(Behavable) */
 	public static final int CAN_ITEMS=2;
-	/** constant mask for the canImprove() and canImproveCode() methods.  Means it can improve areas @see Behavior#canImprove(Environmental) */
+	/** constant mask for the canImprove() and canImproveCode() methods.  Means it can improve areas @see Behavior#canImprove(Behavable) */
 	public static final int CAN_AREAS=4;
-	/** constant mask for the canImprove() and canImproveCode() methods.  Means it can improve rooms @see Behavior#canImprove(Environmental) */
+	/** constant mask for the canImprove() and canImproveCode() methods.  Means it can improve rooms @see Behavior#canImprove(Behavable) */
 	public static final int CAN_ROOMS=8;
-	/** constant mask for the canImprove() and canImproveCode() methods.  Means it can improve exits @see Behavior#canImprove(Environmental) */
+	/** constant mask for the canImprove() and canImproveCode() methods.  Means it can improve exits @see Behavior#canImprove(Behavable) */
 	public static final int CAN_EXITS=16;
 
 	/** constant mask for the flags() method designating that this behavior makes the host move @see Behavior#flags() */

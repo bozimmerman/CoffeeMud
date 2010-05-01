@@ -67,13 +67,13 @@ public class Questwins extends StdCommand
         if((commands.size()>2)&&(((String)commands.elementAt(1)).equalsIgnoreCase("DROP")))
         {
             ScriptingEngine foundS=null;
-            for(int s=0;s<mob.numScripts();s++)
-            {
-                ScriptingEngine S=mob.fetchScript(s);
-                if(S==null) continue;
-                if((S.defaultQuestName().length()>0)
-                &&(CMLib.quests().findQuest(S.defaultQuestName())==null))
-                    foundS=S;
+    		for(Enumeration<ScriptingEngine> e=mob.scripts();e.hasMoreElements();)
+    		{
+    			ScriptingEngine SE=e.nextElement();
+                if(SE==null) continue;
+                if((SE.defaultQuestName().length()>0)
+                &&(CMLib.quests().findQuest(SE.defaultQuestName())==null))
+                    foundS=SE;
             }
             if(foundS!=null)
                 mob.delScript(foundS);
@@ -86,13 +86,13 @@ public class Questwins extends StdCommand
                 mob.tell("There is no such quest as '"+rest+"'.");
                 return false;
             }
-            for(int s=0;s<mob.numScripts();s++)
-            {
-                ScriptingEngine S=mob.fetchScript(s);
-                if(S==null) continue;
-                if((S.defaultQuestName().length()>0)
-                &&(S.defaultQuestName().equalsIgnoreCase(Q.name())))
-                    foundS=S;
+    		for(Enumeration<ScriptingEngine> e=mob.scripts();e.hasMoreElements();)
+    		{
+    			ScriptingEngine SE=e.nextElement();
+                if(SE==null) continue;
+                if((SE.defaultQuestName().length()>0)
+                &&(SE.defaultQuestName().equalsIgnoreCase(Q.name())))
+                    foundS=SE;
             }
             if(foundS==null)
             {
@@ -136,13 +136,13 @@ public class Questwins extends StdCommand
 	            return false;
 	        }
 	        ScriptingEngine foundS=null;
-            for(int s=0;s<mob.numScripts();s++)
-            {
-                ScriptingEngine S=mob.fetchScript(s);
-                if(S==null) continue;
-                if((S.defaultQuestName().length()>0)
-                &&(S.defaultQuestName().equalsIgnoreCase(Q.name())))
-                    foundS=S;
+			for(Enumeration<ScriptingEngine> e=mob.scripts();e.hasMoreElements();)
+			{
+				ScriptingEngine SE=e.nextElement();
+                if(SE==null) continue;
+                if((SE.defaultQuestName().length()>0)
+                &&(SE.defaultQuestName().equalsIgnoreCase(Q.name())))
+                    foundS=SE;
             }
             if(foundS==null)
             {

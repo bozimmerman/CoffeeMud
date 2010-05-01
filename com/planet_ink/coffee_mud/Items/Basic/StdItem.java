@@ -51,7 +51,7 @@ public class StdItem implements Item
 	protected long 			properWornBitmap=Wearable.WORN_HELD;
 	protected int			baseGoldValue=0;
 	protected int			material=RawMaterial.RESOURCE_COTTON;
-	protected Environmental owner=null;
+	protected ItemPossessor owner=null;
 	protected String[] 		xtraValues=null;
 	protected long 			dispossessionTime=0;
 	protected long 			tickStatus=Tickable.STATUS_NOT;
@@ -161,15 +161,15 @@ public class StdItem implements Item
 		affects=null;
 		behaviors=null;
         scripts=null;
-		for(int b=0;b<E.numBehaviors();b++)
+		for(Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
 		{
-			Behavior B=E.fetchBehavior(b);
+			Behavior B=e.nextElement();
 			if(B!=null)	addBehavior((Behavior)B.copyOf());
 		}
-        for(int s=0;s<E.numScripts();s++)
-        {
-            ScriptingEngine S=E.fetchScript(s);
-            if(S!=null) addScript((ScriptingEngine)S.copyOf());
+		for(Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();)
+		{
+			ScriptingEngine SE=e.nextElement();
+            if(SE!=null) addScript((ScriptingEngine)SE.copyOf());
         }
 
 		for(int a=0;a<E.numEffects();a++)
@@ -210,8 +210,8 @@ public class StdItem implements Item
 			riding().addRider(this);
 	}
 
-	public Environmental owner(){return owner;}
-	public void setOwner(Environmental E)
+	public ItemPossessor owner(){return owner;}
+	public void setOwner(ItemPossessor E)
 	{
 		owner=E;
 		if((E!=null)&&(!(E instanceof Room)))
@@ -587,7 +587,8 @@ public class StdItem implements Item
 		myUses=newUses;
 	}
 
-	public boolean savable(){return CMLib.flags().isSavable(this);}
+	public boolean isSavable(){return CMLib.flags().isSavable(this);}
+	public void setSavable(boolean truefalse){ CMLib.flags().setSavable(this, truefalse);}
 
 	protected boolean canWearComplete(MOB mob, long wearWhere)
 	{
@@ -1321,12 +1322,9 @@ public class StdItem implements Item
 	{
 		if(to==null) return;
 		if(behaviors==null) behaviors=new SVector<Behavior>(1);
-		for(int b=0;b<numBehaviors();b++)
-		{
-			Behavior B=fetchBehavior(b);
+		for(Behavior B : behaviors)
 			if(B.ID().equals(to.ID()))
 				return;
-		}
 
 		// first one! so start ticking...
 		if(behaviors.size()==0)
@@ -1348,6 +1346,7 @@ public class StdItem implements Item
 		if(behaviors==null) return 0;
 		return behaviors.size();
 	}
+    public Enumeration<Behavior> behaviors() { return (behaviors==null)?new EmptyEnumeration<Behavior>():behaviors.elements();}
 	public Behavior fetchBehavior(int index)
 	{
 		if(behaviors==null) return null;
@@ -1361,12 +1360,9 @@ public class StdItem implements Item
 	public Behavior fetchBehavior(String ID)
 	{
 		if(behaviors==null) return null;
-		for(int b=0;b<numBehaviors();b++)
-		{
-			Behavior B=fetchBehavior(b);
+		for(Behavior B : behaviors)
 			if((B!=null)&&(B.ID().equalsIgnoreCase(ID)))
 				return B;
-		}
 		return null;
 	}
     
@@ -1404,6 +1400,7 @@ public class StdItem implements Item
         }
     }
     public int numScripts(){return (scripts==null)?0:scripts.size();}
+    public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?new EmptyEnumeration<ScriptingEngine>():scripts.elements();}
     public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
     
 	protected String tackOns()

@@ -479,15 +479,16 @@ public class Stat  extends Skills
         if(ableTypes==ABLETYPE_SCRIPTS)
         {
             str.append("Scripts covered:\n\r");
-            for(int q=0;q<target.numScripts();q++)
-            {
-                ScriptingEngine E=target.fetchScript(q);
+            int q=1;
+    		for(Enumeration<ScriptingEngine> e=target.scripts();e.hasMoreElements();q++)
+    		{
+    			ScriptingEngine SE=e.nextElement();
                 str.append("Script #"+q+"\n\r");
-                str.append("Quest: "+E.defaultQuestName()+"\n\r");
-                str.append("Savable: "+E.isSavable()+"\n\r");
-                str.append("Scope: "+E.getVarScope()+"\n\r");
-                str.append("Vars: "+E.getLocalVarXML()+"\n\r");
-                str.append("Script: "+E.getScript()+"\n\r");
+                str.append("Quest: "+SE.defaultQuestName()+"\n\r");
+                str.append("Savable: "+SE.isSavable()+"\n\r");
+                str.append("Scope: "+SE.getVarScope()+"\n\r");
+                str.append("Vars: "+SE.getLocalVarXML()+"\n\r");
+                str.append("Script: "+SE.getScript()+"\n\r");
                 str.append("\n\r");
             }
             str.append("\n\r");

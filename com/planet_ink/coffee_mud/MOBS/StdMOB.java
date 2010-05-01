@@ -339,18 +339,18 @@ public class StdMOB implements MOB
 			if((A!=null)&&(!A.canBeUninvoked()))
 				addEffect((Ability)A.copyOf());
 		}
-		for(int i=0;i<E.numBehaviors();i++)
+		for(Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
 		{
-			Behavior B=E.fetchBehavior(i);
+			Behavior B=e.nextElement();
 			if(B!=null) // iteration during a clone would just be messed up.
 				behaviors.addElement((Behavior)B.copyOf()); 
 		}
-		ScriptingEngine S=null;
-        for(int i=0;i<E.numScripts();i++)
-        {
-            S=E.fetchScript(i);
-            if(S!=null)
-                addScript((ScriptingEngine)S.copyOf());
+		ScriptingEngine SE=null;
+		for(Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();)
+		{
+			SE=e.nextElement();
+            if(SE!=null)
+                addScript((ScriptingEngine)SE.copyOf());
         }
 	}
 
@@ -2974,7 +2974,7 @@ public class StdMOB implements MOB
 		return list;
 	}
 
-	public boolean savable()
+	public boolean isSavable()
 	{
 		if((!isMonster())&&(soulMate()==null))
             return false;
@@ -2989,6 +2989,7 @@ public class StdMOB implements MOB
 		return true;
 
 	}
+	public void setSavable(boolean truefalse){ CMLib.flags().setSavable(this, truefalse);}
 
 	public MOB soulMate()
 	{
@@ -3147,6 +3148,7 @@ public class StdMOB implements MOB
 	{
 		return behaviors.size();
 	}
+    public Enumeration<Behavior> behaviors() { return behaviors.elements();}
 	public Behavior fetchBehavior(int index)
 	{
 		try
@@ -3158,12 +3160,9 @@ public class StdMOB implements MOB
 	}
 	public Behavior fetchBehavior(String ID)
 	{
-		for(int b=0;b<numBehaviors();b++)
-		{
-			Behavior B=fetchBehavior(b);
+		for(Behavior B : behaviors)
 			if((B!=null)&&(B.ID().equalsIgnoreCase(ID)))
 				return B;
-		}
 		return null;
 	}
 
@@ -3308,6 +3307,7 @@ public class StdMOB implements MOB
     	scripts.removeElement(S);
     }
     public int numScripts(){return (scripts==null)?0:scripts.size();}
+    public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?new EmptyEnumeration<ScriptingEngine>():scripts.elements();}
     public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
 
 	/** Manipulation of the tatoo list */

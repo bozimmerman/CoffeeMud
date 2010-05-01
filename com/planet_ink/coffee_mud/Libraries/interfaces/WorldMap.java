@@ -35,6 +35,8 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public interface WorldMap extends CMLibrary, Runnable
 {
+	public final static long ROOM_EXPIRATION_MILLIS=2500000;
+    
     /************************************************************************/
     /**							 AREAS		    							*/
     /************************************************************************/
@@ -49,7 +51,6 @@ public interface WorldMap extends CMLibrary, Runnable
     public Area getFirstArea();
     public Area getRandomArea();
     public void obliterateArea(String areaName);
-    
     
     /************************************************************************/
     /**							 ROOMS		    							*/
@@ -68,6 +69,10 @@ public interface WorldMap extends CMLibrary, Runnable
     public void obliterateRoom(Room deadRoom);
     public Room findConnectingRoom(Room room);
     public int getRoomDir(Room from, Room to);
+    
+    /************************************************************************/
+    /**								SEARCH TOOLS 							*/
+    /************************************************************************/
 	public Vector<Room> findWorldRoomsLiberally(MOB mob, String cmd, String srchWhatAERIPMVK, int timePct, int maxSeconds);
 	public Room findWorldRoomLiberally(MOB mob, String cmd, String srchWhatAERIPMVK, int timePct, int maxSeconds);
 	public Vector<Room> findAreaRoomsLiberally(MOB mob, Area A, String cmd, String srchWhatAERIPMVK, int timePct);
@@ -103,24 +108,43 @@ public interface WorldMap extends CMLibrary, Runnable
     public boolean explored(Room R);
    
     /************************************************************************/
-    /**							 QUICK-MAPPINGS    							*/
+    /**							SCRIPT HOST									*/
+    /************************************************************************/
+    public void addScriptHost(String area, ActiveEnvironmental host);
+    public void delScriptHost(String area, ActiveEnvironmental oneToDel);
+    public Enumeration<ActiveEnvironmental> scriptHosts(String area);
+    
+    /************************************************************************/
+    /**							 	DEITIES	    							*/
     /************************************************************************/
     public int numDeities();
     public void addDeity(Deity newOne);
     public void delDeity(Deity oneToDel);
     public Deity getDeity(String calledThis);
     public Enumeration<Deity> deities();
+    
+    /************************************************************************/
+    /**							 POST OFFICES	  							*/
+    /************************************************************************/
     public int numPostOffices();
     public void addPostOffice(PostOffice newOne);
     public void delPostOffice(PostOffice oneToDel);
     public PostOffice getPostOffice(String chain, String areaNameOrBranch);
     public Enumeration<PostOffice> postOffices();
+    
+    /************************************************************************/
+    /**							 	BANKS		  							*/
+    /************************************************************************/
     public int numBanks();
     public void addBank(Banker newOne);
     public void delBank(Banker oneToDel);
     public Banker getBank(String chain, String areaNameOrBranch);
     public Enumeration<Banker> banks();
 	public Iterator<String> bankChains(Area AreaOrNull);
+	
+    /************************************************************************/
+    /**							AUCTION HOUSES		 						*/
+    /************************************************************************/
     public int numAuctionHouses();
     public void addAuctionHouse(Auctioneer newOne);
     public void delAuctionHouse(Auctioneer oneToDel);
@@ -148,6 +172,9 @@ public interface WorldMap extends CMLibrary, Runnable
     public MOB mobCreated(Room R);
     public boolean sendGlobalMessage(MOB host, int category, CMMsg msg);
     
+    /************************************************************************/
+    /**							 HELPER CLASSES								*/
+    /************************************************************************/
     public static class CrossExit
     {
         public int x;
@@ -161,7 +188,6 @@ public interface WorldMap extends CMLibrary, Runnable
             return EX;
         }
     }
-	public final static long ROOM_EXPIRATION_MILLIS=2500000;
     
     public class CompleteRoomIDEnumerator implements Enumeration
     {

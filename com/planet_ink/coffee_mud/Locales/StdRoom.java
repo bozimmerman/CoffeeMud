@@ -167,7 +167,7 @@ public class StdRoom implements Room
 		for(int m=0;m<E.numInhabitants();m++)
 		{
 			MOB M2=E.fetchInhabitant(m);
-			if((M2!=null)&&(M2.savable()))
+			if((M2!=null)&&(M2.isSavable()))
 			{
 				MOB M=(MOB)M2.copyOf();
 				if(M.getStartRoom()==E)
@@ -182,16 +182,16 @@ public class StdRoom implements Room
 			if((A!=null)&&(!A.canBeUninvoked()))
 				addEffect((Ability)A.copyOf());
 		}
-		for(int i=0;i<E.numBehaviors();i++)
+		for(Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
 		{
-			Behavior B=E.fetchBehavior(i);
+			Behavior B=e.nextElement();
 			if(B!=null)
 				addBehavior((Behavior)B.copyOf());
 		}
-        for(int s=0;s<E.numScripts();s++)
-        {
-            ScriptingEngine S=E.fetchScript(s);
-            if(S!=null) addScript((ScriptingEngine)S.copyOf());
+		for(Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();)
+		{
+			ScriptingEngine SE=e.nextElement();
+            if(SE!=null) addScript((ScriptingEngine)SE.copyOf());
         }
 	}
 	public CMObject copyOf()
@@ -678,7 +678,7 @@ public class StdRoom implements Room
 				    {
 				        M=fetchInhabitant(m);
 				        if((M!=null)
-				        &&(M.savable())
+				        &&(M.isSavable())
 				        &&(M.getStartRoom()!=this)
 				        &&(M.getStartRoom()!=null)
 				        &&(M.getStartRoom().roomID().length()>0))
@@ -692,7 +692,7 @@ public class StdRoom implements Room
 				    {
 				        M=fetchInhabitant(m);
 				        if((M instanceof ShopKeeper)
-				        &&(M.savable())
+				        &&(M.isSavable())
 				        &&(M.getStartRoom()!=this)
 				        &&(M.getStartRoom()!=null))
 				            M.getStartRoom().bringMobHere(M,false);
@@ -721,7 +721,7 @@ public class StdRoom implements Room
 			            for(int m=0;m<numInhabitants();m++)
 			            {
 			                M=fetchInhabitant(m);
-			                if((M!=null)&&(M.savable()))
+			                if((M!=null)&&(M.isSavable()))
 			                {
 			                    M.setStartRoom(this);
 			                    M.text(); // this permanizes his current state
@@ -736,7 +736,7 @@ public class StdRoom implements Room
 			            {
 			                M=fetchInhabitant(m);
 			                if((M!=null)
-			                &&(M.savable())
+			                &&(M.isSavable())
 			                &&(M instanceof ShopKeeper)
 			                &&(M.getStartRoom()==this))
 			                    shopmobs.addElement(M);
@@ -1398,12 +1398,13 @@ public class StdRoom implements Room
 		return doors;
 	}
     
-    public boolean savable(){
+    public boolean isSavable(){
     	return ((roomID().length()>0)
 			    &&((getArea()==null)
-					|| (!CMath.bset(getArea().flags(),Area.FLAG_INSTANCE_CHILD))));
+					|| (!CMath.bset(getArea().flags(),Area.FLAG_INSTANCE_CHILD)))
+				&&(CMLib.flags().isSavable(this)));
 	}
-    
+	public void setSavable(boolean truefalse){ CMLib.flags().setSavable(this, truefalse);}
 
 	public void destroy()
 	{
@@ -1896,12 +1897,9 @@ public class StdRoom implements Room
 	{
 		if(to==null) return;
 		if(behaviors==null) behaviors=new SVector(1);
-		for(int b=0;b<numBehaviors();b++)
-		{
-			Behavior B=fetchBehavior(b);
+		for(Behavior B : behaviors)
 			if((B!=null)&&(B.ID().equals(to.ID())))
 			   return;
-		}
 		if(behaviors.size()==0)
 			CMLib.threads().startTickDown(this,Tickable.TICKID_ROOM_BEHAVIOR,1);
 		to.startBehavior(this);
@@ -1923,6 +1921,7 @@ public class StdRoom implements Room
 		if(behaviors==null) return 0;
 		return behaviors.size();
 	}
+    public Enumeration<Behavior> behaviors() { return (behaviors==null)?new EmptyEnumeration<Behavior>():behaviors.elements();}
 	public Behavior fetchBehavior(int index)
 	{
 		if(behaviors==null) return null;
@@ -1936,12 +1935,9 @@ public class StdRoom implements Room
 	public Behavior fetchBehavior(String ID)
 	{
 		if(behaviors==null) return null;
-		for(int b=0;b<numBehaviors();b++)
-		{
-			Behavior B=fetchBehavior(b);
+		for(Behavior B : behaviors)
 			if((B!=null)&&(B.ID().equalsIgnoreCase(ID)))
 				return B;
-		}
 		return null;
 	}
 
@@ -1978,6 +1974,7 @@ public class StdRoom implements Room
         }
     }
     public int numScripts(){return (scripts==null)?0:scripts.size();}
+    public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?new EmptyEnumeration<ScriptingEngine>():scripts.elements();}
     public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
     
     public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}

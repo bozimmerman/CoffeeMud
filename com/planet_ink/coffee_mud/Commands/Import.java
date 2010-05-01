@@ -2919,10 +2919,10 @@ public class Import extends StdCommand
             if(B!=null)
             {
                 Behavior BB=B;
-                for(int b=0;b<M.numBehaviors();b++)
-                {
-                    B=M.fetchBehavior(b);
-                    if(B.getClass().getSuperclass().getName().endsWith("CombatAbilities"))
+    			for(Enumeration<Behavior> e=M.behaviors();e.hasMoreElements();)
+    			{
+    				B=e.nextElement();
+                    if((B!=null)&&(B.getClass().getSuperclass().getName().endsWith("CombatAbilities")))
                     {
                         M.delBehavior(BB);
                         M.recoverEnvStats();

@@ -95,7 +95,7 @@ public class GrinderItems
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						MOB M2=R.fetchInhabitant(m);
-						if((M2!=null)&&(M2.savable()))
+						if((M2!=null)&&(M2.isSavable()))
 						   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
 					}
 					return str.toString();
@@ -613,7 +613,7 @@ public class GrinderItems
 			else
 			if(I!=oldI)
 			{
-				Environmental oldOwner=oldI.owner();
+				ItemPossessor oldOwner=oldI.owner();
 				if(M==null)
 				{
 					if(R==null)

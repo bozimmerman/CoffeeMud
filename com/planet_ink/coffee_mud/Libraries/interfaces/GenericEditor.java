@@ -55,7 +55,7 @@ public interface GenericEditor extends CMLibrary
     public void wornLayer(MOB mob, short[] layerAtt, short[] clothingLayer, int showNumber, int showFlag) throws IOException;
     public void genAbility(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException;
     public void genAffects(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException;
-    public void genBehaviors(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException;
+    public void genBehaviors(MOB mob, ActiveEnvironmental E, int showNumber, int showFlag) throws IOException;
     public void genDescription(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException;
     public void genDisplayText(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException;
     public void genMiscSet(MOB mob, Environmental E) throws IOException;

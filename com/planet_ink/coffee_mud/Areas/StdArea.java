@@ -39,36 +39,41 @@ import java.util.Map;
 public class StdArea implements Area
 {
 	public String ID(){	return "StdArea";}
-	protected String 		name="the area";
-	protected String 		description="";
-	protected String 		miscText="";
-	protected String 		archPath="";
-	protected String 		imageName="";
-	protected int 			techLevel=0;
-	protected int 			climateID=Area.CLIMASK_NORMAL;
-	protected long 			tickStatus=Tickable.STATUS_NOT;
-	protected long 			expirationDate=0;
-    protected long 			lastPlayerTime=System.currentTimeMillis();
-    protected int 			flag=Area.STATE_ACTIVE;
+	protected String 	name="the area";
+	protected String 	description="";
+	protected String 	miscText="";
+	protected String 	archPath="";
+	protected String 	imageName="";
+	protected int 		techLevel=0;
+	protected int 		climateID=Area.CLIMASK_NORMAL;
+	protected long 		tickStatus=Tickable.STATUS_NOT;
+	protected long 		expirationDate=0;
+    protected long 		lastPlayerTime=System.currentTimeMillis();
+    protected int 		flag=Area.STATE_ACTIVE;
+    protected String[] 	xtraValues=null;
+	protected String 	author="";
+	protected String 	currency="";
     protected STreeMap<String,String> 		
-    						blurbFlags=new STreeMap<String,String>();
+    					blurbFlags=new STreeMap<String,String>();
+	
+	protected EnvStats 	envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+	protected EnvStats 	baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+	
 	protected STreeMap<String, Room>
-							properRooms=new STreeMap<String, Room>(new RoomIDComparator());
-	protected RoomnumberSet properRoomIDSet=null;
-	protected RoomnumberSet metroRoomIDSet=null;
-
-    protected Vector<Area>	children=null;
-    protected Vector<Area>	parents=null;
-    protected Vector<String>childrenToLoad=new Vector<String>(1);
-    protected Vector<String>parentsToLoad=new Vector<String>(1);
-
-    protected String[] 		xtraValues=null;
-	protected String 		author="";
-	protected String 		currency="";
+						properRooms=new STreeMap<String, Room>(new RoomIDComparator());
+	protected RoomnumberSet 	properRoomIDSet=null;
+	protected RoomnumberSet 	metroRoomIDSet=null;
 	
-	protected EnvStats 		envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
-	protected EnvStats 		baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
-	
+    protected SVector<Area>		children=null;
+    protected SVector<Area>		parents=null;
+    protected SVector<String>	childrenToLoad=new SVector<String>(1);
+    protected SVector<String>	parentsToLoad=new SVector<String>(1);
+	protected SVector<Ability> 	affects=new SVector<Ability>(1);
+	protected SVector<Behavior>	behaviors=new SVector<Behavior>(1);
+	protected SVector<String> 	subOps=new SVector<String>(1);
+    protected SVector<ScriptingEngine> 
+    							scripts=new SVector<ScriptingEngine>(1);
+
     public void initializeClass(){}
 	public long flags(){return 0;}
 	public void setAuthorID(String authorID){author=authorID;}
@@ -147,10 +152,6 @@ public class StdArea implements Area
 
 	public long expirationDate(){return expirationDate;}
 	public void setExpirationDate(long time){expirationDate=time;}
-	protected Vector affects=new Vector(1);
-	protected Vector behaviors=new Vector(1);
-    protected Vector scripts=new Vector(1);
-	protected Vector subOps=new Vector(1);
 	protected Climate climateObj=(Climate)CMClass.getCommon("DefaultClimate");
 	public void setClimateObj(Climate obj){climateObj=obj;}
 	public Climate getClimateObj()
@@ -199,7 +200,13 @@ public class StdArea implements Area
         metroRoomIDSet=null;
     }
     public boolean amDestroyed(){return amDestroyed;}
-    public boolean savable(){return ((!amDestroyed) && (!CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD)));}
+    public boolean isSavable()
+    {	
+    	return ((!amDestroyed) 
+    			&& (!CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD))
+    			&& (CMLib.flags().isSavable(this)));
+    }
+	public void setSavable(boolean truefalse){CMLib.flags().setSavable(this, truefalse);}
 
 	public String name()
 	{
@@ -291,7 +298,8 @@ public class StdArea implements Area
 	}
 	public void setSubOpList(String list)
 	{
-		subOps=CMParms.parseSemicolons(list,true);
+		subOps.clear();
+		subOps.addAll(CMParms.parseSemicolons(list,true));
 	}
 	public void addSubOp(String username){subOps.addElement(username);}
 	public void delSubOp(String username)
@@ -375,18 +383,18 @@ public class StdArea implements Area
 
 		parents=null;
 		if(E.parents!=null)
-			parents=(Vector<Area>)E.parents.clone();
+			parents=E.parents.copyOf();
 		children=null;
 		if(E.children!=null)
-			children=(Vector<Area>)E.children.clone();
+			children=E.children.copyOf();
 		if(E.blurbFlags!=null)
 			blurbFlags=E.blurbFlags.copyOf();
-		affects=new Vector(1);
-		behaviors=new Vector(1);
-        scripts=new Vector(1);
-		for(int b=0;b<E.numBehaviors();b++)
+		affects=new SVector<Ability>(1);
+		behaviors=new SVector<Behavior>(1);
+        scripts=new SVector<ScriptingEngine>(1);
+		for(Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
 		{
-			Behavior B=E.fetchBehavior(b);
+			Behavior B=e.nextElement();
 			if(B!=null)
 				behaviors.addElement((Behavior)B.copyOf());
 		}
@@ -396,12 +404,12 @@ public class StdArea implements Area
 			if(A!=null)
 				affects.addElement((Ability)A.copyOf());
 		}
-        ScriptingEngine S=null;
-        for(int i=0;i<E.numScripts();i++)
-        {
-            S=E.fetchScript(i);
-            if(S!=null)
-                addScript((ScriptingEngine)S.copyOf());
+        ScriptingEngine SE=null;
+		for(Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();)
+		{
+			SE=e.nextElement();
+            if(SE!=null)
+                addScript((ScriptingEngine)SE.copyOf());
         }
 		setSubOpList(E.getSubOpList());
 	}
@@ -706,20 +714,14 @@ public class StdArea implements Area
 			getClimateObj().tick(this,tickID);
 			tickStatus=Tickable.STATUS_REBIRTH;
 			getTimeObj().tick(this,tickID);
-			for(int b=0;b<numBehaviors();b++)
-			{
-				tickStatus=Tickable.STATUS_BEHAVIOR+b;
-				Behavior B=fetchBehavior(b);
+			tickStatus=Tickable.STATUS_BEHAVIOR;
+			for(Behavior B : behaviors)
 				if(B!=null)
 					B.tick(ticking,tickID);
-			}
-            for(int s=0;s<numScripts();s++)
-            {
-                ScriptingEngine S=fetchScript(s);
-                tickStatus=Tickable.STATUS_SCRIPT+s;
-                if(S!=null)
-                    S.tick(ticking,tickID);
-            }
+            tickStatus=Tickable.STATUS_SCRIPT;
+			for(ScriptingEngine SE : scripts)
+                if(SE!=null)
+                    SE.tick(ticking,tickID);
 
 			int a=0;
 			while(a<numEffects())
@@ -879,12 +881,9 @@ public class StdArea implements Area
 	public void addBehavior(Behavior to)
 	{
 		if(to==null) return;
-		for(int b=0;b<numBehaviors();b++)
-		{
-			Behavior B=fetchBehavior(b);
+		for(Behavior B : behaviors)
 			if((B!=null)&&(B.ID().equals(to.ID())))
 				return;
-		}
         to.startBehavior(this);
 		behaviors.addElement(to);
 	}
@@ -896,13 +895,14 @@ public class StdArea implements Area
 	{
 		return behaviors.size();
 	}
+    public Enumeration<Behavior> behaviors() { return behaviors.elements();}
 
     /** Manipulation of the scripts list */
     public void addScript(ScriptingEngine S)
     {
-        if(scripts==null) scripts=new Vector(1);
         if(S==null) return;
-        if(!scripts.contains(S)) {
+        if(!scripts.contains(S)) 
+        {
             ScriptingEngine S2=null;
             for(int s=0;s<scripts.size();s++)
             {
@@ -915,14 +915,10 @@ public class StdArea implements Area
     }
     public void delScript(ScriptingEngine S)
     {
-        if(scripts!=null)
-        {
-            scripts.removeElement(S);
-            if(scripts.size()==0)
-                scripts=new Vector(1);
-        }
+        scripts.removeElement(S);
     }
-    public int numScripts(){return (scripts==null)?0:scripts.size();}
+    public int numScripts(){return scripts.size();}
+    public Enumeration<ScriptingEngine> scripts() { return scripts.elements();}
     public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
 
 	public int maxRange(){return Integer.MAX_VALUE;}
@@ -1087,12 +1083,9 @@ public class StdArea implements Area
 	}
 	public Behavior fetchBehavior(String ID)
 	{
-		for(int b=0;b<numBehaviors();b++)
-		{
-			Behavior B=fetchBehavior(b);
+		for(Behavior B : behaviors)
 			if((B!=null)&&(B.ID().equalsIgnoreCase(ID)))
 				return B;
-		}
 		return null;
 	}
 
@@ -1346,9 +1339,9 @@ public class StdArea implements Area
 			multiEnumerator.addEnumeration(getChild(c).getMetroMap());
 		return new CompleteRoomEnumerator(multiEnumerator);
 	}
-	public Vector getSubOpVectorList()
+	public Enumeration<String> subOps()
 	{
-		return subOps;
+		return subOps.elements();
 	}
 
     public void addChildToLoad(String str) { childrenToLoad.addElement(str);}
@@ -1359,7 +1352,7 @@ public class StdArea implements Area
 	{
 	    if(children==null)
 		{
-	        children=new Vector(1);
+	        children=new SVector<Area>(1);
 	        for(int i=0;i<childrenToLoad.size();i++)
 			{
 	          Area A=CMLib.map().getArea((String)childrenToLoad.elementAt(i));
@@ -1453,7 +1446,7 @@ public class StdArea implements Area
 	// Parent
 	public void initParents() {
 	        if (parents == null) {
-	                parents = new Vector();
+	                parents = new SVector<Area>();
 	                for (int i = 0; i < parentsToLoad.size(); i++) {
 	                        Area A = CMLib.map().getArea((String)parentsToLoad.elementAt(i));
 	                        if (A == null)

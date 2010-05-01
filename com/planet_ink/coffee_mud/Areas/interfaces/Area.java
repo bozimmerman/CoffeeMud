@@ -40,7 +40,7 @@ import java.util.*;
  *
  */
 @SuppressWarnings("unchecked")
-public interface Area extends Environmental, Economics
+public interface Area extends Environmental, Economics, ActiveEnvironmental
 {
 	/**
 	 * Return basic attributed flag about the area.
@@ -421,12 +421,12 @@ public interface Area extends Environmental, Economics
 	 */
 	public void setSubOpList(String list);
 	/**
-	 * Returns a Vector of player Names that represent the SubOp
+	 * Returns a enumeration of player Names that represent the SubOp
 	 * list for this area.   A Player with this designation will have their 
 	 * AREA_ security flags activated when in this area.
-	 * @return Vector of player Names
+	 * @return enumeration of player Names
 	 */
-	public Vector getSubOpVectorList();
+	public Enumeration<String> subOps();
 	/**
 	 * Returns a descriptive list of statistics about this area based on a
 	 * snapshot from getAreaIStats(), which is cached after being generated.

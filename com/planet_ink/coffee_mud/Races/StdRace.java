@@ -470,7 +470,7 @@ public class StdRace implements Race
 		for(int i=0;i<mob.inventorySize();)
 		{
 			Item thisItem=mob.fetchInventory(i);
-			if((thisItem!=null)&&(thisItem.savable()))
+			if((thisItem!=null)&&(thisItem.isSavable()))
 			{
 				if(mob.isMonster())
 				{

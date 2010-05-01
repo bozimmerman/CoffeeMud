@@ -119,7 +119,7 @@ public class MobData extends StdWebMacro
 			for(int a=0;a<E.numLearnedAbilities();a++)
 			{
 				Ability Able=E.fetchAbility(a);
-				if((Able!=null)&&(Able.savable()))
+				if((Able!=null)&&(Able.isSavable()))
                 {
 					theclasses.addElement(CMClass.classID(Able));
                     if(player)
@@ -996,7 +996,7 @@ public class MobData extends StdWebMacro
 					M=RoomData.getMOBFromCode(R,mobCode);
 				else
 					M=RoomData.getMOBFromCode(RoomData.mobs,mobCode);
-				if((M==null)||(!M.savable()))
+				if((M==null)||(!M.isSavable()))
 				{
 					StringBuffer str=new StringBuffer("No MOB?!");
 					str.append(" Got: "+mobCode);
@@ -1005,7 +1005,7 @@ public class MobData extends StdWebMacro
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						MOB M2=R.fetchInhabitant(m);
-						if((M2!=null)&&(M2.savable()))
+						if((M2!=null)&&(M2.isSavable()))
 						   str.append(M2.Name()+"="+RoomData.getMOBCode(R,M2));
 					}
 	                return clearWebMacros(str);
@@ -1512,7 +1512,8 @@ public class MobData extends StdWebMacro
 		}
 		str.append(ExitData.dispositions(M,firstTime,httpReq,parms));
 		str.append(MobData.senses(M,firstTime,httpReq,parms));
-		str.append(AreaData.affectsNBehaves(M,httpReq,parms,1));
+		str.append(AreaData.affects(M,httpReq,parms,1));
+		str.append(AreaData.behaves(M,httpReq,parms,1));
 		str.append(factions(M,httpReq,parms,1));
 		str.append(MobData.abilities(M,httpReq,parms,1));
 		if(M instanceof Deity)

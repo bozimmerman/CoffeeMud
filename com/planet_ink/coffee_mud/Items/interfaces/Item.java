@@ -36,7 +36,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @author Bo Zimmerman
  *
  */
-public interface Item extends Environmental, Rider, DBIdentifiable, Wearable
+public interface Item extends Environmental, Rider, DBIdentifiable, Wearable, ActiveEnvironmental
 {
     /** 
      * Where the item is located.  Either null for
@@ -201,7 +201,7 @@ public interface Item extends Environmental, Rider, DBIdentifiable, Wearable
      * @see com.planet_ink.coffee_mud.Items.interfaces.Item
      * @return the mob or room where the item is located
      */
-    public Environmental owner();
+    public ItemPossessor owner();
     /**
      * Sets the Room or MOB representing where this item is located.  Containers are handled
      * by another pointer, container(), so those two methods be used together to determine
@@ -212,5 +212,5 @@ public interface Item extends Environmental, Rider, DBIdentifiable, Wearable
      * @see com.planet_ink.coffee_mud.Locales.interfaces.Room#addItem(Item)
      * @param E the mob or room where the item is located
      */
-    public void setOwner(Environmental E);
+    public void setOwner(ItemPossessor E);
 }

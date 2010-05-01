@@ -154,7 +154,7 @@ public class GrinderRooms
 			while(oldR.numInhabitants()>(skip))
 			{
 				MOB M=oldR.fetchInhabitant(skip);
-				if(M.savable())
+				if(M.isSavable())
 				{
 					if(!allmobs.contains(M))
 						allmobs.addElement(M);

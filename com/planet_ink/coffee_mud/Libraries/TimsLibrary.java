@@ -192,7 +192,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		if(A!=null)
 		{
 			A=I.fetchEffect("ItemRejuv");
-			if(A.savable())
+			if(A.isSavable())
 				return false;
 			A.setSavable(false);
 			return true;

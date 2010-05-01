@@ -75,7 +75,7 @@ public class Spell_MagicItem extends Spell
 			Ability A=mob.fetchAbility(a);
 			if((A!=null)
 			&&(A instanceof Spell)
-			&&((!A.savable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
+			&&((!A.isSavable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
 			&&(!A.ID().equals(this.ID())))
 				ables.addElement(A);
 		}

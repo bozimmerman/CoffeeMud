@@ -322,7 +322,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         double factor=1.0;
         int x=0;
         String factorMask=null;
-        Environmental oldOwner=null;
+        ItemPossessor oldOwner=null;
         if(E instanceof Item)
         {
             oldOwner=((Item)E).owner();

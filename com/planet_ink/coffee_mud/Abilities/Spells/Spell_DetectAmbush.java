@@ -77,9 +77,9 @@ public class Spell_DetectAmbush extends Spell
                     found=true; 
                     break;
                 }
-				for(int b=0;b<M.numBehaviors();b++)
+				for(Enumeration<Behavior> e=M.behaviors();e.hasMoreElements();)
 				{
-					Behavior B=M.fetchBehavior(b);
+					Behavior B=e.nextElement();
 					if((B!=null)&&(B.grantsAggressivenessTo(M)))
 					{ found=true; break;}
 				}

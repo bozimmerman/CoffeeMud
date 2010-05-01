@@ -48,12 +48,12 @@ public class GoodGuardian extends StdBehavior
 			if((inhab!=null)&&(inhab.isInCombat()))
 			{
                 if(inhab.isMonster())
-				for(int b=0;b<inhab.numBehaviors();b++)
-				{
-					Behavior B=inhab.fetchBehavior(b);
-					if((B!=null)&&(B.grantsAggressivenessTo(inhab.getVictim())))
-						return inhab;
-				}
+        			for(Enumeration<Behavior> e=inhab.behaviors();e.hasMoreElements();)
+        			{
+        				Behavior B=e.nextElement();
+						if((B!=null)&&(B.grantsAggressivenessTo(inhab.getVictim())))
+							return inhab;
+					}
 
 				if((BrotherHelper.isBrother(inhab,observer,false))&&(victim==null))
 					victim=inhab.getVictim();

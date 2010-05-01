@@ -66,7 +66,7 @@ public class Mageness extends CombatAbilities
 		}
 	}
 	
-	public void startBehavior(Environmental forMe)
+	public void startBehavior(ActiveEnvironmental forMe)
 	{
 		super.startBehavior(forMe);
 		if(!(forMe instanceof MOB)) return;

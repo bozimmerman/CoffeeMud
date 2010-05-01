@@ -201,7 +201,7 @@ public class Arcanist extends Thief
 		{
 			Ability A2=mob.fetchAbility(a);
 			if((A2!=null)
-			&&(!A2.savable())
+			&&(!A2.isSavable())
 			&&((A2.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
 				otherChoices.addElement(A2);
 		}
@@ -233,7 +233,7 @@ public class Arcanist extends Thief
 						{
 							Ability A2=mob.fetchAbility(a);
 							if((A2!=null)
-							&&(!A2.savable())
+							&&(!A2.isSavable())
 							&&((A2.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
 								otherChoices.addElement(A2);
 						}
@@ -254,14 +254,14 @@ public class Arcanist extends Thief
 			||msg.tool().ID().equals("Spell_WardArea"))
 			{
 				Ability A=mob.fetchAbility(msg.tool().text());
-				if((A!=null)&&(!A.savable()))
+				if((A!=null)&&(!A.isSavable()))
 					mob.delAbility(A);
 			}
 			else
 			if(msg.tool() instanceof Ability)
 			{
 				Ability A=mob.fetchAbility(msg.tool().ID());
-				if((A!=null)&&(!A.savable())
+				if((A!=null)&&(!A.isSavable())
 				&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
 					mob.delAbility(A);
 			}

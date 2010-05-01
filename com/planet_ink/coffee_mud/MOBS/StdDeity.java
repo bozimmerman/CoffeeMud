@@ -570,7 +570,7 @@ public class StdDeity extends StdMOB implements Deity
 			for(int a=mob.numLearnedAbilities()-1;a>=0;a--)
 			{
 				Ability A=mob.fetchAbility(a);
-				if((A!=null)&&(!A.savable()))
+				if((A!=null)&&(!A.isSavable()))
 				{
 					mob.delAbility(A);
 					A=mob.fetchEffect(A.ID());
@@ -601,7 +601,7 @@ public class StdDeity extends StdMOB implements Deity
 		for(int a=0;a<mob.numLearnedAbilities();a++)
 		{
 			Ability A=mob.fetchAbility(a);
-			if((A!=null)&&(!A.savable()))
+			if((A!=null)&&(!A.isSavable()))
 				return true;
 		}
 		return false;

@@ -79,7 +79,7 @@ public class RoomData extends StdWebMacro
 			if(M==M2)
 				return Long.toString( ( M.ID() + "/" + M.Name() + "/" + M.displayText() ).hashCode() << 5 ) + code;
 			else
-			if((M2!=null)&&(M2.savable()))
+			if((M2!=null)&&(M2.isSavable()))
 				code++;
 		}
 		return "";
@@ -267,7 +267,7 @@ public class RoomData extends StdWebMacro
 			MOB M=(MOB)inhabs.elementAt(i);
 			if(M.isGeneric())
 			{
-				if((getReferenceMOB(M)==null)&&(M.savable()))
+				if((getReferenceMOB(M)==null)&&(M.isSavable()))
 				{
 					MOB M3=(MOB)M.copyOf();
 					mobs.addElement(M3);
@@ -375,7 +375,8 @@ public class RoomData extends StdWebMacro
 				}
 			}
 
-			str.append(AreaData.affectsNBehaves(R,httpReq,parms,1));
+			str.append(AreaData.affects(R,httpReq,parms,1));
+			str.append(AreaData.behaves(R,httpReq,parms,1));
 			if(parms.containsKey("IMAGE"))
 			{
 				String name=httpReq.getRequestParameter("IMAGE");
@@ -468,7 +469,7 @@ public class RoomData extends StdWebMacro
 	                    if(M!=null)
 	                    {
 	                    	CMLib.catalog().updateCatalogIntegrity(M);
-							if(M.savable())
+							if(M.isSavable())
 								classes.addElement(M);
 	                    }
 					}

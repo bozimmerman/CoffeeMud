@@ -95,11 +95,12 @@ public class Thief_Racketeer extends ThiefSkill
         {
             if(mob.isInCombat())
                 return Ability.QUALITY_INDIFFERENT;
-            if(target != null)
+            if(target instanceof ActiveEnvironmental)
             {
-                if((CMLib.coffeeShops().getShopKeeper(target)==null)&&(target.fetchBehavior("MoneyChanger")==null)
-                &&(target.fetchBehavior("ItemMender")==null)&&(target.fetchBehavior("ItemIdentifier")==null)
-                &&(target.fetchBehavior("ItemRefitter")==null))
+            	ActiveEnvironmental AE=(ActiveEnvironmental)target;
+                if((CMLib.coffeeShops().getShopKeeper(target)==null)&&(AE.fetchBehavior("MoneyChanger")==null)
+                &&(AE.fetchBehavior("ItemMender")==null)&&(AE.fetchBehavior("ItemIdentifier")==null)
+                &&(AE.fetchBehavior("ItemRefitter")==null))
                     return Ability.QUALITY_INDIFFERENT;
                 if(target.fetchEffect(ID())!=null)
                     return Ability.QUALITY_INDIFFERENT;

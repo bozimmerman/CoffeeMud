@@ -3846,9 +3846,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     for(int v=1;v<V.size();v++)
                         if(E.fetchEffect((String)V.elementAt(v))!=null)
                         {   found=true; break;}
-                    if(!found)
+                    if((!found)&&(E instanceof ActiveEnvironmental))
                     for(int v=1;v<V.size();v++)
-                        if(E.fetchBehavior((String)V.elementAt(v))!=null)
+                        if(((ActiveEnvironmental)E).fetchBehavior((String)V.elementAt(v))!=null)
                         {   found=true; break;}
 					if(!found) return false;
 				}
@@ -3873,8 +3873,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 for(int v=1;v<V.size();v++)
                     if(E.fetchEffect((String)V.elementAt(v))!=null)
                         return false;
+                if(E instanceof ActiveEnvironmental)
                 for(int v=1;v<V.size();v++)
-                    if(E.fetchBehavior((String)V.elementAt(v))!=null)
+                    if(((ActiveEnvironmental)E).fetchBehavior((String)V.elementAt(v))!=null)
                         return false;
 				break;
 			case 16: // +name
@@ -4203,34 +4204,37 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			case 118: // -if
 				{
 					boolean oneIsOK = false;
-					for(int v=1;v<V.size();v+=3)
-					{
-						ScriptingEngine SE = (ScriptingEngine)V.elementAt(v);
-						String[][] EVAL = (String[][])V.elementAt(v+1);
-						Object[] tmp = (Object[])V.elementAt(v+2);
-						MOB M = SE.getMakeMOB(E);
-				        Item defaultItem=(E instanceof Item)?(Item)E:null;
-						if(SE.eval(E, M, null,M, defaultItem, null, "", tmp, EVAL, 0))
+			        if(E instanceof ActiveEnvironmental)
+						for(int v=1;v<V.size();v+=3)
 						{
-							oneIsOK = true;
-							break;
+							ScriptingEngine SE = (ScriptingEngine)V.elementAt(v);
+							String[][] EVAL = (String[][])V.elementAt(v+1);
+							Object[] tmp = (Object[])V.elementAt(v+2);
+							MOB M = SE.getMakeMOB(E);
+					        Item defaultItem=(E instanceof Item)?(Item)E:null;
+							if(SE.eval((ActiveEnvironmental)E, M, null,M, defaultItem, null, "", tmp, EVAL, 0))
+							{
+								oneIsOK = true;
+								break;
+							}
 						}
-					}
 					if(!oneIsOK) return false;
 					break;
 				}
 			case 119: // +if
 		        {
-					for(int v=1;v<V.size();v+=3)
-					{
-						ScriptingEngine SE = (ScriptingEngine)V.elementAt(v);
-						String[][] EVAL = (String[][])V.elementAt(v+1);
-						Object[] tmp = (Object[])V.elementAt(v+2);
-						MOB M = SE.getMakeMOB(E);
-				        Item defaultItem=(E instanceof Item)?(Item)E:null;
-						if(SE.eval(E, M, null,M, defaultItem, null, "", tmp, EVAL, 0))
-							return true;
-					}
+		        	if(E instanceof ActiveEnvironmental)
+						for(int v=1;v<V.size();v+=3)
+						{
+							ScriptingEngine SE = (ScriptingEngine)V.elementAt(v);
+							String[][] EVAL = (String[][])V.elementAt(v+1);
+							Object[] tmp = (Object[])V.elementAt(v+2);
+							MOB M = SE.getMakeMOB(E);
+					        Item defaultItem=(E instanceof Item)?(Item)E:null;
+					        if(E instanceof ActiveEnvironmental)
+							if(SE.eval((ActiveEnvironmental)E, M, null,M, defaultItem, null, "", tmp, EVAL, 0))
+								return true;
+						}
 					break;
 		        }
 			}

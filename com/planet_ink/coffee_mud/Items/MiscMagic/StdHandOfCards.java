@@ -170,7 +170,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
         }
         else
         {
-            card.setOwner(card);
+            card.setOwner(owner());
             if(!backupContents.contains(card))
                 backupContents.addElement(card);
         }

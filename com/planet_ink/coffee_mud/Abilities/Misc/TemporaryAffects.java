@@ -191,10 +191,10 @@ public class TemporaryAffects extends StdAbility
 					((Ability)A).makeLongLasting();
 					((Ability)A).setAffectedOne(affected);
 				}
-				if(A instanceof Behavior)
+				if((A instanceof Behavior) && (affected instanceof ActiveEnvironmental))
 				{
 					((Behavior)A).setParms(parms);
-					((Behavior)A).startBehavior(affected);
+					((Behavior)A).startBehavior((ActiveEnvironmental)affected);
 				}
 				affects.addElement(new Object[]{A,new int[]{CMath.s_int(numTicksStr)}});
 				if(affected != null)
