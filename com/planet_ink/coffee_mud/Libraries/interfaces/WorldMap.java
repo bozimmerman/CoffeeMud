@@ -59,8 +59,8 @@ public interface WorldMap extends CMLibrary, Runnable
     public String getExtendedRoomID(Room R);
     public Room getRoom(Room room);
     public Room getRoom(String calledThis);
-    public Room getRoom(Vector roomSet, String calledThis);
-	public Room getRoom(Hashtable hashedRoomSet, String areaName, String calledThis);
+    public Room getRoom(Enumeration<Room> roomSet, String calledThis);
+	public Room getRoom(java.util.Map<String,Room> hashedRoomSet, String areaName, String calledThis);
     public Enumeration<Room> rooms();
     public Enumeration<Room> roomsFilled();
     public Room getRandomRoom();
@@ -99,8 +99,8 @@ public interface WorldMap extends CMLibrary, Runnable
     public boolean hasASky(Room room);
     public boolean isClearableRoom(Room room);
     public String createNewExit(Room from, Room room, int direction);
-    public Area areaLocation(Object E);
-    public boolean explored(Room R, Vector areas);
+    public Area areaLocation(CMObject E);
+    public boolean explored(Room R);
    
     /************************************************************************/
     /**							 QUICK-MAPPINGS    							*/
