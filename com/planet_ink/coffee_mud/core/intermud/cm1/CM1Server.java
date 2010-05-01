@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
+import java.util.concurrent.*;
 import java.net.*;
 import java.io.*;
 import java.nio.*;
@@ -42,7 +43,10 @@ public class CM1Server extends Thread
 	private boolean 	isShutdown = false;
 	private Selector	servSelector = null;
 	private ServerSocketChannel	servChan = null;
-	private STreeMap<SocketChannel,RequestHandler> handlers = new STreeMap<SocketChannel,RequestHandler>();
+	private final ArrayBlockingQueue<Runnable> blockQueue = new ArrayBlockingQueue<Runnable>(65536);
+	private SHashtable<SocketChannel,RequestHandler> handlers = new SHashtable<SocketChannel,RequestHandler>();
+	private ThreadPoolExecutor threadPool = new ThreadPoolExecutor(1, 3, 30, TimeUnit.SECONDS, blockQueue);
+	
 	
 	public CM1Server(String serverName, int serverPort)
 	{
@@ -84,21 +88,23 @@ public class CM1Server extends Thread
 				            channel.register (servSelector, SelectionKey.OP_READ);
 				            RequestHandler handler=new RequestHandler(channel);
 				            handlers.put(channel,handler);
+					        handler.sendMsg("CONNECTED TO "+name.toUpperCase());
 				         } 
 				         //sayHello (channel);
 				      }
 				      if (key.isReadable()) 
 				      {
 				    	  RequestHandler handler = handlers.get(key.channel());
-				    	  new Thread(handler).start();
+				  		  threadPool.execute(handler);
 				      }
 				      it.remove();
 				    }
-					for(SocketChannel schan : handlers.navigableKeySet())
+					for(SocketChannel schan : handlers.keySet())
 						try
 						{
 							RequestHandler handler=handlers.get(schan);
-							if(handler!=null)handler.shutdown();
+							if((handler!=null)&&(handler.needsClosing()))
+								handler.shutdown();
 						}
 						catch(Exception e){}
 				}
@@ -113,7 +119,7 @@ public class CM1Server extends Thread
 					try {servSelector.close();}catch(Exception e){}
 				if(servChan != null)
 					try {servChan.close();}catch(Exception e){}
-				for(SocketChannel schan : handlers.navigableKeySet())
+				for(SocketChannel schan : handlers.keySet())
 					try
 					{
 						RequestHandler handler=handlers.get(schan);
@@ -121,6 +127,7 @@ public class CM1Server extends Thread
 					}
 					catch(Exception e){}
 				handlers.clear();
+				threadPool.shutdown();
 				Log.sysOut("CM1Server is shutdown");
 			}
 		}
@@ -130,6 +137,7 @@ public class CM1Server extends Thread
 	public void shutdown()
 	{
 		shutdownRequested = true;
+		threadPool.shutdown();
 		long time = System.currentTimeMillis();
 		while((System.currentTimeMillis()-time<30000) && (!isShutdown))
 		{
