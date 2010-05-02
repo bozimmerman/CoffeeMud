@@ -266,6 +266,14 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		if(network.length()>255) return addy.length();
 		return -1;
 	}
+
+	public void sendLine(boolean debug, String sstr)
+	{
+        if(debug) Log.debugOut("SMTPclient",sstr);
+		send.print(sstr);
+		send.print(EOL);
+		send.flush();
+	}
 	
 	/**
 	* Send a message
@@ -293,7 +301,6 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
     	}
     	
 		String rstr;
-		String sstr;
 		boolean debug = CMSecurity.isDebugging("SMTPCLIENT");
         StringBuffer fixMsg=new StringBuffer(message);
         for(int f=0;f<fixMsg.length();f++)
@@ -341,154 +348,64 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		  throw ioe;
 		}
 		String host = local.getHostName();
-		sstr="HELO " + host;
-        if(debug) Log.debugOut("SMTPclient",sstr);
-		send.print(sstr);
-		send.print(EOL);
-		send.flush();
+		sendLine(debug,"HELO " + host);
 		rstr = reply.readLine();
         if(debug) Log.debugOut("SMTPclient",rstr);
 		if ((rstr==null)||(!rstr.startsWith("250"))) throw new ProtocolException(""+rstr);
 		
 		if((auth != null) && (auth.getAuthType().length()>0))
 		{
-			sstr="AUTH " + auth.getAuthType();
-	        if(debug) Log.debugOut("SMTPclient",sstr);
-			send.print(sstr);
-			send.print(EOL);
-			send.flush();
+			sendLine(debug,"AUTH " + auth.getAuthType());
 			rstr = reply.readLine();
 	        if(debug) Log.debugOut("SMTPclient",rstr);
 			if ((rstr==null)||(!rstr.startsWith("334"))) throw new ProtocolException(""+rstr);
 			if(auth.getAuthType().equalsIgnoreCase("plain"))
-			{
-				sstr=auth.getPlainLogin();
-		        if(debug) Log.debugOut("SMTPclient",sstr);
-				send.print(sstr);
-				send.print(EOL);
-				send.flush();
-			}
+				sendLine(debug,auth.getPlainLogin());
 			else
 			if(auth.getAuthType().equalsIgnoreCase("login"))
 			{
-				sstr=auth.getLogin();
-		        if(debug) Log.debugOut("SMTPclient",sstr);
-				send.print(sstr);
-				send.print(EOL);
-				send.flush();
+				sendLine(debug,auth.getLogin());
 				rstr = reply.readLine();
 		        if(debug) Log.debugOut("SMTPclient",rstr);
 				if ((rstr==null)||(!rstr.startsWith("334"))) throw new ProtocolException(""+rstr);
-				sstr=auth.getPassword();
-		        if(debug) Log.debugOut("SMTPclient",sstr);
-				send.print(sstr);
-				send.print(EOL);
-				send.flush();
+				sendLine(debug,auth.getPassword());
 			}
 			rstr = reply.readLine();
 	        if(debug) Log.debugOut("SMTPclient",rstr);
 			if ((rstr==null)||(!rstr.startsWith("235"))) throw new ProtocolException(""+rstr);
 		}
-		sstr = "MAIL FROM:<" + froaddress+">" ;
-        if(debug) Log.debugOut("SMTPclient",sstr);
-		send.print(sstr);
-		send.print(EOL);
-		send.flush();
+		sendLine(debug,"MAIL FROM:<" + froaddress+">");
 		rstr = reply.readLine();
         if(debug) Log.debugOut("SMTPclient",rstr);
 		if ((rstr==null)||(!rstr.startsWith("250"))) throw new ProtocolException(""+rstr);
-		sstr = "RCPT TO:<" + to_address+">";
-        if(debug) Log.debugOut("SMTPclient",sstr);
-		send.print(sstr);
-		send.print(EOL);
-		send.flush();
+		sendLine(debug,"RCPT TO:<" + to_address+">");
 		rstr = reply.readLine();
         if(debug) Log.debugOut("SMTPclient",rstr);
 		if ((rstr==null)||(!rstr.startsWith("250"))) throw new ProtocolException(""+rstr);
-		sstr="DATA";
-        if(debug) Log.debugOut("SMTPclient",sstr);
-		send.print(sstr);
-		send.print(EOL);
-		send.flush();
+		sendLine(debug,"DATA");
 		rstr = reply.readLine();
         if(debug) Log.debugOut("SMTPclient",rstr);
 		if ((rstr==null)||(!rstr.startsWith("354"))) throw new ProtocolException(""+rstr);
-		sstr="MIME-Version: 1.0";
-        if(debug) Log.debugOut("SMTPclient",sstr);
-		send.print(sstr);
-		send.print(EOL);
-		sstr="Date: " + CMLib.time().date2SecondsString(System.currentTimeMillis());
-        if(debug) Log.debugOut("SMTPclient",sstr);
-		send.print(sstr);
-		send.print(EOL);
-		sstr="From: " + froaddress;
-        if(debug) Log.debugOut("SMTPclient",sstr);
-		send.print(sstr);
-		send.print(EOL);
-		sstr="Subject: " + subject;
-        if(debug) Log.debugOut("SMTPclient",sstr);
-		send.print(sstr);
-		send.print(EOL);
-		sstr="Sender: " + froaddress;
-        if(debug) Log.debugOut("SMTPclient",sstr);
-		send.print(sstr);
-		send.print(EOL);
-		sstr="Reply-To: " + reply_address;
-        if(debug) Log.debugOut("SMTPclient",sstr);
-		send.print(sstr);
-		send.print(EOL);
-		sstr="To: " + mockto_address;
-		send.print(EOL);
+		sendLine(debug,"MIME-Version: 1.0");
+		if((message.indexOf("<HTML>")>=0)&&(message.indexOf("</HTML>")>=0))
+			sendLine(debug,"Content-Type: text/html");
+		else
+			sendLine(debug,"Content-Type: text/plain; charset=iso-8859-1");
+		sendLine(debug,"Content-Transfer-Encoding: 7bit");
+		sendLine(debug,"Date: " + CMLib.time().smtpDateFormat(System.currentTimeMillis()));
+		sendLine(debug,"From: " + froaddress);
+		sendLine(debug,"Subject: " + subject);
+		sendLine(debug,"Sender: " + froaddress);
+		sendLine(debug,"Reply-To: " + reply_address);
+		sendLine(debug,"To: " + mockto_address);
 
-		// Create Date - we'll cheat by assuming that local clock is right
-
-		sstr="Date: " + CMLib.time().smtpDateFormat(System.currentTimeMillis());
-        if(debug) Log.debugOut("SMTPclient",sstr);
-		send.print(sstr);
+		// Sending a blank line ends the header part.
 		send.print(EOL);
-		send.flush();
-
-		// Warn the world that we are on the loose - with the comments header:
-		//		send.print("Comment: Unauthenticated sender");
-		//		send.print(EOL);
-		//		send.print("X-Mailer: JNet SMTP");
-		//		send.print(EOL);
-
-
+		
 		// Now send the message proper
-		if(message!=null)
-		{
-			if((message.indexOf("<HTML>")>=0)&&(message.indexOf("</HTML>")>=0))
-		    {
-				//String BoundryString="---"+Math.random()+"_"+Math.random();
-				//send.print("Content-Type: multipart/mixed; boundry="+BoundryString);
-				//send.print(EOL);
-				//send.print(BoundryString);
-				//send.print(EOL);
-				sstr="Content-Type: text/html";
-		        if(debug) Log.debugOut("SMTPclient",sstr);
-				send.print(sstr);
-				send.print(EOL);
-				
-			}
-			else
-			{
-				sstr="Content-Type: text/plain";
-		        if(debug) Log.debugOut("SMTPclient",sstr);
-				send.print(sstr);
-				send.print(EOL);
-			}
-			// Sending a blank line ends the header part.
-			send.print(EOL);
-			send.print(message);
-	        if(debug) Log.debugOut("SMTPclient",message);
-		}
-		send.print(EOL);
-		sstr=".";
-        if(debug) Log.debugOut("SMTPclient",sstr);
-		send.print(sstr);
-		send.print(EOL);
-		send.flush();
+		sendLine(debug,message);
+		sendLine(debug,".");
+		
 		rstr = reply.readLine();
         if(debug) Log.debugOut("SMTPclient",rstr);
 		if (!rstr.startsWith("250")) throw new ProtocolException(rstr);
