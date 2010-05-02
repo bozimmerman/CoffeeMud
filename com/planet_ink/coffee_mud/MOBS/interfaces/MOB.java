@@ -166,11 +166,10 @@ public interface MOB extends Environmental, Rider, DBIdentifiable, ActiveEnviron
 	public Item fetchFirstWornItem(long wornCode);
 	public Item fetchWieldedItem();
     public boolean hasOnlyGoldInInventory();
-
+	public void giveItem(Item thisContainer);
 
 	public int freeWearPositions(long wornCode, short belowLayer, short layerAttributes);
 	public boolean isMine(Environmental env);
-	public void giveItem(Item thisContainer);
 	public int getWearPositions(long wornCode);
 
 	public int numAllEffects();

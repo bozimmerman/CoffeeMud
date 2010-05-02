@@ -129,49 +129,40 @@ public class AreaScriptNext extends StdWebMacro
 			if(A==null) A=CMLib.map().findArea(area);
 			if(A==null) return list;
 			Room R=null;
-			MOB M=null;
-			Item I=null;
+			ActiveEnvironmental AE=null;
 			ArrayList<String> prefix = new ArrayList<String>();
-			prefix.add(A.name());
-			addScripts(list,prefix,A);
-			addShopScripts(list,prefix,A);
-			String roomID=null;
-			for(Enumeration<String> e=A.getProperRoomnumbers().getRoomIDs();e.hasMoreElements();)
+			for(Enumeration<ActiveEnvironmental> ae=CMLib.map().scriptHosts(A);ae.hasMoreElements();)
 			{
-				roomID=e.nextElement();
-				//System.out.println(roomID);
-				R=CMLib.map().getRoom(roomID);
-				if(R==null) continue;
-				//CMLib.map().resetRoom(R);
-				R=CMLib.map().getRoom(R);
+				AE=ae.nextElement(); if(AE==null) continue;
+				R=CMLib.map().getStartRoom(AE);
+				if(R==null) R=CMLib.map().roomLocation(AE);
 				
 				prefix = new ArrayList<String>();
 				prefix.add(A.name());
-				prefix.add(CMLib.map().getExtendedRoomID(R));
-				addScripts(list,prefix,R);
-				addShopScripts(list,prefix,R);
-				for(int m=0;m<R.numInhabitants();m++)
+				
+				if((AE instanceof Area)||(AE instanceof Exit)||(AE instanceof Room))
 				{
-					M=R.fetchInhabitant(m); if(M==null) continue;
-					ArrayList<String> prefixM=(ArrayList<String>)prefix.clone();
-					prefix.add(M.name());
-					addScripts(list,prefixM,M);
-					addShopScripts(list,prefixM,M);
-					for(int i=0;i<M.inventorySize();i++)
-					{
-						I=M.fetchInventory(i); if(I==null) continue;
-						ArrayList<String> prefixI=(ArrayList<String>)prefixM.clone();
-						prefix.add(M.name());
-						addScripts(list,prefixI,I);
-						addShopScripts(list,prefixI,I);
-					}
+					addScripts(list,prefix,AE);
+					addShopScripts(list,prefix,AE);
 				}
-				for(int i=0;i<R.numItems();i++)
+				else
+				if(AE instanceof MOB)
 				{
-					I=R.fetchItem(i); if(I==null) continue;
-					ArrayList<String> prefixI=(ArrayList<String>)prefix.clone();
-					addScripts(list,prefixI,I);
-					addShopScripts(list,prefixI,I);
+					if(R!=null)
+						prefix.add(CMLib.map().getExtendedRoomID(R));
+					addScripts(list,prefix,AE);
+					addShopScripts(list,prefix,AE);
+				}
+				else
+				if(AE instanceof Item)
+				{
+					if(R!=null)
+						prefix.add(CMLib.map().getExtendedRoomID(R));
+					ItemPossessor IP=((Item)AE).owner();
+					if(IP instanceof MOB)
+						prefix.add(IP.Name());
+					addScripts(list,prefix,AE);
+					addShopScripts(list,prefix,AE);
 				}
 			}
 			httpReq.getRequestObjects().put("AREA_"+area+" SCRIPTSLIST",list);

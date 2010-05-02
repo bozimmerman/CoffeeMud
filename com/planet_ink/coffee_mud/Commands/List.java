@@ -283,8 +283,9 @@ public class List extends StdCommand
 			if(B instanceof ScriptingEngine)
 			{
 				Vector files=B.externalFiles();
-				for(int f=0;f<files.size();f++)
-					DV.addElement(files.elementAt(f),E,R,M,I,B);
+				if(files != null)
+					for(int f=0;f<files.size();f++)
+						DV.addElement(files.elementAt(f),E,R,M,I,B);
 				String nonFiles=((ScriptingEngine)B).getVar("*","COFFEEMUD_SYSTEM_INTERNAL_NONFILENAME_SCRIPT");
 				if(nonFiles.trim().length()>0)
 					DV.addElement("*Custom*"+nonFiles.trim(),E,R,M,I,B);
@@ -294,8 +295,9 @@ public class List extends StdCommand
 		{
 			ScriptingEngine SE=e.nextElement();
 			Vector files=SE.externalFiles();
-			for(int f=0;f<files.size();f++)
-				DV.addElement(files.elementAt(f),E,R,M,I,SE);
+			if(files != null)
+				for(int f=0;f<files.size();f++)
+					DV.addElement(files.elementAt(f),E,R,M,I,SE);
 			String nonFiles=SE.getVar("*","COFFEEMUD_SYSTEM_INTERNAL_NONFILENAME_SCRIPT");
 			if(nonFiles.trim().length()>0)
 				DV.addElement("*Custom*"+nonFiles.trim(),E,R,M,I,SE);
@@ -325,31 +327,49 @@ public class List extends StdCommand
 			return new StringBuffer("List what script details? Try LIST SCRIPTS (COUNT/DETAILS/CUSTOM)");
 		String rest=CMParms.combine(cmds,0);
 		DVector scriptTree=new DVector(6);
+		Area A=null;
 		Room R=null;
-		MOB M=null;
-		Item I=null;
-		for(Enumeration e=CMLib.map().roomsFilled();e.hasMoreElements();)
+		ActiveEnvironmental AE=null;
+		for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
 		{
-			R=(Room)e.nextElement(); if(R==null) continue;
-			addScripts(scriptTree,R,null,null,null,R);
-			addShopScripts(scriptTree,R,null,null,R);
-			for(int m=0;m<R.numInhabitants();m++)
+			A=(Area)e.nextElement(); if(A==null) continue;
+			for(Enumeration<ActiveEnvironmental> he = CMLib.map().scriptHosts(A);he.hasMoreElements();)
 			{
-				M=R.fetchInhabitant(m); if(M==null) continue;
-				addScripts(scriptTree,R,null,M,null,M);
-				addShopScripts(scriptTree,R,M,null,M);
-				for(int i=0;i<M.inventorySize();i++)
+				AE=he.nextElement(); if(AE==null) continue;
+				R=CMLib.map().getStartRoom(AE);
+				if(R==null) R=CMLib.map().roomLocation(AE);
+				if((AE instanceof Area)||(AE instanceof Exit))
 				{
-					I=M.fetchInventory(i); if(I==null) continue;
-					addScripts(scriptTree,R,null,M,I,I);
-					addShopScripts(scriptTree,R,M,I,I);
+					addScripts(scriptTree,A.getRandomProperRoom(),null,null,null,AE);
+					addShopScripts(scriptTree,A.getRandomProperRoom(),null,null,AE);
 				}
-			}
-			for(int i=0;i<R.numItems();i++)
-			{
-				I=R.fetchItem(i); if(I==null) continue;
-				addScripts(scriptTree,R,null,M,I,I);
-				addShopScripts(scriptTree,R,M,I,I);
+				else
+				if(AE instanceof Room)
+				{
+					addScripts(scriptTree,R,null,null,null,AE);
+					addShopScripts(scriptTree,R,null,null,AE);
+				}
+				else
+				if(AE instanceof MOB)
+				{
+					addScripts(scriptTree,R,null,(MOB)AE,null,AE);
+					addShopScripts(scriptTree,R,(MOB)AE,null,AE);
+				}
+				else
+				if(AE instanceof Item)
+				{
+					ItemPossessor IP=((Item)AE).owner();
+					if(IP instanceof MOB)
+					{
+						addScripts(scriptTree,R,null,(MOB)IP,(Item)AE,AE);
+						addShopScripts(scriptTree,R,(MOB)IP,(Item)AE,AE);
+					}
+					else
+					{
+						addScripts(scriptTree,R,null,null,(Item)AE,AE);
+						addShopScripts(scriptTree,R,null,(Item)AE,AE);
+					}
+				}
 			}
 		}
 		

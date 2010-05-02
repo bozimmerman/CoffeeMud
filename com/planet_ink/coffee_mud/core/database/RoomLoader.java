@@ -285,6 +285,7 @@ public class RoomLoader
                 {
                     newRoom.setRoomID(roomID);
                     newRoom.setArea(myArea);
+            		CMLib.map().addScriptHost(myArea, newRoom);
                     newRoom.setDisplayText(DBConnections.getRes(R,"CMDESC1"));
                     if(CMProps.getBoolVar(CMProps.SYSTEMB_ROOMDNOCACHE))
                         newRoom.setDescription("");
@@ -396,6 +397,7 @@ public class RoomLoader
                         {
                             thisRoom.rawDoors()[direction]=newRoom;
                             thisRoom.setRawExit(direction,newExit);
+                    		CMLib.map().addScriptHost(thisRoom.getArea(), newExit);
                         }
                     }
                 }
@@ -569,6 +571,8 @@ public class RoomLoader
     			Environmental E=(Environmental)i.nextElement();
     			if((debug)&&((lastName==null)||(!lastName.equals(E.Name()))))
                 {lastName=E.Name(); Log.debugOut("RoomLoader","Loading object(s): "+E.Name());}
+    			if(E instanceof ActiveEnvironmental)
+    				CMLib.map().addScriptHost(room.getArea(), (ActiveEnvironmental)E);
     			if(E instanceof Item)
     				room.addItem((Item)E);
     			else
@@ -933,6 +937,7 @@ public class RoomLoader
 		for(int i=0;i<items.size();i++)
 		{
 			Item thisItem=(Item)items.elementAt(i);
+    		CMLib.map().addScriptHost(room.getArea(), thisItem);
 			statements.addElement(getDBCreateItemString(room.roomID(),thisItem));
 		}
 		DB.update(CMParms.toStringArray(statements));
@@ -958,6 +963,7 @@ public class RoomLoader
 		{
 			Exit thisExit=room.getRawExit(d);
 			Room thisRoom=room.rawDoors()[d];
+    		CMLib.map().addScriptHost(thisRoom.getArea(), thisExit);
 			if(((thisRoom!=null)||(thisExit!=null))
 			   &&((thisRoom==null)||(thisRoom.isSavable())))
 			{
@@ -1086,6 +1092,7 @@ public class RoomLoader
 		for(int m=0;m<mobs.size();m++)
 		{
 			MOB thisMOB=(MOB)mobs.elementAt(m);
+    		CMLib.map().addScriptHost(room.getArea(), thisMOB);
 			statements.addElement(getDBCreateMOBString(room.roomID(),thisMOB));
 		}
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
@@ -1121,6 +1128,7 @@ public class RoomLoader
 		if((!room.isSavable())||(room.amDestroyed())) return;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROOM")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Start updating room "+room.roomID());
+		CMLib.map().addScriptHost(room.getArea(), room);
 		DB.update(
 		"UPDATE CMROOM SET "
 		+"CMLOID='"+CMClass.classID(room)+"',"
@@ -1193,7 +1201,8 @@ public class RoomLoader
 			return;
 		}
 
-		//CMLib.map().addArea(A); // not sure why I ever toyed with this idea, but apparantly I did.
+		CMLib.map().addScriptHost(A, A);
+		
 		DB.update(
 		"INSERT INTO CMAREA ("
 		+"CMAREA,"
@@ -1221,6 +1230,7 @@ public class RoomLoader
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMAREA")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Updating area "+A.name());
 		boolean ignoreType=CMSecurity.isDisabled("FATAREAS")||CMSecurity.isDisabled("THINAREAS");
+		CMLib.map().addScriptHost(A, A);
 		DB.update(
 		"UPDATE CMAREA SET "
 		+"CMAREA='"+A.Name()+"',"

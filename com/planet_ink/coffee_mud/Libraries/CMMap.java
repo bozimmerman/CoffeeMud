@@ -84,12 +84,14 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		sortedAreas=null;
 		areasList.addElement(newOne);
+		CMLib.map().addScriptHost(newOne, newOne);
 	}
 
 	public void delArea(Area oneToDel)
 	{
 		sortedAreas=null;
 		areasList.remove(oneToDel);
+		CMLib.map().delScriptHost(oneToDel, oneToDel);
 	}
 
 	public Enumeration sortedAreas()
@@ -1647,56 +1649,77 @@ public class CMMap extends StdLibrary implements WorldMap
 		return true;
 	}
 
-	private void cleanScriptHosts(SVector<WeakReference<ActiveEnvironmental>> hosts, ActiveEnvironmental oneToDel)
+	private void cleanScriptHosts(SVector<WeakReference<ActiveEnvironmental>> hosts, ActiveEnvironmental oneToDel, boolean fullCleaning)
 	{
 		for(WeakReference<ActiveEnvironmental> W : hosts)
-			if((W.get()==oneToDel)||(W.get().amDestroyed()))
+			if((W.get()==oneToDel)
+			||(W.get().amDestroyed())
+			||((fullCleaning)&&(!isAQualifyingScriptHost(W.get()))))
 				hosts.remove(W);
 	}
-	
-    public void addScriptHost(String area, ActiveEnvironmental host)
-    {
-    	if((area==null) || (host == null))
-    		return;
-    	boolean isAScriptHost = false;
+
+	private boolean isAQualifyingScriptHost(ActiveEnvironmental host)
+	{
+		if(host==null) return false;
     	for(Enumeration<Behavior> e = host.behaviors();e.hasMoreElements();)
     	{
     		Behavior B=e.nextElement();
     		if((B!=null) && B.isSavable() && (B instanceof ScriptingEngine))
-    		{ isAScriptHost=true; break;}
+    			return true;
     	}
     	for(Enumeration<ScriptingEngine> e = host.scripts();e.hasMoreElements();)
     	{
     		ScriptingEngine SE=e.nextElement();
     		if((SE!=null) && SE.isSavable() && (SE instanceof ScriptingEngine))
-    		{ isAScriptHost=true; break;}
+    			return true;
     	}
-    	if(!isAScriptHost) 
+		return false;
+	}
+	
+	private boolean isAScriptHost(SVector<WeakReference<ActiveEnvironmental>> hosts, ActiveEnvironmental host)
+	{
+		if((hosts==null)||(host==null)||(hosts.size()==0)) return false;
+		for(WeakReference<ActiveEnvironmental> W : hosts)
+			if(W.get()==host)
+				return true;
+		return false;
+	}
+	
+    public void addScriptHost(Area area, ActiveEnvironmental host)
+    {
+    	if((area==null) || (host == null))
     		return;
-    	synchronized(("SCRIPT_HOST_FOR: "+area.toUpperCase()).intern())
+    	if(!isAQualifyingScriptHost(host))
+    		return;
+    	synchronized(("SCRIPT_HOST_FOR: "+area.Name().toUpperCase()).intern())
     	{
-	    	SVector<WeakReference<ActiveEnvironmental>> hosts = scriptHostMap.get(area.toUpperCase());
+	    	SVector<WeakReference<ActiveEnvironmental>> hosts = scriptHostMap.get(area.Name().toUpperCase());
 	    	if(hosts == null)
 	    	{
 	    		hosts=new SVector<WeakReference<ActiveEnvironmental>>();
-	    		scriptHostMap.put(area.toUpperCase(), hosts);
+	    		scriptHostMap.put(area.Name().toUpperCase(), hosts);
 	    	}
-	    	cleanScriptHosts(hosts, null);
+	    	else
+	    	{
+		    	cleanScriptHosts(hosts, null, false);
+		    	if(isAScriptHost(hosts,host))
+		    		return;
+	    	}
 	    	hosts.add(new WeakReference<ActiveEnvironmental>(host));
     	}
     }
-    public void delScriptHost(String area, ActiveEnvironmental oneToDel)
+    public void delScriptHost(Area area, ActiveEnvironmental oneToDel)
     {
     	if((area==null) || (oneToDel == null))
     		return;
-    	synchronized(("SCRIPT_HOST_FOR: "+area.toUpperCase()).intern())
+    	synchronized(("SCRIPT_HOST_FOR: "+area.Name().toUpperCase()).intern())
     	{
-	    	SVector<WeakReference<ActiveEnvironmental>> hosts = scriptHostMap.get(area.toUpperCase());
+	    	SVector<WeakReference<ActiveEnvironmental>> hosts = scriptHostMap.get(area.Name().toUpperCase());
 	    	if(hosts==null) return;
-	    	cleanScriptHosts(hosts, oneToDel);
+	    	cleanScriptHosts(hosts, oneToDel, false);
     	}
     }
-    public Enumeration<ActiveEnvironmental> scriptHosts(String area)
+    public Enumeration<ActiveEnvironmental> scriptHosts(Area area)
     {
     	final Vector<Enumeration<WeakReference<ActiveEnvironmental>>> V = new Vector<Enumeration<WeakReference<ActiveEnvironmental>>>();
     	if(area == null)
@@ -1704,8 +1727,9 @@ public class CMMap extends StdLibrary implements WorldMap
     	    	V.add(scriptHostMap.get(areaKey.toUpperCase()).elements());
     	else
     	{
-	    	SVector<WeakReference<ActiveEnvironmental>> hosts = scriptHostMap.get(area.toUpperCase());
+	    	SVector<WeakReference<ActiveEnvironmental>> hosts = scriptHostMap.get(area.Name().toUpperCase());
 	    	if(hosts==null) return (Enumeration<ActiveEnvironmental>)EmptyEnumeration.INSTANCE;
+	    	V.add(hosts.elements());
     	}
     	if(V.size()==0) return (Enumeration<ActiveEnvironmental>)EmptyEnumeration.INSTANCE;
     	final MultiEnumeration<WeakReference<ActiveEnvironmental>> me = new MultiEnumeration<WeakReference<ActiveEnvironmental>>(V.toArray(new Enumeration[0]));
@@ -1825,6 +1849,7 @@ public class CMMap extends StdLibrary implements WorldMap
                 }
                 R.sendOthers(expireM,expireMsg);
             }
+            
         }
         catch(java.util.NoSuchElementException e){}
         thread.status("title sweeping");
@@ -1843,6 +1868,11 @@ public class CMMap extends StdLibrary implements WorldMap
                 }
             }
         }catch(NoSuchElementException nse){}
+        
+        thread.status("cleaning scripts");
+		for(String areaKey : scriptHostMap.keySet())
+			cleanScriptHosts(scriptHostMap.get(areaKey), null, true);
+        
         long lastDateTime=System.currentTimeMillis()-(5*TimeManager.MILI_MINUTE);
         thread.status("checking");
         try

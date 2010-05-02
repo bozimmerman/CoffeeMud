@@ -110,9 +110,9 @@ public interface WorldMap extends CMLibrary, Runnable
     /************************************************************************/
     /**							SCRIPT HOST									*/
     /************************************************************************/
-    public void addScriptHost(String area, ActiveEnvironmental host);
-    public void delScriptHost(String area, ActiveEnvironmental oneToDel);
-    public Enumeration<ActiveEnvironmental> scriptHosts(String area);
+    public void addScriptHost(Area area, ActiveEnvironmental host);
+    public void delScriptHost(Area area, ActiveEnvironmental oneToDel);
+    public Enumeration<ActiveEnvironmental> scriptHosts(Area area);
     
     /************************************************************************/
     /**							 	DEITIES	    							*/
