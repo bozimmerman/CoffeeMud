@@ -19,7 +19,10 @@ limitations under the License.
 */
 public class EmptyEnumeration<K> implements Enumeration<K>
 {
-	public EmptyEnumeration(){};
+    @SuppressWarnings("unchecked")
+	public static final Enumeration INSTANCE=new EmptyEnumeration();
+    
+    private EmptyEnumeration(){}
     public boolean hasMoreElements(){ return false;}
     public K nextElement(){ throw new NoSuchElementException(); }
 }

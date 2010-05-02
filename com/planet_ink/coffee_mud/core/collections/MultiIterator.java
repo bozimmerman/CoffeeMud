@@ -23,10 +23,11 @@ public class MultiIterator<K> implements Iterator<K>
     Vector<Iterator<K>> iters=new Vector<Iterator<K>>();
     int dex=0;
     
+	@SuppressWarnings("unchecked")
 	public MultiIterator(Iterator<K>[] esets) 
     {
         if((esets==null)||(esets.length==0)) 
-        	iters.add(new EmptyIterator<K>());
+        	iters.add((Iterator<K>)EmptyIterator.INSTANCE);
         else
         for(Iterator<K> I : esets)
         	iters.add(I);

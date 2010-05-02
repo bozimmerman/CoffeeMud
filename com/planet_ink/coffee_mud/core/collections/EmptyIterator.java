@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.core.collections;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 /*
@@ -18,7 +19,9 @@ limitations under the License.
 */
 public class EmptyIterator<K> implements Iterator<K>
 {
-	public EmptyIterator(){};
+    @SuppressWarnings("unchecked")
+	public static final Iterator INSTANCE=new EmptyIterator();
+	private EmptyIterator(){};
     public boolean hasNext(){ return false;}
     public K next(){ throw new NoSuchElementException(); }
     public void remove() { throw new NoSuchElementException();}

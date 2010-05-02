@@ -21,10 +21,11 @@ public class IteratorEnumeration<K> implements Enumeration<K>
 {
 	private Iterator<K> i=null;
     
-    public IteratorEnumeration(Iterator<K> i) 
+    @SuppressWarnings("unchecked")
+	public IteratorEnumeration(Iterator<K> i) 
     {
         if(i==null)
-        	this.i=new EmptyIterator<K>();
+        	this.i=(Iterator<K>)EmptyIterator.INSTANCE;
         else
 	        this.i=i;
         hasMoreElements();

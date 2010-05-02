@@ -23,10 +23,11 @@ public class MultiEnumeration<K> implements Enumeration<K>
 	private Vector<Enumeration<K>> enums=new Vector<Enumeration<K>>();
 	private int dex=0;
     
+	@SuppressWarnings("unchecked")
 	public MultiEnumeration(Enumeration<K>[] esets) 
     {
         if((esets==null)||(esets.length==0))
-        	enums.add(new EmptyEnumeration<K>());
+        	enums.add((Enumeration<K>)EmptyEnumeration.INSTANCE);
         else
         for(Enumeration<K> E : esets)
         	enums.add(E);
