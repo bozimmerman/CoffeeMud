@@ -42,10 +42,14 @@ public class CM1Server extends Thread
 	private boolean 	shutdownRequested = false;
 	private boolean 	isShutdown = false;
 	private Selector	servSelector = null;
-	private ServerSocketChannel	servChan = null;
-	private final ArrayBlockingQueue<Runnable> blockQueue = new ArrayBlockingQueue<Runnable>(65536);
-	private SHashtable<SocketChannel,RequestHandler> handlers = new SHashtable<SocketChannel,RequestHandler>();
-	private ThreadPoolExecutor threadPool = new ThreadPoolExecutor(1, 3, 30, TimeUnit.SECONDS, blockQueue);
+	private ServerSocketChannel	
+						servChan = null;
+	private final ArrayBlockingQueue<Runnable> 
+						blockQueue = new ArrayBlockingQueue<Runnable>(65536);
+	private SHashtable<SocketChannel,RequestHandler> 
+						handlers = new SHashtable<SocketChannel,RequestHandler>();
+	private ThreadPoolExecutor 
+						threadPool = new ThreadPoolExecutor(3, 10, 30, TimeUnit.SECONDS, blockQueue);
 	
 	
 	public CM1Server(String serverName, int serverPort)

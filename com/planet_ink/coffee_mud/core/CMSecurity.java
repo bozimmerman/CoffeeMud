@@ -682,7 +682,7 @@ public class CMSecurity
 	
 	
 	public static boolean isDebugging(String key)
-	{ return (dbgVars.size()>0)&&dbgVars.contains(key);}
+	{ return ((dbgVars.size()>0)&&dbgVars.contains(key))||debuggingEverything;}
 	
 	public static boolean isDisabled(String key)
 	{ return (disVars.size()>0)&&disVars.contains(key);}
@@ -754,6 +754,7 @@ public class CMSecurity
 		dbgVars.clear();
 		for(int v=0;v<V.size();v++)
 			dbgVars.add(((String)V.elementAt(v)).trim());
+		debuggingEverything = dbgVars.contains("EVERYTHING");
 	}
 	
 	public static void setDisableVars(String vars)
@@ -790,6 +791,7 @@ public class CMSecurity
     protected static HashSet disVars=new HashSet();
     protected static HashSet dbgVars=new HashSet();
     protected static HashSet saveFlags=new HashSet();
+    protected static boolean debuggingEverything=false;
 
 	public static long getStartTime(){return i().startTime;}
 	

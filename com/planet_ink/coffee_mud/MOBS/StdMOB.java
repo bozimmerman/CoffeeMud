@@ -794,9 +794,12 @@ public class StdMOB implements MOB
     	CMLib.factions().updatePlayerFactions(this,location());
 		if(tickStatus==Tickable.STATUS_NOT)
 		{
-			try{ imMobile=true;
-				 tick(this,Tickable.TICKID_MOB); // slap on the butt
-			}finally{ imMobile=false;}
+			try { 
+				imMobile=true;
+				tick(this,Tickable.TICKID_MOB); // slap on the butt
+			} catch(Throwable t) {
+				t.printStackTrace();
+			} finally { imMobile=false; }
 		}
         if(location()==null)
         {

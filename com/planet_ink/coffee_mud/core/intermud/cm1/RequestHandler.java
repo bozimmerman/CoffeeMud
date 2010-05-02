@@ -40,13 +40,15 @@ import java.util.concurrent.atomic.*;
 public class RequestHandler implements Runnable
 {
 	private static AtomicInteger counter = new AtomicInteger();
-	private final String runnableName;
-	private boolean isRunning = false;
-	private long idleTime = System.currentTimeMillis();
-	private final SocketChannel chan;
-	private SVector<ByteBuffer>	workingBuffers = new SVector<ByteBuffer>();
-	private SVector<String> lines=new SVector<String>();
-	private char eolChar = '\n';
+	private final String 		 runnableName;
+	private boolean 			 isRunning = false;
+	private long 				 idleTime = System.currentTimeMillis();
+	private final SocketChannel  chan;
+	private SVector<ByteBuffer>	 workingBuffers = new SVector<ByteBuffer>();
+	private SVector<String> 	 lines=new SVector<String>();
+	private char 				 eolChar = '\n';
+	private static final int 	 BUFFER_SIZE=1024;
+	private static final long 	 MAXIMUM_BYTES=1024 * 1024 * 2;
 	
 	public RequestHandler(SocketChannel chan) throws IOException
 	{
@@ -92,7 +94,7 @@ public class RequestHandler implements Runnable
 	    		if((buffer==null)||(buffer.capacity()==buffer.limit()))
 	    		{
 	    			//System.out.println(this.runnableName+": using new buffer");
-	    			buffer = ByteBuffer.allocate(1024);
+	    			buffer = ByteBuffer.allocate(BUFFER_SIZE);
 	    		}
 	    		else
 	    		{
@@ -116,7 +118,7 @@ public class RequestHandler implements Runnable
 	    						nxtBuf.put(buffer);
 	    						nxtBuf.flip();
 	    						//System.out.println(this.runnableName+": NEXT buffer has "+nxtBuf.limit()+" chars.");
-	    						buffer = ByteBuffer.allocate(1024);
+	    						buffer = ByteBuffer.allocate(BUFFER_SIZE);
 	    						buffer.put(nxtBuf);
 	    						buffer.rewind();
 	    						buffer.limit(i);
@@ -138,16 +140,22 @@ public class RequestHandler implements Runnable
 	    					//System.out.println(runnableName+": finalBuf has "+finalBuf.limit()+"/"+finalBuf.capacity()+" bytes");
 	    					lines.add(new String(finalBuf.array()));
 	    					if(lastBuffer == buffer)
-	    						buffer=ByteBuffer.allocate(1024);
+	    						buffer=ByteBuffer.allocate(BUFFER_SIZE);
 	    				}
 	    			if(!workingBuffers.contains(buffer))
 	    				workingBuffers.add(buffer);
 	    			if(buffer.limit()==buffer.capacity())
-	    				buffer=ByteBuffer.allocate(1024);
+	    				buffer=ByteBuffer.allocate(BUFFER_SIZE);
 	    			else
 	    			{
 	    				buffer.position(buffer.limit());
 	    				buffer.limit(buffer.capacity());
+	    			}
+	    			if (((long)BUFFER_SIZE * (long)workingBuffers.size())>MAXIMUM_BYTES)
+	    			{
+	    				workingBuffers.clear();
+	    				shutdown();
+	    				return;
 	    			}
 	    		}
 	    		buffer.flip();
