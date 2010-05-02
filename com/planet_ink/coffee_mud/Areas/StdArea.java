@@ -176,6 +176,7 @@ public class StdArea implements Area
     protected boolean amDestroyed=false;
     public void destroy()
     {
+        CMLib.map().registerWorldObjectDestroyed(this,null,this);
         envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
         baseEnvStats=envStats;
         amDestroyed=true;

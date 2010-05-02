@@ -299,17 +299,6 @@ public class StdDeity extends StdMOB implements Deity
         return "The services of "+name()+" are the following: "+getTriggerDesc(serviceTriggers)+".";
     }
 
-	public void destroy()
-	{
-		super.destroy();
-		CMLib.map().delDeity(this);
-	}
-	public void bringToLife(Room newLocation, boolean resetStats)
-	{
-		super.bringToLife(newLocation,resetStats);
-		CMLib.map().addDeity(this);
-	}
-
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))

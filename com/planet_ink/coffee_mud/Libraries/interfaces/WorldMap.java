@@ -108,52 +108,18 @@ public interface WorldMap extends CMLibrary, Runnable
     public boolean explored(Room R);
     
     /************************************************************************/
-    /**							GENERAL REGISTRY							*/
+    /**						WORLD OBJECT INDEXES							*/
     /************************************************************************/
 	public void registerWorldObjectLoaded(Area area, Room room, CMObject o);
 	public void registerWorldObjectDestroyed(Area area, Room room, CMObject o);
-   
-    /************************************************************************/
-    /**							SCRIPT HOST									*/
-    /************************************************************************/
-    public void addScriptHost(Area area, ActiveEnvironmental host);
-    public void delScriptHost(Area area, ActiveEnvironmental oneToDel);
     public Enumeration<ActiveEnvironmental> scriptHosts(Area area);
-    
-    /************************************************************************/
-    /**							 	DEITIES	    							*/
-    /************************************************************************/
-    public int numDeities();
-    public void addDeity(Deity newOne);
-    public void delDeity(Deity oneToDel);
     public Deity getDeity(String calledThis);
     public Enumeration<Deity> deities();
-    
-    /************************************************************************/
-    /**							 POST OFFICES	  							*/
-    /************************************************************************/
-    public int numPostOffices();
-    public void addPostOffice(PostOffice newOne);
-    public void delPostOffice(PostOffice oneToDel);
     public PostOffice getPostOffice(String chain, String areaNameOrBranch);
     public Enumeration<PostOffice> postOffices();
-    
-    /************************************************************************/
-    /**							 	BANKS		  							*/
-    /************************************************************************/
-    public int numBanks();
-    public void addBank(Banker newOne);
-    public void delBank(Banker oneToDel);
     public Banker getBank(String chain, String areaNameOrBranch);
     public Enumeration<Banker> banks();
 	public Iterator<String> bankChains(Area AreaOrNull);
-	
-    /************************************************************************/
-    /**							AUCTION HOUSES		 						*/
-    /************************************************************************/
-    public int numAuctionHouses();
-    public void addAuctionHouse(Auctioneer newOne);
-    public void delAuctionHouse(Auctioneer oneToDel);
     public Auctioneer getAuctionHouse(String chain, String areaNameOrBranch);
     public Enumeration<Auctioneer> auctionHouses();
     

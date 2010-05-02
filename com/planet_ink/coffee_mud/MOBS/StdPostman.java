@@ -82,17 +82,6 @@ public class StdPostman extends StdShopKeeper implements PostOffice
     public int maxMudMonthsHeld(){return maxMudMonthsHeld;}
     public void setMaxMudMonthsHeld(int months){maxMudMonthsHeld=months;}
 
-    public void destroy()
-    {
-        super.destroy();
-        CMLib.map().delPostOffice(this);
-    }
-    public void bringToLife(Room newLocation, boolean resetStats)
-    {
-        super.bringToLife(newLocation,resetStats);
-        CMLib.map().addPostOffice(this);
-    }
-
     public void addSoldType(int mask){setWhatIsSoldMask(CMath.abs(mask));}
 	public void setWhatIsSoldMask(long newSellCode){
     	super.setWhatIsSoldMask(newSellCode);

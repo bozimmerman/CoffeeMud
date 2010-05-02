@@ -95,17 +95,6 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
     public int minTimedAuctionDays(){return minTimedAuctionDays;}
     public void setMinTimedAuctionDays(int d){minTimedAuctionDays=d;}
 
-    public void destroy()
-    {
-        super.destroy();
-        CMLib.map().delAuctionHouse(this);
-    }
-    public void bringToLife(Room newLocation, boolean resetStats)
-    {
-        super.bringToLife(newLocation,resetStats);
-        CMLib.map().addAuctionHouse(this);
-    }
-
     public long getWhatIsSoldMask(){ return DEAL_AUCTIONEER;}
     public boolean isSold(int mask){return mask==ShopKeeper.DEAL_AUCTIONEER;}
     public void setWhatIsSoldMask(long newSellCode){ }

@@ -629,6 +629,7 @@ public class StdMOB implements MOB
 
 	public void destroy()
 	{
+        CMLib.map().registerWorldObjectDestroyed(null,getStartRoom(),this);
         try { CMLib.catalog().changeCatalogUsage(this,false);} catch(Throwable t){}
         if((CMSecurity.isDebugging("MISSINGKIDS"))&&(fetchEffect("Age")!=null)&&CMath.isInteger(fetchEffect("Age").text())&&(CMath.s_long(fetchEffect("Age").text())>Short.MAX_VALUE))
             Log.debugOut("MISSKIDS",new Exception(Name()+" went missing form "+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(this))));
@@ -826,6 +827,7 @@ public class StdMOB implements MOB
                 addInventory(dropItem);
         }
 
+        CMLib.map().registerWorldObjectLoaded(null,getStartRoom(),this);
         location().showOthers(this,null,CMMsg.MSG_BRINGTOLIFE,null);
 		if(CMLib.flags().isSleeping(this))
 			tell("(You are asleep)");

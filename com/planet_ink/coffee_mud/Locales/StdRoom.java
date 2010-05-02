@@ -1408,6 +1408,7 @@ public class StdRoom implements Room
 
 	public void destroy()
 	{
+        CMLib.map().registerWorldObjectDestroyed(getArea(),this,this);
 		try{
 		for(int a=numEffects()-1;a>=0;a--)
 			fetchEffect(a).unInvoke();

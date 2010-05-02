@@ -262,6 +262,7 @@ public class GenWallpaper implements Item
 	public void destroy()
 	{
 		if(owner==null) return;
+        CMLib.map().registerWorldObjectDestroyed(null,null,this);
 		destroyed=true;
 		removeFromOwnerContainer();
         owner=null;

@@ -119,7 +119,7 @@ public class DeityData extends StdWebMacro
                             		MOB M=R.fetchInhabitant(i);
                             		if((M instanceof Deity)
                             		&&(M.Name().equals(D2.Name())))
-                            			CMLib.map().addDeity((Deity)M);
+                            			CMLib.map().registerWorldObjectLoaded(R.getArea(),R,M);
                             	}
                             }
                             httpReq.getRequestObjects().put(roomID,R);

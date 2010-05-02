@@ -1169,6 +1169,7 @@ public class StdItem implements Item
 	public void destroy()
 	{
 		myContainer=null;
+        CMLib.map().registerWorldObjectDestroyed(null,null,this);
         try {CMLib.catalog().changeCatalogUsage(this,false);} catch(Throwable t){}
 		for(int a=numEffects()-1;a>=0;a--)
 		{

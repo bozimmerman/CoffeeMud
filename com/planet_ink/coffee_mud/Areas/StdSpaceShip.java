@@ -114,6 +114,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
     
     public void destroy()
     {
+        CMLib.map().registerWorldObjectDestroyed(this,null,this);
         envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
         coordinates=null;
         direction=null;

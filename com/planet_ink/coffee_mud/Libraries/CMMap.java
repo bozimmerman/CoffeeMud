@@ -48,12 +48,12 @@ public class CMMap extends StdLibrary implements WorldMap
     public SVector<Auctioneer> 	auctionHouseList = new SVector<Auctioneer>();
     public SVector<Banker> 		bankList		 = new SVector<Banker>();
 	public SVector<SpaceObject>	space			 = new SVector<SpaceObject>();
-	public STreeMap<String,SVector<WeakReference<ActiveEnvironmental>>>
-								scriptHostMap	 = new STreeMap<String,SVector<WeakReference<ActiveEnvironmental>>>();
     public SHashtable<Integer,SVector<WeakReference<MsgListener>>> 
     							globalHandlers	 = new SHashtable<Integer,SVector<WeakReference<MsgListener>>>();
-    private ThreadEngine.SupportThread 
-    							thread			 = null;
+	public STreeMap<String,SLinkedList<WeakReference<ActiveEnvironmental>>>
+								scriptHostMap	 = new STreeMap<String,SLinkedList<WeakReference<ActiveEnvironmental>>>();
+	
+    private ThreadEngine.SupportThread  thread	 = null;
     
     public ThreadEngine.SupportThread getSupportThread() { return thread;}
     
@@ -1234,9 +1234,7 @@ public class CMMap extends StdLibrary implements WorldMap
     {
         if(E ==null) return null;
         if(E instanceof MOB)
-        {
         	return ((MOB)E).getStartRoom();
-        }
         if(E instanceof Item)
         {
             if(((Item)E).owner() instanceof MOB)
@@ -1247,6 +1245,7 @@ public class CMMap extends StdLibrary implements WorldMap
         if(E instanceof Ability)
             return getStartRoom(((Ability)E).affecting());
         if(E instanceof Area) return ((Area)E).getRandomProperRoom();
+        if(E instanceof Room) return (Room)E;
         return roomLocation(E);
     }
 
@@ -1647,7 +1646,60 @@ public class CMMap extends StdLibrary implements WorldMap
 		return true;
 	}
 
-	private void cleanScriptHosts(SVector<WeakReference<ActiveEnvironmental>> hosts, ActiveEnvironmental oneToDel, boolean fullCleaning)
+	
+	public void registerWorldObjectDestroyed(Area area, Room room, CMObject o)
+	{
+		if(o instanceof Deity)
+			delDeity((Deity)o);
+		
+		if(o instanceof PostOffice)
+			delPostOffice((PostOffice)o);
+		
+		if(o instanceof Banker)
+			delBank((Banker)o);
+		
+		if(o instanceof Auctioneer)
+			delAuctionHouse((Auctioneer)o);
+		
+		if(o instanceof ActiveEnvironmental)
+		{
+			ActiveEnvironmental AE=(ActiveEnvironmental)o;
+			if((area == null) && (room!=null)) area = room.getArea();
+			if(area == null) area =getStartArea(AE);
+			delScriptHost(area, AE);
+		}
+	}
+	
+	public void registerWorldObjectLoaded(Area area, Room room, CMObject o)
+	{
+		if(o instanceof Deity)
+			addDeity((Deity)o);
+		
+		if(o instanceof PostOffice)
+			addPostOffice((PostOffice)o);
+		
+		if(o instanceof Banker)
+			addBank((Banker)o);
+		
+		if(o instanceof Auctioneer)
+			addAuctionHouse((Auctioneer)o);
+		
+		if(o instanceof ActiveEnvironmental)
+		{
+			ActiveEnvironmental AE=(ActiveEnvironmental)o;
+			if((area == null) && (room!=null)) area = room.getArea();
+			if(area == null) area = getStartArea(AE);
+			addScriptHost(area, AE);
+			if(o instanceof MOB)
+			{
+				MOB M=(MOB)o;
+				for(int i=0;i<M.inventorySize();i++)
+					addScriptHost(area, M.fetchInventory(i));
+			}
+		}
+	}
+	
+	private void cleanScriptHosts(SLinkedList<WeakReference<ActiveEnvironmental>> hosts, ActiveEnvironmental oneToDel, boolean fullCleaning)
 	{
 		for(WeakReference<ActiveEnvironmental> W : hosts)
 			if((W.get()==oneToDel)
@@ -1674,33 +1726,19 @@ public class CMMap extends StdLibrary implements WorldMap
 		return false;
 	}
 	
-	private boolean isAScriptHost(SVector<WeakReference<ActiveEnvironmental>> hosts, ActiveEnvironmental host)
+	private boolean isAScriptHost(Area area, ActiveEnvironmental host)
+	{
+		if(area == null) return false;
+		return isAScriptHost(scriptHostMap.get(area.Name().toUpperCase()), host);
+	}
+	
+	private boolean isAScriptHost(SLinkedList<WeakReference<ActiveEnvironmental>> hosts, ActiveEnvironmental host)
 	{
 		if((hosts==null)||(host==null)||(hosts.size()==0)) return false;
 		for(WeakReference<ActiveEnvironmental> W : hosts)
 			if(W.get()==host)
 				return true;
 		return false;
-	}
-	
-	public void registerWorldObjectDestroyed(Area area, Room room, CMObject o)
-	{
-		if(o instanceof ActiveEnvironmental)
-			CMLib.map().delScriptHost(area, (ActiveEnvironmental)o);
-	}
-	
-	public void registerWorldObjectLoaded(Area area, Room room, CMObject o)
-	{
-		if(o instanceof ActiveEnvironmental)
-		{
-			CMLib.map().addScriptHost(area, (ActiveEnvironmental)o);
-			if(o instanceof MOB)
-			{
-				MOB M=(MOB)o;
-				for(int i=0;i<M.inventorySize();i++)
-					CMLib.map().addScriptHost(area, M.fetchInventory(i));
-			}
-		}
 	}
 	
     public void addScriptHost(Area area, ActiveEnvironmental host)
@@ -1711,10 +1749,10 @@ public class CMMap extends StdLibrary implements WorldMap
     		return;
     	synchronized(("SCRIPT_HOST_FOR: "+area.Name().toUpperCase()).intern())
     	{
-	    	SVector<WeakReference<ActiveEnvironmental>> hosts = scriptHostMap.get(area.Name().toUpperCase());
+    		SLinkedList<WeakReference<ActiveEnvironmental>> hosts = scriptHostMap.get(area.Name().toUpperCase());
 	    	if(hosts == null)
 	    	{
-	    		hosts=new SVector<WeakReference<ActiveEnvironmental>>();
+	    		hosts=new SLinkedList<WeakReference<ActiveEnvironmental>>();
 	    		scriptHostMap.put(area.Name().toUpperCase(), hosts);
 	    	}
 	    	else
@@ -1728,34 +1766,43 @@ public class CMMap extends StdLibrary implements WorldMap
     }
     public void delScriptHost(Area area, ActiveEnvironmental oneToDel)
     {
-    	if((area==null) || (oneToDel == null))
+    	if(oneToDel == null)
+    		return;
+    	if(area == null)
+    		for(Area A : areasList)
+    			if(isAScriptHost(A,oneToDel))
+    			{
+    				area = A;
+    				break;
+    			}
+    	if(area == null)
     		return;
     	synchronized(("SCRIPT_HOST_FOR: "+area.Name().toUpperCase()).intern())
     	{
-	    	SVector<WeakReference<ActiveEnvironmental>> hosts = scriptHostMap.get(area.Name().toUpperCase());
+    		SLinkedList<WeakReference<ActiveEnvironmental>> hosts = scriptHostMap.get(area.Name().toUpperCase());
 	    	if(hosts==null) return;
 	    	cleanScriptHosts(hosts, oneToDel, false);
     	}
     }
     public Enumeration<ActiveEnvironmental> scriptHosts(Area area)
     {
-    	final Vector<Enumeration<WeakReference<ActiveEnvironmental>>> V = new Vector<Enumeration<WeakReference<ActiveEnvironmental>>>();
+    	final Vector<Iterator<WeakReference<ActiveEnvironmental>>> V = new Vector<Iterator<WeakReference<ActiveEnvironmental>>>();
     	if(area == null)
     		for(String areaKey : scriptHostMap.keySet())
-    	    	V.add(scriptHostMap.get(areaKey.toUpperCase()).elements());
+    	    	V.add(scriptHostMap.get(areaKey.toUpperCase()).iterator());
     	else
     	{
-	    	SVector<WeakReference<ActiveEnvironmental>> hosts = scriptHostMap.get(area.Name().toUpperCase());
+	    	SLinkedList<WeakReference<ActiveEnvironmental>> hosts = scriptHostMap.get(area.Name().toUpperCase());
 	    	if(hosts==null) return (Enumeration<ActiveEnvironmental>)EmptyEnumeration.INSTANCE;
-	    	V.add(hosts.elements());
+	    	V.add(hosts.iterator());
     	}
     	if(V.size()==0) return (Enumeration<ActiveEnvironmental>)EmptyEnumeration.INSTANCE;
-    	final MultiEnumeration<WeakReference<ActiveEnvironmental>> me = new MultiEnumeration<WeakReference<ActiveEnvironmental>>(V.toArray(new Enumeration[0]));
+    	final MultiIterator<WeakReference<ActiveEnvironmental>> me = new MultiIterator<WeakReference<ActiveEnvironmental>>(V.toArray(new Iterator[0]));
     	return new Enumeration<ActiveEnvironmental>()
     	{
-			public boolean hasMoreElements() { return me.hasMoreElements();}
+			public boolean hasMoreElements() { return me.hasNext();}
 			public ActiveEnvironmental nextElement() {
-				WeakReference<ActiveEnvironmental> W = me.nextElement();
+				WeakReference<ActiveEnvironmental> W = me.next();
 				ActiveEnvironmental E = W.get();
 				if(((E==null) || (E.amDestroyed())) && hasMoreElements())
 					return nextElement();

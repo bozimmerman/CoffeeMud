@@ -572,13 +572,15 @@ public class RoomLoader
     			if((debug)&&((lastName==null)||(!lastName.equals(E.Name()))))
                 {lastName=E.Name(); Log.debugOut("RoomLoader","Loading object(s): "+E.Name());}
     			if(E instanceof Item)
+    			{
     				room.addItem((Item)E);
+    				CMLib.map().registerWorldObjectLoaded(room.getArea(), room, E);
+    			}
     			else
                 {
                     ((MOB)E).setStartRoom(room);
     				((MOB)E).bringToLife(room,true);
                 }
-				CMLib.map().registerWorldObjectLoaded(room.getArea(), room, E);
     		}
 		itemLocs=(Hashtable)stuff.get("LOCSFOR"+roomID.toUpperCase());
 		mobRides=(Hashtable)stuff.get("RIDESFOR"+roomID.toUpperCase());

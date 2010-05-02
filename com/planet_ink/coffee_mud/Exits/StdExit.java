@@ -115,6 +115,7 @@ public class StdExit implements Exit
 
     public void destroy()
     {
+        CMLib.map().registerWorldObjectDestroyed(null,null,this);
         CMLib.threads().deleteTick(this,-1);
         affects=null;
         imageName=null;
