@@ -110,7 +110,7 @@ public class GenPackagedItems extends GenItem implements PackagedItems
         }
         String itemi=CMLib.xml().getValFromPieces(iblk.contents,"PICLASS");
         Environmental newOne=CMClass.getItem(itemi);
-        Vector idat=CMLib.xml().getRealContentsFromPieces(iblk.contents,"PIDATA");
+        Vector idat=CMLib.xml().getContentsFromPieces(iblk.contents,"PIDATA");
         if((idat==null)||(newOne==null)||(!(newOne instanceof Item)))
         {
             Log.errOut("Packaged","Error parsing 'PAKITEM' data.");

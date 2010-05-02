@@ -88,11 +88,13 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 
     /**
      *   Create a SMTP object pointing to the specified host
-     *   @param hostid The host to connect to.
+     *   @param SMTPServerInfo the host to connect to.
+     *   @param port the port to connect to.
      *   @exception UnknownHostException
      *   @exception IOException
      */
-    public SMTPclient( String SMTPServerInfo, int port) throws UnknownHostException,IOException {
+    public SMTPclient( String SMTPServerInfo, int port) throws UnknownHostException,IOException 
+    {
     	auth = new SMTPHostAuth(SMTPServerInfo);
         sock = new Socket( auth.getHost(), port );
 		reply = new BufferedReader(new InputStreamReader(sock.getInputStream()));

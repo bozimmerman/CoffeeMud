@@ -429,7 +429,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	{
 		Vector V=CMLib.xml().parseAllXML(xml);
 		if(xml==null){ Log.errOut("BeanCounter","Unable to parse: "+xml); return ;}
-		Vector debtData=CMLib.xml().getRealContentsFromPieces(V,"DEBT");
+		Vector debtData=CMLib.xml().getContentsFromPieces(V,"DEBT");
 		if(debtData==null){ Log.errOut("BeanCounter","Unable to get debt data"); return ;}
 		for(int p=0;p<debtData.size();p++)
 		{

@@ -34,66 +34,50 @@ import java.text.*;
 */
 public interface TimeManager extends CMLibrary
 {
-	public final static long MILI_SECOND=1000;
-	public final static long MILI_MINUTE=MILI_SECOND*60;
-	public final static long MILI_HOUR=MILI_MINUTE*60;
-	public final static long MILI_DAY=MILI_HOUR*24;
-	public final static long MILI_WEEK=MILI_DAY*7;
-	public final static long MILI_MONTH=MILI_DAY*30;
-	public final static long MILI_YEAR=MILI_DAY*365;
-    
-	public final static String[] MONTHS={
-    	"January","February","March","April","May","June","July","August","September","October","November","December"
-    };
-	
-	public final static String[] SHORTMONTHS={
-    	"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
-    };
-    
     /**
      * Returns the numeric representation of the month
      * 
      * <br><br><b>Usage:</b> month2MM("January");
-     * @param Month The month name
+     * @param monthName The month name
      * @return String The number of the month as a string
      */ 
-    public String month2MM(String Month);
+    public String month2MM(String monthName);
     /**
      * Return the name of the month, given a number
      * 
      * <br><br><b>Usage:</b> String Mnth=getMonthName(m,GiveShort).charStats();
-     * @param Number Month number to convert
-     * @param GiveShort Give abbreviation if true
+     * @param monthNum Month number to convert
+     * @param giveShort Give abbreviation if true
      * @return String Month name
      */
-    public String getMonthName(int Number, boolean GiveShort);
+    public String getMonthName(int monthNum, boolean giveShort);
     
     /**
      * Returns whether the given string would parse to a valid
      * date.  If true is returned, the change of getting a valid
      * date from string2Date is much higher.
-     * @param TheDate the strong to parse
+     * @param dateTimeStr the strong to parse
      * @return true if its possibly valid, false definitely not
      */
-    public boolean isValidDateString(String TheDate);
+    public boolean isValidDateString(String dateTimeStr);
     
     /**
      * Converts a string of some form into a Calendar object.
      * 
      * <br><br><b>Usage:</b> string2Millis(GetRes(Results,"StartDateTime"));
-     * @param TheDate The string to retrieve from
+     * @param dateTimeStr The string to retrieve from
      * @return Calendar Calendar object
      */
-    public long string2Millis(String TheDate);
+    public long string2Millis(String dateTimeStr);
     
     /**
      * Converts a string of some form into a Calendar object.
      *
      * <br><br><b>Usage:</b> Calendar.string2Date(GetRes(Results,"StartDateTime"));
-     * @param TheDate The string to retrieve from
+     * @param dateTimeStr The string to retrieve from
      * @return Calendar Calendar object
      */
-    public Calendar string2Date(String TheDate);
+    public Calendar string2Date(String dateTimeStr);
     
     /**
      * Converts a number to two digits.
@@ -107,10 +91,10 @@ public interface TimeManager extends CMLibrary
      * international format (military time)
      * 
      * <br><br><b>Usage:</b> ConvertHour(GetIn(req, "ENDHR"))
-     * @param TheHour Hours in military format
+     * @param hours24 Hours in military format
      * @return String Hours in regular format
      **/
-    public String convertHour(String TheHour);
+    public String convertHour(String hours24);
     
     /**
      * Returns the AMPM stamp given the international Hours portion the Time
@@ -235,7 +219,7 @@ public interface TimeManager extends CMLibrary
      * MM/DD/YYYY HH:MM AP
      * 
      * <br><br><b>Usage:</b> date2String()
-     * @param time The time in calendar
+     * @param C The time in calendar
      * @return String Formatted date/time
      */
     public String date2String(Calendar C);
@@ -304,4 +288,29 @@ public interface TimeManager extends CMLibrary
      * @return the global clock
      */
     public TimeClock globalClock();
+
+    /** constant for the names of the months in a rl year */
+	public final static String[] MONTHS={
+    	"January","February","March","April","May","June","July","August","September","October","November","December"
+    };
+	
+    /** constant for the short names of the months in a rl year */
+	public final static String[] SHORTMONTHS={
+    	"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
+    };
+    
+	/** constant for the number of milliseconds in a second */
+	public final static long MILI_SECOND=1000;
+	/** constant for the number of milliseconds in a minute */
+	public final static long MILI_MINUTE=MILI_SECOND*60;
+	/** constant for the number of milliseconds in a rl hour */
+	public final static long MILI_HOUR=MILI_MINUTE*60;
+	/** constant for the number of milliseconds in a rl day */
+	public final static long MILI_DAY=MILI_HOUR*24;
+	/** constant for the number of milliseconds in a rl week */
+	public final static long MILI_WEEK=MILI_DAY*7;
+	/** constant for the number of milliseconds in a rl month */
+	public final static long MILI_MONTH=MILI_DAY*30;
+	/** constant for the number of milliseconds in a rl year */
+	public final static long MILI_YEAR=MILI_DAY*365;
 }

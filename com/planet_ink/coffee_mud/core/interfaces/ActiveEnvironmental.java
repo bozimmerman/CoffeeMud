@@ -58,7 +58,7 @@ public interface ActiveEnvironmental extends Environmental
      * Returns a behavior object on this object. May return null even if the index
      * is correct to mark a race condition.
      * @see com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#numBehaviors()
+     * @see com.planet_ink.coffee_mud.core.interfaces.ActiveEnvironmental#numBehaviors()
      * @param index which object to return
      * @return the behavior object
      */

@@ -112,7 +112,7 @@ public class Thief_KillLog extends ThiefSkill
 		if((str.trim().length()>0)&&(str.trim().startsWith("<MOBS>")))
 		{
 			Vector buf=CMLib.xml().parseAllXML(str);
-			Vector V=CMLib.xml().getRealContentsFromPieces(buf,"MOBS");
+			Vector V=CMLib.xml().getContentsFromPieces(buf,"MOBS");
 			if(V!=null)
 			for(int i=0;i<V.size();i++)
 			{

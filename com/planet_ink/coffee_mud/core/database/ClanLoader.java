@@ -61,7 +61,7 @@ public class ClanLoader
 			{
 				currentRecordPos=R.getRow();
 				String name=DBConnections.getRes(R,"CMCLID");
-				C=CMLib.clans().getClanType(CMath.s_int(DBConnections.getRes(R,"CMTYPE")));
+				C=CMLib.clans().getNewClanObjectOfType(CMath.s_int(DBConnections.getRes(R,"CMTYPE")));
 				C.setName(name);
 				C.setPremise(DBConnections.getRes(R,"CMDESC"));
 				C.setAcceptanceSettings(DBConnections.getRes(R,"CMACPT"));

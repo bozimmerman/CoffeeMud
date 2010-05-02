@@ -221,7 +221,7 @@ public class DefaultClan implements Clan
                     Log.errOut("Clans","Unable to parse: "+rawxml);
                     return voteList.elements();
                 }
-                Vector voteData=CMLib.xml().getRealContentsFromPieces(xml,"BALLOTS");
+                Vector voteData=CMLib.xml().getContentsFromPieces(xml,"BALLOTS");
                 if(voteData==null){ Log.errOut("Clans","Unable to get BALLOTS data."); return voteList.elements();}
                 CV.voteStarter=CMLib.xml().getValFromPieces(voteData,"BY");
                 CV.voteStarted=CMLib.xml().getLongFromPieces(voteData,"ON");
@@ -229,7 +229,7 @@ public class DefaultClan implements Clan
                 CV.voteStatus=CMLib.xml().getIntFromPieces(voteData,"STATUS");
                 CV.matter=CMLib.xml().getValFromPieces(voteData,"CMD");
                 CV.votes=new DVector(2);
-                Vector xV=CMLib.xml().getRealContentsFromPieces(voteData,"VOTES");
+                Vector xV=CMLib.xml().getContentsFromPieces(voteData,"VOTES");
                 if((xV!=null)&&(xV.size()>0))
                 {
                     for(int x=0;x<xV.size();x++)
@@ -509,7 +509,7 @@ public class DefaultClan implements Clan
         {
             msg.append("-----------------------------------------------------------------\n\r");
             msg.append("^x"+CMStrings.padRight("Clan Relations",16)+":^.^N \n\r");
-            for(Enumeration e=CMLib.clans().allClans();e.hasMoreElements();)
+            for(Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
             {
                 Clan C=(Clan)e.nextElement();
                 if(C!=this)
@@ -741,7 +741,7 @@ public class DefaultClan implements Clan
             Log.errOut("Clans","Unable to parse: "+politics);
             return;
         }
-        Vector poliData=CMLib.xml().getRealContentsFromPieces(xml,"POLITICS");
+        Vector poliData=CMLib.xml().getContentsFromPieces(xml,"POLITICS");
         if(poliData==null){ Log.errOut("Clans","Unable to get POLITICS data."); return;}
         government=CMLib.xml().getIntFromPieces(poliData,"GOVERNMENT");
         exp=CMLib.xml().getLongFromPieces(poliData,"EXP");
@@ -750,7 +750,7 @@ public class DefaultClan implements Clan
         autoPosition=CMLib.xml().getIntFromPieces(poliData,"AUTOPOS");
 
         // now RESOURCES!
-        Vector xV=CMLib.xml().getRealContentsFromPieces(poliData,"RELATIONS");
+        Vector xV=CMLib.xml().getContentsFromPieces(poliData,"RELATIONS");
         if((xV!=null)&&(xV.size()>0))
         {
             for(int x=0;x<xV.size();x++)

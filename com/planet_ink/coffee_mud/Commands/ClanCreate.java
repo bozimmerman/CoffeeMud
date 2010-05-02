@@ -100,7 +100,7 @@ public class ClanCreate extends StdCommand
 								if(cost>0)
 									CMLib.beanCounter().subtractMoney(mob,cost);
 
-								Clan newClan=CMLib.clans().getClanType(Clan.TYPE_CLAN);
+								Clan newClan=CMLib.clans().getNewClanObjectOfType(Clan.TYPE_CLAN);
 								newClan.setName(doubleCheck);
 								newClan.setGovernment(govtType);
 								newClan.setStatus(Clan.CLANSTATUS_PENDING);

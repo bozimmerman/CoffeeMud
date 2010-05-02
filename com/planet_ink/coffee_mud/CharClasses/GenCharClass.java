@@ -434,7 +434,7 @@ public class GenCharClass extends StdCharClass
 			Log.errOut("GenCharClass","Unable to parse: "+parms);
 			return;
 		}
-		Vector classData=CMLib.xml().getRealContentsFromPieces(xml,"CCLASS");
+		Vector classData=CMLib.xml().getContentsFromPieces(xml,"CCLASS");
 		if(classData==null){	Log.errOut("GenCharClass","Unable to get CCLASS data."); return;}
         String classID=CMLib.xml().getValFromPieces(classData,"ID");
 		if(classID.length()==0) return;
@@ -525,7 +525,7 @@ public class GenCharClass extends StdCharClass
 		String saState=CMLib.xml().getValFromPieces(classData,"STARTASTATE");
 		if(saState.length()>0){ startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0); CMLib.coffeeMaker().setCharState(startAdjState,saState);}
 
-		Vector xV=CMLib.xml().getRealContentsFromPieces(classData,"CABILITIES");
+		Vector xV=CMLib.xml().getContentsFromPieces(classData,"CABILITIES");
 		CMLib.ableMapper().delCharMappings(ID());
 		if((xV!=null)&&(xV.size()>0))
 			for(int x=0;x<xV.size();x++)
@@ -549,7 +549,7 @@ public class GenCharClass extends StdCharClass
 			}
 
 		// now WEAPON RESTRICTIONS!
-		xV=CMLib.xml().getRealContentsFromPieces(classData,"NOWEAPS");
+		xV=CMLib.xml().getContentsFromPieces(classData,"NOWEAPS");
 		disallowedWeaponSet=null;
 		if((xV!=null)&&(xV.size()>0))
 		{
@@ -564,7 +564,7 @@ public class GenCharClass extends StdCharClass
 		}
 
         // now WEAPON MATERIALS!
-        xV=CMLib.xml().getRealContentsFromPieces(classData,"NOWMATS");
+        xV=CMLib.xml().getContentsFromPieces(classData,"NOWMATS");
         requiredWeaponMaterials=null;
         if((xV!=null)&&(xV.size()>0))
         {
@@ -579,7 +579,7 @@ public class GenCharClass extends StdCharClass
         }
         
 		// now OUTFIT!
-		Vector oV=CMLib.xml().getRealContentsFromPieces(classData,"OUTFIT");
+		Vector oV=CMLib.xml().getContentsFromPieces(classData,"OUTFIT");
 		outfitChoices=null;
 		if((oV!=null)&&(oV.size()>0))
 		{

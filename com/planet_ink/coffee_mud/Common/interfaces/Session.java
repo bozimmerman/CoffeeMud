@@ -100,7 +100,7 @@ public interface Session extends CMCommon
      * additional pre-linefeed if currently at
      * the prompt.  Adds post linefeed of course.
      * Does not do a page break.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#rawPrintln(String, int)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#rawPrintln(String)
      * @param msg the string to send to the user
      */
 	public void rawPrintln(String msg);
@@ -110,7 +110,7 @@ public interface Session extends CMCommon
      * prompt flag after write, and inserts
      * additional pre-linefeed if currently at
      * the prompt.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#rawPrint(String, int)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#rawPrint(String)
      * @param msg the string to send to the user
      */
 	public void rawPrint(String msg);
@@ -118,7 +118,7 @@ public interface Session extends CMCommon
     /**
      * Higher-level line output method.  Does full
      * filtering of special characters and codes.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#rawPrint(String, int)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#rawPrint(String)
      * @param msg the string to send to the user
      */
 	public void stdPrint(String msg);
@@ -127,7 +127,7 @@ public interface Session extends CMCommon
      * Higher-level line output method.  Does full
      * filtering of special characters and codes
      * using given variable values.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#rawPrint(String, int)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#rawPrint(String)
      * @param Source variable for special code parsing: Source
      * @param Target variable for special code parsing: Target
      * @param Tool variable for special code parsing: Tool
@@ -141,7 +141,7 @@ public interface Session extends CMCommon
     /**
      * Higher-level line output method.  Does full
      * filtering of special characters and codes.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#rawPrintln(String, int)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#rawPrintln(String)
      * @param msg the string to send to the user
      */
 	public void stdPrintln(String msg);
@@ -150,7 +150,7 @@ public interface Session extends CMCommon
      * Higher-level line output method.  Does full
      * filtering of special characters and codes
      * using given variable values.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#rawPrintln(String, int)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#rawPrintln(String)
      * @param Source variable for special code parsing: Source
      * @param Target variable for special code parsing: Target
      * @param Tool variable for special code parsing: Tool
@@ -484,7 +484,7 @@ public interface Session extends CMCommon
     
     /**
      * Returns whether this session is done, or slated to be done.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#logoff(boolean, boolean, boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#logout(boolean)
      * @see com.planet_ink.coffee_mud.Common.interfaces.Session#killFlag()
      * @return true if this session needs to go, false otherwise
      */
@@ -572,7 +572,7 @@ public interface Session extends CMCommon
     /**
      * Sets the player acount attached to this session object.
      * @see com.planet_ink.coffee_mud.Common.interfaces.Session#mob()
-     * @param newmob the player account attached to this session object.
+     * @param account the player account attached to this session object.
      */
 	public void setAccount(PlayerAccount account);
 	

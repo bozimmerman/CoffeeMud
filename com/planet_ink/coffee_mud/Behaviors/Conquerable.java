@@ -409,7 +409,7 @@ public class Conquerable extends Arrest
                     prevHoldingClan=CMLib.xml().getValFromPieces(xml,"OLDCLANID");
                     conquestDate=CMLib.xml().getLongFromPieces(xml,"CLANDATE");
 					holdingClan=savedHoldingClan;
-					Vector allData=CMLib.xml().getRealContentsFromPieces(xml,"ACITEMS");
+					Vector allData=CMLib.xml().getContentsFromPieces(xml,"ACITEMS");
 					if(allData!=null)
 					for(int c=0;c<allData.size();c++)
 					{

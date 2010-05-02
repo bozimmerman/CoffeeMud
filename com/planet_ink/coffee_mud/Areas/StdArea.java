@@ -1607,10 +1607,9 @@ public class StdArea implements Area
             else
             {
                 blurbFlags=new STreeMap<String,String>();
-            	Vector V=CMLib.xml().parseXMLList(val);
-            	for(int v=0;v<V.size();v++)
+            	List<String> V=CMLib.xml().parseXMLList(val);
+            	for(String s : V)
             	{
-            		String s=(String)V.elementAt(v);
             		int x=s.indexOf(' ');
             		if(x<0)
             			blurbFlags.put(s,"");

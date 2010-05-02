@@ -101,7 +101,7 @@ public class DBConnections
 	/**
 	 *
 	 * <br><br><b>Usage: update("UPDATE...");</b>
-	 * @param updateString	the update SQL command
+	 * @param updateStrings	the update SQL commands
 	 * @return int	the responseCode, or -1
 	 */
 	public int update(String[] updateStrings)

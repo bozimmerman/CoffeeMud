@@ -301,7 +301,7 @@ public class MUD extends Thread implements MudHost
         if((tCode==MAIN_HOST)||(privacyV.contains("CLANS")))
         {
     		CMLib.database().DBReadAllClans();
-    		Log.sysOut(Thread.currentThread().getName(),"Clans loaded      : "+CMLib.clans().size());
+    		Log.sysOut(Thread.currentThread().getName(),"Clans loaded      : "+CMLib.clans().numClans());
         }
 
         if((tCode==MAIN_HOST)||(privacyV.contains("FACTIONS")))

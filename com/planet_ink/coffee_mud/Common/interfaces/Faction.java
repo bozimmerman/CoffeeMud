@@ -529,8 +529,6 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#changeEventKeys()
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#MISC_TRIGGERS
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ALL_CHANGE_EVENT_TYPES()
-     * @param event the event object to remove from the list of change events
-     * @return whether the event id was found to remove
      */
     public void clearChangeEvents();
 
@@ -1116,8 +1114,8 @@ public interface Faction extends CMCommon, MsgListener
 
         /**
          * Returns whether the given mob is a valid source and target of this event.
-         * @param mob the source to evaluate
-         * @param mob the target to evaluate
+         * @param source the source to evaluate
+         * @param target the target to evaluate
          * @return true if this event applies to the mobs, false otherwise
          */
         public boolean applies(MOB source, MOB target);
@@ -1271,7 +1269,7 @@ public interface Faction extends CMCommon, MsgListener
         /**
          * Cleans out the internal data structures of this faction
          * to denote that a new context is entered.  Is called by the constructor.
-         * @param Faction the faction to which this data belongs.
+         * @param F the faction to which this data belongs.
          */
         public void resetFactionData(Faction F);
         /**
@@ -1439,7 +1437,7 @@ public interface Faction extends CMCommon, MsgListener
     /**
 	 * A factor defines how modifications of faction value, up or down, are modified on a 
 	 * mob by mob basis.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addFactor(String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addFactor(double, double, String)
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#factors()
      * @author Bo Zimmerman
      *
@@ -1484,7 +1482,7 @@ public interface Faction extends CMCommon, MsgListener
         
         /**
          * The compiled mask to tell which mobs to apply this factor to
-         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeFactorm#setMOBMask(String)
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionZapFactor#setMOBMask(String)
          * @return the compiled mask to tell which mobs to apply this reaction to
          */
         public Vector compiledMOBMask();
@@ -1492,7 +1490,7 @@ public interface Faction extends CMCommon, MsgListener
         /**
          * Set the mask to determine which mobs in the players presence will be affected.  This is a zappermask.
 	     * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
-         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionZapFactor#presentMOBMask(String)
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionZapFactor#MOBMask()
          * @param str the mask to determine which mobs in the players presence will be affected
          */
         public void setMOBMask(String str);
@@ -1500,7 +1498,7 @@ public interface Faction extends CMCommon, MsgListener
         /**
          * Returns a semicolon-delimited string of the values of this factpr, suitable for
          * using to create a new one later.
-         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addFactpr(double,double,String)
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addFactor(double,double,String)
          * @return a string of the values of this factor
          */
         public String toString();
@@ -1509,8 +1507,8 @@ public interface Faction extends CMCommon, MsgListener
     /**
 	 * Adds very temporary affects and behaviors to mobs who match the reaction zapper
 	 * mask, and who are in the same room as someone with standing in this faction.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addReactionItem(String)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#reactionItems()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addReaction(String, String, String, String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#reactions()
      * @author Bo Zimmerman
      *
      */
@@ -1525,7 +1523,7 @@ public interface Faction extends CMCommon, MsgListener
         
         /**
          * Set the ability/behavior/command id.
-         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionReactionItem#reactionObjectID(String)
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionReactionItem#reactionObjectID()
          * @param str the ability/behavior/command id
          */
         public void setReactionObjectID(String str);
@@ -1548,7 +1546,7 @@ public interface Faction extends CMCommon, MsgListener
         /**
          * Set the mask to determine which mobs in the players presence will be affected.  This is a zappermask.
 	     * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
-         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionReactionItem#presentMOBMask(String)
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionReactionItem#presentMOBMask()
          * @param str the mask to determine which mobs in the players presence will be affected
          */
         public void setPresentMOBMask(String str);
@@ -1562,7 +1560,7 @@ public interface Faction extends CMCommon, MsgListener
         
         /**
          * Set the name of the range which determines which folks with this faction get a reaction
-         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionReactionItem#rangeName(String)
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionReactionItem#rangeName()
          * @param str the range which determines which folks with this faction get a reaction
          */
         public void setRangeName(String str);
@@ -1575,7 +1573,7 @@ public interface Faction extends CMCommon, MsgListener
         public String parameters();
         /**
          * Set the parameters for the ability/behavior/command above.
-         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionReactionItem#rangeName(String)
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionReactionItem#rangeName()
          * @param str the parameters for the ability/behavior/command above
          */
         public void setParameters(String str);
@@ -1583,7 +1581,7 @@ public interface Faction extends CMCommon, MsgListener
         /**
          * Returns a semicolon-delimited string of the values of this reaction, suitable for
          * using to create a new one later.
-         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addReaction(String)
+         * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addReaction(String, String, String, String)
          * @return a semicolon-delimited string of the values of this reaction
          */
         public String toString();

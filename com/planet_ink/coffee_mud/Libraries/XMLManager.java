@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLpiece;
 
@@ -345,15 +346,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		return "";
 	}
 
-	public Vector getContentsFromPieces(Vector<XMLpiece> V, String tag)
-	{
-		XMLpiece x=getPieceFromPieces(V,tag);
-		if((x!=null)&&(x.contents!=null))
-			return x.contents;
-		return new Vector();
-	}
-
-	public Vector<XMLpiece> getRealContentsFromPieces(Vector<XMLpiece> V, String tag)
+	public Vector<XMLpiece> getContentsFromPieces(Vector<XMLpiece> V, String tag)
 	{
 		XMLpiece x=getPieceFromPieces(V,tag);
 		if(x!=null)	return x.contents;
@@ -550,22 +543,22 @@ public class XMLManager extends StdLibrary implements XMLLibrary
         return null;
 	}
 
-	public String getXMLList(Vector<?> V)
+	public String getXMLList(List<String> V)
     {
         StringBuffer str=new StringBuffer("");
-        String s=null;
-        for(int v=0;v<V.size();v++)
-        {
-            s=V.elementAt(v).toString();
-            if(s.trim().length()==0)
-                str.append("<X />");
-            else
-                str.append("<X>"+parseOutAngleBrackets(s)+"</X>");
-        }
+        if(V!=null)
+        for(String s : V)
+        	if(s!=null)
+	        {
+	            if(s.trim().length()==0)
+	                str.append("<X />");
+	            else
+	                str.append("<X>"+parseOutAngleBrackets(s)+"</X>");
+	        }
         return str.toString();
     }
     
-    public Vector<String> parseXMLList(String numberedList)
+    public List<String> parseXMLList(String numberedList)
     {
         Vector<XMLpiece> xml=parseAllXML(numberedList);
         Vector<String> V=new Vector<String>();

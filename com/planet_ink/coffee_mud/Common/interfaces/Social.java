@@ -218,7 +218,7 @@ public interface Social extends Environmental, CMCommon
      * there is a target parameter in the name.
      * 
      * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#Name()
-     * @param The object to check to see if this is targetable against.
+     * @param E The object to check to see if this is targetable against.
      * @return true, if it can be targeted
      */
     public boolean targetable(Environmental E);

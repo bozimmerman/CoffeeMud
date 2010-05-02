@@ -114,7 +114,7 @@ public class GenCaged extends GenItem implements CagedAnimal
 		String itemi=CMLib.xml().getValFromPieces(iblk.contents,"MICLASS");
 		String startr=CMLib.xml().getValFromPieces(iblk.contents,"MISTART");
 		Environmental newOne=CMClass.getMOB(itemi);
-		Vector idat=CMLib.xml().getRealContentsFromPieces(iblk.contents,"MIDATA");
+		Vector idat=CMLib.xml().getContentsFromPieces(iblk.contents,"MIDATA");
 		if((idat==null)||(newOne==null)||(!(newOne instanceof MOB)))
 		{
 			Log.errOut("Caged","Error parsing 'MOBITEM' data.");

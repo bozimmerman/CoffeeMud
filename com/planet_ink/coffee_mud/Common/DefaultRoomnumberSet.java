@@ -274,7 +274,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
     {
         Vector V=CMLib.xml().parseAllXML(xml);
         if((V==null)||(V.size()==0)) return;
-        Vector xV=CMLib.xml().getRealContentsFromPieces(V,"AREAS");
+        Vector xV=CMLib.xml().getContentsFromPieces(V,"AREAS");
         root.clear();
         String ID=null;
         String NUMS=null;

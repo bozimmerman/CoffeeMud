@@ -501,7 +501,7 @@ public class DefaultCoffeeShop implements CoffeeShop
         parm=CMLib.xml().getValFromPieces(xmlV,"IGNOR");
         if(parm!=null) shop.setIgnoreMask(parm);
         
-        Vector iV=CMLib.xml().getRealContentsFromPieces(xmlV,"INVS");
+        Vector iV=CMLib.xml().getContentsFromPieces(xmlV,"INVS");
         if(iV==null)
         {
             Log.errOut("DefaultCoffeeShop","Error parsing 'INVS'.");
@@ -520,7 +520,7 @@ public class DefaultCoffeeShop implements CoffeeShop
             int val=CMLib.xml().getIntFromPieces(iblk.contents,"IVAL");
             Environmental newOne=CMClass.getItem(itemi);
             if(newOne==null) newOne=CMClass.getMOB(itemi);
-            Vector idat=CMLib.xml().getRealContentsFromPieces(iblk.contents,"IDATA");
+            Vector idat=CMLib.xml().getContentsFromPieces(iblk.contents,"IDATA");
             if((idat==null)||(newOne==null)||(!(newOne instanceof Item)))
             {
                 Log.errOut("DefaultCoffeeShop","Error parsing 'INV' data.");

@@ -88,7 +88,7 @@ public class GrinderClans
         {
             int relat=0;
             Clan CC=null;
-            for(Enumeration e=CMLib.clans().allClans();e.hasMoreElements();)
+            for(Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
             {
                 CC=(Clan)e.nextElement();
                 if(CC==C) continue;

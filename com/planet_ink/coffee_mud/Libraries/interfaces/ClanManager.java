@@ -31,129 +31,180 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("unchecked")
+/**
+ * This library manages the list of Clans in the game, and helps
+ * administer their most basic functions.
+ * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
+ */
 public interface ClanManager extends CMLibrary
 {
     /**
-     * @return
+     * Returns a list of all available clans names in the game,
+     * as Clan objects.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
+     * @return a list of all available clans names in the game,
      */
-    public Enumeration allClans();
+	public Enumeration<String> clansNames();
     /**
-     * @return
+     * Returns the number of clans in the game.
+     * @return the number of clans in the game.
      */
     public int numClans();
     /**
-     * @param id1
-     * @param id2
-     * @param relation
-     * @return
+     * This method is used to determine the basic relationship between two clans.  The
+     * two clans are evaluated, based on their declared relationship to each other, and
+     * the relations they inherit from allys.  It is then compared with the passed in
+     * relationship constant.  If they match, true is returned, and false otherwise.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#REL_DESCS
+     * @param clanName1 the first clan to evaluate
+     * @param clanName2 the second clan to evaluate
+     * @param relation the clan relation to compare to
+     * @return true if the common relationship matches the given relation, and false otherwise
      */
-    public boolean isCommonClanRelations(String id1, String id2, int relation);
+    public boolean isCommonClanRelations(String clanName1, String clanName2, int relation);
     /**
-     * @param id1
-     * @param id2
-     * @return
+     * This method is used to determine the basic relationship between two clans.  The
+     * two clans are evaluated, based on their declared relationship to each other, and
+     * the relations they inherit from allys.  This relationship is then returned as
+     * a relation constant number.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#REL_DESCS
+     * @param clanName1 the first clan to evaluate
+     * @param clanName2 the second clan to evaluate
+     * @return the relation code integer
      */
-    public int getClanRelations(String id1, String id2);
+    public int getClanRelations(String clanName1, String clanName2);
     /**
-     * @param id
-     * @return
+     * Returns the Clan object associated with the given clan name
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
+     * @param id the clan name
+     * @return the Clan object associated with the given clan name
      */
     public Clan getClan(String id);
     /**
+     * Returns the Clan object associated with the given clan name, or
+     * if the name is not found, the name that most closely matches it.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
      * @param id
-     * @return
+     * @return the Clan object associated with the given clan name
      */
     public Clan findClan(String id);
     /**
-     * @param type
-     * @return
+     * Returns a fresh new empty clan object of the given type.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
+     * @param type a type of clan to create.
+     * @return a fresh new empty clan object of the given type.
      */
-    public Clan getClanType(int type);
+    public Clan getNewClanObjectOfType(int type);
     /**
-     * @param role
-     * @return
+     * Returns the order-ranking (with higher being more important)
+     * of a given clan role.  This then can be used to make some very
+     * general evaluations about pecking order.
+     * @param role the Clan Role
+     * @return the numeric order ranking of that role.
      */
     public int getRoleOrder(int role);
     /**
-     * @param government
-     * @param role
-     * @param titleCase
-     * @param plural
-     * @return
+     * Returns the friendly descriptive name of a given role in a clan, based
+     * on very specific criteria.
+     * @param government the type of government the clan has
+     * @param role the role code of the role to describe
+     * @param titleCase whether or not to uppercase the first word
+     * @param plural whether or not to return the word as a plural
+     * @return the friendly descriptive name of a given role in a clan
      */
     public String getRoleName(int government, int role, boolean titleCase, boolean plural);
     /**
-     * @return
+     * Returns an enumeration of all the Clans in the game 
+     * @return an enumeration of all the Clans in the game
      */
-    public Enumeration clans();
+    public Enumeration<Clan> clans();
     /**
-     * @return
-     */
-    public int size();
-    /**
-     * @param C
+     * Adds the given clan to the games list
+     * @param C the clan to add
      */
     public void addClan(Clan C);
     /**
-     * @param C
+     * Removes the given clan from the games list
+     * @param C the clan to remove
      */
     public void removeClan(Clan C);
     /**
-     * 
+     * Forces all clans to go through their maintenance process, which
+     * normally only occurs infrequently.  This does things like handle
+     * automatic promotions, manage votes, and clean out inactive clans.
      */
     public void tickAllClans();
     /**
-     * @param msg
+     * Sends a message to the games official CLAN chat channel.  This
+     * is normally for messages that may interest all clans.
+     * @param msg the message to send
      */
     public void clanAnnounceAll(String msg);
     /**
-     * @param trophy
-     * @return
+     * Returns a descriptive name for the given trophy code number.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#TROPHY_DESCS
+     * @param trophy the trophy code number
+     * @return the descriptive name
      */
     public String translatePrize(int trophy);
     /**
-     * @return
+     * Returns whether this mud has activated its trophy system for clans.
+     * @return whether this mud has activated its trophy system for clans.
      */
     public boolean trophySystemActive();
     /**
-     * 
-     * @param M
-     * @param members
-     * @return
+     * Returns whether the given MOB is a member of any of the families
+     * represented by the given list of clan members.
+     * @param M the mob to evaluate
+     * @param members the members of a clan
+     * @return true if the mob is a family member, and false otherwise
      */
     public boolean isFamilyOfMembership(MOB M, List<MemberRecord> members);
     
     /**
-     * 
-     * @param mob
-     * @param msg
+     * Makes an announcement to the clan announcement channel from
+     * the given mob.  These are channels marked in the coffeemud.ini file
+     * as receiving clan info messages.  These messages are only seen
+     * by the authors clan members.
+     * @param mob the mob who is announcing the message 
+     * @param msg string message to send to the clan info channels
      */
     public void clanAnnounce(MOB mob, String msg);
     
     /**
-     * 
-     * @param mob
-     * @param C
-     * @param commands
-     * @param function
-     * @param voteIfNecessary
-     * @return
+     * Examines the given command string, which is based on the given clan function code.
+     * If the given Clan requires a vote to accomplish it, the vote will be created. If
+     * the given clan forbids the given mob from performing the given function, or from
+     * even starting a vote on it, the method will return false. If the mob is allowed
+     * to perform 
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#FUNC_CLANACCEPT
+     * @param mob the player who wants to perform the function
+     * @param C the clan that the player belongs to
+     * @param commands the command list describing the function that wants to be executed
+     * @param function the function code described by the commands list
+     * @param voteIfNecessary true to start a vote if one is needed, false to just return true.
+     * @return true to execute the given command, and false not to.
      */
     public boolean goForward(MOB mob, Clan C, Vector commands, int function, boolean voteIfNecessary);
     
     
     /**
-     * 
-     * @param government
-     * @param position
-     * @return
+     * For the given clan government type, this function will return
+     * the clan role that most closely matches the given string "position".
+     * It will return -1 if no position is found that matches the string.
+     * The returned value will an an official role bitmask.
+     * @param government the clan governmnet
+     * @param position the name of the position to look for
+     * @return the role mask/code number for this government, oe -1
      */
     public int getRoleFromName(int government, String position);
     
     /**
-     * 
-     * @param roleType
-     * @return
+     * Returns the iterative order number for a given clan role.
+     * Clan roles are bit-based, whereas an order number will
+     * always be from 0 - number of clan roles.
+     * @param roleType the role bitmask
+     * @return the ordered number
      */
     public int getIntFromRole(int roleType);
 }

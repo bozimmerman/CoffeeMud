@@ -30,17 +30,11 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 {
     public String ID(){return "CoffeeTime";}
     protected TimeClock globalClock=null;
-    /**
-     * Returns the numeric representation of the month
-     *
-     * <br><br><b>Usage:</b> Month2MM("January");
-     * @param Month The month name
-     * @return String The number of the month as a string
-     */
-    public String month2MM(String Month)
+    
+    public String month2MM(String monthName)
     {
     	for(int m=0;m<MONTHS.length;m++)
-    		if(Month.equals(MONTHS[m]))
+    		if(monthName.equals(MONTHS[m]))
     			if(m<9)
 	    			return "0"+(m+1);
     			else
@@ -48,14 +42,6 @@ public class CoffeeTime extends StdLibrary implements TimeManager
         return "01";
     }
 
-    /**
-     * Return the name of the month, given a number
-     *
-     * <br><br><b>Usage:</b> String Mnth=ReturnMonthName(m,GiveShort).charStats();
-     * @param Number Month number to convert
-     * @param GiveShort Give abbreviation if true
-     * @return String Month name
-     */
     public String getMonthName(int number, boolean giveShort)
     {
     	if(number<=0)
@@ -70,48 +56,33 @@ public class CoffeeTime extends StdLibrary implements TimeManager
         	return SHORTMONTHS[number-1];
     }
 
-
-    /**
-     * Converts a string of some form into a Calendar object.
-     *
-     * <br><br><b>Usage:</b> Calendar.S2Date(GetRes(Results,"StartDateTime"));
-     * @param TheDate The string to retrieve from
-     * @return Calendar Calendar object
-     */
-    public long string2Millis(String TheDate)
+    public long string2Millis(String dateTimeStr)
     {
-        Calendar C=string2Date(TheDate);
+        Calendar C=string2Date(dateTimeStr);
         if(C!=null) return C.getTimeInMillis();
         return 0;
     }
 
-    /**
-     * Converts a string of some form into a Calendar object.
-     *
-     * <br><br><b>Usage:</b> Calendar.string2Date(GetRes(Results,"StartDateTime"));
-     * @param TheDate The string to retrieve from
-     * @return Calendar Calendar object
-     */
-    public Calendar string2Date(String TheDate)
+    public Calendar string2Date(String dateTimeStr)
     {
         Calendar D=Calendar.getInstance();
 
-        if(TheDate==null)
+        if(dateTimeStr==null)
             return D;
-        if(TheDate.trim().length()==0)
+        if(dateTimeStr.trim().length()==0)
             return D;
         // for those stupid SQLServer date formats, clean them up!
-        if((TheDate.indexOf(".")==19)
-        ||((TheDate.indexOf("-")==4)&&(TheDate.indexOf(":")==13)))
+        if((dateTimeStr.indexOf(".")==19)
+        ||((dateTimeStr.indexOf("-")==4)&&(dateTimeStr.indexOf(":")==13)))
         {
             //String TheOldDate=TheDate;
-            int HH=CMath.s_int(TheDate.substring(11,13));
-            int MM=CMath.s_int(TheDate.substring(14,16));
+            int HH=CMath.s_int(dateTimeStr.substring(11,13));
+            int MM=CMath.s_int(dateTimeStr.substring(14,16));
             int AP=Calendar.AM;
-            if(TheDate.trim().endsWith("PM"))
+            if(dateTimeStr.trim().endsWith("PM"))
                 AP=Calendar.PM;
             else
-            if(TheDate.trim().endsWith("AM"))
+            if(dateTimeStr.trim().endsWith("AM"))
                 AP=Calendar.AM;
             else
             if(HH==0)
@@ -126,10 +97,10 @@ public class CoffeeTime extends StdLibrary implements TimeManager
                 AP=Calendar.PM;
             }
             else
-            if(TheDate.toUpperCase().substring(10).indexOf("P")>=0)
+            if(dateTimeStr.toUpperCase().substring(10).indexOf("P")>=0)
                 AP=Calendar.PM;
             else
-            if(TheDate.toUpperCase().substring(10).indexOf("A")>=0)
+            if(dateTimeStr.toUpperCase().substring(10).indexOf("A")>=0)
                 AP=Calendar.AM;
             else
             if(HH==12) // as 12 always means 12 noon in international date/time -- 0 = 12am
@@ -148,26 +119,26 @@ public class CoffeeTime extends StdLibrary implements TimeManager
             D.set(Calendar.SECOND,0);
             D.set(Calendar.MILLISECOND,0);
 
-            int YY=CMath.s_int(TheDate.substring(0,4));
+            int YY=CMath.s_int(dateTimeStr.substring(0,4));
             D.set(Calendar.YEAR,YY);
-            int MN=CMath.s_int(TheDate.substring(5,7));
+            int MN=CMath.s_int(dateTimeStr.substring(5,7));
             D.set(Calendar.MONTH,MN-1);
-            int DA=CMath.s_int(TheDate.substring(8,10));
+            int DA=CMath.s_int(dateTimeStr.substring(8,10));
             D.set(Calendar.DATE,DA);
             D.set(Calendar.AM_PM,AP);
         }
         else
         {
             // If it has no time, give it one!
-            if((TheDate.indexOf(":")<0)
-            &&(TheDate.indexOf("AM")<0)
-            &&(TheDate.indexOf("PM")<0))
-                TheDate=TheDate+" 5:00 PM";
+            if((dateTimeStr.indexOf(":")<0)
+            &&(dateTimeStr.indexOf("AM")<0)
+            &&(dateTimeStr.indexOf("PM")<0))
+                dateTimeStr=dateTimeStr+" 5:00 PM";
 
             try
             {
                 DateFormat fmt=DateFormat.getDateTimeInstance(DateFormat.SHORT,DateFormat.SHORT);
-                fmt.parse(TheDate);
+                fmt.parse(dateTimeStr);
                 D=fmt.getCalendar();
                 D.set(Calendar.SECOND,0);
                 D.set(Calendar.MILLISECOND,0);
@@ -175,43 +146,43 @@ public class CoffeeTime extends StdLibrary implements TimeManager
             catch(ParseException e)
             { }
         }
-        confirmDateAMPM(TheDate,D);
+        confirmDateAMPM(dateTimeStr,D);
         return D;
     }
 
-    public boolean isValidDateString(String TheDate)
+    public boolean isValidDateString(String dateTimeStr)
     {
-        if(TheDate==null)
+        if(dateTimeStr==null)
             return false;
-        if(TheDate.trim().length()==0)
+        if(dateTimeStr.trim().length()==0)
             return false;
         // for those stupid SQLServer date formats, clean them up!
-        if((TheDate.indexOf(".")==19)
-        ||((TheDate.indexOf("-")==4)&&(TheDate.indexOf(":")==13)))
+        if((dateTimeStr.indexOf(".")==19)
+        ||((dateTimeStr.indexOf("-")==4)&&(dateTimeStr.indexOf(":")==13)))
         {
             //String TheOldDate=TheDate;
-        	if(!CMath.isInteger(TheDate.substring(11,13)))
+        	if(!CMath.isInteger(dateTimeStr.substring(11,13)))
         		return false;
-        	if(!CMath.isInteger(TheDate.substring(14,16)))
+        	if(!CMath.isInteger(dateTimeStr.substring(14,16)))
         		return false;
-        	if(!CMath.isInteger(TheDate.substring(0,4)))
+        	if(!CMath.isInteger(dateTimeStr.substring(0,4)))
         		return false;
-        	if(!CMath.isInteger(TheDate.substring(5,7)))
+        	if(!CMath.isInteger(dateTimeStr.substring(5,7)))
         		return false;
-        	if(!CMath.isInteger(TheDate.substring(8,10)))
+        	if(!CMath.isInteger(dateTimeStr.substring(8,10)))
         		return false;
         }
         else
         {
             // If it has no time, give it one!
-            if((TheDate.indexOf(":")<0)
-            &&(TheDate.indexOf("AM")<0)
-            &&(TheDate.indexOf("PM")<0))
-                TheDate=TheDate+" 5:00 PM";
+            if((dateTimeStr.indexOf(":")<0)
+            &&(dateTimeStr.indexOf("AM")<0)
+            &&(dateTimeStr.indexOf("PM")<0))
+                dateTimeStr=dateTimeStr+" 5:00 PM";
             try
             {
                 DateFormat fmt=DateFormat.getDateTimeInstance(DateFormat.SHORT,DateFormat.SHORT);
-                fmt.parse(TheDate);
+                fmt.parse(dateTimeStr);
             }
             catch(ParseException e)
             { return false; }
@@ -247,18 +218,9 @@ public class CoffeeTime extends StdLibrary implements TimeManager
         { }
     }
 
-
-    /**
-     * Returns the regular Hours given the hours in the
-     * international format (military time)
-     *
-     * <br><br><b>Usage:</b> ConvertHour(GetIn(req, "ENDHR"))
-     * @param TheHour Hours in military format
-     * @return String Hours in regular format
-     **/
-    public String convertHour(String TheHour)
+    public String convertHour(String hours24)
     {
-        int IntHour =  CMath.s_int(TheHour);
+        int IntHour =  CMath.s_int(hours24);
         if (IntHour > 12)
         {
             IntHour = IntHour-12;
@@ -267,17 +229,10 @@ public class CoffeeTime extends StdLibrary implements TimeManager
             if (IntHour == 0)
                 IntHour = 12;
 
-        TheHour = Integer.toString(IntHour);
-        return TheHour;
+        hours24 = Integer.toString(IntHour);
+        return hours24;
     }
 
-    /**
-     * Returns the AMPM stamp given the international Hours portion the Time
-     *
-     * <br><br><b>Usage:</b> getAMPM(GetIn(req, "ENDHR"))
-     * @param TheHour Hours in military format
-     * @return String AM or PM stamp
-     **/
     public String getAMPM(String TheHour)
     {
         String Stamp;
@@ -290,13 +245,6 @@ public class CoffeeTime extends StdLibrary implements TimeManager
         return Stamp;
     }
 
-    /**
-     * Get the zone id given the timezone string
-     *
-     * <br><br><b>Usage:</b> GetTheZoneID(MeetTZ.getRawOffset())+"\n";
-     * @param theRawOffset The time zone's raw offset to convert
-     * @return String The time zone ID
-     */
     public String getTheIntZoneID(int theRawOffset)
     {
         if (theRawOffset == 0)          // GMT 0
@@ -360,13 +308,6 @@ public class CoffeeTime extends StdLibrary implements TimeManager
 
     }
 
-    /**
-     *  Returns the time zone of the given ID
-     *
-     * <br><br><b>Usage:</b> MEETZN = GetTheTimeZone(ID);
-     * @param theID The ID of the abbreviated time zone.
-     * @return String The time zone name
-     */
     public String getTheTimeZone(String theID)
     {
         if (theID.equalsIgnoreCase("CET"))
@@ -385,39 +326,18 @@ public class CoffeeTime extends StdLibrary implements TimeManager
         return theID;
     }
 
-    /**
-     * Returns the month name for a given date
-     *
-     * <br><br><b>Usage:</b> String ENDMM=d2MMString();
-     * @param time The time in miliseconds
-     * @return String The month name
-     **/
     public String date2MonthString(long time, boolean shortName)
     {
         Calendar C=makeCalendar(time);
         return getMonthName(C.get(Calendar.MONTH)+1,shortName);
     }
 
-    /**
-     * Returns the month/day string for a given date
-     *
-     * <br><br><b>Usage:</b> String ENDMM=d2MMString();
-     * @param time The time in miliseconds
-     * @return String The month/day name
-     **/
     public String date2MonthDateString(long time, boolean shortName)
     {
         Calendar C=makeCalendar(time);
         return getMonthName(C.get(Calendar.MONTH)+1,shortName) + " " + C.get(Calendar.DAY_OF_MONTH);
     }
 
-    /**
-     * Returns the DD portion of a given date
-     *
-     * <br><br><b>Usage:</b> String ENDDD=d2DDString();
-     * @param time The time in miliseconds
-     * @return String The day
-     **/
     public String date2DayOfMonthString(long time)
     {
         Calendar C=makeCalendar(time);
@@ -427,11 +347,6 @@ public class CoffeeTime extends StdLibrary implements TimeManager
         return Day;
     }
 
-    /**
-     * Converts a number to two digits.
-     * @param num the number
-     * @return the number as two digits
-     */
     public String twoDigits(long num)
     {
        String s=Long.toString(num);
@@ -439,14 +354,6 @@ public class CoffeeTime extends StdLibrary implements TimeManager
        return s;
     }
 
-    /**
-    * Returns the YYYY portion of a given date
-    * Returns the DD portion of a given date
-    *
-    * <br><br><b>Usage:</b> String ENDYYYY=d2YYYYString();
-    * @param time The time in miliseconds
-    * @return String The year
-    **/
     public String date2YYYYString(long time)
     {
         Calendar C=makeCalendar(time);
@@ -456,39 +363,17 @@ public class CoffeeTime extends StdLibrary implements TimeManager
         return Year;
     }
 
-    /**
-    * Returns the Hours portion of a given Time
-    *
-    * <br><br><b>Usage:</b> String ENDHR=T2HRString();
-    * @param time The time in miliseconds
-    * @return String The hour
-    **/
     public String date2HRString(long time)
     {
     	return date2HRString(makeCalendar(time));
     }
 
 
-    /**
-    * Returns the Minutes portion of a given Time
-    *
-    * <br><br><b>Usage:</b> String ENDMIN=T2MINString();
-    * @param time The time in miliseconds
-    * @return String The minutes
-    **/
     public String date2MINString(long time)
     {
     	return date2MINString(makeCalendar(time));
     }
 
-
-    /**
-    * Returns the Hours portion of a given Time
-    *
-    * <br><br><b>Usage:</b> String ENDHR=T2HRString();
-    * @param time The time in miliseconds
-    * @return String The hour
-    **/
     public String date2HRString(Calendar C)
     {
         int IntHour = C.get(Calendar.HOUR);
@@ -501,14 +386,6 @@ public class CoffeeTime extends StdLibrary implements TimeManager
         return StrHour;
     }
 
-
-    /**
-    * Returns the Minutes portion of a given Time
-    *
-    * <br><br><b>Usage:</b> String ENDMIN=T2MINString();
-    * @param time The time in miliseconds
-    * @return String The minutes
-    **/
     public String date2MINString(Calendar C)
     {
         int IntMin = C.get(Calendar.MINUTE);
@@ -530,13 +407,6 @@ public class CoffeeTime extends StdLibrary implements TimeManager
         return StrMin;
     }
     
-    /**
-     *  Returns the time zone of the server
-     *
-     * <br><br><b>Usage:</b> MEETZN = T2ZoneString();
-     * @param time The time in miliseconds
-     * @return String The time zone
-     */
     public String date2ZoneString(long time)
     {
         Calendar C=makeCalendar(time);
@@ -548,25 +418,11 @@ public class CoffeeTime extends StdLibrary implements TimeManager
         return  theID;
     }
 
-    /**
-     * Returns the Minutes portion of a given Time
-     *
-     * <br><br><b>Usage:</b> String ST_AMPM=date2AMPMString(time);
-     * @param time The time in miliseconds
-     * @return String AM or PM stamp
-     **/
     public String date2AMPMString(long time)
     {
     	return date2AMPMString(makeCalendar(time));
     }
 
-    /**
-     * Returns the Minutes portion of a given Time
-     *
-     * <br><br><b>Usage:</b> String ST_AMPM=date2AMPMString(time);
-     * @param time The time in miliseconds
-     * @return String AM or PM stamp
-     **/
     public String date2AMPMString(Calendar C)
     {
         if (C.get(Calendar.AM_PM)==Calendar.PM)
@@ -575,13 +431,6 @@ public class CoffeeTime extends StdLibrary implements TimeManager
         	return "AM";
     }
 
-    /**
-     * Returns the time portion of a given Time
-     *
-     * <br><br><b>Usage:</b> String ST_AMPM=date2APTimeString(time);
-     * @param time The time in ampm format
-     * @return String AM or PM stamp
-     **/
     public String date2APTimeString(long time)
     {
         Calendar C=makeCalendar(time);
@@ -617,29 +466,13 @@ public class CoffeeTime extends StdLibrary implements TimeManager
         }
         return (C.get(Calendar.MONTH)+1)+"/"+C.get(Calendar.DATE)+"/"+Year+" "+Hour+":"+MINUTE+" "+AMPM;
     }
-    /**
-     * Converts a given date into a string of form:
-     * MM/DD/YYYY HH:MM AP
-     *
-     * <br><br><b>Usage:</b> d2String()
-     * @param time The time in miliseconds
-     * @return String Formatted date/time
-     */
+    
     public String date2String(long time)
     {
         Calendar C=makeCalendar(time);
         return date2String(C);
     }
 
-
-    /**
-     * Converts a given date into a string of form:
-     * MM/DD/YYYY HH:MM AP
-     *
-     * <br><br><b>Usage:</b> d2SString()
-     * @param time The time in miliseconds
-     * @return String Formatted date/time
-     */
     public String date2SecondsString(long time)
     {
         Calendar C=makeCalendar(time);
@@ -648,14 +481,6 @@ public class CoffeeTime extends StdLibrary implements TimeManager
         return (StrDate.substring(0,StrDate.length()-3)+":"+C.get(Calendar.SECOND)+" "+StrDate.substring(StrDate.length()-2));
     }
 
-    /**
-     * Converts a given date into a string of form:
-     * MM/DD/YYYY
-     *
-     * <br><br><b>Usage:</b> d2DString()
-     * @param time The time in miliseconds
-     * @return String Formatted date
-     */
     public String date2DateString(long time)
     {
         String T=date2String(time);
@@ -663,14 +488,6 @@ public class CoffeeTime extends StdLibrary implements TimeManager
         return T.trim();
     }
 
-    /**
-     * Converts a given date into a string of form:
-     * MM/DD/YY
-     *
-     * <br><br><b>Usage:</b> date2Date2String()
-     * @param time The time in miliseconds
-     * @return String Formatted date
-     */
     public String date2Date2String(long time)
     {
         String T=date2DateString(time);
@@ -679,13 +496,6 @@ public class CoffeeTime extends StdLibrary implements TimeManager
         return T.trim();
     }
 
-    /**
-    * format the date
-    *
-    * <br><br><b>Usage:</b>  msgDateFormat(98374987234)
-    * @param time The time in miliseconds
-    * @return String The date
-    */
     public String smtpDateFormat(long time)
     {
         Calendar senddate=makeCalendar(time);
@@ -742,7 +552,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
         return globalClock;
     }
     
-    private double getTickExpressionMultiPlier(String lastWord) {
+    private double getTickExpressionMultiPlier(String lastWord) 
+    {
         lastWord=lastWord.toUpperCase().trim();
         if(lastWord.startsWith("MINUTE")||lastWord.equals("MINS")||lastWord.equals("MIN"))
             return CMath.div(TimeManager.MILI_MINUTE,Tickable.TIME_TICK_DOUBLE);
@@ -788,7 +599,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
         return 0.0;
     }
 
-    public boolean isTickExpression(String val) {
+    public boolean isTickExpression(String val) 
+    {
         val=val.trim();
         if(CMath.isMathExpression(val)) return true;
         int x=val.lastIndexOf(' ');
@@ -799,7 +611,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
     }
 
     
-    public int parseTickExpression(String val) {
+    public int parseTickExpression(String val) 
+    {
         val=val.trim();
         if(CMath.isMathExpression(val))
             return CMath.s_parseIntExpression(val);

@@ -93,31 +93,27 @@ public interface XMLLibrary extends CMLibrary
     public String returnXMLBlock(String Blob, String Tag);
     
     /**
-     * 
-     * @param V
-     * @param tag
-     * @return
+     * Returns the value of the tag, if it exists in the given
+     * tag collection
+     * @param V the tag collection (container tag)
+     * @param tag the tag to look for
+     * @return its value, or null
      */
     public String getValFromPieces(Vector<XMLpiece> V, String tag);
     /**
-     * 
-     * @param V
-     * @param tag
-     * @return
+     * Returns the contents of a container tag, searched for in
+     * another container tags contents
+     * @param V the container tags contents
+     * @param tag the tag to look for
+     * @return the tags contained in tag, or null
      */
     public Vector<XMLpiece> getContentsFromPieces(Vector<XMLpiece> V, String tag);
     /**
-     * 
-     * @param V
-     * @param tag
-     * @return
-     */
-    public Vector<XMLpiece> getRealContentsFromPieces(Vector<XMLpiece> V, String tag);
-    /**
-     * 
-     * @param V
-     * @param tag
-     * @return
+     * Returns the xml tag node for the given tag name, if found in the
+     * given tag container contents
+     * @param V the tag container contents
+     * @param tag the tag name
+     * @return the xml tag node for the given tag name
      */
     public XMLpiece getPieceFromPieces(Vector<XMLpiece> V, String tag);
     /**
@@ -176,32 +172,40 @@ public interface XMLLibrary extends CMLibrary
     public double getDoubleFromPieces(Vector<XMLpiece> V, String tag);
     
     /**
-     * 
-     * @param buf
-     * @return
+     * Parses all xml inside the given string buffer and returns
+     * the root tags as a container collection.
+     * @param buf the string to parse
+     * @return the parsed xml
      */
     public Vector<XMLpiece> parseAllXML(String buf);
     
     /**
-     * 
-     * @param buf
-     * @return
+     * Parses all xml inside the given stringbuffer and returns
+     * the root tags as a container collection.
+     * @param buf the string to parse
+     * @return the parsed xml
      */
     public Vector<XMLpiece> parseAllXML(StringBuffer buf);
     
     /**
-     * 
-     * @param numberedList
-     * @return
+     * Parses a list of single-level xml tags, together in string.
+     * This method assumes that the given string is a series of
+     * top level tags, with no child tags, and no attributes. It
+     * will parse the tags, and return their values (only) as
+     * a list of strings.  Any deconversions for compatibility
+     * are also performed
+     * @param numberedList the top level xml tags
+     * @return the list of strings with the values of those tags
      */
-    public Vector<String> parseXMLList(String numberedList);
+    public List<String> parseXMLList(String numberedList);
     
     /**
-     * 
-     * @param V
-     * @return
+     * Converts the given list of strings into a set of top-level
+     * xml tags called simply <X>  
+     * @param V the list of strings
+     * @return the top level xml tags
      */
-	public String getXMLList(Vector<?> V);
+	public String getXMLList(List<String> V);
     
     /**
      * Return the data value within the first XML block

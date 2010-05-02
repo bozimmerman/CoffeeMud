@@ -44,7 +44,8 @@ public class CMClass extends ClassLoader
 	protected static boolean debugging=false;
     protected static Hashtable classes=new Hashtable();
     private static CMClass[] clss=new CMClass[256];
-    public CMClass(){
+    public CMClass()
+    {
         super();
         char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
         if(clss==null) clss=new CMClass[256];
@@ -83,41 +84,54 @@ public class CMClass extends ClassLoader
     	CMClass.OBJECT_CLANITEMS,
     	CMClass.OBJECT_MISCMAGIC,
     	CMClass.OBJECT_MISCTECH,
-    	CMClass.OBJECT_WEAPON};
+    	CMClass.OBJECT_WEAPON
+    };
     
     public static int longestWebMacro=-1;
-    protected Hashtable common=new Hashtable();
-    protected Vector races=new Vector();
-    protected Vector charClasses=new Vector();
-    protected Vector MOBs=new Vector();
-    protected Vector abilities=new Vector();
-    protected Vector locales=new Vector();
-    protected Vector exits=new Vector();
-    protected Vector items=new Vector();
-    protected Vector behaviors=new Vector();
-    protected Vector weapons=new Vector();
-    protected Vector armor=new Vector();
-    protected Vector miscMagic=new Vector();
-    protected Vector miscTech=new Vector();
-    protected Vector clanItems=new Vector();
-    protected Vector areaTypes=new Vector();
-    protected Vector commands=new Vector();
-    protected Vector libraries=new Vector();
-    protected Hashtable webMacros=new Hashtable();
-    protected Hashtable CommandWords=new Hashtable();
+
+    
+    protected Hashtable<String,CMCommon> common=new Hashtable<String,CMCommon>();
+    protected Vector<Race> 				 races=new Vector<Race>();
+    protected Vector<CharClass> 		 charClasses=new Vector<CharClass>();
+    protected Vector<MOB> 				 MOBs=new Vector<MOB>();
+    protected Vector<Ability> 			 abilities=new Vector<Ability>();
+    protected Vector<Room> 				 locales=new Vector<Room>();
+    protected Vector<Exit> 				 exits=new Vector<Exit>();
+    protected Vector<Item> 				 items=new Vector<Item>();
+    protected Vector<Behavior> 			 behaviors=new Vector<Behavior>();
+    protected Vector<Weapon> 			 weapons=new Vector<Weapon>();
+    protected Vector<Armor> 			 armor=new Vector<Armor>();
+    protected Vector<MiscMagic> 		 miscMagic=new Vector<MiscMagic>();
+    protected Vector<Electronics> 		 miscTech=new Vector<Electronics>();
+    protected Vector<ClanItem> 			 clanItems=new Vector<ClanItem>();
+    protected Vector<Area> 				 areaTypes=new Vector<Area>();
+    protected Vector<Command> 			 commands=new Vector<Command>();
+    protected Vector<CMLibrary> 		 libraries=new Vector<CMLibrary>();
+    protected Hashtable<String,WebMacro> webMacros=new Hashtable<String,WebMacro>();
+    protected Hashtable<String,Command>  commandWords=new Hashtable<String,Command>();
+    
     protected static final long[] OBJECT_CREATIONS=new long[OBJECT_TOTAL];
     protected static final long[] OBJECT_DESTRUCTIONS=new long[OBJECT_TOTAL];
     
     protected static final java.util.WeakHashMap[] OBJECT_CACHE=new java.util.WeakHashMap[OBJECT_TOTAL];
     protected static final Vector MSGS_CACHE=new Vector();
     protected static final boolean KEEP_OBJECT_CACHE=false;
-    static{ if(KEEP_OBJECT_CACHE) for(int i=0;i<OBJECT_TOTAL;i++)OBJECT_CACHE[i]=new java.util.WeakHashMap();}
-    public static final String[] OBJECT_DESCS={
+    static
+    { 
+    	if(KEEP_OBJECT_CACHE) 
+    		for(int i=0;i<OBJECT_TOTAL;i++)
+    			OBJECT_CACHE[i]=new java.util.WeakHashMap();
+    }
+    
+    public static final String[] OBJECT_DESCS=
+    {
 		"RACE","CHARCLASS","MOB","ABILITY","LOCALE","EXIT","ITEM","BEHAVIOR",
 		"CLAN","WEAPON","ARMOR","MISCMAGIC","AREA","COMMAND","CLANITEMS",
 		"MISCTECH","WEBMACROS","COMMON","LIBRARY"
 	};
-    protected static final String[] OBJECT_ANCESTORS={
+    
+    protected static final String[] OBJECT_ANCESTORS=
+    {
 		"com.planet_ink.coffee_mud.Races.interfaces.Race",
 		"com.planet_ink.coffee_mud.CharClasses.interfaces.CharClass",
 		"com.planet_ink.coffee_mud.MOBS.interfaces.MOB",
@@ -137,7 +151,8 @@ public class CMClass extends ClassLoader
 		"com.planet_ink.coffee_mud.WebMacros.interfaces.WebMacro",
         "com.planet_ink.coffee_mud.Common.interfaces.CMCommon",
         "com.planet_ink.coffee_mud.Libraries.interfaces.CMLibrary",
-		};
+	};
+    
     public static void bumpCounter(Object O, int which)
     {
         if(KEEP_OBJECT_CACHE)
@@ -230,6 +245,46 @@ public class CMClass extends ClassLoader
     	return -1;
     }
 
+	protected static Object getClassSet(String type) { return getClassSet(classCode(type));}
+	protected static Object getClassSet(int code)
+	{
+		switch(code)
+		{
+		case 0: return c().races;
+		case 1: return c().charClasses;
+		case 2: return c().MOBs;
+		case 3: return c().abilities;
+		case 4: return c().locales;
+		case 5: return c().exits;
+		case 6: return c().items;
+		case 7: return c().behaviors;
+		case 8: return null;
+		case 9: return c().weapons;
+		case 10: return c().armor;
+		case 11: return c().miscMagic;
+		case 12: return c().areaTypes;
+		case 13: return c().commands;
+		case 14: return c().clanItems;
+		case 15: return c().miscTech;
+		case 16: return c().webMacros;
+        case 17: return c().common;
+        case 18: return c().libraries;
+		}
+		return null;
+	}
+
+    public static int numPrototypes(int type)
+    {
+    	Object o = getClassSet(type);
+    	if(o instanceof Set) return ((Set)o).size();
+    	if(o instanceof List) return ((List)o).size();
+    	if(o instanceof Collection) return ((Collection)o).size();
+    	if(o instanceof HashSet) return ((HashSet)o).size();
+    	if(o instanceof Hashtable) return ((Hashtable)o).size();
+    	if(o instanceof Vector) return ((Vector)o).size();
+    	return 0;
+    }
+    
     public static void unbumpCounter(Object O, int which)
     {
         if(KEEP_OBJECT_CACHE)
@@ -243,46 +298,47 @@ public class CMClass extends ClassLoader
         }
         OBJECT_DESTRUCTIONS[which]++;
     }
-	public static Enumeration races(){return c().races.elements();}
-    public static Enumeration commonObjects(){return c().common.elements();}
-	public static Race randomRace(){return (Race)c().races.elementAt((int)Math.round(Math.floor(Math.random()*((double)c().races.size()))));}
-	public static Enumeration charClasses(){return c().charClasses.elements();}
+	public static Enumeration<Race> 		races(){return c().races.elements();}
+    public static Enumeration<CMCommon> 	commonObjects(){return c().common.elements();}
+	public static Enumeration<CharClass> 	charClasses(){return c().charClasses.elements();}
+	public static Enumeration<MOB> 			mobTypes(){return c().MOBs.elements();}
+    public static Enumeration<CMLibrary> 	libraries(){return c().libraries.elements();}
+	public static Enumeration<Room> 		locales(){return c().locales.elements();}
+	public static Enumeration<Exit> 		exits(){return c().exits.elements();}
+	public static Enumeration<Behavior> 	behaviors(){return c().behaviors.elements();}
+	public static Enumeration<Item> 		basicItems(){return c().items.elements();}
+	public static Enumeration<Weapon> 		weapons(){return c().weapons.elements();}
+	public static Enumeration<Armor> 		armor(){return c().armor.elements();}
+	public static Enumeration<MiscMagic> 	miscMagic(){return c().miscMagic.elements();}
+	public static Enumeration<Electronics> 	miscTech(){return c().miscTech.elements();}
+	public static Enumeration<ClanItem> 	clanItems(){return c().clanItems.elements();}
+	public static Enumeration<Area> 		areaTypes(){return c().areaTypes.elements();}
+	public static Enumeration<Command> 		commands(){return c().commands.elements();}
+	public static Enumeration<Ability> 		abilities(){return c().abilities.elements();}
+	public static Enumeration<WebMacro> 	webmacros(){return c().webMacros.elements();}
+	
+	public static Race 		randomRace(){return (Race)c().races.elementAt((int)Math.round(Math.floor(Math.random()*((double)c().races.size()))));}
 	public static CharClass randomCharClass(){return (CharClass)c().charClasses.elementAt((int)Math.round(Math.floor(Math.random()*((double)c().charClasses.size()))));}
-	public static Enumeration mobTypes(){return c().MOBs.elements();}
-    public static Enumeration libraries(){return c().libraries.elements();}
-	public static Enumeration locales(){return c().locales.elements();}
-	public static Enumeration exits(){return c().exits.elements();}
-	public static Enumeration behaviors(){return c().behaviors.elements();}
-	public static Enumeration basicItems(){return c().items.elements();}
-	public static Enumeration weapons(){return c().weapons.elements();}
-	public static Enumeration armor(){return c().armor.elements();}
-	public static Enumeration miscMagic(){return c().miscMagic.elements();}
-	public static Enumeration miscTech(){return c().miscTech.elements();}
-	public static Enumeration clanItems(){return c().clanItems.elements();}
-	public static Enumeration areaTypes(){return c().areaTypes.elements();}
-	public static Enumeration commands(){return c().commands.elements();}
-	public static Enumeration abilities(){return c().abilities.elements();}
-	public static Enumeration webmacros(){return c().webMacros.elements();}
-	public static Ability randomAbility(){ return (Ability)c().abilities.elementAt((int)Math.round(Math.floor(Math.random()*((double)c().abilities.size()))));}
-    public static Room getLocale(String calledThis){ return (Room)getNewGlobal(c().locales,calledThis); }
+	public static Ability 	randomAbility(){ return (Ability)c().abilities.elementAt((int)Math.round(Math.floor(Math.random()*((double)c().abilities.size()))));}
+    public static Room 		getLocale(String calledThis){ return (Room)getNewGlobal(c().locales,calledThis); }
     public static CMLibrary getLibrary(String calledThis) { return (CMLibrary)getGlobal(c().libraries,calledThis); }
-    public static Area anyOldArea(){return (Area)c().areaTypes.elementAt(0);}
-    public static Area getAreaType(String calledThis) { return (Area)getNewGlobal(c().areaTypes,calledThis); }
-    public static Exit getExit(String calledThis) { return (Exit)getNewGlobal(c().exits,calledThis);}
-    public static MOB getMOB(String calledThis) { return (MOB)getNewGlobal(c().MOBs,calledThis); }
-    public static Weapon getWeapon(String calledThis) { return (Weapon)getNewGlobal(c().weapons,calledThis); }
-    public static ClanItem getClanItem(String calledThis) { return (ClanItem)getNewGlobal(c().clanItems,calledThis); }
-    public static Item getMiscMagic(String calledThis) { return (Item)getNewGlobal(c().miscMagic,calledThis); }
-    public static Item getMiscTech(String calledThis) { return (Item)getNewGlobal(c().miscTech,calledThis);}
-    public static Armor getArmor(String calledThis) { return (Armor)getNewGlobal(c().armor,calledThis); }
-    public static Item getBasicItem(String calledThis) { return (Item)getNewGlobal(c().items,calledThis); }
-    public static Behavior getBehavior(String calledThis) { return (Behavior)getNewGlobal(c().behaviors,calledThis); }
-    public static Ability getAbility(String calledThis) { return (Ability)getNewGlobal(c().abilities,calledThis); }
+    public static Area 		anyOldArea(){return (Area)c().areaTypes.elementAt(0);}
+    public static Area 		getAreaType(String calledThis) { return (Area)getNewGlobal(c().areaTypes,calledThis); }
+    public static Exit 		getExit(String calledThis) { return (Exit)getNewGlobal(c().exits,calledThis);}
+    public static MOB 		getMOB(String calledThis) { return (MOB)getNewGlobal(c().MOBs,calledThis); }
+    public static Weapon 	getWeapon(String calledThis) { return (Weapon)getNewGlobal(c().weapons,calledThis); }
+    public static ClanItem 	getClanItem(String calledThis) { return (ClanItem)getNewGlobal(c().clanItems,calledThis); }
+    public static Item 		getMiscMagic(String calledThis) { return (Item)getNewGlobal(c().miscMagic,calledThis); }
+    public static Item 		getMiscTech(String calledThis) { return (Item)getNewGlobal(c().miscTech,calledThis);}
+    public static Armor 	getArmor(String calledThis) { return (Armor)getNewGlobal(c().armor,calledThis); }
+    public static Item 		getBasicItem(String calledThis) { return (Item)getNewGlobal(c().items,calledThis); }
+    public static Behavior 	getBehavior(String calledThis) { return (Behavior)getNewGlobal(c().behaviors,calledThis); }
+    public static Ability 	getAbility(String calledThis) { return (Ability)getNewGlobal(c().abilities,calledThis); }
     public static CharClass getCharClass(String calledThis){ return (CharClass)getGlobal(c().charClasses,calledThis);}
-    public static CMCommon getCommon(String calledThis){return (CMCommon)getNewGlobal(c().common,calledThis);}
-    public static Command getCommand(String word){return (Command)getGlobal(c().commands,word);}
-    public static WebMacro getWebMacro(String macroName){return (WebMacro)c().webMacros.get(macroName);}
-    public static Race getRace(String calledThis){return (Race)getGlobal(c().races,calledThis);}
+    public static CMCommon 	getCommon(String calledThis){return (CMCommon)getNewGlobal(c().common,calledThis);}
+    public static Command 	getCommand(String word){return (Command)getGlobal(c().commands,word);}
+    public static WebMacro 	getWebMacro(String macroName){return (WebMacro)c().webMacros.get(macroName);}
+    public static Race 		getRace(String calledThis){return (Race)getGlobal(c().races,calledThis);}
 
 
     public static String getCounterReport()
@@ -299,18 +355,6 @@ public class CMClass extends ClassLoader
     	return OBJECT_CREATIONS[type] - OBJECT_DESTRUCTIONS[type];
     }
     
-    public static int numPrototypes(int type)
-    {
-    	Object o = getClassSet(type);
-    	if(o instanceof Set) return ((Set)o).size();
-    	if(o instanceof List) return ((List)o).size();
-    	if(o instanceof Collection) return ((Collection)o).size();
-    	if(o instanceof HashSet) return ((HashSet)o).size();
-    	if(o instanceof Hashtable) return ((Hashtable)o).size();
-    	if(o instanceof Vector) return ((Vector)o).size();
-    	return 0;
-    }
-    
     public static int numPrototypes(int[] types)
     {
     	int total=0;
@@ -318,10 +362,21 @@ public class CMClass extends ClassLoader
     		total+=numPrototypes(types[i]);
     	return total;
     }
-    
+
 	public static void addAllItemClassNames(Vector V, boolean NonArchon, boolean NonGeneric, boolean NonStandard)
 	{
-		for(Enumeration i=basicItems();i.hasMoreElements();)
+		V.addAll(getAllItemClassNames(basicItems(),NonArchon,NonGeneric,NonStandard));
+		V.addAll(getAllItemClassNames(weapons(),NonArchon,NonGeneric,NonStandard));
+		V.addAll(getAllItemClassNames(armor(),NonArchon,NonGeneric,NonStandard));
+		V.addAll(getAllItemClassNames(miscMagic(),NonArchon,NonGeneric,NonStandard));
+		V.addAll(getAllItemClassNames(miscTech(),NonArchon,NonGeneric,NonStandard));
+		V.addAll(getAllItemClassNames(clanItems(),NonArchon,NonGeneric,NonStandard));
+	}
+	
+    private static List<String> getAllItemClassNames(Enumeration<? extends Item> i, boolean NonArchon, boolean NonGeneric, boolean NonStandard)
+	{
+    	Vector<String> V=new Vector<String>();
+		for(;i.hasMoreElements();)
 		{
 			Item I=(Item)i.nextElement();
 			if(((!NonArchon)||(!(I instanceof ArchonOnly)))
@@ -329,46 +384,7 @@ public class CMClass extends ClassLoader
 			&&((!NonGeneric)||(!I.isGeneric())))
 				V.addElement(CMClass.classID(I));
 		}
-		for(Enumeration i=weapons();i.hasMoreElements();)
-		{
-			Item I=(Item)i.nextElement();
-			if(((!NonArchon)||(!(I instanceof ArchonOnly)))
-			&&((!NonStandard)||(I.isGeneric()))
-			&&((!NonGeneric)||(!I.isGeneric())))
-				V.addElement(CMClass.classID(I));
-		}
-		for(Enumeration i=armor();i.hasMoreElements();)
-		{
-			Item I=(Item)i.nextElement();
-			if(((!NonArchon)||(!(I instanceof ArchonOnly)))
-			&&((!NonStandard)||(I.isGeneric()))
-			&&((!NonGeneric)||(!I.isGeneric())))
-				V.addElement(CMClass.classID(I));
-		}
-		for(Enumeration i=miscMagic();i.hasMoreElements();)
-		{
-			Item I=(Item)i.nextElement();
-			if(((!NonArchon)||(!(I instanceof ArchonOnly)))
-			&&((!NonStandard)||(I.isGeneric()))
-			&&((!NonGeneric)||(!I.isGeneric())))
-				V.addElement(CMClass.classID(I));
-		}
-		for(Enumeration i=miscTech();i.hasMoreElements();)
-		{
-			Item I=(Item)i.nextElement();
-			if(((!NonArchon)||(!(I instanceof ArchonOnly)))
-			&&((!NonStandard)||(I.isGeneric()))
-			&&((!NonGeneric)||(!I.isGeneric())))
-				V.addElement(CMClass.classID(I));
-		}
-		for(Enumeration i=clanItems();i.hasMoreElements();)
-		{
-			Item I=(Item)i.nextElement();
-			if(((!NonArchon)||(!(I instanceof ArchonOnly)))
-			&&((!NonStandard)||(I.isGeneric()))
-			&&((!NonGeneric)||(!I.isGeneric())))
-				V.addElement(CMClass.classID(I));
-		}
+		return V;
 	}
 
 	public static Item getItem(String calledThis)
@@ -418,14 +434,14 @@ public class CMClass extends ClassLoader
 	public static Command findCommandByTrigger(String word,
 											   boolean exactOnly)
 	{
-		Command C=(Command)c().CommandWords.get(word.trim().toUpperCase());
+		Command C=(Command)c().commandWords.get(word.trim().toUpperCase());
 		if((exactOnly)||(C!=null)) return C;
 		word=word.toUpperCase();
-		for(Enumeration e=c().CommandWords.keys();e.hasMoreElements();)
+		for(Enumeration e=c().commandWords.keys();e.hasMoreElements();)
 		{
 			String key=(String)e.nextElement();
 			if(key.toUpperCase().startsWith(word))
-				return (Command)c().CommandWords.get(key);
+				return (Command)c().commandWords.get(key);
 		}
 		return null;
 	}
@@ -464,35 +480,6 @@ public class CMClass extends ClassLoader
 		return true;
 	}
 
-	protected static Object getClassSet(String type) { return getClassSet(classCode(type));}
-	protected static Object getClassSet(int code)
-	{
-		switch(code)
-		{
-		case 0: return c().races;
-		case 1: return c().charClasses;
-		case 2: return c().MOBs;
-		case 3: return c().abilities;
-		case 4: return c().locales;
-		case 5: return c().exits;
-		case 6: return c().items;
-		case 7: return c().behaviors;
-		case 8: return null;
-		case 9: return c().weapons;
-		case 10: return c().armor;
-		case 11: return c().miscMagic;
-		case 12: return c().areaTypes;
-		case 13: return c().commands;
-		case 14: return c().clanItems;
-		case 15: return c().miscTech;
-		case 16: return c().webMacros;
-        case 17: return c().common;
-        case 18: return c().libraries;
-		}
-		return null;
-	}
-
-	
 	public static boolean addClass(String type, CMObject O)
 	{
 		Object set=getClassSet(type);
@@ -503,7 +490,7 @@ public class CMClass extends ClassLoader
             CMParms.sortVector((Vector)set);
             if(set==c().commands) reloadCommandWords();
             if(set==c().libraries) CMLib.registerLibraries(c().libraries.elements());
-}
+		}
 		else
 		if(set instanceof Hashtable)
 			((Hashtable)set).put(O.ID().trim().toUpperCase(), O);
@@ -974,24 +961,24 @@ public class CMClass extends ClassLoader
     }
 	public void unload()
 	{
-        common=new Hashtable();
-		races=new Vector();
-		charClasses=new Vector();
-		MOBs=new Vector();
-		abilities=new Vector();
-		locales=new Vector();
-		exits=new Vector();
-		items=new Vector();
-		behaviors=new Vector();
-		weapons=new Vector();
-		armor=new Vector();
-		miscMagic=new Vector();
-		miscTech=new Vector();
-		areaTypes=new Vector();
-		clanItems=new Vector();
-		commands=new Vector();
-		webMacros=new Hashtable();
-		CommandWords=new Hashtable();
+        common=new Hashtable<String,CMCommon>();
+		races=new Vector<Race>();
+		charClasses=new Vector<CharClass>();
+		MOBs=new Vector<MOB>();
+		abilities=new Vector<Ability>();
+		locales=new Vector<Room>();
+		exits=new Vector<Exit>();
+		items=new Vector<Item>();
+		behaviors=new Vector<Behavior>();
+		weapons=new Vector<Weapon>();
+		armor=new Vector<Armor>();
+		miscMagic=new Vector<MiscMagic>();
+		miscTech=new Vector<Electronics>();
+		areaTypes=new Vector<Area>();
+		clanItems=new Vector<ClanItem>();
+		commands=new Vector<Command>();
+		webMacros=new Hashtable<String,WebMacro>();
+		commandWords=new Hashtable<String,Command>();
 	}
     private void initializeClassGroup(Vector V){ for(int v=0;v<V.size();v++) ((CMObject)V.elementAt(v)).initializeClass();}
     private void initializeClassGroup(Hashtable H){
@@ -1013,7 +1000,6 @@ public class CMClass extends ClassLoader
                     initializeClassGroup((Hashtable)set);
             }
     }
-
 	
 	public static Hashtable loadHashListToObj(String filePath, String auxPath, String ancester)
 	{
@@ -1419,19 +1405,18 @@ public class CMClass extends ClassLoader
 
     protected static void reloadCommandWords()
     {
-    	c().CommandWords.clear();
+    	c().commandWords.clear();
         for(int c=0;c<c().commands.size();c++)
         {
             Command C=(Command)c().commands.elementAt(c);
             String[] wordList=C.getAccessWords();
             if(wordList!=null)
                 for(int w=0;w<wordList.length;w++)
-                    c().CommandWords.put(wordList[w].trim().toUpperCase(),C);
+                    c().commandWords.put(wordList[w].trim().toUpperCase(),C);
         }
 
     }
 
-    
 	public static boolean loadClasses(CMProps page)
     {
         CMClass c=c();
@@ -1719,7 +1704,7 @@ public class CMClass extends ClassLoader
             if((tCode!=MudHost.MAIN_HOST)&&(!privacyV.contains("COMMAND")))
             {
                 c.commands=baseC.commands;
-                c.CommandWords=baseC.CommandWords;
+                c.commandWords=baseC.commandWords;
             }
             else
             {

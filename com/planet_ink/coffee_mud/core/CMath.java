@@ -774,9 +774,9 @@ public class CMath
     
     /**
      * Pre-compiles an expression for faster evaluation later on.
-     * @see CMath#parseMathExpression(LinkedList, double[])
-     * @param st the math expression as a string
-     * @returns the pre-compiled expression
+     * @see CMath#parseMathExpression(LinkedList, double[], double)
+     * @param formula the math expression as a string
+     * @return the pre-compiled expression
      * @throws ArithmeticException
      */
     public static LinkedList<CompiledOperation> compileMathExpression(String formula)
@@ -787,7 +787,7 @@ public class CMath
      * @see CMath#parseMathExpression(LinkedList, double[])
      * @param st the tokenized expression
      * @param inParen whether or not you are in parenthesis mode 
-     * @returns the pre-compiled expression
+     * @return the pre-compiled expression
      * @throws ArithmeticException
      */
     private static LinkedList<CompiledOperation> compileMathExpression(StreamTokenizer st, boolean inParen)
@@ -1316,24 +1316,28 @@ public class CMath
     public double random(){return rand.nextDouble();}
     /**
      * @see java.lang.Math#floor(double)
+     * @see CMath#ceiling(double)
      * @param d the number to get the floor of
      * @return the floor of the given number
      */
     public double floor(double d){return Math.floor(d);}
     /**
-     * @see java.lang.Math#floor(float)
+     * @see java.lang.Math#floor(double)
+     * @see CMath#ceiling(double)
      * @param d the number to get the floor of
      * @return the floor of the given number
      */
     public float floor(float d){return (float)Math.floor(d);}
     /**
-     * @see java.lang.Math#floor(double)
+     * @see java.lang.Math#ceil(double)
+     * @see CMath#floor(double)
      * @param d the number to get the ceiling of
      * @return the ceiling of the given number
      */
     public double ceiling(double d){return Math.ceil(d);}
     /**
-     * @see java.lang.Math#floor(float)
+     * @see java.lang.Math#ceil(double)
+     * @see CMath#floor(float)
      * @param d the number to get the ceiling of
      * @return the ceiling of the given number
      */
@@ -1345,7 +1349,7 @@ public class CMath
      */
     public double sqrt(double d){return Math.sqrt(d);}
     /**
-     * @see java.lang.Math#sqrt(float)
+     * @see java.lang.Math#sqrt(double)
      * @param d the number to get the square root of
      * @return the square root of the given number
      */

@@ -353,7 +353,7 @@ public class GenRace extends StdRace
 			Log.errOut("GenRace","Unable to parse xml: "+parms);
 			return;
 		}
-		Vector raceData=CMLib.xml().getRealContentsFromPieces(xml,"RACE");
+		Vector raceData=CMLib.xml().getContentsFromPieces(xml,"RACE");
 		if(raceData==null){	Log.errOut("GenRace","Unable to get RACE data: ("+parms.length()+"): "+CMStrings.padRight(parms,30)+"."); return;}
 		String id=CMLib.xml().getValFromPieces(raceData,"ID");
 		if(id.length()==0)
@@ -436,7 +436,7 @@ public class GenRace extends StdRace
 		    getAgingChart()[v]=CMath.s_int((String)aV.elementAt(v));
 		clrStatChgDesc();
 		// now RESOURCES!
-		Vector xV=CMLib.xml().getRealContentsFromPieces(raceData,"RESOURCES");
+		Vector xV=CMLib.xml().getContentsFromPieces(raceData,"RESOURCES");
 		resourceChoices=null;
 		if((xV!=null)&&(xV.size()>0))
 		{
@@ -455,7 +455,7 @@ public class GenRace extends StdRace
 		}
 
 		// now OUTFIT!
-		Vector oV=CMLib.xml().getRealContentsFromPieces(raceData,"OUTFIT");
+		Vector oV=CMLib.xml().getContentsFromPieces(raceData,"OUTFIT");
 		outfitChoices=null;
 		if((oV!=null)&&(oV.size()>0))
 		{
@@ -479,7 +479,7 @@ public class GenRace extends StdRace
 		}
 
 		naturalWeapon=null;
-		Vector wblk=CMLib.xml().getRealContentsFromPieces(raceData,"WEAPON");
+		Vector wblk=CMLib.xml().getContentsFromPieces(raceData,"WEAPON");
 		if(wblk!=null)
 		{
 			naturalWeapon=CMClass.getWeapon(CMLib.xml().getValFromPieces(wblk,"ICLASS"));
@@ -490,7 +490,7 @@ public class GenRace extends StdRace
 				naturalWeapon.recoverEnvStats();
 			}
 		}
-		xV=CMLib.xml().getRealContentsFromPieces(raceData,"RABILITIES");
+		xV=CMLib.xml().getContentsFromPieces(raceData,"RABILITIES");
 		racialAbilityNames=null;
 		racialAbilityProficiencies=null;
 		racialAbilityQuals=null;
@@ -513,7 +513,7 @@ public class GenRace extends StdRace
 			}
 		}
 
-		xV=CMLib.xml().getRealContentsFromPieces(raceData,"REFFECTS");
+		xV=CMLib.xml().getContentsFromPieces(raceData,"REFFECTS");
 		racialEffectNames=null;
 		racialEffectParms=null;
 		racialEffectLevels=null;
@@ -534,7 +534,7 @@ public class GenRace extends StdRace
 		}
 
 
-		xV=CMLib.xml().getRealContentsFromPieces(raceData,"CABILITIES");
+		xV=CMLib.xml().getContentsFromPieces(raceData,"CABILITIES");
 		culturalAbilityNames=null;
 		culturalAbilityProficiencies=null;
 		if((xV!=null)&&(xV.size()>0))

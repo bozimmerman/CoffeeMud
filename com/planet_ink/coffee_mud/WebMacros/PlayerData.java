@@ -465,7 +465,7 @@ public class PlayerData extends StdWebMacro
 				String old=httpReq.getRequestParameter("CLAN");
 				if(firstTime) old=M.getClanID();
 				str.append("<OPTION "+((old.length()==0)?"SELECTED":"")+" VALUE=\"\">Clanless");
-				for(Enumeration e=CMLib.clans().allClans();e.hasMoreElements();)
+				for(Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
 				{
 					Clan C=(Clan)e.nextElement();
 					str.append("<OPTION VALUE=\""+C.clanID()+"\"");

@@ -150,7 +150,7 @@ public class ClanData extends StdWebMacro
             }
             else
             {
-                for(Enumeration e=CMLib.clans().allClans();e.hasMoreElements();)
+                for(Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
                 {
                     CC=(Clan)e.nextElement();
                     if(CC==C) continue;
@@ -159,7 +159,7 @@ public class ClanData extends StdWebMacro
             }
             str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
             int relat=-1;
-            for(Enumeration e=CMLib.clans().allClans();e.hasMoreElements();)
+            for(Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
             {
                 CC=(Clan)e.nextElement();
                 if(CC==C) continue;
@@ -400,7 +400,7 @@ public class ClanData extends StdWebMacro
                     String member=httpReq.getRequestParameter("CLANID");
                     String lastID="";
                     Clan CC=null;
-                    for(Enumeration e=CMLib.clans().allClans();e.hasMoreElements();)
+                    for(Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
                     {
                         CC=(Clan)e.nextElement();
                         if(CC==C) continue;

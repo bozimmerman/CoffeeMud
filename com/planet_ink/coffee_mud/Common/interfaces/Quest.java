@@ -179,7 +179,6 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
 	 * This will execute the quest script.  If the quest is running, it
 	 * will call stopQuest first to shut it down.  It will spawn its
 	 * subquests and subsections if necessary.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuestOnTime()
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#resetQuest(int)
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#stepQuest()
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#stopQuest()
@@ -195,7 +194,6 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuest()
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#stepQuest()
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#resetQuest(int)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuestOnTime()
 	 */
 	public void stopQuest();
 
@@ -209,7 +207,6 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuest()
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#stepQuest()
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#stopQuest()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuestOnTime()
      */
     public void resetQuest(int firstPauseTicks);
     
@@ -229,7 +226,6 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
      * the quest is only 1 step, stopQuest() will be called.
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuest()
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#stopQuest()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuestOnTime()
      * @return true if another step was started, false otherwise
      */
     public boolean stepQuest();
@@ -585,7 +581,6 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#suspended()
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#waiting()
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuest()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuestOnTime()
 	 * @return true if the quest is running, false if stopped
 	 */
 	public boolean running();
@@ -612,7 +607,6 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
 	 * a running state to a stopped state.
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#minsRemaining()
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuest()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuestOnTime()
 	 * @return the numer of ticks the quest will keep running
 	 */
 	public int ticksRemaining();
@@ -621,7 +615,6 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
      * a running state to a stopped state.
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#ticksRemaining()
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuest()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuestOnTime()
      * @return the numer of minutes the quest will keep running
 	 */
 	public int minsRemaining();

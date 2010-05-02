@@ -95,7 +95,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
     /**
      * Receives a string for evaluation by the eval function, and stores 
      * it as the first element in the given 2 dimensional string array.
-     * @param expression the eval expression
+     * @param evaluable the eval expression
      * @return EVAL the 1 dimensional array to hold the compiled eval
      */
     public String[] parseEval(String evaluable) throws ScriptParseException;

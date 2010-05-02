@@ -149,7 +149,7 @@ public interface ShopKeeper extends Environmental, Economics
 	public long getWhatIsSoldMask();
     /**
      * Returns whether the given type of good is sold by this shopkeeper.
-     * @param mask  the ShopKeeper DEAL_* constant describing what is sold or bought by this ShopKeeper
+     * @param deal  the ShopKeeper DEAL_* constant describing what is sold or bought by this ShopKeeper
      * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#DEAL_DESCS
      * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#getWhatIsSoldMask()
      * @return true if the shopkeeper will make such a deal

@@ -981,7 +981,7 @@ public class Create extends StdCommand
 			else
 			{
 				String name=CMParms.combine(commands,2);
-				Clan C=CMLib.clans().getClanType(Clan.TYPE_CLAN);
+				Clan C=CMLib.clans().getNewClanObjectOfType(Clan.TYPE_CLAN);
 				C.setName(name);
 				if(C.name().trim().length()==0)
 					mob.tell("You must specify a VALID clan name.");
