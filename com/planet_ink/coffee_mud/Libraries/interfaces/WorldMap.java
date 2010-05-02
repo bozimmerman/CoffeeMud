@@ -106,6 +106,12 @@ public interface WorldMap extends CMLibrary, Runnable
     public String createNewExit(Room from, Room room, int direction);
     public Area areaLocation(CMObject E);
     public boolean explored(Room R);
+    
+    /************************************************************************/
+    /**							GENERAL REGISTRY							*/
+    /************************************************************************/
+	public void registerWorldObjectLoaded(Area area, Room room, CMObject o);
+	public void registerWorldObjectDestroyed(Area area, Room room, CMObject o);
    
     /************************************************************************/
     /**							SCRIPT HOST									*/

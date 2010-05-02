@@ -84,14 +84,12 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		sortedAreas=null;
 		areasList.addElement(newOne);
-		CMLib.map().addScriptHost(newOne, newOne);
 	}
 
 	public void delArea(Area oneToDel)
 	{
 		sortedAreas=null;
 		areasList.remove(oneToDel);
-		CMLib.map().delScriptHost(oneToDel, oneToDel);
 	}
 
 	public Enumeration sortedAreas()
@@ -1683,6 +1681,26 @@ public class CMMap extends StdLibrary implements WorldMap
 			if(W.get()==host)
 				return true;
 		return false;
+	}
+	
+	public void registerWorldObjectDestroyed(Area area, Room room, CMObject o)
+	{
+		if(o instanceof ActiveEnvironmental)
+			CMLib.map().delScriptHost(area, (ActiveEnvironmental)o);
+	}
+	
+	public void registerWorldObjectLoaded(Area area, Room room, CMObject o)
+	{
+		if(o instanceof ActiveEnvironmental)
+		{
+			CMLib.map().addScriptHost(area, (ActiveEnvironmental)o);
+			if(o instanceof MOB)
+			{
+				MOB M=(MOB)o;
+				for(int i=0;i<M.inventorySize();i++)
+					CMLib.map().addScriptHost(area, M.fetchInventory(i));
+			}
+		}
 	}
 	
     public void addScriptHost(Area area, ActiveEnvironmental host)
