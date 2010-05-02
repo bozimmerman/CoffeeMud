@@ -1705,9 +1705,9 @@ public class CMMap extends StdLibrary implements WorldMap
     	else
     	{
 	    	SVector<WeakReference<ActiveEnvironmental>> hosts = scriptHostMap.get(area.toUpperCase());
-	    	if(hosts==null) return new EmptyEnumeration<ActiveEnvironmental>();
+	    	if(hosts==null) return (Enumeration<ActiveEnvironmental>)EmptyEnumeration.INSTANCE;
     	}
-    	if(V.size()==0) return new EmptyEnumeration<ActiveEnvironmental>();
+    	if(V.size()==0) return (Enumeration<ActiveEnvironmental>)EmptyEnumeration.INSTANCE;
     	final MultiEnumeration<WeakReference<ActiveEnvironmental>> me = new MultiEnumeration<WeakReference<ActiveEnvironmental>>(V.toArray(new Enumeration[0]));
     	return new Enumeration<ActiveEnvironmental>()
     	{

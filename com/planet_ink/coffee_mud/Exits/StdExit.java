@@ -740,7 +740,8 @@ public class StdExit implements Exit
 		if(behaviors==null) return 0;
 		return behaviors.size();
 	}
-    public Enumeration<Behavior> behaviors() { return (behaviors==null)?new EmptyEnumeration<Behavior>():behaviors.elements();}
+    @SuppressWarnings("unchecked")
+	public Enumeration<Behavior> behaviors() { return (behaviors==null)?(Enumeration<Behavior>)EmptyEnumeration.INSTANCE:behaviors.elements();}
 	public Behavior fetchBehavior(int index)
 	{
 		if(behaviors==null)
@@ -794,7 +795,8 @@ public class StdExit implements Exit
         }
     }
     public int numScripts(){return (scripts==null)?0:scripts.size();}
-    public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?new EmptyEnumeration<ScriptingEngine>():scripts.elements();}
+    @SuppressWarnings("unchecked")
+	public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?(Enumeration<ScriptingEngine>)EmptyEnumeration.INSTANCE:scripts.elements();}
     public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
     
 	public int openDelayTicks()	{ return 45;}

@@ -294,13 +294,13 @@ public class GenWallpaper implements Item
 	public void addBehavior(Behavior to){}
 	public void delBehavior(Behavior to){}
 	public int numBehaviors(){return 0;}
-    public Enumeration<Behavior> behaviors() { return new EmptyEnumeration<Behavior>();}
+    public Enumeration<Behavior> behaviors() { return (Enumeration<Behavior>)EmptyEnumeration.INSTANCE;}
 	public Behavior fetchBehavior(int index){return null;}
 	public Behavior fetchBehavior(String ID){return null;}
     public void addScript(ScriptingEngine S){}
     public void delScript(ScriptingEngine S) {}
     public int numScripts(){return 0;}
-    public Enumeration<ScriptingEngine> scripts() { return new EmptyEnumeration<ScriptingEngine>();}
+    public Enumeration<ScriptingEngine> scripts() { return (Enumeration<ScriptingEngine>)EmptyEnumeration.INSTANCE;}
     public ScriptingEngine fetchScript(int x){ return null;}
 
     public int getSaveStatIndex(){return getStatCodes().length;}
