@@ -17,6 +17,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.IOException;
 import java.net.*;
 import java.util.*;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 
 import com.planet_ink.coffee_mud.core.exceptions.*;
@@ -40,34 +42,40 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 @SuppressWarnings("unchecked")
 public class SMTPserver extends Thread implements Tickable
 {
+	public static final float  HOST_VERSION_MAJOR=(float)1.1;
+	public static final float  HOST_VERSION_MINOR=(float)1.0;
+	public static final String ServerVersionString = "CoffeeMud SMTPserver/" + HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR;
+	
 	public String ID(){return "SMTPserver";}
 	public String name(){return "SMTPserver";}
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new SMTPserver(mud);}}
     public void initializeClass(){}
     public CMObject copyOf(){try{return (SMTPserver)this.clone();}catch(Exception e){return newInstance();}}
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-	public long tickStatus=STATUS_NOT;
-	public long getTickStatus(){return tickStatus;}
-	public long lastAllProcessing=System.currentTimeMillis();
-
-	public CMProps page=null;
-
-	public static final float HOST_VERSION_MAJOR=(float)1.0;
-	public static final float HOST_VERSION_MINOR=(float)0.0;
-	public static Hashtable webMacros=null;
-	public static CMProps iniPage=null;
+    
+	public long 		tickStatus=STATUS_NOT;
+	public long 		lastAllProcessing=System.currentTimeMillis();
+	public boolean 		isOK = false;
+	private MudHost 	mud;
+	public CMProps 		page=null;
 	public ServerSocket servsock=null;
-	public boolean isOK = false;
-	private MudHost mud;
-	private static boolean displayedBlurb=false;
-	private static String domain="coffeemud";
-	private static DVector journals=null;
+	private HashSet 	oldEmailComplaints=new HashSet();
+	public Hashtable 	webMacros=null;
+	public CMProps 		iniPage=null;
+	private boolean 	displayedBlurb=false;
+	private String 		domain="coffeemud";
+	private DVector 	journals=null;
+	private ThreadPoolExecutor  
+						threadPool = new ThreadPoolExecutor(1, 3, 30, TimeUnit.SECONDS, new UniqueEntryBlockingQueue<Runnable>(256));
 
-	private HashSet oldEmailComplaints=new HashSet();
-
-	public final static String ServerVersionString = "CoffeeMud SMTPserver/" + HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR;
-
-    public SMTPserver(){super("SMTP"); mud=null;isOK=false;setDaemon(true);}
+    public SMTPserver()
+    {
+    	super("SMTP"); 
+    	mud=null;
+    	isOK=false;
+    	setDaemon(true);
+    }
+    
 	public SMTPserver(MudHost a_mud)
 	{
 		super("SMTP");
@@ -80,6 +88,7 @@ public class SMTPserver extends Thread implements Tickable
 		setDaemon(true);
 	}
 
+	public long getTickStatus(){return tickStatus;}
 	public MudHost getMUD()	{return mud;}
 	public String domainName(){return domain;}
 	public String mailboxName(){return CMProps.getVar(CMProps.SYSTEM_MAILBOX);}
@@ -293,13 +302,10 @@ public class SMTPserver extends Thread implements Tickable
 				sock=servsock.accept();
                 while(CMLib.threads().isAllSuspended())
                     Thread.sleep(1000);
+                if(CMSecurity.isDebugging("SMTPSERVER"))
+                	Log.debugOut("SMTPserver","Connection received: "+sock.getInetAddress().getHostAddress());
 				if(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
-				{
-					ProcessSMTPrequest W=new ProcessSMTPrequest(sock,this,page);
-					W.equals(W); // this prevents an initialized by never used error
-					// nb - ProcessSMTPrequest is a Thread, but it .start()s in the constructor
-					//  if succeeds - no need to .start() it here
-				}
+					threadPool.execute(new ProcessSMTPrequest(sock,this));
 				else
 				{
 					sock.getOutputStream().write(("421 Mud down.. try later.\r\n").getBytes());
@@ -311,12 +317,9 @@ public class SMTPserver extends Thread implements Tickable
 		}
 		catch(Exception e)
 		{
-			// jef: if we've been interrupted, servsock will be null
-			//   and serverOK will be true
+			// if we've been interrupted, servsock will be null and serverOK will be true
 			Log.errOut(getName(),e.getMessage());
-
-
-			// jef: this prevents initHost() from running if run() has failed (eg socket in use)
+			// this prevents initHost() from running if run() has failed (eg socket in use)
 			if (!serverOK)
 				isOK = false;
 		}
@@ -331,19 +334,17 @@ public class SMTPserver extends Thread implements Tickable
 		catch(IOException e)
 		{
 		}
-
-		//Log.sysOut(getName(),"Thread stopped!");
 	}
 
 
 	// sends shutdown message to both log and optional session
 	// then just calls interrupt
-
 	public void shutdown(Session S)
 	{
 		Log.sysOut(getName(),"Shutting down.");
 		if (S != null)
 			S.println( getName() + " shutting down.");
+		threadPool.shutdown();
 		if(getTickStatus()==Tickable.STATUS_NOT)
 			tick(this,Tickable.TICKID_READYTOSTOP);
 		else
@@ -352,6 +353,7 @@ public class SMTPserver extends Thread implements Tickable
 			while((att<100)&&(getTickStatus()!=Tickable.STATUS_NOT))
 			{try{att++;Thread.sleep(100);}catch(Exception e){}}
 		}
+		threadPool.shutdownNow();
 		CMLib.killThread(this,1000,30);
 	}
 

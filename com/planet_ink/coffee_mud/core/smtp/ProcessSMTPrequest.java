@@ -36,30 +36,27 @@ import java.io.*;
    limitations under the License.
 */
 @SuppressWarnings("unchecked")
-public class ProcessSMTPrequest extends Thread
+public class ProcessSMTPrequest implements Runnable
 {
-	private CMProps page;
-	private Socket sock;
-	private static long instanceCnt = 0;
-	private SMTPserver server=null;
 	private final static String cr = "\r\n";
 	private final static String S_250 = "250 OK";
-	protected String from=null;
-	protected Vector to=null;
+	private static volatile long instanceCnt = 0;
+	
+	
+	private Socket 		 sock;
+	private SMTPserver 	 server=null;
 	private StringBuffer data=null;
-	protected String domain=null;
+	protected String 	 from=null;
+	protected Vector 	 to=null;
+	protected String 	 domain=null;
+	protected String  	 runnableName;
+	protected boolean 	 debug=false;
 
-	public ProcessSMTPrequest(Socket a_sock,
-							  SMTPserver a_Server,
-							  CMProps a_page)
+	public ProcessSMTPrequest(Socket a_sock, SMTPserver a_Server)
 	{
-		super( "SMTPrq"+(instanceCnt++));
-		page = a_page;
+		runnableName="SMTPrq"+(instanceCnt++);
 		server = a_Server;
 		sock = a_sock;
-
-		if (page != null && sock != null)
-			this.start();
 	}
 	
 	public String validLocalAccount(String s)
@@ -96,6 +93,7 @@ public class ProcessSMTPrequest extends Thread
 		DataInputStream sin = null;
 		DataOutputStream sout = null;
 		int failures=0;
+		debug = CMSecurity.isDebugging("SMTPSERVER");
 
 		byte[] replyData = null;
 
@@ -123,6 +121,7 @@ public class ProcessSMTPrequest extends Thread
 					input.append(c);
 					if(input.length()>server.getMaxMsgSize())
 					{
+						if(debug) Log.debugOut(runnableName,"552 String exceeds size limit.");
 						replyData=("552 String exceeds size limit. You are very bad!"+cr).getBytes();
 						//Log.errOut("SMTPR","Long request from "+sock.getInetAddress());
 						sout.write(replyData);
@@ -141,10 +140,11 @@ public class ProcessSMTPrequest extends Thread
 						cmd=s.substring(0,cmdindex).toUpperCase();
 						parm=s.substring(cmdindex+1);
 					}
-					
+					if(debug) Log.debugOut(runnableName,"Input: "+cmd+" "+parm);
 					
 					if((dataMode)&&(s.equals(".")))
 					{
+						if(debug) Log.debugOut(runnableName,"End of data reached.");
 						dataMode=false;
 	                    boolean translateEqualSigns=false;
 						/*When the SMTP server accepts a message either for relaying or for final delivery, it inserts a trace record (also referred to interchangeably as a "time stamp line" or "Received" line) at the top of the mail data. This trace record indicates the identity of the host that sent the message, the identity of the host that received the message (and is inserting this time stamp), and the date and time the message was received.*/
@@ -170,6 +170,7 @@ public class ProcessSMTPrequest extends Thread
 									String s2=lineR.readLine();
 									if(s2==null) break;
 									String s2u=s2.toUpperCase();
+									if(debug) Log.debugOut(runnableName,"Header State="+boundryState+", "+s2);
 									
 									if((startBuffering)&&(boundry!=null)&&(s2.indexOf(boundry)>=0))
 	                                    break; // we're done with a multipart!
@@ -227,7 +228,10 @@ public class ProcessSMTPrequest extends Thread
 	                                }
 	                                else
 									if((s2u.startsWith("SUBJECT: "))&&(boundryState<2))
+									{
 										subject=s2.substring(9).trim();
+										if(debug) Log.debugOut(runnableName,"Subject="+subject);
+									}
 									else
 	                                if((s2u.startsWith("CONTENT-TRANSFER-ENCODING: "))
 	                                ||(s2u.startsWith("CONTENT TRANSFER ENCODING: ")))
@@ -237,6 +241,7 @@ public class ProcessSMTPrequest extends Thread
 	                                        translateEqualSigns=true;
 	                                    else
 	                                        translateEqualSigns=false;
+										if(debug) Log.debugOut(runnableName,"Transfer Equal Sign="+translateEqualSigns);
 	                                }
 	                                else
 									if((s2u.startsWith("CONTENT TYPE: ")||s2u.startsWith("CONTENT-TYPE: ")))
@@ -344,6 +349,7 @@ public class ProcessSMTPrequest extends Thread
 												}
 											}
 											   
+											if(debug) Log.debugOut(runnableName,"Written: "+server.mailboxName()+"/"+from+"/ALL");
 											CMLib.database().DBWriteJournal(journal,
 																			  from,
 																			  "ALL",
@@ -352,6 +358,7 @@ public class ProcessSMTPrequest extends Thread
 										}
 										else
 										{
+											if(debug) Log.debugOut(runnableName,"Written: "+server.mailboxName()+"/"+from+"/"+(String)to.elementAt(i));
 											CMLib.database().DBWriteJournal(server.mailboxName(),
 																			  from,
 																			  (String)to.elementAt(i),
@@ -541,7 +548,7 @@ public class ProcessSMTPrequest extends Thread
 							replyData=("250 "+sock.getLocalAddress().getHostName()+" Hello "+sock.getInetAddress().getHostName()+" ["+sock.getInetAddress().getHostAddress()+"], pleased to meet you"+cr).getBytes();
 							if(cmd.equals("EHLO"))
 							{
-								replyData=(replyData.toString()
+								replyData=(new String(replyData)
 										  +"250-8BITMIME"+cr
 										  +"250-SIZE 2000"+cr
 										  +"250-DSN"+cr
@@ -777,6 +784,7 @@ public class ProcessSMTPrequest extends Thread
 					
 					if ((replyData != null))
 					{
+						if(debug) Log.debugOut(runnableName,"Reply: "+CMStrings.replaceAll(new String(replyData),cr,""));
 						// must insert a blank line before message body
 						sout.write(replyData);
 						sout.flush();
@@ -797,12 +805,12 @@ public class ProcessSMTPrequest extends Thread
 			}
 			catch(Exception e)
 			{
-				Log.errOut(getName(),"Exception2: " + e.getMessage() );
+				Log.errOut(runnableName,"Exception2: " + e.getMessage() );
 			}
 		}
 		catch (Exception e)
 		{
-			Log.errOut(getName(),"Exception: " + e.getMessage() );
+			Log.errOut(runnableName,"Exception: " + e.getMessage() );
 		}
 		
 		try
