@@ -41,7 +41,7 @@
 <INPUT TYPE=HIDDEN NAME=OLDLINK VALUE="@RequestParameter?OLDLINK@">
 <TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
 <TR>
-<TD WIDTH=10% VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif"  ALT="" BORDER="0"></TD>
+<TD WIDTH=10% VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=80 HEIGHT=80  ALT="" BORDER="0"></TD>
 <TD COLSPAN=3><B>Empty grid square for room: @RequestParameter?ROOM@</B></TD></TR>
 <TR><TD WIDTH=25% ALIGN=RIGHT><INPUT TYPE=BUTTON NAME=NEWROOM VALUE="Create New Room" ONCLICK="Clicked('/grinder/creategridroom.cmvp');"></TD>
 <TD WIDTH=45%><INPUT TYPE=CHECKBOX NAME=COPYROOM><FONT SIZE=-1><B>Copy @RequestParameter?OLDROOM@</B></FONT></TD>

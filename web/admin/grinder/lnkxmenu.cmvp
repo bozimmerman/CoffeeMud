@@ -36,7 +36,7 @@
 <INPUT TYPE=HIDDEN NAME=LINKSTO VALUE="@RequestParameter?LINKSTO@">
 <INPUT TYPE=HIDDEN NAME=OLDROOM VALUE="@RequestParameter?OLDROOM@">
 <INPUT TYPE=HIDDEN NAME=OLDLINK VALUE="@RequestParameter?OLDLINK@">
-<IMG SRC="/grinder/images/grinder.gif" WIDTH=10% HEIGHT=75% ALT="" ALIGN=LEFT BORDER="0">
+<IMG SRC="/grinder/images/grinder.gif" WIDTH=80 HEIGHT=80 ALT="" ALIGN=LEFT BORDER="0">
 <B>Unused @RequestParameter?LINK@ Exit From @RequestParameter?ROOM@ (@RoomName@)</B>
 <BR>
 @if?!CheckReqParm?OLDLINK=@
