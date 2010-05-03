@@ -16,7 +16,9 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 
 /* 
    Copyright 2000-2010 Bo Zimmerman
@@ -398,10 +400,10 @@ public class Conquerable extends Arrest
 			HashSet doneMOBs=new HashSet();
             HashSet doneRooms=new HashSet();
             clanItems.clear();
-			Vector itemSet=CMLib.database().DBReadData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name());
+            List<PlayerData> itemSet=CMLib.database().DBReadData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name());
 			if((itemSet!=null)&&(itemSet.size()>0))
 			{
-				String data=((DatabaseEngine.PlayerData)itemSet.firstElement()).xml;
+				String data=((DatabaseEngine.PlayerData)itemSet.get(0)).xml;
 				Vector xml=CMLib.xml().parseAllXML(data);
 				if(xml!=null)
 				{

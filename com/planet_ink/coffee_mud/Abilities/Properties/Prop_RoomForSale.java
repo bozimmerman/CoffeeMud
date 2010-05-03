@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -461,7 +462,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	    int day=A.getTimeObj().getDayOfMonth();
 	    int year=A.getTimeObj().getYear();
 	    Object O=Resources.getResource("RENTAL INFO/"+owner);
-	    Vector pDataV=null;
+	    List<PlayerData> pDataV=null;
 	    if(O instanceof Vector)
 	        pDataV=(Vector)O;
 	    else
@@ -477,14 +478,14 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	    	pData.key="RENTAL INFO/"+owner;
 	    	pData.xml=ID+"|~>|"+day+" "+month+" "+year+"|~;|";
 	        CMLib.database().DBCreateData(owner,"RENTAL INFO","RENTAL INFO/"+owner,pData.xml);
-	        pDataV.addElement(pData);
+	        pDataV.add(pData);
 	        Resources.submitResource("RENTAL INFO/"+owner,pDataV);
 	        return false;
 	    }
 	    else
-	    if(pDataV.firstElement() instanceof DatabaseEngine.PlayerData)
+	    if(pDataV.get(0) instanceof DatabaseEngine.PlayerData)
 	    {
-	    	pData=(DatabaseEngine.PlayerData)pDataV.firstElement();
+	    	pData=(DatabaseEngine.PlayerData)pDataV.get(0);
 	        String parse=pData.xml;
 	        int x=parse.indexOf("|~;|");
 	        StringBuffer reparse=new StringBuffer("");
@@ -549,7 +550,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		    	pData.section="RENTAL INFO";
 		    	pData.key="RENTAL INFO/"+owner;
 		    	pData.xml=reparse.toString();
-		    	pDataV.setElementAt(pData,0);
+		    	pDataV.set(0,pData);
 		    	Resources.removeResource("RENTAL INFO/"+owner);
 		        Resources.submitResource("RENTAL INFO/"+owner,pDataV);
 	        }

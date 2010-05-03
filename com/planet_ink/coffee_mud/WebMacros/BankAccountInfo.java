@@ -41,7 +41,7 @@ public class BankAccountInfo extends StdWebMacro
 	{
 		double balance=0.0;
 		MoneyLibrary.DebtItem debt=null;
-		Vector items=new Vector(1);
+		List<Item> items=new Vector<Item>(1);
 	}
 	
 	public static synchronized BankAccountStuff getMakeAccountInfo(ExternalHTTPRequests httpReq, Banker B, MOB playerM)
@@ -157,14 +157,14 @@ public class BankAccountInfo extends StdWebMacro
 		if(parms.containsKey("ITEMSWORTH")) return CMLib.beanCounter().nameCurrencyLong(playerM,B.totalItemsWorth(playerM));
 		if(parms.containsKey("ITEMSLIST"))
 		{
-			Vector items=acct.items;
+			List<Item> items=acct.items;
 			if(items != null)
 			{
 				StringBuffer list=new StringBuffer("");
 				for(int v=0;v<items.size();v++)
-					if(!(items.elementAt(v) instanceof Coins))
+					if(!(items.get(v) instanceof Coins))
 					{
-						list.append(((Environmental)items.elementAt(v)).name());
+						list.append(((Environmental)items.get(v)).name());
 						if(v<(items.size()-1)) list.append(", ");
 					}
 				return list.toString();

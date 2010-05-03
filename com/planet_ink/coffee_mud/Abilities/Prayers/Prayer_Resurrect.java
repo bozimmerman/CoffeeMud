@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -56,13 +57,13 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
         boolean playerCorpse=false;
         if((body==null)&&(CMSecurity.isASysOp(mob)))
         {
-            Vector V=CMLib.database().DBReadData("HEAVEN");
+        	List<PlayerData> V=CMLib.database().DBReadData("HEAVEN");
             Vector allObjs=new Vector();
             Vector allDataPs=new Vector();
             if((V!=null)&&(V.size()>0))
             for(int v=0;v<V.size();v++)
             {
-            	DatabaseEngine.PlayerData dataP=(DatabaseEngine.PlayerData)V.elementAt(v);
+            	DatabaseEngine.PlayerData dataP=(DatabaseEngine.PlayerData)V.get(v);
                 String data=dataP.xml;
                 Environmental obj=parseHeavenlyData(data);
                 if(obj!=null)
@@ -120,10 +121,10 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
     					M=mob.location().fetchInhabitant(i);
     					if((M!=null)&&(!M.isMonster()))
     					{
-    						Vector V=CMLib.database().DBReadData(M.Name(),"HEAVEN",M.Name()+"/HEAVEN/"+AGE.text());
+    						List<PlayerData> V=CMLib.database().DBReadData(M.Name(),"HEAVEN",M.Name()+"/HEAVEN/"+AGE.text());
     						if((V!=null)&&(V.size()>0))
     						{
-    							nonPlayerData=(DatabaseEngine.PlayerData)V.firstElement();
+    							nonPlayerData=(DatabaseEngine.PlayerData)V.get(0);
     							break;
     						}
     					}

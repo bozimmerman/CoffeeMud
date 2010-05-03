@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
@@ -136,12 +137,12 @@ public class StdBanker extends StdShopKeeper implements Banker
 
 	public boolean delDepositInventory(String mob, Item thisThang)
 	{
-		Vector V=getRawPDDepositInventory(mob);
+		List<PlayerData> V=getRawPDDepositInventory(mob);
 		boolean money=thisThang instanceof Coins;
 		boolean found=false;
 		for(int v=V.size()-1;v>=0;v--)
 		{
-			DatabaseEngine.PlayerData PD=(DatabaseEngine.PlayerData)V.elementAt(v);
+			DatabaseEngine.PlayerData PD=(DatabaseEngine.PlayerData)V.get(v);
 			if(money&&(PD.xml).startsWith("COINS;"))
 			{
 				CMLib.database().DBDeleteData(PD.who,PD.section,PD.key);
@@ -168,36 +169,36 @@ public class StdBanker extends StdShopKeeper implements Banker
 	{
 		return getRawPDDepositInventory(mob).size();
 	}
-	public Vector getDepositedItems(MOB mob)
+	public List<Item> getDepositedItems(MOB mob)
 	{
 		if(mob==null) return new Vector();
 		return getDepositedItems((isSold(ShopKeeper.DEAL_CLANBANKER))?mob.getClanID():mob.Name());
 	}
-	public Vector getDepositedItems(String mob)
+	public List<Item> getDepositedItems(String mob)
 	{
-		if((mob==null)||(mob.length()==0)) return new Vector();
-		Vector V=getRawPDDepositInventory(mob);
+		if((mob==null)||(mob.length()==0)) return new Vector<Item>();
+		List<PlayerData> V=getRawPDDepositInventory(mob);
 		Vector mine=new Vector();
 		for(int v=0;v<V.size();v++)
 		{
-			DatabaseEngine.PlayerData PD=(DatabaseEngine.PlayerData)V.elementAt(v);
+			DatabaseEngine.PlayerData PD=(DatabaseEngine.PlayerData)V.get(v);
 			Item I=makeItem(PD.xml);
 			if(I!=null)	mine.addElement(I);
 		}
 		return mine;
 	}
-	public Vector getRawPDDepositInventory(String mob)
+	public List<PlayerData> getRawPDDepositInventory(String mob)
 	{
 		return CMLib.database().DBReadData(mob,bankChain());
 	}
-	public Vector getAccountNames()
+	public List<String> getAccountNames()
 	{
-		Vector V=CMLib.database().DBReadData(bankChain());
+		List<PlayerData> V=CMLib.database().DBReadData(bankChain());
 		HashSet h=new HashSet();
 		Vector mine=new Vector();
 		for(int v=0;v<V.size();v++)
 		{
-			DatabaseEngine.PlayerData V2=(DatabaseEngine.PlayerData)V.elementAt(v);
+			DatabaseEngine.PlayerData V2=(DatabaseEngine.PlayerData)V.get(v);
 			if(!h.contains(V2.who))
 			{
 				h.add(V2.who);
@@ -231,18 +232,18 @@ public class StdBanker extends StdShopKeeper implements Banker
 
 	public Item findDepositInventory(String mob, String likeThis)
 	{
-		Vector V=getRawPDDepositInventory(mob);
+		List<PlayerData> V=getRawPDDepositInventory(mob);
 		if(CMath.s_int(likeThis)>0)
 			for(int v=0;v<V.size();v++)
 			{
-				DatabaseEngine.PlayerData PD=(DatabaseEngine.PlayerData)V.elementAt(v);
+				DatabaseEngine.PlayerData PD=(DatabaseEngine.PlayerData)V.get(v);
 				if(PD.xml.startsWith("COINS;"))
 					return makeItem(PD.xml);
 			}
 		else
 		for(int v=0;v<V.size();v++)
 		{
-			DatabaseEngine.PlayerData PD=(DatabaseEngine.PlayerData)V.elementAt(v);
+			DatabaseEngine.PlayerData PD=(DatabaseEngine.PlayerData)V.get(v);
 			Item I=makeItem(PD.xml);
 			if(I==null) continue;
 			if(CMLib.english().containsString(I.Name(),likeThis))
@@ -305,11 +306,11 @@ public class StdBanker extends StdShopKeeper implements Banker
 				}
 				if(proceed)
 				{
-					Vector bankDataV=CMLib.database().DBReadData(bankChain());
+					List<PlayerData> bankDataV=CMLib.database().DBReadData(bankChain());
 					Vector userNames=new Vector();
 					for(int v=0;v<bankDataV.size();v++)
 					{
-						DatabaseEngine.PlayerData dat=(DatabaseEngine.PlayerData)bankDataV.elementAt(v);
+						DatabaseEngine.PlayerData dat=(DatabaseEngine.PlayerData)bankDataV.get(v);
 						String name=dat.who;
 						if(!userNames.contains(name))
 						{
@@ -330,10 +331,10 @@ public class StdBanker extends StdShopKeeper implements Banker
 						String name=(String)userNames.elementAt(u);
 						Coins coinItem=null;
 						int totalValue=0;
-						Vector items=getDepositedItems(name);
+						List<Item> items=getDepositedItems(name);
 						for(int v=0;v<items.size();v++)
 						{
-							Item I=(Item)items.elementAt(v);
+							Item I=(Item)items.get(v);
 							if(I instanceof Coins)
 								coinItem=(Coins)I;
 							else
@@ -378,7 +379,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						{
 							for(int v=0;v<items.size();v++)
 							{
-								Item I=(Item)items.elementAt(v);
+								Item I=(Item)items.get(v);
 								if((I instanceof LandTitle)&&(((LandTitle)I).landOwner().length()>0))
 								{
 									((LandTitle)I).setLandOwner("");
@@ -427,7 +428,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 
 	public double totalItemsWorth(MOB mob)
 	{
-		Vector V=null;
+		List<Item> V=null;
 		if(isSold(ShopKeeper.DEAL_CLANBANKER))
 			V=getDepositedItems(mob.getClanID());
 		else
@@ -435,7 +436,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		double min=0;
 		for(int v=0;v<V.size();v++)
 		{
-			Item I=(Item)V.elementAt(v);
+			Item I=(Item)V.get(v);
 			if(!(I instanceof Coins))
 				min+=I.value();
 		}
@@ -617,7 +618,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				super.executeMsg(myHost,msg);
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 				{
-					Vector V=null;
+					List<Item> V=null;
 					if(isSold(ShopKeeper.DEAL_CLANBANKER))
 						V=getDepositedItems(mob.getClanID());
 					else
@@ -625,19 +626,19 @@ public class StdBanker extends StdShopKeeper implements Banker
 						V=getDepositedItems(mob.Name());
 						if(mob.isMarriedToLiege())
 						{
-							Vector V2=getDepositedItems(mob.getLiegeID());
+							List<Item> V2=getDepositedItems(mob.getLiegeID());
 							if((V2!=null)&&(V2.size()>0))
 								CMParms.addToVector(V2,V);
 						}
 					}
 					for(int v=V.size()-1;v>=0;v--)
-						if(V.elementAt(v) instanceof LandTitle)
+						if(V.get(v) instanceof LandTitle)
 						{
-							LandTitle L=(LandTitle)V.elementAt(v);
+							LandTitle L=(LandTitle)V.get(v);
 							if(L.landOwnerObject()==null)
 							{
 								delDepositInventory(mob,(Item)L);
-								V.removeElement(L);
+								V.remove(L);
 							}
 						}
 
@@ -649,7 +650,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					boolean otherThanCoins=false;
 					for(int i=0;i<V.size();i++)
 					{
-						Item I=(Item)V.elementAt(i);
+						Item I=(Item)V.get(i);
 						if(!(I instanceof Coins))
 						{
 							otherThanCoins=true;

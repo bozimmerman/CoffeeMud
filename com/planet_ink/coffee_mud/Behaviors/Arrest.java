@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -389,10 +390,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			{
 				if((lawName.equalsIgnoreCase("custom"))&&(what!=null))
 				{
-					Vector data=CMLib.database().DBReadData(what.Name(),"ARREST",what.Name()+"/ARREST");
+					List<PlayerData> data=CMLib.database().DBReadData(what.Name(),"ARREST",what.Name()+"/ARREST");
 					if((data!=null)&&(data.size()>0))
 					{
-						DatabaseEngine.PlayerData pdata=(DatabaseEngine.PlayerData)data.firstElement();
+						DatabaseEngine.PlayerData pdata=(DatabaseEngine.PlayerData)data.get(0);
 						String s=CMStrings.replaceAll(pdata.xml,"~","\n");
 						s=CMStrings.replaceAll(s,"`","'");
 						lawprops.load(new ByteArrayInputStream(CMStrings.strToBytes(s)));

@@ -489,11 +489,11 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 
 	public Vector<DebtItem> getDebtOwed(String owedTo)
 	{
-		Vector rows=CMLib.database().DBReadDataKey("DEBT",".*-DEBT-"+owedTo.toUpperCase().trim());
+		List<PlayerData> rows=CMLib.database().DBReadDataKey("DEBT",".*-DEBT-"+owedTo.toUpperCase().trim());
 		Vector<DebtItem> debt=new Vector<DebtItem>(rows.size());
 		for(int r=0;r<rows.size();r++)
 		{
-			PlayerData row=(PlayerData)rows.elementAt(r);
+			PlayerData row=(PlayerData)rows.get(r);
 			String debtor=row.who;
 			String xml=row.xml;
 			parseDebt(debt,debtor,xml);
@@ -542,11 +542,11 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 
 	public Vector<DebtItem> getDebt(String name, String owedTo)
 	{
-		Vector rows=CMLib.database().DBReadData(name.toUpperCase(),"DEBT",name.toUpperCase()+"-DEBT-"+owedTo.toUpperCase().trim());
+		List<PlayerData> rows=CMLib.database().DBReadData(name.toUpperCase(),"DEBT",name.toUpperCase()+"-DEBT-"+owedTo.toUpperCase().trim());
 		Vector<DebtItem> debt=new Vector<DebtItem>(rows.size());
 		for(int r=0;r<rows.size();r++)
 		{
-			PlayerData row=(PlayerData)rows.elementAt(r);
+			PlayerData row=(PlayerData)rows.get(r);
 			String debtor=row.who;
 			String xml=row.xml;
 			parseDebt(debt,debtor,xml);
@@ -556,11 +556,11 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 
 	public Vector<DebtItem> getDebt(String name)
 	{
-		Vector rows=CMLib.database().DBReadData(name.toUpperCase(),"DEBT");
+		List<PlayerData> rows=CMLib.database().DBReadData(name.toUpperCase(),"DEBT");
 		Vector<DebtItem> debt=new Vector<DebtItem>(rows.size());
 		for(int r=0;r<rows.size();r++)
 		{
-			PlayerData row=(PlayerData)rows.elementAt(r);
+			PlayerData row=(PlayerData)rows.get(r);
 			String debtor=row.who;
 			String xml=row.xml;
 			parseDebt(debt,debtor,xml);
@@ -729,10 +729,10 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	{
 		synchronized((this+"LEDGER"+bankName).intern())
 		{
-			Vector V=CMLib.database().DBReadData(owner,"LEDGER-"+bankName,"LEDGER-"+bankName+"/"+owner);
+			List<PlayerData> V=CMLib.database().DBReadData(owner,"LEDGER-"+bankName,"LEDGER-"+bankName+"/"+owner);
 			if((V!=null)&&(V.size()>0))
 			{
-				DatabaseEngine.PlayerData D=(DatabaseEngine.PlayerData)V.firstElement();
+				DatabaseEngine.PlayerData D=(DatabaseEngine.PlayerData)V.get(0);
 				String last=D.xml;
 				if(last.length()>4096)
 				{
@@ -748,10 +748,10 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 
 	public boolean modifyBankGold(String bankName, String owner, String explanation, String currency, double absoluteAmount)
 	{
-		Vector V=CMLib.database().DBReadAllPlayerData(owner);
+		List<PlayerData> V=CMLib.database().DBReadAllPlayerData(owner);
 		for(int v=0;v<V.size();v++)
 		{
-			DatabaseEngine.PlayerData D=(DatabaseEngine.PlayerData)V.elementAt(v);
+			DatabaseEngine.PlayerData D=(DatabaseEngine.PlayerData)V.get(v);
 			String last=D.xml;
 			if(last.startsWith("COINS;"))
 			{

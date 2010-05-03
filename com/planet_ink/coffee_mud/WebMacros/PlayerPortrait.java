@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -14,6 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
+
 import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 
 
@@ -32,7 +34,6 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class PlayerPortrait extends StdWebMacro
 {
     public String name()    {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
@@ -58,10 +59,10 @@ public class PlayerPortrait extends StdWebMacro
             img=(byte[])Resources.getResource("CMPORTRAIT-"+last);
             if(img==null)
             {
-                Vector data=CMLib.database().DBReadData(last,"CMPORTRAIT");
+            	List<PlayerData> data=CMLib.database().DBReadData(last,"CMPORTRAIT");
                 if((data!=null)&&(data.size()>0))
                 {
-                    String encoded=((DatabaseEngine.PlayerData)data.firstElement()).xml;
+                    String encoded=((DatabaseEngine.PlayerData)data.get(0)).xml;
                     img=B64Encoder.B64decode(encoded);
                     if(img!=null)
                         Resources.submitResource("CMPORTRAIT-"+last,img);

@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.CommandJournalFlags;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -19,6 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException;
 
 import java.util.*;
+import java.util.List;
 
 /* 
    Copyright 2000-2010 Bo Zimmerman
@@ -110,7 +112,7 @@ public class MOTD extends StdCommand
                 }
                 if((postalChains.size()>0)&&(P!=null))
                 {
-                    Vector V=CMLib.database().DBReadData(mob.Name(),postalChains);
+                	List<PlayerData> V=CMLib.database().DBReadData(mob.Name(),postalChains);
                     Hashtable res=getPostalResults(V,mob.playerStats().lastDateTime());
                     for(Enumeration e=res.keys();e.hasMoreElements();)
                     {
@@ -240,13 +242,13 @@ public class MOTD extends StdCommand
         return whom+" "+ct[1]+" items still waiting at the "+branchName+" branch of the "+P.postalChain()+" post office.";
     }
     
-    private Hashtable getPostalResults(Vector mailData, long newTimeDate)
+    private Hashtable getPostalResults(List<PlayerData> mailData, long newTimeDate)
     {
         Hashtable results=new Hashtable();
         PostOffice P=null;
         for(int i=0;i<mailData.size();i++)
         {
-        	DatabaseEngine.PlayerData letter=(DatabaseEngine.PlayerData)mailData.elementAt(i);
+        	DatabaseEngine.PlayerData letter=(DatabaseEngine.PlayerData)mailData.get(i);
             String chain=(String)letter.section;
             String branch=(String)letter.key;
             int x=branch.indexOf(";");

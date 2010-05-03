@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -8170,7 +8171,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentItem(which,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if(arg2.length()>0)
                 {
-                    Vector V=null;
+                	List<PlayerData> V=null;
                     which=getVarHost(E,which,source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp);
                     if(arg2.equals("*"))
                         V=CMLib.database().DBReadData(which,"SCRIPTABLEVARS");
@@ -8179,7 +8180,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if((V!=null)&&(V.size()>0))
                     for(int v=0;v<V.size();v++)
                     {
-                    	DatabaseEngine.PlayerData VAR=(DatabaseEngine.PlayerData)V.elementAt(v);
+                    	DatabaseEngine.PlayerData VAR=(DatabaseEngine.PlayerData)V.get(v);
                         String varName=VAR.key;
                         if(varName.startsWith(which.toUpperCase()+"_SCRIPTABLEVARS_"))
                             varName=varName.substring((which+"_SCRIPTABLEVARS_").length());

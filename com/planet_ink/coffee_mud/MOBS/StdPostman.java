@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -136,11 +137,11 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 
     public boolean delFromBox(String mob, Item thisThang)
     {
-        Vector V=getBoxRowPDData(mob);
+    	List<PlayerData> V=getBoxRowPDData(mob);
         boolean found=false;
         for(int v=V.size()-1;v>=0;v--)
         {
-        	DatabaseEngine.PlayerData PD=(DatabaseEngine.PlayerData)V.elementAt(v);
+        	DatabaseEngine.PlayerData PD=(DatabaseEngine.PlayerData)V.get(v);
             if((PD!=null)
             &&(PD.key.startsWith(postalBranch()+";")))
             {
@@ -163,11 +164,11 @@ public class StdPostman extends StdShopKeeper implements PostOffice
     public Hashtable getOurOpenBoxes(String mob)
     {
         Hashtable branches=new Hashtable();
-        Vector V=CMLib.database().DBReadData(mob,postalChain());
+        List<PlayerData> V=CMLib.database().DBReadData(mob,postalChain());
         if(V==null) return branches;
         for(int v=0;v<V.size();v++)
         {
-        	DatabaseEngine.PlayerData PD=(DatabaseEngine.PlayerData)V.elementAt(v);
+        	DatabaseEngine.PlayerData PD=(DatabaseEngine.PlayerData)V.get(v);
             if(PD!=null)
             {
                 String key=PD.key;
@@ -190,11 +191,11 @@ public class StdPostman extends StdShopKeeper implements PostOffice
     }
     public void deleteBoxHere(String mob)
     {
-        Vector V=getBoxRowPDData(mob);
+    	List<PlayerData> V=getBoxRowPDData(mob);
         if(V==null) return;
         for(int v=0;v<V.size();v++)
         {
-        	DatabaseEngine.PlayerData PD=(DatabaseEngine.PlayerData)V.elementAt(v);
+        	DatabaseEngine.PlayerData PD=(DatabaseEngine.PlayerData)V.get(v);
             if((PD!=null)
             &&(PD.key.startsWith(postalBranch()+"/")))
             {
@@ -204,11 +205,11 @@ public class StdPostman extends StdShopKeeper implements PostOffice
     }
     public Vector getAllLocalBoxPD(String mob)
     {
-        Vector V=getBoxRowPDData(mob);
+    	List<PlayerData> V=getBoxRowPDData(mob);
         Vector mine=new Vector();
         for(int v=0;v<V.size();v++)
         {
-        	DatabaseEngine.PlayerData PD=(DatabaseEngine.PlayerData)V.elementAt(v);
+        	DatabaseEngine.PlayerData PD=(DatabaseEngine.PlayerData)V.get(v);
             if((PD!=null)
             &&(PD.key.startsWith(postalBranch()+";")))
             {
@@ -217,7 +218,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         }
         return mine;
     }
-    public Vector getBoxRowPDData(String mob)
+    public List<PlayerData> getBoxRowPDData(String mob)
     {
         return CMLib.database().DBReadData(mob,postalChain());
     }
@@ -233,10 +234,10 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 
     public Item findBoxContents(String mob, String likeThis)
     {
-        Vector V=getBoxRowPDData(mob);
+    	List<PlayerData> V=getBoxRowPDData(mob);
         for(int v=0;v<V.size();v++)
         {
-        	DatabaseEngine.PlayerData PD=(DatabaseEngine.PlayerData)V.elementAt(v);
+        	DatabaseEngine.PlayerData PD=(DatabaseEngine.PlayerData)V.get(v);
             if((PD!=null)
             &&(PD.key.startsWith(postalBranch()+";")))
             {
@@ -251,10 +252,10 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 
     public MailPiece findExactBoxData(String mob, Item likeThis)
     {
-        Vector V=getBoxRowPDData(mob);
+    	List<PlayerData> V=getBoxRowPDData(mob);
         for(int v=0;v<V.size();v++)
         {
-        	DatabaseEngine.PlayerData PD=(DatabaseEngine.PlayerData)V.elementAt(v);
+        	DatabaseEngine.PlayerData PD=(DatabaseEngine.PlayerData)V.get(v);
             if((PD!=null)
             &&(PD.key.startsWith(postalBranch()+";")))
             {
@@ -446,14 +447,14 @@ public class StdPostman extends StdShopKeeper implements PostOffice
             }
             if(proceed)
             {
-                Vector V=getBoxRowPDData(postalChain());
+            	List<PlayerData> V=getBoxRowPDData(postalChain());
                 // first parse all the pending mail,
                 // and remove it from the sorter
                 Vector parsed=new Vector();
                 if(V==null) V=new Vector();
                 for(int v=0;v<V.size();v++)
                 {
-                	DatabaseEngine.PlayerData PD=(DatabaseEngine.PlayerData)V.elementAt(v);
+                	DatabaseEngine.PlayerData PD=(DatabaseEngine.PlayerData)V.get(v);
                     parsed.addElement(parsePostalItemData(PD.xml));
                     CMLib.database().DBDeleteData(PD.who,PD.section,PD.key);
                 }
@@ -489,7 +490,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                 if((TC!=null)&&(maxMudMonthsHeld()>0))
                 for(int v=0;v<V.size();v++)
                 {
-                	DatabaseEngine.PlayerData V2=(DatabaseEngine.PlayerData)V.elementAt(v);
+                	DatabaseEngine.PlayerData V2=(DatabaseEngine.PlayerData)V.get(v);
                     if(V2.key.startsWith(postalBranch()+";"))
                     {
                     	MailPiece data=parsePostalItemData(V2.xml);

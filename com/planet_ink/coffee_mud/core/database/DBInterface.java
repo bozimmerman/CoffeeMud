@@ -345,26 +345,26 @@ public class DBInterface implements DatabaseEngine
 	public void DBDeletePlayerData(String name)
 	{DataLoader.DBDeletePlayer(name);}
 	
-	public Vector DBReadAllPlayerData(String playerID)
+	public List<PlayerData> DBReadAllPlayerData(String playerID)
 	{ return DataLoader.DBReadAllPlayerData(playerID);}
 	
-	public Vector DBReadData(String playerID, String section)
+	public List<PlayerData> DBReadData(String playerID, String section)
 	{ return DataLoader.DBRead(playerID,section);}
 	
-	public Vector DBReadDataKey(String section, String keyMask)
+	public List<PlayerData> DBReadDataKey(String section, String keyMask)
 	{ return DataLoader.DBReadKey(section,keyMask);}
-	public Vector DBReadDataKey(String key)
+	public List<PlayerData> DBReadDataKey(String key)
 	{ return DataLoader.DBReadKey(key);}
 	
 	public int DBCountData(String playerID, String section)
 	{ return DataLoader.DBCount(playerID,section);}
 	
-	public Vector DBReadData(String playerID, String section, String key)
+	public List<PlayerData> DBReadData(String playerID, String section, String key)
 	{ return DataLoader.DBRead(playerID,section,key);}
 	
-	public Vector DBReadData(String section)
+	public List<PlayerData> DBReadData(String section)
 	{ return DataLoader.DBRead(section);}
-    public Vector DBReadData(String player, Vector sections)
+    public List<PlayerData> DBReadData(String player, Vector sections)
     { return DataLoader.DBRead(player, sections);}
 
 	public void DBDeleteData(String playerID, String section)

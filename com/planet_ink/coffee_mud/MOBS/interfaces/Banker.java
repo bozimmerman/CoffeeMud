@@ -11,9 +11,12 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+import java.util.List;
 import java.util.Vector;
 
 
@@ -32,7 +35,6 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public interface Banker extends ShopKeeper
 {
 	public final static double MIN_ITEM_BALANCE_DIVIDEND=10.0;
@@ -43,10 +45,10 @@ public interface Banker extends ShopKeeper
 	public boolean delDepositInventory(MOB mob, Item thisThang);
 	public void delAllDeposits(String mob);
 	public int numberDeposited(String mob);
-	public Vector getAccountNames();
-	public Vector getRawPDDepositInventory(String mob);
-	public Vector getDepositedItems(MOB mob);
-	public Vector getDepositedItems(String depositorName);
+	public List<String> getAccountNames();
+	public List<PlayerData> getRawPDDepositInventory(String mob);
+	public List<Item> getDepositedItems(MOB mob);
+	public List<Item> getDepositedItems(String depositorName);
 	public Item findDepositInventory(String mob, String likeThis);
 	public Item findDepositInventory(MOB mob, String likeThis);
 	public void setCoinInterest(double interest);

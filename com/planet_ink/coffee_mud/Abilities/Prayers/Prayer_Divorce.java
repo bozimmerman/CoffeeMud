@@ -102,11 +102,11 @@ public class Prayer_Divorce extends Prayer
 							if((M2!=null)&&(M2 instanceof Banker))
 							{
 								Banker B=(Banker)M2;
-								Vector V=B.getDepositedItems(maleName);
+								List<Item> V=B.getDepositedItems(maleName);
 								Item coins=B.findDepositInventory(femaleName,""+Integer.MAX_VALUE);
 								for(int v=0;v<V.size();v++)
 								{
-									Item I=(Item)V.elementAt(v);
+									Item I=(Item)V.get(v);
 									if(I==null) break;
 									B.delDepositInventory(maleName,I);
 									if(I instanceof Coins)

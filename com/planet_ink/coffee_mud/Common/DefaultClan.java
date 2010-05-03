@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -82,13 +83,13 @@ public class DefaultClan implements Clan
     {
         if(lastClanKillRecord==null)
         {
-            Vector V=CMLib.database().DBReadData(clanID(),"CLANKILLS",clanID()+"/CLANKILLS");
+        	List<PlayerData> V=CMLib.database().DBReadData(clanID(),"CLANKILLS",clanID()+"/CLANKILLS");
             clanKills.clear();
             if(V.size()==0)
                 lastClanKillRecord="";
             else
             {
-                lastClanKillRecord=((DatabaseEngine.PlayerData)V.firstElement()).xml;
+                lastClanKillRecord=((DatabaseEngine.PlayerData)V.get(0)).xml;
                 Vector V2=CMParms.parseSemicolons(lastClanKillRecord,true);
                 for(int v=0;v<V2.size();v++)
                     clanKills.addElement(Long.valueOf(CMath.s_long((String)V2.elementAt(v))));
@@ -208,12 +209,12 @@ public class DefaultClan implements Clan
     {
         if(voteList==null)
         {
-            Vector V=CMLib.database().DBReadData(clanID(),"CLANVOTES",clanID()+"/CLANVOTES");
+        	List<PlayerData> V=CMLib.database().DBReadData(clanID(),"CLANVOTES",clanID()+"/CLANVOTES");
             voteList=new Vector();
             for(int v=0;v<V.size();v++)
             {
                 ClanVote CV=new ClanVote();
-                String rawxml=((DatabaseEngine.PlayerData)V.elementAt(v)).xml;
+                String rawxml=((DatabaseEngine.PlayerData)V.get(v)).xml;
                 if(rawxml.trim().length()==0) return voteList.elements();
                 Vector xml=CMLib.xml().parseAllXML(rawxml);
                 if(xml==null)

@@ -157,14 +157,14 @@ public class Thief_Embezzle extends ThiefSkill
 			mob.tell("You don't have your own account with "+target.name()+".");
 			return false;
 		}
-		Vector accounts=bank.getAccountNames();
+		List<String> accounts=bank.getAccountNames();
 		String victim="";
 		int tries=0;
 		Coins hisCoins=null;
 		double hisAmount=0;
 		while((hisCoins==null)&&((++tries)<10))
 		{
-			String possVic=(String)accounts.elementAt(CMLib.dice().roll(1,accounts.size(),-1));
+			String possVic=(String)accounts.get(CMLib.dice().roll(1,accounts.size(),-1));
 			Item C=bank.findDepositInventory(possVic,"1");
 			if((C!=null)
 	        &&(C instanceof Coins)

@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -87,7 +88,7 @@ public class StdClanDonationList extends StdClanItem
                 if(CMLib.flags().canBeSeenBy(this,mob))
                 {
                     StringBuffer text=new StringBuffer("");
-                    Vector V=CMLib.database().DBReadData(clanID(),"DONATIONS");
+                    List<PlayerData> V=CMLib.database().DBReadData(clanID(),"DONATIONS");
                     Vector sorted=new Vector();
                     String key=null;
                     int x=0;
@@ -95,7 +96,7 @@ public class StdClanDonationList extends StdClanItem
                     DatabaseEngine.PlayerData set=null;
                     while(V.size()>0)
                     {
-                        set=(DatabaseEngine.PlayerData)V.firstElement();
+                        set=(DatabaseEngine.PlayerData)V.get(0);
                         key=set.key;
                         x=key.indexOf("/");
                         if(x>0)
@@ -119,7 +120,7 @@ public class StdClanDonationList extends StdClanItem
                                 sorted.addElement(O);
                             }
                         }
-                        V.removeElementAt(0);
+                        V.remove(0);
                     }
                     for(int i=0;i<sorted.size();i++)
                         text.append(((String)((Object[])sorted.elementAt(i))[1])+"\n\r");

@@ -44,7 +44,7 @@ public class DataLoader
 	{
 		DB=newDB;
 	}
-	public Vector DBRead(String playerID, String section)
+	public List<PlayerData> DBRead(String playerID, String section)
 	{
 		DBConnection D=null;
 		Vector rows=new Vector();
@@ -73,7 +73,7 @@ public class DataLoader
 		// log comment
 		return rows;
 	}
-	public Vector DBReadAllPlayerData(String playerID)
+	public List<PlayerData> DBReadAllPlayerData(String playerID)
 	{
 		DBConnection D=null;
 		Vector rows=new Vector();
@@ -124,7 +124,8 @@ public class DataLoader
 		// log comment
 		return rows;
 	}
-	public Vector DBReadKey(String section, String keyMask)
+	
+	public List<PlayerData> DBReadKey(String section, String keyMask)
 	{
 		DBConnection D=null;
 		Vector rows=new Vector();
@@ -159,7 +160,7 @@ public class DataLoader
 		return rows;
 	}
 
-	public Vector DBReadKey(String key)
+	public List<PlayerData> DBReadKey(String key)
 	{
 		DBConnection D=null;
 		Vector rows=new Vector();
@@ -189,7 +190,7 @@ public class DataLoader
 		return rows;
 	}
 
-	public Vector DBRead(String playerID, String section, String key)
+	public List<PlayerData> DBRead(String playerID, String section, String key)
 	{
 		DBConnection D=null;
 		Vector rows=new Vector();
@@ -218,7 +219,8 @@ public class DataLoader
 		// log comment
 		return rows;
 	}
-	public Vector DBRead(String section)
+	
+	public List<PlayerData> DBRead(String section)
 	{
 		DBConnection D=null;
 		Vector rows=new Vector();
@@ -245,7 +247,7 @@ public class DataLoader
 		return rows;
 	}
 
-    public Vector DBRead(String playerID, Vector sections)
+    public List<PlayerData> DBRead(String playerID, Vector sections)
     {
         DBConnection D=null;
         Vector rows=new Vector();
@@ -347,6 +349,7 @@ public class DataLoader
 		}
 		if(D!=null) DB.DBDone(D);
 	}
+	
 	public void DBDelete(String playerID, String section, String key)
 	{
 
@@ -365,6 +368,7 @@ public class DataLoader
 		}
 		if(D!=null) DB.DBDone(D);
 	}
+	
 	public void DBDelete(String section)
 	{
 		DB.update("DELETE FROM CMPDAT WHERE CMSECT='"+section+"'");
@@ -372,6 +376,7 @@ public class DataLoader
 		if(DB.queryRows("SELECT * FROM CMPDAT WHERE CMSECT='"+section+"'")>0)
 			Log.errOut("Failed to delete data from section "+section+".");
 	}
+	
 	public void DBCreate(String player, String section, String key, String data)
 	{
 		DB.update(
@@ -390,10 +395,10 @@ public class DataLoader
 	
 	public void DBReadArtifacts()
 	{
-		Vector itemSet=CMLib.database().DBReadData("ARTIFACTS");
+		List<PlayerData> itemSet=CMLib.database().DBReadData("ARTIFACTS");
 		for(int i=0;i<itemSet.size();i++)
 		{
-			PlayerData item=(PlayerData)itemSet.elementAt(i);
+			PlayerData item=(PlayerData)itemSet.get(i);
 			String itemID=(String)item.who;
 			Ability A=CMClass.getAbility("Prop_Artifact");
 			if(A!=null)

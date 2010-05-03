@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -447,12 +448,12 @@ public class DefaultTimeClock implements TimeClock
 			if((loadName!=null)&&(!loaded))
 			{
 				loaded=true;
-				Vector bitV=CMLib.database().DBReadData(loadName,"TIMECLOCK");
+				List<PlayerData> bitV=CMLib.database().DBReadData(loadName,"TIMECLOCK");
 				String timeRsc=null;
 				if((bitV==null)||(bitV.size()==0))
 					timeRsc="<TIME>-1</TIME><DAY>1</DAY><MONTH>1</MONTH><YEAR>1</YEAR>";
 				else
-					timeRsc=((DatabaseEngine.PlayerData)bitV.firstElement()).xml;
+					timeRsc=((DatabaseEngine.PlayerData)bitV.get(0)).xml;
 				Vector V=CMLib.xml().parseAllXML(timeRsc);
 				setTimeOfDay(CMLib.xml().getIntFromPieces(V,"TIME"));
 				setDayOfMonth(CMLib.xml().getIntFromPieces(V,"DAY"));
