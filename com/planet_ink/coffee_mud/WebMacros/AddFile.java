@@ -39,13 +39,12 @@ public class AddFile extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		java.util.Map<String,String> parms=parseParms(parm);
 		if((parms==null)||(parms.size()==0)) return "";
 		StringBuffer buf=new StringBuffer("");
         boolean webify=false;
         Vector V=new Vector();
-        for(Enumeration e=parms.elements();e.hasMoreElements();)
-            V.addElement(e.nextElement());
+        V.addAll(parms.values());
         for(int v=V.size()-1;v>=0;v--)
         {
             String file=(String)V.elementAt(v);

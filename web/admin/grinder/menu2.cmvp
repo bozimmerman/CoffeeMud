@@ -39,9 +39,9 @@
 <INPUT TYPE=HIDDEN NAME=AREA VALUE="@AreaName@">
 <INPUT TYPE=HIDDEN NAME=MAPSTYLE VALUE="@RequestParameter?MAPSTYLE@">
 <INPUT TYPE=HIDDEN NAME=MAPLEVEL VALUE="@RequestParameter?MAPLEVEL@">
-<IMG SRC="/grinder/images/grinder.gif" WIDTH=10% HEIGHT=75% ALT="" ALIGN=LEFT BORDER="0">
-<TABLE WIDTH=90% CELLSPACING=0 CELLPADDING=0 BORDER=0>
+<TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
 <TR>
+	<TD WIDTH=10% VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=10% HEIGHT=75% ALT="" BORDER="0"></TD>
 	<TD WIDTH=50% ALIGN=LEFT>
 	@if?AreaData?ISGRID@<FONT COLOR=WHITE><B>Click on the map above to select an section to edit.</FONT><P>@endif@
 	&nbsp;&nbsp;&nbsp;&nbsp;

@@ -31,14 +31,13 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class JournalFunction extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 	
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		java.util.Map<String,String> parms=parseParms(parm);
 		String journalName=httpReq.getRequestParameter("JOURNAL");
 		if(journalName==null) return "Function not performed -- no Journal specified.";
 		
@@ -190,7 +189,7 @@ public class JournalFunction extends StdWebMacro
 				if(parms.size()==1)
 				{
 					JournalsLibrary.JournalEntry entry = JournalInfo.getNextEntry(msgs, msgKey);
-					while((entry!=null) && (!CMLib.journals().canReadMessage(entry,srch,M,parms.contains("NOPRIV"))))
+					while((entry!=null) && (!CMLib.journals().canReadMessage(entry,srch,M,parms.containsKey("NOPRIV"))))
 						entry = JournalInfo.getNextEntry(msgs, entry.key);
 
 					if(entry==null)
@@ -385,7 +384,7 @@ public class JournalFunction extends StdWebMacro
 			{
 				cardinalNumber++;
 				entry = JournalInfo.getNextEntry(msgs, msgKey);
-				while((entry!=null) && (!CMLib.journals().canReadMessage(entry,srch,M,parms.contains("NOPRIV"))))
+				while((entry!=null) && (!CMLib.journals().canReadMessage(entry,srch,M,parms.containsKey("NOPRIV"))))
 					entry = JournalInfo.getNextEntry(msgs, entry.key);
 				if(entry==null)
 					keepProcessing=false;

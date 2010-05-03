@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.*;
 /* 
    Copyright 2000-2010 Bo Zimmerman
@@ -112,7 +113,7 @@ public interface WorldMap extends CMLibrary, Runnable
     /************************************************************************/
 	public void registerWorldObjectLoaded(Area area, Room room, CMObject o);
 	public void registerWorldObjectDestroyed(Area area, Room room, CMObject o);
-    public Enumeration<ActiveEnvironmental> scriptHosts(Area area);
+    public Enumeration<LocatedPair> scriptHosts(Area area);
     public Deity getDeity(String calledThis);
     public Enumeration<Deity> deities();
     public PostOffice getPostOffice(String chain, String areaNameOrBranch);
@@ -147,6 +148,16 @@ public interface WorldMap extends CMLibrary, Runnable
     /************************************************************************/
     /**							 HELPER CLASSES								*/
     /************************************************************************/
+    public static class LocatedPair
+    {
+    	private WeakReference<Room> roomW;
+    	private WeakReference<ActiveEnvironmental> objW;
+    	public Room room(){return roomW.get();}
+    	public ActiveEnvironmental obj(){return objW.get();}
+    	public LocatedPair(Room room, ActiveEnvironmental obj)
+    	{ this.roomW=new WeakReference(room); this.objW=new WeakReference(obj);}
+    }
+    
     public static class CrossExit
     {
         public int x;

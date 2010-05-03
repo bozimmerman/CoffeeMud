@@ -30,14 +30,13 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class JournalMessageNext extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 	
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		java.util.Map<String,String> parms=parseParms(parm);
 		String journalName=httpReq.getRequestParameter("JOURNAL");
 		if(journalName==null) 
 			return " @break@";
@@ -67,7 +66,7 @@ public class JournalMessageNext extends StdWebMacro
         cardinal++;
         JournalsLibrary.JournalEntry entry = null;
         List<JournalsLibrary.JournalEntry> msgs = JournalInfo.getMessages(httpReq, journalName);
-        while((entry==null)||(!CMLib.journals().canReadMessage(entry,srch,M,parms.contains("NOPRIV"))))
+        while((entry==null)||(!CMLib.journals().canReadMessage(entry,srch,M,parms.containsKey("NOPRIV"))))
         {
         	entry = JournalInfo.getNextEntry(msgs,last);
     		if(entry==null)

@@ -40,7 +40,7 @@ public class FactionData extends StdWebMacro
 
     public String runMacro(ExternalHTTPRequests httpReq, String parm)
     {
-        Hashtable parms=parseParms(parm);
+        java.util.Map<String,String> parms=parseParms(parm);
         String replaceCommand=httpReq.getRequestParameter("REPLACE");
         if((replaceCommand != null) 
         && (replaceCommand.length()>0)

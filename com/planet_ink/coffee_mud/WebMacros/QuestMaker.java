@@ -128,7 +128,7 @@ public class QuestMaker extends StdWebMacro
     
     public String runMacro(ExternalHTTPRequests httpReq, String parm)
     {
-        Hashtable parms=parseParms(parm);
+        java.util.Map<String,String> parms=parseParms(parm);
         if((parms==null)||(parms.size()==0)) return "";
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		if(M==null) return "[error -- no authenticated mob!]";

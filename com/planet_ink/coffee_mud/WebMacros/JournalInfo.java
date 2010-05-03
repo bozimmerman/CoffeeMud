@@ -162,7 +162,7 @@ public class JournalInfo extends StdWebMacro
 	
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		java.util.Map<String,String> parms=parseParms(parm);
 		String journalName=httpReq.getRequestParameter("JOURNAL");
 		if(journalName==null) 
 			return " @break@";
@@ -210,7 +210,7 @@ public class JournalInfo extends StdWebMacro
 			return " @break@";
 		if(cardinal!=null)
 			entry.cardinal=CMath.s_int(cardinal);
-        boolean priviledged=CMSecurity.isAllowedAnywhere(M,"JOURNALS")&&(!parms.contains("NOPRIV"));
+        boolean priviledged=CMSecurity.isAllowedAnywhere(M,"JOURNALS")&&(!parms.containsKey("NOPRIV"));
 		String to=entry.to;
 		if(to.equalsIgnoreCase("all")
         ||((M!=null)

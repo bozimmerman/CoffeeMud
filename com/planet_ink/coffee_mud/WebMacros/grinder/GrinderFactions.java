@@ -40,7 +40,7 @@ public class GrinderFactions {
     public String name()    {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
     
-    public static String modifyFaction(ExternalHTTPRequests httpReq, Hashtable parms, Faction F)
+    public static String modifyFaction(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, Faction F)
     {
         String replaceCommand=httpReq.getRequestParameter("REPLACE");
         if((replaceCommand != null) 

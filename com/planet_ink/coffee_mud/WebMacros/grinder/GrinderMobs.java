@@ -52,7 +52,7 @@ public class GrinderMobs
       "LOANINT","SVCRIT","AUCCHAIN","LIVELIST","TIMELIST",
       "TIMELISTPCT","LIVECUT","TIMECUT","MAXDAYS",
       "MINDAYS","ISAUCTION","DEITYID"};
-	public static String senses(Environmental E, ExternalHTTPRequests httpReq, Hashtable parms)
+	public static String senses(Environmental E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
 	{
 		E.baseEnvStats().setSensesMask(0);
 		for(int d=0;d<EnvStats.CAN_SEE_CODES.length;d++)
@@ -75,7 +75,7 @@ public class GrinderMobs
 		M.recoverMaxState();
 	}
 
-	public static String abilities(MOB E, ExternalHTTPRequests httpReq, Hashtable parms)
+	public static String abilities(MOB E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
 	{
         boolean player=E.playerStats()!=null;
 		while(E.numLearnedAbilities()>0)
@@ -114,7 +114,7 @@ public class GrinderMobs
 		return "";
 	}
 
-	public static String factions(MOB E, ExternalHTTPRequests httpReq, Hashtable parms)
+	public static String factions(MOB E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
 	{
 		for(Enumeration e=E.fetchFactions();e.hasMoreElements();)
 		{
@@ -147,7 +147,7 @@ public class GrinderMobs
 		return "";
 	}
 
-	public static String blessings(Deity E, ExternalHTTPRequests httpReq, Hashtable parms)
+	public static String blessings(Deity E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
 	{
 		while(E.numBlessings()>0)
 		{
@@ -175,7 +175,7 @@ public class GrinderMobs
 		return "";
 	}
 
-	public static String curses(Deity E, ExternalHTTPRequests httpReq, Hashtable parms)
+	public static String curses(Deity E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
 	{
 		while(E.numCurses()>0)
 		{
@@ -203,7 +203,7 @@ public class GrinderMobs
 		return "";
 	}
 
-	public static String expertiseList(MOB E, ExternalHTTPRequests httpReq, Hashtable parms)
+	public static String expertiseList(MOB E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
 	{
 		while(E.numExpertises()>0) E.delExpertise(E.fetchExpertise(0));
 		if(httpReq.isRequestParameter("EXPER1"))
@@ -282,7 +282,7 @@ public class GrinderMobs
 		return "No Item Data!";
 	}
 
-	public static String powers(Deity E, ExternalHTTPRequests httpReq, Hashtable parms)
+	public static String powers(Deity E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
 	{
 		while(E.numPowers()>0)
 		{
@@ -309,7 +309,7 @@ public class GrinderMobs
 		return "";
 	}
 
-	public static String editMob(ExternalHTTPRequests httpReq, Hashtable parms, MOB whom, Room R)
+	public static String editMob(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, MOB whom, Room R)
 	{
 		String mobCode=httpReq.getRequestParameter("MOB");
 		if(mobCode==null) return "@break@";

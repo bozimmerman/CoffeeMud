@@ -66,7 +66,7 @@ public class RaceData extends StdWebMacro
         return str.toString();
     }
 
-    public static StringBuffer estats(EnvStats E, char c, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+    public static StringBuffer estats(EnvStats E, char c, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
     {
         StringBuffer str=new StringBuffer("");
         DVector theclasses=new DVector(2);
@@ -124,7 +124,7 @@ public class RaceData extends StdWebMacro
         return str;
     }
 
-    public static StringBuffer cstats(CharStats E, char c, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+    public static StringBuffer cstats(CharStats E, char c, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
     {
         StringBuffer str=new StringBuffer("");
         DVector theclasses=new DVector(2);
@@ -182,7 +182,7 @@ public class RaceData extends StdWebMacro
         return str;
     }
 
-    public static StringBuffer cstate(CharState E, char c, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+    public static StringBuffer cstate(CharState E, char c, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
     {
         StringBuffer str=new StringBuffer("");
         DVector theclasses=new DVector(2);
@@ -241,7 +241,7 @@ public class RaceData extends StdWebMacro
         return str;
     }
 
-    public static StringBuffer itemList(Vector items, char c, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize, boolean one)
+    public static StringBuffer itemList(Vector items, char c, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize, boolean one)
     {
     	if(items==null) items=new Vector();
         StringBuffer str=new StringBuffer("");
@@ -353,7 +353,7 @@ public class RaceData extends StdWebMacro
         return str;
     }
 
-    public static StringBuffer rabilities(Race E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize, String font)
+    public static StringBuffer rabilities(Race E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize, String font)
     {
         StringBuffer str=new StringBuffer("");
         DVector theclasses=new DVector(4);
@@ -435,7 +435,7 @@ public class RaceData extends StdWebMacro
     }
 
 
-    public static StringBuffer cabilities(Race E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize, String font)
+    public static StringBuffer cabilities(Race E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize, String font)
     {
         StringBuffer str=new StringBuffer("");
         DVector theclasses=new DVector(2);
@@ -511,7 +511,7 @@ public class RaceData extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		java.util.Map<String,String> parms=parseParms(parm);
 
 		String replaceCommand=httpReq.getRequestParameter("REPLACE");
 		if((replaceCommand != null)

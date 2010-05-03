@@ -93,14 +93,13 @@ public class CheckAuthCode extends StdWebMacro
 	
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		java.util.Map<String,String> parms=parseParms(parm);
 		boolean finalCondition=false;
 		Hashtable auths=getAuths(httpReq);
 		if(auths==null) return "false";
 		boolean sysop=((String)auths.get("SYSOP")).equalsIgnoreCase("true");
-		for(Enumeration e=parms.keys();e.hasMoreElements();)
+		for(String key : parms.keySet())
 		{
-			String key=(String)e.nextElement();
 			String equals=(String)parms.get(key);
 			boolean not=false;
 			boolean thisCondition=true;

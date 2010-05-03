@@ -39,7 +39,7 @@ public class HolidayData extends StdWebMacro
 
     public String runMacro(ExternalHTTPRequests httpReq, String parm)
     {
-        Hashtable parms=parseParms(parm);
+        java.util.Map<String,String> parms=parseParms(parm);
         String last=httpReq.getRequestParameter("HOLIDAY");
         if(last==null) return " @break@";
         boolean exists = false;
@@ -340,7 +340,7 @@ public class HolidayData extends StdWebMacro
         return "";
     }
 
-    public static StringBuffer behaviors(DVector behaviors, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+    public static StringBuffer behaviors(DVector behaviors, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
     {
         StringBuffer str=new StringBuffer("");
         if(parms.containsKey("BEHAVIORS"))
@@ -420,7 +420,7 @@ public class HolidayData extends StdWebMacro
         return str;
     }
 
-    public static StringBuffer properties(DVector properties, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+    public static StringBuffer properties(DVector properties, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
     {
         StringBuffer str=new StringBuffer("");
         if(parms.containsKey("AFFECTS"))
@@ -490,7 +490,7 @@ public class HolidayData extends StdWebMacro
         return str;
     }
 
-    public static StringBuffer priceFactors(DVector stats, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+    public static StringBuffer priceFactors(DVector stats, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
     {
         StringBuffer str=new StringBuffer("");
         if(parms.containsKey("PRICEFACTORS"))
@@ -573,7 +573,7 @@ public class HolidayData extends StdWebMacro
         return str;
     }
 
-    public static StringBuffer mudChat(DVector behaviors, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+    public static StringBuffer mudChat(DVector behaviors, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
     {
         StringBuffer str=new StringBuffer("");
         if(parms.containsKey("MUDCHAT"))

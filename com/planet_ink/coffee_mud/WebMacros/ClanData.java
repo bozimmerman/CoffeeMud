@@ -42,7 +42,7 @@ public class ClanData extends StdWebMacro
 	// ACCEPTANCE, TYPE, POINTS, CLANIDRELATIONS, MEMBERSTART, MEMBERNEXT,
 	// MEMBERNAME, MEMBERPOS
 
-    public static StringBuffer members(Clan C, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+    public static StringBuffer members(Clan C, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
     {
         StringBuffer str=new StringBuffer("");
         if(parms.containsKey("MEMBERSLIST"))
@@ -129,7 +129,7 @@ public class ClanData extends StdWebMacro
         return str;
     }
 
-    public static StringBuffer relations(Clan C, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+    public static StringBuffer relations(Clan C, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
     {
         StringBuffer str=new StringBuffer("");
         if(parms.containsKey("RELATIONS"))
@@ -186,7 +186,7 @@ public class ClanData extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("CLAN");
 		if(last==null) return " @break@";
 		if(last.length()>0)
@@ -341,7 +341,7 @@ public class ClanData extends StdWebMacro
 						httpReq.removeRequestParameter("CLANMEMBER");
 					return "";
 				}
-                if(parms.contains("NUMMEMBERS"))
+                if(parms.containsKey("NUMMEMBERS"))
                     str.append(""+C.getMemberList().size()+", ");
 				if(parms.containsKey("MEMBERNEXT"))
 				{

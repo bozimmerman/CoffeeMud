@@ -13,6 +13,8 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+import java.net.URLEncoder;
 import java.util.*;
 
 
@@ -40,8 +42,16 @@ public class AreaScriptKey extends StdWebMacro
 	{
 		String last=httpReq.getRequestParameter("AREASCRIPT");
 		if(last==null) return " @break@";
-		if(last.length()>0)
-            return clearWebMacros(last);
+		java.util.Map<String,String> parms=parseParms(parm);
+		try
+		{
+			if(last.length()>0)
+				if(parms.containsKey("ENCODED"))
+		            return clearWebMacros(last);
+				else
+					return URLEncoder.encode(clearWebMacros(last),"UTF-8");
+		}
+		catch(Exception e){}
 		return "";
 	}
 }

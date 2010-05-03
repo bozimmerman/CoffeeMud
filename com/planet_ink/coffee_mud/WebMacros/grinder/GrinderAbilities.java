@@ -38,7 +38,7 @@ import java.util.*;
 public class GrinderAbilities {
     public String name()    {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-    public static String modifyAbility(ExternalHTTPRequests httpReq, Hashtable parms, Ability oldA, Ability A)
+    public static String modifyAbility(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, Ability oldA, Ability A)
     {
         String replaceCommand=httpReq.getRequestParameter("REPLACE");
         if((replaceCommand != null) 

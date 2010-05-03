@@ -70,7 +70,7 @@ public class ItemData extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		java.util.Map<String,String> parms=parseParms(parm);
         String player=httpReq.getRequestParameter("PLAYER");
 		String last=httpReq.getRequestParameter("ROOM");
 		if((last==null)&&(player==null)) return " @break@";

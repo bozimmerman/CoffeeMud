@@ -45,7 +45,7 @@ public class TimsItemTable extends StdWebMacro
 		int min=CMath.s_int((httpReq.getRequestParameter("MIN")));
 		if(min>0)
 			endTime=System.currentTimeMillis()+(1000*60*((long)min));
-		Hashtable parms=parseParms(parm);
+		java.util.Map<String,String> parms=parseParms(parm);
 		StringBuffer str=new StringBuffer("<TABLE WIDTH=100% BORDER=1>");
 		if(parms.containsKey("WORLD"))
 		{

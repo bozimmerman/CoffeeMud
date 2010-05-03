@@ -5,15 +5,22 @@
 <html>
 <head>
  	<link rel="grinder icon" href="/images/grinder.ico" >
-	<title>Clans List</title>
+	<title>Scripts List</title>
 	<script language=JavaScript>
 	<!--
-		function Script(action)
+		function AreaHosts(action)
 		{
 			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
 			w=window.open("clan.cmvp?AUTH=@Authenticate?AUTH@&CLAN="+action,
 				"Clan",strFeatures, false);
 		}
+		
+		function AreaScript(path, file)
+		{
+			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=750,alwaysRaised=yes,dependent=yes";
+			w=window.open("browsefile.cmvp?AUTH=@Authenticate?AUTH@&PATH="+path+"&FILE="+file,"Script",strFeatures, false);
+		}
+		
 		function Clicked(action)
 		{
 			document.RESOURCES.action=action;
@@ -29,20 +36,28 @@
 </head>
 <body BGCOLOR=BLACK>
 <CENTER>
-<FORM NAME=RESOURCES TARGET=_top METHOD=POST ACTION="editareascriptslist.cmvp">
+<FORM NAME=RESOURCES TARGET=MAP METHOD=POST ACTION="editareascriptslist.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 	<TABLE WIDTH=100% BORDER=1>
 	<TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ @AreaName@ Script Manager</H2></FONT></TD></TR>
 	<TR>
-	<TD WIDTH=90%><B><FONT COLOR=YELLOW>Path</FONT></b></TD>
 	<TD WIDTH=10%><B><FONT COLOR=YELLOW>#</FONT></B></TD>
+	<TD WIDTH=90%><B><FONT COLOR=YELLOW>Path</FONT></b></TD>
 	</TR>
 	@AreaScriptNext?RESET@
 	@loop@
 	@AreaScriptNext@
 	<TR>
-	<TD><a href="javascript:AreaScript('@AreaScriptKey@')"><FONT COLOR=WHITE><B>@AreaScriptKey@</B></FONT></a></TD>
-	<TD><FONT COLOR=WHITE>@AreaScriptData?NUMHOSTS@</FONT></TD>
+	<TD>
+		<a href="javascript:AreaHosts('@AreaScriptKey@')"><FONT COLOR=WHITE>@AreaScriptData?NUMHOSTS@</FONT></a>
+	</TD>
+	<TD>
+		@if?AreaScriptData?ISFILE@
+			<a href="javascript:AreaScript('@AreaScriptData?ENCODEDPATH@','@AreaScriptData?ENCODEDFILENAME@')"><FONT COLOR=WHITE><B>@AreaScriptKey@</B></FONT></a>
+		@else@
+			<a href="javascript:AreaScriptCustom('@AreaScriptKey@')"><FONT COLOR=WHITE><B>@AreaScriptKey@</B></FONT></a>
+		@endif@
+	</TD>
 	</TR>
 	@back@
 	</TABLE>

@@ -40,7 +40,7 @@ public class ChannelBackLogNext extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("CHANNELBACKLOG");
 		if(parms.containsKey("RESET"))
 		{

@@ -56,7 +56,7 @@ public class GrinderHolidays {
     }
 
 
-    public static String createModifyHoliday(ExternalHTTPRequests httpReq, Hashtable parms, String holidayName)
+    public static String createModifyHoliday(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String holidayName)
     {
         int index=CMLib.quests().getHolidayIndex(holidayName);
         if(index<=0)

@@ -32,18 +32,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class CheckReqParm extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		java.util.Map<String,String> parms=parseParms(parm);
 		boolean finalCondition=false;
-		for(Enumeration e=parms.keys();e.hasMoreElements();)
+		for(String key : parms.keySet())
 		{
-			String key=(String)e.nextElement();
 			String equals=(String)parms.get(key);
 			boolean not=false;
 			boolean thisCondition=true;

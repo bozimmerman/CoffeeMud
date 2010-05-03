@@ -51,7 +51,7 @@ public class GrinderAreas
 		return AreaList.toString();
 	}
 
-	public static String doBehavs(ActiveEnvironmental E, ExternalHTTPRequests httpReq, Hashtable parms)
+	public static String doBehavs(ActiveEnvironmental E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
 	{
 		while(E.numBehaviors()>0)
 			E.delBehavior(E.fetchBehavior(0));
@@ -79,7 +79,7 @@ public class GrinderAreas
 		return "";
 	}
 	
-	public static String doAffectsNBehavs(Environmental E, ExternalHTTPRequests httpReq, Hashtable parms)
+	public static String doAffectsNBehavs(Environmental E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
 	{
 		while(E.numEffects()>0)
 			E.delEffect(E.fetchEffect(0));
@@ -106,7 +106,7 @@ public class GrinderAreas
 		return "";
 	}
 
-	public static String modifyArea(ExternalHTTPRequests httpReq, Hashtable parms)
+	public static String modifyArea(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
 	{
         Vector areasNeedingUpdates=new Vector();
 		String last=httpReq.getRequestParameter("AREA");

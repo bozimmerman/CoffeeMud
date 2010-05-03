@@ -38,7 +38,7 @@ public class AreaData extends StdWebMacro
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
 
-	public static StringBuffer behaves(ActiveEnvironmental E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+	public static StringBuffer behaves(ActiveEnvironmental E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("BEHAVIORS"))
@@ -120,7 +120,7 @@ public class AreaData extends StdWebMacro
 		return str;
 	}
 	
-	public static StringBuffer affects(Environmental E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+	public static StringBuffer affects(Environmental E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("AFFECTS"))
@@ -197,7 +197,7 @@ public class AreaData extends StdWebMacro
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
 
-		Hashtable parms=parseParms(parm);
+		java.util.Map<String,String> parms=parseParms(parm);
 		if(parms.containsKey("AREATYPES"))
 		{
 			StringBuffer str=new StringBuffer("");

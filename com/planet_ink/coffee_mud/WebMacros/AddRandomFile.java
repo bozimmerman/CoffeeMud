@@ -32,26 +32,25 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class AddRandomFile extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		java.util.Map<String,String> parms=parseParms(parm);
 		if((parms==null)||(parms.size()==0)) return "";
 		StringBuffer buf=new StringBuffer("");
 		int d=CMLib.dice().roll(1,parms.size(),0);
 		String file=null;
 		int i=0;
 		boolean LINKONLY=false;
-		for(Enumeration e=parms.elements();e.hasMoreElements();)
-			if(((String)e.nextElement()).equalsIgnoreCase("LINKONLY"))
+		for(String val : parms.values())
+			if(val.equalsIgnoreCase("LINKONLY"))
 				LINKONLY=true;
-		for(Enumeration e=parms.elements();e.hasMoreElements();)
+		for(String val : parms.values())
 		{
-			file=(String)e.nextElement();
+			file=val;
 			if(file.equalsIgnoreCase("LINKONLY")) continue;
 			if((++i)==d) break;
 		}

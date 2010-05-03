@@ -40,7 +40,7 @@ public class AccountData extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("ACCOUNT");
 		if(last==null) return "";
 		if(last.length()>0)

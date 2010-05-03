@@ -64,7 +64,7 @@ public class CharClassData extends StdWebMacro
     }
 
 
-    public static StringBuffer cabilities(CharClass E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize, String font)
+    public static StringBuffer cabilities(CharClass E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize, String font)
     {
         StringBuffer str=new StringBuffer("");
         DVector theclasses=new DVector(9);
@@ -241,7 +241,7 @@ public class CharClassData extends StdWebMacro
 	// prime, quals, startingeq
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		java.util.Map<String,String> parms=parseParms(parm);
 
         String replaceCommand=httpReq.getRequestParameter("REPLACE");
         if((replaceCommand != null)

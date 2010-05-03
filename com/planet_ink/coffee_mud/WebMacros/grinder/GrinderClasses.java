@@ -75,7 +75,7 @@ public class GrinderClasses
         return theclasses;
     }
 
-    public static String modifyCharClass(ExternalHTTPRequests httpReq, Hashtable parms, CharClass oldC, CharClass C)
+    public static String modifyCharClass(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, CharClass oldC, CharClass C)
     {
         String replaceCommand=httpReq.getRequestParameter("REPLACE");
         if((replaceCommand != null) 

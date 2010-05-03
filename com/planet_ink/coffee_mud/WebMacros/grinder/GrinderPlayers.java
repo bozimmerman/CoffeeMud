@@ -116,7 +116,7 @@ public class GrinderPlayers extends GrinderMobs
 		return -1;
 	}
 
-	public static String titleList(MOB E, ExternalHTTPRequests httpReq, Hashtable parms)
+	public static String titleList(MOB E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
 	{
 		if(E.playerStats()==null) return "";
 		E.playerStats().getTitles().clear();
@@ -272,7 +272,7 @@ public class GrinderPlayers extends GrinderMobs
 		return "";
 	}
 
-	public static String classList(MOB M, ExternalHTTPRequests httpReq, Hashtable parms)
+	public static String classList(MOB M, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
 	{
 		if(httpReq.isRequestParameter("CHARCLASS1"))
 		{
@@ -303,7 +303,7 @@ public class GrinderPlayers extends GrinderMobs
 		return "";
 	}
 	
-	public static String editPlayer(MOB whom, ExternalHTTPRequests httpReq, Hashtable parms, MOB M)
+	public static String editPlayer(MOB whom, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, MOB M)
 	{
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);

@@ -50,8 +50,8 @@ public class CMMap extends StdLibrary implements WorldMap
 	public SVector<SpaceObject>	space			 = new SVector<SpaceObject>();
     public SHashtable<Integer,SVector<WeakReference<MsgListener>>> 
     							globalHandlers	 = new SHashtable<Integer,SVector<WeakReference<MsgListener>>>();
-	public STreeMap<String,SLinkedList<WeakReference<ActiveEnvironmental>>>
-								scriptHostMap	 = new STreeMap<String,SLinkedList<WeakReference<ActiveEnvironmental>>>();
+	public STreeMap<String,SLinkedList<LocatedPair>>
+								scriptHostMap	 = new STreeMap<String,SLinkedList<LocatedPair>>();
 	
     private ThreadEngine.SupportThread  thread	 = null;
     
@@ -843,13 +843,13 @@ public class CMMap extends StdLibrary implements WorldMap
 
 	public int numDeities() { return deitiesList.size(); }
 	
-	public void addDeity(Deity newOne)
+	protected void addDeity(Deity newOne)
 	{
 		if (!deitiesList.contains(newOne))
 			deitiesList.add(newOne);
 	}
 	
-	public void delDeity(Deity oneToDel)
+	protected void delDeity(Deity oneToDel)
 	{
 		deitiesList.remove(oneToDel);
 	}
@@ -864,12 +864,12 @@ public class CMMap extends StdLibrary implements WorldMap
 	public Enumeration<Deity> deities() { return deitiesList.elements(); }
 
     public int numPostOffices() { return postOfficeList.size(); }
-    public void addPostOffice(PostOffice newOne)
+    protected void addPostOffice(PostOffice newOne)
     {
         if(!postOfficeList.contains(newOne))
 			postOfficeList.add(newOne);
     }
-    public void delPostOffice(PostOffice oneToDel)
+    protected void delPostOffice(PostOffice oneToDel)
     {
 		postOfficeList.remove(oneToDel);
     }
@@ -896,14 +896,14 @@ public class CMMap extends StdLibrary implements WorldMap
     
     public int numAuctionHouses() { return auctionHouseList.size(); }
     
-    public void addAuctionHouse(Auctioneer newOne)
+    protected void addAuctionHouse(Auctioneer newOne)
     {
         if (!auctionHouseList.contains(newOne))
         {
     		auctionHouseList.add(newOne);
         }
     }
-    public void delAuctionHouse(Auctioneer oneToDel)
+    protected void delAuctionHouse(Auctioneer oneToDel)
     {
 		auctionHouseList.remove(oneToDel);
     }
@@ -926,12 +926,12 @@ public class CMMap extends StdLibrary implements WorldMap
     }
 
     public int numBanks() { return bankList.size(); }
-    public void addBank(Banker newOne)
+    protected void addBank(Banker newOne)
     {
         if (!bankList.contains(newOne))
     		bankList.add(newOne);
     }
-    public void delBank(Banker oneToDel)
+    protected void delBank(Banker oneToDel)
     {
     	bankList.remove(oneToDel);
     }
@@ -1581,7 +1581,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		return returnResponse(rooms,room);
 	}
 
-    private DVector getAllPlayersHere(Area area, boolean includeLocalFollowers)
+    protected DVector getAllPlayersHere(Area area, boolean includeLocalFollowers)
     {
         DVector playersHere=new DVector(2);
         Session S=null;
@@ -1611,6 +1611,7 @@ public class CMMap extends StdLibrary implements WorldMap
         return playersHere;
 
     }
+    
     public void resetArea(Area area)
     {
         int oldFlag=area.getAreaState();
@@ -1687,28 +1688,29 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(o instanceof ActiveEnvironmental)
 		{
 			ActiveEnvironmental AE=(ActiveEnvironmental)o;
+			if(room == null) room = getStartRoom(AE);
 			if((area == null) && (room!=null)) area = room.getArea();
 			if(area == null) area = getStartArea(AE);
-			addScriptHost(area, AE);
+			addScriptHost(area, room, AE);
 			if(o instanceof MOB)
 			{
 				MOB M=(MOB)o;
 				for(int i=0;i<M.inventorySize();i++)
-					addScriptHost(area, M.fetchInventory(i));
+					addScriptHost(area, room, M.fetchInventory(i));
 			}
 		}
 	}
 	
-	private void cleanScriptHosts(SLinkedList<WeakReference<ActiveEnvironmental>> hosts, ActiveEnvironmental oneToDel, boolean fullCleaning)
+	protected void cleanScriptHosts(SLinkedList<LocatedPair> hosts, ActiveEnvironmental oneToDel, boolean fullCleaning)
 	{
-		for(WeakReference<ActiveEnvironmental> W : hosts)
-			if((W.get()==oneToDel)
-			||(W.get().amDestroyed())
-			||((fullCleaning)&&(!isAQualifyingScriptHost(W.get()))))
+		for(LocatedPair W : hosts)
+			if((W.obj()==oneToDel)
+			||(W.obj().amDestroyed())
+			||((fullCleaning)&&(!isAQualifyingScriptHost(W.obj()))))
 				hosts.remove(W);
 	}
 
-	private boolean isAQualifyingScriptHost(ActiveEnvironmental host)
+	protected boolean isAQualifyingScriptHost(ActiveEnvironmental host)
 	{
 		if(host==null) return false;
     	for(Enumeration<Behavior> e = host.behaviors();e.hasMoreElements();)
@@ -1726,22 +1728,22 @@ public class CMMap extends StdLibrary implements WorldMap
 		return false;
 	}
 	
-	private boolean isAScriptHost(Area area, ActiveEnvironmental host)
+	protected boolean isAScriptHost(Area area, ActiveEnvironmental host)
 	{
 		if(area == null) return false;
 		return isAScriptHost(scriptHostMap.get(area.Name().toUpperCase()), host);
 	}
 	
-	private boolean isAScriptHost(SLinkedList<WeakReference<ActiveEnvironmental>> hosts, ActiveEnvironmental host)
+	protected boolean isAScriptHost(SLinkedList<LocatedPair> hosts, ActiveEnvironmental host)
 	{
 		if((hosts==null)||(host==null)||(hosts.size()==0)) return false;
-		for(WeakReference<ActiveEnvironmental> W : hosts)
-			if(W.get()==host)
+		for(LocatedPair W : hosts)
+			if(W.obj()==host)
 				return true;
 		return false;
 	}
 	
-    public void addScriptHost(Area area, ActiveEnvironmental host)
+	protected void addScriptHost(Area area, Room room, ActiveEnvironmental host)
     {
     	if((area==null) || (host == null))
     		return;
@@ -1749,10 +1751,10 @@ public class CMMap extends StdLibrary implements WorldMap
     		return;
     	synchronized(("SCRIPT_HOST_FOR: "+area.Name().toUpperCase()).intern())
     	{
-    		SLinkedList<WeakReference<ActiveEnvironmental>> hosts = scriptHostMap.get(area.Name().toUpperCase());
+    		SLinkedList<LocatedPair> hosts = scriptHostMap.get(area.Name().toUpperCase());
 	    	if(hosts == null)
 	    	{
-	    		hosts=new SLinkedList<WeakReference<ActiveEnvironmental>>();
+	    		hosts=new SLinkedList<LocatedPair>();
 	    		scriptHostMap.put(area.Name().toUpperCase(), hosts);
 	    	}
 	    	else
@@ -1761,10 +1763,11 @@ public class CMMap extends StdLibrary implements WorldMap
 		    	if(isAScriptHost(hosts,host))
 		    		return;
 	    	}
-	    	hosts.add(new WeakReference<ActiveEnvironmental>(host));
+	    	hosts.add(new LocatedPair(room, host));
     	}
     }
-    public void delScriptHost(Area area, ActiveEnvironmental oneToDel)
+	
+	protected void delScriptHost(Area area, ActiveEnvironmental oneToDel)
     {
     	if(oneToDel == null)
     		return;
@@ -1779,34 +1782,35 @@ public class CMMap extends StdLibrary implements WorldMap
     		return;
     	synchronized(("SCRIPT_HOST_FOR: "+area.Name().toUpperCase()).intern())
     	{
-    		SLinkedList<WeakReference<ActiveEnvironmental>> hosts = scriptHostMap.get(area.Name().toUpperCase());
+    		SLinkedList<LocatedPair> hosts = scriptHostMap.get(area.Name().toUpperCase());
 	    	if(hosts==null) return;
 	    	cleanScriptHosts(hosts, oneToDel, false);
     	}
     }
-    public Enumeration<ActiveEnvironmental> scriptHosts(Area area)
+	
+    public Enumeration<LocatedPair> scriptHosts(Area area)
     {
-    	final Vector<Iterator<WeakReference<ActiveEnvironmental>>> V = new Vector<Iterator<WeakReference<ActiveEnvironmental>>>();
+    	final Vector<Iterator<LocatedPair>> V = new Vector<Iterator<LocatedPair>>();
     	if(area == null)
     		for(String areaKey : scriptHostMap.keySet())
     	    	V.add(scriptHostMap.get(areaKey.toUpperCase()).iterator());
     	else
     	{
-	    	SLinkedList<WeakReference<ActiveEnvironmental>> hosts = scriptHostMap.get(area.Name().toUpperCase());
-	    	if(hosts==null) return (Enumeration<ActiveEnvironmental>)EmptyEnumeration.INSTANCE;
+	    	SLinkedList<LocatedPair> hosts = scriptHostMap.get(area.Name().toUpperCase());
+	    	if(hosts==null) return (Enumeration<LocatedPair>)EmptyEnumeration.INSTANCE;
 	    	V.add(hosts.iterator());
     	}
-    	if(V.size()==0) return (Enumeration<ActiveEnvironmental>)EmptyEnumeration.INSTANCE;
-    	final MultiIterator<WeakReference<ActiveEnvironmental>> me = new MultiIterator<WeakReference<ActiveEnvironmental>>(V.toArray(new Iterator[0]));
-    	return new Enumeration<ActiveEnvironmental>()
+    	if(V.size()==0) return (Enumeration<LocatedPair>)EmptyEnumeration.INSTANCE;
+    	final MultiIterator<LocatedPair> me = new MultiIterator<LocatedPair>(V.toArray(new Iterator[0]));
+    	return new Enumeration<LocatedPair>()
     	{
 			public boolean hasMoreElements() { return me.hasNext();}
-			public ActiveEnvironmental nextElement() {
-				WeakReference<ActiveEnvironmental> W = me.next();
-				ActiveEnvironmental E = W.get();
+			public LocatedPair nextElement() {
+				LocatedPair W = me.next();
+				ActiveEnvironmental E = W.obj();
 				if(((E==null) || (E.amDestroyed())) && hasMoreElements())
 					return nextElement();
-				return E;
+				return W;
 			}
     	};
     }

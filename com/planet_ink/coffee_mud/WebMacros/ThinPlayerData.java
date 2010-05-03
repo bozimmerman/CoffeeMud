@@ -42,7 +42,7 @@ public class ThinPlayerData extends StdWebMacro {
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
 
-		Hashtable parms=parseParms(parm);
+		java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("PLAYER");
 		if(last==null) return " @break@";
 		StringBuffer str=new StringBuffer("");
@@ -62,9 +62,8 @@ public class ThinPlayerData extends StdWebMacro {
 				}
 			}
 			if(player == null) return " @break@";
-			for(Enumeration e=parms.keys();e.hasMoreElements();)
+			for(String key : parms.keySet())
 			{
-				String key=(String)e.nextElement();
 				int x=CMLib.players().getCharThinSortCode(key.toUpperCase().trim(),false);
 				if(x>=0)
 				{

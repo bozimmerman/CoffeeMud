@@ -129,41 +129,38 @@ public class AreaScriptNext extends StdWebMacro
 			if(A==null) A=CMLib.map().findArea(area);
 			if(A==null) return list;
 			Room R=null;
+			WorldMap.LocatedPair LP=null;
 			ActiveEnvironmental AE=null;
 			ArrayList<String> prefix = new ArrayList<String>();
-			for(Enumeration<ActiveEnvironmental> ae=CMLib.map().scriptHosts(A);ae.hasMoreElements();)
+			for(Enumeration<WorldMap.LocatedPair> ae=CMLib.map().scriptHosts(A);ae.hasMoreElements();)
 			{
-				AE=ae.nextElement(); if(AE==null) continue;
-				R=CMLib.map().getStartRoom(AE);
-				if(R==null) R=CMLib.map().roomLocation(AE);
+				LP=ae.nextElement(); if(LP==null) continue;
+				AE=LP.obj(); if(AE==null) continue;
+				R=LP.room(); if(R==null) R=CMLib.map().getStartRoom(AE);
 				
 				prefix = new ArrayList<String>();
 				prefix.add(A.name());
 				
-				if((AE instanceof Area)||(AE instanceof Exit)||(AE instanceof Room))
+				if((AE instanceof Area)||(AE instanceof Room))
 				{
-					addScripts(list,prefix,AE);
-					addShopScripts(list,prefix,AE);
+					// don't add room to prefix
 				}
 				else
-				if(AE instanceof MOB)
 				{
 					if(R!=null)
 						prefix.add(CMLib.map().getExtendedRoomID(R));
-					addScripts(list,prefix,AE);
-					addShopScripts(list,prefix,AE);
+					if(AE instanceof Item)
+					{
+						if(R!=null)
+							prefix.add(CMLib.map().getExtendedRoomID(R));
+						ItemPossessor IP=((Item)AE).owner();
+						if(IP instanceof MOB)
+							prefix.add(IP.Name());
+					}
 				}
-				else
-				if(AE instanceof Item)
-				{
-					if(R!=null)
-						prefix.add(CMLib.map().getExtendedRoomID(R));
-					ItemPossessor IP=((Item)AE).owner();
-					if(IP instanceof MOB)
-						prefix.add(IP.Name());
-					addScripts(list,prefix,AE);
-					addShopScripts(list,prefix,AE);
-				}
+				
+				addScripts(list,prefix,AE);
+				addShopScripts(list,prefix,AE);
 			}
 			httpReq.getRequestObjects().put("AREA_"+area+" SCRIPTSLIST",list);
 		}
@@ -172,7 +169,7 @@ public class AreaScriptNext extends StdWebMacro
 	
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		java.util.Map<String,String> parms=parseParms(parm);
 		String area=httpReq.getRequestParameter("AREA");
 		if((area==null)||(area.length()==0)) return "@break@";
 		String last=httpReq.getRequestParameter("AREASCRIPT");

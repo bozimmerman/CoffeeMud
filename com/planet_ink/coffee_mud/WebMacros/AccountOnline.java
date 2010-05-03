@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class AccountOnline extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
@@ -46,7 +45,7 @@ public class AccountOnline extends StdWebMacro
 
 		String last=httpReq.getRequestParameter("ACCOUNT");
 		if(last==null) return " @break@";
-		Hashtable parms=parseParms(parm);
+		java.util.Map<String,String> parms=parseParms(parm);
 		if(last.length()>0)
 		{
 			PlayerAccount A = CMLib.players().getAccount(last);

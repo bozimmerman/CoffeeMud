@@ -43,7 +43,7 @@ public class MUDGrinder extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		java.util.Map<String,String> parms=parseParms(parm);
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
 
@@ -413,7 +413,7 @@ public class MUDGrinder extends StdWebMacro
 			httpReq.addRequestParameters("ERRMSG",errMsg);
 		}
         else
-        if(parms.contains("DELHOLIDAY"))
+        if(parms.containsKey("DELHOLIDAY"))
         {
             MOB mob = Authenticate.getAuthenticatedMob(httpReq);
             if(mob==null) return "@break@";
@@ -426,7 +426,7 @@ public class MUDGrinder extends StdWebMacro
             return (err.length()>0)?err:"Holiday '"+last+"' deleted.";
         }
         else
-        if(parms.contains("EDITHOLIDAY"))
+        if(parms.containsKey("EDITHOLIDAY"))
         {
             MOB mob = Authenticate.getAuthenticatedMob(httpReq);
             if(mob==null) return "@break@";
@@ -441,7 +441,7 @@ public class MUDGrinder extends StdWebMacro
             return (err.length()>0)?err:"";
         }
         else
-        if(parms.contains("DELRACE"))
+        if(parms.containsKey("DELRACE"))
         {
             MOB mob = Authenticate.getAuthenticatedMob(httpReq);
             if(mob==null) return "@break@";
@@ -462,7 +462,7 @@ public class MUDGrinder extends StdWebMacro
             return "Race "+R.ID()+" deleted.";
         }
 		else
-		if(parms.contains("EDITRACE"))
+		if(parms.containsKey("EDITRACE"))
 		{
             MOB mob = Authenticate.getAuthenticatedMob(httpReq);
             if(mob==null) return "@break@";
@@ -501,7 +501,7 @@ public class MUDGrinder extends StdWebMacro
             return "Race "+R.ID()+" created.";
 		}
         else
-        if(parms.contains("DELCLASS"))
+        if(parms.containsKey("DELCLASS"))
         {
             MOB mob = Authenticate.getAuthenticatedMob(httpReq);
             if(mob==null) return "@break@";
@@ -523,7 +523,7 @@ public class MUDGrinder extends StdWebMacro
             return "CharClass "+C.ID()+" deleted.";
         }
         else
-        if(parms.contains("EDITCLASS"))
+        if(parms.containsKey("EDITCLASS"))
         {
             MOB mob = Authenticate.getAuthenticatedMob(httpReq);
             if(mob==null) return "@break@";
@@ -562,7 +562,7 @@ public class MUDGrinder extends StdWebMacro
             return "Char Class "+C.ID()+" created.";
         }
         else
-        if(parms.contains("DELFACTION"))
+        if(parms.containsKey("DELFACTION"))
         {
             MOB mob = Authenticate.getAuthenticatedMob(httpReq);
             if(mob==null) return "@break@";
@@ -579,7 +579,7 @@ public class MUDGrinder extends StdWebMacro
             return "Faction "+F.ID()+" deleted.";
         }
         else
-        if(parms.contains("EDITFACTION"))
+        if(parms.containsKey("EDITFACTION"))
         {
             MOB mob = Authenticate.getAuthenticatedMob(httpReq);
             if(mob==null) return "@break@";
@@ -610,7 +610,7 @@ public class MUDGrinder extends StdWebMacro
             return errMsg;
         }
         else
-        if(parms.contains("DELABILITY"))
+        if(parms.containsKey("DELABILITY"))
         {
             MOB mob = Authenticate.getAuthenticatedMob(httpReq);
             if(mob==null) return "@break@";
@@ -629,7 +629,7 @@ public class MUDGrinder extends StdWebMacro
             return "Ability "+A.ID()+" deleted.";
         }
         else
-        if(parms.contains("EDITABILITY"))
+        if(parms.containsKey("EDITABILITY"))
         {
             MOB mob = Authenticate.getAuthenticatedMob(httpReq);
             if(mob==null) return "@break@";

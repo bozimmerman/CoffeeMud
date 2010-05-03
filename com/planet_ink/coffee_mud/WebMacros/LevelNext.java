@@ -32,14 +32,13 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class LevelNext extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("LEVEL");
 		if(parms.containsKey("RESET"))
 		{	
@@ -47,12 +46,10 @@ public class LevelNext extends StdWebMacro
 			return "";
 		}
         int lastLevel=CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL);
-        String s=null;
-        for(Enumeration e=parms.keys();e.hasMoreElements();)
-        {
-            s=(String)e.nextElement();
-            if(CMath.isInteger(s))
-                lastLevel=CMath.s_int(s);
+		for(String key : parms.keySet())
+		{
+            if(CMath.isInteger(key))
+                lastLevel=CMath.s_int(key);
         }
 		if((last==null)||(last.length()>0))
 		{

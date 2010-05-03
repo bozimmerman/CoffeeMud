@@ -48,7 +48,7 @@ public class ExitData extends StdWebMacro
 	public static String dispositions(Environmental E,
 									  boolean firstTime,
 									  ExternalHTTPRequests httpReq,
-									  Hashtable parms)
+									  java.util.Map<String,String> parms)
 	{
 		StringBuffer str=new StringBuffer("");
 		for(int d=0;d<EnvStats.IS_CODES.length;d++)
@@ -67,7 +67,7 @@ public class ExitData extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		java.util.Map<String,String> parms=parseParms(parm);
 
 		String last=httpReq.getRequestParameter("ROOM");
 		if(last==null) return " @break@";

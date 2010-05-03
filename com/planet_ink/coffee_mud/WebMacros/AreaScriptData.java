@@ -13,6 +13,8 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+import java.net.URLEncoder;
 import java.util.*;
 
 
@@ -32,12 +34,11 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class AreaScriptData extends AreaScriptNext 
 {
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		java.util.Map<String,String> parms=parseParms(parm);
 		
 		String area=httpReq.getRequestParameter("AREA");
 		if((area==null)||(area.length()==0)) return "@break@";
@@ -94,7 +95,39 @@ public class AreaScriptData extends AreaScriptNext
 			str.append(subList.size()+", ");
 		
 		if(parms.containsKey("FILE") && (entry != null))
-			str.append(entry.fileName+", ");
+			str.append(Resources.makeFileResourceName(entry.fileName)+", ");
+		
+		if(parms.containsKey("PATH") && (entry != null))
+		{
+			String path=Resources.makeFileResourceName(entry.fileName);
+			int x=path.lastIndexOf('/');
+			str.append(((x<0)?"":path.substring(0,x))+", ");
+		}
+		
+		if(parms.containsKey("FILENAME") && (entry != null))
+		{
+			String path=Resources.makeFileResourceName(entry.fileName);
+			int x=path.lastIndexOf('/');
+			str.append(((x<0)?path:path.substring(x+1))+", ");
+		}
+		
+		if(parms.containsKey("ENCODEDPATH") && (entry != null))
+		{
+			String path=Resources.makeFileResourceName(entry.fileName);
+			int x=path.lastIndexOf('/');
+			try{
+				str.append(URLEncoder.encode(((x<0)?"":path.substring(0,x)),"UTF-8")+", ");
+			}catch(Exception e){}
+		}
+		
+		if(parms.containsKey("ENCODEDFILENAME") && (entry != null))
+		{
+			String path=Resources.makeFileResourceName(entry.fileName);
+			int x=path.lastIndexOf('/');
+			try{
+				str.append(URLEncoder.encode(((x<0)?path:path.substring(x+1)),"UTF-8")+", ");
+			}catch(Exception e){}
+		}
 		
 		if(parms.containsKey("ROOM") && (entry != null) && (entry.path.size()>1))
 			str.append(entry.path.get(1)+", ");

@@ -42,7 +42,7 @@ public class AbilityData extends StdWebMacro
 	// qualifyQ, auto
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-        Hashtable parms=parseParms(parm);
+        java.util.Map<String,String> parms=parseParms(parm);
         
         String replaceCommand=httpReq.getRequestParameter("REPLACE");
         if((replaceCommand != null) 

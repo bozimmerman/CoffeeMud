@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class GrinderItems
 {
     private static final String[] okparms={
@@ -55,7 +54,7 @@ public class GrinderItems
           "RECIPEDATA", "LAYER","SEETHRU","MULTIWEAR","ISCATALOGED",
           "CATARATE","CATALIVE","CATAMASK","BITE"};
 	public static String editItem(ExternalHTTPRequests httpReq,
-								  Hashtable parms,
+								  java.util.Map<String,String> parms,
 								  MOB whom,
 								  Room R,
                                   MOB playerM)

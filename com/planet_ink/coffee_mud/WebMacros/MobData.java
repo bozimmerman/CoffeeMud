@@ -66,7 +66,7 @@ public class MobData extends StdWebMacro
 	public static String senses(Environmental E,
 								boolean firstTime,
 								ExternalHTTPRequests httpReq,
-								Hashtable parms)
+								java.util.Map<String,String> parms)
 	{
 		StringBuffer str=new StringBuffer("");
 		for(int d=0;d<EnvStats.CAN_SEE_CODES.length;d++)
@@ -83,7 +83,7 @@ public class MobData extends StdWebMacro
 		return str.toString();
 	}
 
-	public static StringBuffer abilities(MOB E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+	public static StringBuffer abilities(MOB E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("ABILITIES"))
@@ -179,7 +179,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer expertiseList(MOB E, ExternalHTTPRequests httpReq, Hashtable parms)
+	public static StringBuffer expertiseList(MOB E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("EXPERTISELIST"))
@@ -228,7 +228,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer blessings(Deity E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+	public static StringBuffer blessings(Deity E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("BLESSINGS"))
@@ -289,7 +289,7 @@ public class MobData extends StdWebMacro
 		}
 		return str;
 	}
-	public static StringBuffer curses(Deity E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+	public static StringBuffer curses(Deity E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("CURSES"))
@@ -351,7 +351,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer factions(MOB E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+	public static StringBuffer factions(MOB E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("FACTIONS"))
@@ -448,7 +448,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer classList(MOB E, ExternalHTTPRequests httpReq, Hashtable parms)
+	public static StringBuffer classList(MOB E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("CLASSLIST"))
@@ -527,7 +527,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer powers(Deity E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+	public static StringBuffer powers(Deity E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("POWERS"))
@@ -578,7 +578,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-    public static StringBuffer priceFactors(Economics E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+    public static StringBuffer priceFactors(Economics E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
     {
         StringBuffer str=new StringBuffer("");
         if(parms.containsKey("PRICEFACTORS"))
@@ -643,7 +643,7 @@ public class MobData extends StdWebMacro
         return str;
     }
 
-	public static StringBuffer shopkeeper(ShopKeeper E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+	public static StringBuffer shopkeeper(ShopKeeper E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
         StringBuffer str=new StringBuffer("");
         str.append(priceFactors(E,httpReq,parms,borderSize));
@@ -817,7 +817,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer itemList(MOB oldM, MOB M, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+	public static StringBuffer itemList(MOB oldM, MOB M, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("ITEMLIST"))
@@ -940,7 +940,7 @@ public class MobData extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		java.util.Map<String,String> parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("ROOM");
 		if(last==null) return " @break@";
 		String mobCode=httpReq.getRequestParameter("MOB");

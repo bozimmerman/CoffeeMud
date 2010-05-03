@@ -41,7 +41,7 @@ public class Authenticate extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		java.util.Map<String,String> parms=parseParms(parm);
 		if((parms!=null)&&(parms.containsKey("AUTH")))
 		{
 		    try

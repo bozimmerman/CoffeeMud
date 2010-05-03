@@ -33,7 +33,6 @@ import java.net.URLEncoder;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class RequestParameter extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
@@ -48,17 +47,15 @@ public class RequestParameter extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		String str="";
-		Hashtable parms=parseParms(parm);
-		for(Enumeration e=parms.keys();e.hasMoreElements();)
+		java.util.Map<String,String> parms=parseParms(parm);
+		for(String key : parms.keySet())
 		{
-			String key=(String)e.nextElement();
 			if(!modifiers.contains(key))
 				if(httpReq.isRequestParameter(key))
 					str+=httpReq.getRequestParameter(key);
 		}
-		for(Enumeration e=parms.keys();e.hasMoreElements();)
+		for(String key : parms.keySet())
 		{
-			String key=(String)e.nextElement();
 			if(modifiers.contains(key))
 			{
 				int num = 0;

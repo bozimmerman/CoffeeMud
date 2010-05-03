@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class StdWebMacro implements WebMacro
 {
 	public String ID()		{return name();}
@@ -437,9 +436,9 @@ public class StdWebMacro implements WebMacro
 		return buf;
 	}
 	
-	protected Hashtable parseParms(String parm)
+	protected java.util.Map<String,String> parseParms(String parm)
 	{
-		Hashtable requestParms=new Hashtable();
+		Hashtable<String,String> requestParms=new Hashtable<String,String>();
 		if((parm!=null)&&(parm.length()>0))
 		{
 			while(parm.length()>0)

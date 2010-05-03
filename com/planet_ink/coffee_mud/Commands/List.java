@@ -329,19 +329,22 @@ public class List extends StdCommand
 		DVector scriptTree=new DVector(6);
 		Area A=null;
 		Room R=null;
+		WorldMap.LocatedPair LP=null;
 		ActiveEnvironmental AE=null;
 		for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
 		{
 			A=(Area)e.nextElement(); if(A==null) continue;
-			for(Enumeration<ActiveEnvironmental> he = CMLib.map().scriptHosts(A);he.hasMoreElements();)
+			for(Enumeration<WorldMap.LocatedPair> ae=CMLib.map().scriptHosts(A);ae.hasMoreElements();)
 			{
-				AE=he.nextElement(); if(AE==null) continue;
-				R=CMLib.map().getStartRoom(AE);
-				if(R==null) R=CMLib.map().roomLocation(AE);
+				LP=ae.nextElement(); if(LP==null) continue;
+				AE=LP.obj(); if(AE==null) continue;
+				R=LP.room(); if(R==null) R=CMLib.map().getStartRoom(AE);
+				
 				if((AE instanceof Area)||(AE instanceof Exit))
 				{
-					addScripts(scriptTree,A.getRandomProperRoom(),null,null,null,AE);
-					addShopScripts(scriptTree,A.getRandomProperRoom(),null,null,AE);
+					if(R==null) R=A.getRandomProperRoom();
+					addScripts(scriptTree,R,null,null,null,AE);
+					addShopScripts(scriptTree,R,null,null,AE);
 				}
 				else
 				if(AE instanceof Room)
