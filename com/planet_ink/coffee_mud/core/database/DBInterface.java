@@ -41,6 +41,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 public class DBInterface implements DatabaseEngine
 {
     public String ID(){return "DBInterface";}
+    
     MOBloader MOBloader=null;
     RoomLoader RoomLoader=null;
     DataLoader DataLoader=null;
@@ -54,6 +55,7 @@ public class DBInterface implements DatabaseEngine
     GCClassLoader GCClassLoader=null;
     ClanLoader ClanLoader=null;
     DBConnector DB=null;
+    
     public DBInterface(DBConnector DB)
     {
     	this.DB=DB;
@@ -80,6 +82,7 @@ public class DBInterface implements DatabaseEngine
     public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
     public DBConnector getConnector(){ return DB;}
+    
     public boolean activate(){ return true;}
     public boolean shutdown(){ return true;}
     public void propertiesLoaded(){}
