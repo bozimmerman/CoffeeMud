@@ -36,7 +36,9 @@ import java.util.*;
  */
 /**
  * The core of most object types in CoffeeMud. Much of the most common fields and
- * data are derived from this.
+ * data are derived from this.  It represents something that appears in the 
+ * environment, either physically, or as energy or other phenomenon.
+ * 
  * @author Bo Zimmerman
  *
  */
