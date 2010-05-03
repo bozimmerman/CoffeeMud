@@ -15,9 +15,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-public class ScriptParseException extends CoffeeMudException {
-static final long serialVersionUID=0;
-    public ScriptParseException(String s) {
+public class ScriptParseException extends CoffeeMudException 
+{
+	static final long serialVersionUID=0;
+	
+    public ScriptParseException(String s) 
+    {
         super(s);
     }
 }

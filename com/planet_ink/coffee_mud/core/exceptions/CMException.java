@@ -18,8 +18,10 @@ import java.util.*;
    limitations under the License.
 */
 
-public class CMException extends CoffeeMudException {
-static final long serialVersionUID=0;
+public class CMException extends CoffeeMudException 
+{
+	static final long serialVersionUID=0;
+	
 	public CMException(String s) {
 		super(s);
 	}

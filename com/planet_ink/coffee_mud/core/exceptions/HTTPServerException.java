@@ -32,6 +32,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public class HTTPServerException extends CoffeeMudException
 {
 	public static final long serialVersionUID=0;
+	
 	public HTTPServerException(String s)
 	{
 		super(s);
