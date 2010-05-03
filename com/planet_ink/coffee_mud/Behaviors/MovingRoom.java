@@ -280,9 +280,9 @@ public class MovingRoom extends ActiveTicker
 				Log.errOut("MovingRoom","Moving Room behavior on "+subwayRoom.roomID()+" HAD malformed rooms list in xml file.");
 				subwayRoom.delBehavior(this);
 				CMLib.threads().deleteTick(this,-1);
-				if((ticking instanceof ActiveEnvironmental)
+				if((ticking instanceof PhysicalAgent)
 				&&(ticking!=subwayRoom))
-					((ActiveEnvironmental)ticking).delBehavior(this);
+					((PhysicalAgent)ticking).delBehavior(this);
 				return false;
 			}
 			

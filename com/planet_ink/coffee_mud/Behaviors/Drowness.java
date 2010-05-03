@@ -48,7 +48,7 @@ public class Drowness extends StdBehavior
 	public static final int FIGHTER_SKILL = 128;
     public static final int CHECK_STATUS = 129;
 
-	public void startBehavior(ActiveEnvironmental forMe)
+	public void startBehavior(PhysicalAgent forMe)
 	{
 		super.startBehavior(forMe);
 		if(!(forMe instanceof MOB)) return;

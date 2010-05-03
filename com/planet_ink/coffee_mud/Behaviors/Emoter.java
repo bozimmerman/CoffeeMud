@@ -266,8 +266,8 @@ public class Emoter extends ActiveTicker
 		{
 			if((expires>0)&&((--expires)==0))
 			{
-				if(ticking instanceof ActiveEnvironmental)
-					((ActiveEnvironmental)ticking).delBehavior(this);
+				if(ticking instanceof PhysicalAgent)
+					((PhysicalAgent)ticking).delBehavior(this);
 				return false;
 			}
 			Vector emote=(Vector)emotes.elementAt(CMLib.dice().roll(1,emotes.size(),-1));

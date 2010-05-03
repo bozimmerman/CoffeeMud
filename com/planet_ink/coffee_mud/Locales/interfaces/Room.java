@@ -32,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("unchecked")
-public interface Room extends Environmental, Affectable, ActiveEnvironmental, ItemPossessor
+public interface Room extends Environmental, Affectable, PhysicalAgent, ItemPossessor
 {
 	public String roomID();
 	public void setRoomID(String newRoomID);

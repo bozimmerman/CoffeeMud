@@ -38,7 +38,7 @@ import java.util.HashSet;
  *
  */
 @SuppressWarnings("unchecked")
-public interface Rideable extends ActiveEnvironmental
+public interface Rideable extends PhysicalAgent
 {
     /** constant for the  rideType() method.  Means it is ridden over land*/
 	public final static int RIDEABLE_LAND=0;

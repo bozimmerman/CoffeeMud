@@ -871,7 +871,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 
-	public boolean isMobile(ActiveEnvironmental E)
+	public boolean isMobile(PhysicalAgent E)
 	{
 		if(E!=null)
 			for(Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
@@ -883,7 +883,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return false;
 	}
 
-	public Vector<Behavior> flaggedBehaviors(ActiveEnvironmental E, long flag)
+	public Vector<Behavior> flaggedBehaviors(PhysicalAgent E, long flag)
 	{
 		Vector V=new Vector();
 		if(E!=null)

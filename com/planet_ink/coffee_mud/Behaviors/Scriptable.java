@@ -58,7 +58,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
     
     public MOB getMakeMOB(Tickable ticking){ return engine().getMakeMOB(ticking);}
     
-    public boolean endQuest(ActiveEnvironmental hostObj, MOB mob, String quest)
+    public boolean endQuest(PhysicalAgent hostObj, MOB mob, String quest)
     {
         engine().endQuest(hostObj, mob, quest);
         return false;
@@ -101,7 +101,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
     }
 
 
-    public boolean eval(ActiveEnvironmental scripted,
+    public boolean eval(PhysicalAgent scripted,
                         MOB source,
                         Environmental target,
                         MOB monster,
@@ -119,7 +119,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
     
     public void setScript(String newParms){ engine().setScript(newParms);}
     
-    public String execute(ActiveEnvironmental scripted,
+    public String execute(PhysicalAgent scripted,
                           MOB source,
                           Environmental target,
                           MOB monster,

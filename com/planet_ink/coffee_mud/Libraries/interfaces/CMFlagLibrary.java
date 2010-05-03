@@ -108,12 +108,12 @@ public interface CMFlagLibrary extends CMLibrary
     public boolean isInFlight(Environmental E);
     public boolean isAnimalIntelligence(MOB E);
     public boolean isVegetable(MOB E);
-    public boolean isMobile(ActiveEnvironmental E);
+    public boolean isMobile(PhysicalAgent E);
     public boolean isAggressiveTo(MOB M, MOB toM);
     public boolean isPossiblyAggressive(MOB M);
 	public boolean isChild(Environmental E);
 	public boolean isBaby(Environmental E);
-    public Vector<Behavior> flaggedBehaviors(ActiveEnvironmental E, long flag);
+    public Vector<Behavior> flaggedBehaviors(PhysicalAgent E, long flag);
     public Vector flaggedAnyAffects(Environmental E, long flag);
     public Vector flaggedAffects(Environmental E, long flag);
     public Vector flaggedAbilities(MOB E, long flag);

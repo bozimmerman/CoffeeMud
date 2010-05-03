@@ -72,7 +72,7 @@ public class AreaScriptNext extends StdWebMacro
 		return inst;
 	}
 	
-	public void addScripts(TreeMap<String,ArrayList<AreaScriptInstance>> list, ArrayList<String> prefix, ActiveEnvironmental E)
+	public void addScripts(TreeMap<String,ArrayList<AreaScriptInstance>> list, ArrayList<String> prefix, PhysicalAgent E)
 	{
 		if(E==null) return;
 		for(Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
@@ -112,7 +112,7 @@ public class AreaScriptNext extends StdWebMacro
 		}
 	}
 	
-	public void addShopScripts(TreeMap<String,ArrayList<AreaScriptInstance>> list, ArrayList<String> prefix, ActiveEnvironmental E)
+	public void addShopScripts(TreeMap<String,ArrayList<AreaScriptInstance>> list, ArrayList<String> prefix, PhysicalAgent E)
 	{
 		if(E==null) return;
 		ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(E);
@@ -123,8 +123,8 @@ public class AreaScriptNext extends StdWebMacro
 				Environmental E2=(Environmental)i.next();
 				ArrayList<String> newPrefix=(ArrayList<String>)prefix.clone();
 				newPrefix.add(E2.name());
-				if(E2 instanceof ActiveEnvironmental)
-					addScripts(list,newPrefix,(ActiveEnvironmental)E2);
+				if(E2 instanceof PhysicalAgent)
+					addScripts(list,newPrefix,(PhysicalAgent)E2);
 			}
 		}
 	}
@@ -141,7 +141,7 @@ public class AreaScriptNext extends StdWebMacro
 			if(A==null) return list;
 			Room R=null;
 			WorldMap.LocatedPair LP=null;
-			ActiveEnvironmental AE=null;
+			PhysicalAgent AE=null;
 			ArrayList<String> prefix = new ArrayList<String>();
 			for(Enumeration<WorldMap.LocatedPair> ae=CMLib.map().scriptHosts(A);ae.hasMoreElements();)
 			{

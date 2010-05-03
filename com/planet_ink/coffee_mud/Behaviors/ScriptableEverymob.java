@@ -106,7 +106,7 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
     	return super.tick(ticking, tickID);
     }
     
-    public void startBehavior(ActiveEnvironmental forMe)
+    public void startBehavior(PhysicalAgent forMe)
     {
         giveEveryoneTheScript(forMe);
     }
@@ -125,16 +125,16 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 		if(sampleB!=null) sampleB.dequeResponses();
 	}
 	public Vector externalFiles(){return (sampleB==null)?null:sampleB.externalFiles();}
-	public boolean endQuest(ActiveEnvironmental hostObj, MOB mob, String quest) {
+	public boolean endQuest(PhysicalAgent hostObj, MOB mob, String quest) {
 		return (sampleB==null)?false:sampleB.endQuest(hostObj, mob, quest);
 	}
-	public boolean eval(ActiveEnvironmental scripted, MOB source,
+	public boolean eval(PhysicalAgent scripted, MOB source,
 			Environmental target, MOB monster, Item primaryItem,
 			Item secondaryItem, String msg, Object[] tmp, String[][] eval,
 			int startEval) {
 		return (sampleB==null)?false:sampleB.eval(scripted, source, target, monster, primaryItem, secondaryItem, msg, tmp, eval, startEval);
 	}
-	public String execute(ActiveEnvironmental scripted, MOB source,
+	public String execute(PhysicalAgent scripted, MOB source,
 			Environmental target, MOB monster, Item primaryItem,
 			Item secondaryItem, DVector script, String msg, Object[] tmp) {
 		return (sampleB==null)?"":sampleB.execute(scripted, source, target, monster, primaryItem, secondaryItem, script, msg, tmp);

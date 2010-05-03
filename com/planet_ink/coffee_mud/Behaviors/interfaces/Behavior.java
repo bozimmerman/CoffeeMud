@@ -49,11 +49,11 @@ public interface Behavior extends Tickable, MsgListener, CMContingent, CMModifia
 	 * Called after a behavior is added to a Behavable object.
 	 * The point is to do any initializing.  This method assumes
 	 * setParms() has already been called as well.
-	 * @see com.planet_ink.coffee_mud.core.interfaces.ActiveEnvironmental#addBehavior(Behavior)
+	 * @see com.planet_ink.coffee_mud.core.interfaces.PhysicalAgent#addBehavior(Behavior)
 	 * @see Behavior#setParms(String)
 	 * @param forMe the object to which this behavior has been added
 	 */
-	public void startBehavior(ActiveEnvironmental forMe);
+	public void startBehavior(PhysicalAgent forMe);
 
 	/**
 	 * Called after a behavior is added to an Environmental object.
@@ -120,7 +120,7 @@ public interface Behavior extends Tickable, MsgListener, CMContingent, CMModifia
      * @param E the object to evaluate for this behavior
      * @return whether the given object can be enhanced by this behavior
      */
-	public boolean canImprove(ActiveEnvironmental E);
+	public boolean canImprove(PhysicalAgent E);
 
     /**
      * Returns whether this behavior is capable of enhancing the given type

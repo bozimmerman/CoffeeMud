@@ -1,4 +1,10 @@
 package com.planet_ink.coffee_mud.core.interfaces;
+
+import java.util.Enumeration;
+
+import com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior;
+import com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine;
+
 /*
 Copyright 2000-2010 Bo Zimmerman
 
@@ -14,13 +20,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-
 /**
- * An interface for something capable of possessing Items
- * @author Bo Zimmerman
- *
- */
-public interface ItemPossessor extends PhysicalAgent
+* 
+* A Physical object capable of initiating an effect on the world.
+* (Even if it is normally passive)
+* @see com.planet_ink.coffee_mud.core.interfaces.Physical
+* @see com.planet_ink.coffee_mud.core.interfaces.Behavable
+* 
+* @author Bo Zimmerman
+*
+*/
+public interface PhysicalAgent extends Physical, Behavable
 {
-
 }

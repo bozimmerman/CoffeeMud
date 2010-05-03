@@ -95,9 +95,9 @@ public class Thief_Racketeer extends ThiefSkill
         {
             if(mob.isInCombat())
                 return Ability.QUALITY_INDIFFERENT;
-            if(target instanceof ActiveEnvironmental)
+            if(target instanceof PhysicalAgent)
             {
-            	ActiveEnvironmental AE=(ActiveEnvironmental)target;
+            	PhysicalAgent AE=(PhysicalAgent)target;
                 if((CMLib.coffeeShops().getShopKeeper(target)==null)&&(AE.fetchBehavior("MoneyChanger")==null)
                 &&(AE.fetchBehavior("ItemMender")==null)&&(AE.fetchBehavior("ItemIdentifier")==null)
                 &&(AE.fetchBehavior("ItemRefitter")==null))

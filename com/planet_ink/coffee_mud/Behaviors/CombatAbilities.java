@@ -272,7 +272,7 @@ public class CombatAbilities extends StdBehavior
 		super.executeMsg(host,msg);
 	}
 	
-	public void startBehavior(ActiveEnvironmental forMe)
+	public void startBehavior(PhysicalAgent forMe)
 	{
 		super.startBehavior(forMe);
 		skillsNever=null;

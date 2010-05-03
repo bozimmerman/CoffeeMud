@@ -151,10 +151,10 @@ public interface WorldMap extends CMLibrary, Runnable
     public static class LocatedPair
     {
     	private WeakReference<Room> roomW;
-    	private WeakReference<ActiveEnvironmental> objW;
+    	private WeakReference<PhysicalAgent> objW;
     	public Room room(){return roomW.get();}
-    	public ActiveEnvironmental obj(){return objW.get();}
-    	public LocatedPair(Room room, ActiveEnvironmental obj)
+    	public PhysicalAgent obj(){return objW.get();}
+    	public LocatedPair(Room room, PhysicalAgent obj)
     	{ this.roomW=new WeakReference(room); this.objW=new WeakReference(obj);}
     }
     

@@ -274,7 +274,7 @@ public class List extends StdCommand
 
 	}
 	
-	public void addScripts(DVector DV, Room R, ShopKeeper SK, MOB M, Item I, ActiveEnvironmental E)
+	public void addScripts(DVector DV, Room R, ShopKeeper SK, MOB M, Item I, PhysicalAgent E)
 	{
 		if(E==null) return;
 		for(Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
@@ -313,8 +313,8 @@ public class List extends StdCommand
 			for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 			{
 				Environmental E2=(Environmental)i.next();
-				if(E2 instanceof ActiveEnvironmental)
-					addScripts(DV,R,SK,M,I,(ActiveEnvironmental)E2);
+				if(E2 instanceof PhysicalAgent)
+					addScripts(DV,R,SK,M,I,(PhysicalAgent)E2);
 			}
 		}
 	}
@@ -330,7 +330,7 @@ public class List extends StdCommand
 		Area A=null;
 		Room R=null;
 		WorldMap.LocatedPair LP=null;
-		ActiveEnvironmental AE=null;
+		PhysicalAgent AE=null;
 		for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
 		{
 			A=(Area)e.nextElement(); if(A==null) continue;

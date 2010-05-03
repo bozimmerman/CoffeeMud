@@ -37,7 +37,7 @@ import java.util.Vector;
  * down to a goblin
  */
 @SuppressWarnings("unchecked")
-public interface MOB extends Environmental, Rider, DBIdentifiable, ActiveEnvironmental, ItemPossessor
+public interface MOB extends Environmental, Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 {
 	public int getBitmap();
 	public void setBitmap(int bitmap);

@@ -40,7 +40,7 @@ public class Thiefness extends CombatAbilities
 	protected int tickDown=0;
 
 
-	public void startBehavior(ActiveEnvironmental forMe)
+	public void startBehavior(PhysicalAgent forMe)
 	{
 		super.startBehavior(forMe);
 		if(!(forMe instanceof MOB)) return;

@@ -280,7 +280,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		return (CMLib.xml().convertXMLtoTag("ABLTYS",abilitystr.toString()));
 	}
 
-    public String getGenScripts(ActiveEnvironmental E, boolean includeVars)
+    public String getGenScripts(PhysicalAgent E, boolean includeVars)
     {
         StringBuffer scriptstr=new StringBuffer("");
 		for(Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();)
@@ -1832,7 +1832,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 	}
 
-    public void setGenScripts(ActiveEnvironmental E, Vector buf, boolean restoreVars)
+    public void setGenScripts(PhysicalAgent E, Vector buf, boolean restoreVars)
     {
         Vector V=CMLib.xml().getContentsFromPieces(buf,"SCRPTS");
         if(V==null) return;
@@ -2085,9 +2085,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(aff!=null)
 				E.delEffect(aff);
 		}
-		if(E instanceof ActiveEnvironmental)
+		if(E instanceof PhysicalAgent)
 		{
-			ActiveEnvironmental B=(ActiveEnvironmental)E;
+			PhysicalAgent B=(PhysicalAgent)E;
 			while(B.numBehaviors()>0)
 			{
 				Behavior behav=B.fetchBehavior(0);
@@ -2708,10 +2708,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 		text.append(CMLib.xml().convertXMLtoTag("IMG",E.rawImage()));
 
-		if(E instanceof ActiveEnvironmental)
+		if(E instanceof PhysicalAgent)
 		{
 			StringBuffer behaviorstr=new StringBuffer("");
-			for(Enumeration<Behavior> e=((ActiveEnvironmental)E).behaviors();e.hasMoreElements();)
+			for(Enumeration<Behavior> e=((PhysicalAgent)E).behaviors();e.hasMoreElements();)
 			{
 				Behavior B=e.nextElement();
 				if(B!=null)
@@ -2756,9 +2756,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	public void fillFileSet(Environmental E, HashSet H)
 	{
 	    if(E==null) return;
-	    if(E instanceof ActiveEnvironmental)
+	    if(E instanceof PhysicalAgent)
 	    {
-	    	ActiveEnvironmental AE=(ActiveEnvironmental)E;
+	    	PhysicalAgent AE=(PhysicalAgent)E;
 			for(Enumeration<Behavior> e=AE.behaviors();e.hasMoreElements();)
 			{
 				Behavior B=e.nextElement();
@@ -2827,8 +2827,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		text.append(CMLib.xml().convertXMLtoTag("DISP",E.displayText()));
 		text.append(CMLib.xml().convertXMLtoTag("PROP",getEnvStatsStr(E.baseEnvStats())));
 		text.append(getExtraEnvPropertiesStr(E));
-		if(E instanceof ActiveEnvironmental)
-	        text.append(getGenScripts((ActiveEnvironmental)E,false));
+		if(E instanceof PhysicalAgent)
+	        text.append(getGenScripts((PhysicalAgent)E,false));
 		return text.toString();
 	}
 
@@ -2911,8 +2911,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		E.setDisplayText(CMLib.xml().getValFromPieces(buf,"DISP"));
 		setEnvStats(E.baseEnvStats(),CMLib.xml().getValFromPieces(buf,"PROP"));
 		setExtraEnvProperties(E,buf);
-		if(E instanceof ActiveEnvironmental)
-			setGenScripts((ActiveEnvironmental)E,buf,false);
+		if(E instanceof PhysicalAgent)
+			setGenScripts((PhysicalAgent)E,buf,false);
 	}
 
     public String identifier(Environmental E, Environmental parent)
@@ -2967,7 +2967,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			Log.errOut("CoffeeMaker","Error parsing 'BEHAVES' of "+identifier(E,null)+".  Load aborted");
 			return;
 		}
-		if(E instanceof ActiveEnvironmental)
+		if(E instanceof PhysicalAgent)
 			for(int i=0;i<V.size();i++)
 			{
 				XMLLibrary.XMLpiece ablk=(XMLLibrary.XMLpiece)V.elementAt(i);
@@ -2984,7 +2984,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					continue;
 				}
 				newOne.setParms(CMLib.xml().restoreAngleBrackets(bparms));
-				((ActiveEnvironmental)E).addBehavior(newOne);
+				((PhysicalAgent)E).addBehavior(newOne);
 			}
         if(E instanceof Area)
         	addAutoPropsToAreaIfNecessary((Area)E);

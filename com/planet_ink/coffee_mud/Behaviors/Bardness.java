@@ -38,7 +38,7 @@ public class Bardness extends CombatAbilities
 
 
 	
-	public void startBehavior(ActiveEnvironmental forMe)
+	public void startBehavior(PhysicalAgent forMe)
 	{
 		super.startBehavior(forMe);
 		if(!(forMe instanceof MOB)) return;

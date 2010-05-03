@@ -3846,9 +3846,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     for(int v=1;v<V.size();v++)
                         if(E.fetchEffect((String)V.elementAt(v))!=null)
                         {   found=true; break;}
-                    if((!found)&&(E instanceof ActiveEnvironmental))
+                    if((!found)&&(E instanceof PhysicalAgent))
                     for(int v=1;v<V.size();v++)
-                        if(((ActiveEnvironmental)E).fetchBehavior((String)V.elementAt(v))!=null)
+                        if(((PhysicalAgent)E).fetchBehavior((String)V.elementAt(v))!=null)
                         {   found=true; break;}
 					if(!found) return false;
 				}
@@ -3873,9 +3873,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 for(int v=1;v<V.size();v++)
                     if(E.fetchEffect((String)V.elementAt(v))!=null)
                         return false;
-                if(E instanceof ActiveEnvironmental)
+                if(E instanceof PhysicalAgent)
                 for(int v=1;v<V.size();v++)
-                    if(((ActiveEnvironmental)E).fetchBehavior((String)V.elementAt(v))!=null)
+                    if(((PhysicalAgent)E).fetchBehavior((String)V.elementAt(v))!=null)
                         return false;
 				break;
 			case 16: // +name
@@ -4204,7 +4204,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			case 118: // -if
 				{
 					boolean oneIsOK = false;
-			        if(E instanceof ActiveEnvironmental)
+			        if(E instanceof PhysicalAgent)
 						for(int v=1;v<V.size();v+=3)
 						{
 							ScriptingEngine SE = (ScriptingEngine)V.elementAt(v);
@@ -4212,7 +4212,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							Object[] tmp = (Object[])V.elementAt(v+2);
 							MOB M = SE.getMakeMOB(E);
 					        Item defaultItem=(E instanceof Item)?(Item)E:null;
-							if(SE.eval((ActiveEnvironmental)E, M, null,M, defaultItem, null, "", tmp, EVAL, 0))
+							if(SE.eval((PhysicalAgent)E, M, null,M, defaultItem, null, "", tmp, EVAL, 0))
 							{
 								oneIsOK = true;
 								break;
@@ -4223,7 +4223,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				}
 			case 119: // +if
 		        {
-		        	if(E instanceof ActiveEnvironmental)
+		        	if(E instanceof PhysicalAgent)
 						for(int v=1;v<V.size();v+=3)
 						{
 							ScriptingEngine SE = (ScriptingEngine)V.elementAt(v);
@@ -4231,8 +4231,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							Object[] tmp = (Object[])V.elementAt(v+2);
 							MOB M = SE.getMakeMOB(E);
 					        Item defaultItem=(E instanceof Item)?(Item)E:null;
-					        if(E instanceof ActiveEnvironmental)
-							if(SE.eval((ActiveEnvironmental)E, M, null,M, defaultItem, null, "", tmp, EVAL, 0))
+					        if(E instanceof PhysicalAgent)
+							if(SE.eval((PhysicalAgent)E, M, null,M, defaultItem, null, "", tmp, EVAL, 0))
 								return true;
 						}
 					break;

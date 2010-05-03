@@ -2895,7 +2895,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         }
     }
 
-    public void genBehaviors(MOB mob, ActiveEnvironmental E, int showNumber, int showFlag)
+    public void genBehaviors(MOB mob, PhysicalAgent E, int showNumber, int showFlag)
         throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -7180,8 +7180,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             genMoney(mob,mme,++showNumber,showFlag);
             mme.setMoneyVariation(CMath.s_double(prompt(mob,""+mme.getMoneyVariation(),++showNumber,showFlag,"Money Variation")));
             genAbilities(mob,mme,++showNumber,showFlag);
-            if(me instanceof ActiveEnvironmental)
-	            genBehaviors(mob,(ActiveEnvironmental)me,++showNumber,showFlag);
+            if(me instanceof PhysicalAgent)
+	            genBehaviors(mob,(PhysicalAgent)me,++showNumber,showFlag);
             genAffects(mob,me,++showNumber,showFlag);
             if(!(me instanceof Auctioneer))
             {

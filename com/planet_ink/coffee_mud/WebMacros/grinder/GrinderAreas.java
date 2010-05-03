@@ -51,7 +51,7 @@ public class GrinderAreas
 		return AreaList.toString();
 	}
 
-	public static String doBehavs(ActiveEnvironmental E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
+	public static String doBehavs(PhysicalAgent E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
 	{
 		while(E.numBehaviors()>0)
 			E.delBehavior(E.fetchBehavior(0));

@@ -40,7 +40,7 @@ import java.util.*;
  *
  */
 @SuppressWarnings("unchecked")
-public interface Area extends Environmental, Economics, ActiveEnvironmental
+public interface Area extends Environmental, Economics, PhysicalAgent
 {
 	/**
 	 * Return basic attributed flag about the area.

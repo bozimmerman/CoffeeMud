@@ -36,7 +36,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @author Bo Zimmerman
  *
  */
-public interface Item extends Environmental, Rider, DBIdentifiable, Wearable, ActiveEnvironmental
+public interface Item extends Environmental, Rider, DBIdentifiable, Wearable, PhysicalAgent
 {
     /** 
      * Where the item is located.  Either null for

@@ -243,7 +243,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         return buf;
     }
 
-    private void questifyScriptableBehavs(ActiveEnvironmental E)
+    private void questifyScriptableBehavs(PhysicalAgent E)
     {
     	if(E==null) return;
     	Behavior B=null;
@@ -2602,8 +2602,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         for(int i=0;i<toSet.size();i++)
                         {
                             Environmental E2=(Environmental)toSet.elementAt(i);
-                            if(E2 instanceof ActiveEnvironmental)
-                            	runtimeRegisterBehavior((ActiveEnvironmental)E2,B.ID(),CMParms.combineWithQuotes(p,3),true);
+                            if(E2 instanceof PhysicalAgent)
+                            	runtimeRegisterBehavior((PhysicalAgent)E2,B.ID(),CMParms.combineWithQuotes(p,3),true);
                         }
                     }
                     else
@@ -2689,14 +2689,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         for(int i=0;i<toSet.size();i++)
                         {
                             Environmental E2=(Environmental)toSet.elementAt(i);
-                            if(E2 instanceof ActiveEnvironmental)
+                            if(E2 instanceof PhysicalAgent)
                             {
 	                            ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
 	                            S.setSavable(savable);
 	                            S.registerDefaultQuest(name());
 	                            S.setVarScope(scope);
 	                            S.setScript(val);
-	                            ((ActiveEnvironmental)E2).addScript(S);
+	                            ((PhysicalAgent)E2).addScript(S);
 	                            runtimeRegisterObject(E2);
 	            	        	synchronized(questState)
 	            	        	{
@@ -2809,8 +2809,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         for(int i=0;i<toSet.size();i++)
                         {
                             Environmental E2=(Environmental)toSet.elementAt(i);
-                            if(E2 instanceof ActiveEnvironmental)
-                            	runtimeRegisterBehavior((ActiveEnvironmental)E2,B.ID(),CMParms.combineWithQuotes(p,3),false);
+                            if(E2 instanceof PhysicalAgent)
+                            	runtimeRegisterBehavior((PhysicalAgent)E2,B.ID(),CMParms.combineWithQuotes(p,3),false);
                         }
                     }
                     else
@@ -3089,12 +3089,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		                else
 		                if(O instanceof Behavior)
 		                {
-		                	if(E instanceof ActiveEnvironmental)
+		                	if(E instanceof PhysicalAgent)
 		                	{
-		                		ActiveEnvironmental BB=(ActiveEnvironmental)E;
+		                		PhysicalAgent BB=(PhysicalAgent)E;
 			                    Behavior B=BB.fetchBehavior(((Behavior)O).ID());
 			                    if((E instanceof MOB)&&(B instanceof ScriptingEngine))
-			                        ((ScriptingEngine)B).endQuest((ActiveEnvironmental)E,(MOB)E,name());
+			                        ((ScriptingEngine)B).endQuest((PhysicalAgent)E,(MOB)E,name());
 			                    if((V.size()>2)&&(V.elementAt(2) instanceof String))
 			                    {
 			                        if(B==null){ B=(Behavior)O; BB.addBehavior(B);}
@@ -3594,7 +3594,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         }
     }
 
-    public void runtimeRegisterBehavior(ActiveEnvironmental behaving, String behaviorID, String parms, boolean give)
+    public void runtimeRegisterBehavior(PhysicalAgent behaving, String behaviorID, String parms, boolean give)
     {
         if(behaving==null) return;
         runtimeRegisterObject(behaving);

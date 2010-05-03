@@ -691,13 +691,13 @@ public class ServiceEngine implements ThreadEngine
         long code=obj.getTickStatus();
         if(obj instanceof Environmental)
         {
-            if(CMath.bset(code,Tickable.STATUS_BEHAVIOR) && (obj instanceof ActiveEnvironmental))
+            if(CMath.bset(code,Tickable.STATUS_BEHAVIOR) && (obj instanceof PhysicalAgent))
             {
                 long b=(code-Tickable.STATUS_BEHAVIOR);
                 String codeWord="Behavior #"+b;
-                if((b>=0)&&(b<((ActiveEnvironmental)obj).numBehaviors()))
+                if((b>=0)&&(b<((PhysicalAgent)obj).numBehaviors()))
                 {
-                    Behavior B=((ActiveEnvironmental)obj).fetchBehavior((int)b);
+                    Behavior B=((PhysicalAgent)obj).fetchBehavior((int)b);
                     codeWord+=" ("+B.name()+": "+B.getTickStatus();
                 }
                 else

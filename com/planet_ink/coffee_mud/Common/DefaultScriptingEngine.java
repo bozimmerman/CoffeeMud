@@ -351,7 +351,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         return newLine;
         
     }
-    public boolean endQuest(ActiveEnvironmental hostObj, MOB mob, String quest)
+    public boolean endQuest(PhysicalAgent hostObj, MOB mob, String quest)
     {
         if(mob!=null)
         {
@@ -395,7 +395,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                              String rawHost,
                              MOB source,
                              Environmental target,
-                             ActiveEnvironmental scripted,
+                             PhysicalAgent scripted,
                              MOB monster,
                              Item primaryItem,
                              Item secondaryItem,
@@ -443,7 +443,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
     }
 
     public String getVar(Environmental E, String rawHost, String var, MOB source, Environmental target,
-    					 ActiveEnvironmental scripted, MOB monster, Item primaryItem, Item secondaryItem, String msg,
+    					 PhysicalAgent scripted, MOB monster, Item primaryItem, Item secondaryItem, String msg,
                          Object[] tmp)
     { return getVar(getVarHost(E,rawHost,source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp),var); }
 
@@ -906,7 +906,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         return null;
     }
 
-    protected ActiveEnvironmental getArgumentMOB(String str,
+    protected PhysicalAgent getArgumentMOB(String str,
 		                                        MOB source,
 		                                        MOB monster,
 		                                        Environmental target,
@@ -918,10 +918,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
         return getArgumentItem(str,source,monster,monster,target,primaryItem,secondaryItem,msg,tmp);
     }
 
-    protected ActiveEnvironmental getArgumentItem(String str,
+    protected PhysicalAgent getArgumentItem(String str,
                                             MOB source,
                                             MOB monster,
-                                            ActiveEnvironmental scripted,
+                                            PhysicalAgent scripted,
                                             Environmental target,
                                             Item primaryItem,
                                             Item secondaryItem,
@@ -934,8 +934,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
             if(Character.isDigit(str.charAt(1)))
             {
                 Object O=tmp[CMath.s_int(Character.toString(str.charAt(1)))];
-                if(O instanceof ActiveEnvironmental)
-                    return (ActiveEnvironmental)O;
+                if(O instanceof PhysicalAgent)
+                    return (PhysicalAgent)O;
                 else
                 if((O instanceof Vector)&&(str.length()>3)&&(str.charAt(2)=='.'))
                 {
@@ -952,8 +952,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         {
                             if(y>=V.size()) return null;
                             O=V.elementAt(y);
-                            if(O instanceof ActiveEnvironmental) 
-                            	return (ActiveEnvironmental)O;
+                            if(O instanceof PhysicalAgent) 
+                            	return (PhysicalAgent)O;
                         }
                         str=O.toString(); // will fall through
                     }
@@ -969,14 +969,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
             {
             case 'a': return (lastKnownLocation!=null)?lastKnownLocation.getArea():null;
             case 'B':
-            case 'b': return (lastLoaded instanceof ActiveEnvironmental)?(ActiveEnvironmental)lastLoaded:null;
+            case 'b': return (lastLoaded instanceof PhysicalAgent)?(PhysicalAgent)lastLoaded:null;
             case 'N':
             case 'n': return ((source==backupMOB)&&(backupMOB!=null)&&(monster!=scripted))?scripted:source;
             case 'I':
             case 'i': return scripted;
             case 'T':
             case 't': return ((target==backupMOB)&&(backupMOB!=null)&&(monster!=scripted))?
-            					scripted:(target instanceof ActiveEnvironmental)?(ActiveEnvironmental)target:null;
+            					scripted:(target instanceof PhysicalAgent)?(PhysicalAgent)target:null;
             case 'O':
             case 'o': return primaryItem;
             case 'P':
@@ -1050,8 +1050,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
             if(E==null) E=lastKnownLocation.fetchAnyItem(str);
             if((E==null)&&(monster!=null)) E=monster.fetchInventory(str);
             if(E==null) E=CMLib.players().getPlayer(str);
-            if(E instanceof ActiveEnvironmental)
-	            return (ActiveEnvironmental)E;
+            if(E instanceof PhysicalAgent)
+	            return (PhysicalAgent)E;
         }
         return null;
     }
@@ -1094,7 +1094,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
     protected String varify(MOB source,
                             Environmental target,
-                            ActiveEnvironmental scripted,
+                            PhysicalAgent scripted,
                             MOB monster,
                             Item primaryItem,
                             Item secondaryItem,
@@ -2007,7 +2007,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         stack.addElement(trueFalse?Boolean.TRUE:Boolean.FALSE);
     }
     
-    public boolean eval(ActiveEnvironmental scripted,
+    public boolean eval(PhysicalAgent scripted,
                         MOB source,
                         Environmental target,
                         MOB monster,
@@ -2564,7 +2564,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
                 String arg1=tt[t+0];
                 String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-                ActiveEnvironmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                PhysicalAgent E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if(E==null)
                     returnable=false;
                 else
@@ -2607,7 +2607,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             case 93: // questscripted
             {
                 if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
-                ActiveEnvironmental E=getArgumentMOB(tt[t+0],source,monster,target,primaryItem,secondaryItem,msg,tmp);
+                PhysicalAgent E=getArgumentMOB(tt[t+0],source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 String arg2=tt[t+1];
                 Quest Q=getQuest(arg2);
                 returnable=false;
@@ -4265,7 +4265,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         return ((Boolean)stack.firstElement()).booleanValue();
     }
 
-    protected String functify(ActiveEnvironmental scripted,
+    protected String functify(PhysicalAgent scripted,
                               MOB source,
                               Environmental target,
                               MOB monster,
@@ -4714,7 +4714,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             case 69: // isbehave
             {
                 String arg1=CMParms.cleanBit(funcParms);
-                ActiveEnvironmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                PhysicalAgent E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if(E!=null)
         			for(Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
         			{
@@ -4747,7 +4747,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             case 93: // questscripted
             {
                 String arg1=CMParms.cleanBit(funcParms);
-                ActiveEnvironmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+                PhysicalAgent E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((E!=null)&&(E instanceof MOB)&&(!((MOB)E).isMonster()))
                 {
             		for(Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();)
@@ -5762,7 +5762,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         return (MOB)tmp[SPECIAL_RANDANYONE];
     }
 
-    public String execute(ActiveEnvironmental scripted,
+    public String execute(PhysicalAgent scripted,
                           MOB source,
                           Environmental target,
                           MOB monster,
@@ -6537,7 +6537,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                                 lastLoaded=(Environmental)O;
                           break;
                 case 'I':
-                case 'i': if(O instanceof ActiveEnvironmental) scripted=(ActiveEnvironmental)O;
+                case 'i': if(O instanceof PhysicalAgent) scripted=(PhysicalAgent)O;
                           if(O instanceof MOB) monster=(MOB)O;
                           break;
                 case 'T':
@@ -7475,7 +7475,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 	if(tt==null) return null;
                 }
                 String cast=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
-                ActiveEnvironmental newTarget=getArgumentItem(tt[2],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                PhysicalAgent newTarget=getArgumentItem(tt[2],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 String m2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
                 Behavior B=null;
                 Behavior B2=(cast==null)?null:CMClass.findBehavior(cast);
@@ -7505,7 +7505,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 	tt=parseBits(script,si,"Ccp");
                 	if(tt==null) return null;
                 }
-                ActiveEnvironmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                PhysicalAgent newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 String m2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
                 boolean proceed=true;
                 boolean savable=false;
@@ -7570,7 +7570,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 	if(tt==null) return null;
                 }
                 String cast=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
-                ActiveEnvironmental newTarget=getArgumentItem(tt[2],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                PhysicalAgent newTarget=getArgumentItem(tt[2],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((newTarget!=null)&&(cast!=null))
                 {
                     Behavior B=CMClass.findBehavior(cast);
@@ -8092,7 +8092,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 	tt=parseBits(script,si,"Ccp");
                 	if(tt==null) return null;
                 }
-                ActiveEnvironmental newTarget=getArgumentMOB(tt[1],source,monster,target,primaryItem,secondaryItem,msg,tmp);
+                PhysicalAgent newTarget=getArgumentMOB(tt[1],source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 String force=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]).trim();
                 if(newTarget!=null)
                 {
@@ -8384,7 +8384,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 else
                 if((tt[1].length()>0)&&(defaultQuestName!=null)&&(defaultQuestName.length()>0))
                 {
-                    ActiveEnvironmental newTarget=getArgumentMOB(tt[1].trim(),source,monster,target,primaryItem,secondaryItem,msg,tmp);
+                    PhysicalAgent newTarget=getArgumentMOB(tt[1].trim(),source,monster,target,primaryItem,secondaryItem,msg,tmp);
                     if(newTarget==null)
                         logError(scripted,"MPENDQUEST","Unknown","Quest or MOB: "+s);
                     else
@@ -8464,7 +8464,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 case 'N':
                 case 'n': if(O instanceof MOB) source=(MOB)O; break;
                 case 'I':
-                case 'i': if(O instanceof ActiveEnvironmental) scripted=(ActiveEnvironmental)O;
+                case 'i': if(O instanceof PhysicalAgent) scripted=(PhysicalAgent)O;
                           if(O instanceof MOB) monster=(MOB)O;
                           break;
                 case 'B':
@@ -8821,10 +8821,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
     public boolean okMessage(Environmental host, CMMsg msg)
     {
-        if((!(host instanceof ActiveEnvironmental))||(msg.source()==null))
+        if((!(host instanceof PhysicalAgent))||(msg.source()==null))
             return true;
 
-        ActiveEnvironmental affecting = (ActiveEnvironmental)host;
+        PhysicalAgent affecting = (PhysicalAgent)host;
 
         Vector<DVector> scripts=getScripts();
         DVector script=null;
@@ -8941,10 +8941,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
     public void executeMsg(Environmental host, CMMsg msg)
     {
-        if((!(host instanceof ActiveEnvironmental))||(msg.source()==null))
+        if((!(host instanceof PhysicalAgent))||(msg.source()==null))
             return;
 
-        ActiveEnvironmental affecting = (ActiveEnvironmental)host;
+        PhysicalAgent affecting = (PhysicalAgent)host;
         
         MOB monster=getMakeMOB(affecting);
 
@@ -9789,7 +9789,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             return true;
         }
 
-        ActiveEnvironmental affecting=(ticking instanceof ActiveEnvironmental)?((ActiveEnvironmental)ticking):null;
+        PhysicalAgent affecting=(ticking instanceof PhysicalAgent)?((PhysicalAgent)ticking):null;
 
         Vector<DVector> scripts=getScripts();
 
@@ -9988,7 +9988,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
     public void initializeClass(){};
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
-    public void enqueResponse(ActiveEnvironmental host,
+    public void enqueResponse(PhysicalAgent host,
                               MOB source,
                               Environmental target,
                               MOB monster,
@@ -10004,7 +10004,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             que.addElement(new ScriptableResponse(host,source,target,monster,primaryItem,secondaryItem,script,ticks,msg));
     }
     
-    public void prequeResponse(ActiveEnvironmental host,
+    public void prequeResponse(PhysicalAgent host,
                                MOB source,
                                Environmental target,
                                MOB monster,

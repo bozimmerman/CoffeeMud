@@ -71,7 +71,7 @@ public interface Affectable
      * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#baseEnvStats()
      * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#envStats()
      * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#addEffect(Ability)
-     * @see com.planet_ink.coffee_mud.core.interfaces.ActiveEnvironmental#addBehavior(Behavior)
+     * @see com.planet_ink.coffee_mud.core.interfaces.PhysicalAgent#addBehavior(Behavior)
      * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats
      */
 	public void recoverEnvStats();

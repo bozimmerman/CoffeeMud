@@ -38,7 +38,7 @@ public class ClanHelper extends StdBehavior
 
 
 	protected boolean mobKiller=false;
-	public void startBehavior(ActiveEnvironmental forMe)
+	public void startBehavior(PhysicalAgent forMe)
 	{
 		super.startBehavior(forMe);
 		if(forMe instanceof MOB)

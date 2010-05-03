@@ -1662,9 +1662,9 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(o instanceof Auctioneer)
 			delAuctionHouse((Auctioneer)o);
 		
-		if(o instanceof ActiveEnvironmental)
+		if(o instanceof PhysicalAgent)
 		{
-			ActiveEnvironmental AE=(ActiveEnvironmental)o;
+			PhysicalAgent AE=(PhysicalAgent)o;
 			if((area == null) && (room!=null)) area = room.getArea();
 			if(area == null) area =getStartArea(AE);
 			delScriptHost(area, AE);
@@ -1685,9 +1685,9 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(o instanceof Auctioneer)
 			addAuctionHouse((Auctioneer)o);
 		
-		if(o instanceof ActiveEnvironmental)
+		if(o instanceof PhysicalAgent)
 		{
-			ActiveEnvironmental AE=(ActiveEnvironmental)o;
+			PhysicalAgent AE=(PhysicalAgent)o;
 			if(room == null) room = getStartRoom(AE);
 			if((area == null) && (room!=null)) area = room.getArea();
 			if(area == null) area = getStartArea(AE);
@@ -1701,7 +1701,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 	}
 	
-	protected void cleanScriptHosts(SLinkedList<LocatedPair> hosts, ActiveEnvironmental oneToDel, boolean fullCleaning)
+	protected void cleanScriptHosts(SLinkedList<LocatedPair> hosts, PhysicalAgent oneToDel, boolean fullCleaning)
 	{
 		for(LocatedPair W : hosts)
 			if((W.obj()==oneToDel)
@@ -1710,7 +1710,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				hosts.remove(W);
 	}
 
-	protected boolean isAQualifyingScriptHost(ActiveEnvironmental host)
+	protected boolean isAQualifyingScriptHost(PhysicalAgent host)
 	{
 		if(host==null) return false;
     	for(Enumeration<Behavior> e = host.behaviors();e.hasMoreElements();)
@@ -1728,13 +1728,13 @@ public class CMMap extends StdLibrary implements WorldMap
 		return false;
 	}
 	
-	protected boolean isAScriptHost(Area area, ActiveEnvironmental host)
+	protected boolean isAScriptHost(Area area, PhysicalAgent host)
 	{
 		if(area == null) return false;
 		return isAScriptHost(scriptHostMap.get(area.Name().toUpperCase()), host);
 	}
 	
-	protected boolean isAScriptHost(SLinkedList<LocatedPair> hosts, ActiveEnvironmental host)
+	protected boolean isAScriptHost(SLinkedList<LocatedPair> hosts, PhysicalAgent host)
 	{
 		if((hosts==null)||(host==null)||(hosts.size()==0)) return false;
 		for(LocatedPair W : hosts)
@@ -1743,7 +1743,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		return false;
 	}
 	
-	protected void addScriptHost(Area area, Room room, ActiveEnvironmental host)
+	protected void addScriptHost(Area area, Room room, PhysicalAgent host)
     {
     	if((area==null) || (host == null))
     		return;
@@ -1767,7 +1767,7 @@ public class CMMap extends StdLibrary implements WorldMap
     	}
     }
 	
-	protected void delScriptHost(Area area, ActiveEnvironmental oneToDel)
+	protected void delScriptHost(Area area, PhysicalAgent oneToDel)
     {
     	if(oneToDel == null)
     		return;
@@ -1807,7 +1807,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			public boolean hasMoreElements() { return me.hasNext();}
 			public LocatedPair nextElement() {
 				LocatedPair W = me.next();
-				ActiveEnvironmental E = W.obj();
+				PhysicalAgent E = W.obj();
 				if(((E==null) || (E.amDestroyed())) && hasMoreElements())
 					return nextElement();
 				return W;

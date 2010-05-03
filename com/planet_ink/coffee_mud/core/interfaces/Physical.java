@@ -1,4 +1,9 @@
 package com.planet_ink.coffee_mud.core.interfaces;
+
+import com.planet_ink.coffee_mud.Abilities.interfaces.Ability;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior;
+import com.planet_ink.coffee_mud.Common.interfaces.EnvStats;
+
 /*
 Copyright 2000-2010 Bo Zimmerman
 
@@ -14,13 +19,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-
 /**
- * An interface for something capable of possessing Items
- * @author Bo Zimmerman
- *
- */
-public interface ItemPossessor extends PhysicalAgent
+* 
+* Something that exists in the physical world and can be affected by the
+* world
+* @see com.planet_ink.coffee_mud.core.interfaces.Environmental
+* @author Bo Zimmerman
+*
+*/
+public interface Physical extends Environmental 
 {
-
+	
 }

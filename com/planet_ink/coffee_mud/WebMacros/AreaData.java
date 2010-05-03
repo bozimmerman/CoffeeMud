@@ -38,7 +38,7 @@ public class AreaData extends StdWebMacro
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
 
-	public static StringBuffer behaves(ActiveEnvironmental E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer behaves(PhysicalAgent E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("BEHAVIORS"))
