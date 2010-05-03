@@ -47,9 +47,9 @@ public class AreaScriptKey extends StdWebMacro
 		{
 			if(last.length()>0)
 				if(parms.containsKey("ENCODED"))
-		            return clearWebMacros(last);
-				else
 					return URLEncoder.encode(clearWebMacros(last),"UTF-8");
+				else
+		            return clearWebMacros(last);
 		}
 		catch(Exception e){}
 		return "";

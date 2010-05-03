@@ -8,21 +8,27 @@
 	<title>Scripts List</title>
 	<script language=JavaScript>
 	<!--
+		function AreaScriptCustom(path, rsc)
+		{
+			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+			w=window.open("areascripthoststable.cmvp?AREA=@AreaNameEncoded@&AUTH=@Authenticate?AUTH@&AREASCRIPT="+path,"Script",strFeatures, false);
+		}
+		
 		function AreaHosts(action)
 		{
 			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
-			w=window.open("clan.cmvp?AUTH=@Authenticate?AUTH@&CLAN="+action,
-				"Clan",strFeatures, false);
+			w=window.open("areascripthoststable.cmvp?AREA=@AreaNameEncoded@&AUTH=@Authenticate?AUTH@&AREASCRIPT="+action,"Script",strFeatures, false);
 		}
 		
-		function AreaScript(path, file)
+		function AreaScript(path, file, rsc)
 		{
 			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=750,alwaysRaised=yes,dependent=yes";
-			w=window.open("browsefile.cmvp?AUTH=@Authenticate?AUTH@&PATH="+path+"&FILE="+file,"Script",strFeatures, false);
+			w=window.open("browsefile.cmvp?AREA=@AreaNameEncoded@&AUTH=@Authenticate?AUTH@&PATH="+path+"&FILE="+file+"&RESOURCE="+rsc,"Script",strFeatures, false);
 		}
 		
 		function Clicked(action)
 		{
+			document.RESOURCES.target='_top';
 			document.RESOURCES.action=action;
 			document.RESOURCES.submit();
 		}
@@ -49,13 +55,13 @@
 	@AreaScriptNext@
 	<TR>
 	<TD>
-		<a href="javascript:AreaHosts('@AreaScriptKey@')"><FONT COLOR=WHITE>@AreaScriptData?NUMHOSTS@</FONT></a>
+		<a href="javascript:AreaHosts('@AreaScriptKey?ENCODED@')"><FONT COLOR=WHITE>@AreaScriptData?NUMHOSTS@</FONT></a>
 	</TD>
 	<TD>
 		@if?AreaScriptData?ISFILE@
-			<a href="javascript:AreaScript('@AreaScriptData?ENCODEDPATH@','@AreaScriptData?ENCODEDFILENAME@')"><FONT COLOR=WHITE><B>@AreaScriptKey@</B></FONT></a>
+			<a href="javascript:AreaScript('@AreaScriptData?ENCODEDPATH@','@AreaScriptData?ENCODEDFILENAME@','@AreaScriptData?RESOURCEKEYENCODED@')"><FONT COLOR=WHITE><B>@AreaScriptKey@</B></FONT></a>
 		@else@
-			<a href="javascript:AreaScriptCustom('@AreaScriptKey@')"><FONT COLOR=WHITE><B>@AreaScriptKey@</B></FONT></a>
+			<a href="javascript:AreaScriptCustom('@AreaScriptKey?ENCODED@','@AreaScriptData?RESOURCEKEYENCODED@')"><FONT COLOR=WHITE><B>@AreaScriptKey@</B></FONT></a>
 		@endif@
 	</TD>
 	</TR>

@@ -54,7 +54,7 @@ public class AreaScriptData extends AreaScriptNext
 			for(AreaScriptInstance inst : subList)
 			{
 				String hostName = CMParms.combineWith(inst.path, '.',0, inst.path.size()) + "." + inst.fileName;
-				if(hostName.equalsIgnoreCase(last));
+				if(hostName.equalsIgnoreCase(last))
 				{
 					entry=inst;
 					break;
@@ -97,12 +97,41 @@ public class AreaScriptData extends AreaScriptNext
 		if(parms.containsKey("FILE") && (entry != null))
 			str.append(Resources.makeFileResourceName(entry.fileName)+", ");
 		
+		if(parms.containsKey("RESOURCEKEY") && (entry != null))
+			str.append(entry.instanceKey+", ");
+		
+		if(parms.containsKey("RESOURCEKEYENCODED") && (entry != null))
+			try{
+				str.append(URLEncoder.encode(entry.instanceKey,"UTF-8")+", ");
+			}catch(Exception e){}
+		
 		if(parms.containsKey("PATH") && (entry != null))
 		{
 			String path=Resources.makeFileResourceName(entry.fileName);
 			int x=path.lastIndexOf('/');
 			str.append(((x<0)?"":path.substring(0,x))+", ");
 		}
+
+		if(parms.containsKey("ENTRYPATH") && (entry != null))
+			str.append(CMParms.combineWith(entry.path, '.',0, entry.path.size())+", ");
+		
+		if(parms.containsKey("CUSTOMSCRIPT") && (entry != null))
+			try{
+				String s = entry.customScript;
+				if(parms.containsKey("PARSELED") && (s.trim().length()>0))
+				{
+					StringBuffer st=new StringBuffer("");
+			        List<List<String>> V = CMParms.parseDoubleDelimited(s,'~',';');
+			        for(List<String> LV : V)
+			        {
+			        	for(String L : LV)
+			        		st.append(L+"\n\r");
+			        	st.append("\n\r");
+			        }
+					s=st.toString();
+				}
+				str.append(webify(new StringBuffer(s))+", ");
+			}catch(Exception e){}
 		
 		if(parms.containsKey("FILENAME") && (entry != null))
 		{

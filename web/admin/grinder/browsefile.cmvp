@@ -33,6 +33,7 @@
 <FORM NAME=FILEBROWSE TARGET=_top METHOD=POST ACTION="browsefile.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=PATH VALUE="@RequestParameter?PATH@">
+<INPUT TYPE=HIDDEN NAME=RESOURCE VALUE="@RequestParameter?RESOURCE@">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
 <INPUT TYPE=HIDDEN NAME=NEW VALUE="">
 <P ALIGN=RIGHT><A href="javascript:openUp('SCRIPTABLE');"><FONT COLOR=PINK><I>scriptable help</I></FONT></A></P>
@@ -45,7 +46,7 @@
 </B></FONT><BR>
 @if?!CheckReqParm?RAWTEXT=@
 	@if?CheckReqParm?FUNCTION=CREATE@
-		<FONT COLOR=RED><B>@FileMgr?CREATE@</B></FONT>
+		<FONT COLOR=RED><B>@FileMgr?CREATE@</B></FONT>@if?!CheckReqParm?RESOURCE=@ @ResourceMgr?DELETE@ @endif@
 	@endif@
 @endif@
 @if?!CheckReqParm?FILE=@<TEXTAREA ROWS=25 COLS=85 NAME=RAWTEXT>@FileInfo?TEXTDATA@</TEXTAREA>

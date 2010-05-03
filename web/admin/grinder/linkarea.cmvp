@@ -31,7 +31,7 @@
 <INPUT TYPE=HIDDEN NAME=LINKSTO VALUE="@RequestParameter?LINKSTO@">
 <TABLE WIDTH=100% CELLSPACING=0 CELLPADDING=0 BORDER=0>
 <TR>
-	<TD WIDTH=10% VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=10% HEIGHT=75% ALT="" BORDER="0"></TD>
+	<TD WIDTH=10% VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif"  ALT="" BORDER="0"></TD>
 	<TD WIDTH=50% ALIGN=LEFT>
 	@if?!CheckReqParm?ERRMSG=@
 	<FONT COLOR=RED>@RequestParameter?ERRMSG@</FONT><BR>

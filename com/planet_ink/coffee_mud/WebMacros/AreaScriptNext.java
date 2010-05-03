@@ -44,6 +44,7 @@ public class AreaScriptNext extends StdWebMacro
 		public String instanceKey;
 		public String fileName;
 		public String key;
+		public String customScript="";
 		public AreaScriptInstance(String instanceKey, ArrayList<String> path,
 								  String key, String fileName)
 		{
@@ -54,7 +55,7 @@ public class AreaScriptNext extends StdWebMacro
 		}
 	};
 
-	public void addScript(TreeMap<String,ArrayList<AreaScriptInstance>> list, 
+	public AreaScriptInstance addScript(TreeMap<String,ArrayList<AreaScriptInstance>> list, 
 			ArrayList<String> prefix, String scriptKey, String immediateHost, String key, String file)
 	{
 		ArrayList<String> next=(ArrayList<String>)prefix.clone();
@@ -66,7 +67,9 @@ public class AreaScriptNext extends StdWebMacro
 			subList = new ArrayList<AreaScriptInstance>();
 			list.put(key,subList);
 		}
-		subList.add(new AreaScriptInstance(scriptKey, next, key, file));
+		AreaScriptInstance inst = new AreaScriptInstance(scriptKey, next, key, file); 
+		subList.add(inst);
+		return inst;
 	}
 	
 	public void addScripts(TreeMap<String,ArrayList<AreaScriptInstance>> list, ArrayList<String> prefix, ActiveEnvironmental E)
@@ -85,7 +88,11 @@ public class AreaScriptNext extends StdWebMacro
 					addScript(list, prefix, SE.getScriptResourceKey(),B.ID(),((String)files.elementAt(f)).toLowerCase(), (String)files.elementAt(f));
 				String nonFiles=((ScriptingEngine)B).getVar("*","COFFEEMUD_SYSTEM_INTERNAL_NONFILENAME_SCRIPT");
 				if((nonFiles!=null)&&(nonFiles.trim().length()>0))
-					addScript(list, prefix, SE.getScriptResourceKey(), B.ID(),"Custom",nonFiles);
+				{
+					AreaScriptInstance inst = 
+						addScript(list, prefix, SE.getScriptResourceKey(), B.ID(),"Custom",nonFiles);
+					inst.customScript = nonFiles.trim();
+				}
 			}
 		}
 		for(Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();)
@@ -97,7 +104,11 @@ public class AreaScriptNext extends StdWebMacro
 				addScript(list, prefix, SE.getScriptResourceKey(),null,((String)files.elementAt(f)).toLowerCase(), (String)files.elementAt(f));
 			String nonFiles=SE.getVar("*","COFFEEMUD_SYSTEM_INTERNAL_NONFILENAME_SCRIPT");
 			if(nonFiles.trim().length()>0)
-				addScript(list, prefix, SE.getScriptResourceKey(), null,"Custom",nonFiles);
+			{
+				AreaScriptInstance inst = 
+					addScript(list, prefix, SE.getScriptResourceKey(), null,"Custom",nonFiles);
+				inst.customScript = nonFiles.trim();
+			}
 		}
 	}
 	
@@ -141,22 +152,24 @@ public class AreaScriptNext extends StdWebMacro
 				prefix = new ArrayList<String>();
 				prefix.add(A.name());
 				
-				if((AE instanceof Area)||(AE instanceof Room))
+				if(AE instanceof Area)
 				{
 					// don't add room to prefix
 				}
+				else
+				if(AE instanceof Room)
+					prefix.add(CMLib.map().getExtendedRoomID((Room)AE));
 				else
 				{
 					if(R!=null)
 						prefix.add(CMLib.map().getExtendedRoomID(R));
 					if(AE instanceof Item)
 					{
-						if(R!=null)
-							prefix.add(CMLib.map().getExtendedRoomID(R));
 						ItemPossessor IP=((Item)AE).owner();
 						if(IP instanceof MOB)
 							prefix.add(IP.Name());
 					}
+					prefix.add(AE.Name());
 				}
 				
 				addScripts(list,prefix,AE);

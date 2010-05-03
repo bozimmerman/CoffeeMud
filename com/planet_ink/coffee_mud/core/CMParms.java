@@ -843,6 +843,68 @@ public class CMParms
         return h;
     }
     
+    public static List<List<String>> parseDoubleDelimited(String text, char delim1, char delim2)
+    {
+    	List<String> preparseV=new Vector<String>();
+        int y=0;
+        while((text!=null)&&(text.length()>0))
+        {
+            y=text.indexOf(delim1);
+            while((y>0)&&(text.charAt(y-1)=='\\'))
+                y=text.indexOf(delim1,y+1);
+            String script="";
+            if(y<0)
+            {
+                script=text.trim();
+                text="";
+            }
+            else
+            {
+                script=text.substring(0,y).trim();
+                text=text.substring(y+1).trim();
+            }
+            if(script.length()>0)
+            	preparseV.add(script);
+        }
+        List<List<String>> parsedV=new Vector<List<String>>();
+        for(String s : preparseV)
+        {
+        	List<String> groupV=new Vector<String>();
+            while(s.length()>0)
+            {
+                y=-1;
+                int yy=0;
+                while(yy<s.length())
+                    if((s.charAt(yy)==delim2)&&((yy<=0)||(s.charAt(yy-1)!='\\'))) {y=yy;break;}
+                    else
+                    if(s.charAt(yy)=='\n'){y=yy;break;}
+                    else
+                    if(s.charAt(yy)=='\r'){y=yy;break;}
+                    else yy++;
+                String cmd="";
+                if(y<0)
+                {
+                    cmd=s.trim();
+                    s="";
+                }
+                else
+                {
+                    cmd=s.substring(0,y).trim();
+                    s=s.substring(y+1).trim();
+                }
+                if((cmd.length()>0)&&(!cmd.startsWith("#")))
+                {
+                    cmd=CMStrings.replaceAll(cmd,"\\"+delim1,""+delim1);
+                    cmd=CMStrings.replaceAll(cmd,"\\=","=");
+    	            groupV.add(CMStrings.replaceAll(cmd,"\\"+delim2,""+delim2));
+                }
+            }
+            if(groupV.size()>0)
+            	parsedV.add(groupV);
+        }
+        return parsedV;
+    }
+    
     public static int stringContains(String str1, String str2)
     {
         StringBuffer buf1=new StringBuffer(str1.toLowerCase());
@@ -1745,7 +1807,7 @@ public class CMParms
             V.addElement(e.nextElement());
         return V;
     }
-
+    
 	/** constant value representing an undefined/unimplemented miscText/parms format.*/
 	public static final String FORMAT_UNDEFINED="{UNDEFINED}";
 	/** constant value representing an always empty miscText/parms format.*/

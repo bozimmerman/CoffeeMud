@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+ 	<link rel="grinder icon" href="/images/grinder.ico" >
+<meta name="robots" content="noindex,nofollow">
+<TITLE>Area Script Entry Instances</TITLE>
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+	function EditArea()
+	{
+		document.location.href='/grinder/editareaform.cmvp?AREA=@AreaNameEncoded@&AUTH=@Authenticate?AUTH@';
+	}
+	function EditRoom(room)
+	{
+    	var w;
+    	room=encodeURI(room);
+    	room=room.replace("#","%23");
+		document.location.href='/grinder/editroomform.cmvp?AREA=@AreaNameEncoded@&BESTFILEBROWSE=/&OLDROOM=&AUTH=@Authenticate?AUTH@&LINKSTO=&LINK=&MAPLEVEL=&MAPSTYLE=&OLDLINK=&ROOM='+room;
+	}
+    function EditMOB(room,mobcode)
+    {
+    	var w;
+    	room=encodeURI(room);
+    	mobcode=encodeURI(mobcode);
+    	room=room.replace("#","%23");
+        document.location.href="/grinder/editmobform.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaNameEncoded@&ROOM="+room+"&MOB="+mobcode+"&SINGLEMOB=true";
+    }
+    function EditRoomItem(room,mobcode,itemcode)
+    {
+    	var w;
+    	room=encodeURI(room);
+    	itemcode=encodeURI(itemcode);
+    	mobcode=encodeURI(mobcode);
+    	room=room.replace("#","%23");
+        document.location.href="/grinder/edititemform.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaNameEncoded@&ROOM="+room+"&MOB="+mobcode+"&ITEM="+itemcode+"&SINGLEITEM=true";
+    }
+    function EditRoomMOBItem(room,itemcode)
+    {
+    	var w;
+    	room=encodeURI(room);
+    	itemcode=encodeURI(itemcode);
+    	room=room.replace("#","%23");
+        document.location.href="/grinder/edititemform.cmvp?AUTH=@Authenticate?AUTH@&AREA=@AreaNameEncoded@&ROOM="+room+"&ITEM="+itemcode+"&SINGLEITEM=true";
+    }
+//-->
+</SCRIPT>
+</HEAD>
+<BODY BGCOLOR=BLACK TEXT=#FFFFFF>
+<FONT COLOR=WHITE>
+<H3>@AreaScriptKey@</H3>
+<TABLE WIDTH=100% BORDER=1>
+@AreaScriptData?RESET@
+@loop@
+	@AreaScriptData?NEXT@
+	<TR><TD><FONT COLOR=LIGHTBLUE><B>@AreaScriptData?ENTRYPATH@</B></FONT></TD></TR>
+	@if?AreaScriptData?ISCUSTOM@
+		<TR><TD>@AreaScriptData?CUSTOMSCRIPT&PARSELED@</TD></TR>
+	@endif@
+@back@
+</TABLE>
+</BODY>
+</HTML>
