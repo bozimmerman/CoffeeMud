@@ -57,7 +57,7 @@ public class GenAmmunition extends StdItem implements Ammunition
 	public String readableText(){return readableText;}
 	public void setReadableText(String text)
 	{
-		if(CMLib.flags().isReadable(this)) CMLib.flags().setReadable(this,false);
+		if(isReadable()) CMLib.flags().setReadable(this,false);
 		readableText=text;
 	}
 	public String ammunitionType(){return readableText;}

@@ -364,7 +364,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			}
 		}
 
-		if((CMLib.flags().isReadable(building))
+		if((building.isReadable())
 		&&((building.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN))
 			building.setMaterial(RawMaterial.RESOURCE_PAPER);
 

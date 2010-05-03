@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Items.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.Readable;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -36,7 +37,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @author Bo Zimmerman
  *
  */
-public interface Item extends Environmental, Rider, DBIdentifiable, Wearable, PhysicalAgent
+public interface Item extends Rider, DBIdentifiable, Wearable, PhysicalAgent, Readable
 {
     /** 
      * Where the item is located.  Either null for
@@ -168,22 +169,6 @@ public interface Item extends Environmental, Rider, DBIdentifiable, Wearable, Ph
      * @see RawMaterial
      */
 	public void setMaterial(int newValue);
-
-    /**
-     * If the IS_READABLE flag is set for the envStats().sensesMask() flag on this item, then this
-     * method will be consulted as representing any writing on the Item.  Typically accessed with
-     * the READ command.  This flag is defined in the EnvStats interface
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats
-     * @return the readable text on the item.
-     */
-	public String readableText();
-    /**
-     * Changes the text that is written on the item.  This method does NOT set the IS_READABLE flag
-     * on the envStats().sensesMask flag.  This flag is defined in the EnvStats interface
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats
-     * @param text what is written on the item.  Empty string means nothing.
-     */
-	public void setReadableText(String text);
 	
     /**
      * For a normal item, this method returns the same as envStats().weight().  For

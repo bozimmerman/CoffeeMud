@@ -400,6 +400,8 @@ public class StdItem implements Item
 
 	public String readableText(){return miscText;}
 	public void setReadableText(String text){miscText=text;}
+	public boolean isReadable(){ return CMLib.flags().isReadable(this);}
+	public void setReadable(boolean truefalse){ CMLib.flags().setReadable(this, truefalse);}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -1039,7 +1041,7 @@ public class StdItem implements Item
 				return true;
 			break;
 		case CMMsg.TYP_WRITE:
-			if((CMLib.flags().isReadable(this))&&(!(this instanceof Scroll)))
+			if((isReadable())&&(!(this instanceof Scroll)))
 			{
 				if(msg.targetMessage().trim().length()==0)
 				{
@@ -1122,7 +1124,7 @@ public class StdItem implements Item
 		case CMMsg.TYP_REMOVE: CMLib.commands().handleBeingRemoved(msg);  break;
 		case CMMsg.TYP_DROP: CMLib.commands().handleBeingDropped(msg); break;
 		case CMMsg.TYP_WRITE:
-			if(CMLib.flags().isReadable(this))
+			if(isReadable())
 				setReadableText((readableText()+" "+msg.targetMessage()).trim());
 			break;
 		case CMMsg.TYP_EXPIRE:

@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Exits.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.Readable;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -34,7 +35,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * travel when trying to get from one Room to another.
  * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
  */
-public interface Exit extends Environmental, PhysicalAgent
+public interface Exit extends PhysicalAgent, Readable
 {
     /**
      * Returns whether this exit is OPEN and may be travelled through
@@ -126,48 +127,6 @@ public interface Exit extends Environmental, PhysicalAgent
 	 * @param keyName the new key code
 	 */
 	public void setKeyName(String keyName);
-	
-	/**
-	 * For Exits that are readable, this returns the readable string
-	 * for this exit.  That is to say, what the player sees when they
-	 * read the door.
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#isReadable()
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#setReadable(boolean)
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#setReadableText(String)
-	 * @return the readable string
-	 */
-	public String readableText();
-	
-	/**
-	 * Returns whether this exit is readable when the player uses the READ command
-	 * and targets it.
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#readableText()
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#setReadable(boolean)
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#setReadableText(String)
-	 * @return true if the exit is readable.
-	 */
-	public boolean isReadable();
-	
-	/**
-     * Returns whether this exit is readable when the player uses the READ command
-     * and targets it.  Readable text should also be set or unset.
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#readableText()
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#isReadable()
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#setReadableText(String)
-	 * @param isTrue true if the exit is readable, and false otherwise
-	 */
-	public void setReadable(boolean isTrue);
-	
-	/**
-     * For Exits that are readable, this set the readable string
-     * for this exit.  That is to say, what the player sees when they
-     * read the door.
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#isReadable()
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#setReadable(boolean)
-     * @see com.planet_ink.coffee_mud.Exits.interfaces.Exit#readableText()
-	 * @param text the readable text
-	 */
-	public void setReadableText(String text);
 	
 	/**
 	 * Both reads and optionally modifies an internal reference counter for this

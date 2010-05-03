@@ -1273,9 +1273,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             CMLib.flags().setReadable(E,true);
         else
         if((showFlag!=showNumber)&&(showFlag>-999))
-            mob.tell(showNumber+". Item is readable: "+CMLib.flags().isReadable(E)+"");
+            mob.tell(showNumber+". Item is readable: "+E.isReadable()+"");
         else
-            CMLib.flags().setReadable(E,genGenericPrompt(mob,showNumber+". Is this item readable",CMLib.flags().isReadable(E)));
+            CMLib.flags().setReadable(E,genGenericPrompt(mob,showNumber+". Is this item readable",E.isReadable()));
     }
 
     protected void genReadable2(MOB mob, Item E, int showNumber, int showFlag)
@@ -1283,7 +1283,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
 
-        if((CMLib.flags().isReadable(E))
+        if((E.isReadable())
          ||(E instanceof SpellHolder)
          ||(E instanceof Ammunition)
          ||(E instanceof Recipe)

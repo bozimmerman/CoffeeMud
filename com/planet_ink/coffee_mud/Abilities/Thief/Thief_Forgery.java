@@ -61,7 +61,7 @@ public class Thief_Forgery extends ThiefSkill
 		commands.removeElementAt(commands.size()-1);
 
 		if((!target.isGeneric())
-		   ||((!(target instanceof Scroll))&&(!CMLib.flags().isReadable(target))))
+		   ||((!(target instanceof Scroll))&&(!target.isReadable())))
 		{
 			mob.tell("You can't forge anything on that.");
 			return false;

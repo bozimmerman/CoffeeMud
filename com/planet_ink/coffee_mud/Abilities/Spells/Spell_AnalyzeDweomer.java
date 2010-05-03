@@ -107,7 +107,7 @@ public class Spell_AnalyzeDweomer extends Spell
 					str.append("It is a key.  ");
 				if(target instanceof LandTitle)
 					str.append("It is a property title.  ");
-				if(CMLib.flags().isReadable(target))
+				if(target.isReadable())
 					str.append("It is readable.  ");
 				if(target instanceof DeadBody)
 					str.append("It is a corpse of a "+((DeadBody)target).charStats().getMyRace().name()+".  ");

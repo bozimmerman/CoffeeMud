@@ -286,7 +286,7 @@ public class StdLanguage extends StdAbility implements Language
 	        if((msg.sourceMinor()==CMMsg.TYP_WRITE)
 	        &&(msg.source()==affected)
 	        &&(msg.target() instanceof Item)
-	        &&(CMLib.flags().isReadable((Item)msg.target()))
+	        &&(((Item)msg.target()).isReadable())
 	        &&(msg.targetMessage()!=null)
 	        &&(msg.targetMessage().length()>0))
         	{
@@ -488,7 +488,7 @@ public class StdLanguage extends StdAbility implements Language
         &&(beingSpoken(ID()))
         &&(msg.target() instanceof Item)
         &&(msg.sourceMinor()==CMMsg.TYP_WRITE)
-        &&(CMLib.flags().isReadable((Item)msg.target()))
+        &&(((Item)msg.target()).isReadable())
         &&(msg.targetMessage()!=null)
         &&(msg.targetMessage().length()>0))
         {
@@ -512,9 +512,9 @@ public class StdLanguage extends StdAbility implements Language
         &&((msg.targetMessage()==null)||(!msg.targetMessage().equals("CANCEL")))
         &&(!(affected instanceof LandTitle))
         &&(CMLib.flags().canBeSeenBy(this,msg.source()))
-        &&((CMLib.flags().isReadable((Item)affected))
+        &&(((Item)affected).isReadable())
         &&(((Item)affected).readableText()!=null)
-        &&(((Item)affected).readableText().length()>0)))
+        &&(((Item)affected).readableText().length()>0))
         {
             // first make sure the Item does not handle it,
             // since THIS item is in another language.

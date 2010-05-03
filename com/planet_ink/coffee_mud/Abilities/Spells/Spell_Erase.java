@@ -52,7 +52,7 @@ public class Spell_Erase extends Spell
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null) return false;
 
-		if(!(target instanceof Scroll)&&(!CMLib.flags().isReadable(target)))
+		if(!(target instanceof Scroll)&&(!target.isReadable()))
 		{
 			mob.tell("You can't erase that.");
 			return false;

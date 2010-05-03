@@ -141,6 +141,8 @@ public class GenWallpaper implements Item
 	public void setBaseValue(int newValue){}
 	public String readableText(){return readableText;}
 	public void setReadableText(String text){readableText=text;}
+	public boolean isReadable(){ return CMLib.flags().isReadable(this);}
+	public void setReadable(boolean truefalse){ CMLib.flags().setReadable(this, truefalse);}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats){}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats){}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState){}
@@ -319,7 +321,7 @@ public class GenWallpaper implements Item
 		case 0: return ID();
 		case 1: return name();
 		case 2: return description();
-		case 3: return ""+CMLib.flags().isReadable(this);
+		case 3: return ""+isReadable();
 		case 4: return readableText();
 		}
 		return "";

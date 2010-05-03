@@ -564,7 +564,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 						cols += 2;
 				}
 				StringBuffer map[][]=getMyMappedRoom(cols);
-				if((CMLib.flags().isReadable(this))
+				if((isReadable())
 				&&(map!=null)
 				&&(map.length>0)
 				&&(map[0].length>0)

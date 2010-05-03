@@ -1321,7 +1321,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             	if((msg.target() instanceof Exit)&&(((Exit)msg.target()).isReadable()))
             		text=((Exit)msg.target()).readableText();
             	else
-            	if((msg.target() instanceof Item)&&(CMLib.flags().isReadable((Item)msg.target())))
+            	if((msg.target() instanceof Item)&&(((Item)msg.target()).isReadable()))
             	{
             		text=((Item)msg.target()).readableText();
             		if(((text==null)||(text.length()==0))

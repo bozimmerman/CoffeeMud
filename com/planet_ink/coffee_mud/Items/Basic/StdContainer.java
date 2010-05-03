@@ -477,7 +477,7 @@ public class StdContainer extends StdItem implements Container
 					break;
 				case CONTAIN_READABLES:
 					if((E instanceof Item)
-					&&(CMLib.flags().isReadable(((Item)E))))
+					&&(((Item)E).isReadable()))
 						return true;
 					break;
 				case CONTAIN_SCROLLS:
