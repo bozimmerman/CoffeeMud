@@ -43,7 +43,7 @@ public class Property implements Ability
 	public String displayText(){return "";}
 	protected boolean savable=true;
 	protected String miscText="";
-	protected Environmental affected=null;
+	protected Physical affected=null;
 	
 	/**
 	 * Designates whether, when used as a property/effect, what sort of objects this 
@@ -116,8 +116,8 @@ public class Property implements Ability
 	public boolean proficiencyCheck(MOB mob, int adjustment, boolean auto){return false;}
 	public void helpProficiency(MOB mob){}
 
-	public Environmental affecting(){return affected;}
-	public void setAffectedOne(Environmental being){affected=being;}
+	public Physical affecting(){return affected;}
+	public void setAffectedOne(Physical being){affected=being;}
 
 	public boolean putInCommandlist(){return false;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

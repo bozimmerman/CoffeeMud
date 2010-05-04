@@ -261,11 +261,11 @@ public class Injury extends StdAbility
 	        MOB mob=(MOB)msg.target();
 	        Amputation A=(Amputation)mob.fetchEffect("Amputation");
 	        if(A==null) A=new Amputation();
-	        Vector remains=A.remainingLimbNameSet(mob);
+	        List<String> remains=A.remainingLimbNameSet(mob);
 	        if(mob.charStats().getBodyPart(Race.BODY_HEAD)>0)
-		        remains.addElement("head");
+		        remains.add("head");
 	        if(mob.charStats().getBodyPart(Race.BODY_TORSO)>0)
-		        remains.addElement("torso");
+		        remains.add("torso");
 	        if(remains.size()>0)
 	        {
 		        int[] chances=new int[remains.size()]; 
@@ -275,7 +275,7 @@ public class Injury extends StdAbility
 				    int bodyPart=-1;
 					for(int i=0;i<Race.BODY_PARTS;i++)
 					{
-				        if((" "+((String)remains.elementAt(x)).toUpperCase()).endsWith(" "+Race.BODYPARTSTR[i]))
+				        if((" "+((String)remains.get(x)).toUpperCase()).endsWith(" "+Race.BODYPARTSTR[i]))
 				        { bodyPart=i; break;}
 					}
 				    if(bodyPart>=0)
@@ -317,33 +317,33 @@ public class Injury extends StdAbility
 					if(LimbPct<1) LimbPct=1;
 					int bodyLoc=-1;
 					for(int i=0;i<Race.BODY_PARTS;i++)
-						if((" "+((String)remains.elementAt(chosenOne)).toUpperCase()).endsWith(" "+Race.BODYPARTSTR[i]))
+						if((" "+((String)remains.get(chosenOne)).toUpperCase()).endsWith(" "+Race.BODYPARTSTR[i]))
 					    { bodyLoc=i; break;}
 					if(bodyLoc>=0)
 					{
 					    lastMsg=msg;
-					    lastLoc=(String)remains.elementAt(chosenOne);
+					    lastLoc=(String)remains.get(chosenOne);
 					    Vector bodyVec=injuries[bodyLoc];
 					    if(bodyVec==null){ injuries[bodyLoc]=new Vector(); bodyVec=injuries[bodyLoc];}
 					    int whichInjury=-1;
 					    for(int i=0;i<bodyVec.size();i++)
 					    {
 					        Object[] O=(Object[])bodyVec.elementAt(i);
-					        if(((String)O[0]).equalsIgnoreCase((String)remains.elementAt(chosenOne)))
+					        if(((String)O[0]).equalsIgnoreCase((String)remains.get(chosenOne)))
 					        { whichInjury=i; break;}
 					    }
-					    String newTarg=fixMessageString(msg.targetMessage(),((String)remains.elementAt(chosenOne)).toLowerCase());
+					    String newTarg=fixMessageString(msg.targetMessage(),((String)remains.get(chosenOne)).toLowerCase());
 					    if(!newTarg.equalsIgnoreCase(msg.targetMessage()))
 					    {
 					        msg.modify(msg.source(),msg.target(),msg.tool(),
-					                msg.sourceCode(),fixMessageString(msg.sourceMessage(),((String)remains.elementAt(chosenOne)).toLowerCase()),
+					                msg.sourceCode(),fixMessageString(msg.sourceMessage(),((String)remains.get(chosenOne)).toLowerCase()),
 					                msg.targetCode(),newTarg,
-					                msg.othersCode(),fixMessageString(msg.othersMessage(),((String)remains.elementAt(chosenOne)).toLowerCase()));
+					                msg.othersCode(),fixMessageString(msg.othersMessage(),((String)remains.get(chosenOne)).toLowerCase()));
                             Object[] O=null;
 						    if(whichInjury<0)
 						    {
 						        O=new Object[2];
-						        O[0]=((String)remains.elementAt(chosenOne)).toLowerCase();
+						        O[0]=((String)remains.get(chosenOne)).toLowerCase();
 						        O[1]=Integer.valueOf(0);
 						        bodyVec.addElement(O);
                                 whichInjury=bodyVec.size()-1;

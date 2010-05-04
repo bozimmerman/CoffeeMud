@@ -43,7 +43,7 @@ public class Amputation extends StdAbility implements Amputator
 	public String displayText(){
 		StringBuffer buf=new StringBuffer("");
 		for(int i=0;i<missingLimbNameSet().size();i++)
-			buf.append(", "+missingLimbNameSet().elementAt(i));
+			buf.append(", "+missingLimbNameSet().get(i));
 		if(buf.length()==0) return "";
 		return "(Missing your"+buf.substring(1)+")";
 	}
@@ -108,7 +108,7 @@ public class Amputation extends StdAbility implements Amputator
 			&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 			&&(CMLib.flags().canBeSeenBy(M,msg.source())))
 			{
-				String s=CMLib.utensils().niceCommaList(missingLimbNameSet(),true);
+				String s=CMLib.utensils().niceCommaList((Vector)missingLimbNameSet(),true);
 				if(s.length()>0)
 					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,
 												  CMMsg.MSG_OK_VISUAL,"\n\r"+M.name()+" is missing "+M.charStats().hisher()+" "+s+".\n\r",
@@ -245,7 +245,7 @@ public class Amputation extends StdAbility implements Amputator
 		missingLimbs=null;
 	}
 
-	public Vector missingLimbNameSet()
+	public List<String> missingLimbNameSet()
 	{
 		if(missingLimbs!=null) return missingLimbs;
 		missingLimbs=new Vector();
@@ -279,9 +279,9 @@ public class Amputation extends StdAbility implements Amputator
 		return missingLimbs;
 	}
 
-    public Vector completeLimbNameSet(Environmental E)
+    public List<String> completeLimbNameSet(Environmental E)
     {
-        Vector V=new Vector();
+        Vector<String> V=new Vector<String>();
         if(!(E instanceof MOB)) return V;
         MOB M=(MOB)E;
         int[] limbs=M.charStats().getMyRace().bodyMask();
@@ -305,7 +305,7 @@ public class Amputation extends StdAbility implements Amputator
         return V;
     }
     
-	public Vector remainingLimbNameSet(Environmental E)
+	public List<String> remainingLimbNameSet(Physical E)
 	{
 		missingLimbNameSet();
 		Vector V=new Vector();
@@ -344,7 +344,7 @@ public class Amputation extends StdAbility implements Amputator
 // Addition by Tulath, 4/10/04.
 // Reason:  Easy single limb amputation removal
 // ****************************************************************************
-	public void unamputate(Environmental target, Amputator A, String gone)
+	public void unamputate(Physical target, Amputator A, String gone)
 	{
 		if (target != null)
 		{
@@ -360,11 +360,11 @@ public class Amputation extends StdAbility implements Amputator
 		}
 
 		if (A == null)return;
-		Vector theRest = A.missingLimbNameSet();
+		List<String> theRest = A.missingLimbNameSet();
 		if (theRest.contains(gone))theRest.remove(gone);
 		A.setMiscText("");
 		for (int i = 0; i < theRest.size(); i++)
-		    A.setMiscText(A.text() + ((String)theRest.elementAt(i)) + ";");
+		    A.setMiscText(A.text() + ((String)theRest.get(i)) + ";");
 	}
 
 	public static int getRacialCode(String name)
@@ -376,7 +376,7 @@ public class Amputation extends StdAbility implements Amputator
 		return -1;
 	}
 
-	public Vector affectedLimbNameSet(Object O, String missing, Vector missingLimbs)
+	public List<String> affectedLimbNameSet(Object O, String missing, List<String> missingLimbs)
 	{
 		Vector AL=new Vector();
 		int x=getRacialCode(missing);
@@ -401,7 +401,7 @@ public class Amputation extends StdAbility implements Amputator
 		return AL;
 	}
 
-	public Item amputate(Environmental target, Amputator A, String gone)
+	public Item amputate(Physical target, Amputator A, String gone)
 	{
 		if(A==null) return null;
 		Race R=null;
@@ -480,10 +480,10 @@ public class Amputation extends StdAbility implements Amputator
         
         if(!isFakeLimb)
         {
-    		Vector theRest=A.affectedLimbNameSet(target,gone,A.missingLimbNameSet());
-    		if(!theRest.contains(gone)) theRest.addElement(gone);
+        	List<String> theRest=A.affectedLimbNameSet(target,gone,A.missingLimbNameSet());
+    		if(!theRest.contains(gone)) theRest.add(gone);
             for(int i=0;i<theRest.size();i++)
-                A.setMiscText(A.text()+((String)theRest.elementAt(i))+";");
+                A.setMiscText(A.text()+((String)theRest.get(i))+";");
         }
 		
 		Injury I=(target==null)?null:(Injury)target.fetchEffect("Injury");
@@ -617,16 +617,16 @@ public class Amputation extends StdAbility implements Amputator
 	            fakeLimb=findFakeLimb((MOB)target,choice);
 	            if(fakeLimb != null)
 	            {
-	                Vector VN=completeLimbNameSet(target);
+	            	List<String> VN=completeLimbNameSet(target);
 	                for(int i=0;i<VN.size();i++)
-	                    if(CMLib.english().containsString((String)VN.elementAt(i),choice))
-	                    { gone=(String)VN.elementAt(i); break;}
+	                    if(CMLib.english().containsString((String)VN.get(i),choice))
+	                    { gone=(String)VN.get(i); break;}
 	                if(gone==null)
 	                    fakeLimb=null;
 	            }
 	        }
 	        
-			Vector VN=A.remainingLimbNameSet(target);
+	        List<String> VN=A.remainingLimbNameSet(target);
 			if((VN.size()==0)&&(fakeLimb==null))
 			{
 				if(!auto)
@@ -636,8 +636,8 @@ public class Amputation extends StdAbility implements Amputator
 			if((choice.length()>0)&&(fakeLimb==null)&&(gone==null))
 			{
 				for(int i=0;i<VN.size();i++)
-					if(CMLib.english().containsString((String)VN.elementAt(i),choice))
-					{ gone=(String)VN.elementAt(i); break;}
+					if(CMLib.english().containsString((String)VN.get(i),choice))
+					{ gone=(String)VN.get(i); break;}
 				if(gone==null)
 				{
 					if(!auto)
@@ -650,13 +650,13 @@ public class Amputation extends StdAbility implements Amputator
 			{
                 if(target instanceof MOB)
                 {
-    			    Vector completeSet = completeLimbNameSet(target);
+                	List<String> completeSet = completeLimbNameSet(target);
     			    for(int v=0;v<completeSet.size();v++)
-    			        if((!VN.contains(completeSet.elementAt(v)))
-    			        &&(findFakeLimb((MOB)target,(String)completeSet.elementAt(v))!=null))
-    			            VN.addElement(completeSet.elementAt(v));
+    			        if((!VN.contains(completeSet.get(v)))
+    			        &&(findFakeLimb((MOB)target,(String)completeSet.get(v))!=null))
+    			            VN.add(completeSet.get(v));
                 }
-				gone=(String)VN.elementAt(CMLib.dice().roll(1,VN.size(),-1));
+				gone=(String)VN.get(CMLib.dice().roll(1,VN.size(),-1));
                 if(target instanceof MOB)
 	                fakeLimb=findFakeLimb((MOB)target,gone);
 			}

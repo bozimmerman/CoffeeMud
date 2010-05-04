@@ -37,7 +37,6 @@ import java.util.*;
  * the missing parts are body parts from mobs, but they can technically be
  * anything that can go missing as parts from the hosted object.
  */
-@SuppressWarnings("unchecked")
 public interface Amputator extends Ability
 {
     /**
@@ -47,7 +46,7 @@ public interface Amputator extends Ability
      * @param E the object to scrutinize 
      * @return the set of the name of the remaining pieces. 
      */
-    public Vector remainingLimbNameSet(Environmental E);
+    public List<String> remainingLimbNameSet(Physical E);
     /**
      * Performs the very dirty business of amputating the item of the given
      * name from the given target.  An existing instanceof of the amputator
@@ -59,13 +58,13 @@ public interface Amputator extends Ability
      * @param gone the name of the piece to remove, fully qualified.
      * @return the item object representing the newly missing piece.
      */
-    public Item amputate(Environmental target, Amputator A, String gone);
+    public Item amputate(Physical target, Amputator A, String gone);
     /**
      * The opposite of the remainingLimbNameSet method, this method returns
      * the list of the names of those parts which have been amputated.
      * @return the list of the names of the parts that are GONE!
      */
-    public Vector missingLimbNameSet();
+    public List<String> missingLimbNameSet();
     /**
      * Often losing one part means that other parts are instantly affected, like
      * removing an engine includes the spark plugs.  This method is called to
@@ -77,7 +76,7 @@ public interface Amputator extends Ability
      * @param missingLimbs the parts already missing from the target
      * @return the set of parts that are not yet missing, but now should be.
      */
-    public Vector affectedLimbNameSet(Object O, String missing, Vector missingLimbs);
+    public List<String> affectedLimbNameSet(Object O, String missing, List<String> missingLimbs);
     /**
      * Restores a missing part, denoted by the given string, and managed by the
      * given Amputator property
@@ -85,6 +84,6 @@ public interface Amputator extends Ability
      * @param A the amputator object managing the targets missing stuff
      * @param gone the name of the part to restore.
      */
-    public void unamputate(Environmental target, Amputator A, String gone);
+    public void unamputate(Physical target, Amputator A, String gone);
 
 }

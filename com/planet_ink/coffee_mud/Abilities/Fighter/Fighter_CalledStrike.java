@@ -164,7 +164,7 @@ public class Fighter_CalledStrike extends FighterSkill
 		Amputator A=(Amputator)target.fetchEffect("Amputation");
 		if(A==null)	A=(Amputator)CMClass.getAbility("Amputation");
 
-		Vector remainingLimbList=A.remainingLimbNameSet(target);
+		List<String> remainingLimbList=A.remainingLimbNameSet(target);
 		if(remainingLimbList.size()==0)
 		{
 			if(!auto)
@@ -172,14 +172,14 @@ public class Fighter_CalledStrike extends FighterSkill
 			return false;
 		}
 		if(mob.isMonster())
-			gone=(String)remainingLimbList.elementAt(CMLib.dice().roll(1,remainingLimbList.size(),-1));
+			gone=(String)remainingLimbList.get(CMLib.dice().roll(1,remainingLimbList.size(),-1));
 		else
 		if(commands.size()<=0)
 		{
 			mob.tell("You must specify a body part to cut off.");
 			StringBuffer str=new StringBuffer("Parts include: ");
 			for(int i=0;i<remainingLimbList.size();i++)
-				str.append(((String)remainingLimbList.elementAt(i))+", ");
+				str.append(((String)remainingLimbList.get(i))+", ");
 			mob.tell(str.toString().substring(0,str.length()-2)+".");
 			return false;
 		}
@@ -194,9 +194,9 @@ public class Fighter_CalledStrike extends FighterSkill
 			}
 			else
 			for(int i=0;i<remainingLimbList.size();i++)
-				if(((String)remainingLimbList.elementAt(i)).toUpperCase().startsWith(off.toUpperCase()))
+				if(((String)remainingLimbList.get(i)).toUpperCase().startsWith(off.toUpperCase()))
 				{
-					gone=(String)remainingLimbList.elementAt(i);
+					gone=(String)remainingLimbList.get(i);
 					break;
 				}
 			if(gone.length()==0)
@@ -204,7 +204,7 @@ public class Fighter_CalledStrike extends FighterSkill
 				mob.tell("'"+off+"' is not a valid body part.");
 				StringBuffer str=new StringBuffer("Parts include: ");
 				for(int i=0;i<remainingLimbList.size();i++)
-					str.append(((String)remainingLimbList.elementAt(i))+", ");
+					str.append(((String)remainingLimbList.get(i))+", ");
 				mob.tell(str.toString().substring(0,str.length()-2)+".");
 				return false;
 			}

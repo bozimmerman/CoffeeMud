@@ -40,7 +40,7 @@ public class QuestBound implements Ability
 	public String Name(){return name();}
 	public String description(){return "";}
 	public String displayText(){return "";}
-	protected Environmental affected=null;
+	protected Physical affected=null;
 	protected boolean keyPlayer=false;
 	
 	public boolean canTarget(int can_code){return false;}
@@ -101,8 +101,8 @@ public class QuestBound implements Ability
 	public boolean proficiencyCheck(MOB mob, int adjustment, boolean auto){return false;}
 	public void helpProficiency(MOB mob){}
 
-	public Environmental affecting(){return affected;}
-	public void setAffectedOne(Environmental being){affected=being;}
+	public Physical affecting(){return affected;}
+	public void setAffectedOne(Physical being){affected=being;}
 
 	public boolean putInCommandlist(){return false;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

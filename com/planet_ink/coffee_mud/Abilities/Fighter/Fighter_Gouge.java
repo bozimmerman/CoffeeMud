@@ -157,12 +157,12 @@ public class Fighter_Gouge extends FighterSkill
 				maliciousAffect(mob,target,asLevel,5,-1);
                 Amputator A=(Amputator)target.fetchEffect("Amputation");
                 if(A==null) A=(Amputator)CMClass.getAbility("Amputation");
-                Vector remainingLimbList=A.remainingLimbNameSet(target);
+                List<String> remainingLimbList=A.remainingLimbNameSet(target);
                 String gone=null;
                 for(int i=0;i<remainingLimbList.size();i++)
-                    if(((String)remainingLimbList.elementAt(i)).toUpperCase().endsWith("EYE"))
+                    if(((String)remainingLimbList.get(i)).toUpperCase().endsWith("EYE"))
                     {
-                        gone=(String)remainingLimbList.elementAt(i);
+                        gone=(String)remainingLimbList.get(i);
                         break;
                     }
                 if(gone!=null)

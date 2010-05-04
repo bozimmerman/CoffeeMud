@@ -96,7 +96,7 @@ public class Thief_Bind extends ThiefSkill
 	}
 
 
-	public void setAffectedOne(Environmental E)
+	public void setAffectedOne(Physical E)
 	{
 		if(!(E instanceof Item))
 			super.setAffectedOne(E);

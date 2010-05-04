@@ -41,7 +41,7 @@ public class Spell_LimbRack extends Spell
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
-	public Vector limbsToRemove=new Vector();
+	public List<String> limbsToRemove=new Vector<String>();
 	
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -79,7 +79,7 @@ public class Spell_LimbRack extends Spell
                 Amputator A=(Amputator)mob.fetchEffect("Amputation");
                 if(A==null) A=(Amputator)CMClass.getAbility("Amputation");
                 for(int i=0;i<limbsToRemove.size();i++)
-                    A.amputate(mob,A,(String)limbsToRemove.elementAt(i));
+                    A.amputate(mob,A,(String)limbsToRemove.get(i));
                 if(mob.fetchEffect(A.ID())==null)
                     mob.addNonUninvokableEffect(A);
 		    }
@@ -95,13 +95,13 @@ public class Spell_LimbRack extends Spell
 
 		Amputator A=(Amputator)target.fetchEffect("Amputation");
 		if(A==null)	A=(Amputator)CMClass.getAbility("Amputation");
-		Vector remainingLimbList=A.remainingLimbNameSet(target);
+		List<String> remainingLimbList=A.remainingLimbNameSet(target);
 		for(int i=remainingLimbList.size()-1;i>=0;i--)
 		{
-		    String gone=(String)remainingLimbList.elementAt(i);
+		    String gone=(String)remainingLimbList.get(i);
 		    if((!gone.toUpperCase().endsWith(" ARM"))
 		    &&(!gone.toUpperCase().endsWith(" LEG")))
-		        remainingLimbList.removeElementAt(i);
+		        remainingLimbList.remove(i);
 		}
 		if((remainingLimbList.size()==0)
 	    ||((target.charStats().getMyRace().bodyMask()[Race.BODY_ARM]<=0)
@@ -136,7 +136,10 @@ public class Spell_LimbRack extends Spell
                 {
     				super.maliciousAffect(mob,target,asLevel,12,-1);
     				Ability A2=target.fetchEffect(ID());
-    				if(A2!=null) ((Spell_LimbRack)A2).limbsToRemove=(Vector)remainingLimbList.clone();
+    				if(A2!=null){
+    					((Spell_LimbRack)A2).limbsToRemove=new Vector<String>();
+    					((Spell_LimbRack)A2).limbsToRemove.addAll(remainingLimbList);
+    				}
                 }
 			}
 		}

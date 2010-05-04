@@ -43,7 +43,7 @@ public class Prop_HaveSpellCast extends Prop_SpellAdder
     public String accountForYourself()
     { return spellAccountingsWithMask("Casts "," on the owner.");}
 
-    public void setAffectedOne(Environmental E)
+    public void setAffectedOne(Physical E)
     {
         if(E==null)
         {

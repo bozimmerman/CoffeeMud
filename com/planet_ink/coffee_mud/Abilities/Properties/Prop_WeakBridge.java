@@ -112,7 +112,7 @@ public class Prop_WeakBridge extends Property
 							{
 								Ability falling=CMClass.getAbility("Falling");
 								falling.setProficiency(0);
-								falling.setAffectedOne(msg.target());
+								falling.setAffectedOne(affected);
 								falling.invoke(null,null,mob,true,0);
 							}
 							CMLib.threads().startTickDown(this,Tickable.TICKID_SPELL_AFFECT,1);

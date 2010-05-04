@@ -215,7 +215,7 @@ public class StdAbility implements Ability
 	protected boolean savable=true;
 	public String miscText="";
 	protected MOB invoker=null;
-	protected Environmental affected=null;
+	protected Physical affected=null;
 	protected boolean canBeUninvoked=true;
 	protected boolean unInvoked=false;
 	protected int tickDown=-1;
@@ -677,11 +677,11 @@ public class StdAbility implements Ability
 		return (CMLib.dice().rollPercentage()<pctChance);
 	}
 
-	public Environmental affecting()
+	public Physical affecting()
 	{
 		return affected;
 	}
-	public void setAffectedOne(Environmental being)
+	public void setAffectedOne(Physical being)
 	{
 		affected=being;
 	}

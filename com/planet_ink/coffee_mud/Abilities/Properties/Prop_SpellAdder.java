@@ -291,7 +291,7 @@ public class Prop_SpellAdder extends Property
         lastMOB=null;
     }
     
-    public void setAffectedOne(Environmental being) 
+    public void setAffectedOne(Physical being) 
     {
     	super.setAffectedOne(being);
     	if(being == null)

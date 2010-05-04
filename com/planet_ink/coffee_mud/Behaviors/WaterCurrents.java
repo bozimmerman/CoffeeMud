@@ -218,7 +218,7 @@ public class WaterCurrents extends ActiveTicker
 		public String displayText(){return "";}
 		protected boolean savable=true;
 		protected String miscText="";
-		protected Environmental affected=null;
+		protected Physical affected=null;
 		protected int canAffectCode(){return 0;}
 		protected int canTargetCode(){return 0;}
 		public int getTicksBetweenCasts() { return 0;}
@@ -279,8 +279,8 @@ public class WaterCurrents extends ActiveTicker
 		public boolean proficiencyCheck(MOB mob, int adjustment, boolean auto){return false;}
 		public void helpProficiency(MOB mob){}
 
-		public Environmental affecting(){return affected;}
-		public void setAffectedOne(Environmental being){affected=being;}
+		public Physical affecting(){return affected;}
+		public void setAffectedOne(Physical being){affected=being;}
 
 		public boolean putInCommandlist(){return false;}
 		public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

@@ -113,7 +113,7 @@ public class Thief_DampenAuras extends ThiefSkill
 			{
 				A.tick(target,Tickable.TICKID_MOB);
 				Item I=null;
-				Environmental affecting=A.affecting();
+				Physical affecting=A.affecting();
 				StringBuffer items=new StringBuffer("");
 				for(int i=0;i<target.numItems();i++)
 				{

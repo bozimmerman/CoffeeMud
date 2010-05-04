@@ -64,7 +64,7 @@ public class Prop_LanguageSpeaker extends Property
 		super.setMiscText(txt);
 	}
 
-	public void setAffectedOne(Environmental E)
+	public void setAffectedOne(Physical E)
 	{
 		affectedType = CMClass.getType(E);
 		super.setAffectedOne(E);

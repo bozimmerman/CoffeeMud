@@ -260,7 +260,7 @@ public class Falling extends StdAbility
 		if((affectableStats.disposition()&EnvStats.IS_FLYING)==0)
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FALLING);
 	}
-	public void setAffectedOne(Environmental being)
+	public void setAffectedOne(Physical being)
 	{
 		if(being instanceof Room)
 			room=(Room)being;

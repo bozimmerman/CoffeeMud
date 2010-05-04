@@ -127,10 +127,10 @@ public interface Ability extends Environmental
 	 * not apply to non-affecting skills like kick, but more
 	 * to auto-invoking skills and spells that affect people
 	 * like sleep.
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#setAffectedOne(Environmental)
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#setAffectedOne(Physical)
 	 * @return the room, mob, or item being affected
 	 */
-	public Environmental affecting();
+	public Physical affecting();
 	
 	/**
 	 * Sets a reference to the room, item, mob, or exit
@@ -141,7 +141,7 @@ public interface Ability extends Environmental
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#affecting()
 	 * @param being the room, mob, or item being affected
 	 */
-	public void setAffectedOne(Environmental being);
+	public void setAffectedOne(Physical being);
 
 	/**
 	 * Returns whether this skills triggerStrings should be
