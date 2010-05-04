@@ -23,7 +23,7 @@ limitations under the License.
  * @author Bo Zimmerman
  *
  */
-public interface CMContingent extends CMObject
+public interface Contingent extends CMObject
 {
     /**
      * Utterly and permanently destroy this object, not only removing it from the map, but

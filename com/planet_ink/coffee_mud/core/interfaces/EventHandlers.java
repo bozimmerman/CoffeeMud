@@ -29,7 +29,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-public interface CMEventHandlers extends MsgListener, StatsAffecting
+public interface EventHandlers extends MsgListener, StatsAffecting
 {
     public boolean approveGetItem(MOB mob, Item item);
     public void executeGetItem(MOB mob, Item item);

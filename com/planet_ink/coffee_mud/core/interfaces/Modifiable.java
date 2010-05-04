@@ -34,7 +34,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @author Bo Zimmerman
  *
  */
-public interface CMModifiable 
+public interface Modifiable 
 {
     /**
      * Returns an array of the string names of those fields which are modifiable on this object at run-time by
