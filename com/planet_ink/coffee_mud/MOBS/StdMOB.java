@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.MOBS;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Move;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -2749,6 +2750,7 @@ public class StdMOB implements MOB
 		inventory.addElement(item);
 		item.recoverEnvStats();
 	}
+	public void addItem(Item item, ItemPossessor.Expire expire) { addItem(item);}
 	
 	public void delItem(Item item)
 	{
@@ -3592,31 +3594,33 @@ public class StdMOB implements MOB
 		return false;
 	}
 
-	public void moveItemTo(Item thisContainer)
+	public void moveItemTo(Item container, ItemPossessor.Expire expire, Move... moveFlags) { moveItemTo(container); }
+	
+	public void moveItemTo(Item container)
 	{
 		// caller is responsible for recovering any env
 		// stat changes!
-		if(CMLib.flags().isHidden(thisContainer))
-			thisContainer.baseEnvStats().setDisposition(thisContainer.baseEnvStats().disposition()&((int)EnvStats.ALLMASK-EnvStats.IS_HIDDEN));
+		if(CMLib.flags().isHidden(container))
+			container.baseEnvStats().setDisposition(container.baseEnvStats().disposition()&((int)EnvStats.ALLMASK-EnvStats.IS_HIDDEN));
 
 		// ensure its out of its previous place
 		Environmental owner=location();
-		if(thisContainer.owner()!=null)
+		if(container.owner()!=null)
 		{
-			owner=thisContainer.owner();
-			if(thisContainer.owner() instanceof Room)
-				((Room)thisContainer.owner()).delItem(thisContainer);
+			owner=container.owner();
+			if(container.owner() instanceof Room)
+				((Room)container.owner()).delItem(container);
 			else
-			if(thisContainer.owner() instanceof MOB)
-				((MOB)thisContainer.owner()).delItem(thisContainer);
+			if(container.owner() instanceof MOB)
+				((MOB)container.owner()).delItem(container);
 		}
-		location().delItem(thisContainer);
+		location().delItem(container);
 
-		thisContainer.unWear();
+		container.unWear();
 
-		if(!isMine(thisContainer))
-			addItem(thisContainer);
-		thisContainer.recoverEnvStats();
+		if(!isMine(container))
+			addItem(container);
+		container.recoverEnvStats();
 
 		boolean nothingDone=true;
 		boolean doBugFix = true;
@@ -3630,7 +3634,7 @@ public class StdMOB implements MOB
 				for(int i=0;i<R.numItems();i++)
 				{
 					Item thisItem=R.getItem(i);
-					if((thisItem!=null)&&(thisItem.container()==thisContainer))
+					if((thisItem!=null)&&(thisItem.container()==container))
 					{
 						moveItemTo(thisItem);
 						nothingDone=false;
@@ -3645,7 +3649,7 @@ public class StdMOB implements MOB
 				for(int i=0;i<M.numItems();i++)
 				{
 					Item thisItem=M.getItem(i);
-					if((thisItem!=null)&&(thisItem.container()==thisContainer))
+					if((thisItem!=null)&&(thisItem.container()==container))
 					{
 						moveItemTo(thisItem);
 						nothingDone=false;

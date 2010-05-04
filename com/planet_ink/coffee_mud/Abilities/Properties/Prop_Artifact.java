@@ -180,7 +180,7 @@ public class Prop_Artifact extends Property
 		{
 			msg.source().tell("^HYou lose your hold over "+affected.name()+"^?");
 			Room R=CMLib.map().roomLocation(msg.source());
-			R.bringItemHere((Item)affected,0,false);
+			R.moveItemTo((Item)affected);
 			if(autoreset)
 			{
 				waitToReload=System.currentTimeMillis()+60000;
@@ -211,7 +211,7 @@ public class Prop_Artifact extends Property
 				{
 					if((I.owner() instanceof MOB)
 					&&((!((MOB)I.owner()).isMonster())||(CMLib.players().getPlayer(((MOB)I.owner()).Name())!=null)))
-						R.bringItemHere(I,0,false);
+						R.moveItemTo(I);
 				}
 			}
 			else

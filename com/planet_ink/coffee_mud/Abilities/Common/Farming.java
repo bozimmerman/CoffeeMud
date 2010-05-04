@@ -87,7 +87,7 @@ public class Farming extends GatheringSkill
 					for(int i=0;i<amount;i++)
 					{
 						Item newFound=(Item)found.copyOf();
-						room.addItemRefuse(newFound,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+						room.addItem(newFound,ItemPossessor.Expire.Player_Drop);
 					}
 				}
 			}
@@ -194,7 +194,7 @@ public class Farming extends GatheringSkill
 					commands.addElement(RawMaterial.CODES.NAME(I2.material()));
 					mine=(Item)I2.copyOf();
 					if(mob.location().findItem(null,mob.location().getContextName(I2))==null)
-						mob.location().addItemRefuse(mine,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_RESOURCE));
+						mob.location().addItem(mine,ItemPossessor.Expire.Resource);
 					break;
 				}
 			}

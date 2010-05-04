@@ -80,7 +80,7 @@ public class Prop_StayAboard extends Property
 				R.setRiding(null);
 			if(CMLib.map().roomLocation(R)!=rideR)
 				if(R instanceof Item)
-					rideR.bringItemHere((Item)R,-1,true);
+					rideR.moveItemTo((Item)R,ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
 				else
 				if(R instanceof MOB)
 					rideR.bringMobHere((MOB)R,true);

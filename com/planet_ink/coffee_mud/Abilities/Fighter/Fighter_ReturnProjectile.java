@@ -98,7 +98,7 @@ public class Fighter_ReturnProjectile extends FighterSkill
 				neww.setRanges(w.minRange(),w.maxRange());
 				neww.recoverEnvStats();
 				w=neww;
-				mob.location().addItemRefuse(neww,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+				mob.location().addItem(neww,ItemPossessor.Expire.Player_Drop);
 			}
 			if(mob.location().isContent(w))
 			{

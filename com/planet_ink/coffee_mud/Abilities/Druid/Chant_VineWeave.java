@@ -101,8 +101,8 @@ public class Chant_VineWeave extends Chant
 				Item building=(Item)V.firstElement();
 				Item key=null;
 				if(V.size()>1) key=(Item)V.lastElement();
-				mob.location().addItemRefuse(building,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_RESOURCE));
-				if(key!=null) mob.location().addItemRefuse(key,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_RESOURCE));
+				mob.location().addItem(building,ItemPossessor.Expire.Resource);
+				if(key!=null) mob.location().addItem(key,ItemPossessor.Expire.Resource);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,building.name()+" twists out of some vines and grows still.");
 				mob.location().recoverEnvStats();
 			}

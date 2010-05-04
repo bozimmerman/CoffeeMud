@@ -158,7 +158,7 @@ public class Patroller extends ActiveTicker
 				if(R!=null) 
 				{
 					if(ticking instanceof Item)
-						R.bringItemHere((Item)ticking,-1,false);
+						R.moveItemTo((Item)ticking);
 					else
 					if((ticking instanceof MOB)
                     &&(CMLib.flags().isInTheGame((MOB)ticking,true)))
@@ -421,7 +421,7 @@ public class Patroller extends ActiveTicker
 				thisRoom.showHappens(CMMsg.MSG_OK_ACTION,I,"<S-NAME> goes "+Directions.getDirectionName(direction)+".");
 			    tickStatus=Tickable.STATUS_MISC+18;
 			    if(thatRoom!=null)
-			    	thatRoom.bringItemHere(I,-1,false);
+			    	thatRoom.moveItemTo(I);
 			    tickStatus=Tickable.STATUS_MISC+19;
 				if((I.owner()==thatRoom)&&(thatRoom!=null))
 				{
@@ -454,7 +454,7 @@ public class Patroller extends ActiveTicker
 								if(R instanceof Item)
 								{
 								    tickStatus=Tickable.STATUS_MISC+33;
-									thatRoom.bringItemHere((Item)R,-1,false);
+									thatRoom.moveItemTo((Item)R);
 								    tickStatus=Tickable.STATUS_MISC+34;
 								}
 							}

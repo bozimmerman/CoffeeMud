@@ -529,7 +529,7 @@ public class Dragon extends StdMOB
 				Item PartiallyDigestedItem = Stomach.getItem(y);
 				if(PartiallyDigestedItem!=null)
 				{
-					room.addItemRefuse(PartiallyDigestedItem,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+					room.addItem(PartiallyDigestedItem,ItemPossessor.Expire.Player_Drop);
 					Stomach.delItem(PartiallyDigestedItem);
 				}
 			}

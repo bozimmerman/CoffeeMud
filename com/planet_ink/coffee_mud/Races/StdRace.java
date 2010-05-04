@@ -443,7 +443,7 @@ public class StdRace implements Race
 		Ability AGE=mob.fetchEffect("Age");
 		if(AGE!=null) Body.addNonUninvokableEffect(AGE);
 		if(room!=null)
-			room.addItemRefuse(Body,mob.isMonster()?CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_MONSTER_BODY):CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_BODY));
+			room.addItem(Body,mob.isMonster()?ItemPossessor.Expire.Monster_Body:ItemPossessor.Expire.Player_Body);
 		Body.setDestroyAfterLooting(destroyBodyAfterUse());
 		Body.recoverEnvStats();
 		for(int i=0;i<mob.numAllEffects();i++)
@@ -533,7 +533,7 @@ public class StdRace implements Race
 					I=(Item)I.copyOf();
 					I.setContainer(Body);
 					if(room!=null)
-						room.addItemRefuse(I,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_MONSTER_EQ));
+						room.addItem(I,ItemPossessor.Expire.Monster_EQ);
 				}
 			}
 		}

@@ -78,7 +78,7 @@ public class StdClanItem extends StdItem implements ClanItem
                     setRightfulOwner(null);
 					unWear();
 					removeFromOwnerContainer();
-					if(owner()!=R) R.bringItemHere(this,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP),false);
+					if(owner()!=R) R.moveItemTo(this,ItemPossessor.Expire.Player_Drop);
 					if(R!=null)
 						R.showHappens(CMMsg.MSG_OK_VISUAL,name()+" is dropped!");
 		    	}
@@ -137,7 +137,7 @@ public class StdClanItem extends StdItem implements ClanItem
                     CI.removeFromOwnerContainer();
                     CI.setRightfulOwner(null);
     				if(CI.owner()!=M.location())
-    					M.location().bringItemHere(CI,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP),false);
+    					M.location().moveItemTo(CI,ItemPossessor.Expire.Player_Drop);
     				M.location().show(M,CI,CMMsg.MSG_OK_VISUAL,"<S-NAME> drop(s) <T-NAME>.");
     				return false;
     			}

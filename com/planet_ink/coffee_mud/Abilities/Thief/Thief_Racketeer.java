@@ -179,7 +179,7 @@ public class Thief_Racketeer extends ThiefSkill
                 Coins C=CMLib.beanCounter().makeBestCurrency(mob,amount);
                 if(C!=null)
                 {
-                    mob.location().addItemRefuse(C,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+                    mob.location().addItem(C,ItemPossessor.Expire.Player_Drop);
                     CMLib.commands().postGet(mob,null,C,true);
                 }
             }

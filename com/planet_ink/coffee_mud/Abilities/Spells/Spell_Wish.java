@@ -72,7 +72,7 @@ public class Spell_Wish extends Spell
 			item.unWear();
 			item.setContainer(null);
 			item.removeFromOwnerContainer();
-			here.addItemRefuse(item,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+			here.addItem(item,ItemPossessor.Expire.Player_Drop);
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" appears out of the java plain!");
 		}
 	}
@@ -201,7 +201,7 @@ public class Spell_Wish extends Spell
 				newItem.setContainer(null);
 				newItem.wearAt(0);
 				newItem.recoverEnvStats();
-				mob.location().addItemRefuse(newItem,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+				mob.location().addItem(newItem,ItemPossessor.Expire.Player_Drop);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");
 				mob.location().recoverRoomStats();
 				int experienceRequired=(int)Math.round(CMath.div(newItem.getTotalValue(),10.0));
@@ -252,7 +252,7 @@ public class Spell_Wish extends Spell
 					Item newItem=(Item)foundThang.copyOf();
 					newItem.setContainer(null);
 					newItem.wearAt(0);
-					mob.location().addItemRefuse(newItem,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+					mob.location().addItem(newItem,ItemPossessor.Expire.Player_Drop);
 					mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");
 					mob.location().recoverRoomStats();
 				}

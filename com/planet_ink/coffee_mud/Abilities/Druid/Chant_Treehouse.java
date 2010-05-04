@@ -66,7 +66,7 @@ public class Chant_Treehouse extends Chant
 				while(R.numItems()>0)
 				{
 					Item I=R.getItem(0);
-					if(I!=null) room.bringItemHere(I,-1,false);
+					if(I!=null) room.moveItemTo(I);
 				}
 				R.destroy();
 				room.rawDoors()[Directions.UP]=null;

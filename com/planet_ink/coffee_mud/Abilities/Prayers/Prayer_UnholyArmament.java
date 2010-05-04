@@ -204,7 +204,7 @@ public class Prayer_UnholyArmament extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().addItemRefuse(I,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_MONSTER_EQ));
+				mob.location().addItem(I,ItemPossessor.Expire.Monster_EQ);
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" materializes out of the ground.");
 			}
 		}

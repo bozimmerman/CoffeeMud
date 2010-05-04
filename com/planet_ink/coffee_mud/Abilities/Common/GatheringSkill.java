@@ -186,7 +186,7 @@ public class GatheringSkill extends CommonSkill
 			if(I instanceof Drink)
 			    ((Drink)I).setLiquidHeld(((Drink)I).liquidHeld()*amount);
 			if((!I.amDestroyed())&&(!R.isContent(I)))
-				R.addItemRefuse(I,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+				R.addItem(I,ItemPossessor.Expire.Player_Drop);
 		}
 		if(I instanceof Decayable)
 		    ((Decayable)I).setDecayTime(lowestNonZeroFoodNumber);

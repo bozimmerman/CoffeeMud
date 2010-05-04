@@ -89,7 +89,7 @@ public class Pull extends Go
 		        if((dirCode>=0)&&(super.move(mob,dirCode,false,false,false,false)))
 		        {
 			        if(openThis instanceof Item)
-			            R.bringItemHere((Item)openThis,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP),true);
+			            R.moveItemTo((Item)openThis,ItemPossessor.Expire.Player_Drop,ItemPossessor.Move.Followers);
 			        else
 			        if(openThis instanceof MOB)
 			            move((MOB)openThis,dirCode,((MOB)openThis).isInCombat(),false,true,true);

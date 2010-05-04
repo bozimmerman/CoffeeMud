@@ -169,7 +169,7 @@ public class Fighter_Behead extends FighterSkill
 				limb.baseEnvStats().setLevel(1);
 				limb.baseEnvStats().setWeight(5);
 				limb.recoverEnvStats();
-				mob.location().addItemRefuse(limb,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+				mob.location().addItem(limb,ItemPossessor.Expire.Player_Drop);
 				for(int i=0;i<warrants.size();i++)
 				{
 					LegalWarrant W=(LegalWarrant)warrants.elementAt(i);

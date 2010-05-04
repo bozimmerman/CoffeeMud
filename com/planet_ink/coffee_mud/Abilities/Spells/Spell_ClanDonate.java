@@ -99,7 +99,7 @@ public class Spell_ClanDonate extends Spell
                     {
                         mob.location().show(mob,target,this,CMMsg.MSG_OK_VISUAL,"<T-NAME> vanishes!");
                         if(!clanDonateRoom.isContent(target))
-                            clanDonateRoom.bringItemHere(target,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP),false);
+                            clanDonateRoom.moveItemTo(target,ItemPossessor.Expire.Player_Drop);
                         if(!(target.amDestroyed()))
                         {
                             if(target instanceof Coins)

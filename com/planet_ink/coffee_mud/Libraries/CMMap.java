@@ -1309,7 +1309,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		{
 			I=(Item)contents.elementAt(i);
 			if(bringBackHere!=null)
-				bringBackHere.bringItemHere(I,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP),false);
+				bringBackHere.moveItemTo(I,ItemPossessor.Expire.Player_Drop);
 			else
 				I.destroy();
 		}

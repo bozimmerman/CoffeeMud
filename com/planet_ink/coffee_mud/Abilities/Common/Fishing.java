@@ -88,7 +88,7 @@ public class Fishing extends GatheringSkill
 					for(int i=0;i<amount;i++)
 					{
 						Item newFound=(Item)found.copyOf();
-						mob.location().addItemRefuse(newFound,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+						mob.location().addItem(newFound,ItemPossessor.Expire.Player_Drop);
 						if((mob.riding()!=null)&&(mob.riding() instanceof Container))
 							newFound.setContainer((Container)mob.riding());
 						CMLib.commands().postGet(mob,null,newFound,true);

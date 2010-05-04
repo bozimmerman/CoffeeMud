@@ -84,7 +84,7 @@ public class Go extends StdCommand
 				Item rItem=(Item)rider;
 				if((rItem.owner()==sourceRoom)
 				||(rItem.owner()==destRoom))
-					destRoom.bringItemHere(rItem,-1,false);
+					destRoom.moveItemTo(rItem);
 				else
 					rItem.setRiding(null);
 			}
@@ -147,7 +147,7 @@ public class Go extends StdCommand
 			riding=(Rideable)rideables.elementAt(r);
 			if((riding instanceof Item)
 			&&((sourceRoom).isContent((Item)riding)))
-				destRoom.bringItemHere((Item)riding,-1,false);
+				destRoom.moveItemTo((Item)riding);
 			else
 			if((riding instanceof MOB)
 			&&((sourceRoom).isInhabitant((MOB)riding)))
@@ -163,7 +163,7 @@ public class Go extends StdCommand
 						riding=(Rideable)rideables.elementAt(r);
 						if((riding instanceof Item)
 						&&((destRoom).isContent((Item)riding)))
-							sourceRoom.bringItemHere((Item)riding,-1,false);
+							sourceRoom.moveItemTo((Item)riding);
 						else
 						if((riding instanceof MOB)
 						&&(((MOB)riding).isMonster())

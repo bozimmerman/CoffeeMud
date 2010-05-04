@@ -67,7 +67,7 @@ public class Chant_Goodberry extends Chant
 				((MOB)owner).addItem(newItem);
 			else
 			if(owner instanceof Room)
-				((Room)owner).addItemRefuse(newItem,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+				((Room)owner).addItem(newItem,ItemPossessor.Expire.Player_Drop);
 			newItem.setContainer(location);
 			return true;
 		}

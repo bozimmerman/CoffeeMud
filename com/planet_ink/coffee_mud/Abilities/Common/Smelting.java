@@ -93,7 +93,7 @@ public class Smelting extends CraftingSkill
 						Item copy=(Item)building.copyOf();
 						copy.setMiscText(building.text());
 						copy.recoverEnvStats();
-						mob.location().addItemRefuse(copy,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+						mob.location().addItem(copy,ItemPossessor.Expire.Player_Drop);
 					}
 				}
 				building=null;

@@ -1,6 +1,8 @@
 package com.planet_ink.coffee_mud.Locales;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
+import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Move;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -1047,7 +1049,12 @@ public class StdRoom implements Room
 					bringMobHere((MOB)RI,andFollowers);
 				else
 				if(RI instanceof Item)
-					bringItemHere((Item)RI,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP),andFollowers);
+				{
+					if(andFollowers)
+						moveItemTo((Item)RI,ItemPossessor.Expire.Player_Drop,Move.Followers);
+					else
+						moveItemTo((Item)RI,ItemPossessor.Expire.Player_Drop);
+				}
 				// refuse is good for above, since mostly moving player stuff around
 			}
 			else
@@ -1067,8 +1074,13 @@ public class StdRoom implements Room
 							bringMobHere((MOB)RR,andFollowers);
 						else
 						if(RR instanceof Item)
-							bringItemHere((Item)RR,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP),andFollowers);
-						// refuse is good for above, since mostly moving player stuff around
+						{
+							if(andFollowers)
+								moveItemTo((Item)RR,ItemPossessor.Expire.Player_Drop,Move.Followers);
+							else
+								moveItemTo((Item)RR,ItemPossessor.Expire.Player_Drop);
+							// refuse is good for above, since mostly moving player stuff around
+						}
 					}
 					else
 						RR.setRiding(null);
@@ -1080,7 +1092,8 @@ public class StdRoom implements Room
 		recoverRoomStats();
 	}
 
-	public void bringItemHere(Item item, int expireMins, boolean andRiders)
+	public void moveItemTo(Item container) { moveItemTo(container, Expire.Never);}
+	public void moveItemTo(Item item, Expire expire, Move... moveFlags)
 	{
 		if(item==null) return;
 
@@ -1093,10 +1106,7 @@ public class StdRoom implements Room
 		if(o instanceof MOB)((MOB)o).delItem(item);
 		if(o instanceof Room) ((Room)o).delItem(item);
 
-		if(expireMins<=0)
-			addItem(item);
-		else
-			addItemRefuse(item,expireMins);
+		addItem(item, expire);
 		for(int v=0;v<V.size();v++)
 		{
 			Item i2=(Item)V.elementAt(v);
@@ -1116,12 +1126,15 @@ public class StdRoom implements Room
 					bringMobHere((MOB)RI,true);
 				else
 				if(RI instanceof Item)
-					bringItemHere((Item)RI,-1,true);
+					moveItemTo((Item)RI,null,ItemPossessor.Move.Followers);
 			}
 			else
 				item.setRiding(null);
 		}
-		if(andRiders&&(o instanceof Room)&&(item instanceof Rideable)&&(o!=this))
+		if(CMParms.contains(moveFlags, Move.Followers)
+		&&(o instanceof Room)
+		&&(item instanceof Rideable)
+		&&(o!=this))
 		{
 			Rider RR=null;
 			for(int r=0;r<((Rideable)item).numRiders();r++)
@@ -1136,7 +1149,7 @@ public class StdRoom implements Room
 							bringMobHere((MOB)RR,true);
 						else
 						if(RR instanceof Item)
-							bringItemHere((Item)RR,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP),true);
+							moveItemTo((Item)RR,ItemPossessor.Expire.Player_Drop,ItemPossessor.Move.Followers);
 					}
 					else
 						RR.setRiding(null);
@@ -1597,14 +1610,25 @@ public class StdRoom implements Room
 			items=CMLib.english().fetchEnvironmentals(contents,itemID, false);
 		return items;
 	}
-	public void addItemRefuse(Item item, int expireMins)
+	public void addItem(Item item, Expire expire)
 	{
 		addItem(item);
-        if(expireMins<=0)
-            item.setExpirationDate(0);
-        else
-    		item.setExpirationDate(System.currentTimeMillis()+(expireMins * TimeManager.MILI_MINUTE));
+		if(expire == null) expire=Expire.Never;
+		int numMins = 0;
+		switch(expire)
+		{
+		case Monster_EQ: numMins = CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_MONSTER_EQ); break;
+		case Monster_Body: numMins = CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_MONSTER_BODY); break;
+		case Player_Body: numMins = CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_BODY); break;
+		case Player_Drop: numMins = CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP); break;
+		case Resource: numMins = CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_RESOURCE); break;
+		}
+		if(numMins==0)
+			item.setExpirationDate(0);
+		else
+			item.setExpirationDate(System.currentTimeMillis()+(numMins * TimeManager.MILI_MINUTE));
 	}
+	
 	public void addItem(Item item)
 	{
 		item.setOwner(this);

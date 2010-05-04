@@ -102,7 +102,7 @@ public class Chant_PlantBed extends Chant
 				newItem.recoverEnvStats();
 				newItem.setMiscText(newItem.text());
 				peaPod=newItem;
-				mob.location().addItemRefuse(newItem,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_RESOURCE));
+				mob.location().addItem(newItem,ItemPossessor.Expire.Resource);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A comfortable pea-pod bed grows nearby.");
 				mob.location().recoverEnvStats();
 				beneficialAffect(mob,newItem,asLevel,0);

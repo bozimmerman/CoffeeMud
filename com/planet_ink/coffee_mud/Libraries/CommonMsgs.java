@@ -388,7 +388,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             	if(recallingmob.riding().mobileRideBasis())
                 {
                     if(recallingmob.riding() instanceof Item)
-                        recallingmob.location().bringItemHere((Item)recallingmob.riding(),-1,true);
+                        recallingmob.location().moveItemTo((Item)recallingmob.riding(),ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
                     else
                     if(recallingmob.riding() instanceof MOB)
                         recallingmob.location().bringMobHere((MOB)recallingmob.riding(),true);
@@ -1427,7 +1427,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         {
             mob.delItem(item);
             if(!mob.location().isContent(item))
-                mob.location().addItemRefuse(item,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+                mob.location().addItem(item,ItemPossessor.Expire.Player_Drop);
             if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
                 mob.location().recoverRoomStats();
         }

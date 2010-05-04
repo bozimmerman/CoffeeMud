@@ -1094,7 +1094,7 @@ public class StdItem implements Item
 			{
 				mob.delItem(this);
 				if(!R.isContent(this))
-					R.addItemRefuse(this,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+					R.addItem(this,ItemPossessor.Expire.Player_Drop);
 				if(!CMath.bset(msg.sourceCode(),CMMsg.MASK_OPTIMIZE))
 				{
 					R.recoverRoomStats();

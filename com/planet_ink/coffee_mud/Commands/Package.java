@@ -114,7 +114,7 @@ public class Package extends StdCommand
             thePackage.packageMe(getThis,V.size());
             for(int i=0;i<V.size();i++)
                 ((Item)V.elementAt(i)).destroy();
-            mob.location().addItemRefuse(thePackage,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+            mob.location().addItem(thePackage,ItemPossessor.Expire.Player_Drop);
             mob.location().recoverRoomStats();
             mob.location().recoverRoomStats();
         }

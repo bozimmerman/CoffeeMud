@@ -706,7 +706,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
     	{
     		Coins I = (Coins)e.nextElement();
     		I.setContainer(container);
-    		R.addItemRefuse(I,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_MONSTER_EQ));
+    		R.addItem(I,ItemPossessor.Expire.Monster_EQ);
 		    ((Coins)I).putCoinsBack();
     	}
 	}

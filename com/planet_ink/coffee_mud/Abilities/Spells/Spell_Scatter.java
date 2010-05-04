@@ -168,7 +168,7 @@ public class Spell_Scatter extends Spell
 									room.showOthers(mob,room,target,CMMsg.MASK_ALWAYS|CMMsg.MSG_THROW,"<O-NAME> appears from out of nowhere!");
 							    }
 								if(!room.isContent(target))
-								    room.bringItemHere(target,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP),true);
+								    room.moveItemTo(target,ItemPossessor.Expire.Player_Drop,ItemPossessor.Move.Followers);
 								room.recoverRoomStats();
 							}
 						}

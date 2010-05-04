@@ -1,5 +1,7 @@
 package com.planet_ink.coffee_mud.Locales;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
+import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Move;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.Properties.Property;
@@ -215,7 +217,7 @@ public class ThinRoom implements Room {
 	public void setImage(String newImage){}
 
 	public void addItem(Item item){}
-	public void addItemRefuse(Item item, int expireMins){}
+	public void addItem(Item item, Expire expire){}
 	public void delItem(Item item){}
 	public int numItems(){return 0;}
 	public boolean isContent(Item item){return false;}
@@ -225,7 +227,8 @@ public class ThinRoom implements Room {
 	public Item getItem(String s){return null;}
 	public Item getItem(Item goodLocation, String s){return null;}
 	public Item findItem(String itemID){return null;}
-	public void bringItemHere(Item item, int expireMins, boolean andRiders){}
+	public void moveItemTo(Item item, Expire expire, Move... moveFlags){}
+	public void moveItemTo(Item container) {}
 	public List<Item> findItems(String itemID) { return new Vector(1);}
 	public List<Item> findItems(Item goodLocation, String itemID) { return new Vector(1);}
 

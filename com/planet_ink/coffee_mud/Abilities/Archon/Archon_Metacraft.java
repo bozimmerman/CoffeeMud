@@ -229,7 +229,7 @@ public class Archon_Metacraft extends ArchonSkill
     				Item building=(Item)items.elementAt(v);
                     if(toWHERE.equals("HERE"))
                     {
-                        mob.location().addItemRefuse(building,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+                        mob.location().addItem(building,ItemPossessor.Expire.Player_Drop);
                         mob.location().show(mob,null,null,CMMsg.MSG_OK_ACTION,building.name()+" appears here.");
                     }
                     else

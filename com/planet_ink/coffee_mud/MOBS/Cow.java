@@ -105,7 +105,7 @@ public class Cow extends StdMOB implements Drink
 					((MOB)container.owner()).addItem(I);
 				else
 				if(container.owner() instanceof Room)
-					((Room)container.owner()).addItemRefuse(I,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_RESOURCE));
+					((Room)container.owner()).addItem(I,ItemPossessor.Expire.Resource);
 		}
 	}
 	public int thirstQuenched(){return 100;}

@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Locales.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -232,9 +233,6 @@ public interface Room extends PhysicalAgent, ItemPossessor
 	public void bringMobHere(MOB mob, boolean andFollowers);
 
 	public String getContextName(Environmental E);
-	
-	public void addItemRefuse(Item item, int expireMins);
-	public void bringItemHere(Item item, int expireMins, boolean andRiders);
 
 	public Environmental fetchFromRoomFavorItems(Item goodLocation, String thingName,int wornFilter);
 	public Environmental fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, int wornFilter);

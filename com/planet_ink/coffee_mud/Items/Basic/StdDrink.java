@@ -253,7 +253,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 									((MOB)(((RawMaterial)thePuddle).owner())).addItem((RawMaterial)addHereI);
 								else
 								if(((RawMaterial)thePuddle).owner() instanceof Room)
-									((Room)(((RawMaterial)thePuddle).owner())).addItemRefuse((RawMaterial)addHereI,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+									((Room)(((RawMaterial)thePuddle).owner())).addItem((RawMaterial)addHereI,ItemPossessor.Expire.Player_Drop);
 							}
 							addHereI.setLiquidRemaining(addHereI.liquidRemaining() + amountToTake);
 							addHereI.setLiquidHeld(addHereI.liquidHeld() + amountToTake);

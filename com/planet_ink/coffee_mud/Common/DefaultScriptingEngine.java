@@ -7032,7 +7032,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                                         ((MOB)container.owner()).addItem(m);
                                     else
                                     if(container instanceof Room)
-                                        ((Room)container.owner()).addItemRefuse(m,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+                                        ((Room)container.owner()).addItem(m,ItemPossessor.Expire.Player_Drop);
                                     else
                                         monster.addItem(m);
                                     lastLoaded=m;
@@ -7097,7 +7097,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             {
                                 I=(Item)I.copyOf();
                                 I.recoverEnvStats();
-                                lastKnownLocation.addItemRefuse(I,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_MONSTER_EQ));
+                                lastKnownLocation.addItem(I,ItemPossessor.Expire.Monster_EQ);
                                 I.setContainer(container);
                                 if(I instanceof Coins)
                                     ((Coins)I).putCoinsBack();
@@ -7877,7 +7877,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             goHere.bringMobHere((MOB)scripted,true);
                         else
                         if(scripted instanceof Item)
-                            goHere.bringItemHere((Item)scripted,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP),true);
+                            goHere.moveItemTo((Item)scripted,ItemPossessor.Expire.Player_Drop,ItemPossessor.Move.Followers);
                         else
                         {
                             goHere.bringMobHere(monster,true);
@@ -8035,7 +8035,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             else
                             if((V.elementAt(v) instanceof Item)
                             &&(newRoom!=CMLib.map().roomLocation((Environmental)V.elementAt(v))))
-                                newRoom.bringItemHere((Item)V.elementAt(v),CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP),true);
+                                newRoom.moveItemTo((Item)V.elementAt(v),ItemPossessor.Expire.Player_Drop,ItemPossessor.Move.Followers);
                             if(V.elementAt(v)==scripted)
                                 lastKnownLocation=newRoom;
                         }
@@ -8211,7 +8211,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     {
                         if(arg2.length()>0) ((Item)caged).setName(arg2);
                         if(arg3.length()>0) ((Item)caged).setDisplayText(arg3);
-                        lastKnownLocation.addItemRefuse((Item)caged,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+                        lastKnownLocation.addItem((Item)caged,ItemPossessor.Expire.Player_Drop);
                         ((MOB)E).killMeDead(false);
                     }
                 }

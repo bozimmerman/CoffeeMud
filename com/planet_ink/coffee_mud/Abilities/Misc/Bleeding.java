@@ -95,7 +95,7 @@ public class Bleeding extends StdAbility
 	        		I.setDisplayText("A faint trail of blood leads "+Directions.getDirectionName(dir)+".");
         		I.envStats().setDisposition(I.envStats().disposition()|EnvStats.IS_HIDDEN|EnvStats.IS_UNSAVABLE);
         		I.setSecretIdentity(msg.source().Name()+"`s blood.");
-        		R.addItemRefuse(I,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_MONSTER_EQ));
+        		R.addItem(I,ItemPossessor.Expire.Monster_EQ);
         	}
         	lastDir=Directions.getOpDirectionCode(dir);
         	lastRoom=R;

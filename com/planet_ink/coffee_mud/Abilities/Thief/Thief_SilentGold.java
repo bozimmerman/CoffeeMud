@@ -69,7 +69,7 @@ public class Thief_SilentGold extends ThiefSkill
 					{
 					    CMLib.beanCounter().subtractMoney(msg.source(),C.getTotalValue());
 						MOB mob=(MOB)affected;
-						mob.location().addItemRefuse(C,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_MONSTER_EQ));
+						mob.location().addItem(C,ItemPossessor.Expire.Monster_EQ);
 						mob.location().recoverRoomStats();
 						MOB victim=mob.getVictim();
 						mob.setVictim(null);

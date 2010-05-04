@@ -160,7 +160,6 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public Item fetchFirstWornItem(long wornCode);
 	public Item fetchWieldedItem();
     public boolean hasOnlyGoldInInventory();
-	public void moveItemTo(Item thisContainer);
 
 	public int freeWearPositions(long wornCode, short belowLayer, short layerAttributes);
 	public boolean isMine(Environmental env);

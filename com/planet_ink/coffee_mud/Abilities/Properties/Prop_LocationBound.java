@@ -98,7 +98,7 @@ public class Prop_LocationBound extends Property
 				        else
 				        {
 					        msg.source().tell(affected.name()+" is whisked from you and back to its home.");
-					        tR.bringItemHere((Item)affected,0,false);
+					        tR.moveItemTo((Item)affected);
                             return true;
 				        }
 			        }
@@ -124,7 +124,7 @@ public class Prop_LocationBound extends Property
 				        else
 				        {
 					        msg.source().tell(affected.name()+" is whisked from you and back to its home.");
-					        A.getRandomMetroRoom().bringItemHere((Item)affected,0,false);
+					        A.getRandomMetroRoom().moveItemTo((Item)affected);
                             return true;
 				        }
 			        }

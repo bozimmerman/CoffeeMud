@@ -188,7 +188,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
         if((owner instanceof Room)&&(((Room)owner).numItems()>0)&&(((Room)owner).getItem(((Room)owner).numItems()-1)!=bundle))
         {
             ((Room)owner).delItem(bundle);
-            ((Room)owner).bringItemHere(bundle,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP),false);
+            ((Room)owner).moveItemTo(bundle,ItemPossessor.Expire.Player_Drop);
         }
         if((owner instanceof MOB)&&(((MOB)owner).numItems()>0)&&(((MOB)owner).getItem(((MOB)owner).numItems()-1)!=bundle))
         {
@@ -220,7 +220,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
             {
                 I=(Item)parts.elementAt(p);
                 if(owner instanceof Room)
-                    ((Room)owner).addItemRefuse(I,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+                    ((Room)owner).addItem(I,ItemPossessor.Expire.Player_Drop);
                 else
                 if(owner instanceof MOB)
                     ((MOB)owner).addItem(I);
@@ -230,7 +230,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
             	if(owner instanceof Room)
             	{
             		((Room)owner).delItem(pkg);
-            		((Room)owner).addItemRefuse(pkg,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+            		((Room)owner).addItem(pkg,ItemPossessor.Expire.Player_Drop);
             	}
             	else
 	            if(owner instanceof MOB)
@@ -281,7 +281,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
                         if(rott!=null)
                             E.addNonUninvokableEffect((Ability)rott.copyOf());
                         if(owner instanceof Room)
-                            ((Room)owner).addItemRefuse((Item)E,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+                            ((Room)owner).addItem((Item)E,ItemPossessor.Expire.Player_Drop);
                         else
                         if(owner instanceof MOB)
                             ((MOB)owner).addItem((Item)E);
@@ -314,7 +314,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
                     if(owner instanceof Room)
                     {
                         ((Room)owner).delItem(I);
-                        ((Room)owner).addItemRefuse(I,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+                        ((Room)owner).addItem(I,ItemPossessor.Expire.Player_Drop);
                     }
                     else
                     if(owner instanceof MOB)

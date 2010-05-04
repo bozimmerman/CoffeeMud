@@ -154,7 +154,7 @@ public class Chant_SummonTornado extends Chant
 						else
 						{
 							mob.location().show(mob,null,I,CMMsg.MSG_OK_ACTION,"The tornado picks up <O-NAME> and whisks it away.");
-							R.bringItemHere(I,-1,true);
+							R.moveItemTo(I,ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
 						}
 						if(I.subjectToWearAndTear())
 						{

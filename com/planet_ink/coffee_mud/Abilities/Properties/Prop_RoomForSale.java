@@ -330,7 +330,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	    				if(I.expirationDate()==0)
 	    				{
 	    					long now=System.currentTimeMillis();
-	    					now+=(TimeManager.MILI_HOUR*CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+	    					now+=(TimeManager.MILI_MINUTE*CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
 	    					I.setExpirationDate(now);
 	    				}
 	    				if((I.envStats().rejuv()!=Integer.MAX_VALUE)

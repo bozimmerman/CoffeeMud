@@ -128,7 +128,7 @@ public class PuddleMaker extends StdBehavior
 			I.setDisplayText("a puddle of water has formed here.");
 			I.setDescription("It looks drinkable.");
 		}
-		R.addItemRefuse(I,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_MONSTER_EQ));
+		R.addItem(I,ItemPossessor.Expire.Monster_EQ);
 		R.recoverRoomStats();
 	}
 

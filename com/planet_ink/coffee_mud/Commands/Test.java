@@ -398,7 +398,7 @@ public class Test extends StdCommand
             	B2.setParms("RAND_PROG 100;IF !ISHERE(nondescript);MPECHO LOST MY CONTAINER $d $D!; GOSSIP LOST MY CONTAINER! $d $D; MPPURGE $i;ENDIF;~;");
             	M2.addBehavior(B2);
             	Item I=CMClass.getBasicItem("LockableContainer");
-            	mob.location().addItemRefuse(I,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+            	mob.location().addItem(I,ItemPossessor.Expire.Player_Drop);
             	I.setRiding((Rideable)M2);
             }
             
@@ -428,7 +428,7 @@ public class Test extends StdCommand
                 IS=giveTo(CMClass.getWeapon("Sword"),HaveEnabler,mobs[0],null,0);
                 if(!spellCheck(spells,mobs[0])){ mob.tell("Error1-1"); return false;}
                 IS[0].unWear();
-                R.bringItemHere(IS[0],0,true);
+                R.moveItemTo(IS[0],ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
                 R.recoverRoomStats();
                 if(spellCheck(spells,mobs[0])){ mob.tell("Error1-2"); return false;}
                 
@@ -440,8 +440,8 @@ public class Test extends StdCommand
                 if(spellCheck(spells,mobs[1])){ mob.tell("Error1-4"); return false;}
                 IS[0].unWear();
                 IS[1].unWear();
-                R.bringItemHere(IS[0],0,true);
-                R.bringItemHere(IS[1],0,true);
+                R.moveItemTo(IS[0],ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
+                R.moveItemTo(IS[1],ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
                 R.recoverRoomStats();
                 if(spellCheck(spells,mobs[0])){ mob.tell("Error1-5"); return false;}
                 if(spellCheck(spells,mobs[1])){ mob.tell("Error1-6"); return false;}
@@ -456,7 +456,7 @@ public class Test extends StdCommand
                 IS=giveTo(CMClass.getWeapon("Sword"),HaveSpellCast,mobs[0],null,0);
                 if(!effectCheck(spells,mobs[0])){ mob.tell("Error2-1"); return false;}
                 IS[0].unWear();
-                R.bringItemHere(IS[0],0,true);
+                R.moveItemTo(IS[0],ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
                 R.recoverRoomStats();
                 if(effectCheck(spells,mobs[0])){ mob.tell("Error2-2"); return false;}
                 
@@ -468,8 +468,8 @@ public class Test extends StdCommand
                 if(effectCheck(spells,mobs[1])){ mob.tell("Error2-4"); return false;}
                 IS[0].unWear();
                 IS[1].unWear();
-                R.bringItemHere(IS[0],0,true);
-                R.bringItemHere(IS[1],0,true);
+                R.moveItemTo(IS[0],ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
+                R.moveItemTo(IS[1],ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
                 R.recoverRoomStats();
                 if(effectCheck(spells,mobs[0])){ mob.tell("Error2-5"); return false;}
                 if(effectCheck(spells,mobs[1])){ mob.tell("Error2-6"); return false;}
@@ -482,8 +482,8 @@ public class Test extends StdCommand
                 if(effectCheck(spells,mobs[1])){ mob.tell("Error2-8"); return false;}
                 IS[0].unWear();
                 IS[1].unWear();
-                R.bringItemHere(IS[0],0,true);
-                R.bringItemHere(IS[1],0,true);
+                R.moveItemTo(IS[0],ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
+                R.moveItemTo(IS[1],ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
                 R.recoverRoomStats();
                 if(effectCheck(spells,mobs[0])){ mob.tell("Error2-9"); return false;}
                 if(effectCheck(spells,mobs[1])){ mob.tell("Error2-10"); return false;}
@@ -928,7 +928,7 @@ public class Test extends StdCommand
                 R.recoverRoomStats();
                 if(!testResistance(mobs[0])){ mob.tell("Error16-2"); return false;}
                 IS[0].unWear();
-                R.bringItemHere(IS[0],0,true);
+                R.moveItemTo(IS[0],ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
                 R.recoverRoomStats();
                 if(testResistance(mobs[0])){ mob.tell("Error16-3"); return false;}
                 
@@ -943,8 +943,8 @@ public class Test extends StdCommand
                 if(testResistance(mobs[1])){ mob.tell("Error16-7"); return false;}
                 IS[0].unWear();
                 IS[1].unWear();
-                R.bringItemHere(IS[0],0,true);
-                R.bringItemHere(IS[1],0,true);
+                R.moveItemTo(IS[0],ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
+                R.moveItemTo(IS[1],ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
                 R.recoverRoomStats();
                 if(testResistance(mobs[0])){ mob.tell("Error16-8"); return false;}
                 if(testResistance(mobs[1])){ mob.tell("Error16-9"); return false;}
@@ -1021,7 +1021,7 @@ public class Test extends StdCommand
                 R.recoverRoomStats();
                 if(!isAllAdjusted(mobs[0])){ mob.tell("Error19-2"); return false;}
                 IS[0].unWear();
-                R.bringItemHere(IS[0],0,true);
+                R.moveItemTo(IS[0],ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
                 R.recoverRoomStats();
                 if(isAnyAdjusted(mobs[0])){ mob.tell("Error19-3"); return false;}
                 
@@ -1035,8 +1035,8 @@ public class Test extends StdCommand
                 if(isAnyAdjusted(mobs[1])){ mob.tell("Error19-7"); return false;}
                 IS[0].unWear();
                 IS[1].unWear();
-                R.bringItemHere(IS[0],0,true);
-                R.bringItemHere(IS[1],0,true);
+                R.moveItemTo(IS[0],ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
+                R.moveItemTo(IS[1],ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
                 R.recoverRoomStats();
                 if(isAnyAdjusted(mobs[0])){ mob.tell("Error19-8"); return false;}
                 if(isAnyAdjusted(mobs[0])){ mob.tell("Error19-9"); return false;}

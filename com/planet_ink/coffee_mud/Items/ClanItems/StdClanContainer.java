@@ -75,7 +75,7 @@ public class StdClanContainer extends StdContainer implements ClanItem
                     setRightfulOwner(null);
                     unWear();
                     removeFromOwnerContainer();
-                    if(owner()!=R) R.bringItemHere(this,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP),false);
+                    if(owner()!=R) R.moveItemTo(this,ItemPossessor.Expire.Player_Drop);
                     if(R!=null)
                         R.showHappens(CMMsg.MSG_OK_VISUAL,name()+" is dropped!");
                 }

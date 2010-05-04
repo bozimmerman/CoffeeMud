@@ -426,7 +426,7 @@ public class DefaultClan implements Clan
                 I.setContainer(null);
                 I.wearAt(Wearable.IN_INVENTORY);
                 if(R!=null)
-                    R.bringItemHere(I,0,false);
+                    R.moveItemTo(I);
                 else
                 if(M.isMine(I))
                     I.destroy();

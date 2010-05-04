@@ -92,8 +92,8 @@ public class Chant_GrowItem extends Chant
 				Item building=(Item)V.firstElement();
 				Item key=null;
 				if(V.size()>1) key=(Item)V.lastElement();
-				mob.location().addItemRefuse(building,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_RESOURCE));
-				if(key!=null) mob.location().addItemRefuse(key,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_RESOURCE));
+				mob.location().addItem(building,ItemPossessor.Expire.Resource);
+				if(key!=null) mob.location().addItem(key,ItemPossessor.Expire.Resource);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,building.name()+" grows out of a tree and drops.");
 				mob.location().recoverEnvStats();
 			}

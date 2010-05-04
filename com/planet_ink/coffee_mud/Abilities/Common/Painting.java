@@ -68,7 +68,7 @@ public class Painting extends CommonSkill
 					if(messedUp)
 						commonTell(mob,"<S-NAME> mess(es) up painting "+building.name()+".");
 					else
-						mob.location().addItemRefuse(building,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+						mob.location().addItem(building,ItemPossessor.Expire.Player_Drop);
 				}
 				building=null;
 			}

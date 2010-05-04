@@ -1007,7 +1007,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         questifyScriptableBehavs(q.item); // this really makes little sense, though is harmless
                         if(reselect) q.reselectable.add(q.item);
                         if(q.room!=null)
-                            q.room.bringItemHere(q.item,-1,true);
+                            q.room.moveItemTo(q.item,ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
                         else
                         if(q.item.owner() instanceof Room)
                             q.room=(Room)q.item.owner();
@@ -1468,7 +1468,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         if(reselect) q.reselectable.add(q.item);
                         questifyScriptableBehavs(q.item); // here we go again
                         if(q.room!=null)
-                            q.room.bringItemHere(q.item,-1,true);
+                            q.room.moveItemTo(q.item,ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
                         else
                         if(q.item.owner() instanceof Room)
                             q.room=(Room)q.item.owner();

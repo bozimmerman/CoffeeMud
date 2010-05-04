@@ -178,7 +178,7 @@ public class Transfer extends At
         {
             Item I=(Item)V.elementAt(i);
             if(!room.isContent(I))
-                room.bringItemHere(I,0,true);
+                room.moveItemTo(I,ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
         }
         else
         if(V.elementAt(i) instanceof MOB)

@@ -97,7 +97,7 @@ public class Fighter_CatchProjectile extends FighterSkill
 				neww.setBaseValue(0);
 				neww.recoverEnvStats();
 				w=neww;
-				mob.location().addItemRefuse(neww,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+				mob.location().addItem(neww,ItemPossessor.Expire.Player_Drop);
 			}
 			if(mob.location().isContent(w))
 			{
