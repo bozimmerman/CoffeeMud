@@ -48,22 +48,22 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     // showFlag should be a valid number for editing, or -1 for skipping
 
 
-    public void promptStatInt(MOB mob, CMModifiable E, int showNumber, int showFlag, String FieldDisp, String Field)
+    public void promptStatInt(MOB mob, Modifiable E, int showNumber, int showFlag, String FieldDisp, String Field)
     throws IOException
     { promptStatInt(mob,E,null,showNumber,showFlag,FieldDisp,Field);}
-    public void promptStatInt(MOB mob, CMModifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field)
+    public void promptStatInt(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field)
     throws IOException
     { E.setStat(Field,""+prompt(mob,CMath.s_long(E.getStat(Field)),showNumber,showFlag,FieldDisp,help)); }
-    public void promptStatBool(MOB mob, CMModifiable E, int showNumber, int showFlag, String FieldDisp, String Field)
+    public void promptStatBool(MOB mob, Modifiable E, int showNumber, int showFlag, String FieldDisp, String Field)
     throws IOException
     { promptStatBool(mob,E,null,showNumber,showFlag,FieldDisp,Field);}
-    public void promptStatBool(MOB mob, CMModifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field)
+    public void promptStatBool(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field)
     throws IOException
     { E.setStat(Field,""+prompt(mob,CMath.s_bool(E.getStat(Field)),showNumber,showFlag,FieldDisp,help)); }
-    public void promptStatStr(MOB mob, CMModifiable E, int showNumber, int showFlag, String FieldDisp, String Field)
+    public void promptStatStr(MOB mob, Modifiable E, int showNumber, int showFlag, String FieldDisp, String Field)
     throws IOException
     { promptStatStr(mob,E,null,showNumber,showFlag,FieldDisp,Field,true);}
-    public void promptStatStr(MOB mob, CMModifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, boolean emptyOK)
+    public void promptStatStr(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, boolean emptyOK)
     throws IOException
     { E.setStat(Field,prompt(mob,E.getStat(Field),showNumber,showFlag,FieldDisp,emptyOK,false,help,null,null)); }
     public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp)

@@ -6,14 +6,14 @@ import java.util.Vector;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
-import com.planet_ink.coffee_mud.core.interfaces.CMModifiable;
+import com.planet_ink.coffee_mud.core.interfaces.Modifiable;
 
 /**
  * An interface for a base player account.  If this system is enabled, this
  * represents essentially a "container" for various characters, who
  * share a login and potentially an expiration date.
  */
-public interface PlayerAccount extends CMCommon, AccountStats, CMModifiable
+public interface PlayerAccount extends CMCommon, AccountStats, Modifiable
 {
 	/**
 	 * Return an enumeration of the fully loaded players

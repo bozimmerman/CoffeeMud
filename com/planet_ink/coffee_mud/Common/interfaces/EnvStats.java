@@ -37,11 +37,11 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * Environmentals always keep two instances of this object, a base one, representing
  * his base unmodified state, and current one, representing his state after spells
  * and other affects have had their say.
- * @see com.planet_ink.coffee_mud.core.interfaces.CMModifiable
+ * @see com.planet_ink.coffee_mud.core.interfaces.Modifiable
  * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#baseEnvStats()
  * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#envStats()
  */
-public interface EnvStats extends CMCommon, CMModifiable
+public interface EnvStats extends CMCommon, Modifiable
 {
     /**
      * Returns a bitmask for sense related flags of mobs (CAN_ constants), or 

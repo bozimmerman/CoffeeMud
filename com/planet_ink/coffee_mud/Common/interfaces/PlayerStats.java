@@ -38,7 +38,7 @@ import java.util.*;
  * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#playerStats()
  */
 @SuppressWarnings("unchecked")
-public interface PlayerStats extends CMCommon, CMModifiable, AccountStats
+public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 {
     /**
      * The time, in milis since 1970, that the player was last saved.

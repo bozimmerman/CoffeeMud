@@ -37,7 +37,7 @@ import java.util.*;
  * @author Bo Zimmerman
  */
 @SuppressWarnings("unchecked")
-public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObject, CMModifiable
+public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObject, Modifiable
 {
 	/**
 	 * Returns the generally displayable name of this class.  Usually deferred to

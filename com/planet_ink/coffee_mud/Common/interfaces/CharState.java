@@ -34,7 +34,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @author Bo Zimmerman
  *
  */
-public interface CharState extends CMCommon, CMModifiable
+public interface CharState extends CMCommon, Modifiable
 {
     /** stat constant for hit points */
     public final static int STAT_HITPOINTS=0;

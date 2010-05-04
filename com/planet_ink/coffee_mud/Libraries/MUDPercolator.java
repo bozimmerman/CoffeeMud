@@ -540,7 +540,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         return (Exit)exitChoices.elementAt(CMLib.dice().roll(1,exitChoices.size(),-1));
     }
 
-    protected void fillOutStatCodes(CMModifiable E, String[] ignoreStats, String defPrefix, XMLLibrary.XMLpiece piece, Hashtable defined)
+    protected void fillOutStatCodes(Modifiable E, String[] ignoreStats, String defPrefix, XMLLibrary.XMLpiece piece, Hashtable defined)
     {
         String[] statCodes = E.getStatCodes();
         for(int s=0;s<statCodes.length;s++) {

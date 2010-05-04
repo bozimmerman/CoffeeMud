@@ -34,7 +34,7 @@ import java.util.*;
  * @author Bo Zimmerman
  */
 @SuppressWarnings("unchecked")
-public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, CMModifiable
+public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, Modifiable
 {
     /** Age constant for an infant */
 	public final static int AGE_INFANT=0;
