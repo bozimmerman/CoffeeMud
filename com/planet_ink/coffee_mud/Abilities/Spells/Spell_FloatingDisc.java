@@ -121,7 +121,7 @@ public class Spell_FloatingDisc extends Spell
 				if(target instanceof Coins)
 				{
 					mob.location().delItem((Item)target);
-					mob.addInventory((Item)target);
+					mob.addItem((Item)target);
 				}
 				else
 				if(!CMLib.commands().postGet(mob,null,(Item)target,true))

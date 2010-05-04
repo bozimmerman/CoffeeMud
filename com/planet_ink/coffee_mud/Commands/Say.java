@@ -99,7 +99,7 @@ public class Say extends StdCommand
 			{
 				target=R.fetchFromRoomFavorMOBs(null,whom,Wearable.FILTER_ANY);
 				if((toFlag)&&(target==null))
-				    target=mob.fetchInventory(null,whom);
+				    target=mob.findItem(null,whom);
 
 				if((!toFlag)&&(target!=null))
 				{

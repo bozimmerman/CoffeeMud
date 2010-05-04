@@ -272,7 +272,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				R.setDescription(R.description()+theStr);
 				CMLib.database().DBUpdateRoom(R);
 	        }
-			Item I=R.fetchItem(null,"$id$");
+			Item I=R.findItem(null,"$id$");
 			if((I==null)||(!I.ID().equals("GenWallpaper")))
 			{
 				I=CMClass.getItem("GenWallpaper");
@@ -317,7 +317,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	            Item I=null;
 				for(int i=R.numItems()-1;i>=0;i--)
 				{
-					I=R.fetchItem(i);
+					I=R.getItem(i);
 	                if((I==null)||(I.Name().equalsIgnoreCase("id"))) continue;
 	            	CMLib.catalog().updateCatalogIntegrity(I);
 	                if(clearAllItems)
@@ -429,7 +429,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 
 			for(int i=0;i<R.numItems();i++)
 			{
-				Item I=R.fetchItem(i);
+				Item I=R.getItem(i);
 				if((I.expirationDate()!=0)
 	            &&((I.isSavable())||(I.Name().equalsIgnoreCase("id")))
 				&&((!(I instanceof DeadBody))||(((DeadBody)I).playerCorpse())))

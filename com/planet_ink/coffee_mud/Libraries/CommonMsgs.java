@@ -758,9 +758,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                 if(item.owner() instanceof MOB)
                 {
                     MOB M=(MOB)item.owner();
-                    for(int i=0;i<M.inventorySize();i++)
+                    for(int i=0;i<M.numItems();i++)
                     {
-                        Item item2=M.fetchInventory(i);
+                        Item item2=M.getItem(i);
                         if((item2!=null)&&(item2.container()==item))
                             newItems.addElement(item2);
                     }
@@ -773,7 +773,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                     if(room!=null)
                     for(int i=0;i<room.numItems();i++)
                     {
-                        Item item2=room.fetchItem(i);
+                        Item item2=room.getItem(i);
                         if((item2!=null)&&(item2.container()==item))
                             newItems.addElement(item2);
                     }
@@ -914,7 +914,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                     int x=0;
                     for(int c=0;c<room.numItems();c++)
                     {
-                        Item item=room.fetchItem(c);
+                        Item item=room.getItem(c);
                         if(item==null) continue;
                         if((item.container()==null)
                         &&(item.displayText().length()==0)
@@ -969,7 +969,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         int itemsInTheDarkness=0;
         for(int c=0;c<room.numItems();c++)
         {
-            Item item=room.fetchItem(c);
+            Item item=room.getItem(c);
             if(item==null) continue;
 
             if(item.container()==null)
@@ -1180,7 +1180,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                         room=(Room)view.get(r);
                         for(int i=0;i<room.numItems();i++)
                         {
-                            E=room.fetchItem(i);
+                            E=room.getItem(i);
                             if(E!=null) items.addElement(E);
                         }
                         for(int i=0;i<room.numInhabitants();i++)
@@ -1373,7 +1373,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             if(!mob.isMine(item))
             {
                 item.setContainer(null);
-                mob.giveItem(item);
+                mob.moveItemTo(item);
                 if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
                     mob.location().recoverRoomStats();
                 else
@@ -1396,7 +1396,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                 mob.location().delItem(item);
             if(!mob.isMine(item))
             {
-                mob.addInventory(item);
+                mob.addItem(item);
                 if(CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
                     mob.envStats().setWeight(mob.envStats().weight()+item.envStats().weight());
             }
@@ -1425,7 +1425,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         }
         if(mob.isMine(item))
         {
-            mob.delInventory(item);
+            mob.delItem(item);
             if(!mob.location().isContent(item))
                 mob.location().addItemRefuse(item,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
             if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
@@ -1536,7 +1536,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         Item I=null;
         for(int i=0;i<room.numItems();i++)
         {
-            I=room.fetchItem(i);
+            I=room.getItem(i);
             if((I instanceof Exit)&&(((Exit)I).doorName().length()>0))
             {
                 StringBuilder Say=((Exit)I).viewableText(mob, room);
@@ -1565,7 +1565,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         Item I=null;
         for(int i=0;i<room.numItems();i++)
         {
-            I=room.fetchItem(i);
+            I=room.getItem(i);
             if((I instanceof Exit)&&(((Exit)I).viewableText(mob, room).length()>0))
                 buf.append("^<MEX^>"+((Exit)I).doorName()+"^</MEX^> ");
         }

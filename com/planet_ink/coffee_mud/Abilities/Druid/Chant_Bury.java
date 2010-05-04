@@ -48,7 +48,7 @@ public class Chant_Bury extends Chant
 		if(R!=null)
 		for(int i=0;i<R.numItems();i++)
 		{
-			Item I=R.fetchItem(i);
+			Item I=R.getItem(i);
 			if((I!=null)
 			&&(I instanceof DeadBody)
 			&&(!((DeadBody)I).playerCorpse())

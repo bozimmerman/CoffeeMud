@@ -852,7 +852,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				else
 				for(int i=bodyRoom.numItems()-1;i>=0;i--)
 				{
-					Item item=bodyRoom.fetchItem(i);
+					Item item=bodyRoom.getItem(i);
 					if((item!=null)
 					&&(item.container()==body)
 					&&(CMLib.flags().canBeSeenBy(body,source))
@@ -893,7 +893,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			{
 				for(int i=bodyRoom.numItems()-1;i>=0;i--)
 				{
-					Item item=bodyRoom.fetchItem(i);
+					Item item=bodyRoom.getItem(i);
 					if((item!=null)&&(item.container()==body))
 						item.setContainer(null);
 				}

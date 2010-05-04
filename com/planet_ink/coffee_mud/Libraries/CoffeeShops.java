@@ -53,9 +53,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         {
             Item I=null;
             MOB mob=(MOB)E;
-            for(int i=0;i<mob.inventorySize();i++)
+            for(int i=0;i<mob.numItems();i++)
             {
-                I=mob.fetchInventory(i);
+                I=mob.getItem(i);
                 if(I instanceof ShopKeeper)
                     return (ShopKeeper)I;
                 if(I!=null)
@@ -96,7 +96,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             }
             for(int i=0;i<here.numItems();i++)
             {
-                Item thisItem=here.fetchItem(i);
+                Item thisItem=here.getItem(i);
                 if((thisItem!=null)
                 &&(thisItem!=notMOB)
                 &&(getShopKeeper(thisItem)!=null)
@@ -1055,10 +1055,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 if(I!=null)
                 {
                     V.addElement("$"+I.name()+"$");
-                    seller.addInventory(I);
+                    seller.addItem(I);
                     A.invoke(seller,V,I,true,0);
-                    seller.delInventory(I);
-                    if(!mobFor.isMine(I)) mobFor.addInventory(I);
+                    seller.delItem(I);
+                    if(!mobFor.isMine(I)) mobFor.addItem(I);
                 }
             }
             if(seller.isMonster())
@@ -1655,7 +1655,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 
     public void cancelAuction(String auctionHouse, Auctioneer.AuctionData data)
     {
-    	data.auctioningM.giveItem(data.auctioningI);
+    	data.auctioningM.moveItemTo(data.auctioningI);
     	if(data.highBidderM!=null)
     	{
     		MOB M=data.highBidderM;

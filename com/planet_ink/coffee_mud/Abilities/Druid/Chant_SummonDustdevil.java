@@ -65,7 +65,7 @@ public class Chant_SummonDustdevil extends Chant
 					Vector V=new Vector();
 					for(int i=0;i<mob.location().numItems();i++)
 					{
-						Item I=mob.location().fetchItem(i);
+						Item I=mob.location().getItem(i);
 						if((I!=null)&&(I.container()==null))
 							V.addElement(I);
 					}
@@ -74,7 +74,7 @@ public class Chant_SummonDustdevil extends Chant
 					{
 						Item I=(Item)V.elementAt(i);
 						if((mob.maxCarry()>=mob.envStats().weight()+I.envStats().weight())
-                        &&(mob.maxItems()>=(mob.inventorySize()+I.numberOfItems())))
+                        &&(mob.maxItems()>=(mob.numItems()+I.numberOfItems())))
 							CMLib.commands().postGet(mob,null,I,false);
 						else
 							giveUp=true;
@@ -82,9 +82,9 @@ public class Chant_SummonDustdevil extends Chant
 					if(giveUp)
 					{
 						V=new Vector();
-						for(int i=0;i<mob.inventorySize();i++)
+						for(int i=0;i<mob.numItems();i++)
 						{
-							Item I=mob.fetchInventory(i);
+							Item I=mob.getItem(i);
 							if((I!=null)&&(I.container()==null))
 								V.addElement(I);
 						}
@@ -132,12 +132,12 @@ public class Chant_SummonDustdevil extends Chant
 		{
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> dissipate(s).");
 			Vector V=new Vector();
-			for(int i=0;i<mob.inventorySize();i++)
-				V.addElement(mob.fetchInventory(i));
+			for(int i=0;i<mob.numItems();i++)
+				V.addElement(mob.getItem(i));
 			for(int i=0;i<V.size();i++)
 			{
 				Item I=(Item)V.elementAt(i);
-				mob.delInventory(I);
+				mob.delItem(I);
 				mob.location().addItemRefuse(I,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_MONSTER_EQ));
 			}
 		}

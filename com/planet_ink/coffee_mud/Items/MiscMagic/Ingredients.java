@@ -72,7 +72,7 @@ public class Ingredients extends BagOfEndlessness
 			((Room)owner()).addItem(I);
 		else
 		if(owner() instanceof MOB)
-			((MOB)owner()).addInventory(I);
+			((MOB)owner()).addItem(I);
 		return I;
 	}
 

@@ -49,9 +49,9 @@ public class Song_Lightness extends Song
 	public int mobWeight(MOB mob)
 	{
 		int weight=mob.baseEnvStats().weight();
-		for(int i=0;i<mob.inventorySize();i++)
+		for(int i=0;i<mob.numItems();i++)
 		{
-			Item I=mob.fetchInventory(i);
+			Item I=mob.getItem(i);
 			if((I!=null)&&(!I.amWearingAt(Wearable.WORN_FLOATING_NEARBY)))
 				weight+=I.envStats().weight();
 		}

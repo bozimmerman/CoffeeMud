@@ -54,9 +54,9 @@ public class Chant_ChargeMetal extends Chant
     
 	public Item wieldingMetal(MOB mob)
 	{
-		for(int i=0;i<mob.inventorySize();i++)
+		for(int i=0;i<mob.numItems();i++)
 		{
-			Item item=mob.fetchInventory(i);
+			Item item=mob.getItem(i);
 			if((item!=null)
 			&&(!item.amWearingAt(Wearable.IN_INVENTORY))
 			&&(CMLib.flags().isMetal(item))

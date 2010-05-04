@@ -71,7 +71,7 @@ public class Druid_MyPlants extends StdAbility
 		if(R!=null)
 		for(int i=0;i<R.numItems();i++)
 		{
-			Item I=R.fetchItem(i);
+			Item I=R.getItem(i);
 			if(isMyPlant(I,mob))
 			{
 				if(plantNum==which)

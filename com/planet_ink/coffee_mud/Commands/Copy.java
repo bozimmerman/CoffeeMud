@@ -73,7 +73,7 @@ public class Copy extends StdCommand
 				MOB M=mob.location().fetchInhabitant(rest);
 				if(M==null)
 				{
-					Item I = mob.location().fetchItem(null, rest);
+					Item I = mob.location().findItem(null, rest);
 					if(I instanceof Container)
 						srchContainer=(Container)I;
 					else
@@ -110,7 +110,7 @@ public class Copy extends StdCommand
 		}
 		if(E==null) E=mob.location().fetchFromRoomFavorItems(srchContainer,name,Wearable.FILTER_UNWORNONLY);
         if(E==null) E=mob.location().fetchFromRoomFavorMOBs(srchContainer,name,Wearable.FILTER_UNWORNONLY);
-		if(E==null)	E=mob.fetchInventory(name);
+		if(E==null)	E=mob.findItem(name);
 		if(E==null)
 		{
 			
@@ -183,7 +183,7 @@ public class Copy extends StdCommand
 				else
 				if(dest instanceof MOB)
 				{
-					((MOB)dest).addInventory(newItem);
+					((MOB)dest).addItem(newItem);
 					end="into "+dest.name()+"'s arms";
 				}
 				if(i==0)

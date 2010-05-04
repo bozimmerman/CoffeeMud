@@ -108,7 +108,7 @@ public class Scrapping extends CommonSkill
 	{
 		verb="scrapping";
 		String str=CMParms.combine(commands,0);
-		Item I=mob.location().fetchItem(null,str);
+		Item I=mob.location().findItem(null,str);
 		if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))
 		{
 			commonTell(mob,"You don't see anything called '"+str+"' here.");
@@ -147,7 +147,7 @@ public class Scrapping extends CommonSkill
 		int totalWeight=0;
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I2=mob.location().fetchItem(i);
+			Item I2=mob.location().getItem(i);
 			if((I2!=null)&&(I2.sameAs(I)))
 			{
 				totalWeight+=I2.envStats().weight();
@@ -164,7 +164,7 @@ public class Scrapping extends CommonSkill
 
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I2=mob.location().fetchItem(i);
+			Item I2=mob.location().getItem(i);
 			if((I2.container()!=null)&&(V.contains(I2.container())))
 			{
 				commonTell(mob,"You need to remove the contents of "+I2.name()+" first.");

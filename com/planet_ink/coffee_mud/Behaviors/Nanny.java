@@ -456,9 +456,9 @@ public class Nanny extends StdBehavior
 			if(E instanceof MOB)
 			{
 				MOB mob=(MOB)E;
-				for(int t=0;t<mob.inventorySize();t++)
+				for(int t=0;t<mob.numItems();t++)
 				{
-					Item I=mob.fetchInventory(t);
+					Item I=mob.getItem(t);
 		    		if(isDropOffable(I)&&(!associations.contains(I)))
 		    		{
 		    			MOB source=getAssociateWith(I);
@@ -743,7 +743,7 @@ public class Nanny extends StdBehavior
 	        						parsedPlayers.put(oName,O);
 	        				}
 	        				E=R.fetchInhabitant(eName);
-	        				if(E==null) E=R.fetchAnyItem(eName);
+	        				if(E==null) E=R.findItem(eName);
 	        				if(E==null)
 		        				Log.errOut("Nanny","Unable to find "+eName+" for "+oName+"!!");
 	        				else
@@ -851,7 +851,7 @@ public class Nanny extends StdBehavior
     		{
 	        	for(int i=0;i<R.numItems();i++)
 	        	{
-	        		I=R.fetchItem(i);
+	        		I=R.getItem(i);
 	        		if((I!=null)
 	        		&&(I.isSavable())
 					&&((!CMLib.flags().isGettable(I))||(I.displayText().length()==0))

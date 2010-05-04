@@ -377,10 +377,10 @@ public class StdDeity extends StdMOB implements Deity
 				if(I==null) I=mob.fetchCarried(null,"all");
 				if(I==null) return;
 				V.addElement("$"+I.name()+"$");
-				addInventory(I);
+				addItem(I);
 				Blessing.invoke(this,V,I,true,mob.envStats().level());
-				delInventory(I);
-				if(!mob.isMine(I)) mob.addInventory(I);
+				delItem(I);
+				if(!mob.isMine(I)) mob.addItem(I);
 			}
 			else
 				Blessing.invoke(this,mob,true,mob.envStats().level());
@@ -428,10 +428,10 @@ public class StdDeity extends StdMOB implements Deity
 				if(I==null) I=mob.fetchCarried(null,"all");
 				if(I==null) return;
 				V.addElement("$"+I.name()+"$");
-				addInventory(I);
+				addItem(I);
 				Curse.invoke(this,V,I,true,mob.envStats().level());
-				delInventory(I);
-				if(!mob.isMine(I)) mob.addInventory(I);
+				delItem(I);
+				if(!mob.isMine(I)) mob.addItem(I);
 			}
 			else
 				Curse.invoke(this,mob,true,mob.envStats().level());

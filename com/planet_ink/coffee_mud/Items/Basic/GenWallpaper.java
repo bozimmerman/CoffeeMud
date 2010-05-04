@@ -282,7 +282,7 @@ public class GenWallpaper implements Item
 		if (owner instanceof MOB)
 		{
 			MOB mob=(MOB)owner;
-			mob.delInventory(this);
+			mob.delItem(this);
 		}
 	}
 
@@ -297,13 +297,13 @@ public class GenWallpaper implements Item
 	public void addBehavior(Behavior to){}
 	public void delBehavior(Behavior to){}
 	public int numBehaviors(){return 0;}
-    public Enumeration<Behavior> behaviors() { return (Enumeration<Behavior>)EmptyEnumeration.INSTANCE;}
+    public Enumeration<Behavior> behaviors() { return EmptyEnumeration.INSTANCE;}
 	public Behavior fetchBehavior(int index){return null;}
 	public Behavior fetchBehavior(String ID){return null;}
     public void addScript(ScriptingEngine S){}
     public void delScript(ScriptingEngine S) {}
     public int numScripts(){return 0;}
-    public Enumeration<ScriptingEngine> scripts() { return (Enumeration<ScriptingEngine>)EmptyEnumeration.INSTANCE;}
+    public Enumeration<ScriptingEngine> scripts() { return EmptyEnumeration.INSTANCE;}
     public ScriptingEngine fetchScript(int x){ return null;}
 
     public int getSaveStatIndex(){return getStatCodes().length;}

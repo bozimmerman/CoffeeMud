@@ -70,7 +70,7 @@ public class Thief_Arsonry extends ThiefSkill
 			Vector choices=new Vector();
 			for(int i=0;i<room.numItems();i++)
 			{
-				Item I=room.fetchItem(i);
+				Item I=room.getItem(i);
 				if((I!=null)
 				&&(I.container()==null)
 				&&(I.displayText().length()==0)
@@ -95,9 +95,9 @@ public class Thief_Arsonry extends ThiefSkill
 			targetRoom=mob.location();
 		}
 		boolean proceed=false;
-		for(int i=0;i<mob.inventorySize();i++)
+		for(int i=0;i<mob.numItems();i++)
 		{
-			Item I=mob.fetchInventory(i);
+			Item I=mob.getItem(i);
 			if((I!=null)&&(CMLib.flags().isOnFire(I))&&(CMLib.flags().canBeSeenBy(I,mob)))
 			{ proceed=true; break;}
 		}

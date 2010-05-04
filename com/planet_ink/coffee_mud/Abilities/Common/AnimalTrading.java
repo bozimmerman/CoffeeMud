@@ -84,16 +84,16 @@ public class AnimalTrading extends CommonSkill
 		{
 			for(int i=0;i<mob.location().numItems();i++)
 			{
-				Item I=mob.location().fetchItem(i);
+				Item I=mob.location().getItem(i);
 				if((I!=null)
 				&&(I instanceof Container)
 				&&((((Container)I).containTypes()&Container.CONTAIN_CAGED)==Container.CONTAIN_CAGED))
 				{ cage=I; break;}
 			}
 			if(cage==null)
-			for(int i=0;i<mob.inventorySize();i++)
+			for(int i=0;i<mob.numItems();i++)
 			{
-				Item I=mob.fetchInventory(i);
+				Item I=mob.getItem(i);
 				if((I!=null)
 				&&(I instanceof Container)
 				&&((((Container)I).containTypes()&Container.CONTAIN_CAGED)==Container.CONTAIN_CAGED))

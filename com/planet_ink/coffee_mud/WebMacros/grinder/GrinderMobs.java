@@ -69,7 +69,7 @@ public class GrinderMobs
 		if(I.subjectToWearAndTear())
 			I.setUsesRemaining(100);
 		I.recoverEnvStats();
-		M.addInventory(I);
+		M.addItem(I);
 		M.recoverEnvStats();
 		M.recoverCharStats();
 		M.recoverMaxState();
@@ -271,9 +271,9 @@ public class GrinderMobs
 					I.destroy();
 				}
 			}
-			for(int i=0;i<M.inventorySize();i++)
+			for(int i=0;i<M.numItems();i++)
 			{
-				Item I=M.fetchInventory(i);
+				Item I=M.getItem(i);
 				if((I.container()!=null)&&(!M.isMine(I.container())))
 					I.setContainer(null);
 			}
@@ -351,11 +351,11 @@ public class GrinderMobs
 			M.setStartRoom(R);
 
 			Vector allitems=new Vector();
-			while(oldM.inventorySize()>0)
+			while(oldM.numItems()>0)
 			{
-				Item I=oldM.fetchInventory(0);
+				Item I=oldM.getItem(0);
 				allitems.addElement(I);
-				oldM.delInventory(I);
+				oldM.delItem(I);
 			}
 			MOB copyMOB=(MOB)M.copyOf();
 

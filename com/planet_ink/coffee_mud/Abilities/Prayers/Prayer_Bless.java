@@ -84,9 +84,9 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 		Vector good=new Vector();
 		Vector great=new Vector();
 		Item target=null;
-		for(int i=0;i<mob.inventorySize();i++)
+		for(int i=0;i<mob.numItems();i++)
 		{
-			Item I=mob.fetchInventory(i);
+			Item I=mob.getItem(i);
 			if((I.container()==null)&&((!cursedOnly)||(isCursed(I))))
 				if(I.amWearingAt(Wearable.IN_INVENTORY))
 					good.addElement(I);

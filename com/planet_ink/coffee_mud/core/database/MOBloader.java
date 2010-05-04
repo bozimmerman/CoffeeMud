@@ -197,7 +197,7 @@ public class MOBloader
                     newItem.baseEnvStats().setAbility((int)DBConnections.getLongRes(R,"CMITAB"));
                     newItem.baseEnvStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
                     newItem.recoverEnvStats();
-                    mob.addInventory(newItem);
+                    mob.addItem(newItem);
                 }
             }
             for(Enumeration e=itemLocs.keys();e.hasMoreElements();)
@@ -795,9 +795,9 @@ public class MOBloader
     {
         HashSet done=new HashSet();
         Vector strings=new Vector();
-        for(int i=0;i<mob.inventorySize();i++)
+        for(int i=0;i<mob.numItems();i++)
         {
-            Item thisItem=mob.fetchInventory(i);
+            Item thisItem=mob.getItem(i);
             if((thisItem!=null)&&(!done.contains(""+thisItem))&&(thisItem.isSavable()))
             {
             	CMLib.catalog().updateCatalogIntegrity(thisItem);
@@ -878,13 +878,13 @@ public class MOBloader
             CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just been deleted.",true);
         CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_PURGES);
         DB.update("DELETE FROM CMCHAR WHERE CMUSERID='"+mob.Name()+"'");
-        while(mob.inventorySize()>0)
+        while(mob.numItems()>0)
         {
-            Item thisItem=mob.fetchInventory(0);
+            Item thisItem=mob.getItem(0);
             if(thisItem!=null)
             {
                 thisItem.setContainer(null);
-                mob.delInventory(thisItem);
+                mob.delItem(thisItem);
             }
         }
         DBUpdateItems(mob);

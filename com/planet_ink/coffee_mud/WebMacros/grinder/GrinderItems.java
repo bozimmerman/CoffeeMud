@@ -118,14 +118,14 @@ public class GrinderItems
 					if(R!=null)
 					for(int i=0;i<R.numItems();i++)
 					{
-						Item I2=R.fetchItem(i);
+						Item I2=R.getItem(i);
 						if(I2!=null) str.append(I2.Name()+"="+RoomData.getItemCode(R,I2));
 					}
 				}
 				else
-					for(int i=0;i<M.inventorySize();i++)
+					for(int i=0;i<M.numItems();i++)
 					{
-						Item I2=M.fetchInventory(i);
+						Item I2=M.getItem(i);
 						if(I2!=null) str.append(I2.Name()+"="+RoomData.getItemCode(M,I2));
 					}
 				return str.toString();
@@ -602,7 +602,7 @@ public class GrinderItems
 				}
 				else
 				{
-					M.addInventory(I);
+					M.addItem(I);
 					M.recoverEnvStats();
 					if((mobNum==null)||(!mobNum.startsWith("CATALOG-")))
 						M.text();
@@ -626,7 +626,7 @@ public class GrinderItems
 						R.recoverRoomStats();
 						for(int i=0;i<R.numItems();i++)
 						{
-							Item I2=R.fetchItem(i);
+							Item I2=R.getItem(i);
 							if((I2.container()!=null)
 							&&(I2.container()==oldI))
 								if(I instanceof Container)
@@ -638,15 +638,15 @@ public class GrinderItems
 				}
 				else
 				{
-					M.delInventory(oldI);
-					M.addInventory(I);
+					M.delItem(oldI);
+					M.addItem(I);
 					M.recoverEnvStats();
 					if((mobNum==null)||(!mobNum.startsWith("CATALOG-")))
 						M.text();
                     if(R!=null) R.recoverRoomStats();
-					for(int i=0;i<M.inventorySize();i++)
+					for(int i=0;i<M.numItems();i++)
 					{
-						Item I2=M.fetchInventory(i);
+						Item I2=M.getItem(i);
 						if((I2.container()!=null)
 						&&(I2.container()==oldI))
 							if(I instanceof Container)

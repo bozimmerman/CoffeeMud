@@ -1598,9 +1598,9 @@ public class List extends StdCommand
                     			+CMStrings.padRight(M.envStats().level()+"",3)+": "
                     			+CMLib.flags().getAlignmentName(M)
 		                		+"^N\n\r");
-                    for(int i=0;i<M.inventorySize();i++)
+                    for(int i=0;i<M.numItems();i++)
                     {
-                        Item I=M.fetchInventory(i);
+                        Item I=M.getItem(i);
                         if(I!=null)
                             buf.append("    ^I"+CMStrings.padRight(I.ID(),15)
                             		+": "+CMStrings.padRight((I.displayText().length()>0?I.displayText():I.Name()),35)+": "
@@ -1610,7 +1610,7 @@ public class List extends StdCommand
                 }
                 for(int i=0;i<TR.numItems();i++)
                 {
-                    Item I=TR.fetchItem(i);
+                    Item I=TR.getItem(i);
                     if(I!=null)
                         buf.append("^I"+CMStrings.padRight(I.ID(),15)+": "
                         		+CMStrings.padRight((I.displayText().length()>0?I.displayText():I.Name()),35)+": "

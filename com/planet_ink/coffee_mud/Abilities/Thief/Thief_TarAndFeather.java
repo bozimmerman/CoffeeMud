@@ -98,9 +98,9 @@ public class Thief_TarAndFeather extends ThiefSkill
 			mob.tell(target.name()+" must be prone or bound first.");
 			return false;
 		}
-		for(int i=0;i<target.inventorySize();i++)
+		for(int i=0;i<target.numItems();i++)
 		{
-		    Item I=target.fetchInventory(i);
+		    Item I=target.getItem(i);
 		    if((I!=null)&&(!I.amWearingAt(Wearable.IN_INVENTORY))&&(!I.amWearingAt(Wearable.WORN_FLOATING_NEARBY)))
 		    {
 			    mob.tell(target.name()+" must be undressed first.");
@@ -118,7 +118,7 @@ public class Thief_TarAndFeather extends ThiefSkill
 			Item I=CMClass.getArmor("GenArmor");
 			if(I!=null)
 			{
-			    target.addInventory(I);
+			    target.addItem(I);
 			    long wearCode=0;
 			    Wearable.CODES codes = Wearable.CODES.instance();
 			    for(int i=0;i<codes.all_ordered().length;i++)

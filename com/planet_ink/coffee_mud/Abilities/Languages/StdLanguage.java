@@ -207,8 +207,8 @@ public class StdLanguage extends StdAbility implements Language
         Language winner = null;
         winner = getMyTranslator(id,mob,winner);
         winner = getMyTranslator(id,mob.location(),winner);
-        for(int i=0;i<mob.inventorySize();i++)
-            winner=getMyTranslator(id,mob.fetchInventory(i),winner);
+        for(int i=0;i<mob.numItems();i++)
+            winner=getMyTranslator(id,mob.getItem(i),winner);
         return winner;
     }
 

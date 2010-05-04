@@ -70,9 +70,9 @@ public class Skill_Buffoonery extends BardSkill
 
     public String correctItem(MOB mob)
     {
-        for(int i=0;i<mob.inventorySize();i++)
+        for(int i=0;i<mob.numItems();i++)
         {
-            Item I=mob.fetchInventory(i);
+            Item I=mob.getItem(i);
             if((I!=null)
             &&(CMLib.flags().canBeSeenBy(I,mob))
             &&(I.amWearingAt(Wearable.IN_INVENTORY))
@@ -86,9 +86,9 @@ public class Skill_Buffoonery extends BardSkill
     public Item targetItem(MOB target)
     {
         Vector V=new Vector();
-        for(int i=0;i<target.inventorySize();i++)
+        for(int i=0;i<target.numItems();i++)
         {
-            Item I2=target.fetchInventory(i);
+            Item I2=target.getItem(i);
             if((!I2.amWearingAt(Wearable.IN_INVENTORY))
             &&(((I2 instanceof Weapon)&&(I2.baseEnvStats().damage()>1))
                ||((I2 instanceof Armor)&&(I2.baseEnvStats().armor()>1)))
@@ -136,7 +136,7 @@ public class Skill_Buffoonery extends BardSkill
     			return false;
 		    }
 		}
-		Item I=mob.fetchInventory(null,(String)commands.lastElement());
+		Item I=mob.findItem(null,(String)commands.lastElement());
 		if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))
 		{
 			mob.tell("You don't seem to have '"+((String)commands.lastElement())+"'.");
@@ -202,7 +202,7 @@ public class Skill_Buffoonery extends BardSkill
 				if(position>=0)
 				{
 					I.unWear();
-					target.giveItem(I);
+					target.moveItemTo(I);
 					I.wearAt(position);
 				}
 			}

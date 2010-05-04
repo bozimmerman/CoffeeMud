@@ -64,7 +64,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	{
 		if(I==null) return false;
 		if(I.owner() instanceof MOB)
-			((MOB)I.owner()).delInventory(I);
+			((MOB)I.owner()).delItem(I);
 		else
 		if(I.owner() instanceof Room)
 			((Room)I.owner()).delItem(I);
@@ -87,7 +87,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			Room R=(Room)item.owner();
 		    for(int i=0;i<R.numItems();i++)
 		    {
-		        I=R.fetchItem(i);
+		        I=R.getItem(i);
 				if((I instanceof RawMaterial)
 				&&(I.material()==item.material())
 			    &&(I!=item)
@@ -102,9 +102,9 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		if(owner instanceof MOB)
 		{
 			MOB M=(MOB)item.owner();
-		    for(int i=0;i<M.inventorySize();i++)
+		    for(int i=0;i<M.numItems();i++)
 		    {
-		        I=M.fetchInventory(i);
+		        I=M.getItem(i);
 				if((I instanceof RawMaterial)
 				&&(I.material()==item.material())
 			    &&(I!=item)
@@ -185,15 +185,15 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		}
 		for(int i=0;i<found.size();i++)
 			((RawMaterial)found.elementAt(i)).quickDestroy();
-        if((owner instanceof Room)&&(((Room)owner).numItems()>0)&&(((Room)owner).fetchItem(((Room)owner).numItems()-1)!=bundle))
+        if((owner instanceof Room)&&(((Room)owner).numItems()>0)&&(((Room)owner).getItem(((Room)owner).numItems()-1)!=bundle))
         {
             ((Room)owner).delItem(bundle);
             ((Room)owner).bringItemHere(bundle,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP),false);
         }
-        if((owner instanceof MOB)&&(((MOB)owner).inventorySize()>0)&&(((MOB)owner).fetchInventory(((MOB)owner).inventorySize()-1)!=bundle))
+        if((owner instanceof MOB)&&(((MOB)owner).numItems()>0)&&(((MOB)owner).getItem(((MOB)owner).numItems()-1)!=bundle))
         {
-            ((MOB)owner).delInventory(bundle);
-            ((MOB)owner).giveItem(bundle);
+            ((MOB)owner).delItem(bundle);
+            ((MOB)owner).moveItemTo(bundle);
         }
 		Room R=CMLib.map().roomLocation(bundle);
 		if(R!=null) R.recoverRoomStats();
@@ -223,7 +223,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
                     ((Room)owner).addItemRefuse(I,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
                 else
                 if(owner instanceof MOB)
-                    ((MOB)owner).addInventory(I);
+                    ((MOB)owner).addItem(I);
             }
             if(!pkg.amDestroyed())
             {
@@ -235,8 +235,8 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
             	else
 	            if(owner instanceof MOB)
 	            {
-	            	((MOB)owner).delInventory(pkg);
-	                ((MOB)owner).addInventory(pkg);
+	            	((MOB)owner).delItem(pkg);
+	                ((MOB)owner).addItem(pkg);
 	            }
 	            else
 	            	pkg.destroy();
@@ -284,7 +284,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
                             ((Room)owner).addItemRefuse((Item)E,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
                         else
                         if(owner instanceof MOB)
-                            ((MOB)owner).addInventory((Item)E);
+                            ((MOB)owner).addItem((Item)E);
                     }
                     else
                         E=null;
@@ -319,8 +319,8 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
                     else
                     if(owner instanceof MOB)
                     {
-                        ((MOB)owner).delInventory(I);
-                        ((MOB)owner).addInventory(I);
+                        ((MOB)owner).delItem(I);
+                        ((MOB)owner).addItem(I);
                     }
                     else
                         I.destroy();
@@ -818,7 +818,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		if(R!=null)
 		for(int r=0;r<R.numItems();r++)
 		{
-			I=R.fetchItem(r);
+			I=R.getItem(r);
 			if(I!=null)V.addElement(I);
 		}
 		return V;
@@ -828,9 +828,9 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		Vector V=new Vector();
 		Item I=null;
 		if(M!=null)
-		for(int i=0;i<M.inventorySize();i++)
+		for(int i=0;i<M.numItems();i++)
 		{
-			I=M.fetchInventory(i);
+			I=M.getItem(i);
 			if(I!=null)V.addElement(I);
 		}
 		return V;

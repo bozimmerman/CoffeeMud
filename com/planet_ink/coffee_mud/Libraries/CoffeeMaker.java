@@ -305,9 +305,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	public String getGenMobInventory(MOB M)
 	{
 		StringBuffer itemstr=new StringBuffer("");
-		for(int b=0;b<M.inventorySize();b++)
+		for(int b=0;b<M.numItems();b++)
 		{
-			Item I=M.fetchInventory(b);
+			Item I=M.getItem(b);
 			if((I!=null)&&(I.isSavable()))
 			{
 				itemstr.append("<ITEM>");
@@ -1463,7 +1463,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(room==null) return buf;
 		Vector items=new Vector();
 		for(int i=0;i<room.numItems();i++)
-			items.addElement(room.fetchItem(i));
+			items.addElement(room.getItem(i));
 		Vector mobs=new Vector();
 		for(int i=0;i<room.numInhabitants();i++)
 			mobs.addElement(room.fetchInhabitant(i));
@@ -1478,9 +1478,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			MOB M=(MOB)mobs.elementAt(m);
 			if((M!=null)&&(M.isSavable()))
 			{
-				for(int i=0;i<M.inventorySize();i++)
+				for(int i=0;i<M.numItems();i++)
 				{
-					Item item=M.fetchInventory(i);
+					Item item=M.getItem(i);
 					buf.append(getUniqueItemXML(item,type,found,files));
 				}
 				if(CMLib.coffeeShops().getShopKeeper(M)!=null)
@@ -1514,7 +1514,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		Vector items=new Vector();
 		if(andContent)
 		for(int i=0;i<croom.numItems();i++)
-			items.addElement(croom.fetchItem(i));
+			items.addElement(croom.getItem(i));
 
 		buf.append("<AROOM>");
 		buf.append(CMLib.xml().convertXMLtoTag("ROOMID",room.roomID()));
@@ -1908,7 +1908,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if((newOne instanceof Container)&&(((Container)newOne).capacity()>0))
 				IIDmap.put(CMLib.xml().getValFromPieces(idat,"IID"),newOne);
 			String ILOC=CMLib.xml().getValFromPieces(idat,"ILOC");
-			M.addInventory(newOne);
+			M.addItem(newOne);
 			if(ILOC.length()>0)
 				LOCmap.put(newOne,ILOC);
 			setPropertiesStr(newOne,idat,true);
@@ -1916,9 +1916,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				variableEq=true;
 			newOne.wearAt(wornCode);
 		}
-		for(int i=0;i<M.inventorySize();i++)
+		for(int i=0;i<M.numItems();i++)
 		{
-			Item item=M.fetchInventory(i);
+			Item item=M.getItem(i);
 			if(item!=null)
 			{
 				String ILOC=(String)LOCmap.get(item);
@@ -2059,10 +2059,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				if(A!=null)
 					((MOB)E).delAbility(A);
 			}
-			while(((MOB)E).inventorySize()>0)
+			while(((MOB)E).numItems()>0)
 			{
-				Item I=((MOB)E).fetchInventory(0);
-				if(I!=null){ I.setOwner((MOB)E); I.destroy(); ((MOB)E).delInventory(I);}
+				Item I=((MOB)E).getItem(0);
+				if(I!=null){ I.setOwner((MOB)E); I.destroy(); ((MOB)E).delItem(I);}
 			}
 			if(E instanceof ShopKeeper)
 			{
@@ -2778,8 +2778,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(E instanceof MOB)
 		{
 		    MOB M=(MOB)E;
-		    for(int i=0;i<M.inventorySize();i++)
-		        fillFileSet(M.fetchInventory(i),H);
+		    for(int i=0;i<M.numItems();i++)
+		        fillFileSet(M.getItem(i),H);
 		}
 		if(E instanceof ShopKeeper)
 		{
@@ -3320,10 +3320,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			}
 		case 17:
 			{
-				while(M.inventorySize()>0)
+				while(M.numItems()>0)
 				{
-					Item I=M.fetchInventory(0);
-					if(I!=null){ I.setOwner(M); I.destroy(); M.delInventory(I);}
+					Item I=M.getItem(0);
+					if(I!=null){ I.setOwner(M); I.destroy(); M.delItem(I);}
 				}
 				setGenMobInventory(M,CMLib.xml().parseAllXML(val));
 			}

@@ -142,7 +142,7 @@ public class Taxidermy extends CraftingSkill
 
 		verb="stuffing";
 		String str=CMParms.combine(commands,0);
-		Item I=mob.location().fetchItem(null,str);
+		Item I=mob.location().findItem(null,str);
 		if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))
 		{
 			commonTell(mob,"You don't see anything called '"+str+"' here.");
@@ -156,7 +156,7 @@ public class Taxidermy extends CraftingSkill
 		}
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I2=mob.location().fetchItem(i);
+			Item I2=mob.location().getItem(i);
 			if(I2.container()==I)
 			{
 				commonTell(mob,"You need to remove the contents of "+I2.name()+" first.");

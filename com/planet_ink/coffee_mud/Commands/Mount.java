@@ -57,14 +57,14 @@ public class Mount extends StdCommand
 		}
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I=mob.location().fetchItem(i);
+			Item I=mob.location().getItem(i);
 			if((I!=null)&&(I instanceof Rideable))
 				possRecipients.addElement(I);
 		}
 		Rider RI=null;
 		if(commands.size()>1)
 		{
-			Item I=mob.location().fetchItem(null,(String)commands.firstElement());
+			Item I=mob.location().findItem(null,(String)commands.firstElement());
 			if(I!=null)
 			{
 				commands.removeElementAt(0);

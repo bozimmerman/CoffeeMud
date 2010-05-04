@@ -52,7 +52,7 @@ public class Thief_Forgery extends ThiefSkill
 			mob.tell("What would you like to forge, and onto what?");
 			return false;
 		}
-		Item target=mob.fetchInventory(null,(String)commands.lastElement());
+		Item target=mob.findItem(null,(String)commands.lastElement());
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("You don't see '"+((String)commands.lastElement())+"' here.");

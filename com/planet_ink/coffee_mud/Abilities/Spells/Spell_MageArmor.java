@@ -114,7 +114,7 @@ public class Spell_MageArmor extends Spell
 				mob.location().send(mob,msg);
 				theArmor=CMClass.getArmor("GlowingMageArmor");
 				theArmor.setLayerAttributes(Armor.LAYERMASK_SEETHROUGH);
-				mob.addInventory(theArmor);
+				mob.addItem(theArmor);
 				theArmor.wearAt(Wearable.WORN_TORSO);
 				success=beneficialAffect(mob,target,asLevel,0);
 				mob.location().recoverRoomStats();

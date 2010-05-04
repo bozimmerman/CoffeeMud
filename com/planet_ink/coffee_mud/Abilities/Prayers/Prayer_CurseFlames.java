@@ -62,9 +62,9 @@ public class Prayer_CurseFlames extends Prayer
 	private Item getFireSource(MOB target)
 	{
         Item fireSource=null;
-        for(int i=0;i<target.inventorySize();i++)
+        for(int i=0;i<target.numItems();i++)
         {
-            Item I=target.fetchInventory(i);
+            Item I=target.getItem(i);
             if((CMLib.flags().isOnFire(I))&&(I.container()==null))
             {
                 fireSource=I;
@@ -75,7 +75,7 @@ public class Prayer_CurseFlames extends Prayer
         if(fireSource==null)
         for(int i=0;i<target.location().numItems();i++)
         {
-            Item I=target.location().fetchItem(i);
+            Item I=target.location().getItem(i);
             if((CMLib.flags().isOnFire(I))&&(I.container()==null))
             {
                 fireSource=I;

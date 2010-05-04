@@ -100,7 +100,7 @@ public class CharGen extends StdCommand
 				W.baseEnvStats().setWeight(8);
 				W.recoverEnvStats();
 				CMLib.itemBuilder().balanceItemByLevel(W);
-				M.addInventory(W);
+				M.addItem(W);
 				W.wearIfPossible(M);
 			}
 			else
@@ -131,7 +131,7 @@ public class CharGen extends StdCommand
 				A.baseEnvStats().setWeight(8);
 				A.recoverEnvStats();
 				CMLib.itemBuilder().balanceItemByLevel(A);
-				M.addInventory(A);
+				M.addItem(A);
 				A.wearIfPossible(M);
 			}
 		}

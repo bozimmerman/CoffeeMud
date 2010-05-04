@@ -192,9 +192,9 @@ public class Conquerable extends Arrest
 		&&((!M.isMonster())||CMLib.flags().isMobile(M))
 		&&(holdingClan.length()>0)
 		&&(M.getClanID().equals(holdingClan)))
-			for(int i=0;i<M.inventorySize();i++)
+			for(int i=0;i<M.numItems();i++)
 			{
-				Item I=M.fetchInventory(i);
+				Item I=M.getItem(i);
 				if((I!=null)
 				&&(I instanceof ClanItem)
 				&&(!I.amWearingAt(Wearable.IN_INVENTORY))
@@ -212,9 +212,9 @@ public class Conquerable extends Arrest
 		&&(M.location()!=null)
 		&&(holdingClan.length()>0)
 		&&(M.getClanID().equals(holdingClan)))
-			for(int i=0;i<M.inventorySize();i++)
+			for(int i=0;i<M.numItems();i++)
 			{
-				Item I=M.fetchInventory(i);
+				Item I=M.getItem(i);
 				if((I!=null)
 				&&(I instanceof ClanItem)
 				&&(!I.amWearingAt(Wearable.IN_INVENTORY))
@@ -244,7 +244,7 @@ public class Conquerable extends Arrest
 				MOB M=(MOB)I.owner();
 				if((M.location()!=null)&&(!M.amDead())&&(M.isMonster()))
 				{
-					M.delInventory(I);
+					M.delItem(I);
 					if(M.getClanID().equals(holdingClan))
                     {
 						M.setClanID("");
@@ -464,12 +464,12 @@ public class Conquerable extends Arrest
 									if(foundMOB!=null)
 									{
                                         boolean found=false;
-                                        for(int i=0;i<foundMOB.inventorySize();i++)
-                                            if(newItem.sameAs(foundMOB.fetchInventory(i)))
+                                        for(int i=0;i<foundMOB.numItems();i++)
+                                            if(newItem.sameAs(foundMOB.getItem(i)))
                                                 found=true;
                                         if(!found)
                                         {
-    										foundMOB.addInventory(newItem);
+    										foundMOB.addItem(newItem);
     										newItem.wearAt(newItem.rawProperLocationBitmap());
                                         }
 									}
@@ -480,7 +480,7 @@ public class Conquerable extends Arrest
                                             doneRooms.add(R);
                                             for(int i=R.numItems()-1;i>=0;i--)
                                             {
-                                                Item I=R.fetchItem(i);
+                                                Item I=R.getItem(i);
                                                 if(I instanceof ClanItem)
                                                     I.destroy();
                                             }
@@ -735,9 +735,9 @@ public class Conquerable extends Arrest
 				Item badge=null;
 				Item I=null;
 				ClanItem CI=null;
-				for(int i=msg.source().inventorySize()-1;i>=0;i--)
+				for(int i=msg.source().numItems()-1;i>=0;i--)
 				{
-					I=msg.source().fetchInventory(i);
+					I=msg.source().getItem(i);
 					if(I instanceof ClanItem)
 					{
 						CI=(ClanItem)I;
@@ -919,7 +919,7 @@ public class Conquerable extends Arrest
 				R=(Room)e.nextElement();
 				for(int i=0;i<R.numItems();i++)
 				{
-					I=R.fetchItem(i);
+					I=R.getItem(i);
 					if((I instanceof ClanItem)
 					&&(((ClanItem)I).ciType()==ClanItem.CI_FLAG)
 					&&(((ClanItem)I).clanID().equals(clanID))

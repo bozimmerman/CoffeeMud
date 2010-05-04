@@ -44,9 +44,9 @@ public class Draw extends Get
 	{
 		Vector sheaths=new Vector();
 		if(mob!=null)
-		for(int i=0;i<mob.inventorySize();i++)
+		for(int i=0;i<mob.numItems();i++)
 		{
-			Item I=mob.fetchInventory(i);
+			Item I=mob.getItem(i);
 			if((I!=null)
 			&&(!I.amWearingAt(Wearable.IN_INVENTORY))
 			&&(I instanceof Container)
@@ -116,9 +116,9 @@ public class Draw extends Get
 				containerName=((Item)sheaths.elementAt(0)).name();
 			else
 				containerName="a weapon";
-			for(int i=0;i<mob.inventorySize();i++)
+			for(int i=0;i<mob.numItems();i++)
 			{
-				Item I=mob.fetchInventory(i);
+				Item I=mob.getItem(i);
 				if((I instanceof Weapon)
 				   &&(I.container()!=null)
 				   &&(sheaths.contains(I.container())))
@@ -129,9 +129,9 @@ public class Draw extends Get
 				}
 			}
 			if(whatToGet.length()==0)
-				for(int i=0;i<mob.inventorySize();i++)
+				for(int i=0;i<mob.numItems();i++)
 				{
-					Item I=mob.fetchInventory(i);
+					Item I=mob.getItem(i);
 					if(I instanceof Weapon)
 					{
 						whatToGet=I.name();
@@ -164,7 +164,7 @@ public class Draw extends Get
 				doBugFix=false;
 				Environmental getThis=null;
 				if((container!=null)&&(mob.isMine(container)))
-				   getThis=mob.fetchInventory(container,whatToGet+addendumStr);
+				   getThis=mob.findItem(container,whatToGet+addendumStr);
 				if(getThis==null) break;
 				if(getThis instanceof Weapon)
 					V.addElement(getThis);

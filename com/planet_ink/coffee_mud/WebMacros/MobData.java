@@ -829,8 +829,8 @@ public class MobData extends StdWebMacro
 			if(httpReq.isRequestParameter("ITEM1"))
 			{
                 if(oldM!=M)
-                    for(int i=0;i<oldM.inventorySize();i++)
-                        M.addInventory(oldM.fetchInventory(i));
+                    for(int i=0;i<oldM.numItems();i++)
+                        M.addItem(oldM.getItem(i));
 
                 containers=new Vector();
 				itemlist=RoomData.items;
@@ -860,9 +860,9 @@ public class MobData extends StdWebMacro
 			}
 			else
 			{
-				for(int m=0;m<M.inventorySize();m++)
+				for(int m=0;m<M.numItems();m++)
 				{
-					Item I2=M.fetchInventory(m);
+					Item I2=M.getItem(m);
                     if(I2!=null)
                     {
                     	CMLib.catalog().updateCatalogIntegrity(I2);

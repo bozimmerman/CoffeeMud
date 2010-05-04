@@ -846,7 +846,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             Vector allitems=new Vector();
             while(oldR.numItems()>0)
             {
-                Item I=oldR.fetchItem(0);
+                Item I=oldR.getItem(0);
                 if(!allitems.contains(I))
                     allitems.addElement(I);
                 oldR.delItem(I);
@@ -3225,7 +3225,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                         if((item==null)&&(mob.location()!=null))
                         {
                             Room R=mob.location();
-                            item=R.fetchItem(null,itemstr);
+                            item=R.findItem(null,itemstr);
                             if(item==null)
                             {
                                 item=R.fetchInhabitant(itemstr);

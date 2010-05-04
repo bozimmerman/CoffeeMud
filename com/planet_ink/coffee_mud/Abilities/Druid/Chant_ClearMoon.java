@@ -81,7 +81,7 @@ public class Chant_ClearMoon extends Chant
 				}
 				for(int i=0;i<thatRoom.numItems();i++)
 				{
-					Item I=thatRoom.fetchItem(i);
+					Item I=thatRoom.getItem(i);
 					clearMoons(I);
 				}
 			}

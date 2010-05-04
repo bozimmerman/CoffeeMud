@@ -521,9 +521,9 @@ public class Amputation extends StdAbility implements Amputator
             else
             if(named.startsWith("LEFT "))
                 named=named.substring(5).trim();
-            for(int i=0;i<tmob.inventorySize();i++)
+            for(int i=0;i<tmob.numItems();i++)
             {
-                Item I=tmob.fetchInventory(i);
+                Item I=tmob.getItem(i);
                 if((I!=null)
                 &&(!I.amWearingAt(Wearable.IN_INVENTORY))
                 &&(I.ID().endsWith("Limb"))

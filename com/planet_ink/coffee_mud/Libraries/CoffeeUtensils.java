@@ -82,12 +82,12 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		for(int i=0;i<items.size();i++)
 		{
 			Item I=(Item)items.elementAt(i);
-			if(mob.fetchInventory("$"+I.name()+"$")==null)
+			if(mob.findItem("$"+I.name()+"$")==null)
 			{
 				I=(Item)I.copyOf();
 				I.text();
 				I.recoverEnvStats();
-				mob.addInventory(I);
+				mob.addItem(I);
 				if(I.whereCantWear(mob)<=0)
 					I.wearIfPossible(mob);
 				if(((I instanceof Armor)||(I instanceof Weapon))
@@ -242,7 +242,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			}
 			for(int i=0;i<R.numItems();i++)
 			{
-				Item I=R.fetchItem(i);
+				Item I=R.getItem(i);
 				if(I!=null) extinguish(source,I,mundane);
 			}
 			return;
@@ -263,9 +263,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			MOB tmob=(MOB)target;
 			if(tmob.charStats().getMyRace().ID().equals("FireElemental"))
 				CMLib.combat().postDeath(source,(MOB)target,null);
-			for(int i=0;i<tmob.inventorySize();i++)
+			for(int i=0;i<tmob.numItems();i++)
 			{
-				Item I=tmob.fetchInventory(i);
+				Item I=tmob.getItem(i);
 				if(I!=null) extinguish(tmob,I,mundane);
 			}
 		}
@@ -318,9 +318,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				if(newLastTickedDateTime==0)
 				{
 					Vector rivals=new Vector();
-					for(int i=0;i<mob.inventorySize();i++)
+					for(int i=0;i<mob.numItems();i++)
 					{
-						Item I=mob.fetchInventory(i);
+						Item I=mob.getItem(i);
 						if((I!=null)&&(I.baseEnvStats().rejuv()>0)&&(I.baseEnvStats().rejuv()<Integer.MAX_VALUE))
 						{
 							Vector V=null;
@@ -344,7 +344,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							{
 								Item I=(Item)V.elementAt(r);
 								if(CMLib.dice().rollPercentage()<I.baseEnvStats().rejuv())
-									mob.delInventory(I);
+									mob.delItem(I);
 								else
 								{
 									I.baseEnvStats().setRejuv(0);
@@ -377,7 +377,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							{
 								Item I=(Item)V.elementAt(r);
 								if(chosenI!=I)
-									mob.delInventory(I);
+									mob.delItem(I);
 								else
 								{
 									I.baseEnvStats().setRejuv(0);
@@ -427,7 +427,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
         
         if(CMLib.flags().isHidden(thisContainer))
             thisContainer.baseEnvStats().setDisposition(thisContainer.baseEnvStats().disposition()&((int)EnvStats.ALLMASK-EnvStats.IS_HIDDEN));
-        mob.delInventory(thisContainer);
+        mob.delItem(thisContainer);
         thisContainer.unWear();
         if(!bodyFlag) bodyFlag=(thisContainer instanceof DeadBody);
         if(bodyFlag)
@@ -442,9 +442,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
         do
         {
             nothingDone=true;
-            for(int i=0;i<mob.inventorySize();i++)
+            for(int i=0;i<mob.numItems();i++)
             {
-                Item thisItem=mob.fetchInventory(i);
+                Item thisItem=mob.getItem(i);
                 if((thisItem!=null)&&(thisItem.container()==thisContainer))
                 {
                     recursiveDropMOB(mob,room,thisItem,bodyFlag);
@@ -550,9 +550,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	{
 		if(allowedArmorLevel==CharClass.ARMOR_ANY) return true;
 
-		for(int i=0;i<mob.inventorySize();i++)
+		for(int i=0;i<mob.numItems();i++)
 		{
-			Item I=mob.fetchInventory(i);
+			Item I=mob.getItem(i);
 			if((I!=null)&&(!I.amWearingAt(Wearable.IN_INVENTORY)))
 			{
 				boolean ok=armorCheck(mob,I,allowedArmorLevel);
@@ -625,9 +625,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		Race R=mob.charStats().getMyRace();
 		DVector reWearSet=new DVector(2);
 		Item item=null;
-		for(int i=0;i<mob.inventorySize();i++)
+		for(int i=0;i<mob.numItems();i++)
 		{
-			item=mob.fetchInventory(i);
+			item=mob.getItem(i);
 			if((item!=null)&&(!item.amWearingAt(Wearable.IN_INVENTORY)))
 			{
 				Long oldCode=Long.valueOf(item.rawWornCode());
@@ -836,7 +836,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			int it=0;
 			while(it<rejuvedMOB.location().numItems())
 			{
-				Item item=rejuvedMOB.location().fetchItem(it);
+				Item item=rejuvedMOB.location().getItem(it);
 				if((item!=null)&&(item.container()==body))
 				{
 					CMMsg msg2=CMClass.getMsg(rejuvedMOB,body,item,CMMsg.MSG_GET,null);
@@ -1000,7 +1000,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
                 case 'a': { buf.append(CMLib.factions().getRangePercent(CMLib.factions().AlignID(),mob.fetchFaction(CMLib.factions().AlignID()))+"%"); c++; break; }
                 case 'A': { Faction.FactionRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),mob.fetchFaction(CMLib.factions().AlignID()));buf.append((FR!=null)?FR.name():""+mob.fetchFaction(CMLib.factions().AlignID())); c++; break;}
                 case 'B': { buf.append("\n\r"); c++; break;}
-                case 'c': { buf.append(mob.inventorySize()); c++; break;}
+                case 'c': { buf.append(mob.numItems()); c++; break;}
                 case 'C': { buf.append(mob.maxItems()); c++; break;}
                 case 'd': {   MOB victim=mob.getVictim();
                               if((mob.isInCombat())&&(victim!=null))

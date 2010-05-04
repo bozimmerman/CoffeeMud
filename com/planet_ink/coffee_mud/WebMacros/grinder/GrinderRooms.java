@@ -172,7 +172,7 @@ public class GrinderRooms
 			Vector allitems=new Vector();
 			while(oldR.numItems()>0)
 			{
-				Item I=oldR.fetchItem(0);
+				Item I=oldR.getItem(0);
 				if(!allitems.contains(I))
 					allitems.addElement(I);
 				oldR.delItem(I);
@@ -280,7 +280,7 @@ public class GrinderRooms
 			}
 			for(int i=0;i<R.numItems();i++)
 			{
-				Item I=R.fetchItem(i);
+				Item I=R.getItem(i);
 				if((I.container()!=null)&&(!R.isContent(I.container())))
 					I.setContainer(null);
 			}

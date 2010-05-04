@@ -47,7 +47,7 @@ public class Chant_FungalBloom extends Chant
     {
         for(int i=0;i<R.numItems();i++)
         {
-            Item I=R.fetchItem(i);
+            Item I=R.getItem(i);
             if((I!=null)
             &&(I.container()==null)
             &&(I.material()!=RawMaterial.RESOURCE_MUSHROOMS)

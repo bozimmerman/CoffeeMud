@@ -167,7 +167,7 @@ public class Chant_PlantChoke extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				target.giveItem(myPlant);
+				target.moveItemTo(myPlant);
 				myPlant.setRawWornCode(Wearable.WORN_NECK);
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,myPlant.name()+" jumps up and wraps itself around <S-YOUPOSS> neck!");
 				beneficialAffect(mob,myPlant,asLevel,5);

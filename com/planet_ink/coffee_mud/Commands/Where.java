@@ -234,7 +234,7 @@ public class Where extends StdCommand
 							if((!mobOnly)&&(!roomOnly)&&(!exitOnly))
 								for(int i=0;i<R.numItems();i++)
 								{
-									Item I=R.fetchItem(i);
+									Item I=R.getItem(i);
                                     if((zapperMask)&&(itemOnly))
                                     {
                                         if(CMLib.masking().maskCheck(compiledZapperMask,I,true))
@@ -306,9 +306,9 @@ public class Where extends StdCommand
 										}
 									if((!mobOnly)&&(!roomOnly)&&(!exitOnly))
 									{
-										for(int i=0;i<M.inventorySize();i++)
+										for(int i=0;i<M.numItems();i++)
 										{
-											Item I=M.fetchInventory(i);
+											Item I=M.getItem(i);
                                             if((zapperMask)&&(itemOnly))
                                             {
                                                 if(CMLib.masking().maskCheck(compiledZapperMask,I,true))

@@ -92,7 +92,7 @@ public class Split extends StdCommand
 			{
 			    Coins C=(Coins)V.elementAt(v);
 			    C=(Coins)C.copyOf();
-				mob.addInventory(C);
+				mob.addItem(C);
 				CMMsg newMsg=CMClass.getMsg(mob,recipient,C,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
 				if(mob.location().okMessage(mob,newMsg))
 					mob.location().send(mob,newMsg);

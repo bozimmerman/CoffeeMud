@@ -101,7 +101,7 @@ public class Chant_WindColor extends Chant
 		HashSet group=mob.getGroupMembers(new HashSet());
 		for(int i=0;i<R.numItems();i++)
 		{
-			Item I=R.fetchItem(i);
+			Item I=R.getItem(i);
 			if(I!=null)
 			{
 				int done=0;

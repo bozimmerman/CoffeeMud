@@ -115,9 +115,9 @@ public class Thief_DampenAuras extends ThiefSkill
 				Item I=null;
 				Environmental affecting=A.affecting();
 				StringBuffer items=new StringBuffer("");
-				for(int i=0;i<target.inventorySize();i++)
+				for(int i=0;i<target.numItems();i++)
 				{
-					I=target.fetchInventory(i);
+					I=target.getItem(i);
 					if(I!=null)
 					{
 						I.addEffect(A);

@@ -61,7 +61,7 @@ public class TimsItemTable extends StdWebMacro
 						break;
 					for(int i=0;i<R.numItems();i++)
 					{
-						Item I=R.fetchItem(i);
+						Item I=R.getItem(i);
 						if((endTime>0)&&(System.currentTimeMillis()>endTime))
 							break;
 						if(!doneBefore(onesDone,I)) str.append(addRow(I));
@@ -74,9 +74,9 @@ public class TimsItemTable extends StdWebMacro
 							break;
 						MOB M=R.fetchInhabitant(m);
 						if(M==null) continue;
-						for(int i=0;i<M.inventorySize();i++)
+						for(int i=0;i<M.numItems();i++)
 						{
-							Item I=M.fetchInventory(i);
+							Item I=M.getItem(i);
 							if((endTime>0)&&(System.currentTimeMillis()>endTime))
 								break;
 							if(!doneBefore(onesDone,I)) str.append(addRow(I));

@@ -89,7 +89,7 @@ public class Spell_Disintegrate extends Spell
 					Hashtable V=new Hashtable();
 					for(int i=0;i<R.numItems();i++)
 					{
-						Item item=R.fetchItem(i);
+						Item item=R.getItem(i);
 						if((item!=null)&&(item instanceof DeadBody))
 							V.put(item,item);
 					}
@@ -114,7 +114,7 @@ public class Spell_Disintegrate extends Spell
 						while(i<R.numItems())
 						{
 							int s=R.numItems();
-							Item item=R.fetchItem(i);
+							Item item=R.getItem(i);
 							if((item!=null)&&(item instanceof DeadBody)&&(V.get(item)==null))
 								item.destroy();
 							if(s==R.numItems())

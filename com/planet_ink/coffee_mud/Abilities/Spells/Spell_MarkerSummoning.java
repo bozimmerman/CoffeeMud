@@ -122,7 +122,7 @@ public class Spell_MarkerSummoning extends Spell
 				Vector items=new Vector();
 				for(int i=oldRoom.numItems()-1;i>=0;i--)
 				{
-					Item I=oldRoom.fetchItem(i);
+					Item I=oldRoom.getItem(i);
 					if(I!=null) items.addElement(I);
 				}
 				for(int i=0;i<items.size();i++)

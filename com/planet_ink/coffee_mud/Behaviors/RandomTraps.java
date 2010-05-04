@@ -312,7 +312,7 @@ public class RandomTraps extends ActiveTicker
 					for(int i=0;i<R.numItems();i++)
 					{
                         tickStatus=Tickable.STATUS_MISC+22;
-						Item I=R.fetchItem(i);
+						Item I=R.getItem(i);
 						if((CMLib.flags().isGettable(I))
 						&&(!elligible.contains(I))
 						&&(!I.ID().endsWith("Wallpaper")))

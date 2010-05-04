@@ -89,9 +89,9 @@ public class Thiefness extends CombatAbilities
 					if(!A.ID().equalsIgnoreCase("Thief_Swipe"))
 					{
 						Item I=null;
-						for(int i=0;i<victim.inventorySize();i++)
+						for(int i=0;i<victim.numItems();i++)
 						{
-							Item potentialI=victim.fetchInventory(i);
+							Item potentialI=victim.getItem(i);
 							if((potentialI!=null)
 							&&(potentialI.amWearingAt(Wearable.IN_INVENTORY))
 							&&(CMLib.flags().canBeSeenBy(potentialI,mob)))

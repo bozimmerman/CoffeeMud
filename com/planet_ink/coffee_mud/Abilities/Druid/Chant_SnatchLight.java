@@ -92,9 +92,9 @@ public class Chant_SnatchLight extends Chant
 					M.addEffect(A);
 				}
 				if(M!=null)
-				for(int i=0;i<M.inventorySize();i++)
+				for(int i=0;i<M.numItems();i++)
 				{
-					Item I=M.fetchInventory(i);
+					Item I=M.getItem(i);
 					if((I!=null)&&(I.container()==null)&&(CMLib.flags().isGlowing(I)||CMLib.flags().isLightSource(I))&&(I.fetchEffect(ID())==null))
 					{
 						Ability A=(Ability)copyOf();
@@ -105,7 +105,7 @@ public class Chant_SnatchLight extends Chant
 			}
 			for(int i=0;i<R.numItems();i++)
 			{
-				Item I=R.fetchItem(i);
+				Item I=R.getItem(i);
 				if((I!=null)&&(CMLib.flags().isGlowing(I)||CMLib.flags().isLightSource(I))&&(I.fetchEffect(ID())==null))
 				{
 					Ability A=(Ability)copyOf();
@@ -143,9 +143,9 @@ public class Chant_SnatchLight extends Chant
 				if(E instanceof MOB)
 				{
 					MOB M=(MOB)E;
-					for(int i=0;i<M.inventorySize();i++)
+					for(int i=0;i<M.numItems();i++)
 					{
-						Item I=M.fetchInventory(i);
+						Item I=M.getItem(i);
 						if(I!=null)
 						{
 							Ability A=I.fetchEffect(ID());

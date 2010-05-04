@@ -418,7 +418,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		    if(owner instanceof Room)
 		        ((Room)owner).addItem(C);
 		    if(owner instanceof MOB)
-		        ((MOB)owner).addInventory(C);
+		        ((MOB)owner).addItem(C);
 		    C.setContainer(container);
 		    C.recoverEnvStats();
 	    }
@@ -651,7 +651,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	    {
 	        Coins C=(Coins)V.elementAt(i);
 	        C.setContainer(container);
-	        mob.addInventory(C);
+	        mob.addItem(C);
 	        C.putCoinsBack();
 		}
 		mob.recoverEnvStats();
@@ -685,7 +685,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	    for(int i=0;i<V.size();i++)
 	    {
 	        Coins C=(Coins)V.elementAt(i);
-	        banker.addInventory(C);
+	        banker.addItem(C);
 			CMMsg newMsg=CMClass.getMsg(banker,customer,C,CMMsg.MSG_GIVE,"<S-NAME> give(s) "+C.Name()+" to <T-NAMESELF>.");
 			if(banker.location().okMessage(banker,newMsg))
 			{
@@ -914,9 +914,9 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	    if(mob==null) return;
 	    Vector clear=null;
 	    Item I=null;
-	    for(int i=0;i<mob.inventorySize();i++)
+	    for(int i=0;i<mob.numItems();i++)
 	    {
-	        I=mob.fetchInventory(i);
+	        I=mob.getItem(i);
 	        if(I instanceof Coins)
 	        {
 	            if(clear==null) clear=new Vector();
@@ -965,7 +965,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		if(R==null) return V;
 		for(int i=0;i<R.numItems();i++)
 		{
-			Item I=R.fetchItem(i);
+			Item I=R.getItem(i);
 			if((I!=null)
 			&&(I instanceof Coins)
 			&&((currency==null)||((Coins)I).getCurrency().equalsIgnoreCase(currency))
@@ -989,9 +989,9 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		    addMoney(mob,getCurrency(mob),(double)mob.getMoney());
 		    mob.setMoney(0);
 		}
-		for(int i=0;i<mob.inventorySize();i++)
+		for(int i=0;i<mob.numItems();i++)
 		{
-			Item I=mob.fetchInventory(i);
+			Item I=mob.getItem(i);
 			if((I!=null)
 			&&(I instanceof Coins)
 			&&((currency==null)||((Coins)I).getCurrency().equalsIgnoreCase(currency))

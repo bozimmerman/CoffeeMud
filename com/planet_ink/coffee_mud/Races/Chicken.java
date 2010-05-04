@@ -125,7 +125,7 @@ public class Chicken extends StdRace
             return false;
         if((tickID==Tickable.TICKID_MOB)&&(ticking instanceof MOB))
         {
-            if((CMLib.dice().rollPercentage()>99)&&(((MOB)ticking).inventorySize()<9))
+            if((CMLib.dice().rollPercentage()>99)&&(((MOB)ticking).numItems()<9))
             {
                 Item I=CMClass.getItem("GenFoodResource");
                 I.setName("an egg");
@@ -134,13 +134,13 @@ public class Chicken extends StdRace
                 I.setDescription("It looks like a chicken egg!");
                 I.baseEnvStats().setWeight(1);
         		CMLib.materials().addEffectsToResource(I);
-                ((MOB)ticking).addInventory((Item)I.copyOf());
+                ((MOB)ticking).addItem((Item)I.copyOf());
             }
-            if((((MOB)ticking).inventorySize()>5)
+            if((((MOB)ticking).numItems()>5)
             &&(((MOB)ticking).location()!=null)
-            &&(((MOB)ticking).location().fetchItem(null,"an egg")==null))
+            &&(((MOB)ticking).location().findItem(null,"an egg")==null))
             {
-                Item I=((MOB)ticking).fetchInventory("an egg");
+                Item I=((MOB)ticking).findItem("an egg");
                 if(I!=null)
                 {
                     ((MOB)ticking).location().show(((MOB)ticking),null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> lay(s) an egg.");

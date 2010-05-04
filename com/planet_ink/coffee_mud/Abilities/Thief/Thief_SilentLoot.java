@@ -54,7 +54,7 @@ public class Thief_SilentLoot extends ThiefSkill
 			&&(msg.source()!=affected)
 			&&(CMLib.flags().canBeSeenBy(msg.source(),(MOB)affected))
 			&&(msg.source().location()==((MOB)affected).location())
-			&&((msg.source().inventorySize())>0))
+			&&((msg.source().numItems())>0))
 			{
                 int max=1+getXLEVELLevel((MOB)affected);
 				Item item=msg.source().fetchCarried(null,"all");

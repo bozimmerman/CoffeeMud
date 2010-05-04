@@ -132,7 +132,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 							else
 							{
 	                            CMLib.coffeeShops().auctionNotify(data.auctioningM,"Your auction for "+data.auctioningI.name()+" went unsold.  '"+data.auctioningI.name()+"' has been automatically returned to your inventory.",data.auctioningI.Name());
-	                            data.auctioningM.giveItem(data.auctioningI);
+	                            data.auctioningM.moveItemTo(data.auctioningI);
                                 if(!CMLib.flags().isInTheGame(data.auctioningM,true))
                                     CMLib.database().DBUpdatePlayerItems(data.auctioningM);
                                 CMLib.coffeeShops().cancelAuction(auctionHouse(), data);

@@ -120,7 +120,7 @@ public class Chant_SummonTornado extends Chant
 				Vector stuff=new Vector();
 				for(int i=0;i<mob.location().numItems();i++)
 				{
-					Item I=mob.location().fetchItem(i);
+					Item I=mob.location().getItem(i);
 					if((I!=null)&&(I.container()==null)&&(CMLib.flags().isGettable(I)))
 						stuff.addElement(I);
 				}

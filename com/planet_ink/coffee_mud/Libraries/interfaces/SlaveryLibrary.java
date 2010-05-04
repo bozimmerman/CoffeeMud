@@ -270,7 +270,7 @@ public interface SlaveryLibrary extends CMLibrary
                 }
 
                 // do I already have it?
-                Item I=me.fetchInventory(item);
+                Item I=me.findItem(item);
                 if((I!=null)&&(CMLib.flags().canBeSeenBy(I,me)))
                 {
                     step=STEP_EVAL;
@@ -289,7 +289,7 @@ public interface SlaveryLibrary extends CMLibrary
                     return "HOLD";
                 }
                 // is it just sitting around?
-                I=R.fetchItem(null,item);
+                I=R.findItem(null,item);
                 if((I!=null)&&(CMLib.flags().canBeSeenBy(I,me)))
                 {
                     step=STEP_EVAL;
@@ -297,7 +297,7 @@ public interface SlaveryLibrary extends CMLibrary
                     return "HOLD";
                 }
                 // is it in a container?
-                I=R.fetchAnyItem(item);
+                I=R.findItem(item);
                 if((I!=null)&&(I.container()!=null)
                    &&(I.container() instanceof Container)
                    &&(((Container)I.container()).isOpen()))
@@ -312,7 +312,7 @@ public interface SlaveryLibrary extends CMLibrary
                     MOB M=R.fetchInhabitant(m);
                     if((M!=null)&&(M!=me)&&(CMLib.flags().canBeSeenBy(M,me)))
                     {
-                        I=M.fetchInventory(null,item);
+                        I=M.findItem(null,item);
                         if((I!=null)&&(!I.amWearingAt(Wearable.IN_INVENTORY)))
                         {
                             if(step==STEP_EVAL)
@@ -456,7 +456,7 @@ public interface SlaveryLibrary extends CMLibrary
                     return "HOLD";
                 }
                 // is it just sitting around?
-                Item I=R.fetchItem(null,name);
+                Item I=R.findItem(null,name);
                 if((I!=null)&&(CMLib.flags().canBeSeenBy(I,me)))
                 {
                     step=STEP_EVAL;

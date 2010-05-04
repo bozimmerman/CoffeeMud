@@ -227,9 +227,9 @@ public class Play extends StdAbility
 			instrument=(MusicalInstrument)mob.riding();
 		}
 		if(instrument==null)
-		for(int i=0;i<mob.inventorySize();i++)
+		for(int i=0;i<mob.numItems();i++)
 		{
-			Item I=mob.fetchInventory(i);
+			Item I=mob.getItem(i);
 			if((I!=null)
 			&&(I instanceof MusicalInstrument)
 			&&(I.container()==null)
@@ -373,9 +373,9 @@ public class Play extends StdAbility
 				instrument=(MusicalInstrument)mob.riding();
 			}
 			if(instrument==null)
-			for(int i=0;i<mob.inventorySize();i++)
+			for(int i=0;i<mob.numItems();i++)
 			{
-				Item I=mob.fetchInventory(i);
+				Item I=mob.getItem(i);
 				if((I!=null)
 				&&(I instanceof MusicalInstrument)
 				&&(I.container()==null)

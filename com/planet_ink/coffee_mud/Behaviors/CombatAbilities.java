@@ -545,9 +545,9 @@ public class CombatAbilities extends StdBehavior
         Item wieldedItem=null;
         Item I=null;
         int rtt=mob.rangeToTarget();
-        for(int i=0;i<mob.inventorySize();i++)
+        for(int i=0;i<mob.numItems();i++)
         {
-            I=mob.fetchInventory(i);
+            I=mob.getItem(i);
             if(I instanceof Wand)
             {
                 if(!I.amWearingAt(Wearable.IN_INVENTORY))
@@ -577,7 +577,7 @@ public class CombatAbilities extends StdBehavior
                 Vector choices=new Vector(1);
                 for(int r=0;r<R.numItems();r++)
                 {
-                    I=R.fetchItem(r);
+                    I=R.getItem(r);
                     if((!(I instanceof Weapon))
                     ||(((Weapon)I).minRange()>rtt)
                     ||(((Weapon)I).maxRange()<rtt)

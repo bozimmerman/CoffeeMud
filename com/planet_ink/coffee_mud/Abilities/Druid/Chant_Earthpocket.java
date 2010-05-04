@@ -59,7 +59,7 @@ public class Chant_Earthpocket extends Chant
 			for(int v=0;v<V.size();v++)
 			{
 				((Item)V.elementAt(v)).setContainer(null);
-				mob.giveItem((Item)V.elementAt(v));
+				mob.moveItemTo((Item)V.elementAt(v));
 			}
 			pocket.destroy();
 			pocket=null;

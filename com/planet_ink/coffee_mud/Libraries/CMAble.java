@@ -1350,9 +1350,9 @@ public class CMAble extends StdLibrary implements AbilityMapper
 				continue;
 			amt=comp.getAmount();
 			thisSet.clear();
-			for(int ii=0;ii<mob.inventorySize();ii++)
+			for(int ii=0;ii<mob.numItems();ii++)
 			{
-				I=mob.fetchInventory(ii);
+				I=mob.getItem(ii);
 				if(I==null) continue;
 				if((comp.getType()==AbilityComponent.CompType.STRING)&&(!CMLib.english().containsString(I.name(),comp.getStringType())))
 					continue;

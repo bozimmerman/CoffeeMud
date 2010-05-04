@@ -133,7 +133,7 @@ public class Spell_WallOfForce extends Spell
 		}
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I=mob.location().fetchItem(i);
+			Item I=mob.location().getItem(i);
 			if((I!=null)&&(I.fetchEffect(ID())!=null))
 			{
 				mob.tell("There is already a wall of force here.");

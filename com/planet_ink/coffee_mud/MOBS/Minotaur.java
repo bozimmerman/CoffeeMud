@@ -58,7 +58,7 @@ public class Minotaur extends StdMOB
 		if(mainWeapon!=null)
 		{
 			mainWeapon.wearAt(Wearable.WORN_WIELD);
-			this.addInventory(mainWeapon);
+			this.addItem(mainWeapon);
 		}
 
 		baseEnvStats().setDamage(12);

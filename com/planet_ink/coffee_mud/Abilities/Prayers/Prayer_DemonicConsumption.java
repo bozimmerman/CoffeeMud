@@ -77,7 +77,7 @@ public class Prayer_DemonicConsumption extends Prayer
 					Hashtable V=new Hashtable();
 					for(int i=0;i<mob.location().numItems();i++)
 					{
-						Item item=mob.location().fetchItem(i);
+						Item item=mob.location().getItem(i);
 						if((item!=null)&&(item instanceof DeadBody))
 							V.put(item,item);
 					}
@@ -102,7 +102,7 @@ public class Prayer_DemonicConsumption extends Prayer
 						while(i<mob.location().numItems())
 						{
 							int s=mob.location().numItems();
-							Item item=mob.location().fetchItem(i);
+							Item item=mob.location().getItem(i);
 							if((item!=null)&&(item instanceof DeadBody)&&(V.get(item)==null))
 								item.destroy();
 							if(s==mob.location().numItems())

@@ -229,7 +229,7 @@ public class Follower extends ActiveTicker
 				CMLib.commands().postGet(lastOwner,null,I,true);
 				if(!lastOwner.isMine(I))
 				{
-					lastOwner.giveItem(I);
+					lastOwner.moveItemTo(I);
 					if(lastOwner.location()!=null)
 						lastOwner.location().recoverRoomStats();
 				}

@@ -64,7 +64,7 @@ public class Chant_Goodberry extends Chant
 			Item location=newTarget.container();
 			newTarget.destroy();
 			if(owner instanceof MOB)
-				((MOB)owner).addInventory(newItem);
+				((MOB)owner).addItem(newItem);
 			else
 			if(owner instanceof Room)
 				((Room)owner).addItemRefuse(newItem,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
@@ -105,9 +105,9 @@ public class Chant_Goodberry extends Chant
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> begin to glow!");
 				if(owner instanceof MOB)
-					for(int i=0;i<((MOB)owner).inventorySize();i++)
+					for(int i=0;i<((MOB)owner).numItems();i++)
 					{
-						Item newTarget=((MOB)owner).fetchInventory(i);
+						Item newTarget=((MOB)owner).getItem(i);
 						if((newTarget!=null)&&(checkDo(newTarget,target,owner)))
 						{
 							if((--numAffected)==0)
@@ -118,7 +118,7 @@ public class Chant_Goodberry extends Chant
 				if(owner instanceof Room)
 					for(int i=0;i<((Room)owner).numItems();i++)
 					{
-						Item newTarget=((Room)owner).fetchItem(i);
+						Item newTarget=((Room)owner).getItem(i);
 						if((newTarget!=null)&&(checkDo(newTarget,target,owner)))
 						{
 							if((--numAffected)==0)

@@ -51,7 +51,7 @@ public class Chant_GrowClub extends Chant
             {
                 Room R=mob.location();
                 if((R!=null)
-                &&(R.fetchItem(null,"club")==null)
+                &&(R.findItem(null,"club")==null)
                 &&((R.domainType()==Room.DOMAIN_OUTDOORS_WOODS)
                 ||((R.myResource()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
                 ||(R.domainType()==Room.DOMAIN_OUTDOORS_JUNGLE)))

@@ -44,9 +44,9 @@ public class Sheath extends StdCommand
 	{
 		Vector sheaths=new Vector();
 		if(mob!=null)
-		for(int i=0;i<mob.inventorySize();i++)
+		for(int i=0;i<mob.numItems();i++)
 		{
-			Item I=mob.fetchInventory(i);
+			Item I=mob.getItem(i);
 			if((I!=null)
 			&&(!I.amWearingAt(Wearable.IN_INVENTORY))
 			&&(I instanceof Container)
@@ -80,9 +80,9 @@ public class Sheath extends StdCommand
 			commands.removeElementAt(0);
 		if(commands.size()==0)
 		{
-			for(int i=0;i<mob.inventorySize();i++)
+			for(int i=0;i<mob.numItems();i++)
 			{
-				Item I=mob.fetchInventory(i);
+				Item I=mob.getItem(i);
 				if((I!=null)
 				&&(I instanceof Weapon)
 				&&(!I.amWearingAt(Wearable.IN_INVENTORY)))

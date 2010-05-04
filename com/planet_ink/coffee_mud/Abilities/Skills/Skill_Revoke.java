@@ -69,7 +69,7 @@ public class Skill_Revoke extends StdSkill
 			{
 				target=mob.location().fetchFromRoomFavorMOBs(null,whatToRevoke,Wearable.FILTER_ANY);
 				if(target==null)
-				    target=mob.fetchInventory(null,whatToRevoke);
+				    target=mob.findItem(null,whatToRevoke);
 			}
 		}
 

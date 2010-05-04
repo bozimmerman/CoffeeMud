@@ -177,7 +177,7 @@ public class Farming extends GatheringSkill
 			Item mine=null;
 			for(int i=0;i<mob.location().numItems();i++)
 			{
-				Item I2=mob.location().fetchItem(i);
+				Item I2=mob.location().getItem(i);
 				if(plantable(mob,I2))
 				{ 
 					mine=I2; 
@@ -186,14 +186,14 @@ public class Farming extends GatheringSkill
 				}
 			}
 			if(mine==null)
-			for(int i=0;i<mob.inventorySize();i++)
+			for(int i=0;i<mob.numItems();i++)
 			{
-				Item I2=mob.fetchInventory(i);
+				Item I2=mob.getItem(i);
 				if(plantable(mob,I2))
 				{
 					commands.addElement(RawMaterial.CODES.NAME(I2.material()));
 					mine=(Item)I2.copyOf();
-					if(mob.location().fetchItem(null,mob.location().getContextName(I2))==null)
+					if(mob.location().findItem(null,mob.location().getContextName(I2))==null)
 						mob.location().addItemRefuse(mine,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_RESOURCE));
 					break;
 				}
@@ -251,7 +251,7 @@ public class Farming extends GatheringSkill
 		Item mine=null;
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I=mob.location().fetchItem(i);
+			Item I=mob.location().getItem(i);
 			if(plantable(mob,I)&&(I.material()==code))
 			{ mine=I; break;}
 		}

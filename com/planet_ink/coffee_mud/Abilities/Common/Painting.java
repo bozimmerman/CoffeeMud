@@ -107,7 +107,7 @@ public class Painting extends CommonSkill
 		}
 		else
 		{
-			I=mob.location().fetchItem(null,str);
+			I=mob.location().findItem(null,str);
 			if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))
 			{
 				commonTell(mob,"You don't see any canvases called '"+str+"' sitting here.");
@@ -137,7 +137,7 @@ public class Painting extends CommonSkill
 				String vstr=" "+((String)V.elementAt(v))+" ";
 				for(int i=0;i<mob.location().numItems();i++)
 				{
-					I=mob.location().fetchItem(i);
+					I=mob.location().getItem(i);
 					if((I!=null)
 					&&(I.displayText().length()==0)
 					&&(!CMLib.flags().isGettable(I))

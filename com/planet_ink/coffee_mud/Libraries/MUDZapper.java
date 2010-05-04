@@ -48,9 +48,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 
     protected Item nonCrashingItem=null;
     protected Item nonCrashingItem(MOB mob){
-    	if(mob.inventorySize()>0)
+    	if(mob.numItems()>0)
     	{
-	    	Item I = mob.fetchInventory(0);
+	    	Item I = mob.getItem(0);
 	    	if(I!=null) return I;
     	}
         if(nonCrashingItem!=null)
@@ -4138,7 +4138,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				{
 					boolean found=false;
 					for(int v=1;v<V.size();v++)
-						if(mob.fetchInventory((String)V.elementAt(v))!=null)
+						if(mob.findItem((String)V.elementAt(v))!=null)
 						{ found=true; break;}
 					if(!found) return false;
 				}
@@ -4149,7 +4149,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     boolean found=false;
                     for(int v=1;v<V.size();v++)
                     {
-                        Item I=mob.fetchInventory((String)V.elementAt(v));
+                        Item I=mob.findItem((String)V.elementAt(v));
                         if((I!=null)&&(!I.amWearingAt(Wearable.IN_INVENTORY)))
                         { found=true; break;}
                     }

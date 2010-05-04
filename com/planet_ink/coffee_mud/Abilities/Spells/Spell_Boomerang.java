@@ -91,11 +91,11 @@ public class Spell_Boomerang extends Spell
 					owner.tell(I.name()+" returns to your inventory!");
 					I.unWear();
 					I.setContainer(null);
-					owner.giveItem(I);
+					owner.moveItemTo(I);
 				}
 				else
 				{
-					owner.giveItem(I);
+					owner.moveItemTo(I);
 					I.setOwner(owner);
 				}
 			}

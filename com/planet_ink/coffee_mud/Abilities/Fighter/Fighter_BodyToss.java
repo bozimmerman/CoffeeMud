@@ -48,9 +48,9 @@ public class Fighter_BodyToss extends FighterSkill
 
 	public boolean anyWeapons(MOB mob)
 	{
-		for(int i=0;i<mob.inventorySize();i++)
+		for(int i=0;i<mob.numItems();i++)
 		{
-			Item I=mob.fetchInventory(i);
+			Item I=mob.getItem(i);
 			if((I!=null)
 			   &&((I.amWearingAt(Wearable.WORN_WIELD))
 			      ||(I.amWearingAt(Wearable.WORN_HELD))))

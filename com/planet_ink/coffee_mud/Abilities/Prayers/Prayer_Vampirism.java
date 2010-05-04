@@ -153,7 +153,7 @@ public class Prayer_Vampirism extends Prayer
 				Drink D=null;
 				for(int i=0;i<M.location().numItems();i++)
 				{
-					Item I=M.location().fetchItem(i);
+					Item I=M.location().getItem(i);
 					if((I!=null)
 					&&(I instanceof DeadBody)
 					&&(I.container()==null)

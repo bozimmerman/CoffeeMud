@@ -53,9 +53,9 @@ public class Thief_Kamikaze extends ThiefSkill
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
-			for(int i=0;i<mob.inventorySize();i++)
+			for(int i=0;i<mob.numItems();i++)
 			{
-				Item I=mob.fetchInventory(i);
+				Item I=mob.getItem(i);
 				if((I!=null)&&(I.container()==null))
 				{
 					Trap T=CMLib.utensils().fetchMyTrap(I);
@@ -142,9 +142,9 @@ public class Thief_Kamikaze extends ThiefSkill
 		}
 
 		Trap bombFound=null;
-		for(int i=0;i<target.inventorySize();i++)
+		for(int i=0;i<target.numItems();i++)
 		{
-			Item I=target.fetchInventory(i);
+			Item I=target.getItem(i);
 			if((I!=null)&&(I.container()==null))
 			{
 				Trap T=CMLib.utensils().fetchMyTrap(I);

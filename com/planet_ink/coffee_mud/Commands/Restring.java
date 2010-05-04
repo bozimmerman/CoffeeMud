@@ -66,7 +66,7 @@ public class Restring extends StdCommand
 				MOB M=srchRoom.fetchInhabitant(rest);
 				if(M==null)
 				{
-					Item I = srchRoom.fetchItem(null, rest);
+					Item I = srchRoom.findItem(null, rest);
 					if(I instanceof Container)
 						srchContainer=(Container)I;
 					else
@@ -88,7 +88,7 @@ public class Restring extends StdCommand
 			thang=srchRoom.fetchFromMOBRoomFavorsItems(srchMob,srchContainer,allWord,Wearable.FILTER_ANY);
 		else
 		if(srchMob!=null)
-			thang=srchMob.fetchInventory(allWord);
+			thang=srchMob.findItem(allWord);
 		else
 		if(srchRoom!=null)
 			thang=srchRoom.fetchFromRoomFavorItems(srchContainer,allWord,Wearable.FILTER_ANY);

@@ -159,7 +159,7 @@ public class Skill_Map extends StdSkill
 					CMLib.flags().setRemovable(B,CMLib.flags().isRemovable(item));
 					B.setUsesRemaining(item.usesRemaining());
 					item.destroy();
-					mob.addInventory(B);
+					mob.addItem(B);
 					item=B;
 				}
 				map=item;

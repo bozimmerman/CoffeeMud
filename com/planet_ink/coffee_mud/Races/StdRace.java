@@ -467,9 +467,9 @@ public class StdRace implements Race
         Hashtable containerMap=new Hashtable();
         Hashtable itemMap=new Hashtable();
         DVector lootPolicies=CMLib.utensils().parseLootPolicyFor(mob);
-		for(int i=0;i<mob.inventorySize();)
+		for(int i=0;i<mob.numItems();)
 		{
-			Item thisItem=mob.fetchInventory(i);
+			Item thisItem=mob.getItem(i);
 			if((thisItem!=null)&&(thisItem.isSavable()))
 			{
 				if(mob.isMonster())
@@ -489,7 +489,7 @@ public class StdRace implements Race
 					i++;
 				}
 				else
-					mob.delInventory(thisItem);
+					mob.delItem(thisItem);
 				thisItem.unWear();
 				if(thisItem.container()==null)
 					thisItem.setContainer(Body);
@@ -499,7 +499,7 @@ public class StdRace implements Race
 			}
 			else
 			if(thisItem!=null)
-				mob.delInventory(thisItem);
+				mob.delItem(thisItem);
 			else
 				i++;
 		}

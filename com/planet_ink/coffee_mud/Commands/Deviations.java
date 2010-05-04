@@ -102,7 +102,7 @@ public class Deviations extends StdCommand
 		{
 			for(int i=0;i<R.numItems();i++)
 			{
-				Item I=R.fetchItem(i);
+				Item I=R.getItem(i);
 				if((I!=null)
 				&&((I instanceof Armor)||(I instanceof Weapon))
 				&&(!alreadyDone(I,check)))
@@ -113,9 +113,9 @@ public class Deviations extends StdCommand
 				MOB M=R.fetchInhabitant(m);
 				if(M!=null)
 				{
-					for(int i=0;i<M.inventorySize();i++)
+					for(int i=0;i<M.numItems();i++)
 					{
-						Item I=M.fetchInventory(i);
+						Item I=M.getItem(i);
 						if((I!=null)
 						&&((I instanceof Armor)||(I instanceof Weapon))
 						&&(!alreadyDone(I,check)))
@@ -287,9 +287,9 @@ public class Deviations extends StdCommand
 				if(useFaction!=null) 
 				    mobResults.append(CMStrings.padRight(""+(M.fetchFaction(useFaction.factionID())==Integer.MAX_VALUE?"N/A":""+M.fetchFaction(useFaction.factionID())),7)+" ");
 				int reallyWornCount = 0;
-				for(int j=0;j<M.inventorySize();j++)
+				for(int j=0;j<M.numItems();j++)
 				{
-					Item Iw=M.fetchInventory(j);
+					Item Iw=M.getItem(j);
 					if(!(Iw.amWearingAt(Wearable.IN_INVENTORY)))
 						reallyWornCount++;
 				}

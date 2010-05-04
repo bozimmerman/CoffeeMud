@@ -106,9 +106,9 @@ public class Chant_SummonHail extends Chant
                 if(target.location()==mob.location())
                 {
                     Item I=null;
-                    for(int i=0;i<target.inventorySize();i++)
+                    for(int i=0;i<target.numItems();i++)
                     {
-                        I=target.fetchInventory(i);
+                        I=target.getItem(i);
                         if((I.container()==null)
                         &&(I.amWearingAt(Wearable.WORN_HEAD))
                         &&(((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)

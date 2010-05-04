@@ -404,7 +404,7 @@ public class Destroy extends StdCommand
 				MOB M=srchRoom.fetchInhabitant(rest);
 				if(M==null)
 				{
-					Item I = srchRoom.fetchItem(null, rest);
+					Item I = srchRoom.findItem(null, rest);
 					if(I instanceof Container)
 						srchContainer=(Container)I;
 					else
@@ -427,8 +427,8 @@ public class Destroy extends StdCommand
 		if(itemID.toUpperCase().endsWith(".ALL")){ allFlag=true; itemID="ALL "+itemID.substring(0,itemID.length()-4);}
 		boolean doneSomething=false;
 		Item deadItem=null;
-		deadItem=(srchRoom==null)?null:srchRoom.fetchItem(srchContainer,itemID);
-		if((!allFlag)&&(deadItem==null)) deadItem=(srchMob==null)?null:srchMob.fetchInventory(null,itemID);
+		deadItem=(srchRoom==null)?null:srchRoom.findItem(srchContainer,itemID);
+		if((!allFlag)&&(deadItem==null)) deadItem=(srchMob==null)?null:srchMob.findItem(null,itemID);
 		while(deadItem!=null)
 		{
 			mob.location().recoverRoomStats();
@@ -443,8 +443,8 @@ public class Destroy extends StdCommand
             deadItem.destroy();
             mob.location().delItem(deadItem);
 			deadItem=null;
-			if(!allFlag) deadItem=(srchMob==null)?null:srchMob.fetchInventory(null,itemID);
-			if(deadItem==null) deadItem=(srchRoom==null)?null:srchRoom.fetchItem(null,itemID);
+			if(!allFlag) deadItem=(srchMob==null)?null:srchMob.findItem(null,itemID);
+			if(deadItem==null) deadItem=(srchRoom==null)?null:srchRoom.findItem(null,itemID);
 			if(!allFlag) break;
 		}
 		if(!doneSomething)

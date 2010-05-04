@@ -78,20 +78,20 @@ public class Assassin extends GenMob
 		Item I=CMClass.getWeapon("Longsword");
 		if(I!=null)
 		{
-			addInventory(I);
+			addItem(I);
 			I.wearAt(Wearable.WORN_WIELD);
 		}
 		I=CMClass.getArmor("LeatherArmor");
 		if(I!=null)
 		{
-			addInventory(I);
+			addItem(I);
 			I.wearIfPossible(this);
 		}
 		Weapon d=CMClass.getWeapon("Dagger");
 		if(d!=null)
 		{
 			d.wearAt(Wearable.WORN_HELD);
-			addInventory(d);
+			addItem(d);
 		}
 
 

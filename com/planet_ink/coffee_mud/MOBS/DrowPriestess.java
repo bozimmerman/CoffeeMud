@@ -56,7 +56,7 @@ public class DrowPriestess extends DrowElf
 		if(w!=null)
 		{
 			w.wearAt(Wearable.WORN_WIELD);
-			this.addInventory(w);
+			this.addItem(w);
 		}
 
 		baseEnvStats().setArmor(40);

@@ -81,9 +81,9 @@ public class Prayer_CurseMetal extends Prayer
 
 		MOB mob=(MOB)affected;
 
-		for(int i=0;i<mob.inventorySize();i++)
+		for(int i=0;i<mob.numItems();i++)
 		{
-			Item item=mob.fetchInventory(i);
+			Item item=mob.getItem(i);
 			if((item!=null)
 			   &&(!item.amWearingAt(Wearable.IN_INVENTORY))
 			   &&(CMLib.flags().isMetal(item))

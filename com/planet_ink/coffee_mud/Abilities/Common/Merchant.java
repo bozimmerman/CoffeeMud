@@ -222,7 +222,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
         &&(msg.target() instanceof Item))
         {
             Item newitem=(Item)msg.target();
-            if((newitem.numberOfItems()>(merchantM.maxItems()-(merchantM.inventorySize()+shop.totalStockSizeIncludingDuplicates())))
+            if((newitem.numberOfItems()>(merchantM.maxItems()-(merchantM.numItems()+shop.totalStockSizeIncludingDuplicates())))
             &&(!merchantM.isMine(this)))
             {
                 merchantM.tell("You can't carry that many items.");
@@ -274,7 +274,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			Item I=(Item)getShop().removeStock("all",merchantM);
 			while(I!=null)
 			{
-                merchantM.addInventory(I);
+                merchantM.addItem(I);
 				I=(Item)getShop().removeStock("all",merchantM);
 			}
             merchantM.recoverEnvStats();
@@ -464,7 +464,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			String iname=I.name();
 			while(I!=null)
 			{
-				mob.addInventory(I);
+				mob.addItem(I);
 				I=(Item)getShop().removeStock(itemName,mob);
 			}
             getShop().delAllStoreInventory(I);
@@ -556,7 +556,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
                     getShop().addStoreInventory(I);
 				else
                     getShop().addStoreInventory(I,1,(int)Math.round(val));
-				mob.delInventory(I);
+				mob.delItem(I);
 			}
 		}
 		mob.location().recoverRoomStats();

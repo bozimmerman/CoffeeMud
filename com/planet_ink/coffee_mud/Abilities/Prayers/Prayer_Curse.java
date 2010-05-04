@@ -80,9 +80,9 @@ public class Prayer_Curse extends Prayer
 		Vector good=new Vector();
 		Vector great=new Vector();
 		Item target=null;
-		for(int i=0;i<mob.inventorySize();i++)
+		for(int i=0;i<mob.numItems();i++)
 		{
-			Item I=mob.fetchInventory(i);
+			Item I=mob.getItem(i);
 			if((!blessedOnly)||(isBlessed(I)))
 				if(I.amWearingAt(Wearable.IN_INVENTORY))
 					good.addElement(I);

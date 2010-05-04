@@ -56,9 +56,9 @@ public class Skill_TwoWeaponFighting extends StdSkill
 		&&(lastPrimary.container()==null))
 			return lastPrimary;
 		Weapon weapon=null;
-		for(int i=0;i<mob.inventorySize();i++)
+		for(int i=0;i<mob.numItems();i++)
 		{
-			Item item=mob.fetchInventory(i);
+			Item item=mob.getItem(i);
 			if((item instanceof Weapon)
 			    &&(item.amWearingAt(Wearable.WORN_WIELD))
 				&&(!item.amWearingAt(Wearable.WORN_HELD))
@@ -77,9 +77,9 @@ public class Skill_TwoWeaponFighting extends StdSkill
 		&&(lastSecondary.container()==null))
 			return lastSecondary;
 		Weapon weapon=null;
-		for(int i=0;i<mob.inventorySize();i++)
+		for(int i=0;i<mob.numItems();i++)
 		{
-			Item item=mob.fetchInventory(i);
+			Item item=mob.getItem(i);
 			if((item instanceof Weapon)
 			    &&(item.amWearingAt(Wearable.WORN_HELD))
 				&&(!item.amWearingAt(Wearable.WORN_WIELD))

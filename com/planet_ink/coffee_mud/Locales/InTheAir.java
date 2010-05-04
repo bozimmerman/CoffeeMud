@@ -108,7 +108,7 @@ public class InTheAir extends StdRoom
 		}
 		for(int i=0;i<room.numItems();i++)
 		{
-			Item item=room.fetchItem(i);
+			Item item=room.getItem(i);
 			if(item!=null)
 			{
 				Ability A=item.fetchEffect("Falling");

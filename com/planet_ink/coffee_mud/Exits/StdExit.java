@@ -213,7 +213,7 @@ public class StdExit implements Exit
 		if(mob.riding()!=null) return null;
 		for(int i=0;i<room.numItems();i++)
 		{
-			Item I=room.fetchItem(i);
+			Item I=room.getItem(i);
 			if((I!=null)
 			   &&(I instanceof Rideable)
 			   &&(CMLib.flags().canBeSeenBy(I,mob))
@@ -428,9 +428,9 @@ public class StdExit implements Exit
 				}
 				else
 				{
-					for(int i=0;i<mob.inventorySize();i++)
+					for(int i=0;i<mob.numItems();i++)
 					{
-						Item item=mob.fetchInventory(i);
+						Item item=mob.getItem(i);
 						if((item!=null)
 						&&(item instanceof Key)
 						&&((Key)item).getKey().equals(keyName())
@@ -742,7 +742,7 @@ public class StdExit implements Exit
 		return behaviors.size();
 	}
     @SuppressWarnings("unchecked")
-	public Enumeration<Behavior> behaviors() { return (behaviors==null)?(Enumeration<Behavior>)EmptyEnumeration.INSTANCE:behaviors.elements();}
+	public Enumeration<Behavior> behaviors() { return (behaviors==null)?EmptyEnumeration.INSTANCE:behaviors.elements();}
 	public Behavior fetchBehavior(int index)
 	{
 		if(behaviors==null)
@@ -797,7 +797,7 @@ public class StdExit implements Exit
     }
     public int numScripts(){return (scripts==null)?0:scripts.size();}
     @SuppressWarnings("unchecked")
-	public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?(Enumeration<ScriptingEngine>)EmptyEnumeration.INSTANCE:scripts.elements();}
+	public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();}
     public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
     
 	public int openDelayTicks()	{ return 45;}

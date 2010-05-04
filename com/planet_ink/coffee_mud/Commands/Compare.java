@@ -47,7 +47,7 @@ public class Compare extends StdCommand
 			return false;
 		}
 		commands.removeElementAt(0);
-		Item compareThis=mob.fetchInventory(null,(String)commands.elementAt(0));
+		Item compareThis=mob.findItem(null,(String)commands.elementAt(0));
 		if((compareThis==null)||(!CMLib.flags().canBeSeenBy(compareThis,mob)))
 		{
             Vector V=CMLib.coffeeShops().getAllShopkeepers(mob.location(),mob);
@@ -85,9 +85,9 @@ public class Compare extends StdCommand
 		if(commands.size()==1)
 		{
 			Item possible=null;
-			for(int i=0;i<mob.inventorySize();i++)
+			for(int i=0;i<mob.numItems();i++)
 			{
-				Item I=mob.fetchInventory(i);
+				Item I=mob.getItem(i);
 				if((I!=null)
 				&&(I!=compareThis)
 				&&(I.rawLogicalAnd()==compareThis.rawLogicalAnd()))
@@ -113,7 +113,7 @@ public class Compare extends StdCommand
 			}
 		}
 		else
-			toThis=mob.fetchInventory(null,CMParms.combine(commands,1));
+			toThis=mob.findItem(null,CMParms.combine(commands,1));
 		if((toThis==null)||(!CMLib.flags().canBeSeenBy(toThis,mob)))
 		{
 			mob.tell("You don't have a "+((String)commands.elementAt(1))+".");

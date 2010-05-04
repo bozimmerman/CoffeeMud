@@ -149,9 +149,9 @@ public class StdLimb extends StdItem
 		int numWorkingParts=mob.charStats().getBodyPart(partNum());
 		// now add in other NON-FUNCTIONAL limb things worn
 		// FUNCTIONAL limbs are already included in numWorkingParts
-		for(int i=0;i<mob.inventorySize();i++)
+		for(int i=0;i<mob.numItems();i++)
 		{
-			Item I=mob.fetchInventory(i);
+			Item I=mob.getItem(i);
 			if((I instanceof StdLimb)
 			&&(((StdLimb)I).partNum()==partNum())
 			&&(I.amWearingAt(wearPlace()))

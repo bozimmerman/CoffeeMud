@@ -69,9 +69,9 @@ public class Chant_Brittle extends Chant
     private Item getItem(MOB mobTarget) {
         Vector goodPossibilities=new Vector();
         Vector possibilities=new Vector();
-        for(int i=0;i<mobTarget.inventorySize();i++)
+        for(int i=0;i<mobTarget.numItems();i++)
         {
-            Item item=mobTarget.fetchInventory(i);
+            Item item=mobTarget.getItem(i);
             if((item!=null)
                &&(item.subjectToWearAndTear()))
             {

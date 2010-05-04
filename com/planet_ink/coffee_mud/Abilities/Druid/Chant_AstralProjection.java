@@ -151,9 +151,9 @@ public class Chant_AstralProjection extends Chant
 				Ability A=spirit.fetchEffect(a);
 				if(A.canBeUninvoked()) spirit.delEffect(A);
 			}
-			while(spirit.inventorySize()>0)
+			while(spirit.numItems()>0)
 			{
-				Item I=spirit.fetchInventory(0);
+				Item I=spirit.getItem(0);
 				if(I!=null) I.destroy();
 			}
 			CMLib.beanCounter().clearZeroMoney(spirit,null);

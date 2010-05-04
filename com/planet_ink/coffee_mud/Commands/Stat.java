@@ -566,9 +566,9 @@ public class Stat  extends Skills
 			recoverMOB(M);
 			int base=CMLib.combat().adjustedAttackBonus(M,null);
 			str.append("^c"+CMStrings.padRight("Base Attack",40)+": ^W"+base+"\n\r");
-			for(int i=0;i<target.inventorySize();i++)
+			for(int i=0;i<target.numItems();i++)
 			{
-				Item I=target.fetchInventory(i);
+				Item I=target.getItem(i);
 				if((I!=null)&&(!I.amWearingAt(Wearable.IN_INVENTORY))){ recoverMOB(M); testMOB(target,M,I); int diff=CMLib.combat().adjustedAttackBonus(M,null)-base; reportOnDiffMOB(I,diff,str);}
 			}
 			recoverMOB(M);
@@ -584,9 +584,9 @@ public class Stat  extends Skills
 			str.append("\n\r");
 			base=CMLib.combat().adjustedArmor(M);
 			str.append("^C"+CMStrings.padRight("Base Armor",40)+": ^W"+base+"\n\r");
-			for(int i=0;i<target.inventorySize();i++)
+			for(int i=0;i<target.numItems();i++)
 			{
-				Item I=target.fetchInventory(i);
+				Item I=target.getItem(i);
 				if(I!=null){ recoverMOB(M); testMOB(target,M,I); int diff=CMLib.combat().adjustedArmor(M)-base; reportOnDiffMOB(I,diff,str);}
 			}
 			recoverMOB(M);
@@ -602,9 +602,9 @@ public class Stat  extends Skills
 			str.append("\n\r");
 			base=CMLib.combat().adjustedDamage(M,null,null);
 			str.append("^C"+CMStrings.padRight("Base Damage",40)+": ^W"+base+"\n\r");
-			for(int i=0;i<target.inventorySize();i++)
+			for(int i=0;i<target.numItems();i++)
 			{
-				Item I=target.fetchInventory(i);
+				Item I=target.getItem(i);
 				if(I!=null){ recoverMOB(M); testMOB(target,M,I); int diff=CMLib.combat().adjustedDamage(M,null,null)-base; reportOnDiffMOB(I,diff,str);}
 			}
 			recoverMOB(M);
@@ -620,9 +620,9 @@ public class Stat  extends Skills
 			str.append("\n\r");
 			base=(int)Math.round(M.envStats().speed()*100);
 			str.append("^C"+CMStrings.padRight("Base Attacks%",40)+": ^W"+base+"\n\r");
-			for(int i=0;i<target.inventorySize();i++)
+			for(int i=0;i<target.numItems();i++)
 			{
-				Item I=target.fetchInventory(i);
+				Item I=target.getItem(i);
 				if(I!=null){ recoverMOB(M); testMOB(target,M,I); int diff=(int)Math.round(M.envStats().speed()*100)-base; reportOnDiffMOB(I,diff,str);}
 			}
 			recoverMOB(M);
@@ -638,9 +638,9 @@ public class Stat  extends Skills
 			str.append("\n\r");
 			base=M.maxState().getHitPoints();
 			str.append("^C"+CMStrings.padRight("Base Hit Points",40)+": ^W"+base+"\n\r");
-			for(int i=0;i<target.inventorySize();i++)
+			for(int i=0;i<target.numItems();i++)
 			{
-				Item I=target.fetchInventory(i);
+				Item I=target.getItem(i);
 				if(I!=null){ recoverMOB(M); testMOB(target,M,I); int diff=M.maxState().getHitPoints()-base; reportOnDiffMOB(I,diff,str);}
 			}
 			recoverMOB(M);

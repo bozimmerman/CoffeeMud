@@ -49,7 +49,7 @@ public class Prop_NoPurge extends Property
 				Room R=(Room)affected;
 				for(int i=0;i<R.numItems();i++)
 				{
-					Item I=R.fetchItem(i);
+					Item I=R.getItem(i);
 					if(I!=null) I.setExpirationDate(0);
 				}
 			}

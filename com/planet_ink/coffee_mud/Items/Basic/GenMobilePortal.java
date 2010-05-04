@@ -62,7 +62,7 @@ public class GenMobilePortal extends GenPortal implements Rideable, Exit
                 Vector choices=new Vector();
                 for(int i=0;i<destR.numItems();i++)
                 {
-                    Item I=destR.fetchItem(i);
+                    Item I=destR.getItem(i);
                     if((I!=null)&&(I instanceof StdPortal))
                         choices.addElement(I);
                 }
@@ -71,9 +71,9 @@ public class GenMobilePortal extends GenPortal implements Rideable, Exit
                 {
                     M=destR.fetchInhabitant(m);
                     if(M!=null)
-                        for(int i=0;i<M.inventorySize();i++)
+                        for(int i=0;i<M.numItems();i++)
                         {
-                            Item I=M.fetchInventory(i);
+                            Item I=M.getItem(i);
                             if((I!=null)&&(I instanceof StdPortal))
                                 choices.addElement(I);
                         }

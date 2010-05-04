@@ -45,9 +45,9 @@ public class Spell_Scatter extends Spell
     private Item getItem(MOB mobTarget) {
         Vector goodPossibilities=new Vector();
         Vector possibilities=new Vector();
-        for(int i=0;i<mobTarget.inventorySize();i++)
+        for(int i=0;i<mobTarget.numItems();i++)
         {
-            Item item=mobTarget.fetchInventory(i);
+            Item item=mobTarget.getItem(i);
             if(item!=null)
             {
                 if(item.amWearingAt(Wearable.IN_INVENTORY))

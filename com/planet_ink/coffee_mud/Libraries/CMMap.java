@@ -566,7 +566,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			{
 				M=(MOB)e.nextElement();
 				if(M!=null)
-					found.addAll(M.fetchInventories(srchStr));
+					found.addAll(M.findItems(srchStr));
 		    	if((returnFirst)&&(found.size()>0)) return found;
 			}
 		}
@@ -580,7 +580,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				{
 					M=room.fetchInhabitant(m);
 					if(M!=null)
-						found.addAll(M.fetchInventories(srchStr));
+						found.addAll(M.findItems(srchStr));
 				}
 		    	if((returnFirst)&&(found.size()>0)) return found;
 			}
@@ -639,9 +639,9 @@ public class CMMap extends StdLibrary implements WorldMap
 								CMParms.addToVector(ei,found);
 						}
 					}
-					for(int i=0;i<M.inventorySize();i++)
+					for(int i=0;i<M.numItems();i++)
 					{
-						I=M.fetchInventory(i);
+						I=M.getItem(i);
 						if(I!=null)
 						{
 							SK=CMLib.coffeeShops().getShopKeeper(I);
@@ -710,7 +710,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				}
 				for(int i=0;i<room.numItems();i++)
 				{
-					I=room.fetchItem(i);
+					I=room.getItem(i);
 					if(I!=null)
 					{
 						SK=CMLib.coffeeShops().getShopKeeper(I);
@@ -775,7 +775,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			Room room=(Room)rooms.nextElement();
 			if((room != null) && ((mob==null)||CMLib.flags().canAccess(mob,room)))
 			{
-				found.addAll(anyItems?room.fetchAnyItems(srchStr):room.fetchItems(null,srchStr));
+				found.addAll(anyItems?room.findItems(srchStr):room.findItems(null,srchStr));
 		    	if((returnFirst)&&(found.size()>0)) return found;
 			}
 	    	if((useTimer)&&((System.currentTimeMillis()-startTime)>delay)) 
@@ -1070,7 +1070,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		Item I=null;
 		for(int i=0;i<R.numItems();i++)
 		{
-			I=R.fetchItem(i);
+			I=R.getItem(i);
 			if((I!=null)&&(I.expirationDate()!=0))
 				return false;
 		}
@@ -1302,7 +1302,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		
 		for(int i=0;i<room.numItems();i++)
 		{
-		    I=room.fetchItem(i);
+		    I=room.getItem(i);
 		    if(I!=null) contents.addElement(I);
 		}
 		for(int i=0;i<contents.size();i++)
@@ -1695,8 +1695,8 @@ public class CMMap extends StdLibrary implements WorldMap
 			if(o instanceof MOB)
 			{
 				MOB M=(MOB)o;
-				for(int i=0;i<M.inventorySize();i++)
-					addScriptHost(area, room, M.fetchInventory(i));
+				for(int i=0;i<M.numItems();i++)
+					addScriptHost(area, room, M.getItem(i));
 			}
 		}
 	}
@@ -1797,10 +1797,10 @@ public class CMMap extends StdLibrary implements WorldMap
     	else
     	{
 	    	SLinkedList<LocatedPair> hosts = scriptHostMap.get(area.Name().toUpperCase());
-	    	if(hosts==null) return (Enumeration<LocatedPair>)EmptyEnumeration.INSTANCE;
+	    	if(hosts==null) return EmptyEnumeration.INSTANCE;
 	    	V.add(hosts.iterator());
     	}
-    	if(V.size()==0) return (Enumeration<LocatedPair>)EmptyEnumeration.INSTANCE;
+    	if(V.size()==0) return EmptyEnumeration.INSTANCE;
     	final MultiIterator<LocatedPair> me = new MultiIterator<LocatedPair>(V.toArray(new Iterator[0]));
     	return new Enumeration<LocatedPair>()
     	{
@@ -1869,7 +1869,7 @@ public class CMMap extends StdLibrary implements WorldMap
                     stuffToGo.clear();
                     for(int i=0;i<R.numItems();i++)
                     {
-                        I=R.fetchItem(i);
+                        I=R.getItem(i);
                         if((I!=null)
                         &&((!corpsesOnly)||(I instanceof DeadBody))
                         &&(I.expirationDate()!=0)

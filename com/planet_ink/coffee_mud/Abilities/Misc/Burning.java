@@ -98,7 +98,7 @@ public class Burning extends StdAbility
 					{
 						for(int i=0;i<room.numItems();i++)
 						{
-							Item I=room.fetchItem(i);
+							Item I=room.getItem(i);
 							if(I.name().equals(affected.name())
 							&&(I!=affected)
 							&&(I instanceof RawMaterial)

@@ -514,7 +514,7 @@ public class StdAbility implements Ability
 				for(int i=0;i<mob.location().numInhabitants();i++)
 				{
 					MOB M=mob.location().fetchInhabitant(i);
-					target=M.fetchInventory(null,targetName);
+					target=M.findItem(null,targetName);
 					if(target!=null)
 					{
 						switch(wornFilter)
@@ -600,7 +600,7 @@ public class StdAbility implements Ability
             switch(wornFilter)
             {
             case Wearable.FILTER_ANY:
-                target=mob.fetchInventory(container,targetName);
+                target=mob.findItem(container,targetName);
                 break;
             case Wearable.FILTER_UNWORNONLY:
                 target=mob.fetchCarried(container,targetName);

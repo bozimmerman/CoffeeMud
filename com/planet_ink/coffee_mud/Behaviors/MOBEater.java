@@ -91,7 +91,7 @@ public class MOBEater extends ActiveTicker
 		// =====move the inventory of the stomach to the room
 		for (int y=0;y<Stomach.numItems();y++)
 		{
-			Item PartiallyDigestedItem = Stomach.fetchItem(y);
+			Item PartiallyDigestedItem = Stomach.getItem(y);
 			if((PartiallyDigestedItem!=null)&&(PartiallyDigestedItem.container()==null))
 				these.addElement(PartiallyDigestedItem);
 		}

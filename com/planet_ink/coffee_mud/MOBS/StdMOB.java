@@ -310,21 +310,21 @@ public class StdMOB implements MOB
 		behaviors=new SVector<Behavior>(1);
 		scripts=new SVector<ScriptingEngine>(1);
 		Item I=null;
-		for(int i=0;i<E.inventorySize();i++)
+		for(int i=0;i<E.numItems();i++)
 		{
-			I=E.fetchInventory(i);
+			I=E.getItem(i);
 			if(I!=null)
-				addInventory((Item)I.copyOf());
+				addItem((Item)I.copyOf());
 		}
-		for(int i=0;i<inventorySize();i++)
+		for(int i=0;i<numItems();i++)
 		{
-			I=fetchInventory(i);
+			I=getItem(i);
 			if((I!=null)
 			&&(I.container()!=null)
 			&&(!isMine(I.container())))
-				for(int ii=0;ii<E.inventorySize();ii++)
-					if((E.fetchInventory(ii)==I.container())&&(ii<inventorySize()))
-					{ I.setContainer(fetchInventory(ii)); break;}
+				for(int ii=0;ii<E.numItems();ii++)
+					if((E.getItem(ii)==I.container())&&(ii<numItems()))
+					{ I.setContainer(getItem(ii)); break;}
 		}
 		Ability A=null;
 		for(int i=0;i<E.numLearnedAbilities();i++)
@@ -397,10 +397,10 @@ public class StdMOB implements MOB
 			charStats().getMyRace().affectEnvStats(this,envStats);
 		}
         Item item=null;
-		num=inventorySize();
+		num=numItems();
 		for(int i=0;i<num;i++)
 		{
-			item=fetchInventory(i);
+			item=getItem(i);
 			if(item!=null)
 			{
 				item.recoverEnvStats();
@@ -489,10 +489,10 @@ public class StdMOB implements MOB
 				effect.affectCharStats(this,charStats);
 		}
         Item item=null;
-        num=inventorySize();
+        num=numItems();
 		for(int i=0;i<num;i++)
 		{
-			item=fetchInventory(i);
+			item=getItem(i);
 			if(item!=null)
 				item.affectCharStats(this,charStats);
 		}
@@ -584,10 +584,10 @@ public class StdMOB implements MOB
 				effect.affectCharState(this,maxState);
 		}
         Item item=null;
-        num=inventorySize();
+        num=numItems();
 		for(int i=0;i<num;i++)
 		{
-			item=fetchInventory(i);
+			item=getItem(i);
 			if(item!=null)
 				item.affectCharState(this,maxState);
 		}
@@ -644,14 +644,14 @@ public class StdMOB implements MOB
 			delEffect(fetchEffect(0));
 		while(numLearnedAbilities()>0)
 			delAbility(fetchAbility(0));
-		while(inventorySize()>0)
+		while(numItems()>0)
 		{
-			Item I=fetchInventory(0);
+			Item I=getItem(0);
             if(I!=null)
             {
                 I.setOwner(this);
     			I.destroy();
-                delInventory(I);
+                delItem(I);
             }
 		}
         if(kickFlag)
@@ -824,7 +824,7 @@ public class StdMOB implements MOB
         {
             Item dropItem=CMLib.catalog().getDropItem(this,true);
             if(dropItem!=null)
-                addInventory(dropItem);
+                addItem(dropItem);
         }
 
         CMLib.map().registerWorldObjectLoaded(null,getStartRoom(),this);
@@ -1489,10 +1489,10 @@ public class StdMOB implements MOB
 				return false;
 		}
 
-        num=inventorySize();
+        num=numItems();
         for(int i=num-1;i>=0;i--)
 		{
-			ML=fetchInventory(i);
+			ML=getItem(i);
             if((ML!=null)&&(!ML.okMessage(this,msg)))
 				return false;
 		}
@@ -2473,10 +2473,10 @@ public class StdMOB implements MOB
                 CMLib.combat().handleObserveDeath(this,victim,msg);
 		}
 
-        int num=inventorySize();
+        int num=numItems();
 		for(int i=num-1;i>=0;i--)
 		{
-		    ML=fetchInventory(i);
+		    ML=getItem(i);
 			if(ML!=null)
 			    ML.executeMsg(this,msg);
 		}
@@ -2743,23 +2743,32 @@ public class StdMOB implements MOB
 
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
-	public void addInventory(Item item)
+	public void addItem(Item item)
 	{
 		item.setOwner(this);
 		inventory.addElement(item);
 		item.recoverEnvStats();
 	}
 	
-	public void delInventory(Item item)
+	public void delItem(Item item)
 	{
 		inventory.removeElement(item);
 		item.recoverEnvStats();
 	}
-	public int inventorySize()
+	public int numItems()
 	{
 		return inventory.size();
 	}
-	public Item fetchInventory(int index)
+	public Enumeration<Item> items() { return inventory.elements();}
+	public boolean isContent(Item I) { return inventory.contains(I);}
+	public List<Item> findItems(Item goodLocation, String itemName)
+	{
+		Vector items=CMLib.english().fetchAvailableItems(inventory,itemName,goodLocation,Wearable.FILTER_ANY,true);
+		if(items.size()==0)
+			items=CMLib.english().fetchAvailableItems(inventory,itemName,goodLocation,Wearable.FILTER_ANY,false);
+		return items;
+	}
+	public Item getItem(int index)
 	{
 		try
 		{
@@ -2795,12 +2804,12 @@ public class StdMOB implements MOB
         }
 		return item;
 	}
-	public Item fetchInventory(String itemName){ return fetchFromInventory(null,itemName,Wearable.FILTER_ANY,true,false);}
-	public Item fetchInventory(Item goodLocation, String itemName){ return fetchFromInventory(goodLocation,itemName,Wearable.FILTER_ANY,true,true);}
+	public Item findItem(String itemName){ return fetchFromInventory(null,itemName,Wearable.FILTER_ANY,true,false);}
+	public Item findItem(Item goodLocation, String itemName){ return fetchFromInventory(goodLocation,itemName,Wearable.FILTER_ANY,true,true);}
 	public Item fetchCarried(Item goodLocation, String itemName){ return fetchFromInventory(goodLocation,itemName,Wearable.FILTER_UNWORNONLY,true,true);}
 	public Item fetchWornItem(String itemName){ return fetchFromInventory(null,itemName,Wearable.FILTER_WORNONLY,true,true);}
 	
-	public Vector fetchInventories(String itemName)
+	public List<Item> findItems(String itemName)
 	{ 
         Vector V=CMLib.english().fetchEnvironmentals(inventory,itemName,true);
         if((V!=null)&&(V.size()>0)) return V;
@@ -3312,7 +3321,7 @@ public class StdMOB implements MOB
     	scripts.removeElement(S);
     }
     public int numScripts(){return (scripts==null)?0:scripts.size();}
-    public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?(Enumeration<ScriptingEngine>)EmptyEnumeration.INSTANCE:scripts.elements();}
+    public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();}
     public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
 
 	/** Manipulation of the tatoo list */
@@ -3498,9 +3507,9 @@ public class StdMOB implements MOB
 		Vector V=new Vector();
 		boolean equalOk=(layerAttributes&Armor.LAYERMASK_MULTIWEAR)>0;
 		int lay=0;
-		for(int i=0;i<inventorySize();i++)
+		for(int i=0;i<numItems();i++)
 		{
-			Item thisItem=fetchInventory(i);
+			Item thisItem=getItem(i);
 			if((thisItem!=null)&&(thisItem.amWearingAt(wornCode)))
 			{
 				if(thisItem instanceof Armor)
@@ -3524,9 +3533,9 @@ public class StdMOB implements MOB
     
     public boolean hasOnlyGoldInInventory()
     {
-        for(int i=0;i<inventorySize();i++)
+        for(int i=0;i<numItems();i++)
         {
-            Item I=fetchInventory(i);
+            Item I=getItem(i);
             if(I.amWearingAt(Wearable.IN_INVENTORY)
             &&((I.container()==null)||(I.ultimateContainer().amWearingAt(Wearable.IN_INVENTORY)))
             &&(!(I instanceof Coins)))
@@ -3537,9 +3546,9 @@ public class StdMOB implements MOB
     
 	public Item fetchFirstWornItem(long wornCode)
 	{
-		for(int i=0;i<inventorySize();i++)
+		for(int i=0;i<numItems();i++)
 		{
-			Item thisItem=fetchInventory(i);
+			Item thisItem=getItem(i);
 			if((thisItem!=null)&&(thisItem.amWearingAt(wornCode)))
 				return thisItem;
 		}
@@ -3548,9 +3557,9 @@ public class StdMOB implements MOB
 
 	public Item fetchWieldedItem()
 	{
-		for(int i=0;i<inventorySize();i++)
+		for(int i=0;i<numItems();i++)
 		{
-			Item thisItem=fetchInventory(i);
+			Item thisItem=getItem(i);
 			if((thisItem!=null)&&(thisItem.amWearingAt(Wearable.WORN_WIELD)))
 				return thisItem;
 		}
@@ -3583,7 +3592,7 @@ public class StdMOB implements MOB
 		return false;
 	}
 
-	public void giveItem(Item thisContainer)
+	public void moveItemTo(Item thisContainer)
 	{
 		// caller is responsible for recovering any env
 		// stat changes!
@@ -3599,14 +3608,14 @@ public class StdMOB implements MOB
 				((Room)thisContainer.owner()).delItem(thisContainer);
 			else
 			if(thisContainer.owner() instanceof MOB)
-				((MOB)thisContainer.owner()).delInventory(thisContainer);
+				((MOB)thisContainer.owner()).delItem(thisContainer);
 		}
 		location().delItem(thisContainer);
 
 		thisContainer.unWear();
 
 		if(!isMine(thisContainer))
-			addInventory(thisContainer);
+			addItem(thisContainer);
 		thisContainer.recoverEnvStats();
 
 		boolean nothingDone=true;
@@ -3620,10 +3629,10 @@ public class StdMOB implements MOB
 				Room R=(Room)owner;
 				for(int i=0;i<R.numItems();i++)
 				{
-					Item thisItem=R.fetchItem(i);
+					Item thisItem=R.getItem(i);
 					if((thisItem!=null)&&(thisItem.container()==thisContainer))
 					{
-						giveItem(thisItem);
+						moveItemTo(thisItem);
 						nothingDone=false;
 						break;
 					}
@@ -3633,12 +3642,12 @@ public class StdMOB implements MOB
 			if(owner instanceof MOB)
 			{
 				MOB M=(MOB)owner;
-				for(int i=0;i<M.inventorySize();i++)
+				for(int i=0;i<M.numItems();i++)
 				{
-					Item thisItem=M.fetchInventory(i);
+					Item thisItem=M.getItem(i);
 					if((thisItem!=null)&&(thisItem.container()==thisContainer))
 					{
-						giveItem(thisItem);
+						moveItemTo(thisItem);
 						nothingDone=false;
 						break;
 					}

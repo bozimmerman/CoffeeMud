@@ -223,9 +223,9 @@ public class StdWeapon extends StdItem implements Weapon
 					}
 
 					MOB mob=msg.source();
-					for(int i=0;i<mob.inventorySize();i++)
+					for(int i=0;i<mob.numItems();i++)
 					{
-						Item I=mob.fetchInventory(i);
+						Item I=mob.getItem(i);
 						if((I instanceof Ammunition)
 						&&(I.usesRemaining()>0)
 						&&(I.usesRemaining()<Integer.MAX_VALUE)

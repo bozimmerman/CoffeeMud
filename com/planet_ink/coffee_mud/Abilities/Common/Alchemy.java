@@ -99,7 +99,7 @@ public class Alchemy extends CraftingSkill implements ItemCraftor
 							commonTell(mob,"Something went wrong! "+(Character.toUpperCase(oldName.charAt(0))+oldName.substring(1))+" explodes!");
 					}
 					else
-						mob.addInventory(building);
+						mob.addItem(building);
 				}
 				building=null;
 			}

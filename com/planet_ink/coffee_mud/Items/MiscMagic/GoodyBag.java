@@ -55,7 +55,7 @@ public class GoodyBag extends BagOfEndlessness implements ArchonOnly
 			((Room)owner()).addItem(I);
 		else
 		if(owner() instanceof MOB)
-			((MOB)owner()).addInventory(I);
+			((MOB)owner()).addItem(I);
 		I.recoverEnvStats();
 	}
 

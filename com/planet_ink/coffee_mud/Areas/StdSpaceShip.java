@@ -612,7 +612,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		Room dock=getDock();
 		for(int i=0;i<dock.numItems();i++)
 		{
-			Item I=dock.fetchItem(i);
+			Item I=dock.getItem(i);
 			if(I.Name().equals(Name()))
 				I.destroy();
 		}
@@ -752,7 +752,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
         scripts.removeElement(S);
     }
     public int numScripts(){return (scripts==null)?0:scripts.size();}
-    public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?(Enumeration<ScriptingEngine>)EmptyEnumeration.INSTANCE:scripts.elements();}
+    public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();}
     public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
     
     public void addProperRoom(Room R)
@@ -886,7 +886,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		}
 	}
 	public Enumeration<Room> getFilledProperMap() { return getProperMap();}
-	public Enumeration<String> subOps(){ return (Enumeration<String>)EmptyEnumeration.INSTANCE;}
+	public Enumeration<String> subOps(){ return EmptyEnumeration.INSTANCE;}
 
     public void addChildToLoad(String str){}
     public void addParentToLoad(String str) { parentsToLoad.addElement(str);}

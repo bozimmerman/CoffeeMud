@@ -620,7 +620,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         Vector items = findItems(piece,defined);
         for(int i=0;i<items.size();i++) {
         	Item I=(Item)items.elementAt(i);
-        	M.addInventory(I);
+        	M.addItem(I);
         	I.wearIfPossible(M);
         }
         Vector V = findAffects(piece,defined);

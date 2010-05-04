@@ -70,7 +70,7 @@ public class Spell_ReverseGravity extends Spell
 			}
 			for(int i=0;i<room.numItems();i++)
 			{
-				Item inhab=room.fetchItem(i);
+				Item inhab=room.getItem(i);
 				if((inhab!=null)
                 &&(inhab.container()==null)
                 &&(!CMLib.flags().isInFlight(inhab.ultimateContainer())))

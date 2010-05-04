@@ -89,9 +89,9 @@ public class GateGuard extends StdBehavior
 	{
 		Key key=null;
 		String keyCode=e.keyName();
-		for(int i=0;i<mob.inventorySize();i++)
+		for(int i=0;i<mob.numItems();i++)
 		{
-			Item item=mob.fetchInventory(i);
+			Item item=mob.getItem(i);
 			if((item instanceof Key)&&(((Key)item).getKey().equals(keyCode)))
 			{
 				key=(Key)item;
@@ -102,7 +102,7 @@ public class GateGuard extends StdBehavior
 		{
 			key=(Key)CMClass.getItem("StdKey");
 			key.setKey(keyCode);
-			mob.addInventory(key);
+			mob.addItem(key);
 		}
 		return key;
 	}

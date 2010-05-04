@@ -342,9 +342,9 @@ public class Prop_Artifact extends Property
                                         Item I=null;
 										if(foundMOB!=null)
 										{
-	                                        for(int i=0;i<foundMOB.inventorySize();i++)
+	                                        for(int i=0;i<foundMOB.numItems();i++)
 	                                        {
-	                                        	I=foundMOB.fetchInventory(i);
+	                                        	I=foundMOB.getItem(i);
 	                                        	if(I==null) break;
 	                                        	if(I.Name().equals(newItemMinusArtifact.Name()))
 	                                        	{
@@ -355,7 +355,7 @@ public class Prop_Artifact extends Property
 		                                            	I.destroy();
 	                                        	}
 	                                        }
-    										foundMOB.addInventory(newItem);
+    										foundMOB.addItem(newItem);
     										newItem.wearAt(newItem.rawProperLocationBitmap());
 										}
 										else
@@ -363,7 +363,7 @@ public class Prop_Artifact extends Property
 										{
 	                                        for(int i=0;i<R.numItems();i++)
 	                                        {
-	                                        	I=R.fetchItem(i);
+	                                        	I=R.getItem(i);
 	                                        	if(I==null) break;
 	                                        	if(I.Name().equals(newItemMinusArtifact.Name()))
 	                                        	{

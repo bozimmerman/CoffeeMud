@@ -90,7 +90,7 @@ public class Fill extends StdCommand
 		while(doBugFix || ((allFlag)&&(maxToFill<addendum)))
 		{
 			doBugFix=false;
-			Item fillThis=mob.fetchInventory(null,thingToFill+addendumStr);
+			Item fillThis=mob.findItem(null,thingToFill+addendumStr);
 			if(fillThis==null) break;
 			if((CMLib.flags().canBeSeenBy(fillThis,mob))
 			&&(!V.contains(fillThis)))

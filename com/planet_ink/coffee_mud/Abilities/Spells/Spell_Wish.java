@@ -269,11 +269,11 @@ public class Spell_Wish extends Spell
 			{
 				possName=CMParms.combine(wishV,0,2);
 				target=mob.location().fetchFromRoomFavorMOBs(null,possName,Wearable.FILTER_UNWORNONLY);
-				if(target==null) target=mob.fetchInventory(possName);
+				if(target==null) target=mob.findItem(possName);
 				if(target==null) possName=((String)wishV.elementAt(0)).trim();
 			}
 			if(target==null) target=mob.location().fetchFromRoomFavorMOBs(null,possName,Wearable.FILTER_UNWORNONLY);
-			if(target==null) target=mob.fetchInventory(possName);
+			if(target==null) target=mob.findItem(possName);
 			if((target==null)
 			||(possName.equalsIgnoreCase("FOR"))
 			||(possName.equalsIgnoreCase("TO"))

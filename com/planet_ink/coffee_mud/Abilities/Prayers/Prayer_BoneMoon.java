@@ -67,7 +67,7 @@ public class Prayer_BoneMoon extends Prayer
 			DeadBody B=null;
 			for(int i=0;i<R.numItems();i++)
 			{
-				Item I=R.fetchItem(i);
+				Item I=R.getItem(i);
 				if((I!=null)
 				&&(I instanceof DeadBody)
 				&&(I.container()==null)

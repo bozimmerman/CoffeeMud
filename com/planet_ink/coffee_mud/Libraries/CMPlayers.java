@@ -244,7 +244,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
                 CMLib.database().DBUpdatePlayerMOBOnly(mob);
                 if((mob.Name().length()==0)||(mob.playerStats()==null))
                     continue;
-                thread.status("saving "+mob.Name()+", "+mob.inventorySize()+" items");
+                thread.status("saving "+mob.Name()+", "+mob.numItems()+" items");
                 CMLib.database().DBUpdatePlayerItems(mob);
                 thread.status("saving "+mob.Name()+", "+mob.numLearnedAbilities()+" abilities");
                 CMLib.database().DBUpdatePlayerAbilities(mob);
@@ -269,7 +269,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
                 CMLib.database().DBUpdatePlayerMOBOnly(mob);
                 if((mob.Name().length()==0)||(mob.playerStats()==null))
                     continue;
-                thread.status("just saving "+mob.Name()+", "+mob.inventorySize()+" items");
+                thread.status("just saving "+mob.Name()+", "+mob.numItems()+" items");
                 CMLib.database().DBUpdatePlayerItems(mob);
                 thread.status("just saving "+mob.Name()+", "+mob.numLearnedAbilities()+" abilities");
                 CMLib.database().DBUpdatePlayerAbilities(mob);

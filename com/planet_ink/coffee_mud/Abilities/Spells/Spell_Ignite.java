@@ -107,9 +107,9 @@ public class Spell_Ignite extends Spell
 					if(target instanceof MOB)
 					{
 						MOB mob2=(MOB)target;
-						for(int i=0;i<mob2.inventorySize();i++)
+						for(int i=0;i<mob2.numItems();i++)
 						{
-							Item I=mob2.fetchInventory(i);
+							Item I=mob2.getItem(i);
 							if((I!=null)&&(I.container()==null))
 								ignite(mob2,I);
 						}

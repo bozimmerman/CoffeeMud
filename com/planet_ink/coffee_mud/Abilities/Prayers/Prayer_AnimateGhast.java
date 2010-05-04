@@ -130,7 +130,7 @@ public class Prayer_AnimateGhast extends Prayer
 				int it=0;
 				while(it<newMOB.location().numItems())
 				{
-					Item item=newMOB.location().fetchItem(it);
+					Item item=newMOB.location().getItem(it);
 					if((item!=null)&&(item.container()==body))
 					{
 						CMMsg msg2=CMClass.getMsg(newMOB,body,item,CMMsg.MSG_GET,null);

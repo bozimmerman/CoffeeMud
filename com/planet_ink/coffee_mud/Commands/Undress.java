@@ -64,7 +64,7 @@ public class Undress extends StdCommand
 		}
 		if(target.willFollowOrdersOf(mob)||(CMLib.flags().isBoundOrHeld(target)))
 		{
-			Item item=target.fetchInventory(null,what);
+			Item item=target.findItem(null,what);
 			if((item==null)
 			   ||(!CMLib.flags().canBeSeenBy(item,mob))
 			   ||(item.amWearingAt(Wearable.IN_INVENTORY)))

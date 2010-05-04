@@ -362,8 +362,8 @@ public class Age extends StdAbility
 					newMan.baseCharStats().setMyClasses(";Apprentice");
 					newMan.baseCharStats().setMyLevels(";1");
 					newMan.baseCharStats().getCurrentClass().startCharacter(newMan,false,false);
-					for(int i=0;i<babe.inventorySize();i++)
-						newMan.giveItem(babe.fetchInventory(i));
+					for(int i=0;i<babe.numItems();i++)
+						newMan.moveItemTo(babe.getItem(i));
 					CMLib.utensils().outfit(newMan,newMan.baseCharStats().getMyRace().outfit(newMan));
 					CMLib.utensils().outfit(newMan,newMan.baseCharStats().getCurrentClass().outfit(newMan));
 					Vector<Integer> qualifiedStats = new Vector<Integer>();

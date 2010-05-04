@@ -120,7 +120,7 @@ public class Butchering extends GatheringSkill
 		{
 			for(int i=0;i<mob.location().numItems();i++)
 			{
-				Item I2=mob.location().fetchItem(i);
+				Item I2=mob.location().getItem(i);
 				if((I2!=null)
 				&&(I2 instanceof DeadBody)
 				&&(CMLib.flags().canBeSeenBy(I2,mob))

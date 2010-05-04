@@ -97,7 +97,7 @@ public class Allergies extends StdAbility
 		            Item I=null;
 		            for(int i=0;i<R.numItems();i++)
 		            {
-		                I=R.fetchItem(i);
+		                I=R.getItem(i);
 		                if((I!=null)
 		                &&(I.container()==null)
 		                &&(resourceAllergies.contains(Integer.valueOf(I.material()))))
@@ -107,9 +107,9 @@ public class Allergies extends StdAbility
 		            {
 			            MOB M=R.fetchInhabitant(CMLib.dice().roll(1,R.numInhabitants(),-1));
 			            if(M!=null)
-			            for(int i=0;i<M.inventorySize();i++)
+			            for(int i=0;i<M.numItems();i++)
 			            {
-			                I=M.fetchInventory(i);
+			                I=M.getItem(i);
 			                if((I!=null)
 			                &&(I.container()==null)
 			                &&(resourceAllergies.contains(Integer.valueOf(I.material()))))

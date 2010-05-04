@@ -127,7 +127,7 @@ public class Spell_LocateObject extends Spell
 					room=CMLib.map().getRoom((Room)r.nextElement());
 					if(!CMLib.flags().canAccess(mob,room)) continue;
 
-					item=room.fetchItem(null,what);
+					item=room.findItem(null,what);
 					if((item!=null)&&(CMLib.flags().canBeLocated((Item)item)))
 					{
 						String str=item.name()+" is in a place called '"+room.roomTitle(mob)+"'.";
@@ -138,7 +138,7 @@ public class Spell_LocateObject extends Spell
 						inhab=room.fetchInhabitant(i);
 						if(inhab==null) break;
 
-						item=inhab.fetchInventory(what);
+						item=inhab.findItem(what);
                         SK=CMLib.coffeeShops().getShopKeeper(inhab);
 						if((item==null)&&(SK!=null))
 							item=SK.getShop().getStock(what,mob);

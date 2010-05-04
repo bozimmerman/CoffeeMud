@@ -147,7 +147,7 @@ public class Create extends StdCommand
 				MOB M=mob.location().fetchInhabitant(rest);
 				if(M==null)
 				{
-					Item I = mob.location().fetchItem(null, rest);
+					Item I = mob.location().findItem(null, rest);
 					if(I instanceof Container)
 						setContainer=(Container)I;
 					else
@@ -203,7 +203,7 @@ public class Create extends StdCommand
 		else
 		if(dest instanceof MOB)
 		{
-			((MOB)dest).addInventory(newItem);
+			((MOB)dest).addItem(newItem);
 			newItem.setContainer(setContainer);
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops into "+dest.name()+"'s arms.");
 		}

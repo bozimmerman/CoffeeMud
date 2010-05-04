@@ -154,9 +154,9 @@ public class WaterSurface extends StdRoom implements Drink
 		{
 			MOB mob=msg.source();
 			boolean hasBoat=false;
-			for(int i=0;i<mob.inventorySize();i++)
+			for(int i=0;i<mob.numItems();i++)
 			{
-				Item I=mob.fetchInventory(i);
+				Item I=mob.getItem(i);
 				if((I!=null)&&(I instanceof Rideable)&&(((Rideable)I).rideBasis()==Rideable.RIDEABLE_WATER))
 				{	hasBoat=true; break;}
 			}

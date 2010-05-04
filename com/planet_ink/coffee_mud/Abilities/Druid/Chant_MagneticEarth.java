@@ -56,9 +56,9 @@ public class Chant_MagneticEarth extends Chant
 				if((M!=null)&&(M!=invoker))
 				{
 					toGo.clear();
-					for(int i=0;i<M.inventorySize();i++)
+					for(int i=0;i<M.numItems();i++)
 					{
-						Item I=M.fetchInventory(i);
+						Item I=M.getItem(i);
 						if((I!=null)
 						&&(((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
 						   ||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL))

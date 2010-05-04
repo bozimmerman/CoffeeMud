@@ -176,7 +176,7 @@ public class Spell_BigMouth extends Spell
 		int itemCount = Stomach().numItems();
 		for (int y=itemCount-1;y>=0;y--)
 		{
-			Item PartiallyDigestedItem = Stomach().fetchItem(y);
+			Item PartiallyDigestedItem = Stomach().getItem(y);
 			if (PartiallyDigestedItem!=null)
 			{
 				lastKnownLocation().addItemRefuse(PartiallyDigestedItem,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));

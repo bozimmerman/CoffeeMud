@@ -1088,9 +1088,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	        Item r=CMClass.getItem("Ration");
 	        Item w=CMClass.getItem("Waterskin");
 	        Item t=CMClass.getItem("Torch");
-	        mob.addInventory(r);
-	        mob.addInventory(w);
-	        mob.addInventory(t);
+	        mob.addItem(r);
+	        mob.addItem(w);
+	        mob.addItem(t);
 	        mob.setWimpHitPoint(5);
 	
 	        CMLib.utensils().outfit(mob,mob.baseCharStats().getMyRace().outfit(mob));

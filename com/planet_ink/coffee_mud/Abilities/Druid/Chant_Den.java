@@ -65,7 +65,7 @@ public class Chant_Den extends Chant
 				}
 				while(R.numItems()>0)
 				{
-					Item I=R.fetchItem(0);
+					Item I=R.getItem(0);
 					if(I!=null) room.bringItemHere(I,-1,false);
 				}
 				R.destroy();

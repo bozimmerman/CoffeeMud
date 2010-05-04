@@ -130,7 +130,7 @@ public class Prop_ReqCapacity extends Property
                         int rawResources=0;
 						for(int i=0;i<R.numItems();i++)
 						{
-                            Item I=R.fetchItem(i); 
+                            Item I=R.getItem(i); 
                             if(I instanceof RawMaterial) 
                                 rawResources++;
                             if((I!=null)&&(I.container()==null)) 
@@ -148,7 +148,7 @@ public class Prop_ReqCapacity extends Property
 					{
 						int soFar=0;
 						for(int i=0;i<R.numItems();i++)
-						{Item I=R.fetchItem(i); if(I!=null) soFar+=I.envStats().weight();}
+						{Item I=R.getItem(i); if(I!=null) soFar+=I.envStats().weight();}
 						if((soFar+msg.target().envStats().weight())>=maxWeight)
 						{
 							msg.source().tell("There is no room in here to put "+msg.target().Name()+".");

@@ -92,7 +92,7 @@ public class DrowWarrior extends DrowElf
 		if(chainMail!=null)
 		{
 			chainMail.wearAt(Wearable.WORN_TORSO);
-			this.addInventory(chainMail);
+			this.addItem(chainMail);
 		}
 
         Weapon mainWeapon = null;
@@ -129,11 +129,11 @@ public class DrowWarrior extends DrowElf
 		if(mainWeapon!=null)
 		{
 		    mainWeapon.wearAt(Wearable.WORN_WIELD);
-		    this.addInventory(mainWeapon);
+		    this.addItem(mainWeapon);
 			if(secondWeapon!=null)
 			{
 				secondWeapon.wearAt(Wearable.WORN_HELD);
-				this.addInventory(secondWeapon);
+				this.addItem(secondWeapon);
 			}
 		}
 

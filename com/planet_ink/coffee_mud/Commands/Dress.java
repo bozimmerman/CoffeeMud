@@ -68,7 +68,7 @@ public class Dress extends StdCommand
 		}
 		if((target.willFollowOrdersOf(mob))||(CMLib.flags().isBoundOrHeld(target)))
 		{
-			Item item=mob.fetchInventory(null,what);
+			Item item=mob.findItem(null,what);
 			if((item==null)||(!CMLib.flags().canBeSeenBy(item,mob)))
 			{
 				mob.tell("I don't see "+what+" here.");
@@ -80,7 +80,7 @@ public class Dress extends StdCommand
 			{
 				mob.location().show(mob,target,item,CMMsg.MASK_ALWAYS|CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> mystically put(s) <O-NAME> on <T-NAMESELF>.");
 				item.unWear();
-				target.giveItem(item);
+				target.moveItemTo(item);
 				item.wearIfPossible(target);
 				if((item.rawProperLocationBitmap()!=0)&&(item.amWearingAt(Wearable.IN_INVENTORY))&&(target.isMonster()))
 				{

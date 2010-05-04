@@ -217,16 +217,16 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
             }
 			for(int i=0;i<R.numItems();i++)
 			{
-				I=R.fetchItem(i);
+				I=R.getItem(i);
 				if(I!=null) content.addElement(new RoomContentImpl(I));
 			}
 			for(int m=0;m<R.numInhabitants();m++)
 			{
 			    M=R.fetchInhabitant(m);
 			    if(M==null) continue;
-                for(int i=0;i<M.inventorySize();i++)
+                for(int i=0;i<M.numItems();i++)
                 {
-                    I=M.fetchInventory(i);
+                    I=M.getItem(i);
     				if(I!=null) content.addElement(new RoomContentImpl(I,M));
                 }
 				content.addElement(new RoomContentImpl(M));

@@ -184,7 +184,7 @@ public class Chant_PlantConstriction extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				target.giveItem(myPlant);
+				target.moveItemTo(myPlant);
 				Long II=(Long)positionChoices.elementAt(CMLib.dice().roll(1,positionChoices.size(),-1));
 				myPlant.setRawWornCode(II.longValue());
 				if(II.longValue()==Wearable.WORN_ARMS)

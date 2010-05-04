@@ -271,7 +271,7 @@ public class Druid extends StdCharClass
 		if(affected.location()!=null)
 			for(int i=0;i<affected.location().numItems();i++)
 			{
-				Item I=affected.location().fetchItem(i);
+				Item I=affected.location().getItem(i);
 				if((I!=null)&&(I.ID().equals("DruidicMonument")))
 					affectableState.setMana(affectableState.getMana()+(affectableState.getMana()/2));
 			}

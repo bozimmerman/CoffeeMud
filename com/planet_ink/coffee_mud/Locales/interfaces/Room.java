@@ -233,15 +233,6 @@ public interface Room extends PhysicalAgent, ItemPossessor
 
 	public String getContextName(Environmental E);
 	
-	public void addItem(Item item);
-	public void delItem(Item item);
-	public int numItems();
-	public boolean isContent(Item item);
-	public Item fetchItem(Item goodLocation, String itemID);
-	public Item fetchItem(int i);
-	public Item fetchAnyItem(String itemID);
-	public Vector fetchItems(Item goodLocation, String itemID);
-	public Vector fetchAnyItems(String itemID);
 	public void addItemRefuse(Item item, int expireMins);
 	public void bringItemHere(Item item, int expireMins, boolean andRiders);
 

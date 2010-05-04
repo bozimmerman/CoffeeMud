@@ -47,7 +47,7 @@ public class Trap_RatPit extends Trap_SnakePit
 		if(mob.location()==null) return null;
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I=mob.location().fetchItem(i);
+			Item I=mob.location().getItem(i);
 			if(I instanceof CagedAnimal)
 			{
 				MOB M=((CagedAnimal)I).unCageMe();

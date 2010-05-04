@@ -65,7 +65,7 @@ public class Play_Cymbals extends Play_Instrument
 				}
 				for(int i=0;i<mob.location().numItems();i++)
 				{
-					Item I=mob.location().fetchItem(i);
+					Item I=mob.location().getItem(i);
 					if((I!=null)&&(I instanceof Container)&&(I.container()==null))
 					{
 						Container C=(Container)I;
@@ -78,9 +78,9 @@ public class Play_Cymbals extends Play_Instrument
 					}
 				}
 			}
-			for(int i=0;i<mob.inventorySize();i++)
+			for(int i=0;i<mob.numItems();i++)
 			{
-				Item I=mob.fetchInventory(i);
+				Item I=mob.getItem(i);
 				if((I!=null)&&(I instanceof Container)&&(I.container()==null))
 				{
 					Container C=(Container)I;

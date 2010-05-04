@@ -179,9 +179,9 @@ public class Skill_Juggle extends BardSkill
 			}
 		}
 		pause=true;
-		for(int i=0;i<M.inventorySize();i++)
+		for(int i=0;i<M.numItems();i++)
 		{
-			Item I=M.fetchInventory(i);
+			Item I=M.getItem(i);
 			if((I!=null)
 			&&((I.amWearingAt(Wearable.WORN_WIELD)||I.amWearingAt(Wearable.WORN_HELD)))
 			&&(!juggles.contains(I))
@@ -226,7 +226,7 @@ public class Skill_Juggle extends BardSkill
 			if((i==jug)||(i==jug+1))
 			{
 				if(!M.isMine(I))
-					M.giveItem(I);
+					M.moveItemTo(I);
 				if(i==jug)
 					I.setRawWornCode(Wearable.WORN_WIELD);
 				else
@@ -294,7 +294,7 @@ public class Skill_Juggle extends BardSkill
 						{
 							Item I=(Item)copy.elementAt(CMLib.dice().roll(1,copy.size(),-1));
 							I.unWear();
-							mob.giveItem(I);
+							mob.moveItemTo(I);
 							if((mob.isMine(I))&&(CMLib.commands().postDrop(mob,I,true,false)))
 							{
 								Weapon w=CMClass.getWeapon("StdWeapon");
@@ -336,7 +336,7 @@ public class Skill_Juggle extends BardSkill
 				M.location().show(M,I,CMMsg.MSG_OK_ACTION,"<S-NAME> stop(s) juggling <T-NAMESELF>.");
 				unJuggle(I);
 				I.unWear();
-				if(!M.isMine(I)) M.giveItem(I);
+				if(!M.isMine(I)) M.moveItemTo(I);
 			}
 		}
 		super.unInvoke();
@@ -392,7 +392,7 @@ public class Skill_Juggle extends BardSkill
 		while(doBugFix || ((allFlag)&&(addendum<=maxToJuggle)))
 		{
 			doBugFix=false;
-			Item juggleThis=mob.fetchInventory(null,whatToJuggle+addendumStr);
+			Item juggleThis=mob.findItem(null,whatToJuggle+addendumStr);
 			if((juggleThis!=null)&&(!juggleThis.amWearingAt(Wearable.IN_INVENTORY)))
 			{
 				if((!juggleThis.amWearingAt(Wearable.WORN_HELD))&&(!juggleThis.amWearingAt(Wearable.WORN_WIELD)))

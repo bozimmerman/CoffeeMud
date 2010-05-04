@@ -104,9 +104,9 @@ public class Spell_RepairingAura extends Spell
             Vector inventory=new Vector();
             MOB M=(MOB)target;
             Item I=null;
-            for(int i=0;i<M.inventorySize();i++)
+            for(int i=0;i<M.numItems();i++)
             {
-                I=M.fetchInventory(i);
+                I=M.getItem(i);
                 if((I!=null)&&(I.subjectToWearAndTear())&&(I.fetchEffect(ID())==null))
                 {
                     if(I.amWearingAt(Wearable.IN_INVENTORY))

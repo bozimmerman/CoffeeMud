@@ -1275,7 +1275,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				if(preferredLoc==Wearable.FILTER_WORNONLY)
 					item=((MOB)from).fetchWornItem(name+addendumStr);
 				else
-					item=((MOB)from).fetchInventory(null,name+addendumStr);
+					item=((MOB)from).findItem(null,name+addendumStr);
 			}
 			else
 			if(from instanceof Room)
@@ -1514,7 +1514,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		{
 			for(int i=0;i<room.numItems();i++)
 			{
-				Item I=room.fetchItem(i);
+				Item I=room.getItem(i);
 				if((I.container()==container)
 				&&(I instanceof Coins)
 				&&(CMLib.flags().canBeSeenBy(I,seer))
@@ -1567,7 +1567,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		    if((!CMath.isInteger((String)V.firstElement()))
 		    &&(!((String)V.firstElement()).equalsIgnoreCase("all")))
 		        V.insertElementAt("1",0);
-		    Item I=mob.fetchInventory(container,CMParms.combine(V,1));
+		    Item I=mob.findItem(container,CMParms.combine(V,1));
 		    if(I instanceof Coins)
 		    {
 		        if(((String)V.firstElement()).equalsIgnoreCase("all"))
@@ -1595,7 +1595,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			    C.setDenomination(denomination);
 			    C.setNumberOfCoins(gold);
 				C.recoverEnvStats();
-				mob.addInventory(C);
+				mob.addItem(C);
 				return C;
 			}
 			mob.tell("You don't have that much "+CMLib.beanCounter().getDenominationName(currency,denomination)+".");
@@ -1770,7 +1770,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
                 String packCheckName=CMParms.combine(commands,1);
                 Environmental fromWhat=null;
                 if(checkWhat instanceof MOB)
-                    fromWhat=mob.fetchInventory(null,packCheckName);
+                    fromWhat=mob.findItem(null,packCheckName);
                 else
                 if(checkWhat instanceof Room)
                     fromWhat=((Room)checkWhat).fetchFromMOBRoomFavorsItems(mob,null,packCheckName,Wearable.FILTER_UNWORNONLY);

@@ -48,7 +48,7 @@ public class Skeleton extends Undead
 		if(sword!=null)
 		{
 			sword.wearAt(Wearable.WORN_WIELD);
-			addInventory(sword);
+			addItem(sword);
 		}
 
 		baseEnvStats().setDamage(5);

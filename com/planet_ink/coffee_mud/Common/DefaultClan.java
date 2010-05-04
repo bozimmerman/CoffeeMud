@@ -400,9 +400,9 @@ public class DefaultClan implements Clan
         {
             Item I=null;
             Vector itemsToMove=new Vector();
-            for(int i=0;i<M.inventorySize();i++)
+            for(int i=0;i<M.numItems();i++)
             {
-                I=M.fetchInventory(i);
+                I=M.getItem(i);
                 if(I instanceof ClanItem)
                     itemsToMove.addElement(I);
             }

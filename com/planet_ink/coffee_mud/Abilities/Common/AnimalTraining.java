@@ -206,7 +206,7 @@ public class AnimalTraining extends CommonSkill
 		{
 			for(int i=0;i<mob.location().numItems();i++)
 			{
-				Item I=mob.location().fetchItem(i);
+				Item I=mob.location().getItem(i);
 				if((I!=null)
 				&&(I instanceof Container)
 				&&((((Container)I).containTypes()&Container.CONTAIN_CAGED)==Container.CONTAIN_CAGED))
@@ -215,7 +215,7 @@ public class AnimalTraining extends CommonSkill
 			if(commands.size()>0)
 			{
 				String last=(String)commands.lastElement();
-				Item I=mob.location().fetchItem(null,last);
+				Item I=mob.location().findItem(null,last);
 				if((I!=null)
 				&&(I instanceof Container)
 				&&((((Container)I).containTypes()&Container.CONTAIN_CAGED)==Container.CONTAIN_CAGED))
@@ -229,7 +229,7 @@ public class AnimalTraining extends CommonSkill
 				commonTell(mob,"You don't see anyone called '"+str+"' here.");
 				return false;
 			}
-			taming=mob.location().fetchItem(cage,CMParms.combine(commands,0));
+			taming=mob.location().findItem(cage,CMParms.combine(commands,0));
 			if((taming==null)||(!CMLib.flags().canBeSeenBy(taming,mob))||(!(taming instanceof CagedAnimal)))
 			{
 				commonTell(mob,"You don't see any creatures in "+cage.name()+" called '"+CMParms.combine(commands,0)+"'.");

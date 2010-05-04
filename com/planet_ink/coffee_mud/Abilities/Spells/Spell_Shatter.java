@@ -45,9 +45,9 @@ public class Spell_Shatter extends Spell
     {
         Vector goodPossibilities=new Vector();
         Vector possibilities=new Vector();
-        for(int i=0;i<mobTarget.inventorySize();i++)
+        for(int i=0;i<mobTarget.numItems();i++)
         {
-            Item item=mobTarget.fetchInventory(i);
+            Item item=mobTarget.getItem(i);
             if((item!=null)
                &&(item.subjectToWearAndTear()))
             {

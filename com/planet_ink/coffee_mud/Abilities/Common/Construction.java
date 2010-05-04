@@ -180,7 +180,7 @@ public class Construction extends CraftingSkill
 								}
 								for(int i=room.numItems()-1;i>=0;i--)
 								{
-									Item I=room.fetchItem(i);
+									Item I=room.getItem(i);
 									if(I!=null){
 										room.delItem(I);
 										R.addItem(I);
@@ -431,7 +431,7 @@ public class Construction extends CraftingSkill
 									}
 									for(int i=room.numItems()-1;i>=0;i--)
 									{
-										Item I=room.fetchItem(i);
+										Item I=room.getItem(i);
 										if(I!=null){
 											room.delItem(I);
 											R.addItem(I);

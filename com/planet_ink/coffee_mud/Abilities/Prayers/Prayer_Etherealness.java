@@ -80,7 +80,7 @@ public class Prayer_Etherealness extends Prayer
 				if((msg.tool() instanceof Exit)
 				&&(((Exit)msg.tool()).hasADoor())
 				&&(!((Exit)msg.tool()).isOpen())
-				&&(msg.source().inventorySize()>0))
+				&&(msg.source().numItems()>0))
 				{
 					msg.source().tell("Your corporeal equipment, suspended in your form, will not pass through the door.");
 					return false;

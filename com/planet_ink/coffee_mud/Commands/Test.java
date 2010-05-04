@@ -131,7 +131,7 @@ public class Test extends StdCommand
 	        giveAbility(I1,A);
         if(code<2)
         {
-            mob1.addInventory(I1);
+            mob1.addItem(I1);
             if(code==1) I1.wearEvenIfImpossible(mob1);
         }
         else
@@ -150,7 +150,7 @@ public class Test extends StdCommand
         {
             if(code<2)
             {
-                mob2.addInventory(I2);
+                mob2.addItem(I2);
                 if(code==1) I2.wearEvenIfImpossible(mob2);
             }
             else
@@ -683,7 +683,7 @@ public class Test extends StdCommand
                 //mob.tell("Test#9-1: "+UseSpellCast.accountForYourself());
                 IS=giveTo(CMClass.getItem("SmallSack"),UseSpellCast,mobs[0],null,0);
                 I=CMClass.getItem("StdFood");
-                mobs[0].addInventory(I);
+                mobs[0].addItem(I);
                 C=CMClass.getCommand("Put");
                 C.execute(mobs[0],CMParms.makeVector("Put","Food","Sack"),metaFlags);
                 if(!effectCheck(spells,mobs[0])){ mob.tell("Error9-1"); return false;}
@@ -694,12 +694,12 @@ public class Test extends StdCommand
                 //mob.tell("Test#9-2: "+UseSpellCast.accountForYourself());
                 IS=giveTo(CMClass.getItem("SmallSack"),UseSpellCast,mobs[0],mobs[1],0);
                 I=CMClass.getItem("StdFood");
-                mobs[0].addInventory(I);
+                mobs[0].addItem(I);
                 C=CMClass.getCommand("Put");
                 C.execute(mobs[0],CMParms.makeVector("Put","Food","Sack"),metaFlags);
                 if(!effectCheck(spells,mobs[0])){ mob.tell("Error9-2"); return false;}
                 I=CMClass.getItem("StdFood");
-                mobs[1].addInventory(I);
+                mobs[1].addItem(I);
                 C=CMClass.getCommand("Put");
                 C.execute(mobs[1],CMParms.makeVector("Put","Food","Sack"),metaFlags);
                 if(effectCheck(spells,mobs[1])){ mob.tell("Error9-3"); return false;}
@@ -1208,8 +1208,8 @@ public class Test extends StdCommand
                 { mob.tell("Error24-2"); return false;}
                 
                 
-                mobs[0].giveItem(IS[0]);
-                mobs[0].giveItem(IS[1]);
+                mobs[0].moveItemTo(IS[0]);
+                mobs[0].moveItemTo(IS[1]);
                 
                 msg=CMClass.getMsg(mobs[0],IS[0],null,CMMsg.MSG_DROP,null);
                 if(!R2.okMessage(mobs[0], msg))

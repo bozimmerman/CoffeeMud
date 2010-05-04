@@ -327,7 +327,7 @@ public class RandomItems extends ActiveTicker
 				    		((Room)((Container)ticking).owner()).addItem(I);
 				    	else
 				    	if(((Container)ticking).owner() instanceof MOB)
-				    		((MOB)((Container)ticking).owner()).addInventory(I);
+				    		((MOB)((Container)ticking).owner()).addItem(I);
 				    	else
 				    		break;
 						maintained.addElement(I);
@@ -336,7 +336,7 @@ public class RandomItems extends ActiveTicker
 					else
 				    if(ticking instanceof MOB)
 				    {
-			    		((MOB)ticking).addInventory(I);
+			    		((MOB)ticking).addItem(I);
 			    		I.wearIfPossible((MOB)ticking);
 						maintained.addElement(I);
 				    	I.setContainer((Container)ticking);
@@ -390,7 +390,7 @@ public class RandomItems extends ActiveTicker
 							if(inhabs.size()>0)
 							{
 								MOB M=(MOB)inhabs.elementAt(CMLib.dice().roll(1,inhabs.size(),-1));
-								M.addInventory(I);
+								M.addItem(I);
 								I.wearIfPossible(M);
 								maintained.addElement(I);
 							}

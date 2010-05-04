@@ -246,7 +246,7 @@ public class Prayer_Monolith extends Prayer
 		}
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I=mob.location().fetchItem(i);
+			Item I=mob.location().getItem(i);
 			if((I!=null)&&(I.fetchEffect(ID())!=null))
 			{
 				mob.tell("There is already a monolith here.");

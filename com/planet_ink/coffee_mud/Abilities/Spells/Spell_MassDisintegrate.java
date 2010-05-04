@@ -106,7 +106,7 @@ public class Spell_MassDisintegrate extends Spell
 			Vector V=new Vector();
 			for(int i=mob.location().numItems()-1;i>=0;i--)
 			{
-				Item I=mob.location().fetchItem(i);
+				Item I=mob.location().getItem(i);
 				if((I!=null)&&(I.container()==null))
                 {
                     Vector DBs=CMLib.utensils().getDeadBodies(I);

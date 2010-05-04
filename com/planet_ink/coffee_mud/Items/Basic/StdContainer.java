@@ -175,7 +175,7 @@ public class StdContainer extends StdItem implements Container
 							return false;
 						}
 						else
-                        if((newitem.numberOfItems()>(mob.maxItems()-mob.inventorySize()))&&(!mob.isMine(this)))
+                        if((newitem.numberOfItems()>(mob.maxItems()-mob.numItems()))&&(!mob.isMine(this)))
                         {
                             mob.tell("You can't carry that many items.");
                             return false;
@@ -198,7 +198,7 @@ public class StdContainer extends StdItem implements Container
 					return false;
 				}
                 else
-                if(((numberOfItems()>mob.maxItems()-mob.inventorySize()))&&(!mob.isMine(this)))
+                if(((numberOfItems()>mob.maxItems()-mob.numItems()))&&(!mob.isMine(this)))
                 {
                     mob.tell("You can't carry that many items.");
                     return false;
@@ -292,9 +292,9 @@ public class StdContainer extends StdItem implements Container
 					}
 					else
 					{
-						for(int i=0;i<mob.inventorySize();i++)
+						for(int i=0;i<mob.numItems();i++)
 						{
-							Item item=mob.fetchInventory(i);
+							Item item=mob.getItem(i);
 							if((item!=null)
 							&&(item instanceof Key)
 							&&((Key)item).getKey().equals(keyName())
@@ -534,9 +534,9 @@ public class StdContainer extends StdItem implements Container
 		if(container==null) return;
 		if(own instanceof MOB)
 		{
-			for(int i=0;i<((MOB)own).inventorySize();i++)
+			for(int i=0;i<((MOB)own).numItems();i++)
 			{
-				Item I=((MOB)own).fetchInventory(i);
+				Item I=((MOB)own).getItem(i);
 				if((I.container()==container)
 				&&(!V.contains(I)))
 				{
@@ -550,7 +550,7 @@ public class StdContainer extends StdItem implements Container
 		{
 			for(int i=0;i<((Room)own).numItems();i++)
 			{
-				Item I=((Room)own).fetchItem(i);
+				Item I=((Room)own).getItem(i);
 				if((I!=null)
 				&&(I.container()==container)
 				&&(!V.contains(I)))

@@ -134,9 +134,9 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
         if(owner instanceof MOB)
         {
             if(deck.owner==null)
-                ((MOB)owner).addInventory(deck);
+                ((MOB)owner).addItem(deck);
             else
-                ((MOB)owner).giveItem(deck);
+                ((MOB)owner).moveItemTo(deck);
         }
         else
         if(owner instanceof Room)

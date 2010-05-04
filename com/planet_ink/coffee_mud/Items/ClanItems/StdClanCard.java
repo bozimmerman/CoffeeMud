@@ -69,9 +69,9 @@ public class StdClanCard extends StdClanItem
                 if(msg.source().location().show((MOB)msg.target(),msg.source(),null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> takes(s) "+msg.tool().name()+" away from <T-NAME> and destroys it!"))
                 {
                     Item I=null;
-                    for(int i=msg.source().inventorySize();i>=0;i--)
+                    for(int i=msg.source().numItems();i>=0;i--)
                     {
-                        I=msg.source().fetchInventory(i);
+                        I=msg.source().getItem(i);
                         if((I instanceof ClanItem)
                         &&(I!=msg.tool())
                         &&(((ClanItem)I).clanID().equals(((ClanItem)msg.tool()).clanID())))

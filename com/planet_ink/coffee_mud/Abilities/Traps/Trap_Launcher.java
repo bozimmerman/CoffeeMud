@@ -47,7 +47,7 @@ public class Trap_Launcher extends StdTrap
 		if(mob.location()==null) return null;
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I=mob.location().fetchItem(i);
+			Item I=mob.location().getItem(i);
 			if((I!=null)
 			&&(I instanceof Weapon)
 			&&(((Weapon)I).weaponClassification()==Weapon.CLASS_RANGED))

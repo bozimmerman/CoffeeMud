@@ -91,7 +91,7 @@ public class Skill_Imitation extends BardSkill
 		if(commands.size()>1)
 		{
 			target=mob.location().fetchFromRoomFavorMOBs(null,(String)commands.lastElement(),Wearable.FILTER_ANY);
-			if(target==null) target=mob.fetchInventory(null,(String)commands.lastElement());
+			if(target==null) target=mob.findItem(null,(String)commands.lastElement());
 			if(target!=null) commands.removeElementAt(commands.size()-1);
 		}
 		String cmd=(commands.size()>0)?CMParms.combine(commands,0).toUpperCase():"";

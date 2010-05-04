@@ -82,7 +82,7 @@ public class FireBuilding extends CommonSkill
     {
         for(int i=0;i<R.numItems();i++)
         {
-            Item I2=R.fetchItem(i);
+            Item I2=R.getItem(i);
             if((I2!=null)&&(I2.container()==null)&&(CMLib.flags().isOnFire(I2)))
                 return true;
         }
@@ -94,7 +94,7 @@ public class FireBuilding extends CommonSkill
         Vector here=new Vector();
         for(int i=0;i<R.numItems();i++)
         {
-            Item I2=R.fetchItem(i);
+            Item I2=R.getItem(i);
             if((I2!=null)
             &&(I2.container()==null)
             &&(I2 instanceof RawMaterial)

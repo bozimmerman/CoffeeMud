@@ -129,7 +129,7 @@ public class Auction extends Channel implements Tickable
 	                        }
 	                        else
 	                        {
-	                            auctioneerM.giveItem((Item)liveData.auctioningI);
+	                            auctioneerM.moveItemTo((Item)liveData.auctioningI);
                                 auctioneerM.tell("Your transaction could not be completed because "+winnerM.name()+" was unable to collect the item.  Please contact "+winnerM.name()+" about receipt of "+liveData.auctioningI.name()+" for "+CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+".");
 	                            winnerM.tell("Your transaction could not be completed because you were unable to collect the item.  Please contact "+auctioneerM.displayName(winnerM)+" about receipt of "+liveData.auctioningI.name()+" for "+CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid)+".");
 	                        }
@@ -137,7 +137,7 @@ public class Auction extends Channel implements Tickable
 					}
 					else
 					if(!auctioneerM.isMine((Item)liveData.auctioningI))
-                        auctioneerM.giveItem((Item)liveData.auctioningI);
+                        auctioneerM.moveItemTo((Item)liveData.auctioningI);
                     liveData.auctioningM=null;
                     liveData.auctioningI=null;
                     liveData.highBidderM=null;
@@ -177,7 +177,7 @@ public class Auction extends Channel implements Tickable
 			CMLib.threads().startTickDown(this,Tickable.TICKID_LIVEAUCTION,1);
 			String bidWords=CMLib.beanCounter().nameCurrencyShort(liveData.currency,liveData.bid);
 			if(target instanceof Item)
-				mob.delInventory((Item)target);
+				mob.delItem((Item)target);
 			V.addElement("New live auction: "+liveData.auctioningI.name()+".  The opening bid is "+bidWords+".");
 			if(liveData.auctioningM!=null) liveData.auctioningM.doCommand(V,Command.METAFLAG_FORCED);
 		}
@@ -279,7 +279,7 @@ public class Auction extends Channel implements Tickable
 				V.addElement("0");
 			
 			String s=CMParms.combine(commands,0);
-			Environmental E=mob.fetchInventory(null,s);
+			Environmental E=mob.findItem(null,s);
 			if((E==null)||(E instanceof MOB))
 			{
 				mob.tell(s+" is not an item you can auction.");
@@ -356,7 +356,7 @@ public class Auction extends Channel implements Tickable
 			V.addElement("The auction has been closed.");
 			CMLib.threads().deleteTick(this,Tickable.TICKID_LIVEAUCTION);
 			if(liveData.auctioningI instanceof Item)
-    			liveData.auctioningM.giveItem((Item)liveData.auctioningI);
+    			liveData.auctioningM.moveItemTo((Item)liveData.auctioningI);
             if(liveData.highBid>0.0)
             	CMLib.coffeeShops().returnMoney(liveData.highBidderM,liveData.currency,liveData.highBid);
 			liveData.auctioningM=null;

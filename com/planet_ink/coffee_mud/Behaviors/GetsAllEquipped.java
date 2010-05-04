@@ -69,14 +69,14 @@ public class GetsAllEquipped extends ActiveTicker
 
 			DoneEquipping=true;
             Vector stuffIHad=new Vector();
-            for(int i=0;i<mob.inventorySize();i++)
-                stuffIHad.addElement(mob.fetchInventory(i));
+            for(int i=0;i<mob.numItems();i++)
+                stuffIHad.addElement(mob.getItem(i));
             mob.enqueCommand(CMParms.makeVector("GET","ALL"),Command.METAFLAG_FORCED,0);
             Item I=null;
             Vector dropThisStuff=new Vector();
-            for(int i=0;i<mob.inventorySize();i++)
+            for(int i=0;i<mob.numItems();i++)
             {
-                I=mob.fetchInventory(i);
+                I=mob.getItem(i);
                 if((I!=null)&&(!stuffIHad.contains(I)))
                 {
                     if(I instanceof DeadBody)

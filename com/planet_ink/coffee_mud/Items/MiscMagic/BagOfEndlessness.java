@@ -79,7 +79,7 @@ public class BagOfEndlessness extends BagOfHolding
 				{
 					neweritem=(Item)allStuff.elementAt(i);
 					if(newitem.owner() instanceof MOB)
-						((MOB)newitem.owner()).addInventory(neweritem);
+						((MOB)newitem.owner()).addItem(neweritem);
 					else
 					if(newitem.owner() instanceof Room)
 					{

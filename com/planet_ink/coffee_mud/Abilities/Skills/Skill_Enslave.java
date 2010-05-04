@@ -223,9 +223,9 @@ public class Skill_Enslave extends StdSkill
 	            if(mob.curState().getHunger()<=0)
 	            {
 	                Food f=null;
-	                for(int i=0;i<mob.inventorySize();i++)
+	                for(int i=0;i<mob.numItems();i++)
 	                {
-	                    Item I=mob.fetchInventory(i);
+	                    Item I=mob.getItem(i);
 	                    if(I instanceof Food)
 	                    { f=(Food)I; break;}
 	                }
@@ -240,9 +240,9 @@ public class Skill_Enslave extends StdSkill
 	            if(mob.curState().getThirst()<=0)
 	            {
 	                Drink d=null;
-	                for(int i=0;i<mob.inventorySize();i++)
+	                for(int i=0;i<mob.numItems();i++)
 	                {
-	                    Item I=mob.fetchInventory(i);
+	                    Item I=mob.getItem(i);
 	                    if(I instanceof Drink)
 	                    { d=(Drink)I; break;}
 	                }

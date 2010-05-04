@@ -73,11 +73,11 @@ public class Goblin extends StdMOB
 		if (goblinType < 0)
 			goblinType *= -1;
 
-		while(this.inventorySize()>0)
+		while(this.numItems()>0)
 		{
-			Item I=fetchInventory(0);
+			Item I=getItem(0);
 			if(I!=null)
-				this.delInventory(I);
+				this.delItem(I);
 		}
 
 		birthType=goblinType;
@@ -167,12 +167,12 @@ public class Goblin extends StdMOB
 		if(m!=null)
 		{
 			m.wearAt(Wearable.WORN_WIELD);
-			addInventory(m);
+			addItem(m);
 		}
 		if(c!=null)
 		{
 			c.wearAt(Wearable.WORN_TORSO);
-			addInventory(c);
+			addItem(c);
 		}
 	}
 }

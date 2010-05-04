@@ -68,7 +68,7 @@ public class Modify extends StdCommand
 				MOB M=srchRoom.fetchInhabitant(rest);
 				if(M==null)
 				{
-					Item I = srchRoom.fetchItem(null, rest);
+					Item I = srchRoom.findItem(null, rest);
 					if(I instanceof Container)
 						srchContainer=(Container)I;
 					else
@@ -97,13 +97,13 @@ public class Modify extends StdCommand
 			modItem=(Item)srchRoom.fetchFromMOBRoomFavorsItems(srchMob,srchContainer,itemID,Wearable.FILTER_ANY);
 		else
 		if(srchMob!=null)
-			modItem=srchMob.fetchInventory(itemID);
+			modItem=srchMob.findItem(itemID);
 		else
 		if(srchRoom!=null)
 		{
-			modItem=srchRoom.fetchItem(srchContainer, itemID);
+			modItem=srchRoom.findItem(srchContainer, itemID);
 			if(modItem==null)
-				modItem=srchRoom.fetchAnyItem(itemID);
+				modItem=srchRoom.findItem(itemID);
 		}
 		if(modItem==null)
 		{
@@ -1476,7 +1476,7 @@ public class Modify extends StdCommand
 					MOB M=srchRoom.fetchInhabitant(rest);
 					if(M==null)
 					{
-						Item I = srchRoom.fetchItem(null, rest);
+						Item I = srchRoom.findItem(null, rest);
 						if(I instanceof Container)
 							srchContainer=(Container)I;
 						else
@@ -1498,7 +1498,7 @@ public class Modify extends StdCommand
 				thang=srchRoom.fetchFromMOBRoomFavorsItems(srchMob,srchContainer,allWord,Wearable.FILTER_ANY);
 			else
 			if(srchMob!=null)
-				thang=srchMob.fetchInventory(allWord);
+				thang=srchMob.findItem(allWord);
 			else
 			if(srchRoom!=null)
 				thang=srchRoom.fetchFromRoomFavorItems(srchContainer,allWord,Wearable.FILTER_ANY);

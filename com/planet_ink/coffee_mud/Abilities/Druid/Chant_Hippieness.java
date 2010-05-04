@@ -85,14 +85,14 @@ public class Chant_Hippieness extends Chant
 			Room R=mob.location();
 			if((!mouthed)&&(R!=null)&&(R.numItems()>0))
 			{
-				Item I=R.fetchItem(CMLib.dice().roll(1,R.numItems(),-1));
+				Item I=R.getItem(CMLib.dice().roll(1,R.numItems(),-1));
 				if((I!=null)&&(I.fitsOn(Wearable.WORN_MOUTH)))
 					CMLib.commands().postGet(mob,I.container(),I,false);
 			}
 
-			if(mob.inventorySize()>0)
+			if(mob.numItems()>0)
 			{
-				Item I=mob.fetchInventory(CMLib.dice().roll(1,mob.inventorySize(),-1));
+				Item I=mob.getItem(CMLib.dice().roll(1,mob.numItems(),-1));
 				if(mouthed)
 				{
 					if((I!=null)&&(!I.amWearingAt(Wearable.IN_INVENTORY))&&(!I.amWearingAt(Wearable.WORN_MOUTH)))
@@ -116,7 +116,7 @@ public class Chant_Hippieness extends Chant
 							smoke.setBaseValue(25);
 							smoke.recoverEnvStats();
 							smoke.text();
-							mob.addInventory(smoke);
+							mob.addItem(smoke);
 							smoke.setContainer(I);
 						}
 					}

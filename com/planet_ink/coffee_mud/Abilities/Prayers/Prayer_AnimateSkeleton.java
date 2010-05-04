@@ -88,7 +88,7 @@ public class Prayer_AnimateSkeleton extends Prayer
 		int it=0;
 		while(it<R.numItems())
 		{
-			Item item=R.fetchItem(it);
+			Item item=R.getItem(it);
 			if((item!=null)&&(item.container()==body))
 			{
 				CMMsg msg2=CMClass.getMsg(newMOB,body,item,CMMsg.MSG_GET,null);

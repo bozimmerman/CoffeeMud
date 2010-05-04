@@ -97,7 +97,7 @@ public class Prayer_SenseDisease extends Prayer
 		}
 		for(int i=0;i<R.numItems();i++)
 		{
-			Item I=R.fetchItem(i);
+			Item I=R.getItem(i);
 			if((I!=null)
 			&&(I.container()==null)
 			&&(getDisease(I)!=null))

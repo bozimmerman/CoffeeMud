@@ -100,7 +100,7 @@ public class PuddleMaker extends StdBehavior
 	{
 		for(int i=0;i<R.numItems();i++)
 		{
-			Item I=R.fetchItem(i);
+			Item I=R.getItem(i);
 			if((I instanceof Drink)
 			   &&(!CMLib.flags().isGettable(I))
 			   &&((I.name().toLowerCase().indexOf("puddle")>=0)

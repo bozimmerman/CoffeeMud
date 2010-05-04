@@ -48,16 +48,16 @@ public class Chant_ControlFire extends Chant
     
     private Item getFireSource(MOB target) 
     {
-        for(int i=0;i<target.inventorySize();i++)
+        for(int i=0;i<target.numItems();i++)
         {
-            Item I=target.fetchInventory(i);
+            Item I=target.getItem(i);
             if((CMLib.flags().isOnFire(I))&&(I.container()==null))
                 return I;
         }
 
         for(int i=0;i<target.location().numItems();i++)
         {
-            Item I=target.location().fetchItem(i);
+            Item I=target.location().getItem(i);
             if((CMLib.flags().isOnFire(I))&&(I.container()==null))
                 return I;
         }

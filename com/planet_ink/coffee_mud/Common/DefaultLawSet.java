@@ -160,16 +160,16 @@ public class DefaultLawSet implements Law
                 {
                     treasuryR=CMLib.map().getRoom(room);
                     if(treasuryR!=null)
-                        container=treasuryR.fetchAnyItem(item);
+                        container=treasuryR.findItem(item);
                 }
                 else
                 if(item.length()>0)
                 for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
                 {
                     R=(Room)e.nextElement();
-                    if(R.fetchAnyItem(item) instanceof Container)
+                    if(R.findItem(item) instanceof Container)
                     {
-                        container=R.fetchAnyItem(item);
+                        container=R.findItem(item);
                         treasuryR=R;
                         break;
                     }

@@ -61,7 +61,7 @@ public class Chant_VolcanicChasm extends Chant
 			}
 			for(int i=0;i<R.numItems();i++)
 			{
-				Item I=R.fetchItem(i);
+				Item I=R.getItem(i);
 				if((I!=null)&&(!CMLib.flags().isOnFire(I)))
 				{
 					Ability A=CMClass.getAbility("Burning");

@@ -58,9 +58,9 @@ public class Prayer_DailyBread extends Prayer
 		boolean success=proficiencyCheck(mob,-(levelDiff*25),auto);
 		Item Bread=null;
 		Item BreadContainer=null;
-		for(int i=0;i<target.inventorySize();i++)
+		for(int i=0;i<target.numItems();i++)
 		{
-			Item I=target.fetchInventory(i);
+			Item I=target.getItem(i);
 			if((I!=null)&&(I instanceof Food))
 			{
 				if(I.container()!=null)
@@ -89,7 +89,7 @@ public class Prayer_DailyBread extends Prayer
 					if((E2!=null)&&(E2 instanceof Food))
 					{
 						Bread=(Item)E2.copyOf();
-						target.addInventory(Bread);
+						target.addItem(Bread);
 						break;
 					}
 				}

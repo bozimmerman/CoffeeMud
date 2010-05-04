@@ -114,7 +114,7 @@ public class Chant_SummonSeed extends Chant
 					newItem.baseEnvStats().setWeight(0);
 					newItem.recoverEnvStats();
 					newItem.setMiscText(newItem.text());
-					mob.addInventory(newItem);
+					mob.addItem(newItem);
 				}
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Some seeds appear!");
 				mob.location().recoverEnvStats();

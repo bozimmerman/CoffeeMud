@@ -149,7 +149,7 @@ public class Spell_FakeWeapon extends Spell
 				weapon.baseEnvStats().setWeight(0);
 				weapon.setBaseValue(0);
 				weapon.recoverEnvStats();
-				mob.addInventory(weapon);
+				mob.addItem(weapon);
 				mob.location().show(mob,null,weapon,CMMsg.MSG_OK_ACTION,"Suddenly, <S-NAME> own(s) <O-NAME>!");
 				myItem=weapon;
 				beneficialAffect(mob,weapon,asLevel,0);

@@ -214,7 +214,7 @@ public class Reset extends StdCommand
 		Item I=null;
 		for(int i=0;i<R.numItems();i++)
 		{
-			I=R.fetchItem(i);
+			I=R.getItem(i);
 			if((I instanceof DeadBody)
 			&&(((DeadBody)I).playerCorpse()))
 				warning.append("A player corpse, '"+I.Name()+"' is in "+CMLib.map().getExtendedRoomID(R)+"\n\r");
@@ -893,14 +893,14 @@ public class Reset extends StdCommand
 							boolean changedMOBS=false;
 							boolean changedItems=false;
 							for(int i=0;i<R.numItems();i++)
-								changedItems=changedItems||(rightImportMat(null,R.fetchItem(i),false)>=0);
+								changedItems=changedItems||(rightImportMat(null,R.getItem(i),false)>=0);
 							for(int m=0;m<R.numInhabitants();m++)
 							{
 								MOB M=R.fetchInhabitant(m);
 								if(M==mob) continue;
 								if(!M.isSavable()) continue;
-								for(int i=0;i<M.inventorySize();i++)
-									changedMOBS=changedMOBS||(rightImportMat(null,M.fetchInventory(i),false)>=0);
+								for(int i=0;i<M.numItems();i++)
+									changedMOBS=changedMOBS||(rightImportMat(null,M.getItem(i),false)>=0);
 								ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 								if(SK!=null)
 								{
@@ -1030,7 +1030,7 @@ public class Reset extends StdCommand
 					boolean changedItems=false;
 					for(int i=0;i<R.numItems();i++)
 					{
-						Item I=R.fetchItem(i);
+						Item I=R.getItem(i);
 						if(CMLib.itemBuilder().itemFix(I,-1,recordedChanges))
 							changedItems=true;
 					}
@@ -1039,9 +1039,9 @@ public class Reset extends StdCommand
 						MOB M=R.fetchInhabitant(m);
 						if((M==mob)||(!M.isMonster())) continue;
 						if(!M.isSavable()) continue;
-						for(int i=0;i<M.inventorySize();i++)
+						for(int i=0;i<M.numItems();i++)
 						{
-							Item I=M.fetchInventory(i);
+							Item I=M.getItem(i);
 							int lvl=-1;
 							if((I.baseEnvStats().level()>M.baseEnvStats().level())
 							||((I.baseEnvStats().level()>91)&&((I.baseEnvStats().level() + (I.baseEnvStats().level()/10))<M.baseEnvStats().level())))
@@ -1110,7 +1110,7 @@ public class Reset extends StdCommand
 					mob.tell(R.roomID()+"/"+R.name()+"/"+R.displayText()+"--------------------");
 					for(int i=R.numItems()-1;i>=0;i--)
 					{
-						Item I=R.fetchItem(i);
+						Item I=R.getItem(i);
 						if(I.ID().equalsIgnoreCase("GenWallpaper")) continue;
 						int returned=resetAreaOramaManaI(mob,I,rememberI," ");
 						if(returned<0)
@@ -1204,13 +1204,13 @@ public class Reset extends StdCommand
 								break;
 							}
 						}
-						for(int i=M.inventorySize()-1;i>=0;i--)
+						for(int i=M.numItems()-1;i>=0;i--)
 						{
-							Item I=M.fetchInventory(i);
+							Item I=M.getItem(i);
 							int returned=resetAreaOramaManaI(mob,I,rememberI,"   ");
 							if(returned<0)
 							{
-								M.delInventory(I);
+								M.delItem(I);
 								somethingDone=true;
 								mob.tell("   deleted");
 							}

@@ -357,9 +357,9 @@ public class WeatherAffects extends PuddleMaker
                         if(M.getWearPositions(ALL_COVERED_SPOTS[l])==0)
                             coveredPlaces=coveredPlaces|ALL_COVERED_SPOTS[l];
                     Item I=null;
-                    for(int i=0;i<M.inventorySize();i++)
+                    for(int i=0;i<M.numItems();i++)
                     {
-                        I=M.fetchInventory(i);
+                        I=M.getItem(i);
                         if((I==null)||(I.amWearingAt(Wearable.IN_INVENTORY)))
                            continue;
                         if(I.amWearingAt(Wearable.WORN_ABOUT_BODY))
@@ -385,9 +385,9 @@ public class WeatherAffects extends PuddleMaker
                         if(M.getWearPositions(ALL_FROST_SPOTS[l])==0)
                             unfrostedPlaces=unfrostedPlaces|ALL_FROST_SPOTS[l];
                     Item I=null;
-                    for(int i=0;i<M.inventorySize();i++)
+                    for(int i=0;i<M.numItems();i++)
                     {
-                        I=M.fetchInventory(i);
+                        I=M.getItem(i);
                         if((I==null)||(I.amWearingAt(Wearable.IN_INVENTORY)))
                            continue;
                         for(int l=0;l<ALL_FROST_SPOTS.length;l++)
@@ -667,7 +667,7 @@ public class WeatherAffects extends PuddleMaker
             &&(R.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
             &&((R.domainConditions()&Room.CONDITION_WET)==0))
             {
-                Item I=R.fetchItem(CMLib.dice().roll(1,R.numItems(),-1));
+                Item I=R.getItem(CMLib.dice().roll(1,R.numItems(),-1));
                 if((I!=null)&&(CMLib.flags().isGettable(I)))
                 switch(I.material()&RawMaterial.MATERIAL_MASK)
                 {
@@ -773,9 +773,9 @@ public class WeatherAffects extends PuddleMaker
                 {
                     int weatherType=C.weatherType(R);
                     Vector rustThese=new Vector();
-                    for(int i=0;i<M.inventorySize();i++)
+                    for(int i=0;i<M.numItems();i++)
                     {
-                        Item I=M.fetchInventory(i);
+                        Item I=M.getItem(i);
                         if(I==null) continue;
                         if((!I.amWearingAt(Wearable.IN_INVENTORY))
                         &&(((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL))

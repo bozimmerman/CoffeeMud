@@ -67,7 +67,7 @@ public class ClimbableSurface extends StdRoom
 		if(mob.riding()!=null) return null;
 		for(int i=0;i<room.numItems();i++)
 		{
-			Item I=room.fetchItem(i);
+			Item I=room.getItem(i);
 			if((I!=null)
 			   &&(I instanceof Rideable)
 			   &&(CMLib.flags().canBeSeenBy(I,mob))

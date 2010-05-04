@@ -189,7 +189,7 @@ public class FieryRoom
 		MOB mob=CMLib.map().mobCreated(which);
 		for(int i=0;i<which.numItems();i++) 
 		{
-		    Item target=which.fetchItem(i);
+		    Item target=which.getItem(i);
 		    Ability burn = CMClass.getAbility("Burning");
 			if((burn != null)&&(CMLib.dice().rollPercentage()>60)) 
 			{
@@ -205,8 +205,8 @@ public class FieryRoom
         Vector good = new Vector();
         Vector great = new Vector();
         Item target = null;
-        for (int i = 0; i < mob.inventorySize(); i++) {
-            Item I = mob.fetchInventory(i);
+        for (int i = 0; i < mob.numItems(); i++) {
+            Item I = mob.getItem(i);
             if (I.amWearingAt(Wearable.IN_INVENTORY))
                 good.addElement(I);
             else

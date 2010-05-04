@@ -509,7 +509,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					{
 						MOB borrower=msg.source();
 					    bankLedger(borrower,"Loan of "+old.Name()+": "+msg.source().Name());
-				        addInventory(old);
+				        addItem(old);
 				        double amt=((Coins)old).getTotalValue();
 						CMMsg newMsg=CMClass.getMsg(this,msg.source(),old,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
 						if(location().okMessage(this,newMsg))
@@ -561,7 +561,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						    bankLedger(owner,"Withdrawl of "+CMLib.beanCounter().nameCurrencyShort(this,((Coins)old).getTotalValue())+": "+msg.source().Name());
 							delDepositInventory(owner,depositInventoryItem);
 
-					        addInventory(old);
+					        addItem(old);
 							CMMsg newMsg=CMClass.getMsg(this,msg.source(),old,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
 							if(location().okMessage(this,newMsg))
 							{

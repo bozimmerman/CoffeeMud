@@ -327,7 +327,7 @@ public class ItemGenerator extends ActiveTicker
 				    		((Room)((Container)ticking).owner()).addItem(CMLib.itemBuilder().enchant(I,enchantPct));
 				    	else
 				    	if(((Container)ticking).owner() instanceof MOB)
-				    		((MOB)((Container)ticking).owner()).addInventory(CMLib.itemBuilder().enchant(I,enchantPct));
+				    		((MOB)((Container)ticking).owner()).addItem(CMLib.itemBuilder().enchant(I,enchantPct));
 				    	else
 				    		return true;
 						maintained.addElement(I);
@@ -336,7 +336,7 @@ public class ItemGenerator extends ActiveTicker
 					else
 				    if(ticking instanceof MOB)
 				    {
-			    		((MOB)ticking).addInventory(CMLib.itemBuilder().enchant(I,enchantPct));
+			    		((MOB)ticking).addItem(CMLib.itemBuilder().enchant(I,enchantPct));
 			    		I.wearIfPossible((MOB)ticking);
 						maintained.addElement(I);
 				    	I.setContainer((Container)ticking);
@@ -391,7 +391,7 @@ public class ItemGenerator extends ActiveTicker
 								if(inhabs.size()>0)
 								{
 									MOB M=(MOB)inhabs.elementAt(CMLib.dice().roll(1,inhabs.size(),-1));
-									M.addInventory(CMLib.itemBuilder().enchant(I,enchantPct));
+									M.addItem(CMLib.itemBuilder().enchant(I,enchantPct));
 									I.wearIfPossible(M);
 									maintained.addElement(I);
 								}

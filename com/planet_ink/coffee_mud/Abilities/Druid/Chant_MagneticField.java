@@ -49,9 +49,9 @@ public class Chant_MagneticField extends Chant
 		if(affected instanceof MOB)
 		{
 			MOB M=(MOB)affected;
-			for(int i=0;i<M.inventorySize();i++)
+			for(int i=0;i<M.numItems();i++)
 			{
-				Item I=M.fetchInventory(i);
+				Item I=M.getItem(i);
 				if((I!=null)
 				&&(I.container()==null)
 				&&(CMLib.flags().isMetal(I))

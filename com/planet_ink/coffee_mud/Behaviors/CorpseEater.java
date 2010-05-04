@@ -86,7 +86,7 @@ public class CorpseEater extends ActiveTicker
 			if(thisRoom.numItems()==0) return true;
 			for(int i=0;i<thisRoom.numItems();i++)
 			{
-				Item I=thisRoom.fetchItem(i);
+				Item I=thisRoom.getItem(i);
 				if((I!=null)
 				&&(I instanceof DeadBody)
 				&&(CMLib.flags().canBeSeenBy(I,mob)||CMLib.flags().canSmell(mob)))

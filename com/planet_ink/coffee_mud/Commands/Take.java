@@ -122,7 +122,7 @@ public class Take extends StdCommand
 				&&(V.size()==0)
 				&&(addendumStr.length()==0)
 				&&(!allFlag))
-					giveThis=victim.fetchInventory(thingToGive);
+					giveThis=victim.findItem(thingToGive);
 				if(giveThis==null) break;
 				if(giveThis instanceof Item)
 				{
@@ -142,7 +142,7 @@ public class Take extends StdCommand
 				CMMsg newMsg=CMClass.getMsg(victim,mob,giveThis,CMMsg.MASK_ALWAYS|CMMsg.MSG_GIVE,"<T-NAME> take(s) <O-NAME> from <S-NAMESELF>.");
 				if(victim.location().okMessage(victim,newMsg))
 					victim.location().send(victim,newMsg);
-				if(!mob.isMine(giveThis)) mob.giveItem(giveThis);
+				if(!mob.isMine(giveThis)) mob.moveItemTo(giveThis);
 				if(giveThis instanceof Coins)
 				    ((Coins)giveThis).putCoinsBack();
 				if(giveThis instanceof RawMaterial)

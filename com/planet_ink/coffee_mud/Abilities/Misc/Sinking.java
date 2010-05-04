@@ -235,7 +235,7 @@ public class Sinking extends StdAbility
 		V.addElement(item);
 		for(int i=0;i<room.numItems();i++)
 		{
-			Item newItem=room.fetchItem(i);
+			Item newItem=room.getItem(i);
 			if((newItem!=null)&&(newItem.container()==item))
 				recursiveRoomItems(V,newItem,room);
 		}

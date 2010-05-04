@@ -59,7 +59,7 @@ public class StdClanCommonItem extends StdClanItem
     {
         for(int i=0;i<R.numItems();i++)
         {
-            Item I2=R.fetchItem(i);
+            Item I2=R.getItem(i);
             if((I2!=null)&&(I2.container()==null)&&(CMLib.flags().isOnFire(I2)))
                 return true;
         }
@@ -71,7 +71,7 @@ public class StdClanCommonItem extends StdClanItem
         Vector here=new Vector();
         for(int i=0;i<R.numItems();i++)
         {
-            Item I2=R.fetchItem(i);
+            Item I2=R.getItem(i);
             if((I2!=null)
             &&(I2.container()==null)
             &&(I2 instanceof RawMaterial)
@@ -86,9 +86,9 @@ public class StdClanCommonItem extends StdClanItem
     public Vector resourceHere(MOB M, int material)
     {
         Vector here=new Vector();
-        for(int i=0;i<M.inventorySize();i++)
+        for(int i=0;i<M.numItems();i++)
         {
-            Item I2=M.fetchInventory(i);
+            Item I2=M.getItem(i);
             if((I2!=null)
             &&(I2.container()==null)
             &&(I2 instanceof RawMaterial)
@@ -353,13 +353,13 @@ public class StdClanCommonItem extends StdClanItem
                     	case 7: CMLib.commands().postSay(M,null,"I could use some light, if you expect me to work."); break;
                     	}
                     
-					if((M.inventorySize()>1)&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL))
+					if((M.numItems()>1)&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL))
 					{
 						Item I=null;
 						int tries=0;
 						while((I==null)&&((++tries)<20))
 						{
-							I=M.fetchInventory(CMLib.dice().roll(1,M.inventorySize(),-1));
+							I=M.getItem(CMLib.dice().roll(1,M.numItems(),-1));
 							if((I==null)
                             ||(I==this)
                             ||(I instanceof RawMaterial)

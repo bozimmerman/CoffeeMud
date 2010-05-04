@@ -68,7 +68,7 @@ public class Chant_CaveFishing extends Chant
 		{
 			for(int i=0;i<target.numItems();i++)
 			{
-				Item I=target.fetchItem(i);
+				Item I=target.getItem(i);
 				if((I instanceof Drink)
 				&&(I.container()==null)
 				&&(((Drink)I).liquidType()==RawMaterial.RESOURCE_FRESHWATER)

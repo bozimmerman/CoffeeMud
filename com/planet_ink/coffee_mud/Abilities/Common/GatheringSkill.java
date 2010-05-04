@@ -124,7 +124,7 @@ public class GatheringSkill extends CommonSkill
 	    long lowestNonZeroFoodNumber=Long.MAX_VALUE;
 	    for(int i=0;i<R.numItems();i++)
 	    {
-	        Item I=R.fetchItem(i);
+	        Item I=R.getItem(i);
 			if(CMLib.english().containsString(I.Name(),name))
 			{
 			    if(foundAnyway==null) foundAnyway=I;

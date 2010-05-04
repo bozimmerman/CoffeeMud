@@ -79,7 +79,7 @@ public class Chant_Blight extends Chant
 				R.setResource(RawMaterial.RESOURCE_SAND);
 			for(int i=0;i<R.numItems();i++)
 			{
-				Item I=R.fetchItem(i);
+				Item I=R.getItem(i);
 				if((I!=null)&&(isBlightable(I.material())))
 				{
 					R.showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" withers away.");

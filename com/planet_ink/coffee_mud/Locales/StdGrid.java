@@ -656,7 +656,7 @@ public class StdGrid extends StdRoom implements GridLocale
 						}
 						while(room.numItems()>0)
 						{
-							Item I=room.fetchItem(0);
+							Item I=room.getItem(0);
 							if(I!=null)
 							{
 								if(backHere!=null)

@@ -234,7 +234,7 @@ public class Archon_Metacraft extends ArchonSkill
                     }
                     else
                     {
-        				mob.giveItem(building);
+        				mob.moveItemTo(building);
         				mob.location().show(mob,null,null,CMMsg.MSG_OK_ACTION,building.name()+" appears in <S-YOUPOSS> hands.");
                     }
     			}

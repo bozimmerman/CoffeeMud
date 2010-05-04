@@ -219,12 +219,15 @@ public class ThinRoom implements Room {
 	public void delItem(Item item){}
 	public int numItems(){return 0;}
 	public boolean isContent(Item item){return false;}
-	public Item fetchItem(Item goodLocation, String itemID){return null;}
-	public Item fetchItem(int i){return null;}
-	public Item fetchAnyItem(String itemID){return null;}
+	public Item findItem(Item goodLocation, String itemID){return null;}
+	public Item getItem(int i){return null;}
+	public Enumeration<Item> items(){ return EmptyEnumeration.INSTANCE;}
+	public Item getItem(String s){return null;}
+	public Item getItem(Item goodLocation, String s){return null;}
+	public Item findItem(String itemID){return null;}
 	public void bringItemHere(Item item, int expireMins, boolean andRiders){}
-	public Vector fetchAnyItems(String itemID) { return new Vector(1);}
-	public Vector fetchItems(Item goodLocation, String itemID) { return new Vector(1);}
+	public List<Item> findItems(String itemID) { return new Vector(1);}
+	public List<Item> findItems(Item goodLocation, String itemID) { return new Vector(1);}
 
 	public Environmental fetchFromRoomFavorItems(Item goodLocation, String thingName,int wornFilter){return null;}
 	public Environmental fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, int wornFilter){return null;}
@@ -241,13 +244,13 @@ public class ThinRoom implements Room {
 	public void addBehavior(Behavior to){}
 	public void delBehavior(Behavior to){}
 	public int numBehaviors(){return 0;}
-    public Enumeration<Behavior> behaviors() { return (Enumeration<Behavior>)EmptyEnumeration.INSTANCE;}
+    public Enumeration<Behavior> behaviors() { return EmptyEnumeration.INSTANCE;}
 	public Behavior fetchBehavior(int index){return null;}
 	public Behavior fetchBehavior(String ID){return null;}
     public void addScript(ScriptingEngine S){}
     public void delScript(ScriptingEngine S) {}
     public int numScripts(){return 0;}
-    public Enumeration<ScriptingEngine> scripts() { return (Enumeration<ScriptingEngine>)EmptyEnumeration.INSTANCE;}
+    public Enumeration<ScriptingEngine> scripts() { return EmptyEnumeration.INSTANCE;}
     public ScriptingEngine fetchScript(int x){ return null;}
 	public boolean isGeneric(){return false;}
 	public int getSaveStatIndex(){return getStatCodes().length;}

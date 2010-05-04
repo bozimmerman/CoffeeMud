@@ -444,7 +444,7 @@ public class Merge extends StdCommand
 				{
 					for(int i=0;i<R.numItems();i++)
 					{
-						Item I=R.fetchItem(i);
+						Item I=R.getItem(i);
 						if((I!=null)&&(tryMerge(mob,R,I,things,changes,onfields,ignore,noisy)))
 							saveitems=true;
 					}
@@ -453,9 +453,9 @@ public class Merge extends StdCommand
 						MOB M=R.fetchInhabitant(m);
 						if((M!=null)&&(M.isSavable()))
 						{
-							for(int i=0;i<M.inventorySize();i++)
+							for(int i=0;i<M.numItems();i++)
 							{
-								Item I=M.fetchInventory(i);
+								Item I=M.getItem(i);
 								if((I!=null)&&(tryMerge(mob,R,I,things,changes,onfields,ignore,noisy)))
 									savemobs=true;
 							}

@@ -134,8 +134,8 @@ public class Dragon extends StdMOB
 		{
 			ClawOne.wearAt(Wearable.WORN_WIELD);
 			ClawTwo.wearAt(Wearable.WORN_WIELD);
-			addInventory(ClawOne);
-			addInventory(ClawTwo);
+			addItem(ClawOne);
+			addItem(ClawTwo);
 		}
 
 		// ===== hitpoints are muxed by 10 To beef them up
@@ -526,7 +526,7 @@ public class Dragon extends StdMOB
 			int itemCount = Stomach.numItems();
 			for (int y=itemCount-1;y>=0;y--)
 			{
-				Item PartiallyDigestedItem = Stomach.fetchItem(y);
+				Item PartiallyDigestedItem = Stomach.getItem(y);
 				if(PartiallyDigestedItem!=null)
 				{
 					room.addItemRefuse(PartiallyDigestedItem,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));

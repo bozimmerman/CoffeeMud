@@ -105,9 +105,9 @@ public class StdClanItem extends StdItem implements ClanItem
 	{
 		if(mob==null) return false;
 		Item I=null;
-		for(int i=0;i<mob.inventorySize();i++)
+		for(int i=0;i<mob.numItems();i++)
 		{
-			I=mob.fetchInventory(i);
+			I=mob.getItem(i);
 			if((I!=null)
 			&&(I instanceof ClanItem)
 			&&(!I.amWearingAt(Wearable.IN_INVENTORY)))
@@ -163,7 +163,7 @@ public class StdClanItem extends StdItem implements ClanItem
                 CI.setRightfulOwner(null);
             else
             if(!M.amDead())
-                M.giveItem(CI);
+                M.moveItemTo(CI);
         }
 		return true;
 	}
@@ -233,9 +233,9 @@ public class StdClanItem extends StdItem implements ClanItem
 		if((targetMOB != null)&&(targetMOB.isMonster()))
 		{
 			Item alreadyHasOne=null;
-			for(int i=0;i<targetMOB.inventorySize();i++)
+			for(int i=0;i<targetMOB.numItems();i++)
 			{
-				Item I=targetMOB.fetchInventory(i);
+				Item I=targetMOB.getItem(i);
 				if((I!=null)
                 &&(I instanceof ClanItem)
                 &&((((ClanItem)myHost).ciType()!=ClanItem.CI_PROPAGANDA)||(((ClanItem)I).ciType()==ClanItem.CI_PROPAGANDA)))

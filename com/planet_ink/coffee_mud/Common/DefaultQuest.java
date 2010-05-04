@@ -870,7 +870,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                                Room R2=(Room)e.nextElement();
 	                                for(int i=0;i<R2.numItems();i++)
 	                                {
-	                                    Item I2=R2.fetchItem(i);
+	                                    Item I2=R2.getItem(i);
 	                                    if(I2!=null)
 	                                    {
                                             if(CMLib.masking().maskCheck(mask,I2,true))
@@ -943,7 +943,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		                                    Room R2=(Room)e.nextElement();
 		                                    for(int i=0;i<R2.numItems();i++)
 		                                    {
-		                                        Item I2=R2.fetchItem(i);
+		                                        Item I2=R2.getItem(i);
 		                                        if((I2!=null))
 		                                        {
 		                                            if(itemType.equalsIgnoreCase("any"))
@@ -1437,7 +1437,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                                Room R2=(Room)e.nextElement();
 	                                for(int i=0;i<R2.numItems();i++)
 	                                {
-	                                    Item I2=R2.fetchItem(i);
+	                                    Item I2=R2.getItem(i);
 	                                    if(I2!=null)
 	                                    {
 	                                        if(!CMLib.masking().maskCheck(mask,I2,true))
@@ -2511,7 +2511,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                            	Item I3=(Item)itemSet.elementAt(i3);
 		                            if(q.item==I3)
 		                            {
-			                            M2.giveItem(I3);
+			                            M2.moveItemTo(I3);
 			                            q.item=(Item)q.item.copyOf();
 	                                    questifyScriptableBehavs(q.item);
 		                            }
@@ -2519,7 +2519,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		                            {
 		                                I3=(Item)I3.copyOf();
 	                                    questifyScriptableBehavs(I3);
-			                            M2.giveItem(I3);
+			                            M2.moveItemTo(I3);
 		                            }
 	                            }
                             }
@@ -2530,7 +2530,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                                 questifyScriptableBehavs(I3);
 	                            if(q.item==I3)
 	                            {
-		                            M2.giveItem(I3);
+		                            M2.moveItemTo(I3);
 		                            q.item=(Item)q.item.copyOf();
                                     questifyScriptableBehavs(q.item);
 	                            }
@@ -2538,7 +2538,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                                 {
                                     I3=(Item)I3.copyOf();
                                     questifyScriptableBehavs(I3);
-		                            M2.giveItem(I3);
+		                            M2.moveItemTo(I3);
                                 }
                             }
                         }

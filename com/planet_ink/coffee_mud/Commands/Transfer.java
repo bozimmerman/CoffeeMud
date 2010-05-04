@@ -79,7 +79,7 @@ public class Transfer extends At
 		{
             if(itemFlag)
                 for(int i=0;i<curRoom.numItems();i++)
-                    V.addElement(curRoom.fetchItem(i));
+                    V.addElement(curRoom.getItem(i));
             else
 			for(int i=0;i<curRoom.numInhabitants();i++)
 			{
@@ -101,7 +101,7 @@ public class Transfer extends At
                 {
                     for(int i=0;i<curRoom.numItems();i++)
                     {
-                        Item I=curRoom.fetchItem(i);
+                        Item I=curRoom.getItem(i);
                         if((I!=null)&&(CMLib.english().containsString(I.name(),mobname)))
                             V.addElement(I);
                     }

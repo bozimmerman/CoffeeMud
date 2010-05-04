@@ -869,7 +869,7 @@ public class RoomLoader
 		Vector contents=new Vector();
 		for(int i=0;i<room.numItems();i++)
 		{
-			Item thisItem=room.fetchItem(i);
+			Item thisItem=room.getItem(i);
 			if((thisItem!=null)&&(!contents.contains(thisItem))&&thisItem.isSavable())
 				contents.addElement(thisItem);
 		}

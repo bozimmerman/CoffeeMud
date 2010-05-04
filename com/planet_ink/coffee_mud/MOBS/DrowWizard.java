@@ -57,7 +57,7 @@ public class DrowWizard extends DrowElf
 		if(mainWeapon!=null)
 		{
 			mainWeapon.wearAt(Wearable.WORN_WIELD);
-			this.addInventory(mainWeapon);
+			this.addItem(mainWeapon);
 		}
 
 		baseEnvStats().setArmor(40);

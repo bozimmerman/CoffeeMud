@@ -609,7 +609,7 @@ public class GModify extends StdCommand
 	            boolean saveitems=false;
 	            for(int i=0;i<R.numItems();i++)
 	            {
-	                Item I=R.fetchItem(i);
+	                Item I=R.getItem(i);
 	                if((I!=null)&&(tryModfy(mob,R,I,changes,onfields,noisy)))
 	                    saveitems=true;
 	            }
@@ -620,9 +620,9 @@ public class GModify extends StdCommand
 	                {
 	                    if(tryModfy(mob,R,M,changes,onfields,noisy))
 	                        savemobs=true;
-		                for(int i=0;i<M.inventorySize();i++)
+		                for(int i=0;i<M.numItems();i++)
 		                {
-		                    Item I=M.fetchInventory(i);
+		                    Item I=M.getItem(i);
 		                    if((I!=null)&&(tryModfy(mob,R,I,changes,onfields,noisy)))
 		                        savemobs=true;
 		                }

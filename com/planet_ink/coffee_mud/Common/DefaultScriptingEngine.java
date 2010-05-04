@@ -844,7 +844,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         else
         {
             if(!mob)
-                areaThing=(meMOB!=null)?meMOB.fetchInventory(thisName):null;
+                areaThing=(meMOB!=null)?meMOB.findItem(thisName):null;
             try
             {
                 if(areaThing==null)
@@ -1047,8 +1047,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
             str=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,str);
             Environmental E=lastKnownLocation.fetchFromRoomFavorMOBs(null,str,Wearable.FILTER_ANY);
             if(E==null) E=lastKnownLocation.fetchFromMOBRoomFavorsItems(monster,null,str,Wearable.FILTER_ANY);
-            if(E==null) E=lastKnownLocation.fetchAnyItem(str);
-            if((E==null)&&(monster!=null)) E=monster.fetchInventory(str);
+            if(E==null) E=lastKnownLocation.findItem(str);
+            if((E==null)&&(monster!=null)) E=monster.findItem(str);
             if(E==null) E=CMLib.players().getPlayer(str);
             if(E instanceof PhysicalAgent)
 	            return (PhysicalAgent)E;
@@ -1215,7 +1215,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     StringBuffer str=new StringBuffer("");
                     for(int i=0;i<lastKnownLocation.numItems();i++)
                     {
-                        Item I=lastKnownLocation.fetchItem(i);
+                        Item I=lastKnownLocation.getItem(i);
                         if((I!=null)&&(I.container()==null)&&(CMLib.flags().canBeSeenBy(I,monster)))
                            str.append("\""+I.name()+"\" ");
                     }
@@ -2106,7 +2106,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if(E2!=null)
                         returnable=((MOB)E).isMine(E2);
                     else
-                        returnable=(((MOB)E).fetchInventory(arg2)!=null);
+                        returnable=(((MOB)E).findItem(arg2)!=null);
                 }
                 else
                 if(E instanceof Item)
@@ -2117,7 +2117,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if(E2 instanceof Item)
                         returnable=((Room)E).isContent((Item)E2);
                     else
-                        returnable=(((Room)E).fetchItem(null,arg2)!=null);
+                        returnable=(((Room)E).findItem(null,arg2)!=null);
                 }
                 else
                     returnable=false;
@@ -2144,9 +2144,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(E instanceof MOB)
                 {
                     MOB M=(MOB)E;
-                    for(int i=0;i<M.inventorySize();i++)
+                    for(int i=0;i<M.numItems();i++)
                     {
-                        I=M.fetchInventory(i);
+                        I=M.getItem(i);
                         if(I==null) break;
                         if((item.equalsIgnoreCase("all"))
                         ||(CMLib.english().containsString(I.Name(),item)))
@@ -2166,7 +2166,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     Room R=(Room)E;
                     for(int i=0;i<R.numItems();i++)
                     {
-                        I=R.fetchItem(i);
+                        I=R.getItem(i);
                         if(I==null) break;
                         if((item.equalsIgnoreCase("all"))
                         ||(CMLib.english().containsString(I.Name(),item)))
@@ -3099,7 +3099,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(lastKnownLocation!=null)
                 for(int i=0;i<lastKnownLocation.numItems();i++)
                 {
-                    Item I=lastKnownLocation.fetchItem(i);
+                    Item I=lastKnownLocation.getItem(i);
                     if((I!=null)&&(I.container()==null))
                         ct++;
                 }
@@ -3118,9 +3118,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Item which=null;
                 int ct=1;
                 if(M!=null)
-                for(int i=0;i<M.inventorySize();i++)
+                for(int i=0;i<M.numItems();i++)
                 {
-                    Item I=M.fetchInventory(i);
+                    Item I=M.getItem(i);
                     if((I!=null)&&(I.container()==null))
                     {
                         if(ct==CMath.s_int(arg2.trim()))
@@ -3165,9 +3165,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
                 int ct=1;
                 if(which!=null)
-                for(int i=0;i<which.inventorySize();i++)
+                for(int i=0;i<which.numItems();i++)
                 {
-                    Item I=which.fetchInventory(i);
+                    Item I=which.getItem(i);
                     if((I!=null)&&(I.container()==null))
                         ct++;
                 }
@@ -3200,7 +3200,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(lastKnownLocation!=null)
                 for(int i=0;i<lastKnownLocation.numItems();i++)
                 {
-                    Item I=lastKnownLocation.fetchItem(i);
+                    Item I=lastKnownLocation.getItem(i);
                     if((I!=null)&&(I.container()==null))
                     {
                         if(ct==CMath.s_int(arg1.trim()))
@@ -3220,7 +3220,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             {
                 String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
                 if(lastKnownLocation!=null)
-                    returnable=((lastKnownLocation.fetchAnyItem(arg1)!=null)||(lastKnownLocation.fetchInhabitant(arg1)!=null));
+                    returnable=((lastKnownLocation.findItem(arg1)!=null)||(lastKnownLocation.fetchInhabitant(arg1)!=null));
                 else
                     returnable=false;
                 break;
@@ -4333,9 +4333,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 else
                 if(E instanceof MOB)
                 {
-                    for(int i=0;i<((MOB)E).inventorySize();i++)
+                    for(int i=0;i<((MOB)E).numItems();i++)
                     {
-                        Item I=((MOB)E).fetchInventory(i);
+                        Item I=((MOB)E).getItem(i);
                         if((I!=null)&&(I.amWearingAt(Wearable.IN_INVENTORY))&&(I.container()==null))
                             choices.addElement(I);
                     }
@@ -4352,7 +4352,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 {
                     for(int i=0;i<((Room)E).numItems();i++)
                     {
-                        Item I=((Room)E).fetchItem(i);
+                        Item I=((Room)E).getItem(i);
                         if((I!=null)&&(I.container()==null))
                             choices.addElement(I);
                     }
@@ -4375,9 +4375,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if(E instanceof MOB)
                     {
                         MOB M=(MOB)E;
-                        for(int i=0;i<M.inventorySize();i++)
+                        for(int i=0;i<M.numItems();i++)
                         {
-                            I=M.fetchInventory(i);
+                            I=M.getItem(i);
                             if(I==null) break;
                             if((item.equalsIgnoreCase("all"))
                             ||(CMLib.english().containsString(I.Name(),item)))
@@ -4397,7 +4397,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         Room R=(Room)E;
                         for(int i=0;i<R.numItems();i++)
                         {
-                            I=R.fetchItem(i);
+                            I=R.getItem(i);
                             if(I==null) break;
                             if((item.equalsIgnoreCase("all"))
                             ||(CMLib.english().containsString(I.Name(),item)))
@@ -4418,9 +4418,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 else
                 if(E instanceof MOB)
                 {
-                    for(int i=0;i<((MOB)E).inventorySize();i++)
+                    for(int i=0;i<((MOB)E).numItems();i++)
                     {
-                        Item I=((MOB)E).fetchInventory(i);
+                        Item I=((MOB)E).getItem(i);
                         if((I!=null)&&(!I.amWearingAt(Wearable.IN_INVENTORY))&&(I.container()==null))
                             choices.addElement(I);
                     }
@@ -5046,7 +5046,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     Vector list=new Vector();
                     for(int i=0;i<lastKnownLocation.numItems();i++)
                     {
-                        Item I=lastKnownLocation.fetchItem(i);
+                        Item I=lastKnownLocation.getItem(i);
                         if((I!=null)&&(I.container()==null))
                         {
                             list.addElement(I);
@@ -5171,7 +5171,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(lastKnownLocation!=null)
                 for(int i=0;i<lastKnownLocation.numItems();i++)
                 {
-                    Item I=lastKnownLocation.fetchItem(i);
+                    Item I=lastKnownLocation.getItem(i);
                     if((I!=null)&&(I.container()==null))
                         ct++;
                 }
@@ -5188,9 +5188,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Item which=null;
                 int ct=1;
                 if(M!=null)
-                for(int i=0;i<M.inventorySize();i++)
+                for(int i=0;i<M.numItems();i++)
                 {
-                    Item I=M.fetchInventory(i);
+                    Item I=M.getItem(i);
                     if((I!=null)&&(I.container()==null))
                     {
                         if(ct==CMath.s_int(arg2.trim()))
@@ -5210,9 +5210,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
                 int ct=1;
                 if(which!=null)
-                for(int i=0;i<which.inventorySize();i++)
+                for(int i=0;i<which.numItems();i++)
                 {
-                    Item I=which.fetchInventory(i);
+                    Item I=which.getItem(i);
                     if((I!=null)&&(I.container()==null))
                         ct++;
                 }
@@ -6224,9 +6224,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 }
                 if(tt[1].equals("ALL") && (monster!=null))
                 {
-                    while(monster.inventorySize()>0)
+                    while(monster.numItems()>0)
                     {
-                        Item I=monster.fetchInventory(0);
+                        Item I=monster.getItem(0);
                         if(I!=null)
                         {
                             if(I.owner()==null) I.setOwner(monster);
@@ -6243,9 +6243,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if(E instanceof Item)
                         I=(Item)E;
                     if((I==null)&&(monster!=null))
-                        I=monster.fetchInventory(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]));
+                        I=monster.findItem(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]));
                     if((I==null)&&(scripted instanceof Room))
-                        I=((Room)scripted).fetchAnyItem(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]));
+                        I=((Room)scripted).findItem(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]));
                     if(I!=null)
                         I.destroy();
                 }
@@ -7006,7 +7006,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         String currency=CMLib.english().numPossibleGoldCurrency(scripted,name);
                         double denom=CMLib.english().numPossibleGoldDenomination(scripted,currency,name);
                         Coins C=CMLib.beanCounter().makeCurrency(currency,denom,coins);
-                        monster.addInventory(C);
+                        monster.addItem(C);
                         C.putCoinsBack();
                     }
                     else
@@ -7029,12 +7029,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
                                     m.recoverEnvStats();
                                     m.setContainer(container);
                                     if(container instanceof MOB)
-                                        ((MOB)container.owner()).addInventory(m);
+                                        ((MOB)container.owner()).addItem(m);
                                     else
                                     if(container instanceof Room)
                                         ((Room)container.owner()).addItemRefuse(m,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
                                     else
-                                        monster.addInventory(m);
+                                        monster.addItem(m);
                                     lastLoaded=m;
                                 }
                             }
@@ -7825,7 +7825,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     {
                         s2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s2);
                         if(monster!=null)
-                            E=monster.fetchInventory(s2);
+                            E=monster.findItem(s2);
                     }
                     else
                         E=getArgumentItem(s2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);

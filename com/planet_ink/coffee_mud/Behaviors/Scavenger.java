@@ -55,9 +55,9 @@ public class Scavenger extends ActiveTicker
 		{
 			MOB mob=(MOB)ticking;
 			Room thisRoom=mob.location();
-            if(origItems<0) origItems=mob.inventorySize();
+            if(origItems<0) origItems=mob.numItems();
             if((mob.envStats().weight()>=(int)Math.round(CMath.mul(mob.maxCarry(),0.9)))
-            ||(mob.inventorySize()>=mob.maxItems()))
+            ||(mob.numItems()>=mob.maxItems()))
             {
                 if(CMLib.flags().isATrackingMonster(mob)) return true;
                 String trashRoomID=CMParms.getParmStr(getParms(),"TRASH","");
@@ -70,7 +70,7 @@ public class Scavenger extends ActiveTicker
                     int maxCapacity=0;
                     for(int i=0;i<R.numItems();i++)
                     {
-                        Item I=R.fetchItem(i);
+                        Item I=R.getItem(i);
                         if((I instanceof Container)&&(I.container()==null)&&(!CMLib.flags().isGettable(I)))
                         {
                             if(((Container)I).capacity()>maxCapacity)
@@ -94,11 +94,11 @@ public class Scavenger extends ActiveTicker
                         A.invoke(mob,CMParms.parse("\""+CMLib.map().getExtendedRoomID(R)+"\""),R,true,0);
                 }
                 else
-                if((origItems>=0)&&(mob.inventorySize()>origItems))
+                if((origItems>=0)&&(mob.numItems()>origItems))
                 {
-	                while((origItems>=0)&&(mob.inventorySize()>origItems))
+	                while((origItems>=0)&&(mob.numItems()>origItems))
 	                {
-	                    Item I=mob.fetchInventory(origItems);
+	                    Item I=mob.getItem(origItems);
 	                    if(I==null)
 	                    {
 	                    	if(origItems>0)
@@ -120,7 +120,7 @@ public class Scavenger extends ActiveTicker
             Vector choices=new Vector(thisRoom.numItems()<1000?thisRoom.numItems():1000);
 			for(int i=0;(i<thisRoom.numItems())&&(choices.size()<1000);i++)
 			{
-				Item thisItem=thisRoom.fetchItem(i);
+				Item thisItem=thisRoom.getItem(i);
 				if((thisItem!=null)
                 &&(thisItem.container()==null)
                 &&(CMLib.flags().isGettable(thisItem))

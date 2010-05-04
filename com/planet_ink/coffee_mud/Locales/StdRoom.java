@@ -146,7 +146,7 @@ public class StdRoom implements Room
 		}
 		for(int i=0;i<E.numItems();i++)
 		{
-			Item I2=E.fetchItem(i);
+			Item I2=E.getItem(i);
 			if(I2!=null)
 			{
 				Item I=(Item)I2.copyOf();
@@ -156,13 +156,13 @@ public class StdRoom implements Room
 		}
 		for(int i=0;i<numItems();i++)
 		{
-			Item I2=fetchItem(i);
+			Item I2=getItem(i);
 			if((I2!=null)
 			&&(I2.container()!=null)
 			&&(!isContent(I2.container())))
 				for(int ii=0;ii<E.numItems();ii++)
-					if((E.fetchItem(ii)==I2.container())&&(ii<numItems()))
-					{I2.setContainer(fetchItem(ii)); break;}
+					if((E.getItem(ii)==I2.container())&&(ii<numItems()))
+					{I2.setContainer(getItem(ii)); break;}
 		}
 		for(int m=0;m<E.numInhabitants();m++)
 		{
@@ -545,7 +545,7 @@ public class StdRoom implements Room
 		}
 		for(int i=0;i<numItems();i++)
 		{
-			N=fetchItem(i);
+			N=getItem(i);
 			if((N!=null)&&(!N.okMessage(this,msg)))
 				return false;
 		}
@@ -633,7 +633,7 @@ public class StdRoom implements Room
 		MsgListener N=null;
 		for(int i=0;i<numItems();i++)
 		{
-			N=fetchItem(i);
+			N=getItem(i);
 			if(N!=null)
 				N.executeMsg(this,msg);
 		}
@@ -748,7 +748,7 @@ public class StdRoom implements Room
 			        {
 				        for(int i=0;i<numItems();i++)
 				        {
-				            Item I=fetchItem(i);
+				            Item I=getItem(i);
 				            if(I instanceof DeadBody)
 				                bodies.addElement(I);
 				        }
@@ -775,7 +775,7 @@ public class StdRoom implements Room
 	{
 		for(int c=0;c<numItems();c++)
 		{
-			Item item=fetchItem(c);
+			Item item=getItem(c);
 			if((item!=null)&&(item.container()==null))
 			{
 				ItemTicker I=(ItemTicker)CMClass.getAbility("ItemRejuv");
@@ -857,7 +857,7 @@ public class StdRoom implements Room
 		}
 		for(int i=0;i<numItems();i++)
 		{
-			Item I=fetchItem(i);
+			Item I=getItem(i);
 			if(I!=null) I.affectEnvStats(this,envStats);
 		}
 		for(int m=0;m<numInhabitants();m++)
@@ -886,7 +886,7 @@ public class StdRoom implements Room
 		}
 		for(int i=0;i<numItems();i++)
 		{
-			Item I=fetchItem(i);
+			Item I=getItem(i);
 			if(I!=null) I.recoverEnvStats();
 		}
 	}
@@ -1090,7 +1090,7 @@ public class StdRoom implements Room
 		Vector V=new Vector();
 		if(item instanceof Container)
 			V=((Container)item).getContents();
-		if(o instanceof MOB)((MOB)o).delInventory(item);
+		if(o instanceof MOB)((MOB)o).delItem(item);
 		if(o instanceof Room) ((Room)o).delItem(item);
 
 		if(expireMins<=0)
@@ -1100,7 +1100,7 @@ public class StdRoom implements Room
 		for(int v=0;v<V.size();v++)
 		{
 			Item i2=(Item)V.elementAt(v);
-			if(o instanceof MOB) ((MOB)o).delInventory(i2);
+			if(o instanceof MOB) ((MOB)o).delItem(i2);
 			if(o instanceof Room) ((Room)o).delItem(i2);
 			addItem(i2);
 		}
@@ -1433,7 +1433,7 @@ public class StdRoom implements Room
 		try{
             Vector V=new Vector();
             for(int v=0;v<numItems();v++)
-                V.addElement(fetchItem(v));
+                V.addElement(getItem(v));
             for(int v=0;v<V.size();v++)
                 ((Item)V.elementAt(v)).destroy();
             if(numItems()>0)
@@ -1570,37 +1570,32 @@ public class StdRoom implements Room
 		inhabitants.removeElement(mob);
 	}
 
-	public Item fetchAnyItem(String itemID)
+	public Item findItem(String itemID)
 	{
 		Item item=(Item)CMLib.english().fetchEnvironmental(contents,itemID,true);
 		if(item==null) item=(Item)CMLib.english().fetchEnvironmental(contents,itemID,false);
 		return item;
 	}
-	public Item fetchItem(Item goodLocation, String itemID)
+	public Enumeration<Item> items() { return contents.elements();}
+	public Item findItem(Item goodLocation, String itemID)
 	{
-		Item item=CMLib.english().fetchAvailableItem(contents,itemID,goodLocation,Wearable.FILTER_UNWORNONLY,true);
-		if(item==null) item=CMLib.english().fetchAvailableItem(contents,itemID,goodLocation,Wearable.FILTER_UNWORNONLY,false);
+		Item item=CMLib.english().fetchAvailableItem(contents,itemID,goodLocation,Wearable.FILTER_ANY,true);
+		if(item==null) item=CMLib.english().fetchAvailableItem(contents,itemID,goodLocation,Wearable.FILTER_ANY,false);
 		return item;
 	}
-	public Vector fetchItems(Item goodLocation, String itemID)
+	public List<Item> findItems(Item goodLocation, String itemID)
 	{
-		Vector items=CMLib.english().fetchAvailableItems(contents,itemID,goodLocation,Wearable.FILTER_UNWORNONLY,true);
+		Vector items=CMLib.english().fetchAvailableItems(contents,itemID,goodLocation,Wearable.FILTER_ANY,true);
 		if(items.size()==0)
-			items=CMLib.english().fetchAvailableItems(contents,itemID,goodLocation,Wearable.FILTER_UNWORNONLY,false);
+			items=CMLib.english().fetchAvailableItems(contents,itemID,goodLocation,Wearable.FILTER_ANY,false);
 		return items;
 	}
-	public Vector fetchAnyItems(String itemID)
+	public List<Item> findItems(String itemID)
 	{
 		Vector items=CMLib.english().fetchEnvironmentals(contents,itemID,true);
 		if(items.size()==0)
 			items=CMLib.english().fetchEnvironmentals(contents,itemID, false);
 		return items;
-	}
-	public void addItem(Item item)
-	{
-		item.setOwner(this);
-		contents.addElement(item);
-		item.recoverEnvStats();
 	}
 	public void addItemRefuse(Item item, int expireMins)
 	{
@@ -1609,6 +1604,12 @@ public class StdRoom implements Room
             item.setExpirationDate(0);
         else
     		item.setExpirationDate(System.currentTimeMillis()+(expireMins * TimeManager.MILI_MINUTE));
+	}
+	public void addItem(Item item)
+	{
+		item.setOwner(this);
+		contents.addElement(item);
+		item.recoverEnvStats();
 	}
 	public void delItem(Item item)
 	{
@@ -1623,7 +1624,7 @@ public class StdRoom implements Room
 	{
 		return contents.contains(item);
 	}
-	public Item fetchItem(int i)
+	public Item getItem(int i)
 	{
 		try
 		{
@@ -1922,7 +1923,7 @@ public class StdRoom implements Room
 		if(behaviors==null) return 0;
 		return behaviors.size();
 	}
-    public Enumeration<Behavior> behaviors() { return (behaviors==null)?(Enumeration<Behavior>)EmptyEnumeration.INSTANCE:behaviors.elements();}
+    public Enumeration<Behavior> behaviors() { return (behaviors==null)?EmptyEnumeration.INSTANCE:behaviors.elements();}
 	public Behavior fetchBehavior(int index)
 	{
 		if(behaviors==null) return null;
@@ -1975,7 +1976,7 @@ public class StdRoom implements Room
         }
     }
     public int numScripts(){return (scripts==null)?0:scripts.size();}
-    public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?(Enumeration<ScriptingEngine>)EmptyEnumeration.INSTANCE:scripts.elements();}
+    public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();}
     public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
     
     public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}

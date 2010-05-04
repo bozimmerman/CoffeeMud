@@ -73,7 +73,7 @@ public class Thief_AutoDetectTraps extends ThiefSkill
                 if((R2!=null)&&(CMLib.utensils().fetchMyTrap(R2)!=null)) dropem(msg.source(),R2);
                 for(int i=0;i<R.numItems();i++)
                 {
-                    I=R.fetchItem(i);
+                    I=R.getItem(i);
                     if((I.container()==null)&&(CMLib.utensils().fetchMyTrap(E)!=null))
                         dropem(msg.source(),I);
                 }

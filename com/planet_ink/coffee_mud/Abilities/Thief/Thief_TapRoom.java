@@ -75,7 +75,7 @@ public class Thief_TapRoom extends ThiefSkill
 		Item I=null;
 		for(int i=0;i<R.numItems();i++)
 		{
-			I=R.fetchItem(i);
+			I=R.getItem(i);
 			if(isMyPair(p,I))
 				return I;
 		}
@@ -84,9 +84,9 @@ public class Thief_TapRoom extends ThiefSkill
 		{
 			M=R.fetchInhabitant(m);
 			if(M==null)continue;
-			for(int i=0;i<M.inventorySize();i++)
+			for(int i=0;i<M.numItems();i++)
 			{
-				I=M.fetchInventory(i);
+				I=M.getItem(i);
 				if(isMyPair(p,I))
 					return I;
 			}
@@ -256,9 +256,9 @@ public class Thief_TapRoom extends ThiefSkill
 	{
 		Item I=null;
 		Item[] returnI=new Item[2];
-		for(int i=0;i<mob.inventorySize();i++)
+		for(int i=0;i<mob.numItems();i++)
 		{
-			I=mob.fetchInventory(i);
+			I=mob.getItem(i);
 			if((I instanceof Drink)
 			&&(I.container()==null)
 			&&((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_GLASS)
@@ -285,9 +285,9 @@ public class Thief_TapRoom extends ThiefSkill
 	{
 		Item I=null;
 		Vector available=new Vector();
-		for(int i=0;i<mob.inventorySize();i++)
+		for(int i=0;i<mob.numItems();i++)
 		{
-			I=mob.fetchInventory(i);
+			I=mob.getItem(i);
 			if((I instanceof RawMaterial)
 			&&((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_CLOTH)
 			&&(!CMLib.flags().isOnFire(I))

@@ -83,13 +83,13 @@ public class Spell_Meld extends Spell
 			mob.tell("Meld what and what else together?");
 			return false;
 		}
-		Item itemOne=mob.fetchInventory(null,(String)commands.elementAt(0));
+		Item itemOne=mob.findItem(null,(String)commands.elementAt(0));
 		if((itemOne==null)||(!CMLib.flags().canBeSeenBy(itemOne,mob)))
 		{
 			mob.tell("You don't seem to have a '"+((String)commands.elementAt(0))+"'.");
 			return false;
 		}
-		Item itemTwo=mob.fetchInventory(null,CMParms.combine(commands,1));
+		Item itemTwo=mob.findItem(null,CMParms.combine(commands,1));
 		if((itemTwo==null)||(!CMLib.flags().canBeSeenBy(itemTwo,mob)))
 		{
 			mob.tell("You don't seem to have a '"+CMParms.combine(commands,1)+"'.");
@@ -271,7 +271,7 @@ public class Spell_Meld extends Spell
 						gc.baseEnvStats().setLevel(itemTwo.baseEnvStats().level());
 					gc.baseEnvStats().setAbility((itemOne.baseEnvStats().ability()+itemTwo.baseEnvStats().ability())/2);
 					melded=gc;
-					mob.addInventory(gc);
+					mob.addItem(gc);
 				}
 				else
 				if((itemOne instanceof Weapon)||(itemTwo instanceof Weapon))
@@ -299,7 +299,7 @@ public class Spell_Meld extends Spell
 						gc.baseEnvStats().setLevel(itemTwo.baseEnvStats().level());
 					gc.baseEnvStats().setAbility((itemOne.baseEnvStats().ability()+itemTwo.baseEnvStats().ability())/2);
 					melded=gc;
-					mob.addInventory(gc);
+					mob.addItem(gc);
 				}
 				else
 				if((itemOne instanceof Container)&&(itemTwo instanceof Container))
@@ -327,7 +327,7 @@ public class Spell_Meld extends Spell
 						gc.baseEnvStats().setLevel(itemTwo.baseEnvStats().level());
 					gc.baseEnvStats().setAbility(itemOne.baseEnvStats().ability()+itemTwo.baseEnvStats().ability());
 					melded=gc;
-					mob.addInventory(gc);
+					mob.addItem(gc);
 				}
 				if(melded!=null)
 				{

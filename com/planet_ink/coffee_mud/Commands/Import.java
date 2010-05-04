@@ -5319,7 +5319,7 @@ public class Import extends StdCommand
 								}
 							}
 							else
-								M.addInventory(I);
+								M.addItem(I);
 							I.recoverEnvStats();
 							M.recoverCharStats();
 							M.recoverEnvStats();
@@ -5361,7 +5361,7 @@ public class Import extends StdCommand
 						}
 						else
 						{
-							M2.addInventory(I);
+							M2.addItem(I);
 							I.wearIfPossible(M2);
 							I.recoverEnvStats();
 							M2.recoverCharStats();
@@ -5400,7 +5400,7 @@ public class Import extends StdCommand
 						}
 						else
 						{
-							M.addInventory(I);
+							M.addItem(I);
 							I.wearIfPossible(M);
 							I.recoverEnvStats();
 							M.recoverCharStats();
@@ -5493,7 +5493,7 @@ public class Import extends StdCommand
 					if(C.owner() instanceof MOB)
 					{
 						MOB MM=(MOB)C.owner();
-						MM.addInventory(I);
+						MM.addItem(I);
 						I.setContainer(C);
 						MM.text();
 						I.recoverEnvStats();
@@ -5642,12 +5642,12 @@ public class Import extends StdCommand
 				Room smurfRoom=(Room)newRooms.elementAt(r);
 				for(int ei=0;ei<smurfRoom.numItems();ei++)
 				{
-					Item lookItem=smurfRoom.fetchItem(ei);
+					Item lookItem=smurfRoom.getItem(ei);
 					if((lookItem!=null)&&(lookItem.displayText().length()==0))
 					{
 						for(int i=0;i<smurfRoom.numItems();i++)
 						{
-							Item I=smurfRoom.fetchItem(i);
+							Item I=smurfRoom.getItem(i);
 							if((I!=null)
 							&&(I.displayText().length()>0)
 							&&(I.displayText().indexOf(lookItem.Name())>=0))

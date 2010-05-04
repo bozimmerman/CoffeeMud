@@ -103,9 +103,9 @@ public class Spell_DetectTraps extends Spell
 		else
 		if((E instanceof MOB)&&(CMLib.flags().canBeSeenBy(E,mob)))
 		{
-			for(int i=0;i<((MOB)E).inventorySize();i++)
+			for(int i=0;i<((MOB)E).numItems();i++)
 			{
-				Item I=((MOB)E).fetchInventory(i);
+				Item I=((MOB)E).getItem(i);
 				if(trapCheck(I).length()>0)
 					return E.name()+" is carrying something trapped.";
 			}

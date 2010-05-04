@@ -56,9 +56,9 @@ public class Prop_WearSpellCast extends Prop_HaveSpellCast
     	if(checked) return;
     	Item I=null;
     	disabled=false;
-    	for(int i=0;i<mob.inventorySize();i++)
+    	for(int i=0;i<mob.numItems();i++)
     	{
-    		I=mob.fetchInventory(i);
+    		I=mob.getItem(i);
     		if((I instanceof Armor)
     		&&(!I.amWearingAt(Wearable.IN_INVENTORY))
     		&&((I.rawWornCode()&A.rawWornCode())>0)

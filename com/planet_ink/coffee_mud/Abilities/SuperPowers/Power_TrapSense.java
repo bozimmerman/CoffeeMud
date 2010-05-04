@@ -74,7 +74,7 @@ public class Power_TrapSense extends SuperPower
 			}
 			for(int i=0;i<R.numItems();i++)
 			{
-				Item I=R.fetchItem(i);
+				Item I=R.getItem(i);
 				if((I!=null)&&(I.container()==null))
 					msg.append(trapHere(mob,I));
 			}
@@ -103,9 +103,9 @@ public class Power_TrapSense extends SuperPower
 		else
 		if((E instanceof MOB)&&(CMLib.flags().canBeSeenBy(E,mob)))
 		{
-			for(int i=0;i<((MOB)E).inventorySize();i++)
+			for(int i=0;i<((MOB)E).numItems();i++)
 			{
-				Item I=((MOB)E).fetchInventory(i);
+				Item I=((MOB)E).getItem(i);
 				if(trapCheck(I).length()>0)
 					return E.name()+" is carrying something trapped.\n";
 			}

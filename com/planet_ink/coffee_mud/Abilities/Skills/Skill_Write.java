@@ -61,7 +61,7 @@ public class Skill_Write extends StdSkill
 		Item target=mob.fetchCarried(null,(String)commands.elementAt(0));
 		if(target==null)
 		{
-			target=mob.location().fetchItem(null,(String)commands.elementAt(0));
+			target=mob.location().findItem(null,(String)commands.elementAt(0));
 			if((target!=null)&&(CMLib.flags().isGettable(target)))
 			{
 				mob.tell("You don't have that.");

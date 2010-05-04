@@ -64,9 +64,9 @@ public class Chant_RustCurse extends Chant
 			boolean goodChoices=false;
 			Vector choices=new Vector();
 			MOB mob=(MOB)affected;
-			for(int i=0;i<mob.inventorySize();i++)
+			for(int i=0;i<mob.numItems();i++)
 			{
-				Item I=mob.fetchInventory(i);
+				Item I=mob.getItem(i);
 				if((I!=null)&&(I.subjectToWearAndTear())
 				   &&(((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
 					  ||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL)))

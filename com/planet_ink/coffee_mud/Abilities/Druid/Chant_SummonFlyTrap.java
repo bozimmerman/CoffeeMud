@@ -59,7 +59,7 @@ public class Chant_SummonFlyTrap extends Chant
 				Room R=mob.location();
 				for(int r=0;r<R.numItems();r++)
 				{
-					Item I=R.fetchItem(r);
+					Item I=R.getItem(r);
 					if((I!=null)
 					&&(I instanceof DeadBody)
 					&&(((DeadBody)I).charStats()!=null)

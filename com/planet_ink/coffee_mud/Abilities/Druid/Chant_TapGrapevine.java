@@ -104,7 +104,7 @@ public class Chant_TapGrapevine extends Chant
 		MOB tapped=null;
 		for(int i=0;i<mob.location().numItems();i++)
 		{
-			Item I=mob.location().fetchItem(i);
+			Item I=mob.location().getItem(i);
 			if((I!=null)&&(isPlant(I)!=null))
 			{
 				Ability A=isPlant(I);

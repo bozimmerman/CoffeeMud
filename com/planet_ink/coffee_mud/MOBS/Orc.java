@@ -49,7 +49,7 @@ public class Orc extends StdMOB
 		if(d!=null)
 		{
 			d.wearAt(Wearable.WORN_WIELD);
-			addInventory(d);
+			addItem(d);
 		}
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,6);

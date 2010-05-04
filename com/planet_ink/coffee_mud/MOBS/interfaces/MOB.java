@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Vector;
 
 
@@ -152,21 +153,14 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	/** Manipulation of inventory, which includes held,
 	 * worn, wielded, and contained items */
 	public void flagVariableEq();
-	public void addInventory(Item item);
-	public void delInventory(Item item);
-	public int inventorySize();
-	public Item fetchInventory(int index);
 	public Item fetchFromInventory(Item goodLocation, String itemName, int wornFilter, boolean allowCoins, boolean respectLocationAndWornCode);
-	public Item fetchInventory(String itemName);
-	public Vector fetchInventories(String itemName);
-	public Item fetchInventory(Item goodLocation, String itemName);
 	public Item fetchCarried(Item goodLocation, String itemName);
 	public Item fetchWornItem(String itemName);
 	public Vector fetchWornItems(long wornCode, short aboveOrAroundLayer, short layerAttributes);
 	public Item fetchFirstWornItem(long wornCode);
 	public Item fetchWieldedItem();
     public boolean hasOnlyGoldInInventory();
-	public void giveItem(Item thisContainer);
+	public void moveItemTo(Item thisContainer);
 
 	public int freeWearPositions(long wornCode, short belowLayer, short layerAttributes);
 	public boolean isMine(Environmental env);

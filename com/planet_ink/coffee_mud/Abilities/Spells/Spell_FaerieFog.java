@@ -98,7 +98,7 @@ public class Spell_FaerieFog extends Spell
 			Item I=null;
 			for(int i=0;i<R.numItems();i++)
 			{
-				I=R.fetchItem(i);
+				I=R.getItem(i);
 				if((I!=null)&&(I.fetchEffect(ID())==null))
 				{
 					I.addEffect(this);

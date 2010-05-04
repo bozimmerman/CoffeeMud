@@ -90,7 +90,7 @@ public class WaterCurrents extends ActiveTicker
 		    Item I=null;
 			for(int i=0;i<R.numItems();i++)
 			{
-				I=R.fetchItem(i);
+				I=R.getItem(i);
 				if((I!=null)
 				&&(I.container()==null)
 				&&((!(I instanceof Rideable))

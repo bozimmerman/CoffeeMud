@@ -1496,7 +1496,7 @@ public class Quests extends StdLibrary implements QuestManager
         if(R!=null)
         for(int i=0;i<R.numItems();i++)
         {
-            I=R.fetchItem(i);
+            I=R.getItem(i);
             if((I!=null)&&(I.container()==null)&&(I.isSavable())) 
             {
                 choices.addElement(I);

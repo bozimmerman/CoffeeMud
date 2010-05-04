@@ -102,9 +102,9 @@ public class CraftingSkill extends GatheringSkill
 	    Vector V=null;
 	    Vector V2=null;
 	    boolean clonedYet=false;
-	    for(int i=0;i<mob.inventorySize();i++)
+	    for(int i=0;i<mob.numItems();i++)
 	    {
-	        I=mob.fetchInventory(i);
+	        I=mob.getItem(i);
 	        if((I instanceof Recipe)
 	        &&(((Recipe)I).getCommonSkillID().equalsIgnoreCase(ID())))
 	        {
@@ -154,7 +154,7 @@ public class CraftingSkill extends GatheringSkill
 			R.recoverRoomStats();
 			boolean foundIt=false;
 			for(int r=0;r<R.numItems();r++)
-				if(R.fetchItem(r)==building)
+				if(R.getItem(r)==building)
 					foundIt=true;
 			if(!foundIt)
 			{
@@ -624,7 +624,7 @@ public class CraftingSkill extends GatheringSkill
 			Room R=(Room)from;
 			for(int i=0;i<R.numItems();i++)
 			{
-				Item I=R.fetchItem(i);
+				Item I=R.getItem(i);
 				if((I!=null)
 				&&(I.container()==contained)
 				&&(canMend(mob,I,true))
@@ -636,9 +636,9 @@ public class CraftingSkill extends GatheringSkill
 		if(from instanceof MOB)
 		{
 			MOB M=(MOB)from;
-			for(int i=0;i<M.inventorySize();i++)
+			for(int i=0;i<M.numItems();i++)
 			{
-				Item I=M.fetchInventory(i);
+				Item I=M.getItem(i);
 				if((I!=null)
 				&&(I.container()==contained)
 				&&(canMend(mob,I,true))

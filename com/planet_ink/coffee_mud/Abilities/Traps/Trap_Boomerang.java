@@ -65,7 +65,7 @@ public class Trap_Boomerang extends StdTrap
 				{
 					((Item)affected).unWear();
 					((Item)affected).removeFromOwnerContainer();
-					invoker().addInventory((Item)affected);
+					invoker().addItem((Item)affected);
 					invoker().tell(invoker(),affected,null,"Magically, <T-NAME> appear(s) in your inventory.");
 				}
 				super.spring(target);

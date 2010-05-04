@@ -102,9 +102,9 @@ public class Chant_Mold extends Chant
 					}
 					else
 					if(target instanceof MOB)
-					for(int i=0;i<((MOB)target).inventorySize();i++)
+					for(int i=0;i<((MOB)target).numItems();i++)
 					{
-						Item I=((MOB)target).fetchInventory(i);
+						Item I=((MOB)target).getItem(i);
 						if((I!=null)&&(I instanceof Food))
 						{
 							Ability A=CMClass.getAbility("Disease_Lockjaw");

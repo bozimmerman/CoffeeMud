@@ -99,7 +99,7 @@ public class Dance_Swords extends Dance
 			Weapon sword=null;
 			for(int i=0;i<M.location().numItems();i++)
 			{
-				Item I=M.location().fetchItem(i);
+				Item I=M.location().getItem(i);
 				if((I!=null)
 				&&(I instanceof Weapon)
 				&&(((Weapon)I).weaponClassification()==Weapon.CLASS_SWORD)

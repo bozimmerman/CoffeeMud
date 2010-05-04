@@ -1234,7 +1234,7 @@ public class PokerDealer extends StdBehavior
                 Vector winnings=new Vector();
                 for(int i=R.numItems()-1;i>=0;i--)
                 {
-                    I=R.fetchItem(i);
+                    I=R.getItem(i);
                     if(I instanceof Coins)
                         winnings.addElement(I);
                 }

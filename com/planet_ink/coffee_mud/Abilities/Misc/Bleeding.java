@@ -84,7 +84,7 @@ public class Bleeding extends StdAbility
         	for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
         		if(msg.tool()==R.getReverseExit(d))
         			dir=d;
-        	if((dir>=0)&&(R.fetchItem(null,"a trail of blood")==null))
+        	if((dir>=0)&&(R.findItem(null,"a trail of blood")==null))
         	{
         		Item I=CMClass.getItem("GenFatWallpaper");
         		I.setName("A trail of blood");

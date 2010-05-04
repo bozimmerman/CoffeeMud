@@ -127,7 +127,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 			Room R=(Room)V.elementAt(v);
 			for(int i=0;i<R.numItems();i++)
 			{
-				Item I=R.fetchItem(i);
+				Item I=R.getItem(i);
 				if((I!=null)
 				   &&(I.secretIdentity().equals(mob.Name()))
 				   &&(I.fetchEffect(ID())!=null))

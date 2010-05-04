@@ -367,7 +367,7 @@ public class TaxCollector extends StdBehavior
 				}
 			}
 
-			Item I=R.fetchItem(CMLib.dice().roll(1,R.numItems(),-1));
+			Item I=R.getItem(CMLib.dice().roll(1,R.numItems(),-1));
 			if((I!=null)&&(I instanceof Coins))
 				CMLib.commands().postGet(mob,I.container(),I,false);
 		}

@@ -901,7 +901,7 @@ public class StdItem implements Item
 					mob.tell(name()+" is too heavy.");
 					return false;
 				}
-                if((numberOfItems()>(mob.maxItems()-mob.inventorySize()))&&(!mob.isMine(this)))
+                if((numberOfItems()>(mob.maxItems()-mob.numItems()))&&(!mob.isMine(this)))
                 {
                     mob.tell("You can't carry that many items.");
                     return false;
@@ -961,9 +961,9 @@ public class StdItem implements Item
 				short layer=(this instanceof Armor)?((Armor)this).getClothingLayer():0;
 				short thislayer=0;
 				if(rawWornCode()>0)
-				for(int i=0;i<mob.inventorySize();i++)
+				for(int i=0;i<mob.numItems();i++)
 				{
-					I=mob.fetchInventory(i);
+					I=mob.getItem(i);
 					if((I!=null)&&(I!=this)&&((I.rawWornCode()&rawWornCode())>0))
 					{
 						thislayer=(I instanceof Armor)?((Armor)I).getClothingLayer():0;
@@ -1092,7 +1092,7 @@ public class StdItem implements Item
 			Room R=CMLib.map().roomLocation(msg.target());
 			if(mob.isMine(this))
 			{
-				mob.delInventory(this);
+				mob.delItem(this);
 				if(!R.isContent(this))
 					R.addItemRefuse(this,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
 				if(!CMath.bset(msg.sourceCode(),CMMsg.MASK_OPTIMIZE))
@@ -1145,9 +1145,9 @@ public class StdItem implements Item
             if(owner() instanceof MOB)
             {
                 MOB M=(MOB)owner();
-                for(int i=0;i<M.inventorySize();i++)
+                for(int i=0;i<M.numItems();i++)
                 {
-                    Item thisItem=M.fetchInventory(i);
+                    Item thisItem=M.getItem(i);
                     if((thisItem!=null)&&(thisItem.container()==this))
                         weight+=thisItem.recursiveWeight();
                 }
@@ -1158,7 +1158,7 @@ public class StdItem implements Item
                 Room R=(Room)owner();
                 for(int i=0;i<R.numItems();i++)
                 {
-                    Item thisItem=R.fetchItem(i);
+                    Item thisItem=R.getItem(i);
                     if((thisItem!=null)&&(thisItem.container()==this))
                         weight+=thisItem.recursiveWeight();
                 }
@@ -1198,7 +1198,7 @@ public class StdItem implements Item
 				Room thisRoom=(Room)owner;
 				for(int r=thisRoom.numItems()-1;r>=0;r--)
 				{
-					Item thisItem = thisRoom.fetchItem(r);
+					Item thisItem = thisRoom.getItem(r);
 					if((thisItem!=null)
 					&&(!thisItem.amDestroyed())
 					&&(thisItem.container()!=null)
@@ -1211,16 +1211,16 @@ public class StdItem implements Item
 			if (owner instanceof MOB)
 			{
 				MOB mob=(MOB)owner;
-				for(int r=mob.inventorySize()-1;r>=0;r--)
+				for(int r=mob.numItems()-1;r>=0;r--)
 				{
-					Item thisItem = mob.fetchInventory(r);
+					Item thisItem = mob.getItem(r);
 					if((thisItem!=null)
 					&&(!thisItem.amDestroyed())
 					&&(thisItem.container()!=null)
 					&&(thisItem.container()==this))
 						thisItem.destroy();
 				}
-				mob.delInventory(this);
+				mob.delItem(this);
 			}
 		}
         myContainer=null;
@@ -1243,7 +1243,7 @@ public class StdItem implements Item
 			Room thisRoom=(Room)owner;
 			for(int r=thisRoom.numItems()-1;r>=0;r--)
 			{
-				Item thisItem = thisRoom.fetchItem(r);
+				Item thisItem = thisRoom.getItem(r);
 				if((thisItem!=null)
 				&&(thisItem.container()!=null)
 				&&(thisItem.container()==this))
@@ -1255,15 +1255,15 @@ public class StdItem implements Item
 		if (owner instanceof MOB)
 		{
 			MOB mob=(MOB)owner;
-			for(int r=mob.inventorySize()-1;r>=0;r--)
+			for(int r=mob.numItems()-1;r>=0;r--)
 			{
-				Item thisItem = mob.fetchInventory(r);
+				Item thisItem = mob.getItem(r);
 				if((thisItem!=null)
 				&&(thisItem.container()!=null)
 				&&(thisItem.container()==this))
 					thisItem.removeFromOwnerContainer();
 			}
-			mob.delInventory(this);
+			mob.delItem(this);
 		}
 		recoverEnvStats();
 	}
@@ -1349,7 +1349,7 @@ public class StdItem implements Item
 		if(behaviors==null) return 0;
 		return behaviors.size();
 	}
-    public Enumeration<Behavior> behaviors() { return (behaviors==null)?(Enumeration<Behavior>)EmptyEnumeration.INSTANCE:behaviors.elements();}
+    public Enumeration<Behavior> behaviors() { return (behaviors==null)?EmptyEnumeration.INSTANCE:behaviors.elements();}
 	public Behavior fetchBehavior(int index)
 	{
 		if(behaviors==null) return null;
@@ -1403,7 +1403,7 @@ public class StdItem implements Item
         }
     }
     public int numScripts(){return (scripts==null)?0:scripts.size();}
-    public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?(Enumeration<ScriptingEngine>)EmptyEnumeration.INSTANCE:scripts.elements();}
+    public Enumeration<ScriptingEngine> scripts() { return (scripts==null)?EmptyEnumeration.INSTANCE:scripts.elements();}
     public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
     
 	protected String tackOns()

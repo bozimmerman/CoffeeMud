@@ -48,8 +48,8 @@ public class Spell_TeleportObject extends Spell
 		if((auto||mob.isMonster())&&((commands.size()<1)||(((String)commands.firstElement()).equals(mob.name()))))
 		{
 			commands.clear();
-			if(mob.inventorySize()>0)
-				commands.addElement(mob.fetchInventory(CMLib.dice().roll(1,mob.inventorySize(),-1)));
+			if(mob.numItems()>0)
+				commands.addElement(mob.getItem(CMLib.dice().roll(1,mob.numItems(),-1)));
 			commands.addElement(CMLib.map().getRandomArea().Name());
 		}
 		Room oldRoom=mob.location();
@@ -59,7 +59,7 @@ public class Spell_TeleportObject extends Spell
 			return false;
 		}
 		String objectName=(String)commands.firstElement();
-		Item target=mob.fetchInventory(null,objectName);
+		Item target=mob.findItem(null,objectName);
 		if(target==null)
 		{
 			mob.tell("You don't seem to have an item '"+objectName+"'.");

@@ -195,7 +195,7 @@ public class Ranger_FindWater extends StdAbility
 			{
 				for(int i=0;i<room.numItems();i++)
 				{
-					Item I=room.fetchItem(i);
+					Item I=room.getItem(i);
 					waterCheck(mob,I,container,msg);
 				}
 				for(int m=0;m<room.numInhabitants();m++)
@@ -215,9 +215,9 @@ public class Ranger_FindWater extends StdAbility
 		else
 		if((E instanceof MOB)&&(CMLib.flags().canBeSeenBy(E,mob)))
 		{
-			for(int i=0;i<((MOB)E).inventorySize();i++)
+			for(int i=0;i<((MOB)E).numItems();i++)
 			{
-				Item I=((MOB)E).fetchInventory(i);
+				Item I=((MOB)E).getItem(i);
 				StringBuffer msg2=new StringBuffer("");
 				waterCheck(mob,I,container,msg2);
 				if(msg2.length()>0)

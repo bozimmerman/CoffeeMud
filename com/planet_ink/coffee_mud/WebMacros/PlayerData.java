@@ -192,9 +192,9 @@ public class PlayerData extends StdWebMacro
 				 break;
 		case 31:
 		{
-				for(int inv=0;inv<M.inventorySize();inv++)
+				for(int inv=0;inv<M.numItems();inv++)
 				{
-					Item I=M.fetchInventory(inv);
+					Item I=M.getItem(inv);
 					if((I!=null)&&(I.container()==null))
 						  str.append(I.name()+", ");
 				}

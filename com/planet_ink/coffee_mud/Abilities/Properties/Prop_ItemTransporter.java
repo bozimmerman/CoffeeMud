@@ -86,7 +86,7 @@ public class Prop_ItemTransporter extends Property
 						possibilities.addElement(room);
 					for(int i=0;i<room.numItems();i++)
 					{
-						Item item=room.fetchItem(i);
+						Item item=room.getItem(i);
 						if((item!=null)&&(item!=affected))
 						{
 							A=item.fetchEffect("Prop_ItemTransReceiver");
@@ -102,9 +102,9 @@ public class Prop_ItemTransporter extends Property
 							A=mob.fetchEffect("Prop_ItemTransReceiver");
 							if((A!=null)&&(A.text().equalsIgnoreCase(text())))
 								possibilities.addElement(mob);
-							for(int i=0;i<mob.inventorySize();i++)
+							for(int i=0;i<mob.numItems();i++)
 							{
-								Item item=mob.fetchInventory(i);
+								Item item=mob.getItem(i);
 								if((item!=null)&&(item!=affected))
 								{
 									A=item.fetchEffect("Prop_ItemTransReceiver");
@@ -211,7 +211,7 @@ public class Prop_ItemTransporter extends Property
 			{
 				for(int i=0;i<roomMover.numItems();i++)
 				{
-					Item item=roomMover.fetchItem(i);
+					Item item=roomMover.getItem(i);
 					if((item!=null)
 					   &&(item!=container)
 					   &&(item.amWearingAt(Wearable.IN_INVENTORY))
@@ -225,9 +225,9 @@ public class Prop_ItemTransporter extends Property
 			if(mobMover!=null)
 			{
 				int oldNum=itemsToMove.size();
-				for(int i=0;i<mobMover.inventorySize();i++)
+				for(int i=0;i<mobMover.numItems();i++)
 				{
-					Item item=mobMover.fetchInventory(i);
+					Item item=mobMover.getItem(i);
 					if((item!=null)
 					   &&(item!=container)
 					   &&(item.amWearingAt(Wearable.IN_INVENTORY))
@@ -235,7 +235,7 @@ public class Prop_ItemTransporter extends Property
 					   itemsToMove.addElement(item);
 				}
 				for(int i=oldNum;i<itemsToMove.size();i++)
-					mobMover.delInventory((Item)itemsToMove.elementAt(i));
+					mobMover.delItem((Item)itemsToMove.elementAt(i));
 			}
 			if(itemsToMove.size()>0)
 			{
@@ -258,7 +258,7 @@ public class Prop_ItemTransporter extends Property
 						if(mob instanceof ShopKeeper)
 							((ShopKeeper)mob).getShop().addStoreInventory(item);
 						else
-							mob.addInventory(item);
+							mob.addItem(item);
 					}
 				if(room!=null) room.recoverRoomStats();
 				if(mob!=null){

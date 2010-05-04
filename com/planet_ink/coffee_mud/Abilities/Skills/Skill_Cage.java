@@ -60,7 +60,7 @@ public class Skill_Cage extends StdSkill
 		{
 			for(int i=0;i<mob.location().numItems();i++)
 			{
-				Item I=mob.location().fetchItem(i);
+				Item I=mob.location().getItem(i);
 				if((I!=null)
 				&&(I instanceof Container)
 				&&((((Container)I).containTypes()&Container.CONTAIN_CAGED)==Container.CONTAIN_CAGED))
@@ -69,7 +69,7 @@ public class Skill_Cage extends StdSkill
 			if(commands.size()>0)
 			{
 				String last=(String)commands.lastElement();
-				Item I=mob.location().fetchItem(null,last);
+				Item I=mob.location().findItem(null,last);
 				if((I!=null)
 				&&(I instanceof Container)
 				&&((((Container)I).containTypes()&Container.CONTAIN_CAGED)==Container.CONTAIN_CAGED))
@@ -132,13 +132,13 @@ public class Skill_Cage extends StdSkill
 				if((cage!=null)&&(cage.owner()!=null))
 				{
 					if(cage.owner() instanceof MOB)
-						((MOB)cage.owner()).addInventory((Item)caged);
+						((MOB)cage.owner()).addItem((Item)caged);
 					else
 					if(cage.owner() instanceof Room)
 						((Room)cage.owner()).addItem((Item)caged);
 				}
 				else
-					mob.addInventory((Item)caged);
+					mob.addItem((Item)caged);
 				CMMsg putMsg=CMClass.getMsg(mob,cage,(Item)caged,CMMsg.MSG_PUT,"<S-NAME> cage(s) <O-NAME> in <T-NAME>.");
 				if(mob.location().okMessage(mob,putMsg))
 				{

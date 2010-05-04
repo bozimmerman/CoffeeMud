@@ -166,7 +166,7 @@ public class Thief_Footlocks extends ThiefSkill
 				Ability A=(Thief_Footlocks)target.fetchEffect(ID());
 				if((A!=null)&&(msg.value()<=0))
 				{
-					target.addInventory(foots);
+					target.addItem(foots);
 					foots.wearAt(Wearable.WORN_FEET);
 					if(target.location()!=null) target.location().recoverRoomStats();
 				}

@@ -54,7 +54,7 @@ public class Chant_GroveWalk extends Chant
 
 
 		Room newRoom=null;
-		boolean hereok=mob.location().fetchItem(null,"DruidicMonument")!=null;
+		boolean hereok=mob.location().findItem(null,"DruidicMonument")!=null;
 		try
 		{
 			Vector rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob,areaName,true,10);
@@ -63,7 +63,7 @@ public class Chant_GroveWalk extends Chant
 				Room R=(Room)e.nextElement();
 				for(int i=0;i<R.numItems();i++)
 				{
-					Item I=R.fetchItem(i);
+					Item I=R.getItem(i);
 					if((I!=null)&&(I.ID().equals("DruidicMonument")))
 					{
 					    newRoom=R;

@@ -156,9 +156,9 @@ public class Chant_FurCoat extends Chant
 				long wornCode=(Wearable.WORN_TORSO|Wearable.WORN_ARMS|Wearable.WORN_FEET|Wearable.WORN_WAIST|Wearable.WORN_LEGS);
 				theArmor.setRawProperLocationBitmap(wornCode);
 				theArmor.setRawLogicalAnd(true);
-				for(int i=target.inventorySize()-1;i>=0;i--)
+				for(int i=target.numItems()-1;i>=0;i--)
 				{
-					Item I=mob.fetchInventory(i);
+					Item I=mob.getItem(i);
 					if((I.rawWornCode()&wornCode)>0)
 						I.unWear();
 				}
@@ -170,7 +170,7 @@ public class Chant_FurCoat extends Chant
 				}
 				theArmor.recoverEnvStats();
 				theArmor.text();
-				target.addInventory(theArmor);
+				target.addItem(theArmor);
 				theArmor.wearAt(wornCode);
 				success=beneficialAffect(mob,target,asLevel,0);
 				mob.location().recoverRoomStats();

@@ -43,7 +43,7 @@ public class RoomData extends StdWebMacro
 	{
 		if(I==null) return "";
 		for(int i=0;i<R.numItems();i++)
-			if(R.fetchItem(i)==I)
+			if(R.getItem(i)==I)
 				return Long.toString((I.ID()+"/"+I.Name()+"/"+I.displayText()).hashCode()<<5)+i;
 		return "";
 	}
@@ -63,8 +63,8 @@ public class RoomData extends StdWebMacro
 	public static String getItemCode(MOB M, Item I)
 	{
 		if(I==null) return "";
-		for(int i=0;i<M.inventorySize();i++)
-			if(M.fetchInventory(i)==I)
+		for(int i=0;i<M.numItems();i++)
+			if(M.getItem(i)==I)
 				return Long.toString( ( I.ID() + "/" + I.Name() + "/" + I.displayText() ).hashCode() << 5 ) + i;
 		return "";
 	}
@@ -97,13 +97,13 @@ public class RoomData extends StdWebMacro
 	public static Item getItemFromCode(MOB M, String code)
 	{
         if(M==null) return getItemFromCode(items,code);
-		for(int i=0;i<M.inventorySize();i++)
-			if(getItemCode(M,M.fetchInventory(i)).equals(code))
-				return M.fetchInventory(i);
+		for(int i=0;i<M.numItems();i++)
+			if(getItemCode(M,M.getItem(i)).equals(code))
+				return M.getItem(i);
 		if(code.length()>2) code=code.substring(0,code.length()-2);
-		for(int i=0;i<M.inventorySize();i++)
-			if(getItemCode(M,M.fetchInventory(i)).startsWith(code))
-				return M.fetchInventory(i);
+		for(int i=0;i<M.numItems();i++)
+			if(getItemCode(M,M.getItem(i)).startsWith(code))
+				return M.getItem(i);
 		return null;
 	}
 
@@ -111,12 +111,12 @@ public class RoomData extends StdWebMacro
 	{
         if(R==null) return getItemFromCode(items,code);
 		for(int i=0;i<R.numItems();i++)
-			if(getItemCode(R,R.fetchItem(i)).equals(code))
-				return R.fetchItem(i);
+			if(getItemCode(R,R.getItem(i)).equals(code))
+				return R.getItem(i);
 		if(code.length()>2) code=code.substring(0,code.length()-2);
 		for(int i=0;i<R.numItems();i++)
-			if(getItemCode(R,R.fetchItem(i)).startsWith(code))
-				return R.fetchItem(i);
+			if(getItemCode(R,R.getItem(i)).startsWith(code))
+				return R.getItem(i);
 		return null;
 	}
 
@@ -271,9 +271,9 @@ public class RoomData extends StdWebMacro
 				{
 					MOB M3=(MOB)M.copyOf();
 					mobs.addElement(M3);
-					for(int i3=0;i3<M3.inventorySize();i3++)
+					for(int i3=0;i3<M3.numItems();i3++)
 					{
-						Item I3=M3.fetchInventory(i3);
+						Item I3=M3.getItem(i3);
 						if(I3!=null) I3.stopTicking();
 					}
 				}
@@ -561,7 +561,7 @@ public class RoomData extends StdWebMacro
 				{
 					for(int m=0;m<R.numItems();m++)
 					{
-						Item I2=R.fetchItem(m);
+						Item I2=R.getItem(m);
                         if(I2!=null)
                         {
                         	CMLib.catalog().updateCatalogIntegrity(I2);

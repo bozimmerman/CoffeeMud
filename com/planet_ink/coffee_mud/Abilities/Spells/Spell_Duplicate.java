@@ -94,12 +94,12 @@ public class Spell_Duplicate extends Spell
 				Spell_Disenchant.disenchantItem(newTarget);
 				newTarget.recoverEnvStats();
 				if(target.owner() instanceof MOB)
-					((MOB)target.owner()).addInventory(newTarget);
+					((MOB)target.owner()).addItem(newTarget);
 				else
 				if(target.owner() instanceof Room)
 					((Room)target.owner()).addItemRefuse(newTarget,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
 				else
-					mob.addInventory(newTarget);
+					mob.addItem(newTarget);
 				if(newTarget instanceof Coins)
 					((Coins)newTarget).putCoinsBack();
 				else

@@ -80,7 +80,7 @@ public class Spell_DetectGold extends Spell
 		{
 			for(int i=0;i<((Room)E).numItems();i++)
 			{
-				Item I=((Room)E).fetchItem(i);
+				Item I=((Room)E).getItem(i);
 				metalCheck(mob,I,container,msg);
 			}
 		}
@@ -94,9 +94,9 @@ public class Spell_DetectGold extends Spell
 		if((E instanceof MOB)&&(CMLib.flags().canBeSeenBy(E,mob)))
 		{
 		    CMLib.beanCounter().getTotalAbsoluteNativeValue((MOB)E);
-			for(int i=0;i<((MOB)E).inventorySize();i++)
+			for(int i=0;i<((MOB)E).numItems();i++)
 			{
-				Item I=((MOB)E).fetchInventory(i);
+				Item I=((MOB)E).getItem(i);
 				if(!I.amWearingAt(Wearable.IN_INVENTORY))
 					metalCheck(mob,I,container,msg);
 			}
