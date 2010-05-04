@@ -27,7 +27,7 @@ limitations under the License.
 * @author Bo Zimmerman
 *
 */
-public interface Physical extends Environmental 
+public interface Physical extends Environmental, Affectable
 {
 	
 }
