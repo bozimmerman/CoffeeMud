@@ -43,7 +43,7 @@ public class Gnoll extends StdMOB
 		setDisplayText("A nasty Gnoll stands here.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);
 		setMoney(20);
-		baseEnvStats.setWeight(300);
+		basePhyStats.setWeight(300);
 		setWimpHitPoint(0);
 
 		Weapon h=CMClass.getWeapon("MorningStar");
@@ -63,15 +63,15 @@ public class Gnoll extends StdMOB
 		baseCharStats().setStat(CharStats.STAT_CHARISMA,2);
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,22);
 
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(2);
-		baseEnvStats().setArmor(50);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(2);
+		basePhyStats().setArmor(50);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

@@ -59,15 +59,15 @@ public class CatalogMobNext extends StdWebMacro
     	case 2: return ""+data.mostPopularArea();
     	case 3: return M.baseCharStats().raceName();
     	case 4: return M.baseCharStats().genderName();
-    	case 5: return ""+M.baseEnvStats().level();
+    	case 5: return ""+M.basePhyStats().level();
     	case 6: return M.ID();
     	default:
     		if((optionalColumn!=null)&&(optionalColumn.length()>0))
     		{
     			if(M.isStat(optionalColumn))
     				return M.getStat(optionalColumn);
-    			if(M.baseEnvStats().isStat(optionalColumn))
-    				return M.baseEnvStats().getStat(optionalColumn);
+    			if(M.basePhyStats().isStat(optionalColumn))
+    				return M.basePhyStats().getStat(optionalColumn);
     			if(M.baseCharStats().isStat(optionalColumn))
     				return M.baseCharStats().getStat(optionalColumn);
     			if(M.baseState().isStat(optionalColumn))

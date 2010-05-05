@@ -66,7 +66,7 @@ public class Prayer_Extinguish extends Prayer
 			{
 				mob.location().send(mob,msg);
 				CMLib.utensils().extinguish(mob,target,false);
-				target.recoverEnvStats();
+				target.recoverPhyStats();
 				mob.location().recoverRoomStats();
 			}
 		}

@@ -49,11 +49,11 @@ public class Fighter_Gouge extends FighterSkill
 	protected int overrideMana(){return 100;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(!doneTicking)
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SEE);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SEE);
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

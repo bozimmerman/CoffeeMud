@@ -81,7 +81,7 @@ public class Prayer_Monolith extends Prayer
                     if(room.okMessage(mob,msg2))
                     {
                         room.send(mob,msg2);
-    					amountRemaining-=mob.envStats().damage();
+    					amountRemaining-=mob.phyStats().damage();
     					if(amountRemaining<0)
     					{
     						for(int i=0;i<room.numInhabitants();i++)
@@ -92,7 +92,7 @@ public class Prayer_Monolith extends Prayer
     							&&(M.rangeToTarget()>0)
     							&&(M.rangeToTarget()<3)
     							&&(!M.amDead()))
-    								CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(M.envStats().level()/2,4,0),CMMsg.MASK_ALWAYS|CMMsg.TYP_COLD,Weapon.TYPE_PIERCING,"A shard of ice <DAMAGE> <T-NAME>!");
+    								CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(M.phyStats().level()/2,4,0),CMMsg.MASK_ALWAYS|CMMsg.TYP_COLD,Weapon.TYPE_PIERCING,"A shard of ice <DAMAGE> <T-NAME>!");
     						}
     					    mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The monolith of ice shatters!!!");
     						((Item)affected).destroy();
@@ -144,7 +144,7 @@ public class Prayer_Monolith extends Prayer
 					if(w==null) return false;
 					if(mob.location().show(mob,null,w,CMMsg.MSG_WEAPONATTACK,"^F^<FIGHT^><S-NAME> hack(s) at the monolith of stone with <O-NAME>.^</FIGHT^>^?"))
 					{
-						amountRemaining-=mob.envStats().damage();
+						amountRemaining-=mob.phyStats().damage();
 						if(amountRemaining<0)
 						{
 						    mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The monolith of stone is destroyed!");
@@ -318,7 +318,7 @@ public class Prayer_Monolith extends Prayer
 				I.setDisplayText("a monolith of fire is burning here");
 				I.setDescription("The flames are high and hot.");
 				I.setMaterial(RawMaterial.RESOURCE_NOTHING);
-				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|EnvStats.IS_LIGHTSOURCE);
+				I.basePhyStats().setDisposition(I.basePhyStats().disposition()|PhyStats.IS_LIGHTSOURCE);
 				break;
 			}
 			if(I!=null)
@@ -328,7 +328,7 @@ public class Prayer_Monolith extends Prayer
 				{
 					mob.location().send(mob,msg);
 					CMLib.flags().setGettable(I,false);
-					I.recoverEnvStats();
+					I.recoverPhyStats();
 					mob.location().addItem(I);
 					theWall=I;
 					beneficialAffect(mob,I,asLevel,0);

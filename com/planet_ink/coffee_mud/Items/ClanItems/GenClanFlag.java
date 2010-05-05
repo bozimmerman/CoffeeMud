@@ -44,9 +44,9 @@ public class GenClanFlag extends StdClanFlag
 		setName("a generic clan flag");
 		setDisplayText("a generic clan flag sits here.");
 		setDescription("");
-		baseEnvStats().setWeight(2);
+		basePhyStats().setWeight(2);
 		setMaterial(RawMaterial.RESOURCE_COTTON);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 
@@ -63,7 +63,7 @@ public class GenClanFlag extends StdClanFlag
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	private final static String[] MYCODES={"CLANID","CITYPE"};
 	public String getStat(String code)

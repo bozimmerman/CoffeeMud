@@ -65,7 +65,7 @@ public class Skill_Explosive extends StdSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				int damage=CMLib.dice().roll(1,90+mob.envStats().level(),30);
+				int damage=CMLib.dice().roll(1,90+mob.phyStats().level(),30);
 				if(msg.value()>0)
 					damage=damage/2;
 				CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"The blast <DAMAGE> <T-NAME>!!!");

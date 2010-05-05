@@ -43,7 +43,7 @@ public class GenLasso extends StdLasso
 		setName("a generic lasso");
 		setDisplayText("a generic lasso sits here.");
 		setDescription("");
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public boolean isGeneric(){return true;}
@@ -60,7 +60,7 @@ public class GenLasso extends StdLasso
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 }
 

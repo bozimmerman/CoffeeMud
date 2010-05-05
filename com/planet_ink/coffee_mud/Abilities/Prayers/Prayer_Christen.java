@@ -74,7 +74,7 @@ public class Prayer_Christen extends Prayer
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null) return false;
 
-		if((!(target instanceof CagedAnimal))||(target.envStats().ability()<=0)||(!target.isGeneric()))
+		if((!(target instanceof CagedAnimal))||(target.phyStats().ability()<=0)||(!target.isGeneric()))
 		{
 			mob.tell("You may only christen a child.");
 			return false;

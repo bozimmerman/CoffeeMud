@@ -50,14 +50,14 @@ public class Chant_VineMass extends Chant_SummonVine
 	{
 		MOB victim=caster.getVictim();
 		MOB newMOB=null;
-		int limit=((caster.envStats().level()+(2*super.getXLEVELLevel(caster)))/4);
+		int limit=((caster.phyStats().level()+(2*super.getXLEVELLevel(caster)))/4);
 		for(int i=0;i<limit;i++)
 		{
 			newMOB=CMClass.getMOB("GenMOB");
 			int level=adjustedLevel(caster,0);
 			if(level<1) level=1;
-			newMOB.baseEnvStats().setLevel(level);
-			newMOB.baseEnvStats().setAbility(newMOB.baseEnvStats().ability()*2);
+			newMOB.basePhyStats().setLevel(level);
+			newMOB.basePhyStats().setAbility(newMOB.basePhyStats().ability()*2);
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Vine"));
 			String name="a vine";
 			newMOB.setName(name);
@@ -67,17 +67,17 @@ public class Chant_VineMass extends Chant_SummonVine
 			Ability A=CMClass.getAbility("Fighter_Rescue");
 			A.setProficiency(100);
 			newMOB.addAbility(A);
-			newMOB.baseEnvStats().setSensesMask(newMOB.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_DARK);
+			newMOB.basePhyStats().setSensesMask(newMOB.basePhyStats().sensesMask()|PhyStats.CAN_SEE_DARK);
 			newMOB.setLocation(caster.location());
-			newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
-			newMOB.baseEnvStats().setDamage(6+(5*(level/5)));
-			newMOB.baseEnvStats().setAttackAdjustment(10);
-			newMOB.baseEnvStats().setArmor(100-(30+(level/2)));
+			newMOB.basePhyStats().setRejuv(Integer.MAX_VALUE);
+			newMOB.basePhyStats().setDamage(6+(5*(level/5)));
+			newMOB.basePhyStats().setAttackAdjustment(10);
+			newMOB.basePhyStats().setArmor(100-(30+(level/2)));
 			newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'N');
 			newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 			newMOB.setMiscText(newMOB.text());
 			newMOB.recoverCharStats();
-			newMOB.recoverEnvStats();
+			newMOB.recoverPhyStats();
 			newMOB.recoverMaxState();
 			newMOB.resetToMaxState();
 			newMOB.bringToLife(caster.location(),true);

@@ -112,7 +112,7 @@ public class AnimalTraining extends CommonSkill
 								animal.addAbility((Ability)skill);
 							}
 							animal.recoverCharStats();
-							animal.recoverEnvStats();
+							animal.recoverPhyStats();
 							animal.recoverMaxState();
 							if(taming instanceof CagedAnimal)
 							{
@@ -249,8 +249,8 @@ public class AnimalTraining extends CommonSkill
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		messedUp=!proficiencyCheck(mob,-taming.envStats().level()+(2*getXLEVELLevel(mob)),auto);
-		int duration=getDuration(35,mob,taming.envStats().level(),10);
+		messedUp=!proficiencyCheck(mob,-taming.phyStats().level()+(2*getXLEVELLevel(mob)),auto);
+		int duration=getDuration(35,mob,taming.phyStats().level(),10);
 		verb="training "+M.name();
 		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) training "+M.name()+".");
 		if(mob.location().okMessage(mob,msg))

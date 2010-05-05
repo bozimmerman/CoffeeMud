@@ -99,9 +99,9 @@ public class Chant_Thorns extends Chant
 		return;
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
 		affectableStats.setArmor(affectableStats.armor()-10-(2*super.getXLEVELLevel(invoker())));

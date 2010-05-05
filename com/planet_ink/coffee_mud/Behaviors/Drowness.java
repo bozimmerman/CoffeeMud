@@ -76,7 +76,7 @@ public class Drowness extends StdBehavior
 		mob.baseCharStats().getMyRace().startRacing(mob,false);
 
 		mob.recoverMaxState();
-		mob.recoverEnvStats();
+		mob.recoverPhyStats();
 		mob.recoverCharStats();
 	}
 
@@ -183,7 +183,7 @@ public class Drowness extends StdBehavior
 		        secondWeapon.wearAt(Wearable.WORN_HELD);
 		        mob.addItem(mainWeapon);
                 mob.addItem(secondWeapon);
-		        mob.baseEnvStats().setSpeed(2.0);
+		        mob.basePhyStats().setSpeed(2.0);
                 break;
             case 2:
 		        mainWeapon = CMClass.getWeapon("DrowSword");
@@ -192,7 +192,7 @@ public class Drowness extends StdBehavior
 //		        secondWeapon.wear(Item.SHIELD);
 		        mob.addItem(mainWeapon);
 //              mob.addInventory(secondWeapon);
-		        mob.baseEnvStats().setSpeed(1.0);
+		        mob.basePhyStats().setSpeed(1.0);
                 break;
             case 3:
 		        mainWeapon = CMClass.getWeapon("DrowSword");
@@ -201,7 +201,7 @@ public class Drowness extends StdBehavior
 		        secondWeapon.wearAt(Wearable.WORN_HELD);
 		        mob.addItem(mainWeapon);
                 mob.addItem(secondWeapon);
-		        mob.baseEnvStats().setSpeed(2.0);
+		        mob.basePhyStats().setSpeed(2.0);
                 break;
             case 4:
 		        mainWeapon = CMClass.getWeapon("Scimitar");
@@ -210,7 +210,7 @@ public class Drowness extends StdBehavior
 		        secondWeapon.wearAt(Wearable.WORN_HELD);
 		        mob.addItem(mainWeapon);
                 mob.addItem(secondWeapon);
-		        mob.baseEnvStats().setSpeed(2.0);
+		        mob.basePhyStats().setSpeed(2.0);
                 break;
             default:
 		        mainWeapon = CMClass.getWeapon("DrowSword");
@@ -219,7 +219,7 @@ public class Drowness extends StdBehavior
 		        secondWeapon.wearAt(Wearable.WORN_HELD);
 		        mob.addItem(mainWeapon);
                 mob.addItem(secondWeapon);
-		        mob.baseEnvStats().setSpeed(2.0);
+		        mob.basePhyStats().setSpeed(2.0);
                 break;
         }
 
@@ -304,7 +304,7 @@ public class Drowness extends StdBehavior
     public boolean checkStatus(MOB mob)
     {
         if(CMLib.flags().isSitting(mob))
-            mob.envStats().setDisposition(mob.envStats().disposition() - EnvStats.IS_SITTING);
+            mob.phyStats().setDisposition(mob.phyStats().disposition() - PhyStats.IS_SITTING);
         mob.location().show(mob, null, CMMsg.MSG_QUIETMOVEMENT, "<S-NAME> stand(s) up, ready for more combat.");
 
         return true;
@@ -316,7 +316,7 @@ public class Drowness extends StdBehavior
         if(CMLib.dice().rollPercentage() < 70)
         {
             prayer = mob.fetchAbility(CMLib.dice().roll(1,mob.numLearnedAbilities(),-1));
-            while((prayer==null)||(mob.baseEnvStats().level() < CMLib.ableMapper().lowestQualifyingLevel(prayer.ID())))
+            while((prayer==null)||(mob.basePhyStats().level() < CMLib.ableMapper().lowestQualifyingLevel(prayer.ID())))
                 prayer = mob.fetchAbility(CMLib.dice().roll(1,mob.numLearnedAbilities(),-1));
         }
         else
@@ -405,7 +405,7 @@ public class Drowness extends StdBehavior
         if(CMLib.dice().rollPercentage() < 70)
         {
             prayer = mob.fetchAbility(CMLib.dice().roll(1,mob.numLearnedAbilities(),-1));
-            while((prayer==null)||(mob.baseEnvStats().level() < CMLib.ableMapper().lowestQualifyingLevel(prayer.ID())))
+            while((prayer==null)||(mob.basePhyStats().level() < CMLib.ableMapper().lowestQualifyingLevel(prayer.ID())))
                 prayer = mob.fetchAbility(CMLib.dice().roll(1,mob.numLearnedAbilities(),-1));
         }
         else

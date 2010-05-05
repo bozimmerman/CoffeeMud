@@ -67,7 +67,7 @@ public class Thief_ImprovedHiding extends ThiefSkill
 		{
 			active=false;
 			improve(mob,false);
-			mob.recoverEnvStats();
+			mob.recoverPhyStats();
 		}
 		return super.okMessage(myHost,msg);
 	}

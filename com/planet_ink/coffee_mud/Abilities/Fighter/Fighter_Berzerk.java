@@ -48,9 +48,9 @@ public class Fighter_Berzerk extends FighterSkill
 
 	public int hpAdjustment=0;
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if((invoker==null)&&(affected instanceof MOB))
 		   invoker=(MOB)affected;
 		if(invoker!=null)

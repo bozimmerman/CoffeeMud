@@ -189,7 +189,7 @@ public class Gaoler extends StdCharClass
             CMMsg msg2=CMClass.getMsg((MOB)msg.target(),null,null,CMMsg.MSG_NOISE,"<S-NAME> scream(s) in agony, AAAAAAARRRRGGGHHH!!"+CMProps.msp("scream.wav",40));
             if(((MOB)msg.target()).location().okMessage((MOB)msg.target(),msg2))
             {
-                int xp=(int)Math.round(10.0*CMath.div(msg.target().envStats().level(),((MOB)host).charStats().getClassLevel(this)));
+                int xp=(int)Math.round(10.0*CMath.div(msg.target().phyStats().level(),((MOB)host).charStats().getClassLevel(this)));
                 int[] done=(int[])mudHourMOBXPMap.get(host.Name()+"/"+msg.tool().ID());
                 if(done==null){ done=new int[3]; mudHourMOBXPMap.put(host.Name()+"/"+msg.tool().ID(),done);}
                 if(Calendar.getInstance().get(Calendar.SECOND)!=done[2])
@@ -200,7 +200,7 @@ public class Gaoler extends StdCharClass
                     done[0]=clock.getTimeOfDay();
                     done[2]=Calendar.getInstance().get(Calendar.SECOND);
                     
-                    if(done[1]<(90+(10*((MOB)host).envStats().level())))
+                    if(done[1]<(90+(10*((MOB)host).phyStats().level())))
                     {
                         done[1]+=xp;
                         CMLib.leveler().postExperience((MOB)host,null,null,xp,true);

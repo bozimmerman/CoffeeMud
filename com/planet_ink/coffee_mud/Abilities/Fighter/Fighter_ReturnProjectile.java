@@ -93,10 +93,10 @@ public class Fighter_ReturnProjectile extends FighterSkill
 				neww.setUsesRemaining(1);
 				neww.setWeaponClassification(Weapon.CLASS_THROWN);
 				neww.setWeaponType(((Weapon)w).weaponType());
-				neww.baseEnvStats().setWeight(1);
+				neww.basePhyStats().setWeight(1);
 				neww.setBaseValue(0);
 				neww.setRanges(w.minRange(),w.maxRange());
-				neww.recoverEnvStats();
+				neww.recoverPhyStats();
 				w=neww;
 				mob.location().addItem(neww,ItemPossessor.Expire.Player_Drop);
 			}

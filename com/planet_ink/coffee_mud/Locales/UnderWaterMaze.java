@@ -39,9 +39,9 @@ public class UnderWaterMaze extends StdMaze
 	public UnderWaterMaze()
 	{
 		super();
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_SWIMMING);
-		baseEnvStats.setWeight(3);
-		recoverEnvStats();
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_SWIMMING);
+		basePhyStats.setWeight(3);
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_UNDERWATER;}
 	public int domainConditions(){return Room.CONDITION_WET;}
@@ -64,10 +64,10 @@ public class UnderWaterMaze extends StdMaze
 		super.executeMsg(myHost,msg);
 		UnderWater.sinkAffects(this,msg);
 	}
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
 	}
 	public Vector resourceChoices(){return UnderWater.roomResources;}
 }

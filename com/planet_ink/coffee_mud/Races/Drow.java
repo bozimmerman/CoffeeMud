@@ -3,7 +3,7 @@ import java.util.Vector;
 
 import com.planet_ink.coffee_mud.Areas.interfaces.Area;
 import com.planet_ink.coffee_mud.Common.interfaces.CharStats;
-import com.planet_ink.coffee_mud.Common.interfaces.EnvStats;
+import com.planet_ink.coffee_mud.Common.interfaces.PhyStats;
 import com.planet_ink.coffee_mud.Items.interfaces.Armor;
 import com.planet_ink.coffee_mud.Items.interfaces.Item;
 import com.planet_ink.coffee_mud.Items.interfaces.RawMaterial;
@@ -12,7 +12,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.Room;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.CMClass;
 import com.planet_ink.coffee_mud.core.CMath;
-import com.planet_ink.coffee_mud.core.interfaces.Environmental;
+import com.planet_ink.coffee_mud.core.interfaces.Physical;
 
 /* 
    Copyright 2006 Lee Fox
@@ -56,9 +56,9 @@ public class Drow extends Elf
 	protected static Vector resources=new Vector();
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if((affected instanceof MOB)&&(((MOB)affected).location()!=null)) {
 			MOB mob=(MOB)affected;
 			Room room=mob.location();
@@ -67,7 +67,7 @@ public class Drow extends Elf
 				affectableStats.setArmor(0);
 		}
 		
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_INFRARED|EnvStats.CAN_SEE_DARK);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_INFRARED|PhyStats.CAN_SEE_DARK);
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{

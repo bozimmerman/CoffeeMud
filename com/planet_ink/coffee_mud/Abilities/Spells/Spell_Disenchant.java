@@ -43,7 +43,7 @@ public class Spell_Disenchant extends Spell
 
 	public static int disenchantItem(Item target)
 	{
-		int level=target.baseEnvStats().level();
+		int level=target.basePhyStats().level();
 		boolean doneSomething=false;
 		if(target instanceof Wand)
 		{
@@ -61,11 +61,11 @@ public class Spell_Disenchant extends Spell
 			doneSomething=true;
 		}
 		else
-		if((target.envStats().ability()>0)
+		if((target.phyStats().ability()>0)
 		&&(!(target instanceof Coins)))
 		{
-			level=level-(target.baseEnvStats().ability()*3);
-			target.baseEnvStats().setAbility(0);
+			level=level-(target.basePhyStats().ability()*3);
+			target.basePhyStats().setAbility(0);
 			doneSomething=true;
 		}
 
@@ -109,11 +109,11 @@ public class Spell_Disenchant extends Spell
 				if(level>-999)
 				{
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> fades and becomes dull!");
-					if((target.baseEnvStats().disposition()&EnvStats.IS_BONUS)==EnvStats.IS_BONUS)
-						target.baseEnvStats().setDisposition(target.baseEnvStats().disposition()-EnvStats.IS_BONUS);
+					if((target.basePhyStats().disposition()&PhyStats.IS_BONUS)==PhyStats.IS_BONUS)
+						target.basePhyStats().setDisposition(target.basePhyStats().disposition()-PhyStats.IS_BONUS);
 					if(level<=0) level=1;
-					target.baseEnvStats().setLevel(level);
-					target.recoverEnvStats();
+					target.basePhyStats().setLevel(level);
+					target.recoverPhyStats();
 				}
 				else
 					mob.tell(target.name()+" doesn't seem to be enchanted.");

@@ -46,8 +46,8 @@ public class StdBook extends StdItem
 		setDisplayText("a book sits here.");
 		setDescription("Enter `READ [NUMBER] [BOOK]` to read a chapter.%0D%0AUse your WRITE skill to add new chapters. ");
 		material=RawMaterial.RESOURCE_PAPER;
-		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMREADABLE);
-		recoverEnvStats();
+		basePhyStats().setSensesMask(PhyStats.SENSE_ITEMREADABLE);
+		recoverPhyStats();
 	}
 
 	protected MOB lastReadTo=null;
@@ -308,5 +308,5 @@ public class StdBook extends StdItem
     protected String getReadReq() { return getParm("READ");}
     protected String getWriteReq() { return getParm("WRITE");}
     private String getAdminReq() { return getParm("ADMIN");}
-	public void recoverEnvStats(){CMLib.flags().setReadable(this,true); super.recoverEnvStats();}
+	public void recoverPhyStats(){CMLib.flags().setReadable(this,true); super.recoverPhyStats();}
 }

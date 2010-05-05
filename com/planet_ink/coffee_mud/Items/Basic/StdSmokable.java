@@ -55,7 +55,7 @@ public class StdSmokable extends StdContainer implements Light
 		setMaterial(RawMaterial.RESOURCE_PIPEWEED);
 		wornLogicalAnd=false;
 		baseGoldValue=5;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public void setDuration(int duration){baseDuration=duration;}
@@ -166,10 +166,10 @@ public class StdSmokable extends StdContainer implements Light
 				durationTicks=0;
 				if(destroyedWhenBurnedOut())
 					destroy();
-				M.recoverEnvStats();
+				M.recoverPhyStats();
 				M.recoverCharStats();
 				M.recoverMaxState();
-				M.recoverEnvStats();
+				M.recoverPhyStats();
                 if(M.location()!=null)
     				M.location().recoverRoomStats();
 			}
@@ -220,7 +220,7 @@ public class StdSmokable extends StdContainer implements Light
 				{
 					light(false);
 					CMLib.threads().deleteTick(this,Tickable.TICKID_LIGHT_FLICKERS);
-					recoverEnvStats();
+					recoverPhyStats();
 					room.recoverRoomStats();
 				}
 				break;
@@ -245,7 +245,7 @@ public class StdSmokable extends StdContainer implements Light
 
 					light(true);
 					CMLib.threads().startTickDown(this,Tickable.TICKID_LIGHT_FLICKERS,1);
-					recoverEnvStats();
+					recoverPhyStats();
 					room.recoverRoomStats();
 				}
 				break;
@@ -255,7 +255,7 @@ public class StdSmokable extends StdContainer implements Light
 		&&(msg.sourceMinor()==CMMsg.TYP_THROW)
 		&&(msg.source()!=null))
 		{
-			msg.source().recoverEnvStats();
+			msg.source().recoverPhyStats();
 			if(!CMath.bset(msg.sourceCode(),CMMsg.MASK_OPTIMIZE))
 			{
 				if(msg.source().location()!=null)
@@ -277,7 +277,7 @@ public class StdSmokable extends StdContainer implements Light
 				{
 					if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 					{
-						msg.source().recoverEnvStats();
+						msg.source().recoverPhyStats();
 						if(msg.source().location()!=null)
 							msg.source().location().recoverRoomStats();
 						Room R=CMLib.map().roomLocation(msg.tool());

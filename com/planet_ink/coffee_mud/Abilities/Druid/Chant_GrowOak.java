@@ -56,8 +56,8 @@ public class Chant_GrowOak extends Chant_SummonPlants
 		newItem.setDisplayText(newItem.name()+" grows here.");
 		newItem.setDescription("");
 		Chant_GrowOak newChant=new Chant_GrowOak();
-		newItem.baseEnvStats().setLevel(10+newChant.getX1Level(mob));
-		newItem.baseEnvStats().setWeight(10000);
+		newItem.basePhyStats().setLevel(10+newChant.getX1Level(mob));
+		newItem.basePhyStats().setWeight(10000);
 		CMLib.flags().setGettable(newItem,false);
 		newItem.setMaterial(material);
 		newItem.setSecretIdentity(mob.Name());
@@ -65,12 +65,12 @@ public class Chant_GrowOak extends Chant_SummonPlants
 		room.addItem(newItem);
 		newItem.setExpirationDate(0);
 		room.showHappens(CMMsg.MSG_OK_ACTION,"a tall, healthy "+RawMaterial.CODES.NAME(code).toLowerCase()+" tree sprouts up.");
-		room.recoverEnvStats();
+		room.recoverPhyStats();
 		newChant.PlantsLocation=room;
-		newChant.hpRemaining=100*(mob.envStats().level()+(2*newChant.getXLEVELLevel(mob))+(10*newChant.getX1Level(mob)));
+		newChant.hpRemaining=100*(mob.phyStats().level()+(2*newChant.getXLEVELLevel(mob))+(10*newChant.getX1Level(mob)));
 		newChant.littlePlants=newItem;
 		newChant.beneficialAffect(mob,newItem,0,(newChant.adjustedLevel(mob,0)*240)+450);
-		room.recoverEnvStats();
+		room.recoverPhyStats();
 		return newItem;
 	}
 

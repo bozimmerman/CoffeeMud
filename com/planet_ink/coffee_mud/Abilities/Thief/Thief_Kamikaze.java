@@ -132,7 +132,7 @@ public class Thief_Kamikaze extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		double goldRequired=(double)(( Math.round( ( 100.0 - ( ( mob.charStats().getStat( CharStats.STAT_CHARISMA ) + ( 2.0 * getXLEVELLevel( mob ) ) ) * 2.0 ) ) ) * target.envStats().level() ) );
+		double goldRequired=(double)(( Math.round( ( 100.0 - ( ( mob.charStats().getStat( CharStats.STAT_CHARISMA ) + ( 2.0 * getXLEVELLevel( mob ) ) ) * 2.0 ) ) ) * target.phyStats().level() ) );
 		String localCurrency=CMLib.beanCounter().getCurrency(target);
 	    String costWords=CMLib.beanCounter().nameCurrencyShort(localCurrency,goldRequired);
 		if(CMLib.beanCounter().getTotalAbsoluteValue(mob,localCurrency)<goldRequired)
@@ -174,12 +174,12 @@ public class Thief_Kamikaze extends ThiefSkill
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> pay(s) <T-NAMESELF> to Kamikaze "+s+" for "+costWords+".^?");
 
 			CMLib.beanCounter().subtractMoney(mob,localCurrency,goldRequired);
-			mob.recoverEnvStats();
+			mob.recoverPhyStats();
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				CMLib.beanCounter().addMoney(target,localCurrency,goldRequired);
-				target.recoverEnvStats();
+				target.recoverPhyStats();
 				beneficialAffect(mob,target,asLevel,2);
 				bombFound.activateBomb();
 				commands=new Vector();

@@ -192,10 +192,10 @@ public class Thief_TapRoom extends ThiefSkill
 						else
 						{
 							Item I=(Item)V.firstElement();
-							if(I.baseEnvStats().weight()>1)
+							if(I.basePhyStats().weight()>1)
 							{
-								I.baseEnvStats().setWeight(I.baseEnvStats().weight()-1);
-								I.envStats().setWeight(I.envStats().weight()-1);
+								I.basePhyStats().setWeight(I.basePhyStats().weight()-1);
+								I.phyStats().setWeight(I.phyStats().weight()-1);
 								I.text();
 							}
 							else
@@ -299,12 +299,12 @@ public class Thief_TapRoom extends ThiefSkill
 		return available;
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if((affected instanceof Item)
 		&&((!(affected instanceof Drink))||(!text().startsWith("DST;"))))
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_HIDDEN);
 	}
 
 	public Vector getParsedText(){return CMParms.parseSemicolons(text(),false);}

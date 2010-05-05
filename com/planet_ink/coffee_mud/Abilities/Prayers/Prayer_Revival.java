@@ -78,7 +78,7 @@ public class Prayer_Revival extends Prayer
 					{
 						if(M.fetchEffect(ID())!=null)
 						{
-							levels+=(M.envStats().level()+bonus);
+							levels+=(M.phyStats().level()+bonus);
 							clerics.addElement(M);
 						}
 					}
@@ -120,7 +120,7 @@ public class Prayer_Revival extends Prayer
 				levels=levels/clerics.size();
 				levels=levels+((clerics.size()-3)*5);
 				MOB M=(MOB)inhabs.elementAt(CMLib.dice().roll(1,inhabs.size(),-1));
-				if((M!=null)&&(levels>=(M.envStats().level()+bonus)))
+				if((M!=null)&&(levels>=(M.phyStats().level()+bonus)))
 				{
 					MOB vic1=mob.getVictim();
 					MOB vic2=M.getVictim();

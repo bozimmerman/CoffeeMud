@@ -41,11 +41,11 @@ public class Dance_Grass extends Dance
 	public static Ability kick=null;
 	protected String danceOf(){return name()+" Dance";}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected==null) return;
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_BONUS);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BONUS);
 		affectableStats.setArmor(affectableStats.armor()
 								-(2*adjustedLevel(invoker(),0)));
 	}

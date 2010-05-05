@@ -42,11 +42,11 @@ public class LeatherBracers extends StdArmor
 		setDescription("Strong enough to protect your forearms against the strongest of feathers...");
 		properWornBitmap=Wearable.WORN_LEFT_WRIST | Wearable.WORN_RIGHT_WRIST | Wearable.WORN_ARMS;
 		wornLogicalAnd=true;
-		baseEnvStats().setArmor(1);
-		baseEnvStats().setWeight(5);
-		baseEnvStats().setAbility(0);
+		basePhyStats().setArmor(1);
+		basePhyStats().setWeight(5);
+		basePhyStats().setAbility(0);
 		baseGoldValue=5;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_LEATHER;
 	}
 

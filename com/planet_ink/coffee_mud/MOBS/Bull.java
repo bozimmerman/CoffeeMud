@@ -44,19 +44,19 @@ public class Bull extends StdMOB
 		setMoney(0);
 		setWimpHitPoint(0);
 
-		baseEnvStats().setDamage(10);
-		baseEnvStats().setSpeed(2.0);
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(7);
-		baseEnvStats().setArmor(90);
+		basePhyStats().setDamage(10);
+		basePhyStats().setSpeed(2.0);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(7);
+		basePhyStats().setArmor(90);
 		baseCharStats().setMyRace(CMClass.getRace("Bull"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

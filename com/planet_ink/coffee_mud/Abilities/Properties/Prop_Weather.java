@@ -40,9 +40,9 @@ public class Prop_Weather extends Property
 
 	int code=-1;
 	
-	public void affectEnvStats(Environmental host, EnvStats stats)
+	public void affectPhyStats(Physical host, PhyStats stats)
 	{
-		super.affectEnvStats(host,stats);
+		super.affectPhyStats(host,stats);
 		if((code<0)&&(text().length()>0))
 		{
 			for(int i=0;i<Climate.WEATHER_DESCS.length;i++)

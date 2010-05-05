@@ -334,7 +334,7 @@ public class Skill_Track extends StdSkill
 				Skill_Track newOne=(Skill_Track)copyOf();
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 			    tickStatus=Tickable.STATUS_MISC6+13;
 				newOne.nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,thisRoom,false);
 			}

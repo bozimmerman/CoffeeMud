@@ -82,7 +82,7 @@ public class GenRace extends StdRace
 
 	protected CharStats setStats=null;
 	protected CharStats adjStats=null;
-	protected EnvStats adjEStats=null;
+	protected PhyStats adjPStats=null;
 	protected CharState adjState=null;
 	protected CharState startAdjState=null;
 	protected Vector resourceChoices=null;
@@ -154,20 +154,20 @@ public class GenRace extends StdRace
 		return CMLib.combat().standardMobCondition(viewer,mob);
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		if(adjEStats!=null)
+		if(adjPStats!=null)
 		{
-			affectableStats.setAbility(affectableStats.ability()+adjEStats.ability());
-			affectableStats.setArmor(affectableStats.armor()+adjEStats.armor());
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+adjEStats.attackAdjustment());
-			affectableStats.setDamage(affectableStats.damage()+adjEStats.damage());
-			affectableStats.setDisposition(affectableStats.disposition()|adjEStats.disposition());
-			affectableStats.setHeight(affectableStats.height()+adjEStats.height());
-			affectableStats.setLevel(affectableStats.level()+adjEStats.level());
-			affectableStats.setSensesMask(affectableStats.sensesMask()|adjEStats.sensesMask());
-			affectableStats.setSpeed(affectableStats.speed()+adjEStats.speed());
-			affectableStats.setWeight(affectableStats.weight()+adjEStats.weight());
+			affectableStats.setAbility(affectableStats.ability()+adjPStats.ability());
+			affectableStats.setArmor(affectableStats.armor()+adjPStats.armor());
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+adjPStats.attackAdjustment());
+			affectableStats.setDamage(affectableStats.damage()+adjPStats.damage());
+			affectableStats.setDisposition(affectableStats.disposition()|adjPStats.disposition());
+			affectableStats.setHeight(affectableStats.height()+adjPStats.height());
+			affectableStats.setLevel(affectableStats.level()+adjPStats.level());
+			affectableStats.setSensesMask(affectableStats.sensesMask()|adjPStats.sensesMask());
+			affectableStats.setSpeed(affectableStats.speed()+adjPStats.speed());
+			affectableStats.setWeight(affectableStats.weight()+adjPStats.weight());
 		}
 	}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
@@ -232,9 +232,9 @@ public class GenRace extends StdRace
 		str.append(CMLib.xml().convertXMLtoTag("LEAVE",leaveStr()));
         str.append(CMLib.xml().convertXMLtoTag("HELP",CMLib.xml().parseOutAngleBrackets(helpEntry)));
 		str.append(CMLib.xml().convertXMLtoTag("AGING",CMParms.toStringList(getAgingChart())));
-		if(adjEStats==null) str.append("<ESTATS/>");
+		if(adjPStats==null) str.append("<ESTATS/>");
 		else
-			str.append(CMLib.xml().convertXMLtoTag("ESTATS",CMLib.coffeeMaker().getEnvStatsStr(adjEStats)));
+			str.append(CMLib.xml().convertXMLtoTag("ESTATS",CMLib.coffeeMaker().getPhyStatsStr(adjPStats)));
 		if(adjStats==null) str.append("<ASTATS/>");
 		else
 			str.append(CMLib.xml().convertXMLtoTag("ASTATS",CMLib.coffeeMaker().getCharStatsStr(adjStats)));
@@ -414,9 +414,9 @@ public class GenRace extends StdRace
 		for(int v=0;v<V.size();v++)
 			if(v<bodyMask().length)
 				bodyMask()[v]=CMath.s_int((String)V.elementAt(v));
-		adjEStats=null;
+		adjPStats=null;
         String eStats=CMLib.xml().getValFromPieces(raceData,"ESTATS");
-        if(eStats.length()>0){ adjEStats=(EnvStats)CMClass.getCommon("DefaultEnvStats"); adjEStats.setAllValues(0); CMLib.coffeeMaker().setEnvStats(adjEStats,eStats);}
+        if(eStats.length()>0){ adjPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats"); adjPStats.setAllValues(0); CMLib.coffeeMaker().setPhyStats(adjPStats,eStats);}
         adjStats=null;
         String aStats=CMLib.xml().getValFromPieces(raceData,"ASTATS");
         if(aStats.length()>0){ adjStats=(CharStats)CMClass.getCommon("DefaultCharStats"); adjStats.setAllValues(0); CMLib.coffeeMaker().setCharStats(adjStats,aStats);}
@@ -449,7 +449,7 @@ public class GenRace extends StdRace
 				Item newOne=CMClass.getItem(CMLib.xml().getValFromPieces(iblk.contents,"ICLASS"));
 				String idat=CMLib.xml().getValFromPieces(iblk.contents,"IDATA");
 				newOne.setMiscText(CMLib.xml().restoreAngleBrackets(idat));
-				newOne.recoverEnvStats();
+				newOne.recoverPhyStats();
 				resourceChoices.addElement(newOne);
 			}
 		}
@@ -470,7 +470,7 @@ public class GenRace extends StdRace
 				{
 					String idat=CMLib.xml().getValFromPieces(iblk.contents,"OFDATA");
 					newOne.setMiscText(CMLib.xml().restoreAngleBrackets(idat));
-					newOne.recoverEnvStats();
+					newOne.recoverPhyStats();
 					outfitChoices.addElement(newOne);
 				}
 				else
@@ -487,7 +487,7 @@ public class GenRace extends StdRace
 			if((idat!=null)&&(naturalWeapon!=null))
 			{
 				naturalWeapon.setMiscText(CMLib.xml().restoreAngleBrackets(idat));
-				naturalWeapon.recoverEnvStats();
+				naturalWeapon.recoverPhyStats();
 			}
 		}
 		xV=CMLib.xml().getContentsFromPieces(raceData,"RABILITIES");
@@ -599,7 +599,7 @@ public class GenRace extends StdRace
 				bbody.append((""+bodyMask()[i])+";");
 			return bbody.toString();
 		}
-		case 14: return (adjEStats==null)?"":CMLib.coffeeMaker().getEnvStatsStr(adjEStats);
+		case 14: return (adjPStats==null)?"":CMLib.coffeeMaker().getPhyStatsStr(adjPStats);
 		case 15: return (adjStats==null)?"":CMLib.coffeeMaker().getCharStatsStr(adjStats);
 		case 16: return (setStats==null)?"":CMLib.coffeeMaker().getCharStatsStr(setStats);
 		case 17: return (adjState==null)?"":CMLib.coffeeMaker().getCharStateStr(adjState);
@@ -711,7 +711,7 @@ public class GenRace extends StdRace
 					bodyMask()[v]=CMath.s_int((String)V.elementAt(v));
 			break;
 		}
-		case 14: adjEStats=null;clrStatChgDesc();if(val.length()>0){adjEStats=(EnvStats)CMClass.getCommon("DefaultEnvStats"); adjEStats.setAllValues(0); CMLib.coffeeMaker().setEnvStats(adjEStats,val);}break;
+		case 14: adjPStats=null;clrStatChgDesc();if(val.length()>0){adjPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats"); adjPStats.setAllValues(0); CMLib.coffeeMaker().setPhyStats(adjPStats,val);}break;
 		case 15: adjStats=null;clrStatChgDesc();if(val.length()>0){adjStats=(CharStats)CMClass.getCommon("DefaultCharStats"); adjStats.setAllValues(0); CMLib.coffeeMaker().setCharStats(adjStats,val);}break;
 		case 16: setStats=null;clrStatChgDesc();if(val.length()>0){setStats=(CharStats)CMClass.getCommon("DefaultCharStats"); setStats.setAllValues(0); CMLib.coffeeMaker().setCharStats(setStats,val);}break;
 		case 17: adjState=null;clrStatChgDesc();if(val.length()>0){adjState=(CharState)CMClass.getCommon("DefaultCharState"); adjState.setAllValues(0); CMLib.coffeeMaker().setCharState(adjState,val);}break;
@@ -728,7 +728,7 @@ public class GenRace extends StdRace
 					 {
 						Item I=(Item)resourceChoices.elementAt(num);
 						I.setMiscText(val);
-						I.recoverEnvStats();
+						I.recoverPhyStats();
 					 }
 					 break;
 				 }
@@ -737,7 +737,7 @@ public class GenRace extends StdRace
 				 break;
 		case 22: if(naturalWeapon!=null){
 					 naturalWeapon.setMiscText(val);
-					 naturalWeapon.recoverEnvStats();
+					 naturalWeapon.recoverPhyStats();
 				 }
 				 break;
 		case 23: racialAbilityMap=null;
@@ -799,7 +799,7 @@ public class GenRace extends StdRace
 					 {
 						Item I=(Item)outfitChoices.elementAt(num);
 						I.setMiscText(val);
-						I.recoverEnvStats();
+						I.recoverPhyStats();
 					 }
 					 break;
 				 }

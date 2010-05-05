@@ -42,15 +42,15 @@ public class GenArmor extends StdArmor
 		super();
 
 		setName("a generic armor piece");
-		baseEnvStats.setWeight(25);
+		basePhyStats.setWeight(25);
 		setDisplayText("a generic piece of armor sits here.");
 		setDescription("");
 		baseGoldValue=5;
 		properWornBitmap=Wearable.IN_INVENTORY;
 		wornLogicalAnd=false;
-		baseEnvStats().setLevel(1);
-		baseEnvStats().setArmor(10);
-		recoverEnvStats();
+		basePhyStats().setLevel(1);
+		basePhyStats().setArmor(10);
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_LEATHER;
 	}
 
@@ -77,7 +77,7 @@ public class GenArmor extends StdArmor
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","LAYER","LAYERATTRIB"};
 	public String getStat(String code)

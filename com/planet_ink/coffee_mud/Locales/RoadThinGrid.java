@@ -41,8 +41,8 @@ public class RoadThinGrid extends StdThinGrid
 	{
 		super();
 		name="a road";
-		baseEnvStats.setWeight(1);
-		recoverEnvStats();
+		basePhyStats.setWeight(1);
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_PLAINS;}
 	public int domainConditions(){return Room.CONDITION_NORMAL;}

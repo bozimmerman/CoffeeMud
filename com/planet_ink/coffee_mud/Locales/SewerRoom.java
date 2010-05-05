@@ -40,9 +40,9 @@ public class SewerRoom extends StdRoom
 		super();
 		myID=this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);
 		name="the sewers";
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_DARK);
-		baseEnvStats.setWeight(2);
-		recoverEnvStats();
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_DARK);
+		basePhyStats.setWeight(2);
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_INDOORS_CAVE;}
 	public int domainConditions(){return Room.CONDITION_WET;}

@@ -71,13 +71,13 @@ public class Fighter_Charge extends FighterSkill
 		return super.tick(ticking,tickID);
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		int xlvl=getXLEVELLevel(invoker());
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(2*(affected.envStats().level()+xlvl)));
-		affectableStats.setDamage(affectableStats.damage()+(affected.envStats().level())+abilityCode()+xlvl);
-		affectableStats.setArmor(affectableStats.armor()+(2*(xlvl+affected.envStats().level())));
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(2*(affected.phyStats().level()+xlvl)));
+		affectableStats.setDamage(affectableStats.damage()+(affected.phyStats().level())+abilityCode()+xlvl);
+		affectableStats.setArmor(affectableStats.armor()+(2*(xlvl+affected.phyStats().level())));
 	}
 
 	public int castingQuality(MOB mob, Physical target)
@@ -135,7 +135,7 @@ public class Fighter_Charge extends FighterSkill
 					mob.setAtRange(0);
 					target.setAtRange(0);
 					beneficialAffect(mob,mob,asLevel,2);
-					mob.recoverEnvStats();
+					mob.recoverPhyStats();
 					if(notInCombat)
 					{
 						done=true;

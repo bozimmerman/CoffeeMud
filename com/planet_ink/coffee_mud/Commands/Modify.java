@@ -119,8 +119,8 @@ public class Modify extends StdCommand
 			int newLevel=CMath.s_int(restStr);
 			if(newLevel>=0)
 			{
-				modItem.baseEnvStats().setLevel(newLevel);
-				modItem.recoverEnvStats();
+				modItem.basePhyStats().setLevel(newLevel);
+				modItem.recoverPhyStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
 			}
 		}
@@ -128,16 +128,16 @@ public class Modify extends StdCommand
 		if(command.equals("ABILITY"))
 		{
 			int newAbility=CMath.s_int(restStr);
-			modItem.baseEnvStats().setAbility(newAbility);
-			modItem.recoverEnvStats();
+			modItem.basePhyStats().setAbility(newAbility);
+			modItem.recoverPhyStats();
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
 		}
 		else
 		if(command.equals("HEIGHT"))
 		{
 			int newAbility=CMath.s_int(restStr);
-			modItem.baseEnvStats().setHeight(newAbility);
-			modItem.recoverEnvStats();
+			modItem.basePhyStats().setHeight(newAbility);
+			modItem.recoverPhyStats();
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
 		}
 		else
@@ -146,14 +146,14 @@ public class Modify extends StdCommand
 			int newRejuv=CMath.s_int(restStr);
 			if(newRejuv>0)
 			{
-				modItem.baseEnvStats().setRejuv(newRejuv);
-				modItem.recoverEnvStats();
+				modItem.basePhyStats().setRejuv(newRejuv);
+				modItem.recoverPhyStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
 			}
 			else
 			{
-				modItem.baseEnvStats().setRejuv(Integer.MAX_VALUE);
-				modItem.recoverEnvStats();
+				modItem.basePhyStats().setRejuv(Integer.MAX_VALUE);
+				modItem.recoverPhyStats();
 				mob.tell(modItem.name()+" will now never rejuvinate.");
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
 			}
@@ -356,7 +356,7 @@ public class Modify extends StdCommand
 		if(command.equalsIgnoreCase("AFFECTS"))
 		{
             CMLib.genEd().genAffects(mob,mob.location(),1,1);
-			mob.location().recoverEnvStats();
+			mob.location().recoverPhyStats();
 			CMLib.database().DBUpdateRoom(mob.location());
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The very nature of reality changes.\n\r");
 		}
@@ -364,7 +364,7 @@ public class Modify extends StdCommand
 		if(command.equalsIgnoreCase("BEHAVIORS"))
 		{
             CMLib.genEd().genBehaviors(mob,mob.location(),1,1);
-			mob.location().recoverEnvStats();
+			mob.location().recoverPhyStats();
 			CMLib.database().DBUpdateRoom(mob.location());
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The very nature of reality changes.\n\r");
 		}
@@ -544,13 +544,13 @@ public class Modify extends StdCommand
 			if(command.equalsIgnoreCase("AFFECTS"))
 			{
                 CMLib.genEd().genAffects(mob,myArea,1,1);
-				myArea.recoverEnvStats();
+				myArea.recoverPhyStats();
 			}
 			else
 			if(command.equalsIgnoreCase("BEHAVIORS"))
 			{
                 CMLib.genEd().genBehaviors(mob,myArea,1,1);
-				myArea.recoverEnvStats();
+				myArea.recoverPhyStats();
 			}
 			else
 			{
@@ -587,7 +587,7 @@ public class Modify extends StdCommand
 		}
 		else
 			myArea.setName(oldName);
-		myArea.recoverEnvStats();
+		myArea.recoverPhyStats();
 		mob.location().recoverRoomStats();
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"There is something different about this place...\n\r");
 		if(myArea.name().equals(oldName))
@@ -1085,7 +1085,7 @@ public class Modify extends StdCommand
 			CMLib.database().DBReadFollowers(M,false);
 			if(M.playerStats()!=null)
 				M.playerStats().setLastUpdated(M.playerStats().lastDateTime());
-			M.recoverEnvStats();
+			M.recoverPhyStats();
 			M.recoverCharStats();
 		}
 		else
@@ -1142,9 +1142,9 @@ public class Modify extends StdCommand
 			int newLevel=CMath.s_int(restStr);
 			if(newLevel>=0)
 			{
-				modMOB.baseEnvStats().setLevel(newLevel);
+				modMOB.basePhyStats().setLevel(newLevel);
 				modMOB.recoverCharStats();
-				modMOB.recoverEnvStats();
+				modMOB.recoverPhyStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modMOB.name()+" shakes under the transforming power.");
 			}
 		}
@@ -1152,8 +1152,8 @@ public class Modify extends StdCommand
 		if(command.equals("ABILITY"))
 		{
 			int newAbility=CMath.s_int(restStr);
-			modMOB.baseEnvStats().setAbility(newAbility);
-			modMOB.recoverEnvStats();
+			modMOB.basePhyStats().setAbility(newAbility);
+			modMOB.recoverPhyStats();
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modMOB.name()+" shakes under the transforming power.");
 		}
 		else
@@ -1162,14 +1162,14 @@ public class Modify extends StdCommand
 			int newRejuv=CMath.s_int(restStr);
 			if(newRejuv>0)
 			{
-				modMOB.baseEnvStats().setRejuv(newRejuv);
-				modMOB.recoverEnvStats();
+				modMOB.basePhyStats().setRejuv(newRejuv);
+				modMOB.recoverPhyStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modMOB.name()+" shakes under the transforming power.");
 			}
 			else
 			{
-				modMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
-				modMOB.recoverEnvStats();
+				modMOB.basePhyStats().setRejuv(Integer.MAX_VALUE);
+				modMOB.recoverPhyStats();
 				mob.tell(modMOB.name()+" will now never rejuvinate.");
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modMOB.name()+" shakes under the transforming power.");
 			}
@@ -1208,7 +1208,7 @@ public class Modify extends StdCommand
             if(commands.elementAt(1) instanceof Environmental)
             {
                 CMLib.genEd().genMiscSet(mob,(Environmental)commands.elementAt(1));
-                ((Environmental)commands.elementAt(1)).recoverEnvStats();
+                ((Environmental)commands.elementAt(1)).recoverPhyStats();
                 ((Environmental)commands.elementAt(1)).text();
                 return true;
             }
@@ -1514,7 +1514,7 @@ public class Modify extends StdCommand
 				}
 				else
 					CMLib.genEd().genMiscSet(mob,thang);
-				thang.recoverEnvStats();
+				thang.recoverPhyStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,thang.name()+" shake(s) under the transforming power.");
 				if(!copyItem.sameAs(thang))
 	                Log.sysOut("CreateEdit",mob.Name()+" modified item "+thang.Name()+" ("+thang.ID()+") in "+CMLib.map().getExtendedRoomID(mob.location())+".");
@@ -1548,7 +1548,7 @@ public class Modify extends StdCommand
 	                    Log.sysOut("CreateEdit",mob.Name()+" modified mob "+thang.Name()+" ("+thang.ID()+") in "+CMLib.map().getExtendedRoomID(((MOB)thang).location())+".");
 					copyMOB.destroy();
                 }
-				thang.recoverEnvStats();
+				thang.recoverPhyStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,thang.name()+" shake(s) under the transforming power.");
 			}
 			else
@@ -1563,7 +1563,7 @@ public class Modify extends StdCommand
 					mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
 					Exit copyExit=(Exit)thang.copyOf();
                     CMLib.genEd().genMiscText(mob,thang,1,1);
-					thang.recoverEnvStats();
+					thang.recoverPhyStats();
 					try
 					{
 						for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)

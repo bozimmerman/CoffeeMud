@@ -59,9 +59,9 @@ public class Chant_Shapelessness extends Chant
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> return(s) to material form.");
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setWeight(0);
 		affectableStats.setHeight(-1);
 	}

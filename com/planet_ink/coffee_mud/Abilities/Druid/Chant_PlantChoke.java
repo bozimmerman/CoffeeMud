@@ -101,12 +101,12 @@ public class Chant_PlantChoke extends Chant
 		return true;
 	}
 
-	public void affectEnvStats(Environmental aff, EnvStats affectableStats)
+	public void affectPhyStats(Physical aff, PhyStats affectableStats)
 	{
 		if((aff instanceof MOB)&&(affected instanceof Item)
 		&&(((Item)affected).amWearingAt(Wearable.WORN_NECK))
 		&&(((MOB)aff).isMine(affected)))
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_BREATHE);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_BREATHE);
 	}
 
     public int castingQuality(MOB mob, Physical target)

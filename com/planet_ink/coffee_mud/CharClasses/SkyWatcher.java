@@ -258,9 +258,9 @@ public class SkyWatcher extends StdCharClass
 			}
 		}
 	}
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if((affected instanceof MOB)&&(((MOB)affected).location()!=null))
 		{
 			MOB mob=(MOB)affected;

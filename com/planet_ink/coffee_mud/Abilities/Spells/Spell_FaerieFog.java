@@ -60,24 +60,24 @@ public class Spell_FaerieFog extends Spell
 		super.unInvoke();
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if((affected instanceof MOB)||(affected instanceof Item))
 		{
 			Room R=CMLib.map().roomLocation(affected);
 			if((R!=null)&&(R==theRoom)&&(!unInvoked)&&(R.fetchEffect(ID())==this))
 			{
-				if((affectableStats.disposition()&EnvStats.IS_INVISIBLE)==EnvStats.IS_INVISIBLE)
-					affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_INVISIBLE);
-				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GLOWING);
-				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_BONUS);
+				if((affectableStats.disposition()&PhyStats.IS_INVISIBLE)==PhyStats.IS_INVISIBLE)
+					affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_INVISIBLE);
+				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GLOWING);
+				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BONUS);
 				affectableStats.setArmor(affectableStats.armor()+10);
 			}
 			else
 			{
 				affected.delEffect(this);
-				affected.recoverEnvStats();
+				affected.recoverPhyStats();
 			}
 		}
 		else

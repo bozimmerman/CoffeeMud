@@ -73,7 +73,7 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 						A.setMiscText(t.substring(x+1));
 					}
 				}
-				A.invoke(qualMOB,V2,target,true,asLevel>0?asLevel:((affected!=null)?affected.envStats().level():0));
+				A.invoke(qualMOB,V2,target,true,asLevel>0?asLevel:((affected!=null)?affected.phyStats().level():0));
 			}
 		}
         return true;
@@ -82,7 +82,7 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
     public String accountForYourself()
     { return spellAccountingsWithMask("Casts "," when used.");}
 
-    public void affectEnvStats(Environmental host, EnvStats affectableStats)
+    public void affectPhyStats(Physical host, PhyStats affectableStats)
     {}
     
 	public void executeMsg(Environmental myHost, CMMsg msg)

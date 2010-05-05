@@ -91,7 +91,7 @@ public class Chant_HowlersMoon extends Chant
 				&&(M.fetchEffect(ID())!=null))
 					numWolfs++;
 			}
-			if((numWolfs>5)||((invoker()!=null)&&(numWolfs>(invoker().envStats().level()+(2*super.getXLEVELLevel(invoker())))/10)))
+			if((numWolfs>5)||((invoker()!=null)&&(numWolfs>(invoker().phyStats().level()+(2*super.getXLEVELLevel(invoker())))/10)))
 				 return true;
 			if(fromDir<0)
 			{
@@ -104,7 +104,7 @@ public class Chant_HowlersMoon extends Chant
 			{
 				ticksTicked=0;
 				int level=CMLib.ableMapper().lowestQualifyingLevel(ID())+5;
-				if(invoker()!=null) level=invoker().envStats().level()+5+(2*super.getXLEVELLevel(invoker()));
+				if(invoker()!=null) level=invoker().phyStats().level()+5+(2*super.getXLEVELLevel(invoker()));
 				MOB target = determineMonster(invoker(),level);
 				Room newRoom=room.getRoomInDir(fromDir);
 				int opDir=Directions.getOpDirectionCode(fromDir);
@@ -258,20 +258,20 @@ public class Chant_HowlersMoon extends Chant
 	public MOB determineMonster(MOB caster, int level)
 	{
 		MOB newMOB=CMClass.getMOB("GenMob");
-		newMOB.baseEnvStats().setAbility(0);
-		newMOB.baseEnvStats().setLevel(level);
+		newMOB.basePhyStats().setAbility(0);
+		newMOB.basePhyStats().setLevel(level);
 		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
-		newMOB.baseEnvStats().setWeight(350);
-		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
+		newMOB.basePhyStats().setWeight(350);
+		newMOB.basePhyStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Wolf"));
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
-		newMOB.recoverEnvStats();
+		newMOB.recoverPhyStats();
 		newMOB.recoverCharStats();
-		newMOB.baseEnvStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
-		newMOB.baseEnvStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
-		newMOB.baseEnvStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
-		newMOB.baseEnvStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB));
+		newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
+		newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
+		newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
+		newMOB.basePhyStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB));
 		newMOB.setName("a ferocious wolf");
 		newMOB.setDisplayText("a huge, ferocious wolf is here");
 		newMOB.setDescription("Dark black fur, always standing on end surrounds its muscular body.  The eyes are deep red, and his teeth are bared, snarling at you.");
@@ -283,7 +283,7 @@ public class Chant_HowlersMoon extends Chant
 			newMOB.addBehavior(B);
 		}
 		newMOB.recoverCharStats();
-		newMOB.recoverEnvStats();
+		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
 		newMOB.setStartRoom(null);

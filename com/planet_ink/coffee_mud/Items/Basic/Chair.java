@@ -40,15 +40,15 @@ public class Chair extends StdRideable
 	{
 		super();
 		setName("a chair");
-		baseEnvStats.setWeight(150);
+		basePhyStats.setWeight(150);
 		setDisplayText("a chair is here.");
 		setDescription("Looks like a nice comfortable wooden chair");
 		material=RawMaterial.RESOURCE_OAK;
 		baseGoldValue=5;
-		baseEnvStats().setLevel(1);
+		basePhyStats().setLevel(1);
 		setRideBasis(Rideable.RIDEABLE_SIT);
 		setRiderCapacity(1);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 }

@@ -43,7 +43,7 @@ public class StdPotion extends StdDrink implements Potion
 		super();
 
 		setName("a potion");
-		baseEnvStats.setWeight(1);
+		basePhyStats.setWeight(1);
 		setDisplayText("An empty potion sits here.");
 		setDescription("An empty potion with strange residue.");
 		secretIdentity="What was once a powerful potion.";
@@ -52,7 +52,7 @@ public class StdPotion extends StdDrink implements Potion
 		liquidType=RawMaterial.RESOURCE_DRINKABLE;
 		baseGoldValue=200;
 		material=RawMaterial.RESOURCE_GLASS;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public int liquidType(){return RawMaterial.RESOURCE_DRINKABLE;}
@@ -88,7 +88,7 @@ public class StdPotion extends StdDrink implements Potion
 				for(int i=0;i<spells.size();i++)
 				{
 					Ability thisOne=(Ability)((Ability)spells.elementAt(i)).copyOf();
-					thisOne.invoke(mob,mob,true,envStats().level());
+					thisOne.invoke(mob,mob,true,phyStats().level());
 					setDrunk(true);
 					setLiquidRemaining(0);
 				}
@@ -131,7 +131,7 @@ public class StdPotion extends StdDrink implements Potion
 			}
 		}
 		me.setBaseValue(baseValue);
-		me.recoverEnvStats();
+		me.recoverPhyStats();
 		return theSpells;
 	}
 	
@@ -165,7 +165,7 @@ public class StdPotion extends StdDrink implements Potion
 					drinkIfAble(mob);
 					mob.tell(name()+" vanishes!");
 					destroy();
-					mob.recoverEnvStats();
+					mob.recoverPhyStats();
 				}
 				else
 				{

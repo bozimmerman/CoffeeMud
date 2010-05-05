@@ -65,7 +65,7 @@ public class Prop_Hidden extends Property
 			 &&(msg.sourceMajor()>0))
 			{
 				ticksSinceLoss=0;
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 			}
 		}
 		return;
@@ -94,27 +94,27 @@ public class Prop_Hidden extends Property
 		return super.tick(ticking,tickID);
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected instanceof MOB)
 		{
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_HIDDEN);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_HIDDEN);
 			if(ticksSinceLoss>30)
-				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
+				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_HIDDEN);
 		}
 		else
 		{
 			if(unLocatable)
-				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.SENSE_UNLOCATABLE);
+				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_UNLOCATABLE);
 			if(affected instanceof Item)
 			{
 				if((((Item)affected).owner()!=null)
 				&&(((Item)affected).owner() instanceof Room))
-					affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
+					affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_HIDDEN);
 			}
 			else
-				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
+				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_HIDDEN);
 		}
 	}
 }

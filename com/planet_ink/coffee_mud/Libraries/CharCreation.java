@@ -1079,10 +1079,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	                    newClass=null;
 	            }
 	        }
-	        mob.baseEnvStats().setLevel(1);
+	        mob.basePhyStats().setLevel(1);
 	        mob.baseCharStats().setCurrentClass(newClass);
 	        mob.baseCharStats().setClassLevel(newClass,1);
-	        mob.baseEnvStats().setSensesMask(0);
+	        mob.basePhyStats().setSensesMask(0);
 	
 	
 	        Item r=CMClass.getItem("Ration");
@@ -1101,7 +1101,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	        }
 	
 	        mob.recoverCharStats();
-	        mob.recoverEnvStats();
+	        mob.recoverPhyStats();
 	        mob.recoverMaxState();
 	        mob.resetToMaxState();
 	

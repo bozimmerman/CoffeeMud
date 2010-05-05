@@ -42,7 +42,7 @@ public class Prop_HaveAdjuster extends Property
 	public boolean bubbleAffect(){return true;}
     protected Object[] charStatsChanges=null;
     protected Object[] charStateChanges=null;
-    protected Object[] envStatsChanges=null;
+    protected Object[] phyStatsChanges=null;
     protected Vector mask=null;
 
     
@@ -69,27 +69,27 @@ public class Prop_HaveAdjuster extends Property
 	{
 		super.setMiscText(newText);
         this.charStateChanges=null;
-        this.envStatsChanges=null;
+        this.phyStatsChanges=null;
         this.charStatsChanges=null;
         this.mask=new Vector();
         newText=buildMask(newText,mask);
-        Vector envStatsV=new Vector();
-        addIfPlussed(newText,"abi",EnvStats.STAT_ABILITY,envStatsV);
-        addIfPlussed(newText,"arm",EnvStats.STAT_ARMOR,envStatsV);
-        addIfPlussed(newText,"att",EnvStats.STAT_ATTACK,envStatsV);
-        addIfPlussed(newText,"dam",EnvStats.STAT_DAMAGE,envStatsV);
-        addIfPlussed(newText,"dis",EnvStats.STAT_DISPOSITION,envStatsV);
-        addIfPlussed(newText,"lev",EnvStats.STAT_LEVEL,envStatsV);
-        addIfPlussed(newText,"rej",EnvStats.STAT_REJUV,envStatsV);
-        addIfPlussed(newText,"sen",EnvStats.STAT_SENSES,envStatsV);
+        Vector phyStatsV=new Vector();
+        addIfPlussed(newText,"abi",PhyStats.STAT_ABILITY,phyStatsV);
+        addIfPlussed(newText,"arm",PhyStats.STAT_ARMOR,phyStatsV);
+        addIfPlussed(newText,"att",PhyStats.STAT_ATTACK,phyStatsV);
+        addIfPlussed(newText,"dam",PhyStats.STAT_DAMAGE,phyStatsV);
+        addIfPlussed(newText,"dis",PhyStats.STAT_DISPOSITION,phyStatsV);
+        addIfPlussed(newText,"lev",PhyStats.STAT_LEVEL,phyStatsV);
+        addIfPlussed(newText,"rej",PhyStats.STAT_REJUV,phyStatsV);
+        addIfPlussed(newText,"sen",PhyStats.STAT_SENSES,phyStatsV);
         double dval=CMParms.getParmDoublePlus(newText,"spe");
         if(dval!=0)
         {
-            envStatsV.addElement(Integer.valueOf(EnvStats.NUM_STATS));
-            envStatsV.addElement(Double.valueOf(dval));
+            phyStatsV.addElement(Integer.valueOf(PhyStats.NUM_STATS));
+            phyStatsV.addElement(Double.valueOf(dval));
         }
-        addIfPlussed(newText,"wei",EnvStats.STAT_WEIGHT,envStatsV);
-        addIfPlussed(newText,"hei",EnvStats.STAT_HEIGHT,envStatsV);
+        addIfPlussed(newText,"wei",PhyStats.STAT_WEIGHT,phyStatsV);
+        addIfPlussed(newText,"hei",PhyStats.STAT_HEIGHT,phyStatsV);
 
         Vector charStatsV=new Vector();
         String val=CMParms.getParmStr(newText,"gen","").toUpperCase();
@@ -129,27 +129,27 @@ public class Prop_HaveAdjuster extends Property
         addIfPlussed(newText,"thi",CharState.STAT_THIRST,charStateV);
         
         this.charStateChanges=makeObjectArray(charStateV);
-        this.envStatsChanges=makeObjectArray(envStatsV);
+        this.phyStatsChanges=makeObjectArray(phyStatsV);
         this.charStatsChanges=makeObjectArray(charStatsV);
 	}
 
-	public void envStuff(Object[] changes, EnvStats envStats)
+	public void phyStuff(Object[] changes, PhyStats phyStats)
 	{
         if(changes==null) return;
         for(int c=0;c<changes.length;c+=2)
         switch(((Integer)changes[c]).intValue())
         {
-        case EnvStats.STAT_ABILITY: envStats.setAbility(envStats.ability()+((Integer)changes[c+1]).intValue()); break;
-        case EnvStats.STAT_ARMOR: envStats.setArmor(envStats.armor()+((Integer)changes[c+1]).intValue()); break;
-        case EnvStats.STAT_ATTACK: envStats.setAttackAdjustment(envStats.attackAdjustment()+((Integer)changes[c+1]).intValue()); break;
-        case EnvStats.STAT_DAMAGE: envStats.setDamage(envStats.damage()+((Integer)changes[c+1]).intValue()); break;
-        case EnvStats.STAT_DISPOSITION: envStats.setDisposition(envStats.disposition()+((Integer)changes[c+1]).intValue()); break;
-        case EnvStats.STAT_LEVEL: envStats.setLevel(envStats.level()+((Integer)changes[c+1]).intValue()); break;
-        case EnvStats.STAT_REJUV: envStats.setRejuv(envStats.rejuv()+((Integer)changes[c+1]).intValue()); break;
-        case EnvStats.STAT_SENSES: envStats.setSensesMask(envStats.sensesMask()+((Integer)changes[c+1]).intValue()); break;
-        case EnvStats.STAT_WEIGHT: envStats.setWeight(envStats.weight()+((Integer)changes[c+1]).intValue()); break;
-        case EnvStats.STAT_HEIGHT: envStats.setHeight(envStats.height()+((Integer)changes[c+1]).intValue()); break;
-        case EnvStats.NUM_STATS: envStats.setSpeed(envStats.speed()+((Double)changes[c+1]).doubleValue()); break;
+        case PhyStats.STAT_ABILITY: phyStats.setAbility(phyStats.ability()+((Integer)changes[c+1]).intValue()); break;
+        case PhyStats.STAT_ARMOR: phyStats.setArmor(phyStats.armor()+((Integer)changes[c+1]).intValue()); break;
+        case PhyStats.STAT_ATTACK: phyStats.setAttackAdjustment(phyStats.attackAdjustment()+((Integer)changes[c+1]).intValue()); break;
+        case PhyStats.STAT_DAMAGE: phyStats.setDamage(phyStats.damage()+((Integer)changes[c+1]).intValue()); break;
+        case PhyStats.STAT_DISPOSITION: phyStats.setDisposition(phyStats.disposition()+((Integer)changes[c+1]).intValue()); break;
+        case PhyStats.STAT_LEVEL: phyStats.setLevel(phyStats.level()+((Integer)changes[c+1]).intValue()); break;
+        case PhyStats.STAT_REJUV: phyStats.setRejuv(phyStats.rejuv()+((Integer)changes[c+1]).intValue()); break;
+        case PhyStats.STAT_SENSES: phyStats.setSensesMask(phyStats.sensesMask()+((Integer)changes[c+1]).intValue()); break;
+        case PhyStats.STAT_WEIGHT: phyStats.setWeight(phyStats.weight()+((Integer)changes[c+1]).intValue()); break;
+        case PhyStats.STAT_HEIGHT: phyStats.setHeight(phyStats.height()+((Integer)changes[c+1]).intValue()); break;
+        case PhyStats.NUM_STATS: phyStats.setSpeed(phyStats.speed()+((Double)changes[c+1]).doubleValue()); break;
         }
 	}
 
@@ -176,11 +176,11 @@ public class Prop_HaveAdjuster extends Property
 			setMiscText(text());
 	}
 
-	public void affectEnvStats(Environmental host, EnvStats affectableStats)
+	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{
 		ensureStarted();
-        if(canApply(host)) envStuff(envStatsChanges,affectableStats);
-		super.affectEnvStats(host,affectableStats);
+        if(canApply(host)) phyStuff(phyStatsChanges,affectableStats);
+		super.affectPhyStats(host,affectableStats);
 	}
 
 	public void adjCharStats(Object[] changes, CharStats charStats)
@@ -258,9 +258,9 @@ public class Prop_HaveAdjuster extends Property
 			if((val!=0)&&(y>x))
 			{
 				StringBuffer middle=new StringBuffer("");
-				for(int num=0;num<EnvStats.IS_VERBS.length;num++)
+				for(int num=0;num<PhyStats.IS_VERBS.length;num++)
 					if(CMath.bset(val,CMath.pow(2,num)))
-						middle.append(EnvStats.IS_VERBS[num]+" ");
+						middle.append(PhyStats.IS_VERBS[num]+" ");
 				id=id.substring(0,x)+middle.toString().trim()+id.substring(y+((""+val).length()));
 			}
 		}
@@ -272,9 +272,9 @@ public class Prop_HaveAdjuster extends Property
 			if((val!=0)&&(y>x))
 			{
 				StringBuffer middle=new StringBuffer("");
-				for(int num=0;num<EnvStats.CAN_SEE_VERBS.length;num++)
+				for(int num=0;num<PhyStats.CAN_SEE_VERBS.length;num++)
 					if(CMath.bset(val,CMath.pow(2,num)))
-						middle.append(EnvStats.CAN_SEE_VERBS[num]+" ");
+						middle.append(PhyStats.CAN_SEE_VERBS[num]+" ");
 				id=id.substring(0,x)+middle.toString().trim()+id.substring(y+((""+val).length()));
 			}
 		}

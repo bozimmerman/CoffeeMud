@@ -44,10 +44,10 @@ public class Spell_PassDoor extends Spell
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
     public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectedStats)
+	public void affectPhyStats(Physical affected, PhyStats affectedStats)
 	{
-		super.affectEnvStats(affected,affectedStats);
-		affectedStats.setDisposition(affectedStats.disposition()|EnvStats.IS_INVISIBLE);
+		super.affectPhyStats(affected,affectedStats);
+		affectedStats.setDisposition(affectedStats.disposition()|PhyStats.IS_INVISIBLE);
 		affectedStats.setHeight(-1);
 	}
 
@@ -129,7 +129,7 @@ public class Spell_PassDoor extends Spell
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob,asLevel,5);
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 			}
 		}
 		else
@@ -139,11 +139,11 @@ public class Spell_PassDoor extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.addEffect(this);
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 				mob.tell("\n\r\n\r");
 				CMLib.tracking().move(mob,dirCode,false,false);
 				mob.delEffect(this);
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 			}
 		}
 

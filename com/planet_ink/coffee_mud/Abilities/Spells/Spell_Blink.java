@@ -142,10 +142,10 @@ public class Spell_Blink extends Spell
 			{
 				mob.location().send(mob,msg);
 				if(target.location()==mob.location())
-					if((mob.envStats().level()+(2*getXLEVELLevel(mob)))>5)
-						success=beneficialAffect(mob,target,asLevel,(mob.envStats().level()+(2*getXLEVELLevel(mob)))-4);
+					if((mob.phyStats().level()+(2*getXLEVELLevel(mob)))>5)
+						success=beneficialAffect(mob,target,asLevel,(mob.phyStats().level()+(2*getXLEVELLevel(mob)))-4);
 					else
-						success=beneficialAffect(mob,target,asLevel,mob.envStats().level()+(2*getXLEVELLevel(mob)));
+						success=beneficialAffect(mob,target,asLevel,mob.phyStats().level()+(2*getXLEVELLevel(mob)));
 			}
 		}
 		else

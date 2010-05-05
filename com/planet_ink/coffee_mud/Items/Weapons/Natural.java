@@ -42,13 +42,13 @@ public class Natural extends StdWeapon
 		setName("fingernails and teeth");
 		setDisplayText("A set of claws and teeth are piled here.");
 		setDescription("Those hands and claws look fit to kill.");
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(0);
-		baseEnvStats.setWeight(0);
-		baseEnvStats().setAttackAdjustment(0);
-		baseEnvStats().setDamage(0);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(0);
+		basePhyStats.setWeight(0);
+		basePhyStats().setAttackAdjustment(0);
+		basePhyStats().setDamage(0);
 		weaponType=TYPE_NATURAL;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_SCALES;
 		weaponClassification=Weapon.CLASS_NATURAL;
 	}

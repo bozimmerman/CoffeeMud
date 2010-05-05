@@ -177,7 +177,7 @@ public class FieryRoom
                     if (burn != null) {
                         mob.location().showHappens(CMMsg.MSG_OK_ACTION, target.Name() + " begins to burn!");
                         target.addEffect(burn);
-                        target.recoverEnvStats();
+                        target.recoverPhyStats();
                     }
                 }
             }
@@ -195,7 +195,7 @@ public class FieryRoom
 			{
 			    which.showHappens(CMMsg.MSG_OK_ACTION, target.Name() + " begins to burn!");
 			    burn.invoke(mob,target,true,0);
-			    target.recoverEnvStats();
+			    target.recoverPhyStats();
 			}
 		}
 		mob.destroy();

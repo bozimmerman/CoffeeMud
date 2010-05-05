@@ -39,9 +39,9 @@ public class Prop_NoPurge extends Property
 	public String name(){ return "Prevents automatic purging";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_ITEMS;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected!=null)
 		{
 			if(affected instanceof Room)

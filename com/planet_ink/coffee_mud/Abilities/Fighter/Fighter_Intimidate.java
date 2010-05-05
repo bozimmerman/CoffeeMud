@@ -54,7 +54,7 @@ public class Fighter_Intimidate extends FighterSkill
 		{
 			MOB target=(MOB)msg.target();
 			MOB attacker=msg.source();
-			int levelDiff=((attacker.envStats().level()-(target.envStats().level()+((2*getXLEVELLevel(target)))))*10);
+			int levelDiff=((attacker.phyStats().level()-(target.phyStats().level()+((2*getXLEVELLevel(target)))))*10);
 			// 1 level off = -10
 			// 10 levels off = -100
 			if((!target.isInCombat())

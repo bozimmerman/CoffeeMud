@@ -64,8 +64,8 @@ public class Fighter_MonkeyPunch extends FighterSkill
 				Weapon naturalWeapon=CMClass.getWeapon("GenWeapon");
 				naturalWeapon.setName("a monkey punch");
 				naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
-                naturalWeapon.baseEnvStats().setDamage(5+getXLEVELLevel(mob));
-				naturalWeapon.recoverEnvStats();
+                naturalWeapon.basePhyStats().setDamage(5+getXLEVELLevel(mob));
+				naturalWeapon.recoverPhyStats();
 				CMLib.combat().postAttack(mob,mob.getVictim(),naturalWeapon);
 			}
 		}

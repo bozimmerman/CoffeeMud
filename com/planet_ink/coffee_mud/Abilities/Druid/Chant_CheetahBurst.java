@@ -50,9 +50,9 @@ public class Chant_CheetahBurst extends Chant
 	    tickDown = 3;
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(tickDown==1)
 			affectableStats.setSpeed(affectableStats.speed() + 3.0+CMath.mul(0.1,getXLEVELLevel(invoker())));
 	}
@@ -78,12 +78,12 @@ public class Chant_CheetahBurst extends Chant
 		MOB mob=(MOB)affected;
 		if((--tickDown)==0)
 		{
-			mob.recoverEnvStats();
+			mob.recoverPhyStats();
 			tickDown=3;
 		}
 		else
 		if(tickDown==1)
-			mob.recoverEnvStats();
+			mob.recoverPhyStats();
 		mob.curState().adjMovement(mob.charStats().getStat(CharStats.STAT_STRENGTH)/5,mob.maxState());
 		return true;
 	}

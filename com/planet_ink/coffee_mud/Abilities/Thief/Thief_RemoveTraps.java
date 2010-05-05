@@ -75,8 +75,8 @@ public class Thief_RemoveTraps extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,+(((mob.envStats().level()+(getXLEVELLevel(mob)*2))
-											 -unlockThis.envStats().level())*3),auto);
+		boolean success=proficiencyCheck(mob,+(((mob.phyStats().level()+(getXLEVELLevel(mob)*2))
+											 -unlockThis.phyStats().level())*3),auto);
 		Vector permSetV=new Vector();
 		Trap theTrap=CMLib.utensils().fetchMyTrap(unlockThis);
 		if(theTrap!=null) permSetV.addElement(unlockThis);

@@ -95,7 +95,7 @@ public class Prayer_FountainLife extends Prayer
 				SpringLocation=mob.location();
 				littleSpring=newItem;
 				beneficialAffect(mob,newItem,asLevel,0);
-				mob.location().recoverEnvStats();
+				mob.location().recoverPhyStats();
 			}
 		}
 		else

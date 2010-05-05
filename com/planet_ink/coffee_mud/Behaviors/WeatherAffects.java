@@ -180,10 +180,10 @@ public class WeatherAffects extends PuddleMaker
 	        &&(R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
 	        &&(CMLib.dice().rollPercentage()>((msg.source().charStats().getStat(CharStats.STAT_DEXTERITY)*3)+25)))
             {
-                int oldDisposition=msg.source().baseEnvStats().disposition();
-                oldDisposition=oldDisposition&(Integer.MAX_VALUE-EnvStats.IS_SLEEPING-EnvStats.IS_SNEAKING-EnvStats.IS_SITTING);
-                msg.source().baseEnvStats().setDisposition(oldDisposition|EnvStats.IS_SITTING);
-                msg.source().recoverEnvStats();
+                int oldDisposition=msg.source().basePhyStats().disposition();
+                oldDisposition=oldDisposition&(Integer.MAX_VALUE-PhyStats.IS_SLEEPING-PhyStats.IS_SNEAKING-PhyStats.IS_SITTING);
+                msg.source().basePhyStats().setDisposition(oldDisposition|PhyStats.IS_SITTING);
+                msg.source().recoverPhyStats();
                 R.show(msg.source(),null,CMMsg.MSG_OK_ACTION,"^W<S-NAME> slip(s) on the "+what+" ground.^?");
                 return false;
             }
@@ -508,7 +508,7 @@ public class WeatherAffects extends PuddleMaker
                         if(A2!=null)
                         { 
                             A2.setMiscText("RENDER MUNDANE"); 
-                            A2.invoke(M,M,true,M.envStats().level());
+                            A2.invoke(M,M,true,M.phyStats().level());
                         }
                     }
                     else
@@ -649,7 +649,7 @@ public class WeatherAffects extends PuddleMaker
                     &&(C.weatherType(R)==Climate.WEATHER_HAIL))
                     {
                         A2.setMiscText("RENDER MUNDANE"); 
-                        A2.invoke(M,M,true,M.envStats().level());
+                        A2.invoke(M,M,true,M.phyStats().level());
                     }
                 }
             }
@@ -719,7 +719,7 @@ public class WeatherAffects extends PuddleMaker
                     if(A2!=null)
                     {
                         A2.setMiscText("RENDER MUNDANE"); 
-                        A2.invoke(M,M,true,M.envStats().level());
+                        A2.invoke(M,M,true,M.phyStats().level());
                     }
                     M.destroy();
                 }
@@ -780,7 +780,7 @@ public class WeatherAffects extends PuddleMaker
                         if((!I.amWearingAt(Wearable.IN_INVENTORY))
                         &&(((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL))
                         &&(I.subjectToWearAndTear())
-                        &&((CMLib.dice().rollPercentage()>I.envStats().ability()*25)))
+                        &&((CMLib.dice().rollPercentage()>I.phyStats().ability()*25)))
                             rustThese.addElement(I);
                         else
                         if(I.amWearingAt(Wearable.WORN_ABOUT_BODY)

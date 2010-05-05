@@ -43,19 +43,19 @@ public class EternityLeafArmor extends StdArmor
 		properWornBitmap=Wearable.WORN_TORSO | Wearable.WORN_ARMS | Wearable.WORN_LEGS;
 		wornLogicalAnd=true;
 		baseGoldValue+=25000;
-		baseEnvStats().setArmor(50);
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setWeight(15);
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
-		recoverEnvStats();
+		basePhyStats().setArmor(50);
+		basePhyStats().setAbility(0);
+		basePhyStats().setWeight(15);
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_SEAWEED;
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if((!this.amWearingAt(Wearable.IN_INVENTORY))&&(!this.amWearingAt(Wearable.WORN_HELD)))
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SNEAKING);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SNEAKING);
 	}
 
 

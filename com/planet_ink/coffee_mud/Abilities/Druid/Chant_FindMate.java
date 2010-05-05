@@ -225,7 +225,7 @@ public class Chant_FindMate extends Chant
 					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> yearn(s) for a mate!");
 					A.makeLongLasting();
 					A.nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),true);
-					target.recoverEnvStats();
+					target.recoverPhyStats();
 				}
 			}
 		}

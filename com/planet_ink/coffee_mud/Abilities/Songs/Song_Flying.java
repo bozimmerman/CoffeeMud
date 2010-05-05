@@ -41,11 +41,11 @@ public class Song_Flying extends Song
 	public long flags(){return Ability.FLAG_MOVING;}
     protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(invoker==null) return;
 
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
 	}
 }

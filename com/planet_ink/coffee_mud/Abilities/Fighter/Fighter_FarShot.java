@@ -80,7 +80,7 @@ public class Fighter_FarShot extends FighterSkill
 				A.setSavable(false);
 				msg.target().addEffect(A);
 				A.makeLongLasting();
-				msg.target().recoverEnvStats();
+				msg.target().recoverPhyStats();
 			}
 			else
 			if(((msg.targetMinor()==CMMsg.TYP_REMOVE)
@@ -89,16 +89,16 @@ public class Fighter_FarShot extends FighterSkill
 			{
 				qualifiedWeapons.removeElement(msg.target());
 				msg.target().delEffect(msg.target().fetchEffect(ID()));
-				msg.target().recoverEnvStats();
+				msg.target().recoverPhyStats();
 			}
 		}
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected instanceof Item)
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.SENSE_ITEMNOMAXRANGE);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ITEMNOMAXRANGE);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -127,7 +127,7 @@ public class Fighter_FarShot extends FighterSkill
 					A.setSavable(false);
 					w.addEffect(A);
 					A.makeLongLasting();
-					w.recoverEnvStats();
+					w.recoverPhyStats();
 				}
 			}
 			for(int i=qualifiedWeapons.size()-1;i>=0;i--)
@@ -137,7 +137,7 @@ public class Fighter_FarShot extends FighterSkill
 				{
 					qualifiedWeapons.removeElement(I);
 					I.delEffect(I.fetchEffect(ID()));
-					I.recoverEnvStats();
+					I.recoverPhyStats();
 				}
 			}
 		}

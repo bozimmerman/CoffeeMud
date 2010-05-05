@@ -43,11 +43,11 @@ public class DrowChainMailArmor extends StdArmor
         secretIdentity="A suit of Drow Chain Mail Armor";
 		properWornBitmap=Wearable.WORN_TORSO | Wearable.WORN_ARMS | Wearable.WORN_LEGS;
 		wornLogicalAnd=true;
-		baseEnvStats().setArmor(65);
-		baseEnvStats().setWeight(60);
-		baseEnvStats().setAbility(0);
+		basePhyStats().setArmor(65);
+		basePhyStats().setWeight(60);
+		basePhyStats().setAbility(0);
 		baseGoldValue=1500;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_STEEL;
 	}
 

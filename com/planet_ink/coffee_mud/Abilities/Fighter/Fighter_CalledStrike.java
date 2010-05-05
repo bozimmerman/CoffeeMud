@@ -51,7 +51,7 @@ public class Fighter_CalledStrike extends FighterSkill
 	protected MOB target=null;
 	protected int hpReq=9;
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-100);
 	}
@@ -230,7 +230,7 @@ public class Fighter_CalledStrike extends FighterSkill
 				beneficialAffect(mob,mob,asLevel,2);
 				Ability A2=target.fetchEffect("Injury");
 				if(A2!=null) A2.setMiscText(mob.Name()+"/"+gone);
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 			}
 		}
 		else

@@ -51,13 +51,13 @@ public class StdWeapon extends StdItem implements Weapon
 		setDescription("This is a deadly looking weapon.");
 		wornLogicalAnd=false;
 		properWornBitmap=Wearable.WORN_HELD|Wearable.WORN_WIELD;
-		baseEnvStats().setAttackAdjustment(0);
-		baseEnvStats().setDamage(0);
-		baseEnvStats().setAbility(0);
+		basePhyStats().setAttackAdjustment(0);
+		basePhyStats().setDamage(0);
+		basePhyStats().setAbility(0);
 		baseGoldValue=15;
 		material=RawMaterial.RESOURCE_STEEL;
 		setUsesRemaining(100);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 
@@ -69,34 +69,34 @@ public class StdWeapon extends StdItem implements Weapon
 	public String secretIdentity()
 	{
 		String id=super.secretIdentity();
-		if(envStats().ability()>0)
-			id=name()+" +"+envStats().ability()+((id.length()>0)?"\n":"")+id;
+		if(phyStats().ability()>0)
+			id=name()+" +"+phyStats().ability()+((id.length()>0)?"\n":"")+id;
 		else
-		if(envStats().ability()<0)
-			id=name()+" "+envStats().ability()+((id.length()>0)?"\n":"")+id;
-		return id+"\n\rAttack: "+envStats().attackAdjustment()+", Damage: "+envStats().damage();
+		if(phyStats().ability()<0)
+			id=name()+" "+phyStats().ability()+((id.length()>0)?"\n":"")+id;
+		return id+"\n\rAttack: "+phyStats().attackAdjustment()+", Damage: "+phyStats().damage();
 	}
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(amWearingAt(Wearable.WORN_WIELD))
 		{
-            if(envStats().attackAdjustment()!=0)
-    			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(envStats().attackAdjustment()));
-			if(envStats().damage()!=0)
-				affectableStats.setDamage(affectableStats.damage()+envStats().damage());
+            if(phyStats().attackAdjustment()!=0)
+    			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(phyStats().attackAdjustment()));
+			if(phyStats().damage()!=0)
+				affectableStats.setDamage(affectableStats.damage()+phyStats().damage());
 		}
 	}
-	public void recoverEnvStats()
+	public void recoverPhyStats()
 	{
-		super.recoverEnvStats();
-        if(envStats().damage()!=0)
+		super.recoverPhyStats();
+        if(phyStats().damage()!=0)
         {
-            envStats().setDamage(envStats().damage()+(envStats().ability()*2));
-            envStats().setAttackAdjustment(envStats().attackAdjustment()+(envStats().ability()*10));
+            phyStats().setDamage(phyStats().damage()+(phyStats().ability()*2));
+            phyStats().setAttackAdjustment(phyStats().attackAdjustment()+(phyStats().ability()*10));
         }
 		if((subjectToWearAndTear())&&(usesRemaining()<100))
-			envStats().setDamage(((int)Math.round(CMath.mul(envStats().damage(),CMath.div(usesRemaining(),100)))));
+			phyStats().setDamage(((int)Math.round(CMath.mul(phyStats().damage(),CMath.div(usesRemaining(),100)))));
 	}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
@@ -154,18 +154,18 @@ public class StdWeapon extends StdItem implements Weapon
 						A=CMClass.getAbility("Disease_Infection");
 
 					if((A!=null)&&(msg.target().fetchEffect(A.ID())==null))
-						A.invoke(msg.source(),tmob,true,envStats().level());
+						A.invoke(msg.source(),tmob,true,phyStats().level());
 				}
 			}
 
 			if((subjectToWearAndTear())
 			&&(CMLib.dice().rollPercentage()==1)
 			&&(msg.source().rangeToTarget()==0)
-			&&(CMLib.dice().rollPercentage()>((envStats().level()/2)+(10*envStats().ability())+(CMLib.flags().isABonusItems(this)?20:0)))
+			&&(CMLib.dice().rollPercentage()>((phyStats().level()/2)+(10*phyStats().ability())+(CMLib.flags().isABonusItems(this)?20:0)))
 			&&((material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ENERGY))
 			{
 				setUsesRemaining(usesRemaining()-1);
-				recoverEnvStats();
+				recoverPhyStats();
 				if((usesRemaining()<10)
 				&&(owner()!=null)
 				&&(owner() instanceof MOB)
@@ -181,7 +181,7 @@ public class StdWeapon extends StdItem implements Weapon
 					msg.addTrailerMsg(CMClass.getMsg(((MOB)owner()),null,null,CMMsg.MSG_OK_VISUAL,"^I"+name()+" is destroyed!!^?",CMMsg.NO_EFFECT,null,CMMsg.MSG_OK_VISUAL,"^I"+name()+" being wielded by <S-NAME> is destroyed!^?"));
 					unWear();
 					destroy();
-					owner.recoverEnvStats();
+					owner.recoverPhyStats();
 					owner.recoverCharStats();
 					owner.recoverMaxState();
                     if(owner.location()!=null)
@@ -260,7 +260,7 @@ public class StdWeapon extends StdItem implements Weapon
 					}
 					if(recover)
 					{
-						mob.recoverEnvStats();
+						mob.recoverPhyStats();
 						mob.recoverCharStats();
 						mob.recoverMaxState();
 					}
@@ -354,13 +354,13 @@ public class StdWeapon extends StdItem implements Weapon
 	}
 	public int minRange()
 	{
-		if(CMath.bset(envStats().sensesMask(),EnvStats.SENSE_ITEMNOMINRANGE))
+		if(CMath.bset(phyStats().sensesMask(),PhyStats.SENSE_ITEMNOMINRANGE))
 			return 0;
 		return minRange;
 	}
 	public int maxRange()
 	{
-		if(CMath.bset(envStats().sensesMask(),EnvStats.SENSE_ITEMNOMAXRANGE))
+		if(CMath.bset(phyStats().sensesMask(),PhyStats.SENSE_ITEMNOMAXRANGE))
 			return 100;
 		return maxRange;
 	}

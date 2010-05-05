@@ -72,13 +72,13 @@ public class TemporaryAffects extends StdAbility
 		return flag;
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected==null) return;
 		for(Object[] A : affects)
 			if(A[0] instanceof StatsAffecting)
-				((StatsAffecting)A[0]).affectEnvStats(affected, affectableStats);
+				((StatsAffecting)A[0]).affectPhyStats(affected, affectableStats);
 	}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -110,7 +110,7 @@ public class TemporaryAffects extends StdAbility
 		}
 		affects.remove(Os);
 		if(E != null)
-			E.recoverEnvStats();
+			E.recoverPhyStats();
 		if(E instanceof MOB)
 		{
 			((MOB)E).recoverCharStats();
@@ -198,7 +198,7 @@ public class TemporaryAffects extends StdAbility
 				}
 				affects.addElement(new Object[]{A,new int[]{CMath.s_int(numTicksStr)}});
 				if(affected != null)
-					affected.recoverEnvStats();
+					affected.recoverPhyStats();
 				if(affected instanceof MOB)
 				{
 					((MOB)affected).recoverCharStats();

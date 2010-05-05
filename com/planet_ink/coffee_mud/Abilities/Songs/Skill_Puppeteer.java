@@ -99,12 +99,12 @@ public class Skill_Puppeteer extends BardSkill
 			if(M.isInCombat())
 			{
 				boolean isHit=(CMLib.combat().rollToHit(CMLib.combat().adjustedAttackBonus(M,M.getVictim())+(5*getXLEVELLevel(M))
-                            +((Item)affected).envStats().attackAdjustment(),CMLib.combat().adjustedArmor(M.getVictim()), 0));
+                            +((Item)affected).phyStats().attackAdjustment(),CMLib.combat().adjustedArmor(M.getVictim()), 0));
 				if(!isHit)
 					M.location().show(M,M.getVictim(),affected,CMMsg.MSG_OK_ACTION,"<O-NAME> attacks <T-NAME> and misses!");
 				else
 					CMLib.combat().postDamage(M,M.getVictim(),affected,
-											CMLib.dice().roll(1,affected.envStats().level()+(2*getXLEVELLevel(M)),1),
+											CMLib.dice().roll(1,affected.phyStats().level()+(2*getXLEVELLevel(M)),1),
 											CMMsg.MASK_ALWAYS|CMMsg.TYP_WEAPONATTACK,
 											Weapon.TYPE_BASHING,affected.name()+" attacks and <DAMAGE> <T-NAME>!");
 			}
@@ -144,10 +144,10 @@ public class Skill_Puppeteer extends BardSkill
 		super.unInvoke();
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)

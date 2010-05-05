@@ -42,11 +42,11 @@ public class Hat extends StdArmor
 		setDescription("It looks like a regular cap with long feather.");
 		properWornBitmap=Wearable.WORN_HEAD;
 		wornLogicalAnd=false;
-		baseEnvStats().setArmor(2);
-		baseEnvStats().setWeight(1);
-		baseEnvStats().setAbility(0);
+		basePhyStats().setArmor(2);
+		basePhyStats().setWeight(1);
+		basePhyStats().setAbility(0);
 		baseGoldValue=5;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_LEATHER;
 	}
 

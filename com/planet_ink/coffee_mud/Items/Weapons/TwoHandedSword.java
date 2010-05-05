@@ -40,15 +40,15 @@ public class TwoHandedSword extends Sword
 		setName("a two-handed sword");
 		setDisplayText("a heavy two-handed sword hangs on the wall.");
 		setDescription("It has a metallic pommel, and a very large blade.");
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(0);
-		baseEnvStats.setWeight(15);
-		baseEnvStats().setAttackAdjustment(0);
-		baseEnvStats().setDamage(10);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(0);
+		basePhyStats.setWeight(15);
+		basePhyStats().setAttackAdjustment(0);
+		basePhyStats().setDamage(10);
 		baseGoldValue=50;
 		wornLogicalAnd=true;
 		properWornBitmap=Wearable.WORN_HELD|Wearable.WORN_WIELD;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_STEEL;
 		weaponType=TYPE_SLASHING;
 	}

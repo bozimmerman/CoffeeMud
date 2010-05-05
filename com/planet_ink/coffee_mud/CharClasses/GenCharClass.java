@@ -92,7 +92,7 @@ public class GenCharClass extends StdCharClass
 	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeaponSet;}
 	protected CharStats setStats=null;
 	protected CharStats adjStats=null;
-	protected EnvStats adjEStats=null;
+	protected PhyStats adjPStats=null;
 	protected CharState adjState=null;
 	protected CharState startAdjState=null;
     protected CharClass statBuddy=null;
@@ -203,7 +203,7 @@ public class GenCharClass extends StdCharClass
 			return false;
 		if(mob != null)
 		{
-			if((!mob.isMonster())&&(mob.baseEnvStats().level()>0))
+			if((!mob.isMonster())&&(mob.basePhyStats().level()>0))
 			{
 				if(!CMLib.masking().maskCheck(qualifications,mob,true))
 				{
@@ -227,23 +227,23 @@ public class GenCharClass extends StdCharClass
     }
     
     
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		if(adjEStats!=null)
+		if(adjPStats!=null)
 		{
-			affectableStats.setAbility(affectableStats.ability()+adjEStats.ability());
-			affectableStats.setArmor(affectableStats.armor()+adjEStats.armor());
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+adjEStats.attackAdjustment());
-			affectableStats.setDamage(affectableStats.damage()+adjEStats.damage());
-			affectableStats.setDisposition(affectableStats.disposition()|adjEStats.disposition());
-			affectableStats.setHeight(affectableStats.height()+adjEStats.height());
-			affectableStats.setLevel(affectableStats.level()+adjEStats.level());
-			affectableStats.setSensesMask(affectableStats.sensesMask()|adjEStats.sensesMask());
-			affectableStats.setSpeed(affectableStats.speed()+adjEStats.speed());
-			affectableStats.setWeight(affectableStats.weight()+adjEStats.weight());
+			affectableStats.setAbility(affectableStats.ability()+adjPStats.ability());
+			affectableStats.setArmor(affectableStats.armor()+adjPStats.armor());
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+adjPStats.attackAdjustment());
+			affectableStats.setDamage(affectableStats.damage()+adjPStats.damage());
+			affectableStats.setDisposition(affectableStats.disposition()|adjPStats.disposition());
+			affectableStats.setHeight(affectableStats.height()+adjPStats.height());
+			affectableStats.setLevel(affectableStats.level()+adjPStats.level());
+			affectableStats.setSensesMask(affectableStats.sensesMask()|adjPStats.sensesMask());
+			affectableStats.setSpeed(affectableStats.speed()+adjPStats.speed());
+			affectableStats.setWeight(affectableStats.weight()+adjPStats.weight());
 		}
         if(statBuddy!=null)
-            statBuddy.affectEnvStats(affected,affectableStats);
+            statBuddy.affectPhyStats(affected,affectableStats);
 	}
     public boolean tick(Tickable myChar, int tickID)
     {
@@ -330,9 +330,9 @@ public class GenCharClass extends StdCharClass
 		str.append(CMLib.xml().convertXMLtoTag("MAXLGS",""+maxLanguages));
 		
         str.append(CMLib.xml().convertXMLtoTag("HELP",CMLib.xml().parseOutAngleBrackets(helpEntry)));
-		if(adjEStats==null) str.append("<ESTATS/>");
+		if(adjPStats==null) str.append("<ESTATS/>");
 		else
-			str.append(CMLib.xml().convertXMLtoTag("ESTATS",CMLib.coffeeMaker().getEnvStatsStr(adjEStats)));
+			str.append(CMLib.xml().convertXMLtoTag("ESTATS",CMLib.coffeeMaker().getPhyStatsStr(adjPStats)));
 		if(adjStats==null) str.append("<ASTATS/>");
 		else
 			str.append(CMLib.xml().convertXMLtoTag("ASTATS",CMLib.coffeeMaker().getCharStatsStr(adjStats)));
@@ -508,9 +508,9 @@ public class GenCharClass extends StdCharClass
 		    selectability=CMath.s_int(s);
 		else
 			selectability=CMath.s_bool(s)?Area.THEME_FANTASY:0;
-		adjEStats=null;
+		adjPStats=null;
 		String eStats=CMLib.xml().getValFromPieces(classData,"ESTATS");
-		if(eStats.length()>0){ adjEStats=(EnvStats)CMClass.getCommon("DefaultEnvStats"); CMLib.coffeeMaker().setEnvStats(adjEStats,eStats);}
+		if(eStats.length()>0){ adjPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats"); CMLib.coffeeMaker().setPhyStats(adjPStats,eStats);}
 		adjStats=null;
 		String aStats=CMLib.xml().getValFromPieces(classData,"ASTATS");
 		if(aStats.length()>0){ adjStats=(CharStats)CMClass.getCommon("DefaultCharStats"); CMLib.coffeeMaker().setCharStats(adjStats,aStats);}
@@ -592,7 +592,7 @@ public class GenCharClass extends StdCharClass
 				Item newOne=CMClass.getItem(CMLib.xml().getValFromPieces(iblk.contents,"OFCLASS"));
 				String idat=CMLib.xml().getValFromPieces(iblk.contents,"OFDATA");
 				newOne.setMiscText(CMLib.xml().restoreAngleBrackets(idat));
-				newOne.recoverEnvStats();
+				newOne.recoverPhyStats();
 				outfitChoices.addElement(newOne);
 			}
 		}
@@ -700,7 +700,7 @@ public class GenCharClass extends StdCharClass
 		case 17: return otherBonuses;
 		case 18: return qualifications;
 		case 19: return ""+selectability;
-		case 20: return (adjEStats==null)?"":CMLib.coffeeMaker().getEnvStatsStr(adjEStats);
+		case 20: return (adjPStats==null)?"":CMLib.coffeeMaker().getPhyStatsStr(adjPStats);
 		case 21: return (adjStats==null)?"":CMLib.coffeeMaker().getCharStatsStr(adjStats);
 		case 22: return (setStats==null)?"":CMLib.coffeeMaker().getCharStatsStr(setStats);
 		case 23: return (adjState==null)?"":CMLib.coffeeMaker().getCharStateStr(adjState);
@@ -786,7 +786,7 @@ public class GenCharClass extends StdCharClass
 		case 17: otherBonuses=val;break;
 		case 18: qualifications=val;break;
 		case 19: selectability=CMath.s_parseBitIntExpression(Area.THEME_DESCS,val); break;
-		case 20: adjEStats=null;if(val.length()>0){adjEStats=(EnvStats)CMClass.getCommon("DefaultEnvStats"); adjEStats.setAllValues(0); CMLib.coffeeMaker().setEnvStats(adjEStats,val);}break;
+		case 20: adjPStats=null;if(val.length()>0){adjPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats"); adjPStats.setAllValues(0); CMLib.coffeeMaker().setPhyStats(adjPStats,val);}break;
 		case 21: adjStats=null;if(val.length()>0){adjStats=(CharStats)CMClass.getCommon("DefaultCharStats"); adjStats.setAllValues(0); CMLib.coffeeMaker().setCharStats(adjStats,val);}break;
 		case 22: setStats=null;if(val.length()>0){setStats=(CharStats)CMClass.getCommon("DefaultCharStats"); setStats.setAllValues(0); CMLib.coffeeMaker().setCharStats(setStats,val);}break;
 		case 23: adjState=null;if(val.length()>0){adjState=(CharState)CMClass.getCommon("DefaultCharState"); adjState.setAllValues(0); CMLib.coffeeMaker().setCharState(adjState,val);}break;
@@ -837,7 +837,7 @@ public class GenCharClass extends StdCharClass
 					 {
 						Item I=(Item)outfitChoices.elementAt(num);
 						I.setMiscText(val);
-						I.recoverEnvStats();
+						I.recoverPhyStats();
 					 }
 					 break;
 				 }

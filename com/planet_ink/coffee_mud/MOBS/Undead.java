@@ -42,27 +42,27 @@ public class Undead extends StdMOB
 		setDisplayText("an undead thing slowly moves about.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);
 		setMoney(10);
-		baseEnvStats.setWeight(30);
+		basePhyStats.setWeight(30);
 		setWimpHitPoint(0);
 
 		baseCharStats().setMyRace(CMClass.getRace("Undead"));
 		baseCharStats().getMyRace().startRacing(this,false);
-		baseEnvStats().setDamage(8);
+		basePhyStats().setDamage(8);
 
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(1);
-		baseEnvStats().setArmor(80);
-		baseEnvStats().setSpeed(1.0);
-		baseEnvStats().setDisposition(0); // disable infrared stuff
-		baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(1);
+		basePhyStats().setArmor(80);
+		basePhyStats().setSpeed(1.0);
+		basePhyStats().setDisposition(0); // disable infrared stuff
+		basePhyStats().setSensesMask(PhyStats.CAN_SEE_DARK);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		addAbility(CMClass.getAbility("Skill_AllBreathing"));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

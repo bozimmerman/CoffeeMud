@@ -44,7 +44,7 @@ public class StdKey extends StdItem implements Key
 
 		material=RawMaterial.RESOURCE_STEEL;
 		baseGoldValue=0;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 

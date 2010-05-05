@@ -108,7 +108,7 @@ public class Skill_Slapstick extends BardSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				target.curState().adjMana(-mob.envStats().level(),target.maxState());
+				target.curState().adjMana(-mob.phyStats().level(),target.maxState());
 			}
 		}
 		else

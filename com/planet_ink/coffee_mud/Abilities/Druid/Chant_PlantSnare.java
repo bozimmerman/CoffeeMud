@@ -47,10 +47,10 @@ public class Chant_PlantSnare extends Chant
 	public int amountRemaining=0;
 	public long flags(){return Ability.FLAG_BINDING;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_BOUND);
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BOUND);
 	}
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

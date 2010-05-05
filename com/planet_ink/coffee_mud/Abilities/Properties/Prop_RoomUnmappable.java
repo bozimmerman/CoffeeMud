@@ -38,21 +38,21 @@ public class Prop_RoomUnmappable extends Property
     public String name(){ return "Unmappable Room/Area";}
     protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS;}
 
-    private int bitStream=EnvStats.SENSE_ROOMUNMAPPABLE;
+    private int bitStream=PhyStats.SENSE_ROOMUNMAPPABLE;
     public void setMiscText(String newText)
     {
         super.setMiscText(newText);
         bitStream=0;
         if(!CMParms.parse(newText.toUpperCase().trim()).contains("MAPOK"))
-            bitStream=EnvStats.SENSE_ROOMUNMAPPABLE;
+            bitStream=PhyStats.SENSE_ROOMUNMAPPABLE;
         if(CMParms.parse(newText.toUpperCase().trim()).contains("NOEXPLORE"))
-            bitStream=bitStream|EnvStats.SENSE_ROOMUNEXPLORABLE;
+            bitStream=bitStream|PhyStats.SENSE_ROOMUNEXPLORABLE;
     }
     public String accountForYourself()
     { return "Unmappable";    }
 
 
-    public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+    public void affectPhyStats(Physical affected, PhyStats affectableStats)
     {
         affectableStats.setSensesMask(affectableStats.sensesMask()|bitStream);
     }

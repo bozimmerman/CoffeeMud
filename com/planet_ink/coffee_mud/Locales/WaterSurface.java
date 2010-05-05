@@ -39,8 +39,8 @@ public class WaterSurface extends StdRoom implements Drink
 	{
 		super();
 		name="the water";
-		baseEnvStats.setWeight(2);
-		recoverEnvStats();
+		basePhyStats.setWeight(2);
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
 	public int domainConditions(){return Room.CONDITION_WET;}
@@ -169,7 +169,7 @@ public class WaterSurface extends StdRoom implements Drink
 			}
 			else
 			if(CMLib.flags().isSwimming(mob))
-				if(mob.envStats().weight()>Math.round(CMath.mul(mob.maxCarry(),0.50)))
+				if(mob.phyStats().weight()>Math.round(CMath.mul(mob.maxCarry(),0.50)))
 				{
 					mob.tell("You are too encumbered to swim.");
 					return -1;

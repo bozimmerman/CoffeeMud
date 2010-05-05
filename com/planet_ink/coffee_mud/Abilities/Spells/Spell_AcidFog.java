@@ -59,7 +59,7 @@ public class Spell_AcidFog extends Spell
 			else
 			if((!M.amDead())&&(M.location()!=null))
 			{
-				int damage=M.envStats().level()+super.getXLEVELLevel(invoker())+(2*super.getX1Level(invoker()));
+				int damage=M.phyStats().level()+super.getXLEVELLevel(invoker())+(2*super.getX1Level(invoker()));
 				CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(1,damage,0),CMMsg.TYP_ACID,-1,"<T-NAME> sizzle(s) in the acid fog!");
                 if((!M.isInCombat())&&(M!=invoker)&&(M.location()!=null)&&(M.location().isInhabitant(invoker))&&(CMLib.flags().canBeSeenBy(invoker,M)))
                     CMLib.combat().postAttack(M,invoker,M.fetchWieldedItem());
@@ -123,7 +123,7 @@ public class Spell_AcidFog extends Spell
 					if((msg.value()<=0)&&(msg2.value()<=0)&&(target.location()==mob.location()))
 					{
 						castingLocation=mob.location();
-						success=maliciousAffect(mob,target,asLevel,((mob.envStats().level()+super.getXLEVELLevel(mob)+(2*super.getX1Level(mob)))*10),-1);
+						success=maliciousAffect(mob,target,asLevel,((mob.phyStats().level()+super.getXLEVELLevel(mob)+(2*super.getX1Level(mob)))*10),-1);
 						target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) enveloped in the acid fog!");
 					}
 				}

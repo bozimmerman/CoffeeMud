@@ -42,12 +42,12 @@ public class GenTitle extends StdTitle
 	{
 		super();
 		setName("a generic title");
-		baseEnvStats.setWeight(2);
+		basePhyStats.setWeight(2);
 		setDisplayText("a generic title sits here.");
 		setDescription("");
 		baseGoldValue=5;
-		baseEnvStats().setLevel(1);
-		recoverEnvStats();
+		basePhyStats().setLevel(1);
+		recoverPhyStats();
 	}
 
 	public boolean isGeneric(){return true;}
@@ -68,7 +68,7 @@ public class GenTitle extends StdTitle
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
     public String getStat(String code)
     {

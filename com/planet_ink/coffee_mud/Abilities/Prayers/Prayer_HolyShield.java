@@ -100,7 +100,7 @@ public class Prayer_HolyShield extends Prayer
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,0);
-				target.recoverEnvStats();
+				target.recoverPhyStats();
 			}
 		}
 		else

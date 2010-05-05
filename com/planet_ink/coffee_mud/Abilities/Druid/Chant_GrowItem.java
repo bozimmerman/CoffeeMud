@@ -94,7 +94,7 @@ public class Chant_GrowItem extends Chant
 				mob.location().addItem(building,ItemPossessor.Expire.Resource);
 				if(key!=null) mob.location().addItem(key,ItemPossessor.Expire.Resource);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,building.name()+" grows out of a tree and drops.");
-				mob.location().recoverEnvStats();
+				mob.location().recoverPhyStats();
 			}
 		}
 		else

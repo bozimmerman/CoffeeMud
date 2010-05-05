@@ -42,12 +42,12 @@ public class PortableHole extends BagOfHolding implements MiscMagic
 		setDisplayText("a small black disk can be found up here.");
 		setDescription("It looks like a small disk.");
 		secretIdentity="A Portable Hole";
-		baseEnvStats().setLevel(1);
-		capacity=200 * baseEnvStats().level();
+		basePhyStats().setLevel(1);
+		capacity=200 * basePhyStats().level();
 
 		baseGoldValue=15000;
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
-		recoverEnvStats();
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
+		recoverPhyStats();
 
 
 

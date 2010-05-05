@@ -77,7 +77,7 @@ public class Prop_Familiar extends Property
 					familiarTo.tell("You`ve just lost 50 experience points for losing your familiar");
 				}*/
 				familiarTo.recoverCharStats();
-				familiarTo.recoverEnvStats();
+				familiarTo.recoverPhyStats();
 			}
 		}
 		if(familiarWith!=null)
@@ -87,7 +87,7 @@ public class Prop_Familiar extends Property
 			{
 				familiarWith.delEffect(A);
 				familiarWith.recoverCharStats();
-				familiarWith.recoverEnvStats();
+				familiarWith.recoverPhyStats();
 			}
 			if(familiarWith.amDead())
 				familiarWith.setLocation(null);
@@ -124,7 +124,7 @@ public class Prop_Familiar extends Property
 				following.delEffect(following.fetchEffect(F.ID()));
 				following.addEffect(F);
 				following.recoverCharStats();
-				following.recoverEnvStats();
+				following.recoverPhyStats();
 			}
 			if((familiarWith!=null)
             &&(familiarTo!=null)
@@ -136,7 +136,7 @@ public class Prop_Familiar extends Property
 		return super.tick(ticking,tickID);
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
         
         if((familiarWith!=null)
@@ -145,28 +145,28 @@ public class Prop_Familiar extends Property
 		switch(familiarType)
 		{
 		case DOG:
-				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_HIDDEN);
+				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_HIDDEN);
 				break;
 		case TURTLE:
-				if(((affectableStats.sensesMask()&EnvStats.CAN_NOT_BREATHE)>0)
+				if(((affectableStats.sensesMask()&PhyStats.CAN_NOT_BREATHE)>0)
 				&&(affected instanceof MOB)
 				&&(((MOB)affected).location()!=null)
 				&&((((MOB)affected).location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
 				    ||(((MOB)affected).location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)))
-					affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_NOT_BREATHE);
+					affectableStats.setSensesMask(affectableStats.sensesMask()-PhyStats.CAN_NOT_BREATHE);
 				break;
 		case CAT:
 				break;
 		case BAT:
-				if(((affectableStats.sensesMask()&EnvStats.CAN_NOT_SEE)>0)&&(affected instanceof MOB))
-					affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_NOT_SEE);
+				if(((affectableStats.sensesMask()&PhyStats.CAN_NOT_SEE)>0)&&(affected instanceof MOB))
+					affectableStats.setSensesMask(affectableStats.sensesMask()-PhyStats.CAN_NOT_SEE);
 				break;
 		case RAT:
 				break;
 		case SNAKE:
 				break;
 		case OWL:
-				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_INFRARED);
+				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_INFRARED);
 				break;
 		case RABBIT:
 				break;

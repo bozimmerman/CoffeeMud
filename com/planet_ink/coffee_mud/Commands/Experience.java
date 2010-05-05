@@ -49,7 +49,7 @@ public class Experience extends StdCommand
 			&&(!mob.charStats().getMyRace().leveless()))
 			{
 				if((CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)>0)
-				&&(mob.baseEnvStats().level()>CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)))
+				&&(mob.basePhyStats().level()>CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)))
 					msg.append("You will not gain further levels through experience.\n\r");
 				else
 				if(mob.getExpNeededLevel()==Integer.MAX_VALUE)

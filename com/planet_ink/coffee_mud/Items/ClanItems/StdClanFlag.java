@@ -50,14 +50,14 @@ public class StdClanFlag extends StdItem implements ClanItem
 		super();
 
 		setName("a clan flag");
-		baseEnvStats.setWeight(1);
+		basePhyStats.setWeight(1);
 		setDisplayText("an flag belonging to a clan is here.");
 		setDescription("");
 		secretIdentity="";
 		baseGoldValue=1;
 		setCIType(ClanItem.CI_FLAG);
 		material=RawMaterial.RESOURCE_COTTON;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public String clanID(){return myClan;}

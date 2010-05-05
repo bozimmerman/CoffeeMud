@@ -55,20 +55,20 @@ public class Spell_Sonar extends Spell
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> sonar ears return to normal.");
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
 			MOB victim=mob.getVictim();
 			if((victim==null)||(CMLib.flags().canBeHeardBy(victim,mob)))
-				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_VICTIM);
+				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_VICTIM);
 			if(CMLib.flags().canHear(mob))
 			{
-				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_DARK);
-				if((affectableStats.sensesMask()&EnvStats.CAN_NOT_SEE)>0)
-					affectableStats.setSensesMask(CMath.unsetb(affectableStats.sensesMask(),EnvStats.CAN_NOT_SEE));
+				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK);
+				if((affectableStats.sensesMask()&PhyStats.CAN_NOT_SEE)>0)
+					affectableStats.setSensesMask(CMath.unsetb(affectableStats.sensesMask(),PhyStats.CAN_NOT_SEE));
 			}
 		}
 	}

@@ -44,11 +44,11 @@ public class Chant_Shillelagh extends Chant
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected==null) return;
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_BONUS);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BONUS);
 		if(affected instanceof Item)
 			affectableStats.setAbility(affectableStats.ability()+4);
 	}
@@ -127,8 +127,8 @@ public class Chant_Shillelagh extends Chant
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,0);
 				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> glow(s)!");
-				target.recoverEnvStats();
-				mob.recoverEnvStats();
+				target.recoverPhyStats();
+				mob.recoverPhyStats();
 			}
 		}
 		else

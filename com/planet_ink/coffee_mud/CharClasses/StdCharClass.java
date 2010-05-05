@@ -192,7 +192,7 @@ public class StdCharClass implements CharClass
             return false;
         }
         else
-		if((!mob.isMonster())&&(mob.baseEnvStats().level()>0))
+		if((!mob.isMonster())&&(mob.basePhyStats().level()>0))
 		{
 			CharClass curClass = (mob==null)?null:mob.baseCharStats().getCurrentClass();
 			if(curClass.ID().equals(ID()))
@@ -545,11 +545,11 @@ public class StdCharClass implements CharClass
         fakeMOB.baseCharStats().setMyLevels("0");
         fakeMOB.recoverCharStats();
 
-        EnvStats RS=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+        PhyStats RS=(PhyStats)CMClass.getCommon("DefaultPhyStats");
         RS.setAllValues(0);
-        affectEnvStats(fakeMOB,RS);
+        affectPhyStats(fakeMOB,RS);
         RS.setRejuv(0);
-        CR.setStat("ESTATS",CMLib.coffeeMaker().getEnvStatsStr(RS));
+        CR.setStat("ESTATS",CMLib.coffeeMaker().getPhyStatsStr(RS));
 
         CharStats S1=(CharStats)CMClass.getCommon("DefaultCharStats");
         S1.setMyClasses(ID());
@@ -743,7 +743,7 @@ public class StdCharClass implements CharClass
 
 	public Vector outfit(MOB myChar){return outfitChoices;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 
 	}

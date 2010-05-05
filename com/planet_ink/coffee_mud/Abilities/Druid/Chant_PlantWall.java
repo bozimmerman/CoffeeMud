@@ -75,7 +75,7 @@ public class Chant_PlantWall extends Chant
                 if(mob.location().okMessage(mob,msg2))
                 {
                     mob.location().send(mob,msg2);
-    				amountRemaining-=mob.envStats().damage();
+    				amountRemaining-=mob.phyStats().damage();
     				if(amountRemaining<0)
     				{
     					deathNotice="The plant wall is destroyed!";
@@ -95,7 +95,7 @@ public class Chant_PlantWall extends Chant
                 if(mob.location().okMessage(mob,msg2))
                 {
                     mob.location().send(mob,msg2);
-    				amountRemaining-=mob.envStats().damage();
+    				amountRemaining-=mob.phyStats().damage();
     				if(amountRemaining<0)
     				{
     					deathNotice="The plant wall is destroyed!";
@@ -205,7 +205,7 @@ public class Chant_PlantWall extends Chant
 				I.setDescription("The wall is thick and stringy.");
 				I.setMaterial(RawMaterial.RESOURCE_GREENS);
 				CMLib.flags().setGettable(I,false);
-				I.recoverEnvStats();
+				I.recoverPhyStats();
 				mob.location().addItem(I);
 				theWall=I;
 				deathNotice="The plant wall withers away!";

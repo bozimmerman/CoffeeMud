@@ -42,7 +42,7 @@ public class HillGiant extends StdMOB
 		setDisplayText("A Hill Giant glares at you.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);
 		setMoney(0);
-		baseEnvStats.setWeight(3500 + CMLib.dice().roll(1, 1000, 0));
+		basePhyStats.setWeight(3500 + CMLib.dice().roll(1, 1000, 0));
 
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,6 + CMLib.dice().roll(1, 2, 0));
@@ -51,19 +51,19 @@ public class HillGiant extends StdMOB
 		baseCharStats().setMyRace(CMClass.getRace("Giant"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		baseEnvStats().setDamage(19);
-		baseEnvStats().setSpeed(1.0);
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(12);
-		baseEnvStats().setArmor(0);
+		basePhyStats().setDamage(19);
+		basePhyStats().setSpeed(1.0);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(12);
+		basePhyStats().setArmor(0);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		addBehavior(CMClass.getBehavior("Aggressive"));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

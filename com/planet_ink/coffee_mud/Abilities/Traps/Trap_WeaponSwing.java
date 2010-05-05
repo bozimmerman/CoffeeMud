@@ -67,7 +67,7 @@ public class Trap_WeaponSwing extends StdTrap
 		Item I=getPoison(mob);
 		setMiscText("3/a club");
 		if(I!=null){
-			setMiscText(""+I.baseEnvStats().damage()+"/"+I.name());
+			setMiscText(""+I.basePhyStats().damage()+"/"+I.name());
 			I.destroy();
 		}
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);

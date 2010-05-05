@@ -40,14 +40,14 @@ public class Mace extends StdWeapon
 		setName("a rather large mace");
 		setDisplayText("a heavy mace is found in the center of the room.");
 		setDescription("It`s metallic and quite hard..");
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(0);
-		baseEnvStats.setWeight(10);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(0);
+		basePhyStats.setWeight(10);
 		material=RawMaterial.RESOURCE_STEEL;
-		baseEnvStats().setAttackAdjustment(0);
-		baseEnvStats().setDamage(7);
+		basePhyStats().setAttackAdjustment(0);
+		basePhyStats().setDamage(7);
 		baseGoldValue=8;
-		recoverEnvStats();
+		recoverPhyStats();
 		weaponType=TYPE_BASHING;
 		weaponClassification=Weapon.CLASS_BLUNT;
 	}

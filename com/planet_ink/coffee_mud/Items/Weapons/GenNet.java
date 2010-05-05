@@ -43,7 +43,7 @@ public class GenNet extends StdNet
 		setName("a generic net");
 		setDisplayText("a generic net sits here.");
 		setDescription("");
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public boolean isGeneric(){return true;}
@@ -60,6 +60,6 @@ public class GenNet extends StdNet
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 }

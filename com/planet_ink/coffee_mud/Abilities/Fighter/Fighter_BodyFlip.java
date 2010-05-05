@@ -48,11 +48,11 @@ public class Fighter_BodyFlip extends FighterSkill
     public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_GRAPPLING;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(!doneTicking)
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SITTING);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SITTING);
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -157,7 +157,7 @@ public class Fighter_BodyFlip extends FighterSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.envStats().level()-((2*getXLEVELLevel(mob))+mob.envStats().level());
+		int levelDiff=target.phyStats().level()-((2*getXLEVELLevel(mob))+mob.phyStats().level());
 		if(levelDiff>0)
 			levelDiff=levelDiff*5;
 		else

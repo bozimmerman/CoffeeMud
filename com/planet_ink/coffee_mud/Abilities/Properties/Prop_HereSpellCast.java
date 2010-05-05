@@ -90,7 +90,7 @@ public class Prop_HereSpellCast extends Prop_HaveSpellCast
 			process(msg.source(),(Room)affected,2);
 	}
 	
-	public void affectEnvStats(Environmental host, EnvStats affectableStats)
+	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{
 		if(processing) return;
 		processing=true;

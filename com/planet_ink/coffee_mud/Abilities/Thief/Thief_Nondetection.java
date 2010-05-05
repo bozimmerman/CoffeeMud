@@ -60,7 +60,7 @@ public class Thief_Nondetection extends ThiefSkill
 		if((!CMLib.flags().isHidden(mob))&&(active))
 		{
 			active=false;
-			mob.recoverEnvStats();
+			mob.recoverPhyStats();
 		}
 		else
 		if(msg.amISource(mob))
@@ -77,17 +77,17 @@ public class Thief_Nondetection extends ThiefSkill
 			 &&(msg.sourceMajor()>0))
 			{
 				active=false;
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 			}
 		}
 		return super.okMessage(myHost,msg);
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
-		if(active&&((affected.baseEnvStats().disposition()&EnvStats.IS_HIDDEN)==0))
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_NOT_SEEN);
+		super.affectPhyStats(affected,affectableStats);
+		if(active&&((affected.basePhyStats().disposition()&PhyStats.IS_HIDDEN)==0))
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_NOT_SEEN);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -101,14 +101,14 @@ public class Thief_Nondetection extends ThiefSkill
 				{
 					active=true;
 					helpProficiency((MOB)affected);
-					affected.recoverEnvStats();
+					affected.recoverPhyStats();
 				}
 			}
 			else
 			if(active)
 			{
 				active=false;
-				affected.recoverEnvStats();
+				affected.recoverPhyStats();
 			}
 		}
 		return true;

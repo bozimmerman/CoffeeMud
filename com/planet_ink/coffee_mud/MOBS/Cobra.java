@@ -46,21 +46,21 @@ public class Cobra extends StdMOB
 		addBehavior(CMClass.getBehavior("CombatAbilities"));
 		addAbility(CMClass.getAbility("Poison"));
 
-		baseEnvStats().setDamage(4);
+		basePhyStats().setDamage(4);
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
 
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(1);
-		baseEnvStats().setArmor(10);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(1);
+		basePhyStats().setArmor(10);
 
 		baseCharStats().setMyRace(CMClass.getRace("Cobra"));
 		baseCharStats().getMyRace().startRacing(this,false);
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

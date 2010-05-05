@@ -62,15 +62,15 @@ public class Spell_Delay extends Spell
 			newCaster.setName("the thin air");
 			newCaster.setDescription(" ");
 			newCaster.setDisplayText(" ");
-			newCaster.baseEnvStats().setLevel(invoker.envStats().level()+(2*getXLEVELLevel(invoker)));
-			newCaster.recoverEnvStats();
+			newCaster.basePhyStats().setLevel(invoker.phyStats().level()+(2*getXLEVELLevel(invoker)));
+			newCaster.recoverPhyStats();
 			newCaster.recoverCharStats();
 			newCaster.setLocation((Room)affected);
 			newCaster.addAbility(shooter);
 			try
 			{
 				shooter.setProficiency(100);
-				shooter.invoke(newCaster,parameters,null,false,invoker.envStats().level()+(2*getXLEVELLevel(invoker)));
+				shooter.invoke(newCaster,parameters,null,false,invoker.phyStats().level()+(2*getXLEVELLevel(invoker)));
 			}
 			catch(Exception e){Log.errOut("DELAY/"+CMParms.combine(parameters,0),e);}
 			newCaster.delAbility(shooter);

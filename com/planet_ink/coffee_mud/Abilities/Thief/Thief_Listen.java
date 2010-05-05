@@ -70,7 +70,7 @@ public class Thief_Listen extends ThiefSkill
 				&&(!lastSaid.equals(msg.sourceMessage())))
 				{
 					lastSaid=msg.sourceMessage();
-					if((invoker().envStats().level()+(getXLEVELLevel(invoker())*10))>msg.source().envStats().level())
+					if((invoker().phyStats().level()+(getXLEVELLevel(invoker())*10))>msg.source().phyStats().level())
 						invoker().tell(msg.source(),msg.target(),msg.tool(),msg.sourceMessage());
 					else
 						invoker().tell(msg.source(),null,null,"<S-NAME> said something, but you couldn't quite make it out.");
@@ -84,7 +84,7 @@ public class Thief_Listen extends ThiefSkill
 			&&(!lastSaid.equals(msg.sourceMessage())))
 			{
 				lastSaid=msg.sourceMessage();
-				if((invoker().envStats().level()+(getXLEVELLevel(invoker())*10))>msg.source().envStats().level())
+				if((invoker().phyStats().level()+(getXLEVELLevel(invoker())*10))>msg.source().phyStats().level())
 					invoker().tell(msg.source(),msg.target(),msg.tool(),msg.sourceMessage());
 				else
 					invoker().tell(msg.source(),null,null,"<S-NAME> said something, but you couldn't quite make it out.");
@@ -147,8 +147,8 @@ public class Thief_Listen extends ThiefSkill
 				if((inhab!=null)&&(!CMLib.flags().isSneaking(inhab))&&(!CMLib.flags().isHidden(inhab))&&(inhab!=mob))
 				{
 					numberHeard++;
-					if(inhab.envStats().level()>(mob.envStats().level()+(2*super.getXLEVELLevel(mob))))
-						levelsHeard+=(inhab.envStats().level()-(mob.envStats().level()+(2*super.getXLEVELLevel(mob))));
+					if(inhab.phyStats().level()>(mob.phyStats().level()+(2*super.getXLEVELLevel(mob))))
+						levelsHeard+=(inhab.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob))));
 				}
 			}
 			if((success)&&(numberHeard>0))

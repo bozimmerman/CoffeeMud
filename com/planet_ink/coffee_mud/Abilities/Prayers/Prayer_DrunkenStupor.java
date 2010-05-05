@@ -58,12 +58,12 @@ public class Prayer_DrunkenStupor extends Prayer
 		return inebriation;
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected instanceof MOB)
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()
-                                                    -((MOB)affected).envStats().level()
+                                                    -((MOB)affected).phyStats().level()
                                                     -(2*super.getXLEVELLevel(invoker())));
 	}
 

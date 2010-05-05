@@ -47,13 +47,13 @@ public class Consider extends StdCommand
 		int mob1Armor=CMLib.combat().adjustedArmor(mob1);
 		double mob1Attack=(double)CMLib.combat().adjustedAttackBonus(mob1,mob2);
         double mob2Attack=(double)CMLib.combat().adjustedAttackBonus(mob2,mob1);
-		int mob2Dmg=mob2.envStats().damage();
-		int mob1Dmg=mob1.envStats().damage();
+		int mob2Dmg=mob2.phyStats().damage();
+		int mob1Dmg=mob1.phyStats().damage();
 		int mob2Hp=mob2.baseState().getHitPoints();
 		int mob1Hp=mob1.baseState().getHitPoints();
 
-		double mob2HitRound=(((CMath.div(CMLib.dice().normalizeBy5((int)Math.round(50.0*mob2Attack/mob1Armor)),100.0))*CMath.div(mob2Dmg,2.0))+1.0)*CMath.mul(mob2.envStats().speed(),1.0);
-		double mob1HitRound=(((CMath.div(CMLib.dice().normalizeBy5((int)Math.round(50.0*mob1Attack/mob2Armor)),100.0))*CMath.div(mob1Dmg,2.0))+1.0)*CMath.mul(mob1.envStats().speed(),1.0);
+		double mob2HitRound=(((CMath.div(CMLib.dice().normalizeBy5((int)Math.round(50.0*mob2Attack/mob1Armor)),100.0))*CMath.div(mob2Dmg,2.0))+1.0)*CMath.mul(mob2.phyStats().speed(),1.0);
+		double mob1HitRound=(((CMath.div(CMLib.dice().normalizeBy5((int)Math.round(50.0*mob1Attack/mob2Armor)),100.0))*CMath.div(mob1Dmg,2.0))+1.0)*CMath.mul(mob1.phyStats().speed(),1.0);
 		double mob2SurvivalRounds=CMath.div(mob2Hp,mob1HitRound);
 		double mob1SurvivalRounds=CMath.div(mob1Hp,mob2HitRound);
 
@@ -99,14 +99,14 @@ public class Consider extends StdCommand
         {
         	MOB targetMOB=(MOB)target;
 			int relDiff=relativeLevelDiff(targetMOB,mob);
-			int lvlDiff=(target.envStats().level()-mob.envStats().level());
+			int lvlDiff=(target.phyStats().level()-mob.phyStats().level());
 			int realDiff=relDiff;//(relDiff+lvlDiff)/2;
 
 			int theDiff=2;
-			if(mob.envStats().level()>20) theDiff=3;
-			if(mob.envStats().level()>40) theDiff=4;
-			if(mob.envStats().level()>60) theDiff=5;
-			if(mob.envStats().level()>80) theDiff=6;
+			if(mob.phyStats().level()>20) theDiff=3;
+			if(mob.phyStats().level()>40) theDiff=4;
+			if(mob.phyStats().level()>60) theDiff=5;
+			if(mob.phyStats().level()>80) theDiff=6;
 
 			String levelMsg=null;
 			if(lvlDiff==0)

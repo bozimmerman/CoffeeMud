@@ -43,9 +43,9 @@ public class Spell_Frenzy extends Spell
 	public int hpAdjustment=0;
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if((invoker==null)&&(affected instanceof MOB))
 			invoker=(MOB)affected;
 		int xlvl=super.getXLEVELLevel(invoker());
@@ -116,7 +116,7 @@ public class Spell_Frenzy extends Spell
 					beneficialAffect(mob,target,asLevel,0);
 					target.curState().setHitPoints(target.curState().getHitPoints()+hpAdjustment);
 					target.recoverMaxState();
-					target.recoverEnvStats();
+					target.recoverPhyStats();
 				}
 			}
 		}

@@ -51,8 +51,8 @@ public class Chant_PoisonousVine extends Chant_SummonVine
 		MOB newMOB=CMClass.getMOB("GenMOB");
 		int level=adjustedLevel(caster,0);
 		if(level<1) level=1;
-		newMOB.baseEnvStats().setLevel(level);
-		newMOB.baseEnvStats().setAbility(13);
+		newMOB.basePhyStats().setLevel(level);
+		newMOB.basePhyStats().setAbility(13);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Vine"));
 		String name="a poisonous vine";
 		newMOB.setName(name);
@@ -78,17 +78,17 @@ public class Chant_PoisonousVine extends Chant_SummonVine
 		}
 		newMOB.addBehavior(CMClass.getBehavior("CombatAbilities"));
 		newMOB.setVictim(victim);
-		newMOB.baseEnvStats().setSensesMask(newMOB.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_DARK);
+		newMOB.basePhyStats().setSensesMask(newMOB.basePhyStats().sensesMask()|PhyStats.CAN_SEE_DARK);
 		newMOB.setLocation(caster.location());
-		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
-		newMOB.baseEnvStats().setDamage(6+(5*(level/5)));
-		newMOB.baseEnvStats().setAttackAdjustment(10);
-		newMOB.baseEnvStats().setArmor(100-(30+(level/2)));
+		newMOB.basePhyStats().setRejuv(Integer.MAX_VALUE);
+		newMOB.basePhyStats().setDamage(6+(5*(level/5)));
+		newMOB.basePhyStats().setAttackAdjustment(10);
+		newMOB.basePhyStats().setArmor(100-(30+(level/2)));
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'N');
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		newMOB.setMiscText(newMOB.text());
 		newMOB.recoverCharStats();
-		newMOB.recoverEnvStats();
+		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);

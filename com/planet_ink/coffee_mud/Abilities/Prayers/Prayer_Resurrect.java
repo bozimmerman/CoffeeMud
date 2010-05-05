@@ -216,8 +216,8 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
         if(object==null) object=CMClass.getMOB(classID);
         if(object==null) return null;
         object.setMiscText(data);
-        object.baseEnvStats().setAbility(ability);
-        object.recoverEnvStats();
+        object.basePhyStats().setAbility(ability);
+        object.recoverPhyStats();
         return object;
         
     }

@@ -1854,7 +1854,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			||(neutral&&(CMLib.dice().rollPercentage()>50))
 			||(CMLib.flags().flaggedBehaviors(mob,Behavior.FLAG_POTENTIALLYAGGRESSIVE).size()>0))
 			{
-				if(mob.envStats().level()>(officer.envStats().level()/2))
+				if(mob.phyStats().level()>(officer.phyStats().level()/2))
 					mob.setVictim(officer);
 				else
 				if(!CMLib.flags().isAnimalIntelligence(mob))
@@ -2419,7 +2419,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						judge.location().show(judge,W.criminal(),CMMsg.MSG_OK_VISUAL,"<S-NAME> put(s) <T-NAME> on parole!");
 						Ability A=CMClass.getAbility("Prisoner");
 						A.startTickDown(judge,W.criminal(),W.jailTime());
-						W.criminal().recoverEnvStats();
+						W.criminal().recoverPhyStats();
 						W.criminal().recoverCharStats();
 						CMLib.commands().postSay(judge,W.criminal(),laws.getMessage(Law.MSG_PAROLEDISMISS),false,false);
 						dismissOfficer(officer);
@@ -2543,8 +2543,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
                         // cuff him!
                         W.setState(Law.STATE_MOVING3);
                         A=CMClass.getAbility("Skill_HandCuff");
-                        W.criminal().baseEnvStats().setDisposition(W.criminal().baseEnvStats().disposition()|EnvStats.IS_SITTING);
-                        W.criminal().envStats().setDisposition(W.criminal().envStats().disposition()|EnvStats.IS_SITTING);
+                        W.criminal().basePhyStats().setDisposition(W.criminal().basePhyStats().disposition()|PhyStats.IS_SITTING);
+                        W.criminal().phyStats().setDisposition(W.criminal().phyStats().disposition()|PhyStats.IS_SITTING);
                         if((A!=null)&&(!CMLib.flags().isBoundOrHeld(W.criminal())))
                             A.invoke(officer,W.criminal(),true,0);
                         W.criminal().makePeace();
@@ -2624,7 +2624,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					        served=A.invoke(judge,W.criminal(),false,0);
 					    }
 						fileAllWarrants(laws,W,W.criminal());
-						W.criminal().recoverEnvStats();
+						W.criminal().recoverPhyStats();
 						W.criminal().recoverCharStats();
 						if(!served)
 							CMLib.combat().postAttack(judge,W.criminal(),judge.fetchWieldedItem());
@@ -2679,7 +2679,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						unCuff(W.criminal());
 						Ability A=CMClass.getAbility("Prisoner");
 						if(A!=null)A.startTickDown(officer,W.criminal(),W.jailTime());
-						W.criminal().recoverEnvStats();
+						W.criminal().recoverPhyStats();
 						W.criminal().recoverCharStats();
 						dismissOfficer(officer);
 						if(W.criminal().fetchEffect("Prisoner")==null)
@@ -2746,7 +2746,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
                         unCuff(W.criminal());
                         Ability A=CMClass.getAbility("Prisoner");
                         if(A!=null)A.startTickDown(officer,W.criminal(),W.jailTime());
-                        W.criminal().recoverEnvStats();
+                        W.criminal().recoverPhyStats();
                         W.criminal().recoverCharStats();
                         dismissOfficer(officer);
                         if(W.criminal().fetchEffect("Prisoner")==null)

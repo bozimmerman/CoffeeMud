@@ -46,9 +46,9 @@ public class Prayer_Rockskin extends Prayer
 	int HitsRemaining=0;
 	int oldHP=-1;
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		int xlvl=super.getXLEVELLevel(invoker());
 		affectableStats.setArmor(affectableStats.armor() - 15-(2*xlvl));
 	}

@@ -41,7 +41,7 @@ public class StdClanCommonContainer extends StdClanContainer
 		super();
 
 		setName("a clan workers container");
-		baseEnvStats.setWeight(1);
+		basePhyStats.setWeight(1);
 		setDisplayText("an workers container belonging to a clan is here.");
 		setDescription("");
 		secretIdentity="";
@@ -49,7 +49,7 @@ public class StdClanCommonContainer extends StdClanContainer
 		capacity=100;
 		setCIType(ClanItem.CI_GATHERITEM);
 		material=RawMaterial.RESOURCE_OAK;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -84,10 +84,10 @@ public class StdClanCommonContainer extends StdClanContainer
 						}
 						Vector V=new Vector();
 						if(I!=null)	V.addElement(I.name());
-						A.invoke(M,V,null,false,envStats().level());
+						A.invoke(M,V,null,false,phyStats().level());
 					}
 					else
-						A.invoke(M,new Vector(),null,false,envStats().level());
+						A.invoke(M,new Vector(),null,false,phyStats().level());
 				}
 
 			}

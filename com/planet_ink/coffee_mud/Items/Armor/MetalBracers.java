@@ -42,11 +42,11 @@ public class MetalBracers extends StdArmor
 		setDescription("Good and solid protection for your arms.");
 		properWornBitmap=Wearable.WORN_LEFT_WRIST | Wearable.WORN_RIGHT_WRIST | Wearable.WORN_ARMS;
 		wornLogicalAnd=true;
-		baseEnvStats().setArmor(4);
-		baseEnvStats().setWeight(10);
-		baseEnvStats().setAbility(0);
+		basePhyStats().setArmor(4);
+		basePhyStats().setWeight(10);
+		basePhyStats().setAbility(0);
 		baseGoldValue=10;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_STEEL;
 	}
 

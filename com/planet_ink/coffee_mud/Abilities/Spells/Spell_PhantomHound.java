@@ -84,7 +84,7 @@ public class Spell_PhantomHound extends Spell
 				else
 				{
 					pointsLeft-=(victim.charStats().getStat(CharStats.STAT_INTELLIGENCE));
-					pointsLeft-=victim.envStats().level();
+					pointsLeft-=victim.phyStats().level();
 					int pointsLost=beast.baseState().getHitPoints()-beast.curState().getHitPoints();
 					if(pointsLost>0)
 						pointsLeft-=pointsLost/4;
@@ -157,20 +157,20 @@ public class Spell_PhantomHound extends Spell
 				beast.setDisplayText("the phantom hound is here");
 				beast.setStartRoom(null);
 				beast.setDescription("This is the most ferocious beast you have ever seen.");
-				beast.baseEnvStats().setAttackAdjustment(mob.envStats().attackAdjustment()+100);
-				beast.baseEnvStats().setArmor(mob.baseEnvStats().armor()-20);
-				beast.baseEnvStats().setDamage(75);
-				beast.baseEnvStats().setLevel(mob.envStats().level()+(2*getXLEVELLevel(mob)));
-				beast.baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK|EnvStats.CAN_SEE_HIDDEN|EnvStats.CAN_SEE_INVISIBLE|EnvStats.CAN_SEE_SNEAKERS);
+				beast.basePhyStats().setAttackAdjustment(mob.phyStats().attackAdjustment()+100);
+				beast.basePhyStats().setArmor(mob.basePhyStats().armor()-20);
+				beast.basePhyStats().setDamage(75);
+				beast.basePhyStats().setLevel(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
+				beast.basePhyStats().setSensesMask(PhyStats.CAN_SEE_DARK|PhyStats.CAN_SEE_HIDDEN|PhyStats.CAN_SEE_INVISIBLE|PhyStats.CAN_SEE_SNEAKERS);
 				beast.baseCharStats().setMyRace(CMClass.getRace("Dog"));
 				beast.baseCharStats().getMyRace().startRacing(beast,false);
 		        for(int i : CharStats.CODES.SAVING_THROWS())
 					beast.baseCharStats().setStat(i,200);
 				beast.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
-				beast.baseEnvStats().setAbility(100);
+				beast.basePhyStats().setAbility(100);
 				beast.baseState().setMana(100);
 				beast.baseState().setMovement(1000);
-				beast.recoverEnvStats();
+				beast.recoverPhyStats();
 				beast.recoverCharStats();
 				beast.recoverMaxState();
 				beast.resetToMaxState();

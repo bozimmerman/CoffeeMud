@@ -44,9 +44,9 @@ public class Skill_SlowFall extends BardSkill
     public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_FITNESS; }
 	public boolean activated=false;
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(activated) affectableStats.setWeight(0);
 	}
 
@@ -60,7 +60,7 @@ public class Skill_SlowFall extends BardSkill
 				  ||proficiencyCheck((MOB)affected,0,false)))
 			{
 				activated=true;
-				affected.recoverEnvStats();
+				affected.recoverPhyStats();
 				if(affected instanceof MOB)
 					helpProficiency((MOB)affected);
 			}
@@ -68,7 +68,7 @@ public class Skill_SlowFall extends BardSkill
 			if(activated)
 			{
 				activated=false;
-				affected.recoverEnvStats();
+				affected.recoverPhyStats();
 			}
 		}
 		return super.tick(ticking,tickID);

@@ -54,10 +54,10 @@ public class Thief_Bind extends ThiefSkill
 	public int amountRemaining=500;
 	public String ropeName="the ropes";
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_BOUND);
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BOUND);
 	}
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -82,7 +82,7 @@ public class Thief_Bind extends ThiefSkill
 				{
 					if(msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against "+ropeName.toLowerCase()+" binding <S-HIM-HER>."))
 					{
-						amountRemaining-=(msg.source().charStats().getStat(CharStats.STAT_STRENGTH)+msg.source().envStats().level());
+						amountRemaining-=(msg.source().charStats().getStat(CharStats.STAT_STRENGTH)+msg.source().phyStats().level());
 						if(amountRemaining<0)
 							unInvoke();
 					}
@@ -197,7 +197,7 @@ public class Thief_Bind extends ThiefSkill
 						double prof=0.0;
 						Ability A=mob.fetchAbility("Specialization_Ranged");
 						if(A!=null) prof=CMath.div(A.proficiency(),20);
-						amountRemaining=(mob.charStats().getStat(CharStats.STAT_STRENGTH)+mob.envStats().level()+(2*getXLEVELLevel(mob)))*((int)Math.round(5.0+prof));
+						amountRemaining=(mob.charStats().getStat(CharStats.STAT_STRENGTH)+mob.phyStats().level()+(2*getXLEVELLevel(mob)))*((int)Math.round(5.0+prof));
 					}
 					else
 						amountRemaining=(adjustedLevel(mob,asLevel))*25;

@@ -42,11 +42,11 @@ public class ItemIdentifier extends StdBehavior
 	{
 		if(costFormula != null)
 		{
-			double[] vars = {item.envStats().level(), item.value(), item.usesRemaining(), CMLib.flags().isABonusItems(item)?1.0:0.0,item.baseEnvStats().level(), item.baseGoldValue(),0,0,0,0,0};
+			double[] vars = {item.phyStats().level(), item.value(), item.usesRemaining(), CMLib.flags().isABonusItems(item)?1.0:0.0,item.basePhyStats().level(), item.baseGoldValue(),0,0,0,0,0};
 			return CMath.parseMathExpression(costFormula, vars, 0.0);
 		}
 		else
-			return 500+(item.envStats().level()*20);
+			return 500+(item.phyStats().level()*20);
 	}
 
 	public void setParms(String parms)
@@ -114,17 +114,17 @@ public class ItemIdentifier extends StdBehavior
 			double cost=cost((Item)msg.tool());
 			CMLib.beanCounter().subtractMoney(source,CMLib.beanCounter().getCurrency(observer),(double)cost);
 			String costStr=CMLib.beanCounter().nameCurrencyLong(observer,(double)cost);
-			source.recoverEnvStats();
+			source.recoverPhyStats();
 			CMMsg newMsg=CMClass.getMsg(msg.source(),observer,null,CMMsg.MSG_OK_ACTION,"<S-NAME> give(s) "+costStr+" to <T-NAMESELF>.");
 			msg.addTrailerMsg(newMsg);
 			newMsg=CMClass.getMsg(observer,msg.tool(),null,CMMsg.MSG_EXAMINE,"<S-NAME> examine(s) <T-NAME> very closely.");
 			msg.addTrailerMsg(newMsg);
 			StringBuffer up=new StringBuffer(msg.tool().name()+" is made of "+RawMaterial.CODES.NAME(((Item)msg.tool()).material()).toLowerCase()+".\n\r");
-			if((msg.tool() instanceof Armor)&&(msg.tool().envStats().height()>0))
-				up.append("It is a size "+msg.tool().envStats().height()+".\n\r");
-			int weight=msg.tool().envStats().weight();
-			if((weight!=msg.tool().baseEnvStats().weight())&&(msg.tool() instanceof Container))
-				up.append("It weighs "+msg.tool().baseEnvStats().weight()+" pounds empty and "+weight+" pounds right now.\n\r");
+			if((msg.tool() instanceof Armor)&&(msg.tool().phyStats().height()>0))
+				up.append("It is a size "+msg.tool().phyStats().height()+".\n\r");
+			int weight=msg.tool().phyStats().weight();
+			if((weight!=msg.tool().basePhyStats().weight())&&(msg.tool() instanceof Container))
+				up.append("It weighs "+msg.tool().basePhyStats().weight()+" pounds empty and "+weight+" pounds right now.\n\r");
 			else
 				up.append("It weighs "+weight+" pounds.\n\r");
 			if(msg.tool() instanceof Weapon)

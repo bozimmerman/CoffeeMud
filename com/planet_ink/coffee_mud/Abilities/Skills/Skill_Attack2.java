@@ -50,7 +50,7 @@ public class Skill_Attack2 extends StdSkill
 	protected int roundOfNerfing=1;
 	protected volatile boolean freeToNerf=false;
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
         if((affected instanceof MOB)&&(((MOB)affected).isInCombat()))
     		affectableStats.setSpeed(affectableStats.speed()+(numberOfFullAttacks()*(proficiency()/100.0)));
@@ -78,7 +78,7 @@ public class Skill_Attack2 extends StdSkill
 			{
 				if(CMLib.dice().rollPercentage()>97)
 					helpProficiency(mob);
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 				//chargen combat fighter iterations=100 skiplevels=4 export=output6.txt 1 91
 			}
 		}

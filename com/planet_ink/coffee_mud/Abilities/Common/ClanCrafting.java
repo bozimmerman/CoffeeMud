@@ -340,12 +340,12 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		verb="crafting "+building.name();
 		building.setDisplayText(itemName+" lies here");
 		building.setDescription(itemName+". ");
-		building.baseEnvStats().setWeight(amt1+amt2);
+		building.basePhyStats().setWeight(amt1+amt2);
 		building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 		building.setMaterial(data[0][FOUND_CODE]);
 		int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-6;
-		building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness*3));
-		if(building.baseEnvStats().level()<1) building.baseEnvStats().setLevel(1);
+		building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness*3));
+		if(building.basePhyStats().level()<1) building.basePhyStats().setLevel(1);
 		int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 		int canContain=CMath.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
 		int armordmg=CMath.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
@@ -353,7 +353,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
 		if(building instanceof ClanItem)
 		{
-			building.baseEnvStats().setSensesMask(EnvStats.SENSE_UNLOCATABLE);
+			building.basePhyStats().setSensesMask(PhyStats.SENSE_UNLOCATABLE);
 			((ClanItem)building).setClanID(mob.getClanID());
 			((ClanItem)building).setCIType(CMath.s_int((String)foundRecipe.elementAt(RCP_CITYPE)));
 			if(((ClanItem)building).ciType()==ClanItem.CI_PROPAGANDA)
@@ -371,9 +371,9 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		addSpells(building,spell);
 		if(building instanceof Armor)
 		{
-            ((Armor)building).baseEnvStats().setArmor(0);
+            ((Armor)building).basePhyStats().setArmor(0);
             if(armordmg!=0)
-                ((Armor)building).baseEnvStats().setArmor(armordmg+(abilityCode()-1));
+                ((Armor)building).basePhyStats().setArmor(armordmg+(abilityCode()-1));
             setWearLocation(building,misctype,hardness);
 		}
 
@@ -383,9 +383,9 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 				((Container)building).setCapacity(capacity+amt1+amt2);
 				((Container)building).setContainTypes(canContain);
 			}
-		building.recoverEnvStats();
+		building.recoverPhyStats();
 		building.text();
-		building.recoverEnvStats();
+		building.recoverPhyStats();
 
 
 		messedUp=!proficiencyCheck(mob,0,auto);

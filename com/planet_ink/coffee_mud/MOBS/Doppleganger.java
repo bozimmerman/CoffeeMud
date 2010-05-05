@@ -49,31 +49,31 @@ public class Doppleganger extends StdMOB
 		username="a doppleganger";
 		setDescription("A formless biped creature, with wicked black eyes.");
 		setDisplayText("A formless biped stands here.");
-		setBaseEnvStats((EnvStats)CMClass.getCommon("DefaultEnvStats"));
+		setBasePhyStats((PhyStats)CMClass.getCommon("DefaultPhyStats"));
 		setBaseCharStats((CharStats)CMClass.getCommon("DefaultCharStats"));
 		setBaseState((CharState)CMClass.getCommon("DefaultCharState"));
 		CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);
 		setMoney(250);
-		baseEnvStats.setWeight(100 + Math.abs(randomizer.nextInt() % 101));
+		basePhyStats.setWeight(100 + Math.abs(randomizer.nextInt() % 101));
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,10 + Math.abs(randomizer.nextInt() % 6));
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,12 + Math.abs(randomizer.nextInt() % 6));
 		baseCharStats().setStat(CharStats.STAT_DEXTERITY,9 + Math.abs(randomizer.nextInt() % 6));
 
-		baseEnvStats().setDamage(7);
-		baseEnvStats().setSpeed(2.0);
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(6);
-		baseEnvStats().setArmor(20);
+		basePhyStats().setDamage(7);
+		basePhyStats().setSpeed(2.0);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(6);
+		basePhyStats().setArmor(20);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		addBehavior(CMClass.getBehavior("Mobile"));
 		addBehavior(CMClass.getBehavior("MudChat"));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 
@@ -122,10 +122,10 @@ public class Doppleganger extends StdMOB
 				username=mimicing.Name();
 				setDisplayText(mimicing.displayText());
 				setDescription(mimicing.description());
-				setBaseEnvStats((EnvStats)mimicing.baseEnvStats().copyOf());
+				setBasePhyStats((PhyStats)mimicing.basePhyStats().copyOf());
 				setBaseCharStats((CharStats)mimicing.baseCharStats().copyOf());
 				setBaseState((CharState)mimicing.baseState().copyOf());
-				recoverEnvStats();
+				recoverPhyStats();
 				recoverCharStats();
 				recoverMaxState();
 				resetToMaxState();

@@ -60,12 +60,12 @@ public class WereBat extends Bat
 	{
 		affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+100);
 	}
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(!CMLib.flags().isSleeping(affected))
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_DARK);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK);
 	}
 	public Vector myResources()
 	{

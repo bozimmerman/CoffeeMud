@@ -39,8 +39,8 @@ public class ClimbableSurface extends StdRoom
 	{
 		super();
 		name="the surface";
-		baseEnvStats.setWeight(4);
-		recoverEnvStats();
+		basePhyStats.setWeight(4);
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_ROCKS;}
 	public int domainConditions(){return Room.CONDITION_NORMAL;}

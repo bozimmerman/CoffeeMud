@@ -103,9 +103,9 @@ public class Prop_LimitedItems extends Property
 			countIfNecessary((Item)affected);
 	}
 	
-	public void affectEnvStats(Environmental E, EnvStats affectableStats)
+	public void affectPhyStats(Physical E, PhyStats affectableStats)
 	{
-		super.affectEnvStats(E,affectableStats);
+		super.affectPhyStats(E,affectableStats);
 		
 		if((!(E instanceof Item))||(((Item)E).owner()==null))
 			return;
@@ -116,7 +116,7 @@ public class Prop_LimitedItems extends Property
 		if(norecurse) return;
 		norecurse=true;
 		
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.SENSE_UNLOCATABLE);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_UNLOCATABLE);
 		
 		synchronized(playersLoaded)
 		{

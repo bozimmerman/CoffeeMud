@@ -43,8 +43,8 @@ public class GenResource extends GenItem implements RawMaterial
 		setDisplayText("a pile of resource sits here.");
 		setDescription("");
 		setMaterial(RawMaterial.RESOURCE_IRON);
-		baseEnvStats().setWeight(0);
-		recoverEnvStats();
+		basePhyStats().setWeight(0);
+		recoverPhyStats();
 	}
 
 	protected String domainSource=null;

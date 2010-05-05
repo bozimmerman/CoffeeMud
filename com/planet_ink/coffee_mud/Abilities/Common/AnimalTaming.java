@@ -115,7 +115,7 @@ public class AnimalTaming extends CommonSkill
 								    animal.delBehavior(B);
 								}
 								animal.recoverCharStats();
-								animal.recoverEnvStats();
+								animal.recoverPhyStats();
 								animal.recoverMaxState();
 							}
 							animal.resetToMaxState();
@@ -202,8 +202,8 @@ public class AnimalTaming extends CommonSkill
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		messedUp=!proficiencyCheck(mob,-taming.envStats().level()+(2*getXLEVELLevel(mob)),auto);
-		int duration=getDuration(35,mob,taming.envStats().level(),10);
+		messedUp=!proficiencyCheck(mob,-taming.phyStats().level()+(2*getXLEVELLevel(mob)),auto);
+		int duration=getDuration(35,mob,taming.phyStats().level(),10);
 		verb="taming "+M.name();
 		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) taming "+M.name()+".");
 		if(mob.location().okMessage(mob,msg))

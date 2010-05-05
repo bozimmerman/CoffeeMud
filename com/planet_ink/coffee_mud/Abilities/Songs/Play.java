@@ -70,7 +70,7 @@ public class Play extends StdAbility
 	{
         int level=super.adjustedLevel(mob,asLevel);
         if(instrument!=null)
-            level+=instrument.envStats().ability();
+            level+=instrument.phyStats().ability();
         return level;
 	}
 	
@@ -79,12 +79,12 @@ public class Play extends StdAbility
 		if(invoker()!=null)
 		{
 			if(instrument!=null)
-				return invoker().envStats().level()+instrument.envStats().ability()+(getXLEVELLevel(invoker())*2);
-			return invoker().envStats().level()+(getXLEVELLevel(invoker())*2);
+				return invoker().phyStats().level()+instrument.phyStats().ability()+(getXLEVELLevel(invoker())*2);
+			return invoker().phyStats().level()+(getXLEVELLevel(invoker())*2);
 		}
 		else
 		if(affected!=null)
-			return affected.envStats().level();
+			return affected.phyStats().level();
 		else
 			return 1;
 	}

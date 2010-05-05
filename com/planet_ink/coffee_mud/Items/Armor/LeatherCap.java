@@ -42,11 +42,11 @@ public class LeatherCap extends StdArmor
 		setDescription("It looks like its made of cured leather hide, with metal bindings.");
 		properWornBitmap=Wearable.WORN_HEAD;
 		wornLogicalAnd=false;
-		baseEnvStats().setArmor(4);
-		baseEnvStats().setWeight(1);
-		baseEnvStats().setAbility(0);
+		basePhyStats().setArmor(4);
+		basePhyStats().setWeight(1);
+		basePhyStats().setAbility(0);
 		baseGoldValue=5;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_LEATHER;
 	}
 

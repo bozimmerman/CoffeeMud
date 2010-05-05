@@ -41,19 +41,19 @@ public class GenPackagedItems extends GenItem implements PackagedItems
     {
         super();
         setName("item");
-        baseEnvStats.setWeight(150);
+        basePhyStats.setWeight(150);
         setDisplayText("");
         setDescription("");
         baseGoldValue=5;
-        baseEnvStats().setLevel(1);
+        basePhyStats().setLevel(1);
         setMaterial(RawMaterial.RESOURCE_MEAT);
-        recoverEnvStats();
+        recoverPhyStats();
     }
     protected boolean abilityImbuesMagic(){return false;}
     public String name(){return "a package of "+numberOfItemsInPackage()+" "+Name().trim()+"(s)";}
     public String displayText(){return "a package of "+numberOfItemsInPackage()+" "+Name().trim()+"(s) sit here.";}
-    public int numberOfItemsInPackage(){return baseEnvStats().ability();}
-    public void setNumberOfItemsInPackage(int number){baseEnvStats().setAbility(number);envStats().setAbility(number);}
+    public int numberOfItemsInPackage(){return basePhyStats().ability();}
+    public void setNumberOfItemsInPackage(int number){basePhyStats().setAbility(number);phyStats().setAbility(number);}
     protected byte[]    readableText=null;
     public String readableText(){return readableText==null?"":CMLib.encoder().decompressString(readableText);}
     public void setReadableText(String text){readableText=(text.trim().length()==0)?null:CMLib.encoder().compressString(text);}
@@ -63,9 +63,9 @@ public class GenPackagedItems extends GenItem implements PackagedItems
         name=CMLib.english().cleanArticles(I.Name());
         displayText="";
         setDescription("The contents of the package appears as follows:\n\r"+I.description());
-        baseEnvStats().setLevel(I.baseEnvStats().level());
-        baseEnvStats().setWeight(I.baseEnvStats().weight()*number);
-        baseEnvStats().setHeight(I.baseEnvStats().height());
+        basePhyStats().setLevel(I.basePhyStats().level());
+        basePhyStats().setWeight(I.basePhyStats().weight()*number);
+        basePhyStats().setHeight(I.basePhyStats().height());
         setMaterial(I.material());
         setBaseValue(I.baseGoldValue()*number);
         StringBuffer itemstr=new StringBuffer("");
@@ -75,7 +75,7 @@ public class GenPackagedItems extends GenItem implements PackagedItems
         itemstr.append("</PAKITEM>");
         setPackageText(itemstr.toString());
         setNumberOfItemsInPackage(number);
-        recoverEnvStats();
+        recoverPhyStats();
         return true;
     }
     
@@ -127,11 +127,11 @@ public class GenPackagedItems extends GenItem implements PackagedItems
             number=numberOfItemsInPackage();
         if(number<=0)
             return V;
-        int itemWeight=baseEnvStats().weight()/numberOfItemsInPackage();
+        int itemWeight=basePhyStats().weight()/numberOfItemsInPackage();
         int itemValue=baseGoldValue()/numberOfItemsInPackage();
         Item I=getItem();
         if(I==null) return V;
-        I.recoverEnvStats();
+        I.recoverPhyStats();
         for(int i=0;i<number;i++)
             V.addElement(I.copyOf());
         setNumberOfItemsInPackage(numberOfItemsInPackage()-number);
@@ -140,9 +140,9 @@ public class GenPackagedItems extends GenItem implements PackagedItems
             destroy();
            return V;
         }
-        baseEnvStats().setWeight(itemWeight*number);
+        basePhyStats().setWeight(itemWeight*number);
         setBaseValue(itemValue*number);
-        recoverEnvStats();
+        recoverPhyStats();
         return V;
     }
     public String packageText()

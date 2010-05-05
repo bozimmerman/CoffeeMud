@@ -40,9 +40,9 @@ public class Play_Accompaniment extends Play
 	public String name(){ return "Accompaniment";}
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 
-	public void affectEnvStats(Environmental E, EnvStats stats)
+	public void affectPhyStats(Physical E, PhyStats stats)
 	{
-		super.affectEnvStats(E,stats);
+		super.affectPhyStats(E,stats);
 		if((E instanceof MOB)&&(E!=invoker())&&(((MOB)E).charStats().getCurrentClass().baseClass().equals("Bard")))
 		{
 			int lvl=adjustedLevel(invoker(),0)/10;

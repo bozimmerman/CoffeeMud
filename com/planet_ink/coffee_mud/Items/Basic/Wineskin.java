@@ -43,13 +43,13 @@ public class Wineskin extends StdDrink
 		amountOfThirstQuenched=200;
 		amountOfLiquidHeld=1000;
 		amountOfLiquidRemaining=1000;
-		baseEnvStats.setWeight(10);
+		basePhyStats.setWeight(10);
 		capacity=5;
 		setDisplayText("a tough little wineskin sits here.");
 		setDescription("Looks like it could hold quite a bit of drink.");
 		baseGoldValue=10;
 		material=RawMaterial.RESOURCE_LEATHER;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 

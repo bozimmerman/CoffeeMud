@@ -109,7 +109,7 @@ public class Thief_Arsonry extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(2*super.getXLEVELLevel(mob)));
+		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(2*super.getXLEVELLevel(mob)));
         if(levelDiff<0) levelDiff=0;
         levelDiff*=5;
 		boolean success=proficiencyCheck(mob,-levelDiff,auto);

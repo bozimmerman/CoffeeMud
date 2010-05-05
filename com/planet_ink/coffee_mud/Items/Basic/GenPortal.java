@@ -43,7 +43,7 @@ public class GenPortal extends StdPortal
 		setName("a generic portal");
 		setDisplayText("a generic portal is here.");
 		setDescription("");
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public boolean isGeneric(){return true;}
@@ -67,7 +67,7 @@ public class GenPortal extends StdPortal
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
 							  "CONTAINTYPES","RIDEBASIS","MOBSHELD","EXITNAME","CLOSEDTEXT"};

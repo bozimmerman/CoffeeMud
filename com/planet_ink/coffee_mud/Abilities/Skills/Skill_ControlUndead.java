@@ -227,7 +227,7 @@ public class Skill_ControlUndead extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,((mob.envStats().level()+(2*getXLEVELLevel(mob)))-target.envStats().level())*30,auto);
+		boolean success=proficiencyCheck(mob,((mob.phyStats().level()+(2*getXLEVELLevel(mob)))-target.phyStats().level())*30,auto);
 
 		if(success)
 		{
@@ -241,7 +241,7 @@ public class Skill_ControlUndead extends StdSkill
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					if((mob.envStats().level()-target.envStats().level())>6)
+					if((mob.phyStats().level()-target.phyStats().level())>6)
 					{
                         if(!target.isMonster())
                             success=maliciousAffect(mob,target,asLevel,0,CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_MIND|CMMsg.MASK_ALWAYS);

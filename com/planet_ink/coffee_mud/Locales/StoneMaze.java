@@ -38,8 +38,8 @@ public class StoneMaze extends StdMaze
 	public StoneMaze()
 	{
 		super();
-		baseEnvStats.setWeight(1);
-		recoverEnvStats();
+		basePhyStats.setWeight(1);
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_INDOORS_STONE;}
 	public int domainConditions(){return Room.CONDITION_NORMAL;}

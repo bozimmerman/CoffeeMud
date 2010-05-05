@@ -92,7 +92,7 @@ public class Spell_Frailty extends Spell
 		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		boolean success=proficiencyCheck(mob,(mob.envStats().level()+(2*getXLEVELLevel(mob)))-target.envStats().level(),auto);
+		boolean success=proficiencyCheck(mob,(mob.phyStats().level()+(2*getXLEVELLevel(mob)))-target.phyStats().level(),auto);
 
 		if(success)
 		{

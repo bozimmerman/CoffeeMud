@@ -42,7 +42,7 @@ public class GenWater extends GenDrink
 		readableText = "";
 
 		setName("a generic puddle of water");
-		baseEnvStats.setWeight(2);
+		basePhyStats.setWeight(2);
 		setDisplayText("a generic puddle of water sits here.");
 		setDescription("");
 		baseGoldValue=0;
@@ -51,8 +51,8 @@ public class GenWater extends GenDrink
 		amountOfLiquidHeld=10000;
 		amountOfLiquidRemaining=10000;
 		setMaterial(RawMaterial.RESOURCE_FRESHWATER);
-		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMNOTGET);
-		recoverEnvStats();
+		basePhyStats().setSensesMask(PhyStats.SENSE_ITEMNOTGET);
+		recoverPhyStats();
 	}
 
 

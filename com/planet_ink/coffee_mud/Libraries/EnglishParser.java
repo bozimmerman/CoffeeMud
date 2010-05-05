@@ -1528,7 +1528,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					C.setNumberOfCoins(gold);
 					C.setDenomination(((Coins)I).getDenomination());
 					C.setContainer(container);
-					C.recoverEnvStats();
+					C.recoverPhyStats();
 					room.addItem(C);
 					C.setExpirationDate(I.expirationDate());
 					return C;
@@ -1594,7 +1594,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			    C.setCurrency(currency);
 			    C.setDenomination(denomination);
 			    C.setNumberOfCoins(gold);
-				C.recoverEnvStats();
+				C.recoverPhyStats();
 				mob.addItem(C);
 				return C;
 			}

@@ -101,7 +101,7 @@ public class CombatAbilities extends StdBehavior
 	    {
 	        C=(CharClass)classes.elementAt(i);
 	        mob.baseCharStats().setCurrentClass(C);
-	        mob.baseCharStats().setClassLevel(C,mob.baseEnvStats().level()/classes.size());
+	        mob.baseCharStats().setClassLevel(C,mob.basePhyStats().level()/classes.size());
 	    }
 	    mob.recoverCharStats();
 	}
@@ -173,7 +173,7 @@ public class CombatAbilities extends StdBehavior
 					mob.addNonUninvokableEffect(A);
 					A.setMiscText(text);
 					A.setSavable(false);
-					mob.recoverEnvStats();
+					mob.recoverPhyStats();
 					mob.recoverMaxState();
 					mob.resetToMaxState();
 				}
@@ -451,7 +451,7 @@ public class CombatAbilities extends StdBehavior
 	                tryThisOne.setProficiency(75);
 				else
 				{
-					int levelDiff=mob.baseEnvStats().level()-qualLevel;
+					int levelDiff=mob.basePhyStats().level()-qualLevel;
 					if((levelDiff>50)||(levelDiff<0)) levelDiff=50;
 					tryThisOne.setProficiency(50+levelDiff);
 				}
@@ -583,7 +583,7 @@ public class CombatAbilities extends StdBehavior
                     ||(((Weapon)I).maxRange()<rtt)
                     ||(I.container()!=null)
                     ||(!CMLib.flags().isGettable(I))
-                    ||(I.envStats().level()>mob.envStats().level()))
+                    ||(I.phyStats().level()>mob.phyStats().level()))
                         continue;
                     choices.addElement(I);
                 }

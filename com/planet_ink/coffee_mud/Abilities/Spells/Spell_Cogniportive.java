@@ -236,8 +236,8 @@ public class Spell_Cogniportive extends Spell
 				        home=((Spell_Cogniportive)A).establishHome(mob,target,true);
 					A.setMiscText(home);
 				}
-				target.recoverEnvStats();
-				mob.recoverEnvStats();
+				target.recoverPhyStats();
+				mob.recoverPhyStats();
 				mob.location().recoverRoomStats();
 			}
 

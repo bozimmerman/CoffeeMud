@@ -41,8 +41,8 @@ public class EndlessSky extends StdGrid
 	public EndlessSky()
 	{
 		super();
-		baseEnvStats.setWeight(1);
-		recoverEnvStats();
+		basePhyStats.setWeight(1);
+		recoverPhyStats();
 		setDisplayText("Up in the sky");
 		setDescription("");
 		xsize=CMProps.getIntVar(CMProps.SYSTEMI_SKYSIZE);

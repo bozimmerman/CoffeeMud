@@ -47,9 +47,9 @@ public class Skill_Feint extends StdSkill
 	protected boolean done=false;
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		int lvl=adjustedLevel(invoker(),0);
 		affectableStats.setArmor(affectableStats.armor()+lvl);
 	}

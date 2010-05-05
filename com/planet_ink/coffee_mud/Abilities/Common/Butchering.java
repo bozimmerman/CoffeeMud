@@ -84,7 +84,7 @@ public class Butchering extends GatheringSkill
 								if((newFound instanceof Food)||(newFound instanceof Drink))
 								for(int d=0;d<diseases.size();d++)
 									newFound.addNonUninvokableEffect((Ability)((Ability)diseases.elementAt(d)).copyOf());
-								newFound.recoverEnvStats();
+								newFound.recoverPhyStats();
 								mob.location().addItem(newFound,ItemPossessor.Expire.Resource);
 								mob.location().recoverRoomStats();
 							}
@@ -159,7 +159,7 @@ public class Butchering extends GatheringSkill
 			body=(DeadBody)I;
 			verb="skinning and butchering "+I.name();
             playSound="ripping.wav";
-			int duration=((I.envStats().weight()/(10+getXLEVELLevel(mob))));
+			int duration=((I.phyStats().weight()/(10+getXLEVELLevel(mob))));
 			if(duration<3) duration=3;
 			if(duration>40) duration=40;
 			beneficialAffect(mob,mob,asLevel,duration);

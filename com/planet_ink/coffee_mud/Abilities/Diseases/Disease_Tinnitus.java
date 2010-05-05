@@ -66,15 +66,15 @@ public class Disease_Tinnitus extends Disease
 				ringing=true;
 			else
 				ringing=false;
-			mob.recoverEnvStats();
+			mob.recoverPhyStats();
 			return true;
 		}
 		return true;
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if((affected==null)||(!ringing)) return;
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_HEAR);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_HEAR);
 	}
 }

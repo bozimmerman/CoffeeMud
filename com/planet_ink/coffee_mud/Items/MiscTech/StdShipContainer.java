@@ -44,6 +44,6 @@ public class StdShipContainer extends StdElecContainer implements ShipComponent
 
 		material=RawMaterial.RESOURCE_STEEL;
 		baseGoldValue=0;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 }

@@ -119,16 +119,16 @@ public class Amputation extends StdAbility implements Amputator
 			{
 				M.delEffect(this);
 				M.recoverCharStats();
-				M.recoverEnvStats();
+				M.recoverPhyStats();
 				M.recoverMaxState();
 			}
 		}
 		super.executeMsg(host,msg);
 	}
 	
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		missingLimbNameSet();
 		if(affected instanceof MOB)
 		{
@@ -136,13 +136,13 @@ public class Amputation extends StdAbility implements Amputator
 			if((amputations[Race.BODY_LEG]<0)&&(mob.getWearPositions(Wearable.WORN_LEGS)==0))
 			{
 				if((amputations[Race.BODY_ARM]<0)&&(mob.getWearPositions(Wearable.WORN_ARMS)==0))
-					affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_MOVE);
-				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SITTING);
+					affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_MOVE);
+				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SITTING);
 			}
 			if((amputations[Race.BODY_EYE]<0)&&(mob.getWearPositions(Wearable.WORN_EYES)==0))
-				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SEE);
+				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SEE);
 			if((amputations[Race.BODY_EAR]<0)&&(mob.getWearPositions(Wearable.WORN_EARS)==0))
-				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_HEAR);
+				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_HEAR);
 		}
 	}
 
@@ -439,7 +439,7 @@ public class Amputation extends StdAbility implements Amputator
 	            limb.removeFromOwnerContainer();
 	            isFakeLimb=true;
 	            tmob.recoverCharStats();
-	            tmob.recoverEnvStats();
+	            tmob.recoverPhyStats();
 	            tmob.recoverMaxState();
 		    }
 		}
@@ -447,7 +447,7 @@ public class Amputation extends StdAbility implements Amputator
 		{
 			limb=CMClass.getItem("GenLimb");
 			limb.setName("a "+gone);
-			limb.baseEnvStats().setAbility(1);
+			limb.basePhyStats().setAbility(1);
 			limb.setDisplayText("a bloody "+gone+" is sitting here.");
 			if(target != null)
 				limb.setSecretIdentity(target.name()+"`s bloody "+gone+".");
@@ -465,9 +465,9 @@ public class Amputation extends StdAbility implements Amputator
 					}
 				}
 			limb.setMaterial(material);
-			limb.baseEnvStats().setLevel(1);
-			limb.baseEnvStats().setWeight(5);
-			limb.recoverEnvStats();
+			limb.basePhyStats().setLevel(1);
+			limb.basePhyStats().setWeight(5);
+			limb.recoverPhyStats();
 		}
 		
 		if((target instanceof MOB)&&(((MOB)target).location()!=null))
@@ -676,7 +676,7 @@ public class Amputation extends StdAbility implements Amputator
 					if(newOne==true)
 						target.addNonUninvokableEffect(A);
 					target.recoverCharStats();
-					target.recoverEnvStats();
+					target.recoverPhyStats();
 					target.recoverMaxState();
 					target.location().recoverRoomStats();
 					CMLib.utensils().confirmWearability(target);

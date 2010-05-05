@@ -48,7 +48,7 @@ public class Wyvern extends StdMOB
 		setMoney(0);
 		setWimpHitPoint(2);
 
-		baseEnvStats().setWeight(2000 + Math.abs(randomizer.nextInt() % 550));
+		basePhyStats().setWeight(2000 + Math.abs(randomizer.nextInt() % 550));
 
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,5 + Math.abs(randomizer.nextInt() % 3));
@@ -57,20 +57,20 @@ public class Wyvern extends StdMOB
 		baseCharStats().setMyRace(CMClass.getRace("Wyvern"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		baseEnvStats().setDamage(16);
-		baseEnvStats().setSpeed(2.0);
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(7);
-		baseEnvStats().setArmor(30);
-        baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_FLYING);
+		basePhyStats().setDamage(16);
+		basePhyStats().setSpeed(2.0);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(7);
+		basePhyStats().setArmor(30);
+        basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_FLYING);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
         addBehavior(CMClass.getBehavior("Aggressive"));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

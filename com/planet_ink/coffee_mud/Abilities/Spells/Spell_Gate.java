@@ -99,7 +99,7 @@ public class Spell_Gate extends Spell
 		}
 
 		
-		int adjustment=target.envStats().level()-(mob.envStats().level()+(2*getXLEVELLevel(mob)));
+		int adjustment=target.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
 		if(target.isMonster()) adjustment=adjustment*3;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

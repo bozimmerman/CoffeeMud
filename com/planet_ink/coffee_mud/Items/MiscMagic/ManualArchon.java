@@ -41,14 +41,14 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 		super();
 
 		setName("an ornately decorated book");
-		baseEnvStats.setWeight(1);
+		basePhyStats.setWeight(1);
 		setDisplayText("an ornately decorated book has definitely been left behind by someone.");
 		setDescription("A book covered with mystical symbols, inside and out.");
 		secretIdentity="The Manual of the Archons.";
 		this.setUsesRemaining(Integer.MAX_VALUE);
 		baseGoldValue=50000;
 		material=RawMaterial.RESOURCE_PAPER;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
@@ -77,24 +77,24 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
                         &&(!mob.charStats().isLevelCapped(mob.charStats().getCurrentClass()))
 						&&(!mob.charStats().getMyRace().leveless())
 						&&(!CMSecurity.isDisabled("LEVELS")))
-						while(mob.baseEnvStats().level()<100)
+						while(mob.basePhyStats().level()<100)
 						{
-							int oldLevel = mob.baseEnvStats().level();
+							int oldLevel = mob.basePhyStats().level();
 							if((mob.getExpNeededLevel()==Integer.MAX_VALUE)
 							||(mob.charStats().getCurrentClass().expless())
 							||(mob.charStats().getMyRace().expless()))
 								CMLib.leveler().level(mob);
 							else
 								CMLib.leveler().postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
-							if(mob.baseEnvStats().level()==oldLevel)
+							if(mob.basePhyStats().level()==oldLevel)
 								break;
 						}
 						mob.baseCharStats().setCurrentClass(newClass);
 						mob.baseCharStats().setClassLevel(mob.baseCharStats().getCurrentClass(),30);
-						mob.baseEnvStats().setLevel(mob.baseEnvStats().level()+30);
+						mob.basePhyStats().setLevel(mob.basePhyStats().level()+30);
 						mob.setExperience(mob.getExpNextLevel());
 						mob.recoverCharStats();
-						mob.recoverEnvStats();
+						mob.recoverPhyStats();
 						mob.recoverMaxState();
 						mob.resetToMaxState();
 						mob.charStats().getCurrentClass().startCharacter(mob,true,false);

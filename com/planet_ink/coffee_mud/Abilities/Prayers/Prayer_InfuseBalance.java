@@ -48,13 +48,13 @@ public class Prayer_InfuseBalance extends Prayer
     public int abilityCode(){return serviceRunning;}
     public void setAbilityCode(int newCode){serviceRunning=newCode;}
 
-    public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+    public void affectPhyStats(Physical affected, PhyStats affectableStats)
     {
-        super.affectEnvStats(affected,affectableStats);
-        if(CMath.bset(affectableStats.disposition(),EnvStats.IS_GOOD))
-            affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_GOOD);
-        if(CMath.bset(affectableStats.disposition(),EnvStats.IS_EVIL))
-            affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_EVIL);
+        super.affectPhyStats(affected,affectableStats);
+        if(CMath.bset(affectableStats.disposition(),PhyStats.IS_GOOD))
+            affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_GOOD);
+        if(CMath.bset(affectableStats.disposition(),PhyStats.IS_EVIL))
+            affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_EVIL);
     }
 
     public void unInvoke()
@@ -158,7 +158,7 @@ public class Prayer_InfuseBalance extends Prayer
                 }
                 else
                     beneficialAffect(mob,target,asLevel,0);
-                target.recoverEnvStats();
+                target.recoverPhyStats();
             }
         }
         else

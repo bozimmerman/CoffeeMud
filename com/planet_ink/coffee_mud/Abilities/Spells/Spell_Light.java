@@ -53,12 +53,12 @@ public class Spell_Light extends Spell
         return super.castingQuality(mob,target);
     }
     
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if(!(affected instanceof Room))
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_LIGHTSOURCE);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_LIGHTSOURCE);
 		if(CMLib.flags().isInDark(affected))
-			affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_DARK);
+			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_DARK);
 	}
 	public void unInvoke()
 	{

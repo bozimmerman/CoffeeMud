@@ -43,16 +43,16 @@ public class Prayer_GodLight extends Prayer
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected==null) return;
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_LIGHTSOURCE);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GLOWING);
-        if(CMath.bset(affectableStats.disposition(),EnvStats.IS_DARK))
-            affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_DARK);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_LIGHTSOURCE);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GLOWING);
+        if(CMath.bset(affectableStats.disposition(),PhyStats.IS_DARK))
+            affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_DARK);
 		if(!(affected instanceof MOB)) return;
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SEE);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SEE);
 	}
 
 	public void unInvoke()
@@ -128,11 +128,11 @@ public class Prayer_GodLight extends Prayer
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else
 			// what happened.
-			if(target instanceof Room) mob.envStats().setSensesMask(mob.envStats().sensesMask()|EnvStats.CAN_SEE_DARK);
+			if(target instanceof Room) mob.phyStats().setSensesMask(mob.phyStats().sensesMask()|PhyStats.CAN_SEE_DARK);
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"":((target instanceof MOB)?"^S<S-NAME> point(s) to <T-NAMESELF> and "+prayWord(mob)+". A beam of bright sunlight flashes into <T-HIS-HER> eyes!^?":"^S<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+".^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{

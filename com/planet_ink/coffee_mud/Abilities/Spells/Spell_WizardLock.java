@@ -188,7 +188,7 @@ public class Spell_WizardLock extends Spell
 				Ability lock=target.fetchEffect(ID());
 				if(lock != null)
 				{
-					lock.setMiscText(Integer.toString(mob.envStats().level()));
+					lock.setMiscText(Integer.toString(mob.phyStats().level()));
 					if(target instanceof Exit)
 					{
 						Room R=mob.location();

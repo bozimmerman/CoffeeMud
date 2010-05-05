@@ -59,10 +59,10 @@ public class Chant_EelShock extends Chant
 				mob.tell("<S-YOUPOSS> are no longer stunned.");
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(EnvStats.IS_SITTING);
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setDisposition(PhyStats.IS_SITTING);
 	}
 
 

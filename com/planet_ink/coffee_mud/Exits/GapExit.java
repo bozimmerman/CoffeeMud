@@ -39,12 +39,12 @@ public class GapExit extends StdExit
 
 	public int mobWeight(MOB mob)
 	{
-		int weight=mob.baseEnvStats().weight();
+		int weight=mob.basePhyStats().weight();
 		for(int i=0;i<mob.numItems();i++)
 		{
 			Item I=mob.getItem(i);
 			if((I!=null)&&(!I.amWearingAt(Wearable.WORN_FLOATING_NEARBY)))
-				weight+=I.envStats().weight();
+				weight+=I.phyStats().weight();
 		}
 		return weight;
 	}

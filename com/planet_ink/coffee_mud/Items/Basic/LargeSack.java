@@ -42,7 +42,7 @@ public class LargeSack extends StdContainer
 		capacity=100;
 		baseGoldValue=5;
 		setMaterial(RawMaterial.RESOURCE_COTTON);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 

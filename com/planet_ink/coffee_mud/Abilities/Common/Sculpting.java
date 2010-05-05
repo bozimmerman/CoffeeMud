@@ -279,10 +279,10 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
             playSound="metalbat.wav";
 			building.setDisplayText(itemName+" lies here");
 			building.setDescription(itemName+". ");
-			building.baseEnvStats().setWeight(woodRequired);
+			building.basePhyStats().setWeight(woodRequired);
 			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
 			building.setMaterial(data[0][FOUND_CODE]);
-			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
+			building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
 			addSpells(building,spell);
@@ -345,7 +345,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 					key.setName("a key");
 					key.setDisplayText("a small key sits here");
 					key.setDescription("looks like a key to "+building.name());
-					key.recoverEnvStats();
+					key.recoverPhyStats();
 					key.text();
 				}
 			}
@@ -359,7 +359,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 				if(building instanceof Container)
 					((Container)building).setCapacity(0);
 			}
-			building.recoverEnvStats();
+			building.recoverPhyStats();
 			if((!CMLib.flags().isGettable(building))
 			&&(!CMLib.law().doesOwnThisProperty(mob,mob.location())))
 			{
@@ -372,7 +372,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			    CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,building);
 			if(bundling) building.setBaseValue(lostValue);
 			building.text();
-			building.recoverEnvStats();
+			building.recoverPhyStats();
 
 		}
 

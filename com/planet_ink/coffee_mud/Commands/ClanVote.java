@@ -189,7 +189,7 @@ public class ClanVote extends StdCommand
 								mob2.setName(C.clanID());
 								mob2.setClanID(C.clanID());
 								mob2.setClanRole(Clan.POS_BOSS);
-								mob2.baseEnvStats().setLevel(1000);
+								mob2.basePhyStats().setLevel(1000);
 								if(mob2.location()==null)
 								{
 									mob2.setLocation(mob2.getStartRoom());

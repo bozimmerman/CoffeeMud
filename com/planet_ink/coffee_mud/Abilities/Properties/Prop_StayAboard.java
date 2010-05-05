@@ -88,9 +88,9 @@ public class Prop_StayAboard extends Property
 		}
     }
     
-    public void affectEnvStats(Environmental E, EnvStats affectableStats)
+    public void affectPhyStats(Physical E, PhyStats affectableStats)
     {
-    	super.affectEnvStats(E, affectableStats);
+    	super.affectPhyStats(E, affectableStats);
     	synchronized(this)
     	{
     		if(noRepeat) return;

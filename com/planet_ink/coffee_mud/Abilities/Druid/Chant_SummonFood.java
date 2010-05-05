@@ -89,7 +89,7 @@ public class Chant_SummonFood extends Chant
 				}
 				if(newItem!=null)
 					mob.location().showHappens(CMMsg.MSG_OK_ACTION,CMStrings.capitalizeAndLower(newItem.name())+" quickly begin to grow here.");
-				mob.location().recoverEnvStats();
+				mob.location().recoverPhyStats();
 			}
 		}
 		else

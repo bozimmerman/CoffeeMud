@@ -39,8 +39,8 @@ public class StoneThinGrid extends StdThinGrid
 	public StoneThinGrid()
 	{
 		super();
-		baseEnvStats.setWeight(1);
-		recoverEnvStats();
+		basePhyStats.setWeight(1);
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_INDOORS_STONE;}
 	public int domainConditions(){return Room.CONDITION_NORMAL;}

@@ -171,19 +171,19 @@ public class Painting extends CommonSkill
 			building.setName("a painting of "+name);
 			building.setDisplayText("a painting of "+name+" is here.");
 			building.setDescription(desc);
-			building.baseEnvStats().setWeight(I.baseEnvStats().weight());
+			building.basePhyStats().setWeight(I.basePhyStats().weight());
 			building.setBaseValue(I.baseGoldValue()*(CMLib.dice().roll(1,5,0)));
 			building.setMaterial(I.material());
-			building.baseEnvStats().setLevel(I.baseEnvStats().level());
+			building.basePhyStats().setLevel(I.basePhyStats().level());
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			I.destroy();
 		}
 		String startStr="<S-NAME> start(s) painting "+building.name()+".";
 		displayText="You are painting "+building.name();
 		verb="painting "+building.name();
-		building.recoverEnvStats();
+		building.recoverPhyStats();
 		building.text();
-		building.recoverEnvStats();
+		building.recoverPhyStats();
 
 		messedUp=!proficiencyCheck(mob,0,auto);
 		duration=getDuration(25,mob,1,2);

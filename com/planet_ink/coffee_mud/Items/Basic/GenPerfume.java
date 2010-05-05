@@ -41,10 +41,10 @@ public class GenPerfume extends StdPerfume
 	{
 		super();
 		setName("a generic bottle of perfume");
-		baseEnvStats.setWeight(1);
+		basePhyStats.setWeight(1);
 		setDisplayText("a generic bottle of perfume sits here.");
 		setDescription("");
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 
@@ -68,7 +68,7 @@ public class GenPerfume extends StdPerfume
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES",
 							  "QUENCHED","LIQUIDHELD","LIQUIDTYPE","SMELLLST"};

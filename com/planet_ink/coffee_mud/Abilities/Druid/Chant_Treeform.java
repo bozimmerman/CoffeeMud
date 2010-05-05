@@ -64,7 +64,7 @@ public class Chant_Treeform extends Chant
 		mob.curState().setHunger(1000);
 		mob.curState().setThirst(1000);
 		mob.recoverCharStats();
-		mob.recoverEnvStats();
+		mob.recoverPhyStats();
 
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
@@ -96,7 +96,7 @@ public class Chant_Treeform extends Chant
 			item.setDisplayText(mob.displayText());
 			item.setMaterial(RawMaterial.RESOURCE_WOOD);
 			CMLib.flags().setGettable(item,false);
-			item.envStats().setWeight(2000);
+			item.phyStats().setWeight(2000);
 			CMMsg msg2=CMClass.getMsg(msg.source(),item,msg.targetCode(),null);
 			if(!okMessage(msg.source(),msg2))
 				return false;
@@ -115,19 +115,19 @@ public class Chant_Treeform extends Chant
 		return true;
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly put the mob into
 		// a sleeping state, so that nothing they do
 		// can get them out of it.
 		affectableStats.setName("a tree that reminds you of "+affected.name());
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_MOVE);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_HEAR);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SMELL);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SPEAK);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_TASTE);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_MOVE);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_HEAR);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SMELL);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SPEAK);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TASTE);
 	}
 
 
@@ -209,7 +209,7 @@ public class Chant_Treeform extends Chant
 					target.makePeace();
 					CMLib.commands().postStand(target,true);
 					oldState=(CharState)target.curState().copyOf();
-					success=beneficialAffect(mob,target,asLevel,(mob.envStats().level()+(2*super.getXLEVELLevel(mob)))*50);
+					success=beneficialAffect(mob,target,asLevel,(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*50);
 					if(success)
 					{
 						mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> transform(s) into a tree!!");

@@ -89,7 +89,7 @@ public class Spell_FindFamiliar extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB target = determineMonster(mob, mob.envStats().level());
+				MOB target = determineMonster(mob, mob.phyStats().level());
 				if(target.isInCombat()) target.makePeace();
 				CMLib.commands().postFollow(target,mob,true);
 				invoker=mob;
@@ -107,9 +107,9 @@ public class Spell_FindFamiliar extends Spell
 	{
 
 		MOB newMOB=CMClass.getMOB("GenMOB");
-		newMOB.baseEnvStats().setAbility(7);
-		newMOB.baseEnvStats().setLevel(level);
-		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
+		newMOB.basePhyStats().setAbility(7);
+		newMOB.basePhyStats().setLevel(level);
+		newMOB.basePhyStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 		int choice=CMLib.dice().roll(1,9,-1);
 		switch(choice)
@@ -178,18 +178,18 @@ public class Spell_FindFamiliar extends Spell
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("Raven"));
 			break;
 		}
-		newMOB.recoverEnvStats();
+		newMOB.recoverPhyStats();
 		newMOB.recoverCharStats();
-		newMOB.baseEnvStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
-		newMOB.baseEnvStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
-		newMOB.baseEnvStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
-		newMOB.baseEnvStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB));
+		newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
+		newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
+		newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
+		newMOB.basePhyStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB));
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_GOOD);
 		newMOB.setStartRoom(null);
 		newMOB.recoverCharStats();
-		newMOB.recoverEnvStats();
+		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
 		Ability A=CMClass.getAbility("Prop_Familiar");

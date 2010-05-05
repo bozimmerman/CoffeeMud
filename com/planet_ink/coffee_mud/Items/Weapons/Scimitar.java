@@ -40,13 +40,13 @@ public class Scimitar extends Sword
 		setName("an ornate scimitar");
 		setDisplayText("a rather ornate looking Scimitar leans against the wall.");
 		setDescription("It has a metallic pommel, and a long curved blade.");
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(0);
-		baseEnvStats().setWeight(4);
-		baseEnvStats().setAttackAdjustment(0);
-		baseEnvStats().setDamage(8);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(0);
+		basePhyStats().setWeight(4);
+		basePhyStats().setAttackAdjustment(0);
+		basePhyStats().setDamage(8);
 		baseGoldValue=15;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_STEEL;
 		weaponType=TYPE_SLASHING;
 	}

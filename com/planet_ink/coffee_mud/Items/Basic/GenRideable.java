@@ -44,10 +44,10 @@ public class GenRideable extends StdRideable
 		setName("a generic boat");
 		setDisplayText("a generic boat sits here.");
 		setDescription("");
-		baseEnvStats().setWeight(2000);
+		basePhyStats().setWeight(2000);
 		rideBasis=Rideable.RIDEABLE_WATER;
 		setMaterial(RawMaterial.RESOURCE_OAK);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public boolean isGeneric(){return true;}
@@ -71,7 +71,7 @@ public class GenRideable extends StdRideable
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
 							  "CONTAINTYPES","RIDEBASIS","MOBSHELD"};

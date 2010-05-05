@@ -61,8 +61,8 @@ public class StdItem implements Item
 	protected SVector<Behavior> 		behaviors=null;
     protected SVector<ScriptingEngine>  scripts=null;
 
-	protected EnvStats envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
-	protected EnvStats baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+	protected PhyStats phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+	protected PhyStats basePhyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 
 	protected boolean destroyed=false;
 
@@ -70,8 +70,8 @@ public class StdItem implements Item
 	{
         super();
         CMClass.bumpCounter(this,CMClass.OBJECT_ITEM);
-		baseEnvStats().setWeight(1);
-		baseEnvStats().setArmor(0);
+		basePhyStats().setWeight(1);
+		basePhyStats().setArmor(0);
 		xtraValues=CMProps.getExtraStatCodesHolder(this);
 	}
     protected boolean abilityImbuesMagic(){return true;}
@@ -85,7 +85,7 @@ public class StdItem implements Item
 	public void setName(String newName){name=newName;}
 	public String name()
 	{
-		if(envStats().newName()!=null) return envStats().newName();
+		if(phyStats().newName()!=null) return phyStats().newName();
 		return Name();
 	}
     public String image()
@@ -108,36 +108,36 @@ public class StdItem implements Item
             imageName=newImage;
     }
 	
-	public EnvStats envStats()
+	public PhyStats phyStats()
 	{
-		return envStats;
+		return phyStats;
 	}
 
-	public EnvStats baseEnvStats()
+	public PhyStats basePhyStats()
 	{
-		return baseEnvStats;
+		return basePhyStats;
 	}
 
-	public void recoverEnvStats()
+	public void recoverPhyStats()
 	{
-		baseEnvStats.copyInto(envStats);
+		basePhyStats.copyInto(phyStats);
 		for(int a=0;a<numEffects();a++)
 		{
 			Ability A=fetchEffect(a);
 			if(A!=null)
-				A.affectEnvStats(this,envStats);
+				A.affectPhyStats(this,phyStats);
 		}
-		if(((envStats().ability()>0)&&abilityImbuesMagic())||(this instanceof MiscMagic))
-			envStats().setDisposition(envStats().disposition()|EnvStats.IS_BONUS);
+		if(((phyStats().ability()>0)&&abilityImbuesMagic())||(this instanceof MiscMagic))
+			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_BONUS);
 		if((owner()!=null)
 		&&(owner() instanceof MOB)
 		&&(CMLib.flags().isHidden(this)))
-		   envStats().setDisposition((int)(envStats().disposition()&(EnvStats.ALLMASK-EnvStats.IS_HIDDEN)));
+		   phyStats().setDisposition((int)(phyStats().disposition()&(PhyStats.ALLMASK-PhyStats.IS_HIDDEN)));
 	}
 
-	public void setBaseEnvStats(EnvStats newBaseEnvStats)
+	public void setBasePhyStats(PhyStats newStats)
 	{
-		baseEnvStats=(EnvStats)newBaseEnvStats.copyOf();
+		basePhyStats=(PhyStats)newStats.copyOf();
 	}
 	public CMObject newInstance()
 	{
@@ -155,8 +155,8 @@ public class StdItem implements Item
 	protected void cloneFix(Item E)
 	{
 		destroyed=false;
-		baseEnvStats=(EnvStats)E.baseEnvStats().copyOf();
-		envStats=(EnvStats)E.envStats().copyOf();
+		basePhyStats=(PhyStats)E.basePhyStats().copyOf();
+		phyStats=(PhyStats)E.phyStats().copyOf();
 
 		affects=null;
 		behaviors=null;
@@ -216,7 +216,7 @@ public class StdItem implements Item
 		owner=E;
 		if((E!=null)&&(!(E instanceof Room)))
 			setExpirationDate(0);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	public long expirationDate()
 	{
@@ -292,7 +292,7 @@ public class StdItem implements Item
 			setRawWornCode(properWornBitmap);
 		else
 			setRawWornCode(wornCode);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public long rawProperLocationBitmap()
@@ -374,7 +374,7 @@ public class StdItem implements Item
 	public void unWear()
 	{
 		setRawWornCode(Wearable.IN_INVENTORY);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 
@@ -390,7 +390,7 @@ public class StdItem implements Item
 
 	public int value()
 	{
-		return baseGoldValue()+(10*envStats().ability());
+		return baseGoldValue()+(10*phyStats().ability());
 	}
 	public int baseGoldValue(){return baseGoldValue;}
 	public void setBaseValue(int newValue)
@@ -403,38 +403,38 @@ public class StdItem implements Item
 	public boolean isReadable(){ return CMLib.flags().isReadable(this);}
 	public void setReadable(boolean truefalse){ CMLib.flags().setReadable(this, truefalse);}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if(affected instanceof Room)
 		{
 			if((CMLib.flags().isLightSource(this))&&(CMLib.flags().isInDark(affected)))
-				affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_DARK);
+				affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_DARK);
 		}
 		else
 		{
 			if(CMLib.flags().isLightSource(this))
 			{
 				if(rawWornCode()!=Wearable.IN_INVENTORY)
-					affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_LIGHTSOURCE);
+					affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_LIGHTSOURCE);
 				if(CMLib.flags().isInDark(affected))
-					affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_DARK);
+					affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_DARK);
 			}
 			if((amWearingAt(Wearable.WORN_MOUTH))&&(affected instanceof MOB))
 			{
 				if(!(this instanceof Light))
-					affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SPEAK);
-				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_TASTE);
+					affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SPEAK);
+				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TASTE);
 			}
 			if((!amWearingAt(Wearable.WORN_FLOATING_NEARBY))
 			&&((!(affected instanceof MOB))||(((MOB)affected).riding()!=this)))
-				affectableStats.setWeight(affectableStats.weight()+envStats().weight());
+				affectableStats.setWeight(affectableStats.weight()+phyStats().weight());
 		}
         int num=numEffects();
 		for(int a=0;a<num;a++)
 		{
 			Ability A=fetchEffect(a);
 			if((A!=null)&&(A.bubbleAffect()))
-			   A.affectEnvStats(affected,affectableStats);
+			   A.affectPhyStats(affected,affectableStats);
 		}
 	}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
@@ -528,8 +528,8 @@ public class StdItem implements Item
 	public String secretIdentity()
 	{
 		if((secretIdentity!=null)&&(secretIdentity.length()>0))
-			return secretIdentity+"\n\rLevel: "+envStats().level()+tackOns();
-		return description()+"\n\rLevel: "+envStats().level()+tackOns();
+			return secretIdentity+"\n\rLevel: "+phyStats().level()+tackOns();
+		return description()+"\n\rLevel: "+phyStats().level()+tackOns();
 	}
 
 	public void setSecretIdentity(String newIdentity)
@@ -710,8 +710,8 @@ public class StdItem implements Item
 		&&(msg.sourceMinor()==CMMsg.TYP_THROW)
 		&&(mob.isMine(this)))
 		{
-			if((envStats().weight()>(mob.maxCarry()/5))
-			&&(envStats().weight()!=0))
+			if((phyStats().weight()>(mob.maxCarry()/5))
+			&&(phyStats().weight()!=0))
 			{
 				mob.tell(name()+" is too heavy to throw.");
 				return false;
@@ -789,7 +789,7 @@ public class StdItem implements Item
 			}
 			if(!alreadyWornMsg(msg.source(),this))
 				return false;
-			if(envStats().level()>mob.envStats().level())
+			if(phyStats().level()>mob.phyStats().level())
 			{
 				mob.tell("That looks too advanced for you.");
 				return false;
@@ -825,7 +825,7 @@ public class StdItem implements Item
 			}
 			if(!alreadyWornMsg(msg.source(),this))
 				return false;
-			if(envStats().level()>mob.envStats().level())
+			if(phyStats().level()>mob.phyStats().level())
 			{
 				mob.tell("That looks too advanced for you.");
 				return false;
@@ -839,7 +839,7 @@ public class StdItem implements Item
 			}
 			if(!alreadyWornMsg(msg.source(),this))
 				return false;
-			if(envStats().level()>mob.envStats().level())
+			if(phyStats().level()>mob.phyStats().level())
 			{
 				mob.tell("That looks too advanced for you.");
 				return false;
@@ -888,15 +888,15 @@ public class StdItem implements Item
 					mob.tell("You can't see that.");
 					return false;
 				}
-				if((mob.envStats().level()<envStats().level()-(10+(mob.envStats().level()/5)))
+				if((mob.phyStats().level()<phyStats().level()-(10+(mob.phyStats().level()/5)))
 				&&(!(mob instanceof ShopKeeper)))
 				{
 					mob.tell(name()+" is too powerful to endure possessing it.");
 					return false;
 				}
-				if((envStats().weight()>(mob.maxCarry()-mob.envStats().weight()))
+				if((phyStats().weight()>(mob.maxCarry()-mob.phyStats().weight()))
 				&&(!mob.isMine(this))
-				&&(envStats().weight()!=0))
+				&&(phyStats().weight()!=0))
 				{
 					mob.tell(name()+" is too heavy.");
 					return false;
@@ -1138,7 +1138,7 @@ public class StdItem implements Item
 
     public int recursiveWeight()
     {
-        int weight=envStats().weight();
+        int weight=phyStats().weight();
         if(this instanceof Container)
         {
             if(owner()==null) return weight;
@@ -1265,7 +1265,7 @@ public class StdItem implements Item
 			}
 			mob.delItem(this);
 		}
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public void addNonUninvokableEffect(Ability to)
@@ -1428,8 +1428,8 @@ public class StdItem implements Item
 		{
 		case 0: return ID();
 		case 1: return ""+usesRemaining();
-		case 2: return ""+baseEnvStats().ability();
-		case 3: return ""+baseEnvStats().level();
+		case 2: return ""+basePhyStats().ability();
+		case 3: return ""+basePhyStats().level();
 		case 4: return text();
 		}
 		return "";
@@ -1440,8 +1440,8 @@ public class StdItem implements Item
 		{
 		case 0: return;
 		case 1: setUsesRemaining(CMath.s_parseIntExpression(val)); break;
-		case 2: baseEnvStats().setLevel(CMath.s_parseIntExpression(val)); break;
-		case 3: baseEnvStats().setAbility(CMath.s_parseIntExpression(val)); break;
+		case 2: basePhyStats().setLevel(CMath.s_parseIntExpression(val)); break;
+		case 3: basePhyStats().setAbility(CMath.s_parseIntExpression(val)); break;
 		case 4: setMiscText(val); break;
 		}
 	}

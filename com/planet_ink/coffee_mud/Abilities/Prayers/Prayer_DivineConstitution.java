@@ -125,7 +125,7 @@ public class Prayer_DivineConstitution extends Prayer
 				xtraHPs=0;
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,0);
-				target.recoverEnvStats();
+				target.recoverPhyStats();
 				target.recoverCharStats();
 				target.recoverMaxState();
 			}

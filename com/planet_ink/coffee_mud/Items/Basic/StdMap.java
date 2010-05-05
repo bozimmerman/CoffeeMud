@@ -46,10 +46,10 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		setName("a map");
 		setDisplayText("a map sits here");
 		setDescription("Looks like a map of some place.");
-		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMREADABLE);
+		basePhyStats().setSensesMask(PhyStats.SENSE_ITEMREADABLE);
 		baseGoldValue=10;
 		material=RawMaterial.RESOURCE_PAPER;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 
@@ -301,16 +301,16 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 	public StringBuffer[][] getMyMappedRoom(int width)
 	{
         StringBuffer[][] myMap=null;
-		/*if(oldLevel!=envStats().level())
+		/*if(oldLevel!=phyStats().level())
 		{
 			myMap=null;
-			oldLevel=envStats().level();
+			oldLevel=phyStats().level();
 		}
 
 		if(myMap!=null)
 			return myMap;
 
-		Object o=Resources.getResource("map"+envStats().level()+":"+getMapArea());
+		Object o=Resources.getResource("map"+phyStats().level()+":"+getMapArea());
 		if((o!=null)&&(o instanceof StringBuffer[][]))
 			myMap=(StringBuffer[][])o;
 
@@ -318,7 +318,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 			return myMap;
         */
 		myMap=finishMapMaking(width);
-		Resources.submitResource("map"+envStats().level()+":"+getMapArea(),myMap);
+		Resources.submitResource("map"+phyStats().level()+":"+getMapArea(),myMap);
 		return myMap;
 	}
 
@@ -469,7 +469,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		if(room.r.domainType()==Room.DOMAIN_OUTDOORS_AIR)
 			return false;
 
-		if((envStats().level()<1)&&((room.r.domainType()&Room.INDOORS)==Room.INDOORS))
+		if((phyStats().level()<1)&&((room.r.domainType()&Room.INDOORS)==Room.INDOORS))
 			return false;
 
 		boolean ok=false;
@@ -478,7 +478,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 			Exit E=room.r.getExitInDir(d);
 			if(E!=null)
 			{
-				if(envStats().level()<2)
+				if(phyStats().level()<2)
 				{
 					if((!CMLib.flags().isHidden(E))&&(!CMLib.flags().isInvisible(E))&&(!E.defaultsLocked()))
 						ok=true;
@@ -494,7 +494,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 	{
 		if(!okToPlace(room)) return false;
 		if(exit==null) return false;
-		if(envStats().level()<2)
+		if(phyStats().level()<2)
 		{
 			if((CMLib.flags().isHidden(exit)||CMLib.flags().isInvisible(exit)))
 			   return false;

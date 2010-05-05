@@ -62,9 +62,9 @@ public class Disease_Lycanthropy extends Disease
 		return theRace;
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(!(affected instanceof MOB)) return;
 		if(lycanRace()!=null)
 		{
@@ -97,7 +97,7 @@ public class Disease_Lycanthropy extends Disease
 			&&(M!=mob)
 			&&(!CMLib.flags().isEvil(M))
 			&&(mob.mayIFight(M))
-			&&(M.envStats().level()<(mob.envStats().level()+5)))
+			&&(M.phyStats().level()<(mob.phyStats().level()+5)))
 				return M;
 		}
 		return null;
@@ -209,7 +209,7 @@ public class Disease_Lycanthropy extends Disease
 				changed=true;
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> turn(s) into a "+lycanRace().name()+"!");
 				mob.recoverCharStats();
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 				mob.recoverMaxState();
 				mob.location().recoverRoomStats();
 			}
@@ -224,7 +224,7 @@ public class Disease_Lycanthropy extends Disease
 				changed=false;
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> revert(s) to normal.");
 				mob.recoverCharStats();
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 				mob.recoverMaxState();
 				mob.location().recoverRoomStats();
 				return true;

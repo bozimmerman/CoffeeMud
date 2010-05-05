@@ -84,7 +84,7 @@ public class Spell_SummonEnemy extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB target = determineMonster(mob, mob.envStats().level());
+				MOB target = determineMonster(mob, mob.phyStats().level());
 				if(target!=null)
 				{
 					beneficialAffect(mob,target,asLevel,0);
@@ -115,8 +115,8 @@ public class Spell_SummonEnemy extends Spell
 				MOB mob=room.fetchInhabitant(CMLib.dice().roll(1,room.numInhabitants(),-1));
 				if((mob!=null)
 				&&(!(mob instanceof Deity))
-				&&(mob.envStats().level()>=level-(CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE)/2))
-				&&(mob.envStats().level()<=(level+(CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE)/2)))
+				&&(mob.phyStats().level()>=level-(CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE)/2))
+				&&(mob.phyStats().level()<=(level+(CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE)/2)))
 				&&(mob.charStats()!=null)
 				&&(mob.charStats().getMyRace()!=null)
 				&&(CMProps.isTheme(mob.charStats().getMyRace().availabilityCode()))
@@ -129,9 +129,9 @@ public class Spell_SummonEnemy extends Spell
 		}
 		if(monster==null) return null;
 		monster=(MOB)monster.copyOf();
-		monster.baseEnvStats().setRejuv(Integer.MAX_VALUE);
+		monster.basePhyStats().setRejuv(Integer.MAX_VALUE);
 		monster.recoverCharStats();
-		monster.recoverEnvStats();
+		monster.recoverPhyStats();
 		monster.recoverMaxState();
 		monster.resetToMaxState();
 		monster.text();

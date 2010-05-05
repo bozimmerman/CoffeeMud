@@ -97,7 +97,7 @@ public class Trap_BearTrap extends StdTrap
 				if(trapped.location().show(trapped,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> struggle(s) to get out of the bear trap."))
 				{
 					amountRemaining-=trapped.charStats().getStat(CharStats.STAT_STRENGTH);
-					amountRemaining-=trapped.envStats().level();
+					amountRemaining-=trapped.phyStats().level();
 					if(amountRemaining<=0)
 					{
 						trapped.location().show(trapped,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> pull(s) free of the bear trap.");

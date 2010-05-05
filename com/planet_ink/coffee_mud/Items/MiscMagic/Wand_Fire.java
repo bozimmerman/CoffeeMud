@@ -44,9 +44,9 @@ public class Wand_Fire extends StdWand
 		secretIdentity="The wand of fire.  Responds to 'Blaze' and 'Burn'";
 		this.setUsesRemaining(50);
 		baseGoldValue=20000;
-		baseEnvStats().setLevel(12);
+		basePhyStats().setLevel(12);
 		material=RawMaterial.RESOURCE_OAK;
-		recoverEnvStats();
+		recoverPhyStats();
 		secretWord="BLAZE, BURN";
 	}
 
@@ -82,7 +82,7 @@ public class Wand_Fire extends StdWand
 					if((usesRemaining()>0)&&(spell!=null)&&(useTheWand(spell,mob,0)))
 					{
 						this.setUsesRemaining(this.usesRemaining()-1);
-						spell.invoke(mob, target, true,envStats().level());
+						spell.invoke(mob, target, true,phyStats().level());
 						return;
 					}
 				}
@@ -93,7 +93,7 @@ public class Wand_Fire extends StdWand
 					if((usesRemaining()>4)&&(spell!=null)&&(useTheWand(spell,mob,0)))
 					{
 						this.setUsesRemaining(this.usesRemaining()-5);
-						spell.invoke(mob, target, true,envStats().level());
+						spell.invoke(mob, target, true,phyStats().level());
 						return;
 					}
 				}

@@ -46,8 +46,8 @@ public class StdRideable extends StdContainer implements Rideable
 		setName("a boat");
 		setDisplayText("a boat is docked here.");
 		setDescription("Looks like a boat");
-		baseEnvStats().setWeight(2000);
-		recoverEnvStats();
+		basePhyStats().setWeight(2000);
+		recoverPhyStats();
 		capacity=3000;
 		material=RawMaterial.RESOURCE_OAK;
 	}
@@ -247,32 +247,32 @@ public class StdRideable extends StdContainer implements Rideable
 		return "";
 	}
 
-	public void recoverEnvStats()
+	public void recoverPhyStats()
 	{
-		super.recoverEnvStats();
+		super.recoverPhyStats();
 		if(rideBasis==Rideable.RIDEABLE_AIR)
-			envStats().setDisposition(envStats().disposition()|EnvStats.IS_FLYING);
+			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_FLYING);
 		else
 		if(rideBasis==Rideable.RIDEABLE_WATER)
-			envStats().setDisposition(envStats().disposition()|EnvStats.IS_SWIMMING);
+			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_SWIMMING);
 	}
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
 			if(!CMLib.flags().hasSeenContents(this))
-				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_NOT_SEEN);
+				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_NOT_SEEN);
 			if((mob.isInCombat())&&(mob.rangeToTarget()==0)&&(amRiding(mob)))
 			{
-				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-mob.baseEnvStats().attackAdjustment());
-				affectableStats.setDamage(affectableStats.damage()-mob.baseEnvStats().damage());
+				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-mob.basePhyStats().attackAdjustment());
+				affectableStats.setDamage(affectableStats.damage()-mob.basePhyStats().damage());
 			}
 			if((rideBasis()==Rideable.RIDEABLE_LADDER)
 			&&(amRiding(mob)))
 			{
-				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_CLIMBING);
+				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_CLIMBING);
 				affectableStats.setSpeed(affectableStats.speed()/2);
 			}
 		}
@@ -515,7 +515,7 @@ public class StdRideable extends StdContainer implements Rideable
 							if((rideBasis==Rideable.RIDEABLE_WAGON)
 							&&((riding()==null)
 							   ||(!(riding() instanceof MOB))
-							   ||(((MOB)riding()).baseEnvStats().weight()<(baseEnvStats().weight()/5))))
+							   ||(((MOB)riding()).basePhyStats().weight()<(basePhyStats().weight()/5))))
 							{
 								msg.source().tell(name()+" doesn't seem to be moving.");
 								return false;
@@ -649,10 +649,10 @@ public class StdRideable extends StdContainer implements Rideable
 				    {
 			    	case Rideable.RIDEABLE_SIT:
 			    	case Rideable.RIDEABLE_ENTERIN:
-			    	    msg.tool().baseEnvStats().setDisposition(msg.tool().baseEnvStats().disposition()|EnvStats.IS_SITTING);
+			    	    msg.tool().basePhyStats().setDisposition(msg.tool().basePhyStats().disposition()|PhyStats.IS_SITTING);
 			    	    break;
 			    	case Rideable.RIDEABLE_SLEEP:
-			    	    msg.tool().baseEnvStats().setDisposition(msg.tool().baseEnvStats().disposition()|EnvStats.IS_SLEEPING);
+			    	    msg.tool().basePhyStats().setDisposition(msg.tool().basePhyStats().disposition()|PhyStats.IS_SLEEPING);
 			    		break;
 					default:
 					    break;

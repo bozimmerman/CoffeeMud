@@ -41,12 +41,12 @@ public class GenShipItem extends StdShipItem
 	{
 		super();
 		setName("a generic electrical ship item");
-		baseEnvStats.setWeight(2);
+		basePhyStats.setWeight(2);
 		setDisplayText("a generic electrical sip item sits here.");
 		setDescription("");
 		baseGoldValue=5;
-		baseEnvStats().setLevel(1);
-		recoverEnvStats();
+		basePhyStats().setLevel(1);
+		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 	}
 
@@ -63,7 +63,7 @@ public class GenShipItem extends StdShipItem
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	
 	private final static String[] MYCODES={"FUELTYPE","POWERCAP"};

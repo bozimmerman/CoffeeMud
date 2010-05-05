@@ -50,7 +50,7 @@ public class Goblin extends StdMOB
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 
@@ -59,8 +59,8 @@ public class Goblin extends StdMOB
 	{
 		if(tickID==Tickable.TICKID_MOB)
 		{
-			if(birthType!=baseEnvStats().ability())
-				setMOBSpecifics(baseEnvStats().ability());
+			if(birthType!=basePhyStats().ability())
+				setMOBSpecifics(basePhyStats().ability());
 		}
 		return super.tick(ticking,tickID);
 	}
@@ -83,14 +83,14 @@ public class Goblin extends StdMOB
 		birthType=goblinType;
 		setMoney(randomizer.nextInt() % 15);
 		setWimpHitPoint(0);
-		baseEnvStats.setWeight(40 + Math.abs(randomizer.nextInt() % 30));
+		basePhyStats.setWeight(40 + Math.abs(randomizer.nextInt() % 30));
 		CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,5 + Math.abs(randomizer.nextInt() % 6));
 		baseCharStats().setStat(CharStats.STAT_CHARISMA,2 + Math.abs(randomizer.nextInt() % 3));
-		baseEnvStats().setArmor(25 + Math.abs(randomizer.nextInt() % 20));
-		baseEnvStats().setLevel(1 + Math.abs(randomizer.nextInt() % 3));
-		baseEnvStats().setAbility(goblinType);
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		basePhyStats().setArmor(25 + Math.abs(randomizer.nextInt() % 20));
+		basePhyStats().setLevel(1 + Math.abs(randomizer.nextInt() % 3));
+		basePhyStats().setAbility(goblinType);
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		Weapon m=null;
 		Armor c=null;

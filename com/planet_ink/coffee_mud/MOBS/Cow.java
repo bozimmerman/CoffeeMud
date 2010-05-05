@@ -44,19 +44,19 @@ public class Cow extends StdMOB implements Drink
 		setMoney(0);
 		setWimpHitPoint(0);
 
-		baseEnvStats().setDamage(1);
-		baseEnvStats().setSpeed(1.0);
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(2);
-		baseEnvStats().setArmor(90);
+		basePhyStats().setDamage(1);
+		basePhyStats().setSpeed(1.0);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(2);
+		basePhyStats().setArmor(90);
 		baseCharStats().setMyRace(CMClass.getRace("Cow"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 	public long decayTime(){return 0;}
@@ -96,9 +96,9 @@ public class Cow extends StdMOB implements Drink
 			I.setDescription("It looks like milk");
 			I.setMaterial(RawMaterial.RESOURCE_MILK);
 			I.setBaseValue(RawMaterial.CODES.VALUE(RawMaterial.RESOURCE_MILK));
-			I.baseEnvStats().setWeight(1);
+			I.basePhyStats().setWeight(1);
 			CMLib.materials().addEffectsToResource(I);
-			I.recoverEnvStats();
+			I.recoverPhyStats();
 			I.setContainer(container);
 			if(container.owner()!=null)
 				if(container.owner() instanceof MOB)

@@ -68,8 +68,8 @@ public class Chant_SummonIvy extends Chant_SummonPlants
 			break;
 		}
 		Chant_SummonIvy newChant=new Chant_SummonIvy();
-		newItem.baseEnvStats().setLevel(10+newChant.getX1Level(mob));
-		newItem.baseEnvStats().setWeight(1);
+		newItem.basePhyStats().setLevel(10+newChant.getX1Level(mob));
+		newItem.basePhyStats().setWeight(1);
 		newItem.setSecretIdentity(mob.Name());
 		newItem.setMiscText(newItem.text());
 		newItem.addNonUninvokableEffect(CMClass.getAbility("Disease_PoisonIvy"));
@@ -86,7 +86,7 @@ public class Chant_SummonIvy extends Chant_SummonPlants
 		}
 		else
 			newChant.beneficialAffect(mob,newItem,0,(newChant.adjustedLevel(mob,0)*240)+450);
-		room.recoverEnvStats();
+		room.recoverPhyStats();
 		return newItem;
 	}
 

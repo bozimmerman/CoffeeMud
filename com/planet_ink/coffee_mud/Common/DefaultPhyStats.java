@@ -31,16 +31,16 @@ import java.util.Vector;
    limitations under the License.
 */
 @SuppressWarnings("unchecked")
-public class DefaultEnvStats implements EnvStats
+public class DefaultPhyStats implements PhyStats
 {
-    public String ID(){return "DefaultEnvStats";}
+    public String ID(){return "DefaultPhyStats";}
     protected int[] stats={0,0,100,0,0,0,0,0,0,0};
 	protected double Speed=1.0;			// should be positive
 	protected String replacementName=null;
 	protected String[] ambiances=null;
 	private final static String[] empty=new String[0];
 
-	public DefaultEnvStats(){}
+	public DefaultPhyStats(){}
 	public void setAllValues(int def)
 	{
 		for(int i=0;i<NUM_STATS;i++)
@@ -106,17 +106,17 @@ public class DefaultEnvStats implements EnvStats
 			}
 	}
 
-    public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultEnvStats();}}
+    public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultPhyStats();}}
     public void initializeClass(){}
-    public void copyInto(EnvStats intoStats)
+    public void copyInto(PhyStats intoStats)
     {
-    	if(intoStats instanceof DefaultEnvStats)
+    	if(intoStats instanceof DefaultPhyStats)
     	{
     		for(int i=0;i<NUM_STATS;i++)
-    			((DefaultEnvStats)intoStats).stats[i]=stats[i];
-    		((DefaultEnvStats)intoStats).Speed=Speed;
-    		((DefaultEnvStats)intoStats).ambiances=ambiances;
-    		((DefaultEnvStats)intoStats).replacementName=replacementName;
+    			((DefaultPhyStats)intoStats).stats[i]=stats[i];
+    		((DefaultPhyStats)intoStats).Speed=Speed;
+    		((DefaultPhyStats)intoStats).ambiances=ambiances;
+    		((DefaultPhyStats)intoStats).replacementName=replacementName;
     	}
     	else
     	for(int i=0;i<getStatCodes().length;i++)
@@ -126,13 +126,13 @@ public class DefaultEnvStats implements EnvStats
 	{
 		try
 		{
-			DefaultEnvStats E=(DefaultEnvStats)this.clone();
+			DefaultPhyStats E=(DefaultPhyStats)this.clone();
             E.stats=(int[])E.stats.clone();
             return E;
 		}
 		catch(java.lang.CloneNotSupportedException e)
 		{
-			return new DefaultEnvStats();
+			return new DefaultPhyStats();
 		}
 	}
 	private final static String[] CODES={
@@ -148,7 +148,7 @@ public class DefaultEnvStats implements EnvStats
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
-	public boolean sameAs(EnvStats E){
+	public boolean sameAs(PhyStats E){
 		for(int i=0;i<CODES.length;i++)
 			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
 			   return false;

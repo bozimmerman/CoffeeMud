@@ -101,16 +101,16 @@ public class Chant_AstralProjection extends Chant
 		}
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SLEEPING);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_HEAR);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_MOVE);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SEE);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SMELL);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SPEAK);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_TASTE);
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SLEEPING);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_HEAR);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_MOVE);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SEE);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SMELL);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SPEAK);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TASTE);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
@@ -128,7 +128,7 @@ public class Chant_AstralProjection extends Chant
 			}
 		}
 		if(CMLib.flags().isGolem(target)
-		&&((target.envStats().height()<=0)||(target.envStats().weight()<=0)))
+		&&((target.phyStats().height()<=0)||(target.phyStats().weight()<=0)))
 		{
 			mob.tell("You are already as astral spirit.");
 			return false;
@@ -167,7 +167,7 @@ public class Chant_AstralProjection extends Chant
 			spirit.setSoulMate(target);
 			target.setSession(null);
 			spirit.recoverCharStats();
-			spirit.recoverEnvStats();
+			spirit.recoverPhyStats();
 			spirit.recoverMaxState();
 			mob.location().recoverRoomStats();
 		}

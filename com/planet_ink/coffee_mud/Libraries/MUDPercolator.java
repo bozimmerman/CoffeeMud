@@ -597,7 +597,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         if(value != null) {
         	M.setStat("LEVEL", value);
             addDefinition("MOB_LEVEL",M.getStat("LEVEL"),defined);
-            CMLib.leveler().fillOutMOB(M,M.baseEnvStats().level());
+            CMLib.leveler().fillOutMOB(M,M.basePhyStats().level());
         }
         value = findOptionalString("GENDER",piece,defined);
         if(value != null)
@@ -609,12 +609,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         {
         	Race R=CMClass.getRace(value);
         	if(R!=null)
-                R.setHeightWeight(M.baseEnvStats(),(char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
+                R.setHeightWeight(M.basePhyStats(),(char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
         }
         String[] ignoreStats={"CLASS","NAME","LEVEL","GENDER"};
         fillOutStats(M,ignoreStats,"MOB_",piece,defined);
         M.recoverCharStats();
-        M.recoverEnvStats();
+        M.recoverPhyStats();
         M.recoverMaxState();
         
         Vector items = findItems(piece,defined);
@@ -649,12 +649,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         }
         
         M.recoverCharStats();
-        M.recoverEnvStats();
+        M.recoverPhyStats();
         M.recoverMaxState();
         M.text();
         M.setMiscText(M.text());
         M.recoverCharStats();
-        M.recoverEnvStats();
+        M.recoverPhyStats();
         M.recoverMaxState();
         return M;
     }
@@ -699,7 +699,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         }
         E.text();
         E.setMiscText(E.text());
-        E.recoverEnvStats();
+        E.recoverPhyStats();
         return E;
     }
     
@@ -876,11 +876,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         addDefinition("ITEM_NAME",I.Name(),defined);
         
         fillOutStats(I,ignoreStats,"ITEM_",piece,defined);
-        I.recoverEnvStats();
+        I.recoverPhyStats();
         CMLib.itemBuilder().balanceItemByLevel(I);
-        I.recoverEnvStats();
+        I.recoverPhyStats();
         fillOutStats(I,ignoreStats,"ITEM_",piece,defined);
-        I.recoverEnvStats();
+        I.recoverPhyStats();
         
         Vector V;
         if(I instanceof Container)
@@ -905,10 +905,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         	Behavior B=(Behavior)V.elementAt(i);
         	I.addBehavior(B);
         }
-        I.recoverEnvStats();
+        I.recoverPhyStats();
         I.text();
         I.setMiscText(I.text());
-        I.recoverEnvStats();
+        I.recoverPhyStats();
         return contents;
     }
     

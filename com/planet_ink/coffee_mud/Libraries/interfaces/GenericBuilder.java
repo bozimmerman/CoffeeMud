@@ -101,13 +101,13 @@ public interface GenericBuilder extends CMLibrary
     public String getExtraEnvPropertiesStr(Environmental E);
     public void fillFileSet(Vector V, HashSet H);
     public void fillFileSet(Environmental E, HashSet H);
-    public String getEnvStatsStr(EnvStats E);
+    public String getPhyStatsStr(PhyStats E);
     public String getCharStateStr(CharState E);
     public String getCharStatsStr(CharStats E);
     public String getEnvPropertiesStr(Environmental E);
     public void setCharStats(CharStats E, String props);
     public void setCharState(CharState E, String props);
-    public void setEnvStats(EnvStats E, String props);
+    public void setPhyStats(PhyStats E, String props);
     public void setEnvProperties(Environmental E, Vector buf);
     public String identifier(Environmental E, Environmental parent);
     public void setExtraEnvProperties(Environmental E, Vector buf);

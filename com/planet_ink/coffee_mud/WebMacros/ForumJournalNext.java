@@ -56,8 +56,8 @@ public class ForumJournalNext extends StdWebMacro
 			if(guestM==null)
 			{
 				guestM=CMClass.getMOB("StdMOB");
-				guestM.baseEnvStats().setLevel(0);
-				guestM.envStats().setLevel(0);
+				guestM.basePhyStats().setLevel(0);
+				guestM.phyStats().setLevel(0);
 				guestM.setName("guest");
 			}
 			M=guestM;

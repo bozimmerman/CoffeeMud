@@ -153,14 +153,14 @@ public class Thief_Racketeer extends ThiefSkill
             }
             return false;
         }
-        int levelDiff=target.envStats().level()-(mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
+        int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
         if(!target.mayIFight(mob))
         {
             mob.tell("You cannot racketeer "+target.charStats().himher()+".");
             return false;
         }
         if(!super.invoke(mob,commands,givenTarget,auto,asLevel)) return false;
-        double amount=(double)CMLib.dice().roll(proficiency(),target.envStats().level(),0);
+        double amount=(double)CMLib.dice().roll(proficiency(),target.phyStats().level(),0);
         boolean success=proficiencyCheck(mob,-(levelDiff),auto);
         if(success)
         {

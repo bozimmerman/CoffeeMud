@@ -45,14 +45,14 @@ public class StdClanCommonItem extends StdClanItem
 		super();
 
 		setName("a clan workers item");
-		baseEnvStats.setWeight(1);
+		basePhyStats.setWeight(1);
 		setDisplayText("an workers item belonging to a clan is here.");
 		setDescription("");
 		secretIdentity="";
 		baseGoldValue=1;
 		setCIType(ClanItem.CI_GATHERITEM);
 		material=RawMaterial.RESOURCE_OAK;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
     public boolean fireHere(Room R)
@@ -162,9 +162,9 @@ public class StdClanCommonItem extends StdClanItem
         return V;
     }
 
-    public void affectEnvStats(Environmental affected, EnvStats stats)
+    public void affectPhyStats(Physical affected, PhyStats stats)
     {
-    	super.affectEnvStats(affected,stats);
+    	super.affectPhyStats(affected,stats);
     	if((glows)
     	&&(affected instanceof MOB)
     	&&(!super.amWearingAt(Wearable.IN_INVENTORY))
@@ -172,7 +172,7 @@ public class StdClanCommonItem extends StdClanItem
     	&&(((MOB)affected).location().domainType()==Room.DOMAIN_INDOORS_CAVE)
     	&&(((MOB)affected).getStartRoom()!=null)
     	&&(((MOB)affected).getStartRoom().getArea()==((MOB)affected).location().getArea()))
-    		stats.setSensesMask(stats.sensesMask()|EnvStats.CAN_SEE_DARK);
+    		stats.setSensesMask(stats.sensesMask()|PhyStats.CAN_SEE_DARK);
     }
     
     
@@ -368,10 +368,10 @@ public class StdClanCommonItem extends StdClanItem
 						}
 						Vector V=new Vector();
 						if(I!=null)	V.addElement(I.name());
-						success=A.invoke(M,V,null,false,envStats().level());
+						success=A.invoke(M,V,null,false,phyStats().level());
 					}
 					else
-						success=A.invoke(M,new Vector(),null,false,envStats().level());
+						success=A.invoke(M,new Vector(),null,false,phyStats().level());
                     if((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL)
                     {
                         DVector DV=(DVector)needChart.get(M.location().getArea());

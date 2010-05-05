@@ -49,7 +49,7 @@ public class Chant_CaveIn extends Chant
 	{
 		if((affected instanceof Exit)
 		&&((msg.targetMinor()==CMMsg.TYP_ENTER)||(msg.targetMinor()==CMMsg.TYP_LEAVE)||(msg.targetMinor()==CMMsg.TYP_OPEN))
-		&&(msg.source().envStats().height()>=0)
+		&&(msg.source().phyStats().height()>=0)
 		&&((msg.tool()==affected)||(msg.target()==affected)))
 		{
 			msg.source().tell("This exit is blocked by rubble, and can not be moved through.");
@@ -77,13 +77,13 @@ public class Chant_CaveIn extends Chant
 		return super.okMessage(host,msg);
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected instanceof MOB)
 		{
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_BOUND);
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SITTING);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BOUND);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SITTING);
 		}
 	}
 

@@ -113,7 +113,7 @@ public class Chant_SummonElemental extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB target = determineMonster(mob, mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
+				MOB target = determineMonster(mob, mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 				target.addNonUninvokableEffect((Ability)this.copyOf());
 				if(target.isInCombat()) target.makePeace();
 				CMLib.commands().postFollow(target,mob,true);
@@ -130,14 +130,14 @@ public class Chant_SummonElemental extends Chant
 	public MOB determineMonster(MOB caster, int level)
 	{
 		MOB newMOB=CMClass.getMOB("GenMOB");
-		newMOB.baseEnvStats().setLevel(adjustedLevel(caster,0));
+		newMOB.basePhyStats().setLevel(adjustedLevel(caster,0));
 		switch(CMLib.dice().roll(1,4,0))
 		{
 		case 1:
 			newMOB.setName("a fire elemental");
 			newMOB.setDisplayText("a fire elemental is flaming nearby.");
 			newMOB.setDescription("A large beast, wreathed in flame, with sparkling eyes and a hot temper.");
-			newMOB.baseEnvStats().setDisposition(newMOB.baseEnvStats().disposition()|EnvStats.IS_LIGHTSOURCE);
+			newMOB.basePhyStats().setDisposition(newMOB.basePhyStats().disposition()|PhyStats.IS_LIGHTSOURCE);
 			CMLib.factions().setAlignment(newMOB,Faction.ALIGN_EVIL);
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("FireElemental"));
 			newMOB.addAbility(CMClass.getAbility("Firebreath"));
@@ -167,21 +167,21 @@ public class Chant_SummonElemental extends Chant
 			newMOB.addAbility(CMClass.getAbility("Lighteningbreath"));
 			break;
 		}
-		newMOB.recoverEnvStats();
+		newMOB.recoverPhyStats();
 		newMOB.recoverCharStats();
-		newMOB.baseEnvStats().setAbility(newMOB.baseEnvStats().ability()*2);
-		newMOB.baseEnvStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
-		newMOB.baseEnvStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
-		newMOB.baseEnvStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB));
-		newMOB.baseEnvStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
-		newMOB.baseEnvStats().setSensesMask(newMOB.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_DARK);
+		newMOB.basePhyStats().setAbility(newMOB.basePhyStats().ability()*2);
+		newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
+		newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
+		newMOB.basePhyStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB));
+		newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
+		newMOB.basePhyStats().setSensesMask(newMOB.basePhyStats().sensesMask()|PhyStats.CAN_SEE_DARK);
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		newMOB.addBehavior(CMClass.getBehavior("CombatAbilities"));
 		newMOB.setLocation(caster.location());
-		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
+		newMOB.basePhyStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.setMiscText(newMOB.text());
 		newMOB.recoverCharStats();
-		newMOB.recoverEnvStats();
+		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);

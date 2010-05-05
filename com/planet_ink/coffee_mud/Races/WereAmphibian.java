@@ -72,7 +72,7 @@ public class WereAmphibian extends StdRace
 		}
 		return naturalWeapon;
 	}
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		MOB mob=(MOB)affected;
 		if(mob.location()!=null)
@@ -82,10 +82,10 @@ public class WereAmphibian extends StdRace
 			||(mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
 			||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
 			{
-				if((affectableStats.sensesMask()&EnvStats.CAN_NOT_BREATHE)==EnvStats.CAN_NOT_BREATHE)
-					affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_NOT_BREATHE);
+				if((affectableStats.sensesMask()&PhyStats.CAN_NOT_BREATHE)==PhyStats.CAN_NOT_BREATHE)
+					affectableStats.setSensesMask(affectableStats.sensesMask()-PhyStats.CAN_NOT_BREATHE);
 			}
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
 		}
 	}
 	public String healthText(MOB viewer, MOB mob)

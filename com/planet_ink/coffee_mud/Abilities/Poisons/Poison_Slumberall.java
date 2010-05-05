@@ -49,10 +49,10 @@ public class Poison_Slumberall extends Poison
 	protected int POISON_DAMAGE(){return 0;}
 	protected boolean fallenYet=false;
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if(affected instanceof MOB)
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SLEEPING);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SLEEPING);
 	}
 
 	public void unInvoke()
@@ -102,7 +102,7 @@ public class Poison_Slumberall extends Poison
 		{
 			fallenYet=true;
 			mob.location().show(mob,null,CMMsg.MSG_SLEEP,"<S-NAME> fall(s) asleep!");
-			mob.recoverEnvStats();
+			mob.recoverPhyStats();
 		}
 		return true;
 	}

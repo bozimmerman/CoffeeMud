@@ -81,9 +81,9 @@ public class Play_Blues extends Play
 		}
 		return true;
 	}
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(invoker==null) return;
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()
 											-((invoker().charStats().getStat(CharStats.STAT_CHARISMA)/4)

@@ -162,7 +162,7 @@ public class Spell_WallOfAir extends Spell
 				I.setDescription("The air is swirling dangerously.");
 				I.setMaterial(RawMaterial.RESOURCE_NOTHING);
 				CMLib.flags().setGettable(I,false);
-				I.recoverEnvStats();
+				I.recoverPhyStats();
 				mob.location().addItem(I);
 				theWall=I;
 				beneficialAffect(mob,I,asLevel,10);

@@ -51,9 +51,9 @@ public class Dance_War extends Dance
 		mob.curState().setMana(0);
 		return true;
 	}
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected==null) return;
         int bonus=adjustedLevel(invoker(),0);
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(bonus*2));

@@ -50,9 +50,9 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	{
 		int level=0;
 		Item savedI=(Item)I.copyOf();
-		savedI.recoverEnvStats();
+		savedI.recoverPhyStats();
 		I=(Item)I.copyOf();
-		I.recoverEnvStats();
+		I.recoverPhyStats();
 		int otherDam=0;
 		int otherAtt=0;
 		int otherArm=0;
@@ -62,9 +62,9 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			otherAtt=CMParms.getParmPlus(ADJ.text(),"att");
 			otherDam=CMParms.getParmPlus(ADJ.text(),"dam");
 		}
-		int curArmor=savedI.baseEnvStats().armor()+otherArm;
-		double curAttack=(double)(savedI.baseEnvStats().attackAdjustment()+otherAtt);
-		double curDamage=(double)(savedI.baseEnvStats().damage()+otherDam);
+		int curArmor=savedI.basePhyStats().armor()+otherArm;
+		double curAttack=(double)(savedI.basePhyStats().attackAdjustment()+otherAtt);
+		double curDamage=(double)(savedI.basePhyStats().damage()+otherDam);
 		Wearable.CODES codes = Wearable.CODES.instance();
 		if(I instanceof Weapon)
 		{
@@ -115,7 +115,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				which=useArray.length-1;
 			level=useArray[which];
 		}
-		level+=I.baseEnvStats().ability()*5;
+		level+=I.basePhyStats().ability()*5;
 		if(CAST!=null)
 		{
 			String ID=CAST.ID().toUpperCase();
@@ -230,7 +230,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		int[] LVLS=getItemLevels(newI,ADJ,RES,CAST);
 		int TLVL2=totalLevels(LVLS);
 		
-		changes.append(newI.name()+":"+newI.baseEnvStats().level()+"("+OTLVL+")=>"+TLVL2+"("+TLVL+"), ");
+		changes.append(newI.name()+":"+newI.basePhyStats().level()+"("+OTLVL+")=>"+TLVL2+"("+TLVL+"), ");
         for(int i=0;i<oldI.getStatCodes().length;i++)
             if((!oldI.getStat(oldI.getStatCodes()[i]).equals(newI.getStat(newI.getStatCodes()[i]))))
             	changes.append(oldI.getStatCodes()[i]+"("+oldI.getStat(newI.getStatCodes()[i])+"->"+newI.getStat(newI.getStatCodes()[i])+"), ");
@@ -257,9 +257,9 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			for(Enumeration<Ability> e=spells.elements();e.hasMoreElements();)
 				levels+=CMLib.ableMapper().lowestQualifyingLevel(e.nextElement().ID());
 			int level=(int)Math.round(CMath.div(levels, spells.size()));
-			if(level==I.baseEnvStats().level()) return false;
-			I.baseEnvStats().setLevel(level);
-			I.envStats().setLevel(level);
+			if(level==I.basePhyStats().level()) return false;
+			I.basePhyStats().setLevel(level);
+			I.phyStats().setLevel(level);
 			if(CMLib.flags().isCataloged(I))
 				CMLib.catalog().updateCatalog(I);
 			reportChangesDestroyOldI(oldI,I,changes,level,level);
@@ -269,9 +269,9 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		if((I instanceof Weapon)||(I instanceof Armor))
 		{
 			int lvl=lvlOr0;
-			if(lvl <=0) lvl=I.baseEnvStats().level();
-			I.baseEnvStats().setLevel(lvl);
-			I.envStats().setLevel(lvl);
+			if(lvl <=0) lvl=I.basePhyStats().level();
+			I.basePhyStats().setLevel(lvl);
+			I.phyStats().setLevel(lvl);
 			Ability[] RET=getTimsAdjResCast(I,new int[1]);
 			Ability ADJ=RET[0];
 			Ability RES=RET[1];
@@ -285,8 +285,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 					lvl=1;
 				else
 					lvl=TLVL;
-				I.baseEnvStats().setLevel(lvl);
-				I.recoverEnvStats();
+				I.basePhyStats().setLevel(lvl);
+				I.recoverPhyStats();
 				fixRejuvItem(I);
 				if(CMLib.flags().isCataloged(I))
 					CMLib.catalog().updateCatalog(I);
@@ -297,7 +297,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			{
 				//int FTLVL=TLVL;
 				Vector illegalNums=new Vector();
-				//Log.sysOut("Reset",I.name()+"("+I.baseEnvStats().level()+") "+TLVL+", "+I.baseEnvStats().armor()+"/"+I.baseEnvStats().attackAdjustment()+"/"+I.baseEnvStats().damage()+"/"+((ADJ!=null)?ADJ.text():"null"));
+				//Log.sysOut("Reset",I.name()+"("+I.basePhyStats().level()+") "+TLVL+", "+I.basePhyStats().armor()+"/"+I.basePhyStats().attackAdjustment()+"/"+I.basePhyStats().damage()+"/"+((ADJ!=null)?ADJ.text():"null"));
 				while((TLVL>Math.round(CMath.mul(lvl,1.1)))&&(illegalNums.size()<4))
 				{
 					int highIndex=-1;
@@ -312,27 +312,27 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 						if(I instanceof Weapon)
 						{
 							String s=(ADJ!=null)?ADJ.text():"";
-							int oldAtt=I.baseEnvStats().attackAdjustment();
-							int oldDam=I.baseEnvStats().damage();
+							int oldAtt=I.basePhyStats().attackAdjustment();
+							int oldDam=I.basePhyStats().damage();
 							toneDownWeapon((Weapon)I,ADJ);
-							if((I.baseEnvStats().attackAdjustment()==oldAtt)
-							&&(I.baseEnvStats().damage()==oldDam)
+							if((I.basePhyStats().attackAdjustment()==oldAtt)
+							&&(I.basePhyStats().damage()==oldDam)
 							&&((ADJ==null)||(ADJ.text().equals(s))))
 								illegalNums.addElement(Integer.valueOf(0));
 						}
 						else
 						{
 							String s=(ADJ!=null)?ADJ.text():"";
-							int oldArm=I.baseEnvStats().armor();
+							int oldArm=I.basePhyStats().armor();
 							toneDownArmor((Armor)I,ADJ);
-							if((I.baseEnvStats().armor()==oldArm)
+							if((I.basePhyStats().armor()==oldArm)
 							&&((ADJ==null)||(ADJ.text().equals(s))))
 								illegalNums.addElement(Integer.valueOf(0));
 						}
 						break;
 					case 1:
-						if(I.baseEnvStats().ability()>0)
-							I.baseEnvStats().setAbility(I.baseEnvStats().ability()-1);
+						if(I.basePhyStats().ability()>0)
+							I.basePhyStats().setAbility(I.basePhyStats().ability()-1);
 						else
 							illegalNums.addElement(Integer.valueOf(1));
 						break;
@@ -355,7 +355,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 					LVLS=getItemLevels(I,ADJ,RES,CAST);
 					TLVL=totalLevels(LVLS);
 				}
-				//Log.sysOut("Reset",I.name()+"("+I.baseEnvStats().level()+") "+FTLVL+"->"+TLVL+", "+I.baseEnvStats().armor()+"/"+I.baseEnvStats().attackAdjustment()+"/"+I.baseEnvStats().damage()+"/"+((ADJ!=null)?ADJ.text():"null"));
+				//Log.sysOut("Reset",I.name()+"("+I.basePhyStats().level()+") "+FTLVL+"->"+TLVL+", "+I.basePhyStats().armor()+"/"+I.basePhyStats().attackAdjustment()+"/"+I.basePhyStats().damage()+"/"+((ADJ!=null)?ADJ.text():"null"));
 				fixRejuvItem(I);
 				if(CMLib.flags().isCataloged(I))
 					CMLib.catalog().updateCatalog(I);
@@ -387,7 +387,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
         else
         if(!(I instanceof Armor))
             return false;
-        Hashtable H=timsItemAdjustments(I,I.envStats().level(),I.material(),hands,weaponClass,I.maxRange(),I.rawProperLocationBitmap());
+        Hashtable H=timsItemAdjustments(I,I.phyStats().level(),I.material(),hands,weaponClass,I.maxRange(),I.rawProperLocationBitmap());
         int newValue=CMath.s_int((String)H.get("VALUE"));
         if((I.baseGoldValue()>newValue)&&(newValue>0))
         {
@@ -406,21 +406,21 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			hands=I.rawLogicalAnd()?2:1;
 			weaponClass=((Weapon)I).weaponClassification();
 		}
-		Hashtable H=timsItemAdjustments(I,I.baseEnvStats().level(),I.material(),hands,weaponClass,I.maxRange(),I.rawProperLocationBitmap());
+		Hashtable H=timsItemAdjustments(I,I.basePhyStats().level(),I.material(),hands,weaponClass,I.maxRange(),I.rawProperLocationBitmap());
 		if(I instanceof Weapon)
 		{
-			I.baseEnvStats().setDamage(CMath.s_int((String)H.get("DAMAGE")));
-			I.baseEnvStats().setAttackAdjustment(CMath.s_int((String)H.get("ATTACK")));
+			I.basePhyStats().setDamage(CMath.s_int((String)H.get("DAMAGE")));
+			I.basePhyStats().setAttackAdjustment(CMath.s_int((String)H.get("ATTACK")));
 			I.setBaseValue(CMath.s_int((String)H.get("VALUE")));
-			I.recoverEnvStats();
+			I.recoverPhyStats();
 		}
 		else
 		if(I instanceof Armor)
 		{
-			I.baseEnvStats().setArmor(CMath.s_int((String)H.get("ARMOR")));
+			I.basePhyStats().setArmor(CMath.s_int((String)H.get("ARMOR")));
 			I.setBaseValue(CMath.s_int((String)H.get("VALUE")));
-			I.baseEnvStats().setWeight(CMath.s_int((String)H.get("WEIGHT")));
-			I.recoverEnvStats();
+			I.basePhyStats().setWeight(CMath.s_int((String)H.get("WEIGHT")));
+			I.recoverPhyStats();
 		}
 	}
 
@@ -741,17 +741,17 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				ADJ.setMiscText(ADJ.text().substring(0,a+7)+newNum+ADJ.text().substring(a2));
 			}
 		}
-		if(fixdam&&(W.baseEnvStats().damage()>=10))
-			W.baseEnvStats().setDamage((int)Math.round(CMath.mul(W.baseEnvStats().damage(),0.9)));
+		if(fixdam&&(W.basePhyStats().damage()>=10))
+			W.basePhyStats().setDamage((int)Math.round(CMath.mul(W.basePhyStats().damage(),0.9)));
 		else
-		if(fixatt&&(W.baseEnvStats().damage()>1))
-			W.baseEnvStats().setDamage(W.baseEnvStats().damage()-1);
-		if(fixatt&&(W.baseEnvStats().attackAdjustment()>=10))
-			W.baseEnvStats().setAttackAdjustment((int)Math.round(CMath.mul(W.baseEnvStats().attackAdjustment(),0.9)));
+		if(fixatt&&(W.basePhyStats().damage()>1))
+			W.basePhyStats().setDamage(W.basePhyStats().damage()-1);
+		if(fixatt&&(W.basePhyStats().attackAdjustment()>=10))
+			W.basePhyStats().setAttackAdjustment((int)Math.round(CMath.mul(W.basePhyStats().attackAdjustment(),0.9)));
 		else
-		if(fixatt&&(W.baseEnvStats().attackAdjustment()>1))
-			W.baseEnvStats().setAttackAdjustment(W.baseEnvStats().attackAdjustment()-1);
-		W.recoverEnvStats();
+		if(fixatt&&(W.basePhyStats().attackAdjustment()>1))
+			W.basePhyStats().setAttackAdjustment(W.basePhyStats().attackAdjustment()-1);
+		W.recoverPhyStats();
 	}
 	public void toneDownArmor(Armor A, Ability ADJ)
 	{
@@ -771,12 +771,12 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				ADJ.setMiscText(ADJ.text().substring(0,a+6)+newNum+ADJ.text().substring(a2));
 			}
 		}
-		if(fixit&&(A.baseEnvStats().armor()>=10))
-			A.baseEnvStats().setArmor((int)Math.round(CMath.mul(A.baseEnvStats().armor(),0.9)));
+		if(fixit&&(A.basePhyStats().armor()>=10))
+			A.basePhyStats().setArmor((int)Math.round(CMath.mul(A.basePhyStats().armor(),0.9)));
 		else
-		if(fixit&&(A.baseEnvStats().armor()>1))
-			A.baseEnvStats().setArmor(A.baseEnvStats().armor()-1);
-		A.recoverEnvStats();
+		if(fixit&&(A.basePhyStats().armor()>1))
+			A.basePhyStats().setArmor(A.basePhyStats().armor()-1);
+		A.recoverPhyStats();
 	}
 
 	public void toneDownAdjuster(Item I, Ability ADJ)
@@ -880,9 +880,9 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			otherAtt=CMParms.getParmPlus(ADJ.text(),"att");
 			otherDam=CMParms.getParmPlus(ADJ.text(),"dam");
 		}
-		int curArmor=I.baseEnvStats().armor()+otherArm;
-		double curAttack=(double)(I.baseEnvStats().attackAdjustment()+otherAtt);
-		double curDamage=(double)(I.baseEnvStats().damage()+otherDam);
+		int curArmor=I.basePhyStats().armor()+otherArm;
+		double curAttack=(double)(I.basePhyStats().attackAdjustment()+otherAtt);
+		double curDamage=(double)(I.basePhyStats().damage()+otherDam);
 		if(I instanceof Weapon)
 		{
 			double weight=(double)8;
@@ -937,7 +937,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	}
 
 	public int levelsFromAbility(Item savedI)
-	{ return savedI.baseEnvStats().ability()*5;}
+	{ return savedI.basePhyStats().ability()*5;}
 
 	public int levelsFromAdjuster(Item savedI, Ability ADJ)
 	{
@@ -1061,13 +1061,13 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		while((CMLib.dice().rollPercentage()<=10)||(bump==0))
 			bump=bump+((CMLib.dice().rollPercentage()<=80)?1:-1);
 		if(bump<0) CMLib.flags().setRemovable(I,false);
-		I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|EnvStats.IS_BONUS);
-		I.recoverEnvStats();
+		I.basePhyStats().setDisposition(I.basePhyStats().disposition()|PhyStats.IS_BONUS);
+		I.recoverPhyStats();
 		if(I instanceof Ammunition)
 		{
 			int lvlChange=bump*3;
 			if(lvlChange<0) lvlChange=lvlChange*-1;
-			I.baseEnvStats().setLevel(I.baseEnvStats().level()+lvlChange);
+			I.basePhyStats().setLevel(I.basePhyStats().level()+lvlChange);
 			switch(CMLib.dice().roll(1,2,0))
 			{
 			case 1:
@@ -1098,7 +1098,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				break;
 			}
 			}
-			I.recoverEnvStats();
+			I.recoverPhyStats();
 		}
 		else
 		if(I instanceof Weapon)
@@ -1107,7 +1107,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			{
 			case 1:
 			{
-				I.baseEnvStats().setAbility(bump);
+				I.basePhyStats().setAbility(bump);
 				break;
 			}
 			case 2:
@@ -1124,14 +1124,14 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 						Ability A2=getCombatSpell(true);
 						if(A2!=null) A.setMiscText(A.text()+";"+A2.ID());
 					}
-					I.baseEnvStats().setLevel(I.baseEnvStats().level()+levelsFromCaster(I,A));
+					I.basePhyStats().setLevel(I.basePhyStats().level()+levelsFromCaster(I,A));
 				}
 				if(A==null) return I;
 				I.addNonUninvokableEffect(A);
 				break;
 			}
 			}
-			I.recoverEnvStats();
+			I.recoverPhyStats();
 		}
 		else
 		if(I instanceof Armor)
@@ -1140,7 +1140,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			{
 			case 1:
 			{
-				I.baseEnvStats().setAbility(bump);
+				I.basePhyStats().setAbility(bump);
 				break;
 			}
 			case 2:
@@ -1157,14 +1157,14 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 						Ability A2=getCombatSpell(false);
 						if(A2!=null) A.setMiscText(A.text()+";"+A2.ID());
 					}
-					I.baseEnvStats().setLevel(I.baseEnvStats().level()+levelsFromCaster(I,A));
+					I.basePhyStats().setLevel(I.basePhyStats().level()+levelsFromCaster(I,A));
 				}
 				if(A==null) return I;
 				I.addNonUninvokableEffect(A);
 				break;
 			}
 			}
-			I.recoverEnvStats();
+			I.recoverPhyStats();
 		}
 		return I;
 	}

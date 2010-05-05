@@ -97,7 +97,7 @@ public class Thief_DisassembleTrap extends ThiefSkill
                     for(int i=0;i<components.size();i++) {
                         Item I=(Item)components.elementAt(i);
                         I.text();
-                        I.recoverEnvStats();
+                        I.recoverPhyStats();
                         R.addItem(I,ItemPossessor.Expire.Resource);
                     }
                     R.recoverRoomStats();

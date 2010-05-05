@@ -47,10 +47,10 @@ public class Power_WebSpinning extends SuperPower
 
 	public int amountRemaining=0;
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_BOUND);
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BOUND);
 	}
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -69,7 +69,7 @@ public class Power_WebSpinning extends SuperPower
 				{
 					if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against the web."))
 					{
-						amountRemaining-=(mob.charStats().getStat(CharStats.STAT_STRENGTH)+mob.envStats().level());
+						amountRemaining-=(mob.charStats().getStat(CharStats.STAT_STRENGTH)+mob.phyStats().level());
 						if(amountRemaining<0)
 							unInvoke();
 					}

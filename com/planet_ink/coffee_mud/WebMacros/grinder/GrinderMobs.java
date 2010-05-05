@@ -54,12 +54,12 @@ public class GrinderMobs
       "MINDAYS","ISAUCTION","DEITYID"};
 	public static String senses(Environmental E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
 	{
-		E.baseEnvStats().setSensesMask(0);
-		for(int d=0;d<EnvStats.CAN_SEE_CODES.length;d++)
+		E.basePhyStats().setSensesMask(0);
+		for(int d=0;d<PhyStats.CAN_SEE_CODES.length;d++)
 		{
-			String parm=httpReq.getRequestParameter(EnvStats.CAN_SEE_CODES[d]);
+			String parm=httpReq.getRequestParameter(PhyStats.CAN_SEE_CODES[d]);
 			if((parm!=null)&&(parm.equals("on")))
-			   E.baseEnvStats().setSensesMask(E.baseEnvStats().sensesMask()|(1<<d));
+			   E.basePhyStats().setSensesMask(E.basePhyStats().sensesMask()|(1<<d));
 		}
 		return "";
 	}
@@ -68,9 +68,9 @@ public class GrinderMobs
 	{
 		if(I.subjectToWearAndTear())
 			I.setUsesRemaining(100);
-		I.recoverEnvStats();
+		I.recoverPhyStats();
 		M.addItem(I);
-		M.recoverEnvStats();
+		M.recoverPhyStats();
 		M.recoverCharStats();
 		M.recoverMaxState();
 	}
@@ -385,13 +385,13 @@ public class GrinderMobs
 					M.setDescription(old);
 					break;
 				case 4: // level
-					M.baseEnvStats().setLevel(CMath.s_int(old));
+					M.basePhyStats().setLevel(CMath.s_int(old));
 					break;
 				case 5: // ability;
-					M.baseEnvStats().setAbility(CMath.s_int(old));
+					M.basePhyStats().setAbility(CMath.s_int(old));
 					break;
 				case 6: // rejuv;
-					M.baseEnvStats().setRejuv(CMath.s_int(old));
+					M.basePhyStats().setRejuv(CMath.s_int(old));
 					break;
 				case 7: // misctext
 					if(!M.isGeneric())
@@ -404,24 +404,24 @@ public class GrinderMobs
 					M.baseCharStats().setStat(CharStats.STAT_GENDER,old.charAt(0));
 					break;
 				case 10: // height
-					M.baseEnvStats().setHeight(CMath.s_int(old));
+					M.basePhyStats().setHeight(CMath.s_int(old));
 					break;
 				case 11: // weight;
-					M.baseEnvStats().setWeight(CMath.s_int(old));
+					M.basePhyStats().setWeight(CMath.s_int(old));
 					break;
 				case 12: // speed
 					double d=CMath.s_double(old);
 					if(d<0.0) d=1.0;
-					M.baseEnvStats().setSpeed(d);
+					M.basePhyStats().setSpeed(d);
 					break;
 				case 13: // attack
-					M.baseEnvStats().setAttackAdjustment(CMath.s_int(old));
+					M.basePhyStats().setAttackAdjustment(CMath.s_int(old));
 					break;
 				case 14: // damage
-					M.baseEnvStats().setDamage(CMath.s_int(old));
+					M.basePhyStats().setDamage(CMath.s_int(old));
 					break;
 				case 15: // armor
-					M.baseEnvStats().setArmor(CMath.s_int(old));
+					M.basePhyStats().setArmor(CMath.s_int(old));
 					break;
 				case 16: // alignment
 				    for(int v=0;v<Faction.ALIGN_NAMES.length;v++)
@@ -771,7 +771,7 @@ public class GrinderMobs
                 }
 			}
 
-			M.recoverEnvStats();
+			M.recoverPhyStats();
 			M.recoverCharStats();
 			M.recoverMaxState();
 			M.resetToMaxState();

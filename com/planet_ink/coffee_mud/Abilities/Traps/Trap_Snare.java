@@ -89,8 +89,8 @@ public class Trap_Snare extends StdTrap
 			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> trip(s) a snare trap and get(s) all tangled up!"))
 			{
 				super.spring(target);
-				target.baseEnvStats().setDisposition(target.baseEnvStats().disposition()|EnvStats.IS_SITTING);
-				target.recoverEnvStats();
+				target.basePhyStats().setDisposition(target.basePhyStats().disposition()|PhyStats.IS_SITTING);
+				target.recoverPhyStats();
 				Ability A=CMClass.getAbility("Thief_Bind");
 				Item I=CMClass.getItem("StdItem");
 				I.setName("the snare");

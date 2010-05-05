@@ -44,9 +44,9 @@ public class Chant_Feralness extends Chant
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	int hpAdjustment=0;
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if((affected instanceof MOB)&&(((MOB)affected).charStats().getMyRace()!=((MOB)affected).baseCharStats().getMyRace()))
 		{
 			int adjLvl=adjustedLevel(invoker(),0);

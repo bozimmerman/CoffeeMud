@@ -40,8 +40,8 @@ public class PlainsThinGrid extends StdThinGrid
 	public PlainsThinGrid()
 	{
 		super();
-		baseEnvStats.setWeight(2);
-		recoverEnvStats();
+		basePhyStats.setWeight(2);
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_PLAINS;}
 	public int domainConditions(){return Room.CONDITION_NORMAL;}

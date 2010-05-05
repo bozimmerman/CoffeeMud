@@ -50,10 +50,10 @@ public class Faerie extends SmallElfKin
 	public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 	
 	
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(!CMLib.flags().isSleeping(affected))
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
 	}
 }

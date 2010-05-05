@@ -44,7 +44,7 @@ public class StdShipComponent extends StdShipItem implements ShipComponent
 
 		material=RawMaterial.RESOURCE_STEEL;
 		baseGoldValue=0;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
     /** Standard component weights
      *  1 ROOM=500, THRUSTER,POWERPLANT=100.  COMM=20.  LIFESUPP=50,

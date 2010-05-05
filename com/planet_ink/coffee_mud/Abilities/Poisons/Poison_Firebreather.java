@@ -73,7 +73,7 @@ public class Poison_Firebreather extends Poison_Liquor
 						invoker=mob;
 
 						int damage = 0;
-						int maxDie =  mob.envStats().level();
+						int maxDie =  mob.phyStats().level();
 						if (maxDie > 10)
 							maxDie = 10;
 						damage += CMLib.dice().roll(maxDie,6,1);

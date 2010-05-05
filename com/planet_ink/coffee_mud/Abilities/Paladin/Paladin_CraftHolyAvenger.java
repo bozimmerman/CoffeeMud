@@ -111,11 +111,11 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 		verb="crafting "+building.name();
 		building.setDisplayText(itemName+" lies here");
 		building.setDescription(itemName+". ");
-		building.baseEnvStats().setWeight(woodRequired);
+		building.basePhyStats().setWeight(woodRequired);
 		building.setBaseValue(0);
 		building.setMaterial(data[0][FOUND_CODE]);
-		building.baseEnvStats().setLevel(mob.envStats().level());
-		building.baseEnvStats().setAbility(5);
+		building.basePhyStats().setLevel(mob.phyStats().level());
+		building.basePhyStats().setAbility(5);
 		Weapon w=(Weapon)building;
 		w.setWeaponClassification(Weapon.CLASS_SWORD);
 		w.setWeaponType(Weapon.TYPE_SLASHING);
@@ -128,9 +128,9 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 		A.setMiscText("120%");
 		building.addNonUninvokableEffect(A);
 
-		building.recoverEnvStats();
+		building.recoverPhyStats();
 		building.text();
-		building.recoverEnvStats();
+		building.recoverPhyStats();
 
 		messedUp=!proficiencyCheck(mob,0,auto);
 		if(completion<6) completion=6;

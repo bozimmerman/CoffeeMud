@@ -67,16 +67,16 @@ public class Skill_Disguise extends BardSkill
 	    for(int i=0;i<values.length;i++)
 	        values[i]=null;
 	}
-	public void affectEnvStats(Environmental myHost, EnvStats affectableStats)
+	public void affectPhyStats(Physical myHost, PhyStats affectableStats)
 	{
 		if(values[5]!=null)
 			affectableStats.setName(values[5]);
 		if(values[7]!=null)
 			if(values[7].equalsIgnoreCase("good"))
-				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GOOD);
+				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOOD);
 			else
 			if(values[7].equalsIgnoreCase("evil"))
-				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_EVIL);
+				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_EVIL);
 	}
 
 	public void affectCharStats(MOB myHost, CharStats affectableStats)
@@ -134,8 +134,8 @@ public class Skill_Disguise extends BardSkill
 				String levelStr=mob.charStats().displayClassLevel(mob,false);
 				myDescription.append(mob.displayName(msg.source())+" the "+mob.charStats().raceName()+" is a "+levelStr+".\n\r");
 			}
-			int height=mob.envStats().height();
-			int weight=mob.baseEnvStats().weight();
+			int height=mob.phyStats().height();
+			int weight=mob.basePhyStats().weight();
 			if(values[0]!=null) weight=CMath.s_int(values[0]);
 			if(values[4]!=null) height=CMath.s_int(values[4]);
 			if(height>0)
@@ -202,9 +202,9 @@ public class Skill_Disguise extends BardSkill
 				mob.tell("You cannot disguise your weight as "+how+" pounds!");
 				return false;
 			}
-			int x=mob.baseEnvStats().weight()-CMath.s_int(how);
+			int x=mob.basePhyStats().weight()-CMath.s_int(how);
 			if(x<0) x=x*-1;
-			adjustment=-((int)Math.round(CMath.div(x,mob.baseEnvStats().weight())*100.0));
+			adjustment=-((int)Math.round(CMath.div(x,mob.basePhyStats().weight())*100.0));
 			break;
 		}
 		case 1: // level
@@ -247,9 +247,9 @@ public class Skill_Disguise extends BardSkill
 				mob.tell("You cannot disguise your height as "+how+" inches!");
 				return false;
 			}
-			int x=mob.envStats().height()-CMath.s_int(how);
+			int x=mob.phyStats().height()-CMath.s_int(how);
 			if(x<0) x=x*-1;
-			adjustment=-((int)Math.round(CMath.div(x,mob.envStats().height())*100.0));
+			adjustment=-((int)Math.round(CMath.div(x,mob.phyStats().height())*100.0));
 			break;
 		}
 		case 5: // name
@@ -322,7 +322,7 @@ public class Skill_Disguise extends BardSkill
 				if(A==null) A=(Skill_Disguise)mob.fetchEffect("Skill_Disguise");
 				if(A!=null){ A.values[which]=how; A.makeLongLasting();}
 				mob.recoverCharStats();
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 				mob.location().recoverRoomStats();
 			}
 		}

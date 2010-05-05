@@ -282,7 +282,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 				if(V.size()>0)
 				{
 					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
-					if((autoGenerate>0)||((level<=mob.envStats().level())
+					if((autoGenerate>0)||((level<=mob.phyStats().level())
                                         &&(canDo((String)V.elementAt(RCP_WEAPONCLASS),mob))))
 					{
 						foundRecipe=V;
@@ -332,10 +332,10 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-6;
 			building.setDisplayText(itemName+" lies here");
 			building.setDescription(itemName+". ");
-			building.baseEnvStats().setWeight(woodRequired);
+			building.basePhyStats().setWeight(woodRequired);
 			building.setBaseValue((CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))/4)+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
 			building.setMaterial(data[0][FOUND_CODE]);
-			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness*3));
+			building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness*3));
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			if(bundling) building.setBaseValue(lostValue);
 			addSpells(building,spell);
@@ -348,12 +348,12 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			}
 			if(CMath.s_int((String)foundRecipe.elementAt(RCP_HANDS))==2)
 				building.setRawLogicalAnd(true);
-			building.baseEnvStats().setAttackAdjustment(CMath.s_int((String)foundRecipe.elementAt(RCP_ATTACK))+(hardness*5)+(abilityCode()-1));
-			building.baseEnvStats().setDamage(CMath.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG))+hardness);
+			building.basePhyStats().setAttackAdjustment(CMath.s_int((String)foundRecipe.elementAt(RCP_ATTACK))+(hardness*5)+(abilityCode()-1));
+			building.basePhyStats().setDamage(CMath.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG))+hardness);
 
-			building.recoverEnvStats();
+			building.recoverPhyStats();
 			building.text();
-			building.recoverEnvStats();
+			building.recoverPhyStats();
 		}
 
 		messedUp=!proficiencyCheck(mob,0,auto);

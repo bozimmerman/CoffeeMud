@@ -45,8 +45,8 @@ public class Prayer_Sober extends Prayer implements MendingSkill
 	{ 
 		if(!(E instanceof MOB)) return false;
 		MOB caster=CMClass.getMOB("StdMOB");
-		caster.baseEnvStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
-		caster.envStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
+		caster.basePhyStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
+		caster.phyStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
 		boolean canMend=returnOffensiveAffects(caster,E).size()>0;
 		caster.destroy();
 		return canMend;
@@ -64,7 +64,7 @@ public class Prayer_Sober extends Prayer implements MendingSkill
 				if((CMath.bset(A.flags(),Ability.FLAG_INTOXICATING))
 				&&((A.invoker()==null)
 				   ||((A.invoker()!=null)
-					  &&(A.invoker().envStats().level()<=(caster.envStats().level()+20+(2*super.getXLEVELLevel(caster)))))))
+					  &&(A.invoker().phyStats().level()<=(caster.phyStats().level()+20+(2*super.getXLEVELLevel(caster)))))))
 						offenders.addElement(A);
 			}
 		}

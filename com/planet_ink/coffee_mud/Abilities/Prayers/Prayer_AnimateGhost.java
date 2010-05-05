@@ -56,7 +56,7 @@ public class Prayer_AnimateGhost extends Prayer
 		newMOB.setName((mob==null)?"a poltergeist":"a ghost");
 		newMOB.setDescription(description);
 		newMOB.setDisplayText(newMOB.Name()+" is here");
-		newMOB.baseEnvStats().setLevel(level+(super.getX1Level(mob)*2)+super.getXLEVELLevel(mob));
+		newMOB.basePhyStats().setLevel(level+(super.getX1Level(mob)*2)+super.getXLEVELLevel(mob));
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Spirit"));
         newMOB.baseCharStats().setBodyPartsFromStringAfterRace(body.charStats().getBodyPartsAsString());
@@ -67,14 +67,14 @@ public class Prayer_AnimateGhost extends Prayer
 			newMOB.addNonUninvokableEffect(P);
 		}
 		newMOB.recoverCharStats();
-		newMOB.baseEnvStats().setAttackAdjustment(10);
-		newMOB.baseEnvStats().setDisposition(EnvStats.IS_FLYING|((mob==null)?EnvStats.IS_INVISIBLE:0));
-		newMOB.baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK|EnvStats.CAN_SEE_INVISIBLE);
-		newMOB.baseEnvStats().setDamage(4);
+		newMOB.basePhyStats().setAttackAdjustment(10);
+		newMOB.basePhyStats().setDisposition(PhyStats.IS_FLYING|((mob==null)?PhyStats.IS_INVISIBLE:0));
+		newMOB.basePhyStats().setSensesMask(PhyStats.CAN_SEE_DARK|PhyStats.CAN_SEE_INVISIBLE);
+		newMOB.basePhyStats().setDamage(4);
 		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_EVIL);
-		newMOB.baseState().setHitPoints(10*newMOB.baseEnvStats().level());
+		newMOB.baseState().setHitPoints(10*newMOB.basePhyStats().level());
 		newMOB.baseState().setMovement(CMLib.leveler().getLevelMove(newMOB));
-		newMOB.baseEnvStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
+		newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
 		newMOB.baseState().setMana(100);
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		Ability A=CMClass.getAbility("Immunities");
@@ -86,14 +86,14 @@ public class Prayer_AnimateGhost extends Prayer
 		if((B!=null)&&(mob!=null)){ B.setParms("+NAMES \"-"+mob.Name()+"\"");}
 		if(B!=null) newMOB.addBehavior(B);
 		newMOB.recoverCharStats();
-		newMOB.recoverEnvStats();
+		newMOB.recoverPhyStats();
 		if(mob==null)
 		{
 			B=CMClass.getBehavior("Thiefness");
 			if(B!=null) newMOB.addBehavior(B);
 		}
 		newMOB.recoverCharStats();
-		newMOB.recoverEnvStats();
+		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
 		newMOB.text();
@@ -148,7 +148,7 @@ public class Prayer_AnimateGhost extends Prayer
 			mob.tell("You can't animate that.");
 			return false;
 		}
-		if(body.baseEnvStats().level()<15)
+		if(body.basePhyStats().level()<15)
 		{
 			mob.tell("This creature is too weak to create a ghost from.");
 			return false;

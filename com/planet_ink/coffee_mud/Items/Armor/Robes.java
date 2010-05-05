@@ -42,11 +42,11 @@ public class Robes extends StdArmor
 		setDescription("It is a finely crafted set of robes.");
 		properWornBitmap=Wearable.WORN_TORSO | Wearable.WORN_ARMS | Wearable.WORN_LEGS;
 		wornLogicalAnd=true;
-		baseEnvStats().setArmor(8);
-		baseEnvStats().setWeight(10);
-		baseEnvStats().setAbility(0);
+		basePhyStats().setArmor(8);
+		basePhyStats().setWeight(10);
+		basePhyStats().setAbility(0);
 		baseGoldValue=5;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_COTTON;
 	}
 

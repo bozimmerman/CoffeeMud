@@ -45,8 +45,8 @@ public class StdRoom implements Room
 	protected String 	imageName=null;
 	protected byte[] 	description=null;
 	protected Area 		myArea=null;
-	protected EnvStats 	envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
-	protected EnvStats 	baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+	protected PhyStats 	phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+	protected PhyStats 	basePhyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 	public Exit[] 		exits=new Exit[Directions.NUM_DIRECTIONS()];
 	public Room[] 		doors=new Room[Directions.NUM_DIRECTIONS()];
     protected String[] 	xtraValues=null;
@@ -70,8 +70,8 @@ public class StdRoom implements Room
         super();
         CMClass.bumpCounter(this,CMClass.OBJECT_LOCALE);
         xtraValues=CMProps.getExtraStatCodesHolder(this);
-		baseEnvStats.setWeight(2);
-		recoverEnvStats();
+		basePhyStats.setWeight(2);
+		recoverPhyStats();
 	}
     protected void finalize(){
         for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -100,7 +100,7 @@ public class StdRoom implements Room
 	public void setName(String newName){name=newName;}
 	public String name()
 	{
-		if(envStats().newName()!=null) return envStats().newName();
+		if(phyStats().newName()!=null) return phyStats().newName();
 		return name;
 	}
 
@@ -129,8 +129,8 @@ public class StdRoom implements Room
 	
 	protected void cloneFix(Room E)
 	{
-		baseEnvStats=(EnvStats)E.baseEnvStats().copyOf();
-		envStats=(EnvStats)E.envStats().copyOf();
+		basePhyStats=(PhyStats)E.basePhyStats().copyOf();
+		phyStats=(PhyStats)E.phyStats().copyOf();
 
 		contents=new SVector(1);
 		inhabitants=new SVector(1);
@@ -782,8 +782,8 @@ public class StdRoom implements Room
 			{
 				ItemTicker I=(ItemTicker)CMClass.getAbility("ItemRejuv");
 				I.unloadIfNecessary(item);
-				if((item.envStats().rejuv()<Integer.MAX_VALUE)
-				&&(item.envStats().rejuv()>0))
+				if((item.phyStats().rejuv()<Integer.MAX_VALUE)
+				&&(item.phyStats().rejuv()>0))
 					I.loadMeUp(item,this);
 			}
 		}
@@ -837,81 +837,74 @@ public class StdRoom implements Room
 		return !amDestroyed();
 	}
 
-	public EnvStats envStats()
+	public PhyStats phyStats()
 	{
-		return envStats;
+		return phyStats;
 	}
-	public EnvStats baseEnvStats()
+	public PhyStats basePhyStats()
 	{
-		return baseEnvStats;
+		return basePhyStats;
 	}
-	public void recoverEnvStats()
+	public void recoverPhyStats()
 	{
-		baseEnvStats.copyInto(envStats);
+		basePhyStats.copyInto(phyStats);
 		Area myArea=getArea();
 		if(myArea!=null)
-			myArea.affectEnvStats(this,envStats());
+			myArea.affectPhyStats(this,phyStats());
 
 		for(int a=0;a<numEffects();a++)
 		{
 			Ability A=fetchEffect(a);
-			if(A!=null) A.affectEnvStats(this,envStats);
+			if(A!=null) A.affectPhyStats(this,phyStats);
 		}
-		for(int i=0;i<numItems();i++)
-		{
-			Item I=getItem(i);
-			if(I!=null) I.affectEnvStats(this,envStats);
-		}
-		for(int m=0;m<numInhabitants();m++)
-		{
-			MOB M=fetchInhabitant(m);
-			if(M!=null) M.affectEnvStats(this,envStats);
-		}
+		for(Item I : contents) I.affectPhyStats(this,phyStats);
+		for(MOB M : inhabitants) M.affectPhyStats(this,phyStats);
+		
 	}
 	public void recoverRoomStats()
 	{
-		recoverEnvStats();
+		recoverPhyStats();
 		for(int m=0;m<numInhabitants();m++)
 		{
 			MOB M=fetchInhabitant(m);
 			if(M!=null)
 			{
 				M.recoverCharStats();
-				M.recoverEnvStats();
+				M.recoverPhyStats();
 				M.recoverMaxState();
 			}
 		}
 		for(int d=0;d<exits.length;d++)
 		{
 			Exit X=exits[d];
-			if(X!=null) X.recoverEnvStats();
+			if(X!=null) X.recoverPhyStats();
 		}
 		for(int i=0;i<numItems();i++)
 		{
 			Item I=getItem(i);
-			if(I!=null) I.recoverEnvStats();
+			if(I!=null) I.recoverPhyStats();
 		}
 	}
 
-	public void setBaseEnvStats(EnvStats newBaseEnvStats)
+	public void setBasePhyStats(PhyStats newStats)
 	{
-		baseEnvStats=(EnvStats)newBaseEnvStats.copyOf();
+		basePhyStats=(PhyStats)newStats.copyOf();
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		getArea().affectEnvStats(affected,affectableStats);
-		//if(envStats().sensesMask()>0)
-		//	affectableStats.setSensesMask(affectableStats.sensesMask()|envStats().sensesMask());
-		int disposition=envStats().disposition()
-			&((Integer.MAX_VALUE-(EnvStats.IS_DARK|EnvStats.IS_LIGHTSOURCE|EnvStats.IS_SLEEPING|EnvStats.IS_HIDDEN)));
+		getArea().affectPhyStats(affected,affectableStats);
+		//if(phyStats().sensesMask()>0)
+		//	affectableStats.setSensesMask(affectableStats.sensesMask()|phyStats().sensesMask());
+		int disposition=phyStats().disposition()
+			&((Integer.MAX_VALUE-(PhyStats.IS_DARK|PhyStats.IS_LIGHTSOURCE|PhyStats.IS_SLEEPING|PhyStats.IS_HIDDEN)));
 		if(disposition>0)
 			affectableStats.setDisposition(affectableStats.disposition()|disposition);
 		for(int a=0;a<numEffects();a++)
 		{
 			Ability A=fetchEffect(a);
 			if((A!=null)&&(A.bubbleAffect()))
-			   A.affectEnvStats(affected,affectableStats);
+			   A.affectPhyStats(affected,affectableStats);
 		}
 	}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
@@ -980,7 +973,7 @@ public class StdRoom implements Room
 							buf.append(parseVariesCodes(mob,dispute));
 						break;
 					case 'M':
-						if((mob!=null)&&(CMath.bset(mob.envStats().disposition(),num)))
+						if((mob!=null)&&(CMath.bset(mob.phyStats().disposition(),num)))
 							buf.append(parseVariesCodes(mob,dispute));
 						break;
 					}
@@ -1163,7 +1156,7 @@ public class StdRoom implements Room
 		if(o instanceof MOB)
 		{
 			((MOB)o).recoverCharStats();
-			((MOB)o).recoverEnvStats();
+			((MOB)o).recoverPhyStats();
 			((MOB)o).recoverMaxState();
 		}
 		recoverRoomStats();
@@ -1282,9 +1275,9 @@ public class StdRoom implements Room
 	{
 		MOB everywhereMOB=CMClass.getMOB("StdMOB");
 		everywhereMOB.setName(like.name());
-		everywhereMOB.setBaseEnvStats(like.envStats());
+		everywhereMOB.setBasePhyStats(like.phyStats());
 		everywhereMOB.setLocation(this);
-		everywhereMOB.recoverEnvStats();
+		everywhereMOB.recoverPhyStats();
 		CMMsg msg=CMClass.getMsg(everywhereMOB,null,null,allCode,allCode,allCode,allMessage);
 		send(everywhereMOB,msg);
         everywhereMOB.destroy();
@@ -1474,8 +1467,8 @@ public class StdRoom implements Room
 		CMLib.threads().deleteTick(this,-1);
         imageName=null;
         setArea(null); // this actually deletes the room from the cache map
-        baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
-        envStats=baseEnvStats;
+        basePhyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+        phyStats=basePhyStats;
         for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
             setRawExit(d,null);
         exits=new Exit[Directions.NUM_DIRECTIONS()];
@@ -1633,12 +1626,12 @@ public class StdRoom implements Room
 	{
 		item.setOwner(this);
 		contents.addElement(item);
-		item.recoverEnvStats();
+		item.recoverPhyStats();
 	}
 	public void delItem(Item item)
 	{
 		contents.removeElement(item);
-		item.recoverEnvStats();
+		item.recoverPhyStats();
 	}
 	public int numItems()
 	{
@@ -1845,7 +1838,7 @@ public class StdRoom implements Room
 	}
 
 	public int pointsPerMove(MOB mob)
-	{	return getArea().getClimateObj().adjustMovement(envStats().weight(),mob,this);	}
+	{	return getArea().getClimateObj().adjustMovement(phyStats().weight(),mob,this);	}
 	protected int baseThirst(){return 1;}
 	public int thirstPerRound(MOB mob)
 	{

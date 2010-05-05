@@ -85,7 +85,7 @@ public class Spell_SummonCompanion extends Spell
         if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
             return false;
 
-        int adjustment=(target.envStats().level()-(mob.envStats().level()+(getXLEVELLevel(mob)+(2*getX1Level(mob)))))*3;
+        int adjustment=(target.phyStats().level()-(mob.phyStats().level()+(getXLEVELLevel(mob)+(2*getX1Level(mob)))))*3;
         boolean success=proficiencyCheck(mob,-adjustment,auto);
         
         if(success)

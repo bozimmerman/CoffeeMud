@@ -79,7 +79,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 		super.unInvoke();
 	}
 	
-	public void affectEnvStats(Environmental affected, EnvStats stats)
+	public void affectPhyStats(Physical affected, PhyStats stats)
 	{
 		if((affected instanceof Item)&&(armorBonus>0)&&(((Item)affected).owner() instanceof MOB))
 		{
@@ -121,7 +121,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 		    mob.tell("You are a bit too busy to do that right now.");
 		    return false;
 		}
-		int bonus=(int)Math.round(CMath.mul(0.10+(0.10*getXLEVELLevel(mob)),armor.envStats().armor()));
+		int bonus=(int)Math.round(CMath.mul(0.10+(0.10*getXLEVELLevel(mob)),armor.phyStats().armor()));
 		if(bonus<1)
 		{
 			mob.tell(armor.name()+" is too weak of an armor to provide any more benefit from tweaking.");
@@ -142,7 +142,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 				beneficialAffect(mob,armor,asLevel,0);
 				Ability A=armor.fetchEffect(ID());
 				if(A!=null){ A.setMiscText(""+bonus); A.makeLongLasting();}
-				armor.recoverEnvStats();
+				armor.recoverPhyStats();
 				mob.location().recoverRoomStats();
 			}
 		}

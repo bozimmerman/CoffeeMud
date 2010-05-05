@@ -243,9 +243,9 @@ public class StdAbility implements Ability
 	}
 	public int classificationCode(){ return Ability.ACODE_SKILL; }
 
-	protected static final EnvStats envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
-	public EnvStats envStats(){return envStats;}
-	public EnvStats baseEnvStats(){return envStats;}
+	protected static final PhyStats phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+	public PhyStats phyStats(){return phyStats;}
+	public PhyStats basePhyStats(){return phyStats;}
 
 
 	public long expirationDate()
@@ -263,8 +263,8 @@ public class StdAbility implements Ability
     public void destroy(){amDestroyed=true; affected=null; invoker=null; miscText=null; }
     public boolean amDestroyed(){return amDestroyed;}
 	public void setName(String newName){}
-	public void recoverEnvStats() {}
-	public void setBaseEnvStats(EnvStats newBaseEnvStats){}
+	public void recoverPhyStats() {}
+	public void setBasePhyStats(PhyStats newStats){}
 	public void setDisplayText(String newDisplayText){}
 	public void setDescription(String newDescription){}
 	public int abilityCode(){return 0;}
@@ -316,7 +316,7 @@ public class StdAbility implements Ability
 			if(affected instanceof Room)
 				((Room)affected).recoverRoomStats();
 			else
-				affected.recoverEnvStats();
+				affected.recoverPhyStats();
 			CMLib.threads().startTickDown(this,Tickable.TICKID_MOB,1);
 		}
 		tickDown=tickTime;
@@ -340,7 +340,7 @@ public class StdAbility implements Ability
     		if((caster.isMonster())||(qualifyingLevel>=0))
     			adjLevel+=(CMLib.ableMapper().qualifyingClassLevel(caster,this)-qualifyingLevel);
     		else
-    			adjLevel=caster.envStats().level()-lowestQualifyingLevel-25;
+    			adjLevel=caster.phyStats().level()-lowestQualifyingLevel-25;
         }
         else
         	adjLevel=asLevel;
@@ -362,15 +362,15 @@ public class StdAbility implements Ability
 			if(qualClassLevel>=qualifyingLevel)
 				adjLevel=(qualClassLevel-qualifyingLevel)+1;
 			else
-			if(caster.envStats().level()>=qualifyingLevel)
-				adjLevel=(caster.envStats().level()-qualifyingLevel)+1;
+			if(caster.phyStats().level()>=qualifyingLevel)
+				adjLevel=(caster.phyStats().level()-qualifyingLevel)+1;
 			else
-			if(caster.envStats().level()>=lowestQualifyingLevel)
-				adjLevel=(caster.envStats().level()-lowestQualifyingLevel)+1;
+			if(caster.phyStats().level()>=lowestQualifyingLevel)
+				adjLevel=(caster.phyStats().level()-lowestQualifyingLevel)+1;
 		}
 		else
-		if(caster.envStats().level()>=lowestQualifyingLevel)
-			adjLevel=(caster.envStats().level()-lowestQualifyingLevel)+1;
+		if(caster.phyStats().level()>=lowestQualifyingLevel)
+			adjLevel=(caster.phyStats().level()-lowestQualifyingLevel)+1;
 		if(asLevel>0) adjLevel=asLevel;
 		if(adjLevel<1) return 1;
 		return adjLevel+getXLEVELLevel(caster);
@@ -705,13 +705,13 @@ public class StdAbility implements Ability
 					((MOB)being).location().recoverRoomStats();
 				else
 				{
-					being.recoverEnvStats();
+					being.recoverPhyStats();
 					((MOB)being).recoverCharStats();
 					((MOB)being).recoverMaxState();
 				}
 			}
 			else
-				being.recoverEnvStats();
+				being.recoverPhyStats();
 		}
 	}
 
@@ -720,7 +720,7 @@ public class StdAbility implements Ability
 		return canBeUninvoked;
 	}
 
-	public void affectEnvStats(Environmental affectedEnv, EnvStats affectableStats)
+	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
 	{}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{}
@@ -1052,7 +1052,7 @@ public class StdAbility implements Ability
         {
             tickAdjustmentFromStandard=((int)Math.round(CMath.mul(adjustedLevel(mob,asLevel),1.3)))+25;
             if((target!=null)&&(asLevel<=0)&&(mob!=null)&&(!(target instanceof Room)))
-                tickAdjustmentFromStandard=(int)Math.round(CMath.mul(tickAdjustmentFromStandard,CMath.div(mob.envStats().level(),target.envStats().level())));
+                tickAdjustmentFromStandard=(int)Math.round(CMath.mul(tickAdjustmentFromStandard,CMath.div(mob.phyStats().level(),target.phyStats().level())));
 
             if((tickAdjustmentFromStandard>(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)))
             ||(mob instanceof Deity))
@@ -1529,7 +1529,7 @@ public class StdAbility implements Ability
 			newAbility.autoInvocation(student);
 		}
 		student.recoverCharStats();
-		student.recoverEnvStats();
+		student.recoverPhyStats();
 		student.recoverMaxState();
 	}
 

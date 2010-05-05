@@ -170,7 +170,7 @@ public class Spell_WallOfForce extends Spell
 				I.setDescription("It`s tough, that's for sure.");
 				I.setMaterial(RawMaterial.RESOURCE_NOTHING);
 				CMLib.flags().setGettable(I,false);
-				I.recoverEnvStats();
+				I.recoverPhyStats();
 				mob.location().addItem(I);
 				theWall=I;
 				beneficialAffect(mob,I,asLevel,10);

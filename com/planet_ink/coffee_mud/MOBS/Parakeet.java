@@ -46,20 +46,20 @@ public class Parakeet extends StdMOB
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
 
-		baseEnvStats().setDamage(1);
-		baseEnvStats().setSpeed(1.0);
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(1);
-		baseEnvStats().setArmor(50);
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_FLYING);
+		basePhyStats().setDamage(1);
+		basePhyStats().setSpeed(1.0);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(1);
+		basePhyStats().setArmor(50);
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_FLYING);
 		baseCharStats().setMyRace(CMClass.getRace("SongBird"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

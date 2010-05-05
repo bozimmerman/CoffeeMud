@@ -147,7 +147,7 @@ public class Falling extends StdAbility
 				return stopFalling(mob);
 			else
 			{
-				if(mob.envStats().weight()<1)
+				if(mob.phyStats().weight()<1)
 				{
 					mob.tell("\n\r\n\rYou are floating gently "+addStr+".\n\r\n\r");
 				}
@@ -254,11 +254,11 @@ public class Falling extends StdAbility
 			}
 		}
 	}
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
-		if((affectableStats.disposition()&EnvStats.IS_FLYING)==0)
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FALLING);
+		super.affectPhyStats(affected,affectableStats);
+		if((affectableStats.disposition()&PhyStats.IS_FLYING)==0)
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FALLING);
 	}
 	public void setAffectedOne(Physical being)
 	{
@@ -287,7 +287,7 @@ public class Falling extends StdAbility
 			E.addEffect(F);
 			if(!(E instanceof MOB))
 				CMLib.threads().startTickDown(F,Tickable.TICKID_MOB,1);
-			E.recoverEnvStats();
+			E.recoverPhyStats();
 
 		}
 		return true;

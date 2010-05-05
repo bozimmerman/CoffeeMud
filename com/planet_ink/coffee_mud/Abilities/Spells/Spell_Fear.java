@@ -70,7 +70,7 @@ public class Spell_Fear extends Spell
 	    return super.tick(ticking,tickID);
 	}
 	
-	public void affectEnvStats(Environmental E, EnvStats stats)
+	public void affectPhyStats(Physical E, PhyStats stats)
 	{
 	    if((affected instanceof MOB)&&(invoker!=null)&&(invoker!=affected)&&(((MOB)affected).getVictim()==invoker))
 	    {
@@ -112,7 +112,7 @@ public class Spell_Fear extends Spell
 				// what happened.
 				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"^S<S-NAME> scare(s) <T-NAMESELF>.^?");
 				CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0),null);
-				if(((text().toUpperCase().indexOf("WEAK")<0)||((mob.envStats().level()/2)>target.envStats().level()))
+				if(((text().toUpperCase().indexOf("WEAK")<0)||((mob.phyStats().level()/2)>target.phyStats().level()))
 				&&((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2)))))
 				{
 					mob.location().send(mob,msg);

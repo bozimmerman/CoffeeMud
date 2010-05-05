@@ -42,14 +42,14 @@ public class StdClanSpecialItem extends StdClanItem
 		super();
 
 		setName("a clan item");
-		baseEnvStats.setWeight(1);
+		basePhyStats.setWeight(1);
 		setDisplayText("an item belonging to a clan is here.");
 		setDescription("");
 		secretIdentity="";
 		baseGoldValue=1;
 		setCIType(ClanItem.CI_SPECIALOTHER);
 		material=RawMaterial.RESOURCE_PINE;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
     
     public void setReadableText(String text)

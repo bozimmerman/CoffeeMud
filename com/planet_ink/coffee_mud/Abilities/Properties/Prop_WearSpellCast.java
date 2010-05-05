@@ -107,7 +107,7 @@ public class Prop_WearSpellCast extends Prop_HaveSpellCast
 		return super.addMeIfNeccessary(source,target,makeLongLasting,asLevel);
 	}
 
-	public void affectEnvStats(Environmental host, EnvStats affectableStats)
+	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{
 		if(processing) return;
 		processing=true;

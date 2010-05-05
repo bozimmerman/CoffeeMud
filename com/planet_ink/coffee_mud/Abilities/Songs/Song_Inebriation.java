@@ -38,9 +38,9 @@ public class Song_Inebriation extends Song
 	public String ID() { return "Song_Inebriation"; }
 	public String name(){ return "Drunkenness";}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(invoker==null) return;
 
 		if(affected==invoker) return;

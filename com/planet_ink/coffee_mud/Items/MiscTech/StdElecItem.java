@@ -44,7 +44,7 @@ public class StdElecItem extends StdItem implements Electronics
 
 		material=RawMaterial.RESOURCE_STEEL;
 		baseGoldValue=0;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	protected int fuelType=RawMaterial.RESOURCE_ENERGY;

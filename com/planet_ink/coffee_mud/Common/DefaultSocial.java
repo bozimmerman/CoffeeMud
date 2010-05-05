@@ -272,16 +272,16 @@ public class DefaultSocial implements Social
 	public void setDescription(String str){}
 	public String displayText(){return "";}
 	public void setDisplayText(String str){}
-    public EnvStats stats=null;
-	public EnvStats envStats()
+    public PhyStats stats=null;
+	public PhyStats phyStats()
     {
-        if(stats==null) stats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+        if(stats==null) stats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
         return stats;
     }
-	public EnvStats baseEnvStats(){return envStats();}
+	public PhyStats basePhyStats(){return phyStats();}
 
-	public void recoverEnvStats(){}
-	public void setBaseEnvStats(EnvStats newBaseEnvStats){}
+	public void recoverPhyStats(){}
+	public void setBasePhyStats(PhyStats newStats){}
 	public CMObject newInstance() { return new DefaultSocial();}
     public void initializeClass(){}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
@@ -365,7 +365,7 @@ public class DefaultSocial implements Social
 	public String text(){return "";}
 	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)	{}
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)	{}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)	{}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)	{}
 	public void executeMsg(Environmental myHost, CMMsg msg){}

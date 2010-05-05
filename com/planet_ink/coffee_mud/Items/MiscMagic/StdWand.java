@@ -44,14 +44,14 @@ public class StdWand extends StdItem implements Wand
 		super();
 
 		setName("a crooked stick");
-		baseEnvStats.setWeight(1);
+		basePhyStats.setWeight(1);
 		setDisplayText("a small crooked stick is here.");
 		setDescription("Looks like an broken piece of a tree.");
 		secretIdentity="";
 		baseGoldValue=200;
 		material=RawMaterial.RESOURCE_OAK;
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
-		recoverEnvStats();
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
+		recoverPhyStats();
 	}
 
 	public int maxUses(){return Integer.MAX_VALUE;}
@@ -164,7 +164,7 @@ public class StdWand extends StdItem implements Wand
 							V.addElement(message);
 							mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,this.name()+" glows brightly.");
 							this.setUsesRemaining(this.usesRemaining()-1);
-							A.invoke(mob, V, target, true,envStats().level());
+							A.invoke(mob, V, target, true,phyStats().level());
 							wandUse.helpProficiency(mob);
 							return;
 						}
@@ -216,7 +216,7 @@ public class StdWand extends StdItem implements Wand
 							V.addAll(CMParms.parse(message));
 							mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,me.name()+" glows brightly.");
 							me.setUsesRemaining(me.usesRemaining()-1);
-							A.invoke(mob, V, target, true, me.envStats().level());
+							A.invoke(mob, V, target, true, me.phyStats().level());
 							wandUse.helpProficiency(mob);
 							return;
 						}
@@ -254,8 +254,8 @@ public class StdWand extends StdItem implements Wand
 		switch(getCodeNum(code))
 		{
 		case 0: return ID();
-		case 1: return ""+baseEnvStats().ability();
-		case 2: return ""+baseEnvStats().level();
+		case 1: return ""+basePhyStats().ability();
+		case 2: return ""+basePhyStats().level();
 		case 3: return text();
 		}
 		return "";
@@ -265,8 +265,8 @@ public class StdWand extends StdItem implements Wand
 		switch(getCodeNum(code))
 		{
 		case 0: return;
-		case 1: baseEnvStats().setLevel(CMath.s_parseIntExpression(val)); break;
-		case 2: baseEnvStats().setAbility(CMath.s_parseIntExpression(val)); break;
+		case 1: basePhyStats().setLevel(CMath.s_parseIntExpression(val)); break;
+		case 2: basePhyStats().setAbility(CMath.s_parseIntExpression(val)); break;
 		case 3: setMiscText(val); break;
 		}
 	}

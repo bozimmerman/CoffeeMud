@@ -176,7 +176,7 @@ public class Dragonbreath extends StdAbility
 					invoker=mob;
 
 					int damage = 0;
-					int levelBy=(mob.envStats().level()+(2*getXLEVELLevel(mob)))/4;
+					int levelBy=(mob.phyStats().level()+(2*getXLEVELLevel(mob)))/4;
 					if(levelBy<1) levelBy=1;
 					damage += CMLib.dice().roll(levelBy,6,levelBy);
 					if(msg.value()>0)

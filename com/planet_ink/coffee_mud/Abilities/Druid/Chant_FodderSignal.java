@@ -57,11 +57,11 @@ public class Chant_FodderSignal extends Chant
 
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GLOWING);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GLOWING);
 		affectableStats.setArmor(affectableStats.armor()+10+super.getXLEVELLevel(invoker()));
 	}
 

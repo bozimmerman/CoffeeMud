@@ -56,9 +56,9 @@ public class Prop_PracticeDummy extends Property
 			affectableMaxState.setHitPoints(99999);
 	}
 
-	public void affectEnvStats(Environmental E, EnvStats affectableStats)
+	public void affectPhyStats(Physical E, PhyStats affectableStats)
 	{
-		super.affectEnvStats(E,affectableStats);
+		super.affectPhyStats(E,affectableStats);
 		if(unkillable)
 			affectableStats.setArmor(100);
 	}

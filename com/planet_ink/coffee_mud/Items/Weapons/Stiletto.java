@@ -40,13 +40,13 @@ public class Stiletto extends Dagger
 		setName("a cool stiletto");
 		setDisplayText("a stiletto is in the corner.");
 		setDescription("A dagger, more or less, with a long slender blade and sharp point.");
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(0);
-		baseEnvStats.setWeight(1);
-		baseEnvStats().setAttackAdjustment(0);
-		baseEnvStats().setDamage(3);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(0);
+		basePhyStats.setWeight(1);
+		basePhyStats().setAttackAdjustment(0);
+		basePhyStats().setDamage(3);
 		baseGoldValue=1;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_STEEL;
 		weaponType=TYPE_PIERCING;
 	}

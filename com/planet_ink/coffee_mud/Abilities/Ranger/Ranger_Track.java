@@ -200,7 +200,7 @@ public class Ranger_Track extends StdAbility
 				Ranger_Track newOne=(Ranger_Track)this.copyOf();
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 				newOne.nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),true);
 			}
 		}

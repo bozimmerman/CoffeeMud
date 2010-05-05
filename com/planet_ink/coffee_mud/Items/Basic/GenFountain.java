@@ -42,14 +42,14 @@ public class GenFountain extends GenWater
 		amountOfThirstQuenched=250;
 		amountOfLiquidHeld=999999;
 		amountOfLiquidRemaining=999999;
-		baseEnvStats().setWeight(5);
+		basePhyStats().setWeight(5);
 		capacity=0;
 		setDisplayText("a little fountain flows here.");
 		setDescription("The water looks pure and clean.");
 		baseGoldValue=10;
-		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMNOTGET);
+		basePhyStats().setSensesMask(PhyStats.SENSE_ITEMNOTGET);
 		material=RawMaterial.RESOURCE_FRESHWATER;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 

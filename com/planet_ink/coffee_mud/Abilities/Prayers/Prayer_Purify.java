@@ -44,11 +44,11 @@ public class Prayer_Purify extends Prayer
 	public long flags(){return Ability.FLAG_HOLY;}
 	public int classificationCode(){return ((affecting() instanceof Food)&&(!canBeUninvoked()))?Ability.ACODE_PROPERTY:Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 
-	public void affectEnvStats(Environmental affecting, EnvStats stats)
+	public void affectPhyStats(Physical affecting, PhyStats stats)
 	{
 		if((affecting instanceof Decayable)&&(((Decayable)affecting).decayTime()>0))
 			((Decayable)affecting).setDecayTime(0);
-		super.affectEnvStats(affecting,stats);
+		super.affectPhyStats(affecting,stats);
 	}
 	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
@@ -86,8 +86,8 @@ public class Prayer_Purify extends Prayer
 				{
 					((Drink)target).setLiquidType(RawMaterial.RESOURCE_FRESHWATER);
 					doneSomething=true;
-					target.baseEnvStats().setAbility(0);
-					target.recoverEnvStats();
+					target.basePhyStats().setAbility(0);
+					target.recoverPhyStats();
 				}
 				while(target.numEffects()>0)
 				{
@@ -110,7 +110,7 @@ public class Prayer_Purify extends Prayer
 				}
 				if(doneSomething)
 					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,target.name()+" appears purified!");
-				target.recoverEnvStats();
+				target.recoverPhyStats();
 				mob.location().recoverRoomStats();
 			}
 		}

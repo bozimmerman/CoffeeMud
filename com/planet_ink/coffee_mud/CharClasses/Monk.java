@@ -190,9 +190,9 @@ public class Monk extends StdCharClass
 
     public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg);}
 	public String getOtherBonusDesc(){return "Receives defensive bonus for high dexterity.  Receives unarmed attack bonus.  Receives bonus attack when unarmed.  Has Slow Fall ability.  Receives trap avoidance.  Receives bonus conquest experience.";}
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected instanceof MOB)
 		{
 			if(CMLib.flags().isStanding((MOB)affected))
@@ -222,10 +222,10 @@ public class Monk extends StdCharClass
 	}
 	public void unLevel(MOB mob)
 	{
-		if(mob.envStats().level()<2)
+		if(mob.phyStats().level()<2)
 			return;
 		super.unLevel(mob);
-	    if(((mob.baseEnvStats().level()+1) % 2)==0)
+	    if(((mob.basePhyStats().level()+1) % 2)==0)
 	    {
 			int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
 			int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
@@ -233,11 +233,11 @@ public class Monk extends StdCharClass
 			if(dexStat>maxDexStat) dexStat=maxDexStat;
 			int attArmor=(int)Math.round(CMath.div(dexStat,9.0));
 			attArmor=attArmor*-1;
-			mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-attArmor);
-			mob.envStats().setArmor(mob.envStats().armor()-attArmor);
+			mob.basePhyStats().setArmor(mob.basePhyStats().armor()-attArmor);
+			mob.phyStats().setArmor(mob.phyStats().armor()-attArmor);
 	    }
 
-		mob.recoverEnvStats();
+		mob.recoverPhyStats();
 		mob.recoverCharStats();
 		mob.recoverMaxState();
 	}
@@ -246,7 +246,7 @@ public class Monk extends StdCharClass
 	public void level(MOB mob, Vector newAbilityIDs)
 	{
 	    if(CMSecurity.isDisabled("LEVELS")) return;
-	    if((mob.baseEnvStats().level() % 2)==0)
+	    if((mob.basePhyStats().level() % 2)==0)
 	    {
 			int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
 			int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)

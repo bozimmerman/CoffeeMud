@@ -41,12 +41,12 @@ public class GenItem extends StdItem
 	{
 		super();
 		setName("a generic item");
-		baseEnvStats.setWeight(2);
+		basePhyStats.setWeight(2);
 		setDisplayText("a generic item sits here.");
 		setDescription("");
 		baseGoldValue=5;
-		baseEnvStats().setLevel(1);
-		recoverEnvStats();
+		basePhyStats().setLevel(1);
+		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_OAK);
 	}
 
@@ -63,7 +63,7 @@ public class GenItem extends StdItem
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
     public String getStat(String code)

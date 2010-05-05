@@ -75,13 +75,13 @@ public class StdDeity extends StdMOB implements Deity
 		username="a Mighty Deity";
 		setDescription("He is Mighty.");
 		setDisplayText("A Mighty Deity stands here!");
-		baseEnvStats().setWeight(700);
-		baseEnvStats().setAbility(200);
-		baseEnvStats().setArmor(0);
-		baseEnvStats().setAttackAdjustment(1000);
-		baseEnvStats().setDamage(1000);
+		basePhyStats().setWeight(700);
+		basePhyStats().setAbility(200);
+		basePhyStats().setArmor(0);
+		basePhyStats().setAttackAdjustment(1000);
+		basePhyStats().setDamage(1000);
 		baseCharStats().setMyRace(CMClass.getRace("Spirit"));
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	
 	private class WorshipService
@@ -366,7 +366,7 @@ public class StdDeity extends StdMOB implements Deity
 			if(Blessing.canTarget(Ability.CAN_MOBS))
 			{
 				V.addElement(mob.name()+"$");
-				Blessing.invoke(this,V,mob,true,mob.envStats().level());
+				Blessing.invoke(this,V,mob,true,mob.phyStats().level());
 			}
 			else
 			if(Blessing.canTarget(Ability.CAN_ITEMS))
@@ -378,12 +378,12 @@ public class StdDeity extends StdMOB implements Deity
 				if(I==null) return;
 				V.addElement("$"+I.name()+"$");
 				addItem(I);
-				Blessing.invoke(this,V,I,true,mob.envStats().level());
+				Blessing.invoke(this,V,I,true,mob.phyStats().level());
 				delItem(I);
 				if(!mob.isMine(I)) mob.addItem(I);
 			}
 			else
-				Blessing.invoke(this,mob,true,mob.envStats().level());
+				Blessing.invoke(this,mob,true,mob.phyStats().level());
 		}
 		prevRoom.bringMobHere(this,false);
 		if(mob.location()!=prevRoom)
@@ -417,7 +417,7 @@ public class StdDeity extends StdMOB implements Deity
 			if(Curse.canTarget(Ability.CAN_MOBS))
 			{
 				V.addElement(mob.location().getContextName(mob));
-				Curse.invoke(this,V,mob,true,mob.envStats().level());
+				Curse.invoke(this,V,mob,true,mob.phyStats().level());
 			}
 			else
 			if(Curse.canTarget(Ability.CAN_ITEMS))
@@ -429,12 +429,12 @@ public class StdDeity extends StdMOB implements Deity
 				if(I==null) return;
 				V.addElement("$"+I.name()+"$");
 				addItem(I);
-				Curse.invoke(this,V,I,true,mob.envStats().level());
+				Curse.invoke(this,V,I,true,mob.phyStats().level());
 				delItem(I);
 				if(!mob.isMine(I)) mob.addItem(I);
 			}
 			else
-				Curse.invoke(this,mob,true,mob.envStats().level());
+				Curse.invoke(this,mob,true,mob.phyStats().level());
 		}
 		prevRoom.bringMobHere(this,false);
 		if(mob.location()!=prevRoom)
@@ -1013,7 +1013,7 @@ public class StdDeity extends StdMOB implements Deity
         Room R=null;
         MOB M=null;
 		TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
-        Vector V=CMLib.tracking().getRadiantRooms(room,flags,5+(mob.envStats().level()/5));
+        Vector V=CMLib.tracking().getRadiantRooms(room,flags,5+(mob.phyStats().level()/5));
         for(int v=0;v<V.size();v++)
         {
             R=(Room)V.elementAt(v);
@@ -1106,15 +1106,15 @@ public class StdDeity extends StdMOB implements Deity
             {
                 if((!M.isMonster())&&(M!=mob))
                     CMLib.leveler().postExperience(M,null,null,50,false);
-                totalLevels+=M.envStats().level();
+                totalLevels+=M.phyStats().level();
                 if(!M.isMonster())
-                    totalLevels+=(M.envStats().level()*2);
+                    totalLevels+=(M.phyStats().level()*2);
                 Ability A=M.fetchEffect("Skill_Convert");
                 if(A!=null) A.makeLongLasting();
             }
         }
         undoService(service.parishaners);
-        int exp=(int)Math.round(CMath.div(totalLevels,mob.envStats().level())*10.0);
+        int exp=(int)Math.round(CMath.div(totalLevels,mob.phyStats().level())*10.0);
         CMLib.leveler().postExperience(mob,null,null,exp,false);
         trigServiceParts.remove(mob.Name());
         trigServiceTimes.remove(mob.Name());

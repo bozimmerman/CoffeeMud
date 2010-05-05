@@ -228,7 +228,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 						if((M!=null)
 						&&(M.isSavable())
 						&&(M.getStartRoom()==R)
-						&&((M.baseEnvStats().rejuv()==0)||(M.baseEnvStats().rejuv()==Integer.MAX_VALUE)))
+						&&((M.basePhyStats().rejuv()==0)||(M.basePhyStats().rejuv()==Integer.MAX_VALUE)))
 						{
 			            	CMLib.catalog().updateCatalogIntegrity(M);
 							mobs.addElement(M);
@@ -333,11 +333,11 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	    					now+=(TimeManager.MILI_MINUTE*CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
 	    					I.setExpirationDate(now);
 	    				}
-	    				if((I.envStats().rejuv()!=Integer.MAX_VALUE)
-	    				&&(I.envStats().rejuv()!=0))
+	    				if((I.phyStats().rejuv()!=Integer.MAX_VALUE)
+	    				&&(I.phyStats().rejuv()!=0))
 	    				{
-	    					I.baseEnvStats().setRejuv(Integer.MAX_VALUE);
-	    					I.recoverEnvStats();
+	    					I.basePhyStats().setRejuv(Integer.MAX_VALUE);
+	    					I.recoverPhyStats();
 	    				}
 	                }
 				}
@@ -438,11 +438,11 @@ public class Prop_RoomForSale extends Property implements LandTitle
 					updateItems=true;
 				}
 
-				if((I.envStats().rejuv()!=Integer.MAX_VALUE)
-				&&(I.envStats().rejuv()!=0))
+				if((I.phyStats().rejuv()!=Integer.MAX_VALUE)
+				&&(I.phyStats().rejuv()!=0))
 				{
-					I.baseEnvStats().setRejuv(Integer.MAX_VALUE);
-					I.recoverEnvStats();
+					I.basePhyStats().setRejuv(Integer.MAX_VALUE);
+					I.recoverPhyStats();
 					updateItems=true;
 				}
 			}

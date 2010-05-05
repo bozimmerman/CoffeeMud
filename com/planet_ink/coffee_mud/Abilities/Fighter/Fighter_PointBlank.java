@@ -79,7 +79,7 @@ public class Fighter_PointBlank extends FighterSkill
 				Ability A=(Ability)this.copyOf();
 				A.setSavable(false);
 				msg.target().addEffect(A);
-				msg.target().recoverEnvStats();
+				msg.target().recoverPhyStats();
 			}
 			else
 			if(((msg.targetMinor()==CMMsg.TYP_REMOVE)
@@ -88,16 +88,16 @@ public class Fighter_PointBlank extends FighterSkill
 			{
 				qualifiedWeapons.removeElement(msg.target());
 				msg.target().delEffect(msg.target().fetchEffect(ID()));
-				msg.target().recoverEnvStats();
+				msg.target().recoverPhyStats();
 			}
 		}
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected instanceof Item)
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.SENSE_ITEMNOMINRANGE);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ITEMNOMINRANGE);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -125,7 +125,7 @@ public class Fighter_PointBlank extends FighterSkill
 					Ability A=(Ability)this.copyOf();
 					A.setSavable(false);
 					w.addEffect(A);
-					w.recoverEnvStats();
+					w.recoverPhyStats();
 				}
 			}
 			for(int i=qualifiedWeapons.size()-1;i>=0;i--)
@@ -136,7 +136,7 @@ public class Fighter_PointBlank extends FighterSkill
 				{
 					qualifiedWeapons.removeElement(I);
 					I.delEffect(I.fetchEffect(ID()));
-					I.recoverEnvStats();
+					I.recoverPhyStats();
 				}
 			}
 		}

@@ -97,8 +97,8 @@ public class Spell_FoolsGold extends Spell
 					gold.setDisplayText(gold.name()+" sit here");
 					break;
 				}
-				gold.baseEnvStats().setWeight(0);
-				gold.recoverEnvStats();
+				gold.basePhyStats().setWeight(0);
+				gold.recoverPhyStats();
 				mob.addItem(gold);
 				mob.location().show(mob,null,gold,CMMsg.MSG_OK_ACTION,"Suddenly, <S-NAME> hold(s) <O-NAME>.");
 				destroyOnNextTick=false;

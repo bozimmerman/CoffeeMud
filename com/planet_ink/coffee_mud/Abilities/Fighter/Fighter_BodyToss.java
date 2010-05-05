@@ -71,7 +71,7 @@ public class Fighter_BodyToss extends FighterSkill
 				return Ability.QUALITY_INDIFFERENT;
 			if(mob.charStats().getBodyPart(Race.BODY_ARM)<=1)
 				return Ability.QUALITY_INDIFFERENT;
-			if(target.baseEnvStats().weight()>(mob.baseEnvStats().weight()*2))
+			if(target.basePhyStats().weight()>(mob.basePhyStats().weight()*2))
 				return Ability.QUALITY_INDIFFERENT;
 			if(target.fetchEffect(ID())!=null)
 				return Ability.QUALITY_INDIFFERENT;
@@ -107,7 +107,7 @@ public class Fighter_BodyToss extends FighterSkill
 			mob.tell("You need arms to do this.");
 			return false;
 		}
-		if(target.baseEnvStats().weight()>(mob.baseEnvStats().weight()*2))
+		if(target.basePhyStats().weight()>(mob.basePhyStats().weight()*2))
 		{
 			mob.tell(target.name()+" is too big for you to toss!");
 			return false;

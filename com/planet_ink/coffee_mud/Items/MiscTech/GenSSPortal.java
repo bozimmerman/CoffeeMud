@@ -45,7 +45,7 @@ public class GenSSPortal extends StdPortal implements Electronics
 		setDisplayText("a space ship portal is here.");
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 		setDescription("");
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public boolean isGeneric(){return true;}
@@ -61,7 +61,7 @@ public class GenSSPortal extends StdPortal implements Electronics
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	
 	public int fuelType(){return -1;}

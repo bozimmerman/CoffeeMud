@@ -42,11 +42,11 @@ public class GenShirt extends GenArmor
 		setDescription("It is a plain buttoned tunic.");
 		properWornBitmap=Wearable.WORN_TORSO;
 		wornLogicalAnd=true;
-		baseEnvStats().setArmor(2);
-		baseEnvStats().setWeight(1);
-		baseEnvStats().setAbility(0);
+		basePhyStats().setArmor(2);
+		basePhyStats().setWeight(1);
+		basePhyStats().setAbility(0);
 		baseGoldValue=1;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_COTTON;
 	}
 

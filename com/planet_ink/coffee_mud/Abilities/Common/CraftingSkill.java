@@ -189,7 +189,7 @@ public class CraftingSkill extends GatheringSkill
 	            armor.setClothingLayer(layers[0]);
 	            armor.setLayerAttributes(layerAtt[0]);
 	        }
-	        I.baseEnvStats().setArmor(I.baseEnvStats().armor()+(int)Math.round(hardBonus[0]));
+	        I.basePhyStats().setArmor(I.basePhyStats().armor()+(int)Math.round(hardBonus[0]));
 	        I.setRawLogicalAnd(logicalAnd[0]);
 	        I.setRawProperLocationBitmap(wornLoc[0]);
         }
@@ -473,9 +473,9 @@ public class CraftingSkill extends GatheringSkill
 		Key key=null;
 		int tries=0;
 		MOB mob=CMLib.map().mobCreated();
-		mob.baseEnvStats().setLevel(Integer.MAX_VALUE/2);
-		mob.baseEnvStats().setSensesMask(mob.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_DARK);
-		mob.recoverEnvStats();
+		mob.basePhyStats().setLevel(Integer.MAX_VALUE/2);
+		mob.basePhyStats().setSensesMask(mob.basePhyStats().sensesMask()|PhyStats.CAN_SEE_DARK);
+		mob.recoverPhyStats();
 		while(((building==null)||(building.name().endsWith(" bundle")))&&(((++tries)<100)))
 		{
 			Vector V=new Vector();
@@ -496,15 +496,15 @@ public class CraftingSkill extends GatheringSkill
 		mob.destroy();
 		if(building==null) return null;
 		building.setSecretIdentity("");
-		building.recoverEnvStats();
+		building.recoverPhyStats();
 		building.text();
-		building.recoverEnvStats();
+		building.recoverPhyStats();
 		if(key!=null)
 		{
 			key.setSecretIdentity("");
-			key.recoverEnvStats();
+			key.recoverPhyStats();
 			key.text();
-			key.recoverEnvStats();
+			key.recoverPhyStats();
 		}
 		return new ItemKeyPair(building, key);
 	}

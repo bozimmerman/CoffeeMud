@@ -40,7 +40,7 @@ public class StdShipConsole extends StdRideable
 	{
 		super();
 		setName("a computer console");
-		baseEnvStats.setWeight(20);
+		basePhyStats.setWeight(20);
 		setDescription("");
 		baseGoldValue=5;
 		containType=Container.CONTAIN_SSCOMPONENTS;
@@ -49,7 +49,7 @@ public class StdShipConsole extends StdRideable
 		setLidsNLocks(true,true,false,false);
 		capacity=500;
 		material=RawMaterial.RESOURCE_STEEL;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public int fuelType(){return RawMaterial.RESOURCE_ENERGY;}

@@ -63,7 +63,7 @@ public class Disease_Pneumonia extends Disease
 			if(diseaser==null) diseaser=mob;
 			diseaseTick=DISEASE_DELAY();
 			mob.location().show(mob,null,CMMsg.MSG_QUIETMOVEMENT,DISEASE_AFFECT());
-			int damage=CMLib.dice().roll(4,diseaser.envStats().level()+1,1);
+			int damage=CMLib.dice().roll(4,diseaser.phyStats().level()+1,1);
 			CMLib.combat().postDamage(diseaser,mob,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_DISEASE,-1,null);
 			Disease_Cold A=(Disease_Cold)CMClass.getAbility("Disease_Cold");
 			A.catchIt(mob);
@@ -93,6 +93,6 @@ public class Disease_Pneumonia extends Disease
 		if(affected==null) return;
 		affectableState.setMovement(10);
 		affectableState.setMana(affectableState.getMana()-(affectableState.getMana()/2));
-		affectableState.setHitPoints(affectableState.getHitPoints()-(affected.envStats().level()*2));
+		affectableState.setHitPoints(affectableState.getHitPoints()-(affected.phyStats().level()*2));
 	}
 }

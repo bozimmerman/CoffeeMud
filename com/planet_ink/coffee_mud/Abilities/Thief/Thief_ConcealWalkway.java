@@ -51,12 +51,12 @@ public class Thief_ConcealWalkway extends ThiefSkill
     }
     public void setAbilityCode(int newCode){code=newCode; super.miscText=""+newCode;}
 
-    public void affectEnvStats(Environmental host, EnvStats stats)
+    public void affectPhyStats(Physical host, PhyStats stats)
     {
-        super.affectEnvStats(host,stats);
+        super.affectPhyStats(host,stats);
         if(host instanceof Exit)
         {
-            stats.setDisposition(stats.disposition()|EnvStats.IS_HIDDEN);
+            stats.setDisposition(stats.disposition()|PhyStats.IS_HIDDEN);
             stats.setLevel(stats.level()+abilityCode());
         }
     }
@@ -92,7 +92,7 @@ public class Thief_ConcealWalkway extends ThiefSkill
             return false;
         }
         Exit E=(Exit)chkE;
-        if((!auto)&&(E.envStats().level()>(adjustedLevel(mob,asLevel)*2)))
+        if((!auto)&&(E.phyStats().level()>(adjustedLevel(mob,asLevel)*2)))
         {
             mob.tell("You aren't good enough to conceal that direction.");
             return false;
@@ -111,7 +111,7 @@ public class Thief_ConcealWalkway extends ThiefSkill
                 mob.location().send(mob,msg);
                 Ability A=(Ability)super.copyOf();
                 A.setInvoker(mob);
-                A.setAbilityCode((adjustedLevel(mob,asLevel)*2)-E.envStats().level());
+                A.setAbilityCode((adjustedLevel(mob,asLevel)*2)-E.phyStats().level());
                 Room R=mob.location();
                 if((CMLib.law().doesOwnThisProperty(mob,R))
                 ||((R2!=null)&&(CMLib.law().doesOwnThisProperty(mob,R2))))
@@ -121,7 +121,7 @@ public class Thief_ConcealWalkway extends ThiefSkill
                 }
                 else
                     A.startTickDown(mob,E,15*(adjustedLevel(mob,asLevel)));
-                E.recoverEnvStats();
+                E.recoverPhyStats();
             }
         }
         else

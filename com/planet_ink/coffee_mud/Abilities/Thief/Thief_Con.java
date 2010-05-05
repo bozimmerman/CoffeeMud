@@ -144,7 +144,7 @@ public class Thief_Con extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=((mob.envStats().level()+(2*super.getXLEVELLevel(mob)))-target.envStats().level())*10;
+		int levelDiff=((mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))-target.phyStats().level())*10;
 		if(levelDiff>0) levelDiff=0;
 		boolean success=proficiencyCheck(mob,(mob.charStats().getStat(CharStats.STAT_CHARISMA)*2)+levelDiff,auto);
 
@@ -157,14 +157,14 @@ public class Thief_Con extends ThiefSkill
 		else
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> con(s) <T-NAMESELF> to '"+CMParms.combine(commands,0)+"'.^?");
-			mob.recoverEnvStats();
+			mob.recoverPhyStats();
 			if((mob.location().okMessage(mob,msg))
             &&(mob.location().show(mob,target,CMMsg.MSG_ORDER,null)))
 			{
 				mob.location().send(mob,msg);
 				target.enqueCommand(commands,Command.METAFLAG_FORCED|Command.METAFLAG_ORDER,0);
 			}
-			target.recoverEnvStats();
+			target.recoverPhyStats();
 		}
 		if(target==lastChecked)
 			setProficiency(oldProficiency);

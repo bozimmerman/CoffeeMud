@@ -44,9 +44,9 @@ public class Chant_BestowName extends Chant
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectedStats)
+	public void affectPhyStats(Physical affected, PhyStats affectedStats)
 	{
-		super.affectEnvStats(affected,affectedStats);
+		super.affectPhyStats(affected,affectedStats);
 		if((affected instanceof MOB)
 		&&(((MOB)affected).amFollowing()==null)
 		&&(CMLib.flags().isInTheGame(affected,true)))

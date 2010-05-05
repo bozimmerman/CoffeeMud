@@ -30,19 +30,19 @@ public interface Behavable
 {
     /**
      * Add a new behavior to this object.  After calling this method,
-     * recoverEnvStats() should be called next in case this behavior object modifies the stats.
+     * recoverPhyStats() should be called next in case this behavior object modifies the stats.
      * A Behavior with a given ID() can only be added once per object.
      * @see com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior
-     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#recoverEnvStats()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#recoverPhyStats()
      * @param to The behavior object to add.
      */
 	public void addBehavior(Behavior to);
     
     /**
      * Delete a behavior from this object.  After calling this method,
-     * recoverEnvStats() should be called next in case this behavior object modified the stats.
+     * recoverPhyStats() should be called next in case this behavior object modified the stats.
      * @see com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior
-     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#recoverEnvStats()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#recoverPhyStats()
      * @param to The behavior object to remove.
      */
 	public void delBehavior(Behavior to);

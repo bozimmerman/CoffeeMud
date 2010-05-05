@@ -50,7 +50,7 @@ public class LightSource extends StdItem implements Light
 		setMaterial(RawMaterial.RESOURCE_OAK);
 		wornLogicalAnd=false;
 		baseGoldValue=5;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public void setDuration(int duration){durationTicks=duration;}
@@ -100,14 +100,14 @@ public class LightSource extends StdItem implements Light
 		return super.okMessage(myHost,msg);
 	}
 
-	public void recoverEnvStats()
+	public void recoverPhyStats()
 	{
 		if((getDuration()>0)&&(isLit()))
-			baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_LIGHTSOURCE);
+			basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_LIGHTSOURCE);
 		else
-		if((baseEnvStats().disposition()&EnvStats.IS_LIGHTSOURCE)==EnvStats.IS_LIGHTSOURCE)
-			baseEnvStats().setDisposition(baseEnvStats().disposition()-EnvStats.IS_LIGHTSOURCE);
-		super.recoverEnvStats();
+		if((basePhyStats().disposition()&PhyStats.IS_LIGHTSOURCE)==PhyStats.IS_LIGHTSOURCE)
+			basePhyStats().setDisposition(basePhyStats().disposition()-PhyStats.IS_LIGHTSOURCE);
+		super.recoverPhyStats();
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -135,10 +135,10 @@ public class LightSource extends StdItem implements Light
 					setDuration(0);
 					if(destroyedWhenBurnedOut())
 						destroy();
-					M.recoverEnvStats();
+					M.recoverPhyStats();
 					M.recoverCharStats();
 					M.recoverMaxState();
-					M.recoverEnvStats();
+					M.recoverPhyStats();
                     if(M.location()!=null)
     					M.location().recoverRoomStats();
 				}
@@ -202,7 +202,7 @@ public class LightSource extends StdItem implements Light
 				{
 					light(false);
 					CMLib.threads().deleteTick(this,Tickable.TICKID_LIGHT_FLICKERS);
-					recoverEnvStats();
+					recoverPhyStats();
 					room.recoverRoomStats();
 				}
 				break;
@@ -215,8 +215,8 @@ public class LightSource extends StdItem implements Light
 						mob.tell(name()+" is already lit.");
 					light(true);
 					CMLib.threads().startTickDown(this,Tickable.TICKID_LIGHT_FLICKERS,getDuration());
-					recoverEnvStats();
-					msg.source().recoverEnvStats();
+					recoverPhyStats();
+					msg.source().recoverPhyStats();
 					room.recoverRoomStats();
 				}
 				break;
@@ -225,7 +225,7 @@ public class LightSource extends StdItem implements Light
 			&&(msg.sourceMinor()==CMMsg.TYP_THROW)
 			&&(msg.source()!=null))
 			{
-				msg.source().recoverEnvStats();
+				msg.source().recoverPhyStats();
 				if(!CMath.bset(msg.sourceCode(),CMMsg.MASK_OPTIMIZE))
 				{
 					if(msg.source().location()!=null)
@@ -247,7 +247,7 @@ public class LightSource extends StdItem implements Light
 					{
 						if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 						{
-							msg.source().recoverEnvStats();
+							msg.source().recoverPhyStats();
 							if(msg.source().location()!=null)
 								msg.source().location().recoverRoomStats();
 							Room R=CMLib.map().roomLocation(msg.tool());

@@ -72,7 +72,7 @@ public class MOBloader
                 int level=0;
                 for(int i=0;i<mob.baseCharStats().numClasses();i++)
                     level+=stats.getClassLevel(mob.baseCharStats().getMyClass(i));
-                mob.baseEnvStats().setLevel(level);
+                mob.basePhyStats().setLevel(level);
                 state.setMana(CMath.s_int(DBConnections.getRes(R,"CMMANA")));
                 state.setMovement(CMath.s_int(DBConnections.getRes(R,"CMMOVE")));
                 mob.setDescription(DBConnections.getRes(R,"CMDESC"));
@@ -99,13 +99,13 @@ public class MOBloader
                 mob.setStartRoom(CMLib.map().getRoom(roomID));
                 pstats.setLastDateTime(CMath.s_long(DBConnections.getRes(R,"CMDATE")));
                 pstats.setChannelMask((int)DBConnections.getLongRes(R,"CMCHAN"));
-                mob.baseEnvStats().setAttackAdjustment(CMath.s_int(DBConnections.getRes(R,"CMATTA")));
-                mob.baseEnvStats().setArmor(CMath.s_int(DBConnections.getRes(R,"CMAMOR")));
-                mob.baseEnvStats().setDamage(CMath.s_int(DBConnections.getRes(R,"CMDAMG")));
+                mob.basePhyStats().setAttackAdjustment(CMath.s_int(DBConnections.getRes(R,"CMATTA")));
+                mob.basePhyStats().setArmor(CMath.s_int(DBConnections.getRes(R,"CMAMOR")));
+                mob.basePhyStats().setDamage(CMath.s_int(DBConnections.getRes(R,"CMDAMG")));
                 mob.setBitmap(CMath.s_int(DBConnections.getRes(R,"CMBTMP")));
                 mob.setLiegeID(DBConnections.getRes(R,"CMLEIG"));
-                mob.baseEnvStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
-                mob.baseEnvStats().setWeight((int)DBConnections.getLongRes(R,"CMWEIT"));
+                mob.basePhyStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
+                mob.basePhyStats().setWeight((int)DBConnections.getLongRes(R,"CMWEIT"));
                 pstats.setPrompt(DBConnections.getRes(R,"CMPRPT"));
                 String colorStr=DBConnections.getRes(R,"CMCOLR");
                 if((colorStr!=null)&&(colorStr.length()>0)&&(!colorStr.equalsIgnoreCase("NULL"))) pstats.setColorStr(colorStr);
@@ -154,9 +154,9 @@ public class MOBloader
     {
         if(mob.Name().length()==0) return;
         if(emptyRoom==null) emptyRoom=CMClass.getLocale("StdRoom");
-        int oldDisposition=mob.baseEnvStats().disposition();
-        mob.baseEnvStats().setDisposition(EnvStats.IS_NOT_SEEN|EnvStats.IS_SNEAKING);
-        mob.envStats().setDisposition(EnvStats.IS_NOT_SEEN|EnvStats.IS_SNEAKING);
+        int oldDisposition=mob.basePhyStats().disposition();
+        mob.basePhyStats().setDisposition(PhyStats.IS_NOT_SEEN|PhyStats.IS_SNEAKING);
+        mob.phyStats().setDisposition(PhyStats.IS_NOT_SEEN|PhyStats.IS_SNEAKING);
         CMLib.players().addPlayer(mob);
         DBReadUserOnly(mob);
         Room oldLoc=mob.location();
@@ -193,10 +193,10 @@ public class MOBloader
                     }
                     newItem.wearAt((int)DBConnections.getLongRes(R,"CMITWO"));
                     newItem.setUsesRemaining((int)DBConnections.getLongRes(R,"CMITUR"));
-                    newItem.baseEnvStats().setLevel((int)DBConnections.getLongRes(R,"CMITLV"));
-                    newItem.baseEnvStats().setAbility((int)DBConnections.getLongRes(R,"CMITAB"));
-                    newItem.baseEnvStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
-                    newItem.recoverEnvStats();
+                    newItem.basePhyStats().setLevel((int)DBConnections.getLongRes(R,"CMITLV"));
+                    newItem.basePhyStats().setAbility((int)DBConnections.getLongRes(R,"CMITAB"));
+                    newItem.basePhyStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
+                    newItem.recoverPhyStats();
                     mob.addItem(newItem);
                 }
             }
@@ -208,8 +208,8 @@ public class MOBloader
                 if(container!=null)
                 {
                     keyItem.setContainer(container);
-                    keyItem.recoverEnvStats();
-                    container.recoverEnvStats();
+                    keyItem.recoverPhyStats();
+                    container.recoverPhyStats();
                 }
             }
         }catch(Exception sqle)
@@ -280,14 +280,14 @@ public class MOBloader
                                 newAbility.setMiscText(DBConnections.getRes(R,"CMABTX"));
                                 Ability newAbility2=(Ability)newAbility.copyOf();
                                 mob.addNonUninvokableEffect(newAbility);
-                                newAbility2.recoverEnvStats();
+                                newAbility2.recoverPhyStats();
                                 mob.addAbility(newAbility2);
                             }
                         }else
                         {
                             newAbility.setProficiency(proficiency);
                             newAbility.setMiscText(DBConnections.getRes(R,"CMABTX"));
-                            newAbility.recoverEnvStats();
+                            newAbility.recoverPhyStats();
                             mob.addAbility(newAbility);
                         }
                     }
@@ -299,22 +299,22 @@ public class MOBloader
         }
         if(D!=null) DB.DBDone(D);
         D=null;
-        mob.baseEnvStats().setDisposition(oldDisposition);
+        mob.basePhyStats().setDisposition(oldDisposition);
         mob.recoverCharStats();
-        mob.recoverEnvStats();
+        mob.recoverPhyStats();
         mob.recoverMaxState();
         mob.resetToMaxState();
         if(mob.baseCharStats()!=null)
         {
             mob.baseCharStats().getCurrentClass().startCharacter(mob,false,true);
-            int oldWeight=mob.baseEnvStats().weight();
-            int oldHeight=mob.baseEnvStats().height();
+            int oldWeight=mob.basePhyStats().weight();
+            int oldHeight=mob.basePhyStats().height();
             mob.baseCharStats().getMyRace().startRacing(mob,true);
-            if(oldWeight>0) mob.baseEnvStats().setWeight(oldWeight);
-            if(oldHeight>0) mob.baseEnvStats().setHeight(oldHeight);
+            if(oldWeight>0) mob.basePhyStats().setWeight(oldWeight);
+            if(oldHeight>0) mob.basePhyStats().setHeight(oldHeight);
         }
         mob.recoverCharStats();
-        mob.recoverEnvStats();
+        mob.recoverPhyStats();
         mob.recoverMaxState();
         mob.resetToMaxState();
         // wont add if same name already exists
@@ -504,7 +504,7 @@ public class MOBloader
                     head.append("[");
                     head.append(CMStrings.padRight(M.charStats().getMyRace().name(),8)+" ");
                     head.append(CMStrings.padRight(M.charStats().getCurrentClass().name(M.charStats().getCurrentClassLevel()),10)+" ");
-                    head.append(CMStrings.padRight(""+M.envStats().level(),4)+" ");
+                    head.append(CMStrings.padRight(""+M.phyStats().level(),4)+" ");
                     head.append(CMStrings.padRight(M.getExperience()+"/"+M.getExpNextLevel(),17));
                     head.append("] "+CMStrings.padRight(M.name(),15));
                     head.append("\n\r");
@@ -574,10 +574,10 @@ public class MOBloader
                 else
                 {
                     newMOB.setMiscText(DBConnections.getResQuietly(R,"CMFOTX"));
-                    newMOB.baseEnvStats().setLevel(((int)DBConnections.getLongRes(R,"CMFOLV")));
-                    newMOB.baseEnvStats().setAbility((int)DBConnections.getLongRes(R,"CMFOAB"));
-                    newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
-                    newMOB.recoverEnvStats();
+                    newMOB.basePhyStats().setLevel(((int)DBConnections.getLongRes(R,"CMFOLV")));
+                    newMOB.basePhyStats().setAbility((int)DBConnections.getLongRes(R,"CMFOAB"));
+                    newMOB.basePhyStats().setRejuv(Integer.MAX_VALUE);
+                    newMOB.recoverPhyStats();
                     newMOB.recoverCharStats();
                     newMOB.recoverMaxState();
                     newMOB.resetToMaxState();
@@ -771,13 +771,13 @@ public class MOBloader
                 +", CMROID='"+strStartRoomID+"||"+strOtherRoomID+"'"
                 +", CMDATE='"+pstats.lastDateTime()+"'"
                 +", CMCHAN="+pstats.getChannelMask()
-                +", CMATTA="+mob.baseEnvStats().attackAdjustment()
-                +", CMAMOR="+mob.baseEnvStats().armor()
-                +", CMDAMG="+mob.baseEnvStats().damage()
+                +", CMATTA="+mob.basePhyStats().attackAdjustment()
+                +", CMAMOR="+mob.basePhyStats().armor()
+                +", CMDAMG="+mob.basePhyStats().damage()
                 +", CMBTMP="+mob.getBitmap()
                 +", CMLEIG='"+mob.getLiegeID()+"'"
-                +", CMHEIT="+mob.baseEnvStats().height()
-                +", CMWEIT="+mob.baseEnvStats().weight()
+                +", CMHEIT="+mob.basePhyStats().height()
+                +", CMWEIT="+mob.basePhyStats().weight()
                 +", CMPRPT='"+pstats.getPrompt()+"'"
                 +", CMCOLR='"+pstats.getColorStr()+"'"
                 +", CMCLAN='"+mob.getClanID()+"'"
@@ -805,8 +805,8 @@ public class MOBloader
                 +"CMITUR, CMITLV, CMITAB, CMHEIT"
                 +") values ('"+mob.Name()+"','"+(thisItem)+"','"+thisItem.ID()+"','"+thisItem.text()+" ','"
                 +((thisItem.container()!=null)?(""+thisItem.container()):"")+"',"+thisItem.rawWornCode()+","
-                +thisItem.usesRemaining()+","+thisItem.baseEnvStats().level()+","+thisItem.baseEnvStats().ability()+","
-                +thisItem.baseEnvStats().height()+")";
+                +thisItem.usesRemaining()+","+thisItem.basePhyStats().level()+","+thisItem.basePhyStats().ability()+","
+                +thisItem.basePhyStats().height()+")";
                 strings.addElement(str);
                 done.add(""+thisItem);
             }
@@ -863,7 +863,7 @@ public class MOBloader
             	CMLib.catalog().updateCatalogIntegrity(thisMOB);
                 String str="INSERT INTO CMCHFO (CMUSERID, CMFONM, CMFOID, CMFOTX, CMFOLV, CMFOAB"
                 +") values ('"+mob.Name()+"',"+f+",'"+CMClass.classID(thisMOB)+"','"+thisMOB.text()+" ',"
-                +thisMOB.baseEnvStats().level()+","+thisMOB.baseEnvStats().ability()+")";
+                +thisMOB.basePhyStats().level()+","+thisMOB.basePhyStats().ability()+")";
                 statements.addElement(str);
             }
         }

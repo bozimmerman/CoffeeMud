@@ -69,13 +69,13 @@ public class MobData extends StdWebMacro
 								java.util.Map<String,String> parms)
 	{
 		StringBuffer str=new StringBuffer("");
-		for(int d=0;d<EnvStats.CAN_SEE_CODES.length;d++)
+		for(int d=0;d<PhyStats.CAN_SEE_CODES.length;d++)
 		{
-			if(parms.containsKey(EnvStats.CAN_SEE_CODES[d]))
+			if(parms.containsKey(PhyStats.CAN_SEE_CODES[d]))
 			{
-				String parm=httpReq.getRequestParameter(EnvStats.CAN_SEE_CODES[d]);
+				String parm=httpReq.getRequestParameter(PhyStats.CAN_SEE_CODES[d]);
 				if(firstTime)
-					parm=(((E.baseEnvStats().sensesMask()&(1<<d))>0)?"on":"");
+					parm=(((E.basePhyStats().sensesMask()&(1<<d))>0)?"on":"");
 				if((parm!=null)&&(parm.length()>0))
 					str.append("checked");
 			}
@@ -1036,11 +1036,11 @@ public class MobData extends StdWebMacro
 		if(((changedLevel)||(changedClass))&&(M.isGeneric()))
 		{
 			CMLib.leveler().fillOutMOB(M,CMath.s_int(firstTime?"0":httpReq.getRequestParameter("LEVEL")));
-			httpReq.addRequestParameters("REJUV",""+M.baseEnvStats().rejuv());
-			httpReq.addRequestParameters("ARMOR",""+M.baseEnvStats().armor());
-			httpReq.addRequestParameters("DAMAGE",""+M.baseEnvStats().damage());
-			httpReq.addRequestParameters("SPEED",""+M.baseEnvStats().speed());
-			httpReq.addRequestParameters("ATTACK",""+M.baseEnvStats().attackAdjustment());
+			httpReq.addRequestParameters("REJUV",""+M.basePhyStats().rejuv());
+			httpReq.addRequestParameters("ARMOR",""+M.basePhyStats().armor());
+			httpReq.addRequestParameters("DAMAGE",""+M.basePhyStats().damage());
+			httpReq.addRequestParameters("SPEED",""+M.basePhyStats().speed());
+			httpReq.addRequestParameters("ATTACK",""+M.basePhyStats().attackAdjustment());
 			httpReq.addRequestParameters("MONEY",""+CMLib.beanCounter().getMoney(M));
 		}
 
@@ -1096,15 +1096,15 @@ public class MobData extends StdWebMacro
 				str.append(old);
 				break;
 			case 4: // level
-				if(firstTime) old=""+M.baseEnvStats().level();
+				if(firstTime) old=""+M.basePhyStats().level();
 				str.append(old);
 				break;
 			case 5: // ability;
-				if(firstTime) old=""+M.baseEnvStats().ability();
+				if(firstTime) old=""+M.basePhyStats().ability();
 				str.append(old);
 				break;
 			case 6: // rejuv;
-				if(firstTime) old=""+M.baseEnvStats().rejuv();
+				if(firstTime) old=""+M.basePhyStats().rejuv();
 				if(old.equals(""+Integer.MAX_VALUE))
 					str.append("0");
 				else
@@ -1132,9 +1132,9 @@ public class MobData extends StdWebMacro
 						G=(httpReq.getRequestParameter("GENDER")).charAt(0);
 					if(R3!=null)
 					{
-						R3.setHeightWeight(M.baseEnvStats(),G);
-						httpReq.addRequestParameters("WEIGHT",""+M.baseEnvStats().weight());
-						httpReq.addRequestParameters("HEIGHT",""+M.baseEnvStats().height());
+						R3.setHeightWeight(M.basePhyStats(),G);
+						httpReq.addRequestParameters("WEIGHT",""+M.basePhyStats().weight());
+						httpReq.addRequestParameters("HEIGHT",""+M.basePhyStats().height());
 					}
 				}
 				break;
@@ -1161,27 +1161,27 @@ public class MobData extends StdWebMacro
 				}
 				break;
 			case 10: // height
-				if(firstTime) old=""+M.baseEnvStats().height();
+				if(firstTime) old=""+M.basePhyStats().height();
 				str.append(old);
 				break;
 			case 11: // weight
-				if(firstTime) old=""+M.baseEnvStats().weight();
+				if(firstTime) old=""+M.basePhyStats().weight();
 				str.append(old);
 				break;
 			case 12: // speed
-				if(firstTime) old=""+M.baseEnvStats().speed();
+				if(firstTime) old=""+M.basePhyStats().speed();
 				str.append(old);
 				break;
 			case 13: // attack
-				if(firstTime) old=""+M.baseEnvStats().attackAdjustment();
+				if(firstTime) old=""+M.basePhyStats().attackAdjustment();
 				str.append(old);
 				break;
 			case 14: // damage
-				if(firstTime) old=""+M.baseEnvStats().damage();
+				if(firstTime) old=""+M.basePhyStats().damage();
 				str.append(old);
 				break;
 			case 15: // armor
-				if(firstTime) old=""+M.baseEnvStats().armor();
+				if(firstTime) old=""+M.basePhyStats().armor();
 				str.append(old);
 				break;
 			case 16: // alignment

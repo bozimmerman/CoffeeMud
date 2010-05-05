@@ -48,7 +48,7 @@ public class Pegasus extends StdRideable
         setWimpHitPoint(0);
         rideBasis=Rideable.RIDEABLE_AIR;
 
-        baseEnvStats.setWeight(1500 + Math.abs(randomizer.nextInt() % 200));
+        basePhyStats.setWeight(1500 + Math.abs(randomizer.nextInt() % 200));
 
 
         baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,8 + Math.abs(randomizer.nextInt() % 3));
@@ -57,18 +57,18 @@ public class Pegasus extends StdRideable
         baseCharStats().setMyRace(CMClass.getRace("Horse"));
         baseCharStats().getMyRace().startRacing(this,false);
 
-        baseEnvStats().setDamage(8);
-        baseEnvStats().setSpeed(3.0);
-        baseEnvStats().setAbility(0);
-        baseEnvStats().setLevel(4);
-        baseEnvStats().setArmor(60);
-        baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_FLYING);
+        basePhyStats().setDamage(8);
+        basePhyStats().setSpeed(3.0);
+        basePhyStats().setAbility(0);
+        basePhyStats().setLevel(4);
+        basePhyStats().setArmor(60);
+        basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_FLYING);
 
-        baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+        baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
         recoverMaxState();
         resetToMaxState();
-        recoverEnvStats();
+        recoverPhyStats();
         recoverCharStats();
     }
 

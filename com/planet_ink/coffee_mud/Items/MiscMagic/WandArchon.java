@@ -45,7 +45,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 		this.setUsesRemaining(99999);
 		baseGoldValue=20000;
 		material=RawMaterial.RESOURCE_OAK;
-		recoverEnvStats();
+		recoverPhyStats();
 		secretWord="REFRESH, RESTORE, BLAST, LEVEL X UP, LEVEL X DOWN, BURN!!";
 	}
 
@@ -132,7 +132,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" glows brightly at <T-NAME>.");
 					int destLevel=CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL);
 					if(destLevel==0) destLevel=30;
-					if(destLevel<=target.baseEnvStats().level())
+					if(destLevel<=target.basePhyStats().level())
 						destLevel=100;
 					if((target.charStats().getCurrentClass().leveless())
                     ||(target.charStats().isLevelCapped(target.charStats().getCurrentClass()))
@@ -140,7 +140,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 					||(CMSecurity.isDisabled("LEVELS")))
 					    mob.tell("The wand will not work on such as "+target.name()+".");
 					else
-					while(target.baseEnvStats().level()<destLevel)
+					while(target.basePhyStats().level()<destLevel)
 					{
 						if((target.getExpNeededLevel()==Integer.MAX_VALUE)
 						||(target.charStats().getCurrentClass().expless())

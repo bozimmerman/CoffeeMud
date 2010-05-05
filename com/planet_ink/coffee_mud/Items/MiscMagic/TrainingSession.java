@@ -45,8 +45,8 @@ public class TrainingSession extends StdItem implements MiscMagic
         myUses=Integer.MAX_VALUE;
         myWornCode=0;
         material=0;
-        baseEnvStats.setWeight(0);
-        recoverEnvStats();
+        basePhyStats.setWeight(0);
+        recoverPhyStats();
     }
 
 

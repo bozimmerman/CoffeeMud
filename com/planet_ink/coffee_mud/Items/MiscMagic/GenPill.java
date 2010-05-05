@@ -42,12 +42,12 @@ public class GenPill extends StdPill
 		super();
 
 		setName("a pill");
-		baseEnvStats.setWeight(1);
+		basePhyStats.setWeight(1);
 		setDisplayText("A strange pill lies here.");
 		setDescription("Large and round, with strange markings.");
 		secretIdentity="";
 		baseGoldValue=200;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_CORN;
 		decayTime=0;
 	}
@@ -73,7 +73,7 @@ public class GenPill extends StdPill
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	private final static String[] MYCODES={"NOURISHMENT"};
 	public String getStat(String code)

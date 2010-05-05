@@ -88,7 +88,7 @@ public class Prop_ReqLevels extends Property
 		&&(!CMSecurity.isAllowed(mob,(Room)R,"GOTO")))
 			return false;
 
-		int lvl=mob.envStats().level();
+		int lvl=mob.phyStats().level();
 
 		int lastPlace=0;
 		int x=0;

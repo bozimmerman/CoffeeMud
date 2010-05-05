@@ -70,8 +70,8 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 							behaviors=new SVector<Behavior>(1);
     protected SVector<ScriptingEngine> 
     						scripts=new SVector<ScriptingEngine>(1);
-	protected EnvStats 		envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
-	protected EnvStats 		baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+	protected PhyStats 		phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+	protected PhyStats 		basePhyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 
     
     public void initializeClass(){}
@@ -115,13 +115,13 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
     public void destroy()
     {
         CMLib.map().registerWorldObjectDestroyed(this,null,this);
-        envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+        phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
         coordinates=null;
         direction=null;
         spaceSource=null;
         spaceTarget=null;
         orbiting=null;
-        baseEnvStats=envStats;
+        basePhyStats=phyStats;
         miscText=null;
         imageName=null;
         affects=null;
@@ -155,7 +155,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
     protected void finalize(){CMClass.unbumpCounter(this,CMClass.OBJECT_AREA);}
 	public String name()
 	{
-		if(envStats().newName()!=null) return envStats().newName();
+		if(phyStats().newName()!=null) return phyStats().newName();
 		return name;
 	}
 	public void setName(String newName){
@@ -163,27 +163,27 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		localClock.setLoadName(newName);
 	}
 	public String Name(){return name;}
-	public EnvStats envStats()
+	public PhyStats phyStats()
 	{
-		return envStats;
+		return phyStats;
 	}
-	public EnvStats baseEnvStats()
+	public PhyStats basePhyStats()
 	{
-		return baseEnvStats;
+		return basePhyStats;
 	}
-	public void recoverEnvStats()
+	public void recoverPhyStats()
 	{
-		baseEnvStats.copyInto(envStats);
+		basePhyStats.copyInto(phyStats);
 		for(int a=0;a<numEffects();a++)
 		{
 			Ability A=fetchEffect(a);
 			if(A!=null)
-				A.affectEnvStats(this,envStats);
+				A.affectPhyStats(this,phyStats);
 		}
 	}
-	public void setBaseEnvStats(EnvStats newBaseEnvStats)
+	public void setBasePhyStats(PhyStats newStats)
 	{
-		baseEnvStats=(EnvStats)newBaseEnvStats.copyOf();
+		basePhyStats=(PhyStats)newStats.copyOf();
 	}
 	public void setNextWeatherType(int weatherCode){}
 	public void setCurrentWeatherType(int weatherCode){}
@@ -224,8 +224,8 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public boolean isGeneric(){return false;}
 	protected void cloneFix(StdSpaceShip E)
 	{
-		baseEnvStats=(EnvStats)E.baseEnvStats().copyOf();
-		envStats=(EnvStats)E.envStats().copyOf();
+		basePhyStats=(PhyStats)E.basePhyStats().copyOf();
+		phyStats=(PhyStats)E.phyStats().copyOf();
 
 		affects=new SVector<Ability>(1);
 		behaviors=new SVector<Behavior>(1);
@@ -479,15 +479,15 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	}
 
 	public String getWeatherDescription(){return "There is no weather here.";}
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		if(envStats().sensesMask()>0)
-			affectableStats.setSensesMask(affectableStats.sensesMask()|envStats().sensesMask());
-		int disposition=envStats().disposition()
-			&((Integer.MAX_VALUE-(EnvStats.IS_SLEEPING|EnvStats.IS_HIDDEN)));
+		if(phyStats().sensesMask()>0)
+			affectableStats.setSensesMask(affectableStats.sensesMask()|phyStats().sensesMask());
+		int disposition=phyStats().disposition()
+			&((Integer.MAX_VALUE-(PhyStats.IS_SLEEPING|PhyStats.IS_HIDDEN)));
 		if(disposition>0)
 			affectableStats.setDisposition(affectableStats.disposition()|disposition);
-		affectableStats.setWeight(affectableStats.weight()+envStats().weight());
+		affectableStats.setWeight(affectableStats.weight()+phyStats().weight());
 	}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{}

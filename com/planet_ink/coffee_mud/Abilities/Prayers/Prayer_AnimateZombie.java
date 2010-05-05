@@ -72,7 +72,7 @@ public class Prayer_AnimateZombie extends Prayer
 		else
 			description+="\n\rIt also looks dead.";
 
-		if(body.baseEnvStats().level()<3)
+		if(body.basePhyStats().level()<3)
 		{
 			mob.tell("This creature is too weak to create a zombie from.");
 			return false;
@@ -93,7 +93,7 @@ public class Prayer_AnimateZombie extends Prayer
 				newMOB.setName("a zombie");
 				newMOB.setDescription(description);
 				newMOB.setDisplayText("a zombie is here");
-				newMOB.baseEnvStats().setLevel(2+(super.getX1Level(mob)*2)+super.getXLEVELLevel(mob));
+				newMOB.basePhyStats().setLevel(2+(super.getX1Level(mob)*2)+super.getXLEVELLevel(mob));
 				newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
 				newMOB.baseCharStats().setMyRace(CMClass.getRace("Undead"));
                 newMOB.baseCharStats().setBodyPartsFromStringAfterRace(body.charStats().getBodyPartsAsString());
@@ -103,21 +103,21 @@ public class Prayer_AnimateZombie extends Prayer
 					P.setMiscText("NOTEACH STR=20 INT=10 WIS=10 CON=10 DEX=3 CHA=2");
 					newMOB.addNonUninvokableEffect(P);
 				}
-				newMOB.baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK);
+				newMOB.basePhyStats().setSensesMask(PhyStats.CAN_SEE_DARK);
 				newMOB.recoverCharStats();
-				newMOB.baseEnvStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
-				newMOB.baseEnvStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
+				newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
+				newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
 				CMLib.factions().setAlignment(newMOB,Faction.ALIGN_EVIL);
-				newMOB.baseState().setHitPoints(25*newMOB.baseEnvStats().level());
+				newMOB.baseState().setHitPoints(25*newMOB.basePhyStats().level());
 				newMOB.baseState().setMovement(30);
-				newMOB.baseEnvStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
+				newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
 				newMOB.baseState().setMana(0);
 				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 				newMOB.addNonUninvokableEffect(CMClass.getAbility("Spell_CauseStink"));
 				Behavior B=CMClass.getBehavior("Aggressive");
 				if(B!=null){ B.setParms("+NAMES \"-"+mob.Name()+"\""); newMOB.addBehavior(B);}
 				newMOB.recoverCharStats();
-				newMOB.recoverEnvStats();
+				newMOB.recoverPhyStats();
 				newMOB.recoverMaxState();
 				newMOB.resetToMaxState();
 				newMOB.text();

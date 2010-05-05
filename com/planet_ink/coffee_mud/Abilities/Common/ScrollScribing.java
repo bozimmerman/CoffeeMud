@@ -126,7 +126,7 @@ public class ScrollScribing extends CraftingSkill implements ItemCraftor
 		building.setName("a scroll of "+theSpell.name().toLowerCase());
 		building.setDisplayText("a scroll of "+theSpell.name().toLowerCase()+" sits here.");
 		building.setDescription("");
-		building.recoverEnvStats();
+		building.recoverPhyStats();
 		building.setUsesRemaining(1);
 		building.text();
 		return building;

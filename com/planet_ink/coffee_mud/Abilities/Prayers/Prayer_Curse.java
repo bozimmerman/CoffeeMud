@@ -45,11 +45,11 @@ public class Prayer_Curse extends Prayer
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected==null) return;
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_EVIL);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_EVIL);
 		int xlvl=super.getXLEVELLevel(invoker());
 		if(affected instanceof MOB)
 			affectableStats.setArmor(affectableStats.armor()+5+(2*xlvl));
@@ -149,11 +149,11 @@ public class Prayer_Curse extends Prayer
 					if(I!=null)
 					{
 						endLowerBlessings(I,CMLib.ableMapper().lowestQualifyingLevel(ID()));
-						I.recoverEnvStats();
+						I.recoverPhyStats();
 					}
 					endLowerBlessings(target,CMLib.ableMapper().lowestQualifyingLevel(ID()));
 					success=maliciousAffect(mob,target,asLevel,0,-1);
-					target.recoverEnvStats();
+					target.recoverPhyStats();
 				}
 			}
 		}

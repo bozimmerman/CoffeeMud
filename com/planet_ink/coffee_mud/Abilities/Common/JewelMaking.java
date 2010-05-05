@@ -121,8 +121,8 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 						else
 						if(refitting)
 						{
-							building.baseEnvStats().setHeight(0);
-							building.recoverEnvStats();
+							building.basePhyStats().setHeight(0);
+							building.recoverPhyStats();
 						}
 						else
 							dropAWinner(mob,building);
@@ -332,7 +332,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			if(building==null) return false;
 			if(!canWhat(mob,building,"refit",false))
 				return false;
-			if(building.envStats().height()==0)
+			if(building.phyStats().height()==0)
 			{
 				commonTell(mob,building.name()+" is already the right size.");
 				return false;
@@ -434,7 +434,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				building.setDescription(itemName+" made of "+RawMaterial.CODES.NAME(data[0][FOUND_CODE]).toLowerCase()+".");
 			else
 				building.setDescription(itemName+". ");
-			building.baseEnvStats().setWeight(woodRequired);
+			building.basePhyStats().setWeight(woodRequired);
 			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			if(data[1][FOUND_CODE]==0)
@@ -444,16 +444,16 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				building.setMaterial(data[1][FOUND_CODE]);
 				building.setBaseValue(building.baseGoldValue()+RawMaterial.CODES.VALUE(data[1][FOUND_CODE]));
 			}
-			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
+			building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 			//int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 			int armordmg=CMath.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
 			addSpells(building,spell);
 			if(building instanceof Armor)
 			{
-                ((Armor)building).baseEnvStats().setArmor(0);
+                ((Armor)building).basePhyStats().setArmor(0);
                 if(armordmg!=0)
-                    ((Armor)building).baseEnvStats().setArmor(armordmg);
+                    ((Armor)building).basePhyStats().setArmor(armordmg);
                 setWearLocation(building,misctype,0);
 			}
 			if((misctype.equalsIgnoreCase("statue"))&&(!mob.isMonster()))
@@ -477,9 +477,9 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				building.setDescription(itemName+" of "+of+". ");
 			}
 			if(bundling) building.setBaseValue(lostValue);
-			building.recoverEnvStats();
+			building.recoverPhyStats();
 			building.text();
-			building.recoverEnvStats();
+			building.recoverPhyStats();
 		}
 
 

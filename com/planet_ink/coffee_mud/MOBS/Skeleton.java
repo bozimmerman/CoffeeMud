@@ -42,7 +42,7 @@ public class Skeleton extends Undead
 		setDescription("A walking pile of bones...");
 		setDisplayText("a skeleton rattles as it walks.");
 		setMoney(0);
-		baseEnvStats.setWeight(30);
+		basePhyStats.setWeight(30);
 
 		Weapon sword=CMClass.getWeapon("Longsword");
 		if(sword!=null)
@@ -51,18 +51,18 @@ public class Skeleton extends Undead
 			addItem(sword);
 		}
 
-		baseEnvStats().setDamage(5);
-		baseEnvStats().setLevel(1);
-		baseEnvStats().setArmor(70);
-		baseEnvStats().setSpeed(1.0);
+		basePhyStats().setDamage(5);
+		basePhyStats().setLevel(1);
+		basePhyStats().setArmor(70);
+		basePhyStats().setSpeed(1.0);
 
 		baseCharStats().setMyRace(CMClass.getRace("Skeleton"));
 		baseCharStats().getMyRace().startRacing(this,false);
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

@@ -43,14 +43,14 @@ public class ItemRefitter extends StdBehavior
 	{
 		if(costFormula != null)
 		{
-			double[] vars = {item.envStats().level(), item.value(), item.usesRemaining(), CMLib.flags().isABonusItems(item)?1.0:0.0,item.baseEnvStats().level(), item.baseGoldValue(),0,0,0,0,0};
+			double[] vars = {item.phyStats().level(), item.value(), item.usesRemaining(), CMLib.flags().isABonusItems(item)?1.0:0.0,item.basePhyStats().level(), item.baseGoldValue(),0,0,0,0,0};
 			return CMath.parseMathExpression(costFormula, vars, 0.0);
 		}
 		else
 		{
-			int cost=item.envStats().level()*100;
+			int cost=item.phyStats().level()*100;
 			if(CMLib.flags().isABonusItems(item))
-				cost+=(item.envStats().level()*100);
+				cost+=(item.phyStats().level()*100);
 			return cost;
 		}
 	}
@@ -96,7 +96,7 @@ public class ItemRefitter extends StdBehavior
 				return false;
 			}
 
-			if(tool.baseEnvStats().height()==0)
+			if(tool.basePhyStats().height()==0)
 			{
 				CMLib.commands().postSay(observer,source,"This already looks your size!",true,false);
 				return false;
@@ -131,9 +131,9 @@ public class ItemRefitter extends StdBehavior
 			double cost=cost((Item)msg.tool());
 			CMLib.beanCounter().subtractMoney(source,CMLib.beanCounter().getCurrency(observer),(double)cost);
 			String costStr=CMLib.beanCounter().nameCurrencyLong(observer,(double)cost);
-			source.recoverEnvStats();
-			((Item)msg.tool()).baseEnvStats().setHeight(0);
-			((Item)msg.tool()).recoverEnvStats();
+			source.recoverPhyStats();
+			((Item)msg.tool()).basePhyStats().setHeight(0);
+			((Item)msg.tool()).recoverPhyStats();
 
 			CMMsg newMsg=CMClass.getMsg(observer,source,msg.tool(),CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF> and charges <T-NAMESELF> "+costStr+".");
 			msg.addTrailerMsg(newMsg);

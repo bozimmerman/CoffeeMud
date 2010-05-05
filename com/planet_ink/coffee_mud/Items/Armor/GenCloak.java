@@ -42,16 +42,16 @@ public class GenCloak extends GenArmor
 		setDescription("");
 		properWornBitmap=Wearable.WORN_ABOUT_BODY;
 		wornLogicalAnd=false;
-		baseEnvStats().setArmor(1);
-		baseEnvStats().setWeight(1);
-		baseEnvStats().setAbility(0);
+		basePhyStats().setArmor(1);
+		basePhyStats().setWeight(1);
+		basePhyStats().setAbility(0);
 		baseGoldValue=1;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_COTTON;
 		readableText="a hooded figure";
 	}
 
-	public void affectEnvStats(Environmental host, EnvStats stats)
+	public void affectPhyStats(Physical host, PhyStats stats)
 	{
 		if(!amWearingAt(Wearable.IN_INVENTORY))
 			stats.setName(readableText());

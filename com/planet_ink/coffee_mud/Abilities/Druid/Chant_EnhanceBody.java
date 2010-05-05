@@ -43,15 +43,15 @@ public class Chant_EnhanceBody extends Chant
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if((affected instanceof MOB)
 		&&(((MOB)affected).fetchWieldedItem()==null))
 		{
 			int xlvl=getXLEVELLevel(invoker());
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment() + (5*((affected.envStats().level()+(2*xlvl))/10)));
-			affectableStats.setDamage(affectableStats.damage() + 1+((affected.envStats().level()+(2*xlvl))/10));
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment() + (5*((affected.phyStats().level()+(2*xlvl))/10)));
+			affectableStats.setDamage(affectableStats.damage() + 1+((affected.phyStats().level()+(2*xlvl))/10));
 		}
 	}
 

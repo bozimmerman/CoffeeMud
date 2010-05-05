@@ -72,7 +72,7 @@ public class Spell_WallOfStone extends Spell
                 if(mob.location().okMessage(mob,msg2))
                 {
                     mob.location().send(mob,msg2);
-    				amountRemaining-=mob.envStats().damage();
+    				amountRemaining-=mob.phyStats().damage();
     				if(amountRemaining<0)
     				{
     					deathNotice="The wall of stone is destroyed!";
@@ -164,7 +164,7 @@ public class Spell_WallOfStone extends Spell
 				I.setDescription("The bricks are sold and sturdy.");
 				I.setMaterial(RawMaterial.RESOURCE_STONE);
 				CMLib.flags().setGettable(I,false);
-				I.recoverEnvStats();
+				I.recoverPhyStats();
 				mob.location().addItem(I);
 				theWall=I;
 				deathNotice="The wall of stone vanishes!";

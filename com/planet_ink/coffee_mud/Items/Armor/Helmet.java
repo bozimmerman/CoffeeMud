@@ -42,12 +42,12 @@ public class Helmet extends StdArmor
 		setDescription("This is fairly solid looking helmet.");
 		properWornBitmap=Wearable.WORN_HEAD;
 		wornLogicalAnd=false;
-		baseEnvStats().setArmor(10);
-		baseEnvStats().setWeight(10);
-		baseEnvStats().setAbility(0);
+		basePhyStats().setArmor(10);
+		basePhyStats().setWeight(10);
+		basePhyStats().setAbility(0);
 		baseGoldValue=16;
 		material=RawMaterial.RESOURCE_IRON;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 }

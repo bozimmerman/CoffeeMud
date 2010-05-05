@@ -153,7 +153,7 @@ public class Copy extends StdCommand
 				newMOB.setStartRoom(room);
 				newMOB.setLocation(room);
 				newMOB.recoverCharStats();
-				newMOB.recoverEnvStats();
+				newMOB.recoverPhyStats();
 				newMOB.recoverMaxState();
 				newMOB.resetToMaxState();
 				newMOB.bringToLife(room,true);

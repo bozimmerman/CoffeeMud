@@ -128,8 +128,8 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 						else
 						if(refitting)
 						{
-							building.baseEnvStats().setHeight(0);
-							building.recoverEnvStats();
+							building.basePhyStats().setHeight(0);
+							building.recoverPhyStats();
 						}
 						else
 							dropAWinner(mob,building);
@@ -256,7 +256,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 				commonTell(mob,"You don't know how to refit that sort of thing.");
 				return false;
 			}
-			if(building.envStats().height()==0)
+			if(building.phyStats().height()==0)
 			{
 				commonTell(mob,building.name()+" is already the right size.");
 				return false;
@@ -353,12 +353,12 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
             playSound="scissor.wav";
 			building.setDisplayText(itemName+" lies here");
 			building.setDescription(itemName+". ");
-			building.baseEnvStats().setWeight(woodRequired);
+			building.basePhyStats().setWeight(woodRequired);
 			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))*multiplier);
 			building.setMaterial(data[0][FOUND_CODE]);
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-2;
-			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(6*hardness));
+			building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(6*hardness));
 			int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 			int canContain=CMath.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
 			int armordmg=CMath.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
@@ -368,10 +368,10 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			addSpells(building,spell);
 			if(building instanceof Weapon)
 			{
-				((Weapon)building).baseEnvStats().setAttackAdjustment(abilityCode()+(hardness*5)+(abilityCode()-1)-1);
+				((Weapon)building).basePhyStats().setAttackAdjustment(abilityCode()+(hardness*5)+(abilityCode()-1)-1);
                 ((Weapon)building).setWeaponClassification(Weapon.CLASS_FLAILED);
                 setWeaponTypeClass((Weapon)building,misctype,Weapon.TYPE_SLASHING);
-				building.baseEnvStats().setDamage(armordmg+hardness);
+				building.basePhyStats().setDamage(armordmg+hardness);
 				((Weapon)building).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
 				((Weapon)building).setRawLogicalAnd((capacity>1));
 			}
@@ -382,9 +382,9 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 					((Armor)building).setCapacity(capacity+woodRequired);
 					((Armor)building).setContainTypes(canContain);
 				}
-                ((Armor)building).baseEnvStats().setArmor(0);
+                ((Armor)building).basePhyStats().setArmor(0);
                 if(armordmg!=0)
-                    ((Armor)building).baseEnvStats().setArmor(armordmg+(abilityCode()-1)+hardness);
+                    ((Armor)building).basePhyStats().setArmor(armordmg+(abilityCode()-1)+hardness);
                 setWearLocation(building,misctype,0);
 			}
 			if(building instanceof Drink)
@@ -398,9 +398,9 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 						((Drink)building).setThirstQuenched(capacity*50);
 				}
 			}
-			building.recoverEnvStats();
+			building.recoverPhyStats();
 			building.text();
-			building.recoverEnvStats();
+			building.recoverPhyStats();
 		}
 
 		messedUp=!proficiencyCheck(mob,0,auto);

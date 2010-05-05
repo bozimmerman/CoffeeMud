@@ -68,10 +68,10 @@ public class Spell_FloatingDisc extends Spell
 				CMLib.commands().postDrop(mob,item,true,false);
 			wasntMine=false;
 
-			item.recoverEnvStats();
+			item.recoverPhyStats();
 			mob.recoverMaxState();
 			mob.recoverCharStats();
-			mob.recoverEnvStats();
+			mob.recoverPhyStats();
 		}
 	}
 
@@ -82,9 +82,9 @@ public class Spell_FloatingDisc extends Spell
             unInvoke();
     }
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setWeight(0);
 	}
 
@@ -116,7 +116,7 @@ public class Spell_FloatingDisc extends Spell
 			if(!mob.isMine(target))
 			{
 				target.addNonUninvokableEffect(this);
-				target.recoverEnvStats();
+				target.recoverPhyStats();
 				wasntMine=true;
 				if(target instanceof Coins)
 				{
@@ -127,11 +127,11 @@ public class Spell_FloatingDisc extends Spell
 				if(!CMLib.commands().postGet(mob,null,(Item)target,true))
 				{
 					target.delEffect(this);
-					target.recoverEnvStats();
+					target.recoverPhyStats();
 					return false;
 				}
 				target.delEffect(this);
-				target.recoverEnvStats();
+				target.recoverPhyStats();
 			}
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> begin(s) to float around.":"^S<S-NAME> invoke(s) a floating disc underneath <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
@@ -144,9 +144,9 @@ public class Spell_FloatingDisc extends Spell
 				((Item)target).wearAt(Wearable.WORN_FLOATING_NEARBY);
 				((Item)target).setRawLogicalAnd(properWornLogical);
 				((Item)target).setRawProperLocationBitmap(properWornCode);
-				((Item)target).recoverEnvStats();
-				beneficialAffect(mob,target,asLevel,(mob.envStats().level()+(2*getXLEVELLevel(mob)))*30);
-				mob.recoverEnvStats();
+				((Item)target).recoverPhyStats();
+				beneficialAffect(mob,target,asLevel,(mob.phyStats().level()+(2*getXLEVELLevel(mob)))*30);
+				mob.recoverPhyStats();
 				mob.recoverMaxState();
 				mob.recoverCharStats();
 			}

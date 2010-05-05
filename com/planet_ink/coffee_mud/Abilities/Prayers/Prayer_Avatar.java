@@ -69,9 +69,9 @@ public class Prayer_Avatar extends Prayer
 		affectedState.setHitPoints(affectedState.getHitPoints()+200);
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectedStats)
+	public void affectPhyStats(Physical affected, PhyStats affectedStats)
 	{
-		super.affectEnvStats(affected,affectedStats);
+		super.affectPhyStats(affected,affectedStats);
 		int xlvl=2+(int)Math.round(CMath.div(adjustedLevel(invoker(),0),1.5));
 		affectedStats.setArmor(affectedStats.armor()-(xlvl));
 		affectedStats.setSpeed(affectedStats.speed()+1.0+CMath.mul(0.25,super.getXLEVELLevel(invoker())));
@@ -169,7 +169,7 @@ public class Prayer_Avatar extends Prayer
 
 		int levels=mob.charStats().getClassLevel("Avatar");
 		if(levels<0) 
-            levels=mob.envStats().level();
+            levels=mob.phyStats().level();
 		else
 		if(!mob.charStats().getCurrentClass().ID().equals("Avatar"))
 		{

@@ -38,12 +38,12 @@ public class GenBattery extends GenElecItem
 	{
 		super();
 		setName("a generic battery");
-		baseEnvStats.setWeight(2);
+		basePhyStats.setWeight(2);
 		setDisplayText("a generic battery sits here.");
 		setDescription("");
 		baseGoldValue=5;
-		baseEnvStats().setLevel(1);
-		recoverEnvStats();
+		basePhyStats().setLevel(1);
+		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 	}
 	public boolean sameAs(Environmental E)

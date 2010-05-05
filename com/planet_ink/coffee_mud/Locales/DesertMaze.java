@@ -39,8 +39,8 @@ public class DesertMaze extends StdMaze
 	public DesertMaze()
 	{
 		super();
-		baseEnvStats.setWeight(2);
-		recoverEnvStats();
+		basePhyStats.setWeight(2);
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_DESERT;}
 	public int domainConditions(){return Room.CONDITION_HOT;}

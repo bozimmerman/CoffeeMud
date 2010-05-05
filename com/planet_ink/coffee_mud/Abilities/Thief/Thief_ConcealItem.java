@@ -48,10 +48,10 @@ public class Thief_ConcealItem extends ThiefSkill
 	public int abilityCode(){return code;}
 	public void setAbilityCode(int newCode){code=newCode;}
 
-	public void affectEnvStats(Environmental host, EnvStats stats)
+	public void affectPhyStats(Physical host, PhyStats stats)
 	{
-		super.affectEnvStats(host,stats);
-		stats.setDisposition(stats.disposition()|EnvStats.IS_HIDDEN);
+		super.affectPhyStats(host,stats);
+		stats.setDisposition(stats.disposition()|PhyStats.IS_HIDDEN);
 	}
 	
 	public void executeMsg(Environmental host, CMMsg msg)
@@ -63,7 +63,7 @@ public class Thief_ConcealItem extends ThiefSkill
 			Environmental E=affected;
 			unInvoke();
 			E.delEffect(this);
-			E.recoverEnvStats();
+			E.recoverPhyStats();
 		}
 	}
 	
@@ -77,7 +77,7 @@ public class Thief_ConcealItem extends ThiefSkill
 		Item item=super.getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(item==null) return false;
 		
-		if((!auto)&&(item.envStats().weight()>((adjustedLevel(mob,asLevel)*2))))
+		if((!auto)&&(item.phyStats().weight()>((adjustedLevel(mob,asLevel)*2))))
 		{
 			mob.tell("You aren't good enough to conceal anything that large.");
 			return false;
@@ -97,7 +97,7 @@ public class Thief_ConcealItem extends ThiefSkill
 				Ability A=(Ability)super.copyOf();
 				A.setInvoker(mob);
 				item.addNonUninvokableEffect(A);
-				item.recoverEnvStats();
+				item.recoverPhyStats();
 			}
 		}
 		else

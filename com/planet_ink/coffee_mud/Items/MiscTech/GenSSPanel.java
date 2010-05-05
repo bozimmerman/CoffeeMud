@@ -40,14 +40,14 @@ public class GenSSPanel extends GenShipContainer
 	{
 		super();
 		setName("a generic space ship panel");
-		baseEnvStats.setWeight(2);
+		basePhyStats.setWeight(2);
 		setDescription("");
 		baseGoldValue=5;
 		containType=Container.CONTAIN_SSCOMPONENTS;
 		setLidsNLocks(true,true,false,false);
 		capacity=500;
 		setMaterial(RawMaterial.RESOURCE_STEEL);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	protected int panelType=ShipComponent.ShipPanel.COMPONENT_PANEL_ANY;

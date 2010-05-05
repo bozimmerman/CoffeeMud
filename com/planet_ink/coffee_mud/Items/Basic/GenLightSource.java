@@ -67,7 +67,7 @@ public class GenLightSource extends LightSource
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
     public String getStat(String code)

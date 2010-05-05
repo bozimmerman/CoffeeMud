@@ -104,10 +104,10 @@ public class Spell_FakeSpring extends Spell
 				W.setName(newItem.Name());
 				W.setDisplayText(newItem.displayText());
 				W.setDescription(newItem.description());
-				W.baseEnvStats().setWeight(newItem.baseEnvStats().weight());
+				W.basePhyStats().setWeight(newItem.basePhyStats().weight());
 				CMLib.flags().setGettable(((Item)W),false);
 				W.setThirstQuenched(0);
-				W.recoverEnvStats();
+				W.recoverPhyStats();
 				mob.location().addItem((Item)W);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" starts flowing here.");
 				if(CMLib.law().doesOwnThisProperty(mob,mob.location()))
@@ -118,7 +118,7 @@ public class Spell_FakeSpring extends Spell
 				}
 				else
 					beneficialAffect(mob,W,asLevel,0);
-				mob.location().recoverEnvStats();
+				mob.location().recoverPhyStats();
 			}
 		}
 		else

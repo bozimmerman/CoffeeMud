@@ -68,21 +68,21 @@ public class StatRejuvCharts extends StdWebMacro
 		int disposition=0;
 
 		if((getReq(httpReq,"SITTING").length()>0))
-		{ disposition=EnvStats.IS_SITTING; buf.append("Sitting ");}
+		{ disposition=PhyStats.IS_SITTING; buf.append("Sitting ");}
 		if((getReq(httpReq,"SLEEPING").length()>0))
-		{ disposition=EnvStats.IS_SLEEPING; buf.append("Sleeping ");}
+		{ disposition=PhyStats.IS_SLEEPING; buf.append("Sleeping ");}
 		if((getReq(httpReq,"FLYING").length()>0))
-		{ disposition=EnvStats.IS_FLYING; buf.append("Flying ");}
+		{ disposition=PhyStats.IS_FLYING; buf.append("Flying ");}
 		if((getReq(httpReq,"SWIMMING").length()>0))
-		{ disposition=EnvStats.IS_SWIMMING; buf.append("Swimming ");}
+		{ disposition=PhyStats.IS_SWIMMING; buf.append("Swimming ");}
 		if((getReq(httpReq,"RIDING").length()>0))
 		{ mob.setRiding((Rideable)CMClass.getMOB("GenRideable")); buf.append("Riding ");}
 		boolean hungry=(httpReq.getRequestParameter("HUNGRY")!=null)&&(httpReq.getRequestParameter("HUNGRY").length()>0);
 		if(hungry){ buf.append("Hungry ");		mob.curState().setHunger(0);}
 		boolean thirsty=(httpReq.getRequestParameter("THIRSTY")!=null)&&(httpReq.getRequestParameter("THIRSTY").length()>0);
 		if(thirsty){ buf.append("Thirsty ");		mob.curState().setThirst(0);}
-		mob.baseEnvStats().setDisposition(disposition);
-		mob.recoverEnvStats();
+		mob.basePhyStats().setDisposition(disposition);
+		mob.recoverPhyStats();
 
 		buf.append("<P><TABLE WIDTH=100% BORDER=1>");
 		buf.append("<TR><TD><B>STATS:</B></TD>");
@@ -98,8 +98,8 @@ public class StatRejuvCharts extends StdWebMacro
 				for(int c: CharStats.CODES.BASE())
 					mob.baseCharStats().setStat(c,stats);
 				mob.recoverCharStats();
-				mob.baseEnvStats().setLevel(level);
-				mob.recoverEnvStats();
+				mob.basePhyStats().setLevel(level);
+				mob.recoverPhyStats();
 				mob.curState().setMana(0);
 				mob.curState().setMovement(0);
 				mob.curState().setHitPoints(0);
@@ -122,7 +122,7 @@ public class StatRejuvCharts extends StdWebMacro
 				if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS)
 					man=man*.5;
 
-				double lvl=(double)mob.envStats().level();
+				double lvl=(double)mob.phyStats().level();
 				double lvlby1p5=CMath.div(lvl,1.5);
 				//double lvlby2=CMath.div(lvl,2.0);
 				//double lvlby3=CMath.div(lvl,3.0);

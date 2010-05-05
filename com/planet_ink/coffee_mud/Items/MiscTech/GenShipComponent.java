@@ -40,12 +40,12 @@ public class GenShipComponent extends StdShipComponent
 	{
 		super();
 		setName("a generic ships component");
-		baseEnvStats.setWeight(2);
+		basePhyStats.setWeight(2);
 		setDisplayText("a generic ships component sits here.");
 		setDescription("");
 		baseGoldValue=5;
-		baseEnvStats().setLevel(1);
-		recoverEnvStats();
+		basePhyStats().setLevel(1);
+		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 	}
 
@@ -62,7 +62,7 @@ public class GenShipComponent extends StdShipComponent
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	private final static String[] MYCODES={"FUELTYPE","POWERCAP"};

@@ -45,8 +45,8 @@ public class Prayer_MassFreedom extends Prayer implements MendingSkill
 	{ 
 		if(!(E instanceof MOB)) return false;
 		MOB caster=CMClass.getMOB("StdMOB");
-		caster.baseEnvStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
-		caster.envStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
+		caster.basePhyStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
+		caster.phyStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
 		boolean canMend=returnOffensiveAffects(caster,E).size()>0;
 		caster.destroy();
 		return canMend;
@@ -65,8 +65,8 @@ public class Prayer_MassFreedom extends Prayer implements MendingSkill
 			{
 				try
 				{
-					newMOB.recoverEnvStats();
-					A.affectEnvStats(newMOB,newMOB.envStats());
+					newMOB.recoverPhyStats();
+					A.affectPhyStats(newMOB,newMOB.phyStats());
 					int clas=A.classificationCode()&Ability.ALL_ACODES;
 					if((!CMLib.flags().aliveAwakeMobileUnbound(newMOB,true))
 					   ||(CMath.bset(A.flags(),Ability.FLAG_BINDING))
@@ -74,7 +74,7 @@ public class Prayer_MassFreedom extends Prayer implements MendingSkill
 					if((A.invoker()==null)
 					||((clas!=Ability.ACODE_SPELL)&&(clas!=Ability.ACODE_CHANT)&&(clas!=Ability.ACODE_PRAYER)&&(clas!=Ability.ACODE_SONG))
 					||((A.invoker()!=null)
-					   &&(A.invoker().envStats().level()<=(caster.envStats().level()+1+(2*super.getXLEVELLevel(caster))))))
+					   &&(A.invoker().phyStats().level()<=(caster.phyStats().level()+1+(2*super.getXLEVELLevel(caster))))))
 					 	offenders.addElement(A);
 				}
 				catch(Exception e)

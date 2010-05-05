@@ -43,7 +43,7 @@ public class GenClanDonationList extends StdClanDonationList
         super();
         setName("a generic clan donation list");
         setDisplayText("a generic clan donation list sits here.");
-        recoverEnvStats();
+        recoverPhyStats();
     }
 
 
@@ -60,7 +60,7 @@ public class GenClanDonationList extends StdClanDonationList
     {
         miscText="";
         CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-        recoverEnvStats();
+        recoverPhyStats();
     }
     private final static String[] MYCODES={"CLANID","CITYPE"};
     public String getStat(String code)

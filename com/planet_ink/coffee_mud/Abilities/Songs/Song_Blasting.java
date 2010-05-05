@@ -38,9 +38,9 @@ public class Song_Blasting extends Song
 	public String ID() { return "Song_Blasting"; }
 	public String name(){ return "Blasting";}
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(invoker==null) return;
 
 		affectableStats.setDamage(affectableStats.damage()+1+(adjustedLevel(invoker(),0)/2));

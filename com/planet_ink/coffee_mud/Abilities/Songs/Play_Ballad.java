@@ -98,9 +98,9 @@ public class Play_Ballad extends Play
 		if(invoker()!=null)
 			stats.setStat(CharStats.STAT_SAVE_MIND,stats.getStat(CharStats.STAT_SAVE_MIND)+adjustedLevel(invoker(),0));
 	}
-	public void affectEnvStats(Environmental mob, EnvStats stats)
+	public void affectPhyStats(Physical mob, PhyStats stats)
 	{
-		super.affectEnvStats(mob,stats);
+		super.affectPhyStats(mob,stats);
 		if(invoker()!=null)
 			stats.setAttackAdjustment(stats.attackAdjustment()
 									 +invoker().charStats().getStat(CharStats.STAT_CHARISMA)

@@ -68,9 +68,9 @@ public class Fighter_KiStrike extends FighterSkill
 		return super.okMessage(myHost,msg);
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(!done)
 			affectableStats.setDamage(affectableStats.damage()+(adjustedLevel(invoker(),0)));
 	}

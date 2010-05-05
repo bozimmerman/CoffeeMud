@@ -52,9 +52,9 @@ public class Prayer_HolyAura extends Prayer implements MendingSkill
 					||(CMLib.flags().domainAffects(E,Ability.DOMAIN_CURSING).size()>0));
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
 
@@ -103,13 +103,13 @@ public class Prayer_HolyAura extends Prayer implements MendingSkill
 					CMMsg msg2=CMClass.getMsg(target,I,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,"<S-NAME> release(s) <T-NAME>.");
 					target.location().send(target,msg2);
 					Prayer_Bless.endLowerCurses(I,CMLib.ableMapper().lowestQualifyingLevel(ID()));
-					I.recoverEnvStats();
+					I.recoverPhyStats();
 					I=Prayer_Bless.getSomething(target,true);
 				}
 				Prayer_Bless.endAllOtherBlessings(mob,target,CMLib.ableMapper().lowestQualifyingLevel(ID()));
 				Prayer_Bless.endLowerCurses(target,CMLib.ableMapper().lowestQualifyingLevel(ID()));
 				beneficialAffect(mob,target,asLevel,0);
-				target.recoverEnvStats();
+				target.recoverPhyStats();
 			}
 		}
 		else

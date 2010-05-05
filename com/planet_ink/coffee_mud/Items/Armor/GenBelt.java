@@ -42,13 +42,13 @@ public class GenBelt extends GenArmor
 		setDescription("a belt knitted from tough cloth with a simple sheath built in.");
 		properWornBitmap=Wearable.WORN_WAIST;
 		wornLogicalAnd=false;
-		baseEnvStats().setArmor(0);
-		baseEnvStats().setWeight(1);
+		basePhyStats().setArmor(0);
+		basePhyStats().setWeight(1);
 		setCapacity(20);
-		baseEnvStats().setAbility(0);
+		basePhyStats().setAbility(0);
 		setContainTypes(Container.CONTAIN_DAGGERS|Container.CONTAIN_ONEHANDWEAPONS|Container.CONTAIN_SWORDS|Container.CONTAIN_OTHERWEAPONS);
 		baseGoldValue=1;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_COTTON;
 	}
 }

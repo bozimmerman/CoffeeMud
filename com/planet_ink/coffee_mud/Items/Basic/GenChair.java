@@ -43,14 +43,14 @@ public class GenChair extends GenRideable
 		readableText = "";
 
 		setName("a generic chair");
-		baseEnvStats.setWeight(150);
+		basePhyStats.setWeight(150);
 		setDisplayText("a generic chair is here.");
 		setDescription("");
 		material=RawMaterial.RESOURCE_OAK;
 		baseGoldValue=5;
-		baseEnvStats().setLevel(1);
+		basePhyStats().setLevel(1);
 		setRiderCapacity(1);
 		setRideBasis(Rideable.RIDEABLE_SIT);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 }

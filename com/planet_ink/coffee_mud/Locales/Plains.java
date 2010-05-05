@@ -40,8 +40,8 @@ public class Plains extends StdRoom
 	{
 		super();
 		name="the grass";
-		baseEnvStats.setWeight(2);
-		recoverEnvStats();
+		basePhyStats.setWeight(2);
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_PLAINS;}
 	public int domainConditions(){return Room.CONDITION_NORMAL;}

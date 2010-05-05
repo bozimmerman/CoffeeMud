@@ -44,9 +44,9 @@ public class GenClanPamphlet extends StdClanPamphlet
 		setName("a generic clan pamphlet");
 		setDisplayText("a generic clan pamphlet sits here.");
 		setDescription("");
-		baseEnvStats().setWeight(2);
+		basePhyStats().setWeight(2);
 		setMaterial(RawMaterial.RESOURCE_PAPER);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 
@@ -63,7 +63,7 @@ public class GenClanPamphlet extends StdClanPamphlet
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	private final static String[] MYCODES={"CLANID","CITYPE"};
 	public String getStat(String code)

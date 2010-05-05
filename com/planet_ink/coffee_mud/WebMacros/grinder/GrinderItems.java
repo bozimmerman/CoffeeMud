@@ -181,13 +181,13 @@ public class GrinderItems
 					I.setDescription(old);
 					break;
 				case 4: // level
-					I.baseEnvStats().setLevel(CMath.s_int(old));
+					I.basePhyStats().setLevel(CMath.s_int(old));
 					break;
 				case 5: // ability;
-					I.baseEnvStats().setAbility(CMath.s_int(old));
+					I.basePhyStats().setAbility(CMath.s_int(old));
 					break;
 				case 6: // rejuv;
-					I.baseEnvStats().setRejuv(CMath.s_int(old));
+					I.basePhyStats().setRejuv(CMath.s_int(old));
 					break;
 				case 7: // misctext
 					if(!I.isGeneric())
@@ -228,7 +228,7 @@ public class GrinderItems
 					break;
 				case 18: // armor
 					if(I instanceof Armor)
-						I.baseEnvStats().setArmor(CMath.s_int(old));
+						I.basePhyStats().setArmor(CMath.s_int(old));
 					break;
 				case 19: // worn data
 					if(((I instanceof Armor)||(I instanceof MusicalInstrument))
@@ -245,7 +245,7 @@ public class GrinderItems
 					break;
 				case 20: // height
 					if(I instanceof Armor)
-						I.baseEnvStats().setHeight(CMath.s_int(old));
+						I.basePhyStats().setHeight(CMath.s_int(old));
 					break;
 				case 21: // is weapon
 					break;
@@ -259,11 +259,11 @@ public class GrinderItems
 					break;
 				case 24: // attack
 					if(I instanceof Weapon)
-						I.baseEnvStats().setAttackAdjustment(CMath.s_int(old));
+						I.basePhyStats().setAttackAdjustment(CMath.s_int(old));
 					break;
 				case 25: // damage
 					if(I instanceof Weapon)
-						I.baseEnvStats().setDamage(CMath.s_int(old));
+						I.basePhyStats().setDamage(CMath.s_int(old));
 					break;
 				case 26: // min range
 					if(I instanceof Weapon)
@@ -317,7 +317,7 @@ public class GrinderItems
 					I.setBaseValue(CMath.s_int(old));
 					break;
 				case 38: // weight
-					I.baseEnvStats().setWeight(CMath.s_int(old));
+					I.basePhyStats().setWeight(CMath.s_int(old));
 					break;
 				case 39: // is map
 					break;
@@ -425,10 +425,10 @@ public class GrinderItems
 					break;
 				case 60:
 					if(old.equals("on"))
-						I.baseEnvStats().setSensesMask(I.baseEnvStats().sensesMask()|EnvStats.SENSE_UNLOCATABLE);
+						I.basePhyStats().setSensesMask(I.basePhyStats().sensesMask()|PhyStats.SENSE_UNLOCATABLE);
 					else
-					if((I.baseEnvStats().sensesMask()&EnvStats.SENSE_UNLOCATABLE)>0)
-						I.baseEnvStats().setSensesMask(I.baseEnvStats().sensesMask()-EnvStats.SENSE_UNLOCATABLE);
+					if((I.basePhyStats().sensesMask()&PhyStats.SENSE_UNLOCATABLE)>0)
+						I.basePhyStats().setSensesMask(I.basePhyStats().sensesMask()-PhyStats.SENSE_UNLOCATABLE);
 					break;
 				case 61: // is key
 					break;
@@ -559,7 +559,7 @@ public class GrinderItems
 				if(error.length()>0) return error;
 			}
 
-			I.recoverEnvStats();
+			I.recoverPhyStats();
 			I.text();
 			if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
 			{
@@ -603,7 +603,7 @@ public class GrinderItems
 				else
 				{
 					M.addItem(I);
-					M.recoverEnvStats();
+					M.recoverPhyStats();
 					if((mobNum==null)||(!mobNum.startsWith("CATALOG-")))
 						M.text();
 					if(R!=null) R.recoverRoomStats();
@@ -640,7 +640,7 @@ public class GrinderItems
 				{
 					M.delItem(oldI);
 					M.addItem(I);
-					M.recoverEnvStats();
+					M.recoverPhyStats();
 					if((mobNum==null)||(!mobNum.startsWith("CATALOG-")))
 						M.text();
                     if(R!=null) R.recoverRoomStats();

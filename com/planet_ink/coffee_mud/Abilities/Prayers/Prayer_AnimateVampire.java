@@ -89,7 +89,7 @@ public class Prayer_AnimateVampire extends Prayer
 		else
 			description+="\n\rIt also looks dead.";
 
-		if(body.baseEnvStats().level()<25)
+		if(body.basePhyStats().level()<25)
 		{
 			mob.tell("This creature is too weak to create a vampire from.");
 			return false;
@@ -110,7 +110,7 @@ public class Prayer_AnimateVampire extends Prayer
 				newMOB.setName("a vampire");
 				newMOB.setDescription(description);
 				newMOB.setDisplayText("a vampire is here");
-				newMOB.baseEnvStats().setLevel(19+(super.getX1Level(mob)*2)+super.getXLEVELLevel(mob));
+				newMOB.basePhyStats().setLevel(19+(super.getX1Level(mob)*2)+super.getXLEVELLevel(mob));
 				newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
 				newMOB.baseCharStats().setMyRace(CMClass.getRace("Undead"));
                 newMOB.baseCharStats().setBodyPartsFromStringAfterRace(body.charStats().getBodyPartsAsString());
@@ -120,21 +120,21 @@ public class Prayer_AnimateVampire extends Prayer
 					P.setMiscText("NOTEACH STR=22 INT=15 WIS=15 CON=10 DEX=22 CHA=20");
 					newMOB.addNonUninvokableEffect(P);
 				}
-				newMOB.baseEnvStats().setDisposition(EnvStats.IS_FLYING);
-				newMOB.baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK|EnvStats.CAN_SEE_INVISIBLE);
+				newMOB.basePhyStats().setDisposition(PhyStats.IS_FLYING);
+				newMOB.basePhyStats().setSensesMask(PhyStats.CAN_SEE_DARK|PhyStats.CAN_SEE_INVISIBLE);
 				newMOB.recoverCharStats();
-				newMOB.baseEnvStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
-				newMOB.baseEnvStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
+				newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
+				newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
 				CMLib.factions().setAlignment(newMOB,Faction.ALIGN_EVIL);
-				newMOB.baseState().setHitPoints(30*newMOB.baseEnvStats().level());
+				newMOB.baseState().setHitPoints(30*newMOB.basePhyStats().level());
 				newMOB.baseState().setMovement(CMLib.leveler().getLevelMove(newMOB));
-				newMOB.baseEnvStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
+				newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
 				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 				newMOB.baseState().setMana(100);
 				Behavior B=CMClass.getBehavior("Aggressive");
 				if(B!=null){ B.setParms("+NAMES \"-"+mob.Name()+"\""); newMOB.addBehavior(B);}
 				newMOB.recoverCharStats();
-				newMOB.recoverEnvStats();
+				newMOB.recoverPhyStats();
 				newMOB.recoverMaxState();
 				newMOB.resetToMaxState();
 				Ability A=CMClass.getAbility("Immunities");

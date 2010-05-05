@@ -104,7 +104,7 @@ public class Skill_Convert extends StdSkill
 			}
 		}
         if((CMLib.flags().isAnimalIntelligence(target))                
-        ||((target.isMonster())&&(target.envStats().level()>mob.envStats().level())))
+        ||((target.isMonster())&&(target.phyStats().level()>mob.phyStats().level())))
         {
             mob.tell("You can't convert "+target.name()+".");
             if(mob.isMonster())

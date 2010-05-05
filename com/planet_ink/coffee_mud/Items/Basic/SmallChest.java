@@ -43,8 +43,8 @@ public class SmallChest extends LockableContainer
 		capacity=50;
 		material=RawMaterial.RESOURCE_OAK;
 		baseGoldValue=15;
-		baseEnvStats().setWeight(25);
-		recoverEnvStats();
+		basePhyStats().setWeight(25);
+		recoverPhyStats();
 	}
 
 

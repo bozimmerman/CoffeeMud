@@ -53,7 +53,7 @@ public class Spell_Awe extends Spell
 			if((!target.isInCombat())
 			&&(msg.source().getVictim()!=target)
             &&(msg.source().location()==target.location())
-			&&(CMLib.dice().rollPercentage()>((msg.source().envStats().level()-(target.envStats().level()+(2*getXLEVELLevel(invoker()))))*10)))
+			&&(CMLib.dice().rollPercentage()>((msg.source().phyStats().level()-(target.phyStats().level()+(2*getXLEVELLevel(invoker()))))*10)))
 			{
 				msg.source().tell("You are too much in awe of "+target.name());
 				if(target.getVictim()==msg.source())

@@ -42,11 +42,11 @@ public class RingMail extends StdArmor
 		setDescription("A suit of ring mail including everything to protect the body, legs and arms.");
 		properWornBitmap=Wearable.WORN_TORSO | Wearable.WORN_ARMS | Wearable.WORN_LEGS;
 		wornLogicalAnd=true;
-		baseEnvStats().setArmor(22);
-		baseEnvStats().setWeight(50);
-		baseEnvStats().setAbility(0);
+		basePhyStats().setArmor(22);
+		basePhyStats().setWeight(50);
+		basePhyStats().setAbility(0);
 		baseGoldValue=200;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_STEEL;
 	}
 

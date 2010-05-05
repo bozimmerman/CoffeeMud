@@ -44,24 +44,24 @@ public class Fox extends StdMOB
 		setDisplayText("A fox growls.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
-		baseEnvStats.setWeight(20 + Math.abs(randomizer.nextInt() % 55));
+		basePhyStats.setWeight(20 + Math.abs(randomizer.nextInt() % 55));
 		setWimpHitPoint(2);
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
 		baseCharStats().setMyRace(CMClass.getRace("Fox"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		baseEnvStats().setDamage(6);
-		baseEnvStats().setSpeed(1.0);
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(5);
-		baseEnvStats().setArmor(50);
+		basePhyStats().setDamage(6);
+		basePhyStats().setSpeed(1.0);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(5);
+		basePhyStats().setArmor(50);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

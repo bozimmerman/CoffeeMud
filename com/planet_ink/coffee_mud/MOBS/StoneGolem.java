@@ -43,21 +43,21 @@ public class StoneGolem extends StdMOB
 		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
 
-		baseEnvStats().setDamage(4);
+		basePhyStats().setDamage(4);
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
 
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(25);
-		baseEnvStats().setArmor(-100);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(25);
+		basePhyStats().setArmor(-100);
 
 		baseCharStats().setMyRace(CMClass.getRace("StoneGolem"));
 		baseCharStats().getMyRace().startRacing(this,false);
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

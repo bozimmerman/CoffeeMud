@@ -57,21 +57,21 @@ public class Spell_Silence extends Spell
 		super.unInvoke();
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if((affected instanceof MOB)||(affected instanceof Item))
 		{
 			Room R=CMLib.map().roomLocation(affected);
 			if((R!=null)&&(R==theRoom)&&(!unInvoked)&&(R.fetchEffect(ID())==this))
 			{
-				affectableStats.setSensesMask(affectableStats.sensesMask() |  EnvStats.CAN_NOT_SPEAK);
-				affectableStats.setSensesMask(affectableStats.sensesMask() |  EnvStats.CAN_NOT_HEAR);
+				affectableStats.setSensesMask(affectableStats.sensesMask() |  PhyStats.CAN_NOT_SPEAK);
+				affectableStats.setSensesMask(affectableStats.sensesMask() |  PhyStats.CAN_NOT_HEAR);
 			}
 			else
 			{
 				affected.delEffect(this);
-				affected.recoverEnvStats();
+				affected.recoverPhyStats();
 			}
 		}
 		else

@@ -101,8 +101,8 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 						else
 						if(refitting)
 						{
-							building.baseEnvStats().setHeight(0);
-							building.recoverEnvStats();
+							building.basePhyStats().setHeight(0);
+							building.recoverPhyStats();
 						}
 						else
 						{
@@ -237,7 +237,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 				commonTell(mob,"You don't know how to refit that sort of thing.");
 				return false;
 			}
-			if(building.envStats().height()==0)
+			if(building.phyStats().height()==0)
 			{
 				commonTell(mob,building.name()+" is already the right size.");
 				return false;
@@ -322,12 +322,12 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			verb="carving "+building.name();
 			building.setDisplayText(itemName+" lies here");
 			building.setDescription(itemName+". ");
-			building.baseEnvStats().setWeight(woodRequired);
+			building.basePhyStats().setWeight(woodRequired);
 			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 			building.setMaterial(data[0][FOUND_CODE]);
 			int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-3;
-			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness));
-			if(building.baseEnvStats().level()<1) building.baseEnvStats().setLevel(1);
+			building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness));
+			if(building.basePhyStats().level()<1) building.basePhyStats().setLevel(1);
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 			int canContain=CMath.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
@@ -356,7 +356,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 					key.setName("a key");
 					key.setDisplayText("a small key sits here");
 					key.setDescription("looks like a key to "+building.name());
-					key.recoverEnvStats();
+					key.recoverPhyStats();
 					key.text();
 				}
 			}
@@ -379,18 +379,18 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			{
 			    ((Weapon)building).setWeaponClassification(Weapon.CLASS_BLUNT);
 			    setWeaponTypeClass((Weapon)building,misctype,Weapon.TYPE_SLASHING);
-				building.baseEnvStats().setAttackAdjustment((abilityCode()+(hardness*5)-1));
-				building.baseEnvStats().setDamage(armordmg+hardness);
+				building.basePhyStats().setAttackAdjustment((abilityCode()+(hardness*5)-1));
+				building.basePhyStats().setDamage(armordmg+hardness);
 				((Weapon)building).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
 				((Weapon)building).setRawLogicalAnd((capacity>1));
                 if(!(building instanceof Container))
-                    building.baseEnvStats().setAttackAdjustment(building.baseEnvStats().attackAdjustment()+canContain);
+                    building.basePhyStats().setAttackAdjustment(building.basePhyStats().attackAdjustment()+canContain);
 			}
 			if(building instanceof Armor)
 			{
-                ((Armor)building).baseEnvStats().setArmor(0);
+                ((Armor)building).basePhyStats().setArmor(0);
                 if(armordmg!=0)
-                    ((Armor)building).baseEnvStats().setArmor(armordmg+(abilityCode()-1));
+                    ((Armor)building).basePhyStats().setArmor(armordmg+(abilityCode()-1));
 			    setWearLocation(building,misctype,hardness);
 			}
 			if(building instanceof Light)
@@ -403,9 +403,9 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 					((Container)building).setCapacity(0);
 				}
 			}
-			building.recoverEnvStats();
+			building.recoverPhyStats();
 			building.text();
-			building.recoverEnvStats();
+			building.recoverPhyStats();
 		}
 
 

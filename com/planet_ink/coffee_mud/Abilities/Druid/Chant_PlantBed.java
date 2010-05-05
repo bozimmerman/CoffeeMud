@@ -93,18 +93,18 @@ public class Chant_PlantBed extends Chant
 				newRide.setRideBasis(Rideable.RIDEABLE_SLEEP);
 				newRide.setRiderCapacity(1);
 				newItem.setMaterial(RawMaterial.RESOURCE_HEMP);
-				newItem.baseEnvStats().setWeight(1000);
+				newItem.basePhyStats().setWeight(1000);
 				newItem.setBaseValue(0);
 				CMLib.flags().setGettable(newItem,false);
 				Ability A=CMClass.getAbility("Prop_RideResister");
 				A.setMiscText("disease poison");
 				newItem.addNonUninvokableEffect(A);
-				newItem.recoverEnvStats();
+				newItem.recoverPhyStats();
 				newItem.setMiscText(newItem.text());
 				peaPod=newItem;
 				mob.location().addItem(newItem,ItemPossessor.Expire.Resource);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A comfortable pea-pod bed grows nearby.");
-				mob.location().recoverEnvStats();
+				mob.location().recoverPhyStats();
 				beneficialAffect(mob,newItem,asLevel,0);
 			}
 		}

@@ -44,24 +44,24 @@ public class Rabbit extends StdMOB
 		setDisplayText("A rabbit hops by.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
-		baseEnvStats.setWeight(20 + Math.abs(randomizer.nextInt() % 55));
+		basePhyStats.setWeight(20 + Math.abs(randomizer.nextInt() % 55));
 		setWimpHitPoint(2);
 
-		baseEnvStats().setDamage(2);
+		basePhyStats().setDamage(2);
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
 		baseCharStats().setMyRace(CMClass.getRace("Rabbit"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(1);
-		baseEnvStats().setArmor(30);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(1);
+		basePhyStats().setArmor(30);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

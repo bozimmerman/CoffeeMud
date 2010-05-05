@@ -40,9 +40,9 @@ public class Play_March extends Play
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected String songOf(){return "a "+name();}
 
-	public void affectEnvStats(Environmental affected, EnvStats stats)
+	public void affectPhyStats(Physical affected, PhyStats stats)
 	{
-		super.affectEnvStats(affected,stats);
+		super.affectPhyStats(affected,stats);
 		if((affected instanceof MOB)&&(!((MOB)affected).isMonster()))
 		{
 			

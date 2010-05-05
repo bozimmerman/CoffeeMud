@@ -65,7 +65,7 @@ public class ThiefSkill extends StdAbility
 	public int getMOBLevel(MOB meMOB)
 	{
 		if(meMOB==null) return 0;
-		return meMOB.envStats().level();
+		return meMOB.phyStats().level();
 	}
 	public MOB getHighestLevelMOB(MOB meMOB, Vector not)
 	{
@@ -83,9 +83,9 @@ public class ThiefSkill extends StdAbility
 			&&(M!=meMOB)
 			&&(!CMLib.flags().isSleeping(M))
 			&&(!H.contains(M))
-			&&(highestLevel<M.envStats().level()))
+			&&(highestLevel<M.phyStats().level()))
 			{
-				highestLevel=M.envStats().level();
+				highestLevel=M.phyStats().level();
 				highestMOB=M;
 			}
 		}

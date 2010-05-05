@@ -43,7 +43,7 @@ public class Backpack extends CloseableContainer
 		baseGoldValue=5;
 		properWornBitmap=Wearable.WORN_BACK|Wearable.WORN_HELD;
 		material=RawMaterial.RESOURCE_LEATHER;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 

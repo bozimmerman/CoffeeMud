@@ -42,13 +42,13 @@ public class GenFood extends StdFood
 		super();
 
 		setName("a generic blob of food");
-		baseEnvStats.setWeight(2);
+		basePhyStats.setWeight(2);
 		setDisplayText("a generic blob of food sits here.");
 		setDescription("");
 		baseGoldValue=5;
 		amountOfNourishment=500;
 		material=RawMaterial.RESOURCE_MEAT;
-		recoverEnvStats();
+		recoverPhyStats();
 		decayTime=0;
 	}
 
@@ -66,7 +66,7 @@ public class GenFood extends StdFood
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	private final static String[] MYCODES={"NOURISHMENT","BITE"};
 	public String getStat(String code)

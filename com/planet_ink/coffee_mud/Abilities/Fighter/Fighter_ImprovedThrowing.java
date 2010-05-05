@@ -61,9 +61,9 @@ public class Fighter_ImprovedThrowing extends FighterSkill
 	}
 
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected instanceof MOB)
 		{
 			Item myWeapon=((MOB)affected).fetchWieldedItem();

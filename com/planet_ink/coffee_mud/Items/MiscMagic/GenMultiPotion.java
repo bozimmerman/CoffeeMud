@@ -43,12 +43,12 @@ public class GenMultiPotion extends GenDrink implements Potion
 
 		material=RawMaterial.RESOURCE_GLASS;
 		setName("a flask");
-		baseEnvStats.setWeight(1);
+		basePhyStats.setWeight(1);
 		setDisplayText("A flask sits here.");
 		setDescription("A strange flask with stranger markings.");
 		secretIdentity="";
 		baseGoldValue=200;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 
@@ -107,7 +107,7 @@ public class GenMultiPotion extends GenDrink implements Potion
 				for(int i=0;i<spells.size();i++)
 				{
 					Ability thisOne=(Ability)((Ability)spells.elementAt(i)).copyOf();
-					thisOne.invoke(mob,mob,true,envStats().level());
+					thisOne.invoke(mob,mob,true,phyStats().level());
 				}
 			}
 
@@ -142,7 +142,7 @@ public class GenMultiPotion extends GenDrink implements Potion
 					{
 						mob.tell(name()+" vanishes!");
 						destroy();
-						mob.recoverEnvStats();
+						mob.recoverPhyStats();
 					}
 				}
 				else

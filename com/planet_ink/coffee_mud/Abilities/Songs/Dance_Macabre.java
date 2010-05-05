@@ -42,9 +42,9 @@ public class Dance_Macabre extends Dance
 
 	protected boolean activated=false;
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(activated)
 		{
 			affectableStats.setDamage(affectableStats.damage()+(adjustedLevel(invoker(),0)/2));
@@ -68,14 +68,14 @@ public class Dance_Macabre extends Dance
 			if(!activated)
 			{
 				activated=true;
-				affected.recoverEnvStats();
+				affected.recoverPhyStats();
 			}
 		}
 		else
 		if(activated)
 		{
 			activated=false;
-			affected.recoverEnvStats();
+			affected.recoverPhyStats();
 		}
 		return super.tick(ticking,tickID);
 	}

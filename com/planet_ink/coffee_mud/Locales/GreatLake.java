@@ -40,8 +40,8 @@ public class GreatLake extends StdGrid
 	{
 		super();
 		name="the lake";
-		baseEnvStats.setWeight(2);
-		recoverEnvStats();
+		basePhyStats.setWeight(2);
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
 	public int domainConditions(){return Room.CONDITION_WET;}

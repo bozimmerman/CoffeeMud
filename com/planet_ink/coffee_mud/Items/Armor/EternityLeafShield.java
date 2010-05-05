@@ -44,11 +44,11 @@ public class EternityLeafShield extends StdShield
 		properWornBitmap=Wearable.WORN_HELD;
 		wornLogicalAnd=true;
 		baseGoldValue+=15000;
-		baseEnvStats().setArmor(30);
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setWeight(15);
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
-		recoverEnvStats();
+		basePhyStats().setArmor(30);
+		basePhyStats().setAbility(0);
+		basePhyStats().setWeight(15);
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_SEAWEED;
 	}
 

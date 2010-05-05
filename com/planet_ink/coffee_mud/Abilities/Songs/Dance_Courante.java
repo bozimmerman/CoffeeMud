@@ -40,9 +40,9 @@ public class Dance_Courante extends Dance
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected String danceOf(){return name()+" Dance";}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(invoker==null) return;
 
 		affectableStats.setSpeed(affectableStats.speed()+1.0+(CMath.div(getXLEVELLevel(invoker()),0.25)));

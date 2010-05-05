@@ -46,7 +46,7 @@ public class StdInnKey extends StdKey implements InnKey
 
 		material=RawMaterial.RESOURCE_STEEL;
 		baseGoldValue=10;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 

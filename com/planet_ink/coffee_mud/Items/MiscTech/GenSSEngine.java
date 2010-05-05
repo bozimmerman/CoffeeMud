@@ -39,12 +39,12 @@ public class GenSSEngine extends GenShipComponent
 	{
 		super();
 		setName("a generic ships engine");
-		baseEnvStats.setWeight(500);
+		basePhyStats.setWeight(500);
 		setDisplayText("a generic ships engine sits here.");
 		setDescription("");
 		baseGoldValue=500000;
-		baseEnvStats().setLevel(1);
-		recoverEnvStats();
+		basePhyStats().setLevel(1);
+		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 	}
 	public boolean sameAs(Environmental E)

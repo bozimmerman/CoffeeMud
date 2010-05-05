@@ -45,11 +45,11 @@ public class Spell_GustOfWind extends Spell
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 	public long flags(){return Ability.FLAG_MOVING;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(!doneTicking)
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SITTING);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SITTING);
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -130,7 +130,7 @@ public class Spell_GustOfWind extends Spell
 
 						R.send(mob,msg);
 						if((!CMLib.flags().isInFlight(target))
-						&&(CMLib.dice().rollPercentage()>((target.charStats().getStat(CharStats.STAT_DEXTERITY)*2)+target.envStats().level()-(adjustedLevel(mob,asLevel)/2)))
+						&&(CMLib.dice().rollPercentage()>((target.charStats().getStat(CharStats.STAT_DEXTERITY)*2)+target.phyStats().level()-(adjustedLevel(mob,asLevel)/2)))
 						&&(target.charStats().getBodyPart(Race.BODY_LEG)>0))
 						{
 							R.show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) down!");

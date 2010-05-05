@@ -130,7 +130,7 @@ public class PlayerData extends StdWebMacro
 				break;
 		case 4: str.append(M.baseCharStats().getMyRace().name()+", "); break;
 		case 5: str.append(M.baseCharStats().getCurrentClass().name(M.baseCharStats().getCurrentClassLevel())+", "); break;
-		case 6: str.append(M.baseEnvStats().level()+", "); break;
+		case 6: str.append(M.basePhyStats().level()+", "); break;
 		case 7: str.append(M.baseCharStats().displayClassLevel(M,true)+", "); break;
 		case 8: str.append(M.baseCharStats().getClassLevel(M.baseCharStats().getCurrentClass())+", "); break;
 		case 9: 
@@ -200,8 +200,8 @@ public class PlayerData extends StdWebMacro
 				}
 				break;
 		}
-		case 32: str.append(M.baseEnvStats().weight()+", "); break;
-		case 33: str.append(M.envStats().weight()+", "); break;
+		case 32: str.append(M.basePhyStats().weight()+", "); break;
+		case 33: str.append(M.phyStats().weight()+", "); break;
 		case 34: str.append(CMStrings.capitalizeAndLower(M.baseCharStats().genderName())+", "); break;
 		case 35: if(M.playerStats()!=null)
 					 str.append(M.playerStats().lastDateTime()+", ");
@@ -212,7 +212,7 @@ public class PlayerData extends StdWebMacro
 		case 39: if(M.riding()!=null)
 					 str.append(M.riding().name()+", ");
 				 break;
-		case 40: str.append(M.baseEnvStats().height()+", "); break;
+		case 40: str.append(M.basePhyStats().height()+", "); break;
 		case 41: if(!M.isMonster())
 					 str.append(M.session().getAddress()+", ");
 				 else
@@ -243,7 +243,7 @@ public class PlayerData extends StdWebMacro
 		case 51: if(M.playerStats()!=null)
 				 {
 					long lastDateTime=-1;
-					for(int level=0;level<=M.envStats().level();level++)
+					for(int level=0;level<=M.phyStats().level();level++)
 					{
 						long dateTime=M.playerStats().leveledDateTime(level);
 						if((dateTime>1529122205)&&(dateTime!=lastDateTime))
@@ -259,11 +259,11 @@ public class PlayerData extends StdWebMacro
 					str.append(", ");
 				 }
 				 break;
-		case 52: str.append(M.baseEnvStats().attackAdjustment()+", "); break;
-		case 53: str.append(M.baseEnvStats().damage()+", "); break;
-		case 54: str.append(M.baseEnvStats().armor()+", "); break;
-		case 55: str.append(M.envStats().speed()+", "); break;
-		case 56: str.append(M.baseEnvStats().speed()+", "); break;
+		case 52: str.append(M.basePhyStats().attackAdjustment()+", "); break;
+		case 53: str.append(M.basePhyStats().damage()+", "); break;
+		case 54: str.append(M.basePhyStats().armor()+", "); break;
+		case 55: str.append(M.phyStats().speed()+", "); break;
+		case 56: str.append(M.basePhyStats().speed()+", "); break;
 		case 57: 
 		{
 			for(int e=0;e<M.numExpertises();e++)

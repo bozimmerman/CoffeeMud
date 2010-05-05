@@ -72,7 +72,7 @@ public class Prayer_AnimateMummy extends Prayer
 		else
 			description+="\n\rIt also looks dead.";
 
-		if(body.baseEnvStats().level()<20)
+		if(body.basePhyStats().level()<20)
 		{
 			mob.tell("This creature is too weak to create a mummy from.");
 			return false;
@@ -93,7 +93,7 @@ public class Prayer_AnimateMummy extends Prayer
 				newMOB.setName("a mummy");
 				newMOB.setDescription(description);
 				newMOB.setDisplayText("a mummy is here");
-				newMOB.baseEnvStats().setLevel(19+(super.getX1Level(mob)*2)+super.getXLEVELLevel(mob));
+				newMOB.basePhyStats().setLevel(19+(super.getX1Level(mob)*2)+super.getXLEVELLevel(mob));
 				newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
 				newMOB.baseCharStats().setMyRace(CMClass.getRace("Undead"));
                 newMOB.baseCharStats().setBodyPartsFromStringAfterRace(body.charStats().getBodyPartsAsString());
@@ -104,17 +104,17 @@ public class Prayer_AnimateMummy extends Prayer
 					newMOB.addNonUninvokableEffect(P);
 				}
 				newMOB.recoverCharStats();
-				newMOB.baseEnvStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
-				newMOB.baseEnvStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
-				newMOB.baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK|EnvStats.CAN_SEE_INVISIBLE|EnvStats.CAN_SEE_SNEAKERS);
+				newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
+				newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
+				newMOB.basePhyStats().setSensesMask(PhyStats.CAN_SEE_DARK|PhyStats.CAN_SEE_INVISIBLE|PhyStats.CAN_SEE_SNEAKERS);
 				CMLib.factions().setAlignment(newMOB,Faction.ALIGN_EVIL);
-				newMOB.baseState().setHitPoints(30*newMOB.baseEnvStats().level());
+				newMOB.baseState().setHitPoints(30*newMOB.basePhyStats().level());
 				newMOB.baseState().setMovement(CMLib.leveler().getLevelMove(newMOB));
-				newMOB.baseEnvStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
+				newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
 				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 				newMOB.baseState().setMana(100);
 				newMOB.recoverCharStats();
-				newMOB.recoverEnvStats();
+				newMOB.recoverPhyStats();
 				newMOB.recoverMaxState();
 				newMOB.resetToMaxState();
 				newMOB.addAbility(CMClass.getAbility("Disease_MummyRot"));

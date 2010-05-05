@@ -38,8 +38,8 @@ public class LargeWoodRoom extends WoodRoom
 	public LargeWoodRoom()
 	{
 		super();
-		baseEnvStats.setWeight(3);
-		recoverEnvStats();
+		basePhyStats.setWeight(3);
+		recoverPhyStats();
 	}
 	public int maxRange(){return 5;}
 }

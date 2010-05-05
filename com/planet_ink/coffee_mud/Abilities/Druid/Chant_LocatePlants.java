@@ -176,7 +176,7 @@ public class Chant_LocatePlants extends Chant
 				Chant_LocatePlants newOne=(Chant_LocatePlants)this.copyOf();
 				if(target.fetchEffect(newOne.ID())==null)
 					target.addEffect(newOne);
-				target.recoverEnvStats();
+				target.recoverPhyStats();
 				newOne.nextDirection=CMLib.tracking().trackNextDirectionFromHere(newOne.theTrail,target.location(),false);
 			}
 		}

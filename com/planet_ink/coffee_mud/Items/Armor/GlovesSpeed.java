@@ -44,17 +44,17 @@ public class GlovesSpeed extends StdArmor
 		baseGoldValue+=10000;
 		properWornBitmap=Wearable.WORN_HANDS;
 		wornLogicalAnd=false;
-		baseEnvStats().setArmor(15);
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setWeight(1);
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
-		recoverEnvStats();
+		basePhyStats().setArmor(15);
+		basePhyStats().setAbility(0);
+		basePhyStats().setWeight(1);
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
+		recoverPhyStats();
 
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if((!this.amWearingAt(Wearable.IN_INVENTORY))&&(!this.amWearingAt(Wearable.WORN_HELD)))
 		{
 			affectableStats.setSpeed(affectableStats.speed() * 2.0);

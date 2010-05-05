@@ -288,10 +288,10 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
             playSound="sanding.wav";
 			building.setDisplayText(itemName+" lies here");
 			building.setDescription(itemName+". ");
-			building.baseEnvStats().setWeight(woodRequired);
+			building.basePhyStats().setWeight(woodRequired);
 			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 			building.setMaterial(data[0][FOUND_CODE]);
-			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
+			building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			String ammotype=(String)foundRecipe.elementAt(RCP_AMMOTYPE);
 			int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_AMOCAPACITY));
@@ -307,8 +307,8 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 					((Weapon)building).setAmmoRemaining(0);
 					((Weapon)building).setAmmunitionType(ammotype);
 				}
-				building.baseEnvStats().setAttackAdjustment((abilityCode()-1));
-				building.baseEnvStats().setDamage(armordmg);
+				building.basePhyStats().setAttackAdjustment((abilityCode()-1));
+				building.basePhyStats().setDamage(armordmg);
 				((Weapon)building).setRanges(((Weapon)building).minRange(),maxrange);
 			}
 			else
@@ -317,9 +317,9 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 				((Ammunition)building).setAmmunitionType(ammotype);
 				building.setUsesRemaining(capacity);
 			}
-			building.recoverEnvStats();
+			building.recoverPhyStats();
 			building.text();
-			building.recoverEnvStats();
+			building.recoverPhyStats();
 		}
 
 

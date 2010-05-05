@@ -77,8 +77,8 @@ public class Chant_SummonSeaweed extends Chant_SummonPlants
 			break;
 		}
 		Chant_SummonSeaweed newChant=new Chant_SummonSeaweed();
-		newItem.baseEnvStats().setLevel(10+newChant.getX1Level(mob));
-		newItem.baseEnvStats().setWeight(1);
+		newItem.basePhyStats().setLevel(10+newChant.getX1Level(mob));
+		newItem.basePhyStats().setWeight(1);
 		newItem.setSecretIdentity(mob.Name());
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
@@ -94,7 +94,7 @@ public class Chant_SummonSeaweed extends Chant_SummonPlants
 		}
 		else
 			newChant.beneficialAffect(mob,newItem,0,(newChant.adjustedLevel(mob,0)*240)+450);
-		room.recoverEnvStats();
+		room.recoverPhyStats();
 		return newItem;
 	}
 

@@ -44,12 +44,12 @@ public class Spell_ContinualLight extends Spell
 	protected int canAffectCode(){return CAN_MOBS|CAN_ITEMS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if(!(affected instanceof Room))
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_LIGHTSOURCE);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_LIGHTSOURCE);
 		if(CMLib.flags().isInDark(affected))
-			affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_DARK);
+			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_DARK);
 	}
 	public void unInvoke()
 	{

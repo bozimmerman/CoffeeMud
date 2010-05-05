@@ -139,7 +139,7 @@ public class Chant_SpeedAging extends Chant
 					    }
 					    M.baseCharStats().setStat(CharStats.STAT_AGE,M.baseCharStats().getStat(CharStats.STAT_AGE)+years);
 					}
-					M.recoverEnvStats();
+					M.recoverPhyStats();
 					M.recoverCharStats();
 				}
 				else
@@ -155,7 +155,7 @@ public class Chant_SpeedAging extends Chant
 						mob.location().show((MOB)target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> age(s) a bit.");
 					else
 						mob.location().showHappens(CMMsg.MSG_OK_VISUAL,target.name()+" ages a bit.");
-					target.recoverEnvStats();
+					target.recoverPhyStats();
 				}
 				else
 					return beneficialWordsFizzle(mob,target,"<S-NAME> chant(s) to <T-NAMESELF>, but the magic fades.");

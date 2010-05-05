@@ -43,9 +43,9 @@ public class Merge extends StdCommand
 	{
 		if((stat!=null)&&(stat.length()>0)&&(stat.equalsIgnoreCase("REJUV")))
 		{
-			if(E.baseEnvStats().rejuv()==Integer.MAX_VALUE)
+			if(E.basePhyStats().rejuv()==Integer.MAX_VALUE)
 				return "0";
-			return ""+E.baseEnvStats().rejuv();
+			return ""+E.basePhyStats().rejuv();
 		}
 		return E.getStat(stat);
 	}
@@ -53,7 +53,7 @@ public class Merge extends StdCommand
 	public static void setStat(Environmental E, String stat, String value)
 	{
 		if((stat!=null)&&(stat.length()>0)&&(stat.equalsIgnoreCase("REJUV")))
-			E.baseEnvStats().setRejuv(CMath.s_int(value));
+			E.basePhyStats().setRejuv(CMath.s_int(value));
 		else
 			E.setStat(stat,value);
 	}
@@ -146,7 +146,7 @@ public class Merge extends StdCommand
 		}
 		if(didAnything)
 		{
-			E.recoverEnvStats();
+			E.recoverPhyStats();
 			if(E instanceof MOB)
 			{
 				((MOB)E).recoverCharStats();

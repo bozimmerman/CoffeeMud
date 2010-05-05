@@ -45,14 +45,14 @@ public class Prayer_BlessItem extends Prayer implements MendingSkill
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected==null) return;
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GOOD);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_BONUS);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOOD);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BONUS);
 		if(affected instanceof MOB)
-			affectableStats.setArmor((affectableStats.armor()-5)-((affected.envStats().level()/10)+(2*super.getXLEVELLevel(invoker()))));
+			affectableStats.setArmor((affectableStats.armor()-5)-((affected.phyStats().level()/10)+(2*super.getXLEVELLevel(invoker()))));
 		else
 		if(affected instanceof Item)
 			affectableStats.setAbility(affectableStats.ability()+1);
@@ -128,8 +128,8 @@ public class Prayer_BlessItem extends Prayer implements MendingSkill
 				mob.location().send(mob,msg);
 				Prayer_Bless.endLowerCurses(target,CMLib.ableMapper().lowestQualifyingLevel(ID()));
 				beneficialAffect(mob,target,asLevel,0);
-				target.recoverEnvStats();
-				mob.recoverEnvStats();
+				target.recoverPhyStats();
+				mob.recoverPhyStats();
 			}
 		}
 		else

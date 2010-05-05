@@ -49,8 +49,8 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 		if(((((MOB)E).curState()).getHitPoints()<(((MOB)E).maxState()).getHitPoints()))
 			return true;
 		MOB caster=CMClass.getMOB("StdMOB");
-		caster.baseEnvStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
-		caster.envStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
+		caster.basePhyStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
+		caster.phyStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
 		if(
 		  (E.fetchEffect("Amputation")!=null)
 		||(E.fetchEffect("Fighter_AtemiStrike")!=null)
@@ -112,7 +112,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 					CMLib.combat().postHealing(mob,target,this,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,healing,null);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> look(s) much healthier!");
 					target.recoverCharStats();
-					target.recoverEnvStats();
+					target.recoverPhyStats();
 					target.recoverMaxState();
 				}
 				Ability A=target.fetchEffect("Amputation");
@@ -123,7 +123,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 					A=target.fetchAbility(A.ID());
 					if(A!=null) target.delAbility(A);
 					target.recoverCharStats();
-					target.recoverEnvStats();
+					target.recoverPhyStats();
 					target.recoverMaxState();
 				}
 				
@@ -133,7 +133,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 					target.delEffect(A);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> atemi damage is healed!");
 					target.recoverCharStats();
-					target.recoverEnvStats();
+					target.recoverPhyStats();
 					target.recoverMaxState();
 				}
 				
@@ -144,7 +144,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 					target.delEffect(A);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> lost levels are restored!");
 					target.recoverCharStats();
-					target.recoverEnvStats();
+					target.recoverPhyStats();
 					target.recoverMaxState();
 				}
 				A=target.fetchEffect("Undead_WeakEnergyDrain");
@@ -154,7 +154,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 					target.delEffect(A);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> lost levels are restored!");
 					target.recoverCharStats();
-					target.recoverEnvStats();
+					target.recoverPhyStats();
 					target.recoverMaxState();
 				}
 				A=target.fetchEffect("Undead_ColdTouch");
@@ -164,7 +164,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 					target.delEffect(A);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> no longer cold and weak!");
 					target.recoverCharStats();
-					target.recoverEnvStats();
+					target.recoverPhyStats();
 					target.recoverMaxState();
 				}
 				Vector offensiveAffects=new Prayer_RestoreSmell().returnOffensiveAffects(mob,target);
@@ -174,7 +174,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 						((Ability)offensiveAffects.elementAt(a)).unInvoke();
 					mob.location().showOthers(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> can smell again!");
 					target.recoverCharStats();
-					target.recoverEnvStats();
+					target.recoverPhyStats();
 					target.recoverMaxState();
 				}
 				offensiveAffects=new Prayer_RestoreVoice().returnOffensiveAffects(mob,target);
@@ -184,7 +184,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 						((Ability)offensiveAffects.elementAt(a)).unInvoke();
 					mob.location().showOthers(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> can speak again!");
 					target.recoverCharStats();
-					target.recoverEnvStats();
+					target.recoverPhyStats();
 					target.recoverMaxState();
 				}
 				offensiveAffects=Prayer_RemovePoison.returnOffensiveAffects(target);
@@ -194,7 +194,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 						((Ability)offensiveAffects.elementAt(a)).unInvoke();
 					mob.location().showOthers(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> is cured of <S-HIS-HER> poisonous afflication!");
 					target.recoverCharStats();
-					target.recoverEnvStats();
+					target.recoverPhyStats();
 					target.recoverMaxState();
 				}
 				offensiveAffects=new Prayer_Freedom().returnOffensiveAffects(mob,target);
@@ -204,7 +204,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 						((Ability)offensiveAffects.elementAt(a)).unInvoke();
 					mob.location().showOthers(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> can move again!");
 					target.recoverCharStats();
-					target.recoverEnvStats();
+					target.recoverPhyStats();
 					target.recoverMaxState();
 				}
 				offensiveAffects=new Prayer_CureDisease().returnOffensiveAffects(target);
@@ -214,7 +214,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 						((Ability)offensiveAffects.elementAt(a)).unInvoke();
 					mob.location().showOthers(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> is cured of <S-HIS-HER> disease!");
 					target.recoverCharStats();
-					target.recoverEnvStats();
+					target.recoverPhyStats();
 					target.recoverMaxState();
 				}
 				offensiveAffects=new Prayer_CureBlindness().returnOffensiveAffects(mob,target);
@@ -224,7 +224,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 						((Ability)offensiveAffects.elementAt(a)).unInvoke();
 					mob.location().showOthers(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> can see again!");
 					target.recoverCharStats();
-					target.recoverEnvStats();
+					target.recoverPhyStats();
 					target.recoverMaxState();
 				}
 				offensiveAffects=new Prayer_CureDeafness().returnOffensiveAffects(mob,target);
@@ -234,7 +234,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 						((Ability)offensiveAffects.elementAt(a)).unInvoke();
 					mob.location().showOthers(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> can hear again!");
 					target.recoverCharStats();
-					target.recoverEnvStats();
+					target.recoverPhyStats();
 					target.recoverMaxState();
 				}
 				mob.location().recoverRoomStats();

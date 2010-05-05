@@ -45,7 +45,7 @@ public class GenBow extends StdBow
 		setAmmunitionType("arrows");
 		setAmmoCapacity(20);
 		setAmmoRemaining(20);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public boolean isGeneric(){return true;}
@@ -62,7 +62,7 @@ public class GenBow extends StdBow
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 }
 

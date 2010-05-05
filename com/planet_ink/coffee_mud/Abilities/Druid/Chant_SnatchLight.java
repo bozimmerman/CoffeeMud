@@ -52,16 +52,16 @@ public class Chant_SnatchLight extends Chant
 		return null;
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(CMLib.map().roomLocation(affected)==snatchLocation())
 		{
-			affectableStats.setDisposition(affectableStats.disposition() |  EnvStats.IS_DARK);
-			if(CMath.bset(affectableStats.disposition(),EnvStats.IS_LIGHTSOURCE))
-				affectableStats.setDisposition(CMath.unsetb(affectableStats.disposition(),EnvStats.IS_LIGHTSOURCE));
-			if(CMath.bset(affectableStats.disposition(),EnvStats.IS_GLOWING))
-				affectableStats.setDisposition(CMath.unsetb(affectableStats.disposition(),EnvStats.IS_GLOWING));
+			affectableStats.setDisposition(affectableStats.disposition() |  PhyStats.IS_DARK);
+			if(CMath.bset(affectableStats.disposition(),PhyStats.IS_LIGHTSOURCE))
+				affectableStats.setDisposition(CMath.unsetb(affectableStats.disposition(),PhyStats.IS_LIGHTSOURCE));
+			if(CMath.bset(affectableStats.disposition(),PhyStats.IS_GLOWING))
+				affectableStats.setDisposition(CMath.unsetb(affectableStats.disposition(),PhyStats.IS_GLOWING));
 		}
 		else
 			unInvoke();

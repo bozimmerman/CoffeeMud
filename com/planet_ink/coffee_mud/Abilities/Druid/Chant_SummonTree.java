@@ -53,17 +53,17 @@ public class Chant_SummonTree extends Chant_SummonPlants
 		newItem.setName(name);
 		newItem.setDisplayText(newItem.name()+" grows here.");
 		newItem.setDescription("");
-		newItem.baseEnvStats().setWeight(10000);
+		newItem.basePhyStats().setWeight(10000);
 		CMLib.flags().setGettable(newItem,false);
 		newItem.setMaterial(material);
 		newItem.setSecretIdentity(mob.Name());
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
 		Chant_SummonTree newChant=new Chant_SummonTree();
-		newItem.baseEnvStats().setLevel(10+newChant.getX1Level(mob));
+		newItem.basePhyStats().setLevel(10+newChant.getX1Level(mob));
 		newItem.setExpirationDate(0);
 		room.showHappens(CMMsg.MSG_OK_ACTION,"a tall, healthy "+RawMaterial.CODES.NAME(code).toLowerCase()+" tree sprouts up.");
-		room.recoverEnvStats();
+		room.recoverPhyStats();
 		newChant.PlantsLocation=room;
 		newChant.littlePlants=newItem;
 		if(CMLib.law().doesOwnThisProperty(mob,room))
@@ -74,7 +74,7 @@ public class Chant_SummonTree extends Chant_SummonPlants
 		}
 		else
 			newChant.beneficialAffect(mob,newItem,0,(newChant.adjustedLevel(mob,0)*240)+450);
-		room.recoverEnvStats();
+		room.recoverPhyStats();
 		return newItem;
 	}
 

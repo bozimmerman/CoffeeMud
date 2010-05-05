@@ -56,19 +56,19 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         CMLib.factions().setAlignment(this,Faction.ALIGN_GOOD);
         setMoney(0);
         whatIsSoldMask=ShopKeeper.DEAL_POSTMAN;
-        baseEnvStats.setWeight(150);
+        basePhyStats.setWeight(150);
         setWimpHitPoint(0);
 
         baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,16);
         baseCharStats().setStat(CharStats.STAT_CHARISMA,25);
 
-        baseEnvStats().setArmor(0);
+        basePhyStats().setArmor(0);
 
         baseState.setHitPoints(1000);
 
         recoverMaxState();
         resetToMaxState();
-        recoverEnvStats();
+        recoverPhyStats();
         recoverCharStats();
     }
 
@@ -300,7 +300,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         if(I!=null)
         {
             CMLib.coffeeMaker().setPropertiesStr(I,data.xml,true);
-            I.recoverEnvStats();
+            I.recoverPhyStats();
             I.text();
             return I;
         }
@@ -311,8 +311,8 @@ public class StdPostman extends StdShopKeeper implements PostOffice
     {
         if(I==null) return 0;
         int chargeableWeight=0;
-        if(I.envStats().weight()>0)
-            chargeableWeight=(I.envStats().weight()-1);
+        if(I.phyStats().weight()>0)
+            chargeableWeight=(I.phyStats().weight()-1);
         return chargeableWeight;
     }
 

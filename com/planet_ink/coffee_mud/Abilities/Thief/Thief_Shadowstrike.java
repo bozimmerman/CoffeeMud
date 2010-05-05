@@ -110,13 +110,13 @@ public class Thief_Shadowstrike extends ThiefSkill
 		CMMsg msg=CMClass.getMsg(mob,target,this,code,str,otherCode,otherStr,otherCode,otherStr);
 		if(mob.location().okMessage(mob,msg))
 		{
-		    boolean alwaysInvis=CMath.bset(mob.baseEnvStats().disposition(),EnvStats.IS_INVISIBLE);
-		    if(!alwaysInvis) mob.baseEnvStats().setDisposition(mob.baseEnvStats().disposition()|EnvStats.IS_INVISIBLE);
-		    mob.recoverEnvStats();
+		    boolean alwaysInvis=CMath.bset(mob.basePhyStats().disposition(),PhyStats.IS_INVISIBLE);
+		    if(!alwaysInvis) mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_INVISIBLE);
+		    mob.recoverPhyStats();
 		    mob.location().send(mob,msg);
 		    CMLib.combat().postAttack(mob,target,w);
-		    if(!alwaysInvis) mob.baseEnvStats().setDisposition(mob.baseEnvStats().disposition()-EnvStats.IS_INVISIBLE);
-		    mob.recoverEnvStats();
+		    if(!alwaysInvis) mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()-PhyStats.IS_INVISIBLE);
+		    mob.recoverPhyStats();
 			if(success)
 			{
 				MOB oldVictim=target.getVictim();

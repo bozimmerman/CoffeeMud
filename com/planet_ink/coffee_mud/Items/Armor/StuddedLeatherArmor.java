@@ -42,11 +42,11 @@ public class StuddedLeatherArmor extends StdArmor
 		setDescription("A suit of studded leather armor including everything to protect the body, legs and arms.");
 		properWornBitmap=Wearable.WORN_TORSO | Wearable.WORN_ARMS | Wearable.WORN_LEGS;
 		wornLogicalAnd=true;
-		baseEnvStats().setArmor(22);
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setWeight(35);
+		basePhyStats().setArmor(22);
+		basePhyStats().setAbility(0);
+		basePhyStats().setWeight(35);
 		baseGoldValue=40;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_LEATHER;
 	}
 

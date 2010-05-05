@@ -38,9 +38,9 @@ public class StoneRoom extends StdRoom
 	public StoneRoom()
 	{
 		super();
-		recoverEnvStats();
-		baseEnvStats.setWeight(4);
-		recoverEnvStats();
+		recoverPhyStats();
+		basePhyStats.setWeight(4);
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_INDOORS_STONE;}
 	public int domainConditions(){return Room.CONDITION_NORMAL;}

@@ -43,7 +43,7 @@ public class SmallSack extends StdContainer
 		capacity=25;
 		material=RawMaterial.RESOURCE_COTTON;
 		baseGoldValue=1;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 

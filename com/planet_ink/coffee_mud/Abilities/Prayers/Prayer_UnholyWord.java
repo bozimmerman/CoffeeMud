@@ -44,9 +44,9 @@ public class Prayer_UnholyWord extends Prayer
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CURSING;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
 		MOB mob=(MOB)affected;
@@ -118,11 +118,11 @@ public class Prayer_UnholyWord extends Prayer
 							if(I!=null)
 							{
 								Prayer_Curse.endLowerBlessings(I,CMLib.ableMapper().lowestQualifyingLevel(ID()));
-								I.recoverEnvStats();
+								I.recoverPhyStats();
 							}
 							Prayer_Curse.endLowerBlessings(target,CMLib.ableMapper().lowestQualifyingLevel(ID()));
 							beneficialAffect(mob,target,asLevel,0);
-							target.recoverEnvStats();
+							target.recoverPhyStats();
 						}
 						else
 						if(CMath.bset(affectType,CMMsg.MASK_MALICIOUS))

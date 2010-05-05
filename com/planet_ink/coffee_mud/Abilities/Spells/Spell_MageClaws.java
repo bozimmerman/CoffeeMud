@@ -57,9 +57,9 @@ public class Spell_MageClaws extends Spell
 			w.setName("a pair of jagged claws");
 			w.setWeaponType(Weapon.TYPE_SLASHING);
 			w.setWeaponClassification(Weapon.CLASS_NATURAL);
-			w.baseEnvStats().setDamage(15);
-			w.baseEnvStats().setAttackAdjustment(20);
-			w.recoverEnvStats();
+			w.basePhyStats().setDamage(15);
+			w.basePhyStats().setAttackAdjustment(20);
+			w.recoverPhyStats();
 			msg.modify(msg.source(),msg.target(),w,msg.sourceCode(),msg.sourceMessage(),msg.targetCode(),msg.targetMessage(),msg.othersCode(),msg.othersMessage());
 		}
 		return super.okMessage(myHost,msg);

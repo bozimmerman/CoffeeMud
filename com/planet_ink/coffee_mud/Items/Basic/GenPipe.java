@@ -39,7 +39,7 @@ public class GenPipe extends GenCigar
 	{
 		super();
 		setName("a generic pipe");
-		baseEnvStats.setWeight(1);
+		basePhyStats.setWeight(1);
 		setDisplayText("a generic pipe sits here.");
 		setDescription("This nice wooden pipe could use some herbs in it to smoke.");
 		setMaterial(RawMaterial.RESOURCE_OAK);
@@ -47,7 +47,7 @@ public class GenPipe extends GenCigar
 		destroyedWhenBurnedOut=false;
 		baseGoldValue=5;
 		capacity=2;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 }

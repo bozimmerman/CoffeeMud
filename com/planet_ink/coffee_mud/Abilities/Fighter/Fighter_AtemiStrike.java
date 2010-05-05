@@ -140,7 +140,7 @@ public class Fighter_AtemiStrike extends FighterSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
+		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 		if(levelDiff>0)
 			levelDiff=levelDiff*20;
 		else
@@ -163,7 +163,7 @@ public class Fighter_AtemiStrike extends FighterSkill
 				if(msg.value()<=0)
 				{
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> do(es) not look well.");
-					success=maliciousAffect(mob,target,asLevel,((2*getXLEVELLevel(mob))+mob.envStats().level())/3,-1);
+					success=maliciousAffect(mob,target,asLevel,((2*getXLEVELLevel(mob))+mob.phyStats().level())/3,-1);
 				}
 			}
 		}

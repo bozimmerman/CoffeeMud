@@ -40,8 +40,8 @@ public class SwampGrid extends StdGrid
 	{
 		super();
 		name="the swamp";
-		baseEnvStats.setWeight(3);
-		recoverEnvStats();
+		basePhyStats.setWeight(3);
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_SWAMP;}
 	public int domainConditions(){return Room.CONDITION_WET;}

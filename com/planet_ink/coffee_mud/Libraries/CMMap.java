@@ -1086,7 +1086,7 @@ public class CMMap extends StdLibrary implements WorldMap
     public boolean explored(Room R)
     {
         if((R==null)
-        ||(CMath.bset(R.envStats().sensesMask(),EnvStats.SENSE_ROOMUNEXPLORABLE))
+        ||(CMath.bset(R.phyStats().sensesMask(),PhyStats.SENSE_ROOMUNEXPLORABLE))
         ||(R.getArea()==null))
             return false;
         return false;

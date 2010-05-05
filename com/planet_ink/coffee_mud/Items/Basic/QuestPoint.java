@@ -44,9 +44,9 @@ public class QuestPoint extends StdItem
 		myUses=Integer.MAX_VALUE;
 		myWornCode=0;
 		material=0;
-		baseEnvStats.setWeight(0);
-        baseEnvStats.setSensesMask(baseEnvStats().sensesMask()|EnvStats.SENSE_ITEMNORUIN);
-		recoverEnvStats();
+		basePhyStats.setWeight(0);
+        basePhyStats.setSensesMask(basePhyStats().sensesMask()|PhyStats.SENSE_ITEMNORUIN);
+		recoverPhyStats();
 	}
 
 

@@ -122,8 +122,8 @@ public class Spell_Boomerang extends Spell
 				mob.tell(target.name()+" will now await someone to GET it before acknowleding its new master.");
 				setMiscText("");
 				beneficialAffect(mob,target,asLevel,0);
-				target.recoverEnvStats();
-				mob.recoverEnvStats();
+				target.recoverPhyStats();
+				mob.recoverPhyStats();
 			}
 
 		}

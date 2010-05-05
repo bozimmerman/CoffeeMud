@@ -54,19 +54,19 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		setDisplayText("A shopkeeper is waiting to serve you.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_GOOD);
 		setMoney(0);
-		baseEnvStats.setWeight(150);
+		basePhyStats.setWeight(150);
 		setWimpHitPoint(0);
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,16);
 		baseCharStats().setStat(CharStats.STAT_CHARISMA,25);
 
-		baseEnvStats().setArmor(0);
+		basePhyStats().setArmor(0);
 
 		baseState.setHitPoints(1000);
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 
@@ -147,7 +147,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 						if(xml!=null)
 						{
 							CMLib.coffeeMaker().populateShops(this,xml);
-							recoverEnvStats();
+							recoverPhyStats();
 							recoverCharStats();
 						}
 					}

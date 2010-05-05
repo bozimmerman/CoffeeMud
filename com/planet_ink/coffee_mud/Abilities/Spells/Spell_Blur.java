@@ -70,9 +70,9 @@ public class Spell_Blur extends Spell
 		return true;
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setArmor(affectableStats.armor() - 5 -super.getXLEVELLevel(invoker()));
 	}
 

@@ -66,7 +66,7 @@ public class Thief_Graffiti extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(2*super.getXLEVELLevel(mob)));
+		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(2*super.getXLEVELLevel(mob)));
         if(levelDiff<0) levelDiff=0;
         levelDiff*=5;
 		boolean success=proficiencyCheck(mob,-levelDiff,auto);
@@ -79,7 +79,7 @@ public class Thief_Graffiti extends ThiefSkill
 				Item I=CMClass.getItem("GenWallpaper");
 				I.setName("Graffiti");
 				CMLib.flags().setReadable(I,true);
-				I.recoverEnvStats();
+				I.recoverPhyStats();
 				I.setReadableText(str);
 				switch(CMLib.dice().roll(1,6,0))
 				{
@@ -103,7 +103,7 @@ public class Thief_Graffiti extends ThiefSkill
 					break;
 				}
 				mob.location().addItem(I);
-				I.recoverEnvStats();
+				I.recoverPhyStats();
 				mob.location().recoverRoomStats();
 			}
 		}

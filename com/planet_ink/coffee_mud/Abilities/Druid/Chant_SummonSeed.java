@@ -111,13 +111,13 @@ public class Chant_SummonSeed extends Chant
 					newItem.setDisplayText(newItem.name()+" is here.");
 					newItem.setDescription("");
 					newItem.setMaterial(material);
-					newItem.baseEnvStats().setWeight(0);
-					newItem.recoverEnvStats();
+					newItem.basePhyStats().setWeight(0);
+					newItem.recoverPhyStats();
 					newItem.setMiscText(newItem.text());
 					mob.addItem(newItem);
 				}
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Some seeds appear!");
-				mob.location().recoverEnvStats();
+				mob.location().recoverPhyStats();
 			}
 		}
 		else

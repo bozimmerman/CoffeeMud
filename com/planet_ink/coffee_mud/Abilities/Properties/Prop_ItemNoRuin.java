@@ -41,8 +41,8 @@ public class Prop_ItemNoRuin extends Property
     public String accountForYourself()
     { return "A Prize";    }
 
-    public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+    public void affectPhyStats(Physical affected, PhyStats affectableStats)
     {
-        affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.SENSE_ITEMNORUIN);
+        affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_ITEMNORUIN);
     }
 }

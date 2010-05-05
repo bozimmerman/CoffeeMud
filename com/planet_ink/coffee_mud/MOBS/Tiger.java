@@ -44,7 +44,7 @@ public class Tiger extends StdMOB
 		setDisplayText("A tiger prowls here.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
-		baseEnvStats.setWeight(300 + Math.abs(randomizer.nextInt() % 55));
+		basePhyStats.setWeight(300 + Math.abs(randomizer.nextInt() % 55));
 
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
@@ -53,19 +53,19 @@ public class Tiger extends StdMOB
 		baseCharStats().setMyRace(CMClass.getRace("GreatCat"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		baseEnvStats().setDamage(10);
-		baseEnvStats().setSpeed(2.0);
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(5);
-		baseEnvStats().setArmor(60);
+		basePhyStats().setDamage(10);
+		basePhyStats().setSpeed(2.0);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(5);
+		basePhyStats().setArmor(60);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		addBehavior(CMClass.getBehavior("Aggressive"));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

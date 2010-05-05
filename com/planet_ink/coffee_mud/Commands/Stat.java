@@ -560,7 +560,7 @@ public class Stat  extends Skills
 			str.append("Combat summary:\n\r\n\r");
 			MOB M=CMClass.getMOB("StdMOB");
 			M.setBaseCharStats((CharStats)target.baseCharStats().copyOf());
-			M.setBaseEnvStats((EnvStats)target.baseEnvStats().copyOf());
+			M.setBasePhyStats((PhyStats)target.basePhyStats().copyOf());
 			M.setBaseState((CharState)target.baseState().copyOf());
 			recoverMOB(target);
 			recoverMOB(M);
@@ -618,23 +618,23 @@ public class Stat  extends Skills
 			str.append("^W-------------------------\n\r");
 			str.append("^C"+CMStrings.padRight("Total",40)+": ^W"+CMLib.combat().adjustedDamage(target,null,null)+"\n\r");
 			str.append("\n\r");
-			base=(int)Math.round(M.envStats().speed()*100);
+			base=(int)Math.round(M.phyStats().speed()*100);
 			str.append("^C"+CMStrings.padRight("Base Attacks%",40)+": ^W"+base+"\n\r");
 			for(int i=0;i<target.numItems();i++)
 			{
 				Item I=target.getItem(i);
-				if(I!=null){ recoverMOB(M); testMOB(target,M,I); int diff=(int)Math.round(M.envStats().speed()*100)-base; reportOnDiffMOB(I,diff,str);}
+				if(I!=null){ recoverMOB(M); testMOB(target,M,I); int diff=(int)Math.round(M.phyStats().speed()*100)-base; reportOnDiffMOB(I,diff,str);}
 			}
 			recoverMOB(M);
 			for(int i=0;i<target.numAllEffects();i++)
 			{
 				Ability A=target.fetchEffect(i);
-				if(A!=null){ recoverMOB(M); testMOB(target,M,A); int diff=(int)Math.round(M.envStats().speed()*100)-base; reportOnDiffMOB(A,diff,str);}
+				if(A!=null){ recoverMOB(M); testMOB(target,M,A); int diff=(int)Math.round(M.phyStats().speed()*100)-base; reportOnDiffMOB(A,diff,str);}
 			}
 			recoverMOB(target);
 			recoverMOB(M);
 			str.append("^W-------------------------\n\r");
-			str.append("^C"+CMStrings.padRight("Total",40)+": ^W"+(int)Math.round(target.envStats().speed()*100)+"\n\r");
+			str.append("^C"+CMStrings.padRight("Total",40)+": ^W"+(int)Math.round(target.phyStats().speed()*100)+"\n\r");
 			str.append("\n\r");
 			base=M.maxState().getHitPoints();
 			str.append("^C"+CMStrings.padRight("Base Hit Points",40)+": ^W"+base+"\n\r");
@@ -664,14 +664,14 @@ public class Stat  extends Skills
 	public void recoverMOB(MOB M)
 	{
 		M.recoverCharStats();
-		M.recoverEnvStats();
+		M.recoverPhyStats();
 		M.recoverMaxState();
 		M.resetToMaxState();
 	}
 	public void testMOB(MOB target,MOB M, Environmental test)
 	{
 		test.affectCharStats(target,M.charStats());
-		test.affectEnvStats(target,M.envStats());
+		test.affectPhyStats(target,M.phyStats());
 		test.affectCharState(target,M.maxState());
 	}
 	public void reportOnDiffMOB(Environmental test, int diff, StringBuilder str)

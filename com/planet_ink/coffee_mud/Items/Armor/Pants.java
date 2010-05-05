@@ -42,11 +42,11 @@ public class Pants extends StdArmor
 		setDescription("a well tailored pair of travelers pants.");
 		properWornBitmap=Wearable.WORN_LEGS;
 		wornLogicalAnd=false;
-		baseEnvStats().setArmor(1);
-		baseEnvStats().setWeight(1);
-		baseEnvStats().setAbility(0);
+		basePhyStats().setArmor(1);
+		basePhyStats().setWeight(1);
+		basePhyStats().setAbility(0);
 		baseGoldValue=1;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_COTTON;
 	}
 

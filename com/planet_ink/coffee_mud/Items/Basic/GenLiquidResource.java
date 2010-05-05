@@ -44,9 +44,9 @@ public class GenLiquidResource extends GenDrink implements RawMaterial, Drink
 		setDescription("");
 		setMaterial(RawMaterial.RESOURCE_FRESHWATER);
 		disappearsAfterDrinking=true;
-		baseEnvStats().setWeight(0);
+		basePhyStats().setWeight(0);
 		setCapacity(0);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	protected static Ability rot=null;
 

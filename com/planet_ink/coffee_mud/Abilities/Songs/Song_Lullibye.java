@@ -40,13 +40,13 @@ public class Song_Lullibye extends Song
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 
 	boolean asleep=false;
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(invoker==null) return;
 		if(affected==invoker) return;
 		if(asleep)
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SLEEPING);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SLEEPING);
 	}
 
 
@@ -68,13 +68,13 @@ public class Song_Lullibye extends Song
 			if(oldasleep)
 			{
 				if(CMLib.flags().isSleeping(mob))
-					mob.envStats().setDisposition(mob.envStats().disposition()-EnvStats.IS_SLEEPING);
+					mob.phyStats().setDisposition(mob.phyStats().disposition()-PhyStats.IS_SLEEPING);
 				mob.location().show(mob,null,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> wake(s) up.");
 			}
 			else
 			{
 				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> fall(s) asleep.");
-				mob.envStats().setDisposition(mob.envStats().disposition()|EnvStats.IS_SLEEPING);
+				mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SLEEPING);
 			}
 		}
 

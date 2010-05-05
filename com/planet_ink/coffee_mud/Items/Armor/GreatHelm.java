@@ -42,11 +42,11 @@ public class GreatHelm extends StdArmor
 		setDescription("This is a steel helmet that completely encloses the head.");
 		properWornBitmap=Wearable.WORN_HEAD;
 		wornLogicalAnd=false;
-		baseEnvStats().setArmor(18);
-		baseEnvStats().setWeight(10);
-		baseEnvStats().setAbility(0);
+		basePhyStats().setArmor(18);
+		basePhyStats().setWeight(10);
+		basePhyStats().setAbility(0);
 		baseGoldValue=60;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_STEEL;
 	}
 

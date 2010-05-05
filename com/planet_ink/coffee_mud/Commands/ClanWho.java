@@ -60,11 +60,11 @@ public class ClanWho extends Who
 
 			if((mob2!=null)
 			&&(!thisSession.killFlag())
-			&&((((mob2.envStats().disposition()&EnvStats.IS_CLOAKED)==0)
-					||((CMSecurity.isAllowedAnywhere(mob,"CLOAK")||CMSecurity.isAllowedAnywhere(mob,"WIZINV"))&&(mob.envStats().level()>=mob2.envStats().level()))))
+			&&((((mob2.phyStats().disposition()&PhyStats.IS_CLOAKED)==0)
+					||((CMSecurity.isAllowedAnywhere(mob,"CLOAK")||CMSecurity.isAllowedAnywhere(mob,"WIZINV"))&&(mob.phyStats().level()>=mob2.phyStats().level()))))
 			&&(mob2.getClanID().equals(mob.getClanID()))
 			&&(CMLib.flags().isInTheGame(mob2,true))
-			&&(mob2.envStats().level()>0))
+			&&(mob2.phyStats().level()>0))
 				msg.append(showWhoShort(mob2));
 		}
 		mob.tell(shortHead+msg.toString());

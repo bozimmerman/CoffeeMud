@@ -51,10 +51,10 @@ public class Spell_Transformation extends Spell
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> no longer so brutish.");
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDamage(affectableStats.damage()+affected.envStats().level()+getXLEVELLevel(invoker()));
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setDamage(affectableStats.damage()+affected.phyStats().level()+getXLEVELLevel(invoker()));
 	}
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{

@@ -147,14 +147,14 @@ public class GrinderPlayers extends GrinderMobs
 			case 3: if(M.playerStats()!=null) M.playerStats().setEmail(old); break;
 			case 4: M.baseCharStats().setMyRace(CMClass.getRace(old)); break;
 			case 5: break; // dont set class/levels list through this.
-			case 6: M.baseEnvStats().setLevel(CMath.s_int(old)); break;
+			case 6: M.basePhyStats().setLevel(CMath.s_int(old)); break;
 			case 7: break; // dont set levelstr
 			case 8: break; // dont set classlevelstr
 			case 9: break; // dont set classlist through this
 			case 10: break; // cant set maxcarry
-			case 11: M.baseEnvStats().setAttackAdjustment(CMath.s_int(old)); break;
-			case 12: M.baseEnvStats().setArmor(CMath.s_int(old)); break;
-			case 13: M.baseEnvStats().setDamage(CMath.s_int(old)); break;
+			case 11: M.basePhyStats().setAttackAdjustment(CMath.s_int(old)); break;
+			case 12: M.basePhyStats().setArmor(CMath.s_int(old)); break;
+			case 13: M.basePhyStats().setDamage(CMath.s_int(old)); break;
 			case 14: M.setAgeHours(CMath.s_long(old)); break;
 			case 15: M.setPractices(CMath.s_int(old)); break;
 			case 16: M.setExperience(CMath.s_int(old)); break;
@@ -173,15 +173,15 @@ public class GrinderPlayers extends GrinderMobs
 			case 29: if(CMLib.map().getRoom(old)!=null) M.setStartRoom(CMLib.map().getRoom(old)); break;
 			case 30: if(CMLib.map().getRoom(old)!=null) M.setLocation(CMLib.map().getRoom(old)); break;
 			case 31: break; // dont set inv list here
-			case 32: M.baseEnvStats().setWeight(CMath.s_int(old)); break;
-			case 33: M.envStats().setWeight(CMath.s_int(old)); break;
+			case 32: M.basePhyStats().setWeight(CMath.s_int(old)); break;
+			case 33: M.phyStats().setWeight(CMath.s_int(old)); break;
 			case 34: if(old.length()==1) M.baseCharStats().setStat(CharStats.STAT_GENDER,old.toUpperCase().charAt(0)); break;
 			case 35: if(M.playerStats()!=null) M.playerStats().setLastDateTime(CMath.s_long(old)); break;
 			case 36: M.curState().setHitPoints(CMath.s_int(old)); break;
 			case 37: M.curState().setMana(CMath.s_int(old)); break;
 			case 38: M.curState().setMovement(CMath.s_int(old)); break;
 			case 39: break; // dont set riding here
-			case 40: M.baseEnvStats().setHeight(CMath.s_int(old)); break;
+			case 40: M.basePhyStats().setHeight(CMath.s_int(old)); break;
 			case 41: if(M.playerStats()!=null) M.playerStats().setLastIP(old); break;
 			case 42: M.setQuestPoint(CMath.s_int(old)); break;
 			case 43: M.baseState().setHitPoints(CMath.s_int(old)); break;
@@ -193,11 +193,11 @@ public class GrinderPlayers extends GrinderMobs
 	        case 49: break; // dont set imagepath here
 			case 50: if(M.playerStats()!=null) 	M.playerStats().setNotes(old); break;
 			case 51: break; // dont set level chart
-			case 52: M.baseEnvStats().setAttackAdjustment(CMath.s_int(old)); break;
-			case 53: M.baseEnvStats().setDamage(CMath.s_int(old)); break;
-			case 54: M.baseEnvStats().setArmor(CMath.s_int(old)); break;
-			case 55: M.envStats().setSpeed(CMath.s_double(old)); break;
-			case 56: M.baseEnvStats().setSpeed(CMath.s_double(old)); break;
+			case 52: M.basePhyStats().setAttackAdjustment(CMath.s_int(old)); break;
+			case 53: M.basePhyStats().setDamage(CMath.s_int(old)); break;
+			case 54: M.basePhyStats().setArmor(CMath.s_int(old)); break;
+			case 55: M.phyStats().setSpeed(CMath.s_double(old)); break;
+			case 56: M.basePhyStats().setSpeed(CMath.s_double(old)); break;
 			case 57: 
 			{
 				Vector V=CMParms.parseCommas(old.toUpperCase(),true);
@@ -298,7 +298,7 @@ public class GrinderPlayers extends GrinderMobs
 			}
 			M.baseCharStats().setMyClasses(classList.toString());
 			M.baseCharStats().setMyLevels(levelsList.toString());
-			M.baseEnvStats().setLevel(totalLevel);
+			M.basePhyStats().setLevel(totalLevel);
 		}
 		return "";
 	}
@@ -404,10 +404,10 @@ public class GrinderPlayers extends GrinderMobs
 		if(error.length()>0) return error;
 		error=classList(M,httpReq,parms);
 		if(error.length()>0) return error;
-		M.recoverEnvStats();
+		M.recoverPhyStats();
 		M.recoverCharStats();
 		M.recoverMaxState();
-		M.recoverEnvStats();
+		M.recoverPhyStats();
 		M.recoverCharStats();
 		M.recoverMaxState();
 		if(M.location()!=null)

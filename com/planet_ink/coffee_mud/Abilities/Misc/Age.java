@@ -192,14 +192,14 @@ public class Age extends StdAbility
 						babe.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,3);
 						babe.baseCharStats().setStat(CharStats.STAT_STRENGTH,2);
 						babe.baseCharStats().setStat(CharStats.STAT_WISDOM,2);
-						babe.baseEnvStats().setHeight(babe.baseEnvStats().height()*2);
-						babe.baseEnvStats().setWeight(babe.baseEnvStats().weight()*2);
+						babe.basePhyStats().setHeight(babe.basePhyStats().height()*2);
+						babe.basePhyStats().setWeight(babe.basePhyStats().weight()*2);
 						babe.baseState().setHitPoints(2);
 						babe.baseState().setMana(10);
 						babe.baseState().setMovement(20);
 						babe.setLiegeID(following.Name());
 						babe.recoverCharStats();
-						babe.recoverEnvStats();
+						babe.recoverPhyStats();
 						babe.recoverMaxState();
 						Age A=(Age)babe.fetchEffect(ID());
 						if(A!=null) A.setMiscText(text());
@@ -214,7 +214,7 @@ public class Age extends StdAbility
 						babe.setFollowing(following);
 						R.show(babe,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> JUST TOOK <S-HIS-HER> FIRST STEPS!!!");
 						I.destroy();
-                        CMLib.database().DBReCreateData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text(),babe.ID()+"/"+babe.baseEnvStats().ability()+"/"+babe.text());
+                        CMLib.database().DBReCreateData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text(),babe.ID()+"/"+babe.basePhyStats().ability()+"/"+babe.text());
 					}
 				}
 			}
@@ -252,8 +252,8 @@ public class Age extends StdAbility
 					babe.baseCharStats().setStat(CharStats.STAT_WISDOM,6);
 					if(following!=null)
 						babe.copyFactions(following);
-					babe.baseEnvStats().setHeight(babe.baseEnvStats().height()*5);
-					babe.baseEnvStats().setWeight(babe.baseEnvStats().weight()*5);
+					babe.basePhyStats().setHeight(babe.basePhyStats().height()*5);
+					babe.basePhyStats().setWeight(babe.basePhyStats().weight()*5);
 					babe.baseState().setHitPoints(4);
 					babe.baseState().setMana(25);
 					babe.baseState().setMovement(50);
@@ -263,11 +263,11 @@ public class Age extends StdAbility
 					else
 						babe.delEffect(this);
 					babe.recoverCharStats();
-					babe.recoverEnvStats();
+					babe.recoverPhyStats();
 					babe.recoverMaxState();
 					babe.text();
                     if(following!=null)
-                        CMLib.database().DBReCreateData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text(),babe.ID()+"/"+babe.baseEnvStats().ability()+"/"+babe.text());
+                        CMLib.database().DBReCreateData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text(),babe.ID()+"/"+babe.basePhyStats().ability()+"/"+babe.text());
 				}
 			}
 			else
@@ -291,9 +291,9 @@ public class Age extends StdAbility
 					MOB newMan=CMClass.getMOB("StdMOB");
 					newMan.setAgeHours(babe.getAgeHours());
 					newMan.setBaseCharStats(babe.baseCharStats());
-					newMan.setBaseEnvStats(babe.baseEnvStats());
+					newMan.setBasePhyStats(babe.basePhyStats());
 					if(liege!=null)	newMan.copyFactions(liege);
-					newMan.baseEnvStats().setLevel(1);
+					newMan.basePhyStats().setLevel(1);
 					newMan.setBitmap(babe.getBitmap());
                     for(Enumeration<MOB.Tattoo> e=babe.tattoos();e.hasMoreElements();)
                         newMan.addTattoo(e.nextElement());
@@ -356,7 +356,7 @@ public class Age extends StdAbility
 					newMan.baseState().setHitPoints(CMProps.getIntVar(CMProps.SYSTEMI_STARTHP));
 					newMan.baseState().setMana(CMProps.getIntVar(CMProps.SYSTEMI_STARTMANA));
 					newMan.baseState().setMovement(CMProps.getIntVar(CMProps.SYSTEMI_STARTMOVE));
-					newMan.baseCharStats().getMyRace().setHeightWeight(newMan.baseEnvStats(),(char)newMan.baseCharStats().getStat(CharStats.STAT_GENDER));
+					newMan.baseCharStats().getMyRace().setHeightWeight(newMan.basePhyStats(),(char)newMan.baseCharStats().getStat(CharStats.STAT_GENDER));
 					CMLib.login().reRollStats(newMan,newMan.baseCharStats());
 					newMan.baseCharStats().getMyRace().startRacing(newMan,false);
 					newMan.baseCharStats().setMyClasses(";Apprentice");
@@ -381,14 +381,14 @@ public class Age extends StdAbility
 					newMan.playerStats().setLastDateTime(System.currentTimeMillis());
 					newMan.playerStats().setLastUpdated(System.currentTimeMillis());
 					newMan.recoverCharStats();
-					newMan.recoverEnvStats();
+					newMan.recoverPhyStats();
 					newMan.recoverMaxState();
 					newMan.resetToMaxState();
                     if(CMLib.flags().isAnimalIntelligence(newMan))
                     {
                         newMan.baseCharStats().setMyClasses(";StdCharClass");
                         newMan.recoverCharStats();
-                        newMan.recoverEnvStats();
+                        newMan.recoverPhyStats();
                         newMan.recoverMaxState();
                         newMan.resetToMaxState();
                     }
@@ -440,7 +440,7 @@ public class Age extends StdAbility
 					A=babe.fetchEffect(ID());
 					A.setMiscText(""+ellapsed);
 					babe.recoverCharStats();
-					babe.recoverEnvStats();
+					babe.recoverPhyStats();
 					babe.recoverMaxState();
 					babe.text();
 				}
@@ -562,9 +562,9 @@ public class Age extends StdAbility
 		}
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		doThang();
 	}
 	public void affectCharStats(MOB affected, CharStats affectableStats)

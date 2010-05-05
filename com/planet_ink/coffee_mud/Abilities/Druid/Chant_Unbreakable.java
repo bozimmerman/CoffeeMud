@@ -45,9 +45,9 @@ public class Chant_Unbreakable extends Chant
 	protected int canTargetCode(){return CAN_ITEMS;}
 	protected int maintainCondition=100;
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(!(affected instanceof Item)) return;
 		if(maintainCondition>0)
 			((Item)affected).setUsesRemaining(maintainCondition);
@@ -126,8 +126,8 @@ public class Chant_Unbreakable extends Chant
 
 				beneficialAffect(mob,target,asLevel,0);
 				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> is unbreakable!");
-				target.recoverEnvStats();
-				mob.recoverEnvStats();
+				target.recoverPhyStats();
+				mob.recoverPhyStats();
 			}
 		}
 		else

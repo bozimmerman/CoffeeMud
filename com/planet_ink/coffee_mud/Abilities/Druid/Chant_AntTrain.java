@@ -72,17 +72,17 @@ public class Chant_AntTrain extends Chant
 				CMLib.commands().postDrop(mob,item,true,false);
 			wasntMine=false;
 
-			item.recoverEnvStats();
+			item.recoverPhyStats();
 			mob.recoverMaxState();
 			mob.recoverCharStats();
-			mob.recoverEnvStats();
+			mob.recoverPhyStats();
 		}
 	}
 
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setWeight(0);
 	}
 
@@ -121,7 +121,7 @@ public class Chant_AntTrain extends Chant
 			if(!mob.isMine(target))
 			{
 				target.addNonUninvokableEffect(this);
-				target.recoverEnvStats();
+				target.recoverPhyStats();
 				wasntMine=true;
 				if(target instanceof Coins)
 				{
@@ -132,11 +132,11 @@ public class Chant_AntTrain extends Chant
 				if(!CMLib.commands().postGet(mob,null,(Item)target,true))
 				{
 					target.delEffect(this);
-					target.recoverEnvStats();
+					target.recoverPhyStats();
 					return false;
 				}
 				target.delEffect(this);
-				target.recoverEnvStats();
+				target.recoverPhyStats();
 			}
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"<T-NAME> begin(s) to float around.":"^S<S-NAME> chant(s), and a train of ants appears to carry <T-NAMESELF> for <S-HIM-HER>.^?");
 			if(mob.location().okMessage(mob,msg))
@@ -149,9 +149,9 @@ public class Chant_AntTrain extends Chant
 				((Item)target).wearAt(Wearable.WORN_FLOATING_NEARBY);
 				((Item)target).setRawLogicalAnd(properWornLogical);
 				((Item)target).setRawProperLocationBitmap(properWornCode);
-				((Item)target).recoverEnvStats();
-				beneficialAffect(mob,target,asLevel,(mob.envStats().level()+(2*super.getXLEVELLevel(mob)))*10);
-				mob.recoverEnvStats();
+				((Item)target).recoverPhyStats();
+				beneficialAffect(mob,target,asLevel,(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*10);
+				mob.recoverPhyStats();
 				mob.recoverMaxState();
 				mob.recoverCharStats();
 			}

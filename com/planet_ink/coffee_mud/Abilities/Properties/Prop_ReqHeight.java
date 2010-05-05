@@ -52,7 +52,7 @@ public class Prop_ReqHeight extends Property
 			int height=100;
 			if(CMath.isInteger(text()))
 				height=CMath.s_int(text());
-			if(msg.source().envStats().height()>height)
+			if(msg.source().phyStats().height()>height)
 			{
 				msg.source().tell("You are too tall to fit in there.");
 				return false;

@@ -57,12 +57,12 @@ public class Druid_RecoverVoice extends StdAbility
 			Ability A=fromMe.fetchEffect(a);
 			if(A!=null)
 			{
-				newMOB.recoverEnvStats();
-				A.affectEnvStats(newMOB,newMOB.envStats());
+				newMOB.recoverPhyStats();
+				A.affectPhyStats(newMOB,newMOB.phyStats());
 				if((!CMLib.flags().canSpeak(newMOB))
 				&&((A.invoker()==null)
 				   ||((A.invoker()!=null)
-					  &&(A.invoker().envStats().level()<=(caster.envStats().level()+10+(2*super.getXLEVELLevel(caster)))))))
+					  &&(A.invoker().phyStats().level()<=(caster.phyStats().level()+10+(2*super.getXLEVELLevel(caster)))))))
 						offenders.addElement(A);
 			}
 		}

@@ -39,13 +39,13 @@ public class Ration extends StdFood
 	{
 		super();
 		setName("a ration pack");
-		baseEnvStats.setWeight(10);
+		basePhyStats.setWeight(10);
 		amountOfNourishment=500;
 		setDisplayText("a standard ration pack sits here.");
 		setDescription("Bits of salt dried meat, dried fruit, and hard bread.");
 		baseGoldValue=15;
 		setMaterial(RawMaterial.RESOURCE_MEAT);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 

@@ -55,7 +55,7 @@ public class Prayer_ProtGood extends Prayer
 
 		if(CMLib.flags().isGood(mob))
 		{
-			int damage=(int)Math.round(CMath.div(mob.envStats().level()+(2*super.getXLEVELLevel(invoker())),3.0));
+			int damage=(int)Math.round(CMath.div(mob.phyStats().level()+(2*super.getXLEVELLevel(invoker())),3.0));
 			CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"<T-HIS-HER> protective aura <DAMAGE> <T-NAME>!");
 		}
 		return super.tick(ticking,tickID);
@@ -87,9 +87,9 @@ public class Prayer_ProtGood extends Prayer
 	}
 
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
 		MOB mob=(MOB)affected;

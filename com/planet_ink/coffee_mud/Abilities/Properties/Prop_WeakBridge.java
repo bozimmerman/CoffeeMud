@@ -83,10 +83,10 @@ public class Prop_WeakBridge extends Property
 			{
 				MOB M=room.fetchInhabitant(i);
 				if((M!=null)&&(M!=mob)&&(!CMLib.flags().isInFlight(M)))
-					weight+=M.envStats().weight();
+					weight+=M.phyStats().weight();
 			}
 		}
-		return weight+mob.envStats().weight();
+		return weight+mob.phyStats().weight();
 	}
 
 
@@ -123,13 +123,13 @@ public class Prop_WeakBridge extends Property
 		}
 		super.executeMsg(myHost,msg);
 	}
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		// get rid of flying restrictions when bridge is up
 		if((affected!=null)
 		&&(affected instanceof Room)
 		&&(bridgeIsUp))
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SLEEPING);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SLEEPING);
 	}
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -186,7 +186,7 @@ public class Prop_WeakBridge extends Property
 						}
 					}
 					if(affected instanceof Room)
-						((Room)affected).recoverEnvStats();
+						((Room)affected).recoverPhyStats();
 					CMLib.threads().deleteTick(this,Tickable.TICKID_SPELL_AFFECT);
 					CMLib.threads().startTickDown(this,Tickable.TICKID_SPELL_AFFECT,ticksDown);
 				}
@@ -196,7 +196,7 @@ public class Prop_WeakBridge extends Property
 				bridgeIsUp=true;
 				CMLib.threads().deleteTick(this,Tickable.TICKID_SPELL_AFFECT);
 				if(affected instanceof Room)
-					((Room)affected).recoverEnvStats();
+					((Room)affected).recoverPhyStats();
 			}
 		}
 		return true;

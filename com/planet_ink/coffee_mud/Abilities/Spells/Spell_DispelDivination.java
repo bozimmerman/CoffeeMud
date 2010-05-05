@@ -53,7 +53,7 @@ public class Spell_DispelDivination extends Spell
             &&(A.canBeUninvoked())
             &&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_DIVINATION)
             &&((A.invoker()==caster)
-	            ||(A.invoker().envStats().level()<=caster.envStats().level()+25)
+	            ||(A.invoker().phyStats().level()<=caster.phyStats().level()+25)
 	            ||admin))
 	            	offenders.addElement(A);
         }
@@ -95,7 +95,7 @@ public class Spell_DispelDivination extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int diff=revokeThis.invoker().envStats().level()-mob.envStats().level();
+		int diff=revokeThis.invoker().phyStats().level()-mob.phyStats().level();
 		if(diff<0) diff=0;
 		else diff=diff*-20;
 

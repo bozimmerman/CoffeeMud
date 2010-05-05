@@ -41,11 +41,11 @@ public class GenRideable extends StdRideable
 		username="a generic horse";
 		setDescription("");
 		setDisplayText("A generic horse stands here.");
-		baseEnvStats().setAbility(11); // his only off-default
+		basePhyStats().setAbility(11); // his only off-default
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

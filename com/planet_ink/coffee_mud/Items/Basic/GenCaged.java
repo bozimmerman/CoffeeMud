@@ -41,13 +41,13 @@ public class GenCaged extends GenItem implements CagedAnimal
 	{
 		super();
 		setName("a caged creature");
-		baseEnvStats.setWeight(150);
+		basePhyStats.setWeight(150);
 		setDisplayText("a caged creature sits here.");
 		setDescription("");
 		baseGoldValue=5;
-		baseEnvStats().setLevel(1);
+		basePhyStats().setLevel(1);
 		setMaterial(RawMaterial.RESOURCE_MEAT);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
     protected byte[]    readableText=null;
     public String readableText(){return readableText==null?"":CMLib.encoder().decompressString(readableText);}
@@ -59,9 +59,9 @@ public class GenCaged extends GenItem implements CagedAnimal
 		name=M.Name();
 		displayText=M.displayText();
 		setDescription(M.description());
-		baseEnvStats().setLevel(M.baseEnvStats().level());
-		baseEnvStats().setWeight(M.baseEnvStats().weight());
-		baseEnvStats().setHeight(M.baseEnvStats().height());
+		basePhyStats().setLevel(M.basePhyStats().level());
+		basePhyStats().setWeight(M.basePhyStats().weight());
+		basePhyStats().setHeight(M.basePhyStats().height());
 		StringBuffer itemstr=new StringBuffer("");
 		itemstr.append("<MOBITEM>");
 		itemstr.append(CMLib.xml().convertXMLtoTag("MICLASS",CMClass.classID(M)));
@@ -69,7 +69,7 @@ public class GenCaged extends GenItem implements CagedAnimal
 		itemstr.append(CMLib.xml().convertXMLtoTag("MIDATA",CMLib.coffeeMaker().getPropertiesStr(M,true)));
 		itemstr.append("</MOBITEM>");
 		setCageText(itemstr.toString());
-		recoverEnvStats();
+		recoverPhyStats();
 		return true;
 	}
     
@@ -84,7 +84,7 @@ public class GenCaged extends GenItem implements CagedAnimal
 	{
 		if((msg.amITarget(this)
 			||((msg.tool()==this)&&(msg.target()==container())&&(container()!=null)))
-		&&((baseEnvStats().ability()&ABILITY_MOBPROGRAMMATICALLY)==0)
+		&&((basePhyStats().ability()&ABILITY_MOBPROGRAMMATICALLY)==0)
 		&&((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_DROP)))
 		{
 			MOB M=unCageMe();
@@ -122,7 +122,7 @@ public class GenCaged extends GenItem implements CagedAnimal
 		}
 		CMLib.coffeeMaker().setPropertiesStr(newOne,idat,true);
 		M=(MOB)newOne;
-		M.baseEnvStats().setRejuv(0);
+		M.basePhyStats().setRejuv(0);
 		M.setStartRoom(null);
 		if(M.isGeneric())
 			CMLib.coffeeMaker().resetGenMOB(M,M.text());

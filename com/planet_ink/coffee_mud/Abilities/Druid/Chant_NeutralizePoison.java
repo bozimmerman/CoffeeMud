@@ -104,7 +104,7 @@ public class Chant_NeutralizePoison extends Chant implements MendingSkill
 				if((target instanceof Drink)&&(((Drink)target).liquidHeld()==RawMaterial.RESOURCE_POISON))
 				{
 					((Drink)target).setLiquidHeld(RawMaterial.RESOURCE_FRESHWATER);
-					target.baseEnvStats().setAbility(0);
+					target.basePhyStats().setAbility(0);
 				}
 				if((!CMLib.flags().stillAffectedBy(target,offensiveAffects,false))
 				&&(target instanceof MOB))
@@ -113,7 +113,7 @@ public class Chant_NeutralizePoison extends Chant implements MendingSkill
 					((MOB)target).recoverCharStats();
 					((MOB)target).recoverMaxState();
 				}
-				target.recoverEnvStats();
+				target.recoverPhyStats();
 			}
 		}
 		else

@@ -46,13 +46,13 @@ public class Prayer_FlameWeapon extends Prayer
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HEATING|Ability.FLAG_FIREBASED;}
     protected boolean notAgain=false;
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected==null) return;
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_BONUS);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GLOWING);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_LIGHTSOURCE);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BONUS);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GLOWING);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_LIGHTSOURCE);
 		if(affected instanceof Item)
 			affectableStats.setAbility(affectableStats.ability()+1);
 	}
@@ -172,8 +172,8 @@ public class Prayer_FlameWeapon extends Prayer
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,0);
 				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,("<T-NAME> is engulfed in flames!")+CMProps.msp("fireball.wav",10));
-				target.recoverEnvStats();
-				mob.recoverEnvStats();
+				target.recoverPhyStats();
+				mob.recoverPhyStats();
 			}
 		}
 		else

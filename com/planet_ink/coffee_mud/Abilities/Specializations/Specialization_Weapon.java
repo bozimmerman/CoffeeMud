@@ -99,9 +99,9 @@ public class Specialization_Weapon extends StdAbility
 	}
 
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		activated=false;
 		if(affected instanceof MOB)
 		{

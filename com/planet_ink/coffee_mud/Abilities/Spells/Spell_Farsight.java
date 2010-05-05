@@ -52,7 +52,7 @@ public class Spell_Farsight extends Spell
 		else
 		{
 			CMMsg msg=CMClass.getMsg(mob,null,null,verbalCastCode(mob,null,auto),"^S<S-NAME> get(s) a far off look in <S-HIS-HER> eyes.^?");
-			int limit=mob.envStats().level()/5;
+			int limit=mob.phyStats().level()/5;
 			if(limit<0) limit=1;
 			if(mob.location().okMessage(mob,msg))
 			{

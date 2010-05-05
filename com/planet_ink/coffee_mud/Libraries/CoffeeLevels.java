@@ -58,7 +58,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	public int getLevelMana(MOB mob)
 	{
 		return CMProps.getIntVar(CMProps.SYSTEMI_STARTMANA)+
-		    ((mob.baseEnvStats().level()-1)*getManaBonusNextLevel(mob));
+		    ((mob.basePhyStats().level()-1)*getManaBonusNextLevel(mob));
 	}
 
 	public int getAttackBonusNextLevel(MOB mob)
@@ -78,28 +78,28 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	
 	public int getLevelAttack(MOB mob)
 	{
-		return ((mob.baseEnvStats().level()-1)*getAttackBonusNextLevel(mob)) + mob.baseEnvStats().level();
+		return ((mob.basePhyStats().level()-1)*getAttackBonusNextLevel(mob)) + mob.basePhyStats().level();
 	}
 
 	public int getLevelMOBArmor(MOB mob)
 	{
-		return 100-(int)Math.round(CMath.mul(mob.baseEnvStats().level(),3.0));
+		return 100-(int)Math.round(CMath.mul(mob.basePhyStats().level(),3.0));
 	}
 
 	public int getLevelMOBDamage(MOB mob)
 	{
-		return (mob.baseEnvStats().level());
+		return (mob.basePhyStats().level());
 	}
 
 	public double getLevelMOBSpeed(MOB mob)
 	{
-		return 1.0+Math.floor(CMath.div(mob.baseEnvStats().level(),30.0));
+		return 1.0+Math.floor(CMath.div(mob.basePhyStats().level(),30.0));
 	}
 
 	public int getMoveBonusNextLevel(MOB mob)
 	{
 		CharClass charClass = mob.baseCharStats().getCurrentClass();
-		double lvlMul=1.0;//-CMath.div(mob.envStats().level(),100.0);
+		double lvlMul=1.0;//-CMath.div(mob.phyStats().level(),100.0);
 		if(lvlMul<0.1) lvlMul=.1;
 		int mvStat=mob.charStats().getStat(CharStats.STAT_STRENGTH);
 		int maxMvStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
@@ -112,8 +112,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	public int getLevelMove(MOB mob)
 	{
 		int move=CMProps.getIntVar(CMProps.SYSTEMI_STARTMOVE);
-		if(mob.baseEnvStats().level()>1)
-			move+=(mob.baseEnvStats().level()-1) * getMoveBonusNextLevel(mob);
+		if(mob.basePhyStats().level()>1)
+			move+=(mob.basePhyStats().level()-1) * getMoveBonusNextLevel(mob);
 		return move;
 	}
 
@@ -137,7 +137,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
     public int getPlayerHitPoints(MOB mob)
     {
         int hp=CMProps.getIntVar(CMProps.SYSTEMI_STARTHP);
-        return hp+((mob.envStats().level()-1)*getPlayerHPBonusNextLevel(mob));
+        return hp+((mob.phyStats().level()-1)*getPlayerHPBonusNextLevel(mob));
     }
 
 	public MOB fillOutMOB(CharClass C, int level)
@@ -147,8 +147,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		mob.charStats().setCurrentClass(C);
 		mob.baseCharStats().setCurrentClassLevel(level);
 		mob.charStats().setCurrentClassLevel(level);
-		mob.baseEnvStats().setLevel(level);
-		mob.envStats().setLevel(level);
+		mob.basePhyStats().setLevel(level);
+		mob.phyStats().setLevel(level);
 		fillOutMOB(mob,level);
 		return mob;
 	}
@@ -160,25 +160,25 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 		long rejuv=Tickable.TICKS_PER_RLMIN+Tickable.TICKS_PER_RLMIN+(level*Tickable.TICKS_PER_RLMIN/2);
 		if(rejuv>(Tickable.TICKS_PER_RLMIN*20)) rejuv=(Tickable.TICKS_PER_RLMIN*20);
-		mob.baseEnvStats().setLevel(level);
-		mob.baseEnvStats().setRejuv((int)rejuv);
-		mob.baseEnvStats().setSpeed(getLevelMOBSpeed(mob));
-		mob.baseEnvStats().setArmor(getLevelMOBArmor(mob));
-		mob.baseEnvStats().setDamage(getLevelMOBDamage(mob));
-		mob.baseEnvStats().setAttackAdjustment(getLevelAttack(mob));
+		mob.basePhyStats().setLevel(level);
+		mob.basePhyStats().setRejuv((int)rejuv);
+		mob.basePhyStats().setSpeed(getLevelMOBSpeed(mob));
+		mob.basePhyStats().setArmor(getLevelMOBArmor(mob));
+		mob.basePhyStats().setDamage(getLevelMOBDamage(mob));
+		mob.basePhyStats().setAttackAdjustment(getLevelAttack(mob));
 		mob.setMoney(CMLib.dice().roll(1,level,0)+CMLib.dice().roll(1,10,0));
-        mob.baseState().setHitPoints(CMLib.dice().rollHP(mob.baseEnvStats().level(),mob.baseEnvStats().ability()));
+        mob.baseState().setHitPoints(CMLib.dice().rollHP(mob.basePhyStats().level(),mob.basePhyStats().ability()));
         mob.baseState().setMana(getLevelMana(mob));
         mob.baseState().setMovement(getLevelMove(mob));
         if(mob.getWimpHitPoint()>0)
             mob.setWimpHitPoint((int)Math.round(CMath.mul(mob.curState().getHitPoints(),.10)));
-        mob.setExperience(CMLib.leveler().getLevelExperience(mob.envStats().level()));
+        mob.setExperience(CMLib.leveler().getLevelExperience(mob.phyStats().level()));
 		return mob;
 	}
 
 	public StringBuffer baseLevelAdjuster(MOB mob, int adjuster)
 	{
-		mob.baseEnvStats().setLevel(mob.baseEnvStats().level()+adjuster);
+		mob.basePhyStats().setLevel(mob.basePhyStats().level()+adjuster);
 		CharClass curClass=mob.baseCharStats().getCurrentClass();
 		mob.baseCharStats().setClassLevel(curClass,mob.baseCharStats().getClassLevel(curClass)+adjuster);
 		int classLevel=mob.baseCharStats().getClassLevel(mob.baseCharStats().getCurrentClass());
@@ -188,7 +188,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		StringBuffer theNews=new StringBuffer("");
 
 		mob.recoverCharStats();
-		mob.recoverEnvStats();
+		mob.recoverPhyStats();
 		theNews.append("^HYou are now a "+mob.charStats().displayClassLevel(mob,false)+".^N\n\r");
 
 		int newHitPointGain = getPlayerHPBonusNextLevel(mob) * adjuster;
@@ -204,8 +204,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		theNews.append(mvGain+"^N move " + (mvGain!=1?"points":"point") + ", ^H");
 
 		int attGain=getAttackBonusNextLevel(mob) * adjuster;
-		mob.baseEnvStats().setAttackAdjustment(mob.baseEnvStats().attackAdjustment()+attGain);
-		mob.envStats().setAttackAdjustment(mob.envStats().attackAdjustment()+attGain);
+		mob.basePhyStats().setAttackAdjustment(mob.basePhyStats().attackAdjustment()+attGain);
+		mob.phyStats().setAttackAdjustment(mob.phyStats().attackAdjustment()+attGain);
 		if(attGain>0)
 			theNews.append(attGain+"^N attack " + (attGain!=1?"points":"point") + ", ^H");
 
@@ -217,10 +217,10 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		if(curClass.getLevelsPerBonusDamage()!=0)
         {
     		if((adjuster<0)&&(((classLevel+1)%curClass.getLevelsPerBonusDamage())==0))
-    			mob.baseEnvStats().setDamage(mob.baseEnvStats().damage()-1);
+    			mob.basePhyStats().setDamage(mob.basePhyStats().damage()-1);
     		else
     		if((adjuster>0)&&((classLevel%curClass.getLevelsPerBonusDamage())==0))
-    			mob.baseEnvStats().setDamage(mob.baseEnvStats().damage()+1);
+    			mob.basePhyStats().setDamage(mob.basePhyStats().damage()+1);
         }
 		mob.recoverMaxState();
 		return theNews;
@@ -228,7 +228,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 	public void unLevel(MOB mob)
 	{
-		if((mob.baseEnvStats().level()<2)
+		if((mob.basePhyStats().level()<2)
 		||(CMSecurity.isDisabled("LEVELS"))
 		||(mob.charStats().getCurrentClass().leveless())
 		||(mob.charStats().getMyRace().leveless()))
@@ -256,7 +256,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		if(trainGain<=0)trainGain=1;
 		mob.setTrains(mob.getTrains()-trainGain);
 
-		mob.recoverEnvStats();
+		mob.recoverPhyStats();
 		mob.recoverCharStats();
 		mob.recoverMaxState();
 		mob.tell("^HYou are now a level "+mob.charStats().getClassLevel(mob.charStats().getCurrentClass())+" "+mob.charStats().getCurrentClass().name(mob.charStats().getCurrentClassLevel())+"^N.\n\r");
@@ -321,12 +321,12 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
             }
         }
 		mob.setExperience(mob.getExperience()-amount);
-		int neededLowest=getLevelExperience(mob.baseEnvStats().level()-2);
+		int neededLowest=getLevelExperience(mob.basePhyStats().level()-2);
 		if((mob.getExperience()<neededLowest)
-		&&(mob.baseEnvStats().level()>1))
+		&&(mob.basePhyStats().level()>1))
 		{
 			unLevel(mob);
-			neededLowest=getLevelExperience(mob.baseEnvStats().level()-2);
+			neededLowest=getLevelExperience(mob.basePhyStats().level()-2);
 		}
 	}
 
@@ -373,7 +373,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		||(mob.charStats().getMyRace().leveless()))
 	        return;
         Room room=mob.location();
-        CMMsg msg=CMClass.getMsg(mob,CMMsg.MSG_LEVEL,null,mob.baseEnvStats().level()+1);
+        CMMsg msg=CMClass.getMsg(mob,CMMsg.MSG_LEVEL,null,mob.basePhyStats().level()+1);
         if(!CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_LEVEL,msg))
             return;
         if(room!=null)
@@ -395,7 +395,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		theNews.append(baseLevelAdjuster(mob,1));
 		if(mob.playerStats()!=null)
 		{
-            mob.playerStats().setLeveledDateTime(mob.baseEnvStats().level(),room);
+            mob.playerStats().setLeveledDateTime(mob.basePhyStats().level(),room);
             Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DETAILEDLEVELS);
             Vector channels2=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LEVELS);
             if(!CMLib.flags().isCloaked(mob))
@@ -460,7 +460,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
             }
 
 		// wrap it all up
-		mob.recoverEnvStats();
+		mob.recoverPhyStats();
 		mob.recoverCharStats();
 		mob.recoverMaxState();
 
@@ -477,8 +477,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
         	for(int m=0;m<R.numInhabitants();m++)
         	{
         		MOB M=R.fetchInhabitant(m);
-        		if((M!=null)&&(M!=mob)&&(M!=victim)&&(!M.isMonster())&&(M.envStats().level()>highestLevelPC))
-        			highestLevelPC = M.envStats().level();
+        		if((M!=null)&&(M!=mob)&&(M!=victim)&&(!M.isMonster())&&(M.phyStats().level()>highestLevelPC))
+        			highestLevelPC = M.phyStats().level();
         	}
         	
         HashSet group=mob.getGroupMembers(new HashSet());
@@ -499,12 +499,12 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
         if(victim!=null)
         {
             double levelLimit=CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE);
-            double levelDiff=victim.envStats().level()-mob.envStats().level();
+            double levelDiff=victim.phyStats().level()-mob.phyStats().level();
 
             if(levelDiff<(-levelLimit) )
                 amount=0;
             else
-            if((levelLimit>0)&&((highestLevelPC - mob.envStats().level())<=levelLimit))
+            if((levelLimit>0)&&((highestLevelPC - mob.phyStats().level())<=levelLimit))
         	{
                 double levelFactor=levelDiff / levelLimit;
                 if( levelFactor > levelLimit )

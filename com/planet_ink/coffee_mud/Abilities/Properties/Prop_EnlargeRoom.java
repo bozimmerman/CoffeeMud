@@ -53,7 +53,7 @@ public class Prop_EnlargeRoom extends Property
 		return (int)Math.round(dval(s));
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if(text().length()>0)
 		{

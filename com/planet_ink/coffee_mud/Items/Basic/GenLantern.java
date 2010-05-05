@@ -44,13 +44,13 @@ public class GenLantern extends GenLightSource
 		setDisplayText("a hooded lantern sits here.");
 		setDescription("");
 
-		baseEnvStats().setWeight(5);
+		basePhyStats().setWeight(5);
 		setDuration(DURATION_TICKS);
 		destroyedWhenBurnedOut=false;
 		goesOutInTheRain=false;
 		baseGoldValue=60;
 		setMaterial(RawMaterial.RESOURCE_STEEL);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public boolean isGeneric(){return true;}

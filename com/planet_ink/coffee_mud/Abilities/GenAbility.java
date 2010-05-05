@@ -389,8 +389,8 @@ public class GenAbility extends StdAbility
                 int dmg=0;
                 if(DMG.trim().length()>0)
                     dmg=CMath.parseIntExpression(DMG,
-                            new double[]{mob.envStats().level(),
-                            (target==null)?mob.envStats().level():target.envStats().level()});
+                            new double[]{mob.phyStats().level(),
+                            (target==null)?mob.phyStats().level():target.phyStats().level()});
                 if(((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
                 ||(dmg>0))
                 {
@@ -475,10 +475,10 @@ public class GenAbility extends StdAbility
         return;
     }
 
-    public void affectEnvStats(Environmental affectedEnv, EnvStats affectableStats)
+    public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
     {
         if((Ability)V(ID,V_HERE)!=null)
-            ((Ability)V(ID,V_HERE)).affectEnvStats(affectedEnv,affectableStats);
+            ((Ability)V(ID,V_HERE)).affectPhyStats(affectedEnv,affectableStats);
     }
     public void affectCharStats(MOB affectedMob, CharStats affectableStats)
     {

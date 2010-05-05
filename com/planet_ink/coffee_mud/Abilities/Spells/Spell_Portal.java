@@ -123,7 +123,7 @@ public class Spell_Portal extends Spell
 			MOB t=newRoom.fetchInhabitant(i);
 			if(t!=null)
 			{
-				int adjustment=t.envStats().level()-(mob.envStats().level()+(2*getXLEVELLevel(mob)));
+				int adjustment=t.phyStats().level()-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
 				if(t.isMonster()) adjustment=adjustment*3;
 				profNeg+=adjustment;
 			}

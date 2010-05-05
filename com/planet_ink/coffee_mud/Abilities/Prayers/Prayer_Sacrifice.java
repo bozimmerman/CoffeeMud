@@ -99,7 +99,7 @@ public class Prayer_Sacrifice extends Prayer
 				{
 					double exp=5.0;
 					int levelLimit=CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE);
-					int levelDiff=mob.envStats().level()-target.envStats().level();
+					int levelDiff=mob.phyStats().level()-target.phyStats().level();
 					if(levelDiff>levelLimit) exp=0.0;
                     if(exp>0)
     					CMLib.leveler().postExperience(mob,null,null,(int)Math.round(exp)+(super.getXPCOSTLevel(mob)),false);

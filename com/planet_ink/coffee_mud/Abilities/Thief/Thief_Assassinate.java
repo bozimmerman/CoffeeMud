@@ -317,7 +317,7 @@ public class Thief_Assassinate extends ThiefSkill
 				Thief_Assassinate newOne=(Thief_Assassinate)this.copyOf();
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 				newOne.nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),true);
 			}
 		}

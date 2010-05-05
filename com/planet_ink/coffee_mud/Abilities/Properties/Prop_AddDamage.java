@@ -104,13 +104,13 @@ public class Prop_AddDamage extends Property
 							lvl=lvl.substring(lvl.indexOf(" "));
 						if((text.charAt(x-1)=='-')&&(immune>=0))
 						{
-							if(msg.tool().envStats().level()>=CMath.s_int(lvl))
+							if(msg.tool().phyStats().level()>=CMath.s_int(lvl))
 								immune=-1;
 						}
 						else
 						if(text.charAt(x-1)!='-')
 						{
-							if(msg.tool().envStats().level()<CMath.s_int(lvl))
+							if(msg.tool().phyStats().level()<CMath.s_int(lvl))
 								immune=x;
 						}
 					}

@@ -44,10 +44,10 @@ public class StdMaze extends StdGrid
     protected Room getGridRoom(int x, int y)
     {
         Room R=super.getGridRoom(x,y);
-        if((R!=null)&&(!CMath.bset(R.envStats().sensesMask(),EnvStats.SENSE_ROOMUNEXPLORABLE)))
+        if((R!=null)&&(!CMath.bset(R.phyStats().sensesMask(),PhyStats.SENSE_ROOMUNEXPLORABLE)))
         {
-            R.baseEnvStats().setSensesMask(R.baseEnvStats().sensesMask()|EnvStats.SENSE_ROOMUNEXPLORABLE);
-            R.envStats().setSensesMask(R.envStats().sensesMask()|EnvStats.SENSE_ROOMUNEXPLORABLE);
+            R.basePhyStats().setSensesMask(R.basePhyStats().sensesMask()|PhyStats.SENSE_ROOMUNEXPLORABLE);
+            R.phyStats().setSensesMask(R.phyStats().sensesMask()|PhyStats.SENSE_ROOMUNEXPLORABLE);
         }
         return R;
     }

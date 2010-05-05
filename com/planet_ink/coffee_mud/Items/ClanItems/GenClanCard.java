@@ -44,9 +44,9 @@ public class GenClanCard extends StdClanCard
         setName("a generic clan membership card");
         setDisplayText("a generic clan membership card sits here.");
         setDescription("");
-        baseEnvStats().setWeight(2);
+        basePhyStats().setWeight(2);
         setMaterial(RawMaterial.RESOURCE_PAPER);
-        recoverEnvStats();
+        recoverPhyStats();
     }
 
 
@@ -63,7 +63,7 @@ public class GenClanCard extends StdClanCard
     {
         miscText="";
         CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-        recoverEnvStats();
+        recoverPhyStats();
     }
     private final static String[] MYCODES={"CLANID","CITYPE"};
     public String getStat(String code)

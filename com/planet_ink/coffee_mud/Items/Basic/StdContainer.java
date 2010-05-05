@@ -52,7 +52,7 @@ public class StdContainer extends StdItem implements Container
 		setDescription("I`ll bet you could put stuff in it!");
 		capacity=25;
 		baseGoldValue=10;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_COTTON;
 	}
 
@@ -123,13 +123,13 @@ public class StdContainer extends StdItem implements Container
 							return false;
 						}
 						else
-						if(newitem.envStats().weight()>capacity)
+						if(newitem.phyStats().weight()>capacity)
 						{
 							mob.tell(newitem.name()+" won't fit in "+name()+".");
 							return false;
 						}
 						else
-						if((recursiveWeight()+newitem.envStats().weight())>capacity)
+						if((recursiveWeight()+newitem.phyStats().weight())>capacity)
 						{
 							mob.tell(name()+" is full.");
 							return false;
@@ -162,14 +162,14 @@ public class StdContainer extends StdItem implements Container
 							return false;
 						}
 						else
-						if((mob.envStats().level()<newitem.envStats().level()-(10+(mob.envStats().level()/5)))
+						if((mob.phyStats().level()<newitem.phyStats().level()-(10+(mob.phyStats().level()/5)))
 						&&(!(mob instanceof ShopKeeper)))
 						{
 							mob.tell(newitem.name()+" is too powerful to endure possessing it.");
 							return false;
 						}
 						else
-						if((newitem.recursiveWeight()>(mob.maxCarry()-mob.envStats().weight()))&&(!mob.isMine(this)))
+						if((newitem.recursiveWeight()>(mob.maxCarry()-mob.phyStats().weight()))&&(!mob.isMine(this)))
 						{
 							mob.tell(newitem.name()+" is too heavy.");
 							return false;
@@ -192,7 +192,7 @@ public class StdContainer extends StdItem implements Container
 					return false;
 				}
 				else
-				if((recursiveWeight()>(mob.maxCarry()-mob.envStats().weight()))&&(!mob.isMine(this)))
+				if((recursiveWeight()>(mob.maxCarry()-mob.phyStats().weight()))&&(!mob.isMine(this)))
 				{
 					mob.tell(name()+" is too heavy.");
 					return false;

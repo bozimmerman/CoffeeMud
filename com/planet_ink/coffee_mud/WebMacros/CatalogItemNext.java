@@ -57,7 +57,7 @@ public class CatalogItemNext extends StdWebMacro
     	{
     	case 0: return I.Name();
     	case 1: return ""+data.numReferences();
-    	case 2: return ""+I.baseEnvStats().level();
+    	case 2: return ""+I.basePhyStats().level();
     	case 3: return I.ID();
     	case 4: return ""+I.baseGoldValue();
     	case 5: return (dataRate)?CMath.toPct(data.getRate()):"";
@@ -69,8 +69,8 @@ public class CatalogItemNext extends StdWebMacro
     		{
     			if(I.isStat(optionalColumn))
     				return I.getStat(optionalColumn);
-    			if(I.baseEnvStats().isStat(optionalColumn))
-    				return I.baseEnvStats().getStat(optionalColumn);
+    			if(I.basePhyStats().isStat(optionalColumn))
+    				return I.basePhyStats().getStat(optionalColumn);
     		}
     		break;
     	}

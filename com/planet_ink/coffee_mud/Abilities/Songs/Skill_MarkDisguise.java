@@ -106,11 +106,11 @@ public class Skill_MarkDisguise extends Skill_Disguise
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,mob,asLevel,0);
 				A=(Skill_Disguise)mob.fetchEffect("Skill_MarkDisguise");
-				A.values[0]=""+target.baseEnvStats().weight();
-				A.values[1]=""+target.baseEnvStats().level();
+				A.values[0]=""+target.basePhyStats().weight();
+				A.values[1]=""+target.basePhyStats().level();
 				A.values[2]=target.charStats().genderName();
 				A.values[3]=target.charStats().raceName();
-				A.values[4]=""+target.envStats().height();
+				A.values[4]=""+target.phyStats().height();
 				A.values[5]=target.name();
 				A.values[6]=target.charStats().displayClassName();
 				if(CMLib.flags().isGood(target))
@@ -120,7 +120,7 @@ public class Skill_MarkDisguise extends Skill_Disguise
 					A.values[7]="evil";
 
 				mob.recoverCharStats();
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 				mob.location().recoverRoomStats();
 			}
 		}

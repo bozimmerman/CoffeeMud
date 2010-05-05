@@ -40,13 +40,13 @@ public class Katana extends Sword
 		setName("a katana");
 		setDisplayText("a very ornate katana rests in the room.");
 		setDescription("Just your typical, run-of-the-mill ninja sword--wrapped handle, steel blade, etc.");
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(0);
-		baseEnvStats.setWeight(4);
-		baseEnvStats().setAttackAdjustment(0);
-		baseEnvStats().setDamage(8);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(0);
+		basePhyStats.setWeight(4);
+		basePhyStats().setAttackAdjustment(0);
+		basePhyStats().setDamage(8);
 		baseGoldValue=15;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_STEEL;
 		weaponType=TYPE_SLASHING;
 	}

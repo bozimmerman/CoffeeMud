@@ -58,7 +58,7 @@ public class GenLimb extends StdLimb
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
     public String getStat(String code)

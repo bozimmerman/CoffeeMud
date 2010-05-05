@@ -49,19 +49,19 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
 	public void changeCatalogFlag(Environmental E, boolean truefalse)
 	{
 		if(E==null) return;
-		if(CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_CATALOGED))
+		if(CMath.bset(E.basePhyStats().disposition(),PhyStats.IS_CATALOGED))
 		{
 			if(!truefalse)
 			{
-				E.baseEnvStats().setDisposition(CMath.unsetb(E.baseEnvStats().disposition(),EnvStats.IS_CATALOGED));
-				E.envStats().setDisposition(CMath.unsetb(E.envStats().disposition(),EnvStats.IS_CATALOGED));
+				E.basePhyStats().setDisposition(CMath.unsetb(E.basePhyStats().disposition(),PhyStats.IS_CATALOGED));
+				E.phyStats().setDisposition(CMath.unsetb(E.phyStats().disposition(),PhyStats.IS_CATALOGED));
 			}
 		}
 		else
 		if(truefalse)
 		{
-			E.baseEnvStats().setDisposition(CMath.setb(E.baseEnvStats().disposition(),EnvStats.IS_CATALOGED));
-			E.envStats().setDisposition(CMath.setb(E.envStats().disposition(),EnvStats.IS_CATALOGED));
+			E.basePhyStats().setDisposition(CMath.setb(E.basePhyStats().disposition(),PhyStats.IS_CATALOGED));
+			E.phyStats().setDisposition(CMath.setb(E.phyStats().disposition(),PhyStats.IS_CATALOGED));
 		}
 	}
 	
@@ -516,8 +516,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
     {
     	synchronized(getSync(E).intern())
     	{
-    		EnvStats stats=E.baseEnvStats();
-    		if((stats!=null)&&(CMath.bset(stats.disposition(),EnvStats.IS_CATALOGED)))
+    		PhyStats stats=E.basePhyStats();
+    		if((stats!=null)&&(CMath.bset(stats.disposition(),PhyStats.IS_CATALOGED)))
     		{
 	        	CataData data=getCatalogData(E);
 	            if(data!=null) data.addReference(E);
@@ -529,8 +529,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
     {
     	synchronized(getSync(E).intern())
     	{
-    		EnvStats stats=E.baseEnvStats();
-    		if((stats!=null)&&(CMath.bset(stats.disposition(),EnvStats.IS_CATALOGED)))
+    		PhyStats stats=E.basePhyStats();
+    		if((stats!=null)&&(CMath.bset(stats.disposition(),PhyStats.IS_CATALOGED)))
     		{
 	        	CataData data=getCatalogData(E);
 	            if(data!=null) data.bumpDeathPickup();
@@ -542,7 +542,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
     {
     	synchronized(getSync(E).intern())
     	{
-            if((E!=null)&&(E.baseEnvStats()!=null)&&(!E.amDestroyed()))
+            if((E!=null)&&(E.basePhyStats()!=null)&&(!E.amDestroyed()))
             {
                 if(toCataloged)
             	{
@@ -787,7 +787,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
         			Environmental o=(Environmental)R.get();
         			if((o!=null)
         			&&(!o.amDestroyed())
-        			&&(CMath.bset(o.baseEnvStats().disposition(),EnvStats.IS_CATALOGED)))
+        			&&(CMath.bset(o.basePhyStats().disposition(),PhyStats.IS_CATALOGED)))
         				V.addElement((Environmental)o);
         		}
         	}

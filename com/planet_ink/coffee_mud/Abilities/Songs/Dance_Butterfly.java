@@ -40,11 +40,11 @@ public class Dance_Butterfly extends Dance
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
     protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(invoker==null) return;
 
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
 	}
 }

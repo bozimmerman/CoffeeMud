@@ -43,11 +43,11 @@ public class BagOfHolding extends SmallSack implements MiscMagic
 		setDisplayText("a small black sack is crumpled up here.");
 		setDescription("A nice silk sack to put your things in.");
 		secretIdentity="A Bag of Holding";
-		baseEnvStats().setLevel(1);
+		basePhyStats().setLevel(1);
 		capacity=1000;
 		baseGoldValue=25000;
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
-		recoverEnvStats();
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
+		recoverPhyStats();
 	}
 
 
@@ -65,11 +65,11 @@ public class BagOfHolding extends SmallSack implements MiscMagic
 		}
 	}
 
-	public void recoverEnvStats()
+	public void recoverPhyStats()
 	{
-		baseEnvStats().setWeight(0);
-		super.recoverEnvStats();
-		baseEnvStats().setWeight(-recursiveWeight());
-		super.recoverEnvStats();
+		basePhyStats().setWeight(0);
+		super.recoverPhyStats();
+		basePhyStats().setWeight(-recursiveWeight());
+		super.recoverPhyStats();
 	}
 }

@@ -40,158 +40,158 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 {
     public String ID(){return "Sense";}
 	public boolean canSee(MOB E)
-	{ return (E!=null)&&(!isSleeping(E))&&((E.envStats().sensesMask()&EnvStats.CAN_NOT_SEE)==0); }
+	{ return (E!=null)&&(!isSleeping(E))&&((E.phyStats().sensesMask()&PhyStats.CAN_NOT_SEE)==0); }
 	public boolean canBeLocated(Environmental E)
-	{ return (E!=null)&&(!isSleeping(E))&&((E.envStats().sensesMask()&EnvStats.SENSE_UNLOCATABLE)==0); }
+	{ return (E!=null)&&(!isSleeping(E))&&((E.phyStats().sensesMask()&PhyStats.SENSE_UNLOCATABLE)==0); }
 	public boolean canSeeHidden(MOB E)
-	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_HIDDEN)==EnvStats.CAN_SEE_HIDDEN); }
+	{ return (E!=null)&&((E.phyStats().sensesMask()&PhyStats.CAN_SEE_HIDDEN)==PhyStats.CAN_SEE_HIDDEN); }
 	public boolean canSeeInvisible(MOB E)
-	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_INVISIBLE)==EnvStats.CAN_SEE_INVISIBLE); }
+	{ return (E!=null)&&((E.phyStats().sensesMask()&PhyStats.CAN_SEE_INVISIBLE)==PhyStats.CAN_SEE_INVISIBLE); }
 	public boolean canSeeEvil(MOB E)
-	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_EVIL)==EnvStats.CAN_SEE_EVIL); }
+	{ return (E!=null)&&((E.phyStats().sensesMask()&PhyStats.CAN_SEE_EVIL)==PhyStats.CAN_SEE_EVIL); }
 	public boolean canSeeGood(MOB E)
-	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_GOOD)==EnvStats.CAN_SEE_GOOD); }
+	{ return (E!=null)&&((E.phyStats().sensesMask()&PhyStats.CAN_SEE_GOOD)==PhyStats.CAN_SEE_GOOD); }
 	public boolean canSeeSneakers(MOB E)
-	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_SNEAKERS)==EnvStats.CAN_SEE_SNEAKERS); }
+	{ return (E!=null)&&((E.phyStats().sensesMask()&PhyStats.CAN_SEE_SNEAKERS)==PhyStats.CAN_SEE_SNEAKERS); }
 	public boolean canSeeBonusItems(MOB E)
-	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_BONUS)==EnvStats.CAN_SEE_BONUS); }
+	{ return (E!=null)&&((E.phyStats().sensesMask()&PhyStats.CAN_SEE_BONUS)==PhyStats.CAN_SEE_BONUS); }
 	public boolean canSeeInDark(MOB E)
-	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_DARK)==EnvStats.CAN_SEE_DARK); }
+	{ return (E!=null)&&((E.phyStats().sensesMask()&PhyStats.CAN_SEE_DARK)==PhyStats.CAN_SEE_DARK); }
 	public boolean canSeeVictims(MOB E)
-	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_VICTIM)==EnvStats.CAN_SEE_VICTIM); }
+	{ return (E!=null)&&((E.phyStats().sensesMask()&PhyStats.CAN_SEE_VICTIM)==PhyStats.CAN_SEE_VICTIM); }
 	public boolean canSeeInfrared(MOB E)
-	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_INFRARED)==EnvStats.CAN_SEE_INFRARED); }
+	{ return (E!=null)&&((E.phyStats().sensesMask()&PhyStats.CAN_SEE_INFRARED)==PhyStats.CAN_SEE_INFRARED); }
 	public boolean canHear(MOB E)
-	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_NOT_HEAR)==0); }
+	{ return (E!=null)&&((E.phyStats().sensesMask()&PhyStats.CAN_NOT_HEAR)==0); }
 	public boolean canMove(MOB E)
-	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_NOT_MOVE)==0); }
+	{ return (E!=null)&&((E.phyStats().sensesMask()&PhyStats.CAN_NOT_MOVE)==0); }
 	public boolean allowsMovement(Room R)
-	{ return (R!=null)&&((R.envStats().sensesMask()&EnvStats.SENSE_ROOMNOMOVEMENT)==0); }
+	{ return (R!=null)&&((R.phyStats().sensesMask()&PhyStats.SENSE_ROOMNOMOVEMENT)==0); }
 	public boolean allowsMovement(Area A)
-	{ return (A!=null)&&((A.envStats().sensesMask()&EnvStats.SENSE_ROOMNOMOVEMENT)==0); }
+	{ return (A!=null)&&((A.phyStats().sensesMask()&PhyStats.SENSE_ROOMNOMOVEMENT)==0); }
 	public boolean canSmell(MOB E)
-	{ return canBreathe(E)&&((E.envStats().sensesMask()&EnvStats.CAN_NOT_SMELL)==0); }
+	{ return canBreathe(E)&&((E.phyStats().sensesMask()&PhyStats.CAN_NOT_SMELL)==0); }
 	public boolean canTaste(MOB E)
-	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_NOT_TASTE)==0); }
+	{ return (E!=null)&&((E.phyStats().sensesMask()&PhyStats.CAN_NOT_TASTE)==0); }
 	public boolean canSpeak(MOB E)
-	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_NOT_SPEAK)==0); }
+	{ return (E!=null)&&((E.phyStats().sensesMask()&PhyStats.CAN_NOT_SPEAK)==0); }
 	public boolean canBreathe(MOB E)
-	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_NOT_BREATHE)==0); }
+	{ return (E!=null)&&((E.phyStats().sensesMask()&PhyStats.CAN_NOT_BREATHE)==0); }
 	public boolean canSeeMetal(MOB E)
-	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.CAN_SEE_METAL)==EnvStats.CAN_SEE_METAL); }
+	{ return (E!=null)&&((E.phyStats().sensesMask()&PhyStats.CAN_SEE_METAL)==PhyStats.CAN_SEE_METAL); }
 	public boolean isReadable(Item I)
-	{ return (I!=null)&&((I.envStats().sensesMask()&EnvStats.SENSE_ITEMREADABLE)==EnvStats.SENSE_ITEMREADABLE); }
+	{ return (I!=null)&&((I.phyStats().sensesMask()&PhyStats.SENSE_ITEMREADABLE)==PhyStats.SENSE_ITEMREADABLE); }
 	public boolean isGettable(Item I)
-	{ return (I!=null)&&((I.envStats().sensesMask()&EnvStats.SENSE_ITEMNOTGET)==0); }
+	{ return (I!=null)&&((I.phyStats().sensesMask()&PhyStats.SENSE_ITEMNOTGET)==0); }
 	public boolean isDroppable(Item I)
-	{ return (I!=null)&&((I.envStats().sensesMask()&EnvStats.SENSE_ITEMNODROP)==0); }
+	{ return (I!=null)&&((I.phyStats().sensesMask()&PhyStats.SENSE_ITEMNODROP)==0); }
 	public boolean isRemovable(Item I)
-	{ return (I!=null)&&((I.envStats().sensesMask()&EnvStats.SENSE_ITEMNOREMOVE)==0); }
+	{ return (I!=null)&&((I.phyStats().sensesMask()&PhyStats.SENSE_ITEMNOREMOVE)==0); }
 	public boolean isCataloged(Environmental E)
-	{ return (E!=null)&&((E.baseEnvStats().disposition()&EnvStats.IS_CATALOGED)==EnvStats.IS_CATALOGED); }
+	{ return (E!=null)&&((E.basePhyStats().disposition()&PhyStats.IS_CATALOGED)==PhyStats.IS_CATALOGED); }
 	public boolean hasSeenContents(Environmental E)
-	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.SENSE_CONTENTSUNSEEN)==0); }
+	{ return (E!=null)&&((E.phyStats().sensesMask()&PhyStats.SENSE_CONTENTSUNSEEN)==0); }
     public boolean isSavable(Environmental E)
-    { return (E==null)||((E.envStats().disposition()&EnvStats.IS_UNSAVABLE)==0); }
+    { return (E==null)||((E.phyStats().disposition()&PhyStats.IS_UNSAVABLE)==0); }
 	public void setSavable(Environmental E, boolean truefalse)
 	{
 		if(E==null) return;
-		if(CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_UNSAVABLE))
+		if(CMath.bset(E.basePhyStats().disposition(),PhyStats.IS_UNSAVABLE))
 		{
 			if(truefalse)
 			{
-				E.baseEnvStats().setDisposition(CMath.unsetb(E.baseEnvStats().disposition(),EnvStats.IS_UNSAVABLE));
-				E.envStats().setDisposition(CMath.unsetb(E.envStats().disposition(),EnvStats.IS_UNSAVABLE));
+				E.basePhyStats().setDisposition(CMath.unsetb(E.basePhyStats().disposition(),PhyStats.IS_UNSAVABLE));
+				E.phyStats().setDisposition(CMath.unsetb(E.phyStats().disposition(),PhyStats.IS_UNSAVABLE));
 			}
 		}
 		else
 		if(!truefalse)
 		{
-			E.baseEnvStats().setDisposition(CMath.setb(E.baseEnvStats().disposition(),EnvStats.IS_UNSAVABLE));
-			E.envStats().setDisposition(CMath.setb(E.envStats().disposition(),EnvStats.IS_UNSAVABLE));
+			E.basePhyStats().setDisposition(CMath.setb(E.basePhyStats().disposition(),PhyStats.IS_UNSAVABLE));
+			E.phyStats().setDisposition(CMath.setb(E.phyStats().disposition(),PhyStats.IS_UNSAVABLE));
 		}
 	}
 	public void setReadable(Item I, boolean truefalse)
 	{
 		if(I==null) return;
-		if(CMath.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE))
+		if(CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMREADABLE))
 		{
 			if(!truefalse)
 			{
-				I.baseEnvStats().setSensesMask(CMath.unsetb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE));
-				I.envStats().setSensesMask(CMath.unsetb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE));
+				I.basePhyStats().setSensesMask(CMath.unsetb(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMREADABLE));
+				I.phyStats().setSensesMask(CMath.unsetb(I.phyStats().sensesMask(),PhyStats.SENSE_ITEMREADABLE));
 			}
 		}
 		else
 		if(truefalse)
 		{
-			I.baseEnvStats().setSensesMask(CMath.setb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE));
-			I.envStats().setSensesMask(CMath.setb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE));
+			I.basePhyStats().setSensesMask(CMath.setb(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMREADABLE));
+			I.phyStats().setSensesMask(CMath.setb(I.phyStats().sensesMask(),PhyStats.SENSE_ITEMREADABLE));
 		}
 	}
 	
 	public void setGettable(Item I, boolean truefalse)
 	{
 		if(I==null) return;
-		if(!CMath.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET))
+		if(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOTGET))
 		{
 			if(!truefalse)
 			{
-				I.baseEnvStats().setSensesMask(CMath.setb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET));
-				I.envStats().setSensesMask(CMath.setb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET));
+				I.basePhyStats().setSensesMask(CMath.setb(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOTGET));
+				I.phyStats().setSensesMask(CMath.setb(I.phyStats().sensesMask(),PhyStats.SENSE_ITEMNOTGET));
 			}
 		}
 		else
 		if(truefalse)
 		{
-			I.baseEnvStats().setSensesMask(CMath.unsetb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET));
-			I.envStats().setSensesMask(CMath.unsetb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET));
+			I.basePhyStats().setSensesMask(CMath.unsetb(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOTGET));
+			I.phyStats().setSensesMask(CMath.unsetb(I.phyStats().sensesMask(),PhyStats.SENSE_ITEMNOTGET));
 		}
 	}
 	public void setDroppable(Item I, boolean truefalse)
 	{
 		if(I==null) return;
-		if(!CMath.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP))
+		if(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNODROP))
 		{
 			if(!truefalse)
 			{
-				I.baseEnvStats().setSensesMask(CMath.setb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP));
-				I.envStats().setSensesMask(CMath.setb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMNODROP));
+				I.basePhyStats().setSensesMask(CMath.setb(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNODROP));
+				I.phyStats().setSensesMask(CMath.setb(I.phyStats().sensesMask(),PhyStats.SENSE_ITEMNODROP));
 			}
 		}
 		else
 		if(truefalse)
 		{
-			I.baseEnvStats().setSensesMask(CMath.unsetb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP));
-			I.envStats().setSensesMask(CMath.unsetb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMNODROP));
+			I.basePhyStats().setSensesMask(CMath.unsetb(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNODROP));
+			I.phyStats().setSensesMask(CMath.unsetb(I.phyStats().sensesMask(),PhyStats.SENSE_ITEMNODROP));
 		}
 	}
 	public void setRemovable(Item I, boolean truefalse)
 	{
 		if(I==null) return;
-		if(!CMath.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE))
+		if(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOREMOVE))
 		{
 			if(!truefalse)
 			{
-				I.baseEnvStats().setSensesMask(CMath.setb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE));
-				I.envStats().setSensesMask(CMath.setb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE));
+				I.basePhyStats().setSensesMask(CMath.setb(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOREMOVE));
+				I.phyStats().setSensesMask(CMath.setb(I.phyStats().sensesMask(),PhyStats.SENSE_ITEMNOREMOVE));
 			}
 		}
 		else
 		if(truefalse)
 		{
-			I.baseEnvStats().setSensesMask(CMath.unsetb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE));
-			I.envStats().setSensesMask(CMath.unsetb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE));
+			I.basePhyStats().setSensesMask(CMath.unsetb(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOREMOVE));
+			I.phyStats().setSensesMask(CMath.unsetb(I.phyStats().sensesMask(),PhyStats.SENSE_ITEMNOREMOVE));
 		}
 	}
 	public boolean isSeen(Environmental E)
-	{ return (E!=null)&&(((E.envStats().disposition()&EnvStats.IS_NOT_SEEN)==0) || isSleeping(E)); }
+	{ return (E!=null)&&(((E.phyStats().disposition()&PhyStats.IS_NOT_SEEN)==0) || isSleeping(E)); }
 	public boolean isCloaked(Environmental E)
-	{ return (E!=null)&&((E.envStats().disposition()&EnvStats.IS_CLOAKED)==EnvStats.IS_CLOAKED);}
+	{ return (E!=null)&&((E.phyStats().disposition()&PhyStats.IS_CLOAKED)==PhyStats.IS_CLOAKED);}
 	public boolean isHidden(Environmental E)
 	{
 		if(E==null) return false;
-		boolean isInHide=((E.envStats().disposition()&EnvStats.IS_HIDDEN)==EnvStats.IS_HIDDEN);
+		boolean isInHide=((E.phyStats().disposition()&PhyStats.IS_HIDDEN)==PhyStats.IS_HIDDEN);
 		if((E instanceof MOB)
 		&&(isInHide)
 		&&(((MOB)E).isInCombat()))
@@ -199,11 +199,11 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return isInHide;
 	}
 	public boolean isInvisible(Environmental E)
-	{ return (E!=null)&&((E.envStats().disposition()&EnvStats.IS_INVISIBLE)==EnvStats.IS_INVISIBLE); }
+	{ return (E!=null)&&((E.phyStats().disposition()&PhyStats.IS_INVISIBLE)==PhyStats.IS_INVISIBLE); }
 	public boolean isEvil(Environmental E)
 	{
 		if(E==null) return false;
-		if ((E.envStats().disposition()&EnvStats.IS_EVIL)==EnvStats.IS_EVIL)
+		if ((E.phyStats().disposition()&PhyStats.IS_EVIL)==PhyStats.IS_EVIL)
 			return true;
 		else
 		if(E instanceof MOB)
@@ -235,7 +235,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public boolean isGood(Environmental E)
 	{
 		if(E==null) return false;
-		if ((E.envStats().disposition()&EnvStats.IS_GOOD)==EnvStats.IS_GOOD)
+		if ((E.phyStats().disposition()&PhyStats.IS_GOOD)==PhyStats.IS_GOOD)
 			return true;
 		else
 		if(E instanceof MOB)
@@ -276,9 +276,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 
 	public String getAlignmentName(Environmental E)
 	{
-		if((E.envStats().disposition()&EnvStats.IS_GOOD)==EnvStats.IS_GOOD)
+		if((E.phyStats().disposition()&PhyStats.IS_GOOD)==PhyStats.IS_GOOD)
 		    return Faction.ALIGN_NAMES[Faction.ALIGN_GOOD];
-		if((E.envStats().disposition()&EnvStats.IS_EVIL)==EnvStats.IS_EVIL)
+		if((E.phyStats().disposition()&PhyStats.IS_EVIL)==PhyStats.IS_EVIL)
 		    return Faction.ALIGN_NAMES[Faction.ALIGN_EVIL];
         if(E instanceof MOB)
         {
@@ -305,8 +305,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
     public boolean isNeutral(Environmental E)
     {
         if(E==null) return false;
-		if(((E.envStats().disposition()&EnvStats.IS_GOOD)==EnvStats.IS_GOOD)
-		|| ((E.envStats().disposition()&EnvStats.IS_EVIL)==EnvStats.IS_EVIL))
+		if(((E.phyStats().disposition()&PhyStats.IS_GOOD)==PhyStats.IS_GOOD)
+		|| ((E.phyStats().disposition()&PhyStats.IS_EVIL)==PhyStats.IS_EVIL))
 			return false;
         if(E instanceof MOB)
         {
@@ -332,29 +332,29 @@ public class Sense extends StdLibrary implements CMFlagLibrary
     }
 
 	public boolean isSneaking(Environmental E)
-	{ return (E!=null)&&((E.envStats().disposition()&EnvStats.IS_SNEAKING)==EnvStats.IS_SNEAKING); }
+	{ return (E!=null)&&((E.phyStats().disposition()&PhyStats.IS_SNEAKING)==PhyStats.IS_SNEAKING); }
 	public boolean isABonusItems(Environmental E)
-	{ return (E!=null)&&((E.envStats().disposition()&EnvStats.IS_BONUS)==EnvStats.IS_BONUS); }
+	{ return (E!=null)&&((E.phyStats().disposition()&PhyStats.IS_BONUS)==PhyStats.IS_BONUS); }
 	public boolean isInDark(Environmental E)
-	{ return (E!=null)&&((E.envStats().disposition()&EnvStats.IS_DARK)==EnvStats.IS_DARK); }
+	{ return (E!=null)&&((E.phyStats().disposition()&PhyStats.IS_DARK)==PhyStats.IS_DARK); }
 	public boolean isLightSource(Environmental E)
-	{ return (E!=null)&&((E.envStats().disposition()&EnvStats.IS_LIGHTSOURCE)==EnvStats.IS_LIGHTSOURCE); }
+	{ return (E!=null)&&((E.phyStats().disposition()&PhyStats.IS_LIGHTSOURCE)==PhyStats.IS_LIGHTSOURCE); }
 	public boolean isGlowing(Environmental E)
-	{ return (E!=null)&&((isLightSource(E)||((E.envStats().disposition()&EnvStats.IS_GLOWING)==EnvStats.IS_GLOWING))); }
+	{ return (E!=null)&&((isLightSource(E)||((E.phyStats().disposition()&PhyStats.IS_GLOWING)==PhyStats.IS_GLOWING))); }
 	public boolean isGolem(Environmental E)
-	{ return (E!=null)&&((E.envStats().disposition()&EnvStats.IS_GOLEM)==EnvStats.IS_GOLEM); }
+	{ return (E!=null)&&((E.phyStats().disposition()&PhyStats.IS_GOLEM)==PhyStats.IS_GOLEM); }
 	public boolean isSleeping(Environmental E)
-	{ return (E!=null)&&((E.envStats().disposition()&EnvStats.IS_SLEEPING)==EnvStats.IS_SLEEPING); }
+	{ return (E!=null)&&((E.phyStats().disposition()&PhyStats.IS_SLEEPING)==PhyStats.IS_SLEEPING); }
 	public boolean isSitting(Environmental E)
-	{ return (E!=null)&&((E.envStats().disposition()&EnvStats.IS_SITTING)==EnvStats.IS_SITTING); }
+	{ return (E!=null)&&((E.phyStats().disposition()&PhyStats.IS_SITTING)==PhyStats.IS_SITTING); }
 	public boolean isFlying(Environmental E)
-	{ return (E!=null)&&((E.envStats().disposition()&EnvStats.IS_FLYING)==EnvStats.IS_FLYING); }
+	{ return (E!=null)&&((E.phyStats().disposition()&PhyStats.IS_FLYING)==PhyStats.IS_FLYING); }
 	public boolean isClimbing(Environmental E)
-	{ return (E!=null)&&((E.envStats().disposition()&EnvStats.IS_CLIMBING)==EnvStats.IS_CLIMBING); }
+	{ return (E!=null)&&((E.phyStats().disposition()&PhyStats.IS_CLIMBING)==PhyStats.IS_CLIMBING); }
 	public boolean isSwimming(Environmental E)
-	{ return (E!=null)&&((E.envStats().disposition()&EnvStats.IS_SWIMMING)==EnvStats.IS_SWIMMING); }
+	{ return (E!=null)&&((E.phyStats().disposition()&PhyStats.IS_SWIMMING)==PhyStats.IS_SWIMMING); }
 	public boolean isFalling(Environmental E)
-	{ return (E!=null)&&((E.envStats().disposition()&EnvStats.IS_FALLING)==EnvStats.IS_FALLING); }
+	{ return (E!=null)&&((E.phyStats().disposition()&PhyStats.IS_FALLING)==PhyStats.IS_FALLING); }
 	public boolean isBusy(Environmental E)
 	{ return (E instanceof MOB)&&(((MOB)E).session()!=null)&&((System.currentTimeMillis()-((MOB)E).session().lastLoopTime())>30000);}
 
@@ -443,14 +443,14 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 	public boolean isBound(Environmental E)
 	{
-		if((E!=null)&&((E.envStats().disposition()&EnvStats.IS_BOUND)==EnvStats.IS_BOUND))
+		if((E!=null)&&((E.phyStats().disposition()&PhyStats.IS_BOUND)==PhyStats.IS_BOUND))
 			return true;
 		return false;
 	}
 	public boolean isBoundOrHeld(Environmental E)
 	{
 		if(E==null) return false;
-		if((E.envStats().disposition()&EnvStats.IS_BOUND)==EnvStats.IS_BOUND)
+		if((E.phyStats().disposition()&PhyStats.IS_BOUND)==PhyStats.IS_BOUND)
 			return true;
 		return flaggedAnyAffects(E,Ability.FLAG_BINDING|Ability.FLAG_PARALYZING).size()>0;
 	}
@@ -474,17 +474,17 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{
 		if((seen!=null)&&(isHidden(seen)))
         {
-            int hideFactor=seen.envStats().level();
+            int hideFactor=seen.phyStats().level();
             if(seen instanceof MOB)
                 hideFactor+=(((MOB)seen).charStats().getStat(CharStats.STAT_DEXTERITY))/2;
-            if(CMath.bset(seen.baseEnvStats().disposition(),EnvStats.IS_HIDDEN))
+            if(CMath.bset(seen.basePhyStats().disposition(),PhyStats.IS_HIDDEN))
                 hideFactor+=100;
             else
             if(seen instanceof MOB)
             {
                 hideFactor+=((MOB)seen).charStats().getSave(CharStats.STAT_SAVE_DETECTION);
-                if(seen.envStats().height()>=0)
-	            	hideFactor-=(int)Math.round(Math.sqrt((double)seen.envStats().height()));
+                if(seen.phyStats().height()>=0)
+	            	hideFactor-=(int)Math.round(Math.sqrt((double)seen.phyStats().height()));
             }
             else
                 hideFactor+=100;
@@ -498,12 +498,12 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if((seer!=null)&&(canSeeHidden(seer)))
 		{
             int detectFactor=seer.charStats().getStat(CharStats.STAT_WISDOM)/2;
-            if(CMath.bset(seer.baseEnvStats().sensesMask(),EnvStats.CAN_SEE_HIDDEN))
+            if(CMath.bset(seer.basePhyStats().sensesMask(),PhyStats.CAN_SEE_HIDDEN))
                 detectFactor+=100;
             else // the 100 represents proff, and level represents time searching.
                 detectFactor+=seer.charStats().getSave(CharStats.STAT_SAVE_OVERLOOKING);
-            if(seer.envStats().height()>=0)
-	            detectFactor-=(int)Math.round(Math.sqrt((double)seer.envStats().height()));
+            if(seer.phyStats().height()>=0)
+	            detectFactor-=(int)Math.round(Math.sqrt((double)seer.phyStats().height()));
             return detectFactor;
 		}
 		return 0;
@@ -522,7 +522,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if((!isSeen(seen))&&(seer!=null))
 		{
 			if((!(seen instanceof MOB))
-			||(seen.envStats().level()>seer.envStats().level())
+			||(seen.phyStats().level()>seer.phyStats().level())
 			||(!CMSecurity.isASysOp(seer)))
 				return false;
 		}
@@ -655,7 +655,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 
 	public StringBuffer colorCodes(Environmental seen , MOB seer)
 	{
-		String[] ambiances=seen.envStats().ambiances();
+		String[] ambiances=seen.phyStats().ambiances();
 		if(!CMStrings.containsIgnoreCase(ambiances,"-ALL"))
 		{
 			StringBuffer Say=new StringBuffer("^N");
@@ -743,7 +743,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		if(canSeeMetal(seer)&&(seen1 instanceof Item)&&(seen2 instanceof Item)
 			&&((((Item)seen1).material()&RawMaterial.MATERIAL_MASK)!=(((Item)seen2).material()&RawMaterial.MATERIAL_MASK)))
 		   return false;
-        if(!CMStrings.compareStringArrays(seen1.envStats().ambiances(),seen2.envStats().ambiances()))
+        if(!CMStrings.compareStringArrays(seen1.phyStats().ambiances(),seen2.phyStats().ambiances()))
             return false;
 		return true;
 	}
@@ -832,7 +832,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			for(int v=0;v<V.size();v++)
 			{
 				Item I=(Item)V.elementAt(v);
-				totalWeight+=I.baseEnvStats().weight();
+				totalWeight+=I.basePhyStats().weight();
 				totalFloatilla+=totalWeight*codes.bouancy(I.material());
 			}
 			if(E instanceof Container)
@@ -1046,15 +1046,15 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			switch(lighting.material()&RawMaterial.MATERIAL_MASK)
 			{
 			case RawMaterial.MATERIAL_LEATHER:
-				return 20+lighting.envStats().weight();
+				return 20+lighting.phyStats().weight();
 			case RawMaterial.MATERIAL_CLOTH:
 			case RawMaterial.MATERIAL_PAPER:
 			case RawMaterial.MATERIAL_PLASTIC:
-				return 5+lighting.envStats().weight();
+				return 5+lighting.phyStats().weight();
 			case RawMaterial.MATERIAL_WOODEN:
 				if(E instanceof RawMaterial)
 					return 20;
-				return 20*(1+lighting.envStats().weight());
+				return 20*(1+lighting.phyStats().weight());
 			case RawMaterial.MATERIAL_VEGETATION:
 			case RawMaterial.MATERIAL_FLESH:
 				return -1;
@@ -1150,14 +1150,14 @@ public class Sense extends StdLibrary implements CMFlagLibrary
         StringBuffer buf=new StringBuffer("");
         if(useVerbs)
         {
-            for(int i=0;i<EnvStats.IS_VERBS.length;i++)
+            for(int i=0;i<PhyStats.IS_VERBS.length;i++)
                 if(CMath.isSet(disposition,i))
-                    buf.append(EnvStats.IS_VERBS[i]+", ");
+                    buf.append(PhyStats.IS_VERBS[i]+", ");
         }
         else
-        for(int i=0;i<EnvStats.IS_CODES.length;i++)
+        for(int i=0;i<PhyStats.IS_CODES.length;i++)
             if(CMath.isSet(disposition,i))
-                buf.append(EnvStats.IS_CODES[i]+", ");
+                buf.append(PhyStats.IS_CODES[i]+", ");
         String buff=buf.toString();
         if(buff.endsWith(", ")) buff=buff.substring(0,buff.length()-2).trim();
         return buff;
@@ -1168,14 +1168,14 @@ public class Sense extends StdLibrary implements CMFlagLibrary
         StringBuffer buf=new StringBuffer("");
         if(useVerbs)
         {
-            for(int i=0;i<EnvStats.CAN_SEE_VERBS.length;i++)
+            for(int i=0;i<PhyStats.CAN_SEE_VERBS.length;i++)
                 if(CMath.isSet(disposition,i))
-                    buf.append(EnvStats.CAN_SEE_VERBS[i]+", ");
+                    buf.append(PhyStats.CAN_SEE_VERBS[i]+", ");
         }
         else
-        for(int i=0;i<EnvStats.CAN_SEE_CODES.length;i++)
+        for(int i=0;i<PhyStats.CAN_SEE_CODES.length;i++)
             if(CMath.isSet(disposition,i))
-                buf.append(EnvStats.CAN_SEE_CODES[i]+", ");
+                buf.append(PhyStats.CAN_SEE_CODES[i]+", ");
         String buff=buf.toString();
         if(buff.endsWith(", ")) buff=buff.substring(0,buff.length()-2).trim();
         return buff;
@@ -1184,8 +1184,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
     public int getDispositionCode(String name)
     {
         name=name.toUpperCase().trim();
-        for(int code=0;code<EnvStats.IS_CODES.length-1;code++)
-            if(EnvStats.IS_CODES[code].endsWith(name))
+        for(int code=0;code<PhyStats.IS_CODES.length-1;code++)
+            if(PhyStats.IS_CODES[code].endsWith(name))
                 return code;
         return -1;
     }
@@ -1193,8 +1193,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
     public int getSensesCode(String name)
     {
         name=name.toUpperCase().trim();
-        for(int code=0;code<EnvStats.CAN_SEE_CODES.length-1;code++)
-            if(EnvStats.CAN_SEE_CODES[code].endsWith(name))
+        for(int code=0;code<PhyStats.CAN_SEE_CODES.length-1;code++)
+            if(PhyStats.CAN_SEE_CODES[code].endsWith(name))
                 return code;
         return -1;
     }
@@ -1257,7 +1257,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		StringBuilder str=new StringBuilder("");
 		if(CMLib.flags().isClimbing(mob))
 			str.append("climbing, ");
-		if((mob.envStats().disposition()&EnvStats.IS_EVIL)>0)
+		if((mob.phyStats().disposition()&PhyStats.IS_EVIL)>0)
 			str.append("evil, ");
 		if(CMLib.flags().isFalling(mob))
 			str.append("falling, ");
@@ -1265,7 +1265,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			str.append("bound, ");
 		if(CMLib.flags().isFlying(mob))
 			str.append("flies, ");
-		if((mob.envStats().disposition()&EnvStats.IS_GOOD)>0)
+		if((mob.phyStats().disposition()&PhyStats.IS_GOOD)>0)
 			str.append("good, ");
 		if(CMLib.flags().isHidden(mob))
 			str.append("hidden, ");

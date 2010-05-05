@@ -41,7 +41,7 @@ public class GenDrink extends StdDrink
 	{
 		super();
 		setName("a generic drinking container");
-		baseEnvStats.setWeight(1);
+		basePhyStats.setWeight(1);
 		setDisplayText("a generic drinking container sits here.");
 		setDescription("");
 		baseGoldValue=1;
@@ -51,7 +51,7 @@ public class GenDrink extends StdDrink
 		amountOfLiquidRemaining=700;
 		liquidType=RawMaterial.RESOURCE_FRESHWATER;
 		setMaterial(RawMaterial.RESOURCE_LEATHER);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 
@@ -83,7 +83,7 @@ public class GenDrink extends StdDrink
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES",
 							  "QUENCHED","LIQUIDHELD","LIQUIDTYPE"};

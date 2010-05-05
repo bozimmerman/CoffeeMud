@@ -129,7 +129,7 @@ public class Fighter_Behead extends FighterSkill
 		if((!super.invoke(mob,commands,givenTarget,auto,asLevel))||(ww==null))
 			return false;
 
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
+		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 		if(levelDiff>0)
 			levelDiff=levelDiff*3;
 		else
@@ -149,7 +149,7 @@ public class Fighter_Behead extends FighterSkill
 				mob.location().recoverRoomStats();
 				Item limb=CMClass.getItem("GenLimb");
 				limb.setName(target.Name()+"`s head");
-				limb.baseEnvStats().setAbility(1);
+				limb.basePhyStats().setAbility(1);
 				limb.setDisplayText("the bloody head of "+target.Name()+" is sitting here.");
 				limb.setSecretIdentity(target.name()+"`s bloody head.");
 				int material=RawMaterial.RESOURCE_MEAT;
@@ -166,9 +166,9 @@ public class Fighter_Behead extends FighterSkill
 						}
 					}
 				limb.setMaterial(material);
-				limb.baseEnvStats().setLevel(1);
-				limb.baseEnvStats().setWeight(5);
-				limb.recoverEnvStats();
+				limb.basePhyStats().setLevel(1);
+				limb.basePhyStats().setWeight(5);
+				limb.recoverPhyStats();
 				mob.location().addItem(limb,ItemPossessor.Expire.Player_Drop);
 				for(int i=0;i<warrants.size();i++)
 				{

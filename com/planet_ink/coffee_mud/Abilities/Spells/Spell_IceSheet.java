@@ -79,10 +79,10 @@ public class Spell_IceSheet extends Spell
 					if((!CMLib.flags().isInFlight(mob))
 					&&(CMLib.dice().rollPercentage()>((msg.source().charStats().getStat(CharStats.STAT_DEXTERITY)*3)+25)))
 					{
-						int oldDisposition=mob.baseEnvStats().disposition();
-						oldDisposition=oldDisposition&(Integer.MAX_VALUE-EnvStats.IS_SLEEPING-EnvStats.IS_SNEAKING-EnvStats.IS_SITTING);
-						mob.baseEnvStats().setDisposition(oldDisposition|EnvStats.IS_SITTING);
-						mob.recoverEnvStats();
+						int oldDisposition=mob.basePhyStats().disposition();
+						oldDisposition=oldDisposition&(Integer.MAX_VALUE-PhyStats.IS_SLEEPING-PhyStats.IS_SNEAKING-PhyStats.IS_SITTING);
+						mob.basePhyStats().setDisposition(oldDisposition|PhyStats.IS_SITTING);
+						mob.recoverPhyStats();
 						mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> slip(s) on the ice.");
 						return false;
 					}
@@ -106,12 +106,12 @@ public class Spell_IceSheet extends Spell
 		}
 	}
 	
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		// sleeping for a room disables any special characteristic (as of water)
 		if(affected instanceof Room)
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SLEEPING);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SLEEPING);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)

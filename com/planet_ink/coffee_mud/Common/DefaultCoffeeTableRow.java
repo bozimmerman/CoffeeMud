@@ -136,7 +136,7 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
             bumpVal("B"+tagFix(mob.baseCharStats().getCurrentClass().baseClass()),type);
             bumpVal("C"+tagFix(mob.baseCharStats().getCurrentClass().ID()),type);
             bumpVal("R"+tagFix(mob.baseCharStats().getMyRace().ID()),type);
-            bumpVal("L"+mob.baseEnvStats().level(),type);
+            bumpVal("L"+mob.basePhyStats().level(),type);
             bumpVal("G"+((char)mob.baseCharStats().getStat(CharStats.STAT_GENDER)),type);
             bumpVal("F"+tagFix(mob.getWorshipCharID()),type);
             bumpVal("Q"+tagFix(mob.getClanID()),type);

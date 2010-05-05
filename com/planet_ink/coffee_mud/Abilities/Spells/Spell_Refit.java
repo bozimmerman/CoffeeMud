@@ -51,7 +51,7 @@ public class Spell_Refit extends Spell
 		if(!super.invoke(mob,commands, givenTarget, auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,(((mob.envStats().level()+(2*getXLEVELLevel(mob)))-target.envStats().level())*5),auto);
+		boolean success=proficiencyCheck(mob,(((mob.phyStats().level()+(2*getXLEVELLevel(mob)))-target.phyStats().level())*5),auto);
 
 		if(success)
 		{
@@ -62,14 +62,14 @@ public class Spell_Refit extends Spell
 			{
 				mob.location().send(mob,msg);
 
-				if(target.envStats().height()==0)
+				if(target.phyStats().height()==0)
 					mob.tell("Nothing happens to "+target.name()+".");
 				else
 				{
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> begin(s) to magically resize itself!");
-					target.baseEnvStats().setHeight(0);
+					target.basePhyStats().setHeight(0);
 				}
-				target.recoverEnvStats();
+				target.recoverPhyStats();
 				mob.location().recoverRoomStats();
 			}
 

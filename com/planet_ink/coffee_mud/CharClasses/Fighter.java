@@ -193,7 +193,7 @@ public class Fighter extends StdCharClass
         )
         {
             Area A=(Area)msg.target();
-            int xp=(int)Math.round(50.0*CMath.div(A.getAreaIStats()[Area.AREASTAT_AVGLEVEL],((MOB)host).envStats().level()));
+            int xp=(int)Math.round(50.0*CMath.div(A.getAreaIStats()[Area.AREASTAT_AVGLEVEL],((MOB)host).phyStats().level()));
             if(xp>500) xp=500;
             if(xp>0)
             {

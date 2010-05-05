@@ -45,19 +45,19 @@ public class GenStaff extends GenWeapon implements Wand
 		setDisplayText("a wooden staff lies in the corner of the room.");
 		setDescription("");
 		secretIdentity="";
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(0);
-		baseEnvStats.setWeight(4);
-		baseEnvStats().setAttackAdjustment(0);
-		baseEnvStats().setDamage(4);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(0);
+		basePhyStats.setWeight(4);
+		basePhyStats().setAttackAdjustment(0);
+		basePhyStats().setDamage(4);
 		baseGoldValue=1;
-		recoverEnvStats();
+		recoverPhyStats();
 		wornLogicalAnd=true;
 		material=RawMaterial.RESOURCE_OAK;
 		properWornBitmap=Wearable.WORN_HELD|Wearable.WORN_WIELD;
 		weaponType=TYPE_BASHING;
 		weaponClassification=Weapon.CLASS_STAFF;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	protected int maxUses=Integer.MAX_VALUE;

@@ -93,7 +93,7 @@ public class Bleeding extends StdAbility
         				+Directions.getDirectionName(lastDir)+" to "+Directions.getDirectionName(dir)+".");
 	        	else
 	        		I.setDisplayText("A faint trail of blood leads "+Directions.getDirectionName(dir)+".");
-        		I.envStats().setDisposition(I.envStats().disposition()|EnvStats.IS_HIDDEN|EnvStats.IS_UNSAVABLE);
+        		I.phyStats().setDisposition(I.phyStats().disposition()|PhyStats.IS_HIDDEN|PhyStats.IS_UNSAVABLE);
         		I.setSecretIdentity(msg.source().Name()+"`s blood.");
         		R.addItem(I,ItemPossessor.Expire.Monster_EQ);
         	}
@@ -133,7 +133,7 @@ public class Bleeding extends StdAbility
     	if(target==null) target=mob;
     	if(!(target instanceof MOB)) return false;
     	if(CMLib.flags().isGolem((MOB)target)) return false;
-    	if(((MOB)target).envStats().level()<CMProps.getIntVar(CMProps.SYSTEMI_INJBLEEDMINLEVEL)) return false;
+    	if(((MOB)target).phyStats().level()<CMProps.getIntVar(CMProps.SYSTEMI_INJBLEEDMINLEVEL)) return false;
     	if(((MOB)target).fetchEffect(ID())!=null) return false;
     	if(((MOB)target).location()==null) return false;
     	if(((MOB)target).location().show((MOB)target,null,this,CMMsg.MSG_OK_VISUAL,"^R<S-NAME> start(s) BLEEDING!^?"))

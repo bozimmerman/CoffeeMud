@@ -45,12 +45,12 @@ public class StdPill extends StdFood implements Pill
 		super();
 
 		setName("a pill");
-		baseEnvStats.setWeight(1);
+		basePhyStats.setWeight(1);
 		setDisplayText("A strange pill lies here.");
 		setDescription("Large and round, with strange markings.");
 		secretIdentity="Surely this is a potent pill!";
 		baseGoldValue=200;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_CORN;
 	}
 
@@ -68,7 +68,7 @@ public class StdPill extends StdFood implements Pill
 			for(int i=0;i<spells.size();i++)
 			{
 				Ability thisOne=(Ability)((Ability)spells.elementAt(i)).copyOf();
-				thisOne.invoke(mob,mob,true,envStats().level());
+				thisOne.invoke(mob,mob,true,phyStats().level());
 			}
 	}
 
@@ -108,7 +108,7 @@ public class StdPill extends StdFood implements Pill
 				theSpells.addElement(A);
 			}
 		}
-		me.recoverEnvStats();
+		me.recoverPhyStats();
 		return theSpells;
 	}
 	

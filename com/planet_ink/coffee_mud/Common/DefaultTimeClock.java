@@ -327,7 +327,7 @@ public class DefaultTimeClock implements TimeClock
 					Room R=(Room)r.nextElement();
 					if((R!=null)&&((R.numInhabitants()>0)||(R.numItems()>0)))
 					{
-						R.recoverEnvStats();
+						R.recoverPhyStats();
 						for(int m=0;m<R.numInhabitants();m++)
 						{
 							MOB mob=R.fetchInhabitant(m);

@@ -54,7 +54,7 @@ public class Spell_Reinforce extends Spell
 		if(!super.invoke(mob,commands, givenTarget, auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,(((mob.envStats().level()+(2*getXLEVELLevel(mob)))-target.envStats().level())*5),auto);
+		boolean success=proficiencyCheck(mob,(((mob.phyStats().level()+(2*getXLEVELLevel(mob)))-target.phyStats().level())*5),auto);
 		if(success)
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),
@@ -69,7 +69,7 @@ public class Spell_Reinforce extends Spell
 				{
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> begin(s) to glow and harden!");
 					target.setUsesRemaining(target.usesRemaining()+50);
-					target.recoverEnvStats();
+					target.recoverPhyStats();
 					mob.location().recoverRoomStats();
 				}
 			}

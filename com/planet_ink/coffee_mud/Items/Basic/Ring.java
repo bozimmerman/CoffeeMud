@@ -45,7 +45,7 @@ public class Ring extends StdItem
 		properWornBitmap=Wearable.WORN_LEFT_FINGER | Wearable.WORN_RIGHT_FINGER;
 		wornLogicalAnd=false;
 		baseGoldValue=50;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 }

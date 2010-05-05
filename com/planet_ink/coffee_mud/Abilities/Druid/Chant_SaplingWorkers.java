@@ -183,7 +183,7 @@ public class Chant_SaplingWorkers extends Chant
 		MOB newMOB=CMClass.getMOB("GenMOB");
 		int level=adjustedLevel(caster,0)-6;
 		if(level<1) level=1;
-		newMOB.baseEnvStats().setLevel(level);
+		newMOB.basePhyStats().setLevel(level);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("TreeGolem"));
 		String resourceName=RawMaterial.CODES.NAME(material).toLowerCase();
 		String name=resourceName+" sapling";
@@ -230,19 +230,19 @@ public class Chant_SaplingWorkers extends Chant
 		}
 		newMOB.setDescription("");
 		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
-		newMOB.recoverEnvStats();
+		newMOB.recoverPhyStats();
 		newMOB.recoverCharStats();
-		newMOB.baseEnvStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
-		newMOB.baseEnvStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
-		newMOB.baseEnvStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
+		newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
+		newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
+		newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'N');
-		newMOB.baseEnvStats().setSensesMask(newMOB.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_DARK);
+		newMOB.basePhyStats().setSensesMask(newMOB.basePhyStats().sensesMask()|PhyStats.CAN_SEE_DARK);
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		newMOB.setLocation(caster.location());
-		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
+		newMOB.basePhyStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.setMiscText(newMOB.text());
 		newMOB.recoverCharStats();
-		newMOB.recoverEnvStats();
+		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);

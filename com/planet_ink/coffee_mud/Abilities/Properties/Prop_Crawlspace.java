@@ -51,10 +51,10 @@ public class Prop_Crawlspace extends Property
 			case CMMsg.TYP_FLEE:
 				if(((msg.amITarget(affected))||(msg.tool()==affected))
 				&&(msg.sourceMinor()!=CMMsg.TYP_RECALL)
-				&&(msg.source().envStats().height()>12)
+				&&(msg.source().phyStats().height()>12)
 				&&(!CMLib.flags().isSitting(msg.source())))
 				{
-					if(msg.source().envStats().height()>120)
+					if(msg.source().phyStats().height()>120)
 					{
 						msg.source().tell("You cannot fit in there.");
 						return false;
@@ -65,15 +65,15 @@ public class Prop_Crawlspace extends Property
 				break;
 			case CMMsg.TYP_STAND:
 				if((affected instanceof Room)
-				&&(msg.source().envStats().height()>12))
+				&&(msg.source().phyStats().height()>12))
 				{
 			        if(CMLib.flags().isSleeping(msg.source()))
 					{
 			            MOB mob=msg.source();
-			            int oldDisposition = mob.baseEnvStats().disposition();
-			            oldDisposition=oldDisposition&(Integer.MAX_VALUE-EnvStats.IS_SLEEPING-EnvStats.IS_SNEAKING-EnvStats.IS_SITTING);
-			            mob.baseEnvStats().setDisposition(oldDisposition|EnvStats.IS_SITTING);
-			            mob.recoverEnvStats();
+			            int oldDisposition = mob.basePhyStats().disposition();
+			            oldDisposition=oldDisposition&(Integer.MAX_VALUE-PhyStats.IS_SLEEPING-PhyStats.IS_SNEAKING-PhyStats.IS_SITTING);
+			            mob.basePhyStats().setDisposition(oldDisposition|PhyStats.IS_SITTING);
+			            mob.recoverPhyStats();
 			            mob.recoverCharStats();
 			            mob.recoverMaxState();
 			            mob.tell("You wake up, but you are still crawling.");

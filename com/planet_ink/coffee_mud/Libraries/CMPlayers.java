@@ -116,7 +116,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
             CMLib.database().DBReadFollowers(M,false);
             if(M.playerStats()!=null)
                 M.playerStats().setLastUpdated(M.playerStats().lastDateTime());
-            M.recoverEnvStats();
+            M.recoverPhyStats();
             M.recoverCharStats();
             Ability A=null;
     		for(int a=0;a<M.numLearnedAbilities();a++)

@@ -56,7 +56,7 @@ public class Scavenger extends ActiveTicker
 			MOB mob=(MOB)ticking;
 			Room thisRoom=mob.location();
             if(origItems<0) origItems=mob.numItems();
-            if((mob.envStats().weight()>=(int)Math.round(CMath.mul(mob.maxCarry(),0.9)))
+            if((mob.phyStats().weight()>=(int)Math.round(CMath.mul(mob.maxCarry(),0.9)))
             ||(mob.numItems()>=mob.maxItems()))
             {
                 if(CMLib.flags().isATrackingMonster(mob)) return true;
@@ -108,7 +108,7 @@ public class Scavenger extends ActiveTicker
                         if(I.owner()==null) I.setOwner(mob);
 						I.destroy();
 	                }
-	                mob.recoverEnvStats();
+	                mob.recoverPhyStats();
 	                mob.recoverCharStats();
 	                mob.recoverMaxState();
                 }

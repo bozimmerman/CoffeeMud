@@ -40,12 +40,12 @@ public class GenElecItem extends StdElecItem
 	{
 		super();
 		setName("a generic electric item");
-		baseEnvStats.setWeight(2);
+		basePhyStats.setWeight(2);
 		setDisplayText("a generic electric item sits here.");
 		setDescription("");
 		baseGoldValue=5;
-		baseEnvStats().setLevel(1);
-		recoverEnvStats();
+		basePhyStats().setLevel(1);
+		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 	}
 
@@ -62,7 +62,7 @@ public class GenElecItem extends StdElecItem
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	private final static String[] MYCODES={"FUELTYPE","POWERCAP"};

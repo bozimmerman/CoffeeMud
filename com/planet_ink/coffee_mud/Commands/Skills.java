@@ -147,7 +147,7 @@ public class Skills extends StdCommand
     protected StringBuilder getAbilities(MOB able, Vector ofTypes, int mask, boolean addQualLine, int maxLevel)
     {
         int highestLevel=0;
-        int lowestLevel=able.envStats().level()+1;
+        int lowestLevel=able.phyStats().level()+1;
         StringBuilder msg=new StringBuilder("");
         for(int a=0;a<able.numAbilities();a++)
         {

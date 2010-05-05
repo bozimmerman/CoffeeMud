@@ -179,7 +179,7 @@ public class GrinderClasses
         C.setStat("QUAL",(old==null)?"":old);
         old=httpReq.getRequestParameter("PLAYER");
         C.setStat("PLAYER",(old==null)?"0":old);
-        C.setStat("ESTATS",GrinderRaces.getEStats('E',httpReq));
+        C.setStat("ESTATS",GrinderRaces.getPStats('E',httpReq));
         C.setStat("CSTATS",GrinderRaces.getCStats('S',httpReq));
         C.setStat("ASTATS",GrinderRaces.getCStats('A',httpReq));
         C.setStat("ASTATE",GrinderRaces.getCState('A',httpReq));

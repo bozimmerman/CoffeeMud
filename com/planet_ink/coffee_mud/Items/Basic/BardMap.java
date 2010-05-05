@@ -40,13 +40,13 @@ public class BardMap extends GenMap
 	{
 		super();
 		setName("a map");
-		baseEnvStats.setWeight(0);
+		basePhyStats.setWeight(0);
 		setDisplayText("a map is rolled up here.");
 		setDescription("");
 		baseGoldValue=5;
-		baseEnvStats().setLevel(3);
+		basePhyStats().setLevel(3);
 		setMaterial(RawMaterial.RESOURCE_PAPER);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public void doMapArea()

@@ -50,7 +50,7 @@ public class Skill_RegionalAwareness extends StdSkill
     public char roomColor(Room room)
     {
         if(room==null) return ' ';
-        if(CMath.bset(room.envStats().sensesMask(),EnvStats.SENSE_ROOMUNMAPPABLE))
+        if(CMath.bset(room.phyStats().sensesMask(),PhyStats.SENSE_ROOMUNMAPPABLE))
             return 'w';
         switch(room.domainType())
         {
@@ -74,7 +74,7 @@ public class Skill_RegionalAwareness extends StdSkill
 	public char roomChar(Room room)
 	{
         if(room==null) return ' ';
-        if(CMath.bset(room.envStats().sensesMask(),EnvStats.SENSE_ROOMUNMAPPABLE))
+        if(CMath.bset(room.phyStats().sensesMask(),PhyStats.SENSE_ROOMUNMAPPABLE))
             return ' ';
 		switch(room.domainType())
 		{

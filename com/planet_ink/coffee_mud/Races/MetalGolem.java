@@ -67,9 +67,9 @@ public class MetalGolem extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_UNDEAD,affectableStats.getStat(CharStats.STAT_SAVE_UNDEAD)+100);
 		affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+100);
 	}
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GOLEM);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOLEM);
 	}
 	public String healthText(MOB viewer, MOB mob)
 	{

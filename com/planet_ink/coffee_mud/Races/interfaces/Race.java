@@ -94,11 +94,11 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	/**
 	 * Will initialize a player or mobs height and weight based
 	 * on this races parameters.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats
-	 * @param stats the EnvStats object to change
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats
+	 * @param stats the PhyStats object to change
 	 * @param gender the mobs gender 'M' or 'F'
 	 */
-	public void setHeightWeight(EnvStats stats, char gender);
+	public void setHeightWeight(PhyStats stats, char gender);
 	/**
 	 * The minimum height of males of this race.
 	 * @return minimum height of males in inches

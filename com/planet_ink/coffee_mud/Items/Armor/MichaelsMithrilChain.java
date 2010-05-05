@@ -44,11 +44,11 @@ public class MichaelsMithrilChain extends StdArmor
 		secretIdentity="Michael\\`s Mithril Chain! (Armor Value:+75, Protection from Lightning)";
 		baseGoldValue+=10000;
 		wornLogicalAnd=false;
-		baseEnvStats().setArmor(50);
-		baseEnvStats().setWeight(40);
-		baseEnvStats().setAbility(75);
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
-		recoverEnvStats();
+		basePhyStats().setArmor(50);
+		basePhyStats().setWeight(40);
+		basePhyStats().setAbility(75);
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_MITHRIL;
 	}
 

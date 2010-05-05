@@ -54,17 +54,17 @@ public class Toadstool extends StdRace
 	public int[] getAgingChart(){return agingChart;}
 	
 	protected static Vector resources=new Vector();
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setWeight(1);
 		affectableStats.setHeight(1);
 		affectableStats.setAttackAdjustment(0);
 		affectableStats.setArmor(0);
 		affectableStats.setSensesMask(affectableStats.sensesMask()
-			|EnvStats.CAN_NOT_MOVE|EnvStats.CAN_NOT_SPEAK|EnvStats.CAN_NOT_TASTE);
+			|PhyStats.CAN_NOT_MOVE|PhyStats.CAN_NOT_SPEAK|PhyStats.CAN_NOT_TASTE);
 		affectableStats.setDamage(0);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GOLEM);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOLEM);
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{

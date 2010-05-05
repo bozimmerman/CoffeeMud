@@ -73,10 +73,10 @@ public class WaterElemental extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)+100);
 		affectableStats.setStat(CharStats.STAT_SAVE_WATER,affectableStats.getStat(CharStats.STAT_SAVE_WATER)+100);
 	}
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GOLEM);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOLEM);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
 	}
 	public Weapon myNaturalWeapon()
 	{

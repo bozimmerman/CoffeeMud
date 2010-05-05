@@ -48,7 +48,7 @@ public class GenHandBow extends StdBow
         minRange=1;
         maxRange=2;
         setRawLogicalAnd(false);
-        recoverEnvStats();
+        recoverPhyStats();
     }
 
     public boolean isGeneric(){return true;}
@@ -65,6 +65,6 @@ public class GenHandBow extends StdBow
     {
         miscText="";
         CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-        recoverEnvStats();
+        recoverPhyStats();
     }
 }

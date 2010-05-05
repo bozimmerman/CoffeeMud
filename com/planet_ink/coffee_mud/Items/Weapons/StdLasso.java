@@ -40,13 +40,13 @@ public class StdLasso extends StdWeapon
 		setName("a lasso");
 		setDisplayText("a lasso has been left here.");
 		setDescription("Its a rope with a big stiff loop on one end!");
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(0);
-		baseEnvStats.setWeight(1);
-		baseEnvStats().setAttackAdjustment(0);
-		baseEnvStats().setDamage(0);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(0);
+		basePhyStats.setWeight(1);
+		basePhyStats().setAttackAdjustment(0);
+		basePhyStats().setDamage(0);
 		baseGoldValue=10;
-		recoverEnvStats();
+		recoverPhyStats();
 		minRange=1;
 		maxRange=1;
 		weaponType=Weapon.TYPE_NATURAL;
@@ -85,7 +85,7 @@ public class StdLasso extends StdWeapon
 			if(A!=null)
 			{
 				A.setAffectedOne(this);
-				A.invoke(msg.source(),(MOB)msg.target(),true,envStats().level());
+				A.invoke(msg.source(),(MOB)msg.target(),true,phyStats().level());
 			}
 		}
 		else

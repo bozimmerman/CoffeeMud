@@ -37,7 +37,7 @@ public class UnseenWalkway extends Open
 	public UnseenWalkway()
 	{
 		super();
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_NOT_SEEN);
-		recoverEnvStats();
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_NOT_SEEN);
+		recoverPhyStats();
 	}
 }

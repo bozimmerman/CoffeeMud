@@ -37,7 +37,7 @@ public class HiddenWalkway extends Open
 	public HiddenWalkway()
 	{
 		super();
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_HIDDEN);
-		recoverEnvStats();
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_HIDDEN);
+		recoverPhyStats();
 	}
 }

@@ -867,7 +867,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			}
 		}
 		int level=getQualifyingLevel(student.charStats().getMyRace().ID(),false,A.ID());
-		int classLevel=student.baseEnvStats().level();
+		int classLevel=student.basePhyStats().level();
 		if((level>=0)&&(classLevel>=level))
 		{
 			reqs=getPreReqs(student.charStats().getMyRace().ID(),false,A.ID());
@@ -910,7 +910,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			}
 		}
 		int level=getQualifyingLevel(student.charStats().getMyRace().ID(),false,A.ID());
-		int classLevel=student.baseEnvStats().level();
+		int classLevel=student.basePhyStats().level();
 		if((level>=0)&&(classLevel>=level))
 		{
 			mask=getExtraMask(student.charStats().getMyRace().ID(),false,A.ID());
@@ -939,7 +939,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			}
 		}
 		int level=getQualifyingLevel(student.charStats().getMyRace().ID(),false,A.ID());
-		int classLevel=student.baseEnvStats().level();
+		int classLevel=student.basePhyStats().level();
 		if((level>=0)
 		&&(classLevel>=level)
 		&&((classLevel-level)>greatestDiff))
@@ -971,7 +971,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			}
 		}
 		int level=getQualifyingLevel(student.charStats().getMyRace().ID(),false,A.ID());
-		int classLevel=student.baseEnvStats().level();
+		int classLevel=student.basePhyStats().level();
 		if((level>=0)
 		&&(classLevel>=level)
 		&&((classLevel-level)>greatestDiff))
@@ -1001,7 +1001,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		int level=getQualifyingLevel(student.charStats().getMyRace().ID(),false,A.ID());
 		if((level>=0)
-		&&((theClass==null)||((student.baseEnvStats().level()>=level)&&(theLevel>level))))
+		&&((theClass==null)||((student.basePhyStats().level()>=level)&&(theLevel>level))))
 			return student.charStats().getMyRace();
 		return theClass;
 	}
@@ -1016,7 +1016,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		&&(student.charStats().getClassLevel(C)>=level))
 			return true;
 		level=getQualifyingLevel(student.charStats().getMyRace().ID(),false,A.ID());
-		if((level>=0)&&(student.envStats().level()>=level))
+		if((level>=0)&&(student.phyStats().level()>=level))
 			return true;
 		return false;
 	}
@@ -1034,7 +1034,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 				return true;
 		}
 		int level=getQualifyingLevel(student.charStats().getMyRace().ID(),false,ability);
-		if((level>=0)&&(student.envStats().level()>=level))
+		if((level>=0)&&(student.phyStats().level()>=level))
 			return true;
 		return false;
 	}
@@ -1380,14 +1380,14 @@ public class CMAble extends StdLibrary implements AbilityMapper
 					amt-=I.numberOfItems();
                 }
 				else
-                if(I.envStats().weight()>amt)
+                if(I.phyStats().weight()>amt)
                 {
                     I=(Item)CMLib.materials().unbundle(I,amt);
                     if(I==null) continue;
-					amt=amt-I.envStats().weight();
+					amt=amt-I.phyStats().weight();
                 }
                 else
-                    amt=amt-I.envStats().weight();
+                    amt=amt-I.phyStats().weight();
                 thisSet.addElement(I);
 
 				if(amt<=0)

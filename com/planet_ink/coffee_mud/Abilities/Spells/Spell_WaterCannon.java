@@ -42,14 +42,14 @@ public class Spell_WaterCannon extends Spell
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 
-   public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+   public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly put the mob into
 		// a sleeping state, so that nothing they do
 		// can get them out of it.
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SITTING);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SITTING);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
@@ -98,7 +98,7 @@ public class Spell_WaterCannon extends Spell
 					{
 					   mob.location().send(mob, msg3);
 					}
-					affectEnvStats(target, target.envStats());
+					affectPhyStats(target, target.phyStats());
 				}
 			}
 		}

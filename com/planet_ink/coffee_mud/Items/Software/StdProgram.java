@@ -44,7 +44,7 @@ public class StdProgram extends StdItem implements Software
 
 		material=RawMaterial.RESOURCE_STEEL;
 		baseGoldValue=1000;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 }
 

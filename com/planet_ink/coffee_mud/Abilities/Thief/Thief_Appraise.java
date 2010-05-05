@@ -64,7 +64,7 @@ public class Thief_Appraise extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(2*super.getXLEVELLevel(mob)));
+		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(2*super.getXLEVELLevel(mob)));
 		if(levelDiff<0) levelDiff=0;
         levelDiff*=5;
 		boolean success=proficiencyCheck(mob,-levelDiff,auto);
@@ -79,9 +79,9 @@ public class Thief_Appraise extends ThiefSkill
 			else
 				realValue=(double)target.value();
 			int materialCode=target.material();
-			int weight=target.baseEnvStats().weight();
-			int height=target.baseEnvStats().height();
-			int allWeight=target.envStats().weight();
+			int weight=target.basePhyStats().weight();
+			int height=target.basePhyStats().height();
+			int allWeight=target.phyStats().weight();
 			if(!success)
 			{
 				double deviance=CMath.div(CMLib.dice().roll(1,100,0)+50,100);

@@ -51,7 +51,7 @@ Modification</a></li>
         </li>
         <li> <a href="#DIG2">Core Topic 2: State Layers</a>
           <ul>
-            <li><a href="#envstats">EnvStats fields</a></li>
+            <li><a href="#phystats">PhyStats fields</a></li>
             <li><a href="#charstats">CharStats codes</a></li>
             <li><a href="#charstate">CharState</a></li>
           </ul>
@@ -1109,14 +1109,14 @@ Well, keep reading!</p>
       <p>Each instance of the several Environmental objects (MOBs,
 Items, Exits, Rooms) have a particular storage/state object called
 their Environmental Stats. This object implements the
-Common.interfaces.EnvStats interface, and is typically an instance of
-the Common.DefaultEnvStats class. Access to this state object is
-available through each core.interfaces.Environmental objects <code>EnvStats
-baseEnvStats()</code> and <code>EnvStats envStats()</code> method
+Common.interfaces.PhyStats interface, and is typically an instance of
+the Common.DefaultPhyStats class. Access to this state object is
+available through each core.interfaces.Environmental objects <code>PhyStats
+basePhyStats()</code> and <code>PhyStats phyStats()</code> method
 calls. Since Rooms, MOBS, Items, Exits, and Areas are all Environmental
-objects, that means that they all have baseEnvStats and envStats
+objects, that means that they all have basePhyStats and phyStats
 methods as well.</p>
-      <h3><a name="envstats" id="envstats">EnvStats state object fields</a></h3>
+      <h3><a name="phystats" id="phystats">PhyStats state object fields</a></h3>
       <table bgcolor="#ccccff" border="1">
         <thead> <tr>
           <th>Field name</th>
@@ -1190,39 +1190,39 @@ methods as well.</p>
 Archon's Guide, there are two whose nature may not be readily apparent:
 the sensesMask and the disposition. These two integers are bitmaps. The
 value of each bit is defined by equates in the
-Common.interfaces.EnvStats interface. The equates which refer to the
+Common.interfaces.PhyStats interface. The equates which refer to the
 bits for sensesMask all begin with "CAN_", while the equates which
 refer to the bits for disposition all begin with "IS_".</p>
       <p>Now, as mentioned previously, all Environmental objects have
-two methods for accessing their EnvStats. One is <code>core.interfaces.Environmental.baseEnvStats()</code>
-and the other is <code>core.interfaces.Environmental.envStats()</code>.
+two methods for accessing their PhyStats. One is <code>core.interfaces.Environmental.basePhyStats()</code>
+and the other is <code>core.interfaces.Environmental.phyStats()</code>.
 The difference between these two methods is very significant. The
-EnvStats state object returned by the "baseEnvStats" method refers to
+PhyStats state object returned by the "basePhyStats" method refers to
 the permanent, unmodified, "base" state of the Environmental object.
-The "envStats" method, however, returns the modified, less permanent,
-"current" state of the Environmental object. The EnvStats object
-returned by the "envStats" method is always copied and derived from the
-"baseEnvStats" values, after all relevant modifications have been made
+The "phyStats" method, however, returns the modified, less permanent,
+"current" state of the Environmental object. The PhyStats object
+returned by the "phyStats" method is always copied and derived from the
+"basePhyStats" values, after all relevant modifications have been made
 to it. How the current state object goes from its base values
-(baseEnvStats) to its current values (envStats) is our next topic.</p>
+(basePhyStats) to its current values (phyStats) is our next topic.</p>
       <p>We must now introduce two other Environmental interface
-methods significant to this topic. One is the <code>recoverEnvStats()</code>
-method, while the other is the <code>affectEnvStats(Environmental
-affected, EnvStats affectableStats)</code> method. The
-"recoverEnvStats" method is also located on every Environmental (Item,
-MOB, Exit, etc) object and is the method which turns the <code>baseEnvStats()</code>
-values into their current <code>envStats()</code>
+methods significant to this topic. One is the <code>recoverPhyStats()</code>
+method, while the other is the <code>affectPhyStats(Environmental
+affected, PhyStats affectableStats)</code> method. The
+"recoverPhyStats" method is also located on every Environmental (Item,
+MOB, Exit, etc) object and is the method which turns the <code>basePhyStats()</code>
+values into their current <code>phyStats()</code>
 values. This method call works by copying the base values into the
 current values and then allowing certain other objects to have an
 opportunity to affect the copy. Only after all opportunities to modify
-the copied values have been exhausted, does the <code>recoverEnvStats()</code>
-method return. In essence, <code>recoverEnvStats()</code> allows the
-Environmental objects <code>baseEnvStats()</code> to be updated, with
-that updated state object made available through <code>envStats()</code>.</p>
-      <p>The way in which the current EnvStats state object is modified
-by the <code>recoverEnvStats()</code> method call is by making
-repeated internal calls to the <code>affectEnvStats(Environmental
-affected, EnvStats affectedStats)</code>
+the copied values have been exhausted, does the <code>recoverPhyStats()</code>
+method return. In essence, <code>recoverPhyStats()</code> allows the
+Environmental objects <code>basePhyStats()</code> to be updated, with
+that updated state object made available through <code>phyStats()</code>.</p>
+      <p>The way in which the current PhyStats state object is modified
+by the <code>recoverPhyStats()</code> method call is by making
+repeated internal calls to the <code>affectPhyStats(Environmental
+affected, PhyStats affectedStats)</code>
 methods on other relevant objects. These methods will then have the
 opportunity to change the values in the current state object
 (affectedStats parameter) however they wish. The relevant objects which
@@ -1246,25 +1246,25 @@ the Room.</p>
       <p>Here is an example:</p>
       <p>Gunker the Thief wears Full Plate Armor (Item), and has the
 Shield spell cast on him. His base Armor rating is 100. When he puts on
-the Plate Armor, the "recoverEnvStats" method is called on Gunker's MOB
-object. That method in turn calls the "affectEnvStats" method on the
+the Plate Armor, the "recoverPhyStats" method is called on Gunker's MOB
+object. That method in turn calls the "affectPhyStats" method on the
 Plate Armor and the Shield spell Effect. Both of those methods improve
-the Armor rating on Gunker's MOB's current EnvStats by some number.
+the Armor rating on Gunker's MOB's current PhyStats by some number.
 Thus, Gunker becomes harder to hit in combat. Also, when Gunker picked
 up the Plate armor, the weight of the armor was added to Gunker's
 overall carried weight by increasing the weight value in Gunker's
-EnvStats object.</p>
+PhyStats object.</p>
       <p>I know, this is probably still confusing.</p>
       <p>Confusing or not, however, we still have to consider two other
 state objects, both of which are only available from the MOB object.
 One of which is the CharStats object, and the other of which is the
 CharState object.</p>
       <p>The CharStats objects are most closely analogous to the
-EnvStats objects. For instance, there are <code>CharStats
+PhyStats objects. For instance, there are <code>CharStats
 baseCharStats()</code> and <code>CharStats charStats()</code> method
 calls from a MOB object, as well as a <code>recoverCharStats()</code>
 method call. All of these work similarly to the ones described above
-for EnvStats. The fields on a Common.interfaces.CharStats object are
+for PhyStats. The fields on a Common.interfaces.CharStats object are
 somewhat more straight forward however. Most of the fields of a
 CharStats object are referenced using the <code>int getStat(int)</code>
 and <code>setStat(int,int)</code>
@@ -1289,10 +1289,10 @@ available through <code>getMyRace()</code> and <code>setMyRace()</code>
 methods, as well as Character Class and Character Class level methods.
 See the Common.interfaces.CharStats java file for more information on
 those methods and how they work.</p>
-      <p>Like the EnvStats above, those objects listed as able to
-modify the EnvStats current state object are the same objects which are
+      <p>Like the PhyStats above, those objects listed as able to
+modify the PhyStats current state object are the same objects which are
 able to modify the CharStats state objects. Rereading the section on
-EnvStats will make clear how the CharStats objects are modified in the
+PhyStats will make clear how the CharStats objects are modified in the
 same analogous manner, using repeated calls to<code>
 affectCharStats(MOB affected, CharStats affectedStats)</code> methods
 on related objects.</p>
@@ -1300,7 +1300,7 @@ on related objects.</p>
 to consider is the Common.interfaces.CharState objects on MOBs. The
 CharState object represents those fields which are constantly in flux:
 Hit Points, Mana, Movement, Hunger, Fatigue, and Thirst.</p>
-      <p>Unlike EnvStats and CharStats, there are three CharState
+      <p>Unlike PhyStats and CharStats, there are three CharState
 objects to consider for MOBs: the base CharState object (available
 through <code>CharState baseState()</code> method, the adjusted base
 CharState (or max state) object available through the <code>CharState
@@ -1318,7 +1318,7 @@ current CharState object (curState) represents the current hit points,
 mana points, etc available to the MOB.</p>
       <p>In the case of the CharState objects, adjustment by relevant
 objects is initiated by calling the MOBs <code>recoverMaxState()</code>
-method. This method allows the same objects who modify the EnvStats and
+method. This method allows the same objects who modify the PhyStats and
 CharStats above to modify the maximum CharState values as well.</p>
       <p>Once again, to understand one of them fully is to understand
 them all.</p>
@@ -1855,7 +1855,7 @@ memory.</td>
             <td>Represents a days worth of game player usage statistics.</td>
           </tr>
           <tr>
-            <td>DefaultEnvStats</td>
+            <td>DefaultPhyStats</td>
             <td>Contains an objects attack bonus, armor bonus, weight,
 height, rejuv rate.</td>
           </tr>
@@ -2039,7 +2039,7 @@ as the name of the class. This is no accident -- this is required!</p>
       <pre>public class MyNewMOB extends com.planet_ink.coffee_mud.MOBS.StdMOB<br />{<br />  public String ID(){ return "MyNewMOB";}<br /></pre>
       <p>All of your customizing will be done inside the constructor:
 name, displayText, description, etc, etc.</p>
-      <pre>  public MyNewMOB()<br />  {<br />    super();<br /><br />    setName( "a new mob" );<br />    setDescription( "It`s furry with 2 legs" );<br />    setDisplayText( "My new mob is standing here." );<br /><br />    Factions.setAlignment( this, Faction.ALIGN_NEUTRAL );<br />    setMoney( 0 );<br />    setWimpHitPoint( 2 );<br />    baseEnvStats().setDamage( 4 );<br /><br />    baseEnvStats().setAbility( 0 );<br />    baseEnvStats().setLevel( 1 );<br />    baseEnvStats().setArmor( 30 );<br />    baseEnvStats().setSpeed( 1.0 );<br />    baseEnvStats().setAttackAdjustment( 30 );<br />    baseEnvStats().setWeight( 85 );<br />    baseEnvStats().setSensesMask( EnvStats.CAN_SEE_DARK|EnvStats.CAN_SEE_INFRARED );<br />    baseEnvStats().setDisposition( EnvStats.IS_FLYING );<br />    baseCharStats().setCurrentClass( CMClass.getCharClass( "Fighter" ) );<br /><br />    baseCharStats().setMyRace( CMClass.getRace( "Dog" ) );<br />    baseCharStats().getMyRace().startRacing( this, false );<br />    baseCharStats().setStat( CharStats.STAT_GENDER, (int)'F' );<br />    baseCharStats().setStat( CharStats.STAT_STRENGTH, 18 );<br />    baseCharStats().setStat( CharStats.STAT_INTELLIGENCE, 14 );<br />    baseCharStats().setStat( CharStats.STAT_WISDOM, 13 );<br />    baseCharStats().setStat( CharStats.STAT_DEXTERITY, 15 );<br />    baseCharStats().setStat( CharStats.STAT_CONSTITUTION, 12 );<br />    baseCharStats().setStat( CharStats.STAT_CHARISMA, 13 );<br />    baseCharStats().setStat( CharStats.STAT_SAVE_COLD, 50 );<br /><br />    baseState.setHitPoints( CMLib.dice().roll( baseEnvStats().level(), 20, 20 ) );<br />    baseState.setMana( CMLib.dice().roll( baseEnvStats().level(), 50, 100 ) );<br /><br />    recoverMaxState();<br />    resetToMaxState();<br />    recoverEnvStats();<br />    recoverCharStats();<br />  }<br /></pre>
+      <pre>  public MyNewMOB()<br />  {<br />    super();<br /><br />    setName( "a new mob" );<br />    setDescription( "It`s furry with 2 legs" );<br />    setDisplayText( "My new mob is standing here." );<br /><br />    Factions.setAlignment( this, Faction.ALIGN_NEUTRAL );<br />    setMoney( 0 );<br />    setWimpHitPoint( 2 );<br />    basePhyStats().setDamage( 4 );<br /><br />    basePhyStats().setAbility( 0 );<br />    basePhyStats().setLevel( 1 );<br />    basePhyStats().setArmor( 30 );<br />    basePhyStats().setSpeed( 1.0 );<br />    basePhyStats().setAttackAdjustment( 30 );<br />    basePhyStats().setWeight( 85 );<br />    basePhyStats().setSensesMask( PhyStats.CAN_SEE_DARK|PhyStats.CAN_SEE_INFRARED );<br />    basePhyStats().setDisposition( PhyStats.IS_FLYING );<br />    baseCharStats().setCurrentClass( CMClass.getCharClass( "Fighter" ) );<br /><br />    baseCharStats().setMyRace( CMClass.getRace( "Dog" ) );<br />    baseCharStats().getMyRace().startRacing( this, false );<br />    baseCharStats().setStat( CharStats.STAT_GENDER, (int)'F' );<br />    baseCharStats().setStat( CharStats.STAT_STRENGTH, 18 );<br />    baseCharStats().setStat( CharStats.STAT_INTELLIGENCE, 14 );<br />    baseCharStats().setStat( CharStats.STAT_WISDOM, 13 );<br />    baseCharStats().setStat( CharStats.STAT_DEXTERITY, 15 );<br />    baseCharStats().setStat( CharStats.STAT_CONSTITUTION, 12 );<br />    baseCharStats().setStat( CharStats.STAT_CHARISMA, 13 );<br />    baseCharStats().setStat( CharStats.STAT_SAVE_COLD, 50 );<br /><br />    baseState.setHitPoints( CMLib.dice().roll( basePhyStats().level(), 20, 20 ) );<br />    baseState.setMana( CMLib.dice().roll( basePhyStats().level(), 50, 100 ) );<br /><br />    recoverMaxState();<br />    resetToMaxState();<br />    recoverPhyStats();<br />    recoverCharStats();<br />  }<br /></pre>
       <p>You can see here that the basic stats have been filled out,
 from level to attack speed, alignment and weight. For numeric values,
 higher is always better, except for Armor, which is always best low,
@@ -2050,8 +2050,8 @@ the numerous saving throws, and senses as well as dispositions
 using the format shown.</p>
       <p>It is very important to note the last four commands. These
 commands "reset" the MOB, and "implement" the scores which are given in
-the several areas. <code>recoverEnvStats()</code>, for instance, must
-be called whenever a change is made to the <code>baseEnvStats()</code>
+the several areas. <code>recoverPhyStats()</code>, for instance, must
+be called whenever a change is made to the <code>basePhyStats()</code>
 object. Ditto for "CharStats" and "MaxState".</p>
       <p>Now, suppose we wanted to add an Effect or Behavior or Ability
 to your MOB. The proper place for such a statement would be in the same
@@ -2113,12 +2113,12 @@ com.planet_ink.coffee_mud.Locales.interfaces.Room. If a MOB is to have
 a permanent existence, it must also have a starting room, or a place to
 rejuvenate into when necessary. If a MOB does not have a starting room,
 then its death, when that death comes, will be forever.</p>
-      <pre>MOB mob = CMClass.getMOB( "MyNewMOB" );<br />Room room = CMLib.map().getRoom( "Midgaard#3504" );<br /><br />mob.setStartRoom( room ); // this mob will rejuvenate into this room.<br />mob.baseEnvStats().setRejuv( 500 ); // 30 minutes rejuvenation time<br />mob.recoverEnvStats(); // remember this command?!<br /><br />mob.bringToLife( room, true ); // tadah!<br /></pre>
+      <pre>MOB mob = CMClass.getMOB( "MyNewMOB" );<br />Room room = CMLib.map().getRoom( "Midgaard#3504" );<br /><br />mob.setStartRoom( room ); // this mob will rejuvenate into this room.<br />mob.basePhyStats().setRejuv( 500 ); // 30 minutes rejuvenation time<br />mob.recoverPhyStats(); // remember this command?!<br /><br />mob.bringToLife( room, true ); // tadah!<br /></pre>
       <p>And THAT's all there is to bring a standard mob to life. Now,
 generic items require an additional step:</p>
-      <pre>Item item = CMClass.getItem( "GenItem" );<br />Room room = CMLib.map().getRoom( "Midgaard#3504" );<br /><br />item.text();<br />item.recoverEnvStats();<br />room.addItem( item );<br />room.recoverRoomStats();<br /></pre>
+      <pre>Item item = CMClass.getItem( "GenItem" );<br />Room room = CMLib.map().getRoom( "Midgaard#3504" );<br /><br />item.text();<br />item.recoverPhyStats();<br />room.addItem( item );<br />room.recoverRoomStats();<br /></pre>
       <p>The call to the <code>text()</code> method and the seemingly
-redundant call to <code>Item.recoverEnvStats()</code>
+redundant call to <code>Item.recoverPhyStats()</code>
 (which we know is already in the item constructor), ensures that some
 of the internal structures of the Generic MOB are properly set. Of
 course, you may want to save this room to the database to make the
@@ -2159,12 +2159,12 @@ of the class. This is no accident -- this is required!</p>
       <pre>public class MyNewSword extends com.planet_ink.coffee_mud.Items.Weapons.StdWeapon<br />{<br />  public String ID(){ return "MyNewSword"; }<br /><br />  public MyNewSword()<br />  {<br />    super();<br />  }<br />}<br /></pre>
       <p>All of your customizing will be done inside the constructor:
 name, displayText, description, etc, etc.</p>
-      <pre>  public MyNewSword()<br />  {<br />    super();<br /><br />    setName( "a super sword" );<br />    setDescription( "A long super duper sword!" );<br />    setDisplayText( "Someone left their super sword here." );<br />    setSecretIdentity( "" );<br />    setMaterial( RawMaterial.RESOURCE_STEEL );<br />    setWeaponType( Weapon.TYPE_SLASHING );<br />    setWeaponClassification( Weapon.CLASS_SWORD );<br /><br />    setBaseValue( 500 );<br />    baseEnvStats().setDisposition( EnvStats.IS_GLOWING );<br />    baseEnvStats.setWeight( 25 );<br />    baseEnvStats.setAttackAdjustment( 10 );<br />    baseEnvStats.setDamage( 15 );<br />    recoverEnvStats();<br />  }<br /></pre>
+      <pre>  public MyNewSword()<br />  {<br />    super();<br /><br />    setName( "a super sword" );<br />    setDescription( "A long super duper sword!" );<br />    setDisplayText( "Someone left their super sword here." );<br />    setSecretIdentity( "" );<br />    setMaterial( RawMaterial.RESOURCE_STEEL );<br />    setWeaponType( Weapon.TYPE_SLASHING );<br />    setWeaponClassification( Weapon.CLASS_SWORD );<br /><br />    setBaseValue( 500 );<br />    basePhyStats().setDisposition( PhyStats.IS_GLOWING );<br />    basePhyStats.setWeight( 25 );<br />    basePhyStats.setAttackAdjustment( 10 );<br />    basePhyStats.setDamage( 15 );<br />    recoverPhyStats();<br />  }<br /></pre>
       <p>What is shown above is entirely sufficient for the creation of
 a normal StdWeapon . The material, weight, attack and damage describe
 it completely. You'll even notice that by setting a disposition flag,
 we have made the sword glow! Now, what if we wanted a missile weapon?</p>
-      <pre>  public MyNewBow()<br />  {<br />    super();<br /><br />    setName( "a super bow" );<br />    setDescription( "A long super duper bow!" );<br />    setDisplayText( "Someone left their super bow here." );<br />    setSecretIdentity( "" );<br /><br />    setMaterial( RawMaterial.RESOURCE_OAK );<br />    setBaseValue( 5000 );<br />    baseEnvStats.setWeight( 15 );<br />    baseEnvStats.setAttackAdjustment( 20 );<br />    baseEnvStats.setDamage( 5 );<br />    setWeaponType( Weapon.TYPE_PIERCING );<br />    setWeaponClassification( Weapon.CLASS_RANGED );<br />    setRanges( 1, 5 );<br />    setAmmunitionType( "arrows" );<br />    recoverEnvStats();<br />  }<br /></pre>
+      <pre>  public MyNewBow()<br />  {<br />    super();<br /><br />    setName( "a super bow" );<br />    setDescription( "A long super duper bow!" );<br />    setDisplayText( "Someone left their super bow here." );<br />    setSecretIdentity( "" );<br /><br />    setMaterial( RawMaterial.RESOURCE_OAK );<br />    setBaseValue( 5000 );<br />    basePhyStats.setWeight( 15 );<br />    basePhyStats.setAttackAdjustment( 20 );<br />    basePhyStats.setDamage( 5 );<br />    setWeaponType( Weapon.TYPE_PIERCING );<br />    setWeaponClassification( Weapon.CLASS_RANGED );<br />    setRanges( 1, 5 );<br />    setAmmunitionType( "arrows" );<br />    recoverPhyStats();<br />  }<br /></pre>
       <p>You'll notice we added two new methods, <code>setRanges()</code>,
 and <code>setAmmunitionType()</code>.
 With the former, we specify that this is a ranged-only weapon, usable
@@ -2172,37 +2172,37 @@ from range 1 (0=melee) to range 5. The ammunition type specifies that
 it uses arrows. Other classes, however, have different requirements
 altogether. For instance, if class extends
 com.planet_ink.coffee_mud.Items.Armor.StdArmor:</p>
-      <pre>  public MyNewArmor()<br />  {<br />    super();<br /><br />    setName( "a super bracer" );<br />    setDescription( "A super duper bracer" );<br />    setDisplayText( "Someone left their super bracer here." );<br />    setSecretIdentity( "" );<br /><br />    setMaterial( RawMaterial.RESOURCE_STEEL );<br />    setBaseValue( 100 );<br />    baseEnvStats.setWeight( 5 );<br />    baseEnvStats.setArmor( 5 );<br />    setRawProperLocationBitmap( Wearable.WORN_LEFT_WRIST|Wearable.WORN_RIGHT_WRIST );<br />    setRawLogicalAnd( false );<br />    recoverEnvStats();<br />  }<br /></pre>
+      <pre>  public MyNewArmor()<br />  {<br />    super();<br /><br />    setName( "a super bracer" );<br />    setDescription( "A super duper bracer" );<br />    setDisplayText( "Someone left their super bracer here." );<br />    setSecretIdentity( "" );<br /><br />    setMaterial( RawMaterial.RESOURCE_STEEL );<br />    setBaseValue( 100 );<br />    basePhyStats.setWeight( 5 );<br />    basePhyStats.setArmor( 5 );<br />    setRawProperLocationBitmap( Wearable.WORN_LEFT_WRIST|Wearable.WORN_RIGHT_WRIST );<br />    setRawLogicalAnd( false );<br />    recoverPhyStats();<br />  }<br /></pre>
       <p>In this case, we made a bracer wearable on both left and right
 wrists. If it were something that could only be worn on both wrists at
 the same time (like handcuffs), then the RawLogicalAnd value would have
 been true. Now, a class extending
 com.planet_ink.coffee_mud.Items.Basic.StdContainer:</p>
-      <pre>  public MyNewBag()<br />  {<br />    super();<br /><br />    setName( "a super bag" );<br />    setDescription( "A super duper bag" );<br />    setDisplayText( "Someone left their super bag here." );<br />    setSecretIdentity( "" );<br /><br />    setBaseValue( 50 );<br />    setLidsNLocks( false, true, false, false );<br />    setKeyName( "" );<br />    setMaterial( RawMaterial.RESOURCE_LEATHER );<br />    baseEnvStats.setWeight( 1 );<br />    setCapacity( 100 );<br />    recoverEnvStats();<br />  }<br /></pre>
+      <pre>  public MyNewBag()<br />  {<br />    super();<br /><br />    setName( "a super bag" );<br />    setDescription( "A super duper bag" );<br />    setDisplayText( "Someone left their super bag here." );<br />    setSecretIdentity( "" );<br /><br />    setBaseValue( 50 );<br />    setLidsNLocks( false, true, false, false );<br />    setKeyName( "" );<br />    setMaterial( RawMaterial.RESOURCE_LEATHER );<br />    basePhyStats.setWeight( 1 );<br />    setCapacity( 100 );<br />    recoverPhyStats();<br />  }<br /></pre>
       <p>When setting the capacity of a container, remember that it
 must also be able to hold its own weight! Also, note the lids and locks
 flags have made this container lidless and lockless and always open. Of
 course, without a lock, setting a key would be silly! Now, a class
 extending com.planet_ink.coffee_mud.Items.Basic.StdDrink will create a
 drinkable container:</p>
-      <pre>  public MyNewCup()<br />  {<br />    super();<br /><br />    setName( "a super cup" );<br />    setDescription( "A super duper cup" );<br />    setDisplayText( "Someone left their super cup here." );<br />    setSecretIdentity( "" );<br /><br />    setMaterial( RawMaterial.RESOURCE_LEATHER );<br />    setBaseValue( 5 );<br />    setLiquidHeld( 2000 );<br />    setLiquidRemaining( 2000 );<br />    setThirstQuenched( 500 );<br />    setLiquidType( RawMaterial.RESOURCE_MILK );<br />    baseEnvStats.setWeight( 1 );<br />    setCapacity( 0 );<br />    recoverEnvStats();<br />  }<br /></pre>
+      <pre>  public MyNewCup()<br />  {<br />    super();<br /><br />    setName( "a super cup" );<br />    setDescription( "A super duper cup" );<br />    setDisplayText( "Someone left their super cup here." );<br />    setSecretIdentity( "" );<br /><br />    setMaterial( RawMaterial.RESOURCE_LEATHER );<br />    setBaseValue( 5 );<br />    setLiquidHeld( 2000 );<br />    setLiquidRemaining( 2000 );<br />    setThirstQuenched( 500 );<br />    setLiquidType( RawMaterial.RESOURCE_MILK );<br />    basePhyStats.setWeight( 1 );<br />    setCapacity( 0 );<br />    recoverPhyStats();<br />  }<br /></pre>
       <p>The StdDrink created above is an enormous cup of milk! You'll
 notice the capacity is 0, meaning that mundane objects cannot be stored
 in it. Now, a class extending
 com.planet_ink.coffee_mud.Items.Basic.StdFood:</p>
-      <pre>  public MyNewFood()<br />  {<br />    super();<br /><br />    setName( "a super crumb" );<br />    setDescription( "A super duper crumb" );<br />    setDisplayText( "Someone left their super crumbs." );<br />    setSecretIdentity( "" );<br /><br />    setBaseValue( 1 );<br />    setMaterial( RawMaterial.RESOURCE_MEAT );<br />    setNourishment( 500 );<br />    baseEnvStats.setWeight( 1 );<br />    recoverEnvStats();<br />  }<br /></pre>
+      <pre>  public MyNewFood()<br />  {<br />    super();<br /><br />    setName( "a super crumb" );<br />    setDescription( "A super duper crumb" );<br />    setDisplayText( "Someone left their super crumbs." );<br />    setSecretIdentity( "" );<br /><br />    setBaseValue( 1 );<br />    setMaterial( RawMaterial.RESOURCE_MEAT );<br />    setNourishment( 500 );<br />    basePhyStats.setWeight( 1 );<br />    recoverPhyStats();<br />  }<br /></pre>
       <p>Now, the items extending
 com.planet_ink.coffee_mud.Items.Basic.StdRideable resemble the MOB of
 the same name, and thus, have identical modifications.</p>
-      <pre>  public MyNewBed()<br />  {<br />    super();<br /><br />    setName( "a bed" );<br />    setDescription( "A bed" );<br />    setDisplayText( "A bed is here" );<br />    setSecretIdentity( "" );<br /><br />    setBaseValue( 100 );<br />    setMobCapacity( 2 );<br />    setRideBasis( Rideable.RIDEABLE_SLEEP );<br />    baseEnvStats.setWeight( 100 );<br />    recoverEnvStats();<br />  }<br /></pre>
+      <pre>  public MyNewBed()<br />  {<br />    super();<br /><br />    setName( "a bed" );<br />    setDescription( "A bed" );<br />    setDisplayText( "A bed is here" );<br />    setSecretIdentity( "" );<br /><br />    setBaseValue( 100 );<br />    setMobCapacity( 2 );<br />    setRideBasis( Rideable.RIDEABLE_SLEEP );<br />    basePhyStats.setWeight( 100 );<br />    recoverPhyStats();<br />  }<br /></pre>
       <p>A pile of money extends class
 com.planet_ink.coffee_mud.Items.Basic.StdCoins, and is simplest of all:</p>
-      <pre>  public MyNewMoney()<br />  {<br />    super();<br /><br />    setName( "a pile of coins" );<br />    setDescription( "A pile of coins" );<br />    setDisplayText( "Someone left their money here." );<br />    setSecretIdentity( "" );<br /><br />    setBaseValue( 0 );<br />    setMaterial( RawMaterial.RESOURCE_GOLD );<br />    setNumberOfCoins( 1000 ); // 1000 coins!<br />    setDenomination( 1.0 ); // each coin worth 1.0 basic gold<br />    baseEnvStats.setWeight( 1 );<br />    recoverEnvStats();<br />  }<br /></pre>
+      <pre>  public MyNewMoney()<br />  {<br />    super();<br /><br />    setName( "a pile of coins" );<br />    setDescription( "A pile of coins" );<br />    setDisplayText( "Someone left their money here." );<br />    setSecretIdentity( "" );<br /><br />    setBaseValue( 0 );<br />    setMaterial( RawMaterial.RESOURCE_GOLD );<br />    setNumberOfCoins( 1000 ); // 1000 coins!<br />    setDenomination( 1.0 ); // each coin worth 1.0 basic gold<br />    basePhyStats.setWeight( 1 );<br />    recoverPhyStats();<br />  }<br /></pre>
       <p>Notice that the base value of the coins is 0, it's the other
 methods that truly determine its value. Now, to make a magical pill,
 our class should extend
 com.planet_ink.coffee_mud.Items.MiscMagic.StdPill:</p>
-      <pre>  public MyNewPill()<br />  {<br />    super();<br /><br />    setName( "a super pill" );<br />    setDescription( "A super duper pill" );<br />    setDisplayText( "Someone left their super pill." );<br />    setSecretIdentity( "" );<br /><br />    setBaseValue( 1 );<br />    setMaterial( RawMaterial.RESOURCE_MEAT );<br />    setNourishment( 500 );<br />    baseEnvStats.setWeight( 1 );<br />    setSpellList( "Spell_Sleep;Prayer_CureLightWounds" );<br />    recoverEnvStats();<br />  }<br /></pre>
+      <pre>  public MyNewPill()<br />  {<br />    super();<br /><br />    setName( "a super pill" );<br />    setDescription( "A super duper pill" );<br />    setDisplayText( "Someone left their super pill." );<br />    setSecretIdentity( "" );<br /><br />    setBaseValue( 1 );<br />    setMaterial( RawMaterial.RESOURCE_MEAT );<br />    setNourishment( 500 );<br />    basePhyStats.setWeight( 1 );<br />    setSpellList( "Spell_Sleep;Prayer_CureLightWounds" );<br />    recoverPhyStats();<br />  }<br /></pre>
       <p>The spells cast on the eater are listed by their Class names,
 separated by semicolons. The secret identity is also trimmed out, since
 the system will handle that automaticallyy. Also notice that the
@@ -2214,11 +2214,11 @@ added to IT. So, in the interests of saving a little sand for future
 generations, I would enumerate the StdPotion. We can, however, show off
 another class which extends
 com.planet_ink.coffee_mud.Items.MiscMagic.StdScroll:</p>
-      <pre>  public MyNewScroll()<br />  {<br />    super();<br /><br />    setName( "a super scroll" );<br />    setDescription( "A super duper scroll" );<br />    setDisplayText( "Someone left their super scroll." );<br />    setSecretIdentity( "" );<br />    setBaseValue( 100 );<br /><br />    setMaterial( RawMaterial.RESOURCE_PAPER );<br />    setUsesRemaining( 50 );<br />    baseEnvStats.setWeight( 1 );<br />    setScrollSpells( "Spell_Sleep;Prayer_CureLightWounds" );<br />    recoverEnvStats();<br />  }<br /></pre>
+      <pre>  public MyNewScroll()<br />  {<br />    super();<br /><br />    setName( "a super scroll" );<br />    setDescription( "A super duper scroll" );<br />    setDisplayText( "Someone left their super scroll." );<br />    setSecretIdentity( "" );<br />    setBaseValue( 100 );<br /><br />    setMaterial( RawMaterial.RESOURCE_PAPER );<br />    setUsesRemaining( 50 );<br />    basePhyStats.setWeight( 1 );<br />    setScrollSpells( "Spell_Sleep;Prayer_CureLightWounds" );<br />    recoverPhyStats();<br />  }<br /></pre>
       <p>Not too difficult, right? Looks like the other two, but the
 spell setting method has a different name. Now, let's look at a sample
 of a class extending com.planet_ink.coffee_mud.Items.MiscMagic.StdWand:</p>
-      <pre>  public MyNewWand()<br />  {<br />    super();<br /><br />    setName( "a wand" );<br />    setDescription( "A magic wand" );<br />    setDisplayText( "Someone left their magic wand." );<br />    setSecretIdentity( "" );<br /><br />    setBaseValue( 1000 );<br />    setMaterial( RawMaterial.RESOURCE_OAK );<br />    baseEnvStats.setWeight( 1 );<br />    setSpell( CMClass.getAbility( "Spell_Fireball" ) );<br />    setUsesRemaining( 50 );<br />    recoverEnvStats();<br />  }<br /></pre>
+      <pre>  public MyNewWand()<br />  {<br />    super();<br /><br />    setName( "a wand" );<br />    setDescription( "A magic wand" );<br />    setDisplayText( "Someone left their magic wand." );<br />    setSecretIdentity( "" );<br /><br />    setBaseValue( 1000 );<br />    setMaterial( RawMaterial.RESOURCE_OAK );<br />    basePhyStats.setWeight( 1 );<br />    setSpell( CMClass.getAbility( "Spell_Fireball" ) );<br />    setUsesRemaining( 50 );<br />    recoverPhyStats();<br />  }<br /></pre>
       <p>In this case, we made use of the "uses remaining" field to set
 the number of charges for the wand. The way the spell is set is also
 different. A wand may only have one spell, and the actual Ability
@@ -2238,7 +2238,7 @@ are setting a parameter on the Behavior before adding it.</p>
       <pre>Ability A = CMClass.getAbility( "Prop_HaveResister" );<br />A.setMiscText( "fire acid 50%" );<br />A.addNonUninvokableEffect( A );<br /></pre>
       <p>The above Effect will allow anyone who owns the item to resist
 fire and acid at 50%! And again, as with mobs, these commands are best
-put in the constructor of the item before the recoverEnvStats() call.</p>
+put in the constructor of the item before the recoverPhyStats() call.</p>
       <p>There is also the advanced topic of extending the capabilities
 of the existing Item classes. As mentioned previously, this consists in
 creating your own java classes with the same class name and ID() string
@@ -2271,14 +2271,14 @@ with the creation of an Item in a Room:</p>
 room using the <code>addItem()</code>
 method. Then the room recover is called to make the room react to the
 addition of the item. Now, generic items require an additional step:</p>
-      <pre>Item item = CMClass.getItem( "GenItem" );<br />Room room = CMLib.map().getRoom( "Midgaard#3504" );<br /><br />item.text();<br />item.recoverEnvStats();<br />room.addItem( item );<br />room.recoverRoomStats();<br /></pre>
+      <pre>Item item = CMClass.getItem( "GenItem" );<br />Room room = CMLib.map().getRoom( "Midgaard#3504" );<br /><br />item.text();<br />item.recoverPhyStats();<br />room.addItem( item );<br />room.recoverRoomStats();<br /></pre>
       <p>The call to the <code>text()</code> method and the seemingly
-redundant call to <code>Item.recoverEnvStats()</code>
+redundant call to <code>Item.recoverPhyStats()</code>
 (which we know is already in the item constructor), ensures that some
 of the internal structures of the Generic Item are properly set. Of
 course, these items are one-shot items, meaning that they are not
 generated to exist on the map forever and ever.</p>
-      <pre>Item item = CMClass.getItem( "MyNewItem" );<br />Room room = CMLib.map().getRoom( "Midgaard#3504" );<br /><br />item.baseEnvStats().setRejuv( 500 ); // 30 minutes rejuvenation time<br />item.recoverEnvStats();<br />room.addItem( item );<br />room.recoverRoomStats();<br />room.startItemRejuv();<br /></pre>
+      <pre>Item item = CMClass.getItem( "MyNewItem" );<br />Room room = CMLib.map().getRoom( "Midgaard#3504" );<br /><br />item.basePhyStats().setRejuv( 500 ); // 30 minutes rejuvenation time<br />item.recoverPhyStats();<br />room.addItem( item );<br />room.recoverRoomStats();<br />room.startItemRejuv();<br /></pre>
       <p>In this case, we wanted the item to be rejuvenating. That
 means that, when the item is removed from the room by a player, the
 item will reset at some point in the future. If the rejuv ticks count
@@ -2718,8 +2718,8 @@ that race, such as language. Players Shape Shifted or Polymorphed into
 the race, since they did not grow up in the culture, would not have
 automatic access to these skills per se. These two methods are defined
 similarly to the Racial Abilities above.</p>
-      <pre>  public void affectEnvStats( Environmental affected, EnvStats affectableStats )<br />  {<br />    super.affectEnvStats( affected, affectableStats );<br /><br />    affectableStats.setSensesMask(<br />      affectableStats.sensesMask() | EnvStats.CAN_SEE_INFRARED<br />    );<br />  }<br /></pre>
-      <p>This sample of the <code>affectEnvStats()</code> method we
+      <pre>  public void affectPhyStats( Environmental affected, PhyStats affectableStats )<br />  {<br />    super.affectPhyStats( affected, affectableStats );<br /><br />    affectableStats.setSensesMask(<br />      affectableStats.sensesMask() | PhyStats.CAN_SEE_INFRARED<br />    );<br />  }<br /></pre>
+      <p>This sample of the <code>affectPhyStats()</code> method we
 discussed in the Core Topics above makes sure that all creatures of
 this race can see in the infrared spectrum.</p>
       <pre>  public void affectCharStats( MOB affectedMOB, CharStats affectableStats )<br />  {<br />    super.affectCharStats( affectedMOB, affectableStats );<br />    affectableStats.setStat( CharStats.STAT_STRENGTH, 15 );<br />    affectableStats.setStat( CharStats.STAT_DEXTERITY, 25 );<br />    affectableStats.setStat( CharStats.STAT_INTELLIGENCE, 5 );<br />  }<br /></pre>
@@ -2801,7 +2801,7 @@ com.planet_ink.coffee_mud.Rooms.StdMaze, because our sample classes
 extends them.</p>
       <p>Let's looks at an example of a standard grid room, which has
 much of the functionality we are interested in:</p>
-      <pre>public class RoadGrid extends com.planet_ink.coffee_mud.Locales.StdGrid<br />{<br />  public String ID()<br />  {<br />    return "RoadGrid";<br />  }<br /><br />  public RoadGrid()<br />  {<br />    super();<br />    name = "a road";<br />    baseEnvStats.setWeight( 1 );<br />    recoverEnvStats();<br />  }<br /><br />  public String getGridChildLocaleID()<br />  {<br />    return "Road";<br />  }<br /><br />  public Vector resourceChoices()<br />  {<br />    return Road.roomResources;<br />  }<br /><br />  public int domainType()<br />  {<br />    return Room.DOMAIN_OUTDOORS_PLAINS;<br />  }<br /><br />  public int domainConditions()<br />  {<br />    return Room.CONDITION_NORMAL;<br />  }<br />}<br /></pre>
+      <pre>public class RoadGrid extends com.planet_ink.coffee_mud.Locales.StdGrid<br />{<br />  public String ID()<br />  {<br />    return "RoadGrid";<br />  }<br /><br />  public RoadGrid()<br />  {<br />    super();<br />    name = "a road";<br />    basePhyStats.setWeight( 1 );<br />    recoverPhyStats();<br />  }<br /><br />  public String getGridChildLocaleID()<br />  {<br />    return "Road";<br />  }<br /><br />  public Vector resourceChoices()<br />  {<br />    return Road.roomResources;<br />  }<br /><br />  public int domainType()<br />  {<br />    return Room.DOMAIN_OUTDOORS_PLAINS;<br />  }<br /><br />  public int domainConditions()<br />  {<br />    return Room.CONDITION_NORMAL;<br />  }<br />}<br /></pre>
       <p>Here we see the standard RoadGrid. It's effects, behaviors,
 displaytext, description, and (since it is a grid type) size in the x
 and y are all defined by the builder. The features (and they aren't
@@ -2949,11 +2949,11 @@ those messages, after telling the poor bloke why we are doing it. The
 rest of the method prevents any messages from targeting the mob with
 this property. This saves him from being attacked by aggressives, or
 arrested by cityguards -- since technically he isn't even there.</p>
-      <pre>  public void affectEnvStats( Environmental affected, EnvStats affectableStats )<br />  {<br />    super.affectEnvStats( affected, affectableStats );<br />    // when this spell is on a MOBs Affected list,<br />    // it should consistantly put the mob into<br />    // a sleeping state, so that nothing they do<br />    // can get them out of it.<br /><br />    affectableStats.setWeight( 0 );<br />    affectableStats.setHeight( -1 );<br /><br />    affectableStats.setDisposition(<br />      affectableStats.disposition()|EnvStats.IS_GOLEM<br />    );<br /><br />    affectableStats.setDisposition(<br />      affectableStats.disposition()|EnvStats.IS_INVISIBLE<br />    );<br /><br />    affectableStats.setDisposition(<br />      affectableStats.disposition()|EnvStats.IS_NOT_SEEN<br />    );<br /><br />    affectableStats.setSensesMask(<br />      affectableStats.sensesMask()|EnvStats.CAN_NOT_SPEAK<br />    );<br />  }<br />}<br /></pre>
+      <pre>  public void affectPhyStats( Environmental affected, PhyStats affectableStats )<br />  {<br />    super.affectPhyStats( affected, affectableStats );<br />    // when this spell is on a MOBs Affected list,<br />    // it should consistantly put the mob into<br />    // a sleeping state, so that nothing they do<br />    // can get them out of it.<br /><br />    affectableStats.setWeight( 0 );<br />    affectableStats.setHeight( -1 );<br /><br />    affectableStats.setDisposition(<br />      affectableStats.disposition()|PhyStats.IS_GOLEM<br />    );<br /><br />    affectableStats.setDisposition(<br />      affectableStats.disposition()|PhyStats.IS_INVISIBLE<br />    );<br /><br />    affectableStats.setDisposition(<br />      affectableStats.disposition()|PhyStats.IS_NOT_SEEN<br />    );<br /><br />    affectableStats.setSensesMask(<br />      affectableStats.sensesMask()|PhyStats.CAN_NOT_SPEAK<br />    );<br />  }<br />}<br /></pre>
       <p>Last but not least, here is another example from the Core
-Topics, an <code>affectEnvStats()</code>
+Topics, an <code>affectPhyStats()</code>
 method. This method will always have the host mob passed in the
-"affected" parameter, and a copy of his current EnvStats objects in the
+"affected" parameter, and a copy of his current PhyStats objects in the
 affectableStats parameter. This method then sets the mob as being both
 invisible, and totally unseen. It makes him unviewable to infrared, and
 prevents him from speaking. The two methods above then combine to
@@ -3165,8 +3165,8 @@ muscles.</td>
           </tr>
         </tbody>
       </table>
-      <pre>  public void affectEnvStats( Environmental affected, EnvStats affectableStats )<br />  {<br />    super.affectEnvStats( affected, affectableStats );<br />    if( !doneTicking )<br />    {<br />      affectableStats.setDisposition( affectableStats.disposition()<br />                                      | EnvStats.IS_SITTING<br />                                    );<br />    }<br />  }<br /></pre>
-      <p>This is an example of the <code>affectEnvStats()</code>
+      <pre>  public void affectPhyStats( Environmental affected, PhyStats affectableStats )<br />  {<br />    super.affectPhyStats( affected, affectableStats );<br />    if( !doneTicking )<br />    {<br />      affectableStats.setDisposition( affectableStats.disposition()<br />                                      | PhyStats.IS_SITTING<br />                                    );<br />    }<br />  }<br /></pre>
+      <p>This is an example of the <code>affectPhyStats()</code>
 method described in the Core Topics. In the case of our Trip skill, it
 forces the affected target into a sitting position.</p>
       <pre>  public boolean okMessage( Environmental myHost, CMMsg msg )<br />  {<br />    if( ( affected == null ) || ( !( affected instanceof MOB ) ) )<br />    {<br />      return true;<br />    }<br /><br />    MOB mob = (MOB)affected;<br />    if( doneTicking &amp;&amp; msg.amISource( mob ) )<br />    {<br />      unInvoke();<br />    }<br />    else if( msg.amISource( mob )<br />             &amp;&amp; ( msg.sourceMinor() == CMMsg.TYP_STAND )<br />           )<br />    {<br />      return false;<br />    }<br /><br />    return true;<br />  }<br /></pre>
@@ -3237,7 +3237,7 @@ trip, and the target is able to be tripped.</p>
 called now. This method will check mana requirements, and subtract mana
 if necessary. It should be called AFTER all other preliminary checks
 have been made.</p>
-      <pre>    int levelDiff = target.envStats().level() - mob.envStats().level();<br />    if( levelDiff &gt; 0 )<br />    {<br />      levelDiff = levelDiff * 5;<br />    }<br />    else<br />    {<br />      levelDiff = 0;<br />    }<br /><br />    Double temp = Integer.valueOf(<br />                               target.charStats().getStat(<br />                                                           CharStats.STAT_DEXTERITY<br />                                                         )<br />                             ).doubleValue()<br />                             - 9.0;<br /><br />    int adjustment =<br />    (-levelDiff) + (-( 35 + ( (int)Math.round( temp * 3.0 ) ) ) );<br /><br />    boolean success = proficiencyCheck( mob, adjustment, auto );<br /></pre>
+      <pre>    int levelDiff = target.phyStats().level() - mob.phyStats().level();<br />    if( levelDiff &gt; 0 )<br />    {<br />      levelDiff = levelDiff * 5;<br />    }<br />    else<br />    {<br />      levelDiff = 0;<br />    }<br /><br />    Double temp = Integer.valueOf(<br />                               target.charStats().getStat(<br />                                                           CharStats.STAT_DEXTERITY<br />                                                         )<br />                             ).doubleValue()<br />                             - 9.0;<br /><br />    int adjustment =<br />    (-levelDiff) + (-( 35 + ( (int)Math.round( temp * 3.0 ) ) ) );<br /><br />    boolean success = proficiencyCheck( mob, adjustment, auto );<br /></pre>
       <p>The <code>proficiencyCheck()</code> method called at the end
 here will determine of the user of the skill has passed their
 proficiency check. The first parameter of this method is the invoking
@@ -3442,8 +3442,8 @@ when invoked!</p>
 absolutely vital for Songs, as it tells the Song superclass whether to
 invoke the song upon all your enemies, or upon all your group members.
 Make sure you implement this method!</p>
-      <pre>  public void affectEnvStats( Environmental affected, EnvStats affectableStats )<br />  {<br />    super.affectEnvStats( affected, affectableStats );<br />    if( invoker == null )<br />    {<br />      return;<br />    }<br /><br />    affectableStats.setAttackAdjustment( affectableStats.attackAdjustment() - 5 );<br />  }<br />       <br /></pre>
-      <p>This particular song uses affectEnvStats to lower the attack
+      <pre>  public void affectPhyStats( Environmental affected, PhyStats affectableStats )<br />  {<br />    super.affectPhyStats( affected, affectableStats );<br />    if( invoker == null )<br />    {<br />      return;<br />    }<br /><br />    affectableStats.setAttackAdjustment( affectableStats.attackAdjustment() - 5 );<br />  }<br />       <br /></pre>
+      <p>This particular song uses affectPhyStats to lower the attack
 rating of everyone that hears the song. Although this is not a
 malicious song, it is the price of using it.</p>
       <pre>  public void affectCharStats( MOB affected, CharStats affectableStats )<br />  {<br />    super.affectCharStats( affected, affectableStats );<br />    if( invoker == null )<br />    {<br />      return;<br />    }<br /><br />    affectableStats.setStat( CharStats.STAT_DEXTERITY,<br />                             affectableStats.getStat( CharStats.STAT_DEXTERITY ) - 1 );<br /><br />    affectableStats.setStat( CharStats.STAT_SAVE_ACID,<br />                             affectableStats.getStat( CharStats.STAT_SAVE_ACID )<br />                             + (<br />                                 invoker.charStats().getStat(<br />                                                              CharStats.STAT_CHARISMA<br />                                                            ) * 4<br />                               )<br />                           );<br /><br />    affectableStats.setStat( CharStats.STAT_SAVE_COLD,<br />                             affectableStats.getStat( CharStats.STAT_SAVE_COLD )<br />                             + (<br />                                 invoker.charStats().getStat(<br />                                                              CharStats.STAT_CHARISMA<br />                                                            ) * 4<br />                               )<br />                           );<br /><br />    affectableStats.setStat( CharStats.STAT_SAVE_ELECTRIC,<br />                             affectableStats.getStat( CharStats.STAT_SAVE_ELECTRIC )<br />                             + (<br />                                 invoker.charStats().getStat(<br />                                                              CharStats.STAT_CHARISMA<br />                                                            ) * 4<br />                               )<br />                           );<br /><br />    affectableStats.setStat( CharStats.STAT_SAVE_FIRE,<br />                             affectableStats.getStat( CharStats.STAT_SAVE_FIRE )<br />                             + (<br />                                 invoker.charStats().getStat(<br />                                                              CharStats.STAT_CHARISMA<br />                                                            ) * 4<br />                               )<br />                           );<br /><br />    affectableStats.setStat( CharStats.STAT_SAVE_GAS,<br />                             affectableStats.getStat( CharStats.STAT_SAVE_GAS )<br />                             + (<br />                                 invoker.charStats().getStat(<br />                                                              CharStats.STAT_CHARISMA<br />                                                            ) * 4<br />                               )<br />                           );<br />  }<br />}<br /></pre>
@@ -3575,7 +3575,7 @@ those are true, we make use of a very useful method in the <code>utensils()</cod
 library called makeResource to generate our item for us. We also
 properly set the name of what we have caught based on the material type
 of the foundFish.</p>
-      <pre>    int duration = 35 - mob.envStats().level();<br />    if( duration &lt; 10 )<br />    {<br />      duration=10;<br />    }<br /><br />    CMMsg msg = CMClass.getMsg( mob,<br />                                found,<br />                                this,<br />                                CMMsg.MSG_NOISYMOVEMENT,<br />                                "&lt;S-NAME&gt; start(s) fishing."<br />                              );<br /><br />    if( mob.location().okMessage( mob, msg ) )<br />    {<br />      mob.location().send( mob, msg );<br />      found = (Item)msg.target();<br />      beneficialAffect( mob, mob, asLevel, duration );<br />    }<br />    return true;<br />  }<br />}<br />       <br /></pre>
+      <pre>    int duration = 35 - mob.phyStats().level();<br />    if( duration &lt; 10 )<br />    {<br />      duration=10;<br />    }<br /><br />    CMMsg msg = CMClass.getMsg( mob,<br />                                found,<br />                                this,<br />                                CMMsg.MSG_NOISYMOVEMENT,<br />                                "&lt;S-NAME&gt; start(s) fishing."<br />                              );<br /><br />    if( mob.location().okMessage( mob, msg ) )<br />    {<br />      mob.location().send( mob, msg );<br />      found = (Item)msg.target();<br />      beneficialAffect( mob, mob, asLevel, duration );<br />    }<br />    return true;<br />  }<br />}<br />       <br /></pre>
       <p>Our last step is to calculate the amount of time (duration)
 that it will take to catch the fish, create a coffeemud message to
 declare the start of our finishing adventure, and send the message out.
@@ -3691,7 +3691,7 @@ default completion ticks (4), and initializing a bundling flag to
 false. Even if the player did not explicitly use the word bundle in the
 parameters, they may still have selected a bundle item from the recipes
 list, so we need that flag to notify the rest of the code of that fact.</p>
-      <pre>    if( str.equalsIgnoreCase( "list" ) )<br />    {<br />      StringBuffer buf = new StringBuffer(<br />                                           CMStrings.padRight( "Item", 16 )<br />                                           + " Lvl Sand required\n\r"<br />                                         );<br /><br />      for( int r = 0; r &lt; recipes.size(); r++ )<br />      {<br />        Vector V = (Vector)recipes.elementAt( r );<br />        if( V.size() &gt; 0 )<br />        {<br />          String item = replacePercent( (String)V.elementAt( RCP_FINALNAME ), "" );<br />          int level = CMath.s_int( (String)V.elementAt( RCP_LEVEL ) );<br />          int wood = CMath.s_int( (String)V.elementAt( RCP_WOOD ) );<br />          if( level &lt;= mob.envStats().level() )<br />          {<br />            buf.append(<br />                        CMStrings.padRight( item, 16 )<br />                        + " "<br />                        + CMStrings.padRight( "" + level, 3 )<br />                        + " "<br />                        + wood<br />                        + "\n\r"<br />                      );<br />          }<br />        }<br />      }<br /><br />      commonTell( mob, buf.toString() );<br />      return true;<br />    }<br />       <br /></pre>
+      <pre>    if( str.equalsIgnoreCase( "list" ) )<br />    {<br />      StringBuffer buf = new StringBuffer(<br />                                           CMStrings.padRight( "Item", 16 )<br />                                           + " Lvl Sand required\n\r"<br />                                         );<br /><br />      for( int r = 0; r &lt; recipes.size(); r++ )<br />      {<br />        Vector V = (Vector)recipes.elementAt( r );<br />        if( V.size() &gt; 0 )<br />        {<br />          String item = replacePercent( (String)V.elementAt( RCP_FINALNAME ), "" );<br />          int level = CMath.s_int( (String)V.elementAt( RCP_LEVEL ) );<br />          int wood = CMath.s_int( (String)V.elementAt( RCP_WOOD ) );<br />          if( level &lt;= mob.phyStats().level() )<br />          {<br />            buf.append(<br />                        CMStrings.padRight( item, 16 )<br />                        + " "<br />                        + CMStrings.padRight( "" + level, 3 )<br />                        + " "<br />                        + wood<br />                        + "\n\r"<br />                      );<br />          }<br />        }<br />      }<br /><br />      commonTell( mob, buf.toString() );<br />      return true;<br />    }<br />       <br /></pre>
       <p>If the player entered "list" as the first word in the
 parameters, we display the recipes to them.</p>
       <pre>    fire = getRequiredFire( mob, autoGenerate );<br />    if( fire == null )<br />    {<br />      return false;<br />    }<br /><br />    building = null;<br />    messedUp = false;<br />       <br /></pre>
@@ -3710,7 +3710,7 @@ player is specifying how much raw material they want to use in the
 construction of this item. The recipe list mentions the minimum amount
 of material, but the user is allowed to specify more if they like.
 We'll save this override amount and confirm its validity later.</p>
-      <pre>    String recipeName = CMParms.combine( commands, 0 );<br />    Vector foundRecipe = null;<br />    Vector matches = matchingRecipeNames( recipes, recipeName, true );<br />    for( int r = 0; r &lt; matches.size(); r++ )<br />    {<br />      Vector V = (Vector)matches.elementAt( r );<br />      if( V.size() &gt; 0 )<br />      {<br />        int level = CMath.s_int( (String)V.elementAt( RCP_LEVEL ) );<br />        if( ( autoGenerate &gt; 0 ) || ( level &lt;= mob.envStats().level() ) )<br />        {<br />          foundRecipe = V;<br />          break;<br />        }<br />      }<br />    }<br />       <br /></pre>
+      <pre>    String recipeName = CMParms.combine( commands, 0 );<br />    Vector foundRecipe = null;<br />    Vector matches = matchingRecipeNames( recipes, recipeName, true );<br />    for( int r = 0; r &lt; matches.size(); r++ )<br />    {<br />      Vector V = (Vector)matches.elementAt( r );<br />      if( V.size() &gt; 0 )<br />      {<br />        int level = CMath.s_int( (String)V.elementAt( RCP_LEVEL ) );<br />        if( ( autoGenerate &gt; 0 ) || ( level &lt;= mob.phyStats().level() ) )<br />        {<br />          foundRecipe = V;<br />          break;<br />        }<br />      }<br />    }<br />       <br /></pre>
       <p>Now we can actually get to the important part of making sure
 that the recipe name entered by the players into the command line is
 actually a valid recipe. We do that by combining the remaining strings
@@ -3758,13 +3758,13 @@ construct the item. After that, we can actually initialize the building
 item reference so we can begin to fill it out. The building variable
 will remain referenced only by the common skill class until the <code>unInvoke()</code>
 method is called, when it will be given to the craftor.</p>
-      <pre>    completion = CMath.s_int(<br />                              (String)foundRecipe.elementAt( RCP_TICKS )<br />                            )<br />                            - (<br />                                (<br />                                  mob.envStats().level()<br />                                  - CMath.s_int(<br />                                                 (String)foundRecipe.elementAt( RCP_LEVEL )<br />                                               )<br />                                ) * 2<br />                              );<br /><br />    String itemName = replacePercent(<br />                                      (String)foundRecipe.elementAt( RCP_FINALNAME ),<br />                                      RawMaterial.CODES.NAME(<br />                                        data[0][FOUND_CODE]<br />                                                                ]<br />                                    ).toLowerCase();<br /><br />    if( bundling )<br />    {<br />      itemName = "a " + woodRequired + "# " + itemName;<br />    }<br />    else<br />    {<br />      itemName = CMStrings.startWithAorAn( itemName );<br />    }<br /><br />    building.setName( itemName );<br />    startStr = "&lt;S-NAME&gt; start(s) blowing " + building.name() + ".";<br />    displayText = "You are blowing " + building.name();<br />    verb = "blowing " + building.name();<br />    playSound = "fire.wav";<br />    building.setDisplayText( itemName + " is here" );<br />    building.setDescription( itemName + ". " );<br />    building.baseEnvStats().setWeight( woodRequired );<br />    building.setBaseValue( CMath.s_int( (String)foundRecipe.elementAt( RCP_VALUE ) ) );<br />       <br /></pre>
+      <pre>    completion = CMath.s_int(<br />                              (String)foundRecipe.elementAt( RCP_TICKS )<br />                            )<br />                            - (<br />                                (<br />                                  mob.phyStats().level()<br />                                  - CMath.s_int(<br />                                                 (String)foundRecipe.elementAt( RCP_LEVEL )<br />                                               )<br />                                ) * 2<br />                              );<br /><br />    String itemName = replacePercent(<br />                                      (String)foundRecipe.elementAt( RCP_FINALNAME ),<br />                                      RawMaterial.CODES.NAME(<br />                                        data[0][FOUND_CODE]<br />                                                                ]<br />                                    ).toLowerCase();<br /><br />    if( bundling )<br />    {<br />      itemName = "a " + woodRequired + "# " + itemName;<br />    }<br />    else<br />    {<br />      itemName = CMStrings.startWithAorAn( itemName );<br />    }<br /><br />    building.setName( itemName );<br />    startStr = "&lt;S-NAME&gt; start(s) blowing " + building.name() + ".";<br />    displayText = "You are blowing " + building.name();<br />    verb = "blowing " + building.name();<br />    playSound = "fire.wav";<br />    building.setDisplayText( itemName + " is here" );<br />    building.setDescription( itemName + ". " );<br />    building.basePhyStats().setWeight( woodRequired );<br />    building.setBaseValue( CMath.s_int( (String)foundRecipe.elementAt( RCP_VALUE ) ) );<br />       <br /></pre>
       <p>Now that we have a reference to the item object we are
 building, we can start filling in some fields, such as its name,
 display text, weight, and base value, usually from columns in our
 recipe text file. We can also derive the final completion variable,
 representing the number of ticks it will take to complete the item.</p>
-      <pre>    if( data[0][FOUND_CODE] == RawMaterial.RESOURCE_SAND )<br />    {<br />      building.setMaterial( RawMaterial.RESOURCE_GLASS );<br />    }<br />    else<br />    {<br />      building.setMaterial( data[0][FOUND_CODE] );<br />    }<br /><br />    building.baseEnvStats().setLevel(<br />                                      CMath.s_int(<br />                                                   (String)foundRecipe.elementAt( RCP_LEVEL )<br />                                                 )<br />                                    );<br /><br />    building.setSecretIdentity( "This is the work of " + mob.Name() + "." );<br />    int capacity = CMath.s_int( (String)foundRecipe.elementAt( RCP_CAPACITY ) );<br />    String spell = ( foundRecipe.size() &gt; RCP_SPELL ) ?<br />                     ( (String)foundRecipe.elementAt( RCP_SPELL ) ).trim()<br />                     : "";<br /><br />    addSpells( building, spell );<br />       <br /></pre>
+      <pre>    if( data[0][FOUND_CODE] == RawMaterial.RESOURCE_SAND )<br />    {<br />      building.setMaterial( RawMaterial.RESOURCE_GLASS );<br />    }<br />    else<br />    {<br />      building.setMaterial( data[0][FOUND_CODE] );<br />    }<br /><br />    building.basePhyStats().setLevel(<br />                                      CMath.s_int(<br />                                                   (String)foundRecipe.elementAt( RCP_LEVEL )<br />                                                 )<br />                                    );<br /><br />    building.setSecretIdentity( "This is the work of " + mob.Name() + "." );<br />    int capacity = CMath.s_int( (String)foundRecipe.elementAt( RCP_CAPACITY ) );<br />    String spell = ( foundRecipe.size() &gt; RCP_SPELL ) ?<br />                     ( (String)foundRecipe.elementAt( RCP_SPELL ) ).trim()<br />                     : "";<br /><br />    addSpells( building, spell );<br />       <br /></pre>
       <p>Continuing with our mission of filling out the building
 object, we set the material type, level, and secret identity. We also
 add any properties to it that are listed in the recipe text file by
@@ -3781,8 +3781,8 @@ needs to be made.</p>
 fill out, based on the capacity column. The last line makes sure that
 the gold value of the item reflects the sum of the materials used, in
 case we are bundling.</p>
-      <pre>    building.recoverEnvStats();<br />    building.text();<br />    building.recoverEnvStats();<br />       <br /></pre>
-      <p>The filling out of the item is complete, so we call <code>recoverEnvStats()</code>,
+      <pre>    building.recoverPhyStats();<br />    building.text();<br />    building.recoverPhyStats();<br />       <br /></pre>
+      <p>The filling out of the item is complete, so we call <code>recoverPhyStats()</code>,
 populate the miscText field if the item is Generic, and then recover
 the env stats again in case that changed anything.</p>
       <pre>    messedUp =! proficiencyCheck( mob, 0, auto );<br />    if( completion &lt; 4 )<br />    {<br />      completion = 4;<br />    }<br /><br />    if( bundling )<br />    {<br />      messedUp = false;<br />      completion = 1;<br />      verb = "bundling "<br />             + RawMaterial.CODES.NAME(<br />             building.material()<br />             ).toLowerCase();<br /><br />      startStr = "&lt;S-NAME&gt; start(s) " + verb + ".";<br />      displayText = "You are " + verb;<br />    }<br />       <br /></pre>
@@ -3876,7 +3876,7 @@ which runs downwards from <code>DISEASE_TICKS()</code> to 0. At a
 value of 1, we make a saving throw check for the creature with the
 cold, and potentially give them another disease to enjoy when the Cold
 expires 1 tick later.</p>
-      <pre>    else if( ( !mob.amDead() ) &amp;&amp; ( ( --diseaseTick ) &lt;= 0 ) )<br />    {<br />      diseaseTick = DISEASE_DELAY();<br />      mob.location().show( mob, null, CMMsg.MSG_NOISE, DISEASE_AFFECT() );<br />      if( mob.curState().getHitPoints() &gt; ( ( 2 * diseaser.envStats().level() ) + 1 ) )<br />      {<br />        int damage = CMLib.dice().roll( 2, diseaser.envStats().level(), 1 );<br />        CMLib.combat().postDamage( diseaser,<br />                                   mob,<br />                                   this,<br />                                   damage,<br />                                   CMMsg.MASK_ALWAYS|CMMsg.TYP_DISEASE,<br />                                   -1,<br />                                   null<br />                                 );<br />      }<br /><br />      catchIt( mob );<br />      return true;<br />    }<br />    return true;<br />  }<br /></pre>
+      <pre>    else if( ( !mob.amDead() ) &amp;&amp; ( ( --diseaseTick ) &lt;= 0 ) )<br />    {<br />      diseaseTick = DISEASE_DELAY();<br />      mob.location().show( mob, null, CMMsg.MSG_NOISE, DISEASE_AFFECT() );<br />      if( mob.curState().getHitPoints() &gt; ( ( 2 * diseaser.phyStats().level() ) + 1 ) )<br />      {<br />        int damage = CMLib.dice().roll( 2, diseaser.phyStats().level(), 1 );<br />        CMLib.combat().postDamage( diseaser,<br />                                   mob,<br />                                   this,<br />                                   damage,<br />                                   CMMsg.MASK_ALWAYS|CMMsg.TYP_DISEASE,<br />                                   -1,<br />                                   null<br />                                 );<br />      }<br /><br />      catchIt( mob );<br />      return true;<br />    }<br />    return true;<br />  }<br /></pre>
       <p>The last thing we do in this method is, every <code>DISEASE_DELAY()</code>
 ticks, we emote our DISEASE_AFFECT string, and then allow the creature
 to take a few points of disease damage by calling the <code>MUDFight.postDamage()</code>

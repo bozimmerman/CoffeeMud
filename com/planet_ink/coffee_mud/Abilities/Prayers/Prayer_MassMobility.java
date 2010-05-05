@@ -60,10 +60,10 @@ public class Prayer_MassMobility extends Prayer
 			Ability A=(Ability)msg.tool();
 			MOB newMOB=CMClass.getMOB("StdMOB");
 			CMMsg msg2=CMClass.getMsg(newMOB,null,null,CMMsg.MSG_SIT,null);
-			newMOB.recoverEnvStats();
+			newMOB.recoverPhyStats();
 			try
 			{
-				A.affectEnvStats(newMOB,newMOB.envStats());
+				A.affectPhyStats(newMOB,newMOB.phyStats());
 				if((!CMLib.flags().aliveAwakeMobileUnbound(newMOB,true))
 				   ||(CMath.bset(A.flags(),Ability.FLAG_PARALYZING))
 				   ||(!A.okMessage(newMOB,msg2)))

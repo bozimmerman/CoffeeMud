@@ -44,19 +44,19 @@ public class Chicken extends StdMOB
 		setMoney(0);
 		setWimpHitPoint(0);
 
-		baseEnvStats().setDamage(1);
-		baseEnvStats().setSpeed(1.0);
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(1);
-		baseEnvStats().setArmor(90);
+		basePhyStats().setDamage(1);
+		basePhyStats().setSpeed(1.0);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(1);
+		basePhyStats().setArmor(90);
 		baseCharStats().setMyRace(CMClass.getRace("Chicken"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 }

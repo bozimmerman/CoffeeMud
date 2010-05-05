@@ -222,9 +222,9 @@ public class DefaultCoffeeShop implements CoffeeShop
             E=(Environmental)storeInventory.elementAt(i,1);
             Integer I=(Integer)storeInventory.elementAt(i,2);
             if(I==null)
-                weight+=E.envStats().weight();
+                weight+=E.phyStats().weight();
             else
-                weight+=(E.envStats().weight()*I.intValue());
+                weight+=(E.phyStats().weight()*I.intValue());
         }
         return weight;
     }
@@ -355,8 +355,8 @@ public class DefaultCoffeeShop implements CoffeeShop
             }
             else
                 storeInventory.removeElement(item);
-            item.baseEnvStats().setRejuv(0);
-            item.envStats().setRejuv(0);
+            item.basePhyStats().setRejuv(0);
+            item.phyStats().setRejuv(0);
         }
         return item;
     }
@@ -528,7 +528,7 @@ public class DefaultCoffeeShop implements CoffeeShop
             }
             CMLib.coffeeMaker().setPropertiesStr(newOne,idat,true);
             Environmental E=(Environmental)newOne;
-            E.recoverEnvStats();
+            E.recoverPhyStats();
             V.addElement(E);
             addStoreInventory(E,itemnum,val);
         }

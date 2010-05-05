@@ -96,7 +96,7 @@ public class Trap_MonsterCage extends StdTrap
         Vector V=new Vector();
         Item I=CMClass.getItem("GenCaged");
         ((CagedAnimal)I).setCageText(text());
-        I.recoverEnvStats();
+        I.recoverPhyStats();
         I.text();
         V.addElement(I);
         return V;
@@ -130,7 +130,7 @@ public class Trap_MonsterCage extends StdTrap
 				monster=((CagedAnimal)I).unCageMe();
 				if(monster!=null)
 				{
-					monster.baseEnvStats().setRejuv(0);
+					monster.basePhyStats().setRejuv(0);
 					monster.bringToLife(target.location(),true);
 					monster.setVictim(target);
 					if(target.getVictim()==null)

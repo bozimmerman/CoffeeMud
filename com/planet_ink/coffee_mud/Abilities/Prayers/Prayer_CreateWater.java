@@ -76,7 +76,7 @@ public class Prayer_CreateWater extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().recoverEnvStats();
+				mob.location().recoverPhyStats();
 				D.setLiquidType(RawMaterial.RESOURCE_FRESHWATER);
 				D.setLiquidRemaining(D.liquidHeld());
 				if(target.owner() instanceof Room)

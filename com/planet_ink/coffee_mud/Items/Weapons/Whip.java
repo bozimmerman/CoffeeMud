@@ -40,13 +40,13 @@ public class Whip extends StdWeapon
 		setName("a long leather whip");
 		setDisplayText("a long leather whip has been dropped by someone.");
 		setDescription("Weaved of leather with a nasty little barb at the end.");
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(0);
-		baseEnvStats.setWeight(2);
-		baseEnvStats().setAttackAdjustment(0);
-		baseEnvStats().setDamage(2);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(0);
+		basePhyStats.setWeight(2);
+		basePhyStats().setAttackAdjustment(0);
+		basePhyStats().setDamage(2);
 		baseGoldValue=1;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_LEATHER;
 		weaponType=Weapon.TYPE_SLASHING;//?????????
 		weaponClassification=Weapon.CLASS_FLAILED;

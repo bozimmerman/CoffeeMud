@@ -160,7 +160,7 @@ public class Spell_WallOfDarkness extends Spell
 				I.setDescription("It`s black.");
 				I.setMaterial(RawMaterial.RESOURCE_NOTHING);
 				CMLib.flags().setGettable(I,false);
-				I.recoverEnvStats();
+				I.recoverPhyStats();
 				mob.location().addItem(I);
 				theWall=I;
 				beneficialAffect(mob,I,asLevel,10);

@@ -69,9 +69,9 @@ public class Regeneration extends StdAbility
 		if(mob.amDead()) return true;
 
 		boolean doneAnything=false;
-		doneAnything=doneAnything||mob.curState().adjHitPoints((int)Math.round(CMath.div(mob.envStats().level(),2.0)),mob.maxState());
-		doneAnything=doneAnything||mob.curState().adjMana(mob.envStats().level()*2,mob.maxState());
-		doneAnything=doneAnything||mob.curState().adjMovement(mob.envStats().level()*3,mob.maxState());
+		doneAnything=doneAnything||mob.curState().adjHitPoints((int)Math.round(CMath.div(mob.phyStats().level(),2.0)),mob.maxState());
+		doneAnything=doneAnything||mob.curState().adjMana(mob.phyStats().level()*2,mob.maxState());
+		doneAnything=doneAnything||mob.curState().adjMovement(mob.phyStats().level()*3,mob.maxState());
 		if(doneAnything)
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> regenerate(s).");
 		return true;
@@ -114,7 +114,7 @@ public class Regeneration extends StdAbility
 						String lvl=text.substring(x+5);
 						if(lvl.indexOf(" ")>=0)
 							lvl=lvl.substring(lvl.indexOf(" "));
-						if(msg.tool().envStats().level()>=CMath.s_int(lvl))
+						if(msg.tool().phyStats().level()>=CMath.s_int(lvl))
 							hurts=true;
 					}
 					x=text.indexOf(RawMaterial.CODES.NAME(((Weapon)msg.tool()).material()));

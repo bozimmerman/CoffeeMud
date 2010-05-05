@@ -41,7 +41,7 @@ public class CharGen extends StdCommand
 
 	protected void equipPlayer(MOB M)
 	{
-		int level = M.baseEnvStats().level();
+		int level = M.basePhyStats().level();
 		CharClass C=M.baseCharStats().getCurrentClass();
 		for(long wornCode : Wearable.CODES.ALL())
 		{
@@ -96,9 +96,9 @@ public class CharGen extends StdCommand
 					W.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 				}
-				W.baseEnvStats().setLevel(level);
-				W.baseEnvStats().setWeight(8);
-				W.recoverEnvStats();
+				W.basePhyStats().setLevel(level);
+				W.basePhyStats().setWeight(8);
+				W.recoverPhyStats();
 				CMLib.itemBuilder().balanceItemByLevel(W);
 				M.addItem(W);
 				W.wearIfPossible(M);
@@ -127,9 +127,9 @@ public class CharGen extends StdCommand
 					A.setMaterial(RawMaterial.RESOURCE_OAK);
 					break;
 				}
-				A.baseEnvStats().setLevel(level);
-				A.baseEnvStats().setWeight(8);
-				A.recoverEnvStats();
+				A.basePhyStats().setLevel(level);
+				A.basePhyStats().setWeight(8);
+				A.recoverPhyStats();
 				CMLib.itemBuilder().balanceItemByLevel(A);
 				M.addItem(A);
 				A.wearIfPossible(M);
@@ -152,15 +152,15 @@ public class CharGen extends StdCommand
 		mob.baseCharStats().setStat(CharStats.STAT_DEXTERITY,11);
 		mob.baseCharStats().setCurrentClass(C);
 		mob.baseCharStats().setClassLevel(C,1);
-		mob.baseEnvStats().setArmor(100);
-		mob.baseEnvStats().setLevel(1);
-		mob.baseEnvStats().setSensesMask(0);
+		mob.basePhyStats().setArmor(100);
+		mob.basePhyStats().setLevel(1);
+		mob.basePhyStats().setSensesMask(0);
 		mob.baseState().setHitPoints(20);
 		mob.baseState().setMovement(100);
 		mob.baseState().setMana(100);
 		mob.baseCharStats().getMyRace().startRacing(mob,false);
 		mob.recoverCharStats();
-		mob.recoverEnvStats();
+		mob.recoverPhyStats();
 		mob.recoverMaxState();
 		mob.baseCharStats().getCurrentClass().startCharacter(mob,false,false);
 
@@ -189,7 +189,7 @@ public class CharGen extends StdCommand
 				CMLib.leveler().level(mob);
 			else
 				CMLib.leveler().postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
-			mob.recoverEnvStats();
+			mob.recoverPhyStats();
 			mob.recoverCharStats();
 			mob.recoverMaxState();
 		}
@@ -199,7 +199,7 @@ public class CharGen extends StdCommand
         for(int a=0;a<mob.numEffects();a++)
         	mob.fetchEffect(a).setProficiency(100);
 		mob.recoverCharStats();
-		mob.recoverEnvStats();
+		mob.recoverPhyStats();
 		mob.recoverMaxState();
 		mob.resetToMaxState();
 		return mob;
@@ -209,12 +209,12 @@ public class CharGen extends StdCommand
 	{
 		for(int i : CharStats.CODES.BASE())
 			avgMob.baseCharStats().setStat(i,(int)Math.round(CMath.div(avgMob.baseCharStats().getStat(i),tries)));
-		avgMob.baseEnvStats().setArmor((int)Math.round(CMath.div(avgMob.baseEnvStats().armor(),tries)));
+		avgMob.basePhyStats().setArmor((int)Math.round(CMath.div(avgMob.basePhyStats().armor(),tries)));
 		avgMob.baseState().setHitPoints((int)Math.round(CMath.div(avgMob.baseState().getHitPoints(),tries)));
 		avgMob.baseState().setMovement((int)Math.round(CMath.div(avgMob.baseState().getMovement(),tries)));
 		avgMob.baseState().setMana((int)Math.round(CMath.div(avgMob.baseState().getMana(),tries)));
 		avgMob.recoverCharStats();
-		avgMob.recoverEnvStats();
+		avgMob.recoverPhyStats();
 		avgMob.recoverMaxState();
 		avgMob.resetToMaxState();
 		avgMob.setTrains(0);
@@ -224,12 +224,12 @@ public class CharGen extends StdCommand
 	{
 		for(int i : CharStats.CODES.BASE())
 			avgMob.baseCharStats().setStat(i,avgMob.baseCharStats().getStat(i)+mob2.baseCharStats().getStat(i));
-		avgMob.baseEnvStats().setArmor(avgMob.baseEnvStats().armor()+mob2.baseEnvStats().armor());
+		avgMob.basePhyStats().setArmor(avgMob.basePhyStats().armor()+mob2.basePhyStats().armor());
 		avgMob.baseState().setHitPoints(avgMob.baseState().getHitPoints()+mob2.baseState().getHitPoints());
 		avgMob.baseState().setMovement(avgMob.baseState().getMovement()+mob2.baseState().getMovement());
 		avgMob.baseState().setMana(avgMob.baseState().getMana()+mob2.baseState().getMana());
 		avgMob.recoverCharStats();
-		avgMob.recoverEnvStats();
+		avgMob.recoverPhyStats();
 		avgMob.recoverMaxState();
 		avgMob.resetToMaxState();
 	}
@@ -532,7 +532,7 @@ public class CharGen extends StdCommand
 				                R.addNonUninvokableEffect(CMClass.getAbility("Spell_Light"));
 				                R.setRoomID(c.A.name()+"#"+r.nextInt(Integer.MAX_VALUE));
 				                R.setArea(c.A);
-				                R.recoverEnvStats();
+				                R.recoverPhyStats();
 			                }
 			                c.A.getTimeObj().setTimeOfDay(CMLib.dice().roll(1,c.A.getTimeObj().getHoursInDay(),-1));
 			                
@@ -544,15 +544,15 @@ public class CharGen extends StdCommand
 			                    M1=CMClass.getMOB("StdMOB");  // MOB stat
 			                    Behavior B2=CMClass.getBehavior("CombatAbilities");
 			                    M1.baseCharStats().setMyRace(CMClass.getRace("Human"));
-			                    M1.baseEnvStats().setLevel(level);
+			                    M1.basePhyStats().setLevel(level);
 			                    M1.setName("GOODGUY");
 			                    M1.recoverCharStats();
-			                    M1.recoverEnvStats();
+			                    M1.recoverPhyStats();
 			                    M1.setLocation(R);
-			                    M1.baseCharStats().getMyRace().setHeightWeight(M1.baseEnvStats(),(char)M1.baseCharStats().getStat(CharStats.STAT_GENDER));
-			                    M1.baseEnvStats().setAbility(11);
+			                    M1.baseCharStats().getMyRace().setHeightWeight(M1.basePhyStats(),(char)M1.baseCharStats().getStat(CharStats.STAT_GENDER));
+			                    M1.basePhyStats().setAbility(11);
 			                    M1.recoverCharStats();
-			                    M1.recoverEnvStats();
+			                    M1.recoverPhyStats();
 			                    M1.recoverMaxState();
 			                    M1.resetToMaxState();
 			                    M1.addBehavior(B2);
@@ -563,7 +563,7 @@ public class CharGen extends StdCommand
 			                    M1.setWimpHitPoint(0);
 			                    M1.recoverMaxState();
 			                    M1.recoverCharStats();
-			                    M1.recoverEnvStats();
+			                    M1.recoverPhyStats();
 			                }
 			                else
 			                {
@@ -571,11 +571,11 @@ public class CharGen extends StdCommand
 			                    M1.baseCharStats().setMyRace(CMClass.getRace("Human"));
 				                M1.setName("GOODGUY");
 				                M1.recoverCharStats();
-			                    M1.recoverEnvStats();
+			                    M1.recoverPhyStats();
 			                    M1.setLocation(R);
-				                M1.baseCharStats().getMyRace().setHeightWeight(M1.baseEnvStats(),(char)M1.baseCharStats().getStat(CharStats.STAT_GENDER));
+				                M1.baseCharStats().getMyRace().setHeightWeight(M1.basePhyStats(),(char)M1.baseCharStats().getStat(CharStats.STAT_GENDER));
 				                M1.recoverCharStats();
-				                M1.recoverEnvStats();
+				                M1.recoverPhyStats();
 				                M1.recoverMaxState();
 				                M1.resetToMaxState();
 				                M1.bringToLife(M1.location(),true);
@@ -583,14 +583,14 @@ public class CharGen extends StdCommand
 				                M1.setWimpHitPoint(0);
 				                M1.recoverMaxState();
 				                M1.recoverCharStats();
-				                M1.recoverEnvStats();
+				                M1.recoverPhyStats();
 				                M1.resetToMaxState();
 			                    B1.setStat("PRECAST","1");
 				                M1.addBehavior(B1);
 				                equipPlayer(M1);
 				                M1.recoverMaxState();
 				                M1.recoverCharStats();
-				                M1.recoverEnvStats();
+				                M1.recoverPhyStats();
 			                    B1.setStat("RECORD"," ");
 			                    B1.setStat("PROF","true");
 			                    B1.setStat("LASTSPELL","");
@@ -605,15 +605,15 @@ public class CharGen extends StdCommand
 		                    MOB M2=CMClass.getMOB("StdMOB");  // MOB stat
 		                    Behavior B2=CMClass.getBehavior("CombatAbilities");
 		                    M2.baseCharStats().setMyRace(CMClass.getRace("Human"));
-		                    M2.baseEnvStats().setLevel(level);
+		                    M2.basePhyStats().setLevel(level);
 		                    M2.setName("BADGUY");
 		                    M2.recoverCharStats();
-		                    M2.recoverEnvStats();
+		                    M2.recoverPhyStats();
 		                    M2.setLocation(R);
-		                    M2.baseCharStats().getMyRace().setHeightWeight(M2.baseEnvStats(),(char)M2.baseCharStats().getStat(CharStats.STAT_GENDER));
-		                    M2.baseEnvStats().setAbility(11);
+		                    M2.baseCharStats().getMyRace().setHeightWeight(M2.basePhyStats(),(char)M2.baseCharStats().getStat(CharStats.STAT_GENDER));
+		                    M2.basePhyStats().setAbility(11);
 		                    M2.recoverCharStats();
-		                    M2.recoverEnvStats();
+		                    M2.recoverPhyStats();
 		                    M2.recoverMaxState();
 		                    M2.resetToMaxState();
 		                    M2.addBehavior(B2);
@@ -626,7 +626,7 @@ public class CharGen extends StdCommand
 		                    M2.setWimpHitPoint(0);
 		                    M2.recoverMaxState();
 		                    M2.recoverCharStats();
-		                    M2.recoverEnvStats();
+		                    M2.recoverPhyStats();
 		                    M2.resetToMaxState();
 		                    
 		                    M1.setVictim(M2);

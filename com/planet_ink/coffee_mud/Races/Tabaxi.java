@@ -60,10 +60,10 @@ public class Tabaxi extends GreatCat
 	protected static Vector resources=new Vector();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
-	        affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_INFRARED); //would like to turn this darkvison if it is okay with Zac.
+		super.affectPhyStats(affected,affectableStats);
+	        affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_INFRARED); //would like to turn this darkvison if it is okay with Zac.
 		affectableStats.setSpeed(affectableStats.speed() * 2.0);
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)

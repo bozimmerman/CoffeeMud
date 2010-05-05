@@ -42,20 +42,20 @@ public class Zombie extends Undead
 		setDescription("decayed and rotting, a dead body has been brought back to life...");
 		setDisplayText("a skeleton slowly moves about.");
 		setMoney(10);
-		baseEnvStats.setWeight(30);
+		basePhyStats.setWeight(30);
         baseCharStats().setMyRace(CMClass.getRace("Undead"));
         baseCharStats().getMyRace().startRacing(this,false);
 
-		baseEnvStats().setDamage(8);
-		baseEnvStats().setLevel(2);
-		baseEnvStats().setArmor(80);
-		baseEnvStats().setSpeed(1.0);
+		basePhyStats().setDamage(8);
+		basePhyStats().setLevel(2);
+		basePhyStats().setArmor(80);
+		basePhyStats().setSpeed(1.0);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

@@ -39,9 +39,9 @@ public class Dance_Jitterbug extends Dance
 	public String name(){ return "Jitterbug";}
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(invoker==null) return;
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-adjustedLevel(invoker(),0));
 	}

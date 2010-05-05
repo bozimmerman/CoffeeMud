@@ -94,17 +94,17 @@ public class Prop_EnterAdjuster extends Property
                 thisOne.invoke(mob,mob,true,0);
             }
             
-            mob.baseEnvStats().setAbility(mob.baseEnvStats().ability()+CMParms.getParmPlus(strs[0],"abi"));
-            mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()+CMParms.getParmPlus(strs[0],"arm"));
-            mob.baseEnvStats().setAttackAdjustment(mob.baseEnvStats().attackAdjustment()+CMParms.getParmPlus(strs[0],"att"));
-            mob.baseEnvStats().setDamage(mob.baseEnvStats().damage()+CMParms.getParmPlus(strs[0],"dam"));
-            mob.baseEnvStats().setDisposition(mob.baseEnvStats().disposition()|CMParms.getParmPlus(strs[0],"dis"));
-            mob.baseEnvStats().setLevel(mob.baseEnvStats().level()+CMParms.getParmPlus(strs[0],"lev"));
-            mob.baseEnvStats().setRejuv(mob.baseEnvStats().rejuv()+CMParms.getParmPlus(strs[0],"rej"));
-            mob.baseEnvStats().setSensesMask(mob.baseEnvStats().sensesMask()|CMParms.getParmPlus(strs[0],"sen"));
-            mob.baseEnvStats().setSpeed(mob.baseEnvStats().speed()+CMParms.getParmPlus(strs[0],"spe"));
-            mob.baseEnvStats().setWeight(mob.baseEnvStats().weight()+CMParms.getParmPlus(strs[0],"wei"));
-            mob.baseEnvStats().setHeight(mob.baseEnvStats().height()+CMParms.getParmPlus(strs[0],"hei"));
+            mob.basePhyStats().setAbility(mob.basePhyStats().ability()+CMParms.getParmPlus(strs[0],"abi"));
+            mob.basePhyStats().setArmor(mob.basePhyStats().armor()+CMParms.getParmPlus(strs[0],"arm"));
+            mob.basePhyStats().setAttackAdjustment(mob.basePhyStats().attackAdjustment()+CMParms.getParmPlus(strs[0],"att"));
+            mob.basePhyStats().setDamage(mob.basePhyStats().damage()+CMParms.getParmPlus(strs[0],"dam"));
+            mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|CMParms.getParmPlus(strs[0],"dis"));
+            mob.basePhyStats().setLevel(mob.basePhyStats().level()+CMParms.getParmPlus(strs[0],"lev"));
+            mob.basePhyStats().setRejuv(mob.basePhyStats().rejuv()+CMParms.getParmPlus(strs[0],"rej"));
+            mob.basePhyStats().setSensesMask(mob.basePhyStats().sensesMask()|CMParms.getParmPlus(strs[0],"sen"));
+            mob.basePhyStats().setSpeed(mob.basePhyStats().speed()+CMParms.getParmPlus(strs[0],"spe"));
+            mob.basePhyStats().setWeight(mob.basePhyStats().weight()+CMParms.getParmPlus(strs[0],"wei"));
+            mob.basePhyStats().setHeight(mob.basePhyStats().height()+CMParms.getParmPlus(strs[0],"hei"));
 
             mob.baseCharStats().setStat(CharStats.STAT_CHARISMA,mob.baseCharStats().getStat(CharStats.STAT_CHARISMA)+CMParms.getParmPlus(strs[0],"cha"));
             mob.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)+CMParms.getParmPlus(strs[0],"con"));
@@ -144,7 +144,7 @@ public class Prop_EnterAdjuster extends Property
             int exp=CMParms.getParmPlus(strs[0],"expe");
             if(exp>0) CMLib.leveler().postExperience(mob,null,null,exp,false);
             mob.recoverCharStats();
-            mob.recoverEnvStats();
+            mob.recoverPhyStats();
             mob.recoverMaxState();
 			CMLib.utensils().confirmWearability(mob);
         }

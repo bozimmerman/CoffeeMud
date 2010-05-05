@@ -92,7 +92,7 @@ public class Skill_InstrumentBash extends BardSkill
 					w.setName(instrument.name());
 					w.setDisplayText(instrument.displayText());
 					w.setDescription(instrument.description());
-					w.baseEnvStats().setDamage(instrument.envStats().level()+5+(2*getXLEVELLevel(mob)));
+					w.basePhyStats().setDamage(instrument.phyStats().level()+5+(2*getXLEVELLevel(mob)));
 					CMLib.combat().postAttack(mob,target,w);
 				}
 			}

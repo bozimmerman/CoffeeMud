@@ -57,10 +57,10 @@ public class Stone extends StdRace
 	protected static Vector resources=new Vector();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GOLEM);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SPEAK|EnvStats.CAN_NOT_TASTE);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOLEM);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SPEAK|PhyStats.CAN_NOT_TASTE);
 		affectableStats.setArmor(affectableStats.armor()+affectableStats.armor());
 		affectableStats.setAttackAdjustment(0);
 		affectableStats.setDamage(0);

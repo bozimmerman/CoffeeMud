@@ -46,8 +46,8 @@ public class StdCage extends StdContainer
 		setContainTypes(Container.CONTAIN_BODIES|Container.CONTAIN_CAGED);
 		material=RawMaterial.RESOURCE_OAK;
 		baseGoldValue=15;
-		baseEnvStats().setWeight(25);
-		recoverEnvStats();
+		basePhyStats().setWeight(25);
+		recoverPhyStats();
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

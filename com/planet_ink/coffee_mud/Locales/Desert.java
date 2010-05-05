@@ -40,8 +40,8 @@ public class Desert extends StdRoom
 	{
 		super();
 		name="the desert";
-		baseEnvStats.setWeight(2);
-		recoverEnvStats();
+		basePhyStats.setWeight(2);
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_DESERT;}
 	public int domainConditions(){return Room.CONDITION_HOT;}

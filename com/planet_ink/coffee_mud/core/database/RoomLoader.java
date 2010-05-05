@@ -683,12 +683,12 @@ public class RoomLoader
 						}
 						else
 	    					newItem.setMiscText(DBConnections.getResQuietly(R,"CMITTX"));
-						newItem.baseEnvStats().setRejuv((int)DBConnections.getLongRes(R,"CMITRE"));
+						newItem.basePhyStats().setRejuv((int)DBConnections.getLongRes(R,"CMITRE"));
 						newItem.setUsesRemaining((int)DBConnections.getLongRes(R,"CMITUR"));
-						newItem.baseEnvStats().setLevel((int)DBConnections.getLongRes(R,"CMITLV"));
-						newItem.baseEnvStats().setAbility((int)DBConnections.getLongRes(R,"CMITAB"));
-						newItem.baseEnvStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
-						newItem.recoverEnvStats();
+						newItem.basePhyStats().setLevel((int)DBConnections.getLongRes(R,"CMITLV"));
+						newItem.basePhyStats().setAbility((int)DBConnections.getLongRes(R,"CMITAB"));
+						newItem.basePhyStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
+						newItem.recoverPhyStats();
 	                } catch(Exception e) { Log.errOut("RoomLoader",e); itemNums.remove(itemNum);}
 				}
 				if(((currentRecordPos%updateBreak)==0)&&(setStatus))
@@ -754,14 +754,14 @@ public class RoomLoader
 							newMOB.setMiscText("%DBID>"+roomID+NUMID.substring(NUMID.indexOf("@")));
 						else
 							newMOB.setMiscText(DBConnections.getResQuietly(R,"CMCHTX"));
-						newMOB.baseEnvStats().setLevel(((int)DBConnections.getLongRes(R,"CMCHLV")));
-						newMOB.baseEnvStats().setAbility((int)DBConnections.getLongRes(R,"CMCHAB"));
-						newMOB.baseEnvStats().setRejuv((int)DBConnections.getLongRes(R,"CMCHRE"));
+						newMOB.basePhyStats().setLevel(((int)DBConnections.getLongRes(R,"CMCHLV")));
+						newMOB.basePhyStats().setAbility((int)DBConnections.getLongRes(R,"CMCHAB"));
+						newMOB.basePhyStats().setRejuv((int)DBConnections.getLongRes(R,"CMCHRE"));
 						String ride=DBConnections.getRes(R,"CMCHRI");
 						if((ride!=null)&&(ride.length()>0))
 							mobRides.put(newMOB,ride);
 						newMOB.recoverCharStats();
-						newMOB.recoverEnvStats();
+						newMOB.recoverPhyStats();
 						newMOB.recoverMaxState();
 						newMOB.resetToMaxState();
                     } catch(Exception e) { Log.errOut("RoomLoader",e); itemNums.remove(NUMID);}
@@ -917,11 +917,11 @@ public class RoomLoader
 		+"'"+thisItem.ID()+"',"
 		+"'"+((container!=null)?(""+container):"")+"',"
 		+"'"+text+" ',"
-		+thisItem.baseEnvStats().rejuv()+","
+		+thisItem.basePhyStats().rejuv()+","
 		+thisItem.usesRemaining()+","
-		+thisItem.baseEnvStats().level()+","
-		+thisItem.baseEnvStats().ability()+","
-		+thisItem.baseEnvStats().height()+")";
+		+thisItem.basePhyStats().level()+","
+		+thisItem.basePhyStats().ability()+","
+		+thisItem.basePhyStats().height()+")";
     }
 	public void DBCreateThisItem(String roomID, Item thisItem)
 	{
@@ -1075,9 +1075,9 @@ public class RoomLoader
 		+"'"+mobID+"',"
 		+"'"+CMClass.classID(thisMOB)+"',"
 		+"'"+thisMOB.text()+" ',"
-		+thisMOB.baseEnvStats().level()+","
-		+thisMOB.baseEnvStats().ability()+","
-		+thisMOB.baseEnvStats().rejuv()+","
+		+thisMOB.basePhyStats().level()+","
+		+thisMOB.basePhyStats().ability()+","
+		+thisMOB.basePhyStats().rejuv()+","
 		+"'"+ride+"'"
 		+")";
 	}

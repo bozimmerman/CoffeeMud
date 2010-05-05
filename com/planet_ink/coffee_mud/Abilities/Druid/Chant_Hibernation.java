@@ -113,12 +113,12 @@ public class Chant_Hibernation extends Chant
 		{
 			roundsHibernating++;
 			double man = (double)( ( mob.charStats().getStat( CharStats.STAT_INTELLIGENCE ) + mob.charStats().getStat( CharStats.STAT_WISDOM ) ) );
-			mob.curState().adjMana( (int)Math.round( ( man * .1 ) + ( ( mob.envStats().level() + ( 2.0 * super.getXLEVELLevel( invoker() ) )  ) / 2.0 ) ),
+			mob.curState().adjMana( (int)Math.round( ( man * .1 ) + ( ( mob.phyStats().level() + ( 2.0 * super.getXLEVELLevel( invoker() ) )  ) / 2.0 ) ),
 			                        mob.maxState() );
 			mob.curState().setHunger(oldState.getHunger());
 			mob.curState().setThirst(oldState.getThirst());
 			double move = (double)mob.charStats().getStat( CharStats.STAT_STRENGTH );
-			mob.curState().adjMovement( (int)Math.round( ( move * .1 ) + ( ( mob.envStats().level() + ( 2.0 * super.getXLEVELLevel( invoker() ) )  ) / 2.0 ) ),
+			mob.curState().adjMovement( (int)Math.round( ( move * .1 ) + ( ( mob.phyStats().level() + ( 2.0 * super.getXLEVELLevel( invoker() ) )  ) / 2.0 ) ),
 			                            mob.maxState() );
 			if(!CMLib.flags().isGolem(mob))
 			{
@@ -127,7 +127,7 @@ public class Chant_Hibernation extends Chant
 				                                mob,
 				                                this,
 				                                CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,
-				                                (int)Math.round( ( hp * .1 ) + ( ( mob.envStats().level() + ( 2.0 * super.getXLEVELLevel( invoker() ) ) ) / 2.0 ) ),
+				                                (int)Math.round( ( hp * .1 ) + ( ( mob.phyStats().level() + ( 2.0 * super.getXLEVELLevel( invoker() ) ) ) / 2.0 ) ),
 				                                null ) )
 					unInvoke();
 			}

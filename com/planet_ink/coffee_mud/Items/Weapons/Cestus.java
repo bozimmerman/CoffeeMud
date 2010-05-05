@@ -40,14 +40,14 @@ public class Cestus extends StdWeapon
 		setName("a mean looking cestus");
 		setDisplayText("a cestus is on the gound.");
 		setDescription("It\\`s a glove covered in long spikes and blades.");
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(0);
-		baseEnvStats.setWeight(2);
-		baseEnvStats().setAttackAdjustment(0);
-		baseEnvStats().setDamage(4);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(0);
+		basePhyStats.setWeight(2);
+		basePhyStats().setAttackAdjustment(0);
+		basePhyStats().setDamage(4);
 		material=RawMaterial.RESOURCE_LEATHER;
 		baseGoldValue=5;
-		recoverEnvStats();
+		recoverPhyStats();
 		weaponType=Weapon.TYPE_PIERCING;
 		weaponClassification=Weapon.CLASS_EDGED;
 

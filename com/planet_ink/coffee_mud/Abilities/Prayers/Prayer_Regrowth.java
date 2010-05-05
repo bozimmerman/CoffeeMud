@@ -124,7 +124,7 @@ public class Prayer_Regrowth extends Prayer implements MendingSkill
 					if((found)&&(missLimb!=null))
 						Amp.unamputate(target, Amp, missLimb.toLowerCase());
 					target.recoverCharStats();
-					target.recoverEnvStats();
+					target.recoverPhyStats();
 					target.recoverMaxState();
 		        }
 				mob.location().recoverRoomStats();

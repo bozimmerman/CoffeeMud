@@ -60,7 +60,7 @@ public class Fighter_FieldTactics extends FighterSkill
 				{
 					hidden=true;
 					sitTime=System.currentTimeMillis();
-					affected.recoverEnvStats();
+					affected.recoverPhyStats();
 				}
 			}
 			else
@@ -68,7 +68,7 @@ public class Fighter_FieldTactics extends FighterSkill
 			{
 				hidden=false;
 				sitTime=System.currentTimeMillis();
-				affected.recoverEnvStats();
+				affected.recoverPhyStats();
 			}
 		}
 		return true;
@@ -103,7 +103,7 @@ public class Fighter_FieldTactics extends FighterSkill
 		{
 			hidden=false;
 			sitTime=System.currentTimeMillis();
-			affected.recoverEnvStats();
+			affected.recoverPhyStats();
 		}
 		else
 		if((msg.source()==affected)
@@ -120,7 +120,7 @@ public class Fighter_FieldTactics extends FighterSkill
 		{
 			hidden=false;
 			sitTime=System.currentTimeMillis();
-			affected.recoverEnvStats();
+			affected.recoverPhyStats();
 		}
 		return super.okMessage(myHost,msg);
 	}
@@ -134,15 +134,15 @@ public class Fighter_FieldTactics extends FighterSkill
 		return false;
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if((affected instanceof MOB)
 		&&(((MOB)affected).location()!=null)
 		&&(oneOf(((MOB)affected).location().domainType())))
 		{
 			if((hidden)&&((System.currentTimeMillis()-sitTime)>(60*2*1000)))
-				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
+				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_HIDDEN);
 			activated=true;
 			float xlvl=(float)getXLEVELLevel(invoker());
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round((15.0+xlvl)*(CMath.div(proficiency(),100.0))));

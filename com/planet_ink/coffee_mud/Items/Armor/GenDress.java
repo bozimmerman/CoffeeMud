@@ -42,11 +42,11 @@ public class GenDress extends GenArmor
 		setDescription("a well tailored dress.");
 		properWornBitmap=Wearable.WORN_LEGS|Wearable.WORN_WAIST|Wearable.WORN_TORSO;
 		wornLogicalAnd=true;
-		baseEnvStats().setArmor(2);
-		baseEnvStats().setWeight(3);
-		baseEnvStats().setAbility(0);
+		basePhyStats().setArmor(2);
+		basePhyStats().setWeight(3);
+		basePhyStats().setAbility(0);
 		baseGoldValue=1;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_COTTON;
 	}
 

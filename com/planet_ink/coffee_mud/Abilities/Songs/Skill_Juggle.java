@@ -63,7 +63,7 @@ public class Skill_Juggle extends BardSkill
 	public int maxAttacks()
 	{
 		if((affected!=null)&&(affected instanceof MOB))
-			return (int)Math.round(affected.envStats().speed())
+			return (int)Math.round(affected.phyStats().speed())
 				   +((CMLib.ableMapper().qualifyingClassLevel((MOB)affected,this)+(2*getXLEVELLevel((MOB)affected)))/5);
 		return 1;
 	}
@@ -137,7 +137,7 @@ public class Skill_Juggle extends BardSkill
 				I.addEffect(A);
 				A.makeLongLasting();
 				A.setSavable(false);
-				I.recoverEnvStats();
+				I.recoverPhyStats();
 			}
 		}
 		juggles.addElement(I);
@@ -239,7 +239,7 @@ public class Skill_Juggle extends BardSkill
 					M.location().moveItemTo(I,ItemPossessor.Expire.Player_Drop);
 			}
 		}
-		M.recoverEnvStats();
+		M.recoverPhyStats();
 		M.recoverCharStats();
 		M.recoverMaxState();
 		M.location().recoverRoomStats();
@@ -309,9 +309,9 @@ public class Skill_Juggle extends BardSkill
 									w.setWeaponType(((Weapon)I).weaponType());
 								else
 									w.setWeaponType(Weapon.TYPE_BASHING);
-								w.baseEnvStats().setDamage(CMLib.dice().roll(1,adjustedLevel(mob,0),0));
-								w.baseEnvStats().setWeight(I.baseEnvStats().weight());
-								w.recoverEnvStats();
+								w.basePhyStats().setDamage(CMLib.dice().roll(1,adjustedLevel(mob,0),0));
+								w.basePhyStats().setWeight(I.basePhyStats().weight());
+								w.recoverPhyStats();
 								CMLib.combat().postAttack(mob,mob.getVictim(),w);
 								w.destroy();
 							}

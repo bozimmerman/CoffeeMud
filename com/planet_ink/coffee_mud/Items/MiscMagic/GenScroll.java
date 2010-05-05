@@ -42,12 +42,12 @@ public class GenScroll extends StdScroll
 		super();
 
 		setName("a scroll");
-		baseEnvStats.setWeight(1);
+		basePhyStats.setWeight(1);
 		setDisplayText("a scroll is rolled up here.");
 		setDescription("A rolled up parchment marked with mystical symbols.");
 		secretIdentity="";
 		baseGoldValue=200;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_PAPER;
 	}
 
@@ -72,7 +72,7 @@ public class GenScroll extends StdScroll
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
     public String getStat(String code)

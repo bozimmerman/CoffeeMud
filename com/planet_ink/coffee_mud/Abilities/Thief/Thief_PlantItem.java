@@ -74,7 +74,7 @@ public class Thief_PlantItem extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
+		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
         if(levelDiff<0) levelDiff=0;
         levelDiff*=5;
 		boolean success=proficiencyCheck(mob,-levelDiff,auto);
@@ -87,8 +87,8 @@ public class Thief_PlantItem extends ThiefSkill
 				mob.location().send(mob,msg);
 				if(target.isMine(item))
 				{
-					item.baseEnvStats().setDisposition(item.baseEnvStats().disposition()|EnvStats.IS_HIDDEN);
-					item.recoverEnvStats();
+					item.basePhyStats().setDisposition(item.basePhyStats().disposition()|PhyStats.IS_HIDDEN);
+					item.recoverPhyStats();
 				}
 			}
 		}

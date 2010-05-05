@@ -39,7 +39,7 @@ public class WetCaveRoom extends CaveRoom
 	public WetCaveRoom()
 	{
 		super();
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	public int domainConditions(){return Room.CONDITION_WET;}
 	public int maxRange(){return 5;}

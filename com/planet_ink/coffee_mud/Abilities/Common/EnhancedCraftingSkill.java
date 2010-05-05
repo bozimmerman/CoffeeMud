@@ -375,18 +375,18 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					{
 					case 0:
 						applyName(item,STAGE_TYPES[type][stage]);
-						item.baseEnvStats().setArmor(item.baseEnvStats().armor()+1);
+						item.basePhyStats().setArmor(item.basePhyStats().armor()+1);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.1));
 						break;
 					case 1:
 						applyName(item,STAGE_TYPES[type][stage]);
-						item.baseEnvStats().setArmor(atLeast1(item.baseEnvStats().armor(),0.1)+1);
+						item.basePhyStats().setArmor(atLeast1(item.basePhyStats().armor(),0.1)+1);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.2));
 						affect.tickDown+=Math.round(0.25 * (double)affect.tickDown);
 						break;
 					case 2:
 						applyName(item,STAGE_TYPES[type][stage]);
-						item.baseEnvStats().setArmor(atLeast1(item.baseEnvStats().armor(),0.25)+1);
+						item.basePhyStats().setArmor(atLeast1(item.basePhyStats().armor(),0.25)+1);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.3));
 						//addStatAdjustment(item,"CON","+1");
 						affect.tickDown+=Math.round(0.5 * (double)affect.tickDown);
@@ -424,22 +424,22 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					{
 					case 0:
 						applyName(item,STAGE_TYPES[type][stage]);
-						item.baseEnvStats().setDamage(atLeast1(item.baseEnvStats().damage(),0.05));
+						item.basePhyStats().setDamage(atLeast1(item.basePhyStats().damage(),0.05));
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.1));
 						affect.tickDown+=Math.round(0.25 * (double)affect.tickDown);
 						break;
 					case 1:
 						applyName(item,STAGE_TYPES[type][stage]);
-						item.baseEnvStats().setDamage(atLeast1(item.baseEnvStats().damage(),0.1));
+						item.basePhyStats().setDamage(atLeast1(item.basePhyStats().damage(),0.1));
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.2));
-						item.baseEnvStats().setWeight(atLeast1(item.baseEnvStats().weight(),0.1));
+						item.basePhyStats().setWeight(atLeast1(item.basePhyStats().weight(),0.1));
 						affect.tickDown+=Math.round(0.5 * (double)affect.tickDown);
 						break;
 					case 2:
 						applyName(item,STAGE_TYPES[type][stage]);
-						item.baseEnvStats().setDamage(atLeast1(item.baseEnvStats().damage(),0.15)+1);
+						item.basePhyStats().setDamage(atLeast1(item.basePhyStats().damage(),0.15)+1);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.3));
-						item.baseEnvStats().setWeight(atLeast1(item.baseEnvStats().weight(),0.1));
+						item.basePhyStats().setWeight(atLeast1(item.basePhyStats().weight(),0.1));
 						affect.tickDown+=Math.round(0.75 * (double)affect.tickDown);
 						break;
 					}
@@ -452,29 +452,29 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					{
 					case 0:
 						applyName(item,STAGE_TYPES[type][stage]);
-						item.baseEnvStats().setAttackAdjustment(item.baseEnvStats().attackAdjustment()+3);
+						item.basePhyStats().setAttackAdjustment(item.basePhyStats().attackAdjustment()+3);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.1));
 						affect.tickDown+=Math.round(0.25 * (double)affect.tickDown);
 						break;
 					case 1:
 						applyName(item,STAGE_TYPES[type][stage]);
-						item.baseEnvStats().setAttackAdjustment(item.baseEnvStats().attackAdjustment()+6);
+						item.basePhyStats().setAttackAdjustment(item.basePhyStats().attackAdjustment()+6);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.2));
-						item.baseEnvStats().setWeight(atLeast1(item.baseEnvStats().weight(),0.05));
+						item.basePhyStats().setWeight(atLeast1(item.basePhyStats().weight(),0.05));
 						affect.tickDown+=Math.round(0.5 * (double)affect.tickDown);
 						break;
 					case 2:
 						applyName(item,STAGE_TYPES[type][stage]);
-						item.baseEnvStats().setAttackAdjustment(item.baseEnvStats().attackAdjustment()+9);
+						item.basePhyStats().setAttackAdjustment(item.basePhyStats().attackAdjustment()+9);
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.3));
-						item.baseEnvStats().setWeight(atLeast1(item.baseEnvStats().weight(),0.1));
+						item.basePhyStats().setWeight(atLeast1(item.basePhyStats().weight(),0.1));
 						affect.tickDown+=Math.round(1.25 * (double)affect.tickDown);
 						break;
 					}
 					break;
 				}
 			}
-			item.recoverEnvStats();
+			item.recoverPhyStats();
 		}
 	}
 

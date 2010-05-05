@@ -50,8 +50,8 @@ public class Trap_Vanishing extends StdTrap
 			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> notice(s) something about "+affected.name()+" .. it's fading away."))
 			{
 				super.spring(target);
-				affected.baseEnvStats().setDisposition(affected.baseEnvStats().disposition()|EnvStats.IS_INVISIBLE);
-				affected.recoverEnvStats();
+				affected.basePhyStats().setDisposition(affected.basePhyStats().disposition()|PhyStats.IS_INVISIBLE);
+				affected.recoverPhyStats();
 				if((canBeUninvoked())&&(affected instanceof Item))
 					disable();
 			}

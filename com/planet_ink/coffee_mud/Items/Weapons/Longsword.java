@@ -40,13 +40,13 @@ public class Longsword extends Sword
 		setName("a fancy longsword");
 		setDisplayText("a fancy longsword has been dropped on the ground.");
 		setDescription("A standard one-handed sword.");
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(0);
-		baseEnvStats.setWeight(4);
-		baseEnvStats().setAttackAdjustment(0);
-		baseEnvStats().setDamage(8);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(0);
+		basePhyStats.setWeight(4);
+		basePhyStats().setAttackAdjustment(0);
+		basePhyStats().setDamage(8);
 		baseGoldValue=15;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_STEEL;
 		weaponType=TYPE_SLASHING;
 	}

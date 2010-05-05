@@ -44,19 +44,19 @@ public class Deer extends StdMOB
 		setMoney(0);
 		setWimpHitPoint(0);
 
-		baseEnvStats().setDamage(1);
-		baseEnvStats().setSpeed(2.0);
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(2);
-		baseEnvStats().setArmor(50);
+		basePhyStats().setDamage(1);
+		basePhyStats().setSpeed(2.0);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(2);
+		basePhyStats().setArmor(50);
 		baseCharStats().setMyRace(CMClass.getRace("Deer"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

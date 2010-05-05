@@ -44,9 +44,9 @@ public class Skill_TuneInstrument extends BardSkill
 	public String[] triggerStrings(){return triggerStrings;}
     public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ARTISTIC;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setAbility(affectableStats.ability()+2+getXLEVELLevel(invoker));
 	}
 

@@ -47,9 +47,9 @@ public class Undead_EnergyDrain extends StdAbility
 	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public int levelsDown=1;
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected==null) return;
 		if(levelsDown<0) return;
 		int attacklevel=affectableStats.attackAdjustment()/affectableStats.level();
@@ -66,11 +66,11 @@ public class Undead_EnergyDrain extends StdAbility
 	{
 		super.affectCharState(affected,affectableState);
 		if(affected==null) return;
-		int hplevel=affectableState.getHitPoints()/affected.baseEnvStats().level();
+		int hplevel=affectableState.getHitPoints()/affected.basePhyStats().level();
 		affectableState.setHitPoints(affectableState.getHitPoints()-(hplevel*levelsDown));
-		int manalevel=affectableState.getMana()/affected.baseEnvStats().level();
+		int manalevel=affectableState.getMana()/affected.basePhyStats().level();
 		affectableState.setMana(affectableState.getMana()-(manalevel*levelsDown));
-		int movelevel=affectableState.getMovement()/affected.baseEnvStats().level();
+		int movelevel=affectableState.getMovement()/affected.basePhyStats().level();
 		affectableState.setMovement(affectableState.getMovement()-(movelevel*levelsDown));
 	}
 
@@ -78,7 +78,7 @@ public class Undead_EnergyDrain extends StdAbility
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(affected==null) return;
-		affectableStats.setClassLevel(affectableStats.getCurrentClass(),baseEnvStats().level()-levelsDown-affectableStats.combinedSubLevels());
+		affectableStats.setClassLevel(affectableStats.getCurrentClass(),basePhyStats().level()-levelsDown-affectableStats.combinedSubLevels());
 	}
 
 	public void unInvoke()
@@ -133,8 +133,8 @@ public class Undead_EnergyDrain extends StdAbility
 					{
 						if(reAffect instanceof Undead_EnergyDrain)
 							((Undead_EnergyDrain)reAffect).levelsDown++;
-						((StdAbility)reAffect).setTickDownRemaining(((StdAbility)reAffect).getTickDownRemaining()+mob.envStats().level());
-						mob.recoverEnvStats();
+						((StdAbility)reAffect).setTickDownRemaining(((StdAbility)reAffect).getTickDownRemaining()+mob.phyStats().level());
+						mob.recoverPhyStats();
 						mob.recoverCharStats();
 						mob.recoverMaxState();
 					}

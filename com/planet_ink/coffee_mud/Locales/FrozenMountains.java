@@ -39,7 +39,7 @@ public class FrozenMountains extends Mountains
 	public FrozenMountains()
 	{
 		super();
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	public int domainConditions(){return Room.CONDITION_COLD;}
 

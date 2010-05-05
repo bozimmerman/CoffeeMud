@@ -81,7 +81,7 @@ public class Trap_SnakePit extends Trap_RoomPit
         Vector V=new Vector();
         Item I=CMClass.getItem("GenCaged");
         ((CagedAnimal)I).setCageText(text());
-        I.recoverEnvStats();
+        I.recoverPhyStats();
         I.text();
         V.addElement(I);
         return V;
@@ -120,7 +120,7 @@ public class Trap_SnakePit extends Trap_RoomPit
 
 	public void finishSpringing(MOB target)
 	{
-		if((!invoker().mayIFight(target))||(target.envStats().weight()<5))
+		if((!invoker().mayIFight(target))||(target.phyStats().weight()<5))
 			target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> float(s) gently into the pit!");
 		else
 		{
@@ -149,7 +149,7 @@ public class Trap_SnakePit extends Trap_RoomPit
 			if(monster!=null)
 			{
 				monsters.addElement(monster);
-				monster.baseEnvStats().setRejuv(0);
+				monster.basePhyStats().setRejuv(0);
 				monster.bringToLife(target.location(),true);
 				monster.setVictim(target);
 				if(target.getVictim()==null)

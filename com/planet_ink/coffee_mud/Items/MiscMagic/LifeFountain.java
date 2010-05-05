@@ -47,14 +47,14 @@ public class LifeFountain extends StdDrink implements MiscMagic
 		amountOfThirstQuenched=250;
 		amountOfLiquidHeld=999999;
 		amountOfLiquidRemaining=999999;
-		baseEnvStats().setWeight(5);
+		basePhyStats().setWeight(5);
 		capacity=0;
 		setDisplayText("a fountain of life flows here.");
 		setDescription("The fountain is coming magically from the ground.  The water looks pure and clean.");
 		baseGoldValue=10;
 		material=RawMaterial.RESOURCE_FRESHWATER;
-		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMNOTGET);
-		recoverEnvStats();
+		basePhyStats().setSensesMask(PhyStats.SENSE_ITEMNOTGET);
+		recoverPhyStats();
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -91,11 +91,11 @@ public class LifeFountain extends StdDrink implements MiscMagic
 					if((time==null)||(time.longValue()<(System.currentTimeMillis()-16000)))
 					{
 						Ability A=CMClass.getAbility("Prayer_CureLight");
-						if(A!=null) A.invoke(msg.source(),msg.source(),true,envStats().level());
+						if(A!=null) A.invoke(msg.source(),msg.source(),true,phyStats().level());
 						A=CMClass.getAbility("Prayer_RemovePoison");
-						if(A!=null) A.invoke(msg.source(),msg.source(),true,envStats().level());
+						if(A!=null) A.invoke(msg.source(),msg.source(),true,phyStats().level());
 						A=CMClass.getAbility("Prayer_CureDisease");
-						if(A!=null) A.invoke(msg.source(),msg.source(),true,envStats().level());
+						if(A!=null) A.invoke(msg.source(),msg.source(),true,phyStats().level());
 						time=Long.valueOf(System.currentTimeMillis());
 						lastDrinks.put(msg.source(),time);
 					}

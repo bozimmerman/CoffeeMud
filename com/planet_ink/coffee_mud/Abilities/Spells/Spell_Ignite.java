@@ -48,15 +48,15 @@ public class Spell_Ignite extends Spell
 		switch(I.material()&RawMaterial.MATERIAL_MASK)
 		{
 		case RawMaterial.MATERIAL_LEATHER:
-			durationOfBurn=20+I.envStats().weight();
+			durationOfBurn=20+I.phyStats().weight();
 			break;
 		case RawMaterial.MATERIAL_CLOTH:
 		case RawMaterial.MATERIAL_PLASTIC:
 		case RawMaterial.MATERIAL_PAPER:
-			durationOfBurn=5+I.envStats().weight();
+			durationOfBurn=5+I.phyStats().weight();
 			break;
 		case RawMaterial.MATERIAL_WOODEN:
-			durationOfBurn=40+(I.envStats().weight()*2);
+			durationOfBurn=40+(I.phyStats().weight()*2);
 			break;
 		default:
 			return;

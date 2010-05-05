@@ -86,7 +86,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			{
 				I=(Item)I.copyOf();
 				I.text();
-				I.recoverEnvStats();
+				I.recoverPhyStats();
 				mob.addItem(I);
 				if(I.whereCantWear(mob)<=0)
 					I.wearIfPossible(mob);
@@ -321,7 +321,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					for(int i=0;i<mob.numItems();i++)
 					{
 						Item I=mob.getItem(i);
-						if((I!=null)&&(I.baseEnvStats().rejuv()>0)&&(I.baseEnvStats().rejuv()<Integer.MAX_VALUE))
+						if((I!=null)&&(I.basePhyStats().rejuv()>0)&&(I.basePhyStats().rejuv()<Integer.MAX_VALUE))
 						{
 							Vector V=null;
 							for(int r=0;r<rivals.size();r++)
@@ -343,12 +343,12 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							for(int r=0;r<V.size();r++)
 							{
 								Item I=(Item)V.elementAt(r);
-								if(CMLib.dice().rollPercentage()<I.baseEnvStats().rejuv())
+								if(CMLib.dice().rollPercentage()<I.basePhyStats().rejuv())
 									mob.delItem(I);
 								else
 								{
-									I.baseEnvStats().setRejuv(0);
-									I.envStats().setRejuv(0);
+									I.basePhyStats().setRejuv(0);
+									I.phyStats().setRejuv(0);
 								}
 							}
 						}
@@ -358,7 +358,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							for(int r=0;r<V.size();r++)
 							{
 								Item I=(Item)V.elementAt(r);
-								totalChance+=I.baseEnvStats().rejuv();
+								totalChance+=I.basePhyStats().rejuv();
 							}
 							int chosenChance=CMLib.dice().roll(1,totalChance,0);
 							totalChance=0;
@@ -366,12 +366,12 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							for(int r=0;r<V.size();r++)
 							{
 								Item I=(Item)V.elementAt(r);
-								if(chosenChance<=(totalChance+I.baseEnvStats().rejuv()))
+								if(chosenChance<=(totalChance+I.basePhyStats().rejuv()))
 								{
 									chosenI=I;
 									break;
 								}
-								totalChance+=I.baseEnvStats().rejuv();
+								totalChance+=I.basePhyStats().rejuv();
 							}
 							for(int r=0;r<V.size();r++)
 							{
@@ -380,8 +380,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 									mob.delItem(I);
 								else
 								{
-									I.baseEnvStats().setRejuv(0);
-									I.envStats().setRejuv(0);
+									I.basePhyStats().setRejuv(0);
+									I.phyStats().setRejuv(0);
 								}
 							}
 						}
@@ -393,22 +393,22 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			            for(Iterator<Environmental> i=shop.getBaseInventory();i.hasNext();)
 			            {
 			                Environmental E=(Environmental)i.next();
-			                if((E.baseEnvStats().rejuv()>0)&&(E.baseEnvStats().rejuv()<Integer.MAX_VALUE))
+			                if((E.basePhyStats().rejuv()>0)&&(E.basePhyStats().rejuv()<Integer.MAX_VALUE))
 			                    rivals.addElement(E);
 			            }
 			            for(int r=0;r<rivals.size();r++)
 			            {
 			                Environmental E=(Environmental)rivals.elementAt(r);
-			                if(CMLib.dice().rollPercentage()>E.baseEnvStats().rejuv())
+			                if(CMLib.dice().rollPercentage()>E.basePhyStats().rejuv())
 			                    shop.delAllStoreInventory(E);
 			                else
 			                {
-			                    E.baseEnvStats().setRejuv(0);
-			                    E.envStats().setRejuv(0);
+			                    E.basePhyStats().setRejuv(0);
+			                    E.phyStats().setRejuv(0);
 			                }
 			            }
 			        }
-					mob.recoverEnvStats();
+					mob.recoverPhyStats();
 					mob.recoverCharStats();
 					mob.recoverMaxState();
 				}
@@ -426,7 +426,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
         // stat changes!
         
         if(CMLib.flags().isHidden(thisContainer))
-            thisContainer.baseEnvStats().setDisposition(thisContainer.baseEnvStats().disposition()&((int)EnvStats.ALLMASK-EnvStats.IS_HIDDEN));
+            thisContainer.basePhyStats().setDisposition(thisContainer.basePhyStats().disposition()&((int)PhyStats.ALLMASK-PhyStats.IS_HIDDEN));
         mob.delItem(thisContainer);
         thisContainer.unWear();
         if(!bodyFlag) bodyFlag=(thisContainer instanceof DeadBody);
@@ -437,7 +437,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
         }
         else
             room.addItem(thisContainer,ItemPossessor.Expire.Player_Drop);
-        thisContainer.recoverEnvStats();
+        thisContainer.recoverPhyStats();
         boolean nothingDone=true;
         do
         {
@@ -673,7 +673,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			   item.wearAt(oldCode);
 		}
 		// why wasn't that here before?
-		mob.recoverEnvStats();
+		mob.recoverPhyStats();
 		mob.recoverCharStats();
 		mob.recoverMaxState();
 	}
@@ -681,8 +681,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
     public Item isRuinedLoot(DVector policies, Item I)
     {
         if(I==null) return null;
-        if((CMath.bset(I.envStats().disposition(),EnvStats.IS_UNSAVABLE))
-        ||(CMath.bset(I.envStats().sensesMask(), EnvStats.SENSE_ITEMNORUIN))
+        if((CMath.bset(I.phyStats().disposition(),PhyStats.IS_UNSAVABLE))
+        ||(CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_ITEMNORUIN))
         ||(I instanceof Coins))
             return I;
         if(I.name().toLowerCase().indexOf("ruined ")>=0)
@@ -703,11 +703,11 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
             if(CMath.bset(flags,CMMiscUtils.LOOTFLAG_LOSS))
                 return null;
             Item I2=CMClass.getItem("GenItem");
-            I2.baseEnvStats().setWeight(I.baseEnvStats().weight());
+            I2.basePhyStats().setWeight(I.basePhyStats().weight());
             I2.setName(I.Name());
             I2.setDisplayText(I.displayText());
             I2.setDescription(I2.description());
-            I2.recoverEnvStats();
+            I2.recoverPhyStats();
             I2.setMaterial(I.material());
             String ruinDescAdder=null;
             switch(I2.material()&RawMaterial.MATERIAL_MASK)
@@ -850,8 +850,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			}
             body.delEffect(body.fetchEffect("Age")); // so misskids doesn't record it
             body.destroy();
-            rejuvedMOB.baseEnvStats().setDisposition(CMath.unsetb(rejuvedMOB.baseEnvStats().disposition(),EnvStats.IS_SITTING));
-            rejuvedMOB.envStats().setDisposition(CMath.unsetb(rejuvedMOB.baseEnvStats().disposition(),EnvStats.IS_SITTING));
+            rejuvedMOB.basePhyStats().setDisposition(CMath.unsetb(rejuvedMOB.basePhyStats().disposition(),PhyStats.IS_SITTING));
+            rejuvedMOB.phyStats().setDisposition(CMath.unsetb(rejuvedMOB.basePhyStats().disposition(),PhyStats.IS_SITTING));
 			rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> get(s) up!");
 			corpseRoom.recoverRoomStats();
 			Vector whatsToDo=CMParms.parse(CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH));
@@ -882,8 +882,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				else
 				if(XPLevel>=0)
 				{
-                    double lvl=(double)body.envStats().level();
-                    for(int l=body.envStats().level();l<rejuvedMOB.envStats().level();l++)
+                    double lvl=(double)body.phyStats().level();
+                    for(int l=body.phyStats().level();l<rejuvedMOB.phyStats().level();l++)
                         lvl=lvl/2.0;
 					int expRestored=(int)Math.round(((100.0+(2.0*((double)XPLevel)))*lvl)/2.0);
 					rejuvedMOB.tell("^*You regain "+expRestored+" experience points.^?^.");
@@ -948,20 +948,20 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 						}
 						if(!isFound)
 						{
-							for(String s : mob.envStats().getStatCodes())
+							for(String s : mob.phyStats().getStatCodes())
 								if(promptSub.startsWith(s))
 								{
 									c+=1+s.length();
-									buf.append(mob.envStats().getStat(s));
+									buf.append(mob.phyStats().getStat(s));
 									isFound=true;
 									break;
 								}
 							if(!isFound)
-							for(String s : mob.baseEnvStats().getStatCodes())
+							for(String s : mob.basePhyStats().getStatCodes())
 								if(promptSub.startsWith("BASE "+s))
 								{
 									c+=6+s.length();
-									buf.append(mob.baseEnvStats().getStat(s));
+									buf.append(mob.basePhyStats().getStat(s));
 									isFound=true;
 									break;
 								}
@@ -1019,7 +1019,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				case 'h': { buf.append("^<Hp^>"+mob.curState().getHitPoints()+"^</Hp^>"); c++; break;}
 				case 'H': { buf.append("^<MaxHp^>"+mob.maxState().getHitPoints()+"^</MaxHp^>"); c++; break;}
                 case 'I': {   if((CMLib.flags().isCloaked(mob))
-                              &&(((mob.envStats().disposition()&EnvStats.IS_NOT_SEEN)!=0)))
+                              &&(((mob.phyStats().disposition()&PhyStats.IS_NOT_SEEN)!=0)))
                                   buf.append("Wizinvisible");
                               else
                               if(CMLib.flags().isCloaked(mob))
@@ -1072,7 +1072,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
                               c++; break; }
 				case 'v': { buf.append("^<Move^>"+mob.curState().getMovement()+"^</Move^>"); c++; break;}
 				case 'V': { buf.append("^<MaxMove^>"+mob.maxState().getMovement()+"^</MaxMove^>"); c++; break;}
-                case 'w': { buf.append(mob.envStats().weight()); c++; break;}
+                case 'w': { buf.append(mob.phyStats().weight()); c++; break;}
                 case 'W': { buf.append(mob.maxCarry()); c++; break;}
 				case 'x': { buf.append(mob.getExperience()); c++; break;}
 				case 'X': {

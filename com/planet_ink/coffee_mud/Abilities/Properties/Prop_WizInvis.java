@@ -37,13 +37,13 @@ public class Prop_WizInvis extends Property
 	public String ID() { return "Prop_WizInvis"; }
 	public String displayText() 
 	{
-	    if(CMath.bset(abilityCode(),EnvStats.IS_CLOAKED|EnvStats.IS_NOT_SEEN))
+	    if(CMath.bset(abilityCode(),PhyStats.IS_CLOAKED|PhyStats.IS_NOT_SEEN))
 		    return "(Wizard Invisibility)";
 	    else
-	    if(CMath.bset(abilityCode(),EnvStats.IS_NOT_SEEN))
+	    if(CMath.bset(abilityCode(),PhyStats.IS_NOT_SEEN))
 		    return "(WizUndetectable)";
 	    else
-	    if(CMath.bset(abilityCode(),EnvStats.IS_CLOAKED))
+	    if(CMath.bset(abilityCode(),PhyStats.IS_CLOAKED))
 		    return "(Cloaked)";
 	    else
 	        return "";
@@ -51,7 +51,7 @@ public class Prop_WizInvis extends Property
 	public String name(){ return "Wizard Invisibility";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected boolean disabled=false;
-	protected int abilityCode=EnvStats.IS_NOT_SEEN|EnvStats.IS_CLOAKED;
+	protected int abilityCode=PhyStats.IS_NOT_SEEN|PhyStats.IS_CLOAKED;
 	public int abilityCode(){return abilityCode;}
 	public void setAbilityCode(int newCode){abilityCode=newCode;}
 
@@ -62,28 +62,28 @@ public class Prop_WizInvis extends Property
 	public boolean canBeUninvoked(){return true;}
 	public boolean isAnAutoEffect(){return false;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly put the mob into
 		// a sleeping state, so that nothing they do
 		// can get them out of it.
 		affectableStats.setDisposition(affectableStats.disposition()|abilityCode);
-		if(CMath.bset(abilityCode(),EnvStats.IS_NOT_SEEN))
+		if(CMath.bset(abilityCode(),PhyStats.IS_NOT_SEEN))
 		{
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_INVISIBLE);
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SNEAKING);
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_CLIMBING);
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_INVISIBLE);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_HIDDEN);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SNEAKING);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_CLIMBING);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
 		}
 		if((affected instanceof MOB)&&(!CMLib.flags().canBreathe((MOB)affected)))
-			affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_NOT_BREATHE);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_HIDDEN);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_DARK);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_INVISIBLE);
+			affectableStats.setSensesMask(affectableStats.sensesMask()-PhyStats.CAN_NOT_BREATHE);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_HIDDEN);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_INVISIBLE);
 	}
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -114,13 +114,13 @@ public class Prop_WizInvis extends Property
 					((MOB)being).location().recoverRoomStats();
 				else
 				{
-					being.recoverEnvStats();
+					being.recoverPhyStats();
 					((MOB)being).recoverCharStats();
 					((MOB)being).recoverMaxState();
 				}
 			}
 			else
-				being.recoverEnvStats();
+				being.recoverPhyStats();
 			mob.tell("You begin to fade back into view.");
 		}
 	}

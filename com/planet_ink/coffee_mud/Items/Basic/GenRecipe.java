@@ -46,12 +46,12 @@ public class GenRecipe extends GenReadable implements Recipe
 		setName("a generic recipe");
 		setDisplayText("a generic recipe sits here.");
 		setMaterial(RawMaterial.RESOURCE_PAPER);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 
 	public boolean isGeneric(){return true;}
-	public void recoverEnvStats(){CMLib.flags().setReadable(this,true); super.recoverEnvStats();}
+	public void recoverPhyStats(){CMLib.flags().setReadable(this,true); super.recoverPhyStats();}
 	public String getCommonSkillID(){return commonSkillID;}
 	public void setCommonSkillID(String ID){commonSkillID=ID;}
 	public String getRecipeCodeLine(){return recipeLine;}

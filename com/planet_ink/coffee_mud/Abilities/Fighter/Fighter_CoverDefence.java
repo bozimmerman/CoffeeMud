@@ -56,7 +56,7 @@ public class Fighter_CoverDefence extends FighterSkill
 		   &&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		   &&(CMLib.flags().aliveAwakeMobile(mob,true))
 		   &&(msg.source().rangeToTarget()>0)
-		   &&(mob.envStats().height()<84)
+		   &&(mob.phyStats().height()<84)
 		   &&(msg.tool()!=null)
 		   &&(msg.tool() instanceof Weapon)
 		   &&((((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED)

@@ -43,15 +43,15 @@ public class StdBoffWeapon extends StdWeapon
 		setDescription("This is a not so deadly looking weapon.");
 		wornLogicalAnd=false;
 		properWornBitmap=Wearable.WORN_HELD|Wearable.WORN_WIELD;
-		baseEnvStats().setAttackAdjustment(0);
-		baseEnvStats().setDamage(0);
-		baseEnvStats().setAbility(0);
+		basePhyStats().setAttackAdjustment(0);
+		basePhyStats().setDamage(0);
+		basePhyStats().setAbility(0);
 		baseGoldValue=15;
 		weaponType=Weapon.TYPE_BASHING;
 		weaponClassification=Weapon.CLASS_BLUNT;
 		material=RawMaterial.RESOURCE_STEEL;
 		setUsesRemaining(100);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public String hitString(int damageAmount)

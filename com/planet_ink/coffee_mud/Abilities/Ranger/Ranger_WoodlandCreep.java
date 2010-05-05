@@ -50,11 +50,11 @@ public class Ranger_WoodlandCreep extends StdAbility
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	protected int bonus=0;
 	
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SNEAKING);
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_HIDDEN);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SNEAKING);
 		affectableStats.setSpeed(0.5);
 	}
     public void affectCharStats(MOB affected, CharStats affectableStats)
@@ -76,7 +76,7 @@ public class Ranger_WoodlandCreep extends StdAbility
 		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WOODS))
 		{
 			unInvoke();
-			mob.recoverEnvStats();
+			mob.recoverPhyStats();
 		}
 		if((msg.source()==affected)
 		&&(CMath.bset(msg.sourceMajor(),CMMsg.MASK_MALICIOUS))
@@ -84,7 +84,7 @@ public class Ranger_WoodlandCreep extends StdAbility
 		&&(msg.source().rangeToTarget()<=0))
 		{
  			unInvoke();
-			mob.recoverEnvStats();
+			mob.recoverPhyStats();
 		}
 		return;
 	}
@@ -131,7 +131,7 @@ public class Ranger_WoodlandCreep extends StdAbility
 				((Ranger_WoodlandCreep)newOne).bonus=getXLEVELLevel(mob)*2;
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 			}
 			else
 				success=false;

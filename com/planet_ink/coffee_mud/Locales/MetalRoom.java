@@ -39,8 +39,8 @@ public class MetalRoom extends StdRoom
 	{
 		super();
 		name="the room";
-		baseEnvStats.setWeight(1);
-		recoverEnvStats();
+		basePhyStats.setWeight(1);
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_INDOORS_METAL;}
 	public int domainConditions(){return Room.CONDITION_NORMAL;}

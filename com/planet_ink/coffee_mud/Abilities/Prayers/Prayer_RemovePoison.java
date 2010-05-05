@@ -100,7 +100,7 @@ public class Prayer_RemovePoison extends Prayer implements MendingSkill
 				if((target instanceof Drink)&&(((Drink)target).liquidHeld()==RawMaterial.RESOURCE_POISON))
 				{
 					((Drink)target).setLiquidHeld(RawMaterial.RESOURCE_FRESHWATER);
-					target.baseEnvStats().setAbility(0);
+					target.basePhyStats().setAbility(0);
 				}
 				if(!CMLib.flags().stillAffectedBy(target,offensiveAffects,false))
 				{
@@ -111,7 +111,7 @@ public class Prayer_RemovePoison extends Prayer implements MendingSkill
 						((MOB)target).recoverMaxState();
 					}
 				}
-				target.recoverEnvStats();
+				target.recoverPhyStats();
 			}
 		}
 		else

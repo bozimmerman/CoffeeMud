@@ -39,10 +39,10 @@ public class IndoorUnderWater extends StdRoom implements Drink
 	public IndoorUnderWater()
 	{
 		super();
-		baseEnvStats.setWeight(3);
+		basePhyStats.setWeight(3);
 		name="the water";
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_SWIMMING);
-		recoverEnvStats();
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_SWIMMING);
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_INDOORS_UNDERWATER;}
 	public int domainConditions(){return Room.CONDITION_WET;}
@@ -50,13 +50,13 @@ public class IndoorUnderWater extends StdRoom implements Drink
 	public long decayTime(){return 0;}
 	public void setDecayTime(long time){}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected instanceof MOB)
 		{
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_BREATHE);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_BREATHE);
 		}
 	}
 

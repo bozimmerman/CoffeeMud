@@ -92,14 +92,14 @@ public class Masonry extends CraftingSkill
 		E2.setDisplayText(E.displayText());
 		E2.setDescription(E.description());
 		E2.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),E.hasALock(),E.isLocked(),E.defaultsLocked());
-		E2.setBaseEnvStats((EnvStats)E.baseEnvStats().copyOf());
+		E2.setBasePhyStats((PhyStats)E.basePhyStats().copyOf());
 		E2.setExitParams(E.doorName(),E.closeWord(),E.openWord(),E.closedText());
 		E2.setKeyName(E.keyName());
 		E2.setOpenDelayTicks(E.openDelayTicks());
 		E2.setReadable(E.isReadable());
 		E2.setReadableText(E.readableText());
 		E2.setTemporaryDoorLink(E.temporaryDoorLink());
-		E2.recoverEnvStats();
+		E2.recoverPhyStats();
 		return E2;
 	}
 

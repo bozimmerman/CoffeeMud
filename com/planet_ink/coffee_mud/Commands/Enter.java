@@ -60,8 +60,8 @@ public class Enter extends Go
 				}
 				else
 				if((getThis instanceof DeadBody)
-				&&(mob.envStats().height()<=0)
-				&&(mob.envStats().weight()<=0))
+				&&(mob.phyStats().height()<=0)
+				&&(mob.phyStats().weight()<=0))
 				{
 					String mountStr="<S-NAME> enter(s) <T-NAME>.";
 					CMMsg msg=CMClass.getMsg(mob,getThis,null,CMMsg.MSG_SIT,mountStr);

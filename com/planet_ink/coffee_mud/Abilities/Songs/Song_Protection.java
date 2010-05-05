@@ -37,9 +37,9 @@ public class Song_Protection extends Song
 	public String ID() { return "Song_Protection"; }
 	public String name(){ return "Protection";}
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(invoker==null) return;
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-super.adjustedLevel(invoker(),0));
 	}

@@ -110,15 +110,15 @@ public class Spell_FeignDeath extends Spell
 		return true;
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly put the mob into
 		// a sleeping state, so that nothing they do
 		// can get them out of it.
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_INVISIBLE);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_NOT_SEEN);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_INVISIBLE);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_NOT_SEEN);
 	}
 
 
@@ -160,10 +160,10 @@ public class Spell_FeignDeath extends Spell
                 deathRoom.send(target,msg);
     			Body.setName("the body of "+target.name());
     			Body.setDisplayText("the body of "+target.name()+" lies here.");
-    			Body.baseEnvStats().setWeight(target.envStats().weight()+100);
+    			Body.basePhyStats().setWeight(target.phyStats().weight()+100);
     			Body.setSecretIdentity("FAKE");
     			deathRoom.addItem(Body,ItemPossessor.Expire.Monster_Body);
-    			Body.recoverEnvStats();
+    			Body.recoverPhyStats();
     			deathRoom.recoverRoomStats();
             }
 		}

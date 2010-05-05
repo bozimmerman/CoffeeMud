@@ -51,8 +51,8 @@ public class Visible extends StdCommand
             {
                 try
                 {
-                    newMOB.recoverEnvStats();
-                    A.affectEnvStats(newMOB,newMOB.envStats());
+                    newMOB.recoverPhyStats();
+                    A.affectPhyStats(newMOB,newMOB.phyStats());
                     if(CMLib.flags().isInvisible(newMOB)||CMLib.flags().isHidden(newMOB))
                       offenders.addElement(A);
                 }

@@ -70,7 +70,7 @@ public class Spell_Counterspell extends Spell
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
 		&&(invoker!=null)
 		&&(!mob.amDead())
-		&&(CMLib.dice().rollPercentage()<(70+(2*((mob.envStats().level()+(2*getXLEVELLevel(invoker())))-msg.source().envStats().level())))))
+		&&(CMLib.dice().rollPercentage()<(70+(2*((mob.phyStats().level()+(2*getXLEVELLevel(invoker())))-msg.source().phyStats().level())))))
 		{
 			mob.location().show(mob,msg.source(),CMMsg.MSG_OK_VISUAL,"The barrier around <S-NAME> dispels the "+msg.tool().name()+" from <T-NAME>!");
 			tickDown=0;

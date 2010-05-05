@@ -101,8 +101,8 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 						else
 						if(refitting)
 						{
-							building.baseEnvStats().setHeight(0);
-							building.recoverEnvStats();
+							building.basePhyStats().setHeight(0);
+							building.recoverPhyStats();
 						}
 						else
 							dropAWinner(mob,building);
@@ -234,7 +234,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 				commonTell(mob,"You don't know how to refit that sort of thing.");
 				return false;
 			}
-			if(building.envStats().height()==0)
+			if(building.phyStats().height()==0)
 			{
 				commonTell(mob,building.name()+" is already the right size.");
 				return false;
@@ -318,12 +318,12 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
             playSound="sanding.wav";
 			building.setDisplayText(itemName+" lies here");
 			building.setDescription(itemName+". ");
-			building.baseEnvStats().setWeight(woodRequired);
+			building.basePhyStats().setWeight(woodRequired);
 			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 			building.setMaterial(data[0][FOUND_CODE]);
 			int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-6;
-			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness*3));
-			if(building.baseEnvStats().level()<1) building.baseEnvStats().setLevel(1);
+			building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness*3));
+			if(building.basePhyStats().level()<1) building.basePhyStats().setLevel(1);
 			int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 			int canContain=CMath.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
 			int armordmg=CMath.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
@@ -333,9 +333,9 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			addSpells(building,spell);
 			if(building instanceof Armor)
 			{
-                ((Armor)building).baseEnvStats().setArmor(0);
+                ((Armor)building).basePhyStats().setArmor(0);
                 if(armordmg!=0)
-                    ((Armor)building).baseEnvStats().setArmor(armordmg+(abilityCode()-1));
+                    ((Armor)building).basePhyStats().setArmor(armordmg+(abilityCode()-1));
                 setWearLocation(building,misctype,hardness);
 			}
 			if(building instanceof Container)
@@ -344,9 +344,9 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 					((Container)building).setCapacity(capacity+woodRequired);
 					((Container)building).setContainTypes(canContain);
 				}
-			building.recoverEnvStats();
+			building.recoverPhyStats();
 			building.text();
-			building.recoverEnvStats();
+			building.recoverPhyStats();
 		}
 
 

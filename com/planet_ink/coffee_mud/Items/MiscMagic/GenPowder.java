@@ -43,12 +43,12 @@ public class GenPowder extends StdPowder {
     public GenPowder() {
 		super();
 		setName("a generic powder");
-		baseEnvStats.setWeight(1);
+		basePhyStats.setWeight(1);
 		setDisplayText("a generic powder sits here.");
 		setDescription("");
 		baseGoldValue=1;
-		baseEnvStats().setLevel(1);
-		recoverEnvStats();
+		basePhyStats().setLevel(1);
+		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_ASH);
     }
 
@@ -63,7 +63,7 @@ public class GenPowder extends StdPowder {
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
     public String getStat(String code)

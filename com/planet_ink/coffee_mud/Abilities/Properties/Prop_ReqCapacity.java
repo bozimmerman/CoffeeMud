@@ -148,8 +148,8 @@ public class Prop_ReqCapacity extends Property
 					{
 						int soFar=0;
 						for(int i=0;i<R.numItems();i++)
-						{Item I=R.getItem(i); if(I!=null) soFar+=I.envStats().weight();}
-						if((soFar+msg.target().envStats().weight())>=maxWeight)
+						{Item I=R.getItem(i); if(I!=null) soFar+=I.phyStats().weight();}
+						if((soFar+msg.target().phyStats().weight())>=maxWeight)
 						{
 							msg.source().tell("There is no room in here to put "+msg.target().Name()+".");
 							return false;

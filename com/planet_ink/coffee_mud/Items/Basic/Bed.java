@@ -43,15 +43,15 @@ public class Bed extends GenRideable
 		readableText = "";
 
 		setName("a bed");
-		baseEnvStats.setWeight(150);
+		basePhyStats.setWeight(150);
 		setDisplayText("a bed is here.");
 		setDescription("Looks like a nice comfortable bed");
 		baseGoldValue=5;
-		baseEnvStats().setLevel(1);
+		basePhyStats().setLevel(1);
 		setMaterial(RawMaterial.RESOURCE_COTTON);
 		setRideBasis(Rideable.RIDEABLE_SLEEP);
 		setRiderCapacity(2);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 }

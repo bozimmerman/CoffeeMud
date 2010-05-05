@@ -45,7 +45,7 @@ public class Fighter_TrueShot extends FighterSkill
 	public boolean canBeUninvoked(){return false;}
     protected boolean gettingBonus=false;
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if((affected==null)||(!(affected instanceof MOB))) return;
 		Item w=((MOB)affected).fetchWieldedItem();

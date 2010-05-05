@@ -70,13 +70,13 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
         //CMLib.flags().setGettable(this,false);
         //CMLib.flags().setDroppable(this,false);
         //CMLib.flags().setRemovable(this,false);
-        baseEnvStats().setWeight(1);
+        basePhyStats().setWeight(1);
         // capacity is 52 cards + 1 for the deck itself.
         setCapacity(53);
         // this type is arbitrary -- we will override canContain method
         setContainTypes(Container.CONTAIN_SSCOMPONENTS);
         backupContents=new Vector();
-        recoverEnvStats();
+        recoverPhyStats();
     }
 
     // getContents()
@@ -461,7 +461,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
         for(int i=0;i<handContents.size();i++)
         {
             PlayingCard card=(PlayingCard)handContents.elementAt(i);
-            if(card.envStats().ability()==cardBitCode)
+            if(card.phyStats().ability()==cardBitCode)
                 return card;
         }
         return null;

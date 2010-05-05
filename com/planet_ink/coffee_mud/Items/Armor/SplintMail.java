@@ -42,11 +42,11 @@ public class SplintMail extends StdArmor
 		setDescription("A suit of splint mail armor including everything to protect the body, legs and arms.");
 		properWornBitmap=Wearable.WORN_TORSO | Wearable.WORN_ARMS | Wearable.WORN_LEGS;
 		wornLogicalAnd=true;
-		baseEnvStats().setArmor(44);
-		baseEnvStats().setWeight(60);
-		baseEnvStats().setAbility(0);
+		basePhyStats().setArmor(44);
+		basePhyStats().setWeight(60);
+		basePhyStats().setAbility(0);
 		baseGoldValue=160;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_STEEL;
 	}
 

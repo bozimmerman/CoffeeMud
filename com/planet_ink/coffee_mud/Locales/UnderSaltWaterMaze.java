@@ -39,9 +39,9 @@ public class UnderSaltWaterMaze extends UnderWaterMaze
 	public UnderSaltWaterMaze()
 	{
 		super();
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_SWIMMING);
-		baseEnvStats.setWeight(3);
-		recoverEnvStats();
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_SWIMMING);
+		basePhyStats.setWeight(3);
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_UNDERWATER;}
 	public int domainConditions(){return Room.CONDITION_WET;}

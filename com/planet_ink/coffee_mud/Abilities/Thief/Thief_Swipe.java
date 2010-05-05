@@ -104,7 +104,7 @@ public class Thief_Swipe extends ThiefSkill
 			return false;
 		}
 
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
+		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
 		if((!target.mayIFight(mob))||(levelDiff>15))
 		{
 			mob.tell("You cannot swipe from "+target.charStats().himher()+".");
@@ -205,9 +205,9 @@ public class Thief_Swipe extends ThiefSkill
 						mob.makePeace();
 				}
 				CMLib.beanCounter().addMoney(mob,currency,goldTaken);
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 				CMLib.beanCounter().subtractMoney(target,currency,goldTaken);
-				target.recoverEnvStats();
+				target.recoverPhyStats();
 			}
 		}
 		return success;

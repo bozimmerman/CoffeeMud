@@ -42,7 +42,7 @@ public class GenWeapon extends StdWeapon
 		super();
 
 		setName("a generic weapon");
-		baseEnvStats.setWeight(2);
+		basePhyStats.setWeight(2);
 		setDisplayText("a generic weapon sits here.");
 		setDescription("");
 		baseGoldValue=5;
@@ -50,10 +50,10 @@ public class GenWeapon extends StdWeapon
 		wornLogicalAnd=false;
 		weaponType=Weapon.TYPE_BASHING;
 		material=RawMaterial.RESOURCE_STEEL;
-		baseEnvStats().setAttackAdjustment(0);
-		baseEnvStats().setDamage(5);
-		baseEnvStats().setLevel(5);
-		recoverEnvStats();
+		basePhyStats().setAttackAdjustment(0);
+		basePhyStats().setDamage(5);
+		basePhyStats().setLevel(5);
+		recoverPhyStats();
 	}
 
 	public boolean isGeneric(){return true;}
@@ -70,7 +70,7 @@ public class GenWeapon extends StdWeapon
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	private final static String[] MYCODES={"MINRANGE","MAXRANGE","WEAPONTYPE","WEAPONCLASS",
 							  			   "AMMOTYPE","AMMOCAPACITY"};

@@ -69,7 +69,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 						int x=100;
 						while(((--x)>0)&&A.invoke(mob,CMParms.parse("foot"),mob,true,0));
 						mob.recoverCharStats();
-						mob.recoverEnvStats();
+						mob.recoverPhyStats();
 						mob.recoverMaxState();
 					}
 					unInvoke();

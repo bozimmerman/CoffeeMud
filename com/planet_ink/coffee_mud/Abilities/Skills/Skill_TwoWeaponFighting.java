@@ -90,7 +90,7 @@ public class Skill_TwoWeaponFighting extends StdSkill
 		return weapon;
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if(affected instanceof MOB)
 		{
@@ -142,11 +142,11 @@ public class Skill_TwoWeaponFighting extends StdSkill
 				{
 					primaryWeapon.setRawWornCode(Wearable.WORN_HELD);
 					weapon.setRawWornCode(Wearable.WORN_WIELD);
-					mob.recoverEnvStats();
+					mob.recoverPhyStats();
 					CMLib.combat().postAttack(mob,mob.getVictim(),weapon);
 					weapon.setRawWornCode(Wearable.WORN_HELD);
 					primaryWeapon.setRawWornCode(Wearable.WORN_WIELD);
-					mob.recoverEnvStats();
+					mob.recoverPhyStats();
 					if(CMLib.dice().rollPercentage()==1)
 						helpProficiency(mob);
 				}

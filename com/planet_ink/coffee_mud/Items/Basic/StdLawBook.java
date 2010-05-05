@@ -45,8 +45,8 @@ public class StdLawBook extends StdItem
 		setDisplayText("a law book sits here.");
 		setDescription("Enter `READ [PAGE NUMBER] \"law book\"` to read an entry.%0D%0AUse your WRITE skill to add new entries. ");
 		material=RawMaterial.RESOURCE_PAPER;
-		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMREADABLE);
-		recoverEnvStats();
+		basePhyStats().setSensesMask(PhyStats.SENSE_ITEMREADABLE);
+		recoverPhyStats();
 	}
 
 

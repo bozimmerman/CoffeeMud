@@ -43,8 +43,8 @@ public class LargeChest extends LockableContainer
 		capacity=150;
 		setMaterial(RawMaterial.RESOURCE_OAK);
 		baseGoldValue=50;
-		baseEnvStats().setWeight(50);
-		recoverEnvStats();
+		basePhyStats().setWeight(50);
+		recoverPhyStats();
 	}
 
 

@@ -870,15 +870,15 @@ public class DefaultClan implements Clan
                             ||CMSecurity.isASysOp(M2))
                         {
                             if((CMLib.clans().getRoleOrder(member.role)==max)
-                            &&(M2.envStats().level()>=highestCleric))
+                            &&(M2.phyStats().level()>=highestCleric))
                             {
-                                highestCleric=M2.envStats().level();
+                                highestCleric=M2.phyStats().level();
                                 highestClericM=M2;
                             }
                             else
-                            if(M2.envStats().level()>highestCleric)
+                            if(M2.phyStats().level()>highestCleric)
                             {
-                                highestCleric=M2.envStats().level();
+                                highestCleric=M2.phyStats().level();
                                 highestClericM=M2;
                             }
                             if((M2.getClanRole()<max) && (M2 != currentHighCleric))
@@ -1112,7 +1112,7 @@ public class DefaultClan implements Clan
                                     mob.setName(clanID());
                                     mob.setClanID(clanID());
                                     mob.setClanRole(POS_BOSS);
-                                    mob.baseEnvStats().setLevel(1000);
+                                    mob.basePhyStats().setLevel(1000);
                                     if(mob.location()==null)
                                     {
                                         mob.setLocation(mob.getStartRoom());

@@ -81,7 +81,7 @@ public class Spell_MinorGlobe extends Spell
 			mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The absorbing globe around <S-NAME> absorbs the "+msg.tool().name()+" from <T-NAME>.");
 			return false;
 		}
-		if((invoker!=null)&&(amountAbsorbed>(invoker.envStats().level()*2)))
+		if((invoker!=null)&&(amountAbsorbed>(invoker.phyStats().level()*2)))
 			unInvoke();
 		return true;
 	}

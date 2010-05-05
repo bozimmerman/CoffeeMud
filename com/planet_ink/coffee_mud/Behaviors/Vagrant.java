@@ -53,7 +53,7 @@ public class Vagrant extends StdBehavior
 			else
 			if(sleepForTicks>0)
 			{
-				mob.envStats().setDisposition(mob.envStats().disposition()|EnvStats.IS_SLEEPING);
+				mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SLEEPING);
 				return false;
 			}
 		}

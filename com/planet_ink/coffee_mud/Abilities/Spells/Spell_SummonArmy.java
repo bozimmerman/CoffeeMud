@@ -100,14 +100,14 @@ public class Spell_SummonArmy extends Spell
 			{
 				mob.location().send(mob,msg);
 				String[] choices={"Dog","Orc","Tiger","Troll","Chimp","BrownBear","Goblin","LargeBat","GiantScorpion","Rattlesnake","Ogre"};
-                int num=(mob.envStats().level()+(getXLEVELLevel(mob)+(2*getX1Level(mob))))/3;
+                int num=(mob.phyStats().level()+(getXLEVELLevel(mob)+(2*getX1Level(mob))))/3;
 				for(int i=0;i<num;i++)
 				{
 					MOB newMOB=CMClass.getMOB(choices[CMLib.dice().roll(1,choices.length,-1)]);
 					newMOB.setLocation(mob.location());
-					newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
+					newMOB.basePhyStats().setRejuv(Integer.MAX_VALUE);
 					newMOB.recoverCharStats();
-					newMOB.recoverEnvStats();
+					newMOB.recoverPhyStats();
 					newMOB.recoverMaxState();
 					newMOB.resetToMaxState();
 					newMOB.bringToLife(mob.location(),true);

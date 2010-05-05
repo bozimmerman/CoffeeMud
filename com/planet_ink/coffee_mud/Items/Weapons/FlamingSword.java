@@ -41,14 +41,14 @@ public class FlamingSword extends Longsword
 		setDisplayText("a fancy longsword has been dropped on the ground.");
 		setDescription("A one-handed sword with a very slight red tinge on the blade.");
 		secretIdentity="A Flaming Sword (Additional fire damage when you strike)";
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(1);
-		baseEnvStats().setWeight(4);
-		baseEnvStats().setAttackAdjustment(0);
-		baseEnvStats().setDamage(8);
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_LIGHTSOURCE | EnvStats.IS_BONUS);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(1);
+		basePhyStats().setWeight(4);
+		basePhyStats().setAttackAdjustment(0);
+		basePhyStats().setDamage(8);
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_LIGHTSOURCE | PhyStats.IS_BONUS);
 		baseGoldValue=2500;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_STEEL;
 		weaponType=TYPE_SLASHING;
 	}
@@ -71,7 +71,7 @@ public class FlamingSword extends Longsword
 				if(msg2.value()<=0)
 				{
 					int flameDamage = (int) Math.round( Math.random() * 6 );
-					flameDamage *= baseEnvStats().level();
+					flameDamage *= basePhyStats().level();
 					CMLib.combat().postDamage(msg.source(),(MOB)msg.target(),null,flameDamage,CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,name()+" <DAMAGE> <T-NAME>!");
 				}
 			}

@@ -50,9 +50,9 @@ public class Thief_DampenAuras extends ThiefSkill
 		return super.tick(ticking,tickID);
 	}
 	
-	public void affectEnvStats(Environmental host, EnvStats stats)
+	public void affectPhyStats(Physical host, PhyStats stats)
 	{
-		super.affectEnvStats(host,stats);
+		super.affectPhyStats(host,stats);
 		if(unInvoked) 
 			host.delEffect(this);
 		else

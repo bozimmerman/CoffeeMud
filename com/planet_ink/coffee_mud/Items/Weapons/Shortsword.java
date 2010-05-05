@@ -40,13 +40,13 @@ public class Shortsword extends Sword
 		setName("a short sword");
 		setDisplayText("a short sword has been dropped on the ground.");
 		setDescription("A sword with a not-too-long blade.");
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(0);
-		baseEnvStats.setWeight(3);
-		baseEnvStats().setAttackAdjustment(0);
-		baseEnvStats().setDamage(5);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(0);
+		basePhyStats.setWeight(3);
+		basePhyStats().setAttackAdjustment(0);
+		basePhyStats().setDamage(5);
 		baseGoldValue=10;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_STEEL;
 		weaponType=TYPE_PIERCING;
 	}

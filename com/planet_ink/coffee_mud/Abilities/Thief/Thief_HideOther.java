@@ -69,7 +69,7 @@ public class Thief_HideOther extends ThiefSkill
 			&&(msg.sourceMajor()>0))
 			{
 				unInvoke();
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 			}
 			else
 			if((abilityCode()==0)
@@ -81,7 +81,7 @@ public class Thief_HideOther extends ThiefSkill
 				if(CMath.bset(msg.othersMajor(),CMMsg.MASK_SOUND))
 				{
 					unInvoke();
-					mob.recoverEnvStats();
+					mob.recoverPhyStats();
 				}
 				else
 				switch(msg.othersMinor())
@@ -90,7 +90,7 @@ public class Thief_HideOther extends ThiefSkill
 				case CMMsg.TYP_CAST_SPELL:
 					{
 						unInvoke();
-						mob.recoverEnvStats();
+						mob.recoverPhyStats();
 					}
 					break;
 				case CMMsg.TYP_OPEN:
@@ -105,7 +105,7 @@ public class Thief_HideOther extends ThiefSkill
 						   &&(!msg.source().isMine(msg.target())))))
 					{
 						unInvoke();
-						mob.recoverEnvStats();
+						mob.recoverPhyStats();
 					}
 					break;
 				}
@@ -119,12 +119,12 @@ public class Thief_HideOther extends ThiefSkill
         super.affectCharStats(affected,affectableStats);
         affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,prof+bonus+affectableStats.getStat(CharStats.STAT_SAVE_DETECTION));
     }
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_HIDDEN);
 		if(CMLib.flags().isSneaking(affected))
-			affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_SNEAKING);
+			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_SNEAKING);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
@@ -152,7 +152,7 @@ public class Thief_HideOther extends ThiefSkill
 			return false;
 
         MOB highestMOB=getHighestLevelMOB(mob,CMParms.makeVector(target));
-		int levelDiff=(mob.envStats().level()+(2*super.getXLEVELLevel(mob)))-getMOBLevel(highestMOB);
+		int levelDiff=(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))-getMOBLevel(highestMOB);
 
 		String str="You carefully hide <T-NAMESELF> and direct <T-HIM-HER> to hold still.";
 
@@ -178,7 +178,7 @@ public class Thief_HideOther extends ThiefSkill
 					newOne.bonus=getXLEVELLevel(mob)*2;
 					newOne.prof=proficiency();
 				}
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 			}
 			else
 				success=false;

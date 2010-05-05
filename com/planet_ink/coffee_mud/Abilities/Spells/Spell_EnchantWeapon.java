@@ -54,7 +54,7 @@ public class Spell_EnchantWeapon extends Spell
 			mob.tell(mob,target,null,"You can't enchant <T-NAME> with an Enchant Weapon spell!");
 			return false;
 		}
-		if(target.envStats().ability()>2)
+		if(target.phyStats().ability()>2)
 		{
 			mob.tell(target.name()+" cannot be enchanted further.");
 			return false;
@@ -75,10 +75,10 @@ public class Spell_EnchantWeapon extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> glows!");
-				target.baseEnvStats().setAbility(target.baseEnvStats().ability()+1);
-				target.baseEnvStats().setLevel(target.baseEnvStats().level()+3);
-				target.recoverEnvStats();
-				mob.recoverEnvStats();
+				target.basePhyStats().setAbility(target.basePhyStats().ability()+1);
+				target.basePhyStats().setLevel(target.basePhyStats().level()+3);
+				target.recoverPhyStats();
+				mob.recoverPhyStats();
 			}
 
 		}

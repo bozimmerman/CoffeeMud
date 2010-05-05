@@ -49,7 +49,7 @@ public class Prop_Invisibility extends Property
 		if((msg.amISource(mob))&&(CMath.bset(msg.sourceCode(),CMMsg.MASK_MALICIOUS)))
 		{
 			ticksSinceLoss=0;
-			mob.recoverEnvStats();
+			mob.recoverPhyStats();
 		}
 		return;
 	}
@@ -61,11 +61,11 @@ public class Prop_Invisibility extends Property
 		return super.tick(ticking,tickID);
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_INVISIBLE);
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_INVISIBLE);
 		if(ticksSinceLoss>60)
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_INVISIBLE);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_INVISIBLE);
 	}
 }

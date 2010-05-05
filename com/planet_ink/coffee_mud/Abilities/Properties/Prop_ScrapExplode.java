@@ -52,7 +52,7 @@ public class Prop_ScrapExplode extends Property {
 			Item item=(Item)affect.target();
 			MOB mob = affect.source();
 			Room room = mob.location();
-			int damage = 3 * item.envStats().weight();
+			int damage = 3 * item.phyStats().weight();
 			if (mob != null)
 			{
 				CMLib.combat().postDamage(mob, mob, item, damage*2,  CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE, Weapon.TYPE_PIERCING,

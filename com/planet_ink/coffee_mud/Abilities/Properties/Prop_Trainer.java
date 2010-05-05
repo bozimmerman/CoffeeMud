@@ -113,7 +113,7 @@ public class Prop_Trainer extends Prop_StatTrainer
 				if(mob.fetchExpertise(def.ID)==null) mob.addExpertise(def.ID);
 			}
 			mob.recoverCharStats();
-			mob.recoverEnvStats();
+			mob.recoverPhyStats();
 			mob.recoverMaxState();
 		}
 		return super.tick(ticking,tickID);

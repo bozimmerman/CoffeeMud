@@ -70,7 +70,7 @@ public class Trap_Trap extends StdAbility implements Trap
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(P==null) return null;
-		int level=mob.envStats().level();
+		int level=mob.phyStats().level();
 		if(level<qualifyingClassLevel) level=qualifyingClassLevel;
 		level+=trapBonus;
 		if(level>=100) level=99;
@@ -98,7 +98,7 @@ public class Trap_Trap extends StdAbility implements Trap
 			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> avoid(s) a gas trap set in <T-NAME>.");
 		else
 		if(mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) a trap set in <T-NAME>!"))
-			if(mob.envStats().level()>15)
+			if(mob.phyStats().level()>15)
 			{
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The room fills with gas!");
 				for(int i=0;i<mob.location().numInhabitants();i++)
@@ -106,7 +106,7 @@ public class Trap_Trap extends StdAbility implements Trap
 					MOB target=mob.location().fetchInhabitant(i);
 					if(target==null) break;
 
-					int dmg=CMLib.dice().roll(target.envStats().level(),10,1);
+					int dmg=CMLib.dice().roll(target.phyStats().level(),10,1);
 					CMMsg msg=CMClass.getMsg(invoker(),target,this,CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_GAS,CMMsg.MSG_NOISYMOVEMENT,null);
 					if(target.location().okMessage(target,msg))
 					{
@@ -120,7 +120,7 @@ public class Trap_Trap extends StdAbility implements Trap
 			else
 			{
 				MOB target=mob;
-				int dmg=CMLib.dice().roll(target.envStats().level(),10,1);
+				int dmg=CMLib.dice().roll(target.phyStats().level(),10,1);
 				CMMsg msg=CMClass.getMsg(invoker(),target,this,CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_GAS,CMMsg.MSG_NOISYMOVEMENT,null);
 				if(target.location().okMessage(target,msg))
 				{
@@ -140,7 +140,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		if(mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) a needle trap set in <T-NAME>!"))
 		{
 			MOB target=mob;
-			int dmg=CMLib.dice().roll(target.envStats().level(),5,1);
+			int dmg=CMLib.dice().roll(target.phyStats().level(),5,1);
 			CMMsg msg=CMClass.getMsg(invoker(),target,this,CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE,CMMsg.MSG_NOISYMOVEMENT,null);
 			if(target.location().okMessage(target,msg))
 			{
@@ -163,7 +163,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		if(mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) a blade trap set in <T-NAME>!"))
 		{
 			MOB target=mob;
-			int dmg=CMLib.dice().roll(target.envStats().level(),2,0);
+			int dmg=CMLib.dice().roll(target.phyStats().level(),2,0);
 			CMMsg msg=CMClass.getMsg(invoker(),target,this,CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE,CMMsg.MSG_NOISYMOVEMENT,null);
 			if(target.location().okMessage(target,msg))
 			{
@@ -222,20 +222,20 @@ public class Trap_Trap extends StdAbility implements Trap
 				myPitUp=CMClass.getLocale("ClimbableSurface");
 				myPitUp.setRoomID("");
 				myPitUp.setArea(mob.location().getArea());
-				myPitUp.baseEnvStats().setDisposition(myPitUp.baseEnvStats().disposition()|EnvStats.IS_DARK);
+				myPitUp.basePhyStats().setDisposition(myPitUp.basePhyStats().disposition()|PhyStats.IS_DARK);
 				myPitUp.setDisplayText("Inside a dark pit");
 				myPitUp.setDescription("The walls here are slick and tall.  The trap door has already closed.");
-				myPitUp.recoverEnvStats();
+				myPitUp.recoverPhyStats();
 
 				myPit=CMClass.getLocale("StdRoom");
 				myPit.setRoomID("");
 				myPit.setArea(mob.location().getArea());
-				myPit.baseEnvStats().setDisposition(myPit.baseEnvStats().disposition()|EnvStats.IS_DARK);
+				myPit.basePhyStats().setDisposition(myPit.basePhyStats().disposition()|PhyStats.IS_DARK);
 				myPit.setDisplayText("Inside a dark pit");
 				myPit.setDescription("The walls here are slick and tall.  You can barely see the closed trap door well above you.");
 				myPit.setRawExit(Directions.UP,CMClass.getExit("StdOpenDoorway"));
 				myPit.rawDoors()[Directions.UP]=myPitUp;
-				myPitUp.recoverEnvStats();
+				myPitUp.recoverPhyStats();
 
 			}
 			myPitUp.setRawExit(Directions.UP,CMClass.getExit("StdClosedDoorway"));
@@ -247,12 +247,12 @@ public class Trap_Trap extends StdAbility implements Trap
 				mob.location().rawDoors()[Directions.DOWN]=myPitUp;
 			}
 			myPit.bringMobHere(mob,false);
-			if(mob.envStats().weight()<5)
+			if(mob.phyStats().weight()<5)
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> float(s) gently into the pit!");
 			else
 			{
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> hit(s) the pit floor with a THUMP!");
-				int damage=CMLib.dice().roll(mob.envStats().level(),3,1);
+				int damage=CMLib.dice().roll(mob.phyStats().level(),3,1);
 				CMLib.combat().postDamage(invoker(),mob,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE,-1,null);
 			}
 			CMLib.commands().postLook(mob,true);
@@ -274,9 +274,9 @@ public class Trap_Trap extends StdAbility implements Trap
 	{
 		sprung=true;
 		benefactor.setLocation(target.location());
-		benefactor.baseEnvStats().setLevel(target.envStats().level());
+		benefactor.basePhyStats().setLevel(target.phyStats().level());
 		benefactor.recoverCharStats();
-		benefactor.recoverEnvStats();
+		benefactor.recoverPhyStats();
 		switch(trapType())
 		{
 		case TRAP_GAS:

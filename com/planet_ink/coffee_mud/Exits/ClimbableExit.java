@@ -41,7 +41,7 @@ public class ClimbableExit extends StdExit
 	public ClimbableExit()
 	{
 		super();
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_CLIMBING);
-		recoverEnvStats();
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_CLIMBING);
+		recoverPhyStats();
 	}
 }

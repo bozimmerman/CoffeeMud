@@ -43,12 +43,12 @@ public class Chant_Moonbeam extends Chant
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONSUMMONING;}
     public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if(!(affected instanceof Room))
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_LIGHTSOURCE);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_LIGHTSOURCE);
 		if(CMLib.flags().isInDark(affected))
-			affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_DARK);
+			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_DARK);
 	}
 	public void unInvoke()
 	{

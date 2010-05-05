@@ -150,7 +150,7 @@ public class Scrapping extends CommonSkill
 			Item I2=mob.location().getItem(i);
 			if((I2!=null)&&(I2.sameAs(I)))
 			{
-				totalWeight+=I2.envStats().weight();
+				totalWeight+=I2.phyStats().weight();
 				V.addElement(I2);
 			}
 		}
@@ -207,9 +207,9 @@ public class Scrapping extends CommonSkill
 			    if(((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PRECIOUS)
 			    ||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
 			    ||((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL))
-			        duration+=((Item)V.elementAt(v)).envStats().weight();
+			        duration+=((Item)V.elementAt(v)).phyStats().weight();
 			    else
-			        duration+=((Item)V.elementAt(v)).envStats().weight()/2;
+			        duration+=((Item)V.elementAt(v)).phyStats().weight()/2;
 			    ((Item)V.elementAt(v)).destroy();
 			}
 			beneficialAffect(mob,mob,asLevel,duration);

@@ -44,7 +44,7 @@ public class FireGiant extends StdMOB
 		setDisplayText("A Fire Giant ponders killing you.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);
 		setMoney(0);
-		baseEnvStats.setWeight(6500 + Math.abs(randomizer.nextInt() % 1001));
+		basePhyStats.setWeight(6500 + Math.abs(randomizer.nextInt() % 1001));
 
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,8 + Math.abs(randomizer.nextInt() % 3));
@@ -53,19 +53,19 @@ public class FireGiant extends StdMOB
 		baseCharStats().setMyRace(CMClass.getRace("Giant"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		baseEnvStats().setDamage(20);
-		baseEnvStats().setSpeed(1.0);
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(15);
-		baseEnvStats().setArmor(-10);
+		basePhyStats().setDamage(20);
+		basePhyStats().setSpeed(1.0);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(15);
+		basePhyStats().setArmor(-10);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		addBehavior(CMClass.getBehavior("Aggressive"));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

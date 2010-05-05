@@ -39,8 +39,8 @@ public class Parchment extends GenReadable
 		setName("a piece of parchment");
 		setDisplayText("a piece of parchment here.");
 		setDescription("looks kinda like a piece of paper");
-		baseEnvStats().setWeight(1);
-		recoverEnvStats();
+		basePhyStats().setWeight(1);
+		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_PAPER);
 	}
 

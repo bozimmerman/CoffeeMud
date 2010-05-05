@@ -41,12 +41,12 @@ public class GenClanCommonContainer extends StdClanCommonContainer
 	{
 		super();
 		setName("a generic clan worker container");
-		baseEnvStats.setWeight(2);
+		basePhyStats.setWeight(2);
 		setDisplayText("a generic clan worker container sits here.");
 		setDescription("");
 		baseGoldValue=5;
 		capacity=100;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public String readableText(){return readableText;}
@@ -71,7 +71,7 @@ public class GenClanCommonContainer extends StdClanCommonContainer
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES",
 									 "CLANID","CITYPE"};

@@ -44,7 +44,7 @@ public class Lantern extends LightSource
 		setDisplayText("a hooded lantern sits here.");
 		setDescription("The lantern still looks like it has some oil in it.");
 
-		baseEnvStats().setWeight(5);
+		basePhyStats().setWeight(5);
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 		durationTicks=DURATION_TICKS;
 		this.destroyedWhenBurnedOut=false;

@@ -187,8 +187,8 @@ public class Prop_SpellAdder extends Property
 	        if(R==null) R=CMLib.map().getRandomRoom();
 	        mob=CMLib.map().mobCreated(R);
 	        mob.setName("invoker");
-	        mob.baseEnvStats().setLevel(affected.envStats().level());
-	        mob.envStats().setLevel(affected.envStats().level());
+	        mob.basePhyStats().setLevel(affected.phyStats().level());
+	        mob.phyStats().setLevel(affected.phyStats().level());
 		}
 		invokerMOB=mob;
 		return invokerMOB;
@@ -247,7 +247,7 @@ public class Prop_SpellAdder extends Property
             	asLevel = level;
             else
             if(asLevel <=0)
-            	asLevel = (affected!=null)?affected.envStats().level():0;
+            	asLevel = (affected!=null)?affected.phyStats().level():0;
 			A.invoke(qualMOB,V2,target,true,asLevel);
 			Ability EA=target.fetchEffect(A.ID());
             lastMOB=target;
@@ -355,7 +355,7 @@ public class Prop_SpellAdder extends Property
 		super.executeMsg(host,msg);
 	}
 
-	public void affectEnvStats(Environmental host, EnvStats affectableStats)
+	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{
 		if(processing) return;
 		if((affected instanceof MOB)

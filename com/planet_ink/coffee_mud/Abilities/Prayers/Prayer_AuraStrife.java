@@ -91,7 +91,7 @@ public class Prayer_AuraStrife extends Prayer
 					if(mob.isInCombat())
 					{
 						int levels=invoker().charStats().getClassLevel("Templar");
-						if(levels<0) levels=invoker().envStats().level();
+						if(levels<0) levels=invoker().phyStats().level();
 						if(CMLib.dice().rollPercentage()>=levels)
 						{
 							MOB newvictim=mob.location().fetchInhabitant(CMLib.dice().roll(1,mob.location().numInhabitants(),-1));
@@ -127,7 +127,7 @@ public class Prayer_AuraStrife extends Prayer
 		if(success)
 		{
 			beneficialAffect(mob,target,asLevel,0);
-			target.recoverEnvStats();
+			target.recoverPhyStats();
 			targetRoom.recoverRoomStats();
 		}
 		// return whether it worked

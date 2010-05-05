@@ -44,12 +44,12 @@ public class Spell_Grow extends Spell
     public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	protected int oldWeight=0;
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected instanceof MOB)
 		{
-			double aff=1.0 + CMath.mul(0.1,(invoker().envStats().level()+(2*getXLEVELLevel(invoker()))));
+			double aff=1.0 + CMath.mul(0.1,(invoker().phyStats().level()+(2*getXLEVELLevel(invoker()))));
 			affectableStats.setHeight((int)Math.round(CMath.mul(affectableStats.height(),aff)));
 		}
 	}
@@ -57,7 +57,7 @@ public class Spell_Grow extends Spell
 	{
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)/2);
-		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+((invoker().envStats().level()+(2*getXLEVELLevel(invoker())))/5));
+		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+((invoker().phyStats().level()+(2*getXLEVELLevel(invoker())))/5));
 	}
 
 	public void unInvoke()
@@ -66,9 +66,9 @@ public class Spell_Grow extends Spell
 		{
 			MOB mob=(MOB)affected;
 			if(oldWeight<1)
-				mob.baseCharStats().getMyRace().setHeightWeight(mob.baseEnvStats(),(char)mob.baseCharStats().getStat(CharStats.STAT_GENDER));
+				mob.baseCharStats().getMyRace().setHeightWeight(mob.basePhyStats(),(char)mob.baseCharStats().getStat(CharStats.STAT_GENDER));
 			else
-				mob.baseEnvStats().setWeight(oldWeight);
+				mob.basePhyStats().setWeight(oldWeight);
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> shrink(s) back down to size.");
 		}
@@ -98,10 +98,10 @@ public class Spell_Grow extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> grow(s) to an enormous size!");
-				oldWeight=target.baseEnvStats().weight();
-				double aff=1.0 + CMath.mul(0.1,(target.envStats().level()));
+				oldWeight=target.basePhyStats().weight();
+				double aff=1.0 + CMath.mul(0.1,(target.phyStats().level()));
 				aff=aff*aff;
-				target.baseEnvStats().setWeight((int)Math.round(CMath.mul(target.baseEnvStats().weight(),aff)));
+				target.basePhyStats().setWeight((int)Math.round(CMath.mul(target.basePhyStats().weight(),aff)));
 				beneficialAffect(mob,target,asLevel,0);
 				CMLib.utensils().confirmWearability(target);
 			}

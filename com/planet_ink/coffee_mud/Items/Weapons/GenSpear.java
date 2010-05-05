@@ -43,7 +43,7 @@ public class GenSpear extends StdSpear
 		setName("a generic spear");
 		setDisplayText("a generic spear sits here.");
 		setDescription("");
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public boolean isGeneric(){return true;}
@@ -60,7 +60,7 @@ public class GenSpear extends StdSpear
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 }
 

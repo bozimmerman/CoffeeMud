@@ -36,7 +36,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class GenCoins extends GenItem implements Coins
 {
 	public String ID(){	return "GenCoins";}
-	public int value(){	return envStats().ability();}
+	public int value(){	return phyStats().ability();}
 	protected String currency="";
 	protected double denomination=1.0;
 
@@ -79,14 +79,14 @@ public class GenCoins extends GenItem implements Coins
 	    }
 		setDescription(CMLib.beanCounter().getConvertableDescription(getCurrency(),getDenomination()));
 	}
-	public long getNumberOfCoins(){return envStats().ability();}
+	public long getNumberOfCoins(){return phyStats().ability();}
 	public void setNumberOfCoins(long number)
 	{
 	    if(number<Integer.MAX_VALUE)
-		    baseEnvStats().setAbility((int)number);
+		    basePhyStats().setAbility((int)number);
 	    else
-		    baseEnvStats().setAbility(Integer.MAX_VALUE);
-	    recoverEnvStats();
+		    basePhyStats().setAbility(Integer.MAX_VALUE);
+	    recoverPhyStats();
 	}
 	public double getDenomination(){return denomination;}
 	public void setDenomination(double valuePerCoin)
@@ -101,17 +101,17 @@ public class GenCoins extends GenItem implements Coins
 	public void setCurrency(String named){currency=named; setDynamicMaterial();}
 
 	public boolean isGeneric(){return true;}
-	public void recoverEnvStats()
+	public void recoverPhyStats()
 	{
 		if(((material&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_CLOTH)
 		&&((material&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER))
-			baseEnvStats.setWeight((int)Math.round((baseEnvStats().ability()/100.0)));
-		baseEnvStats.copyInto(envStats);
+			basePhyStats.setWeight((int)Math.round((basePhyStats().ability()/100.0)));
+		basePhyStats.copyInto(phyStats);
 		// import not to sup this, otherwise 'ability' makes it magical!
 		for(int a=0;a<numEffects();a++)
 		{
 			Ability effect=fetchEffect(a);
-			effect.affectEnvStats(this,envStats);
+			effect.affectPhyStats(this,phyStats);
 		}
 	}
 

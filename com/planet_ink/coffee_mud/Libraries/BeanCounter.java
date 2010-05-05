@@ -420,7 +420,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		    if(owner instanceof MOB)
 		        ((MOB)owner).addItem(C);
 		    C.setContainer(container);
-		    C.recoverEnvStats();
+		    C.recoverPhyStats();
 	    }
 	    return C;
 	}
@@ -581,7 +581,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		    C.setCurrency(currency);
 		    C.setDenomination(denomination);
 		    C.setNumberOfCoins(numberOfCoins);
-		    C.recoverEnvStats();
+		    C.recoverPhyStats();
 		    return C;
 	    }
 	    return null;
@@ -654,7 +654,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	        mob.addItem(C);
 	        C.putCoinsBack();
 		}
-		mob.recoverEnvStats();
+		mob.recoverPhyStats();
 	}
 
     public void giveSomeoneMoney(MOB recipient, double absoluteValue)
@@ -695,8 +695,8 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 			else
 				CMLib.commands().postDrop(banker,C,true,false);
 	    }
-		banker.recoverEnvStats();
-		customer.recoverEnvStats();
+		banker.recoverPhyStats();
+		customer.recoverPhyStats();
 	}
 
 	public void dropMoney(Room R, Item container, String currency, double absoluteValue)
@@ -761,7 +761,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 					CMLib.coffeeMaker().setPropertiesStr(C,last.substring(6),true);
 					if((C.getDenomination()==0.0)&&(C.getNumberOfCoins()>0))
 					    C.setDenomination(1.0);
-					C.recoverEnvStats();
+					C.recoverPhyStats();
 					double value=C.getTotalValue();
 					if((absoluteAmount>0.0)||(value>=(-absoluteAmount)))
 					{

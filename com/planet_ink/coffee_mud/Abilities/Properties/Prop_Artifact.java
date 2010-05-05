@@ -248,10 +248,10 @@ public class Prop_Artifact extends Property
 				else
 					data.append(CMLib.xml().convertXMLtoTag("ROOMID",CMLib.map().getExtendedRoomID(R)));
 				data.append(CMLib.xml().convertXMLtoTag("ICLAS",CMClass.classID(I)));
-				data.append(CMLib.xml().convertXMLtoTag("IREJV",I.baseEnvStats().rejuv()));
+				data.append(CMLib.xml().convertXMLtoTag("IREJV",I.basePhyStats().rejuv()));
 				data.append(CMLib.xml().convertXMLtoTag("IUSES",((Item)I).usesRemaining()));
-				data.append(CMLib.xml().convertXMLtoTag("ILEVL",I.baseEnvStats().level()));
-				data.append(CMLib.xml().convertXMLtoTag("IABLE",I.baseEnvStats().ability()));
+				data.append(CMLib.xml().convertXMLtoTag("ILEVL",I.basePhyStats().level()));
+				data.append(CMLib.xml().convertXMLtoTag("IABLE",I.basePhyStats().ability()));
 				data.append(CMLib.xml().convertXMLtoTag("ITEXT",CMLib.xml().parseOutAngleBrackets(I.text())));
 				data.append("</ARTITEM>");
                 ((Item)I).destroy();
@@ -298,12 +298,12 @@ public class Prop_Artifact extends Property
 									HashSet doneMOBs=new HashSet();
 									if(newItem!=null)
 									{
-										newItem.baseEnvStats().setLevel(CMLib.xml().getIntFromPieces(roomData,"ILEVL"));
-										newItem.baseEnvStats().setAbility(CMLib.xml().getIntFromPieces(roomData,"IABLE"));
-										newItem.baseEnvStats().setRejuv(CMLib.xml().getIntFromPieces(roomData,"IREJV"));
+										newItem.basePhyStats().setLevel(CMLib.xml().getIntFromPieces(roomData,"ILEVL"));
+										newItem.basePhyStats().setAbility(CMLib.xml().getIntFromPieces(roomData,"IABLE"));
+										newItem.basePhyStats().setRejuv(CMLib.xml().getIntFromPieces(roomData,"IREJV"));
 										newItem.setUsesRemaining(CMLib.xml().getIntFromPieces(roomData,"IUSES"));
 										newItem.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(roomData,"ITEXT")));
-										newItem.recoverEnvStats();
+										newItem.recoverPhyStats();
 										if(!registeredArtifacts.containsKey(getItemID()))
 											registeredArtifacts.put(getItemID(),newItem);
 										else
@@ -398,13 +398,13 @@ public class Prop_Artifact extends Property
 		return super.tick(ticking,tickID);
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected instanceof Item)
 		{
 			if(nolocate)
-				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.SENSE_UNLOCATABLE);
+				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_UNLOCATABLE);
 			if(((Item)affected).subjectToWearAndTear()) ((Item)affected).setUsesRemaining(100);
 			((Item)affected).setExpirationDate(0);
 		}

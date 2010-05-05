@@ -41,12 +41,12 @@ public class GenPotion extends StdPotion
 		super();
 
 		setName("a potion");
-		baseEnvStats.setWeight(1);
+		basePhyStats.setWeight(1);
 		setDisplayText("A potion sits here.");
 		setDescription("A strange potion with stranger markings.");
 		secretIdentity="";
 		baseGoldValue=200;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_GLASS;
 	}
 
@@ -79,7 +79,7 @@ public class GenPotion extends StdPotion
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES",
 							  "QUENCHED","LIQUIDHELD","LIQUIDTYPE"};

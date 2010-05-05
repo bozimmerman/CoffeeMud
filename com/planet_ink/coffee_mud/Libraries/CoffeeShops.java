@@ -115,12 +115,12 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         if(E==null) return str.toString();
         str.append("Interested in "+E.name()+"?");
         str.append(" Here is some information for you:");
-        str.append("\n\rLevel      : "+E.envStats().level());
+        str.append("\n\rLevel      : "+E.phyStats().level());
         if(E instanceof Item)
         {
             Item I=(Item)E;
             str.append("\n\rMaterial   : "+CMStrings.capitalizeAndLower(RawMaterial.CODES.NAME(I.material()).toLowerCase()));
-            str.append("\n\rWeight     : "+I.envStats().weight()+" pounds");
+            str.append("\n\rWeight     : "+I.phyStats().weight()+" pounds");
             if(I instanceof Weapon)
             {
                 str.append("\n\rWeap. Type : "+CMStrings.capitalizeAndLower(Weapon.TYPE_DESCS[((Weapon)I).weaponType()]));
@@ -179,14 +179,14 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         {
             if(((Item)product).container()!=null) 
             	return false;
-            if(((Item)product).envStats().level()>buyer.envStats().level()) 
+            if(((Item)product).phyStats().level()>buyer.phyStats().level()) 
             	return false;
             if(!CMLib.flags().canBeSeenBy(product,buyer)) 
             	return false;
         }
         if(product instanceof MOB)
         {
-            if(((MOB)product).envStats().level()>buyer.envStats().level()) 
+            if(((MOB)product).phyStats().level()>buyer.phyStats().level()) 
             	return false;
         }
         if(product instanceof Ability)
@@ -238,7 +238,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 }
             }
             if(price==0.0)
-                price=(25.0+product.envStats().level())*product.envStats().level();
+                price=(25.0+product.phyStats().level())*product.phyStats().level();
         }
         else
             price=CMLib.ableMapper().lowestQualifyingLevel(product.ID())*25;
@@ -391,8 +391,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         else
             val.absoluteGoldPrice=CMLib.beanCounter().abbreviatedRePrice(seller,val.absoluteGoldPrice);
 
-        // the magical aura discount for miscmagic (potions, anything else.. MUST be baseEnvStats tho!
-        if((CMath.bset(buyer.baseEnvStats().disposition(),EnvStats.IS_BONUS))
+        // the magical aura discount for miscmagic (potions, anything else.. MUST be basePhyStats tho!
+        if((CMath.bset(buyer.basePhyStats().disposition(),PhyStats.IS_BONUS))
         &&(product instanceof MiscMagic)
         &&(val.absoluteGoldPrice>2.0))
         	val.absoluteGoldPrice/=2;
@@ -521,8 +521,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                     if(CMath.isInteger(range))
                         rangeI=CMath.s_int(range);
                     if((rangeI>0)
-                    &&((product.envStats().level()>(medianLevel+rangeI))
-                        ||(product.envStats().level()<(medianLevel-rangeI))))
+                    &&((product.phyStats().level()>(medianLevel+rangeI))
+                        ||(product.phyStats().level()<(medianLevel-rangeI))))
                     {
                         CMLib.commands().postSay(seller,buyer,"I'm sorry, that's out of my level range.",true,false);
                         return false;
@@ -609,7 +609,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             }
             if(product instanceof Item)
             {
-                if(((Item)product).envStats().level()>buyer.envStats().level())
+                if(((Item)product).phyStats().level()>buyer.phyStats().level())
                 {
                     CMLib.commands().postSay(seller,buyer,"That's too advanced for you, I'm afraid.",true,false);
                     return false;
@@ -642,12 +642,12 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 &&(!CMSecurity.isAllowed(seller,seller.location(),"ORDER"))
                 &&(!CMSecurity.isAllowed(buyer,buyer.location(),"ORDER")))
                 {
-                    if(seller.envStats().level() > (buyer.envStats().level() + CMProps.getIntVar(CMProps.SYSTEMI_FOLLOWLEVELDIFF)))
+                    if(seller.phyStats().level() > (buyer.phyStats().level() + CMProps.getIntVar(CMProps.SYSTEMI_FOLLOWLEVELDIFF)))
                     {
                         buyer.tell(product.name() + " is too advanced for you.");
                         return false;
                     }
-                    if(seller.envStats().level() < (buyer.envStats().level() - CMProps.getIntVar(CMProps.SYSTEMI_FOLLOWLEVELDIFF)))
+                    if(seller.phyStats().level() < (buyer.phyStats().level() - CMProps.getIntVar(CMProps.SYSTEMI_FOLLOWLEVELDIFF)))
                     {
                         buyer.tell(product.name() + " is too inexperienced for you.");
                         return false;
@@ -839,7 +839,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             if(!(shopkeeper instanceof ShopKeeper))
                 CMLib.beanCounter().subtractMoney(shopkeeper,currency,val);
             CMLib.beanCounter().giveSomeoneMoney(shopkeeper,pawner,currency,val);
-            pawner.recoverEnvStats();
+            pawner.recoverPhyStats();
             pawner.tell(shopkeeper.name()+" pays you "+CMLib.beanCounter().nameCurrencyShort(shopkeeper,val)+" for "+rawSoldItem.name()+".");
             if(rawSoldItem instanceof Item)
             {
@@ -873,8 +873,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 newMOB.setClanID("");
                 shop.getShop().addStoreInventory(newMOB);
                 ((MOB)product).setFollowing(null);
-                if((((MOB)product).baseEnvStats().rejuv()>0)
-                &&(((MOB)product).baseEnvStats().rejuv()<Integer.MAX_VALUE)
+                if((((MOB)product).basePhyStats().rejuv()>0)
+                &&(((MOB)product).basePhyStats().rejuv()<Integer.MAX_VALUE)
                 &&(((MOB)product).getStartRoom()!=null))
                     ((MOB)product).killMeDead(false);
                 else
@@ -939,7 +939,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         }
         if(price.questPointPrice>0) buyer.setQuestPoint(buyer.getQuestPoint()-price.questPointPrice);
         if(price.experiencePrice>0) CMLib.leveler().postExperience(buyer,null,null,-price.experiencePrice,false);
-        buyer.recoverEnvStats();
+        buyer.recoverPhyStats();
     }
 
     public boolean purchaseItems(Item baseProduct,
@@ -976,8 +976,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
     {
         if((seller==null)||(seller.location()==null)||(product==null)||(shop==null)||(mobFor==null))
             return false;
-        product.baseEnvStats().setRejuv(Integer.MAX_VALUE);
-        product.recoverEnvStats();
+        product.basePhyStats().setRejuv(Integer.MAX_VALUE);
+        product.recoverPhyStats();
         product.setMiscText(product.text());
         Ability slaveA=null;
         if(shop.isSold(ShopKeeper.DEAL_SLAVES))
@@ -1168,7 +1168,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                     &&(!I.Name().endsWith(" (Copy)")))
                         I.setName(I.Name()+" (Copy)");
                     I.text();
-                    I.recoverEnvStats();
+                    I.recoverPhyStats();
                     if((A.landOwner().length()==0)
                     &&(I.Name().endsWith(" (Copy)")))
                         I.setName(I.Name().substring(0,I.Name().length()-7));
@@ -1611,7 +1611,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	        	{
 		            Area area=CMLib.map().getStartArea(seller);
 		            if(area==null) area=CMLib.map().getStartArea(buyer);
-		        	str.append(CMStrings.padRight(""+data.auctioningI.envStats().level(),3)+" ");
+		        	str.append(CMStrings.padRight(""+data.auctioningI.phyStats().level(),3)+" ");
 		        	str.append(CMStrings.padRight(data.auctioningI.name(),50)+" ");
 		        	if(data.tickDown>System.currentTimeMillis())
 		        	{

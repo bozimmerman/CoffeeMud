@@ -48,8 +48,8 @@ public class StdRideable extends StdMOB implements Rideable
 		setDescription("A brown riding horse looks sturdy and reliable.");
 		setDisplayText("a horse stands here.");
 		baseCharStats().setMyRace(CMClass.getRace("Horse"));
-		baseEnvStats().setWeight(700);
-		recoverEnvStats();
+		basePhyStats().setWeight(700);
+		recoverPhyStats();
 	}
 
 	protected void cloneFix(MOB E)
@@ -136,14 +136,14 @@ public class StdRideable extends StdMOB implements Rideable
 		if(mob!=null)
 			while(riders.removeElement(mob));
 	}
-	public void recoverEnvStats()
+	public void recoverPhyStats()
 	{
-		super.recoverEnvStats();
+		super.recoverPhyStats();
 		if(rideBasis==Rideable.RIDEABLE_AIR)
-			envStats().setDisposition(envStats().disposition()|EnvStats.IS_FLYING);
+			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_FLYING);
 		else
 		if(rideBasis==Rideable.RIDEABLE_WATER)
-			envStats().setDisposition(envStats().disposition()|EnvStats.IS_SWIMMING);
+			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_SWIMMING);
 	}
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
@@ -167,26 +167,26 @@ public class StdRideable extends StdMOB implements Rideable
 				   A.affectCharState(affected,affectableStats);
 			}
 	}
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
 			if(!CMLib.flags().hasSeenContents(this))
-				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_NOT_SEEN);
+				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_NOT_SEEN);
 			if(amRiding(mob))
 			{
 				if((mob.isInCombat())&&(mob.rangeToTarget()==0))
 				{
-					affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-mob.baseEnvStats().attackAdjustment());
-					affectableStats.setDamage(affectableStats.damage()-mob.baseEnvStats().damage());
+					affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-mob.basePhyStats().attackAdjustment());
+					affectableStats.setDamage(affectableStats.damage()-mob.basePhyStats().damage());
 				}
 				for(int a=0;a<numEffects();a++)
 				{
 					Ability A=fetchEffect(a);
 					if((A!=null)&&(A.bubbleAffect()))
-					   A.affectEnvStats(affected,affectableStats);
+					   A.affectPhyStats(affected,affectableStats);
 				}
 			}
 		}
@@ -338,7 +338,7 @@ public class StdRideable extends StdMOB implements Rideable
 					msg.source().tell(msg.tool().name()+" can not be mounted on "+name()+".");
 					return false;
 				}
-				if((baseEnvStats().weight()*5<whoWantsToRide.baseEnvStats().weight()))
+				if((basePhyStats().weight()*5<whoWantsToRide.basePhyStats().weight()))
 				{
 					msg.source().tell(name()+" is too small for "+whoWantsToRide.name()+".");
 					return false;

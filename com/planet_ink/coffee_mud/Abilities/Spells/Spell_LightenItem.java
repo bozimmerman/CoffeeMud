@@ -42,9 +42,9 @@ public class Spell_LightenItem extends Spell
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
     public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setWeight(0);
 	}
 
@@ -60,7 +60,7 @@ public class Spell_LightenItem extends Spell
 			{
 				MOB mob=(MOB)item.owner();
 				mob.tell(item.name()+" grows heavy again.");
-				if((mob.envStats().weight()+item.baseEnvStats().weight())>mob.maxCarry())
+				if((mob.phyStats().weight()+item.basePhyStats().weight())>mob.maxCarry())
 				{
 					if(!item.amWearingAt(Wearable.IN_INVENTORY))
 						CMLib.commands().postRemove(mob,item,false);
@@ -102,8 +102,8 @@ public class Spell_LightenItem extends Spell
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> grow(s) much lighter.");
 				beneficialAffect(mob,target,asLevel,100);
-				target.recoverEnvStats();
-				mob.recoverEnvStats();
+				target.recoverPhyStats();
+				mob.recoverPhyStats();
 				mob.location().recoverRoomStats();
 			}
 

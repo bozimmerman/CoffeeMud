@@ -47,19 +47,19 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
         setDisplayText("The local auctioneer is here calling prices.");
         CMLib.factions().setAlignment(this,Faction.ALIGN_GOOD);
         setMoney(0);
-        baseEnvStats.setWeight(150);
+        basePhyStats.setWeight(150);
         setWimpHitPoint(0);
 
         baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,16);
         baseCharStats().setStat(CharStats.STAT_CHARISMA,25);
 
-        baseEnvStats().setArmor(0);
+        basePhyStats().setArmor(0);
 
         baseState.setHitPoints(1000);
 
         recoverMaxState();
         resetToMaxState();
-        recoverEnvStats();
+        recoverPhyStats();
         recoverCharStats();
     }
 
@@ -255,7 +255,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	                    CMLib.commands().postSay(this,mob,"I can't seem to do business with you.",true,false);
 	                    return false;
 					}
-                    if(msg.tool().envStats().level()>msg.source().envStats().level())
+                    if(msg.tool().phyStats().level()>msg.source().phyStats().level())
                     {
                         CMLib.commands().postSay(this,msg.source(),"That's too advanced for you, I'm afraid.",true,false);
                         return false;
@@ -327,7 +327,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
                         return false;
                     if((msg.targetMinor()==CMMsg.TYP_BUY)&&(msg.tool()!=null)&&(!msg.tool().okMessage(myHost,msg)))
                         return false;
-                    if(msg.tool().envStats().level()>msg.source().envStats().level())
+                    if(msg.tool().phyStats().level()>msg.source().phyStats().level())
                     {
                         CMLib.commands().postSay(this,msg.source(),"That's too advanced for you, I'm afraid.",true,false);
                         return false;

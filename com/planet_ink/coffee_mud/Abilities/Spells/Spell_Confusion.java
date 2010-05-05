@@ -102,7 +102,7 @@ public class Spell_Confusion extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int adjustment=target.envStats().level()-((mob.envStats().level()+super.getXLEVELLevel(mob))/2);
+		int adjustment=target.phyStats().level()-((mob.phyStats().level()+super.getXLEVELLevel(mob))/2);
 		boolean success=proficiencyCheck(mob,-adjustment,auto);
 		if(success)
 		{

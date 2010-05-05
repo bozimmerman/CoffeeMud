@@ -40,12 +40,12 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 		super();
 
 		setName("a pill");
-		baseEnvStats.setWeight(1);
+		basePhyStats.setWeight(1);
 		setDisplayText("A strange pill lies here.");
 		setDescription("Large and round, with strange markings.");
 		secretIdentity="";
 		baseGoldValue=200;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_CORN;
 	}
 
@@ -82,9 +82,9 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 			if((val!=0)&&(y>x))
 			{
 				StringBuffer middle=new StringBuffer("");
-				for(int num=0;num<EnvStats.IS_VERBS.length;num++)
+				for(int num=0;num<PhyStats.IS_VERBS.length;num++)
 					if(CMath.bset(val,CMath.pow(2,num)))
-						middle.append(EnvStats.IS_VERBS[num]+" ");
+						middle.append(PhyStats.IS_VERBS[num]+" ");
 				id=id.substring(0,x)+middle.toString().trim()+id.substring(y+((""+val).length()));
 			}
 		}
@@ -96,9 +96,9 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 			if((val!=0)&&(y>x))
 			{
 				StringBuffer middle=new StringBuffer("");
-				for(int num=0;num<EnvStats.CAN_SEE_VERBS.length;num++)
+				for(int num=0;num<PhyStats.CAN_SEE_VERBS.length;num++)
 					if(CMath.bset(val,CMath.pow(2,num)))
-						middle.append(EnvStats.CAN_SEE_VERBS[num]+" ");
+						middle.append(PhyStats.CAN_SEE_VERBS[num]+" ");
 				id=id.substring(0,x)+middle.toString().trim()+id.substring(y+((""+val).length()));
 			}
 		}
@@ -113,18 +113,18 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 		if((CMParms.getParmPlus(readableText,"beacon")>0)
 		&&(mob.location()!=null))
 			mob.setStartRoom(mob.location());
-		mob.baseEnvStats().setAbility(mob.baseEnvStats().ability()+CMParms.getParmPlus(readableText,"abi"));
-		mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()+CMParms.getParmPlus(readableText,"arm"));
-		mob.baseEnvStats().setAttackAdjustment(mob.baseEnvStats().attackAdjustment()+CMParms.getParmPlus(readableText,"att"));
-		mob.baseEnvStats().setDamage(mob.baseEnvStats().damage()+CMParms.getParmPlus(readableText,"dam"));
-		mob.baseEnvStats().setDisposition(mob.baseEnvStats().disposition()|CMParms.getParmPlus(readableText,"dis"));
-		mob.baseEnvStats().setLevel(mob.baseEnvStats().level()+CMParms.getParmPlus(readableText,"lev"));
-		mob.baseEnvStats().setRejuv(mob.baseEnvStats().rejuv()+CMParms.getParmPlus(readableText,"rej"));
-		mob.baseEnvStats().setSensesMask(mob.baseEnvStats().sensesMask()|CMParms.getParmPlus(readableText,"sen"));
-		mob.baseEnvStats().setSpeed(mob.baseEnvStats().speed()+CMParms.getParmPlus(readableText,"spe"));
-		mob.baseEnvStats().setWeight(mob.baseEnvStats().weight()+CMParms.getParmPlus(readableText,"wei"));
+		mob.basePhyStats().setAbility(mob.basePhyStats().ability()+CMParms.getParmPlus(readableText,"abi"));
+		mob.basePhyStats().setArmor(mob.basePhyStats().armor()+CMParms.getParmPlus(readableText,"arm"));
+		mob.basePhyStats().setAttackAdjustment(mob.basePhyStats().attackAdjustment()+CMParms.getParmPlus(readableText,"att"));
+		mob.basePhyStats().setDamage(mob.basePhyStats().damage()+CMParms.getParmPlus(readableText,"dam"));
+		mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|CMParms.getParmPlus(readableText,"dis"));
+		mob.basePhyStats().setLevel(mob.basePhyStats().level()+CMParms.getParmPlus(readableText,"lev"));
+		mob.basePhyStats().setRejuv(mob.basePhyStats().rejuv()+CMParms.getParmPlus(readableText,"rej"));
+		mob.basePhyStats().setSensesMask(mob.basePhyStats().sensesMask()|CMParms.getParmPlus(readableText,"sen"));
+		mob.basePhyStats().setSpeed(mob.basePhyStats().speed()+CMParms.getParmPlus(readableText,"spe"));
+		mob.basePhyStats().setWeight(mob.basePhyStats().weight()+CMParms.getParmPlus(readableText,"wei"));
 		if(CMParms.getParmPlus(readableText,"wei")!=0) redress=true;
-		mob.baseEnvStats().setHeight(mob.baseEnvStats().height()+CMParms.getParmPlus(readableText,"hei"));
+		mob.basePhyStats().setHeight(mob.basePhyStats().height()+CMParms.getParmPlus(readableText,"hei"));
 		if(CMParms.getParmPlus(readableText,"hei")!=0) redress=true;
 
 		String val=CMParms.getParmStr(readableText,"gen","").toUpperCase();
@@ -167,7 +167,7 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 		int exp=CMParms.getParmPlus(readableText,"expe");
 		if(exp!=0) CMLib.leveler().postExperience(mob,null,null,exp,false);
 		mob.recoverCharStats();
-		mob.recoverEnvStats();
+		mob.recoverPhyStats();
 		mob.recoverMaxState();
 		if(redress)	CMLib.utensils().confirmWearability(mob);
 	}

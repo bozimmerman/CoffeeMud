@@ -45,9 +45,9 @@ public class Spell_Stoneskin extends Spell
 	int HitsRemaining=0;
 	int oldHP=-1;
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setArmor(affectableStats.armor() - 5-getXLEVELLevel(invoker()));
 	}
 

@@ -42,11 +42,11 @@ public class Shoes extends StdArmor
 		setDescription("a well tailored pair of walking shoes.");
 		properWornBitmap=Wearable.WORN_FEET;
 		wornLogicalAnd=false;
-		baseEnvStats().setArmor(1);
-		baseEnvStats().setWeight(1);
-		baseEnvStats().setAbility(0);
+		basePhyStats().setArmor(1);
+		basePhyStats().setWeight(1);
+		basePhyStats().setAbility(0);
 		baseGoldValue=1;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_COTTON;
 	}
 

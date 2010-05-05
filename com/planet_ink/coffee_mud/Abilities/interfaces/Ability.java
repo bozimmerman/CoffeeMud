@@ -36,7 +36,7 @@ import java.util.*;
  * list, and may be listed on *any* Environmental objects effects
  * list.  Often the same class files act in both capacities.
  * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#addAbility(Ability)
- * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#addEffect(Ability)
+ * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#addEffect(Ability)
  */
 @SuppressWarnings("unchecked")
 public interface Ability extends Environmental
@@ -254,7 +254,7 @@ public interface Ability extends Environmental
 	public void unInvoke();
 	
 	/**
-	 * This method is used to modify the behavior of the affectEnvStats, 
+	 * This method is used to modify the behavior of the affectPhyStats, 
 	 * affectCharStats, and affectCharState methods.  If this returns true,
 	 * then those methods will be called only on the owner/mob of the item
 	 * currently being affected by this skill.  If false, those methods
@@ -277,7 +277,7 @@ public interface Ability extends Environmental
 	 * Designates that this skill should never be uninvoked.  Designates that
 	 * this skill is a permanent property of the object it is affecting.
 	 * Is normally called by addNonUninvokableAffect
-	 * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#addNonUninvokableEffect(Ability)
+	 * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#addNonUninvokableEffect(Ability)
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#canBeUninvoked()
 	 */
 	public void makeNonUninvokable();

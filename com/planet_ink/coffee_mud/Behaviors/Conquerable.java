@@ -332,7 +332,7 @@ public class Conquerable extends Arrest
                 &&(A.inMyMetroArea(((MOB)I.owner()).getStartRoom().getArea()))
                 &&((holdingClan.length()==0)||(I.clanID().equals(holdingClan)))
                 &&(I.ciType()!=ClanItem.CI_PROPAGANDA))
-                    itemControlPoints+=((MOB)((Item)I).owner()).envStats().level();
+                    itemControlPoints+=((MOB)((Item)I).owner()).phyStats().level();
             }
         }
         return itemControlPoints;
@@ -428,12 +428,12 @@ public class Conquerable extends Arrest
 								Item newItem=CMClass.getItem(iClass);
 								if(newItem!=null)
 								{
-									newItem.baseEnvStats().setLevel(CMLib.xml().getIntFromPieces(roomData,"ILEVL"));
-									newItem.baseEnvStats().setAbility(CMLib.xml().getIntFromPieces(roomData,"IABLE"));
-									newItem.baseEnvStats().setRejuv(CMLib.xml().getIntFromPieces(roomData,"IREJV"));
+									newItem.basePhyStats().setLevel(CMLib.xml().getIntFromPieces(roomData,"ILEVL"));
+									newItem.basePhyStats().setAbility(CMLib.xml().getIntFromPieces(roomData,"IABLE"));
+									newItem.basePhyStats().setRejuv(CMLib.xml().getIntFromPieces(roomData,"IREJV"));
 									newItem.setUsesRemaining(CMLib.xml().getIntFromPieces(roomData,"IUSES"));
 									newItem.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(roomData,"ITEXT")));
-									newItem.recoverEnvStats();
+									newItem.recoverPhyStats();
 									MOB foundMOB=null;
 									if(MOBname.length()>0)
 										for(int i=0;i<R.numInhabitants();i++)
@@ -669,7 +669,7 @@ public class Conquerable extends Arrest
 						M.setClanID(holdingClan);
                         if(worship!=null) M.setWorshipCharID(worship);
                     }
-					totalControlPoints+=M.envStats().level();
+					totalControlPoints+=M.phyStats().level();
 				}
 			}
 		}
@@ -764,8 +764,8 @@ public class Conquerable extends Arrest
         &&(flagFound((Area)myHost,msg.source().getClanID())))
 		{
 			noMultiFollows.remove(msg.target());
-            if(debugging) Log.debugOut("Conquest",msg.source().getClanID()+" lose "+(msg.target().envStats().level())+" points by harming "+msg.target().name());
-			changeControlPoints(msg.source().getClanID(),-msg.target().envStats().level(),msg.source().location());
+            if(debugging) Log.debugOut("Conquest",msg.source().getClanID()+" lose "+(msg.target().phyStats().level())+" points by harming "+msg.target().name());
+			changeControlPoints(msg.source().getClanID(),-msg.target().phyStats().level(),msg.source().location());
 		}
 
         if((holdingClan.length()>0)
@@ -986,7 +986,7 @@ public class Conquerable extends Arrest
 							&&(M.getStartRoom()!=null)
 							&&(myArea.inMyMetroArea(M.getStartRoom().getArea()))
 							&&(M.getClanID().equals(clanID)))
-								amount+=M.envStats().level();
+								amount+=M.phyStats().level();
 						}
 					}
 				}
@@ -1103,7 +1103,7 @@ public class Conquerable extends Arrest
     						if(killer.getClanID().length()>0)
                             {
     							Clan C=CMLib.clans().getClan(killer.getClanID());
-                                int level=msg.source().envStats().level();
+                                int level=msg.source().phyStats().level();
     							if((C!=null)&&(C.getGovernment()==Clan.GVT_THEOCRACY)
     							&&(killer.getWorshipCharID().equals(msg.source().getWorshipCharID())))
     								level=(level>1)?level/2:level;
@@ -1114,7 +1114,7 @@ public class Conquerable extends Arrest
                             if((killer.amFollowing()!=null)&&(killer.amFollowing().getClanID().length()>0))
                             {
     							Clan C=CMLib.clans().getClan(killer.amFollowing().getClanID());
-                                int level=msg.source().envStats().level();
+                                int level=msg.source().phyStats().level();
     							if((C!=null)&&(C.getGovernment()==Clan.GVT_THEOCRACY)
     							&&(killer.amFollowing().getWorshipCharID().equals(msg.source().getWorshipCharID())))
     								level=(level>1)?level/2:level;
@@ -1130,8 +1130,8 @@ public class Conquerable extends Arrest
 					&&(!msg.source().getClanID().equals(holdingClan))
 					&&(flagFound((Area)myHost,msg.source().getClanID())))
                     {
-                        if(debugging) Log.debugOut("Conquest",msg.source().getClanID()+" lose "+(msg.source().envStats().level())+" points by allowing the death of "+msg.source().name());
-						changeControlPoints(msg.source().getClanID(),-msg.source().envStats().level(),killer.location());
+                        if(debugging) Log.debugOut("Conquest",msg.source().getClanID()+" lose "+(msg.source().phyStats().level())+" points by allowing the death of "+msg.source().name());
+						changeControlPoints(msg.source().getClanID(),-msg.source().phyStats().level(),killer.location());
                     }
 				}
 			}
@@ -1150,8 +1150,8 @@ public class Conquerable extends Arrest
                 &&(!msg.source().getClanID().equals(holdingClan))
                 &&(flagFound((Area)myHost,msg.source().getClanID())))
                 {
-                    if(debugging) Log.debugOut("Conquest",msg.source().getClanID()+" gain "+(msg.source().envStats().level())+" points by converting "+msg.source().name());
-                    changeControlPoints(msg.source().getClanID(),msg.target().envStats().level(),msg.source().location());
+                    if(debugging) Log.debugOut("Conquest",msg.source().getClanID()+" gain "+(msg.source().phyStats().level())+" points by converting "+msg.source().name());
+                    changeControlPoints(msg.source().getClanID(),msg.target().phyStats().level(),msg.source().location());
                 }
             }
             else
@@ -1253,10 +1253,10 @@ public class Conquerable extends Arrest
 								}
 							}
 							data.append(CMLib.xml().convertXMLtoTag("ICLAS",CMClass.classID(I)));
-							data.append(CMLib.xml().convertXMLtoTag("IREJV",I.baseEnvStats().rejuv()));
+							data.append(CMLib.xml().convertXMLtoTag("IREJV",I.basePhyStats().rejuv()));
 							data.append(CMLib.xml().convertXMLtoTag("IUSES",((Item)I).usesRemaining()));
-							data.append(CMLib.xml().convertXMLtoTag("ILEVL",I.baseEnvStats().level()));
-							data.append(CMLib.xml().convertXMLtoTag("IABLE",I.baseEnvStats().ability()));
+							data.append(CMLib.xml().convertXMLtoTag("ILEVL",I.basePhyStats().level()));
+							data.append(CMLib.xml().convertXMLtoTag("IABLE",I.basePhyStats().ability()));
 							data.append(CMLib.xml().convertXMLtoTag("ITEXT",CMLib.xml().parseOutAngleBrackets(I.text())));
 							data.append("</ACITEM>");
                             ((Item)I).destroy();

@@ -42,12 +42,12 @@ public class GlowingMageArmor extends StdArmor
 		setDescription("This suit of armor is made from magical energy, but looks sturdy and protective.");
 		properWornBitmap=Wearable.WORN_TORSO;
 		wornLogicalAnd=false;
-		baseEnvStats().setArmor(45);
-		baseEnvStats().setWeight(0);
-		baseEnvStats().setAbility(0);
+		basePhyStats().setArmor(45);
+		basePhyStats().setWeight(0);
+		basePhyStats().setAbility(0);
 		baseGoldValue=40000;
 		material=RawMaterial.RESOURCE_NOTHING;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 

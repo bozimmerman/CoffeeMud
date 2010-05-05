@@ -45,7 +45,7 @@ import java.util.*;
 public interface Environmental extends Tickable, Affectable, StatsAffecting, MsgListener, Contingent, Modifiable
 {
     /**
-     * The displayable name of this object.  May be modified by envStats() object. Is
+     * The displayable name of this object.  May be modified by phyStats() object. Is
      * derived from the Name().
      * @see  Environmental#Name()
      * @return the modified final name of this object on the map.
@@ -156,8 +156,8 @@ public interface Environmental extends Tickable, Affectable, StatsAffecting, Msg
     /**
      * Whether this object instance is functionally identical to the object passed in.  Works by repeatedly
      * calling getStat on both objects and comparing the values.
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#getStatCodes()
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#getStat(String)
+     * @see com.planet_ink.coffee_mud.core.interfaces.ModigetStatCodes()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Modifiable#getStat(String)
      * @param E the object to compare this one to
      * @return whether this object is the same as the one passed in
      */

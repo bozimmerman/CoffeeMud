@@ -90,7 +90,7 @@ public class GoodGuardian extends StdBehavior
 				if((inhab!=null)
 				   &&(inhab.isInCombat())
 				   &&(inhab.getVictim().isInCombat())
-				&&((observer.envStats().level()>(inhab.envStats().level()+5))))
+				&&((observer.phyStats().level()>(inhab.phyStats().level()+5))))
 				{
 					String msg="<S-NAME> stop(s) <T-NAME> from fighting with "+inhab.getVictim().name();
 					CMMsg msgs=CMClass.getMsg(observer,inhab,CMMsg.MSG_NOISYMOVEMENT,msg);

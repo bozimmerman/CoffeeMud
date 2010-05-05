@@ -39,8 +39,8 @@ public class WaterThinSurface extends WaterSurface
 	{
 		super();
 		name="the water";
-		baseEnvStats.setWeight(2);
-		recoverEnvStats();
+		basePhyStats.setWeight(2);
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_WATERSURFACE;}
 	public int domainConditions(){return Room.CONDITION_WET;}

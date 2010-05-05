@@ -97,7 +97,7 @@ public class Fighter_WeaponBreak extends FighterSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=victim.envStats().level()-(mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
+		int levelDiff=victim.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 		if(levelDiff>0)
 			levelDiff=levelDiff*5;
 		else
@@ -108,7 +108,7 @@ public class Fighter_WeaponBreak extends FighterSkill
 		boolean success=proficiencyCheck(mob,chance,auto)&&(hit);
 		if((success)
 		   &&(hisWeapon!=null)
-		   &&(hisWeapon.envStats().ability()==0)
+		   &&(hisWeapon.phyStats().ability()==0)
 		   &&(!CMLib.flags().isABonusItems(hisWeapon))
 		&&((hisWeapon.rawProperLocationBitmap()==Wearable.WORN_WIELD)
 		   ||(hisWeapon.rawProperLocationBitmap()==Wearable.WORN_WIELD+Wearable.WORN_HELD)))

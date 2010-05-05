@@ -72,16 +72,16 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(newText!=null)
 			setPropertiesStr(mob,newText,false);
 
-		mob.recoverEnvStats();
+		mob.recoverPhyStats();
 		mob.recoverCharStats();
-		mob.baseState().setHitPoints(CMLib.dice().rollHP(mob.baseEnvStats().level(),mob.baseEnvStats().ability()));
+		mob.baseState().setHitPoints(CMLib.dice().rollHP(mob.basePhyStats().level(),mob.basePhyStats().ability()));
 		mob.baseState().setMana(CMLib.leveler().getLevelMana(mob));
 		mob.baseState().setMovement(CMLib.leveler().getLevelMove(mob));
 		mob.recoverMaxState();
 		mob.resetToMaxState();
 		if(mob.getWimpHitPoint()>0)
 			mob.setWimpHitPoint((int)Math.round(CMath.mul(mob.curState().getHitPoints(),.10)));
-		mob.setExperience(CMLib.leveler().getLevelExperience(mob.envStats().level()-1)+500);
+		mob.setExperience(CMLib.leveler().getLevelExperience(mob.phyStats().level()-1)+500);
 	}
 
 	public int envFlags(Environmental E)
@@ -90,13 +90,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(E instanceof Item)
 		{
 			Item item=(Item)E;
-			if(!CMath.bset(item.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP))
+			if(!CMath.bset(item.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNODROP))
 				f=f|1;
-			if(!CMath.bset(item.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET))
+			if(!CMath.bset(item.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOTGET))
 				f=f|2;
-			if(CMath.bset(item.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE))
+			if(CMath.bset(item.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMREADABLE))
 				f=f|4;
-			if(!CMath.bset(item.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE))
+			if(!CMath.bset(item.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOREMOVE))
 				f=f|8;
 		}
 		if(E instanceof Container)
@@ -244,8 +244,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				+CMLib.xml().convertXMLtoTag("IWORN",""+item.rawWornCode())
 				+CMLib.xml().convertXMLtoTag("ILOC",""+((item.container()!=null)?(""+item.container()):""))
 				+CMLib.xml().convertXMLtoTag("IUSES",""+item.usesRemaining())
-				+CMLib.xml().convertXMLtoTag("ILEVL",""+E.baseEnvStats().level())
-				+CMLib.xml().convertXMLtoTag("IABLE",""+E.baseEnvStats().ability())
+				+CMLib.xml().convertXMLtoTag("ILEVL",""+E.basePhyStats().level())
+				+CMLib.xml().convertXMLtoTag("IABLE",""+E.basePhyStats().ability())
 				+((E.isGeneric()?"":CMLib.xml().convertXMLtoTag("ITEXT",""+E.text())));
 			return xml;
 		}
@@ -253,9 +253,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(E instanceof MOB)
 		{
 			String xml=
-				 CMLib.xml().convertXMLtoTag("MLEVL",""+E.baseEnvStats().level())
-				+CMLib.xml().convertXMLtoTag("MABLE",""+E.baseEnvStats().ability())
-				+CMLib.xml().convertXMLtoTag("MREJV",""+E.baseEnvStats().rejuv())
+				 CMLib.xml().convertXMLtoTag("MLEVL",""+E.basePhyStats().level())
+				+CMLib.xml().convertXMLtoTag("MABLE",""+E.basePhyStats().ability())
+				+CMLib.xml().convertXMLtoTag("MREJV",""+E.basePhyStats().rejuv())
 				+((E.isGeneric()?"":CMLib.xml().convertXMLtoTag("ITEXT",""+E.text())));
 			return xml;
 		}
@@ -687,7 +687,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				}
 				else
 					exit=CMClass.getExit("GenExit");
-				exit.recoverEnvStats();
+				exit.recoverPhyStats();
 				if(doorID.length()>0)
 				{
 					Room link=CMLib.map().getRoom(doorID);
@@ -759,16 +759,16 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					if((iden!=null)&&(iden.length()>0)) identTable.put(iden,newMOB);
 
 					newMOB.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(mblk.contents,"MTEXT")));
-					newMOB.baseEnvStats().setLevel(CMLib.xml().getIntFromPieces(mblk.contents,"MLEVL"));
-					newMOB.baseEnvStats().setAbility(CMLib.xml().getIntFromPieces(mblk.contents,"MABLE"));
-					newMOB.baseEnvStats().setRejuv(CMLib.xml().getIntFromPieces(mblk.contents,"MREJV"));
+					newMOB.basePhyStats().setLevel(CMLib.xml().getIntFromPieces(mblk.contents,"MLEVL"));
+					newMOB.basePhyStats().setAbility(CMLib.xml().getIntFromPieces(mblk.contents,"MABLE"));
+					newMOB.basePhyStats().setRejuv(CMLib.xml().getIntFromPieces(mblk.contents,"MREJV"));
 					String ride=CMLib.xml().getValFromPieces(mblk.contents,"MRIDE");
 					if((ride!=null)&&(ride.length()>0))
 						mobRideTable.put(newMOB,ride);
 					newMOB.setStartRoom(newRoom);
 					newMOB.setLocation(newRoom);
 					newMOB.recoverCharStats();
-					newMOB.recoverEnvStats();
+					newMOB.recoverPhyStats();
 					newMOB.recoverMaxState();
 					newMOB.resetToMaxState();
 					newMOB.bringToLife(newRoom,true);
@@ -793,15 +793,15 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					}
 					String iloc=CMLib.xml().getValFromPieces(iblk.contents,"ILOCA");
 					if(iloc.length()>0) itemLocTable.put(newItem,iloc);
-					newItem.baseEnvStats().setLevel(CMLib.xml().getIntFromPieces(iblk.contents,"ILEVL"));
-					newItem.baseEnvStats().setAbility(CMLib.xml().getIntFromPieces(iblk.contents,"IABLE"));
-					newItem.baseEnvStats().setRejuv(CMLib.xml().getIntFromPieces(iblk.contents,"IREJV"));
+					newItem.basePhyStats().setLevel(CMLib.xml().getIntFromPieces(iblk.contents,"ILEVL"));
+					newItem.basePhyStats().setAbility(CMLib.xml().getIntFromPieces(iblk.contents,"IABLE"));
+					newItem.basePhyStats().setRejuv(CMLib.xml().getIntFromPieces(iblk.contents,"IREJV"));
 					newItem.setUsesRemaining(CMLib.xml().getIntFromPieces(iblk.contents,"IUSES"));
 					newItem.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(iblk.contents,"ITEXT")));
 					newItem.setContainer(null);
-					newItem.recoverEnvStats();
+					newItem.recoverPhyStats();
 					newRoom.addItem(newItem);
-					newItem.recoverEnvStats();
+					newItem.recoverPhyStats();
 				}
 				for(Enumeration e=itemLocTable.keys();e.hasMoreElements();)
 				{
@@ -811,8 +811,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					if(parentI!=null)
 					{
 						childI.setContainer(parentI);
-						childI.recoverEnvStats();
-						parentI.recoverEnvStats();
+						childI.recoverPhyStats();
+						parentI.recoverPhyStats();
 					}
 				}
 				for(Enumeration e=mobRideTable.keys();e.hasMoreElements();)
@@ -1129,10 +1129,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			MOB dup=(MOB)E2;
 			if(!CMClass.classID(mob).equals(CMClass.classID(dup)))
 			   str.append(CMClass.classID(mob)+"!="+CMClass.classID(dup)+"\n\r");
-			if(mob.baseEnvStats().level()!=dup.baseEnvStats().level())
-			   str.append("Level- "+mob.baseEnvStats().level()+"!="+dup.baseEnvStats().level()+"\n\r");
-			if(mob.baseEnvStats().ability()!=dup.baseEnvStats().ability())
-			   str.append("Ability- "+mob.baseEnvStats().ability()+"!="+dup.baseEnvStats().ability()+"\n\r");
+			if(mob.basePhyStats().level()!=dup.basePhyStats().level())
+			   str.append("Level- "+mob.basePhyStats().level()+"!="+dup.basePhyStats().level()+"\n\r");
+			if(mob.basePhyStats().ability()!=dup.basePhyStats().ability())
+			   str.append("Ability- "+mob.basePhyStats().ability()+"!="+dup.basePhyStats().ability()+"\n\r");
 			if(!mob.text().equals(dup.text()))
 				str.append(logTextDiff(mob.text(),dup.text()));
 		}
@@ -1143,10 +1143,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			Item dup=(Item)E2;
 			if(!CMClass.classID(item).equals(CMClass.classID(dup)))
 			   str.append(CMClass.classID(item)+"!="+CMClass.classID(dup)+"\n\r");
-			if(item.baseEnvStats().level()!=dup.baseEnvStats().level())
-			   str.append("Level- "+item.baseEnvStats().level()+"!="+dup.baseEnvStats().level()+"\n\r");
-			if(item.baseEnvStats().ability()!=dup.baseEnvStats().ability())
-			   str.append("Ability- "+item.baseEnvStats().ability()+"!="+dup.baseEnvStats().ability()+"\n\r");
+			if(item.basePhyStats().level()!=dup.basePhyStats().level())
+			   str.append("Level- "+item.basePhyStats().level()+"!="+dup.basePhyStats().level()+"\n\r");
+			if(item.basePhyStats().ability()!=dup.basePhyStats().ability())
+			   str.append("Ability- "+item.basePhyStats().ability()+"!="+dup.basePhyStats().ability()+"\n\r");
 			if(item.usesRemaining()!=dup.usesRemaining())
 			   str.append("Uses- "+item.usesRemaining()+"!="+dup.usesRemaining()+"\n\r");
 			if(!item.text().equals(dup.text()))
@@ -1173,9 +1173,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
         StringBuffer buf=new StringBuffer("");
         buf.append("<MOB>");
         buf.append(CMLib.xml().convertXMLtoTag("MCLAS",CMClass.classID(mob)));
-        buf.append(CMLib.xml().convertXMLtoTag("MLEVL",mob.baseEnvStats().level()));
-        buf.append(CMLib.xml().convertXMLtoTag("MABLE",mob.baseEnvStats().ability()));
-        buf.append(CMLib.xml().convertXMLtoTag("MREJV",mob.baseEnvStats().rejuv()));
+        buf.append(CMLib.xml().convertXMLtoTag("MLEVL",mob.basePhyStats().level()));
+        buf.append(CMLib.xml().convertXMLtoTag("MABLE",mob.basePhyStats().ability()));
+        buf.append(CMLib.xml().convertXMLtoTag("MREJV",mob.basePhyStats().rejuv()));
         buf.append(CMLib.xml().convertXMLtoTag("MTEXT",CMLib.xml().parseOutAngleBrackets(mob.text())));
         buf.append("</MOB>\n\r");
         return buf;
@@ -1205,19 +1205,19 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
                     for(int v=0;v<dups.size();v++)
                     {
                         MOB dup=(MOB)dups.elementAt(v);
-                        int oldHeight=mob.baseEnvStats().height();
-                        int oldWeight=mob.baseEnvStats().weight();
+                        int oldHeight=mob.basePhyStats().height();
+                        int oldWeight=mob.basePhyStats().weight();
                         int oldGender=mob.baseCharStats().getStat(CharStats.STAT_GENDER);
-                        dup.baseEnvStats().setHeight(mob.baseEnvStats().height());
-                        dup.baseEnvStats().setWeight(mob.baseEnvStats().weight());
+                        dup.basePhyStats().setHeight(mob.basePhyStats().height());
+                        dup.basePhyStats().setWeight(mob.basePhyStats().weight());
                         dup.baseCharStats().setStat(CharStats.STAT_GENDER,mob.baseCharStats().getStat(CharStats.STAT_GENDER));
                         if(CMClass.classID(mob).equals(CMClass.classID(dup))
-                        &&(mob.baseEnvStats().level()==dup.baseEnvStats().level())
-                        &&(mob.baseEnvStats().ability()==dup.baseEnvStats().ability())
+                        &&(mob.basePhyStats().level()==dup.basePhyStats().level())
+                        &&(mob.basePhyStats().ability()==dup.basePhyStats().ability())
                         &&(mob.text().equals(dup.text())))
                             matched=true;
-                        dup.baseEnvStats().setHeight(oldHeight);
-                        dup.baseEnvStats().setWeight(oldWeight);
+                        dup.basePhyStats().setHeight(oldHeight);
+                        dup.basePhyStats().setWeight(oldWeight);
                         dup.baseCharStats().setStat(CharStats.STAT_GENDER,oldGender);
                         if(matched) break;
                     }
@@ -1226,16 +1226,16 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
                         for(int v=0;v<dups.size();v++)
                         {
                             MOB dup=(MOB)dups.elementAt(v);
-                            int oldHeight=mob.baseEnvStats().height();
-                            int oldWeight=mob.baseEnvStats().weight();
+                            int oldHeight=mob.basePhyStats().height();
+                            int oldWeight=mob.basePhyStats().weight();
                             int oldGender=mob.baseCharStats().getStat(CharStats.STAT_GENDER);
-                            dup.baseEnvStats().setHeight(mob.baseEnvStats().height());
-                            dup.baseEnvStats().setWeight(mob.baseEnvStats().weight());
+                            dup.basePhyStats().setHeight(mob.basePhyStats().height());
+                            dup.basePhyStats().setWeight(mob.basePhyStats().weight());
                             dup.baseCharStats().setStat(CharStats.STAT_GENDER,mob.baseCharStats().getStat(CharStats.STAT_GENDER));
                             if(Log.debugChannelOn()&&CMSecurity.isDebugging("EXPORT"))
                                 logDiff(mob,dup);
-                            dup.baseEnvStats().setHeight(oldHeight);
-                            dup.baseEnvStats().setWeight(oldWeight);
+                            dup.basePhyStats().setHeight(oldHeight);
+                            dup.basePhyStats().setWeight(oldWeight);
                             dup.baseCharStats().setStat(CharStats.STAT_GENDER,oldGender);
                         }
                         dups.addElement(mob);
@@ -1296,27 +1296,27 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				for(int v=0;v<dups.size();v++)
 				{
 					Item dup=(Item)dups.elementAt(v);
-					int oldHeight=item.baseEnvStats().height();
-					item.baseEnvStats().setHeight(dup.baseEnvStats().height());
+					int oldHeight=item.basePhyStats().height();
+					item.basePhyStats().setHeight(dup.basePhyStats().height());
 					if(CMClass.classID(item).equals(CMClass.classID(dup))
-					&&(item.baseEnvStats().level()==dup.baseEnvStats().level())
+					&&(item.basePhyStats().level()==dup.basePhyStats().level())
 					&&(item.usesRemaining()==dup.usesRemaining())
-					&&(item.baseEnvStats().ability()==dup.baseEnvStats().ability())
+					&&(item.basePhyStats().ability()==dup.basePhyStats().ability())
 					&&(item.text().equals(dup.text())))
 					{
-						item.baseEnvStats().setHeight(oldHeight);
+						item.basePhyStats().setHeight(oldHeight);
 						return buf;
 					}
-					item.baseEnvStats().setHeight(oldHeight);
+					item.basePhyStats().setHeight(oldHeight);
 				}
 				for(int v=0;v<dups.size();v++)
 				{
 					Item dup=(Item)dups.elementAt(v);
-					int oldHeight=item.baseEnvStats().height();
-					item.baseEnvStats().setHeight(dup.baseEnvStats().height());
+					int oldHeight=item.basePhyStats().height();
+					item.basePhyStats().setHeight(dup.basePhyStats().height());
 					if(Log.debugChannelOn()&&CMSecurity.isDebugging("EXPORT"))
 						logDiff(item,dup);
-					item.baseEnvStats().setHeight(oldHeight);
+					item.basePhyStats().setHeight(oldHeight);
 				}
 				dups.addElement(item);
 			}
@@ -1332,9 +1332,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
         buf.append("<ITEM>");
         buf.append(CMLib.xml().convertXMLtoTag("ICLAS",CMClass.classID(item)));
         buf.append(CMLib.xml().convertXMLtoTag("IUSES",item.usesRemaining()));
-        buf.append(CMLib.xml().convertXMLtoTag("ILEVL",item.baseEnvStats().level()));
-        buf.append(CMLib.xml().convertXMLtoTag("IABLE",item.baseEnvStats().ability()));
-        buf.append(CMLib.xml().convertXMLtoTag("IREJV",item.baseEnvStats().rejuv()));
+        buf.append(CMLib.xml().convertXMLtoTag("ILEVL",item.basePhyStats().level()));
+        buf.append(CMLib.xml().convertXMLtoTag("IABLE",item.basePhyStats().ability()));
+        buf.append(CMLib.xml().convertXMLtoTag("IREJV",item.basePhyStats().rejuv()));
         buf.append(CMLib.xml().convertXMLtoTag("ITEXT",CMLib.xml().parseOutAngleBrackets(item.text())));
         buf.append("</ITEM>\n\r");
         return buf;
@@ -1350,13 +1350,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
         String itemClass=CMLib.xml().getValFromPieces(iblk.contents,"ICLAS");
         Item newItem=CMClass.getItem(itemClass);
         if(newItem==null) return null;
-        newItem.baseEnvStats().setLevel(CMLib.xml().getIntFromPieces(iblk.contents,"ILEVL"));
-        newItem.baseEnvStats().setAbility(CMLib.xml().getIntFromPieces(iblk.contents,"IABLE"));
-        newItem.baseEnvStats().setRejuv(CMLib.xml().getIntFromPieces(iblk.contents,"IREJV"));
+        newItem.basePhyStats().setLevel(CMLib.xml().getIntFromPieces(iblk.contents,"ILEVL"));
+        newItem.basePhyStats().setAbility(CMLib.xml().getIntFromPieces(iblk.contents,"IABLE"));
+        newItem.basePhyStats().setRejuv(CMLib.xml().getIntFromPieces(iblk.contents,"IREJV"));
         newItem.setUsesRemaining(CMLib.xml().getIntFromPieces(iblk.contents,"IUSES"));
         newItem.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(iblk.contents,"ITEXT")));
         newItem.setContainer(null);
-        newItem.recoverEnvStats();
+        newItem.recoverPhyStats();
         return newItem;
     }
 
@@ -1380,13 +1380,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			&&((S==null)||(S.mob()==null)||(!CMSecurity.isASysOp(S.mob()))))
 				continue;
 			if(newItem==null) return unpackErr("Items","null 'iClass': "+itemClass);
-			newItem.baseEnvStats().setLevel(CMLib.xml().getIntFromPieces(iblk.contents,"ILEVL"));
-			newItem.baseEnvStats().setAbility(CMLib.xml().getIntFromPieces(iblk.contents,"IABLE"));
-			newItem.baseEnvStats().setRejuv(CMLib.xml().getIntFromPieces(iblk.contents,"IREJV"));
+			newItem.basePhyStats().setLevel(CMLib.xml().getIntFromPieces(iblk.contents,"ILEVL"));
+			newItem.basePhyStats().setAbility(CMLib.xml().getIntFromPieces(iblk.contents,"IABLE"));
+			newItem.basePhyStats().setRejuv(CMLib.xml().getIntFromPieces(iblk.contents,"IREJV"));
 			newItem.setUsesRemaining(CMLib.xml().getIntFromPieces(iblk.contents,"IUSES"));
 			newItem.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(iblk.contents,"ITEXT")));
 			newItem.setContainer(null);
-			newItem.recoverEnvStats();
+			newItem.recoverPhyStats();
 			addHere.addElement(newItem);
 		}
 		return "";
@@ -1404,11 +1404,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
         if(newMOB==null) return null;
         String text=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(mblk.contents,"MTEXT"));
         newMOB.setMiscText(text);
-        newMOB.baseEnvStats().setLevel(CMLib.xml().getIntFromPieces(mblk.contents,"MLEVL"));
-        newMOB.baseEnvStats().setAbility(CMLib.xml().getIntFromPieces(mblk.contents,"MABLE"));
-        newMOB.baseEnvStats().setRejuv(CMLib.xml().getIntFromPieces(mblk.contents,"MREJV"));
+        newMOB.basePhyStats().setLevel(CMLib.xml().getIntFromPieces(mblk.contents,"MLEVL"));
+        newMOB.basePhyStats().setAbility(CMLib.xml().getIntFromPieces(mblk.contents,"MABLE"));
+        newMOB.basePhyStats().setRejuv(CMLib.xml().getIntFromPieces(mblk.contents,"MREJV"));
         newMOB.recoverCharStats();
-        newMOB.recoverEnvStats();
+        newMOB.recoverPhyStats();
         newMOB.recoverMaxState();
         newMOB.resetToMaxState();
         return newMOB;
@@ -1433,11 +1433,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(newMOB==null) return unpackErr("MOBs","null 'mClass': "+mClass);
 			String text=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(mblk.contents,"MTEXT"));
 			newMOB.setMiscText(text);
-			newMOB.baseEnvStats().setLevel(CMLib.xml().getIntFromPieces(mblk.contents,"MLEVL"));
-			newMOB.baseEnvStats().setAbility(CMLib.xml().getIntFromPieces(mblk.contents,"MABLE"));
-			newMOB.baseEnvStats().setRejuv(CMLib.xml().getIntFromPieces(mblk.contents,"MREJV"));
+			newMOB.basePhyStats().setLevel(CMLib.xml().getIntFromPieces(mblk.contents,"MLEVL"));
+			newMOB.basePhyStats().setAbility(CMLib.xml().getIntFromPieces(mblk.contents,"MABLE"));
+			newMOB.basePhyStats().setRejuv(CMLib.xml().getIntFromPieces(mblk.contents,"MREJV"));
 			newMOB.recoverCharStats();
-			newMOB.recoverEnvStats();
+			newMOB.recoverPhyStats();
 			newMOB.recoverMaxState();
 			newMOB.resetToMaxState();
 			addHere.addElement(newMOB);
@@ -1608,9 +1608,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						buf.append(CMLib.xml().convertXMLtoTag("MCLAS",CMClass.classID(mob)));
 						if((((mob instanceof Rideable)&&(((Rideable)mob).numRiders()>0)))||(mob.numFollowers()>0))
 							buf.append(CMLib.xml().convertXMLtoTag("MIDEN",""+mob));
-						buf.append(CMLib.xml().convertXMLtoTag("MLEVL",mob.baseEnvStats().level()));
-						buf.append(CMLib.xml().convertXMLtoTag("MABLE",mob.baseEnvStats().ability()));
-						buf.append(CMLib.xml().convertXMLtoTag("MREJV",mob.baseEnvStats().rejuv()));
+						buf.append(CMLib.xml().convertXMLtoTag("MLEVL",mob.basePhyStats().level()));
+						buf.append(CMLib.xml().convertXMLtoTag("MABLE",mob.basePhyStats().ability()));
+						buf.append(CMLib.xml().convertXMLtoTag("MREJV",mob.basePhyStats().rejuv()));
 						buf.append(CMLib.xml().convertXMLtoTag("MTEXT",CMLib.xml().parseOutAngleBrackets(mob.text())));
 						if(mob.riding()!=null)
 							buf.append(CMLib.xml().convertXMLtoTag("MRIDE",""+mob.riding()));
@@ -1644,10 +1644,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
     						buf.append("<ILOCA />");
     					else
     						buf.append(CMLib.xml().convertXMLtoTag("ILOCA",""+item.container()));
-    					buf.append(CMLib.xml().convertXMLtoTag("IREJV",item.baseEnvStats().rejuv()));
+    					buf.append(CMLib.xml().convertXMLtoTag("IREJV",item.basePhyStats().rejuv()));
     					buf.append(CMLib.xml().convertXMLtoTag("IUSES",item.usesRemaining()));
-    					buf.append(CMLib.xml().convertXMLtoTag("ILEVL",item.baseEnvStats().level()));
-    					buf.append(CMLib.xml().convertXMLtoTag("IABLE",item.baseEnvStats().ability()));
+    					buf.append(CMLib.xml().convertXMLtoTag("ILEVL",item.basePhyStats().level()));
+    					buf.append(CMLib.xml().convertXMLtoTag("IABLE",item.basePhyStats().ability()));
     					buf.append(CMLib.xml().convertXMLtoTag("ITEXT",CMLib.xml().parseOutAngleBrackets(item.text())));
     					buf.append("</RITEM>");
     					fillFileSet(item,files);
@@ -1674,7 +1674,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	public void recoverEnvironmental(Environmental E)
 	{
 		if(E==null) return;
-		E.recoverEnvStats();
+		E.recoverPhyStats();
 		if(E instanceof MOB)
 		{
 			((MOB)E).recoverCharStats();
@@ -1773,8 +1773,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 			Item item=(Item)E;
 			item.setUsesRemaining(CMLib.xml().getIntFromPieces(V,"IUSES"));
-			item.baseEnvStats().setLevel(CMLib.xml().getIntFromPieces(V,"ILEVL"));
-			item.baseEnvStats().setAbility(CMLib.xml().getIntFromPieces(V,"IABLE"));
+			item.basePhyStats().setLevel(CMLib.xml().getIntFromPieces(V,"ILEVL"));
+			item.basePhyStats().setAbility(CMLib.xml().getIntFromPieces(V,"IABLE"));
 			if(!E.isGeneric())
 				item.setMiscText(CMLib.xml().getValFromPieces(V,"ITEXT"));
 			//item.wearAt(CMLib.xml().getIntFromPieces(V,"USES"));
@@ -1782,9 +1782,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		else
 		if(E instanceof MOB)
 		{
-			E.baseEnvStats().setLevel(CMLib.xml().getIntFromPieces(V,"MLEVL"));
-			E.baseEnvStats().setAbility(CMLib.xml().getIntFromPieces(V,"MABLE"));
-			E.baseEnvStats().setRejuv(CMLib.xml().getIntFromPieces(V,"MREJV"));
+			E.basePhyStats().setLevel(CMLib.xml().getIntFromPieces(V,"MLEVL"));
+			E.basePhyStats().setAbility(CMLib.xml().getIntFromPieces(V,"MABLE"));
+			E.basePhyStats().setRejuv(CMLib.xml().getIntFromPieces(V,"MREJV"));
 			if(!E.isGeneric())
 				E.setMiscText(CMLib.xml().getValFromPieces(V,"MTEXT"));
 		}
@@ -1912,7 +1912,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(ILOC.length()>0)
 				LOCmap.put(newOne,ILOC);
 			setPropertiesStr(newOne,idat,true);
-			if(newOne.baseEnvStats().rejuv()>0&&newOne.baseEnvStats().rejuv()<Integer.MAX_VALUE)
+			if(newOne.basePhyStats().rejuv()>0&&newOne.basePhyStats().rejuv()<Integer.MAX_VALUE)
 				variableEq=true;
 			newOne.wearAt(wornCode);
 		}
@@ -1993,7 +1993,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					LOCmap.put(ILOC,newOne);
 			}
 			setPropertiesStr(newOne,idat,true);
-			if((newOne.baseEnvStats().rejuv()>0)&&(newOne.baseEnvStats().rejuv()<Integer.MAX_VALUE))
+			if((newOne.basePhyStats().rejuv()>0)&&(newOne.basePhyStats().rejuv()<Integer.MAX_VALUE))
 				variableEq=true;
 			shopmob.getShop().addStoreInventory(newOne,numStock,stockPrice);
 		}
@@ -2013,7 +2013,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 	public boolean handleCatalogItem(Environmental E, Vector buf, boolean fromTop)
 	{
-		setEnvStats(E.baseEnvStats(),CMLib.xml().getValFromPieces(buf,"PROP"));
+		setPhyStats(E.basePhyStats(),CMLib.xml().getValFromPieces(buf,"PROP"));
 		if((CMLib.flags().isCataloged(E))
 		&&(E.isGeneric()))
 		{
@@ -2021,7 +2021,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			Environmental cataE=CMLib.catalog().getCatalogObj(E);
 			if(cataE!=null)
 			{
-				if(CMath.bset(cataE.baseEnvStats().disposition(),EnvStats.IS_CATALOGED))
+				if(CMath.bset(cataE.basePhyStats().disposition(),PhyStats.IS_CATALOGED))
 					Log.errOut("CoffeeMaker","Error with catalog object "+E.Name()+".");
 				else
 				if((cataE!=null)&&(cataE!=E))
@@ -2507,13 +2507,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		str.append(CMLib.xml().convertXMLtoTag("ROID",strStartRoomID+"||"+strOtherRoomID));
 		str.append(CMLib.xml().convertXMLtoTag("DATE",pstats.lastDateTime()));
 		str.append(CMLib.xml().convertXMLtoTag("CHAN",pstats.getChannelMask()));
-		str.append(CMLib.xml().convertXMLtoTag("ATTA",mob.baseEnvStats().attackAdjustment()));
-		str.append(CMLib.xml().convertXMLtoTag("AMOR",mob.baseEnvStats().armor()));
-		str.append(CMLib.xml().convertXMLtoTag("DAMG",mob.baseEnvStats().damage()));
+		str.append(CMLib.xml().convertXMLtoTag("ATTA",mob.basePhyStats().attackAdjustment()));
+		str.append(CMLib.xml().convertXMLtoTag("AMOR",mob.basePhyStats().armor()));
+		str.append(CMLib.xml().convertXMLtoTag("DAMG",mob.basePhyStats().damage()));
 		str.append(CMLib.xml().convertXMLtoTag("BTMP",mob.getBitmap()));
 		str.append(CMLib.xml().convertXMLtoTag("LEIG",mob.getLiegeID()));
-		str.append(CMLib.xml().convertXMLtoTag("HEIT",mob.baseEnvStats().height()));
-		str.append(CMLib.xml().convertXMLtoTag("WEIT",mob.baseEnvStats().weight()));
+		str.append(CMLib.xml().convertXMLtoTag("HEIT",mob.basePhyStats().height()));
+		str.append(CMLib.xml().convertXMLtoTag("WEIT",mob.basePhyStats().weight()));
 		str.append(CMLib.xml().convertXMLtoTag("PRPT",CMLib.xml().parseOutAngleBrackets(pstats.getPrompt())));
 		str.append(CMLib.xml().convertXMLtoTag("COLR",pstats.getColorStr()));
 		str.append(CMLib.xml().convertXMLtoTag("CLAN",mob.getClanID()));
@@ -2543,8 +2543,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				fols.append("<FOLLOWER>");
 				fols.append(CMLib.xml().convertXMLtoTag("FCLAS",CMClass.classID(thisMOB)));
 				fols.append(CMLib.xml().convertXMLtoTag("FTEXT",thisMOB.text()));
-				fols.append(CMLib.xml().convertXMLtoTag("FLEVL",thisMOB.baseEnvStats().level()));
-				fols.append(CMLib.xml().convertXMLtoTag("FABLE",thisMOB.baseEnvStats().ability()));
+				fols.append(CMLib.xml().convertXMLtoTag("FLEVL",thisMOB.basePhyStats().level()));
+				fols.append(CMLib.xml().convertXMLtoTag("FABLE",thisMOB.basePhyStats().ability()));
 				fols.append("</FOLLOWER>");
 			}
 		}
@@ -2584,7 +2584,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			int level=0;
 			for(int i=0;i<mob.baseCharStats().numClasses();i++)
 				level+=mob.baseCharStats().getClassLevel(mob.baseCharStats().getMyClass(i));
-			mob.baseEnvStats().setLevel(level);
+			mob.basePhyStats().setLevel(level);
 			mob.baseCharStats().setMyRace(CMClass.getRace(CMLib.xml().getValFromPieces(mblk.contents,"RACE")));
 			mob.baseCharStats().setStat(CharStats.STAT_GENDER,CMLib.xml().getValFromPieces(mblk.contents,"GEND").charAt(0));
 			for(int i : CharStats.CODES.BASE())
@@ -2614,13 +2614,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			mob.setStartRoom(CMLib.map().getRoom(roomID));
 			mob.playerStats().setLastDateTime(CMLib.xml().getLongFromPieces(mblk.contents,"DATE"));
 			mob.playerStats().setChannelMask(CMLib.xml().getIntFromPieces(mblk.contents,"CHAN"));
-			mob.baseEnvStats().setAttackAdjustment(CMLib.xml().getIntFromPieces(mblk.contents,"ATTA"));
-			mob.baseEnvStats().setArmor(CMLib.xml().getIntFromPieces(mblk.contents,"AMOR"));
-			mob.baseEnvStats().setDamage(CMLib.xml().getIntFromPieces(mblk.contents,"DAMG"));
+			mob.basePhyStats().setAttackAdjustment(CMLib.xml().getIntFromPieces(mblk.contents,"ATTA"));
+			mob.basePhyStats().setArmor(CMLib.xml().getIntFromPieces(mblk.contents,"AMOR"));
+			mob.basePhyStats().setDamage(CMLib.xml().getIntFromPieces(mblk.contents,"DAMG"));
 			mob.setBitmap(CMLib.xml().getIntFromPieces(mblk.contents,"BTMP"));
 			mob.setLiegeID(CMLib.xml().getValFromPieces(mblk.contents,"LEIG"));
-			mob.baseEnvStats().setHeight(CMLib.xml().getIntFromPieces(mblk.contents,"HEIT"));
-			mob.baseEnvStats().setWeight(CMLib.xml().getIntFromPieces(mblk.contents,"WEIT"));
+			mob.basePhyStats().setHeight(CMLib.xml().getIntFromPieces(mblk.contents,"HEIT"));
+			mob.basePhyStats().setWeight(CMLib.xml().getIntFromPieces(mblk.contents,"WEIT"));
 			mob.playerStats().setPrompt(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(mblk.contents,"PRPT")));
 			String colorStr=CMLib.xml().getValFromPieces(mblk.contents,"COLR");
 			if((colorStr!=null)&&(colorStr.length()>0)&&(!colorStr.equalsIgnoreCase("NULL")))
@@ -2662,18 +2662,18 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				String mobClass=CMLib.xml().getValFromPieces(fblk.contents,"FCLAS");
 				MOB newFollower=CMClass.getMOB(mobClass);
 				if(newFollower==null) return unpackErr("PFols","null 'iClass': "+mobClass);
-				newFollower.baseEnvStats().setLevel(CMLib.xml().getIntFromPieces(fblk.contents,"FLEVL"));
-				newFollower.baseEnvStats().setAbility(CMLib.xml().getIntFromPieces(fblk.contents,"FABLE"));
+				newFollower.basePhyStats().setLevel(CMLib.xml().getIntFromPieces(fblk.contents,"FLEVL"));
+				newFollower.basePhyStats().setAbility(CMLib.xml().getIntFromPieces(fblk.contents,"FABLE"));
 				newFollower.setMiscText(CMLib.xml().getValFromPieces(fblk.contents,"FTEXT"));
 				newFollower.recoverCharStats();
-				newFollower.recoverEnvStats();
+				newFollower.recoverPhyStats();
 				newFollower.recoverMaxState();
 				newFollower.resetToMaxState();
 				mob.addFollower(newFollower,-1);
 			}
 
 			mob.recoverCharStats();
-			mob.recoverEnvStats();
+			mob.recoverPhyStats();
 			mob.recoverMaxState();
 			mob.resetToMaxState();
 			addHere.addElement(mob);
@@ -2788,7 +2788,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 	}
 
-	public String getEnvStatsStr(EnvStats E)
+	public String getPhyStatsStr(PhyStats E)
 	{
 		return E.ability()+"|"+
 				E.armor()+"|"+
@@ -2825,7 +2825,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		text.append(CMLib.xml().convertXMLtoTag("NAME",E.Name()));
 		text.append(CMLib.xml().convertXMLtoTag("DESC",E.description()));
 		text.append(CMLib.xml().convertXMLtoTag("DISP",E.displayText()));
-		text.append(CMLib.xml().convertXMLtoTag("PROP",getEnvStatsStr(E.baseEnvStats())));
+		text.append(CMLib.xml().convertXMLtoTag("PROP",getPhyStatsStr(E.basePhyStats())));
 		text.append(getExtraEnvPropertiesStr(E));
 		if(E instanceof PhysicalAgent)
 	        text.append(getGenScripts((PhysicalAgent)E,false));
@@ -2873,7 +2873,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		E.setMovement(nums[4]);
 		E.setThirst(nums[5]);
 	}
-	public void setEnvStats(EnvStats E, String props)
+	public void setPhyStats(PhyStats E, String props)
 	{
 		double[] nums=new double[11];
 		int x=0;
@@ -2909,7 +2909,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		E.setName(CMLib.xml().getValFromPieces(buf,"NAME"));
 		E.setDescription(CMLib.xml().getValFromPieces(buf,"DESC"));
 		E.setDisplayText(CMLib.xml().getValFromPieces(buf,"DISP"));
-		setEnvStats(E.baseEnvStats(),CMLib.xml().getValFromPieces(buf,"PROP"));
+		setPhyStats(E.basePhyStats(),CMLib.xml().getValFromPieces(buf,"PROP"));
 		setExtraEnvProperties(E,buf);
 		if(E instanceof PhysicalAgent)
 			setGenScripts((PhysicalAgent)E,buf,false);
@@ -3041,8 +3041,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 		case 0: return I.ID();
 		case 1: return ""+I.usesRemaining();
-		case 2: return ""+I.baseEnvStats().level();
-		case 3: return ""+I.baseEnvStats().ability();
+		case 2: return ""+I.basePhyStats().level();
+		case 3: return ""+I.basePhyStats().ability();
 		case 4: return I.Name();
 		case 5: return I.displayText();
 		case 6: return I.description();
@@ -3050,16 +3050,16 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		case 8: return ""+I.rawProperLocationBitmap();
 		case 9: return ""+I.rawLogicalAnd();
 		case 10: return ""+I.baseGoldValue();
-		case 11: return ""+(CMath.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE));
-		case 12: return ""+(!CMath.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP));
-		case 13: return ""+(!CMath.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE));
+		case 11: return ""+(CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMREADABLE));
+		case 12: return ""+(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNODROP));
+		case 13: return ""+(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOREMOVE));
 		case 14: return ""+I.material();
 		case 15: return getExtraEnvPropertiesStr(I);
-		case 16: return ""+I.baseEnvStats().disposition();
-		case 17: return ""+I.baseEnvStats().weight();
-		case 18: return ""+I.baseEnvStats().armor();
-		case 19: return ""+I.baseEnvStats().damage();
-		case 20: return ""+I.baseEnvStats().attackAdjustment();
+		case 16: return ""+I.basePhyStats().disposition();
+		case 17: return ""+I.basePhyStats().weight();
+		case 18: return ""+I.basePhyStats().armor();
+		case 19: return ""+I.basePhyStats().damage();
+		case 20: return ""+I.basePhyStats().attackAdjustment();
 		case 21: return I.readableText();
 		case 22: return I.rawImage();
         //case 23: return getGenScripts(I,false);
@@ -3072,8 +3072,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 		case 0: break;
 		case 1: I.setUsesRemaining(CMath.s_parseIntExpression(val)); break;
-		case 2: I.baseEnvStats().setLevel(CMath.s_parseIntExpression(val)); break;
-		case 3: I.baseEnvStats().setAbility(CMath.s_parseIntExpression(val)); break;
+		case 2: I.basePhyStats().setLevel(CMath.s_parseIntExpression(val)); break;
+		case 3: I.basePhyStats().setAbility(CMath.s_parseIntExpression(val)); break;
 		case 4: I.setName(val); break;
 		case 5: I.setDisplayText(val); break;
 		case 6: I.setDescription(val); break;
@@ -3125,25 +3125,25 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				 }
 		case 16:{
 				  if(CMath.isInteger(val)||(val.trim().length()==0))
-					 I.baseEnvStats().setDisposition(CMath.s_parseIntExpression(val));
+					 I.basePhyStats().setDisposition(CMath.s_parseIntExpression(val));
 				  else
 				  {
-					  I.baseEnvStats().setDisposition(0);
+					  I.basePhyStats().setDisposition(0);
 					  Vector V=CMParms.parseCommas(val,true);
 					  for(Enumeration e=V.elements();e.hasMoreElements();)
 					  {
 						  val=(String)e.nextElement();
-						  int dispIndex=CMParms.indexOfIgnoreCase(EnvStats.IS_CODES,val);
+						  int dispIndex=CMParms.indexOfIgnoreCase(PhyStats.IS_CODES,val);
 						  if(dispIndex>=0)
-							  I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|(int)CMath.pow(2,dispIndex));
+							  I.basePhyStats().setDisposition(I.basePhyStats().disposition()|(int)CMath.pow(2,dispIndex));
 					  }
 				  }
 				  break;
 		}
-		case 17: I.baseEnvStats().setWeight(CMath.s_parseIntExpression(val)); break;
-		case 18: I.baseEnvStats().setArmor(CMath.s_parseIntExpression(val)); break;
-		case 19: I.baseEnvStats().setDamage(CMath.s_parseIntExpression(val)); break;
-		case 20: I.baseEnvStats().setAttackAdjustment(CMath.s_parseIntExpression(val)); break;
+		case 17: I.basePhyStats().setWeight(CMath.s_parseIntExpression(val)); break;
+		case 18: I.basePhyStats().setArmor(CMath.s_parseIntExpression(val)); break;
+		case 19: I.basePhyStats().setDamage(CMath.s_parseIntExpression(val)); break;
+		case 20: I.basePhyStats().setAttackAdjustment(CMath.s_parseIntExpression(val)); break;
 		case 21: I.setReadableText(val); break;
 		case 22: I.setImage(val); break;
         /*case 23:
@@ -3179,8 +3179,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 		case 0: return CMClass.classID(M);
 		case 1: return M.baseCharStats().getMyRace().ID();
-		case 2: return ""+M.baseEnvStats().level();
-		case 3: return ""+M.baseEnvStats().ability();
+		case 2: return ""+M.basePhyStats().level();
+		case 3: return ""+M.basePhyStats().ability();
 		case 4: return M.Name();
 		case 5: return M.displayText();
 		case 6: return M.description();
@@ -3190,12 +3190,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		    	return money;
 		    	}
 		case 8: return ""+M.fetchFaction(CMLib.factions().AlignID());
-		case 9: return ""+M.baseEnvStats().disposition();
-		case 10: return ""+M.baseEnvStats().sensesMask();
-		case 11: return ""+M.baseEnvStats().armor();
-		case 12: return ""+M.baseEnvStats().damage();
-		case 13: return ""+M.baseEnvStats().attackAdjustment();
-		case 14: return ""+M.baseEnvStats().speed();
+		case 9: return ""+M.basePhyStats().disposition();
+		case 10: return ""+M.basePhyStats().sensesMask();
+		case 11: return ""+M.basePhyStats().armor();
+		case 12: return ""+M.basePhyStats().damage();
+		case 13: return ""+M.basePhyStats().attackAdjustment();
+		case 14: return ""+M.basePhyStats().speed();
 		case 15: return getExtraEnvPropertiesStr(M);
 		case 16: return getGenMobAbilities(M);
 		case 17:{
@@ -3241,8 +3241,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 		case 0: break;
 		case 1: M.baseCharStats().setMyRace(CMClass.getRace(val)); break;
-		case 2: M.baseEnvStats().setLevel(CMath.s_parseIntExpression(val)); break;
-		case 3: M.baseEnvStats().setAbility(CMath.s_parseIntExpression(val)); break;
+		case 2: M.basePhyStats().setLevel(CMath.s_parseIntExpression(val)); break;
+		case 3: M.basePhyStats().setAbility(CMath.s_parseIntExpression(val)); break;
 		case 4: M.setName(val); break;
 		case 5: M.setDisplayText(val); break;
 		case 6: M.setDescription(val); break;
@@ -3255,17 +3255,17 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		case 9: 
 			{
 				  if(CMath.isInteger(val)||(val.trim().length()==0))
-					 M.baseEnvStats().setDisposition(CMath.s_parseIntExpression(val));
+					 M.basePhyStats().setDisposition(CMath.s_parseIntExpression(val));
 				  else
 				  {
-					  M.baseEnvStats().setDisposition(0);
+					  M.basePhyStats().setDisposition(0);
 					  Vector V=CMParms.parseCommas(val,true);
 					  for(Enumeration e=V.elements();e.hasMoreElements();)
 					  {
 						  val=(String)e.nextElement();
-						  int dispIndex=CMParms.indexOfIgnoreCase(EnvStats.IS_CODES,val);
+						  int dispIndex=CMParms.indexOfIgnoreCase(PhyStats.IS_CODES,val);
 						  if(dispIndex>=0)
-							  M.baseEnvStats().setDisposition(M.baseEnvStats().disposition()|(int)CMath.pow(2,dispIndex));
+							  M.basePhyStats().setDisposition(M.basePhyStats().disposition()|(int)CMath.pow(2,dispIndex));
 					  }
 				  }
 				  break;
@@ -3273,25 +3273,25 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		case 10: 
 			{
 				  if(CMath.isInteger(val)||(val.trim().length()==0))
-					 M.baseEnvStats().setSensesMask(CMath.s_parseIntExpression(val));
+					 M.basePhyStats().setSensesMask(CMath.s_parseIntExpression(val));
 				  else
 				  {
-					  M.baseEnvStats().setSensesMask(0);
+					  M.basePhyStats().setSensesMask(0);
 					  Vector V=CMParms.parseCommas(val,true);
 					  for(Enumeration e=V.elements();e.hasMoreElements();)
 					  {
 						  val=(String)e.nextElement();
-						  int dispIndex=CMParms.indexOfIgnoreCase(EnvStats.CAN_SEE_CODES,val);
+						  int dispIndex=CMParms.indexOfIgnoreCase(PhyStats.CAN_SEE_CODES,val);
 						  if(dispIndex>=0)
-							  M.baseEnvStats().setSensesMask(M.baseEnvStats().sensesMask()|(int)CMath.pow(2,dispIndex));
+							  M.basePhyStats().setSensesMask(M.basePhyStats().sensesMask()|(int)CMath.pow(2,dispIndex));
 					  }
 				  }
 				  break;
 			}
-		case 11: M.baseEnvStats().setArmor(CMath.s_parseIntExpression(val)); break;
-		case 12: M.baseEnvStats().setDamage(CMath.s_parseIntExpression(val)); break;
-		case 13: M.baseEnvStats().setAttackAdjustment(CMath.s_parseIntExpression(val)); break;
-		case 14: M.baseEnvStats().setSpeed(CMath.s_parseMathExpression(val)); break;
+		case 11: M.basePhyStats().setArmor(CMath.s_parseIntExpression(val)); break;
+		case 12: M.basePhyStats().setDamage(CMath.s_parseIntExpression(val)); break;
+		case 13: M.basePhyStats().setAttackAdjustment(CMath.s_parseIntExpression(val)); break;
+		case 14: M.basePhyStats().setSpeed(CMath.s_parseMathExpression(val)); break;
 		case 15: {
 					 while(M.numEffects()>0)
 					 {

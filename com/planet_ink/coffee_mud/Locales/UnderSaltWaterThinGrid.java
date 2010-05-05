@@ -39,11 +39,11 @@ public class UnderSaltWaterThinGrid extends UnderWaterThinGrid
 	public UnderSaltWaterThinGrid()
 	{
 		super();
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_SWIMMING);
-		baseEnvStats.setWeight(3);
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_SWIMMING);
+		basePhyStats.setWeight(3);
 		setDisplayText("Under the water");
 		setDescription("");
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_UNDERWATER;}
 	public int domainConditions(){return Room.CONDITION_WET;}

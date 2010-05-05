@@ -45,11 +45,11 @@ public class WizInv extends StdCommand
 		if(Character.toUpperCase(str.charAt(0))!='W')
 			commands.insertElementAt("OFF",1);
 		commands.removeElementAt(0);
-		int abilityCode=EnvStats.IS_NOT_SEEN|EnvStats.IS_CLOAKED;
+		int abilityCode=PhyStats.IS_NOT_SEEN|PhyStats.IS_CLOAKED;
 		str="Prop_WizInvis";
 		Ability A=mob.fetchEffect(str);
 		if((commands.size()>0)&&("NOCLOAK".startsWith(CMParms.combine(commands,0).trim().toUpperCase())))
-		    abilityCode=EnvStats.IS_NOT_SEEN;
+		    abilityCode=PhyStats.IS_NOT_SEEN;
 		if(CMParms.combine(commands,0).trim().equalsIgnoreCase("OFF"))
 		{
 		   if(A!=null)
@@ -83,7 +83,7 @@ public class WizInv extends StdCommand
 			A=mob.fetchEffect(A.ID());
 			if(A!=null) A.setAbilityCode(abilityCode);
 			
-			mob.recoverEnvStats();
+			mob.recoverPhyStats();
 			mob.location().recoverRoomStats();
 			mob.tell("You may uninvoke WIZINV with 'WIZINV OFF'.");
 			return false;

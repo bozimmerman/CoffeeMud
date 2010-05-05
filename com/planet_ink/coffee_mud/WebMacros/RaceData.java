@@ -66,7 +66,7 @@ public class RaceData extends StdWebMacro
         return str.toString();
     }
 
-    public static StringBuffer estats(EnvStats E, char c, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
+    public static StringBuffer estats(PhyStats E, char c, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
     {
         StringBuffer str=new StringBuffer("");
         DVector theclasses=new DVector(2);
@@ -503,7 +503,7 @@ public class RaceData extends StdWebMacro
 		R.startRacing(mob,false);
 		mob.recoverCharStats();
 		mob.recoverCharStats();
-		mob.recoverEnvStats();
+		mob.recoverPhyStats();
 		mob.recoverMaxState();
 		mob.setSession(null);
 		return mob;
@@ -759,9 +759,9 @@ public class RaceData extends StdWebMacro
                     if(parms.containsKey("ESTATS"))
                     {
                         String eStats=R.getStat("ESTATS");
-                        EnvStats adjEStats=(EnvStats)CMClass.getCommon("DefaultEnvStats"); adjEStats.setAllValues(0);
-                        if(eStats.length()>0){ CMLib.coffeeMaker().setEnvStats(adjEStats,eStats);}
-                        str.append(estats(adjEStats,'E',httpReq,parms,0)+", ");
+                        PhyStats adjPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats"); adjPStats.setAllValues(0);
+                        if(eStats.length()>0){ CMLib.coffeeMaker().setPhyStats(adjPStats,eStats);}
+                        str.append(estats(adjPStats,'E',httpReq,parms,0)+", ");
                     }
                     if(parms.containsKey("CSTATS"))
                     {

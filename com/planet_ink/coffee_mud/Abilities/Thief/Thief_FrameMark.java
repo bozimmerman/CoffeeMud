@@ -76,7 +76,7 @@ public class Thief_FrameMark extends ThiefSkill
 			mob.tell("You aren't wanted for anything here.");
 			return false;
 		}
-		double goldRequired=target.envStats().level() * 1000.0;
+		double goldRequired=target.phyStats().level() * 1000.0;
 		String localCurrency=CMLib.beanCounter().getCurrency(mob.location());
 		if(CMLib.beanCounter().getTotalAbsoluteValue(mob,localCurrency)<goldRequired)
 		{
@@ -88,7 +88,7 @@ public class Thief_FrameMark extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=(target.envStats().level()-(mob.envStats().level()+(2*super.getXLEVELLevel(mob)))*15);
+		int levelDiff=(target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*15);
         if(levelDiff<0) levelDiff=0;
 		boolean success=proficiencyCheck(mob,-levelDiff,auto);
 

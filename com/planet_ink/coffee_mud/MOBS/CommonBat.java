@@ -46,27 +46,27 @@ public class CommonBat extends StdMOB
 		setMoney(0);
 		setWimpHitPoint(0);
 
-		baseEnvStats.setWeight(1 + Math.abs(randomizer.nextInt() % 2));
+		basePhyStats.setWeight(1 + Math.abs(randomizer.nextInt() % 2));
 
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,12);
 		baseCharStats().setStat(CharStats.STAT_DEXTERITY,17);
 
-		baseEnvStats().setDamage(1);
-		baseEnvStats().setSpeed(1.0);
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(1);
-		baseEnvStats().setArmor(80);
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_FLYING);
+		basePhyStats().setDamage(1);
+		basePhyStats().setSpeed(1.0);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(1);
+		basePhyStats().setArmor(80);
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_FLYING);
 		baseCharStats().setMyRace(CMClass.getRace("Bat"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

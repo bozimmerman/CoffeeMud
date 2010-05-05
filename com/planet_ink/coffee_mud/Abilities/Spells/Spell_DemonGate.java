@@ -111,7 +111,7 @@ public class Spell_DemonGate extends Spell
 			{
 				mob.location().send(mob,msg);
                 MOB otherMonster=mob.location().fetchInhabitant("the great demonbeast$");
-				MOB myMonster = determineMonster(mob, mob.envStats().level()+(getXLEVELLevel(mob)+(2*getX1Level(mob))));
+				MOB myMonster = determineMonster(mob, mob.phyStats().level()+(getXLEVELLevel(mob)+(2*getX1Level(mob))));
                 if(otherMonster!=null)
                 {
                     myMonster.location().showOthers(myMonster,mob,CMMsg.MSG_OK_ACTION,"^F^<FIGHT^><S-NAME> wrests itself from out of <T-YOUPOSS> control!^</FIGHT^>^?");
@@ -144,30 +144,30 @@ public class Spell_DemonGate extends Spell
 	{
 		MOB newMOB=CMClass.getMOB("GenRideable");
 		Rideable ride=(Rideable)newMOB;
-		newMOB.baseEnvStats().setAbility(22 + super.getXLEVELLevel(caster));
-		newMOB.baseEnvStats().setLevel(level+ 2 + super.getXLEVELLevel(caster));
+		newMOB.basePhyStats().setAbility(22 + super.getXLEVELLevel(caster));
+		newMOB.basePhyStats().setLevel(level+ 2 + super.getXLEVELLevel(caster));
 		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_EVIL);
-		newMOB.baseEnvStats().setWeight(850);
-		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
+		newMOB.basePhyStats().setWeight(850);
+		newMOB.basePhyStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.baseCharStats().setStat(CharStats.STAT_STRENGTH,18);
 		newMOB.baseCharStats().setStat(CharStats.STAT_DEXTERITY,18);
 		newMOB.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,18);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Demon"));
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
-		newMOB.recoverEnvStats();
+		newMOB.recoverPhyStats();
 		newMOB.recoverCharStats();
-		newMOB.baseEnvStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
-		newMOB.baseEnvStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
-		newMOB.baseEnvStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
-		newMOB.baseEnvStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB));
+		newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
+		newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
+		newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
+		newMOB.basePhyStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB));
 		newMOB.setName("the great demonbeast");
 		newMOB.setDisplayText("a horrendous demonbeast is stalking around here");
 		newMOB.setDescription("Blood red skin with massive horns, and of course muscles in places you didn`t know existed.");
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		ride.setRiderCapacity(2);
 		newMOB.recoverCharStats();
-		newMOB.recoverEnvStats();
+		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
 		newMOB.text();

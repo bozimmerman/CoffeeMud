@@ -986,7 +986,7 @@ public class DefaultFaction implements Faction, MsgListener
         if((source!=target)&&(!event.just100()))
         {
             int levelLimit=CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE);
-            int levelDiff=target.envStats().level()-source.envStats().level();
+            int levelDiff=target.phyStats().level()-source.phyStats().level();
 
             if(levelDiff<(-levelLimit) )
                 baseChangeAmount=0.0;
@@ -1577,10 +1577,10 @@ public class DefaultFaction implements Faction, MsgListener
         	}
         }
         
-    	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+    	public void affectPhyStats(Physical affected, PhyStats affectableStats)
     	{
     		if(!noStatAffectors)
-	    		for(Ability A : myEffects) A.affectEnvStats(affected, affectableStats);
+	    		for(Ability A : myEffects) A.affectPhyStats(affected, affectableStats);
     	}
     	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
     	{

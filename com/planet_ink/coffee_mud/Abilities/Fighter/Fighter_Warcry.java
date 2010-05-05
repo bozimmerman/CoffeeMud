@@ -47,9 +47,9 @@ public class Fighter_Warcry extends FighterSkill
 
 	protected int timesTicking=0;
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(invoker==null) return;
 		float f=(float)CMath.mul(0.1,(float)getXLEVELLevel(invoker()));
 		affectableStats.setDamage(affectableStats.damage()+1+(int)Math.round(CMath.div(affectableStats.damage(),4.0-f)));

@@ -42,11 +42,11 @@ public class ChainMailVest extends StdArmor
 		setDescription("This is fairly solid looking vest made of chain mail.");
 		properWornBitmap=Wearable.WORN_TORSO;
 		wornLogicalAnd=false;
-		baseEnvStats().setArmor(25);
-		baseEnvStats().setWeight(30);
-		baseEnvStats().setAbility(0);
+		basePhyStats().setArmor(25);
+		basePhyStats().setWeight(30);
+		basePhyStats().setAbility(0);
 		baseGoldValue=75;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_STEEL;
 	}
 

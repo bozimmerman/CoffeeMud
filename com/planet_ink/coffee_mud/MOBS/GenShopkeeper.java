@@ -44,7 +44,7 @@ public class GenShopkeeper extends StdShopKeeper
 		username="a generic shopkeeper";
 		setDescription("He looks like he wants to sell something to you.");
 		setDisplayText("A generic shopkeeper stands here.");
-		baseEnvStats().setAbility(11); // his only off-default
+		basePhyStats().setAbility(11); // his only off-default
 	}
 
 	public boolean isGeneric(){return true;}

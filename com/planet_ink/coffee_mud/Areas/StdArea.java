@@ -56,8 +56,8 @@ public class StdArea implements Area
     protected STreeMap<String,String> 		
     					blurbFlags=new STreeMap<String,String>();
 	
-	protected EnvStats 	envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
-	protected EnvStats 	baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+	protected PhyStats 	phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+	protected PhyStats 	basePhyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 	
 	protected STreeMap<String, Room>
 						properRooms=new STreeMap<String, Room>(new RoomIDComparator());
@@ -177,8 +177,8 @@ public class StdArea implements Area
     public void destroy()
     {
         CMLib.map().registerWorldObjectDestroyed(this,null,this);
-        envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
-        baseEnvStats=envStats;
+        phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+        basePhyStats=phyStats;
         amDestroyed=true;
         miscText=null;
         imageName=null;
@@ -211,7 +211,7 @@ public class StdArea implements Area
 
 	public String name()
 	{
-		if(envStats().newName()!=null) return envStats().newName();
+		if(phyStats().newName()!=null) return phyStats().newName();
 		return name;
 	}
 	public synchronized RoomnumberSet getProperRoomnumbers()
@@ -233,27 +233,27 @@ public class StdArea implements Area
 	}
 	public void setName(String newName){name=newName;}
 	public String Name(){return name;}
-	public EnvStats envStats()
+	public PhyStats phyStats()
 	{
-		return envStats;
+		return phyStats;
 	}
-	public EnvStats baseEnvStats()
+	public PhyStats basePhyStats()
 	{
-		return baseEnvStats;
+		return basePhyStats;
 	}
-	public void recoverEnvStats()
+	public void recoverPhyStats()
 	{
-		baseEnvStats.copyInto(envStats);
+		basePhyStats.copyInto(phyStats);
 		for(int a=0;a<numEffects();a++)
 		{
 			Ability A=fetchEffect(a);
 			if(A!=null)
-				A.affectEnvStats(this,envStats);
+				A.affectPhyStats(this,phyStats);
 		}
 	}
-	public void setBaseEnvStats(EnvStats newBaseEnvStats)
+	public void setBasePhyStats(PhyStats newStats)
 	{
-		baseEnvStats=(EnvStats)newBaseEnvStats.copyOf();
+		basePhyStats=(PhyStats)newStats.copyOf();
 	}
 	public int getTechLevel(){return techLevel;}
 	public void setTechLevel(int level){techLevel=level;}
@@ -379,8 +379,8 @@ public class StdArea implements Area
 	public boolean isGeneric(){return false;}
 	protected void cloneFix(StdArea E)
 	{
-		baseEnvStats=(EnvStats)E.baseEnvStats().copyOf();
-		envStats=(EnvStats)E.envStats().copyOf();
+		basePhyStats=(PhyStats)E.basePhyStats().copyOf();
+		phyStats=(PhyStats)E.phyStats().copyOf();
 
 		parents=null;
 		if(E.parents!=null)
@@ -745,12 +745,12 @@ public class StdArea implements Area
 		return true;
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-	    int senses=envStats.sensesMask()&(Integer.MAX_VALUE-(EnvStats.SENSE_UNLOCATABLE|EnvStats.CAN_NOT_SEE));
+	    int senses=phyStats.sensesMask()&(Integer.MAX_VALUE-(PhyStats.SENSE_UNLOCATABLE|PhyStats.CAN_NOT_SEE));
 		if(senses>0) affectableStats.setSensesMask(affectableStats.sensesMask()|senses);
-		int disposition=envStats().disposition()
-			&((Integer.MAX_VALUE-(EnvStats.IS_SLEEPING|EnvStats.IS_HIDDEN)));
+		int disposition=phyStats().disposition()
+			&((Integer.MAX_VALUE-(PhyStats.IS_SLEEPING|PhyStats.IS_HIDDEN)));
 		if((affected instanceof Room)&&(CMLib.map().hasASky((Room)affected)))
 		{
 		    Climate C=getClimateObj();
@@ -758,16 +758,16 @@ public class StdArea implements Area
 		    ||(C.weatherType((Room)affected)==Climate.WEATHER_BLIZZARD)
 		    ||(C.weatherType((Room)affected)==Climate.WEATHER_DUSTSTORM)
 		    ||(getTimeObj().getTODCode()==TimeClock.TIME_NIGHT))
-				disposition=disposition|EnvStats.IS_DARK;
+				disposition=disposition|PhyStats.IS_DARK;
 		}
 		if(disposition>0)
 			affectableStats.setDisposition(affectableStats.disposition()|disposition);
-		affectableStats.setWeight(affectableStats.weight()+envStats().weight());
+		affectableStats.setWeight(affectableStats.weight()+phyStats().weight());
         for(int a=0;a<numEffects();a++)
         {
             Ability A=fetchEffect(a);
             if((A!=null)&&(A.bubbleAffect()))
-               A.affectEnvStats(affected,affectableStats);
+               A.affectPhyStats(affected,affectableStats);
         }
 	}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
@@ -969,7 +969,7 @@ public class StdArea implements Area
 					mob=R.fetchInhabitant(i);
 					if((mob!=null)&&(mob.isMonster()))
 					{
-						int lvl=mob.baseEnvStats().level();
+						int lvl=mob.basePhyStats().level();
 						levelRanges.addElement(Integer.valueOf(lvl));
 						if((theFaction!=null)&&(mob.fetchFaction(theFaction.factionID())!=Integer.MAX_VALUE))
 						{

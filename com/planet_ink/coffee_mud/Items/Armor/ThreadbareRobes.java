@@ -26,12 +26,12 @@ public class ThreadbareRobes extends StdArmor
 		setDescription("These robes are patched, yet still gape with ragged holes. Evidently having seen years of use, they are vitualy worthless");
 		properWornBitmap=Wearable.WORN_TORSO | Wearable.WORN_ARMS | Wearable.WORN_LEGS;
 		wornLogicalAnd=true;
-		baseEnvStats().setArmor(5);
-		baseEnvStats().setWeight(2);
-		baseEnvStats().setAbility(0);
+		basePhyStats().setArmor(5);
+		basePhyStats().setWeight(2);
+		basePhyStats().setAbility(0);
 		baseGoldValue=1;
 		material=RawMaterial.RESOURCE_COTTON;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 }

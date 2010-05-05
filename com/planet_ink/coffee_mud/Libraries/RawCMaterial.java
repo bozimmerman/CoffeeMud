@@ -128,7 +128,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		for(int i=0;i<found.size();i++)
 		{
 			I=(Item)found.elementAt(i);
-			int weight=I.baseEnvStats().weight();
+			int weight=I.basePhyStats().weight();
 			totalWeight+=weight;
 			totalValue+=I.baseGoldValue();
 			if(weight>maxFound)
@@ -165,7 +165,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		            foundAblesH.put(A.ID(),A);
 		    }
 		}
-		bundle.baseEnvStats().setWeight(totalWeight);
+		bundle.basePhyStats().setWeight(totalWeight);
 		bundle.setBaseValue(totalValue);
         adjustResourceName(bundle);
 		if(bundle instanceof Food)
@@ -250,14 +250,14 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
         &&(!CMLib.flags().enchanted(I)))
         {
             Ability rott=I.fetchEffect("Poison_Rotten");
-            if(I.baseEnvStats().weight()>1)
+            if(I.basePhyStats().weight()>1)
             {
                 Environmental owner=I.owner();
-                if(number<=0) number=I.baseEnvStats().weight();
+                if(number<=0) number=I.basePhyStats().weight();
                 if(number<=0) number=1;
-                if(number>=(I.baseEnvStats().weight()-1))
-                    number=I.baseEnvStats().weight();
-                I.baseEnvStats().setWeight(I.baseEnvStats().weight());
+                if(number>=(I.basePhyStats().weight()-1))
+                    number=I.basePhyStats().weight();
+                I.basePhyStats().setWeight(I.basePhyStats().weight());
                 int loseValue=0;
                 int loseNourishment=0;
                 int loseThirstHeld=0;
@@ -289,9 +289,9 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
                     else
                         E=null;
                 }
-                if((I.baseEnvStats().weight()-number)>1)
+                if((I.basePhyStats().weight()-number)>1)
                 {
-                    I.baseEnvStats().setWeight(I.baseEnvStats().weight()-number);
+                    I.basePhyStats().setWeight(I.basePhyStats().weight()-number);
                     I.setBaseValue(I.baseGoldValue()-loseValue);
                     this.adjustResourceName(I);
                     if(I instanceof Food)
@@ -309,7 +309,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
                         if(((Drink)I).liquidRemaining()<=0)
                             ((Drink)I).setLiquidRemaining(0);
                     }
-                    I.recoverEnvStats();
+                    I.recoverPhyStats();
                     // now move it to the end!
                     if(owner instanceof Room)
                     {
@@ -538,13 +538,13 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			if(I instanceof Drink)
 				((Drink)I).setLiquidType(myResource);
 			I.setBaseValue(RawMaterial.CODES.VALUE(myResource));
-			I.baseEnvStats().setWeight(1);
+			I.basePhyStats().setWeight(1);
 			if(I instanceof RawMaterial)
 				((RawMaterial)I).setDomainSource(localeCode);
             adjustResourceName(I);
 			I.setDescription("");
 			addEffectsToResource(I);
-			I.recoverEnvStats();
+			I.recoverPhyStats();
 			return I;
 		}
 		return null;
@@ -598,7 +598,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
                 name=name+" ore";
         }
         
-        if(I.baseEnvStats().weight()==1)
+        if(I.basePhyStats().weight()==1)
         {
             if((I.rawSecretIdentity()!=null)
             &&(I.rawSecretIdentity().length()>0))
@@ -618,9 +618,9 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
         else
         {
             if(I instanceof Drink)
-                I.setName("a "+I.baseEnvStats().weight()+"# pool of "+name);
+                I.setName("a "+I.basePhyStats().weight()+"# pool of "+name);
             else
-                I.setName("a "+I.baseEnvStats().weight()+"# "+name+" bundle");
+                I.setName("a "+I.basePhyStats().weight()+"# "+name+" bundle");
             I.setDisplayText(I.name()+" is here.");
         }
     }
@@ -636,13 +636,13 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			I=CMClass.getItem("GenLiquidResource");
 		else
 			I=CMClass.getItem("GenResource");
-        I.baseEnvStats().setWeight(1);
+        I.basePhyStats().setWeight(1);
         I.setMaterial(type);
         adjustResourceName(I);
 		I.setDescription("");
 		I.setBaseValue(RawMaterial.CODES.VALUE(type));
 		addEffectsToResource(I);
-		I.recoverEnvStats();
+		I.recoverPhyStats();
 		return I;
 	}
     
@@ -675,9 +675,9 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
             &&(!CMLib.flags().isOnFire(I))
             &&(!CMLib.flags().enchanted(I)))
             {
-                if(I.baseEnvStats().weight()>1)
+                if(I.basePhyStats().weight()>1)
                 {
-                    I.baseEnvStats().setWeight(I.baseEnvStats().weight()-1);
+                    I.basePhyStats().setWeight(I.basePhyStats().weight()-1);
                     Environmental E=makeResource(otherMaterial,null,true,I.rawSecretIdentity());
                     if(E instanceof Item)
                         lostValue+=((Item)E).value();
@@ -699,9 +699,9 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
             &&(!CMLib.flags().enchanted(I))
             &&(howMuch>0))
             {
-                if(I.baseEnvStats().weight()>howMuch)
+                if(I.basePhyStats().weight()>howMuch)
                 {
-                    I.baseEnvStats().setWeight(I.baseEnvStats().weight()-howMuch);
+                    I.basePhyStats().setWeight(I.basePhyStats().weight()-howMuch);
                     Environmental E=makeResource(finalMaterial,null,true,I.rawSecretIdentity());
                     if(E instanceof Item)
                         lostValue+=(((Item)E).value()*howMuch);
@@ -710,7 +710,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
                 }
                 else
                 {
-                    howMuch-=I.baseEnvStats().weight();
+                    howMuch-=I.basePhyStats().weight();
                     lostValue+=I.value();
                     ((RawMaterial)I).quickDestroy();
                 }
@@ -777,7 +777,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			&&(!CMLib.flags().isOnFire(I))
 			&&(!CMLib.flags().enchanted(I))
 			&&(I.container()==null))
-				foundWood+=I.envStats().weight();
+				foundWood+=I.phyStats().weight();
 		}
 		return foundWood;
 	}

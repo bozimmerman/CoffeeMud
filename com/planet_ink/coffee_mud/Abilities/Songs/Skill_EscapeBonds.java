@@ -51,7 +51,7 @@ public class Skill_EscapeBonds extends BardSkill
 		if(!CMLib.flags().isBound(mob))
 			unInvoke();
 		else
-			stats.setStat(CharStats.STAT_STRENGTH,stats.getStat(CharStats.STAT_STRENGTH)+stats.getStat(CharStats.STAT_DEXTERITY)+mob.envStats().level());
+			stats.setStat(CharStats.STAT_STRENGTH,stats.getStat(CharStats.STAT_STRENGTH)+stats.getStat(CharStats.STAT_DEXTERITY)+mob.phyStats().level());
 	}
 
     public int castingQuality(MOB mob, Physical target)

@@ -47,14 +47,14 @@ public class StdDrink extends StdContainer implements Drink,Item
 	{
 		super();
 		setName("a cup");
-		baseEnvStats.setWeight(10);
+		basePhyStats.setWeight(10);
 		capacity=0;
 		containType=Container.CONTAIN_LIQUID;
 		setDisplayText("a cup sits here.");
 		setDescription("A small wooden cup with a lid.");
 		baseGoldValue=5;
 		material=RawMaterial.RESOURCE_LEATHER;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 
@@ -119,7 +119,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_DRINK:
-				if((mob.isMine(this))||(envStats().weight()>1000)||(!CMLib.flags().isGettable(this)))
+				if((mob.isMine(this))||(phyStats().weight()>1000)||(!CMLib.flags().isGettable(this)))
 				{
 					if(!containsDrink())
 					{

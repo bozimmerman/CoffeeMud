@@ -55,7 +55,7 @@ public class Spell_DispelMagic extends Spell
                     &&(A.canBeUninvoked())
                     &&(A.abstractQuality()==Ability.QUALITY_MALICIOUS)
                     &&(A.invoker()!=mob)
-                    &&(A.invoker().envStats().level()<=mob.envStats().level()+5))
+                    &&(A.invoker().phyStats().level()<=mob.phyStats().level()+5))
                         return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
                 }
             }
@@ -69,7 +69,7 @@ public class Spell_DispelMagic extends Spell
                     &&((A.abstractQuality()==Ability.QUALITY_BENEFICIAL_OTHERS)
                         ||(A.abstractQuality()==Ability.QUALITY_BENEFICIAL_SELF))
                     &&(A.invoker()==((MOB)target))
-                    &&(A.invoker().envStats().level()<=mob.envStats().level()+5))
+                    &&(A.invoker().phyStats().level()<=mob.phyStats().level()+5))
                         return super.castingQuality(mob, target,Ability.QUALITY_MALICIOUS);
                 }
             }
@@ -101,7 +101,7 @@ public class Spell_DispelMagic extends Spell
 				foundSomethingAtLeast=true;
 				if((A.invoker()!=null)
 				&&((A.invoker()==mob)
-    				||(A.invoker().envStats().level()<=mob.envStats().level()+5)
+    				||(A.invoker().phyStats().level()<=mob.phyStats().level()+5)
                     ||admin))
 					revokeThis=A;
 			}
@@ -123,7 +123,7 @@ public class Spell_DispelMagic extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int diff=revokeThis.invoker().envStats().level()-mob.envStats().level();
+		int diff=revokeThis.invoker().phyStats().level()-mob.phyStats().level();
 		if(diff<0) diff=0;
 		else diff=diff*-20;
 

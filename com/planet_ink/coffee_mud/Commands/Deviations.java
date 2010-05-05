@@ -233,35 +233,35 @@ public class Deviations extends StdCommand
 				if(I instanceof Weapon)
 					W=(Weapon)I;
 				Hashtable vals=CMLib.itemBuilder().timsItemAdjustments(
-								I,I.envStats().level(),I.material(),
+								I,I.phyStats().level(),I.material(),
 								I.rawLogicalAnd()?2:1,
 								(W==null)?0:W.weaponClassification(),
 								I.maxRange(),
 								I.rawProperLocationBitmap());
 				itemResults.append(CMStrings.padRight(I.name(),20)+" ");
 				itemResults.append(CMStrings.padRight(I.ID(),10)+" ");
-				itemResults.append(CMStrings.padRight(""+I.envStats().level(),4)+" ");
+				itemResults.append(CMStrings.padRight(""+I.phyStats().level(),4)+" ");
 				itemResults.append(CMStrings.padRight(""+getDeviation(
-												I.baseEnvStats().attackAdjustment(),
+												I.basePhyStats().attackAdjustment(),
 												vals,"ATTACK"),5)+" ");
 				itemResults.append(CMStrings.padRight(""+getDeviation(
-												I.baseEnvStats().damage(),
+												I.basePhyStats().damage(),
 												vals,"DAMAGE"),5)+" ");
 				itemResults.append(CMStrings.padRight(""+getDeviation(
-												I.baseEnvStats().damage(),
+												I.basePhyStats().damage(),
 												vals,"ARMOR"),5)+" ");
 				itemResults.append(CMStrings.padRight(""+getDeviation(
 												I.baseGoldValue(),
 												vals,"VALUE"),5)+" ");
-				itemResults.append(CMStrings.padRight(""+((I.envStats().rejuv()==Integer.MAX_VALUE)?" MAX":""+I.envStats().rejuv()),5)+" ");
+				itemResults.append(CMStrings.padRight(""+((I.phyStats().rejuv()==Integer.MAX_VALUE)?" MAX":""+I.phyStats().rejuv()),5)+" ");
 				if(I instanceof Weapon)
-					itemResults.append(CMStrings.padRight(""+I.baseEnvStats().weight(),4));
+					itemResults.append(CMStrings.padRight(""+I.basePhyStats().weight(),4));
 				else
 					itemResults.append(CMStrings.padRight(""+getDeviation(
-													I.baseEnvStats().weight(),
+													I.basePhyStats().weight(),
 													vals, "WEIGHT"), 4)+" ");
 				if(I instanceof Armor)
-					itemResults.append(CMStrings.padRight(""+((Armor)I).envStats().height(),4));
+					itemResults.append(CMStrings.padRight(""+((Armor)I).phyStats().height(),4));
 				else
 					itemResults.append(CMStrings.padRight(" - ",4)+" ");
 				itemResults.append("\n\r");
@@ -270,20 +270,20 @@ public class Deviations extends StdCommand
 			{
 				MOB M=(MOB)check.elementAt(c);
 				mobResults.append(CMStrings.padRight(M.name(),20)+" ");
-				mobResults.append(CMStrings.padRight(""+M.envStats().level(),4)+" ");
+				mobResults.append(CMStrings.padRight(""+M.phyStats().level(),4)+" ");
 				mobResults.append(CMStrings.padRight(""+getDeviation(
-												M.baseEnvStats().attackAdjustment(),
+												M.basePhyStats().attackAdjustment(),
 												CMLib.leveler().getLevelAttack(M)),5)+" ");
 				mobResults.append(CMStrings.padRight(""+getDeviation(
-												M.baseEnvStats().damage(),
-												(int)Math.round(CMath.div(CMLib.leveler().getLevelMOBDamage(M),M.baseEnvStats().speed()))),5)+" ");
+												M.basePhyStats().damage(),
+												(int)Math.round(CMath.div(CMLib.leveler().getLevelMOBDamage(M),M.basePhyStats().speed()))),5)+" ");
 				mobResults.append(CMStrings.padRight(""+getDeviation(
-												M.baseEnvStats().armor(),
+												M.basePhyStats().armor(),
 												CMLib.leveler().getLevelMOBArmor(M)),5)+" ");
 				mobResults.append(CMStrings.padRight(""+getDeviation(
-												(int)Math.round(M.baseEnvStats().speed()),
+												(int)Math.round(M.basePhyStats().speed()),
 												(int)Math.round(CMLib.leveler().getLevelMOBSpeed(M))),5)+" ");
-				mobResults.append(CMStrings.padRight(""+((M.envStats().rejuv()==Integer.MAX_VALUE)?" MAX":""+M.envStats().rejuv()) ,5)+" ");
+				mobResults.append(CMStrings.padRight(""+((M.phyStats().rejuv()==Integer.MAX_VALUE)?" MAX":""+M.phyStats().rejuv()) ,5)+" ");
 				if(useFaction!=null) 
 				    mobResults.append(CMStrings.padRight(""+(M.fetchFaction(useFaction.factionID())==Integer.MAX_VALUE?"N/A":""+M.fetchFaction(useFaction.factionID())),7)+" ");
 				int reallyWornCount = 0;

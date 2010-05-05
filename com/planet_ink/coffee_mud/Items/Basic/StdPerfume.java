@@ -54,7 +54,7 @@ public class StdPerfume extends StdDrink implements Perfume
 		capacity=0;
 		baseGoldValue=100;
 		setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_ABOUT_BODY|Wearable.WORN_FLOATING_NEARBY|Wearable.WORN_HELD|Wearable.WORN_ARMS|Wearable.WORN_BACK|Wearable.WORN_EARS|Wearable.WORN_EYES|Wearable.WORN_FEET|Wearable.WORN_HANDS|Wearable.WORN_HEAD|Wearable.WORN_LEFT_FINGER|Wearable.WORN_RIGHT_FINGER|Wearable.WORN_LEGS|Wearable.WORN_LEFT_WRIST|Wearable.WORN_MOUTH|Wearable.WORN_NECK|Wearable.WORN_RIGHT_WRIST|Wearable.WORN_TORSO|Wearable.WORN_WAIST);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public Vector getSmellEmotes(Perfume me)

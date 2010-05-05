@@ -42,23 +42,23 @@ public class Spell_FeelTheVoid extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
     protected final static int mask=
-			EnvStats.CAN_NOT_TASTE|EnvStats.CAN_NOT_SMELL|EnvStats.CAN_NOT_SEE
-		    |EnvStats.CAN_NOT_HEAR;
+			PhyStats.CAN_NOT_TASTE|PhyStats.CAN_NOT_SMELL|PhyStats.CAN_NOT_SEE
+		    |PhyStats.CAN_NOT_HEAR;
     protected final static int mask2=Integer.MAX_VALUE
-			-EnvStats.CAN_SEE_BONUS
-		    -EnvStats.CAN_SEE_DARK
-		    -EnvStats.CAN_SEE_EVIL
-		    -EnvStats.CAN_SEE_GOOD
-		    -EnvStats.CAN_SEE_HIDDEN
-		    -EnvStats.CAN_SEE_INFRARED
-		    -EnvStats.CAN_SEE_INVISIBLE
-		    -EnvStats.CAN_SEE_METAL
-		    -EnvStats.CAN_SEE_SNEAKERS
-		    -EnvStats.CAN_SEE_VICTIM;
+			-PhyStats.CAN_SEE_BONUS
+		    -PhyStats.CAN_SEE_DARK
+		    -PhyStats.CAN_SEE_EVIL
+		    -PhyStats.CAN_SEE_GOOD
+		    -PhyStats.CAN_SEE_HIDDEN
+		    -PhyStats.CAN_SEE_INFRARED
+		    -PhyStats.CAN_SEE_INVISIBLE
+		    -PhyStats.CAN_SEE_METAL
+		    -PhyStats.CAN_SEE_SNEAKERS
+		    -PhyStats.CAN_SEE_VICTIM;
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSensesMask(mask&mask2);
 	}
 

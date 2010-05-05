@@ -67,7 +67,7 @@ public class Spell_FlamingEnsnarement extends Spell
 			case CMMsg.TYP_FLEE:
 				if(mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> struggle(s) against the flaming ensnarement."))
 				{
-					amountRemaining-=mob.envStats().level();
+					amountRemaining-=mob.phyStats().level();
 					if(amountRemaining<0)
 						unInvoke();
 				}
@@ -77,10 +77,10 @@ public class Spell_FlamingEnsnarement extends Spell
 		return super.okMessage(myHost,msg);
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition((int)(affectableStats.disposition()&(EnvStats.ALLMASK-EnvStats.IS_FLYING)));
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setDisposition((int)(affectableStats.disposition()&(PhyStats.ALLMASK-PhyStats.IS_FLYING)));
 	}
 	public void unInvoke()
 	{

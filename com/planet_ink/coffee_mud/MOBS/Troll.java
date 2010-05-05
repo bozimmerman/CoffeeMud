@@ -46,7 +46,7 @@ public class Troll extends StdMOB
 		setDisplayText("A mean looking troll glares at you.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);
 		setMoney(10);
-		baseEnvStats.setWeight(350);
+		basePhyStats.setWeight(350);
 		setWimpHitPoint(0);
 
         int addedInt = (int)Math.round(Math.random() * 3.0);
@@ -55,19 +55,19 @@ public class Troll extends StdMOB
 		baseCharStats().setMyRace(CMClass.getRace("Troll"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(8);
-		baseEnvStats().setAttackAdjustment(baseEnvStats().attackAdjustment()+20);
-		baseEnvStats().setDamage(baseEnvStats().damage()+5);
-		baseEnvStats().setArmor(30);
-		baseEnvStats().setSpeed(3.0);
-		baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK | EnvStats.CAN_SEE_INFRARED);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(8);
+		basePhyStats().setAttackAdjustment(basePhyStats().attackAdjustment()+20);
+		basePhyStats().setDamage(basePhyStats().damage()+5);
+		basePhyStats().setArmor(30);
+		basePhyStats().setSpeed(3.0);
+		basePhyStats().setSensesMask(PhyStats.CAN_SEE_DARK | PhyStats.CAN_SEE_INFRARED);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

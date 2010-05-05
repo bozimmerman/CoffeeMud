@@ -45,11 +45,11 @@ public class Chant_ExplosiveDecompression extends Chant
 	protected int canTargetCode(){return Ability.CAN_ROOMS;}
 	public boolean bubbleAffect(){return true;}
 
-	public void affectEnvStats(Environmental affecting, EnvStats stats)
+	public void affectPhyStats(Physical affecting, PhyStats stats)
 	{
-		super.affectEnvStats(affected,stats);
+		super.affectPhyStats(affected,stats);
 		if(affecting instanceof MOB)
-			stats.setSensesMask(stats.sensesMask()|EnvStats.CAN_NOT_BREATHE);
+			stats.setSensesMask(stats.sensesMask()|PhyStats.CAN_NOT_BREATHE);
 	}
 
     public int castingQuality(MOB mob, Physical target)

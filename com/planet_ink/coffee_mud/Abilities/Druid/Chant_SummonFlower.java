@@ -104,7 +104,7 @@ public class Chant_SummonFlower extends Chant_SummonPlants
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
 		Chant_SummonFlower newChant=new Chant_SummonFlower();
-		newItem.baseEnvStats().setLevel(10+newChant.getX1Level(mob));
+		newItem.basePhyStats().setLevel(10+newChant.getX1Level(mob));
 		newItem.setExpirationDate(0);
 		room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" sprout(s) up here.");
 		newChant.PlantsLocation=room;
@@ -117,7 +117,7 @@ public class Chant_SummonFlower extends Chant_SummonPlants
 		}
 		else
 			newChant.beneficialAffect(mob,newItem,0,(newChant.adjustedLevel(mob,0)*240)+450);
-		room.recoverEnvStats();
+		room.recoverPhyStats();
 		return newItem;
 	}
 

@@ -43,14 +43,14 @@ public class GenSSConsole extends StdShipConsole
 	{
 		super();
 		setName("a computer console");
-		baseEnvStats.setWeight(2);
+		basePhyStats.setWeight(2);
 		setDescription("");
 		baseGoldValue=5;
 		containType=Container.CONTAIN_SSCOMPONENTS;
 		setLidsNLocks(true,true,false,false);
 		capacity=500;
 		setMaterial(RawMaterial.RESOURCE_STEEL);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public boolean isGeneric(){return true;}
@@ -66,7 +66,7 @@ public class GenSSConsole extends StdShipConsole
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
 							  "CONTAINTYPES","RIDEBASIS","MOBSHELD",

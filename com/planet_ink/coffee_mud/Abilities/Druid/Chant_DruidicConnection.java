@@ -83,9 +83,9 @@ public class Chant_DruidicConnection extends Chant
         return true;
     }
     
-    public void affectEnvStats(Environmental affected, EnvStats stats)
+    public void affectPhyStats(Physical affected, PhyStats stats)
     {
-        super.affectEnvStats(affected,stats);
+        super.affectPhyStats(affected,stats);
         if(affected instanceof MOB)
         {
             MOB mob=(MOB)affected;

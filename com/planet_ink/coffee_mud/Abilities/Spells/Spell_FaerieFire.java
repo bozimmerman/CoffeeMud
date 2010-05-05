@@ -53,14 +53,14 @@ public class Spell_FaerieFire extends Spell
 		super.unInvoke();
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 
-		if((affectableStats.disposition()&EnvStats.IS_INVISIBLE)==EnvStats.IS_INVISIBLE)
-			affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_INVISIBLE);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GLOWING);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_BONUS);
+		if((affectableStats.disposition()&PhyStats.IS_INVISIBLE)==PhyStats.IS_INVISIBLE)
+			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_INVISIBLE);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GLOWING);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BONUS);
 		affectableStats.setArmor(affectableStats.armor()+10);
 	}
 

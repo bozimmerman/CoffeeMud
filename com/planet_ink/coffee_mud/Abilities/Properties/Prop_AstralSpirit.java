@@ -123,18 +123,18 @@ public class Prop_AstralSpirit extends Property
 		affectableStats.setMyRace(spiritRace());
 		super.affectCharStats(affected, affectableStats);
 	}
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly put the mob into
 		// a sleeping state, so that nothing they do
 		// can get them out of it.
 		affectableStats.setWeight(0);
 		affectableStats.setHeight(-1);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GOLEM);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_INVISIBLE);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_NOT_SEEN);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SPEAK);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOLEM);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_INVISIBLE);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_NOT_SEEN);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SPEAK);
 	}
 }

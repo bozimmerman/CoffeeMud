@@ -49,14 +49,14 @@ public class StdClanContainer extends StdContainer implements ClanItem
 		super();
 
 		setName("a clan container");
-		baseEnvStats.setWeight(1);
+		basePhyStats.setWeight(1);
 		setDisplayText("an item belonging to a clan is here.");
 		setDescription("");
 		secretIdentity="";
 		baseGoldValue=1;
 		capacity=100;
 		material=RawMaterial.RESOURCE_OAK;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public String clanID(){return myClan;}

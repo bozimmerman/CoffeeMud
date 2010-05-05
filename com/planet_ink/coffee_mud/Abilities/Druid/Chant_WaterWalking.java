@@ -43,9 +43,9 @@ public class Chant_WaterWalking extends Chant
     public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	protected boolean triggerNow=false;
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
@@ -53,7 +53,7 @@ public class Chant_WaterWalking extends Chant
 			   ((mob.location()!=null)
 				&&((mob.location().domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
 				   ||(mob.location().domainType()==Room.DOMAIN_INDOORS_WATERSURFACE))))
-				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
+				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
 		}
 	}
 
@@ -92,7 +92,7 @@ public class Chant_WaterWalking extends Chant
 					||(R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)))
 					{
 						triggerNow=true;
-						msg.source().recoverEnvStats();
+						msg.source().recoverPhyStats();
 						return true;
 					}
 				}

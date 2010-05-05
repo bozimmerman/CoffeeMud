@@ -55,11 +55,11 @@ public class Insect extends StdRace
 	protected static Vector resources=new Vector();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SNEAKING);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GOLEM);
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SNEAKING);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOLEM);
 	}
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

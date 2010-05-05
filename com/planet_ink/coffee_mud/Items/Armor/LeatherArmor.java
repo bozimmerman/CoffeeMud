@@ -42,11 +42,11 @@ public class LeatherArmor extends StdArmor
 		setDescription("This is a fairly decent looking suit of leather armor.");
 		properWornBitmap=Wearable.WORN_TORSO | Wearable.WORN_ARMS | Wearable.WORN_LEGS;
 		wornLogicalAnd=true;
-		baseEnvStats().setArmor(12);
-		baseEnvStats().setWeight(15);
-		baseEnvStats().setAbility(0);
+		basePhyStats().setArmor(12);
+		basePhyStats().setWeight(15);
+		basePhyStats().setAbility(0);
 		baseGoldValue=10;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_LEATHER;
 	}
 

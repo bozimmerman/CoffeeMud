@@ -108,7 +108,7 @@ public class Prop_WearEnabler extends Prop_HaveEnabler
     public String accountForYourself()
     { return spellAccountingsWithMask("Grants "," to the wearer/wielder.");}
 
-    public void recoverEnvStats()
+    public void recoverPhyStats()
     {
         if(processing2) return;
         processing2=true;
@@ -120,7 +120,7 @@ public class Prop_WearEnabler extends Prop_HaveEnabler
         processing2=false;
     }
     
-	public void affectEnvStats(Environmental host, EnvStats affectableStats)
+	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{
 		if(processing) return;
 		processing=true;

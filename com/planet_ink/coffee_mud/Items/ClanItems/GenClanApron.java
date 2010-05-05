@@ -44,8 +44,8 @@ public class GenClanApron extends StdClanApron
         setName("a generic clan apron");
         setDisplayText("a generic apron item sits here.");
         setDescription("");
-        baseEnvStats().setWeight(2);
-        recoverEnvStats();
+        basePhyStats().setWeight(2);
+        recoverPhyStats();
     }
 
 
@@ -62,7 +62,7 @@ public class GenClanApron extends StdClanApron
     {
         miscText="";
         CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-        recoverEnvStats();
+        recoverPhyStats();
     }
     private final static String[] MYCODES={"CLANID","CITYPE"};
     public String getStat(String code)

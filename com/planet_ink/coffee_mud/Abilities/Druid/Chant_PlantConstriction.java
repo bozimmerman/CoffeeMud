@@ -101,7 +101,7 @@ public class Chant_PlantConstriction extends Chant
 		return true;
 	}
 
-	public void affectEnvStats(Environmental aff, EnvStats affectableStats)
+	public void affectPhyStats(Physical aff, PhyStats affectableStats)
 	{
 		if((aff instanceof MOB)&&(affected instanceof Item)
 		&&(((MOB)aff).isMine(affected))

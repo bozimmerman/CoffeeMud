@@ -51,7 +51,7 @@ public class Prayer_Disenchant extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,5-(((mob.envStats().level()+(2*super.getXLEVELLevel(mob)))-target.envStats().level())*5),auto);
+		boolean success=proficiencyCheck(mob,5-(((mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))-target.phyStats().level())*5),auto);
 
 		if(success)
 		{
@@ -64,7 +64,7 @@ public class Prayer_Disenchant extends Prayer
 			{
 				mob.location().send(mob,msg);
 				beneficialAffect(mob,target,asLevel,0);
-				target.baseEnvStats().setAbility(0);
+				target.basePhyStats().setAbility(0);
 				Vector affects=new Vector();
 				for(int a=target.numEffects()-1;a>=0;a--)
 				{
@@ -86,7 +86,7 @@ public class Prayer_Disenchant extends Prayer
 				else
 				if(target instanceof SpellHolder)
 					((SpellHolder)target).setSpellList("");
-				target.recoverEnvStats();
+				target.recoverPhyStats();
 				mob.location().recoverRoomStats();
 			}
 		}

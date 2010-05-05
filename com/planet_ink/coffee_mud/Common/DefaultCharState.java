@@ -215,7 +215,7 @@ public class DefaultCharState implements CharState
 		if(getFatigue()>FATIGUED_MILLIS)
 			man=man*.5;
 
-		double lvl=(double)mob.envStats().level();
+		double lvl=(double)mob.phyStats().level();
 		double lvlby1p5=CMath.div(lvl,1.5);
 		//double lvlby2=CMath.div(lvl,2.0);
 		//double lvlby3=CMath.div(lvl,3.0);
@@ -281,8 +281,8 @@ public class DefaultCharState implements CharState
 			if(expendMovement)
 			{
 				int move=-mob.location().pointsPerMove(mob);
-				if(mob.envStats().weight()>mob.maxCarry())
-					move+=(int)Math.round(CMath.mul(move,10.0*CMath.div(mob.envStats().weight()-mob.maxCarry(),mob.maxCarry())));
+				if(mob.phyStats().weight()>mob.maxCarry())
+					move+=(int)Math.round(CMath.mul(move,10.0*CMath.div(mob.phyStats().weight()-mob.maxCarry(),mob.maxCarry())));
 				adjMovement(move,maxState);
 			}
 			if((!CMLib.flags().isSleeping(mob))

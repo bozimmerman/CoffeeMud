@@ -57,9 +57,9 @@ public class Chant_Shamblermorph extends Chant
 		affectableStats.setStat(CharStats.STAT_GENDER,'N');
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly put the mob into
 		// a sleeping state, so that nothing they do
@@ -70,7 +70,7 @@ public class Chant_Shamblermorph extends Chant
 				affectableStats.setName("a shambling mound called "+affected.name());
 			else
 				affectableStats.setName(affected.name()+" the shambling mound");
-			int oldAdd=affectableStats.weight()-affected.baseEnvStats().weight();
+			int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			treeForm.setHeightWeight(affectableStats,'M');
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
 		}
@@ -105,7 +105,7 @@ public class Chant_Shamblermorph extends Chant
 			return false;
 
 
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
+		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 		if(levelDiff<0) levelDiff=0;
 		boolean success=proficiencyCheck(mob,-(levelDiff*10),auto);
 		boolean malicious=!target.getGroupMembers(new HashSet()).contains(mob);

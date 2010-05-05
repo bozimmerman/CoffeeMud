@@ -38,9 +38,9 @@ public class RingOfJustice extends Ring_Protection implements MiscMagic
 	public RingOfJustice()
 	{
 		super();
-		this.baseEnvStats().setLevel(GOLD_RING_SAPPHIRE);
+		this.basePhyStats().setLevel(GOLD_RING_SAPPHIRE);
 		material=RawMaterial.RESOURCE_GOLD;
-		this.recoverEnvStats();
+		this.recoverPhyStats();
 	}
 
 }

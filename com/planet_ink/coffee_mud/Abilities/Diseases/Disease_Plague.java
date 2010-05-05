@@ -63,7 +63,7 @@ public class Disease_Plague extends Disease
 			if(diseaser==null) diseaser=mob;
 			diseaseTick=DISEASE_DELAY();
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,DISEASE_AFFECT());
-			int dmg=mob.envStats().level()/2;
+			int dmg=mob.phyStats().level()/2;
 			if(dmg<1) dmg=1;
 			CMLib.combat().postDamage(diseaser,mob,this,dmg,CMMsg.MASK_ALWAYS|CMMsg.TYP_DISEASE,-1,null);
 			catchIt(mob);

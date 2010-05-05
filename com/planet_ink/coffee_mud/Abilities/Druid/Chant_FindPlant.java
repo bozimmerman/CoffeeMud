@@ -230,7 +230,7 @@ public class Chant_FindPlant extends Chant
 				Chant_FindPlant newOne=(Chant_FindPlant)this.copyOf();
 				if(target.fetchEffect(newOne.ID())==null)
 					target.addEffect(newOne);
-				target.recoverEnvStats();
+				target.recoverPhyStats();
 				newOne.nextDirection=CMLib.tracking().trackNextDirectionFromHere(newOne.theTrail,target.location(),false);
 			}
 		}

@@ -44,7 +44,7 @@ public class GenBoat extends GenRideable
 		setDescription("Looks like a boat");
 		rideBasis=Rideable.RIDEABLE_WATER;
 		material=RawMaterial.RESOURCE_OAK;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 }

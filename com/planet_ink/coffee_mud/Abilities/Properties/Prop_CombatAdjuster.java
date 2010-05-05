@@ -42,9 +42,9 @@ public class Prop_CombatAdjuster extends Property
 	public String accountForYourself()
 	{ return "Adjusted combat stats";	}
 
-	public void affectEnvStats(Environmental affectedMOB, EnvStats affectableStats)
+	public void affectPhyStats(Physical affectedMOB, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affectedMOB,affectableStats);
+		super.affectPhyStats(affectedMOB,affectableStats);
 		if(alladj[2]!=1.0)
 			affectableStats.setArmor((int)Math.round(CMath.mul(affectableStats.armor()-100,alladj[2]))+100);
 		if(alladj[0]!=1.0)

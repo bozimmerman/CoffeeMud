@@ -59,9 +59,9 @@ public class Where extends StdCommand
 	    if((show!=null)
 	    &&(show.session()!=null)
 	    &&(showTo!=null)
-		&&(((show.envStats().disposition()&EnvStats.IS_CLOAKED)==0)
+		&&(((show.phyStats().disposition()&PhyStats.IS_CLOAKED)==0)
 			||((CMSecurity.isAllowedAnywhere(showTo,"CLOAK")||CMSecurity.isAllowedAnywhere(showTo,"WIZINV"))
-		        &&(showTo.envStats().level()>=show.envStats().level()))))
+		        &&(showTo.phyStats().level()>=show.phyStats().level()))))
 			return true;
 		return false;
 	}
@@ -438,7 +438,7 @@ public class Where extends StdCommand
 			DVector levelsVec=new DVector(2);
 			DVector mobsVec=new DVector(2);
 			DVector alignVec=new DVector(2);
-			int moblevel=mob.envStats().level()+adjust;
+			int moblevel=mob.phyStats().level()+adjust;
 			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
@@ -452,7 +452,7 @@ public class Where extends StdCommand
 					if((median<(moblevel+diffLimit))
 					&&((median>=(moblevel-diffLimit))))
 					{
-						if(mob.envStats().level()>=median)
+						if(mob.phyStats().level()>=median)
 							medianDiff=(int)Math.round(9.0*CMath.div(median,moblevel));
 						else
 							medianDiff=(int)Math.round(10.0*CMath.div(moblevel,median));

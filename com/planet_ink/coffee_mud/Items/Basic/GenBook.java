@@ -41,8 +41,8 @@ public class GenBook extends StdBook
 		super();
 		setDisplayText("a book sits here.");
 		setDescription("Enter `READ [NUMBER] [BOOK]` to read a chapter.%0D%0AUse your WRITE skill to add new chapters. ");
-		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMREADABLE);
-		recoverEnvStats();
+		basePhyStats().setSensesMask(PhyStats.SENSE_ITEMREADABLE);
+		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_PAPER);
 	}
 
@@ -69,7 +69,7 @@ public class GenBook extends StdBook
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	public String getStat(String code)
 	{ 

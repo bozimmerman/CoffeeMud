@@ -39,8 +39,8 @@ public class WetCaveMaze extends StdMaze
 	public WetCaveMaze()
 	{
 		super();
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_DARK);
-		recoverEnvStats();
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_DARK);
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_INDOORS_CAVE;}
 	public int domainConditions(){return Room.CONDITION_WET;}

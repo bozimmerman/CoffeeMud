@@ -68,9 +68,9 @@ public class Thief_Mark extends ThiefSkill
 		super.executeMsg(myHost,msg);
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if((affected!=null)&&(affected instanceof MOB)&&(((MOB)affected).getVictim()==mark))
 		{
 			int xlvl=super.getXLEVELLevel(invoker());
@@ -147,7 +147,7 @@ public class Thief_Mark extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(2*super.getXLEVELLevel(mob)));
+		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(2*super.getXLEVELLevel(mob)));
         if(levelDiff<0) levelDiff=0;
         levelDiff*=5;
 		boolean success=proficiencyCheck(mob,-levelDiff,auto);

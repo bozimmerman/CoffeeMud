@@ -40,7 +40,7 @@ public class ScrollSpell extends StdScroll
 		super();
 		this.setUsesRemaining(2);
 		baseGoldValue=200;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_PAPER;
 	}
 }

@@ -97,7 +97,7 @@ public class Chant_Treemorph extends Chant
 			mob.curState().setHunger(1000);
 			mob.curState().setThirst(1000);
 			mob.recoverCharStats();
-			mob.recoverEnvStats();
+			mob.recoverPhyStats();
 
 			// when this spell is on a MOBs Affected list,
 			// it should consistantly prevent the mob
@@ -130,9 +130,9 @@ public class Chant_Treemorph extends Chant
 		return true;
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly put the mob into
 		// a sleeping state, so that nothing they do
@@ -143,17 +143,17 @@ public class Chant_Treemorph extends Chant
 				affectableStats.setName("a "+treeForm.name()+" called "+affected.name());
 			else
 				affectableStats.setName(affected.name()+" the "+treeForm.name());
-			int oldAdd=affectableStats.weight()-affected.baseEnvStats().weight();
+			int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			treeForm.setHeightWeight(affectableStats,'M');
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
 
 			//affectableStats.setReplacementName("a tree of "+affected.name());
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_MOVE);
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_HEAR);
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SMELL);
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SPEAK);
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_TASTE);
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_NOT_SEEN);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_MOVE);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_HEAR);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SMELL);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SPEAK);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TASTE);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_NOT_SEEN);
 		}
 	}
 
@@ -194,7 +194,7 @@ public class Chant_Treemorph extends Chant
 			return false;
 
 
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
+		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 		if(levelDiff<0) levelDiff=0;
 		boolean success=proficiencyCheck(mob,-(levelDiff*10),auto);
 		treeForm=CMClass.getRace("TreeGolem");
@@ -227,16 +227,16 @@ public class Chant_Treemorph extends Chant
 					tree.setDisplayText("an oak tree that reminds you of "+target.name()+" is growing here.");
 					tree.setDescription("It`s a tall oak tree, which seems to remind you of "+target.name()+".");
 					tree.setMaterial(RawMaterial.RESOURCE_OAK);
-					tree.baseEnvStats().setWeight(5000);
+					tree.basePhyStats().setWeight(5000);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> turn(s) into a tree!!");
-					success=maliciousAffect(mob,target,asLevel,(mob.envStats().level()+(2*super.getXLEVELLevel(mob)))*50,-1);
+					success=maliciousAffect(mob,target,asLevel,(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*50,-1);
 					Ability A=target.fetchEffect(ID());
 					if(success&&(A!=null))
 					{
 						mob.location().addItem(tree);
 						tree.addEffect(A);
 						A.setAffectedOne(target);
-						tree.recoverEnvStats();
+						tree.recoverPhyStats();
 					}
 				}
 			}

@@ -42,9 +42,9 @@ public class Spell_Enlarge extends Spell
 	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
     public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setWeight(affectableStats.weight()+9999);
 		affectableStats.setHeight(affectableStats.height()+9999);
 		affectableStats.setName(affected.name()+addOnString);

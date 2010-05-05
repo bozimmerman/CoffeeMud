@@ -112,7 +112,7 @@ public class Prayer_SummonElemental extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB myMonster = determineMonster(mob, mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
+				MOB myMonster = determineMonster(mob, mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 				invoker=mob;
 				beneficialAffect(mob,myMonster,asLevel,0);
 			}
@@ -130,15 +130,15 @@ public class Prayer_SummonElemental extends Prayer
 	{
 		MOB newMOB=CMClass.getMOB("GenRideable");
 		Rideable ride=(Rideable)newMOB;
-		newMOB.baseEnvStats().setAbility(13);
-		newMOB.baseEnvStats().setLevel(level/2);
+		newMOB.basePhyStats().setAbility(13);
+		newMOB.basePhyStats().setLevel(level/2);
 		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
-		newMOB.baseEnvStats().setWeight(850);
-		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
-		newMOB.baseEnvStats().setDamage(caster.envStats().damage()/2);
-		newMOB.baseEnvStats().setAttackAdjustment(caster.envStats().attackAdjustment()/2);
-		newMOB.baseEnvStats().setArmor(caster.envStats().armor()/2);
-		newMOB.baseEnvStats().setSpeed(1);
+		newMOB.basePhyStats().setWeight(850);
+		newMOB.basePhyStats().setRejuv(Integer.MAX_VALUE);
+		newMOB.basePhyStats().setDamage(caster.phyStats().damage()/2);
+		newMOB.basePhyStats().setAttackAdjustment(caster.phyStats().attackAdjustment()/2);
+		newMOB.basePhyStats().setArmor(caster.phyStats().armor()/2);
+		newMOB.basePhyStats().setSpeed(1);
 		newMOB.baseCharStats().setStat(CharStats.STAT_STRENGTH,25);
 		newMOB.baseCharStats().setStat(CharStats.STAT_DEXTERITY,25);
 		newMOB.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,25);
@@ -183,7 +183,7 @@ public class Prayer_SummonElemental extends Prayer
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 
 		newMOB.recoverCharStats();
-		newMOB.recoverEnvStats();
+		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
 		newMOB.text();

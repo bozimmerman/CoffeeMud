@@ -49,9 +49,9 @@ public class DrowWarrior extends DrowElf
 
 		darkDown = 4;
 
-		baseEnvStats().setLevel(CMLib.dice().roll(4,6,1));
+		basePhyStats().setLevel(CMLib.dice().roll(4,6,1));
 
-        magicResistance = 50 + baseEnvStats().level() * 2;
+        magicResistance = 50 + basePhyStats().level() * 2;
 
 		// ===== set the basics
 		username="a Drow male";
@@ -60,9 +60,9 @@ public class DrowWarrior extends DrowElf
 
         equipDrow();
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 		setMoney(CMLib.dice().roll(4,10,0) * 25);
-		baseEnvStats.setWeight(70 + CMLib.dice().roll(3,6,2));
+		basePhyStats.setWeight(70 + CMLib.dice().roll(3,6,2));
 		baseCharStats.setStat(CharStats.STAT_GENDER,'M');
 
 		setWimpHitPoint(1);
@@ -82,7 +82,7 @@ public class DrowWarrior extends DrowElf
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 
@@ -104,26 +104,26 @@ public class DrowWarrior extends DrowElf
             case 1:
 		        mainWeapon = CMClass.getWeapon("DrowSword");
 		        secondWeapon = CMClass.getWeapon("DrowSword");
-		        baseEnvStats().setSpeed(2.0);
+		        basePhyStats().setSpeed(2.0);
                 break;
             case 2:
 		        mainWeapon = CMClass.getWeapon("DrowSword");
-		        baseEnvStats().setSpeed(1.0);
+		        basePhyStats().setSpeed(1.0);
                 break;
             case 3:
 		        mainWeapon = CMClass.getWeapon("DrowSword");
 		        secondWeapon = CMClass.getWeapon("DrowDagger");
-		        baseEnvStats().setSpeed(2.0);
+		        basePhyStats().setSpeed(2.0);
                 break;
             case 4:
 		        mainWeapon = CMClass.getWeapon("Scimitar");
 		        secondWeapon = CMClass.getWeapon("Scimitar");
-		        baseEnvStats().setSpeed(2.0);
+		        basePhyStats().setSpeed(2.0);
                 break;
             default:
 		        mainWeapon = CMClass.getWeapon("DrowSword");
 		        secondWeapon = CMClass.getWeapon("DrowSword");
-		        baseEnvStats().setSpeed(2.0);
+		        basePhyStats().setSpeed(2.0);
                 break;
         }
 		if(mainWeapon!=null)
@@ -267,8 +267,8 @@ public class DrowWarrior extends DrowElf
 
     public boolean checkStatus()
     {
-        if(envStats().disposition() == EnvStats.IS_SITTING)
-            envStats().setDisposition(envStats().disposition() - EnvStats.IS_SITTING);
+        if(phyStats().disposition() == PhyStats.IS_SITTING)
+            phyStats().setDisposition(phyStats().disposition() - PhyStats.IS_SITTING);
         this.location().show(this, null, CMMsg.MSG_NOISYMOVEMENT, "<S-NAME> stand(s) up, ready for more combat.");
 
         return true;
@@ -280,7 +280,7 @@ public class DrowWarrior extends DrowElf
         if(CMLib.dice().rollPercentage() < 70)
         {
             prayer =  this.fetchAbility(CMLib.dice().roll(1,numLearnedAbilities(),-1));
-            while((prayer==null)||(this.baseEnvStats().level() < CMLib.ableMapper().lowestQualifyingLevel(prayer.ID())))
+            while((prayer==null)||(this.basePhyStats().level() < CMLib.ableMapper().lowestQualifyingLevel(prayer.ID())))
                 prayer = this.fetchAbility(CMLib.dice().roll(1,numLearnedAbilities(),-1));
         }
         else

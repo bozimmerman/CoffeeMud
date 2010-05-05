@@ -59,7 +59,7 @@ public class Chant_Worms extends Chant implements DiseaseAffect
 		{
 			plagueDown=5;
 			if(invoker==null) invoker=mob;
-			int dmg=((mob.envStats().level()+(2*super.getXLEVELLevel(invoker())))/4)+1;
+			int dmg=((mob.phyStats().level()+(2*super.getXLEVELLevel(invoker())))/4)+1;
 			CMLib.combat().postDamage(invoker,mob,this,dmg,CMMsg.TYP_DISEASE,-1,"<T-NAME> feel(s) <T-HIS-HER> innards being consumed by worms!");
 		}
 		return true;

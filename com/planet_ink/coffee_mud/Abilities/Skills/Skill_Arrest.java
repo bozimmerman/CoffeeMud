@@ -111,7 +111,7 @@ public class Skill_Arrest extends StdSkill
 				return false;
 			}
 		}
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
+		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 		if(levelDiff>0)
 			levelDiff=levelDiff*3;
 		else

@@ -38,7 +38,7 @@ public class HiddenClosedDoorway extends StdClosedDoorway
 	public HiddenClosedDoorway()
 	{
 		super();
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_HIDDEN);
-		recoverEnvStats();
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_HIDDEN);
+		recoverPhyStats();
 	}
 }

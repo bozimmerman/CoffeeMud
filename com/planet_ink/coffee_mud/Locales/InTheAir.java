@@ -40,9 +40,9 @@ public class InTheAir extends StdRoom
 	public InTheAir()
 	{
 		super();
-		baseEnvStats.setWeight(1);
+		basePhyStats.setWeight(1);
 		name="the sky";
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_AIR;}
 	public int domainConditions(){return Room.CONDITION_NORMAL;}

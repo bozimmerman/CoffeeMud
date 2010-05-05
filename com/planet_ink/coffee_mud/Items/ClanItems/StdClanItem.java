@@ -52,13 +52,13 @@ public class StdClanItem extends StdItem implements ClanItem
 		super();
 
 		setName("a clan item");
-		baseEnvStats.setWeight(1);
+		basePhyStats.setWeight(1);
 		setDisplayText("an item belonging to a clan is here.");
 		setDescription("");
 		secretIdentity="";
 		baseGoldValue=1;
 		material=RawMaterial.RESOURCE_OAK;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public String clanID(){return myClan;}

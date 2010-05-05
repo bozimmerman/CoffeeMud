@@ -122,9 +122,9 @@ public class Compare extends StdCommand
 
 		if((compareThis instanceof Weapon)&&(toThis instanceof Weapon))
 		{
-			int cDmg=compareThis.baseEnvStats().damage();
-			int tDmg=toThis.baseEnvStats().damage();
-			cDmg+=(int)Math.round(CMath.div(compareThis.baseEnvStats().attackAdjustment()-toThis.baseEnvStats().attackAdjustment(),100.0)*cDmg);
+			int cDmg=compareThis.basePhyStats().damage();
+			int tDmg=toThis.basePhyStats().damage();
+			cDmg+=(int)Math.round(CMath.div(compareThis.basePhyStats().attackAdjustment()-toThis.basePhyStats().attackAdjustment(),100.0)*cDmg);
 
 			if(cDmg==tDmg)
 				mob.tell(compareThis.name()+" and "+toThis.name()+" look about the same.");
@@ -142,10 +142,10 @@ public class Compare extends StdCommand
 				mob.tell(compareThis.name()+" is not worn the same way as "+toThis.name()+", and can't be compared to it.");
 				return false;
 			}
-			if(compareThis.baseEnvStats().armor()==toThis.baseEnvStats().armor())
+			if(compareThis.basePhyStats().armor()==toThis.basePhyStats().armor())
 				mob.tell(compareThis.name()+" and "+toThis.name()+" look about the same.");
 			else
-			if(compareThis.baseEnvStats().armor()>toThis.baseEnvStats().armor())
+			if(compareThis.basePhyStats().armor()>toThis.basePhyStats().armor())
 				mob.tell(compareThis.name()+" looks better than "+toThis.name()+".");
 			else
 				mob.tell(compareThis.name()+" looks worse than "+toThis.name()+".");

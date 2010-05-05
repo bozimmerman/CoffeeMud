@@ -258,8 +258,8 @@ public class Pregnancy extends StdAbility
 							babe.baseCharStats().setStat(CharStats.STAT_STRENGTH,1);
 							babe.baseCharStats().setStat(CharStats.STAT_WISDOM,1);
 							babe.baseCharStats().getMyRace().startRacing(babe,false);
-							babe.baseEnvStats().setHeight(babe.baseEnvStats().height()/10);
-							babe.baseEnvStats().setWeight(babe.baseEnvStats().weight()/10);
+							babe.basePhyStats().setHeight(babe.basePhyStats().height()/10);
+							babe.basePhyStats().setWeight(babe.basePhyStats().weight()/10);
 							babe.baseState().setHitPoints(1);
 							babe.baseState().setMana(0);
 							babe.baseState().setMovement(0);
@@ -293,15 +293,15 @@ public class Pregnancy extends StdAbility
 								babe.addNonUninvokableEffect(AGE);
 							}
 							babe.recoverCharStats();
-							babe.recoverEnvStats();
+							babe.recoverPhyStats();
 							babe.recoverMaxState();
 							babe.resetToMaxState();
 							Item I=CMClass.getItem("GenCaged");
 							((CagedAnimal)I).cageMe(babe);
-							I.baseEnvStats().setAbility(CagedAnimal.ABILITY_MOBPROGRAMMATICALLY);
+							I.basePhyStats().setAbility(CagedAnimal.ABILITY_MOBPROGRAMMATICALLY);
 							if(AGE != null)
 								I.addNonUninvokableEffect((Ability)AGE.copyOf());
-							I.recoverEnvStats();
+							I.recoverPhyStats();
 							mob.location().addItem(I);
 							Behavior B=CMClass.getBehavior("Emoter");
 							B.setParms(Age.happyBabyEmoter);
@@ -323,7 +323,7 @@ public class Pregnancy extends StdAbility
                             if(mob.isMonster()&&(otherParentM!=null))
                                 parent=otherParentM.Name();
                             if(AGE!=null)
-                            	CMLib.database().DBCreateData(parent,"HEAVEN",parent+"/HEAVEN/"+AGE.text(),I.ID()+"/"+I.baseEnvStats().ability()+"/"+I.text());
+                            	CMLib.database().DBCreateData(parent,"HEAVEN",parent+"/HEAVEN/"+AGE.text(),I.ID()+"/"+I.basePhyStats().ability()+"/"+I.text());
 						}
 						else
 							mob.tell("You are in labor!!");

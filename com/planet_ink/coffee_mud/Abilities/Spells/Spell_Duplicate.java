@@ -60,13 +60,13 @@ public class Spell_Duplicate extends Spell
 		}
 
 		int value=(target instanceof Coins)?(int)Math.round(((Coins)target).getTotalValue()):target.value();
-		int multiPlier=5+(((target.envStats().weight())+value)/2);
+		int multiPlier=5+(((target.phyStats().weight())+value)/2);
 		multiPlier+=(target.numEffects()*10);
 		multiPlier+=(target instanceof Potion)?10:0;
 		multiPlier+=(target instanceof Pill)?10:0;
 		multiPlier+=(target instanceof Wand)?5:0;
 
-		int level=target.envStats().level();
+		int level=target.phyStats().level();
 		if(level<=0) level=1;
 		int expLoss=(level*multiPlier);
 		if((mob.getExperience()-expLoss)<0)
@@ -92,7 +92,7 @@ public class Spell_Duplicate extends Spell
 				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,target.name()+" blurs and divides into two!");
 				Item newTarget=(Item)target.copyOf();
 				Spell_Disenchant.disenchantItem(newTarget);
-				newTarget.recoverEnvStats();
+				newTarget.recoverPhyStats();
 				if(target.owner() instanceof MOB)
 					((MOB)target.owner()).addItem(newTarget);
 				else
@@ -105,8 +105,8 @@ public class Spell_Duplicate extends Spell
 				else
 				if(newTarget instanceof RawMaterial)
 					((RawMaterial)newTarget).rebundle();
-				target.recoverEnvStats();
-				mob.recoverEnvStats();
+				target.recoverPhyStats();
+				mob.recoverPhyStats();
 			}
 
 		}

@@ -42,11 +42,11 @@ public class WalkingBoots extends StdArmor
 		setDescription("They look like a rather nice pair of footwear.");
 		properWornBitmap=Wearable.WORN_FEET;
 		wornLogicalAnd=false;
-		baseEnvStats().setArmor(1);
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setWeight(5);
+		basePhyStats().setArmor(1);
+		basePhyStats().setAbility(0);
+		basePhyStats().setWeight(5);
 		baseGoldValue=5;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_LEATHER;
 	}
 

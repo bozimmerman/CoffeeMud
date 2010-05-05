@@ -46,10 +46,10 @@ public class Spell_EnchantArrows extends Spell
 	public long flags(){return Ability.FLAG_NOORDERING;}
     public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
-	public void affectEnvStats(Environmental host, EnvStats affectableStats)
+	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{
         affectableStats.setAbility(affectableStats.ability()+CMath.s_int(text()));
-        affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_BONUS);
+        affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BONUS);
 	}
 	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
@@ -85,8 +85,8 @@ public class Spell_EnchantArrows extends Spell
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> glows!");
 					if(A==null){ A=(Ability)copyOf(); target.addNonUninvokableEffect(A);}
 					A.setMiscText(""+(CMath.s_int(A.text())+1));
-					target.recoverEnvStats();
-					mob.recoverEnvStats();
+					target.recoverPhyStats();
+					mob.recoverPhyStats();
 				}
 			}
 

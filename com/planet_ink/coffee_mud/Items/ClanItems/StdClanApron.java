@@ -41,7 +41,7 @@ public class StdClanApron extends StdClanItem
         super();
 
         setName("a clan apron");
-        baseEnvStats.setWeight(1);
+        basePhyStats.setWeight(1);
         setDisplayText("an apron belonging to a clan is here.");
         setDescription("");
         secretIdentity="";
@@ -50,7 +50,7 @@ public class StdClanApron extends StdClanItem
         material=RawMaterial.RESOURCE_COTTON;
         setRawProperLocationBitmap(Wearable.WORN_WAIST|Wearable.WORN_ABOUT_BODY);
         setRawLogicalAnd(false);
-        recoverEnvStats();
+        recoverPhyStats();
     }
     
     public boolean okMessage(Environmental affecting, CMMsg msg)

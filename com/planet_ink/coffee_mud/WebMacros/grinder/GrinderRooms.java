@@ -41,9 +41,9 @@ public class GrinderRooms
 	{
 		M.setStartRoom(R);
 		M.setLocation(R);
-		M.envStats().setRejuv(5000);
+		M.phyStats().setRejuv(5000);
 		M.recoverCharStats();
-		M.recoverEnvStats();
+		M.recoverPhyStats();
 		M.recoverMaxState();
 		M.resetToMaxState();
 		M.bringToLife(R,true);
@@ -53,7 +53,7 @@ public class GrinderRooms
 	{
 		if(I.subjectToWearAndTear())
 			I.setUsesRemaining(100);
-		I.recoverEnvStats();
+		I.recoverPhyStats();
 		R.addItem(I);
 		R.recoverRoomStats();
 	}

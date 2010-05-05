@@ -51,13 +51,13 @@ public class ExitData extends StdWebMacro
 									  java.util.Map<String,String> parms)
 	{
 		StringBuffer str=new StringBuffer("");
-		for(int d=0;d<EnvStats.IS_CODES.length;d++)
+		for(int d=0;d<PhyStats.IS_CODES.length;d++)
 		{
-			if(parms.containsKey(EnvStats.IS_CODES[d]))
+			if(parms.containsKey(PhyStats.IS_CODES[d]))
 			{
-				String parm=httpReq.getRequestParameter(EnvStats.IS_CODES[d]);
+				String parm=httpReq.getRequestParameter(PhyStats.IS_CODES[d]);
 				if(firstTime)
-					parm=(((E.baseEnvStats().disposition()&(1<<d))>0)?"on":"");
+					parm=(((E.basePhyStats().disposition()&(1<<d))>0)?"on":"");
 				if((parm!=null)&&(parm.length()>0))
 					str.append("checked");
 			}
@@ -144,7 +144,7 @@ public class ExitData extends StdWebMacro
 				str.append(old);
 				break;
 			case 4: // level
-				if(firstTime) old=""+E.baseEnvStats().level();
+				if(firstTime) old=""+E.basePhyStats().level();
 				str.append(old);
 				break;
 			case 5: // levelrestricted;
@@ -247,7 +247,7 @@ public class ExitData extends StdWebMacro
 		str.append(ExitData.dispositions(E,firstTime,httpReq,parms));
 		str.append(AreaData.affects(E,httpReq,parms,1));
 		str.append(AreaData.behaves(E,httpReq,parms,1));
-		E.recoverEnvStats();
+		E.recoverPhyStats();
 		E.text();
 
 		String strstr=str.toString();

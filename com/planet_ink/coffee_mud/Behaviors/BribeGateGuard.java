@@ -149,7 +149,7 @@ public class BribeGateGuard extends StdBehavior
 					if (item != null)
 					{
 						CMLib.coffeeMaker().setPropertiesStr(item,V2.msg, true);
-						item.recoverEnvStats();
+						item.recoverPhyStats();
 						item.text();
 						balance += item.getTotalValue();
 					}

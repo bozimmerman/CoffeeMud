@@ -39,24 +39,24 @@ public class GrinderRaces
 {
     public String name()    {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-    public static String getEStats(char c, ExternalHTTPRequests httpReq)
+    public static String getPStats(char c, ExternalHTTPRequests httpReq)
     {
         boolean changes = false;
-        EnvStats adjEStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
-        adjEStats.setAllValues(0);
+        PhyStats adjPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+        adjPStats.setAllValues(0);
         if(httpReq.isRequestParameter(c+"ESTATS1"))
         {
             int num=1;
             String behav=httpReq.getRequestParameter(c+"ESTATS"+num);
             while(behav!=null)
             {
-                if((behav.length()>0) && (CMParms.makeVector(adjEStats.getStatCodes()).contains(behav.toUpperCase().trim())))
+                if((behav.length()>0) && (CMParms.makeVector(adjPStats.getStatCodes()).contains(behav.toUpperCase().trim())))
                 {
                     String prof=httpReq.getRequestParameter(c+"ESTATSV"+num);
                     if(prof==null) prof="0";
                     if(CMath.s_int(prof)!=0)
                     {
-                        adjEStats.setStat(behav.toUpperCase().trim(), prof);
+                        adjPStats.setStat(behav.toUpperCase().trim(), prof);
                         changes = true;
                     }
                 }
@@ -66,7 +66,7 @@ public class GrinderRaces
         }
         if(!changes)
             return "";
-        return CMLib.coffeeMaker().getEnvStatsStr(adjEStats);
+        return CMLib.coffeeMaker().getPhyStatsStr(adjPStats);
     }
 
     public static String getCStats(char c, ExternalHTTPRequests httpReq)
@@ -269,7 +269,7 @@ public class GrinderRaces
         R.setStat("AVAIL",""+CMath.s_long(httpReq.getRequestParameter("PLAYABLEID")));
         R.setStat("BODYKILL",""+CMath.s_bool(httpReq.getRequestParameter("BODYKILL")));
         R.setStat("DISFLAGS",""+CMath.s_long(httpReq.getRequestParameter("DISFLAGS")));
-        R.setStat("ESTATS",getEStats('E',httpReq));
+        R.setStat("ESTATS",getPStats('E',httpReq));
         R.setStat("CSTATS",getCStats('S',httpReq));
         R.setStat("ASTATS",getCStats('A',httpReq));
         R.setStat("ASTATE",getCState('A',httpReq));

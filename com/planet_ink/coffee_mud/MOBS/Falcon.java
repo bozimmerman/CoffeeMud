@@ -46,27 +46,27 @@ public class Falcon extends StdMOB
 		setMoney(0);
 		setWimpHitPoint(0);
 
-		baseEnvStats.setWeight(1 + Math.abs(randomizer.nextInt() % 6));
+		basePhyStats.setWeight(1 + Math.abs(randomizer.nextInt() % 6));
 
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,10);
 		baseCharStats().setStat(CharStats.STAT_DEXTERITY,17);
 
-		baseEnvStats().setDamage(1);
-		baseEnvStats().setSpeed(3.0);
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(2);
-		baseEnvStats().setArmor(50);
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_FLYING);
+		basePhyStats().setDamage(1);
+		basePhyStats().setSpeed(3.0);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(2);
+		basePhyStats().setArmor(50);
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_FLYING);
 		baseCharStats().setMyRace(CMClass.getRace("GreatBird"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

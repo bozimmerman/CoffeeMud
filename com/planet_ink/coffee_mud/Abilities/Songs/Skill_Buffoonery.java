@@ -76,8 +76,8 @@ public class Skill_Buffoonery extends BardSkill
             if((I!=null)
             &&(CMLib.flags().canBeSeenBy(I,mob))
             &&(I.amWearingAt(Wearable.IN_INVENTORY))
-            &&(!((((I instanceof Armor)&&(I.baseEnvStats().armor()>1))
-                ||((I instanceof Weapon)&&(I.baseEnvStats().damage()>1))))))
+            &&(!((((I instanceof Armor)&&(I.basePhyStats().armor()>1))
+                ||((I instanceof Weapon)&&(I.basePhyStats().damage()>1))))))
                 return I.Name();
         }
         return null;
@@ -90,8 +90,8 @@ public class Skill_Buffoonery extends BardSkill
         {
             Item I2=target.getItem(i);
             if((!I2.amWearingAt(Wearable.IN_INVENTORY))
-            &&(((I2 instanceof Weapon)&&(I2.baseEnvStats().damage()>1))
-               ||((I2 instanceof Armor)&&(I2.baseEnvStats().armor()>1)))
+            &&(((I2 instanceof Weapon)&&(I2.basePhyStats().damage()>1))
+               ||((I2 instanceof Armor)&&(I2.basePhyStats().armor()>1)))
             &&(I2.container()==null))
                 V.addElement(I2);
         }
@@ -142,8 +142,8 @@ public class Skill_Buffoonery extends BardSkill
 			mob.tell("You don't seem to have '"+((String)commands.lastElement())+"'.");
 			return false;
 		}
-		if(((I instanceof Armor)&&(I.baseEnvStats().armor()>1))
-		||((I instanceof Weapon)&&(I.baseEnvStats().damage()>1)))
+		if(((I instanceof Armor)&&(I.basePhyStats().armor()>1))
+		||((I instanceof Weapon)&&(I.basePhyStats().damage()>1)))
 		{
 			mob.tell(I.name()+" is not buffoonish enough!");
 			return false;
@@ -166,7 +166,7 @@ public class Skill_Buffoonery extends BardSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.envStats().level()-mob.envStats().level();
+		int levelDiff=target.phyStats().level()-mob.phyStats().level();
 
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(levelDiff>0)

@@ -42,7 +42,7 @@ public class Teacher extends StdMOB
 		setDisplayText("Cornelius is standing here contemplating your ignorance.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_GOOD);
 		setMoney(100);
-		baseEnvStats.setWeight(150);
+		basePhyStats.setWeight(150);
 		setWimpHitPoint(200);
 
 		Behavior B=CMClass.getBehavior("MOBTeacher");
@@ -57,9 +57,9 @@ public class Teacher extends StdMOB
 		baseCharStats().setMyRace(CMClass.getRace("Human"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		baseEnvStats().setAbility(10);
-		baseEnvStats().setLevel(25);
-		baseEnvStats().setArmor(-500);
+		basePhyStats().setAbility(10);
+		basePhyStats().setLevel(25);
+		basePhyStats().setArmor(-500);
 
 		baseState.setHitPoints(4999);
 		baseState.setMana(4999);
@@ -67,7 +67,7 @@ public class Teacher extends StdMOB
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

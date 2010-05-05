@@ -108,7 +108,7 @@ public class Skill_Meditation extends StdSkill
 			double man=(double)((mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)
                             +(2*getXLEVELLevel(mob))
                             +mob.charStats().getStat(CharStats.STAT_WISDOM)));
-			mob.curState().adjMana( (int)Math.round( ( man * .1 ) + ( ( mob.envStats().level() + ( 2.0 * getXLEVELLevel( mob ) ) ) / 2.0 ) ),
+			mob.curState().adjMana( (int)Math.round( ( man * .1 ) + ( ( mob.phyStats().level() + ( 2.0 * getXLEVELLevel( mob ) ) ) / 2.0 ) ),
 			                        mob.maxState() );
 		}
 		else

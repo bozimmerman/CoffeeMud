@@ -45,13 +45,13 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		super();
 
 		setName("a scroll");
-		baseEnvStats.setWeight(1);
+		basePhyStats.setWeight(1);
 		setDisplayText("a scroll is rolled up here.");
 		setDescription("A rolled up parchment marked with mystical symbols.");
 		secretIdentity="";
 		material=RawMaterial.RESOURCE_PAPER;
 		baseGoldValue=200;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 
@@ -166,7 +166,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 						if((thisOne!=null)&&(me.useTheScroll(thisOne,mob)))
 						{
 							thisOne=(Ability)thisOne.copyOf();
-							thisOne.invoke(mob,params,null,true,envStats().level());
+							thisOne.invoke(mob,params,null,true,phyStats().level());
 							me.setUsesRemaining(me.usesRemaining()-1);
 						}
 						else
@@ -225,7 +225,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 			}
 		}
 		me.setBaseValue(baseValue);
-		me.recoverEnvStats();
+		me.recoverPhyStats();
 		return theSpells;
 	}
 	
@@ -262,8 +262,8 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		switch(getCodeNum(code))
 		{
 		case 0: return ID();
-		case 1: return ""+baseEnvStats().ability();
-		case 2: return ""+baseEnvStats().level();
+		case 1: return ""+basePhyStats().ability();
+		case 2: return ""+basePhyStats().level();
 		case 3: return text();
 		}
 		return "";
@@ -273,8 +273,8 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		switch(getCodeNum(code))
 		{
 		case 0: return;
-		case 1: baseEnvStats().setLevel(CMath.s_parseIntExpression(val)); break;
-		case 2: baseEnvStats().setAbility(CMath.s_parseIntExpression(val)); break;
+		case 1: basePhyStats().setLevel(CMath.s_parseIntExpression(val)); break;
+		case 2: basePhyStats().setAbility(CMath.s_parseIntExpression(val)); break;
 		case 3: setMiscText(val); break;
 		}
 	}

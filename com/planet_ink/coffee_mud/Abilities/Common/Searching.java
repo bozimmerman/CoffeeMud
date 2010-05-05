@@ -80,7 +80,7 @@ public class Searching extends CommonSkill
                 ((MOB)affected).recoverCharStats();
             }
             else
-            if(bonusThisRoom<affected.envStats().level())
+            if(bonusThisRoom<affected.phyStats().level())
             {
                 bonusThisRoom+=5;
                 ((MOB)affected).recoverCharStats();
@@ -89,11 +89,11 @@ public class Searching extends CommonSkill
 		return super.tick(ticking,tickID);
 	}
 
-	public void affectEnvStats(Environmental affectedEnv, EnvStats affectableStats)
+	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affectedEnv,affectableStats);
+		super.affectPhyStats(affectedEnv,affectableStats);
 		if((success)&&(affectedEnv instanceof MOB)&&(((MOB)affectedEnv).location()==searchRoom))
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_HIDDEN);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_HIDDEN);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)

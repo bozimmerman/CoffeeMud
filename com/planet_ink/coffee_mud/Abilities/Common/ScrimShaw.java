@@ -268,10 +268,10 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			verb="scrimshawing "+building.name();
 			building.setDisplayText(itemName+" lies here");
 			building.setDescription(itemName+". ");
-			building.baseEnvStats().setWeight(woodRequired);
+			building.basePhyStats().setWeight(woodRequired);
 			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
 			building.setMaterial(data[0][FOUND_CODE]);
-			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
+			building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
@@ -311,16 +311,16 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 					key.setName("a key");
 					key.setDisplayText("a small key sits here");
 					key.setDescription("looks like a key to "+building.name());
-					key.recoverEnvStats();
+					key.recoverPhyStats();
 					key.text();
 				}
 			}
 			if(building instanceof Weapon)
 			{
-				((Weapon)building).baseEnvStats().setAttackAdjustment(abilityCode()-1);
+				((Weapon)building).basePhyStats().setAttackAdjustment(abilityCode()-1);
                 ((Weapon)building).setWeaponClassification(Weapon.CLASS_FLAILED);
                 setWeaponTypeClass((Weapon)building,misctype,Weapon.TYPE_BASHING,Weapon.TYPE_PIERCING);
-				building.baseEnvStats().setDamage(capacity);
+				building.basePhyStats().setDamage(capacity);
 				((Weapon)building).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
 				((Weapon)building).setRawLogicalAnd(false);
 			}
@@ -334,9 +334,9 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 				if((building instanceof Container)&&(((Container)building).containTypes()!=Container.CONTAIN_SMOKEABLES))
 					((Container)building).setCapacity(0);
 			}
-			building.recoverEnvStats();
+			building.recoverPhyStats();
 			building.text();
-			building.recoverEnvStats();
+			building.recoverPhyStats();
 		}
 
 

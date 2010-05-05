@@ -82,7 +82,7 @@ public class Spell_SummonMonster extends Spell
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
-		        MOB monster = determineMonster(mob, mob.envStats().level()+(getXLEVELLevel(mob)+(2*getX1Level(mob))));
+		        MOB monster = determineMonster(mob, mob.phyStats().level()+(getXLEVELLevel(mob)+(2*getX1Level(mob))));
 		        if(monster!=null)
 					beneficialAffect(mob,monster,asLevel,0);
 			}
@@ -131,8 +131,8 @@ public class Spell_SummonMonster extends Spell
 		    for(Enumeration e=CMClass.mobTypes();e.hasMoreElements();)
             {
                 M=(MOB)((MOB)e.nextElement()).newInstance();
-                if((M.baseEnvStats().level()<level-range)
-                ||(M.baseEnvStats().level()>level+range)
+                if((M.basePhyStats().level()<level-range)
+                ||(M.basePhyStats().level()>level+range)
                 ||(M.isGeneric())
                 ||(!CMLib.flags().isEvil(M))
                 ||(!M.baseCharStats().getMyRace().fertile())
@@ -147,7 +147,7 @@ public class Spell_SummonMonster extends Spell
             for(int i=1;i<choices.size();i++)
             {
                 M=(MOB)choices.elementAt(i);
-                if(CMath.pow(level-M.baseEnvStats().level(),2)<CMath.pow(level-winM.baseEnvStats().level(),2))
+                if(CMath.pow(level-M.basePhyStats().level(),2)<CMath.pow(level-winM.basePhyStats().level(),2))
                     winM=M;
             }
             newMOB=winM;
@@ -155,30 +155,30 @@ public class Spell_SummonMonster extends Spell
         else
         {
             newMOB=CMClass.getMOB("GenMOB");
-            newMOB.baseEnvStats().setLevel(level);
+            newMOB.basePhyStats().setLevel(level);
             newMOB.charStats().setMyRace(CMClass.getRace("Unique"));
             newMOB.setName("a wierd extra-planar monster");
             newMOB.setDisplayText("a wierd extra-planar monster stands here");
             newMOB.setDescription("It's too difficult to describe what this thing looks like, but he/she/it is definitely angry!");
             CMLib.factions().setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
             newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
-            newMOB.baseState().setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+            newMOB.baseState().setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
             newMOB.recoverMaxState();
             newMOB.resetToMaxState();
-            newMOB.recoverEnvStats();
+            newMOB.recoverPhyStats();
             newMOB.recoverCharStats();
             CMLib.leveler().fillOutMOB(newMOB,level);
             newMOB.recoverMaxState();
             newMOB.resetToMaxState();
-            newMOB.recoverEnvStats();
+            newMOB.recoverPhyStats();
             newMOB.recoverCharStats();
         }
         newMOB.setMoney(0);
 		newMOB.setLocation(R);
-		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
+		newMOB.basePhyStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		newMOB.recoverCharStats();
-		newMOB.recoverEnvStats();
+		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(R,true);

@@ -79,26 +79,26 @@ public class Thief_ContractHit extends ThiefSkill
 
 				hitting=true;
 				int num=CMLib.dice().roll(1,3,3);
-				int level=mob.envStats().level();
-				if(level>(invoker.envStats().level()+(2*super.getXLEVELLevel(invoker)))) level=(invoker.envStats().level()+(2*super.getXLEVELLevel(invoker)));
+				int level=mob.phyStats().level();
+				if(level>(invoker.phyStats().level()+(2*super.getXLEVELLevel(invoker)))) level=(invoker.phyStats().level()+(2*super.getXLEVELLevel(invoker)));
 				CharClass C=CMClass.getCharClass("StdCharClass");
 				if(C==null) C=mob.charStats().getCurrentClass();
 				for(int i=0;i<num;i++)
 				{
 					MOB M=CMClass.getMOB("Assassin");
-					M.baseEnvStats().setLevel(level);
-					M.recoverEnvStats();
-					M.baseEnvStats().setArmor(CMLib.leveler().getLevelMOBArmor(M));
-					M.baseEnvStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(M));
-					M.baseEnvStats().setDamage(CMLib.leveler().getLevelMOBDamage(M));
-					M.baseEnvStats().setRejuv(0);
+					M.basePhyStats().setLevel(level);
+					M.recoverPhyStats();
+					M.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(M));
+					M.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(M));
+					M.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(M));
+					M.basePhyStats().setRejuv(0);
 					M.baseState().setMana(CMLib.leveler().getLevelMana(M));
 					M.baseState().setMovement(CMLib.leveler().getLevelMana(M));
-					M.baseState().setHitPoints((10*level)+CMLib.dice().roll(level,baseEnvStats().ability(),1));
+					M.baseState().setHitPoints((10*level)+CMLib.dice().roll(level,basePhyStats().ability(),1));
 					Behavior B=CMClass.getBehavior("Thiefness");
 					B.setParms("Assassin");
 					M.addBehavior(B);
-					M.recoverEnvStats();
+					M.recoverPhyStats();
 					M.recoverCharStats();
 					M.recoverMaxState();
 					M.text(); // this establishes his current state.
@@ -223,8 +223,8 @@ public class Thief_ContractHit extends ThiefSkill
 			return false;
 		}
 
-		int level=target.envStats().level();
-		if(level>(mob.envStats().level()+(2*super.getXLEVELLevel(mob)))) level=(mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
+		int level=target.phyStats().level();
+		if(level>(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))) level=(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 		double goldRequired=100.0*level;
 		String localCurrency=CMLib.beanCounter().getCurrency(mob.location());
 		if(CMLib.beanCounter().getTotalAbsoluteValue(mob,localCurrency)<goldRequired)
@@ -237,7 +237,7 @@ public class Thief_ContractHit extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
+		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
         if(levelDiff<0) levelDiff=0;
         levelDiff*=10;
 		boolean success=proficiencyCheck(mob,-levelDiff,auto);
@@ -249,7 +249,7 @@ public class Thief_ContractHit extends ThiefSkill
 
 			CMLib.beanCounter().subtractMoney(mob,localCurrency,goldRequired);
 			if(success)
-				maliciousAffect(mob,target,asLevel,target.envStats().level()+10,0);
+				maliciousAffect(mob,target,asLevel,target.phyStats().level()+10,0);
 		}
 		return success;
 	}

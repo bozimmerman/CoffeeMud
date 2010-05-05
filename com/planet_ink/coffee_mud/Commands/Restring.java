@@ -118,7 +118,7 @@ public class Restring extends StdCommand
 					}
 				}
 			}
-			thang.recoverEnvStats();
+			thang.recoverPhyStats();
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,thang.name()+" shake(s) under the transforming power.");
 		}
 		else

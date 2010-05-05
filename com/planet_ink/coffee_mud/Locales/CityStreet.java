@@ -39,8 +39,8 @@ public class CityStreet extends StdRoom
 	{
 		super();
 		name="the street";
-		baseEnvStats.setWeight(1);
-		recoverEnvStats();
+		basePhyStats.setWeight(1);
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_CITY;}
 	public int domainConditions(){return Room.CONDITION_NORMAL;}

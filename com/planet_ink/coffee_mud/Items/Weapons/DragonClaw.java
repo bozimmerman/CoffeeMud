@@ -40,12 +40,12 @@ public class DragonClaw extends Natural
 		setName("a vicious dragons claw.");
 		setDisplayText("a Dragons Claw");
 		setDescription("the claw of a dragon");
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(0);
-		baseEnvStats.setWeight(7);
-		baseEnvStats().setAttackAdjustment(2);
-		baseEnvStats().setDamage(8);
-		recoverEnvStats();
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(0);
+		basePhyStats.setWeight(7);
+		basePhyStats().setAttackAdjustment(2);
+		basePhyStats().setDamage(8);
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_STEEL;
 		weaponType=TYPE_SLASHING;
 		weaponClassification=Weapon.CLASS_NATURAL;

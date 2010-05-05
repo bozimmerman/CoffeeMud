@@ -86,7 +86,7 @@ public class Thief_StripItem extends ThiefSkill
 			mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");
 			return false;
 		}
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
+		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
 		if((!target.mayIFight(mob))||(levelDiff>15))
 		{
 			mob.tell("You cannot strip anything off of "+target.charStats().himher()+".");
@@ -144,7 +144,7 @@ public class Thief_StripItem extends ThiefSkill
 				else
 				if(((hisStr==null)||mob.isMonster())
 				&&(!alreadyFighting)
-				&&(CMLib.dice().rollPercentage()>stolen.envStats().level()))
+				&&(CMLib.dice().rollPercentage()>stolen.phyStats().level()))
 				{
 					if(target.getVictim()==mob)
 						target.makePeace();

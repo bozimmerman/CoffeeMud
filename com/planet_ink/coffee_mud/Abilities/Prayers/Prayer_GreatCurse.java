@@ -45,9 +45,9 @@ public class Prayer_GreatCurse extends Prayer
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
 
@@ -96,7 +96,7 @@ public class Prayer_GreatCurse extends Prayer
 					if(I!=null)
 					{
 						Prayer_Curse.endLowerBlessings(I,CMLib.ableMapper().lowestQualifyingLevel(ID()));
-						I.recoverEnvStats();
+						I.recoverPhyStats();
 					}
 					Prayer_Curse.endLowerBlessings(target,CMLib.ableMapper().lowestQualifyingLevel(ID()));
 					success=maliciousAffect(mob,target,asLevel,0,-1);

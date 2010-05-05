@@ -42,10 +42,10 @@ public class GenShield extends GenArmor implements Shield
 		setDescription("");
 		properWornBitmap=Wearable.WORN_HELD;
 		wornLogicalAnd=false;
-		baseEnvStats().setArmor(10);
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setWeight(15);
-		recoverEnvStats();
+		basePhyStats().setArmor(10);
+		basePhyStats().setAbility(0);
+		basePhyStats().setWeight(15);
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_OAK;
 	}
 	public boolean isGeneric(){return true;}

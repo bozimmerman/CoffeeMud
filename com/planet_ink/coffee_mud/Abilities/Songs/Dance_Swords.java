@@ -82,11 +82,11 @@ public class Dance_Swords extends Dance
 		}
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected instanceof Item)
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -128,12 +128,12 @@ public class Dance_Swords extends Dance
 			MOB victiM=M.getVictim();
 			if(M.isInCombat())
 			{
-				boolean isHit=(CMLib.combat().rollToHit(CMLib.combat().adjustedAttackBonus(M,victiM)+((Item)affected).envStats().attackAdjustment(), CMLib.combat().adjustedArmor(victiM), 0));
+				boolean isHit=(CMLib.combat().rollToHit(CMLib.combat().adjustedAttackBonus(M,victiM)+((Item)affected).phyStats().attackAdjustment(), CMLib.combat().adjustedArmor(victiM), 0));
 				if((!isHit)||(!(affected instanceof Weapon)))
 					M.location().show(M,victiM,affected,CMMsg.MSG_OK_ACTION,"<O-NAME> attacks <T-NAME> and misses!");
 				else
 					CMLib.combat().postDamage(M,victiM,affected,
-											CMLib.dice().roll(1,affected.envStats().damage(),5+getXLEVELLevel(M)),
+											CMLib.dice().roll(1,affected.phyStats().damage(),5+getXLEVELLevel(M)),
 											CMMsg.MASK_ALWAYS|CMMsg.TYP_WEAPONATTACK,
 											((Weapon)affected).weaponType(),affected.name()+" attacks and <DAMAGE> <T-NAME>!");
 			}

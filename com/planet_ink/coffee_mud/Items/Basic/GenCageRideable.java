@@ -46,9 +46,9 @@ public class GenCageRideable extends StdCageRideable
 		setContainTypes(Container.CONTAIN_BODIES|Container.CONTAIN_CAGED);
 		material=RawMaterial.RESOURCE_OAK;
 		baseGoldValue=15;
-		baseEnvStats().setWeight(1000);
+		basePhyStats().setWeight(1000);
 		rideBasis=Rideable.RIDEABLE_WAGON;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public boolean isGeneric(){return true;}
@@ -64,7 +64,7 @@ public class GenCageRideable extends StdCageRideable
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
 							  "CONTAINTYPES","RIDEBASIS","MOBSHELD"};

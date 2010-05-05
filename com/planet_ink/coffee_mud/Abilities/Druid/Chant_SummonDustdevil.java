@@ -73,7 +73,7 @@ public class Chant_SummonDustdevil extends Chant
 					for(int i=0;i<V.size();i++)
 					{
 						Item I=(Item)V.elementAt(i);
-						if((mob.maxCarry()>=mob.envStats().weight()+I.envStats().weight())
+						if((mob.maxCarry()>=mob.phyStats().weight()+I.phyStats().weight())
                         &&(mob.maxItems()>=(mob.numItems()+I.numberOfItems())))
 							CMLib.commands().postGet(mob,null,I,false);
 						else
@@ -231,29 +231,29 @@ public class Chant_SummonDustdevil extends Chant
 	{
 		MOB newMOB=CMClass.getMOB("GenMOB");
 		int level=3;
-		newMOB.baseEnvStats().setLevel(level);
+		newMOB.basePhyStats().setLevel(level);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("AirElemental"));
 		String name="a dustdevil";
 		newMOB.setName(name);
 		newMOB.setDisplayText(name+" whirls around here");
 		newMOB.setDescription("");
 		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
-		newMOB.baseEnvStats().setAbility(25);
-		newMOB.baseEnvStats().setWeight(caster.envStats().level()*(caster.envStats().level()+(2*super.getXLEVELLevel(caster))));
-		newMOB.baseCharStats().setStat(CharStats.STAT_STRENGTH,caster.envStats().level()+(2*super.getXLEVELLevel(caster)));
-		newMOB.baseEnvStats().setSensesMask(newMOB.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_DARK);
-		newMOB.baseEnvStats().setSensesMask(newMOB.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_INVISIBLE);
-		newMOB.baseEnvStats().setSensesMask(newMOB.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_HIDDEN);
+		newMOB.basePhyStats().setAbility(25);
+		newMOB.basePhyStats().setWeight(caster.phyStats().level()*(caster.phyStats().level()+(2*super.getXLEVELLevel(caster))));
+		newMOB.baseCharStats().setStat(CharStats.STAT_STRENGTH,caster.phyStats().level()+(2*super.getXLEVELLevel(caster)));
+		newMOB.basePhyStats().setSensesMask(newMOB.basePhyStats().sensesMask()|PhyStats.CAN_SEE_DARK);
+		newMOB.basePhyStats().setSensesMask(newMOB.basePhyStats().sensesMask()|PhyStats.CAN_SEE_INVISIBLE);
+		newMOB.basePhyStats().setSensesMask(newMOB.basePhyStats().sensesMask()|PhyStats.CAN_SEE_HIDDEN);
 		newMOB.setLocation(caster.location());
-		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
-		newMOB.baseEnvStats().setDamage(1);
-		newMOB.baseEnvStats().setAttackAdjustment(0);
-		newMOB.baseEnvStats().setArmor(100);
+		newMOB.basePhyStats().setRejuv(Integer.MAX_VALUE);
+		newMOB.basePhyStats().setDamage(1);
+		newMOB.basePhyStats().setAttackAdjustment(0);
+		newMOB.basePhyStats().setArmor(100);
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'N');
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		newMOB.setMiscText(newMOB.text());
 		newMOB.recoverCharStats();
-		newMOB.recoverEnvStats();
+		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);

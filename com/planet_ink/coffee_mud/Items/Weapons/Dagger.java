@@ -40,16 +40,16 @@ public class Dagger extends StdWeapon
 		setName("a small dagger");
 		setDisplayText("a sharp little dagger lies here.");
 		setDescription("It has a wooden handle and a metal blade.");
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(0);
-		baseEnvStats.setWeight(1);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(0);
+		basePhyStats.setWeight(1);
 		baseGoldValue=2;
-		baseEnvStats().setAttackAdjustment(0);
-		baseEnvStats().setDamage(4);
+		basePhyStats().setAttackAdjustment(0);
+		basePhyStats().setDamage(4);
 		weaponType=TYPE_PIERCING;
 		material=RawMaterial.RESOURCE_STEEL;
 		weaponClassification=Weapon.CLASS_DAGGER;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 

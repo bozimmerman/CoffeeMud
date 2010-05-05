@@ -129,7 +129,7 @@ public class Thief_Robbery extends ThiefSkill
 			mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");
 			return false;
 		}
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+(getXLEVELLevel(mob)*2));
+		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(getXLEVELLevel(mob)*2));
 
 		if((!target.mayIFight(mob))||(CMLib.coffeeShops().getShopKeeper(target)==null))
 		{
@@ -237,7 +237,7 @@ public class Thief_Robbery extends ThiefSkill
 				else
 				if(((hisStr==null)||mob.isMonster())
 				&&(!alreadyFighting)
-				&&((stolen==null)||(CMLib.dice().rollPercentage()>stolen.envStats().level())))
+				&&((stolen==null)||(CMLib.dice().rollPercentage()>stolen.phyStats().level())))
 				{
 					if(target.getVictim()==mob)
 						target.makePeace();

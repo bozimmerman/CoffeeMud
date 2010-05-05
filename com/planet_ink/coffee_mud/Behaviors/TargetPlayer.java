@@ -69,8 +69,8 @@ public class TargetPlayer extends ActiveTicker
 					}
 					else 
 					{
-						if (((shouldFight.envStats()!=null)&&(consider.envStats()!=null)) 
-						&&(shouldFight.envStats().level() > consider.envStats().level()))
+						if (((shouldFight.phyStats()!=null)&&(consider.phyStats()!=null)) 
+						&&(shouldFight.phyStats().level() > consider.phyStats().level()))
 							shouldFight = consider;
 					}
 				}

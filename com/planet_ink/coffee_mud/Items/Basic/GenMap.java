@@ -41,12 +41,12 @@ public class GenMap extends StdMap
 	{
 		super();
 		setName("a generic map");
-		baseEnvStats.setWeight(1);
+		basePhyStats.setWeight(1);
 		setDisplayText("a generic map sits here.");
 		setDescription("");
 		baseGoldValue=5;
 		setMaterial(RawMaterial.RESOURCE_PAPER);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public boolean isGeneric(){return true;}
@@ -75,7 +75,7 @@ public class GenMap extends StdMap
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
     public String getStat(String code)
     {

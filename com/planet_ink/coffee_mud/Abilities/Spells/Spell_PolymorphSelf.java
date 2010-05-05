@@ -46,16 +46,16 @@ public class Spell_PolymorphSelf extends Spell
 
 	Race newRace=null;
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(newRace!=null)
 		{
 			if(affected.name().indexOf(" ")>0)
 				affectableStats.setName("a "+newRace.name()+" called "+affected.name());
 			else
 				affectableStats.setName(affected.name()+" the "+newRace.name());
-			int oldAdd=affectableStats.weight()-affected.baseEnvStats().weight();
+			int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			newRace.setHeightWeight(affectableStats,'M');
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
 		}
@@ -142,7 +142,7 @@ public class Spell_PolymorphSelf extends Spell
 			fakeMOB.baseCharStats().setStat(s,mob.baseCharStats().getStat(s));
 		fakeMOB.baseCharStats().setMyRace(R);
 		fakeMOB.recoverCharStats();
-		fakeMOB.recoverEnvStats();
+		fakeMOB.recoverPhyStats();
 		fakeMOB.recoverMaxState();
 		int fakeStatTotal=0;
 		for(int s: CharStats.CODES.BASE())

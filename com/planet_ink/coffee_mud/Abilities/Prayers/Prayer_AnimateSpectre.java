@@ -72,7 +72,7 @@ public class Prayer_AnimateSpectre extends Prayer
 		else
 			description+="\n\rIt also looks dead.";
 
-		if(body.baseEnvStats().level()<10)
+		if(body.basePhyStats().level()<10)
 		{
 			mob.tell("This creature is too weak to create a spectre from.");
 			return false;
@@ -93,7 +93,7 @@ public class Prayer_AnimateSpectre extends Prayer
 				newMOB.setName("a spectre");
 				newMOB.setDescription(description);
 				newMOB.setDisplayText("a spectre is here");
-				newMOB.baseEnvStats().setLevel(9+(super.getX1Level(mob)*2)+super.getXLEVELLevel(mob));
+				newMOB.basePhyStats().setLevel(9+(super.getX1Level(mob)*2)+super.getXLEVELLevel(mob));
 				newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
 				newMOB.baseCharStats().setMyRace(CMClass.getRace("Undead"));
                 newMOB.baseCharStats().setBodyPartsFromStringAfterRace(body.charStats().getBodyPartsAsString());
@@ -104,20 +104,20 @@ public class Prayer_AnimateSpectre extends Prayer
 					newMOB.addNonUninvokableEffect(P);
 				}
 				newMOB.recoverCharStats();
-				newMOB.baseEnvStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
-				newMOB.baseEnvStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
-				newMOB.baseEnvStats().setDisposition(EnvStats.IS_FLYING);
-				newMOB.baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK);
+				newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
+				newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
+				newMOB.basePhyStats().setDisposition(PhyStats.IS_FLYING);
+				newMOB.basePhyStats().setSensesMask(PhyStats.CAN_SEE_DARK);
 				CMLib.factions().setAlignment(newMOB,Faction.ALIGN_EVIL);
-				newMOB.baseState().setHitPoints(15*newMOB.baseEnvStats().level());
+				newMOB.baseState().setHitPoints(15*newMOB.basePhyStats().level());
 				newMOB.baseState().setMovement(CMLib.leveler().getLevelMove(newMOB));
-				newMOB.baseEnvStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
+				newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
 				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 				newMOB.baseState().setMana(100);
 				Behavior B=CMClass.getBehavior("Aggressive");
 				if(B!=null){ B.setParms("+NAMES \"-"+mob.Name()+"\""); newMOB.addBehavior(B);}
 				newMOB.recoverCharStats();
-				newMOB.recoverEnvStats();
+				newMOB.recoverPhyStats();
 				newMOB.recoverMaxState();
 				newMOB.resetToMaxState();
 				newMOB.addAbility(CMClass.getAbility("Undead_WeakEnergyDrain"));

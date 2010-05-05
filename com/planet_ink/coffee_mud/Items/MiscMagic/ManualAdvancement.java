@@ -41,14 +41,14 @@ public class ManualAdvancement extends StdItem implements MiscMagic,ArchonOnly
 		super();
 
 		setName("a book");
-		baseEnvStats().setWeight(1);
+		basePhyStats().setWeight(1);
 		setDisplayText("an ornately bound book sits here.");
 		setDescription("An ornately bound book filled with mystical symbols.");
 		secretIdentity="The Manual of Advancement.";
 		this.setUsesRemaining(5);
 		baseGoldValue=10000;
 		material=RawMaterial.RESOURCE_PAPER;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)

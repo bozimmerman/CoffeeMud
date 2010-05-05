@@ -179,15 +179,15 @@ public class Arcanist extends Thief
 			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Potion))
 			{
-				mob.baseEnvStats().setDisposition(mob.baseEnvStats().disposition()|EnvStats.IS_BONUS);
-				mob.recoverEnvStats();
+				mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_BONUS);
+				mob.recoverPhyStats();
 				mob.recoverCharStats();
 			}
 			else
-			if((mob.baseEnvStats().disposition()&EnvStats.IS_BONUS)==EnvStats.IS_BONUS)
+			if((mob.basePhyStats().disposition()&PhyStats.IS_BONUS)==PhyStats.IS_BONUS)
 			{
-				mob.baseEnvStats().setDisposition(mob.baseEnvStats().disposition()-EnvStats.IS_BONUS);
-				mob.recoverEnvStats();
+				mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()-PhyStats.IS_BONUS);
+				mob.recoverPhyStats();
 				mob.recoverCharStats();
 			}
 		}
@@ -271,10 +271,10 @@ public class Arcanist extends Thief
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((ticking instanceof MOB)
-		&&((((MOB)ticking).baseEnvStats().disposition()&EnvStats.IS_BONUS)==EnvStats.IS_BONUS))
+		&&((((MOB)ticking).basePhyStats().disposition()&PhyStats.IS_BONUS)==PhyStats.IS_BONUS))
 		{
-			((MOB)ticking).baseEnvStats().setDisposition(((MOB)ticking).baseEnvStats().disposition()-EnvStats.IS_BONUS);
-			((MOB)ticking).recoverEnvStats();
+			((MOB)ticking).basePhyStats().setDisposition(((MOB)ticking).basePhyStats().disposition()-PhyStats.IS_BONUS);
+			((MOB)ticking).recoverPhyStats();
 		}
 		return super.tick(ticking,tickID);
 	}
@@ -283,7 +283,7 @@ public class Arcanist extends Thief
 	{
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.STAT_SAVE_MAGIC,affectableStats.getStat(CharStats.STAT_SAVE_MAGIC)+(affectableStats.getClassLevel(this)));
-		if(CMath.bset(affected.baseEnvStats().disposition(),EnvStats.IS_BONUS))
+		if(CMath.bset(affected.basePhyStats().disposition(),PhyStats.IS_BONUS))
 			affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+30);
 	}
 }

@@ -152,7 +152,7 @@ public class Sinking extends StdAbility
 			if(!isWaterSurface(R)
 			||(CMLib.flags().isWaterWorthy(mob))
 			||(CMLib.flags().isInFlight(mob))
-			||(mob.envStats().weight()<1)
+			||(mob.phyStats().weight()<1)
 			||(!canSinkFrom(R,direction)))
 				return stopSinking(mob);
 			
@@ -166,12 +166,12 @@ public class Sinking extends StdAbility
 				{
                     isTreading=true;
 					mob.curState().expendEnergy(mob,mob.maxState(),true);
-                    mob.recoverEnvStats();
+                    mob.recoverPhyStats();
 					return true;
 				}
 			}
             isTreading=false;
-            mob.recoverEnvStats();
+            mob.recoverPhyStats();
 			mob.tell("\n\r\n\rYOU ARE SINKING "+addStr.toUpperCase()+"!!\n\r\n\r");
 			CMLib.tracking().move(mob,direction,false,false);
 			R=mob.location();
@@ -195,7 +195,7 @@ public class Sinking extends StdAbility
 			||(!CMLib.flags().isGettable(item))
 			||CMLib.flags().isInFlight(item.ultimateContainer())
 			||(CMLib.flags().isWaterWorthy(item.ultimateContainer()))
-			||(item.envStats().weight()<1))
+			||(item.phyStats().weight()<1))
 			{
 				unInvoke();
 				return false;
@@ -241,14 +241,14 @@ public class Sinking extends StdAbility
 		}
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if((!CMLib.flags().isWaterWorthy(affected))
 		&&(!CMLib.flags().isInFlight(affected))
         &&(!isTreading)
-		&&(affected.envStats().weight()>=1))
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FALLING);
+		&&(affected.phyStats().weight()>=1))
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FALLING);
 	}
 	public void setAffectedOne(Physical being)
 	{
@@ -277,7 +277,7 @@ public class Sinking extends StdAbility
 			F.makeLongLasting();
 			if(!(E instanceof MOB))
 				CMLib.threads().startTickDown(F,Tickable.TICKID_MOB,1);
-			E.recoverEnvStats();
+			E.recoverPhyStats();
 		}
 		return true;
 	}

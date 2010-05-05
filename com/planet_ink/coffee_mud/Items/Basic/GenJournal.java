@@ -41,8 +41,8 @@ public class GenJournal extends StdJournal
 		super();
 		setDisplayText("a journal sits here.");
 		setDescription("Enter `READ [NUMBER] [JOURNAL]` to read an entry.%0D%0AUse your WRITE skill to add new entries. ");
-		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMREADABLE);
-		recoverEnvStats();
+		basePhyStats().setSensesMask(PhyStats.SENSE_ITEMREADABLE);
+		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_PAPER);
 	}
 
@@ -69,7 +69,7 @@ public class GenJournal extends StdJournal
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
     public String getStat(String code)
     {

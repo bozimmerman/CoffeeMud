@@ -39,9 +39,9 @@ public class CaveSurface extends ClimbableSurface
 	public CaveSurface()
 	{
 		super();
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_DARK);
-		baseEnvStats.setWeight(4);
-		recoverEnvStats();
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_DARK);
+		basePhyStats.setWeight(4);
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_INDOORS_CAVE;}
 	public int domainConditions(){return Room.CONDITION_NORMAL;}

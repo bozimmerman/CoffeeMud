@@ -47,16 +47,16 @@ public class Chant_Reincarnation extends Chant
 
 	Race newRace=null;
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(newRace!=null)
 		{
 			if(affected.name().indexOf(" ")>0)
 				affectableStats.setName("a "+newRace.name()+" called "+affected.name());
 			else
 				affectableStats.setName(affected.name()+" the "+newRace.name());
-			int oldAdd=affectableStats.weight()-affected.baseEnvStats().weight();
+			int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			newRace.setHeightWeight(affectableStats,'M');
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
 		}
@@ -88,7 +88,7 @@ public class Chant_Reincarnation extends Chant
 				mob.location().recoverRoomStats();
 			else
 			{
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 				mob.recoverCharStats();
 				mob.recoverMaxState();
 			}
@@ -100,7 +100,7 @@ public class Chant_Reincarnation extends Chant
 	public boolean isGolem(Race R)
 	{
 		MOB M=(MOB)CMClass.sampleMOB().copyOf();
-		R.affectEnvStats(M,M.envStats());
+		R.affectPhyStats(M,M.phyStats());
 		return CMLib.flags().isGolem(M);
 	}
 
@@ -124,7 +124,7 @@ public class Chant_Reincarnation extends Chant
 			if(newRace!=null)
 				mob.tell("You are being reincarnated as a "+newRace.name()+"!!");
 			msg.source().recoverCharStats();
-			msg.source().recoverEnvStats();
+			msg.source().recoverPhyStats();
 		}
 	}
 

@@ -116,9 +116,9 @@ public class Prop_NarrowLedge extends Property
 		}
 		super.executeMsg(myHost,msg);
 	}
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		// always disable flying restrictions!
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SLEEPING);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SLEEPING);
 	}
 }

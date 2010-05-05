@@ -48,8 +48,8 @@ public class StdJournal extends StdItem
 		setDisplayText("a journal sits here.");
 		setDescription("Enter `READ [NUMBER] [JOURNAL]` to read an entry.%0D%0AUse your WRITE skill to add new entries. ");
 		material=RawMaterial.RESOURCE_PAPER;
-		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMREADABLE);
-		recoverEnvStats();
+		basePhyStats().setSensesMask(PhyStats.SENSE_ITEMREADABLE);
+		recoverPhyStats();
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -564,5 +564,5 @@ public class StdJournal extends StdItem
     private String getReplyReq() { return getParm("REPLY");}
     private String getAdminReq() { return getParm("ADMIN");}
     
-	public void recoverEnvStats(){CMLib.flags().setReadable(this,true); super.recoverEnvStats();}
+	public void recoverPhyStats(){CMLib.flags().setReadable(this,true); super.recoverPhyStats();}
 }

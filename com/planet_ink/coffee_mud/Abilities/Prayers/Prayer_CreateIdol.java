@@ -45,9 +45,9 @@ public class Prayer_CreateIdol extends Prayer
 	protected int canTargetCode(){return 0;}
 	public boolean bubbleAffect(){return true;}
 
-	public void affectEnvStats(Environmental aff, EnvStats affectableStats)
+	public void affectPhyStats(Physical aff, PhyStats affectableStats)
 	{
-		super.affectEnvStats(aff,affectableStats);
+		super.affectPhyStats(aff,affectableStats);
 		if((affected instanceof Item)&&(((Item)affected).container()==null))
 		{
 			int xlvl=super.getXLEVELLevel(invoker());
@@ -141,16 +141,16 @@ public class Prayer_CreateIdol extends Prayer
 				String name=CMLib.english().startWithAorAn(RawMaterial.CODES.NAME(material).toLowerCase()+" idol of "+mob.getWorshipCharID());
 				newItem.setName(name);
 				newItem.setDisplayText(name+" sits here.");
-				newItem.baseEnvStats().setDisposition(EnvStats.IS_EVIL);
-				newItem.baseEnvStats().setWeight(10);
+				newItem.basePhyStats().setDisposition(PhyStats.IS_EVIL);
+				newItem.basePhyStats().setWeight(10);
 				newItem.setMaterial(material);
-				newItem.recoverEnvStats();
+				newItem.recoverPhyStats();
 				CMLib.flags().setRemovable(newItem,false);
 				CMLib.flags().setDroppable(newItem,false);
 				newItem.addNonUninvokableEffect((Ability)copyOf());
 				mob.location().addItem(newItem,ItemPossessor.Expire.Resource);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" grows out of the ground.");
-				mob.location().recoverEnvStats();
+				mob.location().recoverPhyStats();
 			}
 		}
 		else

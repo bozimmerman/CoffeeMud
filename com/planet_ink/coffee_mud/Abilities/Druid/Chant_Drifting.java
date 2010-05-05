@@ -92,16 +92,16 @@ public class Chant_Drifting extends Chant
 			A.setAffectedOne(null);
 			A.setProficiency(100);
 			A.invoke(null,null,affected,true,0);
-			affected.recoverEnvStats();
+			affected.recoverPhyStats();
 		}
 		return true;
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if((affected.fetchEffect("Falling")==null)&&(!CMLib.flags().isFalling(affected)))
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
 	}
 
 	public void unInvoke()

@@ -122,8 +122,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         MOB talker=CMClass.getMOB("StdMOB");
 		talker.setName("^?");
 		talker.setLocation(CMLib.map().getRandomRoom());
-		talker.baseEnvStats().setDisposition(EnvStats.IS_GOLEM);
-        talker.envStats().setDisposition(EnvStats.IS_GOLEM);
+		talker.basePhyStats().setDisposition(PhyStats.IS_GOLEM);
+        talker.phyStats().setDisposition(PhyStats.IS_GOLEM);
 		talker.setClanID(clanID);
 		postChannel(talker,channelName,message,systemMsg);
         talker.destroy();
@@ -339,10 +339,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
     public void handleSit(CMMsg msg)
     {
         MOB sittingmob=msg.source();
-        int oldDisposition=sittingmob.baseEnvStats().disposition();
-        oldDisposition=oldDisposition&(Integer.MAX_VALUE-EnvStats.IS_SLEEPING-EnvStats.IS_SNEAKING-EnvStats.IS_SITTING);
-        sittingmob.baseEnvStats().setDisposition(oldDisposition|EnvStats.IS_SITTING);
-        sittingmob.recoverEnvStats();
+        int oldDisposition=sittingmob.basePhyStats().disposition();
+        oldDisposition=oldDisposition&(Integer.MAX_VALUE-PhyStats.IS_SLEEPING-PhyStats.IS_SNEAKING-PhyStats.IS_SITTING);
+        sittingmob.basePhyStats().setDisposition(oldDisposition|PhyStats.IS_SITTING);
+        sittingmob.recoverPhyStats();
         sittingmob.recoverCharStats();
         sittingmob.recoverMaxState();
         sittingmob.tell(sittingmob,msg.target(),msg.tool(),msg.sourceMessage());
@@ -350,10 +350,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
     public void handleSleep(CMMsg msg)
     {
         MOB sleepingmob=msg.source();
-        int oldDisposition=sleepingmob.baseEnvStats().disposition();
-        oldDisposition=oldDisposition&(Integer.MAX_VALUE-EnvStats.IS_SLEEPING-EnvStats.IS_SNEAKING-EnvStats.IS_SITTING);
-        sleepingmob.baseEnvStats().setDisposition(oldDisposition|EnvStats.IS_SLEEPING);
-        sleepingmob.recoverEnvStats();
+        int oldDisposition=sleepingmob.basePhyStats().disposition();
+        oldDisposition=oldDisposition&(Integer.MAX_VALUE-PhyStats.IS_SLEEPING-PhyStats.IS_SNEAKING-PhyStats.IS_SITTING);
+        sleepingmob.basePhyStats().setDisposition(oldDisposition|PhyStats.IS_SLEEPING);
+        sleepingmob.recoverPhyStats();
         sleepingmob.recoverCharStats();
         sleepingmob.recoverMaxState();
         sleepingmob.tell(sleepingmob,msg.target(),msg.tool(),msg.sourceMessage());
@@ -361,10 +361,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
     public void handleStand(CMMsg msg)
     {
         MOB standingmob=msg.source();
-        int oldDisposition=standingmob.baseEnvStats().disposition();
-        oldDisposition=oldDisposition&(Integer.MAX_VALUE-EnvStats.IS_SLEEPING-EnvStats.IS_SNEAKING-EnvStats.IS_SITTING);
-        standingmob.baseEnvStats().setDisposition(oldDisposition);
-        standingmob.recoverEnvStats();
+        int oldDisposition=standingmob.basePhyStats().disposition();
+        oldDisposition=oldDisposition&(Integer.MAX_VALUE-PhyStats.IS_SLEEPING-PhyStats.IS_SNEAKING-PhyStats.IS_SITTING);
+        standingmob.basePhyStats().setDisposition(oldDisposition);
+        standingmob.recoverPhyStats();
         standingmob.recoverCharStats();
         standingmob.recoverMaxState();
         standingmob.tell(standingmob,msg.target(),msg.tool(),msg.sourceMessage());
@@ -396,7 +396,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                 else
                     recallingmob.setRiding(null);
             }
-            recallingmob.recoverEnvStats();
+            recallingmob.recoverPhyStats();
             recallingmob.recoverCharStats();
             recallingmob.recoverMaxState();
             postLook(recallingmob,true);
@@ -432,7 +432,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                 int basePrice=1;
                 switch(CMProps.getIntVar(CMProps.SYSTEMI_MANACONSUMEAMT))
                 {
-                case -100: basePrice=basePrice*mob.envStats().level(); break;
+                case -100: basePrice=basePrice*mob.phyStats().level(); break;
                 case -200:
                     {
                         int total=0;
@@ -495,7 +495,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                         mob.tell("Happy Birthday!");
                     mob.baseCharStats().setStat(CharStats.STAT_AGE,mob.baseCharStats().getStat(CharStats.STAT_AGE)+1);
                     mob.recoverCharStats();
-                    mob.recoverEnvStats();
+                    mob.recoverPhyStats();
                     mob.recoverMaxState();
                 }
                 else
@@ -584,41 +584,41 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         String level=null;
         if((mob!=null)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<10))
         {
-            int l=(int)Math.round(Math.floor(CMath.div(item.envStats().level(),10.0)));
+            int l=(int)Math.round(Math.floor(CMath.div(item.phyStats().level(),10.0)));
             level=(l*10)+"-"+((l*10)+9);
         }
         else
         if((mob!=null)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<18))
         {
-            int l=(int)Math.round(Math.floor(CMath.div(item.envStats().level(),5.0)));
+            int l=(int)Math.round(Math.floor(CMath.div(item.phyStats().level(),5.0)));
             level=(l*5)+"-"+((l*5)+4);
         }
         else
-            level=""+item.envStats().level();
+            level=""+item.phyStats().level();
         double divider=100.0;
-        if(item.envStats().weight()<10)
+        if(item.phyStats().weight()<10)
             divider=4.0;
         else
-        if(item.envStats().weight()<50)
+        if(item.phyStats().weight()<50)
             divider=10.0;
         else
-        if(item.envStats().weight()<150)
+        if(item.phyStats().weight()<150)
             divider=20.0;
         String weight=null;
         if((mob!=null)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<10))
         {
-            double l=Math.floor(CMath.div(item.envStats().level(),divider));
+            double l=Math.floor(CMath.div(item.phyStats().level(),divider));
             weight=(int)Math.round(CMath.mul(l,divider))+"-"+(int)Math.round(CMath.mul(l,divider)+(divider-1.0));
         }
         else
         if((mob!=null)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<18))
         {
             divider=divider/2.0;
-            double l=Math.floor(CMath.div(item.envStats().level(),divider));
+            double l=Math.floor(CMath.div(item.phyStats().level(),divider));
             weight=(int)Math.round(CMath.mul(l,divider))+"-"+(int)Math.round(CMath.mul(l,divider)+(divider-1.0));
         }
         else
-            weight=""+item.envStats().weight();
+            weight=""+item.phyStats().weight();
         if(item instanceof CagedAnimal)
         {
 	        MOB M=((CagedAnimal)item).unCageMe();
@@ -626,8 +626,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	            response.append("\n\rLooks like some sort of lifeless thing.\n\r");
 	        else
 	        {
-	            if(M.envStats().height()>0)
-	            	response.append("\n\r"+CMStrings.capitalizeFirstLetter(item.name())+" is "+M.envStats().height()+" inches tall and weighs "+weight+" pounds.\n\r");
+	            if(M.phyStats().height()>0)
+	            	response.append("\n\r"+CMStrings.capitalizeFirstLetter(item.name())+" is "+M.phyStats().height()+" inches tall and weighs "+weight+" pounds.\n\r");
 	            if((mob==null)||(!mob.isMonster()))
 	            	response.append(CMProps.mxpImage(M," ALIGN=RIGHT H=70 W=70"));
 	            response.append(M.healthText(mob)+"\n\r\n\r");
@@ -641,7 +641,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	        if((item instanceof RawMaterial)
 	        &&(!CMLib.flags().isABonusItems(item))
 	        &&(item.rawSecretIdentity().length()>0)
-	        &&(item.baseEnvStats().weight()>1)
+	        &&(item.basePhyStats().weight()>1)
             &&((mob==null)||(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>3)))
 	            response.append("It appears to be a bundle of `"+item.rawSecretIdentity()+"`.  ");
 
@@ -660,8 +660,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	        else
 	        if((item instanceof Armor)&&((mob==null)||mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10))
 	        {
-	            if(item.envStats().height()>0)
-	                response.append(" It is a size "+item.envStats().height()+", and is ");
+	            if(item.phyStats().height()>0)
+	                response.append(" It is a size "+item.phyStats().height()+", and is ");
 	            else
 	                response.append(" It is your size, and is ");
 	            response.append(((item.rawProperLocationBitmap()==Wearable.WORN_HELD)||(item.rawProperLocationBitmap()==(Wearable.WORN_HELD|Wearable.WORN_WIELD)))
@@ -713,12 +713,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 
         StringBuilder buf=new StringBuilder("");
         if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
-            buf.append(item.ID()+"\n\rRejuv :"+item.baseEnvStats().rejuv()
+            buf.append(item.ID()+"\n\rRejuv :"+item.basePhyStats().rejuv()
 		                    +"\n\rType  :"+item.ID()
                             +"\n\rUses  :"+item.usesRemaining()
-                            +"\n\rHeight:"+item.baseEnvStats().height()
-                            +"\n\rAbilty:"+item.baseEnvStats().ability()
-                            +"\n\rLevel :"+item.baseEnvStats().level()
+                            +"\n\rHeight:"+item.basePhyStats().height()
+                            +"\n\rAbilty:"+item.basePhyStats().ability()
+                            +"\n\rLevel :"+item.basePhyStats().level()
                             +"\n\rTime  : "+dispossessionTimeLeftString(item)
                             +"\n\rMisc  :'"+item.text());
         if(item.description().length()==0)
@@ -745,13 +745,13 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                     l.setMaterial(myResource);
                     ((Drink)l).setLiquidType(myResource);
                     l.setBaseValue(RawMaterial.CODES.VALUE(myResource));
-                    l.baseEnvStats().setWeight(1);
+                    l.basePhyStats().setWeight(1);
                     String name=RawMaterial.CODES.NAME(myResource).toLowerCase();
                     l.setName("some "+name);
                     l.setDisplayText("some "+name+" sits here.");
                     l.setDescription("");
             		CMLib.materials().addEffectsToResource(l);
-                    l.recoverEnvStats();
+                    l.recoverPhyStats();
                     newItems.addElement(l);
                 }
 
@@ -1218,9 +1218,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         {
             if(CMath.bset(viewermob.getBitmap(),MOB.ATT_SYSOPMSGS))
                 myDescription.append("\n\rType :"+viewedmob.ID()
-                                    +"\n\rRejuv:"+viewedmob.baseEnvStats().rejuv()
-                                    +"\n\rAbile:"+viewedmob.baseEnvStats().ability()
-                                    +"\n\rLevel:"+viewedmob.baseEnvStats().level()
+                                    +"\n\rRejuv:"+viewedmob.basePhyStats().rejuv()
+                                    +"\n\rAbile:"+viewedmob.basePhyStats().ability()
+                                    +"\n\rLevel:"+viewedmob.basePhyStats().level()
                                     +"\n\rDesc : "+viewedmob.description()
                                     +"\n\rRoom :'"+((viewedmob.getStartRoom()==null)?"null":viewedmob.getStartRoom().roomID())
                                     +"\n\rMisc : "+viewedmob.text()
@@ -1258,8 +1258,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                 else
                     myDescription.append("is here.\n\r");
             }
-            if(viewedmob.envStats().height()>0)
-                myDescription.append(viewedmob.charStats().HeShe()+" is "+viewedmob.envStats().height()+" inches tall and weighs "+viewedmob.baseEnvStats().weight()+" pounds.\n\r");
+            if(viewedmob.phyStats().height()>0)
+                myDescription.append(viewedmob.charStats().HeShe()+" is "+viewedmob.phyStats().height()+" inches tall and weighs "+viewedmob.basePhyStats().weight()+" pounds.\n\r");
             if((longlook)&&(viewermob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>12))
             {
                 CharStats C=(CharStats)CMClass.getCommon("DefaultCharStats");
@@ -1377,7 +1377,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                 if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
                     mob.location().recoverRoomStats();
                 else
-                    mob.envStats().setWeight(mob.envStats().weight()+item.recursiveWeight());
+                    mob.phyStats().setWeight(mob.phyStats().weight()+item.recursiveWeight());
             }
             else
             {
@@ -1391,14 +1391,14 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         {
             item.setContainer(null);
             if(CMLib.flags().isHidden(item))
-                item.baseEnvStats().setDisposition(item.baseEnvStats().disposition()&((int)EnvStats.ALLMASK-EnvStats.IS_HIDDEN));
+                item.basePhyStats().setDisposition(item.basePhyStats().disposition()&((int)PhyStats.ALLMASK-PhyStats.IS_HIDDEN));
             if(mob.location().isContent(item))
                 mob.location().delItem(item);
             if(!mob.isMine(item))
             {
                 mob.addItem(item);
                 if(CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
-                    mob.envStats().setWeight(mob.envStats().weight()+item.envStats().weight());
+                    mob.phyStats().setWeight(mob.phyStats().weight()+item.phyStats().weight());
             }
             item.unWear();
             if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
@@ -1468,7 +1468,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         	else
 	        	item.wearIfPossible(mob,wearLocation);
             mob.recoverCharStats();
-            mob.recoverEnvStats();
+            mob.recoverPhyStats();
             mob.recoverMaxState();
         }
     }
@@ -1480,7 +1480,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         if(item.wearIfPossible(mob,Wearable.WORN_WIELD))
         {
             mob.recoverCharStats();
-            mob.recoverEnvStats();
+            mob.recoverPhyStats();
             mob.recoverMaxState();
         }
     }
@@ -1492,7 +1492,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         if(item.wearIfPossible(mob,Wearable.WORN_HELD))
         {
             mob.recoverCharStats();
-            mob.recoverEnvStats();
+            mob.recoverPhyStats();
             mob.recoverMaxState();
         }
     }

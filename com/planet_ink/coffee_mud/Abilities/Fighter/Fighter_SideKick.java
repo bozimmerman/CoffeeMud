@@ -80,8 +80,8 @@ public class Fighter_SideKick extends FighterSkill
 					Weapon naturalWeapon=CMClass.getWeapon("GenWeapon");
 					naturalWeapon.setName("a side kick");
 					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
-                    naturalWeapon.baseEnvStats().setDamage(5+getXLEVELLevel(mob));
-					naturalWeapon.recoverEnvStats();
+                    naturalWeapon.basePhyStats().setDamage(5+getXLEVELLevel(mob));
+					naturalWeapon.recoverPhyStats();
 					CMLib.combat().postAttack(mob,elligibleTarget,naturalWeapon);
 				}
 			}

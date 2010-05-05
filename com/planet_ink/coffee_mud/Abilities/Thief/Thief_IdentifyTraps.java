@@ -93,8 +93,8 @@ public class Thief_IdentifyTraps extends ThiefSkill
         mob.curState().setMovement(savedState.getMovement());
         if(!detected)return false;
         
-        boolean success=proficiencyCheck(mob,+(((mob.envStats().level()+(getXLEVELLevel(mob)*2))
-                                             -unlockThis.envStats().level())*3),auto);
+        boolean success=proficiencyCheck(mob,+(((mob.phyStats().level()+(getXLEVELLevel(mob)*2))
+                                             -unlockThis.phyStats().level())*3),auto);
         Trap theTrap=CMLib.utensils().fetchMyTrap(unlockThis);
         if(unlockThis instanceof Exit)
         {

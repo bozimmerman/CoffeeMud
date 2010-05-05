@@ -41,12 +41,12 @@ public class BandedArmor extends StdArmor
 		setDescription("This suit of armor is made from metal bands fastened to leather and will provide protection for the torso, arms, and legs.");
 		properWornBitmap=Wearable.WORN_TORSO | Wearable.WORN_ARMS | Wearable.WORN_LEGS;
 		wornLogicalAnd=true;
-		baseEnvStats().setArmor(44);
-		baseEnvStats().setWeight(55);
-		baseEnvStats().setAbility(0);
+		basePhyStats().setArmor(44);
+		basePhyStats().setWeight(55);
+		basePhyStats().setAbility(0);
 		baseGoldValue=400;
 		material=RawMaterial.RESOURCE_IRON;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 }

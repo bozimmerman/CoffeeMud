@@ -42,17 +42,17 @@ public class DaggerOfVenom extends Dagger
 		setDisplayText("a sharp little dagger lies here.");
 		setDescription("It has a wooden handle and a metal blade.");
         secretIdentity="A Dagger of Venom (Periodically injects poison on a successful hit.)";
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(1);
-		baseEnvStats.setWeight(1);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(1);
+		basePhyStats.setWeight(1);
 		baseGoldValue=1500;
-		baseEnvStats().setAttackAdjustment(0);
-		baseEnvStats().setDamage(4);
+		basePhyStats().setAttackAdjustment(0);
+		basePhyStats().setDamage(4);
 		material=RawMaterial.RESOURCE_STEEL;
-        baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
+        basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
 		weaponType=Weapon.TYPE_PIERCING;
 		weaponClassification=Weapon.CLASS_DAGGER;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 
@@ -69,7 +69,7 @@ public class DaggerOfVenom extends Dagger
             if(chance == 10)
             {
                 Ability poison = CMClass.getAbility("Poison");
-	            if(poison!=null) poison.invoke(msg.source(),(MOB)msg.target(), true,envStats().level());
+	            if(poison!=null) poison.invoke(msg.source(),(MOB)msg.target(), true,phyStats().level());
             }
 		}
 	}

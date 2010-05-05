@@ -71,7 +71,7 @@ public class Spell_WallOfFire extends Spell
 					&&(mob.getVictim()==invoker)
 					&&(mob.rangeToTarget()==1))
 					{
-						int damage = CMLib.dice().roll((int)Math.round((invoker.envStats().level()+super.getXLEVELLevel(invoker())+(2.0*super.getX1Level(invoker())))/4.0),6,1);
+						int damage = CMLib.dice().roll((int)Math.round((invoker.phyStats().level()+super.getXLEVELLevel(invoker())+(2.0*super.getX1Level(invoker())))/4.0),6,1);
 						CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The wall of fire flares and <DAMAGE> <T-NAME>!");
 					}
 				}
@@ -145,9 +145,9 @@ public class Spell_WallOfFire extends Spell
 				I.setDisplayText("a blazing wall of fire is burning here");
 				I.setDescription("The flames are high and hot.");
 				I.setMaterial(RawMaterial.RESOURCE_NOTHING);
-				I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|EnvStats.IS_LIGHTSOURCE);
+				I.basePhyStats().setDisposition(I.basePhyStats().disposition()|PhyStats.IS_LIGHTSOURCE);
 				CMLib.flags().setGettable(I,false);
-				I.recoverEnvStats();
+				I.recoverPhyStats();
 				mob.location().addItem(I);
 				theWall=I;
 				deathNotice="The wall of fire flickers...";

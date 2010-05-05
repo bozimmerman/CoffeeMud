@@ -90,9 +90,9 @@ public class Spell_FakeWeapon extends Spell
 			{
 				mob.location().send(mob,msg);
 				Weapon weapon=(Weapon)CMClass.getItem("GenWeapon");
-				weapon.baseEnvStats().setAttackAdjustment(100);
-				weapon.baseEnvStats().setDamage(75);
-				weapon.baseEnvStats().setDisposition(weapon.baseEnvStats().disposition()|EnvStats.IS_BONUS);
+				weapon.basePhyStats().setAttackAdjustment(100);
+				weapon.basePhyStats().setDamage(75);
+				weapon.basePhyStats().setDisposition(weapon.basePhyStats().disposition()|PhyStats.IS_BONUS);
 				weapon.setMaterial(RawMaterial.RESOURCE_COTTON);
 				switch(choice)
 				{
@@ -146,9 +146,9 @@ public class Spell_FakeWeapon extends Spell
 					weapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 				}
-				weapon.baseEnvStats().setWeight(0);
+				weapon.basePhyStats().setWeight(0);
 				weapon.setBaseValue(0);
-				weapon.recoverEnvStats();
+				weapon.recoverPhyStats();
 				mob.addItem(weapon);
 				mob.location().show(mob,null,weapon,CMMsg.MSG_OK_ACTION,"Suddenly, <S-NAME> own(s) <O-NAME>!");
 				myItem=weapon;

@@ -44,9 +44,9 @@ public class GenClanSpecialItem extends StdClanSpecialItem
 		setName("a generic clan item");
 		setDisplayText("a generic clan item sits here.");
 		setDescription("");
-		baseEnvStats().setWeight(2);
+		basePhyStats().setWeight(2);
 		setMaterial(RawMaterial.RESOURCE_OAK);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 
@@ -63,7 +63,7 @@ public class GenClanSpecialItem extends StdClanSpecialItem
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	private final static String[] MYCODES={"CLANID","CITYPE"};
 	public String getStat(String code)

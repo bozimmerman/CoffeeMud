@@ -423,8 +423,8 @@ public class CMClass extends ClassLoader
 		if((sampleMOB==null)&&(c().MOBs.size()>0))
 		{
 			sampleMOB=(MOB)((MOB)c().MOBs.firstElement()).copyOf();
-			sampleMOB.baseEnvStats().setDisposition(EnvStats.IS_NOT_SEEN);
-			sampleMOB.envStats().setDisposition(EnvStats.IS_NOT_SEEN);
+			sampleMOB.basePhyStats().setDisposition(PhyStats.IS_NOT_SEEN);
+			sampleMOB.phyStats().setDisposition(PhyStats.IS_NOT_SEEN);
 		}
 		if(sampleMOB.location()==null)
 			sampleMOB.setLocation(CMLib.map().getRandomRoom());

@@ -106,19 +106,19 @@ public class Chant_WindColor extends Chant
 			{
 				int done=0;
 				if(colors==null) colors=new int[9];
-				if(I.envStats().level()>=(mob.envStats().level()+25))
+				if(I.phyStats().level()>=(mob.phyStats().level()+25))
 					levelCode=4;
 				else
-				if(I.envStats().level()>=(mob.envStats().level()+15))
+				if(I.phyStats().level()>=(mob.phyStats().level()+15))
 				{ if (levelCode<3) levelCode=3;}
 				else
-				if(I.envStats().level()>=(mob.envStats().level()+5))
+				if(I.phyStats().level()>=(mob.phyStats().level()+5))
 				{ if (levelCode<2) levelCode=2;}
 				else
-				if(I.envStats().level()>(mob.envStats().level()-5))
+				if(I.phyStats().level()>(mob.phyStats().level()-5))
 				{ if (levelCode<1) levelCode=1;}
 				else
-				if(I.envStats().level()>(mob.envStats().level()-15))
+				if(I.phyStats().level()>(mob.phyStats().level()-15))
 				{ if (levelCode<0) levelCode=0;}
 				if(CMLib.flags().isHidden(I))
 				{ done++; colors[5]++;}
@@ -147,19 +147,19 @@ public class Chant_WindColor extends Chant
 			if((M!=null)&&(M!=mob)&&(!group.contains(M)))
 			{
 				if(colors==null) colors=new int[9];
-				if(M.envStats().level()>=(mob.envStats().level()+25))
+				if(M.phyStats().level()>=(mob.phyStats().level()+25))
 					levelCode=4;
 				else
-				if(M.envStats().level()>=(mob.envStats().level()+15))
+				if(M.phyStats().level()>=(mob.phyStats().level()+15))
 				{ if (levelCode<3) levelCode=3;}
 				else
-				if(M.envStats().level()>=(mob.envStats().level()+5))
+				if(M.phyStats().level()>=(mob.phyStats().level()+5))
 				{ if (levelCode<2) levelCode=2;}
 				else
-				if(M.envStats().level()>(mob.envStats().level()-5))
+				if(M.phyStats().level()>(mob.phyStats().level()-5))
 				{ if (levelCode<1) levelCode=1;}
 				else
-				if(M.envStats().level()>(mob.envStats().level()-15))
+				if(M.phyStats().level()>(mob.phyStats().level()-15))
 				{ if (levelCode<0) levelCode=0;}
 
 				int done=0;

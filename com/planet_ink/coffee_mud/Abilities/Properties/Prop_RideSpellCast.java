@@ -49,7 +49,7 @@ public class Prop_RideSpellCast extends Prop_HaveSpellCast
         lastRiders=new Vector();
     }
     
-	public void affectEnvStats(Environmental host, EnvStats affectableStats)
+	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{
 		if(processing) return;
 		processing=true;

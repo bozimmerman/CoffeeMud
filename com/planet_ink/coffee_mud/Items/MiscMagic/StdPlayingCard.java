@@ -40,7 +40,7 @@ import java.util.*;
 
     The Playing Card
     This item represents a single card in a deck of 52 without wild cards.
-    The value of the card is set by changing the baseEnvStats().ability()
+    The value of the card is set by changing the basePhyStats().ability()
     value to the numeric representation of the suit and card value from 2-14.
     Methods then exist to parse the ability score into usable values and 
     encodings.  The card uses bits 0-3 to represent value 2-14, bits 4,5 to
@@ -61,22 +61,22 @@ public class StdPlayingCard extends StdItem implements MiscMagic, PlayingCard
 		name="A card";
 		displayText="A card lies here.";
 		secretIdentity="";
-		baseEnvStats().setWeight(0);
+		basePhyStats().setWeight(0);
 		setBaseValue(0);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
     protected boolean abilityImbuesMagic(){return false;}
 
     // the encoded suit
-    public int getBitEncodedSuit(){return envStats().ability()&(16+32);}
+    public int getBitEncodedSuit(){return phyStats().ability()&(16+32);}
     // the encoded value from 2-14
-    public int getBitEncodedValue(){return envStats().ability()&(1+2+4+8);}
+    public int getBitEncodedValue(){return phyStats().ability()&(1+2+4+8);}
     // whether the card is face up
-    public boolean isFaceUp(){return (envStats().ability()&64)==64;}
+    public boolean isFaceUp(){return (phyStats().ability()&64)==64;}
     // set the card face up by turning on bit 64
-    public void turnFaceUp(){ baseEnvStats().setAbility(baseEnvStats().ability()|64); recoverEnvStats();}
+    public void turnFaceUp(){ basePhyStats().setAbility(basePhyStats().ability()|64); recoverPhyStats();}
     // set the card face down by turning off bits 64 and up.
-    public void turnFaceDown(){ baseEnvStats().setAbility(baseEnvStats().ability()&(63)); recoverEnvStats();}
+    public void turnFaceDown(){ basePhyStats().setAbility(basePhyStats().ability()&(63)); recoverPhyStats();}
 
     // return the suit of this card as a single letter string
     public String getStringEncodedSuit()
@@ -171,7 +171,7 @@ public class StdPlayingCard extends StdItem implements MiscMagic, PlayingCard
         return "";
     }
     
-    // recoverEnvStats() is a kind of event handler
+    // recoverPhyStats() is a kind of event handler
     // that is called whenever something changes in
     // the environment of this object.  This method
     // normally causes the object to reevaluate its
@@ -180,14 +180,14 @@ public class StdPlayingCard extends StdItem implements MiscMagic, PlayingCard
     // value with a cached and saved one to determine
     // if the NAME and DISPLAY TEXT of the card should
     // be updated.
-	public void recoverEnvStats()
+	public void recoverPhyStats()
 	{
-	    super.recoverEnvStats();
-	    if(oldAbility!=envStats.ability())
+	    super.recoverPhyStats();
+	    if(oldAbility!=phyStats.ability())
 	    {
-	        oldAbility=envStats().ability();
-	        String suitStr=getSuitDescription(envStats().ability());
-	        String cardStr=getCardValueShortDescription(envStats().ability());
+	        oldAbility=phyStats().ability();
+	        String suitStr=getSuitDescription(phyStats().ability());
+	        String cardStr=getCardValueShortDescription(phyStats().ability());
 	        if((suitStr.length()==0)||(cardStr.length()==0))
 	        {
 	    		name="A mangled card";

@@ -46,9 +46,9 @@ public class Thief_SneakAttack extends ThiefSkill
 	protected boolean activated=false;
 	protected boolean oncePerRound=false;
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(activated)
 		{
 			int xlvl=super.getXLEVELLevel(invoker());
@@ -79,14 +79,14 @@ public class Thief_SneakAttack extends ThiefSkill
 			if(!activated)
 			{
 				activated=true;
-				affected.recoverEnvStats();
+				affected.recoverPhyStats();
 			}
 		}
 		else
 		if(activated)
 		{
 			activated=false;
-			affected.recoverEnvStats();
+			affected.recoverPhyStats();
 		}
 		if(oncePerRound) oncePerRound=false;
 		return super.tick(ticking,tickID);

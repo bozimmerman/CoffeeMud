@@ -133,16 +133,16 @@ public class Spell_IncreaseGravity extends Spell
 		return true;
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(!(affected instanceof MOB)) return;
 		if(((MOB)affected).location()!=gravityRoom())
 			unInvoke();
 		else
 		{
-			if((affectableStats.disposition()&EnvStats.IS_FLYING)>0)
-				affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_FLYING);
+			if((affectableStats.disposition()&PhyStats.IS_FLYING)>0)
+				affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_FLYING);
 			affectableStats.setWeight(affectableStats.weight()*2);
 		}
 	}

@@ -46,7 +46,7 @@ public class Wolf extends StdMOB
 		setMoney(0);
 		setWimpHitPoint(0);
 
-		baseEnvStats.setWeight(50 + Math.abs(randomizer.nextInt() % 55));
+		basePhyStats.setWeight(50 + Math.abs(randomizer.nextInt() % 55));
 
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
@@ -55,17 +55,17 @@ public class Wolf extends StdMOB
 		baseCharStats().setMyRace(CMClass.getRace("Wolf"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		baseEnvStats().setDamage(6);
-		baseEnvStats().setSpeed(1.0);
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(4);
-		baseEnvStats().setArmor(70);
+		basePhyStats().setDamage(6);
+		basePhyStats().setSpeed(1.0);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(4);
+		basePhyStats().setArmor(70);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

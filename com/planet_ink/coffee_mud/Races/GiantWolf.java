@@ -47,10 +47,10 @@ public class GiantWolf extends Wolf
 	public int[] bodyMask(){return parts;}
 
 	protected static Vector resources=new Vector();
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_INFRARED);
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_INFRARED);
 	}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{

@@ -103,7 +103,7 @@ public class MOBEater extends ActiveTicker
 			if(these.elementAt(i) instanceof MOB)
 				lastKnownLocation.bringMobHere((MOB)these.elementAt(i),false);
 		}
-		Stomach.recoverEnvStats();
+		Stomach.recoverPhyStats();
 		lastKnownLocation.recoverRoomStats();
 		lastKnownLocation=null;
 	}
@@ -147,7 +147,7 @@ public class MOBEater extends ActiveTicker
 		{
 			MOB TastyMorsel = mob.getVictim();
 			if(TastyMorsel==null) return true;
-			if (TastyMorsel.envStats().weight()<(mob.envStats().weight()/2))
+			if (TastyMorsel.phyStats().weight()<(mob.phyStats().weight()/2))
 			{
 				// ===== The player has been eaten.
 				// ===== move the tasty morsel to the stomach
@@ -187,7 +187,7 @@ public class MOBEater extends ActiveTicker
 				// no OKaffectS, since the dragon is not in his own stomach.
 				Stomach.send(mob,DigestMsg);
 				int damage=(int)Math.round(TastyMorsel.curState().getHitPoints() * CMath.div(pctAcidHp, 100));
-				if(damage<(TastyMorsel.envStats().level()+6)) damage=TastyMorsel.curState().getHitPoints()+1;
+				if(damage<(TastyMorsel.phyStats().level()+6)) damage=TastyMorsel.curState().getHitPoints()+1;
 				CMLib.combat().postDamage(mob,TastyMorsel,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The stomach acid <DAMAGE> <T-NAME>!");
 			}
 		}

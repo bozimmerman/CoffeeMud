@@ -154,13 +154,13 @@ public class Thief_Shadow extends ThiefSkill
                     +affectableStats.getStat(CharStats.STAT_SAVE_DETECTION));
     }
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected==invoker)
 		{
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SNEAKING);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_HIDDEN);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SNEAKING);
 		}
 		if((shadowing!=null)&&(invoker!=null)&&(shadowing.location()==invoker.location()))
 			lastTogether=System.currentTimeMillis();
@@ -230,7 +230,7 @@ public class Thief_Shadow extends ThiefSkill
 			return false;
 
 		shadowing=null;
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(super.getXLEVELLevel(mob)*2));
+		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(super.getXLEVELLevel(mob)*2));
 
 		boolean success=proficiencyCheck(mob,-(levelDiff*10),auto);
 
@@ -256,7 +256,7 @@ public class Thief_Shadow extends ThiefSkill
 						A.shadowing=target;
 						A.setAffectedOne(target);
 						A.lastTogether=System.currentTimeMillis();
-						mob.recoverEnvStats();
+						mob.recoverPhyStats();
 					}
 					else 
 					{

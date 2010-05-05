@@ -41,14 +41,14 @@ public class StdClanCard extends StdClanItem
         super();
 
         setName("a clan membership card");
-        baseEnvStats.setWeight(1);
+        basePhyStats.setWeight(1);
         setDisplayText("a membership card belonging to a clan is here.");
         setDescription("");
         secretIdentity="";
         baseGoldValue=1;
         setCIType(ClanItem.CI_ANTIPROPAGANDA);
         material=RawMaterial.RESOURCE_PAPER;
-        recoverEnvStats();
+        recoverPhyStats();
     }
 
     public boolean okMessage(Environmental host, CMMsg msg)

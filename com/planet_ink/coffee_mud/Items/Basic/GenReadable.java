@@ -43,12 +43,12 @@ public class GenReadable extends GenItem
 		setDisplayText("a generic readable thing sits here.");
 		setDescription("");
 		setMaterial(RawMaterial.RESOURCE_WOOD);
-		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMREADABLE);
-		baseEnvStats().setWeight(1);
-		recoverEnvStats();
+		basePhyStats().setSensesMask(PhyStats.SENSE_ITEMREADABLE);
+		basePhyStats().setWeight(1);
+		recoverPhyStats();
 	}
 
 
 	public boolean isGeneric(){return true;}
-	public void recoverEnvStats(){CMLib.flags().setReadable(this,true); super.recoverEnvStats();}
+	public void recoverPhyStats(){CMLib.flags().setReadable(this,true); super.recoverPhyStats();}
 }

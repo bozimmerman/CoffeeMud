@@ -30,25 +30,25 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    limitations under the License.
 */
 /**
- * The EnvStats interface is a state object that holds some basic information about
- * just about every Environmental object in the game.  Not all stats are relevant for
- * ALL Environmentals, but most, especially the big ones.
+ * The PhyStats interface is a state object that holds some basic information about
+ * just about every Physical object in the game.  Not all stats are relevant for
+ * ALL Physicals, but most, especially the big ones.
  * 
- * Environmentals always keep two instances of this object, a base one, representing
+ * Physicals always keep two instances of this object, a base one, representing
  * his base unmodified state, and current one, representing his state after spells
  * and other affects have had their say.
  * @see com.planet_ink.coffee_mud.core.interfaces.Modifiable
- * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#baseEnvStats()
- * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#envStats()
+ * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#basePhyStats()
+ * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#phyStats()
  */
-public interface EnvStats extends CMCommon, Modifiable
+public interface PhyStats extends CMCommon, Modifiable
 {
     /**
      * Returns a bitmask for sense related flags of mobs (CAN_ constants), or 
-     * miscellaneous runtime flags for items and other Environmentals (SENSE_ constants). 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#SENSE_ITEMNEVERSAVED
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#CAN_NOT_SEE
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#setSensesMask(int)
+     * miscellaneous runtime flags for items and other Physicals (SENSE_ constants). 
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#SENSE_ITEMNEVERSAVED
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#CAN_NOT_SEE
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#setSensesMask(int)
      * @return a bitmask made up of SENSE_ constants or CAN_ constants
      */
     public int sensesMask(); // mobs, run-time items
@@ -56,40 +56,40 @@ public interface EnvStats extends CMCommon, Modifiable
     
     /**
      * Sets a bitmask for sense related flags of mobs (CAN_ constants), or 
-     * miscellaneous runtime flags for items and other Environmentals (SENSE_ constants). 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#SENSE_ITEMNEVERSAVED
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#CAN_NOT_SEE
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#setSensesMask(int)
+     * miscellaneous runtime flags for items and other Physicals (SENSE_ constants). 
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#SENSE_ITEMNEVERSAVED
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#CAN_NOT_SEE
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#setSensesMask(int)
      * @param newMask a bitmask made up of SENSE_ constants or CAN_ constants
      */
     public void setSensesMask(int newMask);
     
     /**
-     * Returns a bitmask for disposition related flags of Environmentals (IS_ constants).
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#IS_BONUS
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#setDisposition(int)
+     * Returns a bitmask for disposition related flags of Physicals (IS_ constants).
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#IS_BONUS
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#setDisposition(int)
      * @return a bitmask of disposition related flags
      */
     public int disposition(); // items, mobs
     
     /**
-     * Sets a bitmask for disposition related flags of Environmentals (IS_ constants).
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#IS_BONUS
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#disposition()
+     * Sets a bitmask for disposition related flags of Physicals (IS_ constants).
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#IS_BONUS
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#disposition()
      * @param newDisposition a bitmask of disposition flags
      */
     public void setDisposition(int newDisposition);
     
     /**
-     * Returns the experience level of the mob, item, exit, Environmental.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#setLevel(int)
+     * Returns the experience level of the mob, item, exit, Physical.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#setLevel(int)
      * @return the experience level
      */
     public int level(); // items, exits, mobs
     
     /**
-     * Sets the experience level of the mob, item, exit, Environmental.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#level()
+     * Sets the experience level of the mob, item, exit, Physical.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#level()
      * @param newLevel the new experience level
      */
     public void setLevel(int newLevel);
@@ -98,7 +98,7 @@ public interface EnvStats extends CMCommon, Modifiable
      * Returns the ability level (a secondary level, e.g. if magical, how much?)
      * Also acts as a random flag for various purposes.  For instance, on mobs,
      * it designates a hit point multiplier.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#setAbility(int)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#setAbility(int)
      * @return the ability level (or misc integer)
      */
     public int ability(); // items, mobs
@@ -107,148 +107,148 @@ public interface EnvStats extends CMCommon, Modifiable
      * Sets the ability level (a secondary level, e.g. if magical, how much?)
      * Also acts as a random flag for various purposes. For instance, on mobs,
      * it designates a hit point multiplier.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#ability()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#ability()
      * @param newAdjustment the new ability level (or misc integer)
      */
     public void setAbility(int newAdjustment);
     
     /**
-     * Returns the number of ticks before an Environmental removed from the game
+     * Returns the number of ticks before a Physical removed from the game
      * (due to death, destruction, or just removal from home) is restored.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#setRejuv(int)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#setRejuv(int)
      * @return the number of ticks before rejuv (0==never)
      */
     public int rejuv(); // items, mobs
     
     /**
-     * Sets the number of ticks before an Environmental removed from the game
+     * Sets the number of ticks before a Physical removed from the game
      * (due to death, destruction, or just removal from home) is restored.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#rejuv()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#rejuv()
      * @param newRejuv the new number of ticks before rejuv (0==never)
      */
     public void setRejuv(int newRejuv);
 
     /**
-     * Returns the weight of this Environmental, in pounds.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#setWeight(int)
-     * @return the weight of this Environmental
+     * Returns the weight of this Physical, in pounds.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#setWeight(int)
+     * @return the weight of this Physical
      */
     public int weight(); // items, mobs
     
     /**
-     * Sets the weight of this Environmental, in pounds.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#weight()
-     * @param newWeight the new weight of this Environmental
+     * Sets the weight of this Physical, in pounds.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#weight()
+     * @param newWeight the new weight of this Physical
      */
     public void setWeight(int newWeight);
 
     /**
-     * Returns the height of this Environmental, in inches
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#setHeight(int)
-     * @return the height of this Environmental, in inches (0=indeterminate)
+     * Returns the height of this Physical, in inches
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#setHeight(int)
+     * @return the height of this Physical, in inches (0=indeterminate)
      */
     public int height(); // items, mobs
     
     /**
-     * Sets the height of this Environmental, in inches
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#height()
-     * @param newHeight the new height of this Environmental, in inches (0=indeterminate)
+     * Sets the height of this Physical, in inches
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#height()
+     * @param newHeight the new height of this Physical, in inches (0=indeterminate)
      */
     public void setHeight(int newHeight);
 
     /**
-     * Returns the defensive capability number of this Environmental.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#setArmor(int)
-     * @return the raw defensive capability of this Environmental
+     * Returns the defensive capability number of this Physical.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#setArmor(int)
+     * @return the raw defensive capability of this Physical
      */
     public int armor(); // armor items, mobs
     
     /**
-     * Sets the defensive capability number of this Environmental.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#armor()
-     * @param newArmor the defensive capability number of this Environmental
+     * Sets the defensive capability number of this Physical.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#armor()
+     * @param newArmor the defensive capability number of this Physical
      */
     public void setArmor(int newArmor);
 
     /**
-     * Returns the maximum damaging ability of this Environmental 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#setDamage(int)
-     * @return the maxiumu damaging ability of this Environmental
+     * Returns the maximum damaging ability of this Physical 
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#setDamage(int)
+     * @return the maxiumu damaging ability of this Physical
      */
     public int damage(); // weapon items, mobs
     
     /**
-     * Sets the maximum damaging ability of this Environmental 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#damage()
-     * @param newDamage the new maximum damaging ability of this Environmental
+     * Sets the maximum damaging ability of this Physical 
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#damage()
+     * @param newDamage the new maximum damaging ability of this Physical
      */
     public void setDamage(int newDamage);
 
     /**
      * Returns the number of actions this mob can do per tick.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#setSpeed(double)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#setSpeed(double)
      * @return the number of actions per tick.
      */
     public double speed(); // mobs
     
     /**
      * Sets the number of actions this mob can do per tick 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#speed()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#speed()
      * @param newSpeed the new number of actions this mob can do per tick
      */
     public void setSpeed(double newSpeed);
 
     /**
-     * Returns the rawcombat attack prowess of this Environmental
+     * Returns the rawcombat attack prowess of this Physical
      * Usually mobs or weapons
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#setAttackAdjustment(int)
-     * @return the raw combat attack prowess of this Environmental
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#setAttackAdjustment(int)
+     * @return the raw combat attack prowess of this Physical
      */
     public int attackAdjustment(); // weapon items, mobs
     
     /**
-     * Sets the rawcombat attack prowess of this Environmental
+     * Sets the rawcombat attack prowess of this Physical
      * Usually mobs or weapons
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#attackAdjustment()
-     * @param newAdjustment the new raw combat attack prowess of this Environmental
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#attackAdjustment()
+     * @param newAdjustment the new raw combat attack prowess of this Physical
      */
     public void setAttackAdjustment(int newAdjustment);
 
     /**
-     * Returns a modified name for this Environmental, usually null for no change.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#setName(String)
+     * Returns a modified name for this Physical, usually null for no change.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#setName(String)
      * @return the modified name, or null
      */
     public String newName(); // items, mobs
 
     /**
-     * Sets a modified name for this Environmental, usually null for no change.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#newName()
+     * Sets a modified name for this Physical, usually null for no change.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#newName()
      * @param newName the modified name, or null
      */
     public void setName(String newName);
 
     /**
      * Returns a list of ambiances (extra words, visible fields) that are tacked
-     * onto the display text of this Environmental. 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#addAmbiance(String)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#delAmbiance(String)
+     * onto the display text of this Physical. 
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#addAmbiance(String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#delAmbiance(String)
      * @return a list of ambiances
      */
     public String[] ambiances(); // everything
     
     /**
      * Adds an ambiance (extra word, visible field) to the list that are tacked
-     * onto the display text of this Environmental. 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#ambiances()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats#delAmbiance(String)
+     * onto the display text of this Physical. 
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#ambiances()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#delAmbiance(String)
      * @param ambiance a new ambiance string
      */
     public void addAmbiance(String ambiance);
     
     /**
      * Removes an ambiance (extra word, visible field) from the list that are tacked
-     * onto the display text of this Environmental. 
+     * onto the display text of this Physical. 
      * @param ambiance the old ambiance string
      */
     public void delAmbiance(String ambiance);
@@ -261,16 +261,16 @@ public interface EnvStats extends CMCommon, Modifiable
     
     /**
      * Returns whether the given object is substantially the same as this one
-     * @param E the EnvStats to compare to
+     * @param E the PhyStats to compare to
      * @return whether or not they are the same
      */
-    public boolean sameAs(EnvStats E);
+    public boolean sameAs(PhyStats E);
     
     /**
      * Copies the internal data of this object into another of kind.
-     * @param intoStats another EnvStats object.
+     * @param intoStats another PhyStats object.
      */
-    public void copyInto(EnvStats intoStats);
+    public void copyInto(PhyStats intoStats);
 
     /**
      * Sets all the stats in this object to the given value

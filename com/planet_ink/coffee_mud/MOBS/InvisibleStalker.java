@@ -44,28 +44,28 @@ public class InvisibleStalker extends StdMOB
 		setDisplayText("An invisible stalker hunts here.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
-		baseEnvStats.setWeight(10 + Math.abs(randomizer.nextInt() % 10));
+		basePhyStats.setWeight(10 + Math.abs(randomizer.nextInt() % 10));
 
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,12 + Math.abs(randomizer.nextInt() % 3));
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,20);
 		baseCharStats().setStat(CharStats.STAT_DEXTERITY,13);
 
-		baseEnvStats().setDamage(16);
-		baseEnvStats().setSpeed(1.0);
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(4);
-		baseEnvStats().setArmor(0);
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_INVISIBLE);
+		basePhyStats().setDamage(16);
+		basePhyStats().setSpeed(1.0);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(4);
+		basePhyStats().setArmor(0);
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_INVISIBLE);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		addBehavior(CMClass.getBehavior("Aggressive"));
 		addBehavior(CMClass.getBehavior("Mobile"));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

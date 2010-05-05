@@ -45,20 +45,20 @@ public class Chimp extends StdMOB
 		setMoney(0);
 		setWimpHitPoint(2);
 
-		baseEnvStats().setDamage(1);
+		basePhyStats().setDamage(1);
 
 		baseCharStats().setMyRace(CMClass.getRace("Chimp"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(4);
-		baseEnvStats().setArmor(60);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(4);
+		basePhyStats().setArmor(60);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

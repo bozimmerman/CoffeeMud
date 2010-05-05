@@ -53,10 +53,10 @@ public class Score extends Affect
 		&&(!mob.charStats().getCurrentClass().leveless()))
 		{
 			String levelStr=null;
-			if(classLevel>=mob.envStats().level())
-				levelStr="level "+mob.envStats().level()+" "+mob.charStats().getCurrentClass().name(mob.charStats().getCurrentClassLevel());
+			if(classLevel>=mob.phyStats().level())
+				levelStr="level "+mob.phyStats().level()+" "+mob.charStats().getCurrentClass().name(mob.charStats().getCurrentClassLevel());
 			else
-				levelStr=mob.charStats().getCurrentClass().name(mob.charStats().getCurrentClassLevel())+" "+classLevel+"/"+mob.envStats().level();
+				levelStr=mob.charStats().getCurrentClass().name(mob.charStats().getCurrentClassLevel())+" "+classLevel+"/"+mob.phyStats().level();
 			msg.append("You are ^H"+mob.Name()+"^? the ^H"+levelStr+"^?.\n\r");
 		}
 		else
@@ -65,10 +65,10 @@ public class Score extends Affect
 		&&(!mob.charStats().getMyRace().leveless()))
 		{
 			String levelStr=null;
-			if(classLevel>=mob.envStats().level())
-				levelStr=", level "+mob.envStats().level();
+			if(classLevel>=mob.phyStats().level())
+				levelStr=", level "+mob.phyStats().level();
 			else
-				levelStr=", level "+classLevel+"/"+mob.envStats().level();
+				levelStr=", level "+classLevel+"/"+mob.phyStats().level();
 			msg.append("You are ^H"+mob.Name()+"^?^H"+levelStr+"^?.\n\r");
 		}
 		else
@@ -79,7 +79,7 @@ public class Score extends Affect
 			msg.append("You are ^H"+mob.Name()+"^?.\n\r");
 
 		if((!CMSecurity.isDisabled("CLASSES"))
-		&&(classLevel<mob.envStats().level()))
+		&&(classLevel<mob.phyStats().level()))
 		{
 			msg.append("You also have levels in: ");
 			StringBuilder classList=new StringBuilder("");
@@ -152,14 +152,14 @@ public class Score extends Affect
 		msg.append("You have ^H"+mob.curState().getHitPoints()+"/"+mob.maxState().getHitPoints()+"^? ^<HELP^>hit points^</HELP^>, ^H");
 		msg.append(mob.curState().getMana()+"/"+mob.maxState().getMana()+"^? ^<HELP^>mana^</HELP^>, and ^H");
 		msg.append(mob.curState().getMovement()+"/"+mob.maxState().getMovement()+"^? ^<HELP^>movement^</HELP^>.\n\r");
-		if(mob.envStats().height()<0)
+		if(mob.phyStats().height()<0)
 			msg.append("You are incorporeal, but still weigh ^!"+mob.baseWeight()+"^? pounds.\n\r");
 		else
-			msg.append("You are ^!"+mob.envStats().height()+"^? inches tall and weigh ^!"+mob.baseWeight()+"^? pounds.\n\r");
+			msg.append("You are ^!"+mob.phyStats().height()+"^? inches tall and weigh ^!"+mob.baseWeight()+"^? pounds.\n\r");
         if(CMSecurity.isAllowed(mob,mob.location(),"CARRYALL"))
-            msg.append("You are carrying ^!"+mob.numItems()+"^? items weighing ^!"+mob.envStats().weight()+"^? pounds.\n\r");
+            msg.append("You are carrying ^!"+mob.numItems()+"^? items weighing ^!"+mob.phyStats().weight()+"^? pounds.\n\r");
         else
-    		msg.append("You are carrying ^!"+mob.numItems()+"^?/^!"+mob.maxItems()+"^? items weighing ^!"+mob.envStats().weight()+"^?/^!"+mob.maxCarry()+"^? pounds.\n\r");
+    		msg.append("You are carrying ^!"+mob.numItems()+"^?/^!"+mob.maxItems()+"^? items weighing ^!"+mob.phyStats().weight()+"^?/^!"+mob.maxCarry()+"^? pounds.\n\r");
 		msg.append("You have ^!"+mob.getPractices()+"^? ^<HELP^>practices^</HELP^>, ^!"+mob.getTrains()+"^? ^<HELP^>training sessions^</HELP^>, and ^!"+mob.getQuestPoint()+"^? ^<HELP^>quest points^</HELP^>.\n\r");
 		if((!CMSecurity.isDisabled("EXPERIENCE"))
 		&&!mob.charStats().getCurrentClass().expless()
@@ -170,7 +170,7 @@ public class Score extends Affect
 			&&(!mob.charStats().getMyRace().leveless()))
 			{
 				if(((CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)>0)
-					&&(mob.baseEnvStats().level()>CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)))
+					&&(mob.basePhyStats().level()>CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)))
 				||(mob.getExpNeededLevel()==Integer.MAX_VALUE)
                 ||(mob.charStats().isLevelCapped(mob.charStats().getCurrentClass())))
 					msg.append("You have scored ^!"+mob.getExperience()+"^? ^<HELP^>experience points^</HELP^>, ^!"+(mob.getExpNeededDelevel())+"^? over your last level.\n\r");

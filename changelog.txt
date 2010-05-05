@@ -775,7 +775,7 @@ Yep -- more bug fixes, numerous new races added for madrom are file import suppo
   11. Masonry and Construction updated for making peep-holes (windows), and crawlways.
   12. Clan Enchantment spells courtesy of Jeremy V.
   13. GenTub item created for easy bath tubs.
-  14. Scriptable STAT and GSTAT related functions can now dip into CharStats, EnvStats, and CharState (STRENGTH, SAVING THROWS, HIT POINTS, SENSESMASK, etc, etc) -- so those complaining that you couldn't get at that data can now have at it!
+  14. Scriptable STAT and GSTAT related functions can now dip into CharStats, PhyStats, and CharState (STRENGTH, SAVING THROWS, HIT POINTS, SENSESMASK, etc, etc) -- so those complaining that you couldn't get at that data can now have at it!
   15. Scriptable behavior may now be added to items or rooms.
   16. New Scriptable triggers: GET_PROG, PUT_PROG, WEAR_PROG, REMOVE_PROG, DROP_PROG -- obviously to support items, but they will work for Scriptable mobs as well.
   17. Lots of bug fixes, of course, though they tended to be more minor fixes, which is why I'm sticking with 4.1 as the official build for awhile.

@@ -255,8 +255,8 @@ public class Spell_Meld extends Spell
 					gc.setDescription("It looks like someone melded "+itemOneName+" and "+itemTwoName);
 					gc.setSecretIdentity(itemOne.rawSecretIdentity()+", "+itemTwo.rawSecretIdentity());
 					gc.setBaseValue(itemOne.baseGoldValue()+itemTwo.baseGoldValue());
-					gc.baseEnvStats().setWeight(itemOne.baseEnvStats().weight()+itemTwo.baseEnvStats().weight());
-					gc.baseEnvStats().setArmor((itemOne.baseEnvStats().armor()+itemTwo.baseEnvStats().armor())/2);
+					gc.basePhyStats().setWeight(itemOne.basePhyStats().weight()+itemTwo.basePhyStats().weight());
+					gc.basePhyStats().setArmor((itemOne.basePhyStats().armor()+itemTwo.basePhyStats().armor())/2);
 					gc.setMaterial(material);
 					gc.setCapacity(0);
 					if(itemOne instanceof Container)
@@ -266,10 +266,10 @@ public class Spell_Meld extends Spell
 					gc.setRawLogicalAnd(true);
 					gc.setRawProperLocationBitmap(wornLocation);
 
-					gc.baseEnvStats().setLevel(itemOne.baseEnvStats().level());
-					if(itemTwo.baseEnvStats().level()>itemOne.baseEnvStats().level())
-						gc.baseEnvStats().setLevel(itemTwo.baseEnvStats().level());
-					gc.baseEnvStats().setAbility((itemOne.baseEnvStats().ability()+itemTwo.baseEnvStats().ability())/2);
+					gc.basePhyStats().setLevel(itemOne.basePhyStats().level());
+					if(itemTwo.basePhyStats().level()>itemOne.basePhyStats().level())
+						gc.basePhyStats().setLevel(itemTwo.basePhyStats().level());
+					gc.basePhyStats().setAbility((itemOne.basePhyStats().ability()+itemTwo.basePhyStats().ability())/2);
 					melded=gc;
 					mob.addItem(gc);
 				}
@@ -282,9 +282,9 @@ public class Spell_Meld extends Spell
 					gc.setDescription("It looks like someone melded "+itemOneName+" and "+itemTwoName);
 					gc.setSecretIdentity(itemOne.rawSecretIdentity()+", "+itemTwo.rawSecretIdentity());
 					gc.setBaseValue(itemOne.baseGoldValue()+itemTwo.baseGoldValue());
-					gc.baseEnvStats().setWeight(itemOne.baseEnvStats().weight()+itemTwo.baseEnvStats().weight());
-					gc.baseEnvStats().setAttackAdjustment((itemOne.baseEnvStats().attackAdjustment()+itemTwo.baseEnvStats().attackAdjustment())/2);
-					gc.baseEnvStats().setDamage((itemOne.baseEnvStats().damage()+itemTwo.baseEnvStats().damage())/2);
+					gc.basePhyStats().setWeight(itemOne.basePhyStats().weight()+itemTwo.basePhyStats().weight());
+					gc.basePhyStats().setAttackAdjustment((itemOne.basePhyStats().attackAdjustment()+itemTwo.basePhyStats().attackAdjustment())/2);
+					gc.basePhyStats().setDamage((itemOne.basePhyStats().damage()+itemTwo.basePhyStats().damage())/2);
 					if(itemOne instanceof Weapon)
 						gc.setWeaponType(((Weapon)itemOne).weaponType());
 					else
@@ -294,10 +294,10 @@ public class Spell_Meld extends Spell
 					else
 						gc.setWeaponClassification(((Weapon)itemOne).weaponClassification());
 					gc.setRawLogicalAnd(true);
-					gc.baseEnvStats().setLevel(itemOne.baseEnvStats().level());
-					if(itemTwo.baseEnvStats().level()>itemOne.baseEnvStats().level())
-						gc.baseEnvStats().setLevel(itemTwo.baseEnvStats().level());
-					gc.baseEnvStats().setAbility((itemOne.baseEnvStats().ability()+itemTwo.baseEnvStats().ability())/2);
+					gc.basePhyStats().setLevel(itemOne.basePhyStats().level());
+					if(itemTwo.basePhyStats().level()>itemOne.basePhyStats().level())
+						gc.basePhyStats().setLevel(itemTwo.basePhyStats().level());
+					gc.basePhyStats().setAbility((itemOne.basePhyStats().ability()+itemTwo.basePhyStats().ability())/2);
 					melded=gc;
 					mob.addItem(gc);
 				}
@@ -317,15 +317,15 @@ public class Spell_Meld extends Spell
 					gc.setDescription("It looks like someone melded "+itemOneName+" and "+itemTwoName);
 					CMLib.flags().setGettable(gc,CMLib.flags().isGettable(itemOne)&&CMLib.flags().isGettable(itemTwo));
 					gc.setBaseValue(itemOne.baseGoldValue()+itemTwo.baseGoldValue());
-					gc.baseEnvStats().setWeight(itemOne.baseEnvStats().weight()+itemTwo.baseEnvStats().weight());
+					gc.basePhyStats().setWeight(itemOne.basePhyStats().weight()+itemTwo.basePhyStats().weight());
 					gc.setCapacity(((Container)itemOne).capacity()+((Container)itemTwo).capacity());
 					gc.setLidsNLocks((((Container)itemOne).hasALid()||((Container)itemTwo).hasALid()),true,isLocked,false);
 					gc.setKeyName(keyName);
 
-					gc.baseEnvStats().setLevel(itemOne.baseEnvStats().level());
-					if(itemTwo.baseEnvStats().level()>itemOne.baseEnvStats().level())
-						gc.baseEnvStats().setLevel(itemTwo.baseEnvStats().level());
-					gc.baseEnvStats().setAbility(itemOne.baseEnvStats().ability()+itemTwo.baseEnvStats().ability());
+					gc.basePhyStats().setLevel(itemOne.basePhyStats().level());
+					if(itemTwo.basePhyStats().level()>itemOne.basePhyStats().level())
+						gc.basePhyStats().setLevel(itemTwo.basePhyStats().level());
+					gc.basePhyStats().setAbility(itemOne.basePhyStats().ability()+itemTwo.basePhyStats().ability());
 					melded=gc;
 					mob.addItem(gc);
 				}
@@ -353,7 +353,7 @@ public class Spell_Meld extends Spell
 						Behavior B=e.nextElement();
 						if(B!=null)	melded.addBehavior(B);
 					}
-					melded.recoverEnvStats();
+					melded.recoverPhyStats();
 				}
 				itemOne.destroy();
 				itemTwo.destroy();

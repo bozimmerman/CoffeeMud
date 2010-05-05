@@ -87,7 +87,7 @@ public class Prayer_FleshRock extends Prayer
 			mob.curState().setHunger(1000);
 			mob.curState().setThirst(1000);
 			mob.recoverCharStats();
-			mob.recoverEnvStats();
+			mob.recoverPhyStats();
 
 			// when this spell is on a MOBs Affected list,
 			// it should consistantly prevent the mob
@@ -120,9 +120,9 @@ public class Prayer_FleshRock extends Prayer
 		return true;
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly put the mob into
 		// a sleeping state, so that nothing they do
@@ -130,12 +130,12 @@ public class Prayer_FleshRock extends Prayer
 		if(affected instanceof MOB)
 		{
 			//affectableStats.setReplacementName("a statue of "+affected.name());
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_MOVE);
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_HEAR);
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SMELL);
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SPEAK);
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_TASTE);
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_NOT_SEEN);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_MOVE);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_HEAR);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SMELL);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SPEAK);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TASTE);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_NOT_SEEN);
 		}
 	}
 
@@ -171,7 +171,7 @@ public class Prayer_FleshRock extends Prayer
 			return false;
 
 
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
+		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 		if(levelDiff<0) levelDiff=0;
 		boolean success=proficiencyCheck(mob,-(levelDiff*5),auto);
 
@@ -207,9 +207,9 @@ public class Prayer_FleshRock extends Prayer
 					statue.setDisplayText("a rocky statue of "+name+" stands here.");
 					statue.setDescription("It`s a hard rocky statue, which looks exactly like "+name+".");
 					statue.setMaterial(RawMaterial.RESOURCE_GRANITE);
-					statue.baseEnvStats().setWeight(2000);
+					statue.basePhyStats().setWeight(2000);
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> turn(s) into rock!!");
-					success=maliciousAffect(mob,target,asLevel,(mob.envStats().level()+(2*super.getXLEVELLevel(mob)))*15,-1);
+					success=maliciousAffect(mob,target,asLevel,(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))*15,-1);
 					target.makePeace();
 					if(mob.getVictim()==target) mob.setVictim(null);
 					Ability A=target.fetchEffect(ID());
@@ -218,7 +218,7 @@ public class Prayer_FleshRock extends Prayer
 						mob.location().addItem(statue);
 						statue.addEffect(A);
 						A.setAffectedOne(target);
-						statue.recoverEnvStats();
+						statue.recoverPhyStats();
                         ((Prayer_FleshRock)A).prevState=(CharState)target.curState().copyOf();
 					}
 				}

@@ -40,7 +40,7 @@ public class FlyingExit extends StdExit
 	public FlyingExit()
 	{
 		super();
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_FLYING);
-		recoverEnvStats();
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_FLYING);
+		recoverPhyStats();
 	}
 }

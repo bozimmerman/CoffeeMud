@@ -50,9 +50,9 @@ public class Thief_BackStab extends ThiefSkill
     public int abilityCode(){return controlCode;}
     public void setAbilityCode(int newCode){super.setAbilityCode(newCode); controlCode=newCode;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		int factor=(int)Math.round(CMath.div(adjustedLevel((MOB)affected,0),6.0))+2+abilityCode();
 		affectableStats.setDamage(affectableStats.damage()*factor);
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+100+(10*super.getXLEVELLevel(invoker())));
@@ -136,11 +136,11 @@ public class Thief_BackStab extends ThiefSkill
 			else
 			{
 				mob.addEffect(this);
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 			}
 			CMLib.combat().postAttack(mob,target,weapon);
 			mob.delEffect(this);
-			mob.recoverEnvStats();
+			mob.recoverPhyStats();
             lastMOB=""+target;
 		}
 		else

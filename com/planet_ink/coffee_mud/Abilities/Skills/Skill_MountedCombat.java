@@ -43,17 +43,17 @@ public class Skill_MountedCombat extends StdSkill
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected instanceof MOB)
 		{
 			MOB mob=(MOB)affected;
 			if((mob.isInCombat())&&(mob.rangeToTarget()==0)&&(mob.riding()!=null)&&(mob.riding().amRiding(mob)))
 			{
 				int xlvl=super.getXLEVELLevel(invoker());
-				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+((1+(xlvl/3))*mob.baseEnvStats().attackAdjustment()));
-				affectableStats.setDamage(affectableStats.damage()+((1+(xlvl/3))*mob.baseEnvStats().damage()));
+				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+((1+(xlvl/3))*mob.basePhyStats().attackAdjustment()));
+				affectableStats.setDamage(affectableStats.damage()+((1+(xlvl/3))*mob.basePhyStats().damage()));
 			}
 		}
 	}

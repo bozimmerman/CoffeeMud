@@ -130,11 +130,11 @@ public class PresenceReaction extends StdAbility
 		super.executeMsg(affecting,msg);
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		for(CMObject O : managed)
 			if(O instanceof StatsAffecting)
-				((StatsAffecting)O).affectEnvStats(affected, affectableStats);
+				((StatsAffecting)O).affectPhyStats(affected, affectableStats);
 	}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{
@@ -224,7 +224,7 @@ public class PresenceReaction extends StdAbility
 		if(didAnything)
 		{
 			affected.recoverCharStats();
-			affected.recoverEnvStats();
+			affected.recoverPhyStats();
 			affected.recoverMaxState();
 		}
 		return didAnything;

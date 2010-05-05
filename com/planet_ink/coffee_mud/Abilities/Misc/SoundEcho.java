@@ -55,8 +55,8 @@ public class SoundEcho extends StdAbility
 		if(bmob!=null)
 		{
 			bmob.setName("Someone");
-			bmob.baseEnvStats().setSensesMask(EnvStats.CAN_NOT_SEE);
-			bmob.recoverEnvStats();
+			bmob.basePhyStats().setSensesMask(PhyStats.CAN_NOT_SEE);
+			bmob.recoverPhyStats();
 		}
 		return bmob;
 	}

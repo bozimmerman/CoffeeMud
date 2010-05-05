@@ -49,8 +49,8 @@ public class StdMOB implements MOB
 	protected CharStats baseCharStats=(CharStats)CMClass.getCommon("DefaultCharStats");
 	protected CharStats charStats=(CharStats)CMClass.getCommon("DefaultCharStats");
 
-	protected EnvStats 	envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
-	protected EnvStats 	baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+	protected PhyStats 	phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+	protected PhyStats 	basePhyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 
 	protected PlayerStats playerStats=null;
 
@@ -126,16 +126,16 @@ public class StdMOB implements MOB
     public long getAgeHours(){return ageHours;}
 	public int getPractices(){return practices;}
 	public int getExperience(){return experience;}
-	public int getExpNextLevel(){return CMLib.leveler().getLevelExperience(baseEnvStats().level());}
+	public int getExpNextLevel(){return CMLib.leveler().getLevelExperience(basePhyStats().level());}
 	public int getExpPrevLevel()
 	{
-		if(baseEnvStats().level()<=1) return 0;
-		int neededLowest=CMLib.leveler().getLevelExperience(baseEnvStats().level()-2);
+		if(basePhyStats().level()<=1) return 0;
+		int neededLowest=CMLib.leveler().getLevelExperience(basePhyStats().level()-2);
 		return neededLowest;
 	}
 	public int getExpNeededDelevel()
 	{
-		if(baseEnvStats().level()<=1) return 0;
+		if(basePhyStats().level()<=1) return 0;
 		if((CMSecurity.isDisabled("EXPERIENCE"))
 		||(charStats().getCurrentClass().expless())
 		||(charStats().getMyRace().expless()))
@@ -148,7 +148,7 @@ public class StdMOB implements MOB
 	public int getExpNeededLevel()
 	{
 		if((CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)>0)
-		&&(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)<=baseEnvStats().level()))
+		&&(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)<=basePhyStats().level()))
 			return Integer.MAX_VALUE;
 		if((CMSecurity.isDisabled("EXPERIENCE"))
 		||(charStats().getCurrentClass().expless())
@@ -235,7 +235,7 @@ public class StdMOB implements MOB
 	}
 	public String name()
 	{
-		if(envStats().newName()!=null) return envStats().newName();
+		if(phyStats().newName()!=null) return phyStats().newName();
 		return username;
 	}
 	public String titledName()
@@ -280,7 +280,7 @@ public class StdMOB implements MOB
         super();
         CMClass.bumpCounter(this,CMClass.OBJECT_MOB);
 		baseCharStats().setMyRace(CMClass.getRace("Human"));
-		baseEnvStats().setLevel(1);
+		basePhyStats().setLevel(1);
         xtraValues=CMProps.getExtraStatCodesHolder(this);
 	}
 	public long expirationDate(){return expirationDate;}
@@ -294,8 +294,8 @@ public class StdMOB implements MOB
 	{
 		if(E==null) return;
 		affects=new SVector(1);
-		baseEnvStats=(EnvStats)E.baseEnvStats().copyOf();
-		envStats=(EnvStats)E.envStats().copyOf();
+		basePhyStats=(PhyStats)E.basePhyStats().copyOf();
+		phyStats=(PhyStats)E.phyStats().copyOf();
 		baseCharStats=(CharStats)E.baseCharStats().copyOf();
 		charStats=(CharStats)E.charStats().copyOf();
 		baseState=(CharState)E.baseState().copyOf();
@@ -372,30 +372,30 @@ public class StdMOB implements MOB
 		}
 	}
 	public boolean isGeneric(){return false;}
-	public EnvStats envStats()
+	public PhyStats phyStats()
 	{
-		return envStats;
+		return phyStats;
 	}
 
-	public EnvStats baseEnvStats()
+	public PhyStats basePhyStats()
 	{
-		return baseEnvStats;
+		return basePhyStats;
 	}
-	public void recoverEnvStats()
+	public void recoverPhyStats()
 	{
-		baseEnvStats.copyInto(envStats);
+		basePhyStats.copyInto(phyStats);
 		if(location()!=null)
-			location().affectEnvStats(this,envStats);
-		envStats().setWeight(envStats().weight()+(int)Math.round(CMath.div(getMoney(),100.0)));
-		if(riding()!=null) riding().affectEnvStats(this,envStats);
-		if(getMyDeity()!=null) getMyDeity().affectEnvStats(this,envStats);
+			location().affectPhyStats(this,phyStats);
+		phyStats().setWeight(phyStats().weight()+(int)Math.round(CMath.div(getMoney(),100.0)));
+		if(riding()!=null) riding().affectPhyStats(this,phyStats);
+		if(getMyDeity()!=null) getMyDeity().affectPhyStats(this,phyStats);
         int num=0;
 		if(charStats!=null)
 		{
             num=charStats().numClasses();
 			for(int c=0;c<num;c++)
-				charStats().getMyClass(c).affectEnvStats(this,envStats);
-			charStats().getMyRace().affectEnvStats(this,envStats);
+				charStats().getMyClass(c).affectPhyStats(this,phyStats);
+			charStats().getMyRace().affectPhyStats(this,phyStats);
 		}
         Item item=null;
 		num=numItems();
@@ -404,8 +404,8 @@ public class StdMOB implements MOB
 			item=getItem(i);
 			if(item!=null)
 			{
-				item.recoverEnvStats();
-				item.affectEnvStats(this,envStats);
+				item.recoverPhyStats();
+				item.affectPhyStats(this,phyStats);
 			}
 		}
         Ability effect=null;
@@ -414,28 +414,28 @@ public class StdMOB implements MOB
 		{
 			effect=fetchEffect(a);
 			if(effect!=null)
-				effect.affectEnvStats(this,envStats);
+				effect.affectPhyStats(this,phyStats);
 		}
 		for(Enumeration e=factions.elements();e.hasMoreElements();)
-			((Faction.FactionData)e.nextElement()).affectEnvStats(this,envStats);
+			((Faction.FactionData)e.nextElement()).affectPhyStats(this,phyStats);
 		/* the follower light exception*/
 		if(!CMLib.flags().isLightSource(this))
         {
             num=numFollowers();
     		for(int f=0;f<num;f++)
     			if(CMLib.flags().isLightSource(fetchFollower(f)))
-    				envStats.setDisposition(envStats().disposition()|EnvStats.IS_LIGHTSOURCE);
+    				phyStats.setDisposition(phyStats().disposition()|PhyStats.IS_LIGHTSOURCE);
         }
 	}
-	public void setBaseEnvStats(EnvStats newBaseEnvStats)
+	public void setBasePhyStats(PhyStats newStats)
 	{
-		baseEnvStats=(EnvStats)newBaseEnvStats.copyOf();
+		basePhyStats=(PhyStats)newStats.copyOf();
 	}
 
 	public int baseWeight()
 	{
 		if(charStats().getMyRace()==baseCharStats().getMyRace())
-			return baseEnvStats().weight() 
+			return basePhyStats().weight() 
 				 + charStats().getStat(CharStats.STAT_WEIGHTADJ);
 		return charStats().getMyRace().lightestWeight()
 		        + charStats().getStat(CharStats.STAT_WEIGHTADJ)
@@ -456,7 +456,7 @@ public class StdMOB implements MOB
             return Integer.MAX_VALUE/2;
         return (2*Wearable.CODES.TOTAL())
                 +(2*charStats().getStat(CharStats.STAT_DEXTERITY))
-                +(2*envStats().level());
+                +(2*phyStats().level());
     }
 	public int maxFollowers()
 	{
@@ -476,7 +476,7 @@ public class StdMOB implements MOB
 	public CharStats charStats(){return charStats;}
 	public void recoverCharStats()
 	{
-		baseCharStats.setClassLevel(baseCharStats.getCurrentClass(),baseEnvStats().level()-baseCharStats().combinedSubLevels());
+		baseCharStats.setClassLevel(baseCharStats.getCurrentClass(),basePhyStats().level()-baseCharStats().combinedSubLevels());
 		baseCharStats().copyInto(charStats);
 
 		if(riding()!=null) riding().affectCharStats(this,charStats);
@@ -521,15 +521,15 @@ public class StdMOB implements MOB
 	{
 		baseCharStats=(CharStats)newBaseCharStats.copyOf();
 	}
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if(affected instanceof Room)
 		{
 			if(CMLib.flags().isLightSource(this))
 			{
 				if(CMLib.flags().isInDark(affected))
-					affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_DARK);
-				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_LIGHTSOURCE);
+					affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_DARK);
+				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_LIGHTSOURCE);
 			}
 		}
 	}
@@ -660,7 +660,7 @@ public class StdMOB implements MOB
         kickFlag=false;
         clanID=null;
         charStats=baseCharStats;
-        envStats=baseEnvStats;
+        phyStats=basePhyStats;
         playerStats=null;
         location=null;
         lastLocation=null;
@@ -718,7 +718,7 @@ public class StdMOB implements MOB
 				if(follower.location()!=null)
 				{
 					MOB newFol=(MOB)follower.copyOf();
-					newFol.baseEnvStats().setRejuv(0);
+					newFol.basePhyStats().setRejuv(0);
 					newFol.text();
 					follower.killMeDead(false);
 					addFollower(newFol, ((Integer)oldFollowers.elementAt(f,2)).intValue());
@@ -973,7 +973,7 @@ public class StdMOB implements MOB
 		if(victim==mob) return;
 		if(mob==this) return;
 		victim=mob;
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 		recoverMaxState();
 		if(mob!=null)
@@ -997,11 +997,11 @@ public class StdMOB implements MOB
                 {
                 	Item I=fetchWieldedItem();
                 	Item VI=mob.fetchWieldedItem();
-                	Log.combatOut("STRT",Name()+":"+envStats().getCombatStats()+":"+curState().getCombatStats()+":"+((I==null)?"null":I.name())+":"+mob.Name()+":"+mob.envStats().getCombatStats()+":"+mob.curState().getCombatStats()+":"+((VI==null)?"null":VI.name()));
+                	Log.combatOut("STRT",Name()+":"+phyStats().getCombatStats()+":"+curState().getCombatStats()+":"+((I==null)?"null":I.name())+":"+mob.Name()+":"+mob.phyStats().getCombatStats()+":"+mob.curState().getCombatStats()+":"+((VI==null)?"null":VI.name()));
 
                 }
 				mob.recoverCharStats();
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 				mob.recoverMaxState();
 			}
 		}
@@ -1289,7 +1289,7 @@ public class StdMOB implements MOB
                 {
                     long nextTime=lastCommandTime
                                  +Math.round(cmd.tickDelay
-                                             /envStats().speed()
+                                             /phyStats().speed()
                                              *TIME_TICK_DOUBLE);
                     if((System.currentTimeMillis()<nextTime)&&(session()!=null))
                         return false;
@@ -1917,11 +1917,11 @@ public class StdMOB implements MOB
 				if(victim!=null)
 				{
 					victim.setAtRange(rangeToTarget());
-					victim.recoverEnvStats();
+					victim.recoverPhyStats();
 				}
 				else
 					setAtRange(-1);
-				recoverEnvStats();
+				recoverPhyStats();
 				return ok;
 			}
 			else
@@ -1943,11 +1943,11 @@ public class StdMOB implements MOB
 				if(victim!=null)
 				{
 					victim.setAtRange(rangeToTarget());
-					victim.recoverEnvStats();
+					victim.recoverPhyStats();
 				}
 				else
 					setAtRange(-1);
-				recoverEnvStats();
+				recoverPhyStats();
 			}
 			else
 			if((msg.tool()!=null)
@@ -2022,7 +2022,7 @@ public class StdMOB implements MOB
 				&&(soulMate()==null)
 				&&(mob.soulMate()==null)
 				&&(!CMSecurity.isAllowed(this,location(),"PKILL"))&&(!CMSecurity.isAllowed(mob,mob.location(),"PKILL"))
-				&&(mob.envStats().level()>envStats().level()+CMProps.getPKillLevelDiff())
+				&&(mob.phyStats().level()>phyStats().level()+CMProps.getPKillLevelDiff())
 				&&((!(msg.tool() instanceof Ability))
 				   ||(((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_DISEASE))
 				{
@@ -2056,7 +2056,7 @@ public class StdMOB implements MOB
 						{	chanceToFail=charStats().getSave(c); break;}
 					if(chanceToFail>Integer.MIN_VALUE)
 					{
-				        int diff = (envStats().level()-msg.source().envStats().level());
+				        int diff = (phyStats().level()-msg.source().phyStats().level());
 				        int diffSign = diff < 0 ? -1 : 1;
 						chanceToFail+=(diffSign * (diff * diff));
 						if(chanceToFail<5)
@@ -2101,7 +2101,7 @@ public class StdMOB implements MOB
 					mob.tell(mob,this,null,"You can't do that to <T-NAMESELF>.");
 					return false;
 			    }
-			    if(envStats().weight()>(mob.maxCarry()/2))
+			    if(phyStats().weight()>(mob.maxCarry()/2))
 			    {
 			        mob.tell(mob,this,null,"<T-NAME> is too big for you to pull.");
 			        return false;
@@ -2113,7 +2113,7 @@ public class StdMOB implements MOB
 					mob.tell(mob,this,null,"You can't do that to <T-NAMESELF>.");
 					return false;
 			    }
-			    if(envStats().weight()>mob.maxCarry())
+			    if(phyStats().weight()>mob.maxCarry())
 			    {
 			        mob.tell(mob,this,null,"<T-NAME> is too heavy for you to push.");
 			        return false;
@@ -2170,12 +2170,12 @@ public class StdMOB implements MOB
 				&&(!CMSecurity.isAllowed(this,location(),"ORDER"))
 				&&(!CMSecurity.isAllowed(mob,mob.location(),"ORDER")))
                 {
-					if(envStats.level() > (mob.envStats().level() + CMProps.getIntVar(CMProps.SYSTEMI_FOLLOWLEVELDIFF)))
+					if(phyStats.level() > (mob.phyStats().level() + CMProps.getIntVar(CMProps.SYSTEMI_FOLLOWLEVELDIFF)))
 					{
 						mob.tell(name() + " is too advanced for you.");
 						return false;
 					}
-					if(envStats.level() < (mob.envStats().level() - CMProps.getIntVar(CMProps.SYSTEMI_FOLLOWLEVELDIFF)))
+					if(phyStats.level() < (mob.phyStats().level() - CMProps.getIntVar(CMProps.SYSTEMI_FOLLOWLEVELDIFF)))
 					{
 						mob.tell(name() + " is too inexperienced for you.");
 						return false;
@@ -2516,11 +2516,11 @@ public class StdMOB implements MOB
 				tickStatus=Tickable.STATUS_DEAD;
 				if(isMonster)
 				{
-					if((envStats().rejuv()<Integer.MAX_VALUE)
-					&&(baseEnvStats().rejuv()>0))
+					if((phyStats().rejuv()<Integer.MAX_VALUE)
+					&&(basePhyStats().rejuv()>0))
 					{
-						envStats().setRejuv(envStats().rejuv()-1);
-						if((envStats().rejuv()<0)||(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN)))
+						phyStats().setRejuv(phyStats().rejuv()-1);
+						if((phyStats().rejuv()<0)||(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN)))
 						{
 							tickStatus=Tickable.STATUS_REBIRTH;
 							cloneFix(CMClass.staticMOB(ID()));
@@ -2567,11 +2567,11 @@ public class StdMOB implements MOB
 				if((!CMLib.flags().canBreathe(this))&&(!CMLib.flags().isGolem(this)))
 				{
 					location().show(this,this,CMMsg.MSG_OK_VISUAL,("^Z<S-NAME> can't breathe!^.^?")+CMProps.msp("choke.wav",10));
-					CMLib.combat().postDamage(this,this,null,(int)Math.round(CMath.mul(Math.random(),baseEnvStats().level()+2)),CMMsg.MASK_ALWAYS|CMMsg.TYP_GAS,-1,null);
+					CMLib.combat().postDamage(this,this,null,(int)Math.round(CMath.mul(Math.random(),basePhyStats().level()+2)),CMMsg.MASK_ALWAYS|CMMsg.TYP_GAS,-1,null);
 				}
 
                 if(commandQueSize()==0) setActions(actions()-Math.floor(actions()));
-                setActions(actions()+(CMLib.flags().isSitting(this)?envStats().speed()/2.0:envStats().speed()));
+                setActions(actions()+(CMLib.flags().isSitting(this)?phyStats().speed()/2.0:phyStats().speed()));
 
 				if(isInCombat())
 				{
@@ -2612,8 +2612,8 @@ public class StdMOB implements MOB
                      	&&(CMLib.dice().rollPercentage()==1))
                      	{
 							location().show(this,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) asleep from exhaustion!!");
-							baseEnvStats().setDisposition(EnvStats.IS_SLEEPING);
-							envStats().setDisposition(EnvStats.IS_SLEEPING);
+							basePhyStats().setDisposition(PhyStats.IS_SLEEPING);
+							phyStats().setDisposition(PhyStats.IS_SLEEPING);
                      	}
 					}
 				}
@@ -2748,14 +2748,14 @@ public class StdMOB implements MOB
 	{
 		item.setOwner(this);
 		inventory.addElement(item);
-		item.recoverEnvStats();
+		item.recoverPhyStats();
 	}
 	public void addItem(Item item, ItemPossessor.Expire expire) { addItem(item);}
 	
 	public void delItem(Item item)
 	{
 		inventory.removeElement(item);
-		item.recoverEnvStats();
+		item.recoverPhyStats();
 	}
 	public int numItems()
 	{
@@ -3601,7 +3601,7 @@ public class StdMOB implements MOB
 		// caller is responsible for recovering any env
 		// stat changes!
 		if(CMLib.flags().isHidden(container))
-			container.baseEnvStats().setDisposition(container.baseEnvStats().disposition()&((int)EnvStats.ALLMASK-EnvStats.IS_HIDDEN));
+			container.basePhyStats().setDisposition(container.basePhyStats().disposition()&((int)PhyStats.ALLMASK-PhyStats.IS_HIDDEN));
 
 		// ensure its out of its previous place
 		Environmental owner=location();
@@ -3620,7 +3620,7 @@ public class StdMOB implements MOB
 
 		if(!isMine(container))
 			addItem(container);
-		container.recoverEnvStats();
+		container.recoverPhyStats();
 
 		boolean nothingDone=true;
 		boolean doBugFix = true;
@@ -3665,8 +3665,8 @@ public class StdMOB implements MOB
 		switch(getCodeNum(code))
 		{
 		case 0: return ID();
-		case 1: return ""+baseEnvStats().level();
-		case 2: return ""+baseEnvStats().ability();
+		case 1: return ""+basePhyStats().level();
+		case 2: return ""+basePhyStats().ability();
 		case 3: return text();
 		}
 		return "";
@@ -3676,8 +3676,8 @@ public class StdMOB implements MOB
 		switch(getCodeNum(code))
 		{
 		case 0: return;
-		case 1: baseEnvStats().setLevel(CMath.s_parseIntExpression(val)); break;
-		case 2: baseEnvStats().setAbility(CMath.s_parseIntExpression(val)); break;
+		case 1: basePhyStats().setLevel(CMath.s_parseIntExpression(val)); break;
+		case 2: basePhyStats().setAbility(CMath.s_parseIntExpression(val)); break;
 		case 3: setMiscText(val); break;
 		}
 	}

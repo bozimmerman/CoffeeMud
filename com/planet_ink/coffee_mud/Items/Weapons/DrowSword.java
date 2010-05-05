@@ -41,14 +41,14 @@ public class DrowSword extends Longsword
 		setDisplayText("a fancy longsword has been dropped on the ground.");
 		setDescription("A one-handed sword with a very dark blade.");
 		secretIdentity="A Drow Sword";
-		baseEnvStats().setAbility(CMLib.dice().roll(1,6,0));
-		baseEnvStats().setLevel(1);
-		baseEnvStats().setWeight(4);
-		baseEnvStats().setAttackAdjustment(0);
-		baseEnvStats().setDamage(8);
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
+		basePhyStats().setAbility(CMLib.dice().roll(1,6,0));
+		basePhyStats().setLevel(1);
+		basePhyStats().setWeight(4);
+		basePhyStats().setAttackAdjustment(0);
+		basePhyStats().setDamage(8);
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
 		baseGoldValue=2500;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_STEEL;
 		weaponType=TYPE_SLASHING;
 	}

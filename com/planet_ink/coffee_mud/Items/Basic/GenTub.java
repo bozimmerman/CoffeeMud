@@ -44,7 +44,7 @@ public class GenTub extends StdTub
 		setName("a generic bath tub");
 		setDisplayText("a generic bath tub sits here.");
 		setDescription("");
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public boolean isGeneric(){return true;}
@@ -60,7 +60,7 @@ public class GenTub extends StdTub
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY",
 							  "CONTAINTYPES","RIDEBASIS","MOBSHELD",

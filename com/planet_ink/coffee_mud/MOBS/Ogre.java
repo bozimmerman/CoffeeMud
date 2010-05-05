@@ -43,9 +43,9 @@ public class Ogre extends StdMOB
 		setDisplayText("An ogre stares at you while he clenches his fists.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);
 		setMoney(10);
-		baseEnvStats.setWeight(350);
+		basePhyStats.setWeight(350);
 		setWimpHitPoint(0);
-		baseEnvStats().setDamage(12);
+		basePhyStats().setDamage(12);
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,8);
 		baseCharStats().setStat(CharStats.STAT_CHARISMA,2);
@@ -53,16 +53,16 @@ public class Ogre extends StdMOB
 		baseCharStats().setMyRace(CMClass.getRace("Giant"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(4);
-		baseEnvStats().setArmor(50);
-		baseEnvStats().setSpeed(3.0);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(4);
+		basePhyStats().setArmor(50);
+		basePhyStats().setSpeed(3.0);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

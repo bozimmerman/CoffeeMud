@@ -117,7 +117,7 @@ public class Spell_Shatter extends Spell
 					R.send(mob,msg2);
 				if(msg.value()<=0)
 				{
-					int damage=100+adjustedLevel(mob,asLevel)-target.envStats().level();
+					int damage=100+adjustedLevel(mob,asLevel)-target.phyStats().level();
 					if(CMLib.flags().isABonusItems(target))
 						damage=(int)Math.round(CMath.div(damage,2.0));
 					switch(target.material()&RawMaterial.MATERIAL_MASK)
@@ -145,7 +145,7 @@ public class Spell_Shatter extends Spell
 					}
 					target.setUsesRemaining(target.usesRemaining()-damage);
 					if(target.usesRemaining()>0)
-						target.recoverEnvStats();
+						target.recoverPhyStats();
 					else
 					{
 						target.setUsesRemaining(100);

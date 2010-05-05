@@ -167,11 +167,11 @@ public class TimsItemTable extends StdWebMacro
 						A.setMaterial(RawMaterial.RESOURCE_STEEL);
 						if((CharClass.ARMOR_WEARMASK & wornCode) > 0)
 							A.setMaterial(materials[m]);
-						A.baseEnvStats().setLevel(level);
-						A.baseEnvStats().setWeight(5);
-						A.recoverEnvStats();
+						A.basePhyStats().setLevel(level);
+						A.basePhyStats().setWeight(5);
+						A.recoverPhyStats();
 						CMLib.itemBuilder().balanceItemByLevel(A);
-						armorBonus+=A.baseEnvStats().armor();
+						armorBonus+=A.basePhyStats().armor();
 					}
 					str.append("<TD>"+armorBonus+"</TD>");
 				}
@@ -188,11 +188,11 @@ public class TimsItemTable extends StdWebMacro
 					W.setMaterial(materials[m]);
 					W.setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
 					W.setRawLogicalAnd(false);
-					W.baseEnvStats().setLevel(level);
-					W.baseEnvStats().setWeight(8);
-					W.recoverEnvStats();
+					W.basePhyStats().setLevel(level);
+					W.basePhyStats().setWeight(8);
+					W.recoverPhyStats();
 					CMLib.itemBuilder().balanceItemByLevel(W);
-					str.append("<TD>"+W.baseEnvStats().attackAdjustment()+"/"+W.baseEnvStats().damage()+"</TD>");
+					str.append("<TD>"+W.basePhyStats().attackAdjustment()+"/"+W.basePhyStats().damage()+"</TD>");
 				}
 				str.append("</TR>");
 			}
@@ -219,7 +219,7 @@ public class TimsItemTable extends StdWebMacro
 	public String addRow(Item I)
 	{
 		StringBuffer row=new StringBuffer("");
-		int lvl=I.envStats().level();
+		int lvl=I.phyStats().level();
 		row.append("<TR>");
 		row.append("<TD>"+I.name()+"</TD>");
 		row.append("<TD>"+lvl+"</TD>");
@@ -245,11 +245,11 @@ public class TimsItemTable extends StdWebMacro
 		row.append("<TD>"+pct+"%</TD>");
 		
 		if(!(I instanceof Weapon))
-			row.append("<TD>"+I.baseEnvStats().armor()+"</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>");
+			row.append("<TD>"+I.basePhyStats().armor()+"</TD><TD>&nbsp;</TD><TD>&nbsp;</TD>");
 		else
 		{
-			row.append("<TD>&nbsp;</TD><TD>"+I.baseEnvStats().attackAdjustment()+"</TD>");
-			row.append("<TD>"+I.baseEnvStats().damage()+"</TD>");
+			row.append("<TD>&nbsp;</TD><TD>"+I.basePhyStats().attackAdjustment()+"</TD>");
+			row.append("<TD>"+I.basePhyStats().damage()+"</TD>");
 		}
 		if(ADJ!=null) row.append("<TD>"+ADJ.text()+"</TD>");
 		else row.append("<TD>&nbsp;</TD>");

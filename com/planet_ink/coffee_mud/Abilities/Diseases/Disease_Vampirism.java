@@ -50,15 +50,15 @@ public class Disease_Vampirism extends Disease
 	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION;}
 	public int difficultyLevel(){return 9;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(!(affected instanceof MOB)) return;
 		if(((MOB)affected).location()==null) return;
 		if(CMLib.flags().isInDark(((MOB)affected).location()))
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_DARK);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK);
 		else
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SEE);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SEE);
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

@@ -59,16 +59,16 @@ public class Prop_Doppleganger extends Property
     	&&(((Item)affected).owner() instanceof MOB))
     	{
     		lastOwner=((Item)affected).owner();
-			int level=((MOB)lastOwner).envStats().level()+CMath.s_int(text());
+			int level=((MOB)lastOwner).phyStats().level()+CMath.s_int(text());
 			if(text().endsWith("%")) level=(int)Math.round(CMath.mul(level,CMath.s_pct(text())));
 			if(level<minLevel) level=minLevel;
             if(level>maxLevel) level=maxLevel;
-			((Item)affected).baseEnvStats().setLevel(level);
-			((Item)affected).envStats().setLevel(level);
+			((Item)affected).basePhyStats().setLevel(level);
+			((Item)affected).phyStats().setLevel(level);
 			CMLib.itemBuilder().balanceItemByLevel((Item)affected);
-			((Item)affected).baseEnvStats().setLevel(((MOB)lastOwner).envStats().level());
-			((Item)affected).envStats().setLevel(((MOB)lastOwner).envStats().level());
-			lastOwner.recoverEnvStats();
+			((Item)affected).basePhyStats().setLevel(((MOB)lastOwner).phyStats().level());
+			((Item)affected).phyStats().setLevel(((MOB)lastOwner).phyStats().level());
+			lastOwner.recoverPhyStats();
 			Room R=((MOB)lastOwner).location();
 			if(R!=null) R.recoverRoomStats();
     	}
@@ -105,13 +105,13 @@ public class Prop_Doppleganger extends Property
 				MOB victim=mob.getVictim();
                 if(qualifies(victim,R))
 				{
-					total+=victim.envStats().level();
+					total+=victim.phyStats().level();
 					num++;
 				}
                 MOB entrant=(MOB)msg.source();
                 if(qualifies(entrant,R))
                 {
-                    total+=entrant.envStats().level();
+                    total+=entrant.phyStats().level();
                     num++;
                 }
 				for(int i=0;i<R.numInhabitants();i++)
@@ -122,7 +122,7 @@ public class Prop_Doppleganger extends Property
                     &&((M!=victim)&&(M!=entrant))
                     &&(qualifies(M,R)))
 					{
-						total+=M.envStats().level();
+						total+=M.phyStats().level();
 						num++;
 					}
 				}
@@ -132,17 +132,17 @@ public class Prop_Doppleganger extends Property
 					if(text().endsWith("%")) level=(int)Math.round(CMath.mul(CMath.div(total,num),CMath.s_pct(text())));
 					if(level<minLevel) level=minLevel;
                     if(level>maxLevel) level=maxLevel;
-					if(level!=mob.baseEnvStats().level())
+					if(level!=mob.basePhyStats().level())
 					{
-						mob.baseEnvStats().setLevel(level);
-						mob.baseEnvStats().setArmor(CMLib.leveler().getLevelMOBArmor(mob));
-						mob.baseEnvStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(mob));
-						mob.baseEnvStats().setDamage(CMLib.leveler().getLevelMOBDamage(mob));
-						mob.baseEnvStats().setSpeed(1.0+(CMath.div(level,100)*4.0));
+						mob.basePhyStats().setLevel(level);
+						mob.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(mob));
+						mob.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(mob));
+						mob.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(mob));
+						mob.basePhyStats().setSpeed(1.0+(CMath.div(level,100)*4.0));
 						mob.baseState().setHitPoints(CMLib.leveler().getPlayerHitPoints(mob));
 						mob.baseState().setMana(CMLib.leveler().getLevelMana(mob));
 						mob.baseState().setMovement(CMLib.leveler().getLevelMove(mob));
-						mob.recoverEnvStats();
+						mob.recoverPhyStats();
 						mob.recoverCharStats();
 						mob.recoverMaxState();
 						mob.resetToMaxState();

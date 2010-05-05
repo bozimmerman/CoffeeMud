@@ -106,7 +106,7 @@ public class StdRace implements Race
 
 	public Race healthBuddy(){return this;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 
 	}
@@ -226,7 +226,7 @@ public class StdRace implements Race
                     msg.source().curState().adjFatigue(CharState.FATIGUED_MILLIS,msg.source().maxState());
                     myChar.curState().adjFatigue(CharState.FATIGUED_MILLIS,myChar.maxState());
                     Ability A=CMClass.getAbility("Spell_Blindness");
-                    if(A!=null) A.invoke(myChar,myChar,true,myChar.envStats().level());
+                    if(A!=null) A.invoke(myChar,myChar,true,myChar.phyStats().level());
                 }
             }
             else
@@ -285,12 +285,12 @@ public class StdRace implements Race
 		}
 		if(!verifyOnly)
 		{
-			if(mob.baseEnvStats().level()<=1)
+			if(mob.basePhyStats().level()<=1)
 			{
 				mob.setPractices(mob.getPractices()+practicesAtFirstLevel());
 				mob.setTrains(mob.getTrains()+trainsAtFirstLevel());
 			}
-			setHeightWeight(mob.baseEnvStats(),(char)mob.baseCharStats().getStat(CharStats.STAT_GENDER));
+			setHeightWeight(mob.basePhyStats(),(char)mob.baseCharStats().getStat(CharStats.STAT_GENDER));
 
 			if((culturalAbilityNames()!=null)&&(culturalAbilityProficiencies()!=null)
 			   &&(culturalAbilityNames().length==culturalAbilityProficiencies().length))
@@ -391,7 +391,7 @@ public class StdRace implements Race
 	}
 
 	public Vector myResources(){return new Vector();}
-	public void setHeightWeight(EnvStats stats, char gender)
+	public void setHeightWeight(PhyStats stats, char gender)
 	{
 		int weightModifier=0;
 		if(weightVariance()>0)
@@ -431,8 +431,8 @@ public class StdRace implements Race
         &&((!mob.amFollowing().isMonster())||(!mob.amUltimatelyFollowing().isMonster())))
             Body.setSavedMOB((MOB)mob.copyOf());
 		Body.setCharStats((CharStats)mob.baseCharStats().copyOf());
-		Body.baseEnvStats().setLevel(mob.baseEnvStats().level());
-		Body.baseEnvStats().setWeight(mob.baseEnvStats().weight());
+		Body.basePhyStats().setLevel(mob.basePhyStats().level());
+		Body.basePhyStats().setWeight(mob.basePhyStats().weight());
 		Body.setPlayerCorpse(!mob.isMonster());
         Body.setTimeOfDeath(System.currentTimeMillis());
 		Body.setMobPKFlag(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL));
@@ -445,7 +445,7 @@ public class StdRace implements Race
 		if(room!=null)
 			room.addItem(Body,mob.isMonster()?ItemPossessor.Expire.Monster_Body:ItemPossessor.Expire.Player_Body);
 		Body.setDestroyAfterLooting(destroyBodyAfterUse());
-		Body.recoverEnvStats();
+		Body.recoverPhyStats();
 		for(int i=0;i<mob.numAllEffects();i++)
 		{
 			Ability A=mob.fetchEffect(i);
@@ -484,7 +484,7 @@ public class StdRace implements Race
 					newItem.setContainer(null);
 					newItem.setExpirationDate( System.currentTimeMillis() +
 					                           CMProps.getIntVar( CMProps.SYSTEMI_EXPIRE_MONSTER_EQ )* TimeManager.MILI_HOUR );
-					newItem.recoverEnvStats();
+					newItem.recoverPhyStats();
 					thisItem=newItem;
 					i++;
 				}
@@ -555,7 +555,7 @@ public class StdRace implements Race
 
 		Integer level=null;
 		if(mob!=null)
-			level=Integer.valueOf(mob.envStats().level());
+			level=Integer.valueOf(mob.phyStats().level());
 		else
 			level=Integer.valueOf(Integer.MAX_VALUE);
 
@@ -616,9 +616,9 @@ public class StdRace implements Race
 				W2.setName(W.name());
 				W2.setWeaponClassification(W.weaponClassification());
 				W2.setWeaponType(W.weaponType());
-				W2.baseEnvStats().setDamage(W.envStats().damage());
-				W2.baseEnvStats().setAttackAdjustment(W.envStats().attackAdjustment());
-				W2.recoverEnvStats();
+				W2.basePhyStats().setDamage(W.phyStats().damage());
+				W2.basePhyStats().setAttackAdjustment(W.phyStats().attackAdjustment());
+				W2.recoverPhyStats();
 				W2.text();
 				W=W2;
 			}
@@ -627,12 +627,12 @@ public class StdRace implements Race
 		}
 		GR.setStat("WEAPONRACE",getClass().getName());
 
-        EnvStats RS=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+        PhyStats RS=(PhyStats)CMClass.getCommon("DefaultPhyStats");
         RS.setAllValues(0);
         MOB fakeMOB=CMClass.getMOB("StdMOB");
-        affectEnvStats(fakeMOB,RS);
+        affectPhyStats(fakeMOB,RS);
         RS.setRejuv(0);
-		GR.setStat("ESTATS",CMLib.coffeeMaker().getEnvStatsStr(RS));
+		GR.setStat("ESTATS",CMLib.coffeeMaker().getPhyStatsStr(RS));
 
         CharStats S1=(CharStats)CMClass.getCommon("DefaultCharStats");
         S1.setAllValues(0);
@@ -692,7 +692,7 @@ public class StdRace implements Race
 		for(int i=0;i<rscs.size();i++)
         {
             I=(Item)rscs.elementAt(i);
-            I.recoverEnvStats();
+            I.recoverPhyStats();
             txt=I.text();
             GR.setStat("GETRSCID"+i,I.ID());
 			GR.setStat("GETRSCPARM"+i,txt);
@@ -817,15 +817,15 @@ public class StdRace implements Race
 			else
 				GR.bodyMask()[i]=race1.bodyMask()[i];
 
-		EnvStats RS1=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+		PhyStats RS1=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 		RS1.setAllValues(0);
-		CMLib.coffeeMaker().setEnvStats(RS1,race1.getStat("ESTATS"));
+		CMLib.coffeeMaker().setPhyStats(RS1,race1.getStat("ESTATS"));
 
-		EnvStats RS2=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+		PhyStats RS2=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 		RS2.setAllValues(0);
-		CMLib.coffeeMaker().setEnvStats(RS2,race2.getStat("ESTATS"));
+		CMLib.coffeeMaker().setPhyStats(RS2,race2.getStat("ESTATS"));
 
-		EnvStats RS=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+		PhyStats RS=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 		RS.setAbility((RS1.ability()+RS2.ability())/2);
 		RS.setArmor((RS2.armor()+RS2.armor())/2);
 		RS.setAttackAdjustment((RS1.attackAdjustment()+RS2.attackAdjustment())/2);
@@ -834,7 +834,7 @@ public class StdRace implements Race
 		RS.setSpeed((RS1.speed()+RS2.speed())/2.0);
 		RS.setWeight((RS1.weight()+RS2.weight())/2);
 		RS.setRejuv(0);
-		GR.setStat("ESTATS",CMLib.coffeeMaker().getEnvStatsStr(RS));
+		GR.setStat("ESTATS",CMLib.coffeeMaker().getPhyStatsStr(RS));
 
         CharStats SETSTAT1=(CharStats)CMClass.getCommon("DefaultCharStats");
         SETSTAT1.setAllValues(0);
@@ -1023,7 +1023,7 @@ public class StdRace implements Race
 		if(racialAbilityMap==null) return empty;
 		Integer level=null;
 		if(mob!=null)
-			level=Integer.valueOf(mob.envStats().level());
+			level=Integer.valueOf(mob.phyStats().level());
 		else
 			level=Integer.valueOf(Integer.MAX_VALUE);
 		if(racialAbilityMap.containsKey(level))
@@ -1110,13 +1110,13 @@ public class StdRace implements Race
 			startRacing(mob,false);
 			mob.recoverCharStats();
 			mob.recoverCharStats();
-			mob.recoverEnvStats();
+			mob.recoverPhyStats();
 			mob.recoverMaxState();
 			MOB mob2=CMClass.getMOB("StdMOB");
 			mob2.setSession(null);
 			mob2.baseCharStats().setMyRace(new StdRace());
 			mob2.recoverCharStats();
-			mob2.recoverEnvStats();
+			mob2.recoverPhyStats();
 			mob2.recoverMaxState();
             for(int c: CharStats.CODES.ALL())
             {

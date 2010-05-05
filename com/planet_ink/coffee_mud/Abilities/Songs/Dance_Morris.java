@@ -41,9 +41,9 @@ public class Dance_Morris extends Dance
 	protected String danceOf(){return name()+" Dance";}
 	private boolean missedLastOne=false;
     
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setArmor(affectableStats.armor()+(2*adjustedLevel(invoker(),0)));
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(2*adjustedLevel(invoker(),0)));
 	}

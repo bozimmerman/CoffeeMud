@@ -155,7 +155,7 @@ public class Spell_Phantasm extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB myMonster = determineMonster(mob, R, mob.envStats().level()+(2*getXLEVELLevel(mob)));
+				MOB myMonster = determineMonster(mob, R, mob.phyStats().level()+(2*getXLEVELLevel(mob)));
 				myMonster.setVictim(mob.getVictim());
 				CMLib.commands().postFollow(myMonster,mob,true);
 				if(myMonster.getVictim()!=null)
@@ -175,31 +175,31 @@ public class Spell_Phantasm extends Spell
 	public MOB determineMonster(MOB caster, Race R, int level)
 	{
 		MOB newMOB=CMClass.getMOB("GenMob");
-		newMOB.baseEnvStats().setAbility(11);
+		newMOB.basePhyStats().setAbility(11);
 		CharClass C=CMClass.getCharClass("Fighter");
 		newMOB.baseCharStats().setCurrentClass(C);
-		newMOB.baseEnvStats().setLevel(level+10);
+		newMOB.basePhyStats().setLevel(level+10);
 		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_EVIL);
-		newMOB.baseEnvStats().setWeight(850);
-		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
+		newMOB.basePhyStats().setWeight(850);
+		newMOB.basePhyStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.baseCharStats().setStat(CharStats.STAT_STRENGTH,25);
 		newMOB.baseCharStats().setStat(CharStats.STAT_DEXTERITY,25);
 		newMOB.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,25);
 		newMOB.baseCharStats().setMyRace(R);
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
-		newMOB.recoverEnvStats();
+		newMOB.recoverPhyStats();
 		newMOB.recoverCharStats();
-		newMOB.baseEnvStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
-		newMOB.baseEnvStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
-		newMOB.baseEnvStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
-		newMOB.baseEnvStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB));
+		newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
+		newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
+		newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
+		newMOB.basePhyStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB));
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		newMOB.setName("a ferocious "+R.name().toLowerCase());
 		newMOB.setDisplayText("a ferocious "+R.name().toLowerCase()+" is stalking around here");
 		newMOB.setDescription("");
 		newMOB.recoverCharStats();
-		newMOB.recoverEnvStats();
+		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
 		newMOB.text();

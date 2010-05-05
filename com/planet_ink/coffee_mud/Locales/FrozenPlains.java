@@ -39,7 +39,7 @@ public class FrozenPlains extends Plains
 	public FrozenPlains()
 	{
 		super();
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	public int domainConditions(){return Room.CONDITION_COLD;}
 

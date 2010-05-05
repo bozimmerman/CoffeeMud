@@ -176,8 +176,8 @@ public class DefaultPlayerAccount implements PlayerAccount
 			fakePlayerM.setName(accountName());
 			fakePlayerM.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
 			fakePlayerM.playerStats().setAccount(this);
-			fakePlayerM.baseEnvStats().setLevel(1);
-			fakePlayerM.recoverEnvStats();
+			fakePlayerM.basePhyStats().setLevel(1);
+			fakePlayerM.recoverPhyStats();
 			return fakePlayerM;
 		}
 	}

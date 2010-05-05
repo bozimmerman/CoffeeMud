@@ -42,11 +42,11 @@ public class Hood extends StdArmor
 		setDescription("This is a cloth hood that covers the head and shoulders.");
 		properWornBitmap=Wearable.WORN_HEAD;
 		wornLogicalAnd=false;
-		baseEnvStats().setArmor(2);
-		baseEnvStats().setWeight(1);
-		baseEnvStats().setAbility(0);
+		basePhyStats().setArmor(2);
+		basePhyStats().setWeight(1);
+		basePhyStats().setAbility(0);
 		baseGoldValue=5;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_COTTON;
 	}
 

@@ -42,11 +42,11 @@ public class SteelGauntlets extends StdArmor
 		setDescription("They look like they're made of steel.");
 		properWornBitmap=Wearable.WORN_HANDS | Wearable.WORN_LEFT_WRIST | Wearable.WORN_RIGHT_WRIST;
 		wornLogicalAnd=true;
-		baseEnvStats().setArmor(3); // = $$$$ =
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setWeight(5);
+		basePhyStats().setArmor(3); // = $$$$ =
+		basePhyStats().setAbility(0);
+		basePhyStats().setWeight(5);
 		baseGoldValue=20;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_STEEL;
 	}
 

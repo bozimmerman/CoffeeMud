@@ -93,11 +93,11 @@ public class Disease_Obesity extends Disease
 		super.affectCharStats(affectedMob, affectableStats);
 	    affectableStats.setStat(CharStats.STAT_WEIGHTADJ, 
     		affectableStats.getStat(CharStats.STAT_WEIGHTADJ)
-    		+(int)Math.round(CMath.mul(affectedMob.baseEnvStats().weight(),CMath.div(CMath.s_int(text()),100.0))));
+    		+(int)Math.round(CMath.mul(affectedMob.basePhyStats().weight(),CMath.div(CMath.s_int(text()),100.0))));
 	}
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-	    super.affectEnvStats(affected,affectableStats);
+	    super.affectPhyStats(affected,affectableStats);
 	}
 	
 	public void affectCharState(MOB affected, CharState affectableState)
@@ -141,7 +141,7 @@ public class Disease_Obesity extends Disease
 		&&(msg.source().curState().getHunger()>=msg.source().maxState().maxHunger(msg.source().baseWeight())))
 		{
 		    setFatAmountChange(CMLib.dice().roll(1,5,0));
-		    msg.source().recoverEnvStats();
+		    msg.source().recoverPhyStats();
 		    msg.source().recoverCharStats();
 		    msg.source().recoverMaxState();
 		}

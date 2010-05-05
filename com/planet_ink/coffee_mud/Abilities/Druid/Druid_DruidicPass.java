@@ -47,11 +47,11 @@ public class Druid_DruidicPass extends StdAbility
 	protected int canTargetCode(){return 0;}
     public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_STEALTHY;}
     
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SNEAKING);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_INVISIBLE);
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SNEAKING);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_INVISIBLE);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
@@ -105,12 +105,12 @@ public class Druid_DruidicPass extends StdAbility
 			if(mob.fetchEffect(ID())==null)
 			{
 				mob.addEffect(this);
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 			}
 
 			CMLib.tracking().move(mob,dirCode,false,false);
 			mob.delEffect(this);
-			mob.recoverEnvStats();
+			mob.recoverPhyStats();
 		}
 		else
 		{
@@ -127,11 +127,11 @@ public class Druid_DruidicPass extends StdAbility
 				if(mob.fetchEffect(ID())==null)
 				{
 					mob.addEffect(this);
-					mob.recoverEnvStats();
+					mob.recoverPhyStats();
 				}
 				CMLib.tracking().move(mob,dirCode,false,false);
 				mob.delEffect(this);
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 				exit.setDoorsNLocks(exit.hasADoor(),open,exit.defaultsClosed(),exit.hasALock(),locked,exit.defaultsLocked());
 				if(opExit!=null)
 					opExit.setDoorsNLocks(exit.hasADoor(),open,exit.defaultsClosed(),exit.hasALock(),locked,exit.defaultsLocked());

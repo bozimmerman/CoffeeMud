@@ -213,7 +213,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
         playSound="fire.wav";
 		building.setDisplayText(itemName+" lies here");
 		building.setDescription(itemName+". ");
-		building.baseEnvStats().setWeight(woodRequired);
+		building.basePhyStats().setWeight(woodRequired);
 		building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 
 		if(data[0][FOUND_CODE]==RawMaterial.RESOURCE_SAND)
@@ -221,7 +221,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 		else
 			building.setMaterial(data[0][FOUND_CODE]);
 
-		building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
+		building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 		building.setSecretIdentity("This is the work of "+mob.Name()+".");
 		int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 		String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
@@ -252,9 +252,9 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 			}
 		}
 		if(bundling) building.setBaseValue(lostValue);
-		building.recoverEnvStats();
+		building.recoverPhyStats();
 		building.text();
-		building.recoverEnvStats();
+		building.recoverPhyStats();
 
 
 		messedUp=!proficiencyCheck(mob,0,auto);

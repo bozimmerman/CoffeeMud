@@ -45,7 +45,7 @@ public class GoodyBag extends BagOfEndlessness implements ArchonOnly
 		setDisplayText("a small bag is sitting here.");
 		setDescription("A nice little bag to put your things in.");
 		secretIdentity="The Archon's Goody Bag";
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	private void putInBag(Item I)
@@ -56,7 +56,7 @@ public class GoodyBag extends BagOfEndlessness implements ArchonOnly
 		else
 		if(owner() instanceof MOB)
 			((MOB)owner()).addItem(I);
-		I.recoverEnvStats();
+		I.recoverPhyStats();
 	}
 
 	public void addMoney(double value)

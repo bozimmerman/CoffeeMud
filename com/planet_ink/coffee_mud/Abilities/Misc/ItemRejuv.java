@@ -85,7 +85,7 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 		loadContent(ability,item,room);
 		contents.trimToSize();
 		ccontents.trimToSize();
-		CMLib.threads().startTickDown(ability,Tickable.TICKID_ROOM_ITEM_REJUV,item.envStats().rejuv());
+		CMLib.threads().startTickDown(ability,Tickable.TICKID_ROOM_ITEM_REJUV,item.phyStats().rejuv());
 	}
 
 	public void unloadIfNecessary(Item item)

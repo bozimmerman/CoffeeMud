@@ -82,7 +82,7 @@ public class GenExit extends StdExit
 	public void setMiscText(String newText)
 	{
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 		isOpen=!doorDefaultsClosed;
 		isLocked=doorDefaultsLocked;
 	}

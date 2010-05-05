@@ -164,7 +164,7 @@ public class Skill_Enslave extends StdSkill
 			&&(room.isInhabitant(mob)))
 			{
 				lastRoom=room;
-				mob.baseEnvStats().setRejuv(0);
+				mob.basePhyStats().setRejuv(0);
 				mob.setStartRoom(room);
 			}
 		}
@@ -208,7 +208,7 @@ public class Skill_Enslave extends StdSkill
 		                mob.setLiegeID("");
 		                mob.setClanID("");
 		                mob.recoverCharStats();
-		                mob.recoverEnvStats();
+		                mob.recoverPhyStats();
 		                mob.resetToMaxState();
 		                mob.setFollowing(null);
 		                CMLib.combat().postAttack(mob,master,mob.fetchWieldedItem());

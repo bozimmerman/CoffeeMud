@@ -43,10 +43,10 @@ public class Power_SuperClimb extends SuperPower
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MANA|USAGE_MOVEMENT;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_CLIMBING);
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_CLIMBING);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
@@ -81,12 +81,12 @@ public class Power_SuperClimb extends SuperPower
 			if(mob.fetchEffect(ID())==null)
 			{
 				mob.addEffect(this);
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 			}
 
 			CMLib.tracking().move(mob,dirCode,false,false);
 			mob.delEffect(this);
-			mob.recoverEnvStats();
+			mob.recoverPhyStats();
 			if(!success)
 				mob.location().executeMsg(mob,CMClass.getMsg(mob,mob.location(),CMMsg.MASK_MOVE|CMMsg.TYP_GENERAL,null));
 		}

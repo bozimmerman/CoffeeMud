@@ -68,7 +68,7 @@ public class Thief_Search extends ThiefSkill
                 ((MOB)affected).recoverCharStats();
             }
             else
-            if(bonusThisRoom<affected.envStats().level())
+            if(bonusThisRoom<affected.phyStats().level())
             {
                 bonusThisRoom+=5;
 	            ((MOB)affected).recoverCharStats();
@@ -77,10 +77,10 @@ public class Thief_Search extends ThiefSkill
         return true;
     }
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_HIDDEN);
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_HIDDEN);
 	}
 
     public int castingQuality(MOB mob, Physical target)
@@ -126,10 +126,10 @@ public class Thief_Search extends ThiefSkill
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,target,asLevel,0);
-			target.envStats().setSensesMask(mob.envStats().sensesMask()|EnvStats.CAN_SEE_HIDDEN);
-			target.envStats().setSensesMask(mob.envStats().sensesMask()|EnvStats.CAN_SEE_SNEAKERS);
+			target.phyStats().setSensesMask(mob.phyStats().sensesMask()|PhyStats.CAN_SEE_HIDDEN);
+			target.phyStats().setSensesMask(mob.phyStats().sensesMask()|PhyStats.CAN_SEE_SNEAKERS);
 			CMLib.commands().postLook(target,false);
-			target.recoverEnvStats();
+			target.recoverPhyStats();
 		}
 		return success;
 	}

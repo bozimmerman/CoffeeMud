@@ -40,10 +40,10 @@ public class Song_Detection extends Song
 	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
     protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
     
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(invoker==null) return;
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_BONUS);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_BONUS);
 	}
 }

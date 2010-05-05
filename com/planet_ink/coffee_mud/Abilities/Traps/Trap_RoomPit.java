@@ -127,22 +127,22 @@ public class Trap_RoomPit extends StdTrap
 			Room myPitUp=CMClass.getLocale("ClimbableSurface");
 			myPitUp.setRoomID("");
 			myPitUp.setArea(target.location().getArea());
-			myPitUp.baseEnvStats().setDisposition(myPitUp.baseEnvStats().disposition()|EnvStats.IS_DARK);
+			myPitUp.basePhyStats().setDisposition(myPitUp.basePhyStats().disposition()|PhyStats.IS_DARK);
 			myPitUp.setDisplayText("Inside a dark pit");
 			myPitUp.setDescription("The walls here are slick and tall.  The trap door has already closed.");
-			myPitUp.recoverEnvStats();
+			myPitUp.recoverPhyStats();
 
 			Room myPit=CMClass.getLocale("StdRoom");
 			myPit.setRoomID("");
 			myPit.setArea(target.location().getArea());
-			myPit.baseEnvStats().setDisposition(myPit.baseEnvStats().disposition()|EnvStats.IS_DARK);
+			myPit.basePhyStats().setDisposition(myPit.basePhyStats().disposition()|PhyStats.IS_DARK);
 			myPit.setDisplayText("Inside a dark pit");
 			myPit.setDescription("The walls here are slick and tall.  You can barely see the closed trap door well above you.");
 			myPit.setRawExit(Directions.UP,CMClass.getExit("StdOpenDoorway"));
 			myPit.rawDoors()[Directions.UP]=myPitUp;
 			myPitUp.setRawExit(Directions.DOWN,CMClass.getExit("StdOpenDoorway"));
 			myPitUp.rawDoors()[Directions.DOWN]=myPit;
-			myPitUp.recoverEnvStats();
+			myPitUp.recoverPhyStats();
 			V.addElement(myPit);
 			V.addElement(myPitUp);
 			pit=V;
@@ -173,7 +173,7 @@ public class Trap_RoomPit extends StdTrap
 	}
 	public void finishSpringing(MOB target)
 	{
-		if((!invoker().mayIFight(target))||(target.envStats().weight()<5))
+		if((!invoker().mayIFight(target))||(target.phyStats().weight()<5))
 			target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> float(s) gently into the pit!");
 		else
 		{

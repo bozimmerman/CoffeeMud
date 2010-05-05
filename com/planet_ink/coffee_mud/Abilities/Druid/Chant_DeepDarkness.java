@@ -77,14 +77,14 @@ public class Chant_DeepDarkness extends Chant
 		return super.tick(ticking,tickID);
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(CMLib.flags().isGlowing(affected))
-			affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_GLOWING);
+			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_GLOWING);
 		if(CMLib.flags().isLightSource(affected))
-			affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_LIGHTSOURCE);
-		affectableStats.setDisposition(affectableStats.disposition() |  EnvStats.IS_DARK);
+			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_LIGHTSOURCE);
+		affectableStats.setDisposition(affectableStats.disposition() |  PhyStats.IS_DARK);
 	}
 
 

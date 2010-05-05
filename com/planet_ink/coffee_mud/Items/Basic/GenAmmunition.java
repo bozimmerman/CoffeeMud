@@ -45,7 +45,7 @@ public class GenAmmunition extends StdItem implements Ammunition
 		setUsesRemaining(100);
 		setAmmunitionType("arrows");
 		setDescription("");
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public boolean isGeneric(){return true;}
@@ -67,7 +67,7 @@ public class GenAmmunition extends StdItem implements Ammunition
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

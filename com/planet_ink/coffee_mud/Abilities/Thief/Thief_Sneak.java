@@ -63,7 +63,7 @@ public class Thief_Sneak extends ThiefSkill
 		}
 
         MOB highestMOB=getHighestLevelMOB(mob,null);
-		int levelDiff=(mob.envStats().level()+(super.getXLEVELLevel(mob)*2))-getMOBLevel(highestMOB);
+		int levelDiff=(mob.phyStats().level()+(super.getXLEVELLevel(mob)*2))-getMOBLevel(highestMOB);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -80,18 +80,18 @@ public class Thief_Sneak extends ThiefSkill
 			success=proficiencyCheck(mob,levelDiff,auto);
 			if(success)
 			{
-				mob.baseEnvStats().setDisposition(mob.baseEnvStats().disposition()|EnvStats.IS_SNEAKING);
-				mob.recoverEnvStats();
+				mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SNEAKING);
+				mob.recoverPhyStats();
 			}
 			CMLib.tracking().move(mob,dirCode,false,false);
 			if(success)
 			{
 
-				int disposition=mob.baseEnvStats().disposition();
-				if((disposition&EnvStats.IS_SNEAKING)>0)
+				int disposition=mob.basePhyStats().disposition();
+				if((disposition&PhyStats.IS_SNEAKING)>0)
 				{
-					mob.baseEnvStats().setDisposition(disposition-EnvStats.IS_SNEAKING);
-					mob.recoverEnvStats();
+					mob.basePhyStats().setDisposition(disposition-PhyStats.IS_SNEAKING);
+					mob.recoverPhyStats();
 				}
 				Ability toHide=mob.fetchAbility("Thief_Hide");
 				if(toHide==null) toHide=mob.fetchAbility("Ranger_Hide");
@@ -99,7 +99,7 @@ public class Thief_Sneak extends ThiefSkill
 					toHide.invoke(mob,new Vector(),null,false,asLevel);
 			}
 			if(CMLib.flags().isSneaking(mob))
-				mob.envStats().setDisposition(mob.envStats().disposition()-EnvStats.IS_SNEAKING);
+				mob.phyStats().setDisposition(mob.phyStats().disposition()-PhyStats.IS_SNEAKING);
 		}
 		return success;
 	}

@@ -135,15 +135,15 @@ public class Trap_FloodRoom extends StdTrap
 		return true;
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(sprung)
 		{
 			if((!disabled)&&((tickDown>2)&&(tickDown<13)))
 			{
-				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_BREATHE);
-				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
+				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_BREATHE);
+				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
 			}
 		}
 		else
@@ -190,19 +190,19 @@ public class Trap_FloodRoom extends StdTrap
 				{
 					R.showHappens(CMMsg.MSG_OK_VISUAL,"Water is filling up the room!");
 					CMLib.utensils().extinguish(invoker(),R,true);
-					R.recoverEnvStats();
+					R.recoverPhyStats();
 					R.recoverRoomStats();
 				}
 				else
 				if(tickDown>2)
 				{
 					CMLib.utensils().extinguish(invoker(),R,true);
-					R.recoverEnvStats();
+					R.recoverPhyStats();
 					R.recoverRoomStats();
 				}
 				else
 				{
-					R.recoverEnvStats();
+					R.recoverPhyStats();
 					R.recoverRoomStats();
 					R.showHappens(CMMsg.MSG_OK_VISUAL,"The water is draining away...");
 				}
@@ -215,7 +215,7 @@ public class Trap_FloodRoom extends StdTrap
 		super.disable();
 		if((affected!=null)&&(affected instanceof Room))
 		{
-			((Room)affected).recoverEnvStats();
+			((Room)affected).recoverPhyStats();
 			((Room)affected).recoverRoomStats();
 		}
 	}

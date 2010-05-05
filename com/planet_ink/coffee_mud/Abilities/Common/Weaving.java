@@ -112,8 +112,8 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 						else
 						if(refitting)
 						{
-							building.baseEnvStats().setHeight(0);
-							building.recoverEnvStats();
+							building.basePhyStats().setHeight(0);
+							building.recoverPhyStats();
 						}
 						else
 						{
@@ -259,7 +259,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 				commonTell(mob,"You don't know how to refit that sort of thing.");
 				return false;
 			}
-			if(building.envStats().height()==0)
+			if(building.phyStats().height()==0)
 			{
 				commonTell(mob,building.name()+" is already the right size.");
 				return false;
@@ -351,10 +351,10 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			verb="weaving "+building.name();
 			building.setDisplayText(itemName+" lies here");
 			building.setDescription(itemName+". ");
-			building.baseEnvStats().setWeight(woodRequired/2);
+			building.basePhyStats().setWeight(woodRequired/2);
 			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 			building.setMaterial(data[0][FOUND_CODE]);
-			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
+			building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 			int canContain=CMath.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
@@ -362,7 +362,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			if(bundling)
 			{
 			    building.setBaseValue(lostValue);
-				building.baseEnvStats().setWeight(woodRequired);
+				building.basePhyStats().setWeight(woodRequired);
 			}
 			addSpells(building,spell);
 			if(building instanceof Weapon)
@@ -373,7 +373,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 					if(misctype.equalsIgnoreCase(Weapon.CLASS_DESCS[cl]))
 						((Weapon)building).setWeaponClassification(cl);
 				}
-				building.baseEnvStats().setDamage(armordmg);
+				building.basePhyStats().setDamage(armordmg);
 				((Weapon)building).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
 				((Weapon)building).setRawLogicalAnd((capacity>1));
 			}
@@ -385,9 +385,9 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 					((Armor)building).setCapacity(capacity+woodRequired);
 					((Armor)building).setContainTypes(canContain);
 				}
-                ((Armor)building).baseEnvStats().setArmor(0);
+                ((Armor)building).basePhyStats().setArmor(0);
                 if(armordmg!=0)
-                    ((Armor)building).baseEnvStats().setArmor(armordmg+(abilityCode()-1));
+                    ((Armor)building).basePhyStats().setArmor(armordmg+(abilityCode()-1));
                 setWearLocation(building,misctype,0);
 			}
 			else
@@ -410,7 +410,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 					key.setName("a key");
 					key.setDisplayText("a small key sits here");
 					key.setDescription("looks like a key to "+building.name());
-					key.recoverEnvStats();
+					key.recoverPhyStats();
 					key.text();
 				}
 			}
@@ -418,9 +418,9 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			{
                 setRideBasis((Rideable)building,misctype);
 			}
-			building.recoverEnvStats();
+			building.recoverPhyStats();
 			building.text();
-			building.recoverEnvStats();
+			building.recoverPhyStats();
 		}
 
 		messedUp=!proficiencyCheck(mob,0,auto);

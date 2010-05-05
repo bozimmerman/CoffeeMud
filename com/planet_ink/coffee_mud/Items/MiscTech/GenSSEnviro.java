@@ -39,12 +39,12 @@ implements ShipComponent.ShipEnviroControl
 	{
 		super();
 		setName("a generic ships environmental engine");
-		baseEnvStats.setWeight(50);
+		basePhyStats.setWeight(50);
 		setDisplayText("a generic ships environmental engine sits here.");
 		setDescription("");
 		baseGoldValue=1000;
-		baseEnvStats().setLevel(1);
-		recoverEnvStats();
+		basePhyStats().setLevel(1);
+		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 	}
 	public boolean sameAs(Environmental E)

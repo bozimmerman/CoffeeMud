@@ -101,7 +101,7 @@ public class Spell_Youth extends Spell
 					else
 						target.baseCharStats().setStat(CharStats.STAT_AGE,age);
 					target.recoverCharStats();
-					target.recoverEnvStats();
+					target.recoverPhyStats();
 				}
 			}
 		}

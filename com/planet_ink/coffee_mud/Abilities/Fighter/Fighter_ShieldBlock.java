@@ -74,9 +74,9 @@ public class Fighter_ShieldBlock extends FighterSkill
 		return true;
 	}
 	
-	public void affectEnvStats(Environmental affected, EnvStats stats)
+	public void affectPhyStats(Physical affected, PhyStats stats)
 	{
-		super.affectEnvStats(affected,stats);
+		super.affectPhyStats(affected,stats);
 		if(affected instanceof MOB)
 		{
 			Item shield=((MOB)affected).fetchFirstWornItem(Wearable.WORN_HELD);
@@ -84,7 +84,7 @@ public class Fighter_ShieldBlock extends FighterSkill
 			if(enabledFlag)
 			{
 				stats.setArmor(stats.armor()+(int)Math.round(
-					CMath.mul(shield.envStats().armor(),
+					CMath.mul(shield.phyStats().armor(),
 						CMath.mul(getXLEVELLevel((MOB)affected),0.5))));
 			}
 		}

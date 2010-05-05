@@ -41,13 +41,13 @@ public class StdNet extends StdWeapon
 		setName("a net");
 		setDisplayText("a net has been left here.");
 		setDescription("Its a wide tangling net!");
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(0);
-		baseEnvStats.setWeight(1);
-		baseEnvStats().setAttackAdjustment(0);
-		baseEnvStats().setDamage(0);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(0);
+		basePhyStats.setWeight(1);
+		basePhyStats().setAttackAdjustment(0);
+		basePhyStats().setDamage(0);
 		baseGoldValue=10;
-		recoverEnvStats();
+		recoverPhyStats();
 		minRange=1;
 		maxRange=1;
 		weaponType=Weapon.TYPE_NATURAL;
@@ -101,7 +101,7 @@ public class StdNet extends StdWeapon
 					if(A!=null)
 					{
 						A.setAffectedOne(this);
-						A.invoke(msg.source(),M2,true,envStats().level());
+						A.invoke(msg.source(),M2,true,phyStats().level());
 					}
 				}
 			}

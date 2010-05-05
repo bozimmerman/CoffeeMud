@@ -40,9 +40,9 @@ public class UnderWater extends StdRoom implements Drink
 	{
 		super();
 		name="the water";
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_SWIMMING);
-		baseEnvStats.setWeight(3);
-		recoverEnvStats();
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_SWIMMING);
+		basePhyStats.setWeight(3);
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_UNDERWATER;}
 	public int domainConditions(){return Room.CONDITION_WET;}
@@ -50,13 +50,13 @@ public class UnderWater extends StdRoom implements Drink
 	public long decayTime(){return 0;}
 	public void setDecayTime(long time){}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected instanceof MOB)
 		{
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_BREATHE);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
+			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_BREATHE);
 		}
 	}
 
@@ -71,7 +71,7 @@ public class UnderWater extends StdRoom implements Drink
 		   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)))
 			return;
 
-		if(((P instanceof MOB)&&(!CMLib.flags().isWaterWorthy(P))&&(!CMLib.flags().isInFlight(P))&&(P.envStats().weight()>=1))
+		if(((P instanceof MOB)&&(!CMLib.flags().isWaterWorthy(P))&&(!CMLib.flags().isInFlight(P))&&(P.phyStats().weight()>=1))
 		||((P instanceof Item)&&(!CMLib.flags().isInFlight(((Item)P).ultimateContainer()))&&(!CMLib.flags().isWaterWorthy(((Item)P).ultimateContainer()))))
 			if(P.fetchEffect("Sinking")==null)
 			{
@@ -144,7 +144,7 @@ public class UnderWater extends StdRoom implements Drink
 						foundNormal=foundNormal||(A.proficiency()<=0);
 					}
 					else
-					if((!CMath.bset(mob.baseEnvStats().disposition(),EnvStats.IS_SWIMMING))
+					if((!CMath.bset(mob.basePhyStats().disposition(),PhyStats.IS_SWIMMING))
 					&&(!mob.charStats().getMyRace().racialCategory().equals("Amphibian"))
 					&&(!mob.charStats().getMyRace().racialCategory().equals("Fish")))
 						needToSink.addElement(mob);

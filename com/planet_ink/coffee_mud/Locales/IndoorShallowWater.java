@@ -40,7 +40,7 @@ public class IndoorShallowWater extends ShallowWater implements Drink
 	{
 		super();
 		name="the water";
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_INDOORS_WATERSURFACE;}
 	public int domainConditions(){return Room.CONDITION_WET;}

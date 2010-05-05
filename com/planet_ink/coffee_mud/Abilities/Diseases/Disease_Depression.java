@@ -73,9 +73,9 @@ public class Disease_Depression extends Disease
 		return true;
 	}
 	
-	public void affectEnvStats(Environmental E, EnvStats stats)
+	public void affectPhyStats(Physical E, PhyStats stats)
 	{
-	    super.affectEnvStats(E,stats);
+	    super.affectPhyStats(E,stats);
 	    stats.setAttackAdjustment(stats.attackAdjustment()-10);
 	}
 	

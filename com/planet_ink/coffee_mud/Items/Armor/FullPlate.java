@@ -42,11 +42,11 @@ public class FullPlate extends StdArmor
 		setDescription("A suit of Full Plate Armor including everything from head to toe.  Fine workmanship make this both very decorative and functional.");
 		properWornBitmap=Wearable.WORN_TORSO | Wearable.WORN_ARMS | Wearable.WORN_LEGS | Wearable.WORN_FEET | Wearable.WORN_HEAD | Wearable.WORN_HANDS;
 		wornLogicalAnd=true;
-		baseEnvStats().setArmor(90);
-		baseEnvStats().setWeight(90);
-		baseEnvStats().setAbility(0);
+		basePhyStats().setArmor(90);
+		basePhyStats().setWeight(90);
+		basePhyStats().setAbility(0);
 		baseGoldValue=20000;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_STEEL;
 	}
 

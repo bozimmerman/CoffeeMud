@@ -95,28 +95,28 @@ public class Prayer_UnholyArmament extends Prayer
 				((Weapon)I).setWeaponClassification(Weapon.CLASS_SWORD);
 				((Weapon)I).setWeaponType(Weapon.TYPE_SLASHING);
 				I.setDescription("Whatever made this sharp twisted thing couldn`t have been good..");
-				I.baseEnvStats().setLevel(mob.envStats().level());
-				I.baseEnvStats().setWeight(20);
+				I.basePhyStats().setLevel(mob.phyStats().level());
+				I.basePhyStats().setWeight(20);
 				I.setMaterial(RawMaterial.RESOURCE_MITHRIL);
-				I.recoverEnvStats();
-				Hashtable H=CMLib.itemBuilder().timsItemAdjustments(I,mob.envStats().level()+(2*super.getXLEVELLevel(mob)),I.material(),1,((Weapon)I).weaponClassification(),0,I.rawProperLocationBitmap());
-				I.baseEnvStats().setDamage(CMath.s_int((String)H.get("DAMAGE")));
-				I.baseEnvStats().setAttackAdjustment(CMath.s_int((String)H.get("ATTACK")));
+				I.recoverPhyStats();
+				Hashtable H=CMLib.itemBuilder().timsItemAdjustments(I,mob.phyStats().level()+(2*super.getXLEVELLevel(mob)),I.material(),1,((Weapon)I).weaponClassification(),0,I.rawProperLocationBitmap());
+				I.basePhyStats().setDamage(CMath.s_int((String)H.get("DAMAGE")));
+				I.basePhyStats().setAttackAdjustment(CMath.s_int((String)H.get("ATTACK")));
 				I.setBaseValue(0);
 			}
 			else
 			{
 				I=CMClass.getArmor("GenArmor");
 				I.setRawProperLocationBitmap(pos);
-				I.baseEnvStats().setLevel(mob.envStats().level());
+				I.basePhyStats().setLevel(mob.phyStats().level());
 				if(pos==Wearable.WORN_ABOUT_BODY)
 					I.setMaterial(RawMaterial.RESOURCE_COTTON);
 				else
 					I.setMaterial(RawMaterial.RESOURCE_MITHRIL);
-				I.recoverEnvStats();
-				Hashtable H=CMLib.itemBuilder().timsItemAdjustments(I,mob.envStats().level()+(2*super.getXLEVELLevel(mob)),I.material(),1,0,0,I.rawProperLocationBitmap());
-				I.baseEnvStats().setArmor(CMath.s_int((String)H.get("ARMOR")));
-				I.baseEnvStats().setWeight(CMath.s_int((String)H.get("WEIGHT")));
+				I.recoverPhyStats();
+				Hashtable H=CMLib.itemBuilder().timsItemAdjustments(I,mob.phyStats().level()+(2*super.getXLEVELLevel(mob)),I.material(),1,0,0,I.rawProperLocationBitmap());
+				I.basePhyStats().setArmor(CMath.s_int((String)H.get("ARMOR")));
+				I.basePhyStats().setWeight(CMath.s_int((String)H.get("WEIGHT")));
 				I.setBaseValue(0);
 				if(pos==Wearable.WORN_TORSO)
 				{
@@ -180,7 +180,7 @@ public class Prayer_UnholyArmament extends Prayer
 				A.setMiscText("-GOOD -NEUTRAL -NAMES \"+"+mob.Name()+"\"");
 				I.addNonUninvokableEffect(A);
 			}
-			I.recoverEnvStats();
+			I.recoverPhyStats();
 			if((mob.findItem(null,"$"+I.name()+"$")!=null)
 			||(mob.location().findItem(null,"$"+I.name()+"$")!=null))
 			{

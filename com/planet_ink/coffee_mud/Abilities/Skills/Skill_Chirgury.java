@@ -150,9 +150,9 @@ public class Skill_Chirgury extends StdSkill
 				        meat=CMClass.getItem("GenLiquidResource");
 				        meat.setMaterial(RawMaterial.RESOURCE_BLOOD);
 				        ((Drink)meat).setLiquidType(RawMaterial.RESOURCE_BLOOD);
-				        amt=target.envStats().weight()/10;
+				        amt=target.phyStats().weight()/10;
 				        if(amt<1) amt=1;
-				        meat.baseEnvStats().setWeight(1);
+				        meat.basePhyStats().setWeight(1);
 				        ((Drink)meat).setLiquidHeld(10);
 				        ((Drink)meat).setLiquidRemaining(10);
 				        if(target instanceof MOB)
@@ -164,12 +164,12 @@ public class Skill_Chirgury extends StdSkill
 				    else
 					    meat.setDisplayText("the "+parts[partCode].toLowerCase()+" of "+target.Name()+" lies here.");
 					CMLib.materials().addEffectsToResource(meat);
-				    meat.recoverEnvStats();
+				    meat.recoverPhyStats();
 				    meat.text();
 				    for(int i=0;i<amt;i++)
 				    {
 				        meat=(Item)meat.copyOf();
-					    meat.recoverEnvStats();
+					    meat.recoverPhyStats();
 					    meat.text();
 				        mob.location().addItem(meat,ItemPossessor.Expire.Player_Drop);
 				        mob.location().show(mob,meat,null,CMMsg.MSG_GET,(i==0)?"<S-NAME> remove(s) <T-NAME> from "+target.name()+".":null);
@@ -194,14 +194,14 @@ public class Skill_Chirgury extends StdSkill
 				        baby.setMobPKFlag(false);
 				        baby.setMobName(baby.Name());
 				        baby.setPlayerCorpse(false);
-				        baby.baseEnvStats().setWeight(1);
+				        baby.basePhyStats().setWeight(1);
 				        baby.charStats().setStat(CharStats.STAT_GENDER,(CMLib.dice().rollPercentage()>50)?'F':'M');
 				        for(int i: CharStats.CODES.BASE())
 				            baby.charStats().setStat(i,1);
 				        for(int i: CharStats.CODES.MAX())
 				            baby.charStats().setStat(i,1);
 				        baby.charStats().setMyRace(((MOB)target).charStats().getMyRace());
-				        baby.recoverEnvStats();
+				        baby.recoverPhyStats();
 				        baby.setDescription(CMStrings.capitalizeAndLower(baby.charStats().hisher())+" body parts can be faintly made out in the twisted and mangled flesh.");
 				        baby.setMobDescription(baby.description());
 				        baby.text();

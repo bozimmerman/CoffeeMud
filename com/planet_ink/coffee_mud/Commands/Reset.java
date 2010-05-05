@@ -235,7 +235,7 @@ public class Reset extends StdCommand
 	private void reportChangesDestroyNewM(MOB oldM, MOB newM, StringBuffer changes)
 	{
 		if((changes == null)||(oldM==null)) return;
-		changes.append(newM.name()+":"+newM.baseEnvStats().level()+", ");
+		changes.append(newM.name()+":"+newM.basePhyStats().level()+", ");
         for(int i=0;i<oldM.getStatCodes().length;i++)
             if((!oldM.getStat(oldM.getStatCodes()[i]).equals(newM.getStat(newM.getStatCodes()[i]))))
             	changes.append(oldM.getStatCodes()[i]+"("+oldM.getStat(oldM.getStatCodes()[i])+"->"+newM.getStat(newM.getStatCodes()[i])+"), ");
@@ -245,19 +245,19 @@ public class Reset extends StdCommand
 	
 	public boolean fixMob(MOB M, StringBuffer recordedChanges)
 	{
-		MOB M2 = CMLib.leveler().fillOutMOB(M.baseCharStats().getCurrentClass(),M.baseEnvStats().level());
-		if((M.baseEnvStats().attackAdjustment() != M2.baseEnvStats().attackAdjustment())
-		||(M.baseEnvStats().armor() != M2.baseEnvStats().armor())
-		||(M.baseEnvStats().damage() != M2.baseEnvStats().damage())
-		||(M.baseEnvStats().speed() != M2.baseEnvStats().speed()))
+		MOB M2 = CMLib.leveler().fillOutMOB(M.baseCharStats().getCurrentClass(),M.basePhyStats().level());
+		if((M.basePhyStats().attackAdjustment() != M2.basePhyStats().attackAdjustment())
+		||(M.basePhyStats().armor() != M2.basePhyStats().armor())
+		||(M.basePhyStats().damage() != M2.basePhyStats().damage())
+		||(M.basePhyStats().speed() != M2.basePhyStats().speed()))
 		{
 			MOB oldM=M;
 			if(recordedChanges!=null) M=(MOB)M.copyOf();
-			M.baseEnvStats().setAttackAdjustment(M2.baseEnvStats().attackAdjustment());
-			M.baseEnvStats().setArmor(M2.baseEnvStats().armor());
-			M.baseEnvStats().setDamage(M2.baseEnvStats().damage());
-			M.baseEnvStats().setSpeed(M2.baseEnvStats().speed());
-			M.recoverEnvStats();
+			M.basePhyStats().setAttackAdjustment(M2.basePhyStats().attackAdjustment());
+			M.basePhyStats().setArmor(M2.basePhyStats().armor());
+			M.basePhyStats().setDamage(M2.basePhyStats().damage());
+			M.basePhyStats().setSpeed(M2.basePhyStats().speed());
+			M.recoverPhyStats();
 			if(recordedChanges!=null){
 				reportChangesDestroyNewM(oldM,M,recordedChanges);
 				return false;
@@ -747,12 +747,12 @@ public class Reset extends StdCommand
 							MOB M=R.fetchInhabitant(i);
 							if((M.isMonster())
 							&&(M.getStartRoom()==R)
-							&&(M.baseEnvStats().armor()==((100-(M.baseEnvStats().level()*7)))))
+							&&(M.basePhyStats().armor()==((100-(M.basePhyStats().level()*7)))))
 							{
-								int oldArmor=M.baseEnvStats().armor();
-								M.baseEnvStats().setArmor(CMLib.leveler().getLevelMOBArmor(M));
-								M.recoverEnvStats();
-								Log.sysOut("Reset","Updated "+M.name()+" in room "+R.roomID()+" from "+oldArmor+" to "+M.baseEnvStats().armor()+".");
+								int oldArmor=M.basePhyStats().armor();
+								M.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(M));
+								M.recoverPhyStats();
+								Log.sysOut("Reset","Updated "+M.name()+" in room "+R.roomID()+" from "+oldArmor+" to "+M.basePhyStats().armor()+".");
 								didSomething=true;
 							}
 							else
@@ -790,9 +790,9 @@ public class Reset extends StdCommand
 							MOB M=R.fetchInhabitant(i);
 							if((M.isMonster())
 							&&(M.getStartRoom()==R)
-							&&(CMLib.beanCounter().getMoney(M)>(M.baseEnvStats().level()+1)))
+							&&(CMLib.beanCounter().getMoney(M)>(M.basePhyStats().level()+1)))
 							{
-								CMLib.beanCounter().setMoney(M,CMLib.dice().roll(1,M.baseEnvStats().level(),0)+CMLib.dice().roll(1,10,0));
+								CMLib.beanCounter().setMoney(M,CMLib.dice().roll(1,M.basePhyStats().level(),0)+CMLib.dice().roll(1,10,0));
 								Log.sysOut("Reset","Updated "+M.name()+" in room "+R.roomID()+".");
 								didSomething=true;
 							}
@@ -1043,9 +1043,9 @@ public class Reset extends StdCommand
 						{
 							Item I=M.getItem(i);
 							int lvl=-1;
-							if((I.baseEnvStats().level()>M.baseEnvStats().level())
-							||((I.baseEnvStats().level()>91)&&((I.baseEnvStats().level() + (I.baseEnvStats().level()/10))<M.baseEnvStats().level())))
-								lvl=M.baseEnvStats().level();
+							if((I.basePhyStats().level()>M.basePhyStats().level())
+							||((I.basePhyStats().level()>91)&&((I.basePhyStats().level() + (I.basePhyStats().level()/10))<M.basePhyStats().level())))
+								lvl=M.basePhyStats().level();
 							if(CMLib.itemBuilder().itemFix(I,lvl,recordedChanges))
 								changedMOBS=true;
 						}
@@ -1139,9 +1139,9 @@ public class Reset extends StdCommand
 							else
 							{
 								M.baseCharStats().setMyRace(R2);
-								R2.setHeightWeight(M.baseEnvStats(),(char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
+								R2.setHeightWeight(M.basePhyStats(),(char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
 								M.recoverCharStats();
-								M.recoverEnvStats();
+								M.recoverPhyStats();
 								mob.tell(" "+M.Name()+" Changed to "+R2.ID());
 								somethingDone=true;
 							}
@@ -1196,9 +1196,9 @@ public class Reset extends StdCommand
 								}
 								mob.tell(" Changed to "+R2.ID());
 								M.baseCharStats().setMyRace(R2);
-								R2.setHeightWeight(M.baseEnvStats(),(char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
+								R2.setHeightWeight(M.basePhyStats(),(char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
 								M.recoverCharStats();
-								M.recoverEnvStats();
+								M.recoverPhyStats();
 								rememberM.put(M.name(),M.baseCharStats().getMyRace());
 								somethingDone=true;
 								break;

@@ -43,14 +43,14 @@ public class ItemMender extends StdBehavior
 	{
 		if(costFormula != null)
 		{
-			double[] vars = {item.envStats().level(), item.value(), item.usesRemaining(), CMLib.flags().isABonusItems(item)?1.0:0.0,item.baseEnvStats().level(), item.baseGoldValue(),0,0,0,0,0};
+			double[] vars = {item.phyStats().level(), item.value(), item.usesRemaining(), CMLib.flags().isABonusItems(item)?1.0:0.0,item.basePhyStats().level(), item.baseGoldValue(),0,0,0,0,0};
 			return CMath.parseMathExpression(costFormula, vars, 0.0);
 		}
 		else
 		{
-			int cost=(100-item.usesRemaining())+item.envStats().level();
+			int cost=(100-item.usesRemaining())+item.phyStats().level();
 			if(CMLib.flags().isABonusItems(item))
-				cost+=item.envStats().level();
+				cost+=item.phyStats().level();
 			return cost;
 		}
 	}
@@ -139,7 +139,7 @@ public class ItemMender extends StdBehavior
 			double cost=cost((Item)msg.tool());
 			CMLib.beanCounter().subtractMoney(source,CMLib.beanCounter().getCurrency(observer),(double)cost);
 			String costStr=CMLib.beanCounter().nameCurrencyLong(observer,(double)cost);
-			source.recoverEnvStats();
+			source.recoverPhyStats();
 			((Item)msg.tool()).setUsesRemaining(100);
 			CMMsg newMsg=CMClass.getMsg(observer,source,msg.tool(),CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF> and charges <T-NAMESELF> "+costStr+".");
 			msg.addTrailerMsg(newMsg);

@@ -44,10 +44,10 @@ public class Jaguar extends StdMOB
 		setDisplayText("A jaguar prowls quietly.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
-		baseEnvStats.setWeight(20 + Math.abs(randomizer.nextInt() % 45));
+		basePhyStats.setWeight(20 + Math.abs(randomizer.nextInt() % 45));
 		setWimpHitPoint(2);
 
-		baseEnvStats.setWeight(200 + Math.abs(randomizer.nextInt() % 55));
+		basePhyStats.setWeight(200 + Math.abs(randomizer.nextInt() % 55));
 
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
@@ -56,17 +56,17 @@ public class Jaguar extends StdMOB
 		baseCharStats().setMyRace(CMClass.getRace("GreatCat"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		baseEnvStats().setDamage(8);
-		baseEnvStats().setSpeed(2.0);
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(4);
-		baseEnvStats().setArmor(60);
+		basePhyStats().setDamage(8);
+		basePhyStats().setSpeed(2.0);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(4);
+		basePhyStats().setArmor(60);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

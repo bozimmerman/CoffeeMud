@@ -54,7 +54,7 @@ public class Prop_NoPKill extends Property
 				msg.source().setVictim(null);
 				return false;
 			}
-			int levelDiff=msg.source().envStats().level()-((MOB)msg.target()).envStats().level();
+			int levelDiff=msg.source().phyStats().level()-((MOB)msg.target()).phyStats().level();
 			if(levelDiff<0) levelDiff=levelDiff*-1;
 			if(levelDiff>CMath.s_int(text()))
 			{

@@ -126,8 +126,8 @@ public class Chant_SummonHouseplant extends Chant_SummonPlants
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
 		Chant_SummonHouseplant newChant=new Chant_SummonHouseplant();
-		newItem.baseEnvStats().setWeight(1);
-		newItem.baseEnvStats().setLevel(10+newChant.getX1Level(mob));
+		newItem.basePhyStats().setWeight(1);
+		newItem.basePhyStats().setLevel(10+newChant.getX1Level(mob));
 		newItem.setExpirationDate(0);
 		room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" appears here.");
 		newChant.PlantsLocation=room;
@@ -140,7 +140,7 @@ public class Chant_SummonHouseplant extends Chant_SummonPlants
 		}
 		else
 			newChant.beneficialAffect(mob,newItem,0,(newChant.adjustedLevel(mob,0)*240)+450);
-		room.recoverEnvStats();
+		room.recoverPhyStats();
 		return newItem;
 	}
 

@@ -54,7 +54,7 @@ public class Thief_Surrender extends ThiefSkill
 			MOB vic=mob.location().fetchInhabitant(i);
 			if((vic!=null)&&(vic!=mob)&&(vic.isInCombat())&&(vic.getVictim()==mob))
 			{
-				gold+=(vic.envStats().level()*100)-(2*getXLEVELLevel(mob));
+				gold+=(vic.phyStats().level()*100)-(2*getXLEVELLevel(mob));
 				theList.addElement(vic);
 			}
 		}
@@ -91,13 +91,13 @@ public class Thief_Surrender extends ThiefSkill
 			{
 				mob.location().send(mob,msg);
 				CMLib.beanCounter().subtractMoney(mob,localCurrency,goldRequired);
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 				mob.makePeace();
 				for(int v=0;v<theList.size();v++)
 				{
 					MOB vic=(MOB)theList.elementAt(v);
 					CMLib.beanCounter().addMoney(vic,localCurrency,CMath.div(goldRequired,theList.size()));
-					vic.recoverEnvStats();
+					vic.recoverPhyStats();
 					vic.makePeace();
 				}
 			}

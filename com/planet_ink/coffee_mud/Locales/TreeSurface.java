@@ -39,8 +39,8 @@ public class TreeSurface extends ClimbableSurface
 	{
 		super();
 		name="the tree";
-		baseEnvStats.setWeight(4);
-		recoverEnvStats();
+		basePhyStats.setWeight(4);
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_WOODS;}
 	public int domainConditions(){return Room.CONDITION_NORMAL;}

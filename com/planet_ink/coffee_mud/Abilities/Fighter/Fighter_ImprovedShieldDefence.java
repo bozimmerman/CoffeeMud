@@ -45,14 +45,14 @@ public class Fighter_ImprovedShieldDefence extends FighterSkill
 	public boolean canBeUninvoked(){return false;}
     protected boolean gettingBonus=false;
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		gettingBonus=false;
 		if((affected==null)||(!(affected instanceof MOB))) return;
 		Item w=((MOB)affected).fetchFirstWornItem(Wearable.WORN_HELD);
 		if((w==null)||(!(w instanceof Shield))) return;
 		gettingBonus=true;
-		affectableStats.setArmor(affectableStats.armor()-((int)Math.round(CMath.mul(w.envStats().armor(),(CMath.div(proficiency(),100.0+(5.0*getXLEVELLevel(invoker()))))))));
+		affectableStats.setArmor(affectableStats.armor()-((int)Math.round(CMath.mul(w.phyStats().armor(),(CMath.div(proficiency(),100.0+(5.0*getXLEVELLevel(invoker()))))))));
 	}
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

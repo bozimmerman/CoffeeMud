@@ -58,21 +58,21 @@ public class Ring_Ornamental extends Ring
 		super();
 
 		int ringType = CMLib.dice().roll(1,14,-1);
-		this.baseEnvStats.setLevel(ringType);
-		setItemDescription(this.baseEnvStats.level());
+		this.basePhyStats.setLevel(ringType);
+		setItemDescription(this.basePhyStats.level());
 		lastLevel=ringType;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 
-	public void recoverEnvStats()
+	public void recoverPhyStats()
 	{
-		if(lastLevel!=baseEnvStats().level())
+		if(lastLevel!=basePhyStats().level())
 		{
-			setItemDescription(baseEnvStats().level());
-			lastLevel=baseEnvStats().level();
+			setItemDescription(basePhyStats().level());
+			lastLevel=basePhyStats().level();
 		}
-		super.recoverEnvStats();
+		super.recoverPhyStats();
 	}
 
 	public void setItemDescription(int level)

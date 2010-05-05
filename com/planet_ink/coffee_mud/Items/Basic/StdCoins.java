@@ -35,7 +35,7 @@ import java.util.*;
 public class StdCoins extends StdItem implements Coins
 {
 	public String ID(){	return "StdCoins";}
-	public int value(){	return envStats().ability();}
+	public int value(){	return phyStats().ability();}
 	double denomination=1.0;
 	String currency="";
 
@@ -46,8 +46,8 @@ public class StdCoins extends StdItem implements Coins
 		myUses=Integer.MAX_VALUE;
 		material=RawMaterial.RESOURCE_GOLD;
 		myWornCode=0;
-		baseEnvStats.setWeight(0);
-		recoverEnvStats();
+		basePhyStats.setWeight(0);
+		recoverPhyStats();
 	}
     protected boolean abilityImbuesMagic(){return false;}
 
@@ -78,14 +78,14 @@ public class StdCoins extends StdItem implements Coins
 	    }
 		setDescription(CMLib.beanCounter().getConvertableDescription(getCurrency(),getDenomination()));
 	}
-	public long getNumberOfCoins(){return envStats().ability();}
+	public long getNumberOfCoins(){return phyStats().ability();}
 	public void setNumberOfCoins(long number)
 	{
 	    if(number<=Integer.MAX_VALUE)
-		    baseEnvStats().setAbility((int)number);
+		    basePhyStats().setAbility((int)number);
 	    else
-	        baseEnvStats().setAbility(Integer.MAX_VALUE);
-	    envStats().setAbility(baseEnvStats().ability());
+	        basePhyStats().setAbility(Integer.MAX_VALUE);
+	    phyStats().setAbility(basePhyStats().ability());
     }
 	public double getDenomination(){return denomination;}
 	public void setDenomination(double valuePerCoin)
@@ -117,17 +117,17 @@ public class StdCoins extends StdItem implements Coins
 	        setCurrency("");
 	    }
 	}
-	public void recoverEnvStats()
+	public void recoverPhyStats()
 	{
 		if(((material&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_CLOTH)
 		&&((material&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER))
-			baseEnvStats.setWeight((int)Math.round((baseEnvStats().ability()/100.0)));
-		baseEnvStats.copyInto(envStats);
+			basePhyStats.setWeight((int)Math.round((basePhyStats().ability()/100.0)));
+		basePhyStats.copyInto(phyStats);
 		// import not to sup this, otherwise 'ability' makes it magical!
 		for(int a=0;a<numEffects();a++)
 		{
 			Ability A=fetchEffect(a);
-            if(A!=null)	A.affectEnvStats(this,envStats);
+            if(A!=null)	A.affectPhyStats(this,phyStats);
 		}
 	}
 

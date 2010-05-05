@@ -54,10 +54,10 @@ public class Spell_DetectMetal extends Spell
 			mob.tell("Your senses are no longer as metallic.");
 	}
 	
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_METAL);
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_METAL);
 	}
 	
     public int castingQuality(MOB mob, Physical target)

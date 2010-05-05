@@ -45,9 +45,9 @@ public class Chant_Brittle extends Chant
 	protected int oldCondition=-1;
 	protected boolean noRecurse=true;
     
-	public void affectEnvStats(Environmental E, EnvStats stats)
+	public void affectPhyStats(Physical E, PhyStats stats)
 	{
-		super.affectEnvStats(E,stats);
+		super.affectPhyStats(E,stats);
 		if((E instanceof Item)&&(!noRecurse)&&(((Item)E).subjectToWearAndTear()))
 		{
 			noRecurse=true;

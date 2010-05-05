@@ -38,8 +38,8 @@ public class WoodRoomMaze extends StdMaze
 	public WoodRoomMaze()
 	{
 		super();
-		baseEnvStats.setWeight(1);
-		recoverEnvStats();
+		basePhyStats.setWeight(1);
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_INDOORS_WOOD;}
 	public int domainConditions(){return Room.CONDITION_NORMAL;}

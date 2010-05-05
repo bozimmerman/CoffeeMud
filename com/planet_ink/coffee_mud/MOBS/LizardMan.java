@@ -43,7 +43,7 @@ public class LizardMan extends StdMOB
 		setDisplayText("A mean looking Lizard Man stands here.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);
 		setMoney(20);
-		baseEnvStats.setWeight(225);
+		basePhyStats.setWeight(225);
 		setWimpHitPoint(0);
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,6);
@@ -51,17 +51,17 @@ public class LizardMan extends StdMOB
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,18);
 
 		baseCharStats().setMyRace(CMClass.getRace("LizardMan"));
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setDamage(6);
-		baseEnvStats().setSpeed(3);
-		baseEnvStats().setLevel(2);
-		baseEnvStats().setArmor(50);
+		basePhyStats().setAbility(0);
+		basePhyStats().setDamage(6);
+		basePhyStats().setSpeed(3);
+		basePhyStats().setLevel(2);
+		basePhyStats().setArmor(50);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

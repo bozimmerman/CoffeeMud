@@ -56,7 +56,7 @@ public class Play_Solo extends Play
 			&&(((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)))
 			{
 				MOB otherBard=msg.source();
-				if(((otherBard.envStats().level()+CMLib.dice().roll(1,30,0)+getXLEVELLevel(otherBard))>(myChar.envStats().level()+CMLib.dice().roll(1,20,0)+getXLEVELLevel(myChar)))
+				if(((otherBard.phyStats().level()+CMLib.dice().roll(1,30,0)+getXLEVELLevel(otherBard))>(myChar.phyStats().level()+CMLib.dice().roll(1,20,0)+getXLEVELLevel(myChar)))
 				&&(otherBard.location()!=null))
 				{
 					if((otherBard.location().show(otherBard,myChar,null,CMMsg.MSG_OK_ACTION,"<S-NAME> upstage(s) <T-NAMESELF>, stopping <T-HIS-HER> solo!"))

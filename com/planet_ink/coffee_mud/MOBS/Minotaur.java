@@ -45,7 +45,7 @@ public class Minotaur extends StdMOB
 		setDisplayText("A minotaur glares at you.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);
 		setMoney(0);
-		baseEnvStats.setWeight(350 + Math.abs(randomizer.nextInt() % 55));
+		basePhyStats.setWeight(350 + Math.abs(randomizer.nextInt() % 55));
 
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,4 + Math.abs(randomizer.nextInt() % 5));
@@ -61,19 +61,19 @@ public class Minotaur extends StdMOB
 			this.addItem(mainWeapon);
 		}
 
-		baseEnvStats().setDamage(12);
-		baseEnvStats().setSpeed(2.0);
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(6);
-		baseEnvStats().setArmor(60);
+		basePhyStats().setDamage(12);
+		basePhyStats().setSpeed(2.0);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(6);
+		basePhyStats().setArmor(60);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		addBehavior(CMClass.getBehavior("Aggressive"));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

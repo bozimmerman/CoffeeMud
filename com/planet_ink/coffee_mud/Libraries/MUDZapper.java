@@ -1052,7 +1052,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             {
                                 int code=CMLib.flags().getSensesCode(str2.substring(1));
                                 if(code>=0)
-                                    buf.append(EnvStats.CAN_SEE_DESCS[code]+", ");
+                                    buf.append(PhyStats.CAN_SEE_DESCS[code]+", ");
                             }
                         }
                         if(buf.toString().endsWith(", "))
@@ -1072,7 +1072,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             {
                                 int code=CMLib.flags().getSensesCode(str2.substring(1));
                                 if(code>=0)
-                                    buf.append(EnvStats.CAN_SEE_DESCS[code]+", ");
+                                    buf.append(PhyStats.CAN_SEE_DESCS[code]+", ");
                             }
                         }
                         if(buf.toString().endsWith(", "))
@@ -1341,7 +1341,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             {
                                 int code=CMLib.flags().getDispositionCode(str2.substring(1));
                                 if(code>=0)
-                                    buf.append(EnvStats.IS_DESCS[code]+", ");
+                                    buf.append(PhyStats.IS_DESCS[code]+", ");
                             }
                         }
                         if(buf.toString().endsWith(", "))
@@ -1361,7 +1361,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             {
                                 int code=CMLib.flags().getDispositionCode(str2.substring(1));
                                 if(code>=0)
-                                    buf.append(EnvStats.IS_DESCS[code]+", ");
+                                    buf.append(PhyStats.IS_DESCS[code]+", ");
                             }
                         }
                         if(buf.toString().endsWith(", "))
@@ -3314,7 +3314,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			}
 			case 5: // -level
 				{
-					int level=actual?E.baseEnvStats().level():E.envStats().level();
+					int level=actual?E.basePhyStats().level():E.phyStats().level();
 					boolean found=false;
 					for(int v=1;v<V.size();v+=2)
 						if((v+1)<V.size())
@@ -3667,28 +3667,28 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 break;
             case 69: // +disposition
                 for(int v=1;v<V.size();v++)
-                    if((E.envStats().disposition()&((Integer)V.elementAt(v)).intValue())>0)
+                    if((E.phyStats().disposition()&((Integer)V.elementAt(v)).intValue())>0)
                         return false;
                 break;
             case 70: // -disposition
                 {
                     boolean found=false;
                     for(int v=1;v<V.size();v++)
-                        if((E.envStats().disposition()&((Integer)V.elementAt(v)).intValue())>0)
+                        if((E.phyStats().disposition()&((Integer)V.elementAt(v)).intValue())>0)
                         { found=true; break;}
                     if(!found) return false;
                 }
                 break;
             case 71: // +senses
                 for(int v=1;v<V.size();v++)
-                    if((E.envStats().sensesMask()&((Integer)V.elementAt(v)).intValue())>0)
+                    if((E.phyStats().sensesMask()&((Integer)V.elementAt(v)).intValue())>0)
                         return false;
                 break;
             case 72: // -senses
                 {
                     boolean found=false;
                     for(int v=1;v<V.size();v++)
-                        if((E.envStats().sensesMask()&((Integer)V.elementAt(v)).intValue())>0)
+                        if((E.phyStats().sensesMask()&((Integer)V.elementAt(v)).intValue())>0)
                         { found=true; break;}
                     if(!found) return false;
                 }
@@ -4033,43 +4033,43 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				   return false;
 				break;
             case 55: // +able
-                if((V.size()>1)&&(E.envStats().ability()>(((Integer)V.elementAt(1)).intValue())))
+                if((V.size()>1)&&(E.phyStats().ability()>(((Integer)V.elementAt(1)).intValue())))
                    return false;
                 break;
             case 56: // -able
-                if((V.size()>1)&&(E.envStats().ability()<(((Integer)V.elementAt(1)).intValue())))
+                if((V.size()>1)&&(E.phyStats().ability()<(((Integer)V.elementAt(1)).intValue())))
                    return false;
                 break;
             case 61: // +weight
-                if((V.size()>1)&&(E.envStats().weight()>(((Integer)V.elementAt(1)).intValue())))
+                if((V.size()>1)&&(E.phyStats().weight()>(((Integer)V.elementAt(1)).intValue())))
                    return false;
                 break;
             case 62: // -weight
-                if((V.size()>1)&&(E.envStats().weight()<(((Integer)V.elementAt(1)).intValue())))
+                if((V.size()>1)&&(E.phyStats().weight()<(((Integer)V.elementAt(1)).intValue())))
                    return false;
                 break;
             case 63: // +armor
-                if((V.size()>1)&&(E.envStats().armor()>(((Integer)V.elementAt(1)).intValue())))
+                if((V.size()>1)&&(E.phyStats().armor()>(((Integer)V.elementAt(1)).intValue())))
                    return false;
                 break;
             case 64: // -armor
-                if((V.size()>1)&&(E.envStats().armor()<(((Integer)V.elementAt(1)).intValue())))
+                if((V.size()>1)&&(E.phyStats().armor()<(((Integer)V.elementAt(1)).intValue())))
                    return false;
                 break;
             case 65: // +damage
-                if((V.size()>1)&&(E.envStats().damage()>(((Integer)V.elementAt(1)).intValue())))
+                if((V.size()>1)&&(E.phyStats().damage()>(((Integer)V.elementAt(1)).intValue())))
                    return false;
                 break;
             case 66: // -damage
-                if((V.size()>1)&&(E.envStats().damage()<(((Integer)V.elementAt(1)).intValue())))
+                if((V.size()>1)&&(E.phyStats().damage()<(((Integer)V.elementAt(1)).intValue())))
                    return false;
                 break;
             case 67: // +attack
-                if((V.size()>1)&&(E.envStats().attackAdjustment()>(((Integer)V.elementAt(1)).intValue())))
+                if((V.size()>1)&&(E.phyStats().attackAdjustment()>(((Integer)V.elementAt(1)).intValue())))
                    return false;
                 break;
             case 68: // -attack
-                if((V.size()>1)&&(E.envStats().attackAdjustment()<(((Integer)V.elementAt(1)).intValue())))
+                if((V.size()>1)&&(E.phyStats().attackAdjustment()<(((Integer)V.elementAt(1)).intValue())))
                    return false;
                 break;
             case 59: // +value
@@ -4174,23 +4174,23 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					return false;
 				break;
 			case 37: // +lvlgr
-				if((V.size()>1)&&((actual?E.baseEnvStats().level():E.envStats().level())>((Integer)V.elementAt(1)).intValue()))
+				if((V.size()>1)&&((actual?E.basePhyStats().level():E.phyStats().level())>((Integer)V.elementAt(1)).intValue()))
 				   return false;
 				break;
 			case 38: // +lvlge
-				if((V.size()>1)&&((actual?E.baseEnvStats().level():E.envStats().level())>=((Integer)V.elementAt(1)).intValue()))
+				if((V.size()>1)&&((actual?E.basePhyStats().level():E.phyStats().level())>=((Integer)V.elementAt(1)).intValue()))
 				   return false;
 				break;
 			case 39: // +lvlt
-				if((V.size()>1)&&((actual?E.baseEnvStats().level():E.envStats().level())<((Integer)V.elementAt(1)).intValue()))
+				if((V.size()>1)&&((actual?E.basePhyStats().level():E.phyStats().level())<((Integer)V.elementAt(1)).intValue()))
 				   return false;
 				break;
 			case 40: // +lvlle
-				if((V.size()>1)&&((actual?E.baseEnvStats().level():E.envStats().level())<=((Integer)V.elementAt(1)).intValue()))
+				if((V.size()>1)&&((actual?E.basePhyStats().level():E.phyStats().level())<=((Integer)V.elementAt(1)).intValue()))
 				   return false;
 				break;
 			case 41: // +lvleq
-				if((V.size()>1)&&((actual?E.baseEnvStats().level():E.envStats().level())==((Integer)V.elementAt(1)).intValue()))
+				if((V.size()>1)&&((actual?E.basePhyStats().level():E.phyStats().level())==((Integer)V.elementAt(1)).intValue()))
 				   return false;
 				break;
 			case 116: // +groupsize

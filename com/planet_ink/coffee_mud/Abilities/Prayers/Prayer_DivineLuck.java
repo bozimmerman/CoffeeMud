@@ -51,18 +51,18 @@ public class Prayer_DivineLuck extends Prayer
 		for(int i : CharStats.CODES.SAVING_THROWS())
 			affectableStats.setStat(i,
 				affectableStats.getStat(i)
-					+1+((affectedMOB.envStats().level()+(2*super.getXLEVELLevel(invoker())))/5));
+					+1+((affectedMOB.phyStats().level()+(2*super.getXLEVELLevel(invoker())))/5));
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
 		MOB mob=(MOB)affected;
 		int xlvl=super.getXLEVELLevel(invoker());
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+((affected.envStats().level()+(2*xlvl))/5)+1);
-		affectableStats.setDamage(affectableStats.damage()+((affected.envStats().level()+(2*xlvl))/5)+1);
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+((affected.phyStats().level()+(2*xlvl))/5)+1);
+		affectableStats.setDamage(affectableStats.damage()+((affected.phyStats().level()+(2*xlvl))/5)+1);
 
 		if(mob.isInCombat())
 		{

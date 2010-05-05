@@ -59,12 +59,12 @@ public class Prayer_Blindsight extends Prayer
 			mob.tell("Your natural vision returns.");
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_DARK);
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK);
 		if((affected instanceof MOB)&&(!CMLib.flags().canSee((MOB)affected)))
-			affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_NOT_SEE);
+			affectableStats.setSensesMask(affectableStats.sensesMask()-PhyStats.CAN_NOT_SEE);
 	}
 
     public int castingQuality(MOB mob, Physical target)

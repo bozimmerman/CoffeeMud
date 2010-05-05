@@ -46,7 +46,7 @@ public class ArchonJournal extends StdJournal implements ArchonOnly, MiscMagic
 		secretIdentity="The Archon's Journal.  Just READ me.";
 		baseGoldValue=20000;
 		material=RawMaterial.RESOURCE_PAPER;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	
 	public boolean okMessage(Environmental myHost, CMMsg msg)

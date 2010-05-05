@@ -84,7 +84,7 @@ public class Spell_ChangeSex extends Spell
 				Ability A=mob.fetchEffect(ID());
 				if(A!=null) mob.delEffect(A);
 				mob.recoverCharStats();
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 				setChildStuff(mob, target);
 				Room R=CMLib.map().roomLocation(target);
 				if(R!=null)
@@ -153,7 +153,7 @@ public class Spell_ChangeSex extends Spell
 						success=beneficialAffect(mob,target,asLevel,0);
 						M=(MOB)target;
 						M.recoverCharStats();
-						M.recoverEnvStats();
+						M.recoverPhyStats();
 					}
 					else
 					if(target instanceof CagedAnimal)
@@ -164,7 +164,7 @@ public class Spell_ChangeSex extends Spell
 							gender='F';
 						M.baseCharStats().setStat(CharStats.STAT_GENDER,gender);
 						M.recoverCharStats();
-						M.recoverEnvStats();
+						M.recoverPhyStats();
 						setChildStuff(M, target);
 						M.text();
 						((CagedAnimal)target).cageMe(M);
@@ -173,7 +173,7 @@ public class Spell_ChangeSex extends Spell
 					else
 						return false;
 					M.recoverCharStats();
-					target.recoverEnvStats();
+					target.recoverPhyStats();
 					mob.location().show(M,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) "+M.charStats().genderName()+"!");
 				}
 			}

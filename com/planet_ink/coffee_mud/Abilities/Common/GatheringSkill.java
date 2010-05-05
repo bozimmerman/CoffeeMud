@@ -148,7 +148,7 @@ public class GatheringSkill extends CommonSkill
 				            foundAblesH.put(A.ID(),A);
 				    }
 				    foundResource=I.material();
-				    numHere+=I.envStats().weight();
+				    numHere+=I.phyStats().weight();
 				}
 			}
 	    }
@@ -176,7 +176,7 @@ public class GatheringSkill extends CommonSkill
         }
 		I.setName("a "+amount+"# "+RawMaterial.CODES.NAME(foundResource).toLowerCase()+" bundle");
 		I.setDisplayText(I.name()+" is here.");
-		I.baseEnvStats().setWeight(amount);
+		I.basePhyStats().setWeight(amount);
 		if(R.show(mob,null,I,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> create(s) <O-NAME>."))
 		{
 		    int lostValue=CMLib.materials().destroyResources(R,amount,foundResource,-1,I);

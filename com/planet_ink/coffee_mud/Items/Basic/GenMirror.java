@@ -40,12 +40,12 @@ public class GenMirror extends GenItem
 	{
 		super();
 		setName("a generic mirror");
-		baseEnvStats.setWeight(2);
+		basePhyStats.setWeight(2);
 		setDisplayText("a generic mirror sits here.");
 		setDescription("You see yourself in it!");
 		baseGoldValue=5;
-		baseEnvStats().setLevel(1);
-		recoverEnvStats();
+		basePhyStats().setLevel(1);
+		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_GLASS);
 	}
 	public String description()
@@ -70,7 +70,7 @@ public class GenMirror extends GenItem
 			oncePerRound=true;
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,name()+" reflects the vicious magic!");
 			Ability A=(Ability)msg.tool();
-			A.invoke(mob,msg.source(),true,envStats().level());
+			A.invoke(mob,msg.source(),true,phyStats().level());
 			return false;
 		}
 		oncePerRound=false;

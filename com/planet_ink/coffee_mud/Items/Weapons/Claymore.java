@@ -46,16 +46,16 @@ public class Claymore extends Sword
 		Random randomizer = new Random(System.currentTimeMillis());
 		int claymoreType = Math.abs(randomizer.nextInt() % 3);
 
-		this.envStats.setAbility(claymoreType);
-		setItemDescription(this.envStats.ability());
+		this.phyStats.setAbility(claymoreType);
+		setItemDescription(this.phyStats.ability());
 
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(0);
-		baseEnvStats.setWeight(10);
-		baseEnvStats().setAttackAdjustment(0);
-		baseEnvStats().setDamage(8);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(0);
+		basePhyStats.setWeight(10);
+		basePhyStats().setAttackAdjustment(0);
+		basePhyStats().setDamage(8);
 		baseGoldValue=25;
-		recoverEnvStats();
+		recoverPhyStats();
 		wornLogicalAnd=true;
 		properWornBitmap=Wearable.WORN_HELD|Wearable.WORN_WIELD;
 		material=RawMaterial.RESOURCE_STEEL;

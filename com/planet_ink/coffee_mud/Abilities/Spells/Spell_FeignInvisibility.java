@@ -81,7 +81,7 @@ public class Spell_FeignInvisibility extends Spell
 			{
 				mob.location().send(mob,msg);
                 target.tell("You fade from view");
-				beneficialAffect(mob,target,asLevel,mob.envStats().level()*3);
+				beneficialAffect(mob,target,asLevel,mob.phyStats().level()*3);
 			}
 		}
 		else

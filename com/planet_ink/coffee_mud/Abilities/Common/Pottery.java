@@ -212,12 +212,12 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 		verb="making "+building.name();
 		building.setDisplayText(itemName+" lies here");
 		building.setDescription(itemName+". ");
-		building.baseEnvStats().setWeight(woodRequired);
+		building.basePhyStats().setWeight(woodRequired);
 		building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 		building.setMaterial(data[0][FOUND_CODE]);
 		if(building.name().toUpperCase().indexOf("CHINA ")>=0)
 			building.setMaterial(RawMaterial.RESOURCE_CHINA);
-		building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
+		building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 		building.setSecretIdentity("This is the work of "+mob.Name()+".");
 		int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 		String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
@@ -248,9 +248,9 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 		}
 		if(bundling) building.setBaseValue(lostValue);
 		if(misctype.equalsIgnoreCase("stone")) building.setMaterial(RawMaterial.RESOURCE_STONE);
-		building.recoverEnvStats();
+		building.recoverPhyStats();
 		building.text();
-		building.recoverEnvStats();
+		building.recoverPhyStats();
 
 
 		messedUp=!proficiencyCheck(mob,0,auto);

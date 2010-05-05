@@ -43,7 +43,7 @@ public class Bugbear extends StdMOB
 		setDisplayText("A large Bugbear stands here.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);
 		setMoney(20);
-		baseEnvStats.setWeight(300);
+		basePhyStats.setWeight(300);
 		setWimpHitPoint(0);
 
 		Weapon h=CMClass.getWeapon("Halberd");
@@ -57,15 +57,15 @@ public class Bugbear extends StdMOB
 		baseCharStats().setStat(CharStats.STAT_CHARISMA,2);
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,22);
 
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(3);
-		baseEnvStats().setArmor(40);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(3);
+		basePhyStats().setArmor(40);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

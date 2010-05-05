@@ -42,13 +42,13 @@ public class Prayer_MassParalyze extends Prayer
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_PARALYZING;}
 	public String displayText(){ return "(Paralyzed)";}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
 
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_MOVE);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_MOVE);
 	}
 
 	public void unInvoke()
@@ -87,7 +87,7 @@ public class Prayer_MassParalyze extends Prayer
 				CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.TYP_PARALYZE|(auto?CMMsg.MASK_ALWAYS:0),null);
 				if((target!=mob)&&(mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 				{
-					int levelDiff=target.envStats().level()-(mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
+					int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 					if(levelDiff<0) levelDiff=0;
 					if(levelDiff>6) levelDiff=6;
 					mob.location().send(mob,msg);

@@ -354,15 +354,15 @@ public class ItemData extends StdWebMacro
 					str.append(old);
 					break;
 				case 4: // level
-					if(firstTime) old=""+I.baseEnvStats().level();
+					if(firstTime) old=""+I.basePhyStats().level();
 					str.append(old);
 					break;
 				case 5: // ability;
-					if(firstTime) old=""+I.baseEnvStats().ability();
+					if(firstTime) old=""+I.basePhyStats().ability();
 					str.append(old);
 					break;
 				case 6: // rejuv;
-					if(firstTime) old=""+I.baseEnvStats().rejuv();
+					if(firstTime) old=""+I.basePhyStats().rejuv();
 					if(old.equals(""+Integer.MAX_VALUE))
 						str.append("0");
 					else
@@ -419,7 +419,7 @@ public class ItemData extends StdWebMacro
 					if(I instanceof Armor) return "true";
                     return "false";
 				case 18: // armor
-					if(firstTime) old=""+I.baseEnvStats().armor();
+					if(firstTime) old=""+I.basePhyStats().armor();
 					str.append(old);
 					break;
 				case 19: // worn data
@@ -446,7 +446,7 @@ public class ItemData extends StdWebMacro
 					}
 					break;
 				case 20: // height
-					if(firstTime) old=""+I.baseEnvStats().height();
+					if(firstTime) old=""+I.basePhyStats().height();
 					str.append(old);
 					break;
 				case 21: // is weapon
@@ -475,11 +475,11 @@ public class ItemData extends StdWebMacro
 					}
 					break;
 				case 24: // attack
-					if(firstTime) old=""+I.baseEnvStats().attackAdjustment();
+					if(firstTime) old=""+I.basePhyStats().attackAdjustment();
 					str.append(old);
 					break;
 				case 25: // damage
-					if(firstTime) old=""+I.baseEnvStats().damage();
+					if(firstTime) old=""+I.basePhyStats().damage();
 					str.append(old);
 					break;
 				case 26: // min range
@@ -496,7 +496,7 @@ public class ItemData extends StdWebMacro
 					break;
 				case 29: // is gettable
 					if(firstTime)
-						old=(!CMath.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOTGET))?"checked":"";
+						old=(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOTGET))?"checked":"";
 					else
 					if(old.equals("on"))
 						old="checked";
@@ -504,7 +504,7 @@ public class ItemData extends StdWebMacro
 					break;
 				case 30: // is removable
 					if(firstTime)
-						old=(!CMath.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNOREMOVE))?"checked":"";
+						old=(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNOREMOVE))?"checked":"";
 					else
 					if(old.equals("on"))
 						old="checked";
@@ -512,7 +512,7 @@ public class ItemData extends StdWebMacro
 					break;
 				case 31: // is droppable
 					if(firstTime)
-						old=(!CMath.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMNODROP))?"checked":"";
+						old=(!CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMNODROP))?"checked":"";
 					else
 					if(old.equals("on"))
 						old="checked";
@@ -564,7 +564,7 @@ public class ItemData extends StdWebMacro
 					str.append(old);
 					break;
 				case 38: // weight
-					if(firstTime) old=""+I.baseEnvStats().weight();
+					if(firstTime) old=""+I.basePhyStats().weight();
 					str.append(old);
 					break;
 				case 39: // is map
@@ -594,7 +594,7 @@ public class ItemData extends StdWebMacro
 					break;
 				case 41: // is readable
 					if(firstTime)
-						old=(CMath.bset(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE))?"checked":"";
+						old=(CMath.bset(I.basePhyStats().sensesMask(),PhyStats.SENSE_ITEMREADABLE))?"checked":"";
 					else
 					if(old.equals("on"))
 						old="checked";

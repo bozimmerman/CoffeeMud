@@ -49,26 +49,26 @@ public class GiantScorpion extends StdMOB
 		setMoney(0);
 		setWimpHitPoint(2);
 
-		baseEnvStats().setWeight(1000 + Math.abs(randomizer.nextInt() % 550));
+		basePhyStats().setWeight(1000 + Math.abs(randomizer.nextInt() % 550));
 
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,5 + Math.abs(randomizer.nextInt() % 3));
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,13);
 		baseCharStats().setStat(CharStats.STAT_DEXTERITY,9);
 
-		baseEnvStats().setDamage(10);
-		baseEnvStats().setSpeed(2.0);
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(5);
-		baseEnvStats().setArmor(30);
+		basePhyStats().setDamage(10);
+		basePhyStats().setSpeed(2.0);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(5);
+		basePhyStats().setArmor(30);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
         addBehavior(CMClass.getBehavior("Mobile"));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

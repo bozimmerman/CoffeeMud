@@ -53,7 +53,7 @@ public class Spell_BigMouth extends Spell
 		&&(msg.target()!=null)
 		&&(Stomach()!=null))
 		{
-			if(msg.target().envStats().weight()<(mob.envStats().weight()/3))
+			if(msg.target().phyStats().weight()<(mob.phyStats().weight()/3))
 			{
 				if((Stomach()!=null)&&(Stomach().numInhabitants()>(CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().qualifyingLevel(mob,this))))
 				{
@@ -112,7 +112,7 @@ public class Spell_BigMouth extends Spell
 		&&(msg.sourceMinor()==CMMsg.TYP_EAT)
 		&&(msg.target()!=null)
 		&&(Stomach()!=null)
-		&&(msg.target().envStats().weight()<(mob.envStats().weight()/2)))
+		&&(msg.target().phyStats().weight()<(mob.phyStats().weight()/2)))
 		{
 			if(msg.target() instanceof MOB)
 			{
@@ -209,7 +209,7 @@ public class Spell_BigMouth extends Spell
 					// no OKaffectS, since the dragon is not in his own stomach.
 					Stomach().send(mob,DigestMsg);
 					int damage=(int)Math.round(CMath.div(TastyMorsel.curState().getHitPoints(),2));
-					if(damage<(TastyMorsel.envStats().level()+6)) damage=TastyMorsel.curState().getHitPoints()*100;
+					if(damage<(TastyMorsel.phyStats().level()+6)) damage=TastyMorsel.curState().getHitPoints()*100;
 					CMLib.combat().postDamage(mob,TastyMorsel,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The stomach acid <DAMAGE> <T-NAME>!");
 				}
 			}

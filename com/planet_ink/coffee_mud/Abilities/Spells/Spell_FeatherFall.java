@@ -42,9 +42,9 @@ public class Spell_FeatherFall extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setWeight(0);
 	}
 
@@ -55,7 +55,7 @@ public class Spell_FeatherFall extends Spell
 		{
 			Item I=mob.getItem(i);
 			if((I!=null)&&(!I.amWearingAt(Wearable.WORN_FLOATING_NEARBY)))
-				weight+=I.envStats().weight();
+				weight+=I.phyStats().weight();
 		}
 		return weight;
 	}
@@ -71,7 +71,7 @@ public class Spell_FeatherFall extends Spell
 		&&(((msg.tool()==null)||(msg.tool() instanceof MOB))))
 		{
 			MOB mob=msg.source();
-			if((msg.target().envStats().weight()>(mob.maxCarry()-mobWeight(mob)))&&(!mob.isMine(msg.target())))
+			if((msg.target().phyStats().weight()>(mob.maxCarry()-mobWeight(mob)))&&(!mob.isMine(msg.target())))
 			{
 				mob.tell(msg.target().name()+" is too heavy.");
 				return false;

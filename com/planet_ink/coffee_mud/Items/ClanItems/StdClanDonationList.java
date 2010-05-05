@@ -46,7 +46,7 @@ public class StdClanDonationList extends StdClanItem
     {
         super();
         setName("a donation list");
-        baseEnvStats.setWeight(1);
+        basePhyStats.setWeight(1);
         setDisplayText("an list is setting here.");
         setDescription("");
         setCIType(ClanItem.CI_DONATEJOURNAL);

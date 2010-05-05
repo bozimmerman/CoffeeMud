@@ -44,9 +44,9 @@ public class Spell_AlterSubstance extends Spell
 	public String newName="";
 	public int oldMaterial=0;
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(newName.length()>0)
 			affectableStats.setName(newName);
 	}

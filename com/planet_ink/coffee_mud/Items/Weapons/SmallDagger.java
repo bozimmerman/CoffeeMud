@@ -37,8 +37,8 @@ public class SmallDagger extends Dagger
 	{
 		super();
 
-		baseEnvStats().setDamage(3);
-		recoverEnvStats();
+		basePhyStats().setDamage(3);
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_STEEL;
 	}
 

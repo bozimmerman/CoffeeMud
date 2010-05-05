@@ -69,7 +69,7 @@ public class Disease_FrostBite extends Disease
                 super.unInvoke();
                 A.invoke(mob,CMParms.parse(where),mob,true,0);
                 mob.recoverCharStats();
-                mob.recoverEnvStats();
+                mob.recoverPhyStats();
                 mob.recoverMaxState();
             }
             else

@@ -57,7 +57,7 @@ public class MOBTeacher extends CombatAbilities
 		&&(!C.ID().equals("StdCharClass")))
 		{
 			mob.baseCharStats().setMyClasses(C.ID());
-			mob.baseCharStats().setMyLevels(""+mob.envStats().level());
+			mob.baseCharStats().setMyLevels(""+mob.phyStats().level());
 			mob.recoverCharStats();
 			return;
 		}
@@ -69,7 +69,7 @@ public class MOBTeacher extends CombatAbilities
 				mob.baseCharStats().setClassLevel(C1,1);
 		}
 		mob.baseCharStats().setCurrentClass(C);
-		mob.baseCharStats().setClassLevel(C,mob.envStats().level());
+		mob.baseCharStats().setClassLevel(C,mob.phyStats().level());
 		mob.recoverCharStats();
 	}
 
@@ -173,7 +173,7 @@ public class MOBTeacher extends CombatAbilities
 	protected void ensureCharClass()
 	{
 		myMOB.baseCharStats().setMyClasses("StdCharClass");
-		myMOB.baseCharStats().setMyLevels(""+myMOB.envStats().level());
+		myMOB.baseCharStats().setMyLevels(""+myMOB.phyStats().level());
 		myMOB.recoverCharStats();
 
 		Hashtable myAbles=new Hashtable();
@@ -252,7 +252,7 @@ public class MOBTeacher extends CombatAbilities
 		if((myMOB.charStats().getCurrentClass().ID().equals("StdCharClass"))
 		&&(teachEverything))
 			classAbles(myMOB,myAbles,pct);
-		int lvl=myMOB.envStats().level()/myMOB.baseCharStats().numClasses();
+		int lvl=myMOB.phyStats().level()/myMOB.baseCharStats().numClasses();
 		if(lvl<1) lvl=1;
 		for(int i=0;i<myMOB.baseCharStats().numClasses();i++)
 		{

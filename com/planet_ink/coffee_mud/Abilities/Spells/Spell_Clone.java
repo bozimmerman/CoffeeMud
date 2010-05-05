@@ -152,7 +152,7 @@ public class Spell_Clone extends Spell
 			Item I=newMOB.getItem(i);
 			while(I.numEffects()>0)
 				I.delEffect(I.fetchEffect(0));
-			I.baseEnvStats().setAbility(0);
+			I.basePhyStats().setAbility(0);
 			if(I instanceof Potion)
 				((Potion)I).setSpellList("");
 			else
@@ -164,11 +164,11 @@ public class Spell_Clone extends Spell
 				((Wand)I).setMaxUses(0);
 				((Wand)I).setUsesRemaining(0);
 			}
-			I.recoverEnvStats();
+			I.recoverPhyStats();
 			I.text();
 		}
 		newMOB.recoverCharStats();
-		newMOB.recoverEnvStats();
+		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
 		newMOB.text();

@@ -596,9 +596,9 @@ public class CharClassData extends StdWebMacro
                     if(parms.containsKey("ESTATS"))
                     {
                         String eStats=C.getStat("ESTATS");
-                        EnvStats adjEStats=(EnvStats)CMClass.getCommon("DefaultEnvStats"); adjEStats.setAllValues(0);
-                        if(eStats.length()>0){ CMLib.coffeeMaker().setEnvStats(adjEStats,eStats);}
-                        str.append(RaceData.estats(adjEStats,'E',httpReq,parms,0)+", ");
+                        PhyStats adjPStats=(PhyStats)CMClass.getCommon("DefaultPhyStats"); adjPStats.setAllValues(0);
+                        if(eStats.length()>0){ CMLib.coffeeMaker().setPhyStats(adjPStats,eStats);}
+                        str.append(RaceData.estats(adjPStats,'E',httpReq,parms,0)+", ");
                     }
                     if(parms.containsKey("CSTATS"))
                     {
@@ -1001,7 +1001,7 @@ public class CharClassData extends StdWebMacro
 	public String balanceChart(CharClass C)
 	{
 		MOB M=CMClass.getMOB("StdMOB");
-		M.baseEnvStats().setLevel(1);
+		M.basePhyStats().setLevel(1);
 		M.baseCharStats().setCurrentClass(C);
 		M.recoverCharStats();
 		C.startCharacter(M,false,false);

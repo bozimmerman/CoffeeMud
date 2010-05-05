@@ -132,7 +132,7 @@ public class Chicken extends StdRace
                 I.setDisplayText("an egg has been left here.");
                 I.setMaterial(RawMaterial.RESOURCE_EGGS);
                 I.setDescription("It looks like a chicken egg!");
-                I.baseEnvStats().setWeight(1);
+                I.basePhyStats().setWeight(1);
         		CMLib.materials().addEffectsToResource(I);
                 ((MOB)ticking).addItem((Item)I.copyOf());
             }

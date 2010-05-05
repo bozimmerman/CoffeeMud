@@ -62,10 +62,10 @@ public class Skill_Swim extends StdSkill
 	public boolean placeToSwim(Environmental E)
 	{ return placeToSwim(CMLib.map().roomLocation(E));}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
 	}
 
     public boolean preInvoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
@@ -135,12 +135,12 @@ public class Skill_Swim extends StdSkill
 			{
 				if(mob.fetchEffect(ID())==null)
 					mob.addEffect(this);
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 
 				CMLib.tracking().move(mob,dirCode,false,false);
 			}
 			mob.delEffect(this);
-			mob.recoverEnvStats();
+			mob.recoverPhyStats();
 			if(mob.location()!=R)
 				mob.location().show(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,null);
 		}

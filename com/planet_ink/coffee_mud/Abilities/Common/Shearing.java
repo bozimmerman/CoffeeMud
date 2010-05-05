@@ -150,7 +150,7 @@ public class Shearing extends CommonSkill
 			sheep=target;
 			verb="shearing "+target.name();
             playSound="scissor.wav";
-			int duration=(target.envStats().weight()/(10+getXLEVELLevel(mob)));
+			int duration=(target.phyStats().weight()/(10+getXLEVELLevel(mob)));
 			if(duration<10) duration=10;
 			if(duration>40) duration=40;
 			beneficialAffect(mob,mob,asLevel,duration);

@@ -95,7 +95,7 @@ public class Thief_Bribe extends ThiefSkill
 
 
 		double amountRequired=CMLib.beanCounter().getTotalAbsoluteNativeValue(target)
-						+((double)((100l-((mob.charStats().getStat(CharStats.STAT_CHARISMA)+(2l*getXLEVELLevel(mob)))*2)))*target.envStats().level());
+						+((double)((100l-((mob.charStats().getStat(CharStats.STAT_CHARISMA)+(2l*getXLEVELLevel(mob)))*2)))*target.phyStats().level());
 
 		String currency=CMLib.beanCounter().getCurrency(target);
 		boolean success=proficiencyCheck(mob,0,auto);
@@ -117,7 +117,7 @@ public class Thief_Bribe extends ThiefSkill
 		    String costWords=CMLib.beanCounter().nameCurrencyShort(target,amountRequired);
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> bribe(s) <T-NAMESELF> to '"+CMParms.combine(commands,0)+"' for "+costWords+".^?");
 			CMLib.beanCounter().subtractMoney(mob,currency,amountRequired);
-			mob.recoverEnvStats();
+			mob.recoverPhyStats();
             CMMsg msg2=CMClass.getMsg(mob,target,null,CMMsg.MSG_ORDER,null);
 			if((mob.location().okMessage(mob,msg))
             &&(mob.location().okMessage(mob,msg2)))
@@ -127,7 +127,7 @@ public class Thief_Bribe extends ThiefSkill
 				target.doCommand(commands,Command.METAFLAG_FORCED);
 			}
 			CMLib.beanCounter().addMoney(mob,currency,amountRequired);
-			target.recoverEnvStats();
+			target.recoverPhyStats();
 		}
 		if(target==lastChecked)
 			setProficiency(oldProficiency);

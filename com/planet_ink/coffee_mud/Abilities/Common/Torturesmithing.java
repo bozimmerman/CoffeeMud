@@ -213,10 +213,10 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
         playSound="hammer.wav";
 		building.setDisplayText(itemName+" lies here");
 		building.setDescription(itemName+". ");
-		building.baseEnvStats().setWeight(woodRequired);
+		building.basePhyStats().setWeight(woodRequired);
 		building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
 		building.setMaterial(data[0][FOUND_CODE]);
-		building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
+		building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 		building.setSecretIdentity("This is the work of "+mob.Name()+".");
 		int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 		int armordmg=CMath.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
@@ -243,9 +243,9 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		}
 		if(building instanceof Armor)
 		{
-            ((Armor)building).baseEnvStats().setArmor(0);
+            ((Armor)building).basePhyStats().setArmor(0);
             if(armordmg!=0)
-                ((Armor)building).baseEnvStats().setArmor(armordmg+(abilityCode()-1));
+                ((Armor)building).basePhyStats().setArmor(armordmg+(abilityCode()-1));
             setWearLocation(building,misctype,hardness);
 		}
 		if(building instanceof Drink)
@@ -260,9 +260,9 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 			}
 		}
 		if(bundling) building.setBaseValue(lostValue);
-		building.recoverEnvStats();
+		building.recoverPhyStats();
 		building.text();
-		building.recoverEnvStats();
+		building.recoverPhyStats();
 
 
 		messedUp=!proficiencyCheck(mob,0,auto);

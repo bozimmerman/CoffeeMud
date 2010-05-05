@@ -80,9 +80,9 @@ public class Fighter_BackHand extends FighterSkill
 				{
 					Weapon naturalWeapon=CMClass.getWeapon("GenWeapon");
 					naturalWeapon.setName("a back hand");
-                    naturalWeapon.baseEnvStats().setDamage(5+getXLEVELLevel(mob));
+                    naturalWeapon.basePhyStats().setDamage(5+getXLEVELLevel(mob));
 					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
-					naturalWeapon.recoverEnvStats();
+					naturalWeapon.recoverPhyStats();
 					CMLib.combat().postAttack(mob,elligibleTarget,naturalWeapon);
 				}
 			}

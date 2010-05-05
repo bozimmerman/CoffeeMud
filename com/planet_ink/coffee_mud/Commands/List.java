@@ -553,7 +553,7 @@ public class List extends StdCommand
 						&&(CMLib.factions().getFaction(useFaction.factionID())!=null)
 						&&(M.fetchFaction(useFaction.factionID())!=Integer.MAX_VALUE))
 						    totalAlignment+=M.fetchFaction(useFaction.factionID());
-						totalLevels+=M.envStats().level();
+						totalLevels+=M.phyStats().level();
 					}
 				}
 
@@ -1595,7 +1595,7 @@ public class List extends StdCommand
                     MOB M=TR.fetchInhabitant(m);
                     if(M==null) continue;
                     buf.append("^M"+CMStrings.padRight(M.ID(),15)+": "+CMStrings.padRight(M.displayText(),35)+": "
-                    			+CMStrings.padRight(M.envStats().level()+"",3)+": "
+                    			+CMStrings.padRight(M.phyStats().level()+"",3)+": "
                     			+CMLib.flags().getAlignmentName(M)
 		                		+"^N\n\r");
                     for(int i=0;i<M.numItems();i++)
@@ -1604,7 +1604,7 @@ public class List extends StdCommand
                         if(I!=null)
                             buf.append("    ^I"+CMStrings.padRight(I.ID(),15)
                             		+": "+CMStrings.padRight((I.displayText().length()>0?I.displayText():I.Name()),35)+": "
-                        			+CMStrings.padRight(I.envStats().level()+"",3)+": "
+                        			+CMStrings.padRight(I.phyStats().level()+"",3)+": "
                             		+"^N"+((I.container()!=null)?I.Name():"")+"\n\r");
                     }
                 }
@@ -1614,7 +1614,7 @@ public class List extends StdCommand
                     if(I!=null)
                         buf.append("^I"+CMStrings.padRight(I.ID(),15)+": "
                         		+CMStrings.padRight((I.displayText().length()>0?I.displayText():I.Name()),35)+": "
-                    			+CMStrings.padRight(I.envStats().level()+"",3)+": "
+                    			+CMStrings.padRight(I.phyStats().level()+"",3)+": "
                         		+"^N"+((I.container()!=null)?I.Name():"")+"\n\r");
                 }
                 TR.destroy();

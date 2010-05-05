@@ -115,8 +115,8 @@ public class Spell_FakeArmor extends Spell
 			{
 				mob.location().send(mob,msg);
 				Armor armor=(Armor)CMClass.getItem("GenArmor");
-				armor.baseEnvStats().setArmor(0);
-				armor.baseEnvStats().setDisposition(armor.baseEnvStats().disposition()|EnvStats.IS_BONUS);
+				armor.basePhyStats().setArmor(0);
+				armor.basePhyStats().setDisposition(armor.basePhyStats().disposition()|PhyStats.IS_BONUS);
 				armor.setMaterial(RawMaterial.RESOURCE_COTTON);
 				String materialName="cloth";
 				switch(choice)
@@ -151,8 +151,8 @@ public class Spell_FakeArmor extends Spell
 				}
 				armor.setDisplayText(armor.name()+" sits here");
 				armor.setDescription("looks like your size!");
-				armor.baseEnvStats().setWeight(0);
-				armor.recoverEnvStats();
+				armor.basePhyStats().setWeight(0);
+				armor.recoverPhyStats();
 				armor.setBaseValue(0);
 				mob.addItem(armor);
 				mob.location().show(mob,null,armor,CMMsg.MSG_OK_ACTION,"Suddenly, <S-NAME> own(s) <O-NAME>!");

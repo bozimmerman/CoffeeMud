@@ -85,7 +85,7 @@ public class Skill_TurnUndead extends StdSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		boolean success=proficiencyCheck(mob,((mob.envStats().level()+(4*getXLEVELLevel(mob)))-target.envStats().level())*30,auto);
+		boolean success=proficiencyCheck(mob,((mob.phyStats().level()+(4*getXLEVELLevel(mob)))-target.phyStats().level())*30,auto);
 
 		if(success)
 		{
@@ -99,7 +99,7 @@ public class Skill_TurnUndead extends StdSkill
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					if((mob.envStats().level()-target.envStats().level())>6)
+					if((mob.phyStats().level()-target.phyStats().level())>6)
 					{
 						mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> wither(s)"+(auto?".":" under <S-HIS-HER> holy power!"));
 						CMLib.combat().postDamage(mob,target,this,target.curState().getHitPoints(),CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,-1,null);

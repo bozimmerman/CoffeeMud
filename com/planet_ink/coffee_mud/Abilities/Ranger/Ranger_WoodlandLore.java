@@ -44,9 +44,9 @@ public class Ranger_WoodlandLore extends StdAbility
 	public boolean canBeUninvoked(){return false;}
 	public int classificationCode(){ return Ability.ACODE_SKILL;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if((invoker==null)&&(affected instanceof MOB))
 		   invoker=(MOB)affected;
 		if((invoker!=null)

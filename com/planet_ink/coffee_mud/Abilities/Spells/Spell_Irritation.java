@@ -42,9 +42,9 @@ public class Spell_Irritation extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		int xlvl=super.getXLEVELLevel(invoker());
 		affectableStats.setArmor(affectableStats.armor()+20+(2*xlvl));
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-20-(2*xlvl));

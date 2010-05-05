@@ -128,8 +128,8 @@ public class Spell_MagicItem extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,"<T-NAME> glow(s) brightly!");
-				wand.baseEnvStats().setDisposition(target.baseEnvStats().disposition()|EnvStats.IS_BONUS);
-				wand.baseEnvStats().setLevel(wand.baseEnvStats().level()+(CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID())/2));
+				wand.basePhyStats().setDisposition(target.basePhyStats().disposition()|PhyStats.IS_BONUS);
+				wand.basePhyStats().setLevel(wand.basePhyStats().level()+(CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID())/2));
 				//Vector V=CMParms.parseCommas(CMLib.utensils().wornList(wand.rawProperLocationBitmap()),true);
 				if(wand instanceof Armor)
 				{
@@ -165,7 +165,7 @@ public class Spell_MagicItem extends Spell
 					A.setMiscText("LAYERED;"+wandThis.ID()+";");
 					wand.addNonUninvokableEffect(A);
 				}
-				wand.recoverEnvStats();
+				wand.recoverPhyStats();
 			}
 
 		}

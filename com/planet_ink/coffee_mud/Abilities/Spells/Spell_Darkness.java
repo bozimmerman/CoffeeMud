@@ -60,10 +60,10 @@ public class Spell_Darkness extends Spell
 		}
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition() |  EnvStats.IS_DARK);
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition() |  PhyStats.IS_DARK);
 	}
 
     public int castingQuality(MOB mob, Physical target)

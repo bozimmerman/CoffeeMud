@@ -132,13 +132,13 @@ public class Prop_WeaponImmunity extends Property
 						lvl=lvl.substring(2).trim();
 						if((foundPlusMinus.charValue()=='-')&&(immune))
 						{
-							if(msg.tool().envStats().level()>=CMath.s_int(lvl))
+							if(msg.tool().phyStats().level()>=CMath.s_int(lvl))
 								immune=false;
 						}
 						else
 						if(foundPlusMinus.charValue()!='-')
 						{
-							if(msg.tool().envStats().level()<CMath.s_int(lvl))
+							if(msg.tool().phyStats().level()<CMath.s_int(lvl))
 								immune=true;
 						}
 					}

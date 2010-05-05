@@ -38,9 +38,9 @@ public class Song_Rage extends Song
 	public String ID() { return "Song_Rage"; }
 	public String name(){ return "Rage";}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(invoker==null) return;
 		if(affected==invoker) return;
 		affectableStats.setDamage(affectableStats.damage()+(int)Math.round(CMath.div(affectableStats.damage(),2.0+CMath.mul(0.25,super.getXLEVELLevel(invoker())))));

@@ -48,9 +48,9 @@ public class Thief_MarkTrapped extends ThiefSkill
 	public int abilityCode(){return code;}
 	public void setAbilityCode(int newCode){code=newCode;}
 
-	public void affectEnvStats(Environmental host, EnvStats stats)
+	public void affectPhyStats(Physical host, PhyStats stats)
 	{
-		super.affectEnvStats(host,stats);
+		super.affectPhyStats(host,stats);
 		stats.addAmbiance("^Wtrapped");
 	}
 	
@@ -86,7 +86,7 @@ public class Thief_MarkTrapped extends ThiefSkill
 		if(item instanceof Item)
 		{
 			if((!auto)
-			&&(item.envStats().weight()>((adjustedLevel(mob,asLevel)*2)+(getXLEVELLevel(mob)*10))))
+			&&(item.phyStats().weight()>((adjustedLevel(mob,asLevel)*2)+(getXLEVELLevel(mob)*10))))
 			{
 				mob.tell("You aren't good enough to effectively mark anything that large.");
 				return false;
@@ -107,7 +107,7 @@ public class Thief_MarkTrapped extends ThiefSkill
 				Ability A=(Ability)super.copyOf();
 				A.setInvoker(mob);
 				item.addNonUninvokableEffect(A);
-				item.recoverEnvStats();
+				item.recoverPhyStats();
 			}
 		}
 		else

@@ -42,22 +42,22 @@ public class GenUndead extends GenMob
 		setDisplayText("A generic undead mob stands here.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);
 		setMoney(10);
-		baseEnvStats.setWeight(150);
+		basePhyStats.setWeight(150);
 		setWimpHitPoint(0);
 
 		baseCharStats().setMyRace(CMClass.getRace("Undead"));
 		baseCharStats().getMyRace().startRacing(this,false);
 		baseCharStats().setStat(CharStats.STAT_CHARISMA,2);
 
-		baseEnvStats().setAbility(10);
-		baseEnvStats().setLevel(1);
-		baseEnvStats().setArmor(50);
+		basePhyStats().setAbility(10);
+		basePhyStats().setLevel(1);
+		basePhyStats().setArmor(50);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

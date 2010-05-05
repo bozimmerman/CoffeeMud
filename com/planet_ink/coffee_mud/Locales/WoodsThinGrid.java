@@ -40,8 +40,8 @@ public class WoodsThinGrid extends StdThinGrid
 	public WoodsThinGrid()
 	{
 		super();
-		baseEnvStats.setWeight(3);
-		recoverEnvStats();
+		basePhyStats.setWeight(3);
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_WOODS;}
 	public int domainConditions(){return Room.CONDITION_NORMAL;}

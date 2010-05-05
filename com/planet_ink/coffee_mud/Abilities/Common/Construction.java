@@ -92,14 +92,14 @@ public class Construction extends CraftingSkill
 		E2.setDisplayText(E.displayText());
 		E2.setDescription(E.description());
 		E2.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),E.hasALock(),E.isLocked(),E.defaultsLocked());
-		E2.setBaseEnvStats((EnvStats)E.baseEnvStats().copyOf());
+		E2.setBasePhyStats((PhyStats)E.basePhyStats().copyOf());
 		E2.setExitParams(E.doorName(),E.closeWord(),E.openWord(),E.closedText());
 		E2.setKeyName(E.keyName());
 		E2.setOpenDelayTicks(E.openDelayTicks());
 		E2.setReadable(E.isReadable());
 		E2.setReadableText(E.readableText());
 		E2.setTemporaryDoorLink(E.temporaryDoorLink());
-		E2.recoverEnvStats();
+		E2.recoverPhyStats();
 		return E2;
 	}
 
@@ -382,22 +382,22 @@ public class Construction extends CraftingSkill
 								room=CMLib.map().getRoom(room);
 								Exit X=CMClass.getExit("GenExit");
 								if(doingCode==BUILD_SECRETDOOR)
-									X.baseEnvStats().setDisposition(EnvStats.IS_HIDDEN);
+									X.basePhyStats().setDisposition(PhyStats.IS_HIDDEN);
 								X.setName("a door");
 								X.setDescription("");
 								X.setDisplayText("");
 								X.setOpenDelayTicks(9999);
 								X.setExitParams("door","close","open","a closed door");
 								X.setDoorsNLocks(true,false,true,false,false,false);
-								X.recoverEnvStats();
+								X.recoverPhyStats();
 								X.text();
 								room.setRawExit(dir,X);
 								if(room.rawDoors()[dir]!=null)
 								{
 									Exit X2=(Exit)X.copyOf();
 									if(doingCode==BUILD_SECRETDOOR)
-										X2.baseEnvStats().setDisposition(EnvStats.IS_HIDDEN);
-									X2.recoverEnvStats();
+										X2.basePhyStats().setDisposition(PhyStats.IS_HIDDEN);
+									X2.recoverPhyStats();
 									X2.text();
 									room.rawDoors()[dir].setRawExit(Directions.getOpDirectionCode(dir),X2);
 									CMLib.database().DBUpdateExits(room.rawDoors()[dir]);

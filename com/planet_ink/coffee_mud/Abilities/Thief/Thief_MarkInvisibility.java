@@ -61,11 +61,11 @@ public class Thief_MarkInvisibility extends ThiefSkill
 		return -1;
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(active)
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_INVISIBLE);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_INVISIBLE);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -84,14 +84,14 @@ public class Thief_MarkInvisibility extends ThiefSkill
 				{
 					active=true;
 					helpProficiency(mob);
-					mob.recoverEnvStats();
+					mob.recoverPhyStats();
 				}
 			}
 			else
 			if(active)
 			{
 				active=false;
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 			}
 		}
 		return true;

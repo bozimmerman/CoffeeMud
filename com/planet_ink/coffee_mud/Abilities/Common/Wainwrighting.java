@@ -220,10 +220,10 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
         playSound="hammer.wav";
 		building.setDisplayText(itemName+" lies here");
 		building.setDescription(itemName+". ");
-		building.baseEnvStats().setWeight(woodRequired);
+		building.basePhyStats().setWeight(woodRequired);
 		building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 		building.setMaterial(data[0][FOUND_CODE]);
-		building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
+		building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 		building.setSecretIdentity("This is the work of "+mob.Name()+".");
 		int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 		int canContain=CMath.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
@@ -257,14 +257,14 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 				key.setName("a key");
 				key.setDisplayText("a small key sits here");
 				key.setDescription("looks like a key to "+building.name());
-				key.recoverEnvStats();
+				key.recoverPhyStats();
 				key.text();
 			}
 		}
 		if(bundling) building.setBaseValue(lostValue);
-		building.recoverEnvStats();
+		building.recoverPhyStats();
 		building.text();
-		building.recoverEnvStats();
+		building.recoverPhyStats();
 
 
 		messedUp=!proficiencyCheck(mob,0,auto);

@@ -242,10 +242,10 @@ public class DefaultCharStats implements CharStats
         if(mob==null) return "";
 		int classLevel=getClassLevel(getCurrentClass());
 		String levelStr=null;
-		if(classLevel>=mob.envStats().level())
-			levelStr=""+mob.envStats().level();
+		if(classLevel>=mob.phyStats().level())
+			levelStr=""+mob.phyStats().level();
 		else
-			levelStr=classLevel+"/"+mob.envStats().level();
+			levelStr=classLevel+"/"+mob.phyStats().level();
 		if(shortForm)
 			return displayClassName()+" "+levelStr;
 		return "level "+levelStr+" "+displayClassName();
@@ -257,10 +257,10 @@ public class DefaultCharStats implements CharStats
 			return displayClassLevel;
 		int classLevel=getClassLevel(getCurrentClass());
 		String levelStr=null;
-		if(classLevel>=mob.envStats().level())
-			levelStr=""+mob.envStats().level();
+		if(classLevel>=mob.phyStats().level())
+			levelStr=""+mob.phyStats().level();
 		else
-			levelStr=classLevel+"/"+mob.envStats().level();
+			levelStr=classLevel+"/"+mob.phyStats().level();
 		return levelStr;
 	}
 

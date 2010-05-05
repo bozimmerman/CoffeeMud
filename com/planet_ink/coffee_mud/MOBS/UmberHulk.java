@@ -47,7 +47,7 @@ public class UmberHulk extends StdMOB
 		setDisplayText("A huge Umber Hulk eyes you.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);
 		setMoney(10);
-		baseEnvStats.setWeight(350);
+		basePhyStats.setWeight(350);
 		setWimpHitPoint(0);
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,8);
@@ -55,19 +55,19 @@ public class UmberHulk extends StdMOB
 		baseCharStats().setMyRace(CMClass.getRace("UmberHulk"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(8);
-		baseEnvStats().setAttackAdjustment(baseEnvStats().attackAdjustment()+20);
-		baseEnvStats().setDamage(baseEnvStats().damage()+12);
-		baseEnvStats().setArmor(0);
-		baseEnvStats().setSpeed(2.0);
-		baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK | EnvStats.CAN_SEE_INFRARED);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(8);
+		basePhyStats().setAttackAdjustment(basePhyStats().attackAdjustment()+20);
+		basePhyStats().setDamage(basePhyStats().damage()+12);
+		basePhyStats().setArmor(0);
+		basePhyStats().setSpeed(2.0);
+		basePhyStats().setSensesMask(PhyStats.CAN_SEE_DARK | PhyStats.CAN_SEE_INFRARED);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

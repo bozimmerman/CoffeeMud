@@ -44,12 +44,12 @@ public class Spell_SpiderClimb extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if(affected instanceof MOB)
 		{
 		    if(CMLib.flags().isStanding((MOB)affected))
-				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_CLIMBING);
+				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_CLIMBING);
 		}
 	}
 	public void unInvoke()

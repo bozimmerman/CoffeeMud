@@ -43,15 +43,15 @@ public class GenTable extends GenRideable
 		readableText = "";
 
 		setName("a generic table");
-		baseEnvStats.setWeight(250);
+		basePhyStats.setWeight(250);
 		setDisplayText("a generic table is here.");
 		setDescription("");
 		material=RawMaterial.RESOURCE_OAK;
 		baseGoldValue=5;
-		baseEnvStats().setLevel(1);
+		basePhyStats().setLevel(1);
 		setRiderCapacity(4);
 		setRideBasis(Rideable.RIDEABLE_TABLE);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 }

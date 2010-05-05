@@ -42,15 +42,15 @@ public class GenPiano extends GenRideable implements MusicalInstrument
 		setDisplayText("a generic piano sits here.");
 		setDescription("");
 		baseGoldValue=1015;
-		baseEnvStats().setLevel(1);
-		recoverEnvStats();
-		baseEnvStats().setWeight(2000);
+		basePhyStats().setLevel(1);
+		recoverPhyStats();
+		basePhyStats().setWeight(2000);
 		rideBasis=Rideable.RIDEABLE_SIT;
 		riderCapacity=2;
 		setMaterial(RawMaterial.RESOURCE_OAK);
 	}
 
-	public void recoverEnvStats(){CMLib.flags().setReadable(this,false); super.recoverEnvStats();}
+	public void recoverPhyStats(){CMLib.flags().setReadable(this,false); super.recoverPhyStats();}
 	public int instrumentType(){return CMath.s_int(readableText);}
 	public void setInstrumentType(int type){readableText=(""+type);}
 

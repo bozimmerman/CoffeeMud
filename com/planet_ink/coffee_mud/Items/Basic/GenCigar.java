@@ -41,13 +41,13 @@ public class GenCigar extends StdSmokable
 	{
 		super();
 		setName("a generic cigar");
-		baseEnvStats.setWeight(1);
+		basePhyStats.setWeight(1);
 		setDisplayText("a generic cigar sits here.");
 		setDescription("");
 		baseGoldValue=5;
 		capacity=0;
 		durationTicks=200;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public String readableText(){return readableText;}
@@ -71,7 +71,7 @@ public class GenCigar extends StdSmokable
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
     public String getStat(String code)
     {

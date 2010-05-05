@@ -38,8 +38,8 @@ public class MagicFreeRoom extends StdRoom
 	public MagicFreeRoom()
 	{
 		super();
-		baseEnvStats.setWeight(1);
-		recoverEnvStats();
+		basePhyStats.setWeight(1);
+		recoverPhyStats();
 		addEffect(CMClass.getAbility("Prop_MagicFreedom"));
 	}
 	public int domainType(){return Room.DOMAIN_INDOORS_STONE;}

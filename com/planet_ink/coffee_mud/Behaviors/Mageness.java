@@ -39,7 +39,7 @@ public class Mageness extends CombatAbilities
 
 	protected void getSomeMoreMageAbilities(MOB mob)
 	{
-		for(int a=0;a<((mob.baseEnvStats().level())+5);a++)
+		for(int a=0;a<((mob.basePhyStats().level())+5);a++)
 		{
 			Ability addThis=null;
 			int tries=0;

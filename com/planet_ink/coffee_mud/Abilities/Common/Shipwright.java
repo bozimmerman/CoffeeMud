@@ -276,10 +276,10 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
             playSound="saw.wav";
 			building.setDisplayText(itemName+" lies here");
 			building.setDescription(itemName+". ");
-			building.baseEnvStats().setWeight(woodRequired);
+			building.basePhyStats().setWeight(woodRequired);
 			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 			building.setMaterial(data[0][FOUND_CODE]);
-			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
+			building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			int canContain=CMath.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
 			String capacity=(String)foundRecipe.elementAt(RCP_CAPACITY);
@@ -293,7 +293,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				if(CMath.isInteger(capacity))
 					((Rideable)building).setRiderCapacity(CMath.s_int(capacity));
 			    ((Container)building).setContainTypes(canContain);
-			    ((Container)building).setCapacity(building.baseEnvStats().weight()+250+(250*CMath.s_int(capacity)));
+			    ((Container)building).setCapacity(building.basePhyStats().weight()+250+(250*CMath.s_int(capacity)));
 			}
 			else
 			if(building instanceof Container)
@@ -301,9 +301,9 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			    ((Container)building).setContainTypes(canContain);
 			    ((Container)building).setCapacity(CMath.s_int(capacity));
 			}
-			building.recoverEnvStats();
+			building.recoverPhyStats();
 			building.text();
-			building.recoverEnvStats();
+			building.recoverPhyStats();
 		}
 
 

@@ -100,7 +100,7 @@ public class Spell_Knock extends Spell
 			return false;
 
 
-		int levelDiff=openThis.envStats().level()-(mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
+		int levelDiff=openThis.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 		if(levelDiff<0) levelDiff=0;
 		boolean success=proficiencyCheck(mob,-(levelDiff*25),auto);
 
@@ -118,7 +118,7 @@ public class Spell_Knock extends Spell
 					if((A!=null)&&(A.ID().equalsIgnoreCase("Spell_WizardLock")))
 					{
 						String txt=A.text().trim();
-						int level=(A.invoker()!=null)?A.invoker().envStats().level():0;
+						int level=(A.invoker()!=null)?A.invoker().phyStats().level():0;
 						if(txt.length()>0)
 						{
 							if(CMath.isInteger(txt))
@@ -130,7 +130,7 @@ public class Spell_Knock extends Spell
 									level=CMath.s_int(txt.substring(0,x));
 							}
 						}
-						if(level<(mob.envStats().level()+3+(2*getXLEVELLevel(mob))))
+						if(level<(mob.phyStats().level()+3+(2*getXLEVELLevel(mob))))
 						{
 							A.unInvoke();
 							R.show(mob,null,openThis,CMMsg.MSG_OK_VISUAL,"A spell around <O-NAME> seems to fade.");

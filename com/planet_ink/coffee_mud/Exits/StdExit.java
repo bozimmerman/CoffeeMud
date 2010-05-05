@@ -36,8 +36,8 @@ public class StdExit implements Exit
 {
 	public String ID(){	return "StdExit";}
 
-	protected EnvStats envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
-	protected EnvStats baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+	protected PhyStats phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+	protected PhyStats basePhyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 	protected boolean isOpen=true;
 	protected boolean isLocked=false;
 	protected String miscText="";
@@ -87,30 +87,30 @@ public class StdExit implements Exit
 	public void setName(String newName){}
 	public String name()
 	{
-		if(envStats().newName()!=null) return envStats().newName();
+		if(phyStats().newName()!=null) return phyStats().newName();
 		return Name();
 	}
-	public EnvStats envStats()
+	public PhyStats phyStats()
 	{
-		return envStats;
+		return phyStats;
 	}
-	public EnvStats baseEnvStats()
+	public PhyStats basePhyStats()
 	{
-		return baseEnvStats;
+		return basePhyStats;
 	}
-	public void recoverEnvStats()
+	public void recoverPhyStats()
 	{
-		baseEnvStats.copyInto(envStats);
+		basePhyStats.copyInto(phyStats);
 		for(int a=0;a<numEffects();a++)
 		{
 			Ability A=fetchEffect(a);
 			if(A!=null)
-				A.affectEnvStats(this,envStats);
+				A.affectPhyStats(this,phyStats);
 		}
 	}
-	public void setBaseEnvStats(EnvStats newBaseEnvStats)
+	public void setBasePhyStats(PhyStats newStats)
 	{
-		baseEnvStats=(EnvStats)newBaseEnvStats.copyOf();
+		basePhyStats=(PhyStats)newStats.copyOf();
 	}
 
     public void destroy()
@@ -163,8 +163,8 @@ public class StdExit implements Exit
 	public boolean isGeneric(){return false;}
 	protected void cloneFix(Exit E)
 	{
-		baseEnvStats=(EnvStats)E.baseEnvStats().copyOf();
-		envStats=(EnvStats)E.envStats().copyOf();
+		basePhyStats=(PhyStats)E.basePhyStats().copyOf();
+		phyStats=(PhyStats)E.phyStats().copyOf();
 
 		affects=null;
 		behaviors=null;
@@ -299,7 +299,7 @@ public class StdExit implements Exit
 		case CMMsg.TYP_OK_ACTION:
 			return true;
 		case CMMsg.TYP_ENTER:
-			if((hasADoor())&&(!isOpen())&&(mob.envStats().height()>=0))
+			if((hasADoor())&&(!isOpen())&&(mob.phyStats().height()>=0))
 			{
 				if(!CMLib.flags().canBeSeenBy(this,mob))
 					mob.tell("You can't go that way.");
@@ -634,7 +634,7 @@ public class StdExit implements Exit
 	public String keyName()	{ return (hasALock()?miscText:""); }
 	public void setKeyName(String newKeyName){miscText=temporaryDoorLink()+newKeyName;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{}//exits will never be asked this, so this method should always do NOTHING
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{}//exits will never be asked this, so this method should always do NOTHING

@@ -116,7 +116,7 @@ public class Thief_Steal extends ThiefSkill
 			mob.tell(mob,mob.getVictim(),null,"Not while you are fighting <T-NAME>!");
 			return false;
 		}
-		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
+		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
 
 		if((!target.mayIFight(mob))||(levelDiff>15))
 		{
@@ -207,7 +207,7 @@ public class Thief_Steal extends ThiefSkill
 				else
 				if(((hisStr==null)||mob.isMonster())
 				&&(!alreadyFighting)
-				&&((stolen==null)||(CMLib.dice().rollPercentage()>stolen.envStats().level())))
+				&&((stolen==null)||(CMLib.dice().rollPercentage()>stolen.phyStats().level())))
 				{
 					if(target.getVictim()==mob)
 						target.makePeace();

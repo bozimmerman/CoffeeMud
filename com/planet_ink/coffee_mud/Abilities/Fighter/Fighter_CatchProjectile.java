@@ -93,9 +93,9 @@ public class Fighter_CatchProjectile extends FighterSkill
 				neww.setDisplayText(ammo+" sits here.");
 				((Ammunition)neww).setAmmunitionType(ammo);
 				neww.setUsesRemaining(1);
-				neww.baseEnvStats().setWeight(1);
+				neww.basePhyStats().setWeight(1);
 				neww.setBaseValue(0);
-				neww.recoverEnvStats();
+				neww.recoverPhyStats();
 				w=neww;
 				mob.location().addItem(neww,ItemPossessor.Expire.Player_Drop);
 			}

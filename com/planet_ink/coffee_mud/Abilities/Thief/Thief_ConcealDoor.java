@@ -51,12 +51,12 @@ public class Thief_ConcealDoor extends ThiefSkill
     }
     public void setAbilityCode(int newCode){code=newCode; super.miscText=""+newCode;}
 
-    public void affectEnvStats(Environmental host, EnvStats stats)
+    public void affectPhyStats(Physical host, PhyStats stats)
     {
-        super.affectEnvStats(host,stats);
+        super.affectPhyStats(host,stats);
         if((host instanceof Exit)&&(!((Exit)host).isOpen()))
         {
-            stats.setDisposition(stats.disposition()|EnvStats.IS_HIDDEN);
+            stats.setDisposition(stats.disposition()|PhyStats.IS_HIDDEN);
             // cant affect level because will make it unpickable, therefore unopenable
             // need some other way to designate its hiddenitude.
             //stats.setLevel(stats.level()+abilityCode());
@@ -72,7 +72,7 @@ public class Thief_ConcealDoor extends ThiefSkill
         {
             unInvoke();
             affected.delEffect(this);
-            affected.recoverEnvStats();
+            affected.recoverPhyStats();
         }
     }
     
@@ -100,7 +100,7 @@ public class Thief_ConcealDoor extends ThiefSkill
             mob.tell(mob,E,null,"<T-NAME> is not a door!");
             return false;
         }
-        if((!auto)&&(E.envStats().level()>((adjustedLevel(mob,asLevel)*2))))
+        if((!auto)&&(E.phyStats().level()>((adjustedLevel(mob,asLevel)*2))))
         {
             mob.tell("You aren't good enough to conceal that door.");
             return false;
@@ -125,7 +125,7 @@ public class Thief_ConcealDoor extends ThiefSkill
                 mob.location().send(mob,msg);
                 Ability A=(Ability)super.copyOf();
                 A.setInvoker(mob);
-                A.setAbilityCode((adjustedLevel(mob,asLevel)*2)-E.envStats().level());
+                A.setAbilityCode((adjustedLevel(mob,asLevel)*2)-E.phyStats().level());
                 Room R=mob.location();
                 Room R2=null;
                 for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -139,7 +139,7 @@ public class Thief_ConcealDoor extends ThiefSkill
                 }
                 else
                     A.startTickDown(mob,E,15*(adjustedLevel(mob,asLevel)));
-                E.recoverEnvStats();
+                E.recoverPhyStats();
             }
         }
         else

@@ -76,7 +76,7 @@ public class Skill_Map extends StdSkill
 		&&(msg.target() instanceof Room)
 		&&(CMLib.flags().canBeSeenBy(msg.target(),msg.source()))
 		&&(!roomsMappedAlready.contains(msg.target()))
-        &&(!CMath.bset(msg.target().envStats().sensesMask(),EnvStats.SENSE_ROOMUNMAPPABLE)))
+        &&(!CMath.bset(msg.target().phyStats().sensesMask(),PhyStats.SENSE_ROOMUNMAPPABLE)))
 		{
 			roomsMappedAlready.addElement(msg.target());
 			map.setReadableText(map.readableText()+";"+CMLib.map().getExtendedRoomID((Room)msg.target()));
@@ -148,7 +148,7 @@ public class Skill_Map extends StdSkill
 					Item B=CMClass.getItem("BardMap");
 					B.setContainer(item.container());
 					B.setName(item.Name());
-					B.setBaseEnvStats(item.baseEnvStats());
+					B.setBasePhyStats(item.basePhyStats());
 					B.setBaseValue(item.baseGoldValue()*2);
 					B.setDescription(item.description());
 					B.setDisplayText(item.displayText());

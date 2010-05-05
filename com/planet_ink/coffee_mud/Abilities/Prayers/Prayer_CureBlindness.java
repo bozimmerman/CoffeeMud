@@ -46,8 +46,8 @@ public class Prayer_CureBlindness extends Prayer implements MendingSkill
 	{ 
 		if(!(E instanceof MOB)) return false;
 		MOB caster=CMClass.getMOB("StdMOB");
-		caster.baseEnvStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
-		caster.envStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
+		caster.basePhyStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
+		caster.phyStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
 		boolean canMend=returnOffensiveAffects(caster,E).size()>0;
 		caster.destroy();
 		return canMend;
@@ -65,13 +65,13 @@ public class Prayer_CureBlindness extends Prayer implements MendingSkill
 			Ability A=fromMe.fetchEffect(a);
 			if(A!=null)
 			{
-				newMOB.recoverEnvStats();
-				A.affectEnvStats(newMOB,newMOB.envStats());
+				newMOB.recoverPhyStats();
+				A.affectPhyStats(newMOB,newMOB.phyStats());
 				if((!CMLib.flags().canSee(newMOB))
 				   ||(!A.okMessage(newMOB,msg)))
 				if((A.invoker()==null)
 				   ||((A.invoker()!=null)
-					  &&(A.invoker().envStats().level())<=(caster.envStats().level()+1+(2*getXLEVELLevel(caster)))))
+					  &&(A.invoker().phyStats().level())<=(caster.phyStats().level()+1+(2*getXLEVELLevel(caster)))))
 						offenders.addElement(A);
 			}
 		}

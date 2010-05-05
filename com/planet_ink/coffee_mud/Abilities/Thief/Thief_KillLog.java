@@ -92,9 +92,9 @@ public class Thief_KillLog extends ThiefSkill
 				theList.put(mark.Name(),set);
                 MOB mob=(MOB)affected;
                 mob.tell("Ah, a new one for your kill log.");
-                CMLib.leveler().postExperience(mob,null,null,mark.envStats().level(),false);
+                CMLib.leveler().postExperience(mob,null,null,mark.phyStats().level(),false);
 			}
-			set[1]=""+mark.envStats().level();
+			set[1]=""+mark.phyStats().level();
 			set[3]=Integer.toString(CMath.s_int(set[3])+1);
 			mark=null;
 			if((affected!=null)&&(affected instanceof MOB))
@@ -150,7 +150,7 @@ public class Thief_KillLog extends ThiefSkill
 					set[3]="0";
 					theList.put(mark.Name(),set);
 				}
-				set[1]=""+mark.envStats().level();
+				set[1]=""+mark.phyStats().level();
 				set[2]=Integer.toString(CMath.s_int(set[2])+1);
 				if((affected!=null)&&(affected instanceof MOB))
 				{

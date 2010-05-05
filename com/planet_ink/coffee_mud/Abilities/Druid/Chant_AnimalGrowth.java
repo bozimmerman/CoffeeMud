@@ -65,12 +65,12 @@ public class Chant_AnimalGrowth extends Chant
 		affectedStats.setStat(CharStats.STAT_DEXTERITY,affectedStats.getStat(CharStats.STAT_DEXTERITY)-3);
 		affectedStats.setStat(CharStats.STAT_WEIGHTADJ,
 				affectedStats.getStat(CharStats.STAT_WEIGHTADJ)
-				+(affectedMOB.baseEnvStats().weight()*3));
+				+(affectedMOB.basePhyStats().weight()*3));
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectedStats)
+	public void affectPhyStats(Physical affected, PhyStats affectedStats)
 	{
-		super.affectEnvStats(affected,affectedStats);
+		super.affectPhyStats(affected,affectedStats);
 		affectedStats.setHeight(affectedStats.height()*2);
 		String oldName=affected.Name().toUpperCase();
 		if(oldName.startsWith("A "))

@@ -67,7 +67,7 @@ public class Test extends StdCommand
 
     public boolean isAllAdjusted(MOB mob)
     {
-        if(mob.envStats().ability()<10)
+        if(mob.phyStats().ability()<10)
             return false;
         if(mob.charStats().getStat(CharStats.STAT_GENDER)!='F')
             return false;
@@ -81,7 +81,7 @@ public class Test extends StdCommand
     }
     public boolean isAnyAdjusted(MOB mob)
     {
-        if(mob.envStats().ability()>=10)
+        if(mob.phyStats().ability()>=10)
             return true;
         if(mob.charStats().getStat(CharStats.STAT_GENDER)=='F')
             return true;
@@ -231,14 +231,14 @@ public class Test extends StdCommand
                 M.setExperience(0);
             	for(int i=1;i<100;i++)
             	{
-            		M.baseEnvStats().setLevel(i);
-            		M.envStats().setLevel(i);
+            		M.basePhyStats().setLevel(i);
+            		M.phyStats().setLevel(i);
             		M.baseCharStats().setClassLevel(M.baseCharStats().getCurrentClass(),i);
             		M.charStats().setClassLevel(M.baseCharStats().getCurrentClass(),i);
-                    int level=M.baseEnvStats().level();
+                    int level=M.basePhyStats().level();
                     int xp=0;
                     String s=i+") "+M.getExperience()+"/"+M.getExpNextLevel()+"/"+M.getExpNeededLevel()+": ";
-                    while(level==M.baseEnvStats().level())
+                    while(level==M.basePhyStats().level())
                     {
                         xp+=10;
                         CMLib.leveler().gainExperience(M,null,"",10,true);
@@ -263,12 +263,12 @@ public class Test extends StdCommand
             	Object newStats=null;
             	long time=System.currentTimeMillis();
             	for(int i=0;i<times;i++)
-            		newStats=(EnvStats)mob.baseEnvStats().copyOf();
-            	mob.tell("EnvStats CopyOf took :"+(System.currentTimeMillis()-time));
+            		newStats=(PhyStats)mob.basePhyStats().copyOf();
+            	mob.tell("PhyStats CopyOf took :"+(System.currentTimeMillis()-time));
             	time=System.currentTimeMillis();
             	for(int i=0;i<times;i++)
-            		mob.baseEnvStats().copyInto((EnvStats)newStats);
-            	mob.tell("EnvStats CopyInto took :"+(System.currentTimeMillis()-time));
+            		mob.basePhyStats().copyInto((PhyStats)newStats);
+            	mob.tell("PhyStats CopyInto took :"+(System.currentTimeMillis()-time));
             	
             	time=System.currentTimeMillis();
             	for(int i=0;i<times;i++)

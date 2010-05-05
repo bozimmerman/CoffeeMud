@@ -131,7 +131,7 @@ public class MoneyChanger extends StdBehavior
 			if((amountToTake>0.0)&&(amountToTake<CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(observer))))
 			    amountToTake=CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(observer));
 			value-=amountToTake;
-			observer.recoverEnvStats();
+			observer.recoverPhyStats();
 			Coins C=CMLib.beanCounter().makeBestCurrency(observer,value);
 			if((value<=0)||(C==null))
 			{
@@ -167,7 +167,7 @@ public class MoneyChanger extends StdBehavior
 				if((amountToTake>0.0)&&(amountToTake<CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(observer))))
 				    amountToTake=CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(observer));
 				value-=amountToTake;
-				observer.recoverEnvStats();
+				observer.recoverPhyStats();
 	            Coins C=CMLib.beanCounter().makeBestCurrency(observer,value);
 				if((value>0.0)&&(C!=null))
 				{

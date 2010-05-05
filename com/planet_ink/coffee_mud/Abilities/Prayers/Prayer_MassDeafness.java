@@ -42,13 +42,13 @@ public class Prayer_MassDeafness extends Prayer
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	public String displayText(){ return "(Deafness)";}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
 
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_HEAR);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_HEAR);
 	}
 
     public int castingQuality(MOB mob, Physical target)

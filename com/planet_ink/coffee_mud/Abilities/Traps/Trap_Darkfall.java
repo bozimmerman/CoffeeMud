@@ -43,13 +43,13 @@ public class Trap_Darkfall extends StdTrap
 
 	public int baseRejuvTime(int level){return 20;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(sprung)
 		{
 			if(!disabled)
-				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_DARK);
+				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_DARK);
 		}
 		else
 			disabled=false;

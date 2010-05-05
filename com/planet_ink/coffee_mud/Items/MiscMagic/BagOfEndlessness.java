@@ -43,12 +43,12 @@ public class BagOfEndlessness extends BagOfHolding
 		setDisplayText("a small black sack is crumpled up here.");
 		setDescription("A nice silk sack to put your things in.");
 		secretIdentity="The Bag of Endless Stuff";
-		baseEnvStats().setLevel(1);
+		basePhyStats().setLevel(1);
 		capacity=Integer.MAX_VALUE-1000;
 
 		baseGoldValue=10000;
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
-		recoverEnvStats();
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
+		recoverPhyStats();
 	}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
@@ -86,7 +86,7 @@ public class BagOfEndlessness extends BagOfHolding
 						((Room)newitem.owner()).addItem(neweritem);
 						neweritem.setExpirationDate(expirationDate());
 					}
-					neweritem.recoverEnvStats();
+					neweritem.recoverPhyStats();
 				}
 			}
 		}

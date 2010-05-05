@@ -40,20 +40,20 @@ public class Song_Lightness extends Song
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
     protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setWeight(0);
 	}
 
 	public int mobWeight(MOB mob)
 	{
-		int weight=mob.baseEnvStats().weight();
+		int weight=mob.basePhyStats().weight();
 		for(int i=0;i<mob.numItems();i++)
 		{
 			Item I=mob.getItem(i);
 			if((I!=null)&&(!I.amWearingAt(Wearable.WORN_FLOATING_NEARBY)))
-				weight+=I.envStats().weight();
+				weight+=I.phyStats().weight();
 		}
 		return weight;
 	}
@@ -69,7 +69,7 @@ public class Song_Lightness extends Song
 		&&(((msg.tool()==null)||(msg.tool() instanceof MOB))))
 		{
 			MOB mob=msg.source();
-			if((msg.target().envStats().weight()>(mob.maxCarry()-mobWeight(mob)))&&(!mob.isMine(msg.target())))
+			if((msg.target().phyStats().weight()>(mob.maxCarry()-mobWeight(mob)))&&(!mob.isMine(msg.target())))
 			{
 				mob.tell(msg.target().name()+" is too heavy.");
 				return false;

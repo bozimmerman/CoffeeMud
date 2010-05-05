@@ -39,9 +39,9 @@ public class UnderWaterThinGrid extends StdThinGrid
 	public UnderWaterThinGrid()
 	{
 		super();
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_SWIMMING);
-		baseEnvStats.setWeight(3);
-		recoverEnvStats();
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_SWIMMING);
+		basePhyStats.setWeight(3);
+		recoverPhyStats();
 		setDisplayText("Under the water");
 		setDescription("");
 		xsize=CMProps.getIntVar(CMProps.SYSTEMI_SKYSIZE);
@@ -68,10 +68,10 @@ public class UnderWaterThinGrid extends StdThinGrid
 	
 	public String getGridChildLocaleID(){return "UnderWater";}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SWIMMING);
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
 	}
 	public Vector resourceChoices(){return UnderWater.roomResources;}
 

@@ -111,7 +111,7 @@ public class Spell_Wish extends Spell
 		}
 
 		String myWish=CMParms.combine(commands,0);
-		if(((!auto)&&(mob.envStats().level()<20))||(mob.charStats().getStat(CharStats.STAT_CONSTITUTION)<2))
+		if(((!auto)&&(mob.phyStats().level()<20))||(mob.charStats().getStat(CharStats.STAT_CONSTITUTION)<2))
 		{
 			mob.tell("You are too weak to wish.");
 			return false;
@@ -200,7 +200,7 @@ public class Spell_Wish extends Spell
 				newItem.setNumberOfCoins(CMath.s_long((String)goldCheck.firstElement()));
 				newItem.setContainer(null);
 				newItem.wearAt(0);
-				newItem.recoverEnvStats();
+				newItem.recoverPhyStats();
 				mob.location().addItem(newItem,ItemPossessor.Expire.Player_Drop);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops from the sky.");
 				mob.location().recoverRoomStats();
@@ -230,14 +230,14 @@ public class Spell_Wish extends Spell
 			if((thangsFound.size()>0)&&(foundThang!=null))
 			{
 				// yea, we get to DO something!
-				int experienceRequired=100*(foundThang.envStats().level()-1);
+				int experienceRequired=100*(foundThang.phyStats().level()-1);
 				if(foundThang instanceof MOB)
 				{
 					MOB newMOB=(MOB)foundThang.copyOf();
 					newMOB.setStartRoom(null);
 					newMOB.setLocation(mob.location());
 					newMOB.recoverCharStats();
-					newMOB.recoverEnvStats();
+					newMOB.recoverPhyStats();
 					newMOB.recoverMaxState();
 					newMOB.resetToMaxState();
 					newMOB.bringToLife(mob.location(),true);
@@ -552,11 +552,11 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" LOSE WEIGHT ")>=0)))
 			{
 				wishDrain(mob,baseLoss,true);
-				int weight=((MOB)target).baseEnvStats().weight();
+				int weight=((MOB)target).basePhyStats().weight();
 				weight-=50;
 				if(weight<=0) weight=1;
-				((MOB)target).baseEnvStats().setWeight(weight);
-				((MOB)target).recoverEnvStats();
+				((MOB)target).basePhyStats().setWeight(weight);
+				((MOB)target).recoverPhyStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" is now lighter!");
 				return true;
 			}
@@ -567,10 +567,10 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" GAIN WEIGHT ")>=0)))
 			{
 				wishDrain(mob,baseLoss,true);
-				int weight=((MOB)target).baseEnvStats().weight();
+				int weight=((MOB)target).basePhyStats().weight();
 				weight+=50;
-				((MOB)target).baseEnvStats().setWeight(weight);
-				((MOB)target).recoverEnvStats();
+				((MOB)target).basePhyStats().setWeight(weight);
+				((MOB)target).recoverPhyStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" is now heavier!");
 				return true;
 			}
@@ -651,7 +651,7 @@ public class Spell_Wish extends Spell
 							if(CMath.isNumber(s)
 							&&((CMath.s_int(s)!=0)||(s.equalsIgnoreCase("0"))))
 							{
-								level=CMath.s_int(s)-target.baseEnvStats().level();
+								level=CMath.s_int(s)-target.basePhyStats().level();
 								break;
 							}
 						}
@@ -663,21 +663,21 @@ public class Spell_Wish extends Spell
 					if(levelsLost<0) levelsLost=levelsLost*-1;
 					int levelsGained=levelsLost;
 					levelsLost*=4;
-					if(levelsLost>=mob.baseEnvStats().level())
+					if(levelsLost>=mob.basePhyStats().level())
 					{
-						levelsLost=mob.baseEnvStats().level()-1;
+						levelsLost=mob.basePhyStats().level()-1;
 						levelsGained=levelsLost/4;
 						if(level>0) level=levelsGained;
 						else level=-levelsGained;
 					}
-					int newLevel=target.baseEnvStats().level()+level;
+					int newLevel=target.basePhyStats().level()+level;
 					if(target instanceof MOB)
 					{
 					    if(((newLevel>CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL))
 				            ||(((MOB)target).charStats().getCurrentClass().leveless())
                             ||(((MOB)target).charStats().isLevelCapped(((MOB)target).charStats().getCurrentClass()))
 				            ||(((MOB)target).charStats().getMyRace().leveless()))
-					    &&(newLevel>target.baseEnvStats().level()))
+					    &&(newLevel>target.basePhyStats().level()))
 						{
 							wishDrain(mob,baseLoss,false);
 							mob.tell("That's beyond your power, but you lost exp even for trying.");
@@ -693,31 +693,31 @@ public class Spell_Wish extends Spell
 							for(int i2=0;i2<levelsGained;i2++)
 							{
 								CMLib.leveler().level(MT);
-								MT.recoverEnvStats();
-								MT.setExperience(CMLib.leveler().getLevelExperience(MT.baseEnvStats().level()-1));
+								MT.recoverPhyStats();
+								MT.setExperience(CMLib.leveler().getLevelExperience(MT.basePhyStats().level()-1));
 							}
 						}
 						else
-						while(MT.baseEnvStats().level()>newLevel)
+						while(MT.basePhyStats().level()>newLevel)
 						{
 							CMLib.leveler().unLevel(MT);
-							MT.setExperience(CMLib.leveler().getLevelExperience(MT.baseEnvStats().level()-1));
-							MT.recoverEnvStats();
+							MT.setExperience(CMLib.leveler().getLevelExperience(MT.basePhyStats().level()-1));
+							MT.recoverPhyStats();
 						}
 					}
 					else
 					{
-						target.baseEnvStats().setLevel(newLevel);
-						target.recoverEnvStats();
+						target.basePhyStats().setLevel(newLevel);
+						target.recoverPhyStats();
 					}
 					wishDrain(mob,baseLoss*levelsLost,true);
 					if((mob!=target)||(level>0))
 					for(int i2=0;i2<levelsLost;i2++)
 					{
 						CMLib.leveler().unLevel(mob);
-						mob.setExperience(CMLib.leveler().getLevelExperience(mob.baseEnvStats().level()-1));
+						mob.setExperience(CMLib.leveler().getLevelExperience(mob.basePhyStats().level()-1));
 					}
-					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" is now level "+target.envStats().level()+"!");
+					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" is now level "+target.phyStats().level()+"!");
 				}
 				return true;
 			}
@@ -732,11 +732,11 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" LITTLE ")>=0)))
 			{
 				wishDrain(mob,baseLoss,true);
-				int weight=((MOB)target).baseEnvStats().height();
+				int weight=((MOB)target).basePhyStats().height();
 				weight-=12;
 				if(weight<=0) weight=5;
-				((MOB)target).baseEnvStats().setHeight(weight);
-				((MOB)target).recoverEnvStats();
+				((MOB)target).basePhyStats().setHeight(weight);
+				((MOB)target).recoverPhyStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" is now shorter!");
 				return true;
 			}
@@ -748,10 +748,10 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" TALL ")>=0)))
 			{
 				wishDrain(mob,baseLoss,true);
-				int weight=((MOB)target).baseEnvStats().height();
+				int weight=((MOB)target).basePhyStats().height();
 				weight+=12;
-				((MOB)target).baseEnvStats().setHeight(weight);
-				((MOB)target).recoverEnvStats();
+				((MOB)target).basePhyStats().setHeight(weight);
+				((MOB)target).recoverPhyStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" is now taller!");
 				return true;
 			}
@@ -791,16 +791,16 @@ public class Spell_Wish extends Spell
 					{
 						baseLoss+=500;
 						CMLib.leveler().unLevel(mob);
-						mob.setExperience(CMLib.leveler().getLevelExperience(mob.baseEnvStats().level()-1));
+						mob.setExperience(CMLib.leveler().getLevelExperience(mob.basePhyStats().level()-1));
 					}
 					wishDrain(mob,baseLoss,true);
 					int oldCat=mob.baseCharStats().ageCategory();
 					((MOB)target).baseCharStats().setMyRace(R);
 					((MOB)target).baseCharStats().getMyRace().startRacing(((MOB)target),true);
-					((MOB)target).baseCharStats().getMyRace().setHeightWeight(((MOB)target).baseEnvStats(),(char)((MOB)target).baseCharStats().getStat(CharStats.STAT_GENDER));
+					((MOB)target).baseCharStats().getMyRace().setHeightWeight(((MOB)target).basePhyStats(),(char)((MOB)target).baseCharStats().getStat(CharStats.STAT_GENDER));
 					CMLib.utensils().confirmWearability((MOB)target);
 					((MOB)target).recoverCharStats();
-					((MOB)target).recoverEnvStats();
+					((MOB)target).recoverPhyStats();
 					if(!((MOB)target).isMonster())
 						((MOB)target).baseCharStats().setStat(CharStats.STAT_AGE,R.getAgingChart()[oldCat]);
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" is now a "+R.name()+"!");
@@ -827,7 +827,7 @@ public class Spell_Wish extends Spell
 					CMLib.leveler().unLevel(mob);
 					CMLib.leveler().unLevel(mob);
 					CMLib.leveler().unLevel(mob);
-					mob.setExperience(CMLib.leveler().getLevelExperience(mob.baseEnvStats().level()-1));
+					mob.setExperience(CMLib.leveler().getLevelExperience(mob.basePhyStats().level()-1));
 					StringBuffer str=new StringBuffer("");
 					for(int trait: CharStats.CODES.BASE())
 					{
@@ -845,7 +845,7 @@ public class Spell_Wish extends Spell
 						CMLib.coffeeTables().bump(target,CoffeeTableRow.STAT_CLASSCHANGE);
 					((MOB)target).baseCharStats().getCurrentClass().startCharacter((MOB)target,false,true);
 					((MOB)target).recoverCharStats();
-					((MOB)target).recoverEnvStats();
+					((MOB)target).recoverPhyStats();
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,target.name()+" is now a "+C.name(((MOB)target).baseCharStats().getCurrentClassLevel())+"!");
 					return true;
 				}
@@ -894,7 +894,7 @@ public class Spell_Wish extends Spell
 							wishDrain(mob,baseLoss,true);
 							CMLib.leveler().unLevel(mob);
 							CMLib.leveler().unLevel(mob);
-							mob.setExperience(CMLib.leveler().getLevelExperience(mob.baseEnvStats().level()-1));
+							mob.setExperience(CMLib.leveler().getLevelExperience(mob.basePhyStats().level()-1));
 						}
 						A=tm.fetchAbility(A.ID());
 						A.setProficiency(100);
@@ -1040,7 +1040,7 @@ public class Spell_Wish extends Spell
 				if(!CMSecurity.isDisabled("LEVELS"))
 				{
 					CMLib.leveler().unLevel(mob);
-					mob.setExperience(CMLib.leveler().getLevelExperience(mob.baseEnvStats().level()-1));
+					mob.setExperience(CMLib.leveler().getLevelExperience(mob.basePhyStats().level()-1));
 				}
 				if(foundAttribute<=6)
 					((MOB)target).baseCharStats().setStat(foundAttribute,((MOB)target).baseCharStats().getStat(foundAttribute)+1);

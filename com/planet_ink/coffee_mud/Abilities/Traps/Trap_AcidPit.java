@@ -48,7 +48,7 @@ public class Trap_AcidPit extends Trap_RoomPit
 
 	public void finishSpringing(MOB target)
 	{
-		if((!invoker().mayIFight(target))||(target.envStats().weight()<5))
+		if((!invoker().mayIFight(target))||(target.phyStats().weight()<5))
 			target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> float(s) gently into the pit!");
 		else
 		{

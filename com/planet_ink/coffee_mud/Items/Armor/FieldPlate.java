@@ -42,11 +42,11 @@ public class FieldPlate extends StdArmor
 		setDescription("A suit of field plate Armor including everything to protect the body, legs and arms.");
 		properWornBitmap=Wearable.WORN_TORSO | Wearable.WORN_ARMS | Wearable.WORN_LEGS;
 		wornLogicalAnd=true;
-		baseEnvStats().setArmor(59);
-		baseEnvStats().setWeight(80);
-		baseEnvStats().setAbility(0);
+		basePhyStats().setArmor(59);
+		basePhyStats().setWeight(80);
+		basePhyStats().setAbility(0);
 		baseGoldValue=4000;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_STEEL;
 	}
 

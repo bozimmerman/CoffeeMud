@@ -57,10 +57,10 @@ public class Corpse extends GenContainer implements DeadBody
 		setDisplayText("the body of someone lies here.");
 		setDescription("Bloody and bruised, obviously mistreated.");
 		properWornBitmap=0;
-		baseEnvStats.setWeight(150);
+		basePhyStats.setWeight(150);
 		capacity=5;
 		baseGoldValue=0;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_MEAT;
 	}
 	public void setMiscText(String newText)
@@ -135,8 +135,8 @@ public class Corpse extends GenContainer implements DeadBody
 		&&(msg.source().Name().equalsIgnoreCase(mobName()))
 		&&(msg.amITarget(this)||(msg.tool()==this))
 		&&(CMLib.flags().isGolem(msg.source()))
-		&&(msg.source().envStats().height()<0)
-		&&(msg.source().envStats().weight()<=0)
+		&&(msg.source().phyStats().height()<0)
+		&&(msg.source().phyStats().weight()<=0)
         &&(playerCorpse())
         &&(mobName().length()>0))
 		{
@@ -159,8 +159,8 @@ public class Corpse extends GenContainer implements DeadBody
 			if((msg.targetMinor()==CMMsg.TYP_SIT)
 			&&(msg.source().name().equalsIgnoreCase(mobName()))
 			&&(CMLib.flags().isGolem(msg.source()))
-			&&(msg.source().envStats().height()<0)
-			&&(msg.source().envStats().weight()<=0))
+			&&(msg.source().phyStats().height()<0)
+			&&(msg.source().phyStats().weight()<=0))
 				return true;
 			
 			if(!super.okMessage(myHost,msg))

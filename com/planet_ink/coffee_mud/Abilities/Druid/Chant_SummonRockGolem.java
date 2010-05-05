@@ -122,7 +122,7 @@ public class Chant_SummonRockGolem extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB target = determineMonster(mob, mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
+				MOB target = determineMonster(mob, mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 				target.addNonUninvokableEffect((Ability)this.copyOf());
 			}
 		}
@@ -135,20 +135,20 @@ public class Chant_SummonRockGolem extends Chant
 	public MOB determineMonster(MOB caster, int level)
 	{
 		MOB newMOB=CMClass.getMOB("GenMOB");
-		newMOB.baseEnvStats().setLevel(adjustedLevel(caster,0));
+		newMOB.basePhyStats().setLevel(adjustedLevel(caster,0));
 		newMOB.setName("an golem of stone");
 		newMOB.setDisplayText("an stone golem lumbers around here.");
 		newMOB.setDescription("A large beast, made of rock and stone, with a hard stare.");
 		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("StoneGolem"));
-		newMOB.recoverEnvStats();
+		newMOB.recoverPhyStats();
 		newMOB.recoverCharStats();
-		newMOB.baseEnvStats().setAbility(newMOB.baseEnvStats().ability()*2);
-		newMOB.baseEnvStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB)+100);
-		newMOB.baseEnvStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB)+100);
-		newMOB.baseEnvStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB)/2.0);
-		newMOB.baseEnvStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB)+20);
-		newMOB.baseEnvStats().setSensesMask(newMOB.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_DARK);
+		newMOB.basePhyStats().setAbility(newMOB.basePhyStats().ability()*2);
+		newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB)+100);
+		newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB)+100);
+		newMOB.basePhyStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB)/2.0);
+		newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB)+20);
+		newMOB.basePhyStats().setSensesMask(newMOB.basePhyStats().sensesMask()|PhyStats.CAN_SEE_DARK);
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		Ability P=CMClass.getAbility("Prop_StatTrainer");
 		if(P!=null)
@@ -160,10 +160,10 @@ public class Chant_SummonRockGolem extends Chant
 		newMOB.addAbility(CMClass.getAbility("Fighter_Kick"));
 		newMOB.addBehavior(CMClass.getBehavior("CombatAbilities"));
 		newMOB.setLocation(caster.location());
-		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
+		newMOB.basePhyStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.setMiscText(newMOB.text());
 		newMOB.recoverCharStats();
-		newMOB.recoverEnvStats();
+		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
 		newMOB.bringToLife(caster.location(),true);

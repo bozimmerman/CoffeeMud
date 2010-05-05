@@ -49,16 +49,16 @@ public class WingFlying extends StdAbility
     public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_RACIALABILITY;}
     protected Race flyingRace=null;
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
 
 		if((!CMLib.flags().isSleeping(affected))&&(flyingRace!=null))
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
 		else
-			affectableStats.setDisposition(CMath.unsetb(affectableStats.disposition(),EnvStats.IS_FLYING));
+			affectableStats.setDisposition(CMath.unsetb(affectableStats.disposition(),PhyStats.IS_FLYING));
 	}
 
     public boolean tick(Tickable ticking, int tickID)
@@ -84,7 +84,7 @@ public class WingFlying extends StdAbility
 		boolean wasFlying=CMLib.flags().isFlying(target);
 		Ability A=target.fetchEffect(ID());
 		if(A!=null) A.unInvoke();
-		target.recoverEnvStats();
+		target.recoverPhyStats();
 		String str="";
 		if(wasFlying)
 		{

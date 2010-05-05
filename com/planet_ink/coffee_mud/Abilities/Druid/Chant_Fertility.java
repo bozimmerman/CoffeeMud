@@ -127,7 +127,7 @@ public class Chant_Fertility extends Chant
 				    if(A.invoker()==null) 
 				        A.unInvoke();
 				    else
-				    if(A.invoker().envStats().level()<adjustedLevel(mob,asLevel))
+				    if(A.invoker().phyStats().level()<adjustedLevel(mob,asLevel))
 				        A.unInvoke();
 				    else
 				    {

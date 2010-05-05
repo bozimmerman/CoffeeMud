@@ -45,13 +45,13 @@ public class StdPowder extends StdItem implements MagicDust {
 		super();
 
 		setName("a pile of powder");
-		baseEnvStats.setWeight(1);
+		basePhyStats.setWeight(1);
 		setDisplayText("A small pile of powder sits here.");
 		setDescription("A small pile of powder.");
 		secretIdentity="This is a pile of inert materials.";
 		baseGoldValue=0;
 		material=RawMaterial.RESOURCE_ASH;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	
 	public void spreadIfAble(MOB mob, Physical target)
@@ -64,9 +64,9 @@ public class StdPowder extends StdItem implements MagicDust {
 				if(thisOne.canTarget(target))
 				{
 					if((malicious(this))||(!(target instanceof MOB)))
-						thisOne.invoke(mob, target, true, envStats().level());
+						thisOne.invoke(mob, target, true, phyStats().level());
 					else
-						thisOne.invoke((MOB)target,(MOB)target, true, envStats().level());
+						thisOne.invoke((MOB)target,(MOB)target, true, phyStats().level());
 				}
             }
 		destroy();
@@ -130,7 +130,7 @@ public class StdPowder extends StdItem implements MagicDust {
 				theSpells.addElement(A);
 			}
 		}
-		recoverEnvStats();
+		recoverPhyStats();
 		return theSpells;
 	}
 

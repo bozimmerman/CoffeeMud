@@ -42,14 +42,14 @@ public class ManualClasses extends StdItem implements MiscMagic,ArchonOnly
 		super();
 
 		setName("a book");
-		baseEnvStats.setWeight(1);
+		basePhyStats.setWeight(1);
 		setDisplayText("an roughly treated book sits here.");
 		setDescription("An roughly treated book filled with mystical symbols.");
 		secretIdentity="The Manual of Classes.";
 		this.setUsesRemaining(Integer.MAX_VALUE);
 		baseGoldValue=5000;
 		material=RawMaterial.RESOURCE_PAPER;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)

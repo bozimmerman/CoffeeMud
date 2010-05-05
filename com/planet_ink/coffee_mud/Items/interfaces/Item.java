@@ -171,7 +171,7 @@ public interface Item extends Rider, DBIdentifiable, Wearable, PhysicalAgent, Re
 	public void setMaterial(int newValue);
 	
     /**
-     * For a normal item, this method returns the same as envStats().weight().  For
+     * For a normal item, this method returns the same as phyStats().weight().  For
      * a Container, it returns the weight of the container plus the recursive weight
      * of all items in the container.
      * @see Container

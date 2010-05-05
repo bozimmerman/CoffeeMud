@@ -65,7 +65,7 @@ public class Chant_SnuffFlame extends Chant
 			{
 				mob.location().send(mob,msg);
 				CMLib.utensils().extinguish(mob,target,false);
-				target.recoverEnvStats();
+				target.recoverPhyStats();
 				mob.location().recoverRoomStats();
 			}
 		}

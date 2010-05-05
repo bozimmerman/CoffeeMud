@@ -45,7 +45,7 @@ public class LizardManShaman extends LizardMan
 		setDisplayText("A mean looking Lizard Man stands here.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);
 		setMoney(20);
-		baseEnvStats.setWeight(225);
+		basePhyStats.setWeight(225);
 		setWimpHitPoint(0);
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,9);
@@ -53,18 +53,18 @@ public class LizardManShaman extends LizardMan
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,18);
 
 		baseCharStats().setMyRace(CMClass.getRace("LizardMan"));
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setDamage(6);
-		baseEnvStats().setSpeed(3);
-		baseEnvStats().setLevel(3);
-		baseEnvStats().setArmor(30);
+		basePhyStats().setAbility(0);
+		basePhyStats().setDamage(6);
+		basePhyStats().setSpeed(3);
+		basePhyStats().setLevel(3);
+		basePhyStats().setArmor(30);
 		baseCharStats().setCurrentClass(CMClass.getCharClass("Cleric"));
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 
@@ -115,7 +115,7 @@ public class LizardManShaman extends LizardMan
         if(CMLib.dice().rollPercentage() < 70)
         {
             prayer = fetchAbility(CMLib.dice().roll(1,numLearnedAbilities(),-1));
-            while((prayer==null)||(this.baseEnvStats().level() < prayer.baseEnvStats().level()))
+            while((prayer==null)||(this.basePhyStats().level() < prayer.basePhyStats().level()))
 				prayer = fetchAbility(CMLib.dice().roll(1,numLearnedAbilities(),-1));
         }
         else

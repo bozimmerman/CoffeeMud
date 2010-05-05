@@ -102,7 +102,7 @@ public class Fighter_Rallycry extends FighterSkill
 					MOB target=(MOB)e.next();
 					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) rallied!");
 					timesTicking=0;
-					hpUp=mob.envStats().level()+(2*getXLEVELLevel(mob));
+					hpUp=mob.phyStats().level()+(2*getXLEVELLevel(mob));
 					beneficialAffect(mob,target,asLevel,0);
 					target.recoverMaxState();
 					if(target.fetchEffect(ID())!=null)

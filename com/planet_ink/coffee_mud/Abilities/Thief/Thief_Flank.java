@@ -47,9 +47,9 @@ public class Thief_Flank extends ThiefSkill
 	public int usageType(){return USAGE_MOVEMENT;}
 	protected MOB target=null;
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		int xlvl=super.getXLEVELLevel(invoker());
 		affectableStats.setDamage(affectableStats.damage()+5+xlvl);
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+50+(10*xlvl));

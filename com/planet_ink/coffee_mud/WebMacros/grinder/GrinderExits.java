@@ -44,12 +44,12 @@ public class GrinderExits
     
 	public static String dispositions(Environmental E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
 	{
-		E.baseEnvStats().setDisposition(0);
-		for(int d=0;d<EnvStats.IS_CODES.length;d++)
+		E.basePhyStats().setDisposition(0);
+		for(int d=0;d<PhyStats.IS_CODES.length;d++)
 		{
-			String parm=httpReq.getRequestParameter(EnvStats.IS_CODES[d]);
+			String parm=httpReq.getRequestParameter(PhyStats.IS_CODES[d]);
 			if((parm!=null)&&(parm.equals("on")))
-			   E.baseEnvStats().setDisposition(E.baseEnvStats().disposition()|(1<<d));
+			   E.basePhyStats().setDisposition(E.basePhyStats().disposition()|(1<<d));
 		}
 		return "";
 	}
@@ -96,7 +96,7 @@ public class GrinderExits
 					E.setDescription(old); 
 					break;
 				case 4: // level
-					E.baseEnvStats().setLevel(CMath.s_int(old));	
+					E.basePhyStats().setLevel(CMath.s_int(old));	
 					break;
 				case 5: // levelrestricted;
 					break;

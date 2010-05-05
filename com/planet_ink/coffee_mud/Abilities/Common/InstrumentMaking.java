@@ -219,11 +219,11 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
         playSound="sanding.wav";
 		building.setDisplayText(itemName+" lies here");
 		building.setDescription(itemName+". ");
-		building.baseEnvStats().setWeight(woodRequired);
+		building.basePhyStats().setWeight(woodRequired);
 		building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 		building.setMaterial(data[0][FOUND_CODE]);
-		building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
-		if(building.baseEnvStats().level()<1) building.baseEnvStats().setLevel(1);
+		building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
+		if(building.basePhyStats().level()<1) building.basePhyStats().setLevel(1);
 		String type=(String)foundRecipe.elementAt(RCP_TYPE);
 		for(int i=0;i<MusicalInstrument.TYPE_DESC.length;i++)
 			if(type.equalsIgnoreCase(MusicalInstrument.TYPE_DESC[i]))
@@ -241,9 +241,9 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
             setWearLocation(building,misctype,0);
 		}
 		if(bundling) building.setBaseValue(lostValue);
-		building.recoverEnvStats();
+		building.recoverPhyStats();
 		building.text();
-		building.recoverEnvStats();
+		building.recoverPhyStats();
 
 
 		messedUp=!proficiencyCheck(mob,0,auto);

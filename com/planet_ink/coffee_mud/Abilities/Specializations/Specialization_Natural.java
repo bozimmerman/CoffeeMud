@@ -54,10 +54,10 @@ public class Specialization_Natural extends Specialization_Weapon
 	}
 
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		activated=false;
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if((affected instanceof MOB)&&(((MOB)affected).fetchWieldedItem()==null))
 		{
 			activated=true;

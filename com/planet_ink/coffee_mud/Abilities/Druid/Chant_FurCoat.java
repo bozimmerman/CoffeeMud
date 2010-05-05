@@ -152,7 +152,7 @@ public class Chant_FurCoat extends Chant
 				theArmor.setDisplayText("");
 				theArmor.setDescription("The coat is made of thick black fur.");
 				theArmor.setMaterial(RawMaterial.RESOURCE_FUR);
-				theArmor.baseEnvStats().setArmor(2*CMLib.ableMapper().qualifyingClassLevel(mob,this));
+				theArmor.basePhyStats().setArmor(2*CMLib.ableMapper().qualifyingClassLevel(mob,this));
 				long wornCode=(Wearable.WORN_TORSO|Wearable.WORN_ARMS|Wearable.WORN_FEET|Wearable.WORN_WAIST|Wearable.WORN_LEGS);
 				theArmor.setRawProperLocationBitmap(wornCode);
 				theArmor.setRawLogicalAnd(true);
@@ -168,7 +168,7 @@ public class Chant_FurCoat extends Chant
 				  A.setMiscText("cold");
 				  theArmor.addNonUninvokableEffect(A);
 				}
-				theArmor.recoverEnvStats();
+				theArmor.recoverPhyStats();
 				theArmor.text();
 				target.addItem(theArmor);
 				theArmor.wearAt(wornCode);

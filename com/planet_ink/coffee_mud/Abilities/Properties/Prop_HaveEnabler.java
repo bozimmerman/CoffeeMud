@@ -141,7 +141,7 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 		lastMOB=null;
 	}
 
-    public void recoverEnvStats()
+    public void recoverPhyStats()
     {
         if(processing2) return;
         processing2=true;
@@ -156,7 +156,7 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
     public void executeMsg(Environmental host, CMMsg msg)
     {}
     
-	public void affectEnvStats(Environmental host, EnvStats affectableStats)
+	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{
 		if(processing) return;
 		processing=true;

@@ -45,12 +45,12 @@ public class Prayer_SenseEvil extends Prayer
 	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(invoker==null) return;
 
-		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_EVIL);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_EVIL);
 	}
 
 	public void unInvoke()

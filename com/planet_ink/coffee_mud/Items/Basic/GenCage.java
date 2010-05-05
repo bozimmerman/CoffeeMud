@@ -46,8 +46,8 @@ public class GenCage extends StdCage
 		setContainTypes(Container.CONTAIN_BODIES|Container.CONTAIN_CAGED);
 		material=RawMaterial.RESOURCE_OAK;
 		baseGoldValue=15;
-		baseEnvStats().setWeight(25);
-		recoverEnvStats();
+		basePhyStats().setWeight(25);
+		recoverPhyStats();
 	}
 
 	public String readableText(){return readableText;}
@@ -71,7 +71,7 @@ public class GenCage extends StdCage
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES"};
 	public String getStat(String code)

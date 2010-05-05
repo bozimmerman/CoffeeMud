@@ -70,8 +70,8 @@ public class Dragon extends StdMOB
 
 
 	// ===== Defined Value for holding the Dragon Type
-	protected int DragonColor(){ return baseEnvStats().ability();}
-	protected int DragonAge(){ return baseEnvStats().level()/10;}
+	protected int DragonColor(){ return basePhyStats().ability();}
+	protected int DragonAge(){ return basePhyStats().level()/10;}
 	protected Room Stomach = null;
 
 	// ===== random constructor
@@ -91,8 +91,8 @@ public class Dragon extends StdMOB
 	public Dragon(int colorValue, int ageValue)
 	{
 		super();
-		baseEnvStats().setAbility(colorValue);
-		baseEnvStats().setLevel(5+(ageValue*10));
+		basePhyStats().setAbility(colorValue);
+		basePhyStats().setLevel(5+(ageValue*10));
 		birthColor=0;
 		birthAge=0;
 		setupDragonIfNecessary();
@@ -157,10 +157,10 @@ public class Dragon extends StdMOB
 			default:		PointMod = 3;	CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);	break;
 		}
 
-        CMLib.leveler().fillOutMOB(this,baseEnvStats().level());
+        CMLib.leveler().fillOutMOB(this,basePhyStats().level());
 		baseState.setHitPoints(baseState.getHitPoints() * PointMod);
 		setMoney(getMoney()*PointMod);
-		baseEnvStats().setWeight(1500 * DragonAge());
+		basePhyStats().setWeight(1500 * DragonAge());
 
 		// ===== Dragons never flee.
 		setWimpHitPoint(0);
@@ -177,7 +177,7 @@ public class Dragon extends StdMOB
 		// ===== Recover from birth.
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 
@@ -413,7 +413,7 @@ public class Dragon extends StdMOB
 		{
 			MOB TastyMorsel = getVictim();
 			if(TastyMorsel==null) return true;
-			if (TastyMorsel.envStats().weight()<1500)
+			if (TastyMorsel.phyStats().weight()<1500)
 			{
 				// ===== if it is less than three so roll for it
 				int roll = (int)Math.round(Math.random()*99);
@@ -443,9 +443,9 @@ public class Dragon extends StdMOB
 		return true;
 	}
 
-	public void recoverEnvStats()
+	public void recoverPhyStats()
 	{
-		super.recoverEnvStats();
+		super.recoverPhyStats();
 		setupDragonIfNecessary();
 	}
 	public void recoverCharStats()
@@ -498,7 +498,7 @@ public class Dragon extends StdMOB
 										   "<S-NAME> digest(s) <T-NAMESELF>!!");
 				Stomach.send(this,DigestMsg);
 				int damage=((int)Math.round(CMath.div(TastyMorsel.curState().getHitPoints(),2)));
-				if(damage<(TastyMorsel.envStats().level()+6)) damage=TastyMorsel.curState().getHitPoints()+1;
+				if(damage<(TastyMorsel.phyStats().level()+6)) damage=TastyMorsel.curState().getHitPoints()+1;
 				CMLib.combat().postDamage(this,TastyMorsel,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_BURNING,"The stomach acid <DAMAGE> <T-NAME>!");
 			}
 		}

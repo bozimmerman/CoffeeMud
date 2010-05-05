@@ -79,7 +79,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		}
 	}
 
-	public void affectEnvStats(Environmental E, EnvStats affectableStats)
+	public void affectPhyStats(Physical E, PhyStats affectableStats)
 	{
 		if(E instanceof MOB)
 			affectableStats.setWeight(affectableStats.weight()+shop.totalStockWeight());
@@ -277,7 +277,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
                 merchantM.addItem(I);
 				I=(Item)getShop().removeStock("all",merchantM);
 			}
-            merchantM.recoverEnvStats();
+            merchantM.recoverPhyStats();
 		}
 		return super.okMessage(myHost,msg);
 	}
@@ -317,7 +317,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
         if((E instanceof Container)
         &&(!(((Container)E).owner() instanceof MOB))
         &&(((Container)E).canContain(what))
-        &&(((Container)E).capacity()>what.envStats().weight()))
+        &&(((Container)E).capacity()>what.phyStats().weight()))
             return true;
         return false;
     }
@@ -354,7 +354,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			case CMMsg.TYP_VIEW:
 				super.executeMsg(myHost,msg);
 				if((msg.tool()!=null)&&(getShop().doIHaveThisInStock(msg.tool().Name(),mob)))
-					CMLib.commands().postSay(merchantM,msg.source(),"Interested in "+msg.tool().name()+"? Here is some information for you:\n\rLevel "+msg.tool().envStats().level()+"\n\rDescription: "+msg.tool().description(),true,false);
+					CMLib.commands().postSay(merchantM,msg.source(),"Interested in "+msg.tool().name()+"? Here is some information for you:\n\rLevel "+msg.tool().phyStats().level()+"\n\rDescription: "+msg.tool().description(),true,false);
 				break;
             case CMMsg.TYP_SELL: // sell TO -- this is a shopkeeper purchasing from a player
             {
@@ -469,7 +469,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			}
             getShop().delAllStoreInventory(I);
 			mob.recoverCharStats();
-			mob.recoverEnvStats();
+			mob.recoverPhyStats();
 			mob.recoverMaxState();
 			mob.tell(iname+" has been removed from your inventory list.");
 			return true;
@@ -560,7 +560,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			}
 		}
 		mob.location().recoverRoomStats();
-		mob.recoverEnvStats();
+		mob.recoverPhyStats();
 		return true;
 	}
 

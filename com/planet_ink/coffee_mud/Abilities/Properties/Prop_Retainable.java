@@ -179,7 +179,7 @@ public class Prop_Retainable extends Property
         {
             Ability A = me.fetchAbility(a);
             if(A.proficiency() == 0)
-                A.setProficiency(50 + me.envStats().level() - CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
+                A.setProficiency(50 + me.phyStats().level() - CMLib.ableMapper().lowestQualifyingLevel(A.ID()));
             skills.append(", " + A.name());
         }
         if(me instanceof ShopKeeper)
@@ -216,7 +216,7 @@ public class Prop_Retainable extends Property
 					&&(room.isInhabitant(mob)))
 					{
 						lastRoom=room;
-						mob.baseEnvStats().setRejuv(0);
+						mob.basePhyStats().setRejuv(0);
 						mob.setStartRoom(room);
                         lastMoveIn=System.currentTimeMillis();
 					}

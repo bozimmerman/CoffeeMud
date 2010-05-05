@@ -39,8 +39,8 @@ public class MountainsMaze extends StdMaze
 	public MountainsMaze()
 	{
 		super();
-		baseEnvStats.setWeight(5);
-		recoverEnvStats();
+		basePhyStats.setWeight(5);
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_MOUNTAINS;}
 	public int domainConditions(){return Room.CONDITION_NORMAL;}

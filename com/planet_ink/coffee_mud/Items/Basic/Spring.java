@@ -42,14 +42,14 @@ public class Spring extends StdDrink
 		amountOfThirstQuenched=250;
 		amountOfLiquidHeld=999999;
 		amountOfLiquidRemaining=999999;
-		baseEnvStats().setWeight(5);
+		basePhyStats().setWeight(5);
 		capacity=0;
 		setDisplayText("a little magical spring flows here.");
 		setDescription("The spring is coming magically from the ground.  The water looks pure and clean.");
 		baseGoldValue=10;
-		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMNOTGET);
+		basePhyStats().setSensesMask(PhyStats.SENSE_ITEMNOTGET);
 		material=RawMaterial.RESOURCE_FRESHWATER;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 

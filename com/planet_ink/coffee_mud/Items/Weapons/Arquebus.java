@@ -40,12 +40,12 @@ public class Arquebus extends StdWeapon
 		setName("an arquebus");
 		setDisplayText("an arquebus is on the ground.");
 		setDescription("It\\`s got a metal barrel and wooden stock.");
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(0);
-		baseEnvStats.setWeight(15);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(0);
+		basePhyStats.setWeight(15);
 
-		baseEnvStats().setAttackAdjustment(-1);
-		baseEnvStats().setDamage(10);
+		basePhyStats().setAttackAdjustment(-1);
+		basePhyStats().setDamage(10);
 
 		setAmmunitionType("bullets");
 		setAmmoCapacity(1);
@@ -53,7 +53,7 @@ public class Arquebus extends StdWeapon
 		minRange=0;
 		maxRange=5;
 		baseGoldValue=500;
-		recoverEnvStats();
+		recoverPhyStats();
 		wornLogicalAnd=true;
 		material=RawMaterial.RESOURCE_IRON;
 		properWornBitmap=Wearable.WORN_HELD|Wearable.WORN_WIELD;

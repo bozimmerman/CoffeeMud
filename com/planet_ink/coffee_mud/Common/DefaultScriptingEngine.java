@@ -1493,10 +1493,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     break;
                 }
             if(!found)
-            for(int i=0;i<M.envStats().getStatCodes().length;i++)
-                if(M.envStats().getStatCodes()[i].equalsIgnoreCase(arg2))
+            for(int i=0;i<M.phyStats().getStatCodes().length;i++)
+                if(M.phyStats().getStatCodes()[i].equalsIgnoreCase(arg2))
                 {
-                    val=M.envStats().getStat(M.envStats().getStatCodes()[i]);
+                    val=M.phyStats().getStat(M.phyStats().getStatCodes()[i]);
                     found=true;
                     break;
                 }
@@ -1571,10 +1571,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         break;
                     }
                 if(!found)
-                for(int i=0;i<M.envStats().getStatCodes().length;i++)
-                    if(M.envStats().getStatCodes()[i].equalsIgnoreCase(arg2))
+                for(int i=0;i<M.phyStats().getStatCodes().length;i++)
+                    if(M.phyStats().getStatCodes()[i].equalsIgnoreCase(arg2))
                     {
-                        val=M.envStats().getStat(M.envStats().getStatCodes()[i]);
+                        val=M.phyStats().getStat(M.phyStats().getStatCodes()[i]);
                         found=true;
                         break;
                     }
@@ -3583,7 +3583,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     returnable=false;
                 else
                 {
-                    int val1=E.envStats().level();
+                    int val1=E.phyStats().level();
                     returnable=simpleEval(scripted,""+val1,arg3,arg2,"LEVEL");
                 }
                 break;
@@ -5362,7 +5362,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String arg1=CMParms.cleanBit(funcParms);
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if(E!=null)
-                    results.append(E.envStats().level());
+                    results.append(E.phyStats().level());
                 break;
             }
             case 80: // questpoints
@@ -6437,12 +6437,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
                                 break;
                             }
                         if(!found)
-                        for(int i=0;i<M.baseEnvStats().getStatCodes().length;i++)
-                            if(M.baseEnvStats().getStatCodes()[i].equalsIgnoreCase(arg2))
+                        for(int i=0;i<M.basePhyStats().getStatCodes().length;i++)
+                            if(M.basePhyStats().getStatCodes()[i].equalsIgnoreCase(arg2))
                             {
-                                if(arg3.equals("++")) arg3=""+(CMath.s_int(M.baseEnvStats().getStat(M.baseEnvStats().getStatCodes()[i]))+1);
-                                if(arg3.equals("--")) arg3=""+(CMath.s_int(M.baseEnvStats().getStat(M.baseEnvStats().getStatCodes()[i]))-1);
-                                M.baseEnvStats().setStat(arg2,arg3);
+                                if(arg3.equals("++")) arg3=""+(CMath.s_int(M.basePhyStats().getStat(M.basePhyStats().getStatCodes()[i]))+1);
+                                if(arg3.equals("--")) arg3=""+(CMath.s_int(M.basePhyStats().getStat(M.basePhyStats().getStatCodes()[i]))-1);
+                                M.basePhyStats().setStat(arg2,arg3);
                                 found=true;
                                 break;
                             }
@@ -6483,16 +6483,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     }
                     if(newTarget instanceof MOB)
                         ((MOB)newTarget).recoverCharStats();
-                    newTarget.recoverEnvStats();
+                    newTarget.recoverPhyStats();
                     if(newTarget instanceof MOB)
                     {
                         ((MOB)newTarget).recoverMaxState();
                         if(arg2.equalsIgnoreCase("LEVEL"))
                         {
-                            CMLib.leveler().fillOutMOB(((MOB)newTarget),((MOB)newTarget).baseEnvStats().level());
+                            CMLib.leveler().fillOutMOB(((MOB)newTarget),((MOB)newTarget).basePhyStats().level());
                             ((MOB)newTarget).recoverMaxState();
                             ((MOB)newTarget).recoverCharStats();
-                            ((MOB)newTarget).recoverEnvStats();
+                            ((MOB)newTarget).recoverPhyStats();
                             ((MOB)newTarget).resetToMaxState();
                         }
                     }
@@ -6627,13 +6627,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
                                 }
                             }
                             if(!found)
-                            for(int i=0;i<M.baseEnvStats().getStatCodes().length;i++)
+                            for(int i=0;i<M.basePhyStats().getStatCodes().length;i++)
                             {
-                                if(M.baseEnvStats().getStatCodes()[i].equalsIgnoreCase(arg2))
+                                if(M.basePhyStats().getStatCodes()[i].equalsIgnoreCase(arg2))
                                 {
-                                    if(arg3.equals("++")) arg3=""+(CMath.s_int(M.baseEnvStats().getStat(M.baseEnvStats().getStatCodes()[i]))+1);
-                                    if(arg3.equals("--")) arg3=""+(CMath.s_int(M.baseEnvStats().getStat(M.baseEnvStats().getStatCodes()[i]))-1);
-                                    M.baseEnvStats().setStat(arg2,arg3);
+                                    if(arg3.equals("++")) arg3=""+(CMath.s_int(M.basePhyStats().getStat(M.basePhyStats().getStatCodes()[i]))+1);
+                                    if(arg3.equals("--")) arg3=""+(CMath.s_int(M.basePhyStats().getStat(M.basePhyStats().getStatCodes()[i]))-1);
+                                    M.basePhyStats().setStat(arg2,arg3);
                                     found=true;
                                     break;
                                 }
@@ -6691,16 +6691,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     }
                     if(newTarget instanceof MOB)
                         ((MOB)newTarget).recoverCharStats();
-                    newTarget.recoverEnvStats();
+                    newTarget.recoverPhyStats();
                     if(newTarget instanceof MOB)
                     {
                         ((MOB)newTarget).recoverMaxState();
                         if(arg2.equalsIgnoreCase("LEVEL"))
                         {
-                            CMLib.leveler().fillOutMOB(((MOB)newTarget),((MOB)newTarget).baseEnvStats().level());
+                            CMLib.leveler().fillOutMOB(((MOB)newTarget),((MOB)newTarget).basePhyStats().level());
                             ((MOB)newTarget).recoverMaxState();
                             ((MOB)newTarget).recoverCharStats();
-                            ((MOB)newTarget).recoverEnvStats();
+                            ((MOB)newTarget).recoverPhyStats();
                             ((MOB)newTarget).resetToMaxState();
                         }
                     }
@@ -6721,7 +6721,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if((amtStr.endsWith("%"))
                     &&(((MOB)newTarget).getExpNeededLevel()<Integer.MAX_VALUE))
                     {
-                        int baseLevel=newTarget.baseEnvStats().level();
+                        int baseLevel=newTarget.basePhyStats().level();
                         int lastLevelExpNeeded=(baseLevel<=1)?0:CMLib.leveler().getLevelExperience(baseLevel-1);
                         int thisLevelExpNeeded=CMLib.leveler().getLevelExperience(baseLevel);
                         t=(int)Math.round(CMath.mul(thisLevelExpNeeded-lastLevelExpNeeded,
@@ -6814,8 +6814,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         logError(scripted,"MPQSET","Syntax","Unknown object "+tt[3]+" for "+scripted.Name());
                     else
                     {
-                        obj.baseEnvStats().setDisposition(obj.baseEnvStats().disposition()|EnvStats.IS_UNSAVABLE);
-                        obj.recoverEnvStats();
+                        obj.basePhyStats().setDisposition(obj.basePhyStats().disposition()|PhyStats.IS_UNSAVABLE);
+                        obj.recoverPhyStats();
                         Q.runtimeRegisterObject(obj);
                     }
                 }
@@ -6965,7 +6965,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         {
                             m=(MOB)((MOB)Ms.elementAt(i)).copyOf();
                             m.text();
-                            m.recoverEnvStats();
+                            m.recoverPhyStats();
                             m.recoverCharStats();
                             m.resetToMaxState();
                             m.bringToLife(lastKnownLocation,true);
@@ -7026,7 +7026,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                                 if((m!=null)&&(!(m instanceof ArchonOnly)))
                                 {
                                     m=(Item)m.copyOf();
-                                    m.recoverEnvStats();
+                                    m.recoverPhyStats();
                                     m.setContainer(container);
                                     if(container instanceof MOB)
                                         ((MOB)container.owner()).addItem(m);
@@ -7041,7 +7041,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         }
                         lastKnownLocation.recoverRoomStats();
                         monster.recoverCharStats();
-                        monster.recoverEnvStats();
+                        monster.recoverPhyStats();
                         monster.recoverMaxState();
                     }
                 }
@@ -7096,7 +7096,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             if((I!=null)&&(!(I instanceof ArchonOnly)))
                             {
                                 I=(Item)I.copyOf();
-                                I.recoverEnvStats();
+                                I.recoverPhyStats();
                                 lastKnownLocation.addItem(I,ItemPossessor.Expire.Monster_EQ);
                                 I.setContainer(container);
                                 if(I instanceof Coins)
@@ -7120,8 +7120,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if(newTarget!=null)
                 {
-                    newTarget.baseEnvStats().setDisposition(newTarget.baseEnvStats().disposition()|EnvStats.IS_NOT_SEEN);
-                    newTarget.recoverEnvStats();
+                    newTarget.basePhyStats().setDisposition(newTarget.basePhyStats().disposition()|PhyStats.IS_NOT_SEEN);
+                    newTarget.recoverPhyStats();
                     if(lastKnownLocation!=null) lastKnownLocation.recoverRoomStats();
                 }
                 break;
@@ -7259,10 +7259,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 	if(tt==null) return null;
                 }
                 Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-                if((newTarget!=null)&&(CMath.bset(newTarget.baseEnvStats().disposition(),EnvStats.IS_NOT_SEEN)))
+                if((newTarget!=null)&&(CMath.bset(newTarget.basePhyStats().disposition(),PhyStats.IS_NOT_SEEN)))
                 {
-                    newTarget.baseEnvStats().setDisposition(newTarget.baseEnvStats().disposition()-EnvStats.IS_NOT_SEEN);
-                    newTarget.recoverEnvStats();
+                    newTarget.basePhyStats().setDisposition(newTarget.basePhyStats().disposition()-PhyStats.IS_NOT_SEEN);
+                    newTarget.recoverPhyStats();
                     if(lastKnownLocation!=null) lastKnownLocation.recoverRoomStats();
                 }
                 break;
@@ -7850,7 +7850,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         {
                             Environmental oE=((Item)E).owner();
                             ((Item)E).destroy();
-                            if(oE!=null) oE.recoverEnvStats();
+                            if(oE!=null) oE.recoverPhyStats();
                         }
                     }
                     lastKnownLocation.recoverRoomStats();
@@ -8204,8 +8204,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     CagedAnimal caged=(CagedAnimal)CMClass.getItem("GenCaged");
                     if(caged!=null)
                     {
-                        ((Item)caged).baseEnvStats().setAbility(1);
-                        ((Item)caged).recoverEnvStats();
+                        ((Item)caged).basePhyStats().setAbility(1);
+                        ((Item)caged).recoverPhyStats();
                     }
                     if((caged!=null)&&caged.cageMe((MOB)E)&&(lastKnownLocation!=null))
                     {
@@ -8813,8 +8813,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
             product.setName(E.Name());
             product.setDisplayText(E.displayText());
             product.setDescription(E.description());
-            product.setBaseEnvStats((EnvStats)E.baseEnvStats().copyOf());
-            product.recoverEnvStats();
+            product.setBasePhyStats((PhyStats)E.basePhyStats().copyOf());
+            product.recoverPhyStats();
         }
         return product;
     }

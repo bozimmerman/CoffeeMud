@@ -44,26 +44,26 @@ public class Centaur extends StdMOB
 		setDisplayText("A centaur gallops around...");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_GOOD);
 		setMoney(200);
-		baseEnvStats.setWeight(600 + Math.abs(randomizer.nextInt() % 101));
+		basePhyStats.setWeight(600 + Math.abs(randomizer.nextInt() % 101));
 
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,5 + Math.abs(randomizer.nextInt() % 6));
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,12 + Math.abs(randomizer.nextInt() % 6));
 		baseCharStats().setStat(CharStats.STAT_DEXTERITY,9 + Math.abs(randomizer.nextInt() % 6));
 
-		baseEnvStats().setDamage(7);
-		baseEnvStats().setSpeed(2.0);
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(4);
-		baseEnvStats().setArmor(0);
+		basePhyStats().setDamage(7);
+		basePhyStats().setSpeed(2.0);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(4);
+		basePhyStats().setArmor(0);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		addBehavior(CMClass.getBehavior("Mobile"));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

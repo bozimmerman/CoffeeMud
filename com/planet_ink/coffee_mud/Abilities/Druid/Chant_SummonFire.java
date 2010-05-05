@@ -95,11 +95,11 @@ public class Chant_SummonFire extends Chant
 			{
 				mob.location().send(mob,msg);
 				Item I=CMClass.getItem("GenItem");
-				I.baseEnvStats().setWeight(50);
+				I.basePhyStats().setWeight(50);
 				I.setName("a magical campfire");
 				I.setDisplayText("A roaring magical campfire has been built here.");
 				I.setDescription("It consists of magically burning flames, consuming no fuel.");
-				I.recoverEnvStats();
+				I.recoverPhyStats();
 				I.setMaterial(RawMaterial.RESOURCE_NOTHING);
 				I.setMiscText(I.text());
 				Ability B=CMClass.getAbility("Burning");
@@ -110,7 +110,7 @@ public class Chant_SummonFire extends Chant
 				FireLocation=mob.location();
 				littleFire=I;
 				beneficialAffect(mob,I,asLevel,0);
-				mob.location().recoverEnvStats();
+				mob.location().recoverPhyStats();
 			}
 		}
 		else

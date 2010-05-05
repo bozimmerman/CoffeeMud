@@ -44,26 +44,26 @@ public class StoneGiant extends StdMOB
 		setDisplayText("A Stone Giant glares at you.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_EVIL);
 		setMoney(0);
-		baseEnvStats.setWeight(8000 + Math.abs(randomizer.nextInt() % 1001));
+		basePhyStats.setWeight(8000 + Math.abs(randomizer.nextInt() % 1001));
 
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,8 + Math.abs(randomizer.nextInt() % 3));
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,20);
 		baseCharStats().setStat(CharStats.STAT_DEXTERITY,13);
 
-		baseEnvStats().setDamage(20);
-		baseEnvStats().setSpeed(1.0);
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(14);
-		baseEnvStats().setArmor(0);
+		basePhyStats().setDamage(20);
+		basePhyStats().setSpeed(1.0);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(14);
+		basePhyStats().setArmor(0);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 
 		addBehavior(CMClass.getBehavior("Aggressive"));
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

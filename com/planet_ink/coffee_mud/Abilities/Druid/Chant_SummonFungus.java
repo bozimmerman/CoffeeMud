@@ -120,8 +120,8 @@ public class Chant_SummonFungus extends Chant_SummonPlants
 		newItem.setMiscText(newItem.text());
 		room.addItem(newItem);
 		Chant_SummonFungus newChant=new Chant_SummonFungus();
-		newItem.baseEnvStats().setLevel(10+newChant.getX1Level(mob));
-		newItem.baseEnvStats().setWeight(1);
+		newItem.basePhyStats().setLevel(10+newChant.getX1Level(mob));
+		newItem.basePhyStats().setWeight(1);
 		newItem.setExpirationDate(0);
 		CMLib.materials().addEffectsToResource(newItem);
 		room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" sprouts up here.");
@@ -135,7 +135,7 @@ public class Chant_SummonFungus extends Chant_SummonPlants
 		}
 		else
 			newChant.beneficialAffect(mob,newItem,0,(newChant.adjustedLevel(mob,0)*240)+450);
-		room.recoverEnvStats();
+		room.recoverPhyStats();
 		return newItem;
 	}
 

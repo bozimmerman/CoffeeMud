@@ -357,7 +357,7 @@ public class Injury extends StdAbility
 								&&((msg.tool() instanceof Electronics)||(BodyPct>=CMProps.getIntVar(CMProps.SYSTEMI_INJPCTHPAMP)))))
 							{
 							    boolean proceed=(CMLib.dice().rollPercentage()<=CMProps.getIntVar(CMProps.SYSTEMI_INJPCTCHANCEAMP))
-                                                &&(mob.envStats().level()>=CMProps.getIntVar(CMProps.SYSTEMI_INJMINLEVEL));
+                                                &&(mob.phyStats().level()>=CMProps.getIntVar(CMProps.SYSTEMI_INJMINLEVEL));
 							    if(msg.tool() instanceof Weapon)
 								{
 									switch(((Weapon)msg.tool()).weaponType())

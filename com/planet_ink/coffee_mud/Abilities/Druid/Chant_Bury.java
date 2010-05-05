@@ -110,7 +110,7 @@ public class Chant_Bury extends Chant
 			{
 				mob.location().send(mob,msg);
 				if(CMLib.flags().isNeutral(mob))
-                    mob.curState().adjMana(3*target.envStats().level()*super.getXLEVELLevel(mob),mob.maxState());
+                    mob.curState().adjMana(3*target.phyStats().level()*super.getXLEVELLevel(mob),mob.maxState());
                 target.destroy();
 				mob.location().recoverRoomStats();
 			}

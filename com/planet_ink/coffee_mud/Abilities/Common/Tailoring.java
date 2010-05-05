@@ -100,8 +100,8 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 						else
 						if(refitting)
 						{
-							building.baseEnvStats().setHeight(0);
-							building.recoverEnvStats();
+							building.basePhyStats().setHeight(0);
+							building.recoverPhyStats();
 						}
 						else
 							dropAWinner(mob,building);
@@ -227,7 +227,7 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 				commonTell(mob,"You don't know how to refit that sort of thing.");
 				return false;
 			}
-			if(building.envStats().height()==0)
+			if(building.phyStats().height()==0)
 			{
 				commonTell(mob,building.name()+" is already the right size.");
 				return false;
@@ -314,13 +314,13 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 			building.setDisplayText(itemName+" lies here");
 			building.setDescription(itemName+". ");
 			if(bundling)
-				building.baseEnvStats().setWeight(woodRequired);
+				building.basePhyStats().setWeight(woodRequired);
 			else
-				building.baseEnvStats().setWeight(woodRequired/2);
+				building.basePhyStats().setWeight(woodRequired/2);
 			int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-1;
 			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
 			building.setMaterial(data[0][FOUND_CODE]);
-			building.baseEnvStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
+			building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 			int canContain=CMath.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
@@ -332,7 +332,7 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 			{
                 ((Weapon)building).setWeaponClassification(Weapon.CLASS_NATURAL);
                 setWeaponTypeClass((Weapon)building,misctype);
-				building.baseEnvStats().setDamage(armordmg);
+				building.basePhyStats().setDamage(armordmg);
 				((Weapon)building).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
 				((Weapon)building).setRawLogicalAnd((capacity>1));
 			}
@@ -343,18 +343,18 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 					((Armor)building).setCapacity(capacity+woodRequired);
 					((Armor)building).setContainTypes(canContain);
 				}
-                ((Armor)building).baseEnvStats().setArmor(0);
+                ((Armor)building).basePhyStats().setArmor(0);
                 if(armordmg!=0)
-                    ((Armor)building).baseEnvStats().setArmor(armordmg+(abilityCode()-1)+hardness);
+                    ((Armor)building).basePhyStats().setArmor(armordmg+(abilityCode()-1)+hardness);
                 setWearLocation(building,misctype,0);
 			}
 			if(building instanceof Rideable)
 			{
                 setRideBasis((Rideable)building,misctype);
 			}
-			building.recoverEnvStats();
+			building.recoverPhyStats();
 			building.text();
-			building.recoverEnvStats();
+			building.recoverPhyStats();
 		}
 
 

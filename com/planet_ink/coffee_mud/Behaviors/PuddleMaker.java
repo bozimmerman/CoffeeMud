@@ -113,9 +113,9 @@ public class PuddleMaker extends StdBehavior
 		((Drink)I).setLiquidRemaining(100);
 		((Drink)I).setLiquidType(RawMaterial.RESOURCE_FRESHWATER);
 		I.setMaterial(RawMaterial.RESOURCE_FRESHWATER);
-        I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|EnvStats.IS_UNSAVABLE);
+        I.basePhyStats().setDisposition(I.basePhyStats().disposition()|PhyStats.IS_UNSAVABLE);
 		CMLib.materials().addEffectsToResource(I);
-        I.recoverEnvStats();
+        I.recoverPhyStats();
 		if(coldWetWeather(oldWeather))
 		{
 			I.setName("some snow");

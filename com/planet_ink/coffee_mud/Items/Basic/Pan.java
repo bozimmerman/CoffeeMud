@@ -42,8 +42,8 @@ public class Pan extends StdDrink
 		capacity=25;
 		baseGoldValue=5;
 		setMaterial(RawMaterial.RESOURCE_IRON);
-		baseEnvStats().setWeight(5);
-		recoverEnvStats();
+		basePhyStats().setWeight(5);
+		recoverPhyStats();
 	}
 
 

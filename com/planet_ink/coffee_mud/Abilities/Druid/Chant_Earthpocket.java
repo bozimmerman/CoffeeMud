@@ -108,25 +108,25 @@ public class Chant_Earthpocket extends Chant
 				{
 					if(((MOB)affected).location().domainType()==Room.DOMAIN_INDOORS_CAVE)
 					{
-						if(CMath.bset(pocket.baseEnvStats().disposition(),EnvStats.IS_NOT_SEEN))
+						if(CMath.bset(pocket.basePhyStats().disposition(),PhyStats.IS_NOT_SEEN))
 						{
-							pocket.baseEnvStats().setDisposition(pocket.baseEnvStats().disposition()-EnvStats.IS_NOT_SEEN);
-							pocket.recoverEnvStats();
+							pocket.basePhyStats().setDisposition(pocket.basePhyStats().disposition()-PhyStats.IS_NOT_SEEN);
+							pocket.recoverPhyStats();
 						}
 						((MOB)affected).location().moveItemTo(pocket);
 					}
 					else
-					if(!CMath.bset(pocket.baseEnvStats().disposition(),EnvStats.IS_NOT_SEEN))
+					if(!CMath.bset(pocket.basePhyStats().disposition(),PhyStats.IS_NOT_SEEN))
 					{
-						pocket.baseEnvStats().setDisposition(pocket.baseEnvStats().disposition()|EnvStats.IS_NOT_SEEN);
-						pocket.recoverEnvStats();
+						pocket.basePhyStats().setDisposition(pocket.basePhyStats().disposition()|PhyStats.IS_NOT_SEEN);
+						pocket.recoverPhyStats();
 					}
 				}
 				else
-				if(!CMath.bset(pocket.baseEnvStats().disposition(),EnvStats.IS_NOT_SEEN))
+				if(!CMath.bset(pocket.basePhyStats().disposition(),PhyStats.IS_NOT_SEEN))
 				{
-					pocket.baseEnvStats().setDisposition(pocket.baseEnvStats().disposition()|EnvStats.IS_NOT_SEEN);
-					pocket.recoverEnvStats();
+					pocket.basePhyStats().setDisposition(pocket.basePhyStats().disposition()|PhyStats.IS_NOT_SEEN);
+					pocket.recoverPhyStats();
 				}
 			}
 		}
@@ -173,13 +173,13 @@ public class Chant_Earthpocket extends Chant
 				mob.location().send(mob,msg);
 				pocket=(Container)CMClass.getItem("GenContainer");
 				pocket.setCapacity(Integer.MAX_VALUE);
-				pocket.baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMNOTGET);
-				pocket.baseEnvStats().setWeight(0);
+				pocket.basePhyStats().setSensesMask(PhyStats.SENSE_ITEMNOTGET);
+				pocket.basePhyStats().setWeight(0);
 				pocket.setMaterial(RawMaterial.RESOURCE_NOTHING);
 				pocket.setName("an earthpocket");
 				pocket.setDisplayText("an empty pitch-black pocket is in the wall here.");
 				pocket.setDescription("It looks like an endless black hole in the wall.  Very mystical.");
-				pocket.recoverEnvStats();
+				pocket.recoverPhyStats();
 				target.location().addItem(pocket);
 				beneficialAffect(mob,target,asLevel,CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH));
 				target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"A dark pocket of energy appears in a nearby wall.");

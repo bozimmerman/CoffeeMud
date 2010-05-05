@@ -104,22 +104,22 @@ public class Chant_GrowClub extends Chant
 				newItem.setDisplayText(newItem.name()+" sits here");
 				newItem.setDescription("It looks like the limb of a tree.");
 				newItem.setMaterial(material);
-				newItem.baseEnvStats().setWeight(10);
-				int level=mob.envStats().level();
-				newItem.baseEnvStats().setLevel(level);
-				newItem.baseEnvStats().setAttackAdjustment(0);
+				newItem.basePhyStats().setWeight(10);
+				int level=mob.phyStats().level();
+				newItem.basePhyStats().setLevel(level);
+				newItem.basePhyStats().setAttackAdjustment(0);
 				int damage=6;
 				try{ damage=(((level+(2*super.getXLEVELLevel(mob)))-1)/2)+2;}catch(Throwable t){}
 				if(damage<6) damage=6;
-				newItem.baseEnvStats().setDamage(damage+super.getX1Level(mob));
-				newItem.recoverEnvStats();
+				newItem.basePhyStats().setDamage(damage+super.getX1Level(mob));
+				newItem.recoverPhyStats();
 				newItem.setBaseValue(0);
 				newItem.setWeaponClassification(Weapon.CLASS_BLUNT);
 				newItem.setWeaponType(Weapon.TYPE_BASHING);
 				newItem.setMiscText(newItem.text());
 				mob.location().addItem(newItem,ItemPossessor.Expire.Resource);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A good looking club grows out of a tree and drops.");
-				mob.location().recoverEnvStats();
+				mob.location().recoverPhyStats();
 			}
 		}
 		else

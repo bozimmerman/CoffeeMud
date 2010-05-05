@@ -46,7 +46,7 @@ public class DrowElf extends StdMOB
 
 		Random randomizer = new Random(System.currentTimeMillis());
 
-		baseEnvStats().setLevel(4 + Math.abs(randomizer.nextInt() % 7));
+		basePhyStats().setLevel(4 + Math.abs(randomizer.nextInt() % 7));
 
 		int gender = Math.abs(randomizer.nextInt() % 2);
 		String sex = null;
@@ -60,14 +60,14 @@ public class DrowElf extends StdMOB
 		setDescription("a " + sex + " Drow Fighter");
 		setDisplayText("The drow is armored in black chain mail and carrying a nice arsenal of weapons");
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
-		setMoney((int)Math.round(CMath.div((50 * baseEnvStats().level()),(randomizer.nextInt() % 10 + 1))));
-		baseEnvStats.setWeight(70 + Math.abs(randomizer.nextInt() % 20));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
+		setMoney((int)Math.round(CMath.div((50 * basePhyStats().level()),(randomizer.nextInt() % 10 + 1))));
+		basePhyStats.setWeight(70 + Math.abs(randomizer.nextInt() % 20));
 
 		setWimpHitPoint(5);
 
-		baseEnvStats().setSpeed(2.0);
-		baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK | EnvStats.CAN_SEE_INFRARED);
+		basePhyStats().setSpeed(2.0);
+		basePhyStats().setSensesMask(PhyStats.CAN_SEE_DARK | PhyStats.CAN_SEE_INFRARED);
 
 		if(gender == MALE)
 			baseCharStats().setStat(CharStats.STAT_GENDER,'M');
@@ -86,7 +86,7 @@ public class DrowElf extends StdMOB
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

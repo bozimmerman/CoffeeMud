@@ -67,12 +67,12 @@ public class Spell_MassDisintegrate extends Spell
 		for(Iterator e=h.iterator();e.hasNext();)
 		{
 			MOB mob2=(MOB)e.next();
-			avgLevel+=mob2.envStats().level();
+			avgLevel+=mob2.phyStats().level();
 		}
 		if(h.size()>0)
 			avgLevel=avgLevel/h.size();
 		
-		int levelDiff=avgLevel-(mob.envStats().level()+(2*getXLEVELLevel(mob)));
+		int levelDiff=avgLevel-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
 		if(levelDiff<0) levelDiff=0;
 		
 		boolean success=false;
@@ -86,7 +86,7 @@ public class Spell_MassDisintegrate extends Spell
 			for(Iterator f=h.iterator();f.hasNext();)
 			{
 				MOB target=(MOB)f.next();
-				if((target.envStats().level()/avgLevel)<2)
+				if((target.phyStats().level()/avgLevel)<2)
 				{
 					CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 					if(mob.location().okMessage(mob,msg))

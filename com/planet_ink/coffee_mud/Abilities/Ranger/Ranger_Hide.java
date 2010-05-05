@@ -71,18 +71,18 @@ public class Ranger_Hide extends StdAbility
 			 &&(msg.sourceMajor()>0))
 			 {
 				unInvoke();
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 			 }
 		}
 		return;
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_HIDDEN);
 		if(CMLib.flags().isSneaking(affected))
-			affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_SNEAKING);
+			affectableStats.setDisposition(affectableStats.disposition()-PhyStats.IS_SNEAKING);
 	}
     public void affectCharStats(MOB affected, CharStats affectableStats)
     {
@@ -93,7 +93,7 @@ public class Ranger_Hide extends StdAbility
 	public int getMOBLevel(MOB meMOB)
 	{
 		if(meMOB==null) return 0;
-		return meMOB.envStats().level();
+		return meMOB.phyStats().level();
 	}
 	public MOB getHighestLevelMOB(MOB meMOB, Vector not)
 	{
@@ -111,9 +111,9 @@ public class Ranger_Hide extends StdAbility
 			&&(M!=meMOB)
 			&&(!CMLib.flags().isSleeping(M))
 			&&(!H.contains(M))
-			&&(highestLevel<M.envStats().level()))
+			&&(highestLevel<M.phyStats().level()))
 			{
-				highestLevel=M.envStats().level();
+				highestLevel=M.phyStats().level();
 				highestMOB=M;
 			}
 		}
@@ -151,7 +151,7 @@ public class Ranger_Hide extends StdAbility
 		}
 
 		MOB highestMOB=this.getHighestLevelMOB(mob,null);
-		int levelDiff=(mob.envStats().level()+(2*getXLEVELLevel(mob)))-getMOBLevel(highestMOB);
+		int levelDiff=(mob.phyStats().level()+(2*getXLEVELLevel(mob)))-getMOBLevel(highestMOB);
 
 		String str="You creep into some foliage and remain completely still.";
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_ROCKS)
@@ -180,7 +180,7 @@ public class Ranger_Hide extends StdAbility
 				((Ranger_Hide)newOne).bonus=getXLEVELLevel(mob)*2;
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 			}
 			else
 				success=false;

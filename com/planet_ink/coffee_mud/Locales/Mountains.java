@@ -40,8 +40,8 @@ public class Mountains extends StdRoom
 	{
 		super();
 		name="the mountain";
-		baseEnvStats.setWeight(5);
-		recoverEnvStats();
+		basePhyStats.setWeight(5);
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_MOUNTAINS;}
 	public int domainConditions(){return Room.CONDITION_NORMAL;}

@@ -130,14 +130,14 @@ public class Burning extends StdAbility
 							{
 								invoker=CMClass.getMOB("StdMOB");
 								invoker.setLocation(CMClass.getLocale("StdRoom"));
-								invoker.baseEnvStats().setLevel(affected.envStats().level());
-								invoker.envStats().setLevel(affected.envStats().level());
+								invoker.basePhyStats().setLevel(affected.phyStats().level());
+								invoker.phyStats().setLevel(affected.phyStats().level());
 							}
 					        room.showHappens(CMMsg.MSG_OK_ACTION,affected.name()+" EXPLODES!!!");
 					        for(int i=0;i<room.numInhabitants();i++)
 					        {
 					            MOB target=room.fetchInhabitant(i);
-								CMLib.combat().postDamage(invoker(),target,null,CMLib.dice().roll(affected.envStats().level(),5,1),CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The blast <DAMAGE> <T-NAME>!");
+								CMLib.combat().postDamage(invoker(),target,null,CMLib.dice().roll(affected.phyStats().level(),5,1),CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The blast <DAMAGE> <T-NAME>!");
 					        }
 							((Item)affected).destroy();
 					    }
@@ -147,16 +147,16 @@ public class Burning extends StdAbility
 							ash.setName("some ash");
 							ash.setDisplayText("a small pile of ash is here");
 							ash.setMaterial(RawMaterial.RESOURCE_ASH);
-							ash.baseEnvStats().setWeight(1);
-							ash.recoverEnvStats();
+							ash.basePhyStats().setWeight(1);
+							ash.recoverPhyStats();
 							room.addItem(ash,ItemPossessor.Expire.Monster_EQ);
 							((RawMaterial)ash).rebundle();
 							if((affected instanceof RawMaterial)
-							&&(affected.baseEnvStats().weight()>1)
+							&&(affected.basePhyStats().weight()>1)
 							&&(CMLib.flags().burnStatus(affected)>0))
 							{
-								affected.baseEnvStats().setWeight(affected.baseEnvStats().weight()-1);
-								affected.recoverEnvStats();
+								affected.basePhyStats().setWeight(affected.basePhyStats().weight()-1);
+								affected.recoverPhyStats();
 								this.tickDown = CMLib.flags().burnStatus(affected);
 								CMLib.materials().adjustResourceName((Item)affected);
 								((Room)E).recoverRoomStats();
@@ -303,10 +303,10 @@ public class Burning extends StdAbility
 		super.executeMsg(myHost,msg);
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_LIGHTSOURCE);
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_LIGHTSOURCE);
 	}
 	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel)
 	{
@@ -327,13 +327,13 @@ public class Burning extends StdAbility
 				asLevel = CMLib.flags().burnStatus(target);
 			if(asLevel < 0) asLevel = 0;
 			beneficialAffect(mob,target,0,asLevel);
-			target.recoverEnvStats();
+			target.recoverPhyStats();
 			if(target instanceof Item)
 			{
 				Environmental owner=((Item)target).owner();
 				if(owner!=null)
 				{
-					owner.recoverEnvStats();
+					owner.recoverPhyStats();
 					if(owner instanceof Room)
 						((Room)owner).recoverRoomStats();
 					else

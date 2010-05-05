@@ -38,9 +38,9 @@ public class RingOfElectricity extends Ring_Protection implements MiscMagic
 	public RingOfElectricity()
 	{
 		super();
-		this.baseEnvStats().setLevel(COPPER_RING);
+		this.basePhyStats().setLevel(COPPER_RING);
 		material=RawMaterial.RESOURCE_COPPER;
-		this.recoverEnvStats();
+		this.recoverPhyStats();
 	}
 
 }

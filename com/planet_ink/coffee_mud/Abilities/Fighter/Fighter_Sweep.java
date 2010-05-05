@@ -46,7 +46,7 @@ public class Fighter_Sweep extends FighterSkill
     public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		
 		float f=(float)CMath.mul(0.1,(float)getXLEVELLevel(invoker()));
@@ -127,7 +127,7 @@ public class Fighter_Sweep extends FighterSkill
                 mob.location().send(mob,msg);
 				invoker=mob;
 				mob.addEffect(this);
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 				for(Iterator e=h.iterator();e.hasNext();)
 				{
 					MOB target=(MOB)e.next();
@@ -143,7 +143,7 @@ public class Fighter_Sweep extends FighterSkill
 					}
 				}
 				mob.delEffect(this);
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 			}
 		}
 		else

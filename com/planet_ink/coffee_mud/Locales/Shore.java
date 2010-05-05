@@ -40,8 +40,8 @@ public class Shore extends StdRoom
 	{
 		super();
 		name="the shore";
-		baseEnvStats.setWeight(2);
-		recoverEnvStats();
+		basePhyStats.setWeight(2);
+		recoverPhyStats();
 	}
 	protected int baseThirst(){return 1;}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_DESERT;}

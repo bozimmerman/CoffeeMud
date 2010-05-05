@@ -2,7 +2,7 @@ package com.planet_ink.coffee_mud.core.interfaces;
 
 import com.planet_ink.coffee_mud.Abilities.interfaces.Ability;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior;
-import com.planet_ink.coffee_mud.Common.interfaces.EnvStats;
+import com.planet_ink.coffee_mud.Common.interfaces.PhyStats;
 
 /*
 Copyright 2000-2010 Bo Zimmerman
@@ -31,74 +31,74 @@ public interface Affectable
 	/**
      * Object containing a set of base, unmodified, mostly numeric fields.  The values on the fields
      * in this object will be as they were set by the builder. This object is used as a basis for
-     * the recoverEnvStats() method.  See the EnvStats interface for information on the fields herein.
-     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#envStats()
-     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#recoverEnvStats()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats
+     * the recoverPhyStats() method.  See the PhyStats interface for information on the fields herein.
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#phyStats()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#recoverPhyStats()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats
      * @return a set of state fields
      */
-	public EnvStats baseEnvStats();
+	public PhyStats basePhyStats();
     /**
      * Re-sets the object containing a set of base, unmodified, mostly numeric fields.  The values on the fields
      * in this object will be as they were set by the builder. This object is used as a basis for
-     * the recoverEnvStats() method.  See the EnvStats interface for information on the fields herein. This
-     * method is rarely called -- the fields therein are usually set using setter methods from the EnvStats
+     * the recoverPhyStats() method.  See the PhyStats interface for information on the fields herein. This
+     * method is rarely called -- the fields therein are usually set using setter methods from the PhyStats
      * interface on the object itself.
-     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#envStats()
-     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#recoverEnvStats()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats
-     * @param newBaseEnvStats a set of state fields
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#phyStats()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#recoverPhyStats()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats
+     * @param newStats a set of state fields
      */
-    public void setBaseEnvStats(EnvStats newBaseEnvStats);
+    public void setBasePhyStats(PhyStats newStats);
     /**
      * Object containing a set of current, modified, usable, mostly numeric fields.  This object is based on
-     * the object from baseEnvStats() and then updated and modified by the recoverEnvStats() method.
-     * See the EnvStats interface for information on the fields herein.
-     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#baseEnvStats()
-     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#recoverEnvStats()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats
+     * the object from basePhyStats() and then updated and modified by the recoverPhyStats() method.
+     * See the PhyStats interface for information on the fields herein.
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#basePhyStats()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#recoverPhyStats()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats
      * @return the current set of state fields
      */
-	public EnvStats envStats();
+	public PhyStats phyStats();
     /**
-     * This method copies the baseEnvStats() object into the envStats() object, then makes repeated calls to
-     * all surrounding objects  with affectEnvStats(Environmental,EnvStats) method.   Surrounding  objects
+     * This method copies the basePhyStats() object into the phyStats() object, then makes repeated calls to
+     * all surrounding objects  with affectPhyStats(Environmental,PhyStats) method.   Surrounding  objects
      * include the room where the object is located, the Ability objects in the Effects list, the Behaviors
      * in the behaviors list, and race/charclass/area if applicable.  Those methods will then make all necessary
-     * adjustments to the values in the new envStats() object.  When it returns, envStats() will have a totally
+     * adjustments to the values in the new phyStats() object.  When it returns, phyStats() will have a totally
      * updated object.  This method must be called in code whenever the object is placed on the map, or when
      * anything changes in its environment, such as location, effects, or other states.
-     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#baseEnvStats()
-     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#envStats()
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#addEffect(Ability)
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#basePhyStats()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#phyStats()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#addEffect(Ability)
      * @see com.planet_ink.coffee_mud.core.interfaces.PhysicalAgent#addBehavior(Behavior)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats
      */
-	public void recoverEnvStats();
+	public void recoverPhyStats();
 
 	/**
      * Add a new effect to this object, whether permanent or temporary.  After calling this method,
-     * recoverEnvStats() should be called next in case this ability object modifies the stats.
+     * recoverPhyStats() should be called next in case this ability object modifies the stats.
      * An Ability with a given ID() can only be added once per object.
      * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
-     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#recoverEnvStats()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#recoverPhyStats()
      * @param to The ability object to add as an effect.
      */
 	public void addEffect(Ability to);
     /**
      * Same as addEffect(Ability), but will set the Ability object as never being able to be uninvoked.
-     * recoverEnvStats() method  should be called next.
+     * recoverPhyStats() method  should be called next.
      * An Ability with a given ID() can only be added once per object.
      * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
-     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#recoverEnvStats()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#recoverPhyStats()
      * @param to The ability object to add as an effect.
      */
 	public void addNonUninvokableEffect(Ability to);
     /**
      * Delete an effect from this object, whether permanent or temporary.  After calling this method,
-     * recoverEnvStats() should be called next in case this ability object modified the stats.
+     * recoverPhyStats() should be called next in case this ability object modified the stats.
      * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
-     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#recoverEnvStats()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#recoverPhyStats()
      * @param to The ability object to remove as an effect on this object
      */
 	public void delEffect(Ability to);
@@ -112,7 +112,7 @@ public interface Affectable
      * Returns an ability object listed as an effect on this object. May return null even if the index
      * is correct to mark a race condition.
      * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#numEffects()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#numEffects()
      * @param index which object to return
      * @return the ability object effecting this object
      */

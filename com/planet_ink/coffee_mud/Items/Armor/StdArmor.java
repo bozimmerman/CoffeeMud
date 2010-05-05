@@ -48,13 +48,13 @@ public class StdArmor extends StdContainer implements Armor
 		setDescription("Thick padded leather with strips of metal interwoven.");
 		properWornBitmap=Wearable.WORN_TORSO;
 		wornLogicalAnd=false;
-		baseEnvStats().setArmor(10);
-		baseEnvStats().setAbility(0);
+		basePhyStats().setArmor(10);
+		basePhyStats().setAbility(0);
 		baseGoldValue=150;
 		setCapacity(0);
 		setLidsNLocks(false,true,false,false);
 		setUsesRemaining(100);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public void setUsesRemaining(int newUses)
@@ -161,8 +161,8 @@ public class StdArmor extends StdContainer implements Armor
 		if(!super.okMessage(myHost,msg))
 			return false;
 		if((msg.amITarget(this))
-		&&(envStats().height()>0)
-		&&(msg.source().envStats().height()>0)
+		&&(phyStats().height()>0)
+		&&(msg.source().phyStats().height()>0)
 		&&(msg.targetMinor()==CMMsg.TYP_WEAR))
 		{
 			int devianceAllowed=200;
@@ -187,12 +187,12 @@ public class StdArmor extends StdContainer implements Armor
 			}
 			if((devianceAllowed>0)&&(!CMSecurity.isDisabled("EQUIPSIZE")))
 			{
-				if(msg.source().envStats().height()<(envStats().height()-devianceAllowed))
+				if(msg.source().phyStats().height()<(phyStats().height()-devianceAllowed))
 				{
 					msg.source().tell(name()+" doesn't fit you -- it's too big.");
 					return false;
 				}
-				if(msg.source().envStats().height()>(envStats().height()+devianceAllowed))
+				if(msg.source().phyStats().height()>(phyStats().height()+devianceAllowed))
 				{
 					msg.source().tell(name()+" doesn't fit you -- it's too small.");
 					return false;
@@ -216,7 +216,7 @@ public class StdArmor extends StdContainer implements Armor
 		&&(owner()!=null)
 		&&(owner() instanceof MOB)
 		&&(msg.amITarget(owner()))
-		&&(CMLib.dice().rollPercentage()>((envStats().level()/2)+(10*envStats().ability())+(CMLib.flags().isABonusItems(this)?20:0)))
+		&&(CMLib.dice().rollPercentage()>((phyStats().level()/2)+(10*phyStats().ability())+(CMLib.flags().isABonusItems(this)?20:0)))
 		&&(subjectToWearAndTear())
 		&&(CMLib.dice().rollPercentage()>(((MOB)owner()).charStats().getStat(CharStats.STAT_DEXTERITY))))
 		{
@@ -487,7 +487,7 @@ public class StdArmor extends StdContainer implements Armor
 			}
 
 			if(oldUses!=usesRemaining())
-				recoverEnvStats();
+				recoverPhyStats();
 
 			if((usesRemaining()<10)
 			&&(oldUses!=usesRemaining())
@@ -505,7 +505,7 @@ public class StdArmor extends StdContainer implements Armor
 				msg.addTrailerMsg(CMClass.getMsg(((MOB)owner()),null,null,CMMsg.MSG_OK_VISUAL,"^I"+name()+" is destroyed!!^?",CMMsg.NO_EFFECT,null,CMMsg.MSG_OK_VISUAL,"^I"+name()+" being worn by <S-NAME> is destroyed!^?"));
 				unWear();
 				destroy();
-				owner.recoverEnvStats();
+				owner.recoverPhyStats();
 				owner.recoverCharStats();
 				owner.recoverMaxState();
                 if(owner.location()!=null)
@@ -514,34 +514,34 @@ public class StdArmor extends StdContainer implements Armor
 		}
 	}
 
-	public void recoverEnvStats()
+	public void recoverPhyStats()
 	{
-		super.recoverEnvStats();
-		if((baseEnvStats().height()==0)
+		super.recoverPhyStats();
+		if((basePhyStats().height()==0)
 		   &&(!amWearingAt(Wearable.IN_INVENTORY))
 		   &&(owner() instanceof MOB))
-			baseEnvStats().setHeight(((MOB)owner()).baseEnvStats().height());
+			basePhyStats().setHeight(((MOB)owner()).basePhyStats().height());
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		
 		if((!amWearingAt(Wearable.IN_INVENTORY))
 		&&((!amWearingAt(Wearable.WORN_FLOATING_NEARBY))||(fitsOn(Wearable.WORN_FLOATING_NEARBY)))
 		&&((!amWearingAt(Wearable.WORN_HELD))||(this instanceof Shield)))
 		{
-			affectableStats.setArmor(affectableStats.armor()-envStats().armor());
-			if(envStats().armor()!=0)
+			affectableStats.setArmor(affectableStats.armor()-phyStats().armor());
+			if(phyStats().armor()!=0)
 			{
 				if(amWearingAt(Wearable.WORN_TORSO))
-					affectableStats.setArmor(affectableStats.armor()-(envStats().ability()*5));
+					affectableStats.setArmor(affectableStats.armor()-(phyStats().ability()*5));
 				else
 				if((amWearingAt(Wearable.WORN_HEAD))||(this.amWearingAt(Wearable.WORN_HELD)))
-					affectableStats.setArmor(affectableStats.armor()-(envStats().ability()*2));
+					affectableStats.setArmor(affectableStats.armor()-(phyStats().ability()*2));
 				else
 				if(!amWearingAt(Wearable.WORN_FLOATING_NEARBY))
-					affectableStats.setArmor(affectableStats.armor()-envStats().ability());
+					affectableStats.setArmor(affectableStats.armor()-phyStats().ability());
 			}
 		}
 	}
@@ -592,11 +592,11 @@ public class StdArmor extends StdContainer implements Armor
 	public String secretIdentity()
 	{
 		String id=super.secretIdentity();
-		if(envStats().ability()>0)
-			id=name()+" +"+envStats().ability()+((id.length()>0)?"\n\r":"")+id;
+		if(phyStats().ability()>0)
+			id=name()+" +"+phyStats().ability()+((id.length()>0)?"\n\r":"")+id;
 		else
-		if(envStats().ability()<0)
-			id=name()+" "+envStats().ability()+((id.length()>0)?"\n\r":"")+id;
-		return id+"\n\rBase Protection: "+envStats().armor();
+		if(phyStats().ability()<0)
+			id=name()+" "+phyStats().ability()+((id.length()>0)?"\n\r":"")+id;
+		return id+"\n\rBase Protection: "+phyStats().armor();
 	}
 }

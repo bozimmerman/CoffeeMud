@@ -89,7 +89,7 @@ public class Prayer_AnimateDead extends Prayer
 				newMOB.setName(realName+" zombie");
 				newMOB.setDescription(description);
 				newMOB.setDisplayText("");
-				newMOB.baseEnvStats().setLevel(body.envStats().level()+(super.getX1Level(mob)*2)+super.getXLEVELLevel(mob));
+				newMOB.basePhyStats().setLevel(body.phyStats().level()+(super.getX1Level(mob)*2)+super.getXLEVELLevel(mob));
 				newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
 				newMOB.baseCharStats().setMyRace(CMClass.getRace("Undead"));
 				newMOB.baseCharStats().setBodyPartsFromStringAfterRace(body.charStats().getBodyPartsAsString());
@@ -99,20 +99,20 @@ public class Prayer_AnimateDead extends Prayer
 					P.setMiscText("NOTEACH STR=20 INT=10 WIS=10 CON=10 DEX=3 CHA=2");
 					newMOB.addNonUninvokableEffect(P);
 				}
-				newMOB.baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK);
+				newMOB.basePhyStats().setSensesMask(PhyStats.CAN_SEE_DARK);
 				newMOB.recoverCharStats();
-				newMOB.baseEnvStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
-				newMOB.baseEnvStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
+				newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
+				newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
 				CMLib.factions().setAlignment(newMOB,Faction.ALIGN_EVIL);
-				newMOB.baseState().setHitPoints(15*newMOB.baseEnvStats().level());
+				newMOB.baseState().setHitPoints(15*newMOB.basePhyStats().level());
 				newMOB.baseState().setMovement(30);
-				newMOB.baseEnvStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
+				newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
 				newMOB.baseState().setMana(0);
 				Behavior B=CMClass.getBehavior("Aggressive");
 				if(B!=null){ B.setParms("+NAMES \"-"+mob.Name()+"\""); newMOB.addBehavior(B);}
 				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 				newMOB.recoverCharStats();
-				newMOB.recoverEnvStats();
+				newMOB.recoverPhyStats();
 				newMOB.recoverMaxState();
 				newMOB.resetToMaxState();
 				newMOB.text();

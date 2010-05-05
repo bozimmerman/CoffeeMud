@@ -119,7 +119,7 @@ public class Thief_Snatch extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=mob.getVictim().envStats().level()-(mob.envStats().level()+(getXLEVELLevel(mob)*2));
+		int levelDiff=mob.getVictim().phyStats().level()-(mob.phyStats().level()+(getXLEVELLevel(mob)*2));
 		if(levelDiff>0)
 			levelDiff=levelDiff*6;
 		else

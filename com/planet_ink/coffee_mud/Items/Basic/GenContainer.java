@@ -41,12 +41,12 @@ public class GenContainer extends StdContainer
 	{
 		super();
 		setName("a generic container");
-		baseEnvStats.setWeight(2);
+		basePhyStats.setWeight(2);
 		setDisplayText("a generic container sits here.");
 		setDescription("");
 		baseGoldValue=5;
 		capacity=50;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public String readableText(){return readableText;}
@@ -70,7 +70,7 @@ public class GenContainer extends StdContainer
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES"};
 	public String getStat(String code)

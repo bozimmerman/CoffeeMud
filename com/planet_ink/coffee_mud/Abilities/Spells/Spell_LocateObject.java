@@ -144,10 +144,10 @@ public class Spell_LocateObject extends Spell
 							item=SK.getShop().getStock(what,mob);
 						if((item instanceof Item)
 						&&((CMLib.flags().canBeLocated((Item)item)))
-						&&(item.envStats().level()>minLevel)
-						&&(item.envStats().level()<maxLevel))
+						&&(item.phyStats().level()>minLevel)
+						&&(item.phyStats().level()<maxLevel))
 						{
-							String str=item.name()+((!levelAdjust)?"":("("+item.envStats().level()+")"))+" is being carried by "+inhab.name()+" in a place called '"+room.roomTitle(mob)+"'.";
+							String str=item.name()+((!levelAdjust)?"":("("+item.phyStats().level()+")"))+" is being carried by "+inhab.name()+" in a place called '"+room.roomTitle(mob)+"'.";
 							itemsFound.addElement(str);
 							break;
 						}

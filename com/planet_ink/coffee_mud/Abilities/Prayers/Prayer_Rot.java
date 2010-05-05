@@ -248,7 +248,7 @@ public class Prayer_Rot extends Prayer
 				}
 				if(doneSomething)
 					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,target.name()+" appears rotted!");
-				target.recoverEnvStats();
+				target.recoverPhyStats();
 				mob.location().recoverRoomStats();
 			}
 		}

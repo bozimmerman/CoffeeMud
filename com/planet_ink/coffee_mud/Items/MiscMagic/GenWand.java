@@ -47,10 +47,10 @@ public class GenWand extends StdWand
 		secretIdentity=null;
 		setUsesRemaining(0);
 		baseGoldValue=20000;
-		baseEnvStats().setLevel(12);
+		basePhyStats().setLevel(12);
 		CMLib.flags().setReadable(this,false);
 		material=RawMaterial.RESOURCE_OAK;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public boolean isGeneric(){return true;}
@@ -79,7 +79,7 @@ public class GenWand extends StdWand
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
     public String getStat(String code)

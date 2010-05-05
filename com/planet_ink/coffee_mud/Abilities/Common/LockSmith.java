@@ -116,8 +116,8 @@ public class LockSmith extends CraftingSkill
                             {
     							Exit exit2=mob.location().getPairedExit(dir);
     							Room room2=mob.location().getRoomInDir(dir);
-    							((Exit)workingOn).baseEnvStats().setLevel(xlevel(mob));
-    							((Exit)workingOn).recoverEnvStats();
+    							((Exit)workingOn).basePhyStats().setLevel(xlevel(mob));
+    							((Exit)workingOn).recoverPhyStats();
     							((Exit)workingOn).setDoorsNLocks(true,false,true,!delock,!delock,!delock);
     							if(building instanceof Key)
                                 {
@@ -132,7 +132,7 @@ public class LockSmith extends CraftingSkill
 							    &&(exit2.isGeneric())
 							    &&(room2!=null))
     							{
-    								exit2.baseEnvStats().setLevel(xlevel(mob));
+    								exit2.basePhyStats().setLevel(xlevel(mob));
     								exit2.setDoorsNLocks(true,false,true,!delock,!delock,!delock);
     								if(building instanceof Key)
     									exit2.setKeyName(((Key)building).getKey());
@@ -303,7 +303,7 @@ public class LockSmith extends CraftingSkill
 			return false;
 		}
         if((makeResource>=0)&&(building!=null)) building.setMaterial(makeResource);
-		duration=getDuration(25,mob,workingOn.envStats().level(),8);
+		duration=getDuration(25,mob,workingOn.phyStats().level(),8);
 		if(keyFlag) duration=duration/2;
 		building.setName(itemName);
 		startStr="<S-NAME> start(s) working on "+(keyFlag?"a key for ":"")+workingOn.name()+".";
@@ -312,20 +312,20 @@ public class LockSmith extends CraftingSkill
         playSound="drill.wav";
 		building.setDisplayText(itemName+" lies here");
 		building.setDescription(itemName+". ");
-		building.baseEnvStats().setWeight(woodRequired);
+		building.basePhyStats().setWeight(woodRequired);
 		building.setBaseValue(1);
 		if(keyFlag)
-			building.baseEnvStats().setLevel(1);
+			building.basePhyStats().setLevel(1);
 		else
-			building.baseEnvStats().setLevel(workingOn.envStats().level());
+			building.basePhyStats().setLevel(workingOn.phyStats().level());
 		building.setSecretIdentity("This is the work of "+mob.Name()+".");
-		building.recoverEnvStats();
+		building.recoverPhyStats();
 		building.text();
-		building.recoverEnvStats();
+		building.recoverPhyStats();
 
 		int proficiencyAddition=0;
-		if(workingOn.envStats().level()>xlevel(mob))
-			proficiencyAddition=workingOn.envStats().level()-xlevel(mob);
+		if(workingOn.phyStats().level()>xlevel(mob))
+			proficiencyAddition=workingOn.phyStats().level()-xlevel(mob);
 		messedUp=!proficiencyCheck(mob,proficiencyAddition*5,auto);
 
 		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,startStr);

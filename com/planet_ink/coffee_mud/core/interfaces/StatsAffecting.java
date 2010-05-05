@@ -38,18 +38,18 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public interface StatsAffecting
 {
     /**
-     * This method is called by the recoverEnvStats() method on other Environmental objects.  It is used
-     * to transform the Environmental baseEnvStats() object into a finished envStats() object,  both of
-     * which are objects implementing the EnvStats interface.  See those methods for more information.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats
+     * This method is called by the recoverPhyStats() method on other Environmental objects.  It is used
+     * to transform the Environmental basePhyStats() object into a finished phyStats() object,  both of
+     * which are objects implementing the PhyStats interface.  See those methods for more information.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats
      * @see Environmental
-     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#baseEnvStats()
-     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#envStats()
-     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#recoverEnvStats()
-     * @param affected the host of the EnvStats object being affected
-     * @param affectableStats the particular EnvStats object being affected
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#basePhyStats()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#phyStats()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#recoverPhyStats()
+     * @param affected the host of the PhyStats object being affected
+     * @param affectableStats the particular PhyStats object being affected
      */
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats);
+	public void affectPhyStats(Physical affected, PhyStats affectableStats);
     /**
      * This method is called by the recoverCharStats() method on other MOB objects.  It is used
      * to transform the MOB baseCharStats() object into a finished charStats() object,  both of

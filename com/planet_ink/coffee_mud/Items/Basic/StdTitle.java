@@ -55,9 +55,9 @@ public class StdTitle extends StdItem implements LandTitle
 		setName("a standard title");
 		setDescription("Give or Sell this title to transfer ownership. **DON`T LOSE THIS!**");
 		baseGoldValue=10000;
-		baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMREADABLE);
+		basePhyStats().setSensesMask(PhyStats.SENSE_ITEMREADABLE);
 		setMaterial(RawMaterial.RESOURCE_PAPER);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public int landPrice()
@@ -194,7 +194,7 @@ public class StdTitle extends StdItem implements LandTitle
 		return new Vector();
 	}
 
-	public void recoverEnvStats(){CMLib.flags().setReadable(this,true); super.recoverEnvStats();}
+	public void recoverPhyStats(){CMLib.flags().setReadable(this,true); super.recoverPhyStats();}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -317,7 +317,7 @@ public class StdTitle extends StdItem implements LandTitle
 			A.setLandOwner("");
 			updateTitle();
 			updateLot(null);
-			recoverEnvStats();
+			recoverPhyStats();
 		}
 		else
 		if((msg.targetMinor()==CMMsg.TYP_GIVE)
@@ -351,7 +351,7 @@ public class StdTitle extends StdItem implements LandTitle
 			A.setBackTaxes(0);
 			updateTitle();
 			updateLot(null);
-			recoverEnvStats();
+			recoverPhyStats();
 			msg.source().tell(name()+" is now signed over to "+A.landOwner()+".");
 			if(A.rentalProperty())
 			    msg.source().tell("This property is a rental.  Your rent will be paid every mud-month out of your bank account.");
@@ -479,7 +479,7 @@ public class StdTitle extends StdItem implements LandTitle
 				updateLot(null);
 				msg.source().tell(name()+" is now signed over to "+A.landOwner()+".");
 			}
-			recoverEnvStats();
+			recoverPhyStats();
 		}
 	}
 }

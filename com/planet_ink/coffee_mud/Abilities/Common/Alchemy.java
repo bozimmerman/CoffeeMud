@@ -137,7 +137,7 @@ public class Alchemy extends CraftingSkill implements ItemCraftor
 		building.setName("a potion of "+theSpell.name().toLowerCase());
 		building.setDisplayText("a potion of "+theSpell.name().toLowerCase()+" sits here.");
 		building.setDescription("");
-		building.recoverEnvStats();
+		building.recoverPhyStats();
 		building.text();
 		return building;
 	}

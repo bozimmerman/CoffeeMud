@@ -219,7 +219,7 @@ public class Authenticate extends StdWebMacro
 					{
 						MOB M=m.nextElement();
 						if((highestM==null)
-						||((M!=null)&&(M.baseEnvStats().level()>highestM.baseEnvStats().level())))
+						||((M!=null)&&(M.basePhyStats().level()>highestM.basePhyStats().level())))
 							highestM = M;
 					}
 					if(highestM!=null)

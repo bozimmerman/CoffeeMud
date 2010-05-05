@@ -48,7 +48,7 @@ public class StdTub extends StdRideable implements Drink
 	{
 		super();
 		setName("a tub");
-		baseEnvStats.setWeight(100);
+		basePhyStats.setWeight(100);
 		capacity=1000;
 		containType=Container.CONTAIN_LIQUID;
 		setDisplayText("a tub sits here.");
@@ -57,7 +57,7 @@ public class StdTub extends StdRideable implements Drink
 		material=RawMaterial.RESOURCE_CLAY;
 		rideBasis=Rideable.RIDEABLE_SIT;
 		riderCapacity=4;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public long decayTime(){return decayTime;}
@@ -187,7 +187,7 @@ public class StdTub extends StdRideable implements Drink
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_DRINK:
-				if((mob.isMine(this))||(envStats().weight()>1000)||(!CMLib.flags().isGettable(this)))
+				if((mob.isMine(this))||(phyStats().weight()>1000)||(!CMLib.flags().isGettable(this)))
 				{
 					if(!containsDrink())
 					{

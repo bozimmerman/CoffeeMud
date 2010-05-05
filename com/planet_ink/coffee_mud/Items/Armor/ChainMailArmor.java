@@ -42,11 +42,11 @@ public class ChainMailArmor extends StdArmor
 		setDescription("This suit includes a fairly solid looking hauberk with leggings and a coif.");
 		properWornBitmap=Wearable.WORN_TORSO | Wearable.WORN_ARMS | Wearable.WORN_LEGS;
 		wornLogicalAnd=true;
-		baseEnvStats().setArmor(37);
-		baseEnvStats().setWeight(60);
-		baseEnvStats().setAbility(0);
+		basePhyStats().setArmor(37);
+		basePhyStats().setWeight(60);
+		basePhyStats().setAbility(0);
 		baseGoldValue=150;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_STEEL;
 	}
 

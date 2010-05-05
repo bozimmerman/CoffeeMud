@@ -166,7 +166,7 @@ public class Chant_Nectar extends Chant
 				drank=new Vector();
 				lastNum=-1;
 				beneficialAffect(mob,newItem,asLevel,0);
-				mob.location().recoverEnvStats();
+				mob.location().recoverPhyStats();
 			}
 		}
 		else

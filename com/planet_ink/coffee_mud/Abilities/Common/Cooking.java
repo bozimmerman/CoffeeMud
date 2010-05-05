@@ -153,7 +153,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 					{
 						Item food=((Item)building.copyOf());
 						food.setMiscText(building.text());
-						food.recoverEnvStats();
+						food.recoverPhyStats();
 						if(cookingPot.owner() instanceof Room)
 							((Room)cookingPot.owner()).addItem(food,ItemPossessor.Expire.Player_Drop);
 						else
@@ -445,7 +445,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			{
 				Item I=(Item)contents.elementAt(v);
 				if((I.material()!=RawMaterial.RESOURCE_HERBS)||(!honorHerbs()))
-					food.baseEnvStats().setWeight(food.baseEnvStats().weight()+((I.baseEnvStats().weight())/finalAmount));
+					food.basePhyStats().setWeight(food.basePhyStats().weight()+((I.basePhyStats().weight())/finalAmount));
                 if(I instanceof Food)
                     switch(((Food)I).material()&RawMaterial.MATERIAL_MASK)
                     {
@@ -459,7 +459,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			}
             if(mob!=null)
 				food.setNourishment((food.nourishment()+homeCookValue(mob,10))/finalAmount);
-			food.baseEnvStats().setWeight(food.baseEnvStats().weight()/finalAmount);
+			food.basePhyStats().setWeight(food.basePhyStats().weight()/finalAmount);
             playSound=defaultFoodSound;
 		}
 		else
@@ -467,7 +467,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		{
 			building=CMClass.getItem("GenLiquidResource");
 			//building.setMiscText(cooking.text());
-			//building.recoverEnvStats();
+			//building.recoverPhyStats();
 			building.setName(((messedUp)?"spoiled ":"")+finalDishName);
 			building.setDisplayText("some "+((messedUp)?"spoiled ":"")+finalDishName+" has been left here.");
 			building.setDescription("It looks "+((messedUp)?"spoiled!":"good!"));
@@ -477,7 +477,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			for(int v=0;v<contents.size();v++)
 			{
 				Item I=(Item)contents.elementAt(v);
-				drink.baseEnvStats().setWeight(drink.baseEnvStats().weight()+((I.baseEnvStats().weight())/finalAmount));
+				drink.basePhyStats().setWeight(drink.basePhyStats().weight()+((I.basePhyStats().weight())/finalAmount));
 				if(I instanceof Food)
 					drink.setLiquidRemaining(drink.liquidRemaining()+((Food)I).nourishment());
                 if((I instanceof Drink)&&((((Drink)I).liquidType()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
@@ -495,7 +495,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				drink.setLiquidRemaining(1);
 				drink.setThirstQuenched(1);
 			}
-			drink.baseEnvStats().setWeight(drink.baseEnvStats().weight()/finalAmount);
+			drink.basePhyStats().setWeight(drink.basePhyStats().weight()/finalAmount);
 			if(messedUp)drink.setThirstQuenched(1);
             playSound=defaultDrinkSound;
             building.setMaterial(liquidType);
@@ -518,7 +518,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				for(int v=0;v<contents.size();v++)
 				{
 					Item I=(Item)contents.elementAt(v);
-					drink.baseEnvStats().setWeight(drink.baseEnvStats().weight()+((I.baseEnvStats().weight())/finalAmount));
+					drink.basePhyStats().setWeight(drink.basePhyStats().weight()+((I.basePhyStats().weight())/finalAmount));
 					drink.setLiquidRemaining(drink.liquidRemaining()+rem);
                     if((I instanceof Drink)&&((((Drink)I).liquidType()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
                         liquidType=((Drink)I).liquidType();
@@ -534,7 +534,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				building.setMaterial(liquidType);
                 drink.setLiquidType(liquidType);
 			}
-			building.baseEnvStats().setWeight(building.baseEnvStats().weight()/finalAmount);
+			building.basePhyStats().setWeight(building.basePhyStats().weight()/finalAmount);
             playSound=defaultFoodSound;
 		}
 		else
@@ -550,7 +550,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			}
 			building.setName(((messedUp)?"ruined ":"")+finalDishName);
 			building.setDisplayText("some "+((messedUp)?"ruined ":"")+finalDishName+" has been left here");
-			building.baseEnvStats().setWeight(building.baseEnvStats().weight()/finalAmount);
+			building.basePhyStats().setWeight(building.basePhyStats().weight()/finalAmount);
             playSound=defaultFoodSound;
 		}
 		
@@ -566,7 +566,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				else
 					addSpells(building,spell);
 			}
-			building.recoverEnvStats();
+			building.recoverPhyStats();
 			building.text();
 		}
 		return building;

@@ -52,19 +52,19 @@ public class StdBanker extends StdShopKeeper implements Banker
 		CMLib.factions().setAlignment(this,Faction.ALIGN_GOOD);
 		setMoney(0);
 		whatIsSoldMask=ShopKeeper.DEAL_BANKER;
-		baseEnvStats.setWeight(150);
+		basePhyStats.setWeight(150);
 		setWimpHitPoint(0);
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,16);
 		baseCharStats().setStat(CharStats.STAT_CHARISMA,25);
 
-		baseEnvStats().setArmor(0);
+		basePhyStats().setArmor(0);
 
 		baseState.setHitPoints(1000);
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 
@@ -128,7 +128,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 			&&(((Coins)I).getDenomination()==0.0)
 			&&(((Coins)I).getNumberOfCoins()>0))
 			    ((Coins)I).setDenomination(1.0);
-			I.recoverEnvStats();
+			I.recoverPhyStats();
 			I.text();
 			return I;
 		}
@@ -484,7 +484,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						    CMLib.commands().postSay(this,mob,"Ok, Clan "+owner.getClanID()+" now has a balance of "+CMLib.beanCounter().nameCurrencyLong(this,getBalance(owner))+".",true,false);
 						else
 						    CMLib.commands().postSay(this,mob,"Ok, your new balance is "+CMLib.beanCounter().nameCurrencyLong(this,getBalance(owner))+".",true,false);
-						recoverEnvStats();
+						recoverPhyStats();
 
 						if(msg.sourceMessage()!=null) msg.setSourceMessage(CMStrings.replaceAll(msg.sourceMessage(),"<O-NAME>",msg.tool().name()));
 						if(msg.targetMessage()!=null) msg.setTargetMessage(CMStrings.replaceAll(msg.targetMessage(),"<O-NAME>",msg.tool().name()));

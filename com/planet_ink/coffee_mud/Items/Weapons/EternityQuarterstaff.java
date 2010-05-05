@@ -41,20 +41,20 @@ public class EternityQuarterstaff extends Quarterstaff
 		setDisplayText("a wooden quarterstaff lies on the ground.");
 		setDescription("It\\`s long and wooden, just like a quarterstaff ought to be.");
 		secretIdentity="A quarterstaff fashioned from a branch of one of the Fox god's Eternity Trees.  A truly wondrous gift.";
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(20);
-		baseEnvStats.setWeight(4);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(20);
+		basePhyStats.setWeight(4);
 		this.setUsesRemaining(50);
-		baseEnvStats().setAttackAdjustment(0);
-		baseEnvStats().setDamage(12);
+		basePhyStats().setAttackAdjustment(0);
+		basePhyStats().setDamage(12);
 		baseGoldValue+=5000;
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
 		wornLogicalAnd=true;
 		properWornBitmap=Wearable.WORN_HELD|Wearable.WORN_WIELD;
 		material=RawMaterial.RESOURCE_OAK;
 		weaponType=TYPE_BASHING;
 		weaponClassification=Weapon.CLASS_STAFF;
-		recoverEnvStats();
+		recoverPhyStats();
 
 	}
 
@@ -81,7 +81,7 @@ public class EternityQuarterstaff extends Quarterstaff
 						CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSG_CAST_VERBAL_SPELL,"<S-NAME> point(s) <S-HIS-HER> quarterstaff at <T-NAMESELF>, and delivers a healing beam of light.");
 						if(mob.location().okMessage(mob,msg2))
 						{
-		   					int healing=1+(int)Math.round(CMath.div(envStats().level(),10.0));
+		   					int healing=1+(int)Math.round(CMath.div(phyStats().level(),10.0));
 							target.curState().adjHitPoints(healing,target.maxState());
 							target.tell("You feel a little better!");
 							return;

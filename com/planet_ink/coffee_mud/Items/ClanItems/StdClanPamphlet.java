@@ -42,14 +42,14 @@ public class StdClanPamphlet extends StdClanItem
 		super();
 
 		setName("a clan pamphlet");
-		baseEnvStats.setWeight(1);
+		basePhyStats.setWeight(1);
 		setDisplayText("a pamphlet belonging to a clan is here.");
 		setDescription("");
 		secretIdentity="";
 		baseGoldValue=1;
 		setCIType(ClanItem.CI_PROPAGANDA);
 		material=RawMaterial.RESOURCE_PAPER;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

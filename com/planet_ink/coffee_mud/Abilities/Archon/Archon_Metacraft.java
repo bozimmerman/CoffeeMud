@@ -246,7 +246,7 @@ public class Archon_Metacraft extends ArchonSkill
     			}
             else
                 xml.append(CMLib.coffeeMaker().getItemsXML(items,new Hashtable(),files,0));
-			mob.location().recoverEnvStats();
+			mob.location().recoverPhyStats();
 			if(!everyFlag) break;
 		}
         if(success

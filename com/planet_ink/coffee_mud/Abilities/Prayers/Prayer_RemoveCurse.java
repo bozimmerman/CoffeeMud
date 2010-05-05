@@ -97,12 +97,12 @@ public class Prayer_RemoveCurse extends Prayer implements MendingSkill
 						CMLib.flags().setDroppable(I,true);
 					}
 					Prayer_Bless.endLowerCurses(I,adjustedLevel(mob,asLevel));
-					I.recoverEnvStats();
+					I.recoverPhyStats();
 					lastI=I;
 					I=Prayer_Bless.getSomething(target,true);
 				}
 				Prayer_Bless.endLowerCurses(target,adjustedLevel(mob,asLevel));
-				target.recoverEnvStats();
+				target.recoverPhyStats();
 			}
 		}
 		else

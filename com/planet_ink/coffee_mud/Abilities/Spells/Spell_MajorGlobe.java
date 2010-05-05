@@ -81,7 +81,7 @@ public class Spell_MajorGlobe extends Spell
 			mob.location().show(mob,msg.source(),null,CMMsg.MSG_OK_VISUAL,"The globe around <S-NAME> absorbs the "+msg.tool().name()+" from <T-NAME>!");
 			return false;
 		}
-		if((invoker!=null)&&(amountAbsorbed>((invoker.envStats().level()+(2*getXLEVELLevel(invoker)))*4)))
+		if((invoker!=null)&&(amountAbsorbed>((invoker.phyStats().level()+(2*getXLEVELLevel(invoker)))*4)))
 			unInvoke();
 		return true;
 	}

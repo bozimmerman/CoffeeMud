@@ -116,13 +116,13 @@ public class QuestBound implements Ability
     public void destroy(){amDestroyed=true; affected=null;}
     public boolean amDestroyed(){return amDestroyed;}
 
-	protected static final EnvStats envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
-	public EnvStats envStats(){return envStats;}
-	public EnvStats baseEnvStats(){return envStats;}
+	protected static final PhyStats phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+	public PhyStats phyStats(){return phyStats;}
+	public PhyStats basePhyStats(){return phyStats;}
     protected void finalize(){ CMClass.unbumpCounter(this,CMClass.OBJECT_ABILITY); }
 
-	public void recoverEnvStats(){}
-	public void setBaseEnvStats(EnvStats newBaseEnvStats){}
+	public void recoverPhyStats(){}
+	public void setBasePhyStats(PhyStats newStats){}
 	public CMObject newInstance()
 	{
 		try
@@ -208,7 +208,7 @@ public class QuestBound implements Ability
 	public boolean canTarget(Physical P)
 	{ return false;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
 	{}

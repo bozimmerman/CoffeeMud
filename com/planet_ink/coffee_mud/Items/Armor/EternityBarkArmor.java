@@ -43,11 +43,11 @@ public class EternityBarkArmor extends StdArmor
 		properWornBitmap=Wearable.WORN_TORSO | Wearable.WORN_ARMS | Wearable.WORN_LEGS;
 		wornLogicalAnd=true;
 		baseGoldValue+=25000;
-		baseEnvStats().setArmor(100);
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setWeight(15);
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
-		recoverEnvStats();
+		basePhyStats().setArmor(100);
+		basePhyStats().setAbility(0);
+		basePhyStats().setWeight(15);
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_WOOD;
 	}
 

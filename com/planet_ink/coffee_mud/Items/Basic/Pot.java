@@ -46,8 +46,8 @@ public class Pot extends StdDrink
 		setLiquidRemaining(0);
 		setLiquidType(RawMaterial.RESOURCE_FRESHWATER);
 		setMaterial(RawMaterial.RESOURCE_IRON);
-		baseEnvStats().setWeight(5);
-		recoverEnvStats();
+		basePhyStats().setWeight(5);
+		recoverPhyStats();
 	}
 
 

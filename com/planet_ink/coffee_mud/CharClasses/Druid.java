@@ -344,7 +344,7 @@ public class Druid extends StdCharClass
           ||msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Vegetation")
           ||msg.source().charStats().getMyRace().racialCategory().equalsIgnoreCase("Stone Golem")))
         {
-            int xp=msg.source().envStats().level()*5;
+            int xp=msg.source().phyStats().level()*5;
             if(xp>0)
             {
                 ((MOB)host).tell("Your stewardship has benefitted "+msg.source().name()+".");

@@ -49,7 +49,7 @@ public class ClimbableLedge extends ClimbableSurface
 			if(ladder!=null)
 			{
 				msg.source().setRiding(ladder);
-				msg.source().recoverEnvStats();
+				msg.source().recoverPhyStats();
 			}
 			if((getRoomInDir(Directions.DOWN)!=msg.source().location()))
 				return true;

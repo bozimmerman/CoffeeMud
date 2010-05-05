@@ -135,7 +135,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 		int baseStr = mob.baseCharStats().getStat(CharStats.STAT_STRENGTH);
 		if(baseStr > maxStr) baseStr = maxStr;
-		double[] vars = {mob.envStats().attackAdjustment(),
+		double[] vars = {mob.phyStats().attackAdjustment(),
 						 currStr,
 						 baseStr,
 						 strBonus,
@@ -160,7 +160,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if(baseDex > maxDex) baseDex = maxDex;
 		
 		double[] vars = {
-				mob.envStats().armor(),
+				mob.phyStats().armor(),
 				currDex,
 				baseDex,
 				dexBonus,
@@ -177,9 +177,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
     {
         if((attacker==null)||(defender==null)) return false;
         double vars[] = {
-        	attacker.envStats().level(),
-        	defender.envStats().level(),
-        	attacker.envStats().level() > defender.envStats().level() ? 1 : -1
+        	attacker.phyStats().level(),
+        	defender.phyStats().level(),
+        	attacker.phyStats().level() > defender.phyStats().level() ? 1 : -1
         };
         int attackerFudgeBonusAmt = (int)Math.round(CMath.parseMathExpression(attackerFudgeBonusFormula, vars, 0.0));
         return rollToHit(adjustedAttackBonus(attacker,defender),adjustedArmor(defender),attackerFudgeBonusAmt);
@@ -390,7 +390,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		&&(attacker != target)
 		&&(attacker != null)
 		&&(target != null)
-		&&(attacker.isMine(weapon)||(attacker.envStats().level()>1))) // why >1? because quickly made fake-mobs tend to have lvl=1
+		&&(attacker.isMine(weapon)||(attacker.phyStats().level()>1))) // why >1? because quickly made fake-mobs tend to have lvl=1
 			damage = modifySpellDamage(attacker, target, damage);
 		
 		CMMsg msg=CMClass.getMsg(attacker,target,weapon,messageCode,CMMsg.MSG_DAMAGE,messageCode,allDisplayMessage);
@@ -434,8 +434,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				(attacker.curState().getHunger()<1)?1.0:0.0,
 				(attacker.curState().getThirst()<1)?1.0:0.0,
 				(attacker.curState().getFatigue()>CharState.FATIGUED_MILLIS)?1.0:0.0,
-				attacker.envStats().level(),
-				target.envStats().level()
+				attacker.phyStats().level(),
+				target.phyStats().level()
 				};
 		baseDamage = (int)Math.round(CMath.parseMathExpression(spellFudgeDamageFormula, vars, 0.0));
 		vars[0]=baseDamage;
@@ -464,10 +464,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if(target!=null)
 		{
 			double[] vars = {
-					useDmg.envStats().damage(),
+					useDmg.phyStats().damage(),
 					mob.charStats().getStat(CharStats.STAT_STRENGTH),
-					mob.envStats().level(),
-					target.envStats().level(),
+					mob.phyStats().level(),
+					target.phyStats().level(),
 					(mob.curState().getHunger()<1)?1.0:0.0,
 					(mob.curState().getThirst()<1)?1.0:0.0,
 					(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS)?1.0:0.0,
@@ -483,9 +483,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		else
 		{
 			double[] vars = {
-					useDmg.envStats().damage(),
+					useDmg.phyStats().damage(),
 					mob.charStats().getStat(CharStats.STAT_STRENGTH),
-					mob.envStats().level(),
+					mob.phyStats().level(),
 					0,
 					(mob.curState().getHunger()<1)?1.0:0.0,
 					(mob.curState().getThirst()<1)?1.0:0.0,
@@ -519,8 +519,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				(mob.curState().getHunger()<1)?1.0:0.0,
 				(mob.curState().getThirst()<1)?1.0:0.0,
 				(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS)?1.0:0.0,
-				mob.envStats().level(),
-				(target==null)?0:target.envStats().level()
+				mob.phyStats().level(),
+				(target==null)?0:target.phyStats().level()
 			};
 		int weaponCritChancePct = (int)Math.round(CMath.parseMathExpression(weaponCritChanceFormula, vars, 0.0));
 		if(CMLib.dice().rollPercentage()<weaponCritChancePct)
@@ -793,7 +793,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			CMLib.beanCounter().subtractMoney(target,deadMoney);
 		}
 
-		int[] expLost={100*target.envStats().level()};
+		int[] expLost={100*target.phyStats().level()};
 		if(expLost[0]<100) expLost[0]=100;
 		String[] cmds=null;
 		if((target.isMonster())||(target.soulMate()!=null))
@@ -871,7 +871,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			    C=CMLib.beanCounter().makeBestCurrency(currency,myAmountOfDeadMoney,null,body);
 			    if(C!=null)
 			    {
-					C.recoverEnvStats();
+					C.recoverPhyStats();
 					bodyRoom.addItem(C,ItemPossessor.Expire.Monster_EQ);
 					bodyRoom.recoverRoomStats();
 					MOB mob=(MOB)goldLooters.elementAt(g);
@@ -898,7 +898,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 						item.setContainer(null);
 				}
 				body.destroy();
-				bodyRoom.recoverEnvStats();
+				bodyRoom.recoverPhyStats();
 	            return null;
 			}
 	        return body;
@@ -1118,7 +1118,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         	Item KI=attacker.fetchWieldedItem();
         	String tool=(msg.tool()==null)?"null":msg.tool().name();
         	String type=(msg.sourceMinor()==CMMsg.NO_EFFECT)?"??":CMMsg.TYPE_DESCS[msg.sourceMinor()];
-        	Log.combatOut("DAMG",attacker.Name()+":"+attacker.envStats().getCombatStats()+":"+attacker.curState().getCombatStats()+":"+((KI==null)?"null":KI.name())+":"+target.Name()+":"+target.envStats().getCombatStats()+":"+target.curState().getCombatStats()+":"+((DI==null)?"null":DI.name())+":"+tool+":"+type+":"+dmg);
+        	Log.combatOut("DAMG",attacker.Name()+":"+attacker.phyStats().getCombatStats()+":"+attacker.curState().getCombatStats()+":"+((KI==null)?"null":KI.name())+":"+target.Name()+":"+target.phyStats().getCombatStats()+":"+target.curState().getCombatStats()+":"+((DI==null)?"null":DI.name())+":"+tool+":"+type+":"+dmg);
         }
         synchronized(("DMG"+target.Name().toUpperCase()).intern())
         {
@@ -1183,13 +1183,13 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                 	Item KI=killer.fetchWieldedItem();
                 	Item DI=deadmob.fetchWieldedItem();
                 	String room=CMLib.map().getExtendedRoomID((killer.location()!=null)?killer.location():deadmob.location());
-                	Log.killsOut("KILL",room+":"+killer.Name()+":"+killer.envStats().getCombatStats()+":"+killer.curState().getCombatStats()+":"+((KI==null)?"null":KI.name())+":"+deadmob.Name()+":"+deadmob.envStats().getCombatStats()+":"+deadmob.curState().getCombatStats()+":"+((DI==null)?"null":DI.name()));
+                	Log.killsOut("KILL",room+":"+killer.Name()+":"+killer.phyStats().getCombatStats()+":"+killer.curState().getCombatStats()+":"+((KI==null)?"null":KI.name())+":"+deadmob.Name()+":"+deadmob.phyStats().getCombatStats()+":"+deadmob.curState().getCombatStats()+":"+((DI==null)?"null":DI.name()));
                 }
                 if(Log.combatChannelOn())
                 {
                 	Item DI=deadmob.fetchWieldedItem();
                 	Item KI=killer.fetchWieldedItem();
-                	Log.combatOut("KILL",killer.Name()+":"+killer.envStats().getCombatStats()+":"+killer.curState().getCombatStats()+":"+((KI==null)?"null":KI.name())+":"+deadmob.Name()+":"+deadmob.envStats().getCombatStats()+":"+deadmob.curState().getCombatStats()+":"+((DI==null)?"null":DI.name()));
+                	Log.combatOut("KILL",killer.Name()+":"+killer.phyStats().getCombatStats()+":"+killer.curState().getCombatStats()+":"+((KI==null)?"null":KI.name())+":"+deadmob.Name()+":"+deadmob.phyStats().getCombatStats()+":"+deadmob.curState().getCombatStats()+":"+((DI==null)?"null":DI.name()));
                 }
                 justDie(killer,deadmob);
                 if((!deadmob.isMonster())&&(deadmob.soulMate()==null)&&(killer!=deadmob)&&(!killer.isMonster()))
@@ -1376,7 +1376,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                    &&(((MOB)source.riding()).rangeToTarget()<source.rangeToTarget()))
                 {
                     source.setAtRange(((MOB)source.riding()).rangeToTarget());
-                    source.recoverEnvStats();
+                    source.recoverPhyStats();
                     return;
                 }
                 else
@@ -1392,7 +1392,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                        &&(otherMOB.rangeToTarget()<source.rangeToTarget()))
                     {
                         source.setAtRange(otherMOB.rangeToTarget());
-                        source.recoverEnvStats();
+                        source.recoverPhyStats();
                         return;
                     }
                 }
@@ -1427,7 +1427,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
             }
             else
                 source.setAtRange(source.maxRange(tool));
-            source.recoverEnvStats();
+            source.recoverPhyStats();
         }
     }
 
@@ -1461,7 +1461,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                         if((fighter.getVictim()!=null)&&(fighter.getVictim().getVictim()==fighter))
                         {
                             fighter.getVictim().setAtRange(fighter.rangeToTarget());
-                            fighter.getVictim().recoverEnvStats();
+                            fighter.getVictim().recoverPhyStats();
                         }
                     }
                 }
@@ -1526,14 +1526,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         for(Iterator i=dividers.iterator();i.hasNext();)
         {
             MOB mob=(MOB)i.next();
-            totalLevels += (mob.envStats().level()*mob.envStats().level());
+            totalLevels += (mob.phyStats().level()*mob.phyStats().level());
             expAmount += expAddition;
             expAddition -= expAddition/4;
         }
 		for(Iterator i=killers.iterator();i.hasNext();)
 		{
 			MOB mob=(MOB)i.next();
-			int myAmount=(int)Math.round(CMath.mul(expAmount,CMath.div(mob.envStats().level()*mob.envStats().level(),totalLevels)));
+			int myAmount=(int)Math.round(CMath.mul(expAmount,CMath.div(mob.phyStats().level()*mob.phyStats().level(),totalLevels)));
 			if(myAmount>100) myAmount=100;
 			CMLib.leveler().postExperience(mob,killed,"",myAmount,false);
 		}
@@ -1567,8 +1567,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
             {
                 int numAttacks=(int)Math.round(Math.floor(fighter.actions()))-saveAction;
                 if((combatSystem==CombatLibrary.COMBAT_DEFAULT)
-                &&(numAttacks>(int)Math.round(Math.floor(fighter.envStats().speed()+0.9))))
-                    numAttacks=(int)Math.round(Math.floor(fighter.envStats().speed()+0.9));
+                &&(numAttacks>(int)Math.round(Math.floor(fighter.phyStats().speed()+0.9))))
+                    numAttacks=(int)Math.round(Math.floor(fighter.phyStats().speed()+0.9));
                 for(int s=0;s<numAttacks;s++)
                 {
                     if((!fighter.amDead())
@@ -1615,12 +1615,12 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if(lostExperience==null) lostExperience=new int[1];
 		int baseExperience=lostExperience[0];
 		lostExperience[0]=0;
-        int rejuv=mob.envStats().rejuv();
-        if((rejuv==0)||(rejuv==Integer.MAX_VALUE)) rejuv=mob.envStats().level();
+        int rejuv=mob.phyStats().rejuv();
+        if((rejuv==0)||(rejuv==Integer.MAX_VALUE)) rejuv=mob.phyStats().level();
         if(((!mob.isMonster())&&(mob.soulMate()==null))) rejuv=1;
         double[] varVals={
-                mob.baseEnvStats().level()>mob.envStats().level()?mob.baseEnvStats().level():mob.envStats().level(),
-                (fighting!=null)?fighting.envStats().level():0,
+                mob.basePhyStats().level()>mob.phyStats().level()?mob.basePhyStats().level():mob.phyStats().level(),
+                (fighting!=null)?fighting.phyStats().level():0,
                 rejuv
         };
 		for(int w=0;w<commands.length;w++)

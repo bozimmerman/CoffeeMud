@@ -112,9 +112,9 @@ public class Chant_Hippieness extends Chant
 							smoke.setDescription("Looks liefy and green.");
 							smoke.setDisplayText("some smoke is sitting here.");
 							smoke.setMaterial(RawMaterial.RESOURCE_HEMP);
-							smoke.baseEnvStats().setWeight(1);
+							smoke.basePhyStats().setWeight(1);
 							smoke.setBaseValue(25);
-							smoke.recoverEnvStats();
+							smoke.recoverPhyStats();
 							smoke.text();
 							mob.addItem(smoke);
 							smoke.setContainer(I);

@@ -160,8 +160,8 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			newRoom.bringMobHere(follower,false);
             thisRoom.delInhabitant(follower);
 			newRoom.send(follower,enterMsg);
-			follower.baseEnvStats().setDisposition(follower.baseEnvStats().disposition()|EnvStats.IS_SITTING);
-			follower.envStats().setDisposition(follower.envStats().disposition()|EnvStats.IS_SITTING);
+			follower.basePhyStats().setDisposition(follower.basePhyStats().disposition()|PhyStats.IS_SITTING);
+			follower.phyStats().setDisposition(follower.phyStats().disposition()|PhyStats.IS_SITTING);
 			//follower.tell("\n\r\n\r");
 			//CMLib.commands().postLook(follower,true);
 			return true;

@@ -43,7 +43,7 @@ public class GenSling extends StdSling
 		setName("a generic sling");
 		setDisplayText("a generic sling sits here.");
 		setDescription("");
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public boolean isGeneric(){return true;}
@@ -60,7 +60,7 @@ public class GenSling extends StdSling
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 }
 

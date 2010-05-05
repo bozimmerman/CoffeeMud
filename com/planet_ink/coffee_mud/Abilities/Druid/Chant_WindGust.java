@@ -47,11 +47,11 @@ public class Chant_WindGust extends Chant
 	public long flags(){return Ability.FLAG_MOVING;}
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(!doneTicking)
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SITTING);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SITTING);
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -139,7 +139,7 @@ public class Chant_WindGust extends Chant
 							target.setAtRange(target.location().maxRange());
 						mob.location().send(mob,msg);
 						if((!CMLib.flags().isInFlight(target))
-						&&(CMLib.dice().rollPercentage()>(((target.charStats().getStat(CharStats.STAT_DEXTERITY)*2)+target.envStats().level()))-(5*howLong))
+						&&(CMLib.dice().rollPercentage()>(((target.charStats().getStat(CharStats.STAT_DEXTERITY)*2)+target.phyStats().level()))-(5*howLong))
 						&&(target.charStats().getBodyPart(Race.BODY_LEG)>0))
 						{
 							mob.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) down!");

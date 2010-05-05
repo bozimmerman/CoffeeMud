@@ -74,7 +74,7 @@ public class Spell_WallOfIce extends Spell
                 if(mob.location().okMessage(mob,msg2))
                 {
                     mob.location().send(mob,msg2);
-					amountRemaining-=mob.envStats().damage();
+					amountRemaining-=mob.phyStats().damage();
 					if(amountRemaining<0)
 					{
 						deathNotice="The wall of ice shatters!!!";
@@ -86,7 +86,7 @@ public class Spell_WallOfIce extends Spell
 							&&(M.rangeToTarget()>0)
 							&&(M.rangeToTarget()<3)
 							&&(!M.amDead()))
-								CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll((M.envStats().level()+getXLEVELLevel(invoker()))/2,6,0),CMMsg.MASK_ALWAYS|CMMsg.TYP_COLD,Weapon.TYPE_PIERCING,"A shard of ice <DAMAGE> <T-NAME>!");
+								CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll((M.phyStats().level()+getXLEVELLevel(invoker()))/2,6,0),CMMsg.MASK_ALWAYS|CMMsg.TYP_COLD,Weapon.TYPE_PIERCING,"A shard of ice <DAMAGE> <T-NAME>!");
 						}
 						((Item)affected).destroy();
 					}
@@ -177,7 +177,7 @@ public class Spell_WallOfIce extends Spell
 				I.setDescription("The ice is crystal clear.");
 				I.setMaterial(RawMaterial.RESOURCE_GLASS);
 				CMLib.flags().setGettable(I,false);
-				I.recoverEnvStats();
+				I.recoverPhyStats();
 				mob.location().addItem(I);
 				theWall=I;
 				deathNotice="The wall of ice melts.";

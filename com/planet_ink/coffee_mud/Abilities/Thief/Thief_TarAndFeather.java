@@ -47,7 +47,7 @@ public class Thief_TarAndFeather extends ThiefSkill
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
     public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_LEGAL;}
 
-	public void affectEnvStats(Environmental host, EnvStats stats)
+	public void affectPhyStats(Physical host, PhyStats stats)
 	{
 	    if((affected==null)||(!(affected instanceof Item)))
             return;
@@ -140,8 +140,8 @@ public class Thief_TarAndFeather extends ThiefSkill
 			    I.setRawWornCode(wearCode);
 			    I.setName("a coating of tar and feathers");
 			    I.setDisplayText("a pile of tar and feathers sits here.");
-			    I.baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMNOREMOVE);
-			    I.envStats().setSensesMask(EnvStats.SENSE_ITEMNOREMOVE);
+			    I.basePhyStats().setSensesMask(PhyStats.SENSE_ITEMNOREMOVE);
+			    I.phyStats().setSensesMask(PhyStats.SENSE_ITEMNOREMOVE);
 			    I.setRawLogicalAnd(true);
 			    I.addNonUninvokableEffect((Ability)this.copyOf());
 			    Behavior B=CMClass.getBehavior("Decay");

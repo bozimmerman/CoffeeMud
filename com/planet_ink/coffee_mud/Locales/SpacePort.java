@@ -39,8 +39,8 @@ public class SpacePort extends StdRoom
 	{
 		super();
 		name="the space port";
-		baseEnvStats.setWeight(1);
-		recoverEnvStats();
+		basePhyStats.setWeight(1);
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_SPACEPORT;}
 	public int domainConditions(){return Room.CONDITION_NORMAL;}

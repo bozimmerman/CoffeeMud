@@ -44,14 +44,14 @@ public class Spell_Cloudkill extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly put the mob into
 		// a sleeping state, so that nothing they do
 		// can get them out of it.
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SITTING);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SITTING);
 	}
 
 
@@ -119,7 +119,7 @@ public class Spell_Cloudkill extends Spell
 						int damage = target.curState().getHitPoints();
 	
 						int midLevel=(int)Math.round(CMath.div(adjustedLevel(mob,asLevel),2.0));
-						if(midLevel<target.envStats().level())
+						if(midLevel<target.phyStats().level())
 							damage=(int)Math.round(CMath.mul(damage,0.10));
 	
 						if((msg.value()>0)||(msg2.value()>0))

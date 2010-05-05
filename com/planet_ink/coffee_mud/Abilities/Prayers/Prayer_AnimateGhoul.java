@@ -72,7 +72,7 @@ public class Prayer_AnimateGhoul extends Prayer
 		else
 			description+="\n\rIt also looks dead.";
 
-		if(body.baseEnvStats().level()<5)
+		if(body.basePhyStats().level()<5)
 		{
 			mob.tell("This creature is too weak to create a ghoul from.");
 			return false;
@@ -93,7 +93,7 @@ public class Prayer_AnimateGhoul extends Prayer
 				newMOB.setName("a ghoul");
 				newMOB.setDescription(description);
 				newMOB.setDisplayText("a ghoul is here");
-				newMOB.baseEnvStats().setLevel(4+(super.getX1Level(mob)*2)+super.getXLEVELLevel(mob));
+				newMOB.basePhyStats().setLevel(4+(super.getX1Level(mob)*2)+super.getXLEVELLevel(mob));
 				newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
 				newMOB.baseCharStats().setMyRace(CMClass.getRace("Undead"));
                 newMOB.baseCharStats().setBodyPartsFromStringAfterRace(body.charStats().getBodyPartsAsString());
@@ -103,18 +103,18 @@ public class Prayer_AnimateGhoul extends Prayer
 					P.setMiscText("NOTEACH STR=20 INT=10 WIS=10 CON=10 DEX=15 CHA=2");
 					newMOB.addNonUninvokableEffect(P);
 				}
-				newMOB.baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK);
+				newMOB.basePhyStats().setSensesMask(PhyStats.CAN_SEE_DARK);
 				newMOB.recoverCharStats();
-				newMOB.baseEnvStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
-				newMOB.baseEnvStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
+				newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
+				newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
 				CMLib.factions().setAlignment(newMOB,Faction.ALIGN_EVIL);
-				newMOB.baseState().setHitPoints(25*newMOB.baseEnvStats().level());
+				newMOB.baseState().setHitPoints(25*newMOB.basePhyStats().level());
 				newMOB.baseState().setMovement(CMLib.leveler().getLevelMove(newMOB));
-				newMOB.baseEnvStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
+				newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
 				newMOB.baseState().setMana(100);
 				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 				newMOB.recoverCharStats();
-				newMOB.recoverEnvStats();
+				newMOB.recoverPhyStats();
 				newMOB.recoverMaxState();
 				newMOB.resetToMaxState();
 				newMOB.addAbility(CMClass.getAbility("WeakParalysis"));

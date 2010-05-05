@@ -45,9 +45,9 @@ public class StdCageRideable extends StdRideable
 		setContainTypes(Container.CONTAIN_BODIES|Container.CONTAIN_CAGED);
 		material=RawMaterial.RESOURCE_OAK;
 		baseGoldValue=15;
-		baseEnvStats().setWeight(1000);
+		basePhyStats().setWeight(1000);
 		rideBasis=Rideable.RIDEABLE_WAGON;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 

@@ -236,7 +236,7 @@
             <TD><INPUT TYPE=TEXT SIZE=60 NAME=QUAL VALUE="@CharClassData?QUAL@"></TD>
         </TR>
         <TR>
-            <TD><FONT COLOR=YELLOW>EStat Adjustments: </FONT></TD>
+            <TD><FONT COLOR=YELLOW>PhysStat Adjustments: </FONT></TD>
             <TD>@CharClassData?ESTATS@</TD>
         </TR>
         <TR>

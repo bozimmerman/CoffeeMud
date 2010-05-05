@@ -66,9 +66,9 @@ public class Paladin_MountedCharge extends StdAbility
 		return super.tick(ticking,tickID);
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		int xlvl=adjustedLevel(invoker(),0);
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(4*xlvl));
 		affectableStats.setArmor(affectableStats.armor()+(4*xlvl));
@@ -130,7 +130,7 @@ public class Paladin_MountedCharge extends StdAbility
 					mob.setAtRange(0);
 					target.setAtRange(0);
 					beneficialAffect(mob,mob,asLevel,2);
-					mob.recoverEnvStats();
+					mob.recoverPhyStats();
 					if(notInCombat)
 					{
 						done=true;

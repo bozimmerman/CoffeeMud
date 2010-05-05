@@ -133,9 +133,9 @@ public class Mood extends StdAbility
 	    return true;
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats stats)
+	public void affectPhyStats(Physical affected, PhyStats stats)
 	{
-		super.affectEnvStats(affected,stats);
+		super.affectPhyStats(affected,stats);
 		if(moodCode>=0) stats.addAmbiance(MOODS[moodCode][2].toLowerCase());
 	}
 
@@ -795,7 +795,7 @@ public class Mood extends StdAbility
 						if(add) target.addNonUninvokableEffect(MOOD);
 					    MOOD.setMiscText(choice);
 					}
-                    target.recoverEnvStats();
+                    target.recoverPhyStats();
                     target.location().recoverRoomStats();
 				}
 			}

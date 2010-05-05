@@ -39,7 +39,7 @@ public class Ingredients extends BagOfEndlessness
 	{
 		super();
 		secretIdentity="The Archon's Secret Ingredient Bag";
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	protected Item makeResource(String name, int type)
@@ -58,9 +58,9 @@ public class Ingredients extends BagOfEndlessness
 		I.setDescription("It looks like "+name);
 		I.setMaterial(type);
 		I.setBaseValue(RawMaterial.CODES.VALUE(type));
-		I.baseEnvStats().setWeight(1);
+		I.basePhyStats().setWeight(1);
 		CMLib.materials().addEffectsToResource(I);
-		I.recoverEnvStats();
+		I.recoverPhyStats();
 		I.setContainer(this);
 		if(I instanceof Decayable)
 		{

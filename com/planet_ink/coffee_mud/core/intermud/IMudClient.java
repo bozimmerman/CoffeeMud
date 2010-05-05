@@ -89,7 +89,7 @@ public class IMudClient implements I3Interface
 		}
 		else
 		if(imc2online()&&(imc2.getIMC2Mud(mudName)!=null))
-			imc2.imc_send_who(mob.name(),imc2.getIMC2Mud(mudName).name,"who",mob.envStats().level(),0);
+			imc2.imc_send_who(mob.name(),imc2.getIMC2Mud(mudName).name,"who",mob.phyStats().level(),0);
 		else
 		{
 			mob.tell("'"+mudName+"' is not a mud name.");
@@ -115,7 +115,7 @@ public class IMudClient implements I3Interface
 			mob.tell("You must specify a mud name.");
 			return;
 		}
-		imc2.imc_send_who(mob.name(),imc2.getIMC2Mud(parms).name,"info",mob.envStats().level(),0);
+		imc2.imc_send_who(mob.name(),imc2.getIMC2Mud(parms).name,"info",mob.phyStats().level(),0);
 	}
 
 	public void i3chanwho(MOB mob, String channel, String mudName)
@@ -463,7 +463,7 @@ public class IMudClient implements I3Interface
 			}catch(Exception e){Log.errOut("IMudClient",e);}
 		}
 		if(imc2online())
-			imc2.imc_send_whois(mob.Name(),mobName,mob.envStats().level());
+			imc2.imc_send_whois(mob.Name(),mobName,mob.phyStats().level());
 	}
 
 	public void i3mudInfo(MOB mob, String parms)

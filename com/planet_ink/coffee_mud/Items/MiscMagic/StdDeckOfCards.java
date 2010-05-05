@@ -76,7 +76,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 		name="A deck of cards";
 		displayText="A deck of cards has been left here.";
 		secretIdentity="A magical deck of cards.  Say \"Shuffle\" to me.";
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
     protected boolean abilityImbuesMagic(){return false;}
@@ -89,8 +89,8 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
     protected PlayingCard makePlayingCard(int cardBitCode)
     {
         Item I=CMClass.getItem("StdPlayingCard");
-        I.baseEnvStats().setAbility(cardBitCode);
-        I.recoverEnvStats();
+        I.basePhyStats().setAbility(cardBitCode);
+        I.recoverPhyStats();
         I.setContainer(this);
         return (PlayingCard)I;
     }

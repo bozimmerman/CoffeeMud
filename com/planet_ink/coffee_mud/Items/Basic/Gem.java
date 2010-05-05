@@ -58,17 +58,17 @@ public class Gem extends StdItem
 
 		Random randomizer = new Random(System.currentTimeMillis());
 		int ringType = Math.abs(randomizer.nextInt() % 12);
-		baseEnvStats.setLevel(ringType);
-		recoverEnvStats();
+		basePhyStats.setLevel(ringType);
+		recoverPhyStats();
 	}
 
-    public void recoverEnvStats()
+    public void recoverPhyStats()
     {
-        super.recoverEnvStats();
-        if(lastLevel!=envStats().level())
+        super.recoverPhyStats();
+        if(lastLevel!=phyStats().level())
         { 
-            lastLevel=envStats().level(); 
-            setItemDescription(envStats.level());
+            lastLevel=phyStats().level(); 
+            setItemDescription(phyStats.level());
         }
     }
 

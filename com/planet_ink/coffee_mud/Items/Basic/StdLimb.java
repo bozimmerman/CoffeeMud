@@ -42,14 +42,14 @@ public class StdLimb extends StdItem
 	{
 		super();
 		setName("a false limb");
-		baseEnvStats.setWeight(1);
+		basePhyStats.setWeight(1);
 		setDisplayText("a false limb is here.");
 		setDescription("Looks like a false limb.");
 		properWornBitmap=Wearable.WORN_HELD|Wearable.WORN_FLOATING_NEARBY;
 		wornLogicalAnd=false;
 		baseGoldValue=10;
 		material=RawMaterial.RESOURCE_MEAT;
-		recoverEnvStats();
+		recoverPhyStats();
 	}
 
 	public void setName(String name)
@@ -130,7 +130,7 @@ public class StdLimb extends StdItem
 		&&(!amWearingAt(Wearable.WORN_WIELD)))
 		{
 			if(affected.charStats().getBodyPart(partNum())<affected.charStats().getMyRace().bodyMask()[partNum()])
-				affectableStats.alterBodypart(partNum(),envStats().ability());
+				affectableStats.alterBodypart(partNum(),phyStats().ability());
 			else
 				setRawWornCode(0);
 		}

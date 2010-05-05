@@ -71,7 +71,7 @@ public class Play_Symphony extends Play
 	{
 		if(instrument==null){ toDoCode=-1; return toDoCode;}
 		if(toDoCode>0) return toDoCode;
-		int ilvl=instrument.envStats().level();
+		int ilvl=instrument.phyStats().level();
 		switch(instrument.instrumentType())
 		{
 		case 0: //"CLARINETS",
@@ -638,9 +638,9 @@ public class Play_Symphony extends Play
 			break;
 		}
 	}
-	public void affectEnvStats(Environmental mob, EnvStats stats)
+	public void affectPhyStats(Physical mob, PhyStats stats)
 	{
-		super.affectEnvStats(mob,stats);
+		super.affectPhyStats(mob,stats);
 		if(((toDoCode==CODE_UPENVPER2)||(toDoCode==CODE_UPENVPER5))
 		&&(toDoString.length()>0)
 		&&(invoker()!=null))

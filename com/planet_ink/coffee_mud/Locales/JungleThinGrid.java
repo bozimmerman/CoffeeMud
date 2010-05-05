@@ -41,8 +41,8 @@ public class JungleThinGrid extends StdThinGrid
 	{
 		super();
 		name="the jungle";
-		baseEnvStats.setWeight(3);
-		recoverEnvStats();
+		basePhyStats.setWeight(3);
+		recoverPhyStats();
 	}
 	public int domainType(){return Room.DOMAIN_OUTDOORS_JUNGLE;}
 	public int domainConditions(){return Room.CONDITION_HOT;}

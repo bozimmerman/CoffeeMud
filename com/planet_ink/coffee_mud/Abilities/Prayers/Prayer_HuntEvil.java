@@ -172,7 +172,7 @@ public class Prayer_HuntEvil extends Prayer
 				Prayer_HuntEvil newOne=(Prayer_HuntEvil)this.copyOf();
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
-				mob.recoverEnvStats();
+				mob.recoverPhyStats();
 				newOne.nextDirection=CMLib.tracking().trackNextDirectionFromHere(newOne.theTrail,mob.location(),false);
 			}
 		}

@@ -121,8 +121,8 @@ public class StdTrap extends StdAbility implements Trap
 			{
 				invoker=CMClass.getMOB("StdMOB");
 				invoker.setLocation(CMClass.getLocale("StdRoom"));
-				invoker.baseEnvStats().setLevel(affected.envStats().level());
-				invoker.envStats().setLevel(affected.envStats().level());
+				invoker.basePhyStats().setLevel(affected.phyStats().level());
+				invoker.phyStats().setLevel(affected.phyStats().level());
 			}
 		}
 		else
@@ -265,7 +265,7 @@ public class StdTrap extends StdAbility implements Trap
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
 		if(mob!=null)
-			if((!maySetTrap(mob,mob.envStats().level()))
+			if((!maySetTrap(mob,mob.phyStats().level()))
 			&&(!mob.charStats().getCurrentClass().leveless())
 			&&(!CMSecurity.isDisabled("LEVELS")))
 			{

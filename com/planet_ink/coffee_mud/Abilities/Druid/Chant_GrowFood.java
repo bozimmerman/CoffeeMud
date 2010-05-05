@@ -114,16 +114,16 @@ public class Chant_GrowFood extends Chant
 				String name=RawMaterial.CODES.NAME(material).toLowerCase();
 				newItem.setMaterial(material);
 				newItem.setBaseValue(1);
-				newItem.baseEnvStats().setWeight(1);
+				newItem.basePhyStats().setWeight(1);
 				newItem.setName("a pound of "+name);
 				newItem.setDisplayText("some "+name+" sits here.");
 				newItem.setDescription("");
 				CMLib.materials().addEffectsToResource(newItem);
-				newItem.recoverEnvStats();
+				newItem.recoverPhyStats();
 				newItem.setMiscText(newItem.text());
 				mob.location().addItem(newItem,ItemPossessor.Expire.Resource);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" pops out of the ground.");
-				mob.location().recoverEnvStats();
+				mob.location().recoverPhyStats();
 			}
 		}
 		else

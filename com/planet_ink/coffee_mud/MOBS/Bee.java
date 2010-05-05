@@ -43,22 +43,22 @@ public class Bee extends StdMOB
 		setDisplayText("A bee buzzes around here.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);
 		setMoney(0);
-		baseEnvStats.setWeight(1);
+		basePhyStats.setWeight(1);
 		setWimpHitPoint(2);
 
 		addBehavior(CMClass.getBehavior("Follower"));
 		addBehavior(CMClass.getBehavior("CombatAbilities"));
-		baseEnvStats().setDamage(1);
+		basePhyStats().setDamage(1);
 
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
-		baseEnvStats().setDisposition(EnvStats.IS_FLYING);
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(1);
-		baseEnvStats().setArmor(10);
+		basePhyStats().setDisposition(PhyStats.IS_FLYING);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(1);
+		basePhyStats().setArmor(10);
 
 		baseCharStats().setMyRace(CMClass.getRace("Insect"));
 		baseCharStats().getMyRace().startRacing(this,false);
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 		Ability A=CMClass.getAbility("Poison_BeeSting");
 		if(A!=null) {
 			A.setProficiency(100);
@@ -67,7 +67,7 @@ public class Bee extends StdMOB
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 

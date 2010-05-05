@@ -48,9 +48,9 @@ public class Fighter_Battlecry extends FighterSkill
 
 	protected int timesTicking=0;
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(invoker==null) return;
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+1+(int)Math.round(CMath.div(affectableStats.attackAdjustment(),6.0-getXLEVELLevel(invoker()))));
 	}

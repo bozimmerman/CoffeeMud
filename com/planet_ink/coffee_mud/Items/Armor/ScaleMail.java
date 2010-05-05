@@ -42,11 +42,11 @@ public class ScaleMail extends StdArmor
 		setDescription("This suit of armor is made of overlapping leather scales and will provide protection for the torso, arms, and legs.");
 		properWornBitmap=Wearable.WORN_TORSO | Wearable.WORN_ARMS | Wearable.WORN_LEGS;
 		wornLogicalAnd=true;
-		baseEnvStats().setArmor(29);
-		baseEnvStats().setWeight(60);
-		baseEnvStats().setAbility(0);
+		basePhyStats().setArmor(29);
+		basePhyStats().setWeight(60);
+		basePhyStats().setAbility(0);
 		baseGoldValue=240;
-		recoverEnvStats();
+		recoverPhyStats();
 		material=RawMaterial.RESOURCE_STEEL;
 	}
 

@@ -55,7 +55,7 @@ public class RaceClassNext extends StdWebMacro
 			mob.baseCharStats().setStat(i,25);
 		mob.baseCharStats().setMyRace(R);
 		mob.recoverCharStats();
-		mob.recoverEnvStats();
+		mob.recoverPhyStats();
 		mob.recoverMaxState();
 		for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 		{

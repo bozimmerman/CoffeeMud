@@ -163,7 +163,7 @@ public class Taxidermy extends CraftingSkill
 				return false;
 			}
 		}
-		int woodRequired=I.baseEnvStats().weight()/5;
+		int woodRequired=I.basePhyStats().weight()/5;
 		int[] pm={RawMaterial.MATERIAL_CLOTH};
 		int[][] data=fetchFoundResourceData(mob,
 											woodRequired,"cloth stuffing",pm,
@@ -184,7 +184,7 @@ public class Taxidermy extends CraftingSkill
 		if(duration>65) duration=65;
 		duration=getDuration(duration,mob,1,10);
 		building=CMClass.getItem("GenItem");
-		building.baseEnvStats().setWeight(woodRequired);
+		building.basePhyStats().setWeight(woodRequired);
 		String name=((DeadBody)I).mobName();
 		String desc=((DeadBody)I).mobDescription();
 		I.setMaterial(data[0][FOUND_CODE]);
@@ -202,7 +202,7 @@ public class Taxidermy extends CraftingSkill
 		}
 		building.setDescription(desc);
 		building.setSecretIdentity("This is the work of "+mob.Name()+".");
-		building.recoverEnvStats();
+		building.recoverPhyStats();
 		displayText="You are stuffing "+I.name();
 		verb="stuffing "+I.name();
         playSound="scissor.wav";

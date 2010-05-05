@@ -89,7 +89,7 @@ public class Prop_ClosedSeason extends Property
 		return false;
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		if(affected==null) return;
 		if((affected instanceof MOB)||(affected instanceof Item))
@@ -99,16 +99,16 @@ public class Prop_ClosedSeason extends Property
 			&&(closed(R.getArea()))
 			&&((!(affected instanceof MOB))||(!((MOB)affected).isInCombat())))
 			{
-				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_NOT_SEEN);
-				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SEE);
-				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_MOVE);
-				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SPEAK);
-				affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_HEAR);
+				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_NOT_SEEN);
+				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SEE);
+				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_MOVE);
+				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SPEAK);
+				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_HEAR);
 			}
 		}
 		else
 		if((affected instanceof Room)&&(closed(((Room)affected).getArea())))
-			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_DARK);
+			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_DARK);
 		else
 		if(affected instanceof Exit)
 		{

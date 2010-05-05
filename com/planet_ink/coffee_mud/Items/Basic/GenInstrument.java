@@ -39,16 +39,16 @@ public class GenInstrument extends GenItem implements MusicalInstrument
 	{
 		super();
 		setName("a generic musical instrument");
-		baseEnvStats.setWeight(12);
+		basePhyStats.setWeight(12);
 		setDisplayText("a generic musical instrument sits here.");
 		setDescription("");
 		baseGoldValue=15;
-		baseEnvStats().setLevel(1);
-		recoverEnvStats();
+		basePhyStats().setLevel(1);
+		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_OAK);
 	}
 
-	public void recoverEnvStats(){CMLib.flags().setReadable(this,false); super.recoverEnvStats();}
+	public void recoverPhyStats(){CMLib.flags().setReadable(this,false); super.recoverPhyStats();}
 	public int instrumentType(){return CMath.s_int(readableText);}
 	public void setInstrumentType(int type){readableText=(""+type);}
 

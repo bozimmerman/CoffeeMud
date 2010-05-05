@@ -44,16 +44,16 @@ public class Spell_ImprovedPolymorph extends Spell
 
 	Race newRace=null;
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if(newRace!=null)
 		{
 			if(affected.name().indexOf(" ")>0)
 				affectableStats.setName("a "+newRace.name()+" called "+affected.name());
 			else
 				affectableStats.setName(affected.name()+" the "+newRace.name());
-			int oldAdd=affectableStats.weight()-affected.baseEnvStats().weight();
+			int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			newRace.setHeightWeight(affectableStats,'M');
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
 		}
@@ -154,10 +154,10 @@ public class Spell_ImprovedPolymorph extends Spell
 		}
 		fakeMOB.baseCharStats().setMyRace(R);
 		fakeMOB.recoverCharStats();
-		fakeMOB.recoverEnvStats();
+		fakeMOB.recoverPhyStats();
 		fakeMOB.recoverMaxState();
 		fakeMOB.recoverCharStats();
-		fakeMOB.recoverEnvStats();
+		fakeMOB.recoverPhyStats();
 		fakeMOB.recoverMaxState();
 		int fakeStatTotal=0;
 		for(int s: CharStats.CODES.BASE())
@@ -173,7 +173,7 @@ public class Spell_ImprovedPolymorph extends Spell
         fakeMOB.destroy();
         
 		if(statDiff<0) statDiff=statDiff*-1;
-		int levelDiff=((mob.envStats().level()+(2*getXLEVELLevel(mob)))-target.envStats().level());
+		int levelDiff=((mob.phyStats().level()+(2*getXLEVELLevel(mob)))-target.phyStats().level());
 		boolean success=proficiencyCheck(mob,levelDiff-statDiff,auto);
 		if(success&&(!auto)&&(!mob.mayIFight(target))&&(mob!=target)&&(!mob.getGroupMembers(new HashSet()).contains(target)))
 		{

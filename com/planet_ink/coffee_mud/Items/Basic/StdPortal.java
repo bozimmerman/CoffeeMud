@@ -44,8 +44,8 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 		setName("a portal");
 		setDisplayText("a portal is here.");
 		setDescription("It's difficult to see where it leads.  Try ENTER and find out!");
-		baseEnvStats().setWeight(10000);
-		recoverEnvStats();
+		basePhyStats().setWeight(10000);
+		recoverPhyStats();
 		capacity=10000;
 		material=RawMaterial.RESOURCE_NOTHING;
 	}
@@ -61,7 +61,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	public Rider fetchRider(int which){return null;}
 	public void addRider(Rider mob){}
 	public void delRider(Rider mob){}
-	public void recoverEnvStats(){CMLib.flags().setReadable(this,false); super.recoverEnvStats();}
+	public void recoverPhyStats(){CMLib.flags().setReadable(this,false); super.recoverPhyStats();}
 
 	public HashSet getRideBuddies(HashSet list){return list;}
 
@@ -163,7 +163,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 					thisRoom.rawDoors()[Directions.GATE]=R;
 					thisRoom.setRawExit(Directions.GATE,E);
                     Exit E2=CMClass.getExit("OpenNameable");
-                    E2.baseEnvStats().setDisposition(EnvStats.IS_NOT_SEEN);
+                    E2.basePhyStats().setDisposition(PhyStats.IS_NOT_SEEN);
                     R.setRawExit(Directions.GATE,E2);
 					CMLib.tracking().move(msg.source(),Directions.GATE,false,false,false);
 					thisRoom.rawDoors()[Directions.GATE]=oldR;

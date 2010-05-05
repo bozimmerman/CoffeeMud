@@ -81,9 +81,9 @@ public class Spell_Shrink extends Spell
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,(dex*2)+1);
 	}
 
-	public void affectEnvStats(Environmental host, EnvStats affectedStats)
+	public void affectPhyStats(Physical host, PhyStats affectedStats)
 	{
-		super.affectEnvStats(host,affectedStats);
+		super.affectPhyStats(host,affectedStats);
 		int height=(int)Math.round(affectedStats.height()*0.10);
 		if(height==0) height=1;
 		affectedStats.setHeight(height);

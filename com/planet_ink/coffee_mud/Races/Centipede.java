@@ -62,12 +62,12 @@ public class Centipede extends StdRace
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,3);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SNEAKING);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GOLEM);
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SNEAKING);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_HIDDEN);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOLEM);
 	}
 	public String arriveStr()
 	{

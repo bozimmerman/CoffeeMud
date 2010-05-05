@@ -139,21 +139,21 @@ public class Spell_RogueLimb extends Spell
 					rogueLimb=CMClass.getMOB("GenMob");
 					rogueLimb.setName(target.name()+"'s "+limb);
 					rogueLimb.setDisplayText(rogueLimb.name()+" is misbehaving here.");
-					rogueLimb.baseEnvStats().setAttackAdjustment(target.envStats().attackAdjustment());
-					rogueLimb.baseEnvStats().setArmor(target.envStats().armor());
+					rogueLimb.basePhyStats().setAttackAdjustment(target.phyStats().attackAdjustment());
+					rogueLimb.basePhyStats().setArmor(target.phyStats().armor());
 					rogueLimb.baseCharStats().setMyRace(theRace);
 					int hp=100;
 					if(hp>(target.baseState().getHitPoints()/3))
 						hp=(target.baseState().getHitPoints()/3);
-					rogueLimb.baseEnvStats().setDamage(1);
+					rogueLimb.basePhyStats().setDamage(1);
 					rogueLimb.baseState().setHitPoints(100);
 					rogueLimb.baseState().setMana(0);
 					rogueLimb.baseState().setMovement(100);
-					rogueLimb.baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK);
+					rogueLimb.basePhyStats().setSensesMask(PhyStats.CAN_SEE_DARK);
 					rogueLimb.setVictim(target);
 					rogueLimb.recoverMaxState();
 					rogueLimb.recoverCharStats();
-					rogueLimb.recoverEnvStats();
+					rogueLimb.recoverPhyStats();
 					rogueLimb.resetToMaxState();
 					rogueLimb.setStartRoom(null);
 					rogueLimb.bringToLife(mob.location(),true);

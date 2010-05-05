@@ -46,13 +46,13 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 		setDisplayText("a wooden staff lies in the corner of the room.");
 		setDescription("It`s long and wooden, just like a staff ought to be.");
 		secretIdentity="The Archon`s Staff of Power!";
-		baseEnvStats().setAbility(0);
-		baseEnvStats().setLevel(30);
-		baseEnvStats.setWeight(4);
-		baseEnvStats().setAttackAdjustment(10);
-		baseEnvStats().setDamage(12);
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(30);
+		basePhyStats.setWeight(4);
+		basePhyStats().setAttackAdjustment(10);
+		basePhyStats().setDamage(12);
 		baseGoldValue=10000;
-		recoverEnvStats();
+		recoverPhyStats();
 		wornLogicalAnd=true;
 		material=RawMaterial.RESOURCE_OAK;
 		properWornBitmap=Wearable.WORN_HELD|Wearable.WORN_WIELD;
@@ -106,7 +106,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" glows brightly at <T-NAME>.");
 					int destLevel=CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL);
 					if(destLevel==0) destLevel=30;
-					if(destLevel<=target.baseEnvStats().level())
+					if(destLevel<=target.basePhyStats().level())
 						destLevel=100;
 					if((target.charStats().getCurrentClass().leveless())
                     ||(target.charStats().isLevelCapped(target.charStats().getCurrentClass()))
@@ -114,7 +114,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 					||(CMSecurity.isDisabled("LEVELS")))
 					    mob.tell("The wand will not work on such as "+target.name()+".");
 					else
-					while(target.baseEnvStats().level()<destLevel)
+					while(target.basePhyStats().level()<destLevel)
 					{
 						if((target.getExpNeededLevel()==Integer.MAX_VALUE)
 						||(target.charStats().getCurrentClass().expless())
@@ -275,7 +275,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 				if(msg2.value()<=0)
 				{
 					int flameDamage = (int) Math.round( Math.random() * 6 );
-					flameDamage *= baseEnvStats().level();
+					flameDamage *= basePhyStats().level();
 					if(!((MOB)msg.target()).amDead())
 						CMLib.combat().postDamage(msg.source(),(MOB)msg.target(),null,flameDamage,CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,name()+" shoots a flame which <DAMAGE> <T-NAME>!");
 				}

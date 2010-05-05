@@ -196,7 +196,7 @@ public class Druid_PackCall extends StdAbility
 					while(!D.raceName.equals(D.getRaceName(level,MOBRaceCode)))
 						level++;
 					level--;
-					newMOB.baseEnvStats().setLevel(level);
+					newMOB.basePhyStats().setLevel(level);
 					levelsRemaining-=level;
 					if(levelsRemaining<0) break;
 					newMOB.baseCharStats().setMyRace(D.getRace(level,MOBRaceCode));
@@ -211,15 +211,15 @@ public class Druid_PackCall extends StdAbility
 					newMOB.addAbility(A);
 					newMOB.setVictim(victim);
 					newMOB.setLocation(mob.location());
-					newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
-					newMOB.recoverEnvStats();
-					newMOB.baseEnvStats().setAbility(newMOB.baseEnvStats().ability()*2);
-					newMOB.baseEnvStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
-					newMOB.baseEnvStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
-					newMOB.baseEnvStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
+					newMOB.basePhyStats().setRejuv(Integer.MAX_VALUE);
+					newMOB.recoverPhyStats();
+					newMOB.basePhyStats().setAbility(newMOB.basePhyStats().ability()*2);
+					newMOB.basePhyStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
+					newMOB.basePhyStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
+					newMOB.basePhyStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
 					newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 					newMOB.setMiscText(newMOB.text());
-					newMOB.recoverEnvStats();
+					newMOB.recoverPhyStats();
 					newMOB.recoverCharStats();
 					newMOB.recoverMaxState();
 					newMOB.resetToMaxState();

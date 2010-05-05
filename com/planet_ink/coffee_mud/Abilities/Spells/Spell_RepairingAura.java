@@ -46,10 +46,10 @@ public class Spell_RepairingAura extends Spell
 	public int repairDown=REPAIR_MAX;
 	public int adjustedLevel=1;
 	
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_BONUS);
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BONUS);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -140,8 +140,8 @@ public class Spell_RepairingAura extends Spell
 				beneficialAffect(mob,realTarget,asLevel,0);
 				Spell_RepairingAura A=(Spell_RepairingAura)realTarget.fetchEffect(ID());
 				if(A!=null) A.adjustedLevel=adjustedLevel(mob,asLevel);
-                realTarget.recoverEnvStats();
-				mob.recoverEnvStats();
+                realTarget.recoverPhyStats();
+				mob.recoverPhyStats();
 				mob.location().recoverRoomStats();
 			}
 		}

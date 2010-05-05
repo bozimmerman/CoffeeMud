@@ -39,12 +39,12 @@ implements ShipComponent.ShipPowerSource
 	{
 		super();
 		setName("a generic ships battery");
-		baseEnvStats.setWeight(50);
+		basePhyStats.setWeight(50);
 		setDisplayText("a generic ships battery sits here.");
 		setDescription("");
 		baseGoldValue=5000;
-		baseEnvStats().setLevel(1);
-		recoverEnvStats();
+		basePhyStats().setLevel(1);
+		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 	}
 	public boolean sameAs(Environmental E)

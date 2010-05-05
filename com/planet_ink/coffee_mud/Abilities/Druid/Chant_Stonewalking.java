@@ -57,9 +57,9 @@ public class Chant_Stonewalking extends Chant
 		return;
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly put the mob into
 		// a sleeping state, so that nothing they do
@@ -72,8 +72,8 @@ public class Chant_Stonewalking extends Chant
 			   ||(R.domainType()==Room.DOMAIN_OUTDOORS_MOUNTAINS)
 			   ||(R.domainType()==Room.DOMAIN_OUTDOORS_ROCKS))
 			{
-				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_INVISIBLE);
-				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
+				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_INVISIBLE);
+				affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_HIDDEN);
 				affectableStats.setWeight(0);
 				affectableStats.setHeight(-1);
 			}

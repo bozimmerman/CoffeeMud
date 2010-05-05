@@ -41,7 +41,7 @@ public interface ItemTicker extends Ability
 {
 	/**
 	 * Registers the given item as being from the given room.  It will
-	 * read the items envStats().rejuv() value and use it as an interval
+	 * read the items phyStats().rejuv() value and use it as an interval
 	 * for checking to see if this item is no longer in its originating
 	 * room.  If so, it will create a copy of it in the originating room.
 	 * @param item the item to rejuvinate

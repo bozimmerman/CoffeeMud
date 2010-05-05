@@ -50,7 +50,7 @@ public class Ranger_Sneak extends StdAbility
 	public int getMOBLevel(MOB meMOB)
 	{
 		if(meMOB==null) return 0;
-		return meMOB.envStats().level();
+		return meMOB.phyStats().level();
 	}
 	public MOB getHighestLevelMOB(MOB meMOB, Vector not)
 	{
@@ -67,9 +67,9 @@ public class Ranger_Sneak extends StdAbility
 			if((M!=null)
 			&&(M!=meMOB)
 			&&(!H.contains(M))
-			&&(highestLevel<M.envStats().level()))
+			&&(highestLevel<M.phyStats().level()))
 			{
-				highestLevel=M.envStats().level();
+				highestLevel=M.phyStats().level();
 				highestMOB=M;
 			}
 		}
@@ -107,7 +107,7 @@ public class Ranger_Sneak extends StdAbility
 		}
 
         MOB highestMOB=getHighestLevelMOB(mob,null);
-		int levelDiff=(mob.envStats().level()+(2*super.getXLEVELLevel(mob)))-getMOBLevel(highestMOB);
+		int levelDiff=(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))-getMOBLevel(highestMOB);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -125,18 +125,18 @@ public class Ranger_Sneak extends StdAbility
 
 			if(success)
 			{
-				mob.baseEnvStats().setDisposition(mob.baseEnvStats().disposition()|EnvStats.IS_SNEAKING);
-				mob.recoverEnvStats();
+				mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SNEAKING);
+				mob.recoverPhyStats();
 			}
 			CMLib.tracking().move(mob,dirCode,false,false);
 			if(success)
 			{
 
-				int disposition=mob.baseEnvStats().disposition();
-				if((disposition&EnvStats.IS_SNEAKING)>0)
+				int disposition=mob.basePhyStats().disposition();
+				if((disposition&PhyStats.IS_SNEAKING)>0)
 				{
-					mob.baseEnvStats().setDisposition(disposition-EnvStats.IS_SNEAKING);
-					mob.recoverEnvStats();
+					mob.basePhyStats().setDisposition(disposition-PhyStats.IS_SNEAKING);
+					mob.recoverPhyStats();
 				}
 			}
 		}

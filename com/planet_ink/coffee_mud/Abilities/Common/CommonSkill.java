@@ -141,7 +141,7 @@ public class CommonSkill extends StdAbility
 	protected int getDuration(int baseTicks, MOB mob, int itemLevel, int minDuration)
 	{
 		int ticks=baseTicks;
-		int level=mob.envStats().level() - itemLevel;
+		int level=mob.phyStats().level() - itemLevel;
 		double pct=CMath.div(level,CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL))*.5;
 		ticks-=(int)Math.round(CMath.mul(ticks, pct));
 		
@@ -275,7 +275,7 @@ public class CommonSkill extends StdAbility
 	
 	public int xlevel(MOB mob)
 	{ 
-		return mob.envStats().level()+(2*getXLEVELLevel(mob));
+		return mob.phyStats().level()+(2*getXLEVELLevel(mob));
 	}
     
 	public boolean confirmPossibleMaterialLocation(int resource, Room location)

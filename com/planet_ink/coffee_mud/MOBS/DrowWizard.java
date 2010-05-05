@@ -44,9 +44,9 @@ public class DrowWizard extends DrowElf
 
 		darkDown = 4;
 
-		baseEnvStats().setLevel(CMLib.dice().roll(4,6,1));
+		basePhyStats().setLevel(CMLib.dice().roll(4,6,1));
 
-        magicResistance = 50 + baseEnvStats().level() * 2;
+        magicResistance = 50 + basePhyStats().level() * 2;
 
 		// ===== set the basics
 		username="a Drow male";
@@ -60,16 +60,16 @@ public class DrowWizard extends DrowElf
 			this.addItem(mainWeapon);
 		}
 
-		baseEnvStats().setArmor(40);
+		basePhyStats().setArmor(40);
 
-		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
 		setMoney(CMLib.dice().roll(4,10,0) * 25);
-		baseEnvStats.setWeight(70 + CMLib.dice().roll(3,6,2));
+		basePhyStats.setWeight(70 + CMLib.dice().roll(3,6,2));
 		baseCharStats.setStat(CharStats.STAT_GENDER,'M');
 
 		setWimpHitPoint(1);
 
-		baseEnvStats().setSpeed(1.0);
+		basePhyStats().setSpeed(1.0);
 
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,12 + CMLib.dice().roll(1,6,0));
 		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,14 + CMLib.dice().roll(1,6,0));
@@ -85,7 +85,7 @@ public class DrowWizard extends DrowElf
 
 		recoverMaxState();
 		resetToMaxState();
-		recoverEnvStats();
+		recoverPhyStats();
 		recoverCharStats();
 	}
 
@@ -216,7 +216,7 @@ public class DrowWizard extends DrowElf
         if(CMLib.dice().rollPercentage() < 70)
         {
             prayer = fetchAbility(CMLib.dice().roll(1,numLearnedAbilities(),-1));
-            while((prayer==null)||(this.baseEnvStats().level() < CMLib.ableMapper().lowestQualifyingLevel(prayer.ID())))
+            while((prayer==null)||(this.basePhyStats().level() < CMLib.ableMapper().lowestQualifyingLevel(prayer.ID())))
 	            prayer = fetchAbility(CMLib.dice().roll(1,numLearnedAbilities(),-1));
         }
         else

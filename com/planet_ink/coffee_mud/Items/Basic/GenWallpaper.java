@@ -39,7 +39,7 @@ public class GenWallpaper implements Item
 	protected String 		name="some wallpaper";
 	protected byte[] 		description=null;
 	protected String		readableText="";
-	protected EnvStats 		envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+	protected PhyStats 		phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 	protected boolean 		destroyed=false;
 	protected ItemPossessor owner=null;
 	//protected String databaseID="";
@@ -64,17 +64,17 @@ public class GenWallpaper implements Item
 	public String Name(){ return name;}
 	public String name()
 	{
-		if(envStats().newName()!=null) return envStats().newName();
+		if(phyStats().newName()!=null) return phyStats().newName();
 		return Name();
 	}
 	public void setName(String newName){name=newName;}
-	public EnvStats envStats()
-	{return envStats;}
-	public EnvStats baseEnvStats()
-	{ return envStats; }
-	public void recoverEnvStats()
-	{ envStats().setSensesMask(envStats().sensesMask()|EnvStats.SENSE_ITEMNOTGET);}
-	public void setBaseEnvStats(EnvStats newBaseEnvStats){}
+	public PhyStats phyStats()
+	{return phyStats;}
+	public PhyStats basePhyStats()
+	{ return phyStats; }
+	public void recoverPhyStats()
+	{ phyStats().setSensesMask(phyStats().sensesMask()|PhyStats.SENSE_ITEMNOTGET);}
+	public void setBasePhyStats(PhyStats newStats){}
 	public boolean isAContainer(){return false;}
     public int numberOfItems(){return 1;}
     protected void finalize(){CMClass.unbumpCounter(this,CMClass.OBJECT_ITEM);}
@@ -107,7 +107,7 @@ public class GenWallpaper implements Item
 		}
 	}
 
-    public int recursiveWeight(){return envStats().weight();}
+    public int recursiveWeight(){return phyStats().weight();}
 	public ItemPossessor owner(){return owner;}
 	public void setOwner(ItemPossessor E)
 	{ owner=E;}
@@ -143,7 +143,7 @@ public class GenWallpaper implements Item
 	public void setReadableText(String text){readableText=text;}
 	public boolean isReadable(){ return CMLib.flags().isReadable(this);}
 	public void setReadable(boolean truefalse){ CMLib.flags().setReadable(this, truefalse);}
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats){}
+	public void affectPhyStats(Physical affected, PhyStats affectableStats){}
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats){}
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState){}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}

@@ -45,24 +45,24 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 		lastLevel = -1;
 	}
 
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
-		super.affectEnvStats(affected,affectableStats);
+		super.affectPhyStats(affected,affectableStats);
 		if((!this.amWearingAt(Wearable.IN_INVENTORY))&&(!this.amWearingAt(Wearable.WORN_HELD)))
-			affectableStats.setArmor(affectableStats.armor()-envStats().armor()-envStats().ability());
+			affectableStats.setArmor(affectableStats.armor()-phyStats().armor()-phyStats().ability());
 	}
 
-	public void recoverEnvStats()
+	public void recoverPhyStats()
 	{
-		baseEnvStats().setDisposition(baseEnvStats().disposition()|EnvStats.IS_BONUS);
-		super.recoverEnvStats();
-		if(lastLevel!=baseEnvStats().level())
-		{ lastLevel=baseEnvStats().level(); setIdentity();}
+		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
+		super.recoverPhyStats();
+		if(lastLevel!=basePhyStats().level())
+		{ lastLevel=basePhyStats().level(); setIdentity();}
 	}
 
 	protected int correctTargetMinor()
 	{
-		switch(this.envStats().level())
+		switch(this.phyStats().level())
 		{
 			case SILVER_RING:
 				return CMMsg.TYP_COLD;
@@ -98,7 +98,7 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 
 	protected boolean rollChance()
 	{
-		switch(this.envStats().level())
+		switch(this.phyStats().level())
 		{
 			case GOLD_RING_OPAL:
 				if(Math.random()>.15)
@@ -120,7 +120,7 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 
 	private void setIdentity()
 	{
-		switch(this.envStats().level())
+		switch(this.phyStats().level())
 		{
 			case SILVER_RING:
 				secretIdentity="The ring of Seven Winters. (Protection from Cold)";
@@ -163,7 +163,7 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 				material=RawMaterial.RESOURCE_GEM;
 				break;
 			case GOLD_RING_TOPAZ:
-				baseEnvStats().setAbility(60);
+				basePhyStats().setAbility(60);
 				secretIdentity="Zimmers Guard. (Ring of Protection +60)";
 				baseGoldValue+=6000;
 				material=RawMaterial.RESOURCE_GEM;
@@ -184,18 +184,18 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 				material=RawMaterial.RESOURCE_PEARL;
 				break;
 			case GOLD_RING_EMERALD:
-			    if(baseEnvStats().ability()==0)
-					baseEnvStats().setAbility(50);
+			    if(basePhyStats().ability()==0)
+					basePhyStats().setAbility(50);
 				secretIdentity="Fox Guard. (Ring of Protection +50)";
 				baseGoldValue+=5000;
 				material=RawMaterial.RESOURCE_GEM;
 				break;
 			default:
 				double pct=Math.random();
-			    if(baseEnvStats().ability()==0)
-					baseEnvStats().setAbility((int)Math.round(pct*49));
-				baseGoldValue+=baseEnvStats().ability()*100;
-				secretIdentity="A ring of protection + "+baseEnvStats().ability()+".";
+			    if(basePhyStats().ability()==0)
+					basePhyStats().setAbility((int)Math.round(pct*49));
+				baseGoldValue+=basePhyStats().ability()*100;
+				secretIdentity="A ring of protection + "+basePhyStats().ability()+".";
 				material=RawMaterial.RESOURCE_STEEL;
 				break;
 		}

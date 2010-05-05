@@ -2314,9 +2314,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                        if(q.room!=null)
 	                        {
 	                            q.mob.setStartRoom(null);
-	                            q.mob.baseEnvStats().setRejuv(0);
-                                q.mob.baseEnvStats().setDisposition(q.mob.baseEnvStats().disposition()|EnvStats.IS_UNSAVABLE);
-	                            q.mob.recoverEnvStats();
+	                            q.mob.basePhyStats().setRejuv(0);
+                                q.mob.basePhyStats().setDisposition(q.mob.basePhyStats().disposition()|PhyStats.IS_UNSAVABLE);
+	                            q.mob.recoverPhyStats();
 	                            q.mob.text();
 	                            q.mob.bringToLife(q.room,true);
 	                        }
@@ -2401,9 +2401,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                        }
 	                        if(q.room!=null)
 	                        {
-	                            q.item.baseEnvStats().setRejuv(0);
-                                q.item.baseEnvStats().setDisposition(q.item.baseEnvStats().disposition()|EnvStats.IS_UNSAVABLE);
-	                            q.item.recoverEnvStats();
+	                            q.item.basePhyStats().setRejuv(0);
+                                q.item.basePhyStats().setDisposition(q.item.basePhyStats().disposition()|PhyStats.IS_UNSAVABLE);
+	                            q.item.recoverPhyStats();
 	                            q.item.text();
 	                            q.room.addItem(q.item);
 	                            q.room.recoverRoomStats();
@@ -3005,7 +3005,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                questState.stuff.removeElementAt(i);
 	                if(E instanceof Item)
 	                {
-	                	if((CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_UNSAVABLE))
+	                	if((CMath.bset(E.basePhyStats().disposition(),PhyStats.IS_UNSAVABLE))
 	                	&&(!((Item)E).amDestroyed()))
 		                    ((Item)E).destroy();
 	                }
@@ -3017,7 +3017,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                    if(B!=null)
 	                        B.endQuest(M,M,name());
 	                    Room R=M.getStartRoom();
-	                    if((R==null)||(CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_UNSAVABLE)))
+	                    if((R==null)||(CMath.bset(E.basePhyStats().disposition(),PhyStats.IS_UNSAVABLE)))
 	                    {
 	                    	M.setFollowing(null);
 	                        CMLib.tracking().wanderAway(M,true,false);
@@ -3063,10 +3063,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		                    if(CMStrings.contains(E.getStatCodes(),stat.toUpperCase().trim()))
 			                    E.setStat(stat,parms);
 		                    else
-		                    if(CMStrings.contains(E.baseEnvStats().getStatCodes(),stat.toUpperCase().trim()))
+		                    if(CMStrings.contains(E.basePhyStats().getStatCodes(),stat.toUpperCase().trim()))
 		                    {
-		                    	E.baseEnvStats().setStat(stat.toUpperCase().trim(),parms);
-		                    	E.recoverEnvStats();
+		                    	E.basePhyStats().setStat(stat.toUpperCase().trim(),parms);
+		                    	E.recoverPhyStats();
 		                    }
 		                    else
 		                    if((E instanceof MOB)&&(CMStrings.contains(CharStats.CODES.NAMES(),stat.toUpperCase().trim())))
@@ -3636,8 +3636,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         if(CMStrings.contains(E.getStatCodes(),stat))
             oldVal=E.getStat(stat);
         else
-        if(CMStrings.contains(E.baseEnvStats().getStatCodes(),stat))
-        	oldVal=E.baseEnvStats().getStat(stat);
+        if(CMStrings.contains(E.basePhyStats().getStatCodes(),stat))
+        	oldVal=E.basePhyStats().getStat(stat);
         else
         if((E instanceof MOB)&&(CMStrings.contains(CharStats.CODES.NAMES(),stat)))
         	oldVal=""+((MOB)E).baseCharStats().getStat(CMParms.indexOf(CharStats.CODES.NAMES(),stat));
@@ -3652,10 +3652,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         if(CMStrings.contains(E.getStatCodes(),stat))
         	E.setStat(stat,parms);
         else
-        if(CMStrings.contains(E.baseEnvStats().getStatCodes(),stat))
+        if(CMStrings.contains(E.basePhyStats().getStatCodes(),stat))
         {
-        	E.baseEnvStats().setStat(stat,parms);
-        	E.recoverEnvStats();
+        	E.basePhyStats().setStat(stat,parms);
+        	E.recoverPhyStats();
         }
         else
         if((E instanceof MOB)&&(CMStrings.contains(CharStats.CODES.NAMES(),stat)))

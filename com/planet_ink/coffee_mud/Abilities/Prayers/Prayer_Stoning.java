@@ -81,8 +81,8 @@ public class Prayer_Stoning extends Prayer
 				        Item W=M.fetchWieldedItem();
 				        if(W!=null)
 				        {
-				            W.baseEnvStats().setDamage(dmg);
-				            W.envStats().setDamage(dmg);
+				            W.basePhyStats().setDamage(dmg);
+				            W.phyStats().setDamage(dmg);
 				        }
 				        CMLib.combat().postDamage(M,mob,W,dmg,CMMsg.MSG_WEAPONATTACK|CMMsg.MASK_ALWAYS,Weapon.TYPE_BASHING,"<S-NAME> stone(s) <T-NAMESELF>!");
 			        }
@@ -133,7 +133,7 @@ public class Prayer_Stoning extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int adjustment=target.envStats().level()-((mob.envStats().level()+super.getXLEVELLevel(mob))/2);
+		int adjustment=target.phyStats().level()-((mob.phyStats().level()+super.getXLEVELLevel(mob))/2);
 		boolean success=proficiencyCheck(mob,-adjustment,auto);
 		if(success)
 		{

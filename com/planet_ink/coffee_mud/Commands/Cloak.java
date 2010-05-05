@@ -45,7 +45,7 @@ public class Cloak extends StdCommand
 		if(Character.toUpperCase(str.charAt(0))!='C')
 			commands.insertElementAt("OFF",1);
 		commands.removeElementAt(0);
-		int abilityCode=EnvStats.IS_CLOAKED;
+		int abilityCode=PhyStats.IS_CLOAKED;
 		str="Prop_WizInvis";
 		Ability A=mob.fetchEffect(str);
 		if(CMParms.combine(commands,0).trim().equalsIgnoreCase("OFF"))
@@ -59,7 +59,7 @@ public class Cloak extends StdCommand
 		else
 		if(A!=null)
 		{
-		    if(CMath.bset(A.abilityCode(),abilityCode)&&(!CMath.bset(A.abilityCode(),EnvStats.IS_NOT_SEEN)))
+		    if(CMath.bset(A.abilityCode(),abilityCode)&&(!CMath.bset(A.abilityCode(),PhyStats.IS_NOT_SEEN)))
 		    {
 				mob.tell("You are already cloaked!");
 				return false;
@@ -80,7 +80,7 @@ public class Cloak extends StdCommand
 			A=mob.fetchEffect(A.ID());
 			if(A!=null) A.setAbilityCode(abilityCode);
 			
-			mob.recoverEnvStats();
+			mob.recoverPhyStats();
 			mob.location().recoverRoomStats();
 			mob.tell("You may uninvoke CLOAK with 'CLOAK OFF' or 'WIZINV OFF'.");
 			return false;

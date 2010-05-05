@@ -42,7 +42,7 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 	public String accountForYourself()
 	{ return spellAccountingsWithMask("Casts "," during combat.");}
 
-    public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+    public void affectPhyStats(Physical affected, PhyStats affectableStats)
     {}
     
 	public void executeMsg(Environmental myHost, CMMsg msg)

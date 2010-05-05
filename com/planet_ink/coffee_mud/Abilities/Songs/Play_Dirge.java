@@ -97,7 +97,7 @@ public class Play_Dirge extends Play
 	
 						double exp=10.0;
 						int levelLimit=CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE);
-						int levelDiff=follower.envStats().level()-target.envStats().level();
+						int levelDiff=follower.phyStats().level()-target.phyStats().level();
 						if(levelDiff>levelLimit) exp=0.0;
 						int expGained=(int)Math.round(exp);
 	
