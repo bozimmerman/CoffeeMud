@@ -43,7 +43,7 @@ public class Prayer_CallUndead extends Prayer
     public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
     public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_TRANSPORTING|Ability.FLAG_SUMMONING;}
 
-    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
     {
         Room oldRoom=null;
         MOB target=null;

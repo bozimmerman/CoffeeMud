@@ -61,7 +61,7 @@ public class Play_Accompaniment extends Play
         }
     }
     
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {

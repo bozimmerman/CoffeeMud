@@ -61,7 +61,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 
 	protected int diseaseTick=DISEASE_DELAY();
 
-	protected boolean catchIt(MOB mob, Environmental target)
+	protected boolean catchIt(MOB mob, Physical target)
 	{
 		MOB diseased=invoker;
 		if(invoker==target) return true;
@@ -140,29 +140,28 @@ public class Disease extends StdAbility implements DiseaseAffect
 			&&(msg.tool() instanceof Weapon)
 			&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL)
 			&&(msg.source().fetchWieldedItem()==null)
-			&&(msg.target()!=null)
 			&&(msg.target() instanceof MOB)
 			&&(msg.target()!=msg.source())
 			&&(CMLib.dice().rollPercentage()>(((MOB)msg.target()).charStats().getSave(CharStats.STAT_SAVE_DISEASE)+70)))
-				catchIt(mob,msg.target());
+				catchIt(mob,(MOB)msg.target());
 			else
 			if((CMath.bset(abilityCode(),DiseaseAffect.SPREAD_CONTACT))
 			&&(msg.amISource(mob)||msg.amITarget(mob))
-			&&(msg.target()!=null)
 			&&(msg.target() instanceof MOB)
 			&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MOVE)||CMath.bset(msg.targetCode(),CMMsg.MASK_HANDS))
 			&&((msg.tool()==null)
 				||(msg.tool()!=null)
 					&&(msg.tool() instanceof Weapon)
 					&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL)))
-				catchIt(mob,msg.amITarget(mob)?msg.source():msg.target());
+				catchIt(mob,msg.amITarget(mob)?msg.source():(MOB)msg.target());
 			else
 			if((CMath.bset(abilityCode(),DiseaseAffect.SPREAD_STD))
 			&&((msg.amITarget(mob))||(msg.amISource(mob)))
 			&&(msg.tool() instanceof Social)
+			&&(msg.target() instanceof MOB)
 			&&(msg.tool().Name().equals("MATE <T-NAME>")
 				||msg.tool().Name().equals("SEX <T-NAME>")))
-				catchIt(mob,msg.amITarget(mob)?msg.source():msg.target());
+				catchIt(mob,msg.amITarget(mob)?msg.source():(MOB)msg.target());
 		}
 		else
 		if(affected instanceof Item)
@@ -209,7 +208,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 		super.executeMsg(myHost,msg);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

@@ -64,7 +64,6 @@ public class WereWolf extends GiantWolf
 		if(msg.amISource(mob)
 		&&(!msg.amITarget(mob))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
-		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB)
 		&&(mob.fetchWieldedItem()==null)
 		&&(msg.tool()!=null)
@@ -77,7 +76,7 @@ public class WereWolf extends GiantWolf
 		{
 			Ability A=CMClass.getAbility("Disease_Lycanthropy");
 			if((A!=null)&&(msg.target().fetchEffect(A.ID())==null))
-				A.invoke(mob,msg.target(),true,0);
+				A.invoke(mob,(MOB)msg.target(),true,0);
 		}
 		super.executeMsg(myHost,msg);
 	}

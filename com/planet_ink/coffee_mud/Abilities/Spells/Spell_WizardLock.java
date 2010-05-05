@@ -97,7 +97,7 @@ public class Spell_WizardLock extends Spell
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
@@ -106,7 +106,7 @@ public class Spell_WizardLock extends Spell
 		}
 		String targetName=CMParms.combine(commands,0);
 
-		Environmental target=null;
+		Physical target=null;
 		int dirCode=Directions.getGoodDirectionCode(targetName);
 		if(dirCode>=0)
 			target=mob.location().getExitInDir(dirCode);

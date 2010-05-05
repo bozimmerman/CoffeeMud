@@ -44,11 +44,11 @@ public class Bomb_Noxious extends StdBomb
         V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_EGGS));
         return V;
     }
-	public boolean canSetTrapOn(MOB mob, Environmental E)
+	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
-		if(!super.canSetTrapOn(mob,E)) return false;
-		if((!(E instanceof Item))
-		||(((Item)E).material()!=RawMaterial.RESOURCE_EGGS))
+		if(!super.canSetTrapOn(mob,P)) return false;
+		if((!(P instanceof Item))
+		||(((Item)P).material()!=RawMaterial.RESOURCE_EGGS))
 		{
 			if(mob!=null)
 				mob.tell("You an egg to make this out of.");

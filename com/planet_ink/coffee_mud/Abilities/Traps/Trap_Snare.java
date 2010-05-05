@@ -41,16 +41,16 @@ public class Trap_Snare extends StdTrap
 	protected int trapLevel(){return 5;}
 	public String requiresToSet(){return "5 pounds of cloth";}
 
-	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean perm)
+	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
-		if(E==null) return null;
+		if(P==null) return null;
 		if(mob!=null)
 		{
 			Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_CLOTH);
 			if(I!=null)
 				super.destroyResources(mob.location(),I.material(),5);
 		}
-		return super.setTrap(mob,E,trapBonus,qualifyingClassLevel,perm);
+		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}
 
     public Vector getTrapComponents() {
@@ -59,9 +59,9 @@ public class Trap_Snare extends StdTrap
             V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_COTTON));
         return V;
     }
-	public boolean canSetTrapOn(MOB mob, Environmental E)
+	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
-		if(!super.canSetTrapOn(mob,E)) return false;
+		if(!super.canSetTrapOn(mob,P)) return false;
 		if(mob!=null)
 		{
 			Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_CLOTH);

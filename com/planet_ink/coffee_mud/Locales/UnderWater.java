@@ -60,9 +60,9 @@ public class UnderWater extends StdRoom implements Drink
 		}
 	}
 
-	public static void makeSink(Environmental E, Room room, int avg)
+	public static void makeSink(Physical P, Room room, int avg)
 	{
-		if((E==null)||(room==null)) return;
+		if((P==null)||(room==null)) return;
 
 		Room R=room.getRoomInDir(Directions.DOWN);
 		if(avg>0) R=room.getRoomInDir(Directions.UP);
@@ -71,16 +71,16 @@ public class UnderWater extends StdRoom implements Drink
 		   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)))
 			return;
 
-		if(((E instanceof MOB)&&(!CMLib.flags().isWaterWorthy(E))&&(!CMLib.flags().isInFlight(E))&&(E.envStats().weight()>=1))
-		||((E instanceof Item)&&(!CMLib.flags().isInFlight(((Item)E).ultimateContainer()))&&(!CMLib.flags().isWaterWorthy(((Item)E).ultimateContainer()))))
-			if(E.fetchEffect("Sinking")==null)
+		if(((P instanceof MOB)&&(!CMLib.flags().isWaterWorthy(P))&&(!CMLib.flags().isInFlight(P))&&(P.envStats().weight()>=1))
+		||((P instanceof Item)&&(!CMLib.flags().isInFlight(((Item)P).ultimateContainer()))&&(!CMLib.flags().isWaterWorthy(((Item)P).ultimateContainer()))))
+			if(P.fetchEffect("Sinking")==null)
 			{
 				Ability sinking=CMClass.getAbility("Sinking");
 				if(sinking!=null)
 				{
 					sinking.setProficiency(avg);
 					sinking.setAffectedOne(room);
-					sinking.invoke(null,null,E,true,0);
+					sinking.invoke(null,null,P,true,0);
 				}
 			}
 	}
@@ -122,8 +122,8 @@ public class UnderWater extends StdRoom implements Drink
 			return;
 		boolean foundReversed=false;
 		boolean foundNormal=false;
-		Vector needToFall=new Vector();
-		Vector mightNeedAdjusting=new Vector();
+		Vector<Physical> needToSink=new Vector<Physical>();
+		Vector<Physical> mightNeedAdjusting=new Vector<Physical>();
 
 		if((room.domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
 		&&(room.domainType()!=Room.DOMAIN_INDOORS_UNDERWATER))
@@ -147,7 +147,7 @@ public class UnderWater extends StdRoom implements Drink
 					if((!CMath.bset(mob.baseEnvStats().disposition(),EnvStats.IS_SWIMMING))
 					&&(!mob.charStats().getMyRace().racialCategory().equals("Amphibian"))
 					&&(!mob.charStats().getMyRace().racialCategory().equals("Fish")))
-						needToFall.addElement(mob);
+						needToSink.addElement(mob);
 				}
 			}
 		for(int i=0;i<room.numItems();i++)
@@ -166,18 +166,17 @@ public class UnderWater extends StdRoom implements Drink
 					foundNormal=foundNormal||(A.proficiency()<=0);
 				}
 				else
-					needToFall.addElement(item);
+					needToSink.addElement(item);
 			}
 		}
 		int avg=((foundReversed)&&(!foundNormal))?100:0;
-		for(int i=0;i<mightNeedAdjusting.size();i++)
+		for(Physical P : mightNeedAdjusting)
 		{
-			Environmental E=(Environmental)mightNeedAdjusting.elementAt(i);
-			Ability A=E.fetchEffect("Sinking");
+			Ability A=P.fetchEffect("Sinking");
 			if(A!=null) A.setProficiency(avg);
 		}
-		for(int i=0;i<needToFall.size();i++)
-			makeSink((Environmental)needToFall.elementAt(i),room,avg);
+		for(Physical P : needToSink)
+			makeSink(P,room,avg);
 	}
 
 	public static int isOkUnderWaterAffect(Room room, CMMsg msg)

@@ -65,7 +65,7 @@ public class Spell_Summon extends Spell
         super.unInvoke();
     }
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
 		String areaName=CMParms.combine(commands,0).trim().toUpperCase();

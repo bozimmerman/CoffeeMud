@@ -67,7 +67,7 @@ public class Spell_Awe extends Spell
 		return super.okMessage(myHost,msg);
 	}
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {
@@ -95,7 +95,7 @@ public class Spell_Awe extends Spell
 
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

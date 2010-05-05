@@ -46,7 +46,7 @@ public class Thief_Con extends ThiefSkill
     public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE; }
 	protected MOB lastChecked=null;
     public double castingTime(MOB mob, Vector cmds){return 5;}
-    public boolean preInvoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
+    public boolean preInvoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
     {
         if(commands!=null) commands=(Vector)commands.clone();
         if(!conCheck(mob,commands,givenTarget,auto,asLevel))
@@ -128,7 +128,7 @@ public class Thief_Con extends ThiefSkill
         return true;
     }
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
         if(commands!=null) commands=(Vector)commands.clone();
         if(!conCheck(mob,commands,givenTarget,auto,asLevel))

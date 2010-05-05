@@ -49,7 +49,7 @@ public class Chant extends StdAbility
     public final static int WEATHERQUE_COLD=8;
     public final static int WEATHERQUE_CALM=16;
     
-	protected int verbalCastCode(MOB mob, Environmental target, boolean auto)
+	protected int verbalCastCode(MOB mob, Physical target, boolean auto)
     {
         if(renderedMundane)
         {
@@ -102,7 +102,7 @@ public class Chant extends StdAbility
         }
     }
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

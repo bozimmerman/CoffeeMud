@@ -64,7 +64,7 @@ public class Spell_DivineBeauty extends Spell
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> begin(s) to look like <S-HIS-HER> old ugly self.");
 	}
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {
@@ -78,7 +78,7 @@ public class Spell_DivineBeauty extends Spell
         return super.castingQuality(mob,target);
     }
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

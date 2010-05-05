@@ -92,14 +92,14 @@ public class Spell_WizardsChest extends Spell
 	    }
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
 			mob.tell("Enchant what?.");
 			return false;
 		}
-		Environmental target=null;
+		Physical target=null;
 		target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null) return false;
 

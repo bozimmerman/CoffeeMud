@@ -74,7 +74,7 @@ public class Spell_Meld extends Spell
 		return 99;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		// add something to disable traps
 		//

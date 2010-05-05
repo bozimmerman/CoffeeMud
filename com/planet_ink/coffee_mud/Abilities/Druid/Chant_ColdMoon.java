@@ -100,7 +100,7 @@ public class Chant_ColdMoon extends Chant
 		affectableStats.setStat(CharStats.STAT_SAVE_DISEASE,affectableStats.getStat(CharStats.STAT_SAVE_DISEASE)-(50+(5*getXLEVELLevel(invoker()))));
 	}
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {
@@ -121,7 +121,7 @@ public class Chant_ColdMoon extends Chant
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();
 		if(target==null) return false;

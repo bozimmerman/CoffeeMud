@@ -222,7 +222,7 @@ public interface Room extends PhysicalAgent, ItemPossessor
 	public boolean isHere(Environmental E);
 
 	public MOB fetchInhabitant(String inhabitantID);
-	public Vector fetchInhabitants(String inhabitantID);
+	public List<MOB> fetchInhabitants(String inhabitantID);
 	public void addInhabitant(MOB mob);
 	public void delInhabitant(MOB mob);
 	public int numInhabitants();
@@ -234,9 +234,9 @@ public interface Room extends PhysicalAgent, ItemPossessor
 
 	public String getContextName(Environmental E);
 
-	public Environmental fetchFromRoomFavorItems(Item goodLocation, String thingName,int wornFilter);
-	public Environmental fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, int wornFilter);
-	public Environmental fetchFromRoomFavorMOBs(Item goodLocation, String thingName, int wornFilter);
-	public Environmental fetchFromMOBRoomFavorsItems(MOB mob, Item goodLocation, String thingName, int wornFilter);
-	public Environmental fetchFromMOBRoomFavorsMOBs(MOB mob, Item goodLocation, String thingName, int wornFilter);
+	public PhysicalAgent fetchFromRoomFavorItems(Item goodLocation, String thingName,int wornFilter);
+	public PhysicalAgent fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, int wornFilter);
+	public PhysicalAgent fetchFromRoomFavorMOBs(Item goodLocation, String thingName, int wornFilter);
+	public PhysicalAgent fetchFromMOBRoomFavorsItems(MOB mob, Item goodLocation, String thingName, int wornFilter);
+	public PhysicalAgent fetchFromMOBRoomFavorsMOBs(MOB mob, Item goodLocation, String thingName, int wornFilter);
 }

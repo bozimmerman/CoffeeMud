@@ -227,7 +227,7 @@ public class Prop_SpellAdder extends Property
         return VTOO;
     }
     
-	public boolean addMeIfNeccessary(Environmental source, Environmental target, boolean makeLongLasting, int asLevel)
+	public boolean addMeIfNeccessary(PhysicalAgent source, Physical target, boolean makeLongLasting, int asLevel)
 	{
         Vector V=getMySpellsV();
         if((target==null)
@@ -267,7 +267,7 @@ public class Prop_SpellAdder extends Property
         return true;
 	}
 
-    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
     {
         String s=CMParms.combine(commands,0);
         if(s.length()>0) setMiscText(s);
@@ -366,8 +366,8 @@ public class Prop_SpellAdder extends Property
 			 &&(host!=lastMOB))
 				removeMyAffectsFrom(lastMOB);
 
-			if((lastMOB==null)&&(host!=null))
-				addMeIfNeccessary(host,host,true,0);
+			if((lastMOB==null)&&(host instanceof PhysicalAgent))
+				addMeIfNeccessary((PhysicalAgent)host,(Physical)host,true,0);
 			processing=false;
 		}
 	}

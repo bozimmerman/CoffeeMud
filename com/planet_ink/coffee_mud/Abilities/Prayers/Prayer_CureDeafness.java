@@ -76,7 +76,7 @@ public class Prayer_CureDeafness extends Prayer implements MendingSkill
 		return offenders;
 	}
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {
@@ -89,7 +89,7 @@ public class Prayer_CureDeafness extends Prayer implements MendingSkill
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

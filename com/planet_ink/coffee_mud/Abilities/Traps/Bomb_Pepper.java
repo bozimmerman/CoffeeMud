@@ -44,11 +44,11 @@ public class Bomb_Pepper extends StdBomb
         V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_PEPPERS));
         return V;
     }
-	public boolean canSetTrapOn(MOB mob, Environmental E)
+	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
-		if(!super.canSetTrapOn(mob,E)) return false;
-		if((!(E instanceof Item))
-		||(((Item)E).material()!=RawMaterial.RESOURCE_PEPPERS))
+		if(!super.canSetTrapOn(mob,P)) return false;
+		if((!(P instanceof Item))
+		||(((Item)P).material()!=RawMaterial.RESOURCE_PEPPERS))
 		{
 			if(mob!=null)
 				mob.tell("You need some peppers to make this out of.");

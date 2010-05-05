@@ -81,7 +81,7 @@ public class Thief_AutoDetectTraps extends ThiefSkill
         }
     }
     
-    public void dropem(MOB mob, Environmental E)
+    public void dropem(MOB mob, Physical E)
     {
         Ability A=mob.fetchAbility("Thief_IdentifyTraps");
         if(A==null)
@@ -98,7 +98,7 @@ public class Thief_AutoDetectTraps extends ThiefSkill
         mob.curState().setMana(savedState.getMovement());
     }
     
-    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
     {
         MOB target=(givenTarget instanceof MOB)?(MOB)givenTarget:mob;
         if(target.fetchEffect(ID())!=null)

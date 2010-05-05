@@ -836,6 +836,8 @@ public class DefaultClan implements Clan
     {
         if(tickID!=Tickable.TICKID_CLAN)
             return true;
+        if(CMSecurity.isDisabled("CLANTICKS"))
+        	return true;
         try{
         	List<MemberRecord> members=getMemberList();
             int activeMembers=0;

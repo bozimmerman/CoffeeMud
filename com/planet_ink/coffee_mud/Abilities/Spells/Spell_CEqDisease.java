@@ -42,7 +42,7 @@ public class Spell_CEqDisease extends Spell_BaseClanEq {
   public String name(){return "ClanEnchant Disease";}
   public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
-  public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+  public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
   {
     type="Disease";
     // All the work is done by the base model

@@ -41,16 +41,16 @@ public class Trap_Boulders extends StdTrap
 	protected int trapLevel(){return 20;}
 	public String requiresToSet(){return "50 pounds of boulders";}
 
-	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean perm)
+	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
-		if(E==null) return null;
+		if(P==null) return null;
 		if(mob!=null)
 		{
 			Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_ROCK);
 			if(I!=null)
 				super.destroyResources(mob.location(),I.material(),50);
 		}
-		return super.setTrap(mob,E,trapBonus,qualifyingClassLevel,perm);
+		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}
 
     public Vector getTrapComponents() {
@@ -59,9 +59,9 @@ public class Trap_Boulders extends StdTrap
             V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_STONE));
         return V;
     }
-	public boolean canSetTrapOn(MOB mob, Environmental E)
+	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
-		if(!super.canSetTrapOn(mob,E)) return false;
+		if(!super.canSetTrapOn(mob,P)) return false;
 		if(mob!=null)
 		{
 			Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_ROCK);
@@ -71,9 +71,9 @@ public class Trap_Boulders extends StdTrap
 				mob.tell("You'll need to set down at least 50 pounds of rock first.");
 				return false;
 			}
-			if(E instanceof Room)
+			if(P instanceof Room)
 			{
-				Room R=(Room)E;
+				Room R=(Room)P;
 				if((R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
 				   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
 				   &&(R.domainType()!=Room.DOMAIN_OUTDOORS_ROCKS)

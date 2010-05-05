@@ -46,7 +46,7 @@ public class Song_Seeing extends Song
         affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,super.adjustedLevel(invoker(),0)+100+affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING));
     }
     
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {

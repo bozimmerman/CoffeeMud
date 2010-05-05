@@ -39,7 +39,7 @@ public class Song_Health extends Song
 	public String name(){ return "Health";}
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {

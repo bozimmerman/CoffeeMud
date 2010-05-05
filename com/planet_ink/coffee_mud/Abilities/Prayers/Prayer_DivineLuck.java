@@ -87,9 +87,9 @@ public class Prayer_DivineLuck extends Prayer
 			mob.tell("Your divine luck is over.");
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-        Environmental target=mob;
+		Physical target=mob;
         if((auto)&&(givenTarget!=null)) target=givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{

@@ -85,7 +85,7 @@ public class Skill_Imitation extends BardSkill
 
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=null;
 		if(commands.size()>1)

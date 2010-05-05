@@ -71,9 +71,9 @@ public class Spell_GreaterInvisibility extends Spell
 
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Environmental target=this.getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
+		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as

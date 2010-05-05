@@ -388,7 +388,7 @@ public class Injury extends StdAbility
 	    return super.okMessage(host,msg);
 	}
 	
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((givenTarget!=null)&&(auto))
 		{

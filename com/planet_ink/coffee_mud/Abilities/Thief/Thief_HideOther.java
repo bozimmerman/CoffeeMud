@@ -127,7 +127,7 @@ public class Thief_HideOther extends ThiefSkill
 			affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_SNEAKING);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=super.getTarget(mob,commands,givenTarget,false,false);
 		if(target==null) return false;

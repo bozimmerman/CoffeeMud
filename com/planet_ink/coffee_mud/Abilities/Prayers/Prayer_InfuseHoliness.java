@@ -93,7 +93,7 @@ public class Prayer_InfuseHoliness extends Prayer
 		return super.okMessage(myHost, msg);
 	}
 	
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {
@@ -103,9 +103,9 @@ public class Prayer_InfuseHoliness extends Prayer
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Environmental target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
+		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
 		if(target==null)
         {
             if((CMLib.law().doesOwnThisProperty(mob,mob.location()))

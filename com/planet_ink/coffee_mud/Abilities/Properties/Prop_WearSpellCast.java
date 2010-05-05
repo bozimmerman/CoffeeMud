@@ -101,7 +101,7 @@ public class Prop_WearSpellCast extends Prop_HaveSpellCast
 		else
 			super.executeMsg(host,msg);
 	}
-	public boolean addMeIfNeccessary(Environmental source, Environmental target, boolean makeLongLasting, int asLevel)
+	public boolean addMeIfNeccessary(PhysicalAgent source, Physical target, boolean makeLongLasting, int asLevel)
 	{
 		if(disabled&&checked) return false;
 		return super.addMeIfNeccessary(source,target,makeLongLasting,asLevel);

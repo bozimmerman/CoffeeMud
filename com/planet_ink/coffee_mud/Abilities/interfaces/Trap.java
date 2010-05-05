@@ -106,8 +106,8 @@ public interface Trap extends Ability
 	 * Returns whether the given mob, at the given level, is allowed
 	 * to set this trap.  This is where level restrictions are enforced,
 	 * though no messages should be given.
-	 * @see Trap#canSetTrapOn(MOB, Environmental)
-	 * @see Trap#setTrap(MOB, Environmental, int, int, boolean)
+	 * @see Trap#canSetTrapOn(MOB, Physical)
+	 * @see Trap#setTrap(MOB, Physical, int, int, boolean)
 	 * @param mob the trap setter to check
 	 * @param asLevel the level of the trapper, compared to this traps internal level
 	 * @return true if the given trapper is allowed to set this trap, false otherwise
@@ -124,28 +124,28 @@ public interface Trap extends Ability
 	 * trapper if any internal checks aren't made.  Required materials or conditions
 	 * are checked here
 	 * @see Trap#maySetTrap(MOB, int)
-	 * @see Trap#setTrap(MOB, Environmental, int, int, boolean)
+	 * @see Trap#setTrap(MOB, Physical, int, int, boolean)
 	 * @param mob the trapper
-	 * @param E the object this trap will be set upon
+	 * @param P the object this trap will be set upon
 	 * @return true if the trapper has everything he needs to proceed, false otherwise
 	 */
-	public boolean canSetTrapOn(MOB mob, Environmental E);
+	public boolean canSetTrapOn(MOB mob, Physical P);
 	/**
 	 * Completed the task of setting a trap on a given object. If any materials are
 	 * required, this method will consume them.  If it is a bomb, it will still 
 	 * require activation, however.  This wil also set the reset time based on the
 	 * given classlevel and qualifyingClassLevel of the trapper.
 	 * @param mob the trapper
-	 * @param E the object to set the trap on
+	 * @param P the object to set the trap on
 	 * @param trapBonus any bonus to the traps effectiveness (0 is normal)
 	 * @param qualifyingClassLevel the class-level at which the trapper qualified for this trap
 	 * @return the Trap object denoting the trap just added to the target object
 	 */
-	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean permanent);
+	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean permanent);
 	/**
 	 * A simple display string describing the conditions necesssary to get the canSetTrapOn
 	 * method to return true.
-	 * @see Trap#canSetTrapOn(MOB, Environmental)
+	 * @see Trap#canSetTrapOn(MOB, Physical)
 	 * @return a descriptive text for this trap.
 	 */
 	public String requiresToSet();

@@ -42,7 +42,7 @@ public class Spell_MarkerSummoning extends Spell
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
     public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room oldRoom=null;
 		try

@@ -91,7 +91,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
     }
     
 	public void waveIfAble(MOB mob,
-						   Environmental afftarget,
+						   Physical afftarget,
 						   String message)
 	{
 		if((mob.isMine(this))

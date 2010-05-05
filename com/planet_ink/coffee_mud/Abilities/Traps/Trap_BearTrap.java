@@ -45,9 +45,9 @@ public class Trap_BearTrap extends StdTrap
 	protected int amountRemaining=250;
 	protected MOB trapped=null;
 
-	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean perm)
+	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
-		if(E==null) return null;
+		if(P==null) return null;
 		if(mob!=null)
 		{
 			Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_METAL);
@@ -55,7 +55,7 @@ public class Trap_BearTrap extends StdTrap
 			if(I!=null)
 				super.destroyResources(mob.location(),I.material(),30);
 		}
-		return super.setTrap(mob,E,trapBonus,qualifyingClassLevel,perm);
+		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}
 
     public Vector getTrapComponents() {
@@ -64,9 +64,9 @@ public class Trap_BearTrap extends StdTrap
             V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_IRON));
         return V;
     }
-	public boolean canSetTrapOn(MOB mob, Environmental E)
+	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
-		if(!super.canSetTrapOn(mob,E)) return false;
+		if(!super.canSetTrapOn(mob,P)) return false;
 		if(mob!=null)
 		{
 			Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_METAL);

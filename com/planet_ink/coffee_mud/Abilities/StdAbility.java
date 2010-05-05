@@ -136,7 +136,7 @@ public class StdAbility implements Ability
         }
     }
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
 	{
         return castingQuality(mob,target,abstractQuality());
 	}
@@ -287,7 +287,7 @@ public class StdAbility implements Ability
 		return (int)Math.round(CMath.mul(baseTickTime,CMath.mul(getXTIMELevel(invokerMOB),0.20)));
 	}
 
-	public void startTickDown(MOB invokerMOB, Environmental affected, int tickTime)
+	public void startTickDown(MOB invokerMOB, Physical affected, int tickTime)
 	{
 		if(invokerMOB!=null) invoker=invokerMOB;
 
@@ -378,26 +378,26 @@ public class StdAbility implements Ability
 
 	public boolean canTarget(int can_code){return CMath.bset(canTargetCode(),can_code);}
 	public boolean canAffect(int can_code){return CMath.bset(canAffectCode(),can_code);}
-	public boolean canAffect(Environmental E)
+	public boolean canAffect(Physical P)
 	{
-		if((E==null)&&(canAffectCode()==0)) return true;
-		if(E==null) return false;
-		if((E instanceof MOB)&&((canAffectCode()&Ability.CAN_MOBS)>0)) return true;
-		if((E instanceof Item)&&((canAffectCode()&Ability.CAN_ITEMS)>0)) return true;
-		if((E instanceof Exit)&&((canAffectCode()&Ability.CAN_EXITS)>0)) return true;
-		if((E instanceof Room)&&((canAffectCode()&Ability.CAN_ROOMS)>0)) return true;
-		if((E instanceof Area)&&((canAffectCode()&Ability.CAN_AREAS)>0)) return true;
+		if((P==null)&&(canAffectCode()==0)) return true;
+		if(P==null) return false;
+		if((P instanceof MOB)&&((canAffectCode()&Ability.CAN_MOBS)>0)) return true;
+		if((P instanceof Item)&&((canAffectCode()&Ability.CAN_ITEMS)>0)) return true;
+		if((P instanceof Exit)&&((canAffectCode()&Ability.CAN_EXITS)>0)) return true;
+		if((P instanceof Room)&&((canAffectCode()&Ability.CAN_ROOMS)>0)) return true;
+		if((P instanceof Area)&&((canAffectCode()&Ability.CAN_AREAS)>0)) return true;
 		return false;
 	}
 
-	public boolean canTarget(Environmental E)
+	public boolean canTarget(Physical P)
 	{
-		if((E==null)&&(canTargetCode()==0)) return true;
-		if(E==null) return false;
-		if((E instanceof MOB)&&((canTargetCode()&Ability.CAN_MOBS)>0)) return true;
-		if((E instanceof Item)&&((canTargetCode()&Ability.CAN_ITEMS)>0)) return true;
-		if((E instanceof Room)&&((canTargetCode()&Ability.CAN_ROOMS)>0)) return true;
-		if((E instanceof Area)&&((canTargetCode()&Ability.CAN_AREAS)>0)) return true;
+		if((P==null)&&(canTargetCode()==0)) return true;
+		if(P==null) return false;
+		if((P instanceof MOB)&&((canTargetCode()&Ability.CAN_MOBS)>0)) return true;
+		if((P instanceof Item)&&((canTargetCode()&Ability.CAN_ITEMS)>0)) return true;
+		if((P instanceof Room)&&((canTargetCode()&Ability.CAN_ROOMS)>0)) return true;
+		if((P instanceof Area)&&((canTargetCode()&Ability.CAN_AREAS)>0)) return true;
 		return false;
 	}
 
@@ -469,30 +469,30 @@ public class StdAbility implements Ability
 	}
 
 
-	public Environmental getAnyTarget(MOB mob,
+	public Physical getAnyTarget(MOB mob,
 									  Vector commands,
-									  Environmental givenTarget,
+									  Physical givenTarget,
 									  int wornFilter)
 	{ return getAnyTarget(mob,commands,givenTarget,wornFilter,false,false);}
 
-	public Environmental getAnyTarget(MOB mob,
+	public Physical getAnyTarget(MOB mob,
 						  Vector commands,
-						  Environmental givenTarget,
+						  Physical givenTarget,
 						  int wornFilter,
 						  boolean checkOthersInventory)
 	{ return getAnyTarget(mob,commands,givenTarget,wornFilter,checkOthersInventory,false);}
 
-	public Environmental getAnyTarget(MOB mob,
-									  Vector commands,
-									  Environmental givenTarget,
-									  int wornFilter,
-									  boolean checkOthersInventory,
-									  boolean alreadyAffOk)
+	public Physical getAnyTarget(MOB mob,
+								 Vector commands,
+								 Physical givenTarget,
+								 int wornFilter,
+								 boolean checkOthersInventory,
+								 boolean alreadyAffOk)
 	{
 		String targetName=CMParms.combine(commands,0);
-		Environmental target=null;
-		if(givenTarget!=null)
-			target=givenTarget;
+		Physical target=null;
+		if(givenTarget instanceof Physical)
+			target=(Physical)givenTarget;
 		else
 		if((targetName.length()==0)&&(mob.isInCombat())&&(castingQuality(mob,mob.getVictim())==Ability.QUALITY_MALICIOUS))
 			target=mob.getVictim();
@@ -898,11 +898,11 @@ public class StdAbility implements Ability
 			A.setProficiency(maxProficiency);
 	}
 
-    public boolean preInvoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
+    public boolean preInvoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
     {
         return true;
     }
-	public boolean invoke(MOB mob, Environmental target, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Physical target, boolean auto, int asLevel)
 	{
 		Vector V=new Vector();
 		if(target!=null)
@@ -910,7 +910,7 @@ public class StdAbility implements Ability
 		return invoke(mob,V,target,auto,asLevel);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel)
 	{
 		expertise=null;
         if((mob!=null)&&(getXMAXRANGELevel(mob)>0))
@@ -1066,7 +1066,7 @@ public class StdAbility implements Ability
 
 
 	public boolean maliciousAffect(MOB mob,
-								   Environmental target,
+								   Physical target,
 								   int asLevel,
 								   int tickAdjustmentFromStandard,
 								   int additionAffectCheckCode)
@@ -1150,7 +1150,7 @@ public class StdAbility implements Ability
         return tickAdjustmentFromStandard;
     }
 	public boolean beneficialAffect(MOB mob,
-								   Environmental target,
+								   Physical target,
 								   int asLevel,
 								   int tickAdjustmentFromStandard)
 	{
@@ -1406,7 +1406,7 @@ public class StdAbility implements Ability
 		return true;
 	}
 
-	protected int verbalCastCode(MOB mob, Environmental target, boolean auto)
+	protected int verbalCastCode(MOB mob, Physical target, boolean auto)
 	{
 		int affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 		if(castingQuality(mob,target)==Ability.QUALITY_MALICIOUS)
@@ -1415,10 +1415,10 @@ public class StdAbility implements Ability
 		return affectType;
 	}
 
-    protected int verbalCastMask(MOB mob,Environmental target, boolean auto)
+    protected int verbalCastMask(MOB mob,Physical target, boolean auto)
     { return verbalCastCode(mob,target,auto)&CMMsg.MAJOR_MASK;}
 
-	protected int somanticCastCode(MOB mob, Environmental target, boolean auto)
+	protected int somanticCastCode(MOB mob, Physical target, boolean auto)
 	{
 		int affectType=CMMsg.MSG_CAST_SOMANTIC_SPELL;
 		if(castingQuality(mob,target)==Ability.QUALITY_MALICIOUS)
@@ -1426,7 +1426,7 @@ public class StdAbility implements Ability
 		if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
 		return affectType;
 	}
-    protected int somanticCastMask(MOB mob,Environmental target, boolean auto)
+    protected int somanticCastMask(MOB mob, Physical target, boolean auto)
     { return somanticCastCode(mob,target,auto)&CMMsg.MAJOR_MASK;}
 
 	public boolean canBePracticedBy(MOB teacher, MOB student)

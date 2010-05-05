@@ -53,7 +53,7 @@ public class Fighter_Sweep extends FighterSkill
 		affectableStats.setAttackAdjustment((int)Math.round(CMath.div(affectableStats.attackAdjustment(),2.0-f)));
 		affectableStats.setDamage((int)Math.round(CMath.div(affectableStats.damage(),3.0-f)));
 	}
-	public int castingQuality(MOB mob, Environmental target)
+	public int castingQuality(MOB mob, Physical target)
 	{
 		if((mob!=null)&&(target!=null))
 		{
@@ -70,7 +70,7 @@ public class Fighter_Sweep extends FighterSkill
 		return super.castingQuality(mob,target);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{

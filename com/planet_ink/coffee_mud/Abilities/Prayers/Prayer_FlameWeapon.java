@@ -115,7 +115,7 @@ public class Prayer_FlameWeapon extends Prayer
 			destroyMe.destroy();
 	}
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {
@@ -126,7 +126,7 @@ public class Prayer_FlameWeapon extends Prayer
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
         Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
         if(target==null) return false;

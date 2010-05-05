@@ -85,9 +85,9 @@ public class Property implements Ability
 	public void setInvoker(MOB mob){}
 	public static final String[] empty={};
 	public String[] triggerStrings(){return empty;}
-	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel){return false;}
-	public boolean invoke(MOB mob, Environmental target, boolean auto, int asLevel){return false;}
-    public boolean preInvoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining){return true;}
+	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel){return false;}
+	public boolean invoke(MOB mob, Physical target, boolean auto, int asLevel){return false;}
+    public boolean preInvoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining){return true;}
 	public boolean autoInvocation(MOB mob){return false;}
 	public void unInvoke(){}
 	public boolean canBeUninvoked(){return false;}
@@ -105,7 +105,7 @@ public class Property implements Ability
 
 	public long expirationDate(){return 0;}
 	public void setExpirationDate(long time){}
-	public void startTickDown(MOB invokerMOB, Environmental affected, int tickTime)
+	public void startTickDown(MOB invokerMOB, Physical affected, int tickTime)
 	{
 		if(affected.fetchEffect(ID())==null)
 			affected.addEffect(this);
@@ -122,7 +122,7 @@ public class Property implements Ability
 	public boolean putInCommandlist(){return false;}
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
-	public int castingQuality(MOB invoker, Environmental target){return Ability.QUALITY_INDIFFERENT;}
+	public int castingQuality(MOB invoker, Physical target){return Ability.QUALITY_INDIFFERENT;}
 
 	public int classificationCode(){ return Ability.ACODE_PROPERTY;}
 	public boolean isSavable(){ return savable;	}
@@ -217,19 +217,19 @@ public class Property implements Ability
 	public String accountForYourself(){return "";}
 	public String requirements(){return "";}
 
-	public boolean canAffect(Environmental E)
+	public boolean canAffect(Physical P)
 	{
-		if((E==null)&&(canAffectCode()==0)) return true;
-		if(E==null) return false;
-		if((E instanceof MOB)&&((canAffectCode()&Ability.CAN_MOBS)>0)) return true;
-		if((E instanceof Item)&&((canAffectCode()&Ability.CAN_ITEMS)>0)) return true;
-		if((E instanceof Exit)&&((canAffectCode()&Ability.CAN_EXITS)>0)) return true;
-		if((E instanceof Room)&&((canAffectCode()&Ability.CAN_ROOMS)>0)) return true;
-		if((E instanceof Area)&&((canAffectCode()&Ability.CAN_AREAS)>0)) return true;
+		if((P==null)&&(canAffectCode()==0)) return true;
+		if(P==null) return false;
+		if((P instanceof MOB)&&((canAffectCode()&Ability.CAN_MOBS)>0)) return true;
+		if((P instanceof Item)&&((canAffectCode()&Ability.CAN_ITEMS)>0)) return true;
+		if((P instanceof Exit)&&((canAffectCode()&Ability.CAN_EXITS)>0)) return true;
+		if((P instanceof Room)&&((canAffectCode()&Ability.CAN_ROOMS)>0)) return true;
+		if((P instanceof Area)&&((canAffectCode()&Ability.CAN_AREAS)>0)) return true;
 		return false;
 	}
 
-	public boolean canTarget(Environmental E)
+	public boolean canTarget(Physical P)
 	{ return false;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

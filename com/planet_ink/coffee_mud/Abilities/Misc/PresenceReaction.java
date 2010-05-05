@@ -283,7 +283,7 @@ public class PresenceReaction extends StdAbility
 		return true;
 	}
 	
-	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel)
 	{
 		if(target==null)
 		{

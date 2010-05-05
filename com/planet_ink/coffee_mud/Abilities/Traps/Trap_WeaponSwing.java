@@ -61,21 +61,21 @@ public class Trap_WeaponSwing extends StdTrap
         return V;
     }
 
-	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean perm)
+	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
-		if(E==null) return null;
+		if(P==null) return null;
 		Item I=getPoison(mob);
 		setMiscText("3/a club");
 		if(I!=null){
 			setMiscText(""+I.baseEnvStats().damage()+"/"+I.name());
 			I.destroy();
 		}
-		return super.setTrap(mob,E,trapBonus,qualifyingClassLevel,perm);
+		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}
 
-	public boolean canSetTrapOn(MOB mob, Environmental E)
+	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
-		if(!super.canSetTrapOn(mob,E)) return false;
+		if(!super.canSetTrapOn(mob,P)) return false;
 		if(mob!=null)
 		{
 			Item I=getPoison(mob);

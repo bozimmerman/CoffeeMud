@@ -48,7 +48,7 @@ public class Fighter_FlyingKick extends FighterSkill
 	public int maxRange(){return adjustedMaxInvokerRange(5);}
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	public int castingQuality(MOB mob, Environmental target)
+	public int castingQuality(MOB mob, Physical target)
 	{
 		if((mob!=null)&&(target!=null))
 		{
@@ -60,7 +60,7 @@ public class Fighter_FlyingKick extends FighterSkill
 		return super.castingQuality(mob,target);
 	}
 	
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()==0))
 		{

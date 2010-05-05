@@ -113,7 +113,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 	}
 	
 	public void waveIfAble(MOB mob,
-						   Environmental afftarget,
+						   Physical afftarget,
 						   String message)
 	{
 		if((mob.isMine(this))

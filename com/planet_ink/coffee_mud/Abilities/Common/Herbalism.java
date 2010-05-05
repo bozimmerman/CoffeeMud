@@ -121,10 +121,10 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 		return building;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,-1);
-		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
+		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
 		{
 			commands.removeElementAt(0);
 			Ability theSpell=super.getCraftableSpellRecipe(commands);

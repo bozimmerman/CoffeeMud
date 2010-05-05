@@ -38,7 +38,7 @@ public class RandomTraps extends ActiveTicker
 	public String ID(){return "RandomTraps";}
 	protected int canImproveCode(){return Behavior.CAN_ROOMS|Behavior.CAN_AREAS;}
 
-	protected Vector maintained=new Vector();
+	protected Vector<Physical> maintained=new Vector<Physical>();
 	protected int minTraps=1;
 	protected int maxTraps=1;
 	protected int avgTraps=1;
@@ -227,7 +227,7 @@ public class RandomTraps extends ActiveTicker
 		super.tick(ticking,tickID);
         tickStatus=Tickable.STATUS_MISC+0;
 		for(int i=maintained.size()-1;i>=0;i--)
-			if(CMLib.utensils().fetchMyTrap((Environmental)maintained.elementAt(i))==null)
+			if(CMLib.utensils().fetchMyTrap(maintained.elementAt(i))==null)
 				maintained.removeElementAt(i);
 		if(maintained.size()>=maxTraps)
         {
@@ -251,7 +251,7 @@ public class RandomTraps extends ActiveTicker
             
 			if(maintained.size()<avgTraps)
 			{
-				Vector elligible=new Vector();
+				Vector<Physical> elligible=new Vector<Physical>();
 				if(ticking instanceof Room)
                 {
                     tickStatus=Tickable.STATUS_MISC+4;
@@ -353,7 +353,7 @@ public class RandomTraps extends ActiveTicker
 				{
                     tickStatus=Tickable.STATUS_MISC+29;
 					if((maintained.contains(elligible.elementAt(e)))
-					||(CMLib.utensils().fetchMyTrap((Environmental)elligible.elementAt(e))!=null))
+					||(CMLib.utensils().fetchMyTrap(elligible.elementAt(e))!=null))
 						elligible.removeElementAt(e);
                     tickStatus=Tickable.STATUS_MISC+30;
 				}
@@ -362,11 +362,11 @@ public class RandomTraps extends ActiveTicker
 					return true;
 
                 tickStatus=Tickable.STATUS_MISC+31;
-				Environmental E=(Environmental)elligible.elementAt(CMLib.dice().roll(1,elligible.size(),-1));
+                Physical P=elligible.elementAt(CMLib.dice().roll(1,elligible.size(),-1));
 
 				Vector elligibleTraps=new Vector();
 				for(int t=0;t<allTraps.size();t++)
-					if(((Trap)allTraps.elementAt(t)).canSetTrapOn(null,E))
+					if(((Trap)allTraps.elementAt(t)).canSetTrapOn(null,P))
 						elligibleTraps.addElement(allTraps.elementAt(t));
 
 				if(elligibleTraps.size()==0)
@@ -378,8 +378,8 @@ public class RandomTraps extends ActiveTicker
 				T.setProficiency(100);
 				T.makeLongLasting();
 				T.setSavable(false);
-				E.addEffect(T);
-				maintained.addElement(E);
+				P.addEffect(T);
+				maintained.addElement(P);
                 tickStatus=Tickable.STATUS_MISC+33;
 			}
 		}

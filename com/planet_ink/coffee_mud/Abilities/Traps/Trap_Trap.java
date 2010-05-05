@@ -64,12 +64,12 @@ public class Trap_Trap extends StdAbility implements Trap
 
 	// as these are not standard traps, we return this!
 	public boolean maySetTrap(MOB mob, int asLevel){return false;}
-	public boolean canSetTrapOn(MOB mob, Environmental E){return false;}
+	public boolean canSetTrapOn(MOB mob, Physical P){return false;}
     public Vector getTrapComponents() { return new Vector(); }
 	public String requiresToSet(){return "";}
-	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean perm)
+	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
-		if(E==null) return null;
+		if(P==null) return null;
 		int level=mob.envStats().level();
 		if(level<qualifyingClassLevel) level=qualifyingClassLevel;
 		level+=trapBonus;
@@ -78,7 +78,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		Trap T=(Trap)copyOf();
 		T.setReset(rejuv);
 		T.setInvoker(mob);
-		E.addEffect(T);
+		P.addEffect(T);
         T.setAbilityCode(trapBonus);
         if(perm)
         {

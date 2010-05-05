@@ -41,7 +41,7 @@ public class Dance_Foxtrot extends Dance
 	protected int ticks=1;
 	protected int increment=1;
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {

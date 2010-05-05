@@ -43,7 +43,7 @@ public class Dance_Square extends Dance
 	protected String danceOf(){return name()+" Dance";}
     protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {
@@ -80,7 +80,7 @@ public class Dance_Square extends Dance
 
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		steadyDown=-1;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

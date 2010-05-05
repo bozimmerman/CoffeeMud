@@ -32,5 +32,5 @@ import java.util.Vector;
 */
 public interface MagicDust extends SpellHolder, MiscMagic
 {
-	public void spreadIfAble(MOB mob, Environmental target);
+	public void spreadIfAble(MOB mob, Physical target);
 }

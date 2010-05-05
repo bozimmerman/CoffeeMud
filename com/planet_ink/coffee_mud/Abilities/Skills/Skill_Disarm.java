@@ -45,7 +45,7 @@ public class Skill_Disarm extends StdSkill
     public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	public int castingQuality(MOB mob, Environmental target)
+	public int castingQuality(MOB mob, Physical target)
 	{
 		if((mob!=null)&&(target!=null))
 		{
@@ -66,7 +66,7 @@ public class Skill_Disarm extends StdSkill
 		return super.castingQuality(mob,target);
 	}
 	
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!mob.isInCombat())
 		{

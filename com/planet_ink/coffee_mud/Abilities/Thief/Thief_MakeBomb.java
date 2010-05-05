@@ -45,7 +45,7 @@ public class Thief_MakeBomb extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Trap theTrap=null;
 		Vector traps=new Vector();
@@ -58,7 +58,7 @@ public class Thief_MakeBomb extends ThiefSkill
 			   &&(((Trap)A).maySetTrap(mob,qualifyingClassLevel)))
 				traps.addElement(A);
 		}
-		Environmental trapThis=givenTarget;
+		Physical trapThis=givenTarget;
 		if(trapThis!=null)
 			theTrap=(Trap)traps.elementAt(CMLib.dice().roll(1,traps.size(),-1));
 		else

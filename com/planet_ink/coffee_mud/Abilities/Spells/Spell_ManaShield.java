@@ -81,9 +81,9 @@ public class Spell_ManaShield extends Spell
         }
         return true;
     }
-    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
     {
-        Environmental target=mob;
+        Physical target=mob;
         if((auto)&&(givenTarget!=null)) target=givenTarget;
         boolean oldOne=false;
         for(int a=0;a<target.numEffects();a++)

@@ -73,7 +73,7 @@ public class Prayer_BloodHearth extends Prayer
 		return super.okMessage(myHost,msg);
 	}
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if((mob!=null)&&(target instanceof Room))
         {
@@ -84,9 +84,9 @@ public class Prayer_BloodHearth extends Prayer
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Environmental target=mob.location();
+		Physical target=mob.location();
 		if(target==null) return false;
 		if(target.fetchEffect(ID())!=null)
 		{

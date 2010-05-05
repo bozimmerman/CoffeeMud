@@ -63,21 +63,21 @@ public class Trap_Greasy extends StdTrap
         V.addElement(CMClass.getBasicItem("OilFlask"));
         return V;
     }
-	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean perm)
+	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
-		if(E==null) return null;
+		if(P==null) return null;
 		Item I=getPoison(mob);
 		if((I!=null)&&(I instanceof Drink))
 		{
 			((Drink)I).setLiquidHeld(0);
 			I.destroy();
 		}
-		return super.setTrap(mob,E,trapBonus,qualifyingClassLevel,perm);
+		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}
 
-	public boolean canSetTrapOn(MOB mob, Environmental E)
+	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
-		if(!super.canSetTrapOn(mob,E)) return false;
+		if(!super.canSetTrapOn(mob,P)) return false;
 		Item I=getPoison(mob);
 		if((I==null)
 		&&(mob!=null))

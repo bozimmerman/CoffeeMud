@@ -90,7 +90,7 @@ public class Poison_Alcohol extends Poison
 		super.unInvoke();
 	}
 
-    protected boolean catchIt(MOB mob, Environmental target)
+    protected boolean catchIt(MOB mob, Physical target)
     {
         if(!super.catchIt(mob,target))
             return false;
@@ -270,7 +270,7 @@ public class Poison_Alcohol extends Poison
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		int largest=alchoholContribution();
 		if((givenTarget instanceof MOB)&&(auto))

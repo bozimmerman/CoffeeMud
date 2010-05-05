@@ -58,13 +58,13 @@ public class Thief_Lure extends ThiefSkill implements Trap
 	public int getReset(){return 0;}
 	public void spring(MOB M){}
 	public boolean maySetTrap(MOB mob, int asLevel){return false;}
-	public boolean canSetTrapOn(MOB mob, Environmental E){return false;}
+	public boolean canSetTrapOn(MOB mob, Physical P){return false;}
     public Vector getTrapComponents() { return new Vector(); }
 	public String requiresToSet(){return "";}
-	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean perm)
+	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{return null;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{

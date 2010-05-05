@@ -59,7 +59,7 @@ public class Thief_FrameMark extends ThiefSkill
 			return A.ticks;
 		return -1;
 	}
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getMark(mob);
 		if(target==null)

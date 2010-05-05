@@ -69,7 +69,7 @@ public class Prayer_GodLight extends Prayer
 	}
 
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {
@@ -89,10 +89,10 @@ public class Prayer_GodLight extends Prayer
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
-		Environmental target=null;
+		Physical target=null;
 		if((!auto)
         &&((commands.size()==0)||(((String)commands.firstElement()).equalsIgnoreCase("ROOM")))
         &&(!mob.isInCombat()))

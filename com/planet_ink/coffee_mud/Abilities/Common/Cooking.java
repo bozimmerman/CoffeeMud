@@ -572,7 +572,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		return building;
 	}
 	
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		verb=cookWord();
 		cookingPot=null;
@@ -583,7 +583,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		messedUp=false;
 		oldPotContents=null;
 		Vector allRecipes=addRecipes(mob,loadRecipes());
-		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
+		if((auto)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
 		{
 			finalAmount=1;
 			commands.removeElementAt(0);

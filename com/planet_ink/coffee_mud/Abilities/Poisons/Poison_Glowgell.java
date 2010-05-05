@@ -47,7 +47,7 @@ public class Poison_Glowgell extends Poison
 	protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> attempt(s) to smear something on <T-NAMESELF>!^</FIGHT^>^?";}
 	protected String POISON_FAIL(){return "<S-NAME> attempt(s) to smear something on <T-NAMESELF>, but fail(s).";}
 
-	protected boolean catchIt(MOB mob, Environmental target)
+	protected boolean catchIt(MOB mob, Physical target)
 	{
 		return false;
 	}

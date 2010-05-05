@@ -480,7 +480,7 @@ public class CraftingSkill extends GatheringSkill
 			Vector V=new Vector();
 			V.addElement(Integer.valueOf(material));
 			if(recipe!=null) V.addElement(recipe);
-			invoke(mob,V,this,true,-1);
+			invoke(mob,V,null,true,-1);
 			if((V.size()>0)&&(V.lastElement() instanceof Item))
 			{
 				if((V.size()>1)&&((V.elementAt(V.size()-2) instanceof Item)))

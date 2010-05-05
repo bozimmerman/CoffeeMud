@@ -153,7 +153,7 @@ public class Chant_PlantWall extends Chant
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
 		{
@@ -182,7 +182,7 @@ public class Chant_PlantWall extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Environmental target = mob.location();
+		Physical target = mob.location();
 
 
 		boolean success=proficiencyCheck(mob,0,auto);

@@ -143,7 +143,7 @@ public class Spell_Tourettes extends Spell implements DiseaseAffect
 		affectableStats.setStat(CharStats.STAT_CHARISMA,2);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

@@ -44,11 +44,11 @@ public class Bomb_Explosive extends StdBomb
         V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_COAL));
         return V;
     }
-	public boolean canSetTrapOn(MOB mob, Environmental E)
+	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
-		if(!super.canSetTrapOn(mob,E)) return false;
-		if((!(E instanceof Item))
-		||(((Item)E).material()!=RawMaterial.RESOURCE_COAL))
+		if(!super.canSetTrapOn(mob,P)) return false;
+		if((!(P instanceof Item))
+		||(((Item)P).material()!=RawMaterial.RESOURCE_COAL))
 		{
 			if(mob!=null)
 				mob.tell("You need some coal to make this out of.");

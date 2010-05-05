@@ -244,7 +244,7 @@ public class Song_Ode extends Song
 		super.executeMsg(myHost,msg);
 	}
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {
@@ -347,7 +347,7 @@ public class Song_Ode extends Song
 		return songs;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
         steadyDown=-1;
 		if(auto) return false;

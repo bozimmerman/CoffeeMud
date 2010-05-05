@@ -46,7 +46,7 @@ public class Fighter_CoupDeGrace extends FighterSkill
     public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	public int castingQuality(MOB mob, Environmental target)
+	public int castingQuality(MOB mob, Physical target)
 	{
 		if((mob!=null)&&(target!=null))
 		{
@@ -65,7 +65,7 @@ public class Fighter_CoupDeGrace extends FighterSkill
 		return super.castingQuality(mob,target);
 	}
 	
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!mob.isInCombat())
 		{

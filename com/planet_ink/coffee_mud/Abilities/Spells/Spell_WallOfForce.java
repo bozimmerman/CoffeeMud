@@ -124,7 +124,7 @@ public class Spell_WallOfForce extends Spell
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((!mob.isInCombat())||(mob.rangeToTarget()<1))
 		{
@@ -148,7 +148,7 @@ public class Spell_WallOfForce extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Environmental target = mob.location();
+		Physical target = mob.location();
 
 
 		boolean success=proficiencyCheck(mob,0,auto);

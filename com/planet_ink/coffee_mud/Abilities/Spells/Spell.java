@@ -46,7 +46,7 @@ public class Spell extends StdAbility
 	public int classificationCode(){return Ability.ACODE_SPELL;}
 	
 	public boolean maliciousAffect(MOB mob,
-								   Environmental target,
+								   Physical target,
 								   int asLevel,
 								   int tickAdjustmentFromStandard,
 								   int additionAffectCheckCode)
@@ -82,7 +82,7 @@ public class Spell extends StdAbility
 		}
 		return truefalse;
 	}
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

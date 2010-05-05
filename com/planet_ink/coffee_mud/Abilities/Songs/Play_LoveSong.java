@@ -98,7 +98,7 @@ public class Play_LoveSong extends Play
 		return true;
 	}
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {

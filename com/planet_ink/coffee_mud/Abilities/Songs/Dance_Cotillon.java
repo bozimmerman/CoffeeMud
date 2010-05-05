@@ -43,7 +43,7 @@ public class Dance_Cotillon extends Dance
     protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 	protected MOB whichLast=null;
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {

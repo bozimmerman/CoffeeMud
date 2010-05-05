@@ -92,7 +92,7 @@ public interface Ability extends Environmental
 	 * @param target the potential target -- may be invoker
 	 * @return Ability.QUALITY_* constant classification
 	 */
-	public int castingQuality(MOB mob, Environmental target);
+	public int castingQuality(MOB mob, Physical target);
 
 	/**
 	 * Returns a bitmap giving some specific information about
@@ -204,7 +204,7 @@ public interface Ability extends Environmental
 	 * method is called when the command is entered, and every second
 	 * afterwards until the invoker has enough actions to complete it.
 	 * At completion time, invoke is called.
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#invoke(MOB, Vector, Environmental, boolean, int)
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#invoke(MOB, Vector, Physical, boolean, int)
 	 * @param mob the player or mob invoking the skill
 	 * @param commands the parameters entered for the skill (minus trigger word)
 	 * @param givenTarget null, unless being auto-invoked. Represents an override target.
@@ -214,7 +214,7 @@ public interface Ability extends Environmental
 	 * @param actionsRemaining number of free actions the player is defficient.
 	 * @return whether the skill should be allowed to invoke.  false cancels altogether.
 	 */
-    public boolean preInvoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining);
+    public boolean preInvoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining);
     
     /**
      * This method is called when a player or the system invokes this skill,  
@@ -222,14 +222,14 @@ public interface Ability extends Environmental
      * Calls the more complete invoke method without an empty command strings vector
      * unless target is non-null, in which case the vector will contain the name
      * of the target. 
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#invoke(MOB, Vector, Environmental, boolean, int)
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#invoke(MOB, Vector, Physical, boolean, int)
 	 * @param mob the player or mob invoking the skill
 	 * @param target null, unless being auto-invoked. Represents an override target.
 	 * @param auto false if player enters command, true if system invokes the command
 	 * @param asLevel -1, unless being auto-invoked, when it is the level to invoke it at.
      * @return whether the skill successfully invoked.
      */
-	public boolean invoke(MOB mob, Environmental target, boolean auto, int asLevel);
+	public boolean invoke(MOB mob, Physical target, boolean auto, int asLevel);
 	
     /**
      * This method is called when a player or the system invokes this skill,  
@@ -244,7 +244,7 @@ public interface Ability extends Environmental
 	 * @param asLevel -1, unless being auto-invoked, when it is the level to invoke it at.
      * @return whether the skill successfully invoked.
      */
-	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel);
+	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel);
 
 	/**
 	 * If this skill is uninvokable, this method will uninvoke it, remove it
@@ -461,19 +461,19 @@ public interface Ability extends Environmental
 	 * at the given object.  This method derives its answer from the protected
 	 * integer method canTargetCode()
 	 * @see com.planet_ink.coffee_mud.Abilities.StdAbility#canTargetCode()
-	 * @param E the potential target of this skill
+	 * @param P the potential target of this skill
 	 * @return whether E is a valid target
 	 */
-	public boolean canTarget(Environmental E);
+	public boolean canTarget(Physical P);
 	/**
 	 * Returns whether, when used as a property/effect, this ability can affect
 	 * the given object.  This method derives its answer from the protected
 	 * integer method canAffectCode()
 	 * @see com.planet_ink.coffee_mud.Abilities.StdAbility#canAffectCode()
-	 * @param E the potential object to have this as a property/effect
+	 * @param P the potential object to have this as a property/effect
 	 * @return whether E is a valid object to have this as a property/effect
 	 */
-	public boolean canAffect(Environmental E);
+	public boolean canAffect(Physical P);
 	
 	/**
 	 * Returns whether, when used as a skill, this ability can target itself
@@ -540,7 +540,7 @@ public interface Ability extends Environmental
 	 * @param affected the object to be affected by this ability
 	 * @param tickTime the number of ticks to keep the ability ticking.
 	 */
-	public void startTickDown(MOB invoker, Environmental affected, int tickTime);
+	public void startTickDown(MOB invoker, Physical affected, int tickTime);
 
 	/**
 	 * Returns a number from 0-100 representing the percent of proficiency

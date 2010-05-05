@@ -44,12 +44,12 @@ public class Bomb_Water extends StdBomb
         V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_FRESHWATER));
         return V;
     }
-	public boolean canSetTrapOn(MOB mob, Environmental E)
+	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
-		if(!super.canSetTrapOn(mob,E)) return false;
-		if((!(E instanceof Drink))
-		||(((Drink)E).liquidHeld()!=((Drink)E).liquidRemaining())
-		||(((Drink)E).liquidType()!=RawMaterial.RESOURCE_FRESHWATER))
+		if(!super.canSetTrapOn(mob,P)) return false;
+		if((!(P instanceof Drink))
+		||(((Drink)P).liquidHeld()!=((Drink)P).liquidRemaining())
+		||(((Drink)P).liquidType()!=RawMaterial.RESOURCE_FRESHWATER))
 		{
 			if(mob!=null)
 				mob.tell("You need a full water container to make this out of.");

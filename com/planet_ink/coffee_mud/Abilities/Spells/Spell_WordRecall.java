@@ -43,14 +43,14 @@ public class Spell_WordRecall extends Spell
     protected int overrideMana(){return Integer.MAX_VALUE-90;}
     public long flags(){return Ability.FLAG_TRANSPORTING;}
 
-    protected int verbalCastCode(MOB mob, Environmental target, boolean auto)
+    protected int verbalCastCode(MOB mob, Physical target, boolean auto)
     {
         int affectType=CMMsg.MSK_CAST_VERBAL|CMMsg.TYP_RECALL;
         if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
         return affectType;
     }
 
-    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
     {
         if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
             return false;

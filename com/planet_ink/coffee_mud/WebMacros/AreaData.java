@@ -120,7 +120,7 @@ public class AreaData extends StdWebMacro
 		return str;
 	}
 	
-	public static StringBuffer affects(Environmental E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer affects(Physical P, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("AFFECTS"))
@@ -147,9 +147,9 @@ public class AreaData extends StdWebMacro
 				}
 			}
 			else
-			for(int a=0;a<E.numEffects();a++)
+			for(int a=0;a<P.numEffects();a++)
 			{
-				Ability Able=E.fetchEffect(a);
+				Ability Able=P.fetchEffect(a);
 				if((Able!=null)&&(Able.isSavable()))
 				{
 					theclasses.addElement(CMClass.classID(Able));
@@ -180,7 +180,7 @@ public class AreaData extends StdWebMacro
 			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 			{
 				Ability A=(Ability)a.nextElement();
-				if((!A.canAffect(E))||(alreadyHave.contains(A.ID().toLowerCase())))
+				if((!A.canAffect(P))||(alreadyHave.contains(A.ID().toLowerCase())))
 					continue;
 				str.append("<OPTION VALUE=\""+A.ID()+"\">"+A.ID());
 			}

@@ -97,7 +97,7 @@ public class Dance_Salsa extends Dance
 		return true;
 	}
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {

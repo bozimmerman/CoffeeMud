@@ -52,11 +52,11 @@ public class Chant_WhisperWard extends Chant implements Trap
 	public void setReset(int Reset){}
 	public int getReset(){return 0;}
 	public boolean maySetTrap(MOB mob, int asLevel){return false;}
-	public boolean canSetTrapOn(MOB mob, Environmental E){return false;}
+	public boolean canSetTrapOn(MOB mob, Physical P){return false;}
     public Vector getTrapComponents() { return new Vector();}
 	public String requiresToSet(){return "";}
-	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean perm)
-	{beneficialAffect(mob,E,qualifyingClassLevel+trapBonus,0); return (Trap)E.fetchEffect(ID());}
+	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
+	{beneficialAffect(mob,P,qualifyingClassLevel+trapBonus,0); return (Trap)P.fetchEffect(ID());}
 
 	public boolean disabled(){return false;}
 	public boolean sprung(){return false;}
@@ -123,7 +123,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
 		if(commands.size()<2)
@@ -153,7 +153,7 @@ public class Chant_WhisperWard extends Chant implements Trap
 			return false;
 		}
 
-		Environmental target;
+		Physical target;
 		String itemName=CMParms.combine(commands,0,commands.size()-1);
 		if(itemName.equalsIgnoreCase("room"))
 			target=mob.location();

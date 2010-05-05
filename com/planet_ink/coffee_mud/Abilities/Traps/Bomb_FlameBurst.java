@@ -44,13 +44,13 @@ public class Bomb_FlameBurst extends StdBomb
         V.addElement(CMClass.getBasicItem("OilFlask"));
         return V;
     }
-	public boolean canSetTrapOn(MOB mob, Environmental E)
+	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
-		if(!super.canSetTrapOn(mob,E)) return false;
-		if((!(E instanceof Item))
-		||(!(E instanceof Drink))
-		||(!((((Drink)E).containsDrink())||(((Drink)E).liquidType()!=RawMaterial.RESOURCE_LAMPOIL)))
-		   &&(((Item)E).material()!=RawMaterial.RESOURCE_LAMPOIL))
+		if(!super.canSetTrapOn(mob,P)) return false;
+		if((!(P instanceof Item))
+		||(!(P instanceof Drink))
+		||(!((((Drink)P).containsDrink())||(((Drink)P).liquidType()!=RawMaterial.RESOURCE_LAMPOIL)))
+		   &&(((Item)P).material()!=RawMaterial.RESOURCE_LAMPOIL))
 		{
 			if(mob!=null)
 				mob.tell("You need some lamp oil to make this out of.");

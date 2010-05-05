@@ -47,7 +47,7 @@ public class Thief_RemoveTraps extends ThiefSkill
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
     public Vector lastDone=new Vector();
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
         boolean saveTheTrap=false;
         if((commands.size()>0)&&(commands.lastElement() instanceof Boolean))
@@ -56,7 +56,7 @@ public class Thief_RemoveTraps extends ThiefSkill
             commands.removeElementAt(commands.size()-1);
         }
 		String whatTounlock=CMParms.combine(commands,0);
-		Environmental unlockThis=null;
+		Physical unlockThis=null;
 		int dirCode=Directions.getGoodDirectionCode(whatTounlock);
 		Room R=mob.location();
 		Room nextRoom=null;

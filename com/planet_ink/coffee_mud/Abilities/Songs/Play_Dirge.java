@@ -45,7 +45,7 @@ public class Play_Dirge extends Play
 	protected String songOf(){return "a "+name();}
     protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {
@@ -55,7 +55,7 @@ public class Play_Dirge extends Play
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		steadyDown=-1;
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);

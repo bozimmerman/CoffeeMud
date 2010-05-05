@@ -48,11 +48,11 @@ public class Thief_IdentifyBombs extends ThiefSkill
 	protected Room lastRoom=null;
     public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DETRAP;}
 
-	public String trapCheck(Environmental E)
+	public String trapCheck(Physical P)
 	{
-		if(E!=null)
+		if(P!=null)
 		{
-		    Trap T=CMLib.utensils().fetchMyTrap(E);
+		    Trap T=CMLib.utensils().fetchMyTrap(P);
 			if((T!=null)&&(T.isABomb()))
 			{
 				if(CMLib.dice().rollPercentage()==1)
@@ -60,22 +60,22 @@ public class Thief_IdentifyBombs extends ThiefSkill
 					helpProficiency((MOB)affected);
 					affected.recoverEnvStats();
 				}
-				return E.name()+" is a bomb.\n\r";
+				return P.name()+" is a bomb.\n\r";
 			}
 		}
 		return "";
 	}
 
-	public String trapHere(MOB mob, Environmental E)
+	public String trapHere(MOB mob, Physical P)
 	{
 		StringBuffer msg=new StringBuffer("");
-		if(E==null) return msg.toString();
-		if((E instanceof Room)&&(CMLib.flags().canBeSeenBy(E,mob)))
+		if(P==null) return msg.toString();
+		if((P instanceof Room)&&(CMLib.flags().canBeSeenBy(P,mob)))
 			msg.append(trapCheck(mob.location()));
 		else
-		if((E instanceof Container)&&(CMLib.flags().canBeSeenBy(E,mob)))
+		if((P instanceof Container)&&(CMLib.flags().canBeSeenBy(P,mob)))
 		{
-			Container C=(Container)E;
+			Container C=(Container)P;
 			Vector V=C.getContents();
 			for(int v=0;v<V.size();v++)
 				if(trapCheck((Item)V.elementAt(v)).length()>0)
@@ -89,20 +89,20 @@ public class Thief_IdentifyBombs extends ThiefSkill
 				}
 		}
 		else
-		if((E instanceof Item)&&(CMLib.flags().canBeSeenBy(E,mob)))
-			msg.append(trapCheck(E));
+		if((P instanceof Item)&&(CMLib.flags().canBeSeenBy(P,mob)))
+			msg.append(trapCheck(P));
 		else
-		if((E instanceof Exit)&&(CMLib.flags().canBeSeenBy(E,mob)))
+		if((P instanceof Exit)&&(CMLib.flags().canBeSeenBy(P,mob)))
 		{
 			Room room=mob.location();
 			if(room!=null)
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
-				if(room.getExitInDir(d)==E)
+				if(room.getExitInDir(d)==P)
 				{
 					Exit E2=room.getReverseExit(d);
 					Room R2=room.getRoomInDir(d);
-					msg.append(trapCheck(E));
+					msg.append(trapCheck(P));
 					msg.append(trapCheck(E2));
 					msg.append(trapCheck(R2));
 					break;
@@ -110,11 +110,11 @@ public class Thief_IdentifyBombs extends ThiefSkill
 			}
 		}
 		else
-		if((E instanceof MOB)&&(CMLib.flags().canBeSeenBy(E,mob)))
+		if((P instanceof MOB)&&(CMLib.flags().canBeSeenBy(P,mob)))
 		{
-			for(int i=0;i<((MOB)E).numItems();i++)
+			for(int i=0;i<((MOB)P).numItems();i++)
 			{
-				Item I=((MOB)E).getItem(i);
+				Item I=((MOB)P).getItem(i);
 				if(trapCheck(I).length()>0)
 				{
 					if(CMLib.dice().rollPercentage()==1)
@@ -122,24 +122,24 @@ public class Thief_IdentifyBombs extends ThiefSkill
 						helpProficiency((MOB)affected);
 						affected.recoverEnvStats();
 					}
-					return E.name()+" is carrying a bomb.";
+					return P.name()+" is carrying a bomb.";
 				}
 			}
-			ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(E);
+			ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(P);
 			if(SK!=null)
 			{
 	            for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 	            {
 	                Environmental E2=(Environmental)i.next();
 					if(E2 instanceof Item)
-						if(trapCheck(E2).length()>0)
+						if(trapCheck((Item)E2).length()>0)
 						{
 							if(CMLib.dice().rollPercentage()==1)
 							{
 								helpProficiency((MOB)affected);
 								affected.recoverEnvStats();
 							}
-							return E.name()+" has a bomb in stock.";
+							return P.name()+" has a bomb in stock.";
 						}
 				}
 			}
@@ -152,19 +152,18 @@ public class Thief_IdentifyBombs extends ThiefSkill
 		super.executeMsg(myHost,msg);
 		if((affected!=null)
 		&&(affected instanceof MOB)
-		&&(msg.target()!=null)
+		&&(msg.target() instanceof Physical)
 		&&(msg.amISource((MOB)affected))
 		&&((msg.sourceMinor()==CMMsg.TYP_LOOK)||(msg.sourceMinor()==CMMsg.TYP_EXAMINE)))
 		{
 			if((msg.tool()!=null)&&(msg.tool().ID().equals(ID())))
 			{
-				String str=trapHere((MOB)affected,msg.target());
+				String str=trapHere((MOB)affected,(Physical)msg.target());
 				if(str.length()>0)
 					((MOB)affected).tell(str);
 			}
 			else
-			if((msg.target()!=null)
-			&&(trapHere((MOB)affected,msg.target()).length()>0)
+			if((trapHere((MOB)affected,(Physical)msg.target()).length()>0)
 			&&(msg.source()!=msg.target()))
 			{
 				CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),this,CMMsg.MSG_LOOK,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,null);

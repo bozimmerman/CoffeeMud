@@ -200,7 +200,7 @@ public class ThinRoom implements Room {
 							  String allMessage){return true;}
 
 	public MOB fetchInhabitant(String inhabitantID){return null;}
-	public Vector fetchInhabitants(String inhabitantID){return new Vector(1);}
+	public List<MOB> fetchInhabitants(String inhabitantID){return new Vector(1);}
 	public void addInhabitant(MOB mob){}
 	public void delInhabitant(MOB mob){}
 	public int numInhabitants(){return 0;}
@@ -232,11 +232,11 @@ public class ThinRoom implements Room {
 	public List<Item> findItems(String itemID) { return new Vector(1);}
 	public List<Item> findItems(Item goodLocation, String itemID) { return new Vector(1);}
 
-	public Environmental fetchFromRoomFavorItems(Item goodLocation, String thingName,int wornFilter){return null;}
-	public Environmental fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, int wornFilter){return null;}
-	public Environmental fetchFromRoomFavorMOBs(Item goodLocation, String thingName, int wornFilter){return null;}
-	public Environmental fetchFromMOBRoomFavorsItems(MOB mob, Item goodLocation, String thingName, int wornFilter){return null;}
-	public Environmental fetchFromMOBRoomFavorsMOBs(MOB mob, Item goodLocation, String thingName, int wornFilter){return null;}
+	public PhysicalAgent fetchFromRoomFavorItems(Item goodLocation, String thingName,int wornFilter){return null;}
+	public PhysicalAgent fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, int wornFilter){return null;}
+	public PhysicalAgent fetchFromRoomFavorMOBs(Item goodLocation, String thingName, int wornFilter){return null;}
+	public PhysicalAgent fetchFromMOBRoomFavorsItems(MOB mob, Item goodLocation, String thingName, int wornFilter){return null;}
+	public PhysicalAgent fetchFromMOBRoomFavorsMOBs(MOB mob, Item goodLocation, String thingName, int wornFilter){return null;}
 
 	public void addEffect(Ability to){}
 	public void addNonUninvokableEffect(Ability to){}

@@ -1603,7 +1603,7 @@ public class DefaultFaction implements Faction, MsgListener
         }
         public boolean requiresUpdating() { return lastFactionDataChange[0] > lastUpdated; }
         
-        private Ability setPresenceReaction(MOB M, Environmental myHost)
+        private Ability setPresenceReaction(MOB M, Physical myHost)
         {
 	    	Vector myReactions=null;
 	    	Vector tempReactSet=null;
@@ -1658,7 +1658,7 @@ public class DefaultFaction implements Faction, MsgListener
 							M=R.fetchInhabitant(m);
 							if((M!=null)&&(M!=myHost)&&(M.isMonster()))
 							{
-								A=setPresenceReaction(M,myHost);
+								A=setPresenceReaction(M,msg.source());
 								if(A!=null) // means yes, we are using light, and yes, heres a reaction to add
 									lightPresenceReactions.add(A);
 							}
@@ -1667,9 +1667,10 @@ public class DefaultFaction implements Faction, MsgListener
 					}
 					else
 					if((msg.source().isMonster())
-					&&(msg.target()==CMLib.map().roomLocation(myHost)))
+					&&(msg.target()==CMLib.map().roomLocation(myHost))
+					&&(myHost instanceof Physical))
 					{
-						Ability A=setPresenceReaction(msg.source(),myHost);
+						Ability A=setPresenceReaction(msg.source(),(Physical)myHost);
 						if(A!=null){ // means yes, we are using light, and yes, heres a reaction to add
 							lightPresenceAbilities = Arrays.copyOf(lightPresenceAbilities, lightPresenceAbilities.length+1);
 							lightPresenceAbilities[lightPresenceAbilities.length-1]=A;

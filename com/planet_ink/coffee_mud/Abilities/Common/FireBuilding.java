@@ -106,7 +106,7 @@ public class FireBuilding extends CommonSkill
         return here;
     }
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.isMonster()
 		&&(!CMLib.flags().isAnimalIntelligence(mob)))

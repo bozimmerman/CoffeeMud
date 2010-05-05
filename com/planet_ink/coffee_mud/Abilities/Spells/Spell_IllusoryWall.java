@@ -53,7 +53,7 @@ public class Spell_IllusoryWall extends Spell
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
 		String whatToOpen=CMParms.combine(commands,0);

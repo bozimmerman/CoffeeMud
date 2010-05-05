@@ -126,7 +126,7 @@ public class Chant_ChargeMetal extends Chant
 		super.unInvoke();
 	}
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {
@@ -140,9 +140,9 @@ public class Chant_ChargeMetal extends Chant
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Environmental target=this.getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
+		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
 		if(target==null) return false;
 		Item I=null;
 		if(target instanceof MOB) I=wieldingMetal((MOB)target);

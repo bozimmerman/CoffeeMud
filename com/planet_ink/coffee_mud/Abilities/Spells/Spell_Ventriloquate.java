@@ -41,7 +41,7 @@ public class Spell_Ventriloquate extends Spell
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
     public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
 		if(commands.size()<2)
@@ -49,7 +49,7 @@ public class Spell_Ventriloquate extends Spell
 			mob.tell("You must specify who or what to cast this on, and what you want said.");
 			return false;
 		}
-		Environmental target=mob.location().fetchFromRoomFavorItems(null,(String)commands.elementAt(0),Wearable.FILTER_UNWORNONLY);
+		Physical target=mob.location().fetchFromRoomFavorItems(null,(String)commands.elementAt(0),Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");

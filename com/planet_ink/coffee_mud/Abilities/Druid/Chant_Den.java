@@ -77,7 +77,7 @@ public class Chant_Den extends Chant
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target = mob.location();
 		if(target.fetchEffect(ID())!=null)

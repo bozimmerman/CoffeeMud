@@ -101,7 +101,7 @@ public class GenStaff extends GenWeapon implements Wand
 		return secretWord;
 	}
 	public void waveIfAble(MOB mob,
-						   Environmental afftarget,
+						   Physical afftarget,
 						   String message)
 	{
 		StdWand.waveIfAble(mob,afftarget,message,this);
@@ -113,8 +113,8 @@ public class GenStaff extends GenWeapon implements Wand
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_WAND_USE:
-			if(msg.amITarget(this))
-				StdWand.waveIfAble(mob,msg.tool(),msg.targetMessage(),this);
+			if(msg.amITarget(this)&&(msg.tool() instanceof Physical))
+				StdWand.waveIfAble(mob,(Physical)msg.tool(),msg.targetMessage(),this);
 			break;
 		case CMMsg.TYP_SPEAK:
 			if(msg.sourceMinor()==CMMsg.TYP_SPEAK)

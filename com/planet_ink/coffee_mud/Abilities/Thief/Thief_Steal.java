@@ -71,7 +71,7 @@ public class Thief_Steal extends ThiefSkill
 		return times+1;
 	}
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {
@@ -88,7 +88,7 @@ public class Thief_Steal extends ThiefSkill
     }
 
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
         String itemToSteal="all";  
         if(!auto)

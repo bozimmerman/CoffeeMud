@@ -262,7 +262,7 @@ public class StdTrap extends StdAbility implements Trap
 		if(asLevel>=trapLevel()) return true;
 		return false;
 	}
-	public boolean canSetTrapOn(MOB mob, Environmental E)
+	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
 		if(mob!=null)
 			if((!maySetTrap(mob,mob.envStats().level()))
@@ -272,52 +272,52 @@ public class StdTrap extends StdAbility implements Trap
 				mob.tell("You are not high enough level ("+trapLevel()+") to set that trap.");
 				return false;
 			}
-		if(E.fetchEffect(ID())!=null)
+		if(P.fetchEffect(ID())!=null)
 		{
 			if(mob!=null)
-				mob.tell("This trap is already set on "+E.name()+".");
+				mob.tell("This trap is already set on "+P.name()+".");
 			return false;
 		}
-		if(!canAffect(E))
+		if(!canAffect(P))
 		{
 			if(mob!=null)
-				mob.tell("You can't set '"+name()+"' on "+E.name()+".");
+				mob.tell("You can't set '"+name()+"' on "+P.name()+".");
 			return false;
 		}
 		if((canAffectCode()&Ability.CAN_EXITS)==Ability.CAN_EXITS)
 		{
-			if((E instanceof Item)&&(!(E instanceof Container)))
+			if((P instanceof Item)&&(!(P instanceof Container)))
 			{
 				if(mob!=null)
-					mob.tell(E.name()+" has no lid, so '"+name()+"' cannot be set on it.");
+					mob.tell(P.name()+" has no lid, so '"+name()+"' cannot be set on it.");
 				return false;
 			}
-			if(((E instanceof Exit)&&(!(((Exit)E).hasADoor()))))
+			if(((P instanceof Exit)&&(!(((Exit)P).hasADoor()))))
 			{
 				if(mob!=null)
-					mob.tell(E.name()+" has no door, so '"+name()+"' cannot be set on it.");
+					mob.tell(P.name()+" has no door, so '"+name()+"' cannot be set on it.");
 				return false;
 			}
-			if(((E instanceof Container)&&(!(((Container)E).hasALid()))))
+			if(((P instanceof Container)&&(!(((Container)P).hasALid()))))
 			{
 				if(mob!=null)
-					mob.tell(E.name()+" has no lid, so '"+name()+"' cannot be set on it.");
+					mob.tell(P.name()+" has no lid, so '"+name()+"' cannot be set on it.");
 				return false;
 			}
 		}
 		return true;
 	}
     public Vector getTrapComponents() { return emptyV;}
-	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean perm)
+	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
-		if(E==null) return null;
+		if(P==null) return null;
 		int rejuv=baseRejuvTime(qualifyingClassLevel+trapBonus);
 		Trap T=(Trap)copyOf();
 		T.setReset(rejuv);
 		T.setInvoker(mob);
 		T.setSavable(false);
 		T.setAbilityCode(trapBonus);
-		E.addEffect(T);
+		P.addEffect(T);
         if(perm)
         {
             T.setSavable(true);

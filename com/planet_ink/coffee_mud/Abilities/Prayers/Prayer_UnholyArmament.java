@@ -57,7 +57,7 @@ public class Prayer_UnholyArmament extends Prayer
 		Wearable.WORN_ABOUT_BODY,
 	};
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

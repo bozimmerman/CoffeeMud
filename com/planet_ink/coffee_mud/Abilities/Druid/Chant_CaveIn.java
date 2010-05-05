@@ -87,7 +87,7 @@ public class Chant_CaveIn extends Chant
 		}
 	}
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {
@@ -99,9 +99,9 @@ public class Chant_CaveIn extends Chant
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Environmental target=null;
+		Physical target=null;
         if(mob.isMonster()&&(givenTarget instanceof MOB))
             target=mob.location();
         else

@@ -119,7 +119,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Vector V=Druid_MyPlants.myPlantRooms(mob);
 		for(int v=0;v<V.size();v++)

@@ -100,7 +100,7 @@ public class Staff extends StdWeapon implements Wand
 	}
 
 	public void waveIfAble(MOB mob,
-						   Environmental afftarget,
+						   Physical afftarget,
 						   String message)
 	{
 		StdWand.waveIfAble(mob,afftarget,message,this);
@@ -113,8 +113,8 @@ public class Staff extends StdWeapon implements Wand
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_WAND_USE:
-			if(msg.amITarget(this))
-				waveIfAble(mob,msg.tool(),msg.targetMessage());
+			if(msg.amITarget(this)&&(msg.tool() instanceof Physical))
+				waveIfAble(mob,(Physical)msg.tool(),msg.targetMessage());
 			break;
 		case CMMsg.TYP_SPEAK:
 			if(msg.sourceMinor()==CMMsg.TYP_SPEAK)

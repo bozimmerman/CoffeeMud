@@ -88,7 +88,7 @@ public class Song_Mercy extends Song
 		return super.okMessage(myHost,msg);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		count=3;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

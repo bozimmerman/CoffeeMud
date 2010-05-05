@@ -115,7 +115,7 @@ public class Prayer_ProtGood extends Prayer
 			mob.tell("Your protection from goodness fades.");
 	}
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {
@@ -126,9 +126,9 @@ public class Prayer_ProtGood extends Prayer
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-        Environmental target=mob;
+        Physical target=mob;
         if((auto)&&(givenTarget!=null)) target=givenTarget;
         if(target.fetchEffect(this.ID())!=null)
 		{

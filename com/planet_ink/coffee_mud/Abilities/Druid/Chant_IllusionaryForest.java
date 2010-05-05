@@ -58,7 +58,7 @@ public class Chant_IllusionaryForest extends Chant
 		super.unInvoke();
 	}
     
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {
@@ -139,7 +139,7 @@ public class Chant_IllusionaryForest extends Chant
 		return newRoom;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
@@ -148,7 +148,7 @@ public class Chant_IllusionaryForest extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Environmental target = mob.location();
+		Physical target = mob.location();
 		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)

@@ -57,10 +57,10 @@ public interface CMMiscUtils extends CMLibrary
 	public void confirmWearability(MOB mob);
 	public int processVariableEquipment(MOB mob);
     
-    public Trap makeADeprecatedTrap(Environmental unlockThis);
-    public void setTrapped(Environmental myThang, boolean isTrapped);
-    public void setTrapped(Environmental myThang, Trap theTrap, boolean isTrapped);
-    public Trap fetchMyTrap(Environmental myThang);
+    public Trap makeADeprecatedTrap(Physical unlockThis);
+    public void setTrapped(Physical myThang, boolean isTrapped);
+    public void setTrapped(Physical myThang, Trap theTrap, boolean isTrapped);
+    public Trap fetchMyTrap(Physical myThang);
     
     public MOB getMobPossessingAnother(MOB mob);
     public void roomAffectFully(CMMsg msg, Room room, int dirCode);

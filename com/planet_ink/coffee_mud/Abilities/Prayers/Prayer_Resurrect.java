@@ -49,23 +49,23 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 		return (E instanceof DeadBody);
 	}
 	
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Environmental body=null;
+		Physical body=null;
         body=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
         DatabaseEngine.PlayerData nonPlayerData=null;
         boolean playerCorpse=false;
         if((body==null)&&(CMSecurity.isASysOp(mob)))
         {
         	List<PlayerData> V=CMLib.database().DBReadData("HEAVEN");
-            Vector allObjs=new Vector();
+            Vector<Physical> allObjs=new Vector<Physical>();
             Vector allDataPs=new Vector();
             if((V!=null)&&(V.size()>0))
             for(int v=0;v<V.size();v++)
             {
             	DatabaseEngine.PlayerData dataP=(DatabaseEngine.PlayerData)V.get(v);
                 String data=dataP.xml;
-                Environmental obj=parseHeavenlyData(data);
+                PhysicalAgent obj=parseHeavenlyData(data);
                 if(obj!=null)
                 {
                     allDataPs.addElement(dataP);
@@ -81,7 +81,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
                         +CMStrings.padRight("Birth date",16)+"^?");
                 for(int i=0;i<allObjs.size();i++)
                 {
-                    body=(Environmental)allObjs.elementAt(i);
+                    body=allObjs.elementAt(i);
                     Ability age=body.fetchEffect("Age");
                     mob.tell(CMStrings.padRight(((DatabaseEngine.PlayerData)allDataPs.elementAt(i)).who,15)
                             +CMStrings.padRight(body.name(),45)
@@ -89,8 +89,8 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
                 }
                 return false;
             }
-            Environmental E=CMLib.english().fetchEnvironmental(allObjs,name,true);
-            if(E==null) E=CMLib.english().fetchEnvironmental(allObjs,name,false);
+            Physical E=(Physical)CMLib.english().fetchEnvironmental(allObjs,name,true);
+            if(E==null) E=(Physical)CMLib.english().fetchEnvironmental(allObjs,name,false);
             if(E==null) return false;
             for(int i=0;i<allObjs.size();i++)
                 if(allObjs.elementAt(i)==E)
@@ -196,7 +196,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 		return success;
 	}
     
-    public Environmental parseHeavenlyData(String data)
+    public PhysicalAgent parseHeavenlyData(String data)
     {
         String classID=null;
         int ability=0;
@@ -212,7 +212,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
             ability=CMath.s_int(data.substring(0,x));
             data=data.substring(x+1);
         }
-        Environmental object=CMClass.getItem(classID);
+        PhysicalAgent object=CMClass.getItem(classID);
         if(object==null) object=CMClass.getMOB(classID);
         if(object==null) return null;
         object.setMiscText(data);

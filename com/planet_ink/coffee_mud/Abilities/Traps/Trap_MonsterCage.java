@@ -59,16 +59,16 @@ public class Trap_MonsterCage extends StdTrap
 		return null;
 	}
 
-	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean perm)
+	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
-		if(E==null) return null;
+		if(P==null) return null;
 		Item I=getCagedAnimal(mob);
 		if(I!=null)
 		{
 			setMiscText(((CagedAnimal)I).cageText());
 			I.destroy();
 		}
-		return super.setTrap(mob,E,trapBonus,qualifyingClassLevel,perm);
+		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -102,9 +102,9 @@ public class Trap_MonsterCage extends StdTrap
         return V;
     }
     
-	public boolean canSetTrapOn(MOB mob, Environmental E)
+	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
-		if(!super.canSetTrapOn(mob,E)) return false;
+		if(!super.canSetTrapOn(mob,P)) return false;
 		if(getCagedAnimal(mob)==null)
 		{
 			if(mob!=null)

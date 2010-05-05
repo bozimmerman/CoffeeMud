@@ -65,7 +65,7 @@ public class Spell_LowerResists extends Spell
 			affectedStats.setStat(i,affectedStats.getStat(i)-amount);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

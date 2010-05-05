@@ -386,7 +386,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
      * can be cleaned up later.  Ditto for abilities, affects, and behaviors.
      * this method should only be used WHILE a quest script is being interpreted
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterBehavior(PhysicalAgent, String, String, boolean)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterEffect(Environmental, String, String, boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterEffect(Physical, String, String, boolean)
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterObject(Environmental)
      * @param mob the mob receiving the ability
      * @param abilityID the id of the ability
@@ -400,7 +400,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
      * this method should only be used WHILE a quest script is being interpreted
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterAbility(MOB, String, String, boolean)
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterBehavior(PhysicalAgent, String, String, boolean)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterEffect(Environmental, String, String, boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterEffect(Physical, String, String, boolean)
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
      * @param object the object added to the map
      */
@@ -418,14 +418,14 @@ public interface Quest extends Tickable, CMCommon, Modifiable
      * @param parms any effect parameters
      * @param give false to remove this effect, true to replace an existing one
      */
-    public void runtimeRegisterEffect(Environmental affected, String abilityID, String parms, boolean give);
+    public void runtimeRegisterEffect(Physical affected, String abilityID, String parms, boolean give);
     /**
      * Called when you want the quest engine to be aware of a quest specific object
      * that is being added to the map, so that it can be cleaned up later.  This is 
      * called to add a behavior to the given object.
      * this method should only be used WHILE a quest script is being interpreted
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterAbility(MOB, String, String, boolean)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterEffect(Environmental, String, String, boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterEffect(Physical, String, String, boolean)
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterObject(Environmental)
      * @param behaving the object receiving the behavior
      * @param behaviorID the id of the behavior

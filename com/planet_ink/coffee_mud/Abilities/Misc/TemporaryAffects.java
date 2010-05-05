@@ -254,7 +254,7 @@ public class TemporaryAffects extends StdAbility
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<3)
 		{
@@ -262,7 +262,7 @@ public class TemporaryAffects extends StdAbility
 			return false;
 		}
 		Vector V=CMParms.makeVector(commands.firstElement());
-		Environmental target=this.getAnyTarget(mob,V,givenTarget, asLevel);
+		Physical target=getAnyTarget(mob,V,givenTarget, asLevel);
 		if(target==null) return false;
 		commands.removeElementAt(0);
 		

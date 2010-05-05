@@ -57,28 +57,28 @@ public class Prayer_SenseTraps extends Prayer
 		if(canBeUninvoked())
 			mob.tell("Your senses are no longer sensitive to traps.");
 	}
-	public String trapCheck(Environmental E)
+	public String trapCheck(Physical P)
 	{
-		if(E!=null)
-		if(CMLib.utensils().fetchMyTrap(E)!=null)
-			return E.name()+" is trapped.\n\r";
+		if(P!=null)
+		if(CMLib.utensils().fetchMyTrap(P)!=null)
+			return P.name()+" is trapped.\n\r";
 		return "";
 	}
 
-	public String trapHere(MOB mob, Environmental E)
+	public String trapHere(MOB mob, Physical P)
 	{
 		StringBuffer msg=new StringBuffer("");
-		if(E==null) return msg.toString();
-		if((E instanceof Room)&&(CMLib.flags().canBeSeenBy(E,mob)))
+		if(P==null) return msg.toString();
+		if((P instanceof Room)&&(CMLib.flags().canBeSeenBy(P,mob)))
 		{
-			msg.append(trapCheck(E));
-			Room R=(Room)E;
+			msg.append(trapCheck(P));
+			Room R=(Room)P;
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
-				if(R.getExitInDir(d)==E)
+				if(R.getExitInDir(d)==P)
 				{
 					Exit E2=R.getReverseExit(d);
-					msg.append(trapHere(mob,E));
+					msg.append(trapHere(mob,P));
 					msg.append(trapHere(mob,E2));
 					break;
 				}
@@ -97,38 +97,38 @@ public class Prayer_SenseTraps extends Prayer
 			}
 		}
 		else
-		if((E instanceof Container)&&(CMLib.flags().canBeSeenBy(E,mob)))
+		if((P instanceof Container)&&(CMLib.flags().canBeSeenBy(P,mob)))
 		{
-			Container C=(Container)E;
+			Container C=(Container)P;
 			Vector V=C.getContents();
 			for(int v=0;v<V.size();v++)
 				if(trapCheck((Item)V.elementAt(v)).length()>0)
 					msg.append(C.name()+" contains something trapped.\n");
 		}
 		else
-		if((E instanceof Item)&&(CMLib.flags().canBeSeenBy(E,mob)))
-			msg.append(trapCheck(E));
+		if((P instanceof Item)&&(CMLib.flags().canBeSeenBy(P,mob)))
+			msg.append(trapCheck(P));
 		else
-		if((E instanceof Exit)&&(CMLib.flags().canBeSeenBy(E,mob)))
-			msg.append(trapCheck(E));
+		if((P instanceof Exit)&&(CMLib.flags().canBeSeenBy(P,mob)))
+			msg.append(trapCheck(P));
 		else
-		if((E instanceof MOB)&&(CMLib.flags().canBeSeenBy(E,mob)))
+		if((P instanceof MOB)&&(CMLib.flags().canBeSeenBy(P,mob)))
 		{
-			for(int i=0;i<((MOB)E).numItems();i++)
+			for(int i=0;i<((MOB)P).numItems();i++)
 			{
-				Item I=((MOB)E).getItem(i);
+				Item I=((MOB)P).getItem(i);
 				if(trapCheck(I).length()>0)
-					return E.name()+" is carrying something trapped.\n";
+					return P.name()+" is carrying something trapped.\n";
 			}
-			ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(E);
+			ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(P);
 			if(SK!=null)
 			{
     			for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
     			{
     				Environmental E2=(Environmental)i.next();
 					if(E2 instanceof Item)
-						if(trapCheck(E2).length()>0)
-							return E.name()+" has something trapped in stock.\n";
+						if(trapCheck((Item)E2).length()>0)
+							return P.name()+" has something trapped in stock.\n";
 				}
 			}
 		}
@@ -179,7 +179,7 @@ public class Prayer_SenseTraps extends Prayer
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

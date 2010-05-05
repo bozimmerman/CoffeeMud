@@ -106,9 +106,9 @@ public class Spell_ChangeSex extends Spell
 
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Environmental target=super.getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
+		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
 		if(target instanceof Item)
 		{

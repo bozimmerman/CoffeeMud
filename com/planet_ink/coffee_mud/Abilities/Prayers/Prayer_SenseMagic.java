@@ -67,9 +67,9 @@ public class Prayer_SenseMagic extends Prayer
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The sparkles fade from <S-YOUPOSS> eyes");
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-        Environmental target=mob;
+        Physical target=mob;
         if((auto)&&(givenTarget!=null)) target=givenTarget;
         if(target.fetchEffect(this.ID())!=null)
 		{

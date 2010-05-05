@@ -157,7 +157,7 @@ public class Chant_HowlersMoon extends Chant
 		return choices;
 	}
     
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {
@@ -182,7 +182,7 @@ public class Chant_HowlersMoon extends Chant
     }
     
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();
 		if(target==null) return false;

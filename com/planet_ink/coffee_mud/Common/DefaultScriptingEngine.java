@@ -7435,7 +7435,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 	if(tt==null) return null;
                 }
                 String cast=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
-                Environmental newTarget=getArgumentItem(tt[2],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                Physical newTarget=getArgumentItem(tt[2],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 Ability A=null;
                 if(cast!=null) A=CMClass.findAbility(cast);
                 if((newTarget!=null)&&(A!=null))
@@ -7452,7 +7452,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 	if(tt==null) return null;
                 }
                 String cast=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
-                Environmental newTarget=getArgumentItem(tt[2],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                Physical newTarget=getArgumentItem(tt[2],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 String m2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
                 Ability A=null;
                 if(cast!=null) A=CMClass.findAbility(cast);

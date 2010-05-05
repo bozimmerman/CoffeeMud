@@ -64,13 +64,13 @@ public class Spell_StoreSpell extends Spell
 	protected int overridemana=-1;
 
 	public void waveIfAble(MOB mob,
-						   Environmental afftarget,
+						   Physical afftarget,
 						   String message,
 						   Item me)
 	{
 		if((mob.isMine(me))&&(!me.amWearingAt(Wearable.IN_INVENTORY))&&(message!=null))
 		{
-			Environmental target=null;
+			Physical target=null;
 			if((mob.location()!=null))
 				target=afftarget;
 			String name=CMStrings.removeColors(me.name().toUpperCase());
@@ -122,8 +122,8 @@ public class Spell_StoreSpell extends Spell
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_WAND_USE:
-			if((msg.amITarget(affected))&&(affected instanceof Item))
-				waveIfAble(mob,msg.tool(),msg.targetMessage(),(Item)affected);
+			if((msg.amITarget(affected))&&(affected instanceof Item)&&(msg.tool() instanceof Physical))
+				waveIfAble(mob,(Physical)msg.tool(),msg.targetMessage(),(Item)affected);
 			break;
 		case CMMsg.TYP_SPEAK:
 			if(msg.sourceMinor()==CMMsg.TYP_SPEAK)
@@ -135,14 +135,14 @@ public class Spell_StoreSpell extends Spell
 		super.executeMsg(myHost,msg);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{
 			mob.tell("Store which spell onto what?");
 			return false;
 		}
-		Environmental target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Wearable.FILTER_UNWORNONLY);
+		Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("You don't see '"+((String)commands.lastElement())+"' here.");

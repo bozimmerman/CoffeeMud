@@ -105,9 +105,9 @@ public class Spell_SummoningWard extends Spell
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Environmental target=null;
+		Physical target=null;
 		if(commands.size()>0)
 		{
 			String s=CMParms.combine(commands,0);

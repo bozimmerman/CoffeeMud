@@ -62,7 +62,7 @@ public class Poison extends StdAbility
 
 	protected int poisonTick=3;
 
-	protected boolean catchIt(MOB mob, Environmental target)
+	protected boolean catchIt(MOB mob, Physical target)
 	{
 		MOB poisoner=invoker;
 		if(poisoner==null) poisoner=mob;
@@ -186,7 +186,7 @@ public class Poison extends StdAbility
 						&&(msg.target() instanceof MOB))
 						{
 							tickDown--;
-							catchIt((MOB)msg.source(),msg.target());
+							catchIt(msg.source(),(MOB)msg.target());
 						}
 						break;
                     case CMMsg.TYP_FILL:
@@ -205,7 +205,7 @@ public class Poison extends StdAbility
 		super.executeMsg(myHost,msg);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=this.getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
@@ -232,12 +232,13 @@ public class Poison extends StdAbility
 					    else
 							R.show((MOB)target,null,CMMsg.MSG_OK_VISUAL,POISON_START());
 						if(POISON_AFFECTTARGET())
-						    success=maliciousAffect(mob,target,asLevel,POISON_TICKS(),-1);
+						    success=maliciousAffect(mob,(MOB)target,asLevel,POISON_TICKS(),-1);
 						else
 						    success=true;
 					}
                     else
-                        success=maliciousAffect(mob,target,asLevel,100,-1);
+                    if(target instanceof Physical)
+                        success=maliciousAffect(mob,(Physical)target,asLevel,100,-1);
 				}
 				else
 					success=false;

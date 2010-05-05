@@ -43,7 +43,7 @@ public class Song_Thanks extends Song
 	protected boolean skipStandardSongInvoke(){return true;}
 	protected boolean maliciousButNotAggressiveFlag(){return true;}
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {
@@ -115,7 +115,7 @@ public class Song_Thanks extends Song
 		}
 		return true;
 	}
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
         steadyDown=-1;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

@@ -47,7 +47,7 @@ public class Thief_Trap extends ThiefSkill
 
 	protected int maxLevel(){return Integer.MAX_VALUE;}
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {
@@ -57,7 +57,7 @@ public class Thief_Trap extends ThiefSkill
         return super.castingQuality(mob,target);
     }
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Trap theTrap=null;
 		Vector traps=new Vector();
@@ -71,7 +71,7 @@ public class Thief_Trap extends ThiefSkill
 			   &&(((Trap)A).maySetTrap(mob,qualifyingClassLevel)))
 				traps.addElement(A);
 		}
-		Environmental trapThis=givenTarget;
+		Physical trapThis=givenTarget;
 		if(trapThis!=null)
 		{
 		    int cuts=0;

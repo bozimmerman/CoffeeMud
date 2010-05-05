@@ -46,7 +46,7 @@ public class Prayer_Heresy extends Prayer
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	protected int overrideMana(){return 100;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
         LegalBehavior B=null;
 		if(mob.location()!=null) B=CMLib.law().getLegalBehavior(mob.location());

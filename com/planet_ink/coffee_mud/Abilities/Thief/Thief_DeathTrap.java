@@ -55,7 +55,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	public void setReset(int Reset){}
 	public int getReset(){return 0;}
 	public boolean maySetTrap(MOB mob, int asLevel){return false;}
-	public boolean canSetTrapOn(MOB mob, Environmental E){return false;}
+	public boolean canSetTrapOn(MOB mob, Physical P){return false;}
 	public String requiresToSet(){return "";}
     public Vector getTrapComponents() {
         Vector V=new Vector();
@@ -63,12 +63,12 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
         V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_IRON));
         return V;
     }
-	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean perm)
+	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
-		if(E==null) return null;
+		if(P==null) return null;
 		Trap T=(Trap)copyOf();
 		T.setInvoker(mob);
-		E.addEffect(T);
+		P.addEffect(T);
 		CMLib.threads().startTickDown(T,Tickable.TICKID_TRAP_DESTRUCTION,(int)(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)+(2*getXLEVELLevel(mob))));
 		return T;
 	}
@@ -127,7 +127,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		return true;
 	}
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {
@@ -137,7 +137,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
         return super.castingQuality(mob,target);
     }
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room trapThis=mob.location();
 

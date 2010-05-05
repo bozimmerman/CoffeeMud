@@ -89,7 +89,7 @@ public class Chant_Brittle extends Chant
         return null;
     }
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(!(target instanceof MOB)) return Ability.QUALITY_INDIFFERENT;
         if((mob!=null)&&(mob!=target))
@@ -101,7 +101,7 @@ public class Chant_Brittle extends Chant
         return super.castingQuality(mob,target);
     }
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);
 		Item target=null;

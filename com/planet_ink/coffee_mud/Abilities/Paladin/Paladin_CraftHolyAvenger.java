@@ -79,7 +79,7 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		int completion=16;
 		Item fire=getRequiredFire(mob,0);

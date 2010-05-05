@@ -53,11 +53,11 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 	public void setReset(int Reset){}
 	public int getReset(){return 0;}
 	public boolean maySetTrap(MOB mob, int asLevel){return false;}
-	public boolean canSetTrapOn(MOB mob, Environmental E){return false;}
+	public boolean canSetTrapOn(MOB mob, Physical P){return false;}
     public Vector getTrapComponents() { return new Vector(); }
 	public String requiresToSet(){return "";}
-	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean perm)
-	{maliciousAffect(mob,E,qualifyingClassLevel+trapBonus,0,-1); return (Trap)E.fetchEffect(ID());}
+	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
+	{maliciousAffect(mob,P,qualifyingClassLevel+trapBonus,0,-1); return (Trap)P.fetchEffect(ID());}
 
 	public boolean sprung(){return false;}
 	public void spring(MOB mob)
@@ -72,7 +72,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 		// does not set sprung flag -- as this trap never goes out of use
 	}
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {
@@ -102,9 +102,9 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-        Environmental target=(givenTarget!=null)?givenTarget:mob.location();
+		Physical target=(givenTarget!=null)?givenTarget:mob.location();
 		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell(CMStrings.capitalizeFirstLetter(caltropTypeName())+"Caltrops have already been tossed down here.");

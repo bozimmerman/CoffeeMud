@@ -44,7 +44,7 @@ public class Spell_SummonCompanion extends Spell
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
     public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
-    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
     {
         Room oldRoom=null;
         MOB target=null;

@@ -46,7 +46,7 @@ public class Thief_Shadowpass extends ThiefSkill
 	public long flags(){return Ability.FLAG_TRANSPORTING|super.flags();}
     public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room R=mob.location();
 		if((!auto)&&(!CMLib.flags().isInDark(R)))

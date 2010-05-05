@@ -54,7 +54,7 @@ public class StdPowder extends StdItem implements MagicDust {
 		recoverEnvStats();
 	}
 	
-	public void spreadIfAble(MOB mob, Environmental target)
+	public void spreadIfAble(MOB mob, Physical target)
 	{
         Vector spells = getSpells();
         if (spells.size() > 0)
@@ -78,8 +78,8 @@ public class StdPowder extends StdItem implements MagicDust {
 	{
         if(msg.sourceMinor()==CMMsg.TYP_THROW ) 
 		{
-            if(msg.tool()==this) 
-				spreadIfAble(msg.source(),msg.target());
+            if((msg.tool()==this)&&(msg.target() instanceof Physical)) 
+				spreadIfAble(msg.source(),(Physical)msg.target());
             else
                 super.executeMsg(myHost,msg);
         }

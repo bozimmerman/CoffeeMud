@@ -49,10 +49,10 @@ public class Chant_PlantTrap extends Chant implements Trap
 	public int getReset(){return 0;}
 	public boolean maySetTrap(MOB mob, int asLevel){return false;}
     public Vector getTrapComponents() { return new Vector(); }
-	public boolean canSetTrapOn(MOB mob, Environmental E){return false;}
+	public boolean canSetTrapOn(MOB mob, Physical P){return false;}
 	public String requiresToSet(){return "";}
-	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean permanent)
-	{beneficialAffect(mob,E,qualifyingClassLevel+trapBonus,0); return (Trap)E.fetchEffect(ID());}
+	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean permanent)
+	{beneficialAffect(mob,P,qualifyingClassLevel+trapBonus,0); return (Trap)P.fetchEffect(ID());}
 
 	public boolean disabled(){return false;}
 	public boolean sprung(){return false;}
@@ -106,7 +106,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 		super.executeMsg(myHost,msg);
 	}
     
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {
@@ -128,7 +128,7 @@ public class Chant_PlantTrap extends Chant implements Trap
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();
 		if(target==null) return false;

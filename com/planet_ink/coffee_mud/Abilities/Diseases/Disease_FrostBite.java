@@ -99,7 +99,7 @@ public class Disease_FrostBite extends Disease
         }
     }
 
-    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
     {
         where=null;
         return super.invoke(mob,commands,givenTarget,auto,asLevel);

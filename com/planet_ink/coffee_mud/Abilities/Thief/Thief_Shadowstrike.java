@@ -47,7 +47,7 @@ public class Thief_Shadowstrike extends ThiefSkill
 	public int usageType(){return USAGE_MOVEMENT;}
 	protected int overrideMana(){return 100;}
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {
@@ -70,7 +70,7 @@ public class Thief_Shadowstrike extends ThiefSkill
         return super.castingQuality(mob,target);
     }
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isInCombat())
 		{

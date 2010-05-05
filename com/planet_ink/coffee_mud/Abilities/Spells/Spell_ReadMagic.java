@@ -42,12 +42,12 @@ public class Spell_ReadMagic extends Spell
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
     public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		// first, using the commands vector, determine
 		// the target of the spell.  If no target is specified,
 		// the system will assume your combat target.
-		Environmental target=getTarget(mob,null,givenTarget,commands,Wearable.FILTER_ANY);
+		Physical target=getTarget(mob,null,givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null) return false;
 
 		// the invoke method for spells receives as

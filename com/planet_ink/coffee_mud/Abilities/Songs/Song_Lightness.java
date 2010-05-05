@@ -90,7 +90,7 @@ public class Song_Lightness extends Song
 			mob.tell("Your normal weight returns.");
 	}
 	
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {

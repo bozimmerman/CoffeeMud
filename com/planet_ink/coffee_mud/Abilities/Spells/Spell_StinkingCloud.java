@@ -136,7 +136,7 @@ public class Spell_StinkingCloud extends Spell
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		HashSet h=null;
 		if(givenTarget!=null)

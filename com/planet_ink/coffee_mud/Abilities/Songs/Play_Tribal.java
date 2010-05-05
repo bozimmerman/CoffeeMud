@@ -42,7 +42,7 @@ public class Play_Tribal extends Play
 	protected String songOf(){return name()+" Music";}
     protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {

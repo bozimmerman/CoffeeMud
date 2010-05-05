@@ -43,7 +43,7 @@ public class Chant_Reabsorb extends Chant
 	protected int canAffectCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {
@@ -70,7 +70,7 @@ public class Chant_Reabsorb extends Chant
     }
     
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Item target=this.getTarget(mob,mob.location(),givenTarget,null,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;

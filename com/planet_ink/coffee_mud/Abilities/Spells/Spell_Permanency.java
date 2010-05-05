@@ -44,9 +44,9 @@ public class Spell_Permanency extends Spell
 	protected int overrideMana(){return Integer.MAX_VALUE;}
     public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Environmental target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
+		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
 		if(target==null) return false;
 
 		if((mob.baseState().getMana()<100)||(mob.maxState().getMana()<100))

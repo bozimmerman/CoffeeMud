@@ -132,7 +132,7 @@ public class Farming extends GatheringSkill
 		return false;
 	}
 	
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
         bundling=false;
 		if((!auto)

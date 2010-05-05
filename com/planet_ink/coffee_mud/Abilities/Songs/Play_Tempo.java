@@ -40,7 +40,7 @@ public class Play_Tempo extends Play
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
     protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {

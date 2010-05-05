@@ -95,7 +95,7 @@ public class Thief_HideInPlainSight extends ThiefSkill
             M.tell("You are no longer hiding in plain site.");
     }
     
-    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
     {
         if(mob.fetchEffect(this.ID())!=null)
         {

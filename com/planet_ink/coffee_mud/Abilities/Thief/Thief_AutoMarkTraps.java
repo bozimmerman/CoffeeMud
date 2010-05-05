@@ -42,7 +42,7 @@ public class Thief_AutoMarkTraps extends Thief_AutoDetectTraps
     public String[] triggerStrings(){return triggerStrings;}
     protected String skillName(){return "mark";}
 
-    public void dropem(MOB mob, Environmental E)
+    public void dropem(MOB mob, Physical E)
     {
         Ability A=mob.fetchAbility("Thief_DetectTraps");
         if(A==null)
@@ -66,7 +66,7 @@ public class Thief_AutoMarkTraps extends Thief_AutoDetectTraps
         mob.curState().setMana(savedState.getMovement());
     }
     
-    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
     {
         MOB target=(givenTarget instanceof MOB)?(MOB)givenTarget:mob;
         if((!auto)&&(target.fetchAbility("Thief_MarkTraps")==null))

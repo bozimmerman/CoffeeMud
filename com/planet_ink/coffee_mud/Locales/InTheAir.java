@@ -54,26 +54,26 @@ public class InTheAir extends StdRoom
 		return isOkAirAffect(this,msg);
 	}
 
-	public static void makeFall(Environmental E, Room room, int avg)
+	public static void makeFall(Physical P, Room room, int avg)
 	{
-		if((E==null)||(room==null)) return;
+		if((P==null)||(room==null)) return;
 
 		if((avg==0)&&(room.getRoomInDir(Directions.DOWN)==null)) return;
 		if((avg>0)&&(room.getRoomInDir(Directions.UP)==null)) return;
 
-		if(((E instanceof MOB)&&(!CMLib.flags().isInFlight(E)))
-		||((E instanceof Item)
-                &&(((Item)E).container()==null)
-                &&(!CMLib.flags().isFlying(((Item)E).ultimateContainer()))))
+		if(((P instanceof MOB)&&(!CMLib.flags().isInFlight(P)))
+		||((P instanceof Item)
+                &&(((Item)P).container()==null)
+                &&(!CMLib.flags().isFlying(((Item)P).ultimateContainer()))))
 		{
-			if(!CMLib.flags().isFalling(E))
+			if(!CMLib.flags().isFalling(P))
 			{
 				Ability falling=CMClass.getAbility("Falling");
 				if(falling!=null)
 				{
 					falling.setProficiency(avg);
 					falling.setAffectedOne(room);
-					falling.invoke(null,null,E,true,0);
+					falling.invoke(null,null,P,true,0);
 				}
 			}
 		}
@@ -84,7 +84,7 @@ public class InTheAir extends StdRoom
 		if(CMLib.flags().isSleeping(room)) return;
 		boolean foundReversed=false;
 		boolean foundNormal=false;
-		Vector needToFall=new Vector();
+		Vector<Physical> needToFall=new Vector<Physical>();
 		Vector mightNeedAdjusting=new Vector();
 		for(int i=0;i<room.numInhabitants();i++)
 		{
@@ -133,8 +133,8 @@ public class InTheAir extends StdRoom
 			Ability A=E.fetchEffect("Falling");
 			if(A!=null) A.setProficiency(avg);
 		}
-		for(int i=0;i<needToFall.size();i++)
-			makeFall((Environmental)needToFall.elementAt(i),room,avg);
+		for(Physical P : needToFall)
+			makeFall(P,room,avg);
 	}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)

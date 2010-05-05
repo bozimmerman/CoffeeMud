@@ -100,7 +100,7 @@ public class Skill_ArrestingSap extends StdSkill
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SLEEPING);
 	}
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if((mob!=null)&&(target!=null))
         {
@@ -151,7 +151,7 @@ public class Skill_ArrestingSap extends StdSkill
 			}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		boolean safety=false;
 		int ticks=3;

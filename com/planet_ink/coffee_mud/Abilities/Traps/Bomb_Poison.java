@@ -61,11 +61,11 @@ public class Bomb_Poison extends StdBomb
 		return offenders;
 	}
 
-	public boolean canSetTrapOn(MOB mob, Environmental E)
+	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
-		if(!super.canSetTrapOn(mob,E)) return false;
-		Vector V=returnOffensiveAffects(E);
-		if((!(E instanceof Drink))||(V.size()==0))
+		if(!super.canSetTrapOn(mob,P)) return false;
+		Vector V=returnOffensiveAffects(P);
+		if((!(P instanceof Drink))||(V.size()==0))
 		{
 			if(mob!=null)
 				mob.tell("You need some poison to make this out of.");
@@ -73,13 +73,13 @@ public class Bomb_Poison extends StdBomb
 		}
 		return true;
 	}
-	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean perm)
+	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
-		if(E==null) return null;
-		Vector V=returnOffensiveAffects(E);
+		if(P==null) return null;
+		Vector V=returnOffensiveAffects(P);
 		if(V.size()>0)
 			setMiscText(((Ability)V.firstElement()).ID());
-		return super.setTrap(mob,E,trapBonus,qualifyingClassLevel,perm);
+		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}
 
 	public void spring(MOB target)

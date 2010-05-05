@@ -39,7 +39,7 @@ public class Song_Revelation extends Song
 	public String name(){ return "Revelation";}
 	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {

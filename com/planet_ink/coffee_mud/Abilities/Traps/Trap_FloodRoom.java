@@ -90,9 +90,9 @@ public class Trap_FloodRoom extends StdTrap
 	}
 
 
-	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean perm)
+	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
-		if(E==null) return null;
+		if(P==null) return null;
 		Item I=null;
 		if(mob!=null)
 		{
@@ -100,13 +100,13 @@ public class Trap_FloodRoom extends StdTrap
 			if(I!=null)	super.destroyResources(mob.location(),I.material(),100);
 			killWaterskins(mob);
 		}
-		return super.setTrap(mob,E,trapBonus,qualifyingClassLevel,perm);
+		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}
 
 
-	public boolean canSetTrapOn(MOB mob, Environmental E)
+	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
-		if(!super.canSetTrapOn(mob,E)) return false;
+		if(!super.canSetTrapOn(mob,P)) return false;
 		if(mob!=null)
 		{
 			Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_ROCK);
@@ -122,9 +122,9 @@ public class Trap_FloodRoom extends StdTrap
 				return false;
 			}
 		}
-		if(E instanceof Room)
+		if(P instanceof Room)
 		{
-			Room R=(Room)E;
+			Room R=(Room)P;
 			if((R.domainType()&Room.INDOORS)==0)
 			{
 				if(mob!=null)

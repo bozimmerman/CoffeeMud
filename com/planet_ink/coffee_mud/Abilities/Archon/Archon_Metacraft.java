@@ -42,7 +42,7 @@ public class Archon_Metacraft extends ArchonSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	
 	public static Vector craftingSkills=new Vector();
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(craftingSkills.size()==0)
 		{

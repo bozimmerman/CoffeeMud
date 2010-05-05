@@ -56,44 +56,44 @@ public class Spell_DetectTraps extends Spell
 		if(canBeUninvoked())
 			mob.tell("Your senses are no longer sensitive to traps.");
 	}
-	public String trapCheck(Environmental E)
+	public String trapCheck(Physical P)
 	{
-		if(E!=null)
-		if(CMLib.utensils().fetchMyTrap(E)!=null)
-			return E.name()+" is trapped.\n\r";
+		if(P!=null)
+		if(CMLib.utensils().fetchMyTrap(P)!=null)
+			return P.name()+" is trapped.\n\r";
 		return "";
 	}
 
-	public String trapHere(MOB mob, Environmental E)
+	public String trapHere(MOB mob, Physical P)
 	{
 		StringBuffer msg=new StringBuffer("");
-		if(E==null) return msg.toString();
-		if((E instanceof Room)&&(CMLib.flags().canBeSeenBy(E,mob)))
+		if(P==null) return msg.toString();
+		if((P instanceof Room)&&(CMLib.flags().canBeSeenBy(P,mob)))
 			msg.append(trapCheck(mob.location()));
 		else
-		if((E instanceof Container)&&(CMLib.flags().canBeSeenBy(E,mob)))
+		if((P instanceof Container)&&(CMLib.flags().canBeSeenBy(P,mob)))
 		{
-			Container C=(Container)E;
+			Container C=(Container)P;
 			Vector V=C.getContents();
 			for(int v=0;v<V.size();v++)
 				if(trapCheck((Item)V.elementAt(v)).length()>0)
 					msg.append(C.name()+" contains something trapped.");
 		}
 		else
-		if((E instanceof Item)&&(CMLib.flags().canBeSeenBy(E,mob)))
-			msg.append(trapCheck(E));
+		if((P instanceof Item)&&(CMLib.flags().canBeSeenBy(P,mob)))
+			msg.append(trapCheck(P));
 		else
-		if((E instanceof Exit)&&(CMLib.flags().canBeSeenBy(E,mob)))
+		if((P instanceof Exit)&&(CMLib.flags().canBeSeenBy(P,mob)))
 		{
 			Room room=mob.location();
 			if(room!=null)
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
-				if(room.getExitInDir(d)==E)
+				if(room.getExitInDir(d)==P)
 				{
 					Exit E2=room.getReverseExit(d);
 					Room R2=room.getRoomInDir(d);
-					msg.append(trapCheck(E));
+					msg.append(trapCheck(P));
 					msg.append(trapCheck(E2));
 					msg.append(trapCheck(R2));
 					break;
@@ -101,23 +101,23 @@ public class Spell_DetectTraps extends Spell
 			}
 		}
 		else
-		if((E instanceof MOB)&&(CMLib.flags().canBeSeenBy(E,mob)))
+		if((P instanceof MOB)&&(CMLib.flags().canBeSeenBy(P,mob)))
 		{
-			for(int i=0;i<((MOB)E).numItems();i++)
+			for(int i=0;i<((MOB)P).numItems();i++)
 			{
-				Item I=((MOB)E).getItem(i);
+				Item I=((MOB)P).getItem(i);
 				if(trapCheck(I).length()>0)
-					return E.name()+" is carrying something trapped.";
+					return P.name()+" is carrying something trapped.";
 			}
-			ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(E);
+			ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(P);
 			if(SK!=null)
 			{
 				for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 				{
 					Environmental E2=(Environmental)i.next();
 					if(E2 instanceof Item)
-						if(trapCheck(E2).length()>0)
-							return E.name()+" has something trapped in stock.";
+						if(trapCheck((Item)E2).length()>0)
+							return P.name()+" has something trapped in stock.";
 				}
 			}
 		}
@@ -129,19 +129,18 @@ public class Spell_DetectTraps extends Spell
 		super.executeMsg(myHost,msg);
 		if((affected!=null)
 		&&(affected instanceof MOB)
-		&&(msg.target()!=null)
+		&&(msg.target() instanceof Physical)
 		&&(msg.amISource((MOB)affected))
 		&&((msg.sourceMinor()==CMMsg.TYP_LOOK)||(msg.sourceMinor()==CMMsg.TYP_EXAMINE)))
 		{
 			if((msg.tool()!=null)&&(msg.tool().ID().equals(ID())))
 			{
-				String str=trapHere((MOB)affected,msg.target());
+				String str=trapHere((MOB)affected,(Physical)msg.target());
 				if(str.length()>0)
 					((MOB)affected).tell(str);
 			}
 			else
-			if((msg.target()!=null)
-			&&(trapHere((MOB)affected,msg.target()).length()>0)
+			if((trapHere((MOB)affected,(Physical)msg.target()).length()>0)
 			&&(msg.source()!=msg.target()))
 			{
 				CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),this,CMMsg.MSG_LOOK,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,null);
@@ -150,7 +149,7 @@ public class Spell_DetectTraps extends Spell
 		}
 	}
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {
@@ -163,7 +162,7 @@ public class Spell_DetectTraps extends Spell
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))

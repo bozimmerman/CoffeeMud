@@ -124,14 +124,14 @@ public class StdWand extends StdItem implements Wand
 	}
 
 	public void waveIfAble(MOB mob,
-						   Environmental afftarget,
+						   Physical afftarget,
 						   String message)
 	{
 		if((mob.isMine(this))
 		   &&(!this.amWearingAt(Wearable.IN_INVENTORY))
 		   &&(message != null))
 		{
-			Environmental target=null;
+			Physical target=null;
 			if((mob.location()!=null))
 				target=afftarget;
 			int x=message.toUpperCase().indexOf(this.magicWord().toUpperCase());
@@ -175,7 +175,7 @@ public class StdWand extends StdItem implements Wand
 	}
 
 	public static void waveIfAble(MOB mob,
-								  Environmental afftarget,
+								  Physical afftarget,
 								  String message,
 								  Wand me)
 	{
@@ -183,7 +183,7 @@ public class StdWand extends StdItem implements Wand
 		   &&(message!=null)
 		   &&(!me.amWearingAt(Wearable.IN_INVENTORY)))
 		{
-			Environmental target=null;
+			Physical target=null;
 			if(mob.location()!=null)
 				target=afftarget;
 			int x=message.toUpperCase().indexOf(me.magicWord().toUpperCase());
@@ -233,8 +233,8 @@ public class StdWand extends StdItem implements Wand
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_WAND_USE:
-			if(msg.amITarget(this))
-				waveIfAble(mob,msg.tool(),msg.targetMessage());
+			if(msg.amITarget(this)&&(msg.tool() instanceof Physical))
+				waveIfAble(mob,(Physical)msg.tool(),msg.targetMessage());
 			break;
 		case CMMsg.TYP_SPEAK:
 			if(msg.sourceMinor()==CMMsg.TYP_SPEAK)

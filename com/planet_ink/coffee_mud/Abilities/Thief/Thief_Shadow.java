@@ -181,7 +181,7 @@ public class Thief_Shadow extends ThiefSkill
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		Thief_Shadow A=(Thief_Shadow)mob.fetchEffect(ID());
 		if(A!=null)

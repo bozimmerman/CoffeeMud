@@ -45,7 +45,7 @@ public class Chant_SenseSentience extends Chant
 	protected int canTargetCode(){return 0;}
 	protected int canAffectCode(){return 0;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

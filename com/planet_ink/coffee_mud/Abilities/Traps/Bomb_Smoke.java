@@ -44,11 +44,11 @@ public class Bomb_Smoke extends StdBomb
         V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_WOOD));
         return V;
     }
-	public boolean canSetTrapOn(MOB mob, Environmental E)
+	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
-		if(!super.canSetTrapOn(mob,E)) return false;
-		if((!(E instanceof Item))
-		||((((Item)E).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN))
+		if(!super.canSetTrapOn(mob,P)) return false;
+		if((!(P instanceof Item))
+		||((((Item)P).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN))
 		{
 			if(mob!=null)
 				mob.tell("You something wooden to make this out of.");

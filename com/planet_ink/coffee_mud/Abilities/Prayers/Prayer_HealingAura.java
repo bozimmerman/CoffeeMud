@@ -50,7 +50,7 @@ public class Prayer_HealingAura extends Prayer
     protected int tenDown=10;
     protected int twentyDown=20;
 
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {

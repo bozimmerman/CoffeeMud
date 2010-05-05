@@ -49,7 +49,7 @@ public class Play_Harmony extends Play
 		mob.makePeace();
 	}
 	
-    public int castingQuality(MOB mob, Environmental target)
+    public int castingQuality(MOB mob, Physical target)
     {
         if(mob!=null)
         {

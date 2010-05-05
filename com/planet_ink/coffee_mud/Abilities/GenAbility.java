@@ -201,7 +201,7 @@ public class GenAbility extends StdAbility
 
     public boolean isGeneric(){return true;}
 
-    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
     {
     	if((!auto)
     	&&(((String)V(ID,V_CMSK)).length()>0)
@@ -211,7 +211,7 @@ public class GenAbility extends StdAbility
     		return false;
     	}
         // dont forget to allow super. calls to Spell.invoke, Chant.invoke, etc.. based on classification?
-    	Environmental target=givenTarget;
+    	Physical target=givenTarget;
     	if((this.classificationCode()==Ability.QUALITY_BENEFICIAL_SELF)
     	||(this.classificationCode()==Ability.QUALITY_OK_SELF))
     	{
@@ -462,7 +462,7 @@ public class GenAbility extends StdAbility
         return true;
     }
 
-    public boolean preInvoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
+    public boolean preInvoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
     {
         return true;
     }

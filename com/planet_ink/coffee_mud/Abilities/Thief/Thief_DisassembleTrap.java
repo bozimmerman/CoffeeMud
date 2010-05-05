@@ -47,7 +47,7 @@ public class Thief_DisassembleTrap extends ThiefSkill
     public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
     public Vector lastDone=new Vector();
 
-    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
     {
         Ability A=mob.fetchAbility("Thief_RemoveTraps");
         Hashtable traps=new Hashtable();

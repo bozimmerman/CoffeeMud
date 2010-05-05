@@ -154,7 +154,7 @@ public class StdWeapon extends StdItem implements Weapon
 						A=CMClass.getAbility("Disease_Infection");
 
 					if((A!=null)&&(msg.target().fetchEffect(A.ID())==null))
-						A.invoke(msg.source(),msg.target(),true,envStats().level());
+						A.invoke(msg.source(),tmob,true,envStats().level());
 				}
 			}
 

@@ -82,7 +82,7 @@ public class Archon_Record extends ArchonSkill
 		return true;
 	}
 	
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=CMLib.players().getLoadPlayer(CMParms.combine(commands,0));
 		if(target==null) target=getTargetAnywhere(mob,commands,givenTarget,false,true,false);

@@ -2730,11 +2730,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         else
                         if(q.envObject!=null)
                             toSet.addElement(q.envObject);
-                        for(int i=0;i<toSet.size();i++)
-                        {
-                            Environmental E2=(Environmental)toSet.elementAt(i);
-                            runtimeRegisterEffect(E2,A3.ID(),CMParms.combineWithQuotes(p,3),true);
-                        }
+                        for(Object o : toSet)
+                        	if(o instanceof Physical)
+	                            runtimeRegisterEffect((Physical)o,A3.ID(),CMParms.combineWithQuotes(p,3),true);
                     }
                     else
                     {
@@ -2838,11 +2836,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         else
                         if(q.envObject!=null)
                             toSet.addElement(q.envObject);
-                        for(int i=0;i<toSet.size();i++)
-                        {
-                            Environmental E2=(Environmental)toSet.elementAt(i);
-                            runtimeRegisterEffect(E2,A3.ID(),CMParms.combineWithQuotes(p,3),false);
-                        }
+                        for(Object o : toSet)
+                        	if(o instanceof Physical)
+	                            runtimeRegisterEffect((Physical)o,A3.ID(),CMParms.combineWithQuotes(p,3),false);
                     }
                     else
                     {
@@ -3555,7 +3551,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         }
     }
 
-    public void runtimeRegisterEffect(Environmental affected, String abilityID, String parms, boolean give)
+    public void runtimeRegisterEffect(Physical affected, String abilityID, String parms, boolean give)
     {
         if(affected==null) return;
         runtimeRegisterObject(affected);

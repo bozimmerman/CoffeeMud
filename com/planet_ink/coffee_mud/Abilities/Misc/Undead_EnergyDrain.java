@@ -92,7 +92,7 @@ public class Undead_EnergyDrain extends StdAbility
 			mob.tell("The energy drain is lifted.");
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=null;
 		Ability reAffect=null;

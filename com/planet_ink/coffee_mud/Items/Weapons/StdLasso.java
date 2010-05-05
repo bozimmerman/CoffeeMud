@@ -76,7 +76,6 @@ public class StdLasso extends StdWeapon
 		}
 		else
 		if((msg.tool()==this)
-		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB)
 		&&(msg.targetMinor()==CMMsg.TYP_GENERAL)
 		&&(((MOB)msg.target()).isMine(this))
@@ -86,7 +85,7 @@ public class StdLasso extends StdWeapon
 			if(A!=null)
 			{
 				A.setAffectedOne(this);
-				A.invoke(msg.source(),msg.target(),true,envStats().level());
+				A.invoke(msg.source(),(MOB)msg.target(),true,envStats().level());
 			}
 		}
 		else

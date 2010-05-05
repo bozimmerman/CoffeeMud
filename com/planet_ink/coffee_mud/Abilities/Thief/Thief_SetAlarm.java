@@ -57,11 +57,11 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 	public void setReset(int Reset){}
 	public int getReset(){return 0;}
 	public boolean maySetTrap(MOB mob, int asLevel){return false;}
-	public boolean canSetTrapOn(MOB mob, Environmental E){return false;}
+	public boolean canSetTrapOn(MOB mob, Physical P){return false;}
     public Vector getTrapComponents() { return new Vector(); }
 	public String requiresToSet(){return "";}
-	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean perm)
-	{beneficialAffect(mob,E,qualifyingClassLevel+trapBonus,0);return (Trap)E.fetchEffect(ID());}
+	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
+	{beneficialAffect(mob,P,qualifyingClassLevel+trapBonus,0);return (Trap)P.fetchEffect(ID());}
 
 	public void spring(MOB M)
 	{
@@ -132,7 +132,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		String whatToalarm=CMParms.combine(commands,0);
 		Exit alarmThis=null;

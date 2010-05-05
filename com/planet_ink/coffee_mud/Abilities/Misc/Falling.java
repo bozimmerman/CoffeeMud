@@ -267,7 +267,7 @@ public class Falling extends StdAbility
 		else
 			super.setAffectedOne(being);
 	}
-	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel)
 	{
 		if(!auto) return false;
 		Environmental E=target;

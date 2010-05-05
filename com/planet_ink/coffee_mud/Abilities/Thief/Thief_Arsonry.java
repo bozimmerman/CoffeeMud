@@ -43,7 +43,7 @@ public class Thief_Arsonry extends ThiefSkill
     public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_CRIMINAL; }
 	public String[] triggerStrings(){return triggerStrings;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<1)
 		{
@@ -53,7 +53,7 @@ public class Thief_Arsonry extends ThiefSkill
 		String str=CMParms.combine(commands,0);
 		int dir=Directions.getGoodDirectionCode(str);
 		Room targetRoom=null;
-		Environmental target=null;
+		Physical target=null;
 		if(dir>=0)
 		{
 			Room room=mob.location().getRoomInDir(dir);

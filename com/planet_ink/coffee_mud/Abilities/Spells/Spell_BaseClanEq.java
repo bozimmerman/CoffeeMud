@@ -66,7 +66,7 @@ public class Spell_BaseClanEq extends Spell
 		}
 		return super.canBeLearnedBy(teacher,student);
 	}
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(type.length()==0) return false;
 		if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase(""))||(mob.getClanRole()==0))
@@ -101,7 +101,7 @@ public class Spell_BaseClanEq extends Spell
 			mob.tell("Use how much clan enchantment power?");
 			return false;
 		}
-		Environmental target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.elementAt(0),Wearable.FILTER_UNWORNONLY);
+		Physical target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.elementAt(0),Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 		    mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");

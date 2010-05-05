@@ -97,7 +97,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 	}
 
-	public Trap makeADeprecatedTrap(Environmental unlockThis)
+	public Trap makeADeprecatedTrap(Physical unlockThis)
 	{
 		Trap theTrap=null;
 		int roll=(int)Math.round(Math.random()*100.0);
@@ -159,13 +159,13 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 
-	public void setTrapped(Environmental myThang, boolean isTrapped)
+	public void setTrapped(Physical myThang, boolean isTrapped)
 	{
 		Trap t=makeADeprecatedTrap(myThang);
 		t.setReset(50);
 		setTrapped(myThang,t,isTrapped);
 	}
-	public void setTrapped(Environmental myThang, Trap theTrap, boolean isTrapped)
+	public void setTrapped(Physical myThang, Trap theTrap, boolean isTrapped)
 	{
 		for(int a=0;a<myThang.numEffects();a++)
 		{
@@ -178,7 +178,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			myThang.addEffect(theTrap);
 	}
 
-	public Trap fetchMyTrap(Environmental myThang)
+	public Trap fetchMyTrap(Physical myThang)
 	{
 		if(myThang==null) return null;
         Ability A=null;

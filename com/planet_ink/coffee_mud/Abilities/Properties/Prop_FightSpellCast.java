@@ -58,9 +58,7 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&((msg.value())>0)
 		&&(!myItem.amWearingAt(Wearable.IN_INVENTORY))
-		&&(myItem.owner()!=null)
 		&&(myItem.owner() instanceof MOB)
-		&&(msg.target()!=null)
 		&&(msg.target() instanceof MOB))
 		{
 			MOB mob=(MOB)myItem.owner();
@@ -72,12 +70,12 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 				&&(msg.tool()==myItem)
 				&&(myItem.amWearingAt(Wearable.WORN_WIELD))
 				&&(msg.amISource(mob)))
-					addMeIfNeccessary(msg.source(),msg.target(),true,0);
+					addMeIfNeccessary(msg.source(),(MOB)msg.target(),true,0);
 				else
 				if((msg.amITarget(mob))
 				&&(!myItem.amWearingAt(Wearable.WORN_WIELD))
 				&&(!(myItem instanceof Weapon)))
-					addMeIfNeccessary(msg.target(),msg.target(),true,0);
+					addMeIfNeccessary(mob,mob,true,0);
 			}
 		}
 		processing=false;

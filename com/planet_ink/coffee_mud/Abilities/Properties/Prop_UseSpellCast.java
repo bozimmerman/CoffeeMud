@@ -40,7 +40,7 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 	public String name(){ return "Casting spells when used";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
     
-    public boolean addMeIfNeccessary(Environmental source, Environmental target, int asLevel)
+    public boolean addMeIfNeccessary(PhysicalAgent source, Physical target, int asLevel)
     {
         Vector V=getMySpellsV();
         if((target==null)

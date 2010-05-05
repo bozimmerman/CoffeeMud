@@ -60,9 +60,9 @@ public class Trap_SnakePit extends Trap_RoomPit
 		return null;
 	}
 
-	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean perm)
+	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
-		if(E==null) return null;
+		if(P==null) return null;
 		Item I=getCagedAnimal(mob);
 		StringBuffer buf=new StringBuffer("<SNAKES>");
 		int num=0;
@@ -74,7 +74,7 @@ public class Trap_SnakePit extends Trap_RoomPit
 		}
 		buf.append("</SNAKES>");
 		setMiscText(buf.toString());
-		return super.setTrap(mob,E,trapBonus,qualifyingClassLevel,perm);
+		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}
 
     public Vector getTrapComponents() {
@@ -87,9 +87,9 @@ public class Trap_SnakePit extends Trap_RoomPit
         return V;
     }
     
-	public boolean canSetTrapOn(MOB mob, Environmental E)
+	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
-		if(!super.canSetTrapOn(mob,E)) return false;
+		if(!super.canSetTrapOn(mob,P)) return false;
 		if(getCagedAnimal(mob)==null)
 		{
 			if(mob!=null)
