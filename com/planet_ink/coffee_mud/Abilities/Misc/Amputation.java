@@ -305,12 +305,12 @@ public class Amputation extends StdAbility implements Amputator
         return V;
     }
     
-	public List<String> remainingLimbNameSet(Physical E)
+	public List<String> remainingLimbNameSet(Physical P)
 	{
 		missingLimbNameSet();
 		Vector V=new Vector();
-		if(!(E instanceof MOB)) return V;
-		MOB M=(MOB)E;
+		if(!(P instanceof MOB)) return V;
+		MOB M=(MOB)P;
 		int[] limbs=new int[Race.BODY_PARTS];
 		for(int i=0;i<limbs.length;i++)
 		{

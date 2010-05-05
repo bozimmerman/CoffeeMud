@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.ItemKeyPair;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
@@ -82,7 +83,7 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
     public String parametersFile(){ return "herbalism.txt";}
     protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
-	public Vector craftItem(String recipe) { return craftItem(recipe,0); }
+	public ItemKeyPair craftItem(String recipe) { return craftItem(recipe,0); }
 	
 	public void unInvoke()
 	{

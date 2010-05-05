@@ -170,32 +170,21 @@ public class ItemGenerator extends ActiveTicker
 		public long getTickStatus(){return tickStatus;}
 		public boolean tick(Tickable host, int tickID)
 		{
-			Vector allItems=new Vector();
-		    Vector skills=new Vector();
+			List<Item> allItems=new Vector<Item>();
+		    List<ItemCraftor> skills=new Vector<ItemCraftor>();
 			for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
 			{
 				Ability A=(Ability)e.nextElement();
 				if(A instanceof ItemCraftor)
-					skills.addElement(A.copyOf());
+					skills.add((ItemCraftor)A.copyOf());
 			}
-			Vector skillSet=null;
-			Vector materialSet=null;
-			Vector itemSet=null;
-			for(int s=0;s<skills.size();s++)
+			List<ItemCraftor.ItemKeyPair> skillSet=null;
+			for(ItemCraftor skill : skills)
 			{
-				skillSet=((ItemCraftor)skills.elementAt(s)).craftAllItemsVectors();
+				skillSet=skill.craftAllItemSets();
 				if(skillSet!=null)
-				for(int v=0;v<skillSet.size();v++)
-				{
-					materialSet=(Vector)skillSet.elementAt(v);
-					for(int m=0;m<materialSet.size();m++)
-					{
-						
-						itemSet=(Vector)materialSet.elementAt(m);
-						if(itemSet.size()>0)
-							allItems.addElement(itemSet.firstElement());
-					}
-				}
+				for(ItemCraftor.ItemKeyPair materialSet: skillSet)
+					allItems.add(materialSet.item);
 			}
 			Resources.submitResource("ITEMGENERATOR-ALLITEMS",allItems);
 			ItemGenerator.building=false;

@@ -84,7 +84,7 @@ public interface GenericBuilder extends CMLibrary
     public Item getItemFromXML(String xmlBuffer);
     // TYPE= 0=item, 1=weapon, 2=armor
     public StringBuffer getRoomItems(Room room, Hashtable found, HashSet files, int type); 
-    public StringBuffer getItemsXML(Vector items, Hashtable found, HashSet files, int type);
+    public StringBuffer getItemsXML(List<Item> items, Hashtable found, HashSet files, int type);
     public StringBuffer getItemXML(Item item);
     public StringBuffer getRoomXML(Room room,  HashSet custom, HashSet files, boolean andContent);
     public void setPropertiesStr(Environmental E, String buf, boolean fromTop);

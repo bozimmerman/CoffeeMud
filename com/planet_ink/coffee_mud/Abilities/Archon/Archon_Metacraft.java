@@ -186,47 +186,53 @@ public class Archon_Metacraft extends ArchonSkill
 		for(int s=0;s<skillsToUse.size();s++)
 		{
 			skill=(ItemCraftor)skillsToUse.elementAt(s);
-			Vector items=null;
+			List<Item> items=new Vector<Item>();
 			if(everyFlag)
 			{
-				items=new Vector();
 				if(recipe==null)
 				{
-					Vector V=null;
+					List<ItemCraftor.ItemKeyPair> V=null;
 					if(material>=0)
-						V=skill.craftAllItemsVectors(material);
+						V=skill.craftAllItemSets(material);
 					else
-					{
-						Vector V2=new Vector();
-						V=skill.craftAllItemsVectors();
-						if(V!=null)
-						{
-							for(int v=0;v<V.size();v++)
-								V2.addAll((Vector)V.elementAt(v));
-							V=V2;
-						}
-					}
+						V=skill.craftAllItemSets();
+					
 					if(V!=null)
-					for(int v=0;v<V.size();v++)
-						CMParms.addToVector((Vector)V.elementAt(v),items);
+						for(ItemCraftor.ItemKeyPair L: V)
+						{
+							items.add(L.item);
+							if(L.key!=null)
+								items.add(L.key);
+						}
 				}
 				else
 				if(material>=0)
-					items=skill.craftItem(recipe,material);
+				{
+					ItemCraftor.ItemKeyPair pair = skill.craftItem(recipe,material);
+					if(pair!=null) items.addAll(pair.asList());
+				}
 				else
-					items=skill.craftItem(recipe);
+				{
+					ItemCraftor.ItemKeyPair pair = skill.craftItem(recipe);
+					if(pair!=null) items.addAll(pair.asList());
+				}
 			}
 			else
 			if(material>=0)
-				items=skill.craftItem(recipe,material);
+			{
+				ItemCraftor.ItemKeyPair pair = skill.craftItem(recipe,material);
+				if(pair!=null) items.addAll(pair.asList());
+			}
 			else
-				items=skill.craftItem(recipe);
+			{
+				ItemCraftor.ItemKeyPair pair = skill.craftItem(recipe);
+				if(pair!=null) items.addAll(pair.asList());
+			}
 			if((items==null)||(items.size()==0)) continue;
 			success=true;
             if(toWHERE.equals("SELF")||toWHERE.equals("HERE"))
-    			for(int v=0;v<items.size();v++)
+    			for(Item building : items)
     			{
-    				Item building=(Item)items.elementAt(v);
                     if(toWHERE.equals("HERE"))
                     {
                         mob.location().addItem(building,ItemPossessor.Expire.Player_Drop);

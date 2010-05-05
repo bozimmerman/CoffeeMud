@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.ItemKeyPair;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
@@ -116,7 +117,7 @@ public class ScrollScribing extends CraftingSkill implements ItemCraftor
 		}
 	}
 
-	public Vector craftItem(String recipe) { return craftItem(recipe,0); }
+	public ItemKeyPair craftItem(String recipe) { return craftItem(recipe,0); }
 
 	protected Item buildItem(Ability theSpell)
 	{

@@ -43,15 +43,15 @@ public class Prop_HaveSpellCast extends Prop_SpellAdder
     public String accountForYourself()
     { return spellAccountingsWithMask("Casts "," on the owner.");}
 
-    public void setAffectedOne(Physical E)
+    public void setAffectedOne(Physical being)
     {
-        if(E==null)
+        if(being==null)
         {
             if((lastMOB instanceof MOB)
             &&(((MOB)lastMOB).location()!=null))
                 removeMyAffectsFromLastMOB();
         }
-        super.setAffectedOne(E);
+        super.setAffectedOne(being);
     }
     
     public void executeMsg(Environmental host, CMMsg msg)

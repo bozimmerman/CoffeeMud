@@ -40,11 +40,11 @@ public class Prop_StayAboard extends Property
     public String accountForYourself() { return "Stays on anything mounted to.";}
     protected boolean noRepeat=false;
     
-    public void setAffectedOne(Physical E)
+    public void setAffectedOne(Physical being)
     {
-    	super.setAffectedOne(E);
-    	if(E instanceof Rider) {
-    		rideable = ((Rider)E).riding();
+    	super.setAffectedOne(being);
+    	if(being instanceof Rider) {
+    		rideable = ((Rider)being).riding();
     	}
     }
     

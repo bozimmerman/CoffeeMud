@@ -81,7 +81,7 @@ public class Thief_AutoDetectTraps extends ThiefSkill
         }
     }
     
-    public void dropem(MOB mob, Physical E)
+    public void dropem(MOB mob, Physical P)
     {
         Ability A=mob.fetchAbility("Thief_IdentifyTraps");
         if(A==null)
@@ -92,7 +92,7 @@ public class Thief_AutoDetectTraps extends ThiefSkill
             A.setProficiency(100);
         }
         CharState savedState=(CharState)mob.curState().copyOf();
-        A.invoke(mob,E,false,0);
+        A.invoke(mob,P,false,0);
         mob.curState().setMana(savedState.getMana());
         mob.curState().setHitPoints(savedState.getHitPoints());
         mob.curState().setMana(savedState.getMovement());

@@ -89,14 +89,14 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
                 }
                 return false;
             }
-            Physical E=(Physical)CMLib.english().fetchEnvironmental(allObjs,name,true);
-            if(E==null) E=(Physical)CMLib.english().fetchEnvironmental(allObjs,name,false);
-            if(E==null) return false;
+            Physical P=(Physical)CMLib.english().fetchEnvironmental(allObjs,name,true);
+            if(P==null) P=(Physical)CMLib.english().fetchEnvironmental(allObjs,name,false);
+            if(P==null) return false;
             for(int i=0;i<allObjs.size();i++)
-                if(allObjs.elementAt(i)==E)
+                if(allObjs.elementAt(i)==P)
                 {
                     nonPlayerData=(DatabaseEngine.PlayerData)allDataPs.elementAt(i);
-                    body=E;
+                    body=P;
                     break;
                 }
         }

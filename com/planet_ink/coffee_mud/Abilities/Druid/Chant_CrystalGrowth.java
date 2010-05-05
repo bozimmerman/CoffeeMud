@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.util.List;
 import java.util.Vector;
 
 
@@ -84,16 +85,15 @@ public class Chant_CrystalGrowth extends Chant
 					A=(ItemCraftor)CMClass.getAbility("Weaponsmithing");
 					break;
 				}
-				Vector V=null;
-				if(A!=null) V=A.craftAnyItem(material);
-				if((V==null)||(V.size()==0))
+				ItemCraftor.ItemKeyPair pair=null;
+				if(A!=null) pair=A.craftAnyItem(material);
+				if(pair==null)
 				{
 					mob.tell("The chant failed for some reason...");
 					return false;
 				}
-				Item building=(Item)V.firstElement();
-				Item key=null;
-				if(V.size()>1) key=(Item)V.lastElement();
+				Item building=pair.item;
+				Item key=pair.key;
 				mob.location().addItem(building,ItemPossessor.Expire.Resource);
 				if(key!=null) mob.location().addItem(key,ItemPossessor.Expire.Resource);
 				Ability A2=CMClass.getAbility("Chant_Brittle");

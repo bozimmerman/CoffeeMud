@@ -1575,9 +1575,7 @@ public class CMParms
     
 	public static void addToVector(List from, List to)
     {
-        if(from!=null)
-        for(int i=0;i<from.size();i++)
-            to.add(from.get(i));
+        if(from!=null) to.addAll(from);
     }
     
 	public static void addToVector(Iterator from, List to)

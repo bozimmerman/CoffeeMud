@@ -43,10 +43,10 @@ public interface Amputator extends Ability
      * Returns a fully-qualified list of those parts of the given object which
      * have not yet gone missing from it.  This would be a string set denoting the names
      * of the specific parts not yet missing.
-     * @param E the object to scrutinize 
+     * @param P the object to scrutinize 
      * @return the set of the name of the remaining pieces. 
      */
-    public List<String> remainingLimbNameSet(Physical E);
+    public List<String> remainingLimbNameSet(Physical P);
     /**
      * Performs the very dirty business of amputating the item of the given
      * name from the given target.  An existing instanceof of the amputator

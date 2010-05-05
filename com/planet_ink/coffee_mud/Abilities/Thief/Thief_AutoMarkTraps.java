@@ -42,7 +42,7 @@ public class Thief_AutoMarkTraps extends Thief_AutoDetectTraps
     public String[] triggerStrings(){return triggerStrings;}
     protected String skillName(){return "mark";}
 
-    public void dropem(MOB mob, Physical E)
+    public void dropem(MOB mob, Physical P)
     {
         Ability A=mob.fetchAbility("Thief_DetectTraps");
         if(A==null)
@@ -51,7 +51,7 @@ public class Thief_AutoMarkTraps extends Thief_AutoDetectTraps
             A.setProficiency(100);
         }
         CharState savedState=(CharState)mob.curState().copyOf();
-        if(A.invoke(mob,E,false,0))
+        if(A.invoke(mob,P,false,0))
         {
             A=mob.fetchAbility("Thief_MarkTraps");
             if(A==null)
@@ -59,7 +59,7 @@ public class Thief_AutoMarkTraps extends Thief_AutoDetectTraps
                 A=CMClass.getAbility("Thief_MarkTraps");
                 A.setProficiency(100);
             }
-            A.invoke(mob,E,false,0);
+            A.invoke(mob,P,false,0);
         }
         mob.curState().setMana(savedState.getMana());
         mob.curState().setHitPoints(savedState.getHitPoints());

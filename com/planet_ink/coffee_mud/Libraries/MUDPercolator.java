@@ -750,10 +750,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
     	return V;
     }
 
-    protected Vector buildItem(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
+    protected List<Item> buildItem(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
     {
         String classID = findString("class",piece,defined);
-        Vector contents = new Vector();
+        List<Item> contents = new Vector<Item>();
         String[] ignoreStats={};
         if(classID.equalsIgnoreCase("metacraft"))
         {
@@ -764,33 +764,33 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
             int material=-1;
             if(materialStr!=null)
             	 material = RawMaterial.CODES.FIND_IgnoreCase(materialStr);
-            Vector craftors=new Vector();
+            List<ItemCraftor> craftors=new Vector<ItemCraftor>();
 			for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
 			{
 				Ability A=(Ability)e.nextElement();
 				if(A instanceof ItemCraftor)
-					craftors.addElement(A);
+					craftors.add((ItemCraftor)A);
 			}
 			if(recipe.equalsIgnoreCase("anything"))
 			{
 				long startTime=System.currentTimeMillis();
 				while((contents==null)||(contents.size()==0)&&((System.currentTimeMillis()-startTime)<500))
 				{
-					ItemCraftor skill=(ItemCraftor)craftors.elementAt(CMLib.dice().roll(1,craftors.size(),-1));
+					ItemCraftor skill=(ItemCraftor)craftors.get(CMLib.dice().roll(1,craftors.size(),-1));
 					if(skill.fetchRecipes().size()>0)
 					{
-						Vector skillContents=null;
+						List<ItemCraftor.ItemKeyPair> skillContents=null;
 						if(material>=0)
-							skillContents=skill.craftAllItemsVectors(material);
+							skillContents=skill.craftAllItemSets(material);
 						else
 						{
-							skillContents=new Vector();
-							Vector V=skill.craftAllItemsVectors();
-							for(Enumeration e=V.elements();e.hasMoreElements();)
-								skillContents.addAll((Vector)e.nextElement());
+							skillContents=new Vector<ItemCraftor.ItemKeyPair>();
+							List<ItemCraftor.ItemKeyPair> V=skill.craftAllItemSets();
+							for(ItemCraftor.ItemKeyPair pair : V)
+								skillContents.add(pair);
 						}
 						if((skillContents!=null)&&(skillContents.size()>0))
-							contents=(Vector)skillContents.elementAt(CMLib.dice().roll(1,skillContents.size(),-1));
+							contents.addAll(skillContents.get(CMLib.dice().roll(1,skillContents.size(),-1)).asList());
 						if((contents==null)||(contents.size()==0))
 							Log.errOut("MUDPercolator","Tried metacrafting anything, got "+((skillContents==null)?"null":Integer.toString(skillContents.size()))+" from "+skill.ID());
 					}
@@ -799,46 +799,45 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			else
 			if(recipe.toLowerCase().startsWith("any-"))
 			{
+				List<ItemCraftor.ItemKeyPair> skillContents=null;
 				recipe=recipe.substring(4);
-				for(Enumeration e=craftors.elements();e.hasMoreElements();)
+				for(ItemCraftor skill : craftors)
 				{
-					ItemCraftor skill=(ItemCraftor)e.nextElement();
 					if(skill.ID().equalsIgnoreCase(recipe))
 					{
 						if(material>=0)
-							contents=skill.craftAllItemsVectors(material);
+							skillContents=skill.craftAllItemSets(material);
 						else
-						{
-							contents=new Vector();
-							Vector V=skill.craftAllItemsVectors();
-							for(Enumeration e2=V.elements();e2.hasMoreElements();)
-								contents.addAll((Vector)e2.nextElement());
-						}
-						if((contents==null)||(contents.size()==0))
+							skillContents=skill.craftAllItemSets();
+						if((skillContents==null)||(skillContents.size()==0))
 							Log.errOut("MUDPercolator","Tried metacrafting any-"+recipe+", got "+((contents==null)?"null":Integer.toString(contents.size()))+" from "+skill.ID());
 						break;
 					}
 				}
-				if((contents!=null)&&(contents.size()>0))
-					contents=(Vector)contents.elementAt(CMLib.dice().roll(1,contents.size(),-1));
+				if((skillContents!=null)&&(skillContents.size()>0))
+					contents.addAll(skillContents.get(CMLib.dice().roll(1,skillContents.size(),-1)).asList());
 			}
 			else
-			for(Enumeration e=craftors.elements();e.hasMoreElements();)
+			for(ItemCraftor skill : craftors)
 			{
-				ItemCraftor skill=(ItemCraftor)e.nextElement();
 				Vector V=skill.matchingRecipeNames(recipe,false);
 				if((V!=null)&&(V.size()>0))
 				{
+					ItemCraftor.ItemKeyPair pair;
 					if(material>=0)
-						contents=skill.craftItem(recipe,material);
+						pair=skill.craftItem(recipe,material);
 					else
-						contents=skill.craftItem(recipe);
-					break;
+						pair=skill.craftItem(recipe);
+					if(pair!=null)
+					{
+						contents.addAll(pair.asList());
+						break;
+					}
 				}
 			}
 			if((contents==null)||(contents.size()==0))
 	        	throw new CMException("Unable to metacraft an item called '"+recipe+"', Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
-            addDefinition("ITEM_CLASS",((Item)contents.firstElement()).ID(),defined);
+            addDefinition("ITEM_CLASS",((Item)contents.get(0)).ID(),defined);
             ignoreStats=new String[]{"CLASS","NAME","MATERIAL"};
         }
         else
@@ -852,7 +851,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	        	throw new CMException("Unable to find cataloged item called '"+name+"', Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
             I=(Item)I.copyOf();
             CMLib.catalog().changeCatalogUsage(I,true);
-            contents.addElement(I);
+            contents.add(I);
             addDefinition("ITEM_CLASS",I.ID(),defined);
             ignoreStats=new String[]{"CLASS","NAME"};
         }
@@ -860,7 +859,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         {
 	        Item I = CMClass.getItem(classID);
 	        if(I == null) throw new CMException("Unable to build item on classID '"+classID+"', Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
-	        contents.addElement(I);
+	        contents.add(I);
 	        addDefinition("ITEM_CLASS",classID,defined);
 	        
 	        if(I.isGeneric())
@@ -873,7 +872,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	        ignoreStats=new String[]{"CLASS","NAME"};
         }
         
-        Item I=(Item)contents.firstElement();
+        Item I=(Item)contents.get(0);
         addDefinition("ITEM_NAME",I.Name(),defined);
         
         fillOutStats(I,ignoreStats,"ITEM_",piece,defined);
@@ -891,7 +890,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
             {
             	Item I2=(Item)V.elementAt(i);
             	I2.setContainer(I);
-            	contents.addElement(I2);
+            	contents.add(I2);
             }
         }
         V= findAffects(piece,defined);

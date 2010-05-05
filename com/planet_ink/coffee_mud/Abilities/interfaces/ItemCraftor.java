@@ -80,7 +80,7 @@ public interface ItemCraftor extends Ability
 	 * @param material the rawmaterial code to make the item out of
 	 * @return a vector of Item(s)
 	 */
-	public Vector craftAnyItem(int material);
+	public ItemKeyPair craftAnyItem(int material);
 	
 	/**
 	 * Crafts every item of a type supported by this class of 
@@ -91,7 +91,7 @@ public interface ItemCraftor extends Ability
 	 * @param material the rawmaterial code to make the item out of
 	 * @return a vector of vectors of item(s)
 	 */
-	public Vector craftAllItemsVectors(int material);
+	public List<ItemKeyPair> craftAllItemSets(int material);
 	
 	/**
 	 * Crafts every item of a type supported by this class of 
@@ -101,7 +101,7 @@ public interface ItemCraftor extends Ability
 	 * occur when a key is required and also generated.
 	 * @return a vector of vectors of item vector(s)
 	 */
-	public Vector craftAllItemsVectors();
+	public List<ItemKeyPair> craftAllItemSets();
 	
 	/**
 	 * Crafts the item specified by the recipe name, of a supported
@@ -111,7 +111,7 @@ public interface ItemCraftor extends Ability
 	 * @param recipe the name of the item to make
 	 * @return a vector of Item(s)
 	 */
-	public Vector craftItem(String recipe);
+	public ItemKeyPair craftItem(String recipe);
 	
 	/**
 	 * Crafts the item specified by the recipe name, of the specified
@@ -122,7 +122,7 @@ public interface ItemCraftor extends Ability
 	 * @param material the rawmaterial code to make the item out of
 	 * @return a vector of Item(s)
 	 */
-	public Vector craftItem(String recipe, int material);
+	public ItemKeyPair craftItem(String recipe, int material);
 	
 	/**
 	 * Returns a Vector of Integer objects where each Integer
@@ -131,4 +131,24 @@ public interface ItemCraftor extends Ability
 	 * @return a vector of integers
 	 */
 	public Vector myResources();
+	
+	/**
+	 * For auto-crafting, this object represents an item,
+	 * and (optionally) a key to go with it.
+	 * @author bzimmerman
+	 */
+	public class ItemKeyPair
+	{
+		public Item item;
+		public Key key;
+		public ItemKeyPair(Item item, Key key) { this.item=item; this.key=key;}
+		public List<Item> asList()
+		{
+			List<Item> list = new LinkedList<Item>();
+			if(item!=null) list.add(item);
+			if(key != null) list.add(key);
+			return list;
+		}
+		
+	}
 }

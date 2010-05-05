@@ -1445,11 +1445,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		return "";
 	}
 
-    public StringBuffer getItemsXML(Vector items, Hashtable found, HashSet files, int type)
+    public StringBuffer getItemsXML(List<Item> items, Hashtable found, HashSet files, int type)
     {
         StringBuffer buf=new StringBuffer("");
-        for(int i=0;i<items.size();i++)
-            buf.append(getUniqueItemXML((Item)items.elementAt(i),type,found,files));
+        for(Item I : items)
+            buf.append(getUniqueItemXML(I,type,found,files));
         return buf;
     }
     

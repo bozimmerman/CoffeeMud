@@ -82,16 +82,15 @@ public class Chant_GrowItem extends Chant
 			{
 				mob.location().send(mob,msg);
 				ItemCraftor A=(ItemCraftor)CMClass.getAbility("Carpentry");
-				Vector V=null;
-				if(A!=null) V=A.craftAnyItem(material);
-				if((V==null)||(V.size()==0))
+				ItemCraftor.ItemKeyPair pair=null;
+				if(A!=null) pair=A.craftAnyItem(material);
+				if(pair==null)
 				{
 					mob.tell("The chant failed for some reason...");
 					return false;
 				}
-				Item building=(Item)V.firstElement();
-				Item key=null;
-				if(V.size()>1) key=(Item)V.lastElement();
+				Item building=pair.item;
+				Item key=pair.key;
 				mob.location().addItem(building,ItemPossessor.Expire.Resource);
 				if(key!=null) mob.location().addItem(key,ItemPossessor.Expire.Resource);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,building.name()+" grows out of a tree and drops.");

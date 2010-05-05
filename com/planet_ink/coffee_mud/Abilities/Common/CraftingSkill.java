@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.ItemCraftor.ItemKeyPair;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
@@ -465,11 +466,11 @@ public class CraftingSkill extends GatheringSkill
 		}
 	}
 
-	public Vector craftAnyItem(int material){return craftItem(null,material);}
-	public Vector craftItem(String recipe, int material)
+	public ItemKeyPair craftAnyItem(int material){return craftItem(null,material);}
+	public ItemKeyPair craftItem(String recipe, int material)
 	{
 		Item building=null;
-		Item key=null;
+		Key key=null;
 		int tries=0;
 		MOB mob=CMLib.map().mobCreated();
 		mob.baseEnvStats().setLevel(Integer.MAX_VALUE/2);
@@ -483,8 +484,8 @@ public class CraftingSkill extends GatheringSkill
 			invoke(mob,V,null,true,-1);
 			if((V.size()>0)&&(V.lastElement() instanceof Item))
 			{
-				if((V.size()>1)&&((V.elementAt(V.size()-2) instanceof Item)))
-					key=(Item)V.elementAt(V.size()-2);
+				if((V.size()>1)&&((V.elementAt(V.size()-2) instanceof Key)))
+					key=(Key)V.elementAt(V.size()-2);
 				else
 					key=null;
 				building=(Item)V.lastElement();
@@ -494,7 +495,6 @@ public class CraftingSkill extends GatheringSkill
 		}
 		mob.destroy();
 		if(building==null) return null;
-		Vector items=new Vector();
 		building.setSecretIdentity("");
 		building.recoverEnvStats();
 		building.text();
@@ -506,36 +506,34 @@ public class CraftingSkill extends GatheringSkill
 			key.text();
 			key.recoverEnvStats();
 		}
-		items.addElement(building);
-		if(key!=null) items.addElement(key);
-		return items;
+		return new ItemKeyPair(building, key);
 	}
-	public Vector craftAllItemsVectors(int material)
+	public List<ItemKeyPair> craftAllItemSets(int material)
 	{
-		Vector allItems=new Vector();
+		List<ItemKeyPair> allItems=new Vector<ItemKeyPair>();
 		Vector recipes=fetchRecipes();
 		Item built=null;
-		HashSet usedNames=new HashSet();
-		Vector items=null;
+		HashSet<String> usedNames=new HashSet<String>();
+		ItemKeyPair pair=null;
 		String s=null;
 		for(int r=0;r<recipes.size();r++)
 		{
 			s=(String)(((Vector)recipes.elementAt(r)).firstElement());
 			s=CMStrings.replaceAll(s,"%","").trim();
-			items=craftItem(s,material);
-			if((items==null)||(items.size()==0)) continue;
-			built=(Item)items.firstElement();
+			pair=craftItem(s,material);
+			if(pair==null) continue;
+			built=pair.item;
 			if(!usedNames.contains(built.Name()))
 			{
 				usedNames.add(built.Name());
-				allItems.addElement(items);
+				allItems.add(pair);
 			}
 		}
 		usedNames.clear();
 		return allItems;
 	}
 	
-	public Vector craftItem(String recipe)
+	public ItemKeyPair craftItem(String recipe)
 	{
 		Vector rscs=myResources();
 		if(rscs.size()==0) rscs=CMParms.makeVector(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
@@ -543,19 +541,19 @@ public class CraftingSkill extends GatheringSkill
 		return craftItem(recipe,material);
 	}
 	
-	public Vector craftAllItemsVectors()
+	public List<ItemKeyPair> craftAllItemSets()
 	{
 		Vector rscs=myResources();
-		Vector allItemVectorVectors=new Vector();
-		Vector items=null;
+		List<ItemKeyPair> allItems=new Vector<ItemKeyPair>();
+		List<ItemKeyPair> pairs=null;
 		if(rscs.size()==0) rscs=CMParms.makeVector(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
 		for(int r=0;r<rscs.size();r++)
 		{
-			items=craftAllItemsVectors(((Integer)rscs.elementAt(r)).intValue());
-			if((items==null)||(items.size()==0)) continue;
-			allItemVectorVectors.add(items);
+			pairs=craftAllItemSets(((Integer)rscs.elementAt(r)).intValue());
+			if((pairs==null)||(pairs.size()==0)) continue;
+			allItems.addAll(pairs);
 		}
-		return allItemVectorVectors;
+		return allItems;
 	}
 	
 	public Vector matchingRecipeNames(String recipeName, boolean beLoose){return matchingRecipeNames(fetchRecipes(),recipeName,beLoose);}
