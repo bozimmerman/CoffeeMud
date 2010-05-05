@@ -222,31 +222,31 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		return new StdSpaceShip();
 	}
 	public boolean isGeneric(){return false;}
-	protected void cloneFix(StdSpaceShip E)
+	protected void cloneFix(StdSpaceShip ship)
 	{
-		basePhyStats=(PhyStats)E.basePhyStats().copyOf();
-		phyStats=(PhyStats)E.phyStats().copyOf();
+		basePhyStats=(PhyStats)ship.basePhyStats().copyOf();
+		phyStats=(PhyStats)ship.phyStats().copyOf();
 
 		affects=new SVector<Ability>(1);
 		behaviors=new SVector<Behavior>(1);
         scripts=new SVector<ScriptingEngine>(1);
 		parents=null;
-		if(E.parents!=null)
-			parents=(Vector)E.parents.clone();
-		for(Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
+		if(ship.parents!=null)
+			parents=(Vector)ship.parents.clone();
+		for(Enumeration<Behavior> e=ship.behaviors();e.hasMoreElements();)
 		{
 			Behavior B=e.nextElement();
 			if(B!=null)
 				behaviors.addElement(B);
 		}
-		for(int a=0;a<E.numEffects();a++)
+		for(int a=0;a<ship.numEffects();a++)
 		{
-			Ability A=E.fetchEffect(a);
+			Ability A=ship.fetchEffect(a);
 			if(A!=null)
 				affects.addElement((Ability)A.copyOf());
 		}
         ScriptingEngine SE=null;
-		for(Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();)
+		for(Enumeration<ScriptingEngine> e=ship.scripts();e.hasMoreElements();)
 		{
 			SE=e.nextElement();
             if(SE!=null)

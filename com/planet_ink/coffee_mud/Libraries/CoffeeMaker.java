@@ -2079,26 +2079,31 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					((Deity)E).delPower(((Deity)E).fetchPower(0));
 			}
 		}
-		while(E.numEffects()>0)
+		
+		if(E instanceof Physical)
 		{
-			Ability aff=E.fetchEffect(0);
-			if(aff!=null)
-				E.delEffect(aff);
+			Physical P=(Physical)E;
+			while(P.numEffects()>0)
+			{
+				Ability aff=P.fetchEffect(0);
+				if(aff!=null)
+					P.delEffect(aff);
+			}
 		}
 		if(E instanceof PhysicalAgent)
 		{
-			PhysicalAgent B=(PhysicalAgent)E;
-			while(B.numBehaviors()>0)
+			PhysicalAgent P=(PhysicalAgent)E;
+			while(P.numBehaviors()>0)
 			{
-				Behavior behav=B.fetchBehavior(0);
+				Behavior behav=P.fetchBehavior(0);
 				if(behav!=null)
-					B.delBehavior(behav);
+					P.delBehavior(behav);
 			}
-	        while(B.numScripts()>0)
+	        while(P.numScripts()>0)
 	        {
-	            ScriptingEngine scrpt=B.fetchScript(0);
+	            ScriptingEngine scrpt=P.fetchScript(0);
 	            if(scrpt!=null)
-	                B.delScript(scrpt);
+	                P.delScript(scrpt);
 	        }
 		}
 
@@ -2710,8 +2715,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 		if(E instanceof PhysicalAgent)
 		{
+			PhysicalAgent P = (PhysicalAgent)E;
 			StringBuffer behaviorstr=new StringBuffer("");
-			for(Enumeration<Behavior> e=((PhysicalAgent)E).behaviors();e.hasMoreElements();)
+			for(Enumeration<Behavior> e=P.behaviors();e.hasMoreElements();)
 			{
 				Behavior B=e.nextElement();
 				if(B!=null)
@@ -2725,19 +2731,24 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			text.append(CMLib.xml().convertXMLtoTag("BEHAVES",behaviorstr.toString()));
 		}
 
-		StringBuffer affectstr=new StringBuffer("");
-		for(int a=0;a<E.numEffects();a++)
+		if(E instanceof Physical)
 		{
-			Ability A=E.fetchEffect(a);
-			if((A!=null)&&(A.isSavable()))
+			Physical P = (Physical)E;
+			StringBuffer affectstr=new StringBuffer("");
+			for(int a=0;a<P.numEffects();a++)
 			{
-				affectstr.append("<AFF>");
-				affectstr.append(CMLib.xml().convertXMLtoTag("ACLASS",CMClass.classID(A)));
-				affectstr.append(CMLib.xml().convertXMLtoTag("ATEXT",CMLib.xml().parseOutAngleBrackets(A.text())));
-				affectstr.append("</AFF>");
+				Ability A=P.fetchEffect(a);
+				if((A!=null)&&(A.isSavable()))
+				{
+					affectstr.append("<AFF>");
+					affectstr.append(CMLib.xml().convertXMLtoTag("ACLASS",CMClass.classID(A)));
+					affectstr.append(CMLib.xml().convertXMLtoTag("ATEXT",CMLib.xml().parseOutAngleBrackets(A.text())));
+					affectstr.append("</AFF>");
+				}
 			}
+			text.append(CMLib.xml().convertXMLtoTag("AFFECS",affectstr.toString()));
 		}
-		text.append(CMLib.xml().convertXMLtoTag("AFFECS",affectstr.toString()));
+		
 		String[] codes=E.getStatCodes();
 		for(int i=E.getSaveStatIndex();i<codes.length;i++)
 			text.append(CMLib.xml().convertXMLtoTag(codes[i].toUpperCase(),E.getStat(codes[i].toUpperCase())));
@@ -2758,23 +2769,27 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	    if(E==null) return;
 	    if(E instanceof PhysicalAgent)
 	    {
-	    	PhysicalAgent AE=(PhysicalAgent)E;
-			for(Enumeration<Behavior> e=AE.behaviors();e.hasMoreElements();)
+	    	PhysicalAgent P=(PhysicalAgent)E;
+			for(Enumeration<Behavior> e=P.behaviors();e.hasMoreElements();)
 			{
 				Behavior B=e.nextElement();
 				if(B!=null) fillFileSet(B.externalFiles(),H);
 			}
-			for(Enumeration<ScriptingEngine> e=AE.scripts();e.hasMoreElements();)
+			for(Enumeration<ScriptingEngine> e=P.scripts();e.hasMoreElements();)
 			{
 				ScriptingEngine SE=e.nextElement();
 	            if(SE!=null) fillFileSet(SE.externalFiles(),H);
 	        }
 	    }
-		for(int a=0;a<E.numEffects();a++)
-		{
-			Ability A=E.fetchEffect(a);
-			if((A!=null)&&(A.isSavable())) fillFileSet(A.externalFiles(),H);
-		}
+	    if(E instanceof Physical)
+	    {
+	    	Physical P=(Physical)E;
+			for(int a=0;a<P.numEffects();a++)
+			{
+				Ability A=P.fetchEffect(a);
+				if((A!=null)&&(A.isSavable())) fillFileSet(A.externalFiles(),H);
+			}
+	    }
 		if(E instanceof MOB)
 		{
 		    MOB M=(MOB)E;

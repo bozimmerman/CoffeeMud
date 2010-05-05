@@ -145,7 +145,7 @@ public class GrinderRooms
 				((GridLocale)R).clearGrid(null);
 			}
 	
-			String err=GrinderAreas.doAffectsNBehavs(R,httpReq,parms);
+			String err=GrinderAreas.doAffects(R,httpReq,parms);
 			if(err.length()>0) return err;
 	
 			// here's where you resolve items and mobs

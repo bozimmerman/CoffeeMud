@@ -260,34 +260,34 @@ public class Falling extends StdAbility
 		if((affectableStats.disposition()&PhyStats.IS_FLYING)==0)
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FALLING);
 	}
-	public void setAffectedOne(Physical being)
+	public void setAffectedOne(Physical P)
 	{
-		if(being instanceof Room)
-			room=(Room)being;
+		if(P instanceof Room)
+			room=(Room)P;
 		else
-			super.setAffectedOne(being);
+			super.setAffectedOne(P);
 	}
 	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel)
 	{
 		if(!auto) return false;
-		Environmental E=target;
-		if(E==null) return false;
-		if((E instanceof Item)&&(room==null)) return false;
-		if(E.fetchEffect("Falling")==null)
+		Physical P=target;
+		if(P==null) return false;
+		if((P instanceof Item)&&(room==null)) return false;
+		if(P.fetchEffect("Falling")==null)
 		{
 			Falling F=new Falling();
 			F.setProficiency(proficiency());
 			F.invoker=null;
-			if(E instanceof MOB)
-				F.invoker=(MOB)E;
+			if(P instanceof MOB)
+				F.invoker=(MOB)P;
 			else
 				F.invoker=CMClass.getMOB("StdMOB");
 			F.setSavable(false);
 			F.makeLongLasting();
-			E.addEffect(F);
-			if(!(E instanceof MOB))
+			P.addEffect(F);
+			if(!(P instanceof MOB))
 				CMLib.threads().startTickDown(F,Tickable.TICKID_MOB,1);
-			E.recoverPhyStats();
+			P.recoverPhyStats();
 
 		}
 		return true;

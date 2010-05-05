@@ -43,11 +43,11 @@ public class Prayer_CureExhaustion extends Prayer implements MendingSkill
     public long flags(){return Ability.FLAG_HOLY;}
     protected long minCastWaitTime(){return Tickable.TIME_TICK/2;}
 
-	public boolean supportsMending(Environmental E)
+	public boolean supportsMending(Physical item)
 	{ 
-		return (E instanceof MOB)
-				&&(((((MOB)E).curState()).getFatigue()>0)
-						||((((MOB)E).curState()).getMovement()<(((MOB)E).maxState()).getMovement()));
+		return (item instanceof MOB)
+				&&(((((MOB)item).curState()).getFatigue()>0)
+						||((((MOB)item).curState()).getMovement()<(((MOB)item).maxState()).getMovement()));
 	}
 	
     public int castingQuality(MOB mob, Physical target)

@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class Wimpy extends StdBehavior
 {
 	public String ID(){return "Wimpy";}
@@ -78,11 +77,9 @@ public class Wimpy extends StdBehavior
 					if((veryWimpy)&&(!monster.isInCombat()))
 					{
 						Room oldRoom=monster.location();
-						Vector V=CMLib.flags().flaggedBehaviors(monster,Behavior.FLAG_MOBILITY);
-						Behavior B=null;
-						for(int b=0;b<V.size();b++)
+						List<Behavior> V=CMLib.flags().flaggedBehaviors(monster,Behavior.FLAG_MOBILITY);
+						for(Behavior B : V)
 						{
-							B=(Behavior)V.elementAt(b);
 							int tries=0;
 							while(((++tries)<100)&&(oldRoom==monster.location()))
 								B.tick(monster,Tickable.TICKID_MOB);

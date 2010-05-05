@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.util.List;
 
 /* 
    Copyright 2000-2010 Bo Zimmerman
@@ -111,9 +112,9 @@ public class Throw extends StdCommand
 					else
 					if(item instanceof SpellHolder)
 					{
-						Vector V=((SpellHolder)item).getSpells();
+						List<Ability> V=((SpellHolder)item).getSpells();
 						for(int v=0;v<V.size();v++)
-							if(((Ability)V.elementAt(v)).abstractQuality()==Ability.QUALITY_MALICIOUS)
+							if(((Ability)V.get(v)).abstractQuality()==Ability.QUALITY_MALICIOUS)
 							{ 
 								targetMsg=CMMsg.MSG_WEAPONATTACK; 
 								break;

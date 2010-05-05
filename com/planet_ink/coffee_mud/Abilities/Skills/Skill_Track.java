@@ -190,9 +190,8 @@ public class Skill_Track extends StdSkill
 	    tickStatus=Tickable.STATUS_MISC6+1;
 		Room thisRoom=mob.location();
 
-		Vector V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
-		for(int v=0;v<V.size();v++)	
-		    ((Ability)V.elementAt(v)).unInvoke();
+		List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
+		for(Ability A : V) A.unInvoke();
 		if(V.size()>0)
 		{
 			mob.tell("You stop tracking.");

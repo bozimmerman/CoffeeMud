@@ -29,7 +29,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface CagedAnimal extends Environmental
+public interface CagedAnimal extends Item
 {
 	public static final int ABILITY_MOBONPICKUP=0;
 	public static final int ABILITY_MOBPROGRAMMATICALLY=1;

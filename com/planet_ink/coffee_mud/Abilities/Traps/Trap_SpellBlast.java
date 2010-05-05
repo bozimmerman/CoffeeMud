@@ -71,10 +71,11 @@ public class Trap_SpellBlast extends StdTrap
 	{
 		if(P==null) return null;
 		Item I=getPoison(mob);
-		if((I!=null)&&(I instanceof SpellHolder)){
-			Vector V=((SpellHolder)I).getSpells();
+		if((I!=null)&&(I instanceof SpellHolder))
+		{
+			List<Ability> V=((SpellHolder)I).getSpells();
 			if(V.size()>0)
-				setMiscText(((Ability)V.firstElement()).ID());
+				setMiscText(((Ability)V.get(0)).ID());
 			I.setUsesRemaining(I.usesRemaining()-1);
 		}
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);

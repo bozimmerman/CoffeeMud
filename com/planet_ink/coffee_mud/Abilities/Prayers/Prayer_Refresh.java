@@ -44,13 +44,13 @@ public class Prayer_Refresh extends Prayer implements MendingSkill
     public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
     protected long minCastWaitTime(){return Tickable.TIME_TICK/2;}
 
-	public boolean supportsMending(Environmental E)
+	public boolean supportsMending(Physical item)
 	{ 
-		return (E instanceof MOB)
-				&&(((((MOB)E).curState()).getFatigue()>0)
-						||((((MOB)E).curState()).getMovement()<(((MOB)E).maxState()).getMovement())
-						||((((MOB)E).curState()).getMana()<(((MOB)E).maxState()).getMana())
-						||((((MOB)E).curState()).getHitPoints()<(((MOB)E).maxState()).getHitPoints())
+		return (item instanceof MOB)
+				&&(((((MOB)item).curState()).getFatigue()>0)
+						||((((MOB)item).curState()).getMovement()<(((MOB)item).maxState()).getMovement())
+						||((((MOB)item).curState()).getMana()<(((MOB)item).maxState()).getMana())
+						||((((MOB)item).curState()).getHitPoints()<(((MOB)item).maxState()).getHitPoints())
 						);
 	}
 	

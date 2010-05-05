@@ -39,7 +39,7 @@ public class Prop_SpellAdder extends Property
 	public String ID() { return "Prop_SpellAdder"; }
 	public String name(){ return "Casting spells on oneself";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_MOBS;}
-    protected Environmental lastMOB=null;
+    protected Physical lastMOB=null;
     protected MOB invokerMOB=null;
     protected boolean processing=false;
     protected boolean uninvocable=true;
@@ -291,26 +291,26 @@ public class Prop_SpellAdder extends Property
         lastMOB=null;
     }
     
-    public void setAffectedOne(Physical being) 
+    public void setAffectedOne(Physical P) 
     {
-    	super.setAffectedOne(being);
-    	if(being == null)
+    	super.setAffectedOne(P);
+    	if(P == null)
     	{
     		removeMyAffectsFromLastMOB();
     		finalize();
     	}
     }
     
-	public void removeMyAffectsFrom(Environmental E)
+	public void removeMyAffectsFrom(Physical P)
 	{
-        if(E==null)return;
+        if(P==null)return;
         
 		int x=0;
 		Vector eff=new Vector();
 		Ability thisAffect=null;
-		for(x=0;x<E.numEffects();x++)
+		for(x=0;x<P.numEffects();x++)
 		{
-			thisAffect=E.fetchEffect(x);
+			thisAffect=P.fetchEffect(x);
 			if(thisAffect!=null)
 				eff.addElement(thisAffect);
 		}
@@ -323,7 +323,7 @@ public class Prop_SpellAdder extends Property
 				{
 					thisAffect = (Ability)unrevocableSpells.elementAt(v);
 					if(h.containsKey(thisAffect.ID()))
-						E.delEffect(thisAffect);
+						P.delEffect(thisAffect);
 				}
 			}
 			else
@@ -332,10 +332,10 @@ public class Prop_SpellAdder extends Property
 				thisAffect=(Ability)eff.elementAt(x);
 				String ID=(String)h.get(thisAffect.ID());
 				if((ID!=null)
-	            &&(thisAffect.invoker()==getInvokerMOB(E,E))) {
+	            &&(thisAffect.invoker()==getInvokerMOB(P,P))) {
 					thisAffect.unInvoke();
 					if((!uninvocable)&&(!thisAffect.canBeUninvoked()))
-						E.delEffect(thisAffect);
+						P.delEffect(thisAffect);
 				}
 			}
 			unrevocableSpells = null;

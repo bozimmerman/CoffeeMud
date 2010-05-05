@@ -127,10 +127,10 @@ public class StdRoom implements Room
 	
 	public boolean isGeneric(){return false;}
 	
-	protected void cloneFix(Room E)
+	protected void cloneFix(Room R)
 	{
-		basePhyStats=(PhyStats)E.basePhyStats().copyOf();
-		phyStats=(PhyStats)E.phyStats().copyOf();
+		basePhyStats=(PhyStats)R.basePhyStats().copyOf();
+		phyStats=(PhyStats)R.phyStats().copyOf();
 
 		contents=new SVector(1);
 		inhabitants=new SVector(1);
@@ -141,14 +141,14 @@ public class StdRoom implements Room
 		doors=new Room[Directions.NUM_DIRECTIONS()];
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			if(E.getRawExit(d)!=null)
-				exits[d]=(Exit)E.getRawExit(d).copyOf();
-			if(E.rawDoors()[d]!=null)
-				doors[d]=E.rawDoors()[d];
+			if(R.getRawExit(d)!=null)
+				exits[d]=(Exit)R.getRawExit(d).copyOf();
+			if(R.rawDoors()[d]!=null)
+				doors[d]=R.rawDoors()[d];
 		}
-		for(int i=0;i<E.numItems();i++)
+		for(int i=0;i<R.numItems();i++)
 		{
-			Item I2=E.getItem(i);
+			Item I2=R.getItem(i);
 			if(I2!=null)
 			{
 				Item I=(Item)I2.copyOf();
@@ -162,35 +162,35 @@ public class StdRoom implements Room
 			if((I2!=null)
 			&&(I2.container()!=null)
 			&&(!isContent(I2.container())))
-				for(int ii=0;ii<E.numItems();ii++)
-					if((E.getItem(ii)==I2.container())&&(ii<numItems()))
+				for(int ii=0;ii<R.numItems();ii++)
+					if((R.getItem(ii)==I2.container())&&(ii<numItems()))
 					{I2.setContainer(getItem(ii)); break;}
 		}
-		for(int m=0;m<E.numInhabitants();m++)
+		for(int m=0;m<R.numInhabitants();m++)
 		{
-			MOB M2=E.fetchInhabitant(m);
+			MOB M2=R.fetchInhabitant(m);
 			if((M2!=null)&&(M2.isSavable()))
 			{
 				MOB M=(MOB)M2.copyOf();
-				if(M.getStartRoom()==E)
+				if(M.getStartRoom()==R)
 					M.setStartRoom(this);
 				M.setLocation(this);
 				inhabitants.addElement(M);
 			}
 		}
-		for(int i=0;i<E.numEffects();i++)
+		for(int i=0;i<R.numEffects();i++)
 		{
-			Ability A=E.fetchEffect(i);
+			Ability A=R.fetchEffect(i);
 			if((A!=null)&&(!A.canBeUninvoked()))
 				addEffect((Ability)A.copyOf());
 		}
-		for(Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
+		for(Enumeration<Behavior> e=R.behaviors();e.hasMoreElements();)
 		{
 			Behavior B=e.nextElement();
 			if(B!=null)
 				addBehavior((Behavior)B.copyOf());
 		}
-		for(Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();)
+		for(Enumeration<ScriptingEngine> e=R.scripts();e.hasMoreElements();)
 		{
 			ScriptingEngine SE=e.nextElement();
             if(SE!=null) addScript((ScriptingEngine)SE.copyOf());

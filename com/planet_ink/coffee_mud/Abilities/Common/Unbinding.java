@@ -53,12 +53,12 @@ public class Unbinding extends CommonSkill
 			MOB mob=(MOB)affected;
 			if(tickUp==3)
 			{
-			    Vector affects=null;
+				List<Ability> affects=null;
 			    if(found!=null)
 				   affects=CMLib.flags().flaggedAffects(found,Ability.FLAG_BINDING);
 				if((affects!=null)&&(affects.size()>0))
 				{
-				    removing=(Ability)affects.firstElement();
+				    removing=(Ability)affects.get(0);
 					displayText="You are removing "+removing.name()+" from "+found.name();
 					verb="removing "+removing.name()+" from "+found.name();
 				}
@@ -133,13 +133,13 @@ public class Unbinding extends CommonSkill
 	        mob.tell("Not while you are fighting!");
 	        return false;
 	    }
-	    Vector affects=CMLib.flags().flaggedAffects(target,Ability.FLAG_BINDING);
+	    List<Ability> affects=CMLib.flags().flaggedAffects(target,Ability.FLAG_BINDING);
 	    if(affects.size()==0)
 	    {
 	        mob.tell(target.name()+" does not have any bindings you can remove.");
 	        return false;
 	    }
-	    Ability A=(Ability)affects.firstElement();
+	    Ability A=(Ability)affects.get(0);
 	    
 		verb="unbinding";
 		found=null;

@@ -93,14 +93,14 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		return StdScroll.makeSecretIdentity("scroll",super.secretIdentity()," Charges: "+usesRemaining(),getSpells(this));
 	}
 
-	public static String makeSecretIdentity(String thang, String id, String more, Vector V)
+	public static String makeSecretIdentity(String thang, String id, String more, List<Ability> V)
 	{
 		StringBuffer add=new StringBuffer("");
 		for(int v=0;v<V.size();v++)
 		{
 			if(v==0)
 				add.append("A "+thang+" of ");
-			Ability A=(Ability)V.elementAt(v);
+			Ability A=(Ability)V.get(v);
 			if(V.size()==1)
 				add.append(A.name());
 			else
@@ -133,7 +133,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 					mob.tell("The markings have been read off the parchment, and are no longer discernable.");
 				else
 				{
-					Vector Spells=me.getSpells();
+					List<Ability> Spells=me.getSpells();
 					if(Spells.size()==0)
 						mob.tell("The scroll appears to contain no discernable information.");
 					else
@@ -179,7 +179,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 							Spells=me.getSpells();
 							for(int u=0;u<Spells.size();u++)
 							{
-								Ability A=(Ability)Spells.elementAt(u);
+								Ability A=(Ability)Spells.get(u);
 								theNews.append("Level "+CMStrings.padRight(""+CMLib.ableMapper().lowestQualifyingLevel(A.ID()),2)+": "+A.name()+"\n\r");
 							}
 							mob.tell(theNews.toString());
@@ -229,7 +229,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		return theSpells;
 	}
 	
-	public Vector getSpells(){ return getSpells(this);}
+	public List<Ability> getSpells(){ return getSpells(this);}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

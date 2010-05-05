@@ -290,17 +290,17 @@ public class StdMOB implements MOB
         CMClass.unbumpCounter(this,CMClass.OBJECT_MOB);
     }
     public boolean amDestroyed(){return amDestroyed;}
-	protected void cloneFix(MOB E)
+	protected void cloneFix(MOB M)
 	{
-		if(E==null) return;
+		if(M==null) return;
 		affects=new SVector(1);
-		basePhyStats=(PhyStats)E.basePhyStats().copyOf();
-		phyStats=(PhyStats)E.phyStats().copyOf();
-		baseCharStats=(CharStats)E.baseCharStats().copyOf();
-		charStats=(CharStats)E.charStats().copyOf();
-		baseState=(CharState)E.baseState().copyOf();
-		curState=(CharState)E.curState().copyOf();
-		maxState=(CharState)E.maxState().copyOf();
+		basePhyStats=(PhyStats)M.basePhyStats().copyOf();
+		phyStats=(PhyStats)M.phyStats().copyOf();
+		baseCharStats=(CharStats)M.baseCharStats().copyOf();
+		charStats=(CharStats)M.charStats().copyOf();
+		baseState=(CharState)M.baseState().copyOf();
+		curState=(CharState)M.curState().copyOf();
+		maxState=(CharState)M.maxState().copyOf();
 
 		pleaseDestroy=false;
 
@@ -311,9 +311,9 @@ public class StdMOB implements MOB
 		behaviors=new SVector<Behavior>(1);
 		scripts=new SVector<ScriptingEngine>(1);
 		Item I=null;
-		for(int i=0;i<E.numItems();i++)
+		for(int i=0;i<M.numItems();i++)
 		{
-			I=E.getItem(i);
+			I=M.getItem(i);
 			if(I!=null)
 				addItem((Item)I.copyOf());
 		}
@@ -323,31 +323,31 @@ public class StdMOB implements MOB
 			if((I!=null)
 			&&(I.container()!=null)
 			&&(!isMine(I.container())))
-				for(int ii=0;ii<E.numItems();ii++)
-					if((E.getItem(ii)==I.container())&&(ii<numItems()))
+				for(int ii=0;ii<M.numItems();ii++)
+					if((M.getItem(ii)==I.container())&&(ii<numItems()))
 					{ I.setContainer(getItem(ii)); break;}
 		}
 		Ability A=null;
-		for(int i=0;i<E.numLearnedAbilities();i++)
+		for(int i=0;i<M.numLearnedAbilities();i++)
 		{
-			A=E.fetchAbility(i);
+			A=M.fetchAbility(i);
 			if(A!=null)
 				addAbility((Ability)A.copyOf());
 		}
-		for(int i=0;i<E.numEffects();i++)
+		for(int i=0;i<M.numEffects();i++)
 		{
-			A=E.fetchEffect(i);
+			A=M.fetchEffect(i);
 			if((A!=null)&&(!A.canBeUninvoked()))
 				addEffect((Ability)A.copyOf());
 		}
-		for(Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
+		for(Enumeration<Behavior> e=M.behaviors();e.hasMoreElements();)
 		{
 			Behavior B=e.nextElement();
 			if(B!=null) // iteration during a clone would just be messed up.
 				behaviors.addElement((Behavior)B.copyOf()); 
 		}
 		ScriptingEngine SE=null;
-		for(Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();)
+		for(Enumeration<ScriptingEngine> e=M.scripts();e.hasMoreElements();)
 		{
 			SE=e.nextElement();
             if(SE!=null)

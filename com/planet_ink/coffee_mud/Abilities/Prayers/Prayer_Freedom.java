@@ -42,13 +42,13 @@ public class Prayer_Freedom extends Prayer implements MendingSkill
 	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
-	public boolean supportsMending(Environmental E)
+	public boolean supportsMending(Physical item)
 	{ 
-		if(!(E instanceof MOB)) return false;
+		if(!(item instanceof MOB)) return false;
 		MOB caster=CMClass.getMOB("StdMOB");
 		caster.basePhyStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
 		caster.phyStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
-		boolean canMend=returnOffensiveAffects(caster,E).size()>0;
+		boolean canMend=returnOffensiveAffects(caster,item).size()>0;
 		caster.destroy();
 		return canMend;
 	}

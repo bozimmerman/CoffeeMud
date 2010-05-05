@@ -44,9 +44,9 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 	public long flags(){return Ability.FLAG_HOLY;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 
-	public boolean supportsMending(Environmental E)
+	public boolean supportsMending(Physical item)
 	{ 
-		return (E instanceof DeadBody);
+		return (item instanceof DeadBody);
 	}
 	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)

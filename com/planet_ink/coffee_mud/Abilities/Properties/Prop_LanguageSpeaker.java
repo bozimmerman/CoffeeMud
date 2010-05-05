@@ -64,10 +64,10 @@ public class Prop_LanguageSpeaker extends Property
 		super.setMiscText(txt);
 	}
 
-	public void setAffectedOne(Physical being)
+	public void setAffectedOne(Physical P)
 	{
-		affectedType = CMClass.getType(being);
-		super.setAffectedOne(being);
+		affectedType = CMClass.getType(P);
+		super.setAffectedOne(P);
 	}
 	
 	public Language getLanguage()

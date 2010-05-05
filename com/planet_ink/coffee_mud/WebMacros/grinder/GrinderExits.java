@@ -166,7 +166,7 @@ public class GrinderExits
 			{
 				String error=GrinderExits.dispositions(E,httpReq,parms);
 				if(error.length()>0) return error;
-				error=GrinderAreas.doAffectsNBehavs(E,httpReq,parms);
+				error=GrinderAreas.doAffects(E,httpReq,parms);
 				if(error.length()>0) return error;
 			}
 			

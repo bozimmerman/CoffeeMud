@@ -37,16 +37,16 @@ public class Affect extends StdCommand
 	private String[] access={"AFFECT","AFF","AF"};
 	public String[] getAccessWords(){return access;}
 
-	public String getAffects(Session S, Environmental E, boolean xtra)
+	public String getAffects(Session S, Physical P, boolean xtra)
 	{
 		StringBuffer msg=new StringBuffer("");
         int NUM_COLS=xtra?1:2;
         int COL_LEN=xtra?38:25;
 		int colnum=NUM_COLS;
         MOB mob=(S!=null)?S.mob():null;
-		for(int a=0;a<((E instanceof MOB)?((MOB)E).numAllEffects():E.numEffects());a++)
+		for(int a=0;a<((P instanceof MOB)?((MOB)P).numAllEffects():P.numEffects());a++)
 		{
-			Ability thisAffect=E.fetchEffect(a);
+			Ability thisAffect=P.fetchEffect(a);
 			String disp=thisAffect.displayText();
 			if((thisAffect!=null)&&(disp.length()>0))
 			{
@@ -119,21 +119,21 @@ public class Affect extends StdCommand
 	            String name=CMParms.combine(commands,1);
 	            if(name.length()>0)
 	            {
-	                Environmental E=null;
+	                Physical P=null;
 	                if((name.equalsIgnoreCase("here")||(name.equalsIgnoreCase("room"))))
-	                    E=CMLib.map().roomLocation(mob);
+	                    P=CMLib.map().roomLocation(mob);
 	                else
                     if((name.equalsIgnoreCase("area")||(name.equalsIgnoreCase("zone"))))
-                        E=CMLib.map().areaLocation(mob);
+                        P=CMLib.map().areaLocation(mob);
                     else
-    	                E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,name,Wearable.FILTER_ANY);
-	                if(E==null)
+    	                P=mob.location().fetchFromMOBRoomFavorsItems(mob,null,name,Wearable.FILTER_ANY);
+	                if(P==null)
 	                    S.colorOnlyPrint("You don't see "+name+" here.\n\r^N");
 	                else
 	                {
 	                    if(S==mob.session())
-	                        S.colorOnlyPrint(" \n\r^!"+E.name()+" is affected by: ^?");
-	                    String msg=getAffects(S,E,true);
+	                        S.colorOnlyPrint(" \n\r^!"+P.name()+" is affected by: ^?");
+	                    String msg=getAffects(S,P,true);
 	                    if(msg.length()<5)
 	                        S.colorOnlyPrintln("Nothing!\n\r^N");
 	                    else

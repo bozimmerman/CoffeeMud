@@ -45,11 +45,11 @@ public class Prayer_HolyAura extends Prayer implements MendingSkill
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
-	public boolean supportsMending(Environmental E)
+	public boolean supportsMending(Physical item)
 	{ 
-		return (E instanceof MOB)
-				&&((Prayer_Bless.getSomething((MOB)E,true)!=null)
-					||(CMLib.flags().domainAffects(E,Ability.DOMAIN_CURSING).size()>0));
+		return (item instanceof MOB)
+				&&((Prayer_Bless.getSomething((MOB)item,true)!=null)
+					||(CMLib.flags().domainAffects(item,Ability.DOMAIN_CURSING).size()>0));
 	}
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

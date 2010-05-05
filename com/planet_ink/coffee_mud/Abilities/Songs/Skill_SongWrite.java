@@ -95,9 +95,10 @@ public class Skill_SongWrite extends BardSkill
 			mob.tell("You aren't powerful enough to write any more magic onto "+scroll.name()+".");
 			return false;
 		}
-
-		for(int i=0;i<scroll.getSpells().size();i++)
-			if(((Ability)scroll.getSpells().elementAt(i)).ID().equals(scrollThis.ID()))
+		
+		List<Ability> spells=scroll.getSpells();
+		for(Ability spell: spells)
+			if(spell.ID().equals(scrollThis.ID()))
 			{
 				mob.tell("That spell is already written on "+scroll.name()+".");
 				return false;

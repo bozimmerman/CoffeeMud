@@ -41,11 +41,11 @@ public class Spell_Augury extends Spell
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 
-	public boolean isTrapped(Environmental E)
+	public boolean isTrapped(Physical P)
 	{
-		for(int a=0;a<E.numEffects();a++)
+		for(int a=0;a<P.numEffects();a++)
 		{
-			Ability A=E.fetchEffect(a);
+			Ability A=P.fetchEffect(a);
 			if((A!=null)&&(A instanceof Trap))
 				return true;
 		}

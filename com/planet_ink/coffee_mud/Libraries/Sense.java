@@ -224,11 +224,11 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return false;
 	}
 
-	public boolean isATrackingMonster(Environmental E)
+	public boolean isATrackingMonster(MOB M)
 	{
-		if(E==null) return false;
-		if((E instanceof MOB)&&(((MOB)E).isMonster()))
-			return flaggedAffects(E,Ability.FLAG_TRACKING).size()>0;
+		if(M==null) return false;
+		if(M.isMonster())
+			return flaggedAffects(M,Ability.FLAG_TRACKING).size()>0;
 		return false;
 	}
 
@@ -259,16 +259,16 @@ public class Sense extends StdLibrary implements CMFlagLibrary
     public boolean isPossiblyAggressive(MOB M)
     {
         if(M==null) return false;
-        Vector V=CMLib.flags().flaggedBehaviors(M,Behavior.FLAG_POTENTIALLYAGGRESSIVE);
+        List<Behavior> V=CMLib.flags().flaggedBehaviors(M,Behavior.FLAG_POTENTIALLYAGGRESSIVE);
         return ((V==null)||(V.size()==0))? false:true;
     }
     public boolean isAggressiveTo(MOB M, MOB toM)
     {
         if((M==null)||(toM==null)) return false;
-        Vector V=CMLib.flags().flaggedBehaviors(M,Behavior.FLAG_POTENTIALLYAGGRESSIVE);
+        List<Behavior> V=CMLib.flags().flaggedBehaviors(M,Behavior.FLAG_POTENTIALLYAGGRESSIVE);
         if((V==null)||(V.size()==0)) return false;
-        for(int v=0;v<V.size();v++)
-            if(((Behavior)V.elementAt(v)).grantsAggressivenessTo(toM))
+        for(Behavior B : V)
+            if(B.grantsAggressivenessTo(toM))
                 return true;
         return false;
     }
@@ -447,12 +447,12 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return true;
 		return false;
 	}
-	public boolean isBoundOrHeld(Environmental E)
+	public boolean isBoundOrHeld(Physical P)
 	{
-		if(E==null) return false;
-		if((E.phyStats().disposition()&PhyStats.IS_BOUND)==PhyStats.IS_BOUND)
+		if(P==null) return false;
+		if((P.phyStats().disposition()&PhyStats.IS_BOUND)==PhyStats.IS_BOUND)
 			return true;
-		return flaggedAnyAffects(E,Ability.FLAG_BINDING|Ability.FLAG_PARALYZING).size()>0;
+		return flaggedAnyAffects(P,Ability.FLAG_BINDING|Ability.FLAG_PARALYZING).size()>0;
 	}
 	public boolean isOnFire(Environmental seen)
 	{
@@ -883,11 +883,11 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return false;
 	}
 
-	public Vector<Behavior> flaggedBehaviors(PhysicalAgent E, long flag)
+	public List<Behavior> flaggedBehaviors(PhysicalAgent P, long flag)
 	{
 		Vector V=new Vector();
-		if(E!=null)
-			for(Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
+		if(P!=null)
+			for(Enumeration<Behavior> e=P.behaviors();e.hasMoreElements();)
 			{
 				Behavior B=e.nextElement();
 				if((B!=null)&&(CMath.bset(B.flags(),flag)))
@@ -897,104 +897,104 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 
-    public Vector domainAnyAffects(Environmental E, int domain)
+    public List<Ability> domainAnyAffects(Physical P, int domain)
 	{
-		Vector V=new Vector();
-		if(E!=null)
+		Vector<Ability> V=new Vector<Ability>();
+		if(P!=null)
             if(domain>Ability.ALL_ACODES)
             {
-    			for(int a=0;a<E.numEffects();a++)
+    			for(int a=0;a<P.numEffects();a++)
     			{
-    				Ability A=E.fetchEffect(a);
+    				Ability A=P.fetchEffect(a);
     				if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)==domain))
     				{ V.addElement(A);}
     			}
             }
             else
-            for(int a=0;a<E.numEffects();a++)
+            for(int a=0;a<P.numEffects();a++)
             {
-                Ability A=E.fetchEffect(a);
+                Ability A=P.fetchEffect(a);
                 if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==domain))
                 { V.addElement(A);}
             }
 		return V;
 	}
-    public Vector domainAffects(Environmental E, int domain)
+    public List<Ability> domainAffects(Physical P, int domain)
 	{
-		Vector V=new Vector();
-		if(E!=null)
+		Vector<Ability> V=new Vector<Ability>();
+		if(P!=null)
             if(domain>Ability.ALL_ACODES)
             {
-    			for(int a=0;a<E.numEffects();a++)
+    			for(int a=0;a<P.numEffects();a++)
     			{
-    				Ability A=E.fetchEffect(a);
+    				Ability A=P.fetchEffect(a);
     				if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)==domain))
     				{ V.addElement(A);}
     			}
             }
             else
-            for(int a=0;a<E.numEffects();a++)
+            for(int a=0;a<P.numEffects();a++)
             {
-                Ability A=E.fetchEffect(a);
+                Ability A=P.fetchEffect(a);
                 if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==domain))
                 { V.addElement(A);}
             }
 		return V;
 	}
-    public Vector domainAbilities(MOB E, int domain)
+    public List<Ability> domainAbilities(MOB M, int domain)
 	{
-		Vector V=new Vector();
-		if(E!=null)
+		Vector<Ability> V=new Vector<Ability>();
+		if(M!=null)
             if(domain>Ability.ALL_ACODES)
             {
-    			for(int a=0;a<E.numAbilities();a++)
+    			for(int a=0;a<M.numAbilities();a++)
     			{
-    				Ability A=E.fetchAbility(a);
+    				Ability A=M.fetchAbility(a);
     				if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)==domain))
     				{ V.addElement(A);}
     			}
             }
             else
-            for(int a=0;a<E.numAbilities();a++)
+            for(int a=0;a<M.numAbilities();a++)
             {
-                Ability A=E.fetchAbility(a);
+                Ability A=M.fetchAbility(a);
                 if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==domain))
                 { V.addElement(A);}
             }
 		return V;
 	}
-	public Vector flaggedAnyAffects(Environmental E, long flag)
+	public List<Ability> flaggedAnyAffects(Physical P, long flag)
 	{
-		Vector V=new Vector();
-		if(E!=null)
-			for(int a=0;a<E.numEffects();a++)
+		Vector<Ability> V=new Vector<Ability>();
+		if(P!=null)
+			for(int a=0;a<P.numEffects();a++)
 			{
-				Ability A=E.fetchEffect(a);
+				Ability A=P.fetchEffect(a);
 				if((A!=null)&&((A.flags()&flag)>0))
 				{ V.addElement(A);}
 			}
 		return V;
 	}
-	public Vector flaggedAffects(Environmental E, long flag)
+	public List<Ability> flaggedAffects(Physical P, long flag)
 	{
-		Vector V=new Vector();
-		if(E!=null)
-			for(int a=0;a<E.numEffects();a++)
+		Vector<Ability> V=new Vector<Ability>();
+		if(P!=null)
+			for(int a=0;a<P.numEffects();a++)
 			{
-				Ability A=E.fetchEffect(a);
+				Ability A=P.fetchEffect(a);
 				if((A!=null)&&(CMath.bset(A.flags(),flag)))
 				{ V.addElement(A);}
 			}
 		return V;
 	}
 
-	public Vector flaggedAbilities(MOB E, long flag)
+	public List<Ability> flaggedAbilities(MOB M, long flag)
 	{
-		Vector V=new Vector();
-		if(E!=null)
-			for(int a=0;a<E.numAbilities();a++)
+		Vector<Ability> V=new Vector<Ability>();
+		if(M!=null)
+			for(int a=0;a<M.numAbilities();a++)
 			{
-				Ability A=E.fetchAbility(a);
+				Ability A=M.fetchAbility(a);
 				if((A!=null)&&(CMath.bset(A.flags(),flag)))
 				{ V.addElement(A);}
 			}
@@ -1117,17 +1117,17 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return false;
 	}
 
-	public boolean isAgingThing(Environmental E)
+	public boolean isAgingThing(Physical P)
 	{
-		if(E==null) return false;
-		Ability A=E.fetchEffect("Age");
+		if(P==null) return false;
+		Ability A=P.fetchEffect("Age");
 		if((A!=null)&&(CMath.isInteger(A.text())&&(CMath.s_long(A.text())>Short.MAX_VALUE)))
 			return true;
 		return false;
 	}
 
-	public boolean isChild(Environmental E){ return isBaby(E)||((E instanceof MOB)&&(((MOB)E).isMonster())&&(isAgingThing(E)));}
-	public boolean isBaby(Environmental E){ return ((E instanceof CagedAnimal)&&(isAgingThing(E)));}
+	public boolean isChild(Environmental E){ return isBaby(E)||((E instanceof MOB)&&(((MOB)E).isMonster())&&(isAgingThing((MOB)E)));}
+	public boolean isBaby(Environmental E){ return ((E instanceof CagedAnimal)&&(isAgingThing((CagedAnimal)E)));}
 
 	public boolean stillAffectedBy(Environmental obj, Vector oneOf, boolean anyTallF)
 	{

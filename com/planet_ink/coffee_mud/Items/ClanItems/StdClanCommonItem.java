@@ -217,7 +217,7 @@ public class StdClanCommonItem extends StdClanItem
 		&&(readableText().length()>0)
 		&&(((MOB)owner()).getClanID().equals(clanID()))
 		&&((--workDown)<=0)
-        &&(!CMLib.flags().isATrackingMonster(owner))
+        &&(!CMLib.flags().isATrackingMonster((MOB)owner()))
         &&(CMLib.flags().isInTheGame(owner,true))
 		&&(!CMLib.flags().isAnimalIntelligence((MOB)owner())))
 		{

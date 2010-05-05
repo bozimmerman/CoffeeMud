@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class GenMultiPotion extends GenDrink implements Potion
 {
 	public String ID(){	return "GenMultiPotion";}
@@ -65,9 +64,9 @@ public class GenMultiPotion extends GenDrink implements Potion
 		else
 		{
 			String list="";
-			Vector theSpells=getSpells();
+			List<Ability> theSpells=getSpells();
 			for(int v=0;v<theSpells.size();v++)
-				list+=((Ability)theSpells.elementAt(v)).ID()+";";
+				list+=((Ability)theSpells.get(v)).ID()+";";
 			setSpellList(list);
 		}
 	}
@@ -87,7 +86,7 @@ public class GenMultiPotion extends GenDrink implements Potion
 	public String getSpellList()
 	{ return readableText;}
 	public void setSpellList(String list){readableText=list;}
-	public Vector getSpells()
+	public List<Ability> getSpells()
 	{
 		return StdPotion.getSpells(this);
 	}
@@ -99,14 +98,14 @@ public class GenMultiPotion extends GenDrink implements Potion
 
 	public void drinkIfAble(MOB mob)
 	{
-		Vector spells=getSpells();
+		List<Ability> spells=getSpells();
 		if(mob.isMine(this))
 		{
 			if((!isDrunk())&&(spells.size()>0))
 			{
 				for(int i=0;i<spells.size();i++)
 				{
-					Ability thisOne=(Ability)((Ability)spells.elementAt(i)).copyOf();
+					Ability thisOne=(Ability)((Ability)spells.get(i)).copyOf();
 					thisOne.invoke(mob,mob,true,phyStats().level());
 				}
 			}

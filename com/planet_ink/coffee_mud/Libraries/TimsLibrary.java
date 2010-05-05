@@ -245,9 +245,9 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		if((I instanceof SpellHolder)
 		||((I instanceof Wand)&&(lvlOr0<=0)))
 		{
-			Vector spells=new Vector();
+			Vector<Ability> spells=new Vector<Ability>();
 			if(I instanceof SpellHolder)
-				spells=((SpellHolder)I).getSpells();
+				spells.addAll(((SpellHolder)I).getSpells());
 			else
 			if((I instanceof Wand)&&(((Wand)I).getSpell()!=null))
 				spells.add(((Wand)I).getSpell());

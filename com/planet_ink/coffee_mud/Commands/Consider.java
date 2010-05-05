@@ -70,9 +70,9 @@ public class Consider extends StdCommand
 	{
 		Room R=mob.location();
 		if(R==null) return false;
-        Environmental target=null;
-        if((commands.size()==1)&&(commands.firstElement() instanceof Environmental))
-        	target=(Environmental)commands.firstElement();
+        Physical target=null;
+        if((commands.size()==1)&&(commands.firstElement() instanceof Physical))
+        	target=(Physical)commands.firstElement();
         else
         {
     		if(commands.size()<2)

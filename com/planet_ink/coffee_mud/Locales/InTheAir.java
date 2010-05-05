@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class InTheAir extends StdRoom
 {
 	public String ID(){return "InTheAir";}
@@ -85,7 +84,7 @@ public class InTheAir extends StdRoom
 		boolean foundReversed=false;
 		boolean foundNormal=false;
 		Vector<Physical> needToFall=new Vector<Physical>();
-		Vector mightNeedAdjusting=new Vector();
+		Vector<Physical> mightNeedAdjusting=new Vector<Physical>();
 		for(int i=0;i<room.numInhabitants();i++)
 		{
 			MOB mob=room.fetchInhabitant(i);
@@ -127,10 +126,9 @@ public class InTheAir extends StdRoom
 			}
 		}
 		int avg=((foundReversed)&&(!foundNormal))?100:0;
-		for(int i=0;i<mightNeedAdjusting.size();i++)
+		for(Physical P : mightNeedAdjusting)
 		{
-			Environmental E=(Environmental)mightNeedAdjusting.elementAt(i);
-			Ability A=E.fetchEffect("Falling");
+			Ability A=P.fetchEffect("Falling");
 			if(A!=null) A.setProficiency(avg);
 		}
 		for(Physical P : needToFall)

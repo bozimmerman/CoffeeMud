@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.Items.interfaces;
+import java.util.List;
+
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -13,7 +15,6 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-import java.util.Vector;
 
 /* 
    Copyright 2000-2010 Bo Zimmerman
@@ -30,10 +31,9 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public interface SpellHolder extends Item
 {
-	public Vector getSpells();
+	public List<Ability> getSpells();
 	public String getSpellList();
 	public void setSpellList(String list);
 }

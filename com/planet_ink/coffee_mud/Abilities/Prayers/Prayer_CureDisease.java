@@ -42,10 +42,10 @@ public class Prayer_CureDisease extends Prayer implements MendingSkill
 	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
-	public boolean supportsMending(Environmental E)
+	public boolean supportsMending(Physical item)
 	{ 
-		if(!(E instanceof MOB)) return false;
-		boolean canMend=returnOffensiveAffects(E).size()>0;
+		if(!(item instanceof MOB)) return false;
+		boolean canMend=returnOffensiveAffects(item).size()>0;
 		return canMend;
 	}
 	

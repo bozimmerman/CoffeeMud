@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
+import java.util.List;
+
 import com.planet_ink.coffee_mud.Items.MiscMagic.StdWand;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -32,7 +34,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 {
 	public String ID(){	return "ArchonStaff";}
@@ -181,9 +182,9 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 				{
                     if(!safetyCheck(mob,message)) return;
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" glows brightly at <T-NAME>.");
-                    java.util.Vector diseaseV=CMLib.flags().domainAffects(target,Ability.ACODE_DISEASE);
+					List<Ability> diseaseV=CMLib.flags().domainAffects(target,Ability.ACODE_DISEASE);
                     if(diseaseV.size()>0){ Ability A=CMClass.getAbility("Prayer_CureDisease"); if(A!=null) A.invoke(mob,target,true,0);}
-                    java.util.Vector poisonV=CMLib.flags().domainAffects(target,Ability.ACODE_DISEASE);
+                    List<Ability> poisonV=CMLib.flags().domainAffects(target,Ability.ACODE_DISEASE);
                     if(poisonV.size()>0){ Ability A=CMClass.getAbility("Prayer_RemovePoison"); if(A!=null) A.invoke(mob,target,true,0);}
                     Ability bleed=target.fetchEffect("Bleeding"); if(bleed!=null){ bleed.unInvoke(); target.delEffect(bleed);}
                     Ability injury=target.fetchEffect("Injury"); if(injury!=null){ injury.unInvoke(); target.delEffect(injury);}

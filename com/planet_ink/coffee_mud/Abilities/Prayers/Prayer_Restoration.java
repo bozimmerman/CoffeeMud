@@ -42,27 +42,27 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALINGMAGIC;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 
-	public boolean supportsMending(Environmental E)
+	public boolean supportsMending(Physical item)
 	{ 
-		if(!(E instanceof MOB)) return false;
+		if(!(item instanceof MOB)) return false;
 		
-		if(((((MOB)E).curState()).getHitPoints()<(((MOB)E).maxState()).getHitPoints()))
+		if(((((MOB)item).curState()).getHitPoints()<(((MOB)item).maxState()).getHitPoints()))
 			return true;
 		MOB caster=CMClass.getMOB("StdMOB");
 		caster.basePhyStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
 		caster.phyStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
 		if(
-		  (E.fetchEffect("Amputation")!=null)
-		||(E.fetchEffect("Fighter_AtemiStrike")!=null)
-		||(E.fetchEffect("Undead_EnergyDrain")!=null)
-		||(E.fetchEffect("Undead_WeakEnergyDrain")!=null)
-		||(E.fetchEffect("Undead_ColdTouch")!=null)
-		||((new Prayer_RestoreSmell().returnOffensiveAffects(caster,E)).size()>0)
-		||((new Prayer_RestoreVoice().returnOffensiveAffects(caster,E)).size()>0)
-		||((Prayer_RemovePoison.returnOffensiveAffects(E)).size()>0)
-		||((new Prayer_Freedom().returnOffensiveAffects(caster,E)).size()>0)
-		||((new Prayer_CureBlindness().returnOffensiveAffects(caster,E)).size()>0)
-		||((new Prayer_CureDeafness().returnOffensiveAffects(caster,E)).size()>0)
+		  (item.fetchEffect("Amputation")!=null)
+		||(item.fetchEffect("Fighter_AtemiStrike")!=null)
+		||(item.fetchEffect("Undead_EnergyDrain")!=null)
+		||(item.fetchEffect("Undead_WeakEnergyDrain")!=null)
+		||(item.fetchEffect("Undead_ColdTouch")!=null)
+		||((new Prayer_RestoreSmell().returnOffensiveAffects(caster,item)).size()>0)
+		||((new Prayer_RestoreVoice().returnOffensiveAffects(caster,item)).size()>0)
+		||((Prayer_RemovePoison.returnOffensiveAffects(item)).size()>0)
+		||((new Prayer_Freedom().returnOffensiveAffects(caster,item)).size()>0)
+		||((new Prayer_CureBlindness().returnOffensiveAffects(caster,item)).size()>0)
+		||((new Prayer_CureDeafness().returnOffensiveAffects(caster,item)).size()>0)
 		)
 		{
 			caster.destroy();

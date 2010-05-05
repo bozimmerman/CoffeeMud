@@ -377,42 +377,42 @@ public class StdArea implements Area
         return new StdArea();
 	}
 	public boolean isGeneric(){return false;}
-	protected void cloneFix(StdArea E)
+	protected void cloneFix(StdArea areaA)
 	{
-		basePhyStats=(PhyStats)E.basePhyStats().copyOf();
-		phyStats=(PhyStats)E.phyStats().copyOf();
+		basePhyStats=(PhyStats)areaA.basePhyStats().copyOf();
+		phyStats=(PhyStats)areaA.phyStats().copyOf();
 
 		parents=null;
-		if(E.parents!=null)
-			parents=E.parents.copyOf();
+		if(areaA.parents!=null)
+			parents=areaA.parents.copyOf();
 		children=null;
-		if(E.children!=null)
-			children=E.children.copyOf();
-		if(E.blurbFlags!=null)
-			blurbFlags=E.blurbFlags.copyOf();
+		if(areaA.children!=null)
+			children=areaA.children.copyOf();
+		if(areaA.blurbFlags!=null)
+			blurbFlags=areaA.blurbFlags.copyOf();
 		affects=new SVector<Ability>(1);
 		behaviors=new SVector<Behavior>(1);
         scripts=new SVector<ScriptingEngine>(1);
-		for(Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
+		for(Enumeration<Behavior> e=areaA.behaviors();e.hasMoreElements();)
 		{
 			Behavior B=e.nextElement();
 			if(B!=null)
 				behaviors.addElement((Behavior)B.copyOf());
 		}
-		for(int a=0;a<E.numEffects();a++)
+		for(int a=0;a<areaA.numEffects();a++)
 		{
-			Ability A=E.fetchEffect(a);
+			Ability A=areaA.fetchEffect(a);
 			if(A!=null)
 				affects.addElement((Ability)A.copyOf());
 		}
         ScriptingEngine SE=null;
-		for(Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();)
+		for(Enumeration<ScriptingEngine> e=areaA.scripts();e.hasMoreElements();)
 		{
 			SE=e.nextElement();
             if(SE!=null)
                 addScript((ScriptingEngine)SE.copyOf());
         }
-		setSubOpList(E.getSubOpList());
+		setSubOpList(areaA.getSubOpList());
 	}
 	public CMObject copyOf()
 	{

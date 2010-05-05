@@ -184,13 +184,13 @@ public class StdLanguage extends StdAbility implements Language
     
 
     
-    protected Language getMyTranslator(String id, Environmental E, Language winner) 
+    protected Language getMyTranslator(String id, Physical P, Language winner) 
     {
-        if(E==null) return winner;
+        if(P==null) return winner;
         Ability A=null;
-        for(int a=0;a<E.numEffects();a++) 
+        for(int a=0;a<P.numEffects();a++) 
         {
-            A=E.fetchEffect(a);
+            A=P.fetchEffect(a);
             if((A instanceof Language) 
             && ((Language)A).translatesLanguage(id)
             && ((winner==null)

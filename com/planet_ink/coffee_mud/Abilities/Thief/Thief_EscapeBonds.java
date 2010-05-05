@@ -55,7 +55,7 @@ public class Thief_EscapeBonds extends ThiefSkill
 			if((!CMLib.flags().aliveAwakeMobile(mob,true))
 			||(!CMLib.flags().isBound(mob)))
 			{ unInvoke(); return false;}
-			Vector V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_BINDING);
+			List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_BINDING);
 			if(V.size()==0)
 			{ unInvoke(); return false;}
 			int newStrength=mob.charStats().getStat(CharStats.STAT_STRENGTH)
@@ -65,7 +65,7 @@ public class Thief_EscapeBonds extends ThiefSkill
 			for(int v=0;v<V.size();v++)
 			{
 				mob.charStats().setStat(CharStats.STAT_STRENGTH,newStrength);
-				Ability A=(Ability)V.elementAt(v);
+				Ability A=(Ability)V.get(v);
 				if(A.okMessage(mob,msg)) A.executeMsg(mob,msg);
 			}
 			mob.recoverCharStats();
@@ -94,7 +94,7 @@ public class Thief_EscapeBonds extends ThiefSkill
                 return Ability.QUALITY_INDIFFERENT;
             if((!CMLib.flags().aliveAwakeMobile(mob,true))||(!CMLib.flags().isBound(mob)))
                 return Ability.QUALITY_INDIFFERENT;
-            Vector V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_BINDING);
+            List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_BINDING);
             if(V.size()==0)
                 return Ability.QUALITY_INDIFFERENT;
             return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
@@ -118,7 +118,7 @@ public class Thief_EscapeBonds extends ThiefSkill
 			mob.tell(target,null,null,"<T-NAME> <T-IS-ARE> not bound!");
 			return false;
 		}
-		Vector V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_BINDING);
+		List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_BINDING);
 		if(V.size()==0)
 		{
 			mob.tell(target,null,null,"<T-NAME> <T-IS-ARE> not bound by anything which can be slipped free of.");

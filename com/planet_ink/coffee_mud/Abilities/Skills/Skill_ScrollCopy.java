@@ -72,11 +72,11 @@ public class Skill_ScrollCopy extends StdSkill
 			return false;
 		}
 
-		Vector theSpells=((Scroll)target).getSpells();
+		List<Ability> theSpells=((Scroll)target).getSpells();
 		Ability thisSpell=null;
 		for(int a=0;a<theSpells.size();a++)
 		{
-			Ability A=(Ability)theSpells.elementAt(a);
+			Ability A=(Ability)theSpells.get(a);
 			if(CMLib.english().containsString(A.name(),((String)commands.elementAt(0))))
 			{
 				thisSpell=A;

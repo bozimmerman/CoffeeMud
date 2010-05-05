@@ -96,12 +96,12 @@ public class Thief_Bind extends ThiefSkill
 	}
 
 
-	public void setAffectedOne(Physical being)
+	public void setAffectedOne(Physical P)
 	{
-		if(!(being instanceof Item))
-			super.setAffectedOne(being);
+		if(!(P instanceof Item))
+			super.setAffectedOne(P);
 		else
-			ropeName=being.name();
+			ropeName=P.name();
 	}
 
 	public void unInvoke()

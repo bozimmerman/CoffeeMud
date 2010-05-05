@@ -67,10 +67,10 @@ public class Prayer_Regrowth extends Prayer implements MendingSkill
 		}
 	}
 
-	public boolean supportsMending(Environmental E)
+	public boolean supportsMending(Physical item)
 	{ 
-		if(!(E instanceof MOB)) return false;
-		return (E.fetchEffect("Amputation")!=null);
+		if(!(item instanceof MOB)) return false;
+		return (item.fetchEffect("Amputation")!=null);
 	}
 	
     public int castingQuality(MOB mob, Physical target)

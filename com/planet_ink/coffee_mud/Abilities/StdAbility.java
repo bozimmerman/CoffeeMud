@@ -681,9 +681,9 @@ public class StdAbility implements Ability
 	{
 		return affected;
 	}
-	public void setAffectedOne(Physical being)
+	public void setAffectedOne(Physical P)
 	{
-		affected=being;
+		affected=P;
 	}
 
 	public void unInvoke()

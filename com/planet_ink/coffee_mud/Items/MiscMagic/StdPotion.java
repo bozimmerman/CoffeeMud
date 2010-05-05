@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class StdPotion extends StdDrink implements Potion
 {
 	public String ID(){	return "StdPotion";}
@@ -73,21 +72,21 @@ public class StdPotion extends StdDrink implements Potion
 		else
 		{
 			String list="";
-			Vector theSpells=getSpells();
+			List<Ability> theSpells=getSpells();
 			for(int v=0;v<theSpells.size();v++)
-				list+=((Ability)theSpells.elementAt(v)).ID()+";";
+				list+=((Ability)theSpells.get(v)).ID()+";";
 			setSpellList(list);
 		}
 	}
 
 	public void drinkIfAble(MOB mob)
 	{
-		Vector spells=getSpells();
+		List<Ability> spells=getSpells();
 		if(mob.isMine(this))
 			if((!isDrunk())&&(spells.size()>0))
 				for(int i=0;i<spells.size();i++)
 				{
-					Ability thisOne=(Ability)((Ability)spells.elementAt(i)).copyOf();
+					Ability thisOne=(Ability)((Ability)spells.get(i)).copyOf();
 					thisOne.invoke(mob,mob,true,phyStats().level());
 					setDrunk(true);
 					setLiquidRemaining(0);
@@ -98,10 +97,10 @@ public class StdPotion extends StdDrink implements Potion
 	{ return miscText;}
 	public void setSpellList(String list){miscText=list;}
 	
-	public static Vector getSpells(SpellHolder me)
+	public static List<Ability> getSpells(SpellHolder me)
 	{
 		int baseValue=200;
-		Vector theSpells=new Vector();
+		Vector<Ability> theSpells=new Vector<Ability>();
 		String names=me.getSpellList();
 		int del=names.indexOf(";");
 		while(del>=0)
@@ -135,7 +134,7 @@ public class StdPotion extends StdDrink implements Potion
 		return theSpells;
 	}
 	
-	public Vector getSpells(){ return getSpells(this);}
+	public List<Ability> getSpells(){ return getSpells(this);}
 
 	public String secretIdentity()
 	{

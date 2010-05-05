@@ -2395,7 +2395,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             case 12: // ischarmed
             {
                 String arg1=CMParms.cleanBit(funcParms);
-                Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+                Physical E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((E==null)||(!(E instanceof MOB)))
                     returnable=false;
                 else
@@ -2548,14 +2548,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
                 String arg1=tt[t+0];
                 String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-                if(E==null)
+                Physical P=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                if(P==null)
                     returnable=false;
                 else
                 {
                     Ability A=CMClass.findAbility(arg2);
                     if(A!=null) arg2=A.ID();
-                    returnable=(E.fetchEffect(arg2)!=null);
+                    returnable=(P.fetchEffect(arg2)!=null);
                 }
                 break;
             }
@@ -2564,14 +2564,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
                 String arg1=tt[t+0];
                 String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-                PhysicalAgent E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-                if(E==null)
+                PhysicalAgent P=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                if(P==null)
                     returnable=false;
                 else
                 {
                     Behavior B=CMClass.findBehavior(arg2);
                     if(B!=null) arg2=B.ID();
-                    returnable=(E.fetchBehavior(arg2)!=null);
+                    returnable=(P.fetchBehavior(arg2)!=null);
                 }
                 break;
             }
@@ -3810,18 +3810,18 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String arg1=tt[t+0];
                 String arg2=tt[t+1];
                 String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-                Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+                Physical P=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if(arg2.length()==0)
                 {
                     logError(scripted,"MOOD","Syntax",funcParms);
                     return returnable;
                 }
-                if((E==null)||(!(E instanceof MOB)))
+                if((P==null)||(!(P instanceof MOB)))
                     returnable=false;
                 else
-                if(E.fetchEffect("Mood")!=null)
+                if(P.fetchEffect("Mood")!=null)
                 {
-                    String sex=E.fetchEffect("Mood").text();
+                    String sex=P.fetchEffect("Mood").text();
                     if(arg2.equals("=="))
                         returnable=sex.equalsIgnoreCase(arg3);
                     else
@@ -4635,7 +4635,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             case 55: // ispkill
             {
                 String arg1=CMParms.cleanBit(funcParms);
-                Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+                Physical E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((E==null)||(!(E instanceof MOB)))
                     results.append("false");
                 else
@@ -4656,12 +4656,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
             case 12: // ischarmed
             {
                 String arg1=CMParms.cleanBit(funcParms);
-                Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+                Physical E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if(E!=null)
                 {
-                    Vector V=CMLib.flags().flaggedAffects(E,Ability.FLAG_CHARMING);
+                    List<Ability> V=CMLib.flags().flaggedAffects(E,Ability.FLAG_CHARMING);
                     for(int v=0;v<V.size();v++)
-                        results.append((((Ability)V.elementAt(v)).name())+" ");
+                        results.append((((Ability)V.get(v)).name())+" ");
                 }
                 break;
             }
@@ -4704,11 +4704,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(E instanceof MOB)
                 {
                     if(((MOB)E).numAllEffects()>0)
-                        results.append(E.fetchEffect(CMLib.dice().roll(1,((MOB)E).numAllEffects(),-1)).name());
+                        results.append(((MOB)E).fetchEffect(CMLib.dice().roll(1,((MOB)E).numAllEffects(),-1)).name());
                 }
                 else
-                if((E!=null)&&(E.numEffects()>0))
-                    results.append(E.fetchEffect(CMLib.dice().roll(1,E.numEffects(),-1)).name());
+                if((E instanceof Physical)&&(((Physical)E).numEffects()>0))
+                    results.append(((Physical)E).fetchEffect(CMLib.dice().roll(1,((Physical)E).numEffects(),-1)).name());
                 break;
             }
             case 69: // isbehave
@@ -5505,8 +5505,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
             {
                 String arg1=CMParms.cleanBit(funcParms);
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
-                if((E!=null)&&(E instanceof MOB)&&(E.fetchEffect("Mood")!=null))
-                    results.append(CMStrings.capitalizeAndLower(E.fetchEffect("Mood").text()));
+                if((E instanceof MOB)&&(((MOB)E).fetchEffect("Mood")!=null))
+                    results.append(CMStrings.capitalizeAndLower(((MOB)E).fetchEffect("Mood").text()));
                 break;
             }
             case 22: // baseclass

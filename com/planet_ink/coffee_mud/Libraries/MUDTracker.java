@@ -290,9 +290,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 
     public void stopTracking(MOB mob)
     {
-        Vector V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
-        for(int v=0;v<V.size();v++)
-        { ((Ability)V.elementAt(v)).unInvoke(); mob.delEffect((Ability)V.elementAt(v));}
+        List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
+        for(Ability A : V)
+        { A.unInvoke(); mob.delEffect(A);}
     }
 
     public boolean beMobile(MOB mob,

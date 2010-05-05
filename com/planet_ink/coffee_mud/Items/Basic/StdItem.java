@@ -152,29 +152,29 @@ public class StdItem implements Item
 		return new StdItem();
 	}
 	public boolean subjectToWearAndTear(){return false;}
-	protected void cloneFix(Item E)
+	protected void cloneFix(Item I)
 	{
 		destroyed=false;
-		basePhyStats=(PhyStats)E.basePhyStats().copyOf();
-		phyStats=(PhyStats)E.phyStats().copyOf();
+		basePhyStats=(PhyStats)I.basePhyStats().copyOf();
+		phyStats=(PhyStats)I.phyStats().copyOf();
 
 		affects=null;
 		behaviors=null;
         scripts=null;
-		for(Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
+		for(Enumeration<Behavior> e=I.behaviors();e.hasMoreElements();)
 		{
 			Behavior B=e.nextElement();
 			if(B!=null)	addBehavior((Behavior)B.copyOf());
 		}
-		for(Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();)
+		for(Enumeration<ScriptingEngine> e=I.scripts();e.hasMoreElements();)
 		{
 			ScriptingEngine SE=e.nextElement();
             if(SE!=null) addScript((ScriptingEngine)SE.copyOf());
         }
 
-		for(int a=0;a<E.numEffects();a++)
+		for(int a=0;a<I.numEffects();a++)
 		{
-			Ability A=E.fetchEffect(a);
+			Ability A=I.fetchEffect(a);
 			if((A!=null)&&(!A.canBeUninvoked())&&(!A.ID().equals("ItemRejuv")))
 				addEffect((Ability)A.copyOf());
 		}

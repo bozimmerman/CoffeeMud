@@ -79,10 +79,10 @@ public class GrinderAreas
 		return "";
 	}
 	
-	public static String doAffectsNBehavs(Environmental E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
+	public static String doAffects(Physical P, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
 	{
-		while(E.numEffects()>0)
-			E.delEffect(E.fetchEffect(0));
+		while(P.numEffects()>0)
+			P.delEffect(P.fetchEffect(0));
 		if(httpReq.isRequestParameter("AFFECT1"))
 		{
 			int num=1;
@@ -96,7 +96,7 @@ public class GrinderAreas
 					if(theparm==null) theparm="";
 					if(B==null) return "Unknown Effect '"+aff+"'.";
 					B.setMiscText(theparm);
-					E.addNonUninvokableEffect(B);
+					P.addNonUninvokableEffect(B);
 				}
 				num++;
 				aff=httpReq.getRequestParameter("AFFECT"+num);
@@ -373,7 +373,7 @@ public class GrinderAreas
 		if(file==null)file="";
 		A.setArchivePath(file);
 
-		String err=GrinderAreas.doAffectsNBehavs(A,httpReq,parms);
+		String err=GrinderAreas.doAffects(A,httpReq,parms);
 		if(err.length()>0) return err;
 
 		if((redoAllMyDamnRooms)&&(allMyDamnRooms!=null))

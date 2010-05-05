@@ -555,7 +555,7 @@ public class GrinderItems
 			{
 				String error=GrinderExits.dispositions(I,httpReq,parms);
 				if(error.length()>0) return error;
-				error=GrinderAreas.doAffectsNBehavs(I,httpReq,parms);
+				error=GrinderAreas.doAffects(I,httpReq,parms);
 				if(error.length()>0) return error;
 			}
 

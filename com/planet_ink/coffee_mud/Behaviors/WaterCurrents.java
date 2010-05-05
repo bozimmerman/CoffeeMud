@@ -280,7 +280,7 @@ public class WaterCurrents extends ActiveTicker
 		public void helpProficiency(MOB mob){}
 
 		public Physical affecting(){return affected;}
-		public void setAffectedOne(Physical being){affected=being;}
+		public void setAffectedOne(Physical P){affected=P;}
 
 		public boolean putInCommandlist(){return false;}
 		public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}

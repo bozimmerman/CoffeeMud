@@ -703,10 +703,10 @@ public class Play_Symphony extends Play
 		case CODE_REMOVESPELLTYPE:
 			{
 				MOB M=(MOB)affected;
-				Vector V=CMLib.flags().flaggedAffects(M,toDoVal);
+				List<Ability> V=CMLib.flags().flaggedAffects(M,toDoVal);
 				for(int v=0;v<V.size();v++)
 				{
-					Ability A =(Ability)V.elementAt(v); 
+					Ability A =(Ability)V.get(v); 
 					A.unInvoke();
 					if(M.fetchEffect(A.ID())==null)
 						break;

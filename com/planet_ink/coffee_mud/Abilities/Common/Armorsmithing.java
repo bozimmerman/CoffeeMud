@@ -119,7 +119,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 		super.unInvoke();
 	}
 
-	public boolean supportsMending(Environmental I){ return canMend(null,I,true);}
+	public boolean supportsMending(Physical I){ return canMend(null,I,true);}
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;

@@ -37,19 +37,19 @@ public class AutoAffects extends StdCommand
     private String[] access={"AUTOAFFECTS","AUTOAFF","AAF"};
     public String[] getAccessWords(){return access;}
 
-    public String getAutoAffects(Environmental E)
+    public String getAutoAffects(Physical P)
     {
         StringBuffer msg=new StringBuffer("");
         int NUM_COLS=2;
         int COL_LEN=25;
         int colnum=NUM_COLS;
-        for(int a=0;a<((E instanceof MOB)?((MOB)E).numAllEffects():E.numEffects());a++)
+        for(int a=0;a<((P instanceof MOB)?((MOB)P).numAllEffects():P.numEffects());a++)
         {
-            Ability thisAffect=E.fetchEffect(a);
+            Ability thisAffect=P.fetchEffect(a);
             String disp=thisAffect.name();
             if((thisAffect!=null)
             &&(thisAffect.displayText().length()==0)
-            &&((!(E instanceof MOB))||(((MOB)E).fetchAbility(thisAffect.ID())!=null))
+            &&((!(P instanceof MOB))||(((MOB)P).fetchAbility(thisAffect.ID())!=null))
             &&(thisAffect.isAutoInvoked()))
             {
                 if(((++colnum)>NUM_COLS)||(disp.length()>COL_LEN)){ msg.append("\n\r"); colnum=0;}
@@ -96,14 +96,14 @@ public class AutoAffects extends StdCommand
                 String name=CMParms.combine(commands,1);
                 if(name.length()>0)
                 {
-                    Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,name,Wearable.FILTER_ANY);
-                    if(E==null)
+                    Physical P=mob.location().fetchFromMOBRoomFavorsItems(mob,null,name,Wearable.FILTER_ANY);
+                    if(P==null)
                         S.colorOnlyPrint("You don't see "+name+" here.");
                     else
                     {
                         if(S==mob.session())
-                            S.colorOnlyPrint(" \n\r^!"+E.name()+" is affected by: ^?");
-                        String msg=getAutoAffects(E);
+                            S.colorOnlyPrint(" \n\r^!"+P.name()+" is affected by: ^?");
+                        String msg=getAutoAffects(P);
                         if(msg.length()<5)
                             S.colorOnlyPrintln("Nothing!\n\r^N");
                         else

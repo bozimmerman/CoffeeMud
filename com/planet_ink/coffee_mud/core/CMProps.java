@@ -1223,9 +1223,9 @@ public class CMProps extends Properties
         else
         if(O instanceof MagicDust)
         {
-            Vector V=((MagicDust)O).getSpells();
+        	List<Ability> V=((MagicDust)O).getSpells();
             if(V.size()>0)
-                image=getHashedMXPImage(H,"DUST_"+((Ability)V.firstElement()).ID().toUpperCase());
+                image=getHashedMXPImage(H,"DUST_"+((Ability)V.get(0)).ID().toUpperCase());
             if(image==null) image=getHashedMXPImage(H,"DUST_*");
         }
         else
@@ -1246,17 +1246,17 @@ public class CMProps extends Properties
         else
         if(O instanceof Pill)
         {
-            Vector V=((Pill)O).getSpells();
+        	List<Ability> V=((Pill)O).getSpells();
             if(V.size()>0)
-                image=getHashedMXPImage(H,"PILL_"+((Ability)V.firstElement()).ID().toUpperCase());
+                image=getHashedMXPImage(H,"PILL_"+((Ability)V.get(0)).ID().toUpperCase());
             if(image==null) image=getHashedMXPImage(H,"PILL_*");
         }
         else
         if(O instanceof Potion)
         {
-            Vector V=((Potion)O).getSpells();
+        	List<Ability> V=((Potion)O).getSpells();
             if(V.size()>0)
-                image=getHashedMXPImage(H,"POTION_"+((Ability)V.firstElement()).ID().toUpperCase());
+                image=getHashedMXPImage(H,"POTION_"+((Ability)V.get(0)).ID().toUpperCase());
             if(image==null) image=getHashedMXPImage(H,"POTION_*");
         }
         else
@@ -1265,9 +1265,9 @@ public class CMProps extends Properties
         else
         if(O instanceof Scroll)
         {
-            Vector V=((Scroll)O).getSpells();
+        	List<Ability> V=((Scroll)O).getSpells();
             if(V.size()>0)
-                image=getHashedMXPImage(H,"SCROLL_"+((Ability)V.firstElement()).ID().toUpperCase());
+                image=getHashedMXPImage(H,"SCROLL_"+((Ability)V.get(0)).ID().toUpperCase());
             if(image==null) image=getHashedMXPImage(H,"SCROLL_*");
         }
         else

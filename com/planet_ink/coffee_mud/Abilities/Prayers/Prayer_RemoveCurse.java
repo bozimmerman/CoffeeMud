@@ -43,10 +43,10 @@ public class Prayer_RemoveCurse extends Prayer implements MendingSkill
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 
-	public boolean supportsMending(Environmental E)
+	public boolean supportsMending(Physical item)
 	{ 
-		if(!(E instanceof MOB)) return false;
-		return CMLib.flags().domainAffects(E,Ability.DOMAIN_CURSING).size()>0;
+		if(!(item instanceof MOB)) return false;
+		return CMLib.flags().domainAffects(item,Ability.DOMAIN_CURSING).size()>0;
 	}
 	
     public int castingQuality(MOB mob, Physical target)

@@ -44,10 +44,10 @@ public class Prayer_ModerateInfusion extends Prayer implements MendingSkill
     public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
     protected long minCastWaitTime(){return Tickable.TIME_TICK/2;}
 
-	public boolean supportsMending(Environmental E)
+	public boolean supportsMending(Physical item)
 	{ 
-		return (E instanceof MOB)
-				&&((((MOB)E).curState()).getMana()<(((MOB)E).maxState()).getMana());
+		return (item instanceof MOB)
+				&&((((MOB)item).curState()).getMana()<(((MOB)item).maxState()).getMana());
 	}
 	
     public int castingQuality(MOB mob, Physical target)

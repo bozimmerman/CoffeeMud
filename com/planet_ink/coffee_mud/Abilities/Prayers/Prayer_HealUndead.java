@@ -42,11 +42,11 @@ public class Prayer_HealUndead extends Prayer implements MendingSkill
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HEALINGMAGIC;}
 
-	public boolean supportsMending(Environmental E)
+	public boolean supportsMending(Physical item)
 	{ 
-		return (E instanceof MOB)
-			&&(((MOB)E).charStats()).getMyRace().racialCategory().equalsIgnoreCase("Undead")
-			&&((((MOB)E).curState()).getHitPoints()<(((MOB)E).maxState()).getHitPoints());
+		return (item instanceof MOB)
+			&&(((MOB)item).charStats()).getMyRace().racialCategory().equalsIgnoreCase("Undead")
+			&&((((MOB)item).curState()).getHitPoints()<(((MOB)item).maxState()).getHitPoints());
 	}
 	
     public int castingQuality(MOB mob, Physical target)

@@ -107,17 +107,17 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
         return true;
 	}
 
-    public void removeMyAffectsFrom(Environmental E)
+    public void removeMyAffectsFrom(Physical P)
     {
-        if(!(E instanceof MOB))
+        if(!(P instanceof MOB))
             return;
         Vector V=getMySpellsV();
         for(int v=0;v<V.size();v++)
         {
             Ability A=(Ability)V.elementAt(v);
-            ((MOB)E).delAbility(A);
+            ((MOB)P).delAbility(A);
         }
-        if(E==lastMOB)
+        if(P==lastMOB)
         {
             for(Iterator e=lastMOBeffected.iterator();e.hasNext();)
             {

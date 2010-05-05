@@ -75,15 +75,15 @@ public class GrinderMobs
 		M.recoverMaxState();
 	}
 
-	public static String abilities(MOB E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
+	public static String abilities(MOB M, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
 	{
-        boolean player=E.playerStats()!=null;
-		while(E.numLearnedAbilities()>0)
+        boolean player=M.playerStats()!=null;
+		while(M.numLearnedAbilities()>0)
 		{
-			Ability A=E.fetchAbility(0);
-			if(E.fetchEffect(A.ID())!=null)
-				E.delEffect(E.fetchEffect(A.ID()));
-			E.delAbility(A);
+			Ability A=M.fetchAbility(0);
+			if(M.fetchEffect(A.ID())!=null)
+				M.delEffect(M.fetchEffect(A.ID()));
+			M.delAbility(A);
 		}
 		if(httpReq.isRequestParameter("ABLES1"))
 		{
@@ -104,8 +104,8 @@ public class GrinderMobs
                         B.setProficiency(CMath.s_int(prof));
                         B.setMiscText(txt);
                     }
-					E.addAbility(B);
-					B.autoInvocation(E);
+					M.addAbility(B);
+					B.autoInvocation(M);
 				}
 				num++;
 				aff=httpReq.getRequestParameter("ABLES"+num);
@@ -661,7 +661,7 @@ public class GrinderMobs
 				if(error.length()>0) return error;
 				error=GrinderMobs.senses(M,httpReq,parms);
 				if(error.length()>0) return error;
-				error=GrinderAreas.doAffectsNBehavs(M,httpReq,parms);
+				error=GrinderAreas.doAffects(M,httpReq,parms);
 				if(error.length()>0) return error;
 				error=GrinderMobs.factions(M,httpReq,parms);
 				if(error.length()>0) return error;

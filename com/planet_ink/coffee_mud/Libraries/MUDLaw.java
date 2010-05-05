@@ -55,8 +55,8 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	public LegalBehavior getLegalBehavior(Area A)
 	{
 		if(A==null) return null;
-		Vector V=CMLib.flags().flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
-		if(V.size()>0) return (LegalBehavior)V.firstElement();
+		List<Behavior> V=CMLib.flags().flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
+		if(V.size()>0) return (LegalBehavior)V.get(0);
         LegalBehavior B=null;
 		for(Enumeration e=A.getParents();e.hasMoreElements();)
 		{
@@ -68,14 +68,14 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	public LegalBehavior getLegalBehavior(Room R)
 	{
 		if(R==null) return null;
-		Vector V=CMLib.flags().flaggedBehaviors(R,Behavior.FLAG_LEGALBEHAVIOR);
-		if(V.size()>0) return (LegalBehavior)V.firstElement();
+		List<Behavior> V=CMLib.flags().flaggedBehaviors(R,Behavior.FLAG_LEGALBEHAVIOR);
+		if(V.size()>0) return (LegalBehavior)V.get(0);
 		return getLegalBehavior(R.getArea());
 	}
 	public Area getLegalObject(Area A)
 	{
 		if(A==null) return null;
-		Vector V=CMLib.flags().flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
+		List<Behavior> V=CMLib.flags().flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
 		if(V.size()>0) return A;
 	    Area A2=null;
 	    Area A3=null;

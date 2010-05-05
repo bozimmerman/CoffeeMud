@@ -97,12 +97,12 @@ public class Prayer_Curse extends Prayer
 		return target;
 	}
 
-	public static void endLowerBlessings(Environmental target, int level)
+	public static void endLowerBlessings(Physical target, int level)
 	{
-		Vector V=CMLib.flags().domainAffects(target,Ability.DOMAIN_BLESSING);
+		List<Ability> V=CMLib.flags().domainAffects(target,Ability.DOMAIN_BLESSING);
 		for(int v=0;v<V.size();v++)
 		{
-			Ability A=(Ability)V.elementAt(v);
+			Ability A=(Ability)V.get(v);
 			if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<=level)
 				A.unInvoke();
 		}
@@ -112,12 +112,12 @@ public class Prayer_Curse extends Prayer
 		return CMLib.flags().domainAffects(item,Ability.DOMAIN_BLESSING).size()>0;
 	}
 
-	public static void endLowerCurses(Environmental target, int level)
+	public static void endLowerCurses(Physical target, int level)
 	{
-		Vector V=CMLib.flags().domainAffects(target,Ability.DOMAIN_CURSING);
+		List<Ability> V=CMLib.flags().domainAffects(target,Ability.DOMAIN_CURSING);
 		for(int v=0;v<V.size();v++)
 		{
-			Ability A=(Ability)V.elementAt(v);
+			Ability A=(Ability)V.get(v);
 			if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<level)
 				A.unInvoke();
 		}

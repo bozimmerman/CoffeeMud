@@ -3843,13 +3843,14 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			case 43: // -effects
 				{
 					boolean found=false;
-                    for(int v=1;v<V.size();v++)
-                        if(E.fetchEffect((String)V.elementAt(v))!=null)
-                        {   found=true; break;}
+					if(E instanceof PhysicalAgent)
+	                    for(int v=1;v<V.size();v++)
+	                        if(((Physical)E).fetchEffect((String)V.elementAt(v))!=null)
+	                        {   found=true; break;}
                     if((!found)&&(E instanceof PhysicalAgent))
-                    for(int v=1;v<V.size();v++)
-                        if(((PhysicalAgent)E).fetchBehavior((String)V.elementAt(v))!=null)
-                        {   found=true; break;}
+	                    for(int v=1;v<V.size();v++)
+	                        if(((PhysicalAgent)E).fetchBehavior((String)V.elementAt(v))!=null)
+	                        {   found=true; break;}
 					if(!found) return false;
 				}
 				break;
@@ -3870,13 +3871,14 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				}
 				break;
 			case 42: // +effects
-                for(int v=1;v<V.size();v++)
-                    if(E.fetchEffect((String)V.elementAt(v))!=null)
-                        return false;
+                if(E instanceof Physical)
+	                for(int v=1;v<V.size();v++)
+	                    if(((Physical)E).fetchEffect((String)V.elementAt(v))!=null)
+	                        return false;
                 if(E instanceof PhysicalAgent)
-                for(int v=1;v<V.size();v++)
-                    if(((PhysicalAgent)E).fetchBehavior((String)V.elementAt(v))!=null)
-                        return false;
+	                for(int v=1;v<V.size();v++)
+	                    if(((PhysicalAgent)E).fetchBehavior((String)V.elementAt(v))!=null)
+	                        return false;
 				break;
 			case 16: // +name
 				{

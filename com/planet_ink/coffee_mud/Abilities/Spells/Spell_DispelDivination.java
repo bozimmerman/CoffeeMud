@@ -41,9 +41,9 @@ public class Spell_DispelDivination extends Spell
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 
-	public Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
+	public List<Ability> returnOffensiveAffects(MOB caster, Environmental fromMe)
 	{
-		Vector offenders=new Vector();
+		List<Ability> offenders=new Vector<Ability>();
         boolean admin=CMSecurity.isASysOp(caster);
         Ability A=null;
         for(int e=0;e<fromMe.numEffects();e++)
@@ -55,7 +55,7 @@ public class Spell_DispelDivination extends Spell
             &&((A.invoker()==caster)
 	            ||(A.invoker().phyStats().level()<=caster.phyStats().level()+25)
 	            ||admin))
-	            	offenders.addElement(A);
+	            	offenders.add(A);
         }
 		return offenders;
 	}
@@ -73,11 +73,11 @@ public class Spell_DispelDivination extends Spell
 		if(target==null) return false;
 
 		Ability revokeThis=null;
-		Vector allDivinations=CMLib.flags().domainAffects(target,Ability.DOMAIN_DIVINATION);
+		List<Ability> allDivinations=CMLib.flags().domainAffects(target,Ability.DOMAIN_DIVINATION);
 		boolean foundSomethingAtLeast=((allDivinations!=null)&&(allDivinations.size()>0));
-        Vector affects=returnOffensiveAffects(mob,target);
+		List<Ability> affects=returnOffensiveAffects(mob,target);
         if(affects.size()>0)
-        	revokeThis=(Ability)affects.elementAt(CMLib.dice().roll(1,affects.size(),-1));
+        	revokeThis=(Ability)affects.get(CMLib.dice().roll(1,affects.size(),-1));
 
 		if(revokeThis==null)
 		{

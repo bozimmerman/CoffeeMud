@@ -42,10 +42,10 @@ public class Prayer_RockFlesh extends Prayer implements MendingSkill
 	public long flags(){return Ability.FLAG_HOLY;}
     public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
-	public boolean supportsMending(Environmental E)
+	public boolean supportsMending(Physical item)
 	{ 
-		if(!(E instanceof MOB)) return false;
-		return (E.fetchEffect("Spell_FleshStone")!=null)||(E.fetchEffect("Prayer_FleshRock")!=null);
+		if(!(item instanceof MOB)) return false;
+		return (item.fetchEffect("Spell_FleshStone")!=null)||(item.fetchEffect("Prayer_FleshRock")!=null);
 	}
 	
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)

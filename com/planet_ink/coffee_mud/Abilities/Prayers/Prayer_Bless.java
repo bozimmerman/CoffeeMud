@@ -101,12 +101,12 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 		return target;
 	}
 
-	public static void endAllOtherBlessings(MOB from, Environmental target, int level)
+	public static void endAllOtherBlessings(MOB from, Physical target, int level)
 	{
-		Vector V=CMLib.flags().domainAffects(target,Ability.DOMAIN_BLESSING);
+		List<Ability> V=CMLib.flags().domainAffects(target,Ability.DOMAIN_BLESSING);
 		for(int v=0;v<V.size();v++)
 		{
-			Ability A=(Ability)V.elementAt(v);
+			Ability A=(Ability)V.get(v);
 			if((CMLib.ableMapper().lowestQualifyingLevel(A.ID())<level)
 			||(from==A.invoker())
 			||(target==from)
@@ -114,32 +114,32 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 				A.unInvoke();
 		}
 	}
-	public static void endLowerBlessings(Environmental target, int level)
+	public static void endLowerBlessings(Physical target, int level)
 	{
-		Vector V=CMLib.flags().domainAffects(target,Ability.DOMAIN_BLESSING);
+		List<Ability> V=CMLib.flags().domainAffects(target,Ability.DOMAIN_BLESSING);
 		for(int v=0;v<V.size();v++)
 		{
-			Ability A=(Ability)V.elementAt(v);
+			Ability A=(Ability)V.get(v);
 			if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<level)
 				A.unInvoke();
 		}
 	}
-	public static void endLowerCurses(Environmental target, int level)
+	public static void endLowerCurses(Physical target, int level)
 	{
-		Vector V=CMLib.flags().domainAffects(target,Ability.DOMAIN_CURSING);
+		List<Ability> V=CMLib.flags().domainAffects(target,Ability.DOMAIN_CURSING);
 		for(int v=0;v<V.size();v++)
 		{
-			Ability A=(Ability)V.elementAt(v);
+			Ability A=(Ability)V.get(v);
 			if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<=level)
 				A.unInvoke();
 		}
 	}
 	
-	public boolean supportsMending(Environmental E)
+	public boolean supportsMending(Physical item)
 	{ 
-		return (E instanceof MOB)
-				&&((Prayer_Bless.getSomething((MOB)E,true)!=null)
-					||(CMLib.flags().domainAffects(E,Ability.DOMAIN_CURSING).size()>0));
+		return (item instanceof MOB)
+				&&((Prayer_Bless.getSomething((MOB)item,true)!=null)
+					||(CMLib.flags().domainAffects(item,Ability.DOMAIN_CURSING).size()>0));
 	}
 
 	public static boolean isCursed(Item item)

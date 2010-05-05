@@ -130,8 +130,8 @@ public class Chant_LocatePlants extends Chant
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already trying to find plant life.");
 			return false;
 		}
-		Vector V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
-		for(int v=0;v<V.size();v++)	((Ability)V.elementAt(v)).unInvoke();
+		List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
+		for(Ability A : V) A.unInvoke();
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

@@ -41,10 +41,10 @@ public class Prayer_RemoveParalysis extends Prayer implements MendingSkill
 	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
-	public boolean supportsMending(Environmental E)
+	public boolean supportsMending(Physical item)
 	{ 
-		return (E instanceof MOB)
-					&&(CMLib.flags().flaggedAffects(E,Ability.FLAG_PARALYZING|Ability.FLAG_UNHOLY).size()>0);
+		return (item instanceof MOB)
+					&&(CMLib.flags().flaggedAffects(item,Ability.FLAG_PARALYZING|Ability.FLAG_UNHOLY).size()>0);
 	}
 
     public int castingQuality(MOB mob, Physical target)
@@ -69,7 +69,7 @@ public class Prayer_RemoveParalysis extends Prayer implements MendingSkill
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
-		Vector offensiveAffects=CMLib.flags().flaggedAffects(target,Ability.FLAG_PARALYZING|Ability.FLAG_UNHOLY);
+		List<Ability> offensiveAffects=CMLib.flags().flaggedAffects(target,Ability.FLAG_PARALYZING|Ability.FLAG_UNHOLY);
 
 		if((success)&&(offensiveAffects.size()>0))
 		{
@@ -82,7 +82,7 @@ public class Prayer_RemoveParalysis extends Prayer implements MendingSkill
 			{
 				mob.location().send(mob,msg);
 				for(int a=offensiveAffects.size()-1;a>=0;a--)
-					((Ability)offensiveAffects.elementAt(a)).unInvoke();
+					((Ability)offensiveAffects.get(a)).unInvoke();
 			}
 		}
 		else

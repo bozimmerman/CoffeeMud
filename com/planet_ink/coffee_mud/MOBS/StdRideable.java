@@ -316,7 +316,7 @@ public class StdRideable extends StdMOB implements Rideable
 					whoWantsToRide.setRiding(this);
 					return false;
 				}
-				if((msg.tool() instanceof MOB)&&(!CMLib.flags().isBoundOrHeld(msg.tool())))
+				if((msg.tool() instanceof MOB)&&(!CMLib.flags().isBoundOrHeld((MOB)msg.tool())))
 			    {
 					msg.source().tell(msg.tool().name()+" won't let you do that.");
 					return false;

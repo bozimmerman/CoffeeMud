@@ -448,7 +448,7 @@ public class StdRideable extends StdContainer implements Rideable
 					return false;
 				}
 				if((msg.tool() instanceof MOB)
-				&&(!CMLib.flags().isBoundOrHeld(msg.tool())))
+				&&(!CMLib.flags().isBoundOrHeld((MOB)msg.tool())))
 			    {
 					msg.source().tell(msg.tool().name()+" won't let you do that.");
 					return false;

@@ -43,10 +43,10 @@ public class Chant_NeutralizePoison extends Chant implements MendingSkill
 	protected int canTargetCode(){return CAN_MOBS;}
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 
-	public boolean supportsMending(Environmental E)
+	public boolean supportsMending(Physical item)
 	{ 
-		if(!(E instanceof MOB)) return false;
-		boolean canMend=returnOffensiveAffects(E).size()>0;
+		if(!(item instanceof MOB)) return false;
+		boolean canMend=returnOffensiveAffects(item).size()>0;
 		return canMend;
 	}
 	

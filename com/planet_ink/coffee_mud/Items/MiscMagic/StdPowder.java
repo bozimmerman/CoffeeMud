@@ -56,11 +56,11 @@ public class StdPowder extends StdItem implements MagicDust {
 	
 	public void spreadIfAble(MOB mob, Physical target)
 	{
-        Vector spells = getSpells();
+		List<Ability> spells = getSpells();
         if (spells.size() > 0)
             for (int i = 0; i < spells.size(); i++) 
 			{
-                Ability thisOne = (Ability) ( (Ability) spells.elementAt(i)).copyOf();
+                Ability thisOne = (Ability) ( (Ability) spells.get(i)).copyOf();
 				if(thisOne.canTarget(target))
 				{
 					if((malicious(this))||(!(target instanceof MOB)))
@@ -92,15 +92,13 @@ public class StdPowder extends StdItem implements MagicDust {
 	public void setSpellList(String list){miscText=list;}
 
     public boolean malicious(SpellHolder me) {
-        Vector spells=getSpells();
-        for(Enumeration e=spells.elements();e.hasMoreElements();) {
-            Ability checking=(Ability)e.nextElement();
+    	List<Ability> spells=getSpells();
+        for(Ability checking : spells) 
             if(checking.abstractQuality()==Ability.QUALITY_MALICIOUS)
                 return true;
-        }
         return false;
     }
-	public Vector getSpells()
+	public List<Ability> getSpells()
 	{
 		String names=getSpellList();
 

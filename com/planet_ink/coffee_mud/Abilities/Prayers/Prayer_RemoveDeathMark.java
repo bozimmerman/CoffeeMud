@@ -43,10 +43,10 @@ public class Prayer_RemoveDeathMark extends Prayer implements MendingSkill
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
-	public boolean supportsMending(Environmental E)
+	public boolean supportsMending(Physical item)
 	{ 
-		if(!(E instanceof MOB)) return false;
-		return (E.fetchEffect("Thief_Mark")!=null)||(E.fetchEffect("Thief_ContractHit")!=null);
+		if(!(item instanceof MOB)) return false;
+		return (item.fetchEffect("Thief_Mark")!=null)||(item.fetchEffect("Thief_ContractHit")!=null);
 	}
 	
     public int castingQuality(MOB mob, Physical target)

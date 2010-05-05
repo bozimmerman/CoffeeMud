@@ -51,10 +51,10 @@ public class Bandaging extends CommonSkill implements MendingSkill
 		displayText="You are bandaging...";
 		verb="bandaging";
 	}
-	public boolean supportsMending(Environmental E)
+	public boolean supportsMending(Physical item)
 	{ 
-		if(!(E instanceof MOB)) return false;
-		return (E.fetchEffect("Bleeding")!=null)||(E.fetchEffect("Injury")!=null);
+		if(!(item instanceof MOB)) return false;
+		return (item.fetchEffect("Bleeding")!=null)||(item.fetchEffect("Injury")!=null);
 	}
 	
 	public boolean tick(Tickable ticking, int tickID)

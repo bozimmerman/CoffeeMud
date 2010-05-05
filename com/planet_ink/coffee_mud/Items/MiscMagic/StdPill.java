@@ -63,11 +63,11 @@ public class StdPill extends StdFood implements Pill
 
 	public void eatIfAble(MOB mob)
 	{
-		Vector spells=getSpells();
+		List<Ability> spells=getSpells();
 		if((mob.isMine(this))&&(spells.size()>0))
 			for(int i=0;i<spells.size();i++)
 			{
-				Ability thisOne=(Ability)((Ability)spells.elementAt(i)).copyOf();
+				Ability thisOne=(Ability)((Ability)spells.get(i)).copyOf();
 				thisOne.invoke(mob,mob,true,phyStats().level());
 			}
 	}
@@ -112,7 +112,7 @@ public class StdPill extends StdFood implements Pill
 		return theSpells;
 	}
 	
-	public Vector getSpells(){ return getSpells(this);}
+	public List<Ability> getSpells(){ return getSpells(this);}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

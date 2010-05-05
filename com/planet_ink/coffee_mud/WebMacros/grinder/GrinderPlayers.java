@@ -392,7 +392,7 @@ public class GrinderPlayers extends GrinderMobs
 		if(error.length()>0) return error;
 		error=titleList(M,httpReq,parms);
 		if(error.length()>0) return error;
-		error=GrinderAreas.doAffectsNBehavs(M,httpReq,parms);
+		error=GrinderAreas.doAffects(M,httpReq,parms);
 		if(error.length()>0) return error;
 		error=GrinderMobs.factions(M,httpReq,parms);
 		if(error.length()>0) return error;

@@ -2981,7 +2981,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         }
     }
 
-    public void genAffects(MOB mob, Environmental E, int showNumber, int showFlag)
+    public void genAffects(MOB mob, Physical P, int showNumber, int showFlag)
         throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -2989,9 +2989,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
         {
             String affectstr="";
-            for(int b=0;b<E.numEffects();b++)
+            for(int b=0;b<P.numEffects();b++)
             {
-                Ability A=E.fetchEffect(b);
+                Ability A=P.fetchEffect(b);
                 if((A!=null)&&(A.isSavable()))
                 {
                     affectstr+=A.ID();
@@ -3014,16 +3014,16 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 else
                 {
                     Ability chosenOne=null;
-                    for(int a=0;a<E.numEffects();a++)
+                    for(int a=0;a<P.numEffects();a++)
                     {
-                        Ability A=E.fetchEffect(a);
+                        Ability A=P.fetchEffect(a);
                         if((A!=null)&&(A.ID().equalsIgnoreCase(behave)))
                             chosenOne=A;
                     }
                     if(chosenOne!=null)
                     {
                         mob.tell(chosenOne.ID()+" removed.");
-                        E.delEffect(chosenOne);
+                        P.delEffect(chosenOne);
                     }
                     else
                     {
@@ -3039,7 +3039,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                             }
                             chosenOne.setMiscText(parms.trim());
                             mob.tell(chosenOne.ID()+" added.");
-                            E.addNonUninvokableEffect(chosenOne);
+                            P.addNonUninvokableEffect(chosenOne);
                         }
                         else
                         {
@@ -3409,7 +3409,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     protected void genEconomics6(MOB mob, Economics E, int showNumber, int showFlag) throws IOException
     { E.setIgnoreMask(prompt(mob,E.ignoreMask(),showNumber,showFlag,"Ignore Mask",true,false)); }
 
-    protected void genAbilities(MOB mob, MOB E, int showNumber, int showFlag)
+    protected void genAbilities(MOB mob, MOB M, int showNumber, int showFlag)
         throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -3417,9 +3417,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
         {
             String abilitiestr="";
-            for(int a=0;a<E.numLearnedAbilities();a++)
+            for(int a=0;a<M.numLearnedAbilities();a++)
             {
-                Ability A=E.fetchAbility(a);
+                Ability A=M.fetchAbility(a);
                 if((A!=null)&&(A.isSavable()))
                     abilitiestr+=A.ID()+", ";
             }
@@ -3437,25 +3437,25 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 else
                 {
                     Ability chosenOne=null;
-                    for(int a=0;a<E.numLearnedAbilities();a++)
+                    for(int a=0;a<M.numLearnedAbilities();a++)
                     {
-                        Ability A=E.fetchAbility(a);
+                        Ability A=M.fetchAbility(a);
                         if((A!=null)&&(A.ID().equalsIgnoreCase(behave)))
                             chosenOne=A;
                     }
                     if(chosenOne!=null)
                     {
                         mob.tell(chosenOne.ID()+" removed.");
-                        E.delAbility(chosenOne);
-                        if(E.fetchEffect(chosenOne.ID())!=null)
-                            E.delEffect(E.fetchEffect(chosenOne.ID()));
+                        M.delAbility(chosenOne);
+                        if(M.fetchEffect(chosenOne.ID())!=null)
+                            M.delEffect(M.fetchEffect(chosenOne.ID()));
                     }
                     else
                     {
                         chosenOne=CMClass.getAbility(behave);
                         if(chosenOne!=null)
                         {
-                            boolean alreadyHasIt=(E.fetchAbility(chosenOne.ID())!=null);
+                            boolean alreadyHasIt=(M.fetchAbility(chosenOne.ID())!=null);
                             if(!alreadyHasIt)
                                 mob.tell(chosenOne.ID()+" added.");
                             else
@@ -3463,7 +3463,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                             if(!alreadyHasIt)
                             {
                                 chosenOne=(Ability)chosenOne.copyOf();
-                                E.addAbility(chosenOne);
+                                M.addAbility(chosenOne);
                                 chosenOne.setProficiency(50);
                                 chosenOne.autoInvocation(mob);
                             }
@@ -7182,7 +7182,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             genAbilities(mob,mme,++showNumber,showFlag);
             if(me instanceof PhysicalAgent)
 	            genBehaviors(mob,(PhysicalAgent)me,++showNumber,showFlag);
-            genAffects(mob,me,++showNumber,showFlag);
+            genAffects(mob,mme,++showNumber,showFlag);
             if(!(me instanceof Auctioneer))
             {
                 genShopkeeper1(mob,me,++showNumber,showFlag);

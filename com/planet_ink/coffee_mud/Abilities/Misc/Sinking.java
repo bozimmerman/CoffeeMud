@@ -250,34 +250,34 @@ public class Sinking extends StdAbility
 		&&(affected.phyStats().weight()>=1))
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FALLING);
 	}
-	public void setAffectedOne(Physical being)
+	public void setAffectedOne(Physical P)
 	{
-		if(being instanceof Room)
-			room=(Room)being;
+		if(P instanceof Room)
+			room=(Room)P;
 		else
-			super.setAffectedOne(being);
+			super.setAffectedOne(P);
 	}
-	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(!auto) return false;
-		Environmental E=target;
-		if(E==null) return false;
-		if((E instanceof Item)&&(room==null)) return false;
-		if(E.fetchEffect("Sinking")==null)
+		Physical target=givenTarget;
+		if(target==null) return false;
+		if((target instanceof Item)&&(room==null)) return false;
+		if(target.fetchEffect("Sinking")==null)
 		{
 			Sinking F=new Sinking();
 			F.setProficiency(proficiency());
 			F.invoker=null;
-			if(E instanceof MOB)
-				F.invoker=(MOB)E;
+			if(target instanceof MOB)
+				F.invoker=(MOB)target;
 			else
 				F.invoker=CMClass.getMOB("StdMOB");
-			E.addEffect(F);
+			target.addEffect(F);
 			F.setSavable(false);
 			F.makeLongLasting();
-			if(!(E instanceof MOB))
+			if(!(target instanceof MOB))
 				CMLib.threads().startTickDown(F,Tickable.TICKID_MOB,1);
-			E.recoverPhyStats();
+			target.recoverPhyStats();
 		}
 		return true;
 	}

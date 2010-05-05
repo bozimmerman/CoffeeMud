@@ -106,8 +106,9 @@ public class Spell_Scribe extends Spell
 			return false;
 		}
 
-		for(int i=0;i<scroll.getSpells().size();i++)
-			if(((Ability)scroll.getSpells().elementAt(i)).ID().equals(scrollThis.ID()))
+		List<Ability> spells=scroll.getSpells();
+		for(Ability spell: spells)
+			if(spell.ID().equals(scrollThis.ID()))
 			{
 				mob.tell("That spell is already scribed onto "+scroll.name()+".");
 				return false;

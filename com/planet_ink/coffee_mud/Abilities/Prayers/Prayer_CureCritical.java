@@ -42,10 +42,10 @@ public class Prayer_CureCritical extends Prayer implements MendingSkill
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALINGMAGIC;}
 
-	public boolean supportsMending(Environmental E)
+	public boolean supportsMending(Physical item)
 	{ 
-		return (E instanceof MOB)
-				&&((((MOB)E).curState()).getHitPoints()<(((MOB)E).maxState()).getHitPoints());
+		return (item instanceof MOB)
+				&&((((MOB)item).curState()).getHitPoints()<(((MOB)item).maxState()).getHitPoints());
 	}
 	
     public int castingQuality(MOB mob, Physical target)

@@ -43,12 +43,12 @@ public class Chant_ClearMoon extends Chant
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONALTERING;}
 
-	public void clearMoons(Environmental E)
+	public void clearMoons(Physical P)
 	{
-		if(E!=null)
-		for(int a=E.numEffects()-1;a>=0;a--)
+		if(P!=null)
+		for(int a=P.numEffects()-1;a>=0;a--)
 		{
-			Ability A=E.fetchEffect(a);
+			Ability A=P.fetchEffect(a);
 			if((A!=null)
 			&&(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_MOONALTERING)
 			   ||((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_MOONSUMMONING)))

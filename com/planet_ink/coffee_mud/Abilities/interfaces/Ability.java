@@ -139,9 +139,9 @@ public interface Ability extends Environmental
 	 * to auto-invoking skills and spells that affect people
 	 * like sleep, and especially to properties.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#affecting()
-	 * @param being the room, mob, or item being affected
+	 * @param P the room, mob, or item being affected
 	 */
-	public void setAffectedOne(Physical being);
+	public void setAffectedOne(Physical P);
 
 	/**
 	 * Returns whether this skills triggerStrings should be

@@ -73,7 +73,7 @@ public interface CMFlagLibrary extends CMLibrary
     public boolean isHidden(Environmental E);
     public boolean isInvisible(Environmental E);
     public boolean isEvil(Environmental E);
-    public boolean isATrackingMonster(Environmental E);
+    public boolean isATrackingMonster(MOB M);
     public boolean isGood(Environmental E);
     public String getAlignmentName(Environmental E);
     public boolean isNeutral(Environmental E);
@@ -97,7 +97,7 @@ public interface CMFlagLibrary extends CMLibrary
     public boolean aliveAwakeMobile(MOB mob, boolean quiet);
     public boolean isStanding(MOB mob);
     public boolean isBound(Environmental E);
-    public boolean isBoundOrHeld(Environmental E);
+    public boolean isBoundOrHeld(Physical P);
     public boolean isOnFire(Environmental seen);
     public boolean canBeSeenBy(Environmental seen , MOB seer);
     public boolean canBarelyBeSeenBy(Environmental seen , MOB seer);
@@ -113,13 +113,13 @@ public interface CMFlagLibrary extends CMLibrary
     public boolean isPossiblyAggressive(MOB M);
 	public boolean isChild(Environmental E);
 	public boolean isBaby(Environmental E);
-    public Vector<Behavior> flaggedBehaviors(PhysicalAgent E, long flag);
-    public Vector flaggedAnyAffects(Environmental E, long flag);
-    public Vector flaggedAffects(Environmental E, long flag);
-    public Vector flaggedAbilities(MOB E, long flag);
-    public Vector domainAnyAffects(Environmental E, int domain);
-    public Vector domainAffects(Environmental E, int domain);
-    public Vector domainAbilities(MOB E, int domain);
+    public List<Behavior> flaggedBehaviors(PhysicalAgent P, long flag);
+    public List<Ability> flaggedAnyAffects(Physical P, long flag);
+    public List<Ability> flaggedAffects(Physical P, long flag);
+    public List<Ability> flaggedAbilities(MOB M, long flag);
+    public List<Ability> domainAnyAffects(Physical P, int domain);
+    public List<Ability> domainAffects(Physical P, int domain);
+    public List<Ability> domainAbilities(MOB M, int domain);
     public boolean canAccess(MOB mob, Area A);
     public boolean canAccess(MOB mob, Room R);
     public boolean isMetal(Environmental E);

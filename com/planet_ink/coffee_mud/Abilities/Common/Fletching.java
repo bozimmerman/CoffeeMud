@@ -105,7 +105,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean supportsMending(Environmental E){ return canMend(null,E,true);}
+	public boolean supportsMending(Physical item){ return canMend(null,item,true);}
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;

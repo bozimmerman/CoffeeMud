@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class Dance_Tarantella extends Dance
 {
 	public String ID() { return "Dance_Tarantella"; }
@@ -59,10 +58,10 @@ public class Dance_Tarantella extends Dance
 
 		if((++ticks)>=(15-getXLEVELLevel(invoker())))
 		{
-			Vector offenders=CMLib.flags().flaggedAffects(mob,Ability.ACODE_POISON);
+			List<Ability> offenders=CMLib.flags().flaggedAffects(mob,Ability.ACODE_POISON);
 			if(offenders!=null)
 				for(int a=0;a<offenders.size();a++)
-					((Ability)offenders.elementAt(a)).unInvoke();
+					((Ability)offenders.get(a)).unInvoke();
 		}
 
 		return true;

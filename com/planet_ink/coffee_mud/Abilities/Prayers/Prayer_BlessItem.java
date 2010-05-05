@@ -78,10 +78,10 @@ public class Prayer_BlessItem extends Prayer implements MendingSkill
 	}
 
 
-	public boolean supportsMending(Environmental E)
+	public boolean supportsMending(Physical item)
 	{ 
-		return (E instanceof Item)
-					&&(CMLib.flags().domainAffects(E,Ability.DOMAIN_CURSING).size()>0);
+		return (item instanceof Item)
+					&&(CMLib.flags().domainAffects(item,Ability.DOMAIN_CURSING).size()>0);
 	}
 
     public int castingQuality(MOB mob, Physical target)

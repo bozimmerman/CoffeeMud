@@ -31,7 +31,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class DefaultClimate implements Climate
 {
 	public String ID(){return "DefaultClimate";}
@@ -157,9 +156,9 @@ public class DefaultClimate implements Climate
 	public boolean canSeeTheMoon(Room room, Ability butNotA)
 	{
 		if(canSeeTheStars(room)) return true;
-		Vector V=CMLib.flags().domainAffects(room,Ability.DOMAIN_MOONSUMMONING);
+		List<Ability> V=CMLib.flags().domainAffects(room,Ability.DOMAIN_MOONSUMMONING);
 		for(int v=0;v<V.size();v++)
-			if(V.elementAt(v)!=butNotA)
+			if(V.get(v)!=butNotA)
 				return true;
 		return false;
 	}
