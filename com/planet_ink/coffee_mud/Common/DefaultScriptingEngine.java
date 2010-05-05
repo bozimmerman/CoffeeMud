@@ -6802,7 +6802,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 }
                 String qstr=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
                 String var=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
-                Environmental obj=getArgumentItem(tt[3],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                PhysicalAgent obj=getArgumentItem(tt[3],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
                 Quest Q=getQuest(qstr);
                 if(Q==null)

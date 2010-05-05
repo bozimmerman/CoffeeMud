@@ -221,6 +221,7 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 			catch(Exception t)
 			{
 				Log.errOut("ServiceEngine",t);
+				return true;
 			}
 		}
 		return false;

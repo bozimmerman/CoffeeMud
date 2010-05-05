@@ -964,10 +964,10 @@ public class RoomLoader
 		{
 			Exit thisExit=room.getRawExit(d);
 			Room thisRoom=room.rawDoors()[d];
-    		CMLib.map().registerWorldObjectLoaded(thisRoom.getArea(), room, thisExit);
 			if(((thisRoom!=null)||(thisExit!=null))
 			   &&((thisRoom==null)||(thisRoom.isSavable())))
 			{
+	    		CMLib.map().registerWorldObjectLoaded(room.getArea(), room, thisExit);
 				statements.addElement(
 				"INSERT INTO CMROEX ("
 				+"CMROID, "

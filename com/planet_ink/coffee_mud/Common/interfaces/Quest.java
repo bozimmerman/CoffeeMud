@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.util.List;
 import java.util.Vector;
 
 /* 
@@ -386,8 +387,8 @@ public interface Quest extends Tickable, CMCommon, Modifiable
      * can be cleaned up later.  Ditto for abilities, affects, and behaviors.
      * this method should only be used WHILE a quest script is being interpreted
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterBehavior(PhysicalAgent, String, String, boolean)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterEffect(Physical, String, String, boolean)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterObject(Environmental)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterEffect(PhysicalAgent, String, String, boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterObject(PhysicalAgent)
      * @param mob the mob receiving the ability
      * @param abilityID the id of the ability
      * @param parms any ability parameters
@@ -400,11 +401,11 @@ public interface Quest extends Tickable, CMCommon, Modifiable
      * this method should only be used WHILE a quest script is being interpreted
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterAbility(MOB, String, String, boolean)
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterBehavior(PhysicalAgent, String, String, boolean)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterEffect(Physical, String, String, boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterEffect(PhysicalAgent, String, String, boolean)
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-     * @param object the object added to the map
+     * @param P the object added to the map
      */
-    public void runtimeRegisterObject(Environmental object);
+    public void runtimeRegisterObject(PhysicalAgent P);
     /**
      * Called when you want the quest engine to be aware of a quest specific object
      * that is being added to the map, so that it can be cleaned up later.  This is 
@@ -412,21 +413,21 @@ public interface Quest extends Tickable, CMCommon, Modifiable
      * this method should only be used WHILE a quest script is being interpreted
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterAbility(MOB, String, String, boolean)
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterBehavior(PhysicalAgent, String, String, boolean)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterObject(Environmental)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterObject(PhysicalAgent)
      * @param affected the object receiving the effect
      * @param abilityID the id of the effect
      * @param parms any effect parameters
      * @param give false to remove this effect, true to replace an existing one
      */
-    public void runtimeRegisterEffect(Physical affected, String abilityID, String parms, boolean give);
+    public void runtimeRegisterEffect(PhysicalAgent affected, String abilityID, String parms, boolean give);
     /**
      * Called when you want the quest engine to be aware of a quest specific object
      * that is being added to the map, so that it can be cleaned up later.  This is 
      * called to add a behavior to the given object.
      * this method should only be used WHILE a quest script is being interpreted
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterAbility(MOB, String, String, boolean)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterEffect(Physical, String, String, boolean)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterObject(Environmental)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterEffect(PhysicalAgent, String, String, boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterObject(PhysicalAgent)
      * @param behaving the object receiving the behavior
      * @param behaviorID the id of the behavior
      * @param parms any behavior parameters
@@ -633,6 +634,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @return true if the quest is successfully put into a non-running wait state
 	 */
     public boolean resetWaitRemaining(long minusEllapsed);
+    
 	/** A quest spawn flag denoting that this quest does not spawn its steps */
     public final static int SPAWN_NO=0;
     /** A quest spawn flag denoting that this quest spawns only its first step */

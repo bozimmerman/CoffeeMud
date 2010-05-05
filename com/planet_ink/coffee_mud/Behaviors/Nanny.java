@@ -56,7 +56,7 @@ public class Nanny extends StdBehavior
     protected DVector sayLaters=new DVector(2);
     // dynamic list of who belongs to what, before they leave
     // and get added to official drop-offs.
-    protected List<DropOff> associations=new Vector<DropOff>();
+    protected List<DropOff> associations=new SVector<DropOff>();
     
     private static class DropOff
     {
@@ -719,7 +719,7 @@ public class Nanny extends StdBehavior
         if(dropOffs==null)
         {
         	int x=super.parms.indexOf("|~|");
-    		dropOffs=new Vector<DropOff>();
+    		dropOffs=new SVector<DropOff>();
         	if(x>0)
         	{
         		String codes=super.parms.substring(x+3);

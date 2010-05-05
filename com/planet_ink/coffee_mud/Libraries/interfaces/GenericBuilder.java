@@ -78,8 +78,8 @@ public interface GenericBuilder extends CMLibrary
     public StringBuffer getMobXML(MOB mob);
     public StringBuffer getMobsXML(Vector mobs, HashSet custom, HashSet files, Hashtable found);
     public StringBuffer getUniqueItemXML(Item item, int type, Hashtable found, HashSet files);
-    public String addItemsFromXML(String xmlBuffer, Vector addHere, Session S);
-    public String addMOBsFromXML(String xmlBuffer, Vector addHere, Session S);
+    public String addItemsFromXML(String xmlBuffer, List<Item> addHere, Session S);
+    public String addMOBsFromXML(String xmlBuffer, List<MOB> addHere, Session S);
     public MOB getMobFromXML(String xmlBuffer);
     public Item getItemFromXML(String xmlBuffer);
     // TYPE= 0=item, 1=weapon, 2=armor

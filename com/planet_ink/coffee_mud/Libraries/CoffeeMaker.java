@@ -1361,7 +1361,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
     }
 
 	public String addItemsFromXML(String xmlBuffer,
-								  Vector addHere,
+								  List<Item> addHere,
 								  Session S)
 	{
 		Vector xml=CMLib.xml().parseAllXML(xmlBuffer);
@@ -1387,7 +1387,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			newItem.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(iblk.contents,"ITEXT")));
 			newItem.setContainer(null);
 			newItem.recoverPhyStats();
-			addHere.addElement(newItem);
+			addHere.add(newItem);
 		}
 		return "";
 	}
@@ -1416,7 +1416,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 
 	public String addMOBsFromXML(String xmlBuffer,
-								 Vector addHere,
+								 List<MOB> addHere,
 								 Session S)
 	{
 		Vector xml=CMLib.xml().parseAllXML(xmlBuffer);
@@ -1440,7 +1440,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			newMOB.recoverPhyStats();
 			newMOB.recoverMaxState();
 			newMOB.resetToMaxState();
-			addHere.addElement(newMOB);
+			addHere.add(newMOB);
 		}
 		return "";
 	}
