@@ -32,8 +32,8 @@ public interface Affectable
      * Object containing a set of base, unmodified, mostly numeric fields.  The values on the fields
      * in this object will be as they were set by the builder. This object is used as a basis for
      * the recoverEnvStats() method.  See the EnvStats interface for information on the fields herein.
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#envStats()
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#recoverEnvStats()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#envStats()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#recoverEnvStats()
      * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats
      * @return a set of state fields
      */
@@ -44,8 +44,8 @@ public interface Affectable
      * the recoverEnvStats() method.  See the EnvStats interface for information on the fields herein. This
      * method is rarely called -- the fields therein are usually set using setter methods from the EnvStats
      * interface on the object itself.
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#envStats()
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#recoverEnvStats()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#envStats()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#recoverEnvStats()
      * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats
      * @param newBaseEnvStats a set of state fields
      */
@@ -54,8 +54,8 @@ public interface Affectable
      * Object containing a set of current, modified, usable, mostly numeric fields.  This object is based on
      * the object from baseEnvStats() and then updated and modified by the recoverEnvStats() method.
      * See the EnvStats interface for information on the fields herein.
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#baseEnvStats()
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#recoverEnvStats()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#baseEnvStats()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#recoverEnvStats()
      * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats
      * @return the current set of state fields
      */
@@ -68,8 +68,8 @@ public interface Affectable
      * adjustments to the values in the new envStats() object.  When it returns, envStats() will have a totally
      * updated object.  This method must be called in code whenever the object is placed on the map, or when
      * anything changes in its environment, such as location, effects, or other states.
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#baseEnvStats()
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#envStats()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#baseEnvStats()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#envStats()
      * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#addEffect(Ability)
      * @see com.planet_ink.coffee_mud.core.interfaces.PhysicalAgent#addBehavior(Behavior)
      * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats
@@ -81,7 +81,7 @@ public interface Affectable
      * recoverEnvStats() should be called next in case this ability object modifies the stats.
      * An Ability with a given ID() can only be added once per object.
      * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#recoverEnvStats()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#recoverEnvStats()
      * @param to The ability object to add as an effect.
      */
 	public void addEffect(Ability to);
@@ -90,7 +90,7 @@ public interface Affectable
      * recoverEnvStats() method  should be called next.
      * An Ability with a given ID() can only be added once per object.
      * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#recoverEnvStats()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#recoverEnvStats()
      * @param to The ability object to add as an effect.
      */
 	public void addNonUninvokableEffect(Ability to);
@@ -98,7 +98,7 @@ public interface Affectable
      * Delete an effect from this object, whether permanent or temporary.  After calling this method,
      * recoverEnvStats() should be called next in case this ability object modified the stats.
      * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#recoverEnvStats()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#recoverEnvStats()
      * @param to The ability object to remove as an effect on this object
      */
 	public void delEffect(Ability to);

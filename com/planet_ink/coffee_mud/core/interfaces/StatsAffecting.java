@@ -43,9 +43,9 @@ public interface StatsAffecting
      * which are objects implementing the EnvStats interface.  See those methods for more information.
      * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats
      * @see Environmental
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#baseEnvStats()
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#envStats()
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#recoverEnvStats()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#baseEnvStats()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#envStats()
+     * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#recoverEnvStats()
      * @param affected the host of the EnvStats object being affected
      * @param affectableStats the particular EnvStats object being affected
      */

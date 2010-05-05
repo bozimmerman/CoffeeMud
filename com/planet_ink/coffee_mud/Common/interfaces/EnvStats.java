@@ -38,8 +38,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * his base unmodified state, and current one, representing his state after spells
  * and other affects have had their say.
  * @see com.planet_ink.coffee_mud.core.interfaces.Modifiable
- * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#baseEnvStats()
- * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#envStats()
+ * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#baseEnvStats()
+ * @see com.planet_ink.coffee_mud.core.interfaces.Affectable#envStats()
  */
 public interface EnvStats extends CMCommon, Modifiable
 {
