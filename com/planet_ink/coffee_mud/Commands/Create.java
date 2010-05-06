@@ -135,7 +135,7 @@ public class Create extends StdCommand
 
 		String itemID=CMParms.combine(commands,2);
 		Environmental dest=mob.location();
-		Item setContainer=null;
+		Container setContainer=null;
 		int x=itemID.indexOf("@");
 		if(x>0)
 		{

@@ -555,10 +555,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             if((product instanceof Container)&&(((Container)product).hasALock()))
             {
                 boolean found=false;
-                Vector V=((Container)product).getContents();
+                List<Item> V=((Container)product).getContents();
                 for(int i=0;i<V.size();i++)
                 {
-                    Item I=(Item)V.elementAt(i);
+                    Item I=(Item)V.get(i);
                     if((I instanceof Key)
                     &&(((Key)I).getKey().equals(((Container)product).keyName())))
                         found=true;
@@ -847,19 +847,19 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             pawner.tell(shopkeeper.name()+" pays you "+CMLib.beanCounter().nameCurrencyShort(shopkeeper,val)+" for "+rawSoldItem.name()+".");
             if(rawSoldItem instanceof Item)
             {
-                Vector V=null;
+            	List<Item> V=null;
                 if(rawSoldItem instanceof Container)
                     V=((Container)rawSoldItem).getContents();
                 ((Item)rawSoldItem).unWear();
                 ((Item)rawSoldItem).removeFromOwnerContainer();
                 if(V!=null)
                 for(int v=0;v<V.size();v++)
-                    ((Item)V.elementAt(v)).removeFromOwnerContainer();
+                    ((Item)V.get(v)).removeFromOwnerContainer();
                 shop.getShop().addStoreInventory(coreSoldItem,number,-1);
                 if(V!=null)
                 for(int v=0;v<V.size();v++)
                 {
-                    Item item2=(Item)V.elementAt(v);
+                    Item item2=(Item)V.get(v);
                     if(!shop.doISellThis(item2)||(item2 instanceof Key))
                         item2.destroy();
                     else
@@ -914,14 +914,14 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 Area A2=CMLib.law().getLegalObject(room);
                 if((theLaw!=null)&&(A2!=null))
                 {
-                    Environmental[] Treas=theLaw.getTreasuryNSafe(A2);
-                    Room treasuryR=(Room)Treas[0];
-                    Item treasuryItem=(Item)Treas[1];
+                    Law.TreasurySet treas=theLaw.getTreasuryNSafe(A2);
+                    Room treasuryR=treas.room;
+                    Container treasuryContainer=treas.container;
                     if(treasuryR!=null)
                     {
                         double taxAmount=totalFunds-sellingPrice(seller,buyer,product,shop,false).absoluteGoldPrice;
                         totalFunds-=taxAmount;
-                        Coins COIN=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(seller),taxAmount,treasuryR,treasuryItem);
+                        Coins COIN=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(seller),taxAmount,treasuryR,treasuryContainer);
                         if(COIN!=null) COIN.putCoinsBack();
                     }
                 }

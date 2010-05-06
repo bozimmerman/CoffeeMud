@@ -1491,7 +1491,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	    return 0.0;
 	}
 
-	public Item possibleRoomGold(MOB seer, Room room, Item container, String itemID)
+	public Item possibleRoomGold(MOB seer, Room room, Container container, String itemID)
 	{
 		if(itemID.toUpperCase().trim().startsWith("A PILE OF "))
 			itemID=itemID.substring(10);
@@ -1607,7 +1607,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return null;
 	}
 
-	public Vector possibleContainers(MOB mob, Vector commands, int wornFilter, boolean withContentOnly)
+	public List<Container> possibleContainers(MOB mob, Vector commands, int wornFilter, boolean withContentOnly)
 	{
 		Vector V=new Vector();
 		if(commands.size()==1)

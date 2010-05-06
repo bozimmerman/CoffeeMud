@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.util.List;
 import java.util.Vector;
 
 /* 
@@ -66,11 +67,11 @@ public class BagOfEndlessness extends BagOfHolding
 				allStuff.addElement(neweritem);
 				if(newitem instanceof Container)
 				{
-					Vector V=((Container)newitem).getContents();
+					List<Item> V=((Container)newitem).getContents();
 					for(int v=0;v<V.size();v++)
 					{
-						Item I=(Item)((Item)V.elementAt(v)).copyOf();
-						I.setContainer(neweritem);
+						Item I=(Item)((Item)V.get(v)).copyOf();
+						I.setContainer((Container)neweritem);
 						allStuff.addElement(I);
 					}
 				}

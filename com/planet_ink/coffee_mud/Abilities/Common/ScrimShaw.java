@@ -99,7 +99,8 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 							if(key!=null)
 							{
 								dropAWinner(mob,key);
-								key.setContainer(building);
+								if(building instanceof Container)
+									key.setContainer((Container)building);
 							}
 						}
 					}

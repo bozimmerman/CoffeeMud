@@ -34,7 +34,7 @@ public interface ListingLibrary extends CMLibrary
 {
 
     public String itemSeenString(MOB viewer, Environmental item, boolean useName, boolean longLook, boolean sysMsgs);
-    public int getReps(Environmental item, Vector theRest, MOB mob, boolean useName, boolean longLook);
+    public int getReps(Environmental item, List<? extends Environmental> theRest, MOB mob, boolean useName, boolean longLook);
     public void appendReps(int reps, StringBuilder say, boolean compress);
     public StringBuilder lister(MOB mob, Vector things, boolean useName, String tag, String tagParm, boolean longLook, boolean compress);
     public StringBuilder reallyList(Hashtable these, int ofType);

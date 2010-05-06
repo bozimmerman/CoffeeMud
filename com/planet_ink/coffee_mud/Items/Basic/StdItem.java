@@ -41,7 +41,7 @@ public class StdItem implements Item
 	protected String 		name="an ordinary item";
 	protected String		displayText="a nondescript item sits here doing nothing.";
 	protected byte[] 		description=null;
-	protected Item 			myContainer=null;
+	protected Container		myContainer=null;
 	protected int 			myUses=Integer.MAX_VALUE;
 	protected long 			myWornCode=Wearable.IN_INVENTORY;
 	protected String 		miscText="";
@@ -520,7 +520,7 @@ public class StdItem implements Item
 		if(container()==null) return this;
 		return container().ultimateContainer();
 	}
-	public Item container()
+	public Container container()
 	{
 		return myContainer;
 	}
@@ -570,7 +570,7 @@ public class StdItem implements Item
 		else
 			description=CMStrings.strToBytes(newDescription);
 	}
-	public void setContainer(Item newContainer)
+	public void setContainer(Container newContainer)
 	{
 		myContainer=newContainer;
 	}

@@ -173,7 +173,7 @@ public class GenWallpaper implements Item
 		if(destroyed) return false;
 		return true;
 	}
-	public Item container(){return null;}
+	public Container container(){return null;}
 	public Item ultimateContainer(){return this;}
     public void wearEvenIfImpossible(MOB mob){}
 	public String rawSecretIdentity(){return "";}
@@ -201,7 +201,7 @@ public class GenWallpaper implements Item
 		else
 			description=CMStrings.strToBytes(newDescription);
 	}
-	public void setContainer(Item newContainer){}
+	public void setContainer(Container newContainer){}
 	public int usesRemaining(){return Integer.MAX_VALUE;}
 	public void setUsesRemaining(int newUses){}
 	public boolean isSavable(){return CMLib.flags().isSavable(this);}

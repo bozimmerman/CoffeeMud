@@ -522,51 +522,34 @@ public class StdContainer extends StdItem implements Container
 	}
 	public void emptyPlease()
 	{
-		Vector V=getContents();
+		List<Item> V=getContents();
 		for(int v=0;v<V.size();v++)
 		{
-			Item I=(Item)V.elementAt(v);
+			Item I=(Item)V.get(v);
 			I.setContainer(null);
 		}
 	}
-	protected void reallyGetContents(Item container, Environmental own, Vector V)
+	public boolean isInside(Item I)
 	{
-		if(container==null) return;
-		if(own instanceof MOB)
-		{
-			for(int i=0;i<((MOB)own).numItems();i++)
-			{
-				Item I=((MOB)own).getItem(i);
-				if((I.container()==container)
-				&&(!V.contains(I)))
-				{
-					V.addElement(I);
-					reallyGetContents(I,own,V);
-				}
-			}
-		}
-		else
-		if(own instanceof Room)
-		{
-			for(int i=0;i<((Room)own).numItems();i++)
-			{
-				Item I=((Room)own).getItem(i);
-				if((I!=null)
-				&&(I.container()==container)
-				&&(!V.contains(I)))
-				{
-					V.addElement(I);
-					reallyGetContents(I,own,V);
-				}
-			}
-		}
+		if(I.container()==null) return false;
+		if(I.container()==this) return true;
+		return isInside(I.container());
 	}
-
-	public Vector getContents()
+	
+	public ReadOnlyList<Item> getContents()
 	{
-		Vector V=new Vector();
+		List<Item> V=new Vector();
 		if(owner()!=null)
-			reallyGetContents(this,owner(),V);
-		return V;
+		{
+			Item I;
+			for(Enumeration<Item> e = owner().items(); e.hasMoreElements();)
+			{
+				I=e.nextElement();
+				if(I==null) continue;
+				if(isInside(I))
+					V.add(I);
+			}
+		}
+		return new ReadOnlyList<Item>(V);
 	}
 }

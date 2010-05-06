@@ -419,9 +419,9 @@ public class DefaultClan implements Clan
                     R=CMLib.map().getRoom(getRecall());
                 if(I instanceof Container)
                 {
-                    Vector V=((Container)I).getContents();
+                	List<Item> V=((Container)I).getContents();
                     for(int v=0;v<V.size();v++)
-                        ((Item)V.elementAt(v)).setContainer(null);
+                        ((Item)V.get(v)).setContainer(null);
                 }
                 I.setContainer(null);
                 I.wearAt(Wearable.IN_INVENTORY);

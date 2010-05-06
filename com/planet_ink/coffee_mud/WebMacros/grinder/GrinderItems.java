@@ -630,7 +630,7 @@ public class GrinderItems
 							if((I2.container()!=null)
 							&&(I2.container()==oldI))
 								if(I instanceof Container)
-									I2.setContainer(I);
+									I2.setContainer((Container)I);
 								else
 									I2.setContainer(null);
 						}
@@ -650,7 +650,7 @@ public class GrinderItems
 						if((I2.container()!=null)
 						&&(I2.container()==oldI))
 							if(I instanceof Container)
-								I2.setContainer(I);
+								I2.setContainer((Container)I);
 							else
 								I2.setContainer(null);
 					}

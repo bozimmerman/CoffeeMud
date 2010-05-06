@@ -253,7 +253,7 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 				experienceToLose-=CMLib.ableMapper().qualifyingClassLevel(mob,theSpell)*5;
 			}
 
-			Vector V=((Container)building).getContents();
+			List<Item> V=((Container)building).getContents();
 			// first check for all the right stuff
 			for(int i=2;i<recipe.size();i++)
 			{
@@ -263,7 +263,7 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 					boolean ok=false;
 					for(int v=0;v<V.size();v++)
 					{
-						Item I=(Item)V.elementAt(v);
+						Item I=(Item)V.get(v);
 						if(CMLib.english().containsString(I.Name(),ingredient)
 						||(RawMaterial.CODES.NAME(I.material()).equalsIgnoreCase(ingredient)))
 						{ ok=true; break;}
@@ -278,7 +278,7 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 			// now check for unnecessary stuff
 			for(int v=0;v<V.size();v++)
 			{
-				Item I=(Item)V.elementAt(v);
+				Item I=(Item)V.get(v);
 				boolean ok=false;
 				for(int i=2;i<recipe.size();i++)
 				{

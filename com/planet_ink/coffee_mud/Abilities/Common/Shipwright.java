@@ -100,7 +100,8 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 							if(key!=null)
 							{
 								dropAWinner(mob,key);
-								key.setContainer(building);
+								if(key instanceof Container)
+									key.setContainer((Container)building);
 							}
 						}
 					}

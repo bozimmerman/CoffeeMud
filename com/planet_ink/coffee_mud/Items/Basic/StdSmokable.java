@@ -31,7 +31,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class StdSmokable extends StdContainer implements Light
 {
 	public String ID(){	return "StdSmokable";}
@@ -229,11 +228,11 @@ public class StdSmokable extends StdContainer implements Light
 				{
 					if(capacity>0)
 					{
-						Vector V=getContents();
+						List<Item> V=getContents();
                         Item I=null;
 						for(int v=0;v<V.size();v++)
                         {
-                            I=(Item)V.elementAt(v);
+                            I=(Item)V.get(v);
                             if(CMLib.dice().roll(1,100,0)==1)
                                 getAddictedTo(msg.source(),I);
                             I.destroy();

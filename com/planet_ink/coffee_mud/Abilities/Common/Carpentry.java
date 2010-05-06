@@ -60,7 +60,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 	protected static final int RCP_CONTAINMASK=9;
 	protected static final int RCP_SPELL=10;
 
-	protected Item key=null;
+	protected Key key=null;
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -110,7 +110,8 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 							if(key!=null)
 							{
 								dropAWinner(mob,key);
-								key.setContainer(building);
+								if(building instanceof Container)
+									key.setContainer((Container)building);
 							}
 						}
 					}
@@ -351,7 +352,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 				{
 					((Container)building).setLidsNLocks(true,false,true,false);
 					((Container)building).setKeyName(Double.toString(Math.random()));
-					key=CMClass.getItem("GenKey");
+					key=(Key)CMClass.getItem("GenKey");
 					((Key)key).setKey(((Container)building).keyName());
 					key.setName("a key");
 					key.setDisplayText("a small key sits here");

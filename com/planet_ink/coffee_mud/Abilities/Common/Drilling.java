@@ -144,10 +144,10 @@ public class Drilling extends GatheringSkill
 			commonTell(mob,I.name()+" doesn't look like it can hold anything.");
 			return false;
 		}
-		Vector V=((Container)I).getContents();
+		List<Item> V=((Container)I).getContents();
 		for(int v=0;v<V.size();v++)
 		{
-			Item I2=(Item)V.elementAt(v);
+			Item I2=(Item)V.get(v);
 			if((I2.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
 			{
 				commonTell(mob,I.name()+" needs to have the "+I2.name()+" removed first.");

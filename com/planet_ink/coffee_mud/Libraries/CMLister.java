@@ -62,7 +62,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
     }
     
     public int getReps(Environmental item, 
-                       Vector theRest, 
+                       List<? extends Environmental> theRest, 
                        MOB mob, 
                        boolean useName, 
                        boolean longLook)
@@ -74,16 +74,16 @@ public class CMLister extends StdLibrary implements ListingLibrary
         Environmental item2=null;
         while(here<theRest.size())
         {
-            item2=(Environmental)theRest.elementAt(here);
+            item2=(Environmental)theRest.get(here);
             str2=itemSeenString(mob,item2,useName,longLook,false);
             if(str2.length()==0)
-                theRest.removeElement(item2);
+                theRest.remove(item2);
             else
             if((str.equals(str2))
             &&(CMLib.flags().seenTheSameWay(mob,item,item2)))
             {
                 reps++;
-                theRest.removeElement(item2);
+                theRest.remove(item2);
             }
             else
                 here++;
@@ -205,13 +205,14 @@ public class CMLister extends StdLibrary implements ListingLibrary
                 &&(!((Container)item).hasALid())
                 &&(!CMLib.flags().canBarelyBeSeenBy(item,mob)))
                 {
-                    Vector V=((Container)item).getContents();
+                	List<Item> V=new Vector<Item>();
+                	V.addAll(((Container)item).getContents());
                     Item item2=null;
                     if(compress&&V.size()>0) say.append("{");
                     while(V.size()>0)
                     {
-                        item2=(Item)V.firstElement();
-                        V.removeElementAt(0);
+                        item2=(Item)V.get(0);
+                        V.remove(0);
                         int reps2=getReps(item2,V,mob,useName,false);
                         if(CMLib.flags().canBeSeenBy(item2,mob)
                         &&((item2.displayText().length()>0)

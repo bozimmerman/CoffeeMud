@@ -238,11 +238,11 @@ public class Nanny extends StdBehavior
     	if(isDroppedOff(P)) return P;
     	if(P instanceof Container)
     	{
-    		Vector V=((Container)P).getContents();
+    		List<Item> V=((Container)P).getContents();
         	Item I=null;
     		for(int v=0;v<V.size();v++)
     		{
-    			I=(Item)V.elementAt(v);
+    			I=(Item)V.get(v);
     			P=getDroppedOffObjIfAny(I);
     			if(P!=null) return P;
     		}

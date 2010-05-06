@@ -61,7 +61,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
     // this is our private cache, since, as soon
     // as cards start getting dealt, we would lose
     // track of them otherwise.
-    protected Vector cardsCache=null;
+    protected List<Item> cardsCache=null;
     
     // this object can manage one or more hands
     // keyed by the mob/player object.
@@ -110,7 +110,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
     // fillInTheDeck()
     // this method creates all 52 cards in the deck
     // and adds them to a deck owner
-    private Vector fillInTheDeck()
+    private List<Item> fillInTheDeck()
     {
         alreadyFilled=true;
         if(getContents().size()==0)
@@ -168,7 +168,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
         // have a card, make sure its faced-down
         for(int i=0;i<cardsCache.size();i++)
         {
-            PlayingCard card=(PlayingCard)cardsCache.elementAt(i);
+            PlayingCard card=(PlayingCard)cardsCache.get(i);
             if(card.owner()!=owner())
                 addCard(card);
             else
@@ -186,7 +186,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
         if(numberOfCards()<52)
         {
             for(int i=0;i<cardsCache.size();i++)
-                ((Item)cardsCache.elementAt(i)).destroy();
+                ((Item)cardsCache.get(i)).destroy();
             cardsCache.clear();
             Vector allCards=makeAllCards();
             for(int i=0;i<allCards.size();i++)
@@ -236,9 +236,9 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
     {
         HandOfCards cards=getPlayerHand(player);
         if(cards==null) return;
-        Vector cardSet=cards.getContents();
+        List<Item> cardSet=cards.getContents();
         for(int c=0;c<cardSet.size();c++)
-            addCard((PlayingCard)cardSet.elementAt(c));
+            addCard((PlayingCard)cardSet.get(c));
         hands.removeElement(player);
         cards.destroy();
     }

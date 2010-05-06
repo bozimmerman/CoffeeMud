@@ -571,9 +571,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
         if(E instanceof Container)
         {
             Vector Bs=new Vector();
-            Vector V=((Container)E).getContents();
+            List<Item> V=((Container)E).getContents();
             for(int v=0;v<V.size();v++)
-                Bs.addAll(getDeadBodies((Environmental)V.elementAt(v)));
+                Bs.addAll(getDeadBodies((Environmental)V.get(v)));
             return Bs;
         }
         return new Vector();

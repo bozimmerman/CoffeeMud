@@ -464,8 +464,8 @@ public class StdRace implements Race
         else
         if(mob.getMoneyVariation()<0.0)
     		CMLib.beanCounter().subtractMoney(mob, -(Math.random()*mob.getMoneyVariation()));
-        Hashtable containerMap=new Hashtable();
-        Hashtable itemMap=new Hashtable();
+        Hashtable<Item,Container> containerMap=new Hashtable<Item,Container>();
+        Hashtable<Item,Container> itemMap=new Hashtable<Item,Container>();
         DVector lootPolicies=CMLib.utensils().parseLootPolicyFor(mob);
 		for(int i=0;i<mob.numItems();)
 		{
@@ -478,7 +478,7 @@ public class StdRace implements Race
                     if(newItem==null){i++; continue;}
                     if(newItem==thisItem) newItem=(Item)thisItem.copyOf();
                     if(newItem instanceof Container)
-                        itemMap.put(thisItem,newItem);
+                        itemMap.put(thisItem,(Container)newItem);
                     if(thisItem.container()!=null)
                         containerMap.put(thisItem,thisItem.container());
 					newItem.setContainer(null);
@@ -521,7 +521,7 @@ public class StdRace implements Race
             Item newItem=(Item)itemMap.get(oldItem);
             Item oldContainer=(Item)containerMap.get(oldItem);
             if((oldContainer!=null)&&(newItem!=null))
-                newItem.setContainer((Item)itemMap.get(oldContainer));
+                newItem.setContainer(itemMap.get(oldContainer));
         }
 		if(destroyBodyAfterUse())
 		{

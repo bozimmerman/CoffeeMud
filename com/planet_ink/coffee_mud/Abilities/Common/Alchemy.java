@@ -267,7 +267,7 @@ public class Alchemy extends CraftingSkill implements ItemCraftor
 			int resourceType=RawMaterial.CODES.FIND_IgnoreCase(ingredient);
 
 			boolean found=false;
-			Vector V=((Container)building).getContents();
+			List<Item> V=((Container)building).getContents();
 			if(resourceType>0)
 			{
 				if(((Drink)building).liquidType()==resourceType)
@@ -282,7 +282,7 @@ public class Alchemy extends CraftingSkill implements ItemCraftor
 				else
 				for(int i=0;i<V.size();i++)
 				{
-					Item I=(Item)V.elementAt(i);
+					Item I=(Item)V.get(i);
 					if(I.material()==resourceType)
 						found=true;
 					else

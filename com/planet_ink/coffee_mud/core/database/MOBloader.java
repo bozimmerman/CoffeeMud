@@ -186,8 +186,8 @@ public class MOBloader
                     if(loc.length()>0)
                     {
                         Item container=(Item)itemNums.get(loc);
-                        if(container!=null)
-                            newItem.setContainer(container);
+                        if(container instanceof Container)
+                            newItem.setContainer((Container)container);
                         else
                             itemLocs.put(newItem,loc);
                     }
@@ -205,9 +205,9 @@ public class MOBloader
                 Item keyItem=(Item)e.nextElement();
                 String location=(String)itemLocs.get(keyItem);
                 Item container=(Item)itemNums.get(location);
-                if(container!=null)
+                if(container instanceof Container)
                 {
-                    keyItem.setContainer(container);
+                    keyItem.setContainer((Container)container);
                     keyItem.recoverPhyStats();
                     container.recoverPhyStats();
                 }
@@ -843,9 +843,9 @@ public class MOBloader
         if(E instanceof Container)
         {
             Container C=(Container)E;
-            Vector contents=C.getContents();
+            List<Item> contents=C.getContents();
             for(int c=0;c<contents.size();c++)
-                addFollowerDependent((Environmental)contents.elementAt(c),list,"@"+myCode+"C");
+                addFollowerDependent((Environmental)contents.get(c),list,"@"+myCode+"C");
         }
 
     }

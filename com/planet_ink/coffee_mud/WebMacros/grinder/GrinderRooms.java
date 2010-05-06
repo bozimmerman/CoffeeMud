@@ -265,7 +265,8 @@ public class GrinderRooms
 	                if(CONTAINER.length()==0) continue;
 	                Item I2=(Item)items.elementAt(i);
 	                Item C2=(Item)CMLib.english().fetchEnvironmental(items,CONTAINER,true);
-	                I2.setContainer(C2);
+	                if(I2 instanceof Container)
+	                	I2.setContainer((Container)C2);
 	            }
 			}
 			else

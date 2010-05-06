@@ -93,13 +93,14 @@ public class Shell extends StdCommand
     	}
     }
     
-    private Vector sortDirsUp(Vector V)
+    private java.util.List<CMFile> sortDirsUp(CMFile[] files)
     {
-    	Vector dirs=new Vector();
+    	Vector<CMFile> dirs=new Vector<CMFile>();
     	CMFile CF=null;
-    	for(int v=V.size()-1;v>=0;v--)
+    	Vector<CMFile> finalList=new Vector<CMFile>();
+    	for(int v=files.length-1;v>=0;v--)
     	{
-    		CF=(CMFile)V.elementAt(v);
+    		CF=files[v];
     		if((CF.isDirectory())&&(CF.exists()))
     		{
     			int x=0;
@@ -119,20 +120,23 @@ public class Shell extends StdCommand
     					break;
     				}
     			}
-    			V.removeElementAt(v);
     		}
+    		else
+    			finalList.add(CF);
+    			
     	}
-    	for(int v=0;v<V.size();v++)
-    		dirs.addElement(V.elementAt(v));
-    	return dirs;
+    	finalList.addAll(dirs);
+    	return finalList;
     }
-    private Vector sortDirsDown(Vector V)
+    
+    private java.util.List<CMFile>  sortDirsDown(CMFile[] files)
     {
-    	Vector dirs=new Vector();
+    	Vector<CMFile> dirs=new Vector<CMFile>();
+    	HashSet<CMFile> dirsH=new HashSet<CMFile>();
     	CMFile CF=null;
-    	for(int v=V.size()-1;v>=0;v--)
+    	for(int v=files.length-1;v>=0;v--)
     	{
-    		CF=(CMFile)V.elementAt(v);
+    		CF=files[v];
     		if((CF.isDirectory())&&(CF.exists()))
     		{
     			int x=0;
@@ -141,6 +145,7 @@ public class Shell extends StdCommand
     				if(x==dirs.size())
     				{
     					dirs.addElement(CF);
+    					dirsH.add(CF);
 						break;
 					}
     				else
@@ -149,15 +154,16 @@ public class Shell extends StdCommand
     				else
     				{
     					dirs.insertElementAt(CF,x);
+    					dirsH.add(CF);
     					break;
     				}
     			}
-    			V.removeElementAt(v);
     		}
     	}
-    	for(int d=0;d<dirs.size();d++)
-    		V.addElement(dirs.elementAt(d));
-    	return V;
+    	for(CMFile F : files)
+    		if(!dirsH.contains(F))
+	    		dirs.addElement(F);
+    	return dirs;
     }
     
     
@@ -293,10 +299,9 @@ public class Shell extends StdCommand
             if((dirs.length==1)&&(!target.trim().startsWith("::")&&(!target.trim().startsWith("//"))))
                 target=(dirs[0].isLocalFile())?"//"+target.trim():"::"+target.trim();
             CMFile DD=new CMFile(pwd,target,mob,false);
-            Vector ddirs=sortDirsUp(CMParms.makeVector(dirs));
-            for(int d=0;d<ddirs.size();d++)
+            java.util.List<CMFile> ddirs=sortDirsUp(dirs);
+            for(CMFile SF: ddirs)
             {
-                CMFile SF=(CMFile)ddirs.elementAt(d);
                 if((SF==null)||(!SF.exists())){ mob.tell("^xError: source "+desc(SF)+" does not exist!^N"); return false;}
                 if(!SF.canRead()){mob.tell("^xError: access denied to source "+desc(SF)+"!^N"); return false;}
                 if((SF.isDirectory())&&(!opts.preservePaths))
@@ -395,10 +400,10 @@ public class Shell extends StdCommand
                 mob.tell("^xError: no files matched^N");
                 return false;
             }
-            Vector ddirs=sortDirsDown(CMParms.makeVector(dirs));
+            java.util.List<CMFile> ddirs=sortDirsDown(dirs);
             for(int d=0;d<ddirs.size();d++)
             {
-                CMFile CF=(CMFile)ddirs.elementAt(d);
+                CMFile CF=(CMFile)ddirs.get(d);
                 if((CF==null)||(!CF.exists()))
                 {
                     mob.tell("^xError: "+desc(CF)+" does not exist!^N");
@@ -745,11 +750,11 @@ public class Shell extends StdCommand
             if((dirs.length==1)&&(!target.trim().startsWith("::")&&(!target.trim().startsWith("//"))))
                 target=(dirs[0].isLocalFile())?"//"+target.trim():"::"+target.trim();
             CMFile DD=new CMFile(pwd,target,mob,false);
-            Vector ddirs=sortDirsUp(CMParms.makeVector(dirs));
-            Vector dirsLater=new Vector();
+            java.util.List<CMFile> ddirs=sortDirsUp(dirs);
+            java.util.List<CMFile> dirsLater=new Vector<CMFile>();
             for(int d=0;d<ddirs.size();d++)
             {
-                CMFile SF=(CMFile)ddirs.elementAt(d);
+                CMFile SF=(CMFile)ddirs.get(d);
                 if((SF==null)||(!SF.exists())){ mob.tell("^xError: source "+desc(SF)+" does not exist!^N"); return false;}
                 if(!SF.canRead()){mob.tell("^xError: access denied to source "+desc(SF)+"!^N"); return false;}
                 if((SF.isDirectory())&&(!opts.preservePaths))
@@ -801,7 +806,7 @@ public class Shell extends StdCommand
 	                    mob.tell("^xWarning: failed to mkdir "+desc(DF)+" ^N");
 	                else
 	                    mob.tell(desc(SF)+" copied to "+desc(DF));
-	                dirsLater.addElement(SF);
+	                dirsLater.add(SF);
                 }
                 else
                 {
@@ -818,10 +823,10 @@ public class Shell extends StdCommand
 	                }
                 }
             }
-            dirsLater=sortDirsDown(dirsLater);
+            dirsLater=sortDirsDown(dirsLater.toArray(new CMFile[0]));
             for(int d=0;d<dirsLater.size();d++)
             {
-            	CMFile CF=(CMFile)dirsLater.elementAt(d);
+            	CMFile CF=(CMFile)dirsLater.get(d);
                 if((!CF.delete())&&(CF.exists()))
                 {
                 	mob.tell("^xError: Unable to delete dir "+desc(CF));

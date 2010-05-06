@@ -143,9 +143,9 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			{
 				if((cookingPot!=null)&&(finalRecipe!=null)&&(building!=null))
 				{
-					Vector V=cookingPot.getContents();
+					List<Item> V=cookingPot.getContents();
 					for(int v=0;v<V.size();v++)
-						((Item)V.elementAt(v)).destroy();
+						((Item)V.get(v)).destroy();
 					if((cookingPot instanceof Drink)&&(building instanceof Drink))
 						((Drink)cookingPot).setLiquidRemaining(0);
 					if(!aborted)
@@ -196,10 +196,10 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				h.put(RawMaterial.CODES.NAME(((Drink)pot).liquidType())+"/",Integer.valueOf(((Drink)pot).liquidRemaining()/10));
 		}
 		if(pot.owner()==null) return h;
-		Vector V=pot.getContents();
+		List<Item> V=pot.getContents();
 		for(int v=0;v<V.size();v++)
 		{
-			Item I=(Item)V.elementAt(v);
+			Item I=(Item)V.get(v);
 			String ing="Unknown";
 			if(I instanceof RawMaterial)
 				ing=RawMaterial.CODES.NAME(I.material());
@@ -378,13 +378,13 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		return hc*hc*multiplyer;
 	}
 
-	public Item buildItem(MOB mob, Vector finalRecipe, Vector contents)
+	public Item buildItem(MOB mob, Vector finalRecipe, List<Item> contents)
 	{
 		String replaceName=((String)finalRecipe.elementAt(RCP_MAININGR));
 		if(contents!=null)
 		for(int v=0;v<contents.size();v++)
 		{
-			Item I=(Item)contents.elementAt(v);
+			Item I=(Item)contents.get(v);
 			if((I instanceof RawMaterial)
 			&&(RawMaterial.CODES.NAME(I.material()).equalsIgnoreCase((String)finalRecipe.elementAt(RCP_MAININGR))))
 			{
@@ -426,7 +426,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				if(contents!=null)
 				for(int v=0;v<contents.size();v++)
 				{
-					Item I=(Item)contents.elementAt(v);
+					Item I=(Item)contents.get(v);
 					if((I.material()==RawMaterial.RESOURCE_HERBS)&&(honorHerbs()))
 						timesTwo=true;
 					else
@@ -443,7 +443,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
             if(contents!=null)
 			for(int v=0;v<contents.size();v++)
 			{
-				Item I=(Item)contents.elementAt(v);
+				Item I=(Item)contents.get(v);
 				if((I.material()!=RawMaterial.RESOURCE_HERBS)||(!honorHerbs()))
 					food.basePhyStats().setWeight(food.basePhyStats().weight()+((I.basePhyStats().weight())/finalAmount));
                 if(I instanceof Food)
@@ -476,7 +476,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
             if(contents!=null)
 			for(int v=0;v<contents.size();v++)
 			{
-				Item I=(Item)contents.elementAt(v);
+				Item I=(Item)contents.get(v);
 				drink.basePhyStats().setWeight(drink.basePhyStats().weight()+((I.basePhyStats().weight())/finalAmount));
 				if(I instanceof Food)
 					drink.setLiquidRemaining(drink.liquidRemaining()+((Food)I).nourishment());
@@ -517,7 +517,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
                 if(contents!=null)
 				for(int v=0;v<contents.size();v++)
 				{
-					Item I=(Item)contents.elementAt(v);
+					Item I=(Item)contents.get(v);
 					drink.basePhyStats().setWeight(drink.basePhyStats().weight()+((I.basePhyStats().weight())/finalAmount));
 					drink.setLiquidRemaining(drink.liquidRemaining()+rem);
                     if((I instanceof Drink)&&((((Drink)I).liquidType()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))

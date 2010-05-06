@@ -79,9 +79,9 @@ public interface EnglishParsing extends CMLibrary
 	public Object[] parseMoneyStringSDL(MOB mob, String amount, String correctCurrency);
     public String matchAnyCurrencySet(String itemID);
     public double matchAnyDenomination(String currency, String itemID);
-    public Item possibleRoomGold(MOB seer, Room room, Item container, String itemID);
+    public Item possibleRoomGold(MOB seer, Room room, Container container, String itemID);
     public Item bestPossibleGold(MOB mob, Container container, String itemID);
-    public Vector possibleContainers(MOB mob, Vector commands, int wornFilter, boolean withContentOnly);
+    public List<Container> possibleContainers(MOB mob, Vector commands, int wornFilter, boolean withContentOnly);
     public Item possibleContainer(MOB mob, Vector commands, boolean withStuff, int wornFilter);
     public String returnTime(long millis, long ticks);
     public int calculateMaxToGive(MOB mob, Vector commands, boolean breakPackages, Environmental checkWhat, boolean getOnly);

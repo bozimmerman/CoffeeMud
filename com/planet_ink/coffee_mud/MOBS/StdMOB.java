@@ -325,7 +325,7 @@ public class StdMOB implements MOB
 			&&(!isMine(I.container())))
 				for(int ii=0;ii<M.numItems();ii++)
 					if((M.getItem(ii)==I.container())&&(ii<numItems()))
-					{ I.setContainer(getItem(ii)); break;}
+					{ I.setContainer((Container)getItem(ii)); break;}
 		}
 		Ability A=null;
 		for(int i=0;i<M.numLearnedAbilities();i++)

@@ -101,7 +101,7 @@ public class Addictions extends StdAbility
             &&(msg.target() instanceof Container)
             &&(CMath.bset(((Item)msg.target()).rawProperLocationBitmap(),Wearable.WORN_MOUTH))
             &&(((Container)msg.target()).getContents().size()>0)
-            &&(CMLib.english().containsString(((Environmental)((Container)msg.target()).getContents().firstElement()).Name(),text())))
+            &&(CMLib.english().containsString(((Environmental)((Container)msg.target()).getContents().get(0)).Name(),text())))
                 puffCredit=(Item)msg.target();
         }
         return true;

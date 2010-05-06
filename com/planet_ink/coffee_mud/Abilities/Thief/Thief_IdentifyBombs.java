@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class Thief_IdentifyBombs extends ThiefSkill
 {
 	public String ID() { return "Thief_IdentifyBombs"; }
@@ -76,9 +75,9 @@ public class Thief_IdentifyBombs extends ThiefSkill
 		if((P instanceof Container)&&(CMLib.flags().canBeSeenBy(P,mob)))
 		{
 			Container C=(Container)P;
-			Vector V=C.getContents();
+			List<Item> V=C.getContents();
 			for(int v=0;v<V.size();v++)
-				if(trapCheck((Item)V.elementAt(v)).length()>0)
+				if(trapCheck((Item)V.get(v)).length()>0)
 				{
 					if(CMLib.dice().rollPercentage()==1)
 					{

@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.util.List;
 
 /* 
    Copyright 2000-2010 Bo Zimmerman
@@ -73,10 +74,10 @@ public class DrinkCmd extends StdCommand
 		else
 		if(thisThang instanceof Container)
 		{
-			Vector V=((Container)thisThang).getContents();
+			List<Item> V=((Container)thisThang).getContents();
 			for(int v=0;v<V.size();v++)
 			{
-				Item I=(Item)V.elementAt(v);
+				Item I=(Item)V.get(v);
 				if((I instanceof Drink)&&(I instanceof RawMaterial))
 				{
 					tool=thisThang;

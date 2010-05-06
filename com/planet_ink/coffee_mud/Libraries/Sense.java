@@ -824,14 +824,16 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		    return true;
 		if(E instanceof Item)
 		{
-			Vector V=(E instanceof Container)?((Container)E).getContents():new Vector();
-			if(!V.contains(E)) V.addElement(E);
+			List<Item> V=new Vector<Item>();
+			if(E instanceof Container)
+				V.addAll(((Container)E).getContents());
+			if(!V.contains(E)) V.add((Item)E);
 			long totalWeight=0;
 			long totalFloatilla=0;
 			RawMaterial.CODES codes = RawMaterial.CODES.instance();
 			for(int v=0;v<V.size();v++)
 			{
-				Item I=(Item)V.elementAt(v);
+				Item I=(Item)V.get(v);
 				totalWeight+=I.basePhyStats().weight();
 				totalFloatilla+=totalWeight*codes.bouancy(I.material());
 			}

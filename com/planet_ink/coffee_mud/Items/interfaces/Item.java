@@ -45,7 +45,7 @@ public interface Item extends Rider, DBIdentifiable, Wearable, PhysicalAgent, Re
      * point to the container object 
      * @return The item in which  it is contained, or null.
      */
-	public Item container();
+	public Container container();
     /** 
      * Change  the container where the item is located.  Either null for
      * plain site (or contained on person), or will
@@ -53,14 +53,14 @@ public interface Item extends Rider, DBIdentifiable, Wearable, PhysicalAgent, Re
      * @see Container
      * @param newLocation Container item in which this item is contained.
      */
-	public void setContainer(Item newLocation);
+	public void setContainer(Container newLocation);
     /**
      * If an item is in a container, which is in a container, etc, this will
      * return the "highest" or ultimate container in which this item is located.
      * If an item is in a container which is in plain view, it will simply 
-     * return container().  As in container(), null means the item is in plain view.
+     * return container().  If the item is not in a container, it will return itself.
      * @see Container
-     * @return the highest level container in which  this item is found.
+     * @return the highest level container in which  this item is found, or itself
      */
 	public Item ultimateContainer();
     /**

@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.util.List;
 import java.util.Vector;
 
 
@@ -78,10 +79,10 @@ public class Chant_Dehydrate extends Chant
 					{
 						if(target instanceof Container)
 						{
-							Vector V=((Container)target).getContents();
+							List<Item> V=((Container)target).getContents();
 							for(int i=0;i<V.size();i++)
 							{
-								Item I=(Item)V.elementAt(i);
+								Item I=(Item)V.get(i);
 								if(I instanceof Drink)
 								{
 									if(((Drink)I).liquidRemaining()<10000)

@@ -521,7 +521,7 @@ public class RoomLoader
 		return null;
 	}
 
-	private void fixItemKeys(Hashtable itemLocs, Hashtable itemNums)
+	private void fixItemKeys(Hashtable<Item,String> itemLocs, Hashtable<String, PhysicalAgent> itemNums)
 	{
 		for(Enumeration e=itemLocs.keys();e.hasMoreElements();)
 		{
@@ -534,8 +534,8 @@ public class RoomLoader
 			if(container instanceof Rideable)
 				keyItem.setRiding((Rideable)container);
 			else
-			if(container instanceof Item)
-				keyItem.setContainer((Item)container);
+			if(container instanceof Container)
+				keyItem.setContainer((Container)container);
 		}
 	}
 
@@ -560,11 +560,11 @@ public class RoomLoader
 		}
 	}
 
-	private void fixContentContainers(Hashtable content, Hashtable stuff, String roomID, Room room, boolean debug)
+	private void fixContentContainers(Hashtable<String,PhysicalAgent> content, Hashtable<String,Hashtable> stuff, String roomID, Room room, boolean debug)
 	{
 		String lastName=null;
-		Hashtable itemLocs=null;
-		Hashtable mobRides=null;
+		Hashtable<Item,String> itemLocs=null;
+		Hashtable<MOB, String> mobRides=null;
         if(room != null)
     		for(Enumeration i=content.elements();i.hasMoreElements();)
     		{
@@ -582,8 +582,8 @@ public class RoomLoader
     				((MOB)E).bringToLife(room,true);
                 }
     		}
-		itemLocs=(Hashtable)stuff.get("LOCSFOR"+roomID.toUpperCase());
-		mobRides=(Hashtable)stuff.get("RIDESFOR"+roomID.toUpperCase());
+		itemLocs=(Hashtable<Item,String>)stuff.get("LOCSFOR"+roomID.toUpperCase());
+		mobRides=(Hashtable<MOB, String>)stuff.get("RIDESFOR"+roomID.toUpperCase());
 		if(itemLocs!=null)
 		{
 			fixItemKeys(itemLocs,content);
@@ -609,11 +609,11 @@ public class RoomLoader
 		if(debug||(Log.debugChannelOn()&&(CMSecurity.isDebugging("DBROOMS"))))
 			Log.debugOut("RoomLoader","Reading content of "+((thisRoomID!=null)?thisRoomID:"ALL"));
 		
-		Hashtable stuff=new Hashtable();
-        Hashtable itemNums=null;
-        Hashtable cataData=null;
-        Hashtable itemLocs=null;
-		Hashtable mobRides=null;
+		Hashtable<String,Hashtable> stuff=new Hashtable<String,Hashtable>();
+        Hashtable<String,PhysicalAgent> itemNums=null;
+        Hashtable<String,String> cataData=null;
+        Hashtable<Item,String> itemLocs=null;
+		Hashtable<MOB, String> mobRides=null;
 		
 		boolean catalog=((thisRoomID!=null)&&(thisRoomID.startsWith("CATALOG_")));
 
@@ -633,16 +633,16 @@ public class RoomLoader
 				String roomID=DBConnections.getRes(R,"CMROID");
 				if((unloadedRooms!=null)&&(unloadedRooms.contains(roomID)))
 					continue;
-				itemNums=(Hashtable)stuff.get("NUMSFOR"+roomID.toUpperCase());
+				itemNums=(Hashtable<String,PhysicalAgent>)stuff.get("NUMSFOR"+roomID.toUpperCase());
 				if(itemNums==null)
 				{
-					itemNums=new Hashtable();
+					itemNums=new Hashtable<String,PhysicalAgent>();
 					stuff.put("NUMSFOR"+roomID.toUpperCase(),itemNums);
 				}
-				itemLocs=(Hashtable)stuff.get("LOCSFOR"+roomID.toUpperCase());
+				itemLocs=(Hashtable<Item,String>)stuff.get("LOCSFOR"+roomID.toUpperCase());
 				if(itemLocs==null)
 				{
-					itemLocs=new Hashtable();
+					itemLocs=new Hashtable<Item,String>();
 					stuff.put("LOCSFOR"+roomID.toUpperCase(),itemLocs);
 				}
 				String itemNum=DBConnections.getRes(R,"CMITNM");
@@ -657,9 +657,9 @@ public class RoomLoader
 					String loc=DBConnections.getResQuietly(R,"CMITLO");
 					if(loc.length()>0)
 					{
-						Item container=(Item)itemNums.get(loc);
-						if(container!=null)
-							newItem.setContainer(container);
+						PhysicalAgent container=itemNums.get(loc);
+						if(container instanceof Container)
+							newItem.setContainer((Container)container);
 						else
 							itemLocs.put(newItem,loc);
 					}
@@ -722,16 +722,16 @@ public class RoomLoader
 				String NUMID=DBConnections.getRes(R,"CMCHNM");
 				String MOBID=DBConnections.getRes(R,"CMCHID");
 
-				itemNums=(Hashtable)stuff.get("NUMSFOR"+roomID.toUpperCase());
+				itemNums=(Hashtable<String,PhysicalAgent>)stuff.get("NUMSFOR"+roomID.toUpperCase());
 				if(itemNums==null)
 				{
-					itemNums=new Hashtable();
+					itemNums=new Hashtable<String,PhysicalAgent>();
 					stuff.put("NUMSFOR"+roomID.toUpperCase(),itemNums);
 				}
-				mobRides=(Hashtable)stuff.get("RIDESFOR"+roomID.toUpperCase());
+				mobRides=(Hashtable<MOB, String>)stuff.get("RIDESFOR"+roomID.toUpperCase());
 				if(mobRides==null)
 				{
-					mobRides=new Hashtable();
+					mobRides=new Hashtable<MOB, String>();
 					stuff.put("RIDESFOR"+roomID.toUpperCase(),mobRides);
 				}
 
@@ -854,7 +854,7 @@ public class RoomLoader
 				CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Populating Rooms ("+(currentRecordPos)+" of "+recordCount+")");
 			Room room=(Room)e.nextElement();
 			if(debug) Log.debugOut("RoomLoader","Populating room: "+room.roomID());
-			itemNums=(Hashtable)stuff.get("NUMSFOR"+room.roomID().toUpperCase());
+			itemNums=(Hashtable<String,PhysicalAgent>)stuff.get("NUMSFOR"+room.roomID().toUpperCase());
 			if(itemNums!=null)
 				fixContentContainers(itemNums,stuff,room.roomID(),room,debug);
 		}

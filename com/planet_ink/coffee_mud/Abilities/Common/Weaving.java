@@ -121,7 +121,8 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 							if(key!=null)
 							{
 								dropAWinner(mob,key);
-								key.setContainer(building);
+								if(building instanceof Container)
+									key.setContainer((Container)building);
 							}
 						}
 					}

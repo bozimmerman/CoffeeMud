@@ -89,7 +89,7 @@ public class Cow extends StdMOB implements Drink
 		&&(msg.target() instanceof Container)
 		&&(((Container)msg.target()).capacity()>0))
 		{
-			Item container=(Item)msg.target();
+			Container container=(Container)msg.target();
 			Item I=CMClass.getItem("GenLiquidResource");
 			I.setName("some milk");
 			I.setDisplayText("some milk has been left here.");

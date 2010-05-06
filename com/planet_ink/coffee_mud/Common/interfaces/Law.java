@@ -204,7 +204,7 @@ public interface Law extends CMCommon
      * @param A the legal Area to look for a treasury in.
      * @return the two dimensional array of objects (or nulls)
      */
-    public Environmental[] getTreasuryNSafe(Area A);
+    public TreasurySet getTreasuryNSafe(Area A);
     
     /**
      * Combined with otherBits, this method returns the
@@ -569,6 +569,19 @@ public interface Law extends CMCommon
      * @return the number of ticks the punishment perscribes
      */
     public int jailTimes(int which);
+    
+    /**
+     * For the getTreasuryNSafe, this class stores
+     * the location of the treasury, for taxing purposes.
+     * @author bzimmerman
+     *
+     */
+    public class TreasurySet
+    {
+    	public Room room;
+    	public Container container;
+    	public TreasurySet(Room R, Container C){ room=R; container=C;}
+    }
     
     /** A base punishment code meaning the officer warns the criminal */
 	public static final int PUNISHMENT_WARN=0;

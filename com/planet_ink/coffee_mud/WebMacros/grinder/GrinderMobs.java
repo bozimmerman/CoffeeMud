@@ -260,7 +260,8 @@ public class GrinderMobs
                 if(CONTAINER.length()==0) continue;
                 Item I2=(Item)items.elementAt(i);
                 Item C2=(Item)CMLib.english().fetchEnvironmental(items,CONTAINER,true);
-                I2.setContainer(C2);
+                if(C2 instanceof Container)
+                	I2.setContainer((Container)C2);
             }
 			for(int i=0;i<allitems.size();i++)
 			{

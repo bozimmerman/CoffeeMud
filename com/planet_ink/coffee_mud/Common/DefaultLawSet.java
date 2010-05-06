@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Law.TreasurySet;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -142,11 +143,12 @@ public class DefaultLawSet implements Law
             }
     }
 
-    public Environmental[] getTreasuryNSafe(Area A)
+    public TreasurySet getTreasuryNSafe(Area A)
     {
         Room treasuryR=null;
-        Item container=null;
+        Container container=null;
         String tres=(String)taxLaws().get("TREASURY");
+        Item I=null;
         if((tres!=null)&&(tres.length()>0))
         {
             Vector V=CMParms.parseSemicolons(tres,false);
@@ -160,16 +162,21 @@ public class DefaultLawSet implements Law
                 {
                     treasuryR=CMLib.map().getRoom(room);
                     if(treasuryR!=null)
-                        container=treasuryR.findItem(item);
+                    {
+                    	I=treasuryR.findItem(item);
+                    	if(I instanceof Container)
+                        container=(Container)I;
+                    }
                 }
                 else
                 if(item.length()>0)
                 for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
                 {
                     R=(Room)e.nextElement();
-                    if(R.findItem(item) instanceof Container)
+                    I=R.findItem(item);
+                    if(I instanceof Container)
                     {
-                        container=R.findItem(item);
+                        container=(Container)I;
                         treasuryR=R;
                         break;
                     }
@@ -178,10 +185,7 @@ public class DefaultLawSet implements Law
                     treasuryR=A.getRandomMetroRoom();
             }
         }
-        Environmental[] ES=new Environmental[2];
-        ES[0]=treasuryR;
-        ES[1]=container;
-        return ES;
+        return new Law.TreasurySet(treasuryR,container);
     }
 
     public void propertyTaxTick(Area A, boolean debugging)
@@ -206,9 +210,9 @@ public class DefaultLawSet implements Law
                 D.addElement(T);
             }
             titles=null;
-            Environmental[] Treas=getTreasuryNSafe(A);
-            Room treasuryR=(Room)Treas[0];
-            Item container=(Item)Treas[1];
+            Law.TreasurySet treas=getTreasuryNSafe(A);
+            Room treasuryR=treas.room;
+            Container container=treas.container;
             String[] evasionBits=(String[])taxLaws().get("TAXEVASION");
 
             for(Enumeration e=owners.keys();e.hasMoreElements();)

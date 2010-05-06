@@ -810,7 +810,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					Item parentI=(Item)identTable.get(loc);
 					if(parentI!=null)
 					{
-						childI.setContainer(parentI);
+						if(parentI instanceof Container)
+							childI.setContainer((Container)parentI);
 						childI.recoverPhyStats();
 						parentI.recoverPhyStats();
 					}
@@ -1881,8 +1882,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			Log.errOut("CoffeeMaker","Error parsing 'INVEN' of "+identifier(M,null)+".  Load aborted");
 			return;
 		}
-		Hashtable IIDmap=new Hashtable();
-		Hashtable LOCmap=new Hashtable();
+		Hashtable<String,Container> IIDmap=new Hashtable<String,Container>();
+		Hashtable<Item,String> LOCmap=new Hashtable<Item,String>();
 		for(int i=0;i<V.size();i++)
 		{
 			XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)V.elementAt(i);
@@ -1906,7 +1907,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			}
 			long wornCode=CMLib.xml().getLongFromPieces(idat,"IWORN");
 			if((newOne instanceof Container)&&(((Container)newOne).capacity()>0))
-				IIDmap.put(CMLib.xml().getValFromPieces(idat,"IID"),newOne);
+				IIDmap.put(CMLib.xml().getValFromPieces(idat,"IID"),(Container)newOne);
 			String ILOC=CMLib.xml().getValFromPieces(idat,"ILOC");
 			M.addItem(newOne);
 			if(ILOC.length()>0)
@@ -1923,7 +1924,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			{
 				String ILOC=(String)LOCmap.get(item);
 				if(ILOC!=null)
-					item.setContainer((Item)IIDmap.get(ILOC));
+					item.setContainer(IIDmap.get(ILOC));
 				else
 				if(item.amWearingAt(Wearable.WORN_HELD)
 				&&(!item.rawLogicalAnd())
@@ -1947,8 +1948,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			Log.errOut("CoffeeMaker","Error parsing 'STORE' of "+identifier(E,null)+".  Load aborted");
 			return;
 		}
-		Hashtable IIDmap=new Hashtable();
-		Hashtable LOCmap=new Hashtable();
+		Hashtable<String,Container> IIDmap=new Hashtable<String,Container>();
+		Hashtable<Item,String> LOCmap=new Hashtable<Item,String>();
 		for(int i=0;i<V.size();i++)
 		{
 			XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)V.elementAt(i);
@@ -1987,10 +1988,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(newOne instanceof Item)
 			{
 				if(newOne instanceof Container)
-					IIDmap.put(CMLib.xml().getValFromPieces(idat,"IID"),newOne);
+					IIDmap.put(CMLib.xml().getValFromPieces(idat,"IID"),(Container)newOne);
 				String ILOC=CMLib.xml().getValFromPieces(idat,"ILOC");
 				if(ILOC.length()>0)
-					LOCmap.put(ILOC,newOne);
+					LOCmap.put((Item)newOne,ILOC);
 			}
 			setPropertiesStr(newOne,idat,true);
 			if((newOne.basePhyStats().rejuv()>0)&&(newOne.basePhyStats().rejuv()<Integer.MAX_VALUE))
@@ -2003,9 +2004,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(stE instanceof Item)
 			{
 				Item item=(Item)stE;
-				String ILOC=(String)LOCmap.get(item);
+				String ILOC=LOCmap.get(item);
 				if(ILOC!=null)
-					item.setContainer((Item)IIDmap.get(ILOC));
+					item.setContainer(IIDmap.get(ILOC));
 			}
 		}
 		if(variableEq) ((MOB)E).flagVariableEq();

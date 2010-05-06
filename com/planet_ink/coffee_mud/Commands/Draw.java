@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 import java.util.*;
+import java.util.List;
 
 /* 
    Copyright 2000-2010 Bo Zimmerman
@@ -53,9 +54,9 @@ public class Draw extends Get
 			&&(((Container)I).capacity()>0)
 			&&(((Container)I).containTypes()!=Container.CONTAIN_ANYTHING))
 			{
-				Vector contents=((Container)I).getContents();
+				List<Item> contents=((Container)I).getContents();
 				for(int c=0;c<contents.size();c++)
-					if(contents.elementAt(c) instanceof Weapon)
+					if(contents.get(c) instanceof Weapon)
 					{
 						sheaths.addElement(I);
 						break;
@@ -103,7 +104,7 @@ public class Draw extends Get
 		}
 
 		boolean allFlag=false;
-		Vector containers=new Vector();
+		List<Container> containers=new Vector();
 		String containerName="";
 		String whatToGet="";
 		int c=0;
@@ -123,7 +124,7 @@ public class Draw extends Get
 				   &&(I.container()!=null)
 				   &&(sheaths.contains(I.container())))
 				{
-					containers.addElement(I.container());
+					containers.add(I.container());
 					whatToGet=I.name();
 					break;
 				}
@@ -154,8 +155,8 @@ public class Draw extends Get
 		while((c<containers.size())||(containers.size()==0))
 		{
 			Vector V=new Vector();
-			Item container=null;
-			if(containers.size()>0) container=(Item)containers.elementAt(c++);
+			Container container=null;
+			if(containers.size()>0) container=containers.get(c++);
 			int addendum=1;
 			String addendumStr="";
 			boolean doBugFix = true;
@@ -208,8 +209,8 @@ public class Draw extends Get
 		{
 			if(containers.size()>0)
 			{
-				Item container=(Item)containers.elementAt(0);
-				if(((Container)container).isOpen())
+				Container container=containers.get(0);
+				if(container.isOpen())
 					mob.tell("You don't see that in "+container.name()+".");
 				else
 					mob.tell(container.name()+" is closed.");

@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class StdTub extends StdRideable implements Drink
 {
 	public String ID(){	return "StdTub";}
@@ -87,11 +86,11 @@ public class StdTub extends StdRideable implements Drink
             return false;
         if(liquidRemaining()<1)
         {
-            Vector V=getContents();
+        	List<Item> V=getContents();
             for(int v=0;v<V.size();v++)
-                if((V.elementAt(v) instanceof Item)
-                &&(V.elementAt(v) instanceof Drink)
-                &&((((Item)V.elementAt(v)).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
+                if((V.get(v) instanceof Item)
+                &&(V.get(v) instanceof Drink)
+                &&((((Item)V.get(v)).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
                     return true;
             return false;
         }

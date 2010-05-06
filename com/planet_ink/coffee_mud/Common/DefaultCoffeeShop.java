@@ -405,7 +405,7 @@ public class DefaultCoffeeShop implements CoffeeShop
                     ((Item)I).unWear();
                     V.addElement(I);
                     storeInventory.removeElement(I);
-                    ((Item)I).setContainer((Item)product);
+                    ((Item)I).setContainer(C);
                 }
                 if(a==storeInventory.size())
                     i++;

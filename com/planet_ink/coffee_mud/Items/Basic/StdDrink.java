@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class StdDrink extends StdContainer implements Drink,Item
 {
 	public String ID(){	return "StdDrink";}
@@ -79,12 +78,12 @@ public class StdDrink extends StdContainer implements Drink,Item
 	protected int totalDrinkContained()
 	{
 		int total = amountOfLiquidRemaining;
-        Vector V=getContents();
+        List<Item> V=getContents();
         for(int v=0;v<V.size();v++)
-            if((V.elementAt(v) instanceof Item)
-            &&(V.elementAt(v) instanceof Drink)
-            &&((((Item)V.elementAt(v)).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
-                total += ((Drink)V.elementAt(v)).liquidRemaining();
+            if((V.get(v) instanceof Item)
+            &&(V.get(v) instanceof Drink)
+            &&((((Item)V.get(v)).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
+                total += ((Drink)V.get(v)).liquidRemaining();
         return total;
 	}
 	
@@ -98,11 +97,11 @@ public class StdDrink extends StdContainer implements Drink,Item
             return false;
 		if(liquidRemaining()<1)
         {
-            Vector V=getContents();
+			List<Item> V=getContents();
             for(int v=0;v<V.size();v++)
-                if((V.elementAt(v) instanceof Item)
-                &&(V.elementAt(v) instanceof Drink)
-                &&((((Item)V.elementAt(v)).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
+                if((V.get(v) instanceof Item)
+                &&(V.get(v) instanceof Drink)
+                &&((((Item)V.get(v)).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
                     return true;
             return false;
         }
@@ -147,11 +146,11 @@ public class StdDrink extends StdContainer implements Drink,Item
                 &&((!(msg.tool() instanceof Drink))||((Drink)msg.tool()).liquidRemaining()<=0)
                 &&(msg.tool()!=msg.target()))
                 {
-                    Vector V=((Container)msg.tool()).getContents();
+                	List<Item> V=((Container)msg.tool()).getContents();
                     Item I=null;
                     for(int i=0;i<V.size();i++)
                     {
-                        I=(Item)V.elementAt(i);
+                        I=(Item)V.get(i);
                         if(I instanceof Drink)
                             break;
                     }
@@ -236,14 +235,11 @@ public class StdDrink extends StdContainer implements Drink,Item
 						setLiquidType(thePuddle.liquidType());
 						if((thePuddle instanceof RawMaterial)&&(((RawMaterial)thePuddle).container()!=null))
 						{
-							Vector V = this.getContents();
+							List<Item> V = this.getContents();
 							Drink addHereI = null;
-							for(Enumeration e = V.elements();e.hasMoreElements();)
-							{
-								Item I = (Item)e.nextElement();
+							for(Item I : V)
 								if((I instanceof Drink) && (I instanceof RawMaterial) && (I.Name().equals(thePuddle.Name())))
 									addHereI=(Drink)I;
-							}
 							if(addHereI==null)
 							{
 								addHereI=(Drink)thePuddle.copyOf();

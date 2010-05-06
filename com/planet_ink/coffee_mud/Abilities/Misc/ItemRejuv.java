@@ -112,8 +112,8 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 				for(int c=0;c<ccontents.size();c++)
 				{
 					Item thatItem=(Item)ccontents.elementAt(c);
-					if(thatItem.container()==thisItem)
-						thatItem.setContainer(newThisItem);
+					if((thatItem.container()==thisItem)&&(newThisItem instanceof Container))
+						thatItem.setContainer((Container)newThisItem);
 				}
 				thisItem=newThisItem;
 				if(thisItem instanceof Container)

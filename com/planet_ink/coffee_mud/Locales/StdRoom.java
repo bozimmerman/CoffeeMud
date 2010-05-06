@@ -164,7 +164,7 @@ public class StdRoom implements Room
 			&&(!isContent(I2.container())))
 				for(int ii=0;ii<R.numItems();ii++)
 					if((R.getItem(ii)==I2.container())&&(ii<numItems()))
-					{I2.setContainer(getItem(ii)); break;}
+					{I2.setContainer((Container)getItem(ii)); break;}
 		}
 		for(int m=0;m<R.numInhabitants();m++)
 		{
@@ -1093,7 +1093,7 @@ public class StdRoom implements Room
 		if(item.owner()==null) return;
 		Environmental o=item.owner();
 		
-		Vector V=new Vector();
+		List<Item> V=new Vector();
 		if(item instanceof Container)
 			V=((Container)item).getContents();
 		if(o instanceof MOB)((MOB)o).delItem(item);
@@ -1102,7 +1102,7 @@ public class StdRoom implements Room
 		addItem(item, expire);
 		for(int v=0;v<V.size();v++)
 		{
-			Item i2=(Item)V.elementAt(v);
+			Item i2=(Item)V.get(v);
 			if(o instanceof MOB) ((MOB)o).delItem(i2);
 			if(o instanceof Room) ((Room)o).delItem(i2);
 			addItem(i2);

@@ -100,9 +100,9 @@ public class Prayer_SenseTraps extends Prayer
 		if((P instanceof Container)&&(CMLib.flags().canBeSeenBy(P,mob)))
 		{
 			Container C=(Container)P;
-			Vector V=C.getContents();
+			List<Item> V=C.getContents();
 			for(int v=0;v<V.size();v++)
-				if(trapCheck((Item)V.elementAt(v)).length()>0)
+				if(trapCheck((Item)V.get(v)).length()>0)
 					msg.append(C.name()+" contains something trapped.\n");
 		}
 		else

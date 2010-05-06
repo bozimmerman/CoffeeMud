@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 import java.util.*;
+import java.util.List;
 
 /* 
    Copyright 2000-2010 Bo Zimmerman
@@ -157,7 +158,7 @@ public class Empty extends Drop
 		{
 			Container C=(Container)V.elementAt(v);
 			if(C==target) continue;
-			Vector V2=C.getContents();
+			List<Item> V2=C.getContents();
             
             boolean skipMessage=false;
             if((C instanceof Drink)&&(((Drink)C).containsDrink()))
@@ -182,7 +183,7 @@ public class Empty extends Drop
                 if(!skipMessage) R.send(mob,msg);
 				for(int v2=0;v2<V2.size();v2++)
 				{
-					Item I=(Item)V2.elementAt(v2);
+					Item I=(Item)V2.get(v2);
 					if(I instanceof Coins) ((Coins)I).setContainer(null);
 					if(((I.container()==null)||(Get.get(mob,C,I,true,null,true)))
 					&&(I.container()==null))

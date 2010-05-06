@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class Prop_NoPurge extends Property
 {
 	public String ID() { return "Prop_NoPurge"; }
@@ -59,9 +58,9 @@ public class Prop_NoPurge extends Property
 				if(((Container)affected).owner() instanceof Room)
 				{
 					((Container)affected).setExpirationDate(0);
-					Vector V=((Container)affected).getContents();
+					List<Item> V=((Container)affected).getContents();
 					for(int v=0;v<V.size();v++)
-						((Item)V.elementAt(v)).setExpirationDate(0);
+						((Item)V.get(v)).setExpirationDate(0);
 				}
 			}
 			else

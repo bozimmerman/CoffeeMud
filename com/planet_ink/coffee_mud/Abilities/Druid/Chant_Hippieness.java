@@ -117,7 +117,7 @@ public class Chant_Hippieness extends Chant
 							smoke.recoverPhyStats();
 							smoke.text();
 							mob.addItem(smoke);
-							smoke.setContainer(I);
+							smoke.setContainer((Container)I);
 						}
 					}
 					mob.doCommand(CMParms.parse("WEAR \""+I.Name()+"\""),Command.METAFLAG_FORCED);

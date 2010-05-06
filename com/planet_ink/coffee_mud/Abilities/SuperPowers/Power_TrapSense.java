@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class Power_TrapSense extends SuperPower
 {
 	public String ID() { return "Power_TrapSense"; }
@@ -89,9 +88,9 @@ public class Power_TrapSense extends SuperPower
 		if((P instanceof Container)&&(CMLib.flags().canBeSeenBy(P,mob)))
 		{
 			Container C=(Container)P;
-			Vector V=C.getContents();
+			List<Item> V=C.getContents();
 			for(int v=0;v<V.size();v++)
-				if(trapCheck((Item)V.elementAt(v)).length()>0)
+				if(trapCheck((Item)V.get(v)).length()>0)
 					msg.append(C.name()+" contains something trapped.\n");
 		}
 		else

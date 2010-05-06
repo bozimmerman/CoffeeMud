@@ -55,11 +55,11 @@ public class Chant_Earthpocket extends Chant
 		if(canBeUninvoked())
 		{
 			mob.tell("Your earthpocket fades away, dumping its contents into your inventory!");
-			Vector V=pocket.getContents();
+			List<Item> V=pocket.getContents();
 			for(int v=0;v<V.size();v++)
 			{
-				((Item)V.elementAt(v)).setContainer(null);
-				mob.moveItemTo((Item)V.elementAt(v));
+				((Item)V.get(v)).setContainer(null);
+				mob.moveItemTo((Item)V.get(v));
 			}
 			pocket.destroy();
 			pocket=null;

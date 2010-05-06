@@ -59,8 +59,8 @@ public interface MoneyLibrary extends CMLibrary
     public String nameCurrencyLong(MOB mob, double absoluteValue);
     public String nameCurrencyLong(MOB mob, int absoluteValue);
     public String nameCurrencyLong(String currency, double absoluteValue);
-    public Coins makeBestCurrency(MOB mob,  double absoluteValue, Environmental owner, Item container);
-    public Coins makeBestCurrency(String currency,  double absoluteValue, Environmental owner, Item container);
+    public Coins makeBestCurrency(MOB mob,  double absoluteValue, Environmental owner, Container container);
+    public Coins makeBestCurrency(String currency,  double absoluteValue, Environmental owner, Container container);
     public Coins makeBestCurrency(MOB mob, double absoluteValue);
     public Coins makeCurrency(String currency, double denomination, long numberOfCoins);
     public Coins makeBestCurrency(String currency, double absoluteValue);
@@ -69,8 +69,8 @@ public interface MoneyLibrary extends CMLibrary
     public void addMoney(MOB customer, double absoluteValue);
     public void addMoney(MOB customer, String currency, int absoluteValue);
     public void addMoney(MOB mob, String currency, double absoluteValue);
-    public void addMoney(MOB customer, Item container, String currency, int absoluteValue);
-    public void addMoney(MOB mob, Item container, String currency, double absoluteValue);
+    public void addMoney(MOB customer, Container container, String currency, int absoluteValue);
+    public void addMoney(MOB mob, Container container, String currency, double absoluteValue);
     public void giveSomeoneMoney(MOB recipient, double absoluteValue);
     public void giveSomeoneMoney(MOB recipient, String currency, double absoluteValue);
     public void giveSomeoneMoney(MOB banker, MOB customer, double absoluteValue);
@@ -86,7 +86,7 @@ public interface MoneyLibrary extends CMLibrary
     public void setMoney(MOB mob, String currency, double absoluteAmount);
     public void subtractMoney(MOB mob, double absoluteAmount);
     public void subtractMoney(MOB mob, String currency, double absoluteAmount);
-    public void subtractMoney(MOB mob, Item container, String currency, double absoluteAmount);
+    public void subtractMoney(MOB mob, Container container, String currency, double absoluteAmount);
     public void subtractMoney(MOB mob, double denomination, double absoluteAmount);
     public void subtractMoney(MOB mob, String currency, double denomination, double absoluteAmount);
     public int getMoney(MOB mob);
@@ -110,8 +110,8 @@ public interface MoneyLibrary extends CMLibrary
 	public double getDebtOwed(String name, String owedTo);
 	public void adjustDebt(String name, String owedTo, double adjustAmt, String reason, double interest, long due);
 	public void delAllDebt(String name, String owedTo);
-	public void dropMoney(Room R, Item container, String currency, double absoluteValue);
-	public void removeMoney(Room R, Item container, String currency, double absoluteValue);
+	public void dropMoney(Room R, Container container, String currency, double absoluteValue);
+	public void removeMoney(Room R, Container container, String currency, double absoluteValue);
 	
     public static class MoneyDenomination
     {

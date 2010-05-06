@@ -889,7 +889,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
             for(int i=0;i<V.size();i++)
             {
             	Item I2=(Item)V.elementAt(i);
-            	I2.setContainer(I);
+            	I2.setContainer((Container)I);
             	contents.add(I2);
             }
         }

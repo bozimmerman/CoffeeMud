@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.Items.interfaces.Item;
 import com.planet_ink.coffee_mud.Items.interfaces.PlayingCard;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -609,9 +610,9 @@ public class PokerDealer extends StdBehavior
                             HandOfCards hand=(HandOfCards)scores.elementAt(i,2);
                             Integer score=(Integer)scores.elementAt(i,1);
                             StringBuffer str=new StringBuffer("");
-                            Vector handContents=hand.getContents();
+                            List<Item> handContents=hand.getContents();
                             for(int ii=0;ii<handContents.size();ii++)
-                                str.append(((PlayingCard)handContents.elementAt(ii)).getStringEncodedSuit()+((PlayingCard)handContents.elementAt(ii)).getStringEncodedValue()+" ");
+                                str.append(((PlayingCard)handContents.get(ii)).getStringEncodedSuit()+((PlayingCard)handContents.get(ii)).getStringEncodedValue()+" ");
                             Log.sysOut("TEST",str.toString()+": "+score.intValue()+": "+describeHand(score.intValue()));
                         }
                     }
@@ -752,20 +753,21 @@ public class PokerDealer extends StdBehavior
                     // and deal new ones.
                     if((numbersOK)&&(hand!=null))
                     {
-                        Vector cards=hand.getContents();
+                    	List<Item> cards=new Vector<Item>();
+                    	cards.addAll(hand.getContents());
                         Vector removed=new Vector();
                         // make a list of cards to remove
                         for(int i=0;i<parsed.size();i++)
-                            if(!removed.contains(cards.elementAt(CMath.s_int((String)parsed.elementAt(i))-1)))
-                                removed.addElement(cards.elementAt(CMath.s_int((String)parsed.elementAt(i))-1));
+                            if(!removed.contains(cards.get(CMath.s_int((String)parsed.elementAt(i))-1)))
+                                removed.addElement(cards.get(CMath.s_int((String)parsed.elementAt(i))-1));
                         // remove them from our cards list
                         for(int i=0;i<removed.size();i++)
-                            cards.removeElement(removed.elementAt(i));
+                            cards.remove(removed.elementAt(i));
                         // if nothign is left, problem!
                         if(cards.size()==0)
                             communicate(host,whoseTurn,"You may not draw all of your cards.  Try asking for fewer.",msg);
                         else
-                        if((cards.size()<2)&&(((PlayingCard)cards.firstElement()).getBitEncodedValue()!=14))
+                        if((cards.size()<2)&&(((PlayingCard)cards.get(0)).getBitEncodedValue()!=14))
                             communicate(host,whoseTurn,"You may not draw all but one of your cards unless the remaining card is an Ace.  Try again.",msg);
                         else
                         {
@@ -791,7 +793,7 @@ public class PokerDealer extends StdBehavior
     // It can handle poker of 1 or more cards.
     private int determineHand(HandOfCards hand)
     {
-        Vector cards=hand.getContents();
+    	List<Item> cards=hand.getContents();
         if(cards.size()==0) return -1;
         
         // first check for flushes
@@ -801,10 +803,10 @@ public class PokerDealer extends StdBehavior
             int tempSuitCount=0;
             int tempFlushSuit=0;
             for(int c=0;c<cards.size();c++)
-                if(((PlayingCard)cards.elementAt(c)).getBitEncodedSuit()==PlayingCard.suits[s])
+                if(((PlayingCard)cards.get(c)).getBitEncodedSuit()==PlayingCard.suits[s])
                 {
                     tempSuitCount++;
-                    tempFlushSuit=((PlayingCard)cards.elementAt(c)).getBitEncodedSuit();
+                    tempFlushSuit=((PlayingCard)cards.get(c)).getBitEncodedSuit();
                 }
             if(tempSuitCount>=5)
             {
@@ -818,13 +820,13 @@ public class PokerDealer extends StdBehavior
         if(cards.size()>=5)
         for(int window=cards.size()-5;window>=0;window--)
         {
-            highStraightCard=((PlayingCard)cards.elementAt(window+4)).getBitEncodedValue();
+            highStraightCard=((PlayingCard)cards.get(window+4)).getBitEncodedValue();
             if(highStraightCard==1) highStraightCard=14;
             for(int c=window+1;c<window+5;c++)
             {
-                int cardBitValue=((PlayingCard)cards.elementAt(c)).getBitEncodedValue();
+                int cardBitValue=((PlayingCard)cards.get(c)).getBitEncodedValue();
                 if(cardBitValue==1) cardBitValue=14;
-                if(cardBitValue!=(((PlayingCard)cards.elementAt(c-1)).getBitEncodedValue()+1))
+                if(cardBitValue!=(((PlayingCard)cards.get(c-1)).getBitEncodedValue()+1))
                     highStraightCard=-1;
             }
             if(highStraightCard>=0) break;
@@ -836,9 +838,9 @@ public class PokerDealer extends StdBehavior
             cards=hand.getContents();
             for(int window=cards.size()-5;window>=0;window--)
             {
-                highStraightCard=((PlayingCard)cards.elementAt(window+4)).getBitEncodedValue();
+                highStraightCard=((PlayingCard)cards.get(window+4)).getBitEncodedValue();
                 for(int c=window+1;c<window+5;c++)
-                    if(((PlayingCard)cards.elementAt(c)).getBitEncodedValue()!=(((PlayingCard)cards.elementAt(c-1)).getBitEncodedValue()+1))
+                    if(((PlayingCard)cards.get(c)).getBitEncodedValue()!=(((PlayingCard)cards.get(c-1)).getBitEncodedValue()+1))
                         highStraightCard=-1;
                 if(highStraightCard>=0) break;
             }
@@ -855,8 +857,8 @@ public class PokerDealer extends StdBehavior
         DVector matches=new DVector(2);
         for(int c=1;c<cards.size();c++)
         {
-            Integer value=Integer.valueOf(((PlayingCard)cards.elementAt(c)).getBitEncodedValue());
-            if(value.intValue()==(((PlayingCard)cards.elementAt(c-1)).getBitEncodedValue()))
+            Integer value=Integer.valueOf(((PlayingCard)cards.get(c)).getBitEncodedValue());
+            if(value.intValue()==(((PlayingCard)cards.get(c-1)).getBitEncodedValue()))
             {
                 int index=matches.indexOf(value);
                 if(index>=0)
@@ -909,8 +911,8 @@ public class PokerDealer extends StdBehavior
         &&(((Integer)matches.elementAt(matches.size()-1,2)).intValue()==4))
         {
             for(int c=cards.size()-1;c>=0;c--)
-                if(((PlayingCard)cards.elementAt(c)).getBitEncodedValue()!=((Integer)matches.elementAt(matches.size()-1,1)).intValue())
-                    return HAND_4OFAKIND+(((Integer)matches.elementAt(matches.size()-1,1)).intValue()<<15)+((PlayingCard)cards.elementAt(c)).getBitEncodedValue();
+                if(((PlayingCard)cards.get(c)).getBitEncodedValue()!=((Integer)matches.elementAt(matches.size()-1,1)).intValue())
+                    return HAND_4OFAKIND+(((Integer)matches.elementAt(matches.size()-1,1)).intValue()<<15)+((PlayingCard)cards.get(c)).getBitEncodedValue();
             return HAND_4OFAKIND+(((Integer)matches.elementAt(matches.size()-1,1)).intValue()<<15);
         }
         
@@ -927,10 +929,10 @@ public class PokerDealer extends StdBehavior
             int addTimes=0;
             for(int c=cards.size()-1;c>=0;c--)
             {
-                if(((PlayingCard)cards.elementAt(c)).getBitEncodedSuit()==flushSuit)
+                if(((PlayingCard)cards.get(c)).getBitEncodedSuit()==flushSuit)
                 {
                     if((++addTimes)<4)
-                        addValue=(addValue<<4)+((PlayingCard)cards.elementAt(c)).getBitEncodedValue();
+                        addValue=(addValue<<4)+((PlayingCard)cards.get(c)).getBitEncodedValue();
                 }
             }
             return HAND_FLUSH+(flushSuit<<13)+addValue;
@@ -948,10 +950,10 @@ public class PokerDealer extends StdBehavior
             int addValue=0;
             int addTimes=0;
             for(int c=cards.size()-1;c>=0;c--)
-                if(((PlayingCard)cards.elementAt(c)).getBitEncodedValue()!=value)
+                if(((PlayingCard)cards.get(c)).getBitEncodedValue()!=value)
                 {
                     if((++addTimes)<4)
-                        addValue=(addValue<<4)+((PlayingCard)cards.elementAt(c)).getBitEncodedValue();
+                        addValue=(addValue<<4)+((PlayingCard)cards.get(c)).getBitEncodedValue();
                 }
             return HAND_3OFAKIND+(value<<15)+addValue;
         }
@@ -966,11 +968,11 @@ public class PokerDealer extends StdBehavior
             int addValue=0;
             int addTimes=0;
             for(int c=cards.size()-1;c>=0;c--)
-                if((((PlayingCard)cards.elementAt(c)).getBitEncodedValue()!=value)
-                &&(((PlayingCard)cards.elementAt(c)).getBitEncodedValue()!=value1))
+                if((((PlayingCard)cards.get(c)).getBitEncodedValue()!=value)
+                &&(((PlayingCard)cards.get(c)).getBitEncodedValue()!=value1))
                 {
                     if((++addTimes)<2)
-                        addValue=(addValue<<4)+((PlayingCard)cards.elementAt(c)).getBitEncodedValue();
+                        addValue=(addValue<<4)+((PlayingCard)cards.get(c)).getBitEncodedValue();
                 }
             return HAND_2PAIR+(value<<15)+(value1<<11)+addValue;
         }
@@ -983,10 +985,10 @@ public class PokerDealer extends StdBehavior
             int addValue=0;
             int addTimes=0;
             for(int c=cards.size()-1;c>=0;c--)
-                if(((PlayingCard)cards.elementAt(c)).getBitEncodedValue()!=value)
+                if(((PlayingCard)cards.get(c)).getBitEncodedValue()!=value)
                 {
                     if((++addTimes)<4)
-                        addValue=(addValue<<4)+((PlayingCard)cards.elementAt(c)).getBitEncodedValue();
+                        addValue=(addValue<<4)+((PlayingCard)cards.get(c)).getBitEncodedValue();
                 }
             return HAND_1PAIR+(value<<15)+addValue;
         }
@@ -997,7 +999,7 @@ public class PokerDealer extends StdBehavior
         for(int c=cards.size()-1;c>=0;c--)
         {
             if((++addTimes)<5)
-                addValue=(addValue<<4)+((PlayingCard)cards.elementAt(c)).getBitEncodedValue();
+                addValue=(addValue<<4)+((PlayingCard)cards.get(c)).getBitEncodedValue();
         }
         return HAND_HIGHCARD+addValue;
     }
@@ -1027,10 +1029,10 @@ public class PokerDealer extends StdBehavior
             if(faceUpOnly)
             {
                 HandOfCards faceUpHand=((HandOfCards)CMClass.getMiscMagic("StdHandOfCards")).createEmptyHand(null);
-                Vector handContents=hand.getContents();
+                List<Item> handContents=hand.getContents();
                 for(int h=0;h<handContents.size();h++)
                 {
-                    PlayingCard card=(PlayingCard)handContents.elementAt(h);
+                    PlayingCard card=(PlayingCard)handContents.get(h);
                     if(card.isFaceUp())
                     {
                         card=(PlayingCard)card.copyOf();

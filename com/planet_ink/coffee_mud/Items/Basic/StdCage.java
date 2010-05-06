@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class StdCage extends StdContainer
 {
 	public String ID(){	return "StdCage";}
@@ -57,10 +56,10 @@ public class StdCage extends StdContainer
 			Room R=CMLib.map().roomLocation(this);
 			if((R!=null)&&(owner() instanceof Room)&&(CMLib.flags().isInTheGame(this,true)))
 			{
-				Vector mobContents=getContents();
-				for(Enumeration e=mobContents.elements();e.hasMoreElements();)
+				List<Item> mobContents=getContents();
+				for(Iterator<Item> e=mobContents.iterator();e.hasNext();)
 				{
-					Environmental E=(Environmental)e.nextElement();
+					Environmental E=(Environmental)e.next();
 					if(E instanceof CagedAnimal)
 					{
 						MOB M=((CagedAnimal)E).unCageMe();

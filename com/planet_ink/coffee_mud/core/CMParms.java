@@ -1448,7 +1448,7 @@ public class CMParms
     			H.put(O[o][0],O[o][1]);
     	return H;
     }
-    public static Vector makeVector(Object[] O)
+    public static Vector makeVector(Object... O)
     {
         Vector V=new Vector(O!=null?O.length:0);
         if(O!=null)
@@ -1456,7 +1456,7 @@ public class CMParms
             V.addElement(O[s]);
         return V;
     }
-    public static Vector makeVector(String[] O)
+    public static Vector makeVector(String... O)
     {
         Vector V=new Vector(O!=null?O.length:0);
         if(O!=null)
@@ -1464,7 +1464,7 @@ public class CMParms
             V.addElement(O[s]);
         return V;
     }
-    public static HashSet makeHashSet(Object[] O)
+    public static HashSet makeHashSet(Object... O)
     {
         HashSet V=new HashSet();
         if(O!=null)
@@ -1472,7 +1472,7 @@ public class CMParms
             V.add(O[s]);
         return V;
     }
-    public static HashSet makeHashSet(String[] O)
+    public static HashSet makeHashSet(String... O)
     {
         HashSet V=new HashSet();
         if(O!=null)
@@ -1524,26 +1524,7 @@ public class CMParms
         return V;
     }
     
-    public static Vector makeVector()
-    { return new Vector();}
-    public static Vector makeVector(Object O)
-    { Vector V=new Vector(); V.addElement(O); return V;}
-    public static Vector makeVector(Object O, Object O2)
-    { Vector V=new Vector(); V.addElement(O); V.addElement(O2); return V;}
-    public static Vector makeVector(Object O, Object O2, Object O3)
-    { Vector V=new Vector(); V.addElement(O); V.addElement(O2); V.addElement(O3); return V;}
-    public static Vector makeVector(Object O, Object O2, Object O3, Object O4)
-    { Vector V=new Vector(); V.addElement(O); V.addElement(O2); V.addElement(O3); V.addElement(O4); return V;}
-
     public static HashSet makeHashSet(){return new HashSet();}
-    public static HashSet makeHashSet(Object O)
-    {HashSet H=new HashSet(); H.add(O); return H;}
-    public static HashSet makeHashSet(Object O, Object O2)
-    {HashSet H=new HashSet(); H.add(O); H.add(O2); return H;}
-    public static HashSet makeHashSet(Object O, Object O2, Object O3)
-    {HashSet H=new HashSet(); H.add(O); H.add(O2); H.add(O3); return H;}
-    public static HashSet makeHashSet(Object O, Object O2, Object O3, Object O4)
-    {HashSet H=new HashSet(); H.add(O); H.add(O2); H.add(O3); H.add(O4); return H;}
 
     public static String[] toStringArray(Map H)
     {

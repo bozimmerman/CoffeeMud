@@ -92,7 +92,8 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 						if(key!=null)
 						{
 							dropAWinner(mob,key);
-							key.setContainer(building);
+							if(building instanceof Container)
+								key.setContainer((Container)building);
 						}
 					}
 				}

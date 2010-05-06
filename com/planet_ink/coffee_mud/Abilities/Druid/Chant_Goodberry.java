@@ -61,7 +61,7 @@ public class Chant_Goodberry extends Chant
 			newItem.setSpellList(";Prayer_CureLight;");
 			newItem.recoverPhyStats();
 			newItem.setMiscText(newItem.text());
-			Item location=newTarget.container();
+			Container location=newTarget.container();
 			newTarget.destroy();
 			if(owner instanceof MOB)
 				((MOB)owner).addItem(newItem);

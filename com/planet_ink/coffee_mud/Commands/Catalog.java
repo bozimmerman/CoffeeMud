@@ -321,11 +321,10 @@ public class Catalog extends StdCommand
 				else
 				if(ID.equalsIgnoreCase("everydamnthing"))
 				{
-					Vector V=CMParms.makeVector(CMLib.catalog().getCatalogItems());
-					V.addAll(CMParms.makeVector(CMLib.catalog().getCatalogMobs()));
-					del=new Environmental[V.size()];
-					for(int i=0;i<V.size();i++)
-						del[i]=(Environmental)V.elementAt(i);
+					java.util.List<Environmental> V=new Vector<Environmental>();
+					V.addAll(Arrays.asList(CMLib.catalog().getCatalogItems()));
+					V.addAll(Arrays.asList(CMLib.catalog().getCatalogMobs()));
+					del=V.toArray(new Environmental[0]);
 				}
 				else
 				{

@@ -100,7 +100,8 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 							if(key!=null)
 							{
 								dropAWinner(mob,key);
-								key.setContainer(building);
+								if(key instanceof Container)
+									key.setContainer((Container)building);
 							}
 						}
 					}

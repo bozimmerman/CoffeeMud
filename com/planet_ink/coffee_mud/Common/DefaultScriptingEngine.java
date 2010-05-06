@@ -4343,9 +4343,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 else
                 if(E instanceof Item)
                 {
-                    choices.addElement(E);
                     if(E instanceof Container)
-                        choices=((Container)E).getContents();
+                        choices.addAll(((Container)E).getContents());
+                    else
+	                    choices.addElement(E);
                 }
                 else
                 if(E instanceof Room)
@@ -4428,9 +4429,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 else
                 if((E instanceof Item)&&(!(((Item)E).amWearingAt(Wearable.IN_INVENTORY))))
                 {
-                    choices.addElement(E);
                     if(E instanceof Container)
-                        choices=((Container)E).getContents();
+                        choices.addAll(((Container)E).getContents());
+                    else
+	                    choices.addElement(E);
                 }
                 if(choices.size()>0)
                     results.append(((Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).name());
@@ -5642,9 +5644,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         else
                         if(E instanceof Container)
                         {
-                            Vector V=((Container)E).getContents();
+                            List<Item> V=((Container)E).getContents();
                             for(int v=0;v<V.size();v++)
-                                results.append("\""+((Item)V.elementAt(v)).Name()+"\" ");
+                                results.append("\""+((Item)V.get(v)).Name()+"\" ");
                         }
                     }
                 }
@@ -6747,10 +6749,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String currency = CMLib.english().numPossibleGoldCurrency(source, amtStr);
                 long amt = CMLib.english().numPossibleGold(source, amtStr);
                 double denomination = CMLib.english().numPossibleGoldDenomination(source, currency, amtStr);
-                Item container = null;
+                Container container = null;
                 if(newTarget instanceof Item)
                 {
-                	container = (newTarget instanceof Container)?(Item)newTarget:null;
+                	container = (newTarget instanceof Container)?(Container)newTarget:null;
                 	newTarget = ((Item)newTarget).owner();
                 }
                 if(newTarget instanceof MOB)

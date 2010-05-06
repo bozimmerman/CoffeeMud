@@ -40,7 +40,7 @@ public class Prop_ItemTransporter extends Property
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS;}
 	protected Room roomDestination=null;
 	protected MOB mobDestination=null;
-	protected Item nextDestination=null;
+	protected Container nextDestination=null;
     protected static Hashtable possiblePossibilities=new Hashtable();
     protected static Hashtable lastLooks=new Hashtable();
 
@@ -127,9 +127,9 @@ public class Prop_ItemTransporter extends Property
 			if(E instanceof MOB)
 				mobDestination=(MOB)E;
 			else
-			if(E instanceof Item)
+			if(E instanceof Container)
 			{
-				nextDestination=(Item)E;
+				nextDestination=(Container)E;
 				if((nextDestination!=null)&&(nextDestination.owner()!=null))
 				{
 					if(nextDestination.owner() instanceof Room)
@@ -140,6 +140,20 @@ public class Prop_ItemTransporter extends Property
 				}
 				else
 					nextDestination=null;
+			}
+			else
+			if(E instanceof Item)
+			{
+				nextDestination=null;
+				Item I = (Item)E;
+				if((I!=null)&&(I.owner()!=null))
+				{
+					if(I.owner() instanceof Room)
+						roomDestination=(Room)I.owner();
+					else
+					if(I.owner() instanceof MOB)
+						mobDestination=(MOB)I.owner();
+				}
 			}
 		}
 		if((mobDestination==null)&&(roomDestination==null))
