@@ -2273,3 +2273,6 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
  4.New property: Prop_LanguageSpeaker
  5.New INI entry: WIZLISTMASK -- WIZLIST command modified to support it.
  6.MUDGrinder Map editor now has a Scripts editor button on the map screen.
+ 7.Internal: Lots of refactoring done
+ 8.new INI entry: OBJSPERTHREAD -- control your tick thread usage!
+ 

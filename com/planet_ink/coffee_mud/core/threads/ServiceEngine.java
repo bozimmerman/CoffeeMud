@@ -50,6 +50,7 @@ public class ServiceEngine implements ThreadEngine
 	protected SLinkedList<Tick> ticks=new SLinkedList<Tick>();
 	public Iterator<Tick> tickGroups(){return ticks.iterator();}
     private boolean isSuspended=false;
+    private int max_objects_per_thread=0;
 	
     public ThreadEngine.SupportThread getSupportThread() { return thread;}
     
@@ -61,6 +62,15 @@ public class ServiceEngine implements ThreadEngine
 	{
 		if(!ticks.contains(tock))
 			ticks.add(tock);
+	}
+	
+	public int getMaxObjectsPerThread()
+	{
+		if(max_objects_per_thread>0) return max_objects_per_thread;
+		max_objects_per_thread = CMProps.getIntVar(CMProps.SYSTEMI_OBJSPERTHREAD);
+		if(max_objects_per_thread>0) return max_objects_per_thread; 
+		max_objects_per_thread=0;
+		return 128;
 	}
 	
 	public Tick getAvailTickThread(Tickable E, long TICK_TIME, int tickID)
@@ -79,7 +89,7 @@ public class ServiceEngine implements ThreadEngine
 				if((tock==null)
 	            &&(almostTock.TICK_TIME==TICK_TIME)
 	            &&(!almostTock.solitaryTicker)
-	            &&(almostTock.numTickers()<TickableGroup.MAX_TICK_CLIENTS))
+	            &&(almostTock.numTickers()<getMaxObjectsPerThread()))
 				{
 					grp = almostTock.getThreadGroup();
 					if((grp!=null)

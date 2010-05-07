@@ -39,9 +39,6 @@ limitations under the License.
  */
 public interface TickableGroup
 {
-    /** the maximum number of ticking objects which can be handled by a single thread */
-    public final static int MAX_TICK_CLIENTS=128;
-
     /**
      * Returns the current or last Tickable object which this thread made a tick(Tickable,int) method
      * call to.
