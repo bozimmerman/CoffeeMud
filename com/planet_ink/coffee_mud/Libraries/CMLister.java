@@ -80,7 +80,9 @@ public class CMLister extends StdLibrary implements ListingLibrary
                 theRest.remove(item2);
             else
             if((str.equals(str2))
-            &&(CMLib.flags().seenTheSameWay(mob,item,item2)))
+            &&(item instanceof Physical)
+            &&(item2 instanceof Physical)
+            &&(CMLib.flags().seenTheSameWay(mob,(Physical)item,(Physical)item2)))
             {
                 reps++;
                 theRest.remove(item2);
@@ -189,12 +191,13 @@ public class CMLister extends StdLibrary implements ListingLibrary
 				    else
 				        say.append("^<"+tag+tagParm+"^>");
 				}
-                if(compress) say.append(CMLib.flags().colorCodes(item,mob)+"^I");
+                if((compress)&&(item instanceof Physical)) 
+                	say.append(CMLib.flags().colorCodes((Physical)item,mob)+"^I");
                 say.append(CMStrings.endWithAPeriod(itemSeenString(mob,item,useName,longLook,sysmsgs)));
 				if(tag!=null)
 				    say.append("^</"+tag+"^>");
-				if(!compress) 
-                    say.append(CMLib.flags().colorCodes(item,mob)+"^N\n\r");
+				if((!compress)&&(item instanceof Physical)) 
+                    say.append(CMLib.flags().colorCodes((Physical)item,mob)+"^N\n\r");
                 else 
                     say.append("^N");
                 

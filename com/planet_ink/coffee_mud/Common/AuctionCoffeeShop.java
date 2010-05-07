@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.lang.ref.WeakReference;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Vector;
 
 
@@ -136,7 +137,7 @@ public class AuctionCoffeeShop implements CoffeeShop
     
     public void emptyAllShelves(){}
     
-    public Vector removeSellableProduct(String named, MOB mob)
+    public List<Environmental> removeSellableProduct(String named, MOB mob)
     {
         return emptyV;
     }

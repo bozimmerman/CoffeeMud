@@ -40,7 +40,7 @@ public class Visible extends StdCommand
     private String[] access={"VISIBLE","VIS"};
     public String[] getAccessWords(){return access;}
     
-    public static Vector returnOffensiveAffects(Environmental fromMe)
+    public static java.util.List<Ability> returnOffensiveAffects(Physical fromMe)
     {
         MOB newMOB=CMClass.getMOB("StdMOB");
         Vector offenders=new Vector();
@@ -79,7 +79,7 @@ public class Visible extends StdCommand
                 C.execute(mob,CMParms.makeVector("WIZINV","OFF"),metaFlags);
             }
         }
-        Vector V=returnOffensiveAffects(mob);
+        java.util.List V=returnOffensiveAffects(mob);
         if(V.size()==0)
         {
             if(!didSomething)
@@ -87,7 +87,7 @@ public class Visible extends StdCommand
         }
         else
         for(int v=0;v<V.size();v++)
-            ((Ability)V.elementAt(v)).unInvoke();
+            ((Ability)V.get(v)).unInvoke();
         return false;
     }
     public double actionsCost(MOB mob, Vector cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0);}

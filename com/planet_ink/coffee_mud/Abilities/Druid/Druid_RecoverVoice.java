@@ -47,7 +47,7 @@ public class Druid_RecoverVoice extends StdAbility
     public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_FITNESS; }
 
 
-	public Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
+	public List<Ability> returnOffensiveAffects(MOB caster, Physical fromMe)
 	{
 		MOB newMOB=CMClass.getMOB("StdMOB");
 		Vector offenders=new Vector();
@@ -89,7 +89,7 @@ public class Druid_RecoverVoice extends StdAbility
 			return false;
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		Vector offensiveAffects=returnOffensiveAffects(mob,mob);
+		List<Ability> offensiveAffects=returnOffensiveAffects(mob,mob);
 		if((!success)||(offensiveAffects.size()==0))
 			mob.tell("You failed in your vocal meditation.");
 		else
@@ -98,7 +98,7 @@ public class Druid_RecoverVoice extends StdAbility
 			if(mob.location().okMessage(mob,msg))
 			{
 				for(int a=offensiveAffects.size()-1;a>=0;a--)
-					((Ability)offensiveAffects.elementAt(a)).unInvoke();
+					((Ability)offensiveAffects.get(a)).unInvoke();
 			}
 		}
 		return success;

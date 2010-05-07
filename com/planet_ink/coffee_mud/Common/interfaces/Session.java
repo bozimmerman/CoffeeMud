@@ -133,7 +133,7 @@ public interface Session extends CMCommon
      * @param Tool variable for special code parsing: Tool
      * @param msg the string to send to the user
      */
-	public void stdPrint(Environmental Source,
+	public void stdPrint(Physical Source,
 						 Environmental Target,
 						 Environmental Tool,
 						 String msg);
@@ -156,7 +156,7 @@ public interface Session extends CMCommon
      * @param Tool variable for special code parsing: Tool
      * @param msg the string to send to the user
      */
-	public void stdPrintln(Environmental Source,
+	public void stdPrintln(Physical Source,
 						   Environmental Target,
 						   Environmental Tool,
 						   String msg);
@@ -206,7 +206,7 @@ public interface Session extends CMCommon
      * @param Tool variable for special code parsing: Tool
      * @param msg the string to send to the user
      */
-	public void print(Environmental Source,
+	public void print(Physical Source,
 					  Environmental Target,
 					  Environmental Tool,
 					  String msg);
@@ -233,7 +233,7 @@ public interface Session extends CMCommon
      * @param Tool variable for special code parsing: Tool
      * @param msg the string to send to the user
      */
-	public void println(Environmental Source,
+	public void println(Physical Source,
 						Environmental Target,
 						Environmental Tool,
 						String msg);

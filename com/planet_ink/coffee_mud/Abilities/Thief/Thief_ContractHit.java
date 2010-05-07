@@ -94,7 +94,7 @@ public class Thief_ContractHit extends ThiefSkill
 					M.basePhyStats().setRejuv(0);
 					M.baseState().setMana(CMLib.leveler().getLevelMana(M));
 					M.baseState().setMovement(CMLib.leveler().getLevelMana(M));
-					M.baseState().setHitPoints((10*level)+CMLib.dice().roll(level,basePhyStats().ability(),1));
+					M.baseState().setHitPoints(CMLib.dice().rollHP(level, M.basePhyStats().level()));
 					Behavior B=CMClass.getBehavior("Thiefness");
 					B.setParms("Assassin");
 					M.addBehavior(B);

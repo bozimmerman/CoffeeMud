@@ -255,7 +255,8 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	                    CMLib.commands().postSay(this,mob,"I can't seem to do business with you.",true,false);
 	                    return false;
 					}
-                    if(msg.tool().phyStats().level()>msg.source().phyStats().level())
+                    if((msg.tool() instanceof Physical)
+                    &&(((Physical)msg.tool()).phyStats().level()>msg.source().phyStats().level()))
                     {
                         CMLib.commands().postSay(this,msg.source(),"That's too advanced for you, I'm afraid.",true,false);
                         return false;
@@ -327,7 +328,8 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
                         return false;
                     if((msg.targetMinor()==CMMsg.TYP_BUY)&&(msg.tool()!=null)&&(!msg.tool().okMessage(myHost,msg)))
                         return false;
-                    if(msg.tool().phyStats().level()>msg.source().phyStats().level())
+                    if((msg.tool() instanceof Physical)
+                    &&(((Physical)msg.tool()).phyStats().level()>msg.source().phyStats().level()))
                     {
                         CMLib.commands().postSay(this,msg.source(),"That's too advanced for you, I'm afraid.",true,false);
                         return false;

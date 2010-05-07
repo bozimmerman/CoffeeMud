@@ -88,7 +88,7 @@ public interface GenericBuilder extends CMLibrary
     public StringBuffer getItemXML(Item item);
     public StringBuffer getRoomXML(Room room,  HashSet custom, HashSet files, boolean andContent);
     public void setPropertiesStr(Environmental E, String buf, boolean fromTop);
-    public void recoverEnvironmental(Environmental E);
+    public void recoverPhysical(Physical P);
     public void setPropertiesStr(Environmental E, Vector V, boolean fromTop);
     public void setOrdPropertiesStr(Environmental E, Vector V);
     public void setGenMobAbilities(MOB M, Vector buf);

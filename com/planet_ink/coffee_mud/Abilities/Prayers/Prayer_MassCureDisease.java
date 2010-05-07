@@ -49,7 +49,7 @@ public class Prayer_MassCureDisease extends Prayer implements MendingSkill
 		return canMend;
 	}
 	
-	public static Vector returnOffensiveAffects(Environmental fromMe)
+	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
 		Vector offenders=new Vector();
 
@@ -103,13 +103,13 @@ public class Prayer_MassCureDisease extends Prayer implements MendingSkill
 						MOB target=R.fetchInhabitant(m);
 						if(target!=null)
 						{
-							Vector offensiveAffects=returnOffensiveAffects(target);
+							List<Ability> offensiveAffects=returnOffensiveAffects(target);
 							if(offensiveAffects.size()>0)
 							{
 								boolean badOnes=false;
 								for(int a=offensiveAffects.size()-1;a>=0;a--)
 								{
-								    Ability A=((Ability)offensiveAffects.elementAt(a));
+								    Ability A=((Ability)offensiveAffects.get(a));
 								    if(A instanceof DiseaseAffect)
 								    {
 								        if((A.invoker()!=mob)

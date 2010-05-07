@@ -50,7 +50,7 @@ public interface CMMiscUtils extends CMLibrary
     
     public void outfit(MOB mob, Vector items);
     public boolean reachableItem(MOB mob, Environmental E);
-    public void extinguish(MOB source, Environmental target, boolean mundane);
+    public void extinguish(MOB source, Physical target, boolean mundane);
     public boolean armorCheck(MOB mob, int allowedArmorLevel);
 	public boolean armorCheck(MOB mob, Item I, int allowedArmorLevel);
     public void recursiveDropMOB(MOB mob, Room room, Item thisContainer, boolean bodyFlag);

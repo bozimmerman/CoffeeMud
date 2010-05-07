@@ -110,10 +110,11 @@ public class Prop_WeaponImmunity extends Property
 
 			if((foundPlusMinus==null)&&(msg.tool() instanceof Weapon))
 			{
-			    foundPlusMinus=(Character)flags.get(Weapon.TYPE_DESCS[((Weapon)msg.tool()).weaponType()]);
-			    foundPlusMinus=(Character)flags.get(Weapon.CLASS_DESCS[((Weapon)msg.tool()).weaponClassification()]);
-			    foundPlusMinus=(Character)flags.get((CMLib.flags().isABonusItems(msg.tool()))?"MAGIC":"NONMAGIC");
-			    foundPlusMinus=(Character)flags.get(RawMaterial.CODES.NAME(((Weapon)msg.tool()).material()));
+				Weapon W=(Weapon)msg.tool();
+			    foundPlusMinus=(Character)flags.get(Weapon.TYPE_DESCS[W.weaponType()]);
+			    foundPlusMinus=(Character)flags.get(Weapon.CLASS_DESCS[W.weaponClassification()]);
+			    foundPlusMinus=(Character)flags.get((CMLib.flags().isABonusItems(W))?"MAGIC":"NONMAGIC");
+			    foundPlusMinus=(Character)flags.get(RawMaterial.CODES.NAME((W).material()));
 				if(foundPlusMinus!=null)
 				{
 					if((foundPlusMinus.charValue()=='-')&&(immune))
@@ -132,13 +133,13 @@ public class Prop_WeaponImmunity extends Property
 						lvl=lvl.substring(2).trim();
 						if((foundPlusMinus.charValue()=='-')&&(immune))
 						{
-							if(msg.tool().phyStats().level()>=CMath.s_int(lvl))
+							if(W.phyStats().level()>=CMath.s_int(lvl))
 								immune=false;
 						}
 						else
 						if(foundPlusMinus.charValue()!='-')
 						{
-							if(msg.tool().phyStats().level()<CMath.s_int(lvl))
+							if(W.phyStats().level()<CMath.s_int(lvl))
 								immune=true;
 						}
 					}

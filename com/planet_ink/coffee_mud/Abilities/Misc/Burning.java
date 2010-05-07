@@ -330,7 +330,7 @@ public class Burning extends StdAbility
 			target.recoverPhyStats();
 			if(target instanceof Item)
 			{
-				Environmental owner=((Item)target).owner();
+				ItemPossessor owner=((Item)target).owner();
 				if(owner!=null)
 				{
 					owner.recoverPhyStats();

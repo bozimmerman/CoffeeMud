@@ -44,7 +44,7 @@ public class Thief_UsePoison extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 
-	public Vector returnOffensiveAffects(Environmental fromMe)
+	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
 		Vector offenders=new Vector();
 
@@ -83,7 +83,7 @@ public class Thief_UsePoison extends ThiefSkill
 			mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");
 			return false;
 		}
-		Vector V=returnOffensiveAffects(poison);
+		List<Ability> V=returnOffensiveAffects(poison);
 		if((V.size()==0)||(!(poison instanceof Drink)))
 		{
 			mob.tell(poison.name()+" is not a poison!");
@@ -101,7 +101,7 @@ public class Thief_UsePoison extends ThiefSkill
 			mob.location().send(mob,msg);
 			if(success)
 			{
-				Ability A=(Ability)V.firstElement();
+				Ability A=(Ability)V.get(0);
 				if(A!=null)
 					if(target instanceof Weapon)
 						A.invoke(mob,target,true,adjustedLevel(mob,asLevel));

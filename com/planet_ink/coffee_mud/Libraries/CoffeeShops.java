@@ -119,7 +119,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         if(E==null) return str.toString();
         str.append("Interested in "+E.name()+"?");
         str.append(" Here is some information for you:");
-        str.append("\n\rLevel      : "+E.phyStats().level());
+        if(E instanceof Physical)
+        	str.append("\n\rLevel      : "+((Physical)E).phyStats().level());
         if(E instanceof Item)
         {
             Item I=(Item)E;
@@ -222,7 +223,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         else
         if(product instanceof MOB)
         {
-            Ability A=product.fetchEffect("Prop_Retainable");
+        	MOB M=(MOB)product;
+            Ability A=M.fetchEffect("Prop_Retainable");
             if(A!=null)
             {
                 if(A.text().indexOf(";")<0)
@@ -242,7 +244,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 }
             }
             if(price==0.0)
-                price=(25.0+product.phyStats().level())*product.phyStats().level();
+                price=(25.0+M.phyStats().level())*M.phyStats().level();
         }
         else
             price=CMLib.ableMapper().lowestQualifyingLevel(product.ID())*25;
@@ -525,8 +527,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                     if(CMath.isInteger(range))
                         rangeI=CMath.s_int(range);
                     if((rangeI>0)
-                    &&((product.phyStats().level()>(medianLevel+rangeI))
-                        ||(product.phyStats().level()<(medianLevel-rangeI))))
+                    &&(product instanceof Physical)
+                    &&((((Physical)product).phyStats().level()>(medianLevel+rangeI))
+                        ||(((Physical)product).phyStats().level()<(medianLevel-rangeI))))
                     {
                         CMLib.commands().postSay(seller,buyer,"I'm sorry, that's out of my level range.",true,false);
                         return false;
@@ -947,7 +950,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
     }
 
     public boolean purchaseItems(Item baseProduct,
-                                 Vector products,
+                                 List<Environmental> products,
                                  MOB seller,
                                  MOB mobFor)
     {
@@ -955,7 +958,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             return false;
         Room room=seller.location();
         for(int p=0;p<products.size();p++)
-            room.addItem((Item)products.elementAt(p),ItemPossessor.Expire.Player_Drop);
+        	if(products.get(p) instanceof Item)
+	            room.addItem((Item)products.get(p),ItemPossessor.Expire.Player_Drop);
         CMMsg msg2=CMClass.getMsg(mobFor,baseProduct,seller,CMMsg.MSG_GET,null);
         if((baseProduct instanceof LandTitle)||(room.okMessage(mobFor,msg2)))
         {

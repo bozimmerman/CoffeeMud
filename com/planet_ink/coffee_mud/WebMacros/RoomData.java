@@ -85,11 +85,11 @@ public class RoomData extends StdWebMacro
 		return "";
 	}
 
-	public static String getMOBCode(Vector mobs, MOB M)
+	public static String getMOBCode(List<MOB> mobs, MOB M)
 	{
 		if(M==null) return "";
 		for(int i=0;i<mobs.size();i++)
-			if(mobs.elementAt(i)==M)
+			if(mobs.get(i)==M)
 				return Long.toString( ( M.ID() + "/" + M.Name() + "/" + M.displayText() ).hashCode() << 5 ) + i;
 		return "";
 	}

@@ -246,14 +246,18 @@ public class StdLanguage extends StdAbility implements Language
     protected boolean tryLinguisticWriting(CMMsg msg)
     {
         Ability L=null;
-        for(int i=msg.target().numEffects()-1;i>=0;i--)
+        if(msg.target() instanceof Physical)
         {
-            L=msg.target().fetchEffect(i);
-            if((L instanceof Language)&&(!L.ID().equals(ID())))
-            {
-                msg.source().tell(msg.target().name()+" is already written in "+L.name()+" and can not have "+writtenName()+" writing added.");
-                return false;
-            }
+        	Physical P = (Physical)msg.target();
+	        for(int i=P.numEffects()-1;i>=0;i--)
+	        {
+	            L=P.fetchEffect(i);
+	            if((L instanceof Language)&&(!L.ID().equals(ID())))
+	            {
+	                msg.source().tell(msg.target().name()+" is already written in "+L.name()+" and can not have "+writtenName()+" writing added.");
+	                return false;
+	            }
+	        }
         }
         return true;
     }
@@ -492,17 +496,18 @@ public class StdLanguage extends StdAbility implements Language
         &&(msg.targetMessage()!=null)
         &&(msg.targetMessage().length()>0))
         {
+        	Item I = (Item)msg.target();
             Ability L=null;
-            for(int i=msg.target().numEffects()-1;i>=0;i--)
+            for(int i=I.numEffects()-1;i>=0;i--)
             {
-                L=msg.target().fetchEffect(i);
+                L=I.fetchEffect(i);
                 if(L instanceof Language)
                 {
-                    msg.target().delEffect(L);
+                    I.delEffect(L);
                     break;
                 }
             }
-            msg.target().addNonUninvokableEffect((Ability)this.copyOf());
+            I.addNonUninvokableEffect((Ability)this.copyOf());
         }
         else
         if((affected instanceof Item)

@@ -116,13 +116,8 @@ public class QuestBound implements Ability
     public void destroy(){amDestroyed=true; affected=null;}
     public boolean amDestroyed(){return amDestroyed;}
 
-	protected static final PhyStats phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
-	public PhyStats phyStats(){return phyStats;}
-	public PhyStats basePhyStats(){return phyStats;}
     protected void finalize(){ CMClass.unbumpCounter(this,CMClass.OBJECT_ABILITY); }
 
-	public void recoverPhyStats(){}
-	public void setBasePhyStats(PhyStats newStats){}
 	public CMObject newInstance()
 	{
 		try
@@ -285,14 +280,7 @@ public class QuestBound implements Ability
 	public void makeNonUninvokable(){}
 	private static final int[] cost=new int[3];
 	public int[] usageCost(MOB mob,boolean ignoreCostOverride){return cost;}
-
-
-	public void addEffect(Ability to){}
-	public void addNonUninvokableEffect(Ability to){}
-	public void delEffect(Ability to){}
-	public int numEffects(){ return 0;}
-	public Ability fetchEffect(int index){return null;}
-	public Ability fetchEffect(String ID){return null;}
+	
 	public boolean isGeneric(){return false;}
     
     public String buildMask(String newText, Vector mask)

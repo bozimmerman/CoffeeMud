@@ -50,7 +50,7 @@ public interface ShoppingLibrary extends CMLibrary
     public MOB parseBuyingFor(MOB buyer, String message);
     public double transactPawn(MOB shopkeeper, MOB pawner, ShopKeeper shop, Environmental product);
     public void transactMoneyOnly(MOB seller, MOB buyer, ShopKeeper shop, Environmental product, boolean sellerGetsPaid);
-    public boolean purchaseItems(Item baseProduct, Vector products, MOB seller, MOB mobFor);
+    public boolean purchaseItems(Item baseProduct, List<Environmental> products, MOB seller, MOB mobFor);
     public boolean purchaseMOB(MOB product, MOB seller, ShopKeeper shop, MOB mobFor);
     public void purchaseAbility(Ability A,  MOB seller, ShopKeeper shop, MOB mobFor);
     public Vector addRealEstateTitles(Vector V, MOB buyer, CoffeeShop shop, Room myRoom);

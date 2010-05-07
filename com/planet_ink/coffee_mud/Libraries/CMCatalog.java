@@ -46,22 +46,22 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
     public DVector icatalog=new DVector(2);
     public DVector mcatalog=new DVector(2);
 
-	public void changeCatalogFlag(Environmental E, boolean truefalse)
+	public void changeCatalogFlag(Physical P, boolean truefalse)
 	{
-		if(E==null) return;
-		if(CMath.bset(E.basePhyStats().disposition(),PhyStats.IS_CATALOGED))
+		if(P==null) return;
+		if(CMath.bset(P.basePhyStats().disposition(),PhyStats.IS_CATALOGED))
 		{
 			if(!truefalse)
 			{
-				E.basePhyStats().setDisposition(CMath.unsetb(E.basePhyStats().disposition(),PhyStats.IS_CATALOGED));
-				E.phyStats().setDisposition(CMath.unsetb(E.phyStats().disposition(),PhyStats.IS_CATALOGED));
+				P.basePhyStats().setDisposition(CMath.unsetb(P.basePhyStats().disposition(),PhyStats.IS_CATALOGED));
+				P.phyStats().setDisposition(CMath.unsetb(P.phyStats().disposition(),PhyStats.IS_CATALOGED));
 			}
 		}
 		else
 		if(truefalse)
 		{
-			E.basePhyStats().setDisposition(CMath.setb(E.basePhyStats().disposition(),PhyStats.IS_CATALOGED));
-			E.phyStats().setDisposition(CMath.setb(E.phyStats().disposition(),PhyStats.IS_CATALOGED));
+			P.basePhyStats().setDisposition(CMath.setb(P.basePhyStats().disposition(),PhyStats.IS_CATALOGED));
+			P.phyStats().setDisposition(CMath.setb(P.phyStats().disposition(),PhyStats.IS_CATALOGED));
 		}
 	}
 	
@@ -92,11 +92,11 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
     	}
     }
     
-    protected void addCatalogReplace(DVector DV, Environmental E)
+    protected void addCatalogReplace(DVector DV, Physical P)
     {
         int start=0;
         int end=DV.size()-1;
-        String name=E.Name();
+        String name=P.Name();
         int lastStart=0;
         int lastEnd=DV.size()-1;
         int comp=-1;
@@ -121,10 +121,10 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
         }
         if(comp==0)
         {
-        	if(E instanceof DBIdentifiable)
-        		((DBIdentifiable)E).setDatabaseID(((DBIdentifiable)DV.elementAt(mid,1)).databaseID());
+        	if(P instanceof DBIdentifiable)
+        		((DBIdentifiable)P).setDatabaseID(((DBIdentifiable)DV.elementAt(mid,1)).databaseID());
             ((Environmental)DV.elementAt(mid,1)).destroy();
-            DV.setElementAt(mid,1,E);
+            DV.setElementAt(mid,1,P);
         }
         else
         {
@@ -132,10 +132,10 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
                 for(comp=lastStart;comp<=lastEnd;comp++)
                     if(((Environmental)DV.elementAt(comp,1)).Name().compareToIgnoreCase(name)>0)
                     {
-                        DV.insertElementAt(comp,E,new CataDataImpl(""));
+                        DV.insertElementAt(comp,P,new CataDataImpl(""));
                         return;
                     }
-            DV.addElement(E,new CataDataImpl(""));
+            DV.addElement(P,new CataDataImpl(""));
         }
     }
     
@@ -212,7 +212,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
                 for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
                 {
                     shopItem=(Environmental)i.next();
-                    content.addElement(new RoomContentImpl(shopItem,SK));
+                    if(shopItem instanceof Physical)
+	                    content.addElement(new RoomContentImpl((Physical)shopItem,SK));
                 }
             }
 			for(int i=0;i<R.numItems();i++)
@@ -249,8 +250,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
 						updatables.addElement(C.holder());
 				}
 				else
-				if(!updatables.contains(C.E()))
-					deletables.add(C.E());
+				if(!updatables.contains(C.P()))
+					deletables.add(C.P());
     		}
     		else
     		if(C.isDirty())
@@ -261,8 +262,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
 						updatables.addElement(C.holder());
 				}
 				else
-				if(!updatables.contains(C.E()))
-					updatables.add(C.E());
+				if(!updatables.contains(C.P()))
+					updatables.add(C.P());
     		}
     	}
     	for(Environmental E : deletables)
@@ -286,7 +287,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
     	    	for(RoomContent C : content)
     	    	{
     	    		if((C.holder()==SK)&&(!C.deleted()))
-                        newShop.addElement(C.E());
+                        newShop.addElement(C.P());
     	    	}
             	SK.getShop().resubmitInventory(newShop);
     		}
@@ -304,97 +305,97 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
     	}
     }
     
-    public void addCatalog(Environmental E)
+    public void addCatalog(Physical PA)
     {
-        if(E==null) return;
-        if((E==null)||(!(E instanceof DBIdentifiable))||(!((DBIdentifiable)E).canSaveDatabaseID())) 
+        if(PA==null) return;
+        if((PA==null)||(!(PA instanceof DBIdentifiable))||(!((DBIdentifiable)PA).canSaveDatabaseID())) 
         	return;
-    	synchronized(getSync(E).intern())
+    	synchronized(getSync(PA).intern())
     	{
-	        changeCatalogFlag(E,true);
-	        Environmental origE=E;
-    		E=(Environmental)origE.copyOf();
-    		submitToCatalog(E);
-    		if(E instanceof Item)
-	            CMLib.database().DBCreateThisItem("CATALOG_ITEMS",(Item)E);
+	        changeCatalogFlag(PA,true);
+	        Physical origP=PA;
+    		PA=(Physical)origP.copyOf();
+    		submitToCatalog(PA);
+    		if(PA instanceof Item)
+	            CMLib.database().DBCreateThisItem("CATALOG_ITEMS",(Item)PA);
     		else
-    		if(E instanceof MOB)
-	            CMLib.database().DBCreateThisMOB("CATALOG_MOBS",(MOB)E);
-    		CataData data=getCatalogData(E);
-    		if(data!=null) data.addReference(origE);
+    		if(PA instanceof MOB)
+	            CMLib.database().DBCreateThisMOB("CATALOG_MOBS",(MOB)PA);
+    		CataData data=getCatalogData(PA);
+    		if(data!=null) data.addReference(origP);
     	}
     }
     
-    public void submitToCatalog(Environmental E)
+    public void submitToCatalog(Physical P)
     {
-        if(E==null) return;
-    	synchronized(getSync(E).intern())
+        if(P==null) return;
+    	synchronized(getSync(P).intern())
     	{
-	        if(getCatalogObj(E)!=null) return;
-	        changeCatalogFlag(E,false);
-	        E.text(); // to get cataloged status into xml
-	        if(E instanceof Item)
+	        if(getCatalogObj(P)!=null) return;
+	        changeCatalogFlag(P,false);
+	        P.text(); // to get cataloged status into xml
+	        if(P instanceof Item)
 	        {
 	        	synchronized(icatalog)
 	        	{
-		            addCatalogReplace(icatalog,(Item)E);
+		            addCatalogReplace(icatalog,(Item)P);
 	        	}
 	        }
 	        else
-	        if(E instanceof MOB)
+	        if(P instanceof MOB)
 	        {
 	        	synchronized(mcatalog)
 	        	{
-		            addCatalogReplace(mcatalog,(MOB)E);
+		            addCatalogReplace(mcatalog,(MOB)P);
 	        	}
 	        }
     	}
     }
     
-    public void delCatalog(Environmental E)
+    public void delCatalog(Physical P)
     {
-        if(E==null) return;
-        E=getCatalogObj(E);
-        if(E==null) return;
-        CataData data=getCatalogData(E);
-        if(E instanceof Item)
+        if(P==null) return;
+        P=getCatalogObj(P);
+        if(P==null) return;
+        CataData data=getCatalogData(P);
+        if(P instanceof Item)
         {
         	synchronized(icatalog)
         	{
-	            icatalog.removeElement((Item)E);
+	            icatalog.removeElement((Item)P);
         	}
-            CMLib.database().DBDeleteItem("CATALOG_ITEMS",(Item)E);
+            CMLib.database().DBDeleteItem("CATALOG_ITEMS",(Item)P);
         }
         else
-        if(E instanceof MOB)
+        if(P instanceof MOB)
         {
         	synchronized(mcatalog)
         	{
-	            mcatalog.removeElement((MOB)E);
+	            mcatalog.removeElement((MOB)P);
         	}
-            CMLib.database().DBDeleteMOB("CATALOG_MOBS",(MOB)E);
+            CMLib.database().DBDeleteMOB("CATALOG_MOBS",(MOB)P);
         }
         if(data!=null)
         {
         	Vector<Room> rooms=new Vector<Room>();
-        	for(Enumeration<Environmental> e=data.enumeration();e.hasMoreElements();)
+        	for(Enumeration<Physical> e=data.enumeration();e.hasMoreElements();)
         	{
-        		Environmental E2=e.nextElement();
-        		Room R=CMLib.map().getStartRoom(E2);
+        		Physical P2=e.nextElement();
+        		Room R=CMLib.map().getStartRoom(P2);
         		if((R!=null)&&(!rooms.contains(R)))
         			rooms.addElement(R);
-        		changeCatalogUsage(E2,false);
+        		changeCatalogUsage(P2,false);
         	}
         	for(Room R : rooms)
         	{
         		Vector<RoomContent> contents=roomContent(R);
         		for(RoomContent content : contents)
         		{
-        			if((CMLib.flags().isCataloged(content.E()))&&(content.E().Name().equalsIgnoreCase(E.Name())))
+        			if((CMLib.flags().isCataloged(content.P()))&&(content.P().Name().equalsIgnoreCase(P.Name())))
         			{
-            			if(((E instanceof MOB)&&(content.E() instanceof MOB))
-            			||((E instanceof Item)&&(content.E() instanceof Item)))
-            				changeCatalogFlag(content.E(),false);
+            			if(((P instanceof MOB)&&(content.P() instanceof MOB))
+            			||((P instanceof Item)&&(content.P() instanceof Item)))
+            				changeCatalogFlag(content.P(),false);
         			}
         		}
         		R=CMLib.coffeeMaker().makeNewRoomContent(R);
@@ -402,12 +403,12 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
         		boolean dirty=false;
         		for(RoomContent content : contents)
         		{
-        			if((CMLib.flags().isCataloged(content.E()))&&(content.E().Name().equalsIgnoreCase(E.Name())))
+        			if((CMLib.flags().isCataloged(content.P()))&&(content.P().Name().equalsIgnoreCase(P.Name())))
         			{
-            			if(((E instanceof MOB)&&(content.E() instanceof MOB))
-            			||((E instanceof Item)&&(content.E() instanceof Item)))
+            			if(((P instanceof MOB)&&(content.P() instanceof MOB))
+            			||((P instanceof Item)&&(content.P() instanceof Item)))
             			{
-            				changeCatalogFlag(content.E(),false);
+            				changeCatalogFlag(content.P(),false);
             				content.flagDirty();
             				dirty=true;
             			}
@@ -419,64 +420,64 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
         }
     }
     
-    public void updateCatalog(Environmental modelE)
+    public void updateCatalog(Physical modelP)
     {
-        if((modelE==null)
-        ||(!(modelE instanceof DBIdentifiable))
-        ||(!((DBIdentifiable)modelE).canSaveDatabaseID())) 
+        if((modelP==null)
+        ||(!(modelP instanceof DBIdentifiable))
+        ||(!((DBIdentifiable)modelP).canSaveDatabaseID())) 
         	return;
-    	synchronized(getSync(modelE).intern())
+    	synchronized(getSync(modelP).intern())
     	{
-	        changeCatalogFlag(modelE,false);
-    		Environmental cataE=(Environmental)modelE.copyOf();
-	        cataE.text(); // to get cataloged status into xml
-    		if(modelE!=getCatalogObj(modelE))
-		        changeCatalogFlag(modelE,true);
-	        if(cataE instanceof Item)
+	        changeCatalogFlag(modelP,false);
+    		Physical cataP=(Physical)modelP.copyOf();
+	        cataP.text(); // to get cataloged status into xml
+    		if(modelP!=getCatalogObj(modelP))
+		        changeCatalogFlag(modelP,true);
+	        if(cataP instanceof Item)
 	        {
 	        	synchronized(icatalog)
 	        	{
-		            addCatalogReplace(icatalog,(Item)cataE);
+		            addCatalogReplace(icatalog,(Item)cataP);
 	        	}
 	        }
 	        else
-	        if(cataE instanceof MOB)
+	        if(cataP instanceof MOB)
 	        {
 	        	synchronized(mcatalog)
 	        	{
-		            addCatalogReplace(mcatalog,(MOB)cataE);
+		            addCatalogReplace(mcatalog,(MOB)cataP);
 	        	}
 	        }
-    		cataE=getCatalogObj(cataE);
-	        if(cataE instanceof MOB)
-	            CMLib.database().DBUpdateMOB("CATALOG_MOBS",(MOB)cataE);
+    		cataP=getCatalogObj(cataP);
+	        if(cataP instanceof MOB)
+	            CMLib.database().DBUpdateMOB("CATALOG_MOBS",(MOB)cataP);
 	        else
-	            CMLib.database().DBUpdateItem("CATALOG_ITEMS",(Item)cataE);
+	            CMLib.database().DBUpdateItem("CATALOG_ITEMS",(Item)cataP);
 	        
-    		CataData data = getCatalogData(cataE);
-    		data.delReference(cataE);
-    		HashSet<Environmental> ignored=null;
+    		CataData data = getCatalogData(cataP);
+    		data.delReference(cataP);
+    		HashSet<Physical> ignored=null;
     		if(data!=null)
     			ignored=CMParms.makeHashSet(data.enumeration());
     		else
-    			ignored=new HashSet<Environmental>(1);
-    		Environmental E;
-    		for(Iterator<Environmental> i=ignored.iterator();i.hasNext();)
+    			ignored=new HashSet<Physical>(1);
+    		Physical P;
+    		for(Iterator<Physical> i=ignored.iterator();i.hasNext();)
     		{
-    			E=i.next();
-    			if((!E.amDestroyed())
-                &&(CMLib.flags().isCataloged(E))
-                &&(cataE!=E)
-                &&(E.Name().equalsIgnoreCase(cataE.Name())))
+    			P=i.next();
+    			if((!P.amDestroyed())
+                &&(CMLib.flags().isCataloged(P))
+                &&(cataP!=P)
+                &&(P.Name().equalsIgnoreCase(cataP.Name())))
     			{
-                    E.setMiscText(E.text());
-                    changeCatalogFlag(E,true);
+                    P.setMiscText(P.text());
+                    changeCatalogFlag(P,true);
     			}
     		}
     		Vector all=new Vector();
-    		String srchStr="$"+cataE.Name()+"$";
-	        boolean isMob=(cataE instanceof MOB);
-    		if(cataE instanceof MOB)
+    		String srchStr="$"+cataP.Name()+"$";
+	        boolean isMob=(cataP instanceof MOB);
+    		if(cataP instanceof MOB)
     		{
 	    		all.addAll(CMLib.map().findInhabitants(CMLib.map().rooms(),null, srchStr, 50));
 	    		all.addAll(CMLib.map().findShopStock(CMLib.map().rooms(),null, srchStr, 50));
@@ -493,93 +494,93 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
 	        ShopKeeper SK=null;
     		for(Enumeration e=all.elements();e.hasMoreElements();)
     		{
-    			E=(Environmental)e.nextElement();
-                if((CMLib.flags().isCataloged(E))
-                &&(!ignored.contains(E))
-                &&(((isMob)&&(E instanceof MOB))||((!isMob)&&(E instanceof Item)))
-                &&(cataE.Name().equalsIgnoreCase(E.Name())))
+    			P=(Physical)e.nextElement();
+                if((CMLib.flags().isCataloged(P))
+                &&(!ignored.contains(P))
+                &&(((isMob)&&(P instanceof MOB))||((!isMob)&&(P instanceof Item)))
+                &&(cataP.Name().equalsIgnoreCase(P.Name())))
                 {
-                	ignored.add(E);
-                    E.setMiscText(E.text());
-                    changeCatalogFlag(E,true);
+                	ignored.add(P);
+                    P.setMiscText(P.text());
+                    changeCatalogFlag(P,true);
                 }
-                SK=CMLib.coffeeShops().getShopKeeper(E);
+                SK=CMLib.coffeeShops().getShopKeeper(P);
 	            if((SK!=null)&&(!doneShops.contains(SK))) {
 	            	doneShops.add(SK);
-	            	propogateShopChange(SK,ignored,cataE);
+	            	propogateShopChange(SK,ignored,cataP);
 	            }
     		}
     	}
     }
     
-    public void newInstance(Environmental E)
+    public void newInstance(Physical P)
     {
-    	synchronized(getSync(E).intern())
+    	synchronized(getSync(P).intern())
     	{
-    		PhyStats stats=E.basePhyStats();
+    		PhyStats stats=P.basePhyStats();
     		if((stats!=null)&&(CMath.bset(stats.disposition(),PhyStats.IS_CATALOGED)))
     		{
-	        	CataData data=getCatalogData(E);
-	            if(data!=null) data.addReference(E);
+	        	CataData data=getCatalogData(P);
+	            if(data!=null) data.addReference(P);
     		}
     	}
     }
     
-    public void bumpDeathPickup(Environmental E)
+    public void bumpDeathPickup(Physical P)
     {
-    	synchronized(getSync(E).intern())
+    	synchronized(getSync(P).intern())
     	{
-    		PhyStats stats=E.basePhyStats();
+    		PhyStats stats=P.basePhyStats();
     		if((stats!=null)&&(CMath.bset(stats.disposition(),PhyStats.IS_CATALOGED)))
     		{
-	        	CataData data=getCatalogData(E);
+	        	CataData data=getCatalogData(P);
 	            if(data!=null) data.bumpDeathPickup();
     		}
     	}
     }
     
-    public void changeCatalogUsage(Environmental E, boolean toCataloged)
+    public void changeCatalogUsage(Physical P, boolean toCataloged)
     {
-    	synchronized(getSync(E).intern())
+    	synchronized(getSync(P).intern())
     	{
-            if((E!=null)&&(E.basePhyStats()!=null)&&(!E.amDestroyed()))
+            if((P!=null)&&(P.basePhyStats()!=null)&&(!P.amDestroyed()))
             {
                 if(toCataloged)
             	{
-	                changeCatalogFlag(E,true);
-                	CataData data=getCatalogData(E);
-                    if(data!=null) data.addReference(E);
+	                changeCatalogFlag(P,true);
+                	CataData data=getCatalogData(P);
+                    if(data!=null) data.addReference(P);
             	}
                 else
-            	if(CMLib.flags().isCataloged(E))
+            	if(CMLib.flags().isCataloged(P))
             	{
-                    changeCatalogFlag(E,false);
-                	CataData data=getCatalogData(E);
-                    if(data!=null) data.delReference(E);
+                    changeCatalogFlag(P,false);
+                	CataData data=getCatalogData(P);
+                    if(data!=null) data.delReference(P);
             	}
             }
     	}
     }
     
-    protected void propogateShopChange(ShopKeeper SK, HashSet<Environmental> ignored, Environmental cataE)
+    protected void propogateShopChange(ShopKeeper SK, HashSet<Physical> ignored, Physical cataP)
     {
-        boolean isMob=(cataE instanceof MOB);
+        boolean isMob=(cataP instanceof MOB);
         Environmental E=null;
         boolean changes=false;
         Vector<Environmental> newShop=new Vector<Environmental>();
         for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
         {
             E=(Environmental)i.next();
-            if(!ignored.contains(E))
+            if(!ignored.contains(E) && (E instanceof Physical))
             {
-            	ignored.add(E);
+            	ignored.add((Physical)E);
 	            if((isMob)&&(E instanceof MOB)
 	            &&(CMLib.flags().isCataloged(E))
-	            &&(cataE.Name().equalsIgnoreCase(E.Name())))
+	            &&(cataP.Name().equalsIgnoreCase(E.Name())))
 	            { E.setMiscText(E.text()); changes=true;}
 	            if((!isMob)&&(E instanceof Item)
 	            &&(CMLib.flags().isCataloged(E))
-	            &&(cataE.Name().equalsIgnoreCase(E.Name())))
+	            &&(cataP.Name().equalsIgnoreCase(E.Name())))
 	            { E.setMiscText(E.text()); changes=true;}
             }
             newShop.add(E);
@@ -588,76 +589,76 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
         	SK.getShop().resubmitInventory(newShop);
     }
     
-    public CataData getCatalogData(Environmental E) {
-    	if(E==null) return null;
-    	return (E instanceof MOB)?getCatalogMobData(E.Name()):getCatalogItemData(E.Name());
+    public CataData getCatalogData(Physical P) {
+    	if(P==null) return null;
+    	return (P instanceof MOB)?getCatalogMobData(P.Name()):getCatalogItemData(P.Name());
     }
     
-    public Environmental getCatalogObj(Environmental E) {
-    	if(E==null) return null;
-    	return (E instanceof MOB)?getCatalogMob(E.Name()):getCatalogItem(E.Name());
+    public Physical getCatalogObj(Physical P) {
+    	if(P==null) return null;
+    	return (P instanceof MOB)?getCatalogMob(P.Name()):getCatalogItem(P.Name());
     }
     
-    public void updateCatalogIntegrity(Environmental E)
+    public void updateCatalogIntegrity(Physical P)
     {
-    	synchronized(getSync(E).intern())
+    	synchronized(getSync(P).intern())
     	{
-	    	if(checkCatalogIntegrity(E)==null) return;
-	    	changeCatalogFlag(E,false);
-	    	E.text();
+	    	if(checkCatalogIntegrity(P)==null) return;
+	    	changeCatalogFlag(P,false);
+	    	P.text();
     	}
     }
 
     private final String getSync(String name, boolean mobType) { return ((mobType)?"CATASYNC_MOB_":"CATASYNC_ITEM_")+name.toUpperCase();}
     private final String getSync(Environmental E) { return getSync(E.Name(),E instanceof MOB);}
     
-    public StringBuffer checkCatalogIntegrity(Environmental E) 
+    public StringBuffer checkCatalogIntegrity(Physical P) 
     {
-    	if(E==null) return null;
-    	synchronized(getSync(E).intern())
+    	if(P==null) return null;
+    	synchronized(getSync(P).intern())
     	{
-            if(CMLib.flags().isCataloged(E))
+            if(CMLib.flags().isCataloged(P))
     		{
-            	CataData data=getCatalogData(E);
-            	Environmental cataE=getCatalogObj(E);
+            	CataData data=getCatalogData(P);
+            	Physical cataE=getCatalogObj(P);
             	if((cataE==null)||(data==null))
             	{
                 	if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)) 
                 		return null; // if catalog isn't fully loaded, this can be a false correction
                 	if(data!=null)
-    	            	data.delReference(E);
-                	changeCatalogFlag(E,false);
-                	E.text();
+    	            	data.delReference(P);
+                	changeCatalogFlag(P,false);
+                	P.text();
                 	return null;
             	} 
             	else 
             	{
             		StringBuffer diffs=null;
-                	changeCatalogFlag(E,false);
-                	if(!cataE.sameAs(E))
+                	changeCatalogFlag(P,false);
+                	if(!cataE.sameAs(P))
                 	{
                 		if(diffs==null) diffs=new StringBuffer("");
                         for(int i=0;i<cataE.getStatCodes().length;i++)
-                            if((!cataE.getStat(cataE.getStatCodes()[i]).equals(E.getStat(cataE.getStatCodes()[i]))))
+                            if((!cataE.getStat(cataE.getStatCodes()[i]).equals(P.getStat(cataE.getStatCodes()[i]))))
                                 diffs.append(cataE.getStatCodes()[i]+",");
                 	}
-                	if((E instanceof MOB)&&(cataE instanceof MOB))
+                	if((P instanceof MOB)&&(cataE instanceof MOB))
                 	{
                 		if(diffs==null) diffs=new StringBuffer("");
-                		if(!((MOB)E).getClanID().equalsIgnoreCase(((MOB)cataE).getClanID()))
+                		if(!((MOB)P).getClanID().equalsIgnoreCase(((MOB)cataE).getClanID()))
                 			diffs.append("CLANID,");
                 	}
-                	changeCatalogFlag(E,true);
+                	changeCatalogFlag(P,true);
                 	if(data!=null)
-                		data.addReference(E);
+                		data.addReference(P);
                 	return diffs;
             	}
     		}
             else
             {
-            	CataData data=getCatalogData(E);
+            	CataData data=getCatalogData(P);
             	if(data!=null)
-	            	data.delReference(E);
+	            	data.delReference(P);
             	return null;
             }
     	}
@@ -746,13 +747,13 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
     
     public static class RoomContentImpl implements RoomContent
     {
-    	private Environmental 	obj=null;
+    	private Physical 		obj=null;
     	private boolean 		dirty=false;
-    	private Environmental 	holder=null;
+    	private Environmental	holder=null;
     	
-    	public RoomContentImpl(Environmental E){ obj=E;}
-    	public RoomContentImpl(Environmental E, Environmental E2){ obj=E; holder=E2;}
-    	public Environmental E(){return obj;}
+    	public RoomContentImpl(Physical P){ obj=P;}
+    	public RoomContentImpl(Physical P, Environmental E){ obj=P; holder=E;}
+    	public Physical P(){return obj;}
     	public void flagDirty(){ dirty=true;}
     	public Environmental holder(){ return holder;}
     	public boolean isDirty(){ return dirty;}
@@ -766,8 +767,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
         public boolean 		live=false;
         public double 		rate=0.0;
         public volatile int deathPickup=0;
-        public SVector<WeakReference> 
-        					refs=new SVector<WeakReference>(1);
+        public SVector<WeakReference<Physical>> 
+        					refs=new SVector<WeakReference<Physical>>(1);
         public boolean noRefs = CMProps.getBoolVar(CMProps.SYSTEMB_CATALOGNOCACHE) 
         						|| CMSecurity.isDisabled("CATALOGCACHE");
         
@@ -776,26 +777,26 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
             build(catadata);
         }
         
-        private Vector<Environmental> makeVector() {
-        	Vector<Environmental> V=new Vector<Environmental>(refs.size());
-        	WeakReference R=null;
+        private Vector<Physical> makeVector() {
+        	Vector<Physical> V=new Vector<Physical>(refs.size());
+        	WeakReference<Physical> R=null;
         	for(int r=0;r<refs.size();r++)
         	{
         		R=refs.elementAt(r);
         		if(R!=null)
         		{
-        			Environmental o=(Environmental)R.get();
+        			Physical o=R.get();
         			if((o!=null)
         			&&(!o.amDestroyed())
         			&&(CMath.bset(o.basePhyStats().disposition(),PhyStats.IS_CATALOGED)))
-        				V.addElement((Environmental)o);
+        				V.addElement(o);
         		}
         	}
         	return V;
         }
 
         public RoomnumberSet getLocations() {
-        	Vector<Environmental> items=makeVector();
+        	Vector<Physical> items=makeVector();
         	RoomnumberSet homes=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
         	RoomnumberSet set=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
         	Room R=null;
@@ -854,7 +855,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
         	return num;
         }
         
-        public Enumeration<Environmental> enumeration() { return makeVector().elements();}
+        public Enumeration<Physical> enumeration() { return makeVector().elements();}
         
         public int getDeathsPicksups(){ return deathPickup;}
         public void bumpDeathPickup(){ deathPickup++;}
@@ -877,49 +878,50 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
         	} catch(ArrayIndexOutOfBoundsException ex){}
         }
         
-        public Environmental getLiveReference()
+        public Physical getLiveReference()
         {
         	if(noRefs) return null;
-        	Environmental o=null;
+        	Physical o=null;
         	try {
 	        	for(int r=0;r<refs.size();r++)
 	        	{
-	        		o=(Environmental)refs.elementAt(r).get();
+	        		o=(Physical)refs.elementAt(r).get();
 	        		if((o!=null)&&(CMLib.flags().isInTheGame(o,true)))
 		    			return o;
 	        	}
         	} catch(Exception e) { }
     		return null;
         }
-        public synchronized void addReference(Environmental E) {
+        public synchronized void addReference(Physical P) 
+        {
         	if(noRefs) return;
-        	if(isReference(E)) return;
+        	if(isReference(P)) return;
         	Environmental o=null;
         	for(int r=0;r<refs.size();r++)
         	{
         		o=(Environmental)refs.elementAt(r).get();
         		if(o==null)
         		{
-	    			refs.setElementAt(new WeakReference(E),r);
+	    			refs.setElementAt(new WeakReference(P),r);
 	    			return;
         		}
         	}
-        	refs.addElement(new WeakReference(E));
+        	refs.addElement(new WeakReference(P));
         }
         
-        public boolean isReference(Environmental E) {
+        public boolean isReference(Physical P) {
         	for(int r=0;r<refs.size();r++)
-        		if(refs.elementAt(r).get()==E) return true;
+        		if(refs.elementAt(r).get()==P) return true;
         	return false;
         }
         
-        public synchronized void delReference(Environmental E) {
-        	if(!isReference(E)) return;
+        public synchronized void delReference(Physical P) {
+        	if(!isReference(P)) return;
         	Environmental o=null;
         	for(int r=0;r<refs.size();r++)
         	{
         		o=(Environmental)refs.elementAt(r).get();
-        		if(o==E)
+        		if(o==P)
         		{
         			refs.removeElementAt(r);
 	    			return;

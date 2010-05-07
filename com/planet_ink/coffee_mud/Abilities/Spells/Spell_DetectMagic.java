@@ -61,15 +61,16 @@ public class Spell_DetectMagic extends Spell
 		super.executeMsg(myHost,msg);
 		if((affected!=null)
 		&&(affected instanceof MOB)
-		&&(msg.target()!=null)
+		&&(msg.target() instanceof Physical)
 		&&(msg.amISource((MOB)affected))
 		&&((msg.sourceMinor()==CMMsg.TYP_LOOK)||(msg.sourceMinor()==CMMsg.TYP_EXAMINE))
 		&&(CMLib.flags().canBeSeenBy(msg.target(),(MOB)affected)))
 		{
 			String msg2=null;
-			for(int a=0;a<msg.target().numEffects();a++)
+			Physical targetP=(Physical)msg.target();
+			for(int a=0;a<targetP.numEffects();a++)
 			{
-				Ability A=msg.target().fetchEffect(a);
+				Ability A=targetP.fetchEffect(a);
 				if((A!=null)
 				&&(!A.isAutoInvoked())
 				&&(A.displayText().length()>0)
@@ -79,16 +80,16 @@ public class Spell_DetectMagic extends Spell
 				   ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)))
 				{
 					if(msg2==null)
-						msg2=msg.target().name()+" is affected by: "+A.name();
+						msg2=targetP.name()+" is affected by: "+A.name();
 					else
 						msg2+=" "+A.name();
 				}
 			}
-			if((msg2==null)&&(CMLib.flags().isABonusItems(msg.target())))
+			if((msg2==null)&&(CMLib.flags().isABonusItems(targetP)))
 				msg2=msg.target().name()+" is enchanted";
 			if(msg2!=null)
 			{
-				CMMsg msg3=CMClass.getMsg(msg.source(),msg.target(),this,
+				CMMsg msg3=CMClass.getMsg(msg.source(),targetP,this,
 										CMMsg.MSG_OK_VISUAL,msg2+".",
 										CMMsg.NO_EFFECT,null,
 										CMMsg.NO_EFFECT,null);

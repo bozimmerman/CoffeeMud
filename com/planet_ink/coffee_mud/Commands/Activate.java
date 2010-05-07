@@ -50,22 +50,22 @@ public class Activate extends StdCommand
 		String cmd=(String)commands.firstElement();
 		commands.removeElementAt(0);
 		String what=(String)commands.lastElement();
-		Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,what,Wearable.FILTER_ANY);
+		PhysicalAgent P=mob.location().fetchFromMOBRoomFavorsItems(mob,null,what,Wearable.FILTER_ANY);
 		Item item=null;
 		if(mob.riding() instanceof Electronics)
 		{
-		    if((E==null)||(cmd.equalsIgnoreCase(">")))
+		    if((P==null)||(cmd.equalsIgnoreCase(">")))
 		        item=(Item)mob.riding();
 		}
 		else
 		    commands.removeElementAt(commands.size()-1);
-		if((item==null)&&(E instanceof Electronics))
-		    item=(Item)E;
-		if((E==null)||(!CMLib.flags().canBeSeenBy(E,mob)))
+		if((item==null)&&(P instanceof Electronics))
+		    item=(Item)P;
+		if((P==null)||(!CMLib.flags().canBeSeenBy(P,mob)))
 			mob.tell("You don't see anything called "+what+" here that you can activate.");
 		else
 		if(item==null)
-			mob.tell("You can't activate "+E.name()+"'.");
+			mob.tell("You can't activate "+P.name()+"'.");
 
 		String rest=CMParms.combine(commands,0);
 		CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_ACTIVATE,null,CMMsg.MSG_ACTIVATE,rest,CMMsg.MSG_ACTIVATE,null);

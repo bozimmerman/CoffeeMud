@@ -50,7 +50,7 @@ public class Chant_NeutralizePoison extends Chant implements MendingSkill
 		return canMend;
 	}
 	
-	public Vector returnOffensiveAffects(Environmental fromMe)
+	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
 		Vector offenders=new Vector();
 
@@ -69,7 +69,7 @@ public class Chant_NeutralizePoison extends Chant implements MendingSkill
         {
             if(target instanceof MOB)
             {
-                Vector offensiveAffects=returnOffensiveAffects(target);
+            	List<Ability> offensiveAffects=returnOffensiveAffects(target);
                 if(offensiveAffects.size()==0)
                     return Ability.QUALITY_INDIFFERENT;
             }
@@ -86,7 +86,7 @@ public class Chant_NeutralizePoison extends Chant implements MendingSkill
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
-		Vector offensiveAffects=returnOffensiveAffects(target);
+		List<Ability> offensiveAffects=returnOffensiveAffects(target);
 
 		if((success)&&((offensiveAffects.size()>0)
 					   ||((target instanceof Drink)&&(((Drink)target).liquidHeld()==RawMaterial.RESOURCE_POISON))))
@@ -100,7 +100,7 @@ public class Chant_NeutralizePoison extends Chant implements MendingSkill
 			{
 				mob.location().send(mob,msg);
 				for(int a=offensiveAffects.size()-1;a>=0;a--)
-					((Ability)offensiveAffects.elementAt(a)).unInvoke();
+					((Ability)offensiveAffects.get(a)).unInvoke();
 				if((target instanceof Drink)&&(((Drink)target).liquidHeld()==RawMaterial.RESOURCE_POISON))
 				{
 					((Drink)target).setLiquidHeld(RawMaterial.RESOURCE_FRESHWATER);

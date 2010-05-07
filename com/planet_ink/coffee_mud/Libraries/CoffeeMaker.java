@@ -237,26 +237,27 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		else
 		if(E instanceof Item)
 		{
-			Item item=(Item)E;
+			Item I=(Item)E;
 			String xml=
-				(((item instanceof Container)&&(((Container)item).capacity()>0))
-				?CMLib.xml().convertXMLtoTag("IID",""+E):"")
-				+CMLib.xml().convertXMLtoTag("IWORN",""+item.rawWornCode())
-				+CMLib.xml().convertXMLtoTag("ILOC",""+((item.container()!=null)?(""+item.container()):""))
-				+CMLib.xml().convertXMLtoTag("IUSES",""+item.usesRemaining())
-				+CMLib.xml().convertXMLtoTag("ILEVL",""+E.basePhyStats().level())
-				+CMLib.xml().convertXMLtoTag("IABLE",""+E.basePhyStats().ability())
-				+((E.isGeneric()?"":CMLib.xml().convertXMLtoTag("ITEXT",""+E.text())));
+				(((I instanceof Container)&&(((Container)I).capacity()>0))
+				?CMLib.xml().convertXMLtoTag("IID",""+I):"")
+				+CMLib.xml().convertXMLtoTag("IWORN",""+I.rawWornCode())
+				+CMLib.xml().convertXMLtoTag("ILOC",""+((I.container()!=null)?(""+I.container()):""))
+				+CMLib.xml().convertXMLtoTag("IUSES",""+I.usesRemaining())
+				+CMLib.xml().convertXMLtoTag("ILEVL",""+I.basePhyStats().level())
+				+CMLib.xml().convertXMLtoTag("IABLE",""+I.basePhyStats().ability())
+				+((E.isGeneric()?"":CMLib.xml().convertXMLtoTag("ITEXT",""+I.text())));
 			return xml;
 		}
 		else
 		if(E instanceof MOB)
 		{
+			MOB M=(MOB)E;
 			String xml=
-				 CMLib.xml().convertXMLtoTag("MLEVL",""+E.basePhyStats().level())
-				+CMLib.xml().convertXMLtoTag("MABLE",""+E.basePhyStats().ability())
-				+CMLib.xml().convertXMLtoTag("MREJV",""+E.basePhyStats().rejuv())
-				+((E.isGeneric()?"":CMLib.xml().convertXMLtoTag("ITEXT",""+E.text())));
+				 CMLib.xml().convertXMLtoTag("MLEVL",""+M.basePhyStats().level())
+				+CMLib.xml().convertXMLtoTag("MABLE",""+M.basePhyStats().ability())
+				+CMLib.xml().convertXMLtoTag("MREJV",""+M.basePhyStats().rejuv())
+				+((E.isGeneric()?"":CMLib.xml().convertXMLtoTag("ITEXT",""+M.text())));
 			return xml;
 		}
 		return "";
@@ -1672,15 +1673,15 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			setPropertiesStr(E,V,fromTop);
 	}
 
-	public void recoverEnvironmental(Environmental E)
+	public void recoverPhysical(Physical P)
 	{
-		if(E==null) return;
-		E.recoverPhyStats();
-		if(E instanceof MOB)
+		if(P==null) return;
+		P.recoverPhyStats();
+		if(P instanceof MOB)
 		{
-			((MOB)E).recoverCharStats();
-			((MOB)E).recoverMaxState();
-			((MOB)E).resetToMaxState();
+			((MOB)P).recoverCharStats();
+			((MOB)P).recoverMaxState();
+			((MOB)P).resetToMaxState();
 		}
 	}
 
@@ -1691,14 +1692,16 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			Log.errOut("CoffeeMaker","setPropertiesStr2: null 'E'");
 			return;
 		}
-		if(!handleCatalogItem(E, V, fromTop))
+		if((!(E instanceof Physical))
+		||(!handleCatalogItem((Physical)E, V, fromTop)))
 		{
 			if(E.isGeneric())
 				setGenPropertiesStr(E,V);
 			if(fromTop)
 				setOrdPropertiesStr(E,V);
 		}
-		recoverEnvironmental(E);
+		if(E instanceof Physical)
+			recoverPhysical((Physical)E);
 	}
 
 	public void setOrdPropertiesStr(Environmental E, Vector V)
@@ -1772,22 +1775,23 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		else
 		if(E instanceof Item)
 		{
-			Item item=(Item)E;
-			item.setUsesRemaining(CMLib.xml().getIntFromPieces(V,"IUSES"));
-			item.basePhyStats().setLevel(CMLib.xml().getIntFromPieces(V,"ILEVL"));
-			item.basePhyStats().setAbility(CMLib.xml().getIntFromPieces(V,"IABLE"));
+			Item I=(Item)E;
+			I.setUsesRemaining(CMLib.xml().getIntFromPieces(V,"IUSES"));
+			I.basePhyStats().setLevel(CMLib.xml().getIntFromPieces(V,"ILEVL"));
+			I.basePhyStats().setAbility(CMLib.xml().getIntFromPieces(V,"IABLE"));
 			if(!E.isGeneric())
-				item.setMiscText(CMLib.xml().getValFromPieces(V,"ITEXT"));
+				I.setMiscText(CMLib.xml().getValFromPieces(V,"ITEXT"));
 			//item.wearAt(CMLib.xml().getIntFromPieces(V,"USES"));
 		}
 		else
 		if(E instanceof MOB)
 		{
-			E.basePhyStats().setLevel(CMLib.xml().getIntFromPieces(V,"MLEVL"));
-			E.basePhyStats().setAbility(CMLib.xml().getIntFromPieces(V,"MABLE"));
-			E.basePhyStats().setRejuv(CMLib.xml().getIntFromPieces(V,"MREJV"));
-			if(!E.isGeneric())
-				E.setMiscText(CMLib.xml().getValFromPieces(V,"MTEXT"));
+			MOB M=(MOB)E;
+			M.basePhyStats().setLevel(CMLib.xml().getIntFromPieces(V,"MLEVL"));
+			M.basePhyStats().setAbility(CMLib.xml().getIntFromPieces(V,"MABLE"));
+			M.basePhyStats().setRejuv(CMLib.xml().getIntFromPieces(V,"MREJV"));
+			if(!M.isGeneric())
+				M.setMiscText(CMLib.xml().getValFromPieces(V,"MTEXT"));
 		}
 	}
 
@@ -1994,7 +1998,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					LOCmap.put((Item)newOne,ILOC);
 			}
 			setPropertiesStr(newOne,idat,true);
-			if((newOne.basePhyStats().rejuv()>0)&&(newOne.basePhyStats().rejuv()<Integer.MAX_VALUE))
+			if((newOne instanceof Physical)
+			&&(((Physical)newOne).basePhyStats().rejuv()>0)
+			&&(((Physical)newOne).basePhyStats().rejuv()<Integer.MAX_VALUE))
 				variableEq=true;
 			shopmob.getShop().addStoreInventory(newOne,numStock,stockPrice);
 		}
@@ -2012,25 +2018,25 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(variableEq) ((MOB)E).flagVariableEq();
 	}
 
-	public boolean handleCatalogItem(Environmental E, Vector buf, boolean fromTop)
+	public boolean handleCatalogItem(Physical P, Vector buf, boolean fromTop)
 	{
-		setPhyStats(E.basePhyStats(),CMLib.xml().getValFromPieces(buf,"PROP"));
-		if((CMLib.flags().isCataloged(E))
-		&&(E.isGeneric()))
+		setPhyStats(P.basePhyStats(),CMLib.xml().getValFromPieces(buf,"PROP"));
+		if((CMLib.flags().isCataloged(P))
+		&&(P.isGeneric()))
 		{
-			E.setName(CMLib.xml().getValFromPieces(buf,"NAME"));
-			Environmental cataE=CMLib.catalog().getCatalogObj(E);
-			if(cataE!=null)
+			P.setName(CMLib.xml().getValFromPieces(buf,"NAME"));
+			Physical cataP=CMLib.catalog().getCatalogObj(P);
+			if(cataP!=null)
 			{
-				if(CMath.bset(cataE.basePhyStats().disposition(),PhyStats.IS_CATALOGED))
-					Log.errOut("CoffeeMaker","Error with catalog object "+E.Name()+".");
+				if(CMath.bset(cataP.basePhyStats().disposition(),PhyStats.IS_CATALOGED))
+					Log.errOut("CoffeeMaker","Error with catalog object "+P.Name()+".");
 				else
-				if((cataE!=null)&&(cataE!=E))
+				if((cataP!=null)&&(cataP!=P))
 				{
 					if(fromTop)
-						setOrdPropertiesStr(E,buf);
-					setPropertiesStr(E, cataE.text(),false);
-					CMLib.catalog().changeCatalogUsage(E, true);
+						setOrdPropertiesStr(P,buf);
+					setPropertiesStr(P, cataP.text(),false);
+					CMLib.catalog().changeCatalogUsage(P, true);
 					return true;
 				}
 			}
@@ -2841,7 +2847,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		text.append(CMLib.xml().convertXMLtoTag("NAME",E.Name()));
 		text.append(CMLib.xml().convertXMLtoTag("DESC",E.description()));
 		text.append(CMLib.xml().convertXMLtoTag("DISP",E.displayText()));
-		text.append(CMLib.xml().convertXMLtoTag("PROP",getPhyStatsStr(E.basePhyStats())));
+		if(E instanceof Physical)
+			text.append(CMLib.xml().convertXMLtoTag("PROP",getPhyStatsStr(((Physical)E).basePhyStats())));
 		text.append(getExtraEnvPropertiesStr(E));
 		if(E instanceof PhysicalAgent)
 	        text.append(getGenScripts((PhysicalAgent)E,false));
@@ -2925,7 +2932,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		E.setName(CMLib.xml().getValFromPieces(buf,"NAME"));
 		E.setDescription(CMLib.xml().getValFromPieces(buf,"DESC"));
 		E.setDisplayText(CMLib.xml().getValFromPieces(buf,"DISP"));
-		setPhyStats(E.basePhyStats(),CMLib.xml().getValFromPieces(buf,"PROP"));
+		if(E instanceof Physical)
+			setPhyStats(((Physical)E).basePhyStats(),CMLib.xml().getValFromPieces(buf,"PROP"));
 		setExtraEnvProperties(E,buf);
 		if(E instanceof PhysicalAgent)
 			setGenScripts((PhysicalAgent)E,buf,false);
@@ -3005,30 +3013,33 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
         if(E instanceof Area)
         	addAutoPropsToAreaIfNecessary((Area)E);
 
-		V=CMLib.xml().getContentsFromPieces(buf,"AFFECS");
-		if(V==null)
-		{
-			Log.errOut("CoffeeMaker","Error parsing 'AFFECS' of "+identifier(E,null)+".  Load aborted");
-			return;
-		}
-		for(int i=0;i<V.size();i++)
-		{
-			XMLLibrary.XMLpiece ablk=(XMLLibrary.XMLpiece)V.elementAt(i);
-			if((!ablk.tag.equalsIgnoreCase("AFF"))||(ablk.contents==null))
+        if(E instanceof Physical)
+        {
+			V=CMLib.xml().getContentsFromPieces(buf,"AFFECS");
+			if(V==null)
 			{
-				Log.errOut("CoffeeMaker","Error parsing 'AFF' of "+identifier(E,null)+".  Load aborted");
+				Log.errOut("CoffeeMaker","Error parsing 'AFFECS' of "+identifier(E,null)+".  Load aborted");
 				return;
 			}
-			Ability newOne=CMClass.getAbility(CMLib.xml().getValFromPieces(ablk.contents,"ACLASS"));
-			String aparms=CMLib.xml().getValFromPieces(ablk.contents,"ATEXT");
-			if(newOne==null)
+			for(int i=0;i<V.size();i++)
 			{
-				Log.errOut("CoffeeMaker","Unknown affect "+CMLib.xml().getValFromPieces(ablk.contents,"ACLASS")+" on "+identifier(E,null)+", skipping.");
-				continue;
+				XMLLibrary.XMLpiece ablk=(XMLLibrary.XMLpiece)V.elementAt(i);
+				if((!ablk.tag.equalsIgnoreCase("AFF"))||(ablk.contents==null))
+				{
+					Log.errOut("CoffeeMaker","Error parsing 'AFF' of "+identifier(E,null)+".  Load aborted");
+					return;
+				}
+				Ability newOne=CMClass.getAbility(CMLib.xml().getValFromPieces(ablk.contents,"ACLASS"));
+				String aparms=CMLib.xml().getValFromPieces(ablk.contents,"ATEXT");
+				if(newOne==null)
+				{
+					Log.errOut("CoffeeMaker","Unknown affect "+CMLib.xml().getValFromPieces(ablk.contents,"ACLASS")+" on "+identifier(E,null)+", skipping.");
+					continue;
+				}
+				newOne.setMiscText(CMLib.xml().restoreAngleBrackets(aparms));
+				((Physical)E).addNonUninvokableEffect(newOne);
 			}
-			newOne.setMiscText(CMLib.xml().restoreAngleBrackets(aparms));
-			E.addNonUninvokableEffect(newOne);
-		}
+        }
 		String[] codes=E.getStatCodes();
 		for(int i=E.getSaveStatIndex();i<codes.length;i++)
 		{

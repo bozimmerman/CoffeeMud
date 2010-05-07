@@ -40,7 +40,7 @@ public class Prop_Doppleganger extends Property
 	//protected boolean lastLevelChangers=true;
     private int maxLevel=Integer.MAX_VALUE;
     private int minLevel=Integer.MIN_VALUE;
-    protected Environmental lastOwner=null;
+    protected Physical lastOwner=null;
 
 	public String accountForYourself()
 	{ return "Level Changer";	}

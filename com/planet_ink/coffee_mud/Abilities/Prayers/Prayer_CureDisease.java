@@ -49,7 +49,7 @@ public class Prayer_CureDisease extends Prayer implements MendingSkill
 		return canMend;
 	}
 	
-	public Vector returnOffensiveAffects(Environmental fromMe)
+	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
 		Vector offenders=new Vector();
 
@@ -84,7 +84,7 @@ public class Prayer_CureDisease extends Prayer implements MendingSkill
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
-		Vector offensiveAffects=returnOffensiveAffects(target);
+		List<Ability> offensiveAffects=returnOffensiveAffects(target);
 
 		if((success)&&(offensiveAffects.size()>0))
 		{
@@ -99,7 +99,7 @@ public class Prayer_CureDisease extends Prayer implements MendingSkill
 				boolean badOnes=false;
 				for(int a=offensiveAffects.size()-1;a>=0;a--)
 				{
-				    Ability A=((Ability)offensiveAffects.elementAt(a));
+				    Ability A=((Ability)offensiveAffects.get(a));
 				    if(A instanceof DiseaseAffect)
 				    {
 				        if((A.invoker()!=mob)

@@ -41,7 +41,7 @@ public class AnimalTraining extends CommonSkill
 	public String[] triggerStrings(){return triggerStrings;}
     public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
 
-	protected Environmental taming=null;
+	protected Physical taming=null;
 	protected String skillto="";
     protected Object skill=null;
 	protected boolean messedUp=false;

@@ -63,7 +63,7 @@ public class MobData extends StdWebMacro
 		return -1;
 	}
 
-	public static String senses(Environmental E,
+	public static String senses(Physical P,
 								boolean firstTime,
 								ExternalHTTPRequests httpReq,
 								java.util.Map<String,String> parms)
@@ -75,7 +75,7 @@ public class MobData extends StdWebMacro
 			{
 				String parm=httpReq.getRequestParameter(PhyStats.CAN_SEE_CODES[d]);
 				if(firstTime)
-					parm=(((E.basePhyStats().sensesMask()&(1<<d))>0)?"on":"");
+					parm=(((P.basePhyStats().sensesMask()&(1<<d))>0)?"on":"");
 				if((parm!=null)&&(parm.length()>0))
 					str.append("checked");
 			}
@@ -729,7 +729,7 @@ public class MobData extends StdWebMacro
 					Environmental O=(Environmental)i.next();
 					if(O instanceof Item) itemClasses.addElement(O);
 					if(O instanceof MOB) mobClasses.addElement(O);
-                    if(O!=null) CMLib.catalog().updateCatalogIntegrity(O);
+                    if(O instanceof Physical) CMLib.catalog().updateCatalogIntegrity((Physical)O);
 					theclasses.addElement(O);
 					theparms.addElement(""+E.getShop().numberInStock(O));
 					theprices.addElement(""+E.getShop().stockPrice(O));

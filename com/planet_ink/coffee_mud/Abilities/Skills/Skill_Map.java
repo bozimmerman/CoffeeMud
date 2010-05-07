@@ -76,7 +76,7 @@ public class Skill_Map extends StdSkill
 		&&(msg.target() instanceof Room)
 		&&(CMLib.flags().canBeSeenBy(msg.target(),msg.source()))
 		&&(!roomsMappedAlready.contains(msg.target()))
-        &&(!CMath.bset(msg.target().phyStats().sensesMask(),PhyStats.SENSE_ROOMUNMAPPABLE)))
+        &&(!CMath.bset(((Room)msg.target()).phyStats().sensesMask(),PhyStats.SENSE_ROOMUNMAPPABLE)))
 		{
 			roomsMappedAlready.addElement(msg.target());
 			map.setReadableText(map.readableText()+";"+CMLib.map().getExtendedRoomID((Room)msg.target()));

@@ -50,8 +50,6 @@ public class Prop_RideEnabler extends Prop_HaveEnabler
         super.setMiscText(newText);
         lastRiders=new Vector();
     }
-    public void recoverPhyStats()
-    {}
     
 	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{

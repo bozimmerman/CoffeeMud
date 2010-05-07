@@ -83,7 +83,7 @@ public class Restring extends StdCommand
 				}
 			}
 		}
-		Environmental thang=null;
+		Physical thang=null;
 		if((srchMob!=null)&&(srchRoom!=null))
 			thang=srchRoom.fetchFromMOBRoomFavorsItems(srchMob,srchContainer,allWord,Wearable.FILTER_ANY);
 		else

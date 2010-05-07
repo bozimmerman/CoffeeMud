@@ -254,7 +254,7 @@ public interface Social extends Environmental, CMCommon
      */
     public boolean invoke(MOB mob,
                           Vector commands,
-                          Environmental target,
+                          Physical target,
                           boolean auto);
     
     /**

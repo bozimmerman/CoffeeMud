@@ -52,7 +52,7 @@ public class Prayer_Sober extends Prayer implements MendingSkill
 		return canMend;
 	}
 	
-	public Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
+	public List<Ability> returnOffensiveAffects(MOB caster, Physical fromMe)
 	{
 		Vector offenders=new Vector();
 
@@ -93,7 +93,7 @@ public class Prayer_Sober extends Prayer implements MendingSkill
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
-		Vector offensiveAffects=returnOffensiveAffects(mob,target);
+		List<Ability> offensiveAffects=returnOffensiveAffects(mob,target);
 
 		if((success)&&(offensiveAffects.size()>0))
 		{
@@ -106,7 +106,7 @@ public class Prayer_Sober extends Prayer implements MendingSkill
 			{
 				mob.location().send(mob,msg);
 				for(int a=offensiveAffects.size()-1;a>=0;a--)
-					((Ability)offensiveAffects.elementAt(a)).unInvoke();
+					((Ability)offensiveAffects.get(a)).unInvoke();
 			}
 		}
 		else

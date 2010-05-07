@@ -99,10 +99,11 @@ public class Regeneration extends StdAbility
 				boolean hurts=false;
 				if(msg.tool() instanceof Weapon)
 				{
-					int x=text.indexOf(Weapon.TYPE_DESCS[((Weapon)msg.tool()).weaponType()]);
+					Weapon W=(Weapon)msg.tool();
+					int x=text.indexOf(Weapon.TYPE_DESCS[W.weaponType()]);
 					if((x>=0)&&((x==0)||(text.charAt(x-1)=='+')))
 						hurts=true;
-					if(CMLib.flags().isABonusItems(msg.tool()))
+					if(CMLib.flags().isABonusItems(W))
 					{
 						x=text.indexOf("MAGIC");
 						if((x>=0)&&((x==0)||(text.charAt(x-1)=='+')))
@@ -114,10 +115,10 @@ public class Regeneration extends StdAbility
 						String lvl=text.substring(x+5);
 						if(lvl.indexOf(" ")>=0)
 							lvl=lvl.substring(lvl.indexOf(" "));
-						if(msg.tool().phyStats().level()>=CMath.s_int(lvl))
+						if(W.phyStats().level()>=CMath.s_int(lvl))
 							hurts=true;
 					}
-					x=text.indexOf(RawMaterial.CODES.NAME(((Weapon)msg.tool()).material()));
+					x=text.indexOf(RawMaterial.CODES.NAME(W.material()));
 					if((x>=0)&&((x==0)||(text.charAt(x-1)=='+')))
 						hurts=true;
 				}

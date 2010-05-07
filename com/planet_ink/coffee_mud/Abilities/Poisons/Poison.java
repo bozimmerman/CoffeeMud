@@ -193,7 +193,7 @@ public class Poison extends StdAbility
                         if((msg.target() instanceof Drink)
                         &&(affected instanceof Drink))
                         {
-                            msg.target().addEffect((Ability)this.copyOf());
+                            ((Drink)msg.target()).addEffect((Ability)this.copyOf());
                             if((((Drink)affected).liquidRemaining()-((Drink)msg.target()).amountTakenToFillMe((Drink)affected))<=0)
                                 affected.delEffect(this);
                         }

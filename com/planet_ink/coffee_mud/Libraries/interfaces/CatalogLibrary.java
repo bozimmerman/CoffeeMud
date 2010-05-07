@@ -43,27 +43,27 @@ public interface CatalogLibrary extends CMLibrary
     public boolean isCatalogObj(String name);
     public Item getCatalogItem(String name);
     public MOB getCatalogMob(String name);
-    public Environmental getCatalogObj(Environmental E);
+    public Physical getCatalogObj(Physical P);
     public CataData getCatalogItemData(String name);
     public CataData getCatalogMobData(String name);
-    public CataData getCatalogData(Environmental E);
-    public void delCatalog(Environmental E);
-    public void addCatalog(Environmental E);
-    public void submitToCatalog(Environmental E);
-    public void updateCatalog(Environmental E);
-    public StringBuffer checkCatalogIntegrity(Environmental E);
-    public void updateCatalogIntegrity(Environmental E);
-    public void changeCatalogUsage(Environmental E, boolean add);
+    public CataData getCatalogData(Physical P);
+    public void delCatalog(Physical P);
+    public void addCatalog(Physical PA);
+    public void submitToCatalog(Physical P);
+    public void updateCatalog(Physical modelP);
+    public StringBuffer checkCatalogIntegrity(Physical P);
+    public void updateCatalogIntegrity(Physical P);
+    public void changeCatalogUsage(Physical P, boolean add);
     public Item getDropItem(MOB M, boolean live);
     public CataData sampleCataData(String xml);
     public Vector<RoomContent> roomContent(Room R);
     public void updateRoomContent(String roomID, Vector<RoomContent> content);
-    public void newInstance(Environmental E);
-    public void bumpDeathPickup(Environmental E);
+    public void newInstance(Physical P);
+    public void bumpDeathPickup(Physical P);
     
     public static interface RoomContent
     {
-    	public Environmental E();
+    	public Physical P();
     	public Environmental holder();
     	public boolean isDirty();
     	public void flagDirty();
@@ -79,15 +79,15 @@ public interface CatalogLibrary extends CMLibrary
         public void setMaskStr(String s);
         public void setWhenLive(boolean l);
         public void setRate(double r);
-        public Enumeration<Environmental> enumeration();
-        public void addReference(Environmental E);
-        public boolean isReference(Environmental E);
-        public void delReference(Environmental E);
+        public Enumeration<Physical> enumeration();
+        public void addReference(Physical P);
+        public boolean isReference(Physical P);
+        public void delReference(Physical P);
         public int numReferences();
         public String mostPopularArea();
         public String randomRoom();
         public void cleanHouse();
-        public Environmental getLiveReference();
+        public Physical getLiveReference();
         public int getDeathsPicksups();
         public void bumpDeathPickup();
         

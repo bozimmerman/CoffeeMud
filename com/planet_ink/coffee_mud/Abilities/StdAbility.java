@@ -108,7 +108,7 @@ public class StdAbility implements Ability
 	public int enchantQuality(){return abstractQuality();}
     public void initializeClass(){}
 
-    protected int castingQuality(MOB mob, Environmental target, int abstractQuality)
+    protected int castingQuality(MOB mob, Physical target, int abstractQuality)
     {
         if((target!=null)&&(target.fetchEffect(ID())!=null))
             return Ability.QUALITY_INDIFFERENT;
@@ -243,11 +243,6 @@ public class StdAbility implements Ability
 	}
 	public int classificationCode(){ return Ability.ACODE_SKILL; }
 
-	protected static final PhyStats phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
-	public PhyStats phyStats(){return phyStats;}
-	public PhyStats basePhyStats(){return phyStats;}
-
-
 	public long expirationDate()
 	{
 	    return ((long)tickDown) * Tickable.TIME_TICK;
@@ -263,8 +258,6 @@ public class StdAbility implements Ability
     public void destroy(){amDestroyed=true; affected=null; invoker=null; miscText=null; }
     public boolean amDestroyed(){return amDestroyed;}
 	public void setName(String newName){}
-	public void recoverPhyStats() {}
-	public void setBasePhyStats(PhyStats newStats){}
 	public void setDisplayText(String newDisplayText){}
 	public void setDescription(String newDescription){}
 	public int abilityCode(){return 0;}
@@ -691,7 +684,7 @@ public class StdAbility implements Ability
 		unInvoked=true;
 
 		if(affected==null) return;
-		Environmental being=affected;
+		Physical being=affected;
 
 		if(canBeUninvoked())
 		{
@@ -1046,7 +1039,7 @@ public class StdAbility implements Ability
 		return h;
 	}
 
-    public int getMaliciousTickdownTime(MOB mob, Environmental target, int tickAdjustmentFromStandard, int asLevel)
+    public int getMaliciousTickdownTime(MOB mob, Physical target, int tickAdjustmentFromStandard, int asLevel)
     {
         if(tickAdjustmentFromStandard<=0)
         {
@@ -1600,12 +1593,6 @@ public class StdAbility implements Ability
         return true;
     }
 
-	public void addEffect(Ability to){}
-	public void addNonUninvokableEffect(Ability to){}
-	public void delEffect(Ability to){}
-	public int numEffects(){ return 0;}
-	public Ability fetchEffect(int index){return null;}
-	public Ability fetchEffect(String ID){return null;}
 	public boolean isGeneric(){return false;}
 
 	public int getSaveStatIndex(){return getStatCodes().length;}

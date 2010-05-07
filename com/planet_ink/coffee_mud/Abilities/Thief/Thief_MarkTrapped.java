@@ -62,7 +62,7 @@ public class Thief_MarkTrapped extends ThiefSkill
 			return false;
 		}
 		int dir=Directions.getGoodDirectionCode(CMParms.combine(commands,0));
-		Environmental item=givenTarget;
+		Physical item=givenTarget;
 		if((dir>=0)
 		&&(item==null)
 		&&(mob.location()!=null)

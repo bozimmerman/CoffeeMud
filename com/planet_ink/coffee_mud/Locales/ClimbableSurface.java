@@ -115,14 +115,14 @@ public class ClimbableSurface extends StdRoom
 		&&(msg.tool() instanceof Item)
 		&&((!(msg.tool() instanceof Rideable))
 		   ||(((Rideable)msg.tool()).rideBasis()!=Rideable.RIDEABLE_LADDER))
-		&&(!CMLib.flags().isFlying(msg.tool())))
+		&&(!CMLib.flags().isFlying((Item)msg.tool())))
 			InTheAir.makeFall((Item)msg.tool(),this,0);
 		else
 		if((msg.targetMinor()==CMMsg.TYP_DROP)
 		&&(msg.target() instanceof Item)
 		&&((!(msg.target() instanceof Rideable))
 		   ||(((Rideable)msg.target()).rideBasis()!=Rideable.RIDEABLE_LADDER))
-		&&(!CMLib.flags().isFlying(msg.target())))
+		&&(!CMLib.flags().isFlying((Item)msg.target())))
 			InTheAir.makeFall((Item)msg.target(),this,0);
 		else
 		if(msg.amITarget(this)

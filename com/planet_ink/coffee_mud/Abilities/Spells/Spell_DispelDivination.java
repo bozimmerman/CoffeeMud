@@ -41,7 +41,7 @@ public class Spell_DispelDivination extends Spell
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 
-	public List<Ability> returnOffensiveAffects(MOB caster, Environmental fromMe)
+	public List<Ability> returnOffensiveAffects(MOB caster, Physical fromMe)
 	{
 		List<Ability> offenders=new Vector<Ability>();
         boolean admin=CMSecurity.isASysOp(caster);

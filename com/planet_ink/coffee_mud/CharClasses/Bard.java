@@ -176,6 +176,7 @@ public class Bard extends StdCharClass
         {
             Room R=(Room)msg.target();
             MOB mob=msg.source();
+            Physical hostP=(Physical)host;
             if(((R.roomID().length()>0)
             ||((R.getGridParent()!=null)&&(R.getGridParent().roomID().length()>0)))
             &&(!msg.source().playerStats().hasVisited(R)))
@@ -217,7 +218,7 @@ public class Bard extends StdCharClass
                 if(!mob.playerStats().hasVisited(A))
                 {
                     mob.playerStats().addRoomVisit(R);
-                    int xp=(int)Math.round(100.0*CMath.div(A.getAreaIStats()[Area.AREASTAT_AVGLEVEL],host.phyStats().level()));
+                    int xp=(int)Math.round(100.0*CMath.div(A.getAreaIStats()[Area.AREASTAT_AVGLEVEL],hostP.phyStats().level()));
                     if(xp>250) xp=250;
                     if((xp>0)&&CMLib.leveler().postExperience((MOB)host,null,null,xp,true))
                         msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,"^HYou have discovered '"+A.name()+"', you gain "+xp+" experience.^?",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
@@ -229,7 +230,7 @@ public class Bard extends StdCharClass
                     int pctAfter=mob.playerStats().percentVisited((MOB)host,A);
                     if((pctBefore<50)&&(pctAfter>=50))
                     {
-                        int xp=(int)Math.round(50.0*CMath.div(A.getAreaIStats()[Area.AREASTAT_AVGLEVEL],host.phyStats().level()));
+                        int xp=(int)Math.round(50.0*CMath.div(A.getAreaIStats()[Area.AREASTAT_AVGLEVEL],hostP.phyStats().level()));
                         if(xp>125) xp=125;
                         if((xp>0)&&CMLib.leveler().postExperience((MOB)host,null,null,xp,true))
                             msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,"^HYou have familiarized yourself with '"+A.name()+"', you gain "+xp+" experience.^?",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
@@ -237,7 +238,7 @@ public class Bard extends StdCharClass
                     else
                     if((pctBefore<90)&&(pctAfter>=90))
                     {
-                        int xp=(int)Math.round(100.0*CMath.div(A.getAreaIStats()[Area.AREASTAT_AVGLEVEL],host.phyStats().level()));
+                        int xp=(int)Math.round(100.0*CMath.div(A.getAreaIStats()[Area.AREASTAT_AVGLEVEL],hostP.phyStats().level()));
                         if(xp>250) xp=250;
                         if((xp>0)&&CMLib.leveler().postExperience((MOB)host,null,null,xp,true))
                             msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,"^HYou have explored '"+A.name()+"', you gain "+xp+" experience.^?",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));

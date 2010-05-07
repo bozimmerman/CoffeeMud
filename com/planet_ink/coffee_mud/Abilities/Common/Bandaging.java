@@ -43,7 +43,7 @@ public class Bandaging extends CommonSkill implements MendingSkill
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
     public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
 
-	protected Environmental bandaging=null;
+	protected Physical bandaging=null;
 	protected boolean messedUp=false;
 	public Bandaging()
 	{

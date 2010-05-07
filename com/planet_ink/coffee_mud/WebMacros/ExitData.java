@@ -45,7 +45,7 @@ public class ExitData extends StdWebMacro
         "READABLETEXT","ISCLASSRESTRICTED","RESTRICTEDCLASSES",
         "ISALIGNMENTRESTRICTED","RESTRICTEDALIGNMENTS",
         "MISCTEXT","ISGENERIC","DOORNAME","IMAGE"};
-	public static String dispositions(Environmental E,
+	public static String dispositions(Physical P,
 									  boolean firstTime,
 									  ExternalHTTPRequests httpReq,
 									  java.util.Map<String,String> parms)
@@ -57,7 +57,7 @@ public class ExitData extends StdWebMacro
 			{
 				String parm=httpReq.getRequestParameter(PhyStats.IS_CODES[d]);
 				if(firstTime)
-					parm=(((E.basePhyStats().disposition()&(1<<d))>0)?"on":"");
+					parm=(((P.basePhyStats().disposition()&(1<<d))>0)?"on":"");
 				if((parm!=null)&&(parm.length()>0))
 					str.append("checked");
 			}
@@ -88,18 +88,18 @@ public class ExitData extends StdWebMacro
 		int link=Directions.getGoodDirectionCode(linkdir);
 		if((link<0)||(link>=Directions.NUM_DIRECTIONS())) return " @break@";
 
-		Exit E=R.getRawExit(link);
+		Exit X=R.getRawExit(link);
 
 		// important generic<->non generic swap!
 		String newClassID=httpReq.getRequestParameter("CLASSES");
-		if((newClassID!=null)&&(!newClassID.equals(CMClass.classID(E))))
-				E=CMClass.getExit(newClassID);
+		if((newClassID!=null)&&(!newClassID.equals(CMClass.classID(X))))
+				X=CMClass.getExit(newClassID);
 
 		boolean firstTime=(!httpReq.isRequestParameter("ACTION"))
 					||(!(httpReq.getRequestParameter("ACTION")).equals("MODIFYEXIT"))
 					||(((httpReq.isRequestParameter("CHANGEDCLASS"))&&(httpReq.getRequestParameter("CHANGEDCLASS")).equals("true")));
 
-		if(E==null) return "@break@";
+		if(X==null) return "@break@";
 
 		StringBuffer str=new StringBuffer("");
 		for(int o=0;o<okparms.length;o++)
@@ -110,12 +110,12 @@ public class ExitData extends StdWebMacro
 			switch(o)
 			{
 			case 0: // name
-				if(firstTime) old=E.Name();
+				if(firstTime) old=X.Name();
 				str.append(old);
 				break;
 			case 1: // classes
 				{
-					if(firstTime) old=CMClass.classID(E);
+					if(firstTime) old=CMClass.classID(X);
 					Object[] sorted=(Object[])Resources.getResource("MUDGRINDER-EXITS");
 					if(sorted==null)
 					{
@@ -136,15 +136,15 @@ public class ExitData extends StdWebMacro
 				}
 				break;
 			case 2: // displaytext
-				if(firstTime) old=E.displayText();
+				if(firstTime) old=X.displayText();
 				str.append(old);
 				break;
 			case 3: // description
-				if(firstTime) old=E.description();
+				if(firstTime) old=X.description();
 				str.append(old);
 				break;
 			case 4: // level
-				if(firstTime) old=""+E.basePhyStats().level();
+				if(firstTime) old=""+X.basePhyStats().level();
 				str.append(old);
 				break;
 			case 5: // levelrestricted;
@@ -153,38 +153,38 @@ public class ExitData extends StdWebMacro
 				break;
 			case 7: // hasadoor
 				if(firstTime)
-					old=E.hasADoor()?"checked":"";
+					old=X.hasADoor()?"checked":"";
 				else
 				if(old.equals("on"))
 					old="checked";
 				str.append(old);
 				break;
 			case 8: // closedtext
-				if(firstTime) old=E.closedText();
+				if(firstTime) old=X.closedText();
 				if(old.length()==0) old="a closed door";
 				str.append(old);
 				break;
 			case 9: // defaultsclosed
 				if(firstTime)
-					old=E.defaultsClosed()?"checked":"";
+					old=X.defaultsClosed()?"checked":"";
 				else
 				if(old.equals("on"))
 					old="checked";
 				str.append(old);
 				break;
 			case 10: // openword
-				if(firstTime) old=E.openWord();
+				if(firstTime) old=X.openWord();
 				if(old.length()==0) old="open";
 				str.append(old);
 				break;
 			case 11: // closeword
-				if(firstTime) old=E.closeWord();
+				if(firstTime) old=X.closeWord();
 				if(old.length()==0) old="close";
 				str.append(old);
 				break;
 			case 12: // hasalock
 				if(firstTime)
-					old=E.hasALock()?"checked":"";
+					old=X.hasALock()?"checked":"";
 				else
 				if(old.equals("on"))
 					old="checked";
@@ -192,26 +192,26 @@ public class ExitData extends StdWebMacro
 				break;
 			case 13: // defaultslocked
 				if(firstTime)
-					old=E.defaultsLocked()?"checked":"";
+					old=X.defaultsLocked()?"checked":"";
 				else
 				if(old.equals("on"))
 					old="checked";
 				str.append(old);
 				break;
 			case 14: // keyname
-				if(firstTime) old=E.keyName();
+				if(firstTime) old=X.keyName();
 				str.append(old);
 				break;
 			case 15: // isreadable
 				if(firstTime)
-					old=E.isReadable()?"checked":"";
+					old=X.isReadable()?"checked":"";
 				else
 				if(old.equals("on"))
 					old="checked";
 				str.append(old);
 				break;
 			case 16: // readable text
-				if(firstTime) old=E.readableText();
+				if(firstTime) old=X.readableText();
 				str.append(old);
 				break;
 			case 17: // isclassrestricuted
@@ -223,20 +223,20 @@ public class ExitData extends StdWebMacro
 			case 20: // restrictedalignments
 				break;
 			case 21: // misc text
-				if(firstTime) old=E.text();
+				if(firstTime) old=X.text();
 				str.append(old);
 				break;
 			case 22: // is generic
-				if(E.isGeneric())
+				if(X.isGeneric())
 					return "true";
 				return "false";
 			case 23: // door name
-				if(firstTime) old=E.doorName();
+				if(firstTime) old=X.doorName();
 				if(old.length()==0) old="door";
 				str.append(old);
 				break;
 			case 24: // image
-				if(firstTime) old=E.rawImage();
+				if(firstTime) old=X.rawImage();
 				str.append(old);
 				break;
 			}
@@ -244,11 +244,11 @@ public class ExitData extends StdWebMacro
 				httpReq.addRequestParameters(okparms[o],old.equals("checked")?"on":old);
 
 		}
-		str.append(ExitData.dispositions(E,firstTime,httpReq,parms));
-		str.append(AreaData.affects(E,httpReq,parms,1));
-		str.append(AreaData.behaves(E,httpReq,parms,1));
-		E.recoverPhyStats();
-		E.text();
+		str.append(ExitData.dispositions(X,firstTime,httpReq,parms));
+		str.append(AreaData.affects(X,httpReq,parms,1));
+		str.append(AreaData.behaves(X,httpReq,parms,1));
+		X.recoverPhyStats();
+		X.text();
 
 		String strstr=str.toString();
 		if(strstr.endsWith(", "))

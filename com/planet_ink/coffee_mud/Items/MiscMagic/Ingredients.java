@@ -93,8 +93,8 @@ public class Ingredients extends BagOfEndlessness
 		&&(((Item)msg.tool()).owner() !=null))
 		{
 		    ((Decayable)msg.tool()).setDecayTime(0);
-		    Ability A=msg.tool().fetchEffect("Poison_Rotten");
-		    if(A!=null) msg.tool().delEffect(A);
+		    Ability A=((Item)msg.tool()).fetchEffect("Poison_Rotten");
+		    if(A!=null) ((Item)msg.tool()).delEffect(A);
 		}
 		super.executeMsg(myHost,msg);
 	}

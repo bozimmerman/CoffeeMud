@@ -2139,7 +2139,7 @@ public class StdMOB implements MOB
 					msg.source().tell(name()+" is unable to accept that from you.");
 					return false;
 				}
-				if((!CMLib.flags().canBeSeenBy(msg.tool(),this))&&(!CMath.bset(msg.targetCode(),CMMsg.MASK_ALWAYS)))
+				if((!CMLib.flags().canBeSeenBy((Item)msg.tool(),this))&&(!CMath.bset(msg.targetCode(),CMMsg.MASK_ALWAYS)))
 				{
 					mob.tell(name()+" can't see what you are giving.");
 					return false;

@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.lang.ref.WeakReference;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Vector;
 
 
@@ -44,6 +45,15 @@ public class DefaultCoffeeShop implements CoffeeShop
 {
     public String ID(){return "DefaultCoffeeShop";}
 	WeakReference<ShopKeeper> shopKeeper = null;
+    public SVector<Environmental> baseInventory=new SVector<Environmental>(); // for Only Inventory situations
+    public List<ShelfProduct> storeInventory=new SVector<ShelfProduct>();
+    
+    private static Converter<ShelfProduct,Environmental> converter=new Converter<ShelfProduct,Environmental>()
+    {
+		public Environmental convert(ShelfProduct obj) {
+			return obj.product;
+		}
+    };
 	
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
     public CMObject copyOf()
@@ -72,27 +82,19 @@ public class DefaultCoffeeShop implements CoffeeShop
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultCoffeeShop();}}
     public void initializeClass(){}
     
-    public SVector<Environmental> baseInventory=new SVector<Environmental>(); // for Only Inventory situations
-    public DVector storeInventory=new DVector(3);
-    
     public void cloneFix(DefaultCoffeeShop E)
     {
-        storeInventory=new DVector(3);
+        storeInventory=new SVector<ShelfProduct>();
         baseInventory=new SVector();
         Hashtable copyFix=new Hashtable();
-        for(int i=0;i<E.storeInventory.size();i++)
-        {
-            Environmental I2=(Environmental)E.storeInventory.elementAt(i,1);
-            Integer N=(Integer)E.storeInventory.elementAt(i,2);
-            Integer P=(Integer)E.storeInventory.elementAt(i,3);
-            if(I2!=null)
+        for(ShelfProduct SP: storeInventory)
+            if(SP.product!=null)
             {
-                Environmental I3=(Environmental)I2.copyOf();
-                copyFix.put(I2,I3);
+                Environmental I3=(Environmental)SP.product.copyOf();
+                copyFix.put(SP.product,I3);
             	CMLib.threads().deleteTick(I3,-1);
-                storeInventory.addElement(I3,N,P);
+                storeInventory.add(new ShelfProduct(I3,SP.number,SP.price));
             }
-        }
         for(int i=0;i<E.baseInventory.size();i++)
         {
             Environmental I2=(Environmental)E.baseInventory.elementAt(i);
@@ -151,11 +153,11 @@ public class DefaultCoffeeShop implements CoffeeShop
 
     public Iterator<Environmental> getStoreInventory()
     {
-        return storeInventory.getDimensionVector(1).iterator();
+    	return new ConvertingIterator<ShelfProduct,Environmental>(storeInventory.iterator(),converter);
     }
     public Iterator<Environmental> getStoreInventory(String srchStr)
     {
-    	Vector storeInv=(Vector)storeInventory.getDimensionVector(1).clone();
+    	List<Environmental> storeInv=new ConvertingList<ShelfProduct,Environmental>(storeInventory,converter);
     	Vector V=CMLib.english().fetchEnvironmentals(storeInv, srchStr, true);
     	if((V!=null)&&(V.size()>0)) return V.iterator();
     	V=CMLib.english().fetchEnvironmentals(storeInv, srchStr, false);
@@ -187,7 +189,7 @@ public class DefaultCoffeeShop implements CoffeeShop
                 copy=(Environmental)thisThang.copyOf();
                 ((InnKey)copy).hangOnRack(shopKeeper());
             	CMLib.threads().deleteTick(copy,-1);
-                storeInventory.addElement(copy,Integer.valueOf(1),Integer.valueOf(-1));
+                storeInventory.add(new ShelfProduct(copy,1,-1));
             }
         }
         else
@@ -195,18 +197,17 @@ public class DefaultCoffeeShop implements CoffeeShop
             Environmental copy=null;
             thisThang=(Environmental)thisThang.copyOf();
         	CMLib.threads().deleteTick(thisThang,-1);
-            for(int e=0;e<storeInventory.size();e++)
+            for(ShelfProduct SP : storeInventory)
             {
-                copy=(Environmental)storeInventory.elementAt(e,1);
+                copy=(Environmental)SP.product;
                 if(copy.Name().equals(thisThang.Name()))
                 {
-                    Integer I=(Integer)storeInventory.elementAt(e,2);
-                    storeInventory.setElementAt(e,2,Integer.valueOf(I.intValue()+number));
-                    if(price>0) storeInventory.setElementAt(e,3,Integer.valueOf(price));
+                	SP.number+=number;
+                    if(price>0) SP.price=price;
                     return copy;
                 }
             }
-            storeInventory.addElement(thisThang,Integer.valueOf(number),Integer.valueOf(price));
+            storeInventory.add(new ShelfProduct(thisThang,number,price));
         }
         if(originalUncopiedThang instanceof Item)
             ((Item)originalUncopiedThang).destroy();
@@ -215,30 +216,23 @@ public class DefaultCoffeeShop implements CoffeeShop
     
     public int totalStockWeight()
     {
-        Environmental E=null;
         int weight=0;
-        for(int i=0;i<storeInventory.size();i++)
-        {
-            E=(Environmental)storeInventory.elementAt(i,1);
-            Integer I=(Integer)storeInventory.elementAt(i,2);
-            if(I==null)
-                weight+=E.phyStats().weight();
-            else
-                weight+=(E.phyStats().weight()*I.intValue());
-        }
+        for(ShelfProduct SP : storeInventory)
+            if(SP.product instanceof Physical)
+	            if(SP.number<=1)
+	                weight+=((Physical)SP.product).phyStats().weight();
+	            else
+	                weight+=(((Physical)SP.product).phyStats().weight()*SP.number);
         return weight;
     }
     public int totalStockSizeIncludingDuplicates()
     {
         int num=0;
-        for(int i=0;i<storeInventory.size();i++)
-        {
-            Integer I=(Integer)storeInventory.elementAt(i,2);
-            if(I==null) 
+        for(ShelfProduct SP : storeInventory)
+        	if(SP.number<=1)
                 num++;
             else
-                num+=I.intValue();
-        }
+                num+=SP.number;
         return num;
     }
 
@@ -253,19 +247,17 @@ public class DefaultCoffeeShop implements CoffeeShop
                 	baseInventory.removeElement(E);
             }
         }
-        for(int v=storeInventory.size()-1;v>=0;v--)
-        {
-            Environmental E=(Environmental)storeInventory.elementAt(v,1);
-            if(shopCompare(E,thisThang))
-            	storeInventory.removeElement(E);
-        }
+        for(ShelfProduct SP : storeInventory)
+            if(shopCompare(SP.product,thisThang))
+            	storeInventory.remove(SP);
     }
     
     public boolean doIHaveThisInStock(String name, MOB mob)
     {
-        Environmental item=CMLib.english().fetchEnvironmental(storeInventory.getDimensionVector(1),name,true);
+    	List<Environmental> storeInv=new ConvertingList<ShelfProduct,Environmental>(storeInventory,converter);
+        Environmental item=CMLib.english().fetchEnvironmental(storeInv,name,true);
         if(item==null)
-            item=CMLib.english().fetchEnvironmental(storeInventory.getDimensionVector(1),name,false);
+            item=CMLib.english().fetchEnvironmental(storeInv,name,false);
         if((item==null)
            &&(mob!=null)
            &&((isSold(ShopKeeper.DEAL_LANDSELLER))||(isSold(ShopKeeper.DEAL_CLANDSELLER))
@@ -283,38 +275,26 @@ public class DefaultCoffeeShop implements CoffeeShop
 
     public int stockPrice(Environmental likeThis)
     {
-        Environmental E=null;
-        Integer I=null;
-        for(int v=0;v<storeInventory.size();v++)
-        {
-            E=(Environmental)storeInventory.elementAt(v,1);
-            I=(Integer)storeInventory.elementAt(v,3);
-            if(shopCompare(E,likeThis))
-            	return I.intValue();
-        }
+        for(ShelfProduct SP : storeInventory)
+            if(shopCompare(SP.product,likeThis))
+            	return SP.price;
         return -1;
     }
     public int numberInStock(Environmental likeThis)
     {
         int num=0;
-        Environmental E=null;
-        Integer N=null;
-        for(int v=0;v<storeInventory.size();v++)
-        {
-            E=(Environmental)storeInventory.elementAt(v,1);
-            N=(Integer)storeInventory.elementAt(v,2);
-            if(shopCompare(E,likeThis))
-            	num+=N.intValue();
-        }
-
+        for(ShelfProduct SP : storeInventory)
+            if(shopCompare(SP.product,likeThis))
+            	num+=SP.number;
         return num;
     }
 
     public Environmental getStock(String name, MOB mob)
     {
-        Environmental item=CMLib.english().fetchEnvironmental(storeInventory.getDimensionVector(1),name,true);
+    	List<Environmental> storeInv=new ConvertingList<ShelfProduct,Environmental>(storeInventory,converter);
+        Environmental item=CMLib.english().fetchEnvironmental(storeInv,name,true);
         if(item==null)
-            item=CMLib.english().fetchEnvironmental(storeInventory.getDimensionVector(1),name,false);
+            item=CMLib.english().fetchEnvironmental(storeInv,name,false);
         if((item==null)
         &&((isSold(ShopKeeper.DEAL_LANDSELLER))||(isSold(ShopKeeper.DEAL_CLANDSELLER))
            ||(isSold(ShopKeeper.DEAL_SHIPSELLER))||(isSold(ShopKeeper.DEAL_CSHIPSELLER)))
@@ -332,31 +312,25 @@ public class DefaultCoffeeShop implements CoffeeShop
     public Environmental removeStock(String name, MOB mob)
     {
         Environmental item=getStock(name,mob);
-        if(item!=null)
+        if(item instanceof Ability)
+            return item;
+        if(item instanceof Physical)
         {
-            if(item instanceof Ability)
-                return item;
-
-            int index=storeInventory.indexOf(item);
-            if(index>=0)
-            {
-                Integer possNum=(Integer)storeInventory.elementAt(index,2);
-                int possValue=possNum.intValue();
-                possValue--;
-                Environmental copyItem=(Environmental)item.copyOf();
-                if(possValue>=1)
-                    storeInventory.setElementAt(index,2,Integer.valueOf(possValue));
-                else
-                {
-                    storeInventory.removeElementAt(index);
-                    item.destroy();
-                }
-                item=copyItem;
-            }
-            else
-                storeInventory.removeElement(item);
-            item.basePhyStats().setRejuv(0);
-            item.phyStats().setRejuv(0);
+            for(ShelfProduct SP : storeInventory)
+            	if(SP.product==item)
+	            {
+	                Environmental copyItem=(Environmental)item.copyOf();
+	                if(SP.number>1)
+	                	SP.number--;
+	                else
+	                {
+	                    storeInventory.remove(SP);
+	                    item.destroy();
+	                }
+	                item=copyItem;
+	            }
+            ((Physical)item).basePhyStats().setRejuv(0);
+            ((Physical)item).phyStats().setRejuv(0);
         }
         return item;
     }
@@ -383,7 +357,7 @@ public class DefaultCoffeeShop implements CoffeeShop
         if(storeInventory!=null)storeInventory.clear();
         if(baseInventory!=null)baseInventory.clear();
     }
-    public Vector removeSellableProduct(String named, MOB mob)
+    public List<Environmental> removeSellableProduct(String named, MOB mob)
     {
         Vector V=new Vector();
         Environmental product=removeStock(named,mob);
@@ -391,24 +365,20 @@ public class DefaultCoffeeShop implements CoffeeShop
         V.addElement(product);
         if(product instanceof Container)
         {
-            int i=0;
             Key foundKey=null;
             Container C=((Container)product);
-            while(i<storeInventory.size())
+            for(ShelfProduct SP : storeInventory)
             {
-                int a=storeInventory.size();
-                Environmental I=(Environmental)storeInventory.elementAt(i,1);
+                Environmental I=SP.product;
                 if((I instanceof Item)&&(((Item)I).container()==product))
                 {
                     if((I instanceof Key)&&(((Key)I).getKey().equals(C.keyName())))
                         foundKey=(Key)I;
                     ((Item)I).unWear();
                     V.addElement(I);
-                    storeInventory.removeElement(I);
+                    storeInventory.remove(SP);
                     ((Item)I).setContainer(C);
                 }
-                if(a==storeInventory.size())
-                    i++;
             }
             if((C.isLocked())&&(foundKey==null))
             {
@@ -450,7 +420,7 @@ public class DefaultCoffeeShop implements CoffeeShop
     public void buildShopFromXML(String text)
     {
         Vector V=new Vector();
-        storeInventory=new DVector(3);
+        storeInventory=new SVector<ShelfProduct>();
         baseInventory=new SVector();
         
         if(text.length()==0) return;
@@ -518,7 +488,7 @@ public class DefaultCoffeeShop implements CoffeeShop
             String itemi=CMLib.xml().getValFromPieces(iblk.contents,"ICLASS");
             int itemnum=CMLib.xml().getIntFromPieces(iblk.contents,"INUM");
             int val=CMLib.xml().getIntFromPieces(iblk.contents,"IVAL");
-            Environmental newOne=CMClass.getItem(itemi);
+            PhysicalAgent newOne=CMClass.getItem(itemi);
             if(newOne==null) newOne=CMClass.getMOB(itemi);
             Vector idat=CMLib.xml().getContentsFromPieces(iblk.contents,"IDATA");
             if((idat==null)||(newOne==null)||(!(newOne instanceof Item)))
@@ -527,10 +497,10 @@ public class DefaultCoffeeShop implements CoffeeShop
                 return;
             }
             CMLib.coffeeMaker().setPropertiesStr(newOne,idat,true);
-            Environmental E=(Environmental)newOne;
-            E.recoverPhyStats();
-            V.addElement(E);
-            addStoreInventory(E,itemnum,val);
+            PhysicalAgent P=(PhysicalAgent)newOne;
+            P.recoverPhyStats();
+            V.addElement(P);
+            addStoreInventory(P,itemnum,val);
         }
     }
 }

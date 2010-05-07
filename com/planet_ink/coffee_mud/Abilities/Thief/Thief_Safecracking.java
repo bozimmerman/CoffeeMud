@@ -59,9 +59,10 @@ public class Thief_Safecracking extends ThiefSkill
             float f=(float)getXLEVELLevel(mob);
             int ableDiv=(int)Math.round(5.0-(f*0.2));
 			A.setAbilityCode(proficiency()/ableDiv);
-			if((msg.target()!=null)&&(CMLib.dice().rollPercentage()<proficiency()))
+			if((msg.target() instanceof Physical)
+			&&(CMLib.dice().rollPercentage()<proficiency()))
 			{
-				A=msg.target().fetchEffect("Spell_WizardLock");
+				A=((Physical)msg.target()).fetchEffect("Spell_WizardLock");
 				if(A!=null) A.unInvoke();
 			}
 		}

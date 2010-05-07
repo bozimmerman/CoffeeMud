@@ -312,9 +312,9 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				        Environmental item=getShop().getStock("$"+msg.tool().Name()+"$",mobFor);
 				        if(item!=null) CMLib.coffeeShops().transactMoneyOnly(this,msg.source(),this,item,!isMonster());
 				        
-						Vector products=getShop().removeSellableProduct("$"+msg.tool().Name()+"$",mobFor);
+						List<Environmental> products=getShop().removeSellableProduct("$"+msg.tool().Name()+"$",mobFor);
 						if(products.size()==0) break;
-						Environmental product=(Environmental)products.firstElement();
+						Environmental product=(Environmental)products.get(0);
 	                    
 						if(product instanceof Item)
 						{

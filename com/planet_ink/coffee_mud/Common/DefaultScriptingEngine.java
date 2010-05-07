@@ -2273,31 +2273,31 @@ public class DefaultScriptingEngine implements ScriptingEngine
             case 6: // isgood
             {
                 String arg1=CMParms.cleanBit(funcParms);
-                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-                if(E==null)
+                Physical P=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                if(P==null)
                     returnable=false;
                 else
-                    returnable=CMLib.flags().isGood(E);
+                    returnable=CMLib.flags().isGood(P);
                 break;
             }
             case 8: // isevil
             {
                 String arg1=CMParms.cleanBit(funcParms);
-                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-                if(E==null)
+                Physical P=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                if(P==null)
                     returnable=false;
                 else
-                    returnable=CMLib.flags().isEvil(E);
+                    returnable=CMLib.flags().isEvil(P);
                 break;
             }
             case 9: // isneutral
             {
                 String arg1=CMParms.cleanBit(funcParms);
-                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-                if(E==null)
+                Physical P=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                if(P==null)
                     returnable=false;
                 else
-                    returnable=CMLib.flags().isNeutral(E);
+                    returnable=CMLib.flags().isNeutral(P);
                 break;
             }
             case 54: // isalive
@@ -3538,21 +3538,21 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String arg1=tt[t+0];
                 String arg2=tt[t+1];
                 String arg3=tt[t+2];
-                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                Physical P=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
                     logError(scripted,"POSITION","Syntax",funcParms);
                     return returnable;
                 }
-                if(E==null)
+                if(P==null)
                     returnable=false;
                 else
                 {
                     String sex="STANDING";
-                    if(CMLib.flags().isSleeping(E))
+                    if(CMLib.flags().isSleeping(P))
                         sex="SLEEPING";
                     else
-                    if(CMLib.flags().isSitting(E))
+                    if(CMLib.flags().isSitting(P))
                         sex="SITTING";
                     if(arg2.equals("=="))
                         returnable=sex.startsWith(arg3);
@@ -3573,17 +3573,17 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String arg1=tt[t+0];
                 String arg2=tt[t+1];
                 String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
-                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                Physical P=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
                     logError(scripted,"LEVEL","Syntax",funcParms);
                     return returnable;
                 }
-                if(E==null)
+                if(P==null)
                     returnable=false;
                 else
                 {
-                    int val1=E.phyStats().level();
+                    int val1=P.phyStats().level();
                     returnable=simpleEval(scripted,""+val1,arg3,arg2,"LEVEL");
                 }
                 break;
@@ -5345,14 +5345,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
             case 19: // position
             {
                 String arg1=CMParms.cleanBit(funcParms);
-                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-                if(E!=null)
+                Physical P=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                if(P!=null)
                 {
                     String sex="STANDING";
-                    if(CMLib.flags().isSleeping(E))
+                    if(CMLib.flags().isSleeping(P))
                         sex="SLEEPING";
                     else
-                    if(CMLib.flags().isSitting(E))
+                    if(CMLib.flags().isSitting(P))
                         sex="SITTING";
                     results.append(sex);
                     break;
@@ -5362,9 +5362,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
             case 20: // level
             {
                 String arg1=CMParms.cleanBit(funcParms);
-                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-                if(E!=null)
-                    results.append(E.phyStats().level());
+                Physical P=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                if(P!=null)
+                    results.append(P.phyStats().level());
                 break;
             }
             case 80: // questpoints
@@ -6269,7 +6269,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 	tt=parseBits(script,si,"Ccr");
                 	if(tt==null) return null;
                 }
-                Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                Physical newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 String which=tt[2];
                 if(newTarget!=null)
                 if(which.equalsIgnoreCase("all")||(which.length()==0))
@@ -6394,7 +6394,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 	tt=parseBits(script,si,"CCcr");
                 	if(tt==null) return null;
                 }
-                Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                Physical newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 String arg2=tt[2];
                 String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
                 if(newTarget!=null)
@@ -6564,7 +6564,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 	tt=parseBits(script,si,"Cccr");
                 	if(tt==null) return null;
                 }
-                Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                Physical newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 String arg2=tt[2];
                 String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
                 if(newTarget!=null)
@@ -6715,7 +6715,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 	tt=parseBits(script,si,"Ccr");
                 	if(tt==null) return null;
                 }
-                Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                Physical newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 String amtStr=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]).trim();
                 int t=CMath.s_int(amtStr);
                 if((newTarget!=null)&&(newTarget instanceof MOB))
@@ -7119,7 +7119,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 	tt=parseBits(script,si,"Cr");
                 	if(tt==null) return null;
                 }
-                Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                Physical newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if(newTarget!=null)
                 {
                     newTarget.basePhyStats().setDisposition(newTarget.basePhyStats().disposition()|PhyStats.IS_NOT_SEEN);
@@ -7260,7 +7260,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 	tt=parseBits(script,si,"Cr");
                 	if(tt==null) return null;
                 }
-                Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                Physical newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((newTarget!=null)&&(CMath.bset(newTarget.basePhyStats().disposition(),PhyStats.IS_NOT_SEEN)))
                 {
                     newTarget.basePhyStats().setDisposition(newTarget.basePhyStats().disposition()-PhyStats.IS_NOT_SEEN);
@@ -7850,7 +7850,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         else
                         if(E instanceof Item)
                         {
-                            Environmental oE=((Item)E).owner();
+                            ItemPossessor oE=((Item)E).owner();
                             ((Item)E).destroy();
                             if(oE!=null) oE.recoverPhyStats();
                         }
@@ -8815,7 +8815,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
             product.setName(E.Name());
             product.setDisplayText(E.displayText());
             product.setDescription(E.description());
-            product.setBasePhyStats((PhyStats)E.basePhyStats().copyOf());
+            if(E instanceof Physical)
+            	product.setBasePhyStats((PhyStats)((Physical)E).basePhyStats().copyOf());
             product.recoverPhyStats();
         }
         return product;

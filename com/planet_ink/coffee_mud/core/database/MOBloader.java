@@ -280,14 +280,12 @@ public class MOBloader
                                 newAbility.setMiscText(DBConnections.getRes(R,"CMABTX"));
                                 Ability newAbility2=(Ability)newAbility.copyOf();
                                 mob.addNonUninvokableEffect(newAbility);
-                                newAbility2.recoverPhyStats();
                                 mob.addAbility(newAbility2);
                             }
                         }else
                         {
                             newAbility.setProficiency(proficiency);
                             newAbility.setMiscText(DBConnections.getRes(R,"CMABTX"));
-                            newAbility.recoverPhyStats();
                             mob.addAbility(newAbility);
                         }
                     }
@@ -824,28 +822,28 @@ public class MOBloader
     }
 
     // this method is unused, but is a good idea of how to collect riders, followers, carts, etc.
-    protected void addFollowerDependent(Environmental E, DVector list, String parent)
+    protected void addFollowerDependent(PhysicalAgent P, DVector list, String parent)
     {
-        if(E==null) return;
-        if(list.contains(E)) return;
-        if((E instanceof MOB)
-        &&((!((MOB)E).isMonster())||(((MOB)E).isPossessing())))
+        if(P==null) return;
+        if(list.contains(P)) return;
+        if((P instanceof MOB)
+        &&((!((MOB)P).isMonster())||(((MOB)P).isPossessing())))
             return;
-    	CMLib.catalog().updateCatalogIntegrity(E);
+    	CMLib.catalog().updateCatalogIntegrity(P);
         String myCode=""+(list.size()-1);
-        list.addElement(E,CMClass.classID(E)+"#"+myCode+parent);
-        if(E instanceof Rideable)
+        list.addElement(P,CMClass.classID(P)+"#"+myCode+parent);
+        if(P instanceof Rideable)
         {
-            Rideable R=(Rideable)E;
+            Rideable R=(Rideable)P;
             for(int r=0;r<R.numRiders();r++)
                 addFollowerDependent(R.fetchRider(r),list,"@"+myCode+"R");
         }
-        if(E instanceof Container)
+        if(P instanceof Container)
         {
-            Container C=(Container)E;
+            Container C=(Container)P;
             List<Item> contents=C.getContents();
             for(int c=0;c<contents.size();c++)
-                addFollowerDependent((Environmental)contents.get(c),list,"@"+myCode+"C");
+                addFollowerDependent((Item)contents.get(c),list,"@"+myCode+"C");
         }
 
     }

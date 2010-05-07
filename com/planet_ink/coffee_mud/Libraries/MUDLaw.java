@@ -205,7 +205,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		return false;
 	}
     
-    public Ability getClericInfusion(Environmental room)
+    public Ability getClericInfusion(Physical room)
     {
         if(room==null) return null;
         Ability A=null;

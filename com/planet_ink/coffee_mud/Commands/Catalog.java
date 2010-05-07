@@ -40,58 +40,58 @@ public class Catalog extends StdCommand
 	private String[] access={"CATALOG"};
 	public String[] getAccessWords(){return access;}
 	
-	public boolean catalog(Room R, MOB mob, Environmental E)
+	public boolean catalog(Room R, MOB mob, Physical P)
 	    throws java.io.IOException
 	{
-	    Environmental origE=E;
-	    Environmental cataE=CMLib.catalog().getCatalogObj(E);
-	    if((!(E instanceof DBIdentifiable))
-	    ||(!((DBIdentifiable)E).canSaveDatabaseID()))
+		Physical origP=P;
+	    Physical cataP=CMLib.catalog().getCatalogObj(P);
+	    if((!(P instanceof DBIdentifiable))
+	    ||(!((DBIdentifiable)P).canSaveDatabaseID()))
 	    {
-            mob.tell("The object '"+E.Name()+"' can not be cataloged.");
+            mob.tell("The object '"+P.Name()+"' can not be cataloged.");
             return false;
 	    }
         String msg="<S-NAME> catalog(s) <T-NAMESELF>.";
-        if(CMLib.flags().isCataloged(E))
+        if(CMLib.flags().isCataloged(P))
         {
-            mob.tell("The object '"+E.Name()+"' is already cataloged.");
+            mob.tell("The object '"+P.Name()+"' is already cataloged.");
             return false;
         }
-        if(cataE!=null)
+        if(cataP!=null)
         {
-            CMLib.catalog().changeCatalogUsage(E,true);
-            StringBuffer diffs=CMLib.catalog().checkCatalogIntegrity(E);
+            CMLib.catalog().changeCatalogUsage(P,true);
+            StringBuffer diffs=CMLib.catalog().checkCatalogIntegrity(P);
             if((diffs==null)||(diffs.length()==0))
             {
-                mob.tell("The object '"+cataE.Name()+"' already exists in the catalog, exactly as it is.");
+                mob.tell("The object '"+cataP.Name()+"' already exists in the catalog, exactly as it is.");
                 return true;
             }
             if((mob.session()==null)
-            ||(!mob.session().confirm("Cataloging that object will change the existing cataloged '"+E.Name()+"' by altering the following properties: "+diffs.toString()+".  Please confirm (y/N)?","Y")))
+            ||(!mob.session().confirm("Cataloging that object will change the existing cataloged '"+P.Name()+"' by altering the following properties: "+diffs.toString()+".  Please confirm (y/N)?","Y")))
             {
-                CMLib.catalog().changeCatalogUsage(origE,false);
+                CMLib.catalog().changeCatalogUsage(origP,false);
                 return false;
             }
             msg="<S-NAME> modif(ys) the cataloged version of <T-NAMESELF>.";
-            CMLib.catalog().updateCatalog(E);
+            CMLib.catalog().updateCatalog(P);
         }
         else
         {
-            CMLib.catalog().addCatalog(E);
+            CMLib.catalog().addCatalog(P);
         }
-        R.show(mob,E,CMMsg.MSG_OK_VISUAL,msg);
+        R.show(mob,P,CMMsg.MSG_OK_VISUAL,msg);
         return true;
 	}
 	
 	
-	public Environmental findCatalog(int whatKind, String ID, boolean exactOnly)
+	public Physical findCatalog(int whatKind, String ID, boolean exactOnly)
 	{
 		Object[] data=new Object[]{null,null};
 		if((data[0]==null)&&((whatKind==0)||(whatKind==1)))
 		{ data[0]=CMLib.catalog().getCatalogMob(ID); if(data[0]!=null) data[1]=Integer.valueOf(1);}
 		if((data[0]==null)&&((whatKind==0)||(whatKind==2)))
 		{ data[0]=CMLib.catalog().getCatalogItem(ID); if(data[0]!=null) data[1]=Integer.valueOf(2);}
-		if(exactOnly) return (Environmental)data[0];
+		if(exactOnly) return (Physical)data[0];
 		if((data[0]==null)&&((whatKind==0)||(whatKind==1)))
 		{
 			String[] names=(String[])CMLib.catalog().getCatalogMobNames().clone();
@@ -130,7 +130,7 @@ public class Catalog extends StdCommand
 					{	data[0]=CMLib.catalog().getCatalogItem(names[x]); data[1]=Integer.valueOf(2); break;}
 			}
 		}
-		return (Environmental)data[0];
+		return (Physical)data[0];
 	}
 
 	public Enumeration getRoomSet(MOB mob, String which)
@@ -192,7 +192,7 @@ public class Catalog extends StdCommand
                 &&((which.equalsIgnoreCase("ROOM"))||mob.session().confirm("I'm serious now.  You can't abort this, and it WILL modify stuff.\n\r"
                     +"Have you tested this command on small areas and know what you're doing?.\n\rAre you absolutely POSITIVELY sure (y/N)?","N")))
 				{
-					Environmental E=null;
+					Physical P=null;
 					String roomID=null;
 					for(;rooms.hasMoreElements();)
 					{
@@ -202,19 +202,19 @@ public class Catalog extends StdCommand
 						boolean dirty=false;
 						for(CatalogLibrary.RoomContent content : contents)
 						{
-							E=content.E();
-							if(E instanceof Coins) continue;
-                            if((E instanceof MOB)&&(whatKind!=2))
+							P=content.P();
+							if(P instanceof Coins) continue;
+                            if((P instanceof MOB)&&(whatKind!=2))
                             {
-                                if(catalog(R,mob,E)){ 
+                                if(catalog(R,mob,P)){ 
                                 	content.flagDirty(); 
                                 	dirty=true;
                                 }
                             }
                             else
-                            if((E instanceof Item)&&(whatKind!=1))
+                            if((P instanceof Item)&&(whatKind!=1))
                             {
-                                if(catalog(R,mob,E)){ 
+                                if(catalog(R,mob,P)){ 
                                 	content.flagDirty(); 
                                 	dirty=true;
                                 }
@@ -312,7 +312,7 @@ public class Catalog extends StdCommand
 				commands.removeElementAt(0);
 				int whatKind=getObjectType(commands);
 				String ID=CMParms.combine(commands,0);
-				Environmental[] del=null;
+				Physical[] del=null;
 				if(ID.equalsIgnoreCase("everydamnmob"))
 					del=CMLib.catalog().getCatalogMobs();
 				else
@@ -321,48 +321,48 @@ public class Catalog extends StdCommand
 				else
 				if(ID.equalsIgnoreCase("everydamnthing"))
 				{
-					java.util.List<Environmental> V=new Vector<Environmental>();
+					java.util.List<Physical> V=new Vector<Physical>();
 					V.addAll(Arrays.asList(CMLib.catalog().getCatalogItems()));
 					V.addAll(Arrays.asList(CMLib.catalog().getCatalogMobs()));
-					del=V.toArray(new Environmental[0]);
+					del=V.toArray(new Physical[0]);
 				}
 				else
 				{
-					Environmental E=findCatalog(whatKind,ID,false);
-					if(E==null)
+					Physical P=findCatalog(whatKind,ID,false);
+					if(P==null)
 					{
 						mob.tell("'"+ID+"' not found in catalog! Try CATALOG LIST");
 						return false;
 					}
-					del=new Environmental[]{E};
+					del=new Physical[]{P};
 				}
 				for(int d=0;d<del.length;d++)
 				{
-					Environmental E=del[d];
-					CatalogLibrary.CataData data=CMLib.catalog().getCatalogData(E);
-					if(E instanceof MOB)
+					Physical P=del[d];
+					CatalogLibrary.CataData data=CMLib.catalog().getCatalogData(P);
+					if(P instanceof MOB)
 					{
 						String prefix="";
 						if((data!=null)&&(data.numReferences()>0))
-							prefix="Catalog MOB '"+((MOB)E).Name()+"' is currently listed as being in use '"+data.numReferences()+" times.  ";
+							prefix="Catalog MOB '"+((MOB)P).Name()+"' is currently listed as being in use '"+data.numReferences()+" times.  ";
 						if((mob.session()!=null)
-						&&((del.length>10)||(mob.session().confirm(prefix+"This will permanently delete mob '"+((MOB)E).Name()+"' from the catalog.  Are you sure (y/N)?","N"))))
+						&&((del.length>10)||(mob.session().confirm(prefix+"This will permanently delete mob '"+((MOB)P).Name()+"' from the catalog.  Are you sure (y/N)?","N"))))
 						{
-							CMLib.catalog().delCatalog((MOB)E);
-							mob.tell("MOB '"+((MOB)E).Name()+" has been permanently removed from the catalog.");
+							CMLib.catalog().delCatalog((MOB)P);
+							mob.tell("MOB '"+((MOB)P).Name()+" has been permanently removed from the catalog.");
 						}
 					}
 					else
-					if(E instanceof Item)
+					if(P instanceof Item)
 					{
 						String prefix="";
 						if((data!=null)&&(data.numReferences()>0))
-							prefix="Catalog Item '"+((Item)E).Name()+"' is currently listed as being in use '"+data.numReferences()+" times.  ";
+							prefix="Catalog Item '"+((Item)P).Name()+"' is currently listed as being in use '"+data.numReferences()+" times.  ";
 						if((mob.session()!=null)
-						&&((del.length>10)||(mob.session().confirm(prefix+"This will permanently delete item '"+((Item)E).Name()+"' from the catalog.  Are you sure (y/N)?","N"))))
+						&&((del.length>10)||(mob.session().confirm(prefix+"This will permanently delete item '"+((Item)P).Name()+"' from the catalog.  Are you sure (y/N)?","N"))))
 						{
-							CMLib.catalog().delCatalog((Item)E);
-							mob.tell("Item '"+E.Name()+" has been permanently removed from the catalog.");
+							CMLib.catalog().delCatalog((Item)P);
+							mob.tell("Item '"+P.Name()+" has been permanently removed from the catalog.");
 						}
 					}
 				}
@@ -373,19 +373,19 @@ public class Catalog extends StdCommand
                 commands.removeElementAt(0);
 				int whatKind=getObjectType(commands);
                 String ID=CMParms.combine(commands,0);
-                Environmental E=findCatalog(whatKind,ID,false);
-                if(E==null)
+                Physical P=findCatalog(whatKind,ID,false);
+                if(P==null)
                 {
                     mob.tell("'"+ID+"' not found in catalog! Try CATALOG LIST");
                     return false;
                 }
-                CatalogLibrary.CataData data=CMLib.catalog().getCatalogData(E);
-                if(E instanceof MOB)
+                CatalogLibrary.CataData data=CMLib.catalog().getCatalogData(P);
+                if(P instanceof MOB)
                 {
                     mob.tell("There is no extra mob data to edit. See help on CATALOG.");
                 }
                 else
-                if(E instanceof Item)
+                if(P instanceof Item)
                 {
                     if(mob.session()!=null)
                     {
@@ -406,8 +406,8 @@ public class Catalog extends StdCommand
                         {
                             data.setMaskStr("");
                             data.setRate(0.0);
-                            CMLib.database().DBUpdateItem("CATALOG_ITEMS",(Item)E);
-                            Log.sysOut("Catalog",mob.Name()+" modified catalog item "+E.Name());
+                            CMLib.database().DBUpdateItem("CATALOG_ITEMS",(Item)P);
+                            Log.sysOut("Catalog",mob.Name()+" modified catalog item "+P.Name());
                             mob.tell("No drop item.");
                             return false;
                         }
@@ -430,9 +430,9 @@ public class Catalog extends StdCommand
                         {
                             data.setMaskStr(newMask);
                         }
-                        CMLib.database().DBUpdateItem("CATALOG_ITEMS",(Item)E);
-                        Log.sysOut("Catalog",mob.Name()+" modified catalog item "+E.Name());
-                        mob.tell("Item '"+E.Name()+" has been updated.");
+                        CMLib.database().DBUpdateItem("CATALOG_ITEMS",(Item)P);
+                        Log.sysOut("Catalog",mob.Name()+" modified catalog item "+P.Name());
+                        mob.tell("Item '"+P.Name()+" has been updated.");
                     }
                 }
             }
@@ -449,7 +449,7 @@ public class Catalog extends StdCommand
 					commands.removeElementAt(0);
 					
 					int whatKind=getObjectType(commands);
-					Environmental E=null;
+					Physical P=null;
 					String roomID=null;
 					for(;rooms.hasMoreElements();)
 					{
@@ -459,19 +459,19 @@ public class Catalog extends StdCommand
 						Vector<CatalogLibrary.RoomContent> contents=CMLib.catalog().roomContent(R);
 						for(CatalogLibrary.RoomContent content : contents)
 						{
-							E=content.E();
-							if(E instanceof Coins) continue;
-                            if((E instanceof MOB)&&(whatKind!=2)&&(CMLib.flags().isCataloged(E)))
-                            	if(CMLib.catalog().getCatalogObj(E)!=null)
-	                            	mob.tell("Check: MOB "+E.Name()+" in "+roomID+" is cataloged.");
+							P=content.P();
+							if(P instanceof Coins) continue;
+                            if((P instanceof MOB)&&(whatKind!=2)&&(CMLib.flags().isCataloged(P)))
+                            	if(CMLib.catalog().getCatalogObj(P)!=null)
+	                            	mob.tell("Check: MOB "+P.Name()+" in "+roomID+" is cataloged.");
                             	else
-	                            	mob.tell("Error: MOB "+E.Name()+" in "+roomID+" is falsely cataloged.");
+	                            	mob.tell("Error: MOB "+P.Name()+" in "+roomID+" is falsely cataloged.");
                             
-                            if((E instanceof Item)&&(whatKind!=1)&&(CMLib.flags().isCataloged(E)))
-                            	if(CMLib.catalog().getCatalogObj(E)!=null)
-	                            	mob.tell("Check: Item "+E.Name()+" in "+roomID+" is cataloged.");
+                            if((P instanceof Item)&&(whatKind!=1)&&(CMLib.flags().isCataloged(P)))
+                            	if(CMLib.catalog().getCatalogObj(P)!=null)
+	                            	mob.tell("Check: Item "+P.Name()+" in "+roomID+" is cataloged.");
                             	else
-	                            	mob.tell("Error: Item "+E.Name()+" in "+roomID+" is falsely cataloged.");
+	                            	mob.tell("Error: Item "+P.Name()+" in "+roomID+" is falsely cataloged.");
 						}
 						if(db) R.destroy();
 					}
@@ -502,7 +502,7 @@ public class Catalog extends StdCommand
 						Vector<CatalogLibrary.RoomContent> contents=CMLib.catalog().roomContent(R);
 						for(CatalogLibrary.RoomContent content : contents)
 						{
-							E=content.E();
+							E=content.P();
 							if(E instanceof Coins) continue;
                             if((E instanceof MOB)&&(whatKind!=2)&&(!CMLib.flags().isCataloged(E)))
                             	if(CMLib.catalog().getCatalogMob(E.Name())!=null)
@@ -537,7 +537,7 @@ public class Catalog extends StdCommand
 					&&(mob.session().confirm("You are about to auto-clean (and auto-save) all "+which+" "+type+".\n\r"
 				        +"This command, if used improperly, may alter "+type+" in this "+which+".\n\rAre you absolutely sure (y/N)?","N")))
 					{
-						Environmental E=null;
+						Physical P=null;
 						String roomID=null;
 						for(;rooms.hasMoreElements();)
 						{
@@ -547,29 +547,29 @@ public class Catalog extends StdCommand
 							boolean dirty=false;
 							for(CatalogLibrary.RoomContent content : contents)
 							{
-								E=content.E();
-								if(E instanceof Coins) continue;
-	                            if((E instanceof MOB)&&(whatKind!=2))
+								P=content.P();
+								if(P instanceof Coins) continue;
+	                            if((P instanceof MOB)&&(whatKind!=2))
 	                            {
-                                    if((CMLib.flags().isCataloged(E))
-                                    &&(CMLib.catalog().getCatalogObj(E)==null))
+                                    if((CMLib.flags().isCataloged(P))
+                                    &&(CMLib.catalog().getCatalogObj(P)==null))
                                     { 
-                                    	CMLib.catalog().changeCatalogUsage(E,false);
+                                    	CMLib.catalog().changeCatalogUsage(P,false);
                                     	content.flagDirty();
                                     	dirty=true;
-                                    	mob.tell("MOB "+E.Name()+" in "+roomID+" was cleaned.");
+                                    	mob.tell("MOB "+P.Name()+" in "+roomID+" was cleaned.");
                                     }
 	                            }
 	                            else
-	                            if((E instanceof Item)&&(whatKind!=1))
+	                            if((P instanceof Item)&&(whatKind!=1))
 	                            {
-                                    if((CMLib.flags().isCataloged(E))
-                                    &&(CMLib.catalog().getCatalogObj(E)==null))
+                                    if((CMLib.flags().isCataloged(P))
+                                    &&(CMLib.catalog().getCatalogObj(P)==null))
                                     { 
-                                    	CMLib.catalog().changeCatalogUsage(E,false);
+                                    	CMLib.catalog().changeCatalogUsage(P,false);
                                     	content.flagDirty();
                                     	dirty=true;
-                                    	mob.tell("Item "+E.Name()+" in "+roomID+" was cleaned.");
+                                    	mob.tell("Item "+P.Name()+" in "+roomID+" was cleaned.");
                                     }
 	                            }
 							}
@@ -587,27 +587,27 @@ public class Catalog extends StdCommand
 			}
 			else
 			{
-				Environmental thisThang=null;
+				Physical P=null;
 				String ID=CMParms.combine(commands,0);
 				if(ID.equalsIgnoreCase("SELF")||ID.equalsIgnoreCase("ME"))
-					thisThang=mob;
-				if(thisThang==null)
-					thisThang=R.fetchFromRoomFavorMOBs(null,ID,Wearable.FILTER_ANY);
-				if(thisThang!=null)
+					P=mob;
+				if(P==null)
+					P=R.fetchFromRoomFavorMOBs(null,ID,Wearable.FILTER_ANY);
+				if(P!=null)
 				{
-				    if(!catalog(R,mob,thisThang))
+				    if(!catalog(R,mob,P))
 				        return false;
-				    if((thisThang instanceof DBIdentifiable)
-				    &&(((DBIdentifiable)thisThang).canSaveDatabaseID())
-				    &&(((DBIdentifiable)thisThang).databaseID().length()>0))
+				    if((P instanceof DBIdentifiable)
+				    &&(((DBIdentifiable)P).canSaveDatabaseID())
+				    &&(((DBIdentifiable)P).databaseID().length()>0))
 				    {
-					    Room startRoom=CMLib.map().getStartRoom(thisThang);
+					    Room startRoom=CMLib.map().getStartRoom(P);
 					    if(startRoom !=null)
 					    {
-					    	if(thisThang instanceof MOB)
-					    		CMLib.database().DBUpdateMOB(startRoom.roomID(),(MOB)thisThang);
+					    	if(P instanceof MOB)
+					    		CMLib.database().DBUpdateMOB(startRoom.roomID(),(MOB)P);
 					    	else
-					    		CMLib.database().DBUpdateItem(startRoom.roomID(),(Item)thisThang);
+					    		CMLib.database().DBUpdateItem(startRoom.roomID(),(Item)P);
 					    }
 				    }
 				}

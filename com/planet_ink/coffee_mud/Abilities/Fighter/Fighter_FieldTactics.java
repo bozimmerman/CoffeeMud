@@ -77,7 +77,7 @@ public class Fighter_FieldTactics extends FighterSkill
 	public boolean hiding(Environmental mob)
 	{
 		if(!(mob instanceof MOB)) return false;
-		return CMLib.flags().isSitting(mob)&&(((MOB)mob).riding()==null);
+		return CMLib.flags().isSitting((MOB)mob)&&(((MOB)mob).riding()==null);
 	}
 	public boolean hiding(MOB mob)
 	{

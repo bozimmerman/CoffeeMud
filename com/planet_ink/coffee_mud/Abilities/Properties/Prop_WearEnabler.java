@@ -108,18 +108,6 @@ public class Prop_WearEnabler extends Prop_HaveEnabler
     public String accountForYourself()
     { return spellAccountingsWithMask("Grants "," to the wearer/wielder.");}
 
-    public void recoverPhyStats()
-    {
-        if(processing2) return;
-        processing2=true;
-        if((affected instanceof Item)
-        &&(lastMOB instanceof MOB)
-        &&((((Item)affected).owner()!=lastMOB)||(((Item)affected).amDestroyed()))
-        &&(((MOB)lastMOB).location()!=null))
-            removeMyAffectsFromLastMob();
-        processing2=false;
-    }
-    
 	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{
 		if(processing) return;

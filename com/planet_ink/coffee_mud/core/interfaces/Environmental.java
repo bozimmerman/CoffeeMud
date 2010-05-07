@@ -42,7 +42,7 @@ import java.util.*;
  * @author Bo Zimmerman
  *
  */
-public interface Environmental extends Tickable, Affectable, StatsAffecting, MsgListener, Contingent, Modifiable
+public interface Environmental extends Tickable, StatsAffecting, MsgListener, Contingent, Modifiable
 {
     /**
      * The displayable name of this object.  May be modified by phyStats() object. Is

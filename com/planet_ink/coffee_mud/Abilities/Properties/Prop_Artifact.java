@@ -186,9 +186,9 @@ public class Prop_Artifact extends Property
 				waitToReload=System.currentTimeMillis()+60000;
 				if(!CMLib.threads().isTicking(this,Tickable.TICKID_ITEM_BOUNCEBACK))
 					CMLib.threads().startTickDown(this, Tickable.TICKID_ITEM_BOUNCEBACK,4);
-				Environmental E = affected;
-				E.delEffect(this);
-				E.destroy();
+				Physical P = affected;
+				P.delEffect(this);
+				P.destroy();
 			}
 		}
 		return super.okMessage(myHost, msg);

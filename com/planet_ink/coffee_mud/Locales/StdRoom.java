@@ -1275,7 +1275,8 @@ public class StdRoom implements Room
 	{
 		MOB everywhereMOB=CMClass.getMOB("StdMOB");
 		everywhereMOB.setName(like.name());
-		everywhereMOB.setBasePhyStats(like.phyStats());
+		if(like instanceof Physical)
+			everywhereMOB.setBasePhyStats(((Physical)like).phyStats());
 		everywhereMOB.setLocation(this);
 		everywhereMOB.recoverPhyStats();
 		CMMsg msg=CMClass.getMsg(everywhereMOB,null,null,allCode,allCode,allCode,allMessage);

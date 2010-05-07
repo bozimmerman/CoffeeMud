@@ -262,7 +262,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
                 int loseNourishment=0;
                 int loseThirstHeld=0;
                 int loseThirstRemain=0;
-                Environmental E=null;
+                Physical E=null;
                 for(int x=0;x<number;x++)
                 {
                     E=makeResource(I.material(),null,true,I.rawSecretIdentity());
@@ -389,7 +389,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
     			I.addNonUninvokableEffect((Ability)A.copyOf());
     }
     
-	public Environmental makeResource(int myResource, String localeCode, boolean noAnimals, String fullName)
+	public PhysicalAgent makeResource(int myResource, String localeCode, boolean noAnimals, String fullName)
 	{
 		if(myResource<0)
 			return null;

@@ -727,13 +727,13 @@ public class ServiceEngine implements ThreadEngine
                 return "Misc"+num+" Activity #"+(code-base);
             }
             else
-            if(CMath.bset(code,Tickable.STATUS_AFFECT))
+            if(CMath.bset(code,Tickable.STATUS_AFFECT) && (obj instanceof Physical))
             {
                 long b=(code-Tickable.STATUS_AFFECT);
                 String codeWord="Effect #"+b;
-                if((b>=0)&&(b<((Environmental)obj).numEffects()))
+                if((b>=0)&&(b<((Physical)obj).numEffects()))
                 {
-                    Environmental E=((Environmental)obj).fetchEffect((int)b);
+                    Environmental E=((Physical)obj).fetchEffect((int)b);
                     codeWord+=" ("+E.name()+": "+E.getTickStatus()+")";
                 }
                 return codeWord;

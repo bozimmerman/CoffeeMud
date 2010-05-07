@@ -161,21 +161,21 @@ public class StdExit implements Exit
 		return new StdExit();
 	}
 	public boolean isGeneric(){return false;}
-	protected void cloneFix(Exit E)
+	protected void cloneFix(Exit X)
 	{
-		basePhyStats=(PhyStats)E.basePhyStats().copyOf();
-		phyStats=(PhyStats)E.phyStats().copyOf();
+		basePhyStats=(PhyStats)X.basePhyStats().copyOf();
+		phyStats=(PhyStats)X.phyStats().copyOf();
 
 		affects=null;
 		behaviors=null;
         scripts=null;
-		for(Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
+		for(Enumeration<Behavior> e=X.behaviors();e.hasMoreElements();)
 		{
 			Behavior B=e.nextElement();
 			if(B!=null)
 				addBehavior((Behavior)B.copyOf());
 		}
-		for(Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();)
+		for(Enumeration<ScriptingEngine> e=X.scripts();e.hasMoreElements();)
 		{
 			ScriptingEngine SE=e.nextElement();
             if(SE!=null) addScript((ScriptingEngine)SE.copyOf());

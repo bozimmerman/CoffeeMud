@@ -42,14 +42,14 @@ public class GrinderExits
       "ISALIGNMENTRESTRICTED","RESTRICTEDALIGNMENTS",
       " MISCTEXT","ISGENERIC","DOORNAME","IMAGE"};
     
-	public static String dispositions(Environmental E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
+	public static String dispositions(Physical P, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
 	{
-		E.basePhyStats().setDisposition(0);
+		P.basePhyStats().setDisposition(0);
 		for(int d=0;d<PhyStats.IS_CODES.length;d++)
 		{
 			String parm=httpReq.getRequestParameter(PhyStats.IS_CODES[d]);
 			if((parm!=null)&&(parm.equals("on")))
-			   E.basePhyStats().setDisposition(E.basePhyStats().disposition()|(1<<d));
+			   P.basePhyStats().setDisposition(P.basePhyStats().disposition()|(1<<d));
 		}
 		return "";
 	}
@@ -59,15 +59,15 @@ public class GrinderExits
 		synchronized(("SYNC"+R.roomID()).intern())
 		{
 			R=CMLib.map().getRoom(R);
-			Exit E=R.getRawExit(dir);
-			if(E==null) return "No Exit to edit?!";
+			Exit X=R.getRawExit(dir);
+			if(X==null) return "No Exit to edit?!";
 			
 			// important generic<->non generic swap!
 			String newClassID=httpReq.getRequestParameter("CLASSES");
-			if((newClassID!=null)&&(!CMClass.classID(E).equals(newClassID)))
+			if((newClassID!=null)&&(!CMClass.classID(X).equals(newClassID)))
 			{
-				E=CMClass.getExit(newClassID);
-				R.setRawExit(dir,E);
+				X=CMClass.getExit(newClassID);
+				R.setRawExit(dir,X);
 			}
 			
 			for(int o=0;o<okparms.length;o++)
@@ -81,22 +81,22 @@ public class GrinderExits
 				}
 				String old=httpReq.getRequestParameter(parm);
 				if(old==null) old="";
-				if(E.isGeneric()||(!generic))
+				if(X.isGeneric()||(!generic))
 				switch(o)
 				{
 				case 0: // name
-					E.setName(old);	
+					X.setName(old);	
 					break;
 				case 1: // classes
 					break;
 				case 2: // displaytext
-					E.setDisplayText(old);	
+					X.setDisplayText(old);	
 					break;
 				case 3: // description
-					E.setDescription(old); 
+					X.setDescription(old); 
 					break;
 				case 4: // level
-					E.basePhyStats().setLevel(CMath.s_int(old));	
+					X.basePhyStats().setLevel(CMath.s_int(old));	
 					break;
 				case 5: // levelrestricted;
 					break;
@@ -104,40 +104,40 @@ public class GrinderExits
 					break;
 				case 7: // hasadoor
 					if(old.equals("on"))
-						E.setDoorsNLocks(true,!E.defaultsClosed(),E.defaultsClosed(),E.hasALock(),E.hasALock(),E.defaultsLocked());
+						X.setDoorsNLocks(true,!X.defaultsClosed(),X.defaultsClosed(),X.hasALock(),X.hasALock(),X.defaultsLocked());
 					else
-						E.setDoorsNLocks(false,true,false,false,false,false);
+						X.setDoorsNLocks(false,true,false,false,false,false);
 					break;
 				case 8: // closedtext
-					E.setExitParams(E.doorName(),E.closeWord(),E.openWord(),old); 
+					X.setExitParams(X.doorName(),X.closeWord(),X.openWord(),old); 
 					break;
 				case 9: // defaultsclosed
-					E.setDoorsNLocks(E.hasADoor(),E.isOpen(),old.equals("on"),E.hasALock(),E.isLocked(),E.defaultsLocked());
+					X.setDoorsNLocks(X.hasADoor(),X.isOpen(),old.equals("on"),X.hasALock(),X.isLocked(),X.defaultsLocked());
 					break;
 				case 10: // openword
-					E.setExitParams(E.doorName(),E.closeWord(),old,E.closedText());	
+					X.setExitParams(X.doorName(),X.closeWord(),old,X.closedText());	
 					break;
 				case 11: // closeword
-					E.setExitParams(E.doorName(),old,E.openWord(),E.closedText());	
+					X.setExitParams(X.doorName(),old,X.openWord(),X.closedText());	
 					break;
 				case 12: // hasalock
 					if(old.equals("on"))
-						E.setDoorsNLocks(true,!E.defaultsClosed(),E.defaultsClosed(),true,E.defaultsLocked(),E.defaultsLocked());
+						X.setDoorsNLocks(true,!X.defaultsClosed(),X.defaultsClosed(),true,X.defaultsLocked(),X.defaultsLocked());
 					else
-						E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);
+						X.setDoorsNLocks(X.hasADoor(),X.isOpen(),X.defaultsClosed(),false,false,false);
 					break;
 				case 13: // defaultslocked
-					E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),E.hasALock(),E.isLocked(),old.equals("on"));
+					X.setDoorsNLocks(X.hasADoor(),X.isOpen(),X.defaultsClosed(),X.hasALock(),X.isLocked(),old.equals("on"));
 					break;
 				case 14: // keyname
-					if(E.hasALock()&&(old.length()>0))
-						E.setKeyName(old);
+					if(X.hasALock()&&(old.length()>0))
+						X.setKeyName(old);
 					break;
 				case 15: // isreadable
-					E.setReadable(old.equals("on"));
+					X.setReadable(old.equals("on"));
 					break;
 				case 16: // readable text
-					if(E.isReadable()) E.setReadableText(old);
+					if(X.isReadable()) X.setReadableText(old);
 					break;
 				case 17: // isclassrestricuted
 					break;
@@ -148,31 +148,31 @@ public class GrinderExits
 				case 20: // restrictedalignments
 					break;
 				case 21: // misctext
-					if(!E.isGeneric())
-						E.setMiscText(old); 
+					if(!X.isGeneric())
+						X.setMiscText(old); 
 					break;
 				case 22: // is generic
 					break;
 				case 23: // door name
-					E.setExitParams(old,E.closeWord(),E.openWord(),E.closedText());
+					X.setExitParams(old,X.closeWord(),X.openWord(),X.closedText());
 					break;
 				case 24: // image
-				    E.setImage(old);
+				    X.setImage(old);
 				    break;
 				}
 			}
 			
-			if(E.isGeneric())
+			if(X.isGeneric())
 			{
-				String error=GrinderExits.dispositions(E,httpReq,parms);
+				String error=GrinderExits.dispositions(X,httpReq,parms);
 				if(error.length()>0) return error;
-				error=GrinderAreas.doAffects(E,httpReq,parms);
+				error=GrinderAreas.doAffects(X,httpReq,parms);
 				if(error.length()>0) return error;
 			}
 			
 			//adjustments
-			if(!E.hasADoor())
-				E.setDoorsNLocks(false,true,false,false,false,false);
+			if(!X.hasADoor())
+				X.setDoorsNLocks(false,true,false,false,false,false);
 					
 			CMLib.database().DBUpdateExits(R);
 			String makeSame=httpReq.getRequestParameter("MAKESAME");
@@ -185,7 +185,7 @@ public class GrinderExits
 				if(E2!=null)
 				{
 					Exit oldE2=E2;
-					E2=(Exit)E.copyOf();
+					E2=(Exit)X.copyOf();
 					E2.setDisplayText(oldE2.displayText());
 					if(R2!=null)
 					{

@@ -79,7 +79,7 @@ public class Chant_Treehouse extends Chant
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Environmental target = mob.location();
+		Physical target = mob.location();
 		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell("There is already a treehouse above here!");

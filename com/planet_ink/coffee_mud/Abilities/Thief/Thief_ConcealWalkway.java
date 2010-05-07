@@ -91,8 +91,8 @@ public class Thief_ConcealWalkway extends ThiefSkill
             mob.tell("This only works on walkways into or within buildings.");
             return false;
         }
-        Exit E=(Exit)chkE;
-        if((!auto)&&(E.phyStats().level()>(adjustedLevel(mob,asLevel)*2)))
+        Exit X=(Exit)chkE;
+        if((!auto)&&(X.phyStats().level()>(adjustedLevel(mob,asLevel)*2)))
         {
             mob.tell("You aren't good enough to conceal that direction.");
             return false;
@@ -105,27 +105,27 @@ public class Thief_ConcealWalkway extends ThiefSkill
 
         if(success)
         {
-            CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_THIEF_ACT,"<S-NAME> conceal(s) <T-NAME>.",CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
+            CMMsg msg=CMClass.getMsg(mob,X,null,CMMsg.MSG_THIEF_ACT,"<S-NAME> conceal(s) <T-NAME>.",CMMsg.MSG_THIEF_ACT,null,CMMsg.MSG_THIEF_ACT,null);
             if(mob.location().okMessage(mob,msg))
             {
                 mob.location().send(mob,msg);
                 Ability A=(Ability)super.copyOf();
                 A.setInvoker(mob);
-                A.setAbilityCode((adjustedLevel(mob,asLevel)*2)-E.phyStats().level());
+                A.setAbilityCode((adjustedLevel(mob,asLevel)*2)-X.phyStats().level());
                 Room R=mob.location();
                 if((CMLib.law().doesOwnThisProperty(mob,R))
                 ||((R2!=null)&&(CMLib.law().doesOwnThisProperty(mob,R2))))
                 {
-                    E.addNonUninvokableEffect(A);
+                    X.addNonUninvokableEffect(A);
                     CMLib.database().DBUpdateExits(mob.location());
                 }
                 else
-                    A.startTickDown(mob,E,15*(adjustedLevel(mob,asLevel)));
-                E.recoverPhyStats();
+                    A.startTickDown(mob,X,15*(adjustedLevel(mob,asLevel)));
+                X.recoverPhyStats();
             }
         }
         else
-            beneficialVisualFizzle(mob,E,"<S-NAME> attempt(s) to coneal <T-NAME>, but obviously fail(s).");
+            beneficialVisualFizzle(mob,X,"<S-NAME> attempt(s) to coneal <T-NAME>, but obviously fail(s).");
         return success;
     }
 }

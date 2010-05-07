@@ -77,7 +77,7 @@ public class Thief_RemoveTraps extends ThiefSkill
 
 		boolean success=proficiencyCheck(mob,+(((mob.phyStats().level()+(getXLEVELLevel(mob)*2))
 											 -unlockThis.phyStats().level())*3),auto);
-		Vector permSetV=new Vector();
+		Vector<Physical> permSetV=new Vector<Physical>();
 		Trap theTrap=CMLib.utensils().fetchMyTrap(unlockThis);
 		if(theTrap!=null) permSetV.addElement(unlockThis);
 		Trap opTrap=null;
@@ -146,11 +146,11 @@ public class Thief_RemoveTraps extends ThiefSkill
 					{
 						if(theTrap!=null) { 
                             theTrap.unInvoke(); 
-                            ((Environmental)permSetV.elementAt(i)).delEffect(theTrap);
+                            ((Physical)permSetV.elementAt(i)).delEffect(theTrap);
                         }
 						if(opTrap!=null) { 
                             opTrap.unInvoke(); 
-                            ((Environmental)permSetV.elementAt(i)).delEffect(opTrap);
+                            ((Physical)permSetV.elementAt(i)).delEffect(opTrap);
                         }
 					}
 					CMLib.database().DBUpdateRoom(R);

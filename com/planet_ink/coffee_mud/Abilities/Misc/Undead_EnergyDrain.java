@@ -78,7 +78,7 @@ public class Undead_EnergyDrain extends StdAbility
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(affected==null) return;
-		affectableStats.setClassLevel(affectableStats.getCurrentClass(),basePhyStats().level()-levelsDown-affectableStats.combinedSubLevels());
+		affectableStats.setClassLevel(affectableStats.getCurrentClass(),affected.basePhyStats().level()-levelsDown-affectableStats.combinedSubLevels());
 	}
 
 	public void unInvoke()

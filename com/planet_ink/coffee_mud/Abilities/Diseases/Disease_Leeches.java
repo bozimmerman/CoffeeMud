@@ -54,7 +54,7 @@ public class Disease_Leeches extends Disease
 	protected int hp=Integer.MAX_VALUE;
 	protected String thename="";
 
-	public static Vector returnOffensiveAffects(Environmental fromMe)
+	public static List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
 		Vector offenders=new Vector();
 
@@ -77,9 +77,9 @@ public class Disease_Leeches extends Disease
 		if((!mob.amDead())&&((--diseaseTick)<=0))
 		{
 			diseaseTick=DISEASE_DELAY();
-			Vector offensiveEffects=returnOffensiveAffects(mob);
+			List<Ability> offensiveEffects=returnOffensiveAffects(mob);
 			for(int a=offensiveEffects.size()-1;a>=0;a--)
-				((Ability)offensiveEffects.elementAt(a)).unInvoke();
+				((Ability)offensiveEffects.get(a)).unInvoke();
 			mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,DISEASE_AFFECT());
 			MOB diseaser=invoker;
 			if(diseaser==null) diseaser=mob;

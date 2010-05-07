@@ -47,7 +47,7 @@ public class Fighter_PointBlank extends FighterSkill
     public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
 	public int checkDown=4;
 
-	protected Vector qualifiedWeapons=new Vector();
+	protected Vector<Weapon> qualifiedWeapons=new Vector<Weapon>();
 
     protected void cloneFix(Ability E)
     {
@@ -65,30 +65,33 @@ public class Fighter_PointBlank extends FighterSkill
 	{
 		super.executeMsg(host,msg);
 		if((msg.source()==affected)
-		&&(msg.target() instanceof Weapon)
-		&&(((Weapon)msg.target()).weaponClassification()==Weapon.CLASS_RANGED)
-		&&(((Weapon)msg.target()).ammunitionType().length()>0))
+		&&(msg.target() instanceof Weapon))
 		{
-			if(((msg.targetMinor()==CMMsg.TYP_WEAR)
-			   ||(msg.targetMinor()==CMMsg.TYP_WIELD)
-			   ||(msg.targetMinor()==CMMsg.TYP_HOLD))
-			&&(!qualifiedWeapons.contains(msg.target()))
-			&&((msg.source().fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
+			Weapon W=(Weapon)msg.target();
+			if((W.weaponClassification()==Weapon.CLASS_RANGED)
+			&&(W.ammunitionType().length()>0))
 			{
-				qualifiedWeapons.addElement(msg.target());
-				Ability A=(Ability)this.copyOf();
-				A.setSavable(false);
-				msg.target().addEffect(A);
-				msg.target().recoverPhyStats();
-			}
-			else
-			if(((msg.targetMinor()==CMMsg.TYP_REMOVE)
-				||(msg.targetMinor()==CMMsg.TYP_DROP))
-			&&(qualifiedWeapons.contains(msg.target())))
-			{
-				qualifiedWeapons.removeElement(msg.target());
-				msg.target().delEffect(msg.target().fetchEffect(ID()));
-				msg.target().recoverPhyStats();
+				if(((msg.targetMinor()==CMMsg.TYP_WEAR)
+				   ||(msg.targetMinor()==CMMsg.TYP_WIELD)
+				   ||(msg.targetMinor()==CMMsg.TYP_HOLD))
+				&&(!qualifiedWeapons.contains(W))
+				&&((msg.source().fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
+				{
+					qualifiedWeapons.addElement(W);
+					Ability A=(Ability)this.copyOf();
+					A.setSavable(false);
+					W.addEffect(A);
+					W.recoverPhyStats();
+				}
+				else
+				if(((msg.targetMinor()==CMMsg.TYP_REMOVE)
+					||(msg.targetMinor()==CMMsg.TYP_DROP))
+				&&(qualifiedWeapons.contains(msg.target())))
+				{
+					qualifiedWeapons.removeElement(msg.target());
+					W.delEffect(W.fetchEffect(ID()));
+					W.recoverPhyStats();
+				}
 			}
 		}
 	}
@@ -121,7 +124,7 @@ public class Fighter_PointBlank extends FighterSkill
 					helpProficiency(mob);
 				if(!qualifiedWeapons.contains(w))
 				{
-					qualifiedWeapons.addElement(w);
+					qualifiedWeapons.addElement((Weapon)w);
 					Ability A=(Ability)this.copyOf();
 					A.setSavable(false);
 					w.addEffect(A);

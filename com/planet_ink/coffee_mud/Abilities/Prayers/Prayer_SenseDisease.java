@@ -61,7 +61,7 @@ public class Prayer_SenseDisease extends Prayer
 		}
 	}
 
-	public Ability getDisease(Environmental mob)
+	public Ability getDisease(Physical mob)
 	{
 		if(mob instanceof MOB)
 		{

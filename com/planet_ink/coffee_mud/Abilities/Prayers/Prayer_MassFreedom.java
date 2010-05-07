@@ -52,7 +52,7 @@ public class Prayer_MassFreedom extends Prayer implements MendingSkill
 		return canMend;
 	}
 	
-	public Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
+	public List<Ability> returnOffensiveAffects(MOB caster, Physical fromMe)
 	{
 		MOB newMOB=CMClass.getMOB("StdMOB");
 		Vector offenders=new Vector();
@@ -116,7 +116,7 @@ public class Prayer_MassFreedom extends Prayer implements MendingSkill
 					MOB target=room.fetchInhabitant(i);
 					if(target==null) break;
 
-					Vector offensiveAffects=returnOffensiveAffects(mob,target);
+					List<Ability> offensiveAffects=returnOffensiveAffects(mob,target);
 
 					if(offensiveAffects.size()>0)
 					{
@@ -125,7 +125,7 @@ public class Prayer_MassFreedom extends Prayer implements MendingSkill
 						// affected MOB.  Then tell everyone else
 						// what happened.
 						for(int a=offensiveAffects.size()-1;a>=0;a--)
-							((Ability)offensiveAffects.elementAt(a)).unInvoke();
+							((Ability)offensiveAffects.get(a)).unInvoke();
 						if((!CMLib.flags().stillAffectedBy(target,offensiveAffects,false))&&(target.location()!=null))
 							target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) less constricted.");
 					}

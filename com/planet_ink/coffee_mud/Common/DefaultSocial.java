@@ -99,7 +99,7 @@ public class DefaultSocial implements Social
 
 	public boolean invoke(MOB mob,
 						  Vector commands,
-						  Environmental target,
+						  Physical target,
 						  boolean auto)
 	{
 		String targetStr="";
@@ -108,17 +108,17 @@ public class DefaultSocial implements Social
         &&(!((String)commands.elementAt(1)).equalsIgnoreCase("ALL")))
 			targetStr=(String)commands.elementAt(1);
 
-		Environmental Target=target;
-		if(Target==null)
+		Physical targetE=target;
+		if(targetE==null)
 		{
-			Target=mob.location().fetchFromMOBRoomFavorsMOBs(mob,null,targetStr,Wearable.FILTER_ANY);
-			if((Target!=null)&&(!CMLib.flags().canBeSeenBy(Target,mob)))
-			   Target=null;
+			targetE=mob.location().fetchFromMOBRoomFavorsMOBs(mob,null,targetStr,Wearable.FILTER_ANY);
+			if((targetE!=null)&&(!CMLib.flags().canBeSeenBy(targetE,mob)))
+			   targetE=null;
 			else
-			if((Target!=null)&&(!targetable(Target)))
+			if((targetE!=null)&&(!targetable(targetE)))
 			{
-				Social S=CMLib.socials().fetchSocial(baseName(),Target, true);
-				if(S!=null) return S.invoke(mob, commands, Target, auto);
+				Social S=CMLib.socials().fetchSocial(baseName(),targetE, true);
+				if(S!=null) return S.invoke(mob, commands, targetE, auto);
 			}
 		}
 
@@ -139,14 +139,14 @@ public class DefaultSocial implements Social
 		if((See_when_no_target!=null)&&(See_when_no_target.trim().length()==0)) 
             See_when_no_target=null;
         
-		if(((Target==null)&&(targetable(null)))||((Target!=null)&&(!targetable(Target))))
+		if(((targetE==null)&&(targetable(null)))||((targetE!=null)&&(!targetable(targetE))))
 		{
 			CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_ALWAYS:0)|sourceCode(),See_when_no_target,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
 				mob.location().send(mob,msg);
 		}
 		else
-		if(Target==null)
+		if(targetE==null)
 		{
 			CMMsg msg=CMClass.getMsg(mob,null,this,(auto?CMMsg.MASK_ALWAYS:0)|sourceCode(),(You_see==null)?null:You_see+mspFile,CMMsg.NO_EFFECT,null,othersCode(),(Third_party_sees==null)?null:Third_party_sees+mspFile);
 			if(mob.location().okMessage(mob,msg))
@@ -154,7 +154,7 @@ public class DefaultSocial implements Social
 		}
 		else
 		{
-			CMMsg msg=CMClass.getMsg(mob,Target,this,(auto?CMMsg.MASK_ALWAYS:0)|sourceCode(),(You_see==null)?null:You_see+mspFile,targetCode(),(Target_sees==null)?null:Target_sees+mspFile,othersCode(),(Third_party_sees==null)?null:Third_party_sees+mspFile);
+			CMMsg msg=CMClass.getMsg(mob,targetE,this,(auto?CMMsg.MASK_ALWAYS:0)|sourceCode(),(You_see==null)?null:You_see+mspFile,targetCode(),(Target_sees==null)?null:Target_sees+mspFile,othersCode(),(Third_party_sees==null)?null:Third_party_sees+mspFile);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -236,7 +236,7 @@ public class DefaultSocial implements Social
 			else
 			if((target!=null)&&(!CMLib.flags().isInTheGame(target, true)))
 				target=null;
-			if((target!=null)&&(!CMLib.flags().isSeen(target)))
+			if((target!=null)&&(target instanceof Physical)&&(!CMLib.flags().isSeen((Physical)target)))
 				target=null;
 		}
 
@@ -272,16 +272,7 @@ public class DefaultSocial implements Social
 	public void setDescription(String str){}
 	public String displayText(){return "";}
 	public void setDisplayText(String str){}
-    public PhyStats stats=null;
-	public PhyStats phyStats()
-    {
-        if(stats==null) stats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
-        return stats;
-    }
-	public PhyStats basePhyStats(){return phyStats();}
 
-	public void recoverPhyStats(){}
-	public void setBasePhyStats(PhyStats newStats){}
 	public CMObject newInstance() { return new DefaultSocial();}
     public void initializeClass(){}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
@@ -377,11 +368,5 @@ public class DefaultSocial implements Social
 	public String image(){return "";}
     public String rawImage(){return "";}
 	public void setImage(String newImage){}
-	public void addEffect(Ability to){}
-	public void addNonUninvokableEffect(Ability to){}
-	public void delEffect(Ability to){}
-	public int numEffects(){ return 0;}
-	public Ability fetchEffect(int index){return null;}
-	public Ability fetchEffect(String ID){return null;}
 	public boolean isGeneric(){return false;}
 }

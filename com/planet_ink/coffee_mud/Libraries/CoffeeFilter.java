@@ -424,7 +424,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
     
 	public String fullOutFilter(Session S,
 							    MOB mob,
-							    Environmental source,
+							    Physical source,
 							    Environmental target,
 							    Environmental tool,
 							    String msg,

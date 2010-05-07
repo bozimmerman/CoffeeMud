@@ -60,10 +60,10 @@ public class Thief_ConcealItem extends ThiefSkill
 		if((msg.target()==affected)
 		&&(msg.targetMinor()==CMMsg.TYP_GET))
 		{
-			Environmental E=affected;
+			Physical P=affected;
 			unInvoke();
-			E.delEffect(this);
-			E.recoverPhyStats();
+			P.delEffect(this);
+			P.recoverPhyStats();
 		}
 	}
 	

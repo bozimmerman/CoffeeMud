@@ -3239,6 +3239,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         boolean[] flags=(boolean[])cset.firstElement();
         Item item=flags[0]?((E instanceof Item)?(Item)E:nonCrashingItem(mob)):null;
         Room room = flags[1]?((E instanceof Area)?outdoorRoom((Area)E):CMLib.map().roomLocation(E)):null;
+        Physical P = (E instanceof Physical)?(Physical)E:null;
         if((mob==null)||(flags[0]&&(item==null))) 
         	return false;
 		for(int c=1;c<cset.size();c++)
@@ -3313,8 +3314,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				break;
 			}
 			case 5: // -level
+				if(P!=null)
 				{
-					int level=actual?E.basePhyStats().level():E.phyStats().level();
+					int level=actual?P.basePhyStats().level():P.phyStats().level();
 					boolean found=false;
 					for(int v=1;v<V.size();v+=2)
 						if((v+1)<V.size())
@@ -3666,29 +3668,37 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 }
                 break;
             case 69: // +disposition
-                for(int v=1;v<V.size();v++)
-                    if((E.phyStats().disposition()&((Integer)V.elementAt(v)).intValue())>0)
-                        return false;
+            	if(P!=null)
+	            {
+	                for(int v=1;v<V.size();v++)
+	                    if((P.phyStats().disposition()&((Integer)V.elementAt(v)).intValue())>0)
+	                        return false;
+	            }
                 break;
             case 70: // -disposition
+            	if(P!=null)
                 {
                     boolean found=false;
                     for(int v=1;v<V.size();v++)
-                        if((E.phyStats().disposition()&((Integer)V.elementAt(v)).intValue())>0)
+                        if((P.phyStats().disposition()&((Integer)V.elementAt(v)).intValue())>0)
                         { found=true; break;}
                     if(!found) return false;
                 }
                 break;
             case 71: // +senses
-                for(int v=1;v<V.size();v++)
-                    if((E.phyStats().sensesMask()&((Integer)V.elementAt(v)).intValue())>0)
-                        return false;
-                break;
+            	if(P!=null)
+	            {
+	                for(int v=1;v<V.size();v++)
+	                    if((P.phyStats().sensesMask()&((Integer)V.elementAt(v)).intValue())>0)
+	                        return false;
+	            }
+	            break;
             case 72: // -senses
+            	if(P!=null)
                 {
                     boolean found=false;
                     for(int v=1;v<V.size();v++)
-                        if((E.phyStats().sensesMask()&((Integer)V.elementAt(v)).intValue())>0)
+                        if((P.phyStats().sensesMask()&((Integer)V.elementAt(v)).intValue())>0)
                         { found=true; break;}
                     if(!found) return false;
                 }
@@ -3699,8 +3709,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     for(int v=1;v<V.size();v++)
                         if(room.getArea().getTimeObj().getTimeOfDay()==((Integer)V.elementAt(v)).intValue())
                             return false;
-                    break;
                 }
+                break;
             case 74: // -HOUR
                 {
                     boolean found=false;
@@ -3717,8 +3727,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     for(int v=1;v<V.size();v++)
                         if(room.getArea().getTimeObj().getSeasonCode()==((Integer)V.elementAt(v)).intValue())
                             return false;
-                    break;
                 }
+                break;
             case 76: // -season
                 {
                     boolean found=false;
@@ -3730,13 +3740,13 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 }
                 break;
             case 104: // +weather
-            {
-                if(room!=null)
-                for(int v=1;v<V.size();v++)
-                    if(room.getArea().getClimateObj().weatherType(room)==((Integer)V.elementAt(v)).intValue())
-                        return false;
-                break;
-            }
+	            {
+	                if(room!=null)
+	                for(int v=1;v<V.size();v++)
+	                    if(room.getArea().getClimateObj().weatherType(room)==((Integer)V.elementAt(v)).intValue())
+	                        return false;
+	            }
+	            break;
             case 105: // -weather
                 {
                     boolean found=false;
@@ -3753,8 +3763,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     for(int v=1;v<V.size();v++)
                         if(room.getArea().getTimeObj().getMonth()==((Integer)V.elementAt(v)).intValue())
                             return false;
-                    break;
                 }
+                break;
             case 78: // -month
                 {
                     boolean found=false;
@@ -3771,8 +3781,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     for(int v=1;v<V.size();v++)
                         if(room.getArea().getTimeObj().getDayOfMonth()==((Integer)V.elementAt(v)).intValue())
                             return false;
-                    break;
                 }
+                break;
             case 107: // -day
                 {
                     boolean found=false;
@@ -3835,10 +3845,12 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				}
 				break;
 			case 45: // +deity
-				if(mob.getWorshipCharID().length()>0)
-					for(int v=1;v<V.size();v++)
-						if(mob.getWorshipCharID().equalsIgnoreCase((String)V.elementAt(v)))
-						{ return false;}
+				{
+					if(mob.getWorshipCharID().length()>0)
+						for(int v=1;v<V.size();v++)
+							if(mob.getWorshipCharID().equalsIgnoreCase((String)V.elementAt(v)))
+							{ return false;}
+				}
 				break;
 			case 43: // -effects
 				{
@@ -3871,14 +3883,16 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				}
 				break;
 			case 42: // +effects
-                if(E instanceof Physical)
-	                for(int v=1;v<V.size();v++)
-	                    if(((Physical)E).fetchEffect((String)V.elementAt(v))!=null)
-	                        return false;
-                if(E instanceof PhysicalAgent)
-	                for(int v=1;v<V.size();v++)
-	                    if(((PhysicalAgent)E).fetchBehavior((String)V.elementAt(v))!=null)
-	                        return false;
+				{
+	                if(E instanceof Physical)
+		                for(int v=1;v<V.size();v++)
+		                    if(((Physical)E).fetchEffect((String)V.elementAt(v))!=null)
+		                        return false;
+	                if(E instanceof PhysicalAgent)
+		                for(int v=1;v<V.size();v++)
+		                    if(((PhysicalAgent)E).fetchBehavior((String)V.elementAt(v))!=null)
+		                        return false;
+				}
 				break;
 			case 16: // +name
 				{
@@ -4035,43 +4049,43 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				   return false;
 				break;
             case 55: // +able
-                if((V.size()>1)&&(E.phyStats().ability()>(((Integer)V.elementAt(1)).intValue())))
+                if((V.size()>1)&&(P != null)&&(P.phyStats().ability()>(((Integer)V.elementAt(1)).intValue())))
                    return false;
                 break;
             case 56: // -able
-                if((V.size()>1)&&(E.phyStats().ability()<(((Integer)V.elementAt(1)).intValue())))
+                if((V.size()>1)&&(P != null)&&(P.phyStats().ability()<(((Integer)V.elementAt(1)).intValue())))
                    return false;
                 break;
             case 61: // +weight
-                if((V.size()>1)&&(E.phyStats().weight()>(((Integer)V.elementAt(1)).intValue())))
+                if((V.size()>1)&&(P != null)&&(P.phyStats().weight()>(((Integer)V.elementAt(1)).intValue())))
                    return false;
                 break;
             case 62: // -weight
-                if((V.size()>1)&&(E.phyStats().weight()<(((Integer)V.elementAt(1)).intValue())))
+                if((V.size()>1)&&(P != null)&&(P.phyStats().weight()<(((Integer)V.elementAt(1)).intValue())))
                    return false;
                 break;
             case 63: // +armor
-                if((V.size()>1)&&(E.phyStats().armor()>(((Integer)V.elementAt(1)).intValue())))
+                if((V.size()>1)&&(P != null)&&(P.phyStats().armor()>(((Integer)V.elementAt(1)).intValue())))
                    return false;
                 break;
             case 64: // -armor
-                if((V.size()>1)&&(E.phyStats().armor()<(((Integer)V.elementAt(1)).intValue())))
+                if((V.size()>1)&&(P != null)&&(P.phyStats().armor()<(((Integer)V.elementAt(1)).intValue())))
                    return false;
                 break;
             case 65: // +damage
-                if((V.size()>1)&&(E.phyStats().damage()>(((Integer)V.elementAt(1)).intValue())))
+                if((V.size()>1)&&(P != null)&&(P.phyStats().damage()>(((Integer)V.elementAt(1)).intValue())))
                    return false;
                 break;
             case 66: // -damage
-                if((V.size()>1)&&(E.phyStats().damage()<(((Integer)V.elementAt(1)).intValue())))
+                if((V.size()>1)&&(P != null)&&(P.phyStats().damage()<(((Integer)V.elementAt(1)).intValue())))
                    return false;
                 break;
             case 67: // +attack
-                if((V.size()>1)&&(E.phyStats().attackAdjustment()>(((Integer)V.elementAt(1)).intValue())))
+                if((V.size()>1)&&(P != null)&&(P.phyStats().attackAdjustment()>(((Integer)V.elementAt(1)).intValue())))
                    return false;
                 break;
             case 68: // -attack
-                if((V.size()>1)&&(E.phyStats().attackAdjustment()<(((Integer)V.elementAt(1)).intValue())))
+                if((V.size()>1)&&(P != null)&&(P.phyStats().attackAdjustment()<(((Integer)V.elementAt(1)).intValue())))
                    return false;
                 break;
             case 59: // +value
@@ -4176,23 +4190,23 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					return false;
 				break;
 			case 37: // +lvlgr
-				if((V.size()>1)&&((actual?E.basePhyStats().level():E.phyStats().level())>((Integer)V.elementAt(1)).intValue()))
+				if((V.size()>1)&&(P!=null)&&((actual?P.basePhyStats().level():P.phyStats().level())>((Integer)V.elementAt(1)).intValue()))
 				   return false;
 				break;
 			case 38: // +lvlge
-				if((V.size()>1)&&((actual?E.basePhyStats().level():E.phyStats().level())>=((Integer)V.elementAt(1)).intValue()))
+				if((V.size()>1)&&(P!=null)&&((actual?P.basePhyStats().level():P.phyStats().level())>=((Integer)V.elementAt(1)).intValue()))
 				   return false;
 				break;
 			case 39: // +lvlt
-				if((V.size()>1)&&((actual?E.basePhyStats().level():E.phyStats().level())<((Integer)V.elementAt(1)).intValue()))
+				if((V.size()>1)&&(P!=null)&&((actual?P.basePhyStats().level():P.phyStats().level())<((Integer)V.elementAt(1)).intValue()))
 				   return false;
 				break;
 			case 40: // +lvlle
-				if((V.size()>1)&&((actual?E.basePhyStats().level():E.phyStats().level())<=((Integer)V.elementAt(1)).intValue()))
+				if((V.size()>1)&&(P!=null)&&((actual?P.basePhyStats().level():P.phyStats().level())<=((Integer)V.elementAt(1)).intValue()))
 				   return false;
 				break;
 			case 41: // +lvleq
-				if((V.size()>1)&&((actual?E.basePhyStats().level():E.phyStats().level())==((Integer)V.elementAt(1)).intValue()))
+				if((V.size()>1)&&(P!=null)&&((actual?P.basePhyStats().level():P.phyStats().level())==((Integer)V.elementAt(1)).intValue()))
 				   return false;
 				break;
 			case 116: // +groupsize

@@ -764,8 +764,8 @@ public class Conquerable extends Arrest
         &&(flagFound((Area)myHost,msg.source().getClanID())))
 		{
 			noMultiFollows.remove(msg.target());
-            if(debugging) Log.debugOut("Conquest",msg.source().getClanID()+" lose "+(msg.target().phyStats().level())+" points by harming "+msg.target().name());
-			changeControlPoints(msg.source().getClanID(),-msg.target().phyStats().level(),msg.source().location());
+            if(debugging) Log.debugOut("Conquest",msg.source().getClanID()+" lose "+(((MOB)msg.target()).phyStats().level())+" points by harming "+msg.target().name());
+			changeControlPoints(msg.source().getClanID(),-((MOB)msg.target()).phyStats().level(),msg.source().location());
 		}
 
         if((holdingClan.length()>0)
@@ -1151,7 +1151,7 @@ public class Conquerable extends Arrest
                 &&(flagFound((Area)myHost,msg.source().getClanID())))
                 {
                     if(debugging) Log.debugOut("Conquest",msg.source().getClanID()+" gain "+(msg.source().phyStats().level())+" points by converting "+msg.source().name());
-                    changeControlPoints(msg.source().getClanID(),msg.target().phyStats().level(),msg.source().location());
+                    changeControlPoints(msg.source().getClanID(),((MOB)msg.target()).phyStats().level(),msg.source().location());
                 }
             }
             else

@@ -55,19 +55,25 @@ public class GModify extends StdCommand
 
     public static String getStat(Environmental E, String stat)
     {
-        if((stat!=null)&&(stat.length()>0)&&(stat.equalsIgnoreCase("REJUV")))
+        if((stat!=null)
+        &&(stat.length()>0)
+        &&(stat.equalsIgnoreCase("REJUV"))
+        &&(E instanceof Physical))
         {
-            if(E.basePhyStats().rejuv()==Integer.MAX_VALUE)
+            if(((Physical)E).basePhyStats().rejuv()==Integer.MAX_VALUE)
                 return "0";
-            return ""+E.basePhyStats().rejuv();
+            return ""+((Physical)E).basePhyStats().rejuv();
         }
         return E.getStat(stat);
     }
 
     public static void setStat(Environmental E, String stat, String value)
     {
-        if((stat!=null)&&(stat.length()>0)&&(stat.equalsIgnoreCase("REJUV")))
-            E.basePhyStats().setRejuv(CMath.s_int(value));
+        if((stat!=null)
+        &&(stat.length()>0)
+        &&(stat.equalsIgnoreCase("REJUV"))
+        &&(E instanceof Physical))
+        	((Physical)E).basePhyStats().setRejuv(CMath.s_int(value));
         else
             E.setStat(stat,value);
     }
@@ -282,15 +288,18 @@ public class GModify extends StdCommand
         }
         if(didAnything)
         {
-            E.recoverPhyStats();
             if(E instanceof MOB)
             {
+                ((MOB)E).recoverPhyStats();
                 ((MOB)E).recoverCharStats();
                 ((MOB)E).recoverMaxState();
             }
+            else
+            if(E instanceof Physical)
+                ((Physical)E).recoverPhyStats();
             E.text();
-        	if(CMLib.flags().isCataloged(E))
-        		CMLib.catalog().updateCatalog(E);
+        	if(CMLib.flags().isCataloged(E) && (E instanceof Physical))
+        		CMLib.catalog().updateCatalog((Physical)E);
         }
         return didAnything;
     }

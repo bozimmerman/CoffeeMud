@@ -126,7 +126,7 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
                 if(A2!=null)
                 {
                     A2.unInvoke();
-                    A2.delEffect(A2);
+                    lastMOB.delEffect(A2);
                 }
             }
             lastMOBeffected.clear();
@@ -141,18 +141,6 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 		lastMOB=null;
 	}
 
-    public void recoverPhyStats()
-    {
-        if(processing2) return;
-        processing2=true;
-        if((affected instanceof Item)
-        &&(lastMOB instanceof MOB)
-        &&((((Item)affected).owner()!=lastMOB)||(((Item)affected).amDestroyed()))
-        &&(((MOB)lastMOB).location()!=null))
-            removeMyAffectsFromLastMob();
-        processing2=false;
-    }
-    
     public void executeMsg(Environmental host, CMMsg msg)
     {}
     

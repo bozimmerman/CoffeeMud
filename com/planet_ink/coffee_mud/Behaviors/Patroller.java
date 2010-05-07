@@ -259,10 +259,10 @@ public class Patroller extends ActiveTicker
 			    if(R==null) R=CMLib.map().getRoom(thisRoom.getArea()+"#"+nxt);
 			    if(R!=null)
 			    {
-			        boolean airOk=(CMLib.flags().isFlying((Environmental)ticking)
+			        boolean airOk=(((ticking instanceof Physical)&&CMLib.flags().isFlying((Physical)ticking))
 			            ||((ticking instanceof Rider)&&(((Rider)ticking).riding()!=null)&&(((Rider)ticking).riding().rideBasis()==Rideable.RIDEABLE_AIR))
 				        ||((ticking instanceof Rideable)&&(((Rideable)ticking).rideBasis()==Rideable.RIDEABLE_AIR)));
-			        boolean waterOk=(CMLib.flags().isWaterWorthy((Environmental)ticking));
+			        boolean waterOk=((ticking instanceof Physical)&&CMLib.flags().isWaterWorthy((Physical)ticking));
 			        
 				    tickStatus=Tickable.STATUS_MISC+6;
 			        if(R instanceof GridLocale)

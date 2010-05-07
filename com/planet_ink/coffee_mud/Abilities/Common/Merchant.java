@@ -314,10 +314,13 @@ public class Merchant extends CommonSkill implements ShopKeeper
 
     public boolean canPossiblyVend(Environmental E, Environmental what)
     {
+    	if(!(what instanceof Item))
+    		return false;
+    	Item whatI=(Item)what;
         if((E instanceof Container)
         &&(!(((Container)E).owner() instanceof MOB))
-        &&(((Container)E).canContain(what))
-        &&(((Container)E).capacity()>what.phyStats().weight()))
+        &&(((Container)E).canContain(whatI))
+        &&(((Container)E).capacity()>whatI.phyStats().weight()))
             return true;
         return false;
     }
@@ -353,8 +356,16 @@ public class Merchant extends CommonSkill implements ShopKeeper
                 break;
 			case CMMsg.TYP_VIEW:
 				super.executeMsg(myHost,msg);
-				if((msg.tool()!=null)&&(getShop().doIHaveThisInStock(msg.tool().Name(),mob)))
-					CMLib.commands().postSay(merchantM,msg.source(),"Interested in "+msg.tool().name()+"? Here is some information for you:\n\rLevel "+msg.tool().phyStats().level()+"\n\rDescription: "+msg.tool().description(),true,false);
+				if((msg.tool() instanceof Physical)
+				&&(getShop().doIHaveThisInStock(msg.tool().Name(),mob)))
+				{
+					
+					CMLib.commands().postSay(merchantM,msg.source(),"" +
+							"Interested in "+msg.tool().name()+
+							"? Here is some information for you:\n\rLevel "+
+							((Physical)msg.tool()).phyStats().level()+
+							"\n\rDescription: "+msg.tool().description(),true,false);
+				}
 				break;
             case CMMsg.TYP_SELL: // sell TO -- this is a shopkeeper purchasing from a player
             {
@@ -373,9 +384,9 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			        Environmental item=getShop().getStock("$"+msg.tool().Name()+"$",mobFor);
 			        if(item!=null) CMLib.coffeeShops().transactMoneyOnly(merchantM,msg.source(),this,item,!merchantM.isMonster());
 
-                    Vector products=getShop().removeSellableProduct("$"+msg.tool().Name()+"$",mobFor);
+                    List<Environmental> products=getShop().removeSellableProduct("$"+msg.tool().Name()+"$",mobFor);
                     if(products.size()==0) break;
-                    Environmental product=(Environmental)products.firstElement();
+                    Environmental product=(Environmental)products.get(0);
                     if(product instanceof Item)
                     {
                         if(!CMLib.coffeeShops().purchaseItems((Item)product,products,merchantM,mobFor))

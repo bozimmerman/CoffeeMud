@@ -562,10 +562,10 @@ public class DefaultSession extends Thread implements Session
 	public void stdPrint(String msg)
 	{ rawPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,false)); }
 
-	public void print(Environmental src, Environmental trg, Environmental tol, String msg)
+	public void print(Physical src, Environmental trg, Environmental tol, String msg)
 	{ onlyPrint((CMLib.coffeeFilter().fullOutFilter(this,mob,src,trg,tol,msg,false)),false);}
 
-	public void stdPrint(Environmental src, Environmental trg, Environmental tol, String msg)
+	public void stdPrint(Physical src, Environmental trg, Environmental tol, String msg)
 	{ rawPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,src,trg,trg,msg,false)); }
 
 	public void println(String msg)
@@ -602,12 +602,12 @@ public class DefaultSession extends Thread implements Session
 	  rawPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,false)+"\n\r");
 	}
 
-	public void println(Environmental src, Environmental trg, Environmental tol, String msg)
+	public void println(Physical src, Environmental trg, Environmental tol, String msg)
 	{ if(msg==null)return;
 	  onlyPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,src,trg,tol,msg,false)+"\n\r",false);
 	}
 
-	public void stdPrintln(Environmental src,Environmental trg, Environmental tol, String msg)
+	public void stdPrintln(Physical src,Environmental trg, Environmental tol, String msg)
 	{ if(msg==null)return;
 	  rawPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,src,trg,tol,msg,false)+"\n\r");
 	}

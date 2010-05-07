@@ -95,11 +95,11 @@ public class Test extends StdCommand
     }
     
     
-    public void giveAbility(Environmental E, Ability A)
+    public void giveAbility(Physical P, Ability A)
     {
         Ability A2=((Ability)A.copyOf());
         A2.setMiscText(A.text());
-        E.addNonUninvokableEffect(A2);
+        P.addNonUninvokableEffect(A2);
     }
     
     public boolean testResistance(MOB mob)

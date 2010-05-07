@@ -230,7 +230,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		return s;
     }
 
-	public void extinguish(MOB source, Environmental target, boolean mundane)
+	public void extinguish(MOB source, Physical target, boolean mundane)
 	{
 		if(target instanceof Room)
 		{
@@ -317,32 +317,32 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				}
 				if(newLastTickedDateTime==0)
 				{
-					Vector rivals=new Vector();
+					List<List<Item>> rivals=new Vector<List<Item>>();
 					for(int i=0;i<mob.numItems();i++)
 					{
 						Item I=mob.getItem(i);
 						if((I!=null)&&(I.basePhyStats().rejuv()>0)&&(I.basePhyStats().rejuv()<Integer.MAX_VALUE))
 						{
-							Vector V=null;
+							List<Item> V=null;
 							for(int r=0;r<rivals.size();r++)
 							{
-								Vector V2=(Vector)rivals.elementAt(r);
-								Item I2=(Item)V2.firstElement();
+								List<Item> V2=(List<Item>)rivals.get(r);
+								Item I2=(Item)V2.get(0);
 								if(I2.rawWornCode()==I.rawWornCode())
 								{ V=V2; break;}
 							}
-							if(V==null){ V=new Vector(); rivals.addElement(V);}
-							V.addElement(I);
+							if(V==null){ V=new Vector<Item>(); rivals.add(V);}
+							V.add(I);
 						}
 					}
 					for(int i=0;i<rivals.size();i++)
 					{
-						Vector V=(Vector)rivals.elementAt(i);
-						if((V.size()==1)||(((Item)V.firstElement()).rawWornCode()==0))
+						List<Item> V=rivals.get(i);
+						if((V.size()==1)||(((Item)V.get(0)).rawWornCode()==0))
 						{
 							for(int r=0;r<V.size();r++)
 							{
-								Item I=(Item)V.elementAt(r);
+								Item I=(Item)V.get(r);
 								if(CMLib.dice().rollPercentage()<I.basePhyStats().rejuv())
 									mob.delItem(I);
 								else
@@ -357,7 +357,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							int totalChance=0;
 							for(int r=0;r<V.size();r++)
 							{
-								Item I=(Item)V.elementAt(r);
+								Item I=(Item)V.get(r);
 								totalChance+=I.basePhyStats().rejuv();
 							}
 							int chosenChance=CMLib.dice().roll(1,totalChance,0);
@@ -365,7 +365,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							Item chosenI=null;
 							for(int r=0;r<V.size();r++)
 							{
-								Item I=(Item)V.elementAt(r);
+								Item I=(Item)V.get(r);
 								if(chosenChance<=(totalChance+I.basePhyStats().rejuv()))
 								{
 									chosenI=I;
@@ -375,7 +375,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							}
 							for(int r=0;r<V.size();r++)
 							{
-								Item I=(Item)V.elementAt(r);
+								Item I=(Item)V.get(r);
 								if(chosenI!=I)
 									mob.delItem(I);
 								else
@@ -388,23 +388,24 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					}
 			        if(mob instanceof ShopKeeper)
 			        {
-			            rivals=new Vector();
+			            List<Item> V=new Vector<Item>();
 			            CoffeeShop shop = ((ShopKeeper)mob).getShop();
 			            for(Iterator<Environmental> i=shop.getBaseInventory();i.hasNext();)
 			            {
 			                Environmental E=(Environmental)i.next();
-			                if((E.basePhyStats().rejuv()>0)&&(E.basePhyStats().rejuv()<Integer.MAX_VALUE))
-			                    rivals.addElement(E);
+			                if((E instanceof Item)
+			                &&(((Item)E).basePhyStats().rejuv()>0)
+			                &&(((Item)E).basePhyStats().rejuv()<Integer.MAX_VALUE))
+			                    V.add((Item)E);
 			            }
-			            for(int r=0;r<rivals.size();r++)
+			            for(Item I : V)
 			            {
-			                Environmental E=(Environmental)rivals.elementAt(r);
-			                if(CMLib.dice().rollPercentage()>E.basePhyStats().rejuv())
-			                    shop.delAllStoreInventory(E);
+			                if(CMLib.dice().rollPercentage()>I.basePhyStats().rejuv())
+			                    shop.delAllStoreInventory(I);
 			                else
 			                {
-			                    E.basePhyStats().setRejuv(0);
-			                    E.phyStats().setRejuv(0);
+			                    I.basePhyStats().setRejuv(0);
+			                    I.phyStats().setRejuv(0);
 			                }
 			            }
 			        }

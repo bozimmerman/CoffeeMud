@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.core.CMFile;
 import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.core.interfaces.CMObject;
 import com.planet_ink.coffee_mud.core.interfaces.Environmental;
+import com.planet_ink.coffee_mud.core.interfaces.Physical;
 import com.planet_ink.coffee_mud.core.interfaces.Tickable;
 /* 
 Copyright 2000-2010 Bo Zimmerman
@@ -84,14 +85,14 @@ public class FakeSession implements Session
     public void rawPrint(String msg){ onlyPrint(msg,false); }
     public void rawPrint(String msg, int pageBreak){ onlyPrint(msg,false); }
     public void stdPrint(String msg){ onlyPrint(msg,false); }
-    public void stdPrint(Environmental Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg,false); }
+    public void stdPrint(Physical Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg,false); }
     public void stdPrintln(String msg){ onlyPrint(msg+"\n",false); }
-    public void stdPrintln(Environmental Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg+"\n",false); }
+    public void stdPrintln(Physical Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg+"\n",false); }
     public void out(char[] c){ onlyPrint(new String(c),false); }
     public void print(String msg){ onlyPrint(msg,false); }
-    public void print(Environmental Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg,false); }
+    public void print(Physical Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg,false); }
     public void println(String msg){ onlyPrint(msg+"\n",false); }
-    public void println(Environmental Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg+"\n",false); }
+    public void println(Physical Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg+"\n",false); }
     public void wraplessPrintln(String msg){ onlyPrint(msg+"\n",false); }
     public void wraplessPrint(String msg){ onlyPrint(msg,false); }
     public void colorOnlyPrintln(String msg, boolean noCache){ onlyPrint(msg+"\n",false); }

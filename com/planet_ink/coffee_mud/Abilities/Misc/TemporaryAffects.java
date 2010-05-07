@@ -102,19 +102,19 @@ public class TemporaryAffects extends StdAbility
 	public void unAffectAffected(Object[] Os)
 	{
 		CMObject O = (CMObject)Os[0];
-		Environmental E=affected;
+		Physical P=affected;
 		if(O instanceof Ability)
 		{
 			((Ability)O).unInvoke();
 			((Ability)O).destroy();
 		}
 		affects.remove(Os);
-		if(E != null)
-			E.recoverPhyStats();
-		if(E instanceof MOB)
+		if(P != null)
+			P.recoverPhyStats();
+		if(P instanceof MOB)
 		{
-			((MOB)E).recoverCharStats();
-			((MOB)E).recoverMaxState();
+			((MOB)P).recoverCharStats();
+			((MOB)P).recoverMaxState();
 		}
 	}
 	
@@ -210,7 +210,7 @@ public class TemporaryAffects extends StdAbility
 	
 	public boolean destroyIfNecessary()
 	{
-		Environmental E=affected;
+		Physical E=affected;
 		if((affects.size()==0) && (E != null))
 		{
 			unInvoke();

@@ -41,19 +41,25 @@ public class Merge extends StdCommand
 
 	public static String getStat(Environmental E, String stat)
 	{
-		if((stat!=null)&&(stat.length()>0)&&(stat.equalsIgnoreCase("REJUV")))
+		if((stat!=null)
+		&&(stat.length()>0)
+		&&(stat.equalsIgnoreCase("REJUV"))
+		&&(E instanceof Physical))
 		{
-			if(E.basePhyStats().rejuv()==Integer.MAX_VALUE)
+			if(((Physical)E).basePhyStats().rejuv()==Integer.MAX_VALUE)
 				return "0";
-			return ""+E.basePhyStats().rejuv();
+			return ""+((Physical)E).basePhyStats().rejuv();
 		}
-		return E.getStat(stat);
+		return ((Physical)E).getStat(stat);
 	}
 
 	public static void setStat(Environmental E, String stat, String value)
 	{
-		if((stat!=null)&&(stat.length()>0)&&(stat.equalsIgnoreCase("REJUV")))
-			E.basePhyStats().setRejuv(CMath.s_int(value));
+		if((stat!=null)
+		&&(stat.length()>0)
+		&&(stat.equalsIgnoreCase("REJUV"))
+		&&(E instanceof Physical))
+			((Physical)E).basePhyStats().setRejuv(CMath.s_int(value));
 		else
 			E.setStat(stat,value);
 	}
@@ -146,7 +152,8 @@ public class Merge extends StdCommand
 		}
 		if(didAnything)
 		{
-			E.recoverPhyStats();
+			if(E instanceof Physical)
+				((Physical)E).recoverPhyStats();
 			if(E instanceof MOB)
 			{
 				((MOB)E).recoverCharStats();

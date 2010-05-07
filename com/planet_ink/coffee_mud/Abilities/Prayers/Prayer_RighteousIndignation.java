@@ -61,7 +61,7 @@ public class Prayer_RighteousIndignation extends Prayer
 	{
 		if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
 		&&(msg.target() instanceof MOB)
-		&&(CMLib.flags().isEvil(msg.target()))
+		&&(CMLib.flags().isEvil((MOB)msg.target()))
 		&&(msg.source()==affected))
 		{
 			if(msg.value()<0)

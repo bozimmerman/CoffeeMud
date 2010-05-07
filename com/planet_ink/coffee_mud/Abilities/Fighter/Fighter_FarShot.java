@@ -47,7 +47,7 @@ public class Fighter_FarShot extends FighterSkill
     public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
 	public int checkDown=4;
 
-	protected Vector qualifiedWeapons=new Vector();
+	protected Vector<Weapon> qualifiedWeapons=new Vector<Weapon>();
 
     protected void cloneFix(Ability E)
     {
@@ -65,31 +65,34 @@ public class Fighter_FarShot extends FighterSkill
 	{
 		super.executeMsg(host,msg);
 		if((msg.source()==affected)
-		&&(msg.target() instanceof Weapon)
-		&&(((Weapon)msg.target()).weaponClassification()==Weapon.CLASS_RANGED)
-		&&(((Weapon)msg.target()).ammunitionType().length()>0))
+		&&(msg.target() instanceof Weapon))
 		{
-			if(((msg.targetMinor()==CMMsg.TYP_WEAR)
-			   ||(msg.targetMinor()==CMMsg.TYP_WIELD)
-			   ||(msg.targetMinor()==CMMsg.TYP_HOLD))
-			&&(!qualifiedWeapons.contains(msg.target()))
-			&&((msg.source().fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
+			Weapon targetW=(Weapon)msg.target();
+			if((targetW.weaponClassification()==Weapon.CLASS_RANGED)
+			&&(targetW.ammunitionType().length()>0))
 			{
-				qualifiedWeapons.addElement(msg.target());
-				Ability A=(Ability)this.copyOf();
-				A.setSavable(false);
-				msg.target().addEffect(A);
-				A.makeLongLasting();
-				msg.target().recoverPhyStats();
-			}
-			else
-			if(((msg.targetMinor()==CMMsg.TYP_REMOVE)
-				||(msg.targetMinor()==CMMsg.TYP_DROP))
-			&&(qualifiedWeapons.contains(msg.target())))
-			{
-				qualifiedWeapons.removeElement(msg.target());
-				msg.target().delEffect(msg.target().fetchEffect(ID()));
-				msg.target().recoverPhyStats();
+				if(((msg.targetMinor()==CMMsg.TYP_WEAR)
+				   ||(msg.targetMinor()==CMMsg.TYP_WIELD)
+				   ||(msg.targetMinor()==CMMsg.TYP_HOLD))
+				&&(!qualifiedWeapons.contains(msg.target()))
+				&&((msg.source().fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
+				{
+					qualifiedWeapons.addElement(targetW);
+					Ability A=(Ability)this.copyOf();
+					A.setSavable(false);
+					targetW.addEffect(A);
+					A.makeLongLasting();
+					targetW.recoverPhyStats();
+				}
+				else
+				if(((msg.targetMinor()==CMMsg.TYP_REMOVE)
+					||(msg.targetMinor()==CMMsg.TYP_DROP))
+				&&(qualifiedWeapons.contains(targetW)))
+				{
+					qualifiedWeapons.removeElement(targetW);
+					targetW.delEffect(targetW.fetchEffect(ID()));
+					targetW.recoverPhyStats();
+				}
 			}
 		}
 	}
@@ -120,9 +123,9 @@ public class Fighter_FarShot extends FighterSkill
 			{
 				if((CMLib.dice().rollPercentage()<10)&&(mob.isInCombat()) && (mob.rangeToTarget() > 0))
 					helpProficiency(mob);
-				if(!qualifiedWeapons.contains(w))
+				if(!qualifiedWeapons.contains((Weapon)w))
 				{
-					qualifiedWeapons.addElement(w);
+					qualifiedWeapons.addElement((Weapon)w);
 					Ability A=(Ability)this.copyOf();
 					A.setSavable(false);
 					w.addEffect(A);

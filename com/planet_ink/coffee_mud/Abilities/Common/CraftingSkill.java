@@ -165,13 +165,13 @@ public class CraftingSkill extends GatheringSkill
 		}
 	}
 	
-	protected void addSpells(Environmental E, String spells)
+	protected void addSpells(Physical P, String spells)
 	{
 	    if(spells.length()==0) return;
 	    if(spells.equalsIgnoreCase("bundle")) return;
         Vector V=CMLib.ableParms().getCodedSpells(spells);
         for(int v=0;v<V.size();v++)
-            E.addNonUninvokableEffect((Ability)V.elementAt(v));
+            P.addNonUninvokableEffect((Ability)V.elementAt(v));
 	}
     
     protected void setWearLocation(Item I, String wearLocation, int hardnessMultiplier) {

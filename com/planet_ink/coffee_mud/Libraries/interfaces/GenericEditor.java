@@ -31,7 +31,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public interface GenericEditor extends CMLibrary
 {
     public static interface CMEval { public Object eval(Object val, Object[] choices, boolean emptyOK) throws CMException; }
@@ -50,12 +49,12 @@ public interface GenericEditor extends CMLibrary
     public void modifyPlayer(MOB mob, MOB me) throws IOException;
     
     public Room changeRoomType(Room R, Room newRoom);
-    public void spells(MOB mob, Vector V, int showNumber, int showFlag, boolean inParms) throws IOException;
+    public void spells(MOB mob, List<Ability> V, int showNumber, int showFlag, boolean inParms) throws IOException;
     public void wornLocation(MOB mob, long[] oldWornLocation, boolean[] logicalAnd, int showNumber, int showFlag) throws IOException;
     public void wornLayer(MOB mob, short[] layerAtt, short[] clothingLayer, int showNumber, int showFlag) throws IOException;
-    public void genAbility(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException;
+    public void genAbility(MOB mob, Physical P, int showNumber, int showFlag) throws IOException;
     public void genAffects(MOB mob, Physical P, int showNumber, int showFlag) throws IOException;
-    public void genBehaviors(MOB mob, PhysicalAgent E, int showNumber, int showFlag) throws IOException;
+    public void genBehaviors(MOB mob, PhysicalAgent P, int showNumber, int showFlag) throws IOException;
     public void genDescription(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException;
     public void genDisplayText(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException;
     public void genMiscSet(MOB mob, Environmental E) throws IOException;

@@ -602,9 +602,9 @@ public class Play_Symphony extends Play
 		case CODE_UPDAMAGEPER5:
 			if((affected==invoker())
 			&&(msg.sourceMinor()==toDoVal)
-			&&(msg.target()!=null)
-			&&(msg.target().fetchEffect(ID())==null)
-			&&(msg.target().fetchEffect(ID()).invoker()!=invoker()))
+			&&(msg.target() instanceof Physical)
+			&&(((Physical)msg.target()).fetchEffect(ID())==null)
+			&&(((Physical)msg.target()).fetchEffect(ID()).invoker()!=invoker()))
 			{
 				int dmg=0;
 				if(toDoCode==CODE_UPDAMAGEPER3)

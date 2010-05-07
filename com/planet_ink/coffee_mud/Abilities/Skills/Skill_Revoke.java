@@ -50,7 +50,7 @@ public class Skill_Revoke extends StdSkill
 
 		String whatToRevoke=CMParms.combine(commands,0);
 
-		Environmental target=null;
+		Physical target=null;
 		if((whatToRevoke.length()==0)
 		&&(mob.location().numEffects()>0))
 			target=mob.location();

@@ -45,7 +45,7 @@ public class Spell_Wish extends Spell
 	public long flags(){return Ability.FLAG_NOORDERING;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 
-	protected Environmental maybeAdd(Environmental E, Vector foundAll, Environmental foundThang)
+	protected Physical maybeAdd(Physical E, Vector foundAll, Physical foundThang)
 	{
 		if((E!=null)
 		&&((foundThang==null)
@@ -57,7 +57,7 @@ public class Spell_Wish extends Spell
 		return foundThang;
 	}
 
-	private void bringThangHere(MOB mob, Room here, Environmental target)
+	private void bringThangHere(MOB mob, Room here, Physical target)
 	{
 		if(target instanceof MOB)
 		{
@@ -212,19 +212,21 @@ public class Spell_Wish extends Spell
 			}
 
 			Vector thangsFound=new Vector();
-			Environmental foundThang=null;
-			Environmental E=mob.location().fetchFromRoomFavorItems(null,objectWish,Wearable.FILTER_UNWORNONLY);
-			foundThang=maybeAdd(E,thangsFound,foundThang);
+			Physical foundThang=null;
+			Physical P=mob.location().fetchFromRoomFavorItems(null,objectWish,Wearable.FILTER_UNWORNONLY);
+			foundThang=maybeAdd(P,thangsFound,foundThang);
 			try
 			{
 				Vector items=CMLib.map().findRoomItems(CMLib.map().rooms(), mob,objectWish,true,10);
 				items.addAll(CMLib.map().findInhabitants(CMLib.map().rooms(), mob,objectWish,10));
 				items.addAll(CMLib.map().findInventory(CMLib.map().rooms(), mob,objectWish,10));
 				items.addAll(CMLib.map().findShopStock(CMLib.map().rooms(), mob,objectWish,10));
+				Object O;
 				for(Enumeration e=items.elements();e.hasMoreElements();)
 				{
-					E=(Environmental)e.nextElement();
-					foundThang=maybeAdd(E,thangsFound,foundThang);
+					O = e.nextElement();
+					if(O instanceof Physical)
+						foundThang=maybeAdd(((Physical)O),thangsFound,foundThang);
 				}
 		    }catch(NoSuchElementException nse){}
 			if((thangsFound.size()>0)&&(foundThang!=null))
@@ -263,7 +265,7 @@ public class Spell_Wish extends Spell
 			}
 
 			// anything else may refer to another person or item
-			Environmental target=null;
+			Physical target=null;
 			String possName=((String)wishV.elementAt(0)).trim();
 			if(wishV.size()>2)
 			{

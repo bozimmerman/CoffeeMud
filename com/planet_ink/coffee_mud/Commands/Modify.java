@@ -1205,11 +1205,13 @@ public class Modify extends StdCommand
 		String commandType="";
 		if(commands.size()>1)
         {
-            if(commands.elementAt(1) instanceof Environmental)
+			Object O = commands.elementAt(1);
+            if(O instanceof Environmental)
             {
-                CMLib.genEd().genMiscSet(mob,(Environmental)commands.elementAt(1));
-                ((Environmental)commands.elementAt(1)).recoverPhyStats();
-                ((Environmental)commands.elementAt(1)).text();
+                CMLib.genEd().genMiscSet(mob,(Environmental)O);
+                if(O instanceof Physical)
+                	((Physical)O).recoverPhyStats();
+                ((Environmental)O).text();
                 return true;
             }
 			commandType=((String)commands.elementAt(1)).toUpperCase();
@@ -1514,7 +1516,7 @@ public class Modify extends StdCommand
 				}
 				else
 					CMLib.genEd().genMiscSet(mob,thang);
-				thang.recoverPhyStats();
+				((Item)thang).recoverPhyStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,thang.name()+" shake(s) under the transforming power.");
 				if(!copyItem.sameAs(thang))
 	                Log.sysOut("CreateEdit",mob.Name()+" modified item "+thang.Name()+" ("+thang.ID()+") in "+CMLib.map().getExtendedRoomID(mob.location())+".");
@@ -1548,7 +1550,7 @@ public class Modify extends StdCommand
 	                    Log.sysOut("CreateEdit",mob.Name()+" modified mob "+thang.Name()+" ("+thang.ID()+") in "+CMLib.map().getExtendedRoomID(((MOB)thang).location())+".");
 					copyMOB.destroy();
                 }
-				thang.recoverPhyStats();
+				((MOB)thang).recoverPhyStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,thang.name()+" shake(s) under the transforming power.");
 			}
 			else
@@ -1563,7 +1565,7 @@ public class Modify extends StdCommand
 					mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
 					Exit copyExit=(Exit)thang.copyOf();
                     CMLib.genEd().genMiscText(mob,thang,1,1);
-					thang.recoverPhyStats();
+                    ((Exit)thang).recoverPhyStats();
 					try
 					{
 						for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)

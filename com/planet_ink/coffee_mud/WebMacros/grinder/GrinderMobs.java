@@ -52,14 +52,14 @@ public class GrinderMobs
       "LOANINT","SVCRIT","AUCCHAIN","LIVELIST","TIMELIST",
       "TIMELISTPCT","LIVECUT","TIMECUT","MAXDAYS",
       "MINDAYS","ISAUCTION","DEITYID"};
-	public static String senses(Environmental E, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
+	public static String senses(Physical P, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms)
 	{
-		E.basePhyStats().setSensesMask(0);
+		P.basePhyStats().setSensesMask(0);
 		for(int d=0;d<PhyStats.CAN_SEE_CODES.length;d++)
 		{
 			String parm=httpReq.getRequestParameter(PhyStats.CAN_SEE_CODES[d]);
 			if((parm!=null)&&(parm.equals("on")))
-			   E.basePhyStats().setSensesMask(E.basePhyStats().sensesMask()|(1<<d));
+			   P.basePhyStats().setSensesMask(P.basePhyStats().sensesMask()|(1<<d));
 		}
 		return "";
 	}

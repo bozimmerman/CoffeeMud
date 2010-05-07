@@ -643,16 +643,17 @@ public class StdRideable extends StdContainer implements Rideable
 				if((msg.tool()!=null)
 				   &&(msg.tool() instanceof Rider))
 				{
-					((Rider)msg.tool()).setRiding(this);
+					Rider R = (Rider)msg.tool();
+					R.setRiding(this);
 					if(msg.tool() instanceof MOB)
 				    switch(rideBasis())
 				    {
 			    	case Rideable.RIDEABLE_SIT:
 			    	case Rideable.RIDEABLE_ENTERIN:
-			    	    msg.tool().basePhyStats().setDisposition(msg.tool().basePhyStats().disposition()|PhyStats.IS_SITTING);
+			    	    R.basePhyStats().setDisposition(R.basePhyStats().disposition()|PhyStats.IS_SITTING);
 			    	    break;
 			    	case Rideable.RIDEABLE_SLEEP:
-			    	    msg.tool().basePhyStats().setDisposition(msg.tool().basePhyStats().disposition()|PhyStats.IS_SLEEPING);
+			    	    R.basePhyStats().setDisposition(R.basePhyStats().disposition()|PhyStats.IS_SLEEPING);
 			    		break;
 					default:
 					    break;

@@ -451,7 +451,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	public int adjustedDamage(MOB mob, Weapon weapon, MOB target)
 	{
 		double damageAmount=0.0;
-		Environmental useDmg = null;
+		Physical useDmg = null;
 		boolean rangedAttack = false;
 		if((weapon!=null)
 		&&((weapon.weaponClassification()==Weapon.CLASS_RANGED)||(weapon.weaponClassification()==Weapon.CLASS_THROWN)))

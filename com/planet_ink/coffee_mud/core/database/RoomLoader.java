@@ -964,8 +964,12 @@ public class RoomLoader
 		{
 			Exit thisExit=room.getRawExit(d);
 			Room thisRoom=room.rawDoors()[d];
-			if(((thisRoom!=null)||(thisExit!=null))
-			   &&((thisRoom==null)||(thisRoom.isSavable())))
+			
+			if((thisExit!=null)&&(!thisExit.isSavable()))
+				thisExit=null;
+			if((thisRoom!=null)&&(!thisRoom.isSavable()))
+				thisRoom=null;
+			if((thisRoom!=null)||(thisExit!=null))
 			{
 	    		CMLib.map().registerWorldObjectLoaded(room.getArea(), room, thisExit);
 				statements.addElement(

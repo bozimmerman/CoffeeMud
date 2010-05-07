@@ -111,34 +111,35 @@ public class ItemIdentifier extends StdBehavior
 		&&(msg.tool()!=null)
 		&&(msg.tool() instanceof Item))
 		{
-			double cost=cost((Item)msg.tool());
+			Item I = (Item)msg.tool();
+			double cost=cost(I);
 			CMLib.beanCounter().subtractMoney(source,CMLib.beanCounter().getCurrency(observer),(double)cost);
 			String costStr=CMLib.beanCounter().nameCurrencyLong(observer,(double)cost);
 			source.recoverPhyStats();
 			CMMsg newMsg=CMClass.getMsg(msg.source(),observer,null,CMMsg.MSG_OK_ACTION,"<S-NAME> give(s) "+costStr+" to <T-NAMESELF>.");
 			msg.addTrailerMsg(newMsg);
-			newMsg=CMClass.getMsg(observer,msg.tool(),null,CMMsg.MSG_EXAMINE,"<S-NAME> examine(s) <T-NAME> very closely.");
+			newMsg=CMClass.getMsg(observer,I,null,CMMsg.MSG_EXAMINE,"<S-NAME> examine(s) <T-NAME> very closely.");
 			msg.addTrailerMsg(newMsg);
-			StringBuffer up=new StringBuffer(msg.tool().name()+" is made of "+RawMaterial.CODES.NAME(((Item)msg.tool()).material()).toLowerCase()+".\n\r");
-			if((msg.tool() instanceof Armor)&&(msg.tool().phyStats().height()>0))
-				up.append("It is a size "+msg.tool().phyStats().height()+".\n\r");
-			int weight=msg.tool().phyStats().weight();
-			if((weight!=msg.tool().basePhyStats().weight())&&(msg.tool() instanceof Container))
-				up.append("It weighs "+msg.tool().basePhyStats().weight()+" pounds empty and "+weight+" pounds right now.\n\r");
+			StringBuffer up=new StringBuffer(I.name()+" is made of "+RawMaterial.CODES.NAME(I.material()).toLowerCase()+".\n\r");
+			if((I instanceof Armor)&&(((Armor)I).phyStats().height()>0))
+				up.append("It is a size "+((Armor)I).phyStats().height()+".\n\r");
+			int weight=I.phyStats().weight();
+			if((weight!=I.basePhyStats().weight())&&(I instanceof Container))
+				up.append("It weighs "+I.basePhyStats().weight()+" pounds empty and "+weight+" pounds right now.\n\r");
 			else
 				up.append("It weighs "+weight+" pounds.\n\r");
-			if(msg.tool() instanceof Weapon)
+			if(I instanceof Weapon)
 			{
-				Weapon w=(Weapon)msg.tool();
+				Weapon w=(Weapon)I;
 				up.append("It is a "+Weapon.CLASS_DESCS[w.weaponClassification()].toLowerCase()+" weapon.\n\r");
 				up.append("It does "+Weapon.TYPE_DESCS[w.weaponType()].toLowerCase()+" damage.\n\r");
 			}
-			up.append(((Item)msg.tool()).secretIdentity());
+			up.append(((Item)I).secretIdentity());
 			newMsg=CMClass.getMsg(observer,null,null,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) '"+up.toString()+"'^?.");
 			msg.addTrailerMsg(newMsg);
-			newMsg=CMClass.getMsg(observer,source,msg.tool(),CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
+			newMsg=CMClass.getMsg(observer,source,I,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");
 			msg.addTrailerMsg(newMsg);
-			newMsg=CMClass.getMsg(observer,msg.tool(),null,CMMsg.MSG_DROP,null);
+			newMsg=CMClass.getMsg(observer,I,null,CMMsg.MSG_DROP,null);
 			msg.addTrailerMsg(newMsg);
 		}
 	}

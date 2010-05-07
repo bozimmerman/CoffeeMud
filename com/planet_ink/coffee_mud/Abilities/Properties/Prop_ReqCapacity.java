@@ -114,6 +114,7 @@ public class Prop_ReqCapacity extends Property
 			&&(msg.source().location()!=null)
 	        &&((msg.targetMessage()==null)||(!msg.targetMessage().equalsIgnoreCase("GIVE"))))
 			{
+				Item targetI=(Item)msg.target();
                 Room R=null;
                 if(affected instanceof Room)
                     R=(Room)affected;
@@ -149,9 +150,9 @@ public class Prop_ReqCapacity extends Property
 						int soFar=0;
 						for(int i=0;i<R.numItems();i++)
 						{Item I=R.getItem(i); if(I!=null) soFar+=I.phyStats().weight();}
-						if((soFar+msg.target().phyStats().weight())>=maxWeight)
+						if((soFar+targetI.phyStats().weight())>=maxWeight)
 						{
-							msg.source().tell("There is no room in here to put "+msg.target().Name()+".");
+							msg.source().tell("There is no room in here to put "+targetI.Name()+".");
 							return false;
 						}
 					}

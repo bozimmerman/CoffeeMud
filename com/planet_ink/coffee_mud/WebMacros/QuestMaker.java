@@ -88,24 +88,23 @@ public class QuestMaker extends StdWebMacro
         return list.toString();
     }
     
-    public void addCatalogList(Vector toList, Environmental[] fromList)
+    public void addCatalogList(List<Physical> toList, Physical[] fromList)
     {
-        for(int m=0;m<fromList.length;m++)
+        for(Physical P : fromList)
         {
-            Environmental E=(Environmental)fromList[m];
-            E=(Environmental)E.copyOf();
-            CMLib.catalog().changeCatalogUsage(E,true);
-            toList.addElement(E);
+            P=(Physical)P.copyOf();
+            CMLib.catalog().changeCatalogUsage(P,true);
+            toList.add(P);
         }
     }
     
-    private String mobList(Vector mobList, MOB oldMob, String oldValue)
+    private String mobList(List<MOB> mobList, MOB oldMob, String oldValue)
     {
         StringBuffer list=new StringBuffer("");
         if(oldMob==null) oldMob=RoomData.getMOBFromCatalog(oldValue);
         for(int o=0;o<mobList.size();o++)
         {
-            MOB M2=(MOB)mobList.elementAt(o);
+            MOB M2=(MOB)mobList.get(o);
             list.append("<OPTION VALUE=\""+RoomData.getMOBCode(mobList, M2)+"\" ");
             if((oldMob!=null)&&(oldMob.sameAs(M2)))
                 list.append("SELECTED");

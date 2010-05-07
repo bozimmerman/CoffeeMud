@@ -5044,7 +5044,7 @@ public class Import extends StdCommand
 							returnAnError(session,"Room: "+R.roomID()+", Malformed exit codeStr "+codeStr+".  Aborting exit, area="+areaName,compileErrors,commands);
 							continue;
 						}
-						Exit E=CMClass.getExit("GenExit");
+						Exit X=CMClass.getExit("GenExit");
 						Room linkRoom=CMLib.map().getRoom(doneRooms,areaName,""+linkRoomID);
 						if(linkRoomID>=0)
 						{
@@ -5059,8 +5059,8 @@ public class Import extends StdCommand
 								defaultsClosed=true;
 								if(exitFlag==6)
 								{
-									E.basePhyStats().setLevel(100);
-									E.recoverPhyStats();
+									X.basePhyStats().setLevel(100);
+									X.recoverPhyStats();
 								}
 							}
 							if(doorState<0)
@@ -5074,39 +5074,39 @@ public class Import extends StdCommand
 								{
 									hasLock=true;
 									defaultsLocked=true;
-									E.setKeyName(areaName+"#"+doorState);
+									X.setKeyName(areaName+"#"+doorState);
 								}
 							}
-							E.setDoorsNLocks(hasDoor,!defaultsClosed,defaultsClosed,
+							X.setDoorsNLocks(hasDoor,!defaultsClosed,defaultsClosed,
 											 hasLock,defaultsLocked,defaultsLocked);
 						}
-						E.setDisplayText(descStr);
+						X.setDisplayText(descStr);
 						String name=CMParms.getCleanBit(nameStr,0).trim();
 						if(name.equalsIgnoreCase("SECRET"))
 						{
 							name="secret door";
-							E.basePhyStats().setDisposition(E.basePhyStats().disposition()|PhyStats.IS_HIDDEN);
-							E.recoverPhyStats();
+							X.basePhyStats().setDisposition(X.basePhyStats().disposition()|PhyStats.IS_HIDDEN);
+							X.recoverPhyStats();
 						}
 
 						if(name.length()>0)
-							E.setName(CMLib.english().startWithAorAn(name));
+							X.setName(CMLib.english().startWithAorAn(name));
 						else
 						{
-							if(E.hasADoor())
+							if(X.hasADoor())
 							{
-								E.setName("a door");
+								X.setName("a door");
 								name="door";
 							}
 							else
 							{
-								E.setName("the ground");
+								X.setName("the ground");
 								name="ground";
 							}
 						}
-						E.setExitParams(name,E.closeWord(),E.openWord(),E.Name()+", closed");
-						E.setDescription(descStr);
-						R.setRawExit(dirCode,E);
+						X.setExitParams(name,X.closeWord(),X.openWord(),X.Name()+", closed");
+						X.setDescription(descStr);
+						R.setRawExit(dirCode,X);
 						Exit opExit=null;
 						if(((linkRoom==null)||(linkRoom.getArea().Name()!=R.getArea().Name()))&&(linkRoomID>=0))
 						{
@@ -5146,9 +5146,9 @@ public class Import extends StdCommand
 								}
 						    }catch(NoSuchElementException e){}
 							if(linkRoom==null)
-								E.setTemporaryDoorLink("#"+linkRoomID);
+								X.setTemporaryDoorLink("#"+linkRoomID);
 							else
-								E.setTemporaryDoorLink("");
+								X.setTemporaryDoorLink("");
 
 						}
 						if((linkRoom==null)&&(R.rawDoors()[dirCode]!=null))
@@ -5703,20 +5703,20 @@ public class Import extends StdCommand
 			// final exit clean-up optimization
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
-				Exit E=saveRoom.getRawExit(d);
-				if((E!=null)
-				&&(E.isGeneric())
-				&&(!E.hasADoor())
-				&&(!E.hasALock())
-				&&(E.name().equalsIgnoreCase("the ground"))
-				&&(!E.isReadable())
-				&&(E.numEffects()==0)
-				&&(E.numBehaviors()==0)
-				&&(E.temporaryDoorLink().length()==0)
-				&&(E.displayText().equals(E.description())))
+				Exit X=saveRoom.getRawExit(d);
+				if((X!=null)
+				&&(X.isGeneric())
+				&&(!X.hasADoor())
+				&&(!X.hasALock())
+				&&(X.name().equalsIgnoreCase("the ground"))
+				&&(!X.isReadable())
+				&&(X.numEffects()==0)
+				&&(X.numBehaviors()==0)
+				&&(X.temporaryDoorLink().length()==0)
+				&&(X.displayText().equals(X.description())))
 				{
 					Exit E2=CMClass.getExit("OpenDescriptable");
-					E2.setMiscText(E.displayText());
+					E2.setMiscText(X.displayText());
 					saveRoom.setRawExit(d,E2);
 				}
 			}

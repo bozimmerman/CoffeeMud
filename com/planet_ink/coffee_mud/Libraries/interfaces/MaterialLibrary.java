@@ -42,7 +42,7 @@ public interface MaterialLibrary extends CMLibrary
     public String getResourceDesc(int MASK);
     public String getMaterialDesc(int MASK);
     public Item makeItemResource(int type);
-    public Environmental makeResource(int myResource, String localeCode, boolean noAnimals, String fullName);
+    public PhysicalAgent makeResource(int myResource, String localeCode, boolean noAnimals, String fullName);
     public void addEffectsToResource(Item I);
     public int getRandomResourceOfMaterial(int material);
     public boolean rebundle(Item I);

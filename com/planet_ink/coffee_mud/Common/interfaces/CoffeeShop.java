@@ -17,7 +17,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
 /* 
    Copyright 2000-2010 Bo Zimmerman
@@ -51,7 +50,6 @@ import java.util.Vector;
  * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#isSold(int)
  * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#DEAL_INVENTORYONLY
  */
-@SuppressWarnings("unchecked")
 public interface CoffeeShop extends CMCommon
 {
     /**
@@ -217,7 +215,7 @@ public interface CoffeeShop extends CMCommon
      * @param mob the mob who is interested (stock can differ depending on customer)
      * @return the available items, if found, as a Vector of Environmental objects
      */
-    public Vector removeSellableProduct(String named, MOB mob);
+    public List<Environmental> removeSellableProduct(String named, MOB mob);
     
     /**
      * Generates an XML document of all available shop inventory, prices, and availability.
@@ -262,4 +260,21 @@ public interface CoffeeShop extends CMCommon
      * @return whether the whatIsSold code applies to the shopkeeper hosting this shop.
      */
     public boolean isSold(int code);
+    
+    /**
+     * Class for representing a shelf product, holding
+     * an item prototype, the number in stock, and the
+     * price.  A price of -1 means to use the items
+     * calculated value (common).
+     * @author bzimmerman
+     */
+    public static class ShelfProduct
+    {
+    	public Environmental product;
+    	public int number;
+    	public int price;
+    	public ShelfProduct(Environmental E, int number, int price){
+    		this.product=E;this.number=number;this.price=price;
+    	}
+    }
 }

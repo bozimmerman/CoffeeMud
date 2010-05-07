@@ -189,7 +189,7 @@ public class Gaoler extends StdCharClass
             CMMsg msg2=CMClass.getMsg((MOB)msg.target(),null,null,CMMsg.MSG_NOISE,"<S-NAME> scream(s) in agony, AAAAAAARRRRGGGHHH!!"+CMProps.msp("scream.wav",40));
             if(((MOB)msg.target()).location().okMessage((MOB)msg.target(),msg2))
             {
-                int xp=(int)Math.round(10.0*CMath.div(msg.target().phyStats().level(),((MOB)host).charStats().getClassLevel(this)));
+                int xp=(int)Math.round(10.0*CMath.div(((MOB)msg.target()).phyStats().level(),((MOB)host).charStats().getClassLevel(this)));
                 int[] done=(int[])mudHourMOBXPMap.get(host.Name()+"/"+msg.tool().ID());
                 if(done==null){ done=new int[3]; mudHourMOBXPMap.put(host.Name()+"/"+msg.tool().ID(),done);}
                 if(Calendar.getInstance().get(Calendar.SECOND)!=done[2])

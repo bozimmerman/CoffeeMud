@@ -2629,9 +2629,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         for(int i=0;i<toSet.size();i++)
                         {
                             Environmental E2=(Environmental)toSet.get(i);
-                            if(stat.equalsIgnoreCase("KEYPLAYER"))
+                            if(stat.equalsIgnoreCase("KEYPLAYER") && (E2 instanceof Physical))
                             {
-                                Ability A=E2.fetchEffect("QuestBound");
+                                Ability A=((Physical)E2).fetchEffect("QuestBound");
                                 if(A!=null) A.setStat("KEY",val);
                             }
                             else
@@ -3063,10 +3063,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		                    if(CMStrings.contains(E.getStatCodes(),stat.toUpperCase().trim()))
 			                    E.setStat(stat,parms);
 		                    else
-		                    if(CMStrings.contains(E.basePhyStats().getStatCodes(),stat.toUpperCase().trim()))
+		                    if((E instanceof MOB)&&CMStrings.contains(((Physical)E).basePhyStats().getStatCodes(),stat.toUpperCase().trim()))
 		                    {
-		                    	E.basePhyStats().setStat(stat.toUpperCase().trim(),parms);
-		                    	E.recoverPhyStats();
+		                    	((Physical)E).basePhyStats().setStat(stat.toUpperCase().trim(),parms);
+		                    	((Physical)E).recoverPhyStats();
 		                    }
 		                    else
 		                    if((E instanceof MOB)&&(CMStrings.contains(CharStats.CODES.NAMES(),stat.toUpperCase().trim())))
@@ -3129,18 +3129,19 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		                            ((MOB)E).delAbility(A);
 		                    }
 		                    else
+		                    if(E instanceof Physical)
 		                    {
-		                        Ability A=E.fetchEffect(((Ability)O).ID());
+		                        Ability A=((Physical)E).fetchEffect(((Ability)O).ID());
 		                        if((V.size()>2)&&(V.get(2) instanceof String))
 		                        {
-		                            if(A==null){A=(Ability)O; E.addEffect(A);}
+		                            if(A==null){A=(Ability)O; ((Physical)E).addEffect(A);}
 		                            A.setMiscText((String)V.get(2));
 		                        }
 		                        else
 		                        if(A!=null)
 		                        {
 		                            A.unInvoke();
-		                            E.delEffect(A);
+		                            ((Physical)E).delEffect(A);
 		                        }
 		                    }
 		                }
@@ -3634,8 +3635,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         if(CMStrings.contains(E.getStatCodes(),stat))
             oldVal=E.getStat(stat);
         else
-        if(CMStrings.contains(E.basePhyStats().getStatCodes(),stat))
-        	oldVal=E.basePhyStats().getStat(stat);
+        if((E instanceof Physical)&&CMStrings.contains(((Physical)E).basePhyStats().getStatCodes(),stat))
+        	oldVal=((Physical)E).basePhyStats().getStat(stat);
         else
         if((E instanceof MOB)&&(CMStrings.contains(CharStats.CODES.NAMES(),stat)))
         	oldVal=""+((MOB)E).baseCharStats().getStat(CMParms.indexOf(CharStats.CODES.NAMES(),stat));
@@ -3650,10 +3651,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         if(CMStrings.contains(E.getStatCodes(),stat))
         	E.setStat(stat,parms);
         else
-        if(CMStrings.contains(E.basePhyStats().getStatCodes(),stat))
+        if((E instanceof Physical)&&CMStrings.contains(((Physical)E).basePhyStats().getStatCodes(),stat))
         {
-        	E.basePhyStats().setStat(stat,parms);
-        	E.recoverPhyStats();
+        	((Physical)E).basePhyStats().setStat(stat,parms);
+        	((Physical)E).recoverPhyStats();
         }
         else
         if((E instanceof MOB)&&(CMStrings.contains(CharStats.CODES.NAMES(),stat)))

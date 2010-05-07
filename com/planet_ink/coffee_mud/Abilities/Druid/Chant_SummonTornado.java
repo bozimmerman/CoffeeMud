@@ -88,7 +88,7 @@ public class Chant_SummonTornado extends Chant
 			return false;
 		}
 
-		Environmental target = mob.location();
+		Physical target = mob.location();
 
 		if(target.fetchEffect(this.ID())!=null)
 		{

@@ -97,7 +97,7 @@ public class HolyAvenger extends TwoHandedSword
 		&&(msg.tool()==this)
 		&&(msg.target() instanceof MOB)
 		&&(!((MOB)msg.target()).amDead())
-		&&(CMLib.flags().isEvil(msg.target())))
+		&&(CMLib.flags().isEvil((MOB)msg.target())))
 		{
 			CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),new HolyAvenger(),CMMsg.MSG_OK_ACTION,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_UNDEAD,CMMsg.MSG_NOISYMOVEMENT,null);
 			if(msg.source().location().okMessage(msg.source(),msg2))

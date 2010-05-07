@@ -50,10 +50,10 @@ public class Spell_BigMouth extends Spell
 		MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
 		&&(msg.targetMinor()==CMMsg.TYP_EAT)
-		&&(msg.target()!=null)
+		&&(msg.target() instanceof Physical)
 		&&(Stomach()!=null))
 		{
-			if(msg.target().phyStats().weight()<(mob.phyStats().weight()/3))
+			if(((Physical)msg.target()).phyStats().weight()<(mob.phyStats().weight()/3))
 			{
 				if((Stomach()!=null)&&(Stomach().numInhabitants()>(CMLib.ableMapper().qualifyingClassLevel(mob,this)-CMLib.ableMapper().qualifyingLevel(mob,this))))
 				{
@@ -110,9 +110,9 @@ public class Spell_BigMouth extends Spell
 
 		if((msg.amISource(mob))
 		&&(msg.sourceMinor()==CMMsg.TYP_EAT)
-		&&(msg.target()!=null)
+		&&(msg.target() instanceof Physical)
 		&&(Stomach()!=null)
-		&&(msg.target().phyStats().weight()<(mob.phyStats().weight()/2)))
+		&&(((Physical)msg.target()).phyStats().weight()<(mob.phyStats().weight()/2)))
 		{
 			if(msg.target() instanceof MOB)
 			{

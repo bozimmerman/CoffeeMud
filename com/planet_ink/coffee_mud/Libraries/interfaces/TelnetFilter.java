@@ -61,7 +61,7 @@ public interface TelnetFilter extends CMLibrary
     public String getLastWord(StringBuffer buf, int lastSp, int lastSpace);
     public String fullOutFilter(Session S,
                                 MOB mob,
-                                Environmental source,
+                                Physical source,
                                 Environmental target,
                                 Environmental tool,
                                 String msg,

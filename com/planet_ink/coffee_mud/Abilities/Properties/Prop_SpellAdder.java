@@ -194,7 +194,7 @@ public class Prop_SpellAdder extends Property
 		return invokerMOB;
 	}
 
-    public Vector convertToV2(Vector spellsV, Environmental target)
+    public Vector convertToV2(Vector spellsV, Physical target)
     {
         Vector VTOO=new Vector();
         for(int v=0;v<spellsV.size();v++)

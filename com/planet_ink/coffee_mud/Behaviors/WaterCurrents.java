@@ -201,7 +201,6 @@ public class WaterCurrents extends ActiveTicker
 		return true;
 	}
 	protected static final String[] empty={};
-	protected static final PhyStats phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 	protected static final String[] CODES={"CLASS","TEXT"};
 	protected static final int[] cost=new int[3];
 	protected static class AWaterCurrent implements Ability, Cloneable
@@ -294,11 +293,6 @@ public class WaterCurrents extends ActiveTicker
         public void destroy(){amDestroyed=true;}
         public boolean amDestroyed(){return amDestroyed;}
 
-		public PhyStats phyStats(){return phyStats;}
-		public PhyStats basePhyStats(){return phyStats;}
-
-		public void recoverPhyStats(){}
-		public void setBasePhyStats(PhyStats newStats){}
 		public CMObject newInstance()
 		{
 			try
@@ -408,13 +402,6 @@ public class WaterCurrents extends ActiveTicker
 		public int[] usageCost(MOB mob, boolean ignoreClassOverride){return cost;}
 
 
-		public void addEffect(Ability to){}
-		public void addNonUninvokableEffect(Ability to){}
-		public void delEffect(Ability to){}
-		public int numEffects(){ return 0;}
-		public Ability fetchEffect(int index){return null;}
-		public Ability fetchEffect(String ID){return null;}
-		
 		public boolean isGeneric(){return false;}
 	}
 }

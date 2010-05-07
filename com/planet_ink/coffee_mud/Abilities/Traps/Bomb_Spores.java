@@ -39,7 +39,7 @@ public class Bomb_Spores extends StdBomb
 	protected int trapLevel(){return 15;}
 	public String requiresToSet(){return "some diseased meat";}
 
-	public Vector returnOffensiveAffects(Environmental fromMe)
+	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
 		Vector offenders=new Vector();
 
@@ -64,7 +64,7 @@ public class Bomb_Spores extends StdBomb
 	public boolean canSetTrapOn(MOB mob, Physical P)
 	{
 		if(!super.canSetTrapOn(mob,P)) return false;
-		Vector V=returnOffensiveAffects(P);
+		List<Ability> V=returnOffensiveAffects(P);
 		if((!(P instanceof Food))||(V.size()==0))
 		{
 			if(mob!=null)
@@ -76,9 +76,9 @@ public class Bomb_Spores extends StdBomb
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(P==null) return null;
-		Vector V=returnOffensiveAffects(P);
+		List<Ability> V=returnOffensiveAffects(P);
 		if(V.size()>0)
-			setMiscText(((Ability)V.firstElement()).ID());
+			setMiscText(((Ability)V.get(0)).ID());
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}
 

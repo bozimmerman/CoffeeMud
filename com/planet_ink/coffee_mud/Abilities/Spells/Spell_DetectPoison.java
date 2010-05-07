@@ -43,7 +43,7 @@ public class Spell_DetectPoison extends Spell
 	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 
-	public Vector returnOffensiveAffects(Environmental fromMe)
+	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
 		Vector offenders=new Vector();
 
@@ -88,7 +88,7 @@ public class Spell_DetectPoison extends Spell
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
-		Vector offensiveAffects=returnOffensiveAffects(target);
+		List<Ability> offensiveAffects=returnOffensiveAffects(target);
 
 		if((success)&&((offensiveAffects.size()>0)
 					   ||((target instanceof Drink)&&(((Drink)target).liquidHeld()==RawMaterial.RESOURCE_POISON))))
@@ -106,7 +106,7 @@ public class Spell_DetectPoison extends Spell
 					buf.append("weak impurities, ");
 				else
 				for(int i=0;i<offensiveAffects.size();i++)
-					buf.append(((Ability)offensiveAffects.elementAt(i)).name()+", ");
+					buf.append(((Ability)offensiveAffects.get(i)).name()+", ");
 				mob.tell(buf.toString().substring(0,buf.length()-2));
 			}
 		}

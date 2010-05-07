@@ -41,7 +41,7 @@ public class Trap_NeedlePrick extends StdTrap
 	protected int trapLevel(){return 4;}
 	public String requiresToSet(){return "some poison";}
 
-	public Vector returnOffensiveAffects(Environmental fromMe)
+	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
 		Vector offenders=new Vector();
 
@@ -64,7 +64,7 @@ public class Trap_NeedlePrick extends StdTrap
 			if((I!=null)
 			&&(I instanceof Drink))
 			{
-				Vector V=returnOffensiveAffects(I);
+				List<Ability> V=returnOffensiveAffects(I);
 				if(V.size()>0)
 					return I;
 			}
@@ -77,9 +77,9 @@ public class Trap_NeedlePrick extends StdTrap
 		if(P==null) return null;
 		Item I=getPoison(mob);
 		if(I!=null){
-			Vector V=returnOffensiveAffects(I);
+			List<Ability> V=returnOffensiveAffects(I);
 			if(V.size()>0)
-				setMiscText(((Ability)V.firstElement()).ID());
+				setMiscText(((Ability)V.get(0)).ID());
 			I.destroy();
 		}
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);

@@ -46,7 +46,7 @@ public class Antidote extends StdAbility
 	public int classificationCode(){return Ability.ACODE_SKILL;}
 	protected boolean processing=false;
 
-	public Vector returnOffensiveAffects(Environmental fromMe)
+	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
 		Vector offenders=new Vector();
 
@@ -111,7 +111,7 @@ public class Antidote extends StdAbility
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
-		Vector offensiveAffects=returnOffensiveAffects(target);
+		List<Ability> offensiveAffects=returnOffensiveAffects(target);
 
 		if((success)&&(offensiveAffects.size()>0))
 		{
@@ -124,7 +124,7 @@ public class Antidote extends StdAbility
 			{
 				mob.location().send(mob,msg);
 				for(int a=offensiveAffects.size()-1;a>=0;a--)
-					((Ability)offensiveAffects.elementAt(a)).unInvoke();
+					((Ability)offensiveAffects.get(a)).unInvoke();
 				if((!CMLib.flags().stillAffectedBy(target,offensiveAffects,false))&&(target.location()!=null))
 					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) better now.");
 			}

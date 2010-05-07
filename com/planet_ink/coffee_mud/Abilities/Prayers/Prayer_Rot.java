@@ -57,8 +57,11 @@ public class Prayer_Rot extends Prayer
 	        if(host instanceof Decayable)
 	        {
 	        	((Decayable)host).setDecayTime(0);
-		        Ability A=host.fetchEffect("Poison_Rotten");
-		        if(A!=null) host.delEffect(A);
+	        	if(host instanceof Physical)
+	        	{
+			        Ability A=((Physical)host).fetchEffect("Poison_Rotten");
+			        if(A!=null) ((Physical)host).delEffect(A);
+	        	}
 	        }
 	        else
 	        if(host instanceof Container)

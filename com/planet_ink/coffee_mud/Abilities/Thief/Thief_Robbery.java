@@ -145,7 +145,8 @@ public class Thief_Robbery extends ThiefSkill
 			return false;
 
 		ShopKeeper shop=CMLib.coffeeShops().getShopKeeper(target);
-		Environmental stolen=shop.getShop().getStock(itemToSteal,mob);
+		Environmental stock=shop.getShop().getStock(itemToSteal,mob);
+		Physical stolen=(stock instanceof Physical)?(Physical)stock:null;
 		if(stolen!=null)
 		{
 			ShopKeeper.ShopPrice price=CMLib.coffeeShops().sellingPrice(target,mob,stolen,shop,false);
@@ -244,10 +245,10 @@ public class Thief_Robbery extends ThiefSkill
 				}
 				if(stolen!=null)
 				{
-					Vector products=shop.getShop().removeSellableProduct(stolen.Name(),mob);
-					stolen=(Environmental)products.firstElement();
-					if(stolen instanceof Item)
+					List<Environmental> products=shop.getShop().removeSellableProduct(stolen.Name(),mob);
+					if(products.get(0) instanceof Item)
 					{
+						stolen=(Item)products.get(0);
 						mob.location().addItem((Item)stolen,ItemPossessor.Expire.Player_Drop);
 						msg=CMClass.getMsg(mob,stolen,null,CMMsg.MSG_GET,CMMsg.MSG_GET,CMMsg.MSG_NOISE,null);
 						if(mob.location().okMessage(mob,msg))
