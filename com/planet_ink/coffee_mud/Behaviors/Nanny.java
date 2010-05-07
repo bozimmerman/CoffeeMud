@@ -827,12 +827,12 @@ public class Nanny extends StdBehavior
     			
         if(changedSinceLastSave)
         {
-        	Vector<MOB> mobsToSave=new Vector<MOB>();
-        	if(ticking instanceof MOB) 
-        		mobsToSave.addElement((MOB)ticking);
-        	MOB M=null;
     		if(R!=null)
     		{
+            	Vector<MOB> mobsToSave=new Vector<MOB>();
+            	if(ticking instanceof MOB) 
+            		mobsToSave.addElement((MOB)ticking);
+            	MOB M=null;
 	        	for(int i=0;i<R.numInhabitants();i++)
 	        	{
 	        		M=R.fetchInhabitant(i);
