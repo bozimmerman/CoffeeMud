@@ -7711,11 +7711,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         if(themob.playerStats().getTitles().contains(tattoo))
                         {
                             if(tattooMinus)
-                                themob.playerStats().getTitles().removeElement(tattooName);
+                                themob.playerStats().getTitles().remove(tattooName);
                         }
                         else
                         if(!tattooMinus)
-                            themob.playerStats().getTitles().insertElementAt(tattooName,0);
+                            themob.playerStats().getTitles().add(0,tattooName);
                     }
                 }
                 break;

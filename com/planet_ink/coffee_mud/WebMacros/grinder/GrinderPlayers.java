@@ -126,7 +126,7 @@ public class GrinderPlayers extends GrinderMobs
 			while(httpReq.isRequestParameter("TITLE"+num))
 			{
 				String aff=httpReq.getRequestParameter("TITLE"+num);
-				if(aff.trim().length()>0) E.playerStats().getTitles().addElement(aff.trim());
+				if(aff.trim().length()>0) E.playerStats().getTitles().add(aff.trim());
 				num++;
 			}
 		}
@@ -265,7 +265,7 @@ public class GrinderPlayers extends GrinderMobs
 			{
 				String old=httpReq.getRequestParameter("TITLE"+b);
 				if(old==null) old="";
-				M.playerStats().getTitles().addElement(old);
+				M.playerStats().getTitles().add(old);
 				b++;
 			}
 		}

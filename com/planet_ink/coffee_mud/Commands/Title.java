@@ -44,7 +44,7 @@ public class Title extends StdCommand
 	        mob.tell("You don't have any titles to select from.");
 	        return false;
 	    }
-        String currTitle=(String)mob.playerStats().getTitles().elementAt(0);
+        String currTitle=(String)mob.playerStats().getTitles().get(0);
         if(currTitle.startsWith("{")&&currTitle.endsWith("}"))
         {
             mob.tell("You can not change your current title.");
@@ -53,10 +53,10 @@ public class Title extends StdCommand
 	    PlayerStats ps=mob.playerStats();
 	    StringBuffer menu=new StringBuffer("^xTitles:^.^?\n\r");
         CMLib.titles().evaluateAutoTitles(mob);
-	    if(!ps.getTitles().contains("*")) ps.getTitles().addElement("*");
+	    if(!ps.getTitles().contains("*")) ps.getTitles().add("*");
 	    for(int i=0;i<ps.getTitles().size();i++)
 	    {
-	        String title=(String)ps.getTitles().elementAt(i);
+	        String title=(String)ps.getTitles().get(i);
             if(title.startsWith("{")&&title.endsWith("}")) title=title.substring(1,title.length()-1);
 	        if(title.equalsIgnoreCase("*"))
 	    	    menu.append(CMStrings.padRight(""+(i+1),2)+": Do not use a title.\n\r");
@@ -81,9 +81,9 @@ public class Title extends StdCommand
 	        mob.tell("No change");
 	    else
 	    {
-	        String which=(String)ps.getTitles().elementAt(selection-1);
-	        ps.getTitles().removeElementAt(selection-1);
-	        ps.getTitles().insertElementAt(which,0);
+	        String which=(String)ps.getTitles().get(selection-1);
+	        ps.getTitles().remove(selection-1);
+	        ps.getTitles().add(0,which);
 	        mob.tell("Title changed accepted.");
 	    }
 		return false;

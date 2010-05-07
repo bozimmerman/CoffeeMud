@@ -37,7 +37,6 @@ import java.util.*;
  * 
  * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#playerStats()
  */
-@SuppressWarnings("unchecked")
 public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 {
     /**
@@ -185,7 +184,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
      * 
 	 * @return  a Vector of modifiable title definitions
 	 */
-    public Vector getTitles();
+    public List<String> getTitles();
     
     /**
      * Returns which of the player available titles is currently being used by
@@ -375,7 +374,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
 	 * 
 	 * @return  a Vector of security flags and groups strings 
 	 */
-	public Vector getSecurityGroups();
+	public List<String> getSecurityGroups();
 
 	/**
 	 * When a player is first created, this method is used to 

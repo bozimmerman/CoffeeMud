@@ -390,7 +390,7 @@ public class DefaultClan implements Clan
             &&(pos!=POS_APPLICANT))
             {
                 if(!M.playerStats().getTitles().contains(title))
-                    M.playerStats().getTitles().addElement(title);
+                    M.playerStats().getTitles().add(title);
             }
             else
             if(M.playerStats().getTitles().contains(title))

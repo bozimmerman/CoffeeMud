@@ -143,7 +143,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @param classLevel the class level of the mob
 	 * @return a vector of security flag strings
 	 */
-    public Vector getSecurityGroups(int classLevel);
+    public List<String> getSecurityGroups(int classLevel);
 
     /**
      * This method should be called whenever a mob has this class added to

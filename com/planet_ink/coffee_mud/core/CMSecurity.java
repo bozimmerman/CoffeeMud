@@ -469,16 +469,19 @@ public class CMSecurity
         return false;
     }
 	
-	public static Vector getSecurityCodes(MOB mob, Room room)
+	public static Iterator<String> getSecurityCodes(MOB mob, Room room)
 	{
-        if((mob==null)||(mob.playerStats()==null)) return new Vector();
-		Vector codes=(Vector)mob.playerStats().getSecurityGroups().clone();
-        CMParms.addToVector(mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()),codes);
-		HashSet tried=new HashSet();
+        if((mob==null)||(mob.playerStats()==null)) return EmptyIterator.INSTANCE;
+        List<String> codes = mob.playerStats().getSecurityGroups();
+        MultiIterator<String> it=new MultiIterator<String>();
+        it.add(codes.iterator());
+        it.add(mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator());
+		HashSet<String> tried=new HashSet<String>();
+		ArrayList<String> misc=new ArrayList<String>();
 		for(Enumeration e=i().groups.keys();e.hasMoreElements();)
 		{
 			String key=(String)e.nextElement();
-			codes.addElement(key);
+			misc.add(key);
 			HashSet H=(HashSet)i().groups.get(key);
 			for(Iterator i=H.iterator();i.hasNext();)
 			{
@@ -490,13 +493,14 @@ public class CMSecurity
 					{
 						if(s.startsWith("AREA ")) 
 							s=s.substring(5).trim();
-						if(!codes.contains(s))
-							codes.addElement(s);
+						if(!misc.contains(s))
+							misc.add(s);
 					}
 				}
 			}
 		}
-		return codes;
+		it.add(misc.iterator());
+		return it;
 	}
 	
 	

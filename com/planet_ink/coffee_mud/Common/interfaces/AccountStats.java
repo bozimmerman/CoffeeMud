@@ -34,7 +34,6 @@ import java.util.*;
  * An interface for a base player account. Shared by PlayerAccount
  * and PlayerStats (since the account system is optional)  
  */
-@SuppressWarnings("unchecked")
 public interface AccountStats extends CMCommon
 {
     /**
@@ -176,7 +175,7 @@ public interface AccountStats extends CMCommon
 	 * 
 	 * @return a set of player friend names
 	 */
-	public HashSet getFriends();
+	public HashSet<String> getFriends();
 
 	/**
      * Returns a modifiable HashSet that contains the set of player
@@ -184,7 +183,7 @@ public interface AccountStats extends CMCommon
      * 
 	 * @return a set of player ignored player list Names
 	 */
-	public HashSet getIgnored();
+	public HashSet<String> getIgnored();
 	
     /**
      * Returns an XML representation of all the data in this object, for

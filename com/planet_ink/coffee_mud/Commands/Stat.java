@@ -466,7 +466,7 @@ public class Stat  extends Skills
 			if(target.playerStats()!=null)
 				for(int t=0;t<target.playerStats().getTitles().size();t++)
 				{
-					String title = (String)target.playerStats().getTitles().elementAt(t);
+					String title = (String)target.playerStats().getTitles().get(t);
 					ttl.append(" "+title+",");
 				}
 			if(ttl.length()==0)

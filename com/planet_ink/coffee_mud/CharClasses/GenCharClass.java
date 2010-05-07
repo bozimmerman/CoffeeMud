@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 
@@ -107,7 +108,7 @@ public class GenCharClass extends StdCharClass
     protected Hashtable securityGroupCache=new Hashtable();
     protected String helpEntry = "";
     
-    public Vector getSecurityGroups(int classLevel)
+    public List<String> getSecurityGroups(int classLevel)
     {
         if(securityGroups.length==0)
             return super.getSecurityGroups(classLevel);

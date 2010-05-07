@@ -41,12 +41,12 @@ public class DefaultPlayerStats implements PlayerStats
     protected final static int GTELL_STACK_MAX_SIZE=50;
     protected long Hygiene=0; 
 	
-    protected HashSet friends=new HashSet();
-    protected HashSet ignored=new HashSet();
-	protected Vector tellStack=new Vector();
-	protected Vector gtellStack=new Vector();
-	protected Vector titles=new Vector();
-    protected DVector alias=new DVector(2);
+    protected HashSet<String> friends=new HashSet<String>();
+    protected HashSet<String> ignored=new HashSet<String>();
+	protected SVector<String> tellStack=new SVector<String>();
+	protected SVector<String> gtellStack=new SVector<String>();
+	protected SVector<String> titles=new SVector<String>();
+    protected STreeMap<String,String> alias=new STreeMap<String,String>();
     protected String[] xtraValues=null;
 	protected String lastIP="";
     protected long LastDateTime=System.currentTimeMillis();
@@ -182,11 +182,11 @@ public class DefaultPlayerStats implements PlayerStats
             else
                 O.visitedRoomSet=null;
             O.securityGroups=(Vector)securityGroups.clone();
-            O.friends=(HashSet)friends.clone();
-            O.ignored=(HashSet)ignored.clone();
-            O.tellStack=(Vector)tellStack.clone();
-            O.gtellStack=(Vector)gtellStack.clone();
-            O.titles=(Vector)titles.clone();
+            O.friends=(HashSet<String>)friends.clone();
+            O.ignored=(HashSet<String>)ignored.clone();
+            O.tellStack=tellStack.copyOf();
+            O.gtellStack=gtellStack.copyOf();
+            O.titles=titles.copyOf();
             O.alias=alias.copyOf();
             O.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
             return O;
@@ -335,7 +335,7 @@ public class DefaultPlayerStats implements PlayerStats
 			return account.getFriends();
 		return friends;
 	}
-	public HashSet getIgnored()
+	public HashSet<String> getIgnored()
 	{
 		if(account != null)
 			return account.getIgnored();
@@ -344,50 +344,41 @@ public class DefaultPlayerStats implements PlayerStats
 	
     public String[] getAliasNames()
     {
-        String[] aliasNames=new String[alias.size()];
-        for(int s=0;s<alias.size();s++)
-            aliasNames[s]=(String)alias.elementAt(s,1);
-        return aliasNames;
+    	return alias.keySet().toArray(new String[0]);
     }
     
     public String getAlias(String named)
     {
-        int x=alias.indexOf(named.toUpperCase().trim());
-        if(x<0) return "";
-        return (String)alias.elementAt(x,2);
+    	if(alias.containsKey(named.toUpperCase().trim()))
+    		return alias.get(named.toUpperCase().trim());
+    	return "";
     }
     public void addAliasName(String named)
     {
         named=named.toUpperCase().trim();
         if(getAlias(named).length()==0)
-            alias.addElement(named,"");
+            alias.put(named,"");
     }
     public void delAliasName(String named)
     {
-        int x=alias.indexOf(named.toUpperCase().trim());
-        if(x>=0) alias.removeElementAt(x);
+    	alias.remove(named.toUpperCase().trim());
     }
     public void setAlias(String named, String value)
     {
-        int x=alias.indexOf(named.toUpperCase().trim());
-        if(x>=0) alias.setElementAt(x,2,value);
+        alias.put(named.toUpperCase().trim(),value);
     }
     
     public String getAliasXML()
     {
         if(alias.size()==0) return "";
         StringBuffer str=new StringBuffer("");
-        for(int t=alias.size()-1;t>=0;t--)
+        alias.remove("");
+        int t=0;
+        for(String key : alias.keySet())
         {
-            String s=(String)alias.elementAt(t,1);
-            if(s.length()==0) alias.removeElementAt(t);
-        }
-        for(int t=0;t<alias.size();t++)
-        {
-            String s=(String)alias.elementAt(t,1);
-            String v=(String)alias.elementAt(t,2);
-            str.append("<ALIAS"+t+">"+s+"</ALIAS"+t+">");
-            str.append("<ALIASV"+t+">"+v+"</ALIASV"+t+">");
+            str.append("<ALIAS"+t+">"+key+"</ALIAS"+t+">");
+            str.append("<ALIASV"+t+">"+alias.get(key)+"</ALIASV"+t+">");
+            t++;
         }
         return str.toString();
     }
@@ -401,7 +392,7 @@ public class DefaultPlayerStats implements PlayerStats
         return s.substring(1,s.length()-1);
     }
     
-	public Vector getTitles()
+	public List<String> getTitles()
 	{
 	    return titles;
 	}
@@ -515,7 +506,7 @@ public class DefaultPlayerStats implements PlayerStats
             String value=CMLib.xml().getValFromPieces(xml,"ALIASV"+a);
             if((name.length()==0)||(value.length()==0))
                 break;
-            alias.addElement(name,value);
+            alias.put(name.toUpperCase().trim(),value);
         }
 	}
 	
@@ -669,7 +660,7 @@ public class DefaultPlayerStats implements PlayerStats
 		return "<SECGRPS>"+list.toString()+"</SECGRPS>";
 		
 	}
-	public Vector getSecurityGroups(){	return securityGroups;}
+	public List<String> getSecurityGroups(){ return securityGroups;}
 	public void setPoofs(String poofIn, String poofOut, String tranPoofIn, String tranPoofOut)
 	{
 		poofin=poofIn;

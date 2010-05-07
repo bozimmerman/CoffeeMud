@@ -94,7 +94,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
         String title=null;
         Vector mask=null;
         int pdex=0;
-        Vector ptV=P.getTitles();
+        List<String> ptV=P.getTitles();
         boolean somethingDone=false;
         synchronized(ptV)
         {
@@ -109,7 +109,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 	                for(int p=ptV.size()-1;p>=0;p--)
 	                {
 	                	try {
-	    	            	String tit=CMStrings.removeColors((String)ptV.elementAt(p)).replace('\'', '`');
+	    	            	String tit=CMStrings.removeColors((String)ptV.get(p)).replace('\'', '`');
 	    	            	if(tit.equalsIgnoreCase(fixedTitle))
 	    	            	{ pdex=p; break;}
 	                	}catch(java.lang.IndexOutOfBoundsException ioe){}
@@ -121,9 +121,9 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 	                if(pdex<0)
 	                {
 	                    if(ptV.size()>0)
-	                    	ptV.insertElementAt(title,0);
+	                    	ptV.add(0,title);
 	                    else
-	                    	ptV.addElement(title);
+	                    	ptV.add(title);
 	                    somethingDone=true;
 	                }
 	            }
@@ -131,7 +131,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 	            if(pdex>=0)
 	            {
 	                somethingDone=true;
-	                ptV.removeElementAt(pdex);
+	                ptV.remove(pdex);
 	            }
 	        }
         }
@@ -147,7 +147,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
             MOB M=CMLib.players().getLoadPlayer(playerName);
             if(M.playerStats()!=null)
             {
-            	Vector ptV=M.playerStats().getTitles();
+            	List<String> ptV=M.playerStats().getTitles();
             	synchronized(ptV)
             	{
 	                int pdex=ptV.indexOf(title);
@@ -156,7 +156,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 	                    for(int p=ptV.size()-1;p>=0;p--)
 	                    {
 	                    	try {
-	        	            	String tit=CMStrings.removeColors((String)ptV.elementAt(p)).replace('\'', '`');
+	        	            	String tit=CMStrings.removeColors((String)ptV.get(p)).replace('\'', '`');
 	        	            	if(tit.equalsIgnoreCase(fixedTitle))
 	        	            	{ pdex=p; break;}
 	                    	}catch(java.lang.IndexOutOfBoundsException ioe){}
@@ -164,7 +164,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 	                }
 	                if(pdex>=0)
 	                {
-		                ptV.removeElementAt(pdex);
+		                ptV.remove(pdex);
 		                if(!CMLib.flags().isInTheGame(M,true))
 		                    CMLib.database().DBUpdatePlayerPlayerStats(M);
 	                }

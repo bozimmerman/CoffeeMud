@@ -2778,7 +2778,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             String behaviorstr="";
             for(int b=0;b<M.playerStats().getTitles().size();b++)
             {
-                String B=(String)M.playerStats().getTitles().elementAt(b);
+                String B=(String)M.playerStats().getTitles().get(b);
                 if(B!=null) behaviorstr+=B+", ";
             }
             if(behaviorstr.length()>0)
@@ -2793,7 +2793,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 &&(CMath.isInteger(tattoo))
                 &&(CMath.s_int(tattoo)>0)
                 &&(CMath.s_int(tattoo)<=M.playerStats().getTitles().size()))
-                    tattoo=(String)M.playerStats().getTitles().elementAt(CMath.s_int(tattoo)-1);
+                    tattoo=(String)M.playerStats().getTitles().get(CMath.s_int(tattoo)-1);
                 else
                 if((tattoo.length()>0)
                 &&(Character.isDigit(tattoo.charAt(0)))
@@ -2808,7 +2808,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 else
                 {
                     mob.tell(behave.trim().toUpperCase()+" added.");
-                    M.playerStats().getTitles().addElement(tattoo);
+                    M.playerStats().getTitles().add(tattoo);
                 }
             }
             else
@@ -2866,7 +2866,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             String behaviorstr="";
             for(int b=0;b<P.getSecurityGroups().size();b++)
             {
-                String B=(String)P.getSecurityGroups().elementAt(b);
+                String B=(String)P.getSecurityGroups().get(b);
                 if(B!=null) behaviorstr+=B+", ";
             }
             if(behaviorstr.length()>0)
@@ -2891,7 +2891,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                     mob.tell("You do not have clearance to add security code '"+behave+"' to this class.");
                 else
                 {
-                    P.getSecurityGroups().addElement(behave.trim().toUpperCase());
+                    P.getSecurityGroups().add(behave.trim().toUpperCase());
                     mob.tell(behave+" added.");
                 }
             }

@@ -72,7 +72,7 @@ public class StdCharClass implements CharClass
 	public int maxCommonSkills() { return 0;}
 	public int maxLanguages() { return 3;}
     private static final Vector empty=new Vector();
-    public Vector getSecurityGroups(int classLevel){return empty;}
+    public List<String> getSecurityGroups(int classLevel){return empty;}
     public CMObject newInstance(){return this;}
     protected String[] names=null;
     public String[] nameSet()
@@ -666,8 +666,9 @@ public class StdCharClass implements CharClass
             CR.nameSet()[n]=names[n];
         int[] lvls=new int[names.length];
         int nameDex=0;
-        Vector firstSet=getSecurityGroups(0);
-        Vector cumulativeSet=(Vector)firstSet.clone();
+        List<String> firstSet=getSecurityGroups(0);
+        Vector cumulativeSet=new Vector();
+        cumulativeSet.addAll(firstSet);
         securitySets.addElement(firstSet);
         securityLvls.addElement(Integer.valueOf(0));
         for(int x=1;x<20000;x++)
@@ -681,7 +682,8 @@ public class StdCharClass implements CharClass
             }
             if(getSecurityGroups(x).size()!=cumulativeSet.size())
             {
-                Vector V=(Vector)getSecurityGroups(x).clone();
+                Vector V=new Vector();
+                V.addAll(getSecurityGroups(x));
                 for(int i=0;i<cumulativeSet.size();i++)
                     V.remove(cumulativeSet.elementAt(i));
                 securitySets.addElement(V);

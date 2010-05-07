@@ -83,9 +83,8 @@ public class CheckAuthCode extends StdWebMacro
 			auths.put("SYSOP",""+sysop);
 			auths.put("SUBOP",""+(sysop||subOp));
 	        
-			Vector V=CMSecurity.getSecurityCodes(mob,R);
-			for(int v=0;v<V.size();v++)
-				auths.put("AUTH_"+((String)V.elementAt(v)),"true");
+			for(Iterator<String> i = CMSecurity.getSecurityCodes(mob,R);i.hasNext();)
+				auths.put("AUTH_"+i.next(),"true");
 			httpReq.getRequestObjects().put("AUTHS_"+mob.Name().toUpperCase().trim(),auths);
 		}
 		return auths;

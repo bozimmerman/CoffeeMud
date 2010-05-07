@@ -163,7 +163,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	public HashSet getFriends(){return friends;}
-	public HashSet getIgnored(){return ignored;}
+	public HashSet<String> getIgnored(){return ignored;}
 	public MOB getAccountMob()
 	{
 		if(fakePlayerM!=null)

@@ -288,7 +288,7 @@ public class PlayerData extends StdWebMacro
 			if(M.playerStats()!=null)
 				for(int b=0;b<M.playerStats().getSecurityGroups().size();b++)
 				{
-					String B=(String)M.playerStats().getSecurityGroups().elementAt(b);
+					String B=(String)M.playerStats().getSecurityGroups().get(b);
 					if(B!=null)	str.append(B+", ");
 				}
 				break;
@@ -298,7 +298,7 @@ public class PlayerData extends StdWebMacro
 			if(M.playerStats()!=null)
 				for(int b=0;b<M.playerStats().getTitles().size();b++)
 				{
-					String B=(String)M.playerStats().getTitles().elementAt(b);
+					String B=(String)M.playerStats().getTitles().get(b);
 					if(B!=null)	str.append(B+", ");
 				}
 				break;
