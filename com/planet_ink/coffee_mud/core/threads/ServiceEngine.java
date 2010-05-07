@@ -40,30 +40,24 @@ public class ServiceEngine implements ThreadEngine
 {
     public static final long STATUS_ALLMISCTICKS=Tickable.STATUS_MISC|Tickable.STATUS_MISC2|Tickable.STATUS_MISC3|Tickable.STATUS_MISC4|Tickable.STATUS_MISC5|Tickable.STATUS_MISC6;
     
+    private ThreadEngine.SupportThread  thread=null;
+	protected SLinkedList<Tick> 		ticks=new SLinkedList<Tick>();
+    private boolean 					isSuspended=false;
+    private int 						max_objects_per_thread=0;
+	
     public String ID(){return "ServiceEngine";}
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new ServiceEngine();}}
     public void initializeClass(){}
     public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-    private ThreadEngine.SupportThread thread=null;
     public void propertiesLoaded(){}
-	protected SLinkedList<Tick> ticks=new SLinkedList<Tick>();
-	public Iterator<Tick> tickGroups(){return ticks.iterator();}
-    private boolean isSuspended=false;
-    private int max_objects_per_thread=0;
-	
     public ThreadEngine.SupportThread getSupportThread() { return thread;}
     
-	public void delTickGroup(Tick tock)
+	public Iterator<Tick> tickGroups()
 	{
-		ticks.remove(tock);
+		return ticks.iterator();
 	}
-	public void addTickGroup(Tick tock)
-	{
-		if(!ticks.contains(tock))
-			ticks.add(tock);
-	}
-	
+    
 	public int getMaxObjectsPerThread()
 	{
 		if(max_objects_per_thread>0) return max_objects_per_thread;
@@ -73,7 +67,22 @@ public class ServiceEngine implements ThreadEngine
 		return 128;
 	}
 	
-	public Tick getAvailTickThread(Tickable E, long TICK_TIME, int tickID)
+    protected void delTickGroup(Tick tock)
+	{
+		ticks.remove(tock);
+	}
+    protected void addTickGroup(Tick tock)
+	{
+		if(!ticks.contains(tock))
+			ticks.add(tock);
+	}
+	
+    public void startTickDown(Tickable E, int tickID, int numTicks)
+    { 
+    	startTickDown(E,tickID,Tickable.TIME_TICK,numTicks); 
+    }
+    
+	public synchronized void startTickDown(Tickable E, int tickID, long TICK_TIME, int numTicks)
 	{
 		Tick tock=null;
         Tick almostTock=null;
@@ -85,7 +94,7 @@ public class ServiceEngine implements ThreadEngine
 			if(almostTock!=null)
 			{
 	        	if(almostTock.contains(E,tickID)) 
-	        		return null;
+	        		return;
 				if((tock==null)
 	            &&(almostTock.TICK_TIME==TICK_TIME)
 	            &&(!almostTock.solitaryTicker)
@@ -94,29 +103,16 @@ public class ServiceEngine implements ThreadEngine
 					grp = almostTock.getThreadGroup();
 					if((grp!=null)
 		            &&(grp.getName().charAt(0)==threadGroupNum))
-					{
 						tock=almostTock;
-					}
 				}
 			}
 		}
 
-		if(tock!=null) return tock;
-		tock=new Tick(TICK_TIME);
-		addTickGroup(tock);
-		return tock;
-	}
-
-    public void startTickDown(Tickable E, int tickID, int numTicks)
-    { startTickDown(E,tickID,Tickable.TIME_TICK,numTicks); }
-    
-	public void startTickDown(Tickable E,
-							  int tickID,
-                              long TICK_TIME,
-							  int numTicks)
-	{
-		Tick tock=getAvailTickThread(E,TICK_TIME,tickID);
-		if(tock==null) return;
+		if(tock==null)
+		{
+			tock=new Tick(TICK_TIME);
+			addTickGroup(tock);
+		}
 
 		TockClient client=new TockClient(E,numTicks,tickID);
 		if((tickID&65536)==65536)
@@ -124,7 +120,7 @@ public class ServiceEngine implements ThreadEngine
 		tock.addTicker(client);
 	}
 
-	public boolean deleteTick(Tickable E, int tickID)
+	public synchronized boolean deleteTick(Tickable E, int tickID)
 	{
         Tick almostTock=null;
         Iterator set=null;
@@ -170,6 +166,7 @@ public class ServiceEngine implements ThreadEngine
 		}
 		return false;
 	}
+	
 	public boolean isSuspended(Tickable E, int tickID)
 	{
         Tick almostTock=null;
