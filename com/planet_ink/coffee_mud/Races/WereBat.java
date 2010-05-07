@@ -67,7 +67,7 @@ public class WereBat extends Bat
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK);
 	}
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

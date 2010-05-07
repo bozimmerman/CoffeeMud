@@ -114,14 +114,14 @@ public class Chant_SummonTree extends Chant_SummonPlants
 			material=mob.location().myResource();
 		else
 		{
-			Vector V=mob.location().resourceChoices();
+			List<Integer> V=mob.location().resourceChoices();
 			Vector V2=new Vector();
 			if(V!=null)
 			for(int v=0;v<V.size();v++)
 			{
-				if(((((Integer)V.elementAt(v)).intValue()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
-				&&((((Integer)V.elementAt(v)).intValue())!=RawMaterial.RESOURCE_WOOD))
-					V2.addElement(V.elementAt(v));
+				if(((((Integer)V.get(v)).intValue()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
+				&&((((Integer)V.get(v)).intValue())!=RawMaterial.RESOURCE_WOOD))
+					V2.addElement(V.get(v));
 			}
 			if(V2.size()>0)
 				material=((Integer)V2.elementAt(CMLib.dice().roll(1,V2.size(),-1))).intValue();

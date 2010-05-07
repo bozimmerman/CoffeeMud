@@ -89,5 +89,5 @@ public class CaveRoom extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_CRYSTAL),
 		Integer.valueOf(RawMaterial.RESOURCE_PLATINUM)};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
-	public Vector resourceChoices(){return CaveRoom.roomResources;}
+	public List<Integer> resourceChoices(){return CaveRoom.roomResources;}
 }

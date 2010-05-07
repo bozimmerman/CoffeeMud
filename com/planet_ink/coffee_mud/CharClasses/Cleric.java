@@ -356,7 +356,7 @@ public class Cleric extends StdCharClass
 		return true;
 	}
 
-	public Vector outfit(MOB myChar)
+	public List<Item> outfit(MOB myChar)
 	{
 		Vector outfitChoices=new Vector();
 		if(CMLib.flags().isEvil(myChar))

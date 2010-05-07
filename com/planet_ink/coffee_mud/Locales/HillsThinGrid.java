@@ -54,5 +54,5 @@ public class HillsThinGrid extends StdThinGrid
         return new HillsGrid().newInstance();
 	}
 	public String getGridChildLocaleID(){return "Hills";}
-	public Vector resourceChoices(){return Hills.roomResources;}
+	public List<Integer> resourceChoices(){return Hills.roomResources;}
 }

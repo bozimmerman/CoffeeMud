@@ -13,6 +13,8 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+import java.util.List;
 import java.util.Vector;
 /* 
    Copyright 2000-2010 Bo Zimmerman
@@ -62,7 +64,7 @@ public class GiantWolf extends Wolf
 		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,13);
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,13);
 	}
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

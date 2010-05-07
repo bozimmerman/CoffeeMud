@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Vector;
 
 /*
@@ -93,7 +94,7 @@ public class Property implements Ability
 	public boolean canBeUninvoked(){return false;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean isNowAnAutoEffect(){return true;}
-	public Vector externalFiles(){return null;}
+	public List<String> externalFiles(){return null;}
 
 	public boolean canBeTaughtBy(MOB teacher, MOB student){return false;}
 	public boolean canBePracticedBy(MOB teacher, MOB student){return false;}

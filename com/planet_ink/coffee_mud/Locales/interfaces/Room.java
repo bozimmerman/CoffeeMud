@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public interface Room extends PhysicalAgent, ItemPossessor
 {
 	public String roomID();
@@ -95,7 +94,7 @@ public interface Room extends PhysicalAgent, ItemPossessor
 	public int domainConditions();
 	public int myResource();
 	public void setResource(int resourceCode);
-	public Vector resourceChoices();
+	public List<Integer> resourceChoices();
 	public void toggleMobility(boolean onoff);
 	public boolean getMobility();
 
@@ -134,7 +133,7 @@ public interface Room extends PhysicalAgent, ItemPossessor
 		{"ELSE","\n"},
 		{"VARIES","\r"}
 	};
-	public static final Hashtable VARIATION_CODES_HASHED=CMParms.makeHashtable(VARIATION_CODES);
+	public static final Hashtable<String, Object> VARIATION_CODES_HASHED=CMParms.makeHashtable(VARIATION_CODES);
 	
 
 	public void startItemRejuv();

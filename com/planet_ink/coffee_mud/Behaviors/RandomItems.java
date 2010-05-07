@@ -46,7 +46,7 @@ public class RandomItems extends ActiveTicker
 	protected Vector restrictedLocales=null;
 	protected boolean alreadyTriedLoad=false;
 
-	public Vector externalFiles()
+	public List<String> externalFiles()
 	{
         Vector xmlfiles=new Vector();
         String theseparms=getParms();

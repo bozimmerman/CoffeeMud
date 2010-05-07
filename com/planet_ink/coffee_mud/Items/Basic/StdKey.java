@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StdKey extends StdItem implements Key
+public class StdKey extends StdItem implements DoorKey
 {
 	public String ID(){	return "StdKey";}
 	public StdKey()

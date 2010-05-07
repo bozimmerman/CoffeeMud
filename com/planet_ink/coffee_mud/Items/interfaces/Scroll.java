@@ -32,7 +32,6 @@ import java.util.*;
 */
 public interface Scroll extends MiscMagic, Item, SpellHolder
 {
-	
 	public boolean useTheScroll(Ability A, MOB mob);
 	public boolean isReadableScrollBy(String name);
 	public void setReadableScrollBy(String name);

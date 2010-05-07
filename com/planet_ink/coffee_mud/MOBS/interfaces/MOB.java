@@ -220,6 +220,16 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
     public void removeFaction(String which);
     public void copyFactions(MOB source);
     
+    public static class Follower
+    {
+    	public MOB follower;
+    	public int marchingOrder;
+    	public Follower(MOB M, int order){follower=M; marchingOrder=order;}
+    	public static final Converter<Follower,MOB> converter = new Converter<Follower,MOB>(){
+			public MOB convert(Follower obj) { return obj.follower;}
+    	};
+    }
+    
     public static class Tattoo
     {
     	public int tickDown=0;

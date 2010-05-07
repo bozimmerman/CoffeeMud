@@ -45,7 +45,6 @@ import java.util.Vector;
  * circumstances.
  * @see com.planet_ink.coffee_mud.Libraries.interfaces.QuestManager
  */
-@SuppressWarnings("unchecked")
 public interface Quest extends Tickable, CMCommon, Modifiable
 {
     /**
@@ -453,7 +452,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setWinners(String)
 	 * @return the names of all the winners of this quest
 	 */
-	public Vector getWinners();
+	public List<String> getWinners();
 	/**
 	 * Returns a semicolon delimited string of all the winners of this quest
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#declareWinner(String)

@@ -3340,12 +3340,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         	name=name.substring(1);
             if(Q.wasWinner(name))
             {
-                Vector V=Q.getWinners();
+            	List<String> V=Q.getWinners();
                 for(int i=0;i<V.size();i++)
                 {
-                    if(((String)V.elementAt(i)).equalsIgnoreCase(name))
+                    if(((String)V.get(i)).equalsIgnoreCase(name))
                     {
-                    	V.removeElementAt(i);
+                    	V.remove(i);
                     	break;
                     }
                 }
@@ -3355,7 +3355,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         else
         if(!Q.wasWinner(name))
         {
-            Q.getWinners().addElement(name);
+            Q.getWinners().add(name);
             CMLib.database().DBUpdateQuest(Q);
         }
     }
@@ -3364,16 +3364,16 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     {
         Quest Q=getMainQuestObject();
         StringBuffer list=new StringBuffer("");
-        Vector V=Q.getWinners();
+        List<String> V=Q.getWinners();
         for(int i=0;i<V.size();i++)
-            list.append(((String)V.elementAt(i))+";");
+            list.append(((String)V.get(i))+";");
         return list.toString();
     }
 
     public void setWinners(String list)
     {
         Quest Q=getMainQuestObject();
-        Vector V=Q.getWinners();
+        List<String> V=Q.getWinners();
         V.clear();
         list=list.trim();
         int x=list.indexOf(";");
@@ -3382,15 +3382,15 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             String s=list.substring(0,x).trim();
             list=list.substring(x+1).trim();
             if(s.length()>0)
-                V.addElement(s);
+                V.add(s);
             x=list.indexOf(";");
         }
         if(list.trim().length()>0)
-            V.addElement(list.trim());
+            V.add(list.trim());
     }
 
     // retreive the list of previous winners
-    public Vector getWinners()
+    public List<String> getWinners()
     {
         Quest Q=getMainQuestObject();
         if(Q==this) return winners;
@@ -3404,10 +3404,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         name=name.trim();
         if(name.length()==0) return false;
         Quest Q=getMainQuestObject();
-        Vector V=Q.getWinners();
+        List<String> V=Q.getWinners();
         for(int i=0;i<V.size();i++)
         {
-            if(((String)V.elementAt(i)).equalsIgnoreCase(name))
+            if(((String)V.get(i)).equalsIgnoreCase(name))
                 return true;
         }
         return false;

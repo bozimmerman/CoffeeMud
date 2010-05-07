@@ -258,5 +258,5 @@ public class UnderWater extends StdRoom implements Drink
 		Integer.valueOf(RawMaterial.RESOURCE_CLAY),
 		Integer.valueOf(RawMaterial.RESOURCE_LIMESTONE)};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
-	public Vector resourceChoices(){return UnderWater.roomResources;}
+	public List<Integer> resourceChoices(){return UnderWater.roomResources;}
 }

@@ -56,7 +56,7 @@ public class Harpy extends GreatBird
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{ affectableStats.setStat(CharStats.STAT_GENDER,'F');}
 
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

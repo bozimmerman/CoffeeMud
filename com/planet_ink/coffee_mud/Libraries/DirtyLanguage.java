@@ -48,7 +48,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
     protected static final int CMD_AUTOIGNORE=4;
     protected static final int CMD_DEFINE=5;
     protected static final int CMD_REPLACEALL=6;
-    protected Hashtable HASHED_CMDS=CMStrings.makeNumericHash(
+    protected Hashtable<Object,Integer> HASHED_CMDS=CMStrings.makeNumericHash(
             new String[]{"REPLACE","REPLACEWHOLE","IGNORE","IGNOREWHOLE","AUTOIGNORE","DEFINE","REPLACEALL"});
 	
 	public void setLocale(String lang, String state)

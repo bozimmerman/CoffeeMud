@@ -50,5 +50,5 @@ public class UnderSaltWater extends UnderWater
 		Integer.valueOf(RawMaterial.RESOURCE_PEARL),
 		Integer.valueOf(RawMaterial.RESOURCE_LIMESTONE)};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
-	public Vector resourceChoices(){return UnderWater.roomResources;}
+	public List<Integer> resourceChoices(){return UnderWater.roomResources;}
 }

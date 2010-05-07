@@ -78,7 +78,7 @@ public class Tabaxi extends GreatCat
 		affectableStats.setStat(CharStats.STAT_MAX_WISDOM_ADJ,affectableStats.getStat(CharStats.STAT_MAX_WISDOM_ADJ)-2);
 	}
 
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

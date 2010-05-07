@@ -79,7 +79,7 @@ public class Dryad extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_JUSTICE,affectableStats.getStat(CharStats.STAT_SAVE_JUSTICE)+5);
 		affectableStats.setStat(CharStats.STAT_GENDER,'F');
 	}
-	public Vector outfit(MOB myChar)
+	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
@@ -150,7 +150,7 @@ public class Dryad extends StdRace
 		else
 			return "^c" + mob.displayName(viewer) + "^c is in perfect health.^N";
 	}
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

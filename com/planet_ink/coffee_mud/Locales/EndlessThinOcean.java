@@ -68,7 +68,7 @@ public class EndlessThinOcean extends StdThinGrid
 		return super.okMessage(myHost,msg);
 	}
 	public String getGridChildLocaleID(){return "SaltWaterThinSurface";}
-	public Vector resourceChoices(){return UnderSaltWater.roomResources;}
+	public List<Integer> resourceChoices(){return UnderSaltWater.roomResources;}
 	protected void fillExitsOfGridRoom(Room R, int x, int y)
 	{
 		super.fillExitsOfGridRoom(R,x,y);

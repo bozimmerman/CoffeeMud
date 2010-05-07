@@ -48,7 +48,7 @@ public interface CMMiscUtils extends CMLibrary
     public double memoryUse ( Environmental E, int number );
     public String niceCommaList(Vector V, boolean andTOrF);
     
-    public void outfit(MOB mob, Vector items);
+    public void outfit(MOB mob, List<Item> items);
     public boolean reachableItem(MOB mob, Environmental E);
     public void extinguish(MOB source, Physical target, boolean mundane);
     public boolean armorCheck(MOB mob, int allowedArmorLevel);

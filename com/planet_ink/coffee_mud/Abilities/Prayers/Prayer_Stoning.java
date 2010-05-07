@@ -115,7 +115,7 @@ public class Prayer_Stoning extends Prayer
 		if(target==null) return false;
         LegalBehavior B=null;
 		if(mob.location()!=null) B=CMLib.law().getLegalBehavior(mob.location());
-		Vector warrants=new Vector();
+		List<LegalWarrant> warrants=new Vector();
 		if(B!=null)
             warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),target);
 		if((warrants.size()==0)&&(!CMSecurity.isAllowed(mob,mob.location(),"ABOVELAW")))
@@ -150,7 +150,7 @@ public class Prayer_Stoning extends Prayer
 					success=maliciousAffect(mob,target,asLevel,0,CMMsg.MASK_MALICIOUS|CMMsg.TYP_JUSTICE);
 					for(int i=0;i<warrants.size();i++)
 					{
-						LegalWarrant W=(LegalWarrant)warrants.elementAt(i);
+						LegalWarrant W=(LegalWarrant)warrants.get(i);
 						W.setCrime("pardoned");
 						W.setOffenses(0);
 					}

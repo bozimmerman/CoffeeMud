@@ -979,13 +979,11 @@ public class CharClassData extends StdWebMacro
 						str.append(C.getStatQualDesc()+", ");
 				if(parms.containsKey("STARTINGEQ"))
 				{
-					if(C.outfit(null)!=null)
-					for(int i=0;i<C.outfit(null).size();i++)
-					{
-						Item I=(Item)C.outfit(null).elementAt(i);
+					List<Item> items=C.outfit(null);
+					if(items !=null)
+					for(Item I : items)
 						if(I!=null)
 							str.append(I.name()+", ");
-					}
 				}
 				if(parms.containsKey("BALANCE"))
 					str.append(balanceChart(C));

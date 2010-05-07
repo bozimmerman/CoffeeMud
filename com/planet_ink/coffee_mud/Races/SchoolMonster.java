@@ -117,7 +117,7 @@ public class SchoolMonster extends StdRace
 		return super.okMessage(myHost,msg);
 	}
 
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

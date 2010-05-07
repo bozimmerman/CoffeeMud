@@ -181,7 +181,7 @@ public class Delver extends StdCharClass
 	}
 
 
-    public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, HashSet followers)
+    public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
 	{
 		if((mob!=null)
         &&(mob!=killed)
@@ -230,7 +230,7 @@ public class Delver extends StdCharClass
 	public String getOtherLimitsDesc(){return "Must remain Neutral to avoid skill and chant failure chances.";}
 	public String getOtherBonusDesc(){return "Can create a druidic connection with an area.  Benefits from freeing animals from cities.";}
 
-	public Vector outfit(MOB myChar)
+	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

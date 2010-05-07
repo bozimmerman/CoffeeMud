@@ -87,7 +87,7 @@ public class Spider extends StdRace
 		}
 		return naturalWeapon;
 	}
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

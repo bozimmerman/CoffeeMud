@@ -29,7 +29,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface Map extends Item
+public interface RoomMap extends Item
 {
 	public String getMapArea();
 	public void setMapArea(String mapName);

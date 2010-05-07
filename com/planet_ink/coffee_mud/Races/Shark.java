@@ -51,7 +51,7 @@ public class Shark extends GiantFish
         affectableStats.setRacialStat(CharStats.STAT_STRENGTH,16);
         affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,15);
     }
-    public Vector myResources()
+    public List<RawMaterial> myResources()
     {
         synchronized(resources)
         {

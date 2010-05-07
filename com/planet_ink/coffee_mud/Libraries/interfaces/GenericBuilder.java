@@ -99,8 +99,8 @@ public interface GenericBuilder extends CMLibrary
     public String getPlayerXML(MOB mob, HashSet custom, HashSet files);
     public String addPLAYERsFromXML(String xmlBuffer, Vector addHere, Session S);
     public String getExtraEnvPropertiesStr(Environmental E);
-    public void fillFileSet(Vector V, HashSet H);
-    public void fillFileSet(Environmental E, HashSet H);
+    public void fillFileSet(List<String> V, Set<String> H);
+    public void fillFileSet(Environmental E, Set<String> H);
     public String getPhyStatsStr(PhyStats E);
     public String getCharStateStr(CharState E);
     public String getCharStatsStr(CharStats E);

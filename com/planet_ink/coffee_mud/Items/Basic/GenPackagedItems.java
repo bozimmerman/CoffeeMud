@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /* 
@@ -120,7 +121,7 @@ public class GenPackagedItems extends GenItem implements PackagedItems
         return (Item)newOne;
     }
 
-    public Vector unPackage(int number)
+    public List<Item> unPackage(int number)
     {
         Vector V=new Vector();
         if(number>=numberOfItemsInPackage())

@@ -125,7 +125,7 @@ public class GTell extends StdCommand
 				{
 					for(int i=0;i<msg.trailerMsgs().size();i++)
 					{
-						CMMsg msg2=(CMMsg)msg.trailerMsgs().elementAt(i);
+						CMMsg msg2=(CMMsg)msg.trailerMsgs().get(i);
 						if((msg2!=msg)&&(target.okMessage(target,msg2)))
 							target.executeMsg(target,msg2);
 					}

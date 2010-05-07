@@ -43,5 +43,5 @@ public class FrozenMountains extends Mountains
 	}
 	public int domainConditions(){return Room.CONDITION_COLD;}
 
-	public Vector resourceChoices(){return Mountains.roomResources;}
+	public List<Integer> resourceChoices(){return Mountains.roomResources;}
 }

@@ -486,7 +486,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
             {
                 for(int i=0;i<msg.trailerMsgs().size();i++)
                 {
-                    CMMsg msg2=(CMMsg)msg.trailerMsgs().elementAt(i);
+                    CMMsg msg2=(CMMsg)msg.trailerMsgs().get(i);
                     if((msg!=msg2)&&(M.location()!=null)&&(M.location().okMessage(M,msg2)))
                         M.executeMsg(M,msg2);
                 }

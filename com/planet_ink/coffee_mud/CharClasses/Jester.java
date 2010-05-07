@@ -218,7 +218,7 @@ public class Jester extends StdCharClass
     public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(host, mob,victim,amount,6.0);}
 	public String getOtherLimitsDesc(){return "";}
 	public String getOtherBonusDesc(){return "Receives 2%/level bonus to saves versus poison.  Receives extra natural damaging skill. Receives group bonus combat experience when in an intelligent group, and more for a group of players.  Receives exploration and pub-finding experience based on danger level.";}
-	public Vector outfit(MOB myChar)
+	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

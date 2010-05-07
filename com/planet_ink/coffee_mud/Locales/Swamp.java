@@ -77,5 +77,5 @@ public class Swamp extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_CLAY),
 	};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
-	public Vector resourceChoices(){return Swamp.roomResources;}
+	public List<Integer> resourceChoices(){return Swamp.roomResources;}
 }

@@ -455,7 +455,7 @@ public class Amputation extends StdAbility implements Amputator
 			if((R!=null)&&(R.myResources()!=null)&&(R.myResources().size()>0))
 				for(int r=0;r<R.myResources().size();r++)
 				{
-					Item I=(Item)R.myResources().elementAt(r);
+					Item I=(Item)R.myResources().get(r);
 					int mat=I.material()&RawMaterial.MATERIAL_MASK;
 					if(((mat==RawMaterial.MATERIAL_FLESH))
 					||(r==R.myResources().size()-1))
@@ -563,7 +563,7 @@ public class Amputation extends StdAbility implements Amputator
 		{
 			LegalBehavior B=null;
 			if(mob.location()!=null) B=CMLib.law().getLegalBehavior(mob.location());
-			Vector warrants=new Vector();
+			List<LegalWarrant> warrants=new Vector();
 			if(B!=null)
                 warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),target);
 			if((warrants.size()==0)&&(!CMSecurity.isAllowed(mob,mob.location(),"ABOVELAW")))

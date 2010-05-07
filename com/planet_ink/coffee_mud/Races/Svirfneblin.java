@@ -77,7 +77,7 @@ public class Svirfneblin extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_MIND,affectableStats.getStat(CharStats.STAT_SAVE_MIND)+10);
         affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING)+10);
 	}
-	public Vector outfit(MOB myChar)
+	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
@@ -147,7 +147,7 @@ public class Svirfneblin extends StdRace
 		else
 			return "^c" + mob.displayName(viewer) + "^c is in perfect health.^N";
 	}
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

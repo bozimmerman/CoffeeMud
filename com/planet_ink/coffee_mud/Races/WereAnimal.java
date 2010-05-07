@@ -54,7 +54,7 @@ public class WereAnimal extends StdRace
 	
 	protected static Vector resources=new Vector();
 
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

@@ -257,7 +257,7 @@ public class WaterCurrents extends ActiveTicker
 		public boolean canBeUninvoked(){return false;}
 		public boolean isAutoInvoked(){return true;}
 		public boolean isNowAnAutoEffect(){return true;}
-		public Vector externalFiles(){return null;}
+		public List<String> externalFiles(){return null;}
 
 		public boolean canBeTaughtBy(MOB teacher, MOB student){return false;}
 		public boolean canBePracticedBy(MOB teacher, MOB student){return false;}

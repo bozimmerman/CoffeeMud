@@ -372,9 +372,9 @@ public class CMStrings
         return size;
     }
     
-    public static Hashtable makeNumericHash(Object[] obj)
+    public static Hashtable<Object,Integer> makeNumericHash(Object[] obj)
     {
-    	Hashtable H=new Hashtable();
+    	Hashtable<Object,Integer> H=new Hashtable<Object,Integer>();
     	for(int i=0;i<obj.length;i++)
     		H.put(obj[i],Integer.valueOf(i));
     	return H;

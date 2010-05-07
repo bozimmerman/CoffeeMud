@@ -109,7 +109,7 @@ public class Unicorn extends StdRace
 		else
 			return "^c" + mob.displayName(viewer) + "^c is in perfect health.^N";
 	}
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

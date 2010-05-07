@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class PollData extends StdWebMacro
 {
     public String name()    {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
@@ -129,7 +128,7 @@ public class PollData extends StdWebMacro
             {
                 old=httpReq.getRequestParameter("OPTION"+num);
                 if((old!=null)&&(old.trim().length()>0))
-                    P.getOptions().addElement(new Poll.PollOption(old));
+                    P.getOptions().add(new Poll.PollOption(old));
             }
             if(create)
             {
@@ -373,7 +372,7 @@ public class PollData extends StdWebMacro
                         {
                             for(int v=0;v<P.getOptions().size();v++)
                             {
-                                Poll.PollOption O=(Poll.PollOption)P.getOptions().elementAt(v);
+                                Poll.PollOption O=(Poll.PollOption)P.getOptions().get(v);
                                 httpReq.addRequestParameters("OPTION"+(v+1),O.text);
                             }
                         }
@@ -415,8 +414,8 @@ public class PollData extends StdWebMacro
                     }
                     if(parms.containsKey("RESULTS"))
                     {
-                        Vector options=P.getOptions();
-                        Vector results=P.getResults();
+                    	List<Poll.PollOption> options=P.getOptions();
+                    	List<PollResult> results=P.getResults();
                         int which=-1;
                         if(parms.containsKey("NUM"))
                             which=CMath.s_int((String)parms.get("NUM"));
@@ -426,7 +425,7 @@ public class PollData extends StdWebMacro
                         int total=0;
                         for(int r=0;r<P.getResults().size();r++)
                         {
-                            R=(PollResult)results.elementAt(r);
+                            R=(PollResult)results.get(r);
                             choice=CMath.s_int(R.answer);
                             if(((choice<=0)&&CMath.bset(P.getFlags(),Poll.FLAG_ABSTAIN))
                             ||((choice>=0)&&(choice<=options.size())))

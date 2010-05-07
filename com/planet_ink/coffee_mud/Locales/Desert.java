@@ -56,5 +56,5 @@ public class Desert extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_DATES)
 	};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
-	public Vector resourceChoices(){return Desert.roomResources;}
+	public List<Integer> resourceChoices(){return Desert.roomResources;}
 }

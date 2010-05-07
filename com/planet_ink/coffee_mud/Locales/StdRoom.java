@@ -409,7 +409,7 @@ public class StdRoom implements Room
 		}
 	}
 
-	public Vector resourceChoices(){return null;}
+	public List<Integer> resourceChoices(){return null;}
 	public void setResource(int resourceCode)
 	{
 		myResource=resourceCode;
@@ -434,7 +434,7 @@ public class StdRoom implements Room
 				int totalChance=0;
 				for(int i=0;i<resourceChoices().size();i++)
 				{
-					int resource=((Integer)resourceChoices().elementAt(i)).intValue();
+					int resource=((Integer)resourceChoices().get(i)).intValue();
 					totalChance+=RawMaterial.CODES.FREQUENCY(resource);
 				}
 				setResource(-1);
@@ -442,7 +442,7 @@ public class StdRoom implements Room
 				totalChance=0;
 				for(int i=0;i<resourceChoices().size();i++)
 				{
-					int resource=((Integer)resourceChoices().elementAt(i)).intValue();
+					int resource=((Integer)resourceChoices().get(i)).intValue();
 					totalChance+=RawMaterial.CODES.FREQUENCY(resource);
 					if(theRoll<=totalChance)
 					{
@@ -1240,7 +1240,7 @@ public class StdRoom implements Room
 		{
 			for(int i=0;i<msg.trailerMsgs().size();i++)
 			{
-				CMMsg msg2=(CMMsg)msg.trailerMsgs().elementAt(i);
+				CMMsg msg2=(CMMsg)msg.trailerMsgs().get(i);
 				if((msg!=msg2)
 				&&((msg2.target()==null)
 				   ||(!(msg2.target() instanceof MOB))

@@ -43,7 +43,6 @@ import java.util.*;
  * @see com.planet_ink.coffee_mud.Common.interfaces.LegalWarrant
  * @see com.planet_ink.coffee_mud.Common.interfaces.Law
  */
-@SuppressWarnings("unchecked")
 public interface LegalBehavior extends Behavior
 {
     /** constant for the number of miliseconds in a real-life day */
@@ -113,17 +112,6 @@ public interface LegalBehavior extends Behavior
      * @return whether the arrest began successfully.
      */
     public boolean arrest(Area myArea, MOB officer, MOB mob);
-    
-    /**
-     * Generates a Vector of Vectors containing information about
-     * all warrants currently at issue in the geographic legal area
-     * given.  The returned Vector contains one Vector per legal
-     * warrant.  Each Warrant Vector contains the following data in
-     * this order: Criminal name, Victim name, Witness name, Crime
-     * @param myArea the geographic legal area 
-     * @return the Vector of Vectors
-     */
-    public Vector warrantInfo(Area myArea);
     
     /**
      * Returns the set of laws governing the given geographic legal area,
@@ -265,7 +253,7 @@ public interface LegalBehavior extends Behavior
      * @param searchStr the name/search string to use
      * @return a Vector of MOB objects
      */
-    public Vector getCriminals(Area myArea, String searchStr);
+    public List<MOB> getCriminals(Area myArea, String searchStr);
     
     /**
      * Returns a Vector of all active legal warrants available on the given
@@ -275,7 +263,7 @@ public interface LegalBehavior extends Behavior
      * @param accused the mob to look for warrants for
      * @return a Vector of LegalWarrant objects
      */
-    public Vector getWarrantsOf(Area myArea, MOB accused);
+    public List<LegalWarrant> getWarrantsOf(Area myArea, MOB accused);
     
     /**
      * Puts a warrant on the official docket so that officers can act
@@ -335,7 +323,7 @@ public interface LegalBehavior extends Behavior
      * @param jails a Vector of Room objects to inspect
      * @return whether any one of the room objects is, in fact, a jail
      */
-    public boolean isJailRoom(Area myArea, Vector jails);
+    public boolean isJailRoom(Area myArea, List<Room> jails);
     
     /**
      * Issues a LegalWarrant against the accused on behalf of the given 

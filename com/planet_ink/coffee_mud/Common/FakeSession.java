@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Common;
 
 import java.io.ByteArrayOutputStream;
 import java.net.Socket;
+import java.util.List;
 import java.util.Vector;
 
 import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount;
@@ -154,7 +155,7 @@ public class FakeSession implements Session
     }
     public void setAFKMessage(String str){}
     
-    public Vector previousCMD() { return inputV;}
+    public List<String> previousCMD() { return inputV;}
     public MOB mob() { return mob;}
     public void setMob(MOB newmob){ mob=newmob;}
 	public void setAccount(PlayerAccount account){}
@@ -177,7 +178,7 @@ public class FakeSession implements Session
     public void setLastNPCFight(){}
     public long lastLoopTime(){return 0;}
 	public void updateLoopTime(){}
-    public Vector getLastMsgs(){return new Vector();}
+    public List<String> getLastMsgs(){return new Vector();}
     
     public void setServerTelnetMode(int telnetCode, boolean onOff){}
     public boolean serverTelnetMode(int telnetCode){return false;}

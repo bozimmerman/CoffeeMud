@@ -34,7 +34,7 @@ public interface PackagedItems extends Item
 {
     public boolean packageMe(Item I, int number);
     public boolean isPackagable(Vector V);
-    public Vector unPackage(int number);
+    public List<Item> unPackage(int number);
     public int numberOfItemsInPackage();
     public Item getItem();
     public void setNumberOfItemsInPackage(int number);

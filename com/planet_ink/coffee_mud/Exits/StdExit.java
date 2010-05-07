@@ -36,17 +36,18 @@ public class StdExit implements Exit
 {
 	public String ID(){	return "StdExit";}
 
-	protected PhyStats phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
-	protected PhyStats basePhyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
-	protected boolean isOpen=true;
-	protected boolean isLocked=false;
-	protected String miscText="";
-	protected String imageName=null;
-	protected SVector<Ability> affects=null;
-	protected SVector<Behavior> behaviors=null;
-    protected SVector<ScriptingEngine> scripts=null;
-    protected boolean amDestroyed=false;
-    protected short usage=0;
+	protected PhyStats  phyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+	protected PhyStats  basePhyStats=(PhyStats)CMClass.getCommon("DefaultPhyStats");
+	protected boolean 	isOpen=true;
+	protected boolean 	isLocked=false;
+	protected String 	miscText="";
+	protected String 	imageName=null;
+    protected boolean 	amDestroyed=false;
+    protected short 	usage=0;
+	
+	protected SVector<Ability> 			affects=null;
+	protected SVector<Behavior> 		behaviors=null;
+    protected SVector<ScriptingEngine> 	scripts=null;
     
 	public StdExit()
 	{
@@ -432,8 +433,8 @@ public class StdExit implements Exit
 					{
 						Item item=mob.getItem(i);
 						if((item!=null)
-						&&(item instanceof Key)
-						&&((Key)item).getKey().equals(keyName())
+						&&(item instanceof DoorKey)
+						&&((DoorKey)item).getKey().equals(keyName())
 						&&((item.container()==null)
 						   ||((item.container().container()==null)
 							  &&(item.container() instanceof Container)

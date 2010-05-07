@@ -39,7 +39,7 @@ public class ClayGolem extends StoneGolem
 	public String name(){ return "Clay Golem"; }
 	protected static Vector resources=new Vector();
 	
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

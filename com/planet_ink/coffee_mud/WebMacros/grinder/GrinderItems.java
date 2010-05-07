@@ -322,7 +322,7 @@ public class GrinderItems
 				case 39: // is map
 					break;
 				case 40: // map areas
-					if(I instanceof com.planet_ink.coffee_mud.Items.interfaces.Map)
+					if(I instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
 					{
 						Vector<String> V=new Vector<String>();
 						if(httpReq.isRequestParameter("MAPAREAS"))

@@ -13,6 +13,8 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+import java.util.List;
 import java.util.Vector;
 /* 
    Copyright 2000-2010 Bo Zimmerman
@@ -59,7 +61,7 @@ public class Cobra extends Snake
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,18);
 	}
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

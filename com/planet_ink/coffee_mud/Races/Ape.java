@@ -57,7 +57,7 @@ public class Ape extends Monkey
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,15);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

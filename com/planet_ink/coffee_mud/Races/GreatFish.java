@@ -85,7 +85,7 @@ public class GreatFish extends GiantFish
 		}
 		return naturalWeapon;
 	}
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

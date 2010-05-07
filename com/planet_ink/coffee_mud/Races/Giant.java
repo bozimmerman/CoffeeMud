@@ -117,7 +117,7 @@ public class Giant extends StdRace
 		else
 			return "^c" + mob.displayName(viewer) + "^c is in towering health^N";
 	}
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

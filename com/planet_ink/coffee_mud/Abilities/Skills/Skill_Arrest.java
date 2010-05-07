@@ -46,19 +46,19 @@ public class Skill_Arrest extends StdSkill
 	public int usageType(){return USAGE_MOVEMENT;}
     public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_LEGAL; }
 
-	public static Vector getWarrantsOf(MOB target, Area legalA)
+	public static List<LegalWarrant> getWarrantsOf(MOB target, Area legalA)
 	{
         LegalBehavior B=null;
 		if(legalA!=null) B=CMLib.law().getLegalBehavior(legalA);
-		Vector warrants=new Vector();
+		List<LegalWarrant> warrants=new Vector();
 		if(B!=null)
         {
             warrants=B.getWarrantsOf(legalA,target);
 			for(int i=warrants.size()-1;i>=0;i--)
 			{
-			    LegalWarrant W=(LegalWarrant)warrants.elementAt(i);
+			    LegalWarrant W=(LegalWarrant)warrants.get(i);
 			    if(W.crime().equalsIgnoreCase("pardoned"))
-			        warrants.removeElementAt(i);
+			        warrants.remove(i);
 			}
 		}
 		return warrants;

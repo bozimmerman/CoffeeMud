@@ -1457,7 +1457,7 @@ public class StdArea implements Area
 	        }
 	}
 	public Enumeration<Area> getParents() { initParents(); return parents.elements(); }
-    public Vector getParentsRecurse()
+    public List<Area> getParentsRecurse()
     {
         Vector V=new Vector();
         Area A=null;
@@ -1465,7 +1465,7 @@ public class StdArea implements Area
         {
             A=(Area)e.nextElement();
             V.addElement(A);
-            CMParms.addToVector(A.getParentsRecurse(),V);
+            V.addAll(A.getParentsRecurse());
         }
         return V;
     }

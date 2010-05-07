@@ -35,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("unchecked")
-public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.interfaces.Map
+public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.interfaces.RoomMap
 {
 	public String ID(){	return "StdMap";}
 	protected int oldLevel=0;

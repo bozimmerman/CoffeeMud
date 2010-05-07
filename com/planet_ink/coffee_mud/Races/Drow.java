@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.Races;
+import java.util.List;
 import java.util.Vector;
 
 import com.planet_ink.coffee_mud.Areas.interfaces.Area;
@@ -90,7 +91,7 @@ public class Drow extends Elf
 			}
 		}
 	}
-	public Vector outfit(MOB myChar)
+	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
@@ -161,7 +162,7 @@ public class Drow extends Elf
 		else
 			return "^c" + mob.displayName(viewer) + "^c is in perfect health.^N";
 	}
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

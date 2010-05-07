@@ -116,7 +116,7 @@ public class FireElemental extends StdRace
 		else
 			return "^c" + mob.displayName(viewer) + "^c is in perfect condition.^N";
 	}
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

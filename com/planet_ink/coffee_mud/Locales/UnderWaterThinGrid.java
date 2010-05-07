@@ -73,7 +73,7 @@ public class UnderWaterThinGrid extends StdThinGrid
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SWIMMING);
 	}
-	public Vector resourceChoices(){return UnderWater.roomResources;}
+	public List<Integer> resourceChoices(){return UnderWater.roomResources;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

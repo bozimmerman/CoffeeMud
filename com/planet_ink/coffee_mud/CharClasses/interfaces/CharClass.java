@@ -36,7 +36,6 @@ import java.util.*;
  * @see com.planet_ink.coffee_mud.Common.interfaces.CharStats
  * @author Bo Zimmerman
  */
-@SuppressWarnings("unchecked")
 public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObject, Modifiable
 {
 	/**
@@ -177,7 +176,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @param followers the killers followers
 	 * @return whether the mob shares in the exp gains
 	 */
-    public boolean isValidClassBeneficiary(MOB killer, MOB killed, MOB mob, HashSet followers);
+    public boolean isValidClassBeneficiary(MOB killer, MOB killed, MOB mob, Set<MOB> followers);
 
 	/**
 	 * Returns whether the given mob should count in the division of experience gained by the killer
@@ -189,7 +188,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @param followers the killers followers
 	 * @return whether the mob shares in the exp gains
 	 */
-    public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, HashSet followers);
+    public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers);
     
     /**
      * Typically called when a mob gains a level in this class, to allow the class to 
@@ -208,7 +207,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @param mob the mob to level up
 	 * @param gainedAbilityIDs the set of abilities/skill IDs gained during this leveling process
 	 */
-	public void level(MOB mob, Vector gainedAbilityIDs);
+	public void level(MOB mob, List<String> gainedAbilityIDs);
 	
 	/**
 	 * Whenever a player or mob of this race gains experience, this method gets a chance
@@ -236,7 +235,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @param myChar one who will receive the objects
 	 * @return a vector of Item objects
 	 */
-	public Vector outfit(MOB myChar);
+	public List<Item> outfit(MOB myChar);
 
 	/**
 	 * This method is called whenever a player casts a spell which has a lasting

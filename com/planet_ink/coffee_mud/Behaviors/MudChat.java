@@ -158,7 +158,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		}
 	}
 	
-	public Vector externalFiles()
+	public List<String> externalFiles()
 	{
 		int x=parms.indexOf("=");
 		if(x>0)

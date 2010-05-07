@@ -30,10 +30,9 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public interface Perfume
 {
-	public Vector getSmellEmotes(Perfume me);
+	public List<String> getSmellEmotes(Perfume me);
 	public String getSmellList();
 	public void setSmellList(String list);
 	public void wearIfAble(MOB mob, Perfume me);

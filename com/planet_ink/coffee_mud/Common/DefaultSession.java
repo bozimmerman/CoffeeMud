@@ -337,7 +337,7 @@ public class DefaultSession extends Thread implements Session
     public void setLastPKFight(){lastPKFight=System.currentTimeMillis();}
     public long getLastNPCFight(){return lastNPCFight;}
     public void setLastNPCFight(){lastNPCFight=System.currentTimeMillis();}
-    public Vector getLastMsgs(){return (Vector)prevMsgs.clone();}
+    public List<String> getLastMsgs(){return (Vector)prevMsgs.clone();}
 
     public String getTerminalType(){ return terminalType;}
 	public MOB mob(){return mob;}
@@ -350,7 +350,7 @@ public class DefaultSession extends Thread implements Session
 	public int getPageBreak(){return ((mob!=null)&&(mob.playerStats()!=null))?mob.playerStats().getPageBreak():-1;}
 	public boolean killFlag(){return killFlag;}
 	public void setKillFlag(boolean truefalse){killFlag=truefalse;}
-	public Vector previousCMD(){return previousCmd;}
+	public List<String> previousCMD(){return previousCmd;}
 	public void startBeingSnoopedBy(Session S)
 	{
 		if(!snoops.contains(S))

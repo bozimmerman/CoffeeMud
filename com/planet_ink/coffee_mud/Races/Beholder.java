@@ -75,7 +75,7 @@ public class Beholder extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_MIND,100);
 	}
 
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

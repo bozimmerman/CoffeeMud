@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class Scriptable extends StdBehavior implements ScriptingEngine
 {
     public String ID(){return "Scriptable";}
@@ -64,7 +63,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
         return false;
     }
 
-    public Vector externalFiles()
+    public List<String> externalFiles()
     {
         return engine().externalFiles();
     }

@@ -1213,10 +1213,10 @@ public class CMProps extends Properties
             	image=getHashedMXPImage(H,"RESOURCE_*");
         }
         else
-        if(O instanceof Key)
+        if(O instanceof DoorKey)
         {
-            image=getHashedMXPImage(H,"KEY_"+RawMaterial.CODES.NAME(((Key)O).material()));
-            image=getHashedMXPImage(H,"KEY_"+RawMaterial.MATERIAL_DESCS[(((Key)O).material()&RawMaterial.MATERIAL_MASK)>>8]);
+            image=getHashedMXPImage(H,"KEY_"+RawMaterial.CODES.NAME(((DoorKey)O).material()));
+            image=getHashedMXPImage(H,"KEY_"+RawMaterial.MATERIAL_DESCS[(((DoorKey)O).material()&RawMaterial.MATERIAL_MASK)>>8]);
             if(image==null) image=getHashedMXPImage(H,"KEY_*");
         }
         else
@@ -1231,7 +1231,7 @@ public class CMProps extends Properties
             if(image==null) image=getHashedMXPImage(H,"DUST_*");
         }
         else
-        if(O instanceof com.planet_ink.coffee_mud.Items.interfaces.Map)
+        if(O instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
             image=getHashedMXPImage(H,"ITEM_MAP");
         else
         if(O instanceof MusicalInstrument)

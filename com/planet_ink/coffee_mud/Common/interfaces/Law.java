@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.util.Map;
 
 
 
@@ -42,7 +43,6 @@ import java.util.*;
  * @see com.planet_ink.coffee_mud.Behaviors.interfaces.LegalBehavior 
  * @see com.planet_ink.coffee_mud.Common.interfaces.LegalWarrant
  */
-@SuppressWarnings("unchecked")
 public interface Law extends CMCommon
 {
     /**
@@ -219,7 +219,7 @@ public interface Law extends CMCommon
      * 
      * @return a Vector of words and phrases
      */
-    public Vector otherCrimes();
+    public List<List<String>> otherCrimes();
     
     /**
      * Combined with otherCrimes, this method returns the
@@ -238,7 +238,7 @@ public interface Law extends CMCommon
      * 
      * @return a Vector of String[] array bits of other crime info
      */
-    public Vector otherBits();
+    public List<String[]> otherBits();
     
     /**
      * Combined with bannedBits, this method returns the
@@ -254,7 +254,7 @@ public interface Law extends CMCommon
      * 
      * @return a Vector of item or resource names
      */
-    public Vector bannedSubstances();
+    public List<List<String>> bannedSubstances();
     
     /**
      * Combined with bannedSubstances, this method returns the
@@ -273,7 +273,7 @@ public interface Law extends CMCommon
      * 
      * @return a Vector of String[] array bits of substance crime info
      */
-    public Vector bannedBits();
+    public List<String[]> bannedBits();
     
     /**
      * Method for accessing the crimes, flags, and consequences 
@@ -291,7 +291,7 @@ public interface Law extends CMCommon
      * 
      * @return a Hashtable of String[] array bits of ability crime info
      */
-    public Hashtable abilityCrimes();
+    public java.util.Map<String,String[]> abilityCrimes();
     
     /**
      * Method for accessing the crimes, flags, and consequences
@@ -308,7 +308,7 @@ public interface Law extends CMCommon
      * 
      * @return a Hashtable of String[] array bits of basic crime info
      */
-    public Hashtable basicCrimes();
+    public Map<String,String[]> basicCrimes();
     
     /**
      * Returns a Hashtable of various catch-all properties and variables
@@ -325,7 +325,7 @@ public interface Law extends CMCommon
      * 
      * @return a Hashtable of tax law related property information
      */
-    public Hashtable taxLaws();
+    public Map<String, Object> taxLaws();
     
     /**
      * A Vector of strings denoting random things an officer will
@@ -333,7 +333,7 @@ public interface Law extends CMCommon
      * 
      * @return a vector of cute sayings.
      */
-    public Vector chitChat();
+    public List<String> chitChat();
     
     /**
      * A Vector of strings denoting random things an officer will
@@ -341,7 +341,7 @@ public interface Law extends CMCommon
      * 
      * @return a vector of cute sayings.
      */
-    public Vector chitChat2();
+    public List<String> chitChat2();
     
     /**
      * A Vector of strings denoting random things an officer will
@@ -349,7 +349,7 @@ public interface Law extends CMCommon
      * 
      * @return a vector of cute sayings.
      */
-    public Vector chitChat3();
+    public List<String> chitChat3();
     
     /**
      * A Vector of strings denoting which rooms are considered jails.
@@ -357,7 +357,7 @@ public interface Law extends CMCommon
      * 
      * @return a Vector of strings denoting jail rooms
      */
-    public Vector jailRooms();
+    public List<String> jailRooms();
     
     /**
      * A Vector of strings denoting which rooms are considered release 
@@ -365,7 +365,7 @@ public interface Law extends CMCommon
      * 
      * @return a Vector of strings denoting release rooms
      */
-    public Vector releaseRooms();
+    public List<String> releaseRooms();
     
     /**
      * A Vector a strings denoting which mobs are considered officers
@@ -373,7 +373,7 @@ public interface Law extends CMCommon
      * 
      * @return a vector of strings denoting the names of officers
      */
-    public Vector officerNames();
+    public List<String> officerNames();
     
     /**
      * A Vector a strings denoting which mobs are considered judges
@@ -381,7 +381,7 @@ public interface Law extends CMCommon
      * 
      * @return a vector of strings denoting the names of judges
      */
-    public Vector judgeNames();
+    public List<String> judgeNames();
     
     /**
      * Returns a list of all old LegalWarrant objects for all

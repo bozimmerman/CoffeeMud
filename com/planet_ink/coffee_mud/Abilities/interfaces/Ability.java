@@ -388,7 +388,7 @@ public interface Ability extends Environmental
 	 * files returned by this method should not be base distrib files!
 	 * @return a Vector of local path names
 	 */
-	public Vector externalFiles();
+	public List<String> externalFiles();
 
 	/**
 	 * Returns whether the given teacher mob is able and allowed to teach

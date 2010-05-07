@@ -124,7 +124,7 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 	public void dequeResponses() {
 		if(sampleB!=null) sampleB.dequeResponses();
 	}
-	public Vector externalFiles(){return (sampleB==null)?null:sampleB.externalFiles();}
+	public List<String> externalFiles(){return (sampleB==null)?null:sampleB.externalFiles();}
 	public boolean endQuest(PhysicalAgent hostObj, MOB mob, String quest) {
 		return (sampleB==null)?false:sampleB.endQuest(hostObj, mob, quest);
 	}

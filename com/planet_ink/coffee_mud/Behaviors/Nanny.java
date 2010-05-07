@@ -923,11 +923,11 @@ public class Nanny extends StdBehavior
 	        			R.show(mob, PA, CMMsg.MSG_NOISE,"<S-NAME> speak(s) quietly with <T-NAME>.");
 	        		else
 	        		{
-	        			Vector V=((MOB)PA).charStats().getMyRace().myResources();
+	        			List<RawMaterial> V=((MOB)PA).charStats().getMyRace().myResources();
 	        			boolean comb=false;
 	        			if(V!=null)
 	        			for(int v=0;v<V.size();v++)
-	        				if(((Item)V.elementAt(v)).material()==RawMaterial.RESOURCE_FUR)
+	        				if(((Item)V.get(v)).material()==RawMaterial.RESOURCE_FUR)
 	        					comb=true;
 	        			if(comb)
 		        			R.show(mob, PA, CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> groom(s) <T-NAME>.");

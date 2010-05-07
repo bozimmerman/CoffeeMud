@@ -241,7 +241,7 @@ public class RaceData extends StdWebMacro
         return str;
     }
 
-    public static StringBuffer itemList(Vector items, char c, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize, boolean one)
+    public static StringBuffer itemList(List<? extends Item> items, char c, ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, int borderSize, boolean one)
     {
     	if(items==null) items=new Vector();
         StringBuffer str=new StringBuffer("");
@@ -269,11 +269,7 @@ public class RaceData extends StdWebMacro
         }
         else
         {
-            for(int m=0;m<items.size();m++)
-            {
-                Item I2=(Item)items.elementAt(m);
-                classes.addElement(I2);
-            }
+        	classes.addAll(items);
             itemlist=RoomData.contributeItems(classes);
         }
         str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
@@ -379,13 +375,16 @@ public class RaceData extends StdWebMacro
         }
         else
         {
-            Vector ables=E.racialAbilities(null);
+            List<Ability> ables=E.racialAbilities(null);
             DVector cables=E.culturalAbilities();
-            for(int i=0;i<ables.size();i++)
+            for(Ability A : ables)
             {
-                Ability Able=(Ability)ables.elementAt(i);
-                if((Able!=null)&&(!cables.contains(Able.ID())))
-                    theclasses.addElement(Able.ID(),Able.proficiency()+"",CMLib.ableMapper().getDefaultGain(E.ID(),false,Able.ID())?"":"on",CMLib.ableMapper().getQualifyingLevel(E.ID(),false,Able.ID())+"");
+                if((A!=null)&&(!cables.contains(A.ID())))
+                {
+                	boolean defaultGain = CMLib.ableMapper().getDefaultGain(E.ID(), false, A.ID());
+                	int qualifyingLevel = CMLib.ableMapper().getQualifyingLevel(E.ID(), false,A.ID()) ;
+                    theclasses.addElement(A.ID(),A.proficiency()+"",defaultGain?"":"on",qualifyingLevel+"");
+                }
             }
         }
         if(font==null) font="<FONT COLOR=WHITE><B>";
@@ -864,13 +863,9 @@ public class RaceData extends StdWebMacro
 						str.append(R.getAbilitiesDesc()+", ");
 				if(parms.containsKey("EFFECTS"))
 				{
-					Vector ables=R.racialEffects(null);
-					for(int i=0;i<ables.size();i++)
-					{
-						Ability A=(Ability)ables.elementAt(i);
+					for(Ability A : R.racialEffects(null))
 						if(A!=null)
 							str.append(A.Name()+", ");
-					}
 				}
                 if(parms.containsKey("LANGS"))
 					if(R.getLanguagesDesc().length()>0)
@@ -879,12 +874,9 @@ public class RaceData extends StdWebMacro
 				if(parms.containsKey("STARTINGEQ"))
 				{
 					if(R.outfit(null)!=null)
-					for(int i=0;i<R.outfit(null).size();i++)
-					{
-						Item I=(Item)R.outfit(null).elementAt(i);
-						if(I!=null)
-							str.append(I.Name()+", ");
-					}
+						for(Item I : R.outfit(null))
+							if(I!=null)
+								str.append(I.Name()+", ");
 				}
 				if(parms.containsKey("CLASSES"))
 				{

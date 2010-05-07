@@ -47,7 +47,7 @@ public class GatheringSkill extends CommonSkill
 	
 	public GatheringSkill(){super();}
 	
-	public Vector myResources()
+	public List<Integer> myResources()
 	{
 	    if(supportedResources.containsKey(ID()))
 	        return (Vector)supportedResources.get(ID());
@@ -118,7 +118,7 @@ public class GatheringSkill extends CommonSkill
 	    String name=CMParms.combine(what,2);
 	    int foundResource=-1;
 	    Item foundAnyway=null;
-	    Vector maskV=myResources();
+	    List<Integer> maskV=myResources();
 	    Hashtable foundAblesH=new Hashtable();
 	    Ability A=null;
 	    long lowestNonZeroFoodNumber=Long.MAX_VALUE;

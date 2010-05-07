@@ -37,56 +37,56 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class StdRace implements Race
 {
-	public String ID(){	return "StdRace"; }
-	public String name(){ return "StdRace"; }
-	protected int practicesAtFirstLevel(){return 0;}
-	protected int trainsAtFirstLevel(){return 0;}
-	public int shortestMale(){return 24;}
-	public int shortestFemale(){return 24;}
-	public int heightVariance(){return 5;}
-	public int lightestWeight(){return 60;}
-	public int weightVariance(){return 10;}
-	public long forbiddenWornBits(){return 0;}
-	public String racialCategory(){return "Unknown";}
-	public boolean isGeneric(){return false;}
-	public boolean classless(){return false;}
-	public boolean leveless(){return false;}
-	public boolean expless(){return false;}
+	public String 	ID(){	return "StdRace"; }
+	
+	private int[] 		agingChart={0,1,3,15,35,53,70,74,78};
+	protected String 	baseStatChgDesc = null;
+	protected String 	sensesChgDesc = null;
+	protected String 	dispChgDesc = null;
+	protected String 	abilitiesDesc = null;
+	protected String 	languagesDesc = null;
+	protected Weapon 	naturalWeapon=null;
+	protected Hashtable racialAbilityMap=null;
+	protected boolean 	mappedCulturalAbilities=false;
+	protected Vector 	naturalWeaponChoices=null;
+	protected Vector 	outfitChoices=null;
+	protected Hashtable racialEffectMap=null;
+	
+	public String 		name(){ return "StdRace"; }
+	protected int 		practicesAtFirstLevel(){return 0;}
+	protected int 		trainsAtFirstLevel(){return 0;}
+	public int 			shortestMale(){return 24;}
+	public int 			shortestFemale(){return 24;}
+	public int 			heightVariance(){return 5;}
+	public int 			lightestWeight(){return 60;}
+	public int 			weightVariance(){return 10;}
+	public long 		forbiddenWornBits(){return 0;}
+	public String 		racialCategory(){return "Unknown";}
+	public boolean 		isGeneric(){return false;}
+	public boolean 		classless(){return false;}
+	public boolean 		leveless(){return false;}
+	public boolean 		expless(){return false;}
+	public int[] 		bodyMask(){return parts;}
+	public int[] 		getAgingChart(){return agingChart;}
+	protected String[] 	racialEffectNames(){return null;}
+	protected int[] 	racialEffectLevels(){return null;}
+	protected String[] 	racialEffectParms(){return null;}
+	protected String[] 	racialAbilityNames(){return null;}
+	protected int[] 	racialAbilityLevels(){return null;}
+	protected int[] 	racialAbilityProficiencies(){return null;}
+	protected boolean[] racialAbilityQuals(){return null;}
+	protected String[] 	culturalAbilityNames(){return null;}
+	protected int[] 	culturalAbilityProficiencies(){return null;}
+	protected boolean 	uncharmable(){return false;}
+	protected boolean 	destroyBodyAfterUse(){return false;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
-	public int[] bodyMask(){return parts;}
-
-    public CMObject newInstance(){return this;}
-    public void initializeClass(){}
-	private int[] agingChart={0,1,3,15,35,53,70,74,78};
-	public int[] getAgingChart(){return agingChart;}
-
-    protected static final Vector empty=new Vector();
-	protected Weapon naturalWeapon=null;
-	protected Vector naturalWeaponChoices=null;
-	protected Vector outfitChoices=null;
-	protected Hashtable racialEffectMap=null;
-	protected String[] racialEffectNames(){return null;}
-	protected int[] racialEffectLevels(){return null;}
-	protected String[] racialEffectParms(){return null;}
-	protected Hashtable racialAbilityMap=null;
-	protected String[] racialAbilityNames(){return null;}
-	protected int[] racialAbilityLevels(){return null;}
-	protected int[] racialAbilityProficiencies(){return null;}
-	protected boolean[] racialAbilityQuals(){return null;}
-	protected boolean mappedCulturalAbilities=false;
-	protected String[] culturalAbilityNames(){return null;}
-	protected int[] culturalAbilityProficiencies(){return null;}
-	protected boolean uncharmable(){return false;}
-	protected boolean destroyBodyAfterUse(){return false;}
-	protected String baseStatChgDesc = null;
-	protected String sensesChgDesc = null;
-	protected String dispChgDesc = null;
-	protected String abilitiesDesc = null;
-	protected String languagesDesc = null;
 
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
+    public CMObject newInstance(){return this;}
+    public void 	initializeClass(){}
+    protected static final Vector empty=new Vector();
 
 	public boolean fertile(){return true;}
 
@@ -269,7 +269,7 @@ public class StdRace implements Race
 	{
 		return "leaves";
 	}
-	public void level(MOB mob, Vector gainedAbilityIDs){}
+	public void level(MOB mob, List<String> gainedAbilityIDs){}
 	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount) { return amount;}
 
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
@@ -329,7 +329,7 @@ public class StdRace implements Race
 		return naturalWeapon;
 	}
 
-	public Vector outfit(MOB myChar){return outfitChoices;}
+	public List<Item> outfit(MOB myChar){return outfitChoices;}
 
 	public String healthText(MOB viewer, MOB mob)
 	{
@@ -390,7 +390,7 @@ public class StdRace implements Race
 		return CMClass.getWeapon("Natural");
 	}
 
-	public Vector myResources(){return new Vector();}
+	public List<RawMaterial> myResources(){return new Vector();}
 	public void setHeightWeight(PhyStats stats, char gender)
 	{
 		int weightModifier=0;
@@ -416,9 +416,12 @@ public class StdRace implements Race
 
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
-	protected Item makeResource(String name, int type)
+	protected RawMaterial makeResource(String name, int type)
 	{
-		return (Item)CMLib.materials().makeResource(type,ID(),true,name);
+		PhysicalAgent A = CMLib.materials().makeResource(type,ID(),true,name);
+		if(A instanceof RawMaterial)
+			return (RawMaterial)A;
+		return null;
 	}
 
 	public DeadBody getCorpseContainer(MOB mob, Room room)
@@ -525,9 +528,7 @@ public class StdRace implements Race
         }
 		if(destroyBodyAfterUse())
 		{
-			for(int r=0;r<myResources().size();r++)
-			{
-				Item I=(Item)myResources().elementAt(r);
+			for(Item I : myResources())
 				if(I!=null)
 				{
 					I=(Item)I.copyOf();
@@ -535,12 +536,11 @@ public class StdRace implements Race
 					if(room!=null)
 						room.addItem(I,ItemPossessor.Expire.Monster_EQ);
 				}
-			}
 		}
 		return Body;
 	}
 
-	public Vector racialEffects(MOB mob)
+	public List<Ability> racialEffects(MOB mob)
 	{
 		if(racialEffectNames()==null)
 			return empty;
@@ -684,27 +684,27 @@ public class StdRace implements Race
 								|(fertile()?0:Race.GENFLAG_NOFERTILE)
 								|(expless()?Race.GENFLAG_NOEXP:0)));
 
-        Vector rscs=myResources();
+        List<RawMaterial> rscs=myResources();
         if(rscs==null)rscs=new Vector();
         String txt=null;
-        Item I=null;
+        Item I;
         GR.setStat("NUMRSC",""+rscs.size());
 		for(int i=0;i<rscs.size();i++)
         {
-            I=(Item)rscs.elementAt(i);
+			I=rscs.get(i);
             I.recoverPhyStats();
             txt=I.text();
             GR.setStat("GETRSCID"+i,I.ID());
 			GR.setStat("GETRSCPARM"+i,txt);
         }
 
-		Vector outfit=outfit(null);
+		List<Item> outfit=outfit(null);
         if(outfit==null) outfit=new Vector();
 		GR.setStat("NUMOFT",""+outfit.size());
 		for(int i=0;i<outfit.size();i++)
-			GR.setStat("GETOFTID"+i,((Item)outfit.elementAt(i)).ID());
+			GR.setStat("GETOFTID"+i,((Item)outfit.get(i)).ID());
 		for(int i=0;i<outfit.size();i++)
-			GR.setStat("GETOFTPARM"+i,((Item)outfit.elementAt(i)).text());
+			GR.setStat("GETOFTPARM"+i,((Item)outfit.get(i)).text());
 
         GR.setStat("NUMRABLE","");
         if(racialAbilityNames()!=null)
@@ -914,23 +914,23 @@ public class StdRace implements Race
 
 		GR.setStat("DISFLAGS",""+(CMath.s_int(race1.getStat("DISFLAGS"))|CMath.s_int(race2.getStat("DISFLAGS"))));
 
-		Vector rscs=nonHuman.myResources();
+		List<RawMaterial> rscs=nonHuman.myResources();
 		GR.setStat("NUMRSC",""+rscs.size());
 		for(int i=0;i<rscs.size();i++)
-			GR.setStat("GETRSCID"+i,((Item)rscs.elementAt(i)).ID());
+			GR.setStat("GETRSCID"+i,((Item)rscs.get(i)).ID());
 		for(int i=0;i<rscs.size();i++)
-			GR.setStat("GETRSCPARM"+i,((Item)rscs.elementAt(i)).text());
+			GR.setStat("GETRSCPARM"+i,((Item)rscs.get(i)).text());
 
 		GR.setStat("NUMOFT","");
 		Race outfitRace=(nonHuman.outfit(null)!=null)?nonHuman:otherRace;
-		Vector outfit=outfitRace.outfit(null);
+		List<Item> outfit=outfitRace.outfit(null);
 		if((outfit!=null)&&(outfit.size()>0))
 		{
 			GR.setStat("NUMOFT",""+outfit.size());
 			for(int i=0;i<outfit.size();i++)
-				GR.setStat("GETOFTID"+i,((Item)outfit.elementAt(i)).ID());
+				GR.setStat("GETOFTID"+i,((Item)outfit.get(i)).ID());
 			for(int i=0;i<outfit.size();i++)
-				GR.setStat("GETOFTPARM"+i,((Item)outfit.elementAt(i)).text());
+				GR.setStat("GETOFTPARM"+i,((Item)outfit.get(i)).text());
 		}
 
 		race1.racialAbilities(null);
@@ -962,29 +962,29 @@ public class StdRace implements Race
 			GR.setStat("GETRABLEPROF"+(i+dvata1.size()),""+CMLib.ableMapper().getDefaultProficiency(race2.ID(),false,(String)dvata2.elementAt(i,1)));
 		}
 
-		Vector data1=race1.racialEffects(null);
-		Vector data2=race2.racialEffects(null);
-		// kill half of them.
-		for(int i=1;i<data1.size();i++)
-			data1.removeElementAt(i);
-		for(int i=1;i<data2.size();i++)
-			data2.removeElementAt(i);
+		List<Ability> data=new Vector<Ability>();
+		boolean skip=false;
+		for(Ability A : race1.racialEffects(null))
+		{
+			if(!skip) data.add(A);
+			skip=!skip;
+		}
+		for(Ability A : race2.racialEffects(null))
+		{
+			if(!skip) data.add(A);
+			skip=!skip;
+		}
 
-		if((data1.size()+data2.size())>0)
-			GR.setStat("NUMREFF",""+(data1.size()+data2.size()));
+		if(data.size()>0)
+			GR.setStat("NUMREFF",""+data.size());
 		else
 			GR.setStat("NUMREFF","");
-		for(int i=0;i<data1.size();i++)
+		for(int i=0;i<data.size();i++)
 		{
-			GR.setStat("GETREFF"+i,(String)data1.elementAt(i));
-			GR.setStat("GETREFFLVL"+i,""+CMLib.ableMapper().getQualifyingLevel(race1.ID(),false,(String)data1.elementAt(i)));
-			GR.setStat("GETREFFPARM"+i,""+CMLib.ableMapper().getDefaultProficiency(race1.ID(),false,(String)data1.elementAt(i)));
-		}
-		for(int i=0;i<data2.size();i++)
-		{
-			GR.setStat("GETREFF"+(i+data1.size()),(String)data2.elementAt(i));
-			GR.setStat("GETREFFLVL"+(i+data1.size()),""+CMLib.ableMapper().getQualifyingLevel(race2.ID(),false,(String)data2.elementAt(i)));
-			GR.setStat("GETREFFPARM"+(i+data1.size()),""+CMLib.ableMapper().getDefaultProficiency(race2.ID(),false,(String)data2.elementAt(i)));
+			Ability A=data.get(i);
+			GR.setStat("GETREFF"+i,A.ID());
+			GR.setStat("GETREFFLVL"+i,""+CMLib.ableMapper().getQualifyingLevel(race1.ID(),false,A.ID()));
+			GR.setStat("GETREFFPARM"+i,""+CMLib.ableMapper().getDefaultProficiency(race1.ID(),false,A.ID()));
 		}
 		return GR;
 	}
@@ -1000,7 +1000,7 @@ public class StdRace implements Race
                 ables.addElement(culturalAbilityNames()[i],Integer.valueOf(culturalAbilityProficiencies()[i]));
         return ables;
     }
-	public Vector racialAbilities(MOB mob)
+	public List<Ability> racialAbilities(MOB mob)
 	{
 		if((racialAbilityMap==null)
 		&&(racialAbilityNames()!=null)
@@ -1137,9 +1137,10 @@ public class StdRace implements Race
             	baseStatChgDesc=baseStatChgDesc.substring(0,baseStatChgDesc.length()-2);
             StringBuilder astr=new StringBuilder("");
             StringBuilder lstr=new StringBuilder("");
-            Vector ables=racialAbilities(null);
-            if(ables==null) ables=new Vector();
-            else ables=(Vector)ables.clone();
+            
+            List<Ability> ables=new Vector<Ability>();
+            ables.addAll(racialAbilities(null));
+            
             DVector cables=culturalAbilities();
             Ability A=null;
             if(cables!=null)
@@ -1150,13 +1151,13 @@ public class StdRace implements Race
                     if(A!=null)
                     {
                         A.setProficiency(((Integer)cables.elementAt(c,2)).intValue());
-                        ables.addElement(A);
+                        ables.add(A);
                     }
                 }
             }
-    		for(Enumeration e=ables.elements();e.hasMoreElements();)
+    		for(Iterator<Ability> e=ables.iterator();e.hasNext();)
     		{
-    			A=(Ability)e.nextElement();
+    			A=(Ability)e.next();
     			str = ((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)?lstr:astr;
     			if(A.proficiency()<=0)
     				str.append(A.name()+", ");

@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
@@ -192,7 +193,7 @@ public class GenRace extends StdRace
 			affectableMaxState.setThirst(affectableMaxState.getThirst()+adjState.getThirst());
 		}
 	}
-	public Vector myResources(){
+	public List<RawMaterial> myResources(){
 		if(resourceChoices==null)
 			return new Vector();
 		return resourceChoices;
@@ -253,9 +254,8 @@ public class GenRace extends StdRace
 		else
 		{
 			str.append("<RESOURCES>");
-			for(int i=0;i<myResources().size();i++)
+			for(RawMaterial I : myResources())
 			{
-				Item I=(Item)myResources().elementAt(i);
 				str.append("<RSCITEM>");
 				str.append(CMLib.xml().convertXMLtoTag("ICLASS",CMClass.classID(I)));
 				str.append(CMLib.xml().convertXMLtoTag("IDATA",CMLib.xml().parseOutAngleBrackets(I.text())));
@@ -267,9 +267,8 @@ public class GenRace extends StdRace
 		else
 		{
 			str.append("<OUTFIT>");
-			for(int i=0;i<outfit(null).size();i++)
+			for(Item I : outfit(null))
 			{
-				Item I=(Item)outfit(null).elementAt(i);
 				str.append("<OFTITEM>");
 				str.append(CMLib.xml().convertXMLtoTag("OFCLASS",CMClass.classID(I)));
 				str.append(CMLib.xml().convertXMLtoTag("OFDATA",CMLib.xml().parseOutAngleBrackets(I.text())));
@@ -604,8 +603,8 @@ public class GenRace extends StdRace
 		case 16: return (setStats==null)?"":CMLib.coffeeMaker().getCharStatsStr(setStats);
 		case 17: return (adjState==null)?"":CMLib.coffeeMaker().getCharStateStr(adjState);
 		case 18: return ""+myResources().size();
-		case 19: return ""+((Item)myResources().elementAt(num)).ID();
-		case 20: return ""+((Item)myResources().elementAt(num)).text();
+		case 19: return ""+((Item)myResources().get(num)).ID();
+		case 20: return ""+((Item)myResources().get(num)).text();
 		case 21: return (naturalWeapon==null)?"":naturalWeapon.ID();
 		case 22: return (naturalWeapon==null)?"":naturalWeapon.text();
 		case 23: return (racialAbilityNames==null)?"0":(""+racialAbilityNames.length);
@@ -617,8 +616,8 @@ public class GenRace extends StdRace
 		case 29: return (culturalAbilityNames==null)?"":(""+culturalAbilityNames[num]);
 		case 30: return (culturalAbilityProficiencies==null)?"0":(""+culturalAbilityProficiencies[num]);
 		case 31: return ""+((outfit(null)!=null)?outfit(null).size():0);
-		case 32: return ""+((outfit(null)!=null)?((Item)outfit(null).elementAt(num)).ID():"");
-		case 33: return ""+((outfit(null)!=null)?((Item)outfit(null).elementAt(num)).text():"");
+		case 32: return ""+((outfit(null)!=null)?((Item)outfit(null).get(num)).ID():"");
+		case 33: return ""+((outfit(null)!=null)?((Item)outfit(null).get(num)).text():"");
 		case 34: return ""+destroyBodyAfterUse();
 		case 35: return (racialEffectNames==null)?"0":(""+racialEffectNames.length);
 		case 36: return (racialEffectNames==null)?"":(""+racialEffectNames[num]);

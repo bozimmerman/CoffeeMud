@@ -64,7 +64,7 @@ public class Buffalo extends Cow
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,17);
 	}
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

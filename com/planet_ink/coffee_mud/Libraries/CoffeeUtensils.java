@@ -75,13 +75,13 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	    return date;
 	}
 
-	public void outfit(MOB mob, Vector items)
+	public void outfit(MOB mob, List<Item> items)
 	{
 		if((mob==null)||(items==null)||(items.size()==0))
 			return;
 		for(int i=0;i<items.size();i++)
 		{
-			Item I=(Item)items.elementAt(i);
+			Item I=(Item)items.get(i);
 			if(mob.findItem("$"+I.name()+"$")==null)
 			{
 				I=(Item)I.copyOf();

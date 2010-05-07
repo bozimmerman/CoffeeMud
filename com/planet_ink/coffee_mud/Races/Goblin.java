@@ -135,7 +135,7 @@ public class Goblin extends StdRace
 			return "^c" + mob.displayName(viewer) + "^c is in perfect health.^N";
 	}
 	
-	public Vector outfit(MOB myChar)
+	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
@@ -160,7 +160,7 @@ public class Goblin extends StdRace
 	}
 	
 	
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

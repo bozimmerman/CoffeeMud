@@ -1107,7 +1107,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	
 	        executeScript(mob,(Vector)extraScripts.get("CLASS"));
 	        Faction F=null;
-	        Vector mine=null;
+	        List<Integer> mine=null;
 	        int defaultValue=0;
 	        for(Enumeration e=CMLib.factions().factions();e.hasMoreElements();)
 	        {
@@ -1117,7 +1117,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	            if(defaultValue!=Integer.MAX_VALUE)
 	                mob.addFaction(F.factionID(),defaultValue);
 	            if(mine.size()==1)
-	                mob.addFaction(F.factionID(),((Integer)mine.firstElement()).intValue());
+	                mob.addFaction(F.factionID(),((Integer)mine.get(0)).intValue());
 	            else
 	            if(mine.size()>1)
 	            {
@@ -1131,14 +1131,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	                Vector namedChoices=new Vector();
 	                for(int m=0;m<mine.size();m++)
 	                {
-	                    Faction.FactionRange FR=CMLib.factions().getRange(F.factionID(),((Integer)mine.elementAt(m)).intValue());
+	                    Faction.FactionRange FR=CMLib.factions().getRange(F.factionID(),((Integer)mine.get(m)).intValue());
 	                    if(FR!=null)
 	                    {
 	                        namedChoices.addElement(FR.name().toUpperCase());
 	                        menu.append(FR.name()+", ");
 	                    }
 	                    else
-	                        namedChoices.addElement(""+((Integer)mine.elementAt(m)).intValue());
+	                        namedChoices.addElement(""+((Integer)mine.get(m)).intValue());
 	                }
 	                if(mine.size()==namedChoices.size())
 	                {
@@ -1160,7 +1160,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	                    {
 	                        int valueIndex=namedChoices.indexOf(alignment);
 	                        if(valueIndex>=0)
-	                            mob.addFaction(F.factionID(),((Integer)mine.elementAt(valueIndex)).intValue());
+	                            mob.addFaction(F.factionID(),((Integer)mine.get(valueIndex)).intValue());
 	                    }
 	                }
 	            }

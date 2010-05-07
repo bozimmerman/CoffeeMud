@@ -130,7 +130,7 @@ public interface ItemCraftor extends Ability
 	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial
 	 * @return a vector of integers
 	 */
-	public Vector myResources();
+	public List<Integer> myResources();
 	
 	/**
 	 * For auto-crafting, this object represents an item,
@@ -140,8 +140,8 @@ public interface ItemCraftor extends Ability
 	public class ItemKeyPair
 	{
 		public Item item;
-		public Key key;
-		public ItemKeyPair(Item item, Key key) { this.item=item; this.key=key;}
+		public DoorKey key;
+		public ItemKeyPair(Item item, DoorKey key) { this.item=item; this.key=key;}
 		public List<Item> asList()
 		{
 			List<Item> list = new LinkedList<Item>();

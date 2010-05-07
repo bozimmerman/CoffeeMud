@@ -54,5 +54,5 @@ public class JungleThinGrid extends StdThinGrid
         return new JungleGrid().newInstance();
 	}
 	public String getGridChildLocaleID(){return "Jungle";}
-	public Vector resourceChoices(){return Jungle.roomResources;}
+	public List<Integer> resourceChoices(){return Jungle.roomResources;}
 }

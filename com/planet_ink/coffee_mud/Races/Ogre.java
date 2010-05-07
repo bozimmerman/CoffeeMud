@@ -84,7 +84,7 @@ public class Ogre extends Humanoid
         }
 	}
     
-    public Vector outfit(MOB myChar)
+    public List<Item> outfit(MOB myChar)
     {
         if(outfitChoices==null)
         {

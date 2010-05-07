@@ -88,5 +88,5 @@ public class Jungle extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_FEATHERS)
 	};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
-	public Vector resourceChoices(){return Jungle.roomResources;}
+	public List<Integer> resourceChoices(){return Jungle.roomResources;}
 }

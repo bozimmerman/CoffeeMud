@@ -32,12 +32,11 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class MindFlayer extends Humanoid
 {
 	public String ID(){	return "MindFlayer"; }
 	public String name(){ return "MindFlayer"; }
-	protected static Vector resources=new Vector();
+	protected static List<RawMaterial> resources=new Vector<RawMaterial>();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 	public String racialCategory(){return "Illithid";}
 	private String[]culturalAbilityNames={"Spell_MindFog","Spell_Charm"};
@@ -74,14 +73,14 @@ public class MindFlayer extends Humanoid
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-5);
 		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,affectableStats.getStat(CharStats.STAT_INTELLIGENCE)+5);
 	}
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{
 			if(resources.size()==0)
 			{
 				resources=super.myResources();
-				resources.addElement(makeResource
+				resources.add(makeResource
 				("a "+name().toLowerCase()+" tenticle",RawMaterial.RESOURCE_MEAT));
 			}
 		}

@@ -64,7 +64,7 @@ public class Bull extends Buffalo
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,19);
 	}
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

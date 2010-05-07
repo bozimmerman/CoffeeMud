@@ -229,7 +229,7 @@ public class Beastmaster extends StdCharClass
 	public String getOtherLimitsDesc(){return "Must remain Neutral to avoid skill and chant failure chances.";}
 	public String getOtherBonusDesc(){return "When leading animals into battle, will not divide experience among animal followers.  Can create a druidic connection with an area.  Benefits from animal/plant/stone followers leveling.  Benefits from freeing animals from cities.";}
 
-    public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, HashSet followers)
+    public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
 	{
 		if((mob!=null)
         &&(mob!=killed)
@@ -242,7 +242,7 @@ public class Beastmaster extends StdCharClass
 		return false;
 	}
 
-	public Vector outfit(MOB myChar)
+	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

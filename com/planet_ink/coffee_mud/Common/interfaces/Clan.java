@@ -47,7 +47,6 @@ import java.util.*;
   * </ul>
   * @author=Bo Zimmerman, Jeremy Vyska
   */
-@SuppressWarnings("unchecked")
 public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 {
 
@@ -78,7 +77,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanVote
 	 * @return the set of clan votes
 	 */
-	public Enumeration votes();
+	public Enumeration<ClanVote> votes();
 	/**
 	 * Orders the system to save any changes to existing
 	 * ongoing votes for this clan.
@@ -90,14 +89,14 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanVote
 	 * @param CV the clanvote object to add
 	 */
-	public void addVote(Object CV);
+	public void addVote(ClanVote CV);
 	/**
 	 * Removes a new ClanVote object from the list of ongoing
 	 * votes for this clan.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanVote
 	 * @param CV the clanvote object to remove
 	 */
-	public void delVote(Object CV);
+	public void delVote(ClanVote CV);
 
 	/**
 	 * Returns the number of members allowed to vote on the
@@ -354,10 +353,10 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @param controlledAreas the areas controlled
 	 * @return the number of control points represented
 	 */
-	public long calculateMapPoints(Vector controlledAreas);
+	public long calculateMapPoints(List<Area> controlledAreas);
 	/**
 	 * Returns the total control points earned by this clan
-	 * @see Clan#calculateMapPoints(Vector)
+	 * @see Clan#calculateMapPoints(List)
 	 * @see Clan#getControlledAreas()
 	 * @see com.planet_ink.coffee_mud.Behaviors.Conquerable
 	 * @return the number of control points represented

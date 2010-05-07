@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenKey extends GenItem implements Key
+public class GenKey extends GenItem implements DoorKey
 {
 	public String ID(){	return "GenKey";}
 	public GenKey()

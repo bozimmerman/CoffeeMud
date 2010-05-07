@@ -57,7 +57,7 @@ public class GiantRat extends Rat
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,6);
 	}
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

@@ -71,7 +71,7 @@ public class Manticore extends GreatCat
 	{
 	}
 
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

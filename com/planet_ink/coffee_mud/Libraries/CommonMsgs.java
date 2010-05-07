@@ -253,7 +253,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 							{
 								for(int i=0;i<msg.trailerMsgs().size();i++)
 								{
-									CMMsg msg2=(CMMsg)msg.trailerMsgs().elementAt(i);
+									CMMsg msg2=(CMMsg)msg.trailerMsgs().get(i);
 									if((msg!=msg2)&&(target.okMessage(target,msg2)))
 										target.executeMsg(target,msg2);
 								}

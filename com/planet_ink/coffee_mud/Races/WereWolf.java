@@ -81,7 +81,7 @@ public class WereWolf extends GiantWolf
 		super.executeMsg(myHost,msg);
 	}
 
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

@@ -72,5 +72,5 @@ public class Plains extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_LEATHER),
 		Integer.valueOf(RawMaterial.RESOURCE_WOOL)};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
-	public Vector resourceChoices(){return Plains.roomResources;}
+	public List<Integer> resourceChoices(){return Plains.roomResources;}
 }

@@ -1432,7 +1432,7 @@ public class CMParms
         return true;
     }
 
-    public static Hashtable makeHashtable(String[][] O)
+    public static Hashtable<String,Object> makeHashtable(String[][] O)
     {
     	Hashtable H =new Hashtable(O!=null?O.length:0);
     	if(O!=null)
@@ -1440,7 +1440,7 @@ public class CMParms
     			H.put(O[o][0].toUpperCase().trim(),O[o][1]);
     	return H;
     }
-    public static Hashtable makeHashtable(Object[][] O)
+    public static Hashtable<Object,Object> makeHashtable(Object[][] O)
     {
     	Hashtable H =new Hashtable(O!=null?O.length:0);
     	if(O!=null)

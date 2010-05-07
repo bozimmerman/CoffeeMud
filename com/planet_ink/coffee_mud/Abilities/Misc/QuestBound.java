@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
+import java.util.List;
 import java.util.Vector;
 
 /*
@@ -77,7 +78,7 @@ public class QuestBound implements Ability
 	public boolean canBeUninvoked(){return false;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean isNowAnAutoEffect(){return true;}
-	public Vector externalFiles(){return null;}
+	public List<String> externalFiles(){return null;}
     public void clearExpertiseCache(){}
 
 	public boolean canBeTaughtBy(MOB teacher, MOB student){return false;}

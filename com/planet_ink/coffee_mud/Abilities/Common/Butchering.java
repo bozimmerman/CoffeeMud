@@ -64,7 +64,7 @@ public class Butchering extends GatheringSkill
 					else
 					{
 						mob.location().show(mob,null,body,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to skin and chop up <O-NAME>.");
-						Vector resources=body.charStats().getMyRace().myResources();
+						List<RawMaterial> resources=body.charStats().getMyRace().myResources();
 						Vector diseases=new Vector();
 						for(int i=0;i<body.numEffects();i++)
 						{
@@ -80,7 +80,7 @@ public class Butchering extends GatheringSkill
 						{
 							for(int i=0;i<resources.size();i++)
 							{
-								Item newFound=(Item)((Item)resources.elementAt(i)).copyOf();
+								Item newFound=(Item)((Item)resources.get(i)).copyOf();
 								if((newFound instanceof Food)||(newFound instanceof Drink))
 								for(int d=0;d<diseases.size();d++)
 									newFound.addNonUninvokableEffect((Ability)((Ability)diseases.elementAt(d)).copyOf());
@@ -143,7 +143,7 @@ public class Butchering extends GatheringSkill
 			commonTell(mob,"You can't butcher "+I.name()+".");
 			return false;
 		}
-		Vector resources=((DeadBody)I).charStats().getMyRace().myResources();
+		List<RawMaterial> resources=((DeadBody)I).charStats().getMyRace().myResources();
 		if((resources==null)||(resources.size()==0))
 		{
 			commonTell(mob,"There doesn't appear to be any good parts on "+I.name()+".");

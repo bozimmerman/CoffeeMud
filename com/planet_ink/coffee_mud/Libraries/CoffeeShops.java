@@ -84,10 +84,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             Area A=here.getArea();
             if(getShopKeeper(A)!=null)
                 V.addElement(A);
-            Vector V2=A.getParentsRecurse();
+            List<Area> V2=A.getParentsRecurse();
             for(int v2=0;v2<V2.size();v2++)
-                if(getShopKeeper((Area)V2.elementAt(v2))!=null)
-                    V.addElement(V2.elementAt(v2));
+                if(getShopKeeper((Area)V2.get(v2))!=null)
+                    V.addElement(V2.get(v2));
 
             for(int i=0;i<here.numInhabitants();i++)
             {
@@ -562,8 +562,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 for(int i=0;i<V.size();i++)
                 {
                     Item I=(Item)V.get(i);
-                    if((I instanceof Key)
-                    &&(((Key)I).getKey().equals(((Container)product).keyName())))
+                    if((I instanceof DoorKey)
+                    &&(((DoorKey)I).getKey().equals(((Container)product).keyName())))
                         found=true;
                 }
                 if(!found)
@@ -863,7 +863,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 for(int v=0;v<V.size();v++)
                 {
                     Item item2=(Item)V.get(v);
-                    if(!shop.doISellThis(item2)||(item2 instanceof Key))
+                    if(!shop.doISellThis(item2)||(item2 instanceof DoorKey))
                         item2.destroy();
                     else
                         shop.getShop().addStoreInventory(item2,1,-1);

@@ -399,9 +399,8 @@ public class GenCharClass extends StdCharClass
 		else
 		{
 			str.append("<OUTFIT>");
-			for(int i=0;i<outfit(null).size();i++)
+			for(Item I : outfit(null))
 			{
-				Item I=(Item)outfit(null).elementAt(i);
 				str.append("<OFTITEM>");
 				str.append(CMLib.xml().convertXMLtoTag("OFCLASS",CMClass.classID(I)));
 				str.append(CMLib.xml().convertXMLtoTag("OFDATA",CMLib.xml().parseOutAngleBrackets(I.text())));
@@ -715,8 +714,8 @@ public class GenCharClass extends StdCharClass
 		case 31: return ""+((disallowedWeaponSet!=null)?disallowedWeaponSet.size():0);
 		case 32: return CMParms.toStringList(disallowedWeaponSet);
 		case 33: return ""+((outfit(null)!=null)?outfit(null).size():0);
-		case 34: return ""+((outfit(null)!=null)?((Item)outfit(null).elementAt(num)).ID():"");
-		case 35: return ""+((outfit(null)!=null)?((Item)outfit(null).elementAt(num)).text():"");
+		case 34: return ""+((outfit(null)!=null)?((Item)outfit(null).get(num)).ID():"");
+		case 35: return ""+((outfit(null)!=null)?((Item)outfit(null).get(num)).text():"");
 		case 36: return ""+hpDie;
 		case 37: return ""+manaDice;
 		case 38: return ""+manaDie;

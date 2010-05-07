@@ -52,7 +52,7 @@ public class Prayer_Condemnation extends Prayer
 
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		Vector warrants=new Vector();
+		List<LegalWarrant> warrants=new Vector();
 		if(B!=null)
             warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),target);
 
@@ -70,7 +70,7 @@ public class Prayer_Condemnation extends Prayer
 				if(msg.value()<=0)
 				for(int i=0;i<warrants.size();i++)
 				{
-					LegalWarrant W=(LegalWarrant)warrants.elementAt(i);
+					LegalWarrant W=(LegalWarrant)warrants.get(i);
 					if(W.punishment()<Law.PUNISHMENT_HIGHEST)
 						W.setPunishment(W.punishment()+1);
 				}

@@ -47,7 +47,7 @@ public class EndlessOcean extends StdGrid
 	public int domainConditions(){return Room.CONDITION_WET;}
 
 	public String getGridChildLocaleID(){return "SaltWaterSurface";}
-	public Vector resourceChoices(){return UnderSaltWater.roomResources;}
+	public List<Integer> resourceChoices(){return UnderSaltWater.roomResources;}
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);

@@ -9,6 +9,8 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Poll.PollOption;
+import com.planet_ink.coffee_mud.Common.interfaces.Poll.PollResult;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -49,16 +51,16 @@ public class DefaultPoll implements Poll
             return newInstance();
         }
     }
-    public boolean loaded=false;
-    protected String name="POLL";
-    protected String subject="Poll Results Title";
-    protected String description="This is a Poll! Choose from the following:";
-    protected String author="noone";
-    protected long expiration=0;
-    protected long bitmap=0;
-    protected String qualZapper="";
-    protected Vector options=new Vector();
-    protected Vector results=new Vector();
+    public boolean 		   	   loaded=false;
+    protected String 		   name="POLL";
+    protected String 		   subject="Poll Results Title";
+    protected String 		   description="This is a Poll! Choose from the following:";
+    protected String 		   author="noone";
+    protected long 			   expiration=0;
+    protected long 			   bitmap=0;
+    protected String 		   qualZapper="";
+    protected List<PollOption> options=new Vector();
+    protected List<PollResult> results=new Vector();
     
     public boolean loaded(){return loaded;}
     public void setLoaded(boolean truefalse){ loaded=truefalse;}
@@ -84,11 +86,11 @@ public class DefaultPoll implements Poll
     public long getExpiration(){return expiration;}
     public void setExpiration(long time){expiration=time;}
     
-    public Vector getOptions(){return options;}
-    public void setOptions(Vector V){ options=V;}
+    public List<PollOption> getOptions(){return options;}
+    public void setOptions(List<PollOption> V){ options=V;}
     
-    public Vector getResults(){return results;}
-    public void setResults(Vector V){results=V;}
+    public List<PollResult> getResults(){return results;}
+    public void setResults(List<PollResult> V){results=V;}
     
     public String getOptionsXML()
     {
@@ -97,7 +99,7 @@ public class DefaultPoll implements Poll
         PollOption PO=null;
         for(int i=0;i<options.size();i++)
         {
-            PO=(PollOption)options.elementAt(i);
+            PO=(PollOption)options.get(i);
             str.append("<OPTION>");
             str.append(CMLib.xml().convertXMLtoTag("TEXT",CMLib.xml().parseOutAngleBrackets(PO.text)));
             str.append("</OPTION>");
@@ -113,7 +115,7 @@ public class DefaultPoll implements Poll
         PollResult PR=null;
         for(int i=0;i<results.size();i++)
         {
-            PR=(PollResult)results.elementAt(i);
+            PR=(PollResult)results.get(i);
             str.append("<RESULT>");
             str.append(CMLib.xml().convertXMLtoTag("USER",PR.user));
             str.append(CMLib.xml().convertXMLtoTag("IP",PR.ip));
@@ -132,7 +134,7 @@ public class DefaultPoll implements Poll
         Session S=mob.session();
         for(int r=0;r<results.size();r++)
         {
-            R=(PollResult)results.elementAt(r);
+            R=(PollResult)results.get(r);
             if((mob.Name().equals(R.user)))
                 return R;
             if((R.ip.length()>0)&&(S!=null)&&(S.getAddress().equals(R.ip)))
@@ -144,7 +146,7 @@ public class DefaultPoll implements Poll
     public void addVoteResult(PollResult R)
     {
         CMLib.polls().loadPollIfNecessary(this);
-        results.addElement(R);
+        results.add(R);
         CMLib.polls().updatePollResults(this);
     }
     

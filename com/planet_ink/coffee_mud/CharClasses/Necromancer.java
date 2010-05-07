@@ -230,7 +230,7 @@ public class Necromancer extends Cleric
 		}
 	}
 	
-    public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, HashSet followers)
+    public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
 	{
 		if((mob!=null)
         &&(mob!=killed)
@@ -243,7 +243,7 @@ public class Necromancer extends Cleric
 		return false;
 	}
 
-	public Vector outfit(MOB myChar)
+	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

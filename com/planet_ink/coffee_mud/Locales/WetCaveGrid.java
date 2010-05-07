@@ -47,5 +47,5 @@ public class WetCaveGrid extends StdMaze
 
 	public String getGridChildLocaleID(){return "WetCaveRoom";}
 	public int maxRange(){return 5;}
-	public Vector resourceChoices(){return CaveRoom.roomResources;}
+	public List<Integer> resourceChoices(){return CaveRoom.roomResources;}
 }

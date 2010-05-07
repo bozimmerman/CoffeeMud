@@ -86,7 +86,7 @@ public class Grasshopper extends StdRace
 		}
 		return naturalWeapon;
 	}
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

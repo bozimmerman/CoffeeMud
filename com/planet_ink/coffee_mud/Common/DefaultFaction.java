@@ -123,9 +123,9 @@ public class DefaultFaction implements Faction, MsgListener
     public void setShowInSpecialReported(boolean truefalse){showInSpecialReported=truefalse;}
     public void setShowInEditor(boolean truefalse){showInEditor=truefalse;}
     public void setShowInFactionsCommand(boolean truefalse){showInFactionsCommand=truefalse;}
-    public void setChoices(Vector v){choices=new SVector(v);}
-    public void setAutoDefaults(Vector v){autoDefaults=new SVector(v);}
-    public void setDefaults(Vector v){defaults=new SVector(v);}
+    public void setChoices(List<String> v){choices=new SVector(v);}
+    public void setAutoDefaults(List<String> v){autoDefaults=new SVector(v);}
+    public void setDefaults(List<String> v){defaults=new SVector(v);}
     public void setRateModifier(double d){rateModifier=d;}
     
     public Faction.FactionAbilityUsage getAbilityUsage(int x)
@@ -523,7 +523,7 @@ public class DefaultFaction implements Faction, MsgListener
         return (FactionChangeEvent[])changes.get(key);
     }
 
-    public Vector findChoices(MOB mob)
+    public List<Integer> findChoices(MOB mob)
     {
         Vector mine=new Vector();
         String s;
@@ -1860,7 +1860,7 @@ public class DefaultFaction implements Faction, MsgListener
             return ID+";"+low+";"+high;
         }
 
-        public Vector setAbilityFlag(String str)
+        public List<String> setAbilityFlag(String str)
         {
             ID=str;
             Vector flags=CMParms.parse(ID);

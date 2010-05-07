@@ -123,10 +123,10 @@ public class Sessions extends StdLibrary implements SessionsList
 
                     if((S.previousCMD()!=null)
                     &&(S.previousCMD().size()>0)
-                    &&(((String)S.previousCMD().firstElement()).equalsIgnoreCase("IMPORT")
-                       ||((String)S.previousCMD().firstElement()).equalsIgnoreCase("EXPORT")
-                       ||((String)S.previousCMD().firstElement()).equalsIgnoreCase("CHARGEN")
-                       ||((String)S.previousCMD().firstElement()).equalsIgnoreCase("MERGE")))
+                    &&(((String)S.previousCMD().get(0)).equalsIgnoreCase("IMPORT")
+                       ||((String)S.previousCMD().get(0)).equalsIgnoreCase("EXPORT")
+                       ||((String)S.previousCMD().get(0)).equalsIgnoreCase("CHARGEN")
+                       ||((String)S.previousCMD().get(0)).equalsIgnoreCase("MERGE")))
                         check=check*600;
                     else
                     if((S.mob()!=null)&&(CMSecurity.isAllowed(S.mob(),S.mob().location(),"CMDROOMS")))

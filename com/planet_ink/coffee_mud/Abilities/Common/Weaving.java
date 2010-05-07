@@ -407,7 +407,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 					((Container)building).setLidsNLocks(true,false,true,false);
 					((Container)building).setKeyName(Double.toString(Math.random()));
 					key=CMClass.getItem("GenKey");
-					((Key)key).setKey(((Container)building).keyName());
+					((DoorKey)key).setKey(((Container)building).keyName());
 					key.setName("a key");
 					key.setDisplayText("a small key sits here");
 					key.setDescription("looks like a key to "+building.name());

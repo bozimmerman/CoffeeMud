@@ -47,5 +47,5 @@ public class SwampGrid extends StdGrid
 	public int domainConditions(){return Room.CONDITION_WET;}
 
 	public String getGridChildLocaleID(){return "Swamp";}
-	public Vector resourceChoices(){return Swamp.roomResources;}
+	public List<Integer> resourceChoices(){return Swamp.roomResources;}
 }

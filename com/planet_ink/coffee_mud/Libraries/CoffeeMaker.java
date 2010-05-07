@@ -2762,16 +2762,16 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		return text.toString();
 	}
 
-	public void fillFileSet(Vector V, HashSet H)
+	public void fillFileSet(List<String> V, Set<String> H)
 	{
 	    if(H==null) return;
 	    if(V==null) return;
 	    for(int v=0;v<V.size();v++)
-	        if((!H.contains(V.elementAt(v)))
-            &&(V.elementAt(v) instanceof String))
-	            H.add(V.elementAt(v));
+	        if((!H.contains(V.get(v)))
+            &&(V.get(v) instanceof String))
+	            H.add(V.get(v));
 	}
-	public void fillFileSet(Environmental E, HashSet H)
+	public void fillFileSet(Environmental E, Set<String> H)
 	{
 	    if(E==null) return;
 	    if(E instanceof PhysicalAgent)

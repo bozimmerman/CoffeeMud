@@ -134,7 +134,7 @@ public class Archon extends StdCharClass
         return super.okMessage(myHost, msg);
     }
     
-	public Vector outfit(MOB myChar)
+	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

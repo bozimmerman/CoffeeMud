@@ -30,7 +30,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public interface TelnetFilter extends CMLibrary
 {
     public final static String hexStr="0123456789ABCDEF";
@@ -52,7 +51,7 @@ public interface TelnetFilter extends CMLibrary
     										   "-HIM-HERSELF","-HIS-HERSELF",
     										   "-SIRMADAM","IS-ARE","-NAMENOART"};
     
-    public Hashtable getTagTable();
+    public Hashtable<Object, Integer> getTagTable();
     public String simpleOutFilter(String msg);
     // no word-wrapping, text filtering or ('\','n') -> '\n' translations
     // (it's not a member of the interface either so probably shouldn't be public)

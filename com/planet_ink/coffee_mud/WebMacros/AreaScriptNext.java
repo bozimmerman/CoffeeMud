@@ -82,10 +82,10 @@ public class AreaScriptNext extends StdWebMacro
 			{
 				if(!B.isSavable()) continue;
 				ScriptingEngine SE=(ScriptingEngine)B;
-				Vector files=B.externalFiles();
+				List<String> files=B.externalFiles();
 				if(files!=null)
 				for(int f=0;f<files.size();f++)
-					addScript(list, prefix, SE.getScriptResourceKey(),B.ID(),((String)files.elementAt(f)).toLowerCase(), (String)files.elementAt(f));
+					addScript(list, prefix, SE.getScriptResourceKey(),B.ID(),((String)files.get(f)).toLowerCase(), (String)files.get(f));
 				String nonFiles=((ScriptingEngine)B).getVar("*","COFFEEMUD_SYSTEM_INTERNAL_NONFILENAME_SCRIPT");
 				if((nonFiles!=null)&&(nonFiles.trim().length()>0))
 				{
@@ -99,9 +99,9 @@ public class AreaScriptNext extends StdWebMacro
 		{
 			ScriptingEngine SE=e.nextElement();
 			if(!SE.isSavable()) continue;
-			Vector files=SE.externalFiles();
+			List<String> files=SE.externalFiles();
 			for(int f=0;f<files.size();f++)
-				addScript(list, prefix, SE.getScriptResourceKey(),null,((String)files.elementAt(f)).toLowerCase(), (String)files.elementAt(f));
+				addScript(list, prefix, SE.getScriptResourceKey(),null,((String)files.get(f)).toLowerCase(), (String)files.get(f));
 			String nonFiles=SE.getVar("*","COFFEEMUD_SYSTEM_INTERNAL_NONFILENAME_SCRIPT");
 			if(nonFiles.trim().length()>0)
 			{

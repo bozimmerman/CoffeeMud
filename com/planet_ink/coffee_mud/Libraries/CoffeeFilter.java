@@ -32,13 +32,12 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class CoffeeFilter extends StdLibrary implements TelnetFilter
 {
     public String ID(){return "CoffeeFilter";}
-    public Hashtable tagTable=null;
+    public Hashtable<Object,Integer> tagTable=null;
 	
-	public Hashtable getTagTable()
+	public Hashtable<Object, Integer> getTagTable()
 	{
 		if(tagTable==null) tagTable=CMStrings.makeNumericHash(TelnetFilter.FILTER_DESCS);
 		return tagTable;

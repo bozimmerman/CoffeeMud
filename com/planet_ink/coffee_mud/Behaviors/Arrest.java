@@ -79,28 +79,6 @@ public class Arrest extends StdBehavior implements LegalBehavior
         }
         return false;
     }
-    public Vector warrantInfo(Area myArea)
-    {
-        Vector V=new Vector();
-        if(!theLawIsEnabled()) return V;
-        Law laws=getLaws(myArea,false);
-        boolean debugging=CMSecurity.isDebugging("ARREST");
-        if(laws!=null)
-			for(LegalWarrant W : laws.warrants())
-                if(isStillACrime(W,debugging))
-                {
-                    Vector V2=new Vector();
-                    V2.addElement(W.criminal().name());
-                    if(W.victim()==null) V2.addElement("");
-                    else V2.addElement(W.victim().name());
-                    if(W.witness()==null) V2.addElement("");
-                    else V2.addElement(W.witness().name());
-                    V2.addElement(fixCharge(W));
-                    V.addElement(V2);
-                }
-        return V;
-    }
-    
     public int revoltChance(){return 0;}
     public Law legalInfo(Area myArea)
     {
@@ -184,7 +162,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	public void setControlPoints(String clanID, int newControlPoints){}
     public int getControlPoints(String clanID){ return 0;}
 	
-	public Vector getCriminals(Area myArea, String searchStr)
+	public List<MOB> getCriminals(Area myArea, String searchStr)
     {
         Vector V=new Vector();
         if(!theLawIsEnabled()) return V;
@@ -198,7 +176,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
         return V;
     }
 	
-    public Vector getWarrantsOf(Area myArea, MOB accused)
+    public List<LegalWarrant> getWarrantsOf(Area myArea, MOB accused)
     {
         Vector V=new Vector();
         if(!theLawIsEnabled()) return V;
@@ -283,16 +261,16 @@ public class Arrest extends StdBehavior implements LegalBehavior
         }
         return false;
     }
-    public boolean isJailRoom(Area myArea, Vector jails)
+    public boolean isJailRoom(Area myArea, List<Room> jails)
     {
         if(!theLawIsEnabled()) return false;
         Law laws=getLaws(myArea,false);
         if(laws!=null)
         {
-            Vector rooms=getRooms(myArea,laws.jailRooms());
+        	List<Room> rooms=getRooms(myArea,laws.jailRooms());
             boolean answer=false;
             for(int i=0;i<jails.size();i++)
-                answer=answer||rooms.contains(jails.elementAt(i));
+                answer=answer||rooms.contains(jails.get(i));
             return answer;
         }
         return false;
@@ -347,7 +325,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	protected boolean defaultModifiableNames(){return true;}
 
-	public Vector externalFiles() 
+	public List<String> externalFiles() 
 	{
         String lawName=getLawParms();
         if(lawName.length()==0)
@@ -490,11 +468,11 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		&&(CMLib.flags().isMobile(M)))
 		{
 			if((laws.officerNames().size()<=0)
-			||(((String)laws.officerNames().firstElement()).equals("@")))
+			||(((String)laws.officerNames().get(0)).equals("@")))
 			   return false;
 			for(int i=0;i<laws.officerNames().size();i++)
-				if((CMLib.english().containsString(M.displayText(),(String)laws.officerNames().elementAt(i))
-				||(CMLib.english().containsString(M.Name(),(String)laws.officerNames().elementAt(i)))))
+				if((CMLib.english().containsString(M.displayText(),(String)laws.officerNames().get(i))
+				||(CMLib.english().containsString(M.Name(),(String)laws.officerNames().get(i)))))
 					return true;
 		}
 		return false;
@@ -807,12 +785,12 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		&&(!CMLib.flags().isMobile(M))
 		&&(M.location()!=null))
 		{
-			if((laws.judgeNames().size()<=0)||(((String)laws.judgeNames().firstElement()).equals("@")))
+			if((laws.judgeNames().size()<=0)||(((String)laws.judgeNames().get(0)).equals("@")))
 				return false;
 			for(int i=0;i<laws.judgeNames().size();i++)
 			{
-				if((CMLib.english().containsString(M.displayText(),(String)laws.judgeNames().elementAt(i)))
-				||(CMLib.english().containsString(M.Name(),(String)laws.judgeNames().elementAt(i))))
+				if((CMLib.english().containsString(M.displayText(),(String)laws.judgeNames().get(i)))
+				||(CMLib.english().containsString(M.Name(),(String)laws.judgeNames().get(i))))
 					return true;
 			}
 		}
@@ -868,7 +846,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			room=criminal.getStartRoom();
 		else
         {
-    		if((laws.releaseRooms().size()==0)||(((String)laws.releaseRooms().firstElement()).equals("@")))
+    		if((laws.releaseRooms().size()==0)||(((String)laws.releaseRooms().get(0)).equals("@")))
     			return (Room)myArea.getMetroMap().nextElement();
             if(criminal.location()!=null)
     			room=getRoom(criminal.location().getArea(),laws.releaseRooms());
@@ -892,14 +870,14 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		return false;
 	}
 
-	public Vector getRooms(Area A, Vector V)
+	public List<Room> getRooms(Area A, List<String> V)
 	{
 	    Vector finalV=new Vector();
 		Room jail=null;
 		if(V.size()==0) return finalV;
 		for(int v=0;v<V.size();v++)
 		{
-			String which=(String)V.elementAt(v);
+			String which=(String)V.get(v);
 			jail=getRoom(A,which);
 			if((jail!=null)
 			&&(!finalV.contains(jail)))
@@ -927,10 +905,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
         }
         return jail;
     }
-	public Room getRoom(Area A, Vector V)
+	public Room getRoom(Area A, List<String> V)
 	{
 		if(V.size()==0) return null;
-		String which=(String)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
+		String which=(String)V.get(CMLib.dice().roll(1,V.size(),-1));
         return getRoom(A,which);
 	}
 
@@ -974,7 +952,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	public Room findTheJail(MOB mob, Area myArea, Law laws)
 	{
 		Room jail=null;
-		if((laws.jailRooms().size()==0)||(((String)laws.jailRooms().firstElement()).equals("@")))
+		if((laws.jailRooms().size()==0)||(((String)laws.jailRooms().get(0)).equals("@")))
 			return null;
 		jail=getRoom(mob.location().getArea(),laws.jailRooms());
 		if(jail==null) jail=getRoom(myArea,laws.jailRooms());
@@ -1795,13 +1773,13 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		        String rsc=RawMaterial.CODES.NAME(((Item)msg.target()).material()).toUpperCase();
 				for(int i=0;i<laws.bannedSubstances().size();i++)
 				{
-					Vector V=(Vector)laws.bannedSubstances().elementAt(i);
+					Vector V=(Vector)laws.bannedSubstances().get(i);
 					for(int v=0;v<V.size();v++)
 					{
 						if((CMLib.english().containsString(msg.target().name(),(String)V.elementAt(v)))
 						||rsc.equalsIgnoreCase((String)V.elementAt(v)))
 						{
-							String[] info=(String[])laws.bannedBits().elementAt(i);
+							String[] info=(String[])laws.bannedBits().get(i);
 							fillOutWarrant(msg.source(),
 											laws,
 											myArea,
@@ -1821,12 +1799,12 @@ public class Arrest extends StdBehavior implements LegalBehavior
             
 			for(int i=0;i<laws.otherCrimes().size();i++)
 			{
-				Vector V=(Vector)laws.otherCrimes().elementAt(i);
+				Vector V=(Vector)laws.otherCrimes().get(i);
 				for(int v=0;v<V.size();v++)
 				{
 					if(CMLib.english().containsString(msg.othersMessage(),(String)V.elementAt(v)))
 					{
-						String[] info=(String[])laws.otherBits().elementAt(i);
+						String[] info=(String[])laws.otherBits().get(i);
 						fillOutWarrant(msg.source(),
 										laws,
 										myArea,
@@ -2251,7 +2229,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					}
 					else
 					if((CMLib.dice().rollPercentage()>75)&&(laws.chitChat().size()>0))
-						CMLib.commands().postSay(officer,W.criminal(),(String)laws.chitChat().elementAt(CMLib.dice().roll(1,laws.chitChat().size(),-1)),false,false);
+						CMLib.commands().postSay(officer,W.criminal(),(String)laws.chitChat().get(CMLib.dice().roll(1,laws.chitChat().size(),-1)),false,false);
 				}
 				else
 				{
@@ -2712,7 +2690,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					}
 					else
 					if((CMLib.dice().rollPercentage()>75)&&(laws.chitChat2().size()>0))
-						CMLib.commands().postSay(officer,W.criminal(),(String)laws.chitChat2().elementAt(CMLib.dice().roll(1,laws.chitChat2().size(),-1)),false,false);
+						CMLib.commands().postSay(officer,W.criminal(),(String)laws.chitChat2().get(CMLib.dice().roll(1,laws.chitChat2().size(),-1)),false,false);
 				}
 				else
 				{
@@ -2779,7 +2757,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
                     }
                     else
                     if((CMLib.dice().rollPercentage()>75)&&(laws.chitChat3().size()>0))
-                        CMLib.commands().postSay(officer,W.criminal(),(String)laws.chitChat3().elementAt(CMLib.dice().roll(1,laws.chitChat3().size(),-1)),false,false);
+                        CMLib.commands().postSay(officer,W.criminal(),(String)laws.chitChat3().get(CMLib.dice().roll(1,laws.chitChat3().size(),-1)),false,false);
                 }
                 else
                 {

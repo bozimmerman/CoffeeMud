@@ -568,7 +568,7 @@ public class ItemData extends StdWebMacro
 					str.append(old);
 					break;
 				case 39: // is map
-					if(I instanceof com.planet_ink.coffee_mud.Items.interfaces.Map) return "true";
+					if(I instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap) return "true";
                     return "false";
 				case 40: // map areas
 					{
@@ -746,7 +746,7 @@ public class ItemData extends StdWebMacro
 					str.append(old);
 					break;
 				case 65: // is key
-					if(I instanceof Key) return "true";
+					if(I instanceof DoorKey) return "true";
                     return "false";
 				case 66: // content types
 					if(I instanceof Container)

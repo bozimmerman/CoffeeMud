@@ -214,11 +214,11 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
             if(number>pkg.numberOfItemsInPackage())
                 number=pkg.numberOfItemsInPackage();
             Environmental owner=I.owner();
-            Vector parts=((PackagedItems)I).unPackage(number);
+            List<Item> parts=((PackagedItems)I).unPackage(number);
             if(parts.size()==0) return I;
             for(int p=0;p<parts.size();p++)
             {
-                I=(Item)parts.elementAt(p);
+                I=(Item)parts.get(p);
                 if(owner instanceof Room)
                     ((Room)owner).addItem(I,ItemPossessor.Expire.Player_Drop);
                 else
@@ -395,7 +395,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			return null;
 		int material=(myResource&RawMaterial.MATERIAL_MASK);
         
-		Item I=null;
+		RawMaterial I=null;
 		if(!noAnimals)
 		{
 			if((myResource==RawMaterial.RESOURCE_WOOL)
@@ -491,15 +491,15 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		switch(material)
 		{
 		case RawMaterial.MATERIAL_FLESH:
-			I=CMClass.getItem("GenFoodResource");
+			I=(RawMaterial)CMClass.getItem("GenFoodResource");
 			break;
 		case RawMaterial.MATERIAL_VEGETATION:
 		{
 			if(myResource==RawMaterial.RESOURCE_VINE)
-				I=CMClass.getItem("GenResource");
+				I=(RawMaterial)CMClass.getItem("GenResource");
 			else
 			{
-				I=CMClass.getItem("GenFoodResource");
+				I=(RawMaterial)CMClass.getItem("GenFoodResource");
 				if(myResource==RawMaterial.RESOURCE_HERBS)
 					((Food)I).setNourishment(1);
 			}
@@ -508,7 +508,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		case RawMaterial.MATERIAL_LIQUID:
 		case RawMaterial.MATERIAL_ENERGY:
 		{
-			I=CMClass.getItem("GenLiquidResource");
+			I=(RawMaterial)CMClass.getItem("GenLiquidResource");
 			break;
 		}
 		case RawMaterial.MATERIAL_LEATHER:
@@ -520,13 +520,13 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		case RawMaterial.MATERIAL_ROCK:
 		case RawMaterial.MATERIAL_PRECIOUS:
 		{
-			I=CMClass.getItem("GenResource");
+			I=(RawMaterial)CMClass.getItem("GenResource");
 			break;
 		}
 		case RawMaterial.MATERIAL_METAL:
 		case RawMaterial.MATERIAL_MITHRIL:
 		{
-			I=CMClass.getItem("GenResource");
+			I=(RawMaterial)CMClass.getItem("GenResource");
 			break;
 		}
 		}
@@ -550,7 +550,8 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		return null;
 	}
 	
-    public String genericType(Item I) {
+    public String genericType(Item I) 
+    {
         if(I instanceof RawMaterial)
             return CMStrings.capitalizeAndLower(getMaterialDesc(I.material()));
         if(I instanceof Weapon)
@@ -567,13 +568,13 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
             return "pills";
         if(I instanceof Light)
             return "light sources";
-        if(I instanceof com.planet_ink.coffee_mud.Items.interfaces.Map)
+        if(I instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
             return "papers";
         if(I instanceof Scroll)
             return "papers";
         if(I instanceof Electronics)
             return "technology";
-        if(I instanceof Key)
+        if(I instanceof DoorKey)
             return "keys";
         if((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PAPER)
             return "papers";

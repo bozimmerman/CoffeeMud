@@ -46,5 +46,5 @@ public class IndoorShallowWater extends ShallowWater implements Drink
 	public int domainConditions(){return Room.CONDITION_WET;}
 	protected int baseThirst(){return 0;}
 
-	public Vector resourceChoices(){return CaveRoom.roomResources;}
+	public List<Integer> resourceChoices(){return CaveRoom.roomResources;}
 }

@@ -51,7 +51,7 @@ public class GModify extends StdCommand
     private static final int EQUATOR_LT=4;
     private static final int EQUATOR_LTEQ=5;
     private static final int EQUATOR_GTEQ=6;
-    private static final Hashtable EQUATORS=CMStrings.makeNumericHash(new String[]{"$","=","!=",">","<","<=",">="});
+    private static final Hashtable<Object,Integer> EQUATORS=CMStrings.makeNumericHash(new String[]{"$","=","!=",">","<","<=",">="});
 
     public static String getStat(Environmental E, String stat)
     {

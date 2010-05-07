@@ -85,22 +85,22 @@ public class GateGuard extends StdBehavior
 		return -1;
 	}
 
-	protected Key getMyKeyTo(MOB mob, Exit e)
+	protected DoorKey getMyKeyTo(MOB mob, Exit e)
 	{
-		Key key=null;
+		DoorKey key=null;
 		String keyCode=e.keyName();
 		for(int i=0;i<mob.numItems();i++)
 		{
 			Item item=mob.getItem(i);
-			if((item instanceof Key)&&(((Key)item).getKey().equals(keyCode)))
+			if((item instanceof DoorKey)&&(((DoorKey)item).getKey().equals(keyCode)))
 			{
-				key=(Key)item;
+				key=(DoorKey)item;
 				break;
 			}
 		}
 		if(key==null)
 		{
-			key=(Key)CMClass.getItem("StdKey");
+			key=(DoorKey)CMClass.getItem("StdKey");
 			key.setKey(keyCode);
 			mob.addItem(key);
 		}

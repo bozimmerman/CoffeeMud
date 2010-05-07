@@ -296,8 +296,8 @@ public class StdContainer extends StdItem implements Container
 						{
 							Item item=mob.getItem(i);
 							if((item!=null)
-							&&(item instanceof Key)
-							&&((Key)item).getKey().equals(keyName())
+							&&(item instanceof DoorKey)
+							&&((DoorKey)item).getKey().equals(keyName())
 							&&((item.container()==null)
 							   ||((item.container().container()==null)
 								  &&(item.container() instanceof Container)
@@ -426,7 +426,7 @@ public class StdContainer extends StdItem implements Container
 						return true;
 					break;
 				case CONTAIN_KEYS:
-					if(E instanceof Key)
+					if(E instanceof DoorKey)
 						return true;
 					break;
 				case CONTAIN_DRINKABLES:

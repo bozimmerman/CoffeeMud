@@ -287,13 +287,13 @@ public class CommonSkill extends StdAbility
 		if(((isMaterial&&(resource==(roomResourceType&RawMaterial.MATERIAL_MASK))))
 		||(I.intValue()==roomResourceType))
 			return true;
-		Vector resources=location.resourceChoices();
+		List<Integer> resources=location.resourceChoices();
 		if(resources!=null)
 		for(int i=0;i<resources.size();i++)
-			if(isMaterial&&(resource==(((Integer)resources.elementAt(i)).intValue()&RawMaterial.MATERIAL_MASK)))
+			if(isMaterial&&(resource==(((Integer)resources.get(i)).intValue()&RawMaterial.MATERIAL_MASK)))
 				return true;
 			else
-			if(resources.elementAt(i).equals(I))
+			if(resources.get(i).equals(I))
 				return true;
 		return false;
 	}

@@ -81,7 +81,7 @@ public class LockSmith extends CraftingSkill
 		&&(((Container)workingOn).hasALock())
         &&(((Container)workingOn).keyName().length()>0))
             keyCode=((Container)workingOn).keyName();
-		((Key)newbuilding).setKey(keyCode);
+		((DoorKey)newbuilding).setKey(keyCode);
 		return newbuilding;
 	}
 
@@ -119,11 +119,11 @@ public class LockSmith extends CraftingSkill
     							((Exit)workingOn).basePhyStats().setLevel(xlevel(mob));
     							((Exit)workingOn).recoverPhyStats();
     							((Exit)workingOn).setDoorsNLocks(true,false,true,!delock,!delock,!delock);
-    							if(building instanceof Key)
+    							if(building instanceof DoorKey)
                                 {
-                                    if(((Key)building).getKey().length()==0)
-                                        ((Key)building).setKey(keyCode);
-    								((Exit)workingOn).setKeyName(((Key)building).getKey());
+                                    if(((DoorKey)building).getKey().length()==0)
+                                        ((DoorKey)building).setKey(keyCode);
+    								((Exit)workingOn).setKeyName(((DoorKey)building).getKey());
                                 }
     							CMLib.database().DBUpdateExits(mob.location());
     							if((exit2!=null)
@@ -134,8 +134,8 @@ public class LockSmith extends CraftingSkill
     							{
     								exit2.basePhyStats().setLevel(xlevel(mob));
     								exit2.setDoorsNLocks(true,false,true,!delock,!delock,!delock);
-    								if(building instanceof Key)
-    									exit2.setKeyName(((Key)building).getKey());
+    								if(building instanceof DoorKey)
+    									exit2.setKeyName(((DoorKey)building).getKey());
     								CMLib.database().DBUpdateExits(room2);
     							}
                             }
@@ -158,11 +158,11 @@ public class LockSmith extends CraftingSkill
                             else
                             {
     							((Container)workingOn).setLidsNLocks(true,false,!delock,!delock);
-    							if(building instanceof Key)
+    							if(building instanceof DoorKey)
                                 {
-                                    if(((Key)building).getKey().length()==0)
-                                        ((Key)building).setKey(keyCode);
-    								((Container)workingOn).setKeyName(((Key)building).getKey());
+                                    if(((DoorKey)building).getKey().length()==0)
+                                        ((DoorKey)building).setKey(keyCode);
+    								((Container)workingOn).setKeyName(((DoorKey)building).getKey());
                                 }
                             }
 						}

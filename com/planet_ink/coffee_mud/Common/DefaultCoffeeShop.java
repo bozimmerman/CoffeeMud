@@ -112,7 +112,7 @@ public class DefaultCoffeeShop implements CoffeeShop
     {
     	if((thang1==null)&&(thang2==null)) return true;
     	if((thang1==null)||(thang2==null)) return false;
-    	if((thang1 instanceof Key)&&(thang2 instanceof Key))
+    	if((thang1 instanceof DoorKey)&&(thang2 instanceof DoorKey))
     		return thang1.sameAs(thang2);
     	else
         if((thang1.isGeneric())&&(thang2.isGeneric()))
@@ -365,15 +365,15 @@ public class DefaultCoffeeShop implements CoffeeShop
         V.addElement(product);
         if(product instanceof Container)
         {
-            Key foundKey=null;
+            DoorKey foundKey=null;
             Container C=((Container)product);
             for(ShelfProduct SP : storeInventory)
             {
                 Environmental I=SP.product;
                 if((I instanceof Item)&&(((Item)I).container()==product))
                 {
-                    if((I instanceof Key)&&(((Key)I).getKey().equals(C.keyName())))
-                        foundKey=(Key)I;
+                    if((I instanceof DoorKey)&&(((DoorKey)I).getKey().equals(C.keyName())))
+                        foundKey=(DoorKey)I;
                     ((Item)I).unWear();
                     V.addElement(I);
                     storeInventory.remove(SP);
@@ -385,7 +385,7 @@ public class DefaultCoffeeShop implements CoffeeShop
                 String keyName=Double.toString(Math.random());
                 C.setKeyName(keyName);
                 C.setLidsNLocks(C.hasALid(),true,C.hasALock(),false);
-                Key key=(Key)CMClass.getItem("StdKey");
+                DoorKey key=(DoorKey)CMClass.getItem("StdKey");
                 key.setKey(keyName);
                 key.setContainer(C);
                 V.addElement(key);

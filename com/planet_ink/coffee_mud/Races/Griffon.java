@@ -52,7 +52,7 @@ public class Griffon extends GreatBird
 	protected static Vector resources=new Vector();
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{}
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

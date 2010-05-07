@@ -297,7 +297,7 @@ public class SkyWatcher extends StdCharClass
 		}
 	}
 
-	public Vector outfit(MOB myChar)
+	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

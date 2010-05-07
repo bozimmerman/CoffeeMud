@@ -34,24 +34,26 @@ import java.util.*;
 */
 public class GenExit extends StdExit
 {
-	protected String name="a walkway";
-	protected String description="Looks like an ordinary path from here to there.";
-	protected String displayText="";
-	protected String closedText="A barrier blocks the way.";
+	protected String 	name="a walkway";
+	protected String 	description="Looks like an ordinary path from here to there.";
+	protected String 	displayText="";
+	protected String 	closedText="A barrier blocks the way.";
 
-	protected String doorName="door";
-	protected String closeName="close";
-	protected String openName="open";
+	protected String 	doorName="door";
+	protected String 	closeName="close";
+	protected String 	openName="open";
 
-	protected boolean hasADoor=false;
-	protected boolean doorDefaultsClosed=true;
-	protected boolean hasALock=false;
-	protected boolean doorDefaultsLocked=false;
-	protected boolean isReadable=false;
-	protected int openDelayTicks=45;
+	protected boolean 	hasADoor=false;
+	protected boolean 	doorDefaultsClosed=true;
+	protected boolean 	hasALock=false;
+	protected boolean 	doorDefaultsLocked=false;
+	protected boolean 	isReadable=false;
+	protected int 		openDelayTicks=45;
 
+	protected String 	keyName="";
+	
+	
 	public String ID(){	return "GenExit";}
-	protected String keyName="";
 	public GenExit()
 	{
 		super();

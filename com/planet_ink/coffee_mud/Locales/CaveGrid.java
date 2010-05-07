@@ -47,5 +47,5 @@ public class CaveGrid extends StdGrid
 
 	public int maxRange(){return 5;}
 	public String getGridChildLocaleID(){return "CaveRoom";}
-	public Vector resourceChoices(){return CaveRoom.roomResources;}
+	public List<Integer> resourceChoices(){return CaveRoom.roomResources;}
 }

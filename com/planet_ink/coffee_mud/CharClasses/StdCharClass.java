@@ -640,13 +640,13 @@ public class StdCharClass implements CharClass
             CR.setStat("GETWEAP",""+CMParms.toStringList(H));
         }
 
-        Vector outfit=outfit(null);
-        if(outfit==null) outfit=new Vector();
+        List<Item> outfit=outfit(null);
+        if(outfit==null) outfit=new Vector<Item>();
         CR.setStat("NUMOFT",""+outfit.size());
         for(int i=0;i<outfit.size();i++)
-            CR.setStat("GETOFTID"+i,((Item)outfit.elementAt(i)).ID());
+            CR.setStat("GETOFTID"+i,((Item)outfit.get(i)).ID());
         for(int i=0;i<outfit.size();i++)
-            CR.setStat("GETOFTPARM"+i,((Item)outfit.elementAt(i)).text());
+            CR.setStat("GETOFTPARM"+i,((Item)outfit.get(i)).text());
 
         CR.setStat("HPDIE",""+getHPDie());
         CR.setStat("MANADICE",""+getManaDice());
@@ -743,7 +743,7 @@ public class StdCharClass implements CharClass
 		}
 	}
 
-	public Vector outfit(MOB myChar){return outfitChoices;}
+	public List<Item> outfit(MOB myChar){return outfitChoices;}
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -806,16 +806,16 @@ public class StdCharClass implements CharClass
 
 	public void unLevel(MOB mob){}
 
-	public void level(MOB mob, Vector gainedAbilityIDs){}
+	public void level(MOB mob, List<String> gainedAbilityIDs){}
 
 	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount) { return amount;}
 
-	public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, HashSet followers)
+	public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
 	{
 		return isValidClassBeneficiary(killer,killed,mob,followers);
 	}
 
-	public boolean isValidClassBeneficiary(MOB killer, MOB killed, MOB mob, HashSet followers)
+	public boolean isValidClassBeneficiary(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
 	{
 		if((mob!=null)
         &&(mob!=killed)

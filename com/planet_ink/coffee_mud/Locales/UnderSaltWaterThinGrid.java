@@ -58,5 +58,5 @@ public class UnderSaltWaterThinGrid extends UnderWaterThinGrid
 	}
 	public String getGridChildLocaleID(){return "UnderSaltWater";}
 
-	public Vector resourceChoices(){return UnderSaltWater.roomResources;}
+	public List<Integer> resourceChoices(){return UnderSaltWater.roomResources;}
 }

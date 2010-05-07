@@ -185,7 +185,7 @@ public class Prancer extends StdCharClass
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 	public String getOtherLimitsDesc(){return "";}
-	public Vector outfit(MOB myChar)
+	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
@@ -261,7 +261,7 @@ public class Prancer extends StdCharClass
     
 	public String getOtherBonusDesc(){return "Receives defensive bonus for high dexterity.  Receives group bonus combat experience when in an intelligent group, and more for a group of players.  Receives exploration and pub-finding experience based on danger level.";}
 
-	public void level(MOB mob, Vector newAbilityIDs)
+	public void level(MOB mob, List<String> newAbilityIDs)
 	{
 	    if(CMSecurity.isDisabled("LEVELS"))  return;
 	    if((mob.basePhyStats().level() % 3)==0)

@@ -19,6 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.*;
+import java.util.Map;
 
 /*
    Copyright 2000-2010 Bo Zimmerman
@@ -58,22 +59,22 @@ public class DefaultLawSet implements Law
     private boolean lawsModifiable=false;
     private LegalBehavior legalDetails=null;
 
-    private Vector otherCrimes=new Vector();
-    private Vector otherBits=new Vector();
-    private Vector bannedSubstances=new Vector();
-    private Vector bannedBits=new Vector();
-    private Hashtable abilityCrimes=new Hashtable();
-    private Hashtable basicCrimes=new Hashtable();
-    private Hashtable taxLaws=new Hashtable();
+    private List<List<String>>	otherCrimes=new Vector();
+    private List<String[]> 		otherBits=new Vector();
+    private List<List<String>> 	bannedSubstances=new Vector();
+    private List<String[]> 		bannedBits=new Vector();
+    private Map<String,String[]>abilityCrimes=new Hashtable();
+    private Map<String,String[]>basicCrimes=new Hashtable();
+    private Map<String, Object>	taxLaws=new Hashtable();
 
-    private Vector chitChat=new Vector();
-    private Vector chitChat2=new Vector();
-    private Vector chitChat3=new Vector();
-    private Vector jailRooms=new Vector();
-    private Vector releaseRooms=new Vector();
-    private Vector officerNames=new Vector();
-    private Vector judgeNames=new Vector();
-    private String[] messages=new String[Law.MSG_TOTAL];
+    private List<String> chitChat=new Vector();
+    private List<String> chitChat2=new Vector();
+    private List<String> chitChat3=new Vector();
+    private List<String> jailRooms=new Vector();
+    private List<String> releaseRooms=new Vector();
+    private List<String> officerNames=new Vector();
+    private List<String> judgeNames=new Vector();
+    private String[] 	 messages=new String[Law.MSG_TOTAL];
 
     private boolean activated=true;
 
@@ -99,24 +100,24 @@ public class DefaultLawSet implements Law
         resetLaw(laws);
     }
 
-    public Vector otherCrimes() { return otherCrimes;}
-    public Vector otherBits() { return otherBits;}
-    public Vector bannedSubstances() { return bannedSubstances;}
-    public Vector bannedBits() { return bannedBits;}
-    public Hashtable abilityCrimes(){ return abilityCrimes;}
-    public Hashtable basicCrimes(){ return basicCrimes;}
-    public Hashtable taxLaws(){return taxLaws;}
+    public List<List<String>> otherCrimes() { return otherCrimes;}
+    public List<String[]> otherBits() { return otherBits;}
+    public List<List<String>> bannedSubstances() { return bannedSubstances;}
+    public List<String[]> bannedBits() { return bannedBits;}
+    public Map<String,String[]> abilityCrimes(){ return abilityCrimes;}
+    public Map<String,String[]> basicCrimes(){ return basicCrimes;}
+    public Map<String, Object> taxLaws(){return taxLaws;}
 
     public boolean hasModifiableNames(){return namesModifiable;}
     public boolean hasModifiableLaws(){return lawsModifiable;}
 
-    public Vector chitChat(){ return chitChat;}
-    public Vector chitChat2(){ return chitChat2;}
-    public Vector chitChat3(){ return chitChat3;}
-    public Vector jailRooms(){ return jailRooms;}
-    public Vector releaseRooms(){ return releaseRooms;}
-    public Vector officerNames(){ return officerNames;}
-    public Vector judgeNames(){ return judgeNames;}
+    public List<String> chitChat(){ return chitChat;}
+    public List<String> chitChat2(){ return chitChat2;}
+    public List<String> chitChat3(){ return chitChat3;}
+    public List<String> jailRooms(){ return jailRooms;}
+    public List<String> releaseRooms(){ return releaseRooms;}
+    public List<String> officerNames(){ return officerNames;}
+    public List<String> judgeNames(){ return judgeNames;}
     public String[] messages(){ return messages;}
 
     public List<LegalWarrant> oldWarrants(){ return oldWarrants;}
@@ -513,7 +514,7 @@ public class DefaultLawSet implements Law
             {
                 if(key.startsWith("CRIME"))
                 {
-                    otherCrimes.addElement(CMParms.parse(words.substring(0,x)));
+                    otherCrimes.add(CMParms.parse(words.substring(0,x)));
                     String[] bits=new String[Law.BIT_NUMBITS];
                     Vector parsed=CMParms.parseSemicolons(words.substring(x+1),false);
                     for(int i=0;i<Law.BIT_NUMBITS;i++)
@@ -521,12 +522,12 @@ public class DefaultLawSet implements Law
                             bits[i]=(String)parsed.elementAt(i);
                         else
                             bits[i]="";
-                    otherBits.addElement(bits);
+                    otherBits.add(bits);
                 }
                 else
                 if(key.startsWith("BANNED"))
                 {
-                    bannedSubstances.addElement(CMParms.parse(words.substring(0,x)));
+                    bannedSubstances.add(CMParms.parse(words.substring(0,x)));
                     String[] bits=new String[Law.BIT_NUMBITS];
                     Vector parsed=CMParms.parseSemicolons(words.substring(x+1),false);
                     for(int i=0;i<Law.BIT_NUMBITS;i++)
@@ -534,7 +535,7 @@ public class DefaultLawSet implements Law
                             bits[i]=(String)parsed.elementAt(i);
                         else
                             bits[i]="";
-                    bannedBits.addElement(bits);
+                    bannedBits.add(bits);
                 }
                 else
                 if((key.startsWith("$")&&(CMClass.getAbility(key.substring(1))!=null))

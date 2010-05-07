@@ -470,7 +470,7 @@ public class CraftingSkill extends GatheringSkill
 	public ItemKeyPair craftItem(String recipe, int material)
 	{
 		Item building=null;
-		Key key=null;
+		DoorKey key=null;
 		int tries=0;
 		MOB mob=CMLib.map().mobCreated();
 		mob.basePhyStats().setLevel(Integer.MAX_VALUE/2);
@@ -484,8 +484,8 @@ public class CraftingSkill extends GatheringSkill
 			invoke(mob,V,null,true,-1);
 			if((V.size()>0)&&(V.lastElement() instanceof Item))
 			{
-				if((V.size()>1)&&((V.elementAt(V.size()-2) instanceof Key)))
-					key=(Key)V.elementAt(V.size()-2);
+				if((V.size()>1)&&((V.elementAt(V.size()-2) instanceof DoorKey)))
+					key=(DoorKey)V.elementAt(V.size()-2);
 				else
 					key=null;
 				building=(Item)V.lastElement();
@@ -535,28 +535,32 @@ public class CraftingSkill extends GatheringSkill
 	
 	public ItemKeyPair craftItem(String recipe)
 	{
-		Vector rscs=myResources();
+		List<Integer> rscs=myResources();
 		if(rscs.size()==0) rscs=CMParms.makeVector(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
-		int material=((Integer)rscs.elementAt(CMLib.dice().roll(1,rscs.size(),-1))).intValue();
+		int material=((Integer)rscs.get(CMLib.dice().roll(1,rscs.size(),-1))).intValue();
 		return craftItem(recipe,material);
 	}
 	
 	public List<ItemKeyPair> craftAllItemSets()
 	{
-		Vector rscs=myResources();
+		List<Integer> rscs=myResources();
 		List<ItemKeyPair> allItems=new Vector<ItemKeyPair>();
 		List<ItemKeyPair> pairs=null;
 		if(rscs.size()==0) rscs=CMParms.makeVector(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
 		for(int r=0;r<rscs.size();r++)
 		{
-			pairs=craftAllItemSets(((Integer)rscs.elementAt(r)).intValue());
+			pairs=craftAllItemSets(((Integer)rscs.get(r)).intValue());
 			if((pairs==null)||(pairs.size()==0)) continue;
 			allItems.addAll(pairs);
 		}
 		return allItems;
 	}
 	
-	public Vector matchingRecipeNames(String recipeName, boolean beLoose){return matchingRecipeNames(fetchRecipes(),recipeName,beLoose);}
+	public Vector matchingRecipeNames(String recipeName, boolean beLoose)
+	{
+		return matchingRecipeNames(fetchRecipes(),recipeName,beLoose);
+	}
+	
 	protected Vector matchingRecipeNames(Vector recipes, String recipeName, boolean beLoose)
 	{
 		Vector matches=new Vector();

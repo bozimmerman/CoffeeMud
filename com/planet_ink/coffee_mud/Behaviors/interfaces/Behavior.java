@@ -13,7 +13,6 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-import java.util.Vector;
 
 
 /*
@@ -42,7 +41,6 @@ import java.util.Vector;
  * @see com.planet_ink.coffee_mud.core.interfaces.Environmental
  * @see com.planet_ink.coffee_mud.core.interfaces.Tickable
  */
-@SuppressWarnings("unchecked")
 public interface Behavior extends Tickable, MsgListener, Contingent, Modifiable
 {
 	/**
@@ -102,7 +100,7 @@ public interface Behavior extends Tickable, MsgListener, Contingent, Modifiable
 	 * @see Behavior#setParms(String)
 	 * @return a list of the path/names of files used by this behavior
 	 */
-	public Vector externalFiles();
+	public java.util.List<String> externalFiles();
 
 	/**
 	 * Sets whether this behavior can be saved as a permanent aspect of

@@ -45,23 +45,23 @@ public class Skill_CollectBounty extends StdSkill
     public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_LEGAL; }
 	public int usageType(){return USAGE_MANA;}
 
-	public Vector getWarrantsOf(MOB target, Room R)
+	public List<LegalWarrant> getWarrantsOf(MOB target, Room R)
 	{
 	    return getWarrantsOf(target,CMLib.law().getLegalObject(R));
 	}
-	public Vector getWarrantsOf(MOB target, Area legalA)
+	public List<LegalWarrant> getWarrantsOf(MOB target, Area legalA)
 	{
         LegalBehavior B=null;
 		if(legalA!=null) B=CMLib.law().getLegalBehavior(legalA);
-		Vector warrants=new Vector();
+		List<LegalWarrant> warrants=new Vector();
 		if(B!=null)
 		{
             warrants=B.getWarrantsOf(legalA,target);
 			for(int i=warrants.size()-1;i>=0;i--)
 			{
-			    LegalWarrant W=(LegalWarrant)warrants.elementAt(i);
+			    LegalWarrant W=(LegalWarrant)warrants.get(i);
 			    if(W.crime().equalsIgnoreCase("pardoned"))
-			        warrants.removeElementAt(i);
+			        warrants.remove(i);
 			}
 		}
 		return warrants;
@@ -133,7 +133,7 @@ public class Skill_CollectBounty extends StdSkill
 		    return false;
 		}
 
-		Vector warrants=getWarrantsOf(target,R);
+		List<LegalWarrant> warrants=getWarrantsOf(target,R);
 		if(warrants.size()==0)
 		{
 		    mob.tell(target.name()+" is not wanted for anything here.");
@@ -146,7 +146,7 @@ public class Skill_CollectBounty extends StdSkill
 		}
 		for(int w=0;w<warrants.size();w++)
 		{
-		    LegalWarrant W=(LegalWarrant)warrants.elementAt(w);
+		    LegalWarrant W=(LegalWarrant)warrants.get(w);
 		    if(W.crime().equalsIgnoreCase("pardoned"))
 		    {
 		        mob.tell(target.name()+" has been pardoned, and is no longer a criminal.");
@@ -182,12 +182,12 @@ public class Skill_CollectBounty extends StdSkill
 				    A.setInvoker(officer);
 				    target.setFollowing(officer);
 			    }
-			    LegalWarrant W=(LegalWarrant)warrants.firstElement();
+			    LegalWarrant W=(LegalWarrant)warrants.get(0);
 		        W.setArrestingOfficer(legalA,officer);
 		        W.setState(Law.STATE_REPORTING);
 				for(int i=0;i<warrants.size();i++)
 				{
-				    W=(LegalWarrant)warrants.elementAt(i);
+				    W=(LegalWarrant)warrants.get(i);
 			        gold+=(W.punishment()*(5+getXLEVELLevel(mob)));
 				}
 				mob.location().show(judge,mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> pay(s) <T-NAMESELF> the bounty of "+CMLib.beanCounter().nameCurrencyShort(judge,gold)+" on "+target.Name()+".");

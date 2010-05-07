@@ -235,7 +235,7 @@ public class Gaoler extends StdCharClass
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 
-	public Vector outfit(MOB myChar)
+	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

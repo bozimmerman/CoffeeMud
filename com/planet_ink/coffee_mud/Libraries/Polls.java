@@ -160,7 +160,7 @@ public class Polls extends StdLibrary implements PollManager
             Poll.PollOption PO=null;
             for(int o=0;o<P.getOptions().size();o++)
             {
-                PO=(Poll.PollOption)P.getOptions().elementAt(o);
+                PO=(Poll.PollOption)P.getOptions().get(o);
                 present.append("^H"+CMStrings.padLeft(""+(o+1),2)+": ^N"+PO.text+"\n\r");
             }
             if(CMath.bset(P.getFlags(),Poll.FLAG_ABSTAIN))
@@ -236,12 +236,12 @@ public class Polls extends StdLibrary implements PollManager
             Vector del=new Vector();
             for(int i=0;i<P.getOptions().size();i++)
             {
-                Poll.PollOption PO=(Poll.PollOption)P.getOptions().elementAt(i);
+                Poll.PollOption PO=(Poll.PollOption)P.getOptions().get(i);
                 PO.text=CMLib.genEd().prompt(mob,PO.text,++showNumber,showFlag,"Vote Option",true);
                 if(PO.text.length()==0) del.addElement(PO);
             }
             for(int i=0;i<del.size();i++)
-                P.getOptions().removeElement(del.elementAt(i));
+                P.getOptions().remove(del.elementAt(i));
             
             Poll.PollOption PO=null;
             while(!mob.session().killFlag())
@@ -251,7 +251,7 @@ public class Polls extends StdLibrary implements PollManager
                 );
                 if(PO.text.length()==0) 
                     break;
-                P.getOptions().addElement(PO);
+                P.getOptions().add(PO);
             }
             if(showFlag<-900){ ok=true; break;}
             if(showFlag>0){ showFlag=-1; continue;}
@@ -284,7 +284,7 @@ public class Polls extends StdLibrary implements PollManager
         int choice=0;
         for(int r=0;r<P.getResults().size();r++)
         {
-            R=(Poll.PollResult)P.getResults().elementAt(r);
+            R=(Poll.PollResult)P.getResults().get(r);
             choice=CMath.s_int(R.answer);
             if(((choice<=0)&&CMath.bset(P.getFlags(),Poll.FLAG_ABSTAIN))
             ||((choice>=0)&&(choice<=P.getOptions().size())))
@@ -299,7 +299,7 @@ public class Polls extends StdLibrary implements PollManager
         Poll.PollOption O=null;
         for(int o=0;o<P.getOptions().size();o++)
         {
-            O=(Poll.PollOption)P.getOptions().elementAt(o);
+            O=(Poll.PollOption)P.getOptions().get(o);
             int pct=0;
             if(total>0)
                 pct=(int)Math.round(CMath.div(votes[o],total)*100.0);

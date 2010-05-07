@@ -37,7 +37,7 @@ public class StdPerfume extends StdDrink implements Perfume
 {
 	public String ID(){	return "StdPerfume";}
 
-	Vector smellList=new Vector();
+	List<String> smellList=new Vector();
 	
 	public StdPerfume()
 	{
@@ -57,13 +57,13 @@ public class StdPerfume extends StdDrink implements Perfume
 		recoverPhyStats();
 	}
 
-	public Vector getSmellEmotes(Perfume me)
+	public List<String> getSmellEmotes(Perfume me)
 	{	return smellList;}
 	public String getSmellList()
 	{
 		StringBuffer list=new StringBuffer("");
 		for(int i=0;i<smellList.size();i++)
-			list.append(((String)smellList.elementAt(i))+";");
+			list.append(((String)smellList.get(i))+";");
 		return list.toString();
 	}
 	public void setSmellList(String list)

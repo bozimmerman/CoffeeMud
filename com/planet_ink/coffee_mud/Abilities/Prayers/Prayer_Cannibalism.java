@@ -85,12 +85,12 @@ public class Prayer_Cannibalism extends Prayer
 
 	public boolean raceWithBlood(Race R)
 	{
-		Vector V=R.myResources();
+		List<RawMaterial> V=R.myResources();
 		if(V!=null)
 		{
 			for(int i2=0;i2<V.size();i2++)
 			{
-				Item I2=(Item)V.elementAt(i2);
+				Item I2=(Item)V.get(i2);
 				if((I2.material()==RawMaterial.RESOURCE_BLOOD)
 				&&(I2 instanceof Drink))
 					return true;

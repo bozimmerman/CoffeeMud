@@ -47,5 +47,5 @@ public class CaveSurface extends ClimbableSurface
 	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 	public int maxRange(){return 5;}
-	public Vector resourceChoices(){return CaveRoom.roomResources;}
+	public List<Integer> resourceChoices(){return CaveRoom.roomResources;}
 }

@@ -262,7 +262,7 @@ public class StdAbility implements Ability
 	public void setDescription(String newDescription){}
 	public int abilityCode(){return 0;}
 	public void setAbilityCode(int newCode){}
-	public Vector externalFiles(){return null;}
+	public List<String> externalFiles(){return null;}
     protected long minCastWaitTime(){return 0;}
 
 	// ** For most abilities, the following stuff actually matters */

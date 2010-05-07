@@ -19,6 +19,7 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 import java.util.Vector;
 
@@ -287,7 +288,7 @@ public interface Faction extends CMCommon, MsgListener
      * A default faction mask/value is defined as a number, along with an
      * optional Zapper mask describing to whom the value is applied.
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#changeEventKeys()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#setDefaults(Vector)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#setDefaults(List<String>)
      * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
      * @return the default faction mask/value list
      */
@@ -316,7 +317,7 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#defaults()
      * @param v the new default faction mask/value list
      */
-    public void setDefaults(Vector v);
+    public void setDefaults(List<String> v);
 
     /**
      * Returns the automatic default faction mask/value list, which is 
@@ -325,7 +326,7 @@ public interface Faction extends CMCommon, MsgListener
      * as a number, along with an optional Zapper mask describing to whom 
      * the value is applied. Each list item is a string.
      * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#setAutoDefaults(Vector)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#setAutoDefaults(List)
      * @return the automatic default faction mask/value list
      */
     public Enumeration<String> autoDefaults();
@@ -351,7 +352,7 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
      * @param v the new automatic default faction mask/value list
      */
-    public void setAutoDefaults(Vector v);
+    public void setAutoDefaults(List<String> v);
 
     /**
      * A modifier of the base amount of faction value change, namely 100.
@@ -374,7 +375,7 @@ public interface Faction extends CMCommon, MsgListener
      * optional Zapper mask describing to whom the value is applied.
      * Each list item is a string.
      * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#setChoices(Vector)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#setChoices(List)
      * @return the choosable faction mask/value list
      */
     public Enumeration<String> choices();
@@ -387,7 +388,7 @@ public interface Faction extends CMCommon, MsgListener
      * @param mob the player mob to evaluate
      * @return a vector of integer faction values that applies
      */
-    public Vector findChoices(MOB mob);
+    public List<Integer> findChoices(MOB mob);
 
     /**
      * Sets the player choosable faction mask/value list, which is 
@@ -399,7 +400,7 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#choices()
      * @param v the list of choosable faction mask/values
      */
-    public void setChoices(Vector v);
+    public void setChoices(List<String> v);
 
     /**
      * Returns an enumeration of all available Faction.FactionRange objects,
@@ -668,7 +669,7 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#getAffectBehav(String)
      * @return an enumeration of Abilities or Behavior ID
      */
-    public Enumeration affectsBehavs();
+    public Enumeration<String> affectsBehavs();
 
     /**
      * Removes the given ability or behavior from this Faction.  It will require the
@@ -1048,7 +1049,7 @@ public interface Faction extends CMCommon, MsgListener
          * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
          * @return the zapper mask compiled
          */
-        public Vector compiledTargetZapper();
+		public Vector compiledTargetZapper();
         
         /**
          * Returns the zapper mask that is used to see if the source of the event qualifies in
@@ -1345,7 +1346,7 @@ public interface Faction extends CMCommon, MsgListener
          * @param str the ability usage mask
          * @return A vector of words inside the given string that are not valid or were not understood.
          */
-        public Vector setAbilityFlag(String str);
+        public List<String> setAbilityFlag(String str);
 
         /**
          * A bitmask of ability flags that must NOT be set for this usage to apply to an ability

@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanVote;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -145,14 +146,14 @@ public class DefaultClan implements Clan
         else
             CMLib.database().DBDeleteData(clanID(),"CLANVOTES",clanID()+"/CLANVOTES");
     }
-    public void addVote(Object CV)
+    public void addVote(ClanVote CV)
     {
         if(!(CV instanceof ClanVote))
             return;
         votes();
         voteList.addElement((ClanVote)CV);
     }
-    public void delVote(Object CV)
+    public void delVote(ClanVote CV)
     {
         votes();
         voteList.removeElement(CV);
@@ -174,16 +175,16 @@ public class DefaultClan implements Clan
     {
         return calculateMapPoints(getControlledAreas());
     }
-    public long calculateMapPoints(Vector controlledAreas)
+    public long calculateMapPoints(List<Area> controlledAreas)
     {
         long points=0;
-        for(Enumeration e=controlledAreas.elements();e.hasMoreElements();)
-        {
-            Area A=(Area)e.nextElement();
-            LegalBehavior B=CMLib.law().getLegalBehavior(A);
-            if(B!=null)
-                points+=B.controlPoints();
-        }
+        if(controlledAreas!=null)
+	        for(Area A : controlledAreas)
+	        {
+	            LegalBehavior B=CMLib.law().getLegalBehavior(A);
+	            if(B!=null)
+	                points+=B.controlPoints();
+	        }
         return points;
     }
 
@@ -205,7 +206,7 @@ public class DefaultClan implements Clan
         return done;
     }
 
-    public Enumeration votes()
+    public Enumeration<ClanVote> votes()
     {
         if(voteList==null)
         {
@@ -1048,7 +1049,7 @@ public class DefaultClan implements Clan
             &&(votes()!=null))
             {
                 boolean updateVotes=false;
-                Vector votesToRemove=new Vector();
+                Vector<ClanVote> votesToRemove=new Vector<ClanVote>();
                 Vector data=null;
                 switch(getGovernment())
                 {
@@ -1069,7 +1070,7 @@ public class DefaultClan implements Clan
                 if(data.size()>0) duration=CMath.s_long((String)data.firstElement());
                 if(duration<=0) duration=54;
                 duration=duration*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*Tickable.TIME_TICK;
-                for(Enumeration e=votes();e.hasMoreElements();)
+                for(Enumeration<ClanVote> e=votes();e.hasMoreElements();)
                 {
                     ClanVote CV=(ClanVote)e.nextElement();
                     int numVotes=getNumVoters(CV.function);

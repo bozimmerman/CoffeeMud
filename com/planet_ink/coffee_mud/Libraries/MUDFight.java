@@ -247,7 +247,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if((addHere!=null)&&(addHere.trailerMsgs()!=null))
 		for(int i=0;i<addHere.trailerMsgs().size();i++)
 		{
-			CMMsg msg=(CMMsg)addHere.trailerMsgs().elementAt(i);
+			CMMsg msg=(CMMsg)addHere.trailerMsgs().get(i);
 			if((msg.source()==mob)
 			&&((msg.sourceMinor()==CMMsg.TYP_PANIC))
 			   ||(msg.sourceMinor()==CMMsg.TYP_DEATH))
@@ -272,7 +272,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if((addHere!=null)&&(addHere.trailerMsgs()!=null))
 		for(int i=0;i<addHere.trailerMsgs().size();i++)
 		{
-			CMMsg msg=(CMMsg)addHere.trailerMsgs().elementAt(i);
+			CMMsg msg=(CMMsg)addHere.trailerMsgs().get(i);
 			if((msg.source()==deadM)
 			&&((msg.sourceMinor()==CMMsg.TYP_PANIC))
 			   ||(msg.sourceMinor()==CMMsg.TYP_DEATH))

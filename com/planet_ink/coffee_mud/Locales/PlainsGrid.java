@@ -46,5 +46,5 @@ public class PlainsGrid extends StdGrid
 	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
 	public String getGridChildLocaleID(){return "Plains";}
-	public Vector resourceChoices(){return Plains.roomResources;}
+	public List<Integer> resourceChoices(){return Plains.roomResources;}
 }

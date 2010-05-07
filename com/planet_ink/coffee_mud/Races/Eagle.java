@@ -13,6 +13,8 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+import java.util.List;
 import java.util.Vector;
 
 /* 
@@ -48,7 +50,7 @@ public class Eagle extends GreatBird
 		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,10);
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,11);
 	}
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

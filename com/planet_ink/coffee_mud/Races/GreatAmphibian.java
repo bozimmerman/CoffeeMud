@@ -101,7 +101,7 @@ public class GreatAmphibian extends StdRace
 			}
 		}
 	}
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

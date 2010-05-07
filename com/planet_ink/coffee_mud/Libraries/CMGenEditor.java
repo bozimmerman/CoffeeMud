@@ -1268,12 +1268,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
              &&((((ClanItem)E).ciType()==ClanItem.CI_GATHERITEM)
                  ||(((ClanItem)E).ciType()==ClanItem.CI_CRAFTITEM)
                  ||(((ClanItem)E).ciType()==ClanItem.CI_SPECIALAPRON)))
-         ||(E instanceof Key))
+         ||(E instanceof DoorKey))
             CMLib.flags().setReadable(E,false);
         else
         if((CMClass.classID(E).endsWith("Readable"))
         ||(E instanceof Recipe)
-        ||(E instanceof com.planet_ink.coffee_mud.Items.interfaces.Map))
+        ||(E instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap))
             CMLib.flags().setReadable(E,true);
         else
         if((showFlag!=showNumber)&&(showFlag>-999))
@@ -1295,7 +1295,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
          ||(E instanceof Wand)
          ||(E instanceof ClanItem)
          ||(E instanceof Light)
-         ||(E instanceof Key))
+         ||(E instanceof DoorKey))
         {
             boolean ok=false;
             while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
@@ -1324,13 +1324,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 if(E instanceof Wand)
                     mob.tell(showNumber+". Assigned Spell Name: '"+E.readableText()+"'.");
                 else
-                if(E instanceof Key)
+                if(E instanceof DoorKey)
                 {
                     mob.tell(showNumber+". Assigned Key Code: '"+E.readableText()+"'.");
                     ok=true;
                 }
                 else
-                if(E instanceof com.planet_ink.coffee_mud.Items.interfaces.Map)
+                if(E instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
                 {
                     mob.tell(showNumber+". Assigned Map Area(s): '"+E.readableText()+"'.");
                     ok=true;
@@ -1995,8 +1995,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         if((E instanceof Exit)&&(!(E instanceof Item)))
             modifyGenExit(mob,(Exit)E);
         else
-        if(E instanceof com.planet_ink.coffee_mud.Items.interfaces.Map)
-            modifyGenMap(mob,(com.planet_ink.coffee_mud.Items.interfaces.Map)E);
+        if(E instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
+            modifyGenMap(mob,(com.planet_ink.coffee_mud.Items.interfaces.RoomMap)E);
         else
         if(E instanceof Armor)
             modifyGenArmor(mob,(Armor)E);
@@ -6352,7 +6352,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.");
     }
 
-    protected void modifyGenMap(MOB mob, com.planet_ink.coffee_mud.Items.interfaces.Map me)
+    protected void modifyGenMap(MOB mob, com.planet_ink.coffee_mud.Items.interfaces.RoomMap me)
         throws IOException
     {
         if(mob.isMonster())

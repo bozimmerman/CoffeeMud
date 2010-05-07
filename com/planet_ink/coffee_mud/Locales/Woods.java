@@ -97,5 +97,5 @@ public class Woods extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_FEATHERS),
 		Integer.valueOf(RawMaterial.RESOURCE_LEATHER)};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
-	public Vector resourceChoices(){return Woods.roomResources;}
+	public List<Integer> resourceChoices(){return Woods.roomResources;}
 }

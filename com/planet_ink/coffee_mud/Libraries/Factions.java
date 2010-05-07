@@ -1084,11 +1084,11 @@ public class Factions extends StdLibrary implements FactionManager
                                 mob.tell("(no change)");
                             else
                             {
-                                Vector unknowns=CA.setAbilityFlag(newFlags);
+                                List<String> unknowns=CA.setAbilityFlag(newFlags);
                                 if(unknowns.size()>0)
                                     for(int i=unknowns.size()-1;i>=0;i--)
-                                        if(CMClass.getAbility((String)unknowns.elementAt(i))!=null)
-                                            unknowns.removeElementAt(i);
+                                        if(CMClass.getAbility((String)unknowns.get(i))!=null)
+                                            unknowns.remove(i);
                                 if(unknowns.size()>0)
                                 {
                                     mob.tell("The following are unknown masks: '"+CMParms.toStringList(unknowns)+"'.  Please correct them.");

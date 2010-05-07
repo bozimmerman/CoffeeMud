@@ -54,5 +54,5 @@ public class Road extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_CLAY),
 	};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
-	public Vector resourceChoices(){return Road.roomResources;}
+	public List<Integer> resourceChoices(){return Road.roomResources;}
 }

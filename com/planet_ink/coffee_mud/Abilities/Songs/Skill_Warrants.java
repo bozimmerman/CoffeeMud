@@ -60,7 +60,7 @@ public class Skill_Warrants extends BardSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				Vector V=new Vector();
+				List<LegalWarrant> V=new Vector();
 				if(B!=null)
                     V=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),(MOB)null);
 				if(V.size()==0)
@@ -72,7 +72,7 @@ public class Skill_Warrants extends BardSkill
 				buf.append(CMStrings.padRight("Name",14)+" "+CMStrings.padRight("Victim",14)+" "+CMStrings.padRight("Witness",14)+" Crime\n\r");
 				for(int v=0;v<V.size();v++)
 				{
-                    LegalWarrant W=(LegalWarrant)V.elementAt(v);
+                    LegalWarrant W=(LegalWarrant)V.get(v);
                     buf.append(CMStrings.padRight(W.criminal().Name(),14)+" ");
 					buf.append(CMStrings.padRight(W.victim()!=null?W.victim().Name():"N/A",14)+" ");
 					buf.append(CMStrings.padRight(W.witness()!=null?W.witness().Name():"N/A",14)+" ");

@@ -175,7 +175,7 @@ public class Charlatan extends StdCharClass
     
 	public String getOtherLimitsDesc(){return "";}
 	public String getOtherBonusDesc(){return "Receives 2% resistance per level to mind affects, 4% resistance per level to divination spells.  Non-class skills become cheaper at 30th level.  Gains a random non-class skill or spell every other level! Receives exploration and pub-finding experience based on danger level.";}
-	public Vector outfit(MOB myChar)
+	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

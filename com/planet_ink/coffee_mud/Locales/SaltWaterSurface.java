@@ -42,7 +42,7 @@ public class SaltWaterSurface extends WaterSurface
 
 
 	public int liquidType(){return RawMaterial.RESOURCE_SALTWATER;}
-	public Vector resourceChoices(){return UnderSaltWater.roomResources;}
+	public List<Integer> resourceChoices(){return UnderSaltWater.roomResources;}
 
 	public void giveASky(int depth)
 	{

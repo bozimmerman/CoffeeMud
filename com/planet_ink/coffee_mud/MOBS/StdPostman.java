@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
+import java.util.Map;
 
 
 
@@ -161,9 +162,9 @@ public class StdPostman extends StdShopKeeper implements PostOffice
     {
         CMLib.database().DBDeleteData(mob,postalChain());
     }
-    public Hashtable getOurOpenBoxes(String mob)
+    public Map<String, String> getOurOpenBoxes(String mob)
     {
-        Hashtable branches=new Hashtable();
+        Hashtable<String,String> branches=new Hashtable<String,String>();
         List<PlayerData> V=CMLib.database().DBReadData(mob,postalChain());
         if(V==null) return branches;
         for(int v=0;v<V.size();v++)
@@ -347,7 +348,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         return amt+getHoldingCost(data,chargeableWeight);
     }
 
-    protected String getBranchPostableTo(String toWhom, String branch, Hashtable allBranchBoxes)
+    protected String getBranchPostableTo(String toWhom, String branch, Map<String, String> allBranchBoxes)
     {
         String forward=(String)allBranchBoxes.get(branch);
         if(forward==null) return null;
@@ -370,7 +371,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
             MOB M=CMLib.players().getLoadPlayer(toWhom);
             if(M.getStartRoom()!=null)
             {
-                Hashtable allBranchBoxes=getOurOpenBoxes(toWhom);
+                Map<String,String> allBranchBoxes=getOurOpenBoxes(toWhom);
                 PostOffice P=CMLib.map().getPostOffice(postalChain(),M.getStartRoom().getArea().Name());
                 String branch=null;
                 if(P!=null)
@@ -385,9 +386,8 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                 }
                 branch=getBranchPostableTo(toWhom,postalBranch(),allBranchBoxes);
                 if(branch!=null) return branch;
-                for(Enumeration e=allBranchBoxes.keys();e.hasMoreElements();)
+                for(String tryBranch : allBranchBoxes.keySet())
                 {
-                    String tryBranch=(String)e.nextElement();
                     branch=getBranchPostableTo(toWhom,tryBranch,allBranchBoxes);
                     if(branch!=null) return branch;
                 }
@@ -402,12 +402,11 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         else
         if(CMLib.clans().getClan(toWhom)!=null)
         {
-            Hashtable allBranchBoxes=getOurOpenBoxes(toWhom);
+        	Map<String,String> allBranchBoxes=getOurOpenBoxes(toWhom);
             String branch=getBranchPostableTo(toWhom,postalBranch(),allBranchBoxes);
             if(branch!=null) return branch;
-            for(Enumeration e=allBranchBoxes.keys();e.hasMoreElements();)
+            for(String tryBranch : allBranchBoxes.keySet())
             {
-                String tryBranch=(String)e.nextElement();
                 branch=getBranchPostableTo(toWhom,tryBranch,allBranchBoxes);
                 if(branch!=null) return branch;
             }

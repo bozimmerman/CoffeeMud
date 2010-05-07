@@ -52,5 +52,5 @@ public class Shore extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_SAND)
 	};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
-	public Vector resourceChoices(){return Shore.roomResources;}
+	public List<Integer> resourceChoices(){return Shore.roomResources;}
 }

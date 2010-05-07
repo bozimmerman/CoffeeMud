@@ -275,7 +275,7 @@ public class Oracle extends Cleric
 		return true;
 	}
 
-	public Vector outfit(MOB myChar)
+	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
@@ -286,7 +286,7 @@ public class Oracle extends Cleric
 		return outfitChoices;
 	}
 	
-	public void level(MOB mob, Vector newAbilityIDs)
+	public void level(MOB mob, List<String> newAbilityIDs)
 	{
 	    if(CMSecurity.isDisabled("LEVELS")) return;
 		if((!mob.isMonster())&&(mob.charStats().getClassLevel(this)>=30))

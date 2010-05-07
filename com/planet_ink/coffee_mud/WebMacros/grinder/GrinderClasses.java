@@ -191,12 +191,12 @@ public class GrinderClasses
         for(int i=0;httpReq.isRequestParameter("NOWEAPS"+id);id=""+(++i))
             V.addElement(httpReq.getRequestParameter("NOWEAPS"+id));
         C.setStat("GETWEP",CMParms.toStringList(V));
-        Vector Ivs=GrinderRaces.itemList(oldC.outfit(null),'O',httpReq,false);
+        List<Item> Ivs=GrinderRaces.itemList(oldC.outfit(null),'O',httpReq,false);
         C.setStat("NUMOFT",""+Ivs.size());
         for(int l=0;l<Ivs.size();l++)
         {
-            C.setStat("GETOFTID"+l,((Environmental)Ivs.elementAt(l)).ID());
-            C.setStat("GETOFTPARM"+l,((Environmental)Ivs.elementAt(l)).text());
+            C.setStat("GETOFTID"+l,((Environmental)Ivs.get(l)).ID());
+            C.setStat("GETOFTPARM"+l,((Environmental)Ivs.get(l)).text());
         }
         C.setStat("DISFLAGS",""+CMath.s_long(httpReq.getRequestParameter("DISFLAGS")));
         num=0;

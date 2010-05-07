@@ -154,7 +154,7 @@ public class Chicken extends StdRace
         return true;
     }
     
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

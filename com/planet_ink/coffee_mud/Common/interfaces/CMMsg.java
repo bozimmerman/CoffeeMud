@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.Common.interfaces;
+import java.util.List;
+
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -13,7 +15,6 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-import java.util.Vector;
 
 /*
    Copyright 2000-2010 Bo Zimmerman
@@ -100,7 +101,6 @@ import java.util.Vector;
  * @see com.planet_ink.coffee_mud.Locales.interfaces.Room#send(MOB, CMMsg)
  * @see com.planet_ink.coffee_mud.Locales.interfaces.Room#sendOthers(MOB, CMMsg)
  */
-@SuppressWarnings("unchecked")
 public interface CMMsg extends CMCommon
 {
     /**
@@ -647,7 +647,7 @@ public interface CMMsg extends CMCommon
      * @see com.planet_ink.coffee_mud.Locales.interfaces.Room#send(MOB, CMMsg)  
      * @return a Vector of CMMsg objects
      */
-	public Vector trailerMsgs();
+	public List<CMMsg> trailerMsgs();
 	
     /**
      * Appends to the Vector of other CMMsg events which are slated to be confirmed

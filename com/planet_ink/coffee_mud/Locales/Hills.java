@@ -66,5 +66,5 @@ public class Hills extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_POTATOES)
 	};
 	public static final Vector roomResources=new Vector(Arrays.asList(resourceList));
-	public Vector resourceChoices(){return Hills.roomResources;}
+	public List<Integer> resourceChoices(){return Hills.roomResources;}
 }

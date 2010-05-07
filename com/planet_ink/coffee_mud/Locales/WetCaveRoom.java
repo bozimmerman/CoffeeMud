@@ -43,5 +43,5 @@ public class WetCaveRoom extends CaveRoom
 	}
 	public int domainConditions(){return Room.CONDITION_WET;}
 	public int maxRange(){return 5;}
-	public Vector resourceChoices(){return CaveRoom.roomResources;}
+	public List<Integer> resourceChoices(){return CaveRoom.roomResources;}
 }

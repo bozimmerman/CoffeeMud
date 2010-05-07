@@ -47,5 +47,5 @@ public class DesertGrid extends StdGrid
 	public int domainConditions(){return Room.CONDITION_HOT;}
 
 	public String getGridChildLocaleID(){return "Desert";}
-	public Vector resourceChoices(){return Desert.roomResources;}
+	public List<Integer> resourceChoices(){return Desert.roomResources;}
 }

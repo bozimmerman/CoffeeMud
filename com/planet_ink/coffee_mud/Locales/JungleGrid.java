@@ -47,5 +47,5 @@ public class JungleGrid extends StdGrid
 	public int domainConditions(){return Room.CONDITION_HOT;}
 
 	public String getGridChildLocaleID(){return "Jungle";}
-	public Vector resourceChoices(){return Jungle.roomResources;}
+	public List<Integer> resourceChoices(){return Jungle.roomResources;}
 }

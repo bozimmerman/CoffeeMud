@@ -39,7 +39,6 @@ import java.util.*;
  * @author Bo Zimmerman, Jeremy Vyska
  *
  */
-@SuppressWarnings("unchecked")
 public interface Area extends Economics, PhysicalAgent
 {
 	/**
@@ -571,7 +570,7 @@ public interface Area extends Economics, PhysicalAgent
      * A Parent Area passes down certain behaviors and property effects to its children
      * @return a Vector of Area objects
      */
-    public Vector getParentsRecurse();
+    public List<Area> getParentsRecurse();
     /**
      * Returns whether the Area is a Parent of this Area
      * A Parent Area passes down certain behaviors and property effects to its children

@@ -59,13 +59,13 @@ public class Prayer_Forgive extends Prayer
 			mob.tell("Forgive whom?");
 			return false;
 		}
-        Vector warrants=new Vector();
-		Vector criminals=new Vector();
+		List<LegalWarrant> warrants=new Vector();
+		List<MOB> criminals=new Vector();
         if(B!=null)
         {
             criminals=B.getCriminals(CMLib.law().getLegalObject(mob.location()),name);
 	        if(criminals.size()>0)
-	            warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),(MOB)criminals.firstElement());
+	            warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),(MOB)criminals.get(0));
         }
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -81,7 +81,7 @@ public class Prayer_Forgive extends Prayer
 				mob.location().send(mob,msg);
 				for(int i=0;i<warrants.size();i++)
 				{
-					LegalWarrant W=(LegalWarrant)warrants.elementAt(i);
+					LegalWarrant W=(LegalWarrant)warrants.get(i);
 					W.setCrime("pardoned");
 					W.setOffenses(0);
 				}

@@ -13,7 +13,8 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-import java.util.Hashtable;
+
+import java.util.Map;
 import java.util.Vector;
 
 
@@ -32,7 +33,6 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public interface PostOffice extends ShopKeeper
 {
     public void addToBox(String boxName, Item thisThang, String from, String to, long holdTime, double COD);
@@ -40,7 +40,7 @@ public interface PostOffice extends ShopKeeper
     public boolean delFromBox(String mob, Item thisThang);
     public boolean delFromBox(MOB mob, Item thisThang);
     public void emptyBox(String mob);
-    public Hashtable getOurOpenBoxes(String mob);
+    public Map<String, String> getOurOpenBoxes(String mob);
     public void createBoxHere(String mob, String forward);
     public void deleteBoxHere(String mob);
     public MailPiece parsePostalItemData(String data);

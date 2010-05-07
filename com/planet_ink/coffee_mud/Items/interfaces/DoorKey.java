@@ -29,7 +29,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface Key extends Item
+public interface DoorKey extends Item
 {
 	public void setKey(String keyName);
 	public String getKey();

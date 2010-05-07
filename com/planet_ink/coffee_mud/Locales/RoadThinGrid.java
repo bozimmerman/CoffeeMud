@@ -54,5 +54,5 @@ public class RoadThinGrid extends StdThinGrid
         return new RoadGrid().newInstance();
 	}
 	public String getGridChildLocaleID(){return "Road";}
-	public Vector resourceChoices(){return Road.roomResources;}
+	public List<Integer> resourceChoices(){return Road.roomResources;}
 }

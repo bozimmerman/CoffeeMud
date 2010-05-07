@@ -384,7 +384,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         return false;
     }
 
-    public Vector externalFiles()
+    public List<String> externalFiles()
     {
         Vector xmlfiles=new Vector();
         parseLoads(getScript(), 0, xmlfiles, null);

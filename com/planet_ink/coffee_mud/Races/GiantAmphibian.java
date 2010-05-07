@@ -46,7 +46,7 @@ public class GiantAmphibian extends GreatAmphibian
 	public String racialCategory(){return "Amphibian";}
 	protected static Vector resources=new Vector();
 
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class StdBehavior implements Behavior
 {
 	public String ID(){return "StdBehavior";}
@@ -125,7 +124,7 @@ public class StdBehavior implements Behavior
 	public void setParms(String parameters){parms=parameters;}
 	public String parmsFormat(){return CMParms.FORMAT_UNDEFINED;}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-	public Vector externalFiles(){return null;}
+	public List<String> externalFiles(){return null;}
 
 	public void executeMsg(Environmental affecting, CMMsg msg)
 	{

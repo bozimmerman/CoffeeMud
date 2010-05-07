@@ -193,7 +193,7 @@ public class Missionary extends Cleric
 		return true;
 	}
 
-	public Vector outfit(MOB myChar)
+	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

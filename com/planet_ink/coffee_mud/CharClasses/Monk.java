@@ -243,7 +243,7 @@ public class Monk extends StdCharClass
 	}
 
 	
-	public void level(MOB mob, Vector newAbilityIDs)
+	public void level(MOB mob, List<String> newAbilityIDs)
 	{
 	    if(CMSecurity.isDisabled("LEVELS")) return;
 	    if((mob.basePhyStats().level() % 2)==0)
@@ -278,7 +278,7 @@ public class Monk extends StdCharClass
 		}
 	}
 
-	public Vector outfit(MOB myChar)
+	public List<Item> outfit(MOB myChar)
 	{
 		return null;
 	}

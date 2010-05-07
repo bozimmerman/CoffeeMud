@@ -45,5 +45,5 @@ public class MountainSurface extends ClimbableSurface
 	public int domainType(){return Room.DOMAIN_OUTDOORS_MOUNTAINS;}
 	public int domainConditions(){return Room.CONDITION_NORMAL;}
 
-	public Vector resourceChoices(){return Mountains.roomResources;}
+	public List<Integer> resourceChoices(){return Mountains.roomResources;}
 }

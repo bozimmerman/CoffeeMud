@@ -37,8 +37,14 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, Lis
 	{
 		if(V==null)
 			V=new Vector<T>(1);
-		else
-			this.V=V;
+		this.V=V;
+	}
+	
+	public SVector(List<T> V)
+	{
+		if(V==null)
+			V=new Vector<T>(1);
+		this.V.addAll(V);
 	}
 	
 	public SVector(int size)

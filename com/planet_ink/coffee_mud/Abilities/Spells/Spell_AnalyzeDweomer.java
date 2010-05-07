@@ -90,7 +90,7 @@ public class Spell_AnalyzeDweomer extends Spell
 					str.append("It is a magic potion.  ");
 				if(target instanceof Light)
 					str.append("It is a light source.  ");
-				if(target instanceof com.planet_ink.coffee_mud.Items.interfaces.Map)
+				if(target instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
 					str.append("It is a map.  ");
 				if(target instanceof MiscMagic)
 					str.append("It has a magical aura.  ");
@@ -103,7 +103,7 @@ public class Spell_AnalyzeDweomer extends Spell
 				if(target instanceof InnKey)
 					str.append("It is an Inn key.  ");
 				else
-				if(target instanceof Key)
+				if(target instanceof DoorKey)
 					str.append("It is a key.  ");
 				if(target instanceof LandTitle)
 					str.append("It is a property title.  ");

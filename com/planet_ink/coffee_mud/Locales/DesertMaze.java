@@ -47,5 +47,5 @@ public class DesertMaze extends StdMaze
 	protected int baseThirst(){return 4;}
 
 	public String getGridChildLocaleID(){return "Desert";}
-	public Vector resourceChoices(){return Desert.roomResources;}
+	public List<Integer> resourceChoices(){return Desert.roomResources;}
 }

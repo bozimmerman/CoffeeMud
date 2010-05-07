@@ -176,7 +176,7 @@ public class DefaultMessage implements CMMsg
         value=amount;
     }
 	
-	public Vector trailerMsgs()
+	public List<CMMsg> trailerMsgs()
 	{	return trailMsgs;}
 	public void addTrailerMsg(CMMsg msg)
 	{

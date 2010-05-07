@@ -33,9 +33,9 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("unchecked")
-public class List extends StdCommand
+public class ListCmd extends StdCommand
 {
-	public List(){}
+	public ListCmd(){}
 
 	private String[] access={"LIST"};
 	public String[] getAccessWords(){return access;}
@@ -282,10 +282,10 @@ public class List extends StdCommand
 			Behavior B=e.nextElement();
 			if(B instanceof ScriptingEngine)
 			{
-				Vector files=B.externalFiles();
+				java.util.List<String> files=B.externalFiles();
 				if(files != null)
 					for(int f=0;f<files.size();f++)
-						DV.addElement(files.elementAt(f),E,R,M,I,B);
+						DV.addElement(files.get(f),E,R,M,I,B);
 				String nonFiles=((ScriptingEngine)B).getVar("*","COFFEEMUD_SYSTEM_INTERNAL_NONFILENAME_SCRIPT");
 				if(nonFiles.trim().length()>0)
 					DV.addElement("*Custom*"+nonFiles.trim(),E,R,M,I,B);
@@ -294,10 +294,10 @@ public class List extends StdCommand
 		for(Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();)
 		{
 			ScriptingEngine SE=e.nextElement();
-			Vector files=SE.externalFiles();
+			java.util.List<String> files=SE.externalFiles();
 			if(files != null)
 				for(int f=0;f<files.size();f++)
-					DV.addElement(files.elementAt(f),E,R,M,I,SE);
+					DV.addElement(files.get(f),E,R,M,I,SE);
 			String nonFiles=SE.getVar("*","COFFEEMUD_SYSTEM_INTERNAL_NONFILENAME_SCRIPT");
 			if(nonFiles.trim().length()>0)
 				DV.addElement("*Custom*"+nonFiles.trim(),E,R,M,I,SE);

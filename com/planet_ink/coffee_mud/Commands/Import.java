@@ -3252,7 +3252,7 @@ public class Import extends StdCommand
 					 }
 					 break;
 			case 18: I=CMClass.getBasicItem("GenKey");
-					 ((Key)I).setKey(areaName+objectID);
+					 ((DoorKey)I).setKey(areaName+objectID);
 					 break;
 			case 19: I=CMClass.getBasicItem("GenFood");
 					 if(val4>0)
@@ -3306,7 +3306,7 @@ public class Import extends StdCommand
 					 }
 					 break;
 			case 98: I=CMClass.getBasicItem("GenKey");
-					 ((Key)I).setKey(areaName+objectID);
+					 ((DoorKey)I).setKey(areaName+objectID);
 					 break;
 			case 99: I=CMClass.getBasicItem("GenCorpse"); break;
 			case -1: I=CMClass.getBasicItem("GenWallpaper"); break;
@@ -5290,7 +5290,7 @@ public class Import extends StdCommand
 									((ShopKeeper)M).getShop().addStoreInventory(CMClass.getBasicItem("OilFlask"),num*2,-1);
 								else
 								if(((I.ID().equals("GenReadable"))
-								||(I instanceof com.planet_ink.coffee_mud.Items.interfaces.Map))
+								||(I instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap))
 								&&(!((ShopKeeper)M).getShop().doIHaveThisInStock("Parchment",null)))
 								{
 									((ShopKeeper)M).setWhatIsSoldMask(0);

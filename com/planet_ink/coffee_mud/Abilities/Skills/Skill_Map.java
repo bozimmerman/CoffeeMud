@@ -80,8 +80,8 @@ public class Skill_Map extends StdSkill
 		{
 			roomsMappedAlready.addElement(msg.target());
 			map.setReadableText(map.readableText()+";"+CMLib.map().getExtendedRoomID((Room)msg.target()));
-			if(map instanceof com.planet_ink.coffee_mud.Items.interfaces.Map)
-				((com.planet_ink.coffee_mud.Items.interfaces.Map)map).doMapArea();
+			if(map instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
+				((com.planet_ink.coffee_mud.Items.interfaces.RoomMap)map).doMapArea();
 		}
 
 		super.executeMsg(myHost,msg);
@@ -117,7 +117,7 @@ public class Skill_Map extends StdSkill
 			return false;
 		}
 
-		if(item instanceof com.planet_ink.coffee_mud.Items.interfaces.Map)
+		if(item instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
 		{
 			if(!item.ID().equals("BardMap"))
 			{
@@ -167,8 +167,8 @@ public class Skill_Map extends StdSkill
 				{
 					roomsMappedAlready.addElement(mob.location());
 					map.setReadableText(map.readableText()+";"+CMLib.map().getExtendedRoomID(mob.location()));
-					if(map instanceof com.planet_ink.coffee_mud.Items.interfaces.Map)
-						((com.planet_ink.coffee_mud.Items.interfaces.Map)map).doMapArea();
+					if(map instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
+						((com.planet_ink.coffee_mud.Items.interfaces.RoomMap)map).doMapArea();
 				}
 				String rooms=item.readableText();
 				int x=rooms.indexOf(";");

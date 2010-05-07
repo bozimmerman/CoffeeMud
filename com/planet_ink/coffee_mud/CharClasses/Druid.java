@@ -395,7 +395,7 @@ public class Druid extends StdCharClass
 
     public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Druid.doAnimalFollowerLevelingCheck(this,host,msg); Druid.doAnimalFreeingCheck(this,host,msg);}
     
-    public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, HashSet followers)
+    public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
     {
 		if((mob!=null)
         &&(mob!=killed)
@@ -408,7 +408,7 @@ public class Druid extends StdCharClass
 		return false;
 	}
 
-	public Vector outfit(MOB myChar)
+	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

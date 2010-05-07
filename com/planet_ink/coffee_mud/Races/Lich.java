@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.util.List;
 import java.util.Vector;
 
 /* 
@@ -45,7 +46,7 @@ public class Lich extends Skeleton
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-4);
 		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+6);
 	}
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		return resources;
 	}

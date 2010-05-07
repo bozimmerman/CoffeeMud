@@ -121,7 +121,7 @@ public class Monkey extends StdRace
 		}
 	}
 
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

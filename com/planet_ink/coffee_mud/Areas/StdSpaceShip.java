@@ -917,7 +917,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	        }
 	}
 	public Enumeration<Area> getParents() { initParents(); return parents.elements(); }
-    public Vector getParentsRecurse()
+    public List<Area> getParentsRecurse()
     {
         Vector V=new Vector();
         Area A=null;

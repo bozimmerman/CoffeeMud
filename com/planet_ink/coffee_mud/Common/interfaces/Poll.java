@@ -1,5 +1,5 @@
 package com.planet_ink.coffee_mud.Common.interfaces;
-import java.util.Vector;
+import java.util.List;
 
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -41,7 +41,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @see com.planet_ink.coffee_mud.Libraries.interfaces.PollManager
  * @see com.planet_ink.coffee_mud.core.CMLib#polls()
  */
-@SuppressWarnings("unchecked")
 public interface Poll extends CMCommon
 {
     /**
@@ -150,11 +149,11 @@ public interface Poll extends CMCommon
     
     /**
      * Returns a Vector of PollOption objects denoting the poll choices.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Poll#setOptions(Vector)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Poll#setOptions(List)
      * @see com.planet_ink.coffee_mud.Common.interfaces.Poll.PollOption
      * @return a Vector of PollOption objects denoting the poll choices.
      */
-    public Vector getOptions();
+    public List<PollOption> getOptions();
     
     /**
      * Sets a Vector of PollOption objects denoting the poll choices.
@@ -162,7 +161,7 @@ public interface Poll extends CMCommon
      * @see com.planet_ink.coffee_mud.Common.interfaces.Poll.PollOption
      * @param V a Vector of PollOption objects denoting the poll choices.
      */
-    public void setOptions(Vector V);
+    public void setOptions(List<PollOption> V);
     
     /**
      * Returns a Vector of PollResult objects renoting all poll votes.
@@ -170,7 +169,7 @@ public interface Poll extends CMCommon
      * @see com.planet_ink.coffee_mud.Common.interfaces.Poll.PollResult
      * @return a Vector of PollResult objects renoting all poll votes.
      */
-    public Vector getResults();
+    public List<PollResult> getResults();
     
     /**
      * Sets a Vector of PollResult objects renoting all poll votes.
@@ -178,7 +177,7 @@ public interface Poll extends CMCommon
      * @see com.planet_ink.coffee_mud.Common.interfaces.Poll.PollResult
      * @param V a Vector of PollResult objects renoting all poll votes.
      */
-    public void setResults(Vector V);
+    public void setResults(List<PollResult> V);
     
     /**
      * Returns a String of PollOption objects rendered as an XML document.

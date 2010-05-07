@@ -67,9 +67,8 @@ public class AbilityRaceNext extends StdWebMacro
 			return " @break@";
 		}
 
-		for(int a=0;a<R.racialAbilities(null).size();a++)
+		for(Ability A : R.racialAbilities(null))
 		{
-			Ability A=(Ability)R.racialAbilities(null).elementAt(a);
 			boolean okToShow=true;
 			int level=CMLib.ableMapper().getQualifyingLevel(R.ID(),false,A.ID());
 			if(level<0)

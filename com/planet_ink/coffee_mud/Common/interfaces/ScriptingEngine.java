@@ -46,7 +46,6 @@ import org.mozilla.javascript.ScriptableObject;
  * 
  * @see com.planet_ink.coffee_mud.Behaviors.Scriptable
  */
-@SuppressWarnings("unchecked")
 public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 {
     /**
@@ -169,7 +168,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
      * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#setScript(String)
      * @return a list of loaded script files. 
      */
-    public Vector externalFiles();
+    public List<String> externalFiles();
     
     /**
      * If this script is associated with a particular quest, this 

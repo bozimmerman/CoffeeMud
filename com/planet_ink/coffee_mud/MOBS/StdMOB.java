@@ -76,7 +76,7 @@ public class StdMOB implements MOB
 	protected SVector<Behavior>	behaviors	= new SVector<Behavior>(1);
 	protected SVector<Tattoo>	tattoos		= new SVector<Tattoo>(1);
 	protected SVector<String>	expertises	= new SVector<String>(1);
-	protected DVector 			followers	= null;
+	protected SVector<Follower> followers	= null;
 	protected LinkedList<QMCommand> 
 								commandQue	= new LinkedList<QMCommand>();
 	protected SVector<ScriptingEngine>
@@ -2825,33 +2825,31 @@ public class StdMOB implements MOB
 		if(follower!=null)
 		{
 			if(followers==null) 
-				followers=new DVector(2);
-			if(!followers.contains(follower))
-				followers.addElement(follower,Integer.valueOf(order));
+				followers=new SVector<Follower>();
 			else
-			{
-				int x=followers.indexOf(follower);
-				if(x>=0)
-					followers.setElementAt(x,2,Integer.valueOf(order));
-			}
+			for(Follower F : followers)
+				if(F.follower==follower)
+				{
+					F.marchingOrder=order;
+					return;
+				}
+			followers.add(new Follower(follower,order));
 		}
 	}
 
 	public void delFollower(MOB follower)
 	{
-		if((follower!=null)
-		&&(followers!=null)
-		&&(followers.contains(follower)))
+		if((follower!=null)&&(followers!=null))
 		{
-			followers.removeElement(follower);
+			for(Follower F : followers)
+				if(F.follower==follower)
+					followers.remove(follower);
 			if(followers.size()==0) followers=null;
 		}
 	}
 	public int numFollowers()
 	{
-		if(followers==null) 
-			return 0;
-		return followers.size();
+		return (followers==null)?0:followers.size();
 	}
 	public int fetchFollowerOrder(MOB thisOne)
 	{
@@ -2859,9 +2857,9 @@ public class StdMOB implements MOB
 		{
 			if(followers==null) 
 				return -1;
-			int x=followers.indexOf(thisOne);
-			if(x>=0) 
-				return ((Integer)followers.elementAt(x,2)).intValue();
+			for(Follower F : followers)
+				if(F.follower==thisOne)
+					return F.marchingOrder;
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return -1;
@@ -2870,9 +2868,10 @@ public class StdMOB implements MOB
 	{
 		if(followers==null) 
 			return null;
-		MOB mob=(MOB)CMLib.english().fetchEnvironmental(followers.getDimensionVector(1),named,true);
+		List<MOB> list = new ConvertingList<Follower,MOB>(followers,Follower.converter);
+		MOB mob=(MOB)CMLib.english().fetchEnvironmental(list,named,true);
 		if(mob==null)
-			mob=(MOB)CMLib.english().fetchEnvironmental(followers.getDimensionVector(1),named, false);
+			mob=(MOB)CMLib.english().fetchEnvironmental(list,named,false);
 		return mob;
 	}
 	public MOB fetchFollower(int index)
@@ -2881,17 +2880,18 @@ public class StdMOB implements MOB
 		{
 			if(followers==null) 
 				return null;
-			return (MOB)followers.elementAt(index,1);
+			return followers.get(index).follower;
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
+	
 	public boolean isFollowedBy(MOB thisOne)
 	{
-		if(followers==null) 
-			return false;
-		if(followers.contains(thisOne))
-			return true;
+		if(followers!=null) 
+			for(Follower F : followers)
+				if(F.follower==thisOne)
+					return true;
 		return false;
 	}
 
@@ -2981,12 +2981,10 @@ public class StdMOB implements MOB
 		MOB following = amFollowing();
 		if((following!=null)&&(!list.contains(following)))
 			following.getGroupMembers(list);
-		for(int f=0;f<numFollowers();f++)
-		{
-			MOB follower=fetchFollower(f);
-			if((follower!=null)&&(!list.contains(follower)))
-				follower.getGroupMembers(list);
-		}
+		if(followers!=null)
+			for(Follower F : followers)
+				if((F.follower!=null)&&(!list.contains(F.follower)))
+					F.follower.getGroupMembers(list);
 		return list;
 	}
 
@@ -3047,35 +3045,28 @@ public class StdMOB implements MOB
 		{
 			if(index<abilities.size())
 				return (Ability)abilities.elementAt(index);
-			return (Ability)charStats().getMyRace().racialAbilities(this).elementAt(index-abilities.size());
+			return (Ability)charStats().getMyRace().racialAbilities(this).get(index-abilities.size());
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
 	}
 	public Ability fetchAbility(String ID)
 	{
-		Ability A=null;
-		for(int a=0;a<numLearnedAbilities();a++)
-		{
-			A=fetchAbility(a);
+		for(Ability A : abilities)
 			if((A!=null)
 			&&((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID))))
 				return A;
-		}
-		for(int a=0;a<charStats().getMyRace().racialAbilities(this).size();a++)
-		{
-			A=(Ability)charStats().getMyRace().racialAbilities(this).elementAt(a);
+		for(Ability A : charStats().getMyRace().racialAbilities(null))
 			if((A!=null)
 			&&((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID))))
 				return A;
-		}
 		return null;
 	}
 	public Ability findAbility(String ID)
 	{
 		Ability A=(Ability)CMLib.english().fetchEnvironmental(abilities,ID,true);
-        if(A==null) A=(Ability)CMLib.english().fetchEnvironmental(abilities,ID,false);
         if(A==null) A=(Ability)CMLib.english().fetchEnvironmental(charStats().getMyRace().racialAbilities(this),ID,true);
+        if(A==null) A=(Ability)CMLib.english().fetchEnvironmental(abilities,ID,false);
 		if(A==null) A=(Ability)CMLib.english().fetchEnvironmental(charStats().getMyRace().racialAbilities(this),ID,false);
 		if(A==null) A=fetchAbility(ID);
 		return A;
@@ -3578,7 +3569,7 @@ public class StdMOB implements MOB
 		else
 		if(env instanceof MOB)
 		{
-			if((followers!=null)&&(followers.contains(env)))
+			if(isFollowedBy((MOB)env))
 				return true;
 			return false;
 		}

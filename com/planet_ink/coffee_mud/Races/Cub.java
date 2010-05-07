@@ -68,7 +68,7 @@ public class Cub extends Bear
 		}
 		return naturalWeapon;
 	}
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

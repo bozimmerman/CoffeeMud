@@ -171,7 +171,7 @@ public class Gaian extends StdCharClass
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
-    public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, HashSet followers)
+    public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
 	{
 		if((mob!=null)
         &&(mob!=killed)
@@ -318,7 +318,7 @@ public class Gaian extends StdCharClass
 		}
 	}
 
-	public Vector outfit(MOB myChar)
+	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

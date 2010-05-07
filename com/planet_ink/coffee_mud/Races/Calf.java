@@ -56,7 +56,7 @@ public class Calf extends Cow
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,5);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{

@@ -303,7 +303,7 @@ public class Bard extends StdCharClass
 	}
 	public String getOtherLimitsDesc(){return "";}
 	public String getOtherBonusDesc(){return "Receives group bonus combat experience when in an intelligent group, and more for a group with players.  Receives exploration and pub-finding experience based on danger level.";}
-	public Vector outfit(MOB myChar)
+	public List<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

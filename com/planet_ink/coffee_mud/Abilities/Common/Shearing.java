@@ -68,11 +68,11 @@ public class Shearing extends CommonSkill
 		&&(M.charStats().getMyRace().myResources()!=null)
 		&&(M.charStats().getMyRace().myResources().size()>0))
 		{
-			Vector V=M.charStats().getMyRace().myResources();
+			List<RawMaterial> V=M.charStats().getMyRace().myResources();
 			for(int v=0;v<V.size();v++)
-				if((V.elementAt(v) instanceof RawMaterial)
-				&&(((RawMaterial)V.elementAt(v)).material()==RawMaterial.RESOURCE_WOOL))
-					wool.addElement(V.elementAt(v));
+				if((V.get(v) instanceof RawMaterial)
+				&&(((RawMaterial)V.get(v)).material()==RawMaterial.RESOURCE_WOOL))
+					wool.addElement(V.get(v));
 		}
 		return wool;
 	}

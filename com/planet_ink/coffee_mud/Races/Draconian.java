@@ -107,7 +107,7 @@ public class Draconian extends StdRace
 			return "^c" + mob.displayName(viewer) + "^c is in perfect health.^N";
 	}
 
-	public Vector myResources()
+	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
 		{
