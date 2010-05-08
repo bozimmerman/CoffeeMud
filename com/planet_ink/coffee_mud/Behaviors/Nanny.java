@@ -513,11 +513,12 @@ public class Nanny extends StdBehavior
 			String currency=CMLib.beanCounter().getCurrency(host);
 			Set H=msg.source().getGroupMembers(new HashSet<MOB>());
             msg.source().getRideBuddies(H);
-            if(!H.contains(msg.source())) H.add(msg.source());
+            if(!H.contains(msg.source())) 
+            	H.add(msg.source());
         	HashSet<Environmental> H2 = null;
         	do {
                 H2 = new HashSet<Environmental>();
-                H2.addAll(H2);
+                H2.addAll(H);
             	for(Iterator i = H2.iterator(); i.hasNext(); ) {
             	    Environmental E = (Environmental)i.next();
             	    if(E instanceof Rideable)

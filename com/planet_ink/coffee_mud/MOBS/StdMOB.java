@@ -2843,8 +2843,7 @@ public class StdMOB implements MOB
 		{
 			for(Follower F : followers)
 				if(F.follower==follower)
-					followers.remove(follower);
-			if(followers.size()==0) followers=null;
+					followers.remove(F);
 		}
 	}
 	public int numFollowers()
