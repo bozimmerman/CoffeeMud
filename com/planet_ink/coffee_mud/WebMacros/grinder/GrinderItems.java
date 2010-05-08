@@ -665,7 +665,7 @@ public class GrinderItems
 				    if((!itemCode.startsWith("CATALOG-"))
 				    &&(!itemCode.startsWith("NEWCATA-")))
 				    {
-    					RoomData.contributeItems(CMParms.makeVector(I));
+    					RoomData.contributeItems(new XVector<Item>(I));
     					httpReq.addRequestParameters("ITEM",RoomData.getItemCode(RoomData.items,I));
 				    }
 				}

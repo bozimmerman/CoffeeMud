@@ -57,7 +57,7 @@ public class Song_Dexterity extends Song
         {
             if(target instanceof MOB)
             {
-                if(mob.getGroupMembers(new HashSet()).size()==0)
+                if(mob.getGroupMembers(new HashSet<MOB>()).size()==0)
                     return Ability.QUALITY_INDIFFERENT;
             }
         }

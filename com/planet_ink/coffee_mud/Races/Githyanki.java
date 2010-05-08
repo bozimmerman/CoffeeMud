@@ -32,12 +32,11 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class Githyanki extends Humanoid
 {
 	public String ID(){	return "Githyanki"; }
 	public String name(){ return "Githyanki"; }
-	protected static Vector resources=new Vector();
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 	public String racialCategory(){return "Gith";}
 

@@ -765,7 +765,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
             if(materialStr!=null)
             	 material = RawMaterial.CODES.FIND_IgnoreCase(materialStr);
             List<ItemCraftor> craftors=new Vector<ItemCraftor>();
-			for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+			for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 			{
 				Ability A=(Ability)e.nextElement();
 				if(A instanceof ItemCraftor)
@@ -820,7 +820,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			else
 			for(ItemCraftor skill : craftors)
 			{
-				Vector V=skill.matchingRecipeNames(recipe,false);
+				List<List<String>> V=skill.matchingRecipeNames(recipe,false);
 				if((V!=null)&&(V.size()>0))
 				{
 					ItemCraftor.ItemKeyPair pair;
@@ -1121,7 +1121,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
                     	choices.addAll(getAllChoices(tagName,likePiece,defined,false));
                     }
                 }
-            	return CMParms.makeVector(piece);
+            	return new XVector(piece);
             }
         }
         
@@ -1250,7 +1250,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         	throw new CMException("Can't make selection among NONE: on piece '"+piece.tag+"', Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
         else
         if(selection.equals("FIRST"))
-        	selectedChoicesV= CMParms.makeVector(choices.firstElement());
+        	selectedChoicesV= new XVector(choices.firstElement());
         else
         if(selection.startsWith("FIRST-"))
         {
@@ -1262,7 +1262,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         }
         else
         if(selection.equals("LAST"))  
-        	selectedChoicesV=CMParms.makeVector(choices.lastElement());
+        	selectedChoicesV=new XVector(choices.lastElement());
         else
         if(selection.startsWith("LAST-"))
         {
@@ -1305,7 +1305,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         }
         else
         if(selection.equals("ANY"))
-        	selectedChoicesV=CMParms.makeVector(choices.elementAt(CMLib.dice().roll(1,choices.size(),-1)));
+        	selectedChoicesV=new XVector(choices.elementAt(CMLib.dice().roll(1,choices.size(),-1)));
         else
         if(selection.startsWith("ANY-"))
         {

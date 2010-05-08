@@ -48,7 +48,7 @@ public class Apothecary extends Cooking
 	protected int iniPracticesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLPRACCOST);}
 
     public String parametersFile(){ return "poisons.txt";}
-    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
     public Apothecary()
     {

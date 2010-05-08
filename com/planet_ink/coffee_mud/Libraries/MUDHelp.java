@@ -430,7 +430,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			    subTag=subTag.substring(0,x)+subTag.substring(x+1);
 			}
 			
-			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
 				Ability A=(Ability)a.nextElement();
 				if(((A.ID().equalsIgnoreCase(tag)||A.ID().equalsIgnoreCase(subTag))
@@ -529,7 +529,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					if(type==Ability.ACODE_PRAYER)
 					{
 					    String rangeDescs=null;
-					    for(Enumeration e=CMLib.factions().factions();e.hasMoreElements();)
+					    for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
 					    {
 					        Faction F=(Faction)e.nextElement();
 					        rangeDescs=F.usageFactorRangeDescription(A);
@@ -727,7 +727,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				if(D != null)
 				{
 					Command CMD=CMClass.getCommand("Deities");
-					Vector commands=CMParms.makeVector("DEITY",D);
+					Vector commands=new XVector("DEITY",D);
 					try {
 						CMD.execute(forMOB, commands, Command.METAFLAG_FORCED);
 						helpStr = D.Name().toUpperCase();

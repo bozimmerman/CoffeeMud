@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class QuestLoader
 {
 	protected DBConnector DB=null;
@@ -95,11 +94,11 @@ public class QuestLoader
 		+"'"+Q.getWinnerStr()+" '"
 		+")");
 	}
-	public void DBUpdateQuests(Vector quests)
+	public void DBUpdateQuests(List<Quest> quests)
 	{
-		if(quests==null) quests=new Vector();
+		if(quests==null) quests=new Vector<Quest>();
 		String quType="DefaultQuest";
-		if(quests.size()>0) quType=CMClass.classID(quests.firstElement());
+		if(quests.size()>0) quType=CMClass.classID(quests.get(0));
 		DBConnection D=null;
 		DB.update("DELETE FROM CMQUESTS WHERE CMQUTYPE='"+quType+"'");
 		try{Thread.sleep((1000+(quests.size()*100)));}catch(Exception e){}
@@ -112,7 +111,7 @@ public class QuestLoader
 		D=DB.DBFetch();
 		for(int m=0;m<quests.size();m++)
 		{
-			Quest Q=(Quest)quests.elementAt(m);
+			Quest Q=(Quest)quests.get(m);
             if(Q.isCopy()) continue;
 			try{
 				D.update(

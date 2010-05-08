@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.core;
 import com.planet_ink.coffee_mud.WebMacros.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -42,7 +43,7 @@ import org.mozilla.javascript.optimizer.*;
 public class CMClass extends ClassLoader
 {
 	protected static boolean debugging=false;
-    protected static Hashtable classes=new Hashtable();
+    protected static Hashtable<String,Class<?>> classes=new Hashtable<String,Class<?>>();
     private static CMClass[] clss=new CMClass[256];
     public CMClass()
     {
@@ -91,36 +92,36 @@ public class CMClass extends ClassLoader
 
     
     protected Hashtable<String,CMCommon> common=new Hashtable<String,CMCommon>();
-    protected Vector<Race> 				 races=new Vector<Race>();
-    protected Vector<CharClass> 		 charClasses=new Vector<CharClass>();
-    protected Vector<MOB> 				 MOBs=new Vector<MOB>();
-    protected Vector<Ability> 			 abilities=new Vector<Ability>();
-    protected Vector<Room> 				 locales=new Vector<Room>();
-    protected Vector<Exit> 				 exits=new Vector<Exit>();
-    protected Vector<Item> 				 items=new Vector<Item>();
-    protected Vector<Behavior> 			 behaviors=new Vector<Behavior>();
-    protected Vector<Weapon> 			 weapons=new Vector<Weapon>();
-    protected Vector<Armor> 			 armor=new Vector<Armor>();
-    protected Vector<MiscMagic> 		 miscMagic=new Vector<MiscMagic>();
-    protected Vector<Electronics> 		 miscTech=new Vector<Electronics>();
-    protected Vector<ClanItem> 			 clanItems=new Vector<ClanItem>();
-    protected Vector<Area> 				 areaTypes=new Vector<Area>();
-    protected Vector<Command> 			 commands=new Vector<Command>();
-    protected Vector<CMLibrary> 		 libraries=new Vector<CMLibrary>();
+    protected XVector<Race> 			 races=new XVector<Race>();
+    protected XVector<CharClass> 		 charClasses=new XVector<CharClass>();
+    protected XVector<MOB> 				 MOBs=new XVector<MOB>();
+    protected XVector<Ability> 			 abilities=new XVector<Ability>();
+    protected XVector<Room> 			 locales=new XVector<Room>();
+    protected XVector<Exit> 			 exits=new XVector<Exit>();
+    protected XVector<Item> 			 items=new XVector<Item>();
+    protected XVector<Behavior> 		 behaviors=new XVector<Behavior>();
+    protected XVector<Weapon> 			 weapons=new XVector<Weapon>();
+    protected XVector<Armor> 			 armor=new XVector<Armor>();
+    protected XVector<MiscMagic> 		 miscMagic=new XVector<MiscMagic>();
+    protected XVector<Electronics> 		 miscTech=new XVector<Electronics>();
+    protected XVector<ClanItem> 		 clanItems=new XVector<ClanItem>();
+    protected XVector<Area> 			 areaTypes=new XVector<Area>();
+    protected XVector<Command> 			 commands=new XVector<Command>();
+    protected XVector<CMLibrary> 		 libraries=new XVector<CMLibrary>();
     protected Hashtable<String,WebMacro> webMacros=new Hashtable<String,WebMacro>();
     protected Hashtable<String,Command>  commandWords=new Hashtable<String,Command>();
     
     protected static final long[] OBJECT_CREATIONS=new long[OBJECT_TOTAL];
     protected static final long[] OBJECT_DESTRUCTIONS=new long[OBJECT_TOTAL];
     
-    protected static final java.util.WeakHashMap[] OBJECT_CACHE=new java.util.WeakHashMap[OBJECT_TOTAL];
-    protected static final Vector MSGS_CACHE=new Vector();
+    protected static final WeakHashMap<CMObject,Object>[] OBJECT_CACHE=new WeakHashMap[OBJECT_TOTAL];
+    protected static final Vector<CMMsg> MSGS_CACHE=new Vector<CMMsg>();
     protected static final boolean KEEP_OBJECT_CACHE=false;
     static
     { 
     	if(KEEP_OBJECT_CACHE) 
     		for(int i=0;i<OBJECT_TOTAL;i++)
-    			OBJECT_CACHE[i]=new java.util.WeakHashMap();
+    			OBJECT_CACHE[i]=new WeakHashMap<CMObject,Object>();
     }
     
     public static final String[] OBJECT_DESCS=
@@ -153,7 +154,7 @@ public class CMClass extends ClassLoader
         "com.planet_ink.coffee_mud.Libraries.interfaces.CMLibrary",
 	};
     
-    public static void bumpCounter(Object O, int which)
+    public static void bumpCounter(CMObject O, int which)
     {
         if(KEEP_OBJECT_CACHE)
         {
@@ -273,7 +274,7 @@ public class CMClass extends ClassLoader
 		return null;
 	}
 
-    public static int numPrototypes(int type)
+	public static int numPrototypes(int type)
     {
     	Object o = getClassSet(type);
     	if(o instanceof Set) return ((Set)o).size();
@@ -285,7 +286,7 @@ public class CMClass extends ClassLoader
     	return 0;
     }
     
-    public static void unbumpCounter(Object O, int which)
+    public static void unbumpCounter(CMObject O, int which)
     {
         if(KEEP_OBJECT_CACHE)
         {
@@ -363,7 +364,7 @@ public class CMClass extends ClassLoader
     	return total;
     }
 
-	public static void addAllItemClassNames(Vector V, boolean NonArchon, boolean NonGeneric, boolean NonStandard)
+	public static void addAllItemClassNames(Vector<String> V, boolean NonArchon, boolean NonGeneric, boolean NonStandard)
 	{
 		V.addAll(getAllItemClassNames(basicItems(),NonArchon,NonGeneric,NonStandard));
 		V.addAll(getAllItemClassNames(weapons(),NonArchon,NonGeneric,NonStandard));
@@ -437,7 +438,7 @@ public class CMClass extends ClassLoader
 		Command C=(Command)c().commandWords.get(word.trim().toUpperCase());
 		if((exactOnly)||(C!=null)) return C;
 		word=word.toUpperCase();
-		for(Enumeration e=c().commandWords.keys();e.hasMoreElements();)
+		for(Enumeration<String> e=c().commandWords.keys();e.hasMoreElements();)
 		{
 			String key=(String)e.nextElement();
 			if(key.toUpperCase().startsWith(word))
@@ -462,10 +463,11 @@ public class CMClass extends ClassLoader
             classes.remove(O.getClass().getName());
 		Object set=getClassSet(type);
 		if(set==null) return false;
-		if(set instanceof Vector)
+		if(set instanceof List)
 		{
-			((Vector)set).remove(O);
-            CMParms.sortVector((Vector)set);
+			((List)set).remove(O);
+			if(set instanceof XVector)
+				((XVector)set).sort();
             if(set==c().commands) reloadCommandWords();
             //if(set==libraries) CMLib.registerLibraries(libraries.elements());
 		}
@@ -484,10 +486,11 @@ public class CMClass extends ClassLoader
 	{
 		Object set=getClassSet(type);
 		if(set==null) return false;
-		if(set instanceof Vector)
+		if(set instanceof List)
 		{
-			((Vector)set).addElement(O);
-            CMParms.sortVector((Vector)set);
+			((List)set).add(O);
+			if(set instanceof XVector)
+				((XVector)set).sort();
             if(set==c().commands) reloadCommandWords();
             if(set==c().libraries) CMLib.registerLibraries(c().libraries.elements());
 		}
@@ -517,7 +520,7 @@ public class CMClass extends ClassLoader
 		for(int i=CMClass.OBJECT_ANCESTORS.length-1;i>=0;i--)
 		{
 			try{
-				Class ancestorCl = instance().loadClass(CMClass.OBJECT_ANCESTORS[i]);
+				Class<?> ancestorCl = instance().loadClass(CMClass.OBJECT_ANCESTORS[i]);
 				if(CMClass.checkAncestry(O.getClass(),ancestorCl))
 					return i;
 			}catch(Exception e){}
@@ -535,9 +538,10 @@ public class CMClass extends ClassLoader
 		if(!loadListToObj(set,path,OBJECT_ANCESTORS[classCode(classType)],quiet))
             return false;
 
-        if(set instanceof Vector)
+        if(set instanceof List)
         {
-            CMParms.sortVector((Vector)set);
+			if(set instanceof XVector)
+				((XVector)set).sort();
             if(set==c().commands) reloadCommandWords();
             if(set==c().libraries) CMLib.registerLibraries(c().libraries.elements());
         }
@@ -558,9 +562,9 @@ public class CMClass extends ClassLoader
 			pathLess=pathLess.replace('/','.');
 			pathLess=pathLess.replace('\\','.');
 			if(classes.contains(pathLess))
-				return ((CMObject)classes.get(pathLess)).newInstance();
+				return (classes.get(pathLess)).newInstance();
 		}catch(Exception e){}
-		Vector V=new Vector();
+		Vector<Object> V=new Vector<Object>();
 		if(classCode(classType)<0)
 			return null;
 		if((!path.toUpperCase().endsWith(".CLASS"))
@@ -606,7 +610,7 @@ public class CMClass extends ClassLoader
 				thisItem=getGlobal((Hashtable)set,shortThis);
 			if(thisItem!=null) return thisItem;
 		}
-        try{	return ((CMObject)classes.get(calledThis)).newInstance();}catch(Exception e){}
+        try{	return classes.get(calledThis).newInstance();}catch(Exception e){}
 		return thisItem;
 	}
 
@@ -692,7 +696,7 @@ public class CMClass extends ClassLoader
         if((ofClassDomain>=0)||(ofFlags>=0))
         {
             ableV = new Vector();
-            for(Enumeration e=c().abilities.elements();e.hasMoreElements();)
+            for(Enumeration<Ability> e=c().abilities.elements();e.hasMoreElements();)
             {
                 A=(Ability)e.nextElement();
                 if((ofClassDomain<0)
@@ -728,14 +732,14 @@ public class CMClass extends ClassLoader
     {
         if(calledThis==null) return null;
         Behavior B=null;
-        for(Enumeration e=behaviors();e.hasMoreElements();)
+        for(Enumeration<Behavior> e=behaviors();e.hasMoreElements();)
         {
             B=(Behavior)e.nextElement();
             if(B.name().equalsIgnoreCase(calledThis))
                 return (Behavior)B.copyOf();
         }
         if(exact) return null;
-        for(Enumeration e=behaviors();e.hasMoreElements();)
+        for(Enumeration<Behavior> e=behaviors();e.hasMoreElements();)
         {
             B=(Behavior)e.nextElement();
             if(CMLib.english().containsString(B.name(),calledThis))
@@ -748,14 +752,14 @@ public class CMClass extends ClassLoader
 	{
         if(calledThis==null) return null;
 	    Ability A=null;
-        for(Enumeration e=abilities();e.hasMoreElements();)
+        for(Enumeration<Ability> e=abilities();e.hasMoreElements();)
         {
             A=(Ability)e.nextElement();
             if(A.name().equalsIgnoreCase(calledThis))
                 return A;
         }
 	    if(exact) return null;
-        for(Enumeration e=abilities();e.hasMoreElements();)
+        for(Enumeration<Ability> e=abilities();e.hasMoreElements();)
         {
             A=(Ability)e.nextElement();
             if(CMLib.english().containsString(A.name(),calledThis))
@@ -767,8 +771,8 @@ public class CMClass extends ClassLoader
 	public static Ability findAbility(String calledThis, CharStats charStats)
 	{
 		Ability A=null;
-		Vector As=new Vector();
-		for(Enumeration e=abilities();e.hasMoreElements();)
+		Vector<Ability> As=new Vector<Ability>();
+		for(Enumeration<Ability> e=abilities();e.hasMoreElements();)
 		{
 			A=(Ability)e.nextElement();
 			for(int c=0;c<charStats.numClasses();c++)
@@ -787,7 +791,7 @@ public class CMClass extends ClassLoader
 
 	public static Ability findAbility(String calledThis, MOB mob)
 	{
-		Vector As=new Vector();
+		Vector<Ability> As=new Vector<Ability>();
         Ability A=null;
 		for(int a=0;a<mob.numAbilities();a++)
 		{
@@ -810,12 +814,12 @@ public class CMClass extends ClassLoader
         return null;
     }
 
-	public static Object getGlobal(Hashtable fromThese, String calledThis)
+	public static CMObject getGlobal(Hashtable<String,CMObject> fromThese, String calledThis)
 	{
-		Object o=fromThese.get(calledThis);
+		CMObject o=fromThese.get(calledThis);
 		if(o==null)
 		{
-			for(Enumeration e=fromThese.elements();e.hasMoreElements();)
+			for(Enumeration<CMObject> e=fromThese.elements();e.hasMoreElements();)
 			{
 				o=e.nextElement();
 				if(classID(o).equalsIgnoreCase(calledThis))
@@ -881,41 +885,41 @@ public class CMClass extends ClassLoader
         return false;
     }
 
-    public static void sortEnvironmentalsByID(Vector V) 
+    public static void sortEnvironmentalsByID(Vector<Environmental> V) 
     {
-        Hashtable hashed=new Hashtable();
-        for(Enumeration e=V.elements();e.hasMoreElements();)
+        Hashtable<String,Environmental> hashed=new Hashtable<String,Environmental>();
+        for(Enumeration<Environmental> e=V.elements();e.hasMoreElements();)
         {
             Environmental E=(Environmental)e.nextElement();
             hashed.put(E.ID().toUpperCase(),E);
         }
-        Vector idSet=new Vector(new TreeSet(hashed.keySet()));
-        Vector V2=new Vector(V.size());
-        for(Enumeration e=idSet.elements();e.hasMoreElements();)
+        Vector<String> idSet=new Vector<String>(new TreeSet<String>(hashed.keySet()));
+        Vector<Environmental> V2=new Vector<Environmental>(V.size());
+        for(Enumeration<String> e=idSet.elements();e.hasMoreElements();)
             V2.addElement(hashed.get(e.nextElement()));
         //return V2;
     }
 
-    public static void sortEnvironmentalsByName(Vector V) {
-        Hashtable nameHash=new Hashtable();
-        Vector V3;
-        for(Enumeration e=V.elements();e.hasMoreElements();)
+    public static void sortEnvironmentalsByName(Vector<Environmental> V) {
+        Hashtable<String,Environmental[]> nameHash=new Hashtable<String,Environmental[]>();
+        Vector<Environmental> V3;
+        for(Enumeration<Environmental> e=V.elements();e.hasMoreElements();)
         {
             Environmental E=(Environmental)e.nextElement();
             if(nameHash.containsKey(E.Name().toUpperCase()))
             {
-            	V3 = new Vector();
-                V3.addAll(CMParms.makeVector(nameHash.get(E.Name().toUpperCase())));
+            	V3 = new Vector<Environmental>();
+                V3.addAll(new XVector<Environmental>(nameHash.get(E.Name().toUpperCase())));
                 V3.addElement(E);
-                nameHash.put(E.Name().toUpperCase(),V3.toArray());
+                nameHash.put(E.Name().toUpperCase(),V3.toArray(new Environmental[0]));
             }
             else
-                nameHash.put(E.Name().toUpperCase(),new Object[]{E});
+                nameHash.put(E.Name().toUpperCase(),new Environmental[]{E});
         }
-        Vector idSet=new Vector(new TreeSet(nameHash.keySet()));
-        Vector V2=new Vector(V.size());
-        for(Enumeration e=idSet.elements();e.hasMoreElements();)
-            V2.addAll(CMParms.makeVector(nameHash.get(e.nextElement())));
+        Vector<String> idSet=new Vector<String>(new TreeSet<String>(nameHash.keySet()));
+        Vector<Environmental> V2=new Vector<Environmental>(V.size());
+        for(Enumeration<String> e=idSet.elements();e.hasMoreElements();)
+            V2.addAll(new XVector<Environmental>(nameHash.get(e.nextElement())));
         //return V2;
     }
 
@@ -962,21 +966,21 @@ public class CMClass extends ClassLoader
 	public void unload()
 	{
         common=new Hashtable<String,CMCommon>();
-		races=new Vector<Race>();
-		charClasses=new Vector<CharClass>();
-		MOBs=new Vector<MOB>();
-		abilities=new Vector<Ability>();
-		locales=new Vector<Room>();
-		exits=new Vector<Exit>();
-		items=new Vector<Item>();
-		behaviors=new Vector<Behavior>();
-		weapons=new Vector<Weapon>();
-		armor=new Vector<Armor>();
-		miscMagic=new Vector<MiscMagic>();
-		miscTech=new Vector<Electronics>();
-		areaTypes=new Vector<Area>();
-		clanItems=new Vector<ClanItem>();
-		commands=new Vector<Command>();
+		races=new XVector<Race>();
+		charClasses=new XVector<CharClass>();
+		MOBs=new XVector<MOB>();
+		abilities=new XVector<Ability>();
+		locales=new XVector<Room>();
+		exits=new XVector<Exit>();
+		items=new XVector<Item>();
+		behaviors=new XVector<Behavior>();
+		weapons=new XVector<Weapon>();
+		armor=new XVector<Armor>();
+		miscMagic=new XVector<MiscMagic>();
+		miscTech=new XVector<Electronics>();
+		areaTypes=new XVector<Area>();
+		clanItems=new XVector<ClanItem>();
+		commands=new XVector<Command>();
 		webMacros=new Hashtable<String,WebMacro>();
 		commandWords=new Hashtable<String,Command>();
 	}
@@ -1003,7 +1007,7 @@ public class CMClass extends ClassLoader
 	
 	public static Hashtable loadHashListToObj(String filePath, String auxPath, String ancester)
 	{
-		Hashtable h=new Hashtable();
+		Hashtable<String,Object> h=new Hashtable<String,Object>();
 		int x=auxPath.indexOf(";");
 		while(x>=0)
 		{
@@ -1016,7 +1020,7 @@ public class CMClass extends ClassLoader
 		return h;
 	}
 
-	public static Vector loadVectorListToObj(String filePath, String auxPath, String ancester)
+	public static XVector loadVectorListToObj(String filePath, String auxPath, String ancester)
 	{
 		Vector v=new Vector();
 		int x=auxPath.indexOf(";");
@@ -1028,10 +1032,10 @@ public class CMClass extends ClassLoader
 			x=auxPath.indexOf(";");
 		}
 		loadObjectListToObj(v,filePath,auxPath,ancester);
-		return new Vector(new TreeSet(v));
+		return new XVector(new TreeSet(v));
 	}
 	
-	public static Vector loadClassList(String filePath, String auxPath, String subDir, Class ancestorC1, boolean quiet)
+	public static Vector loadClassList(String filePath, String auxPath, String subDir, Class<?> ancestorC1, boolean quiet)
 	{
 		Vector v=new Vector();
 		int x=auxPath.indexOf(";");
@@ -1069,7 +1073,7 @@ public class CMClass extends ClassLoader
 	public static boolean loadListToObj(Object toThis, String filePath, String ancestor, boolean quiet)
 	{
         CMClass loader=new CMClass();
-        Class ancestorCl=null;
+        Class<?> ancestorCl=null;
         if (ancestor != null && ancestor.length() != 0)
         {
             try
@@ -1085,11 +1089,11 @@ public class CMClass extends ClassLoader
 		return loadListToObj(toThis, filePath, ancestorCl, quiet);
 	}
 	
-	public static boolean loadListToObj(Object toThis, String filePath, Class ancestorCl, boolean quiet)
+	public static boolean loadListToObj(Object toThis, String filePath, Class<?> ancestorCl, boolean quiet)
 	{
         CMClass loader=new CMClass();
         CMFile file=new CMFile(filePath,null,true);
-        Vector fileList=new Vector();
+        Vector<String> fileList=new Vector<String>();
         if(file.canRead())
         {
             if(file.isDirectory())
@@ -1123,7 +1127,7 @@ public class CMClass extends ClassLoader
                 String packageName=item.replace('/','.');
                 if(packageName.toUpperCase().endsWith(".CLASS"))
                     packageName=packageName.substring(0,packageName.length()-6);
-                Class C=loader.loadClass(packageName,true);
+                Class<?> C=loader.loadClass(packageName,true);
                 if(C!=null)
                 {
                     if(!checkAncestry(C,ancestorCl))
@@ -1184,7 +1188,7 @@ public class CMClass extends ClassLoader
 		return rawClassName(O.getClass());
 	}
 
-	public static String rawClassName(Class C)
+	public static String rawClassName(Class<?> C)
 	{
 		if(C==null) return "";
 		String name=C.getName();
@@ -1194,7 +1198,7 @@ public class CMClass extends ClassLoader
 		return name;
 	}
 
-	public static CMFile getClassDir(Class C) 
+	public static CMFile getClassDir(Class<?> C) 
 	{
 		URL location = C.getProtectionDomain().getCodeSource().getLocation();
 		String loc;
@@ -1216,7 +1220,7 @@ public class CMClass extends ClassLoader
 		return new CMFile("/"+loc,null,false);
 	}
 
-	public static boolean checkAncestry(Class cl, Class ancestorCl)
+	public static boolean checkAncestry(Class<?> cl, Class<?> ancestorCl)
 	{
 		if (cl == null) return false;
 		if (cl.isPrimitive() || cl.isInterface()) return false;
@@ -1253,14 +1257,14 @@ public class CMClass extends ClassLoader
      * will always want the class resolved before it is returned
      * to them.
      */
-    public Class loadClass(String className) throws ClassNotFoundException {
+    public Class<?> loadClass(String className) throws ClassNotFoundException {
         return (loadClass(className, true));
     }
 
-    public Class finishDefineClass(String className, byte[] classData, String overPackage, boolean resolveIt)
+    public Class<?> finishDefineClass(String className, byte[] classData, String overPackage, boolean resolveIt)
         throws ClassFormatError
     {
-        Class result=null;
+        Class<?> result=null;
         if(overPackage!=null)
         {
             int x=className.lastIndexOf(".");
@@ -1294,11 +1298,11 @@ public class CMClass extends ClassLoader
     }
 
     /**
-     * This is the required version of loadClass which is called
-     * both from loadClass above and from the internal function
+     * This is the required version of loadClass<?> which is called
+     * both from loadClass<?> above and from the internal function
      * FindClassFromClass.
      */
-    public synchronized Class loadClass(String className, boolean resolveIt)
+    public synchronized Class<?> loadClass(String className, boolean resolveIt)
         throws ClassNotFoundException
     {
         String pathName=null;
@@ -1310,7 +1314,7 @@ public class CMClass extends ClassLoader
         }
         else
             pathName=className.replace('.','/')+".class";
-        Class result = (Class)classes.get(className);
+        Class<?> result = (Class<?>)classes.get(className);
         if (result!=null)
         {
             if(debugging) Log.debugOut("CMClass","Loaded: "+result.getName());
@@ -1345,7 +1349,7 @@ public class CMClass extends ClassLoader
             if((str==null)||(str.length()==0))
                 throw new ClassNotFoundException("JavaScript file "+pathName+" not readable!");
             Vector V=Resources.getFileLineVector(str);
-            Class extendsClass=null;
+            Class<?> extendsClass=null;
             Vector implementsClasses=new Vector();
             String overPackage=null;
             for(int v=0;v<V.size();v++)
@@ -1365,7 +1369,7 @@ public class CMClass extends ClassLoader
                 if(((String)V.elementAt(v)).toUpperCase().startsWith("//IMPLEMENTS "))
                 {
                     String extendName=((String)V.elementAt(v)).substring(13).trim();
-                    Class C=null;
+                    Class<?> C=null;
                     try{C=loadClass(extendName);}catch(ClassNotFoundException e){continue;}
                     implementsClasses.addElement(C);
                 }
@@ -1381,7 +1385,7 @@ public class CMClass extends ClassLoader
                 Log.errOut("CMClass","Warning: "+CF.getVFSPathAndName()+" does not extend any class!");
             else
                 cc.setTargetExtends(extendsClass);
-            Class mainClass=null;
+            Class<?> mainClass=null;
             if(implementsClasses.size()>0)
             {
                 Class[] CS=new Class[implementsClasses.size()];
@@ -1391,7 +1395,7 @@ public class CMClass extends ClassLoader
             Object[] objs = cc.compileToClassFiles(str.toString(), "script", 1, name);
             for (int i=0;i<objs.length;i+=2)
             {
-                Class C=finishDefineClass((String)objs[i],(byte[])objs[i+1],overPackage,resolveIt);
+                Class<?> C=finishDefineClass((String)objs[i],(byte[])objs[i+1],overPackage,resolveIt);
                 if(mainClass==null) mainClass=C;
             }
             Context.exit();
@@ -1530,98 +1534,98 @@ public class CMClass extends ClassLoader
                     int size=0;
                     tempV=loadVectorListToObj(prefix+"Abilities/Fighter/","%DEFAULT%",ancestor("ABILITY"));
                     size=tempV.size();
-                    CMParms.addToVector(tempV,c.abilities);
+                    c.abilities.addAll(tempV);
     
                     tempV=loadVectorListToObj(prefix+"Abilities/Ranger/","%DEFAULT%",ancestor("ABILITY"));
                     size+=tempV.size();
-                    CMParms.addToVector(tempV,c.abilities);
+                    c.abilities.addAll(tempV);
     
                     tempV=loadVectorListToObj(prefix+"Abilities/Paladin/","%DEFAULT%",ancestor("ABILITY"));
                     size+=tempV.size();
-                    CMParms.addToVector(tempV,c.abilities);
+                    c.abilities.addAll(tempV);
     
                     size+=tempV.size();
                     if(size>0) Log.sysOut(Thread.currentThread().getName(),"Fighter Skills    : "+size);
-                    CMParms.addToVector(tempV,c.abilities);
+                    c.abilities.addAll(tempV);
     
                     tempV=loadVectorListToObj(prefix+"Abilities/Druid/","%DEFAULT%",ancestor("ABILITY"));
                     if(tempV.size()>0) Log.sysOut(Thread.currentThread().getName(),"Chants loaded     : "+tempV.size());
-                    CMParms.addToVector(tempV,c.abilities);
+                    c.abilities.addAll(tempV);
     
                     tempV=loadVectorListToObj(prefix+"Abilities/Languages/","%DEFAULT%",ancestor("ABILITY"));
                     if(tempV.size()>0) Log.sysOut(Thread.currentThread().getName(),"Languages loaded  : "+tempV.size());
-                    CMParms.addToVector(tempV,c.abilities);
+                    c.abilities.addAll(tempV);
     
                     tempV=loadVectorListToObj(prefix+"Abilities/Properties/","%DEFAULT%",ancestor("ABILITY"));
                     size=tempV.size();
-                    CMParms.addToVector(tempV,c.abilities);
+                    c.abilities.addAll(tempV);
     
                     tempV=loadVectorListToObj(prefix+"Abilities/Diseases/","%DEFAULT%",ancestor("ABILITY"));
                     size+=tempV.size();
-                    CMParms.addToVector(tempV,c.abilities);
+                    c.abilities.addAll(tempV);
     
                     tempV=loadVectorListToObj(prefix+"Abilities/Poisons/","%DEFAULT%",ancestor("ABILITY"));
                     size+=tempV.size();
-                    CMParms.addToVector(tempV,c.abilities);
+                    c.abilities.addAll(tempV);
     
                     tempV=loadVectorListToObj(prefix+"Abilities/Misc/","%DEFAULT%",ancestor("ABILITY"));
                     size+=tempV.size();
                     Log.sysOut(Thread.currentThread().getName(),"Properties loaded : "+size);
-                    CMParms.addToVector(tempV,c.abilities);
+                    c.abilities.addAll(tempV);
     
                     tempV=loadVectorListToObj(prefix+"Abilities/Prayers/","%DEFAULT%",ancestor("ABILITY"));
                     Log.sysOut(Thread.currentThread().getName(),"Prayers loaded    : "+tempV.size());
-                    CMParms.addToVector(tempV,c.abilities);
+                    c.abilities.addAll(tempV);
     
                     tempV=loadVectorListToObj(prefix+"Abilities/Archon/","%DEFAULT%",ancestor("ABILITY"));
                     size+=tempV.size();
-                    CMParms.addToVector(tempV,c.abilities);
+                    c.abilities.addAll(tempV);
     
                     tempV=loadVectorListToObj(prefix+"Abilities/Skills/","%DEFAULT%",ancestor("ABILITY"));
                     size=tempV.size();
-                    CMParms.addToVector(tempV,c.abilities);
+                    c.abilities.addAll(tempV);
     
                     tempV=loadVectorListToObj(prefix+"Abilities/Thief/","%DEFAULT%",ancestor("ABILITY"));
                     size+=tempV.size();
-                    CMParms.addToVector(tempV,c.abilities);
+                    c.abilities.addAll(tempV);
     
                     tempV=loadVectorListToObj(prefix+"Abilities/Common/","%DEFAULT%",ancestor("ABILITY"));
                     size+=tempV.size();
-                    CMParms.addToVector(tempV,c.abilities);
+                    c.abilities.addAll(tempV);
     
                     tempV=loadVectorListToObj(prefix+"Abilities/Specializations/","%DEFAULT%",ancestor("ABILITY"));
                     size+=tempV.size();
-                    CMParms.addToVector(tempV,c.abilities);
+                    c.abilities.addAll(tempV);
                     if(size>0) Log.sysOut(Thread.currentThread().getName(),"Skills loaded     : "+size);
     
                     tempV=loadVectorListToObj(prefix+"Abilities/Songs/","%DEFAULT%",ancestor("ABILITY"));
                     if(tempV.size()>0) Log.sysOut(Thread.currentThread().getName(),"Songs loaded      : "+tempV.size());
-                    CMParms.addToVector(tempV,c.abilities);
+                    c.abilities.addAll(tempV);
     
                     tempV=loadVectorListToObj(prefix+"Abilities/Spells/","%DEFAULT%",ancestor("ABILITY"));
                     if(tempV.size()>0) Log.sysOut(Thread.currentThread().getName(),"Spells loaded     : "+tempV.size());
-                    CMParms.addToVector(tempV,c.abilities);
+                    c.abilities.addAll(tempV);
     
                     tempV=loadVectorListToObj(prefix+"Abilities/SuperPowers/","%DEFAULT%",ancestor("ABILITY"));
                     size=tempV.size();
-                    CMParms.addToVector(tempV,c.abilities);
+                    c.abilities.addAll(tempV);
                     if(size>0) Log.sysOut(Thread.currentThread().getName(),"Heroics loaded    : "+size);
     
                     tempV=loadVectorListToObj(prefix+"Abilities/Traps/","%DEFAULT%",ancestor("ABILITY"));
                     if(tempV.size()>0) Log.sysOut(Thread.currentThread().getName(),"Traps loaded      : "+tempV.size());
-                    CMParms.addToVector(tempV,c.abilities);
+                    c.abilities.addAll(tempV);
                     
-                    CMParms.sortVector(c.abilities);
+                    c.abilities.sort();
 
                     CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: reading genAbilities");
-                    Vector genAbilities=CMLib.database().DBReadAbilities();
+                    List<DatabaseEngine.AckRecord> genAbilities=CMLib.database().DBReadAbilities();
                     if(genAbilities.size()>0)
                     {
                         int loaded=0;
                         for(int r=0;r<genAbilities.size();r++)
                         {
                             Ability A=(Ability)(CMClass.getAbility("GenAbility").copyOf());
-                            A.setStat("ALLXML",(String)((Vector)genAbilities.elementAt(r)).lastElement());
+                            A.setStat("ALLXML",genAbilities.get(r).data);
                             if(!A.ID().equals("GenAbility"))
                             {
                                 c.abilities.addElement(A);
@@ -1631,7 +1635,7 @@ public class CMClass extends ClassLoader
                         if(loaded>0)
                         {
                             Log.sysOut(Thread.currentThread().getName(),"GenAbles loaded   : "+loaded);
-                            CMParms.sortVector(c.abilities);
+                            c.abilities.sort();
                         }
                     }
                 }
@@ -1684,9 +1688,9 @@ public class CMClass extends ClassLoader
                 c.miscTech=loadVectorListToObj(prefix+"Items/MiscTech/",page.getStr("MISCTECH"),ancestor("MISCTECH"));
                 if(c.miscTech.size()>0) Log.sysOut(Thread.currentThread().getName(),"Electronics loaded: "+c.miscTech.size());
                 Vector tempV=loadVectorListToObj(prefix+"Items/Software/",page.getStr("SOFTWARE"),"com.planet_ink.coffee_mud.Items.interfaces.Software");
-                if(tempV.size()>0) CMParms.addToVector(tempV,c.miscTech);
+                if(tempV.size()>0) c.miscTech.addAll(tempV);
 
-                CMParms.sortVector(c.miscTech);
+                c.miscTech.sort();
             }
 
             if((c.items.size()+c.weapons.size()+c.armor.size()+c.miscTech.size()+c.miscMagic.size()+c.clanItems.size())==0)
@@ -1736,14 +1740,14 @@ public class CMClass extends ClassLoader
                 R.copyOf();
             }
             CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: reading genRaces");
-            Vector genRaces=CMLib.database().DBReadRaces();
+            List<DatabaseEngine.AckRecord> genRaces=CMLib.database().DBReadRaces();
             if(genRaces.size()>0)
             {
                 int loaded=0;
                 for(int r=0;r<genRaces.size();r++)
                 {
                     Race GR=(Race)getRace("GenRace").copyOf();
-                    GR.setRacialParms((String)((Vector)genRaces.elementAt(r)).elementAt(1));
+                    GR.setRacialParms(genRaces.get(r).data);
                     if(!GR.ID().equals("GenRace"))
                     {
                         addRace(GR);
@@ -1757,14 +1761,14 @@ public class CMClass extends ClassLoader
         if((tCode==MudHost.MAIN_HOST)||(privacyV.contains("CHARCLASS")))
         {
             CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: reading genClasses");
-            Vector genClasses=CMLib.database().DBReadClasses();
+            List<DatabaseEngine.AckRecord> genClasses=CMLib.database().DBReadClasses();
             if(genClasses.size()>0)
             {
                 int loaded=0;
                 for(int r=0;r<genClasses.size();r++)
                 {
                     CharClass CR=(CharClass)(CMClass.getCharClass("GenCharClass").copyOf());
-                    CR.setClassParms((String)((Vector)genClasses.elementAt(r)).elementAt(1));
+                    CR.setClassParms(genClasses.get(r).data);
                     if(!CR.ID().equals("GenCharClass"))
                     {
                         addCharClass(CR);

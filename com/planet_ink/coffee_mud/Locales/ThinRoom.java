@@ -88,11 +88,12 @@ public class ThinRoom implements Room {
 			myR=CMLib.map().getRoom(roomID);
 			if(myR==null)
 			{
-				Vector V=CMLib.database().DBReadRoomData(roomID,false);
+				Map<String,Room> V=CMLib.database().DBReadRoomData(roomID,false);
 				if(V.size()>0)
 				{
-					myR=(Room)V.firstElement();
-					while(V.size()>1) V.removeElementAt(1);
+					Iterator<String> i=V.keySet().iterator();
+					myR=V.get(i.next());
+					while(i.hasNext()) V.remove(i.next());
 					CMLib.database().DBReadRoomExits(roomID,V,false);
 					CMLib.database().DBReadContent(myR,V);
 					myR.getArea().fillInAreaRoom(R);

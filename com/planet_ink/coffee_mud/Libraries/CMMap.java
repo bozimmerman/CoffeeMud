@@ -149,7 +149,7 @@ public class CMMap extends StdLibrary implements WorldMap
         }
         return null;
     }
-	public Enumeration areas()
+	public Enumeration<Area> areas()
     {
 		return areasList.elements();
 	}
@@ -453,7 +453,7 @@ public class CMMap extends StdLibrary implements WorldMap
     {
     	Vector<Room> foundRooms=new Vector<Room>();
     	Vector completeRooms=new Vector();
-		try { completeRooms=CMParms.makeVector(rooms); }catch(NoSuchElementException nse){}
+		try { completeRooms=new XVector(rooms); }catch(NoSuchElementException nse){}
 		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
 		
 		Enumeration enumSet;
@@ -607,7 +607,7 @@ public class CMMap extends StdLibrary implements WorldMap
     }
     public Vector<Environmental> findShopStock(Enumeration rooms, MOB mob, String srchStr, boolean returnFirst, boolean returnStockers, int timePct)
     {
-    	Vector<Environmental> found=new Vector<Environmental>();
+    	XVector<Environmental> found=new XVector<Environmental>();
 		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
 		if(delay>1000) delay=1000;
 		boolean useTimer = delay>1;
@@ -632,11 +632,11 @@ public class CMMap extends StdLibrary implements WorldMap
 						if(ei.hasNext()) 
 						{
 							if(returnFirst)
-								return (returnStockers)?CMParms.makeVector(M):CMParms.makeVector(ei);
+								return (returnStockers)?new XVector(M):new XVector(ei);
 							if(returnStockers)
 								found.add(M);
 							else
-								CMParms.addToVector(ei,found);
+								found.addAll(ei);
 						}
 					}
 					for(int i=0;i<M.numItems();i++)
@@ -651,11 +651,11 @@ public class CMMap extends StdLibrary implements WorldMap
 								if(ei.hasNext()) 
 								{
 									if(returnFirst)
-										return (returnStockers)?CMParms.makeVector(I):CMParms.makeVector(ei);
+										return (returnStockers)?new XVector(I):new XVector(ei);
 									if(returnStockers)
 										found.add(I);
 									else
-										CMParms.addToVector(ei, found);
+										found.addAll(ei);
 								}
 							}
 						}
@@ -680,11 +680,11 @@ public class CMMap extends StdLibrary implements WorldMap
 					if(ei.hasNext()) 
 					{
 						if(returnFirst)
-							return (returnStockers)?CMParms.makeVector(room):CMParms.makeVector(ei);
+							return (returnStockers)?new XVector(room):new XVector(ei);
 						if(returnStockers)
 							found.add(room);
 						else
-							CMParms.addToVector(ei, found);
+							found.addAll(ei);
 					}
 				}
 				for(int m=0;m<room.numInhabitants();m++)
@@ -699,11 +699,11 @@ public class CMMap extends StdLibrary implements WorldMap
 							if(ei.hasNext()) 
 							{
 								if(returnFirst)
-									return (returnStockers)?CMParms.makeVector(M):CMParms.makeVector(ei);
+									return (returnStockers)?new XVector(M):new XVector(ei);
 								if(returnStockers)
 									found.add(M);
 								else
-									CMParms.addToVector(ei, found);
+									found.addAll(ei);
 							}
 						}
 					}
@@ -720,11 +720,11 @@ public class CMMap extends StdLibrary implements WorldMap
 							if(ei.hasNext()) 
 							{
 								if(returnFirst)
-									return (returnStockers)?CMParms.makeVector(I):CMParms.makeVector(ei);
+									return (returnStockers)?new XVector(I):new XVector(ei);
 								if(returnStockers)
 									found.add(I);
 								else
-									CMParms.addToVector(ei, found);
+									found.addAll(ei);
 							}
 						}
 					}
@@ -744,11 +744,11 @@ public class CMMap extends StdLibrary implements WorldMap
 				if(ei.hasNext()) 
 				{
 					if(returnFirst)
-						return (returnStockers)?CMParms.makeVector(A):CMParms.makeVector(ei);
+						return (returnStockers)?new XVector(A):new XVector(ei);
 					if(returnStockers)
 						found.add(A);
 					else
-						CMParms.addToVector(ei, found);
+						found.addAll(ei);
 				}
 			}
 		}
@@ -1442,7 +1442,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		if(rooms!=null) return rooms;
 		if(room==null) return new Vector<Room>(1);
-		return (Vector<Room>)CMParms.makeVector(room);
+		return (Vector<Room>)new XVector(room);
 	}
 	
 	protected boolean enforceTimeLimit(long startTime, int maxSeconds)
@@ -1598,7 +1598,7 @@ public class CMMap extends StdLibrary implements WorldMap
                 if(includeLocalFollowers)
                 {
                     MOB M2=null;
-                    Set<MOB> H=M.getGroupMembers(new HashSet());
+                    Set<MOB> H=M.getGroupMembers(new HashSet<MOB>());
                     for(Iterator i=H.iterator();i.hasNext();)
                     {
                         M2=(MOB)i.next();

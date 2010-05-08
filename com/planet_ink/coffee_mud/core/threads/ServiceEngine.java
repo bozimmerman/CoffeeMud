@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 
@@ -35,7 +36,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class ServiceEngine implements ThreadEngine
 {
     public static final long STATUS_ALLMISCTICKS=Tickable.STATUS_MISC|Tickable.STATUS_MISC2|Tickable.STATUS_MISC3|Tickable.STATUS_MISC4|Tickable.STATUS_MISC5|Tickable.STATUS_MISC6;
@@ -123,7 +123,7 @@ public class ServiceEngine implements ThreadEngine
 	public synchronized boolean deleteTick(Tickable E, int tickID)
 	{
         Tick almostTock=null;
-        Iterator set=null;
+        Iterator<TockClient> set=null;
 		for(Iterator<Tick> e=tickGroups();e.hasNext();)
 		{
 			almostTock=e.next();
@@ -137,7 +137,7 @@ public class ServiceEngine implements ThreadEngine
 	public boolean isTicking(Tickable E, int tickID)
 	{
         Tick almostTock=null;
-        Iterator set;
+        Iterator<TockClient> set;
 		for(Iterator<Tick> e=tickGroups();e.hasNext();)
 		{
 			almostTock=e.next();
@@ -156,7 +156,7 @@ public class ServiceEngine implements ThreadEngine
 	protected boolean suspendResumeTicking(Tickable E, int tickID, boolean suspend)
 	{
         Tick almostTock=null;
-        Iterator set=null;
+        Iterator<TockClient> set=null;
 		for(Iterator<Tick> e=tickGroups();e.hasNext();)
 		{
 			almostTock=e.next();
@@ -170,7 +170,7 @@ public class ServiceEngine implements ThreadEngine
 	public boolean isSuspended(Tickable E, int tickID)
 	{
         Tick almostTock=null;
-        Iterator set=null;
+        Iterator<TockClient> set=null;
 		for(Iterator<Tick> e=tickGroups();e.hasNext();)
 		{
 			almostTock=e.next();
@@ -291,7 +291,7 @@ public class ServiceEngine implements ThreadEngine
 			}
             try
             {
-    			for(Iterator et=almostTock.tickers();et.hasNext();)
+    			for(Iterator<TockClient> et=almostTock.tickers();et.hasNext();)
     			{
     				TockClient C=(TockClient)et.next();
     				if(C.milliTotal>topObjectMillis)
@@ -379,7 +379,7 @@ public class ServiceEngine implements ThreadEngine
                 xend++;
             int threadNum=CMath.s_int(itemCode.substring(xstart,xend));
             int curThreadNum=0;
-            for(Enumeration e=CMLib.libraries();e.hasMoreElements();)
+            for(Enumeration<CMLibrary> e=CMLib.libraries();e.hasMoreElements();)
             {
                 CMLibrary lib=(CMLibrary)e.nextElement();
                 ThreadEngine.SupportThread thread=lib.getSupportThread();
@@ -434,7 +434,7 @@ public class ServiceEngine implements ThreadEngine
 			almostTock=e.next();
             try
             {
-                for(Iterator i=almostTock.tickers();i.hasNext();)
+                for(Iterator<TockClient> i=almostTock.tickers();i.hasNext();)
                 {
                     C=(TockClient)i.next();
                     E2=C.clientObject;
@@ -622,8 +622,8 @@ public class ServiceEngine implements ThreadEngine
 		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...shutting down Service Engine: "+ID()+": thread shutdown");
         thread.shutdown();
         // force final time tick!
-        Vector timeObjects=new Vector();
-        for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+        Vector<TimeClock> timeObjects=new Vector<TimeClock>();
+        for(Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
         {
             Area A=((Area)e.nextElement());
             if(!timeObjects.contains(A.getTimeObj()))
@@ -671,16 +671,16 @@ public class ServiceEngine implements ThreadEngine
 		}
 	}
     
-    public Vector getNamedTickingObjects(String name)
+    public List<Tickable> getNamedTickingObjects(String name)
     {
-        Vector V=new Vector();
+        Vector<Tickable> V=new Vector<Tickable>();
         Tick almostTock=null;
         TockClient C=null;
         name=name.toUpperCase().trim();
 		for(Iterator<Tick> e=tickGroups();e.hasNext();)
 		{
 			almostTock=e.next();
-            for(Iterator i=almostTock.tickers();i.hasNext();)
+            for(Iterator<TockClient> i=almostTock.tickers();i.hasNext();)
             {
                 C=(TockClient)i.next();
                 if((C.clientObject!=null)
@@ -879,10 +879,10 @@ public class ServiceEngine implements ThreadEngine
         for(int x=0;x<orderedDeaths.size();x++)
         {
             Tick almostTock=(Tick)orderedDeaths.elementAt(x,3);
-            Vector objs=new Vector();
+            Vector<TockClient> tockClients=new Vector<TockClient>();
             try{
-                for(Iterator e=almostTock.tickers();e.hasNext();)
-                    objs.addElement(e.next());
+                for(Iterator<TockClient> e=almostTock.tickers();e.hasNext();)
+                    tockClients.addElement(e.next());
             }catch(NoSuchElementException e){}
             try
             {
@@ -898,9 +898,9 @@ public class ServiceEngine implements ThreadEngine
             }
             if(CMLib.threads() instanceof ServiceEngine)
                 ((ServiceEngine)CMLib.threads()).delTickGroup(almostTock);
-            for(int i=0;i<objs.size();i++)
+            for(int i=0;i<tockClients.size();i++)
             {
-                TockClient c=(TockClient)objs.elementAt(i);
+                TockClient c=(TockClient)tockClients.elementAt(i);
                 CMLib.threads().startTickDown(c.clientObject,c.tickID,c.reTickDown);
             }
         }
@@ -908,12 +908,12 @@ public class ServiceEngine implements ThreadEngine
         thread.status("Checking mud threads");
         for(int m=0;m<CMLib.hosts().size();m++)
         {
-            Vector badThreads=((MudHost)CMLib.hosts().elementAt(m)).getOverdueThreads();
+            List<Thread> badThreads=((MudHost)CMLib.hosts().elementAt(m)).getOverdueThreads();
             if(badThreads.size()>0)
             {
                 for(int b=0;b<badThreads.size();b++)
                 {
-                    Thread T=(Thread)badThreads.elementAt(b);
+                    Thread T=(Thread)badThreads.get(b);
                     String threadName=T.getName();
                     if(T instanceof Tickable)
                         threadName=((Tickable)T).name()+" ("+((Tickable)T).ID()+"): "+((Tickable)T).getTickStatus();

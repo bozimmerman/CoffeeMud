@@ -58,7 +58,7 @@ public class Trap_Greasy extends StdTrap
 		return null;
 	}
 
-    public Vector getTrapComponents() {
+    public List<Item> getTrapComponents() {
         Vector V=new Vector();
         V.addElement(CMClass.getBasicItem("OilFlask"));
         return V;
@@ -93,7 +93,7 @@ public class Trap_Greasy extends StdTrap
 		&&(target.location()!=null))
 		{
 			if((CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS))
-			||(invoker().getGroupMembers(new HashSet()).contains(target)))
+			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target)))
 				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) setting off a trap!");
 			else
 			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,CMStrings.capitalizeAndLower(affected.name())+" is covered in grease!"))

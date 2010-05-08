@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class Troll extends StdRace
 {
 	public String ID(){	return "Troll"; }
@@ -56,7 +55,7 @@ public class Troll extends StdRace
 	private int[] agingChart={0,1,5,40,100,150,200,230,260};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector resources=new Vector();
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)

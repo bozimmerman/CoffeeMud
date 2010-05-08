@@ -456,11 +456,11 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
 	        
     		CataData data = getCatalogData(cataP);
     		data.delReference(cataP);
-    		HashSet<Physical> ignored=null;
+    		SHashSet<Physical> ignored=null;
     		if(data!=null)
-    			ignored=CMParms.makeHashSet(data.enumeration());
+    			ignored=new SHashSet(data.enumeration());
     		else
-    			ignored=new HashSet<Physical>(1);
+    			ignored=new SHashSet<Physical>(1);
     		Physical P;
     		for(Iterator<Physical> i=ignored.iterator();i.hasNext();)
     		{
@@ -562,7 +562,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
     	}
     }
     
-    protected void propogateShopChange(ShopKeeper SK, HashSet<Physical> ignored, Physical cataP)
+    protected void propogateShopChange(ShopKeeper SK, Set<Physical> ignored, Physical cataP)
     {
         boolean isMob=(cataP instanceof MOB);
         Environmental E=null;

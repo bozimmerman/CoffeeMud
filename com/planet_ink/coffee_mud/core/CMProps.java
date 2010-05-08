@@ -249,17 +249,17 @@ public class CMProps extends Properties
     };
     public static final int NUML_SYSTEM=12;
 
-    protected String[] sysVars=new String[NUM_SYSTEM];
-    protected Integer[] sysInts=new Integer[NUMI_SYSTEM];
-    protected Boolean[] sysBools=new Boolean[NUMB_SYSTEM];
-    protected Vector sayFilter=new Vector();
-    protected Vector channelFilter=new Vector();
-    protected Vector emoteFilter=new Vector();
-    protected Object[] listData=new Object[NUML_SYSTEM];
-    protected DVector newusersByIP=new DVector(2);
-    protected DVector skillMaxManaExceptions=new DVector(2);
-    protected DVector skillMinManaExceptions=new DVector(2);
-    protected String[][] statCodeExtensions = null;
+    protected String[] 		sysVars=new String[NUM_SYSTEM];
+    protected Integer[] 	sysInts=new Integer[NUMI_SYSTEM];
+    protected Boolean[] 	sysBools=new Boolean[NUMB_SYSTEM];
+    protected Vector<String>sayFilter=new Vector<String>();
+    protected Vector<String>channelFilter=new Vector<String>();
+    protected Vector<String>emoteFilter=new Vector<String>();
+    protected Object[] 		listData=new Object[NUML_SYSTEM];
+    protected DVector 		newusersByIP=new DVector(2);
+    protected DVector 		skillMaxManaExceptions=new DVector(2);
+    protected DVector 		skillMinManaExceptions=new DVector(2);
+    protected String[][] 	statCodeExtensions = null;
     public int pkillLevelDiff=26;
 
     public boolean loaded=false;
@@ -406,7 +406,7 @@ public class CMProps extends Properties
 	{
 		DVector strBag = new DVector(2);
 		tagStartersToGet = tagStartersToGet.toUpperCase();
-		for(Enumeration e=propertyNames(); e.hasMoreElements();)
+		for(Enumeration<?> e=propertyNames(); e.hasMoreElements();)
 		{
 			String propName = (String)e.nextElement();
 			if(propName.toUpperCase().startsWith(tagStartersToGet))
@@ -619,7 +619,7 @@ public class CMProps extends Properties
     {
     	if(val==null) return 0;
     	set.clear();
-    	Vector V=CMParms.parseCommas(val,true);
+    	Vector<String> V=CMParms.parseCommas(val,true);
     	String s=null;
     	int endVal=0;
     	for(int v=0;v<V.size();v++)
@@ -668,7 +668,7 @@ public class CMProps extends Properties
         if((var<0)||(var>=NUML_SYSTEM)) return new int[0];
         if(p().listData[var]==null)
         {
-            Vector V=CMParms.parseCommas(getListValue(SYSTEML_KEYS[var]), true);
+            Vector<String> V=CMParms.parseCommas(getListValue(SYSTEML_KEYS[var]), true);
             int[] set=new int[V.size()];
             for(int v=0;v<V.size();v++)
                 set[v]=CMath.s_int((String)V.elementAt(v));
@@ -690,7 +690,7 @@ public class CMProps extends Properties
         if((var<0)||(var>=NUML_SYSTEM)) return new String[0][0];
         if(p().listData[var]==null)
         {
-            Vector V=CMParms.parseSemicolons(getListValue(SYSTEML_KEYS[var]),true);
+            Vector<String> V=CMParms.parseSemicolons(getListValue(SYSTEML_KEYS[var]),true);
             String[][] set=new String[V.size()][];
             for(int v=0;v<V.size();v++)
                 set[v]=CMParms.toStringArray(CMParms.parseCommas((String)V.elementAt(v),true));
@@ -808,7 +808,7 @@ public class CMProps extends Properties
             setIntVar(SYSTEMI_EXVIEW,0);
 
         s=getStr("EXPIRATIONS");
-        Vector V=CMParms.parseCommas(s,false);
+        Vector<String> V=CMParms.parseCommas(s,false);
         for(int i=0;i<5;i++)
         {
             if(V.size()>0)
@@ -945,7 +945,7 @@ public class CMProps extends Properties
 
     public static String applyINIFilter(String msg, int whichFilter)
     {
-        Vector filter=null;
+        Vector<String> filter=null;
         switch(whichFilter)
         {
         case SYSTEM_EMOTEFILTER: filter=p().emoteFilter; break;
@@ -1062,16 +1062,16 @@ public class CMProps extends Properties
         return pre+"^<IMAGE '"+fixedFilenames[1]+"' URL=\""+fixedFilenames[0]+"\" "+parms+"^>^N"+post;
     }
 
-    public static String getHashedMXPImage(String key)
+	public static String getHashedMXPImage(String key)
     {
-        Hashtable H=(Hashtable)Resources.getResource("MXP_IMAGES");
+        Hashtable<String,String> H=(Hashtable)Resources.getResource("MXP_IMAGES");
         if(H==null) getDefaultMXPImage(null);
         H=(Hashtable)Resources.getResource("MXP_IMAGES");
         if(H==null) return "";
         return getHashedMXPImage(H,key);
 
     }
-    public static String getHashedMXPImage(Hashtable H, String key)
+    public static String getHashedMXPImage(Hashtable<String, String> H, String key)
     {
         if(H==null) return "";
         String s=(String)H.get(key);
@@ -1086,11 +1086,11 @@ public class CMProps extends Properties
         if((getVar(SYSTEM_MXPIMAGEPATH).length()==0)
         ||(CMSecurity.isDisabled("MXP")))
             return "";
-        Hashtable H=(Hashtable)Resources.getResource("PARSED: mxp_images.ini");
+        Hashtable<String,String> H=(Hashtable)Resources.getResource("PARSED: mxp_images.ini");
         if(H==null)
         {
-            H=new Hashtable();
-            Vector V=Resources.getFileLineVector(new CMFile("resources/mxp_images.ini",null,false).text());
+            H=new Hashtable<String,String>();
+            Vector<String> V=Resources.getFileLineVector(new CMFile("resources/mxp_images.ini",null,false).text());
             if((V!=null)&&(V.size()>0))
             {
                 String s=null;
@@ -1121,7 +1121,7 @@ public class CMProps extends Properties
         {
             String raceName=((MOB)O).charStats().raceName().toUpperCase();
             Race R=null;
-            for(Enumeration e=CMClass.races();e.hasMoreElements();)
+            for(Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
             {
                 R=(Race)e.nextElement();
                 if(raceName.equalsIgnoreCase(R.name()))
@@ -1396,11 +1396,11 @@ public class CMProps extends Properties
         return (getIntVar(SYSTEMI_MUDTHEME)&i)>0;
     }
 
-    public static Vector loadEnumerablePage(String iniFile)
+    public static Vector<String> loadEnumerablePage(String iniFile)
     {
         StringBuffer str=new CMFile(iniFile,null,true).text();
-        if((str==null)||(str.length()==0)) return new Vector();
-        Vector page=Resources.getFileLineVector(str);
+        if((str==null)||(str.length()==0)) return new Vector<String>();
+        Vector<String> page=Resources.getFileLineVector(str);
         for(int p=0;p<(page.size()-1);p++)
         {
             String s=((String)page.elementAt(p)).trim();
@@ -1431,7 +1431,7 @@ public class CMProps extends Properties
                     xtraValues[xtraValues.length-x-1]=val; 
     }
 
-    public static Vector getStatCodeExtensions(Class<?> C, String ID)
+    public static Vector<String> getStatCodeExtensions(Class<?> C, String ID)
     {
     	String[][] statCodeExtensions = p().statCodeExtensions;
     	if( statCodeExtensions == null) return null;
@@ -1447,7 +1447,7 @@ public class CMProps extends Properties
             else
                 V.addElement(myClassName.toUpperCase());
         }
-        for(Enumeration v=V.elements();v.hasMoreElements();)
+        for(Enumeration<String> v=V.elements();v.hasMoreElements();)
         {
         	myClassName = (String)v.nextElement();
         	for(int i=0;i<statCodeExtensions.length;i++)
@@ -1456,14 +1456,14 @@ public class CMProps extends Properties
         }
     	return null;
     }
-    public static Vector getStatCodeExtentions(CMObject O)
+    public static Vector<String> getStatCodeExtentions(CMObject O)
     {
     	return getStatCodeExtensions(O.getClass(),O.ID());
     }
 
     public static String[] getExtraStatCodesHolder(CMObject O)
     {
-    	Vector addedStatCodesV = getStatCodeExtentions(O);
+    	Vector<String> addedStatCodesV = getStatCodeExtentions(O);
     	if(addedStatCodesV == null) return null;
     	String[] statHolder= new String[addedStatCodesV.size()];
     	for(int s=0;s<statHolder.length;s++)
@@ -1473,7 +1473,7 @@ public class CMProps extends Properties
 
     public static String[] getStatCodesList(String[] baseStatCodes, CMObject O)
     {
-    	Vector addedStatCodesV = getStatCodeExtentions(O);
+    	Vector<String> addedStatCodesV = getStatCodeExtentions(O);
     	if(addedStatCodesV == null)
     		return baseStatCodes;
 

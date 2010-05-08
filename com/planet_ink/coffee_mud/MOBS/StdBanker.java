@@ -628,7 +628,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						{
 							List<Item> V2=getDepositedItems(mob.getLiegeID());
 							if((V2!=null)&&(V2.size()>0))
-								CMParms.addToVector(V2,V);
+								V.addAll(V2);
 						}
 					}
 					for(int v=V.size()-1;v>=0;v--)

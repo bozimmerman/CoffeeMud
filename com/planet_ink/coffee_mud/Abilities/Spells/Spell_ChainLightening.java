@@ -46,7 +46,7 @@ public class Spell_ChainLightening extends Spell
 		Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null) h=new HashSet();
 
-		Set<MOB> myGroup=mob.getGroupMembers(new HashSet());
+		Set<MOB> myGroup=mob.getGroupMembers(new HashSet<MOB>());
 		Vector targets=new Vector();
 		for(Iterator e=h.iterator();e.hasNext();)
 			targets.addElement(e.next());

@@ -59,10 +59,10 @@ public class StdLanguage extends StdAbility implements Language
 	private final static String vowels="aeiouy";
 	public boolean beingSpoken(String language){return spoken;}
 	public void setBeingSpoken(String language, boolean beingSpoken){spoken=beingSpoken;}
-	public Hashtable translationHash(String language){ return emptyHash; }
-	public Vector translationVector(String language){ return emptyVector; }
+	public Map<String, String> translationHash(String language){ return emptyHash; }
+	public List<String[]> translationVector(String language){ return emptyVector; }
 	
-    public Vector languagesSupported() {return CMParms.makeVector(ID());}
+    public List<String> languagesSupported() {return new XVector(ID());}
     public boolean translatesLanguage(String language) { return ID().equalsIgnoreCase(language);}
     public int getProficiency(String language) { 
         if(ID().equalsIgnoreCase(language))
@@ -99,11 +99,12 @@ public class StdLanguage extends StdAbility implements Language
 			return fixCase(word,(String)translationHash(language).get(word.toUpperCase()));
 		MOB M=CMLib.players().getPlayer(word);
 		if(M!=null) return word;
-		if(translationVector(language).size()>0)
+		List<String[]> translationVector=translationVector(language);
+		if(translationVector.size()>0)
 		{
 			String[] choices=null;
-			try{ choices=(String[])translationVector(language).elementAt(word.length()-1);}catch(Exception e){}
-			if(choices==null) choices=(String[])translationVector(language).lastElement();
+			try{ choices=(String[])translationVector.get(word.length()-1);}catch(Exception e){}
+			if(choices==null) choices=(String[])translationVector.get(translationVector.size()-1);
 			return choices[CMath.abs(word.toLowerCase().hashCode()) % choices.length];
 		}
 		return word;

@@ -50,7 +50,7 @@ public class GrinderRaces
             String behav=httpReq.getRequestParameter(c+"ESTATS"+num);
             while(behav!=null)
             {
-                if((behav.length()>0) && (CMParms.makeVector(adjPStats.getStatCodes()).contains(behav.toUpperCase().trim())))
+                if((behav.length()>0) && (new XVector<String>(adjPStats.getStatCodes()).contains(behav.toUpperCase().trim())))
                 {
                     String prof=httpReq.getRequestParameter(c+"ESTATSV"+num);
                     if(prof==null) prof="0";
@@ -80,7 +80,7 @@ public class GrinderRaces
             String behav=httpReq.getRequestParameter(c+"CSTATS"+num);
             while(behav!=null)
             {
-                if((behav.length()>0) && (CMParms.makeVector(CharStats.CODES.NAMES()).contains(behav.toUpperCase().trim())))
+                if((behav.length()>0) && (new XVector<String>(CharStats.CODES.NAMES()).contains(behav.toUpperCase().trim())))
                 {
                     int val=CMath.s_int(httpReq.getRequestParameter(c+"CSTATSV"+num));
                     if(val!=0)
@@ -109,7 +109,7 @@ public class GrinderRaces
             String behav=httpReq.getRequestParameter(c+"CSTATE"+num);
             while(behav!=null)
             {
-                if((behav.length()>0) && (CMParms.makeVector(adjCState.getStatCodes()).contains(behav.toUpperCase().trim())))
+                if((behav.length()>0) && (new XVector<String>(adjCState.getStatCodes()).contains(behav.toUpperCase().trim())))
                 {
                     String prof=httpReq.getRequestParameter(c+"CSTATEV"+num);
                     if(prof==null) prof="0";
@@ -147,7 +147,7 @@ public class GrinderRaces
                 {
                     I2=RoomData.getItemFromAnywhere(items,MATCHING);
                     if(I2!=null)
-                        RoomData.contributeItems(CMParms.makeVector(I2));
+                        RoomData.contributeItems(new XVector(I2));
                 }
                 if(I2!=null)
                     classes.addElement(I2);
@@ -299,7 +299,7 @@ public class GrinderRaces
             R.setStat("GETOFTID"+l,((Environmental)V.get(l)).ID());
             R.setStat("GETOFTPARM"+l,((Environmental)V.get(l)).text());
         }
-        V=itemList(CMParms.makeVector(oldR.myNaturalWeapon()),'W',httpReq,true);
+        V=itemList(new XVector(oldR.myNaturalWeapon()),'W',httpReq,true);
         if(V.size()==0)
             R.setStat("WEAPONCLASS","StdWeapon");
         else

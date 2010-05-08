@@ -685,8 +685,7 @@ public class GrinderMobs
 				&&(httpReq.isRequestParameter("SHP1")))
 				{
 					ShopKeeper SK=(ShopKeeper)M;
-					Vector inventory=new Vector();
-					CMParms.addToVector(SK.getShop().getStoreInventory(), inventory);
+					XVector inventory=new XVector(SK.getShop().getStoreInventory());
 					SK.getShop().emptyAllShelves();
 
 					int num=1;
@@ -735,7 +734,7 @@ public class GrinderMobs
 								{	O=(MOB)M2.copyOf(); break;	}
 							}
 							if(O==null)
-							for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+							for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 							{
 								Ability A2=(Ability)a.nextElement();
 								if(CMClass.classID(A2).equals(MATCHING))
@@ -800,7 +799,7 @@ public class GrinderMobs
 			    }
 			    else 
 			    {
-    				RoomData.contributeMOBs(CMParms.makeVector(M));
+    				RoomData.contributeMOBs(new XVector(M));
                     MOB M2=RoomData.getReferenceMOB(M);
     				newMobCode=RoomData.getMOBCode(RoomData.mobs,M2);
 			    }

@@ -48,7 +48,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 	public void setReset(int Reset){}
 	public int getReset(){return 0;}
 	public boolean maySetTrap(MOB mob, int asLevel){return false;}
-    public Vector getTrapComponents() { return new Vector(); }
+    public List<Item> getTrapComponents() { return new Vector(); }
 	public boolean canSetTrapOn(MOB mob, Physical P){return false;}
 	public String requiresToSet(){return "";}
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean permanent)
@@ -68,13 +68,13 @@ public class Chant_PlantTrap extends Chant implements Trap
 		if((target!=invoker())&&(target.location()!=null))
 		{
 			if((!invoker().mayIFight(target))
-			||(invoker().getGroupMembers(new HashSet()).contains(target))
+			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) some agressive plants!");
 			else
 			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> <S-IS-ARE> assaulted by the plants!"))
 			{
-				Vector them=CMParms.makeVector(choices);
+				Vector them=new XVector<String>(choices);
 				if(invoker()!=null)
 				for(int i=0;i<choices.length;i++)
 					if(invoker().fetchAbility(choices[i])==null)

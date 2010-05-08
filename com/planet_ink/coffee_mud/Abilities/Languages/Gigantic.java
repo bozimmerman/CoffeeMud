@@ -37,7 +37,7 @@ public class Gigantic extends StdLanguage
 {
 	public String ID() { return "Gigantic"; }
 	public String name(){ return "Gigantic";}
-	public static Vector wordLists=null;
+	public static List<String[]> wordLists=null;
 	private static boolean mapped=false;
 	public Gigantic()
 	{
@@ -45,7 +45,7 @@ public class Gigantic extends StdLanguage
 		if(!mapped){mapped=true;
 					CMLib.ableMapper().addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Vector translationVector(String language)
+	public List<String[]> translationVector(String language)
 	{
 		if(wordLists==null)
 		{
@@ -60,12 +60,12 @@ five={"sedam","devat","flanon","dvade","matke","trede","horat","jesam","taram","
 			String[]
 six={"jedanast","delalime","veralim","dvanast","bahone","zahedon","prasad","trenast","staronast","starde","delaja"};
 			wordLists=new Vector();
-			wordLists.addElement(one);
-			wordLists.addElement(two);
-			wordLists.addElement(three);
-			wordLists.addElement(four);
-			wordLists.addElement(five);
-			wordLists.addElement(six);
+			wordLists.add(one);
+			wordLists.add(two);
+			wordLists.add(three);
+			wordLists.add(four);
+			wordLists.add(five);
+			wordLists.add(six);
 		}
 		return wordLists;
 	}
@@ -95,7 +95,7 @@ six={"jedanast","delalime","veralim","dvanast","bahone","zahedon","prasad","tren
 	}
 
 	private static final Hashtable hashwords=new Hashtable();
-	public Hashtable translationHash(String language)
+	public Map<String, String> translationHash(String language)
 	{
 		if((hashwords!=null)&&(hashwords.size()>0))
 			return hashwords;

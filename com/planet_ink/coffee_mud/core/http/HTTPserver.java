@@ -386,7 +386,7 @@ public class HTTPserver extends Thread implements MudHost
     	return "English";
     }
 
-    public Vector getOverdueThreads()
+    public List<Thread> getOverdueThreads()
     {
     	Vector V=new Vector();
     	long time=System.currentTimeMillis();

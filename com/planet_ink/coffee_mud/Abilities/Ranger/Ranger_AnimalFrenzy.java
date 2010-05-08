@@ -64,7 +64,7 @@ public class Ranger_AnimalFrenzy extends StdAbility
 
 		if(rangersGroup!=null)
 		{
-			Set<MOB> H=invoker.getGroupMembers(new HashSet());
+			Set<MOB> H=invoker.getGroupMembers(new HashSet<MOB>());
 			for(Iterator e=H.iterator();e.hasNext();)
 			{
 				MOB mob=(MOB)e.next();

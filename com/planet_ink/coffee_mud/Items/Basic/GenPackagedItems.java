@@ -80,15 +80,15 @@ public class GenPackagedItems extends GenItem implements PackagedItems
         return true;
     }
     
-    public boolean isPackagable(Vector V)
+    public boolean isPackagable(List<Item> V)
     {
         if(V==null) return false;
         if(V.size()==0) return false;
         for(int v1=0;v1<V.size();v1++)
         {
-            Item I=(Item)V.elementAt(v1);
+            Item I=(Item)V.get(v1);
             for(int v2=v1+1;v2<V.size();v2++)
-                if(!((Item)V.elementAt(v2)).sameAs(I))
+                if(!((Item)V.get(v2)).sameAs(I))
                     return false;
         }
         return true;

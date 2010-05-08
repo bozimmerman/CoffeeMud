@@ -31,7 +31,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class Trap_AcidSpray extends StdTrap
 {
 	public String ID() { return "Trap_AcidSpray"; }
@@ -47,7 +46,7 @@ public class Trap_AcidSpray extends StdTrap
 		{
 			if((!invoker().mayIFight(target))
 			||(isLocalExempt(target))
-			||(invoker().getGroupMembers(new HashSet()).contains(target))
+			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
 			||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) setting off a acid trap!");

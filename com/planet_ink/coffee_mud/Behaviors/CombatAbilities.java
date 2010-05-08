@@ -204,7 +204,7 @@ public class CombatAbilities extends StdBehavior
 			&&(!attackerM.amDead())
 			&&(attackerM.isInCombat()))
 			{
-	            if((hostM.getGroupMembers(new HashSet()).contains(attackerM))
+	            if((hostM.getGroupMembers(new HashSet<MOB>()).contains(attackerM))
 	            ||(!CMLib.flags().canBeSeenBy(attackerM, hostM)))
 	            	I[0]=0;
 	            else
@@ -238,7 +238,7 @@ public class CombatAbilities extends StdBehavior
 					else
 					{
 						if((victim==msg.source())
-						||(msg.source().getGroupMembers(new HashSet()).contains(victim)))
+						||(msg.source().getGroupMembers(new HashSet<MOB>()).contains(victim)))
 							adjustAggro(mob,msg.source(),msg.value());
 					}
 				}
@@ -248,7 +248,7 @@ public class CombatAbilities extends StdBehavior
 				&&(msg.target()!=mob))
 				{
 					if((msg.target()==victim)
-					||(msg.source().getGroupMembers(new HashSet()).contains(victim)))
+					||(msg.source().getGroupMembers(new HashSet<MOB>()).contains(victim)))
 						adjustAggro(mob,msg.source(),msg.value()*2);
 				}
 				else
@@ -260,7 +260,7 @@ public class CombatAbilities extends StdBehavior
 				&&(msg.source().isInCombat()))
 				{
 					if((msg.source()==victim)
-					||(msg.source().getGroupMembers(new HashSet()).contains(victim)))
+					||(msg.source().getGroupMembers(new HashSet<MOB>()).contains(victim)))
 					{
 						int level=CMLib.ableMapper().qualifyingLevel(msg.source(),(Ability)msg.tool());
 						if(level<=0) level=CMLib.ableMapper().lowestQualifyingLevel(msg.tool().ID());
@@ -457,12 +457,12 @@ public class CombatAbilities extends StdBehavior
 				}
 			}
 			if(target==null) return null;
-			boolean skillUsed=tryThisOne.invoke(mob,CMParms.makeVector(target.name()),null,false,0);
+			boolean skillUsed=tryThisOne.invoke(mob,new XVector(target.name()),null,false,0);
 			if((combatMode==COMBAT_ONLYALWAYS)&&(!skillUsed))
 			{
 				int retries=0;
 				while((++retries<10)&&(!skillUsed))
-					skillUsed=tryThisOne.invoke(mob,CMParms.makeVector(target.name()),null,false,0);
+					skillUsed=tryThisOne.invoke(mob,new XVector(target.name()),null,false,0);
 			}
 			if(skillUsed)
 			{
@@ -590,13 +590,13 @@ public class CombatAbilities extends StdBehavior
                 I=(choices.size()==0)?null:(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
                 if(I!=null)
                 {
-                    CMLib.commands().forceStandardCommand(mob,"GET",CMParms.makeVector("GET",I.Name()));
+                    CMLib.commands().forceStandardCommand(mob,"GET",new XVector("GET",I.Name()));
                     if(mob.isMine(I))
                         wieldMe=I;
                 }
             }
             if(wieldMe!=null)
-                CMLib.commands().forceStandardCommand(mob,"WIELD",CMParms.makeVector("WIELD",wieldMe.Name()));
+                CMLib.commands().forceStandardCommand(mob,"WIELD",new XVector("WIELD",wieldMe.Name()));
             chkDown=5;
         }
         
@@ -627,7 +627,7 @@ public class CombatAbilities extends StdBehavior
 				&&(winMOB!=null)
 				&&(!winMOB.amDead())
 				&&(winMOB.isInCombat())
-	            &&(!mob.getGroupMembers(new HashSet()).contains(winMOB)))
+	            &&(!mob.getGroupMembers(new HashSet<MOB>()).contains(winMOB)))
 				{
 					mob.setVictim(winMOB);
 					victim=mob.getVictim();

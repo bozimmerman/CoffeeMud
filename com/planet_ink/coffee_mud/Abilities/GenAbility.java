@@ -366,7 +366,7 @@ public class GenAbility extends StdAbility
                         Ability P=CMClass.getAbility("Prop_SpellAdder");
                         if(P!=null)
                         {
-                            Vector V=CMParms.makeVector(afterAffect);
+                            Vector V=new XVector(afterAffect);
                             P.invoke(mob,V,null,true,asLevel); // spell adder will return addable affects
                             Ability A=null;
                             if(target!=null)
@@ -447,7 +447,7 @@ public class GenAbility extends StdAbility
                     if(afterCast.length()>0)
                     {
                         Ability P=CMClass.getAbility("Prop_SpellAdder");
-                        if(P!=null) P.invoke(mob,CMParms.makeVector(afterCast),target,true,asLevel);
+                        if(P!=null) P.invoke(mob,new XVector(afterCast),target,true,asLevel);
                     }
                 }
 			}

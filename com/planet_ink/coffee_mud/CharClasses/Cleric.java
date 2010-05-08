@@ -227,7 +227,7 @@ public class Cleric extends StdCharClass
 				return;
 		}
 		// now only give one, for current level, respecting alignment!
-		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
 			if((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())>0)

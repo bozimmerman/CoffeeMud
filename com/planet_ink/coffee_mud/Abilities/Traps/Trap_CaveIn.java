@@ -42,7 +42,7 @@ public class Trap_CaveIn extends StdTrap
 	public String requiresToSet(){return "100 pounds of wood";}
 	public int baseRejuvTime(int level){ return 6;}
 
-    public Vector getTrapComponents() {
+    public List<Item> getTrapComponents() {
         Vector V=new Vector();
         for(int i=0;i<100;i++)
             V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_WOOD));
@@ -110,7 +110,7 @@ public class Trap_CaveIn extends StdTrap
 		if((target!=invoker())&&(target.location()!=null))
 		{
 			if((CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS))
-			||(invoker().getGroupMembers(new HashSet()).contains(target)))
+			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target)))
 				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) setting off a cave-in!");
 			else
 			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> trigger(s) a cave-in!"))

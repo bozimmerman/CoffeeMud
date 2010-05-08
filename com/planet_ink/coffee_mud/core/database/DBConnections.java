@@ -35,7 +35,6 @@ import java.sql.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class DBConnections
 {
 	protected String dbClass="";
@@ -510,7 +509,7 @@ public class DBConnections
 	 */
 	public void retryQueuedErrors()
 	{
-		Vector Queue=new Vector();
+		Vector<String> Queue=new Vector<String>();
 
 		if((lockedUp)||(disconnected))
 		{

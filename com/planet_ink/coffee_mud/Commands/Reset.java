@@ -437,7 +437,7 @@ public class Reset extends StdCommand
 	                {
 	                    T.setLandOwner(mob.Name());
 	                    T.setLandOwner("");
-	                    T.updateLot(CMParms.makeVector(mob.name()));
+	                    T.updateLot(new XVector(mob.name()));
 	                }
 	    		}
             }

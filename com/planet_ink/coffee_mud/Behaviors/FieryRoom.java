@@ -93,7 +93,7 @@ public class FieryRoom
 	                    boolean reallyAffect = true;
 	                    if (noNpc) {
 	                        reallyAffect = false;
-	                        Set<MOB> group = inhab.getGroupMembers(new HashSet());
+	                        Set<MOB> group = inhab.getGroupMembers(new HashSet<MOB>());
 	                        for (Iterator e = group.iterator(); e.hasNext(); ) 
 	                        {
 	                            MOB follower = (MOB) e.next();

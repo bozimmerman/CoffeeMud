@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class GreatAmphibian extends StdRace
 {
 	public String ID(){	return "GreatAmphibian"; }
@@ -44,7 +43,7 @@ public class GreatAmphibian extends StdRace
 	public int weightVariance(){return 40;}
 	public long forbiddenWornBits(){return Integer.MAX_VALUE-Wearable.WORN_EYES;}
 	public String racialCategory(){return "Amphibian";}
-	protected static Vector resources=new Vector();
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 	private String[]racialAbilityNames={"Skill_Swim"};
 	private int[]racialAbilityLevels={1};
 	private int[]racialAbilityProficiencies={100};

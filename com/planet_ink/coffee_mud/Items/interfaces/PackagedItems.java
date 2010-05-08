@@ -29,11 +29,10 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public interface PackagedItems extends Item
 {
     public boolean packageMe(Item I, int number);
-    public boolean isPackagable(Vector V);
+    public boolean isPackagable(List<Item> V);
     public List<Item> unPackage(int number);
     public int numberOfItemsInPackage();
     public Item getItem();

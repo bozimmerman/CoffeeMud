@@ -78,7 +78,7 @@ public class MOBTeacher extends CombatAbilities
 		boolean stdCharClass=mob.charStats().getCurrentClass().ID().equals("StdCharClass");
 		String className=mob.charStats().getCurrentClass().ID();
 		Ability A=null;
-		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
 			A=(Ability)a.nextElement();
 			if((((stdCharClass&&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>0)))

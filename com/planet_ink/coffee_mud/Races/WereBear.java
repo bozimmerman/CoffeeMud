@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class WereBear extends Bear
 {
 	public String ID(){	return "WereBear"; }
@@ -52,7 +51,7 @@ public class WereBear extends Bear
 	private int[] agingChart={0,4,8,12,16,24,30,38,50};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector resources=new Vector();
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+5);

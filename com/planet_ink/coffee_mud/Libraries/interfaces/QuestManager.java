@@ -43,7 +43,7 @@ public interface QuestManager extends CMLibrary
     public void delQuest(Quest Q);
     public void save();
     public Vector parseQuestSteps(Vector script, int startLine, boolean rawLineInput);
-    public Vector parseQuestCommandLines(Vector script, String cmdOnly, int startLine);
+    public Vector parseQuestCommandLines(List<?> script, String cmdOnly, int startLine);
     
     public int getHolidayIndex(String named);
     public String getHolidayName(int index);
@@ -282,7 +282,7 @@ public interface QuestManager extends CMLibrary
         new GenericEditor.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //ability
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
             StringBuffer list=new StringBuffer("");
-            for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+            for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
             	list.append(((Ability)e.nextElement()).ID()+", ");
             if(((String)str).trim().length()==0){
                 if(emptyOK) return "";

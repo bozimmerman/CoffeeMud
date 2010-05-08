@@ -50,7 +50,7 @@ public class Spells  extends Skills
         String[] domainName=new String[1];
         domainName[0]="";
         level[0]=-1;
-        parseDomainInfo(mob,commands,CMParms.makeVector(Integer.valueOf(Ability.ACODE_SPELL)),level,domain,domainName);
+        parseDomainInfo(mob,commands,new XVector(Integer.valueOf(Ability.ACODE_SPELL)),level,domain,domainName);
 		StringBuffer msg=new StringBuffer("");
         msg.append("\n\r^HYour "+domainName[0].replace('_',' ')+"spells:^? "+getAbilities(mob,Ability.ACODE_SPELL,domain[0],true,level[0]));
 		if(!mob.isMonster())

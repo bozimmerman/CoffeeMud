@@ -70,7 +70,7 @@ public class Taxidermy extends CraftingSkill
 		super.unInvoke();
 	}
 
-	protected Vector loadRecipes()
+	protected List<List<String>> loadRecipes()
 	{
         String filename="taxidermy.txt";
 		Vector V=(Vector)Resources.getResource("PARSED: "+filename);
@@ -111,16 +111,16 @@ public class Taxidermy extends CraftingSkill
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		Vector POSES=loadRecipes();
+		List<List<String>> POSES=loadRecipes();
 		String pose=null;
 		if(CMParms.combine(commands,0).equalsIgnoreCase("list"))
 		{
 			StringBuffer str=new StringBuffer("^xTaxidermy Poses^?^.\n");
 			for(int p=0;p<POSES.size();p++)
 			{
-				Vector PP=(Vector)POSES.elementAt(p);
+				List<String> PP=POSES.get(p);
 				if(PP.size()>1) 
-					str.append(((String)PP.firstElement())+"\n");
+					str.append(((String)PP.get(0))+"\n");
 			}
 			mob.tell(str.toString());
 			return true;
@@ -130,11 +130,11 @@ public class Taxidermy extends CraftingSkill
 		{
 			for(int p=0;p<POSES.size();p++)
 			{
-				Vector PP=(Vector)POSES.elementAt(p);
-				if((PP.size()>1)&&(((String)PP.firstElement()).equalsIgnoreCase((String)commands.firstElement())))
+				List<String> PP=POSES.get(p);
+				if((PP.size()>1)&&(((String)PP.get(0)).equalsIgnoreCase((String)commands.firstElement())))
 				{
 					commands.removeElementAt(0);
-					pose=(String)PP.elementAt(CMLib.dice().roll(1,PP.size()-1,0));
+					pose=(String)PP.get(CMLib.dice().roll(1,PP.size()-1,0));
 					break;
 				}
 			}

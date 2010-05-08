@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class Dance_Cotillon extends Dance
 {
 	public String ID() { return "Dance_Cotillon"; }
@@ -48,7 +47,7 @@ public class Dance_Cotillon extends Dance
         if(mob!=null)
         {
             if((!mob.isInCombat())
-            ||(mob.getGroupMembers(new HashSet()).size()<2))
+            ||(mob.getGroupMembers(new HashSet<MOB>()).size()<2))
                 return Ability.QUALITY_INDIFFERENT;
         }
         return super.castingQuality(mob,target);

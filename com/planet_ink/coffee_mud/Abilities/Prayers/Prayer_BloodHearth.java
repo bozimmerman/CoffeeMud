@@ -56,7 +56,7 @@ public class Prayer_BloodHearth extends Prayer
 
 		if(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		{
-			Set<MOB> H=msg.source().getGroupMembers(new HashSet());
+			Set<MOB> H=msg.source().getGroupMembers(new HashSet<MOB>());
 			for(Iterator e=H.iterator();e.hasNext();)
             {
                 MOB M=(MOB)e.next();

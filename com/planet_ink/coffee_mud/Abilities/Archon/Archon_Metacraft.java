@@ -47,7 +47,7 @@ public class Archon_Metacraft extends ArchonSkill
 		if(craftingSkills.size()==0)
 		{
 		    Vector V=new Vector();
-			for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+			for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 			{
 				Ability A=(Ability)e.nextElement();
 				if(A instanceof ItemCraftor)
@@ -147,14 +147,14 @@ public class Archon_Metacraft extends ArchonSkill
 			for(int i=0;i<craftingSkills.size();i++)
 			{
 				skill=(ItemCraftor)craftingSkills.elementAt(i);
-				Vector V=skill.matchingRecipeNames(recipe,false);
+				List<List<String>> V=skill.matchingRecipeNames(recipe,false);
 				if((V!=null)&&(V.size()>0)) skillsToUse.addElement(skill);
 			}
 			if(skillsToUse.size()==0)
 			for(int i=0;i<craftingSkills.size();i++)
 			{
 				skill=(ItemCraftor)craftingSkills.elementAt(i);
-				Vector V=skill.matchingRecipeNames(recipe,true);
+				List<List<String>> V=skill.matchingRecipeNames(recipe,true);
 				if((V!=null)&&(V.size()>0)) skillsToUse.addElement(skill);
 			}
 	    }
@@ -163,14 +163,14 @@ public class Archon_Metacraft extends ArchonSkill
 			for(int i=0;i<craftingSkills.size();i++)
 			{
 				skill=(ItemCraftor)craftingSkills.elementAt(i);
-				Vector V=skill.matchingRecipeNames(recipe,false);
+				List<List<String>> V=skill.matchingRecipeNames(recipe,false);
 				if((V!=null)&&(V.size()>0)){ skillsToUse.addElement(skill);}
 			}
 			if(skillsToUse.size()==0)
 			for(int i=0;i<craftingSkills.size();i++)
 			{
 				skill=(ItemCraftor)craftingSkills.elementAt(i);
-				Vector V=skill.matchingRecipeNames(recipe,true);
+				List<List<String>> V=skill.matchingRecipeNames(recipe,true);
 				if((V!=null)&&(V.size()>0)){ skillsToUse.addElement(skill);}
 			}
 		}

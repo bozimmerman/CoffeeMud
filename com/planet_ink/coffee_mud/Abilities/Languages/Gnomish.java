@@ -37,7 +37,7 @@ public class Gnomish extends StdLanguage
 {
 	public String ID() { return "Gnomish"; }
 	public String name(){ return "Gnomish";}
-	public static Vector wordLists=null;
+	public static List<String[]> wordLists=null;
 	private static boolean mapped=false;
 	public Gnomish()
 	{
@@ -45,7 +45,7 @@ public class Gnomish extends StdLanguage
 		if(!mapped){mapped=true;
 					CMLib.ableMapper().addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Vector translationVector(String language)
+	public List<String[]> translationVector(String language)
 	{
 		if(wordLists==null)
 		{
@@ -56,12 +56,12 @@ public class Gnomish extends StdLanguage
 			String[] five={"whemp","thwam","nippo","punno","upoon","teepe","tunno","ponno","twano","ywhap"};
 			String[] six={"tawhag","ponsol","paleep","ponpopol","niptittle","minwap","tinmipmip","niptemtem","wipwippoo"};
 			wordLists=new Vector();
-			wordLists.addElement(one);
-			wordLists.addElement(two);
-			wordLists.addElement(three);
-			wordLists.addElement(four);
-			wordLists.addElement(five);
-			wordLists.addElement(six);
+			wordLists.add(one);
+			wordLists.add(two);
+			wordLists.add(three);
+			wordLists.add(four);
+			wordLists.add(five);
+			wordLists.add(six);
 		}
 		return wordLists;
 	}

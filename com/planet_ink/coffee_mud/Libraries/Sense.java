@@ -1254,7 +1254,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		for(int r=0;r<R.numInhabitants();r++)
 			if(isAControlledFollower(invoker, R.fetchInhabitant(r), A))
 				return true;
-		Set<MOB> H = invoker.getGroupMembers(new HashSet());
+		Set<MOB> H = invoker.getGroupMembers(new HashSet<MOB>());
 		for(Iterator i=H.iterator();i.hasNext();)
 			if(isAControlledFollower(invoker, (MOB)i.next(), A))
 				return true;

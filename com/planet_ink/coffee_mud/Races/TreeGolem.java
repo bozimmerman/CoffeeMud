@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class TreeGolem extends StdRace
 {
 	public String ID(){	return "TreeGolem"; }
@@ -53,7 +52,7 @@ public class TreeGolem extends StdRace
 	private int[] agingChart={0,10,20,50,65,75,100,150,160};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector resources=new Vector();
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

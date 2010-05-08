@@ -82,7 +82,7 @@ public class Chant_CloudWalk extends Chant
 			}
 			else
 			{
-				Set<MOB> H=mob.getGroupMembers(new HashSet());
+				Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
 				for(Iterator e=H.iterator();e.hasNext();)
 				{
 					MOB M=(MOB)e.next();

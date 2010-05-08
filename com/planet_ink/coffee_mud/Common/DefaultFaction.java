@@ -484,7 +484,7 @@ public class DefaultFaction implements Faction, MsgListener
     
     public String[] getAffectBehav(String ID) {
         if(affBehavs.containsKey(ID.toUpperCase().trim()))
-            return CMParms.toStringArray(CMParms.makeVector((String[])affBehavs.get(ID.toUpperCase().trim())));
+            return CMParms.toStringArray(new XVector<String>((String[])affBehavs.get(ID.toUpperCase().trim())));
         return null;
     }
     
@@ -1567,7 +1567,7 @@ public class DefaultFaction implements Faction, MsgListener
 	        					}
 	        				}
 	        				if(react!=null)
-	        					currentReactionSets.addElement(react.compiledPresentMOBMask(),CMParms.makeVector(react));
+	        					currentReactionSets.addElement(react.compiledPresentMOBMask(),new XVector(react));
 	        			}
 	        			//noReactions=currentReactionSets.size()==0;
 	        		}

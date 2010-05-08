@@ -15,7 +15,6 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.List;
-import java.util.Vector;
 
 /* 
    Copyright 2000-2010 Bo Zimmerman
@@ -166,7 +165,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	 * @param script the parsed quest script
 	 * @param startAtLine which line of the script to start at
 	 */
-    public void setVars(Vector script, int startAtLine);
+    public void setVars(List<?> script, int startAtLine);
     
     /**
      * Returns the unparsed quest script as a single happy string.

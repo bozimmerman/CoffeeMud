@@ -33,24 +33,84 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, Lis
 		V=new Vector<T>();
 	}
 	
-	public SVector(Vector<T> V)
-	{
-		if(V==null)
-			V=new Vector<T>(1);
-		this.V=V;
-	}
-	
-	public SVector(List<T> V)
-	{
-		if(V==null)
-			V=new Vector<T>(1);
-		this.V.addAll(V);
-	}
-	
 	public SVector(int size)
 	{
 		V=new Vector<T>(size);
 	}
+	
+	public SVector(List<T> E)
+	{
+		V=new Vector<T>();
+		if(E!=null)
+			this.V.addAll(E);
+	}
+	
+	public SVector(T... E)
+	{
+		V=new Vector<T>();
+		if(E!=null)
+			for(T o : E)
+				V.add(o);
+	}
+	
+	public SVector(Enumeration<T> E)
+	{
+		V=new Vector<T>();
+		if(E!=null)
+			for(;E.hasMoreElements();)
+				V.add(E.nextElement());
+	}
+	
+	public SVector(Iterator<T> E)
+	{
+		V=new Vector<T>();
+		if(E!=null)
+			for(;E.hasNext();)
+				V.add(E.next());
+	}
+	
+	public SVector(Set<T> E)
+	{
+		if(E!=null)
+			for(T o : E)
+				add(o);
+	}
+	
+	public void addAll(Enumeration<T> E)
+	{
+		if(E!=null)
+			for(;E.hasMoreElements();)
+				V.add(E.nextElement());
+	}
+	
+	public void addAll(Iterator<T> E)
+	{
+		if(E!=null)
+			for(;E.hasNext();)
+				V.add(E.next());
+	}
+	
+	public void removeAll(Enumeration<T> E)
+	{
+		if(E!=null)
+			for(;E.hasMoreElements();)
+				V.remove(E.nextElement());
+	}
+	
+	public void removeAll(Iterator<T> E)
+	{
+		if(E!=null)
+			for(;E.hasNext();)
+				V.remove(E.next());
+	}
+	
+	public void removeAll(List<T> E)
+	{
+		if(E!=null)
+			for(T o : E)
+				V.remove(o);
+	}
+	
 	public synchronized int capacity() {
 		return V.capacity();
 	}

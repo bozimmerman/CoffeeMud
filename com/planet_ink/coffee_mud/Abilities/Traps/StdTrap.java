@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class StdTrap extends StdAbility implements Trap
 {
 	public String ID() { return "StdTrap"; }
@@ -49,7 +48,6 @@ public class StdTrap extends StdAbility implements Trap
 	public boolean isABomb(){return false;}
 	public String requiresToSet(){return "";}
 	private String invokerName=null;
-	private static final Vector emptyV=new Vector();
 
 	public int baseRejuvTime(int level)
 	{
@@ -170,7 +168,7 @@ public class StdTrap extends StdAbility implements Trap
 			   &&(msg.targetMessage()!=null)
 			   &&(msg.target()!=null)
 			   &&(msg.target() instanceof MOB)
-			   &&(!msg.source().getGroupMembers(new HashSet()).contains(msg.target())))
+			   &&(!msg.source().getGroupMembers(new HashSet<MOB>()).contains(msg.target())))
 			{
 				msg.source().tell((MOB)msg.target(),msg.tool(),null,"<S-NAME> can't accept <T-NAME>.");
 				return false;
@@ -307,7 +305,7 @@ public class StdTrap extends StdAbility implements Trap
 		}
 		return true;
 	}
-    public Vector getTrapComponents() { return emptyV;}
+    public List<Item> getTrapComponents() { return new Vector<Item>();}
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(P==null) return null;

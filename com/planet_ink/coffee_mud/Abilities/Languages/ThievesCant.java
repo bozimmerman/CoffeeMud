@@ -44,7 +44,7 @@ public class ThievesCant extends StdLanguage
 {
     public String ID() { return "ThievesCant"; }
     public String name(){ return "Thieves Cant";}
-    public static Vector wordLists=null;
+    public static List<String[]> wordLists=null;
     private static boolean mapped=false;
     public ThievesCant()
     {
@@ -53,7 +53,7 @@ public class ThievesCant extends StdLanguage
                 CMLib.ableMapper().addCharAbilityMapping("Bard",10,ID(),false);}
     }
 
-    public Vector translationVector(String language)
+    public List<String[]> translationVector(String language)
     {
         if(wordLists==null)
         {
@@ -64,17 +64,17 @@ public class ThievesCant extends StdLanguage
             String[] five={"nasty","abram","rogue","royal","blood","bluff","break","teeth","blade","fitch","purse","burnt","chink","chive","chife","clear","drunk","court","cramp","flash","glaze","sharp","ketch","merry","stool","peery","board","queer","boots","smear","smoke","snapt","flash","unrig","whack"};
             String[] six={"baggage","sodomite","banging","battle","garden","beater","beggar","bobbed","bracket","brother","poxed","canters","cousins","money","clanker","damber","fencing","gentry","glimflashy","lavender","jemmy","nubbing","penance","pothooks","rigging","trumps","weeping"};
             wordLists=new Vector();
-            wordLists.addElement(one);
-            wordLists.addElement(two);
-            wordLists.addElement(three);
-            wordLists.addElement(four);
-            wordLists.addElement(five);
-            wordLists.addElement(six);
+            wordLists.add(one);
+            wordLists.add(two);
+            wordLists.add(three);
+            wordLists.add(four);
+            wordLists.add(five);
+            wordLists.add(six);
         }
         return wordLists;
     }
     private static final Hashtable hashwords=new Hashtable();
-    public Hashtable translationHash(String language)
+    public Map<String, String> translationHash(String language)
     {
         if((hashwords!=null)&&(hashwords.size()>0))
             return hashwords;

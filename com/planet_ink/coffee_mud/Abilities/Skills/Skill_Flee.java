@@ -51,7 +51,7 @@ public class Skill_Flee extends StdSkill
 		boolean success=(!mob.isInCombat())||proficiencyCheck(mob,getXLEVELLevel(mob)*10,auto);
 		if(success)
 		{
-			Vector V=CMParms.makeVector("FLEE");
+			Vector V=new XVector("FLEE");
 			V.addAll(commands);
 			CMLib.commands().forceStandardCommand(mob, "FLEE", V);
 		}

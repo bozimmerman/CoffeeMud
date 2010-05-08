@@ -35,7 +35,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class CMFile
 {
     public static final int VFS_MASK_MASKSAVABLE=1+2+4;
@@ -233,7 +232,7 @@ public class CMFile
 	    		}
 	    		else
 	    		{
-		    		List<CMVFSFile> list = new Vector();
+		    		List<CMVFSFile> list = new Vector<CMVFSFile>();
 		    		list.addAll(Arrays.asList(subDir.files));
 		    		if(!list.remove(file))
 		    			return false;
@@ -927,7 +926,7 @@ public class CMFile
         String fullPath=getIOReadableLocalPathAndName();
         File F=new File(fullPath);
 		File PF=F.getParentFile();
-		Vector parents=new Vector();
+		Vector<File> parents=new Vector<File>();
 		while(PF!=null)
 		{
 			parents.addElement(PF);
@@ -1019,8 +1018,8 @@ public class CMFile
         if((!isDirectory())||(!canRead()))
             return new CMFile[0];
         String prefix=demandLocal?"//":(demandVFS?"::":"");
-        Vector dir=new Vector();
-        Vector fcheck=new Vector();
+        Vector<CMFile> dir=new Vector<CMFile>();
+        Vector<String> fcheck=new Vector<String>();
         String thisDir=getVFSPathAndName();
         CMVFSDir vfs=getVFSDirectory();
         String vfsSrchDir=thisDir+"/";
@@ -1079,7 +1078,7 @@ public class CMFile
         		vvfs=vfs[threadCode]=CMLib.database().DBReadVFSDirectory();
             else
             {
-                Vector privateV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(),true);
+                Vector<String> privateV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(),true);
                 if(privateV.contains("DBVFS"))
                     vvfs=vfs[threadCode]=CMLib.database().DBReadVFSDirectory();
                 else
@@ -1192,7 +1191,7 @@ public class CMFile
         CMFile dir=new CMFile((demandLocal?"//":demandVFS?"::":"")+fixedPath,user,false);
         if((!dir.exists())||(!dir.isDirectory())||(!dir.canRead()))
             return null;
-        Vector set=new Vector();
+        Vector<CMFile> set=new Vector<CMFile>();
         CMFile[] cset=dir.listFiles();
         fixedName=fixedName.toUpperCase();
         for(int c=0;c<cset.length;c++)

@@ -37,7 +37,7 @@ public class Draconic extends StdLanguage
 {
 	public String ID() { return "Draconic"; }
 	public String name(){ return "Draconic";}
-	public static Vector wordLists=null;
+	public static List<String[]> wordLists=null;
 	private static boolean mapped=false;
 	public Draconic()
 	{
@@ -46,7 +46,7 @@ public class Draconic extends StdLanguage
 					CMLib.ableMapper().addCharAbilityMapping("All",1,ID(),false);}
 	}
 
-	public Vector translationVector(String language)
+	public List<String[]> translationVector(String language)
 	{
 		if(wordLists==null)
 		{
@@ -57,12 +57,12 @@ public class Draconic extends StdLanguage
 			String[] five={"splut","svets","fruite","dwagg","vrers","verrs","srens","swath","senys","varen"};
 			String[] six={"choccie","svenren","yorens","vyrues","whyrie","vrysenso","forin","sinnes","sessis","uroven","xorers","nosees"};
 			wordLists=new Vector();
-			wordLists.addElement(one);
-			wordLists.addElement(two);
-			wordLists.addElement(three);
-			wordLists.addElement(four);
-			wordLists.addElement(five);
-			wordLists.addElement(six);
+			wordLists.add(one);
+			wordLists.add(two);
+			wordLists.add(three);
+			wordLists.add(four);
+			wordLists.add(five);
+			wordLists.add(six);
 		}
 		return wordLists;
 	}

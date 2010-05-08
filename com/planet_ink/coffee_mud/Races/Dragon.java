@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class Dragon extends StdRace
 {
 	public String ID(){	return "Dragon"; }
@@ -65,7 +64,7 @@ public class Dragon extends StdRace
 	private int[] agingChart={0,5,20,110,325,500,850,950,1050};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector resources=new Vector();
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

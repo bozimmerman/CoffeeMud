@@ -261,7 +261,7 @@ public class Nanny extends StdBehavior
         {
         	if(isDropOffable(msg.tool()))
         	{
-        		String pronoun=this.getPronoun(CMParms.makeVector(msg.tool()));
+        		String pronoun=this.getPronoun(new XVector(msg.tool()));
         		msg.source().tell(msg.source(),host,msg.tool(),"<T-NAME> won't accept <O-NAME>.  You should probably leave your "+pronoun+" here.");
         		return false;
         	}
@@ -511,7 +511,7 @@ public class Nanny extends StdBehavior
         &&(msg.target()==CMLib.map().roomLocation(host)))
         {
 			String currency=CMLib.beanCounter().getCurrency(host);
-			Set H=msg.source().getGroupMembers(new HashSet());
+			Set H=msg.source().getGroupMembers(new HashSet<MOB>());
             msg.source().getRideBuddies(H);
             if(!H.contains(msg.source())) H.add(msg.source());
         	HashSet<Environmental> H2 = null;

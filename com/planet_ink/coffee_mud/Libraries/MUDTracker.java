@@ -697,7 +697,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			{
 				if((R==from)&&(from.getRoomInDir(Directions.getOpDirectionCode(d))==to))
 				{
-					finalSets.addElement(CMParms.makeVector(Integer.valueOf(Directions.getOpDirectionCode(d))));
+					finalSets.addElement(new XVector(Integer.valueOf(Directions.getOpDirectionCode(d))));
 					return finalSets;
 				}
 				int dex=radiantTrail.indexOf(R);

@@ -32,12 +32,11 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class GardenSnake extends Snake
 {
 	public String ID(){	return "GardenSnake"; }
 	public String name(){ return "Garden Snake"; }
-	protected static Vector resources=new Vector();
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 	public String racialCategory(){return "Serpent";}
 	
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

@@ -222,7 +222,7 @@ public class GrinderPlayers extends GrinderMobs
 				{
 					Vector V=CMParms.parseCommas(old.toUpperCase(),true);
 					M.playerStats().getSecurityGroups().clear();
-					CMParms.addToVector(V,M.playerStats().getSecurityGroups());
+					M.playerStats().getSecurityGroups().addAll(V);
 				}
 				break;
 			}

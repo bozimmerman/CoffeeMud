@@ -1454,7 +1454,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             {
                 StringBuffer str=new StringBuffer("");
                 Ability A=null;
-                for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+                for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
                 {
                     A=(Ability)e.nextElement();
                     if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
@@ -6702,7 +6702,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             genRace(mob,me,++showNumber,showFlag);
         	CMLib.factions().updatePlayerFactions(me,me.location());
             Faction F=null;
-            for(Enumeration e=CMLib.factions().factions();e.hasMoreElements();)
+            for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
             {
                 F=(Faction)e.nextElement();
                 if(F.showInEditor())
@@ -6824,7 +6824,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             genCharStats(mob,me,++showNumber,showFlag);
         	CMLib.factions().updatePlayerFactions(me,me.location());
             Faction F=null;
-            for(Enumeration e=CMLib.factions().factions();e.hasMoreElements();)
+            for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
             {
                 F=(Faction)e.nextElement();
                 if(F.showInEditor())
@@ -7167,7 +7167,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             genWeight(mob,M,++showNumber,showFlag);
         	CMLib.factions().updatePlayerFactions(M,(M).location());
             Faction F=null;
-            for(Enumeration e=CMLib.factions().factions();e.hasMoreElements();)
+            for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
             {
                 F=(Faction)e.nextElement();
                 if(F.showInEditor())

@@ -137,7 +137,7 @@ public class Catalog extends StdCommand
 	{
 		Enumeration rooms=null;
 		if(which.equalsIgnoreCase("ROOM"))
-			rooms=CMParms.makeVector(CMLib.map().getExtendedRoomID(mob.location())).elements();
+			rooms=new XVector(CMLib.map().getExtendedRoomID(mob.location())).elements();
 		else
 		if(which.equalsIgnoreCase("AREA"))
 			rooms=mob.location().getArea().getProperRoomnumbers().getRoomIDs();

@@ -134,7 +134,7 @@ public class Email extends StdCommand
                             &&(!from.equals(mob.Name()))
                             &&(!from.equalsIgnoreCase("BOX"))
                             &&(CMLib.players().getLoadPlayer(from)!=null))
-                                execute(mob,CMParms.makeVector(getAccessWords()[0],from),metaFlags);
+                                execute(mob,new XVector(getAccessWords()[0],from),metaFlags);
                             else
                                 mob.tell("You can not reply to this email.");
                         }

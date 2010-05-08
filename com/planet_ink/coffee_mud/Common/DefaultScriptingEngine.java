@@ -7668,7 +7668,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     else
                     {
                         Faction.FactionRange FR=null;
-                        Enumeration e=CMLib.factions().getRanges(CMLib.factions().AlignID());
+                        Enumeration<Faction.FactionRange> e=CMLib.factions().getRanges(CMLib.factions().AlignID());
                         if(e!=null)
                         for(;e.hasMoreElements();)
                         {
@@ -8002,7 +8002,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             if(V.elementAt(v) instanceof MOB)
                             {
                                 MOB mob=(MOB)V.elementAt(v);
-                                Set<MOB> H=mob.getGroupMembers(new HashSet());
+                                Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
                                 for(Iterator e=H.iterator();e.hasNext();)
                                 {
                                     MOB M=(MOB)e.next();
@@ -8582,7 +8582,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     try {
                         String[] EVAL=parseEval(conditionStr);
                         V.addElement("(");
-                        Vector V2=CMParms.makeVector(EVAL);
+                        Vector<String> V2=new XVector<String>(EVAL);
                         V.addAll(V2);
                         V.addElement(")");
                         V.addElement(DO);

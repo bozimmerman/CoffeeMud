@@ -100,7 +100,7 @@ public class Dance_Square extends Dance
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) the "+danceOf()+" over again.^?";
 
-			Set<MOB> friends=mob.getGroupMembers(new HashSet());
+			Set<MOB> friends=mob.getGroupMembers(new HashSet<MOB>());
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
 				Room R=(Room)commonRoomSet.elementAt(v);

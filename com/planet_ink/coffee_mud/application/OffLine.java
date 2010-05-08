@@ -36,12 +36,11 @@ import java.io.*;
     limitations under the License.
  */
 
-@SuppressWarnings("unchecked")
 public class OffLine extends Thread implements MudHost
 {
-    public static Vector mudThreads=new Vector();
+    public static Vector<OffLine> mudThreads=new Vector<OffLine>();
     public static DVector accessed=new DVector(2);
-    public static Vector autoblocked=new Vector();
+    public static Vector<String> autoblocked=new Vector<String>();
 
     public static boolean serverIsRunning = false;
     public static boolean isOK = false;
@@ -393,7 +392,7 @@ public class OffLine extends Thread implements MudHost
             for(int i=0;i<a.length;i++)
                 nameID+=" "+a[i];
             nameID=nameID.trim();
-            Vector V=CMParms.paramParse(nameID);
+            Vector<String> V=CMParms.paramParse(nameID);
             for(int v=0;v<V.size();v++)
             {
                 String s=(String)V.elementAt(v);
@@ -429,7 +428,7 @@ public class OffLine extends Thread implements MudHost
 
                 if(OffLine.isOK)
                 {
-                    mudThreads=new Vector();
+                    mudThreads=new Vector<OffLine>();
                     String ports=page.getProperty("PORT");
                     int pdex=ports.indexOf(",");
                     while(pdex>0)
@@ -472,7 +471,7 @@ public class OffLine extends Thread implements MudHost
     }
     public void setAcceptConnections(boolean truefalse){ acceptConnections=truefalse;}
     public boolean isAcceptingConnections(){ return acceptConnections;}
-    public Vector getOverdueThreads(){return new Vector();}
+    public List<Thread> getOverdueThreads(){return new Vector<Thread>();}
     public long getUptimeSecs() { return (System.currentTimeMillis()-startupTime)/1000;}
     public String getLanguage() { return "English";}
 

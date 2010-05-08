@@ -2204,7 +2204,7 @@ public class Import extends StdCommand
 				M.addNonUninvokableEffect(CMClass.getAbility("Prayer_Curse"));
 			if(CMath.isSet(affFlag,11))
 			{
-				for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+				for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 				{
 					Ability A=(Ability)a.nextElement();
 					if(A.ID().startsWith("Specialization"))
@@ -4314,9 +4314,9 @@ public class Import extends StdCommand
 					CMLib.players().addPlayer(M);
 					Log.sysOut("Import","Imported user: "+M.Name());
 		            CMLib.login().notifyFriends(M,"^X"+M.Name()+" has just been created.^.^?");
-                    Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
+                    List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
                     for(int i=0;i<channels.size();i++)
-                        CMLib.commands().postChannel((String)channels.elementAt(i),M.getClanID(),M.Name()+" has just been created.",true);
+                        CMLib.commands().postChannel((String)channels.get(i),M.getClanID(),M.Name()+" has just been created.",true);
 					if(M.getStartRoom()==null)
 						M.setStartRoom(CMLib.login().getDefaultStartRoom(M));
 					if(M.location()==null)
@@ -5246,7 +5246,7 @@ public class Import extends StdCommand
 					}
 					else
 					{
-						M=getMOB("#"+mobID,R,session,CMParms.copyVector(mobData),CMParms.copyVector(mobProgData),CMParms.copyVector(specialData),CMParms.copyVector(shopData),doneMOBS,areaFileName,compileErrors,commands);
+						M=getMOB("#"+mobID,R,session,CMParms.copyFlattenVector(mobData),CMParms.copyFlattenVector(mobProgData),CMParms.copyFlattenVector(specialData),CMParms.copyFlattenVector(shopData),doneMOBS,areaFileName,compileErrors,commands);
 						if(M==null)
 						{
 							if(multiArea)
@@ -5271,7 +5271,7 @@ public class Import extends StdCommand
 					else
 					{
 						String itemID=CMParms.getCleanBit(s,2);
-						Item I=getItem("#"+itemID,session,areaName,CMParms.copyVector(objectData),CMParms.copyVector(objProgData),doneItems,doneRooms,compileErrors,commands);
+						Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenVector(objectData),CMParms.copyFlattenVector(objProgData),doneItems,doneRooms,compileErrors,commands);
 						if(I==null)
 						{
 							if(multiArea) nextResetData.addElement(s);
@@ -5351,7 +5351,7 @@ public class Import extends StdCommand
 					else
 					{
 						String itemID=CMParms.getCleanBit(s,5);
-						Item I=getItem("#"+itemID,session,areaName,CMParms.copyVector(objectData),CMParms.copyVector(objProgData),doneItems,doneRooms,compileErrors,commands);
+						Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenVector(objectData),CMParms.copyFlattenVector(objProgData),doneItems,doneRooms,compileErrors,commands);
 						if(I==null)
 						{
 							if(multiArea)
@@ -5385,7 +5385,7 @@ public class Import extends StdCommand
 					else
 					{
 						String itemID=CMParms.getCleanBit(s,2);
-						Item I=getItem("#"+itemID,session,areaName,CMParms.copyVector(objectData),CMParms.copyVector(objProgData),doneItems,doneRooms,compileErrors,commands);
+						Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenVector(objectData),CMParms.copyFlattenVector(objProgData),doneItems,doneRooms,compileErrors,commands);
 						if(I==null)
 						{
 							if(multiArea)
@@ -5426,7 +5426,7 @@ public class Import extends StdCommand
 					}
 					else
 					{
-						Item I=getItem("#"+itemID,session,areaName,CMParms.copyVector(objectData),CMParms.copyVector(objProgData),doneItems,doneRooms,compileErrors,commands);
+						Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenVector(objectData),CMParms.copyFlattenVector(objProgData),doneItems,doneRooms,compileErrors,commands);
 						if(I==null)
 						{
 							if(multiArea) nextResetData.addElement(s);
@@ -5455,7 +5455,7 @@ public class Import extends StdCommand
 				{
 					String itemID=CMParms.getCleanBit(s,2);
 					String containerID=CMParms.getCleanBit(s,4);
-					Item I=getItem("#"+itemID,session,areaName,CMParms.copyVector(objectData),CMParms.copyVector(objProgData),doneItems,doneRooms,compileErrors,commands);
+					Item I=getItem("#"+itemID,session,areaName,CMParms.copyFlattenVector(objectData),CMParms.copyFlattenVector(objProgData),doneItems,doneRooms,compileErrors,commands);
 					Container C=(Container)containerHash.get(containerID);
 					if(I==null)
 					{

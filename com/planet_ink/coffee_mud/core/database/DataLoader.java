@@ -36,7 +36,6 @@ import java.util.regex.Pattern;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class DataLoader
 {
 	protected DBConnector DB=null;
@@ -47,7 +46,7 @@ public class DataLoader
 	public List<PlayerData> DBRead(String playerID, String section)
 	{
 		DBConnection D=null;
-		Vector rows=new Vector();
+		Vector<PlayerData> rows=new Vector<PlayerData>();
 		try
 		{
 			D=DB.DBFetch();
@@ -76,7 +75,7 @@ public class DataLoader
 	public List<PlayerData> DBReadAllPlayerData(String playerID)
 	{
 		DBConnection D=null;
-		Vector rows=new Vector();
+		Vector<PlayerData> rows=new Vector<PlayerData>();
 		try
 		{
 			D=DB.DBFetch();
@@ -128,7 +127,7 @@ public class DataLoader
 	public List<PlayerData> DBReadKey(String section, String keyMask)
 	{
 		DBConnection D=null;
-		Vector rows=new Vector();
+		Vector<PlayerData> rows=new Vector<PlayerData>();
         Pattern P=Pattern.compile(keyMask, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 		try
 		{
@@ -163,7 +162,7 @@ public class DataLoader
 	public List<PlayerData> DBReadKey(String key)
 	{
 		DBConnection D=null;
-		Vector rows=new Vector();
+		Vector<PlayerData> rows=new Vector<PlayerData>();
 		try
 		{
 			D=DB.DBFetch();
@@ -193,7 +192,7 @@ public class DataLoader
 	public List<PlayerData> DBRead(String playerID, String section, String key)
 	{
 		DBConnection D=null;
-		Vector rows=new Vector();
+		Vector<PlayerData> rows=new Vector<PlayerData>();
 		try
 		{
 			D=DB.DBFetch();
@@ -223,7 +222,7 @@ public class DataLoader
 	public List<PlayerData> DBRead(String section)
 	{
 		DBConnection D=null;
-		Vector rows=new Vector();
+		Vector<PlayerData> rows=new Vector<PlayerData>();
 		try
 		{
 			D=DB.DBFetch();
@@ -247,10 +246,10 @@ public class DataLoader
 		return rows;
 	}
 
-    public List<PlayerData> DBRead(String playerID, Vector sections)
+    public List<PlayerData> DBRead(String playerID, List<String> sections)
     {
         DBConnection D=null;
-        Vector rows=new Vector();
+        Vector<PlayerData> rows=new Vector<PlayerData>();
         if((sections==null)||(sections.size()==0))
             return rows;
         try
@@ -258,7 +257,7 @@ public class DataLoader
             D=DB.DBFetch();
             StringBuffer orClause=new StringBuffer("");
             for(int i=0;i<sections.size();i++)
-                orClause.append("CMSECT='"+((String)sections.elementAt(i))+"' OR ");
+                orClause.append("CMSECT='"+((String)sections.get(i))+"' OR ");
             String clause=orClause.toString().substring(0,orClause.length()-4);
             ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"' AND ("+clause+")");
             while(R.next())

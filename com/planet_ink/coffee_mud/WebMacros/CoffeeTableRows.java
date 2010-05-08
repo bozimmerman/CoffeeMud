@@ -63,7 +63,7 @@ public class CoffeeTableRows extends StdWebMacro
 		ENDQ.set(Calendar.SECOND,59);
 		ENDQ.set(Calendar.MILLISECOND,000);
 		CMLib.coffeeTables().update();
-		Vector V=CMLib.database().DBReadStats(ENDQ.getTimeInMillis()-1);
+		List<CoffeeTableRow> V=CMLib.database().DBReadStats(ENDQ.getTimeInMillis()-1);
 		if(V.size()==0){return "";}
 		StringBuffer table=new StringBuffer("");
         Calendar C=Calendar.getInstance();
@@ -80,7 +80,7 @@ public class CoffeeTableRows extends StdWebMacro
             if(code.length()>1)
                 CharC=CMClass.getCharClass(code.substring(1));
             Vector allSkills=new Vector();
-            for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+            for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
             {
                 Ability A=(Ability)e.nextElement();
                 if((CharC==null)||(CMLib.ableMapper().getQualifyingLevel(CharC.ID(),true,A.ID())>=0))
@@ -102,18 +102,18 @@ public class CoffeeTableRows extends StdWebMacro
                 Vector set=new Vector();
                 if(V.size()==1)
                 {
-                    CoffeeTableRow T=(CoffeeTableRow)V.elementAt(0);
+                    CoffeeTableRow T=(CoffeeTableRow)V.get(0);
                     set.addElement(T);
-                    V.removeElementAt(0);
+                    V.remove(0);
                 }
                 else
                 for(int v=V.size()-1;v>=0;v--)
                 {
-                    CoffeeTableRow T=(CoffeeTableRow)V.elementAt(v);
+                    CoffeeTableRow T=(CoffeeTableRow)V.get(v);
                     if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
                     {
                         set.addElement(T);
-                        V.removeElementAt(v);
+                        V.remove(v);
                     }
                 }
                 for(int s=0;s<set.size();s++)
@@ -175,18 +175,18 @@ public class CoffeeTableRows extends StdWebMacro
                 Vector set=new Vector();
                 if(V.size()==1)
                 {
-                    CoffeeTableRow T=(CoffeeTableRow)V.elementAt(0);
+                    CoffeeTableRow T=(CoffeeTableRow)V.get(0);
                     set.addElement(T);
-                    V.removeElementAt(0);
+                    V.remove(0);
                 }
                 else
                 for(int v=V.size()-1;v>=0;v--)
                 {
-                    CoffeeTableRow T=(CoffeeTableRow)V.elementAt(v);
+                    CoffeeTableRow T=(CoffeeTableRow)V.get(v);
                     if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
                     {
                         set.addElement(T);
-                        V.removeElementAt(v);
+                        V.remove(v);
                     }
                 }
                 if(set.size()==0){ set.addAll(V); V.clear();}
@@ -241,11 +241,11 @@ public class CoffeeTableRows extends StdWebMacro
 			Vector set=new Vector();
 			for(int v=V.size()-1;v>=0;v--)
 			{
-				CoffeeTableRow T=(CoffeeTableRow)V.elementAt(v);
+				CoffeeTableRow T=(CoffeeTableRow)V.get(v);
 				if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
 				{
 					set.addElement(T);
-					V.removeElementAt(v);
+					V.remove(v);
 				}
 			}
 			long[] totals=new long[CoffeeTableRow.STAT_TOTAL];

@@ -568,7 +568,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
     public Vector getDeadBodies(Environmental E)
     {
         if(E instanceof DeadBody)
-            return CMParms.makeVector(E);
+            return new XVector(E);
         if(E instanceof Container)
         {
             Vector Bs=new Vector();

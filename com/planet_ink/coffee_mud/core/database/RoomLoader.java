@@ -34,7 +34,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class RoomLoader
 {
 	protected DBConnector DB=null;
@@ -46,11 +45,19 @@ public class RoomLoader
 	private int currentRecordPos=1;
 	private int updateBreak=1;
 	private final static String zeroes="000000000000";
+	
+	protected static class StuffClass
+	{
+        public Hashtable<String,Hashtable<String,PhysicalAgent>> itemNums=new Hashtable<String,Hashtable<String,PhysicalAgent>>();
+        public Hashtable<String,Hashtable<String,String>> cataData=new Hashtable<String,Hashtable<String,String>>();
+        public Hashtable<String,Hashtable<Item,String>> itemLocs=new Hashtable<String,Hashtable<Item,String>>();
+        public Hashtable<String,Hashtable<MOB, String>> mobRides=new Hashtable<String,Hashtable<MOB, String>>();
+	}
 
-    public Vector DBReadAreaData(String areaID, boolean reportStatus)
+    public List<Area> DBReadAreaData(String areaID, boolean reportStatus)
     {
         DBConnection D=null;
-        Vector areas=new Vector();
+        Vector<Area> areas=new Vector<Area>();
         try
         {
             D=DB.DBFetch();
@@ -93,72 +100,6 @@ public class RoomLoader
         return areas;
     }
     
-    protected void addRoom(Vector rooms, Room R)
-    {
-    	try {
-	        String roomID=R.roomID();
-	        int start=0;
-	        int end=rooms.size()-1;
-	        int lastStart=0;
-	        int lastEnd=rooms.size()-1;
-	        int comp=-1;
-	        int mid=-1;
-	        while(start<=end)
-	        {
-	            mid=(end+start)/2;
-	            comp=((Room)rooms.elementAt(mid)).roomID().compareToIgnoreCase(roomID);
-	            if(comp==0)
-	                break;
-	            else
-	            if(comp>0)
-	            {
-	                lastEnd=end;
-	                end=mid-1;
-	            }
-	            else
-	            {
-	                lastStart=start;
-	                start=mid+1;
-	            }
-	        }
-	        if(comp==0)
-	            rooms.setElementAt(R,mid);
-	        else
-	        {
-	            if(mid>=0)
-	                for(comp=lastStart;comp<=lastEnd;comp++)
-	                    if(((Room)rooms.elementAt(comp)).roomID().compareToIgnoreCase(roomID)>0)
-	                    {
-	                        rooms.insertElementAt(R,comp);
-	                        return;
-	                    }
-	            rooms.addElement(R);
-	        }
-	    }
-    	catch(Throwable t){ t.printStackTrace();}
-    }
-	    
-    public Room getRoom(Vector rooms, String roomID)
-    {
-        if(rooms.size()==0) return null;
-        int start=0;
-        int end=rooms.size()-1;
-        while(start<=end)
-        {
-            int mid=(end+start)/2;
-            int comp=((Room)rooms.elementAt(mid)).roomID().compareToIgnoreCase(roomID);
-            if(comp==0)
-                return (Room)rooms.elementAt(mid);
-            else
-            if(comp>0)
-                end=mid-1;
-            else
-                start=mid+1;
-
-        }
-        return null;
-    }
-    
     public RoomnumberSet DBReadAreaRoomList(String areaName, boolean reportStatus)
     {
     	RoomnumberSet roomSet=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
@@ -182,7 +123,7 @@ public class RoomLoader
 		return roomSet;
     }
     
-    public Vector DBReadRoomData(String singleRoomIDtoLoad, boolean reportStatus)
+    public Map<String, Room> DBReadRoomData(String singleRoomIDtoLoad, boolean reportStatus)
     { 
     	return DBReadRoomData(singleRoomIDtoLoad,null,reportStatus,null,null);
     }
@@ -234,13 +175,21 @@ public class RoomLoader
         return null;
     }
     
-    public Vector DBReadRoomData(String singleRoomIDtoLoad,
-								 RoomnumberSet roomsToLoad,
-								 boolean reportStatus, 
-								 Vector unknownAreas, 
-								 RoomnumberSet unloadedRooms)
+    public Map<String,Room> DBReadRoomData(String singleRoomIDtoLoad,
+    									   RoomnumberSet roomsToLoad,
+    									   boolean reportStatus, 
+    									   List<String> unknownAreas, 
+    									   RoomnumberSet unloadedRooms)
     {
-        Vector rooms=new Vector();
+    	STreeMap<String, Room> roomSet = new STreeMap<String, Room>(new Comparator<String>()
+		{
+			public int compare(String o1, String o2) {
+				if(o1==o2) return 0;
+				if(o1==null) return -1;
+				if(o2==null) return 1;
+				return o1.compareTo(o2);
+			}
+		});
         DBConnection D=null;
         try
         {
@@ -266,7 +215,7 @@ public class RoomLoader
                     myArea.setName(areaName);
                     if((unknownAreas!=null)
                     &&(!unknownAreas.contains(areaName)))
-                        unknownAreas.addElement(areaName);
+                        unknownAreas.add(areaName);
                 }
                 myArea.addProperRoomnumber(roomID);
                 if(CMath.bset(myArea.flags(),Area.FLAG_THIN))
@@ -292,7 +241,7 @@ public class RoomLoader
                     else
                         newRoom.setDescription(DBConnections.getRes(R,"CMDESC2"));
                     newRoom.setMiscText(DBConnections.getRes(R,"CMROTX"));
-                    addRoom(rooms,newRoom);
+                    roomSet.put(roomID,newRoom);
                 }
                 if(((currentRecordPos%updateBreak)==0)&&(reportStatus))
                     CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Loading Rooms ("+currentRecordPos+" of "+recordCount+")");
@@ -301,19 +250,19 @@ public class RoomLoader
         catch(SQLException sqle)
         {
             Log.errOut("Room",sqle);
-            rooms=null;
+            return null;
         }
         finally
         {
 	        if(D!=null) DB.DBDone(D);
         }
-        return rooms;
+        return roomSet;
     }
 
-    public void DBReadRoomExits(String roomID, Vector allRooms, boolean reportStatus)
+    public void DBReadRoomExits(String roomID, Map<String, Room> allRooms, boolean reportStatus)
     { DBReadRoomExits(roomID,allRooms,reportStatus,null);}
     
-    public void DBReadRoomExits(String roomID, Vector allRooms, boolean reportStatus, RoomnumberSet unloadedRooms)
+    public void DBReadRoomExits(String roomID, Map<String, Room> allRooms, boolean reportStatus, RoomnumberSet unloadedRooms)
     {
         DBConnection D=null;
         // now grab the exits
@@ -332,7 +281,7 @@ public class RoomLoader
                 currentRecordPos=R.getRow();
                 roomID=DBConnections.getRes(R,"CMROID");
                 int direction=(int)DBConnections.getLongRes(R,"CMDIRE");
-                thisRoom=getRoom(allRooms,roomID);
+                thisRoom=allRooms.get(roomID);
                 if(thisRoom==null)
                 {
             		if((unloadedRooms!=null)&&(!unloadedRooms.contains(roomID)))
@@ -343,7 +292,7 @@ public class RoomLoader
                     String exitID=DBConnections.getRes(R,"CMEXID");
                     String exitMiscText=DBConnections.getResQuietly(R,"CMEXTX");
                     String nextRoomID=DBConnections.getRes(R,"CMNRID");
-                    newRoom=getRoom(allRooms,nextRoomID);
+                    newRoom=allRooms.get(nextRoomID);
                     Exit newExit=CMClass.getExit(exitID);
             		if(newRoom==null)
             		{
@@ -364,10 +313,10 @@ public class RoomLoader
                     else
                     if((direction>255)&&(newRoom!=null))
                     {
-                        Vector CEs=CMParms.parseSemicolons(exitMiscText.trim(),true);
+                        Vector<String> CEs=CMParms.parseSemicolons(exitMiscText.trim(),true);
                         for(int ces=0;ces<CEs.size();ces++)
                         {
-                            Vector SCE=CMParms.parse(((String)CEs.elementAt(ces)).trim());
+                            Vector<String> SCE=CMParms.parse(((String)CEs.elementAt(ces)).trim());
                             WorldMap.CrossExit CE=new WorldMap.CrossExit();
                             if(SCE.size()<3) continue;
                             CE.x=CMath.s_int((String)SCE.elementAt(0));
@@ -417,8 +366,8 @@ public class RoomLoader
     
 	public void DBReadAllRooms(RoomnumberSet set)
 	{
-		Vector areas=null;
-        Vector newAreasToCreate=new Vector();
+		List<Area> areas=null;
+        List<String> newAreasToCreate=new Vector<String>();
 		if(set==null)
 		{
 			while(CMLib.map().numAreas()>0)CMLib.map().delArea(CMLib.map().getFirstArea());
@@ -426,25 +375,24 @@ public class RoomLoader
 	        areas=DBReadAreaData(null,true);
 	        if(areas==null) return;
 	        for(int a=0;a<areas.size();a++)
-	            CMLib.map().addArea((Area)areas.elementAt(a));
+	            CMLib.map().addArea((Area)areas.get(a));
 	        areas.clear();
 		}
 
         RoomnumberSet unloadedRooms=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
-        Vector rooms=DBReadRoomData(null,set,set==null,newAreasToCreate,unloadedRooms);
+        Map<String,Room> rooms=DBReadRoomData(null,set,set==null,newAreasToCreate,unloadedRooms);
         
 		// handle stray areas
-		for(Enumeration e=newAreasToCreate.elements();e.hasMoreElements();)
+		for(String areaName : newAreasToCreate)
 		{
-			String areaName=(String)e.nextElement();
 			Log.sysOut("Area","Creating unhandled area: "+areaName);
 			Area A=CMClass.getAreaType("StdArea");
 			A.setName(areaName);
 			DBCreate(A);
 			CMLib.map().addArea(A);
-			for(Enumeration r=rooms.elements();r.hasMoreElements();)
+			for(Map.Entry<String,Room> entry : rooms.entrySet())
 			{
-				Room R=(Room)r.nextElement();
+				Room R=entry.getValue();
 				if(R.getArea().Name().equals(areaName))
 					R.setArea(A);
 			}
@@ -457,15 +405,15 @@ public class RoomLoader
 		if(set==null)
 			CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Finalizing room data)");
 
-		for(Enumeration r=rooms.elements();r.hasMoreElements();)
+		for(Map.Entry<String,Room> entry : rooms.entrySet())
 		{
-			Room thisRoom=(Room)r.nextElement();
+			Room thisRoom=entry.getValue();
 			thisRoom.startItemRejuv();
 			thisRoom.recoverRoomStats();
 		}
 
 		if(set==null)
-			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+			for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 				((Area)a.nextElement()).getAreaStats();
 	}
     
@@ -523,7 +471,7 @@ public class RoomLoader
 
 	private void fixItemKeys(Hashtable<Item,String> itemLocs, Hashtable<String, PhysicalAgent> itemNums)
 	{
-		for(Enumeration e=itemLocs.keys();e.hasMoreElements();)
+		for(Enumeration<Item> e=itemLocs.keys();e.hasMoreElements();)
 		{
 			Item keyItem=(Item)e.nextElement();
 			String location=(String)itemLocs.get(keyItem);
@@ -539,51 +487,50 @@ public class RoomLoader
 		}
 	}
 
-	private void fixMOBRides(Hashtable mobRides, Hashtable itemNums)
+	private void fixMOBRides(Map<MOB, String> mobRides, Map<String,PhysicalAgent> itemNums)
 	{
-		for(Enumeration e=mobRides.keys();e.hasMoreElements();)
+		for(MOB M : mobRides.keySet())
 		{
-			MOB M=(MOB)e.nextElement();
 			String ride=(String)mobRides.get(M);
 			if(ride!=null)
 			{
-				Environmental E=(Environmental)itemNums.get(ride);
-				if(E!=null)
+				PhysicalAgent P=itemNums.get(ride);
+				if(P!=null)
 				{
-					if(E instanceof Rideable)
-						M.setRiding((Rideable)E);
+					if(P instanceof Rideable)
+						M.setRiding((Rideable)P);
 					else
-					if(E instanceof MOB)
-						M.setFollowing((MOB)E);
+					if(P instanceof MOB)
+						M.setFollowing((MOB)P);
 				}
 			}
 		}
 	}
 
-	private void fixContentContainers(Hashtable<String,PhysicalAgent> content, Hashtable<String,Hashtable> stuff, String roomID, Room room, boolean debug)
+	private void fixContentContainers(Hashtable<String,PhysicalAgent> content, StuffClass stuff, String roomID, Room room, boolean debug)
 	{
 		String lastName=null;
 		Hashtable<Item,String> itemLocs=null;
 		Hashtable<MOB, String> mobRides=null;
         if(room != null)
-    		for(Enumeration i=content.elements();i.hasMoreElements();)
+    		for(Enumeration<PhysicalAgent> i=content.elements();i.hasMoreElements();)
     		{
-    			Environmental E=(Environmental)i.nextElement();
-    			if((debug)&&((lastName==null)||(!lastName.equals(E.Name()))))
-                {lastName=E.Name(); Log.debugOut("RoomLoader","Loading object(s): "+E.Name());}
-    			if(E instanceof Item)
+    			PhysicalAgent P=(PhysicalAgent)i.nextElement();
+    			if((debug)&&((lastName==null)||(!lastName.equals(P.Name()))))
+                {lastName=P.Name(); Log.debugOut("RoomLoader","Loading object(s): "+P.Name());}
+    			if(P instanceof Item)
     			{
-    				room.addItem((Item)E);
-    				CMLib.map().registerWorldObjectLoaded(room.getArea(), room, E);
+    				room.addItem((Item)P);
+    				CMLib.map().registerWorldObjectLoaded(room.getArea(), room, P);
     			}
     			else
                 {
-                    ((MOB)E).setStartRoom(room);
-    				((MOB)E).bringToLife(room,true);
+                    ((MOB)P).setStartRoom(room);
+    				((MOB)P).bringToLife(room,true);
                 }
     		}
-		itemLocs=(Hashtable<Item,String>)stuff.get("LOCSFOR"+roomID.toUpperCase());
-		mobRides=(Hashtable<MOB, String>)stuff.get("RIDESFOR"+roomID.toUpperCase());
+		itemLocs=stuff.itemLocs.get("LOCSFOR"+roomID.toUpperCase());
+		mobRides=stuff.mobRides.get("RIDESFOR"+roomID.toUpperCase());
 		if(itemLocs!=null)
 		{
 			fixItemKeys(itemLocs,content);
@@ -603,13 +550,13 @@ public class RoomLoader
 		DBReadContent("CATALOG_ITEMS",null,null,null,true);
 	}
 	
-    public void DBReadContent(String thisRoomID, Room thisRoom, Vector rooms, RoomnumberSet unloadedRooms, boolean setStatus)
+    public void DBReadContent(String thisRoomID, Room thisRoom, Map<String, Room> rooms, RoomnumberSet unloadedRooms, boolean setStatus)
 	{
 		boolean debug=Log.debugChannelOn()&&(CMSecurity.isDebugging("DBROOMPOP"));
 		if(debug||(Log.debugChannelOn()&&(CMSecurity.isDebugging("DBROOMS"))))
 			Log.debugOut("RoomLoader","Reading content of "+((thisRoomID!=null)?thisRoomID:"ALL"));
 		
-		Hashtable<String,Hashtable> stuff=new Hashtable<String,Hashtable>();
+		StuffClass stuff=new StuffClass();
         Hashtable<String,PhysicalAgent> itemNums=null;
         Hashtable<String,String> cataData=null;
         Hashtable<Item,String> itemLocs=null;
@@ -633,17 +580,17 @@ public class RoomLoader
 				String roomID=DBConnections.getRes(R,"CMROID");
 				if((unloadedRooms!=null)&&(unloadedRooms.contains(roomID)))
 					continue;
-				itemNums=(Hashtable<String,PhysicalAgent>)stuff.get("NUMSFOR"+roomID.toUpperCase());
+				itemNums=stuff.itemNums.get("NUMSFOR"+roomID.toUpperCase());
 				if(itemNums==null)
 				{
 					itemNums=new Hashtable<String,PhysicalAgent>();
-					stuff.put("NUMSFOR"+roomID.toUpperCase(),itemNums);
+					stuff.itemNums.put("NUMSFOR"+roomID.toUpperCase(),itemNums);
 				}
-				itemLocs=(Hashtable<Item,String>)stuff.get("LOCSFOR"+roomID.toUpperCase());
+				itemLocs=stuff.itemLocs.get("LOCSFOR"+roomID.toUpperCase());
 				if(itemLocs==null)
 				{
 					itemLocs=new Hashtable<Item,String>();
-					stuff.put("LOCSFOR"+roomID.toUpperCase(),itemLocs);
+					stuff.itemLocs.put("LOCSFOR"+roomID.toUpperCase(),itemLocs);
 				}
 				String itemNum=DBConnections.getRes(R,"CMITNM");
 				String itemID=DBConnections.getRes(R,"CMITID");
@@ -670,11 +617,11 @@ public class RoomLoader
 						    int x=text.lastIndexOf("<CATALOGDATA>");
 						    if((x>0)&&(text.indexOf("</CATALOGDATA>",x)>0))
 					        {
-				                cataData=(Hashtable)stuff.get("CATADATAFOR"+roomID.toUpperCase());
+				                cataData=stuff.cataData.get("CATADATAFOR"+roomID.toUpperCase());
 				                if(cataData==null)
 				                {
-				                    cataData=new Hashtable();
-				                    stuff.put("CATADATAFOR"+roomID.toUpperCase(),cataData);
+				                    cataData=new Hashtable<String,String>();
+				                    stuff.cataData.put("CATADATAFOR"+roomID.toUpperCase(),cataData);
 				                }
 				                cataData.put(itemNum,text.substring(x));
 				                text=text.substring(0,x);
@@ -722,17 +669,17 @@ public class RoomLoader
 				String NUMID=DBConnections.getRes(R,"CMCHNM");
 				String MOBID=DBConnections.getRes(R,"CMCHID");
 
-				itemNums=(Hashtable<String,PhysicalAgent>)stuff.get("NUMSFOR"+roomID.toUpperCase());
+				itemNums=stuff.itemNums.get("NUMSFOR"+roomID.toUpperCase());
 				if(itemNums==null)
 				{
 					itemNums=new Hashtable<String,PhysicalAgent>();
-					stuff.put("NUMSFOR"+roomID.toUpperCase(),itemNums);
+					stuff.itemNums.put("NUMSFOR"+roomID.toUpperCase(),itemNums);
 				}
-				mobRides=(Hashtable<MOB, String>)stuff.get("RIDESFOR"+roomID.toUpperCase());
+				mobRides=stuff.mobRides.get("RIDESFOR"+roomID.toUpperCase());
 				if(mobRides==null)
 				{
 					mobRides=new Hashtable<MOB, String>();
-					stuff.put("RIDESFOR"+roomID.toUpperCase(),mobRides);
+					stuff.mobRides.put("RIDESFOR"+roomID.toUpperCase(),mobRides);
 				}
 
 				MOB newMOB=CMClass.getMOB(MOBID);
@@ -780,22 +727,22 @@ public class RoomLoader
 		}
 		if(thisRoom!=null)
 		{
-			rooms=new Vector();
-			rooms.addElement(thisRoom);
+			rooms=new STreeMap<String,Room>();
+			rooms.put(thisRoom.roomID(),thisRoom);
 		}
 		if(rooms!=null) recordCount=rooms.size();
 		updateBreak=CMath.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
 		currentRecordPos=0;
 
-		itemNums=(Hashtable)stuff.get("NUMSFORCATALOG_ITEMS");
-        cataData=(Hashtable)stuff.get("CATADATAFORCATALOG_ITEMS");
+		itemNums=stuff.itemNums.get("NUMSFORCATALOG_ITEMS");
+        cataData=stuff.cataData.get("CATADATAFORCATALOG_ITEMS");
 		if((itemNums!=null)&&(thisRoomID!=null)&&(thisRoomID.equals("CATALOG_ITEMS")))
 		{
             String itemNum;
             Item I;
             String data;
 			fixContentContainers(itemNums,stuff,"CATALOG_ITEMS",null,debug);
-			for(Enumeration e=itemNums.keys();e.hasMoreElements();)
+			for(Enumeration<String> e=itemNums.keys();e.hasMoreElements();)
 			{
 			    itemNum=(String)e.nextElement();
 			    I=(Item)itemNums.get(itemNum);
@@ -817,15 +764,15 @@ public class RoomLoader
 		}
 
 		// load mob catalog
-		itemNums=(Hashtable)stuff.get("NUMSFORCATALOG_MOBS");
-        cataData=(Hashtable)stuff.get("CATADATAFORCATALOG_MOBS");
+		itemNums=stuff.itemNums.get("NUMSFORCATALOG_MOBS");
+        cataData=stuff.cataData.get("CATADATAFORCATALOG_MOBS");
 		if((itemNums!=null)&&(thisRoomID!=null)&&(thisRoomID.equals("CATALOG_MOBS")))
 		{
             String itemNum;
             MOB M;
             String data;
 			fixContentContainers(itemNums,stuff,"CATALOG_MOBS",null,debug);
-			for(Enumeration e=itemNums.keys();e.hasMoreElements();)
+			for(Enumeration<String> e=itemNums.keys();e.hasMoreElements();)
 			{
                 itemNum=(String)e.nextElement();
                 M=(MOB)itemNums.get(itemNum);
@@ -848,13 +795,13 @@ public class RoomLoader
 		
 		// now load the rooms
 		if(rooms!=null)
-		for(Enumeration e=rooms.elements();e.hasMoreElements();)
+		for(Map.Entry<String,Room> entry : rooms.entrySet())
 		{
 			if((((++currentRecordPos)%updateBreak)==0)&&(setStatus))
 				CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Populating Rooms ("+(currentRecordPos)+" of "+recordCount+")");
-			Room room=(Room)e.nextElement();
+			Room room=entry.getValue();
 			if(debug) Log.debugOut("RoomLoader","Populating room: "+room.roomID());
-			itemNums=(Hashtable<String,PhysicalAgent>)stuff.get("NUMSFOR"+room.roomID().toUpperCase());
+			itemNums=stuff.itemNums.get("NUMSFOR"+room.roomID().toUpperCase());
 			if(itemNums!=null)
 				fixContentContainers(itemNums,stuff,room.roomID(),room,debug);
 		}
@@ -863,15 +810,15 @@ public class RoomLoader
 	}
 
     
-    private Vector DBGetContents(Room room)
+    private List<Item> DBGetContents(Room room)
     {
-		if((!room.isSavable())||(room.amDestroyed())) return new Vector();
-		Vector contents=new Vector();
+		if((!room.isSavable())||(room.amDestroyed())) return new Vector<Item>();
+		List<Item> contents=new Vector<Item>();
 		for(int i=0;i<room.numItems();i++)
 		{
 			Item thisItem=room.getItem(i);
 			if((thisItem!=null)&&(!contents.contains(thisItem))&&thisItem.isSavable())
-				contents.addElement(thisItem);
+				contents.add(thisItem);
 		}
 		return contents;
     }
@@ -928,16 +875,16 @@ public class RoomLoader
 		DB.update(getDBCreateItemString(roomID,thisItem));
 	}
 	
-	public void DBUpdateTheseItems(Room room, Vector items)
+	public void DBUpdateTheseItems(Room room, List<Item> items)
 	{
 		if((!room.isSavable())||(room.amDestroyed())) return;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROIT")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Start item update for room "+room.roomID());
-		Vector statements=new Vector();
+		Vector<String> statements=new Vector<String>();
 		statements.addElement("DELETE FROM CMROIT WHERE CMROID='"+room.roomID()+"'");
 		for(int i=0;i<items.size();i++)
 		{
-			Item thisItem=(Item)items.elementAt(i);
+			Item thisItem=(Item)items.get(i);
     		CMLib.map().registerWorldObjectLoaded(room.getArea(), room, thisItem);
 			statements.addElement(getDBCreateItemString(room.roomID(),thisItem));
 		}
@@ -958,7 +905,7 @@ public class RoomLoader
 		
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROEX")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Starting exit update for room "+room.roomID());
-		Vector statements=new Vector();
+		Vector<String> statements=new Vector<String>();
 		statements.addElement("DELETE FROM CMROEX WHERE CMROID='"+room.roomID()+"'");
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
@@ -989,7 +936,7 @@ public class RoomLoader
 		}
 		if(room instanceof GridLocale)
 		{
-			HashSet done=new HashSet();
+			HashSet<String> done=new HashSet<String>();
 			int ordinal=0;
 			for(Iterator<WorldMap.CrossExit> i=((GridLocale)room).outerExits();i.hasNext();)
 			{
@@ -1000,7 +947,7 @@ public class RoomLoader
 				if((R.isSavable())&&(!done.contains(R.roomID())))
 				{
 					done.add(R.roomID());
-					HashSet oldStrs=new HashSet();
+					HashSet<String> oldStrs=new HashSet<String>();
 					for(Iterator<WorldMap.CrossExit> i2=((GridLocale)room).outerExits();i.hasNext();)
 					{
 						WorldMap.CrossExit CE2=i2.next();
@@ -1013,7 +960,7 @@ public class RoomLoader
 						}
 					}
 					StringBuffer exitStr=new StringBuffer("");
-					for(Iterator a=oldStrs.iterator();a.hasNext();)
+					for(Iterator<String> a=oldStrs.iterator();a.hasNext();)
 						exitStr.append((String)a.next());
 					statements.addElement(
 					"INSERT INTO CMROEX ("
@@ -1086,17 +1033,17 @@ public class RoomLoader
 		+")";
 	}
 	
-	public void DBUpdateTheseMOBs(Room room, Vector mobs)
+	public void DBUpdateTheseMOBs(Room room, List<MOB> mobs)
 	{
 		if((!room.isSavable())||(room.amDestroyed())) return;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Updating mobs for room "+room.roomID());
-		if(mobs==null) mobs=new Vector();
-		Vector statements=new Vector();
+		if(mobs==null) mobs=new Vector<MOB>();
+		Vector<String> statements=new Vector<String>();
 		statements.addElement("DELETE FROM CMROCH WHERE CMROID='"+room.roomID()+"'");
 		for(int m=0;m<mobs.size();m++)
 		{
-			MOB thisMOB=(MOB)mobs.elementAt(m);
+			MOB thisMOB=(MOB)mobs.get(m);
     		CMLib.map().registerWorldObjectLoaded(room.getArea(), room, thisMOB);
 			statements.addElement(getDBCreateMOBString(room.roomID(),thisMOB));
 		}
@@ -1108,7 +1055,7 @@ public class RoomLoader
 	public void DBUpdateMOBs(Room room)
 	{
 		if((!room.isSavable())||(room.amDestroyed())) return;
-		Vector mobs=new Vector();
+		Vector<MOB> mobs=new Vector<MOB>();
 		for(int m=0;m<room.numInhabitants();m++)
 		{
 			MOB thisMOB=room.fetchInhabitant(m);

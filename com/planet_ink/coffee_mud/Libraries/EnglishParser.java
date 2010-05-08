@@ -839,7 +839,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return null;
 	}
 
-    public int getContextNumber(Object[] list, Environmental E){ return getContextNumber(CMParms.makeVector(list),E);}
+    public int getContextNumber(Object[] list, Environmental E){ return getContextNumber(new XVector(list),E);}
     public int getContextNumber(Collection list, Environmental E)
     {
         if(list==null) return 0;
@@ -857,7 +857,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
             }
         return -1;
     }
-    public int getContextSameNumber(Object[] list, Environmental E){ return getContextSameNumber(CMParms.makeVector(list),E);}
+    public int getContextSameNumber(Object[] list, Environmental E){ return getContextSameNumber(new XVector(list),E);}
     public int getContextSameNumber(Collection list, Environmental E)
     {
         if(list==null) return 0;
@@ -875,7 +875,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
             }
         return -1;
     }
-    public String getContextName(Object[] list, Environmental E){ return getContextName(CMParms.makeVector(list),E);}
+    public String getContextName(Object[] list, Environmental E){ return getContextName(new XVector(list),E);}
     public String getContextName(Collection list, Environmental E)
     {
         if(list==null) return E.name();
@@ -885,7 +885,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         return E.name()+"."+number;
     }
 
-    public String getContextSameName(Object[] list, Environmental E){ return getContextName(CMParms.makeVector(list),E);}
+    public String getContextSameName(Object[] list, Environmental E){ return getContextName(new XVector(list),E);}
     public String getContextSameName(Collection list, Environmental E)
     {
         if(list==null) return E.name();

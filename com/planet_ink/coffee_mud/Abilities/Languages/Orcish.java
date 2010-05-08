@@ -37,7 +37,7 @@ public class Orcish extends StdLanguage
 {
 	public String ID() { return "Orcish"; }
 	public String name(){ return "Orcish";}
-	public static Vector wordLists=null;
+	public static List<String[]> wordLists=null;
 	private static boolean mapped=false;
 	public Orcish()
 	{
@@ -45,7 +45,7 @@ public class Orcish extends StdLanguage
 		if(!mapped){mapped=true;
 					CMLib.ableMapper().addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Vector translationVector(String language)
+	public List<String[]> translationVector(String language)
 	{
 		if(wordLists==null)
 		{
@@ -56,12 +56,12 @@ public class Orcish extends StdLanguage
 			String[] five={"bleko","thwak","klarg","gluck","kulgo","mucka","splat","kwath","garth","blark"};
 			String[] six={"kalarg","murder","bleeke","kwargh","guttle","thungo"};
 			wordLists=new Vector();
-			wordLists.addElement(one);
-			wordLists.addElement(two);
-			wordLists.addElement(three);
-			wordLists.addElement(four);
-			wordLists.addElement(five);
-			wordLists.addElement(six);
+			wordLists.add(one);
+			wordLists.add(two);
+			wordLists.add(three);
+			wordLists.add(four);
+			wordLists.add(five);
+			wordLists.add(six);
 		}
 		return wordLists;
 	}

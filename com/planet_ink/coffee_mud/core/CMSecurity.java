@@ -52,7 +52,6 @@ VFS:relative path from /coffeemud/ -- read/write access to virtual file sys
 LIST: (affected by killx, cmdplayers, loadunload, cmdclans, ban, nopurge,
 cmditems, cmdmobs, cmdrooms, sessions, cmdareas, listadmin, stat
 */ 
-
 @SuppressWarnings("unchecked")
 public class CMSecurity
 {
@@ -74,7 +73,7 @@ public class CMSecurity
     public static CMSecurity instance(char c){ return secs[c];}
     private static CMSecurity i(){ return secs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}  
     
-    protected Hashtable groups=new Hashtable();
+    protected Hashtable<String,HashSet<String>> groups=new Hashtable<String,HashSet<String>>();
     protected Vector compiledSysop=null;
     
     public void markShared() {
@@ -101,7 +100,7 @@ public class CMSecurity
 	{
 		clearGroups();
 		if(page==null) return;
-		for(Enumeration e=page.keys();e.hasMoreElements();)
+		for(Enumeration<Object> e=page.keys();e.hasMoreElements();)
 		{
 			String key=(String)e.nextElement();
 			if(key.startsWith("GROUP_"))
@@ -111,7 +110,7 @@ public class CMSecurity
 		}
 	}
 	
-	public static void addGroup(String name, HashSet set)
+	public static void addGroup(String name, HashSet<String> set)
 	{
 		name=name.toUpperCase().trim();
 		if(instance().groups.containsKey(name)) 
@@ -119,9 +118,9 @@ public class CMSecurity
         i().groups.put(name,set);
 	}
 	
-	public static void addGroup(String name, Vector set)
+	public static void addGroup(String name, Vector<String> set)
 	{
-		HashSet H=new HashSet();
+		HashSet<String> H=new HashSet<String>();
 		for(int v=0;v<set.size();v++)
 		{
 			String s=(String)set.elementAt(v);
@@ -161,9 +160,9 @@ public class CMSecurity
 		return true;
 	}
     
-    public static Vector getAccessibleDirs(MOB mob, Room room)
+    public static Vector<String> getAccessibleDirs(MOB mob, Room room)
     {
-        Vector DIRSV=new Vector();
+        Vector<String> DIRSV=new Vector<String>();
         if(isASysOp(mob)){ DIRSV.addElement("/"); return DIRSV; }
         if(mob==null) return DIRSV;
         if((mob.playerStats()==null)
@@ -173,7 +172,7 @@ public class CMSecurity
         String set=null;
 		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
 				 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
-		for(Iterator g=new MultiIterator(allGroups);g.hasNext();)
+		for(Iterator<String> g=new MultiIterator<String>(allGroups);g.hasNext();)
 		{
 			set=((String)g.next()).toUpperCase();
             if(set.startsWith("FS:"))
@@ -202,9 +201,9 @@ public class CMSecurity
             }
             else
             {
-                HashSet H=(HashSet)i().groups.get(set);
+                HashSet<String> H=i().groups.get(set);
                 if(H==null) continue;
-                for(Iterator i=H.iterator();i.hasNext();)
+                for(Iterator<String> i=H.iterator();i.hasNext();)
                 {
                     set=((String)i.next()).toUpperCase();
                     if(set.startsWith("FS:"))
@@ -279,7 +278,7 @@ public class CMSecurity
         return DIRSV;
     }
     
-    public static boolean hasAccessibleDir(MOB mob, Room room)
+	public static boolean hasAccessibleDir(MOB mob, Room room)
     {
         if(isASysOp(mob)) return true;
         if(mob==null) return false;
@@ -290,7 +289,7 @@ public class CMSecurity
         String set=null;
 		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
 				 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
-		for(Iterator g=new MultiIterator(allGroups);g.hasNext();)
+		for(Iterator<String> g=new MultiIterator<String>(allGroups);g.hasNext();)
 		{
 			set=((String)g.next()).toUpperCase();
             if(set.startsWith("FS:"))
@@ -310,9 +309,9 @@ public class CMSecurity
             }
             else
             {
-                HashSet H=(HashSet)i().groups.get(set);
+                HashSet<String> H=i().groups.get(set);
                 if(H==null) continue;
-                for(Iterator i=H.iterator();i.hasNext();)
+                for(Iterator<String> i=H.iterator();i.hasNext();)
                 {
                     set=((String)i.next()).toUpperCase();
                     if(set.startsWith("FS:"))
@@ -355,7 +354,7 @@ public class CMSecurity
         String setSlash=null;
 		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
 				 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
-		for(Iterator g=new MultiIterator(allGroups);g.hasNext();)
+		for(Iterator<String> g=new MultiIterator<String>(allGroups);g.hasNext();)
 		{
 			set=((String)g.next()).toUpperCase();
             if(set.startsWith("FS:"))
@@ -365,9 +364,9 @@ public class CMSecurity
                 set=set.substring(4).trim();
             else
             {
-                HashSet H=(HashSet)i().groups.get(set);
+                HashSet<String> H=i().groups.get(set);
                 if(H==null) continue;
-                for(Iterator i=H.iterator();i.hasNext();)
+                for(Iterator<String> i=H.iterator();i.hasNext();)
                 {
                     set=((String)i.next()).toUpperCase();
                     if(set.startsWith("FS:"))
@@ -417,7 +416,7 @@ public class CMSecurity
         String set=null;
 		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
 				 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
-		for(Iterator g=new MultiIterator(allGroups);g.hasNext();)
+		for(Iterator<String> g=new MultiIterator<String>(allGroups);g.hasNext();)
 		{
 			set=((String)g.next()).toUpperCase();
             if(set.startsWith("FS:"))
@@ -430,9 +429,9 @@ public class CMSecurity
             }
             else
             {
-                HashSet H=(HashSet)i().groups.get(set);
+                HashSet<String> H=i().groups.get(set);
                 if(H==null) continue;
-                for(Iterator i=H.iterator();i.hasNext();)
+                for(Iterator<String> i=H.iterator();i.hasNext();)
                 {
                     set=((String)i.next()).toUpperCase();
                     if(set.startsWith("FS:"))
@@ -471,19 +470,19 @@ public class CMSecurity
 	
 	public static Iterator<String> getSecurityCodes(MOB mob, Room room)
 	{
-        if((mob==null)||(mob.playerStats()==null)) return EmptyIterator.INSTANCE;
+        if((mob==null)||(mob.playerStats()==null)) return EmptyIterator.STRINSTANCE;
         List<String> codes = mob.playerStats().getSecurityGroups();
         MultiIterator<String> it=new MultiIterator<String>();
         it.add(codes.iterator());
         it.add(mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator());
 		HashSet<String> tried=new HashSet<String>();
 		ArrayList<String> misc=new ArrayList<String>();
-		for(Enumeration e=i().groups.keys();e.hasMoreElements();)
+		for(Enumeration<String> e=i().groups.keys();e.hasMoreElements();)
 		{
 			String key=(String)e.nextElement();
 			misc.add(key);
-			HashSet H=(HashSet)i().groups.get(key);
-			for(Iterator i=H.iterator();i.hasNext();)
+			HashSet<String> H=i().groups.get(key);
+			for(Iterator<String> i=H.iterator();i.hasNext();)
 			{
 				String s=(String)i.next();
 				if(!tried.contains(s))
@@ -516,15 +515,15 @@ public class CMSecurity
         String set=null;
 		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
 				 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
-		for(Iterator g=new MultiIterator(allGroups);g.hasNext();)
+		for(Iterator<String> g=new MultiIterator<String>(allGroups);g.hasNext();)
 		{
 			set=(String)g.next();
 			if(set.startsWith(code)||(subop&&set.startsWith("AREA "+code)))
 			   return true;
-			HashSet H=(HashSet)i().groups.get(set);
+			HashSet<String> H=i().groups.get(set);
 			if(H!=null)
 			{
-				for(Iterator i=H.iterator();i.hasNext();)
+				for(Iterator<String> i=H.iterator();i.hasNext();)
 				{
 					String s=(String)i.next();
 					if(s.startsWith(code))
@@ -549,12 +548,12 @@ public class CMSecurity
         String set=null;
 		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
 				 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
-		for(Iterator g=new MultiIterator(allGroups);g.hasNext();)
+		for(Iterator<String> g=new MultiIterator<String>(allGroups);g.hasNext();)
 		{
 			set=(String)g.next();
 			if(set.equals(code)||((subop)&&(set.equals("AREA "+code))))
 			   return true;
-			HashSet H=(HashSet)i().groups.get(set);
+			HashSet<String> H=i().groups.get(set);
 			if(H!=null)
 			{
 				if(H.contains(code))
@@ -574,15 +573,15 @@ public class CMSecurity
 			return false;
 		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
 							 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
-		for(Iterator g=new MultiIterator(allGroups);g.hasNext();)
+		for(Iterator<String> g=new MultiIterator<String>(allGroups);g.hasNext();)
 		{
 			String set=(String)g.next();
 			if(set.startsWith(code))
 			   return true;
-			HashSet H=(HashSet)i().groups.get(set);
+			HashSet<String> H=i().groups.get(set);
 			if(H!=null)
 			{
-				for(Iterator i=H.iterator();i.hasNext();)
+				for(Iterator<String> i=H.iterator();i.hasNext();)
 				{
 					String s=(String)i.next();
 					if(s.startsWith(code))
@@ -590,7 +589,7 @@ public class CMSecurity
 				}
 			}
 		}
-		for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+		for(Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 		{
 			boolean subop=((Area)e.nextElement()).amISubOp(mob.Name());
 			if(!subop) continue;
@@ -598,15 +597,15 @@ public class CMSecurity
 	        String set=null;
 			allGroups=new Iterator[]{mob.playerStats().getSecurityGroups().iterator(),
 					 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
-			for(Iterator g=new MultiIterator(allGroups);g.hasNext();)
+			for(Iterator<String> g=new MultiIterator<String>(allGroups);g.hasNext();)
 			{
 				set=(String)g.next();
 				if(set.startsWith("AREA "+code))
 				   return true;
-				HashSet H=(HashSet)i().groups.get(set);
+				HashSet<String> H=i().groups.get(set);
 				if(H!=null)
 				{
-					for(Iterator i=H.iterator();i.hasNext();)
+					for(Iterator<String> i=H.iterator();i.hasNext();)
 					{
 						String s=(String)i.next();
 						if(subop&&s.startsWith("AREA "+code))
@@ -627,11 +626,11 @@ public class CMSecurity
         String set=null;
 		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
 				 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
-		for(Iterator g=new MultiIterator(allGroups);g.hasNext();)
+		for(Iterator<String> g=new MultiIterator<String>(allGroups);g.hasNext();)
 		{
 			set=(String)g.next();
 			if(set.equals(code)) return true;
-			HashSet H=(HashSet)i().groups.get(set);
+			HashSet<String> H=i().groups.get(set);
 			if(H!=null)
 			{
 				if(H.contains(code))
@@ -650,30 +649,30 @@ public class CMSecurity
         String set=null;
 		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
 				 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
-		for(Iterator g=new MultiIterator(allGroups);g.hasNext();)
+		for(Iterator<String> g=new MultiIterator<String>(allGroups);g.hasNext();)
 		{
 			set=(String)g.next();
 			if(set.equals(code))
 			   return true;
-			HashSet H=(HashSet)i().groups.get(set);
+			HashSet<String> H=i().groups.get(set);
 			if(H!=null)
 			{
 				if(H.contains(code))
 					return true;
 			}
 		}
-		for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+		for(Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 		{
 			boolean subop=((Area)e.nextElement()).amISubOp(mob.Name());
 			if(!subop) continue;
 		
 			allGroups=new Iterator[]{mob.playerStats().getSecurityGroups().iterator(),
 					 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
-			for(Iterator g=new MultiIterator(allGroups);g.hasNext();)
+			for(Iterator<String> g=new MultiIterator<String>(allGroups);g.hasNext();)
 			{
 				set=(String)g.next();
 				if(set.equals("AREA "+code)) return true;
-				HashSet H=(HashSet)i().groups.get(set);
+				HashSet<String> H=i().groups.get(set);
 				if(H!=null)
 				{
 					if(H.contains("AREA "+code))
@@ -698,12 +697,12 @@ public class CMSecurity
     {
         if(CMProps.getIntVar(CMProps.SYSTEMI_JSCRIPTS)!=1)
             return;
-        Hashtable approved=CMSecurity.getApprovedJScriptTable();
+        Hashtable<Long,String> approved=CMSecurity.getApprovedJScriptTable();
         if(approved.containsKey(Long.valueOf(hashCode)))
             approved.remove(Long.valueOf(hashCode));
         approved.put(Long.valueOf(hashCode),approver);
         StringBuffer newApproved=new StringBuffer("");
-        for(Enumeration e=approved.keys();e.hasMoreElements();)
+        for(Enumeration<Long> e=approved.keys();e.hasMoreElements();)
         {
             Long L=(Long)e.nextElement();
             Object O=approved.get(L);
@@ -713,14 +712,14 @@ public class CMSecurity
         Resources.saveFileResource("::jscripts.ini",null,newApproved);
     }
     
-    public static Hashtable getApprovedJScriptTable()
+    public static Hashtable<Long,String> getApprovedJScriptTable()
     {
-        Hashtable approved=(Hashtable)Resources.getResource("APPROVEDJSCRIPTS");
+        Hashtable<Long,String> approved=(Hashtable<Long, String>)Resources.getResource("APPROVEDJSCRIPTS");
         if(approved==null)
         {
-            approved=new Hashtable();
+            approved=new Hashtable<Long,String>();
             Resources.submitResource("APPROVEDJSCRIPTS",approved);
-            Vector jscripts=Resources.getFileLineVector(Resources.getFileResource("jscripts.ini",false));
+            Vector<String> jscripts=Resources.getFileLineVector(Resources.getFileResource("jscripts.ini",false));
             if((jscripts!=null)&&(jscripts.size()>0))
             {
                 for(int i=0;i<jscripts.size();i++)
@@ -741,12 +740,12 @@ public class CMSecurity
             return true;
         if(CMProps.getIntVar(CMProps.SYSTEMI_JSCRIPTS)==0)
             return false;
-        Hashtable approved=CMSecurity.getApprovedJScriptTable();
+        Hashtable<Long,String> approved=CMSecurity.getApprovedJScriptTable();
         Long hashCode=Long.valueOf(script.toString().hashCode());
         Object approver=approved.get(hashCode);
         if(approver==null)
         {
-            approved.put(hashCode,script);
+            approved.put(hashCode,script.toString());
             return false;
         }
         return approver instanceof String;
@@ -754,7 +753,7 @@ public class CMSecurity
 	
 	public static void setDebugVars(String vars)
 	{
-		Vector V=CMParms.parseCommas(vars.toUpperCase(),true);
+		Vector<String> V=CMParms.parseCommas(vars.toUpperCase(),true);
 		dbgVars.clear();
 		for(int v=0;v<V.size();v++)
 			dbgVars.add(((String)V.elementAt(v)).trim());
@@ -763,7 +762,7 @@ public class CMSecurity
 	
 	public static void setDisableVars(String vars)
 	{
-		Vector V=CMParms.parseCommas(vars.toUpperCase(),true);
+		Vector<String> V=CMParms.parseCommas(vars.toUpperCase(),true);
 		disVars.clear();
 		for(int v=0;v<V.size();v++)
 			disVars.add((String)V.elementAt(v));
@@ -778,7 +777,7 @@ public class CMSecurity
 	}
 	public static void setSaveFlags(String flags)
 	{
-		Vector V=CMParms.parseCommas(flags.toUpperCase(),true);
+		Vector<String> V=CMParms.parseCommas(flags.toUpperCase(),true);
 		saveFlags.clear();
 		for(int v=0;v<V.size();v++)
 		    saveFlags.add(V.elementAt(v));
@@ -792,9 +791,9 @@ public class CMSecurity
 		    saveFlags.add(flag);
 	}
 	
-    protected static HashSet disVars=new HashSet();
-    protected static HashSet dbgVars=new HashSet();
-    protected static HashSet saveFlags=new HashSet();
+    protected static HashSet<String> disVars=new HashSet<String>();
+    protected static HashSet<String> dbgVars=new HashSet<String>();
+    protected static HashSet<String> saveFlags=new HashSet<String>();
     protected static boolean debuggingEverything=false;
 
 	public static long getStartTime(){return i().startTime;}
@@ -804,7 +803,7 @@ public class CMSecurity
         if((login==null)||(login.length()<=0))
             return false;
         login=login.toUpperCase();
-        Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
+        Vector<String> banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
         if((banned!=null)&&(banned.size()>0))
         for(int b=0;b<banned.size();b++)
         {
@@ -829,7 +828,7 @@ public class CMSecurity
         if((unBanMe==null)||(unBanMe.length()<=0))
             return;
         StringBuffer newBanned=new StringBuffer("");
-        Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
+        Vector<String> banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
         if((banned!=null)&&(banned.size()>0))
         {
             for(int b=0;b<banned.size();b++)
@@ -845,7 +844,7 @@ public class CMSecurity
     public static void unban(int unBanMe)
     {
         StringBuffer newBanned=new StringBuffer("");
-        Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
+        Vector<String> banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
         if((banned!=null)&&(banned.size()>0))
         {
             for(int b=0;b<banned.size();b++)
@@ -862,7 +861,7 @@ public class CMSecurity
     {
         if((banMe==null)||(banMe.length()<=0))
             return -1;
-        Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
+        Vector<String> banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
         if((banned!=null)&&(banned.size()>0))
         for(int b=0;b<banned.size();b++)
         {

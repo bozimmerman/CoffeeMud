@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.core.database;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalEntry;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -33,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class JournalLoader
 {
 	protected DBConnector DB=null;
@@ -143,11 +143,11 @@ public class JournalLoader
 		return newest;
 	}
 	
-	public synchronized Vector<String> DBReadJournals()
+	public synchronized List<String> DBReadJournals()
 	{
 		DBConnection D=null;
-		HashSet journalsH = new HashSet();
-		Vector journals=new Vector();
+		HashSet<String> journalsH = new HashSet<String>();
+		Vector<String> journals=new Vector<String>();
 		try
 		{
 			D=DB.DBFetch();
@@ -395,7 +395,7 @@ public class JournalLoader
 		}
 	}
 
-	public int getFirstMsgIndex(Vector journal, String from, String to, String subj)
+	public int getFirstMsgIndex(List<JournalEntry> journal, String from, String to, String subj)
 	{
 		from = DB.injectionClean(from);
 		to = DB.injectionClean(to);
@@ -404,7 +404,7 @@ public class JournalLoader
 		if(journal==null) return -1;
 		for(int i=0;i<journal.size();i++)
 		{
-			JournalsLibrary.JournalEntry E=(JournalsLibrary.JournalEntry)journal.elementAt(i);
+			JournalsLibrary.JournalEntry E=(JournalsLibrary.JournalEntry)journal.get(i);
 			if((from!=null)&&(!(E.from).equalsIgnoreCase(from)))
 				continue;
 			if((to!=null)&&(!(E.to).equalsIgnoreCase(to)))

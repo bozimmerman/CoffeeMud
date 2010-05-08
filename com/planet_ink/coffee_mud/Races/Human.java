@@ -57,7 +57,7 @@ public class Human extends StdRace
 	private int[] agingChart={0,1,3,15,35,53,70,74,78};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector resources=new Vector();
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_TECHNOLOGY;}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{

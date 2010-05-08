@@ -101,7 +101,7 @@ public class Prayer_LinkedHealth extends Prayer
 			return false;
 		}
 
-		if(!mob.getGroupMembers(new HashSet()).contains(target))
+		if(!mob.getGroupMembers(new HashSet<MOB>()).contains(target))
 		{
 			mob.tell(target.name()+" is not in your group.");
 			return false;

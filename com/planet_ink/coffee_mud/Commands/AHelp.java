@@ -60,7 +60,7 @@ public class AHelp extends StdCommand
 					Vector V=new Vector();
 					theRest=new StringBuffer("");
 
-					for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+					for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 					{
 						Ability A=(Ability)a.nextElement();
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY))
@@ -73,7 +73,7 @@ public class AHelp extends StdCommand
 					}
 
 					V.clear();
-					for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+					for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 					{
 						Ability A=(Ability)a.nextElement();
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_DISEASE))
@@ -86,7 +86,7 @@ public class AHelp extends StdCommand
 					}
 
 					V.clear();
-					for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+					for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 					{
 						Ability A=(Ability)a.nextElement();
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON))
@@ -99,7 +99,7 @@ public class AHelp extends StdCommand
 					}
 
 					V.clear();
-					for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+					for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 					{
 						Ability A=(Ability)a.nextElement();
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SUPERPOWER))

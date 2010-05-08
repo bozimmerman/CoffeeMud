@@ -52,7 +52,7 @@ public class FileNext extends StdWebMacro
 			return "";
 		}
  		CMFile directory=new CMFile(path,M,false);
-		Vector fileList=new Vector();
+		XVector fileList=new XVector();
 		if((directory.canRead())&&(directory.isDirectory()))
 		{
             httpReq.addRequestParameters("PATH",directory.getVFSPathAndName());
@@ -61,7 +61,7 @@ public class FileNext extends StdWebMacro
 				fileList.addElement(dirs[d].getName());
 			
 		}
-		CMParms.sortVector(fileList);
+		fileList.sort();
 		String lastID="";
 		for(int q=0;q<fileList.size();q++)
 		{

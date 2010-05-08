@@ -212,7 +212,7 @@ public class Quests extends StdLibrary implements QuestManager
                 }
                 else
                 {
-                    areaLine=CMParms.makeVector("","","*special*");
+                    areaLine=new XVector("","","*special*");
                     contains=true;
                 }
                 if(contains)
@@ -1176,7 +1176,7 @@ public class Quests extends StdLibrary implements QuestManager
     }
     
 
-    public Vector parseQuestCommandLines(Vector script, String cmdOnly, int startLine)
+    public Vector parseQuestCommandLines(List<?> script, String cmdOnly, int startLine)
     {
         Vector line=null;
         String cmd=null;
@@ -1185,7 +1185,7 @@ public class Quests extends StdLibrary implements QuestManager
         if(cmdOnly!=null) cmdOnly=cmdOnly.toUpperCase().trim();
         for(int v=startLine;v<script.size();v++)
         {
-            line=CMParms.parse(((String)script.elementAt(v)));
+            line=CMParms.parse(((String)script.get(v)));
             if(line.size()==0) continue;
             cmd=((String)line.firstElement()).toUpperCase().trim();
             if(cmd.equals("</SCRIPT>")&&(inScript))
@@ -1465,7 +1465,7 @@ public class Quests extends StdLibrary implements QuestManager
         if((M!=null)&&(newMobs.contains(M)))
         {
             Command C=CMClass.getCommand("Modify");
-            if(C!=null) C.execute(mob,CMParms.makeVector("MODIFY",M),0);
+            if(C!=null) C.execute(mob,new XVector("MODIFY",M),0);
             // modify it!
         }
         String newValue=(M!=null)?CMLib.coffeeMaker().getMobXML(M).toString():showValue;
@@ -1533,7 +1533,7 @@ public class Quests extends StdLibrary implements QuestManager
         if((I!=null)&&(newItems.contains(I)))
         {
             Command C=CMClass.getCommand("Modify");
-            if(C!=null) C.execute(mob,CMParms.makeVector("MODIFY",I),0);
+            if(C!=null) C.execute(mob,new XVector("MODIFY",I),0);
             // modify it!
         }
         String newValue=(I!=null)?CMLib.coffeeMaker().getItemXML(I).toString():showValue;
@@ -1681,7 +1681,7 @@ public class Quests extends StdLibrary implements QuestManager
                         {
                             String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
                             StringBuffer label=new StringBuffer(((lastLabel==null)?"":lastLabel)+"\n\rChoices: ");
-                            for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+                            for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
                                 label.append(((Ability)e.nextElement()).ID()+" ");
                             String s=CMLib.genEd().prompt(mob,showValue,++showNumber,showFlag,parm1Fixed,optionalEntry,false,label.toString(),
                                                             QuestManager.QM_COMMAND_TESTS[inputCode],

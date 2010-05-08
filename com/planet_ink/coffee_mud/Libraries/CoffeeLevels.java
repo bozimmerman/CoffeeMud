@@ -236,10 +236,10 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		mob.tell("^ZYou have ****LOST A LEVEL****^.^N\n\r\n\r"+CMProps.msp("doh.wav",60));
 		if(!mob.isMonster())
         {
-            Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOSTLEVELS);
+			List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOSTLEVELS);
             if(!CMLib.flags().isCloaked(mob))
             for(int i=0;i<channels.size();i++)
-                CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just lost a level.",true);
+                CMLib.commands().postChannel((String)channels.get(i),mob.getClanID(),mob.Name()+" has just lost a level.",true);
         }
 
 		CharClass curClass=mob.baseCharStats().getCurrentClass();
@@ -383,11 +383,11 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
             room.executeMsg(mob,msg);
         }
 
-        if(mob.getGroupMembers(new HashSet()).size()>1)
+        if(mob.getGroupMembers(new HashSet<MOB>()).size()>1)
         {
         	Command C=CMClass.getCommand("GTell");
         	try{
-        		if(C!=null) C.execute(mob,CMParms.makeVector("GTELL",",<S-HAS-HAVE> gained a level."),Command.METAFLAG_FORCED);
+        		if(C!=null) C.execute(mob,new XVector("GTELL",",<S-HAS-HAVE> gained a level."),Command.METAFLAG_FORCED);
         	}catch(Exception e){}
         }
 		StringBuffer theNews=new StringBuffer("^xYou have L E V E L E D ! ! ! ! ! ^.^N\n\r\n\r"+CMProps.msp("level_gain.wav",60));
@@ -396,14 +396,14 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		if(mob.playerStats()!=null)
 		{
             mob.playerStats().setLeveledDateTime(mob.basePhyStats().level(),room);
-            Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DETAILEDLEVELS);
-            Vector channels2=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LEVELS);
+            List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DETAILEDLEVELS);
+            List<String> channels2=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LEVELS);
             if(!CMLib.flags().isCloaked(mob))
             for(int i=0;i<channels.size();i++)
-                CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just gained a level at "+CMLib.map().getExtendedRoomID(room)+".",true);
+                CMLib.commands().postChannel((String)channels.get(i),mob.getClanID(),mob.Name()+" has just gained a level at "+CMLib.map().getExtendedRoomID(room)+".",true);
             if(!CMLib.flags().isCloaked(mob))
             for(int i=0;i<channels2.size();i++)
-                CMLib.commands().postChannel((String)channels2.elementAt(i),mob.getClanID(),mob.Name()+" has just gained a level.",true);
+                CMLib.commands().postChannel((String)channels2.get(i),mob.getClanID(),mob.Name()+" has just gained a level.",true);
 			if(mob.soulMate()==null)
 				CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LEVELSGAINED);
 		}
@@ -481,7 +481,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
         			highestLevelPC = M.phyStats().level();
         	}
         	
-        Set<MOB> group=mob.getGroupMembers(new HashSet());
+        Set<MOB> group=mob.getGroupMembers(new HashSet<MOB>());
         CharClass charClass=null;
         Race charRace=null;
         

@@ -82,7 +82,7 @@ public class Aggressive extends StdBehavior
 			&&(CMLib.flags().canBeSeenBy(mob,monster))
 			&&(!CMSecurity.isAllowed(mob,R,"ORDER"))
 			&&(!CMSecurity.isAllowed(mob,R,"CMDROOMS"))
-			&&(!monster.getGroupMembers(new HashSet()).contains(mob)))
+			&&(!monster.getGroupMembers(new HashSet<MOB>()).contains(mob)))
 			{
 				// special backstab sneak attack!
 				if(CMLib.flags().isHidden(monster))
@@ -91,13 +91,13 @@ public class Aggressive extends StdBehavior
 					if(A!=null)
 					{
 						A.setProficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
-						monster.enqueCommand(CMParms.makeVector(A.triggerStrings()[0],R.getContextName(mob)),Command.METAFLAG_FORCED,0);
+						monster.enqueCommand(new XVector(A.triggerStrings()[0],R.getContextName(mob)),Command.METAFLAG_FORCED,0);
 					}
 				}
 				if((attackMsg!=null)&&(monster.getVictim()!=mob))
-					monster.enqueCommand(CMParms.makeVector("SAY",attackMsg),Command.METAFLAG_FORCED,0);
+					monster.enqueCommand(new XVector("SAY",attackMsg),Command.METAFLAG_FORCED,0);
 				// normal attack
-				monster.enqueCommand(CMParms.makeVector("KILL",R.getContextName(mob)),Command.METAFLAG_FORCED,0);
+				monster.enqueCommand(new XVector("KILL",R.getContextName(mob)),Command.METAFLAG_FORCED,0);
 				return true;
 			}
 		}
@@ -109,7 +109,7 @@ public class Aggressive extends StdBehavior
 		Room R=observer.location();
 		if((R!=null)&&(R.getArea().getAreaState()<=Area.STATE_ACTIVE))
 		{
-			Set<MOB> groupMembers=observer.getGroupMembers(new HashSet());
+			Set<MOB> groupMembers=observer.getGroupMembers(new HashSet<MOB>());
 			for(int i=0;i<R.numInhabitants();i++)
 			{
 				MOB mob=R.fetchInhabitant(i);

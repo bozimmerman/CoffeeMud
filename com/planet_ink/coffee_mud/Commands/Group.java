@@ -82,7 +82,7 @@ public class Group extends StdCommand
 		throws java.io.IOException
 	{
 		mob.tell(mob.name()+"'s group:\n\r");
-		Set<MOB> group=mob.getGroupMembers(new HashSet());
+		Set<MOB> group=mob.getGroupMembers(new HashSet<MOB>());
 		StringBuffer msg=new StringBuffer("");
 		for(Iterator e=group.iterator();e.hasNext();)
 		{

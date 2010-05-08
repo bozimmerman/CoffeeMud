@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class WereWolf extends GiantWolf
 {
 	public String ID(){	return "WereWolf"; }
@@ -52,7 +51,7 @@ public class WereWolf extends GiantWolf
 	private int[] agingChart={0,4,8,12,16,20,24,28,32};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector resources=new Vector();
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+3);
@@ -94,7 +93,7 @@ public class WereWolf extends GiantWolf
 					("a strip of "+name().toLowerCase()+" hide",RawMaterial.RESOURCE_FUR));
 				for(int i=0;i<2;i++)
 				{
-					Item meat=makeResource
+					RawMaterial meat=makeResource
 					("some "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_MEAT);
 					if(!CMSecurity.isDisabled("AUTODISEASE"))
 					{

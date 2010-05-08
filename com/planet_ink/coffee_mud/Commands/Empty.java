@@ -166,7 +166,7 @@ public class Empty extends Drop
                 if(target instanceof Drink)
                 {
                     Command C2=CMClass.getCommand("Pour");
-                    C2.execute(mob,CMParms.makeVector("POUR","$"+C.Name()+"$","$"+target.Name()+"$"),metaFlags);
+                    C2.execute(mob,new XVector("POUR","$"+C.Name()+"$","$"+target.Name()+"$"),metaFlags);
                     skipMessage=true;
                 }
                 else

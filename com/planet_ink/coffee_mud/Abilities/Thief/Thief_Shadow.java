@@ -84,7 +84,7 @@ public class Thief_Shadow extends ThiefSkill
 		if(CMLib.flags().canBeSeenBy(mob,shadowing)) return false;
 		if(!CMLib.flags().canBeSeenBy(shadowing,mob)) return false;
 		if(mob.location()!=shadowing.location()) return false;
-		if(mob.getGroupMembers(new HashSet()).size()>1) return false;
+		if(mob.getGroupMembers(new HashSet<MOB>()).size()>1) return false;
 		return true;
 	}
 
@@ -211,7 +211,7 @@ public class Thief_Shadow extends ThiefSkill
 			mob.tell("You cannot shadow yourself?!");
 			return false;
 		}
-		if(mob.getGroupMembers(new HashSet()).size()>1)
+		if(mob.getGroupMembers(new HashSet<MOB>()).size()>1)
 		{
 			mob.tell("You cannot shadow someone while part of a group.");
 			return false;

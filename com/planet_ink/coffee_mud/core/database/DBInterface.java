@@ -21,6 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.io.IOException;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.AckRecord;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 /* 
    Copyright 2000-2010 Bo Zimmerman
@@ -37,7 +38,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class DBInterface implements DatabaseEngine
 {
     public String ID(){return "DBInterface";}
@@ -63,7 +63,7 @@ public class DBInterface implements DatabaseEngine
     	DatabaseEngine baseEngine=(DatabaseEngine)CMLib.library(MudHost.MAIN_HOST,CMLib.LIBRARY_DATABASE);
     	if((baseEngine!=null)&&(baseEngine.getConnector()!=DB)&&(baseEngine.isConnected()))
     	    oldBaseDB=baseEngine.getConnector();
-        Vector privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(),true);
+        List<String> privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(),true);
         this.GAbilityLoader=new GAbilityLoader(privacyV.contains("ABILITY")?DB:oldBaseDB);
         this.GCClassLoader=new GCClassLoader(privacyV.contains("CHARCLASS")?DB:oldBaseDB);
         this.GRaceLoader=new GRaceLoader(privacyV.contains("RACE")?DB:oldBaseDB);
@@ -149,13 +149,13 @@ public class DBInterface implements DatabaseEngine
     public PlayerAccount DBReadAccount(String Login)
     { return MOBloader.DBReadAccount(Login);}
     
-    public Vector<PlayerAccount> DBListAccounts(String mask)
+    public List<PlayerAccount> DBListAccounts(String mask)
     { return MOBloader.DBListAccounts(mask);}
     
-    public Vector DBReadAreaData(String areaID, boolean reportStatus)
+    public List<Area> DBReadAreaData(String areaID, boolean reportStatus)
     {return RoomLoader.DBReadAreaData(areaID,reportStatus);}
     
-    public Vector DBReadRoomData(String roomID, boolean reportStatus)
+    public Map<String, Room> DBReadRoomData(String roomID, boolean reportStatus)
     {return RoomLoader.DBReadRoomData(roomID,reportStatus);}
     
     public void DBReadAllRooms(RoomnumberSet roomsToRead)
@@ -164,12 +164,12 @@ public class DBInterface implements DatabaseEngine
     public Room DBReadRoomObject(String roomIDtoLoad, boolean reportStatus)
     { return RoomLoader.DBReadRoomObject(roomIDtoLoad, reportStatus);}
     
-    public void DBReadRoomExits(String roomID, Vector allRooms, boolean reportStatus)
+    public void DBReadRoomExits(String roomID, Map<String, Room> allRooms, boolean reportStatus)
     {RoomLoader.DBReadRoomExits(roomID,allRooms,reportStatus);}
     
 	public void DBReadCatalogs() {RoomLoader.DBReadCatalogs();}
 	
-	public void DBReadContent(Room thisRoom, Vector rooms)
+	public void DBReadContent(Room thisRoom, Map<String, Room> rooms)
 	{RoomLoader.DBReadContent((thisRoom!=null)?thisRoom.roomID():null,thisRoom, rooms,null,false);}
 
     public RoomnumberSet DBReadAreaRoomList(String areaName, boolean reportStatus)
@@ -190,7 +190,7 @@ public class DBInterface implements DatabaseEngine
 	public void DBUpdateQuest(Quest Q)
 	{QuestLoader.DBUpdateQuest(Q);}
 	
-	public void DBUpdateQuests(Vector quests)
+	public void DBUpdateQuests(List<Quest> quests)
 	{QuestLoader.DBUpdateQuests(quests);}
 	
 	public String DBReadRoomMOBData(String roomID, String mobID)
@@ -198,10 +198,10 @@ public class DBInterface implements DatabaseEngine
 	public String DBReadRoomDesc(String roomID)
 	{ return RoomLoader.DBReadRoomDesc(roomID);}
 	
-	public void DBUpdateTheseMOBs(Room room, Vector mobs)
+	public void DBUpdateTheseMOBs(Room room, List<MOB> mobs)
 	{RoomLoader.DBUpdateTheseMOBs(room,mobs);}
 	
-	public void DBUpdateTheseItems(Room room, Vector items)
+	public void DBUpdateTheseItems(Room room, List<Item> items)
 	{RoomLoader.DBUpdateTheseItems(room,items);}
 	
 	public void DBUpdateMOBs(Room room)
@@ -225,7 +225,7 @@ public class DBInterface implements DatabaseEngine
 	public void DBDeleteJournal(String Journal, String msgKeyOrNull)
 	{JournalLoader.DBDelete(Journal, msgKeyOrNull);}
 	
-	public Vector<String> DBReadJournals()
+	public List<String> DBReadJournals()
 	{return JournalLoader.DBReadJournals();}
 	
 	public JournalsLibrary.JournalEntry DBReadJournalEntry(String Journal, String Key)
@@ -333,7 +333,7 @@ public class DBInterface implements DatabaseEngine
 	public void DBReadFollowers(MOB mob, boolean bringToLife)
 	{MOBloader.DBReadFollowers(mob, bringToLife);}
 	
-    public Vector DBScanFollowers(MOB mob)
+    public List<MOB> DBScanFollowers(MOB mob)
     {return MOBloader.DBScanFollowers(mob);}
 	
 	public void DBDeleteMOB(MOB mob)
@@ -367,7 +367,7 @@ public class DBInterface implements DatabaseEngine
 	
 	public List<PlayerData> DBReadData(String section)
 	{ return DataLoader.DBRead(section);}
-    public List<PlayerData> DBReadData(String player, Vector sections)
+    public List<PlayerData> DBReadData(String player, List<String> sections)
     { return DataLoader.DBRead(player, sections);}
 
 	public void DBDeleteData(String playerID, String section)
@@ -387,7 +387,7 @@ public class DBInterface implements DatabaseEngine
 	public void DBCreateData(String player, String section, String key, String data)
 	{ DataLoader.DBCreate(player,section,key,data);}
 	
-	public Vector DBReadRaces()
+	public List<AckRecord> DBReadRaces()
 	{ return GRaceLoader.DBReadRaces();}
 	
 	public void DBDeleteRace(String raceID)
@@ -396,7 +396,7 @@ public class DBInterface implements DatabaseEngine
 	public void DBCreateRace(String raceID,String data)
 	{ GRaceLoader.DBCreateRace(raceID,data);}
 	
-	public Vector DBReadClasses()
+	public List<AckRecord> DBReadClasses()
 	{ return GCClassLoader.DBReadClasses();}
 	
 	public void DBDeleteClass(String classID)
@@ -405,7 +405,7 @@ public class DBInterface implements DatabaseEngine
 	public void DBCreateClass(String classID,String data)
 	{ GCClassLoader.DBCreateClass(classID,data);}
 	
-	public Vector DBReadAbilities()
+	public List<AckRecord> DBReadAbilities()
 	{ return GAbilityLoader.DBReadAbilities();}
 	
 	public void DBDeleteAbility(String classID)
@@ -429,7 +429,7 @@ public class DBInterface implements DatabaseEngine
 	public void DBUpdateStat(long startTime, String data)
 	{ StatLoader.DBUpdate(startTime,data);}
 	
-	public Vector DBReadStats(long startTime)
+	public List<CoffeeTableRow> DBReadStats(long startTime)
 	{ return StatLoader.DBReadAfter(startTime);}
 	
 	public String errorStatus()

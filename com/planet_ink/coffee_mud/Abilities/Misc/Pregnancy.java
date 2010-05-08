@@ -188,7 +188,7 @@ public class Pregnancy extends StdAbility
                     if(CMLib.dice().roll(1,200,0)==1)
                     {
                         Ability A=CMClass.getAbility("Mood");
-                        if(A!=null) A.invoke(mob,CMParms.makeVector("RANDOM"),mob,true,0);
+                        if(A!=null) A.invoke(mob,new XVector("RANDOM"),mob,true,0);
                     }
 					if(daysRemaining<7) // BIRTH!
 					{
@@ -316,9 +316,9 @@ public class Pregnancy extends StdAbility
 								    if(A!=null) A.invoke(mob,mob,true,0);
 								}
 							}
-                            Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.BIRTHS);
+                            List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.BIRTHS);
                             for(int i=0;i<channels.size();i++)
-                                CMLib.commands().postChannel(mob,(String)channels.elementAt(i),mob.name()+" has just given birth to "+I.name()+"!",true);
+                                CMLib.commands().postChannel(mob,(String)channels.get(i),mob.name()+" has just given birth to "+I.name()+"!",true);
                             String parent=mob.Name();
                             if(mob.isMonster()&&(otherParentM!=null))
                                 parent=otherParentM.Name();
@@ -384,9 +384,9 @@ public class Pregnancy extends StdAbility
 			if(mob.location().show(mob,target,this,CMMsg.TYP_GENERAL,auto?null:"<S-NAME> imgregnate(s) <T-NAMESELF>."))
 			{
 				setMiscText(start+"/"+end+"/"+mob.Name()+"/"+mob.charStats().getMyRace().ID());
-                Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONCEPTIONS);
+                List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONCEPTIONS);
                 for(int i=0;i<channels.size();i++)
-                    CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),target.name()+" is now in a 'family way'.",true);
+                    CMLib.commands().postChannel((String)channels.get(i),mob.getClanID(),target.name()+" is now in a 'family way'.",true);
                 target.addNonUninvokableEffect((Ability)copyOf());
 			}
 		}

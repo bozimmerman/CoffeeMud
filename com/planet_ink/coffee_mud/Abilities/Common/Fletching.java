@@ -62,7 +62,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 	protected static final int RCP_SPELL=11;
 
     public String parametersFile(){ return "fletching.txt";}
-    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{
@@ -146,7 +146,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
                 return super.bundle(mob,commands);
             return false;
         }
-		Vector recipes=addRecipes(mob,loadRecipes());
+		List<List<String>> recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
         bundling=false;
@@ -162,12 +162,12 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector V=(Vector)recipes.elementAt(r);
+				List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
-					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
-					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
+					String item=replacePercent((String)V.get(RCP_FINALNAME),"");
+					int level=CMath.s_int((String)V.get(RCP_LEVEL));
+					int wood=CMath.s_int((String)V.get(RCP_WOOD));
                     wood=adjustWoodRequired(wood,mob);
 					if((level<=xlevel(mob))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
@@ -214,14 +214,14 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 				commands.removeElementAt(commands.size()-1);
 			}
 			String recipeName=CMParms.combine(commands,0);
-			Vector foundRecipe=null;
-			Vector matches=matchingRecipeNames(recipes,recipeName,true);
+			List<String> foundRecipe=null;
+			List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
 			for(int r=0;r<matches.size();r++)
 			{
-				Vector V=(Vector)matches.elementAt(r);
+				List<String> V=matches.get(r);
 				if(V.size()>0)
 				{
-					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
+					int level=CMath.s_int((String)V.get(RCP_LEVEL));
                     if((autoGenerate>0)||(level<=xlevel(mob)))
 					{
 						foundRecipe=V;
@@ -234,10 +234,10 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 				commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \"fletch list\" for a list.");
 				return false;
 			}
-			int woodRequired=CMath.s_int((String)foundRecipe.elementAt(RCP_WOOD));
+			int woodRequired=CMath.s_int((String)foundRecipe.get(RCP_WOOD));
             woodRequired=adjustWoodRequired(woodRequired,mob);
 			if((amount>woodRequired)&&(woodRequired>0)) woodRequired=amount;
-			String otherRequired=(String)foundRecipe.elementAt(RCP_EXTRAREQ);
+			String otherRequired=(String)foundRecipe.get(RCP_EXTRAREQ);
 			int[] pm={RawMaterial.MATERIAL_WOODEN};
 			int[][] data=fetchFoundResourceData(mob,
 												woodRequired,"wood",pm,
@@ -266,20 +266,20 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 					return false;
 				}
 			}
-            String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
+            String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.get(RCP_SPELL)).trim():"";
             bundling=spell.equalsIgnoreCase("BUNDLE");
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			int lostValue=autoGenerate>0?0:
                 CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null);
-			building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
+			building=CMClass.getItem((String)foundRecipe.get(RCP_CLASSTYPE));
 			if(building==null)
 			{
-				commonTell(mob,"There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
+				commonTell(mob,"There's no such thing as a "+foundRecipe.get(RCP_CLASSTYPE)+"!!!");
 				return false;
 			}
-			duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),4);
-			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
+			duration=getDuration(CMath.s_int((String)foundRecipe.get(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.get(RCP_LEVEL)),4);
+			String itemName=replacePercent((String)foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE])).toLowerCase();
 			itemName=CMLib.english().startWithAorAn(itemName);
 			building.setName(itemName);
 			startStr="<S-NAME> start(s) making "+building.name()+".";
@@ -289,14 +289,14 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			building.setDisplayText(itemName+" lies here");
 			building.setDescription(itemName+". ");
 			building.basePhyStats().setWeight(woodRequired);
-			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
+			building.setBaseValue(CMath.s_int((String)foundRecipe.get(RCP_VALUE)));
 			building.setMaterial(data[0][FOUND_CODE]);
-			building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)));
+			building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.get(RCP_LEVEL)));
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
-			String ammotype=(String)foundRecipe.elementAt(RCP_AMMOTYPE);
-			int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_AMOCAPACITY));
-			int maxrange=CMath.s_int((String)foundRecipe.elementAt(RCP_MAXRANGE));
-			int armordmg=CMath.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
+			String ammotype=(String)foundRecipe.get(RCP_AMMOTYPE);
+			int capacity=CMath.s_int((String)foundRecipe.get(RCP_AMOCAPACITY));
+			int maxrange=CMath.s_int((String)foundRecipe.get(RCP_MAXRANGE));
+			int armordmg=CMath.s_int((String)foundRecipe.get(RCP_ARMORDMG));
 			if(bundling) building.setBaseValue(lostValue);
 			addSpells(building,spell);
 			if(building instanceof Weapon)

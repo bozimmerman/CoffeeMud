@@ -291,7 +291,7 @@ public class QuestBound implements Ability
         {
             String maskStr=newText.substring(maskindex+5).trim();
             if(maskStr.length()>0)
-                CMParms.addToVector(CMLib.masking().maskCompile(maskStr),mask);
+                mask.addAll(CMLib.masking().maskCompile(maskStr));
             newText=newText.substring(0,maskindex).trim();
         }
         return newText;

@@ -213,7 +213,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             CMLib.threads().startTickDown(this,Tickable.TICKID_QUEST,1);
     }
 
-    public void setVars(Vector script, int startAtLine)
+    public void setVars(List<?> script, int startAtLine)
     {
     	List parsedLine=null;
         String var=null;
@@ -335,7 +335,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	        		List V=(List)O;
 		    		if(allArgs.size()==0)
 		        		for(int v=0;v<V.size();v++)
-		        			allArgs.addElement(CMParms.makeVector(V.get(v)));
+		        			allArgs.addElement(new XVector(V.get(v)));
 		    		else
 		    		{
 		    			Vector allArgsCopy=(Vector)allArgs.clone();
@@ -354,7 +354,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	        	}
 	    		else
 	    		if(allArgs.size()==0)
-        			allArgs.addElement(CMParms.makeVector(O));
+        			allArgs.addElement(new XVector(O));
 	    		else
         		for(int aa=0;aa<allArgs.size();aa++)
 	        		((Vector)allArgs.elementAt(aa)).addElement(O);
@@ -1561,7 +1561,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                        	{
 		                        	int whichFaction=CMLib.dice().roll(1,numFactions,-1);
 		                        	int curFaction=0;
-		                        	for(Enumeration e=CMLib.factions().factions();e.hasMoreElements();curFaction++)
+		                        	for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();curFaction++)
 		                        	{
 		                        		F=(Faction)e.nextElement();
 		                        		if(curFaction==whichFaction)
@@ -2699,7 +2699,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                            runtimeRegisterObject(((PhysicalAgent)E2));
 	            	        	synchronized(questState)
 	            	        	{
-		                            questState.addons.addElement(CMParms.makeVector(E2,S),Integer.valueOf(questState.preserveState));
+		                            questState.addons.addElement(new XVector(E2,S),Integer.valueOf(questState.preserveState));
 	            	        	}
                             }
                         }
@@ -4024,7 +4024,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     	for(int p=startp+1;p<parms.size();p++)
     		allParms.append((String)parms.elementAt(p));
     	Object O=null;
-    	Vector V=new Vector();
+    	XVector V=new XVector();
     	int lastI=0;
     	String eval=null;
     	char code=' ';
@@ -4067,14 +4067,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     			}
     			case '-':
     				if(O instanceof List)
-    					CMParms.delFromVector((List)O,V);
+    					V.removeAll((List)O);
     				else
     				if(O!=null)
     					V.removeElement(O);
     				break;
     			case '+': case ' ':
     				if(O instanceof List)
-    					CMParms.addToVector((List)O,V);
+    					V.addAll((List)O);
     				else
     				if(O!=null)
     					V.addElement(O);

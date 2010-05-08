@@ -260,7 +260,7 @@ public class RaceData extends StdWebMacro
                 {
                     I2=RoomData.getItemFromAnywhere(items,MATCHING);
                     if(I2!=null)
-                        RoomData.contributeItems(CMParms.makeVector(I2));
+                        RoomData.contributeItems(new XVector(I2));
                 }
                 if(I2!=null)
                     classes.addElement(I2);
@@ -412,7 +412,7 @@ public class RaceData extends StdWebMacro
         str.append("<TR><TD WIDTH=35%>");
         str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=RABLES"+(theclasses.size()+1)+">");
         str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
-        for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+        for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
         {
             String cnam=((Ability)a.nextElement()).ID();
             str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
@@ -479,7 +479,7 @@ public class RaceData extends StdWebMacro
         str.append("<TR><TD WIDTH=35%>");
         str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=CABLES"+(theclasses.size()+1)+">");
         str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
-        for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+        for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
         {
             String cnam=((Ability)a.nextElement()).ID();
             str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
@@ -796,7 +796,7 @@ public class RaceData extends StdWebMacro
                     str.append(itemList(R.outfit(null),'O',httpReq,parms,0,false)+", ");
                 if(parms.containsKey("WEAPON"))
                 {
-                    Vector V=CMParms.makeVector(R.myNaturalWeapon());
+                    Vector V=new XVector(R.myNaturalWeapon());
                     str.append(itemList(V,'W',httpReq,parms,0,true)+", ");
                 }
                 if(parms.containsKey("RESOURCES"))

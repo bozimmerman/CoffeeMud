@@ -35,7 +35,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public interface DatabaseEngine extends CMLibrary
 {
 	public String errorStatus();
@@ -45,19 +44,19 @@ public interface DatabaseEngine extends CMLibrary
 	
 	public void DBUpdateFollowers(MOB mob);
 	public void DBReadCatalogs();
-	public void DBReadContent(Room thisRoom, Vector rooms);
-    public Vector DBReadAreaData(String areaID, boolean reportStatus);
-    public Vector DBReadRoomData(String roomID, boolean reportStatus);
+	public void DBReadContent(Room thisRoom, Map<String, Room> rooms);
+    public List<Area> DBReadAreaData(String areaID, boolean reportStatus);
+    public Map<String, Room> DBReadRoomData(String roomID, boolean reportStatus);
     public Room DBReadRoomObject(String roomIDtoLoad, boolean reportStatus);
-    public void DBReadRoomExits(String roomID, Vector allRooms, boolean reportStatus);
+    public void DBReadRoomExits(String roomID, Map<String, Room> allRooms, boolean reportStatus);
 	public void DBUpdateExits(Room room);
 	public void DBCreateThisItem(String roomID, Item thisItem);
 	public void DBCreateThisMOB(String roomID, MOB thisMOB);
 	public String DBReadRoomMOBData(String roomID, String mobID);
 	public String DBReadRoomDesc(String roomID);
     public void DBReadAllRooms(RoomnumberSet roomsToRead);
-	public void DBUpdateTheseMOBs(Room room, Vector mobs);
-	public void DBUpdateTheseItems(Room room, Vector item);
+	public void DBUpdateTheseMOBs(Room room, List<MOB> mobs);
+	public void DBUpdateTheseItems(Room room, List<Item> item);
 	public void DBUpdateMOBs(Room room);
 	public void DBCreateRoom(Room room);
 	public void DBUpdateRoom(Room room);
@@ -71,13 +70,13 @@ public interface DatabaseEngine extends CMLibrary
     public void DBCreateAccount(PlayerAccount account);
     public void DBDeleteAccount(PlayerAccount account);
     public PlayerAccount DBReadAccount(String Login);
-    public Vector<PlayerAccount> DBListAccounts(String mask);
+    public List<PlayerAccount> DBListAccounts(String mask);
 	public void DBUpdateMOB(String roomID, MOB mob);
 	public void DBUpdateItem(String roomID, Item item);
 	public void DBDeleteMOB(String roomID, MOB mob);
 	public void DBDeleteItem(String roomID, Item item);
 	public void DBUpdateItems(Room room);
-	public void DBUpdateQuests(Vector quests);
+	public void DBUpdateQuests(List<Quest> quests);
 	public void DBUpdateQuest(Quest Q);
 	public void DBReadQuests(MudHost myHost);
 	public void DBReCreate(Room room, String oldID);
@@ -97,14 +96,14 @@ public interface DatabaseEngine extends CMLibrary
     public List<PlayerLibrary.ThinPlayer> getExtendedUserList();
     public PlayerLibrary.ThinPlayer getThinUser(String name);
     public List<String> getUserList();
-    public Vector DBScanFollowers(MOB mob);
+    public List<MOB> DBScanFollowers(MOB mob);
 	public void DBReadFollowers(MOB mob, boolean bringToLife);
 	public void DBDeleteMOB(MOB mob);
 	public void DBCreateCharacter(MOB mob);
 	public void DBCreateArea(Area A);
 	public void DBDeleteArea(Area A);
 	public void DBUpdateArea(String keyName,Area A);
-	public Vector DBReadJournals();
+	public List<String> DBReadJournals();
 	public void DBUpdateJournalStats(String Journal, JournalsLibrary.JournalSummaryStats stats);
 	public void DBUpdateJournal(String Journal, JournalsLibrary.JournalEntry entry);
 	public void DBReadJournalSummaryStats(JournalsLibrary.JournalSummaryStats stats);
@@ -135,7 +134,7 @@ public interface DatabaseEngine extends CMLibrary
 	public List<PlayerData> DBReadDataKey(String section, String keyMask);
 	public List<PlayerData> DBReadDataKey(String key);
 	public List<PlayerData> DBReadData(String section);
-    public List<PlayerData> DBReadData(String player, Vector sections);
+    public List<PlayerData> DBReadData(String player, List<String> sections);
 	public void DBDeletePlayerData(String name);
 	public void DBDeleteData(String playerID, String section);
 	public void DBDeleteData(String playerID, String section, String key);
@@ -144,20 +143,20 @@ public interface DatabaseEngine extends CMLibrary
 	public void DBDeleteData(String section);
 	public void DBCreateData(String player, String section, String key, String data);
 	public void DBReadArtifacts();
-	public Vector DBReadRaces();
+	public List<AckRecord> DBReadRaces();
 	public void DBDeleteRace(String raceID);
 	public void DBCreateRace(String raceID,String data);
-	public Vector DBReadClasses();
+	public List<AckRecord> DBReadClasses();
 	public void DBDeleteClass(String classID);
 	public void DBCreateClass(String classID,String data);
-	public Vector DBReadAbilities();
+	public List<AckRecord> DBReadAbilities();
 	public void DBDeleteAbility(String classID);
 	public void DBCreateAbility(String classID,String data);
 	public Object DBReadStat(long startTime);
 	public void DBDeleteStat(long startTime);
 	public void DBCreateStat(long startTime,long endTime,String data);
 	public void DBUpdateStat(long startTime, String data);
-	public Vector DBReadStats(long startTime);
+	public List<CoffeeTableRow> DBReadStats(long startTime);
     public void DBCreatePoll(String name, String player, String subject, String description, String optionXML, int flag, String qualZapper, String results, long expiration);
     public void DBUpdatePoll(String OldName, String name, String player, String subject, String description, String optionXML, int flag, String qualZapper, String results, long expiration);
     public void DBUpdatePollResults(String name, String results);
@@ -190,6 +189,13 @@ public interface DatabaseEngine extends CMLibrary
         public String results="";
     	public long expiration=0;
     	
+    }
+    
+    public static class AckRecord
+    {
+    	public String ID="";
+    	public String data="";
+    	public AckRecord(String id, String dataStr){ ID=id; data=dataStr;}
     }
     
 }

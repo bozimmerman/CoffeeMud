@@ -46,8 +46,8 @@ public class RequestHandler implements Runnable
 	private final SocketChannel  chan;
 	private SVector<ByteBuffer>	 workingBuffers = new SVector<ByteBuffer>();
 	private SVector<String> 	 lines=new SVector<String>();
-	private char 				 eolChar = '\n';
-	private static final int 	 BUFFER_SIZE=1024;
+	private byte[][]			 markBlocks = {{'\n','\r'},{'\r','\n'},{'\n'},{'\r'}};
+	private static final int 	 BUFFER_SIZE=4096;
 	private static final long 	 MAXIMUM_BYTES=1024 * 1024 * 2;
 	
 	public RequestHandler(SocketChannel chan) throws IOException
@@ -106,23 +106,29 @@ public class RequestHandler implements Runnable
 	    		{
 	    			buffer.flip();
 	    			//System.out.println(this.runnableName+": buffer has "+buffer.limit()+" bytes now");
+	    			int containIndex=-1;
 	    			for(int i=0;i<buffer.limit();i++)
-	    				if(buffer.get(i)==eolChar)
+	    				if((containIndex=CMParms.containIndex(buffer, markBlocks, i))>=0)
 	    				{
+	    					if(i>0)
+	    					{
+	    						ByteBuffer prevBuf = ByteBuffer.allocate(BUFFER_SIZE);
+	    						prevBuf.put(buffer.array(),0,i);
+	    						prevBuf.flip();
+	    						workingBuffers.add(prevBuf);
+	    					}
+	    					buffer.position(i + markBlocks[containIndex].length);
 	    					//System.out.println(runnableName+": buffer has \\n at "+i);
-	    					buffer.position(i);
-	    					ByteBuffer lastBuffer=buffer;
 	    					if(buffer.remaining()>0)
 	    					{
-	    						ByteBuffer nxtBuf = ByteBuffer.allocate(buffer.remaining());
-	    						nxtBuf.put(buffer);
-	    						nxtBuf.flip();
-	    						//System.out.println(this.runnableName+": NEXT buffer has "+nxtBuf.limit()+" chars.");
 	    						buffer = ByteBuffer.allocate(BUFFER_SIZE);
-	    						buffer.put(nxtBuf);
-	    						buffer.rewind();
-	    						buffer.limit(i);
+	    						buffer.put(buffer);
+	    						i=-1;
 	    					}
+	    					else
+	    						buffer = ByteBuffer.allocate(BUFFER_SIZE);
+    						buffer.flip();
+    						
 	    					int fullSize = 0;
 	    					for(ByteBuffer buf : workingBuffers)
 	    						fullSize += buf.limit();
@@ -133,16 +139,12 @@ public class RequestHandler implements Runnable
 	    						buf.rewind();
 	    						finalBuf.put(buf);
 	    						workingBuffers.remove(buf);
-	    						if(buf == lastBuffer)
-	    							break;
 	    					}
 	    					finalBuf.flip();
-	    					//System.out.println(runnableName+": finalBuf has "+finalBuf.limit()+"/"+finalBuf.capacity()+" bytes");
+	    					System.out.println(runnableName+": finalBuf has "+finalBuf.limit()+"/"+finalBuf.capacity()+" bytes: "+new String(finalBuf.array()));
 	    					lines.add(new String(finalBuf.array()));
-	    					if(lastBuffer == buffer)
-	    						buffer=ByteBuffer.allocate(BUFFER_SIZE);
 	    				}
-	    			if(!workingBuffers.contains(buffer))
+	    			if(!workingBuffers.contains(buffer) && (buffer.limit()>0))
 	    				workingBuffers.add(buffer);
 	    			if(buffer.limit()==buffer.capacity())
 	    				buffer=ByteBuffer.allocate(BUFFER_SIZE);
@@ -158,6 +160,7 @@ public class RequestHandler implements Runnable
 	    				return;
 	    			}
 	    		}
+	    		System.out.println("flipped at: "+buffer.position());
 	    		buffer.flip();
 			}
 			catch(Exception e)

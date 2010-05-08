@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class AbilityData extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
@@ -164,7 +163,7 @@ public class AbilityData extends StdWebMacro
                 }
                 if(parms.containsKey("ABILITY_FLAGS"))
                 {
-                    Vector list=new Vector();
+                    Vector<String> list=new Vector<String>();
                     if(httpReq.isRequestParameter("ABILITY_FLAGS"))
                     {
                         String id="";
@@ -202,7 +201,7 @@ public class AbilityData extends StdWebMacro
                 }
                 if(parms.containsKey("USAGEMASK"))
                 {
-                    Vector list=new Vector();
+                    Vector<String> list=new Vector<String>();
                     if(httpReq.isRequestParameter("USAGEMASK"))
                     {
                         String id="";
@@ -218,7 +217,7 @@ public class AbilityData extends StdWebMacro
                 }
                 if(parms.containsKey("CANAFFECTMASK"))
                 {
-                    Vector list=new Vector();
+                    Vector<String> list=new Vector<String>();
                     if(httpReq.isRequestParameter("CANAFFECTMASK"))
                     {
                         String id="";
@@ -234,7 +233,7 @@ public class AbilityData extends StdWebMacro
                 }
                 if(parms.containsKey("CANTARGETMASK"))
                 {
-                    Vector list=new Vector();
+                    Vector<String> list=new Vector<String>();
                     if(httpReq.isRequestParameter("CANTARGETMASK"))
                     {
                         String id="";
@@ -314,7 +313,7 @@ public class AbilityData extends StdWebMacro
                 }
                 if(parms.containsKey("POSTCASTAFFECT"))
                 {
-                    Vector list=new Vector();
+                    Vector<String> list=new Vector<String>();
                     if(httpReq.isRequestParameter("POSTCASTAFFECT"))
                     {
                         String id="";
@@ -324,7 +323,7 @@ public class AbilityData extends StdWebMacro
                     } 
                     else 
                         list=CMParms.parseSemicolons(A.getStat("POSTCASTAFFECT").toUpperCase(),true);
-                    for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+                    for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
                     {
                         Ability A2=(Ability)e.nextElement();
                         String AID=A2.ID();
@@ -335,7 +334,7 @@ public class AbilityData extends StdWebMacro
                 }
                 if(parms.containsKey("POSTCASTABILITY"))
                 {
-                    Vector list=new Vector();
+                    Vector<String> list=new Vector<String>();
                     if(httpReq.isRequestParameter("POSTCASTABILITY"))
                     {
                         String id="";
@@ -345,7 +344,7 @@ public class AbilityData extends StdWebMacro
                     } 
                     else 
                         list=CMParms.parseSemicolons(A.getStat("POSTCASTABILITY").toUpperCase(),true);
-                    for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+                    for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
                     {
                         Ability A2=(Ability)e.nextElement();
                         String AID=A2.ID();
@@ -447,7 +446,7 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("ALIGNMENT"))
 				{
 				    String rangeDesc=null;
-				    for(Enumeration e=CMLib.factions().factions();e.hasMoreElements();)
+				    for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
 				    {
 				        Faction F=(Faction)e.nextElement();
 				        rangeDesc=F.usageFactorRangeDescription(A);

@@ -277,7 +277,7 @@ public class Prop_SpellAdder extends Property
         {
             Vector V=getMySpellsV();
             commands.clear();
-            CMParms.addToVector(convertToV2(V,null),commands);
+            commands.addAll(convertToV2(V,null));
         }
         return true;
     }

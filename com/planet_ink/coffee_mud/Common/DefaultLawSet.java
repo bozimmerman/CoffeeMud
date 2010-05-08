@@ -293,9 +293,9 @@ public class DefaultLawSet implements Law
                                 {
                                     if(CMLib.clans().getClan(T.landOwner())!=null)
                                     {
-                                        Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
+                                        List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
                                         for(int i=0;i<channels.size();i++)
-                                            CMLib.commands().postChannel((String)channels.elementAt(i),T.landOwner(),T.landOwner()+" has lost the title to "+T.landPropertyID()+" due to failure to pay property taxes.",false);
+                                            CMLib.commands().postChannel((String)channels.get(i),T.landOwner(),T.landOwner()+" has lost the title to "+T.landPropertyID()+" due to failure to pay property taxes.",false);
                                     }
                                     else
                                     if(CMLib.players().getPlayer(T.landOwner())!=null)

@@ -1109,7 +1109,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	        Faction F=null;
 	        List<Integer> mine=null;
 	        int defaultValue=0;
-	        for(Enumeration e=CMLib.factions().factions();e.hasMoreElements();)
+	        for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
 	        {
 	            F=(Faction)e.nextElement();
 	            mine=F.findChoices(mob);
@@ -1220,9 +1220,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	            &&(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
 	                mob.setBitmap(mob.getBitmap()-MOB.ATT_PLAYERKILL);
 	            CMLib.database().DBUpdatePlayer(mob);
-	            Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
+	            List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
 	            for(int i=0;i<channels.size();i++)
-	                CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just been created.",true);
+	                CMLib.commands().postChannel((String)channels.get(i),mob.getClanID(),mob.Name()+" has just been created.",true);
 	            CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LOGINS);
 	            CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_NEWPLAYERS);
 	        }
@@ -1675,7 +1675,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             {
                 Command C=CMClass.getCommand("WizInv");
                 if((C!=null)&&(C.securityCheck(mob)||C.securityCheck(mob)))
-                    C.execute(mob,CMParms.makeVector("WIZINV"),0);
+                    C.execute(mob,new XVector("WIZINV"),0);
             }
             showTheNews(mob);
             mob.bringToLife(mob.location(),false);
@@ -1695,7 +1695,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             {
                 Command C=CMClass.getCommand("WizInv");
                 if((C!=null)&&(C.securityCheck(mob)||C.securityCheck(mob)))
-                    C.execute(mob,CMParms.makeVector("WIZINV"),0);
+                    C.execute(mob,new XVector("WIZINV"),0);
             }
             showTheNews(mob);
             mob.bringToLife(mob.location(),true);
@@ -1749,10 +1749,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         if((CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("NEVER"))
         &&(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
             mob.setBitmap(mob.getBitmap()-MOB.ATT_PLAYERKILL);
-        Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOGINS);
+        List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOGINS);
         if(!CMLib.flags().isCloaked(mob))
         for(int i=0;i<channels.size();i++)
-            CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has logged on.",true);
+            CMLib.commands().postChannel((String)channels.get(i),mob.getClanID(),mob.Name()+" has logged on.",true);
         setGlobalBitmaps(mob);
         return LoginResult.NORMAL_LOGIN;
     }

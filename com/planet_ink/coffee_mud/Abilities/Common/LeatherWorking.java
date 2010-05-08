@@ -62,10 +62,10 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 	protected static final int RCP_SPELL=10;
 
     public String parametersFile(){ return "leatherworking.txt";}
-	protected Vector loadRecipes()
+	protected List<List<String>> loadRecipes()
 	{
         String filename=parametersFile();
-		Vector recipes=(Vector)Resources.getResource("PARSED: "+filename);
+        List<List<String>> recipes=(List<List<String>>)Resources.getResource("PARSED: "+filename);
 		if(recipes==null)
 		{
 			StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,true).text();
@@ -74,28 +74,28 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 				Log.errOut("LeatherWorking","Recipes not found!");
             else
             {
-                Vector pleaseAdd1=new Vector();
-                Vector pleaseAdd2=new Vector();
+            	List<List<String>> pleaseAdd1=new Vector();
+            	List<List<String>> pleaseAdd2=new Vector();
                 for(int r=0;r<recipes.size();r++)
                 {
-                    Vector V=(Vector)recipes.elementAt(r);
+                    List<String> V=recipes.get(r);
                     if(V.size()>0)
                     {
-                        Vector V1=(Vector)V.clone();
-                        Vector V2=(Vector)V.clone();
-                        String name=(String)V.elementAt(RCP_FINALNAME);
-                        V1.setElementAt("Hard "+name,RCP_FINALNAME);
-                        V1.setElementAt(""+(CMath.s_int((String)V.elementAt(RCP_LEVEL))+5),RCP_LEVEL);
-                        V2.setElementAt("Studded "+name,RCP_FINALNAME);
-                        V2.setElementAt(""+(CMath.s_int((String)V.elementAt(RCP_LEVEL))+11),RCP_LEVEL);
-                        pleaseAdd1.addElement(V1);
-                        pleaseAdd2.addElement(V2);
+                    	List<String> V1=new XVector<String>(V);
+                    	List<String> V2=new XVector<String>(V);
+                        String name=(String)V.get(RCP_FINALNAME);
+                        V1.add(RCP_FINALNAME,"Hard "+name);
+                        V1.add(RCP_LEVEL,""+(CMath.s_int((String)V.get(RCP_LEVEL))+5));
+                        V2.add(RCP_FINALNAME,"Studded "+name);
+                        V2.add(RCP_LEVEL,""+(CMath.s_int((String)V.get(RCP_LEVEL))+11));
+                        pleaseAdd1.add(V1);
+                        pleaseAdd2.add(V2);
                     }
                 }
                 for(int i=0;i<pleaseAdd1.size();i++)
-                    recipes.addElement(pleaseAdd1.elementAt(i));
+                    recipes.add(pleaseAdd1.get(i));
                 for(int i=0;i<pleaseAdd2.size();i++)
-                    recipes.addElement(pleaseAdd2.elementAt(i));
+                    recipes.add(pleaseAdd2.get(i));
             }
 			Resources.submitResource("PARSED: "+filename,recipes);
 		}
@@ -181,7 +181,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
                 return super.bundle(mob,commands);
             return false;
         }
-		Vector recipes=addRecipes(mob,loadRecipes());
+		List<List<String>> recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
         bundling=false;
@@ -198,12 +198,12 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector V=(Vector)recipes.elementAt(r);
+				List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
-					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
-					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
+					String item=replacePercent((String)V.get(RCP_FINALNAME),"");
+					int level=CMath.s_int((String)V.get(RCP_LEVEL));
+					int wood=CMath.s_int((String)V.get(RCP_WOOD));
                     wood=adjustWoodRequired(wood,mob);
 					if((level<=xlevel(mob))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
@@ -282,17 +282,17 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 				commands.removeElementAt(commands.size()-1);
 			}
 			String recipeName=CMParms.combine(commands,0);
-			Vector foundRecipe=null;
-			Vector matches=matchingRecipeNames(recipes,recipeName,true);
+			List<String> foundRecipe=null;
+			List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
 			for(int r=0;r<matches.size();r++)
 			{
-				Vector V=(Vector)matches.elementAt(r);
+				List<String> V=matches.get(r);
 				if(V.size()>0)
 				{
-					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
+					int level=CMath.s_int((String)V.get(RCP_LEVEL));
 					if(level<=xlevel(mob))
 					{
-                        String name=(String)V.elementAt(RCP_FINALNAME);
+                        String name=(String)V.get(RCP_FINALNAME);
                         if(name.toUpperCase().startsWith("STUDDED "))
     						multiplier=3;
                         else
@@ -310,12 +310,12 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 				commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \"leatherwork list\" for a list.");
 				return false;
 			}
-			int woodRequired=CMath.s_int((String)foundRecipe.elementAt(RCP_WOOD));
+			int woodRequired=CMath.s_int((String)foundRecipe.get(RCP_WOOD));
             woodRequired=adjustWoodRequired(woodRequired,mob);
 			if(amount>woodRequired) woodRequired=amount;
 			int[] pm={RawMaterial.MATERIAL_LEATHER};
 			int[] pm1={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};
-			String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
+			String misctype=(String)foundRecipe.get(RCP_MISCTYPE);
             bundling=misctype.equalsIgnoreCase("BUNDLE");
 			int[][] data=fetchFoundResourceData(mob,
 												woodRequired,"leather",pm,
@@ -331,14 +331,14 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 				return false;
 			int lostValue=autoGenerate>0?0:
                 CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null);
-			building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
+			building=CMClass.getItem((String)foundRecipe.get(RCP_CLASSTYPE));
 			if(building==null)
 			{
-				commonTell(mob,"There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
+				commonTell(mob,"There's no such thing as a "+foundRecipe.get(RCP_CLASSTYPE)+"!!!");
 				return false;
 			}
-			duration=getDuration(multiplier*CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),4);
-			String itemName=(replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE]))).toLowerCase();
+			duration=getDuration(multiplier*CMath.s_int((String)foundRecipe.get(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.get(RCP_LEVEL)),4);
+			String itemName=(replacePercent((String)foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE]))).toLowerCase();
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
 			else
@@ -354,17 +354,17 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			building.setDisplayText(itemName+" lies here");
 			building.setDescription(itemName+". ");
 			building.basePhyStats().setWeight(woodRequired);
-			building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE))*multiplier);
+			building.setBaseValue(CMath.s_int((String)foundRecipe.get(RCP_VALUE))*multiplier);
 			building.setMaterial(data[0][FOUND_CODE]);
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 			int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-2;
-			building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(6*hardness));
-			int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
-			int canContain=CMath.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
-			int armordmg=CMath.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
+			building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.get(RCP_LEVEL))+(6*hardness));
+			int capacity=CMath.s_int((String)foundRecipe.get(RCP_CAPACITY));
+			int canContain=CMath.s_int((String)foundRecipe.get(RCP_CONTAINMASK));
+			int armordmg=CMath.s_int((String)foundRecipe.get(RCP_ARMORDMG));
 			if(armordmg!=0) armordmg=armordmg+(multiplier-1);
 			if(bundling) building.setBaseValue(lostValue);
-			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
+			String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.get(RCP_SPELL)).trim():"";
 			addSpells(building,spell);
 			if(building instanceof Weapon)
 			{

@@ -56,7 +56,7 @@ public class Goblin extends StdRace
 	private int[] agingChart={0,1,2,12,21,34,52,57,63};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector resources=new Vector();
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

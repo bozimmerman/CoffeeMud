@@ -48,7 +48,7 @@ public class Spell_MassInvisibility extends Spell
         {
             if(target instanceof MOB)
             {
-                if((((MOB)target).isInCombat())&&(((MOB)target).getGroupMembers(new HashSet()).size()==0))
+                if((((MOB)target).isInCombat())&&(((MOB)target).getGroupMembers(new HashSet<MOB>()).size()==0))
                     return Ability.QUALITY_INDIFFERENT;
             }
         }

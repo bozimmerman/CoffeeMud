@@ -50,7 +50,7 @@ public class Thief_MakeBomb extends ThiefSkill
 		Trap theTrap=null;
 		Vector traps=new Vector();
 		int qualifyingClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(getXLEVELLevel(mob));
-		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
 			if((A instanceof Trap)

@@ -47,7 +47,7 @@ public interface WorldMap extends CMLibrary, Runnable
     public Area getArea(String calledThis);
     public Area findAreaStartsWith(String calledThis);
     public Area findArea(String calledThis);
-    public Enumeration areas();
+    public Enumeration<Area> areas();
 	public Enumeration sortedAreas();
     public Area getFirstArea();
     public Area getRandomArea();

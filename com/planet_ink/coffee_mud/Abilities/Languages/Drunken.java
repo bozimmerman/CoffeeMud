@@ -37,7 +37,7 @@ public class Drunken extends StdLanguage
 {
 	public String ID() { return "Drunken"; }
 	public String name(){ return "Drunken";}
-	public static Vector wordLists=null;
+	public static List<String[]> wordLists=null;
 	private static boolean mapped=false;
 	public Drunken()
 	{
@@ -46,7 +46,7 @@ public class Drunken extends StdLanguage
 					CMLib.ableMapper().addCharAbilityMapping("Archon",1,ID(),false);}
 	}
 
-	public Vector translationVector(String language)
+	public List<String[]> translationVector(String language)
 	{
 		return wordLists;
 	}

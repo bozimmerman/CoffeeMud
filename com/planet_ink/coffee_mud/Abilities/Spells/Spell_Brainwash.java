@@ -111,7 +111,7 @@ public class Spell_Brainwash extends Spell
 	            return false;
 	        }
 	        message=CMParms.combine(commands,1);
-	        commands=CMParms.makeVector(commands.firstElement());
+	        commands=new XVector(commands.firstElement());
 	    }
 	    else
 	    if(text().length()>0)

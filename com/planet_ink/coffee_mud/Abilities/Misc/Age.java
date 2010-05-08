@@ -400,9 +400,9 @@ public class Age extends StdAbility
 					Log.sysOut("Age","Created user: "+newMan.Name());
 		            CMLib.login().notifyFriends(newMan,"^X"+newMan.Name()+" has just been created.^.^?");
 
-                    Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
+		            List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
                     for(int i=0;i<channels.size();i++)
-                        CMLib.commands().postChannel((String)channels.elementAt(i),newMan.getClanID(),newMan.Name()+" has just been created.",true);
+                        CMLib.commands().postChannel((String)channels.get(i),newMan.getClanID(),newMan.Name()+" has just been created.",true);
 
                     if(liege != null)
                     {

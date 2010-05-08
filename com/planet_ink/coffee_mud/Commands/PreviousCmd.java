@@ -43,7 +43,7 @@ public class PreviousCmd extends StdCommand
 	{
 		if(!mob.isMonster())
 		{
-			mob.enqueCommand(CMParms.copyVector(mob.session().previousCMD()),metaFlags,0);
+			mob.enqueCommand(CMParms.copyFlattenVector(mob.session().previousCMD()),metaFlags,0);
 		}
 		return false;
 	}

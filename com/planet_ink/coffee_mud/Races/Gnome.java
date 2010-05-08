@@ -56,7 +56,7 @@ public class Gnome extends StdRace
 	private int[] agingChart={0,1,5,40,100,150,200,230,260};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector resources=new Vector();
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

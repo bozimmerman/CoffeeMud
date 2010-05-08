@@ -92,7 +92,7 @@ public class Spell_PolymorphSelf extends Spell
 		if((auto||mob.isMonster())&&((commands.size()<1)||(((String)commands.firstElement()).equals(mob.name()))))
 		{
 			commands.clear();
-			Vector V=CMParms.denumerate(CMClass.races());
+			XVector<Race> V=new XVector<Race>(CMClass.races());
 			for(int v=V.size()-1;v>=0;v--)
 				if(!CMath.bset(((Race)V.elementAt(v)).availabilityCode(),Area.THEME_FANTASY))
 					V.removeElementAt(v);

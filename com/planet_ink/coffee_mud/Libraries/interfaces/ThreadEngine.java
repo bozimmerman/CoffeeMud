@@ -30,7 +30,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public interface ThreadEngine extends CMLibrary, Runnable
 {
 	// tick related
@@ -57,7 +56,7 @@ public interface ThreadEngine extends CMLibrary, Runnable
 	public  Iterator<Tick> tickGroups();
     public String getTickStatusSummary(Tickable obj);
     public String getServiceThreadSummary(Thread T);
-    public Vector getNamedTickingObjects(String name);
+    public List<Tickable> getNamedTickingObjects(String name);
     
     public class SupportThread extends Thread {
         public boolean started=false;

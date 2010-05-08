@@ -118,7 +118,7 @@ public class GenCharClass extends StdCharClass
         for(int i=securityGroupLevels.length-1;i>=0;i--)
             if((classLevel>=securityGroupLevels[i].intValue())
             &&(i<securityGroups.length))
-                CMParms.addToVector(securityGroups[i],V);
+                V.addAll(securityGroups[i]);
         securityGroupCache.put(Integer.valueOf(classLevel),V);
         return V;
     }

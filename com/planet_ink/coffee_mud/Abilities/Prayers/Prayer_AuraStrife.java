@@ -78,7 +78,7 @@ public class Prayer_AuraStrife extends Prayer
 		&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
-			Set<MOB> invokerGroup=invoker().getGroupMembers(new HashSet());
+			Set<MOB> invokerGroup=invoker().getGroupMembers(new HashSet<MOB>());
 			if(mob!=invoker())
 			{
 				if(mob.location()!=invoker().location())

@@ -37,7 +37,7 @@ public class Fey extends StdLanguage
 {
 	public String ID() { return "Fey"; }//Based on Gevey from http://www.kalieda.org/gevey/lexicon.html
 	public String name(){ return "Fey";}
-	public static Vector wordLists=null;	
+	public static List<String[]> wordLists=null;	
 	private static boolean mapped=false;
 	public Fey()
 	{
@@ -49,7 +49,7 @@ public class Fey extends StdLanguage
     {	
         return new Fey();
     }
-	public Vector translationVector(String language)
+	public List<String[]> translationVector(String language)
 	{ 
 		if(wordLists==null)
 		{
@@ -60,17 +60,17 @@ public class Fey extends StdLanguage
 			String[] five={"shasy","rewist","pae","nuwan","noest","nafozdomuu","kreet","jaas","guhnt","glaa","caebiste","abdist","afosk","belguu","andenav","asatehrh"};
 			String[] six={"sats","retas","pokat","os","mieplust-eh","iha","hosh","griste","fot","begmevrhe","abdisem","soufuuwh","aelnebaduuu"};
 			wordLists=new Vector();
-			wordLists.addElement(one);
-			wordLists.addElement(two);
-			wordLists.addElement(three);
-			wordLists.addElement(four);
-			wordLists.addElement(five);
-			wordLists.addElement(six);
+			wordLists.add(one);
+			wordLists.add(two);
+			wordLists.add(three);
+			wordLists.add(four);
+			wordLists.add(five);
+			wordLists.add(six);
 		}
 		return wordLists; 
 	}
 	private static final Hashtable hashwords=new Hashtable();
-	public Hashtable translationHash(String language)
+	public Map<String, String> translationHash(String language)
 	{
 		if((hashwords!=null)&&(hashwords.size()>0)) 
 			return hashwords;

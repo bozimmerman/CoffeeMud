@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class LizardMan extends StdRace
 {
 	public String ID(){	return "LizardMan"; }
@@ -56,7 +55,7 @@ public class LizardMan extends StdRace
 	private int[] agingChart={0,1,3,14,30,45,60,62,64};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector resources=new Vector();
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{

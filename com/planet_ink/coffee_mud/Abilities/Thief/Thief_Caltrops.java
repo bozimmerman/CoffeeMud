@@ -54,7 +54,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 	public int getReset(){return 0;}
 	public boolean maySetTrap(MOB mob, int asLevel){return false;}
 	public boolean canSetTrapOn(MOB mob, Physical P){return false;}
-    public Vector getTrapComponents() { return new Vector(); }
+    public List<Item> getTrapComponents() { return new Vector(); }
 	public String requiresToSet(){return "";}
 	public Trap setTrap(MOB mob, Physical P, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{maliciousAffect(mob,P,qualifyingClassLevel+trapBonus,0,-1); return (Trap)P.fetchEffect(ID());}
@@ -63,7 +63,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 	public void spring(MOB mob)
 	{
 		if((!invoker().mayIFight(mob))
-		||(invoker().getGroupMembers(new HashSet()).contains(mob))
+		||(invoker().getGroupMembers(new HashSet<MOB>()).contains(mob))
 		||(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> avoid(s) some "+caltropTypeName()+"caltrops on the floor.");
 		else

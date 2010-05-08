@@ -40,7 +40,6 @@ import java.util.*;
  * languages.  A single ability usually represents a single language, but 
  * may support multiple simultaneously.
  */
-@SuppressWarnings("unchecked")
 public interface Language extends Ability
 {
 	/**
@@ -53,7 +52,7 @@ public interface Language extends Ability
      * Returns a Vector of the languages understood by this ability
      * @return vector of language ids supported (usually 1 element == ID())
      */
-    public Vector languagesSupported();
+    public List<String> languagesSupported();
     /**
      * Returns whether the given language is translated by this one
      * @return true if this language translates (usually ID() == language)
@@ -82,7 +81,7 @@ public interface Language extends Ability
      * @param language the language to translate directory (usually ID())
      * @return the hashtable of word-word translations
      */
-    public Hashtable translationHash(String language);
+    public Map<String, String> translationHash(String language);
     /**
      * Returns the word-length rough-translation vector of string arrays for the given language
      * The first string array in the vector represents 1 letter words, the second 2, 
@@ -90,7 +89,7 @@ public interface Language extends Ability
      * @param language the language to return the vector for (usually ID())
      * @return the vector of word-length rough translation string arrays
      */
-    public Vector translationVector(String language);
+    public List<String[]> translationVector(String language);
     /**
      * Returns a language translation of the given word in the given language
      * @param language the language to use (usually ID())

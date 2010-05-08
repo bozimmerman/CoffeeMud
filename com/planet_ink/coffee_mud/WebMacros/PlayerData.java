@@ -444,7 +444,7 @@ public class PlayerData extends StdWebMacro
 				{
 					int b=0;
 					Vector titles=new Vector();
-					if(firstTime) CMParms.addToVector(M.playerStats().getTitles(),titles);
+					if(firstTime) titles.addAll(M.playerStats().getTitles());
 					else
 					while(httpReq.isRequestParameter("TITLE"+b))
 					{

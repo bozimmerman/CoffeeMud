@@ -53,7 +53,7 @@ public class Trap_Boulders extends StdTrap
 		return super.setTrap(mob,P,trapBonus,qualifyingClassLevel,perm);
 	}
 
-    public Vector getTrapComponents() {
+    public List<Item> getTrapComponents() {
         Vector V=new Vector();
         for(int i=0;i<50;i++)
             V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_STONE));
@@ -93,7 +93,7 @@ public class Trap_Boulders extends StdTrap
 		{
 			if((!invoker().mayIFight(target))
 			||(isLocalExempt(target))
-			||(invoker().getGroupMembers(new HashSet()).contains(target))
+			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
 			||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) setting off a boulder trap!");

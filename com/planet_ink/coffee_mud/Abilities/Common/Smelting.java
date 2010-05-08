@@ -73,7 +73,7 @@ public class Smelting extends CraftingSkill
 	}
 
     public String parametersFile(){ return "smelting.txt";}
-    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{
@@ -110,7 +110,7 @@ public class Smelting extends CraftingSkill
 			commonTell(mob,"Make what? Enter \"smelt list\" for a list.");
 			return false;
 		}
-		Vector recipes=addRecipes(mob,loadRecipes());
+		List<List<String>> recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
 		int duration=4;
@@ -120,13 +120,13 @@ public class Smelting extends CraftingSkill
 			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",20)+" Lvl "+CMStrings.padRight("Metal #1",16)+" Metal #2\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector V=(Vector)recipes.elementAt(r);
+				List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
-					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
-					String metal1=((String)V.elementAt(RCP_METALONE)).toLowerCase();
-					String metal2=((String)V.elementAt(RCP_METALTWO)).toLowerCase();
+					String item=replacePercent((String)V.get(RCP_FINALNAME),"");
+					int level=CMath.s_int((String)V.get(RCP_LEVEL));
+					String metal1=((String)V.get(RCP_METALONE)).toLowerCase();
+					String metal2=((String)V.get(RCP_METALTWO)).toLowerCase();
 					if((level<=xlevel(mob))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 						buf.append(CMStrings.padRight(item,20)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRight(metal1,16)+" "+metal2+"\n\r");
@@ -147,14 +147,14 @@ public class Smelting extends CraftingSkill
 			commands.removeElementAt(commands.size()-1);
 			recipeName=CMParms.combine(commands,0);
 		}
-		Vector foundRecipe=null;
-		Vector matches=matchingRecipeNames(recipes,recipeName,true);
+		List<String> foundRecipe=null;
+		List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
 		for(int r=0;r<matches.size();r++)
 		{
-			Vector V=(Vector)matches.elementAt(r);
+			List<String> V=matches.get(r);
 			if(V.size()>0)
 			{
-				int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
+				int level=CMath.s_int((String)V.get(RCP_LEVEL));
                 if(level<=xlevel(mob))
 				{
 					foundRecipe=V;
@@ -167,9 +167,9 @@ public class Smelting extends CraftingSkill
 			commonTell(mob,"You don't know how to make '"+recipeName+"'.  Try \"smelt list\" for a list.");
 			return false;
 		}
-		String doneResourceDesc=(String)foundRecipe.elementAt(RCP_FINALNAME);
-		String resourceDesc1=(String)foundRecipe.elementAt(RCP_METALONE);
-		String resourceDesc2=(String)foundRecipe.elementAt(RCP_METALTWO);
+		String doneResourceDesc=(String)foundRecipe.get(RCP_FINALNAME);
+		String resourceDesc1=(String)foundRecipe.get(RCP_METALONE);
+		String resourceDesc2=(String)foundRecipe.get(RCP_METALTWO);
 		int resourceCode1=RawMaterial.CODES.FIND_IgnoreCase(resourceDesc1);
 		int resourceCode2=RawMaterial.CODES.FIND_IgnoreCase(resourceDesc2);
 		int doneResourceCode=RawMaterial.CODES.FIND_IgnoreCase(doneResourceDesc);
@@ -197,7 +197,7 @@ public class Smelting extends CraftingSkill
 		if((maxAmount>0)&&(amountMaking>maxAmount)) amountMaking=maxAmount;
 		CMLib.materials().destroyResources(mob.location(),amountMaking,RawMaterial.CODES.GET(resourceCode1),0,null);
 		CMLib.materials().destroyResources(mob.location(),amountMaking,RawMaterial.CODES.GET(resourceCode2),0,null);
-		duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),6);
+		duration=getDuration(CMath.s_int((String)foundRecipe.get(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.get(RCP_LEVEL)),6);
 		amountMaking+=amountMaking;
 		building=(Item)CMLib.materials().makeResource(RawMaterial.CODES.GET(doneResourceCode),null,false,null);
 		startStr="<S-NAME> start(s) smelting "+doneResourceDesc.toLowerCase()+".";

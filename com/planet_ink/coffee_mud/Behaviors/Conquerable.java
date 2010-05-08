@@ -281,9 +281,9 @@ public class Conquerable extends Arrest
 			if(holdingClan.length()>0)
 			{
 	            if(CMSecurity.isDebugging("CONQUEST")) Log.debugOut("Conquest",holdingClan+" has lost control of "+myArea.name()+".");
-	            Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
+	            List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
 	            for(int i=0;i<channels.size();i++)
-	                CMLib.commands().postChannel((String)channels.elementAt(i),"ALL",holdingClan+" has lost control of "+myArea.name()+".",false);
+	                CMLib.commands().postChannel((String)channels.get(i),"ALL",holdingClan+" has lost control of "+myArea.name()+".",false);
 				if(journalName.length()>0)
 					CMLib.database().DBWriteJournal(journalName,"Conquest","ALL",holdingClan+" loses control of "+myArea.name()+".","See the subject line.");
 			}
@@ -558,9 +558,9 @@ public class Conquerable extends Arrest
                     	{
                         	Log.sysOut("Conquerable",A.Name()+" revolted against "+holdingClan+" with "+chance+"% chance");
                             if(CMSecurity.isDebugging("CONQUEST")) Log.debugOut("Conquest","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+" with "+chance+"% chance, after "+calcItemControlPoints(myArea)+" item points of "+totalControlPoints+" control points.");
-                            Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
+                            List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
                             for(int i=0;i<channels.size();i++)
-                                CMLib.commands().postChannel((String)channels.elementAt(i),"ALL","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+".",false);
+                                CMLib.commands().postChannel((String)channels.get(i),"ALL","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+".",false);
                             if(journalName.length()>0)
                                 CMLib.database().DBWriteJournal(journalName,"Conquest","ALL","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+".","See the subject line.");
                             if((prevHoldingClan.length()>0)
@@ -575,9 +575,9 @@ public class Conquerable extends Arrest
                     	{
     	                    if(CMLib.dice().rollPercentage()<chance)
     	                    {
-    	                        Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
+    	                    	List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
     	                        for(int i=0;i<channels.size();i++)
-    	                            CMLib.commands().postChannel((String)channels.elementAt(i),"ALL","There are the rumblings of revolt in "+myArea.name()+".",false);
+    	                            CMLib.commands().postChannel((String)channels.get(i),"ALL","There are the rumblings of revolt in "+myArea.name()+".",false);
     	                    }
                     	}
                     }
@@ -856,9 +856,9 @@ public class Conquerable extends Arrest
                     }
 				}
 			}
-            Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
+			List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
             for(int i=0;i<channels.size();i++)
-                CMLib.commands().postChannel((String)channels.elementAt(i),"ALL",holdingClan+" gains control of "+myArea.name()+".",false);
+                CMLib.commands().postChannel((String)channels.get(i),"ALL",holdingClan+" gains control of "+myArea.name()+".",false);
 			if(journalName.length()>0)
 				CMLib.database().DBWriteJournal(journalName,"Conquest","ALL",holdingClan+" gains control of "+myArea.name()+".","See the subject line.");
             conquestDate=System.currentTimeMillis();

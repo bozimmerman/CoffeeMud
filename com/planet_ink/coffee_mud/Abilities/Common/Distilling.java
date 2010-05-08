@@ -47,7 +47,7 @@ public class Distilling extends Cooking
     public String supportedResourceString(){return "MISC";}
 
     public String parametersFile(){ return "liquors.txt";}
-    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
     public Distilling()
     {

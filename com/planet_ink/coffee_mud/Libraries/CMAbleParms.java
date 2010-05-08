@@ -460,7 +460,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 try{ 
                     String oldVal = (String)editRow.elementAt(a,2);
                     fakeSession.previousCMD().clear();
-                    fakeSession.previousCMD().addAll(CMParms.makeVector(A.fakeUserInput(oldVal)));
+                    fakeSession.previousCMD().addAll(new XVector<String>(A.fakeUserInput(oldVal)));
                     String newVal = A.commandLinePrompt(mob,oldVal,showNumber,showFlag);
                     editRow.setElementAt(a,2,newVal);
                 } catch(Exception e) {}
@@ -685,7 +685,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         if(DEFAULT_EDITORS != null)
             return DEFAULT_EDITORS;
         
-        Vector V=CMParms.makeVector(new Object[] {
+        Vector V=new XVector(new Object[] {
                 new AbilityParmEditorImpl("SPELL_ID","The Spell ID",PARMTYPE_CHOICES) {
                     public void createChoices() { createChoices(CMClass.abilities());}
                     public String defaultValue(){ return "Spell_ID";}
@@ -723,12 +723,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 new AbilityParmEditorImpl("ITEM_CLASS_ID","Class ID",PARMTYPE_CHOICES) {
                     public void createChoices() { 
                         Vector V  = new Vector();
-                        V.addAll(CMParms.makeVector(CMClass.clanItems()));
-                        V.addAll(CMParms.makeVector(CMClass.armor()));
-                        V.addAll(CMParms.makeVector(CMClass.basicItems()));
-                        V.addAll(CMParms.makeVector(CMClass.miscMagic()));
-                        V.addAll(CMParms.makeVector(CMClass.miscTech()));
-                        V.addAll(CMParms.makeVector(CMClass.weapons()));
+                        V.addAll(new XVector(CMClass.clanItems()));
+                        V.addAll(new XVector(CMClass.armor()));
+                        V.addAll(new XVector(CMClass.basicItems()));
+                        V.addAll(new XVector(CMClass.miscMagic()));
+                        V.addAll(new XVector(CMClass.miscTech()));
+                        V.addAll(new XVector(CMClass.weapons()));
                         Vector V2=new Vector();
                         Item I;
                         for(Enumeration e=V.elements();e.hasMoreElements();)
@@ -995,7 +995,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         str.append("<TR><TD WIDTH=50%>");
                         str.append("\n\r<SELECT ONCHANGE=\"AddAffect(this);\" NAME="+fieldName+"_AFFECT"+(spells.size()+1)+">");
                         str.append("<OPTION SELECTED VALUE=\"\">Select an Effect");
-                        for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+                        for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
                         {
                             Ability A=(Ability)a.nextElement();
                             String cnam=A.ID();
@@ -1103,7 +1103,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     public void createChoices() {
                         Vector V  = new Vector();
                         Ability A = null;
-                        for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+                        for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
                         {
                             A=(Ability)e.nextElement();
                             if((A.classificationCode() & Ability.ALL_ACODES) == Ability.ACODE_COMMON_SKILL)
@@ -1269,16 +1269,16 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 },
                 new AbilityParmEditorImpl("RESOURCE_OR_MATERIAL","Rsc/Mat",PARMTYPE_CHOICES) {
                     public void createChoices() {
-                        Vector V=CMParms.makeVector(RawMaterial.CODES.NAMES());
-                        V.addAll(CMParms.makeVector(RawMaterial.MATERIAL_DESCS));
+                        Vector V=new XVector<String>(RawMaterial.CODES.NAMES());
+                        V.addAll(new XVector<String>(RawMaterial.MATERIAL_DESCS));
                         createChoices(V);
                     }
                     public String defaultValue(){ return "IRON";}
                 },
                 new AbilityParmEditorImpl("OPTIONAL_RESOURCE_OR_MATERIAL","Rsc/Mat",PARMTYPE_CHOICES) {
                     public void createChoices() {
-                        Vector V=CMParms.makeVector(RawMaterial.CODES.NAMES());
-                        V.addAll(CMParms.makeVector(RawMaterial.MATERIAL_DESCS));
+                        Vector V=new XVector<String>(RawMaterial.CODES.NAMES());
+                        V.addAll(new XVector<String>(RawMaterial.MATERIAL_DESCS));
                         V.addElement("");
                         createChoices(V);
                     }
@@ -1842,10 +1842,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             return choices;
         }
         public DVector createChoices(Vector V) { return createChoices(V.elements());}
-        public DVector createChoices(String[] S) { return createChoices(CMParms.makeVector(S).elements());}
+        public DVector createChoices(String[] S) { return createChoices(new XVector<String>(S).elements());}
         public DVector createBinaryChoices(String[] S) { 
             if(choices != null) return choices;
-            choices = createChoices(CMParms.makeVector(S).elements());
+            choices = createChoices(new XVector<String>(S).elements());
             for(int i=0;i<choices.size();i++)
                 if(i==0)
                     choices.setElementAt(i,1,Integer.toString(0));
@@ -1855,7 +1855,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         }
         public DVector createNumberedChoices(String[] S) { 
             if(choices != null) return choices;
-            choices = createChoices(CMParms.makeVector(S).elements());
+            choices = createChoices(new XVector<String>(S).elements());
             for(int i=0;i<choices.size();i++)
                 choices.setElementAt(i,1,Integer.toString(i));
             return choices;

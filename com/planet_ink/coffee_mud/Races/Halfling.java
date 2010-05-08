@@ -56,7 +56,7 @@ public class Halfling extends StdRace
 	private int[] agingChart={0,1,4,20,50,75,100,110,120};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector resources=new Vector();
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

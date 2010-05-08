@@ -86,9 +86,9 @@ public class CM1Server extends Thread
 				         SocketChannel channel = server.accept();
 				         if (channel != null) 
 				         {
-				            channel.configureBlocking (false);
-				            channel.register (servSelector, SelectionKey.OP_READ);
 				            RequestHandler handler=new RequestHandler(channel);
+				            channel.configureBlocking (false);
+				            channel.register (servSelector, SelectionKey.OP_READ, handler);
 				            handlers.put(channel,handler);
 					        handler.sendMsg("CONNECTED TO "+name.toUpperCase());
 				         } 
@@ -96,7 +96,7 @@ public class CM1Server extends Thread
 				      }
 				      if (key.isReadable()) 
 				      {
-				    	  RequestHandler handler = handlers.get(key.channel());
+				    	  RequestHandler handler = (RequestHandler)key.attachment();
 				  		  threadPool.execute(handler);
 				      }
 				      it.remove();

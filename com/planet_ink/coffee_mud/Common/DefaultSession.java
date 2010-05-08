@@ -872,7 +872,7 @@ public class DefaultSession extends Thread implements Session
                     {
                         boolean keepDown=parts.size()>3?CMath.s_bool((String)parts.elementAt(3)):true;
                         String externalCmd=(parts.size()>4)?CMParms.combine(parts,4):null;
-                        Vector cmd=CMParms.makeVector("SHUTDOWN","NOPROMPT");
+                        Vector cmd=new XVector("SHUTDOWN","NOPROMPT");
                         if(!keepDown)
                         {
                             cmd.add("RESTART");
@@ -1364,9 +1364,9 @@ public class DefaultSession extends Thread implements Session
         }
         if(!CMLib.flags().isCloaked(M))
         {
-            Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOGOFFS);
+            List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOGOFFS);
             for(int i=0;i<channels.size();i++)
-                CMLib.commands().postChannel((String)channels.elementAt(i),M.getClanID(),name+" has logged out",true);
+                CMLib.commands().postChannel((String)channels.get(i),M.getClanID(),name+" has logged out",true);
         }
         CMLib.login().notifyFriends(M,"^X"+M.Name()+" has logged off.^.^?");
             
@@ -1673,7 +1673,7 @@ public class DefaultSession extends Thread implements Session
 
         public void initialize()
         {
-        	Set<MOB> group=theMOB.getGroupMembers(new HashSet());
+        	Set<MOB> group=theMOB.getGroupMembers(new HashSet<MOB>());
             skipRooms.clear();
             for(Iterator i=group.iterator();i.hasNext();)
             {

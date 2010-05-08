@@ -37,7 +37,7 @@ public class Drowish extends StdLanguage
 {
 	public String ID() { return "Drowish"; }
 	public String name(){ return "Drowish";}
-	public static Vector wordLists=null;
+	public static List<String[]> wordLists=null;
 	private static boolean mapped=false;
 	public Drowish()
 	{
@@ -45,7 +45,7 @@ public class Drowish extends StdLanguage
 		if(!mapped){mapped=true;
 					CMLib.ableMapper().addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Vector translationVector(String language)
+	public List<String[]> translationVector(String language)
 	{
 		if(wordLists==null)
 		{
@@ -56,17 +56,17 @@ public class Drowish extends StdLanguage
 			String[] five={"cuiva","cuina","nonwa","imire","nauta","cilta","entuc","norta","latin","lòtea","veuya","veuro","apama","hampa","nurta","firta","saira","holle","herwa","uquen","arcoa","calte","cemma","hanta","tan'en"};
 			String[] six={"mahtale","porisal'que","hairie","tararan","amba'rwa","lati'na","olòtie","amawil","apacen","yavinqua","apalume","lin'quil'ea","menelwa","alassea","nurmea","parmasse","ceniril","heldasse","imirin","eari'na","calaten'gew","lapselunga","ria'nna","eneques"};
 			wordLists=new Vector();
-			wordLists.addElement(one);
-			wordLists.addElement(two);
-			wordLists.addElement(three);
-			wordLists.addElement(four);
-			wordLists.addElement(five);
-			wordLists.addElement(six);
+			wordLists.add(one);
+			wordLists.add(two);
+			wordLists.add(three);
+			wordLists.add(four);
+			wordLists.add(five);
+			wordLists.add(six);
 		}
 		return wordLists;
 	}
 	private static final Hashtable hashwords=new Hashtable();
-	public Hashtable translationHash(String language)
+	public Map<String, String> translationHash(String language)
 	{
 		if((hashwords!=null)&&(hashwords.size()>0))
 			return hashwords;

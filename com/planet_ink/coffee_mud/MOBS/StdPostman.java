@@ -782,7 +782,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	                    {
 	                        Vector PDV=getAllLocalBoxPD(mob.getLiegeID());
 	                        if((PDV!=null)&&(PDV.size()>0))
-	                            CMParms.addToVector(PDV,V);
+	                            V.addAll(PDV);
 	                    }
 	                }
 

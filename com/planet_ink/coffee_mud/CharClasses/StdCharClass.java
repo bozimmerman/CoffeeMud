@@ -455,7 +455,7 @@ public class StdCharClass implements CharClass
                     alreadyAble.put(A.ID(),A);
                 }
             }
-            for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+            for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
             {
                 Ability A=(Ability)a.nextElement();
                 int lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
@@ -472,7 +472,7 @@ public class StdCharClass implements CharClass
         else
         {
         	Vector onesToAdd=new Vector();
-			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
 				Ability A=(Ability)a.nextElement();
 				if((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())>0)

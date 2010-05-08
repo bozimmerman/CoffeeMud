@@ -81,7 +81,7 @@ public class Chant_BestowName extends Chant
 
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		if((!CMLib.flags().isAnimalIntelligence(target))||(!target.isMonster())||(!mob.getGroupMembers(new HashSet()).contains(target)))
+		if((!CMLib.flags().isAnimalIntelligence(target))||(!target.isMonster())||(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
 		{
 			mob.tell("This chant only works on non-player animals in your group.");
 			return false;

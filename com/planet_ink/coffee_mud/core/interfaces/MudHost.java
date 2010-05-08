@@ -40,7 +40,6 @@ import java.util.*;
  * @author Bo Zimmerman
  *
  */
-@SuppressWarnings("unchecked")
 public interface MudHost
 {
     /** the number of milliseconds between each savethread execution */
@@ -86,7 +85,7 @@ public interface MudHost
      * Return any internal threads that are a source of troubles
      * @return a list of threads that need service or killing
      */
-    public Vector getOverdueThreads();
+    public List<Thread> getOverdueThreads();
     
     /**
      * Return the viewable name of the language supported by this host.

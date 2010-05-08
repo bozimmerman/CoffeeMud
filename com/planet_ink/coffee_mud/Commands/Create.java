@@ -871,7 +871,7 @@ public class Create extends StdCommand
                 mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
             }
             else
-                mob.doCommand(CMParms.makeVector("MODIFY","HOLIDAY",named),metaFlags);
+                mob.doCommand(new XVector("MODIFY","HOLIDAY",named),metaFlags);
         }
         else
         if(commandType.equals("FACTION"))

@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class PollLoader
 {
 	protected DBConnector DB=null;
@@ -77,7 +76,7 @@ public class PollLoader
     public List<DatabaseEngine.PollData> DBReadList()
     {
         DBConnection D=null;
-        Vector rows=new Vector();
+        Vector<DatabaseEngine.PollData> rows=new Vector<DatabaseEngine.PollData>();
         try
         {
             D=DB.DBFetch();

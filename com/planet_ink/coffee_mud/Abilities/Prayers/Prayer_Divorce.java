@@ -79,9 +79,9 @@ public class Prayer_Divorce extends Prayer
 					femaleName=target.Name();
 					maleName=target.getLiegeID();
 				}
-                Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DIVORCES);
+                List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DIVORCES);
                 for(int i=0;i<channels.size();i++)
-                    CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),maleName+" and "+femaleName+" are now divorced.",true);
+                    CMLib.commands().postChannel((String)channels.get(i),mob.getClanID(),maleName+" and "+femaleName+" are now divorced.",true);
 				MOB M=CMLib.players().getPlayer(target.getLiegeID());
 				if(M!=null) M.setLiegeID("");
 				target.setLiegeID("");

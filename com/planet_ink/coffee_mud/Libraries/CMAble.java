@@ -261,7 +261,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
         {
             Ability A=null;
             V=new STreeSet<Integer>();
-            for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+            for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
             {
                 A=(Ability)e.nextElement();
                 if(((A.classificationCode()&Ability.ALL_DOMAINS)==domain)
@@ -603,7 +603,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			if(abilityID.startsWith("*"))
 			{
 				String a=abilityID.substring(1).toUpperCase();
-				for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+				for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 				{
 					preA=(Ability)e.nextElement();
 					if(preA.ID().toUpperCase().endsWith(a))
@@ -614,7 +614,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			if(abilityID.endsWith("*"))
 			{
 				String a=abilityID.substring(0,abilityID.length()-1).toUpperCase();
-				for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+				for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 				{
 					preA=(Ability)e.nextElement();
 					if(preA.ID().toUpperCase().startsWith(a))
@@ -1399,7 +1399,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			}
 			if((amt>0)&&(currentAND)&&(i>0)) return null;
 			previousValue=amt<=0;
-			if(previousValue) CMParms.addToVector(thisSet,passes);
+			if(previousValue) passes.addAll(thisSet);
 		}
 		if(passes.size()==0) return null;
 		return passes;

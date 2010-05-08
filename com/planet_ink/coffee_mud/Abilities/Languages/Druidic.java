@@ -37,7 +37,7 @@ public class Druidic extends StdLanguage
 {
 	public String ID() { return "Druidic"; }
 	public String name(){ return "Druidic";}
-	public static Vector wordLists=null;
+	public static List<String[]> wordLists=null;
 	private static boolean mapped=false;
 	public Druidic()
 	{
@@ -48,7 +48,7 @@ public class Druidic extends StdLanguage
 					}
 	}
 
-	public Vector translationVector(String language)
+	public List<String[]> translationVector(String language)
 	{
 		if(wordLists==null)
 		{
@@ -59,12 +59,12 @@ public class Druidic extends StdLanguage
 			String[] five={"croak","bark","blub-blub","cuckoo","squeak","peep"};
 			String[] six={"gobble-gobble","ribbit","b-a-a-a-h","n-a-a-a-y","heehaw","cock-a-doodle-doo"};
 			wordLists=new Vector();
-			wordLists.addElement(one);
-			wordLists.addElement(two);
-			wordLists.addElement(three);
-			wordLists.addElement(four);
-			wordLists.addElement(five);
-			wordLists.addElement(six);
+			wordLists.add(one);
+			wordLists.add(two);
+			wordLists.add(three);
+			wordLists.add(four);
+			wordLists.add(five);
+			wordLists.add(six);
 		}
 		return wordLists;
 	}

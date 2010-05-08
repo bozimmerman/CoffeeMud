@@ -489,7 +489,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 							else
 				                CMLib.commands().postSay(this,mob,"Congratulations!",true,false);
                             CMLib.coffeeShops().returnMoney(mob,data.currency,data.highBid-data.bid);
-                            CMLib.coffeeShops().purchaseItems(data.auctioningI,CMParms.makeVector(data.auctioningI),this,mob);
+                            CMLib.coffeeShops().purchaseItems(data.auctioningI,new XVector(data.auctioningI),this,mob);
     						if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
     							mob.location().recoverRoomStats();
 					    	CMLib.database().DBDeleteJournal(auctionHouse(),data.auctionDBKey);
@@ -503,7 +503,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
                             CMLib.coffeeShops().returnMoney(data.auctioningM,data.currency,finalAmount);
                             CMLib.coffeeShops().auctionNotify(data.auctioningM,"Your auction for "+data.auctioningI.name()+" sold to "+mob.Name()+" for "+CMLib.beanCounter().nameCurrencyShort(data.currency,data.buyOutPrice)+", after the house took a cut of "+CMLib.beanCounter().nameCurrencyShort(data.currency,houseCut)+".",data.auctioningI.Name());
 				            CMLib.beanCounter().subtractMoney(mob,data.currency,data.buyOutPrice);
-                            CMLib.coffeeShops().purchaseItems(data.auctioningI,CMParms.makeVector(data.auctioningI),this,mob);
+                            CMLib.coffeeShops().purchaseItems(data.auctioningI,new XVector(data.auctioningI),this,mob);
 					    	CMLib.database().DBDeleteJournal(auctionHouse(),data.auctionDBKey);
 						}
 					}

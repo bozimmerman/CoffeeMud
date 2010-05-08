@@ -675,7 +675,7 @@ public class Factions extends StdLibrary implements FactionManager
 
             // show in special reports
             boolean alreadyReporter=false;
-            for(Enumeration e=CMLib.factions().factions();e.hasMoreElements();)
+            for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
             {
                 Faction F2=(Faction)e.nextElement();
                 if(F2.showInSpecialReported()) alreadyReporter=true;
@@ -693,7 +693,7 @@ public class Factions extends StdLibrary implements FactionManager
             // non-auto defaults
             error=true;
             if(!me.defaults().hasMoreElements())
-                me.setDefaults(CMParms.makeVector("0"));
+                me.setDefaults(new XVector("0"));
             ++showNumber;
             while(error&&(mob.session()!=null)&&(!mob.session().killFlag()))
             {

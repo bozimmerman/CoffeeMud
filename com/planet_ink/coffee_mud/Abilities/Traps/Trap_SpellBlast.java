@@ -58,7 +58,7 @@ public class Trap_SpellBlast extends StdTrap
 		return null;
 	}
 
-    public Vector getTrapComponents() {
+    public List<Item> getTrapComponents() {
         Vector V=new Vector();
         Scroll I=(Scroll)CMClass.getMiscMagic("StdScroll");
         Ability A=CMClass.getAbility(text());
@@ -99,7 +99,7 @@ public class Trap_SpellBlast extends StdTrap
 		{
 			if((!invoker().mayIFight(target))
 			||(isLocalExempt(target))
-			||(invoker().getGroupMembers(new HashSet()).contains(target))
+			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())
 			||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) setting off a trap!");

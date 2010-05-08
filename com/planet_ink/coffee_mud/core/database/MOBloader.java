@@ -28,7 +28,6 @@ import java.util.*;
  * KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-@SuppressWarnings("unchecked")
 public class MOBloader
 {
     protected DBConnector DB=null;
@@ -116,21 +115,21 @@ public class MOBloader
                 String buf=DBConnections.getRes(R,"CMPFIL");
                 pstats.setXML(buf);
                 stats.setNonBaseStatsFromString(DBConnections.getRes(R,"CMSAVE"));
-                Vector V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"TATTS"),true);
+                List<String> V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"TATTS"),true);
                 for(Enumeration<MOB.Tattoo> e=mob.tattoos();e.hasMoreElements();)
                 	mob.delTattoo(e.nextElement());
                 for(int v=0;v<V9.size();v++)
-                    mob.addTattoo(parseTattoo((String)V9.elementAt(v)));
+                    mob.addTattoo(parseTattoo((String)V9.get(v)));
                 V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"EDUS"),true);
                 while(mob.numExpertises()>0)
                     mob.delExpertise(mob.fetchExpertise(0));
                 for(int v=0;v<V9.size();v++)
-                    mob.addExpertise((String)V9.elementAt(v));
+                    mob.addExpertise((String)V9.get(v));
                 if(pstats.getBirthday()==null)
                     stats.setStat(CharStats.STAT_AGE,
                         pstats.initializeBirthday((int)Math.round(CMath.div(mob.getAgeHours(),60.0)),stats.getMyRace()));
                 mob.setImage(CMLib.xml().returnXMLValue(buf,"IMG"));
-                Vector CleanXML=CMLib.xml().parseAllXML(DBConnections.getRes(R,"CMMXML"));
+                Vector<XMLLibrary.XMLpiece> CleanXML=CMLib.xml().parseAllXML(DBConnections.getRes(R,"CMMXML"));
                 R.close();
                 DB.DBDone(D);
                 D=null;
@@ -169,8 +168,8 @@ public class MOBloader
         {
             D=DB.DBFetch();
             ResultSet R=D.query("SELECT * FROM CMCHIT WHERE CMUSERID='"+mob.Name()+"'");
-            Hashtable itemNums=new Hashtable();
-            Hashtable itemLocs=new Hashtable();
+            Hashtable<String,Item> itemNums=new Hashtable<String,Item>();
+            Hashtable<Item,String> itemLocs=new Hashtable<Item,String>();
             while(R.next())
             {
                 String itemNum=DBConnections.getRes(R,"CMITNM");
@@ -200,7 +199,7 @@ public class MOBloader
                     mob.addItem(newItem);
                 }
             }
-            for(Enumeration e=itemLocs.keys();e.hasMoreElements();)
+            for(Enumeration<Item> e=itemLocs.keys();e.hasMoreElements();)
             {
                 Item keyItem=(Item)e.nextElement();
                 String location=(String)itemLocs.get(keyItem);
@@ -321,7 +320,7 @@ public class MOBloader
     public List<String> getUserList()
     {
         DBConnection D=null;
-        Vector V=new Vector();
+        Vector<String> V=new Vector<String>();
         try
         {
             D=DB.DBFetch();
@@ -409,7 +408,7 @@ public class MOBloader
     public List<PlayerLibrary.ThinPlayer> getExtendedUserList()
     {
         DBConnection D=null;
-        Vector allUsers=new Vector();
+        Vector<PlayerLibrary.ThinPlayer> allUsers=new Vector<PlayerLibrary.ThinPlayer>();
         try
         {
             D=DB.DBFetch();
@@ -461,7 +460,7 @@ public class MOBloader
             head.append(CMStrings.padRight("Lvl",4)+" ");
             head.append(CMStrings.padRight("Exp/Lvl",17));
             head.append("] Character name\n\r");
-            HashSet done=new HashSet();
+            HashSet<String> done=new HashSet<String>();
             if(R!=null) while(R.next())
             {
                 String username=DBConnections.getRes(R,"CMUSERID");
@@ -494,7 +493,7 @@ public class MOBloader
                     head.append("\n\r");
                 }
             }
-            for(Enumeration e=CMLib.players().players();e.hasMoreElements();)
+            for(Enumeration<MOB> e=CMLib.players().players();e.hasMoreElements();)
             {
                 MOB M=(MOB)e.nextElement();
                 if((M.getLiegeID().equals(liegeID))&&(!done.contains(M.Name())))
@@ -554,10 +553,10 @@ public class MOBloader
         return DV;
     }
 
-    public Vector DBScanFollowers(MOB mob)
+    public List<MOB> DBScanFollowers(MOB mob)
     {
         DBConnection D=null;
-        Vector V=new Vector();
+        Vector<MOB> V=new Vector<MOB>();
         // now grab the followers
         try
         {
@@ -594,9 +593,9 @@ public class MOBloader
     {
         Room location=mob.location();
         if(location==null) location=mob.getStartRoom();
-        Vector V=DBScanFollowers(mob);
+        List<MOB> V=DBScanFollowers(mob);
         for(int v=0;v<V.size();v++) {
-            MOB newMOB=(MOB)V.elementAt(v);
+            MOB newMOB=(MOB)V.get(v);
             Room room=(location==null)?newMOB.getStartRoom():location;
             newMOB.setStartRoom(room);
             newMOB.setLocation(room);
@@ -789,10 +788,10 @@ public class MOBloader
         DB.update("UPDATE CMCHAR SET CMDESC='"+mob.description()+"' WHERE CMUSERID='"+mob.Name()+"'");
     }
 
-    private Vector getDBItemUpdateStrings(MOB mob)
+    private List<String> getDBItemUpdateStrings(MOB mob)
     {
-        HashSet done=new HashSet();
-        Vector strings=new Vector();
+        HashSet<String> done=new HashSet<String>();
+        Vector<String> strings=new Vector<String>();
         for(int i=0;i<mob.numItems();i++)
         {
             Item thisItem=mob.getItem(i);
@@ -815,10 +814,10 @@ public class MOBloader
     public void DBUpdateItems(MOB mob)
     {
         if(mob.Name().length()==0) return;
-        Vector statements=new Vector();
+        Vector<String> statements=new Vector<String>();
         statements.addElement("DELETE FROM CMCHIT WHERE CMUSERID='"+mob.Name()+"'");
         statements.addAll(getDBItemUpdateStrings(mob));
-        DB.update(CMParms.toStringArray(statements));
+        DB.update(statements.toArray(new String[0]));
     }
 
     // this method is unused, but is a good idea of how to collect riders, followers, carts, etc.
@@ -851,7 +850,7 @@ public class MOBloader
     public void DBUpdateFollowers(MOB mob)
     {
         if((mob==null)||(mob.Name().length()==0)) return;
-        Vector statements=new Vector();
+        Vector<String> statements=new Vector<String>();
         statements.addElement("DELETE FROM CMCHFO WHERE CMUSERID='"+mob.Name()+"'");
         for(int f=0;f<mob.numFollowers();f++)
         {
@@ -871,9 +870,9 @@ public class MOBloader
     public void DBDelete(MOB mob)
     {
         if(mob.Name().length()==0) return;
-        Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.PLAYERPURGES);
+        List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.PLAYERPURGES);
         for(int i=0;i<channels.size();i++)
-            CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just been deleted.",true);
+            CMLib.commands().postChannel((String)channels.get(i),mob.getClanID(),mob.Name()+" has just been deleted.",true);
         CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_PURGES);
         DB.update("DELETE FROM CMCHAR WHERE CMUSERID='"+mob.Name()+"'");
         while(mob.numItems()>0)
@@ -922,9 +921,9 @@ public class MOBloader
     public void DBUpdateAbilities(MOB mob)
     {
         if(mob.Name().length()==0) return;
-        Vector statements=new Vector();
+        Vector<String> statements=new Vector<String>();
         statements.addElement("DELETE FROM CMCHAB WHERE CMUSERID='"+mob.Name()+"'");
-        HashSet H=new HashSet();
+        HashSet<String> H=new HashSet<String>();
         for(int a=0;a<mob.numLearnedAbilities();a++)
         {
             Ability thisAbility=mob.fetchAbility(a);
@@ -1057,7 +1056,7 @@ public class MOBloader
         return account;
     }
     
-    public Vector<PlayerAccount> DBListAccounts(String mask)
+    public List<PlayerAccount> DBListAccounts(String mask)
     {
         DBConnection D=null;
     	PlayerAccount account = null;
@@ -1143,7 +1142,7 @@ public class MOBloader
     public String[] DBFetchEmailData(String name)
     {
         String[] data=new String[2];
-        for(Enumeration e=CMLib.players().players();e.hasMoreElements();)
+        for(Enumeration<MOB> e=CMLib.players().players();e.hasMoreElements();)
         {
             MOB M=(MOB)e.nextElement();
             if((M.Name().equalsIgnoreCase(name))&&(M.playerStats()!=null))
@@ -1179,7 +1178,7 @@ public class MOBloader
     public String DBEmailSearch(String email)
     {
         DBConnection D=null;
-        for(Enumeration e=CMLib.players().players();e.hasMoreElements();)
+        for(Enumeration<MOB> e=CMLib.players().players();e.hasMoreElements();)
         {
             MOB M=(MOB)e.nextElement();
             if((M.playerStats()!=null)&&(M.playerStats().getEmail().equalsIgnoreCase(email))) return M.Name();

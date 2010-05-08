@@ -98,7 +98,7 @@ public class Thief_Squatting extends ThiefSkill
 				mob.tell("Your squat has succeeded.  This property now belongs to you.");
 				title.setLandOwner(mob.Name());
 				title.updateTitle();
-				title.updateLot(CMParms.makeVector(mob.name()));
+				title.updateLot(new XVector(mob.name()));
 			}
 		}
 		failed=false;

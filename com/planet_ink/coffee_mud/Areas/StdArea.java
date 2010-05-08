@@ -938,7 +938,7 @@ public class StdArea implements Area
 			Vector levelRanges=new Vector();
 			Vector alignRanges=new Vector();
 			Faction theFaction=null;
-			for(Enumeration e=CMLib.factions().factions();e.hasMoreElements();)
+			for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
 			{
 			    Faction F=(Faction)e.nextElement();
 			    if(F.showInSpecialReported())
@@ -1019,7 +1019,7 @@ public class StdArea implements Area
 			s.append("Author         : "+author+"\n\r");
         s.append("Number of rooms: "+statData[Area.AREASTAT_VISITABLEROOMS]+"\n\r");
 		Faction theFaction=null;
-		for(Enumeration e=CMLib.factions().factions();e.hasMoreElements();)
+		for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
 		{
 		    Faction F=(Faction)e.nextElement();
 		    if(F.showInSpecialReported())

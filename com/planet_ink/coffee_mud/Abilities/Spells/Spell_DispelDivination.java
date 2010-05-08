@@ -105,7 +105,7 @@ public class Spell_DispelDivination extends Spell
 			int affectType=verbalCastCode(mob,target,auto);
 			if(((!mob.isMonster())&&(target instanceof MOB)&&(!((MOB)target).isMonster()))
 			||(mob==target)
-			||(mob.getGroupMembers(new HashSet()).contains(target)))
+			||(mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
 				affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 			if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
 

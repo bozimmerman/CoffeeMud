@@ -56,9 +56,9 @@ public class Prayer_PeaceRitual extends Prayer
 			return false;
 
 		MOB mob=(MOB)affected;
-        Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
+        List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
         for(int i=0;i<channels.size();i++)
-    		CMLib.commands().postChannel((String)channels.elementAt(i),clan2,mob.name()+" located in '"+mob.location().displayText()+" is performing a peace ritual on behalf of "+clan2+".",false);
+    		CMLib.commands().postChannel((String)channels.get(i),clan2,mob.name()+" located in '"+mob.location().displayText()+" is performing a peace ritual on behalf of "+clan2+".",false);
 		return super.tick(ticking,tickID);
 	}
 
@@ -114,9 +114,9 @@ public class Prayer_PeaceRitual extends Prayer
 					C2.setClanRelations(C1.clanID(),Clan.REL_HOSTILE,System.currentTimeMillis());
 					C2.update();
 				}
-                Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
+                List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
                 for(int i=0;i<channels.size();i++)
-                    CMLib.commands().postChannel((String)channels.elementAt(i),"ALL","There is now peace between "+C1.name()+" and "+C2.name()+".",false);
+                    CMLib.commands().postChannel((String)channels.get(i),"ALL","There is now peace between "+C1.name()+" and "+C2.name()+".",false);
 			}
 		}
 	}

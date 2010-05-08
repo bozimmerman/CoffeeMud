@@ -144,9 +144,9 @@ public class Prayer_Marry extends Prayer
 				wife.setLiegeID(husband.Name());
 				CMLib.coffeeTables().bump(husband,CoffeeTableRow.STAT_MARRIAGES);
 				CMLib.commands().postSay(mob,husband,"You may kiss your bride!",false,false);
-                Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.MARRIAGES);
+                List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.MARRIAGES);
                 for(int i=0;i<channels.size();i++)
-                    CMLib.commands().postChannel((String)channels.elementAt(i),husband.getClanID(),husband.name()+" and "+wife.name()+" were just joined in holy matrimony!",true);
+                    CMLib.commands().postChannel((String)channels.get(i),husband.getClanID(),husband.name()+" and "+wife.name()+" were just joined in holy matrimony!",true);
              }
 		}
 		else

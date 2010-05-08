@@ -35,7 +35,6 @@ import java.io.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class ProcessSMTPrequest implements Runnable
 {
 	private final static String cr = "\r\n";
@@ -47,10 +46,10 @@ public class ProcessSMTPrequest implements Runnable
 	private SMTPserver 	 server=null;
 	private StringBuffer data=null;
 	protected String 	 from=null;
-	protected Vector 	 to=null;
 	protected String 	 domain=null;
 	protected String  	 runnableName;
 	protected boolean 	 debug=false;
+	protected Vector<String>	to=null;
 
 	public ProcessSMTPrequest(Socket a_sock, SMTPserver a_Server)
 	{
@@ -338,9 +337,9 @@ public class ProcessSMTPrequest implements Runnable
 												}
 												else
 												{
-													Hashtable lists=server.getMailingLists(null);
-													Vector mylist=null;
-													if(lists!=null)	mylist=(Vector)lists.get(journal);
+													Hashtable<String,Vector<String>> lists=server.getMailingLists(null);
+													Vector<String> mylist=null;
+													if(lists!=null)	mylist=lists.get(journal);
 													if((mylist==null)||(!mylist.contains(from)))
 													{
 														replyData=("552 Mailbox '"+journal+"' only accepts messages from subscribers.  Send an email with 'subscribe' as the subject."+cr).getBytes();
@@ -757,7 +756,7 @@ public class ProcessSMTPrequest implements Runnable
 												if(!jerror)
 												{
 													replyData=("250 OK "+name+cr).getBytes();
-													if(to==null) to=new Vector();
+													if(to==null) to=new Vector<String>();
 													if(!to.contains(name))
 														to.addElement(name);
 												}
@@ -768,7 +767,7 @@ public class ProcessSMTPrequest implements Runnable
 											else
 											{
 												replyData=("250 OK "+name+cr).getBytes();
-												if(to==null) to=new Vector();
+												if(to==null) to=new Vector<String>();
 												if(!to.contains(name))
 													to.addElement(name);
 											}

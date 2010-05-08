@@ -56,7 +56,7 @@ public class Kobold extends StdRace
 	private int[] agingChart={0,1,2,12,20,30,45,47,49};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector resources=new Vector();
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

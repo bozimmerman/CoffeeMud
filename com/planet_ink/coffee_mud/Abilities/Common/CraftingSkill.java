@@ -96,12 +96,13 @@ public class CraftingSkill extends GatheringSkill
 		
 	}
 	
-	protected Vector addRecipes(MOB mob, Vector recipes)
+	protected List<List<String>> addRecipes(MOB mob, List<List<String>> recipes)
 	{
 	    if(mob==null) return recipes;
 	    Item I=null;
-	    Vector V=null;
-	    Vector V2=null;
+	    List<List<String>> V=null;
+	    List<String> V2=null;
+	    List<String> lastRecipeV=null;
 	    boolean clonedYet=false;
 	    for(int i=0;i<mob.numItems();i++)
 	    {
@@ -109,25 +110,32 @@ public class CraftingSkill extends GatheringSkill
 	        if((I instanceof Recipe)
 	        &&(((Recipe)I).getCommonSkillID().equalsIgnoreCase(ID())))
 	        {
-	            if(!clonedYet){ recipes=(Vector)recipes.clone(); clonedYet=true;}
+	            if(!clonedYet){ recipes=new XVector<List<String>>(recipes); clonedYet=true;}
 	            V=loadList(new StringBuffer(((Recipe)I).getRecipeCodeLine()));
 	            for(int v=0;v<V.size();v++)
 	            {
-	                V2=(Vector)V.elementAt(v);
-	                if((recipes.size()==0)||(((Vector)recipes.lastElement()).size()<=V2.size()))
-	                    recipes.addElement(V2);
+	                V2=V.get(v);
+	                if(recipes.size()==0)
+	                    recipes.add(V2);
 	                else
 	                {
-	                    Log.errOut(ID(),"Not enough parms ("+((Vector)recipes.lastElement()).size()+"<="+V2.size()+"): "+((Recipe)I).getRecipeCodeLine());
-	                    while(V2.size()<((Vector)recipes.lastElement()).size()) V2.addElement("");
-	                    while(V2.size()>((Vector)recipes.lastElement()).size()) V2.removeElementAt(V2.size()-1);
-	                    recipes.addElement(V2);
+	            	    lastRecipeV=recipes.get(recipes.size()-1);
+		                if((recipes.size()==0)||lastRecipeV.size()<=V2.size())
+		                    recipes.add(V2);
+		                else
+		                {
+		                    Log.errOut(ID(),"Not enough parms ("+lastRecipeV.size()+"<="+V2.size()+"): "+((Recipe)I).getRecipeCodeLine());
+		                    while(V2.size()<lastRecipeV.size()) V2.add("");
+		                    while(V2.size()>lastRecipeV.size()) V2.remove(V2.size()-1);
+		                    recipes.add(V2);
+		                }
 	                }
-	                V2.trimToSize();
+	                if(V2 instanceof Vector)
+	                ((Vector)V2).trimToSize();
 	            }
 	        }
 	    }
-	    if(recipes!=null) recipes.trimToSize();
+	    if(recipes instanceof Vector) ((Vector)recipes).trimToSize();
 	    return recipes;
 	}
 	
@@ -289,8 +297,8 @@ public class CraftingSkill extends GatheringSkill
 		return amt;
 	}
 	
-	public Vector fetchRecipes(){return loadRecipes();}
-	protected Vector loadRecipes(){ return new Vector();}
+	public List<List<String>> fetchRecipes(){return loadRecipes();}
+	protected List<List<String>> loadRecipes(){ return new Vector();}
 	
 	protected Ability getCraftableSpellRecipe(Vector commands)
 	{
@@ -300,21 +308,20 @@ public class CraftingSkill extends GatheringSkill
 			spellName=CMParms.combine(commands,0);
 		else
 		{
-			Vector recipes=loadRecipes();
-			Vector V=(Vector)recipes.elementAt(CMLib.dice().roll(1,recipes.size(),-1));
-			spellName=(String)V.firstElement();
+			List<List<String>> recipes=loadRecipes();
+			List<String> V=recipes.get(CMLib.dice().roll(1,recipes.size(),-1));
+			spellName=(String)V.get(0);
 		}
 		if(spellName!=null)
 		{
 			theSpell=CMClass.getAbility((String)commands.firstElement());
 			if(theSpell==null)
 			{
-				Vector recipes=loadRecipes();
-				for(Enumeration e=recipes.elements();e.hasMoreElements();)
+				List<List<String>> recipes=loadRecipes();
+				for(List<String> V : recipes)
 				{
-					Vector V=(Vector)e.nextElement();
-					if(CMLib.english().containsString((String)V.firstElement(),spellName))
-						theSpell=CMClass.getAbility((String)V.firstElement());
+					if(CMLib.english().containsString((String)V.get(0),spellName))
+						theSpell=CMClass.getAbility((String)V.get(0));
 					if(theSpell!=null) break;	
 				}
 			}
@@ -429,7 +436,7 @@ public class CraftingSkill extends GatheringSkill
 		return data;
 	}
 
-	protected void randomRecipeFix(MOB mob, Vector recipes, Vector commands, int autoGeneration)
+	protected void randomRecipeFix(MOB mob, List<List<String>> recipes, Vector commands, int autoGeneration)
 	{
 		if(((mob.isMonster()&&(!CMLib.flags().isAnimalIntelligence(mob)))||(autoGeneration>0))
 		&&(commands.size()==0)
@@ -440,7 +447,7 @@ public class CraftingSkill extends GatheringSkill
             int maxtries=100;
             while((++tries)<maxtries)
             {
-    			Vector randomRecipe=(Vector)recipes.elementAt(CMLib.dice().roll(1,recipes.size(),-1));
+    			Vector randomRecipe=(Vector)recipes.get(CMLib.dice().roll(1,recipes.size(),-1));
                 boolean proceed=true;
                 if((randomRecipe.size()>1))
                 {
@@ -511,14 +518,14 @@ public class CraftingSkill extends GatheringSkill
 	public List<ItemKeyPair> craftAllItemSets(int material)
 	{
 		List<ItemKeyPair> allItems=new Vector<ItemKeyPair>();
-		Vector recipes=fetchRecipes();
+		List<List<String>> recipes=fetchRecipes();
 		Item built=null;
 		HashSet<String> usedNames=new HashSet<String>();
 		ItemKeyPair pair=null;
 		String s=null;
 		for(int r=0;r<recipes.size();r++)
 		{
-			s=(String)(((Vector)recipes.elementAt(r)).firstElement());
+			s=(String)((recipes.get(r)).get(0));
 			s=CMStrings.replaceAll(s,"%","").trim();
 			pair=craftItem(s,material);
 			if(pair==null) continue;
@@ -536,7 +543,7 @@ public class CraftingSkill extends GatheringSkill
 	public ItemKeyPair craftItem(String recipe)
 	{
 		List<Integer> rscs=myResources();
-		if(rscs.size()==0) rscs=CMParms.makeVector(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
+		if(rscs.size()==0) rscs=new XVector(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
 		int material=((Integer)rscs.get(CMLib.dice().roll(1,rscs.size(),-1))).intValue();
 		return craftItem(recipe,material);
 	}
@@ -546,7 +553,7 @@ public class CraftingSkill extends GatheringSkill
 		List<Integer> rscs=myResources();
 		List<ItemKeyPair> allItems=new Vector<ItemKeyPair>();
 		List<ItemKeyPair> pairs=null;
-		if(rscs.size()==0) rscs=CMParms.makeVector(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
+		if(rscs.size()==0) rscs=new XVector(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
 		for(int r=0;r<rscs.size();r++)
 		{
 			pairs=craftAllItemSets(((Integer)rscs.get(r)).intValue());
@@ -556,34 +563,34 @@ public class CraftingSkill extends GatheringSkill
 		return allItems;
 	}
 	
-	public Vector matchingRecipeNames(String recipeName, boolean beLoose)
+	public List<List<String>> matchingRecipeNames(String recipeName, boolean beLoose)
 	{
 		return matchingRecipeNames(fetchRecipes(),recipeName,beLoose);
 	}
 	
-	protected Vector matchingRecipeNames(Vector recipes, String recipeName, boolean beLoose)
+	protected List<List<String>> matchingRecipeNames(List<List<String>> recipes, String recipeName, boolean beLoose)
 	{
-		Vector matches=new Vector();
+		List<List<String>> matches=new Vector();
 		if(recipeName.length()==0) return matches;
 		for(int r=0;r<recipes.size();r++)
 		{
-			Vector V=(Vector)recipes.elementAt(r);
+			List<String> V=recipes.get(r);
 			if(V.size()>0)
 			{
-				String item=(String)V.elementAt(0);
+				String item=(String)V.get(0);
 				if(replacePercent(item,"").equalsIgnoreCase(recipeName))
-					matches.addElement(V);
+					matches.add(V);
 			}
 		}
 		if(matches.size()>0) return matches;
 		for(int r=0;r<recipes.size();r++)
 		{
-			Vector V=(Vector)recipes.elementAt(r);
+			List<String> V=recipes.get(r);
 			if(V.size()>0)
 			{
-				String item=(String)V.elementAt(0);
+				String item=(String)V.get(0);
 				if((replacePercent(item,"").toUpperCase().indexOf(recipeName.toUpperCase())>=0))
-					matches.addElement(V);
+					matches.add(V);
 			}
 		}
 		if(matches.size()>0) return matches;
@@ -591,12 +598,12 @@ public class CraftingSkill extends GatheringSkill
 		{
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector V=(Vector)recipes.elementAt(r);
+				List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String item=(String)V.elementAt(0);
+					String item=(String)V.get(0);
 					if((recipeName.toUpperCase().indexOf(replacePercent(item,"").toUpperCase())>=0))
-						matches.addElement(V);
+						matches.add(V);
 				}
 			}
 			if(matches.size()>0) return matches;
@@ -604,13 +611,13 @@ public class CraftingSkill extends GatheringSkill
 			if(lastWord.length()>1)
     			for(int r=0;r<recipes.size();r++)
     			{
-    				Vector V=(Vector)recipes.elementAt(r);
+    				List<String> V=recipes.get(r);
     				if(V.size()>0)
     				{
-    					String item=(String)V.elementAt(0);
+    					String item=(String)V.get(0);
     					if((replacePercent(item,"").toUpperCase().indexOf(lastWord.toUpperCase())>=0)
     					||(lastWord.toUpperCase().indexOf(replacePercent(item,"").toUpperCase())>=0))
-    						matches.addElement(V);
+    						matches.add(V);
     				}
     			}
 		}

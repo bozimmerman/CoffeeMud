@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class AbilityAffectNext extends StdWebMacro
 {
 	public String name(){return getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
@@ -50,7 +49,7 @@ public class AbilityAffectNext extends StdWebMacro
 		String ableType=httpReq.getRequestParameter("ABILITYTYPE");
 		if((ableType!=null)&&(ableType.length()>0))
 			parms.put(ableType,ableType);
-		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
 			boolean okToShow=true;

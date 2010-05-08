@@ -229,7 +229,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 	public void makePeaceInGroup(MOB mob)
 	{
-		Set<MOB> myGroup=mob.getGroupMembers(new HashSet());
+		Set<MOB> myGroup=mob.getGroupMembers(new HashSet<MOB>());
 		for(Iterator e=myGroup.iterator();e.hasNext();)
 		{
 			MOB mob2=(MOB)e.next();
@@ -1146,7 +1146,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	                &&(target.fetchEffect("Injury")==null))
 	                {
 	                    Ability A=CMClass.getAbility("Injury");
-	                    if(A!=null) A.invoke(target,CMParms.makeVector(msg),target,true,0);
+	                    if(A!=null) A.invoke(target,new XVector(msg),target,true,0);
 	                }
                 }
             }
@@ -1162,18 +1162,18 @@ public class MUDFight extends StdLibrary implements CombatLibrary
             if((!deadmob.isMonster())&&(deadmob.soulMate()==null))
             {
                 CMLib.coffeeTables().bump(deadmob,CoffeeTableRow.STAT_DEATHS);
-                Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DETAILEDDEATHS);
-                Vector channels2=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DEATHS);
+                List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DETAILEDDEATHS);
+                List<String> channels2=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DEATHS);
                 if(!CMLib.flags().isCloaked(deadmob))
                 for(int i=0;i<channels.size();i++)
                 if((msg.tool()!=null)&&(msg.tool() instanceof MOB))
-                    CMLib.commands().postChannel((String)channels.elementAt(i),deadmob.getClanID(),deadmob.Name()+" was just killed in "+CMLib.map().getExtendedRoomID(deadmob.location())+" by "+msg.tool().Name()+".",true);
+                    CMLib.commands().postChannel((String)channels.get(i),deadmob.getClanID(),deadmob.Name()+" was just killed in "+CMLib.map().getExtendedRoomID(deadmob.location())+" by "+msg.tool().Name()+".",true);
                 else
-                    CMLib.commands().postChannel((String)channels.elementAt(i),deadmob.getClanID(),deadmob.Name()+" has just died at "+CMLib.map().getExtendedRoomID(deadmob.location()),true);
+                    CMLib.commands().postChannel((String)channels.get(i),deadmob.getClanID(),deadmob.Name()+" has just died at "+CMLib.map().getExtendedRoomID(deadmob.location()),true);
                 if(!CMLib.flags().isCloaked(deadmob))
                 for(int i=0;i<channels2.size();i++)
                     if((msg.tool()!=null)&&(msg.tool() instanceof MOB))
-                        CMLib.commands().postChannel((String)channels2.elementAt(i),deadmob.getClanID(),deadmob.Name()+" was just killed.",true);
+                        CMLib.commands().postChannel((String)channels2.get(i),deadmob.getClanID(),deadmob.Name()+" was just killed.",true);
             }
             if(msg.tool() instanceof MOB)
             {
@@ -1223,8 +1223,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         if((fighting==deadmob)&&(R!=null))
         {
             MOB newTargetM=null;
-            Set<MOB> hisGroupH=deadmob.getGroupMembers(new HashSet());
-            Set<MOB> myGroupH=observer.getGroupMembers(new HashSet());
+            Set<MOB> hisGroupH=deadmob.getGroupMembers(new HashSet<MOB>());
+            Set<MOB> myGroupH=observer.getGroupMembers(new HashSet<MOB>());
             for(int r=0;r<R.numInhabitants();r++)
             {
                 MOB M=R.fetchInhabitant(r);
@@ -1663,7 +1663,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				int tickDown=CMath.s_parseIntExpression(whatToDo.substring(4).trim(),varVals);
 				if((A!=null)&&(tickDown>0))
 				{
-					A.invoke(mob,CMParms.makeVector(""+tickDown,"SAFELY"),mob,true,0);
+					A.invoke(mob,new XVector(""+tickDown,"SAFELY"),mob,true,0);
 					mob.resetToMaxState();
 				}
 			}

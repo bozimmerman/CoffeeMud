@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class Resources
 {
     private static Resources[] rscs=new Resources[256];
@@ -61,7 +60,7 @@ public class Resources
 
     public static void clearResources(){r()._clearResources();}
     public static void removeResource(String ID){ r()._removeResource(ID);}
-    public static Vector findResourceKeys(String srch){return r()._findResourceKeys(srch);}
+    public static Vector<String> findResourceKeys(String srch){return r()._findResourceKeys(srch);}
     public static Object getResource(String ID){return r()._getResource(ID);}
     public static void submitResource(String ID, Object obj){r()._submitResource(ID,obj);}
     public static boolean isFileResource(String filename){return r()._isFileResource(filename);}
@@ -87,9 +86,9 @@ public class Resources
         return "\n\r";
     }
     
-    public static Vector getFileLineVector(StringBuffer buf)
+    public static Vector<String> getFileLineVector(StringBuffer buf)
     {
-        Vector V=new Vector();
+        Vector<String> V=new Vector<String>();
         if(buf==null) return V;
         StringBuffer str=new StringBuffer("");
         for(int i=0;i<buf.length();i++)
@@ -123,13 +122,13 @@ public class Resources
         return "resources/"+path+"/";
     }
 
-    public static void updateMultiList(String filename, Hashtable lists)
+    public static void updateMultiList(String filename, Hashtable<String,Vector<String>> lists)
     {
         StringBuffer str=new StringBuffer("");
-        for(Enumeration e=lists.keys();e.hasMoreElements();)
+        for(Enumeration<String> e=lists.keys();e.hasMoreElements();)
         {
             String ml=(String)e.nextElement();
-            Vector V=(Vector)lists.get(ml);
+            Vector<String> V=lists.get(ml);
             str.append(ml+"\r\n");
             if(V!=null)
             for(int v=0;v<V.size();v++)
@@ -139,17 +138,17 @@ public class Resources
         new CMFile(filename,null,false).saveText(str);
     }
 
-    public static Hashtable getMultiLists(String filename)
+    public static Hashtable<String,Vector<String>> getMultiLists(String filename)
     {
-        Hashtable oldH=new Hashtable();
-        Vector V=new Vector();
+        Hashtable<String,Vector<String>> oldH=new Hashtable<String,Vector<String>>();
+        Vector<String> V=new Vector<String>();
         try{
             V=getFileLineVector(new CMFile("resources/"+filename,null,false).text());
         }catch(Exception e){}
         if((V!=null)&&(V.size()>0))
         {
             String journal="";
-            Vector set=new Vector();
+            Vector<String> set=new Vector<String>();
             for(int v=0;v<V.size();v++)
             {
                 String s=(String)V.elementAt(v);
@@ -159,7 +158,7 @@ public class Resources
                 if(journal.length()==0)
                 {
                     journal=s;
-                    set=new Vector();
+                    set=new Vector<String>();
                     oldH.put(journal,set);
                 }
                 else
@@ -187,11 +186,11 @@ public class Resources
 		}
 	}
 
-	public Vector _findResourceKeys(String srch)
+	public Vector<String> _findResourceKeys(String srch)
 	{
 		synchronized(resources)
 		{
-			Vector V=new Vector();
+			Vector<String> V=new Vector<String>();
 			for(int i=0;i<resources.size();i++)
 			{
 				String key=(String)resources.elementAt(i,1);
@@ -242,6 +241,7 @@ public class Resources
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public static Object prepareObject(Object obj)
 	{
         if(obj instanceof Vector) ((Vector)obj).trimToSize();

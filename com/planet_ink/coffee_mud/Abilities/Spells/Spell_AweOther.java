@@ -103,7 +103,7 @@ public class Spell_AweOther extends Spell
 			return false;
 		}
 		String aweWhom=CMParms.combine(commands,1);
-		MOB target=getTarget(mob,CMParms.makeVector(commands.firstElement()),givenTarget);
+		MOB target=getTarget(mob,new XVector(commands.firstElement()),givenTarget);
 		if(target==null) return false;
         Room R=CMLib.map().roomLocation(target);
         if(R==null) R=mob.location();

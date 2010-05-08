@@ -48,7 +48,7 @@ public class Spell_SummonCompanion extends Spell
     {
         Room oldRoom=null;
         MOB target=null;
-        Set<MOB> H=mob.getGroupMembers(new HashSet());
+        Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
         if((H.size()==0)||((H.size()==1)&&(H.contains(mob))))
         {
             mob.tell("You don't have any companions!");

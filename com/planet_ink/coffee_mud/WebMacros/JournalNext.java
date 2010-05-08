@@ -52,7 +52,7 @@ public class JournalNext extends StdWebMacro
 		Vector<String> journals=(Vector)httpReq.getRequestObjects().get("JOURNALLIST");
 		if(journals==null)
 		{
-			Vector<String> rawJournals=CMLib.database().DBReadJournals();
+			List<String> rawJournals=CMLib.database().DBReadJournals();
 			for(Enumeration e=CMLib.journals().commandJournals();e.hasMoreElements();)
 			{
 				CommandJournal CJ=(CommandJournal)e.nextElement();

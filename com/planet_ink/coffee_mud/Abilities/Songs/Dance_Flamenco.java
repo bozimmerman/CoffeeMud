@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class Dance_Flamenco extends Dance
 {
 	public String ID() { return "Dance_Flamenco"; }
@@ -51,7 +50,7 @@ public class Dance_Flamenco extends Dance
 		if(invoker==null) return false;
 
 		int hpLoss=CMLib.dice().roll(adjustedLevel(invoker(),0),8,0)
-                  +CMLib.dice().roll(invoker().getGroupMembers(new HashSet()).size()-1,20,0);
+                  +CMLib.dice().roll(invoker().getGroupMembers(new HashSet<MOB>()).size()-1,20,0);
 		CMLib.combat().postDamage(invoker,mob,this,hpLoss,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe flamenco dance <DAMAGE> <T-NAME>!^?");
 		return true;
 	}

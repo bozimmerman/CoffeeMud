@@ -196,9 +196,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
             laws.warrants().add(W);
         	if(W.criminal()!=null)
         	{
-	            Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.WARRANTS);
+        		List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.WARRANTS);
 	            for(int i=0;i<channels.size();i++)
-	                CMLib.commands().postChannel((String)channels.elementAt(i),"",W.criminal().name()+" has been accused of "+fixCharge(W)+".",true);
+	                CMLib.commands().postChannel((String)channels.get(i),"",W.criminal().name()+" has been accused of "+fixCharge(W)+".",true);
         	}
             return true;
         }
@@ -335,7 +335,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
         if(lawName.equalsIgnoreCase("laws.ini"))
             return super.externalFiles();
         if(new CMFile(Resources.makeFileResourceName(lawName),null,false).exists())
-            return CMParms.makeVector(lawName);
+            return new XVector(lawName);
         return super.externalFiles();
 	}
 	
@@ -581,7 +581,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	public boolean isStillACrime(LegalWarrant W, boolean debugging)
 	{
 		// will witness talk, or victim press charges?
-		Set<MOB> H=W.criminal().getGroupMembers(new HashSet());
+		Set<MOB> H=W.criminal().getGroupMembers(new HashSet<MOB>());
 		if((W.witness()!=null)&&W.witness().amDead()) 
 	    {
 		    if(debugging) Log.debugOut("ARREST", "Witness is DEAD!");
@@ -2288,9 +2288,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						if((highestCrimeAction(laws,W,W.criminal())==Law.PUNISHMENT_EXECUTE)
                         &&(judge.location()!=null))
 						{
-							Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.EXECUTIONS);
+							List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.EXECUTIONS);
                             for(int i=0;i<channels.size();i++)
-								CMLib.commands().postChannel(judge,(String)channels.elementAt(i),W.criminal().Name()+" is being executed at "+judge.location().displayText()+" for "+W.criminal().charStats().hisher()+" crimes.",true);
+								CMLib.commands().postChannel(judge,(String)channels.get(i),W.criminal().Name()+" is being executed at "+judge.location().displayText()+" for "+W.criminal().charStats().hisher()+" crimes.",true);
 						}
 					}
 					else

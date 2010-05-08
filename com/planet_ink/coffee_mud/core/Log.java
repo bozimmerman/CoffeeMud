@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class Log
 {
     private static Log[] logs=new Log[256];
@@ -86,8 +85,8 @@ public class Log
 	private String logName = "application";
 	private String LOGNAME = "APPLICATION";
 
-    private Hashtable FLAGS=new Hashtable();
-    private Hashtable WRITERS=new Hashtable();
+    private Hashtable<String,String> FLAGS=new Hashtable<String,String>();
+    private Hashtable<String,PrintWriter[]> WRITERS=new Hashtable<String,PrintWriter[]>();
 
 	/**
 	 * Optional method to determine if message is a masked

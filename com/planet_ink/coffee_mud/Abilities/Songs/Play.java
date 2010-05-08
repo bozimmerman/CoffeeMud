@@ -257,11 +257,11 @@ public class Play extends StdAbility
     	||(invoker().location()==null))
         {
     		if((backupMob!=null)&&(backupMob.location()!=null))
-	    		 return CMParms.makeVector(backupMob.location());
+	    		 return new XVector(backupMob.location());
 			return new Vector();
         }
     	int depth=super.getXMAXRANGELevel(invoker());
-    	if(depth==0) return CMParms.makeVector(invoker().location());
+    	if(depth==0) return new XVector(invoker().location());
     	Vector rooms=new Vector();
         // needs to be area-only, because of the aggro-tracking rule
 		TrackingLibrary.TrackingFlags flags;

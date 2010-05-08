@@ -94,7 +94,7 @@ public class Stat  extends Skills
 		ENDQ.set(Calendar.SECOND,59);
 		ENDQ.set(Calendar.MILLISECOND,999);
 		CMLib.coffeeTables().update();
-		Vector V=CMLib.database().DBReadStats(ENDQ.getTimeInMillis()-1);
+		List<CoffeeTableRow> V=CMLib.database().DBReadStats(ENDQ.getTimeInMillis()-1);
 		if(V.size()==0){ mob.tell("No Stats?!"); return false;}
 		StringBuffer table=new StringBuffer("");
         boolean skillUse=false;
@@ -155,7 +155,7 @@ public class Stat  extends Skills
         {
             CharClass CharC=CMClass.getCharClass(rest);
             Vector allSkills=new Vector();
-            for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+            for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
                 allSkills.addElement(e.nextElement());
             long[][] totals=new long[allSkills.size()][CoffeeTableRow.STAT_TOTAL];
             while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
@@ -173,11 +173,11 @@ public class Stat  extends Skills
                 Vector set=new Vector();
                 for(int v=V.size()-1;v>=0;v--)
                 {
-                    CoffeeTableRow T=(CoffeeTableRow)V.elementAt(v);
+                    CoffeeTableRow T=(CoffeeTableRow)V.get(v);
                     if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
                     {
                         set.addElement(T);
-                        V.removeElementAt(v);
+                        V.remove(v);
                     }
                 }
                 for(int s=0;s<set.size();s++)
@@ -236,11 +236,11 @@ public class Stat  extends Skills
                 Vector set=new Vector();
                 for(int v=V.size()-1;v>=0;v--)
                 {
-                    CoffeeTableRow T=(CoffeeTableRow)V.elementAt(v);
+                    CoffeeTableRow T=(CoffeeTableRow)V.get(v);
                     if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
                     {
                         set.addElement(T);
-                        V.removeElementAt(v);
+                        V.remove(v);
                     }
                 }
                 if(set.size()==0){ set.addAll(V); V.clear();}
@@ -286,11 +286,11 @@ public class Stat  extends Skills
 			Vector set=new Vector();
 			for(int v=V.size()-1;v>=0;v--)
 			{
-				CoffeeTableRow T=(CoffeeTableRow)V.elementAt(v);
+				CoffeeTableRow T=(CoffeeTableRow)V.get(v);
 				if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
 				{
 					set.addElement(T);
-					V.removeElementAt(v);
+					V.remove(v);
 				}
 			}
 			long[] totals=new long[CoffeeTableRow.STAT_TOTAL];

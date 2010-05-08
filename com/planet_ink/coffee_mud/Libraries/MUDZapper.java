@@ -2140,7 +2140,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					}
 					Ability A=null;
 					for(int v2=0;v2<objs.size();v2++)
-                    	for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+                    	for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
                     	{
                         	A=(Ability)e.nextElement();
                         	if((evaluateSkillFlagObject(objs.elementAt(v2),A))

@@ -334,7 +334,7 @@ public class Auction extends Channel implements Tickable
         		return false;
         	}
         	String amount=CMParms.combine(commands,0);
-    		doLiveAuction(mob,CMParms.makeVector(amount),null);
+    		doLiveAuction(mob,new XVector(amount),null);
 			return true;
         }
         else

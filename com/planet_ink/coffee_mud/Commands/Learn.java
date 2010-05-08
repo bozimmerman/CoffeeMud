@@ -71,7 +71,7 @@ public class Learn extends StdCommand
 		Vector V=Train.getAllPossibleThingsToTrainFor();
 		if(V.contains(what.toUpperCase().trim()))
 		{
-			Vector CC=CMParms.makeVector("SAY","I would like to be trained in "+what);
+			Vector CC=new XVector("SAY","I would like to be trained in "+what);
 			mob.doCommand(CC,metaFlags);
 			if(teacherName.length()>0) commands.addElement(teacherName.trim());
 			Command C=CMClass.getCommand("TRAIN");
@@ -80,7 +80,7 @@ public class Learn extends StdCommand
 		}
 		if(CMClass.findAbility(what+teacherName, mob)!=null)
 		{
-			Vector CC=CMParms.makeVector("SAY","I would like you to teach me "+what);
+			Vector CC=new XVector("SAY","I would like you to teach me "+what);
 			mob.doCommand(CC,metaFlags);
 			return true;
 		}
@@ -108,7 +108,7 @@ public class Learn extends StdCommand
         }
         if(theExpertise!=null)
         {
-            Vector CC=CMParms.makeVector("SAY","I would like you to teach me "+theExpertise.name);
+            Vector CC=new XVector("SAY","I would like you to teach me "+theExpertise.name);
             mob.doCommand(CC,metaFlags);
             return true;
         }
@@ -116,7 +116,7 @@ public class Learn extends StdCommand
 		for(int v=0;v<V.size();v++)
 			if(((String)V.elementAt(v)).startsWith(what.toUpperCase().trim()))
 			{
-				Vector CC=CMParms.makeVector("SAY","I would like to be trained in "+what);
+				Vector CC=new XVector("SAY","I would like to be trained in "+what);
 				mob.doCommand(CC,metaFlags);
 				if(teacherName.length()>0) commands.addElement(teacherName.trim());
 				Command C=CMClass.getCommand("TRAIN");
@@ -124,7 +124,7 @@ public class Learn extends StdCommand
 				return true;
 				
 			}
-		Vector CC=CMParms.makeVector("SAY","I would like you to teach me "+what+teacherName);
+		Vector CC=new XVector("SAY","I would like you to teach me "+what+teacherName);
 		mob.doCommand(CC,metaFlags);
 		return false;
 	}

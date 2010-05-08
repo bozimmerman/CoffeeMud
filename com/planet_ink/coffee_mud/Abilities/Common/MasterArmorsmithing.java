@@ -43,7 +43,7 @@ public class MasterArmorsmithing extends Armorsmithing implements ItemCraftor
 	public String[] triggerStrings(){return triggerStrings;}
 
     public String parametersFile(){ return "masterarmorsmith.txt";}
-    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

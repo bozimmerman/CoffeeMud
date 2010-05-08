@@ -59,7 +59,7 @@ public class Ranger_Sneak extends StdAbility
 		if(R==null) return null;
 		int highestLevel=0;
 		MOB highestMOB=null;
-		Set<MOB> H=meMOB.getGroupMembers(new HashSet());
+		Set<MOB> H=meMOB.getGroupMembers(new HashSet<MOB>());
 		if(not!=null) H.addAll(not);
 		for(int i=0;i<R.numInhabitants();i++)
 		{

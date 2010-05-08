@@ -54,7 +54,7 @@ public class Drow extends Elf
 	private int[] agingChart={0,2,20,110,175,263,350,390,430};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector resources=new Vector();
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

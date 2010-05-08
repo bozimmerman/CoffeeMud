@@ -302,7 +302,7 @@ public class Test extends StdCommand
             if(what.equalsIgnoreCase("edrecipe"))
             {
                 boolean save = CMParms.combine(commands,2).equalsIgnoreCase("save");
-                for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+                for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
                 {
                     Ability A=(Ability)e.nextElement();
                     if(A instanceof ItemCraftor)
@@ -685,7 +685,7 @@ public class Test extends StdCommand
                 I=CMClass.getItem("StdFood");
                 mobs[0].addItem(I);
                 C=CMClass.getCommand("Put");
-                C.execute(mobs[0],CMParms.makeVector("Put","Food","Sack"),metaFlags);
+                C.execute(mobs[0],new XVector("Put","Food","Sack"),metaFlags);
                 if(!effectCheck(spells,mobs[0])){ mob.tell("Error9-1"); return false;}
                 R.recoverRoomStats();
                 
@@ -696,12 +696,12 @@ public class Test extends StdCommand
                 I=CMClass.getItem("StdFood");
                 mobs[0].addItem(I);
                 C=CMClass.getCommand("Put");
-                C.execute(mobs[0],CMParms.makeVector("Put","Food","Sack"),metaFlags);
+                C.execute(mobs[0],new XVector("Put","Food","Sack"),metaFlags);
                 if(!effectCheck(spells,mobs[0])){ mob.tell("Error9-2"); return false;}
                 I=CMClass.getItem("StdFood");
                 mobs[1].addItem(I);
                 C=CMClass.getCommand("Put");
-                C.execute(mobs[1],CMParms.makeVector("Put","Food","Sack"),metaFlags);
+                C.execute(mobs[1],new XVector("Put","Food","Sack"),metaFlags);
                 if(effectCheck(spells,mobs[1])){ mob.tell("Error9-3"); return false;}
                 R.recoverRoomStats();
             }
@@ -714,7 +714,7 @@ public class Test extends StdCommand
                 //mob.tell("Test#10-1: "+UseSpellCast2.accountForYourself());
                 IS=giveTo(CMClass.getItem("StdFood"),UseSpellCast2,mobs[0],null,0);
                 C=CMClass.getCommand("Eat");
-                C.execute(mobs[0],CMParms.makeVector("Eat","ALL"),metaFlags);
+                C.execute(mobs[0],new XVector("Eat","ALL"),metaFlags);
                 if(!effectCheck(spells,mobs[0])){ mob.tell("Error10-1"); return false;}
                 R.recoverRoomStats();
                 
@@ -723,10 +723,10 @@ public class Test extends StdCommand
                 //mob.tell("Test#10-2: "+UseSpellCast2.accountForYourself());
                 IS=giveTo(CMClass.getItem("StdFood"),UseSpellCast2,mobs[0],mobs[1],0);
                 C=CMClass.getCommand("Eat");
-                C.execute(mobs[0],CMParms.makeVector("Eat","ALL"),metaFlags);
+                C.execute(mobs[0],new XVector("Eat","ALL"),metaFlags);
                 if(!effectCheck(spells,mobs[0])){ mob.tell("Error10-2"); return false;}
                 C=CMClass.getCommand("Eat");
-                C.execute(mobs[1],CMParms.makeVector("Eat","ALL"),metaFlags);
+                C.execute(mobs[1],new XVector("Eat","ALL"),metaFlags);
                 if(effectCheck(spells,mobs[1])){ mob.tell("Error10-3"); return false;}
                 R.recoverRoomStats();
             }

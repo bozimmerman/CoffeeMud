@@ -41,7 +41,7 @@ public class Skills extends StdCommand
     
     protected boolean parsedOutIndividualSkill(MOB mob, String qual, int acode)
     {
-        return parsedOutIndividualSkill(mob,qual,CMParms.makeVector(Integer.valueOf(acode)));
+        return parsedOutIndividualSkill(mob,qual,new XVector(Integer.valueOf(acode)));
     }
     
     protected boolean parsedOutIndividualSkill(MOB mob, String qual, Vector acodes)

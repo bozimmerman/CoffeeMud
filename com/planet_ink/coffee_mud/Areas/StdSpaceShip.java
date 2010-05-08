@@ -925,7 +925,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
         {
             A=(Area)e.nextElement();
             V.addElement(A);
-            CMParms.addToVector(A.getParentsRecurse(),V);
+            V.addAll(A.getParentsRecurse());
         }
         return V;
     }

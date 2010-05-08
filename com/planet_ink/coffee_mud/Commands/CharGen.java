@@ -495,15 +495,15 @@ public class CharGen extends StdCommand
 		                
 		                int[] losses=new int[]{0};
 		                
-		                Vector medScore=new Vector();
-		                Vector medWinIters=new Vector();
-		                Vector medPhysDone=new Vector();
-		                Vector medHitPct=new Vector();
-		                Vector medIsHitPct=new Vector();
-		                Vector medPhysTaken=new Vector();
-		                Vector medLossIters=new Vector();
-		                Vector medPlayerDamPct = new Vector();
-		                Vector medPlayerManaPct = new Vector();
+		                XVector<Integer> medScore=new XVector<Integer>();
+		                XVector<Integer> medWinIters=new XVector<Integer>();
+		                XVector<Integer> medPhysDone=new XVector<Integer>();
+		                XVector<Double> medHitPct=new XVector<Double>();
+		                XVector<Double> medIsHitPct=new XVector<Double>();
+		                XVector<Integer> medPhysTaken=new XVector<Integer>();
+		                XVector<Integer> medLossIters=new XVector<Integer>();
+		                XVector<Double> medPlayerDamPct = new XVector();
+		                XVector<Double> medPlayerManaPct = new XVector();
 		                
 		                int H1=0;
 		                int H2=0;
@@ -794,15 +794,15 @@ public class CharGen extends StdCommand
 				                R.destroy();
 		                    }
 			            }
-			            CMParms.sortVector(medScore);
-			            CMParms.sortVector(medHitPct);
-			            CMParms.sortVector(medLossIters);
-			            CMParms.sortVector(medWinIters);
-			            CMParms.sortVector(medPhysDone);
-			            CMParms.sortVector(medPhysTaken);
-			            CMParms.sortVector(medIsHitPct);
-			            CMParms.sortVector(medPlayerDamPct);
-			            CMParms.sortVector(medPlayerManaPct);
+			            medScore.sort();
+			            medHitPct.sort();
+			            medLossIters.sort();
+			            medWinIters.sort();
+			            medPhysDone.sort();
+			            medPhysTaken.sort();
+			            medIsHitPct.sort();
+			            medPlayerDamPct.sort();
+			            medPlayerManaPct.sort();
 		                allData[charClassDex][level-levelStart][0]=bestIterScore[0];
 		                allData[charClassDex][level-levelStart][1]=bestHitScore[0];
 		                allData[charClassDex][level-levelStart][2]=bestSingleHitScore[0];

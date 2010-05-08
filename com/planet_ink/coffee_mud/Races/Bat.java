@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class Bat extends StdRace
 {
 	public String ID(){	return "Bat"; }
@@ -44,7 +43,7 @@ public class Bat extends StdRace
 	public int lightestWeight(){return 2;}
 	public int weightVariance(){return 0;}
 	public long forbiddenWornBits(){return Integer.MAX_VALUE-Wearable.WORN_NECK-Wearable.WORN_HEAD-Wearable.WORN_EARS-Wearable.WORN_EYES;}
-	protected static Vector resources=new Vector();
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 	public String racialCategory(){return "Pteropine";}
 	private String[]racialAbilityNames={"WingFlying"};

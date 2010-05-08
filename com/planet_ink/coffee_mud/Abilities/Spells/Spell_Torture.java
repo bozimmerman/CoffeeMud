@@ -135,7 +135,7 @@ public class Spell_Torture extends Spell
         {
            StringBuffer str=new StringBuffer("");
            Command C=CMClass.getCommand("Affect");
-           try{C.execute(mob,CMParms.makeVector(str),0);}catch(Exception e){}
+           try{C.execute(mob,new XVector(str),0);}catch(Exception e){}
 			mob.location().show(mob,null,CMMsg.MSG_SPEAK,
 			"<S-NAME> says OK! I am affected by:\n\r"+str.toString());
 			break;

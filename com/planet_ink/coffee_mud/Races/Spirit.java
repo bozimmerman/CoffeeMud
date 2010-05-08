@@ -42,7 +42,7 @@ public class Spirit extends Undead
 	public int heightVariance(){return 12;}
 	protected boolean destroyBodyAfterUse(){return true;}
 
-	protected static Vector resources=new Vector();
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 
 	protected Weapon funHumanoidWeapon()
 	{

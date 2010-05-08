@@ -82,7 +82,7 @@ public class Chant_FodderSignal extends Chant
 					&&(M!=dummy)
 					&&(M.isMonster())
 					&&(!M.isInCombat())
-					&&(!dummy.getGroupMembers(new HashSet()).contains(M))
+					&&(!dummy.getGroupMembers(new HashSet<MOB>()).contains(M))
 					&&(CMLib.flags().canBeSeenBy(dummy,M)))
 					{
 						if(room.show(M,dummy,CMMsg.MASK_MOVE|CMMsg.MSG_NOISE,"<S-NAME> howl(s) in anger at <T-NAMESELF>!"))

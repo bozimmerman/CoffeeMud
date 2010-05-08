@@ -32,12 +32,11 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
 public class Blah extends StdLanguage
 {
 	public String ID() { return "Blah"; }
 	public String name(){ return "Blah";}
-	public static Vector wordLists=null;
+	public static List<String[]> wordLists=null;
 	private static boolean mapped=false;
 	public Blah()
 	{
@@ -46,7 +45,7 @@ public class Blah extends StdLanguage
 					CMLib.ableMapper().addCharAbilityMapping("Archon",1,ID(),false);}
 	}
 
-	public Vector translationVector(String language)
+	public List<String[]> translationVector(String language)
 	{
 		return wordLists;
 	}

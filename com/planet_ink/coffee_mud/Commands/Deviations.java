@@ -172,7 +172,7 @@ public class Deviations extends StdCommand
 			return new StringBuffer("You must also specify a mob or item name, or the word room, or the word area.");
 
 		Faction useFaction=null;
-		for(Enumeration e=CMLib.factions().factions();e.hasMoreElements();)
+		for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
 		{
 		    Faction F=(Faction)e.nextElement();
 		    if(F.showInSpecialReported()) useFaction=F;

@@ -90,19 +90,19 @@ public class Thief_DisassembleTrap extends ThiefSkill
             if(R.okMessage(mob,msg))
             {
                 R.send(mob,msg);
-                Vector components=T.getTrapComponents();
+                List<Item> components=T.getTrapComponents();
                 if(components.size()==0) {
                     mob.tell("You don't end up with any usable components.");
                 } else {
                     for(int i=0;i<components.size();i++) {
-                        Item I=(Item)components.elementAt(i);
+                        Item I=(Item)components.get(i);
                         I.text();
                         I.recoverPhyStats();
                         R.addItem(I,ItemPossessor.Expire.Resource);
                     }
                     R.recoverRoomStats();
                     for(int i=0;i<components.size();i++) {
-                        Item I=(Item)components.elementAt(i);
+                        Item I=(Item)components.get(i);
                         if(R.isContent(I))
                             if(!CMLib.commands().postGet(mob,null,I,true))
                                 break;

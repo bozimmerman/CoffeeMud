@@ -240,7 +240,7 @@ public class RandomTraps extends ActiveTicker
             tickStatus=Tickable.STATUS_MISC+2;
 			Vector allTraps=new Vector();
 			if(maintained.size()<avgTraps)
-				for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+				for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 				{
 					Ability A=(Ability)e.nextElement();
 					if(A instanceof Trap)

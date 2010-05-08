@@ -155,7 +155,7 @@ public class MobData extends StdWebMacro
 			str.append("<TR><TD WIDTH=35%>");
 			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=ABLES"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
-			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
 				String cnam=((Ability)a.nextElement()).ID();
 				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
@@ -277,7 +277,7 @@ public class MobData extends StdWebMacro
 			str.append("<TR><TD WIDTH=100%>");
 			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=BLESS"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Blessing");
-			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
 				String cnam=((Ability)a.nextElement()).ID();
 				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
@@ -338,7 +338,7 @@ public class MobData extends StdWebMacro
 			str.append("<TR><TD WIDTH=100%>");
 			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=CURSE"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Curse");
-			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
 				String cnam=((Ability)a.nextElement()).ID();
 				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
@@ -566,7 +566,7 @@ public class MobData extends StdWebMacro
 			str.append("<TR><TD WIDTH=100%>");
 			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=POWER"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Granted Power");
-			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
 				String cnam=((Ability)a.nextElement()).ID();
 				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
@@ -658,8 +658,7 @@ public class MobData extends StdWebMacro
 				String MATCHING=httpReq.getRequestParameter("SHP"+num);
 				String theparm=httpReq.getRequestParameter("SDATA"+num);
 				String theprice=httpReq.getRequestParameter("SPRIC"+num);
-				Vector inventory=new Vector();
-				CMParms.addToVector(E.getShop().getStoreInventory(),inventory);
+				XVector inventory=new XVector(E.getShop().getStoreInventory());
 				while((MATCHING!=null)&&(theparm!=null))
 				{
 					if(CMath.isNumber(MATCHING))
@@ -701,7 +700,7 @@ public class MobData extends StdWebMacro
 							{	O=(MOB)M2.copyOf(); break;	}
 						}
 						if(O==null)
-						for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+						for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 						{
 							Ability A2=(Ability)a.nextElement();
 							if(CMClass.classID(A2).equals(MATCHING))
@@ -786,7 +785,7 @@ public class MobData extends StdWebMacro
 			{
 				bufA=new StringBuffer("");
 				Vector sortMeA=new Vector();
-				for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+				for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 					sortMeA.addElement(CMClass.classID(a.nextElement()));
 				for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
 					sortMeA.addElement(CMClass.classID(m.nextElement()));

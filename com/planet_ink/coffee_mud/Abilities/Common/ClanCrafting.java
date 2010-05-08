@@ -69,7 +69,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 
     public Hashtable parametersFields(){ return new Hashtable();}
     public String parametersFile(){ return "clancraft.txt";}
-    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{
@@ -167,7 +167,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			clanName=C.name();
 			clanTypeName=C.typeName();
 		}
-		Vector recipes=addRecipes(mob,loadRecipes());
+		List<List<String>> recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
 		int duration=4;
@@ -183,17 +183,17 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 					   +CMStrings.padRight("Amt#2",4)+"\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector V=(Vector)recipes.elementAt(r);
+				List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
-					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
-					int exp=CMath.s_int((String)V.elementAt(RCP_EXP));
+					String item=replacePercent((String)V.get(RCP_FINALNAME),"");
+					int level=CMath.s_int((String)V.get(RCP_LEVEL));
+					int exp=CMath.s_int((String)V.get(RCP_EXP));
 					if((level<=xlevel(mob))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
-						String mat1=(String)V.elementAt(RCP_MATERIAL1);
-						String mat2=(String)V.elementAt(RCP_MATERIAL2);
+						String mat1=(String)V.get(RCP_MATERIAL1);
+						String mat2=(String)V.get(RCP_MATERIAL2);
 						String amt1="";
 						String amt2="";
 						int m1=mat1.indexOf("/");
@@ -226,14 +226,14 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		building=null;
 		messedUp=false;
 		String recipeName=CMParms.combine(commands,0);
-		Vector foundRecipe=null;
-		Vector matches=matchingRecipeNames(recipes,recipeName,true);
+		List<String> foundRecipe=null;
+		List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
 		for(int r=0;r<matches.size();r++)
 		{
-			Vector V=(Vector)matches.elementAt(r);
+			List<String> V=matches.get(r);
 			if(V.size()>0)
 			{
-				int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
+				int level=CMath.s_int((String)V.get(RCP_LEVEL));
                 if((autoGenerate>0)||(level<=xlevel(mob)))
 				{
 					foundRecipe=V;
@@ -249,8 +249,8 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 
 		int amt1=0;
 		int amt2=0;
-		String mat1=(String)foundRecipe.elementAt(RCP_MATERIAL1);
-		String mat2=(String)foundRecipe.elementAt(RCP_MATERIAL2);
+		String mat1=(String)foundRecipe.get(RCP_MATERIAL1);
+		String mat2=(String)foundRecipe.get(RCP_MATERIAL2);
 		int m1=mat1.indexOf("/");
 		if(m1>=0)
 		{
@@ -266,7 +266,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
             //amt2=adjustWoodRequired(amt2, mob);
 		}
 
-		expRequired=CMath.s_int((String)foundRecipe.elementAt(RCP_EXP));
+		expRequired=CMath.s_int((String)foundRecipe.get(RCP_EXP));
         expRequired=getXPCOSTAdjustment(mob,expRequired);
 		if((C!=null)&&(C.getExp()<expRequired))
 		{
@@ -277,7 +277,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		if(data==null) return false;
 		amt1=data[0][FOUND_AMT];
 		amt2=data[1][FOUND_AMT];
-		String reqskill=(String)foundRecipe.elementAt(RCP_REQUIREDSKILL);
+		String reqskill=(String)foundRecipe.get(RCP_REQUIREDSKILL);
 		if((autoGenerate<=0)&&(reqskill.trim().length()>0))
 		{
 			Ability A=CMClass.findAbility(reqskill.trim());
@@ -295,22 +295,22 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		if((amt2>0)&&(autoGenerate<=0))
 			CMLib.materials().destroyResources(mob.location(),amt2,data[1][FOUND_CODE],0,null);
 
-		building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
+		building=CMClass.getItem((String)foundRecipe.get(RCP_CLASSTYPE));
 		if(building==null)
 		{
-			commonTell(mob,"There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
+			commonTell(mob,"There's no such thing as a "+foundRecipe.get(RCP_CLASSTYPE)+"!!!");
 			return false;
 		}
 		
-		duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),4);
-		String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
+		duration=getDuration(CMath.s_int((String)foundRecipe.get(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.get(RCP_LEVEL)),4);
+		String misctype=(String)foundRecipe.get(RCP_MISCTYPE);
 		String itemName=null;
 		if(!misctype.equalsIgnoreCase("area"))
 		{
-            if(((String)foundRecipe.elementAt(RCP_FINALNAME)).trim().startsWith("%"))
-    			itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),clanTypeName+" "+clanName);
+            if(((String)foundRecipe.get(RCP_FINALNAME)).trim().startsWith("%"))
+    			itemName=replacePercent((String)foundRecipe.get(RCP_FINALNAME),clanTypeName+" "+clanName);
             else
-                itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),"of "+clanTypeName+" "+clanName);
+                itemName=replacePercent((String)foundRecipe.get(RCP_FINALNAME),"of "+clanTypeName+" "+clanName);
 			if(misctype.length()>0)
 				building.setReadableText(misctype);
 		}
@@ -329,7 +329,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
                 return false;
             }
             
-			itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),"of "+A2.name()).toLowerCase();
+			itemName=replacePercent((String)foundRecipe.get(RCP_FINALNAME),"of "+A2.name()).toLowerCase();
 			building.setReadableText(A2.name());
 		}
 		itemName=CMLib.english().startWithAorAn(itemName);
@@ -341,21 +341,21 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		building.setDisplayText(itemName+" lies here");
 		building.setDescription(itemName+". ");
 		building.basePhyStats().setWeight(amt1+amt2);
-		building.setBaseValue(CMath.s_int((String)foundRecipe.elementAt(RCP_VALUE)));
+		building.setBaseValue(CMath.s_int((String)foundRecipe.get(RCP_VALUE)));
 		building.setMaterial(data[0][FOUND_CODE]);
 		int hardness=RawMaterial.CODES.HARDNESS(data[0][FOUND_CODE])-6;
-		building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL))+(hardness*3));
+		building.basePhyStats().setLevel(CMath.s_int((String)foundRecipe.get(RCP_LEVEL))+(hardness*3));
 		if(building.basePhyStats().level()<1) building.basePhyStats().setLevel(1);
-		int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
-		int canContain=CMath.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
-		int armordmg=CMath.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
+		int capacity=CMath.s_int((String)foundRecipe.get(RCP_CAPACITY));
+		int canContain=CMath.s_int((String)foundRecipe.get(RCP_CONTAINMASK));
+		int armordmg=CMath.s_int((String)foundRecipe.get(RCP_ARMORDMG));
 		building.setSecretIdentity("This is the work of "+mob.Name()+".");
-		String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.elementAt(RCP_SPELL)).trim():"";
+		String spell=(foundRecipe.size()>RCP_SPELL)?((String)foundRecipe.get(RCP_SPELL)).trim():"";
 		if(building instanceof ClanItem)
 		{
 			building.basePhyStats().setSensesMask(PhyStats.SENSE_UNLOCATABLE);
 			((ClanItem)building).setClanID(mob.getClanID());
-			((ClanItem)building).setCIType(CMath.s_int((String)foundRecipe.elementAt(RCP_CITYPE)));
+			((ClanItem)building).setCIType(CMath.s_int((String)foundRecipe.get(RCP_CITYPE)));
 			if(((ClanItem)building).ciType()==ClanItem.CI_PROPAGANDA)
 			{
 				building.setMaterial(RawMaterial.RESOURCE_PAPER);

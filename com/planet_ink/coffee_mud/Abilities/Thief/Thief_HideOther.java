@@ -141,7 +141,7 @@ public class Thief_HideOther extends ThiefSkill
 			mob.tell("Not while in combat!");
 			return false;
 		}
-		Set<MOB> H=mob.getGroupMembers(new HashSet());
+		Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
 		if(!H.contains(target))
 		{
 			mob.tell("You can only hide a group member.");
@@ -151,7 +151,7 @@ public class Thief_HideOther extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-        MOB highestMOB=getHighestLevelMOB(mob,CMParms.makeVector(target));
+        MOB highestMOB=getHighestLevelMOB(mob,new XVector(target));
 		int levelDiff=(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)))-getMOBLevel(highestMOB);
 
 		String str="You carefully hide <T-NAMESELF> and direct <T-HIM-HER> to hold still.";

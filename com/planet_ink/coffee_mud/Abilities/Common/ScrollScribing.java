@@ -72,7 +72,7 @@ public class ScrollScribing extends CraftingSkill implements ItemCraftor
 	}
 
     public String parametersFile(){ return "scribing.txt";}
-    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{
@@ -149,7 +149,7 @@ public class ScrollScribing extends CraftingSkill implements ItemCraftor
 			commonTell(mob,"Enscribe what? Enter \"enscribe list\" for a list.");
 			return false;
 		}
-		Vector recipes=addRecipes(mob,loadRecipes());
+		List<List<String>> recipes=addRecipes(mob,loadRecipes());
 		String pos=(String)commands.lastElement();
 		if((commands.firstElement() instanceof String)&&(((String)commands.firstElement())).equalsIgnoreCase("list"))
 		{
@@ -160,10 +160,10 @@ public class ScrollScribing extends CraftingSkill implements ItemCraftor
 			int toggleTop=3;
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector V=(Vector)recipes.elementAt(r);
+				List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String spell=(String)V.elementAt(0);
+					String spell=(String)V.get(0);
 					Ability A=mob.fetchAbility(spell);
 					if((A!=null)
 					&&(spellLevel(mob,A)>=0)
@@ -215,17 +215,17 @@ public class ScrollScribing extends CraftingSkill implements ItemCraftor
 			String ingredient="";
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector V=(Vector)recipes.elementAt(r);
+				List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String spell=(String)V.elementAt(0);
+					String spell=(String)V.get(0);
 					Ability A=mob.fetchAbility(spell);
 					if((A!=null)
 					&&(xlevel(mob)>=spellLevel(mob,A))
 					&&(A.name().equalsIgnoreCase(recipeName)))
 					{
 						theSpell=A;
-						ingredient=(String)V.elementAt(1);
+						ingredient=(String)V.get(1);
 					}
 				}
 			}

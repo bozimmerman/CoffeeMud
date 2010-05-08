@@ -205,7 +205,7 @@ public class StdThinInstance extends StdThinArea
         			Vector V=(Vector)children.elementAt(i,1);
         			if(V.contains(msg.source())){  myDex=i; break;}
         		}
-        		Set<MOB> grp = msg.source().getGroupMembers(new HashSet());
+        		Set<MOB> grp = msg.source().getGroupMembers(new HashSet<MOB>());
         		for(int i=0;i<children.size();i++) {
         			if(i!=myDex)
         			{
@@ -246,7 +246,7 @@ public class StdThinInstance extends StdThinArea
         			redirectA=newA;
         			CMLib.map().addArea(newA);
         			newA.setAreaState(Area.STATE_ACTIVE); // starts ticking
-        			children.addElement(CMParms.makeVector(msg.source()),redirectA);
+        			children.addElement(new XVector(msg.source()),redirectA);
         		}
         		else
         			redirectA=(StdThinInstance)children.elementAt(myDex,2);

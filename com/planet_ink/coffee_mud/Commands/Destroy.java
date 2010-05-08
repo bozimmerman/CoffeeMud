@@ -1046,7 +1046,7 @@ public class Destroy extends StdCommand
         {
             if(!CMSecurity.isASysOp(mob)) return errorOut(mob);
             String which=CMParms.combine(commands,2);
-            Vector V=null;
+            List<Tickable> V=null;
             if(which.length()>0)
             {
                 V=CMLib.threads().getNamedTickingObjects(which);
@@ -1058,11 +1058,11 @@ public class Destroy extends StdCommand
             {
                 StringBuffer list=new StringBuffer("");
                 for(int v=0;v<V.size();v++)
-                    list.append(((Tickable)V.elementAt(v)).name()+", ");
+                    list.append(((Tickable)V.get(v)).name()+", ");
                 if((mob.session()!=null)&&(mob.session().confirm("Destroy the following ticking objects: "+list.substring(0,list.length()-2)+"  (y/N)? ","N")))
                 {
                     for(int v=0;v<V.size();v++)
-                        CMLib.threads().deleteTick((Tickable)V.elementAt(v),-1);
+                        CMLib.threads().deleteTick((Tickable)V.get(v),-1);
                     Log.sysOut("CreateEdit",mob.Name()+" destroyed ticks named '"+which+"'.");
                 }
             }
@@ -1127,21 +1127,21 @@ public class Destroy extends StdCommand
                 mob.tell("Destroy which journal? Try List Journal");
                 return errorOut(mob);
             }
-            Vector V=CMLib.database().DBReadJournals();
+            List<String> V=CMLib.database().DBReadJournals();
             String name=CMParms.combine(commands,2);
             int which=-1;
             for(int v=0;v<V.size();v++)
-                if(((String)V.elementAt(v)).equalsIgnoreCase(name))
+                if(((String)V.get(v)).equalsIgnoreCase(name))
                 {
-                    name=(String)V.elementAt(v);
+                    name=(String)V.get(v);
                     which=v;
                     break;
                 }
             if(which<0)
             for(int v=0;v<V.size();v++)
-                if(((String)V.elementAt(v)).startsWith(name))
+                if(((String)V.get(v)).startsWith(name))
                 {
-                    name=(String)V.elementAt(v);
+                    name=(String)V.get(v);
                     which=v;
                     break;
                 }

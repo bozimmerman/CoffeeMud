@@ -69,7 +69,7 @@ public class Prayer_HealingAura extends Prayer
 		MOB myChar=(MOB)affected;
 		if(((--fiveDown)>0)&&((--tenDown)>0)&&((--twentyDown)>0)) return true;
 
-		Set<MOB> followers=myChar.getGroupMembers(new HashSet());
+		Set<MOB> followers=myChar.getGroupMembers(new HashSet<MOB>());
 		if(myChar.location()!=null)
 			for(int i=0;i<myChar.location().numInhabitants();i++)
 			{

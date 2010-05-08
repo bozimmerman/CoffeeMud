@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class Bull extends Buffalo
 {
 	public String ID(){	return "Bull"; }
@@ -42,7 +41,7 @@ public class Bull extends Buffalo
 	public int heightVariance(){return 6;}
 	public int lightestWeight(){return 350;}
 	public int weightVariance(){return 100;}
-	protected static Vector resources=new Vector();
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 	public String racialCategory(){return "Bovine";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

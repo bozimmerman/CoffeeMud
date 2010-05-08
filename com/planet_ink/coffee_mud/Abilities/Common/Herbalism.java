@@ -81,7 +81,7 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 	}
 
     public String parametersFile(){ return "herbalism.txt";}
-    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected List<List<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public ItemKeyPair craftItem(String recipe) { return craftItem(recipe,0); }
 	
@@ -139,7 +139,7 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 			commonTell(mob,"Brew what? Enter \"hbrew list\" for a list.");
 			return false;
 		}
-		Vector recipes=addRecipes(mob,loadRecipes());
+		List<List<String>> recipes=addRecipes(mob,loadRecipes());
 		String pos=(String)commands.lastElement();
 		if((commands.firstElement() instanceof String)&&(((String)commands.firstElement()).equalsIgnoreCase("LIST")))
 		{
@@ -149,11 +149,11 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 			boolean fillUsage=(usage.size()==0);
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector V=(Vector)recipes.elementAt(r);
+				List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String spell=(String)V.elementAt(0);
-					int level=CMath.s_int((String)V.elementAt(1));
+					String spell=(String)V.get(0);
+					int level=CMath.s_int((String)V.get(1));
 					Ability A=mob.fetchAbility(spell);
 					if((A!=null)
 					&&(level>=0)
@@ -162,7 +162,7 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 						buf.append(CMStrings.padRight(A.name(),20)+" "+CMStrings.padRight(""+level,5)+" ");
 						for(int i=2;i<V.size();i++)
 						{
-							String s=((String)V.elementAt(i)).toLowerCase();
+							String s=((String)V.get(i)).toLowerCase();
 							if(s.trim().length()==0) continue;
 							if(s.endsWith("$")) s=s.substring(0,s.length()-1);
 							if(fillUsage)
@@ -223,14 +223,14 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 			}
 			String recipeName=CMParms.combine(commands,0);
 			theSpell=null;
-			Vector recipe=null;
+			List<String> recipe=null;
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector V=(Vector)recipes.elementAt(r);
+				List<String> V=recipes.get(r);
 				if(V.size()>0)
 				{
-					String spell=(String)V.elementAt(0);
-					int level=CMath.s_int((String)V.elementAt(1));
+					String spell=(String)V.get(0);
+					int level=CMath.s_int((String)V.get(1));
 					Ability A=mob.fetchAbility(spell);
 					if((A!=null)
 					&&(xlevel(mob)>=level)
@@ -257,7 +257,7 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 			// first check for all the right stuff
 			for(int i=2;i<recipe.size();i++)
 			{
-				String ingredient=((String)recipe.elementAt(i)).trim();
+				String ingredient=((String)recipe.get(i)).trim();
 				if(ingredient.length()>0)
 				{
 					boolean ok=false;
@@ -282,7 +282,7 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 				boolean ok=false;
 				for(int i=2;i<recipe.size();i++)
 				{
-					String ingredient=((String)recipe.elementAt(i)).trim();
+					String ingredient=((String)recipe.get(i)).trim();
 					if(ingredient.length()>0)
 						if(CMLib.english().containsString(I.Name(),ingredient)
 						||(RawMaterial.CODES.NAME(I.material()).equalsIgnoreCase(ingredient)))

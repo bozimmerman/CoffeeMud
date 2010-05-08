@@ -172,7 +172,7 @@ public class ItemGenerator extends ActiveTicker
 		{
 			List<Item> allItems=new Vector<Item>();
 		    List<ItemCraftor> skills=new Vector<ItemCraftor>();
-			for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+			for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 			{
 				Ability A=(Ability)e.nextElement();
 				if(A instanceof ItemCraftor)

@@ -32,13 +32,12 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings("unchecked")
 public class SignLanguage extends StdLanguage
 {
 	public String ID() { return "SignLanguage"; }
 	public String name(){ return "Sign Language";}
 	public String writtenName() { return "Braille";}
-	public static Vector wordLists=null;
+	public static List<String[]> wordLists=null;
 	private static boolean mapped=false;
 	public SignLanguage()
 	{
@@ -47,7 +46,7 @@ public class SignLanguage extends StdLanguage
 					CMLib.ableMapper().addCharAbilityMapping("All",1,ID(),false);}
 	}
 
-	public Vector translationVector(String language)
+	public List<String[]> translationVector(String language)
 	{
 		return wordLists;
 	}

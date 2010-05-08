@@ -249,9 +249,9 @@ public class Clans extends StdLibrary implements ClanManager
 	
 	public void clanAnnounceAll(String msg)
 	{
-        Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
+		List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
         for(int i=0;i<channels.size();i++)
-            CMLib.commands().postChannel((String)channels.elementAt(i),"ALL",msg,true);
+            CMLib.commands().postChannel((String)channels.get(i),"ALL",msg,true);
 	}
 
     public Enumeration<String> clansNames(){return all.keys();}
@@ -367,9 +367,9 @@ public class Clans extends StdLibrary implements ClanManager
 
     public void clanAnnounce(MOB mob, String msg)
     {
-        Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
+    	List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
         for(int i=0;i<channels.size();i++)
-            CMLib.commands().postChannel(mob,(String)channels.elementAt(i),msg,true);
+            CMLib.commands().postChannel(mob,(String)channels.get(i),msg,true);
     }
 
     public int getIntFromRole(int roleType)

@@ -65,7 +65,7 @@ public class Prop_LangTranslator extends Property implements Language
 		}
 	}
 
-    public Vector languagesSupported() 
+    public List<String> languagesSupported() 
     {
         return langs.getDimensionVector(1);
     }
@@ -81,8 +81,8 @@ public class Prop_LangTranslator extends Property implements Language
     }
     public boolean beingSpoken(String language) { return true; }
     public void setBeingSpoken(String language, boolean beingSpoken) {}
-    public Hashtable translationHash(String language) { return new Hashtable();}
-    public Vector translationVector(String language) { return new Vector();}
+    public Map<String, String> translationHash(String language) { return new Hashtable();}
+    public List<String[]> translationVector(String language) { return new Vector();}
     public String translate(String language, String word) { return word;}
     
 	public void executeMsg(Environmental myHost, CMMsg msg)

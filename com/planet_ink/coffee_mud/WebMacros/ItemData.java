@@ -542,7 +542,7 @@ public class ItemData extends StdWebMacro
 									break;
 						}
 						old=old.toUpperCase()+";";
-						for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+						for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 						{
 							String cnam=((Ability)a.nextElement()).ID();
 							str.append("<OPTION VALUE=\""+cnam+"\"");
@@ -641,7 +641,7 @@ public class ItemData extends StdWebMacro
 					{
 						if((firstTime)&&(I instanceof Wand))
 							old=""+((((Wand)I).getSpell()!=null)?((Wand)I).getSpell().ID():"");
-						for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+						for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 						{
 							String cnam=((Ability)a.nextElement()).ID();
 							str.append("<OPTION VALUE=\""+cnam+"\"");
@@ -873,7 +873,7 @@ public class ItemData extends StdWebMacro
 				    Ability A=null;
 					if((firstTime)&&(I instanceof Recipe))
 						old=""+((Recipe)I).getCommonSkillID();
-					for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+					for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 					{
 					 	A=(Ability)e.nextElement();
 					 	if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)

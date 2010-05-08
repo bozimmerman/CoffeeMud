@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class StatLoader
 {
 	protected DBConnector DB=null;
@@ -68,13 +67,13 @@ public class StatLoader
 		return T;
 	}
 	
-	public Vector DBReadAfter(long startTime)
+	public List<CoffeeTableRow> DBReadAfter(long startTime)
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMSTAT")))
 			Log.debugOut("StatLoader","Reading content of Stats since "+CMLib.time().date2String(startTime));
 		DBConnection D=null;
         CoffeeTableRow T=null;
-		Vector rows=new Vector();
+        List<CoffeeTableRow> rows=new Vector<CoffeeTableRow>();
 		try
 		{
 			D=DB.DBFetch();
@@ -86,7 +85,7 @@ public class StatLoader
 				long endTime=DBConnections.getLongRes(R,"CMENDT");
 				String data=DBConnections.getRes(R,"CMDATA");
 				T.populate(strTime,endTime,data);
-				rows.addElement(T);
+				rows.add(T);
 			}
 		}
 		catch(Exception sqle)

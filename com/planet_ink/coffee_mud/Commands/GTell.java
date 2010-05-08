@@ -105,7 +105,7 @@ public class GTell extends StdCommand
 			tellMsg.setOthersMessage(tellMsg.sourceMessage());
 		}
 		
-		Set<MOB> group=mob.getGroupMembers(new HashSet());
+		Set<MOB> group=mob.getGroupMembers(new HashSet<MOB>());
 		CMMsg msg=tellMsg;
 		for(Iterator e=group.iterator();e.hasNext();)
 		{

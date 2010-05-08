@@ -129,7 +129,7 @@ public class Spell_Summon extends Spell
 		int adjustment=(target.phyStats().level()-(mob.phyStats().level()+(getXLEVELLevel(mob)+(2*getX1Level(mob)))))*3;
 		boolean success=proficiencyCheck(mob,-adjustment,auto);
 		
-		if(success&&(!auto)&&(!mob.mayIFight(target))&&(!mob.getGroupMembers(new HashSet()).contains(target)))
+		if(success&&(!auto)&&(!mob.mayIFight(target))&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
 		{
 			mob.tell(target.name()+" is a player, so you must be group members, or your playerkill flags must be on for this to work.");
 			success=false;

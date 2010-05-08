@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class UmberHulk extends StdRace
 {
 	public String ID(){	return "UmberHulk"; }
@@ -45,7 +44,7 @@ public class UmberHulk extends StdRace
 	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Giant-kin";}
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
-	protected static Vector resources=new Vector();
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
     private String[]racialAbilityNames={"Chant_StoneWalking","Spell_Confusion"};
 	private int[]racialAbilityLevels={1,10};
 	private int[]racialAbilityProficiencies={100,50};

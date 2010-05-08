@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class WereAmphibian extends StdRace
 {
 	public String ID(){	return "WereAmphibian"; }
@@ -60,7 +59,7 @@ public class WereAmphibian extends StdRace
 	private int[] agingChart={0,4,8,12,16,20,24,28,32};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector resources=new Vector();
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 
 	public Weapon myNaturalWeapon()
 	{

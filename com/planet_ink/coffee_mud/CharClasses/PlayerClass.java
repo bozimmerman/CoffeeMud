@@ -65,7 +65,7 @@ public class PlayerClass extends StdCharClass
 		if(!loaded())
 		{
 			setLoaded(true);
-			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
 				Ability A=(Ability)a.nextElement();
 				int lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());

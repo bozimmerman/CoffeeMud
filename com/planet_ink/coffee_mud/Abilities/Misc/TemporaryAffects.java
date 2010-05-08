@@ -261,7 +261,7 @@ public class TemporaryAffects extends StdAbility
 			mob.tell("Specify a target, a property, number of ticks, and (optionally) some misc text!");
 			return false;
 		}
-		Vector V=CMParms.makeVector(commands.firstElement());
+		Vector V=new XVector(commands.firstElement());
 		Physical target=getAnyTarget(mob,V,givenTarget, asLevel);
 		if(target==null) return false;
 		commands.removeElementAt(0);

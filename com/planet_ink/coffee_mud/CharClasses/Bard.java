@@ -134,7 +134,7 @@ public class Bard extends StdCharClass
         {
 	    	if(host == mob)
 	    	{
-	    		Set<MOB> H=mob.getGroupMembers(new HashSet());
+	    		Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
 	            double origAmount=theAmount;
 	            for(Iterator e=H.iterator();e.hasNext();)
 	            {

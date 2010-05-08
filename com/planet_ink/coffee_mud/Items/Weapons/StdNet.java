@@ -31,7 +31,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class StdNet extends StdWeapon
 {
 	public String ID(){	return "StdNet";}
@@ -85,7 +84,7 @@ public class StdNet extends StdWeapon
 		&&(msg.sourceMessage()==null))
 		{
 			MOB M=(MOB)msg.target();
-			Set<MOB> H=msg.source().getGroupMembers(new HashSet());
+			Set<MOB> H=msg.source().getGroupMembers(new HashSet<MOB>());
 			if(H.contains(M)) H.remove(M);
 
 			for(int i=0;i<M.location().numInhabitants();i++)

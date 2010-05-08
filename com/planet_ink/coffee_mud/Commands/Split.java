@@ -57,7 +57,7 @@ public class Split extends StdCommand
 		double denom=CMLib.english().numPossibleGoldDenomination(mob,currency,itemID);
 
 		int num=0;
-		Set<MOB> H=mob.getGroupMembers(new HashSet());
+		Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
 		
 		for(MOB recipientM : H)
 		{

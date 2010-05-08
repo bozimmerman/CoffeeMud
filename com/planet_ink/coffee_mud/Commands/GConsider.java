@@ -89,7 +89,7 @@ public class GConsider extends StdCommand
 			return false;
 		}
 
-		int relDiff=relativeLevelDiff(target,mob.getGroupMembers(new HashSet()));
+		int relDiff=relativeLevelDiff(target,mob.getGroupMembers(new HashSet<MOB>()));
 		int lvlDiff=(target.phyStats().level()-mob.phyStats().level());
 		int realDiff=(relDiff+lvlDiff)/2;
 

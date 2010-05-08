@@ -464,7 +464,7 @@ public class ListCmd extends StdCommand
 	public StringBuffer listLinkages(MOB mob)
 	{
 	    Faction useFaction=null;
-	    for(Enumeration e=CMLib.factions().factions();e.hasMoreElements();)
+	    for(Enumeration<Faction> e=CMLib.factions().factions();e.hasMoreElements();)
 	    {
 	        Faction F=(Faction)e.nextElement();
 	        if(F.showInSpecialReported()) useFaction=F;
@@ -852,8 +852,8 @@ public class ListCmd extends StdCommand
 		}
 
 		head.append("] Characters^.^N\n\r");
-		Vector<PlayerAccount> allAccounts=CMLib.database().DBListAccounts(null);
-		Vector<PlayerAccount> oldSet=allAccounts;
+		List<PlayerAccount> allAccounts=CMLib.database().DBListAccounts(null);
+		List<PlayerAccount> oldSet=allAccounts;
 		Hashtable<String, PlayerLibrary.ThinPlayer> thinAcctHash=new Hashtable<String, PlayerLibrary.ThinPlayer>();
 		for(PlayerAccount acct : allAccounts)
 		{
@@ -872,43 +872,43 @@ public class ListCmd extends StdCommand
 				allAccounts=new Vector<PlayerAccount>();
 			if((sortBy<3)||(sortBy>4))
 			{
-				PlayerAccount selected = oldSet.firstElement();
+				PlayerAccount selected = oldSet.get(0);
 				PlayerLibrary.ThinPlayer selectedU=thinAcctHash.get(selected.accountName());
 				for(int u=1;u<oldSet.size();u++)
 				{
-					PlayerAccount acct = oldSet.elementAt(u);
+					PlayerAccount acct = oldSet.get(u);
 					PlayerLibrary.ThinPlayer U=thinAcctHash.get(acct.accountName());
 					if(lib.getThinSortValue(selectedU,sortBy).compareTo(lib.getThinSortValue(U,sortBy))>0)
 					   selected=acct;
 				}
 				if(selected!=null)
 				{
-					oldSet.removeElement(selected);
-					allAccounts.addElement(selected);
+					oldSet.remove(selected);
+					allAccounts.add(selected);
 				}
 			}
 			else
 			{
-				PlayerAccount selected = oldSet.firstElement();
+				PlayerAccount selected = oldSet.get(0);
 				PlayerLibrary.ThinPlayer selectedU=thinAcctHash.get(selected.accountName());
 				for(int u=1;u<oldSet.size();u++)
 				{
-					PlayerAccount acct = oldSet.elementAt(u);
+					PlayerAccount acct = oldSet.get(u);
 					PlayerLibrary.ThinPlayer U=thinAcctHash.get(acct.accountName());
 					if(CMath.s_long(lib.getThinSortValue(selectedU,sortBy))>CMath.s_long(lib.getThinSortValue(U,sortBy)))
 					   selected=acct;
 				}
 				if(selected!=null)
 				{
-					oldSet.removeElement(selected);
-					allAccounts.addElement(selected);
+					oldSet.remove(selected);
+					allAccounts.add(selected);
 				}
 			}
 		}
 
 		for(int u=0;u<allAccounts.size();u++)
 		{
-			PlayerAccount U=allAccounts.elementAt(u);
+			PlayerAccount U=allAccounts.get(u);
 			StringBuffer line=new StringBuffer("");
 			line.append("[");
 			line.append(CMStrings.padRight(U.accountName(),10)+" ");
@@ -1069,7 +1069,7 @@ public class ListCmd extends StdCommand
     public StringBuffer listJournals()
     {
         StringBuffer buf=new StringBuffer("");
-        Vector journals=CMLib.database().DBReadJournals();
+        List<String> journals=CMLib.database().DBReadJournals();
 
         if(journals.size()==0)
             buf.append("No journals exits.");
@@ -1079,7 +1079,7 @@ public class ListCmd extends StdCommand
             buf.append("\n\r^x"+CMStrings.padRight("#",5)+CMStrings.padRight("Name",30)+" Messages^.^N\n\r");
             for(int i=0;i<journals.size();i++)
             {
-                String journal=(String)journals.elementAt(i);
+                String journal=(String)journals.get(i);
                 int messages=CMLib.database().DBCountJournal(journal,null,null);
                 buf.append(CMStrings.padRight(""+(i+1),5)+CMStrings.padRight(journal,30)+" "+messages);
                 buf.append("^N\n\r");
@@ -1297,7 +1297,7 @@ public class ListCmd extends StdCommand
         if(rest.trim().length()==0)
         {
             str.append("Common Skills with editable recipes: ");
-            for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+            for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
             {
                 Ability A=(Ability)e.nextElement();
                 if(A instanceof ItemCraftor)
@@ -1559,7 +1559,7 @@ public class ListCmd extends StdCommand
             roomsToDo=mob.location().getArea().getMetroMap();
         else
         if(rest.trim().length()==0)
-            roomsToDo=CMParms.makeVector(mob.location()).elements();
+            roomsToDo=new XVector(mob.location()).elements();
         else
         {
             Area A=CMLib.map().findArea(rest);
@@ -1569,7 +1569,7 @@ public class ListCmd extends StdCommand
             {
                 Room R=CMLib.map().getRoom(rest);
                 if(R!=null)
-                    roomsToDo=CMParms.makeVector(mob.location()).elements();
+                    roomsToDo=new XVector(mob.location()).elements();
                 else
                     return new StringBuffer("There's no such place as '"+rest+"'");
             }
@@ -1577,7 +1577,7 @@ public class ListCmd extends StdCommand
         StringBuffer buf=new StringBuffer("");
         Room R=null;
         Room TR=null;
-        Vector set=null;
+        Map<String,Room> set=null;
         for(;roomsToDo.hasMoreElements();)
         {
             R=(Room)roomsToDo.nextElement();
@@ -1587,7 +1587,7 @@ public class ListCmd extends StdCommand
                 buf.append("'"+CMLib.map().getExtendedRoomID(R)+"' could not be read from the database!\n\r");
             else
             {
-                TR=(Room)set.elements().nextElement();
+                TR=(Room)set.entrySet().iterator().next();
                 CMLib.database().DBReadContent(TR,set);
                 buf.append("\n\r^NRoomID: "+CMLib.map().getExtendedRoomID(TR)+"\n\r");
                 for(int m=0;m<TR.numInhabitants();m++)

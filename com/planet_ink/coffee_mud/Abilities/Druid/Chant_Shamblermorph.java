@@ -108,7 +108,7 @@ public class Chant_Shamblermorph extends Chant
 		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+(2*super.getXLEVELLevel(mob)));
 		if(levelDiff<0) levelDiff=0;
 		boolean success=proficiencyCheck(mob,-(levelDiff*10),auto);
-		boolean malicious=!target.getGroupMembers(new HashSet()).contains(mob);
+		boolean malicious=!target.getGroupMembers(new HashSet<MOB>()).contains(mob);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

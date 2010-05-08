@@ -21,7 +21,7 @@ public class Ignan extends StdLanguage
 {
 	public String ID() { return "Ignan"; }
 	public String name(){ return "Ignan";}
-	public static Vector wordLists=null;
+	public static List<String[]> wordLists=null;
 	private static boolean mapped=false;
 	public Ignan()
 	{
@@ -33,7 +33,7 @@ public class Ignan extends StdLanguage
     {	
         return new Ignan();
     }
-	public Vector translationVector(String language)
+	public List<String[]> translationVector(String language)
 	{
 		if(wordLists==null)
 		{
@@ -44,17 +44,17 @@ public class Ignan extends StdLanguage
 			String[] five={"stigh","stubh","stoka","me'das","mraks","ghana","buk'ni","narka","pams'u","niska","netrya","ni'jh","dhu'li","dhraj","taran","tarus","jungu","chupna","jattu","chirnu","cukvu","jhakut","jhaur","udaya","ilih"};
 			String[] six={"masu'ra","marttika","bhai'sa","bollai","vila'sini","barhis't'ha","barkro","parada","nikauriya","nird'har","dhanik","ja'n'o","tanakti","chikka'ra","kullada","uccaya","utsava","istaka","i'rsya","inkhuksa","akha'ra","adhuna","avas'dyak"};
 			wordLists=new Vector();
-			wordLists.addElement(one);
-			wordLists.addElement(two);
-			wordLists.addElement(three);
-			wordLists.addElement(four);
-			wordLists.addElement(five);
-			wordLists.addElement(six);
+			wordLists.add(one);
+			wordLists.add(two);
+			wordLists.add(three);
+			wordLists.add(four);
+			wordLists.add(five);
+			wordLists.add(six);
 		}
 		return wordLists;
 	}
 	private static final Hashtable hashwords=new Hashtable();
-	public Hashtable translationHash(String language)
+	public Map<String, String> translationHash(String language)
 	{
 		if((hashwords!=null)&&(hashwords.size()>0))
 			return hashwords;

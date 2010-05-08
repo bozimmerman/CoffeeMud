@@ -57,7 +57,7 @@ public class Paladin extends StdAbility
 			return false;
 		if(paladinsGroup!=null)
 		{
-			Set<MOB> H=((MOB)affected).getGroupMembers(new HashSet());
+			Set<MOB> H=((MOB)affected).getGroupMembers(new HashSet<MOB>());
 			for(Iterator e=H.iterator();e.hasNext();)
 			{
 				MOB mob=(MOB)e.next();

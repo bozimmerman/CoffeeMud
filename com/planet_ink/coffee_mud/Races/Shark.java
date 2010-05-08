@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class Shark extends GiantFish
 {
     public String ID(){ return "Shark"; }
@@ -42,7 +41,7 @@ public class Shark extends GiantFish
     public int heightVariance(){return 20;}
     public int lightestWeight(){return 355;}
     public int weightVariance(){return 105;}
-    protected static Vector resources=new Vector();
+    protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 
     public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
     {

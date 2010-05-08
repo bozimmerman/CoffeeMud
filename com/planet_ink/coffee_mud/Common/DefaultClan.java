@@ -1266,9 +1266,9 @@ public class DefaultClan implements Clan
 
     public void clanAnnounce(String msg)
     {
-        Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
+    	List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
         for(int i=0;i<channels.size();i++)
-            CMLib.commands().postChannel((String)channels.elementAt(i),clanID(),msg,true);
+            CMLib.commands().postChannel((String)channels.get(i),clanID(),msg,true);
     }
 
     public int applyExpMods(int exp)

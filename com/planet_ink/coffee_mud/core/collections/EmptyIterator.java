@@ -17,12 +17,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class EmptyIterator<K> implements Iterator<K>
 {
-    @SuppressWarnings("unchecked")
-	public static final Iterator INSTANCE=new EmptyIterator();
 	private EmptyIterator(){};
     public boolean hasNext(){ return false;}
     public K next(){ throw new NoSuchElementException(); }
     public void remove() { throw new NoSuchElementException();}
+	public static final Iterator INSTANCE=new EmptyIterator();
+	public static final Iterator<String> STRINSTANCE=new EmptyIterator<String>();
 }

@@ -56,7 +56,7 @@ public class Dwarf extends StdRace
 	private int[] agingChart={0,1,5,40,125,188,250,270,290};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector resources=new Vector();
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)

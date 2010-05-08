@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class EarthElemental extends StdRace
 {
 	public String ID(){	return "EarthElemental"; }
@@ -48,7 +47,7 @@ public class EarthElemental extends StdRace
 	public boolean uncharmable(){return true;}
 	protected boolean destroyBodyAfterUse(){return true;}
 
-	protected static Vector resources=new Vector();
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi

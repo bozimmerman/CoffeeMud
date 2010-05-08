@@ -220,7 +220,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		return "";
 	}
 
-	public Vector getFlaggedChannelNames(ChannelFlag flag)
+	public List<String> getFlaggedChannelNames(ChannelFlag flag)
 	{
         Vector channels=new Vector();
 		for(int c=0;c<channelNames.size();c++)

@@ -32,13 +32,12 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class Skeleton extends Undead
 {
 	public String ID(){	return "Skeleton"; }
 	public String name(){ return "Skeleton"; }
 
-	protected static Vector resources=new Vector();
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

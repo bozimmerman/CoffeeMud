@@ -229,7 +229,7 @@ public class Druid extends StdCharClass
 
 		int level=mob.charStats().getClassLevel(this);
 		int numChants=2;
-		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
 			if((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())==level)

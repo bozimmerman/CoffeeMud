@@ -73,9 +73,9 @@ public class Prayer_Annul extends Prayer
 				if((!target.isMonster())&&(target.soulMate()==null))
 					CMLib.coffeeTables().bump(target,CoffeeTableRow.STAT_DIVORCES);
 				mob.location().send(mob,msg);
-                Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DIVORCES);
+                List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DIVORCES);
                 for(int i=0;i<channels.size();i++)
-                    CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),target.name()+" and "+target.getLiegeID()+" just had their marriage annulled.",true);
+                    CMLib.commands().postChannel((String)channels.get(i),mob.getClanID(),target.name()+" and "+target.getLiegeID()+" just had their marriage annulled.",true);
 				MOB M=CMLib.players().getPlayer(target.getLiegeID());
 				if(M!=null) M.setLiegeID("");
 				target.setLiegeID("");

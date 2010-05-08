@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class StdThinArea extends StdArea
 {
 	public String ID(){	return "StdThinArea";}
@@ -67,7 +66,8 @@ public class StdThinArea extends StdArea
 			{
 				R.setArea(this);
 				addProperRoom(R);
-				Vector V=CMParms.makeVector(R);
+				TreeMap<String,Room> V=new TreeMap<String,Room>();
+				V.put(roomID,R);
 				CMLib.database().DBReadRoomExits(roomID,V,false);
 				CMLib.database().DBReadContent(R,V);
 				fillInAreaRoom(R);

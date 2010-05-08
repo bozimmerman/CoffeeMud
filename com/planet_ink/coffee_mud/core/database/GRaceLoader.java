@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -35,7 +36,6 @@ import java.util.regex.Pattern;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class GRaceLoader
 {
     protected DBConnector DB=null;
@@ -58,20 +58,20 @@ public class GRaceLoader
          +"'"+data+" '"
          +")");
     }
-    public Vector DBReadRaces()
+    public List<DatabaseEngine.AckRecord> DBReadRaces()
     {
         DBConnection D=null;
-        Vector rows=new Vector();
+        List<DatabaseEngine.AckRecord> rows=new Vector<DatabaseEngine.AckRecord>();
         try
         {
             D=DB.DBFetch();
             ResultSet R=D.query("SELECT * FROM CMGRAC");
             while(R.next())
             {
-                Vector V=new Vector();
-                V.addElement(DBConnections.getRes(R,"CMRCID"));
-                V.addElement(DBConnections.getRes(R,"CMRDAT"));
-                rows.addElement(V);
+            	DatabaseEngine.AckRecord ack=new DatabaseEngine.AckRecord(
+            			DBConnections.getRes(R,"CMRCID"),
+            			DBConnections.getRes(R,"CMRDAT"));
+                rows.add(ack);
             }
         }
         catch(Exception sqle)
