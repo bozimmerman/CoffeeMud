@@ -47,7 +47,7 @@ public class CM1Server extends Thread
 	private SHashtable<SocketChannel,RequestHandler> 
 						handlers = new SHashtable<SocketChannel,RequestHandler>();
 	private ThreadPoolExecutor 
-						threadPool = new ThreadPoolExecutor(3, 3, 30, TimeUnit.SECONDS, new UniqueEntryBlockingQueue<Runnable>(256));
+						threadPool = new ThreadPoolExecutor(0, 3, 30, TimeUnit.SECONDS, new UniqueEntryBlockingQueue<Runnable>(256));
 	
 	
 	public CM1Server(String serverName, int serverPort)

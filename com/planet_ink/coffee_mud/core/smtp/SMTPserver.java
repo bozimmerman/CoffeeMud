@@ -72,7 +72,7 @@ public class SMTPserver extends Thread implements Tickable
     	super("SMTP"); 
     	mud=null;
     	isOK=false;
-		threadPool = new ThreadPoolExecutor(1, 3, 30, TimeUnit.SECONDS, new UniqueEntryBlockingQueue<Runnable>(256));
+		threadPool = new ThreadPoolExecutor(0, 3, 30, TimeUnit.SECONDS, new UniqueEntryBlockingQueue<Runnable>(256));
 		threadPool.setKeepAliveTime(5, TimeUnit.MINUTES);
     	setDaemon(true);
     }
@@ -86,7 +86,7 @@ public class SMTPserver extends Thread implements Tickable
 			isOK = false;
 		else
 			isOK = true;
-		threadPool = new ThreadPoolExecutor(1, maxThreads, 30, TimeUnit.SECONDS, new UniqueEntryBlockingQueue<Runnable>(256));
+		threadPool = new ThreadPoolExecutor(0, maxThreads, 30, TimeUnit.SECONDS, new UniqueEntryBlockingQueue<Runnable>(256));
 		threadPool.setKeepAliveTime(threadTimeoutMins, TimeUnit.MINUTES);
 		setDaemon(true);
 	}

@@ -46,9 +46,10 @@ public class RequestHandler implements Runnable
 	private final SocketChannel  chan;
 	private SVector<ByteBuffer>	 workingBuffers = new SVector<ByteBuffer>();
 	private SVector<String> 	 lines=new SVector<String>();
-	private byte[][]			 markBlocks = {{'\n','\r'},{'\r','\n'},{'\n'},{'\r'}};
+	private byte[][]			 markBlocks = DEFAULT_MARK_BLOCKS;
 	private static final int 	 BUFFER_SIZE=4096;
 	private static final long 	 MAXIMUM_BYTES=1024 * 1024 * 2;
+	private static final byte[][]DEFAULT_MARK_BLOCKS = {{'\n','\r'},{'\r','\n'},{'\n'},{'\r'}};
 	
 	public RequestHandler(SocketChannel chan) throws IOException
 	{

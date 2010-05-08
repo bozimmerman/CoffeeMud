@@ -86,7 +86,7 @@ public class HTTPserver extends Thread implements MudHost
 			isOK = false;
 		else
 			isOK = true;
-		threadPool = new ThreadPoolExecutor(1, maxThreads, 30, TimeUnit.SECONDS, new UniqueEntryBlockingQueue<Runnable>(256));
+		threadPool = new ThreadPoolExecutor(0, maxThreads, 30, TimeUnit.SECONDS, new UniqueEntryBlockingQueue<Runnable>(256));
 		threadPool.setKeepAliveTime(maxTimeoutMins, TimeUnit.MINUTES);
 	}
 
