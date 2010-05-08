@@ -133,7 +133,7 @@ public class Fighter_CircleTrip extends FighterSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		HashSet h=properTargets(mob,givenTarget,auto);
+		Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
 			mob.tell("There doesn't appear to be anyone here worth tripping.");

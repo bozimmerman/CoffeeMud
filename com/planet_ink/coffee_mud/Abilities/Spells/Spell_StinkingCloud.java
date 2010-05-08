@@ -138,11 +138,11 @@ public class Spell_StinkingCloud extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		HashSet h=null;
-		if(givenTarget!=null)
+		Set<MOB> h=null;
+		if(givenTarget instanceof MOB)
 		{
 			h=new HashSet();
-			h.add(givenTarget);
+			h.add((MOB)givenTarget);
 		}
 		else
 			h=CMLib.combat().properTargets(this,mob,auto);

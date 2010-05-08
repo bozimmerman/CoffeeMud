@@ -1025,16 +1025,16 @@ public class StdAbility implements Ability
         return true;
     }
 
-	public HashSet properTargets(MOB mob, Environmental givenTarget, boolean auto)
+	public Set<MOB> properTargets(MOB mob, Environmental givenTarget, boolean auto)
 	{
-		HashSet h=CMLib.combat().properTargets(this,mob,auto);
+		Set<MOB> h=CMLib.combat().properTargets(this,mob,auto);
 		if((givenTarget!=null)
         &&(givenTarget instanceof MOB)
         &&(CMLib.flags().isInTheGame(givenTarget,true)))
 		{
 			if(h==null) h=new HashSet();
 			if(!h.contains(givenTarget))
-				h.add(givenTarget);
+				h.add((MOB)givenTarget);
 		}
 		return h;
 	}

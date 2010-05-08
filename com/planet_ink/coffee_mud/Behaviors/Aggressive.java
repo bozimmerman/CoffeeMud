@@ -109,7 +109,7 @@ public class Aggressive extends StdBehavior
 		Room R=observer.location();
 		if((R!=null)&&(R.getArea().getAreaState()<=Area.STATE_ACTIVE))
 		{
-			HashSet groupMembers=observer.getGroupMembers(new HashSet());
+			Set<MOB> groupMembers=observer.getGroupMembers(new HashSet());
 			for(int i=0;i<R.numInhabitants();i++)
 			{
 				MOB mob=R.fetchInhabitant(i);

@@ -80,7 +80,7 @@ public class Spell_ClanHome extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				HashSet h=properTargets(mob,givenTarget,false);
+				Set<MOB> h=properTargets(mob,givenTarget,false);
 				if(h==null) return false;
 
 				Room thisRoom=mob.location();

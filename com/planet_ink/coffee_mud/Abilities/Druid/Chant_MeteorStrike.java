@@ -46,7 +46,7 @@ public class Chant_MeteorStrike extends Chant
     {
         if(mob!=null)
         {
-            HashSet h=properTargets(mob,target,false);
+        	Set<MOB> h=properTargets(mob,target,false);
             if(h==null)
                 return Ability.QUALITY_INDIFFERENT;
             
@@ -62,7 +62,7 @@ public class Chant_MeteorStrike extends Chant
     
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		HashSet h=properTargets(mob,givenTarget,auto);
+		Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
 			mob.tell("There doesn't appear to be anyone here worth striking at.");

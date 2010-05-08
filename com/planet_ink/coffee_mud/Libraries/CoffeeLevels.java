@@ -481,7 +481,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
         			highestLevelPC = M.phyStats().level();
         	}
         	
-        HashSet group=mob.getGroupMembers(new HashSet());
+        Set<MOB> group=mob.getGroupMembers(new HashSet());
         CharClass charClass=null;
         Race charRace=null;
         

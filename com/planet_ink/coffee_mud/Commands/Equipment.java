@@ -68,7 +68,7 @@ public class Equipment extends StdCommand
                 header="^N(^H"+wornName+"^?)";
                 header+=CMStrings.SPACES.substring(0,26-header.length())+": ^!";
             }
-            Vector wornHere=mob.fetchWornItems(wornCode,(short)(Short.MIN_VALUE+1),(short)0);
+            List<Item> wornHere=mob.fetchWornItems(wornCode,(short)(Short.MIN_VALUE+1),(short)0);
             int shownThisLoc=0;
             int numLocations=mob.getWearPositions(wornCode);
             if(numLocations==0) numLocations=1;
@@ -87,7 +87,7 @@ public class Equipment extends StdCommand
 	            Vector set=null;
 	            for(int i=0;i<wornHere.size();i++)
 	            {
-	            	I=(Item)wornHere.elementAt(i);
+	            	I=(Item)wornHere.get(i);
 	            	if(I.container()!=null) continue;
 	            	if(I instanceof Armor)
 	            	{
@@ -150,7 +150,7 @@ public class Equipment extends StdCommand
 	            	for(;s2>=0;s2--)
 	            	{
 	            		I2=(Item)set.elementAt(s2);
-	        			wornHere.addElement(I2);
+	        			wornHere.add(I2);
 	            		if((!(I2 instanceof Armor))
 	            		||(!CMath.bset(((Armor)I2).getLayerAttributes(),Armor.LAYERMASK_SEETHROUGH)))
 	            		{
@@ -161,7 +161,7 @@ public class Equipment extends StdCommand
 	            }
 				for(int i=0;i<wornHere.size();i++)
 				{
-					thisItem=(Item)wornHere.elementAt(i);
+					thisItem=(Item)wornHere.get(i);
 					if((thisItem.container()==null)&&(thisItem.amWearingAt(wornCode)))
 					{
 						if(paragraphView)

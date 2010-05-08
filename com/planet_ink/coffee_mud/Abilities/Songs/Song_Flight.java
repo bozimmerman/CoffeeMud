@@ -85,7 +85,7 @@ public class Song_Flight extends Song
 				CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),msgStr);
 				if(R.okMessage(mob,msg))
 				{
-					HashSet h=sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
+					Set<MOB> h=sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
 					if(h==null) continue;
 	
 					for(Iterator f=h.iterator();f.hasNext();)

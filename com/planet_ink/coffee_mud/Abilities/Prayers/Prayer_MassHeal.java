@@ -68,7 +68,7 @@ public class Prayer_MassHeal extends Prayer implements MendingSkill
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
-		HashSet h=properTargets(mob,givenTarget,auto);
+		Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null) return false;
 		for(Iterator e=h.iterator();e.hasNext();)
 		{

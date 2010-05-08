@@ -145,7 +145,7 @@ public class Song_Thanks extends Song
 				CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),msgStr);
 				if(mob.location().okMessage(mob,msg))
 				{
-					HashSet h=this.sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
+					Set<MOB> h=this.sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
 					if(h==null) continue;
 					Song newOne=(Song)this.copyOf();
 	

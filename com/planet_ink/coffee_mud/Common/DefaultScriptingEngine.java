@@ -8002,7 +8002,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             if(V.elementAt(v) instanceof MOB)
                             {
                                 MOB mob=(MOB)V.elementAt(v);
-                                HashSet H=mob.getGroupMembers(new HashSet());
+                                Set<MOB> H=mob.getGroupMembers(new HashSet());
                                 for(Iterator e=H.iterator();e.hasNext();)
                                 {
                                     MOB M=(MOB)e.next();

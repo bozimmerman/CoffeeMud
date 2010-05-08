@@ -179,7 +179,7 @@ public class Song_Friendship extends Song
 				if(mob.location().okMessage(mob,msg))
 				{
 					Song newOne=(Song)this.copyOf();
-					HashSet h=sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
+					Set<MOB> h=sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
 					if(h==null) continue;
 	
 					for(Iterator f=h.iterator();f.hasNext();)

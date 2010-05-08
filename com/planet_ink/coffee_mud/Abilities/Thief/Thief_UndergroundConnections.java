@@ -275,7 +275,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			if(underA!=null)
 			{
 				underA.currRoom=thisRoom;
-				HashSet H=target.getGroupMembers(new HashSet());
+				Set<MOB> H=target.getGroupMembers(new HashSet());
 				Vector group=new Vector();
 				group.addElement(target);
 				for(Iterator i=H.iterator();i.hasNext();)

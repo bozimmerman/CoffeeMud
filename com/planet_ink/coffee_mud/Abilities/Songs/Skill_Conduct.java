@@ -78,7 +78,7 @@ public class Skill_Conduct extends BardSkill
 				mob.location().send(mob,msg);
 				invoker=mob;
 				
-				HashSet h=properTargets(mob,givenTarget,auto);
+				Set<MOB> h=properTargets(mob,givenTarget,auto);
 				if(h==null) return false;
 				if(!h.contains(mob)) h.add(mob);
 

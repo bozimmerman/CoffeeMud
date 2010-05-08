@@ -91,7 +91,7 @@ public class Fighter_Battlecry extends FighterSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				HashSet h=properTargets(mob,givenTarget,auto);
+				Set<MOB> h=properTargets(mob,givenTarget,auto);
 				if(h==null) return false;
 				for(Iterator e=h.iterator();e.hasNext();)
 				{

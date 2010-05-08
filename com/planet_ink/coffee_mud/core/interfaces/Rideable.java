@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import java.util.HashSet;
+import java.util.Set;
 
 /* 
    Copyright 2000-2010 Bo Zimmerman
@@ -37,7 +37,6 @@ import java.util.HashSet;
  * @author Bo Zimmerman
  *
  */
-@SuppressWarnings("unchecked")
 public interface Rideable extends PhysicalAgent
 {
     /** constant for the  rideType() method.  Means it is ridden over land*/
@@ -193,5 +192,5 @@ public interface Rideable extends PhysicalAgent
      * @param list the hashset into which to add all the mob riders
      * @return the same list passed in, filled
      */
-	public HashSet getRideBuddies(HashSet list);
+	public Set<MOB> getRideBuddies(Set<MOB> list);
 }

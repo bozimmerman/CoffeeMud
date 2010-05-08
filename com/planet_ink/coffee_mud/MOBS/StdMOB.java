@@ -2965,7 +2965,7 @@ public class StdMOB implements MOB
 		amFollowing=mob;
 	}
 
-	public HashSet getRideBuddies(HashSet list)
+	public Set<MOB> getRideBuddies(Set<MOB> list)
 	{
 		if(list==null) return list;
 		if(!list.contains(this)) list.add(this);
@@ -2974,7 +2974,7 @@ public class StdMOB implements MOB
 		return list;
 	}
 
-	public HashSet getGroupMembers(HashSet list)
+	public Set<MOB> getGroupMembers(Set<MOB> list)
 	{
 		if(list==null) return list;
 		if(!list.contains(this)) list.add(this);
@@ -3207,7 +3207,7 @@ public class StdMOB implements MOB
 	}
 	public int numExpertises(){return expertises.size();}
 	
-	public Enumeration uniqueExpertises()
+	public Enumeration<String> uniqueExpertises()
 	{
 		try{
 			if(expertises.size()==0) 
@@ -3404,7 +3404,7 @@ public class StdMOB implements MOB
         if(F==null) return false;
         return factions.containsKey(F.factionID().toUpperCase());
     }
-    public Vector fetchFactionRanges()
+    public List<String> fetchFactionRanges()
     {
         Faction F=null;
         Faction.FactionRange FR=null;
@@ -3495,7 +3495,7 @@ public class StdMOB implements MOB
 		return add;
 	}
 
-	public Vector fetchWornItems(long wornCode, short aboveOrAroundLayer, short layerAttributes)
+	public List<Item> fetchWornItems(long wornCode, short aboveOrAroundLayer, short layerAttributes)
 	{
 		Vector V=new Vector();
 		boolean equalOk=(layerAttributes&Armor.LAYERMASK_MULTIWEAR)>0;

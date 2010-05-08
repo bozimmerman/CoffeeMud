@@ -581,7 +581,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	public boolean isStillACrime(LegalWarrant W, boolean debugging)
 	{
 		// will witness talk, or victim press charges?
-		HashSet H=W.criminal().getGroupMembers(new HashSet());
+		Set<MOB> H=W.criminal().getGroupMembers(new HashSet());
 		if((W.witness()!=null)&&W.witness().amDead()) 
 	    {
 		    if(debugging) Log.debugOut("ARREST", "Witness is DEAD!");

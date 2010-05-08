@@ -106,7 +106,7 @@ public class Chant_EelShock extends Chant
     {
         if(mob!=null)
         {
-            HashSet h=CMLib.combat().properTargets(this,mob,false);
+        	Set<MOB> h=CMLib.combat().properTargets(this,mob,false);
             if(h==null)
                 return Ability.QUALITY_INDIFFERENT;
             Room location=mob.location();
@@ -121,7 +121,7 @@ public class Chant_EelShock extends Chant
     
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		HashSet h=CMLib.combat().properTargets(this,mob,auto);
+		Set<MOB> h=CMLib.combat().properTargets(this,mob,auto);
 		if(h==null)
 		{
 			mob.tell("There doesn't appear to be anyone here worth shocking.");

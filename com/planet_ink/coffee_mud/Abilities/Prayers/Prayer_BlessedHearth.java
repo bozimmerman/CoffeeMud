@@ -56,7 +56,7 @@ public class Prayer_BlessedHearth extends Prayer
 		if(((msg.sourceMinor()==CMMsg.TYP_UNDEAD)||(msg.targetMinor()==CMMsg.TYP_UNDEAD))
 		&&(msg.target() instanceof MOB))
 		{
-			HashSet H=((MOB)msg.target()).getGroupMembers(new HashSet());
+			Set<MOB> H=((MOB)msg.target()).getGroupMembers(new HashSet());
 			for(Iterator e=H.iterator();e.hasNext();)
             {
                 MOB M=(MOB)e.next();
@@ -74,7 +74,7 @@ public class Prayer_BlessedHearth extends Prayer
 		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.target() instanceof MOB))
 		{
-			HashSet H=((MOB)msg.target()).getGroupMembers(new HashSet());
+			Set<MOB> H=((MOB)msg.target()).getGroupMembers(new HashSet());
 			for(Iterator e=H.iterator();e.hasNext();)
             {
                 MOB M=(MOB)e.next();

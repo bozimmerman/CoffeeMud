@@ -1673,7 +1673,7 @@ public class DefaultSession extends Thread implements Session
 
         public void initialize()
         {
-            HashSet group=theMOB.getGroupMembers(new HashSet());
+        	Set<MOB> group=theMOB.getGroupMembers(new HashSet());
             skipRooms.clear();
             for(Iterator i=group.iterator();i.hasNext();)
             {

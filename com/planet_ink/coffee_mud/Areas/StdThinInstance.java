@@ -205,7 +205,7 @@ public class StdThinInstance extends StdThinArea
         			Vector V=(Vector)children.elementAt(i,1);
         			if(V.contains(msg.source())){  myDex=i; break;}
         		}
-            	HashSet grp = msg.source().getGroupMembers(new HashSet());
+        		Set<MOB> grp = msg.source().getGroupMembers(new HashSet());
         		for(int i=0;i<children.size();i++) {
         			if(i!=myDex)
         			{

@@ -63,7 +63,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	public void delRider(Rider mob){}
 	public void recoverPhyStats(){CMLib.flags().setReadable(this,false); super.recoverPhyStats();}
 
-	public HashSet getRideBuddies(HashSet list){return list;}
+	public Set<MOB> getRideBuddies(Set<MOB> list){return list;}
 
 	public boolean mobileRideBasis(){return false;}
 	public String stateString(Rider R){	return "in";}

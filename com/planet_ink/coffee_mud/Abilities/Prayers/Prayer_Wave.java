@@ -48,7 +48,7 @@ public class Prayer_Wave extends Prayer
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		HashSet h=properTargets(mob,givenTarget,auto);
+		Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null) return false;
 		int dir=Directions.getGoodDirectionCode(CMParms.combine(commands,0));
 		if(dir<0)

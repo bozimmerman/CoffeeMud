@@ -88,7 +88,7 @@ public class Play_Dirge extends Play
 				CMMsg msg=CMClass.getMsg(mob,null,this,somanticCastCode(mob,null,auto),msgStr);
 				if(R.okMessage(mob,msg))
 				{
-					HashSet h=super.sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
+					Set<MOB> h=super.sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
 					if(h==null) continue;
 	
 					for(Iterator f=h.iterator();f.hasNext();)

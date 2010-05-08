@@ -39,7 +39,7 @@ public class GConsider extends StdCommand
 	private String[] access={"GCONSIDER","GCOS","GCO"};
 	public String[] getAccessWords(){return access;}
 
-	public int relativeLevelDiff(MOB mob1, HashSet mobs)
+	public int relativeLevelDiff(MOB mob1, Set<MOB> mobs)
 	{
 		if((mob1==null)||(mobs==null)) return 0;
 	    MOB mob2=(MOB)mobs.iterator().next();

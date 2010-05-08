@@ -206,7 +206,7 @@ public class Thief_Bind extends ThiefSkill
 				}
 				if((mob.getVictim()==target)&&(!auto))
 				{
-					HashSet H=mob.getGroupMembers(new HashSet());
+					Set<MOB> H=mob.getGroupMembers(new HashSet());
 					MOB M=null;
 					mob.makePeace();
 					for(Iterator i=H.iterator();i.hasNext();)

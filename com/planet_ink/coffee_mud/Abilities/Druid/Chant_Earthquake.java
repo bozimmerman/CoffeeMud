@@ -109,7 +109,7 @@ public class Chant_Earthquake extends Chant
         {
             if(target instanceof MOB)
             {
-                HashSet h=properTargets(mob,target,false);
+            	Set<MOB> h=properTargets(mob,target,false);
                 if(h==null)
                     return Ability.QUALITY_INDIFFERENT;
             }
@@ -119,7 +119,7 @@ public class Chant_Earthquake extends Chant
     
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		HashSet h=properTargets(mob,givenTarget,auto);
+		Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null)
 		{
 			mob.tell("There doesn't appear to be anyone here worth shaking up.");

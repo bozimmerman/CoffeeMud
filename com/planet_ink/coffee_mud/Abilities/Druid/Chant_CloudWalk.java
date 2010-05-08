@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.Vector;
 
 
@@ -81,7 +82,7 @@ public class Chant_CloudWalk extends Chant
 			}
 			else
 			{
-				HashSet H=mob.getGroupMembers(new HashSet());
+				Set<MOB> H=mob.getGroupMembers(new HashSet());
 				for(Iterator e=H.iterator();e.hasNext();)
 				{
 					MOB M=(MOB)e.next();

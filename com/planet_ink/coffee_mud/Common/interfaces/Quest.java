@@ -666,4 +666,14 @@ public interface Quest extends Tickable, CMCommon, Modifiable
                                                 		"WHEREAT","WHEREATGROUP",
                                                 		"ROOM","ROOMGROUP"
 	};
+	/**
+	 * A Quest script contains strings, and options, which
+	 * are mini-quest scripts of strings.
+	 * @author bzimmerman
+	 */
+	public static class QuestScript extends SVector<String>
+	{
+		private static final long serialVersionUID = 6627484220915485083L;
+		public List<QuestScript> options = new SVector<QuestScript>();
+	}
 }

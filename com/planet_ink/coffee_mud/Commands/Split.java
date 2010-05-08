@@ -57,18 +57,17 @@ public class Split extends StdCommand
 		double denom=CMLib.english().numPossibleGoldDenomination(mob,currency,itemID);
 
 		int num=0;
-		HashSet H=mob.getGroupMembers(new HashSet());
+		Set<MOB> H=mob.getGroupMembers(new HashSet());
 		
-		for(Iterator e=((HashSet)H.clone()).iterator();e.hasNext();)
+		for(MOB recipientM : H)
 		{
-			MOB recipient=(MOB)e.next();
-			if((!recipient.isMonster())
-			&&(recipient!=mob)
-			&&(recipient.location()==mob.location())
-			&&(mob.location().isInhabitant(recipient)))
+			if((!recipientM.isMonster())
+			&&(recipientM!=mob)
+			&&(recipientM.location()==mob.location())
+			&&(mob.location().isInhabitant(recipientM)))
 				num++;
 			else
-				H.remove(recipient);
+				H.remove(recipientM);
 		}
 		if(num==0)
 		{

@@ -15,8 +15,8 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 
@@ -156,7 +156,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public Item fetchFromInventory(Item goodLocation, String itemName, int wornFilter, boolean allowCoins, boolean respectLocationAndWornCode);
 	public Item fetchCarried(Item goodLocation, String itemName);
 	public Item fetchWornItem(String itemName);
-	public Vector fetchWornItems(long wornCode, short aboveOrAroundLayer, short layerAttributes);
+	public List<Item> fetchWornItems(long wornCode, short aboveOrAroundLayer, short layerAttributes);
 	public Item fetchFirstWornItem(long wornCode);
 	public Item fetchWieldedItem();
     public boolean hasOnlyGoldInInventory();
@@ -180,8 +180,8 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
     public MOB amUltimatelyFollowing();
 	public boolean willFollowOrdersOf(MOB mob);
 	public void setFollowing(MOB mob);
-	public HashSet getGroupMembers(HashSet list);
-	public HashSet getRideBuddies(HashSet list);
+	public Set<MOB> getGroupMembers(Set<MOB> list);
+	public Set<MOB> getRideBuddies(Set<MOB> list);
 	public int maxFollowers();
 	public int totalFollowers();
 
@@ -199,7 +199,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public void addExpertise(String of);
 	public void delExpertise(String of);
 	public int numExpertises();
-	public Enumeration uniqueExpertises();
+	public Enumeration<String> uniqueExpertises();
 	public String fetchExpertise(int x);
 	public String fetchExpertise(String of);
     
@@ -213,7 +213,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
     public void addFaction(String of, int start);
     public void adjustFaction(String of, int amount);
     public Enumeration<String> fetchFactions();
-    public Vector fetchFactionRanges();
+    public List<String> fetchFactionRanges();
     public boolean hasFaction(String which);
     public int fetchFaction(String which);
     public String getFactionListing();

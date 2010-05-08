@@ -174,7 +174,7 @@ public class Thief_Sap extends ThiefSkill
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 					success=maliciousAffect(mob,target,asLevel,3,-1);
-				HashSet H=mob.getGroupMembers(new HashSet());
+				Set<MOB> H=mob.getGroupMembers(new HashSet());
 				MOB M=null;
 				mob.makePeace();
 				for(Iterator i=H.iterator();i.hasNext();)

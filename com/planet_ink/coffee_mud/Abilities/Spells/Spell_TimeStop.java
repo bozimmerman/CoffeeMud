@@ -165,7 +165,7 @@ public class Spell_TimeStop extends Spell
 				{
 					Room room=mob.location();
 					fixed=new Vector();
-					HashSet grpMembers = mob.getGroupMembers(new HashSet());
+					Set<MOB> grpMembers = mob.getGroupMembers(new HashSet());
 					for(int m=0;m<room.numInhabitants();m++)
 					{
 						MOB mob2=room.fetchInhabitant(m);

@@ -94,7 +94,7 @@ public class Prayer_HolyWind extends Prayer
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		HashSet h=properTargets(mob,givenTarget,auto);
+		Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if((h==null)||(h.size()==0))
 		{
 			mob.tell("There doesn't appear to be anyone here worth blowing around.");

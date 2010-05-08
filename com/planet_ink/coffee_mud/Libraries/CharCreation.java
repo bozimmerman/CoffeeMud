@@ -1777,10 +1777,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             roomID=(String)startRooms.get(charClass);
         if(((roomID==null)||(roomID.length()==0)))
         {
-            Vector V=mob.fetchFactionRanges();
+            List<String> V=mob.fetchFactionRanges();
             for(int v=0;v<V.size();v++)
-                if(startRooms.containsKey(((String)V.elementAt(v)).toUpperCase()))
-                { roomID=(String)startRooms.get(((String)V.elementAt(v)).toUpperCase()); break;}
+                if(startRooms.containsKey(((String)V.get(v)).toUpperCase()))
+                { roomID=(String)startRooms.get(((String)V.get(v)).toUpperCase()); break;}
         }
         if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))
             roomID=(String)startRooms.get(deity);
@@ -1813,10 +1813,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             roomID=(String)deathRooms.get(charClass);
         if(((roomID==null)||(roomID.length()==0)))
         {
-            Vector V=mob.fetchFactionRanges();
+        	List<String> V=mob.fetchFactionRanges();
             for(int v=0;v<V.size();v++)
-                if(deathRooms.containsKey(((String)V.elementAt(v)).toUpperCase()))
-                { roomID=(String)deathRooms.get(((String)V.elementAt(v)).toUpperCase()); break;}
+                if(deathRooms.containsKey(((String)V.get(v)).toUpperCase()))
+                { roomID=(String)deathRooms.get(((String)V.get(v)).toUpperCase()); break;}
         }
         if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))
             roomID=(String)deathRooms.get(deity);
@@ -1867,10 +1867,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             roomID=(String)bodyRooms.get(charClass);
         if(((roomID==null)||(roomID.length()==0)))
         {
-            Vector V=mob.fetchFactionRanges();
+        	List<String> V=mob.fetchFactionRanges();
             for(int v=0;v<V.size();v++)
-                if(bodyRooms.containsKey(((String)V.elementAt(v)).toUpperCase()))
-                { roomID=(String)bodyRooms.get(((String)V.elementAt(v)).toUpperCase()); break;}
+                if(bodyRooms.containsKey(((String)V.get(v)).toUpperCase()))
+                { roomID=(String)bodyRooms.get(((String)V.get(v)).toUpperCase()); break;}
         }
         if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))
             roomID=(String)bodyRooms.get(deity);

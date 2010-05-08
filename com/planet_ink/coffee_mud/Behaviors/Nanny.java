@@ -455,7 +455,7 @@ public class Nanny extends StdBehavior
     }
 
     
-    public void addAssociationsIfNecessary(HashSet H)
+    public void addAssociationsIfNecessary(Set<PhysicalAgent> H)
     {
     	PhysicalAgent P=null;
     	for(Object o : H)
@@ -511,12 +511,13 @@ public class Nanny extends StdBehavior
         &&(msg.target()==CMLib.map().roomLocation(host)))
         {
 			String currency=CMLib.beanCounter().getCurrency(host);
-        	HashSet H=msg.source().getGroupMembers(new HashSet());
+			Set H=msg.source().getGroupMembers(new HashSet());
             msg.source().getRideBuddies(H);
             if(!H.contains(msg.source())) H.add(msg.source());
-        	HashSet H2 = null;
+        	HashSet<Environmental> H2 = null;
         	do {
-                H2 = (HashSet)H.clone();
+                H2 = new HashSet<Environmental>();
+                H2.addAll(H2);
             	for(Iterator i = H2.iterator(); i.hasNext(); ) {
             	    Environmental E = (Environmental)i.next();
             	    if(E instanceof Rideable)

@@ -63,7 +63,7 @@ public class Thief_Ambush extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		HashSet H=mob.getGroupMembers(new HashSet());
+		Set<MOB> H=mob.getGroupMembers(new HashSet());
 		if(!H.contains(mob)) H.add(mob);
 		int numBesidesMe=0;
 		for(Iterator e=H.iterator();e.hasNext();)

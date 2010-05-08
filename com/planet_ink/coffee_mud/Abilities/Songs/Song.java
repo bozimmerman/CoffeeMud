@@ -254,7 +254,7 @@ public class Song extends StdAbility
 		return msgStr;
 	}
 	
-	public HashSet sendMsgAndGetTargets(MOB mob, Room R, CMMsg msg, Environmental givenTarget, boolean auto)
+	public Set<MOB> sendMsgAndGetTargets(MOB mob, Room R, CMMsg msg, Environmental givenTarget, boolean auto)
 	{
 		if(originRoom==R)
 			R.send(mob,msg);
@@ -262,7 +262,7 @@ public class Song extends StdAbility
 			R.sendOthers(mob,msg);
 		if(R!=originRoom)
 			mob.setLocation(R);
-		HashSet h=properTargets(mob,givenTarget,auto);
+		Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(R!=originRoom)
 		{
 			R.delInhabitant(mob);
@@ -323,7 +323,7 @@ public class Song extends StdAbility
 				CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),msgStr);
 				if(R.okMessage(mob,msg))
 				{
-					HashSet h=this.sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
+					Set<MOB> h=this.sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
 					if(h==null) continue;
 					Song newOne=(Song)this.copyOf();
 					for(Iterator f=h.iterator();f.hasNext();)

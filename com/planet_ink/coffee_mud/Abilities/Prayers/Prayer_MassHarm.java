@@ -59,7 +59,7 @@ public class Prayer_MassHarm extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		HashSet h=properTargets(mob,givenTarget,auto);
+		Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null) return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);

@@ -104,7 +104,7 @@ public class Chant_SummonInsects extends Chant
 			return false;
 		}
 
-		HashSet h=properTargets(mob,givenTarget,auto);
+		Set<MOB> h=properTargets(mob,givenTarget,auto);
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

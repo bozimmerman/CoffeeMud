@@ -331,7 +331,7 @@ public class Play extends StdAbility
 		return msgStr;
 	}
 	
-	public HashSet sendMsgAndGetTargets(MOB mob, Room R, CMMsg msg, Environmental givenTarget, boolean auto)
+	public Set<MOB> sendMsgAndGetTargets(MOB mob, Room R, CMMsg msg, Environmental givenTarget, boolean auto)
 	{
 		if(originRoom==R)
 			R.send(mob,msg);
@@ -339,7 +339,7 @@ public class Play extends StdAbility
 			R.sendOthers(mob,msg);
 		if(R!=originRoom)
 			mob.setLocation(R);
-		HashSet h=properTargets(mob,givenTarget,auto);
+		Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(R!=originRoom)
 		{
 			R.delInhabitant(mob);
@@ -436,7 +436,7 @@ public class Play extends StdAbility
 				{
 					Play newOne=(Play)this.copyOf();
 	
-					HashSet h=this.sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
+					Set<MOB> h=this.sendMsgAndGetTargets(mob, R, msg, givenTarget, auto);
 					if(h==null) continue;
 	
 					for(Iterator f=h.iterator();f.hasNext();)

@@ -1598,7 +1598,7 @@ public class CMMap extends StdLibrary implements WorldMap
                 if(includeLocalFollowers)
                 {
                     MOB M2=null;
-                    HashSet H=M.getGroupMembers(new HashSet());
+                    Set<MOB> H=M.getGroupMembers(new HashSet());
                     for(Iterator i=H.iterator();i.hasNext();)
                     {
                         M2=(MOB)i.next();

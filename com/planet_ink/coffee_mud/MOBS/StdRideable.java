@@ -214,7 +214,7 @@ public class StdRideable extends StdMOB implements Rideable
 		return "being ridden by";
 	}
 
-	public HashSet getRideBuddies(HashSet list)
+	public Set<MOB> getRideBuddies(Set<MOB> list)
 	{
 		if(list==null) return list;
 		if(!list.contains(this)) list.add(this);
@@ -223,7 +223,7 @@ public class StdRideable extends StdMOB implements Rideable
 			Rider R=fetchRider(r);
 			if((R instanceof MOB)
 			&&(!list.contains(R)))
-				list.add(R);
+				list.add((MOB)R);
 		}
 		return list;
 	}

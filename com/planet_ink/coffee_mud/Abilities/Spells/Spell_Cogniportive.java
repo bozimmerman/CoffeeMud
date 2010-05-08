@@ -131,7 +131,7 @@ public class Spell_Cogniportive extends Spell
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Strange fizzled sparks fly from "+me.name()+".");
 			else
 			{
-				HashSet h=properTargets(mob,null,false);
+				Set<MOB> h=properTargets(mob,null,false);
 				if(h==null) return;
 
 				Room thisRoom=mob.location();

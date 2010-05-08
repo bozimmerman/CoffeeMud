@@ -1,0 +1,124 @@
+package com.planet_ink.coffee_mud.core.collections;
+import java.io.Serializable;
+import java.util.*;
+
+/*
+Copyright 2000-2010 Bo Zimmerman
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Set<K>
+{
+	private static final long serialVersionUID = -6713012858869312626L;
+	private volatile HashSet<K> T;
+	public SHashSet()
+	{
+		T=new HashSet<K>();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public synchronized HashSet<K> toHashSet() {
+		return (HashSet<K>)T.clone();
+	}
+	public synchronized Vector<K> toVector() {
+		Vector<K> V=new Vector<K>(size());
+		for(Iterator<K> s=T.iterator();s.hasNext();)
+			V.add(s.next());
+		return V;
+	}
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized boolean add(K e) {
+		T=(HashSet<K>)T.clone();
+		return T.add(e);
+	}
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized boolean addAll(Collection<? extends K> c) {
+		T=(HashSet<K>)T.clone();
+		return T.addAll(c);
+	}
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized void clear() {
+		T=(HashSet<K>)T.clone();
+		T.clear();
+	}
+	@SuppressWarnings("unchecked")
+	public synchronized SHashSet<K> copyOf() 
+	{
+		SHashSet<K> TS=new SHashSet<K>();
+		TS.T=(HashSet<K>)T.clone();
+		return TS;
+	}
+	@Override
+	public synchronized boolean contains(Object o) {
+		return T.contains(o);
+	}
+	@Override
+	public synchronized boolean isEmpty() {
+		return T.isEmpty();
+	}
+	@Override
+	public synchronized Iterator<K> iterator() {
+		return new ReadOnlyIterator<K>(T.iterator());
+	}
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized boolean remove(Object o) {
+		T=(HashSet<K>)T.clone();
+		return T.remove(o);
+	}
+	@Override
+	public synchronized int size() {
+		return T.size();
+	}
+	@Override
+	public boolean equals(Object arg0) {
+		return this==arg0;
+	}
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized boolean removeAll(Collection<?> arg0) {
+		T=(HashSet<K>)T.clone();
+		return T.removeAll(arg0);
+	}
+	@Override
+	public synchronized boolean containsAll(Collection<?> arg0) {
+		return T.containsAll(arg0);
+	}
+	@SuppressWarnings("unchecked")
+	@Override
+	public synchronized boolean retainAll(Collection<?> arg0) {
+		T=(HashSet<K>)T.clone();
+		return T.retainAll(arg0);
+	}
+	@Override
+	public synchronized Object[] toArray() {
+		return T.toArray();
+	}
+	@Override
+	public synchronized <T> T[] toArray(T[] arg0) {
+		return T.toArray(arg0);
+	}
+	@Override
+	public String toString() {
+		return super.toString();
+	}
+
+}

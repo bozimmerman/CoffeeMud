@@ -57,14 +57,11 @@ public class Fighter_Sweep extends FighterSkill
 	{
 		if((mob!=null)&&(target!=null))
 		{
-			HashSet h=properTargets(mob,target,false);
+			Set<MOB> h=properTargets(mob,target,false);
 			if(h.size()<2) return Ability.QUALITY_INDIFFERENT;
-			for(Iterator e=((HashSet)h.clone()).iterator();e.hasNext();)
-			{
-				MOB m=(MOB)e.next();
-				if((m.rangeToTarget()<0)||(m.rangeToTarget()>0))
-					h.remove(m);
-			}
+			for(MOB M : h)
+				if((M.rangeToTarget()<0)||(M.rangeToTarget()>0))
+					h.remove(M);
 			if(h.size()<2) return Ability.QUALITY_INDIFFERENT;
 		}
 		return super.castingQuality(mob,target);
@@ -82,13 +79,10 @@ public class Fighter_Sweep extends FighterSkill
 			mob.tell("You must be in combat to sweep!");
 			return false;
 		}
-		HashSet h=properTargets(mob,givenTarget,false);
-		for(Iterator e=((HashSet)h.clone()).iterator();e.hasNext();)
-		{
-			MOB m=(MOB)e.next();
-			if((m.rangeToTarget()<0)||(m.rangeToTarget()>0))
-				h.remove(m);
-		}
+		Set<MOB> h=properTargets(mob,givenTarget,false);
+		for(MOB M : h)
+			if((M.rangeToTarget()<0)||(M.rangeToTarget()>0))
+				h.remove(M);
 
 		if(h.size()==0)
 		{

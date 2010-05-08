@@ -124,7 +124,7 @@ public class Chant_SummonTornado extends Chant
 					if((I!=null)&&(I.container()==null)&&(CMLib.flags().isGettable(I)))
 						stuff.addElement(I);
 				}
-				HashSet H=properTargets(mob,givenTarget,true);
+				Set<MOB> H=properTargets(mob,givenTarget,true);
 				if(H!=null)
 				for(Iterator e=H.iterator();e.hasNext();)
 					stuff.addElement(e.next());

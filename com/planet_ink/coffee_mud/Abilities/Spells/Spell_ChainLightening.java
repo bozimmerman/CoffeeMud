@@ -43,10 +43,10 @@ public class Spell_ChainLightening extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		HashSet h=properTargets(mob,givenTarget,auto);
+		Set<MOB> h=properTargets(mob,givenTarget,auto);
 		if(h==null) h=new HashSet();
 
-		HashSet myGroup=mob.getGroupMembers(new HashSet());
+		Set<MOB> myGroup=mob.getGroupMembers(new HashSet());
 		Vector targets=new Vector();
 		for(Iterator e=h.iterator();e.hasNext();)
 			targets.addElement(e.next());
