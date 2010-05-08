@@ -404,6 +404,7 @@ public class StdRoom implements Room
 			setRawExit(Directions.UP,null);
             skyGridRoom.rawDoors()[Directions.DOWN]=null;
             skyGridRoom.setRawExit(Directions.DOWN,null);
+            CMLib.map().emptyRoom(skyGridRoom,null);
             skyGridRoom.destroy();
 			skyedYet=false;
 		}

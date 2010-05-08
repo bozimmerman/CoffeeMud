@@ -108,7 +108,7 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 	{
 		LinkedList<TockClient> subSet = new LinkedList<TockClient>();
 		if(tickID < 0)
-			subSet.addAll(tickers.subSet(new TockClient(T,0,-1), true, new TockClient(T,0,Integer.MAX_VALUE), true));
+			subSet.addAll(tickers.subSet(new TockClient(T,0,0), true, new TockClient(T,0,Integer.MAX_VALUE), true));
 		else
 			subSet.addAll(tickers.subSet(new TockClient(T,0,tickID), true, new TockClient(T,0,tickID), true));
 		return subSet.iterator();

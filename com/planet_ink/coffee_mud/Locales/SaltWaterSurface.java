@@ -116,6 +116,7 @@ public class SaltWaterSurface extends WaterSurface
 			((GridLocale)room).clearGrid(null);
 			rawDoors()[Directions.UP]=null;
 			setRawExit(Directions.UP,null);
+            CMLib.map().emptyRoom(room,null);
 			room.destroy();
 			skyedYet=false;
 		}

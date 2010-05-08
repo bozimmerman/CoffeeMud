@@ -115,11 +115,9 @@ public class ServiceEngine implements ThreadEngine
 
 	public synchronized boolean deleteTick(Tickable E, int tickID)
 	{
-        Tick almostTock=null;
         Iterator<TockClient> set=null;
-		for(Iterator<Tick> e=tickGroups();e.hasNext();)
+		for(Tick almostTock : ticks)
 		{
-			almostTock=e.next();
 			set=almostTock.getTickSet(E,tickID);
 			for(;set.hasNext();)
 				almostTock.delTicker((TockClient)set.next());
