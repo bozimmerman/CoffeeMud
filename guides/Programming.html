@@ -254,7 +254,10 @@ to access her code libraries.</p>
         </li>
       </ul>
       <h3><a name="IMPORTS" id="IMPORTS">Complete Default Import List</a></h3>
-      <pre>import com.planet_ink.coffee_mud.core.*;<br />import com.planet_ink.coffee_mud.core.interfaces.*;<br />import com.planet_ink.coffee_mud.Abilities.interfaces.*;<br />import com.planet_ink.coffee_mud.Areas.interfaces.*;<br />import com.planet_ink.coffee_mud.Behaviors.interfaces.*;<br />import com.planet_ink.coffee_mud.CharClasses.interfaces.*;<br />import com.planet_ink.coffee_mud.Commands.interfaces.*;<br />import com.planet_ink.coffee_mud.Common.interfaces.*;<br />import com.planet_ink.coffee_mud.Exits.interfaces.*;<br />import com.planet_ink.coffee_mud.Items.interfaces.*;<br />import com.planet_ink.coffee_mud.Locales.interfaces.*;<br />import com.planet_ink.coffee_mud.MOBS.interfaces.*;<br />import com.planet_ink.coffee_mud.Races.interfaces.*;<br />import com.planet_ink.coffee_mud.Libraries.interfaces.*;<br />import java.io.IOException;<br />import java.util.*;<br /></pre>
+      <pre>import com.planet_ink.coffee_mud.core.*;<br />
+      import com.planet_ink.coffee_mud.core.collections.*;<br />
+      import com.planet_ink.coffee_mud.core.interfaces.*;<br />
+      import com.planet_ink.coffee_mud.Abilities.interfaces.*;<br />import com.planet_ink.coffee_mud.Areas.interfaces.*;<br />import com.planet_ink.coffee_mud.Behaviors.interfaces.*;<br />import com.planet_ink.coffee_mud.CharClasses.interfaces.*;<br />import com.planet_ink.coffee_mud.Commands.interfaces.*;<br />import com.planet_ink.coffee_mud.Common.interfaces.*;<br />import com.planet_ink.coffee_mud.Exits.interfaces.*;<br />import com.planet_ink.coffee_mud.Items.interfaces.*;<br />import com.planet_ink.coffee_mud.Locales.interfaces.*;<br />import com.planet_ink.coffee_mud.MOBS.interfaces.*;<br />import com.planet_ink.coffee_mud.Races.interfaces.*;<br />import com.planet_ink.coffee_mud.Libraries.interfaces.*;<br />import java.io.IOException;<br />import java.util.*;<br /></pre>
       <img src="images/rainbow.jpg" alt="Text" />
       <h2><a name="TEXT" id="TEXT">Text</a></h2>
       <p>Before we get started with objects, needs must the topic of
@@ -263,7 +266,7 @@ sent to the user. Since a mud is a text producing engine, this should
 be no great surprise. However, within that text you will often see
 different kinds of codes and tags which affect the output. For
 instance, consider the following lines:</p>
-      <pre>msg=CMClass.newMsg(mob,target,this,affectType,"&lt;S-NAME&gt; reach(es) for &lt;T-NAMESELF&gt;.");<br />mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"&lt;S-NAME&gt; regain(s) &lt;S-HIS-HER&gt; feet.");<br /><br /></pre>
+      <pre>msg=CMClass.newMsg(mob,target,this,CMMsg.MSG_OK_ACTION,"&lt;S-NAME&gt; reach(es) for &lt;T-NAMESELF&gt;.");<br />mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"&lt;S-NAME&gt; regain(s) &lt;S-HIS-HER&gt; feet.");<br /><br /></pre>
       <p>Focusing only on the text for a moment, you will notice that
 special tags are used to designate a player name, or the name of the
 target of a spell. You will also notice that (s) and (es) is used to
@@ -1106,14 +1109,14 @@ of its state objects, and then allow the local Room object, or his
 inventory Item objects, or spell Effect objects to modify the copy, The
 copied state object modifications are stacked on each other. Confused?
 Well, keep reading!</p>
-      <p>Each instance of the several Environmental objects (MOBs,
+      <p>Each instance of the several Physical objects (MOBs,
 Items, Exits, Rooms) have a particular storage/state object called
-their Environmental Stats. This object implements the
+their Physical Stats. This object implements the
 Common.interfaces.PhyStats interface, and is typically an instance of
 the Common.DefaultPhyStats class. Access to this state object is
-available through each core.interfaces.Environmental objects <code>PhyStats
+available through each core.interfaces.Physical objects <code>PhyStats
 basePhyStats()</code> and <code>PhyStats phyStats()</code> method
-calls. Since Rooms, MOBS, Items, Exits, and Areas are all Environmental
+calls. Since Rooms, MOBS, Items, Exits, and Areas are all Physical
 objects, that means that they all have basePhyStats and phyStats
 methods as well.</p>
       <h3><a name="phystats" id="phystats">PhyStats state object fields</a></h3>
@@ -1193,23 +1196,23 @@ value of each bit is defined by equates in the
 Common.interfaces.PhyStats interface. The equates which refer to the
 bits for sensesMask all begin with "CAN_", while the equates which
 refer to the bits for disposition all begin with "IS_".</p>
-      <p>Now, as mentioned previously, all Environmental objects have
-two methods for accessing their PhyStats. One is <code>core.interfaces.Environmental.basePhyStats()</code>
-and the other is <code>core.interfaces.Environmental.phyStats()</code>.
+      <p>Now, as mentioned previously, all Physical objects have
+two methods for accessing their PhyStats. One is <code>core.interfaces.Physical.basePhyStats()</code>
+and the other is <code>core.interfaces.Physical.phyStats()</code>.
 The difference between these two methods is very significant. The
 PhyStats state object returned by the "basePhyStats" method refers to
-the permanent, unmodified, "base" state of the Environmental object.
+the permanent, unmodified, "base" state of the Physical object.
 The "phyStats" method, however, returns the modified, less permanent,
-"current" state of the Environmental object. The PhyStats object
+"current" state of the Physical object. The PhyStats object
 returned by the "phyStats" method is always copied and derived from the
 "basePhyStats" values, after all relevant modifications have been made
 to it. How the current state object goes from its base values
 (basePhyStats) to its current values (phyStats) is our next topic.</p>
-      <p>We must now introduce two other Environmental interface
+      <p>We must now introduce two other Physical interface
 methods significant to this topic. One is the <code>recoverPhyStats()</code>
-method, while the other is the <code>affectPhyStats(Environmental
+method, while the other is the <code>affectPhyStats(Physical
 affected, PhyStats affectableStats)</code> method. The
-"recoverPhyStats" method is also located on every Environmental (Item,
+"recoverPhyStats" method is also located on every Physical (Item,
 MOB, Exit, etc) object and is the method which turns the <code>basePhyStats()</code>
 values into their current <code>phyStats()</code>
 values. This method call works by copying the base values into the
@@ -1217,16 +1220,16 @@ current values and then allowing certain other objects to have an
 opportunity to affect the copy. Only after all opportunities to modify
 the copied values have been exhausted, does the <code>recoverPhyStats()</code>
 method return. In essence, <code>recoverPhyStats()</code> allows the
-Environmental objects <code>basePhyStats()</code> to be updated, with
+Physical objects <code>basePhyStats()</code> to be updated, with
 that updated state object made available through <code>phyStats()</code>.</p>
       <p>The way in which the current PhyStats state object is modified
 by the <code>recoverPhyStats()</code> method call is by making
-repeated internal calls to the <code>affectPhyStats(Environmental
+repeated internal calls to the <code>affectPhyStats(Physical
 affected, PhyStats affectedStats)</code>
 methods on other relevant objects. These methods will then have the
 opportunity to change the values in the current state object
 (affectedStats parameter) however they wish. The relevant objects which
-may change the state of an Environmental are as follows:</p>
+may change the state of an Physical are as follows:</p>
       <ul>
         <li> MOBs
           <p>Room object being occupied, something being Ridden, the
@@ -1371,7 +1374,7 @@ Tickable.TICKID_AREA.</p>
         <li> Ability
           <p>Whenever an Ability object is added as an Effect (using
 the <code>addEffect()</code>
-Environmental method) to a non-MOB object by using the proper Ability
+Physical method) to a non-MOB object by using the proper Ability
 invoke procedure (see below), then the Ability object itself will gain
 it's own regular calls to its tick method. The tickID for this call is
 also Tickable.TICKID_MOB, so as to make consistant the tickID for all
@@ -1469,10 +1472,6 @@ security flags.</td>
           <tr>
             <td>Directions</td>
             <td>Methods to handle the different compass directions.</td>
-          </tr>
-          <tr>
-            <td>DVector</td>
-            <td>A multi-dimensional version of java.util.Vector</td>
           </tr>
           <tr>
             <td>Log</td>
@@ -2325,7 +2324,7 @@ Behavior.FLAG_MOBILITY, or Behavior.FLAG_TROUBLEMAKING. The last method
 (<code>grantsAggressivenessTo()</code>) says whether or not this method
 would necessary cause the host mob to attack the mob (M) in the
 parameter.</p>
-      <pre>  public void startBehavior( Environmental forMe )<br />  {}<br /></pre>
+      <pre>  public void startBehavior( PhysicalAgent forMe )<br />  {}<br /></pre>
       <p>The next method, seldom used, is still quite important.
 startBehavior receives as its parameter the brand new host of this
 behavior. If the behavior instance needs to do any variable or other
@@ -2718,7 +2717,7 @@ that race, such as language. Players Shape Shifted or Polymorphed into
 the race, since they did not grow up in the culture, would not have
 automatic access to these skills per se. These two methods are defined
 similarly to the Racial Abilities above.</p>
-      <pre>  public void affectPhyStats( Environmental affected, PhyStats affectableStats )<br />  {<br />    super.affectPhyStats( affected, affectableStats );<br /><br />    affectableStats.setSensesMask(<br />      affectableStats.sensesMask() | PhyStats.CAN_SEE_INFRARED<br />    );<br />  }<br /></pre>
+      <pre>  public void affectPhyStats( Physical affected, PhyStats affectableStats )<br />  {<br />    super.affectPhyStats( affected, affectableStats );<br /><br />    affectableStats.setSensesMask(<br />      affectableStats.sensesMask() | PhyStats.CAN_SEE_INFRARED<br />    );<br />  }<br /></pre>
       <p>This sample of the <code>affectPhyStats()</code> method we
 discussed in the Core Topics above makes sure that all creatures of
 this race can see in the infrared spectrum.</p>
@@ -2897,12 +2896,12 @@ would modify how staff are handled by Areas.</p>
       <h2><a name="PROPS" id="PROPS">Properties</a></h2>
       <p>Properties are the simplest of the objects which implement the
 Ability interface, and are defined as effects which can be permanently
-tacked-on to items, mobs, and other Environmental objects. Properties
+tacked-on to items, mobs, and other Physical objects. Properties
 are Abilities, but they are never qualified for by classes, never
 gained as skills, and never wear off or disappear when a mob dies. They
-are always added to a mob, item, room, etc using the Environmental
+are always added to a mob, item, room, etc using the Physical
 interface method <code>addNonUninvokableEffect( Ability )</code>
-method either inside a custom coded Environmental object, or at
+method either inside a custom coded Physical object, or at
 run-time to a GenMob, GenItem, Room, or similar type object.</p>
       <p>Properties and Behaviors are often the basic building blocks
 of the customized GenMob and GenItem in CoffeeMud, and differ from each
@@ -2927,7 +2926,7 @@ methods as shown below. Notice that the <code>ID()</code> is the same
 as the name of the class. This is no accident -- this is required!</p>
       <pre>public class Prop_AstralSpirit extends com.planet_ink.coffee_mud.Abilities.Properties.Property<br />{<br />  public String ID()<br />  {<br />    return "Prop_AstralSpirit";<br />  }<br /><br />  public String name()<br />  {<br />    return "Astral Spirit";<br />  }<br /></pre>
       <p>Above we see the aforementioned methods defined. The Property
-does not differ from other Abilities, or indeed other Environmental
+does not differ from other Abilities, or indeed other Physical
 objects in this respect. A unique <code>ID()</code>, and <code>name()</code>
 method must be defined for each new class.</p>
       <pre>  protected int canAffectCode()<br />  {<br />    return Ability.CAN_MOBS;<br />  }<br /><br />  public String accountForYourself()<br />  {<br />    return "an astral spirit";<br />  }<br /></pre>
@@ -2949,7 +2948,7 @@ those messages, after telling the poor bloke why we are doing it. The
 rest of the method prevents any messages from targeting the mob with
 this property. This saves him from being attacked by aggressives, or
 arrested by cityguards -- since technically he isn't even there.</p>
-      <pre>  public void affectPhyStats( Environmental affected, PhyStats affectableStats )<br />  {<br />    super.affectPhyStats( affected, affectableStats );<br />    // when this spell is on a MOBs Affected list,<br />    // it should consistantly put the mob into<br />    // a sleeping state, so that nothing they do<br />    // can get them out of it.<br /><br />    affectableStats.setWeight( 0 );<br />    affectableStats.setHeight( -1 );<br /><br />    affectableStats.setDisposition(<br />      affectableStats.disposition()|PhyStats.IS_GOLEM<br />    );<br /><br />    affectableStats.setDisposition(<br />      affectableStats.disposition()|PhyStats.IS_INVISIBLE<br />    );<br /><br />    affectableStats.setDisposition(<br />      affectableStats.disposition()|PhyStats.IS_NOT_SEEN<br />    );<br /><br />    affectableStats.setSensesMask(<br />      affectableStats.sensesMask()|PhyStats.CAN_NOT_SPEAK<br />    );<br />  }<br />}<br /></pre>
+      <pre>  public void affectPhyStats( Physical affected, PhyStats affectableStats )<br />  {<br />    super.affectPhyStats( affected, affectableStats );<br />    // when this spell is on a MOBs Affected list,<br />    // it should consistantly put the mob into<br />    // a sleeping state, so that nothing they do<br />    // can get them out of it.<br /><br />    affectableStats.setWeight( 0 );<br />    affectableStats.setHeight( -1 );<br /><br />    affectableStats.setDisposition(<br />      affectableStats.disposition()|PhyStats.IS_GOLEM<br />    );<br /><br />    affectableStats.setDisposition(<br />      affectableStats.disposition()|PhyStats.IS_INVISIBLE<br />    );<br /><br />    affectableStats.setDisposition(<br />      affectableStats.disposition()|PhyStats.IS_NOT_SEEN<br />    );<br /><br />    affectableStats.setSensesMask(<br />      affectableStats.sensesMask()|PhyStats.CAN_NOT_SPEAK<br />    );<br />  }<br />}<br /></pre>
       <p>Last but not least, here is another example from the Core
 Topics, an <code>affectPhyStats()</code>
 method. This method will always have the host mob passed in the
@@ -3064,7 +3063,7 @@ circumstances</td>
       </table>
       <p>Only skills marked as Ability.QUALITY_BENEFICIAL_*
 orAbility.QUALITY_MALICIOUS will be used in combat or by most behaviors.</p>
-      <pre>  public int castingQuality( MOB invoker, Environmental target )<br />  {<br />    return super.castingQuality( invoker, target );<br />  }<br /></pre>
+      <pre>  public int castingQuality( MOB invoker, Physical target )<br />  {<br />    return super.castingQuality( invoker, target );<br />  }<br /></pre>
       <p>This second most important method is similar to the <code>abstractQuality()</code>
 method above, but it tells the system what the quality of the skills or
 spell is if it is specifically used by the given invoker against the
@@ -3165,7 +3164,7 @@ muscles.</td>
           </tr>
         </tbody>
       </table>
-      <pre>  public void affectPhyStats( Environmental affected, PhyStats affectableStats )<br />  {<br />    super.affectPhyStats( affected, affectableStats );<br />    if( !doneTicking )<br />    {<br />      affectableStats.setDisposition( affectableStats.disposition()<br />                                      | PhyStats.IS_SITTING<br />                                    );<br />    }<br />  }<br /></pre>
+      <pre>  public void affectPhyStats( Physical affected, PhyStats affectableStats )<br />  {<br />    super.affectPhyStats( affected, affectableStats );<br />    if( !doneTicking )<br />    {<br />      affectableStats.setDisposition( affectableStats.disposition()<br />                                      | PhyStats.IS_SITTING<br />                                    );<br />    }<br />  }<br /></pre>
       <p>This is an example of the <code>affectPhyStats()</code>
 method described in the Core Topics. In the case of our Trip skill, it
 forces the affected target into a sitting position.</p>
@@ -3182,7 +3181,7 @@ method, which is located in StdAbility.java, actually does the work of
 removing the Effect from the affected object (stored in the variable
 affected), and then setting affected to null. In this particular <code>unInvoke()</code>
 method, we also see the code trying to force the mob back to his feet.</p>
-      <pre>  public boolean preInvoke( MOB mob,<br />                            Vector commands,<br />                            Environmental givenTarget,<br />                            boolean auto,<br />                            int asLevel,<br />                            int secondsElapsed,<br />                            double actionsRemaining<br />                          )<br />  {<br />    return true;<br />  }<br /></pre>
+      <pre>  public boolean preInvoke( MOB mob,<br />                            Vector commands,<br />                            Physical givenTarget,<br />                            boolean auto,<br />                            int asLevel,<br />                            int secondsElapsed,<br />                            double actionsRemaining<br />                          )<br />  {<br />    return true;<br />  }<br /></pre>
       <p>The <code>preInvoke()</code> method is an optional method
 that
 normally just returns true. Unless you have reason to do so, you do not
@@ -3199,7 +3198,7 @@ any trigger words, for errors. You may also give the user a message
 that their skill will invoke later on. The preInvoke method will
 continue to be called, at 1 second intervals, until the player is able
 to invoke the command.</p>
-      <pre>  public boolean invoke( MOB mob,<br />                         Vector commands,<br />                         Environmental givenTarget,<br />                         boolean auto,<br />                         int asLevel<br />                       )<br />  {<br /></pre>
+      <pre>  public boolean invoke( MOB mob,<br />                         Vector commands,<br />                         Physical givenTarget,<br />                         boolean auto,<br />                         int asLevel<br />                       )<br />  {<br /></pre>
       <p>If an ability is not autoinvoked, it will always have a
 functional invoke method. This invoke method includes the following
 parameters: the mob invoking the ability and a vector of command
@@ -3347,7 +3346,7 @@ the domain may be added using the | symbol. Possible domains include:</p>
           </tr>
         </tbody>
       </table>
-      <pre>  public boolean invoke( MOB mob,<br />                         Vector commands,<br />                         Environmental givenTarget,<br />                         boolean auto,<br />                         int asLevel<br />                       )<br />  {<br />    MOB target = getTarget( mob, commands, givenTarget );<br />    if( target == null )<br />    {<br />      return false;<br />    }<br /><br />    if( !super.invoke( mob, commands, givenTarget, auto ) )<br />    {<br />      return false;<br />    }<br /><br />    boolean success = proficiencyCheck( mob, 0, auto );<br />    if( success )<br />    {<br />      CMMsg msg = CMClass.getMsg( mob,<br />                                  target,<br />                                  this,<br />                                  affectType( auto ),<br />                                  auto ?<br />                                    "&lt;T-NAME&gt; feel(s) cooly protected."<br />                                  : "^S&lt;S-NAME&gt; invoke(s) a cool field of protection around &lt;T-NAMESELF&gt;.^?"<br />                                );<br /><br />      if( mob.location().okMessage( mob, msg ) )<br />      {<br />        mob.location().send( mob, msg );<br />        beneficialAffect( mob, target, asLevel, 0 );<br />      }<br />    }<br />    else<br />    {<br />      beneficialWordsFizzle( mob,<br />                             target,<br />                             "&lt;S-NAME&gt; attempt(s) to invoke fire protection, but fail(s)."<br />                           );<br />    }<br /><br />    return success;<br />  }<br />}<br /></pre>
+      <pre>  public boolean invoke( MOB mob,<br />                         Vector commands,<br />                         Physical givenTarget,<br />                         boolean auto,<br />                         int asLevel<br />                       )<br />  {<br />    MOB target = getTarget( mob, commands, givenTarget );<br />    if( target == null )<br />    {<br />      return false;<br />    }<br /><br />    if( !super.invoke( mob, commands, givenTarget, auto ) )<br />    {<br />      return false;<br />    }<br /><br />    boolean success = proficiencyCheck( mob, 0, auto );<br />    if( success )<br />    {<br />      CMMsg msg = CMClass.getMsg( mob,<br />                                  target,<br />                                  this,<br />                                  affectType( auto ),<br />                                  auto ?<br />                                    "&lt;T-NAME&gt; feel(s) cooly protected."<br />                                  : "^S&lt;S-NAME&gt; invoke(s) a cool field of protection around &lt;T-NAMESELF&gt;.^?"<br />                                );<br /><br />      if( mob.location().okMessage( mob, msg ) )<br />      {<br />        mob.location().send( mob, msg );<br />        beneficialAffect( mob, target, asLevel, 0 );<br />      }<br />    }<br />    else<br />    {<br />      beneficialWordsFizzle( mob,<br />                             target,<br />                             "&lt;S-NAME&gt; attempt(s) to invoke fire protection, but fail(s)."<br />                           );<br />    }<br /><br />    return success;<br />  }<br />}<br /></pre>
       <p>The <code>invoke()</code> method above follows the one in
 Skill_Abilities very closely. You will see that no adjustment is made
 to the proficiency check, and that, since this is not
@@ -3365,7 +3364,7 @@ constructed depending upon whether the auto flag is set.</p>
       <h3><a name="prayers" id="prayers">Prayers</a></h3>
       <p>Prayers will follow all the rules mentioned above in the Skill
 Abilities section, with a few differences:</p>
-      <pre>public class Prayer_Anger extends com.planet_ink.coffee_mud.Abilities.Prayers.Prayer<br />{<br />  public String ID()<br />  {<br />    return "Prayer_Anger";<br />  }<br /><br />  public String name()<br />  {<br />    return "Anger";<br />  }<br /><br />  public int abstractQuality()<br />  {<br />    return Ability.QUALITY_MALICIOUS;<br />  }<br /><br />  public long flags()<br />  {<br />    return Ability.FLAG_UNHOLY;<br />  }<br /><br />  public boolean invoke( MOB mob,<br />                         Vector commands,<br />                         Environmental givenTarget,<br />                         boolean auto,<br />                         int asLevel<br />                       )<br />  {<br />    if( !super.invoke( mob, commands, givenTarget, auto ) )<br />    {<br />      return false;<br />    }<br /><br />    boolean success = proficiencyCheck( mob, 0, auto );<br /><br />    boolean someoneIsFighting = false;<br />    for( int i = 0; i &lt; mob.location().numInhabitants(); i++ )<br />    {<br />      MOB inhab = mob.location().fetchInhabitant( i );<br />      if( ( inhab != null ) &amp;&amp; ( inhab.isInCombat() ) )<br />      {<br />        someoneIsFighting = true;<br />      }<br />    }<br /><br />    if( success<br />        &amp;&amp;( !someoneIsFighting )<br />        &amp;&amp;( mob.location().numInhabitants() &gt; 3 )<br />      )<br />    {<br />      // it worked, so build a copy of this ability,<br />      // and add it to the effects list of the<br />      // affected MOB.  Then tell everyone else<br />      // what happened.<br />      CMMsg msg = CMClass.getMsg( mob,<br />                                  null,<br />                                  this,<br />                                  affectType( auto ),<br />                                  auto ? "A feeling of anger descends" : "^S&lt;S-NAME&gt; rage(s) for anger.^?"<br />                                );<br /><br />      if( mob.location().okMessage( mob, msg ) )<br />      {<br />        mob.location().send( mob, msg );<br /><br />[.......]<br />}<br /></pre>
+      <pre>public class Prayer_Anger extends com.planet_ink.coffee_mud.Abilities.Prayers.Prayer<br />{<br />  public String ID()<br />  {<br />    return "Prayer_Anger";<br />  }<br /><br />  public String name()<br />  {<br />    return "Anger";<br />  }<br /><br />  public int abstractQuality()<br />  {<br />    return Ability.QUALITY_MALICIOUS;<br />  }<br /><br />  public long flags()<br />  {<br />    return Ability.FLAG_UNHOLY;<br />  }<br /><br />  public boolean invoke( MOB mob,<br />                         Vector commands,<br />                         Physical givenTarget,<br />                         boolean auto,<br />                         int asLevel<br />                       )<br />  {<br />    if( !super.invoke( mob, commands, givenTarget, auto ) )<br />    {<br />      return false;<br />    }<br /><br />    boolean success = proficiencyCheck( mob, 0, auto );<br /><br />    boolean someoneIsFighting = false;<br />    for( int i = 0; i &lt; mob.location().numInhabitants(); i++ )<br />    {<br />      MOB inhab = mob.location().fetchInhabitant( i );<br />      if( ( inhab != null ) &amp;&amp; ( inhab.isInCombat() ) )<br />      {<br />        someoneIsFighting = true;<br />      }<br />    }<br /><br />    if( success<br />        &amp;&amp;( !someoneIsFighting )<br />        &amp;&amp;( mob.location().numInhabitants() &gt; 3 )<br />      )<br />    {<br />      // it worked, so build a copy of this ability,<br />      // and add it to the effects list of the<br />      // affected MOB.  Then tell everyone else<br />      // what happened.<br />      CMMsg msg = CMClass.getMsg( mob,<br />                                  null,<br />                                  this,<br />                                  affectType( auto ),<br />                                  auto ? "A feeling of anger descends" : "^S&lt;S-NAME&gt; rage(s) for anger.^?"<br />                                );<br /><br />      if( mob.location().okMessage( mob, msg ) )<br />      {<br />        mob.location().send( mob, msg );<br /><br />[.......]<br />}<br /></pre>
       <p>The first difference you may notice between this and the Skill
 Ability discussed in the previous section is that this skill extends
 the Prayer.java class instead of StdAbility. Prayer.java will make sure
@@ -3391,7 +3390,7 @@ constructed depending upon whether the auto flag is set.</p>
       <h3><a name="chants" id="chants">Chants</a></h3>
       <p>Chants will follow all the rules mentioned above in the Skill
 Abilities section, with a few differences:</p>
-      <pre>public class Chant_AlterTime extends com.planet_ink.coffee_mud.Abilities.Druid.Chant<br />{<br />  public String ID()<br />  {<br />    return "Chant_AlterTime";<br />  }<br /><br />  public String name()<br />  {<br />    return "Alter Time";<br />  }<br /><br />  public String displayText()<br />  {<br />    return "";<br />  }<br /><br />  public int overrideMana()<br />  {<br />    return 100;<br />  }<br /><br />  public int abstractQuality()<br />  {<br />    return Ability.QUALITY_INDIFFERENT;<br />  }<br /><br />  protected int canAffectCode()<br />  {<br />    return 0;<br />  }<br /><br />  protected int canTargetCode()<br />  {<br />    return 0;<br />  }<br /><br />  public boolean invoke( MOB mob,<br />                         Vector commands,<br />                         Environmental givenTarget,<br />                         boolean auto,<br />                         int asLevel<br />                       )<br />  {<br />    if( !super.invoke( mob, commands, givenTarget, auto ) )<br />    {<br />      return false;<br />    }<br /><br />    boolean success = proficiencyCheck( mob, 0, auto );<br />    if( success )<br />    {<br />      // it worked, so build a copy of this ability,<br />      // and add it to the effects list of the<br />      // affected MOB.  Then tell everyone else<br />      // what happened.<br />      CMMsg msg = CMClass.getMsg( mob,<br />                                  null,<br />                                  this,<br />                                  affectType( auto ),<br />                                  auto ? "" : "^S&lt;S-NAME&gt; chant(s), and reality seems to start blurring.^?"<br />                                );<br /><br />      if( mob.location().okMessage( mob, msg ) )<br />      {<br />        mob.location().send( mob, msg );<br />        int x = CMath.s_int( text() );<br />        while( x == 0 )<br />        {<br />          x = CMLib.dice().roll( 1, 3, -2 );<br />        }<br /><br />        if( x &gt; 0 )<br />        {<br />          mob.location().showHappens( CMMsg.MSG_OK_VISUAL, "Time moves forwards!" );<br />        }<br />        else<br />        {<br />          mob.location().showHappens( CMMsg.MSG_OK_VISUAL, "Time moves backwards!" );<br />        }<br /><br />        if( CMLib.map().numAreas() &gt; 0 )<br />        {<br />          CMLib.map().getFirstArea().tickTock( x );<br />        }<br />      }<br />    }<br />    else<br />    {<br />      return beneficialWordsFizzle( mob,<br />                                    null,<br />                                    "&lt;S-NAME&gt; chant(s), but the magic fades"<br />                                  );<br />    }<br /><br />    // return whether it worked<br />    return success;<br />  }<br />}<br /></pre>
+      <pre>public class Chant_AlterTime extends com.planet_ink.coffee_mud.Abilities.Druid.Chant<br />{<br />  public String ID()<br />  {<br />    return "Chant_AlterTime";<br />  }<br /><br />  public String name()<br />  {<br />    return "Alter Time";<br />  }<br /><br />  public String displayText()<br />  {<br />    return "";<br />  }<br /><br />  public int overrideMana()<br />  {<br />    return 100;<br />  }<br /><br />  public int abstractQuality()<br />  {<br />    return Ability.QUALITY_INDIFFERENT;<br />  }<br /><br />  protected int canAffectCode()<br />  {<br />    return 0;<br />  }<br /><br />  protected int canTargetCode()<br />  {<br />    return 0;<br />  }<br /><br />  public boolean invoke( MOB mob,<br />                         Vector commands,<br />                         Physical givenTarget,<br />                         boolean auto,<br />                         int asLevel<br />                       )<br />  {<br />    if( !super.invoke( mob, commands, givenTarget, auto ) )<br />    {<br />      return false;<br />    }<br /><br />    boolean success = proficiencyCheck( mob, 0, auto );<br />    if( success )<br />    {<br />      // it worked, so build a copy of this ability,<br />      // and add it to the effects list of the<br />      // affected MOB.  Then tell everyone else<br />      // what happened.<br />      CMMsg msg = CMClass.getMsg( mob,<br />                                  null,<br />                                  this,<br />                                  affectType( auto ),<br />                                  auto ? "" : "^S&lt;S-NAME&gt; chant(s), and reality seems to start blurring.^?"<br />                                );<br /><br />      if( mob.location().okMessage( mob, msg ) )<br />      {<br />        mob.location().send( mob, msg );<br />        int x = CMath.s_int( text() );<br />        while( x == 0 )<br />        {<br />          x = CMLib.dice().roll( 1, 3, -2 );<br />        }<br /><br />        if( x &gt; 0 )<br />        {<br />          mob.location().showHappens( CMMsg.MSG_OK_VISUAL, "Time moves forwards!" );<br />        }<br />        else<br />        {<br />          mob.location().showHappens( CMMsg.MSG_OK_VISUAL, "Time moves backwards!" );<br />        }<br /><br />        if( CMLib.map().numAreas() &gt; 0 )<br />        {<br />          CMLib.map().getFirstArea().tickTock( x );<br />        }<br />      }<br />    }<br />    else<br />    {<br />      return beneficialWordsFizzle( mob,<br />                                    null,<br />                                    "&lt;S-NAME&gt; chant(s), but the magic fades"<br />                                  );<br />    }<br /><br />    // return whether it worked<br />    return success;<br />  }<br />}<br /></pre>
       <p>The first difference you may notice between this and the Skill
 Ability discussed in the previous section is that this skill extends
 the Chant.java class instead of StdAbility. Chant.java will make sure
@@ -3442,7 +3441,7 @@ when invoked!</p>
 absolutely vital for Songs, as it tells the Song superclass whether to
 invoke the song upon all your enemies, or upon all your group members.
 Make sure you implement this method!</p>
-      <pre>  public void affectPhyStats( Environmental affected, PhyStats affectableStats )<br />  {<br />    super.affectPhyStats( affected, affectableStats );<br />    if( invoker == null )<br />    {<br />      return;<br />    }<br /><br />    affectableStats.setAttackAdjustment( affectableStats.attackAdjustment() - 5 );<br />  }<br />       <br /></pre>
+      <pre>  public void affectPhyStats( Physical affected, PhyStats affectableStats )<br />  {<br />    super.affectPhyStats( affected, affectableStats );<br />    if( invoker == null )<br />    {<br />      return;<br />    }<br /><br />    affectableStats.setAttackAdjustment( affectableStats.attackAdjustment() - 5 );<br />  }<br />       <br /></pre>
       <p>This particular song uses affectPhyStats to lower the attack
 rating of everyone that hears the song. Although this is not a
 malicious song, it is the price of using it.</p>
@@ -3532,7 +3531,7 @@ where the final work is done. So long as the skill has not been aborted
 player (the helping variable), we go ahead and create several copies of
 our target item, put them in the room using addItemRefuse, and force
 the player to get them into their inventory (if they can).</p>
-      <pre>  public boolean invoke( MOB mob,<br />                         Vector commands,<br />                         Environmental givenTarget,<br />                         boolean auto,<br />                         int asLevel<br />                       )<br />  {<br />    bundling = false;<br />    if( (!auto)<br />        &amp;&amp; ( commands.size() &gt; 0 )<br />        &amp;&amp; ( ( (String)commands.firstElement() ).equalsIgnoreCase( "bundle" ) )<br />      )<br />    {<br />      bundling = true;<br />      if( super.invoke( mob, commands, givenTarget, auto, asLevel ) )<br />      {<br />        return super.bundle( mob, commands );<br />      }<br /><br />      return false;<br />    }<br />       <br /></pre>
+      <pre>  public boolean invoke( MOB mob,<br />                         Vector commands,<br />                         Physical givenTarget,<br />                         boolean auto,<br />                         int asLevel<br />                       )<br />  {<br />    bundling = false;<br />    if( (!auto)<br />        &amp;&amp; ( commands.size() &gt; 0 )<br />        &amp;&amp; ( ( (String)commands.firstElement() ).equalsIgnoreCase( "bundle" ) )<br />      )<br />    {<br />      bundling = true;<br />      if( super.invoke( mob, commands, givenTarget, auto, asLevel ) )<br />      {<br />        return super.bundle( mob, commands );<br />      }<br /><br />      return false;<br />    }<br />       <br /></pre>
       <p>The <code>invoke()</code> method is where common skills do
 99%
 of their work, namely determining what the user wants to do and whether
@@ -3648,7 +3647,7 @@ checking whether everything went ok and adding it to the room if things
 did. Since common skills work by adding themselves as affects on the
 player/mobs performing the skill, we need only check the
 StdAbility.affected reference variable to find our craftor.</p>
-      <pre>  public boolean invoke( MOB mob,<br />                         Vector commands,<br />                         Environmental givenTarget,<br />                         boolean auto,<br />                         int asLevel<br />                       )<br />  {<br />    int autoGenerate = 0;<br /><br />    if( ( auto )<br />        &amp;&amp; ( givenTarget == this )<br />        &amp;&amp; ( commands.size() &gt; 0 )<br />        &amp;&amp; ( commands.firstElement() instanceof Integer )<br />      )<br />    {<br />      autoGenerate = ( (Integer)commands.firstElement() ).intValue();<br />      commands.removeElementAt( 0 );<br />      givenTarget = null;<br />    }<br />       <br /></pre>
+      <pre>  public boolean invoke( MOB mob,<br />                         Vector commands,<br />                         Physical givenTarget,<br />                         boolean auto,<br />                         int asLevel<br />                       )<br />  {<br />    int autoGenerate = 0;<br /><br />    if( ( auto )<br />        &amp;&amp; ( givenTarget == this )<br />        &amp;&amp; ( commands.size() &gt; 0 )<br />        &amp;&amp; ( commands.firstElement() instanceof Integer )<br />      )<br />    {<br />      autoGenerate = ( (Integer)commands.firstElement() ).intValue();<br />      commands.removeElementAt( 0 );<br />      givenTarget = null;<br />    }<br />       <br /></pre>
       <p>Crafting skills are all outfitted with the ability to allow
 the rest of the system to use the skill class as an automatic item
 generator. By convention, this is done by sending in a commands vector
@@ -3922,7 +3921,7 @@ before they can create this trap.</p>
 Traps skill to inform the user of what kinds of extra-materials are
 required by the user before they can lay this particular trap. It will
 be enforced below in the canSetTrap and setTrap methods.</p>
-      <pre>  public Trap setTrap( MOB mob,<br />                       Environmental E,<br />                       int trapBonus,<br />                       int qualifyingClassLevel,<br />                       boolean permanent<br />                     )<br />  {<br />    if( E == null )<br />    {<br />      return null;<br />    }<br /><br />    if( mob != null )<br />    {<br />      Item I = findMostOfMaterial( mob.location(), RawMaterial.MATERIAL_METAL );<br />      if( I != null )<br />      {<br />        super.destroyResources( mob.location(), I.material(), 10 );<br />      }<br />    }<br />    return super.setTrap( mob, E, trapBonus, qualifyingClassLevel, permanent );<br />  }<br />       <br /></pre>
+      <pre>  public Trap setTrap( MOB mob,<br />                       Physical E,<br />                       int trapBonus,<br />                       int qualifyingClassLevel,<br />                       boolean permanent<br />                     )<br />  {<br />    if( E == null )<br />    {<br />      return null;<br />    }<br /><br />    if( mob != null )<br />    {<br />      Item I = findMostOfMaterial( mob.location(), RawMaterial.MATERIAL_METAL );<br />      if( I != null )<br />      {<br />        super.destroyResources( mob.location(), I.material(), 10 );<br />      }<br />    }<br />    return super.setTrap( mob, E, trapBonus, qualifyingClassLevel, permanent );<br />  }<br />       <br /></pre>
       <p>This method is used to actually set the trap, well before the
 trap is sprung. Springing is handled by the StdTrap superclass system,
 and is based on what is returned by the <code>canAffectCode()</code>
@@ -3937,7 +3936,7 @@ will look for any raw material Metals in the room, and return an
 example Item representing the specific type (bronze, iron, gold) of
 metal that is most numerous in the room. The <code>destroyResources()</code>
 method then will remove 10 of those from the room.</p>
-      <pre>  public boolean canSetTrapOn( MOB mob, Environmental E )<br />  {<br />    if( !super.canSetTrapOn( mob, E ) )<br />    {<br />      return false;<br />    }<br /><br />    if( mob != null )<br />    {<br />      Item I = findMostOfMaterial( mob.location(), RawMaterial.MATERIAL_METAL );<br />      if( ( I == null )<br />          || ( super.findNumberOfResource( mob.location(), I.material() ) &lt; 10 )<br />        )<br />      {<br />        mob.tell( "You'll need to set down at least 10 pounds of metal first." );<br />        return false;<br />      }<br />    }<br />    return true;<br />  }<br />       <br /></pre>
+      <pre>  public boolean canSetTrapOn( MOB mob, Physical E )<br />  {<br />    if( !super.canSetTrapOn( mob, E ) )<br />    {<br />      return false;<br />    }<br /><br />    if( mob != null )<br />    {<br />      Item I = findMostOfMaterial( mob.location(), RawMaterial.MATERIAL_METAL );<br />      if( ( I == null )<br />          || ( super.findNumberOfResource( mob.location(), I.material() ) &lt; 10 )<br />        )<br />      {<br />        mob.tell( "You'll need to set down at least 10 pounds of metal first." );<br />        return false;<br />      }<br />    }<br />    return true;<br />  }<br />       <br /></pre>
       <p>This method is called before the <code>setTrap()</code>
 method to determine whether the given player/mob is allowed or able to
 set the trap on the given object (E). Just as we did in setTrap above,

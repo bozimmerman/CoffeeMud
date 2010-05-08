@@ -85,39 +85,32 @@ public class ServiceEngine implements ThreadEngine
 	public synchronized void startTickDown(Tickable E, int tickID, long TICK_TIME, int numTicks)
 	{
 		Tick tock=null;
-        Tick almostTock=null;
 		ThreadGroup grp=null;
         char threadGroupNum=Thread.currentThread().getThreadGroup().getName().charAt(0);
-		for(Iterator<Tick> e=tickGroups();e.hasNext();)
+		for(Tick almostTock : ticks)
 		{
-			almostTock=e.next();
-			if(almostTock!=null)
+        	if(almostTock.contains(E,tickID)) 
+        		return;
+			if((tock==null)
+            &&(almostTock.TICK_TIME==TICK_TIME)
+            &&(!almostTock.solitaryTicker)
+            &&(almostTock.numTickers()<getMaxObjectsPerThread()))
 			{
-	        	if(almostTock.contains(E,tickID)) 
-	        		return;
-				if((tock==null)
-	            &&(almostTock.TICK_TIME==TICK_TIME)
-	            &&(!almostTock.solitaryTicker)
-	            &&(almostTock.numTickers()<getMaxObjectsPerThread()))
-				{
-					grp = almostTock.getThreadGroup();
-					if((grp!=null)
-		            &&(grp.getName().charAt(0)==threadGroupNum))
-						tock=almostTock;
-				}
+				grp = almostTock.getThreadGroup();
+				if((grp!=null)
+	            &&(grp.getName().charAt(0)==threadGroupNum))
+					tock=almostTock;
 			}
 		}
-
-		if(tock==null)
+		boolean isSolitary = ((tickID&65536)==65536); 
+		if((tock==null)||isSolitary)
 		{
 			tock=new Tick(TICK_TIME);
+			tock.solitaryTicker = isSolitary;
 			addTickGroup(tock);
 		}
 
-		TockClient client=new TockClient(E,numTicks,tickID);
-		if((tickID&65536)==65536)
-			tock.solitaryTicker=true;
-		tock.addTicker(client);
+		tock.addTicker(new TockClient(E,numTicks,tickID));
 	}
 
 	public synchronized boolean deleteTick(Tickable E, int tickID)
