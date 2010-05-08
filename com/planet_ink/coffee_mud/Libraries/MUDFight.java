@@ -79,12 +79,12 @@ public class MUDFight extends StdLibrary implements CombatLibrary
     
     public void propertiesLoaded() { activate(); }
     
-	public HashSet allPossibleCombatants(MOB mob, boolean beRuthless)
+	public Set<MOB> allPossibleCombatants(MOB mob, boolean beRuthless)
 	{
-		HashSet h=new HashSet();
+		SHashSet h=new SHashSet();
 		Room thisRoom=mob.location();
 		if(thisRoom==null) return null;
-		Set<MOB> h1=mob.getGroupMembers(new HashSet());
+		Set<MOB> h1=mob.getGroupMembers(new SHashSet());
 		for(int m=0;m<thisRoom.numInhabitants();m++)
 		{
 			MOB inhab=thisRoom.fetchInhabitant(m);
@@ -198,18 +198,18 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         return CMLib.dice().normalizeAndRollLess((int)Math.round(50.0*(hisAttack/myArmor)) + adjustment);
     }
     
-	public HashSet allCombatants(MOB mob)
+	public Set<MOB> allCombatants(MOB mob)
 	{
-		HashSet h=new HashSet();
+		SHashSet h=new SHashSet();
 		Room thisRoom=mob.location();
 		if(thisRoom==null) return null;
 		if(!mob.isInCombat()) return null;
 
 		Set<MOB> h1=null;
         if(mob.Name().equalsIgnoreCase("nobody"))
-            h1=new HashSet();
+            h1=new SHashSet();
         else
-            h1=mob.getGroupMembers(new HashSet());
+            h1=mob.getGroupMembers(new SHashSet());
 		for(int m=0;m<thisRoom.numInhabitants();m++)
 		{
 			MOB inhab=thisRoom.fetchInhabitant(m);
@@ -701,9 +701,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         return C;
     }
 
-    protected HashSet getCombatBeneficiaries(MOB killer, MOB killed, Room deathRoom, HashSet beneficiaries, CharClass combatCharClass)
+    protected Set<MOB> getCombatBeneficiaries(MOB killer, MOB killed, Room deathRoom, Set<MOB> beneficiaries, CharClass combatCharClass)
     {
-        Set<MOB> followers=(killer!=null)?killer.getGroupMembers(new HashSet()):(new HashSet());
+        Set<MOB> followers=(killer!=null)?killer.getGroupMembers(new SHashSet()):(new SHashSet());
         if(combatCharClass==null) combatCharClass=CMClass.getCharClass("StdCharClass");
         if(deathRoom!=null)
         {
@@ -720,10 +720,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         return beneficiaries;
     }
 
-    public HashSet getCombatBeneficiaries(MOB killer, MOB killed, CharClass combatCharClass)
+    public Set<MOB> getCombatBeneficiaries(MOB killer, MOB killed, CharClass combatCharClass)
     {
-        if((killer==null)||(killed==null)) return new HashSet();
-        HashSet beneficiaries=new HashSet();
+        if((killer==null)||(killed==null)) return new SHashSet();
+        SHashSet<MOB> beneficiaries=new SHashSet();
         Room R=killer.location();
         if(R!=null) getCombatBeneficiaries(killer,killed,R,beneficiaries,combatCharClass);
         R=killed.location();
@@ -732,9 +732,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
     }
 
 
-    protected HashSet getCombatDividers(MOB killer, MOB killed, Room deathRoom, HashSet dividers, CharClass combatCharClass)
+    protected Set<MOB> getCombatDividers(MOB killer, MOB killed, Room deathRoom, Set<MOB> dividers, CharClass combatCharClass)
     {
-        Set<MOB> followers=(killer!=null)?killer.getGroupMembers(new HashSet()):(new HashSet());
+        Set<MOB> followers=(killer!=null)?killer.getGroupMembers(new SHashSet()):(new SHashSet());
         if(combatCharClass==null) combatCharClass=CMClass.getCharClass("StdCharClass");
         if(deathRoom!=null)
         {
@@ -751,10 +751,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         return dividers;
     }
 
-    public HashSet getCombatDividers(MOB killer, MOB killed, CharClass combatCharClass)
+    public Set<MOB> getCombatDividers(MOB killer, MOB killed, CharClass combatCharClass)
     {
-        if((killer==null)||(killed==null)) return new HashSet();
-        HashSet dividers=new HashSet();
+        if((killer==null)||(killed==null)) return new SHashSet();
+        Set<MOB> dividers=new SHashSet();
         Room R=killer.location();
         if(R!=null) getCombatDividers(killer,killed,R,dividers,combatCharClass);
         R=killed.location();
@@ -768,8 +768,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		Room deathRoom=target.location();
 
         CharClass combatCharClass=getCombatDominantClass(source,target);
-		HashSet beneficiaries=getCombatBeneficiaries(source,target,combatCharClass);
-		HashSet dividers=getCombatDividers(source,target,combatCharClass);
+        Set<MOB> beneficiaries=getCombatBeneficiaries(source,target,combatCharClass);
+        Set<MOB> dividers=getCombatDividers(source,target,combatCharClass);
 
         dispenseExperience(beneficiaries,dividers,target);
 
@@ -1517,7 +1517,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         }
     }
 
-    public void dispenseExperience(HashSet killers, HashSet dividers, MOB killed)
+    public void dispenseExperience(Set<MOB> killers, Set<MOB> dividers, MOB killed)
     {
         int totalLevels=0;
         int expAmount=100;

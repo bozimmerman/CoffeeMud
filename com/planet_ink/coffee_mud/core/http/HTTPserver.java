@@ -17,6 +17,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.net.*;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 
 /*
@@ -62,6 +64,8 @@ public class HTTPserver extends Thread implements MudHost
     private int myPort=27744;
     private int myServerNumber=0;
     private boolean acceptConnections=true;
+    private int maxThreads = 10;
+    private int maxTimeoutMins = 45;
 
     protected String serverDir = null;
     protected String serverTemplateDir = null;
@@ -69,6 +73,7 @@ public class HTTPserver extends Thread implements MudHost
     protected FileGrabber pageGrabber=new FileGrabber(this);
     protected FileGrabber templateGrabber=new FileGrabber(this);
     public DVector activeRequests=new DVector(2);
+	private ThreadPoolExecutor threadPool;
 
 	public HTTPserver(MudHost a_mud, String a_name, int num)
 	{
@@ -81,6 +86,8 @@ public class HTTPserver extends Thread implements MudHost
 			isOK = false;
 		else
 			isOK = true;
+		threadPool = new ThreadPoolExecutor(1, maxThreads, 30, TimeUnit.SECONDS, new UniqueEntryBlockingQueue<Runnable>(256));
+		threadPool.setKeepAliveTime(maxTimeoutMins, TimeUnit.MINUTES);
 	}
 
 	public String getPartialName()	{return partialName;}
@@ -156,6 +163,16 @@ public class HTTPserver extends Thread implements MudHost
 		else
 			serverTemplateDir = page.getStr("TEMPLATEDIRECTORY");
 
+		if (!CMath.isNumber(page.getStr("MAXTHREADS")))
+			maxThreads=10;
+		else
+			maxThreads=CMath.s_int(page.getStr("MAXTHREADS"));
+		
+		if (!CMath.isNumber(page.getStr("REQUESTTIMEOUTMINS")))
+			maxTimeoutMins=45;
+		else
+			maxTimeoutMins=CMath.s_int(page.getStr("REQUESTTIMEOUTMINS"));
+		
 		// don't want any trailing / chars
 		serverTemplateDir = FileGrabber.fixDirName(serverTemplateDir);
 
@@ -216,9 +233,7 @@ public class HTTPserver extends Thread implements MudHost
             }
             state=1;
             ProcessHTTPrequest W=new ProcessHTTPrequest(sock,this,page,isAdminServer);
-            W.equals(W); // this prevents an initialized by never used error
-            // nb - ProcessHTTPrequest is a Thread, but it .start()s in the constructor
-            //  if succeeds - no need to .start() it here
+            threadPool.execute(W);
         }
     }
 	
@@ -313,6 +328,7 @@ public class HTTPserver extends Thread implements MudHost
 		Log.sysOut(getName(),"Shutting down.");
 		if (S != null)
 			S.println( getName() + " shutting down.");
+		threadPool.shutdownNow();
 		CMLib.killThread(this,500,1);
 	}
 

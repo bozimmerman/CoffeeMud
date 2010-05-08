@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class Prop_SparringRoom extends Property
 {
 	public String ID() { return "Prop_SparringRoom"; }
@@ -58,8 +57,8 @@ public class Prop_SparringRoom extends Property
 			if(source!=null)
 			{
                 CharClass combatCharClass=CMLib.combat().getCombatDominantClass(source,target);
-                HashSet beneficiaries=CMLib.combat().getCombatBeneficiaries(source,target,combatCharClass);
-                HashSet dividers=CMLib.combat().getCombatDividers(source,target,combatCharClass);
+                Set<MOB> beneficiaries=CMLib.combat().getCombatBeneficiaries(source,target,combatCharClass);
+                Set<MOB> dividers=CMLib.combat().getCombatDividers(source,target,combatCharClass);
                 CMLib.combat().dispenseExperience(beneficiaries,dividers,target);
 			}
 			target.makePeace();

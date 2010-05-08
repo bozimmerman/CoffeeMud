@@ -59,7 +59,7 @@ public class Flee extends Go
         MOB fighting=mob.getVictim();
         if(fighting!=null)
         {
-            HashSet H=CMLib.combat().allCombatants(mob);
+        	Set<MOB> H=CMLib.combat().allCombatants(mob);
             for(Iterator i=H.iterator();i.hasNext();)
             {
                 MOB M=(MOB)i.next();

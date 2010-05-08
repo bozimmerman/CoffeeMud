@@ -36,14 +36,14 @@ public interface CombatLibrary extends CMLibrary
     public static final int COMBAT_QUEUE=1;
     public static final int COMBAT_MANUAL=2;
     
-    public HashSet allPossibleCombatants(MOB mob, boolean beRuthless);
+    public Set<MOB> allPossibleCombatants(MOB mob, boolean beRuthless);
     public Set<MOB> properTargets(Ability A, MOB caster, boolean beRuthless);
 	public int adjustedArmor(MOB mob);
 	public int adjustedAttackBonus(MOB mob, MOB target);
 	public int adjustedDamage(MOB mob, Weapon weapon, MOB target);
     public boolean rollToHit(MOB attacker, MOB defender);
     public boolean rollToHit(int attack, int defence, int adjustment);
-    public HashSet allCombatants(MOB mob);
+    public Set<MOB> allCombatants(MOB mob);
     public void makePeaceInGroup(MOB mob);
     public void postPanic(MOB mob, CMMsg addHere);
     public void postDeath(MOB killerM, MOB deadM, CMMsg addHere);
@@ -58,8 +58,8 @@ public interface CombatLibrary extends CMLibrary
     public Vector getFormationFollowed(MOB mob);
     public int getFormationAbsOrder(MOB mob);
     public CharClass getCombatDominantClass(MOB killer, MOB killed);
-    public HashSet getCombatDividers(MOB killer, MOB killed, CharClass combatCharClass);
-    public HashSet getCombatBeneficiaries(MOB killer, MOB killed, CharClass combatCharClass);
+    public Set<MOB> getCombatDividers(MOB killer, MOB killed, CharClass combatCharClass);
+    public Set<MOB> getCombatBeneficiaries(MOB killer, MOB killed, CharClass combatCharClass);
     public DeadBody justDie(MOB source, MOB target);
     public String armorStr(MOB mob);
     public String standardHitWord(int type, int damage);
@@ -88,5 +88,5 @@ public interface CombatLibrary extends CMLibrary
      * @param dividers a set of mobs who must divide the xp.. usually subset of killers
      * @param killed the mob killed 
      */
-	public void dispenseExperience(HashSet killers, HashSet dividers, MOB killed);
+	public void dispenseExperience(Set<MOB> killers, Set<MOB> dividers, MOB killed);
 }

@@ -2275,4 +2275,5 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
  6.MUDGrinder Map editor now has a Scripts editor button on the map screen.
  7.Internal: Lots of refactoring done
  8.new INI entry: OBJSPERTHREAD -- control your tick thread usage!
- 
+ 9.Web server INI files (pub.ini and admin.ini) have some tweeking options for performance (MAXTHREADS/REQUESTTIMEOUTMINS)
+10.

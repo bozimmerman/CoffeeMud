@@ -1032,7 +1032,7 @@ public class StdAbility implements Ability
         &&(givenTarget instanceof MOB)
         &&(CMLib.flags().isInTheGame(givenTarget,true)))
 		{
-			if(h==null) h=new HashSet();
+			if(h==null) h=new SHashSet();
 			if(!h.contains(givenTarget))
 				h.add((MOB)givenTarget);
 		}

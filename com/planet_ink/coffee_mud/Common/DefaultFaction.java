@@ -732,7 +732,7 @@ public class DefaultFaction implements Faction, MsgListener
                 if(eventC.applies(killingBlowM,killedM))
                 {
                     CharClass combatCharClass=CMLib.combat().getCombatDominantClass(killingBlowM,killedM);
-                    HashSet combatBeneficiaries=CMLib.combat().getCombatBeneficiaries(killingBlowM,killedM,combatCharClass);
+                    Set<MOB> combatBeneficiaries=CMLib.combat().getCombatBeneficiaries(killingBlowM,killedM,combatCharClass);
                     for(Iterator i=combatBeneficiaries.iterator();i.hasNext();)
                         executeChange((MOB)i.next(),killedM,eventC);
                 }

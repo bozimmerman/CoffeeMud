@@ -41,7 +41,7 @@ import com.planet_ink.coffee_mud.core.exceptions.*;
 */
 
 @SuppressWarnings("unchecked")
-public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
+public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
 {
     public String ID(){return "ProcessHTTPrequest";}
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new ProcessHTTPrequest();}}
@@ -87,7 +87,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	// not sure which order is expected - I think the first
 	private final static String cr = "\r\n";
 	//private final static String cr = "\n\r";
-
+	protected String runnableName = "";
 	protected String status = S_500;
 	protected String statusExtra = "...";
 	HTTPserver webServer;
@@ -103,7 +103,6 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
         webServer = null;
         sock = null;
         isAdminServer = true;
-        setDaemon(true);
     }
 	public ProcessHTTPrequest(Socket a_sock,
 							  HTTPserver a_webServer,
@@ -115,8 +114,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		//		super( "HTTPrq-"+ instanceCnt++ +"-" + a_sock.getInetAddress().toString() );
 		// thread name contains just the instance counter (faster)
 		//  and short enough to use in log
-		super( "HTTPrq-"+((a_webServer!=null)?a_webServer.getPartialName():"")+ instanceCnt++ );
-		setDaemon(true);
+		runnableName= "HTTPrq-"+((a_webServer!=null)?a_webServer.getPartialName():"")+ instanceCnt++ ;
 		page = a_page;
 		webServer = a_webServer;
 		sock = a_sock;
@@ -127,10 +125,13 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
             synchronized(a_webServer.activeRequests){
     		    a_webServer.activeRequests.addElement(this,Long.valueOf(System.currentTimeMillis()));
             }
-			this.start();
         }
 	}
-
+	public boolean readyToRun()
+	{
+		return (page != null && sock != null && webServer != null);
+	}
+	public String getName() { return runnableName;}
 	public Hashtable getVirtualDirectories(){return webServer.getVirtualDirectories();}
 	public HTTPserver getWebServer()	{return webServer;}
 	public String getHTTPstatus()	{return status;}
