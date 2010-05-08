@@ -65,14 +65,17 @@ public class SMTPserver extends Thread implements Tickable
 	private boolean 	displayedBlurb=false;
 	private String 		domain="coffeemud";
 	private DVector 	journals=null;
-	private ThreadPoolExecutor  
-						threadPool = new ThreadPoolExecutor(1, 3, 30, TimeUnit.SECONDS, new UniqueEntryBlockingQueue<Runnable>(256));
+	private int			maxThreads = 3;
+	private int			threadTimeoutMins = 10;
+	private ThreadPoolExecutor  threadPool;
 
     public SMTPserver()
     {
     	super("SMTP"); 
     	mud=null;
     	isOK=false;
+		threadPool = new ThreadPoolExecutor(1, 3, 30, TimeUnit.SECONDS, new UniqueEntryBlockingQueue<Runnable>(256));
+		threadPool.setKeepAliveTime(5, TimeUnit.MINUTES);
     	setDaemon(true);
     }
     
@@ -85,6 +88,8 @@ public class SMTPserver extends Thread implements Tickable
 			isOK = false;
 		else
 			isOK = true;
+		threadPool = new ThreadPoolExecutor(1, maxThreads, 30, TimeUnit.SECONDS, new UniqueEntryBlockingQueue<Runnable>(256));
+		threadPool.setKeepAliveTime(threadTimeoutMins, TimeUnit.MINUTES);
 		setDaemon(true);
 	}
 
@@ -122,6 +127,11 @@ public class SMTPserver extends Thread implements Tickable
 			Log.errOut(getName(),"Set your coffeemud.ini parameter: PORT");
 			return false;
 		}
+		if(CMath.isNumber(page.getStr("REQUESTTIMEOUTMINS")))
+			threadTimeoutMins=CMath.s_int(page.getStr("REQUESTTIMEOUTMINS"));
+		
+		if(CMath.isNumber(page.getStr("MAXTHREADS")))
+			maxThreads=CMath.s_int(page.getStr("MAXTHREADS"));
 
 		domain=CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase();
 		String mailbox=page.getStr("MAILBOX");

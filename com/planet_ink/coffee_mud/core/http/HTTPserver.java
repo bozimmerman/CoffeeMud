@@ -163,14 +163,10 @@ public class HTTPserver extends Thread implements MudHost
 		else
 			serverTemplateDir = page.getStr("TEMPLATEDIRECTORY");
 
-		if (!CMath.isNumber(page.getStr("MAXTHREADS")))
-			maxThreads=10;
-		else
+		if (CMath.isNumber(page.getStr("MAXTHREADS")))
 			maxThreads=CMath.s_int(page.getStr("MAXTHREADS"));
 		
-		if (!CMath.isNumber(page.getStr("REQUESTTIMEOUTMINS")))
-			maxTimeoutMins=45;
-		else
+		if (CMath.isNumber(page.getStr("REQUESTTIMEOUTMINS")))
 			maxTimeoutMins=CMath.s_int(page.getStr("REQUESTTIMEOUTMINS"));
 		
 		// don't want any trailing / chars
