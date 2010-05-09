@@ -29,11 +29,25 @@ public class SHashtable<K,F> implements java.util.Map<K,F>, java.io.Serializable
 		super();
 		H=new Hashtable<K,F>(size);
 	}
-	public SHashtable(Hashtable<K,F> H)
+	public SHashtable(Map<K,F> H)
 	{
 		super();
-		this.H=H;
+		this.H=new Hashtable<K,F>();
+		if(H!=null)
+			for(K o : H.keySet())
+				put(o,H.get(o));
 	}
+	
+	@SuppressWarnings("unchecked")
+	public SHashtable(Object[][] H)
+	{
+		super();
+		this.H=new Hashtable<K,F>();
+		if(H!=null)
+			for(Object[] o : H)
+				this.H.put((K) o[0],(F) o[1]);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public synchronized Hashtable<K,F> toHashtable() {
 		return (Hashtable<K,F>)H.clone();

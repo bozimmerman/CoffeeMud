@@ -30,6 +30,81 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 	{
 		T=new TreeSet<K>(comp);
 	}
+	
+	public STreeSet(List<K> E)
+	{
+		T=new TreeSet<K>();
+		if(E!=null)
+			this.T.addAll(E);
+	}
+	
+	public STreeSet(K... E)
+	{
+		T=new TreeSet<K>();
+		if(E!=null)
+			for(K o : E)
+				T.add(o);
+	}
+	
+	public STreeSet(Enumeration<K> E)
+	{
+		T=new TreeSet<K>();
+		if(E!=null)
+			for(;E.hasMoreElements();)
+				T.add(E.nextElement());
+	}
+	
+	public STreeSet(Iterator<K> E)
+	{
+		T=new TreeSet<K>();
+		if(E!=null)
+			for(;E.hasNext();)
+				T.add(E.next());
+	}
+	
+	public STreeSet(Set<K> E)
+	{
+		T=new TreeSet<K>();
+		if(E!=null)
+			for(K o : E)
+				add(o);
+	}
+	
+	public void addAll(Enumeration<K> E)
+	{
+		if(E!=null)
+			for(;E.hasMoreElements();)
+				T.add(E.nextElement());
+	}
+	
+	public void addAll(Iterator<K> E)
+	{
+		if(E!=null)
+			for(;E.hasNext();)
+				T.add(E.next());
+	}
+	
+	public void removeAll(Enumeration<K> E)
+	{
+		if(E!=null)
+			for(;E.hasMoreElements();)
+				T.remove(E.nextElement());
+	}
+	
+	public void removeAll(Iterator<K> E)
+	{
+		if(E!=null)
+			for(;E.hasNext();)
+				T.remove(E.next());
+	}
+	
+	public void removeAll(List<K> E)
+	{
+		if(E!=null)
+			for(K o : E)
+				T.remove(o);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public synchronized TreeSet<K> toTreeSet() {
 		return (TreeSet<K>)T.clone();

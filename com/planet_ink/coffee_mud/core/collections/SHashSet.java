@@ -66,6 +66,7 @@ public class SHashSet<K> implements Serializable, Iterable<K>, Collection<K>, Se
 	
 	public SHashSet(Set<K> E)
 	{
+		T=new HashSet<K>();
 		if(E!=null)
 			for(K o : E)
 				add(o);

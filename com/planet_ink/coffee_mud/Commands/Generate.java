@@ -40,7 +40,7 @@ import java.util.*;
 public class Generate extends StdCommand
 {
     public Generate(){}
-    private static final Hashtable OBJECT_TYPES=CMParms.makeHashtable(new Object[][]{
+    private static final SHashtable<String,Integer> OBJECT_TYPES=new SHashtable<String,Integer>(new Object[][]{
     		{"STRING",Integer.valueOf(Integer.MAX_VALUE)},
     		{"AREA",Integer.valueOf(CMClass.OBJECT_AREA)},
     		{"MOB",Integer.valueOf(CMClass.OBJECT_MOB)},

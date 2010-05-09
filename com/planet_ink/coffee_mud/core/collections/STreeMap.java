@@ -41,6 +41,15 @@ public class STreeMap<K,V> implements Serializable, Map<K,V>, NavigableMap<K,V>,
 	{
 		T=new TreeMap<K,V>(comp);
 	}
+	
+	public STreeMap(Map<K,V> E)
+	{
+		T=new TreeMap<K,V>();
+		if(E!=null)
+			for(K o : E.keySet())
+				put(o,E.get(o));
+	}
+	
 	@SuppressWarnings("unchecked")
 	public synchronized TreeMap<K,V> toTreeMap() {
 		return (TreeMap<K,V>)T.clone();

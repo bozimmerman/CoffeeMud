@@ -1410,49 +1410,6 @@ public class CMParms
         return s.toString().substring(2);
     }
 
-    public static boolean equalVectors(List<?> V1, List<?> V2)
-    {
-        if((V1==null)&&(V2==null)) return true;
-        if((V1==null)||(V2==null)) return false;
-        if(V1.size()!=V2.size()) return false;
-        for(int v=0;v<V1.size();v++)
-            if(!V1.get(v).equals(V2.get(v)))
-                return false;
-        return true;
-    }
-
-    public static Hashtable<String,String> makeHashtable(String[][] O)
-    {
-    	Hashtable<String,String> H =new Hashtable<String,String>(O!=null?O.length:0);
-    	if(O!=null)
-    		for(int o=0;o<O.length;o++)
-    			H.put(O[o][0].toUpperCase().trim(),O[o][1]);
-    	return H;
-    }
-    public static Hashtable<Object,Object> makeHashtable(Object[][] O)
-    {
-    	Hashtable<Object,Object> H =new Hashtable<Object,Object>(O!=null?O.length:0);
-    	if(O!=null)
-    		for(int o=0;o<O.length;o++)
-    			H.put(O[o][0],O[o][1]);
-    	return H;
-    }
-    public static String[] toStringArray(Map<String,?> H)
-    {
-        if((H==null)||(H.size()==0)){
-            String[] s=new String[0];
-            return s;
-        }
-        String[] s=new String[H.size()];
-        int v=0;
-        for(String KEY : H.keySet())
-        {
-            s[v]=(String)H.get(KEY);
-            v++;
-        }
-        return s;
-    }
-
     public static String[] appendToArray(String[] front, String[] back)
     {
     	if(back==null) return front;
@@ -1464,14 +1421,6 @@ public class CMParms
     	return newa;
     }
     
-    public static boolean vectorOfStringContainsIgnoreCase(List<?> V, String s)
-    {
-        for(int v=0;v<V.size();v++)
-            if(s.equalsIgnoreCase((String)V.get(v)))
-                return true;
-        return false;
-    }
-
     public static String toStringList(Map<String,?> V)
     {
         if((V==null)||(V.size()==0)){

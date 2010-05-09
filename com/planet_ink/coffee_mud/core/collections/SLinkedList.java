@@ -28,6 +28,73 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 		L=new LinkedList<K>();
 	}
 	
+	public SLinkedList(K... E)
+	{
+		L=new LinkedList<K>();
+		if(E!=null)
+			for(K o : E)
+				L.add(o);
+	}
+	
+	public SLinkedList(Enumeration<K> E)
+	{
+		L=new LinkedList<K>();
+		if(E!=null)
+			for(;E.hasMoreElements();)
+				L.add(E.nextElement());
+	}
+	
+	public SLinkedList(Iterator<K> E)
+	{
+		L=new LinkedList<K>();
+		if(E!=null)
+			for(;E.hasNext();)
+				L.add(E.next());
+	}
+	
+	public SLinkedList(Set<K> E)
+	{
+		L=new LinkedList<K>();
+		if(E!=null)
+			for(K o : E)
+				add(o);
+	}
+	
+	public void addAll(Enumeration<K> E)
+	{
+		if(E!=null)
+			for(;E.hasMoreElements();)
+				L.add(E.nextElement());
+	}
+	
+	public void addAll(Iterator<K> E)
+	{
+		if(E!=null)
+			for(;E.hasNext();)
+				L.add(E.next());
+	}
+	
+	public void removeAll(Enumeration<K> E)
+	{
+		if(E!=null)
+			for(;E.hasMoreElements();)
+				L.remove(E.nextElement());
+	}
+	
+	public void removeAll(Iterator<K> E)
+	{
+		if(E!=null)
+			for(;E.hasNext();)
+				L.remove(E.next());
+	}
+	
+	public void removeAll(List<K> E)
+	{
+		if(E!=null)
+			for(K o : E)
+				L.remove(o);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public synchronized LinkedList<K> toLinkedList() {
 		return (LinkedList<K>)L.clone();

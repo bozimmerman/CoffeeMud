@@ -133,8 +133,7 @@ public interface Room extends PhysicalAgent, ItemPossessor
 		{"ELSE","\n"},
 		{"VARIES","\r"}
 	};
-	public static final Hashtable<String, ?> VARIATION_CODES_HASHED=CMParms.makeHashtable(VARIATION_CODES);
-	
+	public static final SHashtable<String, String> VARIATION_CODES_HASHED=new SHashtable<String,String>(VARIATION_CODES);
 
 	public void startItemRejuv();
 	public void recoverRoomStats();

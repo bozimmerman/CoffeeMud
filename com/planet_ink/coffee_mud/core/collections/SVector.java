@@ -71,6 +71,7 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, Lis
 	
 	public SVector(Set<T> E)
 	{
+		V=new Vector<T>();
 		if(E!=null)
 			for(T o : E)
 				add(o);
