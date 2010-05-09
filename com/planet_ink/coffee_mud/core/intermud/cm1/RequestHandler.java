@@ -46,7 +46,7 @@ public class RequestHandler implements Runnable
 	private long 				 idleTime = System.currentTimeMillis();
 	private final SocketChannel  chan;
 	private String				 user = null;
-	private String				 player = null;
+	private PhysicalAgent		 target = null;
 	private SVector<ByteBuffer>	 workingBuffers = new SVector<ByteBuffer>();
 	private byte[][]			 markBlocks = DEFAULT_MARK_BLOCKS;
 	private static final int 	 BUFFER_SIZE=4096;
@@ -81,11 +81,11 @@ public class RequestHandler implements Runnable
 			try {Thread.sleep(1000);}catch(Exception e){}
 	}
 
-	public void login(MOB M) { user=M.Name(); player=M.Name(); }
-	public void setPlayer(MOB M){ player=M.Name();}
-	public MOB getPlayer(){ return player==null?null:CMLib.players().getLoadPlayer(player);}
-	public MOB getUser(){ return user==null?null:CMLib.players().getLoadPlayer(user);}
-	public void logout() { player=null; user=null;}
+	public void login(MOB M) { user=M.Name(); target=M; }
+	public void setTarget(PhysicalAgent A){ target=A;}
+	public PhysicalAgent getTarget(){ return target;}
+	public MOB getUser(){ return CMLib.players().getLoadPlayer(user);}
+	public void logout() { target=null; user=null;}
 	
 	public boolean needsClosing()
 	{

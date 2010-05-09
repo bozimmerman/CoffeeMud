@@ -306,6 +306,17 @@ public class MUD extends Thread implements MudHost
         if((tCode==MAIN_HOST)||(privacyV.contains("FACTIONS")))
     		CMLib.threads().startTickDown(CMLib.factions(),Tickable.TICKID_MOB,10);
 
+        CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Starting CM1");
+		startCM1();
+		
+		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Starting I3");
+		startIntermud3();
+
+        CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Starting IMC2");
+		startIntermud2();
+		
+		try{Thread.sleep(500);}catch(Exception e){}
+		
         if((tCode==MAIN_HOST)||(privacyV.contains("CATALOG")))
         {
     		Log.sysOut(Thread.currentThread().getName(),"Loading catalog...");
@@ -358,15 +369,6 @@ public class MUD extends Thread implements MudHost
     			Log.sysOut(Thread.currentThread().getName(),"Quests loaded     : "+CMLib.quests().numQuests());
         }
         
-		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Starting I3");
-		startIntermud3();
-
-        CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Starting IMC2");
-		startIntermud2();
-
-        CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Starting CM1");
-		MUD.startCM1();
-		
         if(tCode!=MAIN_HOST)
         {
             CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Waiting for HOST0");

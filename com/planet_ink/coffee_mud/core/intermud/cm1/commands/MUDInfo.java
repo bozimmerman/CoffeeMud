@@ -38,15 +38,29 @@ import java.util.concurrent.atomic.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Quit extends CM1Command
+public class MUDInfo extends CM1Command
 {
-	public String getCommandWord(){ return "QUIT";}
+	public String getCommandWord(){ return "MUDINFO";}
 	public void run()
 	{
 		try
 		{
-			req.sendMsg("[OK]");
-			req.close();
+			if((parameters.length()==0)||(parameters.equalsIgnoreCase("STATUS")))
+				req.sendMsg("[OK "+CMProps.getVar(CMProps.SYSTEM_MUDSTATUS)+"]");
+			else
+			if(parameters.equalsIgnoreCase("PORTS"))
+				req.sendMsg("[OK "+CMProps.getVar(CMProps.SYSTEM_MUDPORTS)+"]");
+			else
+			if(parameters.equalsIgnoreCase("VERSION"))
+				req.sendMsg("[OK "+CMProps.getVar(CMProps.SYSTEM_MUDVER)+"]");
+			else
+			if(parameters.equalsIgnoreCase("DOMAIN"))
+				req.sendMsg("[OK "+CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN)+"]");
+			else
+			if(parameters.equalsIgnoreCase("NAME"))
+				req.sendMsg("[OK "+CMProps.getVar(CMProps.SYSTEM_MUDNAME)+"]");
+			else
+				req.sendMsg("[FAIL "+getHelp(req.getUser())+"]");
 		}
 		catch(java.io.IOException ioe)
 		{
@@ -56,6 +70,6 @@ public class Quit extends CM1Command
 	public boolean passesSecurityCheck(MOB user, PhysicalAgent target){return true;}
 	public String getHelp(MOB user)
 	{
-		return "Ends the current user session and disconnects the user.";
+		return "USAGE : MUDINFO STATUS, PORTS, VERSION, DOMAIN, NAME";
 	}
 }

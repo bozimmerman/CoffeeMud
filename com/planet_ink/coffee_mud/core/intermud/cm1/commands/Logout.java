@@ -40,7 +40,7 @@ import java.util.concurrent.atomic.*;
 */
 public class Logout extends CM1Command
 {
-	public String CommandWord(){ return "LOGOUT";}
+	public String getCommandWord(){ return "LOGOUT";}
 	public void run()
 	{
 		try
@@ -58,5 +58,9 @@ public class Logout extends CM1Command
 			req.close();
 		}
 	}
-	public boolean securityCheck(MOB user){return true;}
+	public boolean passesSecurityCheck(MOB user, PhysicalAgent target){return true;}
+	public String getHelp(MOB user)
+	{
+		return "Logs out the current user, but does not disconnect.";
+	}
 }

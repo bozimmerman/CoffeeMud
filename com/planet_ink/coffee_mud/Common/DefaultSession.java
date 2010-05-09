@@ -56,13 +56,13 @@ public class DefaultSession extends Thread implements Session
     private StringBuffer fakeInput=null;
 	protected boolean waiting=false;
     protected static final int SOTIMEOUT=300;
-	protected Vector previousCmd=new Vector();
+	protected Vector<String> previousCmd=new Vector<String>();
     protected String[] clookup=null;
 	protected String lastColorStr="";
 	protected String lastStr=null;
 	protected int spamStack=0;
 	protected Vector snoops=new Vector();
-	protected Vector prevMsgs=new Vector();
+	protected Vector<String> prevMsgs=new Vector<String>();
 	protected StringBuffer curPrevMsg=null;
 
 	protected boolean lastWasCR=false;
@@ -337,7 +337,7 @@ public class DefaultSession extends Thread implements Session
     public void setLastPKFight(){lastPKFight=System.currentTimeMillis();}
     public long getLastNPCFight(){return lastNPCFight;}
     public void setLastNPCFight(){lastNPCFight=System.currentTimeMillis();}
-    public List<String> getLastMsgs(){return (Vector)prevMsgs.clone();}
+    public List<String> getLastMsgs(){return (Vector<String>)prevMsgs.clone();}
 
     public String getTerminalType(){ return terminalType;}
 	public MOB mob(){return mob;}
@@ -1720,4 +1720,52 @@ public class DefaultSession extends Thread implements Session
             }
         }
     }
+
+	private static String[] STAT_CODES=new String[]{"PREVCMD","ISAFK","AFKMESSAGE","ADDRESS","IDLETIME",
+													"LASTMSG","LASTNPCFIGHT","LASTPKFIGHT","TERMTYPE",
+													"TOTALMILLIS","TOTALTICKS","WRAP","LASTLOOPTIME"};
+	public int getSaveStatIndex() { return STAT_CODES.length;}
+	public String[] getStatCodes() { return STAT_CODES;}
+	public boolean isStat(String code) { return CMParms.contains(getStatCodes(),code.toUpperCase().trim());}
+	public String getStat(String code) 
+	{
+		if(code==null) return null;
+		switch(CMParms.indexOf(getStatCodes(),code.toUpperCase().trim()))
+		{
+		case 0: return CMParms.combineWithQuotes(previousCMD(),0);
+		case 1: return ""+afkFlag();
+		case 2: return afkMessage();
+		case 3: return getAddress();
+		case 4: return CMLib.time().date2String(System.currentTimeMillis()-getIdleMillis());
+		case 5: return CMParms.combineWithQuotes(getLastMsgs(),0);
+		case 6: return CMLib.time().date2String(getLastNPCFight());
+		case 7: return CMLib.time().date2String(getLastPKFight());
+		case 8: return getTerminalType();
+		case 9: return CMLib.time().date2String(System.currentTimeMillis()-getTotalMillis());
+		case 10: return ""+getTotalTicks();
+		case 11: return ""+getWrap();
+		case 12: return CMLib.time().date2String(lastLoopTime());
+		}
+		return null;
+	}
+	public void setStat(String code, String val) 
+	{
+		if(code==null) return;
+		switch(CMParms.indexOf(getStatCodes(),code.toUpperCase().trim()))
+		{
+		case 0: previousCmd=CMParms.parse(val); break;
+		case 1: afkFlag=CMath.s_bool(val); break;
+		case 2: afkMessage=val; break;
+		case 3: return;
+		case 4: lastKeystroke=CMLib.time().string2Millis(val); break;
+		case 5: prevMsgs=CMParms.parse(val); break;
+		case 6: lastNPCFight=CMLib.time().string2Millis(val); break;
+		case 7: lastPKFight=CMLib.time().string2Millis(val); break;
+		case 8: terminalType=val; break;
+		case 9: milliTotal = System.currentTimeMillis() - CMLib.time().string2Millis(val); break;
+		case 10: tickTotal= CMath.s_int(val); break;
+		case 11: if((mob!=null)&&(mob.playerStats()!=null)) mob.playerStats().setWrap(CMath.s_int(val)); break;
+		case 12: lastLoopTop=CMLib.time().string2Millis(val); break;
+		}
+	}
 }

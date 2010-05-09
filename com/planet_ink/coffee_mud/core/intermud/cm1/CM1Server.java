@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.core.intermud.cm1;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.threads.CMThreadFactory;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -47,7 +48,8 @@ public class CM1Server extends Thread
 	private SHashtable<SocketChannel,RequestHandler> 
 						handlers = new SHashtable<SocketChannel,RequestHandler>();
 	private ThreadPoolExecutor 
-						threadPool = new ThreadPoolExecutor(0, 3, 30, TimeUnit.SECONDS, new UniqueEntryBlockingQueue<Runnable>(256));
+						threadPool;
+	
 	
 	
 	public CM1Server(String serverName, int serverPort)
@@ -56,6 +58,8 @@ public class CM1Server extends Thread
 		name=serverName;
 		this.port=serverPort;
 		shutdownRequested = false;
+		threadPool = new ThreadPoolExecutor(0, 3, 30, TimeUnit.SECONDS, new UniqueEntryBlockingQueue<Runnable>(256));
+		threadPool.setThreadFactory(new CMThreadFactory(serverName));
 	}
 	
 	public void run()

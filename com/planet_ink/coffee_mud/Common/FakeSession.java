@@ -186,5 +186,9 @@ public class FakeSession implements Session
     public boolean clientTelnetMode(int telnetCode){return false;}
     public void changeTelnetMode(int telnetCode, boolean onOff){}
     public void initTelnetMode(int mobbitmap){}
-
+	public int getSaveStatIndex() { return 0;}
+	public String getStat(String code) { return null;}
+	public String[] getStatCodes() { return new String[0];}
+	public boolean isStat(String code) { return false;}
+	public void setStat(String code, String val){}
 }

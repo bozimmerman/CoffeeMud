@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -38,24 +39,65 @@ import java.util.concurrent.atomic.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Quit extends CM1Command
+public class SetMobStat extends GetMobStat
 {
-	public String getCommandWord(){ return "QUIT";}
+	public String getCommandWord(){ return "SETMOBSTAT";}
+	
 	public void run()
 	{
 		try
 		{
+			MOB M=null;
+			if(req.getTarget() instanceof MOB)
+				M=(MOB)req.getTarget();
+			if(M==null)
+			{
+				req.sendMsg("[FAIL BAD TARGET]");
+				return;
+			}
+			String rest = "";
+			String type = parameters.toUpperCase().trim();
+			int x=parameters.indexOf(' ');
+			if(x>0)
+			{
+				type=parameters.substring(0,x).toUpperCase().trim();
+				rest=parameters.substring(x+1).toUpperCase().trim();
+			}
+			Modifiable mod=getModifiable(type,M);
+			if(mod==null)
+			{
+				req.sendMsg("[FAIL "+getHelp(M)+"]");
+				return;
+			}
+			String value="";
+			String stat=rest;
+			x=rest.indexOf(' ');
+			if(x>0)
+			{
+				stat=rest.substring(0,x).toUpperCase().trim();
+				value=rest.substring(x+1).toUpperCase().trim();
+			}
+			if((stat.length()==0)||(!isAStat(M,mod,stat)))
+			{
+				req.sendMsg("[FAIL USAGE: SETMOBSTAT "+type+" "+CMParms.toStringList(getStatCodes(M,mod))+"]");
+				return;
+			}
+			if(!isStdMOB(M,mod))
+				mod.setStat(stat, value);
+			else
+		        for(int i=0;i<GenericBuilder.GENMOBCODES.length;i++)
+		            if(GenericBuilder.GENMOBCODES[i].equalsIgnoreCase(stat))
+		            	CMLib.coffeeMaker().setGenMobStat(M, stat, value);
+				
 			req.sendMsg("[OK]");
-			req.close();
 		}
-		catch(java.io.IOException ioe)
+		catch(Exception ioe)
 		{
 			req.close();
 		}
 	}
-	public boolean passesSecurityCheck(MOB user, PhysicalAgent target){return true;}
 	public String getHelp(MOB user)
 	{
-		return "Ends the current user session and disconnects the user.";
+		return "USAGE: SETMOBSTAT "+CMParms.toStringList(TYPES);
 	}
 }

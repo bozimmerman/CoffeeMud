@@ -89,13 +89,13 @@ public class CMParms
         return Combined.toString().trim();
     }
 
-    public static String combineWithQuotes(Vector<?> commands, int startAt)
+    public static String combineWithQuotes(List<?> commands, int startAt)
     {
         StringBuffer Combined=new StringBuffer("");
         if(commands!=null)
         for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
         {
-            String s=commands.elementAt(commandIndex).toString();
+            String s=commands.get(commandIndex).toString();
             if(s.indexOf(" ")>=0) s="\""+s+"\"";
             Combined.append(s+" ");
         }

@@ -40,7 +40,7 @@ import java.util.concurrent.atomic.*;
 */
 public class Shutdown extends CM1Command
 {
-	public String CommandWord(){ return "SHUTDOWN";}
+	public String getCommandWord(){ return "SHUTDOWN";}
 	public void run()
 	{
 		try
@@ -54,5 +54,9 @@ public class Shutdown extends CM1Command
 			req.close();
 		}
 	}
-	public boolean securityCheck(MOB user){return (user!=null)&&CMSecurity.isAllowed(user,user.location(),"SHUTDOWN");}
+	public boolean passesSecurityCheck(MOB user, PhysicalAgent target){return (user!=null)&&CMSecurity.isAllowed(user,user.location(),"SHUTDOWN");}
+	public String getHelp(MOB user)
+	{
+		return "Shuts down the mud.";
+	}
 }

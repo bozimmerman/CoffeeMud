@@ -40,7 +40,7 @@ import java.util.concurrent.atomic.*;
 */
 public class Block extends CM1Command
 {
-	public String CommandWord(){ return "BLOCK";}
+	public String getCommandWord(){ return "BLOCK";}
 	public void run()
 	{
 		try
@@ -54,5 +54,9 @@ public class Block extends CM1Command
 			req.close();
 		}
 	}
-	public boolean securityCheck(MOB user){return true;}
+	public boolean passesSecurityCheck(MOB user, PhysicalAgent target){return true;}
+	public String getHelp(MOB user)
+	{
+		return "Changes the end-of-line for user input, returning a new end-of-line string.";
+	}
 }

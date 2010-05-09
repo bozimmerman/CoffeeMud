@@ -40,14 +40,14 @@ import java.util.concurrent.atomic.*;
 */
 public class Login extends CM1Command
 {
-	public String CommandWord(){ return "LOGIN";}
+	public String getCommandWord(){ return "LOGIN";}
 	public void run()
 	{
 		try
 		{
 			int x=parameters.indexOf(' ');
 			if(x<0)
-				req.sendMsg("[USAGE: LOGIN <CHARACTER NAME> <PASSWORD>]");
+				req.sendMsg("[FAIL "+getHelp(req.getUser())+"]");
 			else
 			{
 				String user=parameters.substring(0,x);
@@ -70,5 +70,9 @@ public class Login extends CM1Command
 			req.close();
 		}
 	}
-	public boolean securityCheck(MOB user){return true;}
+	public boolean passesSecurityCheck(MOB user, PhysicalAgent target){return true;}
+	public String getHelp(MOB user)
+	{
+		return "USAGE: LOGIN <CHARACTER NAME> <PASSWORD>: Logs in a new character to act as the authorizing user.";
+	}
 }

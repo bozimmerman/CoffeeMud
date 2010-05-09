@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.core.smtp;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.threads.CMThreadFactory;
 import com.planet_ink.coffee_mud.core.threads.ServiceEngine;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -74,6 +75,7 @@ public class SMTPserver extends Thread implements Tickable
     	isOK=false;
 		threadPool = new ThreadPoolExecutor(0, 3, 30, TimeUnit.SECONDS, new UniqueEntryBlockingQueue<Runnable>(256));
 		threadPool.setKeepAliveTime(5, TimeUnit.MINUTES);
+		threadPool.setThreadFactory(new CMThreadFactory("SMTP"));
     	setDaemon(true);
     }
     

@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.core.http;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.threads.CMThreadFactory;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -88,6 +89,7 @@ public class HTTPserver extends Thread implements MudHost
 			isOK = true;
 		threadPool = new ThreadPoolExecutor(0, maxThreads, 30, TimeUnit.SECONDS, new UniqueEntryBlockingQueue<Runnable>(256));
 		threadPool.setKeepAliveTime(maxTimeoutMins, TimeUnit.MINUTES);
+		threadPool.setThreadFactory(new CMThreadFactory("HTTP-"+a_name+((num>0)?""+(num+1):"")));
 	}
 
 	public String getPartialName()	{return partialName;}

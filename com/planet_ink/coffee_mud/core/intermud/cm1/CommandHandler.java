@@ -44,7 +44,7 @@ public class CommandHandler implements Runnable
 	private String rest;
 	private RequestHandler req; 
 	private static final Map<String,CM1Command> commandList=new Hashtable<String,CM1Command>();
-	private static final void AddCommand(CM1Command c) { commandList.put(c.CommandWord(),c); }
+	private static final void AddCommand(CM1Command c) { commandList.put(c.getCommandWord(),c); }
 	static
 	{
 		AddCommand(new Quit());
@@ -53,6 +53,9 @@ public class CommandHandler implements Runnable
 		AddCommand(new Logout());
 		AddCommand(new Quit());
 		AddCommand(new Shutdown());
+		AddCommand(new MUDInfo());
+		AddCommand(new GetMobStat());
+		AddCommand(new SetMobStat());
 	}
 	
 	public CommandHandler(RequestHandler req, String command)
@@ -66,8 +69,8 @@ public class CommandHandler implements Runnable
 		}
 		else
 		{
-			cmd=command.substring(0,x);
-			rest=command.substring(x+1);
+			cmd=command.substring(0,x).trim();
+			rest=command.substring(x+1).trim();
 		}
 	}
 
@@ -77,9 +80,33 @@ public class CommandHandler implements Runnable
 		{
 			try
 			{
+				if(cmd.equalsIgnoreCase("HELP"))
+				{
+					if(rest.length()>0)
+					{
+						CM1Command command = commandList.get(rest.toUpperCase().trim());
+						if((command == null) || (!command.passesSecurityCheck(req.getUser(), req.getTarget())))
+							req.sendMsg("[FAIL UNKNOWN: "+rest.toUpperCase().trim()+"]");
+						else
+							req.sendMsg("[OK "+command.getCommandWord()+" "+command.getHelp(req.getUser())+"]");
+					}
+					else
+					{
+						StringBuilder str=new StringBuilder("[OK HELP");
+						for(String cmdWord : commandList.keySet())
+						{
+							CM1Command command = commandList.get(cmdWord);
+							if(command.passesSecurityCheck(req.getUser(), req.getTarget()))
+								str.append(" "+cmdWord);
+						}
+						str.append("]");
+						req.sendMsg(str.toString());
+					}
+					return;
+				}
 				CM1Command command = commandList.get(cmd.toUpperCase().trim());
-				if(command == null)
-					req.sendMsg("[UNKNOWN: "+cmd.toUpperCase().trim()+"]");
+				if((command == null) || (!command.passesSecurityCheck(req.getUser(), req.getTarget())))
+					req.sendMsg("[UNKNOWN "+cmd.toUpperCase().trim()+"]");
 				else
 					command.newInstance(req, rest).run();
 			}
@@ -88,6 +115,7 @@ public class CommandHandler implements Runnable
 				req.close();
 			}
 		}
-		
 	}
+	
+	
 }
