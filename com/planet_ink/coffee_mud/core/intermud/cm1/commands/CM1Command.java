@@ -59,4 +59,5 @@ public abstract class CM1Command implements Runnable, Cloneable
 	}
 	
 	public abstract String CommandWord();
+	public abstract boolean securityCheck(MOB user);
 }

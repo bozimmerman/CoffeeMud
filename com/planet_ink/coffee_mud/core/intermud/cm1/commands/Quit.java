@@ -38,20 +38,20 @@ import java.util.concurrent.atomic.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class CM1Block extends CM1Command
+public class Quit extends CM1Command
 {
-	public String CommandWord(){ return "BLOCK";}
+	public String CommandWord(){ return "QUIT";}
 	public void run()
 	{
 		try
 		{
-			String eob="/BLOCK:"+Math.random();
-			req.sendMsg("[EOB="+eob+"]");
-			req.setEndOfLine(eob);
+			req.sendMsg("[OK]");
+			req.close();
 		}
 		catch(java.io.IOException ioe)
 		{
 			req.close();
 		}
 	}
+	public boolean securityCheck(MOB user){return true;}
 }

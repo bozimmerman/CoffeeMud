@@ -130,7 +130,7 @@ public class CM1Server extends Thread
 					catch(Exception e){}
 				handlers.clear();
 				threadPool.shutdown();
-				Log.sysOut("CM1Server is shutdown");
+				Log.sysOut("CM1Server","Shutdown complete");
 			}
 		}
 		isShutdown = true;

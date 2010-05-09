@@ -38,14 +38,15 @@ import java.util.concurrent.atomic.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class CM1Quit extends CM1Command
+public class Shutdown extends CM1Command
 {
-	public String CommandWord(){ return "QUIT";}
+	public String CommandWord(){ return "SHUTDOWN";}
 	public void run()
 	{
 		try
 		{
-			req.sendMsg("[CLOSING]");
+			req.sendMsg("[OK]");
+			com.planet_ink.coffee_mud.application.MUD.globalShutdown(null,true,null);
 			req.close();
 		}
 		catch(java.io.IOException ioe)
@@ -53,4 +54,5 @@ public class CM1Quit extends CM1Command
 			req.close();
 		}
 	}
+	public boolean securityCheck(MOB user){return (user!=null)&&CMSecurity.isAllowed(user,user.location(),"SHUTDOWN");}
 }

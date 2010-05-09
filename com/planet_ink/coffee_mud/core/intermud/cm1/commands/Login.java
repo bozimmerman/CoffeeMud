@@ -1,5 +1,6 @@
-package com.planet_ink.coffee_mud.core.intermud.cm1;
+package com.planet_ink.coffee_mud.core.intermud.cm1.commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.intermud.cm1.RequestHandler;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -13,7 +14,6 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-import com.planet_ink.coffee_mud.core.intermud.cm1.commands.*;
 import java.util.*;
 import java.net.*;
 import java.nio.ByteBuffer;
@@ -38,56 +38,37 @@ import java.util.concurrent.atomic.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class CommandHandler implements Runnable
+public class Login extends CM1Command
 {
-	private String cmd;
-	private String rest;
-	private RequestHandler req; 
-	private static final Map<String,CM1Command> commandList=new Hashtable<String,CM1Command>();
-	private static final void AddCommand(CM1Command c) { commandList.put(c.CommandWord(),c); }
-	static
+	public String CommandWord(){ return "LOGIN";}
+	public void run()
 	{
-		AddCommand(new Quit());
-		AddCommand(new Block());
-		AddCommand(new Login());
-		AddCommand(new Logout());
-		AddCommand(new Quit());
-		AddCommand(new Shutdown());
-	}
-	
-	public CommandHandler(RequestHandler req, String command)
-	{
-		this.req=req;
-		int x=command.indexOf(' ');
-		if(x<0)
+		try
 		{
-			cmd=command;
-			rest="";
-		}
-		else
-		{
-			cmd=command.substring(0,x);
-			rest=command.substring(x+1);
-		}
-	}
-
-	public void run() 
-	{
-		if(cmd.length()>0)
-		{
-			try
+			int x=parameters.indexOf(' ');
+			if(x<0)
+				req.sendMsg("[USAGE: LOGIN <CHARACTER NAME> <PASSWORD>]");
+			else
 			{
-				CM1Command command = commandList.get(cmd.toUpperCase().trim());
-				if(command == null)
-					req.sendMsg("[UNKNOWN: "+cmd.toUpperCase().trim()+"]");
+				String user=parameters.substring(0,x);
+				String pass=parameters.substring(x+1);
+				MOB M=CMLib.players().getLoadPlayer(user);
+				if((M==null) || (M.playerStats()==null) || (!M.playerStats().password().equalsIgnoreCase(pass)))
+				{
+					Thread.sleep(5000);
+					req.sendMsg("[FAIL]");
+				}
 				else
-					command.newInstance(req, rest).run();
-			}
-			catch(java.io.IOException ioe)
-			{
-				req.close();
+				{
+					req.login(M);
+					req.sendMsg("[OK]");
+				}
 			}
 		}
-		
+		catch(Exception ioe)
+		{
+			req.close();
+		}
 	}
+	public boolean securityCheck(MOB user){return true;}
 }
