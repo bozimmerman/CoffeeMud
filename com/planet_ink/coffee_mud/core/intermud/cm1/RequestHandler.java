@@ -42,10 +42,10 @@ public class RequestHandler implements Runnable
 	private static AtomicInteger counter = new AtomicInteger();
 	private final String 		 runnableName;
 	private boolean 			 isRunning = false;
+	private boolean 			 closeMe = false;
 	private long 				 idleTime = System.currentTimeMillis();
 	private final SocketChannel  chan;
 	private SVector<ByteBuffer>	 workingBuffers = new SVector<ByteBuffer>();
-	private SVector<String> 	 lines=new SVector<String>();
 	private byte[][]			 markBlocks = DEFAULT_MARK_BLOCKS;
 	private static final int 	 BUFFER_SIZE=4096;
 	private static final long 	 MAXIMUM_BYTES=1024 * 1024 * 2;
@@ -60,9 +60,15 @@ public class RequestHandler implements Runnable
 	
 	public void sendMsg(String msg) throws IOException 
 	{
-		byte[] bytes = (msg+"\n").getBytes();
+		byte[] bytes = (msg+"\r\n").getBytes();
 		ByteBuffer buf = ByteBuffer.wrap(bytes);
 		while(chan.isConnected() && chan.isOpen() && (chan.write(buf)>0))try{Thread.sleep(1);}catch(Exception e){}
+	}
+	
+	public void close()
+	{
+		closeMe=true;
+		try {chan.close();}catch(Exception e){}
 	}
 	
 	public void shutdown()
@@ -75,6 +81,8 @@ public class RequestHandler implements Runnable
 
 	public boolean needsClosing()
 	{
+		if(closeMe)
+			return true;
 		if((System.currentTimeMillis() - idleTime) > 10 * 60 * 1000)
 			return true;
 		if((!chan.isOpen()) || (!chan.isConnected()) || (!chan.isRegistered()))
@@ -93,24 +101,20 @@ public class RequestHandler implements Runnable
 	    		if(workingBuffers.size()>0)
 	    			buffer=workingBuffers.lastElement();
 	    		if((buffer==null)||(buffer.capacity()==buffer.limit()))
-	    		{
-	    			//System.out.println(this.runnableName+": using new buffer");
 	    			buffer = ByteBuffer.allocate(BUFFER_SIZE);
-	    		}
 	    		else
 	    		{
-	    			//System.out.println(this.runnableName+": using old buffer: "+buffer.limit());
 	    			buffer.position(buffer.limit());
 	    			buffer.limit(buffer.capacity());
 	    		}
-	    		while (chan.isConnected() && (chan.read (buffer) > 0)) 
+	    		while (chan.isConnected() && (chan.isOpen()) && (chan.read (buffer) > 0)) 
 	    		{
 	    			buffer.flip();
-	    			//System.out.println(this.runnableName+": buffer has "+buffer.limit()+" bytes now");
 	    			int containIndex=-1;
 	    			for(int i=0;i<buffer.limit();i++)
 	    				if((containIndex=CMParms.containIndex(buffer, markBlocks, i))>=0)
 	    				{
+	    					workingBuffers.remove(buffer);
 	    					if(i>0)
 	    					{
 	    						ByteBuffer prevBuf = ByteBuffer.allocate(BUFFER_SIZE);
@@ -118,8 +122,11 @@ public class RequestHandler implements Runnable
 	    						prevBuf.flip();
 	    						workingBuffers.add(prevBuf);
 	    					}
-	    					buffer.position(i + markBlocks[containIndex].length);
-	    					//System.out.println(runnableName+": buffer has \\n at "+i);
+	    					if(((buffer.position() + markBlocks[containIndex].length)>=buffer.limit())
+	    					||((buffer.position() + markBlocks[containIndex].length)>=buffer.capacity()))
+	    						buffer.position(buffer.limit());
+	    					else
+		    					buffer.position(i + markBlocks[containIndex].length);
 	    					if(buffer.remaining()>0)
 	    					{
 	    						buffer = ByteBuffer.allocate(BUFFER_SIZE);
@@ -133,7 +140,6 @@ public class RequestHandler implements Runnable
 	    					int fullSize = 0;
 	    					for(ByteBuffer buf : workingBuffers)
 	    						fullSize += buf.limit();
-	    					//System.out.println(runnableName+": full size "+fullSize);
 	    					ByteBuffer finalBuf=ByteBuffer.allocate(fullSize);
 	    					for(ByteBuffer buf : workingBuffers)
 	    					{
@@ -142,8 +148,8 @@ public class RequestHandler implements Runnable
 	    						workingBuffers.remove(buf);
 	    					}
 	    					finalBuf.flip();
-	    					System.out.println(runnableName+": finalBuf has "+finalBuf.limit()+"/"+finalBuf.capacity()+" bytes: "+new String(finalBuf.array()));
-	    					lines.add(new String(finalBuf.array()));
+	    					markBlocks=DEFAULT_MARK_BLOCKS;
+	    					execute(new String(finalBuf.array()));
 	    				}
 	    			if(!workingBuffers.contains(buffer) && (buffer.limit()>0))
 	    				workingBuffers.add(buffer);
@@ -161,8 +167,8 @@ public class RequestHandler implements Runnable
 	    				return;
 	    			}
 	    		}
-	    		System.out.println("flipped at: "+buffer.position());
 	    		buffer.flip();
+	    		try{Thread.sleep(1);}catch(Exception e){}
 			}
 			catch(Exception e)
 			{
@@ -175,5 +181,19 @@ public class RequestHandler implements Runnable
 				isRunning=false;
 			}
 		}
+	}
+	
+	public void setEndOfLine(String... msgs)
+	{
+		byte[][] newBlocks=new byte[msgs.length][];
+		int i=0;
+		for(String s : msgs)
+			newBlocks[i++]=s.getBytes();
+		markBlocks=newBlocks;
+	}
+	
+	public void execute(String line)
+	{
+		new CommandHandler(this,line).run();
 	}
 }

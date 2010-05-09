@@ -1605,7 +1605,7 @@ public class CMParms
     { return indexOf(supported,x)>=0;}
     public static boolean contains(ByteBuffer buf, byte[] bytes, int pos)
     { 
-    	for(int i=0;i<bytes.length && (i+pos)<buf.capacity();i++)
+    	for(int i=0;i<bytes.length && (i+pos)<buf.limit();i++)
     		if(buf.get(pos+i)!=bytes[i])
     			return false;
     	return true;
