@@ -1519,7 +1519,7 @@ public class StdRoom implements Room
 	}
 	public List<MOB> fetchInhabitants(String inhabitantID)
 	{
-		Vector inhabs=CMLib.english().fetchEnvironmentals(inhabitants,inhabitantID,true);
+		List inhabs=CMLib.english().fetchEnvironmentals(inhabitants,inhabitantID,true);
 		if(inhabs.size()==0)
 			inhabs=CMLib.english().fetchEnvironmentals(inhabitants,inhabitantID, false);
 		return inhabs;
@@ -1593,14 +1593,14 @@ public class StdRoom implements Room
 	}
 	public List<Item> findItems(Item goodLocation, String itemID)
 	{
-		Vector items=CMLib.english().fetchAvailableItems(contents,itemID,goodLocation,Wearable.FILTER_ANY,true);
+		List<Item> items=CMLib.english().fetchAvailableItems(contents,itemID,goodLocation,Wearable.FILTER_ANY,true);
 		if(items.size()==0)
 			items=CMLib.english().fetchAvailableItems(contents,itemID,goodLocation,Wearable.FILTER_ANY,false);
 		return items;
 	}
 	public List<Item> findItems(String itemID)
 	{
-		Vector items=CMLib.english().fetchEnvironmentals(contents,itemID,true);
+		List items=CMLib.english().fetchEnvironmentals(contents,itemID,true);
 		if(items.size()==0)
 			items=CMLib.english().fetchEnvironmentals(contents,itemID, false);
 		return items;
@@ -1690,9 +1690,9 @@ public class StdRoom implements Room
 			found=mob.fetchCarried(goodLocation, thingName);
 		if((found==null)&&(!mineOnly))
 		{
-			found=(Exit)CMLib.english().fetchEnvironmental(exits,thingName,true);
+			found=(Exit)CMLib.english().fetchEnvironmental(Arrays.asList(exits),thingName,true);
 			if(found==null) found=CMLib.english().fetchAvailableItem(contents,thingName,goodLocation,wornFilter,true);
-			if(found==null)	found=(Exit)CMLib.english().fetchEnvironmental(exits,thingName,false);
+			if(found==null)	found=(Exit)CMLib.english().fetchEnvironmental(Arrays.asList(exits),thingName,false);
 			if(found==null) found=CMLib.english().fetchAvailableItem(contents,thingName,goodLocation,wornFilter,false);
 			if((found!=null)&&(CMLib.flags().canBeSeenBy(found,mob)))
 				return found;
@@ -1716,7 +1716,7 @@ public class StdRoom implements Room
 		&&(thingName.indexOf(".")<0))
 		{
 			PhysicalAgent visibleItem=null;
-			visibleItem=(Exit)CMLib.english().fetchEnvironmental(exits,thingName,false);
+			visibleItem=(Exit)CMLib.english().fetchEnvironmental(Arrays.asList(exits),thingName,false);
 			if(visibleItem==null)
 				visibleItem=fetchFromMOBRoomItemExit(null,null,thingName+".2",wornFilter);
 			if(visibleItem!=null)

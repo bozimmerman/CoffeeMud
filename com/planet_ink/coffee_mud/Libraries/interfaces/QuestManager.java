@@ -164,7 +164,7 @@ public interface QuestManager extends CMLibrary
             }
             Environmental[] ES=new Environmental[choices.length];
             for(int e=0;e<choices.length;e++) ES[e]=(Environmental)choices[e];
-            Environmental E=CMLib.english().fetchEnvironmental(ES,(String)str,false);
+            Environmental E=CMLib.english().fetchEnvironmental(Arrays.asList(ES),(String)str,false);
             if(E==null)
                 throw new CMException("'"+str+"' was not found.  You must enter one of the following: "+choiceNames.toString());
             return CMLib.english().getContextName(choices,E);
@@ -237,7 +237,7 @@ public interface QuestManager extends CMLibrary
             }
             Environmental[] ES=new Environmental[choices.length];
             for(int e=0;e<choices.length;e++) ES[e]=(Environmental)choices[e];
-            Environmental E=CMLib.english().fetchEnvironmental(ES,(String)str,false);
+            Environmental E=CMLib.english().fetchEnvironmental(Arrays.asList(ES),(String)str,false);
             if(E==null)
                 throw new CMException("'"+str+"' was not found.  You must enter one of the following: "+choiceNames.toString());
             return CMLib.english().getContextName(choices,E);

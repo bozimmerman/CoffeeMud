@@ -158,7 +158,7 @@ public class DefaultCoffeeShop implements CoffeeShop
     public Iterator<Environmental> getStoreInventory(String srchStr)
     {
     	List<Environmental> storeInv=new ConvertingList<ShelfProduct,Environmental>(storeInventory,converter);
-    	Vector V=CMLib.english().fetchEnvironmentals(storeInv, srchStr, true);
+    	List<Environmental> V=CMLib.english().fetchEnvironmentals(storeInv, srchStr, true);
     	if((V!=null)&&(V.size()>0)) return V.iterator();
     	V=CMLib.english().fetchEnvironmentals(storeInv, srchStr, false);
     	if(V!=null) return V.iterator();

@@ -106,12 +106,12 @@ public class Spell_Scatter extends Spell
 				return maliciousFizzle(mob,mobTarget,"<S-NAME> attempt(s) a scattering spell at <T-NAMESELF>, but nothing happens.");
 		}
 
-		Vector targets=new Vector();
-	    if(givenTarget != null)
-	    	targets.addElement(givenTarget);
+		List<Item> targets=new Vector();
+	    if(givenTarget instanceof Item)
+	    	targets.add((Item)givenTarget);
 	    else
 		if(target!=null)
-		    targets.addElement(target);
+		    targets.add(target);
 		else
 		{
 			targets=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_ANY,true);
@@ -145,7 +145,7 @@ public class Spell_Scatter extends Spell
 				{
 					for(int i=0;i<targets.size();i++)
 					{
-					    target=(Item)targets.elementAt(i);
+					    target=(Item)targets.get(i);
 						msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 						Room room = null;
 						for(int x = 0; (x < 10) && (room == null); x++)

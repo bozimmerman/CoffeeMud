@@ -56,7 +56,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
         String[] req=CMParms.toStringArray(prereq);
         boolean reject=false;
         int ci=0,ri=0;
-        Object[] commands=new Object[req.length];
+        CMObject[] commands=new CMObject[req.length];
         Social[] socials=new Social[req.length];
         for(int i=0;i<req.length;i++)
         {

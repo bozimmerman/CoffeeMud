@@ -1364,7 +1364,7 @@ public class StdMOB implements MOB
 
 	public void doCommand(Vector commands, int metaFlags)
 	{
-		Object O=CMLib.english().findCommand(this,commands);
+		CMObject O=CMLib.english().findCommand(this,commands);
 		if(O!=null)
 			doCommand(O,commands, metaFlags);
 		else
@@ -1422,7 +1422,7 @@ public class StdMOB implements MOB
     public void prequeCommand(Vector commands, int metaFlags, double tickDelay)
     {
         if(commands==null) return;
-        Object O=CMLib.english().findCommand(this,commands);
+        CMObject O=CMLib.english().findCommand(this,commands);
         if(O==null){ CMLib.commands().handleUnknownCommand(this,commands); return;}
         tickDelay=calculateTickDelay(O,commands,tickDelay);
         if(tickDelay<0.0) return;
@@ -1446,7 +1446,7 @@ public class StdMOB implements MOB
 	public void enqueCommand(Vector commands, int metaFlags, double tickDelay)
 	{
 		if(commands==null) return;
-        Object O=CMLib.english().findCommand(this,commands);
+		CMObject O=CMLib.english().findCommand(this,commands);
         if(O==null){ CMLib.commands().handleUnknownCommand(this,commands); return;}
         tickDelay=calculateTickDelay(O,commands,tickDelay);
         if(tickDelay<0.0) return;
@@ -2765,7 +2765,7 @@ public class StdMOB implements MOB
 	public boolean isContent(Item I) { return inventory.contains(I);}
 	public List<Item> findItems(Item goodLocation, String itemName)
 	{
-		Vector items=CMLib.english().fetchAvailableItems(inventory,itemName,goodLocation,Wearable.FILTER_ANY,true);
+		List<Item> items=CMLib.english().fetchAvailableItems(inventory,itemName,goodLocation,Wearable.FILTER_ANY,true);
 		if(items.size()==0)
 			items=CMLib.english().fetchAvailableItems(inventory,itemName,goodLocation,Wearable.FILTER_ANY,false);
 		return items;
@@ -2813,7 +2813,7 @@ public class StdMOB implements MOB
 	
 	public List<Item> findItems(String itemName)
 	{ 
-        Vector V=CMLib.english().fetchEnvironmentals(inventory,itemName,true);
+        List V=CMLib.english().fetchEnvironmentals(inventory,itemName,true);
         if((V!=null)&&(V.size()>0)) return V;
         V=CMLib.english().fetchEnvironmentals(inventory,itemName,false);
         if(V!=null) return V;

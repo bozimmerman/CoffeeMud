@@ -110,7 +110,7 @@ public class Order extends StdCommand
 
 		commands.removeElementAt(0);
 
-		Object O=CMLib.english().findCommand(mob,commands);
+		CMObject O=CMLib.english().findCommand(mob,commands);
 		String order=CMParms.combine(commands,0);
 		if(!CMSecurity.isAllowed(mob,mob.location(),"ORDER"))
 		{

@@ -37,16 +37,12 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public interface EnglishParsing extends CMLibrary
 {
-    public static final int FLAG_STR=0;
-    public static final int FLAG_DOT=1;
-    public static final int FLAG_ALL=2;
-    
     public boolean isAnArticle(String s);
     public String cleanArticles(String s);
     public String stripPunctuation(String str);
     public String insertUnColoredAdjective(String str, String adjective);
     public String startWithAorAn(String str);
-    public Object findCommand(MOB mob, Vector commands);
+    public CMObject findCommand(MOB mob, Vector commands);
     public boolean evokedBy(Ability thisAbility, String thisWord);
     public boolean evokedBy(Ability thisAbility, String thisWord, String secondWord);
     public String getAnEvokeWord(MOB mob, String word);
@@ -55,13 +51,11 @@ public interface EnglishParsing extends CMLibrary
     public void evoke(MOB mob, Vector commands);
     public boolean containsString(String toSrchStr, String srchStr);
     public String bumpDotNumber(String srchStr);
-    public Object[] fetchFlags(String srchStr);
-    public Environmental fetchEnvironmental(Collection list, String srchStr, boolean exactOnly);
-    public Environmental fetchEnvironmental(Hashtable list, String srchStr, boolean exactOnly);
-    public Environmental fetchEnvironmental(Environmental[] list, String srchStr, boolean exactOnly);
-	public Vector fetchEnvironmentals(Collection list, String srchStr, boolean exactOnly);
-    public Item fetchAvailableItem(Collection list, String srchStr, Item goodLocation, int wornFilter, boolean exactOnly);
-    public Vector fetchAvailableItems(Collection list, String srchStr, Item goodLocation, int wornFilter, boolean exactOnly);
+    public Environmental fetchEnvironmental(Collection<? extends Environmental> list, String srchStr, boolean exactOnly);
+    public Environmental fetchEnvironmental(Map<String, ? extends Environmental> list, String srchStr, boolean exactOnly);
+	public List<Environmental> fetchEnvironmentals(List<? extends Environmental> list, String srchStr, boolean exactOnly);
+    public Item fetchAvailableItem(List<Item> list, String srchStr, Item goodLocation, int wornFilter, boolean exactOnly);
+    public List<Item> fetchAvailableItems(List<Item> list, String srchStr, Item goodLocation, int wornFilter, boolean exactOnly);
     public int getContextNumber(Object[] list, Environmental E);
     public int getContextNumber(Collection list, Environmental E);
     public String getContextName(Collection list, Environmental E);
@@ -70,9 +64,9 @@ public interface EnglishParsing extends CMLibrary
     public int getContextSameNumber(Collection list, Environmental E);
     public String getContextSameName(Collection list, Environmental E);
     public String getContextSameName(Object[] list, Environmental E);
-    public Environmental fetchAvailable(Collection list, String srchStr, Item goodLocation, int wornFilter, boolean exactOnly);
+    public Environmental fetchAvailable(Collection<? extends Environmental> list, String srchStr, Item goodLocation, int wornFilter, boolean exactOnly);
     public Environmental parseShopkeeper(MOB mob, Vector commands, String error);
-    public Vector fetchItemList(Environmental from, MOB mob, Item container, Vector commands, int preferredLoc, boolean visionMatters);
+    public List<Item> fetchItemList(Environmental from, MOB mob, Item container, Vector commands, int preferredLoc, boolean visionMatters);
     public long numPossibleGold(Environmental mine, String itemID);
     public String numPossibleGoldCurrency(Environmental mine, String itemID);
     public double numPossibleGoldDenomination(Environmental mine, String currency, String itemID);

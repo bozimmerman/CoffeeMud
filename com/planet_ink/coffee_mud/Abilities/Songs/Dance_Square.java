@@ -70,7 +70,7 @@ public class Dance_Square extends Dance
                 &&(M.location()==invoker().location())
                 &&(M.location().show(invoker(),affected,CMMsg.MSG_ORDER,null)))
                 {
-                    Object O=CMLib.english().findCommand(M,CMParms.parse(cmd));
+                    CMObject O=CMLib.english().findCommand(M,CMParms.parse(cmd));
                     if((O!=null)&&((!(O instanceof Command))||(((Command)O).canBeOrdered())))
 						M.enqueCommand(CMParms.parse(cmd),Command.METAFLAG_FORCED|Command.METAFLAG_ORDER,0);
                 }

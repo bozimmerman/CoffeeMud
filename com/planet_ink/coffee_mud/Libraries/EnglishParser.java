@@ -109,7 +109,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         return str.substring(0,x)+" "+adjective+" "+str.substring(x+1);
     }
     
-	public Object findCommand(MOB mob, Vector commands)
+	public CMObject findCommand(MOB mob, Vector commands)
 	{
 		if((mob==null)
 		||(commands==null)
@@ -610,233 +610,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
 	public String bumpDotNumber(String srchStr)
 	{
-		Object[] flags=fetchFlags(srchStr);
+		FetchFlags flags=fetchFlags(srchStr);
 		if(flags==null) return srchStr;
-		if(((Boolean)flags[FLAG_ALL]).booleanValue())
+		if(flags.allFlag)
 			return srchStr;
-		if(((Integer)flags[FLAG_DOT]).intValue()==0)
-			return "1."+((String)flags[FLAG_STR]);
-		return (((Integer)flags[FLAG_DOT]).intValue()+1)+"."+((String)flags[FLAG_STR]);
-	}
-
-	public Object[] fetchFlags(String srchStr)
-	{
-		if(srchStr.length()==0) return null;
-		srchStr=srchStr.toUpperCase();
-		if((srchStr.length()<2)||(srchStr.equals("THE")))
-		   return null;
-		Object[] flags=new Object[3];
-
-		boolean allFlag=false;
-		if(srchStr.startsWith("ALL "))
-		{
-			srchStr=srchStr.substring(4);
-			allFlag=true;
-		}
-		else
-		if(srchStr.equals("ALL"))
-			allFlag=true;
-
-		int dot=srchStr.lastIndexOf(".");
-		int occurrance=0;
-		if(dot>0)
-		{
-			String sub=srchStr.substring(dot+1);
-			occurrance=CMath.s_int(sub);
-			if(occurrance>0)
-				srchStr=srchStr.substring(0,dot);
-			else
-			{
-				dot=srchStr.indexOf(".");
-				sub=srchStr.substring(0,dot);
-				occurrance=CMath.s_int(sub);
-				if(occurrance>0)
-					srchStr=srchStr.substring(dot+1);
-				else
-					occurrance=0;
-			}
-		}
-		flags[0]=srchStr;
-		flags[1]=Integer.valueOf(occurrance);
-		flags[2]=Boolean.valueOf(allFlag);
-		return flags;
-	}
-
-	public Environmental fetchEnvironmental(Collection list, String srchStr, boolean exactOnly)
-	{
-		Object[] flags=fetchFlags(srchStr);
-		if(flags==null) return null;
-
-		srchStr=(String)flags[FLAG_STR];
-		int myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
-		boolean allFlag=((Boolean)flags[FLAG_ALL]).booleanValue();
-        Environmental thisThang=null;
-		if(exactOnly)
-		{
-			if(srchStr.startsWith("$")) srchStr=srchStr.substring(1);
-			if(srchStr.endsWith("$")) srchStr=srchStr.substring(0,srchStr.length()-1);
-			try
-			{
-				for(Object O : list)
-				{
-					thisThang=(Environmental)O;
-					if(thisThang.ID().equalsIgnoreCase(srchStr)
-					   ||thisThang.name().equalsIgnoreCase(srchStr)
-					   ||thisThang.Name().equalsIgnoreCase(srchStr))
-						if((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0)))
-							if((--myOccurrance)<=0)
-								return thisThang;
-				}
-			}
-			catch(java.lang.ArrayIndexOutOfBoundsException x){}
-		}
-		else
-		{
-			myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
-			try
-			{
-				for(Object O : list)
-				{
-					thisThang=(Environmental)O;
-					if((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
-					   &&((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0))))
-						if((--myOccurrance)<=0)
-							return thisThang;
-				}
-			}
-			catch(java.lang.ArrayIndexOutOfBoundsException x){}
-			myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
-			try
-			{
-				for(Object O : list)
-				{
-					thisThang=(Environmental)O;
-					if((!(thisThang instanceof Ability))
-					&&(containsString(thisThang.displayText(),srchStr)
-                        ||((thisThang instanceof MOB)&&containsString(((MOB)thisThang).genericName(),srchStr))))
-    						if((--myOccurrance)<=0)
-    							return thisThang;
-				}
-			}
-			catch(java.lang.ArrayIndexOutOfBoundsException x){}
-		}
-		return null;
-	}
-
-	public Vector fetchEnvironmentals(Collection list, String srchStr, boolean exactOnly)
-	{
-		Object[] flags=fetchFlags(srchStr);
-		Vector matches=new Vector(1);
-		if(flags==null) return matches;
-		
-		srchStr=(String)flags[FLAG_STR];
-		int myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
-		boolean allFlag=((Boolean)flags[FLAG_ALL]).booleanValue();
-        Environmental thisThang=null;
-		if(exactOnly)
-		{
-			if(srchStr.startsWith("$")) srchStr=srchStr.substring(1);
-			if(srchStr.endsWith("$")) srchStr=srchStr.substring(0,srchStr.length()-1);
-			try
-			{
-				for(Object O : list)
-				{
-					thisThang=(Environmental)O;
-					if(thisThang.ID().equalsIgnoreCase(srchStr)
-					   ||thisThang.name().equalsIgnoreCase(srchStr)
-					   ||thisThang.Name().equalsIgnoreCase(srchStr))
-						if((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0)))
-							if((--myOccurrance)<=0)
-								matches.addElement(thisThang);
-				}
-			}
-			catch(java.lang.ArrayIndexOutOfBoundsException x){}
-		}
-		else
-		{
-			myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
-			try
-			{
-				for(Object O : list)
-				{
-					thisThang=(Environmental)O;
-					if((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
-					   &&((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0))))
-						if((--myOccurrance)<=0)
-							matches.addElement(thisThang);
-				}
-			}
-			catch(java.lang.ArrayIndexOutOfBoundsException x){}
-			if(matches.size()==0)
-			{
-				myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
-				try
-				{
-					for(Object O : list)
-					{
-						thisThang=(Environmental)O;
-						if((!(thisThang instanceof Ability))
-						&&(containsString(thisThang.displayText(),srchStr)
-	                        ||((thisThang instanceof MOB)&&containsString(((MOB)thisThang).genericName(),srchStr))))
-	    						if((--myOccurrance)<=0)
-	    							matches.addElement(thisThang);
-					}
-				}
-				catch(java.lang.ArrayIndexOutOfBoundsException x){}
-			}
-		}
-		return matches;
-	}
-
-	public Environmental fetchEnvironmental(Hashtable list, String srchStr, boolean exactOnly)
-	{
-		Object[] flags=fetchFlags(srchStr);
-		if(flags==null) return null;
-
-		srchStr=(String)flags[FLAG_STR];
-		int myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
-		boolean allFlag=((Boolean)flags[FLAG_ALL]).booleanValue();
-
-		if(list.get(srchStr)!=null)
-			return (Environmental)list.get(srchStr);
-        Environmental thisThang=null;
-		if(exactOnly)
-		{
-			if(srchStr.startsWith("$")) srchStr=srchStr.substring(1);
-			if(srchStr.endsWith("$")) srchStr=srchStr.substring(0,srchStr.length()-1);
-			for(Enumeration e=list.elements();e.hasMoreElements();)
-			{
-				thisThang=(Environmental)e.nextElement();
-				if(thisThang.ID().equalsIgnoreCase(srchStr)
-				||thisThang.Name().equalsIgnoreCase(srchStr)
-				||thisThang.name().equalsIgnoreCase(srchStr))
-					if((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0)))
-						if((--myOccurrance)<=0)
-							return thisThang;
-			}
-		}
-		else
-		{
-			myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
-            for(Enumeration e=list.elements();e.hasMoreElements();)
-            {
-                thisThang=(Environmental)e.nextElement();
-				if((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
-				&&((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0))))
-					if((--myOccurrance)<=0)
-						return thisThang;
-			}
-			myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
-            for(Enumeration e=list.elements();e.hasMoreElements();)
-            {
-                thisThang=(Environmental)e.nextElement();
-				if((containsString(thisThang.displayText(),srchStr))
-                ||((thisThang instanceof MOB)&&containsString(((MOB)thisThang).genericName(),srchStr)))
-					if((--myOccurrance)<=0)
-						return thisThang;
-			}
-		}
-		return null;
+		if(flags.occurrance==0)
+			return "1."+flags.srchStr;
+		return (flags.occurrance+1)+"."+flags.srchStr;
 	}
 
     public int getContextNumber(Object[] list, Environmental E){ return getContextNumber(new XVector(list),E);}
@@ -895,299 +675,6 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         return E.name()+"."+number;
     }
 
-	public Environmental fetchEnvironmental(Environmental[] list, String srchStr, boolean exactOnly)
-	{
-		Object[] flags=fetchFlags(srchStr);
-		if(flags==null) return null;
-
-		srchStr=(String)flags[FLAG_STR];
-		int myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
-		boolean allFlag=((Boolean)flags[FLAG_ALL]).booleanValue();
-		Environmental thisThang=null;
-		if(exactOnly)
-		{
-			if(srchStr.startsWith("$")) srchStr=srchStr.substring(1);
-			if(srchStr.endsWith("$")) srchStr=srchStr.substring(0,srchStr.length()-1);
-			for(int i=0;i<list.length;i++)
-			{
-				thisThang=list[i];
-				if(thisThang!=null)
-					if(thisThang.ID().equalsIgnoreCase(srchStr)
-					||thisThang.Name().equalsIgnoreCase(srchStr)
-					||thisThang.name().equalsIgnoreCase(srchStr))
-						if((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0)))
-							if((--myOccurrance)<=0)
-								return thisThang;
-			}
-		}
-		else
-		{
-			myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
-            for(int i=0;i<list.length;i++)
-            {
-                thisThang=list[i];
-				if(thisThang!=null)
-					if((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
-					   &&((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0))))
-						if((--myOccurrance)<=0)
-							return thisThang;
-			}
-			myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
-            for(int i=0;i<list.length;i++)
-            {
-                thisThang=list[i];
-                if(thisThang==null) continue;
-                if((containsString(thisThang.displayText(),srchStr))
-                ||((thisThang instanceof MOB)&&containsString(((MOB)thisThang).genericName(),srchStr)))
-						if((--myOccurrance)<=0)
-							return thisThang;
-			}
-		}
-		return null;
-	}
-
-	public Item fetchAvailableItem(Collection list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly)
-	{
-		Object[] flags=fetchFlags(srchStr);
-		if(flags==null) return null;
-
-		srchStr=(String)flags[FLAG_STR];
-		int myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
-		boolean allFlag=((Boolean)flags[FLAG_ALL]).booleanValue();
-		Item thisThang=null;
-		if(exactOnly)
-		{
-			try
-			{
-				if(srchStr.startsWith("$")) srchStr=srchStr.substring(1);
-				if(srchStr.endsWith("$")) srchStr=srchStr.substring(0,srchStr.length()-1);
-				for(Object O : list)
-				{
-					thisThang=(Item)O;
-					boolean beingWorn=!thisThang.amWearingAt(Wearable.IN_INVENTORY);
-
-					if((thisThang.container()==goodLocation)
-					&&((wornReqCode==Wearable.FILTER_ANY)||(beingWorn&&(wornReqCode==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornReqCode==Wearable.FILTER_UNWORNONLY)))
-					&&(thisThang.ID().equalsIgnoreCase(srchStr)
-					   ||(thisThang.Name().equalsIgnoreCase(srchStr))
-					   ||(thisThang.name().equalsIgnoreCase(srchStr))))
-						if((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0)))
-							if((--myOccurrance)<=0)
-								return thisThang;
-				}
-			}
-			catch(java.lang.ArrayIndexOutOfBoundsException x){}
-		}
-		else
-		{
-			try
-			{
-				for(Object O : list)
-				{
-					thisThang=(Item)O;
-					boolean beingWorn=!thisThang.amWearingAt(Wearable.IN_INVENTORY);
-
-					if((thisThang.container()==goodLocation)
-					&&((wornReqCode==Wearable.FILTER_ANY)||(beingWorn&&(wornReqCode==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornReqCode==Wearable.FILTER_UNWORNONLY)))
-					&&((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
-					   &&((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0)))))
-						if((--myOccurrance)<=0)
-							return thisThang;
-				}
-			}
-			catch(java.lang.ArrayIndexOutOfBoundsException x){}
-			myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
-			try
-			{
-				for(Object O : list)
-				{
-					thisThang=(Item)O;
-					boolean beingWorn=!thisThang.amWearingAt(Wearable.IN_INVENTORY);
-					if((thisThang.container()==goodLocation)
-					&&((wornReqCode==Wearable.FILTER_ANY)||(beingWorn&&(wornReqCode==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornReqCode==Wearable.FILTER_UNWORNONLY)))
-					&&(containsString(thisThang.displayText(),srchStr)))
-						if((--myOccurrance)<=0)
-							return thisThang;
-				}
-			}
-			catch(java.lang.ArrayIndexOutOfBoundsException x){}
-		}
-		return null;
-	}
-
-	public Vector fetchAvailableItems(Collection list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly)
-	{
-		Vector matches=new Vector();
-		Object[] flags=fetchFlags(srchStr);
-		if(flags==null) return matches;
-
-		srchStr=(String)flags[FLAG_STR];
-		int myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
-		boolean allFlag=((Boolean)flags[FLAG_ALL]).booleanValue();
-		Item thisThang=null;
-		if(exactOnly)
-		{
-			try
-			{
-				if(srchStr.startsWith("$")) srchStr=srchStr.substring(1);
-				if(srchStr.endsWith("$")) srchStr=srchStr.substring(0,srchStr.length()-1);
-				for(Object O : list)
-				{
-					thisThang=(Item)O;
-					boolean beingWorn=!thisThang.amWearingAt(Wearable.IN_INVENTORY);
-
-					if((thisThang.container()==goodLocation)
-					&&((wornReqCode==Wearable.FILTER_ANY)||(beingWorn&&(wornReqCode==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornReqCode==Wearable.FILTER_UNWORNONLY)))
-					&&(thisThang.ID().equalsIgnoreCase(srchStr)
-					   ||(thisThang.Name().equalsIgnoreCase(srchStr))
-					   ||(thisThang.name().equalsIgnoreCase(srchStr))))
-						if((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0)))
-							if((--myOccurrance)<=0)
-								matches.addElement(thisThang);
-				}
-			}
-			catch(java.lang.ArrayIndexOutOfBoundsException x){}
-		}
-		else
-		{
-			try
-			{
-				for(Object O : list)
-				{
-					thisThang=(Item)O;
-					boolean beingWorn=!thisThang.amWearingAt(Wearable.IN_INVENTORY);
-
-					if((thisThang.container()==goodLocation)
-					&&((wornReqCode==Wearable.FILTER_ANY)||(beingWorn&&(wornReqCode==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornReqCode==Wearable.FILTER_UNWORNONLY)))
-					&&((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
-					   &&((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0)))))
-						if((--myOccurrance)<=0)
-							matches.addElement(thisThang);
-				}
-			}
-			catch(java.lang.ArrayIndexOutOfBoundsException x){}
-			if(matches.size()==0)
-			{
-				myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
-				try
-				{
-					for(Object O : list)
-					{
-						thisThang=(Item)O;
-						boolean beingWorn=!thisThang.amWearingAt(Wearable.IN_INVENTORY);
-						if((thisThang.container()==goodLocation)
-						&&((wornReqCode==Wearable.FILTER_ANY)||(beingWorn&&(wornReqCode==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornReqCode==Wearable.FILTER_UNWORNONLY)))
-						&&(containsString(thisThang.displayText(),srchStr)))
-							if((--myOccurrance)<=0)
-								matches.addElement(thisThang);
-					}
-				}
-				catch(java.lang.ArrayIndexOutOfBoundsException x){}
-			}
-		}
-		return matches;
-	}
-
-	public Environmental fetchAvailable(Collection list, String srchStr, Item goodLocation, int wornFilter, boolean exactOnly)
-	{
-		Object[] flags=fetchFlags(srchStr);
-		if(flags==null) return null;
-
-		srchStr=(String)flags[FLAG_STR];
-		int myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
-		boolean allFlag=((Boolean)flags[FLAG_ALL]).booleanValue();
-
-	    Environmental E=null;
-	    Item thisThang=null;
-		if(exactOnly)
-		{
-			try
-			{
-				if(srchStr.startsWith("$")) srchStr=srchStr.substring(1);
-				if(srchStr.endsWith("$")) srchStr=srchStr.substring(0,srchStr.length()-1);
-				for(Object O : list)
-				{
-				    E=(Environmental)O;
-				    if(E instanceof Item)
-				    {
-						thisThang=(Item)E;
-						boolean beingWorn=!thisThang.amWearingAt(Wearable.IN_INVENTORY);
-						if((thisThang.container()==goodLocation)
-						&&((wornFilter==Wearable.FILTER_ANY)||(beingWorn&&(wornFilter==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornFilter==Wearable.FILTER_UNWORNONLY)))
-						&&(thisThang.ID().equalsIgnoreCase(srchStr)
-						   ||(thisThang.Name().equalsIgnoreCase(srchStr))
-						   ||(thisThang.name().equalsIgnoreCase(srchStr))))
-							if((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0)))
-								if((--myOccurrance)<=0)
-									return thisThang;
-				    }
-				    else
-					if(E.ID().equalsIgnoreCase(srchStr)
-					||E.Name().equalsIgnoreCase(srchStr)
-					||E.name().equalsIgnoreCase(srchStr))
-						if((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0)))
-							if((--myOccurrance)<=0)
-								return E;
-				    }
-			}
-			catch(java.lang.ArrayIndexOutOfBoundsException x){}
-		}
-		else
-		{
-			try
-			{
-				for(Object O : list)
-				{
-				    E=(Environmental)O;
-					if(E instanceof Item)
-					{
-					    thisThang=(Item)E;
-						boolean beingWorn=!thisThang.amWearingAt(Wearable.IN_INVENTORY);
-
-						if((thisThang.container()==goodLocation)
-						&&((wornFilter==Wearable.FILTER_ANY)||(beingWorn&&(wornFilter==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornFilter==Wearable.FILTER_UNWORNONLY)))
-						&&((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
-						   &&((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0)))))
-							if((--myOccurrance)<=0)
-								return thisThang;
-					}
-					else
-                    if((containsString(E.name(),srchStr)||containsString(E.Name(),srchStr))
-				    &&((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0))))
-						if((--myOccurrance)<=0)
-							return E;
-
-				}
-			}
-			catch(java.lang.ArrayIndexOutOfBoundsException x){}
-			myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
-			try
-			{
-				for(Object O : list)
-				{
-				    E=(Environmental)O;
-					if(E instanceof Item)
-					{
-					    thisThang=(Item)E;
-						boolean beingWorn=!thisThang.amWearingAt(Wearable.IN_INVENTORY);
-						if((thisThang.container()==goodLocation)
-						&&((wornFilter==Wearable.FILTER_ANY)||(beingWorn&&(wornFilter==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornFilter==Wearable.FILTER_UNWORNONLY)))
-						&&(containsString(thisThang.displayText(),srchStr)))
-							if((--myOccurrance)<=0)
-								return thisThang;
-					}
-					else
-					if((containsString(E.displayText(),srchStr))
-                    ||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr)))
-						if((--myOccurrance)<=0)
-							return E;
-				}
-			}
-			catch(java.lang.ArrayIndexOutOfBoundsException x){}
-		}
-		return null;
-	}
-
 	public Environmental parseShopkeeper(MOB mob, Vector commands, String error)
 	{
 		if(commands.size()==0)
@@ -1239,16 +726,16 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return shopkeeper;
 	}
 
-	public Vector fetchItemList(Environmental from,
-							    MOB mob,
-                                Item container,
-                                Vector commands,
-                                int preferredLoc,
-                                boolean visionMatters)
+	public List<Item> fetchItemList(Environmental from,
+								    MOB mob,
+	                                Item container,
+	                                Vector commands,
+	                                int preferredLoc,
+	                                boolean visionMatters)
 	{
 		int addendum=1;
 		String addendumStr="";
-		Vector V=new Vector();
+		List<Item> V=new Vector();
 
 		int maxToItem=Integer.MAX_VALUE;
 		if((commands.size()>1)
@@ -1284,7 +771,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			&&(item instanceof Item)
 			&&((!visionMatters)||(CMLib.flags().canBeSeenBy(item,mob))||(item instanceof Light))
 			&&(!V.contains(item)))
-				V.addElement(item);
+				V.add((Item)item);
 			if(item==null) break;
 			addendumStr="."+(++addendum);
 		}
@@ -1297,18 +784,18 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			int which=-1;
 			while(V.size()>0)
 			{
-				Item I=(Item)V.firstElement();
+				Item I=(Item)V.get(0);
 				topLayer=(I instanceof Armor)?((Armor)I).getClothingLayer():0;
 				which=0;
 				for(int v=1;v<V.size();v++)
 				{
-					I=(Item)V.elementAt(v);
+					I=(Item)V.get(v);
 					curLayer=(I instanceof Armor)?((Armor)I).getClothingLayer():0;
 					if(curLayer>topLayer)
 					{ which=v; topLayer=curLayer;}
 				}
-				V2.addElement(V.elementAt(which));
-				V.removeElementAt(which);
+				V2.addElement(V.get(which));
+				V.remove(which);
 			}
 			V=V2;
 		}
@@ -1321,18 +808,18 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			int which=-1;
 			while(V.size()>0)
 			{
-				Item I=(Item)V.firstElement();
+				Item I=(Item)V.get(0);
 				topLayer=(I instanceof Armor)?((Armor)I).getClothingLayer():0;
 				which=0;
 				for(int v=1;v<V.size();v++)
 				{
-					I=(Item)V.elementAt(v);
+					I=(Item)V.get(v);
 					curLayer=(I instanceof Armor)?((Armor)I).getClothingLayer():0;
 					if(curLayer<topLayer)
 					{ which=v; topLayer=curLayer;}
 				}
-				V2.addElement(V.elementAt(which));
-				V.removeElementAt(which);
+				V2.addElement(V.get(which));
+				V.remove(which);
 			}
 			V=V2;
 		}
@@ -1658,14 +1145,14 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		while(doBugFix || ((allFlag)&&(addendum<=maxContained)))
 		{
 			doBugFix=false;
-			Environmental thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID+addendumStr,wornFilter);
-			if((thisThang!=null)
-			&&(thisThang instanceof Item)
-			&&(((Item)thisThang) instanceof Container)
-			&&((!withContentOnly)||(((Container)thisThang).getContents().size()>0))
-            &&(CMLib.flags().canBeSeenBy(thisThang,mob)||mob.isMine(thisThang)))
+			Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID+addendumStr,wornFilter);
+			if((E!=null)
+			&&(E instanceof Item)
+			&&(((Item)E) instanceof Container)
+			&&((!withContentOnly)||(((Container)E).getContents().size()>0))
+            &&(CMLib.flags().canBeSeenBy(E,mob)||mob.isMine(E)))
 			{
-				V.addElement(thisThang);
+				V.addElement(E);
 				if(V.size()==1)
 				{
 				    while((fromDex>=0)&&(commands.size()>fromDex))
@@ -1675,7 +1162,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					preWord="";
 				}
 			}
-			if(thisThang==null)
+			if(E==null)
 			    return V;
 			addendumStr="."+(++addendum);
 		}
@@ -1694,17 +1181,17 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		    { fromDex=i; containerDex=i+1;  break;}
 		String possibleContainerID=CMParms.combine(commands,containerDex);
 
-		Environmental thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID,wornFilter);
-		if((thisThang!=null)
-		&&(thisThang instanceof Item)
-		&&(((Item)thisThang) instanceof Container)
-		&&((!withStuff)||(((Container)thisThang).getContents().size()>0)))
+		Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID,wornFilter);
+		if((E!=null)
+		&&(E instanceof Item)
+		&&(((Item)E) instanceof Container)
+		&&((!withStuff)||(((Container)E).getContents().size()>0)))
 		{
 		    while((fromDex>=0)&&(commands.size()>fromDex))
 				commands.removeElementAt(fromDex);
 		    while(commands.size()>containerDex)
 				commands.removeElementAt(containerDex);
-			return (Item)thisThang;
+			return (Item)E;
 		}
 		return null;
 	}
@@ -1820,4 +1307,446 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         return maxToGive;
     }
     
+	protected class FetchFlags
+	{
+		public String srchStr;
+		public int occurrance;
+		public boolean allFlag;
+		public FetchFlags(String ss, int oc, boolean af)
+		{ srchStr=ss; occurrance=oc; allFlag=af;}
+	}
+	
+	public FetchFlags fetchFlags(String srchStr)
+	{
+		if(srchStr.length()==0) return null;
+		srchStr=srchStr.toUpperCase();
+		if((srchStr.length()<2)||(srchStr.equals("THE")))
+		   return null;
+
+		boolean allFlag=false;
+		if(srchStr.startsWith("ALL "))
+		{
+			srchStr=srchStr.substring(4);
+			allFlag=true;
+		}
+		else
+		if(srchStr.equals("ALL"))
+			allFlag=true;
+
+		int dot=srchStr.lastIndexOf(".");
+		int occurrance=0;
+		if(dot>0)
+		{
+			String sub=srchStr.substring(dot+1);
+			occurrance=CMath.s_int(sub);
+			if(occurrance>0)
+				srchStr=srchStr.substring(0,dot);
+			else
+			{
+				dot=srchStr.indexOf(".");
+				sub=srchStr.substring(0,dot);
+				occurrance=CMath.s_int(sub);
+				if(occurrance>0)
+					srchStr=srchStr.substring(dot+1);
+				else
+					occurrance=0;
+			}
+		}
+		return new FetchFlags(srchStr,occurrance,allFlag);
+	}
+
+	public Environmental fetchEnvironmental(Collection<? extends Environmental> list, String srchStr, boolean exactOnly)
+	{
+		FetchFlags flags=fetchFlags(srchStr);
+		if(flags==null) return null;
+
+		srchStr=flags.srchStr;
+		int myOccurrance=flags.occurrance;
+		boolean allFlag=flags.allFlag;
+		try
+		{
+			if(exactOnly)
+			{
+				if(srchStr.startsWith("$"))
+				{
+					if(srchStr.endsWith("$")&&(srchStr.length()>1))
+						srchStr=srchStr.substring(1,srchStr.length()-1);
+					else
+						srchStr=srchStr.substring(1);
+				}
+				else
+				if(srchStr.endsWith("$")) 
+					srchStr=srchStr.substring(0,srchStr.length()-1);
+				for(Environmental E : list)
+					if(E.ID().equalsIgnoreCase(srchStr)
+					   ||E.name().equalsIgnoreCase(srchStr)
+					   ||E.Name().equalsIgnoreCase(srchStr))
+						if((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0)))
+							if((--myOccurrance)<=0)
+								return E;
+			}
+			else
+			{
+				myOccurrance=flags.occurrance;
+				for(Environmental E : list)
+					if((containsString(E.name(),srchStr)||containsString(E.Name(),srchStr))
+					   &&((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0))))
+						if((--myOccurrance)<=0)
+							return E;
+				myOccurrance=flags.occurrance;
+				for(Environmental E : list)
+					if((!(E instanceof Ability))
+					&&(containsString(E.displayText(),srchStr)
+	                    ||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr))))
+							if((--myOccurrance)<=0)
+								return E;
+			}
+		}
+		catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		return null;
+	}
+
+	public List<Environmental> fetchEnvironmentals(List<? extends Environmental> list, String srchStr, boolean exactOnly)
+	{
+		FetchFlags flags=fetchFlags(srchStr);
+		Vector<Environmental> matches=new Vector(1);
+		if(flags==null) return matches;
+		
+		srchStr=flags.srchStr;
+		int myOccurrance=flags.occurrance;
+		boolean allFlag=flags.allFlag;
+		try
+		{
+			if(exactOnly)
+			{
+				if(srchStr.startsWith("$"))
+				{
+					if(srchStr.endsWith("$")&&(srchStr.length()>1))
+						srchStr=srchStr.substring(1,srchStr.length()-1);
+					else
+						srchStr=srchStr.substring(1);
+				}
+				else
+				if(srchStr.endsWith("$")) 
+					srchStr=srchStr.substring(0,srchStr.length()-1);
+				for(Environmental E : list)
+					if(E.ID().equalsIgnoreCase(srchStr)
+					   ||E.name().equalsIgnoreCase(srchStr)
+					   ||E.Name().equalsIgnoreCase(srchStr))
+						if((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0)))
+							if((--myOccurrance)<=0)
+								matches.addElement(E);
+			}
+			else
+			{
+				myOccurrance=flags.occurrance;
+				for(Environmental E : list)
+					if((containsString(E.name(),srchStr)||containsString(E.Name(),srchStr))
+					   &&((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0))))
+						if((--myOccurrance)<=0)
+							matches.addElement(E);
+				if(matches.size()==0)
+				{
+					myOccurrance=flags.occurrance;
+					for(Environmental E : list)
+						if((!(E instanceof Ability))
+						&&(containsString(E.displayText(),srchStr)
+	                        ||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr))))
+	    						if((--myOccurrance)<=0)
+	    							matches.addElement(E);
+				}
+			}
+		}
+		catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		return matches;
+	}
+
+	public Environmental fetchEnvironmental(Map<String, ? extends Environmental> list, String srchStr, boolean exactOnly)
+	{
+		FetchFlags flags=fetchFlags(srchStr);
+		if(flags==null) return null;
+
+		srchStr=flags.srchStr;
+		int myOccurrance=flags.occurrance;
+		boolean allFlag=flags.allFlag;
+
+		if(list.get(srchStr)!=null)
+			return (Environmental)list.get(srchStr);
+        Environmental E=null;
+		if(exactOnly)
+		{
+			if(srchStr.startsWith("$"))
+			{
+				if(srchStr.endsWith("$")&&(srchStr.length()>1))
+					srchStr=srchStr.substring(1,srchStr.length()-1);
+				else
+					srchStr=srchStr.substring(1);
+			}
+			else
+			if(srchStr.endsWith("$")) 
+				srchStr=srchStr.substring(0,srchStr.length()-1);
+			for(String key : list.keySet())
+			{
+				E=(Environmental)list.get(key);
+				if(E.ID().equalsIgnoreCase(srchStr)
+				||E.Name().equalsIgnoreCase(srchStr)
+				||E.name().equalsIgnoreCase(srchStr))
+					if((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0)))
+						if((--myOccurrance)<=0)
+							return E;
+			}
+		}
+		else
+		{
+			myOccurrance=flags.occurrance;
+			for(String key : list.keySet())
+			{
+				E=(Environmental)list.get(key);
+				if((containsString(E.name(),srchStr)||containsString(E.Name(),srchStr))
+				&&((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0))))
+					if((--myOccurrance)<=0)
+						return E;
+			}
+			myOccurrance=flags.occurrance;
+			for(String key : list.keySet())
+			{
+				E=(Environmental)list.get(key);
+				if((containsString(E.displayText(),srchStr))
+                ||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr)))
+					if((--myOccurrance)<=0)
+						return E;
+			}
+		}
+		return null;
+	}
+
+	public Item fetchAvailableItem(List<Item> list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly)
+	{
+		FetchFlags flags=fetchFlags(srchStr);
+		if(flags==null) return null;
+
+		srchStr=flags.srchStr;
+		int myOccurrance=flags.occurrance;
+		boolean allFlag=flags.allFlag;
+		if(exactOnly)
+		{
+			try
+			{
+				if(srchStr.startsWith("$"))
+				{
+					if(srchStr.endsWith("$")&&(srchStr.length()>1))
+						srchStr=srchStr.substring(1,srchStr.length()-1);
+					else
+						srchStr=srchStr.substring(1);
+				}
+				else
+				if(srchStr.endsWith("$")) 
+					srchStr=srchStr.substring(0,srchStr.length()-1);
+				for(Item I : list)
+				{
+					boolean beingWorn=!I.amWearingAt(Wearable.IN_INVENTORY);
+
+					if((I.container()==goodLocation)
+					&&((wornReqCode==Wearable.FILTER_ANY)||(beingWorn&&(wornReqCode==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornReqCode==Wearable.FILTER_UNWORNONLY)))
+					&&(I.ID().equalsIgnoreCase(srchStr)
+					   ||(I.Name().equalsIgnoreCase(srchStr))
+					   ||(I.name().equalsIgnoreCase(srchStr))))
+						if((!allFlag)||((I.displayText()!=null)&&(I.displayText().length()>0)))
+							if((--myOccurrance)<=0)
+								return I;
+				}
+			}
+			catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		}
+		else
+		{
+			try
+			{
+				for(Item I : list)
+				{
+					boolean beingWorn=!I.amWearingAt(Wearable.IN_INVENTORY);
+
+					if((I.container()==goodLocation)
+					&&((wornReqCode==Wearable.FILTER_ANY)||(beingWorn&&(wornReqCode==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornReqCode==Wearable.FILTER_UNWORNONLY)))
+					&&((containsString(I.name(),srchStr)||containsString(I.Name(),srchStr))
+					   &&((!allFlag)||((I.displayText()!=null)&&(I.displayText().length()>0)))))
+						if((--myOccurrance)<=0)
+							return I;
+				}
+			}
+			catch(java.lang.ArrayIndexOutOfBoundsException x){}
+			myOccurrance=flags.occurrance;
+			try
+			{
+				for(Item I : list)
+				{
+					boolean beingWorn=!I.amWearingAt(Wearable.IN_INVENTORY);
+					if((I.container()==goodLocation)
+					&&((wornReqCode==Wearable.FILTER_ANY)||(beingWorn&&(wornReqCode==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornReqCode==Wearable.FILTER_UNWORNONLY)))
+					&&(containsString(I.displayText(),srchStr)))
+						if((--myOccurrance)<=0)
+							return I;
+				}
+			}
+			catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		}
+		return null;
+	}
+
+	public List<Item> fetchAvailableItems(List<Item> list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly)
+	{
+		FetchFlags flags=fetchFlags(srchStr);
+		Vector<Item> matches=new Vector(1);
+		if(flags==null) return matches;
+
+		srchStr=flags.srchStr;
+		int myOccurrance=flags.occurrance;
+		boolean allFlag=flags.allFlag;
+		try
+		{
+			if(exactOnly)
+			{
+				if(srchStr.startsWith("$"))
+				{
+					if(srchStr.endsWith("$")&&(srchStr.length()>1))
+						srchStr=srchStr.substring(1,srchStr.length()-1);
+					else
+						srchStr=srchStr.substring(1);
+				}
+				else
+				if(srchStr.endsWith("$")) 
+					srchStr=srchStr.substring(0,srchStr.length()-1);
+				for(Item I : list)
+				{
+					boolean beingWorn=!I.amWearingAt(Wearable.IN_INVENTORY);
+					if((I.container()==goodLocation)
+					&&((wornReqCode==Wearable.FILTER_ANY)||(beingWorn&&(wornReqCode==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornReqCode==Wearable.FILTER_UNWORNONLY)))
+					&&(I.ID().equalsIgnoreCase(srchStr)
+					   ||(I.Name().equalsIgnoreCase(srchStr))
+					   ||(I.name().equalsIgnoreCase(srchStr))))
+						if((!allFlag)||((I.displayText()!=null)&&(I.displayText().length()>0)))
+							if((--myOccurrance)<=0)
+								matches.addElement(I);
+				}
+			}
+			else
+			{
+				for(Item I : list)
+				{
+					boolean beingWorn=!I.amWearingAt(Wearable.IN_INVENTORY);
+					if((I.container()==goodLocation)
+					&&((wornReqCode==Wearable.FILTER_ANY)||(beingWorn&&(wornReqCode==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornReqCode==Wearable.FILTER_UNWORNONLY)))
+					&&((containsString(I.name(),srchStr)||containsString(I.Name(),srchStr))
+					   &&((!allFlag)||((I.displayText()!=null)&&(I.displayText().length()>0)))))
+						if((--myOccurrance)<=0)
+							matches.addElement(I);
+				}
+				if(matches.size()==0)
+				{
+					myOccurrance=flags.occurrance;
+					for(Item I : list)
+					{
+						boolean beingWorn=!I.amWearingAt(Wearable.IN_INVENTORY);
+						if((I.container()==goodLocation)
+						&&((wornReqCode==Wearable.FILTER_ANY)||(beingWorn&&(wornReqCode==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornReqCode==Wearable.FILTER_UNWORNONLY)))
+						&&(containsString(I.displayText(),srchStr)))
+							if((--myOccurrance)<=0)
+								matches.addElement(I);
+					}
+				}
+			}
+		}
+		catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		return matches;
+	}
+
+	public Environmental fetchAvailable(Collection<? extends Environmental> list, String srchStr, Item goodLocation, int wornFilter, boolean exactOnly)
+	{
+		FetchFlags flags=fetchFlags(srchStr);
+		if(flags==null) return null;
+
+		srchStr=flags.srchStr;
+		int myOccurrance=flags.occurrance;
+		boolean allFlag=flags.allFlag;
+
+	    Item I=null;
+		try
+		{
+			if(exactOnly)
+			{
+				if(srchStr.startsWith("$"))
+				{
+					if(srchStr.endsWith("$")&&(srchStr.length()>1))
+						srchStr=srchStr.substring(1,srchStr.length()-1);
+					else
+						srchStr=srchStr.substring(1);
+				}
+				else
+				if(srchStr.endsWith("$")) 
+					srchStr=srchStr.substring(0,srchStr.length()-1);
+				for(Environmental E : list)
+				    if(E instanceof Item)
+				    {
+						I=(Item)E;
+						boolean beingWorn=!I.amWearingAt(Wearable.IN_INVENTORY);
+						if((I.container()==goodLocation)
+						&&((wornFilter==Wearable.FILTER_ANY)||(beingWorn&&(wornFilter==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornFilter==Wearable.FILTER_UNWORNONLY)))
+						&&(I.ID().equalsIgnoreCase(srchStr)
+						   ||(I.Name().equalsIgnoreCase(srchStr))
+						   ||(I.name().equalsIgnoreCase(srchStr))))
+							if((!allFlag)||((I.displayText()!=null)&&(I.displayText().length()>0)))
+								if((--myOccurrance)<=0)
+									return I;
+				    }
+				    else
+					if(E.ID().equalsIgnoreCase(srchStr)
+					||E.Name().equalsIgnoreCase(srchStr)
+					||E.name().equalsIgnoreCase(srchStr))
+						if((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0)))
+							if((--myOccurrance)<=0)
+								return E;
+			}
+			else
+			{
+				for(Environmental E : list)
+					if(E instanceof Item)
+					{
+					    I=(Item)E;
+						boolean beingWorn=!I.amWearingAt(Wearable.IN_INVENTORY);
+
+						if((I.container()==goodLocation)
+						&&((wornFilter==Wearable.FILTER_ANY)||(beingWorn&&(wornFilter==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornFilter==Wearable.FILTER_UNWORNONLY)))
+						&&((containsString(I.name(),srchStr)||containsString(I.Name(),srchStr))
+						   &&((!allFlag)||((I.displayText()!=null)&&(I.displayText().length()>0)))))
+							if((--myOccurrance)<=0)
+								return I;
+					}
+					else
+                    if((containsString(E.name(),srchStr)||containsString(E.Name(),srchStr))
+				    &&((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0))))
+						if((--myOccurrance)<=0)
+							return E;
+
+				myOccurrance=flags.occurrance;
+				for(Environmental E : list)
+					if(E instanceof Item)
+					{
+					    I=(Item)E;
+						boolean beingWorn=!I.amWearingAt(Wearable.IN_INVENTORY);
+						if((I.container()==goodLocation)
+						&&((wornFilter==Wearable.FILTER_ANY)||(beingWorn&&(wornFilter==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornFilter==Wearable.FILTER_UNWORNONLY)))
+						&&(containsString(I.displayText(),srchStr)))
+							if((--myOccurrance)<=0)
+								return I;
+					}
+					else
+					if((containsString(E.displayText(),srchStr))
+                    ||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr)))
+						if((--myOccurrance)<=0)
+							return E;
+			}
+		}
+		catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		return null;
+	}
 }

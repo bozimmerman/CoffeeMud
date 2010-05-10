@@ -116,7 +116,7 @@ public class Thief_Con extends ThiefSkill
             return false;
         }
         
-        Object O=CMLib.english().findCommand(target,commands);
+        CMObject O=CMLib.english().findCommand(target,commands);
         if(O instanceof Command)
         {
             if((!((Command)O).canBeOrdered())||(!((Command)O).securityCheck(mob))||(((Command)O).ID().equals("Sleep")))

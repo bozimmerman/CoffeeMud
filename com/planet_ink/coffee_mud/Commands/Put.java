@@ -50,13 +50,13 @@ public class Put extends StdCommand
 		commands.removeElementAt(1);
 		commands.removeElementAt(0);
 
-		Vector items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,true);
+		List<Item> items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,true);
 		if(items.size()==0)
 			mob.tell("You don't seem to be carrying that.");
 		else
 		for(int i=0;i<items.size();i++)
 		{
-			Item I=(Item)items.elementAt(i);
+			Item I=(Item)items.get(i);
 			if((items.size()==1)||(I instanceof Light))
 			{
 				CMMsg msg=CMClass.getMsg(mob,I,null,CMMsg.MSG_EXTINGUISH,quiet?null:"<S-NAME> put(s) out <T-NAME>.");

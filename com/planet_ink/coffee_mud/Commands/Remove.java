@@ -64,13 +64,13 @@ public class Remove extends StdCommand
 			return false;
 		}
 
-		Vector items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_WORNONLY,false);
+		List<Item> items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_WORNONLY,false);
 		if(items.size()==0)
 			mob.tell("You don't seem to be wearing that.");
 		else
 		for(int i=0;i<items.size();i++)
 		{
-			Item item=(Item)items.elementAt(i);
+			Item item=(Item)items.get(i);
 			CMMsg newMsg=CMClass.getMsg(mob,item,null,CMMsg.MSG_REMOVE,"<S-NAME> remove(s) <T-NAME>.");
 			if(mob.location().okMessage(mob,newMsg))
 				mob.location().send(mob,newMsg);
