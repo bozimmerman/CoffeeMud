@@ -36,7 +36,7 @@ public interface TrackingLibrary extends CMLibrary
     public int trackNextDirectionFromHere(List<Room> theTrail, Room location, boolean openOnly);
     public void stopTracking(MOB mob);
     public int radiatesFromDir(Room room, Vector<Room> rooms);
-    public void getRadiantRooms(Room room, Vector<Room> rooms, TrackingFlags flags, Room radiateTo, int maxDepth, HashSet<Room> ignoreRooms);
+    public void getRadiantRooms(Room room, List<Room> rooms, TrackingFlags flags, Room radiateTo, int maxDepth, Set<Room> ignoreRooms);
 	public List<Room> getRadiantRooms(Room room, TrackingFlags flags, int maxDepth);
     public boolean beMobile(MOB mob,
                             boolean dooropen,
@@ -54,7 +54,7 @@ public interface TrackingLibrary extends CMLibrary
     public int findRoomDir(MOB mob, Room R);
 	public List<List<Integer>> findAllTrails(Room from, Room to, List<Room> radiantTrail);
 	public List<List<Integer>> findAllTrails(Room from, List<Room> tos, List<Room> radiantTrail);
-	public String getTrailToDescription(Room R1, Vector<Room> set, String where, boolean areaNames, boolean confirm, int radius, HashSet<Room> ignoreRooms, int maxMins);
+	public String getTrailToDescription(Room R1, List<Room> set, String where, boolean areaNames, boolean confirm, int radius, Set<Room> ignoreRooms, int maxMins);
 	
 	public static enum TrackingFlag {NOHOMES,OPENONLY,AREAONLY,NOEMPTYGRIDS,NOAIR,NOWATER};
 	

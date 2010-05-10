@@ -216,20 +216,21 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return V;
 	}
 	public void getRadiantRooms(Room room,
-							    Vector<Room> rooms,
+							    List<Room> rooms,
 							    TrackingFlags flags,
 							    Room radiateTo,
 							    int maxDepth,
-                                HashSet<Room> ignoreRooms)
+                                Set<Room> ignoreRooms)
 	{
 		int depth=0;
 		if(room==null) return;
 		if(rooms.contains(room)) return;
 		HashSet H=new HashSet(1000);
-		rooms.addElement(room);
-        rooms.ensureCapacity(200);
+		rooms.add(room);
+		if(rooms instanceof Vector)
+			((Vector)rooms).ensureCapacity(200);
 		for(int r=0;r<rooms.size();r++)
-			H.add(rooms.elementAt(r));
+			H.add(rooms.get(r));
 		int min=0;
 		int size=rooms.size();
 		boolean radiateToSomewhere=(radiateTo!=null);
@@ -249,7 +250,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		{
 			for(r=min;r<size;r++)
 			{
-				R1=(Room)rooms.elementAt(r);
+				R1=(Room)rooms.get(r);
 				for(d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
 					R=R1.getRoomInDir(d);
@@ -274,7 +275,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 						&&(R.getGridParent()!=null)
 						&&(R.getGridParent().roomID().length()==0)))
 					    continue;
-					rooms.addElement(R);
+					rooms.add(R);
 					H.add(R);
 					if((radiateToSomewhere)
 					&&(R==radiateTo))
@@ -739,7 +740,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return -1;
 	}
 	
-	public String getTrailToDescription(Room R1, Vector<Room> set, String where, boolean areaNames, boolean confirm, int radius, HashSet<Room> ignoreRooms, int maxMins)
+	public String getTrailToDescription(Room R1, List<Room> set, String where, boolean areaNames, boolean confirm, int radius, Set<Room> ignoreRooms, int maxMins)
 	{
 		Room R2=CMLib.map().getRoom(where);
 		if(R2==null)
@@ -765,7 +766,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 					{
 						for(int i=0;i<set.size();i++)
 						{
-							Room R=(Room)set.elementAt(i);
+							Room R=(Room)set.get(i);
 							if(R.getArea()==A)
 							{
 								R2=R;
@@ -784,7 +785,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		int foundAt=-1;
 		for(int i=0;i<set.size();i++)
 		{
-			Room R=(Room)set.elementAt(i);
+			Room R=(Room)set.get(i);
 			if(R==R2){ foundAt=i; break;}
 		}
 		if(foundAt<0) return "You can't get to '"+R2.roomID()+"' from here.";
@@ -802,7 +803,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			didSomething=false;
 			for(int r=foundAt-1;r>=0;r--)
 			{
-				Room R=(Room)set.elementAt(r);
+				Room R=(Room)set.get(r);
 				if(getRoomDirection(R,checkR,trailV)>=0)
 				{
 					trailV.addElement(R);
