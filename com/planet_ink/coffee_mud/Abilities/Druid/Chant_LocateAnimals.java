@@ -45,7 +45,7 @@ public class Chant_LocateAnimals extends Chant
     public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	public String displayText(){return displayText;}
 
-	protected Vector theTrail=null;
+	protected List<Room> theTrail=null;
 	public int nextDirection=-2;
 	public long flags(){return Ability.FLAG_TRACKING;}
 
@@ -142,10 +142,10 @@ public class Chant_LocateAnimals extends Chant
 
 		Vector rooms=new Vector();
 		TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
-		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,20);
-		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
+		List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,20);
+		for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
 		{
-			Room R=CMLib.map().getRoom((Room)r.nextElement());
+			Room R=CMLib.map().getRoom(r.next());
 			if(animalHere(R)!=null)
 				rooms.addElement(R);
 		}
@@ -158,11 +158,11 @@ public class Chant_LocateAnimals extends Chant
 
 		MOB target=null;
 		if((theTrail!=null)&&(theTrail.size()>0))
-			target=animalHere((Room)theTrail.firstElement());
+			target=animalHere((Room)theTrail.get(0));
 
 		if((success)&&(theTrail!=null)&&(target!=null))
 		{
-			theTrail.addElement(mob.location());
+			theTrail.add(mob.location());
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else

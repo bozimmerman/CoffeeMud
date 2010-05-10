@@ -47,10 +47,10 @@ public class Spell_Disintegrate extends Spell
 	{
 		Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
 		if(target==null) return false;
-        Vector DBs=CMLib.utensils().getDeadBodies(target);
+		List<DeadBody> DBs=CMLib.utensils().getDeadBodies(target);
         for(int v=0;v<DBs.size();v++)
         {
-            DeadBody DB=(DeadBody)DBs.elementAt(v);
+            DeadBody DB=(DeadBody)DBs.get(v);
     		if(DB.playerCorpse()
     		&&(!DB.mobName().equals(mob.Name())))
     		{

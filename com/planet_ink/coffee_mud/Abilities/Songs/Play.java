@@ -266,9 +266,9 @@ public class Play extends StdAbility
         // needs to be area-only, because of the aggro-tracking rule
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
-				.add(TrackingLibrary.TrackingFlag.OPENONLY)
-				.add(TrackingLibrary.TrackingFlag.AREAONLY)
-				.add(TrackingLibrary.TrackingFlag.NOAIR);
+				.plus(TrackingLibrary.TrackingFlag.OPENONLY)
+				.plus(TrackingLibrary.TrackingFlag.AREAONLY)
+				.plus(TrackingLibrary.TrackingFlag.NOAIR);
     	CMLib.tracking().getRadiantRooms(invoker().location(), rooms,flags, null, depth, null);
     	if(!rooms.contains(invoker().location()))
     		rooms.addElement(invoker().location());

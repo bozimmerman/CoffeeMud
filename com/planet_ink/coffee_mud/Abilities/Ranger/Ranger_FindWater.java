@@ -49,7 +49,7 @@ public class Ranger_FindWater extends StdAbility
     public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_NATURELORE;}
 	public long flags(){return Ability.FLAG_TRACKING;}
 
-	protected Vector theTrail=null;
+	protected List<Room> theTrail=null;
 	public int nextDirection=-2;
 	public void unInvoke()
 	{
@@ -266,12 +266,12 @@ public class Ranger_FindWater extends StdAbility
 		Vector rooms=new Vector();
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
-				.add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
-				.add(TrackingLibrary.TrackingFlag.NOAIR);
-		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,60+(2*getXLEVELLevel(mob)));
-		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
+				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+				.plus(TrackingLibrary.TrackingFlag.NOAIR);
+		List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,60+(2*getXLEVELLevel(mob)));
+		for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
 		{
-			Room R=CMLib.map().getRoom((Room)r.nextElement());
+			Room R=CMLib.map().getRoom(r.next());
 			if(waterHere(mob,R,null).length()>0)
 				rooms.addElement(R);
 		}

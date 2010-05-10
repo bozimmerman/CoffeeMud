@@ -1888,7 +1888,7 @@ public class ListCmd extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		Vector V=new Vector();
+		List<Environmental> V=new Vector();
         commands.removeElementAt(0);
 		String forWhat=null;
 		if(commands.size()==0)
@@ -1914,16 +1914,16 @@ public class ListCmd extends StdCommand
 				}
 			}
             String what=CMParms.combine(commands,0);
-            Vector V2=CMLib.coffeeShops().getAllShopkeepers(mob.location(),mob);
+            List<Environmental> V2=CMLib.coffeeShops().getAllShopkeepers(mob.location(),mob);
             Environmental shopkeeper=CMLib.english().fetchEnvironmental(V2,what,false);
             if((shopkeeper==null)&&(what.equals("shop")||what.equals("the shop")))
                 for(int v=0;v<V2.size();v++)
-                    if(V2.elementAt(v) instanceof Area)
-                    { shopkeeper=(Environmental)V2.elementAt(v); break;}
+                    if(V2.get(v) instanceof Area)
+                    { shopkeeper=(Environmental)V2.get(v); break;}
 			if((shopkeeper!=null)
             &&(CMLib.coffeeShops().getShopKeeper(shopkeeper)!=null)
             &&(CMLib.flags().canBeSeenBy(shopkeeper,mob)))
-				V.addElement(shopkeeper);
+				V.add(shopkeeper);
 			else
 			if(getAnyCode(mob)>=0)
 			{
@@ -1938,7 +1938,7 @@ public class ListCmd extends StdCommand
 		}
 		for(int i=0;i<V.size();i++)
 		{
-			Environmental shopkeeper=(Environmental)V.elementAt(i);
+			Environmental shopkeeper=(Environmental)V.get(i);
             ShopKeeper SHOP=CMLib.coffeeShops().getShopKeeper(shopkeeper);
             String str="<S-NAME> review(s) <T-YOUPOSS> inventory";
             if(SHOP instanceof Banker)

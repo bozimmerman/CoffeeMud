@@ -39,17 +39,17 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 {
     public String ID(){return "CoffeeUtensils";}
 	
-	public String niceCommaList(Vector V, boolean andTOrF)
+	public String niceCommaList(List<Object> V, boolean andTOrF)
 	{
 		String id="";
 		for(int v=0;v<V.size();v++)
 		{
 			String s=null;
-			if(V.elementAt(v) instanceof Environmental)
-				s=((Environmental)V.elementAt(v)).name();
+			if(V.get(v) instanceof Environmental)
+				s=((Environmental)V.get(v)).name();
 			else
-			if(V.elementAt(v) instanceof String)
-				s=(String)V.elementAt(v);
+			if(V.get(v) instanceof String)
+				s=(String)V.get(v);
 			else
 				continue;
 			if(V.size()==1)
@@ -565,10 +565,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
     
     
-    public Vector getDeadBodies(Environmental E)
+    public List<DeadBody> getDeadBodies(Environmental E)
     {
         if(E instanceof DeadBody)
-            return new XVector(E);
+            return new XVector<DeadBody>((DeadBody)E);
         if(E instanceof Container)
         {
             Vector Bs=new Vector();

@@ -30,11 +30,10 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public interface ShoppingLibrary extends CMLibrary
 {
     public ShopKeeper getShopKeeper(Environmental E);
-    public Vector getAllShopkeepers(Room here, MOB notMOB);
+    public List<Environmental> getAllShopkeepers(Room here, MOB notMOB);
     public String getViewDescription(Environmental E);
     public double rawSpecificGoldPrice(Environmental product,  CoffeeShop shop, double numberOfThem);
     public double prejudiceValueFromPart(MOB customer, boolean sellTo, String part);
@@ -57,11 +56,11 @@ public interface ShoppingLibrary extends CMLibrary
     public boolean ignoreIfNecessary(MOB mob, String ignoreMask, MOB whoIgnores);
     public String storeKeeperString(CoffeeShop shop);
     public boolean doISellThis(Environmental thisThang, ShopKeeper shop);
-	public String[] bid(MOB mob, double bid, String bidCurrency, Auctioneer.AuctionData auctionData, Item I, Vector auctionAnnounces);
+	public String[] bid(MOB mob, double bid, String bidCurrency, Auctioneer.AuctionData auctionData, Item I, List<String> auctionAnnounces);
 	public void returnMoney(MOB to, String currency, double amt);
     public String getAuctionInventory(MOB seller,MOB buyer,Auctioneer auction,String mask);
     public String getListForMask(String targetMessage);
-    public Vector getAuctions(Object ofLike, String auctionHouse);
+    public List<AuctionData> getAuctions(Object ofLike, String auctionHouse);
 	public Auctioneer.AuctionData getEnumeratedAuction(String named, String auctionHouse);
 	public void auctionNotify(MOB M, String resp, String regardingItem);
     public void cancelAuction(String auctionHouse, Auctioneer.AuctionData data);

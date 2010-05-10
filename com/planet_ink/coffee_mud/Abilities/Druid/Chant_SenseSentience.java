@@ -63,12 +63,12 @@ public class Chant_SenseSentience extends Chant
 				lines.append(CMStrings.padRight("Location",17)+"^.^N\n\r");
 				TrackingLibrary.TrackingFlags flags;
 				flags = new TrackingLibrary.TrackingFlags()
-						.add(TrackingLibrary.TrackingFlag.AREAONLY);
-				Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
-				if(!checkSet.contains(mob.location())) checkSet.addElement(mob.location());
-				for(Enumeration r=checkSet.elements();r.hasMoreElements();)
+						.plus(TrackingLibrary.TrackingFlag.AREAONLY);
+				List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
+				if(!checkSet.contains(mob.location())) checkSet.add(mob.location());
+				for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
 				{
-					Room R=CMLib.map().getRoom((Room)r.nextElement());
+					Room R=CMLib.map().getRoom(r.next());
 					if((((R.domainType()&Room.INDOORS)==0)
 						&&(R.domainType()!=Room.DOMAIN_OUTDOORS_CITY)
 						&&(R.domainType()!=Room.DOMAIN_OUTDOORS_SPACEPORT))

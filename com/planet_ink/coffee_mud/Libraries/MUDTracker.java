@@ -37,7 +37,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class MUDTracker extends StdLibrary implements TrackingLibrary
 {
     public String ID(){return "MUDTracker";}
-    public Vector findBastardTheBestWay(Room location,
+    public List<Room> findBastardTheBestWay(Room location,
 							            Room destRoom,
 							            TrackingFlags flags,
 							            int maxRadius)
@@ -122,13 +122,13 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
    }
 
 
-	public Vector findBastardTheBestWay(Room location,
-									    Vector<Room> destRooms,
+	public List<Room> findBastardTheBestWay(Room location,
+									    List<Room> destRooms,
 									    TrackingFlags flags,
 									    int maxRadius)
 	{
 
-	    Vector finalTrail=null;
+		List<Room> finalTrail=null;
         Room destRoom=null;
         int pick=0;
         Vector radiant=null;
@@ -140,8 +140,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
         for(int i=0;(i<5)&&(destRooms.size()>0);i++)
         {
             pick=CMLib.dice().roll(1,destRooms.size(),-1);
-            destRoom=(Room)destRooms.elementAt(pick);
-            destRooms.removeElementAt(pick);
+            destRoom=(Room)destRooms.get(pick);
+            destRooms.remove(pick);
             Vector thisTrail=findBastardTheBestWay(location,destRoom,flags,maxRadius,radiant);
             if((thisTrail!=null)
             &&((finalTrail==null)||(thisTrail.size()<finalTrail.size())))
@@ -150,8 +150,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
         if(finalTrail==null)
 	    for(int r=0;r<destRooms.size();r++)
 	    {
-	        destRoom=(Room)destRooms.elementAt(r);
-            Vector thisTrail=findBastardTheBestWay(location,destRoom,flags,maxRadius);
+	        destRoom=(Room)destRooms.get(r);
+	        List<Room> thisTrail=findBastardTheBestWay(location,destRoom,flags,maxRadius);
             if((thisTrail!=null)
             &&((finalTrail==null)||(thisTrail.size()<finalTrail.size())))
                 finalTrail=thisTrail;
@@ -159,13 +159,13 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	    return finalTrail;
 	}
 
-	public int trackNextDirectionFromHere(Vector<Room> theTrail,
+	public int trackNextDirectionFromHere(List<Room> theTrail,
 										  Room location,
 										  boolean openOnly)
 	{
 		if((theTrail==null)||(location==null))
 			return -1;
-		if(location==theTrail.elementAt(0))
+		if(location==theTrail.get(0))
 			return 999;
 		int locationLocation=theTrail.indexOf(location);
 		if(locationLocation<0) locationLocation=Integer.MAX_VALUE;
@@ -207,7 +207,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return -1;
 	}
 
-	public Vector getRadiantRooms(Room room,
+	public List<Room> getRadiantRooms(Room room,
 								  TrackingFlags flags,
 								  int maxDepth)
 	{
@@ -683,9 +683,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return dir;
 	}
 
-	public Vector findAllTrails(Room from, Room to, Vector<Room> radiantTrail)
+	public List<List<Integer>> findAllTrails(Room from, Room to, List<Room> radiantTrail)
 	{
-		Vector finalSets=new Vector();
+		List<List<Integer>> finalSets=new Vector<List<Integer>>();
 		if((from==null)||(to==null)||(from==to)) return finalSets;
 		int index=radiantTrail.indexOf(to);
 		if(index<0) return finalSets;
@@ -697,18 +697,18 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			{
 				if((R==from)&&(from.getRoomInDir(Directions.getOpDirectionCode(d))==to))
 				{
-					finalSets.addElement(new XVector(Integer.valueOf(Directions.getOpDirectionCode(d))));
+					finalSets.add(new XVector<Integer>(Integer.valueOf(Directions.getOpDirectionCode(d))));
 					return finalSets;
 				}
 				int dex=radiantTrail.indexOf(R);
 				if((dex>=0)&&(dex<index)&&(R.getRoomInDir(Directions.getOpDirectionCode(d))==to))
 				{
-					Vector allTrailsBack=findAllTrails(from,R,radiantTrail);
+					List<List<Integer>> allTrailsBack=findAllTrails(from,R,radiantTrail);
 					for(int a=0;a<allTrailsBack.size();a++)
 					{
-						Vector thisTrail=(Vector)allTrailsBack.elementAt(a);
-						thisTrail.addElement(Integer.valueOf(Directions.getOpDirectionCode(d)));
-						finalSets.addElement(thisTrail);
+						List<Integer> thisTrail=allTrailsBack.get(a);
+						thisTrail.add(Integer.valueOf(Directions.getOpDirectionCode(d)));
+						finalSets.add(thisTrail);
 					}
 				}
 			}
@@ -716,14 +716,14 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return finalSets;
 	}
 
-	public Vector findAllTrails(Room from, Vector<Room> tos, Vector<Room> radiantTrail)
+	public List<List<Integer>> findAllTrails(Room from, List<Room> tos, List<Room> radiantTrail)
 	{
 		Vector finalSets=new Vector();
 		if(from==null) return finalSets;
 		Room to=null;
 		for(int t=0;t<tos.size();t++)
 		{
-			to=(Room)tos.elementAt(t);
+			to=(Room)tos.get(t);
 			finalSets.addAll(findAllTrails(from,to,radiantTrail));
 		}
 		return finalSets;
@@ -778,7 +778,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			}
 		if(R2==null) return "Unable to determine '"+where+"'.";
 		TrackingLibrary.TrackingFlags flags = new TrackingLibrary.TrackingFlags()
-											.add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
+											.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
 		if(set.size()==0)
 			getRadiantRooms(R1,set,flags,R2,radius,ignoreRooms);
 		int foundAt=-1;

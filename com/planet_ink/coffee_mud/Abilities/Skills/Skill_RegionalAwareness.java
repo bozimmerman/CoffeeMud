@@ -132,9 +132,9 @@ public class Skill_RegionalAwareness extends StdSkill
 				HashSet closedPaths=new HashSet();
 				TrackingLibrary.TrackingFlags flags;
 				flags = new TrackingLibrary.TrackingFlags()
-						.add(TrackingLibrary.TrackingFlag.OPENONLY)
-						.add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
-						.add(TrackingLibrary.TrackingFlag.NOAIR);
+						.plus(TrackingLibrary.TrackingFlag.OPENONLY)
+						.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+						.plus(TrackingLibrary.TrackingFlag.NOAIR);
 				CMLib.tracking().getRadiantRooms(mob.location(),rooms,flags,null,diameter,null);
 				rmap[diameter/2][diameter/2]=mob.location();
 				map[diameter/2][diameter/2]='*';

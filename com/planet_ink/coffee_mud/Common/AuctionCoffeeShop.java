@@ -111,11 +111,11 @@ public class AuctionCoffeeShop implements CoffeeShop
     
     public Environmental getStock(String name, MOB mob)
     {
-    	Vector auctions=CMLib.coffeeShops().getAuctions(null,auctionShop);
+    	List<AuctionData> auctions=CMLib.coffeeShops().getAuctions(null,auctionShop);
     	Vector auctionItems=new Vector();
     	for(int a=0;a<auctions.size();a++)
     	{
-    		Item I=((Auctioneer.AuctionData)auctions.elementAt(a)).auctioningI;
+    		Item I=((Auctioneer.AuctionData)auctions.get(a)).auctioningI;
     		auctionItems.addElement(I);
     	}
     	for(int a=0;a<auctionItems.size();a++)

@@ -196,7 +196,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
 		MOB M=null;
 		Environmental E=null;
 		ShopKeeper SK=null;
-        Vector shops=null;
+		List<Environmental> shops=null;
         Environmental shopItem=null;
         Vector<RoomContent> content =new Vector<RoomContent>();
 		if(R!=null)
@@ -205,7 +205,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
             shops=CMLib.coffeeShops().getAllShopkeepers(R,null);
             for(int s=0;s<shops.size();s++)
             {
-                E=(Environmental)shops.elementAt(s);
+                E=(Environmental)shops.get(s);
                 if(E==null) continue;
                 SK=CMLib.coffeeShops().getShopKeeper(E);
                 if(SK==null) continue;

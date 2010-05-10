@@ -121,10 +121,10 @@ public class Spell_LocateObject extends Spell
 				Room room=null;
                 ShopKeeper SK=null;
     			TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
-				Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50+adjustedLevel(mob,asLevel));
-				for(Enumeration r=checkSet.elements();r.hasMoreElements();)
-				{
-					room=CMLib.map().getRoom((Room)r.nextElement());
+    			List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50+adjustedLevel(mob,asLevel));
+    			for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
+    			{
+    				room=CMLib.map().getRoom(r.next());
 					if(!CMLib.flags().canAccess(mob,room)) continue;
 
 					item=room.findItem(null,what);

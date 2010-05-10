@@ -49,7 +49,7 @@ public class Ranger_TrackAnimal extends StdAbility
 	public long flags(){return Ability.FLAG_TRACKING;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	protected Vector theTrail=null;
+	protected List<Room> theTrail=null;
 	public int nextDirection=-2;
 
 
@@ -170,16 +170,16 @@ public class Ranger_TrackAnimal extends StdAbility
 
 		TrackingLibrary.TrackingFlags flags;
 		flags=new TrackingLibrary.TrackingFlags()
-			.add(TrackingLibrary.TrackingFlag.OPENONLY)
-			.add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
-			.add(TrackingLibrary.TrackingFlag.NOAIR)
-			.add(TrackingLibrary.TrackingFlag.NOWATER);
+			.plus(TrackingLibrary.TrackingFlag.OPENONLY)
+			.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+			.plus(TrackingLibrary.TrackingFlag.NOAIR)
+			.plus(TrackingLibrary.TrackingFlag.NOWATER);
 		
 		Vector rooms=new Vector();
-		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,75+(2*getXLEVELLevel(mob)));
-		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
+		List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,75+(2*getXLEVELLevel(mob)));
+		for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
 		{
-			Room R=CMLib.map().getRoom((Room)r.nextElement());
+			Room R=CMLib.map().getRoom(r.next());
 			if(animalHere(R)!=null)
 				rooms.addElement(R);
 		}
@@ -189,11 +189,11 @@ public class Ranger_TrackAnimal extends StdAbility
 
 		MOB target=null;
 		if((theTrail!=null)&&(theTrail.size()>0))
-			target=animalHere((Room)theTrail.firstElement());
+			target=animalHere((Room)theTrail.get(0));
 
 		if((success)&&(theTrail!=null)&&(target!=null))
 		{
-			theTrail.addElement(mob.location());
+			theTrail.add(mob.location());
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else

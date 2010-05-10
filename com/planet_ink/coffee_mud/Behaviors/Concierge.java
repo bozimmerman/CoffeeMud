@@ -110,8 +110,8 @@ public class Concierge extends StdBehavior
 		{
 			TrackingLibrary.TrackingFlags flags;
 			flags = new TrackingLibrary.TrackingFlags()
-					.add(TrackingLibrary.TrackingFlag.AREAONLY);
-			Vector roomsInRange=
+					.plus(TrackingLibrary.TrackingFlag.AREAONLY);
+			List<Room> roomsInRange=
 				CMLib.tracking().getRadiantRooms(observer.location(),flags,50);
 			Room R=null;
 			String place=null;
@@ -202,7 +202,7 @@ public class Concierge extends StdBehavior
 		if(C==null) return "Umm.. I'm stupid.";
 		String name=to.Name();
 		if(to instanceof Room) name=CMLib.map().getExtendedRoomID((Room)to);
-        TrackingLibrary.TrackingFlags flags = new TrackingLibrary.TrackingFlags().add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
+        TrackingLibrary.TrackingFlags flags = new TrackingLibrary.TrackingFlags().plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
 		Vector<Room> set=new Vector<Room>();
 		int radius=100;
 		CMLib.tracking().getRadiantRooms(from.location(),set,flags,null,radius,null);

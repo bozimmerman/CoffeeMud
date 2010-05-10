@@ -29,7 +29,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public interface ChannelsLibrary extends CMLibrary
 {
     public final int QUEUE_SIZE=100;
@@ -38,7 +37,7 @@ public interface ChannelsLibrary extends CMLibrary
     public String getChannelMask(int i);
     public HashSet<ChannelFlag> getChannelFlags(int i);
     public String getChannelName(int i);
-    public Vector getChannelQue(int i);
+    public List<CMMsg> getChannelQue(int i);
     public boolean mayReadThisChannel(MOB sender, boolean areaReq, MOB M, int i);
     public boolean mayReadThisChannel(MOB sender, boolean areaReq, MOB M, int i, boolean offlineOK);
     public boolean mayReadThisChannel(MOB sender, boolean areaReq, Session ses, int i);
@@ -52,8 +51,8 @@ public interface ChannelsLibrary extends CMLibrary
     public String[][] imc2ChannelsArray();
     public String[][] iChannelsArray();
     public String[] getChannelNames();
-    public Vector clearInvalidSnoopers(Session mySession, int channelCode);
-    public void restoreInvalidSnoopers(Session mySession, Vector invalid);
+    public List<Session> clearInvalidSnoopers(Session mySession, int channelCode);
+    public void restoreInvalidSnoopers(Session mySession, List<Session> invalid);
     public String parseOutFlags(String mask, HashSet<ChannelFlag> flags);
     public int loadChannels(String list, String ilist, String imc2list);
     public boolean channelTo(Session ses, boolean areareq, int channelInt, CMMsg msg, MOB sender);

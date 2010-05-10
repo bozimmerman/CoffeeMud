@@ -54,7 +54,7 @@ public class Skill_Track extends StdSkill
 	public void setAbilityCode(int newCode){cacheCode=newCode;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	protected Vector theTrail=null;
+	protected List<Room> theTrail=null;
 	public int nextDirection=-2;
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -280,18 +280,18 @@ public class Skill_Track extends StdSkill
 		}
 
 		TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
-		if(!(allowAir||allowWater)) flags.add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
-		if(!allowAir) flags.add(TrackingLibrary.TrackingFlag.NOAIR);
-		if(!allowWater) flags.add(TrackingLibrary.TrackingFlag.NOWATER);
+		if(!(allowAir||allowWater)) flags.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
+		if(!allowAir) flags.plus(TrackingLibrary.TrackingFlag.NOAIR);
+		if(!allowWater) flags.plus(TrackingLibrary.TrackingFlag.NOWATER);
 	    tickStatus=Tickable.STATUS_MISC6+5;
 		if(rooms.size()<=0)
 		{
 		    try
 		    {
-				Vector checkSet=CMLib.tracking().getRadiantRooms(thisRoom,flags,radius);
-				for(Enumeration r=checkSet.elements();r.hasMoreElements();)
+		    	List<Room> checkSet=CMLib.tracking().getRadiantRooms(thisRoom,flags,radius);
+				for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
 				{
-					Room R=CMLib.map().getRoom((Room)r.nextElement());
+					Room R=CMLib.map().getRoom(r.next());
 					if(R.fetchInhabitant(mobName)!=null)
 						rooms.addElement(R);
 				}
@@ -318,7 +318,7 @@ public class Skill_Track extends StdSkill
 	    tickStatus=Tickable.STATUS_MISC6+11;
 		if((success)&&(theTrail!=null))
 		{
-			theTrail.addElement(thisRoom);
+			theTrail.add(thisRoom);
 
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the

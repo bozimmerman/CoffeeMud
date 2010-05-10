@@ -46,7 +46,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
     public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
-	protected Vector pathOut=null;
+	protected List<Integer> pathOut=null;
 	protected int hygeineLoss=0;
 	protected String theNoun=null;
 	protected Room currRoom=null;
@@ -63,8 +63,8 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			else
 			{
 				currRoom.showHappens(CMMsg.MSG_OK_ACTION,theNoun+" goes by.");
-				currRoom=currRoom.getRoomInDir(((Integer)pathOut.firstElement()).intValue());
-				pathOut.removeElementAt(0);
+				currRoom=currRoom.getRoomInDir(((Integer)pathOut.get(0)).intValue());
+				pathOut.remove(0);
 				if(currRoom!=null)
 				{
 					String roomDesc=currRoom.roomTitle(null);
@@ -214,15 +214,15 @@ public class Thief_UndergroundConnections extends ThiefSkill
 		}
 
 		TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
-		flags.add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
-			 .add(TrackingLibrary.TrackingFlag.NOAIR)
-			 .add(TrackingLibrary.TrackingFlag.NOWATER);
-		Vector trail=CMLib.tracking().getRadiantRooms(thisRoom,flags,30+(2*getXLEVELLevel(mob)));
+		flags.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+			 .plus(TrackingLibrary.TrackingFlag.NOAIR)
+			 .plus(TrackingLibrary.TrackingFlag.NOWATER);
+		List<Room> trail=CMLib.tracking().getRadiantRooms(thisRoom,flags,30+(2*getXLEVELLevel(mob)));
 		Vector finalTos=new Vector();
         Room R=null;
 		for(int c=0;c<trail.size();c++)
 		{
-			R=(Room)trail.elementAt(c);
+			R=(Room)trail.get(c);
 			if((R.getArea()!=A)
 			&&(!CMath.bset(R.domainType(),Room.INDOORS))
 			&&(CMLib.flags().canAccess(target,R)))
@@ -239,16 +239,16 @@ public class Thief_UndergroundConnections extends ThiefSkill
 				}
 			}
 		}
-		Vector allTrails=CMLib.tracking().findAllTrails(thisRoom,finalTos,trail);
+		List<List<Integer>> allTrails=CMLib.tracking().findAllTrails(thisRoom,finalTos,trail);
 		for(int a=allTrails.size()-1;a>=0;a--)
 		{
-			Vector thisTrail=(Vector)allTrails.elementAt(a);
+			List<Integer> thisTrail=(Vector)allTrails.get(a);
 			R=thisRoom;
 			for(int t=0;t<thisTrail.size();t++)
 			{
-				R=R.getRoomInDir(((Integer)thisTrail.elementAt(t)).intValue());
+				R=R.getRoomInDir(((Integer)thisTrail.get(t)).intValue());
 				if((R==null)||(CMath.bset(R.domainType(),Room.INDOORS)))
-				{ allTrails.removeElementAt(a); break;}
+				{ allTrails.remove(a); break;}
 			}
 		}
 		if(allTrails.size()==0)
@@ -256,7 +256,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			mob.tell("Your informants tell you that there's no way they can get you out of here.");
 			return false;
 		}
-		Vector theTrail=(Vector)allTrails.elementAt(CMLib.dice().roll(1,allTrails.size(),-1));
+		List<Integer> theTrail=allTrails.get(CMLib.dice().roll(1,allTrails.size(),-1));
 		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

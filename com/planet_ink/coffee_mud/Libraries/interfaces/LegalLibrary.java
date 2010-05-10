@@ -29,7 +29,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public interface LegalLibrary extends CMLibrary
 {
     public Law getTheLaw(Room R, MOB mob);
@@ -43,7 +42,7 @@ public interface LegalLibrary extends CMLibrary
     public boolean doesHavePriviledgesHere(MOB mob, Room room);
     public boolean doesOwnThisProperty(String name, Room room);
     public boolean doesOwnThisProperty(MOB mob, Room room);
-    public List<LandTitle> getAllUniqueTitles(Enumeration e, String owner, boolean includeRentals);
+    public List<LandTitle> getAllUniqueTitles(Enumeration<Room> e, String owner, boolean includeRentals);
     public Ability getClericInfusion(Physical room);
     public Deity getClericInfused(Room room);
     

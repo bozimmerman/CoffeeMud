@@ -95,7 +95,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
         return thisTag;
     }
 
-	public Vector getTopics(boolean archonHelp, boolean standardHelp)
+	public List<String> getTopics(boolean archonHelp, boolean standardHelp)
 	{
         Vector reverseList=new Vector();
 		Properties rHelpFile=null;

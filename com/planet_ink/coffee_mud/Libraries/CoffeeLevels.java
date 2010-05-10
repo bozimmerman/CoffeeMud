@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 {
     public String ID(){return "CoffeeLevels";}
@@ -262,7 +261,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		mob.tell("^HYou are now a level "+mob.charStats().getClassLevel(mob.charStats().getCurrentClass())+" "+mob.charStats().getCurrentClass().name(mob.charStats().getCurrentClassLevel())+"^N.\n\r");
         curClass.unLevel(mob);
 		Ability A=null;
-		Vector lose=new Vector();
+		Vector<Ability> lose=new Vector<Ability>();
 		for(int a=0;a<mob.numLearnedAbilities();a++)
 		{
 			A=mob.fetchAbility(a);
@@ -387,7 +386,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
         {
         	Command C=CMClass.getCommand("GTell");
         	try{
-        		if(C!=null) C.execute(mob,new XVector("GTELL",",<S-HAS-HAVE> gained a level."),Command.METAFLAG_FORCED);
+        		if(C!=null) C.execute(mob,new XVector<String>("GTELL",",<S-HAS-HAVE> gained a level."),Command.METAFLAG_FORCED);
         	}catch(Exception e){}
         }
 		StringBuffer theNews=new StringBuffer("^xYou have L E V E L E D ! ! ! ! ! ^.^N\n\r\n\r"+CMProps.msp("level_gain.wav",60));
@@ -425,7 +424,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 		mob.tell(theNews.toString());
 		curClass=mob.baseCharStats().getCurrentClass();
-        HashSet oldAbilities=new HashSet();
+        HashSet<String> oldAbilities=new HashSet<String>();
         for(int a=0;a<mob.numAbilities();a++)
             oldAbilities.add(mob.fetchAbility(a).ID());
 
@@ -440,18 +439,18 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 				A.autoInvocation(mob);
 		}
 
-		Vector newAbilityIDs=new Vector();
+		List<String> newAbilityIDs=new Vector<String>();
         for(int a=0;a<mob.numAbilities();a++)
         {
             Ability A=mob.fetchAbility(a);
             if(!oldAbilities.contains(A.ID()))
-            	newAbilityIDs.addElement(A.ID());
+            	newAbilityIDs.add(A.ID());
         }
 
         for(int a=0;a<newAbilityIDs.size();a++)
-            if(!oldAbilities.contains(newAbilityIDs.elementAt(a)))
+            if(!oldAbilities.contains(newAbilityIDs.get(a)))
             {
-            	Ability A=mob.fetchAbility((String)newAbilityIDs.elementAt(a));
+            	Ability A=mob.fetchAbility((String)newAbilityIDs.get(a));
             	if(A!=null)
             	{
 	                String type=Ability.ACODE_DESCS[(A.classificationCode()&Ability.ALL_ACODES)].toLowerCase();
@@ -485,7 +484,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
         CharClass charClass=null;
         Race charRace=null;
         
-        for(Iterator i=group.iterator();i.hasNext();)
+        for(Iterator<MOB> i=group.iterator();i.hasNext();)
         {
         	MOB allyMOB=(MOB)i.next();
         	charClass = allyMOB.charStats().getCurrentClass();

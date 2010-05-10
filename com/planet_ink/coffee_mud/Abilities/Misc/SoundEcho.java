@@ -89,8 +89,8 @@ public class SoundEcho extends StdAbility
 				Vector rooms=new Vector();
 				TrackingLibrary.TrackingFlags flags;
 				flags = new TrackingLibrary.TrackingFlags()
-						.add(TrackingLibrary.TrackingFlag.OPENONLY)
-						.add(TrackingLibrary.TrackingFlag.AREAONLY);
+						.plus(TrackingLibrary.TrackingFlag.OPENONLY)
+						.plus(TrackingLibrary.TrackingFlag.AREAONLY);
 				CMLib.tracking().getRadiantRooms(sourceRoom,rooms,flags,null,range/2,null);
 				Room room=null;
 				for(int v=0;v<rooms.size();v++)

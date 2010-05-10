@@ -77,7 +77,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		return "";
 	}
 
-	public Vector getChannelQue(int i)
+	public List<CMMsg> getChannelQue(int i)
 	{
 		if((i>=0)&&(i<channelQue.size()))
 			return (Vector)channelQue.elementAt(i);
@@ -184,12 +184,12 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	public void channelQueUp(int i, CMMsg msg)
 	{
         CMLib.map().sendGlobalMessage(msg.source(),CMMsg.TYP_CHANNEL,msg);
-		Vector q=getChannelQue(i);
+        List<CMMsg> q=getChannelQue(i);
 		synchronized(q)
 		{
 			if(q.size()>=QUEUE_SIZE)
-				q.removeElementAt(0);
-			q.addElement(msg);
+				q.remove(0);
+			q.add(msg);
 		}
 	}
 	
@@ -318,9 +318,9 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		return CMParms.toStringArray(channelNames);
 	}
 	
-	public Vector clearInvalidSnoopers(Session mySession, int channelCode)
+	public List<Session> clearInvalidSnoopers(Session mySession, int channelCode)
 	{
-	    Vector invalid=null;
+		List<Session> invalid=null;
 	    if(mySession!=null)
 	    {
 		    Session S=null;
@@ -341,11 +341,11 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	    return invalid;	    
 	}
 	
-	public void restoreInvalidSnoopers(Session mySession, Vector invalid)
+	public void restoreInvalidSnoopers(Session mySession, List<Session> invalid)
 	{
 	    if((mySession==null)||(invalid==null)) return;
 		for(int s=0;s<invalid.size();s++)
-		    mySession.startBeingSnoopedBy((Session)invalid.elementAt(s));
+		    mySession.startBeingSnoopedBy((Session)invalid.get(s));
 	}
 
     public String parseOutFlags(String mask, HashSet<ChannelFlag> flags)

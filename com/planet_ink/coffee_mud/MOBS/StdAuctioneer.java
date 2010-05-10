@@ -115,10 +115,10 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 				StdAuctioneer.lastCheckTimes.remove(auctionHouse().toUpperCase().trim());
 				long thisTime=System.currentTimeMillis();
 				StdAuctioneer.lastCheckTimes.put(auctionHouse().toUpperCase().trim(),Long.valueOf(thisTime));
-				Vector auctions=CMLib.coffeeShops().getAuctions(null, auctionHouse());
+				List<AuctionData> auctions=CMLib.coffeeShops().getAuctions(null, auctionHouse());
 				for(int a=0;a<auctions.size();a++)
 				{
-					Auctioneer.AuctionData data=(Auctioneer.AuctionData)auctions.elementAt(a);
+					Auctioneer.AuctionData data=(Auctioneer.AuctionData)auctions.get(a);
 					if(thisTime>=data.tickDown)
 					{
 						if((lastTime==null)||(data.tickDown>lastTime.longValue()))

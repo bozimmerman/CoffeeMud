@@ -132,7 +132,7 @@ public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
 		return (page != null && sock != null && webServer != null);
 	}
 	public String getName() { return runnableName;}
-	public Hashtable getVirtualDirectories(){return webServer.getVirtualDirectories();}
+	public Map<String, String> getVirtualDirectories(){return webServer.getVirtualDirectories();}
 	public HTTPserver getWebServer()	{return webServer;}
 	public String getHTTPstatus()	{return status;}
 	public String getHTTPstatusInfo()	{return statusExtra==null?"":statusExtra;}
@@ -275,7 +275,7 @@ public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
 		}
 	}
 
-	public Hashtable getRequestObjects()
+	public Map<String, Object> getRequestObjects()
 	{
 		if(objects==null) objects=new Hashtable();
 		return objects;
@@ -325,7 +325,7 @@ public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
 		return (String)getRequestParameters().get(key);
 	}
 
-    public Vector getAllRequestParameterKeys(String keyMask)
+    public List<String> getAllRequestParameterKeys(String keyMask)
     {
         Hashtable H=getRequestParameters();
         Pattern p=Pattern.compile(keyMask,Pattern.CASE_INSENSITIVE);

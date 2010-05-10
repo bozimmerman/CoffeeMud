@@ -45,7 +45,7 @@ public class Chant_LocatePlants extends Chant
     public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	public long flags(){return Ability.FLAG_TRACKING;}
 
-	protected Vector theTrail=null;
+	protected List<Room> theTrail=null;
 	public int nextDirection=-2;
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -147,13 +147,13 @@ public class Chant_LocatePlants extends Chant
 
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
-				.add(TrackingLibrary.TrackingFlag.NOAIR)
-				.add(TrackingLibrary.TrackingFlag.NOWATER);
+				.plus(TrackingLibrary.TrackingFlag.NOAIR)
+				.plus(TrackingLibrary.TrackingFlag.NOWATER);
 		Vector rooms=new Vector();
-		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
-		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
+		List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
+		for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
 		{
-			Room R=(Room)r.nextElement();
+			Room R=(Room)r.next();
 			if(plantsHere(mob,R).length()>0)
 				rooms.addElement(R);
 		}
@@ -162,8 +162,8 @@ public class Chant_LocatePlants extends Chant
 		{
 			//TrackingLibrary.TrackingFlags flags;
 			flags = new TrackingLibrary.TrackingFlags()
-					.add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
-					.add(TrackingLibrary.TrackingFlag.NOAIR);
+					.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+					.plus(TrackingLibrary.TrackingFlag.NOAIR);
 			theTrail=CMLib.tracking().findBastardTheBestWay(target.location(),rooms,flags,50);
 		}
 

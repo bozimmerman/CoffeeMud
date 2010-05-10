@@ -117,7 +117,7 @@ public class Channel extends StdCommand
 		&&(CMath.isNumber((String)commands.lastElement())))
 		{
 			int num=CMath.s_int((String)commands.lastElement());
-			Vector que=CMLib.channels().getChannelQue(channelInt);
+			List<CMMsg> que=CMLib.channels().getChannelQue(channelInt);
 			boolean showedAny=false;
 			if(que.size()>0)
 			{
@@ -125,7 +125,7 @@ public class Channel extends StdCommand
 				boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
 				for(int i=que.size()-num;i<que.size();i++)
 				{
-					CMMsg msg=(CMMsg)que.elementAt(i);
+					CMMsg msg=(CMMsg)que.get(i);
 					showedAny=CMLib.channels().channelTo(mob.session(),areareq,channelInt,msg,msg.source())||showedAny;
 				}
 			}

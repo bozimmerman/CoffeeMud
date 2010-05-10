@@ -33,10 +33,9 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public interface HelpLibrary extends CMLibrary
 {
-    public Vector getTopics(boolean archonHelp, boolean standardHelp);
+    public List<String> getTopics(boolean archonHelp, boolean standardHelp);
     public String getActualUsage(Ability A, int which, MOB forMOB);
     public String fixHelp(String tag, String str, MOB forMOB);
     public StringBuilder getHelpText(String helpStr, MOB forMOB, boolean favorAHelp);

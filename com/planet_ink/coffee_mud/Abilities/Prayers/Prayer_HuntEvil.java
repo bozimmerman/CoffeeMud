@@ -46,7 +46,7 @@ public class Prayer_HuntEvil extends Prayer
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
     public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 
-	protected Vector theTrail=null;
+	protected List<Room> theTrail=null;
 	public int nextDirection=-2;
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -142,10 +142,10 @@ public class Prayer_HuntEvil extends Prayer
 
 		Vector rooms=new Vector();
 		TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
-		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
-		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
+		List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
+		for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
 		{
-			Room R=(Room)r.nextElement();
+			Room R=(Room)r.next();
 			if(gameHere(R)!=null)
 				rooms.addElement(R);
 		}
@@ -155,11 +155,11 @@ public class Prayer_HuntEvil extends Prayer
 
 		MOB target=null;
 		if((theTrail!=null)&&(theTrail.size()>0))
-			target=gameHere((Room)theTrail.firstElement());
+			target=gameHere((Room)theTrail.get(0));
 
 		if((success)&&(theTrail!=null)&&(target!=null))
 		{
-			theTrail.addElement(mob.location());
+			theTrail.add(mob.location());
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the
 			// affected MOB.  Then tell everyone else

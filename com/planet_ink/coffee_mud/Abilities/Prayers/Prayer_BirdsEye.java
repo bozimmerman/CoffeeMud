@@ -62,8 +62,8 @@ public class Prayer_BirdsEye extends Prayer
 					Vector set=new Vector();
 					TrackingLibrary.TrackingFlags flags;
 					flags = new TrackingLibrary.TrackingFlags()
-							.add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
-							.add(TrackingLibrary.TrackingFlag.NOAIR);
+							.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+							.plus(TrackingLibrary.TrackingFlag.NOAIR);
 					CMLib.tracking().getRadiantRooms(mob.location(),set,flags,null,2,null);
 					StringBuffer str=new StringBuffer("");
 					for(int i=0;i<set.size();i++)

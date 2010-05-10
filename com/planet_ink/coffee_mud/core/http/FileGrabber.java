@@ -78,7 +78,7 @@ public class FileGrabber
 		return fn;
 	}
 
-	public Hashtable getVirtualDirectories()
+	public Map<String, String> getVirtualDirectories()
 	{
 		return virtualDirectories;
 	}

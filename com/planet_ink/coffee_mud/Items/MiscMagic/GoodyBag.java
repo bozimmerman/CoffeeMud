@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class GoodyBag extends BagOfEndlessness implements ArchonOnly
 {
 	public String ID(){	return "GoodyBag";}
@@ -70,10 +69,10 @@ public class GoodyBag extends BagOfEndlessness implements ArchonOnly
 			alreadyFilled=true;
 			if(getContents().size()==0)
 			{
-			    Vector V=CMLib.beanCounter().getAllCurrencies();
+			    List<String> V=CMLib.beanCounter().getAllCurrencies();
 			    for(int v=0;v<V.size();v++)
 			    {
-			        String currency=(String)V.elementAt(v);
+			        String currency=(String)V.get(v);
 			        MoneyLibrary.MoneyDenomination[] DV=CMLib.beanCounter().getCurrencySet(currency);
 			        for(int v2=0;v2<DV.length;v2++)
 			        {

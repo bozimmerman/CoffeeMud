@@ -54,7 +54,7 @@ public class Disease_Lycanthropy extends Disease
 	
 	protected boolean changed=false;
 	public int abilityCode(){return DiseaseAffect.SPREAD_CONSUMPTION|DiseaseAffect.SPREAD_DAMAGE;}
-	protected Vector deathTrail=null;
+	protected List<Room> deathTrail=null;
 	protected Race theRace=null;
 	protected Race lycanRace(){
 		if(!changed) return null;
@@ -154,14 +154,14 @@ public class Disease_Lycanthropy extends Disease
 			{
 				TrackingLibrary.TrackingFlags flags;
 				flags = new TrackingLibrary.TrackingFlags()
-						.add(TrackingLibrary.TrackingFlag.OPENONLY)
-						.add(TrackingLibrary.TrackingFlag.AREAONLY)
-						.add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
-						.add(TrackingLibrary.TrackingFlag.NOAIR)
-						.add(TrackingLibrary.TrackingFlag.NOWATER);
+						.plus(TrackingLibrary.TrackingFlag.OPENONLY)
+						.plus(TrackingLibrary.TrackingFlag.AREAONLY)
+						.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+						.plus(TrackingLibrary.TrackingFlag.NOAIR)
+						.plus(TrackingLibrary.TrackingFlag.NOWATER);
 				deathTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,flags,50);
 				if(deathTrail!=null)
-					deathTrail.addElement(mob.location());
+					deathTrail.add(mob.location());
 			}
 		}
 		if(deathTrail!=null)

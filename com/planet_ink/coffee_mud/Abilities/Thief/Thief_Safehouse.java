@@ -142,17 +142,17 @@ public class Thief_Safehouse extends ThiefSkill
         {
     		TrackingLibrary.TrackingFlags flags;
     		flags = new TrackingLibrary.TrackingFlags()
-    				.add(TrackingLibrary.TrackingFlag.OPENONLY)
-    				.add(TrackingLibrary.TrackingFlag.AREAONLY)
-    				.add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
-    				.add(TrackingLibrary.TrackingFlag.NOAIR)
-    				.add(TrackingLibrary.TrackingFlag.NOWATER);
-            Vector V=CMLib.tracking().getRadiantRooms(target,flags,50+(2*getXLEVELLevel(mob)));
+    				.plus(TrackingLibrary.TrackingFlag.OPENONLY)
+    				.plus(TrackingLibrary.TrackingFlag.AREAONLY)
+    				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+    				.plus(TrackingLibrary.TrackingFlag.NOAIR)
+    				.plus(TrackingLibrary.TrackingFlag.NOWATER);
+    		List<Room> V=CMLib.tracking().getRadiantRooms(target,flags,50+(2*getXLEVELLevel(mob)));
             Room R=null;
             int v=0;
             for(;v<V.size();v++)
             {
-                R=(Room)V.elementAt(v);
+                R=(Room)V.get(v);
                 if((isGoodSafehouse(R))&&(!isLawHere(R)))
                     break;
             }

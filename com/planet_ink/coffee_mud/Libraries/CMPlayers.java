@@ -334,7 +334,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return x;
 	}
 	
-    public Enumeration<ThinPlayer> thinPlayers(String sort, Hashtable cache)
+    public Enumeration<ThinPlayer> thinPlayers(String sort, Map<String, Object> cache)
     {
 		Vector<PlayerLibrary.ThinPlayer> V=(cache==null)?null:(Vector<PlayerLibrary.ThinPlayer>)cache.get("PLAYERLISTVECTOR"+sort);
 		if(V==null)
@@ -382,7 +382,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return V.elements();
     }
 
-    public Enumeration<PlayerAccount> accounts(String sort, Hashtable cache)
+    public Enumeration<PlayerAccount> accounts(String sort, Map<String, Object> cache)
     {
 		Vector<PlayerAccount> V=(cache==null)?null:(Vector<PlayerAccount>)cache.get("ACCOUNTLISTVECTOR"+sort);
 		if(V==null)

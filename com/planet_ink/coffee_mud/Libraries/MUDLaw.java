@@ -118,7 +118,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
         return true;
     }
     
-	public List<LandTitle> getAllUniqueTitles(Enumeration e, String owner, boolean includeRentals)
+	public List<LandTitle> getAllUniqueTitles(Enumeration<Room> e, String owner, boolean includeRentals)
 	{
 	    Vector V=new Vector();
 	    HashSet roomsDone=new HashSet();

@@ -610,14 +610,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 	}
 
-	public void processFormation(Vector[] done, MOB leader, int level)
+	public void processFormation(List<MOB>[] done, MOB leader, int level)
 	{
 		for(int i=0;i<done.length;i++)
 			if((done[i]!=null)&&(done[i].contains(leader)))
 				return;
 	    if(level>=done.length) return;
 		if(done[level]==null) done[level]=new Vector();
-		done[level].addElement(leader);
+		done[level].add(leader);
 		for(int f=0;f<leader.numFollowers();f++)
 		{
 			MOB M=leader.fetchFollower(f);
@@ -636,7 +636,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	    return leader;
 	}
 
-	public Vector[] getFormation(MOB mob)
+	public List<MOB>[] getFormation(MOB mob)
 	{
 		MOB leader=mob;
         if(leader.amFollowing()!=null)
@@ -646,9 +646,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	    return done;
 	}
 
-	public Vector getFormationFollowed(MOB mob)
+	public List<MOB> getFormationFollowed(MOB mob)
 	{
-	    Vector[] form=getFormation(mob);
+		List<MOB>[] form=getFormation(mob);
 	    for(int i=1;i<form.length;i++)
 	    {
 	        if((form[i]!=null)&&(form[i].contains(mob)))
@@ -667,7 +667,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 	public int getFormationAbsOrder(MOB mob)
 	{
-	    Vector[] form=getFormation(mob);
+		List<MOB>[] form=getFormation(mob);
 	    for(int i=1;i<form.length;i++)
 	    {
 	        if((form[i]!=null)&&(form[i].contains(mob)))

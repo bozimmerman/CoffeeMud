@@ -1013,10 +1013,10 @@ public class StdDeity extends StdMOB implements Deity
         Room R=null;
         MOB M=null;
 		TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
-        Vector V=CMLib.tracking().getRadiantRooms(room,flags,5+(mob.phyStats().level()/5));
+		List<Room> V=CMLib.tracking().getRadiantRooms(room,flags,5+(mob.phyStats().level()/5));
         for(int v=0;v<V.size();v++)
         {
-            R=(Room)V.elementAt(v);
+            R=(Room)V.get(v);
             if(CMLib.law().getClericInfused(R)!=this)
             for(int m=0;m<R.numInhabitants();m++)
             {

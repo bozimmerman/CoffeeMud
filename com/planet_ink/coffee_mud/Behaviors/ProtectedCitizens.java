@@ -201,8 +201,8 @@ public class ProtectedCitizens extends ActiveTicker
 
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
-				.add(TrackingLibrary.TrackingFlag.OPENONLY)
-				.add(TrackingLibrary.TrackingFlag.AREAONLY);
+				.plus(TrackingLibrary.TrackingFlag.OPENONLY)
+				.plus(TrackingLibrary.TrackingFlag.AREAONLY);
         CMLib.tracking().getRadiantRooms(thisRoom,rooms,flags,null,radius,null);
 		for(int r=0;r<rooms.size();r++)
 		{

@@ -141,7 +141,7 @@ public class Deviations extends StdCommand
 		}
 	}
 
-	protected String getDeviation(int val, Hashtable vals, String key)
+	protected String getDeviation(int val, Map<String, String> vals, String key)
 	{
 		if(!vals.containsKey(key))
 			return " - ";
@@ -232,12 +232,12 @@ public class Deviations extends StdCommand
 				Weapon W=null;
 				if(I instanceof Weapon)
 					W=(Weapon)I;
-				Hashtable vals=CMLib.itemBuilder().timsItemAdjustments(
-								I,I.phyStats().level(),I.material(),
-								I.rawLogicalAnd()?2:1,
-								(W==null)?0:W.weaponClassification(),
-								I.maxRange(),
-								I.rawProperLocationBitmap());
+				Map<String,String> vals=CMLib.itemBuilder().timsItemAdjustments(
+										I,I.phyStats().level(),I.material(),
+										I.rawLogicalAnd()?2:1,
+										(W==null)?0:W.weaponClassification(),
+										I.maxRange(),
+										I.rawProperLocationBitmap());
 				itemResults.append(CMStrings.padRight(I.name(),20)+" ");
 				itemResults.append(CMStrings.padRight(I.ID(),10)+" ");
 				itemResults.append(CMStrings.padRight(""+I.phyStats().level(),4)+" ");

@@ -77,7 +77,7 @@ public class TrailTo extends StdCommand
             if(s.toUpperCase().startsWith("NOHOME"))
             {
                 commands.removeElementAt(c);
-                flags.add(TrackingLibrary.TrackingFlag.NOHOMES);
+                flags.plus(TrackingLibrary.TrackingFlag.NOHOMES);
             }
         }
 		String where=CMParms.combine(commands,1);

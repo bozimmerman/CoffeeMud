@@ -92,8 +92,8 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 			Vector rooms=new Vector();
 			TrackingLibrary.TrackingFlags flags;
 			flags = new TrackingLibrary.TrackingFlags()
-					.add(TrackingLibrary.TrackingFlag.OPENONLY)
-					.add(TrackingLibrary.TrackingFlag.AREAONLY);
+					.plus(TrackingLibrary.TrackingFlag.OPENONLY)
+					.plus(TrackingLibrary.TrackingFlag.AREAONLY);
 			CMLib.tracking().getRadiantRooms(room1,rooms,flags,null,10+(getXLEVELLevel(invoker())*2),null);
 			CMLib.tracking().getRadiantRooms(room2,rooms,flags,null,10+(getXLEVELLevel(invoker())*2),null);
 			Vector mobsDone=new Vector();

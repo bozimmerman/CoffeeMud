@@ -184,11 +184,11 @@ public class QuestMaker extends StdWebMacro
                 return list.toString();
         	}
 
-            Vector V=httpReq.getAllRequestParameterKeys("^AT_(.+)");
+        	List<String> V=httpReq.getAllRequestParameterKeys("^AT_(.+)");
 			list.append("<TR><TD COLSPAN=2>");
             for(int v=0;v<V.size();v++)
             {
-                String key=(String)V.elementAt(v);
+                String key=(String)V.get(v);
                 if((!key.startsWith("AT_")))
                     continue;
                 boolean thisPage=false;

@@ -75,10 +75,10 @@ public class Chant_Reabsorb extends Chant
 		Item target=this.getTarget(mob,mob.location(),givenTarget,null,commands,Wearable.FILTER_UNWORNONLY);
 		if(target==null) return false;
 		
-        Vector V=CMLib.utensils().getDeadBodies(target);
+		List<DeadBody> V=CMLib.utensils().getDeadBodies(target);
         for(int v=0;v<V.size();v++)
         {
-        	DeadBody D=(DeadBody)V.elementAt(v);
+        	DeadBody D=(DeadBody)V.get(v);
 			if((D!=null)
 			&&(D.playerCorpse())
 			&&(!D.mobName().equals(mob.Name())))

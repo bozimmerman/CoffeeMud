@@ -92,7 +92,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         return false;
     }
 
-    public Vector classQualifies(MOB mob, int theme)
+    public List<CharClass> classQualifies(MOB mob, int theme)
     {
         Vector them=new Vector();
         HashSet doneClasses=new HashSet();
@@ -108,7 +108,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         return them;
     }
 
-    public Vector raceQualifies(MOB mob, int theme)
+    public List<Race> raceQualifies(MOB mob, int theme)
     {
     	Vector qualRaces = new Vector();
         HashSet doneRaces=new HashSet();
@@ -866,10 +866,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	
 	        StringBuffer listOfRaces=new StringBuffer("[");
 	        boolean tmpFirst = true;
-	        Vector qualRaces = raceQualifies(mob,theme);
-	        for(Enumeration r=qualRaces.elements();r.hasMoreElements();)
+	        List<Race> qualRaces = raceQualifies(mob,theme);
+	        for(Race R : qualRaces)
 	        {
-	            Race R=(Race)r.nextElement();
 	            if (!tmpFirst)
 	                listOfRaces.append(", ");
 	            else
@@ -968,7 +967,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	        {
 	            reRollStats(mob,mob.baseCharStats());
 	            mob.recoverCharStats();
-	            Vector V=classQualifies(mob,theme);
+	            List<CharClass> V=classQualifies(mob,theme);
 	            if(V.size()>0)
 	            {
 	                StringBuffer classes=new StringBuffer("");
@@ -981,13 +980,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	                            classes.append("^?and ^?");
 	                            listOfClasses.append("^?or ^?");
 	                        }
-	                        classes.append(((CharClass)V.elementAt(v)).name());
-	                        listOfClasses.append(((CharClass)V.elementAt(v)).name());
+	                        classes.append(((CharClass)V.get(v)).name());
+	                        listOfClasses.append(((CharClass)V.get(v)).name());
 	                    }
 	                    else
 	                    {
-	                        classes.append(((CharClass)V.elementAt(v)).name()+"^?, ^?");
-	                        listOfClasses.append(((CharClass)V.elementAt(v)).name()+"^?, ^?");
+	                        classes.append(((CharClass)V.get(v)).name()+"^?, ^?");
+	                        listOfClasses.append(((CharClass)V.get(v)).name()+"^?, ^?");
 	                    }
 	
 	                int max=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
@@ -1014,13 +1013,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	            session.println(null,null,null,new CMFile(Resources.buildResourcePath("text")+"classes.txt",null,true).text().toString());
 	
 	        CharClass newClass=null;
-	        Vector qualClasses=classQualifies(mob,theme);
+	        List<CharClass> qualClasses=classQualifies(mob,theme);
 	        if(CMSecurity.isDisabled("CLASSES")||mob.baseCharStats().getMyRace().classless())
 	        {
 	            if(CMSecurity.isDisabled("CLASSES"))
 	                newClass=CMClass.getCharClass("PlayerClass");
 	            if((newClass==null)&&(qualClasses.size()>0))
-	                newClass=(CharClass)qualClasses.elementAt(CMLib.dice().roll(1,qualClasses.size(),-1));
+	                newClass=(CharClass)qualClasses.get(CMLib.dice().roll(1,qualClasses.size(),-1));
 	            if(newClass==null)
 	                newClass=CMClass.getCharClass("PlayerClass");
 	            if(newClass==null)
@@ -1034,7 +1033,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	        }
 	        else
 	        if(qualClasses.size()==1)
-	            newClass=(CharClass)qualClasses.firstElement();
+	            newClass=(CharClass)qualClasses.get(0);
 	        else
 	        while(newClass==null)
 	        {
@@ -1047,9 +1046,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	            {
 	                newClass=CMClass.findCharClass(ClassStr);
 	                if(newClass==null)
-	                for(Enumeration c=qualClasses.elements();c.hasMoreElements();)
+	                for(CharClass C : qualClasses)
 	                {
-	                    CharClass C=(CharClass)c.nextElement();
 	                    if(C.name().equalsIgnoreCase(ClassStr))
 	                    {
 	                        newClass=C;
@@ -1057,9 +1055,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	                    }
 	                }
 	                if(newClass==null)
-	                for(Enumeration c=qualClasses.elements();c.hasMoreElements();)
+	                for(CharClass C : qualClasses)
 	                {
-	                    CharClass C=(CharClass)c.nextElement();
 	                    if(C.name().toUpperCase().startsWith(ClassStr.toUpperCase()))
 	                    {
 	                        newClass=C;
@@ -1889,7 +1886,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         return room;
     }
 
-    public void pageRooms(CMProps page, Hashtable table, String start)
+    public void pageRooms(CMProps page, Map<String, String> table, String start)
     {
         for(Enumeration i=page.keys();i.hasMoreElements();)
         {

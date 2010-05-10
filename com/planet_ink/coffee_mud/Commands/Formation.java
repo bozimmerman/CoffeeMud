@@ -44,7 +44,7 @@ public class Formation extends StdCommand
 	{
 		commands.removeElementAt(0);
 	    MOB leader=CMLib.combat().getFollowedLeader(mob);
-		Vector[] done=CMLib.combat().getFormation(mob);
+	    List<MOB>[] done=CMLib.combat().getFormation(mob);
 		if(commands.size()==0)
 		{
 			StringBuffer str=new StringBuffer("");
@@ -56,7 +56,7 @@ public class Formation extends StdCommand
 					else
 						str.append("^xrow +"+i+" - ^.^?");
 					for(int i2=0;i2<done[i].size();i2++)
-						str.append(((i2>0)?", ":"")+((MOB)done[i].elementAt(i2)).name());
+						str.append(((i2>0)?", ":"")+((MOB)done[i].get(i2)).name());
 					str.append("\n\r");
 				}
 			mob.session().colorOnlyPrintln(str.toString());

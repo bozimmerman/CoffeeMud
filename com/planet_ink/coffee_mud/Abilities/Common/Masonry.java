@@ -680,10 +680,10 @@ public class Masonry extends CraftingSkill
 				return false;
 			}
 			TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
-    		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,20);
-    		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
-    		{
-    			Room R=CMLib.map().getRoom((Room)r.nextElement());
+			List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,20);
+			for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
+			{
+				Room R=CMLib.map().getRoom(r.next());
 				if(R.displayText().equalsIgnoreCase(title))
 				{
 					commonTell(mob,"That title has already been taken.  Choose another.");

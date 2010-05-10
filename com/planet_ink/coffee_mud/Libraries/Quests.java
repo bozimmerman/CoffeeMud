@@ -1053,7 +1053,8 @@ public class Quests extends StdLibrary implements QuestManager
         return mask.trim();
     }
     
-    public Vector breakOutMudChatVs(String MUDCHAT, DVector behaviors) {
+    public Vector breakOutMudChatVs(String MUDCHAT, DVector behaviors) 
+    {
         int mndex=behaviors.indexOf(MUDCHAT);
         String mudChatStr=(mndex<0)?"":(String)behaviors.elementAt(mndex,2);
         if(mudChatStr.startsWith("+")) mudChatStr=mudChatStr.substring(1);

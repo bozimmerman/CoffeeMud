@@ -1073,12 +1073,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         else
                             names.addElement(CMParms.combine(p,2));
                         List<Room> choices=new ArrayList();
-                        Vector useThese=null;
+                        List<Room> useThese=null;
                         if(range>0)
                         {
             				TrackingLibrary.TrackingFlags flags;
             				flags = new TrackingLibrary.TrackingFlags()
-            						.add(TrackingLibrary.TrackingFlag.AREAONLY);
+            						.plus(TrackingLibrary.TrackingFlag.AREAONLY);
                         	useThese=CMLib.tracking().getRadiantRooms(q.room,flags,range);
                         }
                         for(int n=0;n<names.size();n++)
@@ -1088,7 +1088,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                             {
                                 Enumeration e=null;
                                 if(useThese!=null)
-                                	e=useThese.elements();
+                                	e=new IteratorEnumeration<Room>(useThese.iterator());
                                 else
                                 if(q.area!=null)
                                 	e=q.area.getMetroMap();
@@ -1200,12 +1200,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                                 names.addElement(p.elementAt(ip));
                         else
                             names.addElement(CMParms.combine(p,2));
-                        Vector useThese=null;
+                        List<Room> useThese=null;
                         if(range>0)
                         {
             				TrackingLibrary.TrackingFlags flags;
             				flags = new TrackingLibrary.TrackingFlags()
-            						.add(TrackingLibrary.TrackingFlag.AREAONLY);
+            						.plus(TrackingLibrary.TrackingFlag.AREAONLY);
                         	useThese=CMLib.tracking().getRadiantRooms(q.room,flags,range);
                         }
                         for(int n=0;n<names.size();n++)
@@ -1215,7 +1215,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                             {
                                 Enumeration e=null;
                                 if(useThese!=null)
-                                	e=useThese.elements();
+                                	e=new IteratorEnumeration<Room>(useThese.iterator());
                                 else
                                 if(q.area!=null)
                                 	e=q.area.getMetroMap();

@@ -1185,13 +1185,13 @@ public class StdMOB implements MOB
 			}
 			if((amFollowing()!=null)&&(amFollowing().fetchFollowerOrder(this)>0))
 			{
-			    Vector whoseAhead=CMLib.combat().getFormationFollowed(this);
+				List<MOB> whoseAhead=CMLib.combat().getFormationFollowed(this);
 			    if((whoseAhead!=null)&&(whoseAhead.size()>0))
 			    {
 				    sendBack.append(", behind ");
 				    for(int v=0;v<whoseAhead.size();v++)
 				    {
-				        MOB ahead=(MOB)whoseAhead.elementAt(v);
+				        MOB ahead=(MOB)whoseAhead.get(v);
 						if(v>0)
 						{
 							sendBack.append(", ");

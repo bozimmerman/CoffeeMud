@@ -33,7 +33,6 @@ import java.net.InetAddress;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public interface ExternalHTTPRequests extends CMLibrary
 {
 	public byte [] doVirtualPage(byte [] data)
@@ -56,10 +55,10 @@ public interface ExternalHTTPRequests extends CMLibrary
 	public String getRequestParameter(String key);
 	public void removeRequestParameter(String key);
 	public void addRequestParameters(String key, String value);
-    public Vector getAllRequestParameterKeys(String keyMask);
-	public Hashtable getVirtualDirectories();
+    public List<String> getAllRequestParameterKeys(String keyMask);
+	public Map<String, String> getVirtualDirectories();
 	public String getRequestEncodedParameters();
 	public InetAddress getServerAddress();
 	public String getPageContent(String filename);
-	public Hashtable getRequestObjects();
+	public Map<String, Object> getRequestObjects();
 }

@@ -29,7 +29,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public interface CombatLibrary extends CMLibrary
 {
     public static final int COMBAT_DEFAULT=0;
@@ -52,10 +51,10 @@ public interface CombatLibrary extends CMLibrary
     public String replaceDamageTag(String str, int damage, int damageType);
     public void postDamage(MOB attacker, MOB target, Environmental weapon, int damage, int messageCode, int damageType, String allDisplayMessage);
     public void postWeaponDamage(MOB source, MOB target, Item item, boolean success);
-    public void processFormation(Vector[] done, MOB leader, int level);
+    public void processFormation(List<MOB>[] done, MOB leader, int level);
     public MOB getFollowedLeader(MOB mob);
-    public Vector[] getFormation(MOB mob);
-    public Vector getFormationFollowed(MOB mob);
+    public List<MOB>[] getFormation(MOB mob);
+    public List<MOB> getFormationFollowed(MOB mob);
     public int getFormationAbsOrder(MOB mob);
     public CharClass getCombatDominantClass(MOB killer, MOB killed);
     public Set<MOB> getCombatDividers(MOB killer, MOB killed, CharClass combatCharClass);

@@ -148,8 +148,8 @@ public class ProtectedCitizen extends ActiveTicker
 		Vector V=new Vector();
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
-				.add(TrackingLibrary.TrackingFlag.OPENONLY);
-		if(!wander) flags.add(TrackingLibrary.TrackingFlag.AREAONLY);
+				.plus(TrackingLibrary.TrackingFlag.OPENONLY);
+		if(!wander) flags.plus(TrackingLibrary.TrackingFlag.AREAONLY);
 		CMLib.tracking().getRadiantRooms(thisRoom,V,flags,null,radius,null);
 		for(int v=0;v<V.size();v++)
 		{

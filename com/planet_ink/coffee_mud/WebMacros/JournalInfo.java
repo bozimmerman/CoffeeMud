@@ -132,13 +132,10 @@ public class JournalInfo extends StdWebMacro
 	
 	public static void clearJournalCache(ExternalHTTPRequests httpReq, String journalName)
 	{
-		Hashtable h = (Hashtable)httpReq.getRequestObjects().clone();
-		for(Enumeration e=h.keys();e.hasMoreElements();)
-		{
-			Object o=e.nextElement();
-			if((o!=null)&&(o.toString().startsWith("JOURNAL: "+journalName+": ")))
+		SHashtable<String,Object> h = new SHashtable<String,Object>(httpReq.getRequestObjects());
+		for(String o : h.keySet())
+			if((o!=null)&&(o.startsWith("JOURNAL: "+journalName+": ")))
 				httpReq.getRequestObjects().remove(o.toString());
-		}
 	}
 	
 	public static JournalsLibrary.JournalEntry getNextEntry(List<JournalsLibrary.JournalEntry> info, String key)

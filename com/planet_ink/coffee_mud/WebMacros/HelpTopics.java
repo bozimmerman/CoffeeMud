@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class HelpTopics extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
@@ -79,7 +78,7 @@ public class HelpTopics extends StdWebMacro
 		else
 		if(parms.containsKey("NEXT"))
 		{
-			Vector topics=null;
+			List<String> topics=null;
 			if(parms.containsKey("ARCHON"))
 				topics=CMLib.help().getTopics(true,false);
 			else
@@ -96,7 +95,7 @@ public class HelpTopics extends StdWebMacro
 			String lastID="";
 			for(int h=0;h<topics.size();h++)
 			{
-				String topic=(String)topics.elementAt(h);
+				String topic=(String)topics.get(h);
 				if(noables&&CMLib.help().isPlayerSkill(topic))
 				   continue;
 				if(topic.startsWith(fletter)||(fletter.length()==0))

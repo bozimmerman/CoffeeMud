@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class ChannelBackLogNext extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
@@ -56,7 +55,7 @@ public class ChannelBackLogNext extends StdWebMacro
 		{
 			if(CMLib.channels().mayReadThisChannel(mob,channelInt,true))
 			{
-			    Vector que=CMLib.channels().getChannelQue(channelInt);
+				List<CMMsg> que=CMLib.channels().getChannelQue(channelInt);
 				while(true)
 				{
 				    int num=CMath.s_int(last);
@@ -70,7 +69,7 @@ public class ChannelBackLogNext extends StdWebMacro
 						return " @break@";
 					}
 					boolean areareq=CMLib.channels().getChannelFlags(channelInt).contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
-					CMMsg msg=(CMMsg)que.elementAt(num);
+					CMMsg msg=(CMMsg)que.get(num);
 					String str=null;
 					if((mob==msg.source())&&(msg.sourceMessage()!=null))
 					    str=msg.sourceMessage();

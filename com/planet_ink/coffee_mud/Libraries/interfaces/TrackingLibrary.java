@@ -29,16 +29,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public interface TrackingLibrary extends CMLibrary
 {
-    public Vector findBastardTheBestWay(Room location, Room destRoom, TrackingFlags flags, int maxRadius);
-    public Vector findBastardTheBestWay(Room location, Vector<Room> destRooms, TrackingFlags flags, int maxRadius);
-    public int trackNextDirectionFromHere(Vector<Room> theTrail, Room location, boolean openOnly);
+    public List<Room> findBastardTheBestWay(Room location, Room destRoom, TrackingFlags flags, int maxRadius);
+    public List<Room> findBastardTheBestWay(Room location, List<Room> destRooms, TrackingFlags flags, int maxRadius);
+    public int trackNextDirectionFromHere(List<Room> theTrail, Room location, boolean openOnly);
     public void stopTracking(MOB mob);
     public int radiatesFromDir(Room room, Vector<Room> rooms);
     public void getRadiantRooms(Room room, Vector<Room> rooms, TrackingFlags flags, Room radiateTo, int maxDepth, HashSet<Room> ignoreRooms);
-	public Vector getRadiantRooms(Room room, TrackingFlags flags, int maxDepth);
+	public List<Room> getRadiantRooms(Room room, TrackingFlags flags, int maxDepth);
     public boolean beMobile(MOB mob,
                             boolean dooropen,
                             boolean wander,
@@ -53,14 +52,14 @@ public interface TrackingLibrary extends CMLibrary
     public boolean move(MOB mob, int directionCode, boolean flee, boolean nolook);
     public int findExitDir(MOB mob, Room R, String desc);
     public int findRoomDir(MOB mob, Room R);
-	public Vector findAllTrails(Room from, Room to, Vector<Room> radiantTrail);
-	public Vector findAllTrails(Room from, Vector<Room> tos, Vector<Room> radiantTrail);
+	public List<List<Integer>> findAllTrails(Room from, Room to, List<Room> radiantTrail);
+	public List<List<Integer>> findAllTrails(Room from, List<Room> tos, List<Room> radiantTrail);
 	public String getTrailToDescription(Room R1, Vector<Room> set, String where, boolean areaNames, boolean confirm, int radius, HashSet<Room> ignoreRooms, int maxMins);
 	
 	public static enum TrackingFlag {NOHOMES,OPENONLY,AREAONLY,NOEMPTYGRIDS,NOAIR,NOWATER};
 	
-	public static class TrackingFlags extends HashSet {
+	public static class TrackingFlags extends HashSet<TrackingFlag> {
 		private static final long serialVersionUID = 1L;
-		public TrackingFlags add(TrackingFlag flag) { super.add(flag); return this;}
+		public TrackingFlags plus(TrackingFlag flag) { add(flag); return this;}
 	}
 }

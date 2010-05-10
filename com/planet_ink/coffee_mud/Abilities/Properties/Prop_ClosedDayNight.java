@@ -171,10 +171,10 @@ public class Prop_ClosedDayNight extends Property
 			if(mob.location()!=null)
 			{
 				TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
-        		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,25);
-        		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
-        		{
-        			Room R2=CMLib.map().getRoom((Room)r.nextElement());
+				List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,25);
+				for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
+				{
+					Room R2=CMLib.map().getRoom(r.next());
 					if((R2.roomID().indexOf(Home)>=0)
 					||CMLib.english().containsString(R2.name(),Home)
 					||CMLib.english().containsString(R2.displayText(),Home)

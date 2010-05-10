@@ -74,7 +74,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         return null;
     }
 
-    public Vector getAllShopkeepers(Room here, MOB notMOB)
+    public List<Environmental> getAllShopkeepers(Room here, MOB notMOB)
     {
         Vector V=new Vector();
         if(here!=null)
@@ -1424,7 +1424,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				CMLib.database().DBUpdatePlayerItems(to);
 	}
 
-	public String[] bid(MOB mob, double bid, String bidCurrency, Auctioneer.AuctionData auctionData, Item I, Vector auctionAnnounces)
+	public String[] bid(MOB mob, double bid, String bidCurrency, Auctioneer.AuctionData auctionData, Item I, List<String> auctionAnnounces)
 	{
 		String bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.currency,auctionData.bid);
 		String currencyName=CMLib.beanCounter().getDenominationName(auctionData.currency);
@@ -1461,7 +1461,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             returnMoney(auctionData.highBidderM,auctionData.currency,-bid);
 			bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.currency,auctionData.bid);
 			String yourBidWords = CMLib.beanCounter().abbreviatedPrice(currencyName, auctionData.highBid);
-			auctionAnnounces.addElement("A new bid has been entered for "+I.name()+". The current high bid is "+bidWords+".");
+			auctionAnnounces.add("A new bid has been entered for "+I.name()+". The current high bid is "+bidWords+".");
 			if((oldHighBider!=null)&&(oldHighBider==mob))
 				return new String[]{"You have submitted a new high bid of "+yourBidWords+" for "+I.name()+".",null};
 			else
@@ -1482,7 +1482,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			{
 				auctionData.bid=bid;
 				bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.currency,auctionData.bid);
-				auctionAnnounces.addElement("A new bid has been entered for "+I.name()+". The current bid is "+bidWords+".");
+				auctionAnnounces.add("A new bid has been entered for "+I.name()+". The current bid is "+bidWords+".");
 				return new String[]{"You have been outbid by proxy for "+I.name()+".","Your high bid for "+I.name()+" has been reached."};
 			}
 		}
@@ -1490,7 +1490,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		{
 			auctionData.bid=bid;
 			bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.currency,auctionData.bid);
-			auctionAnnounces.addElement("A new bid has been entered for "+I.name()+". The current bid is "+bidWords+".");
+			auctionAnnounces.add("A new bid has been entered for "+I.name()+". The current bid is "+bidWords+".");
 			return new String[]{"You have been outbid by proxy for "+I.name()+".",null};
 		}
 		return null;
@@ -1498,16 +1498,16 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 
 	public Auctioneer.AuctionData getEnumeratedAuction(String named, String auctionHouse)
 	{
-		Vector V=getAuctions(null,auctionHouse);
+		List<AuctionData> V=getAuctions(null,auctionHouse);
 		Vector V2=new Vector();
 		for(int v=0;v<V.size();v++)
-			V2.addElement(((Auctioneer.AuctionData)V.elementAt(v)).auctioningI);
+			V2.addElement(((Auctioneer.AuctionData)V.get(v)).auctioningI);
 		Environmental E=CMLib.english().fetchEnvironmental(V2,named,true);
 		if(!(E instanceof Item)) E=CMLib.english().fetchEnvironmental(V2,named,false);
 		if(E!=null)
 		for(int v=0;v<V.size();v++)
-			if(((Auctioneer.AuctionData)V.elementAt(v)).auctioningI==E)
-				return (Auctioneer.AuctionData)V.elementAt(v);
+			if(((Auctioneer.AuctionData)V.get(v)).auctioningI==E)
+				return (Auctioneer.AuctionData)V.get(v);
 		return null;
 	}
 
@@ -1536,7 +1536,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         	CMLib.database().DBUpdateJournal(data.auctionDBKey, data.auctioningI.Name(),xml.toString(), 0);
 	}
 
-    public Vector getAuctions(Object ofLike, String auctionHouse)
+    public List<AuctionData> getAuctions(Object ofLike, String auctionHouse)
     {
     	Vector auctions=new Vector();
     	String house="SYSTEM_AUCTIONS_"+auctionHouse.toUpperCase().trim();
@@ -1607,10 +1607,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
     {
         StringBuffer str=new StringBuffer("");
         str.append("^x"+CMStrings.padRight("Lvl",3)+" "+CMStrings.padRight("Item",50)+" "+CMStrings.padRight("Days",4)+" ["+CMStrings.padRight("Bid",6)+"] Buy^.^N\n\r");
-        Vector auctions=getAuctions(null,auction.auctionHouse());
+        List<AuctionData> auctions=getAuctions(null,auction.auctionHouse());
         for(int v=0;v<auctions.size();v++)
         {
-        	Auctioneer.AuctionData data=(Auctioneer.AuctionData)auctions.elementAt(v);
+        	Auctioneer.AuctionData data=(Auctioneer.AuctionData)auctions.get(v);
 	        if(shownInInventory(seller,buyer,data.auctioningI,auction))
 	        {
 	        	if(((mask==null)||(mask.length()==0)||(CMLib.english().containsString(data.auctioningI.name(),mask)))

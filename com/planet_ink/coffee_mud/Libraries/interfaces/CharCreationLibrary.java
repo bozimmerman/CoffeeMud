@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 /* 
    Copyright 2000-2010 Bo Zimmerman
@@ -29,15 +30,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public interface CharCreationLibrary extends CMLibrary
 {
     public void reRollStats(MOB mob, CharStats C);
     public boolean canChangeToThisClass(MOB mob, CharClass thisClass, int theme);
     // mob is optional
-    public Vector classQualifies(MOB mob, int theme);
+    public List<CharClass> classQualifies(MOB mob, int theme);
     // mob is optional
-    public Vector raceQualifies(MOB mob, int theme);
+    public List<Race> raceQualifies(MOB mob, int theme);
     public boolean isOkName(String login);
     public void reloadTerminal(MOB mob);
     public void showTheNews(MOB mob);
@@ -45,7 +45,7 @@ public interface CharCreationLibrary extends CMLibrary
     public LoginResult createCharacter(PlayerAccount acct, String login, Session session) throws java.io.IOException;
     public LoginResult login(Session session, int attempt) throws java.io.IOException;
     public LoginResult selectAccountCharacter(PlayerAccount acct, Session session) throws java.io.IOException;
-    public void pageRooms(CMProps page, Hashtable table, String start);
+    public void pageRooms(CMProps page, Map<String, String> table, String start);
     public void initStartRooms(CMProps page);
     public void initDeathRooms(CMProps page);
     public void initBodyRooms(CMProps page);

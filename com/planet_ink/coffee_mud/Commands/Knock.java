@@ -89,7 +89,7 @@ public class Knock extends StdCommand
 					V.addElement(mob.location());
 					TrackingLibrary.TrackingFlags flags;
 					flags = new TrackingLibrary.TrackingFlags()
-							.add(TrackingLibrary.TrackingFlag.OPENONLY);
+							.plus(TrackingLibrary.TrackingFlag.OPENONLY);
 					CMLib.tracking().getRadiantRooms(R,V,flags,null,5,null);
 					V.removeElement(mob.location());
 					for(int v=0;v<V.size();v++)

@@ -58,7 +58,7 @@ public class Prayer_Position extends Prayer
 		Vector set=new Vector();
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
-				.add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
+				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
 		CMLib.tracking().getRadiantRooms(R1,set,flags,R2,Integer.MAX_VALUE,null);
 		int foundAt=-1;
 		for(int i=0;i<set.size();i++)

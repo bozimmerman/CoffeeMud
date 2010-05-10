@@ -62,13 +62,13 @@ public class Spell_DetectSentience extends Spell
 				lines.append(CMStrings.padRight("Location",17)+"^.^N\n\r");
 				TrackingLibrary.TrackingFlags flags;
 				flags = new TrackingLibrary.TrackingFlags()
-						.add(TrackingLibrary.TrackingFlag.AREAONLY);
-				Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,35+this.getXMAXRANGELevel(mob));
-				if(!checkSet.contains(mob.location())) checkSet.addElement(mob.location());
+						.plus(TrackingLibrary.TrackingFlag.AREAONLY);
+				List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,35+this.getXMAXRANGELevel(mob));
+				if(!checkSet.contains(mob.location())) checkSet.add(mob.location());
                 CMMsg msg2=CMClass.getMsg(mob,null,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_CAST,null);
-				for(Enumeration r=checkSet.elements();r.hasMoreElements();)
-				{
-					Room R=CMLib.map().getRoom((Room)r.nextElement());
+        		for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
+        		{
+        			Room R=CMLib.map().getRoom(r.next());
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						MOB M=R.fetchInhabitant(m);

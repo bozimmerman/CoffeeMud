@@ -72,7 +72,7 @@ public class Chant_WarningWinds extends Chant
 			Vector V=new Vector();
 			TrackingLibrary.TrackingFlags flags;
 			flags = new TrackingLibrary.TrackingFlags()
-					.add(TrackingLibrary.TrackingFlag.OPENONLY);
+					.plus(TrackingLibrary.TrackingFlag.OPENONLY);
 			CMLib.tracking().getRadiantRooms(lastRoom,V,flags,null,2,null);
 			boolean fighting=false;
 			boolean enemy=false;

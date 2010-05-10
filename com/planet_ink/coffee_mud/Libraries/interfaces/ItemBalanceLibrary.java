@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public interface ItemBalanceLibrary extends CMLibrary
 {
 	public int timsLevelCalculator(Item I);
@@ -50,7 +49,7 @@ public interface ItemBalanceLibrary extends CMLibrary
 	public Ability[] getTimsAdjResCast(Item I, int[] castMul);
 	public Item enchant(Item I, int pct);
     public int levelsFromAbility(Item savedI);
-    public Hashtable timsItemAdjustments(Item I,
+    public Map<String, String> timsItemAdjustments(Item I,
 							             int level,
 							             int material,
 							             int hands,

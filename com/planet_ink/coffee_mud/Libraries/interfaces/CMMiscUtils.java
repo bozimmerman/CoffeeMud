@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public interface CMMiscUtils extends CMLibrary
 {
     public static final int LOOTFLAG_RUIN=1;
@@ -46,7 +45,7 @@ public interface CMMiscUtils extends CMLibrary
     
     public String getFormattedDate(Environmental E);
     public double memoryUse ( Environmental E, int number );
-    public String niceCommaList(Vector V, boolean andTOrF);
+    public String niceCommaList(List<Object> V, boolean andTOrF);
     
     public void outfit(MOB mob, List<Item> items);
     public boolean reachableItem(MOB mob, Environmental E);
@@ -64,7 +63,7 @@ public interface CMMiscUtils extends CMLibrary
     
     public MOB getMobPossessingAnother(MOB mob);
     public void roomAffectFully(CMMsg msg, Room room, int dirCode);
-    public Vector getDeadBodies(Environmental container);
+    public List<DeadBody> getDeadBodies(Environmental container);
     public boolean resurrect(MOB tellMob, Room corpseRoom, DeadBody body, int XPLevel);
     
     public Item isRuinedLoot(DVector policies, Item I);

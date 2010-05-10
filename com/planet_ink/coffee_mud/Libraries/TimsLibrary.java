@@ -387,7 +387,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
         else
         if(!(I instanceof Armor))
             return false;
-        Hashtable H=timsItemAdjustments(I,I.phyStats().level(),I.material(),hands,weaponClass,I.maxRange(),I.rawProperLocationBitmap());
+        Map<String,String> H=timsItemAdjustments(I,I.phyStats().level(),I.material(),hands,weaponClass,I.maxRange(),I.rawProperLocationBitmap());
         int newValue=CMath.s_int((String)H.get("VALUE"));
         if((I.baseGoldValue()>newValue)&&(newValue>0))
         {
@@ -406,7 +406,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			hands=I.rawLogicalAnd()?2:1;
 			weaponClass=((Weapon)I).weaponClassification();
 		}
-		Hashtable H=timsItemAdjustments(I,I.basePhyStats().level(),I.material(),hands,weaponClass,I.maxRange(),I.rawProperLocationBitmap());
+		Map<String,String> H=timsItemAdjustments(I,I.basePhyStats().level(),I.material(),hands,weaponClass,I.maxRange(),I.rawProperLocationBitmap());
 		if(I instanceof Weapon)
 		{
 			I.basePhyStats().setDamage(CMath.s_int((String)H.get("DAMAGE")));
@@ -424,7 +424,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		}
 	}
 
-	public Hashtable timsItemAdjustments(Item I,
+	public Map<String, String> timsItemAdjustments(Item I,
 										 int level,
 										 int material,
 										 int hands,

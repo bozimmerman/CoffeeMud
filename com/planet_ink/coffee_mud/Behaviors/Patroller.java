@@ -45,7 +45,7 @@ public class Patroller extends ActiveTicker
 	protected int diameter=20;
 	protected boolean rideOk=false;
 	protected boolean rideOnly=false;
-	protected Vector correction=null;
+	protected List<Room> correction=null;
 	protected Vector cachedSteps=null;
 
 	protected volatile int rideCheckCt = 0;
@@ -271,10 +271,10 @@ public class Patroller extends ActiveTicker
 			            if(correction!=null)
 			            {
 			                for(int r=0;r<correction.size();r++)
-			                    if(((GridLocale)R).isMyGridChild((Room)correction.elementAt(r)))
+			                    if(((GridLocale)R).isMyGridChild((Room)correction.get(r)))
 			                    {
 						            GridLocaleFixed=true;
-			                        R=(Room)correction.elementAt(r);
+			                        R=(Room)correction.get(r);
 			                        break;
 			                    }
 			            }
@@ -300,12 +300,12 @@ public class Patroller extends ActiveTicker
 			        {
 						TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
 						if(ticking instanceof Item)
-							flags.add(TrackingLibrary.TrackingFlag.OPENONLY);
-						flags.add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
+							flags.plus(TrackingLibrary.TrackingFlag.OPENONLY);
+						flags.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
 						if(!airOk)
-							flags.add(TrackingLibrary.TrackingFlag.NOAIR);
+							flags.plus(TrackingLibrary.TrackingFlag.NOAIR);
 						if(!waterOk)
-							flags.add(TrackingLibrary.TrackingFlag.NOWATER);
+							flags.plus(TrackingLibrary.TrackingFlag.NOWATER);
 			            correction=CMLib.tracking().findBastardTheBestWay(thisRoom,new XVector(R),flags,diameter);
 					    tickStatus=Tickable.STATUS_MISC+9;
 			            if(correction!=null)

@@ -47,7 +47,7 @@ public class Thief_Assassinate extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public long flags(){return Ability.FLAG_TRACKING;}
     public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING; }
-	protected Vector theTrail=null;
+	protected List<Room> theTrail=null;
 	public int nextDirection=-2;
 	protected MOB tracking=null;
 
@@ -270,15 +270,15 @@ public class Thief_Assassinate extends ThiefSkill
 		    {
 				TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
 				if(givenTarget!=null&&auto&&mob.isMonster())
-					flags.add(TrackingLibrary.TrackingFlag.AREAONLY);
-				flags.add(TrackingLibrary.TrackingFlag.OPENONLY)
-					 .add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
-					 .add(TrackingLibrary.TrackingFlag.NOAIR)
-					 .add(TrackingLibrary.TrackingFlag.NOWATER);
-				Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50+(2*getXLEVELLevel(mob)));
-				for(Enumeration r=checkSet.elements();r.hasMoreElements();)
+					flags.plus(TrackingLibrary.TrackingFlag.AREAONLY);
+				flags.plus(TrackingLibrary.TrackingFlag.OPENONLY)
+					 .plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+					 .plus(TrackingLibrary.TrackingFlag.NOAIR)
+					 .plus(TrackingLibrary.TrackingFlag.NOWATER);
+				List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50+(2*getXLEVELLevel(mob)));
+				for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
 				{
-					Room R=CMLib.map().getRoom((Room)r.nextElement());
+					Room R=CMLib.map().getRoom(r.next());
 					if(R.fetchInhabitant(mobName)!=null)
 						rooms.addElement(R);
 				}
@@ -286,21 +286,21 @@ public class Thief_Assassinate extends ThiefSkill
 		}
 
 		TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
-		flags.add(TrackingLibrary.TrackingFlag.OPENONLY)
-			 .add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
-			 .add(TrackingLibrary.TrackingFlag.NOAIR)
-			 .add(TrackingLibrary.TrackingFlag.NOWATER);
+		flags.plus(TrackingLibrary.TrackingFlag.OPENONLY)
+			 .plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+			 .plus(TrackingLibrary.TrackingFlag.NOAIR)
+			 .plus(TrackingLibrary.TrackingFlag.NOWATER);
 		if(givenTarget!=null&&auto&&mob.isMonster())
-			flags.add(TrackingLibrary.TrackingFlag.AREAONLY);
+			flags.plus(TrackingLibrary.TrackingFlag.AREAONLY);
 		if(rooms.size()>0)
 			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,flags,50+(2*getXLEVELLevel(mob)));
 
 		if((tracking==null)&&(theTrail!=null)&&(theTrail.size()>0))
-			tracking=((Room)theTrail.firstElement()).fetchInhabitant(mobName);
+			tracking=((Room)theTrail.get(0)).fetchInhabitant(mobName);
 
 		if((success)&&(theTrail!=null)&&(tracking!=null))
 		{
-			theTrail.addElement(mob.location());
+			theTrail.add(mob.location());
 
 			// it worked, so build a copy of this ability,
 			// and add it to the affects list of the

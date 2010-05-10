@@ -73,11 +73,11 @@ public class MOBHunter extends ActiveTicker
 		Vector rooms=new Vector();
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
-				.add(TrackingLibrary.TrackingFlag.OPENONLY)
-				.add(TrackingLibrary.TrackingFlag.AREAONLY)
-				.add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
-				.add(TrackingLibrary.TrackingFlag.NOAIR)
-				.add(TrackingLibrary.TrackingFlag.NOWATER);
+				.plus(TrackingLibrary.TrackingFlag.OPENONLY)
+				.plus(TrackingLibrary.TrackingFlag.AREAONLY)
+				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+				.plus(TrackingLibrary.TrackingFlag.NOAIR)
+				.plus(TrackingLibrary.TrackingFlag.NOWATER);
 		CMLib.tracking().getRadiantRooms(mob.location(),rooms,flags,null,radius,null);
 		for(int r=0;r<rooms.size();r++)
 		{

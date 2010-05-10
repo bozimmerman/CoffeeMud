@@ -45,7 +45,7 @@ public class Chant_FindPlant extends Chant
     public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	public long flags(){return Ability.FLAG_TRACKING;}
 	protected String lookingFor="plants";
-	protected Vector theTrail=null;
+	protected List<Room> theTrail=null;
 	protected int nextDirection=-2;
 	public int whatImLookingFor=-1;
 
@@ -203,21 +203,21 @@ public class Chant_FindPlant extends Chant
 		Vector rooms=new Vector();
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
-				.add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
-				.add(TrackingLibrary.TrackingFlag.NOAIR)
-				.add(TrackingLibrary.TrackingFlag.NOWATER);
-		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
-		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
+				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+				.plus(TrackingLibrary.TrackingFlag.NOAIR)
+				.plus(TrackingLibrary.TrackingFlag.NOWATER);
+		List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
+		for(Iterator<Room> r=checkSet.iterator();r.hasNext();)
 		{
-			Room R=(Room)r.nextElement();
+			Room R=(Room)r.next();
 			if(itsHere(target,R).length()>0)
 				rooms.addElement(R);
 		}
 
 		flags = new TrackingLibrary.TrackingFlags()
-				.add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
-				.add(TrackingLibrary.TrackingFlag.NOAIR)
-				.add(TrackingLibrary.TrackingFlag.NOWATER);
+				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+				.plus(TrackingLibrary.TrackingFlag.NOAIR)
+				.plus(TrackingLibrary.TrackingFlag.NOWATER);
 		if(rooms.size()>0)
 			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,flags,50);
 

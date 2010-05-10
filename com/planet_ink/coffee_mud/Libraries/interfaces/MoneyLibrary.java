@@ -29,14 +29,13 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public interface MoneyLibrary extends CMLibrary
 {
     public void unloadCurrencySet(String currency);
     public MoneyDenomination[] createCurrencySet(String currency);
     public MoneyDenomination[] getCurrencySet(String currency);
-    public Vector getAllCurrencies();
-    public Vector getDenominationNameSet(String currency);
+    public List<String> getAllCurrencies();
+    public List<String> getDenominationNameSet(String currency);
     public double lowestAbbreviatedDenomination(String currency);
     public double lowestAbbreviatedDenomination(String currency, double absoluteAmount);
     public double abbreviatedRePrice(MOB shopkeeper, double absoluteAmount);
@@ -77,7 +76,7 @@ public interface MoneyLibrary extends CMLibrary
     public void giveSomeoneMoney(MOB banker, MOB customer, String currency, double absoluteValue);
     public void bankLedger(String bankName, String owner, String explanation);
     public boolean modifyBankGold(String bankName,  String owner, String explanation, String currency, double absoluteAmount);
-    public boolean modifyThisAreaBankGold(Area A,  HashSet triedBanks, String owner, String explanation, String currency, double absoluteAmount);
+    public boolean modifyThisAreaBankGold(Area A,  Set<String> triedBanks, String owner, String explanation, String currency, double absoluteAmount);
     public boolean modifyLocalBankGold(Area A, String owner, String explanation, String currency, double absoluteAmount);
     public void subtractMoneyGiveChange(MOB banker, MOB mob, int absoluteAmount);
     public void subtractMoneyGiveChange(MOB banker, MOB mob, double absoluteAmount);
@@ -93,9 +92,9 @@ public interface MoneyLibrary extends CMLibrary
     public void setMoney(MOB mob, int amount);
     public void clearZeroMoney(MOB mob, String currency);
     public void clearInventoryMoney(MOB mob, String currency);
-    public Vector getStandardCurrency(MOB mob, String currency);
-    public Vector getStandardCurrency(MOB mob, Item container, String currency);
-	public Vector getStandardCurrency(Room R, Item container, String currency);
+    public List<Coins> getStandardCurrency(MOB mob, String currency);
+    public List<Coins> getStandardCurrency(MOB mob, Item container, String currency);
+	public List<Coins> getStandardCurrency(Room R, Item container, String currency);
     public long getNumberOfCoins(MOB mob, String currency, double denomination);
     public String getCurrency(Environmental E);
 	public double getTotalAbsoluteValue(Room R, Item container, String currency);

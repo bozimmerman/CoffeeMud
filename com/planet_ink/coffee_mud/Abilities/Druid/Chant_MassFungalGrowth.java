@@ -51,11 +51,11 @@ public class Chant_MassFungalGrowth extends Chant_SummonFungus
 		Vector V=new Vector();
 		TrackingLibrary.TrackingFlags flags;
 		flags = new TrackingLibrary.TrackingFlags()
-				.add(TrackingLibrary.TrackingFlag.OPENONLY)
-				.add(TrackingLibrary.TrackingFlag.AREAONLY)
-				.add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
-				.add(TrackingLibrary.TrackingFlag.NOAIR)
-				.add(TrackingLibrary.TrackingFlag.NOWATER);
+				.plus(TrackingLibrary.TrackingFlag.OPENONLY)
+				.plus(TrackingLibrary.TrackingFlag.AREAONLY)
+				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+				.plus(TrackingLibrary.TrackingFlag.NOAIR)
+				.plus(TrackingLibrary.TrackingFlag.NOWATER);
 		CMLib.tracking().getRadiantRooms(mob.location(),V,flags,null,adjustedLevel(mob,asLevel),null);
 		for(int v=V.size()-1;v>=0;v--)
 		{

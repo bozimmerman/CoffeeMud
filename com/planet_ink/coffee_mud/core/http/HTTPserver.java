@@ -186,7 +186,7 @@ public class HTTPserver extends Thread implements MudHost
 		return true;
 	}
 
-	public Hashtable getVirtualDirectories(){return pageGrabber.getVirtualDirectories();}
+	public Map<String, String> getVirtualDirectories(){return pageGrabber.getVirtualDirectories();}
 
 	private void addVirtualDirectories()
 	{

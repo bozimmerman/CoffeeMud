@@ -29,7 +29,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public interface PlayerLibrary extends CMLibrary, Runnable
 {
     public int numPlayers();
@@ -41,13 +40,13 @@ public interface PlayerLibrary extends CMLibrary, Runnable
     public PlayerAccount getAccount(String calledThis);
     public boolean accountExists(String name);
     public Enumeration<MOB> players();
-    public Enumeration<PlayerAccount> accounts(String sort, Hashtable cache);
+    public Enumeration<PlayerAccount> accounts(String sort, Map<String, Object> cache);
     public void obliteratePlayer(MOB deadMOB, boolean quiet);
     public void obliterateAccountOnly(PlayerAccount deadAccount);
     public boolean playerExists(String name);
     public void forceTick();
     public int savePlayers();
-    public Enumeration<ThinPlayer> thinPlayers(String sort, Hashtable cache);
+    public Enumeration<ThinPlayer> thinPlayers(String sort, Map<String, Object> cache);
 	public int getCharThinSortCode(String codeName, boolean loose);
 	public String getThinSortValue(ThinPlayer player, int code); 
     

@@ -255,7 +255,7 @@ public class ItemData extends StdWebMacro
 			int hands=1;
 			if(httpReq.isRequestParameter("ISTWOHANDED")&&(httpReq.getRequestParameter("ISTWOHANDED").equalsIgnoreCase("on")))
 			   hands=2;
-			Hashtable vals=null;
+			Map<String,String> vals=null;
 			if(I instanceof Weapon)
 			{
 				int wclass=CMath.s_int(httpReq.getRequestParameter("WEAPONCLASS"));
@@ -289,9 +289,8 @@ public class ItemData extends StdWebMacro
 															 0,
 															 worndata);
 			}
-			for(Enumeration e=vals.keys();e.hasMoreElements();)
+			for(String key : vals.keySet())
 			{
-				String key=(String)e.nextElement();
 				String val=(String)vals.get(key);
 				httpReq.addRequestParameters(key,val);
 			}
@@ -833,19 +832,19 @@ public class ItemData extends StdWebMacro
 				{
 					if((firstTime)&&(I instanceof Coins))
 						old=""+((Coins)I).getCurrency();
-					Vector cs=CMLib.beanCounter().getAllCurrencies();
+					List<String> cs=CMLib.beanCounter().getAllCurrencies();
 				    str.append("<OPTION VALUE=\"\"");
 				    if(old.length()==0)
 				        str.append(" SELECTED");
 				    str.append(">Default currency");
 					for(int i=0;i<cs.size();i++)
 					{
-					    if(((String)cs.elementAt(i)).length()>0)
+					    if(((String)cs.get(i)).length()>0)
 					    {
-						    str.append("<OPTION VALUE=\""+((String)cs.elementAt(i))+"\"");
-						    if(((String)cs.elementAt(i)).equalsIgnoreCase(old))
+						    str.append("<OPTION VALUE=\""+((String)cs.get(i))+"\"");
+						    if(((String)cs.get(i)).equalsIgnoreCase(old))
 						        str.append(" SELECTED");
-						    str.append(">"+((String)cs.elementAt(i)));
+						    str.append(">"+((String)cs.get(i)));
 					    }
 					}
 					break;
