@@ -50,6 +50,21 @@ public interface MaskingLibrary extends CMLibrary
     public boolean syntaxCheck(String text, Vector errorSink);
     public int minMaskLevel(String text, int minMinLevel);
 
+    public static class CompiledZapperMaskEntry
+    {
+    	protected int maskType;
+    	protected Object[] parms;
+    	public CompiledZapperMaskEntry(int type, Object[] parms)
+    	{	maskType=type;this.parms=parms;}
+    }
+    
+    public static class CompiledZapperMask
+    {
+    	protected CompiledZapperMaskEntry[] entries;
+    	public CompiledZapperMask(CompiledZapperMaskEntry[] entries)
+    	{	this.entries=entries;}
+    }
+    
     public final String DEFAULT_MASK_HELP =
         "+SYSOP (allow archons to bypass the rules)  <BR>"
         +"-SYSOP (always <WORD> archons)  <BR>"
