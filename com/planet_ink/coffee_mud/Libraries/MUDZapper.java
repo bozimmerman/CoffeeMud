@@ -36,7 +36,7 @@ import java.util.*;
 public class MUDZapper extends StdLibrary implements MaskingLibrary
 {
     public String ID(){return "MUDZapper";}
-	public Hashtable zapCodes=new Hashtable();
+	public Hashtable<String,Integer> zapCodes=new Hashtable<String,Integer>();
 
     protected MOB nonCrashingMOB=null;
     protected MOB nonCrashingMOB(){
