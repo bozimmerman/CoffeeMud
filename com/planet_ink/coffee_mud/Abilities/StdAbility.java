@@ -996,7 +996,7 @@ public class StdAbility implements Ability
         	Vector<AbilityComponent> componentsRequirements=(Vector<AbilityComponent>)CMLib.ableMapper().getAbilityComponentMap().get(ID().toUpperCase());
             if(componentsRequirements!=null)
             {
-                Vector components=CMLib.ableMapper().componentCheck(mob,componentsRequirements);
+            	List<Object> components=CMLib.ableMapper().componentCheck(mob,componentsRequirements);
                 if(components==null)
                 {
                     mob.tell("You lack the necessary materials to use this "
@@ -1010,13 +1010,13 @@ public class StdAbility implements Ability
                     int i=0;
                     boolean destroy=false;
                     for(;i<components.size();i++)
-                        if(components.elementAt(i) instanceof Boolean)
-                        { destroy=((Boolean)components.elementAt(i)).booleanValue(); break;}
+                        if(components.get(i) instanceof Boolean)
+                        { destroy=((Boolean)components.get(i)).booleanValue(); break;}
                     while(i>=0)
                     {
-                        if((destroy)&&(components.elementAt(0) instanceof Item))
-                            ((Item)components.elementAt(0)).destroy();
-                        components.removeElementAt(0);
+                        if((destroy)&&(components.get(0) instanceof Item))
+                            ((Item)components.get(0)).destroy();
+                        components.remove(0);
                         i--;
                     }
                 }

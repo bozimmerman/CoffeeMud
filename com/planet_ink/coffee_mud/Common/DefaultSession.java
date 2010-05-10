@@ -868,7 +868,9 @@ public class DefaultSession extends Thread implements Session
                 if(tag.equals("SHUTDOWN"))
                 {
                     MOB M=CMLib.players().getLoadPlayer((String)parts.elementAt(1));
-                    if((M!=null)&&(M.playerStats().password().equalsIgnoreCase((String)parts.elementAt(2)))&&(CMSecurity.isASysOp(M)))
+                    if((M!=null)
+                    &&(M.playerStats().password().equalsIgnoreCase((String)parts.elementAt(2)))
+                    &&(CMSecurity.isASysOp(M)))
                     {
                         boolean keepDown=parts.size()>3?CMath.s_bool((String)parts.elementAt(3)):true;
                         String externalCmd=(parts.size()>4)?CMParms.combine(parts,4):null;
@@ -1539,7 +1541,7 @@ public class DefaultSession extends Thread implements Session
 							&&(mob()!=null))
 							{
 								lastBlahCheck=System.currentTimeMillis();
-								Vector V=CMParms.parse(CMProps.getVar(CMProps.SYSTEM_IDLETIMERS));
+								Vector<String> V=CMParms.parse(CMProps.getVar(CMProps.SYSTEM_IDLETIMERS));
 								if((V.size()>0)
 								&&(!CMSecurity.isAllowed(mob(),mob().location(),"IDLEOK"))
 								&&(CMath.s_int((String)V.firstElement())>0))

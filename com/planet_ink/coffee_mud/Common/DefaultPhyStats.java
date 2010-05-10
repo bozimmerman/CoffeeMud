@@ -30,7 +30,6 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class DefaultPhyStats implements PhyStats
 {
     public String ID(){return "DefaultPhyStats";}
@@ -89,7 +88,7 @@ public class DefaultPhyStats implements PhyStats
 		ambiance=ambiance.trim();
 		int i=0;
 		String[] ambis=ambiances();
-        Vector V=null;
+        Vector<String> V=null;
 		for(i=0;i<ambis.length;i++)
 			if(ambis[i].equalsIgnoreCase(ambiance))
 			{

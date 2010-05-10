@@ -1400,7 +1400,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     back=back.substring(x);
                     boolean rest=back.startsWith("..");
                     if(rest) back=back.substring(2);
-                    Vector V=CMParms.parse(middle);
+                    Vector<String> V=CMParms.parse(middle);
                     if((V.size()>0)&&(y>=0))
                     {
                         if(y>=V.size())
@@ -2490,7 +2490,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
                 String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
                 String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-                Vector V=CMParms.parse(arg1.toUpperCase());
+                Vector<String> V=CMParms.parse(arg1.toUpperCase());
                 returnable=V.contains(arg2.toUpperCase());
                 break;
             }
@@ -4630,7 +4630,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             {
                 String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(funcParms,0));
                 String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(funcParms,0));
-                Vector V=CMParms.parse(arg1.toUpperCase());
+                Vector<String> V=CMParms.parse(arg1.toUpperCase());
                 results.append(V.indexOf(arg2.toUpperCase()));
                 break;
             }
@@ -7768,7 +7768,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((newTarget!=null)&&(newTarget instanceof MOB))
                 {
-                    Vector V=CMParms.parse(tt[2]);
+                    Vector<String> V=CMParms.parse(tt[2]);
                     for(int i=0;i<V.size();i++)
                     {
                         if(CMath.isInteger(((String)V.elementAt(i)).trim()))
@@ -8755,7 +8755,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             default:
                 if(cmd.length()>0)
                 {
-                    Vector V=CMParms.parse(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s));
+                    Vector<String> V=CMParms.parse(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s));
                     if((V.size()>0)&&(monster!=null))
                         monster.doCommand(V,Command.METAFLAG_MPFORCED);
                 }

@@ -79,7 +79,7 @@ public class CombatAbilities extends StdBehavior
 			}
 			return;
 	    }
-	    Vector V=CMParms.parse(theParms.trim());
+	    Vector<String> V=CMParms.parse(theParms.trim());
 	    Vector classes=new Vector();
 	    for(int v=0;v<V.size();v++)
 	    {
@@ -108,7 +108,7 @@ public class CombatAbilities extends StdBehavior
 
 	protected String getParmsMinusCombatMode()
 	{
-		Vector V=CMParms.parse(getParms());
+		Vector<String> V=CMParms.parse(getParms());
 		for(int v=V.size()-1;v>=0;v--)
 		{
 			String s=((String)V.elementAt(v)).toUpperCase();
@@ -278,7 +278,7 @@ public class CombatAbilities extends StdBehavior
 		skillsNever=null;
 		wandUseCheck[0]=false;
 		proficient=false;
-		Vector V=CMParms.parse(getParms());
+		Vector<String> V=CMParms.parse(getParms());
 		String s=null;
 		Ability A=null;
 		for(int v=0;v<V.size();v++)

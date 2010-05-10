@@ -273,12 +273,13 @@ public class MUDGrinder extends StdWebMacro
             if(httpReq.getRequestParameter("DELFIRST")!=null)
             	deleteIfExists=httpReq.getRequestParameter("DELFIRST").equalsIgnoreCase("ON");
             StringBuffer buf=new StringBuffer(CMStrings.bytesToStr(bufBytes));
-    		Vector V=CMParms.parse("IMPORT "+(deleteIfExists?"":"NODELETE ")+"NOPROMPT");
-    		V.addElement(buf);
+    		Vector<Object> V=new Vector<Object>();
+    		V.addAll(CMParms.parse("IMPORT "+(deleteIfExists?"":"NODELETE ")+"NOPROMPT"));
+    		V.add(buf);
     		Command C=CMClass.getCommand("Import");
     		if(C==null) return null;
     		try{C.execute(mob,V,0);}catch(Exception e){return e.getMessage();}
-    		if((V.size()==0)||(V.lastElement() instanceof StringBuffer))
+    		if((V.size()==0)||(V.get(V.size()-1) instanceof StringBuffer))
     			return "<FONT COLOR=LIGHTGREEN>Your file was successfully imported.</FONT>";
     		StringBuffer error=new StringBuffer("");
     		for(int i=0;i<V.size();i++)

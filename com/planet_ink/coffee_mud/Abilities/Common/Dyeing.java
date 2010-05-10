@@ -64,7 +64,7 @@ public class Dyeing extends CommonSkill
 					 +name.substring(end+3);
 		}
 		colorWord="^"+colorChar+colorWord+"^?";
-		Vector V=CMParms.parse(name);
+		Vector<String> V=CMParms.parse(name);
 		for(int v=0;v<V.size();v++)
 		{
 			String word=(String)V.elementAt(v);

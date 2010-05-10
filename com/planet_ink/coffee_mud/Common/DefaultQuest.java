@@ -39,7 +39,6 @@ import org.mozilla.javascript.ScriptableObject;
 @SuppressWarnings("unchecked")
 public class DefaultQuest implements Quest, Tickable, CMObject
 {
-
     public String ID(){return "DefaultQuest";}
 
     protected String name="";
@@ -48,7 +47,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     protected String startDate="";
     protected int duration=450; // about 30 minutes
     protected String rawScriptParameter="";
-    protected Vector winners=new Vector();
+    protected SVector<String> winners=new SVector<String>();
     protected boolean durable=false;
     protected int minWait=-1;
     protected int minPlayers=-1;
@@ -132,10 +131,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             for(int i=0;i<internalFiles.size();i++)
             {
                 String filename=((String)internalFiles.elementAt(i,1)).toUpperCase();
-                Vector delThese=new Vector();
+                Vector<String> delThese=new Vector<String>();
                 boolean foundKey=false;
-                Vector V=Resources.findResourceKeys(filename);
-                for(Enumeration e=V.elements();e.hasMoreElements();)
+                Vector<String> V=Resources.findResourceKeys(filename);
+                for(Enumeration<String> e=V.elements();e.hasMoreElements();)
                 {
                     String key=(String)e.nextElement();
                     if(key.startsWith("PARSEDPRG: ")&&(key.toUpperCase().endsWith(filename)))
@@ -215,7 +214,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 
     public void setVars(List<?> script, int startAtLine)
     {
-    	List parsedLine=null;
+    	List<String> parsedLine=null;
         String var=null;
         String val=null;
         Vector setScripts=CMLib.quests().parseQuestCommandLines(script,"SET",startAtLine);
@@ -319,7 +318,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         return NOW;
     }
 
-    public void parseQuestScriptWArgs(Vector script, List args)
+	public void parseQuestScriptWArgs(Vector script, List args)
     {
     	if(args==null) args=new Vector();
     	if(args.size()==0)
@@ -579,8 +578,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         q.area=null;
                         q.roomGroup=null;
                         if(p.size()<3) continue;
-                        Vector names=new Vector();
-                        Vector areas=new Vector();
+                        Vector<String> names=new Vector<String>();
+                        Vector<Area> areas=new Vector<Area>();
                         for(int ip=2;ip<p.size();ip++)
                             names.addElement(p.elementAt(ip));
                         for(int n=0;n<names.size();n++)
@@ -594,18 +593,18 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                             {
                                 if(addAll)
                                 {
-                                    for (Enumeration e = CMLib.map().areas(); e.hasMoreElements(); )
+                                    for (Enumeration<Area> e = CMLib.map().areas(); e.hasMoreElements(); )
                                     {
                                         Area A2=(Area)e.nextElement();
                                         if(!areas.contains(A2))
-                                            areas.addElement(e.nextElement());
+                                            areas.add(e.nextElement());
                                     }
                                 }
                                 else
                                 {
                                     Area A2=CMLib.map().findArea(areaName);
                                     if((A2!=null)&&(!areas.contains(A2)))
-                                        areas.addElement(A2);
+                                        areas.add(A2);
                                 }
                             }
                         }
@@ -614,10 +613,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                             q.roomGroup=new Vector<Room>();
                             Area A=null;
                             Room R=null;
-                            for(Enumeration e=areas.elements();e.hasMoreElements();)
+                            for(Enumeration<Area> e=areas.elements();e.hasMoreElements();)
                             {
                                 A=(Area)e.nextElement();
-                                for(Enumeration e2=A.getMetroMap();e2.hasMoreElements();)
+                                for(Enumeration<Room> e2=A.getMetroMap();e2.hasMoreElements();)
                                 {
                                     R=(Room)e2.nextElement();
                                     if(!q.roomGroup.contains(R))
@@ -649,8 +648,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         	q.mob=(MOB)getObjectIfSpecified(p,args,2,0);
                         }catch(CMException ex){
                             q.mob=null;
-	                        List<MOB> choices=new Vector();
-	                        Vector mobTypes=CMParms.parse(CMParms.combine(p,2).toUpperCase());
+	                        List<MOB> choices=new Vector<MOB>();
+	                        Vector<String> mobTypes=CMParms.parse(CMParms.combine(p,2).toUpperCase());
 	                        for(int t=0;t<mobTypes.size();t++)
 	                        {
 	                            String mobType=(String)mobTypes.elementAt(t);
@@ -3882,7 +3881,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         if(text.trim().toUpperCase().startsWith("LOAD="))
         {
         	String filename=null;
-        	Vector V=CMParms.parse(text.trim().substring(5).trim());
+        	Vector<String> V=CMParms.parse(text.trim().substring(5).trim());
         	if(V.size()>0)
         	{
         		filename=(String)V.firstElement();

@@ -37,7 +37,6 @@ import java.lang.reflect.*;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 @SuppressWarnings("unchecked")
 public class DefaultFaction implements Faction, MsgListener
 {
@@ -68,20 +67,20 @@ public class DefaultFaction implements Faction, MsgListener
 	protected SHashtable<String,FactionRange> 		ranges=new SHashtable<String,FactionRange>();
 	protected SHashtable<String,String[]> 			affBehavs=new SHashtable<String,String[]>();
 	protected double 								rateModifier=1.0;
-    protected SHashtable<String,FactionChangeEvent[]>changes=new SHashtable();
-    protected SHashtable<String,FactionChangeEvent[]>abilityChangesCache=new SHashtable();
+    protected SHashtable<String,FactionChangeEvent[]>changes=new SHashtable<String,FactionChangeEvent[]>();
+    protected SHashtable<String,FactionChangeEvent[]>abilityChangesCache=new SHashtable<String,FactionChangeEvent[]>();
     protected SVector<Faction.FactionZapFactor> 	factors=new SVector<Faction.FactionZapFactor>();
     protected SHashtable<String,Double>				relations=new SHashtable<String,Double>();
     protected SVector<Faction.FactionAbilityUsage> 	abilityUsages=new SVector<Faction.FactionAbilityUsage>();
     protected SVector<String> 						choices=new SVector<String>();
-    protected SVector<Faction.FactionReactionItem> 	reactions=new SVector();
+    protected SVector<Faction.FactionReactionItem> 	reactions=new SVector<Faction.FactionReactionItem>();
     protected SHashtable<String,SVector<Faction.FactionReactionItem>> reactionHash=new SHashtable<String,SVector<Faction.FactionReactionItem>>();
     public Enumeration<Faction.FactionReactionItem> reactions(){return reactions.elements();}
     public Enumeration<Faction.FactionReactionItem> reactions(String rangeName)
     {
     	SVector<Faction.FactionReactionItem> V=(SVector<Faction.FactionReactionItem>)reactionHash.get(rangeName.toUpperCase().trim());
     	if(V!=null) return V.elements();
-    	return new Vector().elements();
+    	return new Vector<Faction.FactionReactionItem>().elements();
     }
     protected Ability presenceReactionPrototype=null;
 
@@ -123,9 +122,9 @@ public class DefaultFaction implements Faction, MsgListener
     public void setShowInSpecialReported(boolean truefalse){showInSpecialReported=truefalse;}
     public void setShowInEditor(boolean truefalse){showInEditor=truefalse;}
     public void setShowInFactionsCommand(boolean truefalse){showInFactionsCommand=truefalse;}
-    public void setChoices(List<String> v){choices=new SVector(v);}
-    public void setAutoDefaults(List<String> v){autoDefaults=new SVector(v);}
-    public void setDefaults(List<String> v){defaults=new SVector(v);}
+    public void setChoices(List<String> v){choices=new SVector<String>(v);}
+    public void setAutoDefaults(List<String> v){autoDefaults=new SVector<String>(v);}
+    public void setDefaults(List<String> v){defaults=new SVector<String>(v);}
     public void setRateModifier(double d){rateModifier=d;}
     
     public Faction.FactionAbilityUsage getAbilityUsage(int x)
@@ -213,9 +212,9 @@ public class DefaultFaction implements Faction, MsgListener
         showInFactionsCommand=alignProp.getBoolean("SHOWINFACTIONSCMD");
         showInSpecialReported=alignProp.getBoolean("SPECIALREPORTED");
         showInEditor=alignProp.getBoolean("EDITALONE");
-        defaults=new SVector(CMParms.parseSemicolons(alignProp.getStr("DEFAULT"),true));
-        autoDefaults =new SVector(CMParms.parseSemicolons(alignProp.getStr("AUTODEFAULTS"),true));
-        choices =new SVector(CMParms.parseSemicolons(alignProp.getStr("AUTOCHOICES"),true));
+        defaults=new SVector<String>(CMParms.parseSemicolons(alignProp.getStr("DEFAULT"),true));
+        autoDefaults =new SVector<String>(CMParms.parseSemicolons(alignProp.getStr("AUTODEFAULTS"),true));
+        choices =new SVector<String>(CMParms.parseSemicolons(alignProp.getStr("AUTOCHOICES"),true));
         useLightReactions=alignProp.getBoolean("USELIGHTREACTIONS");
         ranges=new SHashtable<String,FactionRange>();
         changes=new SHashtable<String,FactionChangeEvent[]>();
@@ -224,7 +223,7 @@ public class DefaultFaction implements Faction, MsgListener
         abilityUsages=new SVector<FactionAbilityUsage>();
         reactions=new SVector<FactionReactionItem>();
         reactionHash=new SHashtable<String,SVector<FactionReactionItem>>();
-        for(Enumeration e=alignProp.keys();e.hasMoreElements();)
+        for(Enumeration<Object> e=alignProp.keys();e.hasMoreElements();)
         {
             if(debug) Log.sysOut("FACTIONS","Starting Key Loop");
             String key = (String) e.nextElement();
@@ -243,7 +242,7 @@ public class DefaultFaction implements Faction, MsgListener
             }
             if(key.startsWith("FACTOR"))
             {
-                Vector factor=CMParms.parseSemicolons(words,false);
+                Vector<String> factor=CMParms.parseSemicolons(words,false);
                 if(factor.size()>2)
                     factors.add(new DefaultFactionZapFactor(CMath.s_double((String)factor.elementAt(0)),
                                              CMath.s_double((String)factor.elementAt(1)),
@@ -251,7 +250,7 @@ public class DefaultFaction implements Faction, MsgListener
             }
             if(key.startsWith("RELATION"))
             {
-                Vector V=CMParms.parse(words);
+                Vector<String> V=CMParms.parse(words);
                 if(V.size()>=2)
                 {
                     String who=(String)V.elementAt(0);
@@ -277,7 +276,7 @@ public class DefaultFaction implements Faction, MsgListener
     private void recalc() {
         minimum=Integer.MAX_VALUE;
         maximum=Integer.MIN_VALUE;
-        for(Enumeration e=ranges();e.hasMoreElements();)
+        for(Enumeration<Faction.FactionRange> e=ranges();e.hasMoreElements();)
         {
             Faction.FactionRange FR=(Faction.FactionRange)e.nextElement();
             if(FR.high()>maximum) maximum=FR.high();
@@ -324,7 +323,7 @@ public class DefaultFaction implements Faction, MsgListener
             if((numCall<0)||(numCall>=ranges.size()))
                 return ""+ranges.size();
             int x=0;
-            for(Enumeration e=ranges();e.hasMoreElements();)
+            for(Enumeration<Faction.FactionRange> e=ranges();e.hasMoreElements();)
             {
                 Faction.FactionRange FR=(Faction.FactionRange)e.nextElement();
                 if(x==numCall) return FR.toString();
@@ -369,7 +368,7 @@ public class DefaultFaction implements Faction, MsgListener
             if((numCall<0)||(numCall>=relations.size()))
                 return ""+relations.size();
             int i=0;
-            for(Enumeration e=relations.keys();e.hasMoreElements();)
+            for(Enumeration<String> e=relations.keys();e.hasMoreElements();)
             {
                 String factionName=(String)e.nextElement();
                 Double D=(Double)relations.get(factionName);
@@ -384,7 +383,7 @@ public class DefaultFaction implements Faction, MsgListener
             if((numCall<0)||(numCall>=affBehavs.size()))
                 return ""+affBehavs.size();
             int i=0;
-            for(Enumeration e=affBehavs.keys();e.hasMoreElements();)
+            for(Enumeration<String> e=affBehavs.keys();e.hasMoreElements();)
             {
                 String ID=(String)e.nextElement();
                 String[] data=(String[])affBehavs.get(ID);
@@ -434,7 +433,7 @@ public class DefaultFaction implements Faction, MsgListener
         String ID=null;
         String[] stuff=null;
         if(mob.isMonster())
-	        for(Enumeration e=affectsBehavs();e.hasMoreElements();)
+	        for(Enumeration<String> e=affectsBehavs();e.hasMoreElements();)
 	        {
 	            ID=(String)e.nextElement();
 	            stuff=getAffectBehav(ID);
@@ -525,9 +524,9 @@ public class DefaultFaction implements Faction, MsgListener
 
     public List<Integer> findChoices(MOB mob)
     {
-        Vector mine=new Vector();
+        Vector<Integer> mine=new Vector<Integer>();
         String s;
-        for(Enumeration e=choices.elements();e.hasMoreElements();)
+        for(Enumeration<String> e=choices.elements();e.hasMoreElements();)
         {
             s=(String)e.nextElement();
             if(CMath.isInteger(s))
@@ -535,7 +534,7 @@ public class DefaultFaction implements Faction, MsgListener
             else
             if(CMLib.masking().maskCheck(s, mob,false))
             {
-                Vector V=CMParms.parse(s);
+                Vector<String> V=CMParms.parse(s);
                 for(int j=0;j<V.size();j++)
                 {
                     if(CMath.isInteger((String)V.elementAt(j)))
@@ -588,7 +587,7 @@ public class DefaultFaction implements Faction, MsgListener
 
     public FactionRange fetchRange(int faction)
     {
-        for (Enumeration e=ranges.elements();e.hasMoreElements();)
+        for (Enumeration<FactionRange> e=ranges.elements();e.hasMoreElements();)
         {
             FactionRange R = (FactionRange)e.nextElement();
             if ( (faction >= R.low()) && (faction <= R.high()))
@@ -598,7 +597,7 @@ public class DefaultFaction implements Faction, MsgListener
     }
     public String fetchRangeName(int faction)
     {
-        for (Enumeration e=ranges.elements();e.hasMoreElements();)
+        for (Enumeration<FactionRange> e=ranges.elements();e.hasMoreElements();)
         {
             FactionRange R = (FactionRange)e.nextElement();
             if ( (faction >= R.low()) && (faction <= R.high()))
@@ -628,7 +627,7 @@ public class DefaultFaction implements Faction, MsgListener
     public int findDefault(MOB mob)
     {
         String s;
-        for(Enumeration e=defaults.elements();e.hasMoreElements();)
+        for(Enumeration<String> e=defaults.elements();e.hasMoreElements();)
         {
             s=(String)e.nextElement();
             if(CMath.isNumber(s))
@@ -636,7 +635,7 @@ public class DefaultFaction implements Faction, MsgListener
             else
             if(CMLib.masking().maskCheck(s, mob,false))
             {
-                Vector V=CMParms.parse(s);
+                Vector<String> V=CMParms.parse(s);
                 for(int j=0;j<V.size();j++)
                 {
                     if(CMath.isNumber((String)V.elementAt(j)))
@@ -650,7 +649,7 @@ public class DefaultFaction implements Faction, MsgListener
     public int findAutoDefault(MOB mob)
     {
         String s;
-        for(Enumeration e=autoDefaults.elements();e.hasMoreElements();)
+        for(Enumeration<String> e=autoDefaults.elements();e.hasMoreElements();)
         {
             s=(String)e.nextElement();
             if(CMath.isNumber(s))
@@ -658,7 +657,7 @@ public class DefaultFaction implements Faction, MsgListener
             else
             if(CMLib.masking().maskCheck(s, mob,false))
             {
-                Vector V=CMParms.parse(s);
+                Vector<String> V=CMParms.parse(s);
                 for(int j=0;j<V.size();j++)
                 {
                     if(CMath.isNumber((String)V.elementAt(j)))
@@ -733,7 +732,7 @@ public class DefaultFaction implements Faction, MsgListener
                 {
                     CharClass combatCharClass=CMLib.combat().getCombatDominantClass(killingBlowM,killedM);
                     Set<MOB> combatBeneficiaries=CMLib.combat().getCombatBeneficiaries(killingBlowM,killedM,combatCharClass);
-                    for(Iterator i=combatBeneficiaries.iterator();i.hasNext();)
+                    for(Iterator<MOB> i=combatBeneficiaries.iterator();i.hasNext();)
                         executeChange((MOB)i.next(),killedM,eventC);
                 }
             }
@@ -1084,7 +1083,7 @@ public class DefaultFaction implements Faction, MsgListener
                 {
                     // Now execute the changes on the relation.  We do this AFTER the execution of the first so
                     // that any changes from okMessage are incorporated
-                    for(Enumeration e=relations.keys();e.hasMoreElements();)
+                    for(Enumeration<String> e=relations.keys();e.hasMoreElements();)
                     {
                         String relID=((String)e.nextElement());
                         FacMsg=CMClass.getMsg(source,target,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,relID);
@@ -1105,7 +1104,7 @@ public class DefaultFaction implements Faction, MsgListener
      public String usageFactorRangeDescription(Ability A)
      {
          StringBuffer rangeStr=new StringBuffer();
-         HashSet namesAdded=new HashSet();
+         HashSet<String> namesAdded=new HashSet<String>();
          for(FactionAbilityUsage usage : abilityUsages)
          {
              if((usage.possibleAbilityID()&&usage.abilityFlags().equalsIgnoreCase(A.ID()))
@@ -1114,7 +1113,7 @@ public class DefaultFaction implements Faction, MsgListener
                  &&((usage.notflag()<0)||(!CMath.bset(A.flags(),usage.notflag())))
                  &&((usage.domain()<0)||((A.classificationCode()&Ability.ALL_DOMAINS)==usage.domain()))))
              {
-                for(Enumeration e=ranges();e.hasMoreElements();)
+                for(Enumeration<FactionRange> e=ranges();e.hasMoreElements();)
                 {
                      FactionRange R=(FactionRange)e.nextElement();
                      if((((R.high()<=usage.high())&&(R.high()>=usage.low()))
@@ -1258,7 +1257,7 @@ public class DefaultFaction implements Faction, MsgListener
         	if(newVal.trim().length()>0)
         		compiledTargetZapper=CMLib.masking().maskCompile(newVal);
         }
-        public Vector compiledTargetZapper(){return compiledTargetZapper;}
+		public Vector compiledTargetZapper(){return compiledTargetZapper;}
         public Vector compiledSourceZapper(){return compiledSourceZapper;}
 		public String getTriggerParm(String parmName) {
 			if((triggerParms==null)||(triggerParms.length()==0))
@@ -1374,7 +1373,7 @@ public class DefaultFaction implements Faction, MsgListener
         public void setFlags(String newFlagCache)
         {
             flagCache=newFlagCache.toUpperCase().trim();
-            Vector flags=CMParms.parse(flagCache);
+            Vector<String> flags=CMParms.parse(flagCache);
             if(flags.contains("OUTSIDER")) outsiderTargetOK=true;
             if(flags.contains("SELFOK")) selfTargetOK=true;
             if(flags.contains("JUST100")) just100=true;
@@ -1448,7 +1447,7 @@ public class DefaultFaction implements Faction, MsgListener
         public DefaultFactionRange(Faction F, String key)
         {
             myFaction=F;
-            Vector v = CMParms.parseSemicolons(key,false);
+            Vector<String> v = CMParms.parseSemicolons(key,false);
             Name = (String) v.elementAt(2);
             low = CMath.s_int( (String) v.elementAt(0));
             high = CMath.s_int( (String) v.elementAt(1));
@@ -1497,12 +1496,12 @@ public class DefaultFaction implements Faction, MsgListener
         private long 		lastUpdated;
         private Ability[] 	myEffects;
         private Behavior[] 	myBehaviors;
-        private DVector 	currentReactionSets;
         private Ability 	lightPresenceAbilities[];
         private Faction.FactionRange currentRange;
         private boolean 	erroredOut;
         private Faction 	myFaction;
         public  boolean 	isReset = false;
+        private DVector 	currentReactionSets;
         
         public DefaultFactionData(Faction F)
         {
@@ -1549,16 +1548,16 @@ public class DefaultFaction implements Faction, MsgListener
 	        		{
 	        			erroredOut=false;
 	        			currentReactionSets=new DVector(2);
-	        			for(Enumeration e=reactions();e.hasMoreElements();)
+	        			for(Enumeration<Faction.FactionReactionItem> e=reactions();e.hasMoreElements();)
 	        			{
 	        				Faction.FactionReactionItem react = (Faction.FactionReactionItem)e.nextElement();
 	        				if(!react.rangeName().equalsIgnoreCase(currentRange.codeName()))
 	        					continue;
 	        				Faction.FactionReactionItem sampleReact = null;
-	        				Vector reactSet=null;
+	        				Vector<Faction.FactionReactionItem> reactSet=null;
 	        				for(int r=0;r<currentReactionSets.size();r++)
 	        				{
-	        					reactSet=(Vector)currentReactionSets.elementAt(r,2);
+	        					reactSet=(Vector<Faction.FactionReactionItem>)currentReactionSets.elementAt(r,2);
 	        					sampleReact=(Faction.FactionReactionItem)reactSet.firstElement();
 	        					if(react.presentMOBMask().trim().equalsIgnoreCase(sampleReact.presentMOBMask().trim()))
 	        					{
@@ -1567,7 +1566,7 @@ public class DefaultFaction implements Faction, MsgListener
 	        					}
 	        				}
 	        				if(react!=null)
-	        					currentReactionSets.addElement(react.compiledPresentMOBMask(),new XVector(react));
+	        					currentReactionSets.addElement(react.compiledPresentMOBMask(),new XVector<Faction.FactionReactionItem>(react));
 	        			}
 	        			//noReactions=currentReactionSets.size()==0;
 	        		}
@@ -1605,15 +1604,15 @@ public class DefaultFaction implements Faction, MsgListener
         
         private Ability setPresenceReaction(MOB M, Physical myHost)
         {
-	    	Vector myReactions=null;
-	    	Vector tempReactSet=null;
+	    	Vector<Object> myReactions=null;
+	    	Vector<Faction.FactionReactionItem> tempReactSet=null;
 	    	Faction.FactionReactionItem reactionItem = null;
 	    	for(int d=0;d<currentReactionSets.size();d++)
 	    		if(CMLib.masking().maskCheck((Vector)currentReactionSets.elementAt(d,1),M,true))
 	    		{
-	    			if(myReactions==null) myReactions=new Vector();
+	    			if(myReactions==null) myReactions=new Vector<Object>();
 	    			tempReactSet=(Vector)currentReactionSets.elementAt(d,2);
-	    			for(Enumeration e=tempReactSet.elements();e.hasMoreElements();)
+	    			for(Enumeration<Faction.FactionReactionItem> e=tempReactSet.elements();e.hasMoreElements();)
 	    			{
 		    			reactionItem=(Faction.FactionReactionItem)e.nextElement();
 		    			myReactions.add(reactionItem.reactionObjectID()+"="+reactionItem.parameters());
@@ -1850,7 +1849,7 @@ public class DefaultFaction implements Faction, MsgListener
         public DefaultFactionAbilityUsage(){}
         public DefaultFactionAbilityUsage(String key)
         {
-            Vector v = CMParms.parseSemicolons(key,false);
+            Vector<String> v = CMParms.parseSemicolons(key,false);
             setAbilityFlag((String)v.firstElement());
             low = CMath.s_int( (String) v.elementAt(1));
             high = CMath.s_int( (String) v.elementAt(2));
@@ -1863,8 +1862,8 @@ public class DefaultFaction implements Faction, MsgListener
         public List<String> setAbilityFlag(String str)
         {
             ID=str;
-            Vector flags=CMParms.parse(ID);
-            Vector unknowns=new Vector();
+            Vector<String> flags=CMParms.parse(ID);
+            Vector<String> unknowns=new Vector<String>();
             possibleAbilityID=false;
             for(int f=0;f<flags.size();f++)
             {

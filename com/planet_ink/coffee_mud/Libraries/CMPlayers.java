@@ -443,7 +443,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
         Vector maskV=CMParms.parseCommas(mask.trim(),false);
         for(int mv=0;mv<maskV.size();mv++)
         {
-            Vector V=CMParms.parse(((String)maskV.elementAt(mv)).trim());
+            Vector<String> V=CMParms.parse(((String)maskV.elementAt(mv)).trim());
             if(V.size()<2) continue;
             long val=CMath.s_long((String)V.elementAt(1));
             if(val<=0) continue;

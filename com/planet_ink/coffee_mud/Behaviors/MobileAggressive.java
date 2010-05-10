@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class MobileAggressive extends Mobile
 {
 	public String ID(){return "MobileAggressive";}
@@ -55,7 +54,7 @@ public class MobileAggressive extends Mobile
 		tickWait=CMParms.getParmInt(newParms,"delay",0);
 		attackMsg=CMParms.getParmStr(newParms,"MESSAGE",null);
 		tickDown=tickWait;
-		Vector V=CMParms.parse(newParms.toUpperCase());
+		Vector<String> V=CMParms.parse(newParms.toUpperCase());
 		mobkill=V.contains("MOBKILL");
 		misbehave=V.contains("MISBEHAVE");
 	}

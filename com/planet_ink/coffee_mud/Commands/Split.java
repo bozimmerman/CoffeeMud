@@ -82,14 +82,14 @@ public class Split extends StdCommand
 			mob.tell("You don't have that much "+CMLib.beanCounter().getDenominationName(currency,denom)+".");
 			return false;
 		}
-		Vector V=CMLib.beanCounter().makeAllCurrency(currency,totalAbsoluteValue);
+		List<Coins> V=CMLib.beanCounter().makeAllCurrency(currency,totalAbsoluteValue);
 		CMLib.beanCounter().subtractMoney(mob,totalAbsoluteValue*num);
 		for(Iterator e=H.iterator();e.hasNext();)
 		{
 			MOB recipient=(MOB)e.next();
 			for(int v=0;v<V.size();v++)
 			{
-			    Coins C=(Coins)V.elementAt(v);
+			    Coins C=(Coins)V.get(v);
 			    C=(Coins)C.copyOf();
 				mob.addItem(C);
 				CMMsg newMsg=CMClass.getMsg(mob,recipient,C,CMMsg.MSG_GIVE,"<S-NAME> give(s) <O-NAME> to <T-NAMESELF>.");

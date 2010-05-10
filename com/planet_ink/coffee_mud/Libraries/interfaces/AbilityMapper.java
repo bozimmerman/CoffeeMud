@@ -34,7 +34,6 @@ import java.util.*;
  * @author Owner
  *
  */
-@SuppressWarnings("unchecked")
 public interface AbilityMapper extends CMLibrary
 {
     public static class AbilityMapping
@@ -58,9 +57,9 @@ public interface AbilityMapper extends CMLibrary
     }
     
     public void addCharAbilityMapping(String ID, int qualLevel, String ability, boolean autoGain);
-    public void addCharAbilityMapping(String ID, int qualLevel, String ability, boolean autoGain, Vector preReqSkillsList);
+    public void addCharAbilityMapping(String ID, int qualLevel, String ability, boolean autoGain, List<String> preReqSkillsList);
     public void addCharAbilityMapping(String ID, int qualLevel, String ability, boolean autoGain, String extraMasks);
-    public void addCharAbilityMapping(String ID, int qualLevel, String ability, boolean autoGain, Vector preReqSkillsList, String extraMasks);
+    public void addCharAbilityMapping(String ID, int qualLevel, String ability, boolean autoGain, List<String> preReqSkillsList, String extraMasks);
     public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, String defParm, boolean autoGain);
     public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, String defParm, boolean autoGain, String extraMasks);
     public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, boolean autoGain);
@@ -71,22 +70,22 @@ public interface AbilityMapper extends CMLibrary
 									  String defaultParam, boolean autoGain, boolean secret, String extraMasks);
 	public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, 
 									  String defaultParam, boolean autoGain, boolean secret,
-									  Vector preReqSkillsList, String extraMask);
+									  List<String> preReqSkillsList, String extraMask);
     public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, 
     								  int maxProficiency, String defaultParam, boolean autoGain, boolean secret);
     public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, 
     								  int maxProficiency, String defaultParam, boolean autoGain, boolean secret, String extraMasks);
     public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, 
     								  int maxProficiency, String defaultParam, boolean autoGain, boolean secret,
-    								  Vector preReqSkillsList, String extraMask);
+    								  List<String> preReqSkillsList, String extraMask);
     public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, 
                                       int maxProficiency, String defaultParam, boolean autoGain, boolean secret,
-                                      Vector preReqSkillsList, String extraMask, Integer[] costOverrides);
+                                      List<String> preReqSkillsList, String extraMask, Integer[] costOverrides);
     public void delCharAbilityMapping(String ID, String ability);
     
-	public void addPreRequisites(String ID, Vector preReqSkillsList, String extraMask);
+	public void addPreRequisites(String ID, List<String> preReqSkillsList, String extraMask);
     public void delCharMappings(String ID);
-    public Enumeration getClassAbles(String ID, boolean addAll);
+    public Enumeration<AbilityMapping> getClassAbles(String ID, boolean addAll);
     public boolean qualifiesByAnyCharClass(String abilityID);
     public int lowestQualifyingLevel(String ability);
     public boolean classOnly(String classID, String abilityID);
@@ -95,7 +94,7 @@ public interface AbilityMapper extends CMLibrary
 	public int numMappedAbilities();
 	public Iterator<String> getAbilityAllowsList(String ableID);
     public DVector getClassAllowsList(String ID);
-    public Vector getLevelListings(String ID, boolean checkAll, int level);
+    public List<String> getLevelListings(String ID, boolean checkAll, int level);
     public DVector getUpToLevelListings(String ID, int level, boolean ignoreAll, boolean gainedOnly);
     public int getQualifyingLevel(String ID, boolean checkAll, String ability);
     public int qualifyingLevel(MOB student, Ability A);
@@ -129,15 +128,15 @@ public interface AbilityMapper extends CMLibrary
     public int getMaxProficiency(String ID, boolean checkAll, String ability);
 	public int getMaxProficiency(String abilityID);
 	public int getMaxProficiency(MOB mob, boolean checkAll, String ability);
-	public Vector componentCheck(MOB mob, Vector<AbilityComponent> req);
+	public List<Object> componentCheck(MOB mob, List<AbilityComponent> req);
 	public String getAbilityComponentDesc(MOB mob, String AID);
 	public Hashtable<String, Vector<AbilityComponent>> getAbilityComponentMap();
 	public String addAbilityComponent(String s, Hashtable<String, Vector<AbilityComponent>> H);
     public String getAbilityComponentCodedString(String AID);
     public Vector<AbilityComponent> getAbilityComponentDVector(String AID);
     public String getAbilityComponentDesc(MOB mob, Vector<AbilityComponent> req, int r);
-    public Vector getAbilityComponentDecodedDVectors(Vector<AbilityComponent> req);
-    public Vector getAbilityComponentDecodedDVectors(String AID);
+    public Vector<DVector> getAbilityComponentDecodedDVectors(Vector<AbilityComponent> req);
+    public Vector<DVector> getAbilityComponentDecodedDVectors(String AID);
     public void setAbilityComponentCodedFromDecodedDVector(DVector decodedDV, Vector<AbilityComponent> codedDV, int row);
     public DVector getAbilityComponentDecodedDVector(Vector<AbilityComponent> codedDV, int r);
     public void addBlankAbilityComponent(Vector<AbilityComponent> codedDV);

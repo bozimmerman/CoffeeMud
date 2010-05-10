@@ -507,7 +507,7 @@ public class FactionData extends StdWebMacro
                             Faction.FactionAbilityUsage E=(Faction.FactionAbilityUsage)e.nextElement();
                             if(!E.possibleAbilityID()||CMClass.getAbility(E.abilityFlags())==null)
                             {
-                                Vector V=CMParms.parse(E.abilityFlags());
+                                Vector<String> V=CMParms.parse(E.abilityFlags());
                                 String id="";
                                 int x=-1;
                                 for(Enumeration e2=V.elements();e2.hasMoreElements();id="_"+(++x))

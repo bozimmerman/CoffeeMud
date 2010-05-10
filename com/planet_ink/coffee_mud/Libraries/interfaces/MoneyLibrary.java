@@ -64,7 +64,7 @@ public interface MoneyLibrary extends CMLibrary
     public Coins makeBestCurrency(MOB mob, double absoluteValue);
     public Coins makeCurrency(String currency, double denomination, long numberOfCoins);
     public Coins makeBestCurrency(String currency, double absoluteValue);
-    public Vector makeAllCurrency(String currency, double absoluteValue);
+    public List<Coins> makeAllCurrency(String currency, double absoluteValue);
     public void addMoney(MOB customer, int absoluteValue);
     public void addMoney(MOB customer, double absoluteValue);
     public void addMoney(MOB customer, String currency, int absoluteValue);

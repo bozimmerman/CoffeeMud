@@ -48,7 +48,7 @@ public class Prop_WeaponImmunity extends Property
 	{
 	    super.setMiscText(newValue);
 	    flags=new Hashtable();
-	    Vector V=CMParms.parse(newValue.toUpperCase());
+	    Vector<String> V=CMParms.parse(newValue.toUpperCase());
 	    Object c=null;
 	    String s=null;
 	    for(int v=0;v<V.size();v++)

@@ -30,13 +30,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class FakeSession implements Session
 {
-    CMFile theFile=null;
-    ByteArrayOutputStream bout=null;
-    MOB mob = null;
-    Vector inputV = new Vector();
+	protected CMFile theFile=null;
+    protected ByteArrayOutputStream bout=null;
+    protected MOB mob = null;
+    protected Vector<String> inputV = new Vector<String>();
     
     public boolean tick(Tickable ticking, int tickID){return false;}
     public String ID(){return "FakeSession";}
@@ -142,7 +141,8 @@ public class FakeSession implements Session
     public boolean amBeingSnoopedBy(Session S){return S==this;}
     public int snoopSuspension(int x){return 0;}
     
-    public void cmdExit(MOB mob, Vector commands) throws Exception {}
+    @SuppressWarnings("unchecked")
+	public void cmdExit(MOB mob, Vector commands) throws Exception {}
     public void kill(boolean t1, boolean t2, boolean t3){}
     public boolean killFlag(){return false;}
     
@@ -178,7 +178,7 @@ public class FakeSession implements Session
     public void setLastNPCFight(){}
     public long lastLoopTime(){return 0;}
 	public void updateLoopTime(){}
-    public List<String> getLastMsgs(){return new Vector();}
+    public List<String> getLastMsgs(){return new Vector<String>();}
     
     public void setServerTelnetMode(int telnetCode, boolean onOff){}
     public boolean serverTelnetMode(int telnetCode){return false;}

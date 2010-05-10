@@ -139,7 +139,7 @@ public class RandomTraps extends ActiveTicker
 				doAnyLockedDoors=false;
 			}
 
-			Vector V=CMParms.parse(oldParms);
+			Vector<String> V=CMParms.parse(oldParms);
 			for(int v=0;v<V.size();v++)
 			{
 				String s=(String)V.elementAt(v);

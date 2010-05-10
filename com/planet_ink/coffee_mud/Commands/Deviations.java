@@ -160,7 +160,7 @@ public class Deviations extends StdCommand
 
 	public StringBuffer deviations(MOB mob, String rest)
 	{
-		Vector V=CMParms.parse(rest);
+		Vector<String> V=CMParms.parse(rest);
 		if((V.size()==0)
 		||((!((String)V.firstElement()).equalsIgnoreCase("mobs"))
 		   &&(!((String)V.firstElement()).equalsIgnoreCase("items"))

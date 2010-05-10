@@ -97,7 +97,7 @@ public class Skill_Enslave extends StdSkill
 					    if((msg.target()==mob)
 					    &&(msg.source().Name().equals(mob.getLiegeID())))
 					    {
-					        Vector V=CMParms.parse(response.toUpperCase());
+					        Vector<String> V=CMParms.parse(response.toUpperCase());
 					        if(V.contains("STOP")||V.contains("CANCEL"))
 					        {
 					            CMLib.commands().postSay(mob,msg.source(),"Yes master.",false,false);

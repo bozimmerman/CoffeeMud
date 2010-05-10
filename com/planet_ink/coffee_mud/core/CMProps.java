@@ -35,7 +35,6 @@ import java.io.ByteArrayInputStream;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class CMProps extends Properties
 {
     private static CMProps[] props=new CMProps[256];
@@ -1062,6 +1061,7 @@ public class CMProps extends Properties
         return pre+"^<IMAGE '"+fixedFilenames[1]+"' URL=\""+fixedFilenames[0]+"\" "+parms+"^>^N"+post;
     }
 
+    @SuppressWarnings("unchecked")
 	public static String getHashedMXPImage(String key)
     {
         Hashtable<String,String> H=(Hashtable)Resources.getResource("MXP_IMAGES");
@@ -1081,6 +1081,7 @@ public class CMProps extends Properties
         return s;
     }
 
+    @SuppressWarnings("unchecked")
     public static String getDefaultMXPImage(Object O)
     {
         if((getVar(SYSTEM_MXPIMAGEPATH).length()==0)

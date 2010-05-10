@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class DefaultPoll implements Poll
 {
     public String ID(){return "DefaultPoll";}
@@ -59,8 +58,8 @@ public class DefaultPoll implements Poll
     protected long 			   expiration=0;
     protected long 			   bitmap=0;
     protected String 		   qualZapper="";
-    protected List<PollOption> options=new Vector();
-    protected List<PollResult> results=new Vector();
+    protected List<PollOption> options=new Vector<PollOption>();
+    protected List<PollResult> results=new SVector<PollResult>();
     
     public boolean loaded(){return loaded;}
     public void setLoaded(boolean truefalse){ loaded=truefalse;}

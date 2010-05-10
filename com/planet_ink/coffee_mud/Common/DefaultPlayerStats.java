@@ -33,48 +33,48 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class DefaultPlayerStats implements PlayerStats
 {
     public String ID(){return "DefaultPlayerStats";}
     protected final static int TELL_STACK_MAX_SIZE=50;
     protected final static int GTELL_STACK_MAX_SIZE=50;
-    protected long Hygiene=0; 
-	
-    protected HashSet<String> friends=new HashSet<String>();
-    protected HashSet<String> ignored=new HashSet<String>();
-	protected SVector<String> tellStack=new SVector<String>();
-	protected SVector<String> gtellStack=new SVector<String>();
-	protected SVector<String> titles=new SVector<String>();
-    protected STreeMap<String,String> alias=new STreeMap<String,String>();
-    protected String[] xtraValues=null;
-	protected String lastIP="";
-    protected long LastDateTime=System.currentTimeMillis();
-    protected long lastUpdated=0;
-	protected int channelMask;
-	protected String email="";
-	protected String Password="";
-	protected String colorStr="";
-	protected String prompt="";
-	protected String poofin="";
-	protected String poofout="";						  
-	protected String tranpoofin="";
-	protected String tranpoofout="";
-    protected String announceMsg="";
-    protected String notes="";
+    
+    protected long 		hygiene=0; 
+    protected String[] 	xtraValues=null;
+	protected String 	lastIP="";
+    protected long 		lLastDateTime=System.currentTimeMillis();
+    protected long 		lastUpdated=0;
+	protected int 		channelMask;
+	protected String 	email="";
+	protected String 	password="";
+	protected String 	colorStr="";
+	protected String 	prompt="";
+	protected String 	poofin="";
+	protected String 	poofout="";						  
+	protected String 	tranpoofin="";
+	protected String 	tranpoofout="";
+    protected String 	announceMsg="";
+    protected String 	notes="";
+	protected int 		wrap=78;
+	protected int 		pageBreak=CMProps.getIntVar(CMProps.SYSTEMI_PAGEBREAK);;
+    protected int[] 	birthday=null;
+	protected MOB 		replyTo=null;
+	protected int 		replyType=0;
+	protected long 		replyTime=0;
     protected PlayerAccount account = null;
-	protected int wrap=78;
-	protected int pageBreak=CMProps.getIntVar(CMProps.SYSTEMI_PAGEBREAK);;
-    protected int[] birthday=null;
-	protected MOB replyTo=null;
-	protected int replyType=0;
-	protected long replyTime=0;
+    protected SHashSet<String>	friends=new SHashSet<String>();
+    protected SHashSet<String> 	ignored=new SHashSet<String>();
+	protected SVector<String> 	tellStack=new SVector<String>();
+	protected SVector<String> 	gtellStack=new SVector<String>();
+	protected SVector<String> 	titles=new SVector<String>();
+    protected STreeMap<String,String> alias=new STreeMap<String,String>();
+    
 	
-	protected Vector securityGroups=new Vector();
+	protected SVector<String> securityGroups=new SVector<String>();
     protected long accountExpiration=0;
     protected RoomnumberSet visitedRoomSet=null;
     protected DVector levelInfo=new DVector(3);
-    protected HashSet introductions=new HashSet();
+    protected SHashSet<String> introductions=new SHashSet<String>();
 
     public DefaultPlayerStats() {
         super();
@@ -98,7 +98,7 @@ public class DefaultPlayerStats implements PlayerStats
 		case 3: return getTitleXML();
 		case 4: return getAliasXML();
 		case 5: return lastIP;
-		case 6: return ""+LastDateTime;
+		case 6: return ""+lLastDateTime;
 		case 7: return ""+channelMask;
 		case 8: return colorStr;
 		case 9: return prompt;
@@ -127,7 +127,7 @@ public class DefaultPlayerStats implements PlayerStats
 		case 3: setTitleXML(CMLib.xml().parseAllXML(val)); break;
 		case 4: setAliasXML(CMLib.xml().parseAllXML(val)); break;
 		case 5: lastIP=val; break;
-		case 6: LastDateTime=CMath.s_long(val); break;
+		case 6: lLastDateTime=CMath.s_long(val); break;
 		case 7: channelMask=CMath.s_int(val); break;
 		case 8: colorStr=val; break;
 		case 9: prompt=val; break;
@@ -181,9 +181,9 @@ public class DefaultPlayerStats implements PlayerStats
                 O.visitedRoomSet=(RoomnumberSet)visitedRoomSet.copyOf();
             else
                 O.visitedRoomSet=null;
-            O.securityGroups=(Vector)securityGroups.clone();
-            O.friends=(HashSet<String>)friends.clone();
-            O.ignored=(HashSet<String>)ignored.clone();
+            O.securityGroups=securityGroups.copyOf();
+            O.friends=friends.copyOf();
+            O.ignored=ignored.copyOf();
             O.tellStack=tellStack.copyOf();
             O.gtellStack=gtellStack.copyOf();
             O.titles=titles.copyOf();
@@ -224,17 +224,17 @@ public class DefaultPlayerStats implements PlayerStats
 		if(account != null)
 			account.setLastUpdated(time);
 	}
-	public long lastDateTime(){return LastDateTime;}
+	public long lastDateTime(){return lLastDateTime;}
 	public void setLastDateTime(long C)
 	{ 
-		LastDateTime=C;
+		lLastDateTime=C;
 		if(account != null)
 			account.setLastDateTime(C);
 	}
-	public String password(){return (account!=null)?account.password():Password;}
+	public String password(){return (account!=null)?account.password():password;}
 	public void setPassword(String newPassword)
 	{
-		Password=newPassword;
+		password=newPassword;
 		if(account != null)
 			account.setPassword(newPassword);
 	}
@@ -277,9 +277,9 @@ public class DefaultPlayerStats implements PlayerStats
             introductions.add(name.toUpperCase().trim());
     }
     
-	public HashSet getHashFrom(String str)
+	public SHashSet<String> getHashFrom(String str)
 	{
-		HashSet h=new HashSet();
+		SHashSet<String> h=new SHashSet<String>();
 		if((str==null)||(str.length()==0)) return h;
 		str=CMStrings.replaceAll(str,"<FRIENDS>","");
 		str=CMStrings.replaceAll(str,"<IGNORED>","");
@@ -309,7 +309,7 @@ public class DefaultPlayerStats implements PlayerStats
 	
 	public List<String> getTellStack()
 	{
-		return new ReadOnlyList(tellStack);
+		return new ReadOnlyList<String>(tellStack);
 	}
     public RoomnumberSet roomSet()
     {
@@ -326,16 +326,16 @@ public class DefaultPlayerStats implements PlayerStats
 	
 	public List<String> getGTellStack()
 	{
-		return new ReadOnlyList(gtellStack);
+		return new ReadOnlyList<String>(gtellStack);
 	}
 	
-	public HashSet getFriends()
+	public Set<String> getFriends()
 	{
 		if(account != null)
 			return account.getFriends();
 		return friends;
 	}
-	public HashSet<String> getIgnored()
+	public Set<String> getIgnored()
 	{
 		if(account != null)
 			return account.getIgnored();
@@ -442,11 +442,11 @@ public class DefaultPlayerStats implements PlayerStats
 	    return (R.getAgingChart()[Race.AGE_YOUNGADULT]+C.getYear()-birthday[2]);
 	}
 	
-	protected String getPrivateList(HashSet h)
+	protected String getPrivateList(Set<String> h)
 	{
 		if((h==null)||(h.size()==0)) return "";
 		StringBuffer list=new StringBuffer("");
-		for(Iterator e=h.iterator();e.hasNext();)
+		for(Iterator<String> e=h.iterator();e.hasNext();)
 			list.append(((String)e.next())+";");
 		return list.toString();
 	}
@@ -489,7 +489,7 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		if((bday!=null)&&(bday.length()>0))
 		{
-		    Vector V=CMParms.parseCommas(bday,true);
+		    Vector<String> V=CMParms.parseCommas(bday,true);
 		    birthday=new int[3];
 		    for(int v=0;v<V.size();v++)
 		        birthday[v]=CMath.s_int((String)V.elementAt(v));
@@ -586,11 +586,11 @@ public class DefaultPlayerStats implements PlayerStats
         levelInfo.clear();
         if(dates.length()>0)
         {
-            Vector sets=CMParms.parseSemicolons(dates,true);
+            Vector<String> sets=CMParms.parseSemicolons(dates,true);
             for(int ss=0;ss<sets.size();ss++)
             {
                 String sStr=(String)sets.elementAt(ss);
-                Vector twin=CMParms.parseCommas(sStr,true);
+                Vector<String> twin=CMParms.parseCommas(sStr,true);
                 if((twin.size()!=2)&&(twin.size()!=3))  continue;
                 if(CMath.s_int((String)twin.firstElement())>=lastNum)
                 {
@@ -637,7 +637,7 @@ public class DefaultPlayerStats implements PlayerStats
     
     protected void setSecurityGroupStr(String grps)
 	{
-		securityGroups=new Vector();
+		securityGroups=new SVector<String>();
 		if((grps==null)||(grps.trim().length()==0))	
 			return;
 		int x=grps.indexOf(";");
@@ -655,7 +655,7 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		if(securityGroups.size()==0) return "";
 		StringBuffer list=new StringBuffer("");
-		for(Iterator e=securityGroups.iterator();e.hasNext();)
+		for(Iterator<String> e=securityGroups.iterator();e.hasNext();)
 			list.append(((String)e.next())+";");
 		return "<SECGRPS>"+list.toString()+"</SECGRPS>";
 		
@@ -669,14 +669,14 @@ public class DefaultPlayerStats implements PlayerStats
 		tranpoofout=tranPoofOut;
 	}
 	
-	public long getHygiene(){return Hygiene;}
-	public void setHygiene(long newVal){Hygiene=newVal;}
+	public long getHygiene(){return hygiene;}
+	public void setHygiene(long newVal){hygiene=newVal;}
 	public boolean adjHygiene(long byThisMuch)
 	{
-	    Hygiene+=byThisMuch;
-		if(Hygiene<1)
+	    hygiene+=byThisMuch;
+		if(hygiene<1)
 		{
-		    Hygiene=0;
+		    hygiene=0;
 			return false;
 		}
 		return true;
@@ -719,7 +719,7 @@ public class DefaultPlayerStats implements PlayerStats
         {
             long totalRooms=0;
             long totalVisits=0;
-            for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+            for(Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
             {
                 A=(Area)e.nextElement();
                 if((CMLib.flags().canAccess(mob,A))

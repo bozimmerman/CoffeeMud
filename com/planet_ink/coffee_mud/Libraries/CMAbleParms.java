@@ -50,7 +50,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         super();
     }
     
-    public Vector getCodedSpells(String spells)
+    public List<Ability> getCodedSpells(String spells)
     {
         Vector spellsV=new Vector(); 
         if(spells.length()==0) return spellsV;
@@ -911,21 +911,21 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         return CMClass.getAbility(oldVal.substring(0,y))!=null;
                     }
                     public String defaultValue(){ return "";}
-                    public String rebuild(Vector spells) throws CMException
+                    public String rebuild(List<Ability> spells) throws CMException
                     {
                         StringBuffer newVal = new StringBuffer("");
                         if(spells.size()==1)
-                            newVal.append("*" + ((Ability)spells.firstElement()).ID() + ";" + ((Ability)spells.firstElement()).text());
+                            newVal.append("*" + ((Ability)spells.get(0)).ID() + ";" + ((Ability)spells.get(0)).text());
                         else
                             if(spells.size()>1) {
                                 for(int s=0;s<spells.size();s++)
                                 {
-                                    String txt = ((Ability)spells.elementAt(s)).text().trim();
+                                    String txt = ((Ability)spells.get(s)).text().trim();
                                     if((txt.indexOf(';')>=0)||(CMClass.getAbility(txt)!=null))
                                         throw new CMException("You may not have more than one spell when one of the spells parameters is a spell id or a ; character.");
-                                    newVal.append(((Ability)spells.elementAt(s)).ID());
+                                    newVal.append(((Ability)spells.get(s)).ID());
                                     if(txt.length()>0)
-                                        newVal.append(";" + ((Ability)spells.elementAt(s)).text());
+                                        newVal.append(";" + ((Ability)spells.get(s)).text());
                                     if(s<(spells.size()-1))
                                         newVal.append(";");
                                 }
@@ -935,18 +935,19 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     public String[] fakeUserInput(String oldVal) {
                         Vector V = new Vector();
                         Vector V2 = new Vector();
-                        Vector spells=CMLib.ableParms().getCodedSpells(oldVal);
+                        List<Ability> spells=CMLib.ableParms().getCodedSpells(oldVal);
                         for(int s=0;s<spells.size();s++) {
-                            V.addElement(((Ability)spells.elementAt(s)).ID());
-                            V2.addElement(((Ability)spells.elementAt(s)).ID());
-                            V2.addElement(((Ability)spells.elementAt(s)).text());
+                            V.addElement(((Ability)spells.get(s)).ID());
+                            V2.addElement(((Ability)spells.get(s)).ID());
+                            V2.addElement(((Ability)spells.get(s)).text());
                         }
                         V.addAll(V2);
                         V.addElement("");
                         return CMParms.toStringArray(V);
                     }
-                    public String webValue(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
-                        Vector spells=null;
+                    public String webValue(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) 
+                    {
+                    	List<Ability> spells=null;
                         if(httpReq.isRequestParameter(fieldName+"_AFFECT1"))
                         {
                             spells = new Vector();
@@ -960,7 +961,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                                     Ability A=CMClass.getAbility(behav);
                                     if(theparm.trim().length()>0)
                                         A.setMiscText(theparm);
-                                    spells.addElement(A);
+                                    spells.add(A);
                                 }
                                 num++;
                                 behav=httpReq.getRequestParameter(fieldName+"_AFFECT"+num);
@@ -976,12 +977,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         }
                     }
                     public String webField(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName) {
-                        Vector spells=CMLib.ableParms().getCodedSpells(webValue(httpReq,parms,oldVal,fieldName));
+                    	List<Ability> spells=CMLib.ableParms().getCodedSpells(webValue(httpReq,parms,oldVal,fieldName));
                         StringBuffer str = new StringBuffer("");
                         str.append("<TABLE WIDTH=100% BORDER=\"1\" CELLSPACING=0 CELLPADDING=0>");
                         for(int i=0;i<spells.size();i++)
                         {
-                            Ability A=(Ability)spells.elementAt(i);
+                            Ability A=(Ability)spells.get(i);
                             str.append("<TR><TD WIDTH=50%>");
                             str.append("\n\r<SELECT ONCHANGE=\"EditAffect(this);\" NAME="+fieldName+"_AFFECT"+(i+1)+">");
                             str.append("<OPTION VALUE=\"\">Delete!");
@@ -1010,10 +1011,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     }
                     public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
                     {
-                        Vector spells=CMLib.ableParms().getCodedSpells(oldVal);
+                    	List<Ability> spells=CMLib.ableParms().getCodedSpells(oldVal);
                         StringBuffer rawCheck = new StringBuffer("");
                         for(int s=0;s<spells.size();s++)
-                            rawCheck.append(((Ability)spells.elementAt(s)).ID()).append(";").append(((Ability)spells.elementAt(s)).text()).append(";");
+                            rawCheck.append(((Ability)spells.get(s)).ID()).append(";").append(((Ability)spells.get(s)).text()).append(";");
                         boolean okToProceed = true;
                         ++showNumber[0];
                         String newVal = null;
@@ -1022,7 +1023,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                             CMLib.genEd().spells(mob,spells,showNumber[0],showFlag,true);
                             StringBuffer sameCheck = new StringBuffer("");
                             for(int s=0;s<spells.size();s++)
-                                sameCheck.append(((Ability)spells.elementAt(s)).ID()).append(';').append(((Ability)spells.elementAt(s)).text()).append(';');
+                                sameCheck.append(((Ability)spells.get(s)).ID()).append(';').append(((Ability)spells.get(s)).text()).append(';');
                             if(sameCheck.toString().equals(rawCheck.toString())) 
                                 return oldVal;
                             try {

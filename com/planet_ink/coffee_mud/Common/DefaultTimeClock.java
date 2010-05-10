@@ -35,7 +35,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class DefaultTimeClock implements TimeClock
 {
 	public String ID(){return "DefaultTimeClock";}
@@ -318,7 +317,7 @@ public class DefaultTimeClock implements TimeClock
 	{
 	    try
 	    {
-	    	for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+	    	for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 	    	{
 	    		Area A=(Area)a.nextElement();
 				if(A.getTimeObj()==this)
@@ -454,7 +453,7 @@ public class DefaultTimeClock implements TimeClock
 					timeRsc="<TIME>-1</TIME><DAY>1</DAY><MONTH>1</MONTH><YEAR>1</YEAR>";
 				else
 					timeRsc=((DatabaseEngine.PlayerData)bitV.get(0)).xml;
-				Vector V=CMLib.xml().parseAllXML(timeRsc);
+				Vector<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(timeRsc);
 				setTimeOfDay(CMLib.xml().getIntFromPieces(V,"TIME"));
 				setDayOfMonth(CMLib.xml().getIntFromPieces(V,"DAY"));
 				setMonth(CMLib.xml().getIntFromPieces(V,"MONTH"));

@@ -30,14 +30,26 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class DefaultMessage implements CMMsg
 {
     public String ID(){return "DefaultMessage";}
-    protected static final Hashtable MSGTYPE_DESCS=new Hashtable();
+    protected static final Hashtable<Object,Object> MSGTYPE_DESCS=new Hashtable<Object,Object>();
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultMessage();}}
     public void initializeClass(){}
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    
+	protected int 			targetCode=0;
+	protected int 			sourceCode=0;
+	protected int 			othersCode=0;
+	protected String 		targetMsg=null;
+	protected String 		othersMsg=null;
+	protected String 		sourceMsg=null;
+	protected MOB 			myAgent=null;
+	protected Environmental myTarget=null;
+	protected Environmental myTool=null;
+	protected int 			value=0;
+	protected SVector<CMMsg>trailMsgs=null;
+
     public CMObject copyOf()
     {
         try
@@ -50,18 +62,6 @@ public class DefaultMessage implements CMMsg
         }
     }
     
-	protected int targetCode=0;
-	protected int sourceCode=0;
-	protected int othersCode=0;
-	protected String targetMsg=null;
-	protected String othersMsg=null;
-	protected String sourceMsg=null;
-	protected MOB myAgent=null;
-	protected Environmental myTarget=null;
-	protected Environmental myTool=null;
-	protected int value=0;
-	protected Vector trailMsgs=null;
-
     public void finalize() throws Throwable
     {
         targetCode=0;
@@ -151,7 +151,7 @@ public class DefaultMessage implements CMMsg
 		othersMsg=othersMessage;
 	}
 
-    protected static synchronized Hashtable getMSGTYPE_DESCS()
+    protected static synchronized Hashtable<Object,Object> getMSGTYPE_DESCS()
     {
         if(MSGTYPE_DESCS.size()!=0) return MSGTYPE_DESCS;
         for(int i=0;i<CMMsg.TYPE_DESCS.length;i++)
@@ -180,7 +180,7 @@ public class DefaultMessage implements CMMsg
 	{	return trailMsgs;}
 	public void addTrailerMsg(CMMsg msg)
 	{
-		if(trailMsgs==null) trailMsgs=new Vector();
+		if(trailMsgs==null) trailMsgs=new SVector<CMMsg>();
 		trailMsgs.addElement(msg);
 	}
 

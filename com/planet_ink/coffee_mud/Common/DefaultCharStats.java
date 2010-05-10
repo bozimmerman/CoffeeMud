@@ -34,7 +34,6 @@ import org.mozilla.javascript.ScriptableObject;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class DefaultCharStats implements CharStats
 {
     public String ID(){return "DefaultCharStats";}
@@ -128,7 +127,7 @@ public class DefaultCharStats implements CharStats
 	public void setMyClasses(String classes)
 	{
 		int x=classes.indexOf(";");
-		Vector MyClasses=new Vector();
+		ArrayList<CharClass> classV=new ArrayList<CharClass>();
         CharClass C=null;
 		while(x>=0)
 		{
@@ -138,7 +137,7 @@ public class DefaultCharStats implements CharStats
             {
                 C=CMClass.getCharClass(theClass);
                 if(C==null) C=CMClass.getCharClass("StdCharClass");
-                MyClasses.addElement(C);
+                classV.add(C);
             }
 			x=classes.indexOf(";");
 		}
@@ -146,32 +145,27 @@ public class DefaultCharStats implements CharStats
         {
             C=CMClass.getCharClass(classes.trim());
             if(C==null) C=CMClass.getCharClass("StdCharClass");
-            MyClasses.addElement(C);
+            classV.add(C);
         }
-		myClasses=new CharClass[MyClasses.size()];
-		for(int i=0;i<MyClasses.size();i++)
-			myClasses[i]=(CharClass)MyClasses.elementAt(i);
+		myClasses=classV.toArray(new CharClass[0]);
 	}
 	public void setMyLevels(String levels)
 	{
 		if((levels.length()==0)&&(myClasses!=null)&&(myClasses.length>0)) 
 			levels="0";
 		int x=levels.indexOf(";");
-		Vector MyLevels=new Vector();
+		ArrayList<Integer> levelV=new ArrayList<Integer>();
 		while(x>=0)
 		{
 			String theLevel=levels.substring(0,x).trim();
 			levels=levels.substring(x+1);
 			if(theLevel.length()>0)
-				MyLevels.addElement(Integer.valueOf(CMath.s_int(theLevel)));
+				levelV.add(Integer.valueOf(CMath.s_int(theLevel)));
 			x=levels.indexOf(";");
 		}
 		if(levels.trim().length()>0)
-			MyLevels.addElement(Integer.valueOf(CMath.s_int(levels)));
-		Integer[] myNewLevels=new Integer[MyLevels.size()];
-		for(int i=0;i<MyLevels.size();i++)
-			myNewLevels[i]=(Integer)MyLevels.elementAt(i);
-		myLevels=myNewLevels;
+			levelV.add(Integer.valueOf(CMath.s_int(levels)));
+		myLevels=levelV.toArray(new Integer[0]);
 	}
 	public String getMyClassesStr()
 	{
@@ -275,7 +269,7 @@ public class DefaultCharStats implements CharStats
 	}
 	public void setNonBaseStatsFromString(String str)
 	{
-		Vector V=CMParms.parseSemicolons(str,false);
+		Vector<String> V=CMParms.parseSemicolons(str,false);
 		CharStats.CODES C = CharStats.CODES.instance(); 
 		for(int x : C.all())
 			if((!C.isBase(x))&&(x!=CharStats.STAT_GENDER)&&(V.size()>0))
@@ -467,7 +461,7 @@ public class DefaultCharStats implements CharStats
 	
 	public void setBodyPartsFromStringAfterRace(String str)
 	{
-		Vector V=CMParms.parseSemicolons(str,true);
+		Vector<String> V=CMParms.parseSemicolons(str,true);
 		bodyAlterations=null;
 		for(int i=0;i<getMyRace().bodyMask().length;i++)
 		{

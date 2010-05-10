@@ -56,7 +56,7 @@ public class Aggressive extends StdBehavior
 		super.setParms(newParms);
 		tickWait=CMParms.getParmInt(newParms,"delay",0);
 		attackMessage=CMParms.getParmStr(newParms,"MESSAGE",null);
-		Vector V=CMParms.parse(newParms.toUpperCase());
+		Vector<String> V=CMParms.parse(newParms.toUpperCase());
 		wander=V.contains("WANDER");
 		mobkill=V.contains("MOBKILL")||(V.contains("MOBKILLER"));
 		misbehave=V.contains("MISBEHAVE");

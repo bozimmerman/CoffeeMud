@@ -134,7 +134,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         if(login.trim().indexOf(" ")>=0) return false;
 
         login=login.toUpperCase().trim();
-        Vector V=CMParms.parse(login);
+        Vector<String> V=CMParms.parse(login);
         for(int v=V.size()-1;v>=0;v--)
         {
             String str=(String)V.elementAt(v);

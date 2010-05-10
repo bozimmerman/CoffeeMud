@@ -608,7 +608,7 @@ public class Spell_Wish extends Spell
 				if(myWish.indexOf(" GAIN ")>=0)
 				{
 					level=1;
-					Vector V=CMParms.parse(myWish);
+					Vector<String> V=CMParms.parse(myWish);
 					for(int i2=1;i2<V.size();i2++)
 					{
 						if(((String)V.elementAt(i2)).equalsIgnoreCase("LEVELS"))
@@ -627,7 +627,7 @@ public class Spell_Wish extends Spell
 				if(myWish.indexOf(" LOSE" )>=0)
 				{
 					level=-1;
-					Vector V=CMParms.parse(myWish);
+					Vector<String> V=CMParms.parse(myWish);
 					for(int i2=1;i2<V.size();i2++)
 					{
 						if(((String)V.elementAt(i2)).equalsIgnoreCase("LEVELS"))
@@ -644,7 +644,7 @@ public class Spell_Wish extends Spell
 				}
 				else
 				{
-					Vector V=CMParms.parse(myWish);
+					Vector<String> V=CMParms.parse(myWish);
 					for(int i2=0;i2<V.size()-1;i2++)
 					{
 						if(((String)V.elementAt(i2)).equalsIgnoreCase("LEVEL"))

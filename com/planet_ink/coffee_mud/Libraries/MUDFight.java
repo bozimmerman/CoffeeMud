@@ -1628,7 +1628,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			String whatToDo=commands[w].toUpperCase();
 			if(whatToDo.startsWith("UNL"))
 			{
-				Vector V=CMParms.parse(whatToDo);
+				Vector<String> V=CMParms.parse(whatToDo);
 				int times=1;
 				if((V.size()>1)&&(CMath.s_int((String)V.lastElement())>1))
 					times=CMath.s_int((String)V.lastElement());

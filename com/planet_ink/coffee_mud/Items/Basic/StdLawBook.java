@@ -289,7 +289,7 @@ public class StdLawBook extends StdItem
 						msg.append(sentence.toLowerCase()+" ");
                     }
                     String oldSentence="";
-                    Vector V=CMParms.parse(oldLaw[Law.BIT_SENTENCE]);
+                    Vector<String> V=CMParms.parse(oldLaw[Law.BIT_SENTENCE]);
                     DVector V2=new DVector(2);
                     for(int v=0;v<V.size();v++)
                     {

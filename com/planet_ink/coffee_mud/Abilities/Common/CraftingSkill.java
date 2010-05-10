@@ -177,9 +177,9 @@ public class CraftingSkill extends GatheringSkill
 	{
 	    if(spells.length()==0) return;
 	    if(spells.equalsIgnoreCase("bundle")) return;
-        Vector V=CMLib.ableParms().getCodedSpells(spells);
+	    List<Ability> V=CMLib.ableParms().getCodedSpells(spells);
         for(int v=0;v<V.size();v++)
-            P.addNonUninvokableEffect((Ability)V.elementAt(v));
+            P.addNonUninvokableEffect((Ability)V.get(v));
 	}
     
     protected void setWearLocation(Item I, String wearLocation, int hardnessMultiplier) {

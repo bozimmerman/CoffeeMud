@@ -1210,7 +1210,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		// any special circumstances?
 		if(crimeFlags.trim().length()>0)
 		{
-			Vector V=CMParms.parse(crimeFlags.toUpperCase());
+			Vector<String> V=CMParms.parse(crimeFlags.toUpperCase());
 			for(int v=0;v<V.size();v++)
 			{
 				String str=(String)V.elementAt(v);
@@ -1282,7 +1282,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		if(crimeLocs.trim().length()>0)
 		{
 			boolean aCrime=false;
-			Vector V=CMParms.parse(crimeLocs);
+			Vector<String> V=CMParms.parse(crimeLocs);
 			String display=mob.location().displayText().toUpperCase().trim();
 			for(int v=0;v<V.size();v++)
 			{

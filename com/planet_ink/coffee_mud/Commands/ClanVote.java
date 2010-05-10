@@ -196,7 +196,7 @@ public class ClanVote extends StdCommand
 									if(mob2.location()==null)
 										mob2.setLocation(CMLib.map().getRandomRoom());
 								}
-								Vector V=CMParms.parse(CV.matter);
+								Vector<String> V=CMParms.parse(CV.matter);
 								mob2.doCommand(V,metaFlags|Command.METAFLAG_FORCED);
                                 mob2.destroy();
 							}

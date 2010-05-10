@@ -52,7 +52,6 @@ import java.util.*;
  * @author FR - Jeremy Vyska; CM - Bo Zimmerman
  * @version 1.0.0.0
  */
-@SuppressWarnings("unchecked")
 public class Prop_ClanEquipment extends Property
 {
     public String ID()
@@ -113,7 +112,7 @@ public class Prop_ClanEquipment extends Property
     public void setMiscText(String text)
     {
         super.setMiscText(text);
-        Vector V=CMParms.parse(text);
+        Vector<String> V=CMParms.parse(text);
         if(V.size()<4)
         {
             return;

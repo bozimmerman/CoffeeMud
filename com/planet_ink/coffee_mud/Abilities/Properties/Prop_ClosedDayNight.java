@@ -57,7 +57,7 @@ public class Prop_ClosedDayNight extends Property
 	public void setMiscText(String text)
 	{
 		super.setMiscText(text);
-		Vector V=CMParms.parse(text);
+		Vector<String> V=CMParms.parse(text);
 		dayFlag=false;
 		doneToday=false;
 		lockupFlag=false;

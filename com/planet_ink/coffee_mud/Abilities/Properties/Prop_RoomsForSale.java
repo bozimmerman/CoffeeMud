@@ -58,7 +58,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 		}
 	}
 
-	public Vector getPropertyRooms()
+	public List<Room> getPropertyRooms()
 	{
 		Vector V=new Vector();
 		Room R=null;
@@ -74,14 +74,14 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 	// update title, since it may affect room clusters, worries about EVERYONE
 	public void updateTitle()
 	{
-		Vector V=getPropertyRooms();
+		List<Room> V=getPropertyRooms();
 		String owner=landOwner();
 		int price=landPrice();
 		boolean rental=rentalProperty();
 		int back=backTaxes();
 		for(int v=0;v<V.size();v++)
 		{
-			Room R=(Room)V.elementAt(v);
+			Room R=(Room)V.get(v);
 			synchronized(("SYNC"+R.roomID()).intern())
 			{
 				R=CMLib.map().getRoom(R);
@@ -112,10 +112,10 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 			{
 			    Room R=(Room)affected;
 			    lastDayDone=R.getArea().getTimeObj().getDayOfMonth();
-			    Vector V=getPropertyRooms();
+			    List<Room> V=getPropertyRooms();
 			    for(int v=0;v<V.size();v++)
 			    {
-			        Room R2=(Room)V.elementAt(v);
+			        Room R2=(Room)V.get(v);
 			        Prop_RoomForSale PRFS=(Prop_RoomForSale)R2.fetchEffect(ID());
 			        if(PRFS!=null)
 			            PRFS.lastDayDone=R.getArea().getTimeObj().getDayOfMonth();

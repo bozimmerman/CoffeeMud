@@ -45,7 +45,7 @@ public interface ShoppingLibrary extends CMLibrary
     public double getSalesTax(Room homeRoom, MOB seller);
     public boolean standardSellEvaluation(MOB seller, MOB buyer, Environmental product, ShopKeeper shop, double maxToPay, double maxEverPaid, boolean sellNotValue);
     public boolean standardBuyEvaluation(MOB seller, MOB buyer, Environmental product, ShopKeeper shop, boolean buyNotView);
-    public String getListInventory(MOB seller,  MOB buyer, Vector inventory, int limit, ShopKeeper shop, String mask);
+    public String getListInventory(MOB seller,  MOB buyer, List<? extends Environmental> inventory, int limit, ShopKeeper shop, String mask);
     public String findInnRoom(InnKey key, String addThis, Room R);
     public MOB parseBuyingFor(MOB buyer, String message);
     public double transactPawn(MOB shopkeeper, MOB pawner, ShopKeeper shop, Environmental product);
@@ -53,7 +53,7 @@ public interface ShoppingLibrary extends CMLibrary
     public boolean purchaseItems(Item baseProduct, List<Environmental> products, MOB seller, MOB mobFor);
     public boolean purchaseMOB(MOB product, MOB seller, ShopKeeper shop, MOB mobFor);
     public void purchaseAbility(Ability A,  MOB seller, ShopKeeper shop, MOB mobFor);
-    public Vector addRealEstateTitles(Vector V, MOB buyer, CoffeeShop shop, Room myRoom);
+    public List<LandTitle> addRealEstateTitles(List<LandTitle> V, MOB buyer, CoffeeShop shop, Room myRoom);
     public boolean ignoreIfNecessary(MOB mob, String ignoreMask, MOB whoIgnores);
     public String storeKeeperString(CoffeeShop shop);
     public boolean doISellThis(Environmental thisThang, ShopKeeper shop);

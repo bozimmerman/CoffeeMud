@@ -350,7 +350,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 
     public String parseOutFlags(String mask, HashSet<ChannelFlag> flags)
     {
-        Vector V=CMParms.parse(mask);
+        Vector<String> V=CMParms.parse(mask);
         for(int v=V.size()-1;v>=0;v--)
         {
             String s=((String)V.elementAt(v)).toUpperCase();
@@ -521,7 +521,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
             &&(Character.isLetter(message.charAt(1))||message.charAt(1)==' ')))
         {
             String msgstr=message.substring(1);
-            Vector V=CMParms.parse(msgstr);
+            Vector<String> V=CMParms.parse(msgstr);
             Social S=CMLib.socials().fetchSocial(V,true,false);
             if(S==null) S=CMLib.socials().fetchSocial(V,false,false);
             if(S!=null)

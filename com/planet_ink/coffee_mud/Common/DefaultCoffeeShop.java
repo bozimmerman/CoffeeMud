@@ -40,7 +40,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class DefaultCoffeeShop implements CoffeeShop
 {
     public String ID(){return "DefaultCoffeeShop";}
@@ -71,7 +70,7 @@ public class DefaultCoffeeShop implements CoffeeShop
     }
     
     public CoffeeShop build(ShopKeeper SK) {
-    	shopKeeper=new WeakReference(SK);
+    	shopKeeper=new WeakReference<ShopKeeper>(SK);
     	return this;
     }
     
@@ -85,8 +84,8 @@ public class DefaultCoffeeShop implements CoffeeShop
     public void cloneFix(DefaultCoffeeShop E)
     {
         storeInventory=new SVector<ShelfProduct>();
-        baseInventory=new SVector();
-        Hashtable copyFix=new Hashtable();
+        baseInventory=new SVector<Environmental>();
+        Hashtable<Environmental,Environmental> copyFix=new Hashtable<Environmental,Environmental>();
         for(ShelfProduct SP: storeInventory)
             if(SP.product!=null)
             {
@@ -162,7 +161,7 @@ public class DefaultCoffeeShop implements CoffeeShop
     	if((V!=null)&&(V.size()>0)) return V.iterator();
     	V=CMLib.english().fetchEnvironmentals(storeInv, srchStr, false);
     	if(V!=null) return V.iterator();
-        return new Vector(1).iterator();
+        return new Vector<Environmental>(1).iterator();
     }
     public Iterator<Environmental> getBaseInventory()
     {
@@ -263,7 +262,7 @@ public class DefaultCoffeeShop implements CoffeeShop
            &&((isSold(ShopKeeper.DEAL_LANDSELLER))||(isSold(ShopKeeper.DEAL_CLANDSELLER))
               ||(isSold(ShopKeeper.DEAL_SHIPSELLER))||(isSold(ShopKeeper.DEAL_CSHIPSELLER))))
         {
-            Vector titles=CMLib.coffeeShops().addRealEstateTitles(new Vector(),mob,this,startRoom());
+            List<LandTitle> titles=CMLib.coffeeShops().addRealEstateTitles(new Vector<LandTitle>(),mob,this,startRoom());
             item=CMLib.english().fetchEnvironmental(titles,name,true);
             if(item==null)
                 item=CMLib.english().fetchEnvironmental(titles,name,false);
@@ -300,7 +299,7 @@ public class DefaultCoffeeShop implements CoffeeShop
            ||(isSold(ShopKeeper.DEAL_SHIPSELLER))||(isSold(ShopKeeper.DEAL_CSHIPSELLER)))
         &&(mob!=null))
         {
-            Vector titles=CMLib.coffeeShops().addRealEstateTitles(new Vector(),mob,this,startRoom());
+            List<LandTitle> titles=CMLib.coffeeShops().addRealEstateTitles(new Vector<LandTitle>(),mob,this,startRoom());
             item=CMLib.english().fetchEnvironmental(titles,name,true);
             if(item==null)
                 item=CMLib.english().fetchEnvironmental(titles,name,false);
@@ -359,7 +358,7 @@ public class DefaultCoffeeShop implements CoffeeShop
     }
     public List<Environmental> removeSellableProduct(String named, MOB mob)
     {
-        Vector V=new Vector();
+        Vector<Environmental> V=new Vector<Environmental>();
         Environmental product=removeStock(named,mob);
         if(product==null) return V;
         V.addElement(product);
@@ -419,9 +418,9 @@ public class DefaultCoffeeShop implements CoffeeShop
 
     public void buildShopFromXML(String text)
     {
-        Vector V=new Vector();
+        Vector<Environmental> V=new Vector<Environmental>();
         storeInventory=new SVector<ShelfProduct>();
-        baseInventory=new SVector();
+        baseInventory=new SVector<Environmental>();
         
         if(text.length()==0) return;
     	ShopKeeper shop=shopKeeper();
@@ -453,7 +452,7 @@ public class DefaultCoffeeShop implements CoffeeShop
             return;
         }
 
-        Vector xmlV=CMLib.xml().parseAllXML(text);
+        Vector<XMLLibrary.XMLpiece> xmlV=CMLib.xml().parseAllXML(text);
         if(xmlV==null)
         {
             Log.errOut("DefaultCoffeeShop","Error parsing data.");
@@ -471,7 +470,7 @@ public class DefaultCoffeeShop implements CoffeeShop
         parm=CMLib.xml().getValFromPieces(xmlV,"IGNOR");
         if(parm!=null) shop.setIgnoreMask(parm);
         
-        Vector iV=CMLib.xml().getContentsFromPieces(xmlV,"INVS");
+        Vector<XMLLibrary.XMLpiece> iV=CMLib.xml().getContentsFromPieces(xmlV,"INVS");
         if(iV==null)
         {
             Log.errOut("DefaultCoffeeShop","Error parsing 'INVS'.");
@@ -490,7 +489,7 @@ public class DefaultCoffeeShop implements CoffeeShop
             int val=CMLib.xml().getIntFromPieces(iblk.contents,"IVAL");
             PhysicalAgent newOne=CMClass.getItem(itemi);
             if(newOne==null) newOne=CMClass.getMOB(itemi);
-            Vector idat=CMLib.xml().getContentsFromPieces(iblk.contents,"IDATA");
+            Vector<XMLLibrary.XMLpiece> idat=CMLib.xml().getContentsFromPieces(iblk.contents,"IDATA");
             if((idat==null)||(newOne==null)||(!(newOne instanceof Item)))
             {
                 Log.errOut("DefaultCoffeeShop","Error parsing 'INV' data.");

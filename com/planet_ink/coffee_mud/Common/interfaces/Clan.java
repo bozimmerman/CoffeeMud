@@ -368,7 +368,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area
 	 * @return a vector of area objects
 	 */
-	public Vector<Area> getControlledAreas();
+	public List<Area> getControlledAreas();
 
 	/**
 	 * Sets the tax rate for this clan.

@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class EvilExecutioner  extends StdBehavior
 {
     public String ID(){return "EvilExecutioner";}
@@ -46,7 +45,7 @@ public class EvilExecutioner  extends StdBehavior
     {
         super.setParms(newParms);
         newParms=newParms.toUpperCase();
-        Vector V=CMParms.parse(newParms);
+        Vector<String> V=CMParms.parse(newParms);
         doPlayers=V.contains("PLAYERS")||V.contains("PLAYER");
     }
 

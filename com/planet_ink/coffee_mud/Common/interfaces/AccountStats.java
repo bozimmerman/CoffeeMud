@@ -175,7 +175,7 @@ public interface AccountStats extends CMCommon
 	 * 
 	 * @return a set of player friend names
 	 */
-	public HashSet<String> getFriends();
+	public Set<String> getFriends();
 
 	/**
      * Returns a modifiable HashSet that contains the set of player
@@ -183,7 +183,7 @@ public interface AccountStats extends CMCommon
      * 
 	 * @return a set of player ignored player list Names
 	 */
-	public HashSet<String> getIgnored();
+	public Set<String> getIgnored();
 	
     /**
      * Returns an XML representation of all the data in this object, for

@@ -118,7 +118,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
         return true;
     }
     
-	public Vector getAllUniqueTitles(Enumeration e, String owner, boolean includeRentals)
+	public List<LandTitle> getAllUniqueTitles(Enumeration e, String owner, boolean includeRentals)
 	{
 	    Vector V=new Vector();
 	    HashSet roomsDone=new HashSet();
@@ -135,11 +135,11 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
                 ||(owner.equals("*")&&(T.landOwner().length()>0))
                 ||(T.landOwner().equals(owner))))
 	        {
-	            Vector V2=T.getPropertyRooms();
+	            List<Room> V2=T.getPropertyRooms();
 	            boolean proceed=true;
 	            for(int v=0;v<V2.size();v++)
 	            {
-	                Room R2=(Room)V2.elementAt(v);
+	                Room R2=(Room)V2.get(v);
 	                if(!roomsDone.contains(R2))
 	                    roomsDone.add(R2);
 	                else

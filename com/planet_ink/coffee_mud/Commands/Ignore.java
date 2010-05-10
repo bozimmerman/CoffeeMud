@@ -43,7 +43,7 @@ public class Ignore extends StdCommand
 	{
 		PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return false;
-		HashSet h=pstats.getIgnored();
+		Set<String> h=pstats.getIgnored();
 		if((commands.size()<2)||(((String)commands.elementAt(1)).equalsIgnoreCase("list")))
 		{
 			if(h.size()==0)

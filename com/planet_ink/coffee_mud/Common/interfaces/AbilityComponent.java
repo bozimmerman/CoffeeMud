@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Common.interfaces;
 
+import java.util.List;
 import java.util.Vector;
 
 import com.planet_ink.coffee_mud.core.CMath;
@@ -8,7 +9,7 @@ import com.planet_ink.coffee_mud.core.CMath;
  * Descriptor class for ability components.
  * These are managed by by the Ability library.
  * @see com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper#addAbilityComponent(String, java.util.Hashtable)
- * @see com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper#componentCheck(com.planet_ink.coffee_mud.MOBS.interfaces.MOB, Vector)
+ * @see com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper#componentCheck(com.planet_ink.coffee_mud.MOBS.interfaces.MOB, List)
  * @see com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper#getAbilityComponentMap()
  * @author Bo Zimmerman
  */

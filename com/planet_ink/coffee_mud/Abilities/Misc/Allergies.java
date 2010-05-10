@@ -55,7 +55,7 @@ public class Allergies extends StdAbility
 	    super.setMiscText(newText);
 	    resourceAllergies.clear();
 	    raceAllergies.clear();
-	    Vector V=CMParms.parse(newText.toUpperCase().trim());
+	    Vector<String> V=CMParms.parse(newText.toUpperCase().trim());
 	    RawMaterial.CODES codes = RawMaterial.CODES.instance();
 	    for(int s=0;s<codes.total();s++)
 	        if(V.contains(codes.names()[s]))

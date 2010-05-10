@@ -597,7 +597,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	    return null;
 	}
 
-	public Vector makeAllCurrency(String currency, double absoluteValue)
+	public List<Coins> makeAllCurrency(String currency, double absoluteValue)
 	{
 	    Vector V=new Vector();
 	    double[] ds=getBestDenominations(currency,absoluteValue);
@@ -646,10 +646,10 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public void addMoney(MOB mob, Container container, String currency, double absoluteValue)
 	{
 	    if(mob==null) return;
-		Vector V=makeAllCurrency(currency,absoluteValue);
+	    List<Coins> V=makeAllCurrency(currency,absoluteValue);
 	    for(int i=0;i<V.size();i++)
 	    {
-	        Coins C=(Coins)V.elementAt(i);
+	        Coins C=(Coins)V.get(i);
 	        C.setContainer(container);
 	        mob.addItem(C);
 	        C.putCoinsBack();
@@ -681,10 +681,10 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		    return;
 		}
 
-		Vector V=makeAllCurrency(currency,absoluteValue);
+		List<Coins> V=makeAllCurrency(currency,absoluteValue);
 	    for(int i=0;i<V.size();i++)
 	    {
-	        Coins C=(Coins)V.elementAt(i);
+	        Coins C=(Coins)V.get(i);
 	        banker.addItem(C);
 			CMMsg newMsg=CMClass.getMsg(banker,customer,C,CMMsg.MSG_GIVE,"<S-NAME> give(s) "+C.Name()+" to <T-NAMESELF>.");
 			if(banker.location().okMessage(banker,newMsg))
@@ -701,10 +701,9 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 
 	public void dropMoney(Room R, Container container, String currency, double absoluteValue)
 	{
-		Vector V=makeAllCurrency(currency,absoluteValue);
-    	for(Enumeration e=V.elements();e.hasMoreElements();)
+		List<Coins> V=makeAllCurrency(currency,absoluteValue);
+    	for(Coins I : V)
     	{
-    		Coins I = (Coins)e.nextElement();
     		I.setContainer(container);
     		R.addItem(I,ItemPossessor.Expire.Monster_EQ);
 		    ((Coins)I).putCoinsBack();

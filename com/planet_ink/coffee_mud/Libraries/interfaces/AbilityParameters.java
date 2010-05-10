@@ -60,7 +60,7 @@ public interface AbilityParameters extends CMLibrary
         public String webTableField(ExternalHTTPRequests httpReq, java.util.Map<String,String> parms, String oldVal);
     }
     
-    public Vector getCodedSpells(String spells);
+    public List<Ability> getCodedSpells(String spells);
     public void parseWearLocation(short[] layerAtt, short[] layers, long[] wornLoc, boolean[] logicalAnd, double[] hardBonus, String wearLocation);
     public void modifyRecipesList(MOB mob, String recipeFilename, String recipeFormat) throws java.io.IOException;
     public void testRecipeParsing(String recipeFilename, String recipeFormat, boolean save);
@@ -74,7 +74,7 @@ public interface AbilityParameters extends CMLibrary
         public String recipeFilename();
         public String recipeFormat();
         public Vector dataRows();
-        public Vector columns();
+		public Vector columns();
         public int[] columnLengths();
         public String[] columnHeaders();
         public int numberOfDataColumns();

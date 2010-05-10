@@ -56,7 +56,7 @@ public class ItemGenerator extends ActiveTicker
 		String parms=newParms;
 		if(parms.indexOf(";")>=0)
 			parms=parms.substring(0,parms.indexOf(";"));
-		Vector V=CMParms.parse(parms);
+		Vector<String> V=CMParms.parse(parms);
 		for(int v=0;v<V.size();v++)
 		{
 			String s=(String)V.elementAt(v);

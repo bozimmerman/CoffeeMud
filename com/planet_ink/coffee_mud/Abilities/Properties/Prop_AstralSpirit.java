@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class Prop_AstralSpirit extends Property
 {
 	public String ID() { return "Prop_AstralSpirit"; }
@@ -80,7 +79,7 @@ public class Prop_AstralSpirit extends Property
 		{
 			if((msg.targetMinor()==CMMsg.TYP_SIT)&&(msg.target() instanceof DeadBody))
 			{
-				Vector V=CMParms.parse(text().toUpperCase());
+				Vector<String> V=CMParms.parse(text().toUpperCase());
 				if(!V.contains("SELF-RES"))
 				{
 					mob.tell("You lack that power");

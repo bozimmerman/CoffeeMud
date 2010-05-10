@@ -286,7 +286,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		}
 	}
 
-	public Vector getPropertyRooms()
+	public List<Room> getPropertyRooms()
 	{
 		Vector V=new Vector();
 		if(affected instanceof Room)

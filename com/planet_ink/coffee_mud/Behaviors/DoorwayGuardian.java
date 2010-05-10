@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class DoorwayGuardian extends StdBehavior
 {
 	public String ID(){return "DoorwayGuardian";}
@@ -55,7 +54,7 @@ public class DoorwayGuardian extends StdBehavior
 		}
 		else
 			message=DEFAULT_MESSAGE;
-		Vector V=CMParms.parse(parms);
+		Vector<String> V=CMParms.parse(parms);
 		nosneak=false;
 		always=false;
 		mask=null;

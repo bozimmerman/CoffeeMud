@@ -75,7 +75,7 @@ public class GTell extends StdCommand
 			&&(Character.isLetter(text.charAt(1))||text.charAt(1)==' ')))
 		{
 			text=text.substring(1);
-			Vector V=CMParms.parse(text);
+			Vector<String> V=CMParms.parse(text);
 			Social S=CMLib.socials().fetchSocial(V,true,false);
 			if(S==null) S=CMLib.socials().fetchSocial(V,false,false);
 			if(S!=null)

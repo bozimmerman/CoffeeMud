@@ -36,7 +36,6 @@ import java.util.*;
  * <p>See the License for the specific language governing permissions and
  * <p>limitations under the License.
  */
-@SuppressWarnings("unchecked")
 public class DefaultClan implements Clan
 {
     public String ID(){return "DefaultClan";}
@@ -53,14 +52,14 @@ public class DefaultClan implements Clan
     protected String AcceptanceSettings="";
     protected int clanType=TYPE_CLAN;
     protected int ClanStatus=0;
-    protected Vector voteList=null;
+    protected Vector<ClanVote> voteList=null;
     protected long exp=0;
-    protected Vector clanKills=new Vector();
+    protected Vector<Long> clanKills=new Vector<Long>();
     protected String lastClanKillRecord=null;
     protected double taxRate=0.0;
 
     //*****************
-    public Hashtable relations=new Hashtable();
+    public Hashtable<String,long[]> relations=new Hashtable<String,long[]>();
     public int government=GVT_DICTATORSHIP;
     //*****************
 
@@ -91,7 +90,7 @@ public class DefaultClan implements Clan
             else
             {
                 lastClanKillRecord=((DatabaseEngine.PlayerData)V.get(0)).xml;
-                Vector V2=CMParms.parseSemicolons(lastClanKillRecord,true);
+                Vector<String> V2=CMParms.parseSemicolons(lastClanKillRecord,true);
                 for(int v=0;v<V2.size();v++)
                     clanKills.addElement(Long.valueOf(CMath.s_long((String)V2.elementAt(v))));
             }
@@ -120,7 +119,7 @@ public class DefaultClan implements Clan
     public void updateVotes()
     {
         StringBuffer str=new StringBuffer("");
-        for(Enumeration e=votes();e.hasMoreElements();)
+        for(Enumeration<ClanVote> e=votes();e.hasMoreElements();)
         {
             ClanVote CV=(ClanVote)e.nextElement();
             str.append(CMLib.xml().convertXMLtoTag("BY",CV.voteStarter));
@@ -188,10 +187,10 @@ public class DefaultClan implements Clan
         return points;
     }
 
-    public Vector getControlledAreas()
+    public List<Area> getControlledAreas()
     {
-        Vector done=new Vector();
-        for(Enumeration e=CMLib.map().sortedAreas();e.hasMoreElements();)
+        Vector<Area> done=new Vector<Area>();
+        for(Enumeration<Area> e=CMLib.map().sortedAreas();e.hasMoreElements();)
         {
             Area A=(Area)e.nextElement();
             LegalBehavior B=CMLib.law().getLegalBehavior(A);
@@ -211,19 +210,19 @@ public class DefaultClan implements Clan
         if(voteList==null)
         {
         	List<PlayerData> V=CMLib.database().DBReadData(clanID(),"CLANVOTES",clanID()+"/CLANVOTES");
-            voteList=new Vector();
+            voteList=new Vector<ClanVote>();
             for(int v=0;v<V.size();v++)
             {
                 ClanVote CV=new ClanVote();
                 String rawxml=((DatabaseEngine.PlayerData)V.get(v)).xml;
                 if(rawxml.trim().length()==0) return voteList.elements();
-                Vector xml=CMLib.xml().parseAllXML(rawxml);
+                Vector<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(rawxml);
                 if(xml==null)
                 {
                     Log.errOut("Clans","Unable to parse: "+rawxml);
                     return voteList.elements();
                 }
-                Vector voteData=CMLib.xml().getContentsFromPieces(xml,"BALLOTS");
+                Vector<XMLLibrary.XMLpiece> voteData=CMLib.xml().getContentsFromPieces(xml,"BALLOTS");
                 if(voteData==null){ Log.errOut("Clans","Unable to get BALLOTS data."); return voteList.elements();}
                 CV.voteStarter=CMLib.xml().getValFromPieces(voteData,"BY");
                 CV.voteStarted=CMLib.xml().getLongFromPieces(voteData,"ON");
@@ -231,7 +230,7 @@ public class DefaultClan implements Clan
                 CV.voteStatus=CMLib.xml().getIntFromPieces(voteData,"STATUS");
                 CV.matter=CMLib.xml().getValFromPieces(voteData,"CMD");
                 CV.votes=new DVector(2);
-                Vector xV=CMLib.xml().getContentsFromPieces(voteData,"VOTES");
+                Vector<XMLLibrary.XMLpiece> xV=CMLib.xml().getContentsFromPieces(voteData,"VOTES");
                 if((xV!=null)&&(xV.size()>0))
                 {
                     for(int x=0;x<xV.size();x++)
@@ -400,7 +399,7 @@ public class DefaultClan implements Clan
         if(M.getClanID().length()==0)
         {
             Item I=null;
-            Vector itemsToMove=new Vector();
+            Vector<Item> itemsToMove=new Vector<Item>();
             for(int i=0;i<M.numItems();i++)
             {
                 I=M.getItem(i);
@@ -511,7 +510,7 @@ public class DefaultClan implements Clan
         {
             msg.append("-----------------------------------------------------------------\n\r");
             msg.append("^x"+CMStrings.padRight("Clan Relations",16)+":^.^N \n\r");
-            for(Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
+            for(Enumeration<Clan> e=CMLib.clans().clans();e.hasMoreElements();)
             {
                 Clan C=(Clan)e.nextElement();
                 if(C!=this)
@@ -537,11 +536,11 @@ public class DefaultClan implements Clan
                         +"^x"+CMStrings.padRight(CMLib.clans().getRoleName(getGovernment(),POS_APPLICANT,true,true),16)+":^.^N "+crewList(POS_APPLICANT)+"\n\r");
             }
         }
-        Vector control=new Vector();
-        Vector controlledAreas=getControlledAreas();
+        Vector<String> control=new Vector<String>();
+        List<Area> controlledAreas=getControlledAreas();
         long controlPoints=calculateMapPoints(controlledAreas);
-        for(Enumeration e=controlledAreas.elements();e.hasMoreElements();)
-            control.addElement(((Area)e.nextElement()).name());
+        for(Area A : controlledAreas)
+            control.addElement(A.name());
         if(control.size()>0)
         {
             msg.append("-----------------------------------------------------------------\n\r");
@@ -717,7 +716,7 @@ public class DefaultClan implements Clan
         else
         {
             str.append("<RELATIONS>");
-            for(Enumeration e=relations.keys();e.hasMoreElements();)
+            for(Enumeration<String> e=relations.keys();e.hasMoreElements();)
             {
                 String key=(String)e.nextElement();
                 str.append("<RELATION>");
@@ -737,13 +736,13 @@ public class DefaultClan implements Clan
         relations.clear();
         government=GVT_DICTATORSHIP;
         if(politics.trim().length()==0) return;
-        Vector xml=CMLib.xml().parseAllXML(politics);
+        Vector<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(politics);
         if(xml==null)
         {
             Log.errOut("Clans","Unable to parse: "+politics);
             return;
         }
-        Vector poliData=CMLib.xml().getContentsFromPieces(xml,"POLITICS");
+        Vector<XMLLibrary.XMLpiece> poliData=CMLib.xml().getContentsFromPieces(xml,"POLITICS");
         if(poliData==null){ Log.errOut("Clans","Unable to get POLITICS data."); return;}
         government=CMLib.xml().getIntFromPieces(poliData,"GOVERNMENT");
         exp=CMLib.xml().getLongFromPieces(poliData,"EXP");
@@ -752,7 +751,7 @@ public class DefaultClan implements Clan
         autoPosition=CMLib.xml().getIntFromPieces(poliData,"AUTOPOS");
 
         // now RESOURCES!
-        Vector xV=CMLib.xml().getContentsFromPieces(poliData,"RELATIONS");
+        Vector<XMLLibrary.XMLpiece> xV=CMLib.xml().getContentsFromPieces(poliData,"RELATIONS");
         if((xV!=null)&&(xV.size()>0))
         {
             for(int x=0;x<xV.size();x++)
@@ -1050,7 +1049,7 @@ public class DefaultClan implements Clan
             {
                 boolean updateVotes=false;
                 Vector<ClanVote> votesToRemove=new Vector<ClanVote>();
-                Vector data=null;
+                Vector<String> data=null;
                 switch(getGovernment())
                 {
                 case GVT_DEMOCRACY:
@@ -1063,7 +1062,7 @@ public class DefaultClan implements Clan
                     data=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_CLANVOTER),false);
                     break;
                 default:
-                    data=new Vector();
+                    data=new Vector<String>();
                     break;
                 }
                 long duration=54;
@@ -1120,7 +1119,7 @@ public class DefaultClan implements Clan
                                         if(mob.location()==null)
                                             mob.setLocation(CMLib.map().getRandomRoom());
                                     }
-                                    Vector V=CMParms.parse(CV.matter);
+                                    Vector<String> V=CMParms.parse(CV.matter);
                                     mob.doCommand(V,Command.METAFLAG_FORCED);
                                     mob.destroy();
                                 }
@@ -1146,7 +1145,7 @@ public class DefaultClan implements Clan
                 if(CMProps.getVar(CMProps.SYSTEM_CLANTROPEXP).length()>0)
                 {
                     Clan winner=null;
-                    for(Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
+                    for(Enumeration<Clan> e=CMLib.clans().clans();e.hasMoreElements();)
                     {
                         Clan C=(Clan)e.nextElement();
                         if((winner==null)||(C.getExp()>winner.getExp()))
@@ -1172,7 +1171,7 @@ public class DefaultClan implements Clan
                 if(CMProps.getVar(CMProps.SYSTEM_CLANTROPPK).length()>0)
                 {
                     Clan winner=null;
-                    for(Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
+                    for(Enumeration<Clan> e=CMLib.clans().clans();e.hasMoreElements();)
                     {
                         Clan C=(Clan)e.nextElement();
                         if((winner==null)||(C.getCurrentClanKills()>winner.getCurrentClanKills()))
@@ -1203,9 +1202,9 @@ public class DefaultClan implements Clan
                     Clan winnerMostClansControlled=null;
                     long mostControlPoints=-1;
                     Clan winnerMostControlPoints=null;
-                    Vector tempControl=null;
+                    List<Area> tempControl=null;
                     long tempNumber=0;
-                    for(Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
+                    for(Enumeration<Clan> e=CMLib.clans().clans();e.hasMoreElements();)
                     {
                         Clan C=(Clan)e.nextElement();
                         tempControl=C.getControlledAreas();
@@ -1300,7 +1299,7 @@ public class DefaultClan implements Clan
                 {
                     int amount=0;
                     double pct=0.0;
-                    Vector V=CMParms.parse(awardStr);
+                    Vector<String> V=CMParms.parse(awardStr);
                     if(V.size()>=2)
                     {
                         String type=((String)V.lastElement()).toUpperCase();
@@ -1357,10 +1356,10 @@ public class DefaultClan implements Clan
         case 12: return ""+getTrophies();
         case 13: return ""+getType();
         case 14: {
-             Vector areas=getControlledAreas();
+             List<Area> areas=getControlledAreas();
              StringBuffer list=new StringBuffer("");
              for(int i=0;i<areas.size();i++)
-                 list.append("\""+((Environmental)areas.elementAt(i)).name()+"\" ");
+                 list.append("\""+areas.get(i).name()+"\" ");
              return list.toString().trim();
         }
         case 15: 

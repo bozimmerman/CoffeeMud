@@ -48,7 +48,7 @@ public class Prop_LangTranslator extends Property implements Language
 	public void setMiscText(String text)
 	{
 		super.setMiscText(text);
-		Vector V=CMParms.parse(text);
+		Vector<String> V=CMParms.parse(text);
 		langs.clear();
 		int lastpct=100;
 		for(int v=0;v<V.size();v++)

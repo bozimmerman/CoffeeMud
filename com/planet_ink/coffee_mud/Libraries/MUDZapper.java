@@ -538,7 +538,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		if(text.trim().length()==0) return "Anyone";
 		StringBuffer buf=new StringBuffer("");
         Hashtable zapCodes=getMaskCodes();
-		Vector V=CMParms.parse(text.toUpperCase());
+		Vector<String> V=CMParms.parse(text.toUpperCase());
 		for(int v=0;v<V.size();v++)
 		{
 			String str=(String)V.elementAt(v);
@@ -2028,7 +2028,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	public boolean syntaxCheck(String mask, Vector errorSink)
 	{
 		if(mask.trim().length()==0) return true;
-		Vector V=CMParms.parse(mask.toUpperCase());
+		Vector<String> V=CMParms.parse(mask.toUpperCase());
 		for(int v=0;v<V.size();v++)
 		{
 			String str=(String)V.elementAt(v);
@@ -2077,7 +2077,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		if(text.trim().length()==0)
 			return preReqs;
         Hashtable zapCodes=getMaskCodes();
-		Vector V=CMParms.parse(text.toUpperCase());
+		Vector<String> V=CMParms.parse(text.toUpperCase());
 		String str=null;
 		String str2=null;
 		for(int v=0;v<V.size();v++)
@@ -2264,7 +2264,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		Vector buf=new Vector();
 		if(text.trim().length()==0) return buf;
         Hashtable zapCodes=getMaskCodes();
-		Vector V=CMParms.parse(text.toUpperCase());
+		Vector<String> V=CMParms.parse(text.toUpperCase());
 		boolean buildItemFlag=false;
 		boolean buildRoomFlag=false;
 		for(int v=0;v<V.size();v++)

@@ -701,7 +701,7 @@ public class CharClassData extends StdWebMacro
                             if(cSrc)
                             {
                                 sec=C.getStat("SSET"+i);
-                                Vector V=CMParms.parse(sec);
+                                Vector<String> V=CMParms.parse(sec);
                                 sec=CMParms.combineWithX(V,",",0);
                             }
                             else
@@ -1018,10 +1018,10 @@ public class CharClassData extends StdWebMacro
 		int beneficialSkillsGained=0;
 		for(int l=1;l<=30;l++)
 		{
-			Vector set=CMLib.ableMapper().getLevelListings(C.ID(),true,l);
+			List<String> set=CMLib.ableMapper().getLevelListings(C.ID(),true,l);
 			for(int s=0;s<set.size();s++)
 			{
-				String able=(String)set.elementAt(s);
+				String able=(String)set.get(s);
 				if(able.equalsIgnoreCase("Skill_Recall")) continue;
 				if(able.equalsIgnoreCase("Skill_Write")) continue;
 				if(able.equalsIgnoreCase("Skill_Swim")) continue;

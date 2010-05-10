@@ -33,13 +33,12 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class DefaultCoffeeTableRow implements CoffeeTableRow
 {
     public String ID(){return "DefaultCoffeeTableRow";}
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
     
-    public Hashtable stats=new Hashtable();
+    public SHashtable<String,long[]> stats=new SHashtable<String,long[]>();
     public long highestOnline=0;
     public long numberOnlineTotal=0;
     public long numberOnlineCounter=0;
@@ -61,7 +60,7 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
         data.append(CMLib.xml().convertXMLtoTag("NUMONLINE",numberOnlineTotal));
         data.append(CMLib.xml().convertXMLtoTag("NUMCOUNT",numberOnlineCounter));
         data.append("<STATS>");
-        for(Enumeration e=stats.keys();e.hasMoreElements();)
+        for(Enumeration<String> e=stats.keys();e.hasMoreElements();)
         {
             String s=(String)e.nextElement();
             long[] l=(long[])stats.get(s);
@@ -90,7 +89,7 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
     public void totalUp(String code, long[] tot)
     {
         code=tagFix(code);
-        for(Enumeration e=stats.keys();e.hasMoreElements();)
+        for(Enumeration<String> e=stats.keys();e.hasMoreElements();)
         {
             String s=(String)e.nextElement();
             if(s.startsWith(code)
@@ -143,7 +142,7 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
             Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
             bumpVal("J"+H.size(),type);
             int pct=0;
-            for(Iterator e=H.iterator();e.hasNext();)
+            for(Iterator<MOB> e=H.iterator();e.hasNext();)
                 if(!((MOB)e.next()).isMonster()) pct++;
             if(pct==0)pct=1;
             bumpVal("P"+pct,type);
@@ -162,7 +161,7 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
         {
             startTime=start;
             endTime=end;
-            Vector all=CMLib.xml().parseAllXML(data);
+            Vector<XMLLibrary.XMLpiece> all=CMLib.xml().parseAllXML(data);
             if((all==null)||(all.size()==0)) return;
             highestOnline=CMLib.xml().getIntFromPieces(all,"HIGH");
             numberOnlineTotal=CMLib.xml().getIntFromPieces(all,"NUMONLINE");
@@ -200,7 +199,7 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
     {
         try{
             DefaultCoffeeTableRow CR=(DefaultCoffeeTableRow)this.clone();
-            CR.stats=(Hashtable)stats.clone();
+            CR.stats=stats.copyOf();
             return CR;
         }
         catch(Exception e){return newInstance();}

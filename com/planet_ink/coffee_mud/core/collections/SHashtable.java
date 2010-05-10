@@ -75,10 +75,10 @@ public class SHashtable<K,F> implements java.util.Map<K,F>, java.io.Serializable
 	}
 
 	@SuppressWarnings("unchecked")
-	public synchronized SHashtable<F,K> copyOf() 
+	public synchronized SHashtable<K,F> copyOf() 
 	{
-		SHashtable<F,K> SH=new SHashtable<F,K>();
-		SH.H=(Hashtable<F,K>)H.clone();
+		SHashtable<K,F> SH=new SHashtable<K,F>();
+		SH.H=(Hashtable<K,F>)H.clone();
 		return SH;
 	}
 

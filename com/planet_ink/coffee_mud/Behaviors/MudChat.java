@@ -405,7 +405,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				if(finalCommand.indexOf("$$")>=0)
 					finalCommand=CMStrings.replaceAll(finalCommand,"$$","$");
 
-				Vector V=CMParms.parse(finalCommand);
+				Vector<String> V=CMParms.parse(finalCommand);
 				for(ChattyResponse R : responseQue)
 					if(CMParms.combine(R.parsedCommand,1).equalsIgnoreCase(finalCommand))
 					{

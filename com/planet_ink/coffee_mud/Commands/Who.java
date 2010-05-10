@@ -122,7 +122,7 @@ public class Who extends StdCommand
 				CMLib.intermud().i3who(mob,mobName.substring(1));
 			return false;
 		}
-		HashSet friends=null;
+		Set<String> friends=null;
 		if((mobName!=null)
 		&&(mob!=null)
 		&&(mobName.equalsIgnoreCase("friends"))

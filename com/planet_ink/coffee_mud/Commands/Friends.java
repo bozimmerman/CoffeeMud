@@ -43,7 +43,7 @@ public class Friends extends StdCommand
 	{
 		PlayerStats pstats=mob.playerStats();
 		if(pstats==null) return false;
-		HashSet h=pstats.getFriends();
+		Set<String> h=pstats.getFriends();
 
 		if((commands.size()<2)||(((String)commands.elementAt(1)).equalsIgnoreCase("list")))
 		{

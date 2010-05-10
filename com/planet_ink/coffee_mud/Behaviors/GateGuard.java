@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class GateGuard extends StdBehavior
 {
 	public String ID(){return "GateGuard";}
@@ -48,7 +47,7 @@ public class GateGuard extends StdBehavior
 		super.setParms(parm);
 		keepLocked=false;
 		allnight=false;
-		Vector V=CMParms.parse(parm);
+		Vector<String> V=CMParms.parse(parm);
 		for(int v=0;v<V.size();v++)
 		{
 			if(((String)V.elementAt(v)).equalsIgnoreCase("keeplocked"))

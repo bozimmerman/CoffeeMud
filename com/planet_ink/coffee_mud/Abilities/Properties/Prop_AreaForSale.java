@@ -161,10 +161,10 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		&&((System.currentTimeMillis()-lastMobSave)>360000))
 		{
 			lastMobSave=System.currentTimeMillis();
-			Vector V=getPropertyRooms();
+			List<Room> V=getPropertyRooms();
 			for(int v=0;v<V.size();v++)
 			{
-				Room R=(Room)V.elementAt(v);
+				Room R=(Room)V.get(v);
 				synchronized(("SYNC"+R.roomID()).intern())
 				{
 					R=CMLib.map().getRoom(R);
@@ -187,7 +187,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		}
 	}
 
-	public Vector getPropertyRooms()
+	public List<Room> getPropertyRooms()
 	{
 		Vector V=new Vector();
 		Area A=null;
@@ -206,10 +206,10 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		if(((System.currentTimeMillis()-lastCall)>360000)
 		&&(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)))
 		{
-			Vector V=getPropertyRooms();
+			List<Room> V=getPropertyRooms();
 			for(int v=0;v<V.size();v++)
 			{
-				Room R=(Room)V.elementAt(v);
+				Room R=(Room)V.get(v);
 				lastCall=System.currentTimeMillis();
 				Integer lastItemNum=(Integer)lastItemNums.get(R);
 				lastItemNums.put(R,Integer.valueOf(Prop_RoomForSale.updateLotWithThisData(R,this,false,false,optPlayerList,(lastItemNum==null)?-1:lastItemNum.intValue())));

@@ -36,7 +36,6 @@ import java.util.Map;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class DefaultLawSet implements Law
 {
     public String ID(){return "DefaultLawSet";}
@@ -59,21 +58,21 @@ public class DefaultLawSet implements Law
     private boolean lawsModifiable=false;
     private LegalBehavior legalDetails=null;
 
-    private List<List<String>>	otherCrimes=new Vector();
-    private List<String[]> 		otherBits=new Vector();
-    private List<List<String>> 	bannedSubstances=new Vector();
-    private List<String[]> 		bannedBits=new Vector();
-    private Map<String,String[]>abilityCrimes=new Hashtable();
-    private Map<String,String[]>basicCrimes=new Hashtable();
-    private Map<String, Object>	taxLaws=new Hashtable();
+    private List<List<String>>	otherCrimes=new Vector<List<String>>();
+    private List<String[]> 		otherBits=new Vector<String[]>();
+    private List<List<String>> 	bannedSubstances=new Vector<List<String>>();
+    private List<String[]> 		bannedBits=new Vector<String[]>();
+    private Map<String,String[]>abilityCrimes=new Hashtable<String,String[]>();
+    private Map<String,String[]>basicCrimes=new Hashtable<String,String[]>();
+    private Map<String, Object>	taxLaws=new Hashtable<String, Object>();
 
-    private List<String> chitChat=new Vector();
-    private List<String> chitChat2=new Vector();
-    private List<String> chitChat3=new Vector();
-    private List<String> jailRooms=new Vector();
-    private List<String> releaseRooms=new Vector();
-    private List<String> officerNames=new Vector();
-    private List<String> judgeNames=new Vector();
+    private List<String> chitChat=new Vector<String>();
+    private List<String> chitChat2=new Vector<String>();
+    private List<String> chitChat3=new Vector<String>();
+    private List<String> jailRooms=new Vector<String>();
+    private List<String> releaseRooms=new Vector<String>();
+    private List<String> officerNames=new Vector<String>();
+    private List<String> judgeNames=new Vector<String>();
     private String[] 	 messages=new String[Law.MSG_TOTAL];
 
     private boolean activated=true;
@@ -152,7 +151,7 @@ public class DefaultLawSet implements Law
         Item I=null;
         if((tres!=null)&&(tres.length()>0))
         {
-            Vector V=CMParms.parseSemicolons(tres,false);
+            Vector<String> V=CMParms.parseSemicolons(tres,false);
             if(V.size()>0)
             {
                 Room R=null;
@@ -171,7 +170,7 @@ public class DefaultLawSet implements Law
                 }
                 else
                 if(item.length()>0)
-                for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
+                for(Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
                 {
                     R=(Room)e.nextElement();
                     I=R.findItem(item);
@@ -197,15 +196,14 @@ public class DefaultLawSet implements Law
             double tax=CMath.s_double((String)taxLaws.get("PROPERTYTAX"));
             if(tax==0.0) return;
             tax=CMath.div(tax,100.0);
-            Vector titles=CMLib.law().getAllUniqueTitles(A.getMetroMap(),"*",false);
-            Hashtable owners=new Hashtable();
-            for(Enumeration e=titles.elements();e.hasMoreElements();)
+            List<LandTitle> titles=CMLib.law().getAllUniqueTitles(A.getMetroMap(),"*",false);
+            Hashtable<String,Vector<LandTitle>> owners=new Hashtable<String,Vector<LandTitle>>();
+            for(LandTitle T : titles)
             {
-                LandTitle T=(LandTitle)e.nextElement();
-                Vector D=(Vector)owners.get(T.landOwner());
+                Vector<LandTitle> D=owners.get(T.landOwner());
                 if(D==null)
                 {
-                    D=new Vector();
+                    D=new Vector<LandTitle>();
                     owners.put(T.landOwner(),D);
                 }
                 D.addElement(T);
@@ -216,23 +214,22 @@ public class DefaultLawSet implements Law
             Container container=treas.container;
             String[] evasionBits=(String[])taxLaws().get("TAXEVASION");
 
-            for(Enumeration e=owners.keys();e.hasMoreElements();)
+            for(String owner : owners.keySet())
             {
-                String owner=(String)e.nextElement();
                 MOB responsibleMob=null;
                 Clan C=CMLib.clans().getClan(owner);
                 if(C!=null)
                     responsibleMob=C.getResponsibleMember();
                 else
                     responsibleMob=CMLib.players().getLoadPlayer(owner);
-                Vector particulars=(Vector)owners.get(owner);
+                Vector<LandTitle> particulars=owners.get(owner);
 
                 double totalValue=0;
                 double paid=0;
                 double owed=0;
                 StringBuffer properties=new StringBuffer("");
                 LandTitle T=null;
-                Vector propertyRooms=null;
+                List<Room> propertyRooms=null;
 
                 for(int p=0;p<particulars.size();p++)
                 {
@@ -243,7 +240,7 @@ public class DefaultLawSet implements Law
                     ||(CMLib.map().getArea(T.landPropertyID())!=null))
                         properties.append(T.landPropertyID());
                     else
-                        properties.append("around "+CMLib.map().getExtendedRoomID((Room)propertyRooms.firstElement()));
+                        properties.append("around "+CMLib.map().getExtendedRoomID((Room)propertyRooms.get(0)));
                     totalValue+=(double)T.landPrice();
                     if(T.backTaxes()>0)
                     {
@@ -338,10 +335,10 @@ public class DefaultLawSet implements Law
                         if(owed<0) owed=0;
                         if((treasuryR!=null)&&((owed+paid)>0))
                         {
-                            Vector V=CMLib.beanCounter().makeAllCurrency(CMLib.beanCounter().getCurrency(A),owed+paid);
+                        	List<Coins> V=CMLib.beanCounter().makeAllCurrency(CMLib.beanCounter().getCurrency(A),owed+paid);
                             for(int v=0;v<V.size();v++)
                             {
-                                Coins COIN=(Coins)V.elementAt(v);
+                                Coins COIN=(Coins)V.get(v);
                                 COIN.setContainer(container);
                                 treasuryR.addItem(COIN);
                                 COIN.putCoinsBack();
@@ -505,7 +502,7 @@ public class DefaultLawSet implements Law
         otherBits.clear();
         bannedSubstances.clear();
         bannedBits.clear();
-        for(Enumeration e=laws.keys();e.hasMoreElements();)
+        for(Enumeration<Object> e=laws.keys();e.hasMoreElements();)
         {
             String key=(String)e.nextElement();
             String words=(String)laws.get(key);
@@ -516,7 +513,7 @@ public class DefaultLawSet implements Law
                 {
                     otherCrimes.add(CMParms.parse(words.substring(0,x)));
                     String[] bits=new String[Law.BIT_NUMBITS];
-                    Vector parsed=CMParms.parseSemicolons(words.substring(x+1),false);
+                    Vector<String> parsed=CMParms.parseSemicolons(words.substring(x+1),false);
                     for(int i=0;i<Law.BIT_NUMBITS;i++)
                         if(i<parsed.size())
                             bits[i]=(String)parsed.elementAt(i);
@@ -529,7 +526,7 @@ public class DefaultLawSet implements Law
                 {
                     bannedSubstances.add(CMParms.parse(words.substring(0,x)));
                     String[] bits=new String[Law.BIT_NUMBITS];
-                    Vector parsed=CMParms.parseSemicolons(words.substring(x+1),false);
+                    Vector<String> parsed=CMParms.parseSemicolons(words.substring(x+1),false);
                     for(int i=0;i<Law.BIT_NUMBITS;i++)
                         if(i<parsed.size())
                             bits[i]=(String)parsed.elementAt(i);
@@ -564,7 +561,7 @@ public class DefaultLawSet implements Law
     private String[] getInternalBits(String bitStr)
     {
         String[] bits=new String[Law.BIT_NUMBITS];
-        Vector parsed=CMParms.parseSemicolons(bitStr,false);
+        Vector<String> parsed=CMParms.parseSemicolons(bitStr,false);
         for(int i=0;i<Law.BIT_NUMBITS;i++)
             if(i<parsed.size())
                 bits[i]=(String)parsed.elementAt(i);

@@ -33,7 +33,6 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class AreaXML extends StdWebMacro
 {
     public String name()    {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
@@ -79,8 +78,9 @@ public class AreaXML extends StdWebMacro
 		if(mob==null) return null;
 		Area pickedA=getLoggedArea(httpReq,mob);
 		if(pickedA==null) return null;
-		Vector V=CMParms.parse("EXPORT AREA DATA MEMORY");
-		V.addElement(pickedA);
+		Vector<Object> V=new Vector<Object>();
+		V.addAll(CMParms.parse("EXPORT AREA DATA MEMORY"));
+		V.add(pickedA);
 		Command C=CMClass.getCommand("Export");
 		if(C==null) return null;
 		try{if(!C.execute(mob,V,0)) return null;}catch(Exception e){return null;}

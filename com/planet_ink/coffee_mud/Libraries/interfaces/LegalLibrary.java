@@ -43,7 +43,7 @@ public interface LegalLibrary extends CMLibrary
     public boolean doesHavePriviledgesHere(MOB mob, Room room);
     public boolean doesOwnThisProperty(String name, Room room);
     public boolean doesOwnThisProperty(MOB mob, Room room);
-    public Vector getAllUniqueTitles(Enumeration e, String owner, boolean includeRentals);
+    public List<LandTitle> getAllUniqueTitles(Enumeration e, String owner, boolean includeRentals);
     public Ability getClericInfusion(Physical room);
     public Deity getClericInfused(Room room);
     

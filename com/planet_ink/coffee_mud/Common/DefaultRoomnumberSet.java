@@ -33,7 +33,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class DefaultRoomnumberSet implements RoomnumberSet
 {
     public STreeMap<String,CMIntegerGrouper> root=new STreeMap<String,CMIntegerGrouper>();
@@ -272,9 +271,9 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 
     public void parseXML(String xml)
     {
-        Vector V=CMLib.xml().parseAllXML(xml);
+        Vector<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(xml);
         if((V==null)||(V.size()==0)) return;
-        Vector xV=CMLib.xml().getContentsFromPieces(V,"AREAS");
+        Vector<XMLLibrary.XMLpiece> xV=CMLib.xml().getContentsFromPieces(V,"AREAS");
         root.clear();
         String ID=null;
         String NUMS=null;

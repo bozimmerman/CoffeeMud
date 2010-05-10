@@ -57,7 +57,7 @@ public class FieryRoom
         directDamage = CMParms.getParmInt(newParms, "damage", 10);
         eqChance = CMParms.getParmInt(newParms, "eqchance", 0);
         burnTicks = CMParms.getParmInt(newParms, "burnticks", 12);
-        Vector V=CMParms.parse(newParms.toUpperCase());
+        Vector<String> V=CMParms.parse(newParms.toUpperCase());
         noStop=(V.contains("NOSTOP"));
         noNpc=(V.contains("NONPC"));
         noFireText=(V.contains("NOFIRETEXT"));

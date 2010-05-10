@@ -263,7 +263,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
            return 0.0;
         if(part.trim().indexOf(" ")<0)
             return CMath.s_double(part.trim());
-        Vector V=CMParms.parse(part.trim());
+        Vector<String> V=CMParms.parse(part.trim());
         double d=0.0;
         boolean yes=false;
         List<String> VF=customer.fetchFactionRanges();
@@ -414,7 +414,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         double resourceRate=0.0;
         double itemRate=0.0;
         String s=shop.finalDevalueRate();
-        Vector V=CMParms.parse(s.trim());
+        Vector<String> V=CMParms.parse(s.trim());
         if(V.size()<=0)
             return 0.0;
         else
@@ -705,7 +705,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 
     public String getListInventory(MOB seller,
                                    MOB buyer,
-                                   Vector rawInventory,
+                                   List<? extends Environmental> rawInventory,
                                    int limit,
                                    ShopKeeper shop,
                                    String mask)
@@ -716,7 +716,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         Environmental E=null;
         for(int i=0;i<rawInventory.size();i++)
         {
-            E=(Environmental)rawInventory.elementAt(i);
+            E=(Environmental)rawInventory.get(i);
             if(shownInInventory(seller,buyer,E,shop)
             &&((mask==null)||(mask.length()==0)||(CMLib.english().containsString(E.name(),mask))))
             	inventory.addElement(E);
@@ -813,7 +813,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         MOB mobFor=buyer;
         if((message!=null)&&(message.length()>0)&&(buyer.location()!=null))
         {
-            Vector V=CMParms.parse(message);
+            Vector<String> V=CMParms.parse(message);
             if(((String)V.elementAt(V.size()-2)).equalsIgnoreCase("for"))
             {
                 String s=(String)V.lastElement();
@@ -1079,7 +1079,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         }
     }
 
-    public Vector addRealEstateTitles(Vector V, MOB buyer, CoffeeShop shop, Room myRoom)
+    public List<LandTitle> addRealEstateTitles(List<LandTitle> V, MOB buyer, CoffeeShop shop, Room myRoom)
     {
         if((myRoom==null)||(buyer==null)) return V;
         Area myArea=myRoom.getArea();
@@ -1137,9 +1137,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                         roomsHandling.add(R);
                     else
                     {
-                        Vector V2=A.getPropertyRooms();
-                        for(int v=0;v<V2.size();v++)
-                            roomsHandling.add(V2.elementAt(v));
+                    	List<Room> V2=A.getPropertyRooms();
+                    	roomsHandling.addAll(V2);
                     }
                     if((A.landOwner().length()>0)
                     &&(!A.landOwner().equals(name))
@@ -1180,20 +1179,20 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                     if((A.landOwner().length()==0)
                     &&(I.Name().endsWith(" (Copy)")))
                         I.setName(I.Name().substring(0,I.Name().length()-7));
-                    V.addElement(I);
+                    V.add((LandTitle)I);
                 }
             }
         }
         if(V.size()<2) return V;
-        Vector V2=new Vector(V.size());
+        Vector<LandTitle> V2=new Vector<LandTitle>(V.size());
         LandTitle L=null;
         LandTitle L2=null;
         int x=-1;
         int x2=-1;
         while(V.size()>0)
         {
-            if(((!(V.elementAt(0) instanceof LandTitle)))
-            ||((x=(L=(LandTitle)V.elementAt(0)).landPropertyID().lastIndexOf('#'))<0))
+            if(((!(V.get(0) instanceof LandTitle)))
+            ||((x=(L=(LandTitle)V.get(0)).landPropertyID().lastIndexOf('#'))<0))
             {
                 if(V2.size()==0)
                     V2.addElement(V.remove(0));
@@ -1205,9 +1204,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 
                 int lowest=CMath.s_int(L.landPropertyID().substring(x+1).trim());
                 for(int v=1;v<V.size();v++)
-                    if(V.elementAt(v) instanceof LandTitle)
+                    if(V.get(v) instanceof LandTitle)
                     {
-                        L2=(LandTitle)V.elementAt(v);
+                        L2=(LandTitle)V.get(v);
                         x2=L2.landPropertyID().lastIndexOf('#');
                         if((x2>0)&&(CMath.s_int(L2.landPropertyID().substring(x+1).trim())<lowest))
                         {
@@ -1215,7 +1214,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                             L=L2;
                         }
                     }
-                V.removeElement(L);
+                V.remove(L);
                 V2.addElement(L);
             }
         }

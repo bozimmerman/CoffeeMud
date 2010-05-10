@@ -43,7 +43,7 @@ public class TaxCollector extends StdBehavior
 	protected long waitTime=1000*60*2;
 	protected long graceTime=1000*60*60;
 	protected int lastMonthChecked=-1;
-	protected Vector taxableProperties=new Vector();
+	protected List<LandTitle> taxableProperties=new Vector<LandTitle>();
 	protected HashSet peopleWhoOwe=new HashSet();
 	protected String treasuryRoomID=null;
 	protected Container treasuryContainer=null;
@@ -70,7 +70,7 @@ public class TaxCollector extends StdBehavior
 	    {
 	        for(int t=0;t<taxableProperties.size();t++)
 	        {
-	            LandTitle T=(LandTitle)taxableProperties.elementAt(t);
+	            LandTitle T=(LandTitle)taxableProperties.get(t);
 			    if((T.landOwner().equals(M.Name())
 			            ||((M.getClanID().length()>0)&&T.landOwner().equals(M.getClanID())))
 	            &&(T.backTaxes()>0))
@@ -162,7 +162,7 @@ public class TaxCollector extends StdBehavior
 				boolean paidBackTaxes=false;
 				for(int i=0;i<taxableProperties.size();i++)
 				{
-				    LandTitle T=(LandTitle)taxableProperties.elementAt(i);
+				    LandTitle T=(LandTitle)taxableProperties.get(i);
 				    if(T.landOwner().equals(msg.source().Name())
 			            ||((msg.source().getClanID().length()>0)&&T.landOwner().equals(msg.source().getClanID())))
 				    {
@@ -204,7 +204,7 @@ public class TaxCollector extends StdBehavior
 				if((paidAmount>0)&&(numProperties>0))
 				for(int i=0;i<taxableProperties.size();i++)
 				{
-				    LandTitle T=(LandTitle)taxableProperties.elementAt(i);
+				    LandTitle T=(LandTitle)taxableProperties.get(i);
 				    if(((T.landOwner().equals(msg.source().Name())))
 				    &&(paidAmount>0))
 				    {
@@ -285,7 +285,7 @@ public class TaxCollector extends StdBehavior
 				    taxableProperties=CMLib.law().getAllUniqueTitles(A2.getMetroMap(),"*",false);
 				    for(int v=0;v<taxableProperties.size();v++)
 				    {
-				        T=(LandTitle)taxableProperties.elementAt(v);
+				        T=(LandTitle)taxableProperties.get(v);
 				        if((!peopleWhoOwe.contains(T.landOwner()))
 				        &&(T.backTaxes()>0))
 				            peopleWhoOwe.add(T.landOwner());

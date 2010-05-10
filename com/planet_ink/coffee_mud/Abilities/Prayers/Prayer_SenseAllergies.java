@@ -70,7 +70,7 @@ public class Prayer_SenseAllergies extends Prayer
 				{
 					
 					Vector allergies=new Vector();
-				    Vector V=CMParms.parse(A.text().toUpperCase().trim());
+				    Vector<String> V=CMParms.parse(A.text().toUpperCase().trim());
 				    for(int i=0;i<V.size();i++)
 				    {
 				    	if(CMParms.contains(RawMaterial.CODES.NAMES(), (String)V.elementAt(i)))

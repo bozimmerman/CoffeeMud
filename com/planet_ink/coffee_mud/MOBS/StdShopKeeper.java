@@ -158,7 +158,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				budgetTickDown=100;
 				budgetRemaining=Long.MAX_VALUE/2;
 				String s=finalBudget();
-				Vector V=CMParms.parse(s.trim().toUpperCase());
+				Vector<String> V=CMParms.parse(s.trim().toUpperCase());
 				if(V.size()>0)
 				{
 					if(((String)V.firstElement()).equals("0"))
@@ -348,7 +348,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 				{
 					String forMask=CMLib.coffeeShops().getListForMask(msg.targetMessage());
-					Vector inventory=new XVector(getShop().getStoreInventory());
+					List<LandTitle> inventory=new XVector(getShop().getStoreInventory());
 					inventory=CMLib.coffeeShops().addRealEstateTitles(inventory,mob,getShop(),getStartRoom());
                     int limit=CMParms.getParmInt(finalPrejudiceFactors(),"LIMIT",0);
                     String s=CMLib.coffeeShops().getListInventory(this,mob,inventory,limit,this,forMask);

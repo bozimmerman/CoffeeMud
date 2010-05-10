@@ -92,7 +92,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		areasList.remove(oneToDel);
 	}
 
-	public Enumeration sortedAreas()
+	public Enumeration<Area> sortedAreas()
 	{
 		if(sortedAreas==null)
 		{

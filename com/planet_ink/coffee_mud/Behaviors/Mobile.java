@@ -106,7 +106,7 @@ public class Mobile extends ActiveTicker
 		leashHash=null;
 		restrictedLocales=null;
 		leash=CMParms.getParmInt(newParms,"LEASH",0);
-		Vector V=CMParms.parse(newParms);
+		Vector<String> V=CMParms.parse(newParms);
 		for(int v=0;v<V.size();v++)
 		{
 			String s=(String)V.elementAt(v);

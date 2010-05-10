@@ -33,12 +33,11 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class DefaultPlayerAccount implements PlayerAccount
 {
     public String ID(){return "DefaultPlayerAccount";}
-    protected HashSet friends=new HashSet();
-    protected HashSet ignored=new HashSet();
+    protected SHashSet<String> friends=new SHashSet<String>();
+    protected SHashSet<String> ignored=new SHashSet<String>();
     protected SVector<String> players = new SVector<String>();
     protected SVector<PlayerLibrary.ThinPlayer> thinPlayers = new SVector<PlayerLibrary.ThinPlayer>();
     protected String accountName = "";
@@ -124,8 +123,8 @@ public class DefaultPlayerAccount implements PlayerAccount
         try
         {
             DefaultPlayerAccount O=(DefaultPlayerAccount)this.clone();
-            O.friends=(HashSet)friends.clone();
-            O.ignored=(HashSet)ignored.clone();
+            O.friends=friends.copyOf();
+            O.ignored=ignored.copyOf();
             O.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
             return O;
         }
@@ -146,9 +145,9 @@ public class DefaultPlayerAccount implements PlayerAccount
 	public void setPassword(String newPassword){Password=newPassword;}
 	public String notes(){return notes;}
 	public void setNotes(String newnotes){notes=newnotes;}
-	public HashSet getHashFrom(String str)
+	public SHashSet<String> getHashFrom(String str)
 	{
-		HashSet h=new HashSet();
+		SHashSet<String> h=new SHashSet<String>();
 		int x=str.indexOf(";");
 		while(x>=0)
 		{
@@ -162,8 +161,8 @@ public class DefaultPlayerAccount implements PlayerAccount
 		return h;
 	}
 
-	public HashSet getFriends(){return friends;}
-	public HashSet<String> getIgnored(){return ignored;}
+	public Set<String> getFriends(){return friends;}
+	public Set<String> getIgnored(){return ignored;}
 	public MOB getAccountMob()
 	{
 		if(fakePlayerM!=null)
@@ -182,11 +181,11 @@ public class DefaultPlayerAccount implements PlayerAccount
 		}
 	}
 	
-	protected String getPrivateList(HashSet h)
+	protected String getPrivateList(Set<String> h)
 	{
 		if((h==null)||(h.size()==0)) return "";
 		StringBuffer list=new StringBuffer("");
-		for(Iterator e=h.iterator();e.hasNext();)
+		for(Iterator<String> e=h.iterator();e.hasNext();)
 			list.append(((String)e.next())+";");
 		return list.toString();
 	}
