@@ -1291,7 +1291,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             if(longlook)
             {
                 Command C=CMClass.getCommand("Consider");
-                try{if(C!=null)C.execute(viewermob,new XVector(viewedmob),0);}catch(java.io.IOException e){}
+                try{if(C!=null)C.executeInternal(viewermob,0,viewedmob);}catch(java.io.IOException e){}
             }
         }
     }

@@ -193,7 +193,7 @@ public class Who extends StdCommand
 		return false;
 	}
 	
-	public Object execute(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
 	{
 		return getWho(mob,null,null);
 	}

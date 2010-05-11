@@ -124,7 +124,7 @@ public interface Command extends CMObject
 	 * @return a object response
 	 * @throws java.io.IOException usually means the player has dropped carrier
 	 */
-	public Object execute(MOB mob, int metaFlags, Object... args)
+	public Object executeInternal(MOB mob, int metaFlags, Object... args)
 		throws java.io.IOException;
 	
     /** constant mask for the metaflags parameter for execute and preexecute, means being mpforced*/

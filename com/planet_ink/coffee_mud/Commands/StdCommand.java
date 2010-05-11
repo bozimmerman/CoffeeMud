@@ -62,7 +62,7 @@ public class StdCommand implements Command
         return true;
     }
 
-	public Object execute(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
 	{
 		return null;
 	}

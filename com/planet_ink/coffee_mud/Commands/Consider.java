@@ -64,42 +64,19 @@ public class Consider extends StdCommand
 		return levelDiffed*(levelDiff<0.0?-1:1);
 	}
 
-
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
-		throws java.io.IOException
+	public int doConsider(MOB mob, Physical target)
 	{
 		Room R=mob.location();
-		if(R==null) return false;
-        Physical target=null;
-        if((commands.size()==1)&&(commands.firstElement() instanceof Physical))
-        	target=(Physical)commands.firstElement();
-        else
-        {
-    		if(commands.size()<2)
-    		{
-    			mob.tell("Consider whom or what?");
-    			return false;
-    		}
-    		commands.removeElementAt(0);
-    		String targetName=CMParms.combine(commands,0);
-    		if(ID.equalsIgnoreCase("SELF")||ID.equalsIgnoreCase("ME"))
-    			target=mob;
-    		if(target==null)
-    			target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,targetName,Wearable.FILTER_ANY);
-    		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
-    		{
-    			mob.tell("I don't see '"+targetName+"' here.");
-    			return false;
-    		}
-        }
+		if(R==null) return 0;
 		CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MASK_EYES|CMMsg.TYP_OK_VISUAL,null,"<S-NAME> consider(s) <T-NAMESELF>.","<S-NAME> consider(s) <T-NAMESELF>.");
 		if(R.okMessage(mob,msg))
 			R.send(mob,msg);
+    	int lvlDiff=0;
         if(target instanceof MOB)
         {
         	MOB targetMOB=(MOB)target;
 			int relDiff=relativeLevelDiff(targetMOB,mob);
-			int lvlDiff=(target.phyStats().level()-mob.phyStats().level());
+			lvlDiff=(target.phyStats().level()-mob.phyStats().level());
 			int realDiff=relDiff;//(relDiff+lvlDiff)/2;
 
 			int theDiff=2;
@@ -202,8 +179,40 @@ public class Consider extends StdCommand
 		else
 		if(!(target instanceof MOB))
 			mob.tell("You don't have any particular thoughts about that.");
+		return lvlDiff;
+	}
+
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
+		throws java.io.IOException
+	{
+        Physical target=null;
+		if(commands.size()<2)
+		{
+			mob.tell("Consider whom or what?");
+			return false;
+		}
+		commands.removeElementAt(0);
+		String targetName=CMParms.combine(commands,0);
+		if(ID.equalsIgnoreCase("SELF")||ID.equalsIgnoreCase("ME"))
+			target=mob;
+		if(target==null)
+			target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,targetName,Wearable.FILTER_ANY);
+		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
+		{
+			mob.tell("I don't see '"+targetName+"' here.");
+			return false;
+		}
+        doConsider(mob,target);
 		return true;
 	}
+	
+	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	{
+		if((args.length==0)||(!(args[0] instanceof MOB)))
+			return null;
+		return Integer.valueOf(doConsider(mob, (MOB)args[0]));
+	}
+	
     public double combatActionsCost(MOB mob, List<String> cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}
     public double actionsCost(MOB mob, List<String> cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0);}
 	public boolean canBeOrdered(){return true;}

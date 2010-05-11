@@ -194,12 +194,12 @@ public class Export extends StdCommand
 			if(S!=null) mob.tell("You must specify a file name to create, or enter 'SCREEN' to have a screen dump or 'EMAIL' to send to an email address.");
 			return false;
 		}
-		execute(mob,metaFlags,commandType,subType,fileName,Integer.valueOf(fileNameCode),S,area,room);
+		executeInternal(mob,metaFlags,commandType,subType,fileName,Integer.valueOf(fileNameCode),S,area,room);
 		return true;
 	}
 
 	/**
-	 * @see com.planet_ink.coffee_mud.Commands.interfaces.Command#execute(MOB, int, Object...)
+	 * @see com.planet_ink.coffee_mud.Commands.interfaces.Command#executeInternal(MOB, int, Object...)
 	 * args[0] = commandType: AREA, PLAYER, ROOM
 	 * args[1] = subType: DATA, PLAYER, MOBS, ITEMS, WEAPONS, ARMOR
 	 * args[2] = fileName: MEMORY, SCREEN, EMAIL
@@ -209,7 +209,7 @@ public class Export extends StdCommand
 	 * args[6] = room
 	 * @return xml document, with filenameType=4, or null
 	 */
-	public Object execute(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
 	{
 		if(args.length<7)
 		{

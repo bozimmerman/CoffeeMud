@@ -83,7 +83,7 @@ public class AreaXML extends StdWebMacro
 		Object resultO=null;
 		try
 		{
-			resultO=C.execute(mob,0,"AREA","DATA","MEMORY",Integer.valueOf(4),null,pickedA,mob.location());
+			resultO=C.executeInternal(mob,0,"AREA","DATA","MEMORY",Integer.valueOf(4),null,pickedA,mob.location());
 		}
 		catch(Exception e)
 		{

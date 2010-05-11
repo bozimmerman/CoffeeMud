@@ -957,7 +957,7 @@ public final class IMC2Driver extends Thread {
 		if(C!=null)
 		{
 			String msg=null;
-			try{msg=(String)C.execute(null,0);}catch(Exception e){}
+			try{msg=(String)C.executeInternal(null,0);}catch(Exception e){}
 			if(msg!=null)
 			{
 				msg=CMStrings.replaceAll(msg,"\n\r","\\n\\r");
