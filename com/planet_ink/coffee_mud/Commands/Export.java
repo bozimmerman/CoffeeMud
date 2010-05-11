@@ -97,25 +97,9 @@ public class Export extends StdCommand
 		String commandType="";
 		String fileName="";
 		int fileNameCode=-1; // -1=indetermined, 0=screen, 1=file, 2=path, 3=email
-		HashSet custom=new HashSet();
-		HashSet files=new HashSet();
 		Room room=mob.location();
 		Area area=(room!=null)?room.getArea():null;
 		Session S=mob.session();
-		while((commands.size()>0)&&(!(commands.lastElement() instanceof String)))
-		{
-			S=null;
-			Object O=commands.lastElement();
-			if(O instanceof Room)
-			{
-				room=(Room)O;
-				area=room.getArea();
-			}
-			else
-			if(O instanceof Area)
-				area=(Area)O;
-			commands.removeElementAt(commands.size()-1);
-		}
 		if(commands.size()>0)
 			commands.removeElementAt(0);
 		if(commands.size()>0)
@@ -210,7 +194,39 @@ public class Export extends StdCommand
 			if(S!=null) mob.tell("You must specify a file name to create, or enter 'SCREEN' to have a screen dump or 'EMAIL' to send to an email address.");
 			return false;
 		}
+		execute(mob,metaFlags,commandType,subType,fileName,Integer.valueOf(fileNameCode),S,area,room);
+		return true;
+	}
 
+	/**
+	 * @see com.planet_ink.coffee_mud.Commands.interfaces.Command#execute(MOB, int, Object...)
+	 * args[0] = commandType: AREA, PLAYER, ROOM
+	 * args[1] = subType: DATA, PLAYER, MOBS, ITEMS, WEAPONS, ARMOR
+	 * args[2] = fileName: MEMORY, SCREEN, EMAIL
+	 * args[3] = fileNameType (0=screen, 1=disk, 2=directory, 3=email, 4=memory)
+	 * args[4] = Session
+	 * args[5] = area
+	 * args[6] = room
+	 * @return xml document, with filenameType=4, or null
+	 */
+	public Object execute(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	{
+		if(args.length<7)
+		{
+			Log.errOut("Export","Illegal arguments");
+			return null;
+		}
+		String commandType=(String)args[0];
+		String subType=(String)args[1];
+		String fileName=(String)args[2];
+		int fileNameCode = ((Integer)args[3]).intValue();
+		Session S = (Session)args[4];
+		Area area = (Area)args[5];
+		Room room = (Room)args[6];
+		
+		HashSet custom=new HashSet();
+		HashSet files=new HashSet();
+		
 		String xml="";
 		if(subType.equalsIgnoreCase("DATA"))
 		{
@@ -445,13 +461,9 @@ public class Export extends StdCommand
 		}
         if(fileNameCode==2) fileName=fileName+"/extras";
         if(fileNameCode==4)
-        {
-        	commands.clear();
-        	commands.addElement(xml);
-        	return true;
-        }
+        	return xml;
 		reallyExport(mob,S,fileName,xml);
-		return true;
+		return null;
 	}
 
 	public boolean canBeOrdered(){return true;}

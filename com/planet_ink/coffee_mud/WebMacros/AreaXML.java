@@ -78,14 +78,20 @@ public class AreaXML extends StdWebMacro
 		if(mob==null) return null;
 		Area pickedA=getLoggedArea(httpReq,mob);
 		if(pickedA==null) return null;
-		Vector<Object> V=new Vector<Object>();
-		V.addAll(CMParms.parse("EXPORT AREA DATA MEMORY"));
-		V.add(pickedA);
 		Command C=CMClass.getCommand("Export");
 		if(C==null) return null;
-		try{if(!C.execute(mob,V,0)) return null;}catch(Exception e){return null;}
-		if((V.size()==0)||(!(V.firstElement() instanceof String))) return null;
-		return ((String)V.firstElement()).getBytes();
+		Object resultO=null;
+		try
+		{
+			resultO=C.execute(mob,0,"AREA","DATA","MEMORY",Integer.valueOf(4),null,pickedA,mob.location());
+		}
+		catch(Exception e)
+		{
+			return null;
+		}
+		if(!(resultO instanceof String)) 
+			return null;
+		return ((String)resultO).getBytes();
     }
     
     public String runMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException
