@@ -38,12 +38,12 @@ public class Prop_EnterAdjuster extends Property
 	public String ID() { return "Prop_EnterAdjuster"; }
 	public String name(){ return "Room entering adjuster";}
 	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS;}
-    private MaskingLibrary.CompiledZapperMask mask=MaskingLibrary.CompiledZapperMask.EMPTY;
+    private MaskingLibrary.CompiledZapperMask mask=MaskingLibrary.CompiledZapperMask.EMPTY();
 
     public void setMiscText(String newText)
     {
         super.setMiscText(newText);
-        mask=MaskingLibrary.CompiledZapperMask.EMPTY;
+        mask=MaskingLibrary.CompiledZapperMask.EMPTY();
         buildMask(newText,mask);
     }
     

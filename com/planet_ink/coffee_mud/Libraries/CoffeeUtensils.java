@@ -598,7 +598,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
                 compiledMask=CMLib.masking().maskCompile(((String)lootPolicy.elementAt(p)).substring(maskDex+5).trim());
             }
             else
-                compiledMask=MaskingLibrary.CompiledZapperMask.EMPTY;
+                compiledMask=MaskingLibrary.CompiledZapperMask.EMPTY();
             Vector parsed=CMParms.parse(s);
             int pct=100;
             for(int x=0;x<parsed.size();x++)

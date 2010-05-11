@@ -253,6 +253,43 @@ public class StdGrid extends StdRoom implements GridLocale
 				V.addElement(subMap[x][y]);
 		return V;
 	}
+	public final Iterator<Room> getExistingRooms() 
+	{
+		final Room[][] map=this.subMap;
+		if(subMap!=null)
+			return new Iterator<Room>()
+			{
+				int x=0;
+				int y=0;
+				Room R=null;
+				private void setRoom()
+				{
+					while(R==null)
+					{
+						while((x<map.length)&&(y>=map[x].length))
+						{
+							y=0;
+							x++;
+						}
+						if(x>=map.length) return;
+						if((x<map.length)&&(y<map[x].length))
+							R=map[x][y];
+						if(R==null) y++;
+					}
+				}
+				public boolean hasNext() { setRoom(); return R!=null;}
+				public Room next() {
+					setRoom();
+					Room r = R;
+					y++;
+					R=null;
+					setRoom();
+					return r;
+				}
+				public void remove() {}
+			};
+		return EmptyIterator.INSTANCE;
+	}
 	protected void halfLink(Room room, 
 							Room loc, 
 							int dirCode, 

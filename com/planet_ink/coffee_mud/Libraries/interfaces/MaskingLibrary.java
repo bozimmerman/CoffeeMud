@@ -65,11 +65,11 @@ public interface MaskingLibrary extends CMLibrary
     	public CompiledZapperMaskEntry[] entries;
     	public CompiledZapperMask(boolean[] flags, CompiledZapperMaskEntry[] entries)
     	{	this.flags=flags; this.entries=entries;}
-    	public static CompiledZapperMask EMPTY;
-    	static
+    	public static CompiledZapperMask EMPTY()
     	{
-    		EMPTY=new CompiledZapperMask(new boolean[2],new CompiledZapperMaskEntry[0]);
-    		EMPTY.empty=true;
+    		CompiledZapperMask e=new CompiledZapperMask(new boolean[2],new CompiledZapperMaskEntry[0]);
+    		e.empty=true;
+    		return e;
     	}
     }
     

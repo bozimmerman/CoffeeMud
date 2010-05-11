@@ -54,12 +54,18 @@ public class ConvertingList<L,K> implements List<K>
 
 	@Override
 	public boolean contains(Object arg0) {
+		for(int x=0;x<size();x++)
+			if((arg0==null)?get(x)==null:arg0.equals(get(x)))
+				return true;
 		return list.contains(arg0);
 	}
 
 	@Override
 	public boolean containsAll(Collection<?> arg0) {
-		return list.containsAll(arg0);
+		for(Object o : arg0)
+			if(!contains(o))
+				return false;
+		return true;
 	}
 
 	@Override
@@ -69,7 +75,10 @@ public class ConvertingList<L,K> implements List<K>
 
 	@Override
 	public int indexOf(Object arg0) {
-		return list.indexOf(arg0);
+		for(int x=0;x<size();x++)
+			if((arg0==null)?get(x)==null:arg0.equals(get(x)))
+				return x;
+		return list.lastIndexOf(arg0);
 	}
 
 	@Override
@@ -83,7 +92,11 @@ public class ConvertingList<L,K> implements List<K>
 	}
 
 	@Override
-	public int lastIndexOf(Object arg0) {
+	public int lastIndexOf(Object arg0) 
+	{
+		for(int x=size()-1;x>=0;x--)
+			if((arg0==null)?get(x)==null:arg0.equals(get(x)))
+				return x;
 		return list.lastIndexOf(arg0);
 	}
 
@@ -133,13 +146,21 @@ public class ConvertingList<L,K> implements List<K>
 	}
 
 	@Override
-	public Object[] toArray() {
-		return list.toArray();
+	public Object[] toArray() 
+	{
+		Object[] obj=new Object[size()];
+		for(int x=0;x<size();x++)
+			obj[x]=get(x);
+		return obj;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T[] toArray(T[] arg0) {
-		return list.toArray(arg0);
+		T[] objs= list.toArray(arg0);
+		for(int x=0;x<size();x++)
+			objs[x] = (T) get(x);
+		return objs;
 	}
 
 }

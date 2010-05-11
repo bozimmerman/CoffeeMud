@@ -72,10 +72,10 @@ public class ProtectedCitizens extends ActiveTicker
 	{
 		if(citizenZapper!=null) return citizenZapper;
 		String s=getParmsNoTicks();
-		if(s.length()==0){ citizenZapper=MaskingLibrary.CompiledZapperMask.EMPTY; return citizenZapper;}
+		if(s.length()==0){ citizenZapper=MaskingLibrary.CompiledZapperMask.EMPTY(); return citizenZapper;}
 		char c=';';
 		int x=s.indexOf(c);
-		if(x<0){ citizenZapper=MaskingLibrary.CompiledZapperMask.EMPTY; return citizenZapper;}
+		if(x<0){ citizenZapper=MaskingLibrary.CompiledZapperMask.EMPTY(); return citizenZapper;}
 		citizenZapper=CMLib.masking().maskCompile(s.substring(0,x));
 		return citizenZapper;
 	}
@@ -84,13 +84,13 @@ public class ProtectedCitizens extends ActiveTicker
 	{
 		if(helperZapper!=null) return helperZapper;
 		String s=getParmsNoTicks();
-		if(s.length()==0){ helperZapper=MaskingLibrary.CompiledZapperMask.EMPTY; return helperZapper;}
+		if(s.length()==0){ helperZapper=MaskingLibrary.CompiledZapperMask.EMPTY(); return helperZapper;}
 		char c=';';
 		int x=s.indexOf(c);
-		if(x<0){ helperZapper=MaskingLibrary.CompiledZapperMask.EMPTY; return helperZapper;}
+		if(x<0){ helperZapper=MaskingLibrary.CompiledZapperMask.EMPTY(); return helperZapper;}
 		s=s.substring(x+1).trim();
 		x=s.indexOf(c);
-		if(x<0){ helperZapper=MaskingLibrary.CompiledZapperMask.EMPTY; return helperZapper;}
+		if(x<0){ helperZapper=MaskingLibrary.CompiledZapperMask.EMPTY(); return helperZapper;}
 		helperZapper=CMLib.masking().maskCompile(s.substring(0,x));
 		return helperZapper;
 	}

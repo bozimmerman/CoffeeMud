@@ -72,7 +72,7 @@ public class Prop_HaveAdjuster extends Property
         this.charStateChanges=null;
         this.phyStatsChanges=null;
         this.charStatsChanges=null;
-        this.mask=MaskingLibrary.CompiledZapperMask.EMPTY;
+        this.mask=MaskingLibrary.CompiledZapperMask.EMPTY();
         newText=buildMask(newText,mask);
         Vector phyStatsV=new Vector();
         addIfPlussed(newText,"abi",PhyStats.STAT_ABILITY,phyStatsV);

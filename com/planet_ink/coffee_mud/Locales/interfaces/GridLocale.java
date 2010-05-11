@@ -42,7 +42,21 @@ public interface GridLocale extends Room, GridZones
 	public void buildGrid();
 	public void clearGrid(Room bringBackHere);
 	public List<Room> getAllRooms();
+	public Iterator<Room> getExistingRooms();
 	public Iterator<WorldMap.CrossExit> outerExits();
 	public void addOuterExit(WorldMap.CrossExit x);
 	public void delOuterExit(WorldMap.CrossExit x);
+	public class ThinGridEntry
+	{
+		public int x;
+		public int y;
+		public Room room;
+		public ThinGridEntry(Room R, int x, int y)
+		{ room=R; this.x=x; this.y=y;}
+	}
+	public static class ThinGridEntryConverter implements Converter<ThinGridEntry,Room>
+	{
+		public static ThinGridEntryConverter INSTANCE = new ThinGridEntryConverter();
+		public Room convert(ThinGridEntry obj) { return obj.room;}
+	}
 }

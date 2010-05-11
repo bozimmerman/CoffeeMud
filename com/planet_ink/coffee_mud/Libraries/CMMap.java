@@ -1316,8 +1316,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		room.clearSky();
 		CMLib.threads().clearDebri(room,0);
 		if(room instanceof GridLocale)
-			for(Room R : ((GridLocale)room).getAllRooms())
-				this.emptyRoom(R, bringBackHere);
+			for(Iterator<Room> r=((GridLocale)room).getExistingRooms();r.hasNext();)
+				emptyRoom(r.next(), bringBackHere);
 	}
 
 
