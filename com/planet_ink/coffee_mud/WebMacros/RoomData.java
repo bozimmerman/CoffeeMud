@@ -36,8 +36,8 @@ import java.util.*;
 public class RoomData extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
-	public static Vector mobs=new Vector();
-	public static Vector items=new Vector();
+	public static List<MOB> mobs=new Vector<MOB>();
+	public static List<Item> items=new Vector<Item>();
 
 	public static String getItemCode(Room R, Item I)
 	{
@@ -48,14 +48,14 @@ public class RoomData extends StdWebMacro
 		return "";
 	}
 
-	public static String getItemCode(Vector allitems, Item I)
+	public static String getItemCode(List<Item> allitems, Item I)
 	{
 		if(I==null) return "";
 		for(int i=0;i<allitems.size();i++)
-			if(allitems.elementAt(i)==I)
+			if(allitems.get(i)==I)
 				return Long.toString((I.ID()+"/"+I.Name()+"/"+I.displayText()).hashCode()<<5)+i;
         for(int i=0;i<allitems.size();i++)
-            if(((Environmental)allitems.elementAt(i)).sameAs(I))
+            if(((Environmental)allitems.get(i)).sameAs(I))
                 return Long.toString((I.ID()+"/"+I.Name()+"/"+I.displayText()).hashCode()<<5)+i;
 		return "";
 	}
@@ -120,17 +120,17 @@ public class RoomData extends StdWebMacro
 		return null;
 	}
 
-	public static Item getItemFromCode(Vector allitems, String code)
+	public static Item getItemFromCode(List<Item> allitems, String code)
 	{
         if(code.startsWith("CATALOG-"))
             return getItemFromCatalog(code);
 		for(int i=0;i<allitems.size();i++)
-			if(getItemCode(allitems,(Item)allitems.elementAt(i)).equals(code))
-				return (Item)allitems.elementAt(i);
+			if(getItemCode(allitems,(Item)allitems.get(i)).equals(code))
+				return (Item)allitems.get(i);
 		if(code.length()>2) code=code.substring(0,code.length()-2);
 		for(int i=0;i<allitems.size();i++)
-			if(getItemCode(allitems,(Item)allitems.elementAt(i)).startsWith(code))
-				return (Item)allitems.elementAt(i);
+			if(getItemCode(allitems,(Item)allitems.get(i)).startsWith(code))
+				return (Item)allitems.get(i);
 		return null;
 	}
 
@@ -147,17 +147,17 @@ public class RoomData extends StdWebMacro
 		return null;
 	}
 
-	public static MOB getMOBFromCode(Vector allmobs, String code)
+	public static MOB getMOBFromCode(List<MOB> allmobs, String code)
 	{
         if(code.startsWith("CATALOG-"))
             return getMOBFromCatalog(code);
 		for(int i=0;i<allmobs.size();i++)
-			if(getMOBCode(allmobs,((MOB)allmobs.elementAt(i))).equals(code))
-				return ((MOB)allmobs.elementAt(i));
+			if(getMOBCode(allmobs,((MOB)allmobs.get(i))).equals(code))
+				return ((MOB)allmobs.get(i));
 		if(code.length()>2) code=code.substring(0,code.length()-2);
 		for(int i=0;i<allmobs.size();i++)
-			if(getMOBCode(allmobs,((MOB)allmobs.elementAt(i))).startsWith(code))
-				return ((MOB)allmobs.elementAt(i));
+			if(getMOBCode(allmobs,((MOB)allmobs.get(i))).startsWith(code))
+				return ((MOB)allmobs.get(i));
 		return null;
 	}
 
@@ -189,7 +189,7 @@ public class RoomData extends StdWebMacro
         return I;
     }
 
-    public static String getAppropriateCode(Environmental E, Environmental RorM, Vector classes, Vector list)
+    public static String getAppropriateCode(Environmental E, Environmental RorM, List classes, List list)
     {
         if(((RorM instanceof Room)&&(((Room)RorM).isHere(E)))
         ||((RorM instanceof MOB)&&(((MOB)RorM).isMine(E))))
@@ -225,7 +225,7 @@ public class RoomData extends StdWebMacro
 		{
 			for(int m=0;m<items.size();m++)
 			{
-				Item I2=(Item)items.elementAt(m);
+				Item I2=(Item)items.get(m);
 				if(MATCHING.equals(""+I2))
 					return I2;
 			}
@@ -243,7 +243,7 @@ public class RoomData extends StdWebMacro
         if(M==null) return null;
         for(int m=0;m<mobs.size();m++)
         {
-            MOB M2=(MOB)mobs.elementAt(m);
+            MOB M2=(MOB)mobs.get(m);
             if(M.sameAs(M2)) return M2;
         }
         return null;
@@ -254,23 +254,23 @@ public class RoomData extends StdWebMacro
         if(I==null) return null;
         for(int i=0;i<items.size();i++)
         {
-            Item I2=(Item)mobs.elementAt(i);
+            Item I2=(Item)mobs.get(i);
             if(I.sameAs(I2)) return I2;
         }
         return null;
     }
 
-	public static Vector contributeMOBs(Vector inhabs)
+	public static List<MOB> contributeMOBs(List<MOB> inhabs)
 	{
 		for(int i=0;i<inhabs.size();i++)
 		{
-			MOB M=(MOB)inhabs.elementAt(i);
+			MOB M=(MOB)inhabs.get(i);
 			if(M.isGeneric())
 			{
 				if((getReferenceMOB(M)==null)&&(M.isSavable()))
 				{
 					MOB M3=(MOB)M.copyOf();
-					mobs.addElement(M3);
+					mobs.add(M3);
 					for(int i3=0;i3<M3.numItems();i3++)
 					{
 						Item I3=M3.getItem(i3);
@@ -292,17 +292,17 @@ public class RoomData extends StdWebMacro
 		return true;
 	}
 
-	public static Vector contributeItems(Vector inhabs)
+	public static List<Item> contributeItems(List<Item> inhabs)
 	{
 		for(int i=0;i<inhabs.size();i++)
 		{
-			Item I=(Item)inhabs.elementAt(i);
+			Item I=(Item)inhabs.get(i);
 			if(I.isGeneric())
 			{
 				boolean found=false;
 				for(int i2=0;i2<items.size();i2++)
 				{
-					Item I2=(Item)items.elementAt(i2);
+					Item I2=(Item)items.get(i2);
 					if(I.sameAs(I2))
 					{	found=true;	break;	}
 				}
@@ -311,7 +311,7 @@ public class RoomData extends StdWebMacro
 					Item I2=(Item)I.copyOf();
                     I2.setContainer(null);
                     I2.wearAt(Wearable.IN_INVENTORY);
-					items.addElement(I2);
+					items.add(I2);
 					I2.stopTicking();
 				}
 			}
@@ -414,7 +414,7 @@ public class RoomData extends StdWebMacro
 			if(parms.containsKey("MOBLIST"))
 			{
 				Vector classes=new Vector();
-				Vector moblist=null;
+				List moblist=null;
 				if(httpReq.isRequestParameter("MOB1"))
 				{
 					moblist=mobs;
@@ -446,7 +446,7 @@ public class RoomData extends StdWebMacro
 						{
 							for(int m=0;m<moblist.size();m++)
 							{
-								MOB M2=(MOB)moblist.elementAt(m);
+								MOB M2=(MOB)moblist.get(m);
 								if(MATCHING.equals(""+M2))
 								{	classes.addElement(M2);	break;	}
 							}
@@ -497,7 +497,7 @@ public class RoomData extends StdWebMacro
 				str.append("<OPTION SELECTED VALUE=\"\">Select a new MOB");
 				for(int i=0;i<moblist.size();i++)
 				{
-					MOB M=(MOB)moblist.elementAt(i);
+					MOB M=(MOB)moblist.get(i);
 					str.append("<OPTION VALUE=\""+M+"\">"+M.Name()+" ("+M.ID()+")");
 				}
 				StringBuffer mlist=(StringBuffer)Resources.getResource("MUDGRINDER-MOBLIST");
@@ -529,7 +529,7 @@ public class RoomData extends StdWebMacro
 				Vector classes=new Vector();
 				Vector containers=new Vector();
 				Vector beingWorn=new Vector();
-				Vector itemlist=null;
+				List<Item> itemlist=null;
 				if(httpReq.isRequestParameter("ITEM1"))
 				{
 					itemlist=items;
@@ -609,7 +609,7 @@ public class RoomData extends StdWebMacro
 				str.append("<OPTION SELECTED VALUE=\"\">Select a new Item");
 				for(int i=0;i<itemlist.size();i++)
 				{
-					Item I=(Item)itemlist.elementAt(i);
+					Item I=(Item)itemlist.get(i);
 					str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");
 				}
 				StringBuffer ilist=(StringBuffer)Resources.getResource("MUDGRINDER-ITEMLIST");

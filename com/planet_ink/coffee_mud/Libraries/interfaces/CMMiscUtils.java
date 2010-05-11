@@ -45,7 +45,7 @@ public interface CMMiscUtils extends CMLibrary
     
     public String getFormattedDate(Environmental E);
     public double memoryUse ( Environmental E, int number );
-    public String niceCommaList(List<Object> V, boolean andTOrF);
+    public String niceCommaList(List<?> V, boolean andTOrF);
     
     public void outfit(MOB mob, List<Item> items);
     public boolean reachableItem(MOB mob, Environmental E);

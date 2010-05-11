@@ -1773,11 +1773,11 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		        String rsc=RawMaterial.CODES.NAME(((Item)msg.target()).material()).toUpperCase();
 				for(int i=0;i<laws.bannedSubstances().size();i++)
 				{
-					Vector V=(Vector)laws.bannedSubstances().get(i);
+					List<String> V=laws.bannedSubstances().get(i);
 					for(int v=0;v<V.size();v++)
 					{
-						if((CMLib.english().containsString(msg.target().name(),(String)V.elementAt(v)))
-						||rsc.equalsIgnoreCase((String)V.elementAt(v)))
+						if((CMLib.english().containsString(msg.target().name(),(String)V.get(v)))
+						||rsc.equalsIgnoreCase((String)V.get(v)))
 						{
 							String[] info=(String[])laws.bannedBits().get(i);
 							fillOutWarrant(msg.source(),
@@ -1799,10 +1799,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
             
 			for(int i=0;i<laws.otherCrimes().size();i++)
 			{
-				Vector V=(Vector)laws.otherCrimes().get(i);
+				List<String> V=laws.otherCrimes().get(i);
 				for(int v=0;v<V.size();v++)
 				{
-					if(CMLib.english().containsString(msg.othersMessage(),(String)V.elementAt(v)))
+					if(CMLib.english().containsString(msg.othersMessage(),(String)V.get(v)))
 					{
 						String[] info=(String[])laws.otherBits().get(i);
 						fillOutWarrant(msg.source(),

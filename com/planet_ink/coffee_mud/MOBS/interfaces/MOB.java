@@ -82,11 +82,11 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	/** Primary mob communication */
 	public void tell(MOB source, Environmental target, Environmental tool, String msg);
 	public void tell(String msg);
-	public void enqueCommand(Vector commands, int metaFlags, double tickDelay);
+	public void enqueCommand(List<String> commands, int metaFlags, double tickDelay);
     public void prequeCommand(Vector commands, int metaFlags, double tickDelay);
 	public boolean dequeCommand();
     public int commandQueSize();
-	public void doCommand(Vector commands, int metaFlags);
+	public void doCommand(List commands, int metaFlags);
     public double actions();
     public void setActions(double remain);
 
@@ -242,11 +242,12 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public static class QMCommand
 	{
 		public Object 	commandObj = null;
-		public Vector 	commandVector = null;
 		public double 	tickDelay = 0.0;
 		public long 	nextCheck=System.currentTimeMillis()-1;
 		public int 		seconds=-1;
 		public int		metaFlags=0;
+		public List<String>
+						commandVector = null;
 	}
 
 	public static final int ATT_AUTOGOLD=1;

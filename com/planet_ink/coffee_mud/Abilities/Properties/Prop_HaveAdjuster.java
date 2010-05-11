@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -43,7 +44,7 @@ public class Prop_HaveAdjuster extends Property
     protected Object[] charStatsChanges=null;
     protected Object[] charStateChanges=null;
     protected Object[] phyStatsChanges=null;
-    protected Vector mask=null;
+    protected MaskingLibrary.CompiledZapperMask mask=null;
 
     
     public boolean addIfPlussed(String newText, String parm, int parmCode, Vector addTo)
@@ -71,7 +72,7 @@ public class Prop_HaveAdjuster extends Property
         this.charStateChanges=null;
         this.phyStatsChanges=null;
         this.charStatsChanges=null;
-        this.mask=new Vector();
+        this.mask=MaskingLibrary.CompiledZapperMask.EMPTY;
         newText=buildMask(newText,mask);
         Vector phyStatsV=new Vector();
         addIfPlussed(newText,"abi",PhyStats.STAT_ABILITY,phyStatsV);
@@ -158,7 +159,7 @@ public class Prop_HaveAdjuster extends Property
         if((affected!=null)
         &&(affected instanceof Item)
         &&(!((Item)affected).amDestroyed())
-        &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,mob,true))))
+        &&((mask==null)||(CMLib.masking().maskCheck(mask,mob,true))))
             return true;
         return false;
     }

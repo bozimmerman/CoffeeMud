@@ -115,7 +115,7 @@ public class Examine extends StdCommand
         }
         return false;
     }
-    public double combatActionsCost(MOB mob, Vector cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}
-    public double actionsCost(MOB mob, Vector cmds){return 1.0;}
+    public double combatActionsCost(MOB mob, List<String> cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}
+    public double actionsCost(MOB mob, List<String> cmds){return 1.0;}
     public boolean canBeOrdered(){return true;}
 }

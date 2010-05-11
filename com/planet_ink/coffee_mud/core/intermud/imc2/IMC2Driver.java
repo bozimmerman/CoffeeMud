@@ -954,15 +954,14 @@ public final class IMC2Driver extends Thread {
 	{
 		StringBuffer str=new StringBuffer("Players on "+CMProps.getVar(CMProps.SYSTEM_MUDNAME)+":\\n\\r");
 		Command C=CMClass.getCommand("Who");
-		Vector V=new Vector();
 		if(C!=null)
 		{
-			try{C.execute(null,V,0);}catch(Exception e){}
-			if((V.size()>0)&&(V.firstElement() instanceof String))
+			String msg=null;
+			try{msg=(String)C.execute(null,0);}catch(Exception e){}
+			if(msg!=null)
 			{
-				String s=(String)V.firstElement();
-				s=CMStrings.replaceAll((String)V.firstElement(),"\n\r","\\n\\r");
-				return str.toString()+s;
+				msg=CMStrings.replaceAll(msg,"\n\r","\\n\\r");
+				return str.toString()+msg;
 			}
 		}
 		return "Unavailable";

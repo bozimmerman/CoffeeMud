@@ -67,7 +67,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 	protected Container cookingPot=null;
     protected String finalDishName=null;
     protected int finalAmount=0;
-    protected Vector finalRecipe=null;
+    protected List finalRecipe=null;
     protected Hashtable oldPotContents=null;
     protected String defaultFoodSound="sizzle.wav";
     protected String defaultDrinkSound="liquid.wav";
@@ -220,7 +220,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 	}
 
 
-	public Vector countIngredients(Vector Vr)
+	public Vector countIngredients(List Vr)
 	{
 		String[] contents=new String[oldPotContents.size()];
 		int[] amounts=new int[oldPotContents.size()];
@@ -241,11 +241,11 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		{
 			for(int vr=RCP_MAININGR;vr<Vr.size();vr+=2)
 			{
-				String ingredient=((String)Vr.elementAt(vr)).toUpperCase();
+				String ingredient=((String)Vr.get(vr)).toUpperCase();
 				if(ingredient.length()>0)
 				{
 					int amount=1;
-					if(vr<Vr.size()-1)amount=CMath.s_int((String)Vr.elementAt(vr+1));
+					if(vr<Vr.size()-1)amount=CMath.s_int((String)Vr.get(vr+1));
 					if(amount==0) amount=1;
 					if(amount<0) amount=amount*-1;
 					if(ingredient.equalsIgnoreCase("water"))
@@ -751,7 +751,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			}
 			for(int vr=0;vr<closeRecipes.size();vr++)
 			{
-				Vector Vr=(Vector)closeRecipes.elementAt(vr);
+				List Vr=(List)closeRecipes.elementAt(vr);
 				Vector missing=missingIngredientsFromOldContents(Vr,false);
 				Vector extra=extraIngredientsInOldContents(Vr,false);
 				String recipeName=replacePercent((String)Vr.get(RCP_FINALFOOD),((String)Vr.get(RCP_MAININGR)).toLowerCase());
@@ -782,7 +782,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		Vector complaints=new Vector();
 		for(int vr=0;vr<perfectRecipes.size();vr++)
 		{
-			Vector Vr=(Vector)perfectRecipes.elementAt(vr);
+			List Vr=(List)perfectRecipes.elementAt(vr);
 			Vector counts=countIngredients(Vr);
 			Integer amountMaking=(Integer)counts.elementAt(0);
 			String recipeName=replacePercent((String)Vr.get(RCP_FINALFOOD),((String)Vr.get(RCP_MAININGR)).toLowerCase());

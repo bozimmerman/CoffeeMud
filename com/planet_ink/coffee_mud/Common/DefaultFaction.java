@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionData;
 import com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionRange;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -1234,8 +1235,8 @@ public class DefaultFaction implements Faction, MsgListener
         private Hashtable<String,String> savedTriggerParms=new Hashtable<String,String>();
         private String triggerParms="";
         private Faction myFaction;
-        private Vector compiledTargetZapper=null;
-        private Vector compiledSourceZapper=null;
+        private MaskingLibrary.CompiledZapperMask compiledTargetZapper=null;
+        private MaskingLibrary.CompiledZapperMask compiledSourceZapper=null;
 
         public String eventID(){return ID;}
         public String flagCache(){return flagCache;}
@@ -1257,8 +1258,8 @@ public class DefaultFaction implements Faction, MsgListener
         	if(newVal.trim().length()>0)
         		compiledTargetZapper=CMLib.masking().maskCompile(newVal);
         }
-		public Vector compiledTargetZapper(){return compiledTargetZapper;}
-        public Vector compiledSourceZapper(){return compiledSourceZapper;}
+		public MaskingLibrary.CompiledZapperMask compiledTargetZapper(){return compiledTargetZapper;}
+        public MaskingLibrary.CompiledZapperMask compiledSourceZapper(){return compiledSourceZapper;}
 		public String getTriggerParm(String parmName) {
 			if((triggerParms==null)||(triggerParms.length()==0))
 				return "";
@@ -1605,18 +1606,14 @@ public class DefaultFaction implements Faction, MsgListener
         private Ability setPresenceReaction(MOB M, Physical myHost)
         {
 	    	Vector<Object> myReactions=null;
-	    	Vector<Faction.FactionReactionItem> tempReactSet=null;
-	    	Faction.FactionReactionItem reactionItem = null;
+	    	List<Faction.FactionReactionItem> tempReactSet=null;
 	    	for(int d=0;d<currentReactionSets.size();d++)
-	    		if(CMLib.masking().maskCheck((Vector)currentReactionSets.elementAt(d,1),M,true))
+	    		if(CMLib.masking().maskCheck((MaskingLibrary.CompiledZapperMask)currentReactionSets.elementAt(d,1),M,true))
 	    		{
 	    			if(myReactions==null) myReactions=new Vector<Object>();
-	    			tempReactSet=(Vector)currentReactionSets.elementAt(d,2);
-	    			for(Enumeration<Faction.FactionReactionItem> e=tempReactSet.elements();e.hasMoreElements();)
-	    			{
-		    			reactionItem=(Faction.FactionReactionItem)e.nextElement();
+	    			tempReactSet=(List)currentReactionSets.elementAt(d,2);
+	    			for(Faction.FactionReactionItem reactionItem : tempReactSet)
 		    			myReactions.add(reactionItem.reactionObjectID()+"="+reactionItem.parameters());
-	    			}
 	    		}
 	    	if(myReactions!=null)
 	    		if(useLightReactions())
@@ -1757,7 +1754,7 @@ public class DefaultFaction implements Faction, MsgListener
     	private double gainF=1.0;
     	private double lossF=1.0;
     	private String mask="";
-    	private Vector compiledMask=null;
+    	private MaskingLibrary.CompiledZapperMask compiledMask=null;
     	public DefaultFactionZapFactor(double gain, double loss, String mask)
     	{
     		setGainFactor(gain);
@@ -1769,7 +1766,7 @@ public class DefaultFaction implements Faction, MsgListener
         public double lossFactor(){return lossF;}
         public void setLossFactor(double val){lossF=val;}
         public String MOBMask(){return mask;}
-        public Vector compiledMOBMask(){return compiledMask;}
+        public MaskingLibrary.CompiledZapperMask compiledMOBMask(){return compiledMask;}
         public void setMOBMask(String str){
         	mask=str;
         	compiledMask=CMLib.masking().maskCompile(str);
@@ -1783,7 +1780,7 @@ public class DefaultFaction implements Faction, MsgListener
     	private String mobMask="";
     	private String rangeName="";
     	private String parms="";
-    	private Vector compiledMobMask=null;
+    	private MaskingLibrary.CompiledZapperMask compiledMobMask=null;
         public String reactionObjectID(){return reactionObjectID;}
         public void setReactionObjectID(String str){reactionObjectID=str;}
         public String presentMOBMask(){return mobMask;}
@@ -1794,7 +1791,7 @@ public class DefaultFaction implements Faction, MsgListener
         	else
 	        	compiledMobMask=CMLib.masking().maskCompile(str);
         }
-        public Vector compiledPresentMOBMask(){ return compiledMobMask;}
+        public MaskingLibrary.CompiledZapperMask compiledPresentMOBMask(){ return compiledMobMask;}
         public String rangeName(){return rangeName;}
         public void setRangeName(String str){rangeName=str.toUpperCase().trim();}
         public String parameters(){return parms;}

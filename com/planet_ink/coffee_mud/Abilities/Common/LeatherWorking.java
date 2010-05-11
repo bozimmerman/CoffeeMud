@@ -84,10 +84,10 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
                     	List<String> V1=new XVector<String>(V);
                     	List<String> V2=new XVector<String>(V);
                         String name=(String)V.get(RCP_FINALNAME);
-                        V1.add(RCP_FINALNAME,"Hard "+name);
-                        V1.add(RCP_LEVEL,""+(CMath.s_int((String)V.get(RCP_LEVEL))+5));
-                        V2.add(RCP_FINALNAME,"Studded "+name);
-                        V2.add(RCP_LEVEL,""+(CMath.s_int((String)V.get(RCP_LEVEL))+11));
+                        V1.set(RCP_FINALNAME,"Hard "+name);
+                        V1.set(RCP_LEVEL,""+(CMath.s_int((String)V.get(RCP_LEVEL))+5));
+                        V2.set(RCP_FINALNAME,"Studded "+name);
+                        V2.set(RCP_LEVEL,""+(CMath.s_int((String)V.get(RCP_LEVEL))+11));
                         pleaseAdd1.add(V1);
                         pleaseAdd2.add(V2);
                     }

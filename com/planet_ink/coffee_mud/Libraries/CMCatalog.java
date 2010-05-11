@@ -762,7 +762,6 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
     
     public static class CataDataImpl implements CataData 
     {
-        public Vector 		lmaskV=null;
         public String 		lmaskStr=null;
         public boolean 		live=false;
         public double 		rate=0.0;
@@ -771,6 +770,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
         					refs=new SVector<WeakReference<Physical>>(1);
         public boolean noRefs = CMProps.getBoolVar(CMProps.SYSTEMB_CATALOGNOCACHE) 
         						|| CMSecurity.isDisabled("CATALOGCACHE");
+        public MaskingLibrary.CompiledZapperMask 		lmaskV=null;
         
         public CataDataImpl(String catadata)
         {
@@ -944,7 +944,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
             rate=_rate;
         }
         
-        public Vector getMaskV(){return lmaskV;}
+        public MaskingLibrary.CompiledZapperMask getMaskV(){return lmaskV;}
         public String getMaskStr(){return lmaskStr;}
         public boolean getWhenLive(){return live;}
         public double getRate(){return rate;}

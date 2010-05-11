@@ -1362,7 +1362,7 @@ public class StdMOB implements MOB
         return false;
 	}
 
-	public void doCommand(Vector commands, int metaFlags)
+	public void doCommand(List commands, int metaFlags)
 	{
 		CMObject O=CMLib.english().findCommand(this,commands);
 		if(O!=null)
@@ -1371,18 +1371,18 @@ public class StdMOB implements MOB
 			CMLib.commands().handleUnknownCommand(this,commands);
 	}
 
-    protected void doCommand(Object O, Vector commands, int metaFlags)
+    protected void doCommand(Object O, List commands, int metaFlags)
 	{
 		try
 		{
 			if(O instanceof Command)
-				((Command)O).execute(this,commands, metaFlags);
+				((Command)O).execute(this,new XVector(commands), metaFlags);
 			else
 			if(O instanceof Social)
-				((Social)O).invoke(this,commands,null,false);
+				((Social)O).invoke(this,new XVector(commands),null,false);
 			else
 			if(O instanceof Ability)
-				CMLib.english().evoke(this,commands);
+				CMLib.english().evoke(this,new XVector(commands));
 			else
 				CMLib.commands().handleUnknownCommand(this,commands);
 		}
@@ -1403,7 +1403,7 @@ public class StdMOB implements MOB
 		}
 	}
 
-    protected double calculateTickDelay(Object command, Vector commands, double tickDelay)
+    protected double calculateTickDelay(Object command, List<String> commands, double tickDelay)
     {
         if(tickDelay<=0.0)
         {
@@ -1443,7 +1443,7 @@ public class StdMOB implements MOB
         dequeCommand();
     }
 
-	public void enqueCommand(Vector commands, int metaFlags, double tickDelay)
+	public void enqueCommand(List<String> commands, int metaFlags, double tickDelay)
 	{
 		if(commands==null) return;
 		CMObject O=CMLib.english().findCommand(this,commands);

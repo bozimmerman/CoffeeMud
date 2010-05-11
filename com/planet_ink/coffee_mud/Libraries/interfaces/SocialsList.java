@@ -55,7 +55,7 @@ public interface SocialsList extends CMLibrary
     
     public Social fetchSocial(String name, boolean exactOnly);
     public Social fetchSocial(String baseName, Environmental Target, boolean exactOnly);
-    public Social fetchSocial(Vector C, boolean exactOnly, boolean checkItemTargets);
+    public Social fetchSocial(List<String> C, boolean exactOnly, boolean checkItemTargets);
     public Social fetchSocial(Vector set, String name, boolean exactOnly);
     public String findSocialName(String named, boolean exactOnly);
     

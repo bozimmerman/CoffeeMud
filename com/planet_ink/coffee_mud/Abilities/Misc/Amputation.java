@@ -108,7 +108,7 @@ public class Amputation extends StdAbility implements Amputator
 			&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 			&&(CMLib.flags().canBeSeenBy(M,msg.source())))
 			{
-				String s=CMLib.utensils().niceCommaList((Vector)missingLimbNameSet(),true);
+				String s=CMLib.utensils().niceCommaList(missingLimbNameSet(),true);
 				if(s.length()>0)
 					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,
 												  CMMsg.MSG_OK_VISUAL,"\n\r"+M.name()+" is missing "+M.charStats().hisher()+" "+s+".\n\r",

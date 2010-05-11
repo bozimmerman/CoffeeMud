@@ -102,18 +102,18 @@ public class CMParms
         return Combined.toString().trim();
     }
 
-    public static String combineWithTabs(Vector<?> commands, int startAt)
+    public static String combineWithTabs(List<?> commands, int startAt)
     {
         return combineWithX(commands,"\t",startAt);
     }
 
-    public static String combineWithX(Vector<?> commands, String X, int startAt)
+    public static String combineWithX(List<?> commands, String X, int startAt)
     {
         StringBuffer Combined=new StringBuffer("");
         if(commands!=null)
         for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
         {
-            String s=commands.elementAt(commandIndex).toString();
+            String s=commands.get(commandIndex).toString();
             Combined.append(s+X);
         }
         return Combined.toString().trim();

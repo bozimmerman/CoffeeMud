@@ -13,6 +13,8 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+import java.util.List;
 import java.util.Vector;
 
 /* 
@@ -48,23 +50,23 @@ public interface Command extends CMObject
 	 * activate this command. A value of 0.0 means perform 
 	 * instantly.  This method only applies when the user
 	 * is not in combat.
-	 * @see Command#combatActionsCost(MOB, Vector)
+	 * @see Command#combatActionsCost(MOB, List<String>)
      * @param mob the mob executing the command, if any
      * @param cmds the parameters to be passed to the command, if any
 	 * @return the number of player free actions required to do this
 	 */
-    public double actionsCost(MOB mob, Vector cmds);
+    public double actionsCost(MOB mob, List<String> cmds);
 	/**
 	 * Returns the number of actions required to completely
 	 * activate this command. A value of 0.0 means perform 
 	 * instantly.  This method only applies when the user
 	 * is fighting in combat.
-	 * @see Command#actionsCost(MOB, Vector)
+	 * @see Command#actionsCost(MOB, List)
      * @param mob the mob executing the command, if any
      * @param cmds the parameters to be passed to the command, if any
 	 * @return the number of player free actions required to do this
 	 */
-    public double combatActionsCost(MOB mob, Vector cmds);
+    public double combatActionsCost(MOB mob, List<String> cmds);
     /**
      * Whether the a group leader or charmer can order their followers
      * to do this command.
@@ -85,7 +87,7 @@ public interface Command extends CMObject
 	 * anything to be in the commands list, or even for the commands to be null.
 	 * This method is not allowed to be called until the player or mob has 
 	 * satisfied the actionsCost requirements and the securityCheck
-	 * @see com.planet_ink.coffee_mud.Commands.interfaces.Command#actionsCost(MOB, Vector)
+	 * @see com.planet_ink.coffee_mud.Commands.interfaces.Command#actionsCost(MOB, List)
 	 * @see com.planet_ink.coffee_mud.Commands.interfaces.Command#securityCheck(MOB)
 	 * @param mob the mob or player issueing the command
 	 * @param commands usually the command words and parameters; a set of strings
@@ -112,6 +114,19 @@ public interface Command extends CMObject
     public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)
         throws java.io.IOException;
     
+	/**
+	 * This method is used for making "insider" calls to the command.  It's parameters
+	 * and implementation can follow any rules you like.  The engine will sometimes
+	 * use these to make direct calls to the command implementations.
+	 * @param mob the mob or player issueing the command
+     * @param metaFlags flags denoting how the command is being executed
+	 * @param args a set of object parameters
+	 * @return a object response
+	 * @throws java.io.IOException usually means the player has dropped carrier
+	 */
+	public Object execute(MOB mob, int metaFlags, Object... args)
+		throws java.io.IOException;
+	
     /** constant mask for the metaflags parameter for execute and preexecute, means being mpforced*/
     public static final int METAFLAG_MPFORCED=1;
     /** constant mask for the metaflags parameter for execute and preexecute, means being ordered*/

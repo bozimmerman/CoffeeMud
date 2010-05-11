@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -105,13 +106,12 @@ public interface ChattyBehavior extends Behavior
 	 * for a particular kind of chatty mob.
 	 * @author bzimmerman
 	 */
-	@SuppressWarnings("unchecked")
 	public static class ChattyGroup implements Cloneable
 	{
 		public String[] groupNames;
-		public Vector[] groupMasks;
+		public MaskingLibrary.CompiledZapperMask[] groupMasks;
 		public ChattyEntry[] entries = null;
-		public ChattyGroup(String[] names, Vector[] masks)
+		public ChattyGroup(String[] names, MaskingLibrary.CompiledZapperMask[] masks)
 		{ groupNames=names; groupMasks=masks;}
 		public ChattyGroup clone(){ try{return (ChattyGroup)super.clone();}catch(Exception e){return this;}}
 	}

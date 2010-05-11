@@ -45,7 +45,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
     protected String unknownCommand(){return "Huh?";}
     protected String unknownInvoke(){return "You don't know how to @x1 that.";}
 
-	public boolean handleUnknownCommand(MOB mob, Vector command)
+	public boolean handleUnknownCommand(MOB mob, List<String> command)
 	{
 		if(mob==null) return false;
 		Room R=mob.location();
@@ -53,7 +53,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		if(R==null){ mob.tell(msgStr); return false;}
         if(command.size()>0)
         {
-            String word=CMLib.english().getAnEvokeWord(mob,(String)command.firstElement());
+            String word=CMLib.english().getAnEvokeWord(mob,(String)command.get(0));
             if(word!=null)
                 msgStr=CMStrings.replaceAll(unknownInvoke(),"@x1",word.toLowerCase());
         }

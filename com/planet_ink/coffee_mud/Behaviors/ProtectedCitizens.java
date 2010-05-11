@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -38,8 +39,8 @@ public class ProtectedCitizens extends ActiveTicker
 {
 	public String ID(){return "ProtectedCitizens";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS|Behavior.CAN_AREAS|Behavior.CAN_ROOMS;}
-	protected static Vector citizenZapper=null;
-	protected static Vector helperZapper=null;
+	protected static MaskingLibrary.CompiledZapperMask citizenZapper=null;
+	protected static MaskingLibrary.CompiledZapperMask helperZapper=null;
 	protected static String[] defclaims={"Help! I'm being attacked!","Help me!!"};
 	protected String[] claims=null;
 	protected int radius=7;
@@ -67,29 +68,29 @@ public class ProtectedCitizens extends ActiveTicker
 		claims=null;
 	}
 
-	public Vector getProtectedZapper()
+	public MaskingLibrary.CompiledZapperMask getProtectedZapper()
 	{
 		if(citizenZapper!=null) return citizenZapper;
 		String s=getParmsNoTicks();
-		if(s.length()==0){ citizenZapper=new Vector(); return citizenZapper;}
+		if(s.length()==0){ citizenZapper=MaskingLibrary.CompiledZapperMask.EMPTY; return citizenZapper;}
 		char c=';';
 		int x=s.indexOf(c);
-		if(x<0){ citizenZapper=new Vector(); return citizenZapper;}
+		if(x<0){ citizenZapper=MaskingLibrary.CompiledZapperMask.EMPTY; return citizenZapper;}
 		citizenZapper=CMLib.masking().maskCompile(s.substring(0,x));
 		return citizenZapper;
 	}
 
-	public Vector getCityguardZapper()
+	public MaskingLibrary.CompiledZapperMask getCityguardZapper()
 	{
 		if(helperZapper!=null) return helperZapper;
 		String s=getParmsNoTicks();
-		if(s.length()==0){ helperZapper=new Vector(); return helperZapper;}
+		if(s.length()==0){ helperZapper=MaskingLibrary.CompiledZapperMask.EMPTY; return helperZapper;}
 		char c=';';
 		int x=s.indexOf(c);
-		if(x<0){ helperZapper=new Vector(); return helperZapper;}
+		if(x<0){ helperZapper=MaskingLibrary.CompiledZapperMask.EMPTY; return helperZapper;}
 		s=s.substring(x+1).trim();
 		x=s.indexOf(c);
-		if(x<0){ helperZapper=new Vector(); return helperZapper;}
+		if(x<0){ helperZapper=MaskingLibrary.CompiledZapperMask.EMPTY; return helperZapper;}
 		helperZapper=CMLib.masking().maskCompile(s.substring(0,x));
 		return helperZapper;
 	}

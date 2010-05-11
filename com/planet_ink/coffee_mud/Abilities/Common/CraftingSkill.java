@@ -131,11 +131,12 @@ public class CraftingSkill extends GatheringSkill
 		                }
 	                }
 	                if(V2 instanceof Vector)
-	                ((Vector)V2).trimToSize();
+	                	((Vector)V2).trimToSize();
 	            }
 	        }
 	    }
-	    if(recipes instanceof Vector) ((Vector)recipes).trimToSize();
+	    if(recipes instanceof Vector) 
+	    	((Vector)recipes).trimToSize();
 	    return recipes;
 	}
 	
@@ -207,7 +208,7 @@ public class CraftingSkill extends GatheringSkill
 	{
 		Vector V=new Vector();
 		if(str==null) return V;
-		Vector V2=new Vector();
+		List V2=new Vector();
 		boolean oneComma=false;
 		int start=0;
 		int longestList=0;
@@ -218,7 +219,7 @@ public class CraftingSkill extends GatheringSkill
 			{
                 if(!skipLine)
                 {
-    				V2.addElement(str.substring(start,i));
+    				V2.add(str.substring(start,i));
     				start=i+1;
     				oneComma=true;
                 }
@@ -231,9 +232,9 @@ public class CraftingSkill extends GatheringSkill
                 else
 				if(oneComma)
 				{
-					V2.addElement(str.substring(start,i));
+					V2.add(str.substring(start,i));
 					if(V2.size()>longestList) longestList=V2.size();
-					V2.trimToSize();
+					if(V2 instanceof Vector) ((Vector)V2).trimToSize();
 					V.addElement(V2);
 					V2=new Vector();
 				}
@@ -244,7 +245,7 @@ public class CraftingSkill extends GatheringSkill
 			}
 		}
 		if((oneComma)&&(str.substring(start).trim().length()>0)&&(!skipLine))
-			V2.addElement(str.substring(start));
+			V2.add(str.substring(start));
 		if(V2.size()>1)
 		{
 			if(V2.size()>longestList) longestList=V2.size();
@@ -252,9 +253,9 @@ public class CraftingSkill extends GatheringSkill
 		}
 		for(int v=0;v<V.size();v++)
 		{
-			V2=(Vector)V.elementAt(v);
+			V2=(List)V.elementAt(v);
 			while(V2.size()<longestList)
-				V2.addElement("");
+				V2.add("");
 		}
 		return V;
 	}

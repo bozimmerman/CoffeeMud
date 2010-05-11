@@ -48,8 +48,8 @@ public class StdAbility implements Ability
 	public String[] triggerStrings(){return empty;}
 	public int maxRange(){return adjustedMaxInvokerRange(0);}
 	public int minRange(){return 0;}
-    public double castingTime(MOB mob, Vector cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFABLETIME),100.0);}
-    public double combatCastingTime(MOB mob, Vector cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMABLETIME),100.0);}
+    public double castingTime(MOB mob, List<String> cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFABLETIME),100.0);}
+    public double combatCastingTime(MOB mob, List<String> cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMABLETIME),100.0);}
 	public boolean putInCommandlist(){return true;}
 	public boolean isAutoInvoked(){return false;}
 	public boolean bubbleAffect(){return false;}

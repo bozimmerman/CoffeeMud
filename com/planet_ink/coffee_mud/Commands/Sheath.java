@@ -212,7 +212,7 @@ public class Sheath extends StdCommand
 		}
 		return false;
 	}
-    public double actionsCost(MOB mob, Vector cmds){return 0.5;}
+    public double actionsCost(MOB mob, List<String> cmds){return 0.5;}
 	public boolean canBeOrdered(){return true;}
 
 	

@@ -337,15 +337,15 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		        			allArgs.addElement(new XVector(V.get(v)));
 		    		else
 		    		{
-		    			Vector allArgsCopy=(Vector)allArgs.clone();
+		    			List allArgsCopy=(List)allArgs.clone();
 		    			allArgs.clear();
 		        		for(int aa=0;aa<allArgsCopy.size();aa++)
 		        		{
-		        			Vector argSet=(Vector)allArgsCopy.elementAt(aa);
+		        			List argSet=(List)allArgsCopy.get(aa);
 			        		for(int v=0;v<V.size();v++)
 				        	{
-				        		Vector V2=(Vector)argSet.clone();
-				        		V2.addElement(V.get(v));
+			        			List V2=new XVector(argSet);
+				        		V2.add(V.get(v));
 				        		allArgs.addElement(V2);
 			        		}
 			        	}
@@ -776,7 +776,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         List<MOB> choices=null;
                         String mobName=CMParms.combine(p,2).toUpperCase();
                         String maskStr=CMLib.quests().breakOutMaskString(s,p);
-                        Vector mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
+                        MaskingLibrary.CompiledZapperMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
                         if(mask!=null) mobName=CMParms.combine(p,2).toUpperCase();
                         try{
                         	choices=(List)getObjectIfSpecified(p,args,2,1);
@@ -850,7 +850,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         List<Item> choices=null;
                         String itemName=CMParms.combine(p,2).toUpperCase();
                         String maskStr=CMLib.quests().breakOutMaskString(s,p);
-                        Vector mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
+                        MaskingLibrary.CompiledZapperMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
                         if(mask!=null) itemName=CMParms.combine(p,2).toUpperCase();
                         try{
                         	choices=(List)getObjectIfSpecified(p,args,2,1);
@@ -1194,7 +1194,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         List choices3=new Vector();
                         Vector names=new Vector();
                         String maskStr=CMLib.quests().breakOutMaskString(s,p);
-                        Vector mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
+                        MaskingLibrary.CompiledZapperMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
                         if((p.size()>3)&&(((String)p.elementAt(2)).equalsIgnoreCase("any")))
                             for(int ip=3;ip<p.size();ip++)
                                 names.addElement(p.elementAt(ip));
@@ -1303,7 +1303,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         }
                         String mobName=CMParms.combine(p,2).toUpperCase();
                         String maskStr=CMLib.quests().breakOutMaskString(s,p);
-                        Vector mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
+                        MaskingLibrary.CompiledZapperMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
                         if(mask!=null) mobName=CMParms.combine(p,2).toUpperCase();
                         try{
                         	q.mob=(MOB)getObjectIfSpecified(p,args,2,0);
@@ -1399,7 +1399,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         }
                         String itemName=CMParms.combine(p,2).toUpperCase();
                         String maskStr=CMLib.quests().breakOutMaskString(s,p);
-                        Vector mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
+                        MaskingLibrary.CompiledZapperMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
                         if(mask!=null) itemName=CMParms.combine(p,2).toUpperCase();
                         try{
                         	q.item=(Item)getObjectIfSpecified(p,args,2,0);
@@ -2263,7 +2263,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         }
                         String mobName=CMParms.combine(p,2);
                         String maskStr=CMLib.quests().breakOutMaskString(s,p);
-                        Vector mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
+                        MaskingLibrary.CompiledZapperMask mask=(maskStr.trim().length()==0)?null:CMLib.masking().maskCompile(maskStr);
                         if(mask!=null) mobName=CMParms.combine(p,2).toUpperCase();
                         if(mobName.length()==0) mobName="ANY";
                         boolean addAll=mobName.equalsIgnoreCase("ALL")

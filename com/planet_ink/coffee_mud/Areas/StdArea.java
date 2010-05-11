@@ -860,7 +860,6 @@ public class StdArea implements Area
 		for(Enumeration<Room> r=getProperMap();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
-			R.clearSky();
 			R.giveASky(0);
 		}
 	}

@@ -61,13 +61,13 @@ public class QuestMaker extends StdWebMacro
         return (DVector)qPages.elementAt(pageNumber);
     }
 
-    private String itemList(Vector itemList, Item oldItem, String oldValue)
+    private String itemList(List<Item> itemList, Item oldItem, String oldValue)
     {
         StringBuffer list=new StringBuffer("");
         if(oldItem==null) oldItem=RoomData.getItemFromCatalog(oldValue);
         for(int o=0;o<itemList.size();o++)
         {
-            Item I=(Item)itemList.elementAt(o);
+            Item I=(Item)itemList.get(o);
             list.append("<OPTION VALUE=\""+RoomData.getItemCode(itemList, I)+"\" ");
             if((oldItem!=null)&&(oldItem.sameAs(I)))
                 list.append("SELECTED");
@@ -88,14 +88,30 @@ public class QuestMaker extends StdWebMacro
         return list.toString();
     }
     
-    public void addCatalogList(List<Physical> toList, Physical[] fromList)
+    public List<MOB> getCatalogMobsForList(Physical[] fromList)
     {
+    	List<MOB> toList=new Vector<MOB>();
         for(Physical P : fromList)
         {
             P=(Physical)P.copyOf();
             CMLib.catalog().changeCatalogUsage(P,true);
-            toList.add(P);
+            if(P instanceof MOB)
+            	toList.add((MOB)P);
         }
+        return toList;
+    }
+    
+    public List<Item> getCatalogItemsForList(Physical[] fromList)
+    {
+    	List<Item> toList=new Vector<Item>();
+        for(Physical P : fromList)
+        {
+            P=(Physical)P.copyOf();
+            CMLib.catalog().changeCatalogUsage(P,true);
+            if(P instanceof Item)
+            	toList.add((Item)P);
+        }
+        return toList;
     }
     
     private String mobList(List<MOB> mobList, MOB oldMob, String oldValue)
@@ -335,8 +351,8 @@ public class QuestMaker extends StdWebMacro
                 case QuestManager.QM_COMMAND_$ITEMXML:
                 {
                     if(oldValue==null) oldValue=defValue;
-                    Vector itemList=new Vector();
-    				itemList=RoomData.contributeItems((Vector)itemList.clone());
+                    List<Item> itemList=new Vector();
+    				itemList=RoomData.contributeItems(itemList);
                     Item oldItem=RoomData.getItemFromAnywhere(itemList,oldValue);
         			list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
         			list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
@@ -352,8 +368,8 @@ public class QuestMaker extends StdWebMacro
                 case QuestManager.QM_COMMAND_$ITEMXML_ONEORMORE:
                 {
                     if(oldValue==null) oldValue=defValue;
-                    Vector itemList=new Vector();
-    				itemList=RoomData.contributeItems((Vector)itemList.clone());
+                    List<Item> itemList=new Vector();
+    				itemList=RoomData.contributeItems(itemList);
                     Vector oldValues=new Vector();
                     int which=1;
                     oldValue=(String)httpReq.getRequestParameter(httpKeyName+"_"+which);
@@ -389,8 +405,8 @@ public class QuestMaker extends StdWebMacro
                 case QuestManager.QM_COMMAND_$MOBXML:
                 {
                     if(oldValue==null) oldValue=defValue;
-                    Vector mobList=new Vector();
-                    mobList=RoomData.contributeMOBs((Vector)mobList.clone());
+                    List<MOB> mobList=new Vector();
+                    mobList=RoomData.contributeMOBs(mobList);
                     MOB oldMob=RoomData.getMOBFromCode(mobList,oldValue);
                     list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
                     list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
@@ -406,8 +422,7 @@ public class QuestMaker extends StdWebMacro
                 case QuestManager.QM_COMMAND_$MOBXML_ONEORMORE:
                 {
                     if(oldValue==null) oldValue=defValue;
-                    Vector mobList=new Vector();
-                    mobList=RoomData.contributeMOBs((Vector)mobList.clone());
+                    List<MOB>mobList=RoomData.contributeMOBs(new Vector<MOB>());
                     Vector oldValues=new Vector();
                     int which=1;
                     oldValue=(String)httpReq.getRequestParameter(httpKeyName+"_"+which);
@@ -520,8 +535,8 @@ public class QuestMaker extends StdWebMacro
                     	break;
                     case QuestManager.QM_COMMAND_$ITEMXML_ONEORMORE: 
                     {
-                        Vector rawitemlist=RoomData.contributeItems(new Vector());
-                        addCatalogList(rawitemlist,CMLib.catalog().getCatalogItems());
+                    	List<Item> rawitemlist=RoomData.contributeItems(new Vector<Item>());
+                    	rawitemlist.addAll(getCatalogItemsForList(CMLib.catalog().getCatalogItems()));
                         Vector oldValues=new Vector();
                         int which=1;
                         oldValue=(String)httpReq.getRequestParameter(httpKeyName+"_"+which);
@@ -566,8 +581,8 @@ public class QuestMaker extends StdWebMacro
                     }
                     case QuestManager.QM_COMMAND_$ITEMXML: 
                     {
-                        Vector rawitemlist=RoomData.contributeItems(new Vector());
-                        addCatalogList(rawitemlist,CMLib.catalog().getCatalogItems());
+                    	List<Item> rawitemlist=RoomData.contributeItems(new Vector<Item>());
+                    	rawitemlist.addAll(getCatalogItemsForList(CMLib.catalog().getCatalogItems()));
                         if(oldValue==null) oldValue="";
                         Item I2=oldValue.length()>0?RoomData.getItemFromAnywhere(rawitemlist,oldValue):null;
                         if(I2==null)
@@ -597,8 +612,8 @@ public class QuestMaker extends StdWebMacro
                     }
                     case QuestManager.QM_COMMAND_$MOBXML_ONEORMORE:
                     {
-                        Vector rawmoblist=RoomData.contributeMOBs(new Vector());
-                        addCatalogList(rawmoblist,CMLib.catalog().getCatalogMobs());
+                        List<MOB> rawmoblist=RoomData.contributeMOBs(new Vector<MOB>());
+                        rawmoblist.addAll(getCatalogMobsForList(CMLib.catalog().getCatalogMobs()));
                         Vector oldValues=new Vector();
                         int which=1;
                         oldValue=(String)httpReq.getRequestParameter(httpKeyName+"_"+which);
@@ -643,8 +658,8 @@ public class QuestMaker extends StdWebMacro
                     }
                     case QuestManager.QM_COMMAND_$MOBXML: 
                     {
-                        Vector rawmoblist=RoomData.contributeMOBs(new Vector());
-                        addCatalogList(rawmoblist,CMLib.catalog().getCatalogMobs());
+                        List<MOB> rawmoblist=RoomData.contributeMOBs(new Vector<MOB>());
+                        rawmoblist.addAll(getCatalogMobsForList(CMLib.catalog().getCatalogMobs()));
                         if(oldValue==null) oldValue="";
                         MOB M2=oldValue.length()>0?RoomData.getMOBFromCode(rawmoblist,oldValue):null;
                         if(M2==null)

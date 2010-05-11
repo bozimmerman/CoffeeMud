@@ -107,6 +107,43 @@ public class Who extends StdCommand
 		return msg;
 	}
 	
+	public String getWho(MOB mob, Set<String> friends, String mobName)
+	{
+		StringBuffer msg=new StringBuffer("");
+		for(int s=0;s<CMLib.sessions().size();s++)
+		{
+			Session thisSession=CMLib.sessions().elementAt(s);
+			MOB mob2=thisSession.mob();
+			if((mob2!=null)&&(mob2.soulMate()!=null))
+				mob2=mob2.soulMate();
+
+			if((mob2!=null)
+			&&(!thisSession.killFlag())
+			&&((((mob2.phyStats().disposition()&PhyStats.IS_CLOAKED)==0)
+				||((CMSecurity.isAllowedAnywhere(mob,"CLOAK")||CMSecurity.isAllowedAnywhere(mob,"WIZINV"))&&(mob.phyStats().level()>=mob2.phyStats().level()))))
+			&&((friends==null)||(friends.contains(mob2.Name())||(friends.contains("All"))))
+			&&(CMLib.flags().isInTheGame(mob2,true))
+			&&(mob2.phyStats().level()>0))
+				msg.append(showWhoShort(mob2));
+		}
+		if((mobName!=null)&&(msg.length()==0))
+			return "";
+		else
+		{
+			StringBuffer head=new StringBuffer("");
+			head.append("^x[");
+			if(!CMSecurity.isDisabled("RACES"))
+				head.append(CMStrings.padRight("Race",12)+" ");
+			if(!CMSecurity.isDisabled("CLASSES"))
+				head.append(CMStrings.padRight("Class",12)+" ");
+			if(!CMSecurity.isDisabled("LEVELS"))
+				head.append(CMStrings.padRight("Level",7));
+			head.append("] Character name^.^N\n\r");
+			head.append(msg.toString());
+			return head.toString();
+		}
+	}
+	
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -148,48 +185,17 @@ public class Who extends StdCommand
             }
         }
 
-		StringBuffer msg=new StringBuffer("");
-		for(int s=0;s<CMLib.sessions().size();s++)
-		{
-			Session thisSession=CMLib.sessions().elementAt(s);
-			MOB mob2=thisSession.mob();
-			if((mob2!=null)&&(mob2.soulMate()!=null))
-				mob2=mob2.soulMate();
-
-			if((mob2!=null)
-			&&(!thisSession.killFlag())
-			&&((((mob2.phyStats().disposition()&PhyStats.IS_CLOAKED)==0)
-				||((CMSecurity.isAllowedAnywhere(mob,"CLOAK")||CMSecurity.isAllowedAnywhere(mob,"WIZINV"))&&(mob.phyStats().level()>=mob2.phyStats().level()))))
-			&&((friends==null)||(friends.contains(mob2.Name())||(friends.contains("All"))))
-			&&(CMLib.flags().isInTheGame(mob2,true))
-			&&(mob2.phyStats().level()>0))
-				msg.append(showWhoShort(mob2));
-		}
+        String msg = getWho(mob,friends,mobName);
 		if((mobName!=null)&&(msg.length()==0))
-			msg.append("That person doesn't appear to be online.\n\r");
+			mob.tell("That person doesn't appear to be online.\n\r");
 		else
-		{
-			StringBuffer head=new StringBuffer("");
-			head.append("^x[");
-			if(!CMSecurity.isDisabled("RACES"))
-				head.append(CMStrings.padRight("Race",12)+" ");
-			if(!CMSecurity.isDisabled("CLASSES"))
-				head.append(CMStrings.padRight("Class",12)+" ");
-			if(!CMSecurity.isDisabled("LEVELS"))
-				head.append(CMStrings.padRight("Level",7));
-			head.append("] Character name^.^N\n\r");
-			if(mob!=null)
-				mob.tell(head.toString()+msg.toString());
-			else
-			{
-				commands.clear();
-				commands.addElement(head.toString()+msg.toString());
-			}
-		}
+			mob.tell(msg);
 		return false;
 	}
 	
+	public Object execute(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	{
+		return getWho(mob,null,null);
+	}
 	public boolean canBeOrdered(){return true;}
-
-	
 }

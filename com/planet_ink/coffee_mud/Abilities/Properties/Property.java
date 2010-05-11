@@ -10,11 +10,13 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Vector;
@@ -62,8 +64,8 @@ public class Property implements Ability
 	protected int canTargetCode(){return 0;}
 	public boolean canTarget(int can_code){return CMath.bset(canTargetCode(),can_code);}
 	public boolean canAffect(int can_code){return CMath.bset(canAffectCode(),can_code);}
-	public double castingTime(MOB mob, Vector cmds){return 0.0;}
-	public double combatCastingTime(MOB mob, Vector cmds){return 0.0;}
+	public double castingTime(MOB mob, List<String> cmds){return 0.0;}
+	public double combatCastingTime(MOB mob, List<String> cmds){return 0.0;}
 	public int abilityCode(){return 0;}
 	public void setAbilityCode(int newCode){}
 	public int adjustedLevel(MOB mob, int asLevel){return -1;}
@@ -251,14 +253,26 @@ public class Property implements Ability
     public void clearExpertiseCache(){}
 	public boolean isGeneric(){return false;}
     
-    public String buildMask(String newText, Vector mask)
+    public String buildMask(String newText, MaskingLibrary.CompiledZapperMask mask)
     {
         int maskindex=newText.toUpperCase().indexOf("MASK=");
         if(maskindex>0)
         {
             String maskStr=newText.substring(maskindex+5).trim();
             if(maskStr.length()>0)
-                mask.addAll(CMLib.masking().maskCompile(maskStr));
+            {
+            	MaskingLibrary.CompiledZapperMask m = CMLib.masking().maskCompile(maskStr);
+            	if(m.entries.length>0)
+            	{
+            		mask.empty=false;
+            		for(int b=0;b<mask.flags.length;b++)
+	            		mask.flags[b]=mask.flags[b]|m.flags[b];
+            		int oldLen=mask.entries.length;
+            		mask.entries=Arrays.copyOf(mask.entries, mask.entries.length+m.entries.length);
+            		for(int b=0;b<m.entries.length;b++)
+            			mask.entries[oldLen+b]=m.entries[b];
+            	}
+            }
             newText=newText.substring(0,maskindex).trim();
         }
         return newText;

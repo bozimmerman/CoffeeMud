@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent;
 import com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent.CompConnector;
 import com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent.CompLocation;
 import com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent.CompType;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 import com.planet_ink.coffee_mud.core.CMClass;
 import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.coffee_mud.core.CMath;
@@ -35,8 +36,7 @@ public class DefaultAbilityComponent implements AbilityComponent
 	private long compTypeMatRsc = 0;
 	private String compTypeStr = "";
 	private String maskStr = "";
-	@SuppressWarnings("unchecked")
-	private Vector compiledMask = null;
+	private MaskingLibrary.CompiledZapperMask compiledMask = null;
 	
     public String ID(){return "DefaultAbilityComponent";}
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
@@ -87,8 +87,7 @@ public class DefaultAbilityComponent implements AbilityComponent
 	{
 		this.amount = amount;
 	}
-	@SuppressWarnings("unchecked")
-	public Vector getCompiledMask() 
+	public MaskingLibrary.CompiledZapperMask getCompiledMask() 
 	{
 		return compiledMask;
 	}

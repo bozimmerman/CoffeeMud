@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -214,7 +215,7 @@ public class ItemGenerator extends ActiveTicker
 			}
 			items=new Vector();
   		    Item I=null;
-			Vector compiled=CMLib.masking().maskCompile(mask);
+  		    MaskingLibrary.CompiledZapperMask compiled=CMLib.masking().maskCompile(mask);
 			double totalValue=0;
 			int maxValue=-1;
 			for(int a=0;a<allItems.size();a++)

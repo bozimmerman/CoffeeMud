@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -98,7 +99,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		int last=0;
 		char lookFor=' ';
 		ArrayList<String> names=new ArrayList<String>();
-		ArrayList<Vector> masks=new ArrayList<Vector>();
+		ArrayList<MaskingLibrary.CompiledZapperMask> masks=new ArrayList<MaskingLibrary.CompiledZapperMask>();
 		for(int i=0;i<n.length;i++)
 			if(n[i]==lookFor)
 			{
@@ -130,7 +131,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		}
 		if((names.size()==0)&&(masks.size()==0))
 			names.add("");
-		return new ChattyGroup(names.toArray(new String[0]),masks.toArray(new Vector[0]));
+		return new ChattyGroup(names.toArray(new String[0]),masks.toArray(new MaskingLibrary.CompiledZapperMask[0]));
 	}
 
 	
@@ -307,7 +308,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 					if(name.equals(myName))
 						return CG;
 				if(meM != null)
-					for(Vector mask : CG.groupMasks)
+					for(MaskingLibrary.CompiledZapperMask mask : CG.groupMasks)
 						if(CMLib.masking().maskCheck(mask, meM, true))
 							return CG;
 			}

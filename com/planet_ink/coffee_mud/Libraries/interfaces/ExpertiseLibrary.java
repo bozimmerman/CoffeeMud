@@ -55,10 +55,10 @@ public interface ExpertiseLibrary extends CMLibrary
         public String ID="";
         public String name="";
         private String uncompiledListMask="";
-        private Vector compiledListMask=null;
+        private MaskingLibrary.CompiledZapperMask compiledListMask=null;
         private String uncompiledFinalMask="";
         public ExpertiseDefinition parent=null;
-        private Vector compiledFinalMask=null;
+        private MaskingLibrary.CompiledZapperMask compiledFinalMask=null;
         private int minLevel=Integer.MIN_VALUE+1;
         public int getMinimumLevel()
         {
@@ -67,7 +67,7 @@ public interface ExpertiseLibrary extends CMLibrary
             return minLevel;
         }
         
-        public Vector compiledListMask()
+        public MaskingLibrary.CompiledZapperMask compiledListMask()
         {
             if((this.compiledListMask==null)&&(uncompiledListMask.length()>0))
             {
@@ -76,7 +76,7 @@ public interface ExpertiseLibrary extends CMLibrary
             }
             return this.compiledListMask;
         }
-        public Vector compiledFinalMask()
+        public MaskingLibrary.CompiledZapperMask compiledFinalMask()
         {
             if((this.compiledFinalMask==null)&&(uncompiledFinalMask.length()>0))
             {

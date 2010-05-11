@@ -224,9 +224,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
     
 	protected static int getClassFieldIndex(DVector dataRow) {
         for(int d=0;d<dataRow.size();d++)
-            if(dataRow.elementAt(d,1) instanceof Vector) 
+            if(dataRow.elementAt(d,1) instanceof List) 
             {
-                Vector V=(Vector)dataRow.elementAt(d,1);
+            	List V=(List)dataRow.elementAt(d,1);
                 if(V.contains("ITEM_CLASS_ID")||V.contains("FOOD_DRINK"))
                     return d;
             }
@@ -246,9 +246,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         String classID = null;
         int fieldIndex = getClassFieldIndex(dataRow);
         for(int d=0;d<dataRow.size();d++)
-            if((dataRow.elementAt(d,1) instanceof Vector) 
+            if((dataRow.elementAt(d,1) instanceof List) 
             &&(!classIDRequired)
-            &&(((Vector)dataRow.elementAt(d,1)).size()>1))
+            &&(((List)dataRow.elementAt(d,1)).size()>1))
                 classIDRequired=true;
         if(fieldIndex >=0)
             classID=(String)dataRow.elementAt(fieldIndex,2);
@@ -305,7 +305,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         str = cleanDataRowEOLs(str);
         Vector rowsV = new Vector();
         DVector dataRow = new DVector(2);
-        Vector currCol = null;
+        List currCol = null;
         String lastDiv = null;
         
         int lastLen = str.length();
@@ -319,9 +319,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 if(columnsV.elementAt(c) instanceof String)
                     stripData(str,(String)columnsV.elementAt(c));
                 else
-                    if(columnsV.elementAt(c) instanceof Vector)
+                    if(columnsV.elementAt(c) instanceof List)
                     {
-                        currCol = (Vector)columnsV.elementAt(c);
+                        currCol = (List)columnsV.elementAt(c);
                         if(c<columnsV.size()-1)
                         {
                             div = (String)columnsV.elementAt(c+1);
@@ -367,10 +367,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         } 
         for(int d=0;d<dataRow.size();d++) 
         {
-            Vector colV=(Vector)dataRow.elementAt(d,1);
+        	List colV=(List)dataRow.elementAt(d,1);
             if(colV.size()==1)
             {
-                AbilityParmEditor A = (AbilityParmEditor)editors.get((String)colV.firstElement());
+                AbilityParmEditor A = (AbilityParmEditor)editors.get((String)colV.get(0));
                 if((A == null)||(A.appliesToClass(classModelI)<0))
                     A = (AbilityParmEditor)editors.get("N_A");
                 dataRow.setElementAt(d,1,A.ID());
@@ -380,9 +380,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 AbilityParmEditor applicableA = null;
                 for(int c=0;c<colV.size();c++)
                 {
-                    AbilityParmEditor A = (AbilityParmEditor)editors.get((String)colV.elementAt(c));
+                    AbilityParmEditor A = (AbilityParmEditor)editors.get((String)colV.get(c));
                     if(A==null) 
-                        throw new CMException("Col name "+((String)colV.elementAt(c))+" is not defined.");
+                        throw new CMException("Col name "+((String)colV.get(c))+" is not defined.");
                     if((applicableA==null)
                             ||(A.appliesToClass(classModelI) > applicableA.appliesToClass(classModelI)))
                         applicableA = A;
@@ -576,7 +576,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 int keyIndex = getClassFieldIndex(editRow);
                 String classFieldData = null;
                 if(keyIndex>=0) {
-                    AbilityParmEditor A = (AbilityParmEditor)editors.get(((Vector)editRow.elementAt(keyIndex,1)).firstElement());
+                    AbilityParmEditor A = (AbilityParmEditor)editors.get(((List)editRow.elementAt(keyIndex,1)).get(0));
                     if(A!=null)
                     {
                         classFieldData = A.commandLinePrompt(mob,(String)editRow.elementAt(keyIndex,2),new int[]{0},-999);
@@ -1555,8 +1555,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 dataRows = parseDataRows(str,columns,numberOfDataColumns);
                 DVector editRow = new DVector(2);
                 for(int c=0;c<columns().size();c++)
-                    if(columns().elementAt(c) instanceof Vector)
-                        editRow.addElement((Vector)columns().elementAt(c),"");
+                    if(columns().elementAt(c) instanceof List)
+                        editRow.addElement(columns().elementAt(c),"");
                 classFieldIndex = CMAbleParms.getClassFieldIndex(editRow);
                 fixDataColumns(dataRows);
             } catch(CMException e) {
@@ -1589,8 +1589,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		public DVector blankRow() {
             DVector editRow = new DVector(2);
             for(int c=0;c<columns().size();c++)
-                if(columns().elementAt(c) instanceof Vector)
-                    editRow.addElement((Vector)columns().elementAt(c),"");
+                if(columns().elementAt(c) instanceof List)
+                    editRow.addElement(columns().elementAt(c),"");
             return editRow;
         }
         public int getClassFieldIndex() { return classFieldIndex;}

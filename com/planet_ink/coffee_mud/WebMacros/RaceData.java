@@ -246,7 +246,7 @@ public class RaceData extends StdWebMacro
     	if(items==null) items=new Vector();
         StringBuffer str=new StringBuffer("");
         Vector classes=new Vector();
-        Vector itemlist=null;
+        List<Item> itemlist=null;
         if(httpReq.isRequestParameter(c+"ITEM1"))
         {
             itemlist=RoomData.items;
@@ -301,7 +301,7 @@ public class RaceData extends StdWebMacro
         if(!one) str.append("<OPTION SELECTED VALUE=\"\">Select a new Item");
         for(int i=0;i<itemlist.size();i++)
         {
-            Item I=(Item)itemlist.elementAt(i);
+            Item I=(Item)itemlist.get(i);
             if(one&&(classes.contains(I)))
             {
                 if(items.contains(I))

@@ -41,7 +41,7 @@ public class Run extends Go
 	private String[] access={"RUN"};
 	public String[] getAccessWords(){return access;}
 	public int energyExpenseFactor(){return 2;}
-	public double actionsCost(MOB mob, Vector cmds)
+	public double actionsCost(MOB mob, List<String> cmds)
 	{
 		return super.actionsCost(mob, cmds) / 4.0;
 	}

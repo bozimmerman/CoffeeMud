@@ -376,16 +376,16 @@ public class DefaultSession extends Thread implements Session
 	           |(((mob!=null)&&(mob.soulMate()!=null))?Command.METAFLAG_POSSESSED:0);
 	}
 
-	public void setPreviousCmd(Vector cmds)
+	public void setPreviousCmd(List cmds)
 	{
 		if(cmds==null) return;
 		if(cmds.size()==0) return;
-		if((cmds.size()>0)&&(((String)cmds.elementAt(0)).trim().startsWith("!")))
+		if((cmds.size()>0)&&(((String)cmds.get(0)).trim().startsWith("!")))
 			return;
 
 		previousCmd.removeAllElements();
 		for(int i=0;i<cmds.size();i++)
-			previousCmd.addElement(((String)cmds.elementAt(i)));
+			previousCmd.addElement(((String)cmds.get(i)));
 	}
 
 	public boolean afkFlag(){return afkFlag;}
@@ -1461,7 +1461,7 @@ public class DefaultSession extends Thread implements Session
 	                                killFlag=true;
 	                    }
 						needPrompt=true;
-						Vector CMDS=null;
+						List CMDS=null;
 						while((!killFlag)&&(mob!=null))
 						{
 	                        while((!killFlag)
@@ -1489,22 +1489,22 @@ public class DefaultSession extends Thread implements Session
 								if(CMDS.size()>0)
 								{
 									waiting=false;
-	                                String firstWord=(String)CMDS.firstElement();
+	                                String firstWord=(String)CMDS.get(0);
 	                                PlayerStats pstats=mob.playerStats();
 	                                String alias=(pstats!=null)?pstats.getAlias(firstWord):"";
 	                                Vector ALL_CMDS=new Vector();
 	                                boolean echoOn=false;
 	                                if(alias.length()>0)
 	                                {
-	                                    CMDS.removeElementAt(0);
+	                                    CMDS.remove(0);
 	                                    Vector<String> all_stuff=CMParms.parseSquiggleDelimited(alias,true);
 	                                    for(String stuff : all_stuff)
 	                                    {
-	                                        Vector THIS_CMDS=(Vector)CMDS.clone();
+	                                    	List THIS_CMDS=new XVector(CMDS);
 	                                        ALL_CMDS.addElement(THIS_CMDS);
 	                                        Vector preCommands=CMParms.parse(stuff);
 	                                        for(int v=preCommands.size()-1;v>=0;v--)
-	                                            THIS_CMDS.insertElementAt(preCommands.elementAt(v),0);
+	                                            THIS_CMDS.add(0,preCommands.elementAt(v));
 	                                    }
 	                                    echoOn=true;
 	                                }
@@ -1512,7 +1512,7 @@ public class DefaultSession extends Thread implements Session
 	                                    ALL_CMDS.addElement(CMDS);
 	                                for(int v=0;v<ALL_CMDS.size();v++)
 	                                {
-	                                    CMDS=(Vector)ALL_CMDS.elementAt(v);
+	                                    CMDS=(List)ALL_CMDS.elementAt(v);
 	    								setPreviousCmd(CMDS);
 	    								milliTotal+=(lastStop-lastStart);
 	
@@ -1525,10 +1525,10 @@ public class DefaultSession extends Thread implements Session
 	
 	    								lastStart=System.currentTimeMillis();
 	                                    if(echoOn) rawPrintln(CMParms.combineWithQuotes(CMDS,0));
-	                                    Vector MORE_CMDS=CMLib.lang().preCommandParser(CMDS);
+	                                    List<List<String>> MORE_CMDS=CMLib.lang().preCommandParser(CMDS);
 	                                    for(int m=0;m<MORE_CMDS.size();m++)
 	                                    	if(mob!=null)
-			    								mob.enqueCommand((Vector)MORE_CMDS.elementAt(m),metaFlags(),0);
+			    								mob.enqueCommand(MORE_CMDS.get(m),metaFlags(),0);
 	    								lastStop=System.currentTimeMillis();
 	                                }
 								}

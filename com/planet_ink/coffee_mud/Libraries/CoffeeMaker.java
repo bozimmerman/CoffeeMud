@@ -1194,19 +1194,19 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
             MOB mob=(MOB)mobs.elementAt(i);
             if(mob.isSavable())
             {
-                Vector dups=(Vector)found.get(mob.Name()+mob.displayText());
+            	List dups=(List)found.get(mob.Name()+mob.displayText());
                 if(dups==null)
                 {
                     dups=new Vector();
                     found.put(mob.Name()+mob.displayText(),dups);
-                    dups.addElement(mob);
+                    dups.add(mob);
                 }
                 else
                 {
                     boolean matched=false;
                     for(int v=0;v<dups.size();v++)
                     {
-                        MOB dup=(MOB)dups.elementAt(v);
+                        MOB dup=(MOB)dups.get(v);
                         int oldHeight=mob.basePhyStats().height();
                         int oldWeight=mob.basePhyStats().weight();
                         int oldGender=mob.baseCharStats().getStat(CharStats.STAT_GENDER);
@@ -1227,7 +1227,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
                     {
                         for(int v=0;v<dups.size();v++)
                         {
-                            MOB dup=(MOB)dups.elementAt(v);
+                            MOB dup=(MOB)dups.get(v);
                             int oldHeight=mob.basePhyStats().height();
                             int oldWeight=mob.basePhyStats().weight();
                             int oldGender=mob.baseCharStats().getStat(CharStats.STAT_GENDER);
@@ -1240,7 +1240,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
                             dup.basePhyStats().setWeight(oldWeight);
                             dup.baseCharStats().setStat(CharStats.STAT_GENDER,oldGender);
                         }
-                        dups.addElement(mob);
+                        dups.add(mob);
                     }
                     else
                         continue;
@@ -1286,18 +1286,18 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 		if(item.displayText().length()>0)
 		{
-			Vector dups=(Vector)found.get(item.Name()+item.displayText());
+			List dups=(List)found.get(item.Name()+item.displayText());
 			if(dups==null)
 			{
 				dups=new Vector();
 				found.put(item.Name()+item.displayText(),dups);
-				dups.addElement(item);
+				dups.add(item);
 			}
 			else
 			{
 				for(int v=0;v<dups.size();v++)
 				{
-					Item dup=(Item)dups.elementAt(v);
+					Item dup=(Item)dups.get(v);
 					int oldHeight=item.basePhyStats().height();
 					item.basePhyStats().setHeight(dup.basePhyStats().height());
 					if(CMClass.classID(item).equals(CMClass.classID(dup))
@@ -1313,14 +1313,14 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				}
 				for(int v=0;v<dups.size();v++)
 				{
-					Item dup=(Item)dups.elementAt(v);
+					Item dup=(Item)dups.get(v);
 					int oldHeight=item.basePhyStats().height();
 					item.basePhyStats().setHeight(dup.basePhyStats().height());
 					if(Log.debugChannelOn()&&CMSecurity.isDebugging("EXPORT"))
 						logDiff(item,dup);
 					item.basePhyStats().setHeight(oldHeight);
 				}
-				dups.addElement(item);
+				dups.add(item);
 			}
             buf.append(getItemXML(item));
 			fillFileSet(item,files);

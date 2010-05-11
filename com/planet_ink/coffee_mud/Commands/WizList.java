@@ -55,7 +55,7 @@ public class WizList extends StdCommand
 		java.util.List<PlayerLibrary.ThinPlayer> allUsers=CMLib.database().getExtendedUserList();
 		String mask=CMProps.getVar(CMProps.SYSTEM_WIZLISTMASK);
 		if(mask.length()==0) mask="-ANYCLASS +Archon";
-		Vector compiledMask=CMLib.masking().maskCompile(mask);
+		MaskingLibrary.CompiledZapperMask compiledMask=CMLib.masking().maskCompile(mask);
 		for(PlayerLibrary.ThinPlayer U : allUsers)
 		{
 	        CharClass C;

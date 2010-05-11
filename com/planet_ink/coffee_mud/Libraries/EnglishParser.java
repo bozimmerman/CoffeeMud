@@ -109,7 +109,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         return str.substring(0,x)+" "+adjective+" "+str.substring(x+1);
     }
     
-	public CMObject findCommand(MOB mob, Vector commands)
+	public CMObject findCommand(MOB mob, List<String> commands)
 	{
 		if((mob==null)
 		||(commands==null)
@@ -117,12 +117,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		||(commands.size()==0))
 			return null;
 
-		String firstWord=((String)commands.elementAt(0)).toUpperCase();
+		String firstWord=((String)commands.get(0)).toUpperCase();
 
 		if((firstWord.length()>1)&&(!Character.isLetterOrDigit(firstWord.charAt(0))))
 		{
-			commands.insertElementAt(((String)commands.elementAt(0)).substring(1),1);
-			commands.setElementAt(""+firstWord.charAt(0),0);
+			commands.add(1,((String)commands.get(0)).substring(1));
+			commands.set(0,""+firstWord.charAt(0));
 			firstWord=""+firstWord.charAt(0);
 		}
 
@@ -133,7 +133,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         &&(!CMSecurity.isDisabled("COMMAND_"+CMClass.classID(C).toUpperCase())))
             return C;
 
-        Ability A=getToEvoke(mob,(Vector)commands.clone());
+        Ability A=getToEvoke(mob,new XVector(commands));
         if((A!=null)
         &&(!CMSecurity.isDisabled("ABILITY_"+A.ID().toUpperCase())))
 			return A;
@@ -179,12 +179,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					if((A.triggerStrings()[t].toUpperCase().startsWith(firstWord))
                     &&(!tried.contains(A.triggerStrings()[t])))
                     {
-                        Vector commands2=(Vector)commands.clone();
+                        Vector commands2=new XVector(commands);
                         commands2.setElementAt(A.triggerStrings()[t],0);
                         Ability A2=getToEvoke(mob,commands2);
                         if((A2!=null)&&(!CMSecurity.isDisabled("ABILITY_"+A2.ID().toUpperCase())))
                         {
-                            commands.setElementAt(A.triggerStrings()[t],0);
+                            commands.set(0,A.triggerStrings()[t]);
                             return A;
                         }
                     }
@@ -201,7 +201,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		social=CMLib.socials().fetchSocial(commands,false,true);
 		if(social!=null)
 		{
-			commands.setElementAt(social.baseName(),0);
+			commands.set(0,social.baseName());
 			return social;
 		}
 
@@ -209,14 +209,14 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		{
 			if(CMLib.channels().getChannelName(c).startsWith(firstWord))
 			{
-				commands.setElementAt(CMLib.channels().getChannelName(c),0);
+				commands.set(0,CMLib.channels().getChannelName(c));
 				C=CMClass.getCommand("Channel");
 				if((C!=null)&&(C.securityCheck(mob))) return C;
 			}
 			else
 			if(("NO"+CMLib.channels().getChannelName(c)).startsWith(firstWord))
 			{
-				commands.setElementAt("NO"+CMLib.channels().getChannelName(c),0);
+				commands.set(0,"NO"+CMLib.channels().getChannelName(c));
 				C=CMClass.getCommand("NoChannel");
 				if((C!=null)&&(C.securityCheck(mob))) return C;
 			}
@@ -1378,24 +1378,27 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				if(srchStr.endsWith("$")) 
 					srchStr=srchStr.substring(0,srchStr.length()-1);
 				for(Environmental E : list)
-					if(E.ID().equalsIgnoreCase(srchStr)
-					   ||E.name().equalsIgnoreCase(srchStr)
-					   ||E.Name().equalsIgnoreCase(srchStr))
-						if((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0)))
-							if((--myOccurrance)<=0)
-								return E;
+					if(E!=null)
+						if(E.ID().equalsIgnoreCase(srchStr)
+						   ||E.name().equalsIgnoreCase(srchStr)
+						   ||E.Name().equalsIgnoreCase(srchStr))
+							if((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0)))
+								if((--myOccurrance)<=0)
+									return E;
 			}
 			else
 			{
 				myOccurrance=flags.occurrance;
 				for(Environmental E : list)
-					if((containsString(E.name(),srchStr)||containsString(E.Name(),srchStr))
+					if((E!=null)
+					   &&(containsString(E.name(),srchStr)||containsString(E.Name(),srchStr))
 					   &&((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0))))
 						if((--myOccurrance)<=0)
 							return E;
 				myOccurrance=flags.occurrance;
 				for(Environmental E : list)
-					if((!(E instanceof Ability))
+					if((E!=null)
+					&&(!(E instanceof Ability))
 					&&(containsString(E.displayText(),srchStr)
 	                    ||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr))))
 							if((--myOccurrance)<=0)
@@ -1430,18 +1433,20 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				if(srchStr.endsWith("$")) 
 					srchStr=srchStr.substring(0,srchStr.length()-1);
 				for(Environmental E : list)
-					if(E.ID().equalsIgnoreCase(srchStr)
-					   ||E.name().equalsIgnoreCase(srchStr)
-					   ||E.Name().equalsIgnoreCase(srchStr))
-						if((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0)))
-							if((--myOccurrance)<=0)
-								matches.addElement(E);
+					if(E!=null)
+						if(E.ID().equalsIgnoreCase(srchStr)
+						   ||E.name().equalsIgnoreCase(srchStr)
+						   ||E.Name().equalsIgnoreCase(srchStr))
+							if((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0)))
+								if((--myOccurrance)<=0)
+									matches.addElement(E);
 			}
 			else
 			{
 				myOccurrance=flags.occurrance;
 				for(Environmental E : list)
-					if((containsString(E.name(),srchStr)||containsString(E.Name(),srchStr))
+					if((E!=null)
+					&&(containsString(E.name(),srchStr)||containsString(E.Name(),srchStr))
 					   &&((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0))))
 						if((--myOccurrance)<=0)
 							matches.addElement(E);
@@ -1449,7 +1454,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				{
 					myOccurrance=flags.occurrance;
 					for(Environmental E : list)
-						if((!(E instanceof Ability))
+						if((E!=null)
+						&&(!(E instanceof Ability))
 						&&(containsString(E.displayText(),srchStr)
 	                        ||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr))))
 	    						if((--myOccurrance)<=0)
@@ -1488,12 +1494,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			for(String key : list.keySet())
 			{
 				E=(Environmental)list.get(key);
-				if(E.ID().equalsIgnoreCase(srchStr)
-				||E.Name().equalsIgnoreCase(srchStr)
-				||E.name().equalsIgnoreCase(srchStr))
-					if((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0)))
-						if((--myOccurrance)<=0)
-							return E;
+				if(E!=null)
+					if(E.ID().equalsIgnoreCase(srchStr)
+					||E.Name().equalsIgnoreCase(srchStr)
+					||E.name().equalsIgnoreCase(srchStr))
+						if((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0)))
+							if((--myOccurrance)<=0)
+								return E;
 			}
 		}
 		else
@@ -1502,7 +1509,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			for(String key : list.keySet())
 			{
 				E=(Environmental)list.get(key);
-				if((containsString(E.name(),srchStr)||containsString(E.Name(),srchStr))
+				if((E!=null)
+				&&(containsString(E.name(),srchStr)||containsString(E.Name(),srchStr))
 				&&((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0))))
 					if((--myOccurrance)<=0)
 						return E;
@@ -1511,10 +1519,11 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			for(String key : list.keySet())
 			{
 				E=(Environmental)list.get(key);
-				if((containsString(E.displayText(),srchStr))
-                ||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr)))
-					if((--myOccurrance)<=0)
-						return E;
+				if(E!=null)
+					if((containsString(E.displayText(),srchStr))
+	                ||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr)))
+						if((--myOccurrance)<=0)
+							return E;
 			}
 		}
 		return null;
@@ -1546,7 +1555,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				{
 					boolean beingWorn=!I.amWearingAt(Wearable.IN_INVENTORY);
 
-					if((I.container()==goodLocation)
+					if((I!=null)
+					&&(I.container()==goodLocation)
 					&&((wornReqCode==Wearable.FILTER_ANY)||(beingWorn&&(wornReqCode==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornReqCode==Wearable.FILTER_UNWORNONLY)))
 					&&(I.ID().equalsIgnoreCase(srchStr)
 					   ||(I.Name().equalsIgnoreCase(srchStr))
@@ -1566,7 +1576,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				{
 					boolean beingWorn=!I.amWearingAt(Wearable.IN_INVENTORY);
 
-					if((I.container()==goodLocation)
+					if((I!=null)
+					&&(I.container()==goodLocation)
 					&&((wornReqCode==Wearable.FILTER_ANY)||(beingWorn&&(wornReqCode==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornReqCode==Wearable.FILTER_UNWORNONLY)))
 					&&((containsString(I.name(),srchStr)||containsString(I.Name(),srchStr))
 					   &&((!allFlag)||((I.displayText()!=null)&&(I.displayText().length()>0)))))
@@ -1581,7 +1592,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				for(Item I : list)
 				{
 					boolean beingWorn=!I.amWearingAt(Wearable.IN_INVENTORY);
-					if((I.container()==goodLocation)
+					if((I!=null)
+					&&(I.container()==goodLocation)
 					&&((wornReqCode==Wearable.FILTER_ANY)||(beingWorn&&(wornReqCode==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornReqCode==Wearable.FILTER_UNWORNONLY)))
 					&&(containsString(I.displayText(),srchStr)))
 						if((--myOccurrance)<=0)
@@ -1619,7 +1631,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				for(Item I : list)
 				{
 					boolean beingWorn=!I.amWearingAt(Wearable.IN_INVENTORY);
-					if((I.container()==goodLocation)
+					if((I!=null)
+					&&(I.container()==goodLocation)
 					&&((wornReqCode==Wearable.FILTER_ANY)||(beingWorn&&(wornReqCode==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornReqCode==Wearable.FILTER_UNWORNONLY)))
 					&&(I.ID().equalsIgnoreCase(srchStr)
 					   ||(I.Name().equalsIgnoreCase(srchStr))
@@ -1634,7 +1647,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				for(Item I : list)
 				{
 					boolean beingWorn=!I.amWearingAt(Wearable.IN_INVENTORY);
-					if((I.container()==goodLocation)
+					if((I!=null)
+					&&(I.container()==goodLocation)
 					&&((wornReqCode==Wearable.FILTER_ANY)||(beingWorn&&(wornReqCode==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornReqCode==Wearable.FILTER_UNWORNONLY)))
 					&&((containsString(I.name(),srchStr)||containsString(I.Name(),srchStr))
 					   &&((!allFlag)||((I.displayText()!=null)&&(I.displayText().length()>0)))))
@@ -1647,7 +1661,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					for(Item I : list)
 					{
 						boolean beingWorn=!I.amWearingAt(Wearable.IN_INVENTORY);
-						if((I.container()==goodLocation)
+						if((I!=null)
+						&&(I.container()==goodLocation)
 						&&((wornReqCode==Wearable.FILTER_ANY)||(beingWorn&&(wornReqCode==Wearable.FILTER_WORNONLY))||((!beingWorn)&&(wornReqCode==Wearable.FILTER_UNWORNONLY)))
 						&&(containsString(I.displayText(),srchStr)))
 							if((--myOccurrance)<=0)
@@ -1699,12 +1714,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 									return I;
 				    }
 				    else
-					if(E.ID().equalsIgnoreCase(srchStr)
-					||E.Name().equalsIgnoreCase(srchStr)
-					||E.name().equalsIgnoreCase(srchStr))
-						if((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0)))
-							if((--myOccurrance)<=0)
-								return E;
+				    if(E!=null)
+						if(E.ID().equalsIgnoreCase(srchStr)
+						||E.Name().equalsIgnoreCase(srchStr)
+						||E.name().equalsIgnoreCase(srchStr))
+							if((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0)))
+								if((--myOccurrance)<=0)
+									return E;
 			}
 			else
 			{
@@ -1722,7 +1738,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 								return I;
 					}
 					else
-                    if((containsString(E.name(),srchStr)||containsString(E.Name(),srchStr))
+                    if((E!=null)
+                    &&(containsString(E.name(),srchStr)||containsString(E.Name(),srchStr))
 				    &&((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0))))
 						if((--myOccurrance)<=0)
 							return E;
@@ -1740,10 +1757,11 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 								return I;
 					}
 					else
-					if((containsString(E.displayText(),srchStr))
-                    ||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr)))
-						if((--myOccurrance)<=0)
-							return E;
+					if(E!=null)
+						if((containsString(E.displayText(),srchStr))
+	                    ||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr)))
+							if((--myOccurrance)<=0)
+								return E;
 			}
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}

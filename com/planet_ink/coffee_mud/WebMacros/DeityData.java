@@ -85,7 +85,7 @@ public class DeityData extends StdWebMacro
                 if(parms.containsKey("MOBCODE"))
                 {
                     String roomID=D.getStartRoom().roomID();
-                    Vector classes=(Vector)httpReq.getRequestObjects().get("DEITYLIST-"+roomID);
+                    List classes=(List)httpReq.getRequestObjects().get("DEITYLIST-"+roomID);
                     if(classes==null)
                     {
                         classes=new Vector();
@@ -132,7 +132,7 @@ public class DeityData extends StdWebMacro
                             {
                                 MOB M=R.fetchInhabitant(m);
                                 if(M.isSavable())
-                                    classes.addElement(M);
+                                    classes.add(M);
                             }
                             RoomData.contributeMOBs(classes);
                         }

@@ -2091,7 +2091,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             	List<String> V=CMLib.beanCounter().getAllCurrencies();
                 for(int v=0;v<V.size();v++)
                     if(((String)V.get(v)).length()==0)
-                        V.add(v,"Default");
+                        V.set(v,"Default");
                 mob.tell("'"+oldCurrency+"' is not a known currency. Existing currencies include: DEFAULT"+CMParms.toStringList(V));
                 gocontinue=true;
             }
@@ -5452,8 +5452,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         {
             if(mob.session().confirm("Enter Y to DELETE, or N to modify (y/N)?","N"))
             {
-                Vector set=(Vector)sets.elementAt(origLevelIndex,2);
-                set.removeElementAt(origAbleIndex);
+                List set=(List)sets.elementAt(origLevelIndex,2);
+                set.remove(origAbleIndex);
                 return null;
             }
             level=(Integer)sets.elementAt(origLevelIndex,1);
@@ -5481,14 +5481,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         }
         else
         {
-            Vector levelSet=(Vector)sets.elementAt(origLevelIndex,2);
-            aMAP=(AbilityMapper.AbilityMapping)levelSet.elementAt(origAbleIndex);
-            levelSet.removeElementAt(origAbleIndex);
+        	List levelSet=(List)sets.elementAt(origLevelIndex,2);
+            aMAP=(AbilityMapper.AbilityMapping)levelSet.get(origAbleIndex);
+            levelSet.remove(origAbleIndex);
             origAbleIndex=-1;
         }
 
         int newlevelIndex=sets.indexOf(level);
-        Vector<AbilityMapper.AbilityMapping> levelSet=null;
+        List<AbilityMapper.AbilityMapping> levelSet=null;
         if(newlevelIndex<0)
         {
             newlevelIndex=sets.size();
@@ -5496,7 +5496,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             sets.addElement(level,levelSet);
         }
         else
-            levelSet=(Vector)sets.elementAt(newlevelIndex,2);
+            levelSet=(List)sets.elementAt(newlevelIndex,2);
         aMAP.defaultProficiency=CMath.s_int(mob.session().prompt("Enter the (default) proficiency level ("+aMAP.defaultProficiency+"): ",aMAP.defaultProficiency+""));
         aMAP.maxProficiency=CMath.s_int(mob.session().prompt("Enter the (maximum) proficiency level ("+aMAP.maxProficiency+"): ",aMAP.maxProficiency+""));
         aMAP.autoGain=mob.session().confirm("Is this skill automatically gained"+(aMAP.autoGain?"(Y/n)":"(y/N)")+"?",""+aMAP.autoGain);
@@ -5520,7 +5520,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             else
             	aMAP.extraMask=s;
         }
-        levelSet.addElement(aMAP);
+        levelSet.add(aMAP);
         return sets;
     }
 
@@ -5584,10 +5584,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             {
                 int index=levelSets.indexOf(Integer.valueOf(i));
                 if(index<0) continue;
-                Vector set=(Vector)levelSets.elementAt(index,2);
+                List set=(List)levelSets.elementAt(index,2);
                 for(int s=0;s<set.size();s++)
                 {
-                	AbilityMapper.AbilityMapping aMAP=(AbilityMapper.AbilityMapping)set.elementAt(s);
+                	AbilityMapper.AbilityMapping aMAP=(AbilityMapper.AbilityMapping)set.get(s);
                     parts.append(spaces+CMStrings.padRight(""+i,3)+" "
                                        +CMStrings.padRight(""+aMAP.abilityName,25)+" "
                                        +CMStrings.padRight(""+aMAP.defaultProficiency,5)+" "
@@ -5609,12 +5609,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             {
                 int lvlIndex=-1;
                 int ableIndex=-1;
-                Vector myLevelSet=null;
+                List myLevelSet=null;
                 for(int s=0;s<levelSets.size();s++)
                 {
-                    Vector lvls=(Vector)levelSets.elementAt(s,2);
+                	List lvls=(List)levelSets.elementAt(s,2);
                     for(int l=0;l<lvls.size();l++)
-                        if(CMLib.english().containsString(((AbilityMapper.AbilityMapping)lvls.elementAt(l)).abilityName,newName))
+                        if(CMLib.english().containsString(((AbilityMapper.AbilityMapping)lvls.get(l)).abilityName,newName))
                         {
                             lvlIndex=s;
                             ableIndex=l;
@@ -5643,7 +5643,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 else
                 if(myLevelSet!=null)
                 {
-                    String aID=((AbilityMapper.AbilityMapping)myLevelSet.elementAt(ableIndex)).abilityName;
+                    String aID=((AbilityMapper.AbilityMapping)myLevelSet.get(ableIndex)).abilityName;
                     if(genClassAbleMod(mob,levelSets,aID,lvlIndex,ableIndex)!=null)
                         mob.tell(aID+" modified.");
                     else
@@ -5664,10 +5664,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                     for(int s=0;s<levelSets.size();s++)
                     {
                         Integer lvl=(Integer)levelSets.elementAt(s,1);
-                        Vector<AbilityMapper.AbilityMapping> lvls=(Vector)levelSets.elementAt(s,2);
+                        List<AbilityMapper.AbilityMapping> lvls=(List)levelSets.elementAt(s,2);
                         for(int l=0;l<lvls.size();l++)
                         {
-                        	AbilityMapper.AbilityMapping aMAP=(AbilityMapper.AbilityMapping)lvls.elementAt(l);
+                        	AbilityMapper.AbilityMapping aMAP=(AbilityMapper.AbilityMapping)lvls.get(l);
                             E.setStat("GETCABLELVL"+dex,lvl.toString());
                             E.setStat("GETCABLEGAIN"+dex,""+aMAP.autoGain);
                             E.setStat("GETCABLEPROF"+dex,""+aMAP.defaultProficiency);

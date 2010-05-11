@@ -205,15 +205,15 @@ public class DBUpgrade
 		for(Enumeration e=oldTables.keys();e.hasMoreElements();)
 		{
 			String s=(String)e.nextElement();
-			Vector V1=(Vector)oldTables.get(s);
-			Vector V2=(Vector)newTables.get(s);
+			List V1=(List)oldTables.get(s);
+			List V2=(List)newTables.get(s);
 			if((V1==null)||(V2==null))
 			{ same=false; break;}
 			if((V1.size()!=V2.size()))
 			{ same=false; break;}
 			for(int v=0;v<V1.size();v++)
 			{
-				if(!((String)V1.elementAt(v)).equals(V2.elementAt(v)))
+				if(!((String)V1.get(v)).equals(V2.get(v)))
 				{ same=false; break;}
 			}
 			if(!same) break;
@@ -221,15 +221,15 @@ public class DBUpgrade
 		for(Enumeration e=newTables.keys();e.hasMoreElements();)
 		{
 			String s=(String)e.nextElement();
-			Vector V1=(Vector)oldTables.get(s);
-			Vector V2=(Vector)newTables.get(s);
+			List V1=(List)oldTables.get(s);
+			List V2=(List)newTables.get(s);
 			if((V1==null)||(V2==null))
 			{ same=false; break;}
 			if((V1.size()!=V2.size()))
 			{ same=false; break;}
 			for(int v=0;v<V1.size();v++)
 			{
-				if(!((String)V1.elementAt(v)).equals(V2.elementAt(v)))
+				if(!((String)V1.get(v)).equals(V2.get(v)))
 				{ same=false; break;}
 			}
 			if(!same) break;
@@ -539,7 +539,7 @@ public class DBUpgrade
 			for(Enumeration e=oldTables.keys();e.hasMoreElements();)
 			{
 				String table=(String)e.nextElement();
-				Vector fields=(Vector)oldTables.get(table);
+				List fields=(List)oldTables.get(table);
 				Vector rows=new Vector();
 				data.put(table,rows);
 				java.sql.Statement myStatement=myConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
@@ -550,7 +550,7 @@ public class DBUpgrade
 					rows.addElement(row);
 					for(int s=0;s<fields.size();s++)
 					{
-						String S=R.getString(((String)fields.elementAt(s)).substring(1));
+						String S=R.getString(((String)fields.get(s)).substring(1));
 						if(S==null) S="";
 						row.addElement(S);
 					}
@@ -578,9 +578,9 @@ public class DBUpgrade
 			for(Enumeration e=newTables.keys();e.hasMoreElements();)
 			{
 				String table=(String)e.nextElement();
-				Vector ofields=(Vector)oldTables.get(table);
-				Vector nfields=(Vector)newTables.get(table);
-				Vector rows=(Vector)data.get(table);
+				List ofields=(List)oldTables.get(table);
+				List nfields=(List)newTables.get(table);
+				List rows=(List)data.get(table);
 				p(table);
 				if((rows==null)||(rows.size()==0))
 				{
@@ -590,40 +590,40 @@ public class DBUpgrade
 				int[] matrix=new int[nfields.size()];
 				for(int i=0;i<nfields.size();i++)
 				{
-					String field=(String)nfields.elementAt(i);
+					String field=(String)nfields.get(i);
 					int oldIndex=-1;
 					for(int u=0;u<ofields.size();u++)
-						if(((String)ofields.elementAt(u)).substring(1).equals(field.substring(1)))
+						if(((String)ofields.get(u)).substring(1).equals(field.substring(1)))
 						{ oldIndex=u; break;}
 					matrix[i]=oldIndex;
 				}
 				
 				for(int r=0;r<rows.size();r++)
 				{
-					Vector row=(Vector)rows.elementAt(r);
+					List row=(List)rows.get(r);
 					java.sql.Statement myStatement=myConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 					StringBuffer str=new StringBuffer("INSERT INTO "+table+" (");
 					for(int i=0;i<nfields.size();i++)
-						str.append(((String)nfields.elementAt(i)).substring(1)+",");
+						str.append(((String)nfields.get(i)).substring(1)+",");
 					if(nfields.size()>0)
 						str.setCharAt(str.length()-1,' ');
 					str.append(") VALUES (");
 					for(int i=0;i<nfields.size();i++)
 					{
-						String field=(String)nfields.elementAt(i);
+						String field=(String)nfields.get(i);
 						int oldIndex=matrix[i];
 						String value=null;
 						if(field.startsWith("#"))
 						{
 							if(oldIndex>=0)
-								value=(String)row.elementAt(oldIndex);
+								value=(String)row.get(oldIndex);
 							else
 								value="0";
 						}
 						else
 						{
 							if(oldIndex>=0)
-								value="'"+((String)row.elementAt(oldIndex))+"'";
+								value="'"+((String)row.get(oldIndex))+"'";
 							else
 								value="''";
 						}

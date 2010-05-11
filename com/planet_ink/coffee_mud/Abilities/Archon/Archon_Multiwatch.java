@@ -46,8 +46,8 @@ public class Archon_Multiwatch extends ArchonSkill
 	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ARCHON;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	public static Hashtable DATA=new Hashtable();
-	public static Hashtable IPS=new Hashtable();
+	public static Hashtable<MOB,int[]> DATA=new Hashtable<MOB,int[]>();
+	public static Hashtable<String,Vector> IPS=new Hashtable<String,Vector>();
 
 	public static final int DATA_GOODSPEECH=0;
 	public static final int DATA_ANYSPEECH=1;
@@ -182,7 +182,7 @@ public class Archon_Multiwatch extends ArchonSkill
 		{
 			DATA.clear();
 			IPS.clear();
-			Hashtable ipes=new Hashtable();
+			Hashtable<String,Vector> ipes=new Hashtable<String,Vector>();
 			for(int s=0;s<CMLib.sessions().size();s++)
 			{
 				Session S=CMLib.sessions().elementAt(s);

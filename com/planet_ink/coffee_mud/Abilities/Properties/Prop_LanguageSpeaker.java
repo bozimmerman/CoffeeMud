@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -32,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class Prop_LanguageSpeaker extends Property
 {
 	public String ID() { return "Prop_LanguageSpeaker"; }
@@ -41,7 +41,7 @@ public class Prop_LanguageSpeaker extends Property
 	protected boolean doPlayers=false;
 	protected boolean noMobs=false;
 	protected boolean homeOnly=false;
-	protected Vector mobMask = null;
+	protected MaskingLibrary.CompiledZapperMask mobMask = null;
 	protected Language lang = null;
 	protected String langStr = "";
 	

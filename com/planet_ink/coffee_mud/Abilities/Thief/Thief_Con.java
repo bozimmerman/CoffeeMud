@@ -45,7 +45,7 @@ public class Thief_Con extends ThiefSkill
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
     public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE; }
 	protected MOB lastChecked=null;
-    public double castingTime(MOB mob, Vector cmds){return 5;}
+    public double castingTime(MOB mob, List<String> cmds){return 5;}
     public boolean preInvoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
     {
         if(commands!=null) commands=(Vector)commands.clone();

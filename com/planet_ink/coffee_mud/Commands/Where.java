@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -123,7 +124,7 @@ public class Where extends StdCommand
                 boolean zapperMask=false;
                 boolean zapperMask2=false;
                 boolean areaFlag=false;
-                Vector compiledZapperMask=null;
+                MaskingLibrary.CompiledZapperMask compiledZapperMask=null;
                 if(who.toUpperCase().startsWith("AREA "))
                 {
                     areaFlag=true;

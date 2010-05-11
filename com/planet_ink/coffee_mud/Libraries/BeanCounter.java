@@ -42,7 +42,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
     public Hashtable<String,MoneyDenomination[]> currencies=new Hashtable<String,MoneyDenomination[]>();
     public static Hashtable<String,MoneyDenomination[]> defaultCurrencies=new Hashtable<String,MoneyDenomination[]>();
     public Vector<String> allCurrencyNames=new Vector<String>();
-    public Hashtable allCurrencyDenominationNames=new Hashtable();
+    public Hashtable<String,List<String>> allCurrencyDenominationNames=new Hashtable<String,List<String>>();
 
 	public void unloadCurrencySet(String currency)
 	{

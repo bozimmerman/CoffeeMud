@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -74,7 +75,7 @@ public class CMSecurity
     private static CMSecurity i(){ return secs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}  
     
     protected Hashtable<String,HashSet<String>> groups=new Hashtable<String,HashSet<String>>();
-    protected Vector compiledSysop=null;
+    protected MaskingLibrary.CompiledZapperMask compiledSysop=null;
     
     public void markShared() {
         char threadCode=Thread.currentThread().getThreadGroup().getName().charAt(0);

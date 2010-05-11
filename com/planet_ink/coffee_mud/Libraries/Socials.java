@@ -570,18 +570,18 @@ public class Socials extends StdLibrary implements SocialsList
 		return null;
 	}
 
-	public Social fetchSocial(Vector C, boolean exactOnly, boolean checkItemTargets)
+	public Social fetchSocial(List<String> C, boolean exactOnly, boolean checkItemTargets)
 	{
 		if(C==null) return null;
 		if(C.size()==0) return null;
 
-		String socialName=(String)C.elementAt(0);
+		String socialName=(String)C.get(0);
 		String theRest="";
         Social S=null;
         boolean tryTargets=false;
 		if(C.size()>1)
 		{
-			String Target=((String)C.elementAt(1)).toUpperCase();
+			String Target=((String)C.get(1)).toUpperCase();
             S=fetchSocial(socialName+" "+Target,true);
             if((S==null)
 			&&((!Target.equals("SELF"))&&(!Target.equals("ALL"))))

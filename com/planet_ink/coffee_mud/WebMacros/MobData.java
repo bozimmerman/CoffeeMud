@@ -681,7 +681,7 @@ public class MobData extends StdWebMacro
 						Environmental O=null;
 						for(int m=0;m<RoomData.mobs.size();m++)
 						{
-							MOB M2=(MOB)RoomData.mobs.elementAt(m);
+							MOB M2=(MOB)RoomData.mobs.get(m);
 							if(MATCHING.equals(""+M2))
 							{	O=M2;	break;	}
 						}
@@ -772,12 +772,12 @@ public class MobData extends StdWebMacro
 			str.append("<OPTION SELECTED VALUE=\"\">Select an item");
 			for(int i=0;i<RoomData.items.size();i++)
 			{
-				Item I=(Item)RoomData.items.elementAt(i);
+				Item I=(Item)RoomData.items.get(i);
 				str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");
 			}
 			for(int i=0;i<RoomData.mobs.size();i++)
 			{
-				MOB I=(MOB)RoomData.mobs.elementAt(i);
+				MOB I=(MOB)RoomData.mobs.get(i);
 				str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");
 			}
 			StringBuffer bufA=(StringBuffer)Resources.getResource("MUDGRINDER-STORESTUFF");
@@ -824,7 +824,7 @@ public class MobData extends StdWebMacro
 			Vector classes=new Vector();
 			Vector containers=new Vector();
             Vector beingWorn=new Vector();
-			Vector itemlist=null;
+            List<Item> itemlist=null;
 			if(httpReq.isRequestParameter("ITEM1"))
 			{
                 if(oldM!=M)
@@ -909,7 +909,7 @@ public class MobData extends StdWebMacro
 			str.append("<OPTION SELECTED VALUE=\"\">Select a new Item");
 			for(int i=0;i<itemlist.size();i++)
 			{
-				Item I=(Item)itemlist.elementAt(i);
+				Item I=(Item)itemlist.get(i);
 				str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");
 			}
 			StringBuffer mposs=(StringBuffer)Resources.getResource("MUDGRINDER-MOBPOSS");

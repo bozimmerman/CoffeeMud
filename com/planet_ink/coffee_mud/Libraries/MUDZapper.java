@@ -13,6 +13,8 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZapperMask;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary.CompiledZapperMaskEntry;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -62,11 +64,15 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
     public String rawMaskHelp(){return DEFAULT_MASK_HELP;}
 
     
-	protected Vector preCompiled(String str)
+	protected CompiledZapperMask preCompiled(String str)
     {
-        Hashtable H=(Hashtable)Resources.getResource("SYSTEM_HASHED_MASKS");
-        if(H==null){ H=new Hashtable(); Resources.submitResource("SYSTEM_HASHED_MASKS",H); }
-        Vector V=(Vector)H.get(str.toLowerCase().trim());
+        Hashtable<String,CompiledZapperMask> H=(Hashtable<String,CompiledZapperMask>)Resources.getResource("SYSTEM_HASHED_MASKS");
+        if(H==null)
+        { 
+        	H=new Hashtable<String,CompiledZapperMask>(); 
+        	Resources.submitResource("SYSTEM_HASHED_MASKS",H); 
+        }
+        CompiledZapperMask V=H.get(str.toLowerCase().trim());
         if(V==null)
         {
             V=maskCompile(str);
@@ -75,7 +81,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         return V;
     }
 
-    public Hashtable getMaskCodes()
+    public Hashtable<String,Integer> getMaskCodes()
 	{
 		if(zapCodes.size()==0)
 		{
@@ -408,39 +414,42 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         return false;
     }
 
-	protected Vector levelCompiledHelper(String str, char c, Vector entry)
+	protected CompiledZapperMaskEntry levelCompiledHelper(String str, char c)
 	{
-		if(entry==null) entry=new Vector();
+		Vector<Object> parms=new Vector<Object>();
+		Integer entryType=null;
 		if(str.startsWith(c+">=")&&(CMath.isNumber(str.substring(3).trim())))
 		{
-			entry.addElement(getMaskCodes().get("+LVLGE"));
-			entry.addElement(Integer.valueOf(CMath.s_int(str.substring(3).trim())));
+			entryType=getMaskCodes().get("+LVLGE");
+			parms.addElement(Integer.valueOf(CMath.s_int(str.substring(3).trim())));
 		}
 		else
 		if(str.startsWith(c+"<=")&&(CMath.isNumber(str.substring(3).trim())))
 		{
-			entry.addElement(getMaskCodes().get("+LVLLE"));
-			entry.addElement(Integer.valueOf(CMath.s_int(str.substring(3).trim())));
+			entryType=getMaskCodes().get("+LVLLE");
+			parms.addElement(Integer.valueOf(CMath.s_int(str.substring(3).trim())));
 		}
 		else
 		if(str.startsWith(c+">")&&(CMath.isNumber(str.substring(2).trim())))
 		{
-			entry.addElement(getMaskCodes().get("+LVLGR"));
-			entry.addElement(Integer.valueOf(CMath.s_int(str.substring(2).trim())));
+			entryType=getMaskCodes().get("+LVLGR");
+			parms.addElement(Integer.valueOf(CMath.s_int(str.substring(2).trim())));
 		}
 		else
 		if(str.startsWith(c+"<")&&(CMath.isNumber(str.substring(2).trim())))
 		{
-			entry.addElement(getMaskCodes().get("+LVLLT"));
-			entry.addElement(Integer.valueOf(CMath.s_int(str.substring(2).trim())));
+			entryType=getMaskCodes().get("+LVLLT");
+			parms.addElement(Integer.valueOf(CMath.s_int(str.substring(2).trim())));
 		}
 		else
 		if(str.startsWith(c+"=")&&(CMath.isNumber(str.substring(2).trim())))
 		{
-			entry.addElement(getMaskCodes().get("+LVLEQ"));
-			entry.addElement(Integer.valueOf(CMath.s_int(str.substring(2).trim())));
+			entryType=getMaskCodes().get("+LVLEQ");
+			parms.addElement(Integer.valueOf(CMath.s_int(str.substring(2).trim())));
 		}
-		return entry;
+		if((entryType==null)||(parms.size()==0))
+			return null;
+		return new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0]));
 	}
 
 	protected StringBuffer levelHelp(String lvl, char c, String append)
@@ -2160,24 +2169,21 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
     public int minMaskLevel(String text, int minMinLevel)
     {
         int level=minMinLevel;
-        Vector cset=preCompiled(text);
-        for(int c=1;c<cset.size();c++)
+        CompiledZapperMask cset=preCompiled(text);
+        for(CompiledZapperMaskEntry entry : cset.entries)
         {
-        	Vector V=(Vector)cset.elementAt(c);
-            if(V.size()>0)
-            switch(((Integer)V.firstElement()).intValue())
+            switch(entry.maskType)
             {
             case 5: // -level
             {
-                for(int v=1;v<V.size();v+=2)
-                    if((v+1)<V.size())
-                    switch(((Integer)V.elementAt(v)).intValue())
+                for(int v=0;v<entry.parms.length-1;v+=2)
+                    switch(((Integer)entry.parms[v]).intValue())
                     {
                         case 37: // +lvlgr
-                            level=((Integer)V.elementAt(v+1)).intValue()+1;
+                            level=((Integer)entry.parms[v+1]).intValue()+1;
                             break;
                         case 38: // +lvlge
-                            level=((Integer)V.elementAt(v+1)).intValue();
+                            level=((Integer)entry.parms[v+1]).intValue();
                             break;
                         case 39: // +lvlt
                             level=minMinLevel;
@@ -2186,22 +2192,21 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             level=minMinLevel;
                             break;
                         case 41: // +lvleq
-                            level=((Integer)V.elementAt(v+1)).intValue();
+                            level=((Integer)entry.parms[v+1]).intValue();
                             break;
                     }
             }
             break;
             case 6: // -classlevel
                 {
-                    for(int v=1;v<V.size();v+=2)
-                        if((v+1)<V.size())
-                        switch(((Integer)V.elementAt(v)).intValue())
+                    for(int v=0;v<entry.parms.length-1;v+=2)
+                        switch(((Integer)entry.parms[v]).intValue())
                         {
                         case 37: // +lvlgr
-                            level=((Integer)V.elementAt(v+1)).intValue()+1;
+                            level=((Integer)entry.parms[v+1]).intValue()+1;
                             break;
                         case 38: // +lvlge
-                            level=((Integer)V.elementAt(v+1)).intValue();
+                            level=((Integer)entry.parms[v+1]).intValue();
                             break;
                         case 39: // +lvlt
                             level=minMinLevel;
@@ -2210,22 +2215,21 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             level=minMinLevel;
                             break;
                         case 41: // +lvleq
-                            level=((Integer)V.elementAt(v+1)).intValue();
+                            level=((Integer)entry.parms[v+1]).intValue();
                             break;
                         }
                 }
                 break;
             case 103: // -maxclasslevel
                 {
-                    for(int v=1;v<V.size();v+=2)
-                        if((v+1)<V.size())
-                        switch(((Integer)V.elementAt(v)).intValue())
+                    for(int v=0;v<entry.parms.length-1;v+=2)
+                        switch(((Integer)entry.parms[v]).intValue())
                         {
                         case 37: // +lvlgr
-                            level=((Integer)V.elementAt(v+1)).intValue()+1;
+                            level=((Integer)entry.parms[v+1]).intValue()+1;
                             break;
                         case 38: // +lvlge
-                            level=((Integer)V.elementAt(v+1)).intValue();
+                            level=((Integer)entry.parms[v+1]).intValue();
                             break;
                         case 39: // +lvlt
                             level=minMinLevel;
@@ -2234,7 +2238,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             level=minMinLevel;
                             break;
                         case 41: // +lvleq
-                            level=((Integer)V.elementAt(v+1)).intValue();
+                            level=((Integer)entry.parms[v+1]).intValue();
                             break;
                         }
                 }
@@ -2246,10 +2250,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 level=minMinLevel;
                 break;
             case 39: // +lvlt
-                level=((Integer)V.elementAt(1)).intValue();
+                level=((Integer)entry.parms[0]).intValue();
                 break;
             case 40: // +lvlle
-                level=((Integer)V.elementAt(1)).intValue()+1;
+                level=((Integer)entry.parms[0]).intValue()+1;
                 break;
             case 41: // +lvleq
                 level=minMinLevel;
@@ -2259,39 +2263,38 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         return level;
     }
 
-	public Vector maskCompile(String text)
+	public CompiledZapperMask maskCompile(String text)
 	{
-		Vector buf=new Vector();
-		if(text.trim().length()==0) return buf;
-        Hashtable zapCodes=getMaskCodes();
+		Vector<CompiledZapperMaskEntry> buf=new Vector<CompiledZapperMaskEntry>();
+		if(text.trim().length()==0) return new CompiledZapperMask(new boolean[]{false,false},buf.toArray(new CompiledZapperMaskEntry[0]));
+        Hashtable<String,Integer> zapCodes=getMaskCodes();
 		Vector<String> V=CMParms.parse(text.toUpperCase());
 		boolean buildItemFlag=false;
 		boolean buildRoomFlag=false;
+		Integer entryType;
 		for(int v=0;v<V.size();v++)
 		{
 			String str=(String)V.elementAt(v);
 			int val=-1;
-			if(zapCodes.containsKey(str))
-				switch(((Integer)zapCodes.get(str)).intValue())
+			entryType=zapCodes.get(str);
+			if(entryType!=null)
+				switch(entryType.intValue())
 				{
 				case 0: // -class
 					{
-						Vector entry=new Vector();
-						buf.addElement(entry);
-						entry.addElement(zapCodes.get(str));
+						Vector<Object> parms=new Vector<Object>();
 						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 						{
 							CharClass C=(CharClass)c.nextElement();
 							if(fromHereStartsWith(V,'+',v+1,CMStrings.padRight(C.name(),4).toUpperCase().trim()))
-								entry.addElement(C.name());
+								parms.addElement(C.name());
 						}
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 					}
 					break;
 				case 1: // -baseclass
 					{
-						Vector entry=new Vector();
-						buf.addElement(entry);
-						entry.addElement(zapCodes.get(str));
+						Vector<Object> parms=new Vector<Object>();
 						HashSet seenBase=new HashSet();
 						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 						{
@@ -2300,16 +2303,15 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							{
 								seenBase.add(C.baseClass());
 								if(fromHereStartsWith(V,'+',v+1,CMStrings.padRight(C.baseClass(),4).toUpperCase().trim()))
-									entry.addElement(C.baseClass());
+									parms.addElement(C.baseClass());
 							}
 						}
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 					}
 					break;
 				case 117: // +baseclass
 					{
-						Vector entry=new Vector();
-						buf.addElement(entry);
-						entry.addElement(zapCodes.get(str));
+						Vector<Object> parms=new Vector<Object>();
 						HashSet seenBase=new HashSet();
 						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 						{
@@ -2318,16 +2320,15 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							{
 								seenBase.add(C.baseClass());
 								if(fromHereStartsWith(V,'-',v+1,CMStrings.padRight(C.baseClass(),4).toUpperCase().trim()))
-									entry.addElement(C.baseClass());
+									parms.addElement(C.baseClass());
 							}
 						}
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 					}
 					break;
 				case 2: // -Race
 					{
-						Vector entry=new Vector();
-						buf.addElement(entry);
-						entry.addElement(zapCodes.get(str));
+						Vector<Object> parms=new Vector<Object>();
 						Vector cats=new Vector();
 						for(Enumeration r=CMClass.races();r.hasMoreElements();)
 						{
@@ -2339,14 +2340,13 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							   cats.addElement(R.name());
 						}
 						for(int c=0;c<cats.size();c++)
-							entry.addElement(cats.elementAt(c));
+							parms.addElement(cats.elementAt(c));
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 					}
 					break;
 				case 12: // -Racecats
 					{
-						Vector entry=new Vector();
-						buf.addElement(entry);
-						entry.addElement(zapCodes.get(str));
+						Vector<Object> parms=new Vector<Object>();
 						Vector cats=new Vector();
 						for(Enumeration r=CMClass.races();r.hasMoreElements();)
 						{
@@ -2357,14 +2357,13 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							   cats.addElement(R.racialCategory());
 						}
 						for(int c=0;c<cats.size();c++)
-							entry.addElement(cats.elementAt(c));
+							parms.addElement(cats.elementAt(c));
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 					}
 					break;
 				case 13: // +Racecats
 					{
-						Vector entry=new Vector();
-						buf.addElement(entry);
-						entry.addElement(zapCodes.get(str));
+						Vector<Object> parms=new Vector<Object>();
 						Vector cats=new Vector();
 						for(Enumeration r=CMClass.races();r.hasMoreElements();)
 						{
@@ -2375,56 +2374,52 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							   cats.addElement(R.racialCategory());
 						}
 						for(int c=0;c<cats.size();c++)
-							entry.addElement(cats.elementAt(c));
+							parms.addElement(cats.elementAt(c));
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 					}
 					break;
                 case 112: // +Race
                     {
-                        Vector entry=new Vector();
-                        buf.addElement(entry);
-                        entry.addElement(zapCodes.get(str));
+                        Vector<Object> parms=new Vector<Object>();
                         for(Enumeration r=CMClass.races();r.hasMoreElements();)
                         {
                             Race R=(Race)r.nextElement();
                             String cat=R.name().toUpperCase();
                             if(fromHereStartsWith(V,'-',v+1,cat))
-                               entry.addElement(R.name());
+                               parms.addElement(R.name());
                         }
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                     }
                     break;
 				case 3: // -Alignment
 					{
-						Vector entry=new Vector();
-						buf.addElement(entry);
-						entry.addElement(zapCodes.get(str));
+						Vector<Object> parms=new Vector<Object>();
 						if(fromHereStartsWith(V,'+',v+1,Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].substring(0,3)))
-						    entry.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_EVIL]);
+						    parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_EVIL]);
 						if(fromHereStartsWith(V,'+',v+1,Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].substring(0,3)))
-						    entry.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_GOOD]);
+						    parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_GOOD]);
 						if(fromHereStartsWith(V,'+',v+1,Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].substring(0,3)))
-						    entry.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL]);
+						    parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL]);
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 					}
 					break;
 				case 4: // -Gender
 					{
-						Vector entry=new Vector();
-						buf.addElement(entry);
-						entry.addElement(zapCodes.get(str));
+						Vector<Object> parms=new Vector<Object>();
 						if(fromHereStartsWith(V,'+',v+1,"MALE"))
-							entry.addElement("M");
+							parms.addElement("M");
 						if(fromHereStartsWith(V,'+',v+1,"FEMALE"))
-							entry.addElement("F");
+							parms.addElement("F");
 						if(fromHereStartsWith(V,'+',v+1,"NEUTER"))
-							entry.addElement("N");
+							parms.addElement("N");
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 					}
 					break;
 				case 5: // -Levels
 				case 6: // -ClassLevels
                 case 103: // -MaxclassLevels
 					{
-						Vector entry=new Vector();
-						buf.addElement(entry);
-						entry.addElement(zapCodes.get(str));
+						Vector<Object> parms=new Vector<Object>();
 						for(int v2=v+1;v2<V.size();v2++)
                         {
                             String str2=(String)V.elementAt(v2);
@@ -2433,17 +2428,21 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 v=v2-1;
                                 break;
                             }
-							levelCompiledHelper(str2,'+',entry);
+							CompiledZapperMaskEntry e = levelCompiledHelper(str2,'+');
+							if(e!=null)
+							{
+								parms.add(Integer.valueOf(e.maskType));
+								parms.add(e.parms[0]);
+							}
                             v=V.size();
                         }
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 					}
 					break;
                 case 43: // -Effect
                 case 42: // +Effect
                     {
-                        Vector entry=new Vector();
-                        buf.addElement(entry);
-                        entry.addElement(zapCodes.get(str));
+                        Vector<Object> parms=new Vector<Object>();
                         for(int v2=v+1;v2<V.size();v2++)
                         {
                             String str2=(String)V.elementAt(v2);
@@ -2463,10 +2462,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 if(A==null) A=CMClass.getAbilityByName(str2,false);
                                 if(A==null) A=CMClass.getBehaviorByName(str2,false);
                                 if(A!=null)
-                                    entry.addElement(A.ID());
+                                    parms.addElement(A.ID());
                             }
                             v=V.size();
                         }
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                     }
                     break;
 				case 7: // -Tattoos
@@ -2482,9 +2482,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 100: // -Home
                 case 53: // -JavaClass
 					{
-						Vector entry=new Vector();
-						buf.addElement(entry);
-						entry.addElement(zapCodes.get(str));
+						Vector<Object> parms=new Vector<Object>();
 						for(int v2=v+1;v2<V.size();v2++)
 						{
 							String str2=(String)V.elementAt(v2);
@@ -2495,16 +2493,15 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             }
                             else
 							if(str2.startsWith("+"))
-								entry.addElement(str2.substring(1));
+								parms.addElement(str2.substring(1));
                             v=V.size();
 						}
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 					}
 					break;
 				case 46: // -Faction
 				{
-					Vector entry=new Vector();
-					buf.addElement(entry);
-					entry.addElement(zapCodes.get(str));
+					Vector<Object> parms=new Vector<Object>();
 					for(int v2=v+1;v2<V.size();v2++)
 					{
 						String str2=(String)V.elementAt(v2);
@@ -2516,9 +2513,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         else
 						if((str2.startsWith("+"))
 				        &&(CMLib.factions().isRangeCodeName(str2.substring(1))))
-							entry.addElement(str2.substring(1).toUpperCase());
+							parms.addElement(str2.substring(1).toUpperCase());
                         v=V.size();
 					}
+					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 					break;
 				}
 				case 8: // +Tattoos
@@ -2534,9 +2532,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 99: // +Home
                 case 54: // +JavaClass
 					{
-						Vector entry=new Vector();
-						buf.addElement(entry);
-						entry.addElement(zapCodes.get(str));
+						Vector<Object> parms=new Vector<Object>();
 						for(int v2=v+1;v2<V.size();v2++)
 						{
 							String str2=(String)V.elementAt(v2);
@@ -2547,17 +2543,16 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             }
                             else
 							if(str2.startsWith("-"))
-								entry.addElement(str2.substring(1));
+								parms.addElement(str2.substring(1));
                             v=V.size();
 						}
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 					}
 					break;
                 case 83: // +skills
                 case 84: // -skills
                     {
-                        Vector entry=new Vector();
-                        buf.addElement(entry);
-                        entry.addElement(zapCodes.get(str));
+                        Vector<Object> parms=new Vector<Object>();
                         for(int v2=v+1;v2<V.size();v2++)
                         {
                             String str2=(String)V.elementAt(v2);
@@ -2581,20 +2576,19 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             	Ability A=CMClass.getAbility(str2);
                                 if(A!=null)
                                 {
-                                    entry.addElement(A.ID());
-                                    entry.addElement(Integer.valueOf(prof));
+                                    parms.addElement(A.ID());
+                                    parms.addElement(Integer.valueOf(prof));
                                 }
                             }
                             v=V.size();
                         }
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                     }
                     break;
                 case 101: // -skillflag
                 case 102: // +skillflag
                     {
-                        Vector entry=new Vector();
-                        buf.addElement(entry);
-                        entry.addElement(zapCodes.get(str));
+                        Vector<Object> parms=new Vector<Object>();
                         for(int v2=v+1;v2<V.size();v2++)
                         {
                             String str2=(String)V.elementAt(v2);
@@ -2608,18 +2602,17 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             {
                                 str2=str2.substring(1).toUpperCase();
                                 Object o=makeSkillFlagObject(str2);
-                                if(o!=null) entry.addElement(o);
+                                if(o!=null) parms.addElement(o);
                             }
                             v=V.size();
                         }
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                     }
                     break;
                 case 33: // -Item
                 case 48: // -Worn
                     {
-                        Vector entry=new Vector();
-                        buf.addElement(entry);
-                        entry.addElement(zapCodes.get(str));
+                        Vector<Object> parms=new Vector<Object>();
                         for(int v2=v+1;v2<V.size();v2++)
                         {
                             String str2=(String)V.elementAt(v2);
@@ -2630,17 +2623,16 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             }
                             else
                             if((str2.startsWith("+"))||(str2.startsWith("-")))
-                                entry.addElement(str2.substring(1));
+                                parms.addElement(str2.substring(1));
                             v=V.size();
                         }
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                     }
                     break;
                 case 49: // +Material
                 case 50: // -Material
                     {
-                        Vector entry=new Vector();
-                        buf.addElement(entry);
-                        entry.addElement(zapCodes.get(str));
+                        Vector<Object> parms=new Vector<Object>();
                         buildItemFlag=true;
                         for(int v2=v+1;v2<V.size();v2++)
                         {
@@ -2655,18 +2647,17 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             {
                                 int code=CMLib.materials().getMaterialCode(str2.substring(1),false);
                                 if(code>=0)
-                                    entry.addElement(RawMaterial.MATERIAL_DESCS[(code&RawMaterial.MATERIAL_MASK)>>8]);
+                                    parms.addElement(RawMaterial.MATERIAL_DESCS[(code&RawMaterial.MATERIAL_MASK)>>8]);
                             }
                             v=V.size();
                         }
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                     }
                     break;
                 case 57: // -WornOn
                 case 58: // +WornOn
                     {
-                        Vector entry=new Vector();
-                        buf.addElement(entry);
-                        entry.addElement(zapCodes.get(str));
+                        Vector<Object> parms=new Vector<Object>();
                         buildItemFlag=true;
                         for(int v2=v+1;v2<V.size();v2++)
                         {
@@ -2680,18 +2671,17 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
                             {
                                 long code=Wearable.CODES.FIND_endsWith(str2.substring(1));
-                                if(code>=0) entry.addElement(Long.valueOf(code));
+                                if(code>=0) parms.addElement(Long.valueOf(code));
                             }
                             v=V.size();
                         }
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                     }
                     break;
                 case 69: // +Disposition
                 case 70: // -Disposition
                     {
-                        Vector entry=new Vector();
-                        buf.addElement(entry);
-                        entry.addElement(zapCodes.get(str));
+                        Vector<Object> parms=new Vector<Object>();
                         for(int v2=v+1;v2<V.size();v2++)
                         {
                             String str2=(String)V.elementAt(v2);
@@ -2704,18 +2694,17 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
                             {
                                 int code=CMLib.flags().getDispositionCode(str2.substring(1));
-                                if(code>=0) entry.addElement(Integer.valueOf((int)CMath.pow(2,code)));
+                                if(code>=0) parms.addElement(Integer.valueOf((int)CMath.pow(2,code)));
                             }
                             v=V.size();
                         }
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                     }
                     break;
                 case 71: // +Senses
                 case 72: // -Senses
                     {
-                        Vector entry=new Vector();
-                        buf.addElement(entry);
-                        entry.addElement(zapCodes.get(str));
+                        Vector<Object> parms=new Vector<Object>();
                         for(int v2=v+1;v2<V.size();v2++)
                         {
                             String str2=(String)V.elementAt(v2);
@@ -2728,18 +2717,17 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
                             {
                                 int code=CMLib.flags().getSensesCode(str2.substring(1));
-                                if(code>=0) entry.addElement(Integer.valueOf((int)CMath.pow(2,code)));
+                                if(code>=0) parms.addElement(Integer.valueOf((int)CMath.pow(2,code)));
                             }
                             v=V.size();
                         }
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                     }
                     break;
                 case 75: // +Season
                 case 76: // -Season
                     {
-                        Vector entry=new Vector();
-                        buf.addElement(entry);
-                        entry.addElement(zapCodes.get(str));
+                        Vector<Object> parms=new Vector<Object>();
                         buildRoomFlag=true;
                         for(int v2=v+1;v2<V.size();v2++)
                         {
@@ -2753,21 +2741,20 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
                             {
                                 if(CMath.isInteger(str2.substring(1).trim()))
-                                    entry.addElement(Integer.valueOf(CMath.s_int(str2.substring(1).trim())));
+                                    parms.addElement(Integer.valueOf(CMath.s_int(str2.substring(1).trim())));
                                 else
                                 if(determineSeason(str2.substring(1).trim())>=0)
-                                    entry.addElement(Integer.valueOf(determineSeason(str2.substring(1).trim())));
+                                    parms.addElement(Integer.valueOf(determineSeason(str2.substring(1).trim())));
                             }
                             v=V.size();
                         }
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                     }
                     break;
                 case 104: // +weather
                 case 105: // -weather
                     {
-                        Vector entry=new Vector();
-                        buf.addElement(entry);
-                        entry.addElement(zapCodes.get(str));
+                        Vector<Object> parms=new Vector<Object>();
                         buildRoomFlag=true;
                         for(int v2=v+1;v2<V.size();v2++)
                         {
@@ -2781,13 +2768,14 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
                             {
                                 if(CMath.isInteger(str2.substring(1).trim()))
-                                    entry.addElement(Integer.valueOf(CMath.s_int(str2.substring(1).trim())));
+                                    parms.addElement(Integer.valueOf(CMath.s_int(str2.substring(1).trim())));
                                 else
                                 if(CMParms.indexOf(Climate.WEATHER_DESCS,str2.substring(1).trim())>=0)
-                                    entry.addElement(Integer.valueOf(CMParms.indexOf(Climate.WEATHER_DESCS,str2.substring(1).trim())));
+                                    parms.addElement(Integer.valueOf(CMParms.indexOf(Climate.WEATHER_DESCS,str2.substring(1).trim())));
                             }
                             v=V.size();
                         }
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                     }
                     break;
                 case 73: // +HOUR
@@ -2797,9 +2785,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 106: // +DAY
                 case 107: // -DAY
                     {
-                        Vector entry=new Vector();
-                        buf.addElement(entry);
-                        entry.addElement(zapCodes.get(str));
+                        Vector<Object> parms=new Vector<Object>();
                         buildRoomFlag=true;
                         for(int v2=v+1;v2<V.size();v2++)
                         {
@@ -2811,9 +2797,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             }
                             else
                             if((str2.startsWith("-"))||(str2.startsWith("+")))
-                                entry.addElement(Integer.valueOf(CMath.s_int(str2.substring(1).trim())));
+                                parms.addElement(Integer.valueOf(CMath.s_int(str2.substring(1).trim())));
                             v=V.size();
                         }
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                     }
                     break;
                 case 85: // +quallvl
@@ -2826,11 +2813,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		                    int adjustment=0;
 		                    if(((v+2)<V.size())&&(CMath.isInteger((String)V.elementAt(v+2))))
 		                    	adjustment=CMath.s_int((String)V.elementAt(v+2));
-	                        Vector entry=new Vector();
-	                        buf.addElement(entry);
-	                        entry.addElement(zapCodes.get(str));
-	                        entry.addElement(A.ID());
-	                        entry.addElement(Integer.valueOf(adjustment));
+	                        Vector<Object> parms=new Vector<Object>();
+	                        parms.addElement(A.ID());
+	                        parms.addElement(Integer.valueOf(adjustment));
+							buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 	                    }
 	                }
                 	break;
@@ -2840,17 +2826,13 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 108: // +sysop
                 case 109: // +sysop
                 {
-                    Vector entry=new Vector();
-                    buf.addElement(entry);
-                    entry.addElement(zapCodes.get(str));
+					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),new Object[0]));
                     break;
                 }
                 case 51: // +Resource
                 case 52: // -Resource
                     {
-                        Vector entry=new Vector();
-                        buf.addElement(entry);
-                        entry.addElement(zapCodes.get(str));
+                        Vector<Object> parms=new Vector<Object>();
                         buildItemFlag=true;
                         for(int v2=v+1;v2<V.size();v2++)
                         {
@@ -2865,44 +2847,41 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             {
                                 int code=CMLib.materials().getResourceCode(str2.substring(1),false);
                                 if(code>=0)
-                                    entry.addElement(RawMaterial.CODES.NAME(code));
+                                    parms.addElement(RawMaterial.CODES.NAME(code));
                             }
                             v=V.size();
                         }
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                     }
                     break;
 				case 10: // -Player
 				case 11: // -MOB
 					{
-						Vector entry=new Vector();
-						buf.addElement(entry);
-						entry.addElement(zapCodes.get(str));
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),new Object[0]));
 						break;
 					}
 				case 17: // -anyclass
 					{
-						Vector entry=new Vector();
-						buf.addElement(entry);
-						entry.addElement(zapCodes.get(str));
+						Vector<Object> parms=new Vector<Object>();
 						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 						{
 							CharClass C=(CharClass)c.nextElement();
 							if(fromHereStartsWith(V,'+',v+1,CMStrings.padRight(C.name(),4).toUpperCase().trim()))
-								entry.addElement(C.name());
+								parms.addElement(C.name());
 						}
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 					}
 					break;
 				case 18: // +anyclass
 					{
-						Vector entry=new Vector();
-						buf.addElement(entry);
-						entry.addElement(zapCodes.get(str));
+						Vector<Object> parms=new Vector<Object>();
 						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 						{
 							CharClass C=(CharClass)c.nextElement();
 							if(fromHereStartsWith(V,'-',v+1,CMStrings.padRight(C.name(),4).toUpperCase().trim()))
-								entry.addElement(C.name());
+								parms.addElement(C.name());
 						}
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 					}
 					break;
                 case 59: // +value
@@ -2947,18 +2926,15 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 116: // +groupsize
 					{
 						val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-						Vector entry=new Vector();
-						buf.addElement(entry);
-						entry.addElement(zapCodes.get(str));
-						entry.addElement(Integer.valueOf(val));
+						Vector<Object> parms=new Vector<Object>();
+						parms.addElement(Integer.valueOf(val));
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 						break;
 					}
                 case 118: // -if
                 case 119: // +if
 					{
-                        Vector entry=new Vector();
-                        buf.addElement(entry);
-                        entry.addElement(zapCodes.get(str));
+                        Vector<Object> parms=new Vector<Object>();
                         for(int v2=v+1;v2<V.size();v2++)
                         {
                             String str2=(String)V.elementAt(v2);
@@ -2974,11 +2950,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 SE.setVarScope("*");
                                 try {
 	                                String[] tt = SE.parseEval(str2);
-	                                entry.addElement(SE);
+	                                parms.addElement(SE);
 	                                String[][] EVAL={tt};
-	                                entry.addElement(EVAL); // the compiled eval
+	                                parms.addElement(EVAL); // the compiled eval
 	                                Object[] tmp = new Object[ScriptingEngine.SPECIAL_NUM_OBJECTS];
-	                                entry.addElement(tmp);
+	                                parms.addElement(tmp);
                                 } catch(ScriptParseException spe) {
                                 	Log.errOut("MUDZapper","Script parse Exception for "+str2);
                                 	Log.errOut("MUDZapper",spe);
@@ -2986,6 +2962,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             }
                             v=V.size();
                         }
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 						break;
 					}
 				}
@@ -2998,11 +2975,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     CharClass C=(CharClass)c.nextElement();
                     if(str.equals("-"+C.name().toUpperCase().trim()))
                     {
-                        Vector entry=new Vector();
-                        buf.addElement(entry);
-                        entry.addElement(zapCodes.get("+CLASS"));
-                        entry.addElement(C.name());
+                        Vector<Object> parms=new Vector<Object>();
+                        entryType=zapCodes.get("+CLASS").intValue();
+                        parms.addElement(C.name());
                         found=true;
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                         break;
                     }
                 }
@@ -3013,74 +2990,74 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     String race=R.name().toUpperCase();
                     if(str.equals("-"+race))
                     {
-                        Vector entry=new Vector();
-                        buf.addElement(entry);
-                        entry.addElement(zapCodes.get("+RACE"));
-                        entry.addElement(R.name());
+                        Vector<Object> parms=new Vector<Object>();
+                        entryType=zapCodes.get("+RACE").intValue();
+                        parms.addElement(R.name());
                         found=true;
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                         break;
                     }
                 }
                 if((!found)
                 &&(str.equals("-"+Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].toUpperCase())))
                 {
-                    Vector entry=new Vector();
-                    buf.addElement(entry);
-                    entry.addElement(zapCodes.get("+ALIGNMENT"));
-                    entry.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_EVIL]);
+                    Vector<Object> parms=new Vector<Object>();
+                    entryType=zapCodes.get("+ALIGNMENT").intValue();
+                    parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_EVIL]);
                     found=true;
+					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                 }
                 if((!found)
                 &&(str.equals("-"+Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].toUpperCase())))
                 {
-                    Vector entry=new Vector();
-                    buf.addElement(entry);
-                    entry.addElement(zapCodes.get("+ALIGNMENT"));
-                    entry.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_GOOD]);
+                    Vector<Object> parms=new Vector<Object>();
+                    entryType=zapCodes.get("+ALIGNMENT").intValue();
+                    parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_GOOD]);
                     found=true;
+					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                 }
                 if((!found)
                 &&(str.equals("-"+Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].toUpperCase())))
                 {
-                    Vector entry=new Vector();
-                    buf.addElement(entry);
-                    entry.addElement(zapCodes.get("+ALIGNMENT"));
-                    entry.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL]);
+                    Vector<Object> parms=new Vector<Object>();
+                    entryType=zapCodes.get("+ALIGNMENT").intValue();
+                    parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL]);
                     found=true;
+					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                 }
                 if((!found)&&(str.equals("-MALE")))
                 {
-                    Vector entry=new Vector();
-                    buf.addElement(entry);
-                    entry.addElement(zapCodes.get("+GENDER"));
-                    entry.addElement("M");
+                    Vector<Object> parms=new Vector<Object>();
+                    entryType=zapCodes.get("+GENDER").intValue();
+                    parms.addElement("M");
                     found=true;
+					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                 }
                 if((!found)&&(str.equals("-FEMALE")))
                 {
-                    Vector entry=new Vector();
-                    buf.addElement(entry);
-                    entry.addElement(zapCodes.get("+GENDER"));
-                    entry.addElement("F");
+                    Vector<Object> parms=new Vector<Object>();
+                    entryType=zapCodes.get("+GENDER").intValue();
+                    parms.addElement("F");
                     found=true;
+					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                 }
                 if((!found)&&(str.equals("-NEUTER")))
                 {
-                    Vector entry=new Vector();
-                    buf.addElement(entry);
-                    entry.addElement(zapCodes.get("+GENDER"));
-                    entry.addElement("N");
+                    Vector<Object> parms=new Vector<Object>();
+                    entryType=zapCodes.get("+GENDER").intValue();
+                    parms.addElement("N");
                     found=true;
+					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                 }
                 if((!found)
                 &&(str.startsWith("-"))
                 &&(CMLib.factions().isRangeCodeName(str.substring(1))))
                 {
-                    Vector entry=new Vector();
-                    buf.addElement(entry);
-                    entry.addElement(zapCodes.get("+FACTION"));
-                    entry.addElement(str.substring(1));
+                    Vector<Object> parms=new Vector<Object>();
+                    entryType=zapCodes.get("+FACTION").intValue();
+                    parms.addElement(str.substring(1));
                     found=true;
+					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                 }
                 if(!found)
 				for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
@@ -3088,11 +3065,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					CharClass C=(CharClass)c.nextElement();
 					if(str.startsWith("-"+CMStrings.padRight(C.name(),4).toUpperCase().trim()))
 					{
-						Vector entry=new Vector();
-						buf.addElement(entry);
-						entry.addElement(zapCodes.get("+CLASS"));
-						entry.addElement(C.name());
+						Vector<Object> parms=new Vector<Object>();
+	                    entryType=zapCodes.get("+CLASS").intValue();
+						parms.addElement(C.name());
                         found=true;
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                         break;
 					}
 				}
@@ -3102,11 +3079,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					Race R=(Race)r.nextElement();
 					if(str.startsWith("-"+CMStrings.padRight(R.name(),6).toUpperCase().trim()))
 					{
-						Vector entry=new Vector();
-						buf.addElement(entry);
-						entry.addElement(zapCodes.get("+RACE"));
-						entry.addElement(R.name());
+						Vector<Object> parms=new Vector<Object>();
+	                    entryType=zapCodes.get("+RACE").intValue();
+						parms.addElement(R.name());
                         found=true;
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                         break;
 					}
 				}
@@ -3118,93 +3095,85 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     if(cat.length()>6) cat=cat.substring(0,6);
                     if(str.startsWith("-"+cat))
                     {
-                        Vector entry=new Vector();
-                        buf.addElement(entry);
-                        entry.addElement(zapCodes.get("+RACECAT"));
-                        entry.addElement(R.racialCategory());
+                        Vector<Object> parms=new Vector<Object>();
+	                    entryType=zapCodes.get("+RACECAT").intValue();
+                        parms.addElement(R.racialCategory());
+						buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
                     }
                 }
                 if((!found)
 				&&(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].substring(0,3))))
 				{
-					Vector entry=new Vector();
-					buf.addElement(entry);
-					entry.addElement(zapCodes.get("+ALIGNMENT"));
-					entry.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_EVIL]);
+					Vector<Object> parms=new Vector<Object>();
+                    entryType=zapCodes.get("+ALIGNMENT").intValue();
+					parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_EVIL]);
                     found=true;
+					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 				}
                 if((!found)
 				&&(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].substring(0,3))))
 				{
-					Vector entry=new Vector();
-					buf.addElement(entry);
-					entry.addElement(zapCodes.get("+ALIGNMENT"));
-					entry.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_GOOD]);
+					Vector<Object> parms=new Vector<Object>();
+                    entryType=zapCodes.get("+ALIGNMENT").intValue();
+					parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_GOOD]);
                     found=true;
+					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 				}
                 if((!found)
 				&&(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].substring(0,3))))
 				{
-					Vector entry=new Vector();
-					buf.addElement(entry);
-					entry.addElement(zapCodes.get("+ALIGNMENT"));
-					entry.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL]);
+					Vector<Object> parms=new Vector<Object>();
+                    entryType=zapCodes.get("+ALIGNMENT").intValue();
+					parms.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL]);
                     found=true;
+					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 				}
                 if((!found)
 				&&(str.startsWith("-MALE")))
 				{
-					Vector entry=new Vector();
-					buf.addElement(entry);
-					entry.addElement(zapCodes.get("+GENDER"));
-					entry.addElement("M");
+					Vector<Object> parms=new Vector<Object>();
+                    entryType=zapCodes.get("+GENDER").intValue();
+					parms.addElement("M");
                     found=true;
+					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 				}
                 if((!found)
 				&&(str.startsWith("-FEMALE")))
 				{
-					Vector entry=new Vector();
-					buf.addElement(entry);
-					entry.addElement(zapCodes.get("+GENDER"));
-					entry.addElement("F");
+					Vector<Object> parms=new Vector<Object>();
+                    entryType=zapCodes.get("+GENDER").intValue();
+					parms.addElement("F");
                     found=true;
+					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 				}
                 if((!found)
                 &&(str.startsWith("-NEUTER")))
 				{
-					Vector entry=new Vector();
-					buf.addElement(entry);
-					entry.addElement(zapCodes.get("+GENDER"));
-					entry.addElement("N");
+					Vector<Object> parms=new Vector<Object>();
+                    entryType=zapCodes.get("+GENDER").intValue();
+					parms.addElement("N");
                     found=true;
+					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 				}
                 if((!found)
 				&&(str.startsWith("-"))
  		        &&(CMLib.factions().isRangeCodeName(str.substring(1))))
 				{
-					Vector entry=new Vector();
-					buf.addElement(entry);
-					entry.addElement(zapCodes.get("+FACTION"));
-					entry.addElement(str.substring(1));
+					Vector<Object> parms=new Vector<Object>();
+                    entryType=zapCodes.get("+FACTION").intValue();
+					parms.addElement(str.substring(1));
                     found=true;
+					buf.add(new CompiledZapperMaskEntry(entryType.intValue(),parms.toArray(new Object[0])));
 				}
                 if(!found)
                 {
-    				Vector entry=levelCompiledHelper(str,'-',null);
-    				if((entry!=null)&&(entry.size()>0))
+                	CompiledZapperMaskEntry entry=levelCompiledHelper(str,'-');
+    				if(entry!=null)
     					buf.addElement(entry);
                 }
 			}
 		}
-		for(int b=0;b<buf.size();b++)
-			if(buf.elementAt(b) instanceof Vector)
-				((Vector)buf.elementAt(b)).trimToSize();
-		if(buf.size()>0)
-			buf.insertElementAt(new boolean[]{buildItemFlag,buildRoomFlag}, 0);
-		else
-			buf.addElement(new boolean[]{buildItemFlag,buildRoomFlag});
-		buf.trimToSize();
-		return buf;
+		return new CompiledZapperMask(new boolean[]{buildItemFlag,buildRoomFlag},buf.toArray(new CompiledZapperMaskEntry[0]));
 	}
 
 	protected Room outdoorRoom(Area A)
@@ -3229,26 +3198,24 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	}
 
 	public boolean maskCheck(String text, Environmental E, boolean actual){ return maskCheck(preCompiled(text),E,actual);}
-	public boolean maskCheck(Vector cset, Environmental E, boolean actual)
+	public boolean maskCheck(CompiledZapperMask cset, Environmental E, boolean actual)
 	{
 		if(E==null) return true;
-		if((cset==null)||(cset.size()<2)) return true;
+		if((cset==null)||(cset.entries.length<1)) return true;
         getMaskCodes();
         CharStats base=null;
         MOB mob=(E instanceof MOB)?(MOB)E:nonCrashingMOB();
-        boolean[] flags=(boolean[])cset.firstElement();
+        boolean[] flags=cset.flags;
         Item item=flags[0]?((E instanceof Item)?(Item)E:nonCrashingItem(mob)):null;
         Room room = flags[1]?((E instanceof Area)?outdoorRoom((Area)E):CMLib.map().roomLocation(E)):null;
         Physical P = (E instanceof Physical)?(Physical)E:null;
         if((mob==null)||(flags[0]&&(item==null))) 
         	return false;
-		for(int c=1;c<cset.size();c++)
+		for(CompiledZapperMaskEntry entry : cset.entries)
 		{
-			Vector V=(Vector)cset.elementAt(c);
             try
             {
-			if(V.size()>0)
-			switch(((Integer)V.firstElement()).intValue())
+			switch(entry.maskType)
 			{
             case 108: // +sysop
                 if(CMSecurity.isASysOp(mob))
@@ -3270,7 +3237,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 break;
 			case 0: // -class
 			{
-				if(!V.contains(actual?mob.baseCharStats().getCurrentClass().name():mob.charStats().displayClassName()))
+				if(!CMParms.contains(entry.parms,actual?mob.baseCharStats().getCurrentClass().name():mob.charStats().displayClassName()))
 					return false;
 				break;
 			}
@@ -3282,7 +3249,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					CharClass C=CMClass.getCharClass(mob.charStats().displayClassName());
 					if(C!=null) baseClass=C.baseClass();
 				}
-				if(!V.contains(baseClass))
+				if(!CMParms.contains(entry.parms,baseClass))
 					return false;
 				break;
 			}
@@ -3294,22 +3261,22 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					CharClass C=CMClass.getCharClass(mob.charStats().displayClassName());
 					if(C!=null) baseClass=C.baseClass();
 				}
-				if(V.contains(baseClass))
+				if(CMParms.contains(entry.parms,baseClass))
 					return false;
 				break;
 			}
 			case 2: // -race
-				if(!V.contains(actual?mob.baseCharStats().getMyRace().name():mob.charStats().raceName()))
+				if(!CMParms.contains(entry.parms,actual?mob.baseCharStats().getMyRace().name():mob.charStats().raceName()))
 					return false;
 				break;
 			case 3: // -alignment
-				if(!V.contains(CMLib.flags().getAlignmentName(mob)))
+				if(!CMParms.contains(entry.parms,CMLib.flags().getAlignmentName(mob)))
 					return false;
 				break;
 			case 4: // -gender
 			{
 		        base=getBaseCharStats(base,mob);
-				if(!V.contains(actual?(""+((char)base.getStat(CharStats.STAT_GENDER))):(""+(Character.toUpperCase(mob.charStats().genderName().charAt(0))))))
+				if(!CMParms.contains(entry.parms,actual?(""+((char)base.getStat(CharStats.STAT_GENDER))):(""+(Character.toUpperCase(mob.charStats().genderName().charAt(0))))))
 					return false;
 				break;
 			}
@@ -3318,28 +3285,27 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				{
 					int level=actual?P.basePhyStats().level():P.phyStats().level();
 					boolean found=false;
-					for(int v=1;v<V.size();v+=2)
-						if((v+1)<V.size())
-						switch(((Integer)V.elementAt(v)).intValue())
+					for(int v=0;v<entry.parms.length-1;v+=2)
+						switch(((Integer)entry.parms[v]).intValue())
 						{
 							case 37: // +lvlgr
-								if(level>((Integer)V.elementAt(v+1)).intValue())
+								if(level>((Integer)entry.parms[v+1]).intValue())
 								   found=true;
 								break;
 							case 38: // +lvlge
-								if(level>=((Integer)V.elementAt(v+1)).intValue())
+								if(level>=((Integer)entry.parms[v+1]).intValue())
 								   found=true;
 								break;
 							case 39: // +lvlt
-								if(level<((Integer)V.elementAt(v+1)).intValue())
+								if(level<((Integer)entry.parms[v+1]).intValue())
 								   found=true;
 								break;
 							case 40: // +lvlle
-								if(level<=((Integer)V.elementAt(v+1)).intValue())
+								if(level<=((Integer)entry.parms[v+1]).intValue())
 								   found=true;
 								break;
 							case 41: // +lvleq
-								if(level==((Integer)V.elementAt(v+1)).intValue())
+								if(level==((Integer)entry.parms[v+1]).intValue())
 								   found=true;
 								break;
 						}
@@ -3351,28 +3317,27 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					boolean found=false;
 					int cl=actual?mob.baseCharStats().getClassLevel(mob.baseCharStats().getCurrentClass())
 								 :mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
-					for(int v=1;v<V.size();v+=2)
-						if((v+1)<V.size())
-						switch(((Integer)V.elementAt(v)).intValue())
+					for(int v=0;v<entry.parms.length-1;v+=2)
+						switch(((Integer)entry.parms[v]).intValue())
 						{
 							case 37: // +lvlgr
-								if((V.size()>1)&&(cl>((Integer)V.elementAt(v+1)).intValue()))
+								if(cl>((Integer)entry.parms[v+1]).intValue())
 								   found=true;
 								break;
 							case 38: // +lvlge
-								if((V.size()>1)&&(cl>=((Integer)V.elementAt(v+1)).intValue()))
+								if(cl>=((Integer)entry.parms[v+1]).intValue())
 								   found=true;
 								break;
 							case 39: // +lvlt
-								if((V.size()>1)&&(cl<((Integer)V.elementAt(v+1)).intValue()))
+								if(cl<((Integer)entry.parms[v+1]).intValue())
 								   found=true;
 								break;
 							case 40: // +lvlle
-								if((V.size()>1)&&(cl<=((Integer)V.elementAt(v+1)).intValue()))
+								if(cl<=((Integer)entry.parms[v+1]).intValue())
 								   found=true;
 								break;
 							case 41: // +lvleq
-								if((V.size()>1)&&(cl==((Integer)V.elementAt(v+1)).intValue()))
+								if(cl==((Integer)entry.parms[v+1]).intValue())
 								   found=true;
 								break;
 						}
@@ -3402,28 +3367,27 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	                        if(c2>cl) cl=c2;
 	                    }
                     }
-                    for(int v=1;v<V.size();v+=2)
-                        if((v+1)<V.size())
-                        switch(((Integer)V.elementAt(v)).intValue())
+                    for(int v=0;v<entry.parms.length-1;v+=2)
+                        switch(((Integer)entry.parms[v]).intValue())
                         {
                             case 37: // +lvlgr
-                                if((V.size()>1)&&(cl>((Integer)V.elementAt(v+1)).intValue()))
+                                if(cl>((Integer)entry.parms[v+1]).intValue())
                                    found=true;
                                 break;
                             case 38: // +lvlge
-                                if((V.size()>1)&&(cl>=((Integer)V.elementAt(v+1)).intValue()))
+                                if(cl>=((Integer)entry.parms[v+1]).intValue())
                                    found=true;
                                 break;
                             case 39: // +lvlt
-                                if((V.size()>1)&&(cl<((Integer)V.elementAt(v+1)).intValue()))
+                                if(cl<((Integer)entry.parms[v+1]).intValue())
                                    found=true;
                                 break;
                             case 40: // +lvlle
-                                if((V.size()>1)&&(cl<=((Integer)V.elementAt(v+1)).intValue()))
+                                if(cl<=((Integer)entry.parms[v+1]).intValue())
                                    found=true;
                                 break;
                             case 41: // +lvleq
-                                if((V.size()>1)&&(cl==((Integer)V.elementAt(v+1)).intValue()))
+                                if(cl==((Integer)entry.parms[v+1]).intValue())
                                    found=true;
                                 break;
                         }
@@ -3433,9 +3397,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			case 7: // -tattoo
 				{
 					boolean found=false;
-					for(int v=1;v<V.size();v++)
-						if((mob.findTattoo((String)V.elementAt(v))!=null)
-                        ||((room!=null)&&(room.getArea().getBlurbFlag((String)V.elementAt(v))!=null)))
+					for(Object o : entry.parms)
+						if((mob.findTattoo((String)o)!=null)
+                        ||((room!=null)&&(room.getArea().getBlurbFlag((String)o)!=null)))
 						{ found=true; break;}
 
 					if(!found) return false;
@@ -3443,9 +3407,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				break;
 			case 8: // +tattoo
 				{
-					for(int v=1;v<V.size();v++)
-						if((mob.findTattoo((String)V.elementAt(v))!=null)
-                        ||((room!=null)&&(room.getArea().getBlurbFlag((String)V.elementAt(v))!=null)))
+					for(Object o : entry.parms)
+						if((mob.findTattoo((String)o)!=null)
+                        ||((room!=null)&&(room.getArea().getBlurbFlag((String)o)!=null)))
 						{ return false;}
 				}
 				break;
@@ -3454,7 +3418,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					String moodName = "NORMAL";
 					Ability A = mob.fetchEffect("Mood");
 					if((A!=null)&&(A.text().trim().length()>0)) moodName=A.text().toUpperCase().trim();
-					if(!V.contains(moodName)) return false;
+					if(!CMParms.contains(entry.parms,moodName)) return false;
 				}
 				break;
 			case 121: // +mood
@@ -3462,31 +3426,31 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					String moodName = "NORMAL";
 					Ability A = mob.fetchEffect("Mood");
 					if((A!=null)&&(A.text().trim().length()>0)) moodName=A.text().toUpperCase().trim();
-					if(V.contains(moodName)) return false;
+					if(CMParms.contains(entry.parms,moodName)) return false;
 				}
 				break;
 			case 81: // -expertise
 				{
 					boolean found=false;
-					for(int v=1;v<V.size();v++)
-						if(mob.fetchExpertise((String)V.elementAt(v))!=null)
+					for(Object o : entry.parms)
+						if(mob.fetchExpertise((String)o)!=null)
 						{ found=true; break;}
 					if(!found) return false;
 				}
 				break;
 			case 82: // +expertise
 				{
-					for(int v=1;v<V.size();v++)
-						if(mob.fetchExpertise((String)V.elementAt(v))!=null)
+					for(Object o : entry.parms)
+						if(mob.fetchExpertise((String)o)!=null)
 						{ return false;}
 				}
 				break;
             case 113: // -questwin
                 {
                     boolean found=false;
-                    for(int v=1;v<V.size();v++)
+					for(Object o : entry.parms)
                     {
-                        Quest Q=CMLib.quests().fetchQuest((String)V.elementAt(v));
+                        Quest Q=CMLib.quests().fetchQuest((String)o);
                         if((Q!=null)&&(Q.wasWinner(mob.Name())))
                         { found=true; break;}
                     }
@@ -3495,9 +3459,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 break;
             case 114: // +questwin
                 {
-                    for(int v=1;v<V.size();v++)
+					for(Object o : entry.parms)
                     {
-                        Quest Q=CMLib.quests().fetchQuest((String)V.elementAt(v));
+                        Quest Q=CMLib.quests().fetchQuest((String)o);
                         if((Q!=null)&&(Q.wasWinner(mob.Name())))
                         { return false;}
                     }
@@ -3507,10 +3471,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				{
 					boolean found=false;
 					Ability A=null;
-					for(int v=1;v<V.size();v+=2)
+					for(int v=0;v<entry.parms.length-1;v+=2)
 					{
-						A=mob.fetchAbility((String)V.elementAt(v));
-						if((A!=null)&&(A.proficiency()>=((Integer)V.elementAt(v+1)).intValue()))
+						A=mob.fetchAbility((String)entry.parms[v]);
+						if((A!=null)&&(A.proficiency()>=((Integer)entry.parms[v+1]).intValue()))
 						{ found=true; break;}
 					}
 					if(!found) return false;
@@ -3519,11 +3483,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             case 101: // -skillflag
                 {
                     Ability A=null;
-                    Object o=null;
                     boolean found=false;
-                    for(int v=1;v<V.size();v++)
+					for(Object o : entry.parms)
                     {
-                        o=V.elementAt(v);
                         for(int a=0;a<mob.numAbilities();a++)
                         {
                             A=mob.fetchAbility(a);
@@ -3538,10 +3500,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			case 84: // +skill
 				{
 					Ability A=null;
-					for(int v=1;v<V.size();v++)
+					for(int v=0;v<entry.parms.length-1;v+=2)
 					{
-						A=mob.fetchAbility((String)V.elementAt(v));
-						if((A!=null)&&(A.proficiency()>=((Integer)V.elementAt(v+1)).intValue()))
+						A=mob.fetchAbility((String)entry.parms[v]);
+						if((A!=null)&&(A.proficiency()>=((Integer)entry.parms[v+1]).intValue()))
 						{ return false;}
 					}
 				}
@@ -3549,10 +3511,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             case 102: // +skillflag
                 {
                     Ability A=null;
-                    Object o=null;
-                    for(int v=1;v<V.size();v++)
+					for(Object o : entry.parms)
                     {
-                        o=V.elementAt(v);
                         for(int a=0;a<mob.numAbilities();a++)
                         {
                             A=mob.fetchAbility(a);
@@ -3565,16 +3525,16 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			case 79: // -security
 				{
 					boolean found=false;
-					for(int v=1;v<V.size();v++)
-						if(CMSecurity.isAllowed(mob,room,(String)V.elementAt(v)))
+					for(Object o : entry.parms)
+						if(CMSecurity.isAllowed(mob,room,(String)o))
 						{ found=true; break;}
 					if(!found) return false;
 				}
 				break;
 			case 80: // +security
 				{
-					for(int v=1;v<V.size();v++)
-						if(CMSecurity.isAllowed(mob,room,(String)V.elementAt(v)))
+					for(Object o : entry.parms)
+						if(CMSecurity.isAllowed(mob,room,(String)o))
 						{ return false;}
 				}
 				break;
@@ -3582,8 +3542,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				{
 					boolean found=false;
 					String name=actual?E.Name():E.name();
-					for(int v=1;v<V.size();v++)
-						if(name.equalsIgnoreCase((String)V.elementAt(v)))
+					for(Object o : entry.parms)
+						if(name.equalsIgnoreCase((String)o))
 						{ found=true; break;}
 					if(!found) return false;
 				}
@@ -3602,7 +3562,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					Race R2=CMClass.getRace(mob.charStats().raceName());
 					if(R2!=null) raceCat=R2.racialCategory();
 				}
-				if(!V.contains(raceCat))
+				if(!CMParms.contains(entry.parms,raceCat))
 					return false;
 				break;
 			}
@@ -3611,7 +3571,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 String race=mob.baseCharStats().getMyRace().name();
                 if((!actual)&&(!mob.baseCharStats().getMyRace().name().equals(mob.charStats().raceName())))
                     race=mob.charStats().raceName();
-                if(V.contains(race)) return false;
+                if(CMParms.contains(entry.parms,race)) return false;
                 break;
             }
 			case 13: // +racecat
@@ -3622,7 +3582,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					Race R2=CMClass.getRace(mob.charStats().raceName());
 					if(R2!=null) raceCat=R2.racialCategory();
 				}
-				if(V.contains(raceCat))
+				if(CMParms.contains(entry.parms,raceCat))
 					return false;
 				break;
 			}
@@ -3632,8 +3592,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					if(clanID.length()==0)
 						return false;
 					boolean found=false;
-					for(int v=1;v<V.size();v++)
-						if(clanID.equalsIgnoreCase((String)V.elementAt(v)))
+					for(Object o : entry.parms)
+						if(clanID.equalsIgnoreCase((String)o))
 						{ found=true; break;}
 					if(!found) return false;
 				}
@@ -3641,64 +3601,60 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			case 15: // +clan
                 String clanID=(E instanceof MOB)?mob.getClanID():(E instanceof ClanItem)?((ClanItem)E).clanID():"";
 				if(clanID.length()>0)
-					for(int v=1;v<V.size();v++)
-						if(clanID.equalsIgnoreCase((String)V.elementAt(v)))
+					for(Object o : entry.parms)
+						if(clanID.equalsIgnoreCase((String)o))
 						{ return false;}
 				break;
             case 49: // +material
-                if(V.contains(RawMaterial.MATERIAL_DESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8]))
+                if(CMParms.contains(entry.parms,RawMaterial.MATERIAL_DESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8]))
                     return false;
                 break;
             case 50: // -material
-        		if(!V.contains(RawMaterial.MATERIAL_DESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8]))
+        		if(!CMParms.contains(entry.parms,RawMaterial.MATERIAL_DESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8]))
                     return false;
                 break;
             case 57: // +wornOn
-                for(int v=1;v<V.size();v++)
-                    if((item.rawProperLocationBitmap()&((Long)V.elementAt(v)).longValue())>0)
+				for(Object o : entry.parms)
+                    if((item.rawProperLocationBitmap()&((Long)o).longValue())>0)
                         return false;
                 break;
             case 58: // -wornOn
                 {
                     boolean found=false;
-                    for(int v=1;v<V.size();v++)
-                        if((item.rawProperLocationBitmap()&((Long)V.elementAt(v)).longValue())>0)
+					for(Object o : entry.parms)
+                        if((item.rawProperLocationBitmap()&((Long)o).longValue())>0)
                         { found=true; break;}
                     if(!found) return false;
                 }
                 break;
             case 69: // +disposition
             	if(P!=null)
-	            {
-	                for(int v=1;v<V.size();v++)
-	                    if((P.phyStats().disposition()&((Integer)V.elementAt(v)).intValue())>0)
+					for(Object o : entry.parms)
+	                    if((P.phyStats().disposition()&((Integer)o).intValue())>0)
 	                        return false;
-	            }
                 break;
             case 70: // -disposition
             	if(P!=null)
                 {
                     boolean found=false;
-                    for(int v=1;v<V.size();v++)
-                        if((P.phyStats().disposition()&((Integer)V.elementAt(v)).intValue())>0)
+					for(Object o : entry.parms)
+                        if((P.phyStats().disposition()&((Integer)o).intValue())>0)
                         { found=true; break;}
                     if(!found) return false;
                 }
                 break;
             case 71: // +senses
             	if(P!=null)
-	            {
-	                for(int v=1;v<V.size();v++)
-	                    if((P.phyStats().sensesMask()&((Integer)V.elementAt(v)).intValue())>0)
+					for(Object o : entry.parms)
+	                    if((P.phyStats().sensesMask()&((Integer)o).intValue())>0)
 	                        return false;
-	            }
 	            break;
             case 72: // -senses
             	if(P!=null)
                 {
                     boolean found=false;
-                    for(int v=1;v<V.size();v++)
-                        if((P.phyStats().sensesMask()&((Integer)V.elementAt(v)).intValue())>0)
+					for(Object o : entry.parms)
+                        if((P.phyStats().sensesMask()&((Integer)o).intValue())>0)
                         { found=true; break;}
                     if(!found) return false;
                 }
@@ -3706,71 +3662,71 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             case 73: // +HOUR
                 {
                     if(room!=null)
-                    for(int v=1;v<V.size();v++)
-                        if(room.getArea().getTimeObj().getTimeOfDay()==((Integer)V.elementAt(v)).intValue())
-                            return false;
+    					for(Object o : entry.parms)
+	                        if(room.getArea().getTimeObj().getTimeOfDay()==((Integer)o).intValue())
+	                            return false;
                 }
                 break;
             case 74: // -HOUR
                 {
                     boolean found=false;
                     if(room!=null)
-                    for(int v=1;v<V.size();v++)
-                        if(room.getArea().getTimeObj().getTimeOfDay()==((Integer)V.elementAt(v)).intValue())
-                        { found=true; break;}
+    					for(Object o : entry.parms)
+	                        if(room.getArea().getTimeObj().getTimeOfDay()==((Integer)o).intValue())
+	                        { found=true; break;}
                     if(!found) return false;
                 }
                 break;
             case 75: // +season
                 {
                     if(room!=null)
-                    for(int v=1;v<V.size();v++)
-                        if(room.getArea().getTimeObj().getSeasonCode()==((Integer)V.elementAt(v)).intValue())
-                            return false;
+    					for(Object o : entry.parms)
+	                        if(room.getArea().getTimeObj().getSeasonCode()==((Integer)o).intValue())
+	                            return false;
                 }
                 break;
             case 76: // -season
                 {
                     boolean found=false;
                     if(room!=null)
-                    for(int v=1;v<V.size();v++)
-                        if(room.getArea().getTimeObj().getSeasonCode()==((Integer)V.elementAt(v)).intValue())
-                        { found=true; break;}
+    					for(Object o : entry.parms)
+	                        if(room.getArea().getTimeObj().getSeasonCode()==((Integer)o).intValue())
+	                        { found=true; break;}
                     if(!found) return false;
                 }
                 break;
             case 104: // +weather
 	            {
 	                if(room!=null)
-	                for(int v=1;v<V.size();v++)
-	                    if(room.getArea().getClimateObj().weatherType(room)==((Integer)V.elementAt(v)).intValue())
-	                        return false;
+						for(Object o : entry.parms)
+		                    if(room.getArea().getClimateObj().weatherType(room)==((Integer)o).intValue())
+		                        return false;
 	            }
 	            break;
             case 105: // -weather
                 {
                     boolean found=false;
                     if(room!=null)
-                    for(int v=1;v<V.size();v++)
-                        if(room.getArea().getClimateObj().weatherType(room)==((Integer)V.elementAt(v)).intValue())
-                        { found=true; break;}
+    					for(Object o : entry.parms)
+	                        if(room.getArea().getClimateObj().weatherType(room)==((Integer)o).intValue())
+	                        { found=true; break;}
                     if(!found) return false;
                 }
                 break;
             case 77: // +month
                 {
                     if(room!=null)
-                    for(int v=1;v<V.size();v++)
-                        if(room.getArea().getTimeObj().getMonth()==((Integer)V.elementAt(v)).intValue())
-                            return false;
+    					for(Object o : entry.parms)
+	                        if(room.getArea().getTimeObj().getMonth()==((Integer)o).intValue())
+	                            return false;
                 }
                 break;
             case 78: // -month
                 {
                     boolean found=false;
                     if(room!=null)
-                    for(int v=1;v<V.size();v++)
-                        if(room.getArea().getTimeObj().getMonth()==((Integer)V.elementAt(v)).intValue())
+    					for(Object o : entry.parms)
+                        if(room.getArea().getTimeObj().getMonth()==((Integer)o).intValue())
                         { found=true; break;}
                     if(!found) return false;
                 }
@@ -3778,68 +3734,70 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             case 106: // +day
                 {
                     if(room!=null)
-                    for(int v=1;v<V.size();v++)
-                        if(room.getArea().getTimeObj().getDayOfMonth()==((Integer)V.elementAt(v)).intValue())
-                            return false;
+    					for(Object o : entry.parms)
+	                        if(room.getArea().getTimeObj().getDayOfMonth()==((Integer)o).intValue())
+	                            return false;
                 }
                 break;
             case 107: // -day
                 {
                     boolean found=false;
                     if(room!=null)
-                    for(int v=1;v<V.size();v++)
-                        if(room.getArea().getTimeObj().getDayOfMonth()==((Integer)V.elementAt(v)).intValue())
-                        { found=true; break;}
+    					for(Object o : entry.parms)
+	                        if(room.getArea().getTimeObj().getDayOfMonth()==((Integer)o).intValue())
+	                        { found=true; break;}
                     if(!found) return false;
                 }
                 break;
             case 85: // +quallvl
+            	if(entry.parms.length>1)
 	            {
-	                Ability A=CMClass.getAbility((String)V.elementAt(1));
-	                int adjustment=((Integer)V.elementAt(2)).intValue();
+	                Ability A=CMClass.getAbility((String)entry.parms[0]);
+	                int adjustment=((Integer)entry.parms[1]).intValue();
 	        		int lvl=CMLib.ableMapper().qualifyingClassLevel(mob,A);
 	        		int clvl=CMLib.ableMapper().qualifyingLevel(mob,A)+adjustment;
 	        		if(lvl<clvl) return false;
 	            }
                 break;
             case 86: // -quallvl
+            	if(entry.parms.length>1)
                 {
-                    Ability A=CMClass.getAbility((String)V.elementAt(1));
-                    int adjustment=((Integer)V.elementAt(2)).intValue();
+                    Ability A=CMClass.getAbility((String)entry.parms[0]);
+                    int adjustment=((Integer)entry.parms[1]).intValue();
             		int lvl=CMLib.ableMapper().qualifyingClassLevel(mob,A);
             		int clvl=CMLib.ableMapper().qualifyingLevel(mob,A)+adjustment;
             		if(lvl>clvl) return false;
                 }
                 break;
             case 51: // +resource
-                if(V.contains(RawMaterial.CODES.NAME(item.material())))
+                if(CMParms.contains(entry.parms,RawMaterial.CODES.NAME(item.material())))
                     return false;
                 break;
             case 52: // -resource
-                if(!V.contains(RawMaterial.CODES.NAME(item.material())))
+                if(!CMParms.contains(entry.parms,RawMaterial.CODES.NAME(item.material())))
                     return false;
                 break;
             case 53: // -JavaClass
                 {
                     boolean found=false;
-                    for(int v=1;v<V.size();v++)
-                        if(E.ID().equalsIgnoreCase((String)V.elementAt(v)))
+					for(Object o : entry.parms)
+                        if(E.ID().equalsIgnoreCase((String)o))
                         { found=true; break;}
                     if(!found) return false;
                 }
                 break;
             case 54: // +JavaClass
-                    for(int v=1;v<V.size();v++)
-                        if(E.ID().equalsIgnoreCase((String)V.elementAt(v)))
-                        { return false;}
+				for(Object o : entry.parms)
+                    if(E.ID().equalsIgnoreCase((String)o))
+                    { return false;}
                 break;
 			case 44: // -deity
 				{
 					if(mob.getWorshipCharID().length()==0)
 						return false;
 					boolean found=false;
-					for(int v=1;v<V.size();v++)
-						if(mob.getWorshipCharID().equalsIgnoreCase((String)V.elementAt(v)))
+					for(Object o : entry.parms)
+						if(mob.getWorshipCharID().equalsIgnoreCase((String)o))
 						{ found=true; break;}
 					if(!found) return false;
 				}
@@ -3847,8 +3805,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			case 45: // +deity
 				{
 					if(mob.getWorshipCharID().length()>0)
-						for(int v=1;v<V.size();v++)
-							if(mob.getWorshipCharID().equalsIgnoreCase((String)V.elementAt(v)))
+						for(Object o : entry.parms)
+							if(mob.getWorshipCharID().equalsIgnoreCase((String)o))
 							{ return false;}
 				}
 				break;
@@ -3856,12 +3814,12 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				{
 					boolean found=false;
 					if(E instanceof PhysicalAgent)
-	                    for(int v=1;v<V.size();v++)
-	                        if(((Physical)E).fetchEffect((String)V.elementAt(v))!=null)
+						for(Object o : entry.parms)
+	                        if(((Physical)E).fetchEffect((String)o)!=null)
 	                        {   found=true; break;}
                     if((!found)&&(E instanceof PhysicalAgent))
-	                    for(int v=1;v<V.size();v++)
-	                        if(((PhysicalAgent)E).fetchBehavior((String)V.elementAt(v))!=null)
+    					for(Object o : entry.parms)
+	                        if(((PhysicalAgent)E).fetchBehavior((String)o)!=null)
 	                        {   found=true; break;}
 					if(!found) return false;
 				}
@@ -3869,36 +3827,36 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			case 46: // -faction
 				{
 			    	boolean found=false;
-			    	for(int v=1;v<V.size();v++)
-			    	    if(CMLib.factions().isFactionedThisWay(mob,(String)V.elementAt(v)))
+					for(Object o : entry.parms)
+			    	    if(CMLib.factions().isFactionedThisWay(mob,(String)o))
 			    	    { found=true; break;}
 					if(!found) return false;
 				}
 				break;
 			case 47: // +faction
 				{
-			    	for(int v=1;v<V.size();v++)
-			    	    if(CMLib.factions().isFactionedThisWay(mob,(String)V.elementAt(v)))
+					for(Object o : entry.parms)
+			    	    if(CMLib.factions().isFactionedThisWay(mob,(String)o))
 			    	        return false;
 				}
 				break;
 			case 42: // +effects
 				{
 	                if(E instanceof Physical)
-		                for(int v=1;v<V.size();v++)
-		                    if(((Physical)E).fetchEffect((String)V.elementAt(v))!=null)
+						for(Object o : entry.parms)
+		                    if(((Physical)E).fetchEffect((String)o)!=null)
 		                        return false;
 	                if(E instanceof PhysicalAgent)
-		                for(int v=1;v<V.size();v++)
-		                    if(((PhysicalAgent)E).fetchBehavior((String)V.elementAt(v))!=null)
+						for(Object o : entry.parms)
+		                    if(((PhysicalAgent)E).fetchBehavior((String)o)!=null)
 		                        return false;
 				}
 				break;
 			case 16: // +name
 				{
 					String name=actual?E.Name():E.name();
-					for(int v=1;v<V.size();v++)
-                        if(name.equalsIgnoreCase((String)V.elementAt(v)))
+					for(Object o : entry.parms)
+                        if(name.equalsIgnoreCase((String)o))
 						{ return false;}
 				}
 				break;
@@ -3907,15 +3865,15 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					boolean found=false;
 					if(actual)
 					{
-						for(int v=1;v<V.size();v++)
-							if(mob.baseCharStats().getClassLevel((String)V.elementAt(v))>=0)
+						for(Object o : entry.parms)
+							if(mob.baseCharStats().getClassLevel((String)o)>=0)
 							{ found=true; break;}
 					}
 					else
 					{
-						for(int v=1;v<V.size();v++)
-							if((mob.charStats().getClassLevel((String)V.elementAt(v))>=0)
-							||(mob.charStats().displayClassName().equalsIgnoreCase((String)V.elementAt(v))))
+						for(Object o : entry.parms)
+							if((mob.charStats().getClassLevel((String)o)>=0)
+							||(mob.charStats().displayClassName().equalsIgnoreCase((String)o)))
 							{ found=true; break;}
 					}
 					if(!found) return false;
@@ -3924,191 +3882,191 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			case 18: // +anyclass
 				if(actual)
 				{
-					for(int v=1;v<V.size();v++)
-						if(mob.baseCharStats().getClassLevel((String)V.elementAt(v))>=0)
+					for(Object o : entry.parms)
+						if(mob.baseCharStats().getClassLevel((String)o)>=0)
 						{ return false;}
 				}
 				else
 				{
-					for(int v=1;v<V.size();v++)
-						if((mob.charStats().getClassLevel((String)V.elementAt(v))>=0)
-						||(mob.charStats().displayClassName().equalsIgnoreCase((String)V.elementAt(v))))
+					for(Object o : entry.parms)
+						if((mob.charStats().getClassLevel((String)o)>=0)
+						||(mob.charStats().displayClassName().equalsIgnoreCase((String)o)))
 						{ return false; }
 				}
 				break;
 			case 19: // +adjstr
-				if((V.size()>1)&&(mob.charStats().getStat(CharStats.STAT_STRENGTH)<(((Integer)V.elementAt(1)).intValue())))
+				if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_STRENGTH)<(((Integer)entry.parms[0]).intValue())))
 				   return false;
 				break;
 			case 20: // +adjint
-				if((V.size()>1)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<(((Integer)V.elementAt(1)).intValue())))
+				if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<(((Integer)entry.parms[0]).intValue())))
 				   return false;
 				break;
 			case 21: // +adjwis
-				if((V.size()>1)&&(mob.charStats().getStat(CharStats.STAT_WISDOM)<(((Integer)V.elementAt(1)).intValue())))
+				if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_WISDOM)<(((Integer)entry.parms[0]).intValue())))
 				   return false;
 				break;
 			case 22: // +adjdex
-				if((V.size()>1)&&(mob.charStats().getStat(CharStats.STAT_DEXTERITY)<(((Integer)V.elementAt(1)).intValue())))
+				if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_DEXTERITY)<(((Integer)entry.parms[0]).intValue())))
 				   return false;
 				break;
 			case 23: // -adjcha
-				if((V.size()>1)&&(mob.charStats().getStat(CharStats.STAT_CONSTITUTION)<(((Integer)V.elementAt(1)).intValue())))
+				if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_CONSTITUTION)<(((Integer)entry.parms[0]).intValue())))
 				   return false;
 				break;
 			case 24: // +adjcha
-				if((V.size()>1)&&(mob.charStats().getStat(CharStats.STAT_CHARISMA)<(((Integer)V.elementAt(1)).intValue())))
+				if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_CHARISMA)<(((Integer)entry.parms[0]).intValue())))
 				   return false;
 				break;
 			case 25: // -adjstr
-				if((V.size()>1)&&(mob.charStats().getStat(CharStats.STAT_STRENGTH)>(((Integer)V.elementAt(1)).intValue())))
+				if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_STRENGTH)>(((Integer)entry.parms[0]).intValue())))
 				   return false;
 				break;
 			case 26: // -adjint
-				if((V.size()>1)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>(((Integer)V.elementAt(1)).intValue())))
+				if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>(((Integer)entry.parms[0]).intValue())))
 				   return false;
 				break;
 			case 27: // -adjwis
-				if((V.size()>1)&&(mob.charStats().getStat(CharStats.STAT_WISDOM)>(((Integer)V.elementAt(1)).intValue())))
+				if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_WISDOM)>(((Integer)entry.parms[0]).intValue())))
 				   return false;
 				break;
 			case 28: // -adjdex
-				if((V.size()>1)&&(mob.charStats().getStat(CharStats.STAT_DEXTERITY)>(((Integer)V.elementAt(1)).intValue())))
+				if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_DEXTERITY)>(((Integer)entry.parms[0]).intValue())))
 				   return false;
 				break;
 			case 29: // -adjcon
-				if((V.size()>1)&&(mob.charStats().getStat(CharStats.STAT_CONSTITUTION)>(((Integer)V.elementAt(1)).intValue())))
+				if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_CONSTITUTION)>(((Integer)entry.parms[0]).intValue())))
 				   return false;
 				break;
 			case 30: // -adjcha
-				if((V.size()>1)&&(mob.charStats().getStat(CharStats.STAT_CHARISMA)>(((Integer)V.elementAt(1)).intValue())))
+				if((entry.parms.length>0)&&(mob.charStats().getStat(CharStats.STAT_CHARISMA)>(((Integer)entry.parms[0]).intValue())))
 				   return false;
 				break;
 			case 87: // +str
 		        base=getBaseCharStats(base,mob);
-				if((V.size()>1)&&(base.getStat(CharStats.STAT_STRENGTH)<(((Integer)V.elementAt(1)).intValue())))
+				if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_STRENGTH)<(((Integer)entry.parms[0]).intValue())))
 				   return false;
 				break;
 			case 88: // +int
 		        base=getBaseCharStats(base,mob);
-				if((V.size()>1)&&(base.getStat(CharStats.STAT_INTELLIGENCE)<(((Integer)V.elementAt(1)).intValue())))
+				if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_INTELLIGENCE)<(((Integer)entry.parms[0]).intValue())))
 				   return false;
 				break;
 			case 89: // +wis
 		        base=getBaseCharStats(base,mob);
-				if((V.size()>1)&&(base.getStat(CharStats.STAT_WISDOM)<(((Integer)V.elementAt(1)).intValue())))
+				if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_WISDOM)<(((Integer)entry.parms[0]).intValue())))
 				   return false;
 				break;
 			case 90: // +dex
 		        base=getBaseCharStats(base,mob);
-				if((V.size()>1)&&(base.getStat(CharStats.STAT_DEXTERITY)<(((Integer)V.elementAt(1)).intValue())))
+				if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_DEXTERITY)<(((Integer)entry.parms[0]).intValue())))
 				   return false;
 				break;
 			case 91: // +con
 		        base=getBaseCharStats(base,mob);
-				if((V.size()>1)&&(base.getStat(CharStats.STAT_CONSTITUTION)<(((Integer)V.elementAt(1)).intValue())))
+				if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_CONSTITUTION)<(((Integer)entry.parms[0]).intValue())))
 				   return false;
 				break;
 			case 92: // +cha
 		        base=getBaseCharStats(base,mob);
-				if((V.size()>1)&&(base.getStat(CharStats.STAT_CHARISMA)<(((Integer)V.elementAt(1)).intValue())))
+				if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_CHARISMA)<(((Integer)entry.parms[0]).intValue())))
 				   return false;
 				break;
 			case 93: // -str
 		        base=getBaseCharStats(base,mob);
-				if((V.size()>1)&&(base.getStat(CharStats.STAT_STRENGTH)>(((Integer)V.elementAt(1)).intValue())))
+				if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_STRENGTH)>(((Integer)entry.parms[0]).intValue())))
 				   return false;
 				break;
 			case 94: // -int
 		        base=getBaseCharStats(base,mob);
-				if((V.size()>1)&&(base.getStat(CharStats.STAT_INTELLIGENCE)>(((Integer)V.elementAt(1)).intValue())))
+				if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_INTELLIGENCE)>(((Integer)entry.parms[0]).intValue())))
 				   return false;
 				break;
 			case 95: // -wis
 		        base=getBaseCharStats(base,mob);
-				if((V.size()>1)&&(base.getStat(CharStats.STAT_WISDOM)>(((Integer)V.elementAt(1)).intValue())))
+				if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_WISDOM)>(((Integer)entry.parms[0]).intValue())))
 				   return false;
 				break;
 			case 96: // -dex
 		        base=getBaseCharStats(base,mob);
-				if((V.size()>1)&&(base.getStat(CharStats.STAT_DEXTERITY)>(((Integer)V.elementAt(1)).intValue())))
+				if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_DEXTERITY)>(((Integer)entry.parms[0]).intValue())))
 				   return false;
 				break;
 			case 97: // -con
 		        base=getBaseCharStats(base,mob);
-				if((V.size()>1)&&(base.getStat(CharStats.STAT_CONSTITUTION)>(((Integer)V.elementAt(1)).intValue())))
+				if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_CONSTITUTION)>(((Integer)entry.parms[0]).intValue())))
 				   return false;
 				break;
 			case 98: // -cha
 		        base=getBaseCharStats(base,mob);
-				if((V.size()>1)&&(base.getStat(CharStats.STAT_CHARISMA)>(((Integer)V.elementAt(1)).intValue())))
+				if((entry.parms.length>0)&&(base.getStat(CharStats.STAT_CHARISMA)>(((Integer)entry.parms[0]).intValue())))
 				   return false;
 				break;
 			case 122: // -chance
-				if((V.size()>1)&&(CMLib.dice().rollPercentage()<(((Integer)V.elementAt(1)).intValue())))
+				if((entry.parms.length>0)&&(CMLib.dice().rollPercentage()<(((Integer)entry.parms[0]).intValue())))
 				   return false;
 				break;
             case 55: // +able
-                if((V.size()>1)&&(P != null)&&(P.phyStats().ability()>(((Integer)V.elementAt(1)).intValue())))
+                if((entry.parms.length>0)&&(P != null)&&(P.phyStats().ability()>(((Integer)entry.parms[0]).intValue())))
                    return false;
                 break;
             case 56: // -able
-                if((V.size()>1)&&(P != null)&&(P.phyStats().ability()<(((Integer)V.elementAt(1)).intValue())))
+                if((entry.parms.length>0)&&(P != null)&&(P.phyStats().ability()<(((Integer)entry.parms[0]).intValue())))
                    return false;
                 break;
             case 61: // +weight
-                if((V.size()>1)&&(P != null)&&(P.phyStats().weight()>(((Integer)V.elementAt(1)).intValue())))
+                if((entry.parms.length>0)&&(P != null)&&(P.phyStats().weight()>(((Integer)entry.parms[0]).intValue())))
                    return false;
                 break;
             case 62: // -weight
-                if((V.size()>1)&&(P != null)&&(P.phyStats().weight()<(((Integer)V.elementAt(1)).intValue())))
+                if((entry.parms.length>0)&&(P != null)&&(P.phyStats().weight()<(((Integer)entry.parms[0]).intValue())))
                    return false;
                 break;
             case 63: // +armor
-                if((V.size()>1)&&(P != null)&&(P.phyStats().armor()>(((Integer)V.elementAt(1)).intValue())))
+                if((entry.parms.length>0)&&(P != null)&&(P.phyStats().armor()>(((Integer)entry.parms[0]).intValue())))
                    return false;
                 break;
             case 64: // -armor
-                if((V.size()>1)&&(P != null)&&(P.phyStats().armor()<(((Integer)V.elementAt(1)).intValue())))
+                if((entry.parms.length>0)&&(P != null)&&(P.phyStats().armor()<(((Integer)entry.parms[0]).intValue())))
                    return false;
                 break;
             case 65: // +damage
-                if((V.size()>1)&&(P != null)&&(P.phyStats().damage()>(((Integer)V.elementAt(1)).intValue())))
+                if((entry.parms.length>0)&&(P != null)&&(P.phyStats().damage()>(((Integer)entry.parms[0]).intValue())))
                    return false;
                 break;
             case 66: // -damage
-                if((V.size()>1)&&(P != null)&&(P.phyStats().damage()<(((Integer)V.elementAt(1)).intValue())))
+                if((entry.parms.length>0)&&(P != null)&&(P.phyStats().damage()<(((Integer)entry.parms[0]).intValue())))
                    return false;
                 break;
             case 67: // +attack
-                if((V.size()>1)&&(P != null)&&(P.phyStats().attackAdjustment()>(((Integer)V.elementAt(1)).intValue())))
+                if((entry.parms.length>0)&&(P != null)&&(P.phyStats().attackAdjustment()>(((Integer)entry.parms[0]).intValue())))
                    return false;
                 break;
             case 68: // -attack
-                if((V.size()>1)&&(P != null)&&(P.phyStats().attackAdjustment()<(((Integer)V.elementAt(1)).intValue())))
+                if((entry.parms.length>0)&&(P != null)&&(P.phyStats().attackAdjustment()<(((Integer)entry.parms[0]).intValue())))
                    return false;
                 break;
             case 59: // +value
                 if(E instanceof MOB)
                 {
-                    if((V.size()>1)&&(CMLib.beanCounter().getTotalAbsoluteValueAllCurrencies(mob)>(((Integer)V.elementAt(1)).intValue())))
+                    if((entry.parms.length>0)&&(CMLib.beanCounter().getTotalAbsoluteValueAllCurrencies(mob)>(((Integer)entry.parms[0]).intValue())))
                        return false;
                 }
                 else
                 {
-                    if((V.size()>1)&&(item.baseGoldValue()>(((Integer)V.elementAt(1)).intValue())))
+                    if((entry.parms.length>0)&&(item.baseGoldValue()>(((Integer)entry.parms[0]).intValue())))
                         return false;
                 }
                 break;
             case 60: // -value
                 if(E instanceof MOB)
                 {
-                    if((V.size()>1)&&(CMLib.beanCounter().getTotalAbsoluteValueAllCurrencies(mob)<(((Integer)V.elementAt(1)).intValue())))
+                    if((entry.parms.length>0)&&(CMLib.beanCounter().getTotalAbsoluteValueAllCurrencies(mob)<(((Integer)entry.parms[0]).intValue())))
                        return false;
                 }
                 else
                 {
-                    if((V.size()>1)&&(item.baseGoldValue()<(((Integer)V.elementAt(1)).intValue())))
+                    if((entry.parms.length>0)&&(item.baseGoldValue()<(((Integer)entry.parms[0]).intValue())))
                         return false;
                 }
                 break;
@@ -4116,8 +4074,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				{
 					boolean found=false;
                     if(room!=null)
-						for(int v=1;v<V.size();v++)
-							if(room.getArea().Name().equalsIgnoreCase((String)V.elementAt(v)))
+    					for(Object o : entry.parms)
+							if(room.getArea().Name().equalsIgnoreCase((String)o))
 							{ found=true; break;}
 					if(!found) return false;
 				}
@@ -4125,8 +4083,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			case 32: // +area
             {
 				if(room!=null)
-					for(int v=1;v<V.size();v++)
-						if(room.getArea().Name().equalsIgnoreCase((String)V.elementAt(v)))
+					for(Object o : entry.parms)
+						if(room.getArea().Name().equalsIgnoreCase((String)o))
 						{ return false;}
                 break;
             }
@@ -4135,8 +4093,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 boolean found=false;
                 Area A=CMLib.map().getStartArea(E);
                 if(A!=null)
-                    for(int v=1;v<V.size();v++)
-                        if(A.Name().equalsIgnoreCase((String)V.elementAt(v)))
+                    for(Object o : entry.parms)
+                        if(A.Name().equalsIgnoreCase((String)o))
                         { found=true; break;}
                 if(!found) return false;
             }
@@ -4145,16 +4103,16 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             {
                 Area A=CMLib.map().getStartArea(E);
                 if(A!=null)
-                    for(int v=1;v<V.size();v++)
-                        if(A.Name().equalsIgnoreCase((String)V.elementAt(v)))
+                    for(Object o : entry.parms)
+                        if(A.Name().equalsIgnoreCase((String)o))
                         { return false;}
                 break;
             }
 			case 33: // -item
 				{
 					boolean found=false;
-					for(int v=1;v<V.size();v++)
-						if(mob.findItem((String)V.elementAt(v))!=null)
+                    for(Object o : entry.parms)
+						if(mob.findItem((String)o)!=null)
 						{ found=true; break;}
 					if(!found) return false;
 				}
@@ -4163,9 +4121,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 if(E instanceof MOB)
                 {
                     boolean found=false;
-                    for(int v=1;v<V.size();v++)
+                    for(Object o : entry.parms)
                     {
-                        Item I=mob.findItem((String)V.elementAt(v));
+                        Item I=mob.findItem((String)o);
                         if((I!=null)&&(!I.amWearingAt(Wearable.IN_INVENTORY)))
                         { found=true; break;}
                     }
@@ -4177,55 +4135,55 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         return false;
                 break;
 			case 34: // +class
-				if(V.contains(actual?mob.baseCharStats().getCurrentClass().name():mob.charStats().displayClassName()))
+				if(CMParms.contains(entry.parms,actual?mob.baseCharStats().getCurrentClass().name():mob.charStats().displayClassName()))
 					return false;
 				break;
 			case 35: // +alignment
-				if(V.contains(CMLib.flags().getAlignmentName(mob)))
+				if(CMParms.contains(entry.parms,CMLib.flags().getAlignmentName(mob)))
 					return false;
 				break;
 			case 36: // +gender
 		        base=getBaseCharStats(base,mob);
-				if(V.contains(actual?(""+((char)base.getStat(CharStats.STAT_GENDER))):(""+Character.toUpperCase(mob.charStats().genderName().charAt(0)))))
+				if(CMParms.contains(entry.parms,actual?(""+((char)base.getStat(CharStats.STAT_GENDER))):(""+Character.toUpperCase(mob.charStats().genderName().charAt(0)))))
 					return false;
 				break;
 			case 37: // +lvlgr
-				if((V.size()>1)&&(P!=null)&&((actual?P.basePhyStats().level():P.phyStats().level())>((Integer)V.elementAt(1)).intValue()))
+				if((entry.parms.length>0)&&(P!=null)&&((actual?P.basePhyStats().level():P.phyStats().level())>((Integer)entry.parms[0]).intValue()))
 				   return false;
 				break;
 			case 38: // +lvlge
-				if((V.size()>1)&&(P!=null)&&((actual?P.basePhyStats().level():P.phyStats().level())>=((Integer)V.elementAt(1)).intValue()))
+				if((entry.parms.length>0)&&(P!=null)&&((actual?P.basePhyStats().level():P.phyStats().level())>=((Integer)entry.parms[0]).intValue()))
 				   return false;
 				break;
 			case 39: // +lvlt
-				if((V.size()>1)&&(P!=null)&&((actual?P.basePhyStats().level():P.phyStats().level())<((Integer)V.elementAt(1)).intValue()))
+				if((entry.parms.length>0)&&(P!=null)&&((actual?P.basePhyStats().level():P.phyStats().level())<((Integer)entry.parms[0]).intValue()))
 				   return false;
 				break;
 			case 40: // +lvlle
-				if((V.size()>1)&&(P!=null)&&((actual?P.basePhyStats().level():P.phyStats().level())<=((Integer)V.elementAt(1)).intValue()))
+				if((entry.parms.length>0)&&(P!=null)&&((actual?P.basePhyStats().level():P.phyStats().level())<=((Integer)entry.parms[0]).intValue()))
 				   return false;
 				break;
 			case 41: // +lvleq
-				if((V.size()>1)&&(P!=null)&&((actual?P.basePhyStats().level():P.phyStats().level())==((Integer)V.elementAt(1)).intValue()))
+				if((entry.parms.length>0)&&(P!=null)&&((actual?P.basePhyStats().level():P.phyStats().level())==((Integer)entry.parms[0]).intValue()))
 				   return false;
 				break;
 			case 116: // +groupsize
-				if((V.size()>1)&&(mob.getGroupMembers(new HashSet(1)).size()<(((Integer)V.elementAt(1)).intValue())))
+				if((entry.parms.length>0)&&(mob.getGroupMembers(new HashSet(1)).size()<(((Integer)entry.parms[0]).intValue())))
 				   return false;
 				break;
 			case 115: // -groupsize
-				if((V.size()>1)&&(mob.getGroupMembers(new HashSet(1)).size()>(((Integer)V.elementAt(1)).intValue())))
+				if((entry.parms.length>0)&&(mob.getGroupMembers(new HashSet(1)).size()>(((Integer)entry.parms[0]).intValue())))
 				   return false;
 				break;
 			case 118: // -if
 				{
 					boolean oneIsOK = false;
 			        if(E instanceof PhysicalAgent)
-						for(int v=1;v<V.size();v+=3)
+						for(int v=0;v<entry.parms.length-2;v+=3)
 						{
-							ScriptingEngine SE = (ScriptingEngine)V.elementAt(v);
-							String[][] EVAL = (String[][])V.elementAt(v+1);
-							Object[] tmp = (Object[])V.elementAt(v+2);
+							ScriptingEngine SE = (ScriptingEngine)entry.parms[v];
+							String[][] EVAL = (String[][])entry.parms[v+1];
+							Object[] tmp = (Object[])entry.parms[v+2];
 							MOB M = SE.getMakeMOB(E);
 					        Item defaultItem=(E instanceof Item)?(Item)E:null;
 							if(SE.eval((PhysicalAgent)E, M, null,M, defaultItem, null, "", tmp, EVAL, 0))
@@ -4240,11 +4198,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			case 119: // +if
 		        {
 		        	if(E instanceof PhysicalAgent)
-						for(int v=1;v<V.size();v+=3)
+						for(int v=0;v<entry.parms.length-2;v+=3)
 						{
-							ScriptingEngine SE = (ScriptingEngine)V.elementAt(v);
-							String[][] EVAL = (String[][])V.elementAt(v+1);
-							Object[] tmp = (Object[])V.elementAt(v+2);
+							ScriptingEngine SE = (ScriptingEngine)entry.parms[v];
+							String[][] EVAL = (String[][])entry.parms[v+1];
+							Object[] tmp = (Object[])entry.parms[v+2];
 							MOB M = SE.getMakeMOB(E);
 					        Item defaultItem=(E instanceof Item)?(Item)E:null;
 					        if(E instanceof PhysicalAgent)
@@ -4260,19 +4218,17 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	}
 
     public boolean maskCheck(String text, PlayerLibrary.ThinPlayer E){ return maskCheck(preCompiled(text),E);}
-	public boolean maskCheck(Vector cset, PlayerLibrary.ThinPlayer E)
+	public boolean maskCheck(CompiledZapperMask cset, PlayerLibrary.ThinPlayer E)
 	{
 		if(E==null) return true;
-		if((cset==null)||(cset.size()<2)) return true;
+		if((cset==null)||(cset.empty)||(cset.entries.length<1)) return true;
         getMaskCodes();
         //boolean[] flags=(boolean[])cset.firstElement();
-		for(int c=1;c<cset.size();c++)
+		for(CompiledZapperMaskEntry entry : cset.entries)
 		{
-			Vector V=(Vector)cset.elementAt(c);
             try
             {
-			if(V.size()>0)
-			switch(((Integer)V.firstElement()).intValue())
+			switch(entry.maskType)
 			{
             case 108: // +sysop
                 if(CMSecurity.isASysOp(E))
@@ -4299,28 +4255,28 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			case 0: // -class
 			{
 				CharClass C=CMClass.getCharClass(E.charClass);
-				if((C==null)||(!V.contains(C.name())))
+				if((C==null)||(!CMParms.contains(entry.parms,C.name())))
 					return false;
 				break;
 			}
 			case 1: // -baseclass
 			{
 				CharClass C=CMClass.getCharClass(E.charClass);
-				if((C==null)||(!V.contains(C.baseClass())))
+				if((C==null)||(!CMParms.contains(entry.parms,C.baseClass())))
 					return false;
 				break;
 			}
 			case 117: // +baseclass
 			{
 				CharClass C=CMClass.getCharClass(E.charClass);
-				if((C!=null)&&(V.contains(C.baseClass())))
+				if((C!=null)&&(CMParms.contains(entry.parms,C.baseClass())))
 					return false;
 				break;
 			}
 			case 2: // -race
 			{
 				Race R=CMClass.getRace(E.race); 
-				if((R==null)||(!V.contains(R.name())))
+				if((R==null)||(!CMParms.contains(entry.parms,R.name())))
 					return false;
 				break;
 			}
@@ -4328,28 +4284,27 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				{
 					int level=E.level;
 					boolean found=false;
-					for(int v=1;v<V.size();v+=2)
-						if((v+1)<V.size())
-						switch(((Integer)V.elementAt(v)).intValue())
+					for(int v=0;v<entry.parms.length-1;v+=2)
+						switch(((Integer)entry.parms[v]).intValue())
 						{
 							case 37: // +lvlgr
-								if(level>((Integer)V.elementAt(v+1)).intValue())
+								if(level>((Integer)entry.parms[v+1]).intValue())
 								   found=true;
 								break;
 							case 38: // +lvlge
-								if(level>=((Integer)V.elementAt(v+1)).intValue())
+								if(level>=((Integer)entry.parms[v+1]).intValue())
 								   found=true;
 								break;
 							case 39: // +lvlt
-								if(level<((Integer)V.elementAt(v+1)).intValue())
+								if(level<((Integer)entry.parms[v+1]).intValue())
 								   found=true;
 								break;
 							case 40: // +lvlle
-								if(level<=((Integer)V.elementAt(v+1)).intValue())
+								if(level<=((Integer)entry.parms[v+1]).intValue())
 								   found=true;
 								break;
 							case 41: // +lvleq
-								if(level==((Integer)V.elementAt(v+1)).intValue())
+								if(level==((Integer)entry.parms[v+1]).intValue())
 								   found=true;
 								break;
 						}
@@ -4359,9 +4314,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	            case 113: // -questwin
 	            {
 	                boolean found=false;
-	                for(int v=1;v<V.size();v++)
+	                for(Object o : entry.parms)
 	                {
-	                    Quest Q=CMLib.quests().fetchQuest((String)V.elementAt(v));
+	                    Quest Q=CMLib.quests().fetchQuest((String)o);
 	                    if((Q!=null)&&(Q.wasWinner(E.name)))
 	                    { found=true; break;}
 	                }
@@ -4370,9 +4325,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	            break;
 	        case 114: // +questwin
             {
-                for(int v=1;v<V.size();v++)
+                for(Object o : entry.parms)
                 {
-                    Quest Q=CMLib.quests().fetchQuest((String)V.elementAt(v));
+                    Quest Q=CMLib.quests().fetchQuest((String)o);
                     if((Q!=null)&&(Q.wasWinner(E.name)))
                     { return false;}
                 }
@@ -4382,8 +4337,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				{
 					boolean found=false;
 					String name=E.name;
-					for(int v=1;v<V.size();v++)
-						if(name.equalsIgnoreCase((String)V.elementAt(v)))
+					for(Object o : entry.parms)
+						if(name.equalsIgnoreCase((String)o))
 						{ found=true; break;}
 					if(!found) return false;
 				}
@@ -4393,43 +4348,43 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			case 12: // -racecat
 			{
 				Race R=CMClass.getRace(E.race); 
-				if((R==null)||(!V.contains(R.racialCategory())))
+				if((R==null)||(!CMParms.contains(entry.parms,R.racialCategory())))
 					return false;
 				break;
 			}
             case 112: // +race
             {
 				Race R=CMClass.getRace(E.race); 
-                if((R!=null)&&(V.contains(R.name())))
+                if((R!=null)&&(CMParms.contains(entry.parms,R.name())))
                 	return false;
                 break;
             }
 			case 13: // +racecat
 			{
 				Race R=CMClass.getRace(E.race); 
-                if((R!=null)&&(V.contains(R.racialCategory())))
+                if((R!=null)&&(CMParms.contains(entry.parms,R.racialCategory())))
 					return false;
 				break;
 			}
             case 53: // -JavaClass
                 {
                     boolean found=false;
-                    for(int v=1;v<V.size();v++)
-                        if("StdMOB".equalsIgnoreCase((String)V.elementAt(v)))
+                    for(Object o : entry.parms)
+                        if("StdMOB".equalsIgnoreCase((String)o))
                         { found=true; break;}
                     if(!found) return false;
                 }
                 break;
             case 54: // +JavaClass
-                    for(int v=1;v<V.size();v++)
-                        if("StdMOB".equalsIgnoreCase((String)V.elementAt(v)))
+                    for(Object o : entry.parms)
+                        if("StdMOB".equalsIgnoreCase((String)o))
                         { return false;}
                 break;
 			case 16: // +name
 				{
 					String name=E.name;
-					for(int v=1;v<V.size();v++)
-                        if(name.equalsIgnoreCase((String)V.elementAt(v)))
+					for(Object o : entry.parms)
+                        if(name.equalsIgnoreCase((String)o))
 						{ return false;}
 				}
 				break;
@@ -4438,8 +4393,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					boolean found=false;
 					CharClass C=CMClass.getCharClass(E.charClass);
 					if(C!=null)
-					for(int v=1;v<V.size();v++)
-						if(C.name().equalsIgnoreCase((String)V.elementAt(v)))
+					for(Object o : entry.parms)
+						if(C.name().equalsIgnoreCase((String)o))
 						{ found=true; break;}
 					if(!found) return false;
 				}
@@ -4448,8 +4403,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			{
 				CharClass C=CMClass.getCharClass(E.charClass);
 				if(C!=null)
-					for(int v=1;v<V.size();v++)
-						if(C.name().equalsIgnoreCase((String)V.elementAt(v)))
+					for(Object o : entry.parms)
+						if(C.name().equalsIgnoreCase((String)o))
 						{ return false; }
 				break;
 			}
@@ -4550,34 +4505,34 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			case 119: // +if
 				return false;
 			case 37: // +lvlgr
-				if((V.size()>1)&&((E.level)>((Integer)V.elementAt(1)).intValue()))
+				if((entry.parms.length>0)&&((E.level)>((Integer)entry.parms[0]).intValue()))
 				   return false;
 				break;
 			case 38: // +lvlge
-				if((V.size()>1)&&((E.level)>=((Integer)V.elementAt(1)).intValue()))
+				if((entry.parms.length>0)&&((E.level)>=((Integer)entry.parms[0]).intValue()))
 				   return false;
 				break;
 			case 39: // +lvlt
-				if((V.size()>1)&&((E.level)<((Integer)V.elementAt(1)).intValue()))
+				if((entry.parms.length>0)&&((E.level)<((Integer)entry.parms[0]).intValue()))
 				   return false;
 				break;
 			case 40: // +lvlle
-				if((V.size()>1)&&((E.level)<=((Integer)V.elementAt(1)).intValue()))
+				if((entry.parms.length>0)&&((E.level)<=((Integer)entry.parms[0]).intValue()))
 				   return false;
 				break;
 			case 41: // +lvleq
-				if((V.size()>1)&&((E.level)==((Integer)V.elementAt(1)).intValue()))
+				if((entry.parms.length>0)&&((E.level)==((Integer)entry.parms[0]).intValue()))
 				   return false;
 				break;
 			case 122: // -chance
-				if((V.size()>1)&&(CMLib.dice().rollPercentage()<(((Integer)V.elementAt(1)).intValue())))
+				if((entry.parms.length>0)&&(CMLib.dice().rollPercentage()<(((Integer)entry.parms[0]).intValue())))
 				   return false;
 				break;
 			case 34: // +class
 			{
 				CharClass C=CMClass.getCharClass(E.charClass);
 				if(C!=null)
-				if(V.contains(C.name()))
+				if(CMParms.contains(entry.parms,C.name()))
 					return false;
 				break;
 			}

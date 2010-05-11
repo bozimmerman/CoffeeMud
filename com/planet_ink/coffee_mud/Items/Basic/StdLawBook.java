@@ -583,7 +583,7 @@ public class StdLawBook extends StdItem
 					if(newValue!=oldLaw)
 					{
 						if(newValue!=null) 
-							theLaw.otherBits().add(x-1,newValue);
+							theLaw.otherBits().set(x-1,newValue);
 						else
 						{
 							theLaw.otherCrimes().remove(x-1);
@@ -680,7 +680,7 @@ public class StdLawBook extends StdItem
 					if(newValue!=oldLaw)
 					{
 						if(newValue!=null) 
-							theLaw.bannedBits().add(x-1,newValue);
+							theLaw.bannedBits().set(x-1,newValue);
 						else
 						{
 							theLaw.bannedSubstances().remove(x-1);

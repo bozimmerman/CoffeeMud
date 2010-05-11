@@ -42,7 +42,7 @@ public interface EnglishParsing extends CMLibrary
     public String stripPunctuation(String str);
     public String insertUnColoredAdjective(String str, String adjective);
     public String startWithAorAn(String str);
-    public CMObject findCommand(MOB mob, Vector commands);
+    public CMObject findCommand(MOB mob, List<String> commands);
     public boolean evokedBy(Ability thisAbility, String thisWord);
     public boolean evokedBy(Ability thisAbility, String thisWord, String secondWord);
     public String getAnEvokeWord(MOB mob, String word);

@@ -92,7 +92,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
         if(P==null) return false;
         if(autoTitles==null) reloadAutoTitles();
         String title=null;
-        Vector mask=null;
+        MaskingLibrary.CompiledZapperMask mask=null;
         int pdex=0;
         List<String> ptV=P.getTitles();
         boolean somethingDone=false;
@@ -100,7 +100,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
         {
 	        for(int t=0;t<autoTitles.size();t++)
 	        {
-	            mask=(Vector)autoTitles.elementAt(t,3);
+	            mask=(MaskingLibrary.CompiledZapperMask)autoTitles.elementAt(t,3);
 	            title=(String)autoTitles.elementAt(t,1);
 	            pdex=ptV.indexOf(title);
 	            if(pdex<0)

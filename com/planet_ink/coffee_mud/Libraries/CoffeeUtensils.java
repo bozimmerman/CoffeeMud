@@ -39,7 +39,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 {
     public String ID(){return "CoffeeUtensils";}
 	
-	public String niceCommaList(List<Object> V, boolean andTOrF)
+	public String niceCommaList(List<?> V, boolean andTOrF)
 	{
 		String id="";
 		for(int v=0;v<V.size();v++)
@@ -590,7 +590,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
         {
             String s=((String)lootPolicy.elementAt(p)).toUpperCase().trim();
             if(s.length()==0) continue;
-            Vector compiledMask=null;
+            MaskingLibrary.CompiledZapperMask compiledMask=null;
             int maskDex=s.indexOf("MASK=");
             if(maskDex>=0)
             {
@@ -598,7 +598,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
                 compiledMask=CMLib.masking().maskCompile(((String)lootPolicy.elementAt(p)).substring(maskDex+5).trim());
             }
             else
-                compiledMask=new Vector();
+                compiledMask=MaskingLibrary.CompiledZapperMask.EMPTY;
             Vector parsed=CMParms.parse(s);
             int pct=100;
             for(int x=0;x<parsed.size();x++)
@@ -691,7 +691,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
         for(int d=0;d<policies.size();d++)
         {
             if((((Vector)policies.elementAt(d,3)).size()>0)
-            &&(!CMLib.masking().maskCheck((Vector)policies.elementAt(d,3),I,true)))
+            &&(!CMLib.masking().maskCheck((MaskingLibrary.CompiledZapperMask)policies.elementAt(d,3),I,true)))
                 continue;
             if(CMLib.dice().rollPercentage()>((Integer)policies.elementAt(d,1)).intValue())
                 continue;

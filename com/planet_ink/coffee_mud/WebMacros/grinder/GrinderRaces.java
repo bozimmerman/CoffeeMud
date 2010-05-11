@@ -133,7 +133,7 @@ public class GrinderRaces
     {
         if(items==null) items=new Vector();
         Vector classes=new Vector();
-        Vector itemlist=null;
+        List<Item> itemlist=null;
         if(httpReq.isRequestParameter(c+"ITEM1"))
         {
             itemlist=RoomData.items;

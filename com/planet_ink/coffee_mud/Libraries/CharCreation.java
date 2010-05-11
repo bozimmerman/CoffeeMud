@@ -267,12 +267,12 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         return false;
     }
 
-    private void executeScript(MOB mob, Vector scripts) 
+    private void executeScript(MOB mob, List<String> scripts) 
     {
         if(scripts==null) return;
         for(int s=0;s<scripts.size();s++) 
         {
-            String script=(String)scripts.elementAt(s);
+            String script=(String)scripts.get(s);
             ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
             S.setSavable(false);
             S.setVarScope("*");
@@ -287,9 +287,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         }
     }
 
-    private Hashtable getLoginScripts()
+    private Map<String,List<String>> getLoginScripts()
     {
-        Hashtable extraScripts=new Hashtable();
+        Hashtable<String,List<String>> extraScripts=new Hashtable<String,List<String>>();
         final String[] VALID_SCRIPT_CODES={"PASSWORD","EMAIL","ANSI","THEME","RACE","GENDER","STATS","CLASS","FACTIONS","END"};                    
         Vector extras=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_CHARCREATIONSCRIPTS),true);
         for(int e=0;e<extras.size();e++) {
@@ -312,9 +312,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 }
                 s=s.substring(x+1);
             }
-            Vector V=(Vector)extraScripts.get(code);
+            List<String> V=extraScripts.get(code);
             if(V==null){ V=new Vector(); extraScripts.put(code,V);}
-            V.addElement(s.trim());
+            V.add(s.trim());
         }
         return extraScripts;
     }
@@ -728,7 +728,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     public LoginResult createCharacter(PlayerAccount acct, String login, Session session)
         throws java.io.IOException
     {
-    	Hashtable extraScripts = getLoginScripts();
+    	Map<String,List<String>> extraScripts = getLoginScripts();
         
         login=CMStrings.capitalizeAndLower(login.trim());
         
@@ -760,7 +760,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	        if((acct==null)||(acct.password().length()==0))
 	        {
 		        mob.playerStats().setPassword(password);
-		        executeScript(mob,(Vector)extraScripts.get("PASSWORD"));
+		        executeScript(mob,extraScripts.get("PASSWORD"));
 	        }
 	        
 	        if((acct!=null)&&(acct.getEmail().length()>0))
@@ -785,7 +785,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	        }
 	        mob.playerStats().setAccount(acct);
 	        Log.sysOut("FrontDoor","Creating user: "+mob.Name());
-	        executeScript(mob,(Vector)extraScripts.get("EMAIL"));
+	        executeScript(mob,extraScripts.get("EMAIL"));
 	
 	        mob.setBitmap(MOB.ATT_AUTOEXITS|MOB.ATT_AUTOWEATHER);
 	        if(acct!=null)

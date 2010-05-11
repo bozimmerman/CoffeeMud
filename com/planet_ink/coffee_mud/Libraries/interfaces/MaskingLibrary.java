@@ -42,27 +42,35 @@ public interface MaskingLibrary extends CMLibrary
 	public Vector getAbilityEduReqs(String text);
     public String maskDesc(String text);
 	public String maskDesc(String text, boolean skipFirstWord);
-	public Vector maskCompile(String text);
-    public boolean maskCheck(Vector cset, Environmental E, boolean actual);
+	public CompiledZapperMask maskCompile(String text);
+    public boolean maskCheck(CompiledZapperMask cset, Environmental E, boolean actual);
     public boolean maskCheck(String text, Environmental E, boolean actual);
-	public boolean maskCheck(Vector cset, PlayerLibrary.ThinPlayer E);
+	public boolean maskCheck(CompiledZapperMask cset, PlayerLibrary.ThinPlayer E);
     public boolean maskCheck(String text, PlayerLibrary.ThinPlayer E);
     public boolean syntaxCheck(String text, Vector errorSink);
     public int minMaskLevel(String text, int minMinLevel);
 
     public static class CompiledZapperMaskEntry
     {
-    	protected int maskType;
-    	protected Object[] parms;
+    	public int maskType;
+    	public Object[] parms;
     	public CompiledZapperMaskEntry(int type, Object[] parms)
     	{	maskType=type;this.parms=parms;}
     }
     
     public static class CompiledZapperMask
     {
-    	protected CompiledZapperMaskEntry[] entries;
-    	public CompiledZapperMask(CompiledZapperMaskEntry[] entries)
-    	{	this.entries=entries;}
+    	public boolean[] flags;
+    	public boolean empty=false;
+    	public CompiledZapperMaskEntry[] entries;
+    	public CompiledZapperMask(boolean[] flags, CompiledZapperMaskEntry[] entries)
+    	{	this.flags=flags; this.entries=entries;}
+    	public static CompiledZapperMask EMPTY;
+    	static
+    	{
+    		EMPTY=new CompiledZapperMask(new boolean[2],new CompiledZapperMaskEntry[0]);
+    		EMPTY.empty=true;
+    	}
     }
     
     public final String DEFAULT_MASK_HELP =

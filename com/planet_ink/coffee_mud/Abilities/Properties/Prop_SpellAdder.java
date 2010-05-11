@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -45,7 +46,7 @@ public class Prop_SpellAdder extends Property
     protected boolean uninvocable=true;
     protected int level=-1;
 	protected Vector spellV=null;
-    protected Vector compiledMask=null;
+    protected MaskingLibrary.CompiledZapperMask compiledMask=null;
     protected Vector unrevocableSpells = null;
     
     public void finalize()
@@ -233,7 +234,6 @@ public class Prop_SpellAdder extends Property
         if((target==null)
         ||(V.size()==0)
         ||((compiledMask!=null)
-            &&(compiledMask.size()>0)
             &&(!CMLib.masking().maskCheck(compiledMask,target,true))))
                 return false;
 		Vector VTOO=convertToV2(V,target);

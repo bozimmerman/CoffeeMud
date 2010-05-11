@@ -715,7 +715,7 @@ public class GrinderMobs
 							Environmental O=null;
 							for(int m=0;m<RoomData.mobs.size();m++)
 							{
-								MOB M2=(MOB)RoomData.mobs.elementAt(m);
+								MOB M2=(MOB)RoomData.mobs.get(m);
 								if(MATCHING.equals(""+M2))
 								{	O=M2;	break;	}
 							}

@@ -62,9 +62,13 @@ public class StdCommand implements Command
         return true;
     }
 
+	public Object execute(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	{
+		return null;
+	}
 	
-    public double actionsCost(MOB mob, Vector cmds){return 0.0;}
-    public double combatActionsCost(MOB mob, Vector cmds){return 0.0;}
+    public double actionsCost(MOB mob, List<String> cmds){return 0.0;}
+    public double combatActionsCost(MOB mob, List<String> cmds){return 0.0;}
 	public boolean canBeOrdered(){return true;}
 	public boolean securityCheck(MOB mob){return true;}
 	public boolean staffCommand(){return false;}

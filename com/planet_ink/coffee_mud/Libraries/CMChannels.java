@@ -80,8 +80,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	public List<CMMsg> getChannelQue(int i)
 	{
 		if((i>=0)&&(i<channelQue.size()))
-			return (Vector)channelQue.elementAt(i);
-		return new Vector();
+			return (List)channelQue.elementAt(i);
+		return new Vector<CMMsg>();
 	}
 	
     public boolean mayReadThisChannel(MOB sender, boolean areaReq, MOB M, int i)

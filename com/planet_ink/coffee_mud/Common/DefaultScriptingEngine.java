@@ -355,13 +355,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
     {
         if(mob!=null)
         {
-            Vector<DVector> scripts=getScripts();
+        	List<DVector> scripts=getScripts();
             if(!mob.amDead()) lastKnownLocation=mob.location();
             String trigger="";
             String[] tt=null;
             for(int v=0;v<scripts.size();v++)
             {
-                DVector script=(DVector)scripts.elementAt(v);
+                DVector script=(DVector)scripts.get(v);
                 if(script.size()>0)
                 {
                     trigger=((String)script.elementAt(0,1)).toUpperCase().trim();
@@ -729,10 +729,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
         }
     }
 
-    protected Vector loadMobsFromFile(Environmental scripted, String filename)
+    protected List<PhysicalAgent> loadMobsFromFile(Environmental scripted, String filename)
     {
         filename=filename.trim();
-        Vector monsters=(Vector)Resources.getResource("RANDOMMONSTERS-"+filename);
+        List monsters=(List)Resources.getResource("RANDOMMONSTERS-"+filename);
         if(monsters!=null) return monsters;
         StringBuffer buf=getResourceFileData(filename);
         String thangName="null";
@@ -768,10 +768,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
         return monsters;
     }
 
-    protected Vector loadItemsFromFile(Environmental scripted, String filename)
+    protected List<PhysicalAgent> loadItemsFromFile(Environmental scripted, String filename)
     {
         filename=filename.trim();
-        Vector items=(Vector)Resources.getResource("RANDOMITEMS-"+filename);
+        List items=(List)Resources.getResource("RANDOMITEMS-"+filename);
         if(items!=null) return items;
         StringBuffer buf=getResourceFileData(filename);
         String thangName="null";
@@ -807,7 +807,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         return items;
     }
 
-    protected Environmental findSomethingCalledThis(String thisName, MOB meMOB, Room imHere, Vector OBJS, boolean mob)
+    protected Environmental findSomethingCalledThis(String thisName, MOB meMOB, Room imHere, List<Environmental> OBJS, boolean mob)
     {
         if(thisName.length()==0) return null;
         Environmental thing=null;
@@ -815,7 +815,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         if(thisName.toUpperCase().trim().startsWith("FROMFILE "))
         {
             try{
-                Vector V=null;
+            	List V=null;
                 if(mob)
                     V=loadMobsFromFile(null,CMParms.getCleanBit(thisName,1));
                 else
@@ -829,7 +829,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if(name.equalsIgnoreCase("ANY"))
                     {
                         if(V.size()>0)
-                            areaThing=(Environmental)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
+                            areaThing=(Environmental)V.get(CMLib.dice().roll(1,V.size(),-1));
                     }
                     else
                     {
@@ -897,12 +897,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }catch(NoSuchElementException nse){}
         }
         if(areaThing!=null)
-            OBJS.addElement(areaThing);
+            OBJS.add(areaThing);
         else
         if(thing!=null)
-            OBJS.addElement(thing);
+            OBJS.add(thing);
         if(OBJS.size()>0)
-            return (Environmental)OBJS.firstElement();
+            return (Environmental)OBJS.get(0);
         return null;
     }
 
@@ -937,9 +937,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(O instanceof PhysicalAgent)
                     return (PhysicalAgent)O;
                 else
-                if((O instanceof Vector)&&(str.length()>3)&&(str.charAt(2)=='.'))
+                if((O instanceof List)&&(str.length()>3)&&(str.charAt(2)=='.'))
                 {
-                    Vector V=(Vector)O;
+                	List V=(List)O;
                     String back=str.substring(2);
                     if(back.charAt(1)=='$')
                         back=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,back);
@@ -951,7 +951,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         if((V.size()>0)&&(y>=0))
                         {
                             if(y>=V.size()) return null;
-                            O=V.elementAt(y);
+                            O=V.get(y);
                             if(O instanceof PhysicalAgent) 
                             	return (PhysicalAgent)O;
                         }
@@ -1058,8 +1058,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
     private String makeNamedString(Object O)
     {
-        if(O instanceof Vector)
-            return makeParsableString((Vector)O);
+        if(O instanceof List)
+            return makeParsableString((List)O);
         else
         if(O instanceof Room)
             return ((Room)O).roomTitle(null);
@@ -1072,15 +1072,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
         return "";
     }
 
-    private String makeParsableString(Vector V)
+    private String makeParsableString(List V)
     {
         if((V==null)||(V.size()==0)) return "";
-        if(V.firstElement() instanceof String) return CMParms.combineWithQuotes(V,0);
+        if(V.get(0) instanceof String) return CMParms.combineWithQuotes(V,0);
         StringBuffer ret=new StringBuffer("");
         String S=null;
         for(int v=0;v<V.size();v++)
         {
-            S=makeNamedString(V.elementAt(v)).trim();
+            S=makeNamedString(V.get(v)).trim();
             if(S.length()==0)
                 ret.append("? ");
             else
@@ -2501,12 +2501,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
                 String found=null;
                 boolean validFunc=false;
-                Vector<DVector> scripts=getScripts();
+                List<DVector> scripts=getScripts();
                 String trigger=null;
                 String[] ttrigger=null;
                 for(int v=0;v<scripts.size();v++)
                 {
-                    DVector script2=(DVector)scripts.elementAt(v);
+                    DVector script2=(DVector)scripts.get(v);
                     if(script2.size()<1) continue;
                     trigger=((String)script2.elementAt(0,1)).toUpperCase().trim();
                     ttrigger=(String[])script2.elementAt(0,2);
@@ -2673,7 +2673,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String arg2=tt[t+1];
                 String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
                 int num=0;
-                Vector MASK=null;
+                MaskingLibrary.CompiledZapperMask MASK=null;
                 if((arg3.toUpperCase().startsWith("MASK")&&(arg3.substring(4).trim().startsWith("="))))
                 {
                     arg3=arg3.substring(4).trim();
@@ -2707,7 +2707,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String arg2=tt[t+1];
                 String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
                 int num=0;
-                Vector MASK=null;
+                MaskingLibrary.CompiledZapperMask MASK=null;
                 if((arg3.toUpperCase().startsWith("MASK")&&(arg3.substring(4).trim().startsWith("="))))
                 {
                     arg3=arg3.substring(4).trim();
@@ -2946,7 +2946,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         if(!name.equalsIgnoreCase("*"))
                         {
                             num=0;
-                            Vector MASK=null;
+                            MaskingLibrary.CompiledZapperMask MASK=null;
                             if((name.toUpperCase().startsWith("MASK")&&(name.substring(4).trim().startsWith("="))))
                             {
                                 name=name.substring(4).trim();
@@ -4590,12 +4590,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(funcParms,0));
                 String found=null;
                 boolean validFunc=false;
-                Vector<DVector> scripts=getScripts();
+                List<DVector> scripts=getScripts();
                 String trigger=null;
                 String[] ttrigger=null;
                 for(int v=0;v<scripts.size();v++)
                 {
-                    DVector script2=(DVector)scripts.elementAt(v);
+                    DVector script2=(DVector)scripts.get(v);
                     if(script2.size()<1) continue;
                     trigger=((String)script2.elementAt(0,1)).toUpperCase().trim();
                     ttrigger=(String[])script2.elementAt(0,2);
@@ -4874,7 +4874,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             {
                 String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
                 int num=0;
-                Vector MASK=null;
+                MaskingLibrary.CompiledZapperMask MASK=null;
                 if((arg1.toUpperCase().startsWith("MASK")&&(arg1.substring(4).trim().startsWith("="))))
                 {
                     arg1=arg1.substring(4).trim();
@@ -4905,7 +4905,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             {
                 int num=0;
                 String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(funcParms));
-                Vector MASK=null;
+                MaskingLibrary.CompiledZapperMask MASK=null;
                 if((arg1.toUpperCase().startsWith("MASK")&&(arg1.substring(4).trim().startsWith("="))))
                 {
                     arg1=arg1.substring(4).trim();
@@ -5072,7 +5072,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if((name.length()>0)&&(!name.equalsIgnoreCase("*")))
                     {
                         num=0;
-                        Vector MASK=null;
+                        MaskingLibrary.CompiledZapperMask MASK=null;
                         if((name.toUpperCase().startsWith("MASK")&&(name.substring(4).trim().startsWith("="))))
                         {
                             name=name.substring(4).trim();
@@ -8518,10 +8518,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String named=tt[1];
                 String parms=tt[2].trim();
                 boolean found=false;
-                Vector<DVector> scripts=getScripts();
+                List<DVector> scripts=getScripts();
                 for(int v=0;v<scripts.size();v++)
                 {
-                    DVector script2=(DVector)scripts.elementAt(v);
+                    DVector script2=(DVector)scripts.get(v);
                     if(script2.size()<1) continue;
                     String trigger=((String)script2.elementAt(0,1)).toUpperCase().trim();
                     String[] ttrigger=(String[])script2.elementAt(0,2);
@@ -8776,11 +8776,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
             return "PARSEDPRG: "+getScript();
     }
     
-    protected Vector<DVector> getScripts()
+    protected List<DVector> getScripts()
     {
         if(CMSecurity.isDisabled("SCRIPTABLE")||CMSecurity.isDisabled("SCRIPTING"))
             return empty;
-        Vector scripts=(Vector)Resources.getResource(getScriptResourceKey());
+        List scripts=(List)Resources.getResource(getScriptResourceKey());
         if(scripts==null)
         {
             String scr=getScript();
@@ -8829,7 +8829,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
         PhysicalAgent affecting = (PhysicalAgent)host;
 
-        Vector<DVector> scripts=getScripts();
+        List<DVector> scripts=getScripts();
         DVector script=null;
         boolean tryIt=false;
         String trigger=null;
@@ -8839,7 +8839,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         for(int v=0;v<scripts.size();v++)
         {
             tryIt=false;
-            script=(DVector)scripts.elementAt(v);
+            script=(DVector)scripts.get(v);
             if(script.size()<1) continue;
 
             trigger=((String)script.elementAt(0,1)).toUpperCase().trim();
@@ -8959,7 +8959,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         if((defaultItem!=null)&&(defaultItem.owner() instanceof MOB))
             eventMob=(MOB)defaultItem.owner();
 
-        Vector<DVector> scripts=getScripts();
+        List<DVector> scripts=getScripts();
 
         if(msg.amITarget(eventMob)
         &&(!msg.amISource(monster))
@@ -8971,7 +8971,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         String[] t=null;
         for(int v=0;v<scripts.size();v++)
         {
-            script=(DVector)scripts.elementAt(v);
+            script=(DVector)scripts.get(v);
             if(script.size()<1) continue;
 
             trigger=((String)script.elementAt(0,1)).toUpperCase().trim();
@@ -9375,14 +9375,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     int prcnt=CMath.s_int(t[1]);
                     if(CMLib.dice().rollPercentage()<prcnt)
                     {
-                        Vector V=(Vector)que.clone();
+                    	List V=(List)que.clone();
                         ScriptableResponse SB=null;
                         String roomID=null;
                         if(msg.target()!=null)
                             roomID=CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(msg.target()));
                         for(int q=0;q<V.size();q++)
                         {
-                            SB=(ScriptableResponse)V.elementAt(q);
+                            SB=(ScriptableResponse)V.get(q);
                             if((SB.scr==script)&&(SB.s==msg.source()))
                             {
                                 if(que.removeElement(SB))
@@ -9405,14 +9405,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     int prcnt=CMath.s_int(t[1]);
                     if(CMLib.dice().rollPercentage()<prcnt)
                     {
-                        Vector V=(Vector)que.clone();
+                    	List V=(List)que.clone();
                         ScriptableResponse SB=null;
                         String roomID=null;
                         if(msg.target()!=null)
                             roomID=CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(msg.target()));
                         for(int q=0;q<V.size();q++)
                         {
-                            SB=(ScriptableResponse)V.elementAt(q);
+                            SB=(ScriptableResponse)V.get(q);
                             if((SB.scr==script)&&(SB.s==msg.source()))
                             {
                                 if(que.removeElement(SB))
@@ -9794,14 +9794,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
         PhysicalAgent affecting=(ticking instanceof PhysicalAgent)?((PhysicalAgent)ticking):null;
 
-        Vector<DVector> scripts=getScripts();
+        List<DVector> scripts=getScripts();
 
         int triggerCode=-1;
         String trigger="";
         String[] t=null;
         for(int thisScriptIndex=0;thisScriptIndex<scripts.size();thisScriptIndex++)
         {
-            DVector script=(DVector)scripts.elementAt(thisScriptIndex);
+            DVector script=(DVector)scripts.get(thisScriptIndex);
             if(script.size()<2) continue;
             trigger=((String)script.elementAt(0,1)).toUpperCase().trim();
             t=(String[])script.elementAt(0,2);

@@ -76,9 +76,9 @@ public class AutoAffects extends StdCommand
                 return false;
             }
             else
-            if(commands.firstElement() instanceof Vector)
+            if(commands.firstElement() instanceof List)
             {
-                ((Vector)commands.firstElement()).addElement(getAutoAffects(mob));
+                ((List)commands.firstElement()).add(getAutoAffects(mob));
                 return false;
             }
             else

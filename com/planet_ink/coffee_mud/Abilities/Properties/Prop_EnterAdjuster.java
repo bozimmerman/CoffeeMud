@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -37,12 +38,12 @@ public class Prop_EnterAdjuster extends Property
 	public String ID() { return "Prop_EnterAdjuster"; }
 	public String name(){ return "Room entering adjuster";}
 	protected int canAffectCode(){return Ability.CAN_EXITS|Ability.CAN_ROOMS;}
-    private Vector mask=new Vector();
+    private MaskingLibrary.CompiledZapperMask mask=MaskingLibrary.CompiledZapperMask.EMPTY;
 
     public void setMiscText(String newText)
     {
         super.setMiscText(newText);
-        mask=new Vector();
+        mask=MaskingLibrary.CompiledZapperMask.EMPTY;
         buildMask(newText,mask);
     }
     
@@ -58,7 +59,7 @@ public class Prop_EnterAdjuster extends Property
 		if((affected!=null)
 		&&(((msg.targetMinor()==CMMsg.TYP_ENTER)&&((affected instanceof Room)||(affected instanceof Exit)))
 		   ||((msg.targetMinor()==CMMsg.TYP_SIT)&&(affected==msg.target())&&(affected instanceof Rideable)))
-        &&((mask.size()==0)||(CMLib.masking().maskCheck(mask,msg.source(),true))))
+        &&((mask==null)||(CMLib.masking().maskCheck(mask,msg.source(),true))))
         {
             MOB mob=msg.source();
             String[] strs=separateMask(text());

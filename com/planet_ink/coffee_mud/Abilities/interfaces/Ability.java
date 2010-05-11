@@ -179,24 +179,24 @@ public interface Ability extends Environmental
 	 * activate this skill. A value of 0.0 means invoke 
 	 * instantly.  This method only applies when the invoker
 	 * is not in combat.
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#combatCastingTime(MOB, Vector)
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#combatCastingTime(MOB, List)
 	 * @param mob the potential caster
 	 * @param commands the potential command set
 	 * @return the number of player free actions required to do this
 	 */
-	public double castingTime(MOB mob, Vector commands);
+	public double castingTime(MOB mob, List<String> commands);
 	
 	/**
 	 * Returns the number of actions required to completely
 	 * activate this skill. A value of 0.0 means invoke 
 	 * instantly.  This method only applies when the invoker
 	 * is in combat.
-	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#castingTime(MOB, Vector)
+	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#castingTime(MOB, List)
 	 * @param mob the potential caster
 	 * @param commands the potential command set
 	 * @return the number of player free actions required to do this
 	 */
-	public double combatCastingTime(MOB mob, Vector commands);
+	public double combatCastingTime(MOB mob, List<String> commands);
 
 	/**
 	 * This method is only called when the mob invoking this skill

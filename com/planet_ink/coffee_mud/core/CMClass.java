@@ -603,11 +603,11 @@ public class CMClass extends ClassLoader
 		{
 			set=getClassSet(i);
 			if(set==null) continue;
-			if(set instanceof Vector)
-				thisItem=getGlobal((Vector)set,shortThis);
+			if(set instanceof List)
+				thisItem=getGlobal((List)set,shortThis);
 			else
-			if(set instanceof Hashtable)
-				thisItem=getGlobal((Hashtable)set,shortThis);
+			if(set instanceof Map)
+				thisItem=getGlobal((Map)set,shortThis);
 			if(thisItem!=null) return thisItem;
 		}
         try{	return classes.get(calledThis).newInstance();}catch(Exception e){}
@@ -656,14 +656,14 @@ public class CMClass extends ClassLoader
         return null;
     }
 
-    public static CMObject getNewGlobal(Vector list, String ID)
+    public static CMObject getNewGlobal(List<? extends CMObject> list, String ID)
     {
         CMObject O=(CMObject)getGlobal(list,ID);
         if(O!=null) return O.newInstance();
         return null;
     }
 
-	public static Object getGlobal(Vector list, String ID)
+	public static Object getGlobal(List<? extends CMObject> list, String ID)
 	{
 		if(list.size()==0) return null;
 		int start=0;
@@ -671,9 +671,9 @@ public class CMClass extends ClassLoader
 		while(start<=end)
 		{
 			int mid=(end+start)/2;
-			int comp=classID(list.elementAt(mid)).compareToIgnoreCase(ID);
+			int comp=classID(list.get(mid)).compareToIgnoreCase(ID);
 			if(comp==0)
-				return list.elementAt(mid);
+				return list.get(mid);
 			else
 			if(comp>0)
 				end=mid-1;
@@ -807,21 +807,21 @@ public class CMClass extends ClassLoader
 		return A;
 	}
 
-    public static CMObject getNewGlobal(Hashtable list, String ID)
+    public static CMObject getNewGlobal(Map<String,? extends CMObject> list, String ID)
     {
         CMObject O=(CMObject)getGlobal(list,ID);
         if(O!=null) return O.newInstance();
         return null;
     }
 
-	public static CMObject getGlobal(Hashtable<String,CMObject> fromThese, String calledThis)
+	public static CMObject getGlobal(Map<String,? extends CMObject> fromThese, String calledThis)
 	{
 		CMObject o=fromThese.get(calledThis);
 		if(o==null)
 		{
-			for(Enumeration<CMObject> e=fromThese.elements();e.hasMoreElements();)
+			for(String s : fromThese.keySet())
 			{
-				o=e.nextElement();
+				o=fromThese.get(s);
 				if(classID(o).equalsIgnoreCase(calledThis))
 					return o;
 			}
@@ -984,9 +984,16 @@ public class CMClass extends ClassLoader
 		webMacros=new Hashtable<String,WebMacro>();
 		commandWords=new Hashtable<String,Command>();
 	}
-    private void initializeClassGroup(Vector V){ for(int v=0;v<V.size();v++) ((CMObject)V.elementAt(v)).initializeClass();}
-    private void initializeClassGroup(Hashtable H){
-        for(Enumeration e=H.elements();e.hasMoreElements();) ((CMObject)e.nextElement()).initializeClass();}
+    private void initializeClassGroup(List<? extends CMObject> V)
+    { 
+    	for(int v=0;v<V.size();v++) 
+    		((CMObject)V.get(v)).initializeClass();
+    }
+    private void initializeClassGroup(Map<String,? extends CMObject> H)
+    {
+        for(Object o : H.keySet())
+    		((CMObject)H.get(o)).initializeClass();
+	}
     
     
 	public void intializeClasses()
@@ -998,10 +1005,10 @@ public class CMClass extends ClassLoader
             {
             	Object set = CMClass.getClassSet(o); 
                 if(set instanceof Vector)
-                    initializeClassGroup((Vector)set);
+                    initializeClassGroup((List)set);
                 else
                 if(set instanceof Hashtable)
-                    initializeClassGroup((Hashtable)set);
+                    initializeClassGroup((Map)set);
             }
     }
 	
@@ -1156,19 +1163,19 @@ public class CMClass extends ClassLoader
                         H.put(itemName.trim().toUpperCase(),O);
                     }
                     else
-                    if(toThis instanceof Vector)
+                    if(toThis instanceof List)
                     {
-                        Vector V=(Vector)toThis;
+                    	List V=(List)toThis;
                         boolean doNotAdd=false;
                         for(int v=0;v<V.size();v++)
-                            if(rawClassName(V.elementAt(v)).equals(itemName))
+                            if(rawClassName(V.get(v)).equals(itemName))
                             {
-                                V.setElementAt(O,v);
+                                V.set(v,O);
                                 doNotAdd=true;
                                 break;
                             }
                         if(!doNotAdd)
-                            V.addElement(O);
+                            V.add(O);
                     }
                 }
             }
