@@ -373,8 +373,10 @@ public class GrinderAreas
 		if(file==null)file="";
 		A.setArchivePath(file);
 
-		String err=GrinderAreas.doAffects(A,httpReq,parms);
-		if(err.length()>0) return err;
+		String error=GrinderAreas.doAffects(A,httpReq,parms);
+		if(error.length()>0) return error;
+		error=GrinderAreas.doBehavs(A,httpReq,parms);
+		if(error.length()>0) return error;
 
 		if((redoAllMyDamnRooms)&&(allMyDamnRooms!=null))
 			CMLib.map().renameRooms(A,oldName,allMyDamnRooms);

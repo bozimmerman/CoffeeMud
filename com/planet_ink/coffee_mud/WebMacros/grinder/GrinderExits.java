@@ -168,6 +168,8 @@ public class GrinderExits
 				if(error.length()>0) return error;
 				error=GrinderAreas.doAffects(X,httpReq,parms);
 				if(error.length()>0) return error;
+				error=GrinderAreas.doBehavs(X,httpReq,parms);
+				if(error.length()>0) return error;
 			}
 			
 			//adjustments

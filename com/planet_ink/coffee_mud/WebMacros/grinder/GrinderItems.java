@@ -557,6 +557,8 @@ public class GrinderItems
 				if(error.length()>0) return error;
 				error=GrinderAreas.doAffects(I,httpReq,parms);
 				if(error.length()>0) return error;
+				error=GrinderAreas.doBehavs(I,httpReq,parms);
+				if(error.length()>0) return error;
 			}
 
 			I.recoverPhyStats();

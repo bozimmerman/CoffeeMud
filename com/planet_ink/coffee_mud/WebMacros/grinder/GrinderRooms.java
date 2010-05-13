@@ -145,8 +145,10 @@ public class GrinderRooms
 				((GridLocale)R).clearGrid(null);
 			}
 	
-			String err=GrinderAreas.doAffects(R,httpReq,parms);
-			if(err.length()>0) return err;
+			String error=GrinderAreas.doAffects(R,httpReq,parms);
+			if(error.length()>0) return error;
+			error=GrinderAreas.doBehavs(R,httpReq,parms);
+			if(error.length()>0) return error;
 	
 			// here's where you resolve items and mobs
 			Vector allmobs=new Vector();
