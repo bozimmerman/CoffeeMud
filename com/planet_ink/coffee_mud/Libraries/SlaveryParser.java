@@ -201,7 +201,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
         if(poss.size()==0)
         {
             geasStep g=new geasStep(geasSteps);
-            g.que.addElement(CMParms.parse("wanderquery "+req));
+            g.que.add(CMParms.parse("wanderquery "+req));
             geasSteps.addElement(g);
         }
         else
@@ -215,17 +215,17 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
                     Log.debugOut("GEAS",CMParms.toStringList(all));
                 g.que=new Vector();
                 for(int a=0;a<all.size();a++)
-                    g.que.addElement(CMParms.parse((String)all.elementAt(a)));
+                    g.que.add(CMParms.parse((String)all.elementAt(a)));
                 if(you!=null)   map.put("%c",you.name());
                 map.put("%n",me.name());
                 for(int q=0;q<g.que.size();q++)
                 {
-                    Vector V=(Vector)g.que.elementAt(q);
+                    List<String> V=g.que.get(q);
                     for(int v=0;v<V.size();v++)
                     {
-                        String s=(String)V.elementAt(v);
+                        String s=(String)V.get(v);
                         if(s.startsWith("%"))
-                            V.setElementAt(CMLib.english().cleanArticles((String)map.get(s.trim())),v);
+                            V.set(v,CMLib.english().cleanArticles((String)map.get(s.trim())));
                     }
                 }
                 geasSteps.addElement(g);

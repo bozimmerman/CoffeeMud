@@ -2579,7 +2579,7 @@ messages to the player in question.</p>
       <p>The next method, like <code>statQualifications above()</code>,
 is for the benefit of the web macros. It describes any special bonuses
 received due to being this class.</p>
-      <pre>  public Vector outfit( MOB myChar )<br />  {<br />    if( outfitChoices == null )<br />    {<br />      outfitChoices = new Vector();<br />      Weapon w = (Weapon)CMClass.getWeapon( "a mortgage" );<br />      outfitChoices.addElement( w );<br />    }<br />    return outfitChoices;<br />  }<br /></pre>
+      <pre>  public Vector outfit( MOB myChar )<br />  {<br />    if( outfitChoices == null )<br />    {<br />      outfitChoices = new Vector();<br />      Weapon w = (Weapon)CMClass.getWeapon( "a mortgage" );<br />      outfitChoices.add( w );<br />    }<br />    return outfitChoices;<br />  }<br /></pre>
       <p>The outfit method should return a Vector of any Class-Specific
 Item object equipment they may need. Clothing and so forth is actually
 covered by Races.</p>
@@ -2707,7 +2707,7 @@ gained abilities appropriate to the level of the mob. If the four
 variables are set properly, the programmer will not need to override
 the method from StdRace unless there other gender-based or other
 special qualifications for skills not defined by those four variables.</p>
-      <pre>  public Vector outfit( MOB myChar )<br />  {<br />    if( outfitChoices == null )<br />    {<br />      outfitChoices = new Vector();<br />      Weapon w = (Weapon)CMClass.getItem( "GenPants" );<br />      outfitChoices.addElement( w );<br />    }<br /><br />    return outfitChoices;<br />  }<br /></pre>
+      <pre>  public Vector outfit( MOB myChar )<br />  {<br />    if( outfitChoices == null )<br />    {<br />      outfitChoices = new Vector();<br />      Weapon w = (Weapon)CMClass.getItem( "GenPants" );<br />      outfitChoices.add( w );<br />    }<br /><br />    return outfitChoices;<br />  }<br /></pre>
       <p>The outfit method should return a Vector of any Race-Specific
 Item object equipment they may need.</p>
       <pre>  private String[] culturalAbilityNames = { "Dwarven", "Mining" };<br />  private int[] culturalAbilityProficiencies = { 100, 50 };<br /><br />  public String[] culturalAbilityNames()<br />  {<br />    return culturalAbilityNames;<br />  }<br /><br />  public int[] culturalAbilityProficiencies()<br />  {<br />    return culturalAbilityProficiencies;<br />  }<br /></pre>

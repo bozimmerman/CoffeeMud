@@ -36,7 +36,7 @@ public class MXPElement implements Cloneable
     private Vector parsedAttributes=null;
     private Hashtable attributeValues=null;
     private Hashtable alternativeAttributes=null;
-    private Vector userParms=new Vector();
+    private List<String> userParms=new Vector();
     private boolean basicElement=true;
     
     private int bufInsert=-1;
@@ -84,7 +84,7 @@ public class MXPElement implements Cloneable
             if(E.parsedAttributes!=null) E.parsedAttributes=(Vector)E.parsedAttributes.clone();
             if(E.attributeValues!=null) E.attributeValues=(Hashtable)E.attributeValues.clone();
             if(E.alternativeAttributes!=null) E.alternativeAttributes=(Hashtable)E.alternativeAttributes.clone();
-            if(E.userParms!=null) E.userParms=(Vector)E.userParms.clone();
+            if(E.userParms!=null) E.userParms= new Vector<String>(E.userParms);
             return E;
         }
         catch(Exception e){}
@@ -226,7 +226,7 @@ public class MXPElement implements Cloneable
         return parsedAttributes;
     }
     public String getFlag(){return flag;}
-    public Vector getUserParms(){return userParms;}
+    public List<String> getUserParms(){return userParms;}
     public void saveSettings(int insertPoint, Vector theUserParms)
     {
         bufInsert=insertPoint;
@@ -312,15 +312,15 @@ public class MXPElement implements Cloneable
             String userParm=null;
             for(int u=0;u<userParms.size();u++)
             {
-                userParm=((String)userParms.elementAt(u)).toUpperCase().trim();
+                userParm=userParms.get(u).toUpperCase().trim();
                 int xx=userParm.indexOf("=");
                 if((xx>0)&&(alternativeAttributes.containsKey(userParm.substring(0,xx).trim())))
                 {
                     String newKey=(String)alternativeAttributes.get(userParm.substring(0,xx).trim());
-                    String uu=(String)userParms.elementAt(u);
+                    String uu=userParms.get(u);
                     xx=uu.indexOf("=");
-                    userParms.setElementAt(newKey+uu.substring(xx),u);
-                    userParm=((String)userParms.elementAt(u)).toUpperCase().trim();
+                    userParms.set(u,newKey+uu.substring(xx));
+                    userParm=userParms.get(u).toUpperCase().trim();
                 }
                 boolean found=false;
                 for(int a=0;a<aV.size();a++)
@@ -331,7 +331,7 @@ public class MXPElement implements Cloneable
                         found=true;
                         if(a>position) position=a;
                         attributeValues.remove(avParm);
-                        String val=(avParm.equals(userParm))?"":((String)userParms.elementAt(u)).trim().substring(avParm.length()+1);
+                        String val=(avParm.equals(userParm))?"":userParms.get(u).trim().substring(avParm.length()+1);
                         attributeValues.put(avParm,val);
                         break;
                     }
@@ -341,7 +341,7 @@ public class MXPElement implements Cloneable
                     position++;
                     avParm=(String)aV.elementAt(position);
                     attributeValues.remove(avParm);
-                    attributeValues.put(avParm,((String)userParms.elementAt(u)).trim());
+                    attributeValues.put(avParm,userParms.get(u).trim());
                 }
             }
         }

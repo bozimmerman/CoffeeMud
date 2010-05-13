@@ -92,7 +92,7 @@ public class Generate extends StdCommand
             return false;
         }
         StringBuffer xml = file.textUnformatted();
-        Vector xmlRoot = CMLib.xml().parseAllXML(xml);
+        List<XMLLibrary.XMLpiece> xmlRoot = CMLib.xml().parseAllXML(xml);
         Hashtable definedIDs = new Hashtable();
         CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs);
         String typeName = (String)commands.elementAt(1);

@@ -79,7 +79,7 @@ public class JournalInfo extends StdWebMacro
 		if(parent==null) 
 			parent="";
 		String httpkey="JOURNAL: "+journalName+": "+parent+": "+dbsearch+": "+page;
-		Vector<JournalsLibrary.JournalEntry> msgs=(Vector<JournalsLibrary.JournalEntry>)httpReq.getRequestObjects().get(httpkey);
+		List<JournalsLibrary.JournalEntry> msgs=(Vector<JournalsLibrary.JournalEntry>)httpReq.getRequestObjects().get(httpkey);
 		if(msgs==null)
 		{
 			if((page==null)||(page.length()==0))

@@ -894,13 +894,13 @@ public class Destroy extends StdCommand
                 int which=-1;
                 if(commands.size()>2)
                     which=CMath.s_int((String)commands.elementAt(2));
-                Vector<JournalsLibrary.JournalEntry> entries = CMLib.database().DBReadJournalMsgs(CMJ.JOURNAL_NAME());
+                List<JournalsLibrary.JournalEntry> entries = CMLib.database().DBReadJournalMsgs(CMJ.JOURNAL_NAME());
                 
                 if((which<=0)||(which>entries.size()))
                     mob.tell("Please enter a valid "+CMJ.NAME().toLowerCase()+" number to delete.  Use LIST "+CMJ.NAME()+"S for more information.");
                 else
                 {
-                	JournalsLibrary.JournalEntry entry = entries.elementAt(which-1);
+                	JournalsLibrary.JournalEntry entry = entries.get(which-1);
                     CMLib.database().DBDeleteJournal(CMJ.JOURNAL_NAME(),entry.key);
                     mob.tell(CMJ.NAME().toLowerCase()+" deletion submitted.");
                     
@@ -1008,11 +1008,11 @@ public class Destroy extends StdCommand
 			else
 			{
 				StringBuffer newNoPurge=new StringBuffer("");
-				Vector protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
+				List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
 				if((protectedOnes!=null)&&(protectedOnes.size()>0))
 					for(int b=0;b<protectedOnes.size();b++)
 					{
-						String B=(String)protectedOnes.elementAt(b);
+						String B=(String)protectedOnes.get(b);
 						if(((b+1)!=which)&&(B.trim().length()>0))
 							newNoPurge.append(B+"\n");
 					}

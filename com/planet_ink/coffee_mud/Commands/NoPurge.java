@@ -53,11 +53,11 @@ public class NoPurge extends StdCommand
 			mob.tell("Protect whom?  '"+protectMe+"' is not a known player.");
 			return false;
 		}
-		Vector protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
+		List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
 		if((protectedOnes!=null)&&(protectedOnes.size()>0))
 		for(int b=0;b<protectedOnes.size();b++)
 		{
-			String B=(String)protectedOnes.elementAt(b);
+			String B=(String)protectedOnes.get(b);
 			if(B.equalsIgnoreCase(protectMe))
 			{
 				mob.tell("That player already protected.  Do LIST NOPURGE and check out #"+(b+1)+".");

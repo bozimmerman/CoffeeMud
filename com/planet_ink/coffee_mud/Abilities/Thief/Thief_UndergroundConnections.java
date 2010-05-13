@@ -242,7 +242,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 		List<List<Integer>> allTrails=CMLib.tracking().findAllTrails(thisRoom,finalTos,trail);
 		for(int a=allTrails.size()-1;a>=0;a--)
 		{
-			List<Integer> thisTrail=(Vector)allTrails.get(a);
+			List<Integer> thisTrail=allTrails.get(a);
 			R=thisRoom;
 			for(int t=0;t<thisTrail.size();t++)
 			{

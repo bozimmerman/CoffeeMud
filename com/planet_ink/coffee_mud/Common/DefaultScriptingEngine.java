@@ -144,24 +144,24 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
     public void setLocalVarXML(String xml)
     {
-        Vector V=resources._findResourceKeys("SCRIPTVAR-");
-        for(int v=0;v<V.size();v++)
+        Vector<String> rKeys=resources._findResourceKeys("SCRIPTVAR-");
+        for(int v=0;v<rKeys.size();v++)
         {
-            String key=(String)V.elementAt(v);
+            String key=(String)rKeys.elementAt(v);
             if(key.startsWith("SCRIPTVAR-"))
                 resources._removeResource(key);
         }
-        V=CMLib.xml().parseAllXML(xml);
+        List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(xml);
         for(int v=0;v<V.size();v++)
         {
-            XMLLibrary.XMLpiece piece=(XMLLibrary.XMLpiece)V.elementAt(v);
+            XMLLibrary.XMLpiece piece=(XMLLibrary.XMLpiece)V.get(v);
             if((piece.contents!=null)&&(piece.contents.size()>0))
             {
                 String kkey="SCRIPTVAR-"+piece.tag;
                 Hashtable H=new Hashtable();
                 for(int c=0;c<piece.contents.size();c++)
                 {
-                    XMLLibrary.XMLpiece piece2=(XMLLibrary.XMLpiece)piece.contents.elementAt(c);
+                    XMLLibrary.XMLpiece piece2=(XMLLibrary.XMLpiece)piece.contents.get(c);
                     H.put(piece2.tag,piece2.value);
                 }
                 resources._submitResource(kkey,H);

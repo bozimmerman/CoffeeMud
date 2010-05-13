@@ -49,7 +49,7 @@ public class SocialNext extends StdWebMacro
         String lastID="";
         for(int s=0;s<CMLib.socials().getSocialsList().size();s++)
         {
-            String name=(String)CMLib.socials().getSocialsList().elementAt(s);
+            String name=(String)CMLib.socials().getSocialsList().get(s);
             if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!name.equalsIgnoreCase(lastID))))
             {
                 httpReq.addRequestParameters("SOCIAL",name);

@@ -1038,10 +1038,10 @@ public class Modify extends StdCommand
             mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
             return;
         }
-        Vector oldSocials = new Vector();
-        Vector allSocials = CMLib.socials().getSocialsSet(name);
+        List<Social> oldSocials = new Vector();
+        List<Social> allSocials = CMLib.socials().getSocialsSet(name);
         for(int a = 0; a<allSocials.size();a++)
-        	oldSocials.add(((Social)allSocials.elementAt(a)).copyOf());
+        	oldSocials.add((Social)((Social)allSocials.get(a)).copyOf());
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around the idea of  "+S.name()+"s.");
 		CMLib.socials().modifySocialInterface(mob,(name+" "+oldStuff).trim());
         allSocials = CMLib.socials().getSocialsSet(name);
@@ -1049,11 +1049,11 @@ public class Modify extends StdCommand
         if(!changed)
         for(int a=0;a<oldSocials.size();a++)
         {
-        	Social oldSocial = (Social)oldSocials.elementAt(a);
+        	Social oldSocial = (Social)oldSocials.get(a);
         	boolean found = false;
         	for(int a2=0;a2<allSocials.size();a2++)
         	{
-        		Social newSocial = (Social)allSocials.elementAt(a2);
+        		Social newSocial = (Social)allSocials.get(a2);
         		if(oldSocial.name().equals(newSocial.name()))
         		{
         			found = true;

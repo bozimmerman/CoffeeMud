@@ -34,6 +34,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Vector;
 
 /**
@@ -176,7 +177,7 @@ public class Intermud implements Runnable, Persistent, Serializable
     public Hashtable           banned;
     public ChannelList         channels;
     public MudList             muds;
-    public Vector              name_servers;
+    public List<NameServer>    name_servers;
     public int                 password;
 
     private Intermud(ImudServices imud, PersistentPeer p)
@@ -200,7 +201,7 @@ public class Intermud implements Runnable, Persistent, Serializable
             s=(String)V.elementAt(v);
             Vector<String> V2=CMParms.parseAny(s,':',true);
             if(V2.size()>=3)
-                name_servers.addElement(new NameServer((String)V2.firstElement(),CMath.s_int((String)V2.elementAt(1)), (String)V2.elementAt(2)));
+                name_servers.add(new NameServer((String)V2.firstElement(),CMath.s_int((String)V2.elementAt(1)), (String)V2.elementAt(2)));
         }
         modified = Persistent.UNMODIFIED;
         try {
@@ -241,8 +242,8 @@ public class Intermud implements Runnable, Persistent, Serializable
                     if(info.elementAt(1) instanceof Integer)
 	                    c.type = ((Integer)info.elementAt(1)).intValue();
                     else
-                    if(info.elementAt(1) instanceof Vector)
-                    	Log.errOut("InterMud","Received unexpected channel-reply: " + CMParms.toStringList((Vector)info.elementAt(1)));
+                    if(info.elementAt(1) instanceof List)
+                    	Log.errOut("InterMud","Received unexpected channel-reply: " + CMParms.toStringList((List)info.elementAt(1)));
                     addChannel(c);
                 }
             }
@@ -255,7 +256,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 		if(thread==null) return null;
 		if(thread.name_servers==null) return null;
 		if(thread.name_servers.size()==0) return null;
-        return (NameServer)thread.name_servers.elementAt(0);
+        return (NameServer)thread.name_servers.get(0);
 	}
 
     private synchronized void connect() {
@@ -271,7 +272,7 @@ public class Intermud implements Runnable, Persistent, Serializable
                 Vector connectionStatuses=new Vector(name_servers.size());
                 for(int i=0;i<name_servers.size();i++)
                 {
-                    NameServer n = (NameServer)name_servers.elementAt(i);
+                    NameServer n = (NameServer)name_servers.get(i);
                     try
                     {
                         connection = new Socket(n.ip, n.port);
@@ -695,7 +696,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 
         if( router_list != null ) {
             Vector router = (Vector)router_list.elementAt(0);
-            NameServer name_server = (NameServer)name_servers.elementAt(0);
+            NameServer name_server = (NameServer)name_servers.get(0);
 
             if( !name_server.name.equals(router.elementAt(0)) ) {
                 // create new name server and connect

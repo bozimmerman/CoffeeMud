@@ -47,17 +47,17 @@ public class HolidayData extends StdWebMacro
         {
             int index=CMLib.quests().getHolidayIndex(last);
             exists = index>=0;
-            Vector encodedData=(Vector)httpReq.getRequestObjects().get("HOLIDAY_"+last.toUpperCase().trim());
+            List encodedData=(List)httpReq.getRequestObjects().get("HOLIDAY_"+last.toUpperCase().trim());
             if(encodedData==null)
             {
-                Vector steps=null;
+            	List<String> steps=null;
                 if(index>=0)
                 {
                     Object resp=CMLib.quests().getHolidayFile();
-                    if(resp instanceof Vector)
-                        steps=(Vector)resp;
+                    if(resp instanceof List)
+                        steps=(List<String>)resp;
                     if(steps!=null)
-                        encodedData=CMLib.quests().getEncodedHolidayData((String)steps.elementAt(index));
+                        encodedData=CMLib.quests().getEncodedHolidayData((String)steps.get(index));
                 }
                 else
                 {
@@ -69,11 +69,11 @@ public class HolidayData extends StdWebMacro
             }
             if(encodedData!=null)
             {
-                DVector settings=(DVector)encodedData.elementAt(0);
-                DVector behaviors=(DVector)encodedData.elementAt(1);
-                DVector properties=(DVector)encodedData.elementAt(2);
-                DVector stats=(DVector)encodedData.elementAt(3);
-                //Vector stepV=(Vector)encodedData.elementAt(4);
+                DVector settings=(DVector)encodedData.get(0);
+                DVector behaviors=(DVector)encodedData.get(1);
+                DVector properties=(DVector)encodedData.get(2);
+                DVector stats=(DVector)encodedData.get(3);
+                //List stepV=(List)encodedData.elementAt(4);
                 //int pricingMobIndex=((Integer)encodedData.elementAt(5)).intValue();
 
                 StringBuffer str=new StringBuffer("");
@@ -578,7 +578,7 @@ public class HolidayData extends StdWebMacro
         StringBuffer str=new StringBuffer("");
         if(parms.containsKey("MUDCHAT"))
         {
-            Vector mudchats=new Vector();
+        	List<List<String>> mudchats=new Vector();
             if(httpReq.isRequestParameter("MCWDS1"))
             {
                 int wdsnum=1;
@@ -587,11 +587,11 @@ public class HolidayData extends StdWebMacro
                 String say=httpReq.getRequestParameter("MCSAYS"+wdsnum+"_1");
                 while((wordsList!=null)&&(weight!=null)&&(say!=null))
                 {
-                    Vector mudchat=new Vector();
+                    List<String> mudchat=new Vector();
                     if(wordsList.length()>0)
                     {
-                        mudchats.addElement(mudchat);
-                        mudchat.addElement(CMStrings.replaceAll(wordsList,",","|"));
+                        mudchats.add(mudchat);
+                        mudchat.add(CMStrings.replaceAll(wordsList,",","|"));
                         int saynum=1;
                         while((weight!=null)&&(say!=null))
                         {
@@ -599,7 +599,7 @@ public class HolidayData extends StdWebMacro
                             {
                                 if(say.trim().length()==0)
                                     say="What should I say about those words?";
-                                mudchat.addElement(weight+say);
+                                mudchat.add(weight+say);
                             }
                             saynum++;
                             say=httpReq.getRequestParameter("MCSAYS"+wdsnum+"_"+saynum);
@@ -640,8 +640,8 @@ public class HolidayData extends StdWebMacro
 
             for(int i=0;i<mudchats.size();i++)
             {
-                Vector mudChat=(Vector)mudchats.elementAt(i);
-                String sayList=CMStrings.replaceAll(CMStrings.replaceAll((String)mudChat.firstElement(),"\"","&quot;"),"|",",");
+            	List<String> mudChat=(List<String>)mudchats.get(i);
+                String sayList=CMStrings.replaceAll(CMStrings.replaceAll((String)mudChat.get(0),"\"","&quot;"),"|",",");
                 str.append("<TR><TD WIDTH=25% VALIGN=TOP>");
                 str.append("<INPUT TYPE=TEXT SIZE=15 NAME=MCWDS"+(i+1)+" VALUE=\""+sayList+"\">");
                 str.append("</TD><TD WIDTH=75%>");
@@ -649,7 +649,7 @@ public class HolidayData extends StdWebMacro
                 for(int ii=1;ii<mudChat.size();ii++)
                 {
                     str.append("<TR><TD WIDTH=20%>");
-                    String say=(String)mudChat.elementAt(ii);
+                    String say=(String)mudChat.get(ii);
                     int weight=CMath.s_int(""+say.charAt(0));
                     say=CMStrings.replaceAll(say.substring(1),"\"","&quot;");
                     str.append("<SELECT NAME=MCSAYW"+(i+1)+"_"+(ii)+" ONCHANGE=\"NoSay(this)\">");

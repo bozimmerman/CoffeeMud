@@ -214,7 +214,7 @@ public interface Ability extends Environmental
 	 * @param actionsRemaining number of free actions the player is defficient.
 	 * @return whether the skill should be allowed to invoke.  false cancels altogether.
 	 */
-    public boolean preInvoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining);
+    public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining);
     
     /**
      * This method is called when a player or the system invokes this skill,  

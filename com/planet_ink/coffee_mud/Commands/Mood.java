@@ -44,7 +44,7 @@ public class Mood extends StdCommand
 		Ability A=CMClass.getAbility("Mood");
 		if(A!=null)
 		{
-			Vector V=(Vector)commands.clone();
+			Vector V=new XVector(commands);
 			V.removeElementAt(0);
 			A.invoke(mob,V,mob,true,0);
 		}

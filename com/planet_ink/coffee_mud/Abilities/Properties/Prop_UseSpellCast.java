@@ -42,7 +42,7 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
     
     public boolean addMeIfNeccessary(PhysicalAgent source, Physical target, int asLevel)
     {
-        Vector V=getMySpellsV();
+    	List<Ability> V=getMySpellsV();
         if((target==null)
         ||(V.size()==0)
         ||((compiledMask!=null)&&(!CMLib.masking().maskCheck(compiledMask,target,true))))
@@ -52,7 +52,7 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
         
 		for(int v=0;v<V.size();v++)
 		{
-			Ability A=(Ability)V.elementAt(v);
+			Ability A=(Ability)V.get(v);
 			Ability EA=target.fetchEffect(A.ID());
 			if((EA==null)&&(didHappen(100)))
 			{

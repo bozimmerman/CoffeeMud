@@ -99,7 +99,7 @@ public interface XMLLibrary extends CMLibrary
      * @param tag the tag to look for
      * @return its value, or null
      */
-    public String getValFromPieces(Vector<XMLpiece> V, String tag);
+    public String getValFromPieces(List<XMLpiece> V, String tag);
     /**
      * Returns the contents of a container tag, searched for in
      * another container tags contents
@@ -107,7 +107,7 @@ public interface XMLLibrary extends CMLibrary
      * @param tag the tag to look for
      * @return the tags contained in tag, or null
      */
-    public Vector<XMLpiece> getContentsFromPieces(Vector<XMLpiece> V, String tag);
+    public List<XMLpiece> getContentsFromPieces(List<XMLpiece> V, String tag);
     /**
      * Returns the xml tag node for the given tag name, if found in the
      * given tag container contents
@@ -115,7 +115,7 @@ public interface XMLLibrary extends CMLibrary
      * @param tag the tag name
      * @return the xml tag node for the given tag name
      */
-    public XMLpiece getPieceFromPieces(Vector<XMLpiece> V, String tag);
+    public XMLpiece getPieceFromPieces(List<XMLpiece> V, String tag);
     /**
      * Return the data value within a given XML block
      * <TAG>Data</TAG>
@@ -125,7 +125,7 @@ public interface XMLLibrary extends CMLibrary
      * @param tag Tag to search for
      * @return boolean Information from XML block
      */
-    public boolean getBoolFromPieces(Vector<XMLpiece> V, String tag);
+    public boolean getBoolFromPieces(List<XMLpiece> V, String tag);
     
     /**
      * Return the data value within a given XML block
@@ -136,7 +136,7 @@ public interface XMLLibrary extends CMLibrary
      * @param tag Tag to search for
      * @return short Information from XML block
      */
-    public short getShortFromPieces(Vector<XMLpiece> V, String tag);
+    public short getShortFromPieces(List<XMLpiece> V, String tag);
     
     /**
      * Return the data value within a given XML block
@@ -147,7 +147,7 @@ public interface XMLLibrary extends CMLibrary
      * @param tag Tag to search for
      * @return int Information from XML block
      */
-    public int getIntFromPieces(Vector<XMLpiece> V, String tag);
+    public int getIntFromPieces(List<XMLpiece> V, String tag);
     
     /**
      * Return the data value within a given XML block
@@ -158,7 +158,7 @@ public interface XMLLibrary extends CMLibrary
      * @param tag Tag to search for
      * @return long Information from XML block
      */
-    public long getLongFromPieces(Vector<XMLpiece> V, String tag);
+    public long getLongFromPieces(List<XMLpiece> V, String tag);
     
     /**
      * Return the data value within a given XML block
@@ -169,7 +169,7 @@ public interface XMLLibrary extends CMLibrary
      * @param tag Tag to search for
      * @return double Information from XML block
      */
-    public double getDoubleFromPieces(Vector<XMLpiece> V, String tag);
+    public double getDoubleFromPieces(List<XMLpiece> V, String tag);
     
     /**
      * Parses all xml inside the given string buffer and returns
@@ -177,7 +177,7 @@ public interface XMLLibrary extends CMLibrary
      * @param buf the string to parse
      * @return the parsed xml
      */
-    public Vector<XMLpiece> parseAllXML(String buf);
+    public List<XMLpiece> parseAllXML(String buf);
     
     /**
      * Parses all xml inside the given stringbuffer and returns
@@ -185,7 +185,7 @@ public interface XMLLibrary extends CMLibrary
      * @param buf the string to parse
      * @return the parsed xml
      */
-    public Vector<XMLpiece> parseAllXML(StringBuffer buf);
+    public List<XMLpiece> parseAllXML(StringBuffer buf);
     
     /**
      * Parses a list of single-level xml tags, together in string.
@@ -248,7 +248,7 @@ public interface XMLLibrary extends CMLibrary
      * @param Tag Tag to search for
      * @return String Parameter value
      */
-    public String getParmValue(Hashtable<String,String> parmSet, String Tag);
+    public String getParmValue(Map<String, String> parmSet, String Tag);
     
     /**
      * parse a tag value for safety
@@ -276,7 +276,7 @@ public interface XMLLibrary extends CMLibrary
     {
         public String tag="";
         public String value="";
-        public Vector<XMLpiece> contents=new Vector<XMLpiece>();
+        public List<XMLpiece> contents=new Vector<XMLpiece>();
         public Hashtable<String,String> parms=new Hashtable<String,String>();
         public XMLpiece parent=null;
         public int outerStart=-1;
@@ -287,7 +287,7 @@ public interface XMLLibrary extends CMLibrary
         public XMLpiece copyOf() {
         	try {
         		XMLpiece piece2=(XMLpiece)this.clone();
-        		piece2.contents=(Vector<XMLpiece>)contents.clone();
+        		piece2.contents=new XVector<XMLpiece>(contents);
         		piece2.parms=(Hashtable<String,String>)parms.clone();
         		return piece2;
         	} catch(Exception e) {
@@ -300,7 +300,7 @@ public interface XMLLibrary extends CMLibrary
             if (x == null) return;
             if (contents == null) contents = new Vector<XMLpiece>();
             x.parent=this;
-            contents.addElement(x);
+            contents.add(x);
         }
     }
 }

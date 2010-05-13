@@ -73,21 +73,21 @@ public class Taxidermy extends CraftingSkill
 	protected List<List<String>> loadRecipes()
 	{
         String filename="taxidermy.txt";
-		Vector V=(Vector)Resources.getResource("PARSED: "+filename);
+        List<List<String>> V=(List<List<String>>)Resources.getResource("PARSED: "+filename);
 		if(V==null)
 		{
 			V=new Vector();
 			StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,true).text();
-			Vector strV=Resources.getFileLineVector(str);
-			Vector V2=null;
+			List<String> strV=Resources.getFileLineVector(str);
+			List<String> V2=null;
 			boolean header=true;
 			for(int v=0;v<strV.size();v++)
 			{
-				String s=(String)strV.elementAt(v);
+				String s=(String)strV.get(v);
 				if(header)
 				{
 					if((V2!=null)&&(V2.size()>0))
-						V.addElement(V2);
+						V.add(V2);
 					V2=new Vector();
 				}
 				if(s.length()==0)
@@ -95,12 +95,12 @@ public class Taxidermy extends CraftingSkill
 				else
 				if(V2 != null)
 				{
-					V2.addElement(s);
+					V2.add(s);
 					header=false;
 				}
 			}
 			if((V2!=null)&&(V2.size()>0))
-				V.addElement(V2);
+				V.add(V2);
 			if(V.size()==0)
 				Log.errOut("Taxidermy","Poses not found!");
 			Resources.submitResource("PARSED: "+filename,V);

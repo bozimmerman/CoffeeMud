@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -462,7 +463,7 @@ public class GenAbility extends StdAbility
         return true;
     }
 
-    public boolean preInvoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
+    public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
     {
         return true;
     }
@@ -752,7 +753,7 @@ public class GenAbility extends StdAbility
 
     private void parseAllXML(String xml)
     {
-    	Vector V=CMLib.xml().parseAllXML(xml);
+    	List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(xml);
     	if((V==null)||(V.size()==0)) return;
     	for(int c=0;c<getStatCodes().length;c++)
     		if(getStatCodes()[c].equals("CLASS"))

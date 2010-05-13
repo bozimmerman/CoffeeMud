@@ -41,7 +41,7 @@ public class Prop_NarrowLedge extends Property
 
 	protected int check=16;
 	protected String name="the narrow ledge";
-	protected Vector mobsToKill=new Vector();
+	protected List<MOB> mobsToKill=new Vector();
 
 	public String accountForYourself()
 	{ return "Very narrow";	}
@@ -61,11 +61,11 @@ public class Prop_NarrowLedge extends Property
 			synchronized(mobsToKill)
 			{
 				CMLib.threads().deleteTick(this,Tickable.TICKID_SPELL_AFFECT);
-				Vector V=((Vector)mobsToKill.clone());
+				List<MOB> V=new XVector<MOB>(mobsToKill);
 				mobsToKill.clear();
 				for(int v=0;v<V.size();v++)
 				{
-					MOB mob=(MOB)V.elementAt(v);
+					MOB mob=(MOB)V.get(v);
 					if(mob.location()!=null)
 					{
 						if((affected instanceof Room)&&(mob.location()!=affected))
@@ -104,7 +104,7 @@ public class Prop_NarrowLedge extends Property
 				{
 					if(!mobsToKill.contains(mob))
 					{
-						mobsToKill.addElement(mob);
+						mobsToKill.add(mob);
 						Ability falling=CMClass.getAbility("Falling");
 						falling.setProficiency(0);
 						falling.setAffectedOne(affected);

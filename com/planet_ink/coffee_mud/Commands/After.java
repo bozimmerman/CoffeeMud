@@ -37,9 +37,19 @@ public class After extends StdCommand implements Tickable
 	public String name(){return "SysOpSkills";} // for tickables use
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
 
-	public Vector afterCmds=new Vector();
+	public List<AfterCommand> afterCmds=new Vector<AfterCommand>();
 
 	public After(){}
+	
+	private static class AfterCommand
+	{
+		long start=0;
+		long duration=0;
+		boolean every=false;
+		MOB M=null;
+		Vector command=null;
+		int metaFlags=0;
+	}
 
 	private String[] access={"AFTER"};
 	public String[] getAccessWords(){return access;}
@@ -66,16 +76,12 @@ public class After extends StdCommand implements Tickable
 			str.append(CMStrings.padRight("Next run",20)+" "+CMStrings.padRight(" Interval",20)+" "+CMStrings.padRight("Who",10)+" Command\n\r");
 			while(s<afterCmds.size())
 			{
-				Vector V=(Vector)afterCmds.elementAt(s);
-				long start=((Long)V.elementAt(0)).longValue();
-				long duration=((Long)V.elementAt(1)).longValue();
-				every=((Boolean)V.elementAt(2)).booleanValue();
-				MOB M=((MOB)V.elementAt(3));
-				Vector command=(Vector)V.elementAt(4);
-				str.append(CMStrings.padRight(CMLib.time().date2String(start+duration),20)+" ");
-				str.append((every?"*":" ")+CMStrings.padRight(CMLib.english().returnTime(duration,0),20)+" ");
-				str.append(CMStrings.padRight(M.Name(),10)+" ");
-				str.append(CMStrings.limit(CMParms.combine(command,0),25)+"\n\r");
+				AfterCommand V=afterCmds.get(s);
+				every=V.every;
+				str.append(CMStrings.padRight(CMLib.time().date2String(V.start+V.duration),20)+" ");
+				str.append((every?"*":" ")+CMStrings.padRight(CMLib.english().returnTime(V.duration,0),20)+" ");
+				str.append(CMStrings.padRight(V.M.Name(),10)+" ");
+				str.append(CMStrings.limit(CMParms.combine(V.command,0),25)+"\n\r");
 				s++;
 			}
 			mob.tell(str.toString());
@@ -107,14 +113,14 @@ public class After extends StdCommand implements Tickable
 		}
 		commands.removeElementAt(0);
 		if(commands.size()==0){ mob.tell(afterErr); return false;}
-		Vector V=new Vector();
-		V.addElement(Long.valueOf(System.currentTimeMillis()));
-		V.addElement(Long.valueOf(time));
-		V.addElement(Boolean.valueOf(every));
-		V.addElement(mob);
-		V.addElement(commands);
-		V.addElement(Integer.valueOf(metaFlags));
-		afterCmds.addElement(V);
+		AfterCommand V=new AfterCommand();
+		V.start=System.currentTimeMillis();
+		V.duration=Long.valueOf(time);
+		V.every=every;
+		V.M=mob;
+		V.command=commands;
+		V.metaFlags=metaFlags;
+		afterCmds.add(V);
 		CMLib.threads().startTickDown(this,Tickable.TICKID_AREA,1);
 		mob.tell("Ok.");
 		return false;
@@ -131,23 +137,18 @@ public class After extends StdCommand implements Tickable
 		int s=0;
 		while(s<afterCmds.size())
 		{
-			Vector V=(Vector)afterCmds.elementAt(s);
-			long start=((Long)V.elementAt(0)).longValue();
-			long duration=((Long)V.elementAt(1)).longValue();
-			if(System.currentTimeMillis()>(start+duration))
+			AfterCommand cmd=afterCmds.get(s);
+			if(System.currentTimeMillis()>(cmd.start+cmd.duration))
 			{
-				boolean every=((Boolean)V.elementAt(2)).booleanValue();
-				MOB mob=((MOB)V.elementAt(3));
-				Vector command=(Vector)V.elementAt(4);
-				Integer metaFlag=(Integer)V.elementAt(5);
+				boolean every=cmd.every;
 				if(every)
 				{
-					V.setElementAt(Long.valueOf(System.currentTimeMillis()),0);
+					cmd.start=System.currentTimeMillis();
 					s++;
 				}
 				else
-					afterCmds.removeElementAt(s);
-				mob.doCommand((Vector)command.clone(),metaFlag.intValue());
+					afterCmds.remove(s);
+				cmd.M.doCommand((Vector)cmd.command.clone(),cmd.metaFlags);
 			}
 			else
 				s++;

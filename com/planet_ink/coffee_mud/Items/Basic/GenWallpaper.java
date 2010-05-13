@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -149,7 +150,7 @@ public class GenWallpaper implements Item
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	public void setMiscText(String newText)
 	{
-		Vector V=CMLib.xml().parseAllXML(newText);
+		List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(newText);
 		if(V!=null)
 		{
 			setName(CMLib.xml().getValFromPieces(V,"NAME"));

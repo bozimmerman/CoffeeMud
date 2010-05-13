@@ -154,7 +154,7 @@ public interface SlaveryLibrary extends CMLibrary
 
     public static class geasStep
     {
-        public Vector que=new Vector();
+        public List<List<String>> que=new Vector<List<String>>();
         public int step=STEP_EVAL;
         public MOB bothering=null;
         public geasSteps mySteps=null;
@@ -224,7 +224,7 @@ public interface SlaveryLibrary extends CMLibrary
                 if(response.trim().length()==0)
                     return false;
                 bothering=null;
-                que.insertElementAt(CMParms.parse("find150 \""+response+"\""),0);
+                que.add(0,CMParms.parse("find150 \""+response+"\""));
                 step=STEP_EVAL;
                 return true;
             }
@@ -242,14 +242,14 @@ public interface SlaveryLibrary extends CMLibrary
                 step=STEP_ALLDONE;
                 return "DONE";
             }
-            Vector cur=(Vector)que.firstElement();
+            List<String> cur=que.get(0);
             if(cur.size()==0)
             {
                 step=STEP_EVAL;
-                que.removeElementAt(0);
+                que.remove(0);
                 return "HOLD";
             }
-            String s=(String)cur.firstElement();
+            String s=(String)cur.get(0);
             if(CMSecurity.isDebugging("GEAS"))
                 Log.debugOut("GEAS","STEP-"+s);
             if(s.equalsIgnoreCase("itemfind"))
@@ -262,7 +262,7 @@ public interface SlaveryLibrary extends CMLibrary
                     if(CMLib.beanCounter().getTotalAbsoluteNativeValue(me)>=((double)CMath.s_int(item)))
                     {
                         step=STEP_EVAL;
-                        que.removeElementAt(0);
+                        que.remove(0);
                         CMLib.commands().postSay(me,null,"I got the money!",false,false);
                         return "HOLD";
                     }
@@ -284,7 +284,7 @@ public interface SlaveryLibrary extends CMLibrary
                         CMLib.commands().postGet(me,I.container(),I,false);
                         return "HOLD";
                     }
-                    que.removeElementAt(0);
+                    que.remove(0);
                     CMLib.commands().postSay(me,null,"I got "+I.name()+"!",false,false);
                     return "HOLD";
                 }
@@ -362,7 +362,7 @@ public interface SlaveryLibrary extends CMLibrary
                                     return "HOLD";
                                 }
                                 price=price-CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(me,M);
-                                que.insertElementAt(CMParms.parse("itemfind "+CMLib.beanCounter().nameCurrencyShort(M,price)),0);
+                                que.add(0,CMParms.parse("itemfind "+CMLib.beanCounter().nameCurrencyShort(M,price)));
                                 CMLib.commands().postSay(me,null,"Damn, I need "+CMLib.beanCounter().nameCurrencyShort(M,price)+".",false,false);
                                 step=STEP_EVAL;
                                 return "HOLD";
@@ -398,7 +398,7 @@ public interface SlaveryLibrary extends CMLibrary
                     if(CMSecurity.isDebugging("GEAS"))
                         Log.debugOut("GEAS","MOBFIND-FOUND: "+name);
                     step=STEP_EVAL;
-                    que.removeElementAt(0);
+                    que.remove(0);
                     return "HOLD";
                 }
 
@@ -434,7 +434,7 @@ public interface SlaveryLibrary extends CMLibrary
                 if((dirCode>=0)&&(R!=null)&&(R.getRoomInDir(dirCode)!=null))
                 {
                     if(CMParms.parse(name).size()>1)
-                        cur.setElementAt(CMParms.combine(CMParms.parse(name),1),1);
+                        cur.set(1,CMParms.combine(CMParms.parse(name),1));
                     step=STEP_EVAL;
                     CMLib.tracking().move(me,dirCode,false,false);
                     return "HOLD";
@@ -445,14 +445,14 @@ public interface SlaveryLibrary extends CMLibrary
                    ||CMLib.english().containsString(R.description(),name))
                 {
                     step=STEP_EVAL;
-                    que.removeElementAt(0);
+                    que.remove(0);
                     return "HOLD";
                 }
                 MOB M=R.fetchInhabitant(name);
                 if((M!=null)&&(M!=me)&&(CMLib.flags().canBeSeenBy(M,me)))
                 {
                     step=STEP_EVAL;
-                    que.removeElementAt(0);
+                    que.remove(0);
                     return "HOLD";
                 }
                 // is it just sitting around?
@@ -468,11 +468,11 @@ public interface SlaveryLibrary extends CMLibrary
                     int x=CMath.s_int(s.substring(4));
                     if((--x)<0)
                     {
-                        que.removeElementAt(0);
+                        que.remove(0);
                         step=STEP_EVAL;
                         return "HOLD";
                     }
-                    cur.setElementAt("find"+x,0);
+                    cur.set(0,"find"+x);
                 }
 
                 // if asked someone something, give them time to respond.
@@ -497,7 +497,7 @@ public interface SlaveryLibrary extends CMLibrary
             else
             {
                 step=STEP_EVAL;
-                que.removeElementAt(0);
+                que.remove(0);
                 me.enqueCommand(cur,Command.METAFLAG_FORCED|Command.METAFLAG_ORDER,0);
                 return "HOLD";
             }

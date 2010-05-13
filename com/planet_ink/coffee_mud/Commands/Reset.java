@@ -567,10 +567,10 @@ public class Reset extends StdCommand
 				mob.tell("Which bank?");
 				return false;
 			}
-			Vector V=CMLib.database().DBReadJournalMsgs(bank);
+			List<JournalsLibrary.JournalEntry> V=CMLib.database().DBReadJournalMsgs(bank);
 			for(int v=0;v<V.size();v++)
 			{
-				JournalsLibrary.JournalEntry V2=(JournalsLibrary.JournalEntry)V.elementAt(v);
+				JournalsLibrary.JournalEntry V2=(JournalsLibrary.JournalEntry)V.get(v);
 				String name=V2.from;
 				String ID=V2.subj;
 				String classID=V2.to;

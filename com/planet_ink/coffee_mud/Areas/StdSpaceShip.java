@@ -42,8 +42,8 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public long 			velocity=0;
 	public long 			accelleration=0;
     protected String[]  	xtraValues=null;
-	protected Vector<Area>	parents=null;
-    protected Vector<String>parentsToLoad=new Vector<String>();
+	protected List<Area>	parents=null;
+    protected List<String>	parentsToLoad=new Vector<String>();
     protected STreeMap<String,String>
     						blurbFlags=new STreeMap<String,String>();
     protected String 		imageName="";
@@ -51,16 +51,16 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	protected TimeClock 	localClock=(TimeClock)CMClass.getCommon("DefaultTimeClock");
 	protected String 		currency="";
 	private long 			expirationDate=0;
-	public SpaceObject 		spaceTarget=null;
-	public SpaceObject 		spaceSource=null;
-	public SpaceObject 		orbiting=null;
+	protected SpaceObject 	spaceTarget=null;
+	protected SpaceObject 	spaceSource=null;
+	protected SpaceObject 	orbiting=null;
 	protected boolean 		amDestroyed=false;
 	
 	protected String 		name="a space ship";
 	protected Room 			savedDock=null;
 	protected String 		description="";
 	protected String 		miscText="";
-	protected Vector 		myRooms=new Vector();
+	protected SVector<Room>	myRooms=new SVector();
 	protected int 			flag=Area.STATE_ACTIVE;
 	protected long 			tickStatus=Tickable.STATUS_NOT;
 	protected String 		author=""; // will be used for owner, I guess.
@@ -232,7 +232,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
         scripts=new SVector<ScriptingEngine>(1);
 		parents=null;
 		if(ship.parents!=null)
-			parents=(Vector)ship.parents.clone();
+			parents=new XVector(ship.parents);
 		for(Enumeration<Behavior> e=ship.behaviors();e.hasMoreElements();)
 		{
 			Behavior B=e.nextElement();
@@ -428,7 +428,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	}
 
 	public Enumeration<Room> getCompleteMap(){return getProperMap();}
-	public Vector getMetroCollection(){return (Vector)myRooms.clone();}
+	public List<Room> getMetroCollection(){return new ReadOnlyList(myRooms);}
 	
 	public int[] addMaskAndReturn(int[] one, int[] two)
 	{
@@ -889,7 +889,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public Enumeration<String> subOps(){ return EmptyEnumeration.INSTANCE;}
 
     public void addChildToLoad(String str){}
-    public void addParentToLoad(String str) { parentsToLoad.addElement(str);}
+    public void addParentToLoad(String str) { parentsToLoad.add(str);}
 
 	// Children
 	public void initChildren() {}
@@ -909,14 +909,14 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	        if (parents == null) {
 	                parents = new Vector();
 	                for (int i = 0; i < parentsToLoad.size(); i++) {
-	                        Area A = CMLib.map().getArea( (String) parentsToLoad.elementAt(i));
+	                        Area A = CMLib.map().getArea( (String) parentsToLoad.get(i));
 	                        if (A == null)
 	                                continue;
-	                        parents.addElement(A);
+	                        parents.add(A);
 	                }
 	        }
 	}
-	public Enumeration<Area> getParents() { initParents(); return parents.elements(); }
+	public Enumeration<Area> getParents() { initParents(); return new IteratorEnumeration<Area>(parents.iterator()); }
     public List<Area> getParentsRecurse()
     {
         Vector V=new Vector();
@@ -941,11 +941,11 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	}
 
 	public int getNumParents() { initParents(); return parents.size(); }
-	public Area getParent(int num) { initParents(); return (Area)parents.elementAt(num); }
+	public Area getParent(int num) { initParents(); return parents.get(num); }
 	public Area getParent(String named) {
 	        initParents();
 	        for(int i=0;i<parents.size();i++){
-	                Area A=(Area)parents.elementAt(i);
+	                Area A=(Area)parents.get(i);
 	                if((A.name().equalsIgnoreCase(named))
 	                   ||(A.Name().equalsIgnoreCase(named)))
 	                       return A;
@@ -955,7 +955,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public boolean isParent(Area named) {
 	        initParents();
 	        for(int i=0;i<parents.size();i++){
-	                Area A=(Area)parents.elementAt(i);
+	                Area A=(Area)parents.get(i);
 	                if(A.equals(named))
 	                       return true;
 	        }
@@ -964,7 +964,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public boolean isParent(String named) {
 	        initParents();
 	        for(int i=0;i<parents.size();i++){
-	                Area A=(Area)parents.elementAt(i);
+	                Area A=(Area)parents.get(i);
 	                if((A.name().equalsIgnoreCase(named))
 	                   ||(A.Name().equalsIgnoreCase(named)))
 	                        return true;
@@ -974,16 +974,16 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public void addParent(Area Adopted) {
 	        initParents();
 	        for(int i=0;i<parents.size();i++){
-	                Area A=(Area)parents.elementAt(i);
+	                Area A=(Area)parents.get(i);
 	                if(A.Name().equalsIgnoreCase(Adopted.Name())){
-	                        parents.setElementAt(Adopted, i);
+	                        parents.set(i,Adopted);
 	                        return;
 	                }
 	        }
-	        parents.addElement(Adopted);
+	        parents.add(Adopted);
 	}
-	public void removeParent(Area Disowned) { initParents();parents.removeElement(Disowned); }
-	public void removeParent(int Disowned) { initParents();parents.removeElementAt(Disowned); }
+	public void removeParent(Area Disowned) { initParents();parents.remove(Disowned); }
+	public void removeParent(int Disowned) { initParents();parents.remove(Disowned); }
 	public boolean canParent(Area newParent) {
 	    return true;
 	}

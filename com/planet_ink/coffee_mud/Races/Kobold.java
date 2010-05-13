@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class Kobold extends StdRace
 {
 	public String ID(){	return "Kobold"; }
@@ -134,7 +133,7 @@ public class Kobold extends StdRace
 				("a pile of "+name().toLowerCase()+" bones",RawMaterial.RESOURCE_BONE));
 			}
 		}
-		Vector rsc=(Vector)resources.clone();
+		Vector<RawMaterial> rsc=new XVector<RawMaterial>(resources);
 		Item meat=makeResource
 		("some "+name().toLowerCase()+" flesh",RawMaterial.RESOURCE_MEAT);
 		if((CMLib.dice().rollPercentage()<5)&&(!CMSecurity.isDisabled("AUTODISEASE")))

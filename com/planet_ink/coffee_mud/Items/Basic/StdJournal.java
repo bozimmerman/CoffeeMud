@@ -247,8 +247,8 @@ public class StdJournal extends StdItem
 											mob.tell("The journal '"+journal+"' does not presently exist.  Aborted.");
 								        else
 								        {
-											Vector journal2=CMLib.database().DBReadJournalMsgs(Name());
-											JournalsLibrary.JournalEntry entry2=(JournalsLibrary.JournalEntry)journal2.elementAt(which-1);
+								        	List<JournalsLibrary.JournalEntry> journal2=CMLib.database().DBReadJournalMsgs(Name());
+											JournalsLibrary.JournalEntry entry2=(JournalsLibrary.JournalEntry)journal2.get(which-1);
 											CMLib.database().DBDeleteJournal(Name(),entry2.key);
 											CMLib.database().DBWriteJournal(realName,
 																			  entry2.from,
@@ -414,7 +414,7 @@ public class StdJournal extends StdItem
 	public JournalsLibrary.JournalEntry DBRead(MOB reader, String Journal, int which, long lastTimeDate, boolean newOnly, boolean all)
 	{
 		StringBuffer buf=new StringBuffer("");
-		Vector journal=CMLib.database().DBReadJournalMsgs(Journal);
+		List<JournalsLibrary.JournalEntry> journal=CMLib.database().DBReadJournalMsgs(Journal);
 		boolean shortFormat=readableText().toUpperCase().indexOf("SHORTLIST")>=0;
 		if((which<0)||(journal==null)||(which>=journal.size()))
 		{
@@ -441,7 +441,7 @@ public class StdJournal extends StdItem
 		{
 			if(journal.size()>0)
 			{
-				JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)journal.firstElement();
+				JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)journal.get(0);
 				fakeEntry.key=entry.key;
 				fakeEntry.from=entry.from;
 				fakeEntry.subj=entry.subj;
@@ -449,7 +449,7 @@ public class StdJournal extends StdItem
 			Vector selections=new Vector();
 			for(int j=0;j<journal.size();j++)
 			{
-				JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)journal.elementAt(j);
+				JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)journal.get(j);
 				String from=entry.from;
 				long date=entry.date;
 				String to=entry.to;
@@ -508,7 +508,7 @@ public class StdJournal extends StdItem
 		}
 		else
 		{
-			JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)journal.elementAt(which);
+			JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)journal.get(which);
 			String from=entry.from;
 			long date=entry.date;
 			String to=entry.to;

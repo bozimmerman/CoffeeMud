@@ -77,13 +77,13 @@ public class HalfElf extends StdRace
 			outfitChoices=new Vector();
 			// Have to, since it requires use of special constructor
 			Armor s1=CMClass.getArmor("GenShirt");
-			outfitChoices.addElement(s1);
+			outfitChoices.add(s1);
 			Armor s2=CMClass.getArmor("GenShoes");
-			outfitChoices.addElement(s2);
+			outfitChoices.add(s2);
 			Armor p1=CMClass.getArmor("GenPants");
-			outfitChoices.addElement(p1);
+			outfitChoices.add(p1);
 			Armor s3=CMClass.getArmor("GenBelt");
-			outfitChoices.addElement(s3);
+			outfitChoices.add(s3);
 		}
 		return outfitChoices;
 	}

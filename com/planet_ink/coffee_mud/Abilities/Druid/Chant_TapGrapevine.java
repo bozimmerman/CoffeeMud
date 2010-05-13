@@ -42,7 +42,7 @@ public class Chant_TapGrapevine extends Chant
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
-	Vector myChants=new Vector();
+	List<Ability> myChants=new Vector();
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
@@ -61,11 +61,11 @@ public class Chant_TapGrapevine extends Chant
 	{
 		if((affected instanceof MOB)&&(myChants!=null))
 		{
-			Vector V=myChants;
+			List<Ability> V=myChants;
 			myChants=null;
 			for(int i=0;i<V.size();i++)
 			{
-				Ability A=(Ability)V.elementAt(i);
+				Ability A=(Ability)V.get(i);
 				if((A.affecting()!=null)
 				   &&(A.ID().equals(ID()))
 				   &&(A.affecting() instanceof Item))
@@ -152,12 +152,12 @@ public class Chant_TapGrapevine extends Chant
 						if(A!=null) myPlant.delEffect(A);
 						myPlant.addNonUninvokableEffect((Ability)C.copyOf());
 						A=myPlant.fetchEffect(ID());
-						if(A!=null) myChants.addElement(A);
+						if(A!=null) myChants.add(A);
 						ii++;
 						myPlant=Druid_MyPlants.myPlant(R,tapped,ii);
 					}
 				}
-				C.myChants=(Vector)myChants.clone();
+				C.myChants=new XVector<Ability>(myChants);
 				myChants=new Vector();
 			}
 

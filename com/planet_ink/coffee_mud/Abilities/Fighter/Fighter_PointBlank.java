@@ -47,12 +47,12 @@ public class Fighter_PointBlank extends FighterSkill
     public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
 	public int checkDown=4;
 
-	protected Vector<Weapon> qualifiedWeapons=new Vector<Weapon>();
+	protected List<Weapon> qualifiedWeapons=new Vector<Weapon>();
 
     protected void cloneFix(Ability E)
     {
         super.cloneFix(E);
-        qualifiedWeapons=((Vector)((Fighter_PointBlank)E).qualifiedWeapons.clone());
+        qualifiedWeapons=new XVector<Weapon>(((Fighter_PointBlank)E).qualifiedWeapons);
     }
     
     public void setMiscText(String newText)
@@ -77,7 +77,7 @@ public class Fighter_PointBlank extends FighterSkill
 				&&(!qualifiedWeapons.contains(W))
 				&&((msg.source().fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
 				{
-					qualifiedWeapons.addElement(W);
+					qualifiedWeapons.add(W);
 					Ability A=(Ability)this.copyOf();
 					A.setSavable(false);
 					W.addEffect(A);
@@ -88,7 +88,7 @@ public class Fighter_PointBlank extends FighterSkill
 					||(msg.targetMinor()==CMMsg.TYP_DROP))
 				&&(qualifiedWeapons.contains(msg.target())))
 				{
-					qualifiedWeapons.removeElement(msg.target());
+					qualifiedWeapons.remove(msg.target());
 					W.delEffect(W.fetchEffect(ID()));
 					W.recoverPhyStats();
 				}
@@ -124,7 +124,7 @@ public class Fighter_PointBlank extends FighterSkill
 					helpProficiency(mob);
 				if(!qualifiedWeapons.contains(w))
 				{
-					qualifiedWeapons.addElement((Weapon)w);
+					qualifiedWeapons.add((Weapon)w);
 					Ability A=(Ability)this.copyOf();
 					A.setSavable(false);
 					w.addEffect(A);
@@ -133,11 +133,11 @@ public class Fighter_PointBlank extends FighterSkill
 			}
 			for(int i=qualifiedWeapons.size()-1;i>=0;i--)
 			{
-				Item I=(Item)qualifiedWeapons.elementAt(i);
+				Item I=(Item)qualifiedWeapons.get(i);
 				if((I.amWearingAt(Wearable.IN_INVENTORY))
 				||(I.owner()!=affected))
 				{
-					qualifiedWeapons.removeElement(I);
+					qualifiedWeapons.remove(I);
 					I.delEffect(I.fetchEffect(ID()));
 					I.recoverPhyStats();
 				}

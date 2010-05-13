@@ -32,7 +32,6 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class Rat extends Rodent
 {
 	public String ID(){	return "Rat"; }
@@ -68,8 +67,8 @@ public class Rat extends Rodent
 					("some "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
 			}
 		}
-		Vector rsc=(Vector)resources.clone();
-		Item meat=makeResource
+		Vector<RawMaterial> rsc=new XVector<RawMaterial>(resources);
+		RawMaterial meat=makeResource
 		("some "+name().toLowerCase()+" flesh",RawMaterial.RESOURCE_MEAT);
 		if((CMLib.dice().rollPercentage()<10)&&(!CMSecurity.isDisabled("AUTODISEASE")))
 		{

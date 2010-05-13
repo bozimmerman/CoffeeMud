@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
@@ -98,12 +99,12 @@ public class Thief_TrophyCount extends ThiefSkill
 		theList.clear();
 		if((str.trim().length()>0)&&(str.trim().startsWith("<MOBS>")))
 		{
-			Vector buf=CMLib.xml().parseAllXML(str);
-			Vector V=CMLib.xml().getContentsFromPieces(buf,"MOBS");
+			List<XMLLibrary.XMLpiece> buf=CMLib.xml().parseAllXML(str);
+			List<XMLLibrary.XMLpiece> V=CMLib.xml().getContentsFromPieces(buf,"MOBS");
 			if(V!=null)
 			for(int i=0;i<V.size();i++)
 			{
-				XMLLibrary.XMLpiece ablk=(XMLLibrary.XMLpiece)V.elementAt(i);
+				XMLLibrary.XMLpiece ablk=(XMLLibrary.XMLpiece)V.get(i);
 				if(ablk.tag.equalsIgnoreCase("MOB"))
 				{
 					String[] one=new String[4];

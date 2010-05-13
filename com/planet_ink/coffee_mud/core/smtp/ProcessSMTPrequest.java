@@ -337,8 +337,8 @@ public class ProcessSMTPrequest implements Runnable
 												}
 												else
 												{
-													Hashtable<String,Vector<String>> lists=server.getMailingLists(null);
-													Vector<String> mylist=null;
+													Map<String, List<String>> lists=server.getMailingLists(null);
+													List<String> mylist=null;
 													if(lists!=null)	mylist=lists.get(journal);
 													if((mylist==null)||(!mylist.contains(from)))
 													{

@@ -214,8 +214,8 @@ public class RoomData extends StdWebMacro
 			if(allitems instanceof MOB)
 				return getItemFromCode((MOB)allitems,MATCHING);
 			else
-			if(allitems instanceof Vector)
-				return getItemFromCode((Vector)allitems,MATCHING);
+			if(allitems instanceof List)
+				return getItemFromCode((List)allitems,MATCHING);
 		}
 		else
         if(MATCHING.startsWith("CATALOG-"))

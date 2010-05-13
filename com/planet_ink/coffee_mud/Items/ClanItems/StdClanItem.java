@@ -168,11 +168,11 @@ public class StdClanItem extends StdItem implements ClanItem
 		return true;
 	}
 
-	protected static Vector loadList(StringBuffer str)
+	protected static List<List<String>> loadList(StringBuffer str)
 	{
-		Vector V=new Vector();
+		List<List<String>> V=new Vector();
 		if(str==null) return V;
-		Vector V2=new Vector();
+		List<String> V2=new Vector();
 		boolean oneComma=false;
 		int start=0;
 		int longestList=0;
@@ -180,7 +180,7 @@ public class StdClanItem extends StdItem implements ClanItem
 		{
 			if(str.charAt(i)=='\t')
 			{
-				V2.addElement(str.substring(start,i));
+				V2.add(str.substring(start,i));
 				start=i+1;
 				oneComma=true;
 			}
@@ -189,9 +189,9 @@ public class StdClanItem extends StdItem implements ClanItem
 			{
 				if(oneComma)
 				{
-					V2.addElement(str.substring(start,i));
+					V2.add(str.substring(start,i));
 					if(V2.size()>longestList) longestList=V2.size();
-					V.addElement(V2);
+					V.add(V2);
 					V2=new Vector();
 				}
 				start=i+1;
@@ -201,22 +201,22 @@ public class StdClanItem extends StdItem implements ClanItem
 		if(V2.size()>1)
 		{
 			if(oneComma)
-				V2.addElement(str.substring(start,str.length()));
+				V2.add(str.substring(start,str.length()));
 			if(V2.size()>longestList) longestList=V2.size();
-			V.addElement(V2);
+			V.add(V2);
 		}
 		for(int v=0;v<V.size();v++)
 		{
-			V2=(Vector)V.elementAt(v);
+			V2=V.get(v);
 			while(V2.size()<longestList)
-				V2.addElement("");
+				V2.add("");
 		}
 		return V;
 	}
 
-	public static synchronized Vector loadRecipes()
+	public static synchronized List<List<String>> loadRecipes()
 	{
-		Vector V=(Vector)Resources.getResource("PARSED: clancraft.txt");
+		List<List<String>> V=(List<List<String>>)Resources.getResource("PARSED: clancraft.txt");
 		if(V==null)
 		{
 			StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+"clancraft.txt",null,true).text();
@@ -380,13 +380,13 @@ public class StdClanItem extends StdItem implements ClanItem
 					M.location().show(M,myHost,CMMsg.MSG_OK_ACTION,"<T-NAME> is destroyed by <S-YOUPOSS> touch!");
 				if(C!=null)
 				{
-					Vector recipes=loadRecipes();
+					List<List<String>> recipes=loadRecipes();
 					for(int v=0;v<recipes.size();v++)
 					{
-						Vector V=(Vector)recipes.elementAt(v);
-						if((V.size()>3)&&(CMath.s_int((String)V.elementAt(3))==((ClanItem)myHost).ciType()))
+						List<String> V=recipes.get(v);
+						if((V.size()>3)&&(CMath.s_int((String)V.get(3))==((ClanItem)myHost).ciType()))
 						{
-							int exp=CMath.s_int((String)V.elementAt(6))/2;
+							int exp=CMath.s_int((String)V.get(6))/2;
 							if(exp>0)
 							{
 								C.setExp(C.getExp()+exp);

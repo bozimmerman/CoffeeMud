@@ -433,7 +433,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         Vector columnsV = parseRecipeFormatColumns(recipeFormat);
         int numberOfDataColumns = 0;
         for(int c = 0; c < columnsV.size(); c++)
-            if(columnsV.elementAt(c) instanceof Vector)
+            if(columnsV.elementAt(c) instanceof List)
                 numberOfDataColumns++;
         Vector rowsV = null;
         try {
@@ -1548,7 +1548,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             columns = parseRecipeFormatColumns(recipeFormat);
             numberOfDataColumns = 0;
             for(int c = 0; c < columns.size(); c++)
-                if(columns.elementAt(c) instanceof Vector)
+                if(columns.elementAt(c) instanceof List)
                     numberOfDataColumns++;
             dataRows = null;
             try {

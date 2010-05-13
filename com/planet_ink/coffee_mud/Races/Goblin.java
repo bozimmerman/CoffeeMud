@@ -146,15 +146,15 @@ public class Goblin extends StdRace
 			s1.setDisplayText("a small ratty tunic is folded neatly here.");
 			s1.setDescription("It is a small ratty abused little shirt.");
 			s1.text();
-			outfitChoices.addElement(s1);
+			outfitChoices.add(s1);
 			Armor p1=CMClass.getArmor("GenPants");
 			p1.setName("a cotton loincloth");
 			p1.setDisplayText("a cotton loincloth lies here");
 			p1.setDescription("Looks like little more than some rags pinned together at the corners.");
 			p1.text();
-			outfitChoices.addElement(p1);
+			outfitChoices.add(p1);
 			Armor s3=CMClass.getArmor("GenBelt");
-			outfitChoices.addElement(s3);
+			outfitChoices.add(s3);
 		}
 		return outfitChoices;
 	}

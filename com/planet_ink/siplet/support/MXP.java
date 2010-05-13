@@ -870,7 +870,7 @@ public class MXP
         if(E.name().equalsIgnoreCase("SUPPORT"))
         {
             StringBuffer supportResponse=new StringBuffer("");
-            Vector V=E.getUserParms();
+            List<String> V=E.getUserParms();
             if((V==null)||(V.size()==0))
             {
                 for(Enumeration e=elements.elements();e.hasMoreElements();)
@@ -894,7 +894,7 @@ public class MXP
             else
             for(int v=0;v<V.size();v++)
             {
-                String request=((String)V.elementAt(v)).trim().toUpperCase();
+                String request=((String)V.get(v)).trim().toUpperCase();
                 if(request.startsWith("\"")) request=request.substring(1).trim();
                 if(request.endsWith("\"")) request=request.substring(0,request.length()-1).trim();
                 if(request.startsWith("\'")) request=request.substring(1).trim();

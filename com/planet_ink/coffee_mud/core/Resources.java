@@ -86,7 +86,7 @@ public class Resources
         return "\n\r";
     }
     
-    public static Vector<String> getFileLineVector(StringBuffer buf)
+    public static List<String> getFileLineVector(StringBuffer buf)
     {
         Vector<String> V=new Vector<String>();
         if(buf==null) return V;
@@ -122,36 +122,35 @@ public class Resources
         return "resources/"+path+"/";
     }
 
-    public static void updateMultiList(String filename, Hashtable<String,Vector<String>> lists)
+    public static void updateMultiList(String filename, Map<String, List<String>> lists)
     {
         StringBuffer str=new StringBuffer("");
-        for(Enumeration<String> e=lists.keys();e.hasMoreElements();)
+        for(String ml : lists.keySet())
         {
-            String ml=(String)e.nextElement();
-            Vector<String> V=lists.get(ml);
+            List<String> V=lists.get(ml);
             str.append(ml+"\r\n");
             if(V!=null)
             for(int v=0;v<V.size();v++)
-                str.append(((String)V.elementAt(v))+"\r\n");
+                str.append(((String)V.get(v))+"\r\n");
             str.append("\r\n");
         }
         new CMFile(filename,null,false).saveText(str);
     }
 
-    public static Hashtable<String,Vector<String>> getMultiLists(String filename)
+    public static Map<String, List<String>> getMultiLists(String filename)
     {
-        Hashtable<String,Vector<String>> oldH=new Hashtable<String,Vector<String>>();
-        Vector<String> V=new Vector<String>();
+        Hashtable<String,List<String>> oldH=new Hashtable<String,List<String>>();
+        List<String> V=new Vector<String>();
         try{
             V=getFileLineVector(new CMFile("resources/"+filename,null,false).text());
         }catch(Exception e){}
         if((V!=null)&&(V.size()>0))
         {
             String journal="";
-            Vector<String> set=new Vector<String>();
+            List<String> set=new Vector<String>();
             for(int v=0;v<V.size();v++)
             {
-                String s=(String)V.elementAt(v);
+                String s=(String)V.get(v);
                 if(s.trim().length()==0)
                     journal="";
                 else
@@ -162,7 +161,7 @@ public class Resources
                     oldH.put(journal,set);
                 }
                 else
-                    set.addElement(s);
+                    set.add(s);
             }
         }
         return oldH;

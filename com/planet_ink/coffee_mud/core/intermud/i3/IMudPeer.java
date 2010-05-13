@@ -76,8 +76,8 @@ public class IMudPeer implements PersistentPeer
 				if(newobj instanceof MudList)
 					((Intermud)myobj).muds=(MudList)newobj;
 				newobj=in.readObject();
-				if(newobj instanceof Vector)
-				((Intermud)myobj).name_servers=(Vector)newobj;
+				if(newobj instanceof List)
+				((Intermud)myobj).name_servers=(List)newobj;
 			}
 			catch(Exception e){
 				//Log.errOut("IMudPeer",e.getMessage());

@@ -249,9 +249,9 @@ public class Import extends StdCommand
 	};
 
 
-    protected static String getAreaName(Vector V)
+    protected static String getAreaName(List<String> V)
 	{
-		V=(Vector)V.clone();
+		V=new XVector<String>(V);
 		// find area line first
 		String areaName="";
 		String firstLine=nextLine(V);
@@ -280,13 +280,13 @@ public class Import extends StdCommand
 		else
 		if(V.size()>1)
 		{
-			String lineAfter=(String)V.elementAt(1);
+			String lineAfter=(String)V.get(1);
 			if(lineAfter.indexOf("~")<0)
 				return "";
 			lineAfter=lineAfter.substring(0,lineAfter.length()-1);
 			if((lineAfter.indexOf(".are")>=0)&&(V.size()>2)&&(lineAfter.indexOf("@@")<0))
 			{
-				lineAfter=(String)V.elementAt(2);
+				lineAfter=(String)V.get(2);
 				if(lineAfter.indexOf("~")<0)
 					return "";
 				lineAfter=lineAfter.substring(0,lineAfter.length()-1);
@@ -409,12 +409,12 @@ public class Import extends StdCommand
 		return true;
 	}
 	
-    protected static String getAreaAuthor(Vector V)
+    protected static String getAreaAuthor(List<String> V)
 	{
-		V=(Vector)V.clone();
+		V=new XVector<String>(V);
 		for(int v=0;v<V.size();v++)
 		{
-			String s=((String)V.elementAt(v)).trim();
+			String s=((String)V.get(v)).trim();
 			if(s.toUpperCase().startsWith("#AUTHOR "))
 			{
 				s=s.substring(8).trim();
@@ -653,19 +653,19 @@ public class Import extends StdCommand
 		{"@@N","^?"}
 	};
 
-    protected static String nextLine(Vector V)
+    protected static String nextLine(List<String> V)
 	{
 		if(V.size()==0) return "";
-		return (String)V.elementAt(0);
+		return (String)V.get(0);
 	}
-    protected static String eatLine(Vector V)
+    protected static String eatLine(List<String> V)
 	{
 		if(V.size()==0) return "";
-		String s=(String)V.elementAt(0);
-		V.removeElementAt(0);
+		String s=(String)V.get(0);
+		V.remove(0);
 		return s;
 	}
-    protected static String eatNextLine(Vector V)
+    protected static String eatNextLine(List<String> V)
 	{
 		String s="";
 		while((s.trim().length()==0)&&(V.size()>0))
@@ -741,7 +741,7 @@ public class Import extends StdCommand
 		return s;
 	}
 
-    protected static String eatLineSquiggle(Vector V)
+    protected static String eatLineSquiggle(List<String> V)
 	{
 		if(V.size()==0) return "";
 		String s=eatLine(V);
@@ -1628,27 +1628,28 @@ public class Import extends StdCommand
 		return CMath.s_int(str.toString());
 	}
 
-    protected static void readBlocks(Vector buf,
-						   Vector areaData,
-						   Vector roomData,
-						   Vector mobData,
-						   Vector resetData,
-						   Vector objectData,
-						   Vector mobProgData,
-						   Vector objProgData,
-						   Vector shopData,
-						   Vector specialData,
-						   Vector socialData)
+    protected static void readBlocks(
+    					   List<String> buf,
+    					   List<String> areaData,
+						   List<String> roomData,
+						   List<String> mobData,
+						   List<String> resetData,
+						   List<String> objectData,
+						   List<String> mobProgData,
+						   List<String> objProgData,
+						   List<String> shopData,
+						   List<String> specialData,
+						   List<String> socialData)
 	{
 		Vector helpsToEat=new Vector();
 
-		Vector wasUsingThisOne=null;
-		Vector useThisOne=null;
+		List<String> wasUsingThisOne=null;
+		List<String> useThisOne=null;
 		while(buf.size()>0)
 		{
-			String s=((String)buf.elementAt(0)).toUpperCase().trim();
-			if(s.startsWith("#")&&((String)buf.elementAt(0)).startsWith(" "))
-				s=((String)buf.elementAt(0)).toUpperCase();
+			String s=((String)buf.get(0)).toUpperCase().trim();
+			if(s.startsWith("#")&&((String)buf.get(0)).startsWith(" "))
+				s=((String)buf.get(0)).toUpperCase();
 			boolean okString=true;
 			if(s.startsWith("#"))
 			{
@@ -1736,8 +1737,8 @@ public class Import extends StdCommand
 				else
 				if((importNumber(s)>0)&&(wasUsingThisOne!=null))
 				{
-					Vector V=new Vector();
-					wasUsingThisOne.addElement(V);
+					List<String> V=new Vector();
+					wasUsingThisOne.addAll(V);
 					useThisOne=V;
 				}
 				else
@@ -1760,13 +1761,13 @@ public class Import extends StdCommand
 			if(useThisOne!=null)
 			{
 				if(okString)
-					useThisOne.addElement(CMLib.coffeeFilter().safetyFilter((String)buf.elementAt(0)));
-				buf.removeElementAt(0);
+					useThisOne.add(CMLib.coffeeFilter().safetyFilter((String)buf.get(0)));
+				buf.remove(0);
 			}
 			else
 			{
 				Log.sysOut("Import","Just eating: "+s);
-				buf.removeElementAt(0);
+				buf.remove(0);
 			}
 		}
 		if(helpsToEat.size()>0)
@@ -1994,9 +1995,9 @@ public class Import extends StdCommand
 
 		for(int m=0;m<mobData.size();m++)
 		{
-			Vector objV=null;
-			if(mobData.elementAt(m) instanceof Vector)
-				objV=(Vector)mobData.elementAt(m);
+			List<String> objV=null;
+			if(mobData.elementAt(m) instanceof List)
+				objV=(List)mobData.elementAt(m);
 			else
 			if(mobData.elementAt(m) instanceof String)
 			{
@@ -2616,7 +2617,7 @@ public class Import extends StdCommand
 									returnAnError(session,"Unknown MobPrg: "+mobprg,compileErrors,commands);
 								else
 								{
-									Vector V=Resources.getFileLineVector(buf);
+									List<String> V=Resources.getFileLineVector(buf);
 									while(V.size()>0)
 									{
 										s=nextLine(V);
@@ -2966,9 +2967,9 @@ public class Import extends StdCommand
 		}
 		for(int o=0;o<objectData.size();o++)
 		{
-			Vector objV=null;
-			if(objectData.elementAt(o) instanceof Vector)
-				objV=(Vector)objectData.elementAt(o);
+			List<String> objV=null;
+			if(objectData.elementAt(o) instanceof List)
+				objV=(List)objectData.elementAt(o);
 			else
 			if(objectData.elementAt(o) instanceof String)
 			{
@@ -3529,7 +3530,7 @@ public class Import extends StdCommand
 					boolean squiggleFound=false;
 					for(int y=0;y<objV.size();y++)
 					{
-						String ts=(String)objV.elementAt(y);
+						String ts=(String)objV.get(y);
 						if(ts.indexOf("~")>=0)
 						{
 							squiggleFound=true;
@@ -3540,13 +3541,13 @@ public class Import extends StdCommand
 						   ||ts.equals("L")
 						   ||ts.equals("F"))
 						{
-							objV.insertElementAt("~",y);
+							objV.add(y,"~");
 							squiggleFound=true;
 							break;
 						}
 					}
 					if(!squiggleFound)
-						objV.addElement("~");
+						objV.add("~");
 					String desc=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
 					I.setDescription(I.description()+desc);
 					if(I.ID().equals("GenReadable"))
@@ -4056,7 +4057,7 @@ public class Import extends StdCommand
 				}
 				
                 if(CF!=null) buf=CF.textUnformatted();
-				Vector areas=new Vector();
+				List<List<XMLLibrary.XMLpiece>> areas=new Vector();
 				if(session!=null)
 					session.rawPrint("Unpacking area(s) from file: '"+areaFileName+"'...");
 				String error=CMLib.coffeeMaker().fillAreasVectorFromXML(buf.toString(),areas,custom,externalFiles);
@@ -4072,7 +4073,7 @@ public class Import extends StdCommand
 				{
 					if(session!=null)
 						session.rawPrint("Unpacking area #"+(a+1)+"/"+num+"...");
-					Vector area=(Vector)areas.firstElement();
+					List<XMLLibrary.XMLpiece> area=areas.get(0);
 					error=CMLib.coffeeMaker().unpackAreaFromXML(area,session,true);
 					if(session!=null)
 						session.rawPrintln("!");
@@ -4112,7 +4113,7 @@ public class Import extends StdCommand
 						return returnAnError(session,"An error occurred on import: "+error+"\n\rPlease correct the problem and try the import again.",compileErrors,commands);
 					else
 					{
-						areas.removeElement(area);
+						areas.remove(area);
 						a++;
 					}
 				}
@@ -4373,7 +4374,7 @@ public class Import extends StdCommand
 		}
 
 
-		Vector V=Resources.getFileLineVector(buf);
+		List<String> V=Resources.getFileLineVector(buf);
 
 		// sort the data into general blocks, and identify area
 		if(session!=null) session.println("\n\rSorting data from file '"+areaFileName+"'...");
@@ -4599,9 +4600,9 @@ public class Import extends StdCommand
 
 			for(int r=0;r<roomData.size();r++)
 			{
-				Vector roomV=null;
-				if(roomData.elementAt(r) instanceof Vector)
-					roomV=(Vector)roomData.elementAt(r);
+				List<String> roomV=null;
+				if(roomData.elementAt(r) instanceof List)
+					roomV=(List)roomData.elementAt(r);
 				else
 				if(roomData.elementAt(r) instanceof String)
 				{
@@ -4630,8 +4631,8 @@ public class Import extends StdCommand
 				R.setRoomID(plainRoomID);
 
 				if((roomV.size()>2)
-				&&(((String)roomV.elementAt(0)).trim().equals("~"))
-				&&(((String)roomV.elementAt(1)).trim().equals("~")))
+				&&(((String)roomV.get(0)).trim().equals("~"))
+				&&(((String)roomV.get(1)).trim().equals("~")))
 				{
 					eatLineSquiggle(roomV);
 					eatLineSquiggle(roomV);
@@ -4931,7 +4932,7 @@ public class Import extends StdCommand
 						R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoChannel"));
 				}
 
-				roomV.insertElementAt(R.roomID(),0);
+				roomV.add(0,R.roomID());
 				newRooms.addElement(R);
 				if(plainRoomID.startsWith("#"))
 					doneRooms.put(plainRoomID.substring(1),R);
@@ -4945,9 +4946,9 @@ public class Import extends StdCommand
 			// handle exits, mobs, objects, etc.
 			for(int r=0;r<roomData.size();r++)
 			{
-				Vector roomV=null;
-				if(roomData.elementAt(r) instanceof Vector)
-					roomV=(Vector)roomData.elementAt(r);
+				List<String> roomV=null;
+				if(roomData.elementAt(r) instanceof List)
+					roomV=(List)roomData.elementAt(r);
 				else
 					continue;
 				String roomID=eatLine(roomV);

@@ -23,6 +23,7 @@ import java.io.IOException;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.AckRecord;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalEntry;
 /* 
    Copyright 2000-2010 Bo Zimmerman
 
@@ -234,7 +235,7 @@ public class DBInterface implements DatabaseEngine
 	public void DBUpdateMessageReplies(String key, int numReplies)
 	{ JournalLoader.DBUpdateMessageReplies(key, numReplies);}
 	
-	public Vector<JournalsLibrary.JournalEntry> DBReadJournalMsgs(String Journal)
+	public List<JournalEntry> DBReadJournalMsgs(String Journal)
 	{return JournalLoader.DBReadJournalMsgs(Journal);}
 	
 	public Vector<JournalsLibrary.JournalEntry> DBReadJournalMsgsNewerThan(String Journal, String to, long olderDate)

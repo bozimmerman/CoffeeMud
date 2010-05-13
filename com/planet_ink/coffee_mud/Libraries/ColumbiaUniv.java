@@ -330,11 +330,11 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
         for(int u=0;u<completeUsageMap.length;u++)
             completeUsageMap[u]=new Hashtable();
         helpMap.clear();
-        Vector V=Resources.getFileLineVector(Resources.getFileResource("skills/expertises.txt",true));
+        List<String> V=Resources.getFileLineVector(Resources.getFileResource("skills/expertises.txt",true));
         String ID=null,WKID=null;
         for(int v=0;v<V.size();v++)
         {
-            String row=(String)V.elementAt(v);
+            String row=(String)V.get(v);
             WKID=this.confirmExpertiseLine(row,ID,true);
             if(WKID==null) continue;
             if(WKID.startsWith("Error: "))

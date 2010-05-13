@@ -39,18 +39,20 @@ public class StdRace implements Race
 {
 	public String 	ID(){	return "StdRace"; }
 	
-	private int[] 		agingChart={0,1,3,15,35,53,70,74,78};
-	protected String 	baseStatChgDesc = null;
-	protected String 	sensesChgDesc = null;
-	protected String 	dispChgDesc = null;
-	protected String 	abilitiesDesc = null;
-	protected String 	languagesDesc = null;
-	protected Weapon 	naturalWeapon=null;
-	protected Hashtable racialAbilityMap=null;
-	protected boolean 	mappedCulturalAbilities=false;
-	protected Vector 	naturalWeaponChoices=null;
-	protected Vector 	outfitChoices=null;
-	protected Hashtable racialEffectMap=null;
+	private int[] 			agingChart={0,1,3,15,35,53,70,74,78};
+	protected String 		baseStatChgDesc = null;
+	protected String 		sensesChgDesc = null;
+	protected String 		dispChgDesc = null;
+	protected String 		abilitiesDesc = null;
+	protected String 		languagesDesc = null;
+	protected Weapon 		naturalWeapon=null;
+	protected boolean 		mappedCulturalAbilities=false;
+	protected List<Item>	outfitChoices=null;
+	protected List<Weapon> 	naturalWeaponChoices=null;
+	protected Map<Integer,List<Ability>> 
+							racialAbilityMap=null;
+	protected Map<Integer,List<Ability>> 
+							racialEffectMap=null;
 	
 	public String 		name(){ return "StdRace"; }
 	protected int 		practicesAtFirstLevel(){return 0;}
@@ -382,11 +384,11 @@ public class StdRace implements Race
 					naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
 					break;
 				}
-				naturalWeaponChoices.addElement(naturalWeapon);
+				naturalWeaponChoices.add(naturalWeapon);
 			}
 		}
 		if(naturalWeaponChoices.size()>0)
-			return (Weapon)naturalWeaponChoices.elementAt(CMLib.dice().roll(1,naturalWeaponChoices.size(),-1));
+			return naturalWeaponChoices.get(CMLib.dice().roll(1,naturalWeaponChoices.size(),-1));
 		return CMClass.getWeapon("Natural");
 	}
 
@@ -560,8 +562,8 @@ public class StdRace implements Race
 			level=Integer.valueOf(Integer.MAX_VALUE);
 
 		if(racialEffectMap.containsKey(level))
-			return (Vector)racialEffectMap.get(level);
-		Vector finalV=new Vector();
+			return racialEffectMap.get(level);
+		List<Ability> finalV=new Vector();
 		for(int v=0;v<racialEffectLevels().length;v++)
 		{
 			if((racialEffectLevels()[v]<=level.intValue())
@@ -575,7 +577,7 @@ public class StdRace implements Race
 					A.setSavable(false);
 					A.setMiscText(racialEffectParms()[v]);
 					A.makeNonUninvokable();
-					finalV.addElement(A);
+					finalV.add(A);
 				}
 			}
 		}
@@ -1008,7 +1010,7 @@ public class StdRace implements Race
 		&&(racialAbilityProficiencies()!=null)
 		&&(racialAbilityQuals()!=null))
 		{
-			racialAbilityMap=new Hashtable();
+			racialAbilityMap=new Hashtable<Integer,List<Ability>>();
 			for(int i=0;i<racialAbilityNames().length;i++)
 			{
 				CMLib.ableMapper().addCharAbilityMapping(ID(),
@@ -1027,9 +1029,9 @@ public class StdRace implements Race
 		else
 			level=Integer.valueOf(Integer.MAX_VALUE);
 		if(racialAbilityMap.containsKey(level))
-			return (Vector)racialAbilityMap.get(level);
+			return racialAbilityMap.get(level);
 		DVector V=CMLib.ableMapper().getUpToLevelListings(ID(),level.intValue(),true,(mob!=null));
-		Vector finalV=new Vector();
+		List<Ability> finalV=new Vector();
 		for(int v=0;v<V.size();v++)
 		{
 			Ability A=CMClass.getAbility((String)V.elementAt(v,1));
@@ -1038,7 +1040,7 @@ public class StdRace implements Race
 				A.setProficiency(CMLib.ableMapper().getDefaultProficiency(ID(),false,A.ID()));
 				A.setSavable(false);
 				A.setMiscText(CMLib.ableMapper().getDefaultParm(ID(),false,A.ID()));
-				finalV.addElement(A);
+				finalV.add(A);
 			}
 		}
 		racialAbilityMap.put(level,finalV);

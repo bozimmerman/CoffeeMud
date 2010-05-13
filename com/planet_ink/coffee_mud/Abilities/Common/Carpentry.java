@@ -423,8 +423,8 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 
 		if(autoGenerate>0)
 		{
-			if(key!=null) commands.addElement(key);
-			commands.addElement(building);
+			if(key!=null) commands.add(key);
+			commands.add(building);
 			return true;
 		}
 

@@ -85,10 +85,10 @@ public class Spirit extends Undead
 					naturalWeapon.setWeaponType(Weapon.TYPE_BURSTING);
 					break;
 				}
-				naturalWeaponChoices.addElement(naturalWeapon);
+				naturalWeaponChoices.add(naturalWeapon);
 			}
 		}
-		return (Weapon)naturalWeaponChoices.elementAt(CMLib.dice().roll(1,naturalWeaponChoices.size(),-1));
+		return naturalWeaponChoices.get(CMLib.dice().roll(1,naturalWeaponChoices.size(),-1));
 	}
 	public Weapon myNaturalWeapon()
 	{ return funHumanoidWeapon();	}

@@ -60,7 +60,7 @@ public class GrinderMap extends GrinderFlatMap
 				if((roomID.length() > 0)&&(roomID.indexOf("#(")<0))
 				{
 					GrinderRoom GR = new GrinderRoom(roomID);
-					areaMap.addElement(GR);
+					areaMap.add(GR);
 					hashRooms.put(GR.roomID, GR);
 				}
 			}
@@ -90,7 +90,7 @@ public class GrinderMap extends GrinderFlatMap
 
 		for (int x = 0; x < areaMap.size(); x++)
 		{
-			GrinderRoom GR = (GrinderRoom) areaMap.elementAt(x);
+			GrinderRoom GR =  areaMap.get(x);
 			if (GR.xy[0] < xoffset)
 			{
 				xoffset = GR.xy[0];
@@ -111,7 +111,7 @@ public class GrinderMap extends GrinderFlatMap
 		Ybound = 0;
 		for (int x = 0; x < areaMap.size(); x++)
 		{
-			GrinderRoom room = (GrinderRoom) areaMap.elementAt(x);
+			GrinderRoom room = areaMap.get(x);
 			room.xy[0] = room.xy[0] + xoffset;
 			if (room.xy[0] > Xbound) Xbound = room.xy[0];
 			room.xy[1] = room.xy[1] + yoffset;
@@ -123,7 +123,7 @@ public class GrinderMap extends GrinderFlatMap
 		                      (Xbound + 1) + "," + (Ybound + 1) + "," + (maxZ + 1));
 		for (int y = 0; y < areaMap.size(); y++)
 		{
-			GrinderRoom room = (GrinderRoom) areaMap.elementAt(y);
+			GrinderRoom room = areaMap.get(y);
 			// this was hardcoded to look for below zero, but my zFix math
 			// often ended up with minZ >= 1
 			if(room.z<minZ)
@@ -161,7 +161,7 @@ public class GrinderMap extends GrinderFlatMap
 		{
 			for (int r = 0; r < areaMap.size(); r++)
 			{
-				GrinderRoom room = (GrinderRoom) areaMap.elementAt(r);
+				GrinderRoom room = areaMap.get(r);
 				if (room.roomID.equalsIgnoreCase(ID))
 					return room;
 			}
@@ -248,7 +248,7 @@ public class GrinderMap extends GrinderFlatMap
 
 		for (int i = 0; i < areaMap.size(); i++)
 		{
-			GrinderRoom room = (GrinderRoom) areaMap.elementAt(i);
+			GrinderRoom room = areaMap.get(i);
 			room.xy=new int[2];
 			for (int d = 0; d < Directions.NUM_DIRECTIONS(); d++)
 			{
@@ -266,7 +266,7 @@ public class GrinderMap extends GrinderFlatMap
 			doneSomething = false;
 			for (int i = 0; i < areaMap.size(); i++)
 			{
-				GrinderRoom room = (GrinderRoom) areaMap.elementAt(i);
+				GrinderRoom room = areaMap.get(i);
 				if (!processed.containsKey(room.roomID))
 				{
 					placeRoom(room, 0, 0, processed, true, true, 0, 0);
@@ -279,7 +279,7 @@ public class GrinderMap extends GrinderFlatMap
 		// some overhead, but worthwhile
 		for (int x = 0; x < areaMap.size(); x++)
 		{
-			GrinderRoom GR = (GrinderRoom) areaMap.elementAt(x);
+			GrinderRoom GR = areaMap.get(x);
             if(GR.xy==null) Log.errOut("GrinderMap",GR.roomID+" not assigned an XY!");
 			if (GR.z < minZ)
 			{
@@ -302,10 +302,10 @@ public class GrinderMap extends GrinderFlatMap
 		int updatedCount = 0;
 		for (int x = 0; x < areaMap.size(); x++)
 		{
-			GrinderRoom GR = (GrinderRoom) areaMap.elementAt(x);
+			GrinderRoom GR = areaMap.get(x);
 			int oldZ = GR.z;
 			GR.z += zFix;
-			areaMap.setElementAt(GR,x);
+			areaMap.set(x,GR);
 			if (GR.z!=oldZ) updatedCount++;
 		}
 		if (debug) Log.sysOut("GR-PLACERS", "maybe update: " + updatedCount);
@@ -595,7 +595,7 @@ public class GrinderMap extends GrinderFlatMap
 			{
 				for (int r = 0; r < areaMap.size(); r++)
 				{
-					GrinderRoom roomToBlame = (GrinderRoom) areaMap.elementAt(r);
+					GrinderRoom roomToBlame = areaMap.get(r);
 					if (roomToBlame != room)
 					{
 						for (int rd = 0; rd < Directions.NUM_DIRECTIONS(); rd++)

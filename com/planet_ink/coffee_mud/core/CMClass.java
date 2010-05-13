@@ -1004,7 +1004,7 @@ public class CMClass extends ClassLoader
             if((tCode==MudHost.MAIN_HOST)||(privacyV.contains(OBJECT_DESCS[o])))
             {
             	Object set = CMClass.getClassSet(o); 
-                if(set instanceof Vector)
+                if(set instanceof List)
                     initializeClassGroup((List)set);
                 else
                 if(set instanceof Hashtable)
@@ -1355,15 +1355,15 @@ public class CMClass extends ClassLoader
             StringBuffer str=CF.textVersion(classData);
             if((str==null)||(str.length()==0))
                 throw new ClassNotFoundException("JavaScript file "+pathName+" not readable!");
-            Vector V=Resources.getFileLineVector(str);
+            List<String> V=Resources.getFileLineVector(str);
             Class<?> extendsClass=null;
             Vector implementsClasses=new Vector();
             String overPackage=null;
             for(int v=0;v<V.size();v++)
             {
-                if((extendsClass==null)&&((String)V.elementAt(v)).trim().toUpperCase().startsWith("//EXTENDS "))
+                if((extendsClass==null)&&((String)V.get(v)).trim().toUpperCase().startsWith("//EXTENDS "))
                 {
-                    String extendName=((String)V.elementAt(v)).trim().substring(10).trim();
+                    String extendName=((String)V.get(v)).trim().substring(10).trim();
                     try{extendsClass=loadClass(extendName);}
                     catch(ClassNotFoundException e)
                     {
@@ -1371,11 +1371,11 @@ public class CMClass extends ClassLoader
                         throw e;
                     }
                 }
-                if((overPackage==null)&&((String)V.elementAt(v)).trim().toUpperCase().startsWith("//PACKAGE "))
-                    overPackage=((String)V.elementAt(v)).trim().substring(10).trim();
-                if(((String)V.elementAt(v)).toUpperCase().startsWith("//IMPLEMENTS "))
+                if((overPackage==null)&&((String)V.get(v)).trim().toUpperCase().startsWith("//PACKAGE "))
+                    overPackage=((String)V.get(v)).trim().substring(10).trim();
+                if(((String)V.get(v)).toUpperCase().startsWith("//IMPLEMENTS "))
                 {
-                    String extendName=((String)V.elementAt(v)).substring(13).trim();
+                    String extendName=((String)V.get(v)).substring(13).trim();
                     Class<?> C=null;
                     try{C=loadClass(extendName);}catch(ClassNotFoundException e){continue;}
                     implementsClasses.addElement(C);

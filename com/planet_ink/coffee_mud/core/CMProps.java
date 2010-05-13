@@ -1091,14 +1091,14 @@ public class CMProps extends Properties
         if(H==null)
         {
             H=new Hashtable<String,String>();
-            Vector<String> V=Resources.getFileLineVector(new CMFile("resources/mxp_images.ini",null,false).text());
+            List<String> V=Resources.getFileLineVector(new CMFile("resources/mxp_images.ini",null,false).text());
             if((V!=null)&&(V.size()>0))
             {
                 String s=null;
                 int x=0;
                 for(int v=0;v<V.size();v++)
                 {
-                    s=((String)V.elementAt(v)).trim();
+                    s=((String)V.get(v)).trim();
                     if(s.startsWith("//")||s.startsWith(";"))
                         continue;
                     x=s.indexOf("=");
@@ -1397,20 +1397,20 @@ public class CMProps extends Properties
         return (getIntVar(SYSTEMI_MUDTHEME)&i)>0;
     }
 
-    public static Vector<String> loadEnumerablePage(String iniFile)
+    public static List<String> loadEnumerablePage(String iniFile)
     {
         StringBuffer str=new CMFile(iniFile,null,true).text();
         if((str==null)||(str.length()==0)) return new Vector<String>();
-        Vector<String> page=Resources.getFileLineVector(str);
+        List<String> page=Resources.getFileLineVector(str);
         for(int p=0;p<(page.size()-1);p++)
         {
-            String s=((String)page.elementAt(p)).trim();
+            String s=((String)page.get(p)).trim();
             if(s.startsWith("#")||s.startsWith("!")) continue;
             if((s.endsWith("\\"))&&(!s.endsWith("\\\\")))
             {
-                s=s.substring(0,s.length()-1)+((String)page.elementAt(p+1)).trim();
-                page.removeElementAt(p+1);
-                page.setElementAt(s,p);
+                s=s.substring(0,s.length()-1)+((String)page.get(p+1)).trim();
+                page.remove(p+1);
+                page.set(p,s);
                 p=p-1;
             }
         }

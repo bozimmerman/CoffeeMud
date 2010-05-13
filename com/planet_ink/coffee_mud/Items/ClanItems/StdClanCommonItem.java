@@ -100,37 +100,37 @@ public class StdClanCommonItem extends StdClanItem
         return here;
     }
     
-    public Vector resourceHere(Room R, Vector materials)
+    public List resourceHere(Room R, List materials)
     {
-        Vector allMat=new Vector();
-        Vector V=null;
+    	List allMat=new Vector();
+    	List V=null;
         for(int m=0;m<materials.size();m++)
         {
-            V=resourceHere(R,((Integer)materials.elementAt(m)).intValue());
+            V=resourceHere(R,((Integer)materials.get(m)).intValue());
             for(int v=0;v<V.size();v++)
-                allMat.addElement(V.elementAt(v));
+                allMat.add(V.get(v));
             V.clear();
         }
         return allMat;
     }
-    public Vector resourceHere(MOB M, Vector materials)
+    public List resourceHere(MOB M, List materials)
     {
-        Vector allMat=new Vector();
-        Vector V=null;
+    	List allMat=new Vector();
+    	List V=null;
         for(int m=0;m<materials.size();m++)
         {
-            V=resourceHere(M,((Integer)materials.elementAt(m)).intValue());
+            V=resourceHere(M,((Integer)materials.get(m)).intValue());
             for(int v=0;v<V.size();v++)
-                allMat.addElement(V.elementAt(v));
+                allMat.add(V.get(v));
             V.clear();
         }
         return allMat;
     }
     
-    public Vector enCode(MOB M, String req)
+    public List enCode(MOB M, String req)
     {
         req=req.toUpperCase();
-        Vector V=new Vector();
+        List V=new Vector();
         for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
         {
             int x=req.indexOf(RawMaterial.MATERIAL_DESCS[i]);
@@ -140,7 +140,7 @@ public class StdClanCommonItem extends StdClanItem
             if(((x+RawMaterial.MATERIAL_DESCS[i].length())<req.length())
             &&Character.isLetter(req.charAt((x+RawMaterial.MATERIAL_DESCS[i].length()))))
                 continue;
-            V.addElement(Integer.valueOf(i<<8));
+            V.add(Integer.valueOf(i<<8));
         }
         RawMaterial.CODES codes = RawMaterial.CODES.instance();
         for(int s=0;s<codes.total();s++)
@@ -153,12 +153,12 @@ public class StdClanCommonItem extends StdClanItem
             if(((x+S.length())<req.length())
             &&Character.isLetter(req.charAt((x+S.length()))))
                 continue;
-            V.addElement(Integer.valueOf(codes.get(s)));
+            V.add(Integer.valueOf(codes.get(s)));
         }
         if((M.location()!=null)
         &&(V.contains(Integer.valueOf(RawMaterial.MATERIAL_METAL)))
         &&(resourceHere(M.location(),RawMaterial.MATERIAL_WOODEN).size()==0))
-            V.addElement(Integer.valueOf(RawMaterial.MATERIAL_WOODEN));
+            V.add(Integer.valueOf(RawMaterial.MATERIAL_WOODEN));
         return V;
     }
 
@@ -236,7 +236,7 @@ public class StdClanCommonItem extends StdClanItem
                         DVector DV=(DVector)needChart.get(M.location().getArea());
                         if(DV!=null)
                         {
-                            Vector needs=null;
+                        	List needs=null;
                             MOB M2=null;
                             boolean getToWork=false;
                             if(A.ID().equalsIgnoreCase("FireBuilding"))
@@ -246,7 +246,7 @@ public class StdClanCommonItem extends StdClanItem
                                 {
                                     try{
                                         int rand=i;
-                                        needs=(Vector)DV.elementAt(rand,2);
+                                        needs=(List)DV.elementAt(rand,2);
                                         M2=(MOB)DV.elementAt(rand,1);
                                     }catch(Exception e){continue;}
                                     if((needs!=null)&&(M2!=null)
@@ -271,14 +271,14 @@ public class StdClanCommonItem extends StdClanItem
                                     return true;
                                 }
                             }
-                            Vector rsc=null;
+                            List rsc=null;
                             // if I have the stuff on hand.
                             if(!getToWork)
                             for(int i=DV.size()-1;i>=0;i--)
                             {
                                 try{
                                     int rand=i;
-                                    needs=(Vector)DV.elementAt(rand,2);
+                                    needs=(List)DV.elementAt(rand,2);
                                     M2=(MOB)DV.elementAt(rand,1);
                                     if(!CMLib.flags().isInTheGame(M2,true))
                                     {
@@ -293,7 +293,7 @@ public class StdClanCommonItem extends StdClanItem
                                     if(rsc.size()>0)
                                     {
                                         for(int r=0;r<rsc.size();r++)
-                                            CMLib.commands().postDrop(M,(Environmental)rsc.elementAt(r),false,true);
+                                            CMLib.commands().postDrop(M,(Environmental)rsc.get(r),false,true);
                                         return true;
                                     }
                                 }
@@ -303,7 +303,7 @@ public class StdClanCommonItem extends StdClanItem
                             {
                                 try{
                                     int rand=CMLib.dice().roll(1,DV.size(),-1);
-                                    needs=(Vector)DV.elementAt(rand,2);
+                                    needs=(List)DV.elementAt(rand,2);
                                     M2=(MOB)DV.elementAt(rand,1);
                                 }catch(Exception e){continue;}
                                 if((needs!=null)&&(M2!=null)
@@ -320,7 +320,7 @@ public class StdClanCommonItem extends StdClanItem
                             {
                                 try{
                                     int rand=CMLib.dice().roll(1,DV.size(),-1);
-                                    needs=(Vector)DV.elementAt(rand,2);
+                                    needs=(List)DV.elementAt(rand,2);
                                     M2=(MOB)DV.elementAt(rand,1);
                                 }catch(Exception e){continue;}
                                 if((needs!=null)&&(M2!=null)
@@ -330,7 +330,7 @@ public class StdClanCommonItem extends StdClanItem
                                     if(rsc.size()>0)
                                     {
                                         for(int r=0;r<rsc.size();r++)
-                                            CMLib.commands().postGet(M,null,(Item)rsc.elementAt(r),false);
+                                            CMLib.commands().postGet(M,null,(Item)rsc.get(r),false);
                                         if(trackTo(M,M2))
                                             return true;
                                     }

@@ -35,38 +35,40 @@ import java.util.*;
 public class StdDeity extends StdMOB implements Deity
 {
 	public String ID(){return "StdDeity";}
-	protected int xpwrath=100;
-	protected String clericReqs="";
-	protected String worshipReqs="";
-    protected String serviceRitual="";
-	protected String clericRitual="";
-	protected String clericSin="";
-	protected String clericPowerup="";
-	protected String worshipRitual="";
-	protected String worshipSin="";
-	protected Vector worshipTriggers=new Vector();
-	protected Vector worshipCurseTriggers=new Vector();
-	protected Vector clericTriggers=new Vector();
-    protected Vector serviceTriggers=new Vector();
-	protected Vector clericPowerTriggers=new Vector();
-	protected Vector clericCurseTriggers=new Vector();
-	protected DVector blessings=new DVector(2);
-	protected DVector curses=new DVector(2);
-	protected Vector powers=new Vector();
-	protected Hashtable trigBlessingParts=new Hashtable();
-	protected Hashtable trigBlessingTimes=new Hashtable();
-	protected Hashtable trigPowerParts=new Hashtable();
-	protected Hashtable trigPowerTimes=new Hashtable();
-	protected Hashtable trigCurseParts=new Hashtable();
-	protected Hashtable trigCurseTimes=new Hashtable();
-    protected Hashtable trigServiceParts=new Hashtable();
-    protected Hashtable trigServiceTimes=new Hashtable();
-    protected Vector<WorshipService> services=new Vector<WorshipService>();
-	protected int rebukeCheckDown=0;
-	protected boolean norecurse=false;
-    protected MOB blacklist=null;
-    protected int blackmarks=0;
-    protected long lastBlackmark=0;
+	
+	protected int 		xpwrath=100;
+	protected String 	clericReqs="";
+	protected String 	worshipReqs="";
+    protected String 	serviceRitual="";
+	protected String 	clericRitual="";
+	protected String 	clericSin="";
+	protected String 	clericPowerup="";
+	protected String 	worshipRitual="";
+	protected String 	worshipSin="";
+	protected int 		rebukeCheckDown=0;
+	protected boolean 	norecurse=false;
+    protected MOB 		blacklist=null;
+    protected int 		blackmarks=0;
+    protected long 		lastBlackmark=0;
+    
+	protected List<DeityTrigger> 	worshipTriggers=new Vector<DeityTrigger>();
+	protected List<DeityTrigger> 	worshipCurseTriggers=new Vector<DeityTrigger>();
+	protected List<DeityTrigger> 	clericTriggers=new Vector<DeityTrigger>();
+    protected List<DeityTrigger> 	serviceTriggers=new Vector<DeityTrigger>();
+	protected List<DeityTrigger> 	clericPowerTriggers=new Vector<DeityTrigger>();
+	protected List<DeityTrigger> 	clericCurseTriggers=new Vector<DeityTrigger>();
+	protected List<DeityPower> 	 	blessings=new Vector<DeityPower>();
+	protected List<DeityPower>	 	curses=new Vector<DeityPower>();
+	protected List<Ability> 	 	powers=new Vector<Ability>();
+	protected Map<String,boolean[]> trigBlessingParts=new Hashtable();
+	protected Map<String,Long> 		trigBlessingTimes=new Hashtable();
+	protected Map<String,boolean[]> trigPowerParts=new Hashtable();
+	protected Map<String,Long> 		trigPowerTimes=new Hashtable();
+	protected Map<String,boolean[]> trigCurseParts=new Hashtable();
+	protected Map<String,Long> 		trigCurseTimes=new Hashtable();
+    protected Map<String,boolean[]> trigServiceParts=new Hashtable();
+    protected Map<String,Long> 		trigServiceTimes=new Hashtable();
+    protected List<WorshipService> 	services=new Vector<WorshipService>();
     protected Vector waitingFor=new Vector();
 
 	public StdDeity()
@@ -84,13 +86,21 @@ public class StdDeity extends StdMOB implements Deity
 		recoverPhyStats();
 	}
 	
-	private class WorshipService
+	private static class WorshipService
 	{
-		MOB cleric = null;
-		Room room = null;
-		boolean serviceCompleted = false;
-		long startTime = System.currentTimeMillis();
-		Vector<MOB> parishaners = new Vector<MOB>();
+		public MOB cleric = null;
+		public Room room = null;
+		public boolean serviceCompleted = false;
+		public long startTime = System.currentTimeMillis();
+		public List<MOB> parishaners = new Vector<MOB>();
+	}
+
+	private static class DeityPower
+	{
+		public Ability power;
+		public boolean clericOnly;
+		public DeityPower(Ability A, boolean clericsOnly)
+		{ power=A; clericOnly=clericsOnly;}
 	}
 
     protected void cloneFix(MOB E)
@@ -98,22 +108,22 @@ public class StdDeity extends StdMOB implements Deity
         super.cloneFix(E);
         if(E instanceof StdDeity)
         {
-            worshipTriggers=(Vector)((StdDeity)E).worshipTriggers.clone();
-            worshipCurseTriggers=(Vector)((StdDeity)E).worshipCurseTriggers.clone();
-            clericTriggers=(Vector)((StdDeity)E).clericTriggers.clone();
-            clericPowerTriggers=(Vector)((StdDeity)E).clericPowerTriggers.clone();
-            clericCurseTriggers=(Vector)((StdDeity)E).clericCurseTriggers.clone();
-            blessings=(DVector)((StdDeity)E).blessings.copyOf();
-            curses=(DVector)((StdDeity)E).curses.copyOf();
-            powers=(Vector)((StdDeity)E).powers.clone();
-            trigBlessingParts=(Hashtable)((StdDeity)E).trigBlessingParts.clone();
-            trigBlessingTimes=(Hashtable)((StdDeity)E).trigBlessingTimes.clone();
-            trigPowerParts=(Hashtable)((StdDeity)E).trigPowerParts.clone();
-            trigPowerTimes=(Hashtable)((StdDeity)E).trigPowerTimes.clone();
-            trigCurseParts=(Hashtable)((StdDeity)E).trigCurseParts.clone();
-            trigCurseTimes=(Hashtable)((StdDeity)E).trigCurseTimes.clone();
-            trigServiceParts=(Hashtable)((StdDeity)E).trigServiceParts.clone();
-            trigServiceTimes=(Hashtable)((StdDeity)E).trigServiceTimes.clone();
+            worshipTriggers=new XVector<DeityTrigger>(((StdDeity)E).worshipTriggers);
+            worshipCurseTriggers=new XVector<DeityTrigger>(((StdDeity)E).worshipCurseTriggers);
+            clericTriggers=new XVector<DeityTrigger>(((StdDeity)E).clericTriggers);
+            clericPowerTriggers=new XVector<DeityTrigger>(((StdDeity)E).clericPowerTriggers);
+            clericCurseTriggers=new XVector<DeityTrigger>(((StdDeity)E).clericCurseTriggers);
+            blessings=new XVector<DeityPower>(((StdDeity)E).blessings);
+            curses=new XVector<DeityPower>(((StdDeity)E).curses);
+            powers=new XVector(((StdDeity)E).powers);
+            trigBlessingParts=new XHashtable<String,boolean[]>(((StdDeity)E).trigBlessingParts);
+            trigBlessingTimes=new XHashtable<String,Long>(((StdDeity)E).trigBlessingTimes);
+            trigPowerParts=new XHashtable<String,boolean[]>(((StdDeity)E).trigPowerParts);
+            trigPowerTimes=new XHashtable<String,Long>(((StdDeity)E).trigPowerTimes);
+            trigCurseParts=new XHashtable<String,boolean[]>(((StdDeity)E).trigCurseParts);
+            trigCurseTimes=new XHashtable<String,Long>(((StdDeity)E).trigCurseTimes);
+            trigServiceParts=new XHashtable<String,boolean[]>(((StdDeity)E).trigServiceParts);
+            trigServiceTimes=new XHashtable<String,Long>(((StdDeity)E).trigServiceTimes);
         }
     }
 
@@ -144,13 +154,13 @@ public class StdDeity extends StdMOB implements Deity
         parseTriggers(serviceTriggers,ritual);
     }
 
-	public String getTriggerDesc(Vector V)
+	public String getTriggerDesc(List<DeityTrigger> V)
 	{
 		if((V==null)||(V.size()==0)) return "Never";
 		StringBuffer buf=new StringBuffer("");
 		for(int v=0;v<V.size();v++)
 		{
-			DeityTrigger DT=(DeityTrigger)V.elementAt(v);
+			DeityTrigger DT=(DeityTrigger)V.get(v);
 			if(v>0) buf.append(", "+((DT.previousConnect==CONNECT_AND)?"and ":"or "));
 			switch(DT.triggerCode)
 			{
@@ -597,15 +607,15 @@ public class StdDeity extends StdMOB implements Deity
 	}
 
 	public boolean triggerCheck(CMMsg msg,
-							    Vector V,
-							    Hashtable trigParts,
-							    Hashtable trigTimes)
+							    List<DeityTrigger> V,
+							    Map<String, boolean[]> trigParts,
+							    Map<String, Long> trigTimes)
 	{
 		boolean recheck=false;
 		for(int v=0;v<V.size();v++)
 		{
 			boolean yup=false;
-			DeityTrigger DT=(DeityTrigger)V.elementAt(v);
+			DeityTrigger DT=(DeityTrigger)V.get(v);
 			if((msg.sourceMinor()==TRIG_WATCH[DT.triggerCode])
 			||(TRIG_WATCH[DT.triggerCode]==-999))
 			{
@@ -873,7 +883,7 @@ public class StdDeity extends StdMOB implements Deity
 		{
 			if(numBlessings()>0)
 			{
-				Vector V=worshipTriggers;
+				List<DeityTrigger> V=worshipTriggers;
 				if(msg.source().charStats().getCurrentClass().baseClass().equals("Cleric"))
 					V=clericTriggers;
 				if((V!=null)&&(V.size()>0))
@@ -888,7 +898,7 @@ public class StdDeity extends StdMOB implements Deity
 							boolean rollingTruth=checks[0];
 							for(int v=1;v<V.size();v++)
 							{
-								DeityTrigger DT=(DeityTrigger)V.elementAt(v);
+								DeityTrigger DT=(DeityTrigger)V.get(v);
 								if(DT.previousConnect==CONNECT_AND)
 									rollingTruth=rollingTruth&&checks[v];
 								else
@@ -902,7 +912,7 @@ public class StdDeity extends StdMOB implements Deity
 			}
 			if(numCurses()>0)
 			{
-				Vector V=worshipCurseTriggers;
+				List<DeityTrigger> V=worshipCurseTriggers;
 				if(msg.source().charStats().getCurrentClass().baseClass().equals("Cleric"))
 					V=clericCurseTriggers;
 				if((V!=null)&&(V.size()>0))
@@ -916,7 +926,7 @@ public class StdDeity extends StdMOB implements Deity
 							boolean rollingTruth=checks[0];
 							for(int v=1;v<V.size();v++)
 							{
-								DeityTrigger DT=(DeityTrigger)V.elementAt(v);
+								DeityTrigger DT=(DeityTrigger)V.get(v);
 								if(DT.previousConnect==CONNECT_AND)
 									rollingTruth=rollingTruth&&checks[v];
 								else
@@ -932,7 +942,7 @@ public class StdDeity extends StdMOB implements Deity
             &&(msg.source().charStats().getCurrentClass().baseClass().equals("Cleric")
                 ||(CMSecurity.isASysOp(msg.source()))))
 			{
-				Vector V=clericPowerTriggers;
+				List<DeityTrigger> V=clericPowerTriggers;
 				if((V!=null)&&(V.size()>0))
 				{
 					boolean recheck=triggerCheck(msg,V,trigPowerParts,trigPowerTimes);
@@ -945,7 +955,7 @@ public class StdDeity extends StdMOB implements Deity
 							boolean rollingTruth=checks[0];
 							for(int v=1;v<V.size();v++)
 							{
-								DeityTrigger DT=(DeityTrigger)V.elementAt(v);
+								DeityTrigger DT=(DeityTrigger)V.get(v);
 								if(DT.previousConnect==CONNECT_AND)
 									rollingTruth=rollingTruth&&checks[v];
 								else
@@ -962,7 +972,7 @@ public class StdDeity extends StdMOB implements Deity
                 ||(CMSecurity.isASysOp(msg.source())))
             &&(CMLib.law().getClericInfused(msg.source().location())==this))
             {
-                Vector V=serviceTriggers;
+            	List<DeityTrigger> V=serviceTriggers;
 				if((V!=null)&&(V.size()>0))
 				{
 	                boolean recheck=triggerCheck(msg,V,trigServiceParts,trigServiceTimes);
@@ -975,7 +985,7 @@ public class StdDeity extends StdMOB implements Deity
 	                        boolean rollingTruth=checks[0];
 	                        for(int v=1;v<V.size();v++)
 	                        {
-	                            DeityTrigger DT=(DeityTrigger)V.elementAt(v);
+	                            DeityTrigger DT=(DeityTrigger)V.get(v);
 	                            if(rollingTruth) startServiceIfNecessary(msg.source(),msg.source().location());
 	                            if(DT.previousConnect==CONNECT_AND)
 	                                rollingTruth=rollingTruth&&checks[v];
@@ -1041,13 +1051,13 @@ public class StdDeity extends StdMOB implements Deity
         }
     }
 
-    protected void undoService(Vector<MOB> V)
+    protected void undoService(List<MOB> V)
     {
         MOB M=null;
         Ability A=null;
         for(int m=V.size()-1;m>=0;m--)
         {
-            M=(MOB)V.elementAt(m);
+            M=(MOB)V.get(m);
             if(M==null) continue;
             A=M.fetchEffect("Skill_Track");
             if(A!=null) A.unInvoke();
@@ -1062,11 +1072,11 @@ public class StdDeity extends StdMOB implements Deity
         {
             for(int d=services.size()-1;d>=0;d--)
             {
-            	WorshipService service = services.elementAt(d);
+            	WorshipService service = services.get(d);
                 if(System.currentTimeMillis()-service.startTime>(1000*60*30))
                 {
                     undoService(service.parishaners);
-                    services.removeElementAt(d);
+                    services.remove(d);
                     Ability A=CMLib.law().getClericInfusion(service.room);
                     if(A!=null) A.setAbilityCode(0);
                 }
@@ -1225,10 +1235,8 @@ public class StdDeity extends StdMOB implements Deity
 			}
 			long curTime=System.currentTimeMillis()-60000;
             Long L=null;
-            String key=null;
-			for(Enumeration e=trigBlessingTimes.keys();e.hasMoreElements();)
+			for(String key : trigBlessingTimes.keySet())
 			{
-				key=(String)e.nextElement();
 				L=(Long)trigBlessingTimes.get(key);
 				if((L!=null)&&(L.longValue()<curTime))
 				{
@@ -1236,9 +1244,8 @@ public class StdDeity extends StdMOB implements Deity
 					trigBlessingParts.remove(key);
 				}
 			}
-			for(Enumeration e=trigPowerTimes.keys();e.hasMoreElements();)
+			for(String key : trigPowerTimes.keySet())
 			{
-				key=(String)e.nextElement();
 				L=(Long)trigPowerTimes.get(key);
                 if((L!=null)&&(L.longValue()<curTime))
 				{
@@ -1246,19 +1253,17 @@ public class StdDeity extends StdMOB implements Deity
 					trigPowerParts.remove(key);
 				}
 			}
-			for(Enumeration e=trigCurseTimes.keys();e.hasMoreElements();)
+			for(String key : trigCurseTimes.keySet())
 			{
-                key=(String)e.nextElement();
-                L=(Long)trigPowerTimes.get(key);
+                L=(Long)trigCurseTimes.get(key);
                 if((L!=null)&&(L.longValue()<curTime))
 				{
 					trigCurseTimes.remove(key);
 					trigCurseParts.remove(key);
 				}
 			}
-            for(Enumeration e=trigServiceTimes.keys();e.hasMoreElements();)
+			for(String key : trigServiceTimes.keySet())
             {
-                key=(String)e.nextElement();
                 L=(Long)trigServiceTimes.get(key);
                 if((L!=null)&&(L.longValue()<curTime))
                 {
@@ -1302,11 +1307,11 @@ public class StdDeity extends StdMOB implements Deity
 			if((A!=null)&&(A.ID().equals(to.ID())))
 				return;
 		}
-		blessings.addElement(to,Boolean.valueOf(clericOnly));
+		blessings.add(new DeityPower(to,clericOnly));
 	}
 	public void delBlessing(Ability to)
 	{
-		blessings.removeElement(to);
+		blessings.remove(to);
 	}
 	public int numBlessings()
 	{
@@ -1316,7 +1321,7 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		try
 		{
-			return (Ability)blessings.elementAt(index,1);
+			return blessings.get(index).power;
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
@@ -1325,7 +1330,7 @@ public class StdDeity extends StdMOB implements Deity
     {
         try
         {
-            return ((Boolean)blessings.elementAt(index,2)).booleanValue();
+            return blessings.get(index).clericOnly;
         }
         catch(java.lang.ArrayIndexOutOfBoundsException x){}
         return false;
@@ -1348,10 +1353,12 @@ public class StdDeity extends StdMOB implements Deity
 			if((A!=null)&&((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID))))
 				return A;
 		}
-		return (Ability)CMLib.english().fetchEnvironmental(blessings.getDimensionVector(1),ID,false);
+		return (Ability)CMLib.english().fetchEnvironmental(new ConvertingList<DeityPower,Ability>(blessings,new Converter<DeityPower,Ability>(){
+			public Ability convert(DeityPower obj) { return obj.power;}
+		}),ID,false);
 	}
 
-    protected void parseTriggers(Vector putHere, String trigger)
+    protected void parseTriggers(List<DeityTrigger> putHere, String trigger)
 	{
 		putHere.clear();
 		trigger=trigger.toUpperCase().trim();
@@ -1594,7 +1601,7 @@ public class StdDeity extends StdMOB implements Deity
 						Log.errOut("StdDeity",Name()+"- Illegal trigger: '"+cmd+"','"+trig+"'");
 						break;
 					}
-					putHere.addElement(DT);
+					putHere.add(DT);
 				}
 				else
 				{
@@ -1681,11 +1688,11 @@ public class StdDeity extends StdMOB implements Deity
 			if((A!=null)&&(A.ID().equals(to.ID())))
 				return;
 		}
-		curses.addElement(to, Boolean.valueOf(clericOnly));
+		curses.add(new DeityPower(to,clericOnly));
 	}
 	public void delCurse(Ability to)
 	{
-		curses.removeElement(to);
+		curses.remove(to);
 	}
 	public int numCurses()
 	{
@@ -1695,7 +1702,7 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		try
 		{
-			return (Ability)curses.elementAt(index,1);
+			return curses.get(index).power;
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
@@ -1708,14 +1715,16 @@ public class StdDeity extends StdMOB implements Deity
 			if((A!=null)&&((A.ID().equalsIgnoreCase(ID))||(A.Name().equalsIgnoreCase(ID))))
 				return A;
 		}
-		return (Ability)CMLib.english().fetchEnvironmental(curses.getDimensionVector(1),ID,false);
+		return (Ability)CMLib.english().fetchEnvironmental(new ConvertingList<DeityPower,Ability>(curses,new Converter<DeityPower,Ability>(){
+			public Ability convert(DeityPower obj) { return obj.power;}
+		}),ID,false);
 	}
 
     public boolean fetchCurseCleric(int index)
     {
         try
         {
-            return ((Boolean)curses.elementAt(index,2)).booleanValue();
+            return curses.get(index).clericOnly;
         }
         catch(java.lang.ArrayIndexOutOfBoundsException x){}
         return false;
@@ -1771,11 +1780,11 @@ public class StdDeity extends StdMOB implements Deity
 			if((A!=null)&&(A.ID().equals(to.ID())))
 				return;
 		}
-		powers.addElement(to);
+		powers.add(to);
 	}
 	public void delPower(Ability to)
 	{
-		powers.removeElement(to);
+		powers.remove(to);
 	}
 	public int numPowers()
 	{
@@ -1785,7 +1794,7 @@ public class StdDeity extends StdMOB implements Deity
 	{
 		try
 		{
-			return (Ability)powers.elementAt(index);
+			return powers.get(index);
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;

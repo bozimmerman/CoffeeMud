@@ -82,7 +82,7 @@ public class CommandJournal extends StdCommand
             return true;
         }
         int count=CMath.s_int(second);
-        Vector journal=CMLib.database().DBReadJournalMsgs(journalID);
+        List<JournalsLibrary.JournalEntry> journal=CMLib.database().DBReadJournalMsgs(journalID);
         int size=0;
         if(journal!=null) size=journal.size();
         if(size<=0)
@@ -115,8 +115,8 @@ public class CommandJournal extends StdCommand
             mob.tell(rest+" is not a journal");
             return true;
         }
-        Vector journal2=CMLib.database().DBReadJournalMsgs(journalID);
-        JournalsLibrary.JournalEntry entry2=(JournalsLibrary.JournalEntry)journal2.elementAt(count-1);
+        List<JournalsLibrary.JournalEntry> journal2=CMLib.database().DBReadJournalMsgs(journalID);
+        JournalsLibrary.JournalEntry entry2=(JournalsLibrary.JournalEntry)journal2.get(count-1);
         String from2=entry2.from;
         String to=(String)entry2.to;
         String subject=(String)entry2.subj;
@@ -153,7 +153,7 @@ public class CommandJournal extends StdCommand
             mob.tell("This feature has been disabled.");
         else
         {
-            Vector journal=CMLib.database().DBReadJournalMsgs(journalID);
+        	List<JournalsLibrary.JournalEntry> journal=CMLib.database().DBReadJournalMsgs(journalID);
             int size=0;
             if(journal!=null) size=journal.size();
             if(size<=0)

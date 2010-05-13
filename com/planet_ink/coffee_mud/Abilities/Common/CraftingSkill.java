@@ -260,9 +260,9 @@ public class CraftingSkill extends GatheringSkill
 		return V;
 	}
 
-	protected Vector loadRecipes(String filename)
+	protected List<List<String>> loadRecipes(String filename)
     {
-        Vector V=(Vector)Resources.getResource("PARSED: "+filename);
+		List<List<String>> V=(List<List<String>>)Resources.getResource("PARSED: "+filename);
         if(V==null)
         {
             StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,true).text();
@@ -448,26 +448,26 @@ public class CraftingSkill extends GatheringSkill
             int maxtries=100;
             while((++tries)<maxtries)
             {
-    			Vector randomRecipe=(Vector)recipes.get(CMLib.dice().roll(1,recipes.size(),-1));
+    			List<String> randomRecipe=recipes.get(CMLib.dice().roll(1,recipes.size(),-1));
                 boolean proceed=true;
                 if((randomRecipe.size()>1))
                 {
                     int levelIndex=-1;
                     for(int i=1;i<randomRecipe.size();i++)
                     {
-                        if(CMath.isInteger((String)randomRecipe.elementAt(i)))
+                        if(CMath.isInteger((String)randomRecipe.get(i)))
                         {
                             levelIndex=i;
                             break;
                         }
                     }
                     if((levelIndex>0)
-                    &&(xlevel(mob)<CMath.s_int((String)randomRecipe.elementAt(levelIndex))))
+                    &&(xlevel(mob)<CMath.s_int((String)randomRecipe.get(levelIndex))))
                         proceed=false;
                 }
                 if((proceed)||(tries==(maxtries-1)))
                 {
-        			commands.addElement(randomRecipe.firstElement());
+        			commands.addElement(randomRecipe.get(0));
                     break;
                 }
             }

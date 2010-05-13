@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Common;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLpiece;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -496,7 +497,7 @@ public class DefaultPlayerStats implements PlayerStats
 		}
 	}
 	
-	private void setAliasXML(Vector<XMLLibrary.XMLpiece> xml)
+	private void setAliasXML(List<XMLpiece> xml)
 	{
         alias.clear();
         int a=-1;
@@ -510,7 +511,7 @@ public class DefaultPlayerStats implements PlayerStats
         }
 	}
 	
-	private void setTitleXML(Vector<XMLLibrary.XMLpiece> xml)
+	private void setTitleXML(List<XMLpiece> xml)
 	{
 		titles.clear();
 		int t=-1;
@@ -529,7 +530,7 @@ public class DefaultPlayerStats implements PlayerStats
 		account = null;
 		if(str==null) 
 			return;
-		Vector<XMLLibrary.XMLpiece> xml = CMLib.xml().parseAllXML(str);
+		List<XMLLibrary.XMLpiece> xml = CMLib.xml().parseAllXML(str);
 		friends=getHashFrom(CMLib.xml().getValFromPieces(xml,"FRIENDS"));
 		ignored=getHashFrom(CMLib.xml().getValFromPieces(xml,"IGNORED"));
         introductions=getHashFrom(CMLib.xml().getValFromPieces(xml,"INTROS"));

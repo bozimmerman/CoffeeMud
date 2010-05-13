@@ -129,11 +129,11 @@ public class BribeGateGuard extends StdBehavior
 		// return the balance in int form
 		if(surviveReboot)
 		{
-			Vector V =CMLib.database().DBReadJournalMsgs("BRIBEGATE_"+gates());
+			List<JournalsLibrary.JournalEntry> V =CMLib.database().DBReadJournalMsgs("BRIBEGATE_"+gates());
 			Vector mine = new Vector();
 			for (int v = 0; v < V.size(); v++)
 			{
-				JournalsLibrary.JournalEntry V2 =(JournalsLibrary.JournalEntry)V.elementAt(v);
+				JournalsLibrary.JournalEntry V2 =(JournalsLibrary.JournalEntry)V.get(v);
 				if ( ( V2.from.equalsIgnoreCase(mob.Name())))
 				{
 					mine.addElement(V2);
@@ -200,11 +200,11 @@ public class BribeGateGuard extends StdBehavior
 		// kill the journal entries for that mob
 		if(surviveReboot)
 		{
-			Vector V = CMLib.database().DBReadJournalMsgs("BRIBEGATE_"+gates());
+			List<JournalsLibrary.JournalEntry> V = CMLib.database().DBReadJournalMsgs("BRIBEGATE_"+gates());
 			Vector mine = new Vector();
 			for (int v = 0; v < V.size(); v++)
 			{
-				JournalsLibrary.JournalEntry V2 = (JournalsLibrary.JournalEntry)V.elementAt(v);
+				JournalsLibrary.JournalEntry V2 = (JournalsLibrary.JournalEntry)V.get(v);
 				if ( ( V2.from).equalsIgnoreCase(mob.Name())) {
 				  mine.addElement(V2);
 				}

@@ -129,7 +129,7 @@ public class MOBloader
                     stats.setStat(CharStats.STAT_AGE,
                         pstats.initializeBirthday((int)Math.round(CMath.div(mob.getAgeHours(),60.0)),stats.getMyRace()));
                 mob.setImage(CMLib.xml().returnXMLValue(buf,"IMG"));
-                Vector<XMLLibrary.XMLpiece> CleanXML=CMLib.xml().parseAllXML(DBConnections.getRes(R,"CMMXML"));
+                List<XMLLibrary.XMLpiece> CleanXML=CMLib.xml().parseAllXML(DBConnections.getRes(R,"CMMXML"));
                 R.close();
                 DB.DBDone(D);
                 D=null;

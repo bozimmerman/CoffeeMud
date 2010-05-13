@@ -152,7 +152,7 @@ public class Apprentice extends StdCharClass
 		{
 			outfitChoices=new Vector();
 			Weapon w=CMClass.getWeapon("Dagger");
-			outfitChoices.addElement(w);
+			outfitChoices.add(w);
 		}
 		return outfitChoices;
 	}

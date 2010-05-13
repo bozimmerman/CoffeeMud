@@ -248,7 +248,7 @@ public class Beastmaster extends StdCharClass
 		{
 			outfitChoices=new Vector();
 			Weapon w=CMClass.getWeapon("Quarterstaff");
-			outfitChoices.addElement((Item)w);
+			outfitChoices.add((Item)w);
 		}
 		return outfitChoices;
 	}

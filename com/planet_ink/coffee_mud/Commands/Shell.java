@@ -579,7 +579,7 @@ public class Shell extends StdCommand
             }
             StringBuffer buf=file.textUnformatted();
             String CR=Resources.getLineMarker(buf);
-            Vector vbuf=Resources.getFileLineVector(buf);
+            List<String> vbuf=Resources.getFileLineVector(buf);
             buf=null;
             mob.tell(desc(file)+" has been loaded.\n\r\n\r");
             final String help=
@@ -603,7 +603,7 @@ public class Shell extends StdCommand
                     if(line.trim().equals("."))
                         menuMode=true;
                     else
-                        vbuf.addElement(line);
+                        vbuf.add(line);
                 }
                 else
                 {
@@ -615,7 +615,7 @@ public class Shell extends StdCommand
                         {
                             StringBuffer text=new StringBuffer("");
                             for(int i=0;i<vbuf.size();i++)
-                                text.append(((String)vbuf.elementAt(i))+CR);
+                                text.append(((String)vbuf.get(i))+CR);
                             if(file.saveText(text))
                                 mob.tell("File saved.");
                             else
@@ -638,7 +638,7 @@ public class Shell extends StdCommand
                             {
                                 String str=mob.session().prompt("Text to replace it with: ","");
                                 for(int i=0;i<vbuf.size();i++)
-                                    vbuf.setElementAt(CMStrings.replaceAll((String)vbuf.elementAt(i),line,str),i);
+                                    vbuf.set(i,CMStrings.replaceAll((String)vbuf.get(i),line,str));
                             }
                             else
                                 mob.tell("(aborted)");
@@ -655,12 +655,12 @@ public class Shell extends StdCommand
                             if((CMath.isInteger(line))&&(CMath.s_int(line)>=0)&&(CMath.s_int(line)<(vbuf.size())))
                             {
                                 int ln=CMath.s_int(line);
-                                mob.tell("Current: \n\r"+CMStrings.padRight(""+ln,3)+") "+(String)vbuf.elementAt(ln));
+                                mob.tell("Current: \n\r"+CMStrings.padRight(""+ln,3)+") "+(String)vbuf.get(ln));
                                 String str=mob.session().prompt("Rewrite: \n\r");
                                 if(str.length()==0)
                                     mob.tell("(no change)");
                                 else
-                                    vbuf.setElementAt(str,ln);
+                                    vbuf.set(ln,str);
                             }
                             else
                                 mob.tell("'"+line+"' is not a valid line number.");
@@ -677,7 +677,7 @@ public class Shell extends StdCommand
                             if((CMath.isInteger(line))&&(CMath.s_int(line)>=0)&&(CMath.s_int(line)<(vbuf.size())))
                             {
                                 int ln=CMath.s_int(line);
-                                vbuf.removeElementAt(ln);
+                                vbuf.remove(ln);
                                 mob.tell("Line "+ln+" deleted.");
                             }
                             else
@@ -693,7 +693,7 @@ public class Shell extends StdCommand
                     {
                         StringBuffer list=new StringBuffer("File: "+file.getVFSPathAndName()+"\n\r");
                         for(int v=0;v<vbuf.size();v++)
-                            list.append(CMLib.coffeeFilter().colorOnlyFilter("^X"+CMStrings.padRight(""+v,3)+")^.^N ",mob.session())+(String)vbuf.elementAt(v)+"\n\r");
+                            list.append(CMLib.coffeeFilter().colorOnlyFilter("^X"+CMStrings.padRight(""+v,3)+")^.^N ",mob.session())+(String)vbuf.get(v)+"\n\r");
                         mob.session().rawPrint(list.toString());
                         break;
                     }
@@ -708,7 +708,7 @@ public class Shell extends StdCommand
                             {
                                 int ln=CMath.s_int(line);
                                 String str=mob.session().prompt("Enter text to insert here.\n\r: ");
-                                vbuf.insertElementAt(str,ln);
+                                vbuf.add(ln,str);
                             }
                             else
                                 mob.tell("'"+line+"' is not a valid line number.");

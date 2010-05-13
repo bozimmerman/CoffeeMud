@@ -38,11 +38,11 @@ public class INIModify extends StdWebMacro
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 	public boolean isAdminMacro()	{return true;}
 	
-	public void updateINIFile(Vector page)
+	public void updateINIFile(List<String> page)
 	{
 		StringBuffer buf=new StringBuffer("");
 		for(int p=0;p<page.size();p++)
-			buf.append(((String)page.elementAt(p))+"\r\n");
+			buf.append(((String)page.get(p))+"\r\n");
         new CMFile(CMProps.getVar(CMProps.SYSTEM_INIPATH),null,false,true).saveText(buf);
 	}
 
@@ -61,7 +61,7 @@ public class INIModify extends StdWebMacro
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
 		if(parms==null) return "";
-		Vector page=CMProps.loadEnumerablePage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
+		List<String> page=CMProps.loadEnumerablePage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
 		if(parms.containsKey("ADDKEY"))
 		{
 			String key=(String)parms.get("KEY");
@@ -78,7 +78,7 @@ public class INIModify extends StdWebMacro
 				if(near.endsWith("*")) near=near.substring(0,near.length()-1);
 				for(int p=0;p<page.size();p++)
 				{
-					String s=((String)page.elementAt(p)).trim();
+					String s=((String)page.get(p)).trim();
 					int x=s.indexOf(near);
 					if(x==0) 
 						found=true;
@@ -90,9 +90,9 @@ public class INIModify extends StdWebMacro
 				}
 			}
 			if(where>=0)
-				page.insertElementAt(key+"=",where);
+				page.add(where,key+"=");
 			else
-				page.addElement(key+"=");
+				page.add(key+"=");
 			Log.sysOut("INIModify","Key '"+key+"' added.");
 			updateINIFile(page);
 			return "";
@@ -105,7 +105,7 @@ public class INIModify extends StdWebMacro
 			key=key.trim().toUpperCase();
 			for(int p=0;p<page.size();p++)
 			{
-				String s=((String)page.elementAt(p)).trim();
+				String s=((String)page.get(p)).trim();
 				if(s.startsWith("!")||s.startsWith("#")) continue;
 				int x=s.indexOf("=");
 				if(x<0) x=s.indexOf(":");
@@ -113,7 +113,7 @@ public class INIModify extends StdWebMacro
 				String thisKey=s.substring(0,x).trim().toUpperCase();
 				if(thisKey.equals(key))
 				{
-					page.removeElementAt(p);
+					page.remove(p);
 					Log.sysOut("INIModify","Key '"+thisKey+"' removed.");
 					updateINIFile(page);
 					break;
@@ -129,7 +129,7 @@ public class INIModify extends StdWebMacro
 			if((ipage==null)||(!ipage.loaded)) return "";
 			for(int p=0;p<page.size();p++)
 			{
-				String s=((String)page.elementAt(p)).trim();
+				String s=((String)page.get(p)).trim();
 				if(s.startsWith("!")||s.startsWith("#")) continue;
 				int x=s.indexOf("=");
 				if(x<0) x=s.indexOf(":");
@@ -143,7 +143,7 @@ public class INIModify extends StdWebMacro
 				{
 					modified.add(thisKey);
 					Log.sysOut("INIModify","Key '"+thisKey+"' modified.");
-					page.setElementAt(thisKey+"="+httpReq.getRequestParameter(thisKey),p);
+					page.set(p,thisKey+"="+httpReq.getRequestParameter(thisKey));
 				}
 			}
 			if(modified.size()>0)

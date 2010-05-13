@@ -45,7 +45,7 @@ public class ProtectedCitizens extends ActiveTicker
 	protected String[] claims=null;
 	protected int radius=7;
 	protected int maxAssistance=1;
-	protected Hashtable assisters=new Hashtable();
+	protected Map<MOB,List<MOB>> assisters=new Hashtable<MOB,List<MOB>>();
 
 	public ProtectedCitizens()
 	{
@@ -165,7 +165,7 @@ public class ProtectedCitizens extends ActiveTicker
 
 		Room thisRoom=mob.location();
 		Vector rooms=new Vector();
-		Vector assMOBS=(Vector)assisters.get(mob);
+		List<MOB> assMOBS=assisters.get(mob);
 		if(assMOBS==null)
 		{
 			assMOBS=new Vector();
@@ -173,7 +173,7 @@ public class ProtectedCitizens extends ActiveTicker
 		}
 		for(int a=0;a<assMOBS.size();a++)
 		{
-			MOB M=(MOB)assMOBS.elementAt(a);
+			MOB M=(MOB)assMOBS.get(a);
 			if((M!=null)
 			&&(M.mayIFight(mob.getVictim()))
 			&&(M!=mob.getVictim())
@@ -226,15 +226,15 @@ public class ProtectedCitizens extends ActiveTicker
 					&&(CMLib.flags().canHear(M))))
 					{
 						boolean notAllowed=false;
-						for(Enumeration a=assisters.elements();a.hasMoreElements();)
+						for(MOB hostM : assisters.keySet())
 						{
-							Vector assers=(Vector)a.nextElement();
+							List<MOB> assers = assisters.get(hostM);
 							if(assers.contains(M))
 							{ notAllowed=true; break;}
 						}
 						if(!notAllowed)
 						{
-							assMOBS.addElement(M);
+							assMOBS.add(M);
 							if(M.location()==thisRoom)
 								CMLib.combat().postAttack(M,mob.getVictim(),M.fetchWieldedItem());
 							else

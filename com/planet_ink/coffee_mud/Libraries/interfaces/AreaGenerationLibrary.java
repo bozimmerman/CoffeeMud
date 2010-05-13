@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLpiece;
 import com.planet_ink.coffee_mud.Libraries.layouts.AbstractLayout;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -34,7 +35,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public interface AreaGenerationLibrary extends CMLibrary
 {
-    public void buildDefinedIDSet(Vector xmlRoot, Hashtable defined);
+    public void buildDefinedIDSet(List<XMLpiece> xmlRoot, Hashtable defined);
     public Vector findItems(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
     public Vector findMobs(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
     public String findString(String tagName, XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;

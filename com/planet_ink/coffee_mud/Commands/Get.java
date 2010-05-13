@@ -125,7 +125,7 @@ public class Get extends StdCommand
 		String containerName="";
 		if(commands.size()>0)
 			containerName=(String)commands.lastElement();
-		Vector containerCommands=(Vector)commands.clone();
+		Vector containerCommands=new XVector(commands);
 		java.util.List<Container> containers=CMLib.english().possibleContainers(mob,commands,Wearable.FILTER_ANY,true);
 		int c=0;
 

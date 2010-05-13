@@ -97,7 +97,7 @@ public class GenPackagedItems extends GenItem implements PackagedItems
     public Item getItem()
     {
         if(packageText().length()==0) return null;
-        Vector buf=CMLib.xml().parseAllXML(packageText());
+        List<XMLLibrary.XMLpiece> buf=CMLib.xml().parseAllXML(packageText());
         if(buf==null)
         {
             Log.errOut("Packaged","Error parsing 'PAKITEM'.");
@@ -111,7 +111,7 @@ public class GenPackagedItems extends GenItem implements PackagedItems
         }
         String itemi=CMLib.xml().getValFromPieces(iblk.contents,"PICLASS");
         Environmental newOne=CMClass.getItem(itemi);
-        Vector idat=CMLib.xml().getContentsFromPieces(iblk.contents,"PIDATA");
+        List<XMLLibrary.XMLpiece> idat=CMLib.xml().getContentsFromPieces(iblk.contents,"PIDATA");
         if((idat==null)||(newOne==null)||(!(newOne instanceof Item)))
         {
             Log.errOut("Packaged","Error parsing 'PAKITEM' data.");

@@ -728,7 +728,7 @@ public class Nanny extends StdBehavior
         		parms=parms.substring(0,3);
         		if(codes.trim().length()>0)
         		{
-	        		Vector V=CMLib.xml().parseAllXML(codes);
+        			List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(codes);
 	        		XMLLibrary.XMLpiece P=null;
 	        		Hashtable parsedPlayers=new Hashtable();
 	    	    	long time=0;
@@ -740,7 +740,7 @@ public class Nanny extends StdBehavior
 	        		if((V!=null)&&(R!=null))
 	        		for(int v=0;v<V.size();v++)
 	        		{
-	        			P=((XMLLibrary.XMLpiece)V.elementAt(v));
+	        			P=((XMLLibrary.XMLpiece)V.get(v));
 	        			if((P!=null)&&(P.contents!=null)&&(P.contents.size()==3)&&(P.tag.equalsIgnoreCase("DROP")))
 	        			{
 	        				eName=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(P.contents,"ENAM"));

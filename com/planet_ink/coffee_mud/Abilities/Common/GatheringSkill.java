@@ -43,16 +43,16 @@ public class GatheringSkill extends CommonSkill
 	private static final String[] triggerStrings = {"FLETCH","FLETCHING"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public String supportedResourceString(){return "";}
-	protected static final Hashtable supportedResources=new Hashtable();
+	protected static final Map<String,List<Integer>> supportedResources=new Hashtable();
 	
 	public GatheringSkill(){super();}
 	
 	public List<Integer> myResources()
 	{
 	    if(supportedResources.containsKey(ID()))
-	        return (Vector)supportedResources.get(ID());
+	        return supportedResources.get(ID());
 	    String mask=supportedResourceString();
-	    Vector maskV=new Vector();
+	    List<Integer> maskV=new Vector();
 	    String str=mask;
 	    while(mask.length()>0)
 	    {
@@ -72,7 +72,7 @@ public class GatheringSkill extends CommonSkill
         		{
     	            int rsc=RawMaterial.CODES.FIND_IgnoreCase(str.substring(1));
         			if(rsc>=0)
-    	            	maskV.removeElement(Integer.valueOf(rsc));
+    	            	maskV.remove(Integer.valueOf(rsc));
     	            found=true;
         		}
         		if(!found)
@@ -89,7 +89,7 @@ public class GatheringSkill extends CommonSkill
         		{
     	            int rsc=RawMaterial.CODES.FIND_IgnoreCase(str);
         			if(rsc>=0)
-		                maskV.addElement(Integer.valueOf(rsc));
+		                maskV.add(Integer.valueOf(rsc));
         		}
 	        }
 	    }

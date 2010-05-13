@@ -46,16 +46,16 @@ public class Thief_Con extends ThiefSkill
     public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE; }
 	protected MOB lastChecked=null;
     public double castingTime(MOB mob, List<String> cmds){return 5;}
-    public boolean preInvoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
+    public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
     {
-        if(commands!=null) commands=(Vector)commands.clone();
+        if(commands!=null) commands=new XVector<String>(commands);
         if(!conCheck(mob,commands,givenTarget,auto,asLevel))
             return false;
         Vector V=new Vector();
-        V.addElement(commands.elementAt(0));
+        V.addElement(commands.get(0));
         MOB target=this.getTarget(mob,V,givenTarget);
         if(target==null) return false;
-        commands.removeElementAt(0);
+        commands.remove(0);
         if(secondsElapsed>0)
         {
             if((secondsElapsed%4)==0)
@@ -70,20 +70,20 @@ public class Thief_Con extends ThiefSkill
         return true;
     }
 
-    public boolean conCheck(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean conCheck(MOB mob, List<String> commands, Environmental givenTarget, boolean auto, int asLevel)
     {
-        if(commands!=null) commands=(Vector)commands.clone();
+        if(commands!=null) commands= new XVector<String>(commands);
         if(commands.size()<1)
         {
             mob.tell("Con whom into doing what?");
             return false;
         }
         Vector V=new Vector();
-        V.addElement(commands.elementAt(0));
+        V.addElement(commands.get(0));
         MOB target=this.getTarget(mob,V,givenTarget);
         if(target==null) return false;
         
-        commands.removeElementAt(0);
+        commands.remove(0);
 
         if((!target.mayIFight(mob))||(target.charStats().getStat(CharStats.STAT_INTELLIGENCE)<3))
         {
@@ -110,7 +110,7 @@ public class Thief_Con extends ThiefSkill
         }
 
 
-        if(((String)commands.elementAt(0)).toUpperCase().startsWith("FOL"))
+        if(((String)commands.get(0)).toUpperCase().startsWith("FOL"))
         {
             mob.tell("You can't con someone into following you.");
             return false;
@@ -130,7 +130,7 @@ public class Thief_Con extends ThiefSkill
     
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-        if(commands!=null) commands=(Vector)commands.clone();
+        if(commands!=null) commands=new XVector(commands);
         if(!conCheck(mob,commands,givenTarget,auto,asLevel))
             return false;
         Vector V=new Vector();

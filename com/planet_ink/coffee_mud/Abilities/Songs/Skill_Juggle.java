@@ -43,14 +43,14 @@ public class Skill_Juggle extends BardSkill
 	public String[] triggerStrings(){return triggerStrings;}
     public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_FOOLISHNESS;}
 	public int usageType(){return USAGE_MOVEMENT;}
-	protected Vector juggles=new Vector();
+	protected SVector<Item> juggles=new SVector<Item>();
 	protected long lastJuggle=-1;
 	protected boolean pause=false;
 
     public void setMiscText(String newText)
     {
         super.setMiscText(newText);
-        juggles=new Vector();
+        juggles=new SVector();
     }
     
 	public int maxJuggles()
@@ -73,7 +73,7 @@ public class Skill_Juggle extends BardSkill
 		if(juggles.size()>0)
 		{
 			StringBuffer str=new StringBuffer("(Juggling: ");
-			Vector V=(Vector)juggles.clone();
+			SVector<Item> V=juggles.copyOf();
 			for(int i=0;i<V.size();i++)
 			{
 				Item I=(Item)V.elementAt(i);
@@ -166,7 +166,7 @@ public class Skill_Juggle extends BardSkill
 		}
 		if(anythingToDo)
 		{
-			Vector copy=(Vector)juggles.clone();
+			SVector<Item> copy=juggles.copyOf();
 			for(int i=0;i<copy.size();i++)
 			{
 				Item I=(Item)copy.elementAt(i);
@@ -206,7 +206,7 @@ public class Skill_Juggle extends BardSkill
 		if(lastJuggle>(System.currentTimeMillis()-500))
 			return;
 		lastJuggle=System.currentTimeMillis();
-		Vector copy=(Vector)juggles.clone();
+		SVector<Item> copy=juggles.copyOf();
 		int jug=-1;
 		for(int i=0;i<copy.size();i++)
 		{
@@ -288,7 +288,7 @@ public class Skill_Juggle extends BardSkill
 					else
 					if(mob.isInCombat())
 					{
-						Vector copy=(Vector)juggles.clone();
+						SVector<Item> copy=juggles.copyOf();
 						int maxAttacks=maxAttacks();
 						for(int i=0;((i<maxAttacks)&&(copy.size()>0));i++)
 						{

@@ -84,24 +84,24 @@ public class Dwarf extends StdRace
 			s1.setDisplayText("a grey work tunic has been left here.");
 			s1.setDescription("There are lots of little loops and folks for hanging tools about it.");
 			s1.text();
-			outfitChoices.addElement(s1);
+			outfitChoices.add(s1);
 
 			Armor s2=CMClass.getArmor("GenShoes");
 			s2.setName("a pair of hefty work boots");
 			s2.setDisplayText("some hefty work boots have been left here.");
 			s2.setDescription("Thick and well worn boots with very tough souls.");
 			s2.text();
-			outfitChoices.addElement(s2);
+			outfitChoices.add(s2);
 
 			Armor p1=CMClass.getArmor("GenPants");
 			p1.setName("some hefty work pants");
 			p1.setDisplayText("some hefty work pants have been left here.");
 			p1.setDescription("There are lots of little loops and folks for hanging tools about it.");
 			p1.text();
-			outfitChoices.addElement(p1);
+			outfitChoices.add(p1);
 			
 			Armor s3=CMClass.getArmor("GenBelt");
-			outfitChoices.addElement(s3);
+			outfitChoices.add(s3);
 		}
 		return outfitChoices;
 	}

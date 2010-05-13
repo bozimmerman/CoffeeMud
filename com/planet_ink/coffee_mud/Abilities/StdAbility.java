@@ -891,7 +891,7 @@ public class StdAbility implements Ability
 			A.setProficiency(maxProficiency);
 	}
 
-    public boolean preInvoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
+    public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
     {
         return true;
     }

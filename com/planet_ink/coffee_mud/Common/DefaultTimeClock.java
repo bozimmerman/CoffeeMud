@@ -453,7 +453,7 @@ public class DefaultTimeClock implements TimeClock
 					timeRsc="<TIME>-1</TIME><DAY>1</DAY><MONTH>1</MONTH><YEAR>1</YEAR>";
 				else
 					timeRsc=((DatabaseEngine.PlayerData)bitV.get(0)).xml;
-				Vector<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(timeRsc);
+				List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(timeRsc);
 				setTimeOfDay(CMLib.xml().getIntFromPieces(V,"TIME"));
 				setDayOfMonth(CMLib.xml().getIntFromPieces(V,"DAY"));
 				setMonth(CMLib.xml().getIntFromPieces(V,"MONTH"));

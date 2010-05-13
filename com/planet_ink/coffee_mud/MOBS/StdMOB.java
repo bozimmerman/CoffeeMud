@@ -1328,7 +1328,7 @@ public class StdMOB implements MOB
             {
                 double diff=actions()-cmd.tickDelay;
                 Object O=cmd.commandObj;
-                Vector commands=(Vector)cmd.commandVector;
+                Vector commands=new XVector(cmd.commandVector);
                 cmd.nextCheck=cmd.nextCheck+1000;
                 cmd.seconds+=1;
                 int secondsElapsed=cmd.seconds;

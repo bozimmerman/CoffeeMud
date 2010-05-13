@@ -45,9 +45,9 @@ public class Prop_SpellAdder extends Property
     protected boolean processing=false;
     protected boolean uninvocable=true;
     protected int level=-1;
-	protected Vector spellV=null;
+	protected List<Ability> spellV=null;
     protected MaskingLibrary.CompiledZapperMask compiledMask=null;
-    protected Vector unrevocableSpells = null;
+    protected List<Ability> unrevocableSpells = null;
     
     public void finalize()
     {
@@ -86,7 +86,7 @@ public class Prop_SpellAdder extends Property
         	compiledMask=CMLib.masking().maskCompile(maskString);
 	}
     
-	public Vector getMySpellsV()
+	public List<Ability> getMySpellsV()
 	{
         if(spellV!=null) return spellV;
 		spellV=new Vector();
@@ -126,7 +126,7 @@ public class Prop_SpellAdder extends Property
 			{
 				A=(Ability)A.copyOf();
 				A.setMiscText(parm);
-                spellV.addElement(A);
+                spellV.add(A);
 			}
 		}
 		return spellV;
@@ -157,11 +157,11 @@ public class Prop_SpellAdder extends Property
 		return false;
 	}
     
-	public Hashtable makeMySpellsH(Vector V)
+	public Map<String, String> makeMySpellsH(List<Ability> V)
 	{
-		Hashtable spellH=new Hashtable();
+		Hashtable<String, String> spellH=new Hashtable<String, String>();
 		for(int v=0;v<V.size();v++)
-            spellH.put(((Ability)V.elementAt(v)).ID(),((Ability)V.elementAt(v)).ID());
+            spellH.put(((Ability)V.get(v)).ID(),((Ability)V.get(v)).ID());
 		return spellH;
 	}
 
@@ -195,12 +195,12 @@ public class Prop_SpellAdder extends Property
 		return invokerMOB;
 	}
 
-    public Vector convertToV2(Vector spellsV, Physical target)
+    public List convertToV2(List<Ability> spellsV, Physical target)
     {
-        Vector VTOO=new Vector();
+        List VTOO=new Vector();
         for(int v=0;v<spellsV.size();v++)
         {
-            Ability A=(Ability)spellsV.elementAt(v);
+            Ability A=(Ability)spellsV.get(v);
             Ability EA=(target!=null)?target.fetchEffect(A.ID()):null;
             if((EA==null)&&(didHappen(100)))
             {
@@ -221,8 +221,8 @@ public class Prop_SpellAdder extends Property
                         A.setMiscText(t.substring(x+1));
                     }
                 }
-                VTOO.addElement(A);
-                VTOO.addElement(V2);
+                VTOO.add(A);
+                VTOO.add(V2);
             }
         }
         return VTOO;
@@ -230,19 +230,19 @@ public class Prop_SpellAdder extends Property
     
 	public boolean addMeIfNeccessary(PhysicalAgent source, Physical target, boolean makeLongLasting, int asLevel)
 	{
-        Vector V=getMySpellsV();
+		List<Ability> V=getMySpellsV();
         if((target==null)
         ||(V.size()==0)
         ||((compiledMask!=null)
             &&(!CMLib.masking().maskCheck(compiledMask,target,true))))
                 return false;
-		Vector VTOO=convertToV2(V,target);
+		List VTOO=convertToV2(V,target);
         if(VTOO.size()==0) return false;
 		MOB qualMOB=getInvokerMOB(source,target);
 		for(int v=0;v<VTOO.size();v+=2)
 		{
-			Ability A=(Ability)VTOO.elementAt(v);
-            Vector V2=(Vector)VTOO.elementAt(v+1);
+			Ability A=(Ability)VTOO.get(v);
+            Vector V2=(Vector)VTOO.get(v+1);
             if(level >= 0)
             	asLevel = level;
             else
@@ -260,7 +260,7 @@ public class Prop_SpellAdder extends Property
 					EA.makeNonUninvokable();
 					if(unrevocableSpells == null)
 						unrevocableSpells = new Vector();
-					unrevocableSpells.addElement(EA);
+					unrevocableSpells.add(EA);
 				}
 			}
 		}
@@ -275,7 +275,7 @@ public class Prop_SpellAdder extends Property
             addMeIfNeccessary(mob,givenTarget,false,asLevel);
         else
         {
-            Vector V=getMySpellsV();
+        	List<Ability> V=getMySpellsV();
             commands.clear();
             commands.addAll(convertToV2(V,null));
         }
@@ -316,12 +316,12 @@ public class Prop_SpellAdder extends Property
 		}
 		if(eff.size()>0)
 		{
-			Hashtable h=makeMySpellsH(getMySpellsV());
+			Map<String,String> h=makeMySpellsH(getMySpellsV());
 			if(unrevocableSpells != null)
 			{
 				for(int v=unrevocableSpells.size()-1;v>=0;v--)
 				{
-					thisAffect = (Ability)unrevocableSpells.elementAt(v);
+					thisAffect = (Ability)unrevocableSpells.get(v);
 					if(h.containsKey(thisAffect.ID()))
 						P.delEffect(thisAffect);
 				}
@@ -374,11 +374,11 @@ public class Prop_SpellAdder extends Property
     
     public String spellAccountingsWithMask(String pre, String post)
     {
-        Vector spellList=getMySpellsV();
+        List<Ability> spellList=getMySpellsV();
         String id="";
         for(int v=0;v<spellList.size();v++)
         {
-            Ability A=(Ability)spellList.elementAt(v);
+            Ability A=(Ability)spellList.get(v);
             if(spellList.size()==1)
                 id+=A.name();
             else

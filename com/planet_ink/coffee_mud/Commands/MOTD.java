@@ -71,10 +71,10 @@ public class MOTD extends StdCommand
 				    buf.append(msg+"\n\r--------------------------------------\n\r");
 				}
 		
-				Vector journal=CMLib.database().DBReadJournalMsgs("CoffeeMud News");
+				List<JournalsLibrary.JournalEntry> journal=CMLib.database().DBReadJournalMsgs("CoffeeMud News");
 				for(int which=0;which<journal.size();which++)
 				{
-					JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)journal.elementAt(which);
+					JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)journal.get(which);
 					String from=entry.from;
 					long last=entry.date;
 					String to=entry.to;
@@ -157,11 +157,11 @@ public class MOTD extends StdCommand
                 for(int cj=0;cj<myEchoableCommandJournals.size();cj++)
                 {
                 	JournalsLibrary.CommandJournal CMJ=myEchoableCommandJournals.elementAt(cj);
-                    Vector items=CMLib.database().DBReadJournalMsgs("SYSTEM_"+CMJ.NAME()+"S");
+                	List<JournalsLibrary.JournalEntry> items=CMLib.database().DBReadJournalMsgs("SYSTEM_"+CMJ.NAME()+"S");
                     if(items!=null)
                     for(int i=0;i<items.size();i++)
                     {
-                    	JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)items.elementAt(i);
+                    	JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)items.get(i);
                         String from=entry.from;
                         String message=entry.msg;
                         long compdate=entry.update;
@@ -178,11 +178,11 @@ public class MOTD extends StdCommand
                 if((!CMath.bset(mob.getBitmap(),MOB.ATT_AUTOFORWARD))
                 &&(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0))
                 {
-                    Vector msgs=CMLib.database().DBReadJournalMsgs(CMProps.getVar(CMProps.SYSTEM_MAILBOX));
+                	List<JournalsLibrary.JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(CMProps.getVar(CMProps.SYSTEM_MAILBOX));
                     int mymsgs=0;
                     for(int num=0;num<msgs.size();num++)
                     {
-                    	JournalsLibrary.JournalEntry thismsg=(JournalsLibrary.JournalEntry)msgs.elementAt(num);
+                    	JournalsLibrary.JournalEntry thismsg=(JournalsLibrary.JournalEntry)msgs.get(num);
                         String to=thismsg.to;
                         if(to.equalsIgnoreCase("all")
                         ||to.equalsIgnoreCase(mob.Name())

@@ -139,7 +139,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
         CMFile F=new CMFile(filename,null,false,true);
         if(!F.exists()){ Log.errOut("Language file "+filename+" not found! This mud is in deep doo-doo!"); return null;}
         StringBuffer alldata=F.text();
-        Vector V=Resources.getFileLineVector(alldata);
+        List<String> V=Resources.getFileLineVector(alldata);
         String s=null;
         DVector currentSection=null;
         DVector globalDefinitions=new DVector(2);
@@ -150,8 +150,8 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
         DVector wholeFile=new DVector(2);
         for(int v=0;v<V.size();v++)
         {
-            wholeFile.addElement(filename,(String)V.elementAt(v));
-            s=((String)V.elementAt(v)).trim();
+            wholeFile.addElement(filename,(String)V.get(v));
+            s=((String)V.get(v)).trim();
             if((s.startsWith("#"))||(s.trim().length()==0)) continue;
             if(s.startsWith("["))
             {

@@ -57,7 +57,7 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
         ||((compiledMask!=null)&&(!CMLib.masking().maskCheck(compiledMask,target,true))))
             return false;
         MOB newMOB=(MOB)target;
-		Vector V=getMySpellsV();
+		List<Ability> V=getMySpellsV();
 		int proff=100;
 		int x=text().indexOf("%");
 		if(x>0)
@@ -77,7 +77,7 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
         boolean clearedYet=false;
 		for(int v=0;v<V.size();v++)
 		{
-			Ability A=(Ability)V.elementAt(v);
+			Ability A=(Ability)V.get(v);
 			if(newMOB.fetchAbility(A.ID())==null)
 			{
 				String t=A.text();
@@ -111,10 +111,10 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
     {
         if(!(P instanceof MOB))
             return;
-        Vector V=getMySpellsV();
+        List<Ability> V=getMySpellsV();
         for(int v=0;v<V.size();v++)
         {
-            Ability A=(Ability)V.elementAt(v);
+            Ability A=(Ability)V.get(v);
             ((MOB)P).delAbility(A);
         }
         if(P==lastMOB)

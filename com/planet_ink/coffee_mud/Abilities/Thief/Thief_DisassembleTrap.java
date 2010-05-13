@@ -56,7 +56,7 @@ public class Thief_DisassembleTrap extends ThiefSkill
             return false;
         }
         
-        Vector cmds=(Vector)commands.clone();
+        Vector cmds=new XVector(commands);
         cmds.addElement(new Boolean(true));
         CharState oldState=(CharState)mob.curState().copyOf();
         boolean worked=A.invoke(mob,cmds,givenTarget,auto,asLevel);

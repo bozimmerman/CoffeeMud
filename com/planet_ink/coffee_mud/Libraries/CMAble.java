@@ -803,13 +803,13 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			for(int p=0;p<preReqs.size();p++)
 			{
 				prof=(Integer)preReqs.elementAt(p,2);
-				if(preReqs.elementAt(p,1) instanceof Vector)
+				if(preReqs.elementAt(p,1) instanceof List)
 				{
-					Vector V=(Vector)preReqs.elementAt(p,1);
+					List V=(List)preReqs.elementAt(p,1);
 					names.append("(One of: ");
 					for(int v=0;v<V.size();v++)
 					{
-						Ability A=CMClass.getAbility((String)V.elementAt(v));
+						Ability A=CMClass.getAbility((String)V.get(v));
 						if(A!=null)
 						{
 							names.append("'"+A.name()+"'");
@@ -1693,7 +1693,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		{
 			H=new Hashtable();
 			StringBuffer buf=new CMFile(Resources.makeFileResourceName("skills/components.txt"),null,true).text();
-			Vector V=new Vector();
+			List<String> V=new Vector();
 			if(buf!=null)
 				V=Resources.getFileLineVector(buf);
 			String s=null;
@@ -1701,7 +1701,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			if(V!=null)
 			for(int v=0;v<V.size();v++)
 			{
-				s=((String)V.elementAt(v)).trim();
+				s=((String)V.get(v)).trim();
 				if(s.startsWith("#")||(s.length()==0)||s.startsWith(";")||s.startsWith(":")) continue;
 				error=addAbilityComponent(s,H);
 				if(error!=null) Log.errOut("CMAble",error);

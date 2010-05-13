@@ -150,12 +150,12 @@ public class SocialData extends StdWebMacro
             if(!CMSecurity.isAllowed(M,M.location(),"CMDSOCIALS")) return "[authentication error]";
             
             boolean create=false;
-            Vector SV=CMLib.socials().getSocialsSet(last);
-            Vector OSV=null;
+            List<Social> SV=CMLib.socials().getSocialsSet(last);
+            List<Social> OSV=null;
             if(SV==null)
             	create=true;
             else
-            	OSV=(Vector)SV.clone();
+            	OSV=new XVector<Social>(SV);
             SV=new Vector();
             
             String old=httpReq.getRequestParameter("TITLE");
@@ -230,14 +230,14 @@ public class SocialData extends StdWebMacro
                         }
                     }
                 }
-                SV.addElement(S);
+                SV.add(S);
             }
             if(OSV!=null)
                 for(int s=0;s<OSV.size();s++)
-                    CMLib.socials().remove(((Social)OSV.elementAt(s)).Name());
+                    CMLib.socials().remove(((Social)OSV.get(s)).Name());
             
             for(int s=0;s<SV.size();s++)
-                CMLib.socials().addSocial((Social)SV.elementAt(s));
+                CMLib.socials().addSocial((Social)SV.get(s));
             
             CMLib.socials().save(M);
             if(create)
@@ -255,12 +255,12 @@ public class SocialData extends StdWebMacro
             if(M==null) return "[authentication error]";
             if(!CMSecurity.isAllowed(M,M.location(),"CMDSOCIALS")) return "[authentication error]";
             if(last==null) return " @break@";
-            Vector SV=CMLib.socials().getSocialsSet(last);
+            List<Social> SV=CMLib.socials().getSocialsSet(last);
             if(SV==null)
                 return "Unknown social!";
-            SV=(Vector)SV.clone();
+            SV=new XVector<Social>(SV);
             for(int s=0;s<SV.size();s++)
-                CMLib.socials().remove(((Social)SV.elementAt(s)).Name());
+                CMLib.socials().remove(((Social)SV.get(s)).Name());
             CMLib.socials().save(M);
             Log.sysOut(M.name()+" deleted social "+last);
             return "Social deleted.";
@@ -270,10 +270,10 @@ public class SocialData extends StdWebMacro
             if(last==null) return " @break@";
             if(last.length()>0)
             {
-                Vector SV=null;
+            	List<Social> SV=null;
                 String newSocialID=httpReq.getRequestParameter("NEWSOCIAL");
                 if(SV==null)
-                    SV=(Vector)httpReq.getRequestObjects().get("SOCIAL-"+last);
+                    SV=(List<Social>)httpReq.getRequestObjects().get("SOCIAL-"+last);
                 if((SV==null)
                 &&(newSocialID!=null)
                 &&(newSocialID.length()>0)
@@ -326,7 +326,7 @@ public class SocialData extends StdWebMacro
                     else
                     for(int s=0;s<SV.size();s++)
                     {
-                        Social S=(Social)SV.elementAt(s);
+                        Social S=(Social)SV.get(s);
                         boolean found=false;
                         for(int b=0;b<BEXTNS.length;b++)
                             if(S.Name().equalsIgnoreCase(last+BEXTNS[b]))
@@ -371,9 +371,9 @@ public class SocialData extends StdWebMacro
                         String EXTN=(String)EXTNS.elementAt(t);
                         Social S=null;
                         for(int s=0;s<SV.size();s++)
-                            if(((Social)SV.elementAt(s)).Name().equalsIgnoreCase(last+EXTN))
+                            if(((Social)SV.get(s)).Name().equalsIgnoreCase(last+EXTN))
                             {
-                                S=(Social)SV.elementAt(s);
+                                S=(Social)SV.get(s);
                                 break;
                             }
                         if(parms.containsKey("IS"+TYPE))

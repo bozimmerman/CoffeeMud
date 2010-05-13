@@ -463,8 +463,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	    int year=A.getTimeObj().getYear();
 	    Object O=Resources.getResource("RENTAL INFO/"+owner);
 	    List<PlayerData> pDataV=null;
-	    if(O instanceof Vector)
-	        pDataV=(Vector)O;
+	    if(O instanceof List)
+	        pDataV=(List<PlayerData>)O;
 	    else
 	        pDataV=CMLib.database().DBReadData(owner,"RENTAL INFO");
 	    if(pDataV==null)

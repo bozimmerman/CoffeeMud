@@ -46,7 +46,7 @@ public class Skill_Track extends StdSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public long flags(){return Ability.FLAG_TRACKING;}
-	private Hashtable cachedPaths=new Hashtable();
+	private Map<String,List<Room>> cachedPaths=new Hashtable<String,List<Room>>();
 	protected int cacheCode=-1;
 	private long tickStatus=0;
 	public long getTickStatus(){return tickStatus;} 
@@ -306,7 +306,7 @@ public class Skill_Track extends StdSkill
 			theTrail=null;
 		    tickStatus=Tickable.STATUS_MISC6+8;
 			if((cacheCode==1)&&(rooms.size()==1))
-				theTrail=(Vector)cachedPaths.get(CMLib.map().getExtendedRoomID(thisRoom)+"->"+CMLib.map().getExtendedRoomID((Room)rooms.firstElement()));
+				theTrail=(List<Room>)cachedPaths.get(CMLib.map().getExtendedRoomID(thisRoom)+"->"+CMLib.map().getExtendedRoomID((Room)rooms.firstElement()));
 		    tickStatus=Tickable.STATUS_MISC6+9;
 			if(theTrail==null)
 				theTrail=CMLib.tracking().findBastardTheBestWay(thisRoom,rooms,flags,radius);

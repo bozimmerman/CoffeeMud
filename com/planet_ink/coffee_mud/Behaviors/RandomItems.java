@@ -187,9 +187,9 @@ public class RandomItems extends ActiveTicker
     	return I.owner()==CMLib.map().roomLocation(thang);
 	}
 
-	public Vector getItems(Tickable thang, String theseparms)
+	public List<Item> getItems(Tickable thang, String theseparms)
 	{
-		Vector items=null;
+		List<Item> items=null;
 		int x=theseparms.indexOf(";");
 		String filename=(x>=0)?theseparms.substring(x+1):theseparms;
 		if(filename.trim().length()==0)
@@ -202,7 +202,7 @@ public class RandomItems extends ActiveTicker
 		{
 			int end=start+20;
 			if(end>filename.length()) end=filename.length();
-			items=(Vector)Resources.getResource("RANDOMITEMS-XML/"+filename.length()+"/"+filename.hashCode());
+			items=(List<Item>)Resources.getResource("RANDOMITEMS-XML/"+filename.length()+"/"+filename.hashCode());
 			if(items!=null) return items;
 			items=new Vector();
 			String error=CMLib.coffeeMaker().addItemsFromXML(filename,items,null);
@@ -232,7 +232,7 @@ public class RandomItems extends ActiveTicker
 			int extraSemicolon=filename.indexOf(";");
 			if(extraSemicolon>=0) filename=filename.substring(0,extraSemicolon);
 			filename=filename.trim();
-			items=(Vector)Resources.getResource("RANDOMITEMS-"+filename);
+			items=(List<Item>)Resources.getResource("RANDOMITEMS-"+filename);
 			if((items==null)&&(!alreadyTriedLoad))
 			{
 				alreadyTriedLoad=true;
@@ -298,14 +298,14 @@ public class RandomItems extends ActiveTicker
 			return true;
 		if((canAct(ticking,tickID))||(maintained.size()<minItems))
 		{
-			Vector items=getItems(ticking,getParms());
+			List<Item> items=getItems(ticking,getParms());
 			if(items==null) return true;
 			int attempts=10;
 			if((ticking instanceof Environmental)&&(((Environmental)ticking).amDestroyed()))
 				return false;
 			while((maintained.size()<avgItems)&&(((--attempts)>0)))
 			{
-				I=(Item)items.elementAt(CMLib.dice().roll(1,items.size(),-1));
+				I=(Item)items.get(CMLib.dice().roll(1,items.size(),-1));
 				if(I!=null)
 				{
 					I=(Item)I.copyOf();

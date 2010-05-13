@@ -36,7 +36,7 @@ public class QuestChat extends MudChat
 {
 
 	public String ID(){return "QuestChat";}
-	private Hashtable alreadySaid=new Hashtable();
+	private Map<String,List<String>> alreadySaid=new Hashtable<String,List<String>>();
 	private String myQuestName=null;
 
     public void registerDefaultQuest(String questName){ myQuestName=questName;}
@@ -58,7 +58,7 @@ public class QuestChat extends MudChat
 					 {
 						 String codeStr=expression.substring(x+2).toUpperCase().trim();
 						 expression=expression.substring(0,x-1).trim();
-						 Vector V=(Vector)alreadySaid.get(speaker.Name().toUpperCase());
+						 List<String> V=alreadySaid.get(speaker.Name().toUpperCase());
 						 if(V==null)
 						 {
 							 V=new Vector();
@@ -69,7 +69,7 @@ public class QuestChat extends MudChat
 					    	 return false;
 						 if(super.match(speaker,expression,message,rest))
 						 {
-							 V.addElement(codeStr);
+							 V.add(codeStr);
 							 if((myQuestName!=null)&&(myQuestName.length()>0))
 							 {
 							     Quest myQuest=CMLib.quests().fetchQuest(myQuestName);

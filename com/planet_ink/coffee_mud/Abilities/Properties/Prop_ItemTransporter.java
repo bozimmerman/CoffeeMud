@@ -41,8 +41,8 @@ public class Prop_ItemTransporter extends Property
 	protected Room roomDestination=null;
 	protected MOB mobDestination=null;
 	protected Container nextDestination=null;
-    protected static Hashtable possiblePossibilities=new Hashtable();
-    protected static Hashtable lastLooks=new Hashtable();
+    protected static Map<String,List<PhysicalAgent>> possiblePossibilities=new Hashtable<String,List<PhysicalAgent>>();
+    protected static Map<String,Integer> lastLooks=new Hashtable<String,Integer>();
 
 	public String accountForYourself()
 	{ return "Item Transporter";	}
@@ -60,8 +60,8 @@ public class Prop_ItemTransporter extends Property
 
 	private synchronized boolean setDestination()
 	{
-		Vector possibilities=(Vector)possiblePossibilities.get(text());
-		Integer lastLook=(Integer)lastLooks.get(text());
+		List<PhysicalAgent> possibilities=(List<PhysicalAgent>)possiblePossibilities.get(text());
+		Integer lastLook=lastLooks.get(text());
 		if((possibilities==null)||(lastLook==null)||(lastLook.intValue()<0))
 		{
 			possibilities=new Vector();
@@ -83,7 +83,7 @@ public class Prop_ItemTransporter extends Property
 					Room room=(Room)r.nextElement();
 					Ability A=room.fetchEffect("Prop_ItemTransReceiver");
 					if((A!=null)&&(A.text().equalsIgnoreCase(text())))
-						possibilities.addElement(room);
+						possibilities.add(room);
 					for(int i=0;i<room.numItems();i++)
 					{
 						Item item=room.getItem(i);
@@ -91,7 +91,7 @@ public class Prop_ItemTransporter extends Property
 						{
 							A=item.fetchEffect("Prop_ItemTransReceiver");
 							if((A!=null)&&(A.text().equalsIgnoreCase(text())))
-								possibilities.addElement(item);
+								possibilities.add(item);
 						}
 					}
 					for(int m=0;m<room.numInhabitants();m++)
@@ -101,7 +101,7 @@ public class Prop_ItemTransporter extends Property
 						{
 							A=mob.fetchEffect("Prop_ItemTransReceiver");
 							if((A!=null)&&(A.text().equalsIgnoreCase(text())))
-								possibilities.addElement(mob);
+								possibilities.add(mob);
 							for(int i=0;i<mob.numItems();i++)
 							{
 								Item item=mob.getItem(i);
@@ -109,7 +109,7 @@ public class Prop_ItemTransporter extends Property
 								{
 									A=item.fetchEffect("Prop_ItemTransReceiver");
 									if((A!=null)&&(A.text().equalsIgnoreCase(text())))
-										possibilities.addElement(item);
+										possibilities.add(item);
 								}
 							}
 						}
@@ -119,17 +119,17 @@ public class Prop_ItemTransporter extends Property
 		}
 		if(possibilities.size()>0)
 		{
-			Environmental E=(Environmental)possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1));
+			PhysicalAgent P=possibilities.get(CMLib.dice().roll(1,possibilities.size(),-1));
 			nextDestination=null;
-			if(E instanceof Room)
-				roomDestination=(Room)E;
+			if(P instanceof Room)
+				roomDestination=(Room)P;
 			else
-			if(E instanceof MOB)
-				mobDestination=(MOB)E;
+			if(P instanceof MOB)
+				mobDestination=(MOB)P;
 			else
-			if(E instanceof Container)
+			if(P instanceof Container)
 			{
-				nextDestination=(Container)E;
+				nextDestination=(Container)P;
 				if((nextDestination!=null)&&(nextDestination.owner()!=null))
 				{
 					if(nextDestination.owner() instanceof Room)
@@ -142,10 +142,10 @@ public class Prop_ItemTransporter extends Property
 					nextDestination=null;
 			}
 			else
-			if(E instanceof Item)
+			if(P instanceof Item)
 			{
 				nextDestination=null;
-				Item I = (Item)E;
+				Item I = (Item)P;
 				if((I!=null)&&(I.owner()!=null))
 				{
 					if(I.owner() instanceof Room)

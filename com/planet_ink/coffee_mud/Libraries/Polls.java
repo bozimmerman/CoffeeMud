@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.IOException;
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /* 
@@ -363,12 +364,12 @@ public class Polls extends StdLibrary implements PollManager
         Vector options=new Vector();
         P.setOptions(options);
         String optionsXML=data.options;
-        Vector V2=CMLib.xml().parseAllXML(optionsXML);
+        List<XMLLibrary.XMLpiece> V2=CMLib.xml().parseAllXML(optionsXML);
         XMLLibrary.XMLpiece OXV=CMLib.xml().getPieceFromPieces(V2,"OPTIONS");
         if((OXV!=null)&&(OXV.contents!=null)&&(OXV.contents.size()>0))
         for(int v2=0;v2<OXV.contents.size();v2++)
         {
-            XMLLibrary.XMLpiece XP=(XMLLibrary.XMLpiece)OXV.contents.elementAt(v2);
+            XMLLibrary.XMLpiece XP=(XMLLibrary.XMLpiece)OXV.contents.get(v2);
             if(!XP.tag.equalsIgnoreCase("option"))
                 continue;
             Poll.PollOption PO=new Poll.PollOption(
@@ -386,7 +387,7 @@ public class Polls extends StdLibrary implements PollManager
         if((OXV!=null)&&(OXV.contents!=null)&&(OXV.contents.size()>0))
         for(int v2=0;v2<OXV.contents.size();v2++)
         {
-            XMLLibrary.XMLpiece XP=(XMLLibrary.XMLpiece)OXV.contents.elementAt(v2);
+            XMLLibrary.XMLpiece XP=(XMLLibrary.XMLpiece)OXV.contents.get(v2);
             if(!XP.tag.equalsIgnoreCase("result"))
                 continue;
             Poll.PollResult PR=new Poll.PollResult(

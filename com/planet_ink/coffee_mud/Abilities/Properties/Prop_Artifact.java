@@ -280,14 +280,14 @@ public class Prop_Artifact extends Property
 					// does it already exist?
 					if(registeredArtifacts.containsKey(getItemID())) registeredArtifacts.remove(getItemID());
 					String data=((DatabaseEngine.PlayerData)itemSet.get(0)).xml;
-					Vector xml=CMLib.xml().parseAllXML(data);
+					List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(data);
 					if(xml!=null)
 						for(int c=0;c<xml.size();c++)
 						{
-							XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xml.elementAt(c);
+							XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xml.get(c);
 							if((iblk.tag.equalsIgnoreCase("ARTITEM"))&&(iblk.contents!=null))
 							{
-								Vector roomData=iblk.contents;
+								List<XMLLibrary.XMLpiece> roomData=iblk.contents;
 								String roomID=CMLib.xml().getValFromPieces(roomData,"ROOMID");
 								String MOBname=CMLib.xml().getValFromPieces(roomData,"MOB");
 								Room R=CMLib.map().getRoom(roomID);

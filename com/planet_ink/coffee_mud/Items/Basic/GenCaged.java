@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /* 
@@ -33,7 +34,6 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class GenCaged extends GenItem implements CagedAnimal
 {
 	public String ID(){	return "GenCaged";}
@@ -99,7 +99,7 @@ public class GenCaged extends GenItem implements CagedAnimal
 	{
 		MOB M=null;
 		if(cageText().length()==0) return M;
-		Vector buf=CMLib.xml().parseAllXML(cageText());
+		List<XMLLibrary.XMLpiece> buf=CMLib.xml().parseAllXML(cageText());
 		if(buf==null)
 		{
 			Log.errOut("Caged","Error parsing 'MOBITEM'.");
@@ -114,7 +114,7 @@ public class GenCaged extends GenItem implements CagedAnimal
 		String itemi=CMLib.xml().getValFromPieces(iblk.contents,"MICLASS");
 		String startr=CMLib.xml().getValFromPieces(iblk.contents,"MISTART");
 		Environmental newOne=CMClass.getMOB(itemi);
-		Vector idat=CMLib.xml().getContentsFromPieces(iblk.contents,"MIDATA");
+		List<XMLLibrary.XMLpiece> idat=CMLib.xml().getContentsFromPieces(iblk.contents,"MIDATA");
 		if((idat==null)||(newOne==null)||(!(newOne instanceof MOB)))
 		{
 			Log.errOut("Caged","Error parsing 'MOBITEM' data.");

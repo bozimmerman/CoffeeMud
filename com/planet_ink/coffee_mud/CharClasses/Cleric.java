@@ -362,12 +362,12 @@ public class Cleric extends StdCharClass
 		if(CMLib.flags().isEvil(myChar))
 		{
 			Weapon w=CMClass.getWeapon("Shortsword");
-			outfitChoices.addElement(w);
+			outfitChoices.add(w);
 		}
 		else
 		{
 			Weapon w=CMClass.getWeapon("SmallMace");
-			outfitChoices.addElement(w);
+			outfitChoices.add(w);
 		}
 		return outfitChoices;
 	}

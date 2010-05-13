@@ -49,7 +49,7 @@ public class JournalNext extends StdWebMacro
 			return "";
 		}
 		
-		Vector<String> journals=(Vector)httpReq.getRequestObjects().get("JOURNALLIST");
+		List<String> journals=(List<String>)httpReq.getRequestObjects().get("JOURNALLIST");
 		if(journals==null)
 		{
 			List<String> rawJournals=CMLib.database().DBReadJournals();
@@ -80,7 +80,7 @@ public class JournalNext extends StdWebMacro
 		MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		for(int j=0;j<journals.size();j++)
 		{
-			String B=(String)journals.elementAt(j);
+			String B=(String)journals.get(j);
 			if((H.contains(B.toUpperCase().trim()))&&((M==null)||(!CMSecurity.isASysOp(M))))
 			    continue;
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!B.equals(lastID))))

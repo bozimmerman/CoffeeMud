@@ -73,32 +73,32 @@ public class Merge extends StdCommand
     protected static boolean tryMerge(MOB mob,
 									  Room room,
 									  Environmental E,
-									  Vector things,
-									  Vector changes,
-									  Vector onfields,
-									  Vector ignore,
+									  List things,
+									  List<String> changes,
+									  List<String> onfields,
+									  List<String> ignore,
 									  boolean noisy)
 	{
 		boolean didAnything=false;
-		Vector efields=new Vector();
-		Vector allMyFields=new Vector();
+		List<String> efields=new Vector();
+		List<String> allMyFields=new Vector();
 		String[] EFIELDS=E.getStatCodes();
 		for(int i=0;i<EFIELDS.length;i++)
 			if(!efields.contains(EFIELDS[i]))
-				efields.addElement(EFIELDS[i]);
-		efields.addElement("REJUV");
-		allMyFields=(Vector)efields.clone();
+				efields.add(EFIELDS[i]);
+		efields.add("REJUV");
+		allMyFields=new XVector<String>(efields);
 		for(int v=0;v<ignore.size();v++)
-			if(efields.contains(ignore.elementAt(v)))
-				efields.removeElement(ignore.elementAt(v));
+			if(efields.contains(ignore.get(v)))
+				efields.remove(ignore.get(v));
 		for(int v=0;v<changes.size();v++)
-			if(efields.contains(changes.elementAt(v)))
-				efields.removeElement(changes.elementAt(v));
+			if(efields.contains(changes.get(v)))
+				efields.remove(changes.get(v));
 		if(noisy) mergedebugtell(mob,"AllMy-"+CMParms.toStringList(allMyFields));
 		if(noisy) mergedebugtell(mob,"efields-"+CMParms.toStringList(efields));
 		for(int t=0;t<things.size();t++)
 		{
-			Environmental E2=(Environmental)things.elementAt(t);
+			Environmental E2=(Environmental)things.get(t);
 			if(noisy) mergedebugtell(mob,E.name()+"/"+E2.name()+"/"+CMClass.classID(E)+"/"+CMClass.classID(E2));
 			if(CMClass.classID(E).equals(CMClass.classID(E2)))
 			{
@@ -107,11 +107,11 @@ public class Merge extends StdCommand
 				{
 					fieldsToCheck=new Vector();
 					for(int v=0;v<onfields.size();v++)
-						if(efields.contains(onfields.elementAt(v)))
-							fieldsToCheck.addElement(onfields.elementAt(v));
+						if(efields.contains(onfields.get(v)))
+							fieldsToCheck.addElement(onfields.get(v));
 				}
 				else
-					fieldsToCheck=(Vector)efields.clone();
+					fieldsToCheck=new XVector<String>(efields);
 
 				boolean checkedOut=fieldsToCheck.size()>0;
 				if(noisy) mergedebugtell(mob,"fieldsToCheck-"+CMParms.toStringList(fieldsToCheck));
@@ -125,20 +125,20 @@ public class Merge extends StdCommand
 				}
 				if(checkedOut)
 				{
-					Vector fieldsToChange=null;
+					List<String> fieldsToChange=null;
 					if(changes.size()==0)
-						fieldsToChange=(Vector)allMyFields.clone();
+						fieldsToChange=new XVector<String>(allMyFields);
 					else
 					{
 						fieldsToChange=new Vector();
 						for(int v=0;v<changes.size();v++)
-							if(allMyFields.contains(changes.elementAt(v)))
-								fieldsToChange.addElement(changes.elementAt(v));
+							if(allMyFields.contains(changes.get(v)))
+								fieldsToChange.add(changes.get(v));
 					}
 					if(noisy) mergedebugtell(mob,"fieldsToChange-"+CMParms.toStringList(fieldsToChange));
 					for(int i=0;i<fieldsToChange.size();i++)
 					{
-						String field=(String)fieldsToChange.elementAt(i);
+						String field=(String)fieldsToChange.get(i);
 						if(noisy) mergedebugtell(mob,E.name()+" wants to change "+field+" value "+getStat(E,field)+" to "+getStat(E2,field)+"/"+(!getStat(E,field).equals(getStat(E2,field))));
 						if(!getStat(E,field).equals(getStat(E2,field)))
 						{
@@ -164,7 +164,7 @@ public class Merge extends StdCommand
 		return didAnything;
 	}
 	
-	public void sortEnumeratedList(Enumeration e, Vector allKnownFields, StringBuffer allFieldsMsg)
+	public void sortEnumeratedList(Enumeration e, List<String> allKnownFields, StringBuffer allFieldsMsg)
 	{
 		for(;e.hasMoreElements();)
 		{
@@ -173,7 +173,7 @@ public class Merge extends StdCommand
 			for(int x=0;x<fields.length;x++)
 				if(!allKnownFields.contains(fields[x]))
 				{
-					allKnownFields.addElement(fields[x]);
+					allKnownFields.add(fields[x]);
 					allFieldsMsg.append(fields[x]+" ");
 				}
 		}
@@ -260,12 +260,12 @@ public class Merge extends StdCommand
 			return false;
 		}
 
-		Vector changes=new Vector();
-		Vector onfields=new Vector();
-		Vector ignore=new Vector();
-		Vector use=null;
-		Vector allKnownFields=new Vector();
-		Vector things=new Vector();
+		List<String> changes=new Vector();
+		List<String> onfields=new Vector();
+		List<String> ignore=new Vector();
+		List<String> use=null;
+		List<String> allKnownFields=new Vector();
+		List things=new Vector();
 		boolean aremobs=false;
 		if((buf.length()>20)&&(buf.substring(0,20).indexOf("<MOBS>")>=0))
 		{
@@ -318,7 +318,7 @@ public class Merge extends StdCommand
 			sortEnumeratedList(CMClass.miscTech(),allKnownFields,allFieldsMsg);
 		}
 
-		allKnownFields.addElement("REJUV");
+		allKnownFields.add("REJUV");
 		allFieldsMsg.append("REJUV ");
 
 		for(int i=0;i<commands.size();i++)
@@ -351,7 +351,7 @@ public class Merge extends StdCommand
 						return false;
 					}
 					if(allKnownFields.contains(s))
-						use.addElement(s);
+						use.add(s);
 					else
 					{
 						mob.tell("'"+s+"' is an unknown field name.  Valid fields include: "+allFieldsMsg.toString());
@@ -369,7 +369,7 @@ public class Merge extends StdCommand
 					return false;
 				}
 				if(allKnownFields.contains(str))
-					use.addElement(str);
+					use.add(str);
 				else
 				{
 					mob.tell("'"+str+"' is an unknown field name.  Valid fields include: "+allFieldsMsg.toString());

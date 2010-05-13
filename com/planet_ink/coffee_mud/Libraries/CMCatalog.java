@@ -971,7 +971,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
         
         public void build(String catadata)
         {
-            Vector V=null;
+        	List<XMLLibrary.XMLpiece> V=null;
             if((catadata!=null)&&(catadata.length()>0))
             {
                 V=CMLib.xml().parseAllXML(catadata);

@@ -161,7 +161,7 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
         {
             startTime=start;
             endTime=end;
-            Vector<XMLLibrary.XMLpiece> all=CMLib.xml().parseAllXML(data);
+            List<XMLLibrary.XMLpiece> all=CMLib.xml().parseAllXML(data);
             if((all==null)||(all.size()==0)) return;
             highestOnline=CMLib.xml().getIntFromPieces(all,"HIGH");
             numberOnlineTotal=CMLib.xml().getIntFromPieces(all,"NUMONLINE");
@@ -172,7 +172,7 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
             stats.clear();
             for(int s=0;s<X.contents.size();s++)
             {
-                XMLLibrary.XMLpiece S=(XMLLibrary.XMLpiece)X.contents.elementAt(s);
+                XMLLibrary.XMLpiece S=(XMLLibrary.XMLpiece)X.contents.get(s);
                 long[] l=CMParms.toLongArray(CMParms.parseCommas(S.value,true));
                 if(l.length<STAT_TOTAL)
                 {

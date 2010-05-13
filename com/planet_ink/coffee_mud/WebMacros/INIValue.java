@@ -42,11 +42,11 @@ public class INIValue extends StdWebMacro
 	public String getHelpFor(String tag, String mask)
 	{
 		Vector help=new Vector();
-		Vector page=CMProps.loadEnumerablePage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
+		List<String> page=CMProps.loadEnumerablePage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
 		boolean startOver=false;
 		for(int p=0;p<page.size();p++)
 		{
-			String s=((String)page.elementAt(p)).trim();
+			String s=((String)page.get(p)).trim();
 			if(s.trim().length()==0)
 				startOver=true;
 			else
@@ -98,10 +98,10 @@ public class INIValue extends StdWebMacro
 				return " @break@";
 			String mask=((String)parms.get("MASK")).toUpperCase().trim();
 			String lastID="";
-			Vector page=CMProps.loadEnumerablePage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
+			List<String> page=CMProps.loadEnumerablePage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
 			for(int p=0;p<page.size();p++)
 			{
-				String s=((String)page.elementAt(p)).trim();
+				String s=((String)page.get(p)).trim();
 				if(s.startsWith("#")||s.startsWith("!")) 
 					continue;
 				int x=s.indexOf("=");

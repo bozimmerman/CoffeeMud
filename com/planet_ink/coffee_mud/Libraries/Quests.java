@@ -158,7 +158,7 @@ public class Quests extends StdLibrary implements QuestManager
         {
             return "The file '"+Resources.makeFileResourceName(holidayFilename)+"' does not exist, and is required for this feature.";
         }
-        Vector V=Resources.getFileLineVector(F.text());
+        List<String> V=Resources.getFileLineVector(F.text());
         Vector steps=parseQuestSteps(V,0,true);
         return steps;
     }
@@ -168,32 +168,32 @@ public class Quests extends StdLibrary implements QuestManager
         Object resp=getHolidayFile();
         if(resp instanceof String)
             return (String)resp;
-        Vector steps=null;
-        if(resp instanceof Vector)
-            steps=(Vector)resp;
+        List<String> steps=null;
+        if(resp instanceof List)
+            steps=(List)resp;
         else
             return "Unknown error.";
         String areaName=A.Name().toUpperCase().trim();
         if(otherParms.equalsIgnoreCase("ALL"))
             areaName=null;
         StringBuffer str=new StringBuffer("^xDefined Quest Holidays^?\n\r");
-        Vector line=null;
+        List<String> line=null;
         String var=null;
-        Vector V=null;
+        List<String> V=null;
         str.append("^H#  "+CMStrings.padRight("Holiday Name",20)+CMStrings.padRight("Area Name(s)",50)+"^?\n\r");
         for(int s=1;s<steps.size();s++)
         {
-            String step=(String)steps.elementAt(s);
+            String step=(String)steps.get(s);
             V=Resources.getFileLineVector(new StringBuffer(step));
-            Vector cmds=CMLib.quests().parseQuestCommandLines(V,"SET",0);
-            Vector areaLine=null;
-            Vector nameLine=null;
+            List<List<String>> cmds=CMLib.quests().parseQuestCommandLines(V,"SET",0);
+            List<String> areaLine=null;
+            List<String> nameLine=null;
             for(int v=0;v<cmds.size();v++)
             {
-                line=(Vector)cmds.elementAt(v);
+                line=cmds.get(v);
                 if(line.size()>1)
                 {
-                    var=((String)line.elementAt(1)).toUpperCase();
+                    var=((String)line.get(1)).toUpperCase();
                     if(var.equals("AREAGROUP"))
                     { areaLine=line;}
                     if(var.equals("NAME"))
@@ -207,7 +207,7 @@ public class Quests extends StdLibrary implements QuestManager
                 {
                     if((!contains) && (areaName != null))
                     for(int l=2;l<areaLine.size();l++)
-                        if(areaName.equalsIgnoreCase((String)areaLine.elementAt(l)))
+                        if(areaName.equalsIgnoreCase((String)areaLine.get(l)))
                         {    contains=true; break;}
                 }
                 else
@@ -254,9 +254,9 @@ public class Quests extends StdLibrary implements QuestManager
         Object resp=getHolidayFile();
         if(resp instanceof String)
             return (String)resp;
-        Vector steps=null;
-        if(resp instanceof Vector)
-            steps=(Vector)resp;
+        List<String> steps=null;
+        if(resp instanceof List)
+            steps=(List)resp;
         else
             return "Unknown error.";
         if(CMLib.quests().fetchQuest(named)!=null)
@@ -268,11 +268,11 @@ public class Quests extends StdLibrary implements QuestManager
         String step=null;
         for(int v=0;v<steps.size();v++)
         {
-            step=(String)steps.elementAt(v);
-            Vector stepV=Resources.getFileLineVector(new StringBuffer(step));
+            step=(String)steps.get(v);
+            List<String> stepV=Resources.getFileLineVector(new StringBuffer(step));
             for(int v1=0;v1<stepV.size();v1++)
             {
-                line=(String)stepV.elementAt(v1);
+                line=(String)stepV.get(v1);
                 lineV=CMParms.parse(line);
                 if(lineV.size()>1)
                 {
@@ -320,9 +320,9 @@ public class Quests extends StdLibrary implements QuestManager
         Object resp=getHolidayFile();
         if(resp instanceof String)
             return (String)resp;
-        Vector steps=null;
-        if(resp instanceof Vector)
-            steps=(Vector)resp;
+        List<String> steps=null;
+        if(resp instanceof List)
+            steps=(List)resp;
         else
             return "Unknown error.";
         
@@ -331,10 +331,10 @@ public class Quests extends StdLibrary implements QuestManager
         
         String step=null;
         StringBuffer buf=new StringBuffer("");
-        steps.removeElementAt(holidayNumber);
+        steps.remove(holidayNumber);
         for(int v=0;v<steps.size();v++)
         {
-            step=(String)steps.elementAt(v);
+            step=(String)steps.get(v);
             buf.append(step+"\n\r");
         }
         CMFile F=new CMFile(Resources.makeFileResourceName(holidayFilename),null,false);
@@ -348,9 +348,9 @@ public class Quests extends StdLibrary implements QuestManager
     {
         Object resp=getHolidayFile();
         if(resp instanceof String){ return "";}
-        Vector steps=null;
-        if(resp instanceof Vector)
-            steps=(Vector)resp;
+        List<String> steps=null;
+        if(resp instanceof List)
+            steps=(List<String>)resp;
         else
             return "";
         
@@ -362,11 +362,11 @@ public class Quests extends StdLibrary implements QuestManager
         String var=null;
         String cmd=null;
         String step=null;
-        step=(String)steps.elementAt(index);
-        Vector stepV=Resources.getFileLineVector(new StringBuffer(step));
+        step=(String)steps.get(index);
+        List<String> stepV=Resources.getFileLineVector(new StringBuffer(step));
         for(int v1=0;v1<stepV.size();v1++)
         {
-            line=(String)stepV.elementAt(v1);
+            line=(String)stepV.get(v1);
             lineV=CMParms.parse(line);
             if(lineV.size()>1)
             {
@@ -383,9 +383,9 @@ public class Quests extends StdLibrary implements QuestManager
     {
         Object resp=getHolidayFile();
         if(resp instanceof String){ return -1;}
-        Vector steps=null;
-        if(resp instanceof Vector)
-            steps=(Vector)resp;
+        List<String> steps=null;
+        if(resp instanceof List)
+            steps=(List)resp;
         else
             return -1;
         
@@ -396,11 +396,11 @@ public class Quests extends StdLibrary implements QuestManager
         String step=null;
         for(int v=1;v<steps.size();v++)
         {
-            step=(String)steps.elementAt(v);
-            Vector stepV=Resources.getFileLineVector(new StringBuffer(step));
+            step=(String)steps.get(v);
+            List<String> stepV=Resources.getFileLineVector(new StringBuffer(step));
             for(int v1=0;v1<stepV.size();v1++)
             {
-                line=(String)stepV.elementAt(v1);
+                line=(String)stepV.get(v1);
                 lineV=CMParms.parse(line);
                 if(lineV.size()>1)
                 {
@@ -429,9 +429,9 @@ public class Quests extends StdLibrary implements QuestManager
     
     public Vector getEncodedHolidayData(String dataFromStepsFile)
     {
-        Vector stepV=Resources.getFileLineVector(new StringBuffer(dataFromStepsFile));
+    	List<String> stepV=Resources.getFileLineVector(new StringBuffer(dataFromStepsFile));
         for(int v=0;v<stepV.size();v++)
-            stepV.setElementAt(CMStrings.replaceAll((String)stepV.elementAt(v),"\\;",";"),v);
+            stepV.set(v,CMStrings.replaceAll((String)stepV.get(v),"\\;",";"));
         DVector settings=new DVector(3);
         DVector behaviors=new DVector(3);
         DVector properties=new DVector(3);
@@ -450,7 +450,7 @@ public class Quests extends StdLibrary implements QuestManager
         String[] SETTINGS={"NAME","WAIT","DATE","DURATION","MUDDAY","AREAGROUP","MOBGROUP"};
         for(int v=0;v<stepV.size();v++)
         {
-            line=(String)stepV.elementAt(v);
+            line=(String)stepV.get(v);
             lineV=CMParms.parse(line);
             if(lineV.size()>1)
             {
@@ -499,15 +499,15 @@ public class Quests extends StdLibrary implements QuestManager
         Object resp=getHolidayFile();
         if(resp instanceof String)
         { mob.tell((String)resp); return;}
-        Vector steps=null;
-        if(resp instanceof Vector)
-            steps=(Vector)resp;
+        List<String> steps=null;
+        if(resp instanceof List)
+            steps=(List)resp;
         else
         { mob.tell("Unknown error."); return;}
         if((holidayNumber<=0)||(holidayNumber>=steps.size()))
         { mob.tell(holidayNumber+" does not exist as a holiday -- enter LIST HOLIDAYS."); return;}
 
-        String step=(String)steps.elementAt(holidayNumber);
+        String step=(String)steps.get(holidayNumber);
         Vector encodedData=getEncodedHolidayData(step);
         DVector settings=(DVector)encodedData.elementAt(0);
         DVector behaviors=(DVector)encodedData.elementAt(1);
@@ -564,15 +564,15 @@ public class Quests extends StdLibrary implements QuestManager
         DVector behaviors=(DVector)newData.elementAt(1);
         DVector properties=(DVector)newData.elementAt(2);
         DVector stats=(DVector)newData.elementAt(3);
-        //Vector stepV=(Vector)data.elementAt(4);
+        //List stepV=(List)data.elementAt(4);
         int pricingMobIndex=((Integer)newData.elementAt(5)).intValue();
         
         int holidayNumber=getHolidayIndex(oldName);
         Object resp=getHolidayFile();
         if(resp instanceof String) return (String)resp;
-        Vector steps=null;
-        if(resp instanceof Vector)
-            steps=(Vector)resp;
+        List<String> steps=null;
+        if(resp instanceof List)
+            steps=(List)resp;
         else
             return "Unknown error.";
         
@@ -582,7 +582,7 @@ public class Quests extends StdLibrary implements QuestManager
         StringBuffer buf=new StringBuffer("");
         for(int v=0;v<steps.size();v++)
         {
-            step=(String)steps.elementAt(v);
+            step=(String)steps.get(v);
             if(v==holidayNumber)
             {
                 encodedData=getEncodedHolidayData(step);
@@ -1053,16 +1053,16 @@ public class Quests extends StdLibrary implements QuestManager
         return mask.trim();
     }
     
-    public Vector breakOutMudChatVs(String MUDCHAT, DVector behaviors) 
+    public List<List<String>> breakOutMudChatVs(String MUDCHAT, DVector behaviors) 
     {
         int mndex=behaviors.indexOf(MUDCHAT);
         String mudChatStr=(mndex<0)?"":(String)behaviors.elementAt(mndex,2);
         if(mudChatStr.startsWith("+")) mudChatStr=mudChatStr.substring(1);
         Vector rawMCV=CMParms.parseSemicolons(mudChatStr,true);
-        Vector mudChatV=new Vector();
+        List<List<String>> mudChatV=new Vector();
         String s=null;
-        Vector V=new Vector();
-        mudChatV.addElement(V);
+        List<String> V=new Vector();
+        mudChatV.add(V);
         for(int r=0;r<rawMCV.size();r++)
         {
             s=(String)rawMCV.elementAt(r);
@@ -1071,13 +1071,13 @@ public class Quests extends StdLibrary implements QuestManager
                 if(V.size()>0)
                 {
                     V=new Vector();
-                    mudChatV.addElement(V);
+                    mudChatV.add(V);
                 }
                 s=s.substring(1,s.length()-1);
             }
-            V.addElement(s);
+            V.add(s);
         }
-        if(V.size()==0) mudChatV.removeElement(V);
+        if(V.size()==0) mudChatV.remove(V);
         return mudChatV;
     }
     
@@ -1085,8 +1085,8 @@ public class Quests extends StdLibrary implements QuestManager
     throws IOException
     {
         int mndex=behaviors.indexOf(var);
-        Vector mudChatV = breakOutMudChatVs(var,behaviors);
-        Vector V = null;
+        List<List<String>> mudChatV = breakOutMudChatVs(var,behaviors);
+        List<String> V = null;
         String s=null;
         for(int v=0;v<=mudChatV.size();v++)
         {
@@ -1099,9 +1099,9 @@ public class Quests extends StdLibrary implements QuestManager
                     ||(showNumber==showFlag))
                     {
                         V=new Vector();
-                        V.addElement("match | these | words or phrases");
-                        V.addElement("9say this");
-                        mudChatV.addElement(V);
+                        V.add("match | these | words or phrases");
+                        V.add("9say this");
+                        mudChatV.add(V);
                         v-=1;
                     }
                     else
@@ -1110,20 +1110,20 @@ public class Quests extends StdLibrary implements QuestManager
                 }
                 continue;
             }
-            V=(Vector)mudChatV.elementAt(v);
-            String words=(String)V.firstElement();
+            V=(List<String>)mudChatV.get(v);
+            String words=(String)V.get(0);
             mob.tell(showNumber+". MudChat for words: "+words);
             if((showFlag==showNumber)||(showFlag<=-999))
             {
                 words=CMLib.genEd().prompt(mob,words,showNumber,showFlag,"Enter matching words (| delimited, NULL to delete)\n\r",true);
                 if(words.trim().length()==0)
                 {
-                    mudChatV.removeElementAt(v);
+                    mudChatV.remove(v);
                     if((showFlag==showNumber)) break;
                     showNumber--;
                     continue;
                 }
-                V.setElementAt(words,0);
+                V.set(0,words);
                 for(int v1=1;v1<=V.size();v1++)
                 {
                     if(v1==V.size())
@@ -1131,12 +1131,12 @@ public class Quests extends StdLibrary implements QuestManager
                         if((mob.session()!=null)&&(!mob.session().killFlag())
                         &&(mob.session().confirm("Add another thing to say (y/N)","NO")))
                         {
-                            V.addElement("9say this");
+                            V.add("9say this");
                             v1-=1;
                         }
                         continue;
                     }
-                    s=(String)V.elementAt(v1);
+                    s=(String)V.get(v1);
                     String newStr="?";
                     while((newStr.equals("?"))&&(mob.session()!=null)&&(!mob.session().killFlag()))
                     {
@@ -1148,13 +1148,13 @@ public class Quests extends StdLibrary implements QuestManager
                     }
                     if(s.trim().length()==0)
                     {
-                        V.removeElementAt(v1);
+                        V.remove(v1);
                         v1--;
                         continue;
                     }
                     if(!Character.isDigit(s.charAt(0)))
                         s="9"+s;
-                    V.setElementAt(s,v1);
+                    V.set(v1,s);
                 }
             }
             showNumber++;
@@ -1162,11 +1162,11 @@ public class Quests extends StdLibrary implements QuestManager
         StringBuffer finalVal=new StringBuffer("");
         for(int v=0;v<mudChatV.size();v++)
         {
-            V=(Vector)mudChatV.elementAt(v);
+            V=(List<String>)mudChatV.get(v);
             if(V.size()==0) continue;
-            finalVal.append("("+((String)V.firstElement())+");");
+            finalVal.append("("+((String)V.get(0))+");");
             for(int v1=1;v1<V.size();v1++)
-                finalVal.append(((String)V.elementAt(v1))+";");
+                finalVal.append(((String)V.get(v1))+";");
             finalVal.append(";");
         }
         if(mndex>=0)
@@ -1177,7 +1177,7 @@ public class Quests extends StdLibrary implements QuestManager
     }
     
 
-    public Vector parseQuestCommandLines(List<?> script, String cmdOnly, int startLine)
+    public List<List<String>> parseQuestCommandLines(List<?> script, String cmdOnly, int startLine)
     {
         Vector line=null;
         String cmd=null;
@@ -1207,7 +1207,7 @@ public class Quests extends StdLibrary implements QuestManager
         return lines;
     }
     
-    public Vector parseQuestSteps(Vector script, int startLine, boolean rawLineInput)
+    public Vector parseQuestSteps(List<String> script, int startLine, boolean rawLineInput)
     {
         Vector line=null;
         String cmd=null;
@@ -1217,23 +1217,23 @@ public class Quests extends StdLibrary implements QuestManager
         String lineStr=null;
         for(int v=startLine;v<script.size();v++)
         {
-            lineStr=((String)script.elementAt(v)).trim();
+            lineStr=((String)script.get(v)).trim();
             if(lineStr.trim().equalsIgnoreCase(XMLLibrary.FILE_XML_BOUNDARY))
             {
                 if(scr.toString().trim().length()>0)
                     parsed.addElement(scr.toString());
-                scr=new StringBuffer(((String)script.elementAt(v))+"\n\r");
+                scr=new StringBuffer(((String)script.get(v))+"\n\r");
                 while((++v)<script.size())
-                    scr.append(((String)script.elementAt(v))+"\n\r");
+                    scr.append(((String)script.get(v))+"\n\r");
                 break;
             }
             line=CMParms.parse(lineStr.toUpperCase());
             if(line.size()==0) continue;
             cmd=((String)line.firstElement()).trim();
             if(rawLineInput)
-                scr.append(((String)script.elementAt(v))+"\n\r");
+                scr.append(((String)script.get(v))+"\n\r");
             else
-                scr.append(CMStrings.replaceAll(((String)script.elementAt(v))+"\n\r",";","\\;"));
+                scr.append(CMStrings.replaceAll(((String)script.get(v))+"\n\r",";","\\;"));
             if(cmd.equals("</SCRIPT>")&&(inScript))
             {
                 inScript=false; 
@@ -1271,7 +1271,7 @@ public class Quests extends StdLibrary implements QuestManager
             if((files[f].getName().toUpperCase().endsWith(".QUEST"))
             &&((fileToGet==null)||(files[f].getName().toUpperCase().startsWith(fileToGet.toUpperCase().trim()))))
             {
-                Vector V=Resources.getFileLineVector(files[f].text());
+            	List<String> V=Resources.getFileLineVector(files[f].text());
                 String s=null;
                 boolean foundStart=false;
                 boolean foundQuestScript=false;
@@ -1279,7 +1279,7 @@ public class Quests extends StdLibrary implements QuestManager
                 StringBuffer script=null;
                 for(int v=0;v<V.size();v++)
                 {
-                    s=((String)V.elementAt(v)).trim();
+                    s=((String)V.get(v)).trim();
                     if((foundQuestScript)&&(script!=null))
                         script.append(s+"\n\r");
                     else

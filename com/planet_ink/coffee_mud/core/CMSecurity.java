@@ -720,12 +720,12 @@ public class CMSecurity
         {
             approved=new Hashtable<Long,String>();
             Resources.submitResource("APPROVEDJSCRIPTS",approved);
-            Vector<String> jscripts=Resources.getFileLineVector(Resources.getFileResource("jscripts.ini",false));
+            List<String> jscripts=Resources.getFileLineVector(Resources.getFileResource("jscripts.ini",false));
             if((jscripts!=null)&&(jscripts.size()>0))
             {
                 for(int i=0;i<jscripts.size();i++)
                 {
-                    String s=(String)jscripts.elementAt(i);
+                    String s=(String)jscripts.get(i);
                     int x=s.indexOf("=");
                     if(x>0)
                         approved.put(Long.valueOf(CMath.s_long(s.substring(0,x))),s.substring(x+1));
@@ -804,11 +804,11 @@ public class CMSecurity
         if((login==null)||(login.length()<=0))
             return false;
         login=login.toUpperCase();
-        Vector<String> banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
+        List<String> banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
         if((banned!=null)&&(banned.size()>0))
         for(int b=0;b<banned.size();b++)
         {
-            String str=(String)banned.elementAt(b);
+            String str=(String)banned.get(b);
             if(str.length()>0)
             {
                 if(str.equals("*")||((str.indexOf("*")<0))&&(str.equals(login))) return true;
@@ -829,12 +829,12 @@ public class CMSecurity
         if((unBanMe==null)||(unBanMe.length()<=0))
             return;
         StringBuffer newBanned=new StringBuffer("");
-        Vector<String> banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
+        List<String> banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
         if((banned!=null)&&(banned.size()>0))
         {
             for(int b=0;b<banned.size();b++)
             {
-                String B=(String)banned.elementAt(b);
+                String B=(String)banned.get(b);
                 if((!B.equals(unBanMe))&&(B.trim().length()>0))
                     newBanned.append(B+"\n");
             }
@@ -845,12 +845,12 @@ public class CMSecurity
     public static void unban(int unBanMe)
     {
         StringBuffer newBanned=new StringBuffer("");
-        Vector<String> banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
+        List<String> banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
         if((banned!=null)&&(banned.size()>0))
         {
             for(int b=0;b<banned.size();b++)
             {
-                String B=(String)banned.elementAt(b);
+                String B=(String)banned.get(b);
                 if(((b+1)!=unBanMe)&&(B.trim().length()>0))
                     newBanned.append(B+"\n");
             }
@@ -862,11 +862,11 @@ public class CMSecurity
     {
         if((banMe==null)||(banMe.length()<=0))
             return -1;
-        Vector<String> banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
+        List<String> banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
         if((banned!=null)&&(banned.size()>0))
         for(int b=0;b<banned.size();b++)
         {
-            String B=(String)banned.elementAt(b);
+            String B=(String)banned.get(b);
             if(B.equals(banMe))
                 return b;
         }

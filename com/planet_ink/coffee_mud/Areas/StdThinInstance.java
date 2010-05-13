@@ -39,8 +39,19 @@ public class StdThinInstance extends StdThinArea
 	public String ID(){	return "StdThinInstance";}
 	private long flags=Area.FLAG_THIN|Area.FLAG_INSTANCE_PARENT;
 	public long flags(){return flags;}
+	private class ThinChild
+	{
+		public List<MOB> mobs;
+		public StdThinInstance A;
+		public ThinChild(StdThinInstance A, List<MOB> mobs)
+		{
+			this.A=A;
+			this.mobs=mobs;
+		}
+
+	}
 	
-	private DVector children = new DVector(2);
+	private SVector<ThinChild> children = new SVector<ThinChild>();
 	private volatile int instanceCounter=0;
 	private static final long CHILD_CHECK_INTERVAL=TimeClock.TIME_MILIS_PER_MUDHOUR/TimeClock.TIME_TICK ;
 	private long childCheckDown=CHILD_CHECK_INTERVAL;
@@ -145,14 +156,14 @@ public class StdThinInstance extends StdThinArea
 	    	{
         		for(int i=children.size()-1;i>=0;i--) 
         		{
-        			StdThinInstance childA=(StdThinInstance)children.elementAt(i,2);
+        			StdThinInstance childA=children.elementAt(i).A;
         			if(childA.getAreaState() > Area.STATE_ACTIVE)
         			{
-        				Vector V=(Vector)children.elementAt(i,3);
+        				List<MOB> V=children.elementAt(i).mobs;
         				boolean anyInside=false;
         				for(int v=0;v<V.size();v++)
         				{
-        					MOB M=(MOB)V.elementAt(v);
+        					MOB M=(MOB)V.get(v);
         					if(CMLib.flags().isInTheGame(M,true)
         					&&(M.location()!=null)
         					&&(M.location().getArea()==childA))
@@ -160,10 +171,10 @@ public class StdThinInstance extends StdThinArea
         				}
         				if(!anyInside)
         				{
-        					children.removeElementsAt(i);
+        					children.remove(i);
             				for(int v=0;v<V.size();v++)
             				{
-            					MOB M=(MOB)V.elementAt(v);
+            					MOB M=(MOB)V.get(v);
             					if((M.location()!=null)
             					&&(M.location().getArea()==this))
             						M.setLocation(M.getStartRoom());
@@ -202,17 +213,17 @@ public class StdThinInstance extends StdThinArea
         	{
         		int myDex=-1;
         		for(int i=0;i<children.size();i++) {
-        			Vector V=(Vector)children.elementAt(i,1);
+        			List<MOB> V=children.elementAt(i).mobs;
         			if(V.contains(msg.source())){  myDex=i; break;}
         		}
         		Set<MOB> grp = msg.source().getGroupMembers(new HashSet<MOB>());
         		for(int i=0;i<children.size();i++) {
         			if(i!=myDex)
         			{
-            			Vector V=(Vector)children.elementAt(i,1);
+        				List<MOB> V=children.elementAt(i).mobs;
 	        			for(int v=V.size()-1;v>=0;v--)
 	        			{
-	        				MOB M=(MOB)V.elementAt(v);
+	        				MOB M=(MOB)V.get(v);
 	        				if(grp.contains(M))
 		        			{
 		        				if(myDex<0)
@@ -222,10 +233,10 @@ public class StdThinInstance extends StdThinArea
 		        				}
 		        				else
 		        				if((CMLib.flags().isInTheGame(M,true))
-	        					&&(M.location().getArea()!=(Area)children.elementAt(i,2)))
+	        					&&(M.location().getArea()!=children.elementAt(i).A))
 		        				{
 		        					V.remove(M);
-		        					((Vector)children.elementAt(myDex,1)).addElement(M);
+		        					children.get(myDex).mobs.add(M);
 		        				}
 		        			}
 	        			}
@@ -246,10 +257,10 @@ public class StdThinInstance extends StdThinArea
         			redirectA=newA;
         			CMLib.map().addArea(newA);
         			newA.setAreaState(Area.STATE_ACTIVE); // starts ticking
-        			children.addElement(new XVector(msg.source()),redirectA);
+        			children.add(new ThinChild(redirectA,new SVector<MOB>(msg.source())));
         		}
         		else
-        			redirectA=(StdThinInstance)children.elementAt(myDex,2);
+        			redirectA=children.get(myDex).A;
         		Room R=redirectA.getRoom(redirectA.convertToMyArea(CMLib.map().getExtendedRoomID((Room)msg.target())));
         		if(R!=null) msg.setTarget(R);
         	}

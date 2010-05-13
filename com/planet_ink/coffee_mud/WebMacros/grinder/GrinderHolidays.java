@@ -68,23 +68,23 @@ public class GrinderHolidays {
             if(index < 0)
                 return "Error creating holiday file.";
         }
-        Vector steps=null;
+        List<String> steps=null;
         Vector encodedData = null;
         Object resp=CMLib.quests().getHolidayFile();
-        if(resp instanceof Vector)
-            steps=(Vector)resp;
+        if(resp instanceof List)
+            steps=(List<String>)resp;
         else
         if(resp instanceof String)
             return (String)resp;
         if(steps!=null)
-            encodedData=CMLib.quests().getEncodedHolidayData((String)steps.elementAt(index));
+            encodedData=CMLib.quests().getEncodedHolidayData((String)steps.get(index));
         if(encodedData==null)
-            return "Error reading holiday data (code: "+((resp instanceof Vector)?"T":"F")+":"+((steps==null)?"F":"T")+":"+((encodedData==null)?"F":"T")+")";
+            return "Error reading holiday data (code: "+((resp instanceof List)?"T":"F")+":"+((steps==null)?"F":"T")+":"+((encodedData==null)?"F":"T")+")";
         DVector settings=(DVector)encodedData.elementAt(0);
         DVector behaviors=(DVector)encodedData.elementAt(1);
         DVector properties=(DVector)encodedData.elementAt(2);
         DVector stats=(DVector)encodedData.elementAt(3);
-        //Vector stepV=(Vector)encodedData.elementAt(4);
+        //List stepV=(List)encodedData.elementAt(4);
         //int pricingMobIndex=((Integer)encodedData.elementAt(5)).intValue();
 
         String name=setText(settings,"NAME",httpReq.getRequestParameter("NAME"));

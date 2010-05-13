@@ -217,10 +217,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     	List<String> parsedLine=null;
         String var=null;
         String val=null;
-        Vector setScripts=CMLib.quests().parseQuestCommandLines(script,"SET",startAtLine);
+        List<List<String>> setScripts=CMLib.quests().parseQuestCommandLines(script,"SET",startAtLine);
         for(int v=0;v<setScripts.size();v++)
         {
-            parsedLine=(List)setScripts.elementAt(v);
+            parsedLine=(List<String>)setScripts.get(v);
             if(parsedLine.size()>1)
             {
                 var=((String)parsedLine.get(1)).toUpperCase();
@@ -356,10 +356,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         			allArgs.addElement(new XVector(O));
 	    		else
         		for(int aa=0;aa<allArgs.size();aa++)
-	        		((Vector)allArgs.elementAt(aa)).addElement(O);
+	        		((List)allArgs.elementAt(aa)).add(O);
 	        }
 	        for(int a=0;a<allArgs.size();a++)
-		        parseQuestScript(script, (Vector)allArgs.elementAt(a),-1);
+		        parseQuestScript(script, (List)allArgs.elementAt(a),-1);
         }
     }
 
@@ -3907,16 +3907,16 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             text=text.substring(0,x);
             if((xml.length()>0)&&(internalFiles==null))
             {
-                Vector topXMLV=CMLib.xml().parseAllXML(xml);
+            	List<XMLLibrary.XMLpiece> topXMLV=CMLib.xml().parseAllXML(xml);
                 for(int t=0;t<topXMLV.size();t++)
                 {
-                    XMLLibrary.XMLpiece filePiece=(XMLLibrary.XMLpiece)topXMLV.elementAt(t);
+                    XMLLibrary.XMLpiece filePiece=(XMLLibrary.XMLpiece)topXMLV.get(t);
                     String name=null;
                     String data=null;
                     if(filePiece.tag.equalsIgnoreCase("FILE")&&(filePiece.contents!=null))
                         for(int p=0;p<filePiece.contents.size();p++)
                         {
-                            XMLLibrary.XMLpiece piece=(XMLLibrary.XMLpiece)filePiece.contents.elementAt(p);
+                            XMLLibrary.XMLpiece piece=(XMLLibrary.XMLpiece)filePiece.contents.get(p);
                             if(piece.tag.equalsIgnoreCase("NAME")) name=piece.value;
                             if(piece.tag.equalsIgnoreCase("DATA")) data=piece.value;
                         }

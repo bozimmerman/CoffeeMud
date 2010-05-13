@@ -99,9 +99,9 @@ public class Affect extends StdCommand
 				return false;
 			}
 			else
-			if(commands.firstElement() instanceof Vector)
+			if(commands.firstElement() instanceof List)
 			{
-				((Vector)commands.firstElement()).addElement(getAffects(S,mob,false));
+				((List)commands.firstElement()).add(getAffects(S,mob,false));
 				return false;
 			}
 			else

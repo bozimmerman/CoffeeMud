@@ -470,7 +470,7 @@ public class ListCmd extends StdCommand
 	        if(F.showInSpecialReported()) useFaction=F;
 	    }
 		StringBuffer buf=new StringBuffer("Links: \n\r");
-		Vector areaLinkGroups=new Vector();
+		List<List<Area>> areaLinkGroups=new Vector<List<Area>>();
 		for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
@@ -480,7 +480,7 @@ public class ListCmd extends StdCommand
 				buf.append("\n\r");
 				continue;
 			}
-			Vector linkedGroups=new Vector();
+			List<List<Room>> linkedGroups=new Vector();
 			int numMobs=0;
 			int totalAlignment=0;
 			int totalLevels=0;
@@ -489,8 +489,8 @@ public class ListCmd extends StdCommand
 				Room R=(Room)r.nextElement();
 				if(R.roomID().length()>0)
 				{
-					Vector myVec=null;
-					Vector clearVec=null;
+					List<Room> myVec=null;
+					List<Room> clearVec=null;
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
 						Room R2=R.rawDoors()[d];
@@ -498,7 +498,7 @@ public class ListCmd extends StdCommand
 						{
 							for(int g=0;g<linkedGroups.size();g++)
 							{
-								Vector G=(Vector)linkedGroups.elementAt(g);
+								List<Room> G=linkedGroups.get(g);
 								if(G.size()==0)
 									clearVec=G;
 								else
@@ -507,13 +507,13 @@ public class ListCmd extends StdCommand
 									if(myVec==null)
 									{
 										myVec=G;
-										myVec.addElement(R);
+										myVec.add(R);
 									}
 									else
 									if(myVec!=G)
 									{
 										for(int g2=0;g2<myVec.size();g2++)
-											G.addElement(myVec.elementAt(g2));
+											G.add(myVec.get(g2));
 										myVec.clear();
 										clearVec=myVec;
 										myVec=G;
@@ -525,19 +525,19 @@ public class ListCmd extends StdCommand
 					if(myVec==null)
 					{
 						if(clearVec!=null)
-							clearVec.addElement(R);
+							clearVec.add(R);
 						else
 						{
 							clearVec=new Vector();
-							clearVec.addElement(R);
-							linkedGroups.addElement(clearVec);
+							clearVec.add(R);
+							linkedGroups.add(clearVec);
 						}
 					}
 				}
 				for(int g=linkedGroups.size()-1;g>=0;g--)
 				{
-					if(((Vector)linkedGroups.elementAt(g)).size()==0)
-						linkedGroups.removeElementAt(g);
+					if((linkedGroups.get(g)).size()==0)
+						linkedGroups.remove(g);
 				}
 
 				for(int m=0;m<R.numInhabitants();m++)
@@ -559,8 +559,8 @@ public class ListCmd extends StdCommand
 
 			}
 			StringBuffer ext=new StringBuffer("links ");
-			Vector myVec=null;
-			Vector clearVec=null;
+			List<Area> myVec=null;
+			List<Area> clearVec=null;
 			for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
@@ -573,7 +573,7 @@ public class ListCmd extends StdCommand
 						ext.append(Directions.getDirectionName(d)+" to "+R2.getArea().name()+" ("+R.roomID()+"/"+R2.roomID()+") ");
 						for(int g=0;g<areaLinkGroups.size();g++)
 						{
-							Vector G=(Vector)areaLinkGroups.elementAt(g);
+							List<Area> G=areaLinkGroups.get(g);
 							if(G.size()==0)
 								clearVec=G;
 							else
@@ -582,13 +582,13 @@ public class ListCmd extends StdCommand
 								if(myVec==null)
 								{
 									myVec=G;
-									myVec.addElement(R.getArea());
+									myVec.add(R.getArea());
 								}
 								else
 								if(myVec!=G)
 								{
 									for(int g2=0;g2<myVec.size();g2++)
-										G.addElement(myVec.elementAt(g2));
+										G.add(myVec.get(g2));
 									myVec.clear();
 									clearVec=myVec;
 									myVec=G;
@@ -601,12 +601,12 @@ public class ListCmd extends StdCommand
 			if(myVec==null)
 			{
 				if(clearVec!=null)
-					clearVec.addElement(A);
+					clearVec.add(A);
 				else
 				{
 					clearVec=new Vector();
-					clearVec.addElement(A);
-					areaLinkGroups.addElement(clearVec);
+					clearVec.add(A);
+					areaLinkGroups.add(clearVec);
 				}
 			}
 			if(numMobs>0)
@@ -616,26 +616,25 @@ public class ListCmd extends StdCommand
 			if(linkedGroups.size()>0)
 			{
 				buf.append("\tgroups: "+linkedGroups.size()+" sizes: ");
-				for(Enumeration r=linkedGroups.elements();r.hasMoreElements();)
-					buf.append(((Vector)r.nextElement()).size()+" ");
+				for(List<Room> grp : linkedGroups)
+					buf.append(grp.size()+" ");
 			}
 			buf.append("\t"+ext.toString()+"\n\r");
 		}
 		buf.append("There were "+areaLinkGroups.size()+" area groups:");
 		for(int g=areaLinkGroups.size()-1;g>=0;g--)
 		{
-			if(((Vector)areaLinkGroups.elementAt(g)).size()==0)
-				areaLinkGroups.removeElementAt(g);
+			if(areaLinkGroups.get(g).size()==0)
+				areaLinkGroups.remove(g);
 		}
 		StringBuffer unlinkedGroups=new StringBuffer("");
-		for(Enumeration r=areaLinkGroups.elements();r.hasMoreElements();)
+		for(List<Area> V : areaLinkGroups)
 		{
-			Vector V=(Vector)r.nextElement();
 			buf.append(V.size()+" ");
 			if(V.size()<4)
 			{
 				for(int v=0;v<V.size();v++)
-					unlinkedGroups.append(((Area)V.firstElement()).name()+"\t");
+					unlinkedGroups.append(((Area)V.get(0)).name()+"\t");
 				unlinkedGroups.append("|\t");
 			}
 
@@ -658,14 +657,14 @@ public class ListCmd extends StdCommand
                 journal=CMJ.NAME().trim();
         }
         if(journal==null) return buf;
-		Vector V=CMLib.database().DBReadJournalMsgs("SYSTEM_"+journal+"S");
+        List<JournalsLibrary.JournalEntry> V=CMLib.database().DBReadJournalMsgs("SYSTEM_"+journal+"S");
 		if(V!=null)
 		{
 			buf.append("\n\r^x"+CMStrings.padRight("#",5)+CMStrings.padRight("From",10)+" Entry^.^N\n\r");
 			buf.append("---------------------------------------------\n\r");
 			for(int j=0;j<V.size();j++)
 			{
-				JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)V.elementAt(j);
+				JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)V.get(j);
 				String from=entry.from;
 				String message=entry.msg;
 				buf.append(CMStrings.padRight((j+1)+"",3)+") "+CMStrings.padRight(from,10)+" "+message+"\n\r");
@@ -1215,11 +1214,11 @@ public class ListCmd extends StdCommand
 			String key=(String)keySet.firstElement();
 			StringBuffer str=new StringBuffer("^x"+key+"^?\n\r");
 			Object o=Resources.getResource(key);
-			if(o instanceof Vector) str.append(CMParms.toStringList((Vector)o));
+			if(o instanceof List) str.append(CMParms.toStringList((List)o));
 			else
-			if(o instanceof Hashtable) str.append(CMParms.toStringList((Hashtable)o));
+			if(o instanceof Map) str.append(CMParms.toStringList((Map)o));
 			else
-			if(o instanceof HashSet) str.append(CMParms.toStringList((HashSet)o));
+			if(o instanceof Set) str.append(CMParms.toStringList((Set)o));
 			else
 			if(o instanceof String[]) str.append(CMParms.toStringList((String[])o));
 			else
@@ -1250,11 +1249,11 @@ public class ListCmd extends StdCommand
 		CMFile f=new CMFile(fileName,mob,true);
 		if((!f.exists())||(!f.canRead()))
 			return "File '"+f.getName()+"' does not exist.";
-		Vector V=Resources.getFileLineVector(f.text());
+		List<String> V=Resources.getFileLineVector(f.text());
 		Hashtable entries = new Hashtable();
 		for(int v=0;v<V.size();v++)
 		{
-			String s=(String)V.elementAt(v);
+			String s=(String)V.get(v);
 			if(s.indexOf(" Help  Help")==19)
 			{
 				int x=s.indexOf("wanted help on",19);
@@ -1835,20 +1834,20 @@ public class ListCmd extends StdCommand
 		case 31:
 		{
 			StringBuffer str=new StringBuffer("\n\rProtected players:\n\r");
-			Vector protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
+			List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
 			if((protectedOnes!=null)&&(protectedOnes.size()>0))
 			for(int b=0;b<protectedOnes.size();b++)
-				str.append((b+1)+") "+((String)protectedOnes.elementAt(b))+"\n\r");
+				str.append((b+1)+") "+((String)protectedOnes.get(b))+"\n\r");
 			s.wraplessPrintln(str.toString());
 			break;
 		}
 		case 32:
 		{
 			StringBuffer str=new StringBuffer("\n\rBanned names/ips:\n\r");
-			Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
+			List<String> banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
 			if((banned!=null)&&(banned.size()>0))
 			for(int b=0;b<banned.size();b++)
-				str.append((b+1)+") "+((String)banned.elementAt(b))+"\n\r");
+				str.append((b+1)+") "+((String)banned.get(b))+"\n\r");
 			s.wraplessPrintln(str.toString());
 			break;
 		}
@@ -1902,7 +1901,7 @@ public class ListCmd extends StdCommand
 		}
 		else
 		{
-			Vector origCommands=(Vector)commands.clone();
+			Vector origCommands=new XVector(commands);
 			for(int c=commands.size()-2;c>=0;c--)
 			{
 				if(((String)commands.elementAt(c)).equalsIgnoreCase("for"))

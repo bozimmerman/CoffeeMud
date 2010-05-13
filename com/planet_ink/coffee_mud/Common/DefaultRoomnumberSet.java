@@ -271,16 +271,16 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 
     public void parseXML(String xml)
     {
-        Vector<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(xml);
+        List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(xml);
         if((V==null)||(V.size()==0)) return;
-        Vector<XMLLibrary.XMLpiece> xV=CMLib.xml().getContentsFromPieces(V,"AREAS");
+        List<XMLLibrary.XMLpiece> xV=CMLib.xml().getContentsFromPieces(V,"AREAS");
         root.clear();
         String ID=null;
         String NUMS=null;
         if((xV!=null)&&(xV.size()>0))
             for(int x=0;x<xV.size();x++)
             {
-                XMLLibrary.XMLpiece ablk=(XMLLibrary.XMLpiece)xV.elementAt(x);
+                XMLLibrary.XMLpiece ablk=(XMLLibrary.XMLpiece)xV.get(x);
                 if((ablk.tag.equalsIgnoreCase("AREA"))&&(ablk.contents!=null))
                 {
                     ID=CMLib.xml().getValFromPieces(ablk.contents,"ID").toUpperCase();

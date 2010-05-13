@@ -209,7 +209,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 
 	public void setXML(String str)
 	{
-		Vector<XMLLibrary.XMLpiece> xml = CMLib.xml().parseAllXML(str);
+		List<XMLLibrary.XMLpiece> xml = CMLib.xml().parseAllXML(str);
 		XMLLibrary libXML = CMLib.xml();
         String[] codes=getStatCodes();
         for(int i=0;i<codes.length;i++)

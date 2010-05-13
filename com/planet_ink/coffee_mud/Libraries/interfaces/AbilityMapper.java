@@ -141,4 +141,12 @@ public interface AbilityMapper extends CMLibrary
     public DVector getAbilityComponentDecodedDVector(Vector<AbilityComponent> codedDV, int r);
     public void addBlankAbilityComponent(Vector<AbilityComponent> codedDV);
     public boolean isDomainIncludedInAnyAbility(int domain, int acode);
+    
+    public static class AbilityPreReq
+    {
+    	public String[] abilityIDs;
+    	public int proficiency;
+    	public AbilityPreReq(int prof, String[] ids)
+    	{ abilityIDs=ids; proficiency=prof;}
+    }
 }

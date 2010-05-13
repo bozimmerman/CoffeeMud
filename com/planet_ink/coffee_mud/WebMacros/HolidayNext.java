@@ -48,31 +48,31 @@ public class HolidayNext extends StdWebMacro
             return "";
         }
         Object resp=CMLib.quests().getHolidayFile();
-        Vector steps=null;
-        if(resp instanceof Vector)
-            steps=(Vector)resp;
+        List<String> steps=null;
+        if(resp instanceof List)
+            steps=(List<String>)resp;
         else
         if(resp instanceof String)
             return (String)resp;
         else
             return "[Unknown error.]";
         Vector holidays=new Vector();
-        Vector line=null;
+        List<String> line=null;
         String var=null;
-        Vector V=null;
+        List<String> V=null;
         for(int s=1;s<steps.size();s++)
         {
-            String step=(String)steps.elementAt(s);
+            String step=(String)steps.get(s);
             V=Resources.getFileLineVector(new StringBuffer(step));
-            Vector cmds=CMLib.quests().parseQuestCommandLines(V,"SET",0);
+            List<List<String>> cmds=CMLib.quests().parseQuestCommandLines(V,"SET",0);
             //Vector areaLine=null;
-            Vector nameLine=null;
+            List<String> nameLine=null;
             for(int v=0;v<cmds.size();v++)
             {
-                line=(Vector)cmds.elementAt(v);
+                line=cmds.get(v);
                 if(line.size()>1)
                 {
-                    var=((String)line.elementAt(1)).toUpperCase();
+                    var=((String)line.get(1)).toUpperCase();
                     //if(var.equals("AREAGROUP"))
                     //{ areaLine=line;}
                     if(var.equals("NAME"))

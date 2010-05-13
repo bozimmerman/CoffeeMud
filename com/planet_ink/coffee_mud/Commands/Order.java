@@ -165,7 +165,7 @@ public class Order extends StdCommand
 		for(int v=0;v<doV.size();v++)
 		{
 			target=(MOB)doV.elementAt(v);
-			target.enqueCommand((Vector)commands.clone(),metaFlags|Command.METAFLAG_ORDER,0);
+			target.enqueCommand((List)commands.clone(),metaFlags|Command.METAFLAG_ORDER,0);
 		}
 		return false;
 	}

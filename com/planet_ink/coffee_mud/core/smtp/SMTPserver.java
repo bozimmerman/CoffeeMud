@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalEntry;
 
 /*
    Copyright 2000-2010 Bo Zimmerman
@@ -388,7 +389,7 @@ public class SMTPserver extends Thread implements Tickable
 	}
 
 
-	public Hashtable<String,Vector<String>> getMailingLists(Hashtable<String,Vector<String>> oldH)
+	public Map<String, List<String>> getMailingLists(Map<String, List<String>> oldH)
 	{
 		if(oldH!=null) return oldH;
 		return Resources.getMultiLists("mailinglists.txt");
@@ -399,7 +400,7 @@ public class SMTPserver extends Thread implements Tickable
 		if(tickStatus!=STATUS_NOT) return true;
 
 		boolean updatedMailingLists=false;
-		Hashtable<String,Vector<String>> lists=null;
+		Map<String, List<String>> lists=null;
 
 		tickStatus=STATUS_START;
 		if((tickID==Tickable.TICKID_READYTOSTOP)||(tickID==Tickable.TICKID_EMAIL))
@@ -417,10 +418,10 @@ public class SMTPserver extends Thread implements Tickable
 				{
 					boolean keepall=isAKeepAllJournal(journalName);
 					// Vector mailingList=?
-					Vector<JournalsLibrary.JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(journalName);
+					List<JournalsLibrary.JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(journalName);
 					for(int m=0;m<msgs.size();m++)
 					{
-						JournalsLibrary.JournalEntry msg=(JournalsLibrary.JournalEntry)msgs.elementAt(m);
+						JournalsLibrary.JournalEntry msg=(JournalsLibrary.JournalEntry)msgs.get(m);
 						String to=msg.to;
 						if(to.equalsIgnoreCase("ALL"))
 						{
@@ -437,8 +438,8 @@ public class SMTPserver extends Thread implements Tickable
 								if(CMLib.players().playerExists(from))
 								{
 									lists=getMailingLists(lists);
-									if(lists==null) lists=new Hashtable<String,Vector<String>>();
-									Vector<String> mylist=lists.get(journalName);
+									if(lists==null) lists=new Hashtable<String,List<String>>();
+									List<String> mylist=lists.get(journalName);
 									if(mylist==null)
 									{
 										mylist=new Vector<String>();
@@ -446,11 +447,11 @@ public class SMTPserver extends Thread implements Tickable
 									}
 									boolean found=false;
 									for(int l=0;l<mylist.size();l++)
-										if(((String)mylist.elementAt(l)).equalsIgnoreCase(from))
+										if(((String)mylist.get(l)).equalsIgnoreCase(from))
 											found=true;
 									if(!found)
 									{
-										mylist.addElement(from);
+										mylist.add(from);
 										updatedMailingLists=true;
 										if(CMProps.getBoolVar(CMProps.SYSTEMB_EMAILFORWARDING))
 										{
@@ -475,12 +476,12 @@ public class SMTPserver extends Thread implements Tickable
 								CMLib.database().DBDeleteJournal(journalName,key);
 								lists=getMailingLists(lists);
 								if(lists==null) continue;
-								Vector<String> mylist=lists.get(journalName);
+								List<String> mylist=lists.get(journalName);
 								if(mylist==null) continue;
 								for(int l=mylist.size()-1;l>=0;l--)
-									if(((String)mylist.elementAt(l)).equalsIgnoreCase(from))
+									if(((String)mylist.get(l)).equalsIgnoreCase(from))
 									{
-										mylist.removeElementAt(l);
+										mylist.remove(l);
 										updatedMailingLists=true;
 										if(CMProps.getBoolVar(CMProps.SYSTEMB_EMAILFORWARDING))
 										{
@@ -503,12 +504,12 @@ public class SMTPserver extends Thread implements Tickable
 									lists=getMailingLists(lists);
 									if(lists!=null)
 									{
-										Vector<String> mylist=lists.get(journalName);
+										List<String> mylist=lists.get(journalName);
 										if((mylist!=null)&&(mylist.contains(from)))
 										{
 											for(int i=0;i<mylist.size();i++)
 											{
-												String to2=(String)mylist.elementAt(i);
+												String to2=(String)mylist.get(i);
 												if(CMProps.getBoolVar(CMProps.SYSTEMB_EMAILFORWARDING))
 													CMLib.database().DBWriteJournal(journalName,from,to2,subj,s);
 											}
@@ -539,7 +540,7 @@ public class SMTPserver extends Thread implements Tickable
 			{
 				if((mailboxName()!=null)&&(mailboxName().length()>0))
 				{
-					Vector<JournalsLibrary.JournalEntry> emails=CMLib.database().DBReadJournalMsgs(mailboxName());
+					List<JournalsLibrary.JournalEntry> emails=CMLib.database().DBReadJournalMsgs(mailboxName());
 					processEmails(mailboxName(), emails,null,true);
 				}
 				if(journals!=null)
@@ -548,7 +549,7 @@ public class SMTPserver extends Thread implements Tickable
 						String journalName=(String)journals.elementAt(j,1);
 						if(isAForwardingJournal(journalName))
 						{
-							Vector<JournalsLibrary.JournalEntry> emails=CMLib.database().DBReadJournalMsgs(journalName);
+							List<JournalsLibrary.JournalEntry> emails=CMLib.database().DBReadJournalMsgs(journalName);
 							processEmails(journalName, emails,journalName,false);
 						}
 					}
@@ -581,14 +582,14 @@ public class SMTPserver extends Thread implements Tickable
 	}
 	
 	public void processEmails(String journalName,
-							  Vector<JournalsLibrary.JournalEntry> emails,
+							  List<JournalEntry> emails,
 							  String overrideReplyTo,
 							  boolean usePrivateRules)
 	{
 		if(emails!=null)
 		for(int e=0;e<emails.size();e++)
 		{
-			JournalsLibrary.JournalEntry mail=(JournalsLibrary.JournalEntry)emails.elementAt(e);
+			JournalsLibrary.JournalEntry mail=(JournalsLibrary.JournalEntry)emails.get(e);
 			String key=mail.key;
 			String from=mail.from;
 			String to=mail.to;

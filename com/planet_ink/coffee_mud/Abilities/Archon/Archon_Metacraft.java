@@ -41,7 +41,7 @@ public class Archon_Metacraft extends ArchonSkill
 	private static final String[] triggerStrings = {"METACRAFT"};
 	public String[] triggerStrings(){return triggerStrings;}
 	
-	public static Vector craftingSkills=new Vector();
+	public static List<Ability> craftingSkills=new Vector<Ability>();
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		if(craftingSkills.size()==0)
@@ -72,7 +72,7 @@ public class Archon_Metacraft extends ArchonSkill
 				if(lowestA!=null)
 				{
 				    V.removeElement(lowestA);
-				    craftingSkills.addElement(lowestA);
+				    craftingSkills.add(lowestA);
 				}
 				else
 				    break;
@@ -131,11 +131,11 @@ public class Archon_Metacraft extends ArchonSkill
 		}
 		ItemCraftor skill=null;
 		String recipe=CMParms.combine(commands,0);
-		Vector skillsToUse=new Vector();
+		List<Ability> skillsToUse=new Vector<Ability>();
 		boolean everyFlag=false;
 		if(recipe.equalsIgnoreCase("everything"))
 		{
-			skillsToUse=(Vector)craftingSkills.clone();
+			skillsToUse=new XVector<Ability>(craftingSkills);
 			everyFlag=true;
 			recipe=null;
 		}
@@ -146,32 +146,32 @@ public class Archon_Metacraft extends ArchonSkill
 	    	recipe=recipe.substring(6).trim();
 			for(int i=0;i<craftingSkills.size();i++)
 			{
-				skill=(ItemCraftor)craftingSkills.elementAt(i);
+				skill=(ItemCraftor)craftingSkills.get(i);
 				List<List<String>> V=skill.matchingRecipeNames(recipe,false);
-				if((V!=null)&&(V.size()>0)) skillsToUse.addElement(skill);
+				if((V!=null)&&(V.size()>0)) skillsToUse.add(skill);
 			}
 			if(skillsToUse.size()==0)
 			for(int i=0;i<craftingSkills.size();i++)
 			{
-				skill=(ItemCraftor)craftingSkills.elementAt(i);
+				skill=(ItemCraftor)craftingSkills.get(i);
 				List<List<String>> V=skill.matchingRecipeNames(recipe,true);
-				if((V!=null)&&(V.size()>0)) skillsToUse.addElement(skill);
+				if((V!=null)&&(V.size()>0)) skillsToUse.add(skill);
 			}
 	    }
 		else
 		{
 			for(int i=0;i<craftingSkills.size();i++)
 			{
-				skill=(ItemCraftor)craftingSkills.elementAt(i);
+				skill=(ItemCraftor)craftingSkills.get(i);
 				List<List<String>> V=skill.matchingRecipeNames(recipe,false);
-				if((V!=null)&&(V.size()>0)){ skillsToUse.addElement(skill);}
+				if((V!=null)&&(V.size()>0)){ skillsToUse.add(skill);}
 			}
 			if(skillsToUse.size()==0)
 			for(int i=0;i<craftingSkills.size();i++)
 			{
-				skill=(ItemCraftor)craftingSkills.elementAt(i);
+				skill=(ItemCraftor)craftingSkills.get(i);
 				List<List<String>> V=skill.matchingRecipeNames(recipe,true);
-				if((V!=null)&&(V.size()>0)){ skillsToUse.addElement(skill);}
+				if((V!=null)&&(V.size()>0)){ skillsToUse.add(skill);}
 			}
 		}
 		if(skillsToUse.size()==0)
@@ -185,7 +185,7 @@ public class Archon_Metacraft extends ArchonSkill
         HashSet files = new HashSet();
 		for(int s=0;s<skillsToUse.size();s++)
 		{
-			skill=(ItemCraftor)skillsToUse.elementAt(s);
+			skill=(ItemCraftor)skillsToUse.get(s);
 			List<Item> items=new Vector<Item>();
 			if(everyFlag)
 			{

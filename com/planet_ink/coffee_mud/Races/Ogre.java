@@ -95,15 +95,15 @@ public class Ogre extends Humanoid
             s1.setDisplayText("a large patchy tunic is crumpled up here.");
             s1.setDescription("It is a large ragged patchy nasty sweat-stained tunic.");
             s1.text();
-            outfitChoices.addElement(s1);
+            outfitChoices.add(s1);
             Armor p1=CMClass.getArmor("GenPants");
             p1.setName("some torn leggings");
             p1.setDisplayText("some torn leggings lie here.");
             p1.setDescription("They appear made for a large person with poor taste in clothing.");
             p1.text();
-            outfitChoices.addElement(p1);
+            outfitChoices.add(p1);
             Armor s3=CMClass.getArmor("GenBelt");
-            outfitChoices.addElement(s3);
+            outfitChoices.add(s3);
         }
         return outfitChoices;
     }

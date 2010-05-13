@@ -404,21 +404,21 @@ public class Conquerable extends Arrest
 			if((itemSet!=null)&&(itemSet.size()>0))
 			{
 				String data=((DatabaseEngine.PlayerData)itemSet.get(0)).xml;
-				Vector xml=CMLib.xml().parseAllXML(data);
+				List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(data);
 				if(xml!=null)
 				{
 					savedHoldingClan=CMLib.xml().getValFromPieces(xml,"CLANID");
                     prevHoldingClan=CMLib.xml().getValFromPieces(xml,"OLDCLANID");
                     conquestDate=CMLib.xml().getLongFromPieces(xml,"CLANDATE");
 					holdingClan=savedHoldingClan;
-					Vector allData=CMLib.xml().getContentsFromPieces(xml,"ACITEMS");
+					List<XMLLibrary.XMLpiece> allData=CMLib.xml().getContentsFromPieces(xml,"ACITEMS");
 					if(allData!=null)
 					for(int c=0;c<allData.size();c++)
 					{
-						XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)allData.elementAt(c);
+						XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)allData.get(c);
 						if((iblk.tag.equalsIgnoreCase("ACITEM"))&&(iblk.contents!=null))
 						{
-							Vector roomData=iblk.contents;
+							List<XMLLibrary.XMLpiece> roomData=iblk.contents;
 							String roomID=CMLib.xml().getValFromPieces(roomData,"ROOMID");
 							String MOBname=CMLib.xml().getValFromPieces(roomData,"MOB");
 							Room R=CMLib.map().getRoom(roomID);

@@ -86,15 +86,15 @@ public class Halfling extends StdRace
 			s1.setDisplayText("a small tunic is folded neatly here.");
 			s1.setDescription("It is a small but nicely made button-up tunic.");
 			s1.text();
-			outfitChoices.addElement(s1);
+			outfitChoices.add(s1);
 			Armor p1=CMClass.getArmor("GenPants");
 			p1.setName("some small pants");
 			p1.setDisplayText("some small pants lie here.");
 			p1.setDescription("They appear to be for a dimunitive person, and extend barely past the knee at that.");
 			p1.text();
-			outfitChoices.addElement(p1);
+			outfitChoices.add(p1);
 			Armor s3=CMClass.getArmor("GenBelt");
-			outfitChoices.addElement(s3);
+			outfitChoices.add(s3);
 		}
 		return outfitChoices;
 	}

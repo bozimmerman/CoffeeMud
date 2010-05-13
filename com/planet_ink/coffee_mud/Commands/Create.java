@@ -571,13 +571,13 @@ public class Create extends StdCommand
             mob.tell("You have failed to specify the proper fields.\n\rFormat: CREATE EXPERTISE [EXPERTISE ID]=[PARAMETERS] as follows: \n\r");
             StringBuffer buf=new CMFile(Resources.makeFileResourceName("skills/expertises.txt"),null,true).text();
             StringBuffer inst=new StringBuffer("");
-            Vector V=new Vector();
+            List<String> V=new Vector();
             if(buf!=null) V=Resources.getFileLineVector(buf);
             for(int v=0;v<V.size();v++)
-                if(((String)V.elementAt(v)).startsWith("#"))
-                    inst.append(((String)V.elementAt(v)).substring(1)+"\n\r");
+                if(((String)V.get(v)).startsWith("#"))
+                    inst.append(((String)V.get(v)).substring(1)+"\n\r");
                 else
-                if(((String)V.elementAt(v)).length()>0) 
+                if(((String)V.get(v)).length()>0) 
                     break;
             if(mob.session()!=null) mob.session().wraplessPrintln(inst.toString());
             mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
@@ -620,13 +620,13 @@ public class Create extends StdCommand
             mob.tell("You have failed to specify the proper fields.\n\rFormat: CREATE TITLE [TITLE]=[ZAPPER MASK] as follows: \n\r");
             StringBuffer buf=new CMFile(Resources.makeFileResourceName("titles.txt"),null,true).text();
             StringBuffer inst=new StringBuffer("");
-            Vector V=new Vector();
+            List<String> V=new Vector();
             if(buf!=null) V=Resources.getFileLineVector(buf);
             for(int v=0;v<V.size();v++)
-                if(((String)V.elementAt(v)).startsWith("#"))
-                    inst.append(((String)V.elementAt(v)).substring(1)+"\n\r");
+                if(((String)V.get(v)).startsWith("#"))
+                    inst.append(((String)V.get(v)).substring(1)+"\n\r");
                 else
-                if(((String)V.elementAt(v)).length()>0) 
+                if(((String)V.get(v)).length()>0) 
                     break;
             if(mob.session()!=null) mob.session().wraplessPrintln(inst.toString());
             mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");

@@ -287,9 +287,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         return null;
     }
 
-	public Ability getToEvoke(MOB mob, Vector commands)
+	public Ability getToEvoke(MOB mob, List<String> commands)
 	{
-		String evokeWord=((String)commands.elementAt(0)).toUpperCase();
+		String evokeWord=((String)commands.get(0)).toUpperCase();
 
 		boolean foundMoreThanOne=false;
 		Ability evokableAbility=null;
@@ -327,13 +327,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 
 		if(evokableAbility!=null)
-			commands.removeElementAt(0);
+			commands.remove(0);
 		else
 		if((foundMoreThanOne)&&(commands.size()>1))
 		{
-			commands.removeElementAt(0);
+			commands.remove(0);
 			foundMoreThanOne=false;
-			String secondWord=((String)commands.elementAt(0)).toUpperCase();
+			String secondWord=((String)commands.get(0)).toUpperCase();
 			for(int a=0;a<mob.numAbilities();a++)
 			{
 				Ability thisAbility=mob.fetchAbility(a);
@@ -355,11 +355,11 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				}
 			}
 			if((evokableAbility!=null)&&(!foundMoreThanOne))
-				commands.removeElementAt(0);
+				commands.remove(0);
 			else
 			if((foundMoreThanOne)&&(commands.size()>1))
 			{
-				String secondAndThirdWord=secondWord+" "+((String)commands.elementAt(1)).toUpperCase();
+				String secondAndThirdWord=secondWord+" "+((String)commands.get(1)).toUpperCase();
 
 				for(int a=0;a<mob.numAbilities();a++)
 				{
@@ -373,8 +373,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				}
 				if(evokableAbility!=null)
 				{
-					commands.removeElementAt(0);
-					commands.removeElementAt(0);
+					commands.remove(0);
+					commands.remove(0);
 				}
 			}
 			else
@@ -387,7 +387,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					&&(thisAbility.name().toUpperCase().indexOf(" "+secondWord.toUpperCase())>0))
 					{
 						evokableAbility=thisAbility;
-						commands.removeElementAt(0);
+						commands.remove(0);
 						break;
 					}
 				}
@@ -396,9 +396,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return evokableAbility;
 	}
 
-    public boolean preEvoke(MOB mob, Vector commands, int secondsElapsed, double actionsRemaining)
+    public boolean preEvoke(MOB mob, List<String> commands, int secondsElapsed, double actionsRemaining)
     {
-        commands=(Vector)commands.clone();
+        commands=new Vector<String>(commands);
         Ability evokableAbility=getToEvoke(mob,commands);
         if(evokableAbility==null)
         {
@@ -675,14 +675,14 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         return E.name()+"."+number;
     }
 
-	public Environmental parseShopkeeper(MOB mob, Vector commands, String error)
+	public Environmental parseShopkeeper(MOB mob, List<String> commands, String error)
 	{
 		if(commands.size()==0)
 		{
             if(error.length()>0) mob.tell(error);
 			return null;
 		}
-		commands.removeElementAt(0);
+		commands.remove(0);
 
 		List<Environmental> V=CMLib.coffeeShops().getAllShopkeepers(mob.location(),mob);
 		if(V.size()==0)
@@ -697,7 +697,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
                 if(error.length()>0) mob.tell(error);
 				return null;
 			}
-            String what=(String)commands.lastElement();
+            String what=(String)commands.get(commands.size()-1);
 
             Environmental shopkeeper=fetchEnvironmental(V,what,false);
             if((shopkeeper==null)&&(what.equals("shop")||what.equals("the shop")))
@@ -705,10 +705,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
                     if(V.get(v) instanceof Area)
                     { shopkeeper=(Environmental)V.get(v); break;}
 			if((shopkeeper!=null)&&(CMLib.coffeeShops().getShopKeeper(shopkeeper)!=null)&&(CMLib.flags().canBeSeenBy(shopkeeper,mob)))
-				commands.removeElementAt(commands.size()-1);
+				commands.remove(commands.size()-1);
 			else
 			{
-				mob.tell("You don't see anyone called '"+(String)commands.lastElement()+"' here buying or selling.");
+				mob.tell("You don't see anyone called '"+(String)commands.get(commands.size()-1)+"' here buying or selling.");
 				return null;
 			}
 			return shopkeeper;
@@ -716,11 +716,11 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		Environmental shopkeeper=(Environmental)V.get(0);
 		if(commands.size()>1)
 		{
-			MOB M=mob.location().fetchInhabitant((String)commands.lastElement());
+			MOB M=mob.location().fetchInhabitant((String)commands.get(commands.size()-1));
 			if((M!=null)&&(CMLib.coffeeShops().getShopKeeper(M)!=null)&&(CMLib.flags().canBeSeenBy(M,mob)))
 			{
 				shopkeeper=M;
-				commands.removeElementAt(commands.size()-1);
+				commands.remove(commands.size()-1);
 			}
 		}
 		return shopkeeper;
@@ -729,7 +729,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	public List<Item> fetchItemList(Environmental from,
 								    MOB mob,
 	                                Item container,
-	                                Vector commands,
+	                                List<String> commands,
 	                                int preferredLoc,
 	                                boolean visionMatters)
 	{
@@ -739,14 +739,14 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
 		int maxToItem=Integer.MAX_VALUE;
 		if((commands.size()>1)
-		&&(CMath.s_int((String)commands.firstElement())>0))
+		&&(CMath.s_int((String)commands.get(0))>0))
 		{
-			maxToItem=CMath.s_int((String)commands.firstElement());
-			commands.setElementAt("all",0);
+			maxToItem=CMath.s_int((String)commands.get(0));
+			commands.set(0,"all");
 		}
 
 		String name=CMParms.combine(commands,0);
-		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
+		boolean allFlag=(commands.size()>0)?((String)commands.get(0)).equalsIgnoreCase("all"):false;
 		if(name.toUpperCase().startsWith("ALL.")){ allFlag=true; name="ALL "+name.substring(4);}
 		if(name.toUpperCase().endsWith(".ALL")){ allFlag=true; name="ALL "+name.substring(0,name.length()-4);}
 		boolean doBugFix = true;
@@ -1094,7 +1094,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return null;
 	}
 
-	public List<Container> possibleContainers(MOB mob, Vector commands, int wornFilter, boolean withContentOnly)
+	public List<Container> possibleContainers(MOB mob, List<String> commands, int wornFilter, boolean withContentOnly)
 	{
 		Vector V=new Vector();
 		if(commands.size()==1)
@@ -1103,13 +1103,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		int fromDex=-1;
 		int containerDex=commands.size()-1;
 		for(int i=commands.size()-2;i>0;i--)
-		    if(((String)commands.elementAt(i)).equalsIgnoreCase("from"))
+		    if(((String)commands.get(i)).equalsIgnoreCase("from"))
 		    {
 		        fromDex=i;
 			    containerDex=i+1;
 			    if(((containerDex+1)<commands.size())
-			    &&((((String)commands.elementAt(containerDex)).equalsIgnoreCase("all"))
-			    ||(CMath.s_int((String)commands.elementAt(containerDex))>0)))
+			    &&((((String)commands.get(containerDex)).equalsIgnoreCase("all"))
+			    ||(CMath.s_int((String)commands.get(containerDex))>0)))
 			        containerDex++;
 			    break;
 			}
@@ -1122,13 +1122,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			allFlag=true;
 		else
 		if(containerDex>1)
-			preWord=(String)commands.elementAt(containerDex-1);
+			preWord=(String)commands.get(containerDex-1);
 
 		int maxContained=Integer.MAX_VALUE;
 		if(CMath.s_int(preWord)>0)
 		{
 			maxContained=CMath.s_int(preWord);
-			commands.setElementAt("all",containerDex-1);
+			commands.set(containerDex-1,"all");
 			containerDex--;
 			preWord="all";
 		}
@@ -1156,9 +1156,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				if(V.size()==1)
 				{
 				    while((fromDex>=0)&&(commands.size()>fromDex))
-						commands.removeElementAt(fromDex);
+						commands.remove(fromDex);
 				    while(commands.size()>containerDex)
-						commands.removeElementAt(containerDex);
+						commands.remove(containerDex);
 					preWord="";
 				}
 			}
@@ -1169,7 +1169,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return V;
 	}
 
-	public Item possibleContainer(MOB mob, Vector commands, boolean withStuff, int wornFilter)
+	public Item possibleContainer(MOB mob, List<String> commands, boolean withStuff, int wornFilter)
 	{
 		if(commands.size()==1)
 			return null;
@@ -1177,7 +1177,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		int fromDex=-1;
 		int containerDex=commands.size()-1;
 		for(int i=commands.size()-2;i>=1;i--)
-		    if(((String)commands.elementAt(i)).equalsIgnoreCase("from"))
+		    if(((String)commands.get(i)).equalsIgnoreCase("from"))
 		    { fromDex=i; containerDex=i+1;  break;}
 		String possibleContainerID=CMParms.combine(commands,containerDex);
 
@@ -1188,9 +1188,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		&&((!withStuff)||(((Container)E).getContents().size()>0)))
 		{
 		    while((fromDex>=0)&&(commands.size()>fromDex))
-				commands.removeElementAt(fromDex);
+				commands.remove(fromDex);
 		    while(commands.size()>containerDex)
-				commands.removeElementAt(containerDex);
+				commands.remove(containerDex);
 			return (Item)E;
 		}
 		return null;
@@ -1237,22 +1237,22 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	    return new Object[]{myCurrency,Double.valueOf(denomination),Long.valueOf(Math.round(b/denomination))};
 	}
     
-    public int calculateMaxToGive(MOB mob, Vector commands, boolean breakPackages, Environmental checkWhat, boolean getOnly)
+    public int calculateMaxToGive(MOB mob, List<String> commands, boolean breakPackages, Environmental checkWhat, boolean getOnly)
     {
         int maxToGive=Integer.MAX_VALUE;
         if((commands.size()>1)
         &&(CMLib.english().numPossibleGold(mob,CMParms.combine(commands,0))==0)
-        &&(CMath.s_int((String)commands.firstElement())>0))
+        &&(CMath.s_int((String)commands.get(0))>0))
         {
-            maxToGive=CMath.s_int((String)commands.firstElement());
-            commands.setElementAt("all",0);
+            maxToGive=CMath.s_int((String)commands.get(0));
+            commands.set(0,"all");
             if(breakPackages)
             {
                 boolean throwError=false;
-                if((commands.size()>2)&&("FROM".startsWith(((String)commands.elementAt(1)).toUpperCase())))
+                if((commands.size()>2)&&("FROM".startsWith(((String)commands.get(1)).toUpperCase())))
                 {
                     throwError=true;
-                    commands.removeElementAt(1);
+                    commands.remove(1);
                 }
                 String packCheckName=CMParms.combine(commands,1);
                 Environmental fromWhat=null;
@@ -1287,13 +1287,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
                     }
                     else
                     if(commands.size()==1)
-                        commands.addElement(toWhat.name());
+                        commands.add(toWhat.name());
                     else
                     {
-                        Object O=commands.firstElement();
+                        String O=commands.get(0);
                         commands.clear();
-                        commands.addElement(O);
-                        commands.addElement(toWhat.name());
+                        commands.add(O);
+                        commands.add(toWhat.name());
                     }
                 }
                 else

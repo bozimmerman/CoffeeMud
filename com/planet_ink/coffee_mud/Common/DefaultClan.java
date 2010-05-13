@@ -216,13 +216,13 @@ public class DefaultClan implements Clan
                 ClanVote CV=new ClanVote();
                 String rawxml=((DatabaseEngine.PlayerData)V.get(v)).xml;
                 if(rawxml.trim().length()==0) return voteList.elements();
-                Vector<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(rawxml);
+                List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(rawxml);
                 if(xml==null)
                 {
                     Log.errOut("Clans","Unable to parse: "+rawxml);
                     return voteList.elements();
                 }
-                Vector<XMLLibrary.XMLpiece> voteData=CMLib.xml().getContentsFromPieces(xml,"BALLOTS");
+                List<XMLLibrary.XMLpiece> voteData=CMLib.xml().getContentsFromPieces(xml,"BALLOTS");
                 if(voteData==null){ Log.errOut("Clans","Unable to get BALLOTS data."); return voteList.elements();}
                 CV.voteStarter=CMLib.xml().getValFromPieces(voteData,"BY");
                 CV.voteStarted=CMLib.xml().getLongFromPieces(voteData,"ON");
@@ -230,12 +230,12 @@ public class DefaultClan implements Clan
                 CV.voteStatus=CMLib.xml().getIntFromPieces(voteData,"STATUS");
                 CV.matter=CMLib.xml().getValFromPieces(voteData,"CMD");
                 CV.votes=new DVector(2);
-                Vector<XMLLibrary.XMLpiece> xV=CMLib.xml().getContentsFromPieces(voteData,"VOTES");
+                List<XMLLibrary.XMLpiece> xV=CMLib.xml().getContentsFromPieces(voteData,"VOTES");
                 if((xV!=null)&&(xV.size()>0))
                 {
                     for(int x=0;x<xV.size();x++)
                     {
-                        XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xV.elementAt(x);
+                        XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xV.get(x);
                         if((!iblk.tag.equalsIgnoreCase("VOTE"))||(iblk.contents==null))
                             continue;
                         String userID=CMLib.xml().getValFromPieces(iblk.contents,"BY");
@@ -736,13 +736,13 @@ public class DefaultClan implements Clan
         relations.clear();
         government=GVT_DICTATORSHIP;
         if(politics.trim().length()==0) return;
-        Vector<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(politics);
+        List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(politics);
         if(xml==null)
         {
             Log.errOut("Clans","Unable to parse: "+politics);
             return;
         }
-        Vector<XMLLibrary.XMLpiece> poliData=CMLib.xml().getContentsFromPieces(xml,"POLITICS");
+        List<XMLLibrary.XMLpiece> poliData=CMLib.xml().getContentsFromPieces(xml,"POLITICS");
         if(poliData==null){ Log.errOut("Clans","Unable to get POLITICS data."); return;}
         government=CMLib.xml().getIntFromPieces(poliData,"GOVERNMENT");
         exp=CMLib.xml().getLongFromPieces(poliData,"EXP");
@@ -751,12 +751,12 @@ public class DefaultClan implements Clan
         autoPosition=CMLib.xml().getIntFromPieces(poliData,"AUTOPOS");
 
         // now RESOURCES!
-        Vector<XMLLibrary.XMLpiece> xV=CMLib.xml().getContentsFromPieces(poliData,"RELATIONS");
+        List<XMLLibrary.XMLpiece> xV=CMLib.xml().getContentsFromPieces(poliData,"RELATIONS");
         if((xV!=null)&&(xV.size()>0))
         {
             for(int x=0;x<xV.size();x++)
             {
-                XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xV.elementAt(x);
+                XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xV.get(x);
                 if((!iblk.tag.equalsIgnoreCase("RELATION"))||(iblk.contents==null))
                     continue;
                 String relClanID=CMLib.xml().getValFromPieces(iblk.contents,"CLAN");

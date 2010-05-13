@@ -182,13 +182,13 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
             }
         }catch(NoSuchElementException e){}
         StringBuffer newNoPurge=new StringBuffer("");
-        Vector protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
+        List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
         boolean somethingDone=false;
         if((protectedOnes!=null)&&(protectedOnes.size()>0))
         {
             for(int b=0;b<protectedOnes.size();b++)
             {
-                String B=(String)protectedOnes.elementAt(b);
+                String B=(String)protectedOnes.get(b);
                 if(!B.equalsIgnoreCase(deadMOB.name()))
                     newNoPurge.append(B+"\n");
                 else
@@ -212,13 +212,13 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
         accountsList.remove(deadAccount);
     	
         StringBuffer newNoPurge=new StringBuffer("");
-        Vector protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
+        List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
         boolean somethingDone=false;
         if((protectedOnes!=null)&&(protectedOnes.size()>0))
         {
             for(int b=0;b<protectedOnes.size();b++)
             {
-                String B=(String)protectedOnes.elementAt(b);
+                String B=(String)protectedOnes.get(b);
                 if(!B.equalsIgnoreCase(deadAccount.accountName()))
                     newNoPurge.append(B+"\n");
                 else
@@ -495,7 +495,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
         }
         thread.status("autopurge process");
         List<PlayerLibrary.ThinPlayer> allUsers=CMLib.database().getExtendedUserList();
-        Vector protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
+        List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
         if(protectedOnes==null) protectedOnes=new Vector();
 
         for(ThinPlayer user : allUsers)
@@ -537,7 +537,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
                 boolean protectedOne=false;
                 for(int p=0;p<protectedOnes.size();p++)
                 {
-                    String P=(String)protectedOnes.elementAt(p);
+                    String P=(String)protectedOnes.get(p);
                     if(P.equalsIgnoreCase(name))
                     {
                         protectedOne=true;
@@ -551,13 +551,13 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
                 	continue;
                 }
                 
-                Vector warnedOnes=Resources.getFileLineVector(Resources.getFileResource("warnedplayers.ini",false));
+                List<String> warnedOnes=Resources.getFileLineVector(Resources.getFileResource("warnedplayers.ini",false));
                 long foundWarningDateTime=-1;
                 StringBuffer warnStr=new StringBuffer("");
                 if((warnedOnes!=null)&&(warnedOnes.size()>0))
                     for(int b=0;b<warnedOnes.size();b++)
                     {
-                        String B=((String)warnedOnes.elementAt(b)).trim();
+                        String B=((String)warnedOnes.get(b)).trim();
                         if((B.trim().length()>0)
                         &&(B.toUpperCase().startsWith(name.toUpperCase()+" ")))
                         {

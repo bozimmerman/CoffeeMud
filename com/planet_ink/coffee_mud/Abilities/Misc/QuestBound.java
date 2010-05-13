@@ -74,7 +74,7 @@ public class QuestBound implements Ability
 	public String[] triggerStrings(){return empty;}
 	public boolean invoke(MOB mob, Vector commands, Physical target, boolean auto, int asLevel){return false;}
 	public boolean invoke(MOB mob, Physical target, boolean auto, int asLevel){return false;}
-    public boolean preInvoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining){return true;}
+    public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining){return true;}
 	public boolean autoInvocation(MOB mob){return false;}
 	public void unInvoke(){}
 	public boolean canBeUninvoked(){return false;}

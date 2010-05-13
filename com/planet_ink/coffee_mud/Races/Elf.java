@@ -84,24 +84,24 @@ public class Elf extends StdRace
 			s1.setDisplayText("a delicate green shirt sits gracefully here.");
 			s1.setDescription("Obviously fine craftmenship, with sharp folds and intricate designs.");
 			s1.text();
-			outfitChoices.addElement(s1);
+			outfitChoices.add(s1);
 
 			Armor s2=CMClass.getArmor("GenShoes");
 			s2.setName("a pair of sandals");
 			s2.setDisplayText("a pair of sandals lie here.");
 			s2.setDescription("Obviously fine craftmenship, these light leather sandals have tiny woodland drawings in them.");
 			s2.text();
-			outfitChoices.addElement(s2);
+			outfitChoices.add(s2);
 
 			Armor p1=CMClass.getArmor("GenPants");
 			p1.setName("some delicate leggings");
 			p1.setDisplayText("a pair delicate brown leggings sit here.");
 			p1.setDescription("Obviously fine craftmenship, with sharp folds and intricate designs.  They look perfect for dancing in!");
 			p1.text();
-			outfitChoices.addElement(p1);
+			outfitChoices.add(p1);
 			
 			Armor s3=CMClass.getArmor("GenBelt");
-			outfitChoices.addElement(s3);
+			outfitChoices.add(s3);
 		}
 		return outfitChoices;
 	}

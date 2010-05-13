@@ -55,10 +55,10 @@ public class QuestMaker extends StdWebMacro
 			filePages=CMLib.quests().getQuestTemplate(mob, template);
     		httpReq.getRequestObjects().put("QM_FILE_PAGES",filePages);
 		}
-        Vector qPages=(Vector)filePages.elementAt(0,4);
-        if(pageNumber<=0) return (DVector)qPages.firstElement();
-        if(pageNumber>=qPages.size()) return (DVector)qPages.lastElement();
-        return (DVector)qPages.elementAt(pageNumber);
+        List<DVector> qPages=(List<DVector>)filePages.elementAt(0,4);
+        if(pageNumber<=0) return (DVector)qPages.get(0);
+        if(pageNumber>=qPages.size()) return (DVector)qPages.get(qPages.size()-1);
+        return (DVector)qPages.get(pageNumber);
     }
 
     private String itemList(List<Item> itemList, Item oldItem, String oldValue)
@@ -718,10 +718,10 @@ public class QuestMaker extends StdWebMacro
                 String script=((StringBuffer)filePages.elementAt(0,5)).toString();
                 String var=null;
                 String val=null;
-                Vector qPages=(Vector)filePages.elementAt(0,4);
+                List<DVector> qPages=(List<DVector>)filePages.elementAt(0,4);
                 for(int page=0;page<qPages.size();page++)
                 {
-                    DVector pageDV=(DVector)qPages.elementAt(page);
+                    DVector pageDV=(DVector)qPages.get(page);
                     for(int v=0;v<pageDV.size();v++)
                     {
                         var=(String)pageDV.elementAt(v,2);

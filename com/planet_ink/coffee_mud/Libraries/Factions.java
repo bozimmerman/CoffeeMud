@@ -1435,7 +1435,7 @@ public class Factions extends StdLibrary implements FactionManager
 
     private StringBuffer rebuildFactionProperties(Faction F)
     {
-        Vector oldV=Resources.getFileLineVector(Resources.getFileResource(F.factionID(),true));
+    	List<String> oldV=Resources.getFileLineVector(Resources.getFileResource(F.factionID(),true));
         if(oldV.size()<10)
         {
 
@@ -1444,7 +1444,7 @@ public class Factions extends StdLibrary implements FactionManager
         for(int i=0;i<defined.length;i++) defined[i]=false;
         for(int v=0;v<oldV.size();v++)
         {
-            String s=(String)oldV.elementAt(v);
+            String s=(String)oldV.get(v);
             if(!(s.trim().startsWith("#")||s.trim().length()==0||(s.indexOf("=")<0)))
             {
                 String tag=s.substring(0,s.indexOf("=")).trim().toUpperCase();
@@ -1459,7 +1459,7 @@ public class Factions extends StdLibrary implements FactionManager
         StringBuffer buf=new StringBuffer("");
         for(int v=0;v<oldV.size();v++)
         {
-            String s=(String)oldV.elementAt(v);
+            String s=(String)oldV.get(v);
             if(s.trim().length()==0)
             {
                 if((lastCommented>=0)&&(!done[lastCommented]))

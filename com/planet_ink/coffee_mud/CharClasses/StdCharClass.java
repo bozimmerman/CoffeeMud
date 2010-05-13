@@ -659,8 +659,8 @@ public class StdCharClass implements CharClass
         //this.startCharacter(mob,isBorrowedClass,verifyOnly)
         //CR.setStat("STARTASTATE",CMLib.coffeeMaker().getCharStateStr(STARTCS));
         String[] names=nameSet();
-        Vector securitySets=new Vector();
-        Vector securityLvls=new Vector();
+        List<List<String>> securitySets=new Vector();
+        List<Integer> securityLvls=new Vector();
         CR.setStat("NUMNAME",""+names.length);
         for(int n=0;n<names.length;n++)
             CR.nameSet()[n]=names[n];
@@ -669,8 +669,8 @@ public class StdCharClass implements CharClass
         List<String> firstSet=getSecurityGroups(0);
         Vector cumulativeSet=new Vector();
         cumulativeSet.addAll(firstSet);
-        securitySets.addElement(firstSet);
-        securityLvls.addElement(Integer.valueOf(0));
+        securitySets.add(firstSet);
+        securityLvls.add(Integer.valueOf(0));
         for(int x=1;x<20000;x++)
         {
             if(!this.name(x).equals(names[nameDex]))
@@ -682,19 +682,19 @@ public class StdCharClass implements CharClass
             }
             if(getSecurityGroups(x).size()!=cumulativeSet.size())
             {
-                Vector V=new Vector();
+            	List<String> V=new Vector();
                 V.addAll(getSecurityGroups(x));
                 for(int i=0;i<cumulativeSet.size();i++)
                     V.remove(cumulativeSet.elementAt(i));
-                securitySets.addElement(V);
-                securityLvls.addElement(Integer.valueOf(x));
+                securitySets.add(V);
+                securityLvls.add(Integer.valueOf(x));
                 cumulativeSet.addAll(V);
             }
         }
         for(int l=0;l<lvls.length;l++)
             CR.setStat("NAMELEVEL"+l,""+lvls[l]);
         if((securitySets.size()==1)
-        &&(((Vector)securitySets.firstElement()).size()==0))
+        &&(securitySets.get(0).size()==0))
         {
             securitySets.clear();
             securityLvls.clear();
@@ -702,8 +702,8 @@ public class StdCharClass implements CharClass
         CR.setStat("NUMSSET",""+securitySets.size());
         for(int s=0;s<securitySets.size();s++)
         {
-            CR.setStat("SSET"+s,CMParms.combine((Vector)securitySets.elementAt(s),0));
-            CR.setStat("SSETLEVEL"+s,""+((Integer)securityLvls.elementAt(s)).intValue());
+            CR.setStat("SSET"+s,CMParms.combine(securitySets.get(s),0));
+            CR.setStat("SSETLEVEL"+s,""+securityLvls.get(s).intValue());
         }
         H=requiredWeaponMaterials();
         if((H==null)||(H.size()==0))

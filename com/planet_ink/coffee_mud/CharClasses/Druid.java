@@ -384,7 +384,7 @@ public class Druid extends StdCharClass
                 stuff[1]=Integer.valueOf(0);
                 stuff[2]=new Vector();
             }
-            if((((Integer)stuff[1]).intValue()<19)&&(!((Vector)stuff[2]).contains(""+msg.source())))
+            if((((Integer)stuff[1]).intValue()<19)&&(!((List)stuff[2]).contains(""+msg.source())))
             {
                 stuff[1]=Integer.valueOf(((Integer)stuff[1]).intValue()+1);
                 ((MOB)host).tell("You have freed "+msg.source().name()+" from "+(msg.source().getStartRoom().getArea().name())+".");
@@ -414,7 +414,7 @@ public class Druid extends StdCharClass
 		{
 			outfitChoices=new Vector();
 			Weapon w=CMClass.getWeapon("Quarterstaff");
-			outfitChoices.addElement(w);
+			outfitChoices.add(w);
 		}
 		return outfitChoices;
 	}

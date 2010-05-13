@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class BanListMgr extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
@@ -51,10 +50,10 @@ public class BanListMgr extends StdWebMacro
 		if(parms.containsKey("NEXT"))
 		{
 			String lastID="";
-			Vector banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
+			List<String> banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
 			for(int i=0;i<banned.size();i++)
 			{
-				String key=(String)banned.elementAt(i);
+				String key=(String)banned.get(i);
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!key.equals(lastID))))
 				{
 					httpReq.addRequestParameters("BANNEDONE",key);

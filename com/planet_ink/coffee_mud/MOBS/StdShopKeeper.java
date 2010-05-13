@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -143,7 +144,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 							shoptext=CMLib.coffeeMaker().getGenMOBTextUnpacked(this,CMLib.encoder().decompressString(miscText));
 						else
 							shoptext=CMLib.coffeeMaker().getGenMOBTextUnpacked(this,CMStrings.bytesToStr(miscText));
-						Vector xml=CMLib.xml().parseAllXML(shoptext);
+						List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(shoptext);
 						if(xml!=null)
 						{
 							CMLib.coffeeMaker().populateShops(this,xml);

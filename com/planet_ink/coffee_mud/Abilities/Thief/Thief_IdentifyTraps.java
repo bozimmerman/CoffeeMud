@@ -47,7 +47,7 @@ public class Thief_IdentifyTraps extends ThiefSkill
 
     public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
     {
-        Vector savedCommands=(Vector)commands.clone();
+        Vector savedCommands=new XVector(commands);
         String whatTounlock=CMParms.combine(commands,0);
         Physical unlockThis=givenTarget;
         Room nextRoom=null;

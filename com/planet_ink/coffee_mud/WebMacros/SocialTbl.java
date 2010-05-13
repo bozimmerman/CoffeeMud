@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class SocialTbl extends StdWebMacro
 {
 	public String name()	{return "SocialTbl";}
@@ -44,7 +43,7 @@ public class SocialTbl extends StdWebMacro
 		StringBuffer TBL=(StringBuffer)Resources.getResource("WEB SOCIALS TBL");
 		if(TBL!=null) return TBL.toString();
 
-		Vector socialVec=CMLib.socials().getSocialsList();
+		List<String> socialVec=CMLib.socials().getSocialsList();
 		StringBuffer msg=new StringBuffer("\n\r");
 		int col=0;
 		int percent = 100/AT_MAX_COL;
@@ -71,7 +70,7 @@ public class SocialTbl extends StdWebMacro
 				msg.append(" width=\"" + percent + "%\"");
 
 			msg.append(">");
-			msg.append((String)socialVec.elementAt(i));
+			msg.append((String)socialVec.get(i));
 			msg.append("</td>");
 			// finish the row
 			if((percent == 100) || (++col)> (AT_MAX_COL-1 ))

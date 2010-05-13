@@ -47,7 +47,7 @@ public class Archon_Multiwatch extends ArchonSkill
 	public int usageType(){return USAGE_MOVEMENT;}
 
 	public static Hashtable<MOB,int[]> DATA=new Hashtable<MOB,int[]>();
-	public static Hashtable<String,Vector> IPS=new Hashtable<String,Vector>();
+	public static Hashtable<String,List<MOB>> IPS=new Hashtable<String,List<MOB>>();
 
 	public static final int DATA_GOODSPEECH=0;
 	public static final int DATA_ANYSPEECH=1;
@@ -149,14 +149,14 @@ public class Archon_Multiwatch extends ArchonSkill
 				&&(!CMParms.combine(mob.session().previousCMD(),0).equals(lastCommand)))
 				{
 					data[DATA_TYPEDCOMMAND]++;
-					Vector V=null;
+					List<MOB> V=null;
 					if(mob.session().getAddress()!=null)
-						V=(Vector)IPS.get(mob.session().getAddress());
+						V=IPS.get(mob.session().getAddress());
 
 					if(V!=null)
 					for(int v=0;v<V.size();v++)
 					{
-						MOB M=(MOB)V.elementAt(v);
+						MOB M=(MOB)V.get(v);
 						if(M==mob) continue;
 						if(M.session()==null) continue;
 						if(!CMLib.flags().isInTheGame(M,true)) continue;
@@ -182,33 +182,33 @@ public class Archon_Multiwatch extends ArchonSkill
 		{
 			DATA.clear();
 			IPS.clear();
-			Hashtable<String,Vector> ipes=new Hashtable<String,Vector>();
+			Hashtable<String,List<MOB>> ipes=new Hashtable<String,List<MOB>>();
 			for(int s=0;s<CMLib.sessions().size();s++)
 			{
 				Session S=CMLib.sessions().elementAt(s);
 				if((S.getAddress().length()>0)
 				&&(S.mob()!=null))
 				{
-					Vector V=(Vector)ipes.get(S.getAddress());
+					List V=(List)ipes.get(S.getAddress());
 					if(V==null){
 						V=new Vector();
 						ipes.put(S.getAddress(),V);
 					}
-					if(!V.contains(S.mob())) V.addElement(S.mob());
+					if(!V.contains(S.mob())) V.add(S.mob());
 				}
 			}
 			StringBuffer rpt=new StringBuffer("");
 			for(Enumeration e=ipes.keys();e.hasMoreElements();)
 			{
 				String addr=(String)e.nextElement();
-				Vector names=(Vector)ipes.get(addr);
+				List<MOB> names=ipes.get(addr);
 				if(names.size()>1)
 				{
 					IPS.put(addr,names);
 					rpt.append("Watch #"+(IPS.size())+" added: ");
 					for(int n=0;n<names.size();n++)
 					{
-						MOB MN=(MOB)names.elementAt(n);
+						MOB MN=(MOB)names.get(n);
 						if(MN.fetchEffect(ID())==null)
 						{
 							Ability A=(Ability)copyOf();
@@ -239,12 +239,12 @@ public class Archon_Multiwatch extends ArchonSkill
 				mob.tell("Multiwatch is already off.");
 				return false;
 			}
-			for(Enumeration e=IPS.elements();e.hasMoreElements();)
+			for(Enumeration<List<MOB>> e=IPS.elements();e.hasMoreElements();)
 			{
-				Vector V=(Vector)e.nextElement();
+				List<MOB> V=e.nextElement();
 				for(int v=0;v<V.size();v++)
 				{
-					MOB M=(MOB)V.elementAt(v);
+					MOB M=(MOB)V.get(v);
 					Ability A=M.fetchEffect(ID());
 					if(A!=null) M.delEffect(A);
 				}
@@ -298,14 +298,14 @@ public class Archon_Multiwatch extends ArchonSkill
 		if((commands.size()==0)&&(DATA.size()>0)&&(IPS.size()>0))
 		{
 			StringBuffer report=new StringBuffer("");
-			for(Enumeration e=IPS.keys();e.hasMoreElements();)
+			for(Enumeration<String> e=IPS.keys();e.hasMoreElements();)
 			{
 				String key=(String)e.nextElement();
 				int sync=0;
-				Vector V=(Vector)IPS.get(key);
+				List<MOB> V=IPS.get(key);
 				for(int v=0;v<V.size();v++)
 				{
-					MOB M=(MOB)V.elementAt(v);
+					MOB M=(MOB)V.get(v);
 					int data[]=(int[])DATA.get(M);
 					if(data!=null) sync+=data[DATA_SYNCHROFOUND];
 				}
@@ -318,7 +318,7 @@ public class Archon_Multiwatch extends ArchonSkill
 							  +"\n\r");
 				for(int v=0;v<V.size();v++)
 				{
-					MOB M=(MOB)V.elementAt(v);
+					MOB M=(MOB)V.get(v);
 					int data[]=(int[])DATA.get(M);
 					if(data==null) data=new int[DATA_TOTAL];
 					report.append(CMStrings.padRight(M.Name(),25));

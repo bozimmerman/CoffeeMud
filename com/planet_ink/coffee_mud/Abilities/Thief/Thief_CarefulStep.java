@@ -47,12 +47,12 @@ public class Thief_CarefulStep extends ThiefSkill
 	public int usageType(){return USAGE_MOVEMENT;}
     public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_ACROBATIC; }
 
-    public boolean preInvoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
+    public boolean preInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
     {
         if(secondsElapsed==0)
         {
             String dir=CMParms.combine(commands,0);
-            if(commands.size()>0) dir=(String)commands.lastElement();
+            if(commands.size()>0) dir=(String)commands.get(commands.size()-1);
             int dirCode=Directions.getGoodDirectionCode(dir);
             if(dirCode<0)
             {

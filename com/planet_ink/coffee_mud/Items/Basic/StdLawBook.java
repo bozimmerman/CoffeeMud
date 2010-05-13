@@ -540,7 +540,7 @@ public class StdLawBook extends StdItem
 			str.append(CMStrings.padRight("#  Words",20)+" "+shortLawHeader()+"\n\r");
 			for(int x=0;x<theLaw.otherCrimes().size();x++)
 			{
-				String crime=CMParms.combineWithQuotes((Vector)theLaw.otherCrimes().get(x),0);
+				String crime=CMParms.combineWithQuotes(theLaw.otherCrimes().get(x),0);
 				String[] set=(String[])theLaw.otherBits().get(x);
 				str.append(CMStrings.padRight(""+(x+1)+". "+crime,20)+" "+shortLawDesc(set)+"\n\r");
 			}
@@ -592,7 +592,7 @@ public class StdLawBook extends StdItem
 						String[] newBits=new String[theLaw.otherBits().size()];
 						for(int c=0;c<theLaw.otherCrimes().size();c++)
 						{
-							String crimeWords=CMParms.combineWithQuotes((Vector)theLaw.otherCrimes().get(c),0);
+							String crimeWords=CMParms.combineWithQuotes(theLaw.otherCrimes().get(c),0);
 							String[] thisLaw=(String[])theLaw.otherBits().get(c);
 							StringBuffer s2=new StringBuffer("");
 							for(int i=0;i<thisLaw.length;i++)
@@ -629,7 +629,7 @@ public class StdLawBook extends StdItem
 			str.append(CMStrings.padRight("#  Items",20)+" "+shortLawHeader()+"\n\r");
 			for(int x=0;x<theLaw.bannedSubstances().size();x++)
 			{
-				String crime=CMParms.combineWithQuotes((Vector)theLaw.bannedSubstances().get(x),0);
+				String crime=CMParms.combineWithQuotes(theLaw.bannedSubstances().get(x),0);
 				String[] set=(String[])theLaw.bannedBits().get(x);
 				str.append(CMStrings.padRight(""+(x+1)+". "+crime,20)+" "+shortLawDesc(set)+"\n\r");
 			}
@@ -689,7 +689,7 @@ public class StdLawBook extends StdItem
 						String[] newBits=new String[theLaw.bannedBits().size()];
 						for(int c=0;c<theLaw.bannedSubstances().size();c++)
 						{
-							String crimeWords=CMParms.combineWithQuotes((Vector)theLaw.bannedSubstances().get(c),0);
+							String crimeWords=CMParms.combineWithQuotes(theLaw.bannedSubstances().get(c),0);
 							String[] thisLaw=(String[])theLaw.bannedBits().get(c);
 							StringBuffer s2=new StringBuffer("");
 							for(int i=0;i<thisLaw.length;i++)

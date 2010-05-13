@@ -1540,10 +1540,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
     {
     	Vector auctions=new Vector();
     	String house="SYSTEM_AUCTIONS_"+auctionHouse.toUpperCase().trim();
-	    Vector otherAuctions=CMLib.database().DBReadJournalMsgs(house);
+    	List<JournalsLibrary.JournalEntry> otherAuctions=CMLib.database().DBReadJournalMsgs(house);
 	    for(int o=0;o<otherAuctions.size();o++)
 	    {
-	    	JournalsLibrary.JournalEntry auctionData=(JournalsLibrary.JournalEntry)otherAuctions.elementAt(o);
+	    	JournalsLibrary.JournalEntry auctionData=(JournalsLibrary.JournalEntry)otherAuctions.get(o);
             String from=(String)auctionData.from;
 	        String to=(String)auctionData.to;
             String key=(String)auctionData.key;
@@ -1555,7 +1555,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             data.start=auctionData.date;
             data.tickDown=CMath.s_long(to);
             String xml=(String)auctionData.msg;
-            Vector xmlV=CMLib.xml().parseAllXML(xml);
+            List<XMLLibrary.XMLpiece> xmlV=CMLib.xml().parseAllXML(xml);
             xmlV=CMLib.xml().getContentsFromPieces(xmlV,"AUCTION");
             String bid=CMLib.xml().getValFromPieces(xmlV,"PRICE");
             double oldBid=CMath.s_double(bid);
@@ -1573,7 +1573,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             data.currency=CMLib.beanCounter().getCurrency(data.auctioningM);
             for(int v=0;v<xmlV.size();v++)
             {
-                XMLLibrary.XMLpiece X=(XMLLibrary.XMLpiece)xmlV.elementAt(v);
+                XMLLibrary.XMLpiece X=(XMLLibrary.XMLpiece)xmlV.get(v);
                 if(X.tag.equalsIgnoreCase("AUCTIONITEM"))
                 {
                     data.auctioningI=CMLib.coffeeMaker().getItemFromXML(X.value);

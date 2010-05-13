@@ -103,16 +103,16 @@ public class GenCharClass extends StdCharClass
 	public boolean leveless(){return (disableFlags&CharClass.GENFLAG_NOLEVELS)==CharClass.GENFLAG_NOLEVELS;}
 	public boolean expless(){return (disableFlags&CharClass.GENFLAG_NOEXP)==CharClass.GENFLAG_NOEXP;}
 	//protected Vector outfitChoices=null; from stdcharclass -- but don't forget them!
-    protected Vector[] securityGroups={};
+    protected List<String>[] securityGroups=new List[0];
     protected Integer[] securityGroupLevels={};
-    protected Hashtable securityGroupCache=new Hashtable();
+    protected Map<Integer,List<String>> securityGroupCache=new Hashtable<Integer,List<String>>();
     protected String helpEntry = "";
     
     public List<String> getSecurityGroups(int classLevel)
     {
         if(securityGroups.length==0)
             return super.getSecurityGroups(classLevel);
-        Vector V=(Vector)securityGroupCache.get(Integer.valueOf(classLevel));
+        List<String> V=securityGroupCache.get(Integer.valueOf(classLevel));
         if(V!=null) return V;
         V=new Vector();
         for(int i=securityGroupLevels.length-1;i>=0;i--)
@@ -428,13 +428,13 @@ public class GenCharClass extends StdCharClass
 	public void setClassParms(String parms)
 	{
 		if(parms.trim().length()==0) return;
-		Vector xml=CMLib.xml().parseAllXML(parms);
+		List<XMLLibrary.XMLpiece> xml=CMLib.xml().parseAllXML(parms);
 		if(xml==null)
 		{
 			Log.errOut("GenCharClass","Unable to parse: "+parms);
 			return;
 		}
-		Vector classData=CMLib.xml().getContentsFromPieces(xml,"CCLASS");
+		List<XMLLibrary.XMLpiece> classData=CMLib.xml().getContentsFromPieces(xml,"CCLASS");
 		if(classData==null){	Log.errOut("GenCharClass","Unable to get CCLASS data."); return;}
         String classID=CMLib.xml().getValFromPieces(classData,"ID");
 		if(classID.length()==0) return;
@@ -525,12 +525,12 @@ public class GenCharClass extends StdCharClass
 		String saState=CMLib.xml().getValFromPieces(classData,"STARTASTATE");
 		if(saState.length()>0){ startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0); CMLib.coffeeMaker().setCharState(startAdjState,saState);}
 
-		Vector xV=CMLib.xml().getContentsFromPieces(classData,"CABILITIES");
+		List<XMLLibrary.XMLpiece> xV=CMLib.xml().getContentsFromPieces(classData,"CABILITIES");
 		CMLib.ableMapper().delCharMappings(ID());
 		if((xV!=null)&&(xV.size()>0))
 			for(int x=0;x<xV.size();x++)
 			{
-				XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xV.elementAt(x);
+				XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xV.get(x);
 				if((!iblk.tag.equalsIgnoreCase("CABILITY"))||(iblk.contents==null))
 					continue;
 				// I hate backwards compatibility.
@@ -556,7 +556,7 @@ public class GenCharClass extends StdCharClass
 			disallowedWeaponSet=new HashSet();
 			for(int x=0;x<xV.size();x++)
 			{
-				XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xV.elementAt(x);
+				XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xV.get(x);
 				if((!iblk.tag.equalsIgnoreCase("WCLASS"))||(iblk.contents==null))
 					continue;
 				disallowedWeaponSet.add(Integer.valueOf(CMath.s_int(iblk.value)));
@@ -571,7 +571,7 @@ public class GenCharClass extends StdCharClass
             requiredWeaponMaterials=new HashSet();
             for(int x=0;x<xV.size();x++)
             {
-                XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xV.elementAt(x);
+                XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xV.get(x);
                 if((!iblk.tag.equalsIgnoreCase("WMAT"))||(iblk.contents==null))
                     continue;
                 requiredWeaponMaterials.add(Integer.valueOf(CMath.s_int(iblk.value)));
@@ -579,27 +579,27 @@ public class GenCharClass extends StdCharClass
         }
         
 		// now OUTFIT!
-		Vector oV=CMLib.xml().getContentsFromPieces(classData,"OUTFIT");
+        List<XMLLibrary.XMLpiece> oV=CMLib.xml().getContentsFromPieces(classData,"OUTFIT");
 		outfitChoices=null;
 		if((oV!=null)&&(oV.size()>0))
 		{
 			outfitChoices=new Vector();
 			for(int x=0;x<oV.size();x++)
 			{
-				XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)oV.elementAt(x);
+				XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)oV.get(x);
 				if((!iblk.tag.equalsIgnoreCase("OFTITEM"))||(iblk.contents==null))
 					continue;
 				Item newOne=CMClass.getItem(CMLib.xml().getValFromPieces(iblk.contents,"OFCLASS"));
 				String idat=CMLib.xml().getValFromPieces(iblk.contents,"OFDATA");
 				newOne.setMiscText(CMLib.xml().restoreAngleBrackets(idat));
 				newOne.recoverPhyStats();
-				outfitChoices.addElement(newOne);
+				outfitChoices.add(newOne);
 			}
 		}
 
         // security groups
-        Vector groupSet=new Vector();
-        Vector groupLevelSet=new Vector();
+        List<List<String>> groupSet=new Vector();
+        List<Integer> groupLevelSet=new Vector();
         int index=0;
         int lastLevel=-1;
         while(true)
@@ -608,8 +608,8 @@ public class GenCharClass extends StdCharClass
             int groupLevel=CMLib.xml().getIntFromPieces(classData,"SSETLEVEL"+index);
             if((groups.length()==0)||(groupLevel<=lastLevel))
                 break;
-            groupSet.addElement(CMParms.parse(groups.toUpperCase()));
-            groupLevelSet.addElement(Integer.valueOf(groupLevel));
+            groupSet.add(CMParms.parse(groups.toUpperCase()));
+            groupLevelSet.add(Integer.valueOf(groupLevel));
             lastLevel=groupLevel;
             index++;
         }
@@ -617,8 +617,8 @@ public class GenCharClass extends StdCharClass
         securityGroupLevels=new Integer[groupLevelSet.size()];
         for(int i=0;i<groupSet.size();i++)
         {
-            securityGroups[i]=(Vector)groupSet.elementAt(i);
-            securityGroupLevels[i]=(Integer)groupLevelSet.elementAt(i);
+            securityGroups[i]=(List<String>)groupSet.get(i);
+            securityGroupLevels[i]=(Integer)groupLevelSet.get(i);
         }
         securityGroupCache.clear();
         
@@ -828,7 +828,7 @@ public class GenCharClass extends StdCharClass
 		case 33: if(CMath.s_int(val)==0) outfitChoices=null; break;
 		case 34: {   if(outfitChoices==null) outfitChoices=new Vector();
 					 if(num>=outfitChoices.size())
-						outfitChoices.addElement(CMClass.getItem(val));
+						outfitChoices.add(CMClass.getItem(val));
 					 else
 				        outfitChoices.setElementAt(CMClass.getItem(val),num);
 					 break;
@@ -872,7 +872,7 @@ public class GenCharClass extends StdCharClass
                  break;
         case 43:{  num=CMath.s_int(val);
                    if(num<0) num=0;
-                   Vector[] newGroups=new Vector[num];
+                   List<String>[] newGroups=new Vector[num];
                    Integer[] newLevels=new Integer[num];
                    for(int i=0;i<securityGroups.length;i++)
                        if(i<num)

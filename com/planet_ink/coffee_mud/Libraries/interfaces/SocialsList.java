@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public interface SocialsList extends CMLibrary
 {
     public final String filename=Resources.buildResourcePath("")+"socials.txt";
@@ -56,15 +55,15 @@ public interface SocialsList extends CMLibrary
     public Social fetchSocial(String name, boolean exactOnly);
     public Social fetchSocial(String baseName, Environmental Target, boolean exactOnly);
     public Social fetchSocial(List<String> C, boolean exactOnly, boolean checkItemTargets);
-    public Social fetchSocial(Vector set, String name, boolean exactOnly);
+    public Social fetchSocial(List<Social> set, String name, boolean exactOnly);
     public String findSocialName(String named, boolean exactOnly);
     
-    public Vector getSocialsSet(String named);
+    public List<Social> getSocialsSet(String named);
     public int numSocialSets();
-    public Vector enumSocialSet(int index);
+    public List<Social> enumSocialSet(int index);
     
     public void save(MOB whom);
-    public Vector getSocialsList();
+    public List<String> getSocialsList();
     public String getSocialsHelp(MOB mob, String named, boolean exact);
     public String getSocialsTable();
     public Social makeDefaultSocial(String name, String type);

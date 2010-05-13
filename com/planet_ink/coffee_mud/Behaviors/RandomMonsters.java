@@ -161,9 +161,9 @@ public class RandomMonsters extends ActiveTicker
 		return !restrictedLocales.contains(Integer.valueOf(newRoom.domainType()));
 	}
 
-	public Vector getMonsters(Tickable thang, String theseparms)
+	public List<MOB> getMonsters(Tickable thang, String theseparms)
 	{
-		Vector monsters=null;
+		List<MOB> monsters=null;
 		int x=theseparms.indexOf(";");
 		String filename=(x>=0)?theseparms.substring(x+1):theseparms;
 		if(filename.trim().length()==0)
@@ -176,7 +176,7 @@ public class RandomMonsters extends ActiveTicker
 		{
 			int end=start+20;
 			if(end>filename.length()) end=filename.length();
-			monsters=(Vector)Resources.getResource("RANDOMMONSTERS-XML/"+filename.length()+"/"+filename.hashCode());
+			monsters=(List<MOB>)Resources.getResource("RANDOMMONSTERS-XML/"+filename.length()+"/"+filename.hashCode());
 			if(monsters!=null) return monsters;
 			monsters=new Vector();
 			String error=CMLib.coffeeMaker().addMOBsFromXML(filename,monsters,null);
@@ -206,7 +206,7 @@ public class RandomMonsters extends ActiveTicker
 			int extraSemicolon=filename.indexOf(";");
 			if(extraSemicolon>=0) filename=filename.substring(0,extraSemicolon);
 			filename=filename.trim();
-			monsters=(Vector)Resources.getResource("RANDOMMONSTERS-"+filename);
+			monsters=(List<MOB>)Resources.getResource("RANDOMMONSTERS-"+filename);
 			if((monsters==null)&&(!alreadyTriedLoad))
 			{
 				alreadyTriedLoad=true;
@@ -293,7 +293,7 @@ public class RandomMonsters extends ActiveTicker
 		if((canAct(ticking,tickID))||(maintained.size()<minMonsters))
 		{
 			tickStatus=Tickable.STATUS_MISC;
-			Vector monsters=getMonsters(ticking,getParms());
+			List<MOB> monsters=getMonsters(ticking,getParms());
 			tickStatus=Tickable.STATUS_MISC+1;
 			if(monsters==null){
 				tickStatus=Tickable.STATUS_NOT;
@@ -302,7 +302,7 @@ public class RandomMonsters extends ActiveTicker
 			tickStatus=Tickable.STATUS_MISC+2;
 			if(maintained.size()<avgMonsters)
 			{
-				MOB M=(MOB)monsters.elementAt(CMLib.dice().roll(1,monsters.size(),-1));
+				MOB M=(MOB)monsters.get(CMLib.dice().roll(1,monsters.size(),-1));
 				if(M!=null)
 				{
 					tickStatus=Tickable.STATUS_MISC+3;

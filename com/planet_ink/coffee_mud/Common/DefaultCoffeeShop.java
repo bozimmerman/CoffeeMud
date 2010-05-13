@@ -452,7 +452,7 @@ public class DefaultCoffeeShop implements CoffeeShop
             return;
         }
 
-        Vector<XMLLibrary.XMLpiece> xmlV=CMLib.xml().parseAllXML(text);
+        List<XMLLibrary.XMLpiece> xmlV=CMLib.xml().parseAllXML(text);
         if(xmlV==null)
         {
             Log.errOut("DefaultCoffeeShop","Error parsing data.");
@@ -470,7 +470,7 @@ public class DefaultCoffeeShop implements CoffeeShop
         parm=CMLib.xml().getValFromPieces(xmlV,"IGNOR");
         if(parm!=null) shop.setIgnoreMask(parm);
         
-        Vector<XMLLibrary.XMLpiece> iV=CMLib.xml().getContentsFromPieces(xmlV,"INVS");
+        List<XMLLibrary.XMLpiece> iV=CMLib.xml().getContentsFromPieces(xmlV,"INVS");
         if(iV==null)
         {
             Log.errOut("DefaultCoffeeShop","Error parsing 'INVS'.");
@@ -478,7 +478,7 @@ public class DefaultCoffeeShop implements CoffeeShop
         }
         for(int i=0;i<iV.size();i++)
         {
-            XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)iV.elementAt(i);
+            XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)iV.get(i);
             if((!iblk.tag.equalsIgnoreCase("INV"))||(iblk.contents==null))
             {
                 Log.errOut("DefaultCoffeeShop","Error parsing 'INVS' data.");
@@ -489,7 +489,7 @@ public class DefaultCoffeeShop implements CoffeeShop
             int val=CMLib.xml().getIntFromPieces(iblk.contents,"IVAL");
             PhysicalAgent newOne=CMClass.getItem(itemi);
             if(newOne==null) newOne=CMClass.getMOB(itemi);
-            Vector<XMLLibrary.XMLpiece> idat=CMLib.xml().getContentsFromPieces(iblk.contents,"IDATA");
+            List<XMLLibrary.XMLpiece> idat=CMLib.xml().getContentsFromPieces(iblk.contents,"IDATA");
             if((idat==null)||(newOne==null)||(!(newOne instanceof Item)))
             {
                 Log.errOut("DefaultCoffeeShop","Error parsing 'INV' data.");

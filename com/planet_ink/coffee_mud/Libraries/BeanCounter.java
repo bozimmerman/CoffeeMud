@@ -166,7 +166,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public List<String> getDenominationNameSet(String currency)
 	{
 	    if(allCurrencyDenominationNames.containsKey(currency))
-	        return (Vector)allCurrencyDenominationNames.get(currency);
+	        return allCurrencyDenominationNames.get(currency);
         return new Vector();
 	}
 
@@ -427,13 +427,13 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 
 	protected void parseDebt(Vector<DebtItem> debt, String debtor, String xml)
 	{
-		Vector V=CMLib.xml().parseAllXML(xml);
+		List<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(xml);
 		if(xml==null){ Log.errOut("BeanCounter","Unable to parse: "+xml); return ;}
-		Vector debtData=CMLib.xml().getContentsFromPieces(V,"DEBT");
+		List<XMLLibrary.XMLpiece> debtData=CMLib.xml().getContentsFromPieces(V,"DEBT");
 		if(debtData==null){ Log.errOut("BeanCounter","Unable to get debt data"); return ;}
 		for(int p=0;p<debtData.size();p++)
 		{
-			XMLLibrary.XMLpiece ablk=(XMLLibrary.XMLpiece)debtData.elementAt(p);
+			XMLLibrary.XMLpiece ablk=(XMLLibrary.XMLpiece)debtData.get(p);
 			if((!ablk.tag.equalsIgnoreCase("OWE"))||(ablk.contents==null)||(ablk.contents.size()==0)) continue;
 			String owed=CMLib.xml().getValFromPieces(ablk.contents,"TO");
 			double amt=CMLib.xml().getDoubleFromPieces(ablk.contents,"AMT");

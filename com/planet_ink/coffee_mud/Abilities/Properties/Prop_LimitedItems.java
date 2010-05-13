@@ -38,7 +38,7 @@ public class Prop_LimitedItems extends Property
 	public String ID() { return "Prop_LimitedItems"; }
 	public String name(){ return "Limited Item";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
-	public static Hashtable instances=new Hashtable();
+	public static Map<String,List<Item>> instances=new Hashtable<String,List<Item>>();
 	public static boolean[] playersLoaded=new boolean[1];
 	protected boolean norecurse=false;
 	protected boolean destroy=false;
@@ -55,17 +55,17 @@ public class Prop_LimitedItems extends Property
 		if(CMLib.flags().isInTheGame(I,false))
 		{
 			int max=CMath.s_int(text());
-			Vector myInstances=null;
+			List<Item> myInstances=null;
 			synchronized(instances)
 			{
 				if(!instances.containsKey(I.Name()))
 				{
 					myInstances=new Vector();
 					instances.put(I.Name(),myInstances);
-					myInstances.addElement(I);
+					myInstances.add(I);
 				}
 			}
-			myInstances=(Vector)instances.get(I.Name());
+			myInstances=instances.get(I.Name());
 			if(myInstances!=null)
 			{
 				synchronized(myInstances)
@@ -75,17 +75,17 @@ public class Prop_LimitedItems extends Property
 						if(max==0) max++;
 						int num=0;
 						for(int i=myInstances.size()-1;i>=0;i--)
-							if(!((Item)myInstances.elementAt(i)).amDestroyed())
+							if(!((Item)myInstances.get(i)).amDestroyed())
 								num++;
 							else
-								myInstances.removeElementAt(i);
+								myInstances.remove(i);
 						if(num>=max)
 						{
 							I.destroy();
 							destroy=true;
 						}
 						else
-							myInstances.addElement(I);
+							myInstances.add(I);
 					}
 				}
 			}

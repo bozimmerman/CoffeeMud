@@ -43,7 +43,7 @@ public class Prop_WeakBridge extends Property
 	protected int max=400;
 	protected int chance=75;
 	protected int ticksDown=100;
-	protected Vector mobsToKill=new Vector();
+	protected List<MOB> mobsToKill=new Vector();
 
 	public String accountForYourself()
 	{ return "Weak and Rickity";	}
@@ -107,7 +107,7 @@ public class Prop_WeakBridge extends Property
 					{
 						if(!mobsToKill.contains(mob))
 						{
-							mobsToKill.addElement(mob);
+							mobsToKill.add(mob);
 							if(!CMLib.flags().isFalling(mob))
 							{
 								Ability falling=CMClass.getAbility("Falling");
@@ -140,7 +140,7 @@ public class Prop_WeakBridge extends Property
 				synchronized(mobsToKill)
 				{
 					bridgeIsUp=false;
-					Vector V=((Vector)mobsToKill.clone());
+					List<MOB> V=new XVector<MOB>(mobsToKill);
 					mobsToKill.clear();
 					if(affected instanceof Room)
 					{
@@ -151,12 +151,12 @@ public class Prop_WeakBridge extends Property
 							if((M!=null)
 							&&(!CMLib.flags().isInFlight(M))
 							&&(!V.contains(M)))
-								V.addElement(M);
+								V.add(M);
 						}
 					}
 					for(int i=0;i<V.size();i++)
 					{
-						MOB mob=(MOB)V.elementAt(i);
+						MOB mob=(MOB)V.get(i);
 						if((mob.location()!=null)
 						&&(!CMLib.flags().isInFlight(mob)))
 						{

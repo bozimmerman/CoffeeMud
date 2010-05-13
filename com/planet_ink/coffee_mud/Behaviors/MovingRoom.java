@@ -105,9 +105,9 @@ public class MovingRoom extends ActiveTicker
 	protected static synchronized String loadInfo()
 	{
 		StringBuffer str=new StringBuffer("");
-        Vector V=Resources.getFileLineVector(new CMFile("resources/movingroom.xml",null,true).text());
+		List<String> V=Resources.getFileLineVector(new CMFile("resources/movingroom.xml",null,true).text());
         for(int v=0;v<V.size();v++)
-			str.append((String)V.elementAt(v));
+			str.append((String)V.get(v));
 		String theString = str.toString();
 		return theString;
 	}
@@ -178,44 +178,44 @@ public class MovingRoom extends ActiveTicker
 			boolean revDirName=false;
 			if (((pos==0)||(pos==listOfRooms.size()-1))&&(currentStatus==1))
 				revDirName=true;
-			Vector V=new Vector();
+			List V=new Vector();
 			if (!revDirName)
 			{
 				if (isReversed)
-					V=(Vector)messageInfo.elementAt(CODE_REVERSEBLOCK);
+					V=(List)messageInfo.elementAt(CODE_REVERSEBLOCK);
 				else
-					V=(Vector)messageInfo.elementAt(CODE_NORMALBLOCK);
+					V=(List)messageInfo.elementAt(CODE_NORMALBLOCK);
 			}
 			else
 			{
 				if (isReversed)
-					V=(Vector)messageInfo.elementAt(CODE_NORMALBLOCK);
+					V=(List)messageInfo.elementAt(CODE_NORMALBLOCK);
 				else
-					V=(Vector)messageInfo.elementAt(CODE_REVERSEBLOCK);
+					V=(List)messageInfo.elementAt(CODE_REVERSEBLOCK);
 			}
-			repWord=incoming.substring(1,i)+V.elementAt(0).toString()+incoming.substring(i+10);
+			repWord=incoming.substring(1,i)+V.get(0).toString()+incoming.substring(i+10);
 		}
 		else
 		if (incoming.indexOf("$outopendir")>0)
 		{
 			i = incoming.indexOf("$outopendir");
-			Vector V=new Vector();
+			List V=new Vector();
 			if (isReversed)
-				V=(Vector)messageInfo.elementAt(CODE_REVERSEBLOCK);
+				V=(List)messageInfo.elementAt(CODE_REVERSEBLOCK);
 			else
-				V=(Vector)messageInfo.elementAt(CODE_NORMALBLOCK);
-			repWord=incoming.substring(1,i)+Directions.getDirectionName(Directions.getOpDirectionCode(V.elementAt(1).toString()))+incoming.substring(i+11);
+				V=(List)messageInfo.elementAt(CODE_NORMALBLOCK);
+			repWord=incoming.substring(1,i)+Directions.getDirectionName(Directions.getOpDirectionCode(V.get(1).toString()))+incoming.substring(i+11);
 		}
 		else
 		if (incoming.indexOf("$inopendir")>0)
 		{
 			i = incoming.indexOf("$inopendir");
-			Vector V=new Vector();
+			List V=new Vector();
 			if (isReversed)
-				V=(Vector)messageInfo.elementAt(CODE_REVERSEBLOCK);
+				V=(List)messageInfo.elementAt(CODE_REVERSEBLOCK);
 			else
-				V=(Vector)messageInfo.elementAt(CODE_NORMALBLOCK);
-			repWord=incoming.substring(1,i)+V.elementAt(1).toString()+incoming.substring(i+10);
+				V=(List)messageInfo.elementAt(CODE_NORMALBLOCK);
+			repWord=incoming.substring(1,i)+V.get(1).toString()+incoming.substring(i+10);
 		}
 		else
 		{

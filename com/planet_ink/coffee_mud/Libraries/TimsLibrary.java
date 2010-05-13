@@ -1014,9 +1014,9 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return level;
 	}
 
-	public synchronized Vector getCombatSpellSet()
+	public synchronized List<Ability> getCombatSpellSet()
 	{
-		Vector spellSet=(Vector)Resources.getResource("COMPLETE_SPELL_SET");
+		List<Ability> spellSet=(List<Ability>)Resources.getResource("COMPLETE_SPELL_SET");
 		if(spellSet==null)
 		{
 			spellSet=new Vector();
@@ -1028,7 +1028,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				{
 					int lowLevel=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 					if((lowLevel>0)&&(lowLevel<25))
-						spellSet.addElement(A);
+						spellSet.add(A);
 				}
 			}
 			Resources.submitResource("COMPLETE_SPELL_SET",spellSet);
@@ -1038,11 +1038,11 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 
 	public Ability getCombatSpell(boolean malicious)
 	{
-		Vector spellSet=getCombatSpellSet();
+		List<Ability> spellSet=getCombatSpellSet();
 		int tries=0;
 		while(((++tries)<1000))
 		{
-			Ability A=(Ability)spellSet.elementAt(CMLib.dice().roll(1,spellSet.size(),-1));
+			Ability A=(Ability)spellSet.get(CMLib.dice().roll(1,spellSet.size(),-1));
 			if(((malicious)&&(A.canTarget(Ability.CAN_MOBS))&&(A.enchantQuality()==Ability.QUALITY_MALICIOUS)))
 				return A;
 			if((!malicious)

@@ -300,11 +300,11 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
                 if((num!=null)&&(CMath.isNumber(num)))
                 {
                     thread.status("updating journal "+CMJ.NAME());
-                    Vector items=CMLib.database().DBReadJournalMsgs(CMJ.JOURNAL_NAME());
+                    List<JournalsLibrary.JournalEntry> items=CMLib.database().DBReadJournalMsgs(CMJ.JOURNAL_NAME());
                     if(items!=null)
                     for(int i=items.size()-1;i>=0;i--)
                     {
-                    	JournalEntry entry=(JournalEntry)items.elementAt(i);
+                    	JournalEntry entry=(JournalEntry)items.get(i);
                         long compdate=entry.update;
                         compdate=compdate+Math.round(CMath.mul(TimeManager.MILI_DAY,CMath.s_double(num)));
                         if(System.currentTimeMillis()>compdate)
@@ -328,11 +328,11 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
                 if((num!=null)&&(CMath.isNumber(num)))
                 {
                     thread.status("updating journal "+FMJ.NAME());
-                    Vector items=CMLib.database().DBReadJournalMsgs(FMJ.NAME());
+                    List<JournalsLibrary.JournalEntry> items=CMLib.database().DBReadJournalMsgs(FMJ.NAME());
                     if(items!=null)
                     for(int i=items.size()-1;i>=0;i--)
                     {
-                    	JournalEntry entry=(JournalEntry)items.elementAt(i);
+                    	JournalEntry entry=(JournalEntry)items.get(i);
                     	if(!CMath.bset(entry.attributes, JournalEntry.ATTRIBUTE_PROTECTED))
                     	{
 	                        long compdate=entry.update;

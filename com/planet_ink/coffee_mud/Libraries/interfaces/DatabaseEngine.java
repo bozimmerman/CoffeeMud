@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalEntry;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -110,7 +111,7 @@ public interface DatabaseEngine extends CMLibrary
 	public void DBUpdateMessageReplies(String key, int numReplies);
 	public JournalsLibrary.JournalEntry DBReadJournalEntry(String Journal, String Key);
 	public Vector<JournalsLibrary.JournalEntry> DBReadJournalPageMsgs(String Journal, String parent, String searchStr, long newerDate, int limit);
-	public Vector<JournalsLibrary.JournalEntry> DBReadJournalMsgs(String Journal);
+	public List<JournalEntry> DBReadJournalMsgs(String Journal);
 	public Vector<JournalsLibrary.JournalEntry> DBReadJournalMsgsNewerThan(String Journal, String to, long olderDate);
 	public int DBCountJournal(String Journal, String from, String to);
 	public void DBWriteJournal(String Journal, JournalsLibrary.JournalEntry entry);

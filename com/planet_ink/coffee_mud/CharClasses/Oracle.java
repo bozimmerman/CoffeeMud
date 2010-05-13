@@ -281,7 +281,7 @@ public class Oracle extends Cleric
 		{
 			outfitChoices=new Vector();
 			Weapon w=CMClass.getWeapon("SmallMace");
-			outfitChoices.addElement(w);
+			outfitChoices.add(w);
 		}
 		return outfitChoices;
 	}

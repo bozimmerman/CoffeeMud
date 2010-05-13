@@ -48,6 +48,13 @@ public class ItemGenerator extends ActiveTicker
 	protected int enchantPct=10;
 	protected boolean favorMobs=false;
 	protected Vector restrictedLocales=null;
+	
+	private static class GeneratedItemSet extends Vector<Item>
+	{
+		private static final long serialVersionUID = -4240751718776459599L;
+		public double totalValue=0.0;
+		public int maxValue=0;
+	}
 
 	public void setParms(String newParms)
 	{
@@ -193,18 +200,18 @@ public class ItemGenerator extends ActiveTicker
 		}
 	}
 
-	public synchronized Vector getItems(Tickable thang, String theseparms)
+	public synchronized GeneratedItemSet getItems(Tickable thang, String theseparms)
 	{
 		String mask=parms;
 		if(mask.indexOf(";")>=0) mask=mask.substring(parms.indexOf(";")+1);
-		Vector items=(Vector)Resources.getResource("ITEMGENERATOR-"+mask.toUpperCase().trim());
+		GeneratedItemSet items=(GeneratedItemSet)Resources.getResource("ITEMGENERATOR-"+mask.toUpperCase().trim());
 		if(items==null)
 		{
-			Vector allItems=null;
+			List<Item> allItems=null;
 			synchronized(ID().intern())
 			{
 				if(ItemGenerator.building) return null;
-				allItems=(Vector)Resources.getResource("ITEMGENERATOR-ALLITEMS");
+				allItems=(List<Item>)Resources.getResource("ITEMGENERATOR-ALLITEMS");
 				if(allItems==null)
 				{
 					ItemGenerator.building=true;
@@ -213,30 +220,30 @@ public class ItemGenerator extends ActiveTicker
 					return null;
 				}
 			}
-			items=new Vector();
+			items=new GeneratedItemSet();
   		    Item I=null;
   		    MaskingLibrary.CompiledZapperMask compiled=CMLib.masking().maskCompile(mask);
 			double totalValue=0;
 			int maxValue=-1;
 			for(int a=0;a<allItems.size();a++)
 			{
-				I=(Item)allItems.elementAt(a);
+				I=(Item)allItems.get(a);
 				if(CMLib.masking().maskCheck(compiled,I,true))
 				{
 					if(I.value()>maxValue)
 						maxValue=I.value();
-					items.addElement(I);
+					items.add(I);
 				}
 			}
 			for(int a=0;a<items.size();a++)
 			{
-				I=(Item)items.elementAt(a);
+				I=(Item)items.get(a);
 				totalValue+=CMath.div(maxValue,I.value()+1);
 			}
 			if(items.size()>0)
 			{
-				items.insertElementAt(Integer.valueOf(maxValue),0);
-				items.insertElementAt(Double.valueOf(totalValue),0);
+				items.maxValue=maxValue;
+				items.totalValue=totalValue;
 			}
 			Resources.submitResource("ITEMGENERATOR-"+mask.toUpperCase().trim(),items);
 		}
@@ -266,7 +273,7 @@ public class ItemGenerator extends ActiveTicker
 			return true;
 		if((canAct(ticking,tickID))||(maintained.size()<minItems))
 		{
-			Vector items=getItems(ticking,getParms());
+			GeneratedItemSet items=getItems(ticking,getParms());
 			if(items==null) return true;
 			if((ticking instanceof Environmental)&&(((Environmental)ticking).amDestroyed()))
 				return false;
@@ -274,8 +281,8 @@ public class ItemGenerator extends ActiveTicker
 			if((maintained.size()<avgItems)
             &&(items.size()>1))
 			{
-				double totalValue=((Double)items.firstElement()).doubleValue();
-				int maxValue=((Integer)items.elementAt(1)).intValue();
+				double totalValue=items.totalValue;
+				int maxValue=items.maxValue;
 				double pickedTotal=Math.random()*totalValue;
 				double value=-1;
 				for(int i=2;i<items.size();i++)

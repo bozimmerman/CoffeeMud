@@ -156,7 +156,7 @@ public class Foraging extends GatheringSkill
 			&&((found.Name().toUpperCase().endsWith(" HERBS"))
 			   ||(found.Name().equalsIgnoreCase("herbs"))))
 			{
-				Hashtable H=(Hashtable)Resources.getResource("HERB_LOCALE_MAP");
+				Map<String,List<String>> H=(Map<String,List<String>>)Resources.getResource("HERB_LOCALE_MAP");
 				if(H==null)
 				{
 					H=Resources.getMultiLists("skills/herbs.txt");
@@ -165,13 +165,13 @@ public class Foraging extends GatheringSkill
 				}
 				if(H!=null)
 				{
-					Vector V=(Vector)H.get(mob.location().ID());
+					List<String> V=(List<String>)H.get(mob.location().ID());
 					if((V!=null)&&(V.size()>0))
 					{
 						int total=0;
 						for(int i=0;i<V.size();i++)
 						{
-							String s=(String)V.elementAt(i);
+							String s=(String)V.get(i);
 							int x=s.indexOf(" ");
 							if((x>=0)&&(CMath.isNumber(s.substring(0,x).trim())))
 								total+=CMath.s_int(s.substring(0,x).trim());
@@ -182,7 +182,7 @@ public class Foraging extends GatheringSkill
 						total=0;
 						for(int i=0;i<V.size();i++)
 						{
-							String s=(String)V.elementAt(i);
+							String s=(String)V.get(i);
 							int x=s.indexOf(" ");
 							if((x>=0)&&(CMath.isNumber(s.substring(0,x).trim())))
 							{

@@ -176,11 +176,11 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
     public void reloadAutoTitles()
     {
         autoTitles=new DVector(3);
-        Vector V=Resources.getFileLineVector(Resources.getFileResource("titles.txt",true));
+        List<String> V=Resources.getFileLineVector(Resources.getFileResource("titles.txt",true));
         String WKID=null;
         for(int v=0;v<V.size();v++)
         {
-            String row=(String)V.elementAt(v);
+            String row=(String)V.get(v);
             WKID=evaluateAutoTitle(row,true);
             if(WKID==null) continue;
             if(WKID.startsWith("Error: "))

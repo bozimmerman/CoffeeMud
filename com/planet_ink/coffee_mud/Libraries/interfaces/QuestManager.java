@@ -42,8 +42,8 @@ public interface QuestManager extends CMLibrary
     public void addQuest(Quest Q);
     public void delQuest(Quest Q);
     public void save();
-    public Vector parseQuestSteps(Vector script, int startLine, boolean rawLineInput);
-    public Vector parseQuestCommandLines(List<?> script, String cmdOnly, int startLine);
+    public Vector parseQuestSteps(List<String> script, int startLine, boolean rawLineInput);
+    public List<List<String>> parseQuestCommandLines(List<?> script, String cmdOnly, int startLine);
     
     public int getHolidayIndex(String named);
     public String getHolidayName(int index);
@@ -55,7 +55,7 @@ public interface QuestManager extends CMLibrary
     public StringBuffer getDefaultHoliData(String named, String area);
     public Object getHolidayFile();
     public Vector getEncodedHolidayData(String dataFromStepsFile);
-    public Vector breakOutMudChatVs(String MUDCHAT, DVector behaviors);
+    public List<List<String>> breakOutMudChatVs(String MUDCHAT, DVector behaviors);
     public String breakOutMaskString(String s, Vector p);
     
     public DVector getQuestTemplate(MOB mob, String fileToGet);

@@ -46,8 +46,8 @@ public interface EnglishParsing extends CMLibrary
     public boolean evokedBy(Ability thisAbility, String thisWord);
     public boolean evokedBy(Ability thisAbility, String thisWord, String secondWord);
     public String getAnEvokeWord(MOB mob, String word);
-    public Ability getToEvoke(MOB mob, Vector commands);
-    public boolean preEvoke(MOB mob, Vector commands, int secondsElapsed, double actionsRemaining);
+    public Ability getToEvoke(MOB mob, List<String> commands);
+    public boolean preEvoke(MOB mob, List<String> commands, int secondsElapsed, double actionsRemaining);
     public void evoke(MOB mob, Vector commands);
     public boolean containsString(String toSrchStr, String srchStr);
     public String bumpDotNumber(String srchStr);
@@ -65,8 +65,8 @@ public interface EnglishParsing extends CMLibrary
     public String getContextSameName(Collection list, Environmental E);
     public String getContextSameName(Object[] list, Environmental E);
     public Environmental fetchAvailable(Collection<? extends Environmental> list, String srchStr, Item goodLocation, int wornFilter, boolean exactOnly);
-    public Environmental parseShopkeeper(MOB mob, Vector commands, String error);
-    public List<Item> fetchItemList(Environmental from, MOB mob, Item container, Vector commands, int preferredLoc, boolean visionMatters);
+    public Environmental parseShopkeeper(MOB mob, List<String> commands, String error);
+    public List<Item> fetchItemList(Environmental from, MOB mob, Item container, List<String> commands, int preferredLoc, boolean visionMatters);
     public long numPossibleGold(Environmental mine, String itemID);
     public String numPossibleGoldCurrency(Environmental mine, String itemID);
     public double numPossibleGoldDenomination(Environmental mine, String currency, String itemID);
@@ -75,8 +75,8 @@ public interface EnglishParsing extends CMLibrary
     public double matchAnyDenomination(String currency, String itemID);
     public Item possibleRoomGold(MOB seer, Room room, Container container, String itemID);
     public Item bestPossibleGold(MOB mob, Container container, String itemID);
-    public List<Container> possibleContainers(MOB mob, Vector commands, int wornFilter, boolean withContentOnly);
-    public Item possibleContainer(MOB mob, Vector commands, boolean withStuff, int wornFilter);
+    public List<Container> possibleContainers(MOB mob, List<String> commands, int wornFilter, boolean withContentOnly);
+    public Item possibleContainer(MOB mob, List<String> commands, boolean withStuff, int wornFilter);
     public String returnTime(long millis, long ticks);
-    public int calculateMaxToGive(MOB mob, Vector commands, boolean breakPackages, Environmental checkWhat, boolean getOnly);
+    public int calculateMaxToGive(MOB mob, List<String> commands, boolean breakPackages, Environmental checkWhat, boolean getOnly);
 }
