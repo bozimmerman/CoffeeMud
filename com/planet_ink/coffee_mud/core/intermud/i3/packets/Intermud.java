@@ -292,7 +292,7 @@ public class Intermud implements Runnable, Persistent, Serializable
                     connected = true;
                     input_thread = new Thread(this);
                     input_thread.setDaemon(true);
-                    input_thread.setName("Intermud");
+                    input_thread.setName("I3Client:"+n.ip+"@"+n.port);
                     input_thread.start();
                     Enumeration e = intermud.getChannels();
 
@@ -870,8 +870,7 @@ class SaveThread extends Thread {
 	protected boolean closed=false;
 
     public SaveThread(Intermud imud) {
-        super("Intermud save");
-		setName("Intermud save");
+        super("I3SaveThread");
 		setDaemon(true);
         intermud = imud;
     }

@@ -54,7 +54,7 @@ public class CM1Server extends Thread
 	
 	public CM1Server(String serverName, int serverPort)
 	{
-		super("CM1:"+serverName+":"+serverPort);
+		super(serverName+"@"+serverPort);
 		name=serverName;
 		this.port=serverPort;
 		shutdownRequested = false;

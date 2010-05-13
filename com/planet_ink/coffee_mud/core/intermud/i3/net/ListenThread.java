@@ -39,8 +39,7 @@ public class ListenThread extends Thread {
     private Vector clients;
 
     public ListenThread(int port) throws java.io.IOException {
-		super("ListenThread");
-		setName("ListenThread");
+		super("I3Listener@"+port);
         clients = new Vector(10, 2);
         listen = new ServerSocket(port);
         setDaemon(true);

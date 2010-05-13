@@ -275,7 +275,7 @@ public class HTTPserver extends Thread implements MudHost
 			Vector allports=CMParms.parseCommas(page.getStr("PORT"),true);
 			myPort=CMath.s_int((String)allports.elementAt(myServerNumber));
 			servsock=new ServerSocket(myPort, q_len, bindAddr);
-
+			setName(getName()+"@"+myPort);
 			Log.sysOut(getName(),"Started on port: "+myPort);
 			if (bindAddr != null)
 				Log.sysOut(getName(),"Bound to: "+bindAddr.toString());
