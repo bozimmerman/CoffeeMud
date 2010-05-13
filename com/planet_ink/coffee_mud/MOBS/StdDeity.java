@@ -57,9 +57,9 @@ public class StdDeity extends StdMOB implements Deity
     protected List<DeityTrigger> 	serviceTriggers=new Vector<DeityTrigger>();
 	protected List<DeityTrigger> 	clericPowerTriggers=new Vector<DeityTrigger>();
 	protected List<DeityTrigger> 	clericCurseTriggers=new Vector<DeityTrigger>();
-	protected List<DeityPower> 	 	blessings=new Vector<DeityPower>();
-	protected List<DeityPower>	 	curses=new Vector<DeityPower>();
-	protected List<Ability> 	 	powers=new Vector<Ability>();
+	protected List<DeityPower> 	 	blessings=new SVector<DeityPower>();
+	protected List<DeityPower>	 	curses=new SVector<DeityPower>();
+	protected List<Ability> 	 	powers=new SVector<Ability>();
 	protected Map<String,boolean[]> trigBlessingParts=new Hashtable();
 	protected Map<String,Long> 		trigBlessingTimes=new Hashtable();
 	protected Map<String,boolean[]> trigPowerParts=new Hashtable();
@@ -1311,7 +1311,10 @@ public class StdDeity extends StdMOB implements Deity
 	}
 	public void delBlessing(Ability to)
 	{
-		blessings.remove(to);
+		if(blessings.size()==0) return;
+		for(DeityPower P : blessings)
+			if(P.power==to)
+				blessings.remove(P);
 	}
 	public int numBlessings()
 	{
@@ -1692,7 +1695,10 @@ public class StdDeity extends StdMOB implements Deity
 	}
 	public void delCurse(Ability to)
 	{
-		curses.remove(to);
+		if(curses.size()==0) return;
+		for(DeityPower P : curses)
+			if(P.power==to)
+				curses.remove(to);
 	}
 	public int numCurses()
 	{
