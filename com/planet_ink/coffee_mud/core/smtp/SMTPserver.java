@@ -299,6 +299,7 @@ public class SMTPserver extends Thread implements Tickable
 
 		try
 		{
+			setName(getName()+"@"+page.getInt("PORT"));
 			servsock=new ServerSocket(page.getInt("PORT"), q_len, bindAddr);
 
 			Log.sysOut(getName(),"Started on port: "+page.getInt("PORT"));

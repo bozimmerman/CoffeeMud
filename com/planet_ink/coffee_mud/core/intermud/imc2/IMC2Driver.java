@@ -259,6 +259,7 @@ public final class IMC2Driver extends Thread {
         tracef(8, "Connecting to " + this_imcmud.hubname);
 
         try {
+        	setName("IMC2Client:"+this_imcmud.host+"@"+this_imcmud.port);
             sa = new Socket(this_imcmud.host, this_imcmud.port);
         } catch (Exception e) {
             tracef(0, "Error connecting to " + this_imcmud.host + ":" +
