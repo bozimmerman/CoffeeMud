@@ -49,7 +49,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	protected final SVector<ThinGridEntry> 	
 								rooms=new SVector<ThinGridEntry>();
 	protected static boolean 	tickStarted=false;
-
+	
 	public StdThinGrid()
 	{
 		super();
@@ -148,7 +148,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	        while(start<=end)
 	        {
 	            mid=(end+start)/2;
-	            comptotal=(rooms.elementAt(mid).x<<31)+rooms.elementAt(mid).y;
+	            comptotal=((long)rooms.elementAt(mid).x<<31)+rooms.elementAt(mid).y;
 	            comp=comptotal>total?1:(comptotal==total)?0:-1;
 	            if(comp==0) return mid;
 	            else
@@ -176,7 +176,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 				rooms.addElement(entry);
 				return;
 			}
-            long comptotal=(rooms.elementAt(pos).x<<31)+rooms.elementAt(pos).y;
+            long comptotal=((long)rooms.elementAt(pos).x<<31)+(long)rooms.elementAt(pos).y;
             int comp=comptotal>total?1:(comptotal==total)?0:-1;
 			if(comp==0) return;
 			if(comp>0)
