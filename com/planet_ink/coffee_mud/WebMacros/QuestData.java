@@ -83,7 +83,7 @@ public class QuestData extends StdWebMacro
             {
                 long min=Q.waitRemaining();
                 if(min>0) {
-                    min=min*Tickable.TIME_TICK;
+                    min=min*CMProps.getTickMillis();
                     if(min>60000)
                         return (min/60000)+" minutes";
                     return (min/1000)+" seconds";

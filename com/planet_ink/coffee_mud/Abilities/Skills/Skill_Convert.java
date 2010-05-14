@@ -123,7 +123,7 @@ public class Skill_Convert extends StdSkill
 			if(convertStack.contains(target))
 			{
 				Long L=(Long)convertStack.elementAt(convertStack.indexOf(target),2);
-				if((System.currentTimeMillis()-L.longValue())>Tickable.TIME_MILIS_PER_MUDHOUR*5)
+				if((System.currentTimeMillis()-L.longValue())>CMProps.getMillisPerMudHour()*5)
 					convertStack.removeElement(target);
 			}
 			if(convertStack.contains(target))
@@ -197,7 +197,7 @@ public class Skill_Convert extends StdSkill
                         CMLib.leveler().postExperience(mob,null,null,200,false);
                 if(target.isMonster())
                 {
-                    beneficialAffect(mob,target,asLevel,(int)(TimeManager.MILI_HOUR/Tickable.TIME_TICK));
+                    beneficialAffect(mob,target,asLevel,(int)(TimeManager.MILI_HOUR/CMProps.getTickMillis()));
                     Skill_Convert A=(Skill_Convert)target.fetchEffect(ID());
                     if(A!=null) A.priorFaith=target.getWorshipCharID();
                 }
@@ -220,6 +220,6 @@ public class Skill_Convert extends StdSkill
 	}
     
     public void makeLongLasting(){
-        tickDown=(int)(Tickable.TICKS_PER_RLMIN*60*24*7);
+        tickDown=(int)(CMProps.getTicksPerMinute()*60*24*7);
     }
 }

@@ -68,15 +68,6 @@ public interface Tickable extends CMObject
      */
     public boolean tick(Tickable ticking, int tickID);
 
-    /** the number of miliseconds for each tick/round.*/
-    public final static long TIME_TICK=4000;
-    /** the number of milliseconds for each game-mud-hour */
-    public final static long TIME_MILIS_PER_MUDHOUR=10*60000;
-    /** the number of game/rounds for each real minute of time */
-    public final static long TICKS_PER_RLMIN=(int)Math.round(60000.0/(double)TIME_TICK);
-    /** TIME_TICK as a double */
-    public final static double TIME_TICK_DOUBLE=(double)TIME_TICK;
-
     /** a mask for tickids */
     public final static int TICKMASK_SOLITARY=65536;
     /** the most common tickid, representing the tick of a mob*/

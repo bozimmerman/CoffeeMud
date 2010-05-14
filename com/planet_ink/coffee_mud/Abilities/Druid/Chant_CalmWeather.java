@@ -64,7 +64,7 @@ public class Chant_CalmWeather extends Chant
                 A=area.fetchEffect("Chant_ControlWeather");
                 if(A!=null)
                 {
-                    A.setExpirationDate(Climate.WEATHER_TICK_DOWN*Tickable.TIME_TICK);
+                    A.setExpirationDate(Climate.WEATHER_TICK_DOWN*CMProps.getTickMillis());
                     A.setAbilityCode(1);
                 }
             }

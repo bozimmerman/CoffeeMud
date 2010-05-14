@@ -375,7 +375,7 @@ public class Druid extends StdCharClass
         {
             Object[] stuff=(Object[])animalChecking.get(host);
             Room room=msg.source().location();
-            if((stuff==null)||(System.currentTimeMillis()-((Long)stuff[0]).longValue()>(room.getArea().getTimeObj().getDaysInMonth()*room.getArea().getTimeObj().getHoursInDay()*TimeClock.TIME_MILIS_PER_MUDHOUR)))
+            if((stuff==null)||(System.currentTimeMillis()-((Long)stuff[0]).longValue()>(room.getArea().getTimeObj().getDaysInMonth()*room.getArea().getTimeObj().getHoursInDay()*CMProps.getMillisPerMudHour())))
             {
                 stuff=new Object[3];
                 stuff[0]=Long.valueOf(System.currentTimeMillis());

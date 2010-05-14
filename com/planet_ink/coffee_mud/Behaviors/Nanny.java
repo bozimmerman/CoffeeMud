@@ -145,7 +145,7 @@ public class Nanny extends StdBehavior
     		if(D.mommyM==mob)
     		{
     			long t=System.currentTimeMillis()-D.dropOffTime;
-    			t=Math.round(Math.ceil(CMath.div(t,Tickable.TIME_MILIS_PER_MUDHOUR)));
+    			t=Math.round(Math.ceil(CMath.div(t,CMProps.getMillisPerMudHour())));
     			if(t>0) amt+=(t*hourlyRate);
     		}
     	return amt;
@@ -206,7 +206,7 @@ public class Nanny extends StdBehavior
     		if(D.baby==P)
     		{
     			long t=System.currentTimeMillis()-D.dropOffTime;
-    			t=Math.round(Math.floor(CMath.div(t,Tickable.TIME_MILIS_PER_MUDHOUR)));
+    			t=Math.round(Math.floor(CMath.div(t,CMProps.getMillisPerMudHour())));
     			if(t>0) return CMLib.beanCounter().abbreviatedPrice(currency, (t+hourlyRate))+" for watching "+P.name();
     		}
     	return "";
@@ -224,7 +224,7 @@ public class Nanny extends StdBehavior
     		if(D.mommyM==mob)
     		{
     			long t=System.currentTimeMillis()-D.dropOffTime;
-    			t=Math.round(Math.ceil(CMath.div(t,Tickable.TIME_MILIS_PER_MUDHOUR)));
+    			t=Math.round(Math.ceil(CMath.div(t,CMProps.getMillisPerMudHour())));
     			if(t>0) owed.append(CMLib.beanCounter().abbreviatedPrice(currency, (t*hourlyRate))+" for "+D.baby.name()+", ");
     		}
     	String s=owed.toString();

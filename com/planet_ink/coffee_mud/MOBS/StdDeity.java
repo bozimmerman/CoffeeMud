@@ -223,7 +223,7 @@ public class StdDeity extends StdMOB implements Deity
 				buf.append(DT.parm1+"% of the time");
 				break;
             case TRIGGER_WAIT:
-                buf.append("wait "+((CMath.s_int(DT.parm1)*Tickable.TIME_TICK)/1000)+" seconds");
+                buf.append("wait "+((CMath.s_int(DT.parm1)*CMProps.getTickMillis())/1000)+" seconds");
                 break;
             case TRIGGER_YOUSAY:
                 buf.append("then you will automatically say '"+DT.parm1.toLowerCase()+"'");
@@ -718,7 +718,7 @@ public class StdDeity extends StdMOB implements Deity
                                 if(checks[t]) proceed=false;
                             if(proceed)
                             {
-                                if(System.currentTimeMillis()>(((Long)trigTimes.get(msg.source().Name())).longValue()+(CMath.s_int(DT.parm1)*Tickable.TIME_TICK)))
+                                if(System.currentTimeMillis()>(((Long)trigTimes.get(msg.source().Name())).longValue()+(CMath.s_int(DT.parm1)*CMProps.getTickMillis())))
                                 {
                                    yup=true;
                                    waitingFor.removeElement(msg.source());

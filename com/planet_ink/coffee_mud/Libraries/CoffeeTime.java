@@ -556,46 +556,46 @@ public class CoffeeTime extends StdLibrary implements TimeManager
     {
         lastWord=lastWord.toUpperCase().trim();
         if(lastWord.startsWith("MINUTE")||lastWord.equals("MINS")||lastWord.equals("MIN"))
-            return CMath.div(TimeManager.MILI_MINUTE,Tickable.TIME_TICK_DOUBLE);
+            return CMath.div(TimeManager.MILI_MINUTE,CMProps.getTickMillisD());
         else
         if(lastWord.startsWith("SECOND")||lastWord.equals("SECS")||lastWord.equals("SEC"))
-            return CMath.div(TimeManager.MILI_SECOND,Tickable.TIME_TICK_DOUBLE);
+            return CMath.div(TimeManager.MILI_SECOND,CMProps.getTickMillisD());
         else
         if(lastWord.startsWith("HOUR"))
-            return CMath.div(TimeManager.MILI_HOUR,Tickable.TIME_TICK_DOUBLE);
+            return CMath.div(TimeManager.MILI_HOUR,CMProps.getTickMillisD());
         else
         if(lastWord.startsWith("DAY")||lastWord.equals("DAYS"))
-            return CMath.div(TimeManager.MILI_DAY,Tickable.TIME_TICK_DOUBLE);
+            return CMath.div(TimeManager.MILI_DAY,CMProps.getTickMillisD());
         else
         if(lastWord.startsWith("TICK"))
             return 1.0;
         else
         if(lastWord.startsWith("MUDHOUR"))
-            return CMath.div(TimeClock.TIME_MILIS_PER_MUDHOUR,Tickable.TIME_TICK_DOUBLE);
+            return CMath.div(CMProps.getMillisPerMudHour(),CMProps.getTickMillisD());
         else
         if(lastWord.startsWith("MUDDAY"))
-            return CMath.div(TimeClock.TIME_MILIS_PER_MUDHOUR
+            return CMath.div(CMProps.getMillisPerMudHour()
                     *globalClock().getHoursInDay()
-                    ,Tickable.TIME_TICK_DOUBLE);
+                    ,CMProps.getTickMillisD());
         else
         if(lastWord.startsWith("MUDWEEK"))
-            return CMath.div(TimeClock.TIME_MILIS_PER_MUDHOUR
+            return CMath.div(CMProps.getMillisPerMudHour()
                     *globalClock().getHoursInDay()
                     *globalClock().getDaysInWeek()
-                    ,Tickable.TIME_TICK_DOUBLE);
+                    ,CMProps.getTickMillisD());
         else
         if(lastWord.startsWith("MUDMONTH"))
-            return CMath.div(TimeClock.TIME_MILIS_PER_MUDHOUR
+            return CMath.div(CMProps.getMillisPerMudHour()
                     *globalClock().getHoursInDay()
                     *globalClock().getDaysInMonth()
-                    ,Tickable.TIME_TICK_DOUBLE);
+                    ,CMProps.getTickMillisD());
         else
         if(lastWord.startsWith("MUDYEAR"))
-            return CMath.div(TimeClock.TIME_MILIS_PER_MUDHOUR
+            return CMath.div(CMProps.getMillisPerMudHour()
                     *globalClock().getHoursInDay()
                     *globalClock().getDaysInMonth()
                     *globalClock().getMonthsInYear()
-                    ,Tickable.TIME_TICK_DOUBLE);
+                    ,CMProps.getTickMillisD());
         return 0.0;
     }
 

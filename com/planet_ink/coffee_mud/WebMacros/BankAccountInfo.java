@@ -137,7 +137,7 @@ public class BankAccountInfo extends StdWebMacro
 				dueDate="Past due.";
 			else
 			{
-				int mudHoursToGo=(int)(timeRemaining/Tickable.TIME_MILIS_PER_MUDHOUR);
+				int mudHoursToGo=(int)(timeRemaining/CMProps.getMillisPerMudHour());
 				if(playerA.getTimeObj()==null)
 					dueDate="Not available";
 				else

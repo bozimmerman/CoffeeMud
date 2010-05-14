@@ -1115,10 +1115,10 @@ public class StdLawBook extends StdItem
 		while(true)
 		{
 			StringBuffer str=new StringBuffer("");
-			str.append("1. LEVEL 1 PAROLE TIME: "+(CMath.s_int(theLaw.getInternalStr("PAROLE1TIME"))*Tickable.TIME_TICK/1000)+" seconds.\n\r");
-			str.append("2. LEVEL 2 PAROLE TIME: "+(CMath.s_int(theLaw.getInternalStr("PAROLE2TIME"))*Tickable.TIME_TICK/1000)+" seconds.\n\r");
-			str.append("3. LEVEL 3 PAROLE TIME: "+(CMath.s_int(theLaw.getInternalStr("PAROLE3TIME"))*Tickable.TIME_TICK/1000)+" seconds.\n\r");
-			str.append("4. LEVEL 4 PAROLE TIME: "+(CMath.s_int(theLaw.getInternalStr("PAROLE4TIME"))*Tickable.TIME_TICK/1000)+" seconds.\n\r");
+			str.append("1. LEVEL 1 PAROLE TIME: "+(CMath.s_int(theLaw.getInternalStr("PAROLE1TIME"))*CMProps.getTickMillis()/1000)+" seconds.\n\r");
+			str.append("2. LEVEL 2 PAROLE TIME: "+(CMath.s_int(theLaw.getInternalStr("PAROLE2TIME"))*CMProps.getTickMillis()/1000)+" seconds.\n\r");
+			str.append("3. LEVEL 3 PAROLE TIME: "+(CMath.s_int(theLaw.getInternalStr("PAROLE3TIME"))*CMProps.getTickMillis()/1000)+" seconds.\n\r");
+			str.append("4. LEVEL 4 PAROLE TIME: "+(CMath.s_int(theLaw.getInternalStr("PAROLE4TIME"))*CMProps.getTickMillis()/1000)+" seconds.\n\r");
 			str.append("\n\r");
 			List<String> V=theLaw.releaseRooms();
 			if(CMParms.combine(V,0).equals("@"))
@@ -1165,12 +1165,12 @@ public class StdLawBook extends StdItem
 					}
 					else
 					{
-						long oldTime=CMath.s_int(theLaw.getInternalStr("PAROLE"+x+"TIME"))*Tickable.TIME_TICK/1000;
+						long oldTime=CMath.s_int(theLaw.getInternalStr("PAROLE"+x+"TIME"))*CMProps.getTickMillis()/1000;
 						s=mob.session().prompt("Enter a new number of seconds ("+oldTime+"): ",""+oldTime);
 						if((CMath.s_int(s)!=oldTime)&&(CMath.s_int(s)>0))
 						{
 							long x1=CMath.s_int(s);
-							x1=x1*1000/Tickable.TIME_TICK;
+							x1=x1*1000/CMProps.getTickMillis();
 							changeTheLaw(A,B,mob,theLaw,"PAROLE"+x+"TIME",""+x1);
 							mob.tell("Changed.");
 						}
@@ -1203,10 +1203,10 @@ public class StdLawBook extends StdItem
 		while(true)
 		{
 			StringBuffer str=new StringBuffer("");
-			str.append("1. LEVEL 1 JAIL TIME: "+(CMath.s_int(theLaw.getInternalStr("JAIL1TIME"))*Tickable.TIME_TICK/1000)+" seconds.\n\r");
-			str.append("2. LEVEL 2 JAIL TIME: "+(CMath.s_int(theLaw.getInternalStr("JAIL2TIME"))*Tickable.TIME_TICK/1000)+" seconds.\n\r");
-			str.append("3. LEVEL 3 JAIL TIME: "+(CMath.s_int(theLaw.getInternalStr("JAIL3TIME"))*Tickable.TIME_TICK/1000)+" seconds.\n\r");
-			str.append("4. LEVEL 4 JAIL TIME: "+(CMath.s_int(theLaw.getInternalStr("JAIL4TIME"))*Tickable.TIME_TICK/1000)+" seconds.\n\r");
+			str.append("1. LEVEL 1 JAIL TIME: "+(CMath.s_int(theLaw.getInternalStr("JAIL1TIME"))*CMProps.getTickMillis()/1000)+" seconds.\n\r");
+			str.append("2. LEVEL 2 JAIL TIME: "+(CMath.s_int(theLaw.getInternalStr("JAIL2TIME"))*CMProps.getTickMillis()/1000)+" seconds.\n\r");
+			str.append("3. LEVEL 3 JAIL TIME: "+(CMath.s_int(theLaw.getInternalStr("JAIL3TIME"))*CMProps.getTickMillis()/1000)+" seconds.\n\r");
+			str.append("4. LEVEL 4 JAIL TIME: "+(CMath.s_int(theLaw.getInternalStr("JAIL4TIME"))*CMProps.getTickMillis()/1000)+" seconds.\n\r");
 			str.append("\n\r");
 			List<String> V=theLaw.jailRooms();
 			if(CMParms.combine(V,0).equals("@"))
@@ -1253,12 +1253,12 @@ public class StdLawBook extends StdItem
 					}
 					else
 					{
-						long oldTime=CMath.s_int(theLaw.getInternalStr("JAIL"+x+"TIME"))*Tickable.TIME_TICK/1000;
+						long oldTime=CMath.s_int(theLaw.getInternalStr("JAIL"+x+"TIME"))*CMProps.getTickMillis()/1000;
 						s=mob.session().prompt("Enter a new number of seconds ("+oldTime+"): ",""+oldTime);
 						if((CMath.s_int(s)!=oldTime)&&(CMath.s_int(s)>0))
 						{
 							long x1=CMath.s_int(s);
-							x1=x1*1000/Tickable.TIME_TICK;
+							x1=x1*1000/CMProps.getTickMillis();
 							changeTheLaw(A,B,mob,theLaw,"JAIL"+x+"TIME",""+x1);
 							mob.tell("Changed.");
 						}

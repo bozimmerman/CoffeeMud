@@ -91,7 +91,7 @@ public class StdAbility implements Ability
 	protected int iniPracticesToPractice(){return 1;}
 	public void setTimeOfNextCast(MOB caster)
 	{
-		long newTime=(getTicksBetweenCasts()*Tickable.TIME_TICK);
+		long newTime=(getTicksBetweenCasts()*CMProps.getTickMillis());
 		double mul=1.0;
 		mul -= (0.05 * (double)getXLEVELLevel(caster));
 		mul -= (0.1 * (double)getXTIMELevel(caster));
@@ -245,11 +245,11 @@ public class StdAbility implements Ability
 
 	public long expirationDate()
 	{
-	    return ((long)tickDown) * Tickable.TIME_TICK;
+	    return ((long)tickDown) * CMProps.getTickMillis();
 	}
 	public void setExpirationDate(long time){
 		if(time>System.currentTimeMillis())
-			tickDown=(int)((time-System.currentTimeMillis())/Tickable.TIME_TICK);
+			tickDown=(int)((time-System.currentTimeMillis())/CMProps.getTickMillis());
 	}
 	public boolean isNowAnAutoEffect(){ return isAnAutoEffect; }
     public boolean isSavable(){ return savable;}

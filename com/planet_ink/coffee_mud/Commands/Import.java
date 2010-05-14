@@ -2911,8 +2911,8 @@ public class Import extends StdCommand
 				if(A!=null)
 					A.autoInvocation(M);
 			}
-			long rejuv=Tickable.TICKS_PER_RLMIN+Tickable.TICKS_PER_RLMIN+(Tickable.TICKS_PER_RLMIN*M.basePhyStats().level()/2);
-			if(rejuv>(30*Tickable.TICKS_PER_RLMIN)) rejuv=(30*Tickable.TICKS_PER_RLMIN);
+			long rejuv=CMProps.getTicksPerMinute()+CMProps.getTicksPerMinute()+(CMProps.getTicksPerMinute()*M.basePhyStats().level()/2);
+			if(rejuv>(30*CMProps.getTicksPerMinute())) rejuv=(30*CMProps.getTicksPerMinute());
 			M.basePhyStats().setRejuv((int)rejuv);
 			if(M.displayText().toUpperCase().indexOf("MONEY CHANGER")>=0)
 				M.addBehavior(CMClass.getBehavior("MoneyChanger"));
@@ -5439,7 +5439,7 @@ public class Import extends StdCommand
 							R.addItem(I);
 							if(CMLib.flags().isGettable(I))
 							{
-								int rejuv=(int)Math.round(CMath.div((long)60000,Tickable.TIME_TICK)*4.0);
+								int rejuv=(int)Math.round(CMath.div((long)60000,CMProps.getTickMillis())*4.0);
 								I.basePhyStats().setRejuv(rejuv*I.basePhyStats().level());
 							}
 							I.recoverPhyStats();

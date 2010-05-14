@@ -261,6 +261,10 @@ public class CMProps extends Properties
     protected String[][] 	statCodeExtensions = null;
     protected int 			pkillLevelDiff=26;
     protected boolean 		loaded=false;
+    protected long 			TIME_TICK=4000;
+    protected long 			MILLIS_PER_MUDHOUR=600000;
+    protected long 			TICKS_PER_RLMIN=(int)Math.round(60000.0/(double)TIME_TICK);
+    protected double 		TIME_TICK_DOUBLE=(double)TIME_TICK;
 
 	public CMProps(InputStream in)
 	{
@@ -482,6 +486,24 @@ public class CMProps extends Properties
 		}
 	}
 
+	/** retrieve a particular .ini file entry as a long
+	*
+	* <br><br><b>Usage:</b>  long i=getInt("TAG");
+	* @param tagToGet	the property tag to retreive.
+	* @return long the value of the .ini file tag
+	*/
+	public long getLong(String tagToGet)
+	{
+		try
+		{
+			return Long.parseLong(getStr(tagToGet));
+		}
+		catch(Throwable t)
+		{
+			return 0;
+		}
+	}
+	
     public static int getPKillLevelDiff(){return p().pkillLevelDiff;}
 
     public static String getVar(int varNum)
@@ -707,6 +729,15 @@ public class CMProps extends Properties
     {
         if(CMLib.lang()!=null)
             CMLib.lang().setLocale(getStr("LANGUAGE"),getStr("COUNTRY"));
+        
+        TIME_TICK=getLong("TICKTIME");
+        if(TIME_TICK<500) TIME_TICK=4000;
+        TIME_TICK_DOUBLE=(double)TIME_TICK;
+        TICKS_PER_RLMIN=(int)Math.round(60000.0/TIME_TICK_DOUBLE);
+        MILLIS_PER_MUDHOUR=getLong("MILLISPERMUDHOUR");
+        if(MILLIS_PER_MUDHOUR < TIME_TICK)
+        	MILLIS_PER_MUDHOUR = 600000;
+        
         setVar(SYSTEM_PRIVATERESOURCES,getStr("PRIVATERESOURCES"));
         setVar(SYSTEM_BADNAMES,getStr("BADNAMES"));
         setVar(SYSTEM_MULTICLASS,getStr("CLASSSYSTEM"));
@@ -1394,6 +1425,26 @@ public class CMProps extends Properties
         return image;
     }
 
+    public static long getTickMillis()
+    {
+    	return p().TIME_TICK;
+    }
+    
+    public static double getTickMillisD()
+    {
+    	return p().TIME_TICK_DOUBLE;
+    }
+    
+    public static long getMillisPerMudHour()
+    {
+    	return p().MILLIS_PER_MUDHOUR;
+    }
+    
+    public static long getTicksPerMinute()
+    {
+    	return p().TICKS_PER_RLMIN;
+    }
+    
     public static String msp(String soundName, int priority)
     { return msp(soundName,50,CMLib.dice().roll(1,50,priority));}
 
@@ -1467,6 +1518,7 @@ public class CMProps extends Properties
     	return getStatCodeExtensions(O.getClass(),O.ID());
     }
 
+    
     public static String[] getExtraStatCodesHolder(CMObject O)
     {
     	Vector<String> addedStatCodesV = getStatCodeExtentions(O);

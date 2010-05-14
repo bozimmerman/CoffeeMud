@@ -107,7 +107,7 @@ public class Hireling extends StdBehavior
 
 	protected double gamehours()
 	{
-		double d=CMath.div(((long)minutes() * 60L * 1000L),Tickable.TIME_MILIS_PER_MUDHOUR);
+		double d=CMath.div(((long)minutes() * 60L * 1000L),CMProps.getMillisPerMudHour());
 		long d2=Math.round(d*10.0);
 		return CMath.div(d2,10.0);
 	}

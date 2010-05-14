@@ -134,8 +134,8 @@ public class DefaultTimeClock implements TimeClock
                         CMath.s_int(page.getStr("DUSKHR")),
                         CMath.s_int(page.getStr("NIGHTHR")));
 
-        CMProps.setIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY,""+((Tickable.TIME_MILIS_PER_MUDHOUR*CMLib.time().globalClock().getHoursInDay()/Tickable.TIME_TICK)));
-        CMProps.setIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH,""+((Tickable.TIME_MILIS_PER_MUDHOUR*CMLib.time().globalClock().getHoursInDay()*CMLib.time().globalClock().getDaysInMonth()/Tickable.TIME_TICK)));
+        CMProps.setIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY,""+((CMProps.getMillisPerMudHour()*CMLib.time().globalClock().getHoursInDay()/CMProps.getTickMillis())));
+        CMProps.setIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH,""+((CMProps.getMillisPerMudHour()*CMLib.time().globalClock().getHoursInDay()*CMLib.time().globalClock().getDaysInMonth()/CMProps.getTickMillis())));
     }
     
 	public String timeDescription(MOB mob, Room room)
@@ -240,7 +240,7 @@ public class DefaultTimeClock implements TimeClock
         try
         {
             TimeClock C=(TimeClock)this.clone();
-            long diff=(System.currentTimeMillis()-millis)/Tickable.TIME_MILIS_PER_MUDHOUR;
+            long diff=(System.currentTimeMillis()-millis)/CMProps.getMillisPerMudHour();
             C.tickTock((int)diff);
             return C;
         }
@@ -253,7 +253,7 @@ public class DefaultTimeClock implements TimeClock
 
     public String deriveEllapsedTimeString(long millis)
     {
-        int hours=(int)(millis/Tickable.TIME_MILIS_PER_MUDHOUR);
+        int hours=(int)(millis/CMProps.getMillisPerMudHour());
         int days=0;
         int months=0;
         int years=0;
@@ -310,7 +310,7 @@ public class DefaultTimeClock implements TimeClock
         numMudHours+=(getMonth()-C.getMonth())*(getHoursInDay()*getDaysInMonth());
         numMudHours+=(getDayOfMonth()-C.getDayOfMonth())*getHoursInDay();
         numMudHours+=(getTimeOfDay()-C.getTimeOfDay());
-        return numMudHours*Tickable.TIME_MILIS_PER_MUDHOUR;
+        return numMudHours*CMProps.getMillisPerMudHour();
     }
     
 	public void raiseLowerTheSunEverywhere()
@@ -438,11 +438,11 @@ public class DefaultTimeClock implements TimeClock
 	{
 		tickStatus=Tickable.STATUS_NOT;
 		if(((loadName==null)||(loaded))
-		&&(((System.currentTimeMillis()-lastTicked)<=Tickable.TIME_MILIS_PER_MUDHOUR)))
+		&&(((System.currentTimeMillis()-lastTicked)<=CMProps.getMillisPerMudHour())))
 			return true;
 		synchronized(this)
 		{
-			boolean timeToTick = ((System.currentTimeMillis()-lastTicked)>Tickable.TIME_MILIS_PER_MUDHOUR);
+			boolean timeToTick = ((System.currentTimeMillis()-lastTicked)>CMProps.getMillisPerMudHour());
 			lastTicked=System.currentTimeMillis();
 			if((loadName!=null)&&(!loaded))
 			{

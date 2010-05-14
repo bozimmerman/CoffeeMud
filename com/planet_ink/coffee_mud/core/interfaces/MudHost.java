@@ -45,7 +45,7 @@ public interface MudHost
     /** the number of milliseconds between each savethread execution */
 	public final static long TIME_SAVETHREAD_SLEEP=60*60000; // 60 minutes, right now.
     /** the number of milliseconds between each utilithread execution */
-	public final static long TIME_UTILTHREAD_SLEEP=Tickable.TIME_MILIS_PER_MUDHOUR;
+	public final static long TIME_UTILTHREAD_SLEEP=10 * 60000;
     /** for multi-host systems, the thread code denoting the main/first mud host */
     public final static char MAIN_HOST='0';
 	

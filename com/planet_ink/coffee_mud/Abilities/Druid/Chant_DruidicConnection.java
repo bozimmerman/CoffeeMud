@@ -61,7 +61,7 @@ public class Chant_DruidicConnection extends Chant
         if(affected instanceof Area)
         {
             int hoursPerDay=((Area)affected).getTimeObj().getHoursInDay();
-            long millisPerHoursPerDay=hoursPerDay*Tickable.TIME_MILIS_PER_MUDHOUR;
+            long millisPerHoursPerDay=hoursPerDay*CMProps.getMillisPerMudHour();
             if(ellapsed>=millisPerHoursPerDay)
             {
                 lastTime=System.currentTimeMillis();

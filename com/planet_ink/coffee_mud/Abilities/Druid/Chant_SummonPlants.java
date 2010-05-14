@@ -162,7 +162,7 @@ public class Chant_SummonPlants extends Chant
             if((bonusWorthy)&&(!mob.isMonster()))
             {
                 long[] num=(long[])plantBonuses.get(mob.Name()+"/"+room.getArea().Name());
-                if((num==null)||(System.currentTimeMillis()-num[1]>(room.getArea().getTimeObj().getDaysInMonth()*room.getArea().getTimeObj().getHoursInDay()*TimeClock.TIME_MILIS_PER_MUDHOUR)))
+                if((num==null)||(System.currentTimeMillis()-num[1]>(room.getArea().getTimeObj().getDaysInMonth()*room.getArea().getTimeObj().getHoursInDay()*CMProps.getMillisPerMudHour())))
                 {
                     num=new long[2];
                     plantBonuses.remove(mob.Name()+"/"+room.getArea().Name());

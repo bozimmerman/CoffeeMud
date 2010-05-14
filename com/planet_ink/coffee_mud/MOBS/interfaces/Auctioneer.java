@@ -52,7 +52,7 @@ public interface Auctioneer extends ShopKeeper
 			Area A=CMLib.map().getStartArea(mob);
 			if(A==null) A=CMLib.map().getStartArea(mob2);
 			long daysRemain=tickDown-System.currentTimeMillis();
-			daysRemain=Math.round(Math.floor(CMath.div(CMath.div(daysRemain,Tickable.TIME_MILIS_PER_MUDHOUR),A.getTimeObj().getHoursInDay())));
+			daysRemain=Math.round(Math.floor(CMath.div(CMath.div(daysRemain,CMProps.getMillisPerMudHour()),A.getTimeObj().getHoursInDay())));
 			return (int)daysRemain;
 		}
 		public int daysEllapsed(MOB mob, MOB mob2)
@@ -61,7 +61,7 @@ public interface Auctioneer extends ShopKeeper
 			Area A=CMLib.map().getStartArea(mob);
 			if(A==null) A=CMLib.map().getStartArea(mob2);
 			long daysRemain=System.currentTimeMillis()-start;
-			daysRemain=Math.round(Math.floor(CMath.div(CMath.div(daysRemain,Tickable.TIME_MILIS_PER_MUDHOUR),A.getTimeObj().getHoursInDay())));
+			daysRemain=Math.round(Math.floor(CMath.div(CMath.div(daysRemain,CMProps.getMillisPerMudHour()),A.getTimeObj().getHoursInDay())));
 			return (int)daysRemain;
 		}
 	}

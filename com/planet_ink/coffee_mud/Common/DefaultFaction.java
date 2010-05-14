@@ -836,7 +836,7 @@ public class DefaultFaction implements Faction, MsgListener
 		            	Long addTime=(Long)eventC.stateVariable(2);
 		            	if(addTime==null)
 		            	{
-		            		addTime=Long.valueOf(CMath.s_long(eventC.getTriggerParm("WAIT"))*Tickable.TIME_TICK);
+		            		addTime=Long.valueOf(CMath.s_long(eventC.getTriggerParm("WAIT"))*CMProps.getTickMillis());
 		            		eventC.setStateVariable(2,addTime);
 		            	}
 		            	eventC.setStateVariable(1,Long.valueOf(System.currentTimeMillis()+addTime.longValue()));
@@ -891,8 +891,8 @@ public class DefaultFaction implements Faction, MsgListener
 			            	Long addTime=(Long)eventC.stateVariable(1);
 			            	if(addTime==null)
 			            	{
-			            		addTime=Long.valueOf(CMath.s_long(eventC.getTriggerParm("WAIT"))*Tickable.TIME_TICK);
-			            		if(addTime.longValue()<Tickable.TIME_TICK) addTime=Long.valueOf(Tickable.TIME_TICK);
+			            		addTime=Long.valueOf(CMath.s_long(eventC.getTriggerParm("WAIT"))*CMProps.getTickMillis());
+			            		if(addTime.longValue()<CMProps.getTickMillis()) addTime=Long.valueOf(CMProps.getTickMillis());
 			            		eventC.setStateVariable(1,addTime);
 			            	}
 			            	eventC.setStateVariable(0,Long.valueOf(System.currentTimeMillis()+addTime.longValue()));

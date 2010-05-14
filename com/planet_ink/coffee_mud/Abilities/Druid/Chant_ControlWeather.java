@@ -87,7 +87,7 @@ public class Chant_ControlWeather extends Chant
         Chant_ControlWeather A=(Chant_ControlWeather)mob.location().getArea().fetchEffect(ID());
         if((A!=null)&&(A.abilityCode()==1))
         {
-            long remaining=A.tickDown*Tickable.TIME_TICK;
+            long remaining=A.tickDown*CMProps.getTickMillis();
             mob.tell("This area is under an enchantment of climactic balance, which can not be controlled for "+mob.location().getArea().getTimeObj().deriveEllapsedTimeString(remaining)+".");
             return false;
         }

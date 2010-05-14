@@ -52,7 +52,7 @@ public class Pregnancy extends StdAbility
 			int y=text().indexOf('/',x+1);
 			if(y<0) return "";
 			long start=CMath.s_long(text().substring(0,x));
-			long divisor=Tickable.TIME_TICK*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
+			long divisor=CMProps.getTickMillis()*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
 			long days=(System.currentTimeMillis()-start)/divisor; // down to days;
 			long months=days/CMLib.time().globalClock().getDaysInMonth();
 			if(days<1)
@@ -182,7 +182,7 @@ public class Pregnancy extends StdAbility
 				{
 					int z=text().indexOf('/',y+1);
 					long end=CMath.s_long(text().substring(x+1,y));
-					long divisor=Tickable.TIME_TICK*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
+					long divisor=CMProps.getTickMillis()*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
 					daysRemaining=(end-System.currentTimeMillis())/divisor; // down to days
 					monthsRemaining=daysRemaining/CMLib.time().globalClock().getDaysInMonth(); // down to months
                     if(CMLib.dice().roll(1,200,0)==1)
@@ -371,7 +371,7 @@ public class Pregnancy extends StdAbility
 		int birthmonths=(int)Math.round(CMath.mul((R.getAgingChart()[1]-R.getAgingChart()[0])*CMLib.time().globalClock().getMonthsInYear(),0.75));
 		if(birthmonths<=0) birthmonths=5;
 		long ticksperbirthperiod=tickspermudmonth*birthmonths;
-		long millisperbirthperiod=ticksperbirthperiod*Tickable.TIME_TICK;
+		long millisperbirthperiod=ticksperbirthperiod*CMProps.getTickMillis();
 
 		long end=start+millisperbirthperiod;
 		if(success)

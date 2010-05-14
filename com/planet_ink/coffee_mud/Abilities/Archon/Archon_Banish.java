@@ -212,7 +212,7 @@ public class Archon_Banish extends ArchonSkill
 					time=System.currentTimeMillis()+(TimeManager.MILI_SECOND*CMath.s_int(num));
 				else
 				if("TICKS".startsWith(last))
-					time=System.currentTimeMillis()+(Tickable.TIME_TICK*CMath.s_int(num));
+					time=System.currentTimeMillis()+(CMProps.getTickMillis()*CMath.s_int(num));
 				if(time>System.currentTimeMillis())
 				{
 					commands.removeElementAt(commands.size()-1);

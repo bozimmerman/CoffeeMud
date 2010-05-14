@@ -93,7 +93,7 @@ public class Chant_Fertilization extends Chant
 				                  mob.location(),
 				                  asLevel,
 				                  (int)( CMLib.ableMapper().qualifyingClassLevel( mob, this ) *
-				                      ( ( ( Tickable.TIME_MILIS_PER_MUDHOUR * mob.location().getArea().getTimeObj().getHoursInDay() ) / Tickable.TIME_TICK ) ) ) );
+				                      ( ( ( CMProps.getMillisPerMudHour() * mob.location().getArea().getTimeObj().getHoursInDay() ) / CMProps.getTickMillis() ) ) ) );
 			}
 
 		}

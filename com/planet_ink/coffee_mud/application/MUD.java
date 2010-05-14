@@ -251,7 +251,7 @@ public class MUD extends Thread implements MudHost
 		{
 			smtpServerThread = new SMTPserver(CMLib.mud(0));
 			smtpServerThread.start();
-			CMLib.threads().startTickDown(smtpServerThread,Tickable.TICKID_EMAIL,(int)Tickable.TICKS_PER_RLMIN * 5);
+			CMLib.threads().startTickDown(smtpServerThread,Tickable.TICKID_EMAIL,(int)CMProps.getTicksPerMinute() * 5);
 		}
 
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: loading base classes");

@@ -60,9 +60,9 @@ public interface CharState extends CMCommon, Modifiable
     /** constant representing how many ticks a MOB can  be hungry before death */
 	public final static int DEATH_HUNGER_TICKS=(30*30)*12; // 12 hours
     /** constant for how many fatigue points are lost per tick of rest */
-	public final static long REST_PER_TICK=Tickable.TIME_TICK*200;
+	public final static long REST_PER_TICK=CMProps.getTickMillis()*200;
     /** constant for how many fatigue points are required to be considered fatigued */
-	public final static long FATIGUED_MILLIS=Tickable.TIME_TICK*3000;
+	public final static long FATIGUED_MILLIS=CMProps.getTickMillis()*3000;
     /** constant for how many fatigue points are required to be considered exhausted */
 	public final static long FATIGUED_EXHAUSTED_MILLIS=FATIGUED_MILLIS*10;
 
@@ -197,7 +197,7 @@ public interface CharState extends CMCommon, Modifiable
     /**
      * During rest, and even standing still, this method will be called to allow the
      * fields in this object to recover some of their value.  It is called by the
-     * mob tick(Tickable,int) method every Tickable.TIME_TICK milliseconds
+     * mob tick(Tickable,int) method every CMProps.getTickMillis() milliseconds
      * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB
      * @param mob the mob recovering
      * @param maxState The CharState objects which represents the maximum values for these fields

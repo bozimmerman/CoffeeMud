@@ -401,8 +401,8 @@ public class Create extends StdCommand
 			newMOB.setName("A Standard MOB");
 		newMOB.setStartRoom(mob.location());
 		newMOB.setLocation(mob.location());
-        long rejuv=Tickable.TICKS_PER_RLMIN+Tickable.TICKS_PER_RLMIN+(Tickable.TICKS_PER_RLMIN/2);
-        if(rejuv>(Tickable.TICKS_PER_RLMIN*20)) rejuv=(Tickable.TICKS_PER_RLMIN*20);
+        long rejuv=CMProps.getTicksPerMinute()+CMProps.getTicksPerMinute()+(CMProps.getTicksPerMinute()/2);
+        if(rejuv>(CMProps.getTicksPerMinute()*20)) rejuv=(CMProps.getTicksPerMinute()*20);
 		newMOB.phyStats().setRejuv((int)rejuv);
 		newMOB.baseCharStats().getMyRace().setHeightWeight(newMOB.basePhyStats(),(char)newMOB.baseCharStats().getStat(CharStats.STAT_GENDER));
 		newMOB.recoverCharStats();

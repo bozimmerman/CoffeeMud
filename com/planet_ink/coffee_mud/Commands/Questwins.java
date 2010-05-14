@@ -168,7 +168,7 @@ public class Questwins extends StdCommand
                 &&(CMath.isInteger(timeRemaining))))
                 {
                     long ticks=CMath.s_int(timeRemaining);
-                    ticks*=Tickable.TIME_TICK;
+                    ticks*=CMProps.getTickMillis();
                     if(ticks>60000)
                         timeRemaining=(ticks/60000)+" minutes";
                     else

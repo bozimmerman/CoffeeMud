@@ -876,8 +876,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                     MOB M2=(MOB)M.copyOf();
                     M2.setStartRoom(R);
                     M2.setLocation(R);
-                    long rejuv=Tickable.TICKS_PER_RLMIN+Tickable.TICKS_PER_RLMIN+(Tickable.TICKS_PER_RLMIN/2);
-                    if(rejuv>(Tickable.TICKS_PER_RLMIN*20)) rejuv=(Tickable.TICKS_PER_RLMIN*20);
+                    long rejuv=CMProps.getTicksPerMinute()+CMProps.getTicksPerMinute()+(CMProps.getTicksPerMinute()/2);
+                    if(rejuv>(CMProps.getTicksPerMinute()*20)) rejuv=(CMProps.getTicksPerMinute()*20);
                     M2.phyStats().setRejuv((int)rejuv);
                     M2.recoverCharStats();
                     M2.recoverPhyStats();

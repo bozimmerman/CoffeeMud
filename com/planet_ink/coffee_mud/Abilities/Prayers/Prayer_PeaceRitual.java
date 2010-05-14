@@ -179,7 +179,7 @@ public class Prayer_PeaceRitual extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,asLevel,(int)Tickable.TICKS_PER_RLMIN*5);
+				beneficialAffect(mob,target,asLevel,(int)CMProps.getTicksPerMinute()*5);
 			}
 		}
 		else

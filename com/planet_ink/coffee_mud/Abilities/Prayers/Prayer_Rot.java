@@ -92,7 +92,7 @@ public class Prayer_Rot extends Prayer
 			    {
 		    			newTime=
 		    			System.currentTimeMillis()+(
-		            	   Tickable.TIME_TICK
+		            	   CMProps.getTickMillis()
 					        *CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)
 					      );
 		    	break;
@@ -101,7 +101,7 @@ public class Prayer_Rot extends Prayer
 			    {
 		    			newTime=
 		    			System.currentTimeMillis()+(
-		                Tickable.TIME_TICK
+		                CMProps.getTickMillis()
 				        *CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)
 				        *5);
 			    break;
@@ -114,13 +114,13 @@ public class Prayer_Rot extends Prayer
 			    case RawMaterial.RESOURCE_BLOOD:
 	    			newTime=
 		    			System.currentTimeMillis()+(
-		                Tickable.TIME_TICK
+		                CMProps.getTickMillis()
 				        *CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY));
 	    			break;
 			    case RawMaterial.RESOURCE_MILK:
 	    			newTime=
 		    			System.currentTimeMillis()+(
-		                Tickable.TIME_TICK
+		                CMProps.getTickMillis()
 				        *CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)
 				        *5);
 	    			break;
@@ -131,13 +131,13 @@ public class Prayer_Rot extends Prayer
 		    case RawMaterial.RESOURCE_BLOOD:
     			newTime=
 	    			System.currentTimeMillis()+(
-	                Tickable.TIME_TICK
+	                CMProps.getTickMillis()
 			        *CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY));
     			break;
 		    case RawMaterial.RESOURCE_MILK:
     			newTime=
 	    			System.currentTimeMillis()+(
-	                Tickable.TIME_TICK
+	                CMProps.getTickMillis()
 			        *CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)
 			        *5);
     			break;

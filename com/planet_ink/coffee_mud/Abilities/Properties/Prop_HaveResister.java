@@ -117,7 +117,7 @@ public class Prop_HaveResister extends Property
     protected int weaponProtection(String kind, int damage, int myLevel, int hisLevel)
     {
         int protection=remainingProtection;
-        if((System.currentTimeMillis()-lastProtection)>=Tickable.TIME_TICK)
+        if((System.currentTimeMillis()-lastProtection)>=CMProps.getTickMillis())
         {    protection=(getProtection(kind)+(myLevel-hisLevel)); lastProtection=System.currentTimeMillis();}
         if(protection<=0) return damage;
         remainingProtection=protection-100;

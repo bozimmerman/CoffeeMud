@@ -1290,7 +1290,7 @@ public class StdMOB implements MOB
                     long nextTime=lastCommandTime
                                  +Math.round(cmd.tickDelay
                                              /phyStats().speed()
-                                             *TIME_TICK_DOUBLE);
+                                             *CMProps.getTickMillisD());
                     if((System.currentTimeMillis()<nextTime)&&(session()!=null))
                         return false;
 					cmd=commandQue.removeFirst();
@@ -2583,7 +2583,7 @@ public class StdMOB implements MOB
 				}
 				else
 				{
-					peaceTime+=Tickable.TIME_TICK;
+					peaceTime+=CMProps.getTickMillis();
 					if(CMath.bset(getBitmap(),MOB.ATT_AUTODRAW)
 					&&(peaceTime>=SHEATH_TIME)
 					&&(CMLib.flags().aliveAwakeMobileUnbound(this,true)))
@@ -2598,7 +2598,7 @@ public class StdMOB implements MOB
 					else
 					if(!CMSecurity.isAllowed(this,location(),"IMMORT"))
 					{
-						curState().adjFatigue(Tickable.TIME_TICK,maxState());
+						curState().adjFatigue(CMProps.getTickMillis(),maxState());
 				        if((curState().getFatigue()>CharState.FATIGUED_MILLIS)
 						&&(!isMonster)
                      	&&(CMLib.dice().rollPercentage()==1)
@@ -2626,7 +2626,7 @@ public class StdMOB implements MOB
 				if((!isMonster)&&(soulMate()==null))
 				{
                     CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_TICKSONLINE);
-                    if(((++tickCounter)*Tickable.TIME_TICK)>60000)
+                    if(((++tickCounter)*CMProps.getTickMillis())>60000)
                     {
                         tickCounter=0;
                         if(inventory!=null) inventory.trimToSize();

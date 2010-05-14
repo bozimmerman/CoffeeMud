@@ -65,7 +65,7 @@ public class Auction extends Channel implements Tickable
 	public void setLiveAuctionState(int code)
 	{
 		liveData.state=code;
-		liveData.tickDown=15000/Tickable.TIME_TICK;
+		liveData.tickDown=15000/CMProps.getTickMillis();
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

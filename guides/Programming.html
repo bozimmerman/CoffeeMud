@@ -1351,7 +1351,7 @@ the events you already needed! They include:</p>
       <ul>
         <li> MOBs
           <p>All MOBs have their <code>tick()</code> method called
-once per Tickable.TIME_TICK (4 seconds), with the "tickID" defined
+once per CMProps.getTickMillis() (4 seconds), with the "tickID" defined
 by&nbsp;Tickable.MOB_TICK. MOBs will, in turn, call the <code>tick()</code>
 methods on their own Behaviors, and Ability objects affecting them. If
 any of these dependent objects return "false" from their own tick
@@ -1360,7 +1360,7 @@ calls.</p>
         </li>
         <li> Exits, Items, Rooms
           <p>Whenever a Behavior is added to any of these objects, they
-will begin to have their tick methods called once per&nbsp;Tickable.TIME_TICK
+will begin to have their tick methods called once per&nbsp;CMProps.getTickMillis()
 (4 seconds), with the tickID defined by Tickable.TICKID_ITEM_BEHAVIOR,
 TICKID_EXIT_BEHAVIOR, or TICKID_ROOM_BEHAVIOR. Deletion of the last
 behavior from the host object will stop this tick event from occurring
@@ -1368,7 +1368,7 @@ again.</p>
         </li>
         <li> Areas
           <p>All Area objects have their tick methods called once
-per&nbsp;Tickable.TIME_TICK, with the tickID defined by
+per&nbsp;CMProps.getTickMillis(), with the tickID defined by
 Tickable.TICKID_AREA.</p>
         </li>
         <li> Ability
@@ -1398,7 +1398,7 @@ method, therefore, will be TIME_TICK * NUM_TICKS.</p>
       <p>Now, the above version of <code>startTickDown()</code> can be
 used to create timed events of any duration. However, all objects in
 the base distribution of CoffeeMud operate on a single default time
-interval of 4000 milliseconds as defined by Tickable.TIME_TICK. For
+interval of 4000 milliseconds as defined by CMProps.getTickMillis(). For
 this reason, a different version of the <code>startTickDown()</code>
 method is called which does not include the TIME_TICK parameter,
 utilizing the standard 4 second delay instead:</p>

@@ -53,7 +53,7 @@ public class StdThinInstance extends StdThinArea
 	
 	private SVector<ThinChild> children = new SVector<ThinChild>();
 	private volatile int instanceCounter=0;
-	private static final long CHILD_CHECK_INTERVAL=TimeClock.TIME_MILIS_PER_MUDHOUR/TimeClock.TIME_TICK ;
+	private static final long CHILD_CHECK_INTERVAL=CMProps.getMillisPerMudHour()/CMProps.getTickMillis();
 	private long childCheckDown=CHILD_CHECK_INTERVAL;
 	
 	protected String getStrippedRoomID(String roomID)

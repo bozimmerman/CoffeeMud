@@ -305,7 +305,7 @@ public class Stat  extends Skills
 				numberOnlineTotal+=T.numberOnlineTotal();
 				numberOnlineCounter+=T.numberOnlineCounter();
 			}
-			totals[CoffeeTableRow.STAT_TICKSONLINE]=(totals[CoffeeTableRow.STAT_TICKSONLINE]*Tickable.TIME_TICK)/scale/(1000*60);
+			totals[CoffeeTableRow.STAT_TICKSONLINE]=(totals[CoffeeTableRow.STAT_TICKSONLINE]*CMProps.getTickMillis())/scale/(1000*60);
 			double avgOnline=(numberOnlineCounter>0)?CMath.div(numberOnlineTotal,numberOnlineCounter):0.0;
 			avgOnline=CMath.div(Math.round(avgOnline*10.0),10.0);
 			table.append(CMStrings.padRight(CMLib.time().date2DateString(curTime+1)+" - "+CMLib.time().date2DateString(lastCur-1),25)

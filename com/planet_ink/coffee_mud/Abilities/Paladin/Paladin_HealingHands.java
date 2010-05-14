@@ -45,7 +45,7 @@ public class Paladin_HealingHands extends StdAbility
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_HEALING;}
 	public long flags(){return Ability.FLAG_HEALINGMAGIC;}
-    protected long minCastWaitTime(){return Tickable.TIME_TICK;}
+    protected long minCastWaitTime(){return CMProps.getTickMillis();}
 
 	public boolean invoke(MOB mob, Vector commands, Physical givenTarget, boolean auto, int asLevel)
 	{

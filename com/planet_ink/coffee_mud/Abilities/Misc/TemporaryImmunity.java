@@ -45,7 +45,7 @@ public class TemporaryImmunity extends StdAbility
 	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public boolean canBeUninvoked(){return true;}
 	public boolean isAutoInvoked(){return true;}
-	public final static long IMMUNITY_TIME=Tickable.TIME_MILIS_PER_MUDHOUR*60;
+	public final static long IMMUNITY_TIME=CMProps.getMillisPerMudHour()*60;
     protected DVector set=new DVector(2);
 
     public TemporaryImmunity()

@@ -61,11 +61,11 @@ public class Conquerable extends Arrest
     }
 
     protected int revoltDown=REVOLTFREQ;
-    protected static final int REVOLTFREQ=(int)((TimeManager.MILI_DAY*3)/Tickable.TIME_TICK);
+    protected static final int REVOLTFREQ=(int)((TimeManager.MILI_DAY*3)/CMProps.getTickMillis());
     protected int checkDown=0;
     protected static final int CHECKFREQ=10;
     protected int pointDown=0;
-    protected static final int POINTFREQ=(int)((10*60000)/Tickable.TIME_TICK);
+    protected static final int POINTFREQ=(int)((10*60000)/CMProps.getTickMillis());
     protected int fightDown=0;
     protected static final int FIGHTFREQ=2;
 

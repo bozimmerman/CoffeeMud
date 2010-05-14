@@ -41,7 +41,7 @@ public class Prayer_CureFatigue extends Prayer implements MendingSkill
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
     public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
     public long flags(){return Ability.FLAG_HOLY;}
-    protected long minCastWaitTime(){return Tickable.TIME_TICK/2;}
+    protected long minCastWaitTime(){return CMProps.getTickMillis()/2;}
 
 	public boolean supportsMending(Physical item)
 	{ 

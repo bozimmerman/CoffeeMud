@@ -50,7 +50,7 @@ public class Age extends StdAbility
 	{
 		long start=CMath.s_long(text());
 		if(start<Short.MAX_VALUE) return "";
-		long days=((System.currentTimeMillis()-start)/Tickable.TIME_TICK)/CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY); // down to days;
+		long days=((System.currentTimeMillis()-start)/CMProps.getTickMillis())/CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY); // down to days;
 		long months=days/CMLib.time().globalClock().getDaysInMonth();
 		long years=months/CMLib.time().globalClock().getMonthsInYear();
 		if(days<1)
@@ -159,7 +159,7 @@ public class Age extends StdAbility
 		                           CMLib.time().globalClock().getDaysInMonth() *
 		                           CMProps.getIntVar( CMProps.SYSTEMI_TICKSPERMUDDAY ) );
 
-		int ellapsed=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,Tickable.TIME_TICK),divisor)));
+		int ellapsed=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,CMProps.getTickMillis()),divisor)));
 		if((affected instanceof Item)&&(affected instanceof CagedAnimal))
 		{
             ((Item)affected).setExpirationDate(0);
@@ -470,7 +470,7 @@ public class Age extends StdAbility
                     long l=CMath.s_long(text());
                     if((l>0)&&(l<Long.MAX_VALUE))
                     {
-                        int ellapsed=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,Tickable.TIME_TICK),divisor)));
+                        int ellapsed=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,CMProps.getTickMillis()),divisor)));
                         if(ellapsed<=myRace.getAgingChart()[3])
                         {
                             String s=displayText();
@@ -538,7 +538,7 @@ public class Age extends StdAbility
 						long l=CMath.s_long(text());
 						if((l>0)&&(l<Long.MAX_VALUE))
 						{
-							int ellapsed=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,Tickable.TIME_TICK),divisor)));
+							int ellapsed=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,CMProps.getTickMillis()),divisor)));
 							if(ellapsed<=myRace.getAgingChart()[2])
 							    soil=true;
 						}
@@ -582,7 +582,7 @@ public class Age extends StdAbility
 			    divisor = (double)( CMLib.time().globalClock().getMonthsInYear() *
 			                        CMLib.time().globalClock().getDaysInMonth() *
 			                        CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY ) );
-            int age=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,Tickable.TIME_TICK),divisor)));
+            int age=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,CMProps.getTickMillis()),divisor)));
             if((age>=Short.MAX_VALUE)||(age<0))
                 Log.errOut("Age","Recorded, on "+affected.name()+", age of "+age+", from tick values (("+System.currentTimeMillis()+"-"+l+")/4000)/"+divisor);
             else

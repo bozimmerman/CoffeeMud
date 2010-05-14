@@ -1047,7 +1047,7 @@ public class ListCmd extends StdCommand
 					{
 					    long min=Q.waitRemaining();
 					    if(min>0) {
-					        min=min*Tickable.TIME_TICK;
+					        min=min*CMProps.getTickMillis();
 					        if(min>60000)
 	                            buf.append("waiting ("+(min/60000)+" minutes left)");
 					        else

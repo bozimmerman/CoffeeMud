@@ -374,7 +374,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     		}
     		if(!session.killFlag())
     			session.updateLoopTime();
-    		String s = session.prompt("\n\r^wCommand or Name ^H(?)^w: ^N", TimeClock.TIME_MILIS_PER_MUDHOUR);
+    		String s = session.prompt("\n\r^wCommand or Name ^H(?)^w: ^N", CMProps.getMillisPerMudHour());
     		if(s==null) return LoginResult.NO_LOGIN;
     		if(s.trim().length()==0) continue;
     		if(s.equalsIgnoreCase("?")||(s.equalsIgnoreCase("HELP"))||s.equalsIgnoreCase("H"))

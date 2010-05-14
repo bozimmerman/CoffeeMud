@@ -157,8 +157,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		if(mob==null) mob=CMClass.getMOB("StdMOB");
 		if(!mob.isMonster()) return mob;
 
-		long rejuv=Tickable.TICKS_PER_RLMIN+Tickable.TICKS_PER_RLMIN+(level*Tickable.TICKS_PER_RLMIN/2);
-		if(rejuv>(Tickable.TICKS_PER_RLMIN*20)) rejuv=(Tickable.TICKS_PER_RLMIN*20);
+		long rejuv=CMProps.getTicksPerMinute()+CMProps.getTicksPerMinute()+(level*CMProps.getTicksPerMinute()/2);
+		if(rejuv>(CMProps.getTicksPerMinute()*20)) rejuv=(CMProps.getTicksPerMinute()*20);
 		mob.basePhyStats().setLevel(level);
 		mob.basePhyStats().setRejuv((int)rejuv);
 		mob.basePhyStats().setSpeed(getLevelMOBSpeed(mob));

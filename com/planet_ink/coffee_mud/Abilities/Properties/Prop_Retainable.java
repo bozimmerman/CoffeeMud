@@ -113,7 +113,7 @@ public class Prop_Retainable extends Property
 					}
 					if(payPeriodLengthInMilliseconds<=0)
 						payPeriodLengthInMilliseconds=((long)payPeriodLengthInMudDays)
-										*((long)CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY))*Tickable.TIME_TICK;
+										*((long)CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY))*CMProps.getTickMillis();
 					if((System.currentTimeMillis()>(lastPayDayTimestamp+payPeriodLengthInMilliseconds))
 					&&(CMLib.flags().isInTheGame(mob,true)))
 					{

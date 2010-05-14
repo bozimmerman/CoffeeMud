@@ -841,7 +841,7 @@ public class DefaultClan implements Clan
         try{
         	List<MemberRecord> members=getMemberList();
             int activeMembers=0;
-            long deathMilis=CMProps.getIntVar(CMProps.SYSTEMI_DAYSCLANDEATH)*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*Tickable.TIME_TICK;
+            long deathMilis=CMProps.getIntVar(CMProps.SYSTEMI_DAYSCLANDEATH)*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*CMProps.getTickMillis();
             int[] numTypes=new int[POSORDER.length];
             for(MemberRecord member : members)
             {
@@ -1068,7 +1068,7 @@ public class DefaultClan implements Clan
                 long duration=54;
                 if(data.size()>0) duration=CMath.s_long((String)data.firstElement());
                 if(duration<=0) duration=54;
-                duration=duration*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*Tickable.TIME_TICK;
+                duration=duration*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*CMProps.getTickMillis();
                 for(Enumeration<ClanVote> e=votes();e.hasMoreElements();)
                 {
                     ClanVote CV=(ClanVote)e.nextElement();

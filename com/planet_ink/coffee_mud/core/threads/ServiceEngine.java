@@ -79,7 +79,7 @@ public class ServiceEngine implements ThreadEngine
 	
     public void startTickDown(Tickable E, int tickID, int numTicks)
     { 
-    	startTickDown(E,tickID,Tickable.TIME_TICK,numTicks); 
+    	startTickDown(E,tickID,CMProps.getTickMillis(),numTicks); 
     }
     
 	public synchronized void startTickDown(Tickable E, int tickID, long TICK_TIME, int numTicks)

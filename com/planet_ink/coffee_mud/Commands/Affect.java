@@ -53,7 +53,7 @@ public class Affect extends StdCommand
                 if(xtra)
                 {
                     disp+="^N: TR=";
-                    long tr=thisAffect.expirationDate() / Tickable.TIME_TICK;
+                    long tr=thisAffect.expirationDate() / CMProps.getTickMillis();
                     if(tr>=(Integer.MAX_VALUE/2))
                         disp+="~";
                     else

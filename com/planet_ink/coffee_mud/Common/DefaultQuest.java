@@ -3284,7 +3284,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                 else
                     C.setYear(NOW.getYear());
                 long distance=C.deriveMillisAfter(NOW);
-                waitRemaining=(int)(distance/Tickable.TIME_TICK);
+                waitRemaining=(int)(distance/CMProps.getTickMillis());
             }
             else
             {
@@ -3296,11 +3296,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                 long distance=CMLib.time().string2Millis(month+"/"+day+"/"+year+" 12:00 AM");
                 while(distance<System.currentTimeMillis())
                     distance=CMLib.time().string2Millis(month+"/"+day+"/"+(++year)+" 12:00 AM");
-                waitRemaining=(int)((distance-System.currentTimeMillis())/Tickable.TIME_TICK);
+                waitRemaining=(int)((distance-System.currentTimeMillis())/CMProps.getTickMillis());
             }
         }
         else
-            waitRemaining=(minWait+(CMLib.dice().roll(1,maxWait,0)))-(int)(ellapsedTime/Tickable.TIME_TICK);
+            waitRemaining=(minWait+(CMLib.dice().roll(1,maxWait,0)))-(int)(ellapsedTime/CMProps.getTickMillis());
         return true;
     }
 
@@ -3416,7 +3416,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     public boolean stopping(){return stoppingQuest;}
     public boolean waiting(){return waitRemaining>=0;}
     public int ticksRemaining(){return ticksRemaining;}
-    public int minsRemaining(){return (int)(ticksRemaining*Tickable.TIME_TICK/60000);}
+    public int minsRemaining(){return (int)(ticksRemaining*CMProps.getTickMillis()/60000);}
     private long tickStatus=Tickable.STATUS_NOT;
     public long getTickStatus(){return tickStatus;}
 

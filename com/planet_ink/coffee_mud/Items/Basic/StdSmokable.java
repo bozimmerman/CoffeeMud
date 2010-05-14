@@ -35,7 +35,7 @@ public class StdSmokable extends StdContainer implements Light
 {
 	public String ID(){	return "StdSmokable";}
 	protected boolean lit=false;
-	protected long puffTicks=30000/Tickable.TIME_TICK;
+	protected long puffTicks=30000/CMProps.getTickMillis();
 	protected int baseDuration=200;
 	protected int durationTicks=200;
 	protected boolean destroyedWhenBurnedOut=true;

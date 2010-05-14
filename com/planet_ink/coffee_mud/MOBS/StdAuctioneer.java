@@ -110,7 +110,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 		synchronized(("AUCTION_HOUSE_"+auctionHouse().toUpperCase().trim()).intern())
 		{
 			Long lastTime=(Long)StdAuctioneer.lastCheckTimes.get(auctionHouse().toUpperCase().trim());
-			if((lastTime==null)||(System.currentTimeMillis()-lastTime.longValue())>(Tickable.TIME_MILIS_PER_MUDHOUR-5))
+			if((lastTime==null)||(System.currentTimeMillis()-lastTime.longValue())>(CMProps.getMillisPerMudHour()-5))
 			{
 				StdAuctioneer.lastCheckTimes.remove(auctionHouse().toUpperCase().trim());
 				long thisTime=System.currentTimeMillis();
@@ -238,7 +238,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
                     lastMsgData.currency=CMLib.beanCounter().getCurrency(msg.source());
                     Area area=CMLib.map().getStartArea(this);
                     if(area==null) area=CMLib.map().getStartArea(msg.source());
-                    lastMsgData.tickDown=System.currentTimeMillis()+(days*area.getTimeObj().getHoursInDay()*Tickable.TIME_MILIS_PER_MUDHOUR)+60000;
+                    lastMsgData.tickDown=System.currentTimeMillis()+(days*area.getTimeObj().getHoursInDay()*CMProps.getMillisPerMudHour())+60000;
                     return super.okMessage(myHost, msg);
                 }
                 return false;

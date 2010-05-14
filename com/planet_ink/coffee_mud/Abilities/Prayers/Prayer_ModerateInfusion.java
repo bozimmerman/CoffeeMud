@@ -42,7 +42,7 @@ public class Prayer_ModerateInfusion extends Prayer implements MendingSkill
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
     public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
     public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
-    protected long minCastWaitTime(){return Tickable.TIME_TICK/2;}
+    protected long minCastWaitTime(){return CMProps.getTickMillis()/2;}
 
 	public boolean supportsMending(Physical item)
 	{ 
