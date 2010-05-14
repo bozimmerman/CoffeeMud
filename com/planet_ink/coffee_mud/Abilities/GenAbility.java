@@ -255,7 +255,7 @@ public class GenAbility extends StdAbility
 	    		if(dirCode>=0)
 	    			openThis=mob.location().getExitInDir(dirCode);
 	    		if(openThis==null)
-	    			openThis=mob.location().fetchFromRoomFavorItems(null, whatToOpen, Wearable.FILTER_ANY);
+	    			openThis=mob.location().fetchFromRoomFavorItems(null, whatToOpen);
 	    		if((openThis==null)||(!(openThis instanceof Exit))) return false;
 	    		break;
 	    	}

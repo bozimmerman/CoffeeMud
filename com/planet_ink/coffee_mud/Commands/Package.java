@@ -65,7 +65,7 @@ public class Package extends StdCommand
         do
         {
             Environmental getThis=null;
-            getThis=mob.location().fetchFromRoomFavorItems(null,whatToGet+addendumStr,Wearable.FILTER_UNWORNONLY);
+            getThis=mob.location().fetchFromRoomFavorItems(null,whatToGet+addendumStr);
             if(getThis==null) break;
             if((getThis instanceof Item)
             &&(CMLib.flags().canBeSeenBy(getThis,mob))

@@ -44,7 +44,7 @@ public class Fire extends StdCommand
 		String rest="ALL";
 		if(commands.size()>1) rest=CMParms.combine(commands,1);
 
-		Environmental target=mob.location().fetchFromRoomFavorMOBs(null,rest,Wearable.FILTER_ANY);
+		Environmental target=mob.location().fetchFromRoomFavorMOBs(null,rest);
 		if((target!=null)&&(!target.name().equalsIgnoreCase(rest))&&(rest.length()<4))
 		   target=null;
 		if((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob)))

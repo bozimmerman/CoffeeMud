@@ -91,7 +91,7 @@ public class Restring extends StdCommand
 			thang=srchMob.findItem(allWord);
 		else
 		if(srchRoom!=null)
-			thang=srchRoom.fetchFromRoomFavorItems(srchContainer,allWord,Wearable.FILTER_ANY);
+			thang=srchRoom.fetchFromRoomFavorItems(srchContainer,allWord);
 		if((thang!=null)&&(thang instanceof Item))
 		{
 			if(!thang.isGeneric())

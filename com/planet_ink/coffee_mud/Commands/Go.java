@@ -423,7 +423,7 @@ public class Go extends StdCommand
 		{
 			Environmental E=null;
 			if(R!=null)
-				E=R.fetchFromRoomFavorItems(null,whereStr,Wearable.FILTER_UNWORNONLY);
+				E=R.fetchFromRoomFavorItems(null,whereStr);
 			if(E instanceof Rideable)
 			{
 				Command C=CMClass.getCommand("Enter");

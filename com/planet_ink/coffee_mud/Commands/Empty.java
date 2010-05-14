@@ -70,7 +70,7 @@ public class Empty extends Drop
 			{
 				target=CMLib.english().possibleContainer(mob,commands,false,Wearable.FILTER_UNWORNONLY);
 				if(target==null) 
-					target=mob.location().fetchFromRoomFavorItems(null,s,Wearable.FILTER_UNWORNONLY);
+					target=mob.location().fetchFromRoomFavorItems(null,s);
 				else
 					commands.addElement("delme");
 			}

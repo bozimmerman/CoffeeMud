@@ -1702,7 +1702,7 @@ public class StdRoom implements Room
 				if(!newThingName.equals(thingName))
 				{
 					thingName=newThingName;
-					found=fetchFromRoomFavorItems(goodLocation, thingName,wornFilter);
+					found=fetchFromRoomFavorItems(goodLocation, thingName);
 				}
 				else
 					found=null;
@@ -1731,7 +1731,7 @@ public class StdRoom implements Room
 		}
 		return found;
 	}
-	public PhysicalAgent fetchFromRoomFavorItems(Item goodLocation, String thingName, int wornFilter)
+	public PhysicalAgent fetchFromRoomFavorItems(Item goodLocation, String thingName)
 	{
 		// def was Wearable.FILTER_UNWORNONLY;
 		String newThingName=CMLib.lang().preItemParser(thingName);
@@ -1741,8 +1741,8 @@ public class StdRoom implements Room
 		for(int e=0;e<exits.length;e++)
 		    if(exits[e]!=null)V.addElement(exits[e]);
 		V.addAll(inhabitants);
-		found=(PhysicalAgent)CMLib.english().fetchAvailable(V,thingName,goodLocation,wornFilter,true);
-		if(found==null) found=(PhysicalAgent)CMLib.english().fetchAvailable(V,thingName,goodLocation,wornFilter,false);
+		found=(PhysicalAgent)CMLib.english().fetchAvailable(V,thingName,goodLocation,Wearable.FILTER_ANY,true);
+		if(found==null) found=(PhysicalAgent)CMLib.english().fetchAvailable(V,thingName,goodLocation,Wearable.FILTER_ANY,false);
 
 		if((found!=null) // the smurfy well exception
 		&&(found instanceof Item)
@@ -1750,19 +1750,19 @@ public class StdRoom implements Room
 		&&(found.displayText().length()==0)
 		&&(thingName.indexOf('.')<0))
 		{
-			PhysicalAgent visibleItem=fetchFromRoomFavorItems(null,thingName+".2",wornFilter);
+			PhysicalAgent visibleItem=fetchFromRoomFavorItems(null,thingName+".2");
 			if(visibleItem!=null)
 				found=visibleItem;
 		}
 		if(found==null)
 		{
 			newThingName=CMLib.lang().failedItemParser(thingName);
-			if(newThingName!=null) return fetchFromRoomFavorItems(goodLocation,newThingName,wornFilter); 
+			if(newThingName!=null) return fetchFromRoomFavorItems(goodLocation,newThingName); 
 		}
 		return found;
 	}
 
-	public PhysicalAgent fetchFromRoomFavorMOBs(Item goodLocation, String thingName, int wornFilter)
+	public PhysicalAgent fetchFromRoomFavorMOBs(Item goodLocation, String thingName)
 	{
 		// def was Wearable.FILTER_UNWORNONLY;
 		String newThingName=CMLib.lang().preItemParser(thingName);
@@ -1773,12 +1773,12 @@ public class StdRoom implements Room
 		for(int e=0;e<exits.length;e++)
 		    if(exits[e]!=null)
 		    	V.addElement(exits[e]);
-		found=(PhysicalAgent)CMLib.english().fetchAvailable(V,thingName,goodLocation,wornFilter,true);
-		if(found==null) found=(PhysicalAgent)CMLib.english().fetchAvailable(V,thingName,goodLocation,wornFilter,false);
+		found=(PhysicalAgent)CMLib.english().fetchAvailable(V,thingName,goodLocation,Wearable.FILTER_ANY,true);
+		if(found==null) found=(PhysicalAgent)CMLib.english().fetchAvailable(V,thingName,goodLocation,Wearable.FILTER_ANY,false);
 		if(found==null)
 		{
 			newThingName=CMLib.lang().failedItemParser(thingName);
-			if(newThingName!=null) return fetchFromRoomFavorMOBs(goodLocation,newThingName,wornFilter); 
+			if(newThingName!=null) return fetchFromRoomFavorMOBs(goodLocation,newThingName); 
 		}
 		return found;
 	}
@@ -1803,9 +1803,9 @@ public class StdRoom implements Room
 		if((found==null)&&(!mineOnly))
 		{
 			if(favorItems)
-				found=fetchFromRoomFavorItems(goodLocation, thingName,wornFilter);
+				found=fetchFromRoomFavorItems(goodLocation, thingName);
 			else
-				found=fetchFromRoomFavorMOBs(goodLocation, thingName,wornFilter);
+				found=fetchFromRoomFavorMOBs(goodLocation, thingName);
 			if((found!=null)&&(CMLib.flags().canBeSeenBy(found,mob)))
 				return found;
 			while((found!=null)&&(!CMLib.flags().canBeSeenBy(found,mob)))
@@ -1815,9 +1815,9 @@ public class StdRoom implements Room
 				{
 					thingName=newThingName;
 					if(favorItems)
-						found=fetchFromRoomFavorItems(goodLocation, thingName,wornFilter);
+						found=fetchFromRoomFavorItems(goodLocation, thingName);
 					else
-						found=fetchFromRoomFavorMOBs(goodLocation, thingName,wornFilter);
+						found=fetchFromRoomFavorMOBs(goodLocation, thingName);
 				}
 				else
 					found=null;

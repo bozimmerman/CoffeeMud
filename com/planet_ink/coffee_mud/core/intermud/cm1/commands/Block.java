@@ -49,8 +49,9 @@ public class Block extends CM1Command
 			req.sendMsg("[OK "+eob+"]");
 			req.setEndOfLine(eob);
 		}
-		catch(java.io.IOException ioe)
+		catch(Exception ioe)
 		{
+			Log.errOut(className,ioe);
 			req.close();
 		}
 	}

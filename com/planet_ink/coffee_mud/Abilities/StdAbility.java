@@ -421,7 +421,7 @@ public class StdAbility implements Ability
 			target=mob.location().fetchInhabitant(targetName);
 			if(target==null)
 			{
-				Environmental t=mob.location().fetchFromRoomFavorItems(null,targetName,Wearable.FILTER_UNWORNONLY);
+				Environmental t=mob.location().fetchFromRoomFavorItems(null,targetName);
 				if((t!=null)&&(!(t instanceof MOB)))
 				{
 					if(!quiet)
@@ -495,7 +495,7 @@ public class StdAbility implements Ability
 		else
 		if(mob.location()!=null)
 		{
-			target=mob.location().fetchFromRoomFavorMOBs(null,targetName, wornFilter);
+			target=mob.location().fetchFromRoomFavorMOBs(null,targetName);
 			if(target==null)
 				target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,targetName,wornFilter);
 			if((target==null)
@@ -584,7 +584,7 @@ public class StdAbility implements Ability
 			target=givenTarget;
 
 		if((location!=null)&&(target==null)&&(targetName.length()>0))
-			target=location.fetchFromRoomFavorItems(container,targetName,wornFilter);
+			target=location.fetchFromRoomFavorItems(container,targetName);
 		if((target==null)&&(targetName.length()>0))
 		{
 			if(location!=null)

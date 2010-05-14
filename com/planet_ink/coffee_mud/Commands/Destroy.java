@@ -1272,7 +1272,7 @@ public class Destroy extends StdCommand
 		else
 		{
 			String allWord=CMParms.combine(commands,1);
-			Environmental thang=mob.location().fetchFromRoomFavorItems(null,allWord,Wearable.FILTER_ANY);
+			Environmental thang=mob.location().fetchFromRoomFavorItems(null,allWord);
 			if(thang==null)
 			    thang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,allWord,Wearable.FILTER_ANY);
 			if((thang!=null)&&(thang instanceof Item))

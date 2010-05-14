@@ -93,8 +93,21 @@ public class SetMobStat extends GetMobStat
 		}
 		catch(Exception ioe)
 		{
+			Log.errOut(className,ioe);
 			req.close();
 		}
+	}
+	public boolean passesSecurityCheck(MOB user, PhysicalAgent target)
+	{
+		if(user==null) return false;
+		if(target instanceof MOB)
+		{
+			if(CMLib.players().playerExists(target.Name()))
+				return CMSecurity.isAllowed(user,user.location(),"CMDPLAYERS");
+			return CMSecurity.isAllowed(user,user.location(),"CMDMOBS");
+		}
+		else
+			return false;
 	}
 	public String getHelp(MOB user)
 	{

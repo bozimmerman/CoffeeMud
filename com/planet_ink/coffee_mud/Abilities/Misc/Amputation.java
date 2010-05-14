@@ -212,7 +212,7 @@ public class Amputation extends StdAbility implements Amputator
 			target=mob.location().fetchInhabitant(targetName);
 			if(target==null)
 			{
-				Environmental t=mob.location().fetchFromRoomFavorItems(null,targetName,Wearable.FILTER_UNWORNONLY);
+				Environmental t=mob.location().fetchFromRoomFavorItems(null,targetName);
 				if((t!=null)&&(!(t instanceof MOB)))
 				{
 					if(!quiet)

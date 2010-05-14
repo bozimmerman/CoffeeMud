@@ -1045,7 +1045,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         if(lastKnownLocation!=null)
         {
             str=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,str);
-            Environmental E=lastKnownLocation.fetchFromRoomFavorMOBs(null,str,Wearable.FILTER_ANY);
+            Environmental E=lastKnownLocation.fetchFromRoomFavorMOBs(null,str);
             if(E==null) E=lastKnownLocation.fetchFromMOBRoomFavorsItems(monster,null,str,Wearable.FILTER_ANY);
             if(E==null) E=lastKnownLocation.findItem(str);
             if((E==null)&&(monster!=null)) E=monster.findItem(str);
@@ -7820,7 +7820,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if(flag==1)
                     {
                         s2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s2);
-                        E=lastKnownLocation.fetchFromRoomFavorItems(null,s2,Wearable.FILTER_ANY);
+                        E=lastKnownLocation.fetchFromRoomFavorItems(null,s2);
                     }
                     else
                     if(flag==2)

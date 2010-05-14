@@ -40,6 +40,7 @@ import java.util.concurrent.atomic.*;
 */
 public abstract class CM1Command implements Runnable, Cloneable
 {
+	protected final String className="CM1"+getClass().getName().substring(getClass().getName().lastIndexOf('.'));
 	protected String parameters;
 	protected RequestHandler req;
 
@@ -56,6 +57,41 @@ public abstract class CM1Command implements Runnable, Cloneable
 		{
 			return null;
 		}
+	}
+	
+	public PhysicalAgent getTarget(String parameters)
+	{
+		if(parameters.equalsIgnoreCase("USER"))
+			return req.getUser();
+		int x=parameters.indexOf('@');
+		String who=parameters;
+		String where="";
+		PhysicalAgent P=req.getTarget();
+		if(x>0)
+		{
+			who=parameters.substring(0,x);
+			where=parameters.substring(x+1);
+			Room R=CMLib.map().getRoom(where);
+			if(R==null)
+			{
+				Area A=CMLib.map().getArea(where);
+				if(A!=null) R=A.getRandomMetroRoom();
+			}
+			if(who.length()==0)
+				P=R;
+		}
+		else
+		{
+			MOB M=CMLib.players().getLoadPlayer(who);
+			if(M!=null) return M;
+		}
+		Room R=CMLib.map().roomLocation(P);
+		if(R==null) CMLib.map().roomLocation(req.getTarget());
+		if(R==null) return null;
+		P=R.fetchFromRoomFavorMOBs(null,who);
+		if((P==null)&&(req.getTarget() instanceof MOB))
+			P=R.fetchFromRoomFavorMOBs(null,who);
+		return P;
 	}
 	
 	public abstract String getCommandWord();

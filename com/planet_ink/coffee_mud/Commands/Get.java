@@ -158,7 +158,7 @@ public class Get extends StdCommand
 					if(!allFlag)
 						getThis=CMLib.english().possibleRoomGold(mob,R,container,whatToGet);
 					if(getThis==null)
-						getThis=R.fetchFromRoomFavorItems(container,whatToGet+addendumStr,Wearable.FILTER_UNWORNONLY);
+						getThis=R.fetchFromRoomFavorItems(container,whatToGet+addendumStr);
 				}
 				if(getThis==null) break;
 				if((getThis instanceof Item)

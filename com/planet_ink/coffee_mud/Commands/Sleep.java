@@ -54,7 +54,7 @@ public class Sleep extends StdCommand
 			return false;
 		}
 		String possibleRideable=CMParms.combine(commands,1);
-		Environmental E=mob.location().fetchFromRoomFavorItems(null,possibleRideable,Wearable.FILTER_UNWORNONLY);
+		Environmental E=mob.location().fetchFromRoomFavorItems(null,possibleRideable);
 		if((E==null)||(!CMLib.flags().canBeSeenBy(E,mob)))
 		{
 			mob.tell("You don't see '"+possibleRideable+"' here.");

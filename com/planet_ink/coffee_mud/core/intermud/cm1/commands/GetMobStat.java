@@ -126,6 +126,7 @@ public class GetMobStat extends CM1Command
 		}
 		catch(Exception ioe)
 		{
+			Log.errOut(className,ioe);
 			req.close();
 		}
 	}

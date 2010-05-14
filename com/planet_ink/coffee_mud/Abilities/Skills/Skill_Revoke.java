@@ -67,7 +67,7 @@ public class Skill_Revoke extends StdSkill
 				target=mob.location().getExitInDir(dir);
 			else
 			{
-				target=mob.location().fetchFromRoomFavorMOBs(null,whatToRevoke,Wearable.FILTER_ANY);
+				target=mob.location().fetchFromRoomFavorMOBs(null,whatToRevoke);
 				if(target==null)
 				    target=mob.findItem(null,whatToRevoke);
 			}

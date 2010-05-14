@@ -42,7 +42,7 @@ public class Hire extends StdCommand
 		throws java.io.IOException
 	{
 		String rest=CMParms.combine(commands,1);
-		Environmental target=mob.location().fetchFromRoomFavorMOBs(null,rest,Wearable.FILTER_ANY);
+		Environmental target=mob.location().fetchFromRoomFavorMOBs(null,rest);
 		if((target!=null)&&(!target.name().equalsIgnoreCase(rest))&&(rest.length()<4))
 		   target=null;
 		if((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob)))

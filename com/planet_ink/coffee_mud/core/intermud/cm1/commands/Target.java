@@ -38,20 +38,21 @@ import java.util.concurrent.atomic.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Logout extends CM1Command
+public class Target extends CM1Command
 {
-	public String getCommandWord(){ return "LOGOUT";}
+	public String getCommandWord(){ return "TARGET";}
 	public void run()
 	{
 		try
 		{
-			if(req.getUser()==null)
-				req.sendMsg("[FAIL]");
-			else
+			PhysicalAgent P=getTarget(parameters);
+			if(P!=null)
 			{
+				req.setTarget(P);
 				req.sendMsg("[OK]");
-				req.logout();
+				return;
 			}
+			req.sendMsg("[FAIL]");
 		}
 		catch(Exception ioe)
 		{
@@ -59,9 +60,9 @@ public class Logout extends CM1Command
 			req.close();
 		}
 	}
-	public boolean passesSecurityCheck(MOB user, PhysicalAgent target){return true;}
+	public boolean passesSecurityCheck(MOB user, PhysicalAgent target){return true;} // anybody can target, its harmless
 	public String getHelp(MOB user)
 	{
-		return "Logs out the current user, but does not disconnect.";
+		return "USAGE: TARGET USER, <NAME>, <NAME>@<LOCATION>, @<LOCATION>";
 	}
 }

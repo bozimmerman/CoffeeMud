@@ -38,20 +38,43 @@ import java.util.concurrent.atomic.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Logout extends CM1Command
+public class Listen extends CM1Command
 {
-	public String getCommandWord(){ return "LOGOUT";}
+	public String getCommandWord(){ return "LISTEN";}
+	
+	protected void ListenTo(Object o)
+	{
+		
+	}
+	
+	// dont forget to do a security check on what
+	// they want to listen to
+	/*
+	public boolean passesSecurityCheck(MOB user, PhysicalAgent target)
+	{
+		if(user==null) return false;
+		if(target instanceof MOB)
+		{
+			if(CMLib.players().playerExists(target.Name()))
+				return CMSecurity.isAllowed(user,user.location(),"CMDPLAYERS");
+			return CMSecurity.isAllowed(user,user.location(),"CMDMOBS");
+		}
+		else
+			return false;
+	}
+	 */
 	public void run()
 	{
 		try
 		{
-			if(req.getUser()==null)
-				req.sendMsg("[FAIL]");
-			else
+			PhysicalAgent P=getTarget(parameters);
+			if(P!=null)
 			{
+				req.setTarget(P);
 				req.sendMsg("[OK]");
-				req.logout();
+				return;
 			}
+			req.sendMsg("[FAIL]");
 		}
 		catch(Exception ioe)
 		{
@@ -59,9 +82,10 @@ public class Logout extends CM1Command
 			req.close();
 		}
 	}
+	// depends on what you want to listen to
 	public boolean passesSecurityCheck(MOB user, PhysicalAgent target){return true;}
 	public String getHelp(MOB user)
 	{
-		return "Logs out the current user, but does not disconnect.";
+		return "USAGE: LISTEN <CHANNELNAME> <NAME>, <NAME>@<LOCATION>, @<LOCATION>, <CHANNEL>";
 	}
 }

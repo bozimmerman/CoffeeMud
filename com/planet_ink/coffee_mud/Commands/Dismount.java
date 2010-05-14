@@ -55,7 +55,7 @@ public class Dismount extends StdCommand
 		}
 		else
 		{
-			Environmental E=mob.location().fetchFromRoomFavorItems(null,CMParms.combine(commands,0),Wearable.FILTER_ANY);
+			Environmental E=mob.location().fetchFromRoomFavorItems(null,CMParms.combine(commands,0));
 			if((E==null)||(!(E instanceof Rider)))
 			{
 				mob.tell("You don't see anything called '"+CMParms.combine(commands,0)+"' here to dismount from anything.");

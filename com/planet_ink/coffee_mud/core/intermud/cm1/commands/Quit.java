@@ -50,6 +50,7 @@ public class Quit extends CM1Command
 		}
 		catch(java.io.IOException ioe)
 		{
+			Log.errOut(className,ioe);
 			req.close();
 		}
 	}
