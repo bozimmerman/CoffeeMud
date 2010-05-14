@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.GridZones.XYVector;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
@@ -64,6 +65,11 @@ public class StdGrid extends StdRoom implements GridLocale
         }
     }
 	public String getGridChildLocaleID(){return "StdRoom";}
+	public Room getGridChild(XYVector xy) {
+		if(xy==null) return null;
+		return this.getGridChild(xy.x,xy.y);
+	}
+
 	public CMObject newInstance()
 	{
 		if(CMSecurity.isDisabled("FATGRIDS"))
@@ -97,17 +103,24 @@ public class StdGrid extends StdRoom implements GridLocale
 	public void setXGridSize(int x){ if(x>0)xsize=x; }
 	public void setYGridSize(int y){ if(y>0)ysize=y; }
 
-	public int[] getRoomXY(String roomID)
+	public XYVector getRoomXY(String roomID)
 	{
 		Room room=CMLib.map().getRoom(roomID);
 		if(room==null) return null;
-		if(!isMyGridChild(room)) return null;
-		int[] xy=new int[2];
-		xy[0]=getGridChildX(room);
-		xy[1]=getGridChildY(room);
-		return xy;
+		return getRoomXY(room);
 	}
 	
+	public XYVector getRoomXY(Room room)
+	{
+		Room[][] subMap=getBuiltGrid();
+		if(subMap!=null)
+			for(int x=0;x<subMap.length;x++)
+				for(int y=0;y<subMap[x].length;y++)
+					if(subMap[x][y]==room)
+						return new XYVector(x,y);
+		return null;
+	}
+
 	
 	public Room prepareRoomInDir(Room fromRoom, int direction)
 	{
@@ -195,18 +208,17 @@ public class StdGrid extends StdRoom implements GridLocale
 			if(grid==null) grid=getBuiltGrid();
 			if(grid!=null)
 			{
-				int y=((GridLocale)loc).getGridChildY(oldLoc);
-				int x=((GridLocale)loc).getGridChildX(oldLoc);
-				if((x>=0)&&(y>=0))
+				XYVector xy=((GridLocale)loc).getRoomXY(oldLoc);
+				if((xy.x>=0)&&(xy.y>=0))
 				switch(opDirection)
 				{
 				case Directions.EAST:
 					if((((GridLocale)loc).yGridSize()==yGridSize()))
-						return grid[grid.length-1][y];
+						return grid[grid.length-1][xy.y];
 					break;
 				case Directions.WEST:
 					if((((GridLocale)loc).yGridSize()==yGridSize()))
-						return grid[0][y];
+						return grid[0][xy.y];
 					break;
 				case Directions.NORTHWEST:
 					return grid[0][0];
@@ -214,11 +226,11 @@ public class StdGrid extends StdRoom implements GridLocale
 					return grid[grid.length-1][0];
 				case Directions.NORTH:
 					if((((GridLocale)loc).xGridSize()==xGridSize()))
-						return grid[x][0];
+						return grid[xy.x][0];
 					break;
 				case Directions.SOUTH:
 					if((((GridLocale)loc).xGridSize()==xGridSize()))
-						return grid[x][grid[0].length-1];
+						return grid[xy.x][grid[0].length-1];
 					break;
 				case Directions.SOUTHEAST:
 					return grid[grid.length-1][grid[0].length-1];

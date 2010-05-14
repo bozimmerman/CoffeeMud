@@ -400,7 +400,7 @@ public class CMMap extends StdLibrary implements WorldMap
             Room R=null;
             if(roomSet==null)
             {
-                int x=calledThis.indexOf("#");
+                int x=calledThis.indexOf('#');
                 if(x>=0)
                 {
                     Area A=getArea(calledThis.substring(0,x));

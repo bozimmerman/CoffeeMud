@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.GridZones.XYVector;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -78,12 +79,12 @@ public class GrinderFlatMap
 					{
 						if(xyxy!=null)
 						{
-							int[] thisXY=((GridZones)area).getRoomXY(roomID);
+							XYVector thisXY=((GridZones)area).getRoomXY(roomID);
 							if(thisXY==null) continue;
-							if((thisXY[0]<xyxy[0])
-							||(thisXY[1]<xyxy[1])
-							||(thisXY[0]>xyxy[2])
-							||(thisXY[1]>xyxy[3]))
+							if((thisXY.x<xyxy[0])
+							||(thisXY.y<xyxy[1])
+							||(thisXY.x>xyxy[2])
+							||(thisXY.y>xyxy[3]))
 								continue;
 						}
 						GrinderRoom GR=new GrinderRoom(roomID);
@@ -108,12 +109,12 @@ public class GrinderFlatMap
 				R=(Room)r.nextElement();
 				if(R.roomID().length()>0)
 				{
-					int[] thisXY=((GridZones)area).getRoomXY(R.roomID());
+					XYVector thisXY=((GridZones)area).getRoomXY(R.roomID());
 					if(thisXY==null) continue;
-					if((thisXY[0]<xyxy[0])
-					||(thisXY[1]<xyxy[1])
-					||(thisXY[0]>=xyxy[2])
-					||(thisXY[1]>=xyxy[3]))
+					if((thisXY.x<xyxy[0])
+					||(thisXY.y<xyxy[1])
+					||(thisXY.x>=xyxy[2])
+					||(thisXY.y>=xyxy[3]))
 					{
 						// force the old ones to expire asap
 						if((thinArea)&&(R.expirationDate()>0))
@@ -174,15 +175,15 @@ public class GrinderFlatMap
             for(int i=areaMap.size()-1;i>=0;i--)
             {
                 GrinderRoom room=areaMap.get(i);
-                int[] myxy=((GridZones)area).getRoomXY(room.roomID);
+                XYVector myxy=((GridZones)area).getRoomXY(room.roomID);
 				if(myxy==null) continue;
-                if((myxy[0]<boundsXYXY[0])||(myxy[1]<boundsXYXY[1])||(myxy[0]>=boundsXYXY[2])||(myxy[1]>=boundsXYXY[3]))
+                if((myxy.x<boundsXYXY[0])||(myxy.y<boundsXYXY[1])||(myxy.x>=boundsXYXY[2])||(myxy.y>=boundsXYXY[3]))
                 	areaMap.remove(room);
                 else
                 {
                 	room.xy=new int[2];
-	                room.xy[0]=myxy[0]-boundsXYXY[0];
-	                room.xy[1]=myxy[1]-boundsXYXY[1];
+	                room.xy[0]=myxy.x-boundsXYXY[0];
+	                room.xy[1]=myxy.y-boundsXYXY[1];
                 }
             }
         }

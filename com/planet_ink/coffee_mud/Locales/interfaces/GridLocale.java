@@ -46,13 +46,12 @@ public interface GridLocale extends Room, GridZones
 	public Iterator<WorldMap.CrossExit> outerExits();
 	public void addOuterExit(WorldMap.CrossExit x);
 	public void delOuterExit(WorldMap.CrossExit x);
-	public class ThinGridEntry
+	public static class ThinGridEntry
 	{
-		public int x;
-		public int y;
 		public Room room;
+		public XYVector xy;
 		public ThinGridEntry(Room R, int x, int y)
-		{ room=R; this.x=x; this.y=y;}
+		{ room=R; xy=new XYVector(x,y);}
 	}
 	public static class ThinGridEntryConverter implements Converter<ThinGridEntry,Room>
 	{

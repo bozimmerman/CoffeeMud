@@ -91,17 +91,17 @@ public class Dice extends StdLibrary implements DiceLibrary
 	
 	public int getHPCode(String str)
 	{
-		int i=str.indexOf("d");
+		int i=str.indexOf('d');
 		if(i<0) return 11;
 		int roll=CMath.s_int(str.substring(0,i).trim());
 		str=str.substring(i+1).trim();
 
-		i=str.indexOf("+");
+		i=str.indexOf('+');
 		int dice=0;
 		int plus=0;
 		if(i<0)
 		{
-			i=str.indexOf("-");
+			i=str.indexOf('-');
 			if(i<0)
 				dice=CMath.s_int(str.trim());
 			else

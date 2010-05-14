@@ -68,13 +68,25 @@ public interface GridZones extends Environmental
 	 * @return the y coordinate of the room
 	 */
 	public int getGridChildY(Room loc);
+	
 	/**
 	 * Returns the XY coordinates of the Room with the given roomID
-	 * in int[]{x,y} format.
+	 * in XYVector format.
+	 * @see XYVector
 	 * @param roomID the roomID of the room to get coordinates for
-	 * @return coordinates in int[]{x,y} format.
+	 * @return coordinates in XYVector format.
 	 */
-	public int[] getRoomXY(String roomID);
+	public XYVector getRoomXY(String roomID);
+	
+	/**
+	 * Returns the XY coordinates of the Room, if a child of 
+	 * this gridzone, in XYVector format.
+	 * @see XYVector
+	 * @param room the room to get coordinates for
+	 * @return coordinates in XYVector format.
+	 */
+	public XYVector getRoomXY(Room room);
+	
 	/**
 	 * Returns the total width of this grid.
 	 * @return the width
@@ -103,4 +115,27 @@ public interface GridZones extends Environmental
 	 * @return the Room object at those coordinates
 	 */
 	public Room getGridChild(int x, int y);
+
+	/**
+	 * Returns the Room object at the given coordinates.
+	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
+	 * @see XYVector
+	 * @param xy the x and y coordinate
+	 * @return the Room object at those coordinates
+	 */
+	public Room getGridChild(XYVector xy);
+	
+	/**
+	 * A class for holding x/y coordinates. Used by GridZones
+	 * as a way to hold such coordinates in a single place,
+	 * and easily compare them to each other.
+	 * @author bzimmerman
+	 */
+	public static class XYVector
+	{
+		public int x;
+		public int y;
+		public XYVector(int x, int y)
+		{ this.x=x; this.y=y;}
+	}
 }

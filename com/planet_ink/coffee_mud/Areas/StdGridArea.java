@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.GridZones.XYVector;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
@@ -52,7 +53,7 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 
 	public String getNewRoomID(Room startRoom, int direction)
 	{
-		int[] xy=posFromRoomID(startRoom);
+		XYVector xy=posFromRoomID(startRoom);
 		int xChange=0;
 		int yChange=0;
 		switch(direction)
@@ -70,9 +71,9 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 		if(isMyGridChild(startRoom))
 		{
 			// PERFECT condition
-			if((xy!=null)&&(xy[0]>=0))
+			if((xy!=null)&&(xy.x>=0))
 			{
-				String newID=roomIDFromPos(xy[0]+xChange,xy[1]+yChange);
+				String newID=roomIDFromPos(xy.x+xChange,xy.y+yChange);
 				if((newID!=null)&&(newID.length()>0))
 				{
 					newID=Name()+"#"+newID;
@@ -107,9 +108,8 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 		if(roomID==null) return null;
 		return getRoom(Name()+"#"+roomID);
 	}
-	public int[] getRoomXY(String roomID)
+	public XYVector getRoomXY(String roomID)
 	{
-		int[] xy={-1,-1};
 		if(roomID.length()==0) return null;
 		if(roomID.endsWith(")"))
 		{
@@ -123,29 +123,25 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 		if(!CMath.isNumber(roomID)) return null;
 		int len=(""+ySize).length();
 		if(roomID.length()<=len)
-		{
-			xy[0]=0;
-			xy[1]=CMath.s_int(roomID);
-			return xy;
-		}
+			return new XYVector(0,CMath.s_int(roomID));
 		String xStr=roomID.substring(0,roomID.length()-len);
 		String yStr=roomID.substring(roomID.length()-len);
 		while(yStr.startsWith("0")) yStr=yStr.substring(1);
-		xy[0]=CMath.s_int(xStr);
-		xy[1]=CMath.s_int(yStr);
-		if((xy[0]<0)||(xy[1]<0)||(xy[1]>=xGridSize())||(xy[0]>=yGridSize()))
+		XYVector xy = new XYVector(CMath.s_int(xStr),CMath.s_int(yStr));
+		if((xy.x<0)||(xy.y<0)||(xy.x>=xGridSize())||(xy.y>=yGridSize()))
 			return null;
 		return xy;
 	}
-	protected int[] posFromRoomID(Room loc)
+	public XYVector getRoomXY(Room room){ return posFromRoomID(room);}
+	protected XYVector posFromRoomID(Room loc)
 	{
 		if(loc==null) return null;
 		String roomID=loc.roomID();
 		if(roomID.length()==0) roomID=getGridChildCode(loc);
 		return getRoomXY(roomID);
 	}
-	public int getGridChildX(Room loc){return posFromRoomID(loc)[0];}
-	public int getGridChildY(Room loc){return posFromRoomID(loc)[1];}
+	public int getGridChildX(Room loc){return posFromRoomID(loc).x;}
+	public int getGridChildY(Room loc){return posFromRoomID(loc).y;}
 	public String getGridChildCode(Room loc){ return CMLib.map().getExtendedRoomID(loc);}
 	public Room getRandomGridChild(){ return super.getRandomProperRoom();}
 	public Room getGridChild(String childCode){return CMLib.map().getRoom(childCode);}
@@ -154,4 +150,9 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 	public int yGridSize(){ return ySize;}
 	public void setXGridSize(int x){xSize=x;}
 	public void setYGridSize(int y){ySize=y; yLength=Integer.toString(ySize).length();}
+	public Room getGridChild(XYVector xy)
+	{
+		if(xy==null) return null;
+		return getGridChild(xy.x,xy.y);
+	}
 }

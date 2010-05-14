@@ -424,16 +424,15 @@ public class GrinderRooms
 		if((autoLink)&&(R.getArea() instanceof GridZones))
 		{
 			GridZones GZ=(GridZones)R.getArea();
-			int x=GZ.getGridChildX(R);
-			int y=GZ.getGridChildY(R);
+			GridZones.XYVector Rxy=GZ.getRoomXY(R);
 			boolean resaveMyExits=false;
-			if((x>=0)&&(y>=0))
+			if((Rxy.x>=0)&&(Rxy.y>=0))
 			{
 				Room R2=null;
 				
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
-					int[] xy=Directions.adjustXYByDirections(x,y,d);
+					int[] xy=Directions.adjustXYByDirections(Rxy.x,Rxy.y,d);
 					R2=GZ.getGridChild(xy[0],xy[1]);
 					if((R2!=null)&&(R!=R2))
 					{
