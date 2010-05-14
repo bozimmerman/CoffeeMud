@@ -45,18 +45,6 @@ public class CommandHandler implements Runnable
 	private RequestHandler req; 
 	private static final Map<String,CM1Command> commandList=new Hashtable<String,CM1Command>();
 	private static final void AddCommand(CM1Command c) { commandList.put(c.getCommandWord(),c); }
-	static
-	{
-		AddCommand(new Quit());
-		AddCommand(new Block());
-		AddCommand(new Login());
-		AddCommand(new Logout());
-		AddCommand(new Quit());
-		AddCommand(new Shutdown());
-		AddCommand(new MUDInfo());
-		AddCommand(new GetMobStat());
-		AddCommand(new SetMobStat());
-	}
 	
 	public CommandHandler(RequestHandler req, String command)
 	{
@@ -71,6 +59,53 @@ public class CommandHandler implements Runnable
 		{
 			cmd=command.substring(0,x).trim();
 			rest=command.substring(x+1).trim();
+		}
+		
+		if(commandList.size()==0)
+		{
+			String className=CommandHandler.class.getName();
+			String packageName=className;
+			x=packageName.lastIndexOf('.');
+			if(x>0)
+				packageName=packageName.substring(0,x)+".commands.";
+			if (!className.startsWith("/"))
+				className = "/" + className;
+			
+			className = className.replace('.', '/');
+			className = className + ".class";
+	
+			URL classUrl = this.getClass().getResource(className);
+			if (classUrl != null) 
+			{
+			   String temp = classUrl.getFile();
+			   if (temp.startsWith("file:")) {
+			      temp=temp.substring(5);
+			   }
+			   x=temp.lastIndexOf('/');
+			   if(x>0)
+			   {
+				   File dir=new File(temp.substring(0,x)+"/commands");
+				   if((dir.exists())&&(dir.isDirectory()))
+				   {
+					   for(File F : dir.listFiles())
+						   if(F.getName().endsWith(".class")
+						   &&(!F.getName().equals("CM1Command.class"))
+						   &&(F.getName().indexOf('$')<0))
+						   {
+							   String name=packageName + F.getName().substring(0,F.getName().length()-6);
+							   try
+							   {
+								   Class<?> c=CMClass.instance().loadClass(name,true);
+								   AddCommand((CM1Command)c.newInstance());
+							   }
+							   catch(Exception e)
+							   {
+								   e.printStackTrace();
+							   }
+						   }
+				   }
+			   }
+			}
 		}
 	}
 
