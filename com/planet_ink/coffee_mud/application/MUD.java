@@ -1167,7 +1167,7 @@ public class MUD extends Thread implements MudHost
 				if(MUD.isOK)
 				{
 					String ports=page.getProperty("PORT");
-					int pdex=ports.indexOf(",");
+					int pdex=ports.indexOf(',');
 					while(pdex>0)
 					{
 						MUD mud=new MUD("MUD@"+ports.substring(0,pdex));
@@ -1176,7 +1176,7 @@ public class MUD extends Thread implements MudHost
 						ports=ports.substring(pdex+1);
 						mud.start();
                         CMLib.hosts().addElement(mud);
-						pdex=ports.indexOf(",");
+						pdex=ports.indexOf(',');
 					}
 					MUD mud=new MUD("MUD@"+ports);
 					mud.acceptConnections=false;

@@ -101,8 +101,8 @@ public class Prop_AddDamage extends Property
 					if(x>0)
 					{
 						String lvl=text.substring(x+5);
-						if(lvl.indexOf(" ")>=0)
-							lvl=lvl.substring(lvl.indexOf(" "));
+						if(lvl.indexOf(' ')>=0)
+							lvl=lvl.substring(lvl.indexOf(' '));
 						if((text.charAt(x-1)=='-')&&(immune>=0))
 						{
 							if(W.phyStats().level()>=CMath.s_int(lvl))
@@ -156,7 +156,7 @@ public class Prop_AddDamage extends Property
 				if(lastNumber>=0)
 				{
 					text=text.substring(lastNumber,immune).trim();
-					x=text.indexOf(" ");
+					x=text.indexOf(' ');
 					if(x>0) text=text.substring(0,x).trim();
 					if(text.endsWith("%"))
 						msg.setValue(msg.value()+(int)Math.round(CMath.mul(msg.value(),CMath.div(CMath.s_int(text.substring(0,text.length()-1)),100.0))));

@@ -582,7 +582,7 @@ public class Spell_Wish extends Spell
 			{
 				int x=myWish.indexOf(" EXP");
 				String wsh=myWish.substring(0,x).trim();
-				x=wsh.lastIndexOf(" ");
+				x=wsh.lastIndexOf(' ');
 				int amount=25;
 				if((x>=0)&&(CMath.isNumber(wsh.substring(x).trim())))
 				   amount=CMath.s_int(wsh.substring(x).trim());

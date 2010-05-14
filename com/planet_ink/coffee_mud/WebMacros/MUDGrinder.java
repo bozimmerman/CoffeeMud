@@ -875,7 +875,7 @@ public class MUDGrinder extends StdWebMacro
 		{
 			mapStyle=mapStyle.substring(1);
 			int[] xyxy=new int[6];
-			int x=mapStyle.indexOf("_");
+			int x=mapStyle.indexOf('_');
 			int index=0;
 			while(x>=0)
 			{
@@ -885,7 +885,7 @@ public class MUDGrinder extends StdWebMacro
 					xyxy[index++]=CMath.s_int(coord);
 				else
 					break;
-				x=mapStyle.indexOf("_");
+				x=mapStyle.indexOf('_');
 			}
 			if((index<xyxy.length)&&(CMath.isInteger(mapStyle)))
 				xyxy[index++]=CMath.s_int(mapStyle);

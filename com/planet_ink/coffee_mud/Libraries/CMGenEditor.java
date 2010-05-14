@@ -578,13 +578,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             if(newName.equalsIgnoreCase("default"))
                 A.setCurrency("");
             else
-            if((newName.indexOf("=")<0)&&(!CMLib.beanCounter().getAllCurrencies().contains(newName.trim().toUpperCase())))
+            if((newName.indexOf('=')<0)&&(!CMLib.beanCounter().getAllCurrencies().contains(newName.trim().toUpperCase())))
             {
             	List<String> V=CMLib.beanCounter().getAllCurrencies();
                 mob.tell("'"+newName.trim().toUpperCase()+"' is not a known currency. Existing currencies include: DEFAULT"+CMParms.toStringList(V));
             }
             else
-            if(newName.indexOf("=")>=0)
+            if(newName.indexOf('=')>=0)
                 A.setCurrency(newName.trim());
             else
                 A.setCurrency(newName.toUpperCase().trim());
@@ -1373,7 +1373,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                         {
                             String oldName=newName;
                             if(!newName.endsWith(";")) newName+=";";
-                            int x=newName.indexOf(";");
+                            int x=newName.indexOf(';');
                             while(x>=0)
                             {
                                 String spellName=newName.substring(0,x).trim();
@@ -1385,7 +1385,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                                     break;
                                 }
                                 newName=newName.substring(x+1).trim();
-                                x=newName.indexOf(";");
+                                x=newName.indexOf(';');
                             }
                             newName=oldName;
                         }
@@ -2797,9 +2797,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 else
                 if((tattoo.length()>0)
                 &&(Character.isDigit(tattoo.charAt(0)))
-                &&(tattoo.indexOf(" ")>0)
-                &&(CMath.isNumber(tattoo.substring(0,tattoo.indexOf(" ")))))
-                    tattoo=tattoo.substring(tattoo.indexOf(" ")+1).trim();
+                &&(tattoo.indexOf(' ')>0)
+                &&(CMath.isNumber(tattoo.substring(0,tattoo.indexOf(' ')))))
+                    tattoo=tattoo.substring(tattoo.indexOf(' ')+1).trim();
                 if(M.playerStats().getTitles().contains(tattoo))
                 {
                     mob.tell(tattoo.trim().toUpperCase()+" removed.");

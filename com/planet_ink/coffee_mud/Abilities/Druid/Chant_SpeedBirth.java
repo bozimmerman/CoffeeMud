@@ -56,7 +56,7 @@ public class Chant_SpeedBirth extends Chant
 		String rest=null;
 		if(A!=null)
 		{
-			int x=A.text().indexOf("/");
+			int x=A.text().indexOf('/');
 			if(x>0)
 			{
 				int y=A.text().indexOf("/",x+1);

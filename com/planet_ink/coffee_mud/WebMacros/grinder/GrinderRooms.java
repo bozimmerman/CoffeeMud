@@ -211,7 +211,7 @@ public class GrinderRooms
                             happilyAddMob((MOB)M.copyOf(),R);
 					}
 					else
-					if(MATCHING.indexOf("@")>0)
+					if(MATCHING.indexOf('@')>0)
 					{
 						for(int m=0;m<RoomData.mobs.size();m++)
 						{

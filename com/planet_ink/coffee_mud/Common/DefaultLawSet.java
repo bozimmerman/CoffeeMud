@@ -506,7 +506,7 @@ public class DefaultLawSet implements Law
         {
             String key=(String)e.nextElement();
             String words=(String)laws.get(key);
-            int x=words.indexOf(";");
+            int x=words.indexOf(';');
             if(x>=0)
             {
                 if(key.startsWith("CRIME"))

@@ -80,7 +80,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
         
         String theRest=null;
         long roomNum=-1;
-        int x=areaName.indexOf("#");
+        int x=areaName.indexOf('#');
         CMIntegerGrouper CI=null;
         if(x<=0)
         {
@@ -130,7 +130,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
     
     public int roomCount(String areaName)
     {
-        int x=areaName.indexOf("#");
+        int x=areaName.indexOf('#');
         if(x>0)
             areaName=areaName.substring(0,x).toUpperCase();
         else
@@ -226,7 +226,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
     	if(str==null) return false;
         String theRest=null;
         long roomNum=0;
-        int origX=str.indexOf("#");
+        int origX=str.indexOf('#');
         int x=origX;
         if(x>0)
         {
@@ -300,7 +300,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
         
         String theRest=null;
         long roomNum=-1;
-        int x=areaName.indexOf("#");
+        int x=areaName.indexOf('#');
         if(x>0)
         {
             theRest=areaName.substring(x+1).trim();

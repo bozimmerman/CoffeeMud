@@ -53,7 +53,7 @@ public class Group extends StdCommand
 		}
 		    
 		String levelStr=who.charStats().displayClassLevel(who,true).trim();
-		int x=levelStr.lastIndexOf(" ");
+		int x=levelStr.lastIndexOf(' ');
 		if(x>=0) levelStr=levelStr.substring(x).trim();
 		if(!CMSecurity.isDisabled("CLASSES"))
 		{

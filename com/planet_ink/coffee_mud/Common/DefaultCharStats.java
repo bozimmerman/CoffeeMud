@@ -126,7 +126,7 @@ public class DefaultCharStats implements CharStats
 
 	public void setMyClasses(String classes)
 	{
-		int x=classes.indexOf(";");
+		int x=classes.indexOf(';');
 		ArrayList<CharClass> classV=new ArrayList<CharClass>();
         CharClass C=null;
 		while(x>=0)
@@ -139,7 +139,7 @@ public class DefaultCharStats implements CharStats
                 if(C==null) C=CMClass.getCharClass("StdCharClass");
                 classV.add(C);
             }
-			x=classes.indexOf(";");
+			x=classes.indexOf(';');
 		}
 		if(classes.trim().length()>0)
         {
@@ -153,7 +153,7 @@ public class DefaultCharStats implements CharStats
 	{
 		if((levels.length()==0)&&(myClasses!=null)&&(myClasses.length>0)) 
 			levels="0";
-		int x=levels.indexOf(";");
+		int x=levels.indexOf(';');
 		ArrayList<Integer> levelV=new ArrayList<Integer>();
 		while(x>=0)
 		{
@@ -161,7 +161,7 @@ public class DefaultCharStats implements CharStats
 			levels=levels.substring(x+1);
 			if(theLevel.length()>0)
 				levelV.add(Integer.valueOf(CMath.s_int(theLevel)));
-			x=levels.indexOf(";");
+			x=levels.indexOf(';');
 		}
 		if(levels.trim().length()>0)
 			levelV.add(Integer.valueOf(CMath.s_int(levels)));

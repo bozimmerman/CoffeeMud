@@ -141,7 +141,7 @@ public class Domesticating extends CommonSkill
 				mob.tell("You must specify a name.");
 				return false;
 			}
-			if(newName.indexOf(" ")>=0)
+			if(newName.indexOf(' ')>=0)
 			{
 				mob.tell("The name may not contain a space.");
 				return false;
@@ -162,7 +162,7 @@ public class Domesticating extends CommonSkill
 			||(oldName.toUpperCase().startsWith("SOME ")))
 				newName=oldName+" named "+newName;
 			else
-			if(oldName.indexOf(" ")>=0)
+			if(oldName.indexOf(' ')>=0)
 				newName=newName+", "+oldName;
 		}
 

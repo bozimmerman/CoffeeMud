@@ -311,7 +311,7 @@ public class StdLawBook extends StdItem
                             {
                                 if(t.toUpperCase().startsWith(Law.PUNISHMENTMASK_DESCS[i]))
                                 {
-                                    int x1=t.indexOf("=");
+                                    int x1=t.indexOf('=');
                                     if(x1>0)
                                         V2.addElement(Law.PUNISHMENTMASK_DESCS[i].toLowerCase(),t.substring(x1+1));
                                     else
@@ -343,7 +343,7 @@ public class StdLawBook extends StdItem
                             for(int i=0;i<Law.PUNISHMENTMASK_DESCS.length;i++)
                             {
                                 String sentence=Law.PUNISHMENTMASK_DESCS[i];
-                                if(sentence.indexOf("=")>0) sentence=sentence.substring(0,sentence.indexOf("="));
+                                if(sentence.indexOf('=')>0) sentence=sentence.substring(0,sentence.indexOf('='));
                                 msg.append(sentence.toLowerCase()+" ");
                             }
                             StringBuffer oldFlags=new StringBuffer("");
@@ -432,7 +432,7 @@ public class StdLawBook extends StdItem
                         {
                             t=(String)V2.elementAt(v2,1);
                             String p=(String)V2.elementAt(v2,2);
-                            if(p.indexOf(" ")>0)
+                            if(p.indexOf(' ')>0)
                                 newSentence.append("\""+t+p+"\" ");
                             else
                                 newSentence.append(t+p+" ");

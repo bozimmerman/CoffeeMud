@@ -98,7 +98,7 @@ public class StdClanDonationList extends StdClanItem
                     {
                         set=(DatabaseEngine.PlayerData)V.get(0);
                         key=set.key;
-                        x=key.indexOf("/");
+                        x=key.indexOf('/');
                         if(x>0)
                         {
                             val=CMath.s_long(key.substring(0,x));

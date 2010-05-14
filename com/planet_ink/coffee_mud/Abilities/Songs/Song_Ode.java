@@ -81,7 +81,7 @@ public class Song_Ode extends Song
 		{
 			String t=trail.toString();
 			int[] counts=new int[stuff.length];
-			int x=t.indexOf(";");
+			int x=t.indexOf(';');
 			while(x>=0)
 			{
 				int q=CMath.s_int(t.substring(0,x));
@@ -92,7 +92,7 @@ public class Song_Ode extends Song
 						if(CMath.s_int(stuff[i][0])==q)
 							counts[i]++;
 					}
-				x=t.indexOf(";");
+				x=t.indexOf(';');
 			}
 			int wa=-1;
 			for(int i=0;i<stuff.length;i++)
@@ -294,19 +294,19 @@ public class Song_Ode extends Song
 			return benefits;
 		benefits=new Hashtable();
 
-		int x=s.indexOf(";");
+		int x=s.indexOf(';');
 		while(x>=0)
 		{
 			int code=CMath.s_int(s.substring(0,x));
 			s=s.substring(x+1);
-			x=s.indexOf(";");
+			x=s.indexOf(';');
 			if(x>=0)
 			{
 				int tick=CMath.s_int(s.substring(0,x));
 				s=s.substring(x+1);
 				benefits.put(Integer.valueOf(code),Integer.valueOf(tick));
 			}
-			x=s.indexOf(";");
+			x=s.indexOf(';');
 		}
 		return benefits;
 	}

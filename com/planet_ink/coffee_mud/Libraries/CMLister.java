@@ -154,7 +154,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
                                boolean longLook,
                                boolean compress)
 	{
-	    boolean nameTagParm=((tagParm!=null)&&(tagParm.indexOf("*")>=0));
+	    boolean nameTagParm=((tagParm!=null)&&(tagParm.indexOf('*')>=0));
 		StringBuilder say=new StringBuilder("");
         Environmental item=null;
         boolean sysmsgs=(mob!=null)?CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS):false;

@@ -50,7 +50,7 @@ public class Restring extends StdCommand
 		throws java.io.IOException
 	{
 		String allWord=CMParms.combine(commands,1);
-		int x=allWord.indexOf("@");
+		int x=allWord.indexOf('@');
 		MOB srchMob=mob;
 		Item srchContainer=null;
 		Room srchRoom=mob.location();

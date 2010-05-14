@@ -54,8 +54,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 			if(newText.startsWith("%DBID>"))
 			{
-				String dbstr=CMLib.database().DBReadRoomMOBData(newText.substring(6,newText.indexOf("@")),
-																  ((Object)mob).getClass().getName()+newText.substring(newText.indexOf("@")).trim());
+				String dbstr=CMLib.database().DBReadRoomMOBData(newText.substring(6,newText.indexOf('@')),
+																  ((Object)mob).getClass().getName()+newText.substring(newText.indexOf('@')).trim());
 				if(dbstr!=null)
 					return dbstr;
 				Log.errOut("Unable to re-read mob data: "+newText);
@@ -962,7 +962,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	        	{
 	        		prop=(String)allProps.elementAt(v);
 	        		parms="";
-	        		int x=prop.indexOf("(");
+	        		int x=prop.indexOf('(');
 	        		if(x>=0)
 	        		{
 	        			parms=prop.substring(x+1).trim();
@@ -2858,7 +2858,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	public void setCharStats(CharStats E, String props)
 	{
 		int x=0;
-		for(int y=props.indexOf("|");y>=0;y=props.indexOf("|"))
+		for(int y=props.indexOf('|');y>=0;y=props.indexOf('|'))
 		{
 			try
 			{
@@ -2876,7 +2876,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	{
 		int[] nums=new int[6];
 		int x=0;
-		for(int y=props.indexOf("|");y>=0;y=props.indexOf("|"))
+		for(int y=props.indexOf('|');y>=0;y=props.indexOf('|'))
 		{
 			try
 			{
@@ -3377,7 +3377,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		    	for(int v=0;v<V10.size();v++)
 		    	{
 		    	    String s=(String)V10.elementAt(v);
-		    	    int x=s.lastIndexOf("(");
+		    	    int x=s.lastIndexOf('(');
 		    	    int y=s.lastIndexOf(")");
 		    	    if((x>0)&&(y>x))
 		    	        M.addFaction(s.substring(0,x),CMath.s_int(s.substring(x+1,y)));

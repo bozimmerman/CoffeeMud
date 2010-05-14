@@ -116,7 +116,7 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 			int y=roomID.lastIndexOf("#(");
 			if(y>0) roomID=roomID.substring(0,y);
 		}
-		int x=roomID.indexOf("#");
+		int x=roomID.indexOf('#');
 		if(x<0) return null;
 		if(!roomID.substring(0,x).equalsIgnoreCase(Name())) return null;
 		roomID=roomID.substring(x+1);

@@ -60,7 +60,7 @@ public class ProcessSMTPrequest implements Runnable
 	
 	public String validLocalAccount(String s)
 	{
-		int x=s.indexOf("@");
+		int x=s.indexOf('@');
 		String name=s;
 		if(x>0)
 		{
@@ -133,7 +133,7 @@ public class ProcessSMTPrequest implements Runnable
 				{
 					String cmd=s.toUpperCase();
 					String parm="";
-					int cmdindex=s.indexOf(" ");
+					int cmdindex=s.indexOf(' ');
 					if(cmdindex>0)
 					{
 						cmd=s.substring(0,cmdindex).toUpperCase();
@@ -179,7 +179,7 @@ public class ProcessSMTPrequest implements Runnable
 	                                    boolean nextAppended=false;
 	                                    if(translateEqualSigns)
 	                                    {
-	                                        if(s2.indexOf("=")>=0)
+	                                        if(s2.indexOf('=')>=0)
 	                                        {
 	                                            StringBuffer newStr=new StringBuffer(s2);
 	                                            for(int c1=0;c1<newStr.length()-2;c1++)
@@ -248,7 +248,7 @@ public class ProcessSMTPrequest implements Runnable
 	                                    if((boundryState<0)&&(s2u.substring(14).trim().startsWith("MULTIPART/")))
 	                                    {
 	                                        String contentType=s2.substring(14).trim();
-	                                        int y=s2u.indexOf(";");
+	                                        int y=s2u.indexOf(';');
 	                                        if(y>=0) contentType=s2.substring(14,y).trim();
 	                                        int x=s2u.indexOf("BOUNDARY=");
 	                                        for(int z=0;(z<5)&&(x<0);z++)
@@ -267,7 +267,7 @@ public class ProcessSMTPrequest implements Runnable
 	                                        if(s2!=null)
 	                                        {
 		                                        boundry=s2.substring(x+9).trim();
-		                                        y=s2.indexOf(";");
+		                                        y=s2.indexOf(';');
 		                                        if(y>=0) s2=s2.substring(0,y).trim();
 		                                        if(boundry.startsWith("\"")&&boundry.endsWith("\""))
 		                                            boundry=boundry.substring(1,boundry.length()-1).trim();
@@ -560,7 +560,7 @@ public class ProcessSMTPrequest implements Runnable
 					else
 					if(cmd.equals("MAIL"))
 					{
-						int x=parm.indexOf(":");
+						int x=parm.indexOf(':');
 						if(x<0)
 							replyData=("501 Syntax error in \""+parm+"\""+cr).getBytes();
 						else
@@ -575,7 +575,7 @@ public class ProcessSMTPrequest implements Runnable
 								boolean error=false;
 								if(parm.startsWith("<"))
 								{
-									x=parm.indexOf(">");
+									x=parm.indexOf('>');
 									if(x<0)
 									{
 										replyData=("501 Syntax error in \""+parm+"\""+cr).getBytes();
@@ -588,7 +588,7 @@ public class ProcessSMTPrequest implements Runnable
 									}
 								}
 								else
-								if(parm.indexOf(" ")>=0)
+								if(parm.indexOf(' ')>=0)
 								{
 									replyData=("501 Syntax error in \""+parm+"\""+cr).getBytes();
 									error=true;
@@ -675,7 +675,7 @@ public class ProcessSMTPrequest implements Runnable
 							replyData=("503 Need MAIL before RCPT"+cr).getBytes();
 						else
 						{
-							int x=parm.indexOf(":");
+							int x=parm.indexOf(':');
 							if(x<0)
 								replyData=("501 Syntax error in \""+parm+"\""+cr).getBytes();
 							else
@@ -690,7 +690,7 @@ public class ProcessSMTPrequest implements Runnable
 									boolean error=false;
 									if(parm.startsWith("<"))
 									{
-										x=parm.indexOf(">");
+										x=parm.indexOf('>');
 										if(x<0)
 										{
 											replyData=("501 Syntax error in \""+parm+"\""+cr).getBytes();
@@ -703,7 +703,7 @@ public class ProcessSMTPrequest implements Runnable
 										}
 									}
 									else
-									if(parm.indexOf(" ")>=0)
+									if(parm.indexOf(' ')>=0)
 									{
 										replyData=("501 Syntax error in \""+parm+"\""+cr).getBytes();
 										error=true;
@@ -721,7 +721,7 @@ public class ProcessSMTPrequest implements Runnable
 	                                        replyData=("502 Parameters not supported... \""+parmparms+"\""+cr).getBytes();
 	                                }
 									else
-									if(parm.indexOf("@")<0)
+									if(parm.indexOf('@')<0)
 										replyData=("550 "+parm+" user unknown."+cr).getBytes();
 									else
 									if(!error)

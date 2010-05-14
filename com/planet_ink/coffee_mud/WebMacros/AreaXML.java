@@ -55,7 +55,7 @@ public class AreaXML extends StdWebMacro
 			fileName=pickedA.getArchivePath();
 		else
 			fileName=pickedA.Name();
-		if(fileName.indexOf(".")<0)
+		if(fileName.indexOf('.')<0)
 			fileName=fileName+".cmare";
         return fileName;
     }

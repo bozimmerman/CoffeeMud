@@ -131,7 +131,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         if(login.length()>20) return false;
         if(login.length()<3) return false;
 
-        if(login.trim().indexOf(" ")>=0) return false;
+        if(login.trim().indexOf(' ')>=0) return false;
 
         login=login.toUpperCase().trim();
         Vector<String> V=CMParms.parse(login);
@@ -1531,7 +1531,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	                session.println("\n\rInvalid password.\n\r");
 	                if((!session.killFlag())
 	                &&(player.email.length()>0)
-	                &&(player.email.indexOf("@")>0)
+	                &&(player.email.indexOf('@')>0)
 	                &&(attempt>2)
 	                &&(CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).length()>0))
 	                {

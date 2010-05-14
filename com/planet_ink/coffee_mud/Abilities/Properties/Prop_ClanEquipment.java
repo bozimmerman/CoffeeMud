@@ -245,7 +245,7 @@ public class Prop_ClanEquipment extends Property
             if(x>=0)
             {
                 message=message.substring(x+secretWord.length());
-                int y=message.indexOf("'");
+                int y=message.indexOf('\'');
                 if(y>=0)
                 {
                     message=message.substring(0,y);

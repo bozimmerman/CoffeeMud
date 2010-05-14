@@ -1369,8 +1369,8 @@ public class StdDeity extends StdMOB implements Deity
 		if(!trigger.equals("-"))
 		while(trigger.length()>0)
 		{
-			int div1=trigger.indexOf("&");
-			int div2=trigger.indexOf("|");
+			int div1=trigger.indexOf('&');
+			int div2=trigger.indexOf('|');
 			int div=div1;
 
 			if((div2>=0)&&((div<0)||(div2<div)))

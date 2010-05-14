@@ -52,7 +52,7 @@ public class LinkedWeather extends StdBehavior
 			if(getParms().length()==0)
 				return true;
 			String s=getParms();
-			int x=s.indexOf(";");
+			int x=s.indexOf(';');
 			rolling=false;
 			if(x>=0)
 			{

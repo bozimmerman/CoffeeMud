@@ -272,12 +272,16 @@ public class Equipment extends StdCommand
 			msg.append("^!(nothing)^?\n\r");
         }
         else
-        if((paragraphView)&&(msg.lastIndexOf(",") > -1))
         {
-            msg.insert(msg.lastIndexOf(",") + 1, ".");
-            msg.deleteCharAt(msg.lastIndexOf(","));
-            if(msg.lastIndexOf(",") > -1)
-                msg.insert(msg.lastIndexOf(",") + 1, " and");
+        	int commaDex=(paragraphView)?msg.lastIndexOf(","):-1;
+	        if((paragraphView)&&(commaDex > -1))
+	        {
+	            msg.insert(commaDex + 1, ".");
+	            msg.deleteCharAt(commaDex);
+	        	commaDex=msg.lastIndexOf(",");
+	            if(commaDex > -1)
+	                msg.insert(commaDex + 1, " and");
+	        }
         }
         return msg;
 	}

@@ -71,7 +71,7 @@ public class RandomTraps extends ActiveTicker
 		doAnyDoors=false;
 		doAnyLockedDoors=true;
 		doRooms=false;
-		int x=newParms.indexOf(";");
+		int x=newParms.indexOf(';');
 		String oldParms=newParms;
 		restrictedLocales=null;
 		if(x>=0)

@@ -339,7 +339,7 @@ public class Merge extends StdCommand
 				use=ignore;
 				str=str.substring(7).trim();
 			}
-			int x=str.indexOf(",");
+			int x=str.indexOf(',');
 			while(x>=0)
 			{
 				String s=str.substring(0,x).trim();
@@ -359,7 +359,7 @@ public class Merge extends StdCommand
 					}
 				}
 				str=str.substring(x+1).trim();
-				x=str.indexOf(",");
+				x=str.indexOf(',');
 			}
 			if(str.length()>0)
 			{

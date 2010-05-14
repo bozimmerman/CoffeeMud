@@ -430,7 +430,7 @@ public class OffLine extends Thread implements MudHost
                 {
                     mudThreads=new Vector<OffLine>();
                     String ports=page.getProperty("PORT");
-                    int pdex=ports.indexOf(",");
+                    int pdex=ports.indexOf(',');
                     while(pdex>0)
                     {
                         OffLine mud=new OffLine();
@@ -439,7 +439,7 @@ public class OffLine extends Thread implements MudHost
                         ports=ports.substring(pdex+1);
                         mud.start();
                         mudThreads.addElement(mud);
-                        pdex=ports.indexOf(",");
+                        pdex=ports.indexOf(',');
                     }
                     OffLine mud=new OffLine();
                     mud.acceptConnections=false;

@@ -227,7 +227,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             Ability A=M.fetchEffect("Prop_Retainable");
             if(A!=null)
             {
-                if(A.text().indexOf(";")<0)
+                if(A.text().indexOf(';')<0)
                 {
                     if(CMath.isDouble(A.text()))
                         price=CMath.s_double(A.text());
@@ -236,7 +236,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 }
                 else
                 {
-                    String s2=A.text().substring(0,A.text().indexOf(";"));
+                    String s2=A.text().substring(0,A.text().indexOf(';'));
                     if(CMath.isDouble(s2))
                         price=CMath.s_double(s2);
                     else
@@ -253,7 +253,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 
     public double prejudiceValueFromPart(MOB customer, boolean pawnTo, String part)
     {
-        int x=part.indexOf("=");
+        int x=part.indexOf('=');
         if(x<0) return 0.0;
         String sellorby=part.substring(0,x);
         part=part.substring(x+1);
@@ -261,7 +261,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
            return 0.0;
         if((!pawnTo)&&(!sellorby.trim().equalsIgnoreCase("BUY")))
            return 0.0;
-        if(part.trim().indexOf(" ")<0)
+        if(part.trim().indexOf(' ')<0)
             return CMath.s_double(part.trim());
         Vector<String> V=CMParms.parse(part.trim());
         double d=0.0;
@@ -302,20 +302,20 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             if(factors.length()==0)
                 return 1.0;
         }
-        if(factors.indexOf("=")<0)
+        if(factors.indexOf('=')<0)
         {
             if(CMath.s_double(factors)!=0.0)
                 return CMath.s_double(factors);
             return 1.0;
         }
-        int x=factors.indexOf(";");
+        int x=factors.indexOf(';');
         while(x>=0)
         {
             String part=factors.substring(0,x).trim();
             factors=factors.substring(x+1).trim();
             double d=prejudiceValueFromPart(customer,pawnTo,part);
             if(d!=0.0) return d;
-            x=factors.indexOf(";");
+            x=factors.indexOf(';');
         }
         double d=prejudiceValueFromPart(customer,pawnTo,factors.trim());
         if(d!=0.0) return d;
@@ -1593,7 +1593,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		int x=targetMessage.toUpperCase().lastIndexOf("FOR '");
 		if(x>0)
 		{
-			int y=targetMessage.lastIndexOf("'");
+			int y=targetMessage.lastIndexOf('\'');
 			if(y>x)
 				return targetMessage.substring(x+5,y);
 		}

@@ -46,7 +46,7 @@ public class Pregnancy extends StdAbility
 
 	public String displayText()
 	{
-		int x=text().indexOf("/");
+		int x=text().indexOf('/');
 		if(x>0)
 		{
 			int y=text().indexOf("/",x+1);
@@ -174,7 +174,7 @@ public class Pregnancy extends StdAbility
 		&&(CMLib.flags().isInTheGame(affected,true)))
 		{
 			MOB mob=(MOB)affected;
-			int x=text().indexOf("/");
+			int x=text().indexOf('/');
 			if(x>0)
 			{
 				int y=text().indexOf("/",x+1);

@@ -189,7 +189,7 @@ public class FileMgr extends StdWebMacro
                     return  "Error deleting directory!";
                 String newPath=F.getAbsolutePath();
                 if(newPath.endsWith("/")) newPath=newPath.substring(0,newPath.length()-1);
-                int x=newPath.lastIndexOf("/");
+                int x=newPath.lastIndexOf('/');
                 if(x>0) newPath=newPath.substring(0,x);
                 httpReq.addRequestParameters("PATH",newPath);
                 httpReq.removeRequestParameter("FILE");

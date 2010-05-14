@@ -173,7 +173,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
             if(PD!=null)
             {
                 String key=PD.key;
-                int x=key.indexOf("/");
+                int x=key.indexOf('/');
                 if(x>0)
                     branches.put(key.substring(0,x),key.substring(x+1));
             }
@@ -274,7 +274,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         MailPiece piece = new MailPiece();
         for(int i=0;i<5;i++)
         {
-            int x=data.indexOf(";");
+            int x=data.indexOf(';');
             if(x<0)
             {
             	Log.errOut("StdPostman","Man formed postal data: "+data);

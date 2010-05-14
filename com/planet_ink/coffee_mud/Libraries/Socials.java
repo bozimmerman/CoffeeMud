@@ -611,7 +611,7 @@ public class Socials extends StdLibrary implements SocialsList
             String socName=socialName.toUpperCase();
 			for(String key : soc.keySet())
 			{
-				if((key.startsWith(socName))&&(key.indexOf(" ")<0))
+				if((key.startsWith(socName))&&(key.indexOf(' ')<0))
 				{	
 					socialName=key; 
 					break;

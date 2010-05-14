@@ -345,7 +345,7 @@ public class MOBloader
 	    	PlayerLibrary.ThinPlayer thisUser=new PlayerLibrary.ThinPlayer();
 	        thisUser.name=DBConnections.getRes(R,"CMUSERID");
 	        String cclass=DBConnections.getRes(R,"CMCLAS");
-	        int x=cclass.lastIndexOf(";");
+	        int x=cclass.lastIndexOf(';');
 	        CharClass C=null;
 	        if((x>0)&&(x<cclass.length()-2))
 	        {
@@ -360,13 +360,13 @@ public class MOBloader
 	        else
 	            thisUser.race=rrace;
 	        String lvl=DBConnections.getRes(R,"CMLEVL");
-	        x=lvl.indexOf(";");
+	        x=lvl.indexOf(';');
 	        int level=0;
 	        while(x>=0)
 	        {
 	            level+=CMath.s_int(lvl.substring(0,x));
 	            lvl=lvl.substring(x+1);
-	            x=lvl.indexOf(";");
+	            x=lvl.indexOf(';');
 	        }
 	        if(lvl.length()>0) level+=CMath.s_int(lvl);
 	        thisUser.level=level;
@@ -469,17 +469,17 @@ public class MOBloader
                 {
                     done.add(username);
                     String cclass=DBConnections.getRes(R,"CMCLAS");
-                    int x=cclass.lastIndexOf(";");
+                    int x=cclass.lastIndexOf(';');
                     if((x>0)&&(x<cclass.length()-2)) cclass=CMClass.getCharClass(cclass.substring(x+1)).name();
                     String race=(CMClass.getRace(DBConnections.getRes(R,"CMRACE"))).name();
                     String lvl=DBConnections.getRes(R,"CMLEVL");
-                    x=lvl.indexOf(";");
+                    x=lvl.indexOf(';');
                     int level=0;
                     while(x>=0)
                     {
                         level+=CMath.s_int(lvl.substring(0,x));
                         lvl=lvl.substring(x+1);
-                        x=lvl.indexOf(";");
+                        x=lvl.indexOf(';');
                     }
                     if(lvl.length()>0) level+=CMath.s_int(lvl);
                     int exp=CMath.s_int(DBConnections.getRes(R,"CMEXPE"));
@@ -527,17 +527,17 @@ public class MOBloader
             {
                 String username=DBConnections.getRes(R,"CMUSERID");
                 String cclass=DBConnections.getRes(R,"CMCLAS");
-                int x=cclass.lastIndexOf(";");
+                int x=cclass.lastIndexOf(';');
                 if((x>0)&&(x<cclass.length()-2)) cclass=CMClass.getCharClass(cclass.substring(x+1)).name();
                 String race=(CMClass.getRace(DBConnections.getRes(R,"CMRACE"))).name();
                 String lvl=DBConnections.getRes(R,"CMLEVL");
-                x=lvl.indexOf(";");
+                x=lvl.indexOf(';');
                 int level=0;
                 while(x>=0)
                 {
                     level+=CMath.s_int(lvl.substring(0,x));
                     lvl=lvl.substring(x+1);
-                    x=lvl.indexOf(";");
+                    x=lvl.indexOf(';');
                 }
                 if(lvl.length()>0) level+=CMath.s_int(lvl);
                 DV.addElement(username,

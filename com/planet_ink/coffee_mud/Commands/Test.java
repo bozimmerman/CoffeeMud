@@ -362,7 +362,7 @@ public class Test extends StdCommand
             if(what.equalsIgnoreCase("mudhourstil"))
             {
                 String startDate=CMParms.combine(commands,2);
-                int x=startDate.indexOf("-");
+                int x=startDate.indexOf('-');
                 int mudmonth=CMath.s_int(startDate.substring(0,x));
                 int mudday=CMath.s_int(startDate.substring(x+1));
                 TimeClock C=(TimeClock)CMClass.getCommon("DefaultTimeClock");

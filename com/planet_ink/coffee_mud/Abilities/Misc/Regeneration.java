@@ -113,8 +113,8 @@ public class Regeneration extends StdAbility
 					if((x>=0)&&((x==0)||(text.charAt(x-1)=='+')))
 					{
 						String lvl=text.substring(x+5);
-						if(lvl.indexOf(" ")>=0)
-							lvl=lvl.substring(lvl.indexOf(" "));
+						if(lvl.indexOf(' ')>=0)
+							lvl=lvl.substring(lvl.indexOf(' '));
 						if(W.phyStats().level()>=CMath.s_int(lvl))
 							hurts=true;
 					}

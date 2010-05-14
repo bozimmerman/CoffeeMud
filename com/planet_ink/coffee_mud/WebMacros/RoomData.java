@@ -221,7 +221,7 @@ public class RoomData extends StdWebMacro
         if(MATCHING.startsWith("CATALOG-"))
             return getItemFromCatalog(MATCHING);
         else
-		if(MATCHING.indexOf("@")>0)
+		if(MATCHING.indexOf('@')>0)
 		{
 			for(int m=0;m<items.size();m++)
 			{
@@ -442,7 +442,7 @@ public class RoomData extends StdWebMacro
 					        }
 						}
 						else
-						if(MATCHING.indexOf("@")>0)
+						if(MATCHING.indexOf('@')>0)
 						{
 							for(int m=0;m<moblist.size();m++)
 							{

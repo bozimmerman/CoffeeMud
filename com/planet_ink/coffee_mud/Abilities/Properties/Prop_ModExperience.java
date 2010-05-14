@@ -62,7 +62,7 @@ public class Prop_ModExperience extends Property
 		   ||(affected instanceof Area)))
 		{
 			String s=text().trim();
-			int x=s.indexOf(";");
+			int x=s.indexOf(';');
 			if(x>=0)
 			{
 				String mask=s.substring(x+1).trim();

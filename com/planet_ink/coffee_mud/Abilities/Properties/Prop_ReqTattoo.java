@@ -49,14 +49,14 @@ public class Prop_ReqTattoo extends Property
 	public void setMiscText(String newText)
 	{
 		themsg="";
-		int x=newText.indexOf(";");
+		int x=newText.indexOf(';');
 		if(x<0) 
 			super.setMiscText(newText);
 		else
-		if(newText.substring(0,x).indexOf("+")>=0)
+		if(newText.substring(0,x).indexOf('+')>=0)
 			super.setMiscText(newText);
 		else
-		if(newText.substring(0,x).indexOf("-")>=0)
+		if(newText.substring(0,x).indexOf('-')>=0)
 			super.setMiscText(newText);
 		else
 		{

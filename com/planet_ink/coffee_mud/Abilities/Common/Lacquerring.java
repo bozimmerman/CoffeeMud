@@ -56,7 +56,7 @@ public class Lacquerring extends CommonSkill
 		int end=name.indexOf("^?");
 		if((end>0)&&(end<=name.length()-3))
 		{
-			int start=name.substring(0,end).indexOf("^");
+			int start=name.substring(0,end).indexOf('^');
 			if((start>=0)&&(start<(end-3)))
 				name=name.substring(0,start)
 					 +name.substring(end+3);

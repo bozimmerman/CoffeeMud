@@ -43,7 +43,7 @@ public class Prop_EnlargeRoom extends Property
 
 	protected double dval(String s)
 	{
-		if(s.indexOf(".")>=0)
+		if(s.indexOf('.')>=0)
 			return CMath.s_double(s);
 		return (double)CMath.s_int(s);
 	}

@@ -229,7 +229,7 @@ public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
 				{
 					request = "/";
 				}
-				int p = request.indexOf("?");
+				int p = request.indexOf('?');
 				if (p == -1)
 				{
 					requestMain = request;
@@ -359,7 +359,7 @@ public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
 
 		while (pStr != null)
 		{
-			int p = pStr.indexOf("&");
+			int p = pStr.indexOf('&');
 			if (p == -1)
 			{
 				thisParam = pStr;
@@ -374,7 +374,7 @@ public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
 					pStr = null;
 			}
 
-			int eq=thisParam.indexOf("=");
+			int eq=thisParam.indexOf('=');
 			if (eq == -1)
 			{
 				// a null parameter (ie a parameter name with no value,
@@ -569,7 +569,7 @@ public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
 	protected String runMacro(String foundMacro)
 		throws HTTPRedirectException, HTTPServerException
 	{
-		int x=foundMacro.indexOf("?");
+		int x=foundMacro.indexOf('?');
 		StringBuffer parms=null;
 		if(x>=0)
 		{
@@ -933,11 +933,11 @@ public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
 
                 // now do the web path macro check, complete
                 // with zmud correction;
-                int lastSlash=filename.lastIndexOf("/");
+                int lastSlash=filename.lastIndexOf('/');
                 String macCheck=(lastSlash>=0)?filename.substring(lastSlash+1):filename;
-                lastSlash=macCheck.indexOf("?");
+                lastSlash=macCheck.indexOf('?');
                 if(lastSlash>=0) macCheck=macCheck.substring(0,lastSlash);
-                lastSlash=macCheck.indexOf("&");
+                lastSlash=macCheck.indexOf('&');
                 if(lastSlash>=0) macCheck=macCheck.substring(0,lastSlash);
                 WebMacro W=CMClass.getWebMacro(macCheck.toUpperCase());
                 if((W!=null)&&(W.isAWebPath())&&((!W.isAdminMacro())||(isAdminServer)))
@@ -1003,7 +1003,7 @@ public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
 				if (processOK)
 				{
 					String exten;
-					try { exten = filename.substring(filename.lastIndexOf(".")); }
+					try { exten = filename.substring(filename.lastIndexOf('.')); }
 					catch (Exception e) {exten = "";}
 					if (exten==null) exten = "";
 
@@ -1221,7 +1221,7 @@ public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
                 throw new IOException("File not found!");
             }
 			String exten="";
-			try { exten = filename.substring(filename.lastIndexOf(".")); }
+			try { exten = filename.substring(filename.lastIndexOf('.')); }
 			catch (Exception e) {}
 			if(page.getStr("VIRTUALPAGEEXTENSION").equalsIgnoreCase(exten) )
 				replyData=doVirtualPage(replyData);
@@ -1388,7 +1388,7 @@ public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
                     return "[400 -- no content data received]";
                 if(type.toLowerCase().indexOf("multipart/form-data")>=0)
                 {
-                    int x=inLine.lastIndexOf(" ");
+                    int x=inLine.lastIndexOf(' ');
                     if(x<0) return "[400 -- improperly formatted post request]";
                     StringBuffer parms=new StringBuffer("");
                     String boundary="--"+getBoundary(inData)+"\r\n";
@@ -1467,7 +1467,7 @@ public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
 				if(type.toLowerCase().indexOf("urlencoded")>=0)
                 {
                     String lastLine=new String((byte[])inData.lastElement());
-                    int x=inLine.lastIndexOf(" ");
+                    int x=inLine.lastIndexOf(' ');
                     if(x<0) return "[400 -- improperly formatted post request]";
                     return inLine.substring(0,x)+"?"+lastLine+inLine.substring(x);
                 }

@@ -58,7 +58,7 @@ public class INIValue extends StdWebMacro
 			}
 			else
 			{
-				int x=s.indexOf("=");
+				int x=s.indexOf('=');
 				if((x>=0)
 				&&(help.size()>0)
 				&&((s.substring(0,x).equals(mask)
@@ -104,8 +104,8 @@ public class INIValue extends StdWebMacro
 				String s=((String)page.get(p)).trim();
 				if(s.startsWith("#")||s.startsWith("!")) 
 					continue;
-				int x=s.indexOf("=");
-				if(x<0) x=s.indexOf(":");
+				int x=s.indexOf('=');
+				if(x<0) x=s.indexOf(':');
 				if(x<0) continue;
 				String id=s.substring(0,x).trim().toUpperCase();
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!id.equals(lastID))))

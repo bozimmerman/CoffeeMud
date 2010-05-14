@@ -63,7 +63,7 @@ public class Embroidering extends CommonSkill
 				{
 					String desc=found.description();
 					int x=desc.indexOf(" Embroidered on it are the words `");
-					int y=desc.lastIndexOf("`");
+					int y=desc.lastIndexOf('`');
 					if((x>=0)&&(y>x))
 						desc=desc.substring(0,x);
 					found.setDescription(desc+" Embroidered on it are the words `"+writing+"`.");

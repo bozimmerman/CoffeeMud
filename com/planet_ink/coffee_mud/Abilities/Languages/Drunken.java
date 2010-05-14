@@ -54,7 +54,7 @@ public class Drunken extends StdLanguage
 	protected Vector getSChoices(StringBuffer word)
 	{
 		Vector V=new Vector();
-		int x=word.toString().toUpperCase().indexOf("S");
+		int x=word.toString().toUpperCase().indexOf('S');
 		while(x>=0)
 		{
 			if((x>=word.length()-1)||(Character.toUpperCase(word.charAt(x+1))!='H'))

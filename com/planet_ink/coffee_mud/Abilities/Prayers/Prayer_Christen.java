@@ -84,7 +84,7 @@ public class Prayer_Christen extends Prayer
 			mob.tell("Christen "+target.name()+" what?");
 			return false;
 		}
-		if(name.indexOf(" ")>=0)
+		if(name.indexOf(' ')>=0)
 		{
 			mob.tell("The name may not have a space in it.");
 			return false;

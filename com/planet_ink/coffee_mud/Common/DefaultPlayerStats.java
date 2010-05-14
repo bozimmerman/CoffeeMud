@@ -288,13 +288,13 @@ public class DefaultPlayerStats implements PlayerStats
         str=CMStrings.replaceAll(str,"</INTROS>","");
 		str=CMStrings.replaceAll(str,"</FRIENDS>","");
 		str=CMStrings.replaceAll(str,"</IGNORED>","");
-		int x=str.indexOf(";");
+		int x=str.indexOf(';');
 		while(x>=0)
 		{
 			String fi=str.substring(0,x).trim();
 			if(fi.length()>0) h.add(fi);
 			str=str.substring(x+1);
-			x=str.indexOf(";");
+			x=str.indexOf(';');
 		}
 		if(str.trim().length()>0)
 			h.add(str.trim());
@@ -641,13 +641,13 @@ public class DefaultPlayerStats implements PlayerStats
 		securityGroups=new SVector<String>();
 		if((grps==null)||(grps.trim().length()==0))	
 			return;
-		int x=grps.indexOf(";");
+		int x=grps.indexOf(';');
 		while(x>=0)
 		{
 			String fi=grps.substring(0,x).trim();
 			if(fi.length()>0) securityGroups.addElement(fi.toUpperCase());
 			grps=grps.substring(x+1);
-			x=grps.indexOf(";");
+			x=grps.indexOf(';');
 		}
 		if(grps.trim().length()>0)
 			securityGroups.addElement(grps.trim().toUpperCase());

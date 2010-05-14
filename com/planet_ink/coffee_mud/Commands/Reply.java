@@ -49,7 +49,7 @@ public class Reply extends StdCommand
 			mob.tell("No one has told you anything yet!");
 			return false;
 		}
-		if((pstats.replyTo().Name().indexOf("@")<0)
+		if((pstats.replyTo().Name().indexOf('@')<0)
 		&&((CMLib.players().getPlayer(pstats.replyTo().Name())==null)
 			||(pstats.replyTo().isMonster())
 			||(!CMLib.flags().isInTheGame(pstats.replyTo(),true))))
@@ -67,7 +67,7 @@ public class Reply extends StdCommand
 		switch(replyType)
 		{
 		case PlayerStats.REPLY_SAY:
-			if((pstats.replyTo().Name().indexOf("@")<0)
+			if((pstats.replyTo().Name().indexOf('@')<0)
 			&&((mob.location()==null)||(!mob.location().isInhabitant(pstats.replyTo()))))
 			{
 				mob.tell(pstats.replyTo().Name()+" is no longer in the room.");

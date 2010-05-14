@@ -58,7 +58,7 @@ public class StdThinInstance extends StdThinArea
 	
 	protected String getStrippedRoomID(String roomID)
 	{
-		int x=roomID.indexOf("#");
+		int x=roomID.indexOf('#');
 		if(x<0) return null;
 		return roomID.substring(x);
 	}
@@ -72,7 +72,7 @@ public class StdThinInstance extends StdThinArea
 	
 	protected Area getParentArea()
 	{
-		int x=Name().indexOf("_");
+		int x=Name().indexOf('_');
 		if(x<0) return null;
 		if(!CMath.isNumber(Name().substring(0,x))) return null;
 		Area parentA = CMLib.map().getArea(Name().substring(x+1));

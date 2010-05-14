@@ -87,7 +87,7 @@ public class Follower extends ActiveTicker
 			&&(CMLib.dice().rollPercentage()<chance))
 			{
 				String directionWent=msg.othersMessage();
-				int x=directionWent.lastIndexOf(" ");
+				int x=directionWent.lastIndexOf(' ');
 				if(x>=0)
 				{
 					directionWent=directionWent.substring(x+1);

@@ -125,8 +125,8 @@ public class Reset extends StdCommand
 	{
 		if((I!=null)&&(I.description().trim().length()>0))
 		{
-			int x=I.description().trim().indexOf(" ");
-			int y=I.description().trim().lastIndexOf(" ");
+			int x=I.description().trim().indexOf(' ');
+			int y=I.description().trim().lastIndexOf(' ');
 			if((x<0)||((x>0)&&(y==x)))
 			{
 				String s=I.description().trim().toLowerCase();
@@ -381,7 +381,7 @@ public class Reset extends StdCommand
 	    		{
 	    			R=CMLib.map().getRoom(R);
 					if((R.roomID().length()>0)
-					&&(R.roomID().indexOf("#")>0)
+					&&(R.roomID().indexOf('#')>0)
 					&&(!R.roomID().startsWith(A.Name())))
 					{
 						String oldID=R.roomID();

@@ -76,17 +76,17 @@ public class Patroller extends ActiveTicker
 		
 		Vector V=new Vector();
 		String path=getParms().trim();
-		int x=path.indexOf(";");
+		int x=path.indexOf(';');
 		if(x<0) return V;
 		path=path.substring(x+1).trim();
-		x=path.indexOf(";");
+		x=path.indexOf(';');
 		String s=null;
 		while(x>=0)
 		{
 			s=path.substring(0,x).trim();
 			if(s.length()>0) V.addElement(s);
 			path=path.substring(x+1).trim();
-			x=path.indexOf(";");
+			x=path.indexOf(';');
 		}
 		if(path.length()>0)
 			V.addElement(path);

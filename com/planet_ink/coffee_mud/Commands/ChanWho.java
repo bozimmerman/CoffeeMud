@@ -48,7 +48,7 @@ public class ChanWho extends StdCommand
 			mob.tell("You must specify a channel name. Try CHANNELS for a list.");
 			return false;
 		}
-		int x=channel.indexOf("@");
+		int x=channel.indexOf('@');
 		String mud=null;
 		if(x>0)
 		{

@@ -565,7 +565,7 @@ public final class IMC2Driver extends Thread {
         {
             String key = "";
             String val = "";
-            int kpos = keys.indexOf("=");
+            int kpos = keys.indexOf('=');
             if(kpos > -1)
             {
                 key = keys.substring(0, kpos);
@@ -601,7 +601,7 @@ public final class IMC2Driver extends Thread {
                 else
                 {
                     if(!keys.equals(" ")) {
-                        int npos = keys.indexOf(" ");
+                        int npos = keys.indexOf(' ');
                         if (npos > -1) {
                             val = keys.substring(0, npos);
                             if(npos+2 > keys.length())
@@ -673,7 +673,7 @@ public final class IMC2Driver extends Thread {
     {
        String buf;
 
-       int pos = fullname.indexOf("@");
+       int pos = fullname.indexOf('@');
        if(pos > -1)
            buf = fullname.substring(pos+1);
         else
@@ -685,7 +685,7 @@ public final class IMC2Driver extends Thread {
     /* return d from a!b!c!d */
     final String imc_lastinpath(String path)
     {
-        int pos = path.lastIndexOf("!");
+        int pos = path.lastIndexOf('!');
         if(pos < 0)
             return path;
 
@@ -697,7 +697,7 @@ public final class IMC2Driver extends Thread {
     {
        String buf;
 
-       int pos = fullname.indexOf("@");
+       int pos = fullname.indexOf('@');
        if(pos > -1)
            buf = fullname.substring(0, pos);
         else
@@ -733,7 +733,7 @@ public final class IMC2Driver extends Thread {
         for (int i = 0; i < PACKET.IMC_MAX_KEYS; i++) {
             if (p.key[i] == "") {
                 p.key[i] = key;
-                if((value.indexOf(" ") > -1))
+                if((value.indexOf(' ') > -1))
                     value = "\""+value+"\"";
                 p.value[i] = value;
                 return;
@@ -1146,11 +1146,11 @@ public final class IMC2Driver extends Thread {
         rinfo.network = netname;
         rinfo.version = version;
 
-        int pos = path.indexOf("!");
+        int pos = path.indexOf('!');
         if(pos > -1)
         {
             String hubs = path.substring(pos+1, path.length());
-            int pos2 = hubs.indexOf("!");
+            int pos2 = hubs.indexOf('!');
             if(pos2 > -1)
                 rinfo.hub = hubs.substring(0, pos2);
             else
@@ -1240,7 +1240,7 @@ public final class IMC2Driver extends Thread {
         mud = imc_mudof(from);
 
         /* forged? */
-        if (chan.indexOf(":")<-1 || !mud.equalsIgnoreCase(imc_mudof(chan)))
+        if (chan.indexOf(':')<-1 || !mud.equalsIgnoreCase(imc_mudof(chan)))
             return;
 
         c = new IMC_CHANNEL();
@@ -1766,7 +1766,7 @@ public final class IMC2Driver extends Thread {
         imc_send(out);
 
         String chan = to;
-        int pos = to.indexOf(":");
+        int pos = to.indexOf(':');
         if (pos > -1)
             chan = to.substring(pos + 1, to.length());
 

@@ -141,13 +141,13 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
     
     private String expertMath(String s,int l)
     {
-        int x=s.indexOf("{");
+        int x=s.indexOf('{');
         while(x>=0)
         {
             int y=s.indexOf("}",x);
             if(y<0) break;
             s=s.substring(0,x)+CMath.parseIntExpression(s.substring(x+1,y))+s.substring(y+1);
-            x=s.indexOf("{");
+            x=s.indexOf('{');
         }
         return s;
     }
@@ -211,7 +211,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
         ExpertiseLibrary.ExpertiseDefinition def=null;
         boolean didOne=false;
         if(row.trim().startsWith("#")||row.trim().startsWith(";")||(row.trim().length()==0)) return null;
-        int x=row.indexOf("=");
+        int x=row.indexOf('=');
         if(x<0) return "Error: Invalid line! Not comment, whitespace, and does not contain an = sign!"; 
         if(row.trim().toUpperCase().startsWith("HELP_"))
         {
@@ -242,7 +242,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
                 if(def!=null)
                 {
                     WKID=def.name.toUpperCase().replace(' ','_');
-                    x=WKID.lastIndexOf("_");
+                    x=WKID.lastIndexOf('_');
                     if((x>=0)&&(CMath.isInteger(WKID.substring(x+1))||CMath.isRomanNumeral(WKID.substring(x+1))))
                     {
                         WKID=WKID.substring(0,x);

@@ -1008,11 +1008,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 return null;
             case '[':
                 {
-                    int x=str.substring(2).indexOf("]");
+                    int x=str.substring(2).indexOf(']');
                     if(x>=0)
                     {
                         String mid=str.substring(2).substring(0,x);
-                        int y=mid.indexOf(" ");
+                        int y=mid.indexOf(' ');
                         if(y>0)
                         {
                             int num=CMath.s_int(mid.substring(0,y).trim());
@@ -1025,11 +1025,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
             break;
             case '{':
                 {
-                    int x=str.substring(2).indexOf("}");
+                    int x=str.substring(2).indexOf('}');
                     if(x>=0)
                     {
                         String mid=str.substring(2).substring(0,x).trim();
-                        int y=mid.indexOf(" ");
+                        int y=mid.indexOf(' ');
                         if(y>0)
                         {
                             int num=CMath.s_int(mid.substring(0,y).trim());
@@ -1084,7 +1084,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             if(S.length()==0)
                 ret.append("? ");
             else
-            if(S.indexOf(" ")>=0)
+            if(S.indexOf(' ')>=0)
                 ret.append("\""+S+"\" ");
             else
                 ret.append(S+" ");
@@ -1102,7 +1102,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             Object[] tmp,
                             String varifyable)
     {
-        int t=varifyable.indexOf("$");
+        int t=varifyable.indexOf('$');
         if((monster!=null)&&(monster.location()!=null))
             lastKnownLocation=monster.location();
         if(lastKnownLocation==null) lastKnownLocation=source.location();
@@ -1310,11 +1310,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 break;
             case '<':
                 {
-                    int x=back.indexOf(">");
+                    int x=back.indexOf('>');
                     if(x>=0)
                     {
                         String mid=back.substring(0,x);
-                        int y=mid.indexOf(" ");
+                        int y=mid.indexOf(' ');
                         Environmental E=null;
                         String arg1="";
                         if(y>=0)
@@ -1332,11 +1332,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
             case '[':
                 {
                     middle="";
-                    int x=back.indexOf("]");
+                    int x=back.indexOf(']');
                     if(x>=0)
                     {
                         String mid=back.substring(0,x);
-                        int y=mid.indexOf(" ");
+                        int y=mid.indexOf(' ');
                         if(y>0)
                         {
                             int num=CMath.s_int(mid.substring(0,y).trim());
@@ -1351,11 +1351,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
             case '{':
                 {
                     middle="";
-                    int x=back.indexOf("}");
+                    int x=back.indexOf('}');
                     if(x>=0)
                     {
                         String mid=back.substring(0,x).trim();
-                        int y=mid.indexOf(" ");
+                        int y=mid.indexOf(' ');
                         if(y>0)
                         {
                             int num=CMath.s_int(mid.substring(0,y).trim());
@@ -1370,7 +1370,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             case '%':
                 {
                     middle="";
-                    int x=back.indexOf("%");
+                    int x=back.indexOf('%');
                     if(x>=0)
                     {
                         middle=functify(monster,source,target,monster,primaryItem,secondaryItem,msg,tmp,back.substring(0,x).trim());
@@ -1414,7 +1414,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 }
             }
             varifyable=front+middle+back;
-            t=varifyable.indexOf("$");
+            t=varifyable.indexOf('$');
         }
         return varifyable;
     }
@@ -4279,7 +4279,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         StringBuffer results = new StringBuffer("");
         while(evaluable.length()>0)
         {
-            int y=evaluable.indexOf("(");
+            int y=evaluable.indexOf('(');
             int z=evaluable.indexOf(")");
             String preFab=(y>=0)?uevaluable.substring(0,y).trim():"";
             Integer funcCode=(Integer)funcH.get(preFab);
@@ -7703,9 +7703,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     String tattoo=tattooName;
                     if((tattoo.length()>0)
                     &&(Character.isDigit(tattoo.charAt(0)))
-                    &&(tattoo.indexOf(" ")>0)
-                    &&(CMath.isNumber(tattoo.substring(0,tattoo.indexOf(" ")).trim())))
-                        tattoo=tattoo.substring(tattoo.indexOf(" ")+1).trim();
+                    &&(tattoo.indexOf(' ')>0)
+                    &&(CMath.isNumber(tattoo.substring(0,tattoo.indexOf(' ')).trim())))
+                        tattoo=tattoo.substring(tattoo.indexOf(' ')+1).trim();
                     if(themob.playerStats()!=null)
                     {
                         if(themob.playerStats().getTitles().contains(tattoo))
@@ -9623,8 +9623,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             str=str.substring(dex+2+channel.length()).trim();
                         else
                         {
-                            dex=str.indexOf("'");
-                            int edex=str.lastIndexOf("'");
+                            dex=str.indexOf('\'');
+                            int edex=str.lastIndexOf('\'');
                             if(edex>dex) str=str.substring(dex+1,edex);
                         }
                         str=" "+CMStrings.removeColors(str)+" ";
@@ -9715,7 +9715,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             I=(Integer)progH.get(ttrigger[0]);
         else
         {
-            int x=trigger.indexOf(" ");
+            int x=trigger.indexOf(' ');
             if(x<0)
                 I=(Integer)progH.get(trigger.toUpperCase().trim());
             else

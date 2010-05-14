@@ -40,7 +40,7 @@ public class StdCommand implements Command
     {
         if(ID==null){
             ID=this.getClass().getName();
-            int x=ID.lastIndexOf(".");
+            int x=ID.lastIndexOf('.');
             if(x>=0) ID=ID.substring(x+1);
         }
         return ID;

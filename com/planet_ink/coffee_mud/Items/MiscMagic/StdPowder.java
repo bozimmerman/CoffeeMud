@@ -103,7 +103,7 @@ public class StdPowder extends StdItem implements MagicDust {
 		String names=getSpellList();
 
 		Vector theSpells=new Vector();
-		int del=names.indexOf(";");
+		int del=names.indexOf(';');
 		while(del>=0)
 		{
 			String thisOne=names.substring(0,del);
@@ -117,7 +117,7 @@ public class StdPowder extends StdItem implements MagicDust {
 				}
 			}
 			names=names.substring(del+1);
-			del=names.indexOf(";");
+			del=names.indexOf(';');
 		}
 		if((names.length()>0)&&(!names.equals(";")))
 		{

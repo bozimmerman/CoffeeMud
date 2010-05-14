@@ -130,7 +130,7 @@ public class Spell_AlterSubstance extends Spell
 				oldName=CMStrings.replaceAll(oldName,oldMaterialName,material);
 				if(oldName.indexOf(material)<0)
 				{
-					int x=oldName.lastIndexOf(" ");
+					int x=oldName.lastIndexOf(' ');
 					if(x<0)
 						oldName=material+" "+oldName;
 					else

@@ -246,7 +246,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
 	private String collapsedName(Ability thisAbility)
 	{
-		int x=thisAbility.name().indexOf(" ");
+		int x=thisAbility.name().indexOf(' ');
 		if(x>=0)
 			return CMStrings.replaceAll(thisAbility.name()," ","");
 		return thisAbility.Name();
@@ -1333,7 +1333,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		if(srchStr.equals("ALL"))
 			allFlag=true;
 
-		int dot=srchStr.lastIndexOf(".");
+		int dot=srchStr.lastIndexOf('.');
 		int occurrance=0;
 		if(dot>0)
 		{
@@ -1343,7 +1343,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				srchStr=srchStr.substring(0,dot);
 			else
 			{
-				dot=srchStr.indexOf(".");
+				dot=srchStr.indexOf('.');
 				sub=srchStr.substring(0,dot);
 				occurrance=CMath.s_int(sub);
 				if(occurrance>0)

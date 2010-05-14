@@ -62,8 +62,8 @@ public class ItemGenerator extends ActiveTicker
         maintained=new Vector();
 		restrictedLocales=null;
 		String parms=newParms;
-		if(parms.indexOf(";")>=0)
-			parms=parms.substring(0,parms.indexOf(";"));
+		if(parms.indexOf(';')>=0)
+			parms=parms.substring(0,parms.indexOf(';'));
 		Vector<String> V=CMParms.parse(parms);
 		for(int v=0;v<V.size();v++)
 		{
@@ -203,7 +203,7 @@ public class ItemGenerator extends ActiveTicker
 	public synchronized GeneratedItemSet getItems(Tickable thang, String theseparms)
 	{
 		String mask=parms;
-		if(mask.indexOf(";")>=0) mask=mask.substring(parms.indexOf(";")+1);
+		if(mask.indexOf(';')>=0) mask=mask.substring(parms.indexOf(';')+1);
 		GeneratedItemSet items=(GeneratedItemSet)Resources.getResource("ITEMGENERATOR-"+mask.toUpperCase().trim());
 		if(items==null)
 		{

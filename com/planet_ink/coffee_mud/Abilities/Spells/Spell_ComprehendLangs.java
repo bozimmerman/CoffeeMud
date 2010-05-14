@@ -84,7 +84,7 @@ public class Spell_ComprehendLangs extends Spell
 					if(msg.amITarget(affected)&&(msg.targetMessage()!=null))
 						msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,msg.targetCode(),CMMsg.NO_EFFECT,CMStrings.substituteSayInMessage(msg.targetMessage(),str)+" (translated from "+msg.tool().name()+")"));
 					else
-					if((msg.othersMessage()!=null)&&(msg.othersMessage().indexOf("'")>0))
+					if((msg.othersMessage()!=null)&&(msg.othersMessage().indexOf('\'')>0))
 					{
 						String otherMes=msg.othersMessage();
 						if(msg.target()!=null)

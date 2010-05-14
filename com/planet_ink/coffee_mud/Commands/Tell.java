@@ -109,7 +109,7 @@ public class Tell extends StdCommand
 		for(int i=1;i<commands.size();i++)
 		{
 			String s=(String)commands.elementAt(i);
-			if(s.indexOf(" ")>=0)
+			if(s.indexOf(' ')>=0)
 				commands.setElementAt("\""+s+"\"",i);
 		}
 		String combinedCommands=CMParms.combine(commands,1);
@@ -121,10 +121,10 @@ public class Tell extends StdCommand
 		combinedCommands=CMProps.applyINIFilter(combinedCommands,CMProps.SYSTEM_SAYFILTER);
 		if(target==null)
 		{
-			if(targetName.indexOf("@")>=0)
+			if(targetName.indexOf('@')>=0)
 			{
-				String mudName=targetName.substring(targetName.indexOf("@")+1);
-				targetName=targetName.substring(0,targetName.indexOf("@"));
+				String mudName=targetName.substring(targetName.indexOf('@')+1);
+				targetName=targetName.substring(0,targetName.indexOf('@'));
 				if(CMLib.intermud().i3online()||CMLib.intermud().imc2online())
 					CMLib.intermud().i3tell(mob,targetName,mudName,combinedCommands);
 				else

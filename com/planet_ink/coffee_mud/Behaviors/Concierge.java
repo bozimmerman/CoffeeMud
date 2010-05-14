@@ -62,7 +62,7 @@ public class Concierge extends StdBehavior
 	    for(int v=0;v<V.size();v++)
 	    {
 	    	s=(String)V.elementAt(v);
-	    	x=s.indexOf("=");
+	    	x=s.indexOf('=');
 	    	if(x>0)
 	    	{
 	    		price=CMath.s_double(s.substring(x+1));

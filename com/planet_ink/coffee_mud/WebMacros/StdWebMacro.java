@@ -208,7 +208,7 @@ public class StdWebMacro implements WebMacro
                         s.replace(i,i+foundMacro.length()+2,foundMacro);
                     else
                     {
-                        int x=foundMacro.indexOf("?");
+                        int x=foundMacro.indexOf('?');
                         int len=foundMacro.length();
                         if(x>=0) foundMacro=foundMacro.substring(0,x);
                         WebMacro W=CMClass.getWebMacro(foundMacro.toUpperCase());
@@ -321,7 +321,7 @@ public class StdWebMacro implements WebMacro
 		{
 			while(parm.length()>0)
 			{
-				int x=parm.indexOf("&");
+				int x=parm.indexOf('&');
 				String req=null;
 				if(x>=0)
 				{
@@ -335,7 +335,7 @@ public class StdWebMacro implements WebMacro
 				}
 				if(req!=null)
 				{
-					x=req.indexOf("=");
+					x=req.indexOf('=');
 					if(x>=0)
 						requestParms.addElement(req.substring(0,x).trim().toUpperCase(),req.substring(x+1).trim());
 					else
@@ -443,7 +443,7 @@ public class StdWebMacro implements WebMacro
 		{
 			while(parm.length()>0)
 			{
-				int x=parm.indexOf("&");
+				int x=parm.indexOf('&');
 				String req=null;
 				if(x>=0)
 				{
@@ -457,7 +457,7 @@ public class StdWebMacro implements WebMacro
 				}
 				if(req!=null)
 				{
-					x=req.indexOf("=");
+					x=req.indexOf('=');
 					if(x>=0)
 						requestParms.put(req.substring(0,x).trim().toUpperCase(),req.substring(x+1).trim());
 					else

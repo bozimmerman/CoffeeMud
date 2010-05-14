@@ -47,7 +47,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public void unloadCurrencySet(String currency)
 	{
 	    String code=currency.toUpperCase().trim();
-	    int x=code.indexOf("=");
+	    int x=code.indexOf('=');
 	    if(x>=0) code=code.substring(0,x).trim();
 	    if((code.length()>0)&&(currencies.containsKey(code)))
 	    {
@@ -64,7 +64,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
     
 	protected MoneyDenomination[] createCurrencySet(Hashtable currencies, String currency)
 	{
-	    int x=currency.indexOf("=");
+	    int x=currency.indexOf('=');
 	    if(x<0) return null;
 	    String code=currency.substring(0,x).trim().toUpperCase();
 	    if(currencies.containsKey(code))
@@ -79,7 +79,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
         for(int v=0;v<CV.size();v++)
         {
             s=(String)CV.elementAt(v);
-            x=s.indexOf(" ");
+            x=s.indexOf(' ');
             if(x<0) continue;
             num=s.substring(0,x).trim();
             if(CMath.isDouble(num))
@@ -93,7 +93,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
             String shortName="";
             if(s.endsWith(")"))
             {
-                x=s.lastIndexOf(" ");
+                x=s.lastIndexOf(' ');
                 if((x>0)&&(x<s.length()-1)&&(s.charAt(x+1)=='('))
                 {
                     shortName=s.substring(x+2,s.length()-1).trim();
@@ -137,7 +137,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	{
 	    if(currency==null) return null;
 	    String code=currency.toUpperCase().trim();
-	    int x=code.indexOf("=");
+	    int x=code.indexOf('=');
 	    if(x<0)
 	    {
 	        if(currencies.containsKey(code))
@@ -1037,7 +1037,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 			        if(s.length()>0)
 			            break;
 		        }
-	        int x=s.indexOf("=");
+	        int x=s.indexOf('=');
 	        if(x<0) return s.toUpperCase().trim();
 	        return s.substring(0,x).toUpperCase().trim();
 	    }

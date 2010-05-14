@@ -317,9 +317,9 @@ public class IMudClient implements I3Interface
 				if(S!=null)
 				{
 					msg=S.makeChannelMsg(mob,0,channelName,V,true);
-					if((msg.target()!=null)&&(msg.target().name().indexOf("@")>=0))
+					if((msg.target()!=null)&&(msg.target().name().indexOf('@')>=0))
 					{
-						int x=msg.target().name().indexOf("@");
+						int x=msg.target().name().indexOf('@');
 						String mudName=msg.target().name().substring(x+1);
 						String tellName=msg.target().name().substring(0,x);
 						if((mudName==null)||(mudName.length()==0))
@@ -396,9 +396,9 @@ public class IMudClient implements I3Interface
 				if(S!=null)
 				{
 					msg=S.makeChannelMsg(mob,0,channelName,V,true);
-					if((msg.target()!=null)&&(msg.target().name().indexOf("@")>=0))
+					if((msg.target()!=null)&&(msg.target().name().indexOf('@')>=0))
 					{
-						int x=msg.target().name().indexOf("@");
+						int x=msg.target().name().indexOf('@');
 						String mudName=msg.target().name().substring(x+1);
 						String tellName=msg.target().name().substring(0,x);
 						if((mudName==null)||(mudName.length()==0))

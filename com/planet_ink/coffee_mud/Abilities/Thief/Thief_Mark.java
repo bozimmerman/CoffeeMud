@@ -89,7 +89,7 @@ public class Thief_Mark extends ThiefSkill
 		{
 			if(mark==null)
 			{
-				int x=text().indexOf("/");
+				int x=text().indexOf('/');
 				if(x<0) return super.tick(me,tickID);
 				MOB M=mob.location().fetchInhabitant(text().substring(0,x));
 				if(M!=null)

@@ -121,14 +121,14 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			String ID=CAST.ID().toUpperCase();
 			Vector theSpells=new Vector();
 			String names=CAST.text();
-			int del=names.indexOf(";");
+			int del=names.indexOf(';');
 			while(del>=0)
 			{
 				String thisOne=names.substring(0,del);
 				Ability A=CMClass.getAbility(thisOne);
 				if(A!=null)	theSpells.addElement(A);
 				names=names.substring(del+1);
-				del=names.indexOf(";");
+				del=names.indexOf(';');
 			}
 			Ability A=CMClass.getAbility(names);
 			if(A!=null) theSpells.addElement(A);
@@ -782,8 +782,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	public void toneDownAdjuster(Item I, Ability ADJ)
 	{
 		String s=ADJ.text();
-		int plusminus=s.indexOf("+");
-		int minus=s.indexOf("-");
+		int plusminus=s.indexOf('+');
+		int minus=s.indexOf('-');
 		if((minus>=0)&&((plusminus<0)||(minus<plusminus)))
 			plusminus=minus;
 		while(plusminus>=0)
@@ -989,14 +989,14 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			String ID=CAST.ID().toUpperCase();
 			Vector theSpells=new Vector();
 			String names=CAST.text();
-			int del=names.indexOf(";");
+			int del=names.indexOf(';');
 			while(del>=0)
 			{
 				String thisOne=names.substring(0,del);
 				Ability A=CMClass.getAbility(thisOne);
 				if(A!=null)	theSpells.addElement(A);
 				names=names.substring(del+1);
-				del=names.indexOf(";");
+				del=names.indexOf(';');
 			}
 			Ability A=CMClass.getAbility(names);
 			if(A!=null) theSpells.addElement(A);

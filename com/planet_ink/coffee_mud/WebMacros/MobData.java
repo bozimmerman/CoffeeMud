@@ -676,7 +676,7 @@ public class MobData extends StdWebMacro
                             theclasses.addElement(O);
 			        }
 			        else
-					if(MATCHING.indexOf("@")>0)
+					if(MATCHING.indexOf('@')>0)
 					{
 						Environmental O=null;
 						for(int m=0;m<RoomData.mobs.size();m++)

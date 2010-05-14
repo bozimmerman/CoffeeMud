@@ -147,8 +147,8 @@ public class Qualify  extends Skills
 				if(Ability.DOMAIN_DESCS[i].startsWith(qual.toUpperCase()))
 				{ domain=i<<5; break;}
 				else
-				if((Ability.DOMAIN_DESCS[i].indexOf("/")>=0)
-				&&(Ability.DOMAIN_DESCS[i].substring(Ability.DOMAIN_DESCS[i].indexOf("/")+1).startsWith(qual.toUpperCase())))
+				if((Ability.DOMAIN_DESCS[i].indexOf('/')>=0)
+				&&(Ability.DOMAIN_DESCS[i].substring(Ability.DOMAIN_DESCS[i].indexOf('/')+1).startsWith(qual.toUpperCase())))
 				{ domain=i<<5; break;}
 			if(domain>0)
 			{

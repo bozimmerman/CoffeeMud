@@ -44,7 +44,7 @@ public class Spell_StoreSpell extends Spell
             if(spellName.length()==0)
             {
                 spellName="unknown";
-                int x=text().indexOf("/");
+                int x=text().indexOf('/');
                 Ability A=null;
                 if(x>0)
                 {
@@ -82,10 +82,10 @@ public class Spell_StoreSpell extends Spell
 			if(x>=0)
 			{
 				message=message.substring(x+name.length());
-				int y=message.indexOf("'");
+				int y=message.indexOf('\'');
 				if(y>=0) message=message.substring(0,y);
 				message=message.trim();
-				x=text().indexOf("/");
+				x=text().indexOf('/');
 				int charges=0;
 				Ability A=null;
 				if(x>0){
@@ -194,7 +194,7 @@ public class Spell_StoreSpell extends Spell
 			A.setMiscText(wandThis.ID()+"/0");
 		}
 		int charges=0;
-		int x=A.text().indexOf("/");
+		int x=A.text().indexOf('/');
 		if(x>=0) charges=CMath.s_int(A.text().substring(x+1));
 		overridemana=-1;
 		int mana=usageCost(mob,true)[0]+wandThis.usageCost(mob,true)[0];

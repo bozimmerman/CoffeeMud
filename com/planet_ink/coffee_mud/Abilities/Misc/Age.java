@@ -239,7 +239,7 @@ public class Age extends StdAbility
 				Room R=CMLib.map().roomLocation(affected);
 				if(R!=null)
 				{
-					if(babe.Name().indexOf(" ")>0)
+					if(babe.Name().indexOf(' ')>0)
 					{
 						babe.setName(CMStrings.replaceAll(babe.Name()," baby "," young "));
 						babe.setDisplayText(CMStrings.replaceAll(babe.displayText()," baby "," young "));
@@ -281,7 +281,7 @@ public class Age extends StdAbility
 
 				Room R=CMLib.map().roomLocation(affected);
 				if((R!=null)
-				&&(affected.Name().indexOf(" ")<0)
+				&&(affected.Name().indexOf(' ')<0)
 				&&(!CMLib.players().playerExists(affected.Name())))
 				{
 					MOB liege=null;
@@ -425,7 +425,7 @@ public class Age extends StdAbility
 					if(babe.getLiegeID().length()>0)
 						liege=CMLib.players().getLoadPlayer(babe.getLiegeID());
 					if(liege==null) liege=babe.amFollowing();
-					if(babe.Name().indexOf(" ")>0)
+					if(babe.Name().indexOf(' ')>0)
 					{
 						babe.setName(CMStrings.replaceAll(babe.Name(),"young boy ","male "));
 						babe.setName(CMStrings.replaceAll(babe.Name(),"baby boy ","male "));

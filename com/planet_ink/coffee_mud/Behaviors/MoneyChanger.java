@@ -53,7 +53,7 @@ public class MoneyChanger extends StdBehavior
 	    rates.clear();
 	    cut=0.05;
 	    newParm=newParm.toUpperCase();
-		int x=newParm.indexOf("=");
+		int x=newParm.indexOf('=');
 		while(x>0)
 		{
 		    int lastSp=newParm.lastIndexOf(" ",x);
@@ -77,7 +77,7 @@ public class MoneyChanger extends StdBehavior
 						&&((Character.isDigit(newParm.charAt(x)))||(newParm.charAt(x)=='.')))
 							x++;
 						double val=CMath.s_double(newParm.substring(0,x));
-						if(newParm.substring(0,x).indexOf(".")<0)
+						if(newParm.substring(0,x).indexOf('.')<0)
 							val= (double)CMath.s_long(newParm.substring(0,x));
 						if(x<newParm.length())
 							newParm=newParm.substring(x+1);
@@ -93,7 +93,7 @@ public class MoneyChanger extends StdBehavior
 				}
 
 			}
-			x=newParm.indexOf("=");
+			x=newParm.indexOf('=');
 		}
 	}
 

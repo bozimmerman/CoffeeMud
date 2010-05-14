@@ -84,7 +84,7 @@ public class Export extends StdCommand
 		else
 		{
 			if(S!=null) mob.tell("Writing file...");
-			if(fileName.indexOf(".")<0)
+			if(fileName.indexOf('.')<0)
 				fileName=fileName+".cmare";
             new CMFile(fileName,mob,false).saveText(xml);
             if(S!=null) mob.tell("File '"+fileName+"' written.");

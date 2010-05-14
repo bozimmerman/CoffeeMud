@@ -136,7 +136,7 @@ public class Create extends StdCommand
 		String itemID=CMParms.combine(commands,2);
 		Environmental dest=mob.location();
 		Container setContainer=null;
-		int x=itemID.indexOf("@");
+		int x=itemID.indexOf('@');
 		if(x>0)
 		{
 			String rest=itemID.substring(x+1).trim();
@@ -447,7 +447,7 @@ public class Create extends StdCommand
 			GR=R.makeGenRace();
 			raceID=GR.ID();
 		}
-		if(raceID.indexOf(" ")>=0)
+		if(raceID.indexOf(' ')>=0)
 		{
 			mob.tell("'"+raceID+"' is an invalid race id, because it contains a space.");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
@@ -566,7 +566,7 @@ public class Create extends StdCommand
     
     public void expertises(MOB mob, Vector commands)
     {
-        if((commands.size()<3)||(CMParms.combine(commands,1).indexOf("=")<0))
+        if((commands.size()<3)||(CMParms.combine(commands,1).indexOf('=')<0))
         {
             mob.tell("You have failed to specify the proper fields.\n\rFormat: CREATE EXPERTISE [EXPERTISE ID]=[PARAMETERS] as follows: \n\r");
             StringBuffer buf=new CMFile(Resources.makeFileResourceName("skills/expertises.txt"),null,true).text();
@@ -584,8 +584,8 @@ public class Create extends StdCommand
             return;
         }
         String parms=CMParms.combineWithQuotes(commands,2);
-        String skillID=parms.substring(0,parms.indexOf("="));
-        if(skillID.indexOf(" ")>=0)
+        String skillID=parms.substring(0,parms.indexOf('='));
+        if(skillID.indexOf(' ')>=0)
         {
             mob.tell("Spaces are not allowed in expertise codes.");
             mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
@@ -615,7 +615,7 @@ public class Create extends StdCommand
     
     public void titles(MOB mob, Vector commands)
     {
-        if((commands.size()<3)||(CMParms.combine(commands,1).indexOf("=")<0))
+        if((commands.size()<3)||(CMParms.combine(commands,1).indexOf('=')<0))
         {
             mob.tell("You have failed to specify the proper fields.\n\rFormat: CREATE TITLE [TITLE]=[ZAPPER MASK] as follows: \n\r");
             StringBuffer buf=new CMFile(Resources.makeFileResourceName("titles.txt"),null,true).text();
@@ -633,7 +633,7 @@ public class Create extends StdCommand
             return;
         }
         String parms=CMParms.combineWithQuotes(commands,2);
-        String skillID=parms.substring(0,parms.indexOf("="));
+        String skillID=parms.substring(0,parms.indexOf('='));
         if(CMLib.titles().isExistingAutoTitle(skillID))
         {
             mob.tell("'"+skillID+"' already exists, you'll need to destroy it first.");
@@ -671,7 +671,7 @@ public class Create extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return;
 		}
-		if(classD.indexOf(" ")>=0)
+		if(classD.indexOf(' ')>=0)
 		{
 			mob.tell("'"+classD+"' is an invalid  id, because it contains a space.");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
@@ -714,7 +714,7 @@ public class Create extends StdCommand
             CR=C.makeGenCharClass();
             classD=CR.ID();
         }
-		if(classD.indexOf(" ")>=0)
+		if(classD.indexOf(' ')>=0)
 		{
 			mob.tell("'"+classD+"' is an invalid class id, because it contains a space.");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
@@ -878,12 +878,12 @@ public class Create extends StdCommand
         {
             if(!CMSecurity.isAllowed(mob,mob.location(),"CMDFACTIONS")) return errorOut(mob);
             mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
-            if((commands.size()<3)||(CMParms.combine(commands,2).indexOf(".")<0))
+            if((commands.size()<3)||(CMParms.combine(commands,2).indexOf('.')<0))
                 mob.tell("Create which faction?  You must give a filename with an extension.");
             else
             {
                 String name=CMParms.combine(commands,2);
-                if((name.indexOf(" ")>=0)||(name.length()==0))
+                if((name.indexOf(' ')>=0)||(name.length()==0))
                 {
                 	mob.tell("That name is not allowed. No spaces!");
                 	return false;

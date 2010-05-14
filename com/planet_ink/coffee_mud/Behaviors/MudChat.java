@@ -145,7 +145,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 	{
 		ChattyGroup[] rsc=null;
 		String filename="chat.dat";
-		int x=parms.indexOf("=");
+		int x=parms.indexOf('=');
 		if(x>0)	filename=parms.substring(0,x);
 		rsc=(ChattyGroup[])Resources.getResource("MUDCHAT GROUPS-"+filename.toLowerCase());
 		if(rsc!=null) return rsc;
@@ -161,7 +161,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 	
 	public List<String> externalFiles()
 	{
-		int x=parms.indexOf("=");
+		int x=parms.indexOf('=');
 		if(x>0)
 		{
 		    Vector xmlfiles=new Vector();
@@ -323,7 +323,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		ChattyGroup matchedCG=null;
         if(getParms().length()>0)
         {
-            int x=getParms().indexOf("=");
+            int x=getParms().indexOf('=');
             if(x<0)
             	matchedCG=matchChatGroup(forMe,getParms(),chatGroups);
             else

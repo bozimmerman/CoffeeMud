@@ -601,8 +601,8 @@ public class MXP
     {
         if(!s.startsWith("<"))
             return "";
-        int x=s.indexOf(" ");
-        if(x<0)x=s.indexOf(">");
+        int x=s.indexOf(' ');
+        if(x<0)x=s.indexOf('>');
         if(x<0) return "";
         return s.substring(1,x).toUpperCase().trim();
     }
@@ -626,7 +626,7 @@ public class MXP
                 String v=null;
                 while(style.length()>0)
                 {
-                    int x=style.indexOf(";");
+                    int x=style.indexOf(';');
                     if(x>=0)
                     {
                         s=style.substring(0,x).trim();
@@ -637,7 +637,7 @@ public class MXP
                         s=style.trim();
                         style="";
                     }
-                    int y=s.indexOf(":");
+                    int y=s.indexOf(':');
                     if(y>=0)
                     {
                         v=s.substring(y+1);
@@ -899,7 +899,7 @@ public class MXP
                 if(request.endsWith("\"")) request=request.substring(0,request.length()-1).trim();
                 if(request.startsWith("\'")) request=request.substring(1).trim();
                 if(request.endsWith("\'")) request=request.substring(0,request.length()-1).trim();
-                int x=request.indexOf(".");
+                int x=request.indexOf('.');
                 String tag=request;
                 String parm="";
                 if(x>0)

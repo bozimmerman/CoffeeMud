@@ -209,10 +209,10 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		for(int v=0;v<preReqSkillsList.size();v++)
 		{
 			String s=(String)preReqSkillsList.get(v);
-			int x=s.indexOf("(");
+			int x=s.indexOf('(');
 			if((x>=0)&&(s.endsWith(")")))
 				s=s.substring(0,x);
-			if((s.indexOf("*")>=0)||(s.indexOf(",")>=0))
+			if((s.indexOf('*')>=0)||(s.indexOf(',')>=0))
 			{
 				String ID2=ID;
 				while(allows.contains("*"+ID2))
@@ -232,7 +232,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			for(int v=0;v<preReqsOf.size();v++)
 			{
 				String s=(String)preReqsOf.elementAt(v);
-				if((s.indexOf("*")>=0)||(s.indexOf(",")>=0))
+				if((s.indexOf('*')>=0)||(s.indexOf(',')>=0))
 				{
 					String ID2=ID;
 					while(allows.contains("*"+ID2))
@@ -313,7 +313,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			if(KEYID.startsWith("*"))
 			{
 				abilityID=(String)allows.get(KEYID);
-				if(abilityID.startsWith("*")||abilityID.endsWith("*")||(abilityID.indexOf(",")>0))
+				if(abilityID.startsWith("*")||abilityID.endsWith("*")||(abilityID.indexOf(',')>0))
 				{
 					Vector orset=getOrSet(ableID,abilityID);
 					if(orset.size()!=0)
@@ -377,7 +377,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			{
 				String s=(String)preReqSkillsList.get(v);
 				int prof=0;
-				int x=s.indexOf("(");
+				int x=s.indexOf('(');
 				if((x>=0)&&(s.endsWith(")")))
 				{
 					prof=CMath.s_int(s.substring(x+1,s.length()-1));
@@ -649,7 +649,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		for(int v=0;v<rawPreReqs.size();v++)
 		{
 			String abilityID=(String)rawPreReqs.elementAt(v,1);
-			if(abilityID.startsWith("*")||abilityID.endsWith("*")||(abilityID.indexOf(",")>0))
+			if(abilityID.startsWith("*")||abilityID.endsWith("*")||(abilityID.indexOf(',')>0))
 			{
 				Vector orset=getOrSet(A.ID(),abilityID);
 				if(orset.size()!=0)
@@ -1569,7 +1569,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 
 	public String addAbilityComponent(String s, Hashtable<String, Vector<AbilityComponent>> H)
 	{
-		int x=s.indexOf("=");
+		int x=s.indexOf('=');
 		if(x<0) return "Malformed component line (code 0): "+s;
 		String id=s.substring(0,x).toUpperCase().trim();
 		String parms=s.substring(x+1);
@@ -1613,7 +1613,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			parms=parms.substring(x+1).trim();
 
 			build.setLocation(AbilityComponent.CompLocation.INVENTORY);
-			x=parmS.indexOf(":");
+			x=parmS.indexOf(':');
 			if(x<0)
 			{
 				error="Malformed component line (code 0-1): "+parmS; 
@@ -1633,7 +1633,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			parmS=parmS.substring(x+1);
 
 			build.setConsumed(true);
-			x=parmS.indexOf(":");
+			x=parmS.indexOf(':');
 			if(x<0){error="Malformed component line (code 1-1): "+parmS; continue;}
 			if(parmS.substring(0,x).equalsIgnoreCase("kept")) 
 				build.setConsumed(false);
@@ -1646,7 +1646,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			parmS=parmS.substring(x+1);
 
 			build.setAmount(1);
-			x=parmS.indexOf(":");
+			x=parmS.indexOf(':');
 			if(x<0){error="Malformed component line (code 2-1): "+parmS; continue;}
 			if((x>0)&&(!CMath.isInteger(parmS.substring(0,x))))
 			{
@@ -1658,7 +1658,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			parmS=parmS.substring(x+1);
 
 			build.setType(AbilityComponent.CompType.STRING, "");
-			x=parmS.indexOf(":");
+			x=parmS.indexOf(':');
 			if(x<=0){error="Malformed component line (code 3-1): "+parmS; continue;}
 			rsc=parmS.substring(0,x);
 			depth=CMLib.materials().getResourceCode(rsc,false);

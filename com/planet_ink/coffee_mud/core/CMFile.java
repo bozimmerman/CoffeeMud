@@ -1147,7 +1147,7 @@ public class CMFile
                 if(filename.startsWith(".."))
                 {
                     filename=filename.substring(2);
-                    int x=currentPath.lastIndexOf("/");
+                    int x=currentPath.lastIndexOf('/');
                     if(x>=0)
                         currentPath=currentPath.substring(0,x);
                     else

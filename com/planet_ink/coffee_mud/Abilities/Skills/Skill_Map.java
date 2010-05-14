@@ -171,7 +171,7 @@ public class Skill_Map extends StdSkill
 						((com.planet_ink.coffee_mud.Items.interfaces.RoomMap)map).doMapArea();
 				}
 				String rooms=item.readableText();
-				int x=rooms.indexOf(";");
+				int x=rooms.indexOf(';');
 				while(x>=0)
 				{
 					String roomID=rooms.substring(0,x);
@@ -180,7 +180,7 @@ public class Skill_Map extends StdSkill
 						if(!roomsMappedAlready.contains(room))
 							roomsMappedAlready.addElement(room);
 					rooms=rooms.substring(x+1);
-					x=rooms.indexOf(";");
+					x=rooms.indexOf(';');
 				}
 				beneficialAffect(mob,mob,asLevel,0);
 			}

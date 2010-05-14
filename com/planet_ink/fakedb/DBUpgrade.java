@@ -84,11 +84,11 @@ public class DBUpgrade
 							}
 							else
 							{
-								int x=line.indexOf(" ");
+								int x=line.indexOf(' ');
 								if(x<0)	throw new Exception("BAH!");
 								String name=line.substring(0,x).trim();
 								line=line.substring(x+1).trim();
-								x=line.indexOf(" ");
+								x=line.indexOf(' ');
 								if(x>0)	line=line.substring(0,x).trim();
 								if(line.toUpperCase().startsWith("INT")
 								||line.toUpperCase().startsWith("NUMB")
@@ -165,11 +165,11 @@ public class DBUpgrade
 							}
 							else
 							{
-								int x=line.indexOf(" ");
+								int x=line.indexOf(' ');
 								if(x<0)	throw new Exception("BAH!");
 								String name=line.substring(0,x).trim();
 								line=line.substring(x+1).trim();
-								x=line.indexOf(" ");
+								x=line.indexOf(' ');
 								if(x>0)	line=line.substring(0,x).trim();
 								if(line.toUpperCase().startsWith("INT")
 								||line.toUpperCase().startsWith("NUMB")

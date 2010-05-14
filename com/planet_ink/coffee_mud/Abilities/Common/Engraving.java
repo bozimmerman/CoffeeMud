@@ -64,7 +64,7 @@ public class Engraving extends CommonSkill
 				{
 					String desc=found.description();
 					int x=desc.indexOf(" Engraved on it are the words `");
-					int y=desc.lastIndexOf("`");
+					int y=desc.lastIndexOf('`');
 					if((x>=0)&&(y>x))
 						desc=desc.substring(0,x);
 					found.setDescription(desc+" Engraved on it are the words `"+writing+"`.");

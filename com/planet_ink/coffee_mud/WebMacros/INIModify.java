@@ -107,8 +107,8 @@ public class INIModify extends StdWebMacro
 			{
 				String s=((String)page.get(p)).trim();
 				if(s.startsWith("!")||s.startsWith("#")) continue;
-				int x=s.indexOf("=");
-				if(x<0) x=s.indexOf(":");
+				int x=s.indexOf('=');
+				if(x<0) x=s.indexOf(':');
 				if(x<0) continue;
 				String thisKey=s.substring(0,x).trim().toUpperCase();
 				if(thisKey.equals(key))
@@ -131,8 +131,8 @@ public class INIModify extends StdWebMacro
 			{
 				String s=((String)page.get(p)).trim();
 				if(s.startsWith("!")||s.startsWith("#")) continue;
-				int x=s.indexOf("=");
-				if(x<0) x=s.indexOf(":");
+				int x=s.indexOf('=');
+				if(x<0) x=s.indexOf(':');
 				if(x<0) continue;
 				String thisKey=s.substring(0,x).trim().toUpperCase();
                 

@@ -52,9 +52,9 @@ public class ColorSet extends StdCommand
 					buf.append("^"+ColorLibrary.COLOR_ALLEXTENDEDCOLORCODELETTERS[ii]+CMStrings.capitalizeAndLower(ColorLibrary.COLOR_ALLCOLORNAMES[ii]));
 					break;
 				}
-		    if(what.indexOf("|")>0)
+		    if(what.indexOf('|')>0)
 		    {
-		        what=what.substring(what.indexOf("|")+1);
+		        what=what.substring(what.indexOf('|')+1);
 		        buf.append("^N=background, foreground=");
 		    }
 		    else

@@ -104,7 +104,7 @@ public class StdCoins extends StdItem implements Coins
 	public void setMiscText(String text)
 	{
 	    super.setMiscText(text);
-	    int x=text.indexOf("/");
+	    int x=text.indexOf('/');
 	    if(x>=0)
 	    {
 	        currency=text.substring(0,x);

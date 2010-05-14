@@ -255,11 +255,11 @@ public class Import extends StdCommand
 		// find area line first
 		String areaName="";
 		String firstLine=nextLine(V);
-		if((firstLine.indexOf("~")>=0)&&(firstLine.indexOf("}")>=0))
+		if((firstLine.indexOf('~')>=0)&&(firstLine.indexOf('}')>=0))
 		{
 			String areaLine=firstLine;
 			areaLine=areaLine.substring(0,areaLine.length()-1);
-			int x=areaLine.indexOf("}");
+			int x=areaLine.indexOf('}');
 			areaLine=areaLine.substring(x+1).trim();
 			x=areaLine.indexOf("  ");
 			if(x>0)
@@ -267,7 +267,7 @@ public class Import extends StdCommand
 			areaName=areaLine;
 		}
 		else
-		if((firstLine.indexOf("~")>=0)
+		if((firstLine.indexOf('~')>=0)
 		&&(firstLine.startsWith("#AREA "))
 		&&(firstLine.toUpperCase().indexOf(".ARE")<0))
 		{
@@ -281,13 +281,13 @@ public class Import extends StdCommand
 		if(V.size()>1)
 		{
 			String lineAfter=(String)V.get(1);
-			if(lineAfter.indexOf("~")<0)
+			if(lineAfter.indexOf('~')<0)
 				return "";
 			lineAfter=lineAfter.substring(0,lineAfter.length()-1);
 			if((lineAfter.indexOf(".are")>=0)&&(V.size()>2)&&(lineAfter.indexOf("@@")<0))
 			{
 				lineAfter=(String)V.get(2);
-				if(lineAfter.indexOf("~")<0)
+				if(lineAfter.indexOf('~')<0)
 					return "";
 				lineAfter=lineAfter.substring(0,lineAfter.length()-1);
 				areaName=lineAfter.trim();
@@ -316,8 +316,8 @@ public class Import extends StdCommand
 		}
 
 		if((areaName.indexOf(""+((char)27))>=0)
-		||(areaName.indexOf("&")>=0)
-		||(areaName.indexOf("{")>=0)
+		||(areaName.indexOf('&')>=0)
+		||(areaName.indexOf('{')>=0)
 		||(areaName.indexOf("@@")>=0))
 		{
 			for(int s1=0;s1<colors.length;s1++)
@@ -337,8 +337,8 @@ public class Import extends StdCommand
 				String nextLink="";
 				if(r<(reLinkTable.size()-1))
 					nextLink=(String)reLinkTable.elementAt(r+1);
-				int s1=link.indexOf("/");
-				int s2=link.lastIndexOf("/");
+				int s1=link.indexOf('/');
+				int s2=link.lastIndexOf('/');
 				String sourceRoomID=link.substring(0,s1);
 	    		synchronized(("SYNC"+sourceRoomID).intern())
 	    		{
@@ -434,7 +434,7 @@ public class Import extends StdCommand
 			}
 			else
 			if((s.toUpperCase().startsWith("NAME     "))
-			&&(s.indexOf("{")>0))
+			&&(s.indexOf('{')>0))
 			{
 				s=s.substring(5).trim();
 				if(s.endsWith("~"))
@@ -447,16 +447,16 @@ public class Import extends StdCommand
 			}
 			else
 			if((s.toUpperCase().startsWith("#AREA "))
-			&&(s.indexOf("{")>0))
+			&&(s.indexOf('{')>0))
 			{
 				s=s.substring(6).trim();
 				if(s.trim().startsWith("{"))
 				{
-					int x=s.trim().indexOf("}");
+					int x=s.trim().indexOf('}');
 					if(x>0) s=s.substring(x+1).trim();
 					if(s.endsWith("~"))
 						s=s.substring(0,s.length()-1).trim();
-					x=s.indexOf(" ");
+					x=s.indexOf(' ');
 					if((x>1)
 					&&(s.substring(0,x).trim().toUpperCase().equals("THE"))
 					&&(CMParms.parse(s).size()>0))
@@ -487,7 +487,7 @@ public class Import extends StdCommand
 					continue;
 				if(s.trim().startsWith("{"))
 				{
-					int x=s.trim().indexOf("}");
+					int x=s.trim().indexOf('}');
 					if(x>0) s=s.substring(x+1).trim();
 				}
 				else
@@ -497,7 +497,7 @@ public class Import extends StdCommand
 					s=(String)CMParms.parse(s).elementAt(2);
 				if(s.endsWith("~"))
 					s=s.substring(0,s.length()-1).trim();
-				int x=s.indexOf(" ");
+				int x=s.indexOf(' ');
 				if(x>1) s=s.substring(0,x).trim();
 				if((s.length()==0)||(s.toUpperCase().equalsIgnoreCase("NONE")))
 					continue;
@@ -506,11 +506,11 @@ public class Import extends StdCommand
 			else
 			if(s.trim().startsWith("{"))
 			{
-				int x=s.trim().indexOf("}");
+				int x=s.trim().indexOf('}');
 				if(x>0) s=s.substring(x+1).trim();
 				if(s.endsWith("~"))
 					s=s.substring(0,s.length()-1).trim();
-				x=s.indexOf(" ");
+				x=s.indexOf(' ');
 				if((x>1)
 				&&(s.substring(0,x).trim().toUpperCase().equals("THE"))
 				&&(CMParms.parse(s).size()>0))
@@ -525,11 +525,11 @@ public class Import extends StdCommand
 			else
 			if(s.trim().startsWith("["))
 			{
-				int x=s.trim().indexOf("]");
+				int x=s.trim().indexOf(']');
 				if(x>0) s=s.substring(x+1).trim();
 				if(s.endsWith("~"))
 					s=s.substring(0,s.length()-1).trim();
-				x=s.indexOf(" ");
+				x=s.indexOf(' ');
 				if((x>1)
 				&&(s.substring(0,x).trim().toUpperCase().equals("THE"))
 				&&(CMParms.parse(s).size()>0))
@@ -699,7 +699,7 @@ public class Import extends StdCommand
 		String s=CMParms.getCleanBit(str,which);
 		if(s.length()==0)
 			return 0;
-		int x=s.indexOf("|");
+		int x=s.indexOf('|');
 		if((x<0)&&(s.length()>0)&&(CMath.s_int(s)==0))
 		{
 			boolean otherStyle=true;
@@ -726,7 +726,7 @@ public class Import extends StdCommand
 		{
 			num=num|CMath.s_int(s.substring(0,x));
 			s=s.substring(x+1);
-			x=s.indexOf("|");
+			x=s.indexOf('|');
 		}
 
 		return (num|CMath.s_int(s));
@@ -745,7 +745,7 @@ public class Import extends StdCommand
 	{
 		if(V.size()==0) return "";
 		String s=eatLine(V);
-		while(s.indexOf("~")<0)
+		while(s.indexOf('~')<0)
 		{
 			String l=eatLine(V);
 			if(l.startsWith(" "))
@@ -761,12 +761,12 @@ public class Import extends StdCommand
 		if(s.endsWith("~"))
 			s=s.substring(0,s.length()-1);
 
-		if(s.indexOf("^")>=0)	s=CMStrings.replaceAll(s,"^","^^");
+		if(s.indexOf('^')>=0)	s=CMStrings.replaceAll(s,"^","^^");
 
 		if((s.indexOf(""+((char)27))>=0)
-		||(s.indexOf("&")>=0)
-		||(s.indexOf("{")>=0)
-		||(s.indexOf("_")>=0)
+		||(s.indexOf('&')>=0)
+		||(s.indexOf('{')>=0)
+		||(s.indexOf('_')>=0)
 		||(s.indexOf("@@")>=0))
 		{
 			for(int s1=0;s1<colors.length;s1++)
@@ -1658,7 +1658,7 @@ public class Import extends StdCommand
 				||(s.startsWith("AUTHOR")))
 				{
 					wasUsingThisOne=null;
-					if((s.indexOf("~")>=0)
+					if((s.indexOf('~')>=0)
 					&&(s.startsWith("AREA ")||s.startsWith("AUTHOR ")))
 						okString=true;
 					useThisOne=areaData;
@@ -1932,17 +1932,17 @@ public class Import extends StdCommand
 
 	public static int getDRoll(String str)
 	{
-		int i=str.indexOf("d");
+		int i=str.indexOf('d');
 		if(i<0) return 11;
 		int roll=CMath.s_int(str.substring(0,i).trim());
 		str=str.substring(i+1).trim();
 
-		i=str.indexOf("+");
+		i=str.indexOf('+');
 		int dice=0;
 		int plus=0;
 		if(i<0)
 		{
-			i=str.indexOf("-");
+			i=str.indexOf('-');
 			if(i<0)
 				dice=CMath.s_int(str.trim());
 			else
@@ -2507,7 +2507,7 @@ public class Import extends StdCommand
 					{
 						scriptStuff+=s.substring(1).trim()+";";
 						s=nextLine(objV);
-						while(s.indexOf("~")<0)
+						while(s.indexOf('~')<0)
 						{
 							scriptStuff+=s.trim()+";";
 							eatLine(objV);
@@ -2553,7 +2553,7 @@ public class Import extends StdCommand
 				{
 					s="M "+s.substring(1);
 					rest="";
-					while(s.indexOf("~")<=0)
+					while(s.indexOf('~')<=0)
 					{
 						mp++;
 						if(mp<mobProgData.size())
@@ -2626,7 +2626,7 @@ public class Import extends StdCommand
 											s=eatLineSquiggle(V).substring(1).trim();
 											scriptStuff+=s+";";
 											s=nextLine(V);
-											while(s.indexOf("~")<0)
+											while(s.indexOf('~')<0)
 											{
 												scriptStuff+=s+";";
 												eatLine(V);
@@ -2989,7 +2989,7 @@ public class Import extends StdCommand
 			String objectName=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
 			String objectDisplay=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
 			String objectDescription="";
-			if((nextLine(objV).indexOf("~")>=0)||((nextLine(objV).length()>0)&&(!Character.isDigit(nextLine(objV).charAt(0)))))
+			if((nextLine(objV).indexOf('~')>=0)||((nextLine(objV).length()>0)&&(!Character.isDigit(nextLine(objV).charAt(0)))))
 				objectDescription=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(objV));
 			String codeStr1=eatNextLine(objV);
 			String codeStr2=eatNextLine(objV);
@@ -3067,15 +3067,15 @@ public class Import extends StdCommand
 			case 3:
 			case 4:
 			case 10:
-				if((codeStr2.indexOf("`")<=0)
-				&&(nextLine(objV).indexOf("`")>=0))
+				if((codeStr2.indexOf('`')<=0)
+				&&(nextLine(objV).indexOf('`')>=0))
 					codeStr2=eatNextLine(objV);
 				break;
 			default:
 				break;
 			}
 			boolean forgiveZeroes=false;
-			if((codeStr2.indexOf("~")>=0)&&(codeStr2.lastIndexOf("~")>codeStr2.indexOf("~")))
+			if((codeStr2.indexOf('~')>=0)&&(codeStr2.lastIndexOf('~')>codeStr2.indexOf('~')))
 			{
 				Vector V=CMParms.parseSquiggles(codeStr2);
 				if(V.size()==4)
@@ -3531,7 +3531,7 @@ public class Import extends StdCommand
 					for(int y=0;y<objV.size();y++)
 					{
 						String ts=(String)objV.get(y);
-						if(ts.indexOf("~")>=0)
+						if(ts.indexOf('~')>=0)
 						{
 							squiggleFound=true;
 							break;
@@ -3844,7 +3844,7 @@ public class Import extends StdCommand
 					{
 						scriptStuff+=codeLine.substring(1).trim()+";";
 						codeLine=nextLine(objV);
-						while(codeLine.indexOf("~")<0)
+						while(codeLine.indexOf('~')<0)
 						{
 							scriptStuff+=codeLine.trim()+";";
 							eatLine(objV);
@@ -4389,7 +4389,7 @@ public class Import extends StdCommand
 				{
 					didSocials=true;
 					String word=codeLine.trim().toUpperCase();
-					int x=word.indexOf(" ");
+					int x=word.indexOf(' ');
 					if(x>0) word=word.substring(0,x).trim();
 
 					Social S1=CMLib.socials().fetchSocial(word,true);
@@ -5183,7 +5183,7 @@ public class Import extends StdCommand
 						{
 							scriptStuff+=nextLine.substring(1).trim()+";";
 							nextLine=nextLine(roomV);
-							while(nextLine.indexOf("~")<0)
+							while(nextLine.indexOf('~')<0)
 							{
 								scriptStuff+=nextLine.trim()+";";
 								eatLine(roomV);
@@ -5336,7 +5336,7 @@ public class Import extends StdCommand
 				{
 					String roomID=CMParms.getCleanBit(s,1);
 					String mobID=CMParms.getCleanBit(s,2);
-					int x=roomID.lastIndexOf("#");
+					int x=roomID.lastIndexOf('#');
 					if(x>=0) roomID=roomID.substring(x);
 					Room R2=CMLib.map().getRoom(doneRooms,areaName,roomID);
 					MOB M2=null;
@@ -5739,7 +5739,7 @@ public class Import extends StdCommand
 				String dcode=(String)laterLinks.get(key);
 				String roomID="";
 				String dirID="";
-				int x=key.lastIndexOf("/");
+				int x=key.lastIndexOf('/');
 				if(x>=0)
 				{
 					roomID=key.substring(0,x);

@@ -92,7 +92,7 @@ public class Trap_WeaponSwing extends StdTrap
 		if((target!=invoker())
 		   &&(target.location()!=null))
 		{
-			int x=text().indexOf("/");
+			int x=text().indexOf('/');
 			int dam=3;
 			String name="a club";
 			if(x>=0)

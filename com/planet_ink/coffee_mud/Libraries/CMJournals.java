@@ -104,7 +104,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
         clearCommandJournals();
         while(list.length()>0)
         {
-            int x=list.indexOf(",");
+            int x=list.indexOf(',');
 
             String item=null;
             if(x<0)
@@ -117,7 +117,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
                 item=list.substring(0,x).trim();
                 list=list.substring(x+1);
             }
-            x=item.indexOf(" ");
+            x=item.indexOf(' ');
             Hashtable<CommandJournalFlags,String> flags=new Hashtable<CommandJournalFlags,String>();
             String mask="";
             if(x>0)
@@ -179,7 +179,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
         clearForumJournals();
         while(list.length()>0)
         {
-            int x=list.indexOf(",");
+            int x=list.indexOf(',');
             String item=null;
             if(x<0)
             {

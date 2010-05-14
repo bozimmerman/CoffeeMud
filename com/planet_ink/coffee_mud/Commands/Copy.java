@@ -62,7 +62,7 @@ public class Copy extends StdCommand
 		String name=CMParms.combine(commands,0);
 		Environmental dest=mob.location();
 		Item srchContainer=null;
-		int x=name.indexOf("@");
+		int x=name.indexOf('@');
 		if(x>0)
 		{
 			String rest=name.substring(x+1).trim();

@@ -79,8 +79,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 
 	public String landOwner()
 	{
-		if(text().indexOf("/")<0) return "";
-		return text().substring(0,text().indexOf("/"));
+		if(text().indexOf('/')<0) return "";
+		return text().substring(0,text().indexOf('/'));
 	}
 
 	public CMObject landOwnerObject()
@@ -104,8 +104,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 
 	public int backTaxes()
 	{
-		if(text().indexOf("/")<0) return 0;
-		int x=text().indexOf("TAX",text().indexOf("/"));
+		if(text().indexOf('/')<0) return 0;
+		int x=text().indexOf("TAX",text().indexOf('/'));
 		if(x<0) return 0;
 		String s=(String)CMParms.parse(text().substring(x+3)).firstElement();
 		return CMath.s_int(s.substring(0,s.length()-1));
@@ -120,8 +120,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 
 	public boolean rentalProperty()
 	{
-		if(text().indexOf("/")<0) return text().indexOf("RENTAL")>=0;
-	    return text().indexOf("RENTAL",text().indexOf("/"))>0;
+		if(text().indexOf('/')<0) return text().indexOf("RENTAL")>=0;
+	    return text().indexOf("RENTAL",text().indexOf('/'))>0;
     }
 	public void setRentalProperty(boolean truefalse)
 	{

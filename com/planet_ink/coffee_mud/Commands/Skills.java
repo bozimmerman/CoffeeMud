@@ -53,8 +53,8 @@ public class Skills extends StdCommand
             if(Ability.DOMAIN_DESCS[i].replace('_',' ').equalsIgnoreCase(qual))
             	return false;
             else
-            if((Ability.DOMAIN_DESCS[i].replace('_',' ').indexOf("/")>=0)
-            &&(Ability.DOMAIN_DESCS[i].replace('_',' ').substring(Ability.DOMAIN_DESCS[i].indexOf("/")+1).equalsIgnoreCase(qual)))
+            if((Ability.DOMAIN_DESCS[i].replace('_',' ').indexOf('/')>=0)
+            &&(Ability.DOMAIN_DESCS[i].replace('_',' ').substring(Ability.DOMAIN_DESCS[i].indexOf('/')+1).equalsIgnoreCase(qual)))
             	return false;
         Ability A=CMClass.findAbility(qual);
         if((A!=null)
@@ -103,8 +103,8 @@ public class Skills extends StdCommand
             if(Ability.DOMAIN_DESCS[i].replace('_',' ').startsWith(qual))
             { domain[0]=i<<5; break;}
             else
-            if((Ability.DOMAIN_DESCS[i].replace('_',' ').indexOf("/")>=0)
-            &&(Ability.DOMAIN_DESCS[i].replace('_',' ').substring(Ability.DOMAIN_DESCS[i].indexOf("/")+1).startsWith(qual)))
+            if((Ability.DOMAIN_DESCS[i].replace('_',' ').indexOf('/')>=0)
+            &&(Ability.DOMAIN_DESCS[i].replace('_',' ').substring(Ability.DOMAIN_DESCS[i].indexOf('/')+1).startsWith(qual)))
             { domain[0]=i<<5; break;}
         if(domain[0]>0)
             domainName[0]=Ability.DOMAIN_DESCS[domain[0]>>5].toLowerCase();

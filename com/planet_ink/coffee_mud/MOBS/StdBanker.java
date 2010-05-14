@@ -114,7 +114,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 
 	protected Item makeItem(String data)
 	{
-		int x=data.indexOf(";");
+		int x=data.indexOf(';');
 		if(x<0) return null;
 		Item I=null;
 		if(data.substring(0,x).equals("COINS"))

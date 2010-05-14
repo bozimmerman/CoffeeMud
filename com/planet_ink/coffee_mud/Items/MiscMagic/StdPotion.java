@@ -102,7 +102,7 @@ public class StdPotion extends StdDrink implements Potion
 		int baseValue=200;
 		Vector<Ability> theSpells=new Vector<Ability>();
 		String names=me.getSpellList();
-		int del=names.indexOf(";");
+		int del=names.indexOf(';');
 		while(del>=0)
 		{
 			String thisOne=names.substring(0,del);
@@ -117,7 +117,7 @@ public class StdPotion extends StdDrink implements Potion
 				}
 			}
 			names=names.substring(del+1);
-			del=names.indexOf(";");
+			del=names.indexOf(';');
 		}
 		if((names.length()>0)&&(!names.equals(";")))
 		{

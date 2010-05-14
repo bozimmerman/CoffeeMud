@@ -94,7 +94,7 @@ public class Channel extends StdCommand
 		for(int i=0;i<commands.size();i++)
 		{
 			String s=(String)commands.elementAt(i);
-			if(s.indexOf(" ")>=0)
+			if(s.indexOf(' ')>=0)
 				commands.setElementAt("\""+s+"\"",i);
 		}
 		if(!CMLib.masking().maskCheck(CMLib.channels().getChannelMask(channelInt),mob,true))

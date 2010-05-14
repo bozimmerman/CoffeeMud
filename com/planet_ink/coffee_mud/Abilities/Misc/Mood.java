@@ -142,7 +142,7 @@ public class Mood extends StdAbility
 	private String changeSay(String msg, String to)
 	{
 		if(msg==null) return null;
-		int x=msg.indexOf("'");
+		int x=msg.indexOf('\'');
 		if(x<0) return msg;
 		int y=msg.indexOf("say(s)");
 		if((y>=0)&&(y<x))

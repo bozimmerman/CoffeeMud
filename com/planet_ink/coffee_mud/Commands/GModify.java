@@ -412,7 +412,7 @@ public class GModify extends StdCommand
                     newSet.addElement(s.toString());
                 s=new StringBuffer("");
             }
-            if(str.indexOf(" ")>=0)
+            if(str.indexOf(' ')>=0)
                 str="\""+str+"\"";
             if(s.length()>0)
                 s.append(" "+str);
@@ -513,7 +513,7 @@ public class GModify extends StdCommand
                 }
                 while(val.trim().startsWith("["))
                 {
-                    int x2=val.indexOf("]");
+                    int x2=val.indexOf(']');
                     if(x2<0) break;
                     String cd=val.trim().substring(1,x2);
                     if(cd.length()!=2)

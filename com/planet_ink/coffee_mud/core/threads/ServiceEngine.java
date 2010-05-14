@@ -522,7 +522,7 @@ public class ServiceEngine implements ThreadEngine
 		}
 		int group=-1;
 		int client=-1;
-		int clistart=which.indexOf("-");
+		int clistart=which.indexOf('-');
 		if((grpstart>=0)&&(clistart>grpstart))
 		{
 			group=CMath.s_int(which.substring(grpstart,clistart));

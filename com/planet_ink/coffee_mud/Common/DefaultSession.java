@@ -684,13 +684,13 @@ public class DefaultSession extends Thread implements Session
 				String changes=pstats.getColorStr();
 				lastColorStr=changes;
 				clookup=(String[])CMLib.color().standardColorLookups().clone();
-				int x=changes.indexOf("#");
+				int x=changes.indexOf('#');
 				while(x>0)
 				{
 					String sub=changes.substring(0,x);
 					changes=changes.substring(x+1);
 					clookup[sub.charAt(0)]=CMLib.color().translateCMCodeToANSI(sub.substring(1));
-					x=changes.indexOf("#");
+					x=changes.indexOf('#');
 				}
 				for(int i=0;i<clookup.length;i++)
 				{
@@ -837,9 +837,9 @@ public class DefaultSession extends Thread implements Session
         // now we have the line, so parse out tags -- only tags matter!
         while(l.length()>0)
         {
-            int tagStart=l.indexOf("<");
+            int tagStart=l.indexOf('<');
             if(tagStart<0) return;
-            int tagEnd=l.indexOf(">");
+            int tagEnd=l.indexOf('>');
             if(tagEnd<0) return;
             String tag=l.substring(tagStart+1,tagEnd).trim();
             l=l.substring(tagEnd+1).trim();
@@ -854,7 +854,7 @@ public class DefaultSession extends Thread implements Session
                     for(int p=1;p<parts.size();p++)
                     {
                         String pp=(String)parts.elementAt(p);
-                        int x=pp.indexOf("=");
+                        int x=pp.indexOf('=');
                         if(x<0) continue;
                         mxpVersionInfo.remove(pp.substring(0,x).trim());
                         mxpVersionInfo.put(pp.substring(0,x).trim(),pp.substring(x+1).trim());

@@ -90,7 +90,7 @@ public class Trap_Launcher extends StdTrap
 	{
 		if((target!=invoker())&&(target.location()!=null))
 		{
-			int x=text().indexOf("/");
+			int x=text().indexOf('/');
 			int dam=3;
 			String name="a projectile";
 			if(x>=0)

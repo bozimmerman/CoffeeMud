@@ -1015,13 +1015,13 @@ public class CMClass extends ClassLoader
 	public static Hashtable loadHashListToObj(String filePath, String auxPath, String ancester)
 	{
 		Hashtable<String,Object> h=new Hashtable<String,Object>();
-		int x=auxPath.indexOf(";");
+		int x=auxPath.indexOf(';');
 		while(x>=0)
 		{
 			String path=auxPath.substring(0,x).trim();
 			auxPath=auxPath.substring(x+1).trim();
 			loadObjectListToObj(h,filePath,path,ancester);
-			x=auxPath.indexOf(";");
+			x=auxPath.indexOf(';');
 		}
 		loadObjectListToObj(h,filePath,auxPath,ancester);
 		return h;
@@ -1030,13 +1030,13 @@ public class CMClass extends ClassLoader
 	public static XVector loadVectorListToObj(String filePath, String auxPath, String ancester)
 	{
 		Vector v=new Vector();
-		int x=auxPath.indexOf(";");
+		int x=auxPath.indexOf(';');
 		while(x>=0)
 		{
 			String path=auxPath.substring(0,x).trim();
 			auxPath=auxPath.substring(x+1).trim();
 			loadObjectListToObj(v,filePath,path,ancester);
-			x=auxPath.indexOf(";");
+			x=auxPath.indexOf(';');
 		}
 		loadObjectListToObj(v,filePath,auxPath,ancester);
 		return new XVector(new TreeSet(v));
@@ -1045,7 +1045,7 @@ public class CMClass extends ClassLoader
 	public static Vector loadClassList(String filePath, String auxPath, String subDir, Class<?> ancestorC1, boolean quiet)
 	{
 		Vector v=new Vector();
-		int x=auxPath.indexOf(";");
+		int x=auxPath.indexOf(';');
 		while(x>=0)
 		{
 			String path=auxPath.substring(0,x).trim();
@@ -1054,7 +1054,7 @@ public class CMClass extends ClassLoader
 				loadListToObj(v,filePath, ancestorC1, quiet);
 			else
 				loadListToObj(v,path,ancestorC1, quiet);
-			x=auxPath.indexOf(";");
+			x=auxPath.indexOf(';');
 		}
 		if(auxPath.equalsIgnoreCase("%default%"))
 			loadListToObj(v,filePath, ancestorC1, quiet);
@@ -1107,7 +1107,7 @@ public class CMClass extends ClassLoader
             {
                 CMFile[] list=file.listFiles();
                 for(int l=0;l<list.length;l++)
-                    if((list[l].getName().indexOf("$")<0)&&(list[l].getName().toUpperCase().endsWith(".CLASS")))
+                    if((list[l].getName().indexOf('$')<0)&&(list[l].getName().toUpperCase().endsWith(".CLASS")))
                         fileList.addElement(list[l].getVFSPathAndName());
                 for(int l=0;l<list.length;l++)
                     if(list[l].getName().toUpperCase().endsWith(".JS"))
@@ -1153,7 +1153,7 @@ public class CMClass extends ClassLoader
                 else
                 {
                     String itemName=O.getClass().getName();
-                    int x=itemName.lastIndexOf(".");
+                    int x=itemName.lastIndexOf('.');
                     if(x>=0) itemName=itemName.substring(x+1);
                     if(toThis instanceof Hashtable)
                     {
@@ -1199,7 +1199,7 @@ public class CMClass extends ClassLoader
 	{
 		if(C==null) return "";
 		String name=C.getName();
-		int lastDot=name.lastIndexOf(".");
+		int lastDot=name.lastIndexOf('.');
 		if(lastDot>=0)
 			return name.substring(lastDot+1);
 		return name;
@@ -1239,7 +1239,7 @@ public class CMClass extends ClassLoader
     public static String classPtrStr(Object e)
     {
         String ptr=""+e;
-        int x=ptr.lastIndexOf("@");
+        int x=ptr.lastIndexOf('@');
         if(x>0)return ptr.substring(x+1);
         return ptr;
     }
@@ -1274,7 +1274,7 @@ public class CMClass extends ClassLoader
         Class<?> result=null;
         if(overPackage!=null)
         {
-            int x=className.lastIndexOf(".");
+            int x=className.lastIndexOf('.');
             if(x>=0)
                 className=overPackage+className.substring(x);
             else
@@ -1285,7 +1285,7 @@ public class CMClass extends ClassLoader
         {
             if(e.getMessage().toLowerCase().indexOf("(wrong name:")>=0)
             {
-                int x=className.lastIndexOf(".");
+                int x=className.lastIndexOf('.');
                 if(x>=0)
                 {
                     String notherName=className.substring(x+1);

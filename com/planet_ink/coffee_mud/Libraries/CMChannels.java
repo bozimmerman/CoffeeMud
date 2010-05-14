@@ -135,7 +135,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		||(M.playerStats()==null))
 		    return false;
 		String senderName=sender.Name();
-		int x=senderName.indexOf("@");
+		int x=senderName.indexOf('@');
 		if(x>0) senderName=senderName.substring(0,x);
 		
 		if(getChannelFlags(i).contains(ChannelFlag.CLANONLY)||getChannelFlags(i).contains(ChannelFlag.CLANALLYONLY))
@@ -368,7 +368,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
         clearChannels();
 		while(list.length()>0)
 		{
-			int x=list.indexOf(",");
+			int x=list.indexOf(',');
 
 			String item=null;
 			if(x<0)
@@ -382,7 +382,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				list=list.substring(x+1);
 			}
 			numChannelsLoaded++;
-			x=item.indexOf(" ");
+			x=item.indexOf(' ');
 			HashSet<ChannelFlag> flags=new HashSet<ChannelFlag>();
 			if(x>0)
 			{
@@ -399,7 +399,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		}
 		while(ilist.length()>0)
 		{
-			int x=ilist.indexOf(",");
+			int x=ilist.indexOf(',');
 
 			String item=null;
 			if(x<0)
@@ -412,8 +412,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				item=ilist.substring(0,x).trim();
 				ilist=ilist.substring(x+1);
 			}
-			int y1=item.indexOf(" ");
-			int y2=item.lastIndexOf(" ");
+			int y1=item.indexOf(' ');
+			int y2=item.lastIndexOf(' ');
 			if((y1<0)||(y2<=y1)) continue;
 			numChannelsLoaded++;
 			numIChannelsLoaded++;
@@ -430,7 +430,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		}
 		while(imc2list.length()>0)
 		{
-			int x=imc2list.indexOf(",");
+			int x=imc2list.indexOf(',');
 
 			String item=null;
 			if(x<0)
@@ -443,8 +443,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				item=imc2list.substring(0,x).trim();
 				imc2list=imc2list.substring(x+1);
 			}
-			int y1=item.indexOf(" ");
-			int y2=item.lastIndexOf(" ");
+			int y1=item.indexOf(' ');
+			int y2=item.lastIndexOf(' ');
 			if((y1<0)||(y2<=y1)) continue;
 			numChannelsLoaded++;
 			numImc2ChannelsLoaded++;

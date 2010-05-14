@@ -43,7 +43,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
     {
         if(row.trim().startsWith("#")||row.trim().startsWith(";")||(row.trim().length()==0))
             return null;
-        int x=row.indexOf("=");
+        int x=row.indexOf('=');
         while((x>=1)&&(row.charAt(x-1)=='\\')) x=row.indexOf("=",x+1);
         if(x<0)
             return "Error: Invalid line! Not comment, whitespace, and does not contain an = sign!";

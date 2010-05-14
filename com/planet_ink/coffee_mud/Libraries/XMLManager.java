@@ -41,17 +41,17 @@ public class XMLManager extends StdLibrary implements XMLLibrary
     
 	public String parseOutAngleBrackets(String s)
 	{
-		int x=s.indexOf("<");
+		int x=s.indexOf('<');
 		while(x>=0)
 		{
 			s=s.substring(0,x)+"&lt;"+s.substring(x+1);
-			x=s.indexOf("<");
+			x=s.indexOf('<');
 		}
-		x=s.indexOf(">");
+		x=s.indexOf('>');
 		while(x>=0)
 		{
 			s=s.substring(0,x)+"&gt;"+s.substring(x+1);
-			x=s.indexOf(">");
+			x=s.indexOf('>');
 		}
 		return s;
 	}

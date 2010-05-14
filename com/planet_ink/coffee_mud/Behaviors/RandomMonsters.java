@@ -49,14 +49,14 @@ public class RandomMonsters extends ActiveTicker
 	{
         Vector xmlfiles=new Vector();
         String theseparms=getParms();
-		int x=theseparms.indexOf(";");
+		int x=theseparms.indexOf(';');
 		String filename=(x>=0)?theseparms.substring(x+1):theseparms;
 		if(filename.trim().length()==0)
 		    return null;
 		int start=filename.indexOf("<MOBS>");
 		if((start<0)||(start>20))
 		{
-			int extraSemicolon=filename.indexOf(";");
+			int extraSemicolon=filename.indexOf(';');
 			if(extraSemicolon>=0) filename=filename.substring(0,extraSemicolon);
 			if(filename.trim().length()>0)
 			    xmlfiles.addElement(filename.trim());
@@ -69,7 +69,7 @@ public class RandomMonsters extends ActiveTicker
 	public void setParms(String newParms)
 	{
         maintained=new Vector();
-		int x=newParms.indexOf(";");
+		int x=newParms.indexOf(';');
 		String oldParms=newParms;
 		restrictedLocales=null;
 		if(x>=0)
@@ -80,7 +80,7 @@ public class RandomMonsters extends ActiveTicker
 			if(extraX<0)
 			{
 				String xtra=newParms.substring(x+1);
-				extraX=xtra.indexOf(";");
+				extraX=xtra.indexOf(';');
 				if(extraX>=0) extraParms=xtra.substring(extraX+1);
 			}
 			Vector<String> V=CMParms.parse(extraParms);
@@ -164,7 +164,7 @@ public class RandomMonsters extends ActiveTicker
 	public List<MOB> getMonsters(Tickable thang, String theseparms)
 	{
 		List<MOB> monsters=null;
-		int x=theseparms.indexOf(";");
+		int x=theseparms.indexOf(';');
 		String filename=(x>=0)?theseparms.substring(x+1):theseparms;
 		if(filename.trim().length()==0)
 		{
@@ -203,7 +203,7 @@ public class RandomMonsters extends ActiveTicker
 		}
 		else
 		{
-			int extraSemicolon=filename.indexOf(";");
+			int extraSemicolon=filename.indexOf(';');
 			if(extraSemicolon>=0) filename=filename.substring(0,extraSemicolon);
 			filename=filename.trim();
 			monsters=(List<MOB>)Resources.getResource("RANDOMMONSTERS-"+filename);

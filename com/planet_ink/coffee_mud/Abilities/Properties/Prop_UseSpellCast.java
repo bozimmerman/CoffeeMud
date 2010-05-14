@@ -61,7 +61,7 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 				Vector V2=new Vector();
 				if(t.length()>0)
 				{
-					int x=t.indexOf("/");
+					int x=t.indexOf('/');
 					if(x<0)
 					{
 						V2=CMParms.parse(t);

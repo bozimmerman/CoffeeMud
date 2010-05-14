@@ -72,8 +72,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
         if(dateTimeStr.trim().length()==0)
             return D;
         // for those stupid SQLServer date formats, clean them up!
-        if((dateTimeStr.indexOf(".")==19)
-        ||((dateTimeStr.indexOf("-")==4)&&(dateTimeStr.indexOf(":")==13)))
+        if((dateTimeStr.indexOf('.')==19)
+        ||((dateTimeStr.indexOf('-')==4)&&(dateTimeStr.indexOf(':')==13)))
         {
             //String TheOldDate=TheDate;
             int HH=CMath.s_int(dateTimeStr.substring(11,13));
@@ -97,10 +97,10 @@ public class CoffeeTime extends StdLibrary implements TimeManager
                 AP=Calendar.PM;
             }
             else
-            if(dateTimeStr.toUpperCase().substring(10).indexOf("P")>=0)
+            if(dateTimeStr.toUpperCase().substring(10).indexOf('P')>=0)
                 AP=Calendar.PM;
             else
-            if(dateTimeStr.toUpperCase().substring(10).indexOf("A")>=0)
+            if(dateTimeStr.toUpperCase().substring(10).indexOf('A')>=0)
                 AP=Calendar.AM;
             else
             if(HH==12) // as 12 always means 12 noon in international date/time -- 0 = 12am
@@ -130,7 +130,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
         else
         {
             // If it has no time, give it one!
-            if((dateTimeStr.indexOf(":")<0)
+            if((dateTimeStr.indexOf(':')<0)
             &&(dateTimeStr.indexOf("AM")<0)
             &&(dateTimeStr.indexOf("PM")<0))
                 dateTimeStr=dateTimeStr+" 5:00 PM";
@@ -157,8 +157,8 @@ public class CoffeeTime extends StdLibrary implements TimeManager
         if(dateTimeStr.trim().length()==0)
             return false;
         // for those stupid SQLServer date formats, clean them up!
-        if((dateTimeStr.indexOf(".")==19)
-        ||((dateTimeStr.indexOf("-")==4)&&(dateTimeStr.indexOf(":")==13)))
+        if((dateTimeStr.indexOf('.')==19)
+        ||((dateTimeStr.indexOf('-')==4)&&(dateTimeStr.indexOf(':')==13)))
         {
             //String TheOldDate=TheDate;
         	if(!CMath.isInteger(dateTimeStr.substring(11,13)))
@@ -175,7 +175,7 @@ public class CoffeeTime extends StdLibrary implements TimeManager
         else
         {
             // If it has no time, give it one!
-            if((dateTimeStr.indexOf(":")<0)
+            if((dateTimeStr.indexOf(':')<0)
             &&(dateTimeStr.indexOf("AM")<0)
             &&(dateTimeStr.indexOf("PM")<0))
                 dateTimeStr=dateTimeStr+" 5:00 PM";
@@ -484,14 +484,14 @@ public class CoffeeTime extends StdLibrary implements TimeManager
     public String date2DateString(long time)
     {
         String T=date2String(time);
-        if(T.indexOf(" ")>0) T=T.substring(0,T.indexOf(" "));
+        if(T.indexOf(' ')>0) T=T.substring(0,T.indexOf(' '));
         return T.trim();
     }
 
     public String date2Date2String(long time)
     {
         String T=date2DateString(time);
-        int x=T.lastIndexOf("/");
+        int x=T.lastIndexOf('/');
         T=T.substring(0,x+1)+T.substring(x+3);
         return T.trim();
     }

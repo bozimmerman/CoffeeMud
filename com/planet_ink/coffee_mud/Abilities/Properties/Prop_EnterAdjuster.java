@@ -64,7 +64,7 @@ public class Prop_EnterAdjuster extends Property
             MOB mob=msg.source();
             String[] strs=separateMask(text());
             Vector theSpells=new Vector();
-            int del=strs[0].indexOf(";");
+            int del=strs[0].indexOf(';');
             while(del>=0)
             {
                 String thisOne=strs[0].substring(0,del);
@@ -78,7 +78,7 @@ public class Prop_EnterAdjuster extends Property
                     }
                 }
                 strs[0]=strs[0].substring(del+1);
-                del=strs[0].indexOf(";");
+                del=strs[0].indexOf(';');
             }
             if((strs[0].length()>0)&&(!strs[0].equals(";")))
             {

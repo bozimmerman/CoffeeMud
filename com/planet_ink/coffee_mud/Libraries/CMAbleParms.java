@@ -57,7 +57,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         if(spells.startsWith("*"))
         {
             spells=spells.substring(1);
-            int x=spells.indexOf(";");
+            int x=spells.indexOf(';');
             if(x<0) x=spells.length();
             Ability A=CMClass.getAbility(spells.substring(0,x));
             if(A!=null)
@@ -91,7 +91,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
     
     protected String parseLayers(short[] layerAtt, short[] clothingLayers, String misctype)
     {
-        int colon=misctype.indexOf(":");
+        int colon=misctype.indexOf(':');
         if(colon>=0)
         {
             String layers=misctype.substring(0,colon).toUpperCase().trim();

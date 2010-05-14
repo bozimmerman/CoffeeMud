@@ -200,13 +200,13 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
     {
         String classID=null;
         int ability=0;
-        int x=data.indexOf("/");
+        int x=data.indexOf('/');
         if(x>=0)
         {
             classID=data.substring(0,x);
             data=data.substring(x+1);
         }
-        x=data.indexOf("/");
+        x=data.indexOf('/');
         if(x>=0)
         {
             ability=CMath.s_int(data.substring(0,x));

@@ -698,7 +698,7 @@ public class RoomLoader
 						if((CMProps.getBoolVar(CMProps.SYSTEMB_MOBNOCACHE))
 						&&(!catalog)
 						&&(NUMID.indexOf(MOBID+"@")>=0))
-							newMOB.setMiscText("%DBID>"+roomID+NUMID.substring(NUMID.indexOf("@")));
+							newMOB.setMiscText("%DBID>"+roomID+NUMID.substring(NUMID.indexOf('@')));
 						else
 							newMOB.setMiscText(DBConnections.getResQuietly(R,"CMCHTX"));
 						newMOB.basePhyStats().setLevel(((int)DBConnections.getLongRes(R,"CMCHLV")));
@@ -1009,7 +1009,7 @@ public class RoomLoader
 			Log.debugOut("RoomLoader","Created mob "+thisMOB.name()+" for room "+roomID);
 		
 		if((CMProps.getBoolVar(CMProps.SYSTEMB_MOBNOCACHE))&&(!catalog))
-		   thisMOB.setMiscText("%DBID>"+roomID+mobID.substring(mobID.indexOf("@")));
+		   thisMOB.setMiscText("%DBID>"+roomID+mobID.substring(mobID.indexOf('@')));
 		
 		return
 		"INSERT INTO CMROCH ("

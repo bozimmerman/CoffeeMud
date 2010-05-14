@@ -46,7 +46,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
         if(helpStr.length()==0) return false;
         if(getHelpFile().size()==0) return false;
 		helpStr=helpStr.toUpperCase().trim();
-		if(helpStr.indexOf(" ")>=0)
+		if(helpStr.indexOf(' ')>=0)
 			helpStr=helpStr.replace(' ','_');
         if(helpStr.startsWith("SPELL_")
 		 ||helpStr.startsWith("SONG_")
@@ -424,9 +424,9 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			name=name.replace('_',' ');
 			Vector helpedPreviously=new Vector();
 			String subTag=tag;
-			while(subTag.indexOf("_")!=subTag.lastIndexOf("_"))
+			while(subTag.indexOf('_')!=subTag.lastIndexOf('_'))
 			{
-			    int x=subTag.lastIndexOf("_");
+			    int x=subTag.lastIndexOf('_');
 			    subTag=subTag.substring(0,x)+subTag.substring(x+1);
 			}
 			
@@ -646,7 +646,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 	public StringBuilder getHelpText(String helpStr, Properties rHelpFile, MOB forMOB, boolean noFix)
 	{
 		helpStr=helpStr.toUpperCase().trim();
-		if(helpStr.indexOf(" ")>=0)
+		if(helpStr.indexOf(' ')>=0)
 			helpStr=helpStr.replace(' ','_');
 		String thisTag=null;
 
@@ -877,7 +877,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
                         	       MOB forMOB)
 	{
 		helpStr=helpStr.toUpperCase().trim();
-		if(helpStr.indexOf(" ")>=0)
+		if(helpStr.indexOf(' ')>=0)
 			helpStr=helpStr.replace(' ','_');
 		Vector matches=new Vector();
 

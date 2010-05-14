@@ -152,7 +152,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     // the unique name of the quest
     public String startDate(){return startDate;}
     public void setStartDate(String newDate){
-        int x=newDate.indexOf("-");
+        int x=newDate.indexOf('-');
         if((x>0)
         &&(CMath.isMathExpression(newDate.substring(0,x)))
         &&(CMath.isMathExpression(newDate.substring(x+1))))
@@ -3270,7 +3270,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             if(startDate().toUpperCase().startsWith("MUDDAY"))
             {
                 String sd2=startDate().substring("MUDDAY".length()).trim();
-                int x=sd2.indexOf("-");
+                int x=sd2.indexOf('-');
                 if(x<0) return false;
                 int mudmonth=CMath.s_parseIntExpression(sd2.substring(0,x));
                 int mudday=CMath.s_parseIntExpression(sd2.substring(x+1));
@@ -3289,7 +3289,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             }
             else
             {
-                int x=startDate.indexOf("-");
+                int x=startDate.indexOf('-');
                 if(x<0) return false;
                 int month=CMath.s_parseIntExpression(startDate.substring(0,x));
                 int day=CMath.s_parseIntExpression(startDate.substring(x+1));
@@ -3375,14 +3375,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         List<String> V=Q.getWinners();
         V.clear();
         list=list.trim();
-        int x=list.indexOf(";");
+        int x=list.indexOf(';');
         while(x>0)
         {
             String s=list.substring(0,x).trim();
             list=list.substring(x+1).trim();
             if(s.length()>0)
                 V.add(s);
-            x=list.indexOf(";");
+            x=list.indexOf(';');
         }
         if(list.trim().length()>0)
             V.add(list.trim());
@@ -3973,7 +3973,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     private static final String VALID_ASTR_CODES="_&|";
     private String modifyStringFromArgs(String s, List args)
     {
-    	int x=s.toUpperCase().indexOf("$");
+    	int x=s.toUpperCase().indexOf('$');
     	while((x>=0)&&(x<s.length()-1))
     	{
     		int y=x+1;
@@ -4297,7 +4297,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 
         public boolean isStat(String statName)
         {
-    		int x=statName.indexOf("#");
+    		int x=statName.indexOf('#');
     		if(x>=0) statName=statName.substring(0,x);
     		for(int i=0;i<QOBJS.length;i++)
     			if(statName.equalsIgnoreCase(QOBJS[i]))
@@ -4309,7 +4309,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 
     	public Object getStat(String statName)
     	{
-    		int x=statName.indexOf("#");
+    		int x=statName.indexOf('#');
     		String whichStr=null;
     		int whichNum=-1;
     		if(x>=0){

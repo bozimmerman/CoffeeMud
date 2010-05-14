@@ -384,7 +384,7 @@ public class StdClanCommonItem extends StdClanItem
                             }
                             DV.removeElement(M);
                             String req=A.accountForYourself();
-                            int reqIndex=req.indexOf(":");
+                            int reqIndex=req.indexOf(':');
                             if(reqIndex>0)
                                 DV.addElement(M,enCode(M,req.substring(reqIndex+1)));
                             else

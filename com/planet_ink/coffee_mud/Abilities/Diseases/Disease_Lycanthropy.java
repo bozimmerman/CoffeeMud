@@ -68,7 +68,7 @@ public class Disease_Lycanthropy extends Disease
 		if(!(affected instanceof MOB)) return;
 		if(lycanRace()!=null)
 		{
-			if(affected.name().indexOf(" ")>0)
+			if(affected.name().indexOf(' ')>0)
 				affectableStats.setName("a "+lycanRace().name()+" called "+affected.name());
 			else
 				affectableStats.setName(affected.name()+" the "+lycanRace().name());

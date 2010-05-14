@@ -313,12 +313,12 @@ public class MXPElement implements Cloneable
             for(int u=0;u<userParms.size();u++)
             {
                 userParm=userParms.get(u).toUpperCase().trim();
-                int xx=userParm.indexOf("=");
+                int xx=userParm.indexOf('=');
                 if((xx>0)&&(alternativeAttributes.containsKey(userParm.substring(0,xx).trim())))
                 {
                     String newKey=(String)alternativeAttributes.get(userParm.substring(0,xx).trim());
                     String uu=userParms.get(u);
-                    xx=uu.indexOf("=");
+                    xx=uu.indexOf('=');
                     userParms.set(u,newKey+uu.substring(xx));
                     userParm=userParms.get(u).toUpperCase().trim();
                 }

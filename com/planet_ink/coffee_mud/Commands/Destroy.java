@@ -391,7 +391,7 @@ public class Destroy extends StdCommand
 		MOB srchMob=mob;
 		Item srchContainer=null;
 		Room srchRoom=mob.location();
-		int x=itemID.indexOf("@");
+		int x=itemID.indexOf('@');
 		if(x>0)
 		{
 			String rest=itemID.substring(x+1).trim();

@@ -57,7 +57,7 @@ public class GatheringSkill extends CommonSkill
 	    while(mask.length()>0)
 	    {
 	        str=mask;
-	        int x=mask.indexOf("|");
+	        int x=mask.indexOf('|');
 	        if(x>=0)
 	        {
 	            str=mask.substring(0,x);

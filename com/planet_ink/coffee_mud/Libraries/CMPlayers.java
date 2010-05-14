@@ -561,7 +561,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
                         if((B.trim().length()>0)
                         &&(B.toUpperCase().startsWith(name.toUpperCase()+" ")))
                         {
-                            int lastSpace=B.lastIndexOf(" ");
+                            int lastSpace=B.lastIndexOf(' ');
                             foundWarningDateTime=CMath.s_long(B.substring(lastSpace+1).trim());
                             if((foundWarningDateTime > 0) && (System.currentTimeMillis() < foundWarningDateTime + (10 * TimeManager.MILI_DAY)))
 	                            warnStr.append(B+"\n");

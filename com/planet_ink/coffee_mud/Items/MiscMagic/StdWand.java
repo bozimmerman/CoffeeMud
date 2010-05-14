@@ -138,7 +138,7 @@ public class StdWand extends StdItem implements Wand
 			if(x>=0)
 			{
 				message=message.substring(x+this.magicWord().length());
-				int y=message.indexOf("'");
+				int y=message.indexOf('\'');
 				if(y>=0) message=message.substring(0,y);
 				message=message.trim();
 				Ability wandUse=mob.fetchAbility("Skill_WandUse");
@@ -190,7 +190,7 @@ public class StdWand extends StdItem implements Wand
 			if(x>=0)
 			{
 				message=message.substring(x+me.magicWord().length());
-				int y=message.indexOf("'");
+				int y=message.indexOf('\'');
 				if(y>=0) message=message.substring(0,y);
 				message=message.trim();
 				Ability wandUse=mob.fetchAbility("Skill_WandUse");

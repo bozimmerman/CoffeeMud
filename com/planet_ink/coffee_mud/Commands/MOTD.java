@@ -234,7 +234,7 @@ public class MOTD extends StdCommand
             branchName=((MOB)P).getStartRoom().getArea().Name();
         else
         {
-            int x=branchName.indexOf("#");
+            int x=branchName.indexOf('#');
             if(x>=0) branchName=branchName.substring(0,x);
         }
         if(ct[0]>0)
@@ -251,7 +251,7 @@ public class MOTD extends StdCommand
         	DatabaseEngine.PlayerData letter=(DatabaseEngine.PlayerData)mailData.get(i);
             String chain=(String)letter.section;
             String branch=(String)letter.key;
-            int x=branch.indexOf(";");
+            int x=branch.indexOf(';');
             if(x<0) continue;
             branch=branch.substring(0,x);
             P=CMLib.map().getPostOffice(chain,branch);

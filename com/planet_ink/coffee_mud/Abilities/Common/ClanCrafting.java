@@ -196,14 +196,14 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 						String mat2=(String)V.get(RCP_MATERIAL2);
 						String amt1="";
 						String amt2="";
-						int m1=mat1.indexOf("/");
+						int m1=mat1.indexOf('/');
 						if(m1>=0)
 						{
 							amt1=mat1.substring(m1+1);
 							mat1=mat1.substring(0,m1).toLowerCase();
 		                    //amt1=""+adjustWoodRequired(CMath.s_int(amt1),mob);
 						}
-						int m2=mat2.indexOf("/");
+						int m2=mat2.indexOf('/');
 						if(m2>=0)
 						{
 							amt2=mat2.substring(m2+1);
@@ -251,14 +251,14 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		int amt2=0;
 		String mat1=(String)foundRecipe.get(RCP_MATERIAL1);
 		String mat2=(String)foundRecipe.get(RCP_MATERIAL2);
-		int m1=mat1.indexOf("/");
+		int m1=mat1.indexOf('/');
 		if(m1>=0)
 		{
 			amt1=CMath.s_int(mat1.substring(m1+1));
 			mat1=mat1.substring(0,m1).toLowerCase();
 	        //amt1=adjustWoodRequired(amt1, mob);
 		}
-		int m2=mat2.indexOf("/");
+		int m2=mat2.indexOf('/');
 		if(m2>=0)
 		{
 			amt2=CMath.s_int(mat2.substring(m2+1));

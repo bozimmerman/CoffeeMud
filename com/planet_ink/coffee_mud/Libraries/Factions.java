@@ -1445,9 +1445,9 @@ public class Factions extends StdLibrary implements FactionManager
         for(int v=0;v<oldV.size();v++)
         {
             String s=(String)oldV.get(v);
-            if(!(s.trim().startsWith("#")||s.trim().length()==0||(s.indexOf("=")<0)))
+            if(!(s.trim().startsWith("#")||s.trim().length()==0||(s.indexOf('=')<0)))
             {
-                String tag=s.substring(0,s.indexOf("=")).trim().toUpperCase();
+                String tag=s.substring(0,s.indexOf('=')).trim().toUpperCase();
                 int tagRef=CMLib.factions().isFactionTag(tag);
                 if(tagRef>=0) defined[tagRef]=true;
             }
@@ -1470,10 +1470,10 @@ public class Factions extends StdLibrary implements FactionManager
                 }
             }
             else
-            if(s.trim().startsWith("#")||(s.indexOf("=")<0))
+            if(s.trim().startsWith("#")||(s.indexOf('=')<0))
             {
                 buf.append(s+CR);
-                int x=s.indexOf("=");
+                int x=s.indexOf('=');
                 if(x>=0)
                 {
                     s=s.substring(0,x).trim();
@@ -1487,7 +1487,7 @@ public class Factions extends StdLibrary implements FactionManager
             }
             else
             {
-                String tag=s.substring(0,s.indexOf("=")).trim().toUpperCase();
+                String tag=s.substring(0,s.indexOf('=')).trim().toUpperCase();
                 int tagRef=CMLib.factions().isFactionTag(tag);
                 if(tagRef<0)
                     buf.append(s+CR);

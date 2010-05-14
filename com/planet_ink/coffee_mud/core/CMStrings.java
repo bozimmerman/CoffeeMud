@@ -212,8 +212,8 @@ public class CMStrings
     public static String getSayFromMessage(String msg)
     {
         if(msg==null) return null;
-        int start=msg.indexOf("'");
-        int end=msg.lastIndexOf("'");
+        int start=msg.indexOf('\'');
+        int end=msg.lastIndexOf('\'');
         if((start>0)&&(end>start))
             return msg.substring(start+1,end);
         return null;
@@ -221,8 +221,8 @@ public class CMStrings
     public static String substituteSayInMessage(String affmsg, String msg)
     {
         if(affmsg==null) return null;
-        int start=affmsg.indexOf("'");
-        int end=affmsg.lastIndexOf("'");
+        int start=affmsg.indexOf('\'');
+        int end=affmsg.lastIndexOf('\'');
         if((start>0)&&(end>start))
             return affmsg.substring(0,start+1)+msg+affmsg.substring(end);
         return affmsg;

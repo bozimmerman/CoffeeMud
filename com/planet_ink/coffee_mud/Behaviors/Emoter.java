@@ -134,7 +134,7 @@ public class Emoter extends ActiveTicker
 		while(newParms.length()>0)
 		{
 			String thisEmote=newParms;
-			x=newParms.indexOf(";");
+			x=newParms.indexOf(';');
 			if(x<0)
 				newParms="";
 			else

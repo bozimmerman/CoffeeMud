@@ -70,7 +70,7 @@ public class CMParms
         for(int commandIndex=startAt;commandIndex<endAt;commandIndex++)
         {
             String s=commands.get(commandIndex).toString();
-            if(s.indexOf(" ")>=0) s="\""+s+"\"";
+            if(s.indexOf(' ')>=0) s="\""+s+"\"";
             Combined.append(s+" ");
         }
         return Combined.toString().trim();
@@ -83,7 +83,7 @@ public class CMParms
         for(int commandIndex=0;commandIndex<0;commandIndex++)
         {
             String s=(String)commands.elementAt(commandIndex);
-            if(s.indexOf(" ")>=0) s="\""+s+"\"";
+            if(s.indexOf(' ')>=0) s="\""+s+"\"";
             Combined.append(s+" ");
         }
         return Combined.toString().trim();
@@ -96,7 +96,7 @@ public class CMParms
         for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
         {
             String s=commands.get(commandIndex).toString();
-            if(s.indexOf(" ")>=0) s="\""+s+"\"";
+            if(s.indexOf(' ')>=0) s="\""+s+"\"";
             Combined.append(s+" ");
         }
         return Combined.toString().trim();
@@ -172,7 +172,7 @@ public class CMParms
         str=str.trim();
         while(!str.equals(""))
         {
-            int spaceIndex=str.indexOf(" ");
+            int spaceIndex=str.indexOf(' ');
             int strIndex=str.indexOf("\"");
             String CMD="";
             if((strIndex>=0)&&((strIndex<spaceIndex)||(spaceIndex<0)))
@@ -972,7 +972,7 @@ public class CMParms
                         while((x<text.length())
                         &&((Character.isDigit(text.charAt(x)))||(text.charAt(x)=='.')))
                             x++;
-                        if(text.substring(0,x).indexOf(".")<0)
+                        if(text.substring(0,x).indexOf('.')<0)
                         {
                             if(pm=='+')
                                 return (double)CMath.s_int(text.substring(0,x));
@@ -1013,7 +1013,7 @@ public class CMParms
                         while((x<text.length())
                         &&((Character.isDigit(text.charAt(x)))||(text.charAt(x)=='.')))
                             x++;
-                        if(text.substring(0,x).indexOf(".")<0)
+                        if(text.substring(0,x).indexOf('.')<0)
                             return (double)CMath.s_long(text.substring(0,x));
                         return CMath.s_double(text.substring(0,x));
                     }

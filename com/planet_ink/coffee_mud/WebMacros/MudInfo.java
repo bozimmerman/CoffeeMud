@@ -51,7 +51,7 @@ public class MudInfo extends StdWebMacro
         if(parms.containsKey("PORT"))
         {
             String ports=CMProps.getVar(CMProps.SYSTEM_MUDPORTS).trim();
-            int x=ports.indexOf(" ");
+            int x=ports.indexOf(' ');
             if(x<0)
                 return clearWebMacros(ports);
             return clearWebMacros(ports.substring(0,x));

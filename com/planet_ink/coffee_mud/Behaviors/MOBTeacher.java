@@ -310,7 +310,7 @@ public class MOBTeacher extends CombatAbilities
 					s=s.substring(0,x);
 				else
 				{
-					x=s.lastIndexOf("`");
+					x=s.lastIndexOf('`');
 					if(x>0) 
 						s=s.substring(0,x);
 				}

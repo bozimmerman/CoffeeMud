@@ -212,7 +212,7 @@ public class Email extends StdCommand
 		if(!CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("OPTION"))
 		{
 			if(newEmail.length()<6) return false;
-			if(newEmail.indexOf("@")<0) return false;
+			if(newEmail.indexOf('@')<0) return false;
 			String confirmEmail=mob.session().prompt("Confirm that '"+newEmail+"' is correct by re-entering.\n\rRe-enter:");
 			if(confirmEmail==null) return false;
 			confirmEmail=confirmEmail.trim();

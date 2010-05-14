@@ -60,7 +60,7 @@ public class Prop_AbilityImmunity extends Property
 				wearer=true;
 			else
 			{
-				int x=s.indexOf("=");
+				int x=s.indexOf('=');
 				if(x<0)
 					messages.addElement("");
 				else

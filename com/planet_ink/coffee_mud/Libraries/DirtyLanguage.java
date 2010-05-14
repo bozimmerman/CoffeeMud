@@ -155,7 +155,7 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
             if((s.startsWith("#"))||(s.trim().length()==0)) continue;
             if(s.startsWith("["))
             {
-                int x=s.lastIndexOf("]");
+                int x=s.lastIndexOf(']');
                 if((currentSectionReplaceStrs.size()>0)
                 &&(currentSection!=null))
                     currentSection.addElement("REPLACEWHOLE",currentSectionReplaceStrs,currentSectionReplaceStrs);

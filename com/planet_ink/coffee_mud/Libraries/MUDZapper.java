@@ -289,7 +289,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	protected Object makeSkillFlagObject(String str)
 	{
         Object o=null;
-        int x=str.indexOf("&");
+        int x=str.indexOf('&');
         if(x>=0)
         {
             Vector V=CMParms.parseAny(str,'&',true);
@@ -850,7 +850,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             {
                                 int prof=0;
                                 str2=str2.substring(1);
-                                int x=str2.indexOf("(");
+                                int x=str2.indexOf('(');
                                 if(x>0)
                                 {
                                     if(str2.endsWith(")"))
@@ -884,7 +884,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	                        {
 	                        	int prof=0;
 	                        	str2=str2.substring(1);
-	                        	int x=str2.indexOf("(");
+	                        	int x=str2.indexOf('(');
 	                        	if(x>0)
 	                        	{
 	                        		if(str2.endsWith(")"))
@@ -2121,7 +2121,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	                        if(str2.startsWith("+"))
 	                        {
 	                        	str2=str2.substring(1);
-	                        	int x=str2.indexOf("(");
+	                        	int x=str2.indexOf('(');
 	                        	if(x>0) str2=str2.substring(0,x);
 	                        	Ability A=CMClass.getAbility(str2);
 	                        	if((A!=null)&&(!preReqs.contains(A.ID())))
@@ -2566,7 +2566,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             {
                             	str2=str2.substring(1);
                             	int prof=0;
-                            	int x=str2.indexOf("(");
+                            	int x=str2.indexOf('(');
                             	if(x>0)
                             	{
                             		if(str2.endsWith(")"))

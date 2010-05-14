@@ -933,7 +933,7 @@ public class StdRoom implements Room
 	protected String parseVariesCodes(MOB mob, String text)
 	{
 		StringBuffer buf=new StringBuffer("");
-		int x=text.indexOf("<");
+		int x=text.indexOf('<');
 		String elseStr=null;
 		while(x>=0)
 		{
@@ -983,7 +983,7 @@ public class StdRoom implements Room
 			if(!found)
 				x=text.indexOf("<",1);
 			else
-				x=text.indexOf("<");
+				x=text.indexOf('<');
 		}
 		if((buf.length()==0)&&(elseStr!=null))
 		{
@@ -1713,7 +1713,7 @@ public class StdRoom implements Room
 		&&(found instanceof Item)
 		&&(goodLocation==null)
 		&&(found.displayText().length()==0)
-		&&(thingName.indexOf(".")<0))
+		&&(thingName.indexOf('.')<0))
 		{
 			PhysicalAgent visibleItem=null;
 			visibleItem=(Exit)CMLib.english().fetchEnvironmental(Arrays.asList(exits),thingName,false);
@@ -1748,7 +1748,7 @@ public class StdRoom implements Room
 		&&(found instanceof Item)
 		&&(goodLocation==null)
 		&&(found.displayText().length()==0)
-		&&(thingName.indexOf(".")<0))
+		&&(thingName.indexOf('.')<0))
 		{
 			PhysicalAgent visibleItem=fetchFromRoomFavorItems(null,thingName+".2",wornFilter);
 			if(visibleItem!=null)

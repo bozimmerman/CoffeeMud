@@ -54,7 +54,7 @@ public class Prop_Artifact extends Property
 	{
 		if(itemID==null)
 		{
-			int x=miscText.indexOf(";");
+			int x=miscText.indexOf(';');
 			if(x>=0)
 				itemID=miscText.substring(x+1);
 			else
@@ -83,7 +83,7 @@ public class Prop_Artifact extends Property
 			waitToReload=System.currentTimeMillis()+5000;
 			return;
 		}
-		int x=text.indexOf(";");
+		int x=text.indexOf(';');
 		if(x>=0)
 		{
 			itemID=text.substring(x+1);

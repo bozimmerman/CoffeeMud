@@ -527,7 +527,7 @@ public class HolidayData extends StdWebMacro
                     String priceLine=(String)priceV.elementAt(v);
                     double priceFactor=0.0;
                     String mask="";
-                    int x=priceLine.indexOf(" ");
+                    int x=priceLine.indexOf(' ');
                     if(x<0)
                         priceFactor=CMath.s_double(priceLine);
                     else

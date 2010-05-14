@@ -80,11 +80,11 @@ public class ProtectedCitizen extends ActiveTicker
 		cityguard=s.substring(0,x).trim();
 		if(cityguard.length()==0)
 		{ cityguard=defcityguard; return "-NAME \"+"+cityguard+"\"";}
-		if((cityguard.indexOf("+")>0)
-		||(cityguard.indexOf("-")>0)
-		||(cityguard.indexOf(">")>0)
-		||(cityguard.indexOf("<")>0)
-		||(cityguard.indexOf("=")>0))
+		if((cityguard.indexOf('+')>0)
+		||(cityguard.indexOf('-')>0)
+		||(cityguard.indexOf('>')>0)
+		||(cityguard.indexOf('<')>0)
+		||(cityguard.indexOf('=')>0))
 		{
 			zapper=cityguard;
 			cityguard=null;

@@ -207,7 +207,7 @@ public class Util
 						while((x<text.length())
 						&&((Character.isDigit(text.charAt(x)))||(text.charAt(x)=='.')))
 							x++;
-						if(text.substring(0,x).indexOf(".")<0)
+						if(text.substring(0,x).indexOf('.')<0)
 						{
 							if(pm=='+')
 								return (double)Util.s_int(text.substring(0,x));
@@ -248,7 +248,7 @@ public class Util
 						while((x<text.length())
 						&&((Character.isDigit(text.charAt(x)))||(text.charAt(x)=='.')))
 							x++;
-						if(text.substring(0,x).indexOf(".")<0)
+						if(text.substring(0,x).indexOf('.')<0)
 							return (double)Util.s_long(text.substring(0,x));
 						return Util.s_double(text.substring(0,x));
 					}
@@ -941,7 +941,7 @@ public class Util
 		for(int commandIndex=startAt;commandIndex<endAt;commandIndex++)
 		{
 			String s=(String)commands.elementAt(commandIndex);
-			if(s.indexOf(" ")>=0) s="\""+s+"\"";
+			if(s.indexOf(' ')>=0) s="\""+s+"\"";
 			Combined.append(s+" ");
 		}
 		return Combined.toString().trim();
@@ -954,7 +954,7 @@ public class Util
         for(int commandIndex=0;commandIndex<0;commandIndex++)
         {
             String s=(String)commands.elementAt(commandIndex);
-            if(s.indexOf(" ")>=0) s="\""+s+"\"";
+            if(s.indexOf(' ')>=0) s="\""+s+"\"";
             Combined.append(s+" ");
         }
         return Combined.toString().trim();
@@ -967,7 +967,7 @@ public class Util
 		for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
 		{
 			String s=(String)commands.elementAt(commandIndex);
-			if(s.indexOf(" ")>=0) s="\""+s+"\"";
+			if(s.indexOf(' ')>=0) s="\""+s+"\"";
 			Combined.append(s+" ");
 		}
 		return Combined.toString().trim();
@@ -1027,7 +1027,7 @@ public class Util
 		str=str.trim();
 		while(!str.equals(""))
 		{
-			int spaceIndex=str.indexOf(" ");
+			int spaceIndex=str.indexOf(' ');
 			int strIndex=str.indexOf("\"");
 			String CMD="";
 			if((strIndex>=0)&&((strIndex<spaceIndex)||(spaceIndex<0)))
@@ -1132,14 +1132,14 @@ public class Util
 	{
 		Vector V=new Vector();
 		if((s==null)||(s.length()==0)) return V;
-		int x=s.indexOf(",");
+		int x=s.indexOf(',');
 		while(x>=0)
 		{
 			String s2=s.substring(0,x).trim();
 			s=s.substring(x+1).trim();
 			if((!ignoreNulls)||(s2.length()>0))
 				V.addElement(s2);
-			x=s.indexOf(",");
+			x=s.indexOf(',');
 		}
 		if((!ignoreNulls)||(s.trim().length()>0))
 			V.addElement(s.trim());
@@ -1150,14 +1150,14 @@ public class Util
     {
         Vector V=new Vector();
         if((s==null)||(s.length()==0)) return V;
-        int x=s.indexOf("|");
+        int x=s.indexOf('|');
         while(x>=0)
         {
             String s2=s.substring(0,x).trim();
             s=s.substring(x+1).trim();
             if((!ignoreNulls)||(s2.length()>0))
                 V.addElement(s2);
-            x=s.indexOf("|");
+            x=s.indexOf('|');
         }
         if((!ignoreNulls)||(s.trim().length()>0))
             V.addElement(s.trim());
@@ -1168,13 +1168,13 @@ public class Util
 	{
 		Vector V=new Vector();
 		if((s==null)||(s.length()==0)) return V;
-		int x=s.indexOf("~");
+		int x=s.indexOf('~');
 		while(x>=0)
 		{
 			String s2=s.substring(0,x).trim();
 			s=s.substring(x+1).trim();
 			V.addElement(s2);
-			x=s.indexOf("~");
+			x=s.indexOf('~');
 		}
 		return V;
 	}
@@ -1183,13 +1183,13 @@ public class Util
 	{
 		Vector V=new Vector();
 		if((s==null)||(s.length()==0)) return V;
-		int x=s.indexOf(".");
+		int x=s.indexOf('.');
 		while(x>=0)
 		{
 			String s2=s.substring(0,x+1);
 			s=s.substring(x+1);
 			V.addElement(s2);
-			x=s.indexOf(".");
+			x=s.indexOf('.');
 		}
 		return V;
 	}
@@ -1198,14 +1198,14 @@ public class Util
 	{
 		Vector V=new Vector();
 		if((s==null)||(s.length()==0)) return V;
-		int x=s.indexOf("~");
+		int x=s.indexOf('~');
 		while(x>=0)
 		{
 			String s2=s.substring(0,x).trim();
 			s=s.substring(x+1).trim();
 			if((s2.length()>0)||(!ignoreNulls))
 				V.addElement(s2);
-			x=s.indexOf("~");
+			x=s.indexOf('~');
 		}
 		if((s.length()>0)||(!ignoreNulls))
 			V.addElement(s);
@@ -1216,14 +1216,14 @@ public class Util
 	{
 		Vector V=new Vector();
 		if((s==null)||(s.length()==0)) return V;
-		int x=s.indexOf(";");
+		int x=s.indexOf(';');
 		while(x>=0)
 		{
 			String s2=s.substring(0,x).trim();
 			s=s.substring(x+1).trim();
 			if((!ignoreNulls)||(s2.length()>0))
 				V.addElement(s2);
-			x=s.indexOf(";");
+			x=s.indexOf(';');
 		}
 		if((!ignoreNulls)||(s.trim().length()>0))
 			V.addElement(s.trim());
@@ -1246,14 +1246,14 @@ public class Util
 	{
 		Vector V=new Vector();
 		if((s==null)||(s.length()==0)) return V;
-		int x=s.indexOf(" ");
+		int x=s.indexOf(' ');
 		while(x>=0)
 		{
 			String s2=s.substring(0,x).trim();
 			s=s.substring(x+1).trim();
 			if((!ignoreNulls)||(s2.length()>0))
 				V.addElement(s2);
-			x=s.indexOf(" ");
+			x=s.indexOf(' ');
 		}
 		if((!ignoreNulls)||(s.trim().length()>0))
 			V.addElement(s.trim());

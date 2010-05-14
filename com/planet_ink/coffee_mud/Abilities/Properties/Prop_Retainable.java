@@ -52,7 +52,7 @@ public class Prop_Retainable extends Property
 	public void setMiscText(String text)
 	{
 		super.setMiscText(text);
-		int x=text.indexOf(";");
+		int x=text.indexOf(';');
 		if(x<0)
 		{
 			payAmountPerPayPeriod=CMath.s_int(text);
@@ -63,7 +63,7 @@ public class Prop_Retainable extends Property
 		{
 			payAmountPerPayPeriod=CMath.s_int(text.substring(0,x));
 			text=text.substring(x+1);
-			x=text.indexOf(";");
+			x=text.indexOf(';');
 			if(x<0)
 			{
 				payPeriodLengthInMudDays=CMath.s_int(text);

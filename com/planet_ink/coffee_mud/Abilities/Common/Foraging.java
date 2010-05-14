@@ -172,7 +172,7 @@ public class Foraging extends GatheringSkill
 						for(int i=0;i<V.size();i++)
 						{
 							String s=(String)V.get(i);
-							int x=s.indexOf(" ");
+							int x=s.indexOf(' ');
 							if((x>=0)&&(CMath.isNumber(s.substring(0,x).trim())))
 								total+=CMath.s_int(s.substring(0,x).trim());
 							else
@@ -183,7 +183,7 @@ public class Foraging extends GatheringSkill
 						for(int i=0;i<V.size();i++)
 						{
 							String s=(String)V.get(i);
-							int x=s.indexOf(" ");
+							int x=s.indexOf(' ');
 							if((x>=0)&&(CMath.isNumber(s.substring(0,x).trim())))
 							{
 								total+=CMath.s_int(s.substring(0,x).trim());

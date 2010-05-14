@@ -153,7 +153,7 @@ public class SMTPserver extends Thread implements Tickable
 				{
 					String s=((String)V.elementAt(v)).trim();
 					String parm="";
-					int x=s.indexOf("(");
+					int x=s.indexOf('(');
 					if((x>0)&&(s.endsWith(")")))
 					{
 						parm=s.substring(x+1,s.length()-1).trim();

@@ -726,7 +726,7 @@ public class CMSecurity
                 for(int i=0;i<jscripts.size();i++)
                 {
                     String s=(String)jscripts.get(i);
-                    int x=s.indexOf("=");
+                    int x=s.indexOf('=');
                     if(x>0)
                         approved.put(Long.valueOf(CMath.s_long(s.substring(0,x))),s.substring(x+1));
                 }
@@ -811,7 +811,7 @@ public class CMSecurity
             String str=(String)banned.get(b);
             if(str.length()>0)
             {
-                if(str.equals("*")||((str.indexOf("*")<0))&&(str.equals(login))) return true;
+                if(str.equals("*")||((str.indexOf('*')<0))&&(str.equals(login))) return true;
                 else
                 if(str.startsWith("*")&&str.endsWith("*")&&(login.indexOf(str.substring(1,str.length()-1))>=0)) return true;
                 else

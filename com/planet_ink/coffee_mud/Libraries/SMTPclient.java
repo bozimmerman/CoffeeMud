@@ -116,7 +116,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	{
 		int x=this.getEmailAddressError(emailAddress);
 		if(x>=0) throw new BadEmailAddressException("Malformed email address");
-		x=emailAddress.indexOf("@");
+		x=emailAddress.indexOf('@');
 		String domain=emailAddress.substring(x+1).trim();
 		Vector addys=new Vector();
 		Attribute mx=doMXLookup(domain);
@@ -134,7 +134,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		for(Enumeration e=addys.elements();e.hasMoreElements();)
 		{
 			String hostid=(String)e.nextElement();
-			int y=hostid.lastIndexOf(" ");
+			int y=hostid.lastIndexOf(' ');
 			if(y>=0) hostid=hostid.substring(y+1).trim();
 			try
 			{
@@ -239,7 +239,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	private int getEmailAddressError(String addy)
 	{
 		if(addy==null) return 0;
-		int x=addy.indexOf("@");
+		int x=addy.indexOf('@');
 		if(x<0) return addy.length();
 		String localPart=addy.substring(0,x).trim();
 		String network=addy.substring(x+1);

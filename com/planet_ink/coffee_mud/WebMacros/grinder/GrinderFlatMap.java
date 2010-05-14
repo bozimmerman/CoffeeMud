@@ -660,7 +660,7 @@ public class GrinderFlatMap
 							buf.append(">");
 							String roomID=GR.roomID;
 							if(roomID.startsWith(area.Name()+"#"))
-							    roomID=roomID.substring(roomID.indexOf("#"));
+							    roomID=roomID.substring(roomID.indexOf('#'));
 							try
 							{
 								buf.append("<a name=\""+URLEncoder.encode(GR.roomID,"UTF-8")+"\" href=\"javascript:RC('"+GR.roomID+"');\"><FONT SIZE=-1><B>"+roomID+"</B></FONT></a><BR>");

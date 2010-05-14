@@ -755,7 +755,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 						for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 						{
 							Room R=(Room)r.nextElement();
-							int x=R.roomID().indexOf("#");
+							int x=R.roomID().indexOf('#');
 							if((x>=0)&&(CMath.s_int(R.roomID().substring(x+1))<lowest))
 								lowest=CMath.s_int(R.roomID().substring(x+1));
 						}

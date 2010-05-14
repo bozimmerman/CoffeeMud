@@ -88,7 +88,7 @@ public class Sounder extends StdBehavior
 				if(s.toUpperCase().startsWith("SOUND "))
 				{
 					s=s.substring(6).trim();
-					int x=s.indexOf(" ");
+					int x=s.indexOf(' ');
 					if(x<0) continue;
 					String y=s.substring(0,x);
 					if(!CMath.isNumber(y)) continue;

@@ -113,7 +113,7 @@ public class Prop_SpellAdder extends Property
 			String parm="";
 			if(thisOne.endsWith(")"))
 			{
-				int x=thisOne.indexOf("(");
+				int x=thisOne.indexOf('(');
 				if(x>0)
 				{
 					parm=thisOne.substring(x+1,thisOne.length()-1);
@@ -135,7 +135,7 @@ public class Prop_SpellAdder extends Property
 	public boolean didHappen(int defaultPct)
 	{
 		String parmString=getParmString(text());
-		int x=parmString.indexOf("%");
+		int x=parmString.indexOf('%');
 		if(x<0)
 		{
 			if(CMLib.dice().rollPercentage()<=defaultPct)
@@ -209,7 +209,7 @@ public class Prop_SpellAdder extends Property
                 Vector V2=new Vector();
                 if(t.length()>0)
                 {
-                    int x=t.indexOf("/");
+                    int x=t.indexOf('/');
                     if(x<0)
                     {
                         V2=CMParms.parse(t);

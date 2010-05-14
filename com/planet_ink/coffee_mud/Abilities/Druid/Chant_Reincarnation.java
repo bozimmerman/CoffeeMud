@@ -52,7 +52,7 @@ public class Chant_Reincarnation extends Chant
 		super.affectPhyStats(affected,affectableStats);
 		if(newRace!=null)
 		{
-			if(affected.name().indexOf(" ")>0)
+			if(affected.name().indexOf(' ')>0)
 				affectableStats.setName("a "+newRace.name()+" called "+affected.name());
 			else
 				affectableStats.setName(affected.name()+" the "+newRace.name());

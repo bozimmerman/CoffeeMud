@@ -557,7 +557,7 @@ public class CMProps extends Properties
         {
         case SYSTEM_PKILL:
             {
-                int x=val.indexOf("-");
+                int x=val.indexOf('-');
                 if(x>0)
                     props.pkillLevelDiff=CMath.s_int(val.substring(x+1));
             }
@@ -625,7 +625,7 @@ public class CMProps extends Properties
     	{
     		s=(String)V.elementAt(v);
     		if(CMath.isInteger(s)){ endVal=CMath.s_int(s); continue;}
-    		int x=s.indexOf(" ");
+    		int x=s.indexOf(' ');
     		if(CMath.isInteger(s.substring(x+1).trim()))
     			set.addElement(s.substring(0,x).trim().toUpperCase(),Integer.valueOf(CMath.s_int(s.substring(x+1).trim())));
     	}
@@ -1101,7 +1101,7 @@ public class CMProps extends Properties
                     s=((String)V.get(v)).trim();
                     if(s.startsWith("//")||s.startsWith(";"))
                         continue;
-                    x=s.indexOf("=");
+                    x=s.indexOf('=');
                     if(x<0) continue;
                     if(s.substring(x+1).trim().length()>0)
                         H.put(s.substring(0,x),s.substring(x+1));

@@ -73,7 +73,7 @@ public class Hireling extends StdBehavior
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
-		int dex=newParms.indexOf(";");
+		int dex=newParms.indexOf(';');
 		zapperMask=null;
 		if(dex>=0)
 		{

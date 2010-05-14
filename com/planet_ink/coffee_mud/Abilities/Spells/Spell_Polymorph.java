@@ -50,7 +50,7 @@ public class Spell_Polymorph extends Spell
 		super.affectPhyStats(affected,affectableStats);
 		if((newRace!=null)&&(affected instanceof MOB))
 		{
-			if(affected.name().indexOf(" ")>0)
+			if(affected.name().indexOf(' ')>0)
 				affectableStats.setName("a "+newRace.name()+" called "+affected.name());
 			else
 				affectableStats.setName(affected.name()+" the "+newRace.name());

@@ -208,8 +208,8 @@ public class DefaultSocial implements Social
 		if(targetStr.length()>0)
 		{
 		    String targetMud="";
-		    if(targetStr.indexOf("@")>0)
-		        targetMud=targetStr.substring(targetStr.indexOf("@")+1);
+		    if(targetStr.indexOf('@')>0)
+		        targetMud=targetStr.substring(targetStr.indexOf('@')+1);
 		    else
 		    {
 		    	target=CMLib.players().getPlayer(targetStr);

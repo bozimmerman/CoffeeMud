@@ -101,7 +101,7 @@ public class TemporaryImmunity extends StdAbility
 			for(int v=0;v<V.size();v++)
 			{
 				String s=(String)V.elementAt(v);
-				int x=s.indexOf("/");
+				int x=s.indexOf('/');
 				if(x>0)
 					set.addElement(s.substring(0,x),Long.valueOf(CMath.s_long(s.substring(x+1))));
 			}

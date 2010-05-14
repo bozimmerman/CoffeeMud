@@ -86,7 +86,7 @@ public class Prop_ClosedDayNight extends Property
 			if(s.startsWith("HOURS="))
 			{
 				s=s.substring(6);
-				int x=s.indexOf("-");
+				int x=s.indexOf('-');
 				if(x>=0)
 				{
 					openTime=CMath.s_int(s.substring(0,x));

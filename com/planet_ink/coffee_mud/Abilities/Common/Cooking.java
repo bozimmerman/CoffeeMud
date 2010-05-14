@@ -272,8 +272,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				if(amounts[i]<0)
 				{
 					String content=contents[i];
-					if(content.indexOf("/")>=0)
-						content=content.substring(0,content.indexOf("/"));
+					if(content.indexOf('/')>=0)
+						content=content.substring(0,content.indexOf('/'));
 					codedList.addElement(content);
 				}
 		}
@@ -289,8 +289,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				&&(!ingredient2.toUpperCase().startsWith("WATER/")))
 				{
 					String content=contents[i];
-					if(content.indexOf("/")>=0)
-						content=content.substring(0,content.indexOf("/"));
+					if(content.indexOf('/')>=0)
+						content=content.substring(0,content.indexOf('/'));
 					codedList.addElement(content);
 				}
 			}
@@ -321,8 +321,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			if(!found)
 			{
 				String content=ingredient;
-				if(content.indexOf("/")>=0)
-					content=content.substring(0,content.indexOf("/"));
+				if(content.indexOf('/')>=0)
+					content=content.substring(0,content.indexOf('/'));
 				extra.addElement(content);
 			}
 		}
@@ -400,7 +400,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 					if(name.endsWith(" flesh"))
 						name=name.substring(0,name.length()-6);
 					name=name.trim();
-					int x=name.lastIndexOf(" ");
+					int x=name.lastIndexOf(' ');
 					if((x>0)&&(!name.substring(x+1).trim().equalsIgnoreCase("of")))
 						replaceName=name.substring(x+1);
 					else

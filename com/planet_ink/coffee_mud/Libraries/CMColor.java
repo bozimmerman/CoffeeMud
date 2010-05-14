@@ -54,7 +54,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 	{
 	    if(code.length()==0) return code;
 	    if(!code.startsWith("^")) return code;
-	    int background=code.indexOf("|");
+	    int background=code.indexOf('|');
 	    int bold=0;
 	    for(int i=0;i<code.length();i++)
 	        if(Character.isLowerCase(code.charAt(i)))
@@ -67,8 +67,8 @@ public class CMColor extends StdLibrary implements ColorLibrary
 	public String translateANSItoCMCode(String code)
 	{
 	    if(code.length()==0) return code;
-	    if(code.indexOf("^")==0) return code;
-	    if(code.indexOf("|")>0) return code;
+	    if(code.indexOf('^')==0) return code;
+	    if(code.indexOf('|')>0) return code;
 	    String code1=null;
 	    String code2=null;
 	    boolean bold=(code.indexOf(";1;")>0)||(code.indexOf("[1;")>0);
@@ -186,7 +186,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
             for(int i=0;i<schemeSettings.size();i++)
             {
                 String s=(String)schemeSettings.elementAt(i);
-                int x=s.indexOf("=");
+                int x=s.indexOf('=');
                 if(x>0)
                 {
                     String key=s.substring(0,x).trim();
@@ -202,7 +202,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
                         String addCode=null;
                         while(value.length()>0)
                         {
-                            x=value.indexOf("+");
+                            x=value.indexOf('+');
                             if(x<0)
                             {
                                 addColor=value;
@@ -293,7 +293,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			for(int i=0;i<schemeSettings.size();i++)
 			{
 			    String s=(String)schemeSettings.elementAt(i);
-			    int x=s.indexOf("=");
+			    int x=s.indexOf('=');
 			    if(x>0)
 			    {
 			        String key=s.substring(0,x).trim();
@@ -309,7 +309,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			            String addCode=null;
 			            while(value.length()>0)
 			            {
-			                x=value.indexOf("+");
+			                x=value.indexOf('+');
 			                if(x<0)
 			                {
 			                    addColor=value;

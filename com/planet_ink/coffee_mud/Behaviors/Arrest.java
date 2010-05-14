@@ -685,7 +685,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
     {
         String s=getDetainParm(laws,W,criminal);
         if((s==null)||(s.length()==0)) return "";
-        int x=s.indexOf(",");
+        int x=s.indexOf(',');
         if((x<0)||(!CMath.isInteger(s.substring(x+1)))) return s;
         return s.substring(0,x);
     }
@@ -693,7 +693,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
     {
         String s=getDetainParm(laws,W,criminal);
         if((s==null)||(s.length()==0)) return -1;
-        int x=s.indexOf(",");
+        int x=s.indexOf(',');
         if((x<0)||(!CMath.isInteger(s.substring(x+1)))) 
             return laws.jailTimes()[0].intValue();
         return CMath.s_int(s.substring(x+1));
@@ -1385,7 +1385,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
         for(int v=0;v<sentences.size();v++)
         {
             String s=(String)sentences.elementAt(v);
-            int x=s.indexOf("=");
+            int x=s.indexOf('=');
             String parm=null;
             if(x>0)
             {
@@ -1542,8 +1542,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			int x=msg.sourceMessage().toUpperCase().indexOf("I HEREBY PARDON ");
 			if(x>0)
 			{
-				int y=msg.sourceMessage().lastIndexOf("'");
-				if(y<x)	y=msg.sourceMessage().lastIndexOf("`");
+				int y=msg.sourceMessage().lastIndexOf('\'');
+				if(y<x)	y=msg.sourceMessage().lastIndexOf('`');
 				String name=null;
 				if(y>x)
 					name=msg.sourceMessage().substring(x+16,y).trim();

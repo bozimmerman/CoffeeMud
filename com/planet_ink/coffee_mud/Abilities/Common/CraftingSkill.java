@@ -60,12 +60,12 @@ public class CraftingSkill extends GatheringSkill
 			if(x>=0) return new StringBuffer(thisStr).replace(x,x+2,withThis).toString();
 			x=thisStr.indexOf(" %");
 			if(x>=0) return new StringBuffer(thisStr).replace(x,x+2,withThis).toString();
-			x=thisStr.indexOf("%");
+			x=thisStr.indexOf('%');
 			if(x>=0) return new StringBuffer(thisStr).replace(x,x+1,withThis).toString();
 		}
 		else
 		{
-			int x=thisStr.indexOf("%");
+			int x=thisStr.indexOf('%');
 			if(x>=0) return new StringBuffer(thisStr).replace(x,x+1,withThis).toString();
 		}
 		return thisStr;

@@ -65,7 +65,7 @@ public class Whisper extends StdCommand
 		for(int i=1;i<commands.size();i++)
 		{
 			String s=(String)commands.elementAt(i);
-			if(s.indexOf(" ")>=0)
+			if(s.indexOf(' ')>=0)
 				commands.setElementAt("\""+s+"\"",i);
 		}
 		String combinedCommands=CMParms.combine(commands,1);

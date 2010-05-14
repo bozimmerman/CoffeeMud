@@ -351,7 +351,7 @@ public class DBConnections
 			String Val=Results.getString(Field);
 			if(Val!=null)
 			{
-				if(Val.indexOf(".")>=0)
+				if(Val.indexOf('.')>=0)
 					return Math.round(Float.parseFloat(Val));
 				return Long.parseLong(Val);
 			}

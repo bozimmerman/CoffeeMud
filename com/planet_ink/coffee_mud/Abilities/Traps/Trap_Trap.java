@@ -185,7 +185,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		if(mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> trigger(s) a trap set in <T-NAME>!"))
 		{
 			String spell=text();
-			int x=spell.indexOf(";");
+			int x=spell.indexOf(';');
 			Vector V=new Vector();
 			V.addElement(mob.name());
 			if(x>0)

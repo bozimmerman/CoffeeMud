@@ -712,7 +712,7 @@ public class GrinderMobs
                                 SK.getShop().addStoreInventory((Environmental)O.copyOf(),CMath.s_int(theparm),CMath.s_int(theprice));
 				        }
 				        else
-						if(MATCHING.indexOf("@")>0)
+						if(MATCHING.indexOf('@')>0)
 						{
 							Environmental O=null;
 							for(int m=0;m<RoomData.mobs.size();m++)

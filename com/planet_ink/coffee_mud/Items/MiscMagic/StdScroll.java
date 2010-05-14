@@ -149,7 +149,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 							while((thisOne==null)&&(spellName.length()>0))
 							{
 
-								int t=spellName.lastIndexOf(" ");
+								int t=spellName.lastIndexOf(' ');
 								if(t<0)
 									spellName="";
 								else
@@ -197,7 +197,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		int baseValue=200;
 		Vector theSpells=new Vector();
 		String names=me.getSpellList();
-		int del=names.indexOf(";");
+		int del=names.indexOf(';');
 		while(del>=0)
 		{
 			String thisOne=names.substring(0,del);
@@ -212,7 +212,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 				}
 			}
 			names=names.substring(del+1);
-			del=names.indexOf(";");
+			del=names.indexOf(';');
 		}
 		if((names.length()>0)&&(!names.equals(";")))
 		{

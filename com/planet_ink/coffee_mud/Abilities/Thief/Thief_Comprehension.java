@@ -96,7 +96,7 @@ public class Thief_Comprehension extends ThiefSkill
 				if(msg.amITarget(affected)&&(msg.targetMessage()!=null))
 					queue.addElement(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,msg.targetCode(),CMMsg.NO_EFFECT,CMStrings.substituteSayInMessage(msg.targetMessage(),str)+" (translated from "+((Ability)msg.tool()).ID()+")"));
 				else
-				if((msg.othersMessage()!=null)&&(msg.othersMessage().indexOf("'")>0))
+				if((msg.othersMessage()!=null)&&(msg.othersMessage().indexOf('\'')>0))
 				{
 					String otherMes=msg.othersMessage();
 					if(msg.target()!=null)

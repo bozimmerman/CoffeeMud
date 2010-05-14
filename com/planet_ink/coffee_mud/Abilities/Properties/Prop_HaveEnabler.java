@@ -59,7 +59,7 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
         MOB newMOB=(MOB)target;
 		List<Ability> V=getMySpellsV();
 		int proff=100;
-		int x=text().indexOf("%");
+		int x=text().indexOf('%');
 		if(x>0)
 		{
 			int mul=1;
@@ -83,7 +83,7 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 				String t=A.text();
 				if(t.length()>0)
 				{
-					x=t.indexOf("/");
+					x=t.indexOf('/');
 					if(x<0)
 						A.setMiscText("");
 					else

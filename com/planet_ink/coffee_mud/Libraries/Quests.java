@@ -995,7 +995,7 @@ public class Quests extends StdLibrary implements QuestManager
             String priceLine=(String)priceV.elementAt(v);
             double priceFactor=0.0;
             String mask="";
-            int x=priceLine.indexOf(" ");
+            int x=priceLine.indexOf(' ');
             if(x<0)
                 priceFactor=CMath.s_double(priceLine);
             else
@@ -1321,7 +1321,7 @@ public class Quests extends StdLibrary implements QuestManager
                         {
                             if(parsePages)
                             {
-                                int x=s.indexOf("=");
+                                int x=s.indexOf('=');
                                 if(x<0)
                                     Log.errOut("Quests","Illegal QuestMaker variable syntax: "+s);
                                 else

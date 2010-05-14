@@ -46,7 +46,7 @@ public class Prop_HaveZapper extends Property
 
     public boolean didHappen(int defaultPct)
     {
-        int x=text().indexOf("%");
+        int x=text().indexOf('%');
         if(x<0)
         {
             if(CMLib.dice().rollPercentage()<=defaultPct)

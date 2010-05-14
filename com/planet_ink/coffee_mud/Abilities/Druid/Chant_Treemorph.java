@@ -139,7 +139,7 @@ public class Chant_Treemorph extends Chant
 		// can get them out of it.
 		if((treeForm!=null)&&(affected instanceof MOB))
 		{
-			if(affected.name().indexOf(" ")>0)
+			if(affected.name().indexOf(' ')>0)
 				affectableStats.setName("a "+treeForm.name()+" called "+affected.name());
 			else
 				affectableStats.setName(affected.name()+" the "+treeForm.name());

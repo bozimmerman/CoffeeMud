@@ -428,7 +428,7 @@ public class StdLanguage extends StdAbility implements Language
 
 	protected boolean translateOthersMessage(CMMsg msg, String sourceWords)
 	{
-		if((msg.othersMessage()!=null)&&(msg.othersMessage().indexOf("'")>0))
+		if((msg.othersMessage()!=null)&&(msg.othersMessage().indexOf('\'')>0))
 		{
 			String otherMes=msg.othersMessage();
 			if(msg.target()!=null)

@@ -83,10 +83,10 @@ public class Corpse extends GenContainer implements DeadBody
 	
 	public void setSecretIdentity(String newIdentity)
 	{
-		if(newIdentity.indexOf("/")>0)
+		if(newIdentity.indexOf('/')>0)
 		{
 			playerCorpse=false;
-			int x=newIdentity.indexOf("/");
+			int x=newIdentity.indexOf('/');
 			if(x>=0)
 			{
 				mobName=newIdentity.substring(0,x);

@@ -99,7 +99,7 @@ public class Buy extends StdCommand
 		String forName="";
 		if((mobFor!=null)&&(mobFor!=mob))
 		{
-			if(mobFor.name().indexOf(" ")>=0)
+			if(mobFor.name().indexOf(' ')>=0)
 				forName=" for '"+mobFor.Name()+"'";
 			else
 				forName=" for "+mobFor.Name();

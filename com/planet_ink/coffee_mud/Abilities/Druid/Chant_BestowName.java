@@ -73,7 +73,7 @@ public class Chant_BestowName extends Chant
 			mob.tell("You must specify a name.");
 			return false;
 		}
-		if(myName.indexOf(" ")>=0)
+		if(myName.indexOf(' ')>=0)
 		{
 			mob.tell("Your name may not contain a space.");
 			return false;
@@ -92,7 +92,7 @@ public class Chant_BestowName extends Chant
 		||(target.name().toUpperCase().startsWith("SOME ")))
 			myName=target.name()+" named "+myName;
 		else
-		if(target.name().indexOf(" ")>=0)
+		if(target.name().indexOf(' ')>=0)
 			myName=myName+", "+target.name();
 
 
