@@ -100,10 +100,10 @@ public class HTTPserver extends Thread implements MudHost
 
 	public Properties getCommonPropPage()
 	{
-		if (webCommon==null || !webCommon.loaded)
+		if (webCommon==null || !webCommon.isLoaded())
 		{
 			webCommon=new CMProps ("web/common.ini");
-			if(!webCommon.loaded)
+			if(!webCommon.isLoaded())
 				Log.errOut("HTTPserver","Unable to load common.ini!");
 		}
 		return webCommon;
@@ -207,11 +207,11 @@ public class HTTPserver extends Thread implements MudHost
 
 	protected boolean loadPropPage()
 	{
-		if (page==null || !page.loaded)
+		if (page==null || !page.isLoaded())
 		{
 			String fn = "web/" + getPartialName() + ".ini";
 			page=new CMProps(getCommonPropPage(), fn);
-			if(!page.loaded)
+			if(!page.isLoaded())
 			{
 				Log.errOut(getName(),"failed to load " + fn);
 				return false;
@@ -242,7 +242,7 @@ public class HTTPserver extends Thread implements MudHost
 		boolean serverOK = false;
 
 		if (!isOK)	return;
-		if ((page == null) || (!page.loaded))
+		if ((page == null) || (!page.isLoaded()))
 		{
 			Log.errOut(getName(),"ERROR: HTTPserver will not run with no properties. WebServer shutting down.");
 			isOK = false;

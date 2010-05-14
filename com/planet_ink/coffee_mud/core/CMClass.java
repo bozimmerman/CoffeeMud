@@ -900,7 +900,8 @@ public class CMClass extends ClassLoader
         //return V2;
     }
 
-    public static void sortEnvironmentalsByName(Vector<Environmental> V) {
+    public static void sortEnvironmentalsByName(Vector<Environmental> V) 
+    {
         Hashtable<String,Environmental[]> nameHash=new Hashtable<String,Environmental[]>();
         Vector<Environmental> V3;
         for(Enumeration<Environmental> e=V.elements();e.hasMoreElements();)
@@ -958,11 +959,13 @@ public class CMClass extends ClassLoader
     { CMMsg M=MsgFactory(); M.modify(source,target,tool,newSourceCode,sourceMessage,newTargetCode,targetMessage,newOthersCode,othersMessage); return M;}
 
 
-    public static void shutdown() {
+    public static void shutdown() 
+    {
         for(int c=0;c<clss.length;c++)
             if(clss[c]!=null)
                 clss[c].unload();
     }
+    
 	public void unload()
 	{
         common=new Hashtable<String,CMCommon>();
@@ -984,11 +987,13 @@ public class CMClass extends ClassLoader
 		webMacros=new Hashtable<String,WebMacro>();
 		commandWords=new Hashtable<String,Command>();
 	}
+	
     private void initializeClassGroup(List<? extends CMObject> V)
     { 
     	for(int v=0;v<V.size();v++) 
     		((CMObject)V.get(v)).initializeClass();
     }
+    
     private void initializeClassGroup(Map<String,? extends CMObject> H)
     {
         for(Object o : H.keySet())
@@ -1264,7 +1269,8 @@ public class CMClass extends ClassLoader
      * will always want the class resolved before it is returned
      * to them.
      */
-    public Class<?> loadClass(String className) throws ClassNotFoundException {
+    public Class<?> loadClass(String className) throws ClassNotFoundException 
+    {
         return (loadClass(className, true));
     }
 
@@ -1425,7 +1431,6 @@ public class CMClass extends ClassLoader
                 for(int w=0;w<wordList.length;w++)
                     c().commandWords.put(wordList[w].trim().toUpperCase(),C);
         }
-
     }
 
 	public static boolean loadClasses(CMProps page)

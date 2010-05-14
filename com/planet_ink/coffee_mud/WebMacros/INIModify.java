@@ -68,7 +68,7 @@ public class INIModify extends StdWebMacro
 			if((key==null)||(key.trim().length()==0)) return "";
 			key=key.trim().toUpperCase();
             CMProps ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
-			if((ipage==null)||(!ipage.loaded)) return "";
+			if((ipage==null)||(!ipage.isLoaded())) return "";
 			if(ipage.containsKey(key)) return "";
 			int where=0;
 			if(parms.containsKey("NEAR"))
@@ -126,7 +126,7 @@ public class INIModify extends StdWebMacro
 		{
 			HashSet modified=new HashSet();
             CMProps ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
-			if((ipage==null)||(!ipage.loaded)) return "";
+			if((ipage==null)||(!ipage.isLoaded())) return "";
 			for(int p=0;p<page.size();p++)
 			{
 				String s=((String)page.get(p)).trim();
@@ -151,7 +151,7 @@ public class INIModify extends StdWebMacro
                 if(modified.contains("JSCRIPTS")) return ""; // never modified through this
 				updateINIFile(page);
 				ipage=CMProps.loadPropPage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
-				if((ipage==null)||(!ipage.loaded)) return "";
+				if((ipage==null)||(!ipage.isLoaded())) return "";
 				ipage.resetSystemVars();
 				if(modified(modified,"SYSOPMASK"))
 					CMSecurity.setSysOp(ipage.getStr("SYSOPMASK"));

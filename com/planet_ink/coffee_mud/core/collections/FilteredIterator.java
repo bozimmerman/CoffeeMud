@@ -41,8 +41,9 @@ public class FilteredIterator<K> implements Iterator<K>
 		while((nextElement==null) && (iter.hasNext()))
 		{
 			nextElement = iter.next();
-			if(filterer.equals(nextElement))
+			if(filterer.passesFilter(nextElement))
 				return;
+			nextElement = null;
 		}
 	}
 	

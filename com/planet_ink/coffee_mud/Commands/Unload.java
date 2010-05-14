@@ -248,15 +248,15 @@ public class Unload extends StdCommand
         		}
         	}
         	
-			Vector V=Resources.findResourceKeys(str);
-			if(V.size()==0)
+			Iterator<String> k=Resources.findResourceKeys(str);
+			if(!k.hasNext())
 			{
 				mob.tell("Unknown resource '"+str+"'.  Use LIST RESOURCES.");
 				return false;
 			}
-			for(int v=0;v<V.size();v++)
+			for(;k.hasNext();)
 			{
-				String key=(String)V.elementAt(v);
+				String key=k.next();
 				Resources.removeResource(key);
 				mob.tell("Resource '"+key+"' unloaded.");
 			}

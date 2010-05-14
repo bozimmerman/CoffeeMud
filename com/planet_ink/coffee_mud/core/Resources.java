@@ -36,6 +36,28 @@ import java.util.*;
 public class Resources
 {
     private static Resources[] rscs=new Resources[256];
+    private static boolean 	   compress=false;
+    
+	private STreeMap<String,Object> resources=new STreeMap<String,Object>(new Comparator<String>(){
+		public int compare(String o1, String o2) {
+			if(o1==null)
+			{
+				if(o2==null) return 0;
+				return -1;
+			}
+			else
+			if(o2==null)
+				return 1;
+			return o1.compareToIgnoreCase(o2);
+		}
+	});
+	
+	private static class CompressedResource
+	{
+		public byte[] data;
+		public CompressedResource(byte[] d) { data=d;}
+	}
+	
     public Resources()
     {
         super();
@@ -51,16 +73,12 @@ public class Resources
     }
     public static Resources instance(char c){ return rscs[c];}
     private static Resources r(){ return rscs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
-
-    private static boolean compress=false;
     
     public static Resources newResources(){ return new Resources();}
 
-	private DVector resources=new DVector(3);
-
     public static void clearResources(){r()._clearResources();}
     public static void removeResource(String ID){ r()._removeResource(ID);}
-    public static Vector<String> findResourceKeys(String srch){return r()._findResourceKeys(srch);}
+    public static Iterator<String> findResourceKeys(String srch){return r()._findResourceKeys(srch);}
     public static Object getResource(String ID){return r()._getResource(ID);}
     public static void submitResource(String ID, Object obj){r()._submitResource(ID,obj);}
     public static boolean isFileResource(String filename){return r()._isFileResource(filename);}
@@ -179,65 +197,30 @@ public class Resources
 
 	public void _clearResources()
 	{
-		synchronized(resources)
-		{
-			resources.clear();
-		}
+		resources.clear();
 	}
 
-	public Vector<String> _findResourceKeys(String srch)
+	public Iterator<String> _findResourceKeys(final String srch)
 	{
-		synchronized(resources)
-		{
-			Vector<String> V=new Vector<String>();
-			for(int i=0;i<resources.size();i++)
-			{
-				String key=(String)resources.elementAt(i,1);
-				if((srch.length()==0)||(key.toUpperCase().indexOf(srch.toUpperCase())>=0))
-					V.addElement(key);
+		final String lowerSrch=srch.toLowerCase();
+		final boolean allOfThem=(lowerSrch.length()==0);
+		return new FilteredIterator<String>(resources.keySet().iterator(), new Filterer<String>(){
+			public boolean passesFilter(String obj) {
+				return (allOfThem) || (obj.toLowerCase().indexOf(lowerSrch)>=0);
 			}
-			return V;
-		}
+		});
 	}
 
-    private int _getResourceIndex(String ID)
-    {
-		// protected elsewhere
-        if(resources.size()==0) return -1;
-        int start=0;
-        int end=resources.size()-1;
-        while(start<=end)
-        {
-            int mid=(end+start)/2;
-            int comp=((String)resources.elementAt(mid,1)).compareToIgnoreCase(ID);
-            if(comp==0)
-                return mid;
-            else
-            if(comp>0)
-                end=mid-1;
-            else
-                start=mid+1;
-
-        }
-        return -1;
-    }
-    
 	public Object _getResource(String ID)
 	{
-		synchronized(resources)
+		Object O = resources.get(ID);
+		if(O!=null)
 		{
-			// protected elsewhere
-			int x = _getResourceIndex(ID);
-			if((x<resources.size())&&(x>=0))
-			{
-				if(!compress) return resources.elementAt(x,2);
-				if((((Boolean)resources.elementAt(x,3)).booleanValue())
-	            &&(resources.elementAt(x,2) instanceof byte[]))
-					return new StringBuffer(CMLib.encoder().decompressString((byte[])resources.elementAt(x,2)));
-				return resources.elementAt(x,2);
-			}
-			return null;
+			if(compress && (O instanceof CompressedResource))
+				return new StringBuffer(CMLib.encoder().decompressString(((CompressedResource)O).data));
+			return O;
 		}
+		return null;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -251,80 +234,24 @@ public class Resources
 		return obj;
 	}
 
-	public void _submitResource(String ID, Object obj)
+	public Object _submitResource(String ID, Object obj)
 	{
-		synchronized(resources)
-		{
-            int properIndex=-1;
-            if(ID.length()==0) 
-                properIndex=0;
-            else
-            if(resources.size()>0)
-            {
-                int start=0;
-                int end=resources.size()-1;
-                int mid=0;
-                while(start<=end)
-                {
-                    mid=(end+start)/2;
-                    int comp=((String)resources.elementAt(mid,1)).compareToIgnoreCase(ID);
-                    if(comp==0) 
-                        return;
-                    else
-                    if(comp>0)
-                        end=mid-1;
-                    else
-                        start=mid+1;
-                }
-                if(end<0) 
-                    properIndex=0;
-                else
-                if(start>=resources.size()) 
-                    properIndex=resources.size()-1;
-                else
-                    properIndex=mid;
-            }
-            Object prepared=prepareObject(obj);
-            Boolean preparedB=new Boolean(prepared!=obj);
-            if(properIndex<0)
-                resources.addElement(ID,prepared,preparedB);
-            else
-            {
-                int comp=((String)resources.elementAt(properIndex,1)).compareToIgnoreCase(ID);
-                if(comp>0)
-                    resources.insertElementAt(properIndex,ID,prepared,preparedB);
-                else
-                if(properIndex==resources.size()-1)
-                    resources.addElement(ID,prepared,preparedB);
-                else
-                    resources.insertElementAt(properIndex+1,ID,prepared,preparedB);
-            }
-        }
+        Object prepared=prepareObject(obj);
+        if(prepared != obj)
+        	resources.put(ID,new CompressedResource((byte[])prepared));
+        else
+        	resources.put(ID,prepared);
+        return prepared;
 	}
 
 	private Object _updateResource(String ID, Object obj)
 	{
-		synchronized(resources)
-		{
-            int index=_getResourceIndex(ID);
-            if(index<0) return null;
-            Object prepared=prepareObject(obj);
-			resources.setElementAt(index,2,prepared);
-            resources.setElementAt(index,3,new Boolean(prepared!=obj));
-            return prepared;
-		}
+		return _submitResource(ID, obj);
 	}
 
 	public void _removeResource(String ID)
 	{
-		synchronized(resources)
-		{
-			try{
-                int index=_getResourceIndex(ID);
-                if(index<0) return;
-				resources.removeElementAt(index);
-			}catch(ArrayIndexOutOfBoundsException e){}
-		}
+		resources.remove(ID);
 	}
 
 	public boolean _isFileResource(String filename)

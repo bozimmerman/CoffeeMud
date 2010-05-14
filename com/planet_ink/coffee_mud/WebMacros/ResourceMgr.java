@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class ResourceMgr extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
@@ -51,10 +50,9 @@ public class ResourceMgr extends StdWebMacro
 		if(parms.containsKey("NEXT"))
 		{
 			String lastID="";
-			Vector V=Resources.findResourceKeys("");
-			for(int i=0;i<V.size();i++)
+			for(Iterator<String> k=Resources.findResourceKeys("");k.hasNext();)
 			{
-				String key=(String)V.elementAt(i);
+				String key=k.next();
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!key.equals(lastID))))
 				{
 					httpReq.addRequestParameters("RESOURCE",key);

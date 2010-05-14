@@ -101,10 +101,10 @@ public class SMTPserver extends Thread implements Tickable
 
 	public Properties getCommonPropPage()
 	{
-		if (iniPage==null || !iniPage.loaded)
+		if (iniPage==null || !iniPage.isLoaded())
 		{
 			iniPage=new CMProps ("web/common.ini");
-			if(!iniPage.loaded)
+			if(!iniPage.isLoaded())
 				Log.errOut("SMTPserver","Unable to load common.ini!");
 		}
 		return iniPage;
@@ -251,11 +251,11 @@ public class SMTPserver extends Thread implements Tickable
 
 	protected boolean loadPropPage()
 	{
-		if (page==null || !page.loaded)
+		if (page==null || !page.isLoaded())
 		{
 			String fn = "web/email.ini";
 			page=new CMProps (getCommonPropPage(), fn);
-			if(!page.loaded)
+			if(!page.isLoaded())
 			{
 				Log.errOut(getName(),"failed to load " + fn);
 				return false;
@@ -271,7 +271,7 @@ public class SMTPserver extends Thread implements Tickable
 		boolean serverOK = false;
 
 		if (!isOK)	return;
-		if ((page == null) || (!page.loaded))
+		if ((page == null) || (!page.isLoaded()))
 		{
 			Log.errOut(getName(),"ERROR: SMTPserver will not run with no properties. Shutting down.");
 			isOK = false;

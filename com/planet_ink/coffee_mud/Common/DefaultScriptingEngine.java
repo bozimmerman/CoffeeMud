@@ -122,10 +122,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
     {
         if((scope==null)||(scope.length()==0)) return "";
         StringBuffer str=new StringBuffer("");
-        Vector V=resources._findResourceKeys("SCRIPTVAR-");
-        for(int v=0;v<V.size();v++)
+        for(Iterator<String> k = resources._findResourceKeys("SCRIPTVAR-");k.hasNext();)
         {
-            String key=(String)V.elementAt(v);
+            String key=k.next();
             if(key.startsWith("SCRIPTVAR-"))
             {
                 str.append("<"+key.substring(10)+">");
@@ -144,10 +143,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
     public void setLocalVarXML(String xml)
     {
-        Vector<String> rKeys=resources._findResourceKeys("SCRIPTVAR-");
-        for(int v=0;v<rKeys.size();v++)
+        for(Iterator<String> k = Resources.findResourceKeys("SCRIPTVAR-");k.hasNext();)
         {
-            String key=(String)rKeys.elementAt(v);
+            String key=k.next();
             if(key.startsWith("SCRIPTVAR-"))
                 resources._removeResource(key);
         }
@@ -418,14 +416,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
     public boolean isVar(String host, String var) {
         if(host.equalsIgnoreCase("*"))
         {
-            Vector V=resources._findResourceKeys("SCRIPTVAR-");
             String val=null;
             Hashtable H=null;
             String key=null;
             var=var.toUpperCase();
-            for(int v=0;v<V.size();v++)
+            for(Iterator<String> k = resources._findResourceKeys("SCRIPTVAR-");k.hasNext();)
             {
-                key=(String)V.elementAt(v);
+                key=k.next();
                 if(key.startsWith("SCRIPTVAR-"))
                 {
                     H=(Hashtable)resources._getResource(key);
@@ -457,14 +454,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
         		parseLoads(getScript(),0,null,str);
         		return str.toString();
         	}
-            Vector V=resources._findResourceKeys("SCRIPTVAR-");
             String val=null;
             Hashtable H=null;
             String key=null;
             var=var.toUpperCase();
-            for(int v=0;v<V.size();v++)
+            for(Iterator<String> k = resources._findResourceKeys("SCRIPTVAR-");k.hasNext();)
             {
-                key=(String)V.elementAt(v);
+                key=k.next();
                 if(key.startsWith("SCRIPTVAR-"))
                 {
                     H=(Hashtable)resources._getResource(key);
@@ -1424,10 +1420,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
         DVector set=new DVector(2);
         if(mobname.equals("*"))
         {
-            Vector V=resources._findResourceKeys("SCRIPTVAR-");
-            for(int v=0;v<V.size();v++)
+            for(Iterator<String> k = resources._findResourceKeys("SCRIPTVAR-");k.hasNext();)
             {
-                String key=(String)V.elementAt(v);
+                String key=k.next();
                 if(key.startsWith("SCRIPTVAR-"))
                 {
                     Hashtable H=(Hashtable)resources._getResource(key);
@@ -6887,10 +6882,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     boolean foundKey=false;
                     scriptname=scriptname.toUpperCase().trim();
                     String parmname=scriptname;
-                    Vector V=Resources.findResourceKeys(parmname);
-                    for(Enumeration e=V.elements();e.hasMoreElements();)
+                    for(Iterator<String> k = Resources.findResourceKeys(parmname);k.hasNext();)
                     {
-                        String key=(String)e.nextElement();
+                        String key=k.next();
                         if(key.startsWith("PARSEDPRG: ")&&(key.toUpperCase().endsWith(parmname)))
                         { foundKey=true; delThese.addElement(key);}
                     }

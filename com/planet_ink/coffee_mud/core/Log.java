@@ -35,31 +35,47 @@ import java.util.*;
 */
 public class Log
 {
-    private static Log[] logs=new Log[256];
-    public Log(){
+    
+    /** final date format for headers */
+    public static final SimpleDateFormat dateFormat=new SimpleDateFormat("yyyyMMdd.HHmm.ssSS");
+    /** SPACES for headers */
+    private static final String SPACES="                                                                                               ";
+	/**	always to "log" */
+	private PrintWriter fileOutWriter=null;
+	/** always to systemout */
+	private PrintWriter systemOutWriter=new PrintWriter(System.out,true);
+	/** The fully qualified file path */
+	private String 		filePath = "";
+	/** log name */
+	private String 		logName = "application";
+	private String 		LOGNAME = "APPLICATION";
+    private Hashtable<String,String> 		FLAGS=new Hashtable<String,String>();
+    private Hashtable<String,PrintWriter[]> WRITERS=new Hashtable<String,PrintWriter[]>();
+    private static final Log[] 				logs=new Log[256];
+    public Log()
+    {
         super();
         char threadCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
-        if(logs==null) 
-            logs=new Log[256];
         if(logs[threadCode]==null)
             logs[threadCode]=this;
     }
     private static Log l(){ return logs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
     public static Log l(char threadCode){return logs[threadCode];}
-    public static Log instance(){
+    public static Log instance()
+    {
         Log log=l();
         if(log==null) 
             log=new Log();
         return log;
     }
-    public static Log newInstance(){
+    public static Log newInstance()
+    {
         char threadCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
-        if(logs==null) 
-            logs=new Log[256];
         logs[threadCode]=new Log();
         return l();
     }
-    public static void shareWith(char threadCode) {
+    public static void shareWith(char threadCode) 
+    {
         char tc=Thread.currentThread().getThreadGroup().getName().charAt(0);
         if(logs[threadCode]!=null)
             logs[tc]=logs[threadCode];
@@ -69,24 +85,6 @@ public class Log
         else
             logs[tc]=logs[threadCode]=new Log();
     }
-    
-    /** final date format for headers */
-    public static SimpleDateFormat dateFormat=new SimpleDateFormat("yyyyMMdd.HHmm.ssSS");
-    /** SPACES for headers */
-    private static final String SPACES="                                                                                               ";
-
-	/**	always to "log" */
-	private PrintWriter fileOutWriter=null;
-	/** always to systemout */
-	private PrintWriter systemOutWriter=new PrintWriter(System.out,true);
-	/** The fully qualified file path */
-	private String filePath = "";
-	/** log name */
-	private String logName = "application";
-	private String LOGNAME = "APPLICATION";
-
-    private Hashtable<String,String> FLAGS=new Hashtable<String,String>();
-    private Hashtable<String,PrintWriter[]> WRITERS=new Hashtable<String,PrintWriter[]>();
 
 	/**
 	 * Optional method to determine if message is a masked

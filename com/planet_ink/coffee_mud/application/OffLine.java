@@ -411,7 +411,7 @@ public class OffLine extends Thread implements MudHost
             while(true)
             {
                 page=CMProps.loadPropPage(iniFile);
-                if ((page==null)||(!page.loaded))
+                if ((page==null)||(!page.isLoaded()))
                 {
                     System.out.println("ERROR: Unable to read ini file: '"+iniFile+"'.");
                     System.exit(-1);

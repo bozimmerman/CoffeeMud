@@ -133,10 +133,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                 String filename=((String)internalFiles.elementAt(i,1)).toUpperCase();
                 Vector<String> delThese=new Vector<String>();
                 boolean foundKey=false;
-                Vector<String> V=Resources.findResourceKeys(filename);
-                for(Enumeration<String> e=V.elements();e.hasMoreElements();)
-                {
-                    String key=(String)e.nextElement();
+    			for(Iterator<String> k=Resources.findResourceKeys(filename);k.hasNext();)
+    			{
+    				String key=k.next();
                     if(key.startsWith("PARSEDPRG: ")&&(key.toUpperCase().endsWith(filename)))
                     { foundKey=true; delThese.addElement(key);}
                 }

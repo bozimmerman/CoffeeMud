@@ -32,14 +32,16 @@ public class CMStrings
         return str.toString();
     }
     
-    public static boolean isUpperCase(String str) {
+    public static boolean isUpperCase(String str) 
+    {
     	for(int c=0;c<str.length();c++)
     		if(!Character.isUpperCase(str.charAt(c)))
     			return false;
     	return true;
     }
     
-    public static boolean isLowerCase(String str) {
+    public static boolean isLowerCase(String str) 
+    {
     	for(int c=0;c<str.length();c++)
     		if(!Character.isLowerCase(str.charAt(c)))
     			return false;
@@ -60,10 +62,36 @@ public class CMStrings
         return str.substring(0,x+1)+". "+str.substring(x+1).trim();
     }
     
-    public static String bytesToStr(byte[] b){ if(b==null) return ""; try{ return new String(b,CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT));}catch(Exception e){return new String(b);}}
-    public static byte[] strToBytes(String str){ try{ return str.getBytes(CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT));}catch(Exception e){return str.getBytes();}}
+    public static String bytesToStr(byte[] b)
+    { 
+    	if(b==null) 
+    		return "";
+    	try
+    	{
+    		return new String(b,CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT));
+    	}
+    	catch(Exception e)
+    	{
+    		return new String(b);
+    	}
+    }
+    
+    public static byte[] strToBytes(String str)
+    { 
+    	try
+    	{ 
+    		return str.getBytes(CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT));
+    	}
+    	catch(Exception e)
+    	{
+    		return str.getBytes();
+    	}
+    }
+    
     public static boolean isVowel(char c)
-    { return (("aeiou").indexOf(Character.toLowerCase(c))>=0);}
+    { 
+    	return (("aeiou").indexOf(Character.toLowerCase(c))>=0);
+    }
     
     public static String replaceAll(String str, String thisStr, String withThisStr)
     {
@@ -74,11 +102,9 @@ public class CMStrings
         ||(thisStr.length()==0))
             return str;
         for(int i=str.length()-1;i>=0;i--)
-        {
             if(str.charAt(i)==thisStr.charAt(0))
                 if(str.substring(i).startsWith(thisStr))
                     str=str.substring(0,i)+withThisStr+str.substring(i+thisStr.length());
-        }
         return str;
     }
     
@@ -155,14 +181,12 @@ public class CMStrings
         ||(thisStr.length()==0))
             return str;
         for(int i=str.length()-1;i>=0;i--)
-        {
             if(str.charAt(i)==thisStr.charAt(0))
                 if(str.substring(i).startsWith(thisStr))
                 {
                     str=str.substring(0,i)+withThisStr+str.substring(i+thisStr.length());
                     return str;
                 }
-        }
         return str;
     }
     
@@ -172,11 +196,13 @@ public class CMStrings
         char[] c=name.toCharArray();
         int i=0;
         for(;i<c.length;i++)
+        {
             if(c[i]=='^')
                 i++;
             else
             if(Character.isLetter(c[i]))
                 break;
+        }
         if(i<c.length)
             c[i]=Character.toUpperCase(c[i]);
         i++;
@@ -185,9 +211,11 @@ public class CMStrings
                 c[i]=Character.toLowerCase(c[i]);
         return new String(c).trim();
     }
+    
     public static String capitalizeFirstLetter(String name)
     {
-        if((name==null)||(name.length()==0)) return "";
+        if((name==null)||(name.length()==0)) 
+        	return "";
         char[] c=name.toCharArray();
         int i=0;
         for(;i<c.length;i++)
@@ -333,7 +361,8 @@ public class CMStrings
     
     public static int lengthMinusColors(String thisStr)
     {
-        if(thisStr==null) return 0;
+        if(thisStr==null) 
+        	return 0;
         int size=0;
         for(int i=0;i<thisStr.length();i++)
         {
@@ -345,24 +374,24 @@ public class CMStrings
                     int tagStart=i;
                     char c=thisStr.charAt(i);
                     if((c=='<')||(c=='&'))
-                    while(i<(thisStr.length()-1))
-                    {
-                        if(((c=='<')&&((thisStr.charAt(i)!='^')||(thisStr.charAt(i+1)!='>')))
-                        ||((c=='&')&&(thisStr.charAt(i)!=';')))
-                        {
-                            i++;
-                            if(i>=(thisStr.length()-1))
-                            {
-                                i=tagStart+1;
-                                break;
-                            }
-                        }
-                        else
-                        {
-                            i++;
-                            break;
-                        }
-                    }
+	                    while(i<(thisStr.length()-1))
+	                    {
+	                        if(((c=='<')&&((thisStr.charAt(i)!='^')||(thisStr.charAt(i+1)!='>')))
+	                        ||((c=='&')&&(thisStr.charAt(i)!=';')))
+	                        {
+	                            i++;
+	                            if(i>=(thisStr.length()-1))
+	                            {
+	                                i=tagStart+1;
+	                                break;
+	                            }
+	                        }
+	                        else
+	                        {
+	                            i++;
+	                            break;
+	                        }
+	                    }
                 }
             }
             else
@@ -479,7 +508,7 @@ public class CMStrings
 	{
 		public int		type	= -1;
 		public String	value	= "";
-		public double numValue  = 0.0;
+		public double 	numValue  = 0.0;
 
 		public static StringExpToken token(int type, String value) throws Exception
 		{
@@ -628,8 +657,6 @@ public class CMStrings
 				return null;
 		}
 	}
-	
-	
 
 	/*
 	 * case STRING_EXP_TOKEN_EVALUATOR: case STRING_EXP_TOKEN_OPENPAREN: case STRING_EXP_TOKEN_CLOSEPAREN: case STRING_EXP_TOKEN_WORD: case

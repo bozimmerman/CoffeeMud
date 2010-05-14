@@ -56,7 +56,15 @@ cmditems, cmdmobs, cmdrooms, sessions, cmdareas, listadmin, stat
 @SuppressWarnings("unchecked")
 public class CMSecurity
 {
-    protected final long startTime=System.currentTimeMillis();
+    protected final long 			 startTime=System.currentTimeMillis();
+    protected static HashSet<String> disVars=new HashSet<String>();
+    protected static HashSet<String> dbgVars=new HashSet<String>();
+    protected static HashSet<String> saveFlags=new HashSet<String>();
+    protected static boolean 		 debuggingEverything=false;
+    protected Hashtable<String,HashSet<String>> groups=new Hashtable<String,HashSet<String>>();
+    protected MaskingLibrary.CompiledZapperMask compiledSysop=null;
+
+    
     private static CMSecurity[] secs=new CMSecurity[256];
     public CMSecurity()
     {
@@ -73,9 +81,6 @@ public class CMSecurity
     }
     public static CMSecurity instance(char c){ return secs[c];}
     private static CMSecurity i(){ return secs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}  
-    
-    protected Hashtable<String,HashSet<String>> groups=new Hashtable<String,HashSet<String>>();
-    protected MaskingLibrary.CompiledZapperMask compiledSysop=null;
     
     public void markShared() {
         char threadCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
@@ -565,6 +570,7 @@ public class CMSecurity
 		}
 		return false;
 	}
+	
 	public static boolean isAllowedStartsWith(MOB mob, String code)
 	{
         if(mob==null) return false;
@@ -617,6 +623,7 @@ public class CMSecurity
 		}
 		return false;
 	}
+	
 	public static boolean isAllowedEverywhere(MOB mob, String code)
 	{
         if(mob==null) return false;
@@ -640,6 +647,7 @@ public class CMSecurity
 		}
 		return false;
 	}
+	
 	public static boolean isAllowedAnywhere(MOB mob, String code)
 	{
         if(mob==null) return false;
@@ -792,11 +800,6 @@ public class CMSecurity
 		    saveFlags.add(flag);
 	}
 	
-    protected static HashSet<String> disVars=new HashSet<String>();
-    protected static HashSet<String> dbgVars=new HashSet<String>();
-    protected static HashSet<String> saveFlags=new HashSet<String>();
-    protected static boolean debuggingEverything=false;
-
 	public static long getStartTime(){return i().startTime;}
 	
     public static boolean isBanned(String login)

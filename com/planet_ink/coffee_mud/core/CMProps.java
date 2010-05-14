@@ -259,9 +259,8 @@ public class CMProps extends Properties
     protected DVector 		skillMaxManaExceptions=new DVector(2);
     protected DVector 		skillMinManaExceptions=new DVector(2);
     protected String[][] 	statCodeExtensions = null;
-    public int pkillLevelDiff=26;
-
-    public boolean loaded=false;
+    protected int 			pkillLevelDiff=26;
+    protected boolean 		loaded=false;
 
 	public CMProps(InputStream in)
 	{
@@ -277,6 +276,7 @@ public class CMProps extends Properties
 			loaded=false;
 		}
 	}
+	
 	public CMProps(String filename)
 	{
     	char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
@@ -329,7 +329,6 @@ public class CMProps extends Properties
 		}
 	}
 
-
 	public static CMProps loadPropPage(String iniFile)
 	{
         CMProps page=null;
@@ -341,6 +340,12 @@ public class CMProps extends Properties
 		}
 		return page;
 	}
+	
+	public boolean isLoaded()
+	{
+		return loaded;
+	}
+
     /** retrieve a local .ini file entry as a string
     *
     * <br><br><b>Usage:</b>  String s=getPrivateStr("TAG");

@@ -84,7 +84,7 @@ public class INIValue extends StdWebMacro
 		if((parms.size()==0)&&(last!=null)&&(last.length()>0))
 		{
             CMProps page=CMProps.loadPropPage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
-			if((page==null)||(!page.loaded)) return "";
+			if((page==null)||(!page.isLoaded())) return "";
 			return page.getStr(last);
 		}
 		if(parms.containsKey("RESET"))
@@ -137,7 +137,7 @@ public class INIValue extends StdWebMacro
 			return "'MASK' not found!";
 		String mask=((String)parms.get("MASK")).toUpperCase();
         CMProps page=CMProps.loadPropPage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
-		if((page==null)||(!page.loaded)) return "";
+		if((page==null)||(!page.isLoaded())) return "";
 		if(mask.trim().endsWith("*"))
 			for(Enumeration e=page.keys();e.hasMoreElements();)
 			{

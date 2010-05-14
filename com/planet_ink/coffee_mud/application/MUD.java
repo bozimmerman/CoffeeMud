@@ -55,10 +55,21 @@ import java.sql.*;
 
 public class MUD extends Thread implements MudHost
 {
-    private static final float HOST_VERSION_MAJOR=(float)5.6;
-    private static final long  HOST_VERSION_MINOR=3;
+    private static final float 		HOST_VERSION_MAJOR=(float)5.6;
+    private static final long  		HOST_VERSION_MINOR=3;
+    
+    private final static String[]   STATE_STRING={"waiting","accepting","allowing"};
 
-    protected static boolean 		   bringDown=false;
+    private static boolean 	serverIsRunning = false;
+    private static boolean 	isOK = false;
+    private int 			state=0;
+    private ServerSocket 	servsock=null;
+    private boolean 		acceptConnections=false;
+    private String 			host="MyHost";
+    private int			 	port=5555;
+    private final long 		startupTime = System.currentTimeMillis();
+    
+    private static boolean 		   		bringDown=false;
     private static String 			   execExternalCommand=null;
     private static I3Server 		   i3server=null;
     private static CM1Server 		   cm1server=null;
@@ -68,18 +79,7 @@ public class MUD extends Thread implements MudHost
     private static DVector 			   accessed=new DVector(2);
     private static Vector<String>	   autoblocked=new Vector<String>();
     private static Vector<DBConnector> databases=new Vector<DBConnector>();
-
-    private static boolean serverIsRunning = false;
-
-    protected static boolean isOK = false;
-    protected boolean acceptConnections=false;
-    protected String host="MyHost";
-    protected int port=5555;
-    protected final long startupTime = System.currentTimeMillis();
-
-    private final static String[] STATE_STRING={"waiting","accepting","allowing"};
-    private int state=0;
-	ServerSocket servsock=null;
+    
 
 	public MUD(String name)
 	{
@@ -126,7 +126,7 @@ public class MUD extends Thread implements MudHost
 
 		CMProps page=CMProps.instance();
 		
-		if ((page == null) || (!page.loaded))
+		if ((page == null) || (!page.isLoaded()))
 		{
 			fatalStartupError(t,1);
 			return false;
@@ -601,6 +601,7 @@ public class MUD extends Thread implements MudHost
 
 		Log.sysOut(Thread.currentThread().getName(),"MUD on port "+port+" stopped!");
 	}
+	
     public String getStatus()
     {
         if(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN))
@@ -620,6 +621,7 @@ public class MUD extends Thread implements MudHost
 	{
 		globalShutdown(null,true,null);
 	}
+	
 	public static void globalShutdown(Session S, boolean keepItDown, String externalCommand)
 	{
 		CMProps.setBoolVar(CMProps.SYSTEMB_MUDSTARTED,false);
@@ -885,7 +887,7 @@ public class MUD extends Thread implements MudHost
 	}
 
 
-	public static void startIntermud3()
+	private static void startIntermud3()
 	{
         char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		CMProps page=CMProps.instance();
@@ -927,7 +929,7 @@ public class MUD extends Thread implements MudHost
 		}
 	}
 	
-	public static void startCM1()
+	private static void startCM1()
 	{
         char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		CMProps page=CMProps.instance();
@@ -950,7 +952,7 @@ public class MUD extends Thread implements MudHost
 		}
 	}
 	
-	public static void startIntermud2()
+	private static void startIntermud2()
 	{
         char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		CMProps page=CMProps.instance();
@@ -1016,7 +1018,7 @@ public class MUD extends Thread implements MudHost
 		return realAC;
 	}
 
-	public static int killCount(ThreadGroup tGroup, Thread thisOne)
+	private static int killCount(ThreadGroup tGroup, Thread thisOne)
 	{
 		int killed=0;
 
@@ -1034,7 +1036,7 @@ public class MUD extends Thread implements MudHost
 		return killed;
 	}
 
-	public static void threadList(ThreadGroup tGroup)
+	private static void threadList(ThreadGroup tGroup)
 	{
 		int ac = tGroup.activeCount();
 		Thread tArray[] = new Thread [ac+1];
@@ -1076,11 +1078,12 @@ public class MUD extends Thread implements MudHost
 
 	private static class HostGroup extends Thread
 	{
-		private static int grpid=0;
-		private String name=null;
-		private String iniFile=null;
-		private String logName=null;
-        char threadCode=MAIN_HOST;
+		private static int 	grpid=0;
+		private String 		name=null;
+		private String 		iniFile=null;
+		private String 		logName=null;
+		private char 		threadCode=MAIN_HOST;
+		
 		public HostGroup(ThreadGroup G, String mudName, String iniFileName)
 		{
             super(G,"HOST"+grpid);
@@ -1109,7 +1112,7 @@ public class MUD extends Thread implements MudHost
                     return;
             }
 			CMProps page=CMProps.loadPropPage("//"+iniFile);
-            if ((page==null)||(!page.loaded))
+            if ((page==null)||(!page.isLoaded()))
             {
                 Log.errOut(Thread.currentThread().getName(),"ERROR: Unable to read ini file: '"+iniFile+"'.");
                 System.out.println("MUD/ERROR: Unable to read ini file: '"+iniFile+"'.");
@@ -1227,10 +1230,6 @@ public class MUD extends Thread implements MudHost
     	Vector<Thread> V=new Vector<Thread>();
     	for(int w=0;w<webServers.size();w++)
     		V.addAll(((HTTPserver)webServers.elementAt(w)).getOverdueThreads());
-    	//smtpServerThread -- handled as a Tickable
-    	//databases aren't a thread
-    	//utiliThread and saveThread aren't a bad idea...
-    	//imserver is a GREAT idea
     	return V;
     }
 
@@ -1262,7 +1261,7 @@ public class MUD extends Thread implements MudHost
 		if(nameID.length()==0) nameID="Unnamed CoffeeMud";
 		String iniFile=(String)iniFiles.firstElement();
 		CMProps page=CMProps.loadPropPage("//"+iniFile);
-		if ((page==null)||(!page.loaded))
+		if ((page==null)||(!page.isLoaded()))
 		{
 		    Log.instance().startLogFiles("mud",1);
 		    Log.instance().setLogOutput("BOTH","BOTH","BOTH","BOTH","BOTH","BOTH","BOTH");
@@ -1349,6 +1348,5 @@ public class MUD extends Thread implements MudHost
         	}
         }
         throw new CMException("Unknown command: "+word);
-        //return "OK";
     }
 }

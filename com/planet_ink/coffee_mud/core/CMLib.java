@@ -39,8 +39,8 @@ import org.mozilla.javascript.ScriptableObject;
 */
 public class CMLib
 {
-    static final long serialVersionUID=42;
     public String getClassName(){return "CMLib";}
+	private static final long serialVersionUID=42;
     private static final SVector<MudHost> mudThreads=new SVector<MudHost>();
     private static CMLib[] libs=new CMLib[256];
     public CMLib(){
@@ -52,9 +52,9 @@ public class CMLib
     private static CMLib l(){ return libs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
     public static CMLib l(char c){return libs[c];}
     public static CMLib instance(){return l();}
-    private final CMLibrary[] libraries=new CMLibrary[LIBRARY_TOTAL];
-    private boolean[] registered=new boolean[LIBRARY_TOTAL];
-
+    
+    private final CMLibrary[] 	libraries=new CMLibrary[LIBRARY_TOTAL];
+    private boolean[] 			registered=new boolean[LIBRARY_TOTAL];
 
     public static final int LIBRARY_DATABASE=0;
     public static final int LIBRARY_THREADS=1;
@@ -121,7 +121,9 @@ public class CMLib
     public static Directions directions(){return Directions.instance();}
     public static Log log(){return Log.instance();}
     public static SVector<MudHost> hosts(){return mudThreads;}
-    public static MudHost mud(int port){
+    
+    public static MudHost mud(int port)
+    {
         if(mudThreads.size()==0)
             return null;
         else

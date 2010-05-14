@@ -1208,10 +1208,12 @@ public class ListCmd extends StdCommand
 
 	public String listResources(MOB mob, String parm)
 	{
-		Vector keySet=Resources.findResourceKeys(parm);
-		if(keySet.size()==1)
+		Iterator<String> keyIter=Resources.findResourceKeys(parm);
+		if(!keyIter.hasNext())
+			return "";
+		String key = keyIter.next();
+		if(!keyIter.hasNext())
 		{
-			String key=(String)keySet.firstElement();
 			StringBuffer str=new StringBuffer("^x"+key+"^?\n\r");
 			Object o=Resources.getResource(key);
 			if(o instanceof List) str.append(CMParms.toStringList((List)o));
@@ -1237,7 +1239,7 @@ public class ListCmd extends StdCommand
 				str.append(o.toString());
 			return str.toString();
 		}
-		Enumeration keys=keySet.elements();
+		Enumeration<String> keys=new IteratorEnumeration<String>(Resources.findResourceKeys(parm));
 		return CMLib.lister().reallyList2Cols(keys,-1,null).toString();
 	}
 
