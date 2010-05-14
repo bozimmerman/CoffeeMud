@@ -115,6 +115,10 @@ public class CM1Server extends Thread
 						catch(Exception e){}
 				}
 			}
+			catch(CancelledKeyException t)
+			{
+				// ignore
+			}
 			catch(Throwable t)
 			{
 				Log.errOut("CM1Server",t);
