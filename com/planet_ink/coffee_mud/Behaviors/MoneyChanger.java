@@ -56,7 +56,7 @@ public class MoneyChanger extends StdBehavior
 		int x=newParm.indexOf('=');
 		while(x>0)
 		{
-		    int lastSp=newParm.lastIndexOf(" ",x);
+		    int lastSp=newParm.lastIndexOf(' ',x);
 		    if(lastSp<0) lastSp=0;
 			if((lastSp>=0)&&(lastSp<x-1)&&(Character.isLetter(newParm.charAt(x-1))))
 			{

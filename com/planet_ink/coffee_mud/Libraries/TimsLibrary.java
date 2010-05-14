@@ -796,7 +796,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				if(CMath.isNumber(number))
 				{
 					int num=CMath.s_int(number);
-					int spacebefore=s.lastIndexOf(" ",plusminus);
+					int spacebefore=s.lastIndexOf(' ',plusminus);
 					if(spacebefore<0) spacebefore=0;
 					if(spacebefore<plusminus)
 					{
