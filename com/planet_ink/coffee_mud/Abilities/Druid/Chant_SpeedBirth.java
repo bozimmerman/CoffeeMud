@@ -59,7 +59,7 @@ public class Chant_SpeedBirth extends Chant
 			int x=A.text().indexOf('/');
 			if(x>0)
 			{
-				int y=A.text().indexOf("/",x+1);
+				int y=A.text().indexOf('/',x+1);
 				if(y>x)
 				{
 					start=CMath.s_long(A.text().substring(0,x));

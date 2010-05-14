@@ -510,7 +510,7 @@ public class AbilityData extends StdWebMacro
                         int x=thang.toString().indexOf('/');
                         while(x>0){
                             thang.setCharAt(x+1,Character.toUpperCase(thang.charAt(x+1)));
-                            x=thang.toString().indexOf("/",x+1);
+                            x=thang.toString().indexOf('/',x+1);
                         }
                         str.append(thang.toString()+", ");
                     }

@@ -63,7 +63,7 @@ public class Decay extends ActiveTicker
 		String s=parms;
 		int x=s.toUpperCase().indexOf("REMAIN=");
 		if(x<0) return "remain="+tickDown+" "+s;
-		int y=s.indexOf(" ",x+1);
+		int y=s.indexOf(' ',x+1);
 		if(y<0) y=s.length();
 		return ("remain="+tickDown+" "+s.substring(0,x)+s.substring(y).trim()).trim();
 	}

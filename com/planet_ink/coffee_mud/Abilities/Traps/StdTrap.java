@@ -146,7 +146,7 @@ public class StdTrap extends StdAbility implements Trap
 		if(text.trim().startsWith(":"))
 		{
 			int x=text.indexOf(':');
-			int y=text.indexOf(":",x+1);
+			int y=text.indexOf(':',x+1);
 			if((x>=0)&&(y>x)&&(CMath.isInteger(text.substring(x+1,y).trim())))
 			{
 				setAbilityCode(CMath.s_int(text.substring(x+1,y).trim()));

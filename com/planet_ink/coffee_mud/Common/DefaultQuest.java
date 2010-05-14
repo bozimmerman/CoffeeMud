@@ -4010,7 +4010,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	    			s=s.substring(0,x)+replace+s.substring(y);
     			}
     		}catch(CMException ex){}
-	    	x=s.toUpperCase().indexOf("$",x+1);
+	    	x=s.toUpperCase().indexOf('$',x+1);
     	}
     	return s;
     }

@@ -290,8 +290,8 @@ public class BribeGateGuard extends StdBehavior
 		key = key.toUpperCase();
 		int x = text.indexOf(key);
 		while (x >= 0) {
-		  int y = text.indexOf("=", x);
-		  int z = text.indexOf(" ", y);
+		  int y = text.indexOf('=', x);
+		  int z = text.indexOf(' ', y);
 		  if (z < 0) {
 		    return text.substring(y + 1);
 		  }

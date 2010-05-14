@@ -981,7 +981,7 @@ public class StdRoom implements Room
 					break;
 				}
 			if(!found)
-				x=text.indexOf("<",1);
+				x=text.indexOf('<',1);
 			else
 				x=text.indexOf('<');
 		}

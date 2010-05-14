@@ -96,9 +96,9 @@ public class Prop_ReqLevels extends Property
         if(text.length()==0) return true;
         while(x>=0)
         {
-            x=text.indexOf(">",lastPlace);
-            if(x<0) x=text.indexOf("<",lastPlace);
-            if(x<0) x=text.indexOf("=",lastPlace);
+            x=text.indexOf('>',lastPlace);
+            if(x<0) x=text.indexOf('<',lastPlace);
+            if(x<0) x=text.indexOf('=',lastPlace);
             if(x>=0)
             {
                 char primaryChar=text.charAt(x);

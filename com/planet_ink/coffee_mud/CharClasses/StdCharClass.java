@@ -527,7 +527,7 @@ public class StdCharClass implements CharClass
                         x=q.indexOf(CharStats.CODES.DESC(c).substring(0,3)+" ");
                     if(x>=0)
                     {
-                        String qs=q.substring(q.indexOf(" ",x+1)).trim();
+                        String qs=q.substring(q.indexOf(' ',x+1)).trim();
                         if(qs.length()>0)
                         {
                             int spot=0;

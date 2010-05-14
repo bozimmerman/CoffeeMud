@@ -933,7 +933,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
    					int x=entry.indexOf("<ZAP=");
    					if(x>=0)
    					{
-   						int y=entry.indexOf(">",x);
+   						int y=entry.indexOf('>',x);
    						if(y>(x+5))
    						{
    							String word=entry.substring(x+5,y).trim();

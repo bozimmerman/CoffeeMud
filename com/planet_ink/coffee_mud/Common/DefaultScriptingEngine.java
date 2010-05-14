@@ -558,9 +558,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     continue;
                 }
                 results.append(p+"\n");
-                int z=parse.indexOf("~",y);
+                int z=parse.indexOf('~',y);
                 while((z>0)&&(parse.charAt(z-1)=='\\'))
-                    z=parse.indexOf("~",z+1);
+                    z=parse.indexOf('~',z+1);
                 if(z>0)
                 {
                     String filename=parse.substring(y+5,z).trim();

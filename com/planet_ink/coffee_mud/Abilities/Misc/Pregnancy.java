@@ -49,7 +49,7 @@ public class Pregnancy extends StdAbility
 		int x=text().indexOf('/');
 		if(x>0)
 		{
-			int y=text().indexOf("/",x+1);
+			int y=text().indexOf('/',x+1);
 			if(y<0) return "";
 			long start=CMath.s_long(text().substring(0,x));
 			long divisor=Tickable.TIME_TICK*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
@@ -177,10 +177,10 @@ public class Pregnancy extends StdAbility
 			int x=text().indexOf('/');
 			if(x>0)
 			{
-				int y=text().indexOf("/",x+1);
+				int y=text().indexOf('/',x+1);
 				if(y>x)
 				{
-					int z=text().indexOf("/",y+1);
+					int z=text().indexOf('/',y+1);
 					long end=CMath.s_long(text().substring(x+1,y));
 					long divisor=Tickable.TIME_TICK*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);
 					daysRemaining=(end-System.currentTimeMillis())/divisor; // down to days

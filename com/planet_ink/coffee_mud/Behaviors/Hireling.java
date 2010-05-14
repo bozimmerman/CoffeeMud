@@ -77,7 +77,7 @@ public class Hireling extends StdBehavior
 		zapperMask=null;
 		if(dex>=0)
 		{
-			int dex2=newParms.indexOf(";",dex+1);
+			int dex2=newParms.indexOf(';',dex+1);
 			if(dex2>dex)
 			{
 				setPrice(newParms.substring(0,dex));

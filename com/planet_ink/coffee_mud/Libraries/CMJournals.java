@@ -129,7 +129,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
                     int keyx=mask.toUpperCase().indexOf(flag);
                     if(keyx>=0)
                     {
-                        int keyy=mask.indexOf(" ",keyx+1);
+                        int keyy=mask.indexOf(' ',keyx+1);
                         if(keyy<0) keyy=mask.length();
                         if((keyx==0)||(Character.isWhitespace(mask.charAt(keyx-1))))
                         {

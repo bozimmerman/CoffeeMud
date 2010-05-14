@@ -1329,7 +1329,7 @@ public class Quests extends StdLibrary implements QuestManager
                                     Log.errOut("Quests","QuestMaker syntax error, QUESTMAKER_PAGE not yet designated: "+s);
                                 else
                                 {
-                                    int y=s.indexOf("=",x+1);
+                                    int y=s.indexOf('=',x+1);
                                     if(y>=0)
                                         pageDV.addElement(s.substring(x+1,y).trim(),s.substring(0,x),s.substring(y+1),"");
                                     else

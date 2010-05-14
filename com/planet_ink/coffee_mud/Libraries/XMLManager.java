@@ -240,7 +240,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		if(founde<0) founde=Blob.indexOf("/"+Tag+" ",foundb)-1;
 		if(founde<0)
 		{
-			founde=Blob.indexOf(">",foundb);
+			founde=Blob.indexOf('>',foundb);
 			if((founde>0)&&(Blob.charAt(founde-1)!='/')) founde=-1;
 		}
 		if(founde<0) return "";

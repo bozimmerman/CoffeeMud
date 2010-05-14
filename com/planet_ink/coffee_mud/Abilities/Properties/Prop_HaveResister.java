@@ -94,7 +94,7 @@ public class Prop_HaveResister extends Property
 		int z=nonMask.indexOf(protType.toUpperCase());
 		if(z<0) 
             return 0;
-		int x=nonMask.indexOf("%",z+protType.length());
+		int x=nonMask.indexOf('%',z+protType.length());
 		if(x<0)
 			return 50;
 		int mul=1;

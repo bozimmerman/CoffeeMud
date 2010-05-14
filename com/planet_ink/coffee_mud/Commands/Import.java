@@ -305,7 +305,7 @@ public class Import extends StdCommand
 			else
 			if((areaName.length()>13)&&((areaName.charAt(12)=='{')||(areaName.charAt(13)=='{')))			
 			{
-				int x=areaName.indexOf("}",12);
+				int x=areaName.indexOf('}',12);
 				if(x>12)
 					areaName=areaName.substring(x+1).trim();
 				else

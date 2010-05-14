@@ -59,7 +59,7 @@ public class Drunken extends StdLanguage
 		{
 			if((x>=word.length()-1)||(Character.toUpperCase(word.charAt(x+1))!='H'))
 				V.addElement(Integer.valueOf(x));
-			x=word.toString().toUpperCase().indexOf("S",x+1);
+			x=word.toString().toUpperCase().indexOf('S',x+1);
 		}
 		return V;
 	}

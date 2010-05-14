@@ -144,7 +144,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
         int x=s.indexOf('{');
         while(x>=0)
         {
-            int y=s.indexOf("}",x);
+            int y=s.indexOf('}',x);
             if(y<0) break;
             s=s.substring(0,x)+CMath.parseIntExpression(s.substring(x+1,y))+s.substring(y+1);
             x=s.indexOf('{');

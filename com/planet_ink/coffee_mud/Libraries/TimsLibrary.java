@@ -714,7 +714,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		if((ADJ!=null)&&(ADJ.text().toUpperCase().indexOf("DAMAGE+")>=0))
 		{
 			int a=ADJ.text().toUpperCase().indexOf("DAMAGE+");
-			int a2=ADJ.text().toUpperCase().indexOf(" ",a+4);
+			int a2=ADJ.text().toUpperCase().indexOf(' ',a+4);
 			if(a2<0) a2=ADJ.text().length();
 			int num=CMath.s_int(ADJ.text().substring(a+7,a2));
 			int newNum = (int)Math.round(CMath.mul(num,0.9));
@@ -729,7 +729,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		if((ADJ!=null)&&(ADJ.text().toUpperCase().indexOf("ATTACK+")>=0))
 		{
 			int a=ADJ.text().toUpperCase().indexOf("ATTACK+");
-			int a2=ADJ.text().toUpperCase().indexOf(" ",a+4);
+			int a2=ADJ.text().toUpperCase().indexOf(' ',a+4);
 			if(a2<0) a2=ADJ.text().length();
 			int num=CMath.s_int(ADJ.text().substring(a+7,a2));
 			int newNum = (int)Math.round(CMath.mul(num,0.9));
@@ -759,7 +759,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		if((ADJ!=null)&&(ADJ.text().toUpperCase().indexOf("ARMOR-")>=0))
 		{
 			int a=ADJ.text().toUpperCase().indexOf("ARMOR-");
-			int a2=ADJ.text().toUpperCase().indexOf(" ",a+4);
+			int a2=ADJ.text().toUpperCase().indexOf(' ',a+4);
 			if(a2<0) a2=ADJ.text().length();
 			int num=CMath.s_int(ADJ.text().substring(a+6,a2));
 			int newNum = (int)Math.round(CMath.mul(num,0.9));
@@ -788,7 +788,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			plusminus=minus;
 		while(plusminus>=0)
 		{
-			int spaceafter=s.indexOf(" ",plusminus+1);
+			int spaceafter=s.indexOf(' ',plusminus+1);
 			if(spaceafter<0) spaceafter=s.length();
 			if(spaceafter>plusminus)
 			{
@@ -836,8 +836,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 					}
 				}
 			}
-			minus=s.indexOf("-",plusminus+1);
-			plusminus=s.indexOf("+",plusminus+1);
+			minus=s.indexOf('-',plusminus+1);
+			plusminus=s.indexOf('+',plusminus+1);
 			if((minus>=0)&&((plusminus<0)||(minus<plusminus)))
 				plusminus=minus;
 		}
