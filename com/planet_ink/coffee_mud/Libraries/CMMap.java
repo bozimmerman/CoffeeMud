@@ -37,24 +37,25 @@ import java.util.*;
 public class CMMap extends StdLibrary implements WorldMap
 {
     public String ID(){return "CMMap";}
-	public final int 			QUADRANT_WIDTH	 = 10;
-    public static MOB 			deityStandIn	 = null;
-    public long 				lastVReset		 = 0;
-    
-	public SVector<Area>		areasList 		 = new SVector<Area>();
-    public SVector<Area>		sortedAreas	     = null;
-	public SVector<Deity>		deitiesList 	 = new SVector<Deity>();
-    public SVector<PostOffice> 	postOfficeList	 = new SVector<PostOffice>();
-    public SVector<Auctioneer> 	auctionHouseList = new SVector<Auctioneer>();
-    public SVector<Banker> 		bankList		 = new SVector<Banker>();
-	public SVector<SpaceObject>	space			 = new SVector<SpaceObject>();
-    public SHashtable<Integer,SVector<WeakReference<MsgListener>>> 
-    							globalHandlers	 = new SHashtable<Integer,SVector<WeakReference<MsgListener>>>();
-	public STreeMap<String,SLinkedList<LocatedPair>>
+	public final int 		QUADRANT_WIDTH	 = 10;
+    public static MOB 		deityStandIn	 = null;
+    public long 			lastVReset		 = 0;
+	public List<Area>		areasList 		 = new SVector<Area>();
+    public List<Area>		sortedAreas	     = null;
+	public List<Deity>		deitiesList 	 = new SVector<Deity>();
+    public List<PostOffice>	postOfficeList	 = new SVector<PostOffice>();
+    public List<Auctioneer>	auctionHouseList = new SVector<Auctioneer>();
+    public List<Banker> 	bankList		 = new SVector<Banker>();
+	public List<SpaceObject>space			 = new SVector<SpaceObject>();
+	
+    public Map<Integer,List<WeakReference<MsgListener>>> 
+    							globalHandlers	 = new SHashtable<Integer,List<WeakReference<MsgListener>>>();
+    public List<WeakReference<MsgListener>>
+    							globalMonitors	 = new SLinkedList<WeakReference<MsgListener>>();
+	public Map<String,SLinkedList<LocatedPair>>
 								scriptHostMap	 = new STreeMap<String,SLinkedList<LocatedPair>>();
 	
     private ThreadEngine.SupportThread  thread	 = null;
-    
     public ThreadEngine.SupportThread getSupportThread() { return thread;}
     
     protected int getGlobalIndex(Vector list, String name)
@@ -83,7 +84,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public void addArea(Area newOne)
 	{
 		sortedAreas=null;
-		areasList.addElement(newOne);
+		areasList.add(newOne);
 	}
 
 	public void delArea(Area oneToDel)
@@ -111,7 +112,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			}
 			sortedAreas=V;
 		}
-		return (sortedAreas==null)?sortedAreas():sortedAreas.elements();
+		return (sortedAreas==null)?sortedAreas():new IteratorEnumeration<Area>(sortedAreas.iterator());
 	}
 
 	public Area getArea(String calledThis)
@@ -149,10 +150,7 @@ public class CMMap extends StdLibrary implements WorldMap
         }
         return null;
     }
-	public Enumeration<Area> areas()
-    {
-		return areasList.elements();
-	}
+	public Enumeration<Area> areas() { return new IteratorEnumeration<Area>(areasList.iterator()); }
 	public Enumeration<String> roomIDs(){ return new WorldMap.CompleteRoomIDEnumerator(this);}
 	public Area getFirstArea()
 	{
@@ -166,7 +164,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		while((numAreas()>0)&&(A==null))
 		{
 			try{
-				A=(Area)areasList.elementAt(CMLib.dice().roll(1,numAreas(),-1));
+				A=(Area)areasList.get(CMLib.dice().roll(1,numAreas(),-1));
             }catch(ArrayIndexOutOfBoundsException e){}
 		}
 		return A;
@@ -175,16 +173,16 @@ public class CMMap extends StdLibrary implements WorldMap
     public void addGlobalHandler(MsgListener E, int category)
     {
     	if(E==null) return;
-        SVector<WeakReference<MsgListener>> V=globalHandlers.get(Integer.valueOf(category));
+        List<WeakReference<MsgListener>> V=globalHandlers.get(Integer.valueOf(category));
         if(V==null)
         {
-            V=new SVector<WeakReference<MsgListener>>();
+            V=new SLinkedList<WeakReference<MsgListener>>();
             globalHandlers.put(Integer.valueOf(category),V);
         }
         synchronized(V)
         {
-        	for(Enumeration<WeakReference<MsgListener>> e=V.elements();e.hasMoreElements();)
-        		if(e.nextElement().get()==E)
+        	for(WeakReference<MsgListener> l : V)
+        		if(l.get()==E)
         			return;
             V.add(new WeakReference<MsgListener>(E));
         }
@@ -192,19 +190,15 @@ public class CMMap extends StdLibrary implements WorldMap
 
     public void delGlobalHandler(MsgListener E, int category)
     {
-        SVector<WeakReference<MsgListener>> V=globalHandlers.get(Integer.valueOf(category));
-        if((E==null)||(V==null)) return;
+    	List<WeakReference<MsgListener>> V=globalHandlers.get(Integer.valueOf(category));
+        if((E==null)||(V==null)) 
+        	return;
         synchronized(V)
         {
         	WeakReference<MsgListener> foundW=null;
-        	for(Enumeration<WeakReference<MsgListener>> e=V.elements();e.hasMoreElements();)
-        	{
-            	WeakReference<MsgListener> W=e.nextElement();
+        	for(WeakReference<MsgListener> W : V)
         		if(W.get()==E)
-        			foundW=W;
-        	}
-        	if(foundW != null)
-	        	V.remove(foundW);
+		        	V.remove(foundW);
         }
     }
 
@@ -234,8 +228,8 @@ public class CMMap extends StdLibrary implements WorldMap
     }
 
 	public boolean isObjectInSpace(SpaceObject O){ return space.contains(O); }
-	public void delObjectInSpace(SpaceObject O){ space.removeElement(O); }
-	public void addObjectToSpace(SpaceObject O){ space.addElement(O); }
+	public void delObjectInSpace(SpaceObject O){ space.remove(O); }
+	public void addObjectToSpace(SpaceObject O){ space.add(O); }
 
 	public long getDistanceFrom(SpaceObject O1, SpaceObject O2)
 	{
@@ -322,8 +316,9 @@ public class CMMap extends StdLibrary implements WorldMap
 
     public boolean sendGlobalMessage(MOB host, int category, CMMsg msg)
     {
-        SVector<WeakReference<MsgListener>> V=globalHandlers.get(Integer.valueOf(category));
-        if(V==null) return true;
+        List<WeakReference<MsgListener>> V=globalHandlers.get(Integer.valueOf(category));
+        if(V==null) 
+        	return true;
         synchronized(V)
         {
 	        try
@@ -353,7 +348,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	            	}
 	            	else
 	            	if(O==null)
-	            		V.removeElement(W);
+	            		V.remove(W);
 	            }
 	            for(WeakReference<MsgListener> W : V)
 	            {
@@ -861,7 +856,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				return D;
 		return null;
 	}
-	public Enumeration<Deity> deities() { return deitiesList.elements(); }
+	public Enumeration<Deity> deities() { return new IteratorEnumeration<Deity>(deitiesList.iterator()); }
 
     public int numPostOffices() { return postOfficeList.size(); }
     protected void addPostOffice(PostOffice newOne)
@@ -890,9 +885,9 @@ public class CMMap extends StdLibrary implements WorldMap
                 return P;
         return null;
     }
-    public Enumeration<PostOffice> postOffices() { return postOfficeList.elements(); }
+    public Enumeration<PostOffice> postOffices() { return new IteratorEnumeration<PostOffice>(postOfficeList.iterator()); }
 
-    public Enumeration<Auctioneer> auctionHouses() { return auctionHouseList.elements(); }
+    public Enumeration<Auctioneer> auctionHouses() { return new IteratorEnumeration<Auctioneer>(auctionHouseList.iterator()); }
     
     public int numAuctionHouses() { return auctionHouseList.size(); }
     
@@ -953,7 +948,7 @@ public class CMMap extends StdLibrary implements WorldMap
         return null;
     }
     
-    public Enumeration<Banker> banks() { return bankList.elements();}
+    public Enumeration<Banker> banks() { return new IteratorEnumeration<Banker>(bankList.iterator());}
     
 	public Iterator<String> bankChains(Area AreaOrNull)
 	{
