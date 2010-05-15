@@ -356,6 +356,7 @@ public class SMTPserver extends Thread implements Tickable
 		Log.sysOut(getName(),"Shutting down.");
 		if (S != null)
 			S.println( getName() + " shutting down.");
+		try{servsock.close(); Thread.sleep(100);}catch(Exception e){}
 		threadPool.shutdown();
 		if(getTickStatus()==Tickable.STATUS_NOT)
 			tick(this,Tickable.TICKID_READYTOSTOP);
