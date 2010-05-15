@@ -258,17 +258,14 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 					{
 						client=i.next();
 						lastClient=client;
-						if((client.lastStart!=0)&&(client.lastStop!=0))
-						{
-							client.milliTotal+=(client.lastStop-client.lastStart);
-							client.tickTotal++;
-						}
 						client.lastStart=System.currentTimeMillis();
 						if(tickTicker(client,CMLib.threads().isAllSuspended()))
                         {
                             delTicker(client);
                         }
 						client.lastStop=System.currentTimeMillis();
+						client.milliTotal+=(client.lastStop-client.lastStart);
+						client.tickTotal++;
 					}
 				}
 			}
