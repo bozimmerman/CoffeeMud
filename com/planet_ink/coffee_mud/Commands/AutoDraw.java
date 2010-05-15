@@ -38,7 +38,7 @@ public class AutoDraw extends StdCommand
 {
 	public AutoDraw(){}
 
-	private String[] access={"AUTODRAW"};
+	private final String[] access={"AUTODRAW"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

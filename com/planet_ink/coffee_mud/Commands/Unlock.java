@@ -36,7 +36,7 @@ public class Unlock extends StdCommand
 {
 	public Unlock(){}
 
-	private String[] access={"UNLOCK","UNL","UN"};
+	private final String[] access={"UNLOCK","UNL","UN"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

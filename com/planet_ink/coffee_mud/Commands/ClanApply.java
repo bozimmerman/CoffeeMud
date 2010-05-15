@@ -36,7 +36,7 @@ public class ClanApply extends StdCommand
 {
 	public ClanApply(){}
 
-	private String[] access={"CLANAPPLY"};
+	private final String[] access={"CLANAPPLY"};
 	public String[] getAccessWords(){return access;}
     
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

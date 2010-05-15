@@ -36,7 +36,7 @@ public class AHelp extends StdCommand
 {
 	public AHelp(){}
 
-	private String[] access={"ARCHELP","AHELP"};
+	private final String[] access={"ARCHELP","AHELP"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

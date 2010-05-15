@@ -36,7 +36,7 @@ public class NoANSI extends StdCommand
 {
 	public NoANSI(){}
 
-	private String[] access={"NOANSI","NOCOLOR","NOCOLOUR"};
+	private final String[] access={"NOANSI","NOCOLOR","NOCOLOUR"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

@@ -37,7 +37,7 @@ public class Score extends Affect
 {
 	public Score(){}
 
-	private String[] access={"SCORE","SC"};
+	private final String[] access={"SCORE","SC"};
 	public String[] getAccessWords(){return access;}
 
     public StringBuilder getScore(MOB mob){return getScore(mob,"");}

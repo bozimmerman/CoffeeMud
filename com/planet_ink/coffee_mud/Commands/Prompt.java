@@ -36,7 +36,7 @@ public class Prompt extends StdCommand
 {
 	public Prompt(){}
 
-	private String[] access={"PROMPT"};
+	private final String[] access={"PROMPT"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

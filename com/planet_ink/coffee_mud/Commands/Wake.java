@@ -36,7 +36,7 @@ public class Wake extends StdCommand
 {
 	public Wake(){}
 
-	private String[] access={"WAKE"};
+	private final String[] access={"WAKE"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

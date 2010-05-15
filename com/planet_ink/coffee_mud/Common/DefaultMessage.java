@@ -48,7 +48,8 @@ public class DefaultMessage implements CMMsg
 	protected Environmental myTarget=null;
 	protected Environmental myTool=null;
 	protected int 			value=0;
-	protected SVector<CMMsg>trailMsgs=null;
+	protected SLinkedList<CMMsg>
+							trailMsgs=null;
 
     public CMObject copyOf()
     {
@@ -177,11 +178,14 @@ public class DefaultMessage implements CMMsg
     }
 	
 	public List<CMMsg> trailerMsgs()
-	{	return trailMsgs;}
+	{
+		return trailMsgs;
+	}
+	
 	public void addTrailerMsg(CMMsg msg)
 	{
-		if(trailMsgs==null) trailMsgs=new SVector<CMMsg>();
-		trailMsgs.addElement(msg);
+		if(trailMsgs==null) trailMsgs=new SLinkedList<CMMsg>();
+		trailMsgs.add(msg);
 	}
 
 	public void modify(MOB source,

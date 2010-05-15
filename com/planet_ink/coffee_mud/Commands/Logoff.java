@@ -36,7 +36,7 @@ public class Logoff extends StdCommand
 {
 	public Logoff(){}
 
-	private String[] access={"LOGOFF","LOGOUT"};
+	private final String[] access={"LOGOFF","LOGOUT"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

@@ -37,7 +37,7 @@ public class ColorSet extends StdCommand
 {
 	public ColorSet(){}
 
-	private String[] access={"COLORSET"};
+	private final String[] access={"COLORSET"};
 	public String[] getAccessWords(){return access;}
 	
 	public String colorDescription(String code)

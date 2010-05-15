@@ -36,7 +36,7 @@ public class Prayers extends Skills
 {
 	public Prayers(){}
 
-	private String[] access={"PRAYERS"};
+	private final String[] access={"PRAYERS"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

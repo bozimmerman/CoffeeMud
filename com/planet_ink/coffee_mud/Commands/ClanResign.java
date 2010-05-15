@@ -36,7 +36,7 @@ public class ClanResign extends StdCommand
 {
 	public ClanResign(){}
 
-	private String[] access={"CLANRESIGN"};
+	private final String[] access={"CLANRESIGN"};
 	public String[] getAccessWords(){return access;}
     
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

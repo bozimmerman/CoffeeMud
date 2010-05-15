@@ -36,7 +36,7 @@ public class DrinkCmd extends StdCommand
 {
 	public DrinkCmd(){}
 
-	private String[] access={"DRINK","DR","DRI"};
+	private final String[] access={"DRINK","DR","DRI"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

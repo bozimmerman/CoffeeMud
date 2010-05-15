@@ -37,7 +37,7 @@ public class Qualify  extends Skills
 {
 	public Qualify(){}
 
-	private String[] access={"QUALIFY","QUAL"};
+	private final String[] access={"QUALIFY","QUAL"};
 	public String[] getAccessWords(){return access;}
 
 	public StringBuffer getQualifiedAbilities(MOB able, 

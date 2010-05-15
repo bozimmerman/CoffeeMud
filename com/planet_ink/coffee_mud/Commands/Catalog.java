@@ -37,7 +37,7 @@ public class Catalog extends StdCommand
 {
 	public Catalog(){}
 
-	private String[] access={"CATALOG"};
+	private final String[] access={"CATALOG"};
 	public String[] getAccessWords(){return access;}
 	
 	public boolean catalog(Room R, MOB mob, Physical P)

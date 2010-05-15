@@ -36,7 +36,7 @@ public class Order extends StdCommand
 {
 	public Order(){}
 
-	private String[] access={"ORDER"};
+	private final String[] access={"ORDER"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

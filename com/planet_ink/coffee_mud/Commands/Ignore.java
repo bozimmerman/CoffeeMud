@@ -36,7 +36,7 @@ public class Ignore extends StdCommand
 {
 	public Ignore(){}
 
-	private String[] access={"IGNORE"};
+	private final String[] access={"IGNORE"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

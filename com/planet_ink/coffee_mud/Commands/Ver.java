@@ -36,7 +36,7 @@ public class Ver extends StdCommand
 {
 	public Ver(){}
 
-	private String[] access={"VERSION","VER"};
+	private final String[] access={"VERSION","VER"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

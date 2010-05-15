@@ -36,7 +36,7 @@ public class Retire extends StdCommand
 {
 	public Retire(){}
 
-	private String[] access={"RETIRE"};
+	private final String[] access={"RETIRE"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

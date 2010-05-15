@@ -36,7 +36,7 @@ public class Ban extends StdCommand
 {
 	public Ban(){}
 
-	private String[] access={"BAN"};
+	private final String[] access={"BAN"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

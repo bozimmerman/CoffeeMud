@@ -37,7 +37,7 @@ public class Expertises extends StdCommand
 {
 	public Expertises(){}
 
-	private String[] access={"EXPERTISES","EXPS"};
+	private final String[] access={"EXPERTISES","EXPS"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

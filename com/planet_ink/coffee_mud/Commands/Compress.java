@@ -36,7 +36,7 @@ public class Compress extends StdCommand
 {
     public Compress(){}
 
-    private String[] access={"COMPRESS"};
+    private final String[] access={"COMPRESS"};
     public String[] getAccessWords(){return access;}
     public boolean execute(MOB mob, Vector commands, int metaFlags)
         throws java.io.IOException

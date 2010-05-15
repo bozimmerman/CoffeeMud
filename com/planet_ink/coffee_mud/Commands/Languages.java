@@ -36,7 +36,7 @@ public class Languages extends Skills
 {
 	public Languages(){}
 
-	private String[] access={"LANGUAGES","LANGS"};
+	private final String[] access={"LANGUAGES","LANGS"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

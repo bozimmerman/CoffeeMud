@@ -36,7 +36,7 @@ public class Rebuke extends StdCommand
 {
 	public Rebuke(){}
 
-	private String[] access={"REBUKE"};
+	private final String[] access={"REBUKE"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

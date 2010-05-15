@@ -36,7 +36,7 @@ public class Friends extends StdCommand
 {
 	public Friends(){}
 
-	private String[] access={"FRIENDS"};
+	private final String[] access={"FRIENDS"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

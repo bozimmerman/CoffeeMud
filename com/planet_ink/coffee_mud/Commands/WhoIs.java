@@ -36,7 +36,7 @@ public class WhoIs extends Who
 {
 	public WhoIs(){}
 
-	private String[] access={"WHOIS"};
+	private final String[] access={"WHOIS"};
 	public String[] getAccessWords(){return access;}
 	
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

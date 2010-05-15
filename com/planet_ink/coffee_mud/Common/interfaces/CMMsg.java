@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.Common.interfaces;
+import java.util.Iterator;
 import java.util.List;
 
 import com.planet_ink.coffee_mud.core.interfaces.*;
@@ -641,11 +642,11 @@ public interface CMMsg extends CMCommon
                        String allMessage);
 
     /**
-     * Returns a Vector of other CMMsg events which are slated to be confirmed
+     * Returns a List of other CMMsg events which are slated to be confirmed
      * and executed AFTER this current message is handled.  This is implemented
      * by the Room object
      * @see com.planet_ink.coffee_mud.Locales.interfaces.Room#send(MOB, CMMsg)  
-     * @return a Vector of CMMsg objects
+     * @return a List of CMMsg objects
      */
 	public List<CMMsg> trailerMsgs();
 	

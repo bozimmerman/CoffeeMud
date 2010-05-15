@@ -36,7 +36,7 @@ public class UnLink extends StdCommand
 {
 	public UnLink(){}
 
-	private String[] access={"UNLINK"};
+	private final String[] access={"UNLINK"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

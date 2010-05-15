@@ -36,7 +36,7 @@ public class Emote extends StdCommand
 {
 	public Emote(){}
 
-	private String[] access={"EMOTE",",",";",":"};
+	private final String[] access={"EMOTE",",",";",":"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

@@ -37,7 +37,7 @@ public class ListCmd extends StdCommand
 {
 	public ListCmd(){}
 
-	private String[] access={"LIST"};
+	private final String[] access={"LIST"};
 	public String[] getAccessWords(){return access;}
 
 

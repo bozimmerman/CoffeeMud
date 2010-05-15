@@ -37,7 +37,7 @@ public class Empty extends Drop
 {
 	public Empty(){}
 
-	private String[] access={"EMPTY","EMP"};
+	private final String[] access={"EMPTY","EMP"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

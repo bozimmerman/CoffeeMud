@@ -36,7 +36,7 @@ public class Channels extends StdCommand
 {
 	public Channels(){}
 
-	private String[] access={"CHANNELS"};
+	private final String[] access={"CHANNELS"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

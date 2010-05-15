@@ -39,7 +39,7 @@ public class Email extends StdCommand
 {
 	public Email(){}
 
-	private String[] access={"EMAIL"};
+	private final String[] access={"EMAIL"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

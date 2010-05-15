@@ -36,7 +36,7 @@ public class Compare extends StdCommand
 {
 	public Compare(){}
 
-	private String[] access={"COMPARE","COMP"};
+	private final String[] access={"COMPARE","COMP"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

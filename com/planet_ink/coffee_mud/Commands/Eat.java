@@ -36,7 +36,7 @@ public class Eat extends StdCommand
 {
 	public Eat(){}
 
-	private String[] access={"EAT"};
+	private final String[] access={"EAT"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

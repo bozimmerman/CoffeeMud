@@ -37,7 +37,7 @@ public class WizList extends StdCommand
 {
 	public WizList(){}
 
-	private String[] access={"WIZLIST"};
+	private final String[] access={"WIZLIST"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

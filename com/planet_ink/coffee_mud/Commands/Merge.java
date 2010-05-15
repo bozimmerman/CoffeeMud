@@ -36,7 +36,7 @@ public class Merge extends StdCommand
 {
 	public Merge(){}
 
-	private String[] access={"MERGE"};
+	private final String[] access={"MERGE"};
 	public String[] getAccessWords(){return access;}
 
 	public static String getStat(Environmental E, String stat)

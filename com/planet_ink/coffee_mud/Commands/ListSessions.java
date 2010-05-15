@@ -36,7 +36,7 @@ public class ListSessions extends StdCommand
 {
 	public ListSessions(){}
 
-	private String[] access={"SESSIONS"};
+	private final String[] access={"SESSIONS"};
 	public String[] getAccessWords(){return access;}
 
 

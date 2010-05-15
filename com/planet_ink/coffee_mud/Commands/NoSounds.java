@@ -37,7 +37,7 @@ public class NoSounds extends StdCommand
 {
 	public NoSounds(){}
 
-	private String[] access={"NOSOUNDS","NOMSP"};
+	private final String[] access={"NOSOUNDS","NOMSP"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

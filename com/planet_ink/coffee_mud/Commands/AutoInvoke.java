@@ -37,7 +37,7 @@ public class AutoInvoke extends StdCommand
 {
 	public AutoInvoke(){}
 
-	private String[] access={"AUTOINVOKE"};
+	private final String[] access={"AUTOINVOKE"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

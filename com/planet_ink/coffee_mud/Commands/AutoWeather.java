@@ -38,7 +38,7 @@ public class AutoWeather extends StdCommand
 {
 	public AutoWeather(){}
 
-	private String[] access={"AUTOWEATHER"};
+	private final String[] access={"AUTOWEATHER"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

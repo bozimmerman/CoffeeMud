@@ -37,7 +37,7 @@ public class TickTock extends StdCommand
 {
 	public TickTock(){}
 
-	private String[] access={"TICKTOCK"};
+	private final String[] access={"TICKTOCK"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

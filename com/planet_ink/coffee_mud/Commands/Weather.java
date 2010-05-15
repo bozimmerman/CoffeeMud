@@ -36,7 +36,7 @@ public class Weather extends StdCommand
 {
 	public Weather(){}
 
-	private String[] access={"WEATHER"};
+	private final String[] access={"WEATHER"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

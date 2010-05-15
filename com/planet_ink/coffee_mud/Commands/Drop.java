@@ -37,7 +37,7 @@ public class Drop extends StdCommand
 {
 	public Drop(){}
 
-	private String[] access={"DROP","DRO"};
+	private final String[] access={"DROP","DRO"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean drop(MOB mob, Environmental dropThis, boolean quiet, boolean optimize)

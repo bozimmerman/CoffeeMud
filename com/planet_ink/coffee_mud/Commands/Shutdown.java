@@ -36,7 +36,7 @@ public class Shutdown extends StdCommand
 {
 	public Shutdown(){}
 
-	private String[] access={"SHUTDOWN"};
+	private final String[] access={"SHUTDOWN"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

@@ -36,7 +36,7 @@ public class Formation extends StdCommand
 {
 	public Formation(){}
 
-	private String[] access={"FORMATION"};
+	private final String[] access={"FORMATION"};
 	public String[] getAccessWords(){return access;}
 	
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

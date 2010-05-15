@@ -36,7 +36,7 @@ public class Report extends Skills
 {
 	public Report(){}
 
-	private String[] access={"REPORT"};
+	private final String[] access={"REPORT"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

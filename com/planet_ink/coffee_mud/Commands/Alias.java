@@ -34,7 +34,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class Alias extends StdCommand
 {
-    private String[] access={"ALIAS"};
+    private final String[] access={"ALIAS"};
     public String[] getAccessWords(){return access;}
     public boolean execute(MOB mob, Vector commands, int metaFlags)
         throws java.io.IOException

@@ -36,7 +36,7 @@ public class Down extends Go
 {
 	public Down(){}
 
-	private String[] access={"DOWN","D"};
+	private final String[] access={"DOWN","D"};
 	public String[] getAccessWords(){return access;}
 	
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

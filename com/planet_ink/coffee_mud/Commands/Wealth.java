@@ -29,7 +29,7 @@ public class Wealth extends Inventory
 {
 	public Wealth(){}
 
-	private String[] access={"WEALTH"};
+	private final String[] access={"WEALTH"};
 	public String[] getAccessWords(){return access;}
 
 

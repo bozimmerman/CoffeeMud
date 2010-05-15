@@ -36,7 +36,7 @@ public class Quiet extends StdCommand
 {
 	public Quiet(){}
 
-	private String[] access={"QUIET"};
+	private final String[] access={"QUIET"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

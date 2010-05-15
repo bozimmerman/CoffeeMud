@@ -36,7 +36,7 @@ public class ClanQual extends StdCommand
 {
 	public ClanQual(){}
 
-	private String[] access={"CLANQUAL"};
+	private final String[] access={"CLANQUAL"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

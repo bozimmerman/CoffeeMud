@@ -36,7 +36,7 @@ public class GTell extends StdCommand
 {
 	public GTell(){}
 
-	private String[] access={"GTELL","GT"};
+	private final String[] access={"GTELL","GT"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
@@ -121,14 +121,11 @@ public class GTell extends StdCommand
 					target.playerStats().addGTellStack(CMLib.coffeeFilter().fullOutFilter(target.session(),target,mob,msg.target(),null,CMStrings.removeColors(tellStr),false));
 				}
 				target.executeMsg(target,msg);
-				if(msg.trailerMsgs()!=null)
-				{
-					for(int i=0;i<msg.trailerMsgs().size();i++)
-					{
-						CMMsg msg2=(CMMsg)msg.trailerMsgs().get(i);
+	            if(msg.trailerMsgs()!=null)
+	            {
+		    		for(CMMsg msg2 : msg.trailerMsgs())
 						if((msg2!=msg)&&(target.okMessage(target,msg2)))
 							target.executeMsg(target,msg2);
-					}
 					msg.trailerMsgs().clear();
 				}
 			}

@@ -38,7 +38,7 @@ public class AutoImprovement extends StdCommand
 {
 	public AutoImprovement(){}
 
-	private String[] access={"AUTOIMPROVEMENT"};
+	private final String[] access={"AUTOIMPROVEMENT"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

@@ -39,7 +39,7 @@ public class MPRun extends StdCommand
 {
     public MPRun(){}
 
-    private String[] access={"MPRUN"};
+    private final String[] access={"MPRUN"};
     public String[] getAccessWords(){return access;}
     
     public boolean execute(MOB mob, Vector commands, int metaFlags)

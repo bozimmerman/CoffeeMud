@@ -36,7 +36,7 @@ public class Northeast extends Go
 {
 	public Northeast(){}
 
-	private String[] access={"NORTHEAST","NE"};
+	private final String[] access={"NORTHEAST","NE"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

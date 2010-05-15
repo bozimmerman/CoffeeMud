@@ -37,7 +37,7 @@ public class Teach extends StdCommand
 {
 	public Teach(){}
 
-	private String[] access={"TEACH"};
+	private final String[] access={"TEACH"};
 	public String[] getAccessWords(){return access;}
     
     

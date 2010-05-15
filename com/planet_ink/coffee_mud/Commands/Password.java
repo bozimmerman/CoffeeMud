@@ -36,7 +36,7 @@ public class Password extends StdCommand
 {
 	public Password(){}
 
-	private String[] access={"PASSWORD"};
+	private final String[] access={"PASSWORD"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

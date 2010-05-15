@@ -38,7 +38,7 @@ public class Destroy extends StdCommand
 {
 	public Destroy(){}
 
-	private String[] access={"DESTROY"};
+	private final String[] access={"DESTROY"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean errorOut(MOB mob)

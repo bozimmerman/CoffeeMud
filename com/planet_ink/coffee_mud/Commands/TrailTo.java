@@ -37,7 +37,7 @@ public class TrailTo extends StdCommand
 {
 	public TrailTo(){}
 
-	private String[] access={"TRAILTO"};
+	private final String[] access={"TRAILTO"};
 	public String[] getAccessWords(){return access;}
 
 

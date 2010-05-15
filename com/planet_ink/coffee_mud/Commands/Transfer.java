@@ -36,7 +36,7 @@ public class Transfer extends At
 {
 	public Transfer(){}
 
-	private String[] access={"TRANSFER"};
+	private final String[] access={"TRANSFER"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

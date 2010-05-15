@@ -36,7 +36,7 @@ public class Possess extends StdCommand
 {
 	public Possess(){}
 
-	private String[] access={"POSSESS","POSS"};
+	private final String[] access={"POSSESS","POSS"};
 	public String[] getAccessWords(){return access;}
 
 	public MOB getTarget(MOB mob, Vector commands, boolean quiet)

@@ -38,7 +38,7 @@ public class Pause extends StdCommand
 {
     public Pause(){}
 
-    private String[] access={"PAUSE"};
+    private final String[] access={"PAUSE"};
     public String[] getAccessWords(){return access;}
 
     public boolean errorOut(MOB mob)

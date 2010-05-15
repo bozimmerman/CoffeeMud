@@ -37,7 +37,7 @@ public class Wield extends StdCommand
 {
 	public Wield(){}
 
-	private String[] access={"WIELD"};
+	private final String[] access={"WIELD"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

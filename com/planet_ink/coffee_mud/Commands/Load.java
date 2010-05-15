@@ -37,7 +37,7 @@ public class Load extends StdCommand
 {
 	public Load(){}
 
-	private String[] access={"LOAD"};
+	private final String[] access={"LOAD"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

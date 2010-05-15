@@ -36,7 +36,7 @@ public class Follow extends StdCommand
 {
 	public Follow(){}
 
-	private String[] access={"FOLLOW","FOL","FO","F"};
+	private final String[] access={"FOLLOW","FOL","FO","F"};
 	public String[] getAccessWords(){return access;}
 
 

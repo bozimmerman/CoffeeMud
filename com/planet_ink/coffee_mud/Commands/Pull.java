@@ -37,7 +37,7 @@ public class Pull extends Go
 {
 	public Pull(){}
 
-	private String[] access={"PULL"};
+	private final String[] access={"PULL"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

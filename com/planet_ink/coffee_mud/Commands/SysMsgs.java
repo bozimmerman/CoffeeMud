@@ -36,7 +36,7 @@ public class SysMsgs extends StdCommand
 {
 	public SysMsgs(){}
 
-	private String[] access={"SYSMSGS"};
+	private final String[] access={"SYSMSGS"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

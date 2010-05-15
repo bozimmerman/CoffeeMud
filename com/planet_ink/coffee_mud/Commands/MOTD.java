@@ -42,7 +42,7 @@ public class MOTD extends StdCommand
 {
 	public MOTD(){}
 
-	private String[] access={"MOTD"};
+	private final String[] access={"MOTD"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

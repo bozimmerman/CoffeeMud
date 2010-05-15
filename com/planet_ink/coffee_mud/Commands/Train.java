@@ -37,7 +37,7 @@ public class Train extends StdCommand
 {
 	public Train(){}
 
-	private String[] access={"TRAIN","TR","TRA"};
+	private final String[] access={"TRAIN","TR","TRA"};
 	public String[] getAccessWords(){return access;}
 	
 	public static Vector getAllPossibleThingsToTrainFor()

@@ -36,7 +36,7 @@ public class Deities extends StdCommand
 {
 	public Deities(){}
 
-	private String[] access={"DEITIES","GODS","DEITY"};
+	private final String[] access={"DEITIES","GODS","DEITY"};
 	public String[] getAccessWords(){return access;}
 
 	public String getDeityInformation(MOB mob, Deity D)

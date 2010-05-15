@@ -36,7 +36,7 @@ public class Crawl extends Go
 {
 	public Crawl(){}
 
-	private String[] access={"CRAWL","CR"};
+	private final String[] access={"CRAWL","CR"};
 	public String[] getAccessWords(){return access;}
     
     public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)

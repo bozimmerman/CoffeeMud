@@ -36,7 +36,7 @@ public class Save extends StdCommand
 {
 	public Save(){}
 
-	private String[] access={"SAVE"};
+	private final String[] access={"SAVE"};
 	public String[] getAccessWords(){return access;}
 	
 	public void clearSaveAndRestart(Room room, int taskCode)

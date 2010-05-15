@@ -38,7 +38,7 @@ public class AutoNotify extends StdCommand
 
 	public AutoNotify(){}
 
-	private String[] access={"AUTONOTIFY"};
+	private final String[] access={"AUTONOTIFY"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

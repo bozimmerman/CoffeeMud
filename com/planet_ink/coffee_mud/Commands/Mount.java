@@ -36,7 +36,7 @@ public class Mount extends StdCommand
 {
 	public Mount(){}
 
-	private String[] access={"MOUNT","BOARD","RIDE","M"};
+	private final String[] access={"MOUNT","BOARD","RIDE","M"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

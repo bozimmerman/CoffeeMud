@@ -36,7 +36,7 @@ public class Chants extends Skills
 {
 	public Chants(){}
 
-	private String[] access={"CHANTS"};
+	private final String[] access={"CHANTS"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

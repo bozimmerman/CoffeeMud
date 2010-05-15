@@ -37,7 +37,7 @@ public class Consider extends StdCommand
 {
 	public Consider(){}
 
-	private String[] access={"CONSIDER","COS","CO"};
+	private final String[] access={"CONSIDER","COS","CO"};
 	public String[] getAccessWords(){return access;}
 
 	public int relativeLevelDiff(MOB mob1, MOB mob2)

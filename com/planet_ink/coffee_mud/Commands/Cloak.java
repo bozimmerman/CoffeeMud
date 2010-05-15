@@ -36,7 +36,7 @@ public class Cloak extends StdCommand
 {
 	public Cloak(){}
 
-	private String[] access={"CLOAK"};
+	private final String[] access={"CLOAK"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

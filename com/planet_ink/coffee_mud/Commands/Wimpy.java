@@ -36,7 +36,7 @@ public class Wimpy extends StdCommand
 {
 	public Wimpy(){}
 
-	private String[] access={"WIMPY"};
+	private final String[] access={"WIMPY"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

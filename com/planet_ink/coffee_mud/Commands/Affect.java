@@ -34,7 +34,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class Affect extends StdCommand
 {
-	private String[] access={"AFFECT","AFF","AF"};
+	private final String[] access={"AFFECT","AFF","AF"};
 	public String[] getAccessWords(){return access;}
 
 	public String getAffects(Session S, Physical P, boolean xtra)

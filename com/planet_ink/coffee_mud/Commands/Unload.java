@@ -36,7 +36,7 @@ public class Unload extends StdCommand
 {
 	public Unload(){}
 
-	private String[] access={"UNLOAD"};
+	private final String[] access={"UNLOAD"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

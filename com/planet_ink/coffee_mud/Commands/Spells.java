@@ -36,7 +36,7 @@ public class Spells  extends Skills
 {
 	public Spells(){}
 
-	private String[] access={"SPELLS","SP"};
+	private final String[] access={"SPELLS","SP"};
 	public String[] getAccessWords(){return access;}
     
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

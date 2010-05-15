@@ -36,7 +36,7 @@ public class NoFollow extends Follow
 {
 	public NoFollow(){}
 
-	private String[] access={"NOFOLLOW","NOFOL"};
+	private final String[] access={"NOFOLLOW","NOFOL"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

@@ -36,7 +36,7 @@ public class Export extends StdCommand
 {
 	public Export(){}
 
-	private String[] access={"EXPORT"};
+	private final String[] access={"EXPORT"};
 	public String[] getAccessWords(){return access;}
 
 	public static void reallyExport(MOB mob, Session S, String fileName, String xml)

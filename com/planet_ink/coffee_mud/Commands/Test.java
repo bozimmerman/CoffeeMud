@@ -38,7 +38,7 @@ public class Test extends StdCommand
 {
     public Test(){}
 
-    private String[] access={"Test"};
+    private final String[] access={"Test"};
     public String[] getAccessWords(){return access;}
     
     public static final String[] spells={"Spell_Blur","Spell_ResistMagicMissiles"};

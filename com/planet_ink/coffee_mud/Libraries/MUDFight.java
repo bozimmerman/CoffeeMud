@@ -245,14 +245,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		// make sure he's not already dead, or with a pending death.
 		if(mob.amDead()) return;
 		if((addHere!=null)&&(addHere.trailerMsgs()!=null))
-		for(int i=0;i<addHere.trailerMsgs().size();i++)
-		{
-			CMMsg msg=(CMMsg)addHere.trailerMsgs().get(i);
-			if((msg.source()==mob)
-			&&((msg.sourceMinor()==CMMsg.TYP_PANIC))
-			   ||(msg.sourceMinor()==CMMsg.TYP_DEATH))
-				return;
-		}
+    		for(CMMsg msg : addHere.trailerMsgs())
+				if((msg.source()==mob)
+				&&((msg.sourceMinor()==CMMsg.TYP_PANIC))
+				   ||(msg.sourceMinor()==CMMsg.TYP_DEATH))
+					return;
 		CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_PANIC,null);
 		if(addHere!=null)
 			addHere.addTrailerMsg(msg);
@@ -270,14 +267,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		// make sure he's not already dead, or with a pending death.
 		if(deadM.amDead()) return;
 		if((addHere!=null)&&(addHere.trailerMsgs()!=null))
-		for(int i=0;i<addHere.trailerMsgs().size();i++)
-		{
-			CMMsg msg=(CMMsg)addHere.trailerMsgs().get(i);
-			if((msg.source()==deadM)
-			&&((msg.sourceMinor()==CMMsg.TYP_PANIC))
-			   ||(msg.sourceMinor()==CMMsg.TYP_DEATH))
-				return;
-		}
+    		for(CMMsg msg : addHere.trailerMsgs())
+				if((msg.source()==deadM)
+				&&((msg.sourceMinor()==CMMsg.TYP_PANIC))
+				   ||(msg.sourceMinor()==CMMsg.TYP_DEATH))
+					return;
 
 		String msp=CMProps.msp("death"+CMLib.dice().roll(1,7,0)+".wav",50);
 		CMMsg msg=null;

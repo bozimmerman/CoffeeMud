@@ -38,7 +38,7 @@ public class Create extends StdCommand
 {
 	public Create(){}
 
-	private String[] access={"CREATE"};
+	private final String[] access={"CREATE"};
 	public String[] getAccessWords(){return access;}
 
 	public void exits(MOB mob, Vector commands)

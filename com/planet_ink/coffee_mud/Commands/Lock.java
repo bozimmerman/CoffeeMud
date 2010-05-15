@@ -36,7 +36,7 @@ public class Lock extends StdCommand
 {
 	public Lock(){}
 
-	private String[] access={"LOCK","LOC"};
+	private final String[] access={"LOCK","LOC"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

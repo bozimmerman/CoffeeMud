@@ -36,7 +36,7 @@ public class ClanList extends StdCommand
 {
 	public ClanList(){}
 
-	private String[] access={"CLANLIST","CLANS"};
+	private final String[] access={"CLANLIST","CLANS"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

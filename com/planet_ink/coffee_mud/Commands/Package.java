@@ -37,7 +37,7 @@ public class Package extends StdCommand
 {
     public Package(){}
 
-    private String[] access={"PACKAGE"};
+    private final String[] access={"PACKAGE"};
     public String[] getAccessWords(){return access;}
 
     public boolean execute(MOB mob, Vector commands, int metaFlags)

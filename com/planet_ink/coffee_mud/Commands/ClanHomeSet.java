@@ -37,7 +37,7 @@ public class ClanHomeSet extends StdCommand
 {
 	public ClanHomeSet(){}
 
-	private String[] access={"CLANHOMESET"};
+	private final String[] access={"CLANHOMESET"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

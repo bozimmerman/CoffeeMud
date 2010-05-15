@@ -36,7 +36,7 @@ public class Snoop extends StdCommand
 {
 	public Snoop(){}
 
-	private String[] access={"SNOOP"};
+	private final String[] access={"SNOOP"};
 	public String[] getAccessWords(){return access;}
 	
 	protected Vector snoopingOn(Session S)

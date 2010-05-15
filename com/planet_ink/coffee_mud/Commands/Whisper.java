@@ -36,7 +36,7 @@ public class Whisper extends StdCommand
 {
 	public Whisper(){}
 
-	private String[] access={"WHISPER"};
+	private final String[] access={"WHISPER"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

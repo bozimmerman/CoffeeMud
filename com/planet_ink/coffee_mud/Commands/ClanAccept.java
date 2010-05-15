@@ -38,7 +38,7 @@ public class ClanAccept extends StdCommand
 {
 	public ClanAccept(){}
 
-	private String[] access={"CLANACCEPT"};
+	private final String[] access={"CLANACCEPT"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

@@ -36,7 +36,7 @@ public class Commands extends StdCommand
 {
 	public Commands(){}
 
-	private String[] access={"COMMANDS"};
+	private final String[] access={"COMMANDS"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

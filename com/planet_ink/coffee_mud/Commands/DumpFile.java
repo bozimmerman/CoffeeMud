@@ -36,7 +36,7 @@ public class DumpFile extends StdCommand
 {
 	public DumpFile(){}
 
-	private String[] access={"DUMPFILE"};
+	private final String[] access={"DUMPFILE"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

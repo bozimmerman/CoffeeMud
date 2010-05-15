@@ -37,7 +37,7 @@ public class ChanWho extends StdCommand
 {
 	public ChanWho(){}
 
-	private String[] access={"CHANWHO"};
+	private final String[] access={"CHANWHO"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

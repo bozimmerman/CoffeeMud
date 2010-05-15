@@ -36,7 +36,7 @@ public class Fire extends StdCommand
 {
 	public Fire(){}
 
-	private String[] access={"FIRE"};
+	private final String[] access={"FIRE"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

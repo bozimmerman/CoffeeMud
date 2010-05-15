@@ -36,7 +36,7 @@ public class ANSI extends StdCommand
 {
 	public ANSI(){}
 
-	private String[] access={"ANSI","COLOR","COLOUR"};
+	private final String[] access={"ANSI","COLOR","COLOUR"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

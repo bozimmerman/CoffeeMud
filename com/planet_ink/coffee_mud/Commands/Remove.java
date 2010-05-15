@@ -37,7 +37,7 @@ public class Remove extends StdCommand
 {
 	public Remove(){}
 
-	private String[] access={"REMOVE","REM"};
+	private final String[] access={"REMOVE","REM"};
 	public String[] getAccessWords(){return access;}
 
 

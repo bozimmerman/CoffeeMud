@@ -1237,20 +1237,20 @@ public class StdRoom implements Room
 	{
 		reallyReallySend(source,msg);
 		// now handle trailer msgs
-		if((msg.trailerMsgs()!=null)&&(depth<3))
+		if(depth<3)
 		{
-			for(int i=0;i<msg.trailerMsgs().size();i++)
-			{
-				CMMsg msg2=(CMMsg)msg.trailerMsgs().get(i);
-				if((msg!=msg2)
-				&&((msg2.target()==null)
-				   ||(!(msg2.target() instanceof MOB))
-				   ||((!((MOB)msg2.target()).amDead())||(msg2.sourceMinor()==CMMsg.TYP_DEATH)))
-				&&(okMessage(source,msg2)))
-				{
-					source.executeMsg(source,msg2);
-                    reallySend(source,msg2,depth+1);
-				}
+            if(msg.trailerMsgs()!=null)
+            {
+	    		for(CMMsg msg2 : msg.trailerMsgs())
+					if((msg!=msg2)
+					&&((msg2.target()==null)
+					   ||(!(msg2.target() instanceof MOB))
+					   ||((!((MOB)msg2.target()).amDead())||(msg2.sourceMinor()==CMMsg.TYP_DEATH)))
+					&&(okMessage(source,msg2)))
+					{
+						source.executeMsg(source,msg2);
+	                    reallySend(source,msg2,depth+1);
+					}
 			}
 		}
 	}

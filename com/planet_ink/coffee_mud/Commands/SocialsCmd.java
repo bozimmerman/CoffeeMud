@@ -36,7 +36,7 @@ public class SocialsCmd extends StdCommand
 {
 	public SocialsCmd(){}
 
-	private String[] access={"SOCIALS"};
+	private final String[] access={"SOCIALS"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

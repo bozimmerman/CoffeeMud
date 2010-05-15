@@ -37,7 +37,7 @@ public class ClanWho extends Who
 {
 	public ClanWho(){}
 
-	private String[] access={"CLANWHO","CLWH"};
+	private final String[] access={"CLANWHO","CLWH"};
 	public String[] getAccessWords(){return access;}
 	
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

@@ -38,7 +38,7 @@ public class Autoforward extends StdCommand
 {
 	public Autoforward(){}
 
-	private String[] access={"AUTOFORWARD"};
+	private final String[] access={"AUTOFORWARD"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

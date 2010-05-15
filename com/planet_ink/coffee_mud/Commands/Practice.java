@@ -36,7 +36,7 @@ public class Practice extends StdCommand
 {
 	public Practice(){}
 
-	private String[] access={"PRACTICE","PRAC"};
+	private final String[] access={"PRACTICE","PRAC"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

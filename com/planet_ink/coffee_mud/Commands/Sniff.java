@@ -36,7 +36,7 @@ public class Sniff extends StdCommand
 {
 	public Sniff(){}
 
-	private String[] access={"SNIFF","SMELL"};
+	private final String[] access={"SNIFF","SMELL"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

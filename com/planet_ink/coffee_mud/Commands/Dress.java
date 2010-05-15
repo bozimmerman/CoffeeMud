@@ -36,7 +36,7 @@ public class Dress extends StdCommand
 {
 	public Dress(){}
 
-	private String[] access={"DRESS"};
+	private final String[] access={"DRESS"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

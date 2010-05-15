@@ -36,7 +36,7 @@ public class Value extends StdCommand
 {
 	public Value(){}
 
-	private String[] access={"VALUE","VAL","V"};
+	private final String[] access={"VALUE","VAL","V"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

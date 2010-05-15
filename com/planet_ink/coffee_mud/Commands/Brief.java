@@ -36,7 +36,7 @@ public class Brief extends StdCommand
 {
 	public Brief(){}
 
-	private String[] access={"BRIEF"};
+	private final String[] access={"BRIEF"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

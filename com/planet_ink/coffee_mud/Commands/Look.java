@@ -36,7 +36,7 @@ public class Look extends StdCommand
 {
 	public Look(){}
 
-	private String[] access={"LOOK","LOO","LO","L"};
+	private final String[] access={"LOOK","LOO","LO","L"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

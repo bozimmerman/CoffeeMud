@@ -37,7 +37,7 @@ public class Draw extends Get
 {
 	public Draw(){}
 
-	private String[] access={"DRAW"};
+	private final String[] access={"DRAW"};
 	public String[] getAccessWords(){return access;}
 
 	public Vector getSheaths(MOB mob)

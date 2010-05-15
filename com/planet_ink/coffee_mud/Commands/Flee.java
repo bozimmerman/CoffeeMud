@@ -36,7 +36,7 @@ public class Flee extends Go
 {
 	public Flee(){}
 
-	private String[] access={"FLEE"};
+	private final String[] access={"FLEE"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

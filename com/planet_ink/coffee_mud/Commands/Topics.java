@@ -36,7 +36,7 @@ public class Topics extends ATopics
 {
 	public Topics(){}
 
-	private String[] access={"TOPICS"};
+	private final String[] access={"TOPICS"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

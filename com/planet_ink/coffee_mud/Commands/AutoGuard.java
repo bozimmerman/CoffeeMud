@@ -38,7 +38,7 @@ public class AutoGuard extends StdCommand
 {
 	public AutoGuard(){}
 
-	private String[] access={"AUTOGUARD","GUARD"};
+	private final String[] access={"AUTOGUARD","GUARD"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

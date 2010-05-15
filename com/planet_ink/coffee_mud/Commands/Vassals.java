@@ -36,7 +36,7 @@ public class Vassals extends StdCommand
 {
 	public Vassals(){}
 
-	private String[] access={"VASSALS"};
+	private final String[] access={"VASSALS"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

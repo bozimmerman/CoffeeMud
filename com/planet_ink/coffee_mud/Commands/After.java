@@ -51,7 +51,7 @@ public class After extends StdCommand implements Tickable
 		int metaFlags=0;
 	}
 
-	private String[] access={"AFTER"};
+	private final String[] access={"AFTER"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

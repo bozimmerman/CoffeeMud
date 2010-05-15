@@ -36,7 +36,7 @@ public class Goto extends At
 {
 	public Goto(){}
 
-	private String[] access={"GOTO"};
+	private final String[] access={"GOTO"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

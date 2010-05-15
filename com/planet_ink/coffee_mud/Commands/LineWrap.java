@@ -36,7 +36,7 @@ public class LineWrap extends StdCommand
 {
 	public LineWrap(){}
 
-	private String[] access={"LINEWRAP"};
+	private final String[] access={"LINEWRAP"};
 	public String[] getAccessWords(){return access;}
 	
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

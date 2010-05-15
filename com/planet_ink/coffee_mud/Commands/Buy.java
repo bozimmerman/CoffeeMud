@@ -36,7 +36,7 @@ public class Buy extends StdCommand
 {
 	public Buy(){}
 
-	private String[] access={"BUY"};
+	private final String[] access={"BUY"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

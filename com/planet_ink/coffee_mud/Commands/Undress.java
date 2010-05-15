@@ -37,7 +37,7 @@ public class Undress extends StdCommand
 {
 	public Undress(){}
 
-	private String[] access={"UNDRESS"};
+	private final String[] access={"UNDRESS"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

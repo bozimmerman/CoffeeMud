@@ -38,7 +38,7 @@ public class Modify extends StdCommand
 {
 	public Modify(){}
 
-	private String[] access={"MODIFY","MOD"};
+	private final String[] access={"MODIFY","MOD"};
 	public String[] getAccessWords(){return access;}
 
 	public void items(MOB mob, Vector commands)

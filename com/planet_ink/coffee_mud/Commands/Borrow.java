@@ -36,7 +36,7 @@ public class Borrow extends StdCommand
 {
 	public Borrow(){}
 
-	private String[] access={"BORROW"};
+	private final String[] access={"BORROW"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

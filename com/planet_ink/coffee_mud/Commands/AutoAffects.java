@@ -34,7 +34,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class AutoAffects extends StdCommand
 {
-    private String[] access={"AUTOAFFECTS","AUTOAFF","AAF"};
+    private final String[] access={"AUTOAFFECTS","AUTOAFF","AAF"};
     public String[] getAccessWords(){return access;}
 
     public String getAutoAffects(Physical P)

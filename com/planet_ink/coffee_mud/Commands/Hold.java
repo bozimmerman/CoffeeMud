@@ -37,7 +37,7 @@ public class Hold extends StdCommand
 {
 	public Hold(){}
 
-	private String[] access={"HOLD","HOL","HO","H"};
+	private final String[] access={"HOLD","HOL","HO","H"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

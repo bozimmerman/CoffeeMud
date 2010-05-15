@@ -38,7 +38,7 @@ public class Reset extends StdCommand
 {
 	public Reset(){}
 
-	private String[] access={"RESET"};
+	private final String[] access={"RESET"};
 	public boolean canBeOrdered(){return true;}
 	public String[] getAccessWords(){return access;}
 	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"RESET");}

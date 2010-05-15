@@ -37,7 +37,7 @@ public class Wear extends StdCommand
 {
 	public Wear(){}
 
-	private String[] access={"WEAR"};
+	private final String[] access={"WEAR"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean wear(MOB mob, Item item, int locationIndex, boolean quiet)

@@ -36,7 +36,7 @@ public class Copy extends StdCommand
 {
 	public Copy(){}
 
-	private String[] access={"COPY"};
+	private final String[] access={"COPY"};
 	public String[] getAccessWords(){return access;}
 	
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

@@ -36,7 +36,7 @@ public class Split extends StdCommand
 {
 	public Split(){}
 
-	private String[] access={"SPLIT"};
+	private final String[] access={"SPLIT"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

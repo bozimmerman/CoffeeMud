@@ -36,7 +36,7 @@ public class Description extends StdCommand
 {
 	public Description(){}
 
-	private String[] access={"DESCRIPTION"};
+	private final String[] access={"DESCRIPTION"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

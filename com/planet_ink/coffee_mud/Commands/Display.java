@@ -37,7 +37,7 @@ public class Display extends StdCommand
 {
 	public Display(){}
 
-	private String[] access={"DISPLAY","SHOW"};
+	private final String[] access={"DISPLAY","SHOW"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

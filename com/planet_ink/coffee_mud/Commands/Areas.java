@@ -36,7 +36,7 @@ public class Areas extends StdCommand
 {
 	public Areas(){}
 
-	private String[] access={"AREAS"};
+	private final String[] access={"AREAS"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

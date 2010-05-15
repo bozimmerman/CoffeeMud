@@ -36,7 +36,7 @@ public class Who extends StdCommand
 {
 	public Who(){}
 
-	private String[] access={"WHO","WH"};
+	private final String[] access={"WHO","WH"};
 	public String[] getAccessWords(){return access;}
 	
 	protected static final String shortHead=

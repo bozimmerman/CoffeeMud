@@ -36,7 +36,7 @@ public class Credits extends StdCommand
 {
 	public Credits(){}
 
-	private String[] access={"CREDITS"};
+	private final String[] access={"CREDITS"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

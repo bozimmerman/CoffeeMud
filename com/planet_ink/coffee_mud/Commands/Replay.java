@@ -36,7 +36,7 @@ public class Replay extends StdCommand
 {
 	public Replay(){}
 
-	private String[] access={"REPLAY"};
+	private final String[] access={"REPLAY"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

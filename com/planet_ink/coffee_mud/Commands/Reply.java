@@ -36,7 +36,7 @@ public class Reply extends StdCommand
 {
 	public Reply(){}
 
-	private String[] access={"REPLY","REP","RE"};
+	private final String[] access={"REPLY","REP","RE"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

@@ -36,7 +36,7 @@ public class Boot extends StdCommand
 {
 	public Boot(){}
 
-	private String[] access={"BOOT"};
+	private final String[] access={"BOOT"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

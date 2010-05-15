@@ -37,7 +37,7 @@ public class Take extends StdCommand
 {
 	public Take(){}
 
-	private String[] access={"TAKE"};
+	private final String[] access={"TAKE"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

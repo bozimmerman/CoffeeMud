@@ -38,7 +38,7 @@ public class AutoExits extends StdCommand
 {
 	public AutoExits(){}
 
-	private String[] access={"AUTOEXITS"};
+	private final String[] access={"AUTOEXITS"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

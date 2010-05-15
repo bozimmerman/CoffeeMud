@@ -36,7 +36,7 @@ public class ClanMorgueSet extends StdCommand
 {
 	public ClanMorgueSet(){}
 
-	private String[] access={"CLANMORGUESET"};
+	private final String[] access={"CLANMORGUESET"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

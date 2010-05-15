@@ -97,7 +97,7 @@ public class Expire extends StdCommand
         }
     }
 
-    private String[] access={"EXPIRE"};
+    private final String[] access={"EXPIRE"};
     public String[] getAccessWords(){return access;}
 
     

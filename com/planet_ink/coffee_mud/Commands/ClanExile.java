@@ -38,7 +38,7 @@ public class ClanExile extends StdCommand
 {
 	public ClanExile(){}
 
-	private String[] access={"CLANEXILE"};
+	private final String[] access={"CLANEXILE"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

@@ -37,7 +37,7 @@ public class Where extends StdCommand
 {
 	public Where(){}
 
-	private String[] access={"WHERE"};
+	private final String[] access={"WHERE"};
 	public String[] getAccessWords(){return access;}
 
     protected void whereAdd(DVector V, String area, int i)

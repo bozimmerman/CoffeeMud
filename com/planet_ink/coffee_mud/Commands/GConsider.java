@@ -36,7 +36,7 @@ public class GConsider extends StdCommand
 {
 	public GConsider(){}
 
-	private String[] access={"GCONSIDER","GCOS","GCO"};
+	private final String[] access={"GCONSIDER","GCOS","GCO"};
 	public String[] getAccessWords(){return access;}
 
 	public int relativeLevelDiff(MOB mob1, Set<MOB> mobs)

@@ -36,7 +36,7 @@ public class PageBreak extends StdCommand
 {
 	public PageBreak(){}
 
-	private String[] access={"PAGEBREAK"};
+	private final String[] access={"PAGEBREAK"};
 	public String[] getAccessWords(){return access;}
 	
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

@@ -36,7 +36,7 @@ public class ATopics extends StdCommand
 {
 	public ATopics(){}
 
-	private String[] access={"ARCTOPICS","ATOPICS"};
+	private final String[] access={"ARCTOPICS","ATOPICS"};
 	public String[] getAccessWords(){return access;}
 
 	public static void doTopics(MOB mob, Properties rHelpFile, String helpName, String resName)

@@ -36,7 +36,7 @@ public class Hire extends StdCommand
 {
 	public Hire(){}
 
-	private String[] access={"HIRE"};
+	private final String[] access={"HIRE"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

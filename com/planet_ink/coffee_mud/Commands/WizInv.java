@@ -36,7 +36,7 @@ public class WizInv extends StdCommand
 {
 	public WizInv(){}
 
-	private String[] access={"WIZINVISIBLE","WIZINV","NOWIZINV"};
+	private final String[] access={"WIZINVISIBLE","WIZINV","NOWIZINV"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

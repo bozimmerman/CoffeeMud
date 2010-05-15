@@ -38,7 +38,7 @@ public class Kill extends StdCommand
 {
 	public Kill(){}
 
-	private String[] access={"KILL","K","ATTACK"};
+	private final String[] access={"KILL","K","ATTACK"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

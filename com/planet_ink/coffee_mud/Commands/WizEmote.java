@@ -36,7 +36,7 @@ public class WizEmote extends StdCommand
 {
 	public WizEmote(){}
 
-	private String[] access={"WIZEMOTE"};
+	private final String[] access={"WIZEMOTE"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

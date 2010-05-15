@@ -36,7 +36,7 @@ public class Tell extends StdCommand
 {
 	public Tell(){}
 
-	private String[] access={"TELL","T"};
+	private final String[] access={"TELL","T"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

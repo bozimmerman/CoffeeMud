@@ -36,7 +36,7 @@ public class Quit extends StdCommand
 {
 	public Quit(){}
 
-	private String[] access={"QUIT","QUI","Q"};
+	private final String[] access={"QUIT","QUI","Q"};
 	public String[] getAccessWords(){return access;}
 
 	public static void dispossess(MOB mob)

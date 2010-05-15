@@ -38,7 +38,7 @@ public class JRun extends StdCommand
 {
     public JRun(){}
 
-    private String[] access={"JRUN"};
+    private final String[] access={"JRUN"};
     public String[] getAccessWords(){return access;}
     public boolean execute(MOB mob, Vector commands, int metaFlags)
         throws java.io.IOException

@@ -37,7 +37,7 @@ public class Learn extends StdCommand
 {
 	public Learn(){}
 
-	private String[] access={"LEARN"};
+	private final String[] access={"LEARN"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

@@ -36,7 +36,7 @@ public class OutFit extends StdCommand
 {
 	public OutFit(){}
 
-	private String[] access={"OUTFIT"};
+	private final String[] access={"OUTFIT"};
 	public String[] getAccessWords(){return access;}
     public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)
     throws java.io.IOException

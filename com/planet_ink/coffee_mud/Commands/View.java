@@ -36,7 +36,7 @@ public class View extends StdCommand
 {
 	public View(){}
 
-	private String[] access={"VIEW"};
+	private final String[] access={"VIEW"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

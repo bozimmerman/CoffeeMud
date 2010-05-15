@@ -36,7 +36,7 @@ public class HelpList extends StdCommand
 {
 	public HelpList(){}
 
-	private String[] access={"HELPLIST","HLIST"};
+	private final String[] access={"HELPLIST","HLIST"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

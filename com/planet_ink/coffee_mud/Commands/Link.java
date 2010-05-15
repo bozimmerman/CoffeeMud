@@ -38,7 +38,7 @@ public class Link extends At
 {
 	public Link(){}
 
-	private String[] access={"LINK"};
+	private final String[] access={"LINK"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

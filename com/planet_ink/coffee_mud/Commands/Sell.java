@@ -36,7 +36,7 @@ public class Sell extends StdCommand
 {
 	public Sell(){}
 
-	private String[] access={"SELL"};
+	private final String[] access={"SELL"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

@@ -1,11 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
   <meta name="generator" content="HTML Tidy, see www.w3.org" />
-  <title>Programming for CoffeeMud 5.6</title>
-  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
-<!-- Modified by Josh Mueller, 2006-5-6, fix validation problems, reformat, fix spelling errors -->
-</head>
+  
+  <title>Programming for CoffeeMud 5.6</title><link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-5-6, fix validation problems, reformat, fix spelling errors --></head>
+
 <body>
 <center>
 <table border="1" cellpadding="10" cellspacing="0" width="90%">
@@ -110,8 +108,7 @@ Modification</a></li>
         <li><a href="#LANGS">Languages</a></li>
       </ul>
       </td>
-      <td align="left" valign="top"> <img src="images/mug.jpg"
- alt="CoffeeMud logo" />
+      <td align="left" valign="top"> <img src="images/mug.jpg" alt="CoffeeMud logo" />
       <h2><a name="overview" id="overview">Overview</a></h2>
       <p>The purpose of this document is to assist those who wish to
 add custom Items, MOBs, Behaviors, Properties, or other objects to
@@ -120,9 +117,7 @@ should be experienced with writing and compiling Java classes. The
 object oriented notions of class inheritance and polymorphism, as well
 as the Java constructs of interfaces should be at least vaguely
 familiar to you before attempting to build classes for CoffeeMud. Also,
-it is expected that all of the ideas presented in the <a
- href="ArchonGuide.html">Archons Guide</a> and <a
- href="GameBuildersGuide.html">Game Builders Guide</a>
+it is expected that all of the ideas presented in the <a href="ArchonGuide.html">Archons Guide</a> and <a href="GameBuildersGuide.html">Game Builders Guide</a>
 are completely familiar. The difference between a GenItem and a
 StdItem, or a GenMob and a GenPostman will not be explained in this
 document.</p>
@@ -254,10 +249,7 @@ to access her code libraries.</p>
         </li>
       </ul>
       <h3><a name="IMPORTS" id="IMPORTS">Complete Default Import List</a></h3>
-      <pre>import com.planet_ink.coffee_mud.core.*;<br />
-      import com.planet_ink.coffee_mud.core.collections.*;<br />
-      import com.planet_ink.coffee_mud.core.interfaces.*;<br />
-      import com.planet_ink.coffee_mud.Abilities.interfaces.*;<br />import com.planet_ink.coffee_mud.Areas.interfaces.*;<br />import com.planet_ink.coffee_mud.Behaviors.interfaces.*;<br />import com.planet_ink.coffee_mud.CharClasses.interfaces.*;<br />import com.planet_ink.coffee_mud.Commands.interfaces.*;<br />import com.planet_ink.coffee_mud.Common.interfaces.*;<br />import com.planet_ink.coffee_mud.Exits.interfaces.*;<br />import com.planet_ink.coffee_mud.Items.interfaces.*;<br />import com.planet_ink.coffee_mud.Locales.interfaces.*;<br />import com.planet_ink.coffee_mud.MOBS.interfaces.*;<br />import com.planet_ink.coffee_mud.Races.interfaces.*;<br />import com.planet_ink.coffee_mud.Libraries.interfaces.*;<br />import java.io.IOException;<br />import java.util.*;<br /></pre>
+      <pre>import com.planet_ink.coffee_mud.core.*;<br />import com.planet_ink.coffee_mud.core.collections.*;<br />import com.planet_ink.coffee_mud.core.interfaces.*;<br />import com.planet_ink.coffee_mud.Abilities.interfaces.*;<br />import com.planet_ink.coffee_mud.Areas.interfaces.*;<br />import com.planet_ink.coffee_mud.Behaviors.interfaces.*;<br />import com.planet_ink.coffee_mud.CharClasses.interfaces.*;<br />import com.planet_ink.coffee_mud.Commands.interfaces.*;<br />import com.planet_ink.coffee_mud.Common.interfaces.*;<br />import com.planet_ink.coffee_mud.Exits.interfaces.*;<br />import com.planet_ink.coffee_mud.Items.interfaces.*;<br />import com.planet_ink.coffee_mud.Locales.interfaces.*;<br />import com.planet_ink.coffee_mud.MOBS.interfaces.*;<br />import com.planet_ink.coffee_mud.Races.interfaces.*;<br />import com.planet_ink.coffee_mud.Libraries.interfaces.*;<br />import java.io.IOException;<br />import java.util.*;<br /></pre>
       <img src="images/rainbow.jpg" alt="Text" />
       <h2><a name="TEXT" id="TEXT">Text</a></h2>
       <p>Before we get started with objects, needs must the topic of
@@ -272,8 +264,8 @@ special tags are used to designate a player name, or the name of the
 target of a spell. You will also notice that (s) and (es) is used to
 modify the proper form of a verb. These are key features of the
 CoffeeMud text engine. Here is a more complete list of available tags:</p>
-      <a name="nametag" id="nametag" />
-      <table bgcolor="#ffffcc" border="1">
+      <a name="nametag" id="nametag">
+      </a><table bgcolor="#ffffcc" border="1">
         <tbody>
           <tr>
             <td><code>&lt;S-HIS-HER&gt;</code> </td>
@@ -387,8 +379,8 @@ with an '`s'</td>
 system strings. For instance:</p>
       <pre>msg.append("^!You are thirsty.^?\n\r");<br /></pre>
       <p>These codes are as follows:</p>
-      <a name="textcolor" id="textcolor" />
-      <table bgcolor="#ccffff" border="1">
+      <a name="textcolor" id="textcolor">
+      </a><table bgcolor="#ccffff" border="1">
         <tbody>
           <tr>
             <td><code>^N</code> </td>
@@ -576,11 +568,11 @@ system strings. For instance:</p>
           </tr>
         </tbody>
       </table>
-      <p>As you might have guessed, it is preferred that the system
+<a name="textcolor" id="textcolor">      </a><p><a name="textcolor" id="textcolor">As you might have guessed, it is preferred that the system
 colors (the last 16 codes) be used sparingly, in favor of the more
-customizable codes above.</p>
-      <img src="images/mozilla.jpg" alt="Mozilla Javascript" />
-      <h2><a name="javascript" id="javascript">JavaScripting:</a></h2>
+customizable codes above.</a></p>
+<a name="textcolor" id="textcolor">      <img src="images/mozilla.jpg" alt="Mozilla Javascript" />
+      </a><h2><a name="javascript" id="javascript">JavaScripting:</a></h2>
       <p>JavaScript is an interpreted scripting language which is used
 in various parts of CoffeeMud. The CoffeeMud engine integrates the
 Rhino Javascript interpretor package from Mozilla in such places as the
@@ -833,8 +825,8 @@ into the components we will discuss.</p>
       <p>The Major code is a series of significant bits in the integer,
 each of which gives some new meaning to the message. These bits are as
 follows:</p>
-      <a name="majorcode" id="majorcode" />
-      <table bgcolor="#ffccff" border="1">
+      <a name="majorcode" id="majorcode">
+      </a><table bgcolor="#ffccff" border="1">
         <thead> <tr>
           <th width="15%">Bit mask</th>
           <th width="30%">CMMsg Equate Variable(s)</th>
@@ -905,33 +897,33 @@ repetition.</td>
           </tr>
         </tbody>
       </table>
-      <p>The above masks can be quite confusing. It is best to examine
+<a name="majorcode" id="majorcode">      </a><p><a name="majorcode" id="majorcode">The above masks can be quite confusing. It is best to examine
 the several MSG_ equates in the CMMsg interface to see how they are
 properly or improperly used. Remember a MSG_ equate is a completely
-constructed Code, complete with the appropriate Major and Minor aspects.</p>
-      <p>The Minor Code represents the more specific activity being
+constructed Code, complete with the appropriate Major and Minor aspects.</a></p>
+<a name="majorcode" id="majorcode">      </a><p><a name="majorcode" id="majorcode">The Minor Code represents the more specific activity being
 performed, and is a simple integer ranging from 0 (NO EFFECT) to 2047.
 The officially recognized Minor codes are exhaustively listed in the
 CMMsg interface, and all begin with the prefix TYP_. These types cover
 every sort of major event which occurs in the CoffeeMud engine,
 including getting items, casting spells, entering or leaving rooms,
-etc, etc..</p>
-      <pre>CMMsg msg = CMClass.getMsg(attacker,target,weapon,CMMsg.MSG_WEAPONATTACK,<br />          "&lt;S-NAME&gt;attack(s) &lt;T-NAME&gt;!");<br /></pre>
-      <p>The core.CMClass has many different getMsg signatures to make
+etc, etc..</a></p>
+<a name="majorcode" id="majorcode">      </a><pre><a name="majorcode" id="majorcode">CMMsg msg = CMClass.getMsg(attacker,target,weapon,CMMsg.MSG_WEAPONATTACK,<br />          "&lt;S-NAME&gt;attack(s) &lt;T-NAME&gt;!");<br /></a></pre>
+<a name="majorcode" id="majorcode">      </a><p><a name="majorcode" id="majorcode">The core.CMClass has many different getMsg signatures to make
 message construction quick and painless. The above is an example where
 only a single Code and a single message text are provided. In
 constructors where only one Code or message text field are provided, it
 is assumed that the code and message texts will be the same for source,
-target (if any) and others.</p>
-      <p>CMMsg objects also have <code>value()</code> and <code>setValue(int)</code>
+target (if any) and others.</a></p>
+<a name="majorcode" id="majorcode">      </a><p><a name="majorcode" id="majorcode">CMMsg objects also have <code>value()</code> and <code>setValue(int)</code>
 methods for modifying an integer not found in the constructor. This
 number is used for several different purposes in message construction,
 from the amount of damage in a TYP_DAMAGE message, to the amount of
 experience in a TYP_EXPCHANGE message. This number is also used to
 determine whether or not a standard saving throw was made. Value
 defaults to 0, but, after running through a message which contains a
-savable event, the value will be &gt;0 if the save was made.</p>
-      <h3><a name="messagepreview" id="messagepreview">Message
+savable event, the value will be &gt;0 if the save was made.</a></p>
+<a name="majorcode" id="majorcode">      </a><h3><a name="messagepreview" id="messagepreview">Message
 Previewing</a></h3>
       <p>Once a Message has been constructed, it is time to actually
 put the message out into the system. There is a standard form for the
@@ -1275,7 +1267,7 @@ methods on a CharStats object. Both of these methods require, as their
 first parameter, an integer code which corresponds to the specific stat
 being set or read. These stat parameters are defined as equates within
 the CharStats interface, and include:</p>
-      <p><a name="charstats" id="charstats" /> STAT_STRENGTH,
+      <p><a name="charstats" id="charstats"> STAT_STRENGTH,
 STAT_INTELLIGENCE, STAT_DEXTERITY, STAT_CONSTITUTION, STAT_CHARISMA,
 STAT_WISDOM, STAT_GENDER, STAT_SAVE_PARALYSIS, STAT_SAVE_FIRE,
 STAT_SAVE_COLD, STAT_SAVE_WATER, STAT_SAVE_GAS, STAT_SAVE_MIND,
@@ -1285,25 +1277,25 @@ STAT_SAVE_MAGIC, STAT_SAVE_DISEASE, STAT_SAVE_TRAPS,
 STAT_MAX_STRENGTH_ADJ, STAT_MAX_INTELLIGENCE_ADJ,
 STAT_MAX_DEXTERITY_ADJ, STAT_MAX_CONSTITUTION_ADJ,
 STAT_MAX_CHARISMA_ADJ, STAT_MAX_WISDOM_ADJ, STAT_AGE,
-STAT_SAVE_DETECTION, STAT_SAVE_OVERLOOKING.</p>
-      <p>In addition to these equates defined and read through the <code>getStat()</code>
+STAT_SAVE_DETECTION, STAT_SAVE_OVERLOOKING.</a></p>
+<a name="charstats" id="charstats">      </a><p><a name="charstats" id="charstats">In addition to these equates defined and read through the <code>getStat()</code>
 and <code>setStat()</code> methods, there is also the Race object
 available through <code>getMyRace()</code> and <code>setMyRace()</code>
 methods, as well as Character Class and Character Class level methods.
 See the Common.interfaces.CharStats java file for more information on
-those methods and how they work.</p>
-      <p>Like the PhyStats above, those objects listed as able to
+those methods and how they work.</a></p>
+<a name="charstats" id="charstats">      </a><p><a name="charstats" id="charstats">Like the PhyStats above, those objects listed as able to
 modify the PhyStats current state object are the same objects which are
 able to modify the CharStats state objects. Rereading the section on
 PhyStats will make clear how the CharStats objects are modified in the
 same analogous manner, using repeated calls to<code>
 affectCharStats(MOB affected, CharStats affectedStats)</code> methods
-on related objects.</p>
-      <p><a name="charstate" id="charstate" /> The last state object
+on related objects.</a></p>
+<a name="charstats" id="charstats">      </a><p><a name="charstate" id="charstate"> The last state object
 to consider is the Common.interfaces.CharState objects on MOBs. The
 CharState object represents those fields which are constantly in flux:
-Hit Points, Mana, Movement, Hunger, Fatigue, and Thirst.</p>
-      <p>Unlike PhyStats and CharStats, there are three CharState
+Hit Points, Mana, Movement, Hunger, Fatigue, and Thirst.</a></p>
+<a name="charstate" id="charstate">      </a><p><a name="charstate" id="charstate">Unlike PhyStats and CharStats, there are three CharState
 objects to consider for MOBs: the base CharState object (available
 through <code>CharState baseState()</code> method, the adjusted base
 CharState (or max state) object available through the <code>CharState
@@ -1311,22 +1303,22 @@ maxState()</code> method and modified by <code>recoverMaxState(MOB
 affected, CharState affectedState)</code> methods on related objects,
 and lastly the current CharState object available through the <code>CharState
 curState()</code> and refreshed or reset to maximums using the MOBs <code>resetToMaxState()</code>
-method.</p>
-      <p>The relationship between the above objects is as follows: The
+method.</a></p>
+<a name="charstate" id="charstate">      </a><p><a name="charstate" id="charstate">The relationship between the above objects is as follows: The
 base CharState object represents the maximum values for the state
 variables BEFORE modification by magical armor or spells. The adjusted
 base CharState object (Max State) represents the maximum values for the
 state variables AFTER modification by magical armor or spells. The
 current CharState object (curState) represents the current hit points,
-mana points, etc available to the MOB.</p>
-      <p>In the case of the CharState objects, adjustment by relevant
+mana points, etc available to the MOB.</a></p>
+<a name="charstate" id="charstate">      </a><p><a name="charstate" id="charstate">In the case of the CharState objects, adjustment by relevant
 objects is initiated by calling the MOBs <code>recoverMaxState()</code>
 method. This method allows the same objects who modify the PhyStats and
-CharStats above to modify the maximum CharState values as well.</p>
-      <p>Once again, to understand one of them fully is to understand
-them all.</p>
-      <img src="images/time.jpg" alt="Tick Tock" />
-      <h3><a name="DIG3" id="DIG3">Core Topic 3: Tick Tock</a></h3>
+CharStats above to modify the maximum CharState values as well.</a></p>
+<a name="charstate" id="charstate">      </a><p><a name="charstate" id="charstate">Once again, to understand one of them fully is to understand
+them all.</a></p>
+<a name="charstate" id="charstate">      <img src="images/time.jpg" alt="Tick Tock" />
+      </a><h3><a name="DIG3" id="DIG3">Core Topic 3: Tick Tock</a></h3>
       <p>Our last Core Topic will cover the ability of the mobs, items,
 exits, abilities, spell effects, behaviors, and other objects to
 perform tasks on a regular, timed, basis. The tasks to be performed are
@@ -1419,8 +1411,8 @@ some are Common classes.</p>
 com.planet_ink.coffee_mud.core package. Like the interfaces, they may
 not be extended or overwritten without risking problems. The core
 classes, and their general purpose is:</p>
-      <a name="corepurpose" id="corepurpose" />
-      <table bgcolor="#ffffcc" border="1">
+      <a name="corepurpose" id="corepurpose">
+      </a><table bgcolor="#ffffcc" border="1">
         <thead> <tr>
           <th>Core Class Name</th>
           <th>Purpose</th>
@@ -1484,14 +1476,14 @@ StringBuffers keyed by String names.</td>
           </tr>
         </tbody>
       </table>
-      <p>You should check out the javadocs for those classes for more
-information on the core classes.</p>
-      <p>* CMLib also refers to some of the sub-core classes, such as
+<a name="corepurpose" id="corepurpose">      </a><p><a name="corepurpose" id="corepurpose">You should check out the javadocs for those classes for more
+information on the core classes.</a></p>
+<a name="corepurpose" id="corepurpose">      </a><p><a name="corepurpose" id="corepurpose">* CMLib also refers to some of the sub-core classes, such as
 the Database access objects, and the Threading engine. While they are
 considered core, they are accessed through CMLib as if they were
 non-core libraries. Most core classes can also be accessed through
-CMLib methods, making it a one-stop shop.</p>
-      <p>Now, non-core libraries, or Libraries proper, are located in
+CMLib methods, making it a one-stop shop.</a></p>
+<a name="corepurpose" id="corepurpose">      </a><p><a name="corepurpose" id="corepurpose">Now, non-core libraries, or Libraries proper, are located in
 the com.planet_ink.coffee_mud.Libraries package, and each one
 implements a unique interface from the
 com.planet_ink.coffee_mud.Libraries.interfaces package. This is unique,
@@ -1499,11 +1491,11 @@ that each class in the Libraries package implements a unique interface
 all its own, but that is not the only unique thing about this package.
 Libraries are also singletons -- there is never more than 1 instance of
 each Library. Moreover, these singletons are all accessed from a single
-accessor class, CMLib, which we mentioned earlier.</p>
-      <p>Here is a map of how the classes, interfaces, and CMLib
-methods are all mapped together:</p>
-      <a name="corelibrarymap" id="corelibrarymap" />
-      <table bgcolor="#99ff99" border="1">
+accessor class, CMLib, which we mentioned earlier.</a></p>
+<a name="corepurpose" id="corepurpose">      </a><p><a name="corepurpose" id="corepurpose">Here is a map of how the classes, interfaces, and CMLib
+methods are all mapped together:</a></p>
+<a name="corepurpose" id="corepurpose">      </a><a name="corelibrarymap" id="corelibrarymap">
+      </a><table bgcolor="#99ff99" border="1">
         <thead> <tr>
           <th>Library class name <code>...Libraries.*</code> </th>
           <th>Library interface name <code>...Libraries.interfaces.*</code>
@@ -1784,7 +1776,7 @@ methods are all mapped together:</p>
           </tr>
         </tbody>
       </table>
-      <p>Libraries are lastly unique in that it is almost useless to
+<a name="corelibrarymap" id="corelibrarymap">      </a><p><a name="corelibrarymap" id="corelibrarymap">Libraries are lastly unique in that it is almost useless to
 write new ones, unless you are doing the most serious additions and
 enhancements to your system. However, they are designed especially so
 they they can be extended and overridden. They have their own entry in
@@ -1794,8 +1786,8 @@ can make changes to the most basic CoffeeMud algorithms, even at
 run-time! Libraries also have an entry in the coffeemud.ini file,
 LIBRARY, so that you can specify your custom extended versions of them
 after the %DEFAULT% string, thus allowing your changes to be loaded at
-boot-time.</p>
-      <p>The last set of classes to discuss under this topic are
+boot-time.</a></p>
+<a name="corelibrarymap" id="corelibrarymap">      </a><p><a name="corelibrarymap" id="corelibrarymap">The last set of classes to discuss under this topic are
 neither Core class or Libraries, but form parts of the cores of other
 classes, including many of the Libraries. These are the Common classes.
 They are part of the com.planet_ink.coffee_mud.Common package. Like the
@@ -1805,9 +1797,9 @@ the Libraries, numerous instances of each class will exist in your mud,
 and they are created from the core CMClass loader, much like MOBs,
 Items, Rooms, and so forth. The javadocs are also a good place to learn
 about these classes, but here is a brief list of them to wrap up our
-last Core Topic.</p>
-      <a name="corecommon" id="corecommon" />
-      <table bgcolor="#ccccff" border="1">
+last Core Topic.</a></p>
+<a name="corelibrarymap" id="corelibrarymap">      </a><a name="corecommon" id="corecommon">
+      </a><table bgcolor="#ccccff" border="1">
         <thead> <tr>
           <th>Common Class</th>
           <th>Description</th>
@@ -1908,10 +1900,10 @@ spans areas, possibly the whole world.</td>
           </tr>
         </tbody>
       </table>
-      <br />
+<a name="corecommon" id="corecommon">      <br />
       <br />
       <img src="images/pencil.jpg" alt="commands" />
-      <h2><a name="CMDS" id="CMDS">Commands</a></h2>
+      </a><h2><a name="CMDS" id="CMDS">Commands</a></h2>
       <p>Commands are exactly what they sound like: LOOK, QUIT, KILL,
 GET, and all the other things you type into the mud are handled by
 CoffeeMud Commands.</p>
@@ -3031,8 +3023,8 @@ Ability.QUALITY_MALICIOUS, which tells the system that the skill is
 always malicious to others, and that it will most likely anger the
 target. It tells mobs to target this skill at enemies in combat</p>
       <p>Other possible values include:</p>
-      <a name="skillquality" id="skillquality" />
-      <table border="1">
+      <a name="skillquality" id="skillquality">
+      </a><table border="1">
         <tbody>
           <tr>
             <td>Ability.QUALITY_BENEFICIAL_SELF</td>
@@ -3061,10 +3053,10 @@ circumstances</td>
           </tr>
         </tbody>
       </table>
-      <p>Only skills marked as Ability.QUALITY_BENEFICIAL_*
-orAbility.QUALITY_MALICIOUS will be used in combat or by most behaviors.</p>
-      <pre>  public int castingQuality( MOB invoker, Physical target )<br />  {<br />    return super.castingQuality( invoker, target );<br />  }<br /></pre>
-      <p>This second most important method is similar to the <code>abstractQuality()</code>
+<a name="skillquality" id="skillquality">      </a><p><a name="skillquality" id="skillquality">Only skills marked as Ability.QUALITY_BENEFICIAL_*
+orAbility.QUALITY_MALICIOUS will be used in combat or by most behaviors.</a></p>
+<a name="skillquality" id="skillquality">      </a><pre><a name="skillquality" id="skillquality">  public int castingQuality( MOB invoker, Physical target )<br />  {<br />    return super.castingQuality( invoker, target );<br />  }<br /></a></pre>
+<a name="skillquality" id="skillquality">      </a><p><a name="skillquality" id="skillquality">This second most important method is similar to the <code>abstractQuality()</code>
 method above, but it tells the system what the quality of the skills or
 spell is if it is specifically used by the given invoker against the
 given target at this given time. If your skill is only useful in water
@@ -3072,42 +3064,42 @@ or against elves, it might be good to check to see if the invoker is in
 water or the target is an elf before returning a value. The same kinds
 of values may be returned from this method as are returned by
 abstractQuality, except for QUALITY_OK_OTHERS and
-Ability.QUALITY_OK_SELF, which are meaningless in this context.</p>
-      <pre>  public boolean isAutoInvoked()<br />  {<br />    return false;<br />  }<br /></pre>
-      <p>All skills are either autoInvoking, or they must be invoked by
+Ability.QUALITY_OK_SELF, which are meaningless in this context.</a></p>
+<a name="skillquality" id="skillquality">      </a><pre><a name="skillquality" id="skillquality">  public boolean isAutoInvoked()<br />  {<br />    return false;<br />  }<br /></a></pre>
+<a name="skillquality" id="skillquality">      </a><p><a name="skillquality" id="skillquality">All skills are either autoInvoking, or they must be invoked by
 a player or mob. The value returned by this method determines which
 sort this ability is. If it is autoinvoking, it will not have an
 invoke( method as described below, nor will it have trigger strings,
 nor will it return anything other than "" from it's <code>displayText()</code>
 method. An example of an autoInvoking ability would be Blind Fighting
 or Two Weapon Fighting. In our case, however, Trip is not autoinvoking,
-but requires a player to invoke it.</p>
-      <pre>  private static final String[] triggerStrings = { "TRIP" };<br />  public String[] triggerStrings()<br />  {<br />    return triggerStrings;<br />  }<br /><br />  public double castingTime(MOB mob, Vector cmds)<br />  {<br />    return 0.25;<br />  }<br /><br />  public double combatCastingTime(MOB mob, Vector cmds)<br />  {<br />    return 1.0;<br />  }<br /></pre>
-      <p>For skills which are not autoinvoking, like this one, we must
+but requires a player to invoke it.</a></p>
+<a name="skillquality" id="skillquality">      </a><pre><a name="skillquality" id="skillquality">  private static final String[] triggerStrings = { "TRIP" };<br />  public String[] triggerStrings()<br />  {<br />    return triggerStrings;<br />  }<br /><br />  public double castingTime(MOB mob, Vector cmds)<br />  {<br />    return 0.25;<br />  }<br /><br />  public double combatCastingTime(MOB mob, Vector cmds)<br />  {<br />    return 1.0;<br />  }<br /></a></pre>
+<a name="skillquality" id="skillquality">      </a><p><a name="skillquality" id="skillquality">For skills which are not autoinvoking, like this one, we must
 define an array of strings which constitute the command words to use
 this skill. Each entry in the array must be only one word. If more than
 one skill is found with the same trigger words (such as the spells,
 which all share the trigger word "CAST"), then the name of the specific
 ability will be the required next parameter. Trip, however, has a
-unique trigger word, which is defined by this method.</p>
-      <p>Skills can also define how many actions they take to execute
+unique trigger word, which is defined by this method.</a></p>
+<a name="skillquality" id="skillquality">      </a><p><a name="skillquality" id="skillquality">Skills can also define how many actions they take to execute
 when the caster or user of the skill is in combat, or not in combat.
 The next two methods define this. A value of 0 means that the skill or
 spell is always instantaneous. A higher value means that the skill
 requires a full action to perform. Typical players have 1 action per
-tick (4 second period) to use.</p>
-      <pre>  public int classificationCode()<br />  {<br />    return Ability.ACODE_SKILL;<br />  }<br /></pre>
-      <p>This important method defines which category an ability falls
+tick (4 second period) to use.</a></p>
+<a name="skillquality" id="skillquality">      </a><pre><a name="skillquality" id="skillquality">  public int classificationCode()<br />  {<br />    return Ability.ACODE_SKILL;<br />  }<br /></a></pre>
+<a name="skillquality" id="skillquality">      </a><p><a name="skillquality" id="skillquality">This important method defines which category an ability falls
 into. Possible values include: SKILL, PRAYER, SONG, TRAP, SPELL,
-THIEF_SKILL, LANGUAGE, CHANT, COMMON_SKILL, DISEASE, or POISON.</p>
-      <pre>  public long flags()<br />  {<br />    return Ability.FLAG_MOVING;<br />  }<br /></pre>
-      <p>This method returns a value consisting of one or more flags,
+THIEF_SKILL, LANGUAGE, CHANT, COMMON_SKILL, DISEASE, or POISON.</a></p>
+<a name="skillquality" id="skillquality">      </a><pre><a name="skillquality" id="skillquality">  public long flags()<br />  {<br />    return Ability.FLAG_MOVING;<br />  }<br /></a></pre>
+<a name="skillquality" id="skillquality">      </a><p><a name="skillquality" id="skillquality">This method returns a value consisting of one or more flags,
 separated by | symbols in the same way that canAffectCode does above.
 Each flag has a specific meaning and imparts information to the engine
 about the ability. Possible values, which may be used alone or together
-in any combination, include:</p>
-      <a name="skillflags" id="skillflags" />
-      <table border="1" cellpadding="1" cellspacing="1" width="75%">
+in any combination, include:</a></p>
+<a name="skillquality" id="skillquality">      </a><a name="skillflags" id="skillflags">
+      </a><table border="1" cellpadding="1" cellspacing="1" width="75%">
         <tbody>
           <tr>
             <td>FLAG_BINDING</td>
@@ -3164,25 +3156,25 @@ muscles.</td>
           </tr>
         </tbody>
       </table>
-      <pre>  public void affectPhyStats( Physical affected, PhyStats affectableStats )<br />  {<br />    super.affectPhyStats( affected, affectableStats );<br />    if( !doneTicking )<br />    {<br />      affectableStats.setDisposition( affectableStats.disposition()<br />                                      | PhyStats.IS_SITTING<br />                                    );<br />    }<br />  }<br /></pre>
-      <p>This is an example of the <code>affectPhyStats()</code>
+<a name="skillflags" id="skillflags">      </a><pre><a name="skillflags" id="skillflags">  public void affectPhyStats( Physical affected, PhyStats affectableStats )<br />  {<br />    super.affectPhyStats( affected, affectableStats );<br />    if( !doneTicking )<br />    {<br />      affectableStats.setDisposition( affectableStats.disposition()<br />                                      | PhyStats.IS_SITTING<br />                                    );<br />    }<br />  }<br /></a></pre>
+<a name="skillflags" id="skillflags">      </a><p><a name="skillflags" id="skillflags">This is an example of the <code>affectPhyStats()</code>
 method described in the Core Topics. In the case of our Trip skill, it
-forces the affected target into a sitting position.</p>
-      <pre>  public boolean okMessage( Environmental myHost, CMMsg msg )<br />  {<br />    if( ( affected == null ) || ( !( affected instanceof MOB ) ) )<br />    {<br />      return true;<br />    }<br /><br />    MOB mob = (MOB)affected;<br />    if( doneTicking &amp;&amp; msg.amISource( mob ) )<br />    {<br />      unInvoke();<br />    }<br />    else if( msg.amISource( mob )<br />             &amp;&amp; ( msg.sourceMinor() == CMMsg.TYP_STAND )<br />           )<br />    {<br />      return false;<br />    }<br /><br />    return true;<br />  }<br /></pre>
-      <p>This is an example of the <code>okMessage()</code> method
+forces the affected target into a sitting position.</a></p>
+<a name="skillflags" id="skillflags">      </a><pre><a name="skillflags" id="skillflags">  public boolean okMessage( Environmental myHost, CMMsg msg )<br />  {<br />    if( ( affected == null ) || ( !( affected instanceof MOB ) ) )<br />    {<br />      return true;<br />    }<br /><br />    MOB mob = (MOB)affected;<br />    if( doneTicking &amp;&amp; msg.amISource( mob ) )<br />    {<br />      unInvoke();<br />    }<br />    else if( msg.amISource( mob )<br />             &amp;&amp; ( msg.sourceMinor() == CMMsg.TYP_STAND )<br />           )<br />    {<br />      return false;<br />    }<br /><br />    return true;<br />  }<br /></a></pre>
+<a name="skillflags" id="skillflags">      </a><p><a name="skillflags" id="skillflags">This is an example of the <code>okMessage()</code> method
 described in the Core Topics. In this case, it intercepts messages
 where the affected mob is trying to stand and cancels the message,
-without comment, by returning false.</p>
-      <pre>  public void unInvoke()<br />  {<br />    if( ( affected == null ) || ( !( affected instanceof MOB ) ) )<br />    {<br />      return;<br />    }<br /><br />    MOB mob = (MOB)affected;<br />    if( canBeUninvoked() )<br />    {<br />      doneTicking = true;<br />    }<br /><br />    super.unInvoke();<br /><br />    if( !mob.amDead() )<br />    {<br />      if( mob.location() != null )<br />      {<br />        CMMsg msg = CMClass.getMsg( mob,<br />                                    null,<br />                                    CMMsg.MSG_NOISYMOVEMENT,<br />                                    "&lt;S-NAME&gt; regain(s) &lt;S-HIS-HER&gt; feet."<br />                                  );<br /><br />        if( mob.location().okMessage( mob, msg ) )<br />        {<br />          mob.location().send( mob, msg );<br />          CMLib.commands().postStand( mob, true );<br />        }<br />      }<br />      else<br />      {<br />        mob.tell( "You regain your feet." );<br />      }<br />    }<br />  }<br /></pre>
-      <p>All standard abilities include an <code>unInvoke()</code>
+without comment, by returning false.</a></p>
+<a name="skillflags" id="skillflags">      </a><pre><a name="skillflags" id="skillflags">  public void unInvoke()<br />  {<br />    if( ( affected == null ) || ( !( affected instanceof MOB ) ) )<br />    {<br />      return;<br />    }<br /><br />    MOB mob = (MOB)affected;<br />    if( canBeUninvoked() )<br />    {<br />      doneTicking = true;<br />    }<br /><br />    super.unInvoke();<br /><br />    if( !mob.amDead() )<br />    {<br />      if( mob.location() != null )<br />      {<br />        CMMsg msg = CMClass.getMsg( mob,<br />                                    null,<br />                                    CMMsg.MSG_NOISYMOVEMENT,<br />                                    "&lt;S-NAME&gt; regain(s) &lt;S-HIS-HER&gt; feet."<br />                                  );<br /><br />        if( mob.location().okMessage( mob, msg ) )<br />        {<br />          mob.location().send( mob, msg );<br />          CMLib.commands().postStand( mob, true );<br />        }<br />      }<br />      else<br />      {<br />        mob.tell( "You regain your feet." );<br />      }<br />    }<br />  }<br /></a></pre>
+<a name="skillflags" id="skillflags">      </a><p><a name="skillflags" id="skillflags">All standard abilities include an <code>unInvoke()</code>
 method, which is called when the Effect caused by the ability is
 dispelled, or the duration of the ability expires. The <code>super.unInvoke()</code>
 method, which is located in StdAbility.java, actually does the work of
 removing the Effect from the affected object (stored in the variable
 affected), and then setting affected to null. In this particular <code>unInvoke()</code>
-method, we also see the code trying to force the mob back to his feet.</p>
-      <pre>  public boolean preInvoke( MOB mob,<br />                            Vector commands,<br />                            Physical givenTarget,<br />                            boolean auto,<br />                            int asLevel,<br />                            int secondsElapsed,<br />                            double actionsRemaining<br />                          )<br />  {<br />    return true;<br />  }<br /></pre>
-      <p>The <code>preInvoke()</code> method is an optional method
+method, we also see the code trying to force the mob back to his feet.</a></p>
+<a name="skillflags" id="skillflags">      </a><pre><a name="skillflags" id="skillflags">  public boolean preInvoke( MOB mob,<br />                            Vector commands,<br />                            Physical givenTarget,<br />                            boolean auto,<br />                            int asLevel,<br />                            int secondsElapsed,<br />                            double actionsRemaining<br />                          )<br />  {<br />    return true;<br />  }<br /></a></pre>
+<a name="skillflags" id="skillflags">      </a><p><a name="skillflags" id="skillflags">The <code>preInvoke()</code> method is an optional method
 that
 normally just returns true. Unless you have reason to do so, you do not
 need to override the standard preInvoke method in StdAbility.java. The
@@ -3197,9 +3189,9 @@ the commands Vector, which contains the command parameter strings minus
 any trigger words, for errors. You may also give the user a message
 that their skill will invoke later on. The preInvoke method will
 continue to be called, at 1 second intervals, until the player is able
-to invoke the command.</p>
-      <pre>  public boolean invoke( MOB mob,<br />                         Vector commands,<br />                         Physical givenTarget,<br />                         boolean auto,<br />                         int asLevel<br />                       )<br />  {<br /></pre>
-      <p>If an ability is not autoinvoked, it will always have a
+to invoke the command.</a></p>
+<a name="skillflags" id="skillflags">      </a><pre><a name="skillflags" id="skillflags">  public boolean invoke( MOB mob,<br />                         Vector commands,<br />                         Physical givenTarget,<br />                         boolean auto,<br />                         int asLevel<br />                       )<br />  {<br /></a></pre>
+<a name="skillflags" id="skillflags">      </a><p><a name="skillflags" id="skillflags">If an ability is not autoinvoked, it will always have a
 functional invoke method. This invoke method includes the following
 parameters: the mob invoking the ability and a vector of command
 parameter strings (which does not include any trigger words). The
@@ -3210,9 +3202,9 @@ from potions, wands, traps, or other automatic invocations. Which
 brings us to the last parameter, auto. Auto is false on normal
 invocations of the skill, and true whenever the skill should always
 invoke no matter what. Setting auto to true not only changes the output
-string for the skill, but overrides proficiency checks as well.</p>
-      <pre>    MOB target = this.getTarget( mob, commands, givenTarget );<br />    if( target == null )<br />    {<br />      return false;<br />    }<br /></pre>
-      <p>Our first step in Trip is to get our target. There are several
+string for the skill, but overrides proficiency checks as well.</a></p>
+<a name="skillflags" id="skillflags">      </a><pre><a name="skillflags" id="skillflags">    MOB target = this.getTarget( mob, commands, givenTarget );<br />    if( target == null )<br />    {<br />      return false;<br />    }<br /></a></pre>
+<a name="skillflags" id="skillflags">      </a><p><a name="skillflags" id="skillflags">Our first step in Trip is to get our target. There are several
       <code>getTarget()</code> methods built into StdAbility for
 determining a target object based on the command parameters passed in,
 as well as the <code>abstractQuality()</code> value for the ability.
@@ -3221,23 +3213,23 @@ is smart enough to know that if a target name is not specified by
 givenTarget, and also one is not specified in the commands Vector
 passed in, that it should choose whoever the mob is fighting, since the
 ability isAbility.QUALITY_MALICIOUS. Non-malicious skills would not
-follow this reasoning, but would choose the caster himself as default.</p>
-      <p>All of the several <code>getTarget()</code> methods will
+follow this reasoning, but would choose the caster himself as default.</a></p>
+<a name="skillflags" id="skillflags">      </a><p><a name="skillflags" id="skillflags">All of the several <code>getTarget()</code> methods will
 generate their own error messages to the user if a target is not
 specified, or found, or cannot be determined. For this reason, we need
 only to check to see if a target has been returned. If not, we can
 return false from <code>invoke()</code>, telling the system that the
-ability failed to invoke.</p>
-      <pre>    if( CMLib.flags().isSitting( target )<br />        || CMLib.flags().isSleeping( target )<br />      )<br />    {<br />      mob.tell( target,<br />                null,<br />                null,<br />                "&lt;S-NAME&gt; is already on the floor!"<br />              );<br /><br />      return false;<br />    }<br /><br />    if( !CMLib.flags().aliveAwakeMobile( mob, true )<br />        ||( CMLib.flags().isSitting( mob ) )<br />      )<br />    {<br />      mob.tell( "You need to stand up!" );<br />      return false;<br />    }<br /><br />    if( mob.isInCombat() &amp;&amp; ( mob.rangeToTarget() &gt; 0 ) )<br />    {<br />      mob.tell( "You are too far away to trip!" );<br />      return false;<br />    }<br /><br />    if( target.riding() != null )<br />    {<br />      mob.tell( "You can't trip someone "<br />                + target.riding().stateString( target )<br />                + " "<br />                + target.riding().name()<br />                + "!"<br />              );<br /><br />      return false;<br />    }<br /><br />    if( CMLib.flags().isFlying( target ) )<br />    {<br />      mob.tell( target.name() + " is flying and can't be tripped!" );<br />      return false;<br />    }<br /></pre>
-      <p>Here are numerous checks to see if the invoking mob is able to
-trip, and the target is able to be tripped.</p>
-      <pre>    if( !super.invoke( mob, commands, givenTarget, auto ) )<br />    {<br />      return false;<br />    }<br /></pre>
-      <p>The <code>invoke()</code> method back up in StdAbility is
+ability failed to invoke.</a></p>
+<a name="skillflags" id="skillflags">      </a><pre><a name="skillflags" id="skillflags">    if( CMLib.flags().isSitting( target )<br />        || CMLib.flags().isSleeping( target )<br />      )<br />    {<br />      mob.tell( target,<br />                null,<br />                null,<br />                "&lt;S-NAME&gt; is already on the floor!"<br />              );<br /><br />      return false;<br />    }<br /><br />    if( !CMLib.flags().aliveAwakeMobile( mob, true )<br />        ||( CMLib.flags().isSitting( mob ) )<br />      )<br />    {<br />      mob.tell( "You need to stand up!" );<br />      return false;<br />    }<br /><br />    if( mob.isInCombat() &amp;&amp; ( mob.rangeToTarget() &gt; 0 ) )<br />    {<br />      mob.tell( "You are too far away to trip!" );<br />      return false;<br />    }<br /><br />    if( target.riding() != null )<br />    {<br />      mob.tell( "You can't trip someone "<br />                + target.riding().stateString( target )<br />                + " "<br />                + target.riding().name()<br />                + "!"<br />              );<br /><br />      return false;<br />    }<br /><br />    if( CMLib.flags().isFlying( target ) )<br />    {<br />      mob.tell( target.name() + " is flying and can't be tripped!" );<br />      return false;<br />    }<br /></a></pre>
+<a name="skillflags" id="skillflags">      </a><p><a name="skillflags" id="skillflags">Here are numerous checks to see if the invoking mob is able to
+trip, and the target is able to be tripped.</a></p>
+<a name="skillflags" id="skillflags">      </a><pre><a name="skillflags" id="skillflags">    if( !super.invoke( mob, commands, givenTarget, auto ) )<br />    {<br />      return false;<br />    }<br /></a></pre>
+<a name="skillflags" id="skillflags">      </a><p><a name="skillflags" id="skillflags">The <code>invoke()</code> method back up in StdAbility is
 called now. This method will check mana requirements, and subtract mana
 if necessary. It should be called AFTER all other preliminary checks
-have been made.</p>
-      <pre>    int levelDiff = target.phyStats().level() - mob.phyStats().level();<br />    if( levelDiff &gt; 0 )<br />    {<br />      levelDiff = levelDiff * 5;<br />    }<br />    else<br />    {<br />      levelDiff = 0;<br />    }<br /><br />    Double temp = Integer.valueOf(<br />                               target.charStats().getStat(<br />                                                           CharStats.STAT_DEXTERITY<br />                                                         )<br />                             ).doubleValue()<br />                             - 9.0;<br /><br />    int adjustment =<br />    (-levelDiff) + (-( 35 + ( (int)Math.round( temp * 3.0 ) ) ) );<br /><br />    boolean success = proficiencyCheck( mob, adjustment, auto );<br /></pre>
-      <p>The <code>proficiencyCheck()</code> method called at the end
+have been made.</a></p>
+<a name="skillflags" id="skillflags">      </a><pre><a name="skillflags" id="skillflags">    int levelDiff = target.phyStats().level() - mob.phyStats().level();<br />    if( levelDiff &gt; 0 )<br />    {<br />      levelDiff = levelDiff * 5;<br />    }<br />    else<br />    {<br />      levelDiff = 0;<br />    }<br /><br />    Double temp = Integer.valueOf(<br />                               target.charStats().getStat(<br />                                                           CharStats.STAT_DEXTERITY<br />                                                         )<br />                             ).doubleValue()<br />                             - 9.0;<br /><br />    int adjustment =<br />    (-levelDiff) + (-( 35 + ( (int)Math.round( temp * 3.0 ) ) ) );<br /><br />    boolean success = proficiencyCheck( mob, adjustment, auto );<br /></a></pre>
+<a name="skillflags" id="skillflags">      </a><p><a name="skillflags" id="skillflags">The <code>proficiencyCheck()</code> method called at the end
 here will determine of the user of the skill has passed their
 proficiency check. The first parameter of this method is the invoking
 mob, followed by either a positive (or helpful) adjustment, or a
@@ -3245,13 +3237,13 @@ negative (not helpful) adjustment. The second parameter is the auto
 flag mentioned above, to allow overrides of the normal proficiency. In
 the case of Trip, we calculate an adjustment based both on level and
 the dexterity of the target. We store whether or not the proficiency
-check failed or passed into the variable success.</p>
-      <pre>    success = success &amp;&amp; ( target.charStats().getBodyPart( Race.BODY_LEG ) &gt; 0 );<br /><br />    if( success )<br />    {<br />      CMMsg msg = CMClass.getMsg( mob,<br />                                  target,<br />                                  this,<br />                                  CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|( auto ? CMMsg.MASK_ALWAYS : 0 ),<br />                                  auto ? "&lt;T-NAME&gt; trip(s)!" : "^F&lt;S-NAME&gt; trip(s) &lt;T-NAMESELF&gt;!^?"<br />                                );<br /><br />      if( mob.location().okMessage( mob, msg ) )<br />      {<br />        mob.location().send( mob, msg );<br />        int durationTicks = ( msg.value() &gt; 0 ) ? 1 : 2;<br />        maliciousAffect( mob, target, asLevel, durationTicks, -1 );<br />        target.tell( "You hit the floor!" );<br />      }<br />    }<br />    else<br />    {<br />      return maliciousFizzle( mob,<br />                              target,<br />                              "&lt;S-NAME&gt; attempt(s) to trip &lt;T-NAMESELF&gt;, but fail(s)."<br />                            );<br />    }<br /><br />    return success;<br />  }<br />}<br /></pre>
-      <p>The rest of the <code>invoke()</code> method actually does
+check failed or passed into the variable success.</a></p>
+<a name="skillflags" id="skillflags">      </a><pre><a name="skillflags" id="skillflags">    success = success &amp;&amp; ( target.charStats().getBodyPart( Race.BODY_LEG ) &gt; 0 );<br /><br />    if( success )<br />    {<br />      CMMsg msg = CMClass.getMsg( mob,<br />                                  target,<br />                                  this,<br />                                  CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|( auto ? CMMsg.MASK_ALWAYS : 0 ),<br />                                  auto ? "&lt;T-NAME&gt; trip(s)!" : "^F&lt;S-NAME&gt; trip(s) &lt;T-NAMESELF&gt;!^?"<br />                                );<br /><br />      if( mob.location().okMessage( mob, msg ) )<br />      {<br />        mob.location().send( mob, msg );<br />        int durationTicks = ( msg.value() &gt; 0 ) ? 1 : 2;<br />        maliciousAffect( mob, target, asLevel, durationTicks, -1 );<br />        target.tell( "You hit the floor!" );<br />      }<br />    }<br />    else<br />    {<br />      return maliciousFizzle( mob,<br />                              target,<br />                              "&lt;S-NAME&gt; attempt(s) to trip &lt;T-NAMESELF&gt;, but fail(s)."<br />                            );<br />    }<br /><br />    return success;<br />  }<br />}<br /></a></pre>
+<a name="skillflags" id="skillflags">      </a><p><a name="skillflags" id="skillflags">The rest of the <code>invoke()</code> method actually does
 the work of sending the trip message and affecting the target if
 necessary, or sending the "fizzle" message if the proficiency check
-failed (success was false).</p>
-      <p>Of special note are some of the other StdAbility method calls
+failed (success was false).</a></p>
+<a name="skillflags" id="skillflags">      </a><p><a name="skillflags" id="skillflags">Of special note are some of the other StdAbility method calls
 in this section of code. You'll notice that the message constructed (as
 per the Core Topics discussion in a previous section) in this case uses
 a TYP_JUSTICE message (meaning an attack on dignity), with the
@@ -3268,13 +3260,13 @@ parameter, normally -1, asks <code>maliciousAffect()</code>
 to give the target one more saving throw, against any of the valid
 saving throw type messages, such as TYP_FIRE, TYP_ACID, TYP_GAS, etc.
 The value of -1 means not to make any further saving throw attempts
-before affecting the target.</p>
-      <p>If this skill had not been malicious, we could have made a
+before affecting the target.</a></p>
+<a name="skillflags" id="skillflags">      </a><p><a name="skillflags" id="skillflags">If this skill had not been malicious, we could have made a
 call to the <code>beneficialAffect()</code> method instead. That
 method has the same parameters as <code>maliciousAffect()</code>,
 though it lacks the final parameter for a further saving throw, since
-beneficial affects require no saving throw.</p>
-      <p>Now, if the success variable had been false, then we made a
+beneficial affects require no saving throw.</a></p>
+<a name="skillflags" id="skillflags">      </a><p><a name="skillflags" id="skillflags">Now, if the success variable had been false, then we made a
 call to the <code>maliciousFizzle()</code>
 method. In addition to a display in the room, this method will make
 sure the target knows that the invoking mob was trying to do something
@@ -3284,15 +3276,15 @@ calls instead to either the <code>beneficialWordsFizzle()</code>
 method, or the <code>beneficialVisualFizzle()</code>
 method, depending upon whether the skill is verbal or somantic based.
 Most spells are verbal based, for instance, while most skills are
-somantic.</p>
-      <p>Finally, we return the results of the success variable from
+somantic.</a></p>
+<a name="skillflags" id="skillflags">      </a><p><a name="skillflags" id="skillflags">Finally, we return the results of the success variable from
 the <code>invoke()</code>
 method, to let the system know whether or not the ability succeeded. If
 it did, the target will now be affected by this ability, and will have
 to stay on the ground for a few ticks while the source mob pounds on
-him or her.</p>
-      <img src="images/fireball.jpg" alt="Spells" />
-      <h2><a name="SPC" id="SPC">Spells, Prayers, and Chants</a></h2>
+him or her.</a></p>
+<a name="skillflags" id="skillflags">      <img src="images/fireball.jpg" alt="Spells" />
+      </a><h2><a name="SPC" id="SPC">Spells, Prayers, and Chants</a></h2>
       <p>Spells, Prayers, and Chants are all special forms of
 Abilities. For this reason, it is required that you go back and read
 the previous section on Skill Abilities before proceeding. You will
@@ -3309,8 +3301,8 @@ well. The second difference is in the <code>classificationCode()</code>
 method. You will notice that the domain of the spell is also specified.
 In addition to the normal classification code of Ability.ACODE_SPELL,
 the domain may be added using the | symbol. Possible domains include:</p>
-      <a name="spelldomain" id="spelldomain" />
-      <table border="1">
+      <a name="spelldomain" id="spelldomain">
+      </a><table border="1">
         <tbody>
           <tr>
             <td>DOMAIN_DIVINATION</td>
@@ -3346,8 +3338,8 @@ the domain may be added using the | symbol. Possible domains include:</p>
           </tr>
         </tbody>
       </table>
-      <pre>  public boolean invoke( MOB mob,<br />                         Vector commands,<br />                         Physical givenTarget,<br />                         boolean auto,<br />                         int asLevel<br />                       )<br />  {<br />    MOB target = getTarget( mob, commands, givenTarget );<br />    if( target == null )<br />    {<br />      return false;<br />    }<br /><br />    if( !super.invoke( mob, commands, givenTarget, auto ) )<br />    {<br />      return false;<br />    }<br /><br />    boolean success = proficiencyCheck( mob, 0, auto );<br />    if( success )<br />    {<br />      CMMsg msg = CMClass.getMsg( mob,<br />                                  target,<br />                                  this,<br />                                  affectType( auto ),<br />                                  auto ?<br />                                    "&lt;T-NAME&gt; feel(s) cooly protected."<br />                                  : "^S&lt;S-NAME&gt; invoke(s) a cool field of protection around &lt;T-NAMESELF&gt;.^?"<br />                                );<br /><br />      if( mob.location().okMessage( mob, msg ) )<br />      {<br />        mob.location().send( mob, msg );<br />        beneficialAffect( mob, target, asLevel, 0 );<br />      }<br />    }<br />    else<br />    {<br />      beneficialWordsFizzle( mob,<br />                             target,<br />                             "&lt;S-NAME&gt; attempt(s) to invoke fire protection, but fail(s)."<br />                           );<br />    }<br /><br />    return success;<br />  }<br />}<br /></pre>
-      <p>The <code>invoke()</code> method above follows the one in
+<a name="spelldomain" id="spelldomain">      </a><pre><a name="spelldomain" id="spelldomain">  public boolean invoke( MOB mob,<br />                         Vector commands,<br />                         Physical givenTarget,<br />                         boolean auto,<br />                         int asLevel<br />                       )<br />  {<br />    MOB target = getTarget( mob, commands, givenTarget );<br />    if( target == null )<br />    {<br />      return false;<br />    }<br /><br />    if( !super.invoke( mob, commands, givenTarget, auto ) )<br />    {<br />      return false;<br />    }<br /><br />    boolean success = proficiencyCheck( mob, 0, auto );<br />    if( success )<br />    {<br />      CMMsg msg = CMClass.getMsg( mob,<br />                                  target,<br />                                  this,<br />                                  affectType( auto ),<br />                                  auto ?<br />                                    "&lt;T-NAME&gt; feel(s) cooly protected."<br />                                  : "^S&lt;S-NAME&gt; invoke(s) a cool field of protection around &lt;T-NAMESELF&gt;.^?"<br />                                );<br /><br />      if( mob.location().okMessage( mob, msg ) )<br />      {<br />        mob.location().send( mob, msg );<br />        beneficialAffect( mob, target, asLevel, 0 );<br />      }<br />    }<br />    else<br />    {<br />      beneficialWordsFizzle( mob,<br />                             target,<br />                             "&lt;S-NAME&gt; attempt(s) to invoke fire protection, but fail(s)."<br />                           );<br />    }<br /><br />    return success;<br />  }<br />}<br /></a></pre>
+<a name="spelldomain" id="spelldomain">      </a><p><a name="spelldomain" id="spelldomain">The <code>invoke()</code> method above follows the one in
 Skill_Abilities very closely. You will see that no adjustment is made
 to the proficiency check, and that, since this is not
 aAbility.QUALITY_MALICIOUS ability, calls are made to <code>beneficialAffect()</code>
@@ -3360,8 +3352,8 @@ which is a method located in Spell.java, is made. This call will
 automaticallyy construct the proper message type for a spell, taking
 into accountAbility.QUALITY_MALICIOUSness, and whether the auto flag is
 set. You will also notice that different message strings are
-constructed depending upon whether the auto flag is set.</p>
-      <h3><a name="prayers" id="prayers">Prayers</a></h3>
+constructed depending upon whether the auto flag is set.</a></p>
+<a name="spelldomain" id="spelldomain">      </a><h3><a name="prayers" id="prayers">Prayers</a></h3>
       <p>Prayers will follow all the rules mentioned above in the Skill
 Abilities section, with a few differences:</p>
       <pre>public class Prayer_Anger extends com.planet_ink.coffee_mud.Abilities.Prayers.Prayer<br />{<br />  public String ID()<br />  {<br />    return "Prayer_Anger";<br />  }<br /><br />  public String name()<br />  {<br />    return "Anger";<br />  }<br /><br />  public int abstractQuality()<br />  {<br />    return Ability.QUALITY_MALICIOUS;<br />  }<br /><br />  public long flags()<br />  {<br />    return Ability.FLAG_UNHOLY;<br />  }<br /><br />  public boolean invoke( MOB mob,<br />                         Vector commands,<br />                         Physical givenTarget,<br />                         boolean auto,<br />                         int asLevel<br />                       )<br />  {<br />    if( !super.invoke( mob, commands, givenTarget, auto ) )<br />    {<br />      return false;<br />    }<br /><br />    boolean success = proficiencyCheck( mob, 0, auto );<br /><br />    boolean someoneIsFighting = false;<br />    for( int i = 0; i &lt; mob.location().numInhabitants(); i++ )<br />    {<br />      MOB inhab = mob.location().fetchInhabitant( i );<br />      if( ( inhab != null ) &amp;&amp; ( inhab.isInCombat() ) )<br />      {<br />        someoneIsFighting = true;<br />      }<br />    }<br /><br />    if( success<br />        &amp;&amp;( !someoneIsFighting )<br />        &amp;&amp;( mob.location().numInhabitants() &gt; 3 )<br />      )<br />    {<br />      // it worked, so build a copy of this ability,<br />      // and add it to the effects list of the<br />      // affected MOB.  Then tell everyone else<br />      // what happened.<br />      CMMsg msg = CMClass.getMsg( mob,<br />                                  null,<br />                                  this,<br />                                  affectType( auto ),<br />                                  auto ? "A feeling of anger descends" : "^S&lt;S-NAME&gt; rage(s) for anger.^?"<br />                                );<br /><br />      if( mob.location().okMessage( mob, msg ) )<br />      {<br />        mob.location().send( mob, msg );<br /><br />[.......]<br />}<br /></pre>
@@ -3462,26 +3454,26 @@ common skills have this in common: they invoke immediately, but take a
 long time to complete. They give messages of progress to the user, and
 they immediately unInvoke themselves if the user leaves the room,
 enters combat, or some other canceling condition arises.</p>
-      <p><a name="skillgathering" id="skillgathering" /> Let's look
+      <p><a name="skillgathering" id="skillgathering"> Let's look
 at a Gathering skill. Although Crafting skills are much more involved,
 especially in the way they select the items they create, and in the way
 they fill-in the variables for what they are creating, you will find
-them remarkably similar to gathering skills.</p>
-      <pre>public class Fishing extends com.planet_ink.coffee_mud.Abilities.Common.GatheringSkill<br />{<br />  public String ID()<br />  {<br />    return "Fishing";<br />  }<br /><br />  public String name()<br />  {<br />    return "Fishing";<br />  }<br />       <br /></pre>
-      <p>If you've read the Skill Abilities section above, you will
+them remarkably similar to gathering skills.</a></p>
+<a name="skillgathering" id="skillgathering">      </a><pre><a name="skillgathering" id="skillgathering">public class Fishing extends com.planet_ink.coffee_mud.Abilities.Common.GatheringSkill<br />{<br />  public String ID()<br />  {<br />    return "Fishing";<br />  }<br /><br />  public String name()<br />  {<br />    return "Fishing";<br />  }<br />       <br /></a></pre>
+<a name="skillgathering" id="skillgathering">      </a><p><a name="skillgathering" id="skillgathering">If you've read the Skill Abilities section above, you will
 recognize these methods and their importance. As always, the <code>ID()</code>
 must match the class name, while the <code>name()</code> can be
-whatever you want to call the skill.</p>
-      <pre>  private static final String[] triggerStrings = { "FISH" };<br />  public String[] triggerStrings()<br />  {<br />    return triggerStrings;<br />  }<br />       <br /></pre>
-      <p>And again, like a normal skill, the common skills create and
+whatever you want to call the skill.</a></p>
+<a name="skillgathering" id="skillgathering">      </a><pre><a name="skillgathering" id="skillgathering">  private static final String[] triggerStrings = { "FISH" };<br />  public String[] triggerStrings()<br />  {<br />    return triggerStrings;<br />  }<br />       <br /></a></pre>
+<a name="skillgathering" id="skillgathering">      </a><p><a name="skillgathering" id="skillgathering">And again, like a normal skill, the common skills create and
 return their invocation words (or "trigger strings" as they are called
-in skills).</p>
-      <pre>  public long flags()<br />  {<br />    return FLAG_GATHERING;<br />  }<br /><br />  public String supportedResourceString()<br />  {<br />    return "FLESH";<br />  }<br />       <br /></pre>
-      <p>The <code>flags()</code> method you will also recognize from
+in skills).</a></p>
+<a name="skillgathering" id="skillgathering">      </a><pre><a name="skillgathering" id="skillgathering">  public long flags()<br />  {<br />    return FLAG_GATHERING;<br />  }<br /><br />  public String supportedResourceString()<br />  {<br />    return "FLESH";<br />  }<br />       <br /></a></pre>
+<a name="skillgathering" id="skillgathering">      </a><p><a name="skillgathering" id="skillgathering">The <code>flags()</code> method you will also recognize from
 the Skill Abilities section. However, we've provided the system at
 large with a flag to let it know that this skill is for gathering
-resources, and not for crafting.</p>
-      <p>The <code>supportedResourceString()</code> is a great
+resources, and not for crafting.</a></p>
+<a name="skillgathering" id="skillgathering">      </a><p><a name="skillgathering" id="skillgathering">The <code>supportedResourceString()</code> is a great
 supplementary method that is unique to Common Skills. It's purpose is
 to inform the system what kinds of MATERIALS and RESOURCES are utilized
 by this skill. Fishing is for catching fish, so we'll notify the system
@@ -3489,20 +3481,20 @@ that we deal in meat (flesh). Appropriate strings to return from this
 method are listed in
 com.planet_ink.coffee_mud.Items.interfaces.RawMaterial.java. If there
 is more than one resource or material type, they are separated with the
-pipe | character.</p>
-      <pre>  protected Item found = null;<br />  protected String foundShortName = "";<br />       <br /></pre>
-      <p>Almost all the common skills create the item that they will
+pipe | character.</a></p>
+<a name="skillgathering" id="skillgathering">      </a><pre><a name="skillgathering" id="skillgathering">  protected Item found = null;<br />  protected String foundShortName = "";<br />       <br /></a></pre>
+<a name="skillgathering" id="skillgathering">      </a><p><a name="skillgathering" id="skillgathering">Almost all the common skills create the item that they will
 generate in the invoke method, store it in the skill, and then provide
 it when the skill is unInvoked. For this reason, we'll need some
-variables to store the object we will create, and a string for its name.</p>
-      <pre>  public Fishing()<br />  {<br />    super();<br />    displayText = "You are fishing...";<br />    verb = "fishing";<br />  }<br />       <br /></pre>
-      <p>Our constructor sets the variable "verb", which is part of the
+variables to store the object we will create, and a string for its name.</a></p>
+<a name="skillgathering" id="skillgathering">      </a><pre><a name="skillgathering" id="skillgathering">  public Fishing()<br />  {<br />    super();<br />    displayText = "You are fishing...";<br />    verb = "fishing";<br />  }<br />       <br /></a></pre>
+<a name="skillgathering" id="skillgathering">      </a><p><a name="skillgathering" id="skillgathering">Our constructor sets the variable "verb", which is part of the
 CommonSkill superclass. It is used when constructing sentences which
 let the user and others around them know what they are doing.
 displayText serves the same purpose described by the Skill Abilities
-section above.</p>
-      <pre>  public boolean tick( Tickable ticking, int tickID )<br />  {<br />    if( ( affected != null )<br />        &amp;&amp; ( affected instanceof MOB )<br />        &amp;&amp; ( tickID == Tickable.TICKID_MOB )<br />      )<br />    {<br />      MOB mob = (MOB)affected;<br />      if( tickUp == 6 )<br />      {<br />        if( found != null )<br />        {<br />          commonTell( mob, "You got a tug on the line!" );<br />        }<br />        else<br />        {<br />          StringBuffer str = new StringBuffer( "Nothing is biting around here.\n\r" );<br />          commonTell( mob, str.toString() );<br />          unInvoke();<br />        }<br />      }<br />    }<br /><br />    return super.tick( ticking, tickID );<br />  }<br />       <br /></pre>
-      <p>Although our common skill super classes do most of the hard
+section above.</a></p>
+<a name="skillgathering" id="skillgathering">      </a><pre><a name="skillgathering" id="skillgathering">  public boolean tick( Tickable ticking, int tickID )<br />  {<br />    if( ( affected != null )<br />        &amp;&amp; ( affected instanceof MOB )<br />        &amp;&amp; ( tickID == Tickable.TICKID_MOB )<br />      )<br />    {<br />      MOB mob = (MOB)affected;<br />      if( tickUp == 6 )<br />      {<br />        if( found != null )<br />        {<br />          commonTell( mob, "You got a tug on the line!" );<br />        }<br />        else<br />        {<br />          StringBuffer str = new StringBuffer( "Nothing is biting around here.\n\r" );<br />          commonTell( mob, str.toString() );<br />          unInvoke();<br />        }<br />      }<br />    }<br /><br />    return super.tick( ticking, tickID );<br />  }<br />       <br /></a></pre>
+<a name="skillgathering" id="skillgathering">      </a><p><a name="skillgathering" id="skillgathering">Although our common skill super classes do most of the hard
 work of maintaining the task being performed, you will still find that
 they are often extended by individual common skills in other to give
 more appropriate messages to the user. If you don't know what a tick
@@ -3514,8 +3506,8 @@ the skill is invoked. in this case, after 24 seconds (6*4), we let the
 user know whether or not an item was generated by the invoke method. If
 an an item was invoked, we tell them they have hooked a fish. If an
 item was not generated, we tell them that nothing is biting and
-immediately <code>unInvoke()</code> the skill.</p>
-      <p>The <code>commonTell()</code> method is another feature
+immediately <code>unInvoke()</code> the skill.</a></p>
+<a name="skillgathering" id="skillgathering">      </a><p><a name="skillgathering" id="skillgathering">The <code>commonTell()</code> method is another feature
 unique
 to common skills. Since common skills are often found on hireling mobs,
 we wanted a special method which would tell players who invoke the
@@ -3523,49 +3515,49 @@ skill about the progress of our task, even if it is a follower that is
 actually DOING the task. For instance, <code>commonTell()</code>
 would tell a player who is fishing "You got a tug on the line!".
 However, commonTell would force an NPC follower of a player to SAY "I
-got a tug on the line!".</p>
-      <pre>  public void unInvoke()<br />  {<br />    if( canBeUninvoked() )<br />    {<br />      if( ( affected != null ) &amp;&amp; ( affected instanceof MOB ) )<br />      {<br />        MOB mob = (MOB)affected;<br />        if( ( found != null )<br />            &amp;&amp; ( !aborted )<br />            &amp;&amp;( !helping )<br />          )<br />        {<br />          int amount = CMLib.dice().roll( 1, 5, 0 ) * ( abilityCode() );<br />          String s = "s";<br />          if( amount == 1 )<br />          {<br />            s = "";<br />          }<br /><br />          mob.location().show( mob,<br />                               null,<br />                               CMMsg.MSG_NOISYMOVEMENT,<br />                               "&lt;S-NAME&gt; manage(s) to catch "<br />                                 + amount<br />                                 + " pound"<br />                                 + s<br />                                 + " of "<br />                                 + foundShortName<br />                                 + "."<br />                              );<br /><br />          for( int i = 0; i &lt; amount; i++ )<br />          {<br />            Item newFound = (Item)found.copyOf();<br />            mob.location().addItemRefuse( newFound, ItemPossessor.ItemExpiration.Player_Drop );<br /><br />            if( ( mob.riding() != null )<br />                &amp;&amp; ( mob.riding() instanceof Container )<br />              )<br />            {<br />              newFound.setContainer( (Container)mob.riding() );<br />            }<br /><br />            CMLib.commands().postGet( mob, null, newFound, true );<br />          }<br />        }<br />      }<br />    }<br /><br />    super.unInvoke();<br />  }<br />       <br /></pre>
-      <p>As mentioned above, the <code>unInvoke()</code> method is
+got a tug on the line!".</a></p>
+<a name="skillgathering" id="skillgathering">      </a><pre><a name="skillgathering" id="skillgathering">  public void unInvoke()<br />  {<br />    if( canBeUninvoked() )<br />    {<br />      if( ( affected != null ) &amp;&amp; ( affected instanceof MOB ) )<br />      {<br />        MOB mob = (MOB)affected;<br />        if( ( found != null )<br />            &amp;&amp; ( !aborted )<br />            &amp;&amp;( !helping )<br />          )<br />        {<br />          int amount = CMLib.dice().roll( 1, 5, 0 ) * ( abilityCode() );<br />          String s = "s";<br />          if( amount == 1 )<br />          {<br />            s = "";<br />          }<br /><br />          mob.location().show( mob,<br />                               null,<br />                               CMMsg.MSG_NOISYMOVEMENT,<br />                               "&lt;S-NAME&gt; manage(s) to catch "<br />                                 + amount<br />                                 + " pound"<br />                                 + s<br />                                 + " of "<br />                                 + foundShortName<br />                                 + "."<br />                              );<br /><br />          for( int i = 0; i &lt; amount; i++ )<br />          {<br />            Item newFound = (Item)found.copyOf();<br />            mob.location().addItemRefuse( newFound, ItemPossessor.ItemExpiration.Player_Drop );<br /><br />            if( ( mob.riding() != null )<br />                &amp;&amp; ( mob.riding() instanceof Container )<br />              )<br />            {<br />              newFound.setContainer( (Container)mob.riding() );<br />            }<br /><br />            CMLib.commands().postGet( mob, null, newFound, true );<br />          }<br />        }<br />      }<br />    }<br /><br />    super.unInvoke();<br />  }<br />       <br /></a></pre>
+<a name="skillgathering" id="skillgathering">      </a><p><a name="skillgathering" id="skillgathering">As mentioned above, the <code>unInvoke()</code> method is
 where the final work is done. So long as the skill has not been aborted
 (the aborted variable), or the skill was invoked only to help ANOTHER
 player (the helping variable), we go ahead and create several copies of
 our target item, put them in the room using addItemRefuse, and force
-the player to get them into their inventory (if they can).</p>
-      <pre>  public boolean invoke( MOB mob,<br />                         Vector commands,<br />                         Physical givenTarget,<br />                         boolean auto,<br />                         int asLevel<br />                       )<br />  {<br />    bundling = false;<br />    if( (!auto)<br />        &amp;&amp; ( commands.size() &gt; 0 )<br />        &amp;&amp; ( ( (String)commands.firstElement() ).equalsIgnoreCase( "bundle" ) )<br />      )<br />    {<br />      bundling = true;<br />      if( super.invoke( mob, commands, givenTarget, auto, asLevel ) )<br />      {<br />        return super.bundle( mob, commands );<br />      }<br /><br />      return false;<br />    }<br />       <br /></pre>
-      <p>The <code>invoke()</code> method is where common skills do
+the player to get them into their inventory (if they can).</a></p>
+<a name="skillgathering" id="skillgathering">      </a><pre><a name="skillgathering" id="skillgathering">  public boolean invoke( MOB mob,<br />                         Vector commands,<br />                         Physical givenTarget,<br />                         boolean auto,<br />                         int asLevel<br />                       )<br />  {<br />    bundling = false;<br />    if( (!auto)<br />        &amp;&amp; ( commands.size() &gt; 0 )<br />        &amp;&amp; ( ( (String)commands.firstElement() ).equalsIgnoreCase( "bundle" ) )<br />      )<br />    {<br />      bundling = true;<br />      if( super.invoke( mob, commands, givenTarget, auto, asLevel ) )<br />      {<br />        return super.bundle( mob, commands );<br />      }<br /><br />      return false;<br />    }<br />       <br /></a></pre>
+<a name="skillgathering" id="skillgathering">      </a><p><a name="skillgathering" id="skillgathering">The <code>invoke()</code> method is where common skills do
 99%
 of their work, namely determining what the user wants to do and whether
 they have the resources and are in the right place to do it, and then
 actually generating the target item and filling it out. Then the invoke
 method actually places the filled-out common skill on the player as an
-"effect", allowing it to receive "tick" calls until it completes.</p>
-      <p>In this case, right off the bat we check to see if the user is
+"effect", allowing it to receive "tick" calls until it completes.</a></p>
+<a name="skillgathering" id="skillgathering">      </a><p><a name="skillgathering" id="skillgathering">In this case, right off the bat we check to see if the user is
 trying to use the Fishing skill to bundle up a pile of fish. If so, we
 call a superclass helper method to do the bundling for us. The bundle
 method which will happily use the <code>supportedResourceString()</code>
-method above to determine what the player is allowed to bundle.</p>
-      <pre>    int foundFish = -1;<br />    boolean maybeFish = false;<br />    if( mob.location() != null )<br />    {<br />      for( int i = 0; i &lt; RawMaterial.FISHES.length; i++ )<br />      {<br />        if( mob.location().myResource() == RawMaterial.FISHES[i] )<br />        {<br />          foundFish = RawMaterial.FISHES[i];<br />          maybeFish = true;<br />        }<br />        else if( ( mob.location().resourceChoices() != null )<br />                 &amp;&amp; ( mob.location().resourceChoices().contains(<br />                                                                         Integer.valueOf(<br />                                                                                      RawMaterial.FISHES[i]<br />                                                                                    )<br />                                                                       )<br />                            )<br />               )<br />        {<br />          maybeFish = true;<br />        }<br />      }<br />    }<br />       <br /></pre>
-      <p>Our next step is to initialize a variable for the
+method above to determine what the player is allowed to bundle.</a></p>
+<a name="skillgathering" id="skillgathering">      </a><pre><a name="skillgathering" id="skillgathering">    int foundFish = -1;<br />    boolean maybeFish = false;<br />    if( mob.location() != null )<br />    {<br />      for( int i = 0; i &lt; RawMaterial.FISHES.length; i++ )<br />      {<br />        if( mob.location().myResource() == RawMaterial.FISHES[i] )<br />        {<br />          foundFish = RawMaterial.FISHES[i];<br />          maybeFish = true;<br />        }<br />        else if( ( mob.location().resourceChoices() != null )<br />                 &amp;&amp; ( mob.location().resourceChoices().contains(<br />                                                                         Integer.valueOf(<br />                                                                                      RawMaterial.FISHES[i]<br />                                                                                    )<br />                                                                       )<br />                            )<br />               )<br />        {<br />          maybeFish = true;<br />        }<br />      }<br />    }<br />       <br /></a></pre>
+<a name="skillgathering" id="skillgathering">      </a><p><a name="skillgathering" id="skillgathering">Our next step is to initialize a variable for the
 com.planet_ink.coffee_mud.Items.interfaces.RawMaterial.java (resource)
 code which will represent the type of fish we have caught here. We also
 set a variable saying whether or not ANY fish are even POSSIBLY
-available here.</p>
-      <pre>    if( !maybeFish )<br />    {<br />      commonTell( mob, "The fishing doesn't look too good around here." );<br />      return false;<br />    }<br />       <br /></pre>
-      <p>If maybeFish is false, we are in a location where no fish are
-even possibly available (such as a Desert room).</p>
-      <pre>    verb = "fishing";<br />    found = null;<br />    playSound = "fishreel.wav";<br />       <br /></pre>
-      <p>Otherwise, we re-initialize the "verb" and "found" variables
+available here.</a></p>
+<a name="skillgathering" id="skillgathering">      </a><pre><a name="skillgathering" id="skillgathering">    if( !maybeFish )<br />    {<br />      commonTell( mob, "The fishing doesn't look too good around here." );<br />      return false;<br />    }<br />       <br /></a></pre>
+<a name="skillgathering" id="skillgathering">      </a><p><a name="skillgathering" id="skillgathering">If maybeFish is false, we are in a location where no fish are
+even possibly available (such as a Desert room).</a></p>
+<a name="skillgathering" id="skillgathering">      </a><pre><a name="skillgathering" id="skillgathering">    verb = "fishing";<br />    found = null;<br />    playSound = "fishreel.wav";<br />       <br /></a></pre>
+<a name="skillgathering" id="skillgathering">      </a><p><a name="skillgathering" id="skillgathering">Otherwise, we re-initialize the "verb" and "found" variables
 we mentioned above, and set a CommonSkill string called "playSound"
 which will be used to give our skill a little sound effect while it is
-working.</p>
-      <pre>    if( !super.invoke( mob, commands, givenTarget, auto, asLevel ) )<br />    {<br />      return false;<br />    }<br />       <br /></pre>
-      <p>Next we call the GatherSkill superclass invoke method. It is
+working.</a></p>
+<a name="skillgathering" id="skillgathering">      </a><pre><a name="skillgathering" id="skillgathering">    if( !super.invoke( mob, commands, givenTarget, auto, asLevel ) )<br />    {<br />      return false;<br />    }<br />       <br /></a></pre>
+<a name="skillgathering" id="skillgathering">      </a><p><a name="skillgathering" id="skillgathering">Next we call the GatherSkill superclass invoke method. It is
 important to note that several qualifying checks are made in that
 method, such as whether the player is able to perform the skill. It
 also subtracts the necessary mana or movement points for using the
-skill.</p>
-      <pre>    if( ( proficiencyCheck( mob, 0, auto ) )<br />        &amp;&amp; ( foundFish &gt; 0 )<br />      )<br />    {<br />      found = (Item)CMLib.materials().makeResource( foundFish, mob.location().domainType(), false, null );<br />      foundShortName = "nothing";<br />      if( found != null )<br />      {<br />        foundShortName = RawMaterial.CODES.NAME( found.material()).toLowerCase();<br />      }<br />    }<br />       <br /></pre>
-      <p>Now we check to see if two important conditions have occurred;
+skill.</a></p>
+<a name="skillgathering" id="skillgathering">      </a><pre><a name="skillgathering" id="skillgathering">    if( ( proficiencyCheck( mob, 0, auto ) )<br />        &amp;&amp; ( foundFish &gt; 0 )<br />      )<br />    {<br />      found = (Item)CMLib.materials().makeResource( foundFish, mob.location().domainType(), false, null );<br />      foundShortName = "nothing";<br />      if( found != null )<br />      {<br />        foundShortName = RawMaterial.CODES.NAME( found.material()).toLowerCase();<br />      }<br />    }<br />       <br /></a></pre>
+<a name="skillgathering" id="skillgathering">      </a><p><a name="skillgathering" id="skillgathering">Now we check to see if two important conditions have occurred;
 the first being whether the player has passed his or her proficiency
 check, and the second being whether the foundFish variable was
 assigned. Remember that the foundFish variable represents the material
@@ -3573,9 +3565,9 @@ assigned. Remember that the foundFish variable represents the material
 those are true, we make use of a very useful method in the <code>utensils()</code>
 library called makeResource to generate our item for us. We also
 properly set the name of what we have caught based on the material type
-of the foundFish.</p>
-      <pre>    int duration = 35 - mob.phyStats().level();<br />    if( duration &lt; 10 )<br />    {<br />      duration=10;<br />    }<br /><br />    CMMsg msg = CMClass.getMsg( mob,<br />                                found,<br />                                this,<br />                                CMMsg.MSG_NOISYMOVEMENT,<br />                                "&lt;S-NAME&gt; start(s) fishing."<br />                              );<br /><br />    if( mob.location().okMessage( mob, msg ) )<br />    {<br />      mob.location().send( mob, msg );<br />      found = (Item)msg.target();<br />      beneficialAffect( mob, mob, asLevel, duration );<br />    }<br />    return true;<br />  }<br />}<br />       <br /></pre>
-      <p>Our last step is to calculate the amount of time (duration)
+of the foundFish.</a></p>
+<a name="skillgathering" id="skillgathering">      </a><pre><a name="skillgathering" id="skillgathering">    int duration = 35 - mob.phyStats().level();<br />    if( duration &lt; 10 )<br />    {<br />      duration=10;<br />    }<br /><br />    CMMsg msg = CMClass.getMsg( mob,<br />                                found,<br />                                this,<br />                                CMMsg.MSG_NOISYMOVEMENT,<br />                                "&lt;S-NAME&gt; start(s) fishing."<br />                              );<br /><br />    if( mob.location().okMessage( mob, msg ) )<br />    {<br />      mob.location().send( mob, msg );<br />      found = (Item)msg.target();<br />      beneficialAffect( mob, mob, asLevel, duration );<br />    }<br />    return true;<br />  }<br />}<br />       <br /></a></pre>
+<a name="skillgathering" id="skillgathering">      </a><p><a name="skillgathering" id="skillgathering">Our last step is to calculate the amount of time (duration)
 that it will take to catch the fish, create a coffeemud message to
 declare the start of our finishing adventure, and send the message out.
 After doing so, notice that we re-set the found variable to <code>msg.target()</code>.
@@ -3584,8 +3576,8 @@ since, in the getMsg method, we already declared found to be our
 message target. So isn't that like saying that A=A? Actually no!
 Remember that the okMessage method may preview or *modify* a message.
 Re-setting the found variable to <code>msg.target()</code> is done to
-support code which may have modified our target to something else.</p>
-      <p><a name="skillcrafting" id="skillcrafting" /> Now we'll take
+support code which may have modified our target to something else.</a></p>
+<a name="skillgathering" id="skillgathering">      </a><p><a name="skillcrafting" id="skillcrafting"> Now we'll take
 a look at a proper crafting skill. They are more complicated than
 gathering skills, but you'll be able to apply almost all you learned by
 reviewing the gathering skill to build a good picture of the way
@@ -3594,18 +3586,18 @@ extend com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill. Many
 of them also implement the
 com.planet_ink.coffee_mud.Abilities.interfaces.ItemCrafter interface,
 which allows them to provide items to other parts of coffeemud
-instantly!</p>
-      <pre>public class GlassBlowing extends CraftingSkill implements ItemCraftor<br />{<br />  public String ID()<br />  {<br />    return "GlassBlowing";<br />  }<br /><br />  public String name()<br />  {<br />    return "Glass Blowing";<br />  }<br />       <br /></pre>
-      <p>If you've read the Skill Abilities section above, you will
+instantly!</a></p>
+<a name="skillcrafting" id="skillcrafting">      </a><pre><a name="skillcrafting" id="skillcrafting">public class GlassBlowing extends CraftingSkill implements ItemCraftor<br />{<br />  public String ID()<br />  {<br />    return "GlassBlowing";<br />  }<br /><br />  public String name()<br />  {<br />    return "Glass Blowing";<br />  }<br />       <br /></a></pre>
+<a name="skillcrafting" id="skillcrafting">      </a><p><a name="skillcrafting" id="skillcrafting">If you've read the Skill Abilities section above, you will
 recognize these methods and their importance. As always, the <code>ID()</code>
 must match the class name, while the <code>name()</code> can be
-whatever you want to call the skill.</p>
-      <pre>  private static final String[] triggerStrings = { "GLASSBLOW", "GLASSBLOWING" };<br />  public String[] triggerStrings()<br />  {<br />    return triggerStrings;<br />  }<br />       <br /></pre>
-      <p>And again, like a normal skill, the common skills create and
+whatever you want to call the skill.</a></p>
+<a name="skillcrafting" id="skillcrafting">      </a><pre><a name="skillcrafting" id="skillcrafting">  private static final String[] triggerStrings = { "GLASSBLOW", "GLASSBLOWING" };<br />  public String[] triggerStrings()<br />  {<br />    return triggerStrings;<br />  }<br />       <br /></a></pre>
+<a name="skillcrafting" id="skillcrafting">      </a><p><a name="skillcrafting" id="skillcrafting">And again, like a normal skill, the common skills create and
 return their invocation words (or "trigger strings" as they are called
-in skills).</p>
-      <pre>  public String supportedResourceString()<br />  {<br />    return "GLASS|SAND";<br />  }<br />       <br /></pre>
-      <p>The <code>supportedResourceString()</code> is a great
+in skills).</a></p>
+<a name="skillcrafting" id="skillcrafting">      </a><pre><a name="skillcrafting" id="skillcrafting">  public String supportedResourceString()<br />  {<br />    return "GLASS|SAND";<br />  }<br />       <br /></a></pre>
+<a name="skillcrafting" id="skillcrafting">      </a><p><a name="skillcrafting" id="skillcrafting">The <code>supportedResourceString()</code> is a great
 supplementary method that is unique to Common Skills. It's purpose is
 to inform the system what kinds of MATERIALS and RESOURCES are utilized
 by this skill. GlassBlowing is for turning sand into glass, so we'll
@@ -3613,50 +3605,50 @@ notify the system that we deal in sand and glass resources. Appropriate
 strings to return from this method are listed in
 com.planet_ink.coffee_mud.Items.interfaces.RawMaterial.java. If there
 is more than one resource or material type, they are separated with the
-pipe | character.</p>
-      <pre>  protected static final int RCP_FINALNAME = 0;<br />  protected static final int RCP_LEVEL     = 1;<br />  protected static final int RCP_TICKS     = 2;<br />  protected static final int RCP_WOOD      = 3;<br />  protected static final int RCP_VALUE     = 4;<br />  protected static final int RCP_CLASSTYPE = 5;<br />  protected static final int RCP_MISCTYPE  = 6;<br />  protected static final int RCP_CAPACITY  = 7;<br />  protected static final int RCP_SPELL     = 8;<br />       <br /></pre>
-      <p>This list is at the core of the crafting skills It represents
+pipe | character.</a></p>
+<a name="skillcrafting" id="skillcrafting">      </a><pre><a name="skillcrafting" id="skillcrafting">  protected static final int RCP_FINALNAME = 0;<br />  protected static final int RCP_LEVEL     = 1;<br />  protected static final int RCP_TICKS     = 2;<br />  protected static final int RCP_WOOD      = 3;<br />  protected static final int RCP_VALUE     = 4;<br />  protected static final int RCP_CLASSTYPE = 5;<br />  protected static final int RCP_MISCTYPE  = 6;<br />  protected static final int RCP_CAPACITY  = 7;<br />  protected static final int RCP_SPELL     = 8;<br />       <br /></a></pre>
+<a name="skillcrafting" id="skillcrafting">      </a><p><a name="skillcrafting" id="skillcrafting">This list is at the core of the crafting skills It represents
 the name and function of each column of the crafting skill's text file.
 Later on, we will use these constants to index into a Vector that
 represents the particular row from the crafting skill's text file that
-the player is building.</p>
-      <pre>  protected Item building    = null;<br />  protected Item fire        = null;<br />  protected boolean messedUp = false;<br />       <br /></pre>
-      <p>As in the gathering skill, we need to set up our global
+the player is building.</a></p>
+<a name="skillcrafting" id="skillcrafting">      </a><pre><a name="skillcrafting" id="skillcrafting">  protected Item building    = null;<br />  protected Item fire        = null;<br />  protected boolean messedUp = false;<br />       <br /></a></pre>
+<a name="skillcrafting" id="skillcrafting">      </a><p><a name="skillcrafting" id="skillcrafting">As in the gathering skill, we need to set up our global
 variables to remember the object we are crafting, since it will be
 constructed below in our invoke method, but not sent out into the world
 until the unInvoke method. We also need a reference to the fire object
-we are using, so we can watch and see if it goes out.</p>
-      <pre>  public boolean tick( Tickable ticking, int tickID )<br />  {<br />    if( ( affected != null )<br />        &amp;&amp; ( affected instanceof MOB )<br />        &amp;&amp; ( tickID == Tickable.TICKID_MOB )<br />      )<br />    {<br />      MOB mob = (MOB)affected;<br />      if( ( building == null )<br />          || ( fire == null )<br />          || ( !CMLib.flags().isOnFire( fire ) )<br />          || ( !mob.location().isContent( fire ) )<br />          || ( mob.isMine( fire ) )<br />        )<br />      {<br />        messedUp = true;<br />        unInvoke();<br />      }<br />    }<br />    return super.tick( ticking, tickID );<br />  }<br />       <br /></pre>
-      <p>Unlike the gathering skill, we will let the superclass tick
+we are using, so we can watch and see if it goes out.</a></p>
+<a name="skillcrafting" id="skillcrafting">      </a><pre><a name="skillcrafting" id="skillcrafting">  public boolean tick( Tickable ticking, int tickID )<br />  {<br />    if( ( affected != null )<br />        &amp;&amp; ( affected instanceof MOB )<br />        &amp;&amp; ( tickID == Tickable.TICKID_MOB )<br />      )<br />    {<br />      MOB mob = (MOB)affected;<br />      if( ( building == null )<br />          || ( fire == null )<br />          || ( !CMLib.flags().isOnFire( fire ) )<br />          || ( !mob.location().isContent( fire ) )<br />          || ( mob.isMine( fire ) )<br />        )<br />      {<br />        messedUp = true;<br />        unInvoke();<br />      }<br />    }<br />    return super.tick( ticking, tickID );<br />  }<br />       <br /></a></pre>
+<a name="skillcrafting" id="skillcrafting">      </a><p><a name="skillcrafting" id="skillcrafting">Unlike the gathering skill, we will let the superclass tick
 method do all the talking to the player. The only job being done here
 is to make sure the fire didn't go out. If it did, we declare the
-project messed up, and immediately unInvoke it.</p>
-      <pre>  protected Vector loadRecipes()<br />  {<br />    return super.loadRecipes( "glassblowing.txt" );<br />  }<br />       <br /></pre>
-      <p>Overriding the <code>loadRecipes()</code> method is
+project messed up, and immediately unInvoke it.</a></p>
+<a name="skillcrafting" id="skillcrafting">      </a><pre><a name="skillcrafting" id="skillcrafting">  protected Vector loadRecipes()<br />  {<br />    return super.loadRecipes( "glassblowing.txt" );<br />  }<br />       <br /></a></pre>
+<a name="skillcrafting" id="skillcrafting">      </a><p><a name="skillcrafting" id="skillcrafting">Overriding the <code>loadRecipes()</code> method is
 absolutely
 necessary for any crafting skill, as it specifies the recipes list. A
 recipes list is a comma-delimited file where each row is linefeed
 delimited. Each columns meaning is defined by the constants above. The
 loadRecipes(String) method will automaticallyy look in
-$coffeemud-install-path/resources/skills for the file specified.</p>
-      <pre>  public void unInvoke()<br />  {<br />    if( canBeUninvoked() )<br />    {<br />      if( ( affected != null ) &amp;&amp; ( affected instanceof MOB ) )<br />      {<br />        MOB mob = (MOB)affected;<br /><br />        if( ( building != null ) &amp;&amp; ( !aborted ) )<br />        {<br />          if( messedUp )<br />          {<br />            commonTell( mob,<br />                        CMStrings.capitalizeAndLower(<br />                                                      building.name())<br />                                                      + " explodes!"<br />                      );<br />          }<br />          else<br />          {<br />            mob.location().addItemRefuse( building, ItemPossessor.ItemExpiration.Player_Drop );<br />          }<br />        }<br /><br />        building = null;<br />      }<br />    }<br />    super.unInvoke();<br />  }<br />       <br /></pre>
-      <p>Just like in the gathering skill, the <code>unInvoke()</code>
+$coffeemud-install-path/resources/skills for the file specified.</a></p>
+<a name="skillcrafting" id="skillcrafting">      </a><pre><a name="skillcrafting" id="skillcrafting">  public void unInvoke()<br />  {<br />    if( canBeUninvoked() )<br />    {<br />      if( ( affected != null ) &amp;&amp; ( affected instanceof MOB ) )<br />      {<br />        MOB mob = (MOB)affected;<br /><br />        if( ( building != null ) &amp;&amp; ( !aborted ) )<br />        {<br />          if( messedUp )<br />          {<br />            commonTell( mob,<br />                        CMStrings.capitalizeAndLower(<br />                                                      building.name())<br />                                                      + " explodes!"<br />                      );<br />          }<br />          else<br />          {<br />            mob.location().addItemRefuse( building, ItemPossessor.ItemExpiration.Player_Drop );<br />          }<br />        }<br /><br />        building = null;<br />      }<br />    }<br />    super.unInvoke();<br />  }<br />       <br /></a></pre>
+<a name="skillcrafting" id="skillcrafting">      </a><p><a name="skillcrafting" id="skillcrafting">Just like in the gathering skill, the <code>unInvoke()</code>
 method is where we actually give our product to the world. Its been
 saved in the 'building' variable reference, so its just a matter of
 checking whether everything went ok and adding it to the room if things
 did. Since common skills work by adding themselves as affects on the
 player/mobs performing the skill, we need only check the
-StdAbility.affected reference variable to find our craftor.</p>
-      <pre>  public boolean invoke( MOB mob,<br />                         Vector commands,<br />                         Physical givenTarget,<br />                         boolean auto,<br />                         int asLevel<br />                       )<br />  {<br />    int autoGenerate = 0;<br /><br />    if( ( auto )<br />        &amp;&amp; ( givenTarget == this )<br />        &amp;&amp; ( commands.size() &gt; 0 )<br />        &amp;&amp; ( commands.firstElement() instanceof Integer )<br />      )<br />    {<br />      autoGenerate = ( (Integer)commands.firstElement() ).intValue();<br />      commands.removeElementAt( 0 );<br />      givenTarget = null;<br />    }<br />       <br /></pre>
-      <p>Crafting skills are all outfitted with the ability to allow
+StdAbility.affected reference variable to find our craftor.</a></p>
+<a name="skillcrafting" id="skillcrafting">      </a><pre><a name="skillcrafting" id="skillcrafting">  public boolean invoke( MOB mob,<br />                         Vector commands,<br />                         Physical givenTarget,<br />                         boolean auto,<br />                         int asLevel<br />                       )<br />  {<br />    int autoGenerate = 0;<br /><br />    if( ( auto )<br />        &amp;&amp; ( givenTarget == this )<br />        &amp;&amp; ( commands.size() &gt; 0 )<br />        &amp;&amp; ( commands.firstElement() instanceof Integer )<br />      )<br />    {<br />      autoGenerate = ( (Integer)commands.firstElement() ).intValue();<br />      commands.removeElementAt( 0 );<br />      givenTarget = null;<br />    }<br />       <br /></a></pre>
+<a name="skillcrafting" id="skillcrafting">      </a><p><a name="skillcrafting" id="skillcrafting">Crafting skills are all outfitted with the ability to allow
 the rest of the system to use the skill class as an automatic item
 generator. By convention, this is done by sending in a commands vector
 (which is normally the parameter strings entered by a user) with the
 first element as an Integer object instead. This object then represents
 the material out of which the item should be made, and maps back to one
-of the RawMaterial.RESOURCE_* constants.</p>
-      <pre>    randomRecipeFix( mob,<br />                     addRecipes( mob, loadRecipes() ),<br />                     commands,<br />                     autoGenerate<br />                   );<br />       <br /></pre>
-      <p>This complex line does the most important work related to the
+of the RawMaterial.RESOURCE_* constants.</a></p>
+<a name="skillcrafting" id="skillcrafting">      </a><pre><a name="skillcrafting" id="skillcrafting">    randomRecipeFix( mob,<br />                     addRecipes( mob, loadRecipes() ),<br />                     commands,<br />                     autoGenerate<br />                   );<br />       <br /></a></pre>
+<a name="skillcrafting" id="skillcrafting">      </a><p><a name="skillcrafting" id="skillcrafting">This complex line does the most important work related to the
 autoGenerate flag we set above, and also to handle the case where mobs
 are initiating this skill on their own. Embedded are three method
 calls: one to get a vector of vectors representing the skill row matrix
@@ -3665,36 +3657,36 @@ recipe Items in the mobs inventory (<code>addRecipes(..)</code>), and
 lastly, to randomly select a recipe based on the autoGenerate flag or
 if the invoker is an NPC (<code>randomRecipeFix()</code>). <code>randomRecipeFix()</code>
 can handle things like modifying the parameter list (commands) so that
-it has the name of the random recipe selected.</p>
-      <pre>    if( commands.size() == 0 )<br />    {<br />      commonTell( mob, "Make what? Enter \"glassblow list\" for a list." );<br />      return false;<br />    }<br /><br />    if( ( !auto )<br />        &amp;&amp; ( commands.size() &gt; 0 )<br />        &amp;&amp;( ( (String)commands.firstElement() ).equalsIgnoreCase( "bundle" ) )<br />      )<br />    {<br />      bundling = true;<br />      if( super.invoke( mob, commands, givenTarget, auto, asLevel ) )<br />      {<br />        return super.bundle( mob, commands );<br />      }<br /><br />      return false;<br />    }<br />       <br /></pre>
-      <p>Now we can finally start dealing the the parameter list typed
+it has the name of the random recipe selected.</a></p>
+<a name="skillcrafting" id="skillcrafting">      </a><pre><a name="skillcrafting" id="skillcrafting">    if( commands.size() == 0 )<br />    {<br />      commonTell( mob, "Make what? Enter \"glassblow list\" for a list." );<br />      return false;<br />    }<br /><br />    if( ( !auto )<br />        &amp;&amp; ( commands.size() &gt; 0 )<br />        &amp;&amp;( ( (String)commands.firstElement() ).equalsIgnoreCase( "bundle" ) )<br />      )<br />    {<br />      bundling = true;<br />      if( super.invoke( mob, commands, givenTarget, auto, asLevel ) )<br />      {<br />        return super.bundle( mob, commands );<br />      }<br /><br />      return false;<br />    }<br />       <br /></a></pre>
+<a name="skillcrafting" id="skillcrafting">      </a><p><a name="skillcrafting" id="skillcrafting">Now we can finally start dealing the the parameter list typed
 by the player, or generated by the system. The parameter list (minus
 the command invoking word) is in the "commands" vector as a set of
 strings. The first thing we do is check the parameters to see if they
 want to generate a bundle of raw resources. If they do, we call a
 superclass helper method to do so and exit -- this is identical to the
-way it was done in the gathering skill above.</p>
-      <pre>    Vector recipes = addRecipes( mob, loadRecipes() );<br />       <br /></pre>
-      <p>We're going to need that final recipes list so we can search
+way it was done in the gathering skill above.</a></p>
+<a name="skillcrafting" id="skillcrafting">      </a><pre><a name="skillcrafting" id="skillcrafting">    Vector recipes = addRecipes( mob, loadRecipes() );<br />       <br /></a></pre>
+<a name="skillcrafting" id="skillcrafting">      </a><p><a name="skillcrafting" id="skillcrafting">We're going to need that final recipes list so we can search
 for the one the player entered into the command line. Therefore we call
       <code>loadRecipes()</code>
 to get the list from our text file, and then addRecipes to tack on any
 Recipe Items in the mobs inventory. What comes back is our vector of
 vectors, representing the rows and columns in the text file. Each
 vector in the 'recipes' vector can be index by the RCP_* constants
-above.</p>
-      <pre>    String str = (String)commands.elementAt( 0 );<br />    String startStr = null;<br />    bundling = false;<br />    int completion = 4;<br />       <br /></pre>
-      <p>Next we initialize a few important variables, such as setting
+above.</a></p>
+<a name="skillcrafting" id="skillcrafting">      </a><pre><a name="skillcrafting" id="skillcrafting">    String str = (String)commands.elementAt( 0 );<br />    String startStr = null;<br />    bundling = false;<br />    int completion = 4;<br />       <br /></a></pre>
+<a name="skillcrafting" id="skillcrafting">      </a><p><a name="skillcrafting" id="skillcrafting">Next we initialize a few important variables, such as setting
 a variable for the first word in the parameters (str), setting a
 default completion ticks (4), and initializing a bundling flag to
 false. Even if the player did not explicitly use the word bundle in the
 parameters, they may still have selected a bundle item from the recipes
-list, so we need that flag to notify the rest of the code of that fact.</p>
-      <pre>    if( str.equalsIgnoreCase( "list" ) )<br />    {<br />      StringBuffer buf = new StringBuffer(<br />                                           CMStrings.padRight( "Item", 16 )<br />                                           + " Lvl Sand required\n\r"<br />                                         );<br /><br />      for( int r = 0; r &lt; recipes.size(); r++ )<br />      {<br />        Vector V = (Vector)recipes.elementAt( r );<br />        if( V.size() &gt; 0 )<br />        {<br />          String item = replacePercent( (String)V.elementAt( RCP_FINALNAME ), "" );<br />          int level = CMath.s_int( (String)V.elementAt( RCP_LEVEL ) );<br />          int wood = CMath.s_int( (String)V.elementAt( RCP_WOOD ) );<br />          if( level &lt;= mob.phyStats().level() )<br />          {<br />            buf.append(<br />                        CMStrings.padRight( item, 16 )<br />                        + " "<br />                        + CMStrings.padRight( "" + level, 3 )<br />                        + " "<br />                        + wood<br />                        + "\n\r"<br />                      );<br />          }<br />        }<br />      }<br /><br />      commonTell( mob, buf.toString() );<br />      return true;<br />    }<br />       <br /></pre>
-      <p>If the player entered "list" as the first word in the
-parameters, we display the recipes to them.</p>
-      <pre>    fire = getRequiredFire( mob, autoGenerate );<br />    if( fire == null )<br />    {<br />      return false;<br />    }<br /><br />    building = null;<br />    messedUp = false;<br />       <br /></pre>
-      <p>Now we know we are definitely building something, so we can
+list, so we need that flag to notify the rest of the code of that fact.</a></p>
+<a name="skillcrafting" id="skillcrafting">      </a><pre><a name="skillcrafting" id="skillcrafting">    if( str.equalsIgnoreCase( "list" ) )<br />    {<br />      StringBuffer buf = new StringBuffer(<br />                                           CMStrings.padRight( "Item", 16 )<br />                                           + " Lvl Sand required\n\r"<br />                                         );<br /><br />      for( int r = 0; r &lt; recipes.size(); r++ )<br />      {<br />        Vector V = (Vector)recipes.elementAt( r );<br />        if( V.size() &gt; 0 )<br />        {<br />          String item = replacePercent( (String)V.elementAt( RCP_FINALNAME ), "" );<br />          int level = CMath.s_int( (String)V.elementAt( RCP_LEVEL ) );<br />          int wood = CMath.s_int( (String)V.elementAt( RCP_WOOD ) );<br />          if( level &lt;= mob.phyStats().level() )<br />          {<br />            buf.append(<br />                        CMStrings.padRight( item, 16 )<br />                        + " "<br />                        + CMStrings.padRight( "" + level, 3 )<br />                        + " "<br />                        + wood<br />                        + "\n\r"<br />                      );<br />          }<br />        }<br />      }<br /><br />      commonTell( mob, buf.toString() );<br />      return true;<br />    }<br />       <br /></a></pre>
+<a name="skillcrafting" id="skillcrafting">      </a><p><a name="skillcrafting" id="skillcrafting">If the player entered "list" as the first word in the
+parameters, we display the recipes to them.</a></p>
+<a name="skillcrafting" id="skillcrafting">      </a><pre><a name="skillcrafting" id="skillcrafting">    fire = getRequiredFire( mob, autoGenerate );<br />    if( fire == null )<br />    {<br />      return false;<br />    }<br /><br />    building = null;<br />    messedUp = false;<br />       <br /></a></pre>
+<a name="skillcrafting" id="skillcrafting">      </a><p><a name="skillcrafting" id="skillcrafting">Now we know we are definitely building something, so we can
 initialize some more variables, such as the global messedUp flag and
 the global building reference item. The global fire reference item is
 also set here by calling a superclass helper method <code>getRequiredFire(..)</code>
@@ -3702,15 +3694,15 @@ which also has the
 benefit of giving the user an error message if it fails to find a fire
 to use. The autoGenerate flag is sent in to tell the method to skip the
 check if we are simply using the invoke method to automaticallyy
-generate an item.</p>
-      <pre>    int amount = -1;<br />    if( ( commands.size() &gt; 1 )<br />        &amp;&amp; ( CMath.isNumber( (String)commands.lastElement() ) )<br />      )<br />    {<br />      amount = CMath.s_int( (String)commands.lastElement() );<br />      commands.removeElementAt( commands.size() - 1 );<br />    }<br />       <br /></pre>
-      <p>Our next step is to check the parameters list to see if the
+generate an item.</a></p>
+<a name="skillcrafting" id="skillcrafting">      </a><pre><a name="skillcrafting" id="skillcrafting">    int amount = -1;<br />    if( ( commands.size() &gt; 1 )<br />        &amp;&amp; ( CMath.isNumber( (String)commands.lastElement() ) )<br />      )<br />    {<br />      amount = CMath.s_int( (String)commands.lastElement() );<br />      commands.removeElementAt( commands.size() - 1 );<br />    }<br />       <br /></a></pre>
+<a name="skillcrafting" id="skillcrafting">      </a><p><a name="skillcrafting" id="skillcrafting">Our next step is to check the parameters list to see if the
 player is specifying how much raw material they want to use in the
 construction of this item. The recipe list mentions the minimum amount
 of material, but the user is allowed to specify more if they like.
-We'll save this override amount and confirm its validity later.</p>
-      <pre>    String recipeName = CMParms.combine( commands, 0 );<br />    Vector foundRecipe = null;<br />    Vector matches = matchingRecipeNames( recipes, recipeName, true );<br />    for( int r = 0; r &lt; matches.size(); r++ )<br />    {<br />      Vector V = (Vector)matches.elementAt( r );<br />      if( V.size() &gt; 0 )<br />      {<br />        int level = CMath.s_int( (String)V.elementAt( RCP_LEVEL ) );<br />        if( ( autoGenerate &gt; 0 ) || ( level &lt;= mob.phyStats().level() ) )<br />        {<br />          foundRecipe = V;<br />          break;<br />        }<br />      }<br />    }<br />       <br /></pre>
-      <p>Now we can actually get to the important part of making sure
+We'll save this override amount and confirm its validity later.</a></p>
+<a name="skillcrafting" id="skillcrafting">      </a><pre><a name="skillcrafting" id="skillcrafting">    String recipeName = CMParms.combine( commands, 0 );<br />    Vector foundRecipe = null;<br />    Vector matches = matchingRecipeNames( recipes, recipeName, true );<br />    for( int r = 0; r &lt; matches.size(); r++ )<br />    {<br />      Vector V = (Vector)matches.elementAt( r );<br />      if( V.size() &gt; 0 )<br />      {<br />        int level = CMath.s_int( (String)V.elementAt( RCP_LEVEL ) );<br />        if( ( autoGenerate &gt; 0 ) || ( level &lt;= mob.phyStats().level() ) )<br />        {<br />          foundRecipe = V;<br />          break;<br />        }<br />      }<br />    }<br />       <br /></a></pre>
+<a name="skillcrafting" id="skillcrafting">      </a><p><a name="skillcrafting" id="skillcrafting">Now we can actually get to the important part of making sure
 that the recipe name entered by the players into the command line is
 actually a valid recipe. We do that by combining the remaining strings
 on the command line into a single variable "recipeName", and then
@@ -3720,21 +3712,21 @@ Once we have this list of matching recipes, we can select the winner
 based on level (unless we are performing an auto-generation, in which
 case level doesn't matter). Our winning recipe is stored in a single
 vector of strings called foundRecipe, which we can index by the RCP_*
-constants.</p>
-      <pre>    if( foundRecipe == null )<br />    {<br />      commonTell( mob,<br />                  "You don't know how to make a '"<br />                    + recipeName<br />                    + "'. Try \"glassblow list\" for a list."<br />                );<br />      return false;<br />    }<br />       <br /></pre>
-      <p>Of course, if no recipe matched, or none met the level
+constants.</a></p>
+<a name="skillcrafting" id="skillcrafting">      </a><pre><a name="skillcrafting" id="skillcrafting">    if( foundRecipe == null )<br />    {<br />      commonTell( mob,<br />                  "You don't know how to make a '"<br />                    + recipeName<br />                    + "'. Try \"glassblow list\" for a list."<br />                );<br />      return false;<br />    }<br />       <br /></a></pre>
+<a name="skillcrafting" id="skillcrafting">      </a><p><a name="skillcrafting" id="skillcrafting">Of course, if no recipe matched, or none met the level
 requirements, our matched row vector will be null, in which case we
-error out.</p>
-      <pre>    int woodRequired = CMath.s_int( (String)foundRecipe.elementAt( RCP_WOOD ) );<br />    if( amount &gt; woodRequired )<br />    {<br />      woodRequired = amount;<br />    }<br /><br />    String misctype = (String)foundRecipe.elementAt( RCP_MISCTYPE );<br />    bundling = misctype.equalsIgnoreCase( "BUNDLE" );<br />    int[] pm = { RawMaterial.RESOURCE_SAND,<br />                 RawMaterial.RESOURCE_CRYSTAL,<br />                 RawMaterial.RESOURCE_GLASS<br />               };<br /><br />    int[][] data = fetchFoundResourceData( mob,<br />                                           woodRequired,<br />                                           "sand",<br />                                           pm,<br />                                           0,<br />                                           null,<br />                                           null,<br />                                           bundling,<br />                                           autoGenerate<br />                                         );<br />    if( data == null )<br />    {<br />      return false;<br />    }<br /><br />    woodRequired = data[0][FOUND_AMT];<br />       <br /></pre>
-      <p>However, if we did find a matching row, its time to start
+error out.</a></p>
+<a name="skillcrafting" id="skillcrafting">      </a><pre><a name="skillcrafting" id="skillcrafting">    int woodRequired = CMath.s_int( (String)foundRecipe.elementAt( RCP_WOOD ) );<br />    if( amount &gt; woodRequired )<br />    {<br />      woodRequired = amount;<br />    }<br /><br />    String misctype = (String)foundRecipe.elementAt( RCP_MISCTYPE );<br />    bundling = misctype.equalsIgnoreCase( "BUNDLE" );<br />    int[] pm = { RawMaterial.RESOURCE_SAND,<br />                 RawMaterial.RESOURCE_CRYSTAL,<br />                 RawMaterial.RESOURCE_GLASS<br />               };<br /><br />    int[][] data = fetchFoundResourceData( mob,<br />                                           woodRequired,<br />                                           "sand",<br />                                           pm,<br />                                           0,<br />                                           null,<br />                                           null,<br />                                           bundling,<br />                                           autoGenerate<br />                                         );<br />    if( data == null )<br />    {<br />      return false;<br />    }<br /><br />    woodRequired = data[0][FOUND_AMT];<br />       <br /></a></pre>
+<a name="skillcrafting" id="skillcrafting">      </a><p><a name="skillcrafting" id="skillcrafting">However, if we did find a matching row, its time to start
 pulling information out of that row and start using it. The first thing
 we check is the minimum required raw materials (woodRequired) which can
 be modified by a larger "amount" variable by the player if they entered
 one. We also draw out the general modifier string "misctype", which can
 be used to specify parameters on the item being generated. For
 instance, is the misctype column says "bundle", we know that we are
-bundling raw resources and can set our bundling flag to true.</p>
-      <p>The next step is a bit more complicated. The pm array is
+bundling raw resources and can set our bundling flag to true.</a></p>
+<a name="skillcrafting" id="skillcrafting">      </a><p><a name="skillcrafting" id="skillcrafting">The next step is a bit more complicated. The pm array is
 constructed of RawMaterial.RESOURCE_* constants which represent those
 material or resource types valid for making the items in this common
 skill. Next we call the powerful superclass method
@@ -3745,60 +3737,60 @@ take that into account as well. The returned array "data" has two
 dimensions, 0 for the primary resource, and 1 for a secondary resource
 if applicable (its not applicable here). Each dimension can be
 dereferenced using superclass FOUND_* constants. For instance, we can
-get a final "woodRequired" value from the data integer array.</p>
-      <pre>    if( !super.invoke( mob, commands, givenTarget, auto, asLevel ) )<br />    {<br />      return false;<br />    }<br />       <br /></pre>
-      <p>Just like for gathering skills, the superclass invoke method
+get a final "woodRequired" value from the data integer array.</a></p>
+<a name="skillcrafting" id="skillcrafting">      </a><pre><a name="skillcrafting" id="skillcrafting">    if( !super.invoke( mob, commands, givenTarget, auto, asLevel ) )<br />    {<br />      return false;<br />    }<br />       <br /></a></pre>
+<a name="skillcrafting" id="skillcrafting">      </a><p><a name="skillcrafting" id="skillcrafting">Just like for gathering skills, the superclass invoke method
 is called to take care of mana consumption, and to make sure the person
-trying to do the crafting is not asleep or dead.</p>
-      <pre>    int lostValue = destroyResources( mob.location(),<br />                                      woodRequired,<br />                                      data[0][FOUND_CODE],<br />                                      0,<br />                                      null,<br />                                      autoGenerate<br />                                    );<br /><br />    building = CMClass.getItem( (String)foundRecipe.elementAt( RCP_CLASSTYPE ) );<br /><br />    if( building == null )<br />    {<br />      commonTell( mob,<br />                  "There's no such thing as a "<br />                    + foundRecipe.elementAt( RCP_CLASSTYPE )<br />                    + "!!!" );<br />      return false;<br />    }<br />       <br /></pre>
-      <p>Our next step is to call another superclass method <code>destroyResources()</code>
+trying to do the crafting is not asleep or dead.</a></p>
+<a name="skillcrafting" id="skillcrafting">      </a><pre><a name="skillcrafting" id="skillcrafting">    int lostValue = destroyResources( mob.location(),<br />                                      woodRequired,<br />                                      data[0][FOUND_CODE],<br />                                      0,<br />                                      null,<br />                                      autoGenerate<br />                                    );<br /><br />    building = CMClass.getItem( (String)foundRecipe.elementAt( RCP_CLASSTYPE ) );<br /><br />    if( building == null )<br />    {<br />      commonTell( mob,<br />                  "There's no such thing as a "<br />                    + foundRecipe.elementAt( RCP_CLASSTYPE )<br />                    + "!!!" );<br />      return false;<br />    }<br />       <br /></a></pre>
+<a name="skillcrafting" id="skillcrafting">      </a><p><a name="skillcrafting" id="skillcrafting">Our next step is to call another superclass method <code>destroyResources()</code>
 which will remove the resources from the room which are used to
 construct the item. After that, we can actually initialize the building
 item reference so we can begin to fill it out. The building variable
 will remain referenced only by the common skill class until the <code>unInvoke()</code>
-method is called, when it will be given to the craftor.</p>
-      <pre>    completion = CMath.s_int(<br />                              (String)foundRecipe.elementAt( RCP_TICKS )<br />                            )<br />                            - (<br />                                (<br />                                  mob.phyStats().level()<br />                                  - CMath.s_int(<br />                                                 (String)foundRecipe.elementAt( RCP_LEVEL )<br />                                               )<br />                                ) * 2<br />                              );<br /><br />    String itemName = replacePercent(<br />                                      (String)foundRecipe.elementAt( RCP_FINALNAME ),<br />                                      RawMaterial.CODES.NAME(<br />                                        data[0][FOUND_CODE]<br />                                                                ]<br />                                    ).toLowerCase();<br /><br />    if( bundling )<br />    {<br />      itemName = "a " + woodRequired + "# " + itemName;<br />    }<br />    else<br />    {<br />      itemName = CMStrings.startWithAorAn( itemName );<br />    }<br /><br />    building.setName( itemName );<br />    startStr = "&lt;S-NAME&gt; start(s) blowing " + building.name() + ".";<br />    displayText = "You are blowing " + building.name();<br />    verb = "blowing " + building.name();<br />    playSound = "fire.wav";<br />    building.setDisplayText( itemName + " is here" );<br />    building.setDescription( itemName + ". " );<br />    building.basePhyStats().setWeight( woodRequired );<br />    building.setBaseValue( CMath.s_int( (String)foundRecipe.elementAt( RCP_VALUE ) ) );<br />       <br /></pre>
-      <p>Now that we have a reference to the item object we are
+method is called, when it will be given to the craftor.</a></p>
+<a name="skillcrafting" id="skillcrafting">      </a><pre><a name="skillcrafting" id="skillcrafting">    completion = CMath.s_int(<br />                              (String)foundRecipe.elementAt( RCP_TICKS )<br />                            )<br />                            - (<br />                                (<br />                                  mob.phyStats().level()<br />                                  - CMath.s_int(<br />                                                 (String)foundRecipe.elementAt( RCP_LEVEL )<br />                                               )<br />                                ) * 2<br />                              );<br /><br />    String itemName = replacePercent(<br />                                      (String)foundRecipe.elementAt( RCP_FINALNAME ),<br />                                      RawMaterial.CODES.NAME(<br />                                        data[0][FOUND_CODE]<br />                                                                ]<br />                                    ).toLowerCase();<br /><br />    if( bundling )<br />    {<br />      itemName = "a " + woodRequired + "# " + itemName;<br />    }<br />    else<br />    {<br />      itemName = CMStrings.startWithAorAn( itemName );<br />    }<br /><br />    building.setName( itemName );<br />    startStr = "&lt;S-NAME&gt; start(s) blowing " + building.name() + ".";<br />    displayText = "You are blowing " + building.name();<br />    verb = "blowing " + building.name();<br />    playSound = "fire.wav";<br />    building.setDisplayText( itemName + " is here" );<br />    building.setDescription( itemName + ". " );<br />    building.basePhyStats().setWeight( woodRequired );<br />    building.setBaseValue( CMath.s_int( (String)foundRecipe.elementAt( RCP_VALUE ) ) );<br />       <br /></a></pre>
+<a name="skillcrafting" id="skillcrafting">      </a><p><a name="skillcrafting" id="skillcrafting">Now that we have a reference to the item object we are
 building, we can start filling in some fields, such as its name,
 display text, weight, and base value, usually from columns in our
 recipe text file. We can also derive the final completion variable,
-representing the number of ticks it will take to complete the item.</p>
-      <pre>    if( data[0][FOUND_CODE] == RawMaterial.RESOURCE_SAND )<br />    {<br />      building.setMaterial( RawMaterial.RESOURCE_GLASS );<br />    }<br />    else<br />    {<br />      building.setMaterial( data[0][FOUND_CODE] );<br />    }<br /><br />    building.basePhyStats().setLevel(<br />                                      CMath.s_int(<br />                                                   (String)foundRecipe.elementAt( RCP_LEVEL )<br />                                                 )<br />                                    );<br /><br />    building.setSecretIdentity( "This is the work of " + mob.Name() + "." );<br />    int capacity = CMath.s_int( (String)foundRecipe.elementAt( RCP_CAPACITY ) );<br />    String spell = ( foundRecipe.size() &gt; RCP_SPELL ) ?<br />                     ( (String)foundRecipe.elementAt( RCP_SPELL ) ).trim()<br />                     : "";<br /><br />    addSpells( building, spell );<br />       <br /></pre>
-      <p>Continuing with our mission of filling out the building
+representing the number of ticks it will take to complete the item.</a></p>
+<a name="skillcrafting" id="skillcrafting">      </a><pre><a name="skillcrafting" id="skillcrafting">    if( data[0][FOUND_CODE] == RawMaterial.RESOURCE_SAND )<br />    {<br />      building.setMaterial( RawMaterial.RESOURCE_GLASS );<br />    }<br />    else<br />    {<br />      building.setMaterial( data[0][FOUND_CODE] );<br />    }<br /><br />    building.basePhyStats().setLevel(<br />                                      CMath.s_int(<br />                                                   (String)foundRecipe.elementAt( RCP_LEVEL )<br />                                                 )<br />                                    );<br /><br />    building.setSecretIdentity( "This is the work of " + mob.Name() + "." );<br />    int capacity = CMath.s_int( (String)foundRecipe.elementAt( RCP_CAPACITY ) );<br />    String spell = ( foundRecipe.size() &gt; RCP_SPELL ) ?<br />                     ( (String)foundRecipe.elementAt( RCP_SPELL ) ).trim()<br />                     : "";<br /><br />    addSpells( building, spell );<br />       <br /></a></pre>
+<a name="skillcrafting" id="skillcrafting">      </a><p><a name="skillcrafting" id="skillcrafting">Continuing with our mission of filling out the building
 object, we set the material type, level, and secret identity. We also
 add any properties to it that are listed in the recipe text file by
 calling the superclass helper method <code>addSpells()</code>. There
 is also a column in the recipe file for the capacity of the item if it
-is a container.</p>
-      <pre>    if( building instanceof Container )<br />    {<br />      if( capacity &gt; 0 )<br />      {<br />        ( (Container)building ).setCapacity( capacity + woodRequired );<br />      }<br /><br />      if( misctype.equalsIgnoreCase( "LID" ) )<br />      {<br />        ( (Container)building ).setLidsNLocks( true, false, false, false );<br />      }<br />      else if( misctype.equalsIgnoreCase( "LOCK" ) )<br />      {<br />        ( (Container)building ).setLidsNLocks( true, false, true, false );<br />        ( (Container)building ).setKeyName(<br />                                            Double.valueOf(<br />                                                        Math.random()<br />                                                      ).toString()<br />                                          );<br />      }<br /><br />      ( (Container)building ).setContainTypes( Container.CONTAIN_ANYTHING );<br />    }<br />       <br /></pre>
-      <p>If, in fact, the item we are building is a container, we'll
+is a container.</a></p>
+<a name="skillcrafting" id="skillcrafting">      </a><pre><a name="skillcrafting" id="skillcrafting">    if( building instanceof Container )<br />    {<br />      if( capacity &gt; 0 )<br />      {<br />        ( (Container)building ).setCapacity( capacity + woodRequired );<br />      }<br /><br />      if( misctype.equalsIgnoreCase( "LID" ) )<br />      {<br />        ( (Container)building ).setLidsNLocks( true, false, false, false );<br />      }<br />      else if( misctype.equalsIgnoreCase( "LOCK" ) )<br />      {<br />        ( (Container)building ).setLidsNLocks( true, false, true, false );<br />        ( (Container)building ).setKeyName(<br />                                            Double.valueOf(<br />                                                        Math.random()<br />                                                      ).toString()<br />                                          );<br />      }<br /><br />      ( (Container)building ).setContainTypes( Container.CONTAIN_ANYTHING );<br />    }<br />       <br /></a></pre>
+<a name="skillcrafting" id="skillcrafting">      </a><p><a name="skillcrafting" id="skillcrafting">If, in fact, the item we are building is a container, we'll
 set the capacity of the container, and use our general purpose
 "misctype" column from the table to determine whether a lit or lock
-needs to be made.</p>
-      <pre>    if( building instanceof Drink )<br />    {<br />      if( CMLib.flags().isGettable( building ) )<br />      {<br />        ( (Drink)building ).setLiquidRemaining( 0 );<br />        ( (Drink)building ).setLiquidHeld( capacity * 50 );<br />        ( (Drink)building ).setThirstQuenched( 250 );<br /><br />        if( ( capacity * 50 ) &lt; 250 )<br />        {<br />          ( (Drink)building ).setThirstQuenched( capacity * 50 );<br />        }<br />      }<br />    }<br /><br />    if( bundling )<br />    {<br />      building.setBaseValue( lostValue );<br />    }<br />       <br /></pre>
-      <p>If the item is a Drinkable, then we have a few more fields to
+needs to be made.</a></p>
+<a name="skillcrafting" id="skillcrafting">      </a><pre><a name="skillcrafting" id="skillcrafting">    if( building instanceof Drink )<br />    {<br />      if( CMLib.flags().isGettable( building ) )<br />      {<br />        ( (Drink)building ).setLiquidRemaining( 0 );<br />        ( (Drink)building ).setLiquidHeld( capacity * 50 );<br />        ( (Drink)building ).setThirstQuenched( 250 );<br /><br />        if( ( capacity * 50 ) &lt; 250 )<br />        {<br />          ( (Drink)building ).setThirstQuenched( capacity * 50 );<br />        }<br />      }<br />    }<br /><br />    if( bundling )<br />    {<br />      building.setBaseValue( lostValue );<br />    }<br />       <br /></a></pre>
+<a name="skillcrafting" id="skillcrafting">      </a><p><a name="skillcrafting" id="skillcrafting">If the item is a Drinkable, then we have a few more fields to
 fill out, based on the capacity column. The last line makes sure that
 the gold value of the item reflects the sum of the materials used, in
-case we are bundling.</p>
-      <pre>    building.recoverPhyStats();<br />    building.text();<br />    building.recoverPhyStats();<br />       <br /></pre>
-      <p>The filling out of the item is complete, so we call <code>recoverPhyStats()</code>,
+case we are bundling.</a></p>
+<a name="skillcrafting" id="skillcrafting">      </a><pre><a name="skillcrafting" id="skillcrafting">    building.recoverPhyStats();<br />    building.text();<br />    building.recoverPhyStats();<br />       <br /></a></pre>
+<a name="skillcrafting" id="skillcrafting">      </a><p><a name="skillcrafting" id="skillcrafting">The filling out of the item is complete, so we call <code>recoverPhyStats()</code>,
 populate the miscText field if the item is Generic, and then recover
-the env stats again in case that changed anything.</p>
-      <pre>    messedUp =! proficiencyCheck( mob, 0, auto );<br />    if( completion &lt; 4 )<br />    {<br />      completion = 4;<br />    }<br /><br />    if( bundling )<br />    {<br />      messedUp = false;<br />      completion = 1;<br />      verb = "bundling "<br />             + RawMaterial.CODES.NAME(<br />             building.material()<br />             ).toLowerCase();<br /><br />      startStr = "&lt;S-NAME&gt; start(s) " + verb + ".";<br />      displayText = "You are " + verb;<br />    }<br />       <br /></pre>
-      <p>Now we can set our messedUp flag based on a proficiency check,
+the env stats again in case that changed anything.</a></p>
+<a name="skillcrafting" id="skillcrafting">      </a><pre><a name="skillcrafting" id="skillcrafting">    messedUp =! proficiencyCheck( mob, 0, auto );<br />    if( completion &lt; 4 )<br />    {<br />      completion = 4;<br />    }<br /><br />    if( bundling )<br />    {<br />      messedUp = false;<br />      completion = 1;<br />      verb = "bundling "<br />             + RawMaterial.CODES.NAME(<br />             building.material()<br />             ).toLowerCase();<br /><br />      startStr = "&lt;S-NAME&gt; start(s) " + verb + ".";<br />      displayText = "You are " + verb;<br />    }<br />       <br /></a></pre>
+<a name="skillcrafting" id="skillcrafting">      </a><p><a name="skillcrafting" id="skillcrafting">Now we can set our messedUp flag based on a proficiency check,
 and change our common skill player-message strings based on whether we
-are bundling.</p>
-      <pre>    if( autoGenerate &gt; 0 )<br />    {<br />      commands.addElement( building );<br />      return true;<br />    }<br />       <br /></pre>
-      <p>If the invoke method was called simply to generate the item,
+are bundling.</a></p>
+<a name="skillcrafting" id="skillcrafting">      </a><pre><a name="skillcrafting" id="skillcrafting">    if( autoGenerate &gt; 0 )<br />    {<br />      commands.addElement( building );<br />      return true;<br />    }<br />       <br /></a></pre>
+<a name="skillcrafting" id="skillcrafting">      </a><p><a name="skillcrafting" id="skillcrafting">If the invoke method was called simply to generate the item,
 we are done -- we can add the item to the commands vector (where it
-will be expected), and return.</p>
-      <pre>    CMMsg msg = CMClass.getMsg( mob,<br />                                building,<br />                                this,<br />                                CMMsg.MSG_NOISYMOVEMENT,<br />                                startStr<br />                              );<br /><br />    if( mob.location().okMessage( mob, msg ) )<br />    {<br />      mob.location().send( mob, msg );<br />      building = (Item)msg.target();<br />      beneficialAffect( mob, mob, asLevel, completion );<br />    }<br />    else if( bundling )<br />    {<br />      messedUp = false;<br />      aborted = false;<br />      unInvoke();<br />    }<br />    return true;<br />  }<br />}<br />       <br /></pre>
-      <p>Last but not least, we do exactly what we did in our gathering
+will be expected), and return.</a></p>
+<a name="skillcrafting" id="skillcrafting">      </a><pre><a name="skillcrafting" id="skillcrafting">    CMMsg msg = CMClass.getMsg( mob,<br />                                building,<br />                                this,<br />                                CMMsg.MSG_NOISYMOVEMENT,<br />                                startStr<br />                              );<br /><br />    if( mob.location().okMessage( mob, msg ) )<br />    {<br />      mob.location().send( mob, msg );<br />      building = (Item)msg.target();<br />      beneficialAffect( mob, mob, asLevel, completion );<br />    }<br />    else if( bundling )<br />    {<br />      messedUp = false;<br />      aborted = false;<br />      unInvoke();<br />    }<br />    return true;<br />  }<br />}<br />       <br /></a></pre>
+<a name="skillcrafting" id="skillcrafting">      </a><p><a name="skillcrafting" id="skillcrafting">Last but not least, we do exactly what we did in our gathering
 skill, namely generate a message for this event, and add the common
 skill as an effect to the invoker of it. The completion time is used to
-determine how long it will take to generate the item.</p>
-      <img src="images/prayer.jpg" alt="poisons" />
-      <h2><a name="POISON" id="POISON">Poisons</a></h2>
+determine how long it will take to generate the item.</a></p>
+<a name="skillcrafting" id="skillcrafting">      <img src="images/prayer.jpg" alt="poisons" />
+      </a><h2><a name="POISON" id="POISON">Poisons</a></h2>
       <pre>public class Poison_BeeSting extends com.planet_ink.coffee_mud.Abilities.Poisons.Poison<br />{<br />  public String ID()<br />  {<br />    return "Poison_BeeSting";<br />  }<br /><br />  public String name()<br />  {<br />    return "Bee Sting";<br />  }<br /></pre>
       <p>The Poison base class in the Poisons package provides a tidy
 template upon which your more common, mundane poisons can be based. The
@@ -4033,5 +4025,4 @@ entry value. Correct casing is taken care of by the Language base class.</p>
   </tbody>
 </table>
 </center>
-</body>
-</html>
+</body></html>

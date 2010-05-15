@@ -36,7 +36,7 @@ public class ClanTax extends StdCommand
 {
 	public ClanTax(){}
 
-	private String[] access={"CLANTAX"};
+	private final String[] access={"CLANTAX"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

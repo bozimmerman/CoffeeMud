@@ -36,7 +36,7 @@ public class Bid extends StdCommand
 {
 	public Bid(){}
 
-	private String[] access={"BID"};
+	private final String[] access={"BID"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

@@ -38,7 +38,7 @@ public class Go extends StdCommand
 {
 	public Go(){}
 
-	private String[] access={"GO","WALK"};
+	private final String[] access={"GO","WALK"};
 	public String[] getAccessWords(){return access;}
 	
 	public int energyExpenseFactor(){return 1;}

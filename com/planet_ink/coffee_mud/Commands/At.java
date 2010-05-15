@@ -36,7 +36,7 @@ public class At extends StdCommand
 {
 	public At(){}
 
-	private String[] access={"AT"};
+	private final String[] access={"AT"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

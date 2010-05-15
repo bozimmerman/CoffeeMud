@@ -36,7 +36,7 @@ public class As extends StdCommand
 {
 	public As(){}
 
-	private String[] access={"AS"};
+	private final String[] access={"AS"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

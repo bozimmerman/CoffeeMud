@@ -39,7 +39,7 @@ public class Import extends StdCommand
 {
 	public Import(){}
 
-	private String[] access={"IMPORT"};
+	private final String[] access={"IMPORT"};
 	public String[] getAccessWords(){return access;}
 
 	public static final String[][] objDescs={

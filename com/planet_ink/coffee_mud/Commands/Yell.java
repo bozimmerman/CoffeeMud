@@ -36,7 +36,7 @@ public class Yell extends StdCommand
 {
 	public Yell(){}
 
-	private String[] access={"YELL","Y"};
+	private final String[] access={"YELL","Y"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

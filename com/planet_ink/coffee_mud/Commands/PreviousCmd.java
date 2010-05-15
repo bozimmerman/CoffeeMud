@@ -36,7 +36,7 @@ public class PreviousCmd extends StdCommand
 {
 	public PreviousCmd(){}
 
-	private String[] access={"!"};
+	private final String[] access={"!"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

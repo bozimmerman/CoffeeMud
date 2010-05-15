@@ -37,7 +37,7 @@ public class AutoLoot extends StdCommand
 {
 	public AutoLoot(){}
 
-	private String[] access={"AUTOLOOT"};
+	private final String[] access={"AUTOLOOT"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

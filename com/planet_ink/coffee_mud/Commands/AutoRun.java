@@ -37,7 +37,7 @@ public class AutoRun extends StdCommand
 {
 	public AutoRun(){}
 
-	private String[] access={"AUTORUN"};
+	private final String[] access={"AUTORUN"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

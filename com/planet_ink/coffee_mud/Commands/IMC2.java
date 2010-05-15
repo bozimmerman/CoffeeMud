@@ -36,7 +36,7 @@ public class IMC2 extends StdCommand
 {
 	public IMC2(){}
 
-	private String[] access={"IMC2"};
+	private final String[] access={"IMC2"};
 	public String[] getAccessWords(){return access;}
 
 	public void IMC2Error(MOB mob)

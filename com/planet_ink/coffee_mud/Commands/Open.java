@@ -36,7 +36,7 @@ public class Open extends StdCommand
 {
 	public Open(){}
 
-	private String[] access={"OPEN","OP","O"};
+	private final String[] access={"OPEN","OP","O"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

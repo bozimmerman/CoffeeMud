@@ -36,7 +36,7 @@ public class Sit extends StdCommand
 {
 	public Sit(){}
 
-	private String[] access={"SIT","REST","R"};
+	private final String[] access={"SIT","REST","R"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

@@ -36,7 +36,7 @@ public class Read extends StdCommand
 {
 	public Read(){}
 
-	private String[] access={"READ"};
+	private final String[] access={"READ"};
 	public String[] getAccessWords(){return access;}
 
 	public void read(MOB mob, Environmental thisThang, String theRest)

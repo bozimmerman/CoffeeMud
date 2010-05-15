@@ -37,7 +37,7 @@ public class Shell extends StdCommand
 {
 	public Shell(){}
 
-	private String[] access={"SHELL","CMFS","."};
+	private final String[] access={"SHELL","CMFS","."};
 	public String[] getAccessWords(){return access;}
     
     protected static DVector pwds=new DVector(2);

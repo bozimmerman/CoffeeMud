@@ -37,7 +37,7 @@ public class Stand extends StdCommand
 {
 	public Stand(){}
 
-	private String[] access={"STAND","ST","STA","STAN"};
+	private final String[] access={"STAND","ST","STA","STAN"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

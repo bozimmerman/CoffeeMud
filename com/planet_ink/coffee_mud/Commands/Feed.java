@@ -37,7 +37,7 @@ public class Feed extends StdCommand
 {
 	public Feed(){}
 
-	private String[] access={"FEED"};
+	private final String[] access={"FEED"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

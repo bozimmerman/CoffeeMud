@@ -36,7 +36,7 @@ public class Throw extends StdCommand
 {
 	public Throw(){}
 
-	private String[] access={"THROW","TOSS"};
+	private final String[] access={"THROW","TOSS"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

@@ -37,7 +37,7 @@ public class AutoAssist extends StdCommand
 {
 	public AutoAssist(){}
 
-	private String[] access={"AUTOASSIST"};
+	private final String[] access={"AUTOASSIST"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

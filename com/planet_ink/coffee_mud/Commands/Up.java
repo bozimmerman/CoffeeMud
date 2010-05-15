@@ -36,7 +36,7 @@ public class Up extends Go
 {
 	public Up(){}
 
-	private String[] access={"UP","U"};
+	private final String[] access={"UP","U"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

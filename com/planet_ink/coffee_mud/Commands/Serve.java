@@ -36,7 +36,7 @@ public class Serve extends StdCommand
 {
 	public Serve(){}
 
-	private String[] access={"SERVE"};
+	private final String[] access={"SERVE"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

@@ -36,7 +36,7 @@ public class Stat  extends Skills
 {
 	public Stat(){}
 
-	private String[] access={"STAT"};
+	private final String[] access={"STAT"};
 	public String[] getAccessWords(){return access;}
 
     public static final int ABLETYPE_EQUIPMENT=-2;

@@ -36,7 +36,7 @@ public class Equipment extends StdCommand
 {
 	public Equipment(){}
 
-	private String[] access={"EQUIPMENT","EQ","EQUIP"};
+	private final String[] access={"EQUIPMENT","EQ","EQUIP"};
 	public String[] getAccessWords(){return access;}
 
 	public static StringBuilder getEquipment(MOB seer, MOB mob, boolean allPlaces)

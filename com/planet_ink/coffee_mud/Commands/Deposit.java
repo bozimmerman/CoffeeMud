@@ -36,7 +36,7 @@ public class Deposit extends StdCommand
 {
 	public Deposit(){}
 
-	private String[] access={"DEPOSIT"};
+	private final String[] access={"DEPOSIT"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException

@@ -36,7 +36,7 @@ public class PollCmd extends StdCommand
 {
     public PollCmd(){}
 
-    private String[] access={"POLL"};
+    private final String[] access={"POLL"};
     public String[] getAccessWords(){return access;}
     public boolean execute(MOB mob, Vector commands, int metaFlags)
         throws java.io.IOException

@@ -37,7 +37,7 @@ public class Purge extends StdCommand
 {
 	public Purge(){}
 
-	private String[] access={"PURGE"};
+	private final String[] access={"PURGE"};
 	public String[] getAccessWords(){return access;}
 
 	public boolean errorOut(MOB mob)

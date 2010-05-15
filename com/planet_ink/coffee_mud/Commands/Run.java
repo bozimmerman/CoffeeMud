@@ -38,7 +38,7 @@ public class Run extends Go
 {
 	public Run(){}
 
-	private String[] access={"RUN"};
+	private final String[] access={"RUN"};
 	public String[] getAccessWords(){return access;}
 	public int energyExpenseFactor(){return 2;}
 	public double actionsCost(MOB mob, List<String> cmds)

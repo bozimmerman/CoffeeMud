@@ -37,7 +37,7 @@ public class AutoGold extends StdCommand
 {
 	public AutoGold(){}
 
-	private String[] access={"AUTOGOLD"};
+	private final String[] access={"AUTOGOLD"};
 	public String[] getAccessWords(){return access;}
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
