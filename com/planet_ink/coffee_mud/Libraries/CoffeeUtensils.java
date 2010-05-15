@@ -690,7 +690,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
         	return I;
         for(int d=0;d<policies.size();d++)
         {
-            if((((Vector)policies.elementAt(d,3)).size()>0)
+            if((((MaskingLibrary.CompiledZapperMask)policies.elementAt(d,3)).entries.length>0)
             &&(!CMLib.masking().maskCheck((MaskingLibrary.CompiledZapperMask)policies.elementAt(d,3),I,true)))
                 continue;
             if(CMLib.dice().rollPercentage()>((Integer)policies.elementAt(d,1)).intValue())
