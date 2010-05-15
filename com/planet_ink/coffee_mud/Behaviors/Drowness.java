@@ -191,7 +191,7 @@ public class Drowness extends StdBehavior
 		        mainWeapon.wearAt(Wearable.WORN_WIELD);
 //		        secondWeapon.wear(Item.SHIELD);
 		        mob.addItem(mainWeapon);
-//              mob.addInventory(secondWeapon);
+//              mob.addItem(secondWeapon);
 		        mob.basePhyStats().setSpeed(1.0);
                 break;
             case 3:

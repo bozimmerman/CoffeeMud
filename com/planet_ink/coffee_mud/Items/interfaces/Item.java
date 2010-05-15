@@ -190,11 +190,10 @@ public interface Item extends Rider, DBIdentifiable, Wearable, PhysicalAgent, Re
     /**
      * Sets the Room or MOB representing where this item is located.  Containers are handled
      * by another pointer, container(), so those two methods be used together to determine
-     * where a given item is.  This method is called by the addInventory method on mobs
+     * where a given item is.  This method is called by the addItem method on mobs
      * and the addItem interface on Rooms.  Alone, this method is insufficient to properly
      * determine an items location, so one of the two above should be called instead.
-     * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#addItem(Item)
-     * @see com.planet_ink.coffee_mud.Locales.interfaces.Room#addItem(Item)
+     * @see com.planet_ink.coffee_mud.core.interfaces.ItemPossessor#addItem(Item)
      * @param E the mob or room where the item is located
      */
     public void setOwner(ItemPossessor E);

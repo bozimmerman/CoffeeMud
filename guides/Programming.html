@@ -568,11 +568,11 @@ system strings. For instance:</p>
           </tr>
         </tbody>
       </table>
-<a name="textcolor" id="textcolor">      </a><p><a name="textcolor" id="textcolor">As you might have guessed, it is preferred that the system
+      <p>As you might have guessed, it is preferred that the system
 colors (the last 16 codes) be used sparingly, in favor of the more
-customizable codes above.</a></p>
-<a name="textcolor" id="textcolor">      <img src="images/mozilla.jpg" alt="Mozilla Javascript" />
-      </a><h2><a name="javascript" id="javascript">JavaScripting:</a></h2>
+customizable codes above.</p>
+      <img src="images/mozilla.jpg" alt="Mozilla Javascript" />
+      <h2><a name="javascript" id="javascript">JavaScripting:</a></h2>
       <p>JavaScript is an interpreted scripting language which is used
 in various parts of CoffeeMud. The CoffeeMud engine integrates the
 Rhino Javascript interpretor package from Mozilla in such places as the
@@ -897,33 +897,33 @@ repetition.</td>
           </tr>
         </tbody>
       </table>
-<a name="majorcode" id="majorcode">      </a><p><a name="majorcode" id="majorcode">The above masks can be quite confusing. It is best to examine
+      <p>The above masks can be quite confusing. It is best to examine
 the several MSG_ equates in the CMMsg interface to see how they are
 properly or improperly used. Remember a MSG_ equate is a completely
-constructed Code, complete with the appropriate Major and Minor aspects.</a></p>
-<a name="majorcode" id="majorcode">      </a><p><a name="majorcode" id="majorcode">The Minor Code represents the more specific activity being
+constructed Code, complete with the appropriate Major and Minor aspects.</p>
+      <p>The Minor Code represents the more specific activity being
 performed, and is a simple integer ranging from 0 (NO EFFECT) to 2047.
 The officially recognized Minor codes are exhaustively listed in the
 CMMsg interface, and all begin with the prefix TYP_. These types cover
 every sort of major event which occurs in the CoffeeMud engine,
 including getting items, casting spells, entering or leaving rooms,
-etc, etc..</a></p>
-<a name="majorcode" id="majorcode">      </a><pre><a name="majorcode" id="majorcode">CMMsg msg = CMClass.getMsg(attacker,target,weapon,CMMsg.MSG_WEAPONATTACK,<br />          "&lt;S-NAME&gt;attack(s) &lt;T-NAME&gt;!");<br /></a></pre>
-<a name="majorcode" id="majorcode">      </a><p><a name="majorcode" id="majorcode">The core.CMClass has many different getMsg signatures to make
+etc, etc..</p>
+      <pre>CMMsg msg = CMClass.getMsg(attacker,target,weapon,CMMsg.MSG_WEAPONATTACK,<br />          "&lt;S-NAME&gt;attack(s) &lt;T-NAME&gt;!");<br /></pre>
+      <p>The core.CMClass has many different getMsg signatures to make
 message construction quick and painless. The above is an example where
 only a single Code and a single message text are provided. In
 constructors where only one Code or message text field are provided, it
 is assumed that the code and message texts will be the same for source,
-target (if any) and others.</a></p>
-<a name="majorcode" id="majorcode">      </a><p><a name="majorcode" id="majorcode">CMMsg objects also have <code>value()</code> and <code>setValue(int)</code>
+target (if any) and others.</p>
+      <p>CMMsg objects also have <code>value()</code> and <code>setValue(int)</code>
 methods for modifying an integer not found in the constructor. This
 number is used for several different purposes in message construction,
 from the amount of damage in a TYP_DAMAGE message, to the amount of
 experience in a TYP_EXPCHANGE message. This number is also used to
 determine whether or not a standard saving throw was made. Value
 defaults to 0, but, after running through a message which contains a
-savable event, the value will be &gt;0 if the save was made.</a></p>
-<a name="majorcode" id="majorcode">      </a><h3><a name="messagepreview" id="messagepreview">Message
+savable event, the value will be &gt;0 if the save was made.</p>
+      <h3><a name="messagepreview" id="messagepreview">Message
 Previewing</a></h3>
       <p>Once a Message has been constructed, it is time to actually
 put the message out into the system. There is a standard form for the
@@ -1278,24 +1278,24 @@ STAT_MAX_STRENGTH_ADJ, STAT_MAX_INTELLIGENCE_ADJ,
 STAT_MAX_DEXTERITY_ADJ, STAT_MAX_CONSTITUTION_ADJ,
 STAT_MAX_CHARISMA_ADJ, STAT_MAX_WISDOM_ADJ, STAT_AGE,
 STAT_SAVE_DETECTION, STAT_SAVE_OVERLOOKING.</a></p>
-<a name="charstats" id="charstats">      </a><p><a name="charstats" id="charstats">In addition to these equates defined and read through the <code>getStat()</code>
+      <p>In addition to these equates defined and read through the <code>getStat()</code>
 and <code>setStat()</code> methods, there is also the Race object
 available through <code>getMyRace()</code> and <code>setMyRace()</code>
 methods, as well as Character Class and Character Class level methods.
 See the Common.interfaces.CharStats java file for more information on
-those methods and how they work.</a></p>
-<a name="charstats" id="charstats">      </a><p><a name="charstats" id="charstats">Like the PhyStats above, those objects listed as able to
+those methods and how they work.</p>
+      <p>Like the PhyStats above, those objects listed as able to
 modify the PhyStats current state object are the same objects which are
 able to modify the CharStats state objects. Rereading the section on
 PhyStats will make clear how the CharStats objects are modified in the
 same analogous manner, using repeated calls to<code>
 affectCharStats(MOB affected, CharStats affectedStats)</code> methods
-on related objects.</a></p>
-<a name="charstats" id="charstats">      </a><p><a name="charstate" id="charstate"> The last state object
+on related objects.</p>
+      <p><a name="charstate" id="charstate"> The last state object
 to consider is the Common.interfaces.CharState objects on MOBs. The
 CharState object represents those fields which are constantly in flux:
 Hit Points, Mana, Movement, Hunger, Fatigue, and Thirst.</a></p>
-<a name="charstate" id="charstate">      </a><p><a name="charstate" id="charstate">Unlike PhyStats and CharStats, there are three CharState
+      <p>Unlike PhyStats and CharStats, there are three CharState
 objects to consider for MOBs: the base CharState object (available
 through <code>CharState baseState()</code> method, the adjusted base
 CharState (or max state) object available through the <code>CharState
@@ -1303,22 +1303,22 @@ maxState()</code> method and modified by <code>recoverMaxState(MOB
 affected, CharState affectedState)</code> methods on related objects,
 and lastly the current CharState object available through the <code>CharState
 curState()</code> and refreshed or reset to maximums using the MOBs <code>resetToMaxState()</code>
-method.</a></p>
-<a name="charstate" id="charstate">      </a><p><a name="charstate" id="charstate">The relationship between the above objects is as follows: The
+method.</p>
+      <p>The relationship between the above objects is as follows: The
 base CharState object represents the maximum values for the state
 variables BEFORE modification by magical armor or spells. The adjusted
 base CharState object (Max State) represents the maximum values for the
 state variables AFTER modification by magical armor or spells. The
 current CharState object (curState) represents the current hit points,
-mana points, etc available to the MOB.</a></p>
-<a name="charstate" id="charstate">      </a><p><a name="charstate" id="charstate">In the case of the CharState objects, adjustment by relevant
+mana points, etc available to the MOB.</p>
+      <p>In the case of the CharState objects, adjustment by relevant
 objects is initiated by calling the MOBs <code>recoverMaxState()</code>
 method. This method allows the same objects who modify the PhyStats and
-CharStats above to modify the maximum CharState values as well.</a></p>
-<a name="charstate" id="charstate">      </a><p><a name="charstate" id="charstate">Once again, to understand one of them fully is to understand
-them all.</a></p>
-<a name="charstate" id="charstate">      <img src="images/time.jpg" alt="Tick Tock" />
-      </a><h3><a name="DIG3" id="DIG3">Core Topic 3: Tick Tock</a></h3>
+CharStats above to modify the maximum CharState values as well.</p>
+      <p>Once again, to understand one of them fully is to understand
+them all.</p>
+      <img src="images/time.jpg" alt="Tick Tock" />
+      <h3><a name="DIG3" id="DIG3">Core Topic 3: Tick Tock</a></h3>
       <p>Our last Core Topic will cover the ability of the mobs, items,
 exits, abilities, spell effects, behaviors, and other objects to
 perform tasks on a regular, timed, basis. The tasks to be performed are
@@ -1379,21 +1379,21 @@ and spell effects to perform tasks. The other objects have
 circumstantial ticks in certain instances.</p>
       <p>Now, to add a new periodic call to the "tick" method on an
 Environmental object, one needs only to make a method call like this:</p>
-      <pre>CMClass.threads().startTickDown(theEnvObject,Tickable.MY_TICK_ID,TIME_TICK,NUM_TICKS);<br /></pre>
+      <pre>CMClass.threads().startTickDown(theEnvObject,Tickable.MY_TICK_ID,CMProps.getTickMillis(),NUM_TICKS);<br /></pre>
       <p>The second parameter is the tickID which will be used when the
       <code>tick()</code>
 method on the "theEnvObject" object is called. The third parameter is
 the time interval, in milliseconds, between each event. The fourth
 parameter is the number of time intervals between each call to the <code>tick()</code>
 method. The total time between each call to the <code>tick()</code>
-method, therefore, will be TIME_TICK * NUM_TICKS.</p>
+method, therefore, will be&nbsp;&nbsp;CMProps.getTickMillis() * NUM_TICKS.</p>
       <p>Now, the above version of <code>startTickDown()</code> can be
 used to create timed events of any duration. However, all objects in
 the base distribution of CoffeeMud operate on a single default time
-interval of 4000 milliseconds as defined by CMProps.getTickMillis(). For
+interval, usually of 4000 milliseconds, as defined by CMProps.getTickMillis() and ultimately from the coffeemud.ini file. For
 this reason, a different version of the <code>startTickDown()</code>
 method is called which does not include the TIME_TICK parameter,
-utilizing the standard 4 second delay instead:</p>
+utilizing the standard delay instead:</p>
       <pre>CMClass.ThreadEngine().startTickDown(theEnvObject,Host.MY_TICK_ID,NUM_TICKS);<br /></pre>
       <p>Stopping any of these tick calls can be done by simply
 returning "false" from the tick method itself, or manually using the
@@ -1476,14 +1476,14 @@ StringBuffers keyed by String names.</td>
           </tr>
         </tbody>
       </table>
-<a name="corepurpose" id="corepurpose">      </a><p><a name="corepurpose" id="corepurpose">You should check out the javadocs for those classes for more
-information on the core classes.</a></p>
-<a name="corepurpose" id="corepurpose">      </a><p><a name="corepurpose" id="corepurpose">* CMLib also refers to some of the sub-core classes, such as
+      <p>You should check out the javadocs for those classes for more
+information on the core classes.</p>
+      <p>* CMLib also refers to some of the sub-core classes, such as
 the Database access objects, and the Threading engine. While they are
 considered core, they are accessed through CMLib as if they were
 non-core libraries. Most core classes can also be accessed through
-CMLib methods, making it a one-stop shop.</a></p>
-<a name="corepurpose" id="corepurpose">      </a><p><a name="corepurpose" id="corepurpose">Now, non-core libraries, or Libraries proper, are located in
+CMLib methods, making it a one-stop shop.</p>
+      <p>Now, non-core libraries, or Libraries proper, are located in
 the com.planet_ink.coffee_mud.Libraries package, and each one
 implements a unique interface from the
 com.planet_ink.coffee_mud.Libraries.interfaces package. This is unique,
@@ -1491,10 +1491,10 @@ that each class in the Libraries package implements a unique interface
 all its own, but that is not the only unique thing about this package.
 Libraries are also singletons -- there is never more than 1 instance of
 each Library. Moreover, these singletons are all accessed from a single
-accessor class, CMLib, which we mentioned earlier.</a></p>
-<a name="corepurpose" id="corepurpose">      </a><p><a name="corepurpose" id="corepurpose">Here is a map of how the classes, interfaces, and CMLib
-methods are all mapped together:</a></p>
-<a name="corepurpose" id="corepurpose">      </a><a name="corelibrarymap" id="corelibrarymap">
+accessor class, CMLib, which we mentioned earlier.</p>
+      <p>Here is a map of how the classes, interfaces, and CMLib
+methods are all mapped together:</p>
+      <a name="corelibrarymap" id="corelibrarymap">
       </a><table bgcolor="#99ff99" border="1">
         <thead> <tr>
           <th>Library class name <code>...Libraries.*</code> </th>
@@ -1776,7 +1776,7 @@ methods are all mapped together:</a></p>
           </tr>
         </tbody>
       </table>
-<a name="corelibrarymap" id="corelibrarymap">      </a><p><a name="corelibrarymap" id="corelibrarymap">Libraries are lastly unique in that it is almost useless to
+      <p>Libraries are lastly unique in that it is almost useless to
 write new ones, unless you are doing the most serious additions and
 enhancements to your system. However, they are designed especially so
 they they can be extended and overridden. They have their own entry in
@@ -1786,8 +1786,8 @@ can make changes to the most basic CoffeeMud algorithms, even at
 run-time! Libraries also have an entry in the coffeemud.ini file,
 LIBRARY, so that you can specify your custom extended versions of them
 after the %DEFAULT% string, thus allowing your changes to be loaded at
-boot-time.</a></p>
-<a name="corelibrarymap" id="corelibrarymap">      </a><p><a name="corelibrarymap" id="corelibrarymap">The last set of classes to discuss under this topic are
+boot-time.</p>
+      <p>The last set of classes to discuss under this topic are
 neither Core class or Libraries, but form parts of the cores of other
 classes, including many of the Libraries. These are the Common classes.
 They are part of the com.planet_ink.coffee_mud.Common package. Like the
@@ -1797,8 +1797,8 @@ the Libraries, numerous instances of each class will exist in your mud,
 and they are created from the core CMClass loader, much like MOBs,
 Items, Rooms, and so forth. The javadocs are also a good place to learn
 about these classes, but here is a brief list of them to wrap up our
-last Core Topic.</a></p>
-<a name="corelibrarymap" id="corelibrarymap">      </a><a name="corecommon" id="corecommon">
+last Core Topic.</p>
+      <a name="corecommon" id="corecommon">
       </a><table bgcolor="#ccccff" border="1">
         <thead> <tr>
           <th>Common Class</th>
@@ -1900,10 +1900,12 @@ spans areas, possibly the whole world.</td>
           </tr>
         </tbody>
       </table>
-<a name="corecommon" id="corecommon">      <br />
       <br />
+
+      <br />
+
       <img src="images/pencil.jpg" alt="commands" />
-      </a><h2><a name="CMDS" id="CMDS">Commands</a></h2>
+      <h2><a name="CMDS" id="CMDS">Commands</a></h2>
       <p>Commands are exactly what they sound like: LOOK, QUIT, KILL,
 GET, and all the other things you type into the mud are handled by
 CoffeeMud Commands.</p>
@@ -1913,7 +1915,7 @@ of the Command be unique in the system. A custom Command imports the
 same packages mentioned in the first section of this document under
 Complete Default Import List as well as
 com.planet_ink.coffee_mud.Commands.StdCommand.</p>
-      <pre>public class DoNothing extends com.planet_ink.coffee_mud.Commands.StdCommand<br />{<br />  public DoNothing(){}<br /><br />  private String[] access={ "DONOTHING" };<br />  public String[] getAccessWords(){ return access; }<br /></pre>
+      <pre>public class DoNothing extends com.planet_ink.coffee_mud.Commands.StdCommand<br />{<br />  public DoNothing(){}<br /><br />  private final String[] access={ "DONOTHING" };<br />  public String[] getAccessWords(){ return access; }<br /></pre>
       <p>All Commands should extend StdCommand for conformity's sake,
 though it is not required so long as your class implements the
 com.planet_ink.coffee_mud.core.interfaces.Command interface. In our
@@ -1925,12 +1927,12 @@ array containing one such access word in this case, and then define our
 Command interface method getAccessWords() to return that array. Our
 String array may contain as many strings as you would need to provide
 sufficient words to activate this command.</p>
-      <pre>public double actionsCost(MOB mob, Vector cmds){ return 1.0; }<br />public double combatActionsCost(MOB mob, Vector cmds){ return 1.0; }<br /><br />public boolean canBeOrdered(){ return true; }<br /></pre>
+      <pre>public double actionsCost(MOB mob, List&lt;String&gt; cmds){ return 1.0; }<br />public double combatActionsCost(MOB mob, List&lt;String&gt; cmds){ return 1.0; }<br /><br />public boolean canBeOrdered(){ return true; }<br /></pre>
       <p>The next two methods, <code>actionsCost()</code> and <code>combatActionsCost()</code>,
 designate how LONG it takes to execute this command. A value of 0 means
 that the command always happens instantly. A value greater than 0 will
 always take that many free actions to complete. A standard player may
-perform 1 action in a given 4 second period, or 2 actions during combat
+perform 1 action in a given Tick ( 4 second period), or 2 actions during combat
 in the default combat system -- they retain their 1 action per tick in
 other combat systems). Action costs may be partial as well, costing 0.5
 (1/2 action) or other values.</p>
@@ -1946,7 +1948,7 @@ method returns false, the command and its access words will behave as
 if they do not even exist, returning "Huh?" should a player attempt to
 use it. Returning true, however, means only that the execute method
 below may be accessed. Any further security would have to be
-implemented there.</p>
+implemented during execution of the command.</p>
       <p>In the above example, we call the <code>isAllowed()</code>
 method in CMSecurity with the mob reference, the room in which the mob
 is located, and the security code "IMMORT". This asks the Security
@@ -2070,7 +2072,7 @@ weaponsmiths, and others.</p>
       <pre>    setRideBasis( Rideable.RIDEABLE_LAND );<br />    setMobCapacity( 2 );<br /></pre>
       <p>The last thing is to give the MOB equipment, armor, and
 weapons. The following commands will do the trick!</p>
-      <pre>    Weapon sword = (Weapon)CMClass.getWeapon( "Longsword" );<br />    addInventory( sword );<br />    sword.wearIfPossible( this );<br /><br />    Armor mail = (Armor)CMClass.getArmor( "FullPlate" );<br />    addInventory( mail );<br />    mail.wearIfPossible( this );<br /><br />    Item sack = (Item)CMClass.getItem( "StdContainer" );<br />    addInventory( sack );<br /><br />    Item waterskin = (Item)CMClass.getItem( "Waterskin" );<br />    addInventory( waterskin );<br />    waterskin.setContainer( sack );<br /></pre>
+      <pre>    Weapon sword = (Weapon)CMClass.getWeapon( "Longsword" );<br />    addItem( sword );<br />    sword.wearIfPossible( this );<br /><br />    Armor mail = (Armor)CMClass.getArmor( "FullPlate" );<br />    addItem( mail );<br />    mail.wearIfPossible( this );<br /><br />    Item sack = (Item)CMClass.getItem( "StdContainer" );<br />    addItem( sack );<br /><br />    Item waterskin = (Item)CMClass.getItem( "Waterskin" );<br />    addItem( waterskin );<br />    waterskin.setContainer( sack );<br /></pre>
       <p>And that's all there is to creating a new standard MOB. Easy,
 huh? Well, obviously, the real complexity of MOBs comes when the
 Behaviors and Abilities are programmed, but that is not covered here,
@@ -2279,7 +2281,7 @@ not actually activated until the room item rejuvs are set. This is done
 with the last method call to <code>startItemRejuv()</code>, which
 handles the rejuv resets on all items in the room.</p>
       <p>In the previous section, we saw how items are given to mobs by
-simply calling the <code>addInventory()</code>
+simply calling the <code>addItem()</code>
 method, so this will not be repeated. Regardless of where or how the
 item is created, however, it is destroyed the same way. With a simple
 call to the <code>destroy()</code> method on the item. Here is an
@@ -2353,7 +2355,7 @@ is alive, awake, and mobile. The second method (<code>canFreelyBehaveNormal()</c
 returns true if the mob is not currently in combat, not charmed or
 following anyone, and is not severely injured. We want our ravenous mob
 to follow this behavior only in the best of health and mood.</p>
-      <pre>    Item eatible = null;<br />    for( int i = 0; i &lt; mob.inventorySize(); i++ )<br />    {<br />      Item I = mob.fetchInventory( i );<br />      if( ( I != null ) &amp;&amp; ( I instanceof Food ) )<br />      {<br />        eatible=I;<br />      }<br />    }<br /></pre>
+      <pre>    Item eatible = null;<br />    for( int i = 0; i &lt; mob.numItems(); i++ )<br />    {<br />      Item I = mob.getItem( i );<br />      if( ( I != null ) &amp;&amp; ( I instanceof Food ) )<br />      {<br />        eatible=I;<br />      }<br />    }<br /></pre>
       <p>Next, we iterate through the mob's inventory to find the last
 instance of a piece of food.</p>
       <pre>    if( eatible != null)<br />    {<br />      room.show( mob, eatible, null, "&lt;S-NAME&gt; gobble(s) up &lt;T-NAMESELF&gt;." );<br />      return true;<br />    }<br /></pre>
@@ -2366,7 +2368,7 @@ NOT have food, therefore, is just as important.</p>
 source of food, we will pick a random inhabitant of the room, which is
 not ourselves, 25% of the time. Otherwise, we just return true, and try
 again on the next tick.</p>
-      <pre>    int randItem = CMLib.dice().roll( 1, mobToHitUp.inventorySize(), -1 );<br />    Item I = mobToHitUp.fetchInventory( randItem );<br />    if( ( I != null ) &amp;&amp; ( I instanceof Food ) )<br />    {<br />      eatible = I;<br />    }<br /><br />    if( eatible == null )<br />    {<br />      return true;<br />    }<br />   <br /></pre>
+      <pre>    int randItem = CMLib.dice().roll( 1, mobToHitUp.numItems(), -1 );<br />    Item I = mobToHitUp.getItem( randItem );<br />    if( ( I != null ) &amp;&amp; ( I instanceof Food ) )<br />    {<br />      eatible = I;<br />    }<br /><br />    if( eatible == null )<br />    {<br />      return true;<br />    }<br />   <br /></pre>
       <p>Next we will pick a random piece of inventory from that mob,
 and see if it is food. If not, we return true and try again on the next
 tick.</p>
