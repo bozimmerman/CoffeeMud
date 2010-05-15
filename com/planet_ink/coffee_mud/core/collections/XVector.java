@@ -29,12 +29,14 @@ public class XVector<T> extends Vector<T>
 	
 	public XVector(List<T> V)
 	{
+		super();
 		if(V!=null)
 			addAll(V);
 	}
 	
 	public XVector(T... E)
 	{
+		super();
 		if(E!=null)
 			for(T o : E)
 				add(o);
@@ -42,6 +44,7 @@ public class XVector<T> extends Vector<T>
 	
 	public XVector(Set<T> E)
 	{
+		super();
 		if(E!=null)
 			for(T o : E)
 				add(o);
@@ -49,6 +52,7 @@ public class XVector<T> extends Vector<T>
 	
 	public XVector(Enumeration<T> E)
 	{
+		super();
 		if(E!=null)
 			for(;E.hasMoreElements();)
 				add(E.nextElement());
@@ -56,6 +60,7 @@ public class XVector<T> extends Vector<T>
 	
 	public XVector(Iterator<T> E)
 	{
+		super();
 		if(E!=null)
 			for(;E.hasNext();)
 				add(E.next());

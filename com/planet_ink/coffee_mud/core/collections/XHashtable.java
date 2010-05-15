@@ -27,8 +27,14 @@ public class XHashtable<K,V> extends Hashtable<K,V>
 {
 	private static final long serialVersionUID = 6687178785122563992L;
 	
+	public XHashtable()
+	{
+		super();
+	}
+	
 	public XHashtable(Map<K,V> V)
 	{
+		super();
 		if(V!=null)
 			putAll(V);
 	}

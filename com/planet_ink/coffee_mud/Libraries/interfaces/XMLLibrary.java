@@ -1,20 +1,9 @@
 package com.planet_ink.coffee_mud.Libraries.interfaces;
-import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.*;
-import com.planet_ink.coffee_mud.core.collections.*;
-import com.planet_ink.coffee_mud.Abilities.interfaces.*;
-import com.planet_ink.coffee_mud.Areas.interfaces.*;
-import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
-import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
-import com.planet_ink.coffee_mud.Commands.interfaces.*;
-import com.planet_ink.coffee_mud.Common.interfaces.*;
-import com.planet_ink.coffee_mud.Exits.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.Locales.interfaces.*;
-import com.planet_ink.coffee_mud.MOBS.interfaces.*;
-import com.planet_ink.coffee_mud.Races.interfaces.*;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import com.planet_ink.coffee_mud.core.collections.XHashtable;
+import com.planet_ink.coffee_mud.core.collections.XVector;
+
 /* 
    Copyright 2000-2010 Bo Zimmerman
 
@@ -30,7 +19,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public interface XMLLibrary extends CMLibrary
 {
     public final static String HEX_DIGITS="0123456789ABCDEF";
@@ -276,8 +264,8 @@ public interface XMLLibrary extends CMLibrary
     {
         public String tag="";
         public String value="";
-        public List<XMLpiece> contents=new Vector<XMLpiece>();
-        public Hashtable<String,String> parms=new Hashtable<String,String>();
+        public List<XMLpiece> contents=new XVector<XMLpiece>();
+        public Map<String,String> parms=new XHashtable<String,String>();
         public XMLpiece parent=null;
         public int outerStart=-1;
         public int innerStart=-1;
@@ -288,7 +276,7 @@ public interface XMLLibrary extends CMLibrary
         	try {
         		XMLpiece piece2=(XMLpiece)this.clone();
         		piece2.contents=new XVector<XMLpiece>(contents);
-        		piece2.parms=(Hashtable<String,String>)parms.clone();
+        		piece2.parms=new XHashtable<String,String>(parms);
         		return piece2;
         	} catch(Exception e) {
         		return this;
@@ -298,7 +286,7 @@ public interface XMLLibrary extends CMLibrary
         public void addContent(XMLpiece x)
         {
             if (x == null) return;
-            if (contents == null) contents = new Vector<XMLpiece>();
+            if (contents == null) contents = new XVector<XMLpiece>();
             x.parent=this;
             contents.add(x);
         }
