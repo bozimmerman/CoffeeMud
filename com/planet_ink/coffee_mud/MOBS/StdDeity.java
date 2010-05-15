@@ -69,7 +69,7 @@ public class StdDeity extends StdMOB implements Deity
     protected Map<String,boolean[]> trigServiceParts=new SHashtable();
     protected Map<String,Long> 		trigServiceTimes=new SHashtable();
     protected List<WorshipService> 	services=new SVector<WorshipService>();
-    protected Vector waitingFor=new Vector();
+    protected List<MOB> 			waitingFor=new SLinkedList();
 
 	public StdDeity()
 	{
@@ -721,11 +721,11 @@ public class StdDeity extends StdMOB implements Deity
                                 if(System.currentTimeMillis()>(((Long)trigTimes.get(msg.source().Name())).longValue()+(CMath.s_int(DT.parm1)*CMProps.getTickMillis())))
                                 {
                                    yup=true;
-                                   waitingFor.removeElement(msg.source());
+                                   waitingFor.remove(msg.source());
                                 }
                                 else
                                 {
-                                    waitingFor.addElement(msg.source());
+                                    waitingFor.add(msg.source());
                                     return false;
                                 }
                             }
@@ -1286,15 +1286,13 @@ public class StdDeity extends StdMOB implements Deity
                 }
             }
 		}
-        for(int w=waitingFor.size();w>=0;w--)
+        for(MOB M : waitingFor)
         {
             try{
-                MOB M=(MOB)waitingFor.elementAt(w);
-                waitingFor.removeElement(M);
+            	waitingFor.remove(M);
                 executeMsg(this,CMClass.getMsg(M,null,null,CMMsg.MSG_OK_VISUAL,null));
             }catch(Exception e){}
         }
-        waitingFor.trimToSize();
 		return true;
 	}
 
