@@ -60,15 +60,15 @@ public class StdDeity extends StdMOB implements Deity
 	protected List<DeityPower> 	 	blessings=new SVector<DeityPower>();
 	protected List<DeityPower>	 	curses=new SVector<DeityPower>();
 	protected List<Ability> 	 	powers=new SVector<Ability>();
-	protected Map<String,boolean[]> trigBlessingParts=new Hashtable();
-	protected Map<String,Long> 		trigBlessingTimes=new Hashtable();
-	protected Map<String,boolean[]> trigPowerParts=new Hashtable();
-	protected Map<String,Long> 		trigPowerTimes=new Hashtable();
-	protected Map<String,boolean[]> trigCurseParts=new Hashtable();
-	protected Map<String,Long> 		trigCurseTimes=new Hashtable();
-    protected Map<String,boolean[]> trigServiceParts=new Hashtable();
-    protected Map<String,Long> 		trigServiceTimes=new Hashtable();
-    protected List<WorshipService> 	services=new Vector<WorshipService>();
+	protected Map<String,boolean[]> trigBlessingParts=new SHashtable();
+	protected Map<String,Long> 		trigBlessingTimes=new SHashtable();
+	protected Map<String,boolean[]> trigPowerParts=new SHashtable();
+	protected Map<String,Long> 		trigPowerTimes=new SHashtable();
+	protected Map<String,boolean[]> trigCurseParts=new SHashtable();
+	protected Map<String,Long> 		trigCurseTimes=new SHashtable();
+    protected Map<String,boolean[]> trigServiceParts=new SHashtable();
+    protected Map<String,Long> 		trigServiceTimes=new SHashtable();
+    protected List<WorshipService> 	services=new SVector<WorshipService>();
     protected Vector waitingFor=new Vector();
 
 	public StdDeity()
