@@ -606,6 +606,7 @@ public class ServiceEngine implements ThreadEngine
 			{
 				CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...shutting down Service Engine: killing Tick#" + tock.getCounter()+": "+tock.getStatus());
 				tock.shutdown();
+				ticks.remove(tock);
 			}
 			try{Thread.sleep(100);}catch(Exception e){}
 			which++;
