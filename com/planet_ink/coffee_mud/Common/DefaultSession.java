@@ -72,6 +72,7 @@ public class DefaultSession extends Thread implements Session
     private long lastStart=System.currentTimeMillis();
     private long lastStop=System.currentTimeMillis();
     private long lastLoopTop=System.currentTimeMillis();
+    private long userLoginTime=System.currentTimeMillis();
     private long onlineTime=System.currentTimeMillis();
     private long lastPKFight=0;
     private long lastNPCFight=0;
@@ -1378,7 +1379,7 @@ public class DefaultSession extends Thread implements Session
         LT.start();
 		if(M.playerStats()!=null)
 			M.playerStats().setLastDateTime(System.currentTimeMillis());
-		Log.sysOut("Session","Logout: "+name);
+		Log.sysOut("Session","Logout: "+name+" ("+CMLib.time().date2ShortEllapsedTime(System.currentTimeMillis()-userLoginTime)+")");
 		if(inTheGame)
 			CMLib.database().DBUpdateFollowers(M);
 	}
@@ -1448,6 +1449,7 @@ public class DefaultSession extends Thread implements Session
 							acct=mob.playerStats().getAccount();
 						if((!killFlag)&&(mob!=null))
 	                    {
+							userLoginTime=System.currentTimeMillis();
 						    StringBuffer loginMsg=new StringBuffer("");
 						    loginMsg.append(getAddress())
 						            .append(" "+terminalType)
@@ -1632,7 +1634,7 @@ public class DefaultSession extends Thread implements Session
 		if(mob!=null) mob.removeFromGame(true,true);
 		if(mob!=null) mob.setSession(null);
 		mob=null;
-		Log.sysOut("Session","Logout: "+getAddress());
+		Log.sysOut("Session","Disconnect: "+getAddress()+" ("+CMLib.time().date2ShortEllapsedTime(getMillisOnline())+")");
 
 		status=Session.STATUS_LOGOUT4;
 		killFlag=true;

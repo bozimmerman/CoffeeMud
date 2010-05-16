@@ -473,6 +473,106 @@ public class CoffeeTime extends StdLibrary implements TimeManager
         return date2String(C);
     }
 
+    public String date2LongEllapsedTime(long time)
+    {
+    	StringBuilder str=new StringBuilder("");
+    	if(time > (TimeManager.MILI_YEAR))
+    	{
+    		int num=(int)Math.round(CMath.div(time,TimeManager.MILI_YEAR));
+    		time = time % TimeManager.MILI_YEAR;
+    		str.append(num+" year(s), ");
+    	}
+    	if(time > (TimeManager.MILI_MONTH))
+    	{
+    		int num=(int)Math.round(CMath.div(time,TimeManager.MILI_MONTH));
+    		time = time % TimeManager.MILI_MONTH;
+    		str.append(num+" month(s), ");
+    	}
+    	if(time > (TimeManager.MILI_WEEK))
+    	{
+    		int num=(int)Math.round(CMath.div(time,TimeManager.MILI_WEEK));
+    		time = time % TimeManager.MILI_WEEK;
+    		str.append(num+" week(s), ");
+    	}
+    	if(time > (TimeManager.MILI_DAY))
+    	{
+    		int num=(int)Math.round(CMath.div(time,TimeManager.MILI_DAY));
+    		time = time % TimeManager.MILI_DAY;
+    		str.append(num+" day(s), ");
+    	}
+    	if(time > (TimeManager.MILI_HOUR))
+    	{
+    		int num=(int)Math.round(CMath.div(time,TimeManager.MILI_HOUR));
+    		time = time % TimeManager.MILI_HOUR;
+    		str.append(num+" hour(s), ");
+    	}
+    	if(time > (TimeManager.MILI_MINUTE))
+    	{
+    		int num=(int)Math.round(CMath.div(time,TimeManager.MILI_MINUTE));
+    		time = time % TimeManager.MILI_MINUTE;
+    		str.append(num+" minute(s), ");
+    	}
+    	if(time > (TimeManager.MILI_SECOND))
+    	{
+    		int num=(int)Math.round(CMath.div(time,TimeManager.MILI_SECOND));
+    		time = time % TimeManager.MILI_SECOND;
+    		str.append(num+" seconds(s), ");
+    	}
+    	if(str.length()>0)
+    		return str.substring(0,str.length()-2);
+    	return time+" milliseconds";
+    }
+    
+    public String date2ShortEllapsedTime(long time)
+    {
+    	StringBuilder str=new StringBuilder("");
+    	if(time > (TimeManager.MILI_YEAR))
+    	{
+    		int num=(int)Math.round(CMath.div(time,TimeManager.MILI_YEAR));
+    		time = time % TimeManager.MILI_YEAR;
+    		str.append(num+"y ");
+    	}
+    	if(time > (TimeManager.MILI_MONTH))
+    	{
+    		int num=(int)Math.round(CMath.div(time,TimeManager.MILI_MONTH));
+    		time = time % TimeManager.MILI_MONTH;
+    		str.append(num+"M ");
+    	}
+    	if(time > (TimeManager.MILI_WEEK))
+    	{
+    		int num=(int)Math.round(CMath.div(time,TimeManager.MILI_WEEK));
+    		time = time % TimeManager.MILI_WEEK;
+    		str.append(num+"w ");
+    	}
+    	if(time > (TimeManager.MILI_DAY))
+    	{
+    		int num=(int)Math.round(CMath.div(time,TimeManager.MILI_DAY));
+    		time = time % TimeManager.MILI_DAY;
+    		str.append(num+"d ");
+    	}
+    	if(time > (TimeManager.MILI_HOUR))
+    	{
+    		int num=(int)Math.round(CMath.div(time,TimeManager.MILI_HOUR));
+    		time = time % TimeManager.MILI_HOUR;
+    		str.append(num+"h ");
+    	}
+    	if(time > (TimeManager.MILI_MINUTE))
+    	{
+    		int num=(int)Math.round(CMath.div(time,TimeManager.MILI_MINUTE));
+    		time = time % TimeManager.MILI_MINUTE;
+    		str.append(num+"m ");
+    	}
+    	if(time > (TimeManager.MILI_SECOND))
+    	{
+    		int num=(int)Math.round(CMath.div(time,TimeManager.MILI_SECOND));
+    		time = time % TimeManager.MILI_SECOND;
+    		str.append(num+"s ");
+    	}
+    	if(str.length()>0)
+    		return str.substring(0,str.length()-1);
+    	return time+"ms";
+    }
+    
     public String date2SecondsString(long time)
     {
         Calendar C=makeCalendar(time);

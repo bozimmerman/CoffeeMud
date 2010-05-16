@@ -233,6 +233,26 @@ public interface TimeManager extends CMLibrary
      */
     public String date2String(long time);
     /**
+     * Converts a given number of milliseconds,
+     * into a number of rl years, months, days,
+     * hours, minutes, and seconds.
+     * 
+     * <br><br><b>Usage:</b> date2LongEllapsedTime(time)
+     * @param time The time in miliseconds
+     * @return String Formatted ellapsed time
+     */
+    public String date2LongEllapsedTime(long time);
+    /**
+     * Converts a given number of ms,
+     * into a number of rl y, m, d,
+     * h, m, and s.
+     * 
+     * <br><br><b>Usage:</b> date2LongEllapsedTime(time)
+     * @param time The time in miliseconds
+     * @return String Formatted ellapsed time
+     */
+    public String date2ShortEllapsedTime(long time);
+    /**
      * Converts a given date into a string of form:
      * MM/DD/YYYY HH:MM AP
      * 
