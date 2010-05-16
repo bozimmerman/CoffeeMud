@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 
 /*
    Copyright 2000-2010 Bo Zimmerman
@@ -42,9 +43,14 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
     protected final static int LOOK_LONG=0;
     protected final static int LOOK_NORMAL=1;
     protected final static int LOOK_BRIEFOK=2;
+
+    // this needs to be global to work right
+    protected final List<WeakReference<MsgMonitor>>
+			globalMonitors = new SLinkedList<WeakReference<MsgMonitor>>();
+    
     protected String unknownCommand(){return "Huh?";}
     protected String unknownInvoke(){return "You don't know how to @x1 that.";}
-
+    
 	public boolean handleUnknownCommand(MOB mob, List<String> command)
 	{
 		if(mob==null) return false;
@@ -78,6 +84,38 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		return false;
 	}
 
+    public void monitorGlobalMessage(CMMsg msg)
+    {
+    	MsgMonitor M;
+    	for(WeakReference<MsgMonitor> W : globalMonitors)
+    	{
+    		M=W.get();
+    		if(M != null)
+    			M.monitorMsg(msg);
+    		else
+    			globalMonitors.remove(M);
+    	}
+    }
+    
+    public void addGlobalMonitor(MsgMonitor M)
+    {
+        if(M==null) 
+        	return;
+    	for(WeakReference<MsgMonitor> W : globalMonitors)
+    		if(W.get()==M)
+    			return;
+    	globalMonitors.add(new WeakReference(M));
+    }
+    
+    public void delGlobalMonitor(MsgMonitor M)
+    {
+        if(M==null) 
+        	return;
+    	for(WeakReference<MsgMonitor> W : globalMonitors)
+    		if(W.get()==M)
+    			globalMonitors.remove(W);
+    }
+    
 	public StringBuilder getScore(MOB mob)
 	{
 		Vector V=new Vector();

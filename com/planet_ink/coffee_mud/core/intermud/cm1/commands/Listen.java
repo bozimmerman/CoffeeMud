@@ -86,6 +86,10 @@ public class Listen extends CM1Command
 	public boolean passesSecurityCheck(MOB user, PhysicalAgent target){return true;}
 	public String getHelp(MOB user)
 	{
-		return "USAGE: LISTEN <CHANNELNAME> <NAME>, <NAME>@<LOCATION>, @<LOCATION>, <CHANNEL>";
+		return "USAGE: LISTEN CHANNEL <NAME>, "
+				+"SOURCEOBJECT <TARGET>, SOURCECODE <CODE>, SOURCETEXT <TEXT>, "
+				+"TARGETOBJECT <TARGET>, TARGETCODE <CODE>, TARGETTEXT <TEXT>, "
+				+"TOOLOBJECT <TARGET>, TOOLCODE <CODE>, TOOLTEXT <TEXT>, "
+				+"@ROOM <TARGET>, @TARGET, + <OTHERS>, - <OTHERS>";
 	}
 }

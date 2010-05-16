@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Modifier;
 import java.net.URL;
 
@@ -114,9 +115,10 @@ public class CMClass extends ClassLoader
     protected static final long[] OBJECT_CREATIONS=new long[OBJECT_TOTAL];
     protected static final long[] OBJECT_DESTRUCTIONS=new long[OBJECT_TOTAL];
     
-    protected static final WeakHashMap<CMObject,Object>[] OBJECT_CACHE=new WeakHashMap[OBJECT_TOTAL];
-    protected static final Vector<CMMsg> MSGS_CACHE=new Vector<CMMsg>();
+    protected static final Map<CMObject,Object>[] OBJECT_CACHE=new WeakHashMap[OBJECT_TOTAL];
+    protected static final List<CMMsg> MSGS_CACHE=new Vector<CMMsg>();
     protected static final boolean KEEP_OBJECT_CACHE=false;
+    
     static
     { 
     	if(KEEP_OBJECT_CACHE) 
@@ -878,7 +880,7 @@ public class CMClass extends ClassLoader
         {
             if(MSGS_CACHE.size()<10000)
             {
-                MSGS_CACHE.addElement(msg);
+                MSGS_CACHE.add(msg);
                 return true;
             }
         }
@@ -934,11 +936,11 @@ public class CMClass extends ClassLoader
                 if(MSGS_CACHE.size()==0)
                 {
                     msg=(CMMsg)getCommon("DefaultMessage");
-                    MSGS_CACHE.addElement(msg);
+                    MSGS_CACHE.add(msg);
                 }
             }
-            msg=(CMMsg)MSGS_CACHE.firstElement();
-            MSGS_CACHE.removeElementAt(0);
+            msg=MSGS_CACHE.get(0);
+            MSGS_CACHE.remove(0);
         }
         return msg;
     }

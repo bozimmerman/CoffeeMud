@@ -49,12 +49,10 @@ public class CMMap extends StdLibrary implements WorldMap
 	public List<SpaceObject>space			 = new SVector<SpaceObject>();
 	
     public Map<Integer,List<WeakReference<MsgListener>>> 
-    							globalHandlers	 = new SHashtable<Integer,List<WeakReference<MsgListener>>>();
-    public List<WeakReference<MsgListener>>
-    							globalMonitors	 = new SLinkedList<WeakReference<MsgListener>>();
+    						globalHandlers	 = new SHashtable<Integer,List<WeakReference<MsgListener>>>();
 	public Map<String,SLinkedList<LocatedPair>>
-								scriptHostMap	 = new STreeMap<String,SLinkedList<LocatedPair>>();
-	
+							scriptHostMap	 = new STreeMap<String,SLinkedList<LocatedPair>>();
+    
     private ThreadEngine.SupportThread  thread	 = null;
     public ThreadEngine.SupportThread getSupportThread() { return thread;}
     
@@ -195,14 +193,13 @@ public class CMMap extends StdLibrary implements WorldMap
         	return;
         synchronized(V)
         {
-        	WeakReference<MsgListener> foundW=null;
         	for(WeakReference<MsgListener> W : V)
         		if(W.get()==E)
-		        	V.remove(foundW);
+		        	V.remove(W);
         }
     }
-
-    public MOB deity() {
+    public MOB deity() 
+    {
     	if(deities().hasMoreElements())
     		return (MOB)deities().nextElement();
     	if((deityStandIn==null)
