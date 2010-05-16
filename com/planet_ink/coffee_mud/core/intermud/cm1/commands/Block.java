@@ -41,6 +41,10 @@ import java.util.concurrent.atomic.*;
 public class Block extends CM1Command
 {
 	public String getCommandWord(){ return "BLOCK";}
+	public Block(RequestHandler req, String parameters) {
+		super(req, parameters);
+	}
+	
 	public void run()
 	{
 		try

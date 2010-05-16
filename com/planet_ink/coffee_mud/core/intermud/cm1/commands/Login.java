@@ -41,6 +41,10 @@ import java.util.concurrent.atomic.*;
 public class Login extends CM1Command
 {
 	public String getCommandWord(){ return "LOGIN";}
+	public Login(RequestHandler req, String parameters) {
+		super(req, parameters);
+	}
+	
 	public void run()
 	{
 		try

@@ -42,6 +42,41 @@ public class Listen extends CM1Command
 {
 	public String getCommandWord(){ return "LISTEN";}
 	
+	public Listen(RequestHandler req, String parameters) 
+	{
+		super(req, parameters);
+	}
+	
+	protected class Listener implements MsgMonitor
+	{
+		public Listener()
+		{
+		}
+		
+		public boolean doesMonitor(Room room, CMMsg msg)
+		{
+			return true;
+		}
+		
+		public String messageToString(CMMsg msg)
+		{
+			return "Not Yet Implemented";
+		}
+		
+		public void monitorMsg(Room room, CMMsg msg) 
+		{
+			try
+			{
+				if(doesMonitor(room,msg))
+					req.sendMsg("[MESSAGE "+messageToString(msg)+"]");
+			}
+			catch(IOException ioe)
+			{
+				CMLib.commands().delGlobalMonitor(this);
+			}
+		}
+	}
+	
 	protected void ListenTo(Object o)
 	{
 		
@@ -82,11 +117,16 @@ public class Listen extends CM1Command
 			req.close();
 		}
 	}
+	
 	// depends on what you want to listen to
-	public boolean passesSecurityCheck(MOB user, PhysicalAgent target){return true;}
+	public boolean passesSecurityCheck(MOB user, PhysicalAgent target)
+	{
+		return true;
+	}
+	
 	public String getHelp(MOB user)
 	{
-		return "USAGE: LISTEN CHANNEL <NAME>, "
+		return "USAGE: "+getCommandWord()+" CHANNEL <NAME>, "
 				+"SOURCEOBJECT <TARGET>, SOURCECODE <CODE>, SOURCETEXT <TEXT>, "
 				+"TARGETOBJECT <TARGET>, TARGETCODE <CODE>, TARGETTEXT <TEXT>, "
 				+"TOOLOBJECT <TARGET>, TOOLCODE <CODE>, TOOLTEXT <TEXT>, "

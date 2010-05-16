@@ -41,6 +41,10 @@ import java.util.concurrent.atomic.*;
 public class Quit extends CM1Command
 {
 	public String getCommandWord(){ return "QUIT";}
+	public Quit(RequestHandler req, String parameters) {
+		super(req, parameters);
+	}
+
 	public void run()
 	{
 		try

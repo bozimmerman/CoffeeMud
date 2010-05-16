@@ -42,6 +42,9 @@ import java.util.concurrent.atomic.*;
 public class GetMobStat extends CM1Command
 {
 	public String getCommandWord(){ return "GETMOBSTAT";}
+	public GetMobStat(RequestHandler req, String parameters) {
+		super(req, parameters);
+	}
 	
 	protected static final String[] TYPES={"SESSION","MOB","CHAR","STATE","PHYSICAL","BASECHAR","MAXSTATE","BASESTATE","BASEPHYSICAL","PLAYERSTATS"};
 	public Modifiable getModifiable(String type, MOB M)

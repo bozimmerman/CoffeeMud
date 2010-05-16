@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
+import java.lang.reflect.Constructor;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -41,20 +42,34 @@ import java.util.concurrent.atomic.*;
 public abstract class CM1Command implements Runnable, Cloneable
 {
 	protected final String className="CM1"+getClass().getName().substring(getClass().getName().lastIndexOf('.'));
-	protected String parameters;
-	protected RequestHandler req;
+	protected final String parameters;
+	protected final RequestHandler req;
 
-	public CM1Command newInstance(RequestHandler req, String parms)
+	public CM1Command()
+	{ 
+		super(); 
+		req=null; 
+		parameters=""; 
+	}
+	
+	public CM1Command(final RequestHandler req, final String parameters)
+	{
+		super();
+		this.parameters = parameters;
+		this.req=req;
+	}
+	
+	public static CM1Command newInstance(Class<? extends CM1Command> cls, RequestHandler req, String parms)
 	{
 		try
 		{
-			CM1Command C=(CM1Command)clone();
-			C.parameters=parms;
-			C.req=req;
-			return C;
+			if(cls==null)
+				return null;
+			return cls.getConstructor(RequestHandler.class, String.class).newInstance(req,parms);
 		}
 		catch(Exception e)
 		{
+			Log.errOut("CM1Command",e);
 			return null;
 		}
 	}

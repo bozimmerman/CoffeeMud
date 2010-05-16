@@ -42,6 +42,9 @@ import java.util.concurrent.atomic.*;
 public class SetMobStat extends GetMobStat
 {
 	public String getCommandWord(){ return "SETMOBSTAT";}
+	public SetMobStat(RequestHandler req, String parameters) {
+		super(req, parameters);
+	}
 	
 	public void run()
 	{

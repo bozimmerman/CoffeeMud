@@ -38,13 +38,19 @@ import java.util.concurrent.atomic.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class CommandHandler implements Runnable
 {
 	private String cmd;
 	private String rest;
 	private RequestHandler req; 
-	private static final Map<String,CM1Command> commandList=new Hashtable<String,CM1Command>();
-	private static final void AddCommand(CM1Command c) { commandList.put(c.getCommandWord(),c); }
+	private static final Map<String,Class<? extends CM1Command>> commandList=new Hashtable<String,Class<? extends CM1Command>>();
+	private static final void AddCommand(Class<? extends CM1Command> c) throws InstantiationException, IllegalAccessException 
+	{ 
+		CM1Command c1 = CM1Command.newInstance(c,null,"");
+		commandList.put(c1.getCommandWord(),c);
+	}
+	
 	static
 	{
 		String className=CommandHandler.class.getName();
@@ -78,8 +84,7 @@ public class CommandHandler implements Runnable
 						   String name=packageName + F.getName().substring(0,F.getName().length()-6);
 						   try
 						   {
-							   Class<?> c=CMClass.instance().loadClass(name,true);
-							   AddCommand((CM1Command)c.newInstance());
+							   AddCommand((Class<? extends CM1Command>)CMClass.instance().loadClass(name,true));
 						   }
 						   catch(Exception e)
 						   {
@@ -117,7 +122,8 @@ public class CommandHandler implements Runnable
 				{
 					if(rest.length()>0)
 					{
-						CM1Command command = commandList.get(rest.toUpperCase().trim());
+						Class<? extends CM1Command> commandClass = commandList.get(rest.toUpperCase().trim());
+						CM1Command command = CM1Command.newInstance(commandClass, req, rest);
 						if((command == null) || (!command.passesSecurityCheck(req.getUser(), req.getTarget())))
 							req.sendMsg("[FAIL UNKNOWN: "+rest.toUpperCase().trim()+"]");
 						else
@@ -128,7 +134,8 @@ public class CommandHandler implements Runnable
 						StringBuilder str=new StringBuilder("[OK HELP");
 						for(String cmdWord : commandList.keySet())
 						{
-							CM1Command command = commandList.get(cmdWord);
+							Class<? extends CM1Command> commandClass = commandList.get(cmdWord);
+							CM1Command command = CM1Command.newInstance(commandClass, req, "");
 							if(command.passesSecurityCheck(req.getUser(), req.getTarget()))
 								str.append(" "+cmdWord);
 						}
@@ -137,11 +144,12 @@ public class CommandHandler implements Runnable
 					}
 					return;
 				}
-				CM1Command command = commandList.get(cmd.toUpperCase().trim());
+				Class<? extends CM1Command> commandClass = commandList.get(cmd.toUpperCase().trim());
+				CM1Command command = CM1Command.newInstance(commandClass, req, rest);
 				if((command == null) || (!command.passesSecurityCheck(req.getUser(), req.getTarget())))
 					req.sendMsg("[UNKNOWN "+cmd.toUpperCase().trim()+"]");
 				else
-					command.newInstance(req, rest).run();
+					command.run();
 			}
 			catch(java.io.IOException ioe)
 			{

@@ -41,6 +41,10 @@ import java.util.concurrent.atomic.*;
 public class Target extends CM1Command
 {
 	public String getCommandWord(){ return "TARGET";}
+	public Target(RequestHandler req, String parameters) {
+		super(req, parameters);
+	}
+
 	public void run()
 	{
 		try
