@@ -64,7 +64,7 @@ public class MUDInfo extends CM1Command
 			if(parameters.equalsIgnoreCase("NAME"))
 				req.sendMsg("[OK "+CMProps.getVar(CMProps.SYSTEM_MUDNAME)+"]");
 			else
-				req.sendMsg("[FAIL "+getHelp(req.getUser())+"]");
+				req.sendMsg("[FAIL "+getHelp(req.getUser(), null, null)+"]");
 		}
 		catch(java.io.IOException ioe)
 		{
@@ -73,8 +73,8 @@ public class MUDInfo extends CM1Command
 		}
 	}
 	public boolean passesSecurityCheck(MOB user, PhysicalAgent target){return true;}
-	public String getHelp(MOB user)
+	public String getHelp(MOB user, Physical target, String rest)
 	{
-		return "USAGE : MUDINFO STATUS, PORTS, VERSION, DOMAIN, NAME";
+		return "USAGE: MUDINFO STATUS, PORTS, VERSION, DOMAIN, NAME";
 	}
 }

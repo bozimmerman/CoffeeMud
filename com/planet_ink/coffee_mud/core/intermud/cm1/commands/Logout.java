@@ -64,8 +64,8 @@ public class Logout extends CM1Command
 		}
 	}
 	public boolean passesSecurityCheck(MOB user, PhysicalAgent target){return true;}
-	public String getHelp(MOB user)
+	public String getHelp(MOB user, Physical target, String rest)
 	{
-		return "Logs out the current user, but does not disconnect.";
+		return "USAGE: LOGOUT: Logs out the current user, but does not disconnect.";
 	}
 }

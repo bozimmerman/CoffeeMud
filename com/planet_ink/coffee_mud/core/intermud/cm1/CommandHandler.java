@@ -127,7 +127,7 @@ public class CommandHandler implements Runnable
 						if((command == null) || (!command.passesSecurityCheck(req.getUser(), req.getTarget())))
 							req.sendMsg("[FAIL UNKNOWN: "+rest.toUpperCase().trim()+"]");
 						else
-							req.sendMsg("[OK "+command.getCommandWord()+" "+command.getHelp(req.getUser())+"]");
+							req.sendMsg("[OK "+command.getCommandWord()+" "+command.getHelp(req.getUser(), req.getTarget(), rest)+"]");
 					}
 					else
 					{

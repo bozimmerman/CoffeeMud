@@ -125,12 +125,8 @@ public class Listen extends CM1Command
 		return true;
 	}
 	
-	public String getHelp(MOB user)
+	public String getHelp(MOB user, Physical target, String rest)
 	{
-		return "USAGE: "+getCommandWord()+" <"+getCommandWord()+"ER NAME> CHANNEL <NAME>, "
-				+"SOURCEOBJECT <TARGET>, SOURCECODE <CODE>, SOURCETEXT <TEXT>, "
-				+"TARGETOBJECT <TARGET>, TARGETCODE <CODE>, TARGETTEXT <TEXT>, "
-				+"TOOLOBJECT <TARGET>, TOOLCODE <CODE>, TOOLTEXT <TEXT>, "
-				+"@ROOM <TARGET>, @TARGET, + <OTHERS>, - <OTHERS>";
+		return "USAGE: "+getCommandWord()+" <"+getCommandWord()+"ER NAME> CHANNEL <NAME>";
 	}
 }

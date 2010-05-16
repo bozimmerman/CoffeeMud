@@ -65,7 +65,7 @@ public class Target extends CM1Command
 		}
 	}
 	public boolean passesSecurityCheck(MOB user, PhysicalAgent target){return true;} // anybody can target, its harmless
-	public String getHelp(MOB user)
+	public String getHelp(MOB user, Physical target, String rest)
 	{
 		return "USAGE: TARGET USER, <NAME>, <NAME>@<LOCATION>, @<LOCATION>";
 	}

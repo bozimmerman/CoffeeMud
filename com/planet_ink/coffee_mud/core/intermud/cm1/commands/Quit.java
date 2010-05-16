@@ -59,8 +59,8 @@ public class Quit extends CM1Command
 		}
 	}
 	public boolean passesSecurityCheck(MOB user, PhysicalAgent target){return true;}
-	public String getHelp(MOB user)
+	public String getHelp(MOB user, Physical target, String rest)
 	{
-		return "Ends the current user session and disconnects the user.";
+		return "USAGE: QUIT: Ends the current user session and disconnects the user.";
 	}
 }

@@ -39,10 +39,10 @@ import java.util.concurrent.atomic.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class SetMobStat extends GetMobStat
+public class SetStat extends GetStat
 {
-	public String getCommandWord(){ return "SETMOBSTAT";}
-	public SetMobStat(RequestHandler req, String parameters) {
+	public String getCommandWord(){ return "SETSTAT";}
+	public SetStat(RequestHandler req, String parameters) {
 		super(req, parameters);
 	}
 	
@@ -50,10 +50,10 @@ public class SetMobStat extends GetMobStat
 	{
 		try
 		{
-			MOB M=null;
-			if(req.getTarget() instanceof MOB)
-				M=(MOB)req.getTarget();
-			if(M==null)
+			Physical P=null;
+			if(req.getTarget() instanceof Physical)
+				P=(Physical)req.getTarget();
+			if(P==null)
 			{
 				req.sendMsg("[FAIL BAD TARGET]");
 				return;
@@ -66,10 +66,10 @@ public class SetMobStat extends GetMobStat
 				type=parameters.substring(0,x).toUpperCase().trim();
 				rest=parameters.substring(x+1).toUpperCase().trim();
 			}
-			Modifiable mod=getModifiable(type,M);
+			Modifiable mod=getModifiable(type,P);
 			if(mod==null)
 			{
-				req.sendMsg("[FAIL "+getHelp(M)+"]");
+				req.sendMsg("[FAIL "+getHelp(req.getUser(), P, "")+"]");
 				return;
 			}
 			String value="";
@@ -80,18 +80,25 @@ public class SetMobStat extends GetMobStat
 				stat=rest.substring(0,x).toUpperCase().trim();
 				value=rest.substring(x+1).toUpperCase().trim();
 			}
-			if((stat.length()==0)||(!isAStat(M,mod,stat)))
+			if((stat.length()==0)||(!isAStat(P,mod,stat)))
 			{
-				req.sendMsg("[FAIL USAGE: SETMOBSTAT "+type+" "+CMParms.toStringList(getStatCodes(M,mod))+"]");
+				req.sendMsg("[FAIL USAGE: SETSTAT "+type+" "+CMParms.toStringList(getStatCodes(P,mod))+"]");
 				return;
 			}
-			if(!isStdMOB(M,mod))
+			if(!UseGenBuilder(P,mod))
 				mod.setStat(stat, value);
 			else
-		        for(int i=0;i<GenericBuilder.GENMOBCODES.length;i++)
-		            if(GenericBuilder.GENMOBCODES[i].equalsIgnoreCase(stat))
-		            	CMLib.coffeeMaker().setGenMobStat(M, stat, value);
-				
+			{
+				String[] codes = this.getStatCodes(P, mod);
+		        for(int i=0;i<codes.length;i++)
+		            if(codes[i].equalsIgnoreCase(stat))
+		    			if(P instanceof MOB)
+			            	CMLib.coffeeMaker().setGenMobStat((MOB)P, stat, value);
+		    			else
+		    			if(P instanceof Item)
+			            	CMLib.coffeeMaker().setGenItemStat((Item)P, stat, value);
+		        		
+			}
 			req.sendMsg("[OK]");
 		}
 		catch(Exception ioe)
@@ -112,8 +119,8 @@ public class SetMobStat extends GetMobStat
 		else
 			return false;
 	}
-	public String getHelp(MOB user)
+	public String getHelp(MOB user, Physical target, String rest)
 	{
-		return "USAGE: SETMOBSTAT "+CMParms.toStringList(TYPES);
+		return "USAGE: SETSTAT "+CMParms.toStringList(getApplicableStatCodes(target));
 	}
 }

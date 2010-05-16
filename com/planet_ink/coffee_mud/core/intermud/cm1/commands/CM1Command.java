@@ -111,5 +111,5 @@ public abstract class CM1Command implements Runnable, Cloneable
 	
 	public abstract String getCommandWord();
 	public abstract boolean passesSecurityCheck(MOB user, PhysicalAgent target);
-	public abstract String getHelp(MOB user);
+	public abstract String getHelp(MOB user, Physical target, String rest);
 }

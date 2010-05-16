@@ -60,7 +60,7 @@ public class Shutdown extends CM1Command
 		}
 	}
 	public boolean passesSecurityCheck(MOB user, PhysicalAgent target){return (user!=null)&&CMSecurity.isAllowed(user,user.location(),"SHUTDOWN");}
-	public String getHelp(MOB user)
+	public String getHelp(MOB user, Physical target, String rest)
 	{
 		return "Shuts down the mud.";
 	}
