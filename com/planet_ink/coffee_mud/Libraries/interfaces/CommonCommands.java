@@ -35,7 +35,7 @@ import java.util.*;
 public interface CommonCommands extends CMLibrary
 {
     public void delGlobalMonitor(MsgMonitor M);
-    public void monitorGlobalMessage(CMMsg msg);
+    public void monitorGlobalMessage(Room room, CMMsg msg);
     public void addGlobalMonitor(MsgMonitor M);
     public boolean forceStandardCommand(MOB mob, String command, Vector parms);
     public StringBuilder getScore(MOB mob);

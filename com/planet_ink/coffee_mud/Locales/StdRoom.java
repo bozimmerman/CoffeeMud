@@ -1231,7 +1231,7 @@ public class StdRoom implements Room
 			if((otherMOB!=null)&&(otherMOB!=source))
 				otherMOB.executeMsg(otherMOB,msg);
 		executeMsg(source,msg);
-		CMLib.commands().monitorGlobalMessage(msg);
+		CMLib.commands().monitorGlobalMessage(this, msg);
 	}
 
     protected void reallySend(MOB source, CMMsg msg, int depth)

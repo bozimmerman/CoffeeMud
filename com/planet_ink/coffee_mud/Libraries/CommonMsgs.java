@@ -84,14 +84,14 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		return false;
 	}
 
-    public void monitorGlobalMessage(CMMsg msg)
+    public void monitorGlobalMessage(Room room, CMMsg msg)
     {
     	MsgMonitor M;
     	for(WeakReference<MsgMonitor> W : globalMonitors)
     	{
     		M=W.get();
     		if(M != null)
-    			M.monitorMsg(msg);
+    			M.monitorMsg(room, msg);
     		else
     			globalMonitors.remove(M);
     	}

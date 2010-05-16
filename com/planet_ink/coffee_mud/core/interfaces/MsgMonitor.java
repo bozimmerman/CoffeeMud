@@ -40,8 +40,9 @@ public interface MsgMonitor
      * have already been through an approval process, so this method is
      * called only to see the final execution of the meaning of the
      * message.
+	 * @param room the room the message was sent to
+	 * @param msg the CMMsg that needs to be executed
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg
-     * @param msg the CMMsg that needs to be executed
 	 */
-	public void monitorMsg(CMMsg msg);
+	public void monitorMsg(Room room, CMMsg msg);
 }
