@@ -47,7 +47,8 @@ public class RequestHandler implements Runnable
 	private final SocketChannel  chan;
 	private String				 user = null;
 	private PhysicalAgent		 target = null;
-	private SVector<ByteBuffer>	 workingBuffers = new SVector<ByteBuffer>();
+	private List<ByteBuffer>	 workingBuffers = new SLinkedList<ByteBuffer>();
+	private Map<String,Object> 	 dependents = new STreeMap<String,Object>();
 	private byte[][]			 markBlocks = DEFAULT_MARK_BLOCKS;
 	private static final int 	 BUFFER_SIZE=4096;
 	private static final long 	 MAXIMUM_BYTES=1024 * 1024 * 2;
@@ -86,6 +87,8 @@ public class RequestHandler implements Runnable
 	public PhysicalAgent getTarget(){ return target;}
 	public MOB getUser(){ return CMLib.players().getLoadPlayer(user);}
 	public void logout() { target=null; user=null;}
+	public void addDependent(String s, Object O){ dependents.put(s,O); }
+	public void delDependent(String s){ dependents.remove(s); }
 	
 	public boolean needsClosing()
 	{
@@ -107,7 +110,7 @@ public class RequestHandler implements Runnable
 			{
 	    		ByteBuffer buffer = null;
 	    		if(workingBuffers.size()>0)
-	    			buffer=workingBuffers.lastElement();
+	    			buffer=workingBuffers.get(workingBuffers.size()-1);
 	    		if((buffer==null)||(buffer.capacity()==buffer.limit()))
 	    			buffer = ByteBuffer.allocate(BUFFER_SIZE);
 	    		else

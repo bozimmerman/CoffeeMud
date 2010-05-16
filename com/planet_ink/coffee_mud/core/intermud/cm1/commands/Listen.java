@@ -49,8 +49,13 @@ public class Listen extends CM1Command
 	
 	protected class Listener implements MsgMonitor
 	{
-		public Listener()
+		private final String channelName;
+		
+		public Listener(String channelName)
 		{
+			this.channelName=channelName.toUpperCase().trim();
+			CMLib.commands().addGlobalMonitor(this);
+			req.addDependent(this.channelName, this);
 		}
 		
 		public boolean doesMonitor(Room room, CMMsg msg)
@@ -73,13 +78,9 @@ public class Listen extends CM1Command
 			catch(IOException ioe)
 			{
 				CMLib.commands().delGlobalMonitor(this);
+				req.delDependent(channelName);
 			}
 		}
-	}
-	
-	protected void ListenTo(Object o)
-	{
-		
 	}
 	
 	// dont forget to do a security check on what
@@ -126,7 +127,7 @@ public class Listen extends CM1Command
 	
 	public String getHelp(MOB user)
 	{
-		return "USAGE: "+getCommandWord()+" CHANNEL <NAME>, "
+		return "USAGE: "+getCommandWord()+" <"+getCommandWord()+"ER NAME> CHANNEL <NAME>, "
 				+"SOURCEOBJECT <TARGET>, SOURCECODE <CODE>, SOURCETEXT <TEXT>, "
 				+"TARGETOBJECT <TARGET>, TARGETCODE <CODE>, TARGETTEXT <TEXT>, "
 				+"TOOLOBJECT <TARGET>, TOOLCODE <CODE>, TOOLTEXT <TEXT>, "
