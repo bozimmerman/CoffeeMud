@@ -60,7 +60,7 @@ public class Block extends CM1Command
 		}
 	}
 	public boolean passesSecurityCheck(MOB user, PhysicalAgent target){return true;}
-	public String getHelp(MOB user, Physical target, String rest)
+	public String getHelp(MOB user, PhysicalAgent target, String rest)
 	{
 		return "USAGE: BLOCK: Changes the end-of-line for user input, returning a new end-of-line string.";
 	}

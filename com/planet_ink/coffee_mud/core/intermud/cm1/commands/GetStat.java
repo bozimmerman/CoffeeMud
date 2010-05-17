@@ -77,29 +77,29 @@ public class GetStat extends CM1Command
 		return majorCodes.toArray(new String[0]);
 	}
 	
-	public Modifiable getModifiable(String type, Physical E)
+	public Modifiable getModifiable(String type, Physical P)
 	{
 		int x=CMParms.indexOf(STATTYPES,type.toUpperCase().trim());
 		if(x<0) return null;
-		if(!isApplicableTypeCode(type,E))
+		if(!isApplicableTypeCode(type,P))
 			return null;
 		
 		switch(x)
 		{
-		case 0: return ((MOB)E).session();
-		case 1: return (Modifiable)E;
-		case 2: return ((MOB)E).charStats();
-		case 3: return ((MOB)E).curState();
-		case 4: return ((Physical)E).phyStats();
-		case 5: return ((MOB)E).baseCharStats();
-		case 6: return ((MOB)E).maxState();
-		case 7: return ((MOB)E).baseState();
-		case 8: return ((Physical)E).basePhyStats();
-		case 9: return ((MOB)E).playerStats();
-		case 10:return (Modifiable)E;
-		case 11:return (Modifiable)E;
-		case 12:return (Modifiable)E;
-		case 13:return (Modifiable)E;
+		case 0: return ((MOB)P).session();
+		case 1: return (Modifiable)P;
+		case 2: return ((MOB)P).charStats();
+		case 3: return ((MOB)P).curState();
+		case 4: return ((Physical)P).phyStats();
+		case 5: return ((MOB)P).baseCharStats();
+		case 6: return ((MOB)P).maxState();
+		case 7: return ((MOB)P).baseState();
+		case 8: return ((Physical)P).basePhyStats();
+		case 9: return ((MOB)P).playerStats();
+		case 10:return (Modifiable)P;
+		case 11:return (Modifiable)P;
+		case 12:return (Modifiable)P;
+		case 13:return (Modifiable)P;
 		}
 		return null;
 	}
@@ -137,12 +137,10 @@ public class GetStat extends CM1Command
 	{
 		try
 		{
-			Physical P=null;
-			if(req.getTarget() instanceof Physical)
-				P=(Physical)req.getTarget();
+			PhysicalAgent P=req.getTarget();
 			if(P==null)
 			{
-				req.sendMsg("[FAIL NOT LOGGED IN]");
+				req.sendMsg("[FAIL NO TARGET]");
 				return;
 			}
 			String stat = "";
@@ -209,8 +207,21 @@ public class GetStat extends CM1Command
 		else
 			return false;
 	}
-	public String getHelp(MOB user, Physical target, String rest)
+	public String getHelp(MOB user, PhysicalAgent target, String rest)
 	{
-		return "USAGE: GETSTAT "+CMParms.toStringList(getApplicableStatCodes(target));
+		Modifiable mod=null;
+		if((rest!=null)&&(rest.trim().length()>0))
+		{
+			int x=rest.indexOf(' ');
+			if(x>0)
+				rest=rest.substring(0,x).toUpperCase().trim();
+			if(isApplicableTypeCode(rest, target))
+				mod=getModifiable(rest.toUpperCase().trim(), target);
+		}
+		if(mod==null)
+			return "USAGE: "+getCommandWord()+" "+CMParms.toStringList(getApplicableStatCodes(target));
+		else
+			return "USAGE: "+getCommandWord()+" "+rest.toUpperCase().trim()+" "+CMParms.toStringList(getStatCodes(target,mod));
+		
 	}
 }

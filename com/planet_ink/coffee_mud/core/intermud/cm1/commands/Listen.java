@@ -125,7 +125,7 @@ public class Listen extends CM1Command
 		return true;
 	}
 	
-	public String getHelp(MOB user, Physical target, String rest)
+	public String getHelp(MOB user, PhysicalAgent target, String rest)
 	{
 		return "USAGE: "+getCommandWord()+" <"+getCommandWord()+"ER NAME> CHANNEL <NAME>";
 	}

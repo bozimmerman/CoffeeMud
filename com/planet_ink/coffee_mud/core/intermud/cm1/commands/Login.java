@@ -76,7 +76,7 @@ public class Login extends CM1Command
 		}
 	}
 	public boolean passesSecurityCheck(MOB user, PhysicalAgent target){return true;}
-	public String getHelp(MOB user, Physical target, String rest)
+	public String getHelp(MOB user, PhysicalAgent target, String rest)
 	{
 		return "USAGE: LOGIN <CHARACTER NAME> <PASSWORD>: Logs in a new character to act as the authorizing user.";
 	}

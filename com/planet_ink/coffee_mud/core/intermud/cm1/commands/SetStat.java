@@ -50,12 +50,10 @@ public class SetStat extends GetStat
 	{
 		try
 		{
-			Physical P=null;
-			if(req.getTarget() instanceof Physical)
-				P=(Physical)req.getTarget();
+			PhysicalAgent P=req.getTarget();
 			if(P==null)
 			{
-				req.sendMsg("[FAIL BAD TARGET]");
+				req.sendMsg("[FAIL NO TARGET]");
 				return;
 			}
 			String rest = "";
@@ -106,21 +104,5 @@ public class SetStat extends GetStat
 			Log.errOut(className,ioe);
 			req.close();
 		}
-	}
-	public boolean passesSecurityCheck(MOB user, PhysicalAgent target)
-	{
-		if(user==null) return false;
-		if(target instanceof MOB)
-		{
-			if(CMLib.players().playerExists(target.Name()))
-				return CMSecurity.isAllowed(user,user.location(),"CMDPLAYERS");
-			return CMSecurity.isAllowed(user,user.location(),"CMDMOBS");
-		}
-		else
-			return false;
-	}
-	public String getHelp(MOB user, Physical target, String rest)
-	{
-		return "USAGE: SETSTAT "+CMParms.toStringList(getApplicableStatCodes(target));
 	}
 }
