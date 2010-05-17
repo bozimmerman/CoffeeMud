@@ -41,6 +41,7 @@ import java.util.concurrent.atomic.*;
 public class Listen extends CM1Command
 {
 	public String getCommandWord(){ return "LISTEN";}
+	protected static final String[] STATTYPES={"CHANNEL","LOGINS","MOB","ROOM","PLAYER","ABILITY","ITEM"};
 	
 	public Listen(RequestHandler req, String parameters) 
 	{
@@ -122,11 +123,11 @@ public class Listen extends CM1Command
 	// depends on what you want to listen to
 	public boolean passesSecurityCheck(MOB user, PhysicalAgent target)
 	{
-		return true;
+		return (user != null);
 	}
 	
 	public String getHelp(MOB user, PhysicalAgent target, String rest)
 	{
-		return "USAGE: "+getCommandWord()+" <"+getCommandWord()+"ER NAME> CHANNEL <NAME>";
+		return "USAGE: "+getCommandWord()+" <"+getCommandWord()+"ER NAME> "+CMParms.toStringList(STATTYPES);
 	}
 }

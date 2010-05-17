@@ -56,6 +56,11 @@ public class SetStat extends GetStat
 				req.sendMsg("[FAIL NO TARGET]");
 				return;
 			}
+			if(!isAuthorized(req.getUser(),P))
+			{
+				req.sendMsg("[FAIL UNAUTHORIZED]");
+				return;
+			}
 			String rest = "";
 			String type = parameters.toUpperCase().trim();
 			int x=parameters.indexOf(' ');

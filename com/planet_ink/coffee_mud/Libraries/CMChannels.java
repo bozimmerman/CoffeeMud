@@ -537,6 +537,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
         }
         else
             msg=CMClass.getMsg(mob,null,null,CMMsg.MASK_CHANNEL|CMMsg.MASK_ALWAYS|CMMsg.MSG_SPEAK,"^Q^<CHANNEL \""+channelName+"\"^>You "+channelName+" '"+message+"'^</CHANNEL^>^N^.",CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),"^Q^<CHANNEL \""+channelName+"\"^><S-NAME> "+channelName+"S '"+message+"'^</CHANNEL^>^N^.");
+        CMLib.commands().monitorGlobalMessage(mob.location(), msg);
         if((mob.location()!=null)
         &&((!mob.location().isInhabitant(mob))||(mob.location().okMessage(mob,msg))))
         {

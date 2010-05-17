@@ -274,7 +274,7 @@ public class IMudInterface implements ImudServices, Serializable
 					String str="^Q^<CHANNEL \""+channelName+"\"^>"+mob.name()+" "+channelName+"(S) '"+ck.message+"'^</CHANNEL^>^N^.";
 					msg=CMClass.getMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str);
 				}
-
+		        CMLib.commands().monitorGlobalMessage(mob.location(), msg);
 				CMLib.channels().channelQueUp(channelInt,msg);
 				for(int s=0;s<CMLib.sessions().size();s++)
 				{

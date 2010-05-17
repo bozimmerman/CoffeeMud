@@ -83,6 +83,7 @@ public class Quit extends StdCommand
 	                {
 	                    CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_QUIT, msg);
 	                    session.kill(false,false, false);
+	                    CMLib.commands().monitorGlobalMessage(R, msg);
 	                }
 				}
 			}

@@ -1459,8 +1459,13 @@ public class DefaultSession extends Thread implements Session
 	                                .append(", login: "+mob.Name());
 							Log.sysOut("Session",loginMsg.toString());
 							if(loginResult != CharCreationLibrary.LoginResult.NO_LOGIN)
-	                            if(!CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_LOGIN,CMClass.getMsg(mob,null,CMMsg.MSG_LOGIN,null)))
+							{
+								CMMsg msg = CMClass.getMsg(mob,null,CMMsg.MSG_LOGIN,null);
+	                            if(!CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_LOGIN,msg))
 	                                killFlag=true;
+	                            else
+	                            	CMLib.commands().monitorGlobalMessage(mob.location(), msg);
+							}
 	                    }
 						needPrompt=true;
 						List CMDS=null;

@@ -133,6 +133,30 @@ public class GetStat extends CM1Command
         return false;
 	}
 
+	public boolean isAuthorized(MOB user, PhysicalAgent target)
+	{
+		if(target instanceof MOB)
+		{
+			if(CMLib.players().playerExists(target.Name()))
+				return CMSecurity.isAllowed(user,user.location(),"CMDPLAYERS");
+			return CMSecurity.isAllowed(user,user.location(),"CMDMOBS");
+		}
+		else
+		if(target instanceof Item)
+			return CMSecurity.isAllowed(user,user.location(),"CMDITEMS");
+		else
+		if(target instanceof Room)
+			return CMSecurity.isAllowed(user,user.location(),"CMDROOMS");
+		else
+		if(target instanceof Exit)
+			return CMSecurity.isAllowed(user,user.location(),"CMDEXITS");
+		else
+		if(target instanceof Area)
+			return CMSecurity.isAllowed(user,user.location(),"CMDAREAS");
+		else
+			return false;
+	}
+	
 	public void run()
 	{
 		try
@@ -141,6 +165,11 @@ public class GetStat extends CM1Command
 			if(P==null)
 			{
 				req.sendMsg("[FAIL NO TARGET]");
+				return;
+			}
+			if(!isAuthorized(req.getUser(),P))
+			{
+				req.sendMsg("[FAIL UNAUTHORIZED]");
 				return;
 			}
 			String stat = "";
@@ -185,27 +214,7 @@ public class GetStat extends CM1Command
 	}
 	public boolean passesSecurityCheck(MOB user, PhysicalAgent target)
 	{
-		if(user==null) return false;
-		if(target instanceof MOB)
-		{
-			if(CMLib.players().playerExists(target.Name()))
-				return CMSecurity.isAllowed(user,user.location(),"CMDPLAYERS");
-			return CMSecurity.isAllowed(user,user.location(),"CMDMOBS");
-		}
-		else
-		if(target instanceof Item)
-			return CMSecurity.isAllowed(user,user.location(),"CMDITEMS");
-		else
-		if(target instanceof Room)
-			return CMSecurity.isAllowed(user,user.location(),"CMDROOMS");
-		else
-		if(target instanceof Exit)
-			return CMSecurity.isAllowed(user,user.location(),"CMDEXITS");
-		else
-		if(target instanceof Area)
-			return CMSecurity.isAllowed(user,user.location(),"CMDAREAS");
-		else
-			return false;
+		return (user != null);
 	}
 	public String getHelp(MOB user, PhysicalAgent target, String rest)
 	{

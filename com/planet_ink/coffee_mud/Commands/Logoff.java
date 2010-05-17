@@ -66,6 +66,7 @@ public class Logoff extends StdCommand
 	                    CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_QUIT, msg);
 	                    session.logout(true);
 	                }
+                    CMLib.commands().monitorGlobalMessage(R, msg);
 				}
 			}
 			catch(Exception e)
