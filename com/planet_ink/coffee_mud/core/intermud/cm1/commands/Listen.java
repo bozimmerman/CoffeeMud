@@ -41,7 +41,7 @@ import java.util.concurrent.atomic.*;
 public class Listen extends CM1Command
 {
 	public String getCommandWord(){ return "LISTEN";}
-	protected static final String[] STATTYPES={"CHANNEL","LOGINS","MOB","ROOM","PLAYER","ABILITY","ITEM"};
+	protected static enum STATTYPE {CHANNEL,LOGINS,MOB,ROOM,PLAYER,ABILITY,ITEM};
 	
 	public Listen(RequestHandler req, String parameters) 
 	{
@@ -51,22 +51,40 @@ public class Listen extends CM1Command
 	protected class Listener implements MsgMonitor
 	{
 		private final String channelName;
+		private final STATTYPE statType;
+		private final Environmental obj;
+		private final String parm;
 		
-		public Listener(String channelName)
+		public Listener(String channelName, STATTYPE statType, Environmental obj, String parm)
 		{
 			this.channelName=channelName.toUpperCase().trim();
 			CMLib.commands().addGlobalMonitor(this);
 			req.addDependent(this.channelName, this);
+			this.statType=statType;
+			this.obj=obj;
+			this.parm=parm;
 		}
 		
 		public boolean doesMonitor(Room room, CMMsg msg)
 		{
-			return true;
+			switch(statType)
+			{
+			case CHANNEL: 
+				return (CMath.bset(msg.othersMajor(), CMMsg.MASK_CHANNEL)) 
+					&& (parm.equals(CMLib.channels().getChannelName(msg.othersMinor()-CMMsg.TYP_CHANNEL)));
+			case LOGINS: return msg.othersMinor()==CMMsg.TYP_LOGIN;
+			case MOB: return msg.source()==obj;
+			case ROOM: return room==obj;
+			case PLAYER: return ((MOB)obj).location()==room;
+			case ABILITY: return msg.tool()==obj;
+			case ITEM: return (msg.target()==obj);
+			}
+			return false;
 		}
 		
 		public String messageToString(CMMsg msg)
 		{
-			return "Not Yet Implemented";
+			return CMLib.coffeeFilter().fullOutFilter(null, CMLib.map().deity(), msg.source(), msg.target(), msg.tool(), msg.othersMessage(), false);
 		}
 		
 		public void monitorMsg(Room room, CMMsg msg) 
@@ -128,6 +146,6 @@ public class Listen extends CM1Command
 	
 	public String getHelp(MOB user, PhysicalAgent target, String rest)
 	{
-		return "USAGE: "+getCommandWord()+" <"+getCommandWord()+"ER NAME> "+CMParms.toStringList(STATTYPES);
+		return "USAGE: "+getCommandWord()+" <"+getCommandWord()+"ER NAME> "+CMParms.toStringList(STATTYPE.values());
 	}
 }
