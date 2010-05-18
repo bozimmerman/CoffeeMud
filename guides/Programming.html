@@ -1,8 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
   <meta name="generator" content="HTML Tidy, see www.w3.org" />
-  
-  <title>Programming for CoffeeMud 5.6</title><link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-5-6, fix validation problems, reformat, fix spelling errors --></head>
+  <title>Programming for CoffeeMud 5.6</title>
+  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
+<!-- Modified by Josh Mueller, 2006-5-6, fix validation problems, reformat, fix spelling errors -->
+</head>
 <body>
 <center>
 <table border="1" cellpadding="10" cellspacing="0" width="90%">
@@ -107,7 +110,8 @@ Modification</a></li>
         <li><a href="#LANGS">Languages</a></li>
       </ul>
       </td>
-      <td align="left" valign="top"> <img src="images/mug.jpg" alt="CoffeeMud logo" />
+      <td align="left" valign="top"> <img src="images/mug.jpg"
+ alt="CoffeeMud logo" />
       <h2><a name="overview" id="overview">Overview</a></h2>
       <p>The purpose of this document is to assist those who wish to
 add custom Items, MOBs, Behaviors, Properties, or other objects to
@@ -116,7 +120,9 @@ should be experienced with writing and compiling Java classes. The
 object oriented notions of class inheritance and polymorphism, as well
 as the Java constructs of interfaces should be at least vaguely
 familiar to you before attempting to build classes for CoffeeMud. Also,
-it is expected that all of the ideas presented in the <a href="ArchonGuide.html">Archons Guide</a> and <a href="GameBuildersGuide.html">Game Builders Guide</a>
+it is expected that all of the ideas presented in the <a
+ href="ArchonGuide.html">Archons Guide</a> and <a
+ href="GameBuildersGuide.html">Game Builders Guide</a>
 are completely familiar. The difference between a GenItem and a
 StdItem, or a GenMob and a GenPostman will not be explained in this
 document.</p>
@@ -263,8 +269,8 @@ special tags are used to designate a player name, or the name of the
 target of a spell. You will also notice that (s) and (es) is used to
 modify the proper form of a verb. These are key features of the
 CoffeeMud text engine. Here is a more complete list of available tags:</p>
-      <a name="nametag" id="nametag">
-      </a><table bgcolor="#ffffcc" border="1">
+      <a name="nametag" id="nametag"> </a>
+      <table bgcolor="#ffffcc" border="1">
         <tbody>
           <tr>
             <td><code>&lt;S-HIS-HER&gt;</code> </td>
@@ -378,8 +384,8 @@ with an '`s'</td>
 system strings. For instance:</p>
       <pre>msg.append("^!You are thirsty.^?\n\r");<br /></pre>
       <p>These codes are as follows:</p>
-      <a name="textcolor" id="textcolor">
-      </a><table bgcolor="#ccffff" border="1">
+      <a name="textcolor" id="textcolor"> </a>
+      <table bgcolor="#ccffff" border="1">
         <tbody>
           <tr>
             <td><code>^N</code> </td>
@@ -824,8 +830,8 @@ into the components we will discuss.</p>
       <p>The Major code is a series of significant bits in the integer,
 each of which gives some new meaning to the message. These bits are as
 follows:</p>
-      <a name="majorcode" id="majorcode">
-      </a><table bgcolor="#ffccff" border="1">
+      <a name="majorcode" id="majorcode"> </a>
+      <table bgcolor="#ffccff" border="1">
         <thead> <tr>
           <th width="15%">Bit mask</th>
           <th width="30%">CMMsg Equate Variable(s)</th>
@@ -1351,7 +1357,8 @@ calls.</p>
         </li>
         <li> Exits, Items, Rooms
           <p>Whenever a Behavior is added to any of these objects, they
-will begin to have their tick methods called once per&nbsp;CMProps.getTickMillis()
+will begin to have their tick methods called once
+per&nbsp;CMProps.getTickMillis()
 (4 seconds), with the tickID defined by Tickable.TICKID_ITEM_BEHAVIOR,
 TICKID_EXIT_BEHAVIOR, or TICKID_ROOM_BEHAVIOR. Deletion of the last
 behavior from the host object will stop this tick event from occurring
@@ -1385,11 +1392,13 @@ method on the "theEnvObject" object is called. The third parameter is
 the time interval, in milliseconds, between each event. The fourth
 parameter is the number of time intervals between each call to the <code>tick()</code>
 method. The total time between each call to the <code>tick()</code>
-method, therefore, will be&nbsp;&nbsp;CMProps.getTickMillis() * NUM_TICKS.</p>
+method, therefore, will be&nbsp;&nbsp;CMProps.getTickMillis() *
+NUM_TICKS.</p>
       <p>Now, the above version of <code>startTickDown()</code> can be
 used to create timed events of any duration. However, all objects in
 the base distribution of CoffeeMud operate on a single default time
-interval, usually of 4000 milliseconds, as defined by CMProps.getTickMillis() and ultimately from the coffeemud.ini file. For
+interval, usually of 4000 milliseconds, as defined by
+CMProps.getTickMillis() and ultimately from the coffeemud.ini file. For
 this reason, a different version of the <code>startTickDown()</code>
 method is called which does not include the TIME_TICK parameter,
 utilizing the standard delay instead:</p>
@@ -1410,8 +1419,8 @@ some are Common classes.</p>
 com.planet_ink.coffee_mud.core package. Like the interfaces, they may
 not be extended or overwritten without risking problems. The core
 classes, and their general purpose is:</p>
-      <a name="corepurpose" id="corepurpose">
-      </a><table bgcolor="#ffffcc" border="1">
+      <a name="corepurpose" id="corepurpose"> </a>
+      <table bgcolor="#ffffcc" border="1">
         <thead> <tr>
           <th>Core Class Name</th>
           <th>Purpose</th>
@@ -1493,8 +1502,8 @@ each Library. Moreover, these singletons are all accessed from a single
 accessor class, CMLib, which we mentioned earlier.</p>
       <p>Here is a map of how the classes, interfaces, and CMLib
 methods are all mapped together:</p>
-      <a name="corelibrarymap" id="corelibrarymap">
-      </a><table bgcolor="#99ff99" border="1">
+      <a name="corelibrarymap" id="corelibrarymap"> </a>
+      <table bgcolor="#99ff99" border="1">
         <thead> <tr>
           <th>Library class name <code>...Libraries.*</code> </th>
           <th>Library interface name <code>...Libraries.interfaces.*</code>
@@ -1797,8 +1806,8 @@ and they are created from the core CMClass loader, much like MOBs,
 Items, Rooms, and so forth. The javadocs are also a good place to learn
 about these classes, but here is a brief list of them to wrap up our
 last Core Topic.</p>
-      <a name="corecommon" id="corecommon">
-      </a><table bgcolor="#ccccff" border="1">
+      <a name="corecommon" id="corecommon"> </a>
+      <table bgcolor="#ccccff" border="1">
         <thead> <tr>
           <th>Common Class</th>
           <th>Description</th>
@@ -1900,9 +1909,7 @@ spans areas, possibly the whole world.</td>
         </tbody>
       </table>
       <br />
-
       <br />
-
       <img src="images/pencil.jpg" alt="commands" />
       <h2><a name="CMDS" id="CMDS">Commands</a></h2>
       <p>Commands are exactly what they sound like: LOOK, QUIT, KILL,
@@ -1931,7 +1938,8 @@ sufficient words to activate this command.</p>
 designate how LONG it takes to execute this command. A value of 0 means
 that the command always happens instantly. A value greater than 0 will
 always take that many free actions to complete. A standard player may
-perform 1 action in a given Tick ( 4 second period), or 2 actions during combat
+perform 1 action in a given Tick ( 4 second period), or 2 actions
+during combat
 in the default combat system -- they retain their 1 action per tick in
 other combat systems). Action costs may be partial as well, costing 0.5
 (1/2 action) or other values.</p>
@@ -2542,7 +2550,7 @@ almost always false, determines whether the skill is "secret" for this
 class. Secret skills are qualified for (or gained), but do not appear
 on Qualify lists, Class information, or Help files. Secret skills are
 never taught by Guildmasters (MOBTeachers) unless specifically told to.
-The next parameter is a Vector of Strings, representing a list of
+The next parameter is a List of Strings, representing a list of
 skills which must be known by this class before he can learn the skill
 in question. The last parameter is a String representing a mask which
 must be passed by the person who wants to gain this skill.</p>
@@ -2552,7 +2560,7 @@ Security Flags or CoffeeMud Security Groups to your players based on
 their Character Class and Character Class Level. This is a rather
 obscure feature that is really only meant for special Character Classes
 you may design for your admins and builders. Your player <code>getSecurityGroups()</code>
-methods will normally just return an empty Vector regardless of
+methods will normally just return an empty List regardless of
 classLevel. In this case, however, we are demonstrating how a player
 who gains 1001 levels in our NormalGuy Class will become immune to the
 CoffeeMud legal system (ABOVELAW flag) and gain access to the Archon
@@ -2573,7 +2581,8 @@ messages to the player in question.</p>
 is for the benefit of the web macros. It describes any special bonuses
 received due to being this class.</p>
       <pre>  public List&lt;Item&gt; outfit( MOB myChar )<br />  {<br />    if( outfitChoices == null )<br />    {<br />      outfitChoices = new Vector();<br />      Weapon w = (Weapon)CMClass.getWeapon( "a mortgage" );<br />      outfitChoices.add( w );<br />    }<br />    return outfitChoices;<br />  }<br /></pre>
-      <p>The outfit method should return a Vector of any Class-Specific
+      <p>The outfit method should return a&nbsp;List of any
+Class-Specific
 Item object equipment they may need. Clothing and so forth is actually
 covered by Races.</p>
       <pre>  public void grantAbilities( MOB mob, boolean isBorrowedClass )<br />  {<br />    super.grantAbilities( mob, isBorrowedClass );<br />    if( mob.isMonster() )<br />    {<br />        DVector V = CMLib.abilityMapping().getUpToLevelListings( ID(),<br />        mob.charStats().getClassLevel( ID() ),<br />        false,<br />        false<br />      );<br /><br />      for( Enumeration a = V.elements(); a.hasMoreElements(); )<br />      {<br />        Ability A = CMClass.getAbility( (String)a.nextElement() );<br />        if( ( A != null )<br />            &amp;&amp; ( ( A.classificationCode()&amp;Ability.ALL_ACODES) != Ability.ACODE_COMMON_SKILL )<br />            &amp;&amp; ( !CMLib.abilityMapping().getDefaultGain( ID(), true, A.ID() ) )<br />          )<br />        {<br />          giveMobAbility( mob,<br />            A,<br />            CMLib.abilityMapping().getDefaultproficiency( ID(), true, A.ID() ),<br />            CMLib.abilityMapping().getDefaultParm( ID(), true, A.ID() ),<br />            isBorrowedClass<br />          );<br />        }<br />      }<br />    }<br />  }<br /></pre>
@@ -2673,7 +2682,7 @@ Remember that these can be found in the Race interface for you to
 reference. In the above example, we find no antenea, 2 eyes, 2 ears, a
 head, neck, no arms or hands, a torso, 4 legs, 4 feet, a nose, but no
 gill, and then a mouth, waist, tail, and 2 wings.</p>
-      <pre>  private String[] racialAbilityNames = { "Skill_Trip", "Fighter_Whomp" };<br />  private int[] racialAbilityLevels = { 1, 3 };<br />  private int[] racialAbilityProficiencies = { 75, 50 };<br />  private boolean[] racialAbilityQuals = { false, false };<br /><br />  protected String[] racialAbilityNames()<br />  {<br />    return null;<br />  }<br /><br />  protected int[] racialAbilityLevels()<br />  {<br />    return null;<br />  }<br /><br />  protected int[] racialAbilityProficiencies()<br />  {<br />    return null;<br />  }<br /><br />  protected boolean[] racialAbilityQuals()<br />  {<br />    return null;<br />  }<br /><br />  public List&lt;Ability&gt; racialAbilities( MOB mob )<br />  {<br />    Vector V = super.racialAbilities( mob );<br />    return V;<br />  }<br /></pre>
+      <pre>  private String[] racialAbilityNames = { "Skill_Trip", "Fighter_Whomp" };<br />  private int[] racialAbilityLevels = { 1, 3 };<br />  private int[] racialAbilityProficiencies = { 75, 50 };<br />  private boolean[] racialAbilityQuals = { false, false };<br /><br />  protected String[] racialAbilityNames()<br />  {<br />    return null;<br />  }<br /><br />  protected int[] racialAbilityLevels()<br />  {<br />    return null;<br />  }<br /><br />  protected int[] racialAbilityProficiencies()<br />  {<br />    return null;<br />  }<br /><br />  protected boolean[] racialAbilityQuals()<br />  {<br />    return null;<br />  }<br /><br />  public List&lt;Ability&gt; racialAbilities( MOB mob )<br />  {<br />    List V = super.racialAbilities( mob );<br />    return V;<br />  }<br /></pre>
       <p>Our next section here deals with Racial Abilities, which are
 defined as follows: A racial ability is a skill that has a command
 word, and is not autoinvoked. A racial ability may be qualified for or
@@ -2694,14 +2703,16 @@ is the proficiency of skills automaticallyy gained. The <code>racialAbilityQuals
 tells whether or not the skill is automaticallyy gained (false) or is
 only qualified for (true).</p>
       <p>The method above (<code>racialAbilities()</code>) will return
-a Vector of Ability objects, with proficiency already set, appropriate
-to the mob passed in. This vector should consist only of automaticallyy
+a&nbsp;List of Ability objects, with proficiency already set,
+appropriate
+to the mob passed in. This list should consist only of automaticallyy
 gained abilities appropriate to the level of the mob. If the four
 variables are set properly, the programmer will not need to override
 the method from StdRace unless there other gender-based or other
 special qualifications for skills not defined by those four variables.</p>
       <pre>  public List&lt;Item&gt; outfit( MOB myChar )<br />  {<br />    if( outfitChoices == null )<br />    {<br />      outfitChoices = new Vector();<br />      Weapon w = (Weapon)CMClass.getItem( "GenPants" );<br />      outfitChoices.add( w );<br />    }<br /><br />    return outfitChoices;<br />  }<br /></pre>
-      <p>The outfit method should return a Vector of any Race-Specific
+      <p>The outfit method should return a&nbsp;List of any
+Race-Specific
 Item object equipment they may need.</p>
       <pre>  private String[] culturalAbilityNames = { "Dwarven", "Mining" };<br />  private int[] culturalAbilityProficiencies = { 100, 50 };<br /><br />  public String[] culturalAbilityNames()<br />  {<br />    return culturalAbilityNames;<br />  }<br /><br />  public int[] culturalAbilityProficiencies()<br />  {<br />    return culturalAbilityProficiencies;<br />  }<br /></pre>
       <p>Cultural Abilities are defined as those skills which a mob or
@@ -2809,7 +2820,7 @@ itself, though this will never be used. Players will never actually be
 inside the Grid room itself, but will always occupy one of the child
 rooms, each of which will take direction from the parent Grid. If you
 wish to define resources, however, be aware that the resourceChoices
-vector returned may not be null, and must only contain Integer objects
+list returned may not be null, and must only contain Integer objects
 representing the Resource (see the Items.interfaces.RawMaterial.java
 interface) available there. Use the RESOURCE_* static integer values
 from RawMaterial interface.</p>
@@ -2881,7 +2892,7 @@ methods provide access to the set of rooms which are directly a part of
 this area. The last method is one which should be called if any proper
 rooms are ever added, since it clears and "re-calculates" the metro
 rooms list.</p>
-      <pre>  public void addSubOp( String username )<br />  public void delSubOp( String username )<br />  public boolean amISubOp( String username )<br />  public String getSubOpList()<br />  public void setSubOpList( String list )<br />  public Vector getSubOpVectorList()<br /></pre>
+      <pre>  public void addSubOp( String username )<br />  public void delSubOp( String username )<br />  public boolean amISubOp( String username )<br />  public String getSubOpList()<br />  public void setSubOpList( String list )<br /></pre>
       <p>And lastly, the list of staff (Area Archons they are also
 sometimes called), can be managed from here. Changing these methods
 would modify how staff are handled by Areas.</p>
@@ -3024,8 +3035,8 @@ Ability.QUALITY_MALICIOUS, which tells the system that the skill is
 always malicious to others, and that it will most likely anger the
 target. It tells mobs to target this skill at enemies in combat</p>
       <p>Other possible values include:</p>
-      <a name="skillquality" id="skillquality">
-      </a><table border="1">
+      <a name="skillquality" id="skillquality"> </a>
+      <table border="1">
         <tbody>
           <tr>
             <td>Ability.QUALITY_BENEFICIAL_SELF</td>
@@ -3099,8 +3110,8 @@ separated by | symbols in the same way that canAffectCode does above.
 Each flag has a specific meaning and imparts information to the engine
 about the ability. Possible values, which may be used alone or together
 in any combination, include:</p>
-      <a name="skillflags" id="skillflags">
-      </a><table border="1" cellpadding="1" cellspacing="1" width="75%">
+      <a name="skillflags" id="skillflags"> </a>
+      <table border="1" cellpadding="1" cellspacing="1" width="75%">
         <tbody>
           <tr>
             <td>FLAG_BINDING</td>
@@ -3174,7 +3185,7 @@ method, which is located in StdAbility.java, actually does the work of
 removing the Effect from the affected object (stored in the variable
 affected), and then setting affected to null. In this particular <code>unInvoke()</code>
 method, we also see the code trying to force the mob back to his feet.</p>
-      <pre>  public boolean preInvoke( MOB mob,<br />                            Vector commands,<br />                            Physical givenTarget,<br />                            boolean auto,<br />                            int asLevel,<br />                            int secondsElapsed,<br />                            double actionsRemaining<br />                          )<br />  {<br />    return true;<br />  }<br /></pre>
+      <pre>  public boolean preInvoke( MOB mob,<br />                            List&lt;String&gt; commands,<br />                            Physical givenTarget,<br />                            boolean auto,<br />                            int asLevel,<br />                            int secondsElapsed,<br />                            double actionsRemaining<br />                          )<br />  {<br />    return true;<br />  }<br /></pre>
       <p>The <code>preInvoke()</code> method is an optional method
 that
 normally just returns true. Unless you have reason to do so, you do not
@@ -3302,8 +3313,8 @@ well. The second difference is in the <code>classificationCode()</code>
 method. You will notice that the domain of the spell is also specified.
 In addition to the normal classification code of Ability.ACODE_SPELL,
 the domain may be added using the | symbol. Possible domains include:</p>
-      <a name="spelldomain" id="spelldomain">
-      </a><table border="1">
+      <a name="spelldomain" id="spelldomain"> </a>
+      <table border="1">
         <tbody>
           <tr>
             <td>DOMAIN_DIVINATION</td>
@@ -3624,7 +3635,7 @@ we are using, so we can watch and see if it goes out.</p>
 method do all the talking to the player. The only job being done here
 is to make sure the fire didn't go out. If it did, we declare the
 project messed up, and immediately unInvoke it.</p>
-      <pre>  protected Vector loadRecipes()<br />  {<br />    return super.loadRecipes( "glassblowing.txt" );<br />  }<br />       <br /></pre>
+      <pre>  protected List&lt;List&lt;String&gt;&gt; loadRecipes()<br />  {<br />    return super.loadRecipes( "glassblowing.txt" );<br />  }<br />       <br /></pre>
       <p>Overriding the <code>loadRecipes()</code> method is
 absolutely
 necessary for any crafting skill, as it specifies the recipes list. A
@@ -3667,7 +3678,7 @@ strings. The first thing we do is check the parameters to see if they
 want to generate a bundle of raw resources. If they do, we call a
 superclass helper method to do so and exit -- this is identical to the
 way it was done in the gathering skill above.</p>
-      <pre>    Vector recipes = addRecipes( mob, loadRecipes() );<br />       <br /></pre>
+      <pre>    List&lt;List&lt;String&gt;&gt; recipes = addRecipes( mob, loadRecipes() );<br />       <br /></pre>
       <p>We're going to need that final recipes list so we can search
 for the one the player entered into the command line. Therefore we call
       <code>loadRecipes()</code>
@@ -3702,7 +3713,7 @@ player is specifying how much raw material they want to use in the
 construction of this item. The recipe list mentions the minimum amount
 of material, but the user is allowed to specify more if they like.
 We'll save this override amount and confirm its validity later.</p>
-      <pre>    String recipeName = CMParms.combine( commands, 0 );<br />    Vector foundRecipe = null;<br />    Vector matches = matchingRecipeNames( recipes, recipeName, true );<br />    for( int r = 0; r &lt; matches.size(); r++ )<br />    {<br />      Vector V = (Vector)matches.elementAt( r );<br />      if( V.size() &gt; 0 )<br />      {<br />        int level = CMath.s_int( (String)V.elementAt( RCP_LEVEL ) );<br />        if( ( autoGenerate &gt; 0 ) || ( level &lt;= mob.phyStats().level() ) )<br />        {<br />          foundRecipe = V;<br />          break;<br />        }<br />      }<br />    }<br />       <br /></pre>
+      <pre>    String recipeName = CMParms.combine( commands, 0 );<br />    List&lt;String&gt; foundRecipe = null;<br />    List&lt;List&lt;String&gt;&gt; matches = matchingRecipeNames( recipes, recipeName, true );<br />    for( int r = 0; r &lt; matches.size(); r++ )<br />    {<br />      List&lt;String&gt; V = matches.get( r );<br />      if( V.size() &gt; 0 )<br />      {<br />        int level = CMath.s_int( (String)V.elementAt( RCP_LEVEL ) );<br />        if( ( autoGenerate &gt; 0 ) || ( level &lt;= mob.phyStats().level() ) )<br />        {<br />          foundRecipe = V;<br />          break;<br />        }<br />      }<br />    }<br />       <br /></pre>
       <p>Now we can actually get to the important part of making sure
 that the recipe name entered by the players into the command line is
 actually a valid recipe. We do that by combining the remaining strings
@@ -3941,7 +3952,7 @@ the job. If not, we inform the user and return false from the method.
 If everything is fine, we return true. Notice that we were careful to
 call the superclass version of this method -- it does important things
 for us also, so it should definitely be called! </p>
-      <pre>    public Vector getTrapComponents() <br />    {<br />        Vector V = new Vector();<br />        for( int i = 0 ; i &lt; 10 ; i++ )<br />            V.addElement( CMLib.materials().makeItemResource( RawMaterial.RESOURCE_IRON ) );<br />        return V;<br />    }<br /><br />       <br /></pre>
+      <pre>    public List&lt;Item&gt; getTrapComponents() <br />    {<br />        Vector V = new Vector();<br />        for( int i = 0 ; i &lt; 10 ; i++ )<br />            V.addElement( CMLib.materials().makeItemResource( RawMaterial.RESOURCE_IRON ) );<br />        return V;<br />    }<br /><br />       <br /></pre>
 This
 method is not a terribly important one, but helps serve skills that
 allow traps to be disassembled. &nbsp;It fills a Vector with something
@@ -4026,4 +4037,5 @@ entry value. Correct casing is taken care of by the Language base class.</p>
   </tbody>
 </table>
 </center>
-</body></html>
+</body>
+</html>
