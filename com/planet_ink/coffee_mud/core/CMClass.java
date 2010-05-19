@@ -44,7 +44,8 @@ import org.mozilla.javascript.optimizer.*;
 public class CMClass extends ClassLoader
 {
 	protected static boolean debugging=false;
-    protected static Hashtable<String,Class<?>> classes=new Hashtable<String,Class<?>>();
+    protected static final Map<String,Class<?>> classes=new Hashtable<String,Class<?>>();
+    protected static final Map<String,Integer> 	MSGTYPE_DESCS=new Hashtable<String,Integer>();
     private static CMClass[] clss=new CMClass[256];
     public CMClass()
     {
@@ -563,7 +564,7 @@ public class CMClass extends ClassLoader
 				pathLess=pathLess.substring(0,pathLess.length()-3);
 			pathLess=pathLess.replace('/','.');
 			pathLess=pathLess.replace('\\','.');
-			if(classes.contains(pathLess))
+			if(classes.containsKey(pathLess))
 				return (classes.get(pathLess)).newInstance();
 		}catch(Exception e){}
 		Vector<Object> V=new Vector<Object>();
@@ -1805,6 +1806,22 @@ public class CMClass extends ClassLoader
         return true;
     }
 	
+    public static Map<String,Integer> getMSGTYPE_DESCS()
+    {
+        if(MSGTYPE_DESCS.size()!=0) return MSGTYPE_DESCS;
+    	synchronized(MSGTYPE_DESCS)
+    	{
+	        if(MSGTYPE_DESCS.size()!=0) return MSGTYPE_DESCS;
+	        for(int i=0;i<CMMsg.TYPE_DESCS.length;i++)
+	            MSGTYPE_DESCS.put(CMMsg.TYPE_DESCS[i],Integer.valueOf(i));
+	        for(int i=0;i<CMMsg.MASK_DESCS.length;i++)
+	            MSGTYPE_DESCS.put(CMMsg.MASK_DESCS[i],Integer.valueOf((int)CMath.pow(2,11+i)));
+	        for(int i=0;i<CMMsg.MISC_DESCS.length;i++)
+	            MSGTYPE_DESCS.put((String)CMMsg.MISC_DESCS[i][0],(Integer)CMMsg.MISC_DESCS[i][1]);
+    	}
+        return MSGTYPE_DESCS;
+    }
+    
     protected static class JScriptLib extends ScriptableObject
     {
         public String getClassName(){ return "JScriptLib";}

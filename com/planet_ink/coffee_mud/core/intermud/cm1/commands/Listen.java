@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -41,50 +42,145 @@ import java.util.concurrent.atomic.*;
 public class Listen extends CM1Command
 {
 	public String getCommandWord(){ return "LISTEN";}
-	protected static enum STATTYPE {CHANNEL,LOGINS,MOB,ROOM,PLAYER,ABILITY,ITEM};
+	protected static enum STATTYPE {CHANNEL,LOGINS,MOB,ROOM,PLAYER,ABILITY,ITEM,TARGET,SOURCE,TOOL,TARGETCODE,SOURCECODE,OTHERSCODE,AREA,TARGETMASK,SOURCEMASK,OTHERSMASK};
+	protected static SLinkedList<Listener> listeners=new SLinkedList<Listener>();
 	
 	public Listen(RequestHandler req, String parameters) 
 	{
 		super(req, parameters);
 	}
 	
+	protected void sendMsg(Listener listener, String msg) throws IOException
+	{
+		req.sendMsg("[MESSAGE "+listener.channelName+": "+msg+"]");
+	}
+	
+	protected static class ListenCriterium
+	{
+		public final STATTYPE statType;
+		public final Environmental obj;
+		public final String parm;
+		public final int parmInt;
+		public ListenCriterium(STATTYPE statType, Environmental obj, String parm)
+		{
+			this.statType=statType;
+			this.obj=obj;
+			switch(statType)
+			{
+			case CHANNEL: 
+				this.parm=(parm==null)?"":parm.toUpperCase().trim();
+				parmInt=CMLib.channels().getChannelIndex(this.parm);
+				break;
+			case SOURCECODE: 
+			case TARGETCODE: 
+			case OTHERSCODE: 
+				this.parm=(parm==null)?"":parm.toUpperCase().trim();
+				parmInt= CMParms.indexOf(CMMsg.TYPE_DESCS,this.parm);
+				break;
+			case SOURCEMASK: 
+			case TARGETMASK: 
+			case OTHERSMASK:
+				this.parm=(parm==null)?"":parm.toUpperCase().trim();
+				if(CMParms.indexOf(CMMsg.MASK_DESCS,this.parm)>=0)
+				{
+					Integer I=CMClass.getMSGTYPE_DESCS().get(this.parm);
+					if(I!=null) 
+						parmInt=I.intValue();
+					else
+						parmInt=-1;
+				}
+				else
+					parmInt=-1;
+				break;
+			default:
+				parmInt=0;
+				this.parm=(parm==null)?"":parm;
+				break;
+			}
+		}
+	}
+	
 	protected class Listener implements MsgMonitor
 	{
-		private final String channelName;
-		private final STATTYPE statType;
-		private final Environmental obj;
-		private final String parm;
+		public final String channelName;
+		private final ListenCriterium crits[];
+		public final List<String> msgs=new LinkedList<String>();
 		
-		public Listener(String channelName, STATTYPE statType, Environmental obj, String parm)
+		public Listener(String channelName, ListenCriterium[] crits)
 		{
 			this.channelName=channelName.toUpperCase().trim();
 			CMLib.commands().addGlobalMonitor(this);
 			req.addDependent(this.channelName, this);
-			this.statType=statType;
-			this.obj=obj;
-			this.parm=parm;
+			listeners.add(this);
+			this.crits=crits;
 		}
-		
-		public boolean doesMonitor(Room room, CMMsg msg)
+
+		public boolean doesMonitor(final ListenCriterium crit, final Room room, final CMMsg msg)
 		{
-			switch(statType)
+			switch(crit.statType)
 			{
 			case CHANNEL: 
 				return (CMath.bset(msg.othersMajor(), CMMsg.MASK_CHANNEL)) 
-					&& (parm.equals(CMLib.channels().getChannelName(msg.othersMinor()-CMMsg.TYP_CHANNEL)));
-			case LOGINS: return msg.othersMinor()==CMMsg.TYP_LOGIN;
-			case MOB: return msg.source()==obj;
-			case ROOM: return room==obj;
-			case PLAYER: return ((MOB)obj).location()==room;
-			case ABILITY: return msg.tool()==obj;
-			case ITEM: return (msg.target()==obj);
+					&& (crit.parmInt==(msg.othersMinor()-CMMsg.TYP_CHANNEL));
+			case LOGINS: return (msg.othersMinor()==CMMsg.TYP_LOGIN)||(msg.othersMinor()==CMMsg.TYP_QUIT);
+			case MOB: return msg.source()==crit.obj;
+			case ROOM: return room==crit.obj;
+			case AREA: return room.getArea()==crit.obj;
+			case PLAYER: return ((MOB)crit.obj).location()==room;
+			case ABILITY: return msg.tool()==crit.obj;
+			case ITEM: return (msg.target()==crit.obj);
+			case TARGET: return (msg.target()==crit.obj);
+			case SOURCE: return (msg.source()==crit.obj);
+			case TOOL: return (msg.tool()==crit.obj);
+			case SOURCECODE: return msg.sourceMinor()==crit.parmInt;
+			case TARGETCODE: return msg.targetMinor()==crit.parmInt;
+			case OTHERSCODE: return msg.othersMinor()==crit.parmInt;
+			case SOURCEMASK: return CMath.bset(msg.sourceMajor(), crit.parmInt);
+			case TARGETMASK: return CMath.bset(msg.targetMinor(), crit.parmInt);
+			case OTHERSMASK: return CMath.bset(msg.othersMinor(), crit.parmInt);
 			}
 			return false;
 		}
 		
-		public String messageToString(CMMsg msg)
+		public boolean doesMonitor(final Room room, final CMMsg msg)
 		{
-			return CMLib.coffeeFilter().fullOutFilter(null, CMLib.map().deity(), msg.source(), msg.target(), msg.tool(), msg.othersMessage(), false);
+			for(ListenCriterium crit : crits)
+				if(!doesMonitor(crit,room,msg))
+					return true;
+			return false;
+		}
+		
+		public String messageToString(final CMMsg msg)
+		{
+			switch(crits[0].statType)
+			{
+			case CHANNEL: 
+				return CMLib.coffeeFilter().fullOutFilter(null, CMLib.map().deity(), msg.source(), msg.target(), msg.tool(), msg.othersMessage(), false);
+			case LOGINS: 
+				if(msg.othersMinor()==CMMsg.TYP_LOGIN)
+					return "LOGIN "+msg.source().Name();
+				else
+					return "LOGOUT "+msg.source().Name();
+			default:
+			{
+				StringBuilder str=new StringBuilder("");
+				str.append('\"').append(msg.source().Name()).append('\"').append(' ');
+				str.append(CMMsg.TYPE_DESCS[msg.sourceMinor()]);
+				if(msg.target()!=null)
+					str.append('\"').append(msg.target().Name()).append('\"').append(' ');
+				else
+					str.append("NULL ");
+				str.append(CMMsg.TYPE_DESCS[msg.targetMinor()]);
+				if(msg.tool()!=null)
+					str.append('\"').append(msg.tool().Name()).append('\"').append(' ');
+				else
+					str.append("NULL ");
+				str.append(CMMsg.TYPE_DESCS[msg.othersMinor()]);
+				str.append(Integer.toString(msg.value())).append(' ');
+				str.append(CMLib.coffeeFilter().fullOutFilter(null, CMLib.map().deity(), msg.source(), msg.target(), msg.tool(), msg.othersMessage(), false));
+				return str.toString();
+			}
+			}
 		}
 		
 		public void monitorMsg(Room room, CMMsg msg) 
@@ -92,44 +188,171 @@ public class Listen extends CM1Command
 			try
 			{
 				if(doesMonitor(room,msg))
-					req.sendMsg("[MESSAGE "+messageToString(msg)+"]");
+					sendMsg(this, messageToString(msg));
 			}
 			catch(IOException ioe)
 			{
 				CMLib.commands().delGlobalMonitor(this);
 				req.delDependent(channelName);
+				listeners.remove(this);
 			}
 		}
 	}
 	
-	// dont forget to do a security check on what
-	// they want to listen to
-	/*
-	public boolean passesSecurityCheck(MOB user, PhysicalAgent target)
+	public boolean securityCheck(MOB user, ListenCriterium crit)
 	{
-		if(user==null) return false;
-		if(target instanceof MOB)
+		switch(crit.statType)
 		{
-			if(CMLib.players().playerExists(target.Name()))
-				return CMSecurity.isAllowed(user,user.location(),"CMDPLAYERS");
-			return CMSecurity.isAllowed(user,user.location(),"CMDMOBS");
+		case CHANNEL: 
+		{
+			if(crit.parmInt<0)
+				return false;
+			if(!CMLib.masking().maskCheck(CMLib.channels().getChannelMask(crit.parmInt),user,true))
+				return false;
+	        HashSet<ChannelsLibrary.ChannelFlag> flags=CMLib.channels().getChannelFlags(crit.parmInt);
+	        if(flags.contains(ChannelsLibrary.ChannelFlag.CLANONLY)||flags.contains(ChannelsLibrary.ChannelFlag.CLANALLYONLY))
+	            return CMSecurity.isAllowedAnywhere(user, "STAT");
+	        return true;
 		}
-		else
-			return false;
+		case SOURCECODE: 
+		case TARGETCODE: 
+		case OTHERSCODE: 
+		case SOURCEMASK: 
+		case TARGETMASK: 
+		case OTHERSMASK: 
+			if(crit.parmInt<0)
+				return false;
+			return true;
+		case PLAYER:  return CMSecurity.isAllowedEverywhere(user, "CMDPLAYERS");
+		case MOB:
+		case ROOM:
+		case AREA:
+		case ABILITY:
+		case ITEM:
+		case TARGET:
+		case SOURCE:
+		case TOOL:
+		default:
+			return true;
+		}
 	}
-	 */
+	
+	public boolean parameterCheck(MOB user, ListenCriterium crit)
+	{
+		switch(crit.statType)
+		{
+		case CHANNEL: 
+		{
+			if(crit.parmInt<0)
+				return false;
+	        return true;
+		}
+		case SOURCECODE: 
+		case TARGETCODE: 
+		case OTHERSCODE: 
+		case SOURCEMASK: 
+		case TARGETMASK: 
+		case OTHERSMASK: 
+			if(crit.parmInt<0)
+				return false;
+			return true;
+		case MOB: return (crit.obj instanceof MOB)&&(!CMLib.players().playerExists(crit.obj.Name()));
+		case ROOM:  return crit.obj instanceof Room;
+		case AREA:  return crit.obj instanceof Area;
+		case PLAYER:  return (crit.obj instanceof MOB)&&(CMLib.players().playerExists(crit.obj.Name()));
+		case ABILITY: return crit.obj instanceof Ability;
+		case ITEM:  return crit.obj instanceof Item;
+		case TARGET: return crit.obj instanceof Environmental;
+		case SOURCE:  return (crit.obj instanceof MOB)&&(!CMLib.players().playerExists(crit.obj.Name()));
+		case TOOL:  return crit.obj instanceof Environmental;
+		default:
+			return true;
+		}
+	}
+	
+	public List<ListenCriterium> getCriterium(String rest) throws IOException
+	{
+		List<ListenCriterium> list=new Vector<ListenCriterium>();
+		while(rest.length()>0)
+		{
+			String codeStr;
+			int x=rest.indexOf(' ');			
+			if(x>0)
+			{
+				codeStr=rest.substring(0,x).toUpperCase().trim();
+				if(codeStr.trim().length()==0)
+					codeStr=null;
+				else
+					rest=rest.substring(x+1).trim();
+			}
+			else
+				codeStr=null;
+			if((codeStr==null)||(STATTYPE.valueOf(codeStr)==null))
+			{
+				req.sendMsg("[FAIL "+codeStr+" NOT "+CMParms.toStringList(STATTYPE.values())+"]");
+				return null;
+			}
+			String parm=null;
+			x=rest.indexOf(' ');			
+			if(x>0)
+			{
+				parm=rest.substring(0,x).trim();
+				if(STATTYPE.valueOf(parm.toUpperCase().trim())!=null)
+					parm="";
+				else
+					rest=rest.substring(x+1).trim();
+			}
+			else
+			{
+				parm="";
+				rest="";
+			}
+			ListenCriterium crit=new ListenCriterium(STATTYPE.valueOf(codeStr),req.getTarget(),parm);
+			if(!parameterCheck(req.getUser(),crit))
+			{
+				req.sendMsg("[FAIL "+codeStr+" PARAMETERS]");
+				return null;
+			}
+			if(!securityCheck(req.getUser(),crit))
+			{
+				req.sendMsg("[FAIL "+codeStr+" UNAUTHORIZED]");
+				return null;
+			}
+			list.add(crit);
+		}
+		return list;
+	}
+	
 	public void run()
 	{
 		try
 		{
-			PhysicalAgent P=getTarget(parameters);
-			if(P!=null)
+			String name;
+			String rest="";
+			int x=parameters.indexOf(' ');
+			if(x>0)
 			{
-				req.setTarget(P);
-				req.sendMsg("[OK]");
+				name=parameters.substring(0,x).trim();
+				if(name.trim().length()==0)
+					name=null;
+				else
+					rest=parameters.substring(x+1).trim();
+			}
+			else
+				name=null;
+			if(name==null)
+			{
+				req.sendMsg("[FAIL No "+getCommandWord()+"ER name given]");
 				return;
 			}
-			req.sendMsg("[FAIL]");
+			List<ListenCriterium> crit=getCriterium(rest);
+			if(crit==null)
+				return;
+			else
+			if(crit.size()==0)
+				req.sendMsg("[FAIL NOT "+CMParms.toStringList(STATTYPE.values())+"]");
+			else
+				req.sendMsg("[OK]");
 		}
 		catch(Exception ioe)
 		{

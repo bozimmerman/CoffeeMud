@@ -33,7 +33,6 @@ import java.util.*;
 public class DefaultMessage implements CMMsg
 {
     public String ID(){return "DefaultMessage";}
-    protected static final Hashtable<Object,Object> MSGTYPE_DESCS=new Hashtable<Object,Object>();
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultMessage();}}
     public void initializeClass(){}
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
@@ -152,18 +151,6 @@ public class DefaultMessage implements CMMsg
 		othersMsg=othersMessage;
 	}
 
-    protected static synchronized Hashtable<Object,Object> getMSGTYPE_DESCS()
-    {
-        if(MSGTYPE_DESCS.size()!=0) return MSGTYPE_DESCS;
-        for(int i=0;i<CMMsg.TYPE_DESCS.length;i++)
-            MSGTYPE_DESCS.put(CMMsg.TYPE_DESCS[i],Integer.valueOf(i));
-        for(int i=0;i<CMMsg.MASK_DESCS.length;i++)
-            MSGTYPE_DESCS.put(CMMsg.MASK_DESCS[i],Integer.valueOf((int)CMath.pow(2,11+i)));
-        for(int i=0;i<CMMsg.MISC_DESCS.length;i++)
-            MSGTYPE_DESCS.put(CMMsg.MISC_DESCS[i][0],CMMsg.MISC_DESCS[i][1]);
-        return MSGTYPE_DESCS;
-    }
-    
     public void setSourceCode(int code){sourceCode=code;}
     public void setTargetCode(int code){targetCode=code;}
     public void setOthersCode(int code){othersCode=code;}
@@ -259,7 +246,7 @@ public class DefaultMessage implements CMMsg
     protected static boolean matches(int code1, int code2){return ((code1&CMMsg.MINOR_MASK)==code2)||((code1&CMMsg.MAJOR_MASK)==code2);}
     protected static boolean matches(int code1, String code2)
     {
-        Integer I=(Integer)getMSGTYPE_DESCS().get(code2.toUpperCase());
+        Integer I=CMClass.getMSGTYPE_DESCS().get(code2.toUpperCase());
         if(I==null)
         {
             code2=code2.toUpperCase();
