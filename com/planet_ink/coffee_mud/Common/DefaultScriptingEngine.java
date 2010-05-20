@@ -8100,6 +8100,31 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 }
                 break;
             }
+            case 79: // mppossess
+            {
+                if(tt==null){
+                	tt=parseBits(script,si,"Cr");
+                	if(tt==null) return null;
+                }
+                PhysicalAgent newSource=getArgumentMOB(tt[1],source,monster,target,primaryItem,secondaryItem,msg,tmp);
+                PhysicalAgent newTarget=getArgumentMOB(tt[2],source,monster,target,primaryItem,secondaryItem,msg,tmp);
+                if((!(newSource instanceof MOB))||(((MOB)newSource).isMonster()))
+	                logError(scripted,"MPPOSSESS","RunTime",tt[1]+" is not a player.");
+                else
+                if((!(newTarget instanceof MOB))||(!((MOB)newTarget).isMonster())||CMSecurity.isASysOp((MOB)newTarget))
+	                logError(scripted,"MPPOSSESS","RunTime",tt[2]+" is not a mob.");
+                else
+                {
+                	MOB mobM=(MOB)newSource;
+                	MOB targetM=(MOB)newTarget;
+            		Session S=mobM.session();
+            		S.setMob(targetM);
+            		targetM.setSession(S);
+            		targetM.setSoulMate(mobM);
+            		mobM.setSession(null);
+                }
+                break;
+            }
             case 20: // mpsetvar
             {
                 if(tt==null){
