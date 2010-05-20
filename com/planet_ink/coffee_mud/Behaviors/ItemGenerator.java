@@ -228,7 +228,8 @@ public class ItemGenerator extends ActiveTicker
 			for(int a=0;a<allItems.size();a++)
 			{
 				I=(Item)allItems.get(a);
-				if(CMLib.masking().maskCheck(compiled,I,true))
+				if((CMLib.masking().maskCheck(compiled,I,true))
+				&&(!(I instanceof ClanItem)))
 				{
 					if(I.value()>maxValue)
 						maxValue=I.value();
