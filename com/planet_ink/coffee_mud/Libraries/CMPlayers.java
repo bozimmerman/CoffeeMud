@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class CMPlayers extends StdLibrary implements PlayerLibrary
 {
     public String ID(){return "CMPlayers";}
@@ -166,7 +165,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
             deadLoc.send(deadMOB,msg);
         try
         {
-            for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+            for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
             {
                 Room R=(Room)r.nextElement();
                 if((R!=null)&&(R!=deadLoc))
@@ -334,7 +333,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return x;
 	}
 	
-    public Enumeration<ThinPlayer> thinPlayers(String sort, Map<String, Object> cache)
+    @SuppressWarnings("unchecked")
+	public Enumeration<ThinPlayer> thinPlayers(String sort, Map<String, Object> cache)
     {
 		Vector<PlayerLibrary.ThinPlayer> V=(cache==null)?null:(Vector<PlayerLibrary.ThinPlayer>)cache.get("PLAYERLISTVECTOR"+sort);
 		if(V==null)
@@ -382,7 +382,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return V.elements();
     }
 
-    public Enumeration<PlayerAccount> accounts(String sort, Map<String, Object> cache)
+    @SuppressWarnings("unchecked")
+	public Enumeration<PlayerAccount> accounts(String sort, Map<String, Object> cache)
     {
 		Vector<PlayerAccount> V=(cache==null)?null:(Vector<PlayerAccount>)cache.get("ACCOUNTLISTVECTOR"+sort);
 		if(V==null)
@@ -440,10 +441,10 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
         for(int i=0;i<levels.length;i++) levels[i]=0;
         for(int i=0;i<prePurgeLevels.length;i++) prePurgeLevels[i]=0;
         String mask=CMProps.getVar(CMProps.SYSTEM_AUTOPURGE);
-        Vector maskV=CMParms.parseCommas(mask.trim(),false);
+        List<String> maskV=CMParms.parseCommas(mask.trim(),false);
         for(int mv=0;mv<maskV.size();mv++)
         {
-            Vector<String> V=CMParms.parse(((String)maskV.elementAt(mv)).trim());
+            Vector<String> V=CMParms.parse(((String)maskV.get(mv)).trim());
             if(V.size()<2) continue;
             long val=CMath.s_long((String)V.elementAt(1));
             if(val<=0) continue;
@@ -496,7 +497,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
         thread.status("autopurge process");
         List<PlayerLibrary.ThinPlayer> allUsers=CMLib.database().getExtendedUserList();
         List<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
-        if(protectedOnes==null) protectedOnes=new Vector();
+        if(protectedOnes==null) protectedOnes=new Vector<String>();
 
         for(ThinPlayer user : allUsers)
         {
@@ -558,13 +559,15 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
                     for(int b=0;b<warnedOnes.size();b++)
                     {
                         String B=((String)warnedOnes.get(b)).trim();
-                        if((B.trim().length()>0)
-                        &&(B.toUpperCase().startsWith(name.toUpperCase()+" ")))
+                        long warningDateTime=-1;
+                        if(B.trim().length()>0)
                         {
                             int lastSpace=B.lastIndexOf(' ');
-                            foundWarningDateTime=CMath.s_long(B.substring(lastSpace+1).trim());
-                            if((foundWarningDateTime > 0) && (System.currentTimeMillis() < foundWarningDateTime + (10 * TimeManager.MILI_DAY)))
-	                            warnStr.append(B+"\n");
+                            warningDateTime=CMath.s_long(B.substring(lastSpace+1).trim());
+                            if((warningDateTime > 0) && (System.currentTimeMillis() < warningDateTime + (10 * TimeManager.MILI_DAY)))
+                                warnStr.append(B+"\n");
+                            if(B.toUpperCase().startsWith(name.toUpperCase()+" "))
+                                foundWarningDateTime=warningDateTime;
                         }
                     }
                 if((foundWarningDateTime<0)
