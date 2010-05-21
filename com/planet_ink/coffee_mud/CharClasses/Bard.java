@@ -211,7 +211,6 @@ public class Bard extends StdCharClass
                                 ||name.endsWith(" liquor")
                                 ||name.endsWith(" ale")
                                 ||name.endsWith(" whiskey")
-                                ||name.endsWith(" wine")
                                 ||name.endsWith(" wine"))
                                 	pub=true;
                             }
