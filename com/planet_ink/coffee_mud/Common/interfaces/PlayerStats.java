@@ -445,6 +445,8 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
      * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#hasVisited(Area)
      * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#percentVisited(MOB, Area)
      * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#addRoomVisit(Room)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#unVisit(Room)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#unVisit(Area)
      * 
      * @param R the room to check and see whether the player has been there.
      * 
@@ -458,6 +460,8 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
      * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#hasVisited(Room)
      * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#percentVisited(MOB, Area)
      * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#addRoomVisit(Room)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#unVisit(Room)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#unVisit(Area)
      * 
      * @param A the area to check
      * @return true if the player has been there, false otherwise
@@ -471,6 +475,8 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
      * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#hasVisited(Room)
      * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#hasVisited(Area)
      * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#addRoomVisit(Room)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#unVisit(Room)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#unVisit(Area)
      * 
      * @param mob the player of these stats
      * @param A the Area to check
@@ -484,11 +490,34 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats
      * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#hasVisited(Room)
      * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#hasVisited(Area)
      * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#percentVisited(MOB, Area)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#unVisit(Room)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#unVisit(Area)
      * 
      * @param R the room to credit the player with
      */
     public void addRoomVisit(Room R);
 
+    /**
+     * Deletes the visitation record for all rooms in the given area.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#hasVisited(Room)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#hasVisited(Area)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#percentVisited(MOB, Area)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#unVisit(Room)
+     * 
+     * @param A area of rooms to remove
+     */
+    public void unVisit(Area A);
+    
+    /**
+     * Deletes the visitation record for the given room
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#hasVisited(Room)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#hasVisited(Area)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#percentVisited(MOB, Area)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#unVisit(Area)
+     * 
+     * @param R the room to remove
+     */
+    public void unVisit(Room R);
     /**
      * Returns the string array set of defined alias commands
      * for this player.

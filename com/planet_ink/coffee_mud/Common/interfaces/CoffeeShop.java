@@ -61,7 +61,7 @@ public interface CoffeeShop extends CMCommon
      * @param thisThang the thing to compare against the base inventory
      * @return whether the item, or one just like it, is in the base inventory
      */
-    public boolean inBaseInventory(Environmental thisThang);
+    public boolean inEnumerableInventory(Environmental thisThang);
     
     /**
      * Adds a new item to the store inventory.  Use this method when an item is sold
@@ -79,7 +79,7 @@ public interface CoffeeShop extends CMCommon
      * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#DEAL_INVENTORYONLY
      * @return the number of items in the base inventory
      */
-    public int baseStockSize();
+    public int enumerableStockSize();
     
     /**
      * Returns the number of items this shop currently has for sale.  Does not
@@ -113,7 +113,7 @@ public interface CoffeeShop extends CMCommon
      * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#DEAL_INVENTORYONLY
      * @return a Vector of objects in base inventory
      */
-    public Iterator<Environmental> getBaseInventory();
+    public Iterator<Environmental> getEnumerableInventory();
     
     /**
      * Clears both the base and stock/store inventories.

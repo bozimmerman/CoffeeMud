@@ -1088,6 +1088,28 @@ public class Reset extends StdCommand
         else
 		if(s.startsWith("clantick"))
 			CMLib.clans().tickAllClans();
+		else
+		if(s.equalsIgnoreCase("VISITATION"))
+		{
+		    try
+		    {
+				if(commands.size()>1) s=(String)commands.elementAt(1);
+		    	boolean area=false;
+		    	if(s.equalsIgnoreCase("AREA"))
+		    	{
+		    		area=true;
+					if(commands.size()>2) s=(String)commands.elementAt(2);
+		    	}
+		    	MOB M=CMLib.players().getLoadPlayer(s);
+		    	if((M!=null)&&(M.playerStats()!=null))
+		    	{
+		    		if(area)
+			    		M.playerStats().unVisit(M.location().getArea());
+		    		else
+			    		M.playerStats().unVisit(M.location());
+		    	}
+		    }catch(NoSuchElementException nse){}
+		}
         else
 		if(s.equalsIgnoreCase("arearacemat")&&(CMSecurity.isASysOp(mob)))
 		{

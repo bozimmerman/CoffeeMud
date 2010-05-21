@@ -390,7 +390,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			        {
 			            List<Item> V=new Vector<Item>();
 			            CoffeeShop shop = ((ShopKeeper)mob).getShop();
-			            for(Iterator<Environmental> i=shop.getBaseInventory();i.hasNext();)
+			            for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
 			            {
 			                Environmental E=(Environmental)i.next();
 			                if((E instanceof Item)

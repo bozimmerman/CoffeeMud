@@ -44,7 +44,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 {
     public String ID(){return "DefaultCoffeeShop";}
 	WeakReference<ShopKeeper> shopKeeper = null;
-    public SVector<Environmental> baseInventory=new SVector<Environmental>(); // for Only Inventory situations
+    public SVector<Environmental> enumerableInventory=new SVector<Environmental>(); // for Only Inventory situations
     public List<ShelfProduct> storeInventory=new SVector<ShelfProduct>();
     
     private static Converter<ShelfProduct,Environmental> converter=new Converter<ShelfProduct,Environmental>()
@@ -84,7 +84,7 @@ public class DefaultCoffeeShop implements CoffeeShop
     public void cloneFix(DefaultCoffeeShop E)
     {
         storeInventory=new SVector<ShelfProduct>();
-        baseInventory=new SVector<Environmental>();
+        enumerableInventory=new SVector<Environmental>();
         Hashtable<Environmental,Environmental> copyFix=new Hashtable<Environmental,Environmental>();
         for(ShelfProduct SP: storeInventory)
             if(SP.product!=null)
@@ -94,15 +94,15 @@ public class DefaultCoffeeShop implements CoffeeShop
             	CMLib.threads().deleteTick(I3,-1);
                 storeInventory.add(new ShelfProduct(I3,SP.number,SP.price));
             }
-        for(int i=0;i<E.baseInventory.size();i++)
+        for(int i=0;i<E.enumerableInventory.size();i++)
         {
-            Environmental I2=(Environmental)E.baseInventory.elementAt(i);
+            Environmental I2=(Environmental)E.enumerableInventory.elementAt(i);
             if(I2!=null)
             {
                 Environmental I3=(Environmental)copyFix.get(I2);
                 if(I3==null) I3=(Environmental)I2.copyOf();
             	CMLib.threads().deleteTick(I3,-1);
-                baseInventory.addElement(I3);
+                enumerableInventory.addElement(I3);
             }
         }
     }
@@ -125,11 +125,11 @@ public class DefaultCoffeeShop implements CoffeeShop
     	return false;
     }
     
-    public boolean inBaseInventory(Environmental thisThang)
+    public boolean inEnumerableInventory(Environmental thisThang)
     {
-        for(int x=0;x<baseInventory.size();x++)
+        for(int x=0;x<enumerableInventory.size();x++)
         {
-            Environmental E=(Environmental)baseInventory.elementAt(x);
+            Environmental E=(Environmental)enumerableInventory.elementAt(x);
             if(shopCompare(E,thisThang)) return true;
         }
         return false;
@@ -140,9 +140,9 @@ public class DefaultCoffeeShop implements CoffeeShop
         return addStoreInventory(thisThang,1,-1);
     }
 
-    public int baseStockSize()
+    public int enumerableStockSize()
     {
-        return baseInventory.size();
+        return enumerableInventory.size();
     }
 
     public int totalStockSize()
@@ -163,9 +163,9 @@ public class DefaultCoffeeShop implements CoffeeShop
     	if(V!=null) return V.iterator();
         return new Vector<Environmental>(1).iterator();
     }
-    public Iterator<Environmental> getBaseInventory()
+    public Iterator<Environmental> getEnumerableInventory()
     {
-        return baseInventory.iterator();
+        return enumerableInventory.iterator();
     }
 
     public Environmental addStoreInventory(Environmental thisThang, 
@@ -173,11 +173,11 @@ public class DefaultCoffeeShop implements CoffeeShop
                                            int price)
     {
         if(number<0) number=1;
-        if((isSold(ShopKeeper.DEAL_INVENTORYONLY))&&(!inBaseInventory(thisThang)))
+        if((isSold(ShopKeeper.DEAL_INVENTORYONLY))&&(!inEnumerableInventory(thisThang)))
         {
         	Environmental E=(Environmental)thisThang.copyOf();
         	CMLib.threads().deleteTick(E,-1);
-            baseInventory.addElement(E);
+            enumerableInventory.addElement(E);
         }
         Environmental originalUncopiedThang=thisThang;
         if(thisThang instanceof InnKey)
@@ -237,13 +237,13 @@ public class DefaultCoffeeShop implements CoffeeShop
 
     public void delAllStoreInventory(Environmental thisThang)
     {
-        if((isSold(ShopKeeper.DEAL_INVENTORYONLY))&&(inBaseInventory(thisThang)))
+        if((isSold(ShopKeeper.DEAL_INVENTORYONLY))&&(inEnumerableInventory(thisThang)))
         {
-            for(int v=baseInventory.size()-1;v>=0;v--)
+            for(int v=enumerableInventory.size()-1;v>=0;v--)
             {
-                Environmental E=(Environmental)baseInventory.elementAt(v);
+                Environmental E=(Environmental)enumerableInventory.elementAt(v);
                 if(shopCompare(E,thisThang))
-                	baseInventory.removeElement(E);
+                	enumerableInventory.removeElement(E);
             }
         }
         for(ShelfProduct SP : storeInventory)
@@ -354,7 +354,7 @@ public class DefaultCoffeeShop implements CoffeeShop
     public void emptyAllShelves()
     {
         if(storeInventory!=null)storeInventory.clear();
-        if(baseInventory!=null)baseInventory.clear();
+        if(enumerableInventory!=null)enumerableInventory.clear();
     }
     public List<Environmental> removeSellableProduct(String named, MOB mob)
     {
@@ -420,7 +420,7 @@ public class DefaultCoffeeShop implements CoffeeShop
     {
         Vector<Environmental> V=new Vector<Environmental>();
         storeInventory=new SVector<ShelfProduct>();
-        baseInventory=new SVector<Environmental>();
+        enumerableInventory=new SVector<Environmental>();
         
         if(text.length()==0) return;
     	ShopKeeper shop=shopKeeper();

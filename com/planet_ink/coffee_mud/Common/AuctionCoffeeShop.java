@@ -74,17 +74,17 @@ public class AuctionCoffeeShop implements CoffeeShop
     public ShopKeeper shopKeeper(){ return (shopKeeper==null)?null:shopKeeper.get();}
     public boolean isSold(int code){ShopKeeper SK=shopKeeper(); return (SK==null)?false:SK.isSold(code);}
     
-    public boolean inBaseInventory(Environmental thisThang)
+    public boolean inEnumerableInventory(Environmental thisThang)
     {
         return false;
     }
 
     public Environmental addStoreInventory(Environmental thisThang){ return addStoreInventory(thisThang,1,-1);}
-    public int baseStockSize(){ return 0;}
+    public int enumerableStockSize(){ return 0;}
     public int totalStockSize(){ return 0;}
     public Iterator<Environmental> getStoreInventory(){ return emptyV.iterator();}
     public Iterator<Environmental> getStoreInventory(String srchStr){ return emptyV.iterator();}
-    public Iterator<Environmental> getBaseInventory(){ return emptyV.iterator();}
+    public Iterator<Environmental> getEnumerableInventory(){ return emptyV.iterator();}
     
     public Environmental addStoreInventory(Environmental thisThang, 
                                            int number, 

@@ -191,7 +191,7 @@ public class Bard extends StdCharClass
                     &&(M.getStartRoom()==R))
                     {
                     	List<Ability> V2=new Vector<Ability>();
-        				for(Iterator<Environmental> i=((ShopKeeper)M).getShop().getBaseInventory();i.hasNext();)
+        				for(Iterator<Environmental> i=((ShopKeeper)M).getShop().getStoreInventory();i.hasNext();)
         				{
         					Environmental O=(Environmental)i.next();
                             if(O instanceof Potion)

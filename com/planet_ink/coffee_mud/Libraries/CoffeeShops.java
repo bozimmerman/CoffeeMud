@@ -1341,7 +1341,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         case ShopKeeper.DEAL_SLAVES:
             return ((E instanceof MOB)&&(!CMLib.flags().isAnimalIntelligence((MOB)E)));
         case ShopKeeper.DEAL_INVENTORYONLY:
-            return (shopKeeper.getShop().inBaseInventory(E));
+            return (shopKeeper.getShop().inEnumerableInventory(E));
         case ShopKeeper.DEAL_INNKEEPER:
             return E instanceof InnKey;
         case ShopKeeper.DEAL_JEWELLER:

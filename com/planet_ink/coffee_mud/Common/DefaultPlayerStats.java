@@ -712,7 +712,21 @@ public class DefaultPlayerStats implements PlayerStats
         if(numRooms<=0) return true;
         return roomSet().roomCount(A.Name())>0;
     }
-
+    public void unVisit(Room R)
+    {
+        if(roomSet().contains(CMLib.map().getExtendedRoomID(R)))
+        	roomSet().remove(CMLib.map().getExtendedRoomID(R));
+    }
+    public void unVisit(Area A)
+    {
+    	Room R;
+    	for(Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
+    	{
+    		R=r.nextElement();
+	        if(roomSet().contains(CMLib.map().getExtendedRoomID(R)))
+	        	roomSet().remove(CMLib.map().getExtendedRoomID(R));
+    	}
+    }
     
     public int percentVisited(MOB mob, Area A)
     {

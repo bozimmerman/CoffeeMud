@@ -124,7 +124,7 @@ public class Deviations extends StdCommand
 					ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 					if(SK!=null)
 					{
-	        			for(Iterator<Environmental> i=SK.getShop().getBaseInventory();i.hasNext();)
+	        			for(Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
 	        			{
 	        				Environmental E2=(Environmental)i.next();
 							if(E2 instanceof Item)
