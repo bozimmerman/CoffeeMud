@@ -1079,7 +1079,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         }
     }
 
-    public List<LandTitle> addRealEstateTitles(List<LandTitle> V, MOB buyer, CoffeeShop shop, Room myRoom)
+    public List<Environmental> addRealEstateTitles(List<Environmental> V, MOB buyer, CoffeeShop shop, Room myRoom)
     {
         if((myRoom==null)||(buyer==null)) return V;
         Area myArea=myRoom.getArea();
@@ -1184,7 +1184,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             }
         }
         if(V.size()<2) return V;
-        Vector<LandTitle> V2=new Vector<LandTitle>(V.size());
+        Vector<Environmental> V2=new Vector<Environmental>(V.size());
         LandTitle L=null;
         LandTitle L2=null;
         int x=-1;

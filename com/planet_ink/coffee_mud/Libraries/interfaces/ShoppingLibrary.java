@@ -52,7 +52,7 @@ public interface ShoppingLibrary extends CMLibrary
     public boolean purchaseItems(Item baseProduct, List<Environmental> products, MOB seller, MOB mobFor);
     public boolean purchaseMOB(MOB product, MOB seller, ShopKeeper shop, MOB mobFor);
     public void purchaseAbility(Ability A,  MOB seller, ShopKeeper shop, MOB mobFor);
-    public List<LandTitle> addRealEstateTitles(List<LandTitle> V, MOB buyer, CoffeeShop shop, Room myRoom);
+    public List<Environmental> addRealEstateTitles(List<Environmental> V, MOB buyer, CoffeeShop shop, Room myRoom);
     public boolean ignoreIfNecessary(MOB mob, String ignoreMask, MOB whoIgnores);
     public String storeKeeperString(CoffeeShop shop);
     public boolean doISellThis(Environmental thisThang, ShopKeeper shop);

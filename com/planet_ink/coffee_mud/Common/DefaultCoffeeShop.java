@@ -262,7 +262,7 @@ public class DefaultCoffeeShop implements CoffeeShop
            &&((isSold(ShopKeeper.DEAL_LANDSELLER))||(isSold(ShopKeeper.DEAL_CLANDSELLER))
               ||(isSold(ShopKeeper.DEAL_SHIPSELLER))||(isSold(ShopKeeper.DEAL_CSHIPSELLER))))
         {
-            List<LandTitle> titles=CMLib.coffeeShops().addRealEstateTitles(new Vector<LandTitle>(),mob,this,startRoom());
+            List<Environmental> titles=CMLib.coffeeShops().addRealEstateTitles(new Vector<Environmental>(),mob,this,startRoom());
             item=CMLib.english().fetchEnvironmental(titles,name,true);
             if(item==null)
                 item=CMLib.english().fetchEnvironmental(titles,name,false);
@@ -299,7 +299,7 @@ public class DefaultCoffeeShop implements CoffeeShop
            ||(isSold(ShopKeeper.DEAL_SHIPSELLER))||(isSold(ShopKeeper.DEAL_CSHIPSELLER)))
         &&(mob!=null))
         {
-            List<LandTitle> titles=CMLib.coffeeShops().addRealEstateTitles(new Vector<LandTitle>(),mob,this,startRoom());
+            List<Environmental> titles=CMLib.coffeeShops().addRealEstateTitles(new Vector<Environmental>(),mob,this,startRoom());
             item=CMLib.english().fetchEnvironmental(titles,name,true);
             if(item==null)
                 item=CMLib.english().fetchEnvironmental(titles,name,false);
