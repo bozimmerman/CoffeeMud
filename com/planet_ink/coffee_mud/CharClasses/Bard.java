@@ -204,7 +204,17 @@ public class Bard extends StdCharClass
 
                             }
                             if(O instanceof Drink)
+                            {
                                 V2.addAll(CMLib.flags().domainAffects((Drink)O,Ability.ACODE_POISON));
+                                String name=" "+O.Name().toLowerCase();
+                                if(name.endsWith(" beer")
+                                ||name.endsWith(" liquor")
+                                ||name.endsWith(" ale")
+                                ||name.endsWith(" whiskey")
+                                ||name.endsWith(" wine")
+                                ||name.endsWith(" wine"))
+                                	pub=true;
+                            }
                             for(int v=0;v<V2.size();v++)
                                 pub=pub||CMath.bset(((Ability)V2.get(v)).flags(),Ability.FLAG_INTOXICATING);
                         }
