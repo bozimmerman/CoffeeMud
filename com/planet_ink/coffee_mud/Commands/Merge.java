@@ -656,7 +656,7 @@ public class Merge extends StdCommand
 				for(Enumeration<MOB> r=R.inhabitants();r.hasMoreElements();)
 				{
 					MOB M=r.nextElement();
-					if(!doneM.contains(M))
+					if((!doneM.contains(M))&&(M.isMonster()))
 						Log.sysOut("Compare","MOB: "+dbR.roomID()+"."+M.Name()+" not in database");
 				}
 				
