@@ -95,7 +95,7 @@ public class ThinRoom implements Room {
 					myR=V.get(i.next());
 					while(i.hasNext()) V.remove(i.next());
 					CMLib.database().DBReadRoomExits(roomID,V,false);
-					CMLib.database().DBReadContent(myR,V);
+					CMLib.database().DBReadContent(myR,V,true);
 					myR.getArea().fillInAreaRoom(R);
 					if(CMath.bset(myR.getArea().flags(),Area.FLAG_THIN))
 						myR.setExpirationDate(System.currentTimeMillis()+WorldMap.ROOM_EXPIRATION_MILLIS);
@@ -205,6 +205,7 @@ public class ThinRoom implements Room {
 	public void addInhabitant(MOB mob){}
 	public void delInhabitant(MOB mob){}
 	public int numInhabitants(){return 0;}
+	public Enumeration<MOB> inhabitants(){return EmptyEnumeration.INSTANCE;}
 	public boolean isInhabitant(MOB mob){return false;}
 	public MOB fetchInhabitant(int i){return null;}
 	public int numPCInhabitants(){return 0;}

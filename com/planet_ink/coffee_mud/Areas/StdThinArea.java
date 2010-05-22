@@ -69,7 +69,7 @@ public class StdThinArea extends StdArea
 				TreeMap<String,Room> V=new TreeMap<String,Room>();
 				V.put(roomID,R);
 				CMLib.database().DBReadRoomExits(roomID,V,false);
-				CMLib.database().DBReadContent(R,V);
+				CMLib.database().DBReadContent(R,V,true);
 				fillInAreaRoom(R);
 				R.setExpirationDate(System.currentTimeMillis()+WorldMap.ROOM_EXPIRATION_MILLIS);
 			}

@@ -2,6 +2,9 @@ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.database.DBConnection;
+import com.planet_ink.coffee_mud.core.database.DBConnector;
+import com.planet_ink.coffee_mud.core.database.DBInterface;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -187,7 +190,7 @@ public class Merge extends StdCommand
 		commands.removeElementAt(0);
 		if(commands.size()==0)
 		{
-			mob.tell("Merge what file?");
+			mob.tell("Merge what? Try DATABASE or a filename");
 			return false;
 		}
 		if(mob.isMonster())
@@ -198,6 +201,7 @@ public class Merge extends StdCommand
 		if((commands.size()>0)&&
 		   ((String)commands.elementAt(0)).equalsIgnoreCase("noprompt"))
 			commands.removeElementAt(0);
+		
 		if((commands.size()>0)&&
 		   ((String)commands.elementAt(0)).equalsIgnoreCase("?"))
 		{
@@ -213,6 +217,7 @@ public class Merge extends StdCommand
 			mob.tell("Valid field names are "+allFieldsMsg.toString());
 			return false;
 		}
+		String scope="WORLD";
 		if((commands.size()>0)&&
 		   ((String)commands.elementAt(0)).equalsIgnoreCase("room"))
 		{
@@ -223,6 +228,7 @@ public class Merge extends StdCommand
 			}
 			commands.removeElementAt(0);
 			placesToDo.addElement(mob.location());
+			scope="ROOM";
 		}
 		if((commands.size()>0)&&
 		   ((String)commands.elementAt(0)).equalsIgnoreCase("area"))
@@ -234,6 +240,7 @@ public class Merge extends StdCommand
 			}
 			commands.removeElementAt(0);
 			placesToDo.addElement(mob.location().getArea());
+			scope="AREA";
 		}
 		if((commands.size()>0)&&
 		   ((String)commands.elementAt(0)).equalsIgnoreCase("world"))
@@ -245,11 +252,24 @@ public class Merge extends StdCommand
 			}
 			commands.removeElementAt(0);
 			placesToDo=new Vector();
+			scope="WORLD";
 		}
 		if(commands.size()==0)
 		{
-			mob.tell("Merge what file?");
+			mob.tell("Merge what? DATABASE or filename");
 			return false;
+		}
+		String firstWord=(String)commands.firstElement();
+		if(firstWord.equalsIgnoreCase("DATABASE"))
+		{
+			commands.removeElementAt(0);
+			if(commands.size()==0)
+			{
+				mob.tell("Merge parameters missing: DBCLASS, DBSERVICE, DBUSER, DBPASS");
+				return false;
+			}
+			firstWord=(String)commands.firstElement();
+			return doArchonDBCompare(mob, scope, firstWord, commands);
 		}
 		String filename=(String)commands.lastElement();
 		commands.remove(filename);
@@ -499,6 +519,185 @@ public class Merge extends StdCommand
                 A.setAreaState(Area.STATE_ACTIVE);
         }
 		return false;
+	}
+	
+    private static final SHashtable<String,Integer> OBJECT_TYPES=new SHashtable<String,Integer>(new Object[][]{
+    		{"MOBS",Integer.valueOf(CMClass.OBJECT_MOB)},
+    		{"ROOMS",Integer.valueOf(CMClass.OBJECT_LOCALE)},
+    		{"ITEMS",Integer.valueOf(CMClass.OBJECT_ITEM)},
+    		{"WEAPON",Integer.valueOf(CMClass.OBJECT_WEAPON)},
+    		{"ARMOR",Integer.valueOf(CMClass.OBJECT_ARMOR)},
+        });
+    	
+	public boolean doArchonDBCompare(MOB mob, String scope, String firstWord, Vector commands)
+	{
+		Integer doType = OBJECT_TYPES.get(firstWord.toUpperCase());
+		if(doType==null) doType = OBJECT_TYPES.get(firstWord.toUpperCase()+"S");
+		if(doType!=null)
+			commands.remove(0);
+		else
+			doType=CMClass.OBJECT_LOCALE;
+		
+		String theRest = CMParms.combineWithQuotes(commands, 0);
+		DBConnector dbConnector=null;
+        String dbClass=CMParms.getParmStr(theRest,"DBCLASS","");
+        String dbService=CMParms.getParmStr(theRest,"DBSERVICE","");
+        String dbUser=CMParms.getParmStr(theRest,"DBUSER","");
+        String dbPass=CMParms.getParmStr(theRest,"DBPASS","");
+        int dbConns=CMParms.getParmInt(theRest,"DBCONNECTIONS",3);
+        boolean dbReuse=CMParms.getParmBool(theRest,"DBREUSE",true);
+        if(dbClass.length()==0)
+        {
+        	mob.tell("This command requires DBCLASS= to be set.");
+    		return false;
+        }
+        if(dbService.length()==0)
+        {
+        	mob.tell("This command requires DBSERVICE= to be set.");
+    		return false;
+        }
+        if(dbUser.length()==0)
+        {
+        	mob.tell("This command requires DBUSER= to be set.");
+    		return false;
+        }
+        if(dbPass.length()==0)
+        {
+        	mob.tell("This command requires DBPASS= to be set.");
+    		return false;
+        }
+        
+        dbConnector=new DBConnector(dbClass,dbService,dbUser,dbPass,dbConns,dbReuse,false,false);
+        dbConnector.reconnect();
+		DBInterface dbInterface = new DBInterface(dbConnector);
+		
+		DBConnection DBTEST=dbConnector.DBFetch();
+		if(DBTEST!=null) dbConnector.DBDone(DBTEST);
+		mob.tell("Loading database rooms...");
+		List<Room> rooms = new LinkedList<Room>();
+		if((!dbConnector.amIOk())||(!dbInterface.isConnected()))
+		{
+        	mob.tell("Failed to connect to database.");
+    		return false;
+		}
+		if(scope.equalsIgnoreCase("AREA"))
+			rooms.addAll(Arrays.asList(dbInterface.DBReadRoomObjects(mob.location().getArea().Name(), false)));
+		else
+		if(scope.equalsIgnoreCase("ROOM"))
+		{
+			Room R=dbInterface.DBReadRoomObject(mob.location().roomID(), false);
+			if(R!=null)
+				rooms.add(R);
+		}
+		else
+		for(Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
+			rooms.addAll(Arrays.asList(dbInterface.DBReadRoomObjects(e.nextElement().Name(), false)));
+		if(rooms.size()==0)
+		{
+        	mob.tell("No rooms found.");
+    		return false;
+		}
+		for(Room R : rooms)
+	        CMLib.database().DBReadContent(R,null,false);
+		mob.tell("Data loaded, starting scan.");
+		Comparator<MOB> convM=new Comparator<MOB>() {
+			public int compare(MOB arg0, MOB arg1) {
+				int x=arg0.ID().compareTo(arg1.ID());
+				return(x!=0)?x:arg0.Name().compareTo(arg1.Name());
+			}
+		};
+		Comparator<Item> convI=new Comparator<Item>() {
+			public int compare(Item arg0, Item arg1) {
+				int x=arg0.ID().compareTo(arg1.ID());
+				return(x!=0)?x:arg0.Name().compareTo(arg1.Name());
+			}
+		};
+		
+		for(Room dbR : rooms)
+		{
+			Room R=CMLib.map().getRoom(dbR.roomID());
+			if(R==null)
+			{
+				if(doType.intValue()==CMClass.OBJECT_LOCALE)
+					Log.sysOut("Compare",dbR.roomID()+" not in database");
+				// import, including exits!
+				continue;
+			}
+			synchronized(("SYNC"+dbR.roomID()).intern())
+			{
+				R=CMLib.map().getRoom(R);
+				CMLib.map().resetRoom(R);
+				List<MOB> mobSetL=new Vector<MOB>();
+				for(Enumeration<MOB> e=dbR.inhabitants();e.hasMoreElements();)
+					mobSetL.add(e.nextElement());
+				MOB[] mobSet=mobSetL.toArray(new MOB[0]);
+				Arrays.sort(mobSet, convM);
+				String lastName="";
+				int ct=1;
+				HashSet<MOB> doneM=new HashSet<MOB>();
+				for(MOB dbM : mobSet)
+				{
+					if(!lastName.equals(dbM.Name()))
+						ct=1;
+					else
+						ct++;
+					String rName=dbM.Name()+"."+ct;
+					MOB M=R.fetchInhabitant(rName);
+					if(M==null)
+						Log.sysOut("Compare","MOB: "+dbR.roomID()+"."+rName+" not in local room");
+					else
+					{
+						doneM.add(M);
+						if(!dbM.sameAs(M))
+							Log.sysOut("Compare","MOB: "+dbR.roomID()+"."+rName+" not same as database");
+					}
+					lastName=dbM.Name();
+				}
+				for(Enumeration<MOB> r=R.inhabitants();r.hasMoreElements();)
+				{
+					MOB M=r.nextElement();
+					if(!doneM.contains(M))
+						Log.sysOut("Compare","MOB: "+dbR.roomID()+"."+M.Name()+" not in database");
+				}
+				
+				STreeSet<Item> itemSetL=new STreeSet<Item>(convI);
+				for(Enumeration<Item> e=dbR.items();e.hasMoreElements();)
+					itemSetL.add(e.nextElement());
+				Item[] itemSet=itemSetL.toArray(new Item[0]);
+				Arrays.sort(itemSet, convI);
+				lastName="";
+				ct=1;
+				HashSet<Item> doneI=new HashSet<Item>();
+				for(Item dbI : itemSet)
+				{
+					if(!lastName.equals(dbI.Name()))
+						ct=1;
+					else
+						ct++;
+					String rName=dbI.Name()+"."+ct;
+					Item I=R.findItem(rName);
+					if(I==null)
+						Log.sysOut("Compare","Item: "+dbR.roomID()+"."+rName+" not in local room");
+					else
+					{
+						doneI.add(I);
+						if(!dbI.sameAs(I))
+							Log.sysOut("Compare","Item: "+dbR.roomID()+"."+rName+" not same as database");
+					}
+					lastName=dbI.Name();
+				}
+				for(Enumeration<Item> i=R.items();i.hasMoreElements();)
+				{
+					Item I=i.nextElement();
+					if(!doneI.contains(I))
+						Log.sysOut("Compare","Item: "+dbR.roomID()+"."+I.Name()+" not in database");
+				}
+			}
+			dbR.destroy();
+		}
+		dbInterface.shutdown();
+		mob.tell("Done");
+		return true;
 	}
 	
 	public boolean canBeOrdered(){return true;}

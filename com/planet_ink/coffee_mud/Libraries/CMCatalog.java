@@ -398,7 +398,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
             				changeCatalogFlag(content.P(),false);
         			}
         		}
-        		R=CMLib.coffeeMaker().makeNewRoomContent(R);
+        		R=CMLib.coffeeMaker().makeNewRoomContent(R,false);
         		contents=roomContent(R);
         		boolean dirty=false;
         		for(RoomContent content : contents)

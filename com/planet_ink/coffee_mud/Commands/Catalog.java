@@ -197,7 +197,7 @@ public class Catalog extends StdCommand
 					for(;rooms.hasMoreElements();)
 					{
 						roomID=(String)rooms.nextElement();
-						R=CMLib.coffeeMaker().makeNewRoomContent(CMLib.map().getRoom(roomID));
+						R=CMLib.coffeeMaker().makeNewRoomContent(CMLib.map().getRoom(roomID),false);
 						Vector<CatalogLibrary.RoomContent> contents=CMLib.catalog().roomContent(R);
 						boolean dirty=false;
 						for(CatalogLibrary.RoomContent content : contents)
@@ -223,9 +223,9 @@ public class Catalog extends StdCommand
 						if(dirty)
 						{
 							CMLib.catalog().updateRoomContent(roomID, contents);
-							R.destroy();
 							CMLib.map().resetRoom(CMLib.map().getRoom(roomID), true);
 						}
+						R.destroy();
 					}
 				}
 			}
@@ -455,7 +455,7 @@ public class Catalog extends StdCommand
 					{
 						roomID=(String)rooms.nextElement();
 						R=CMLib.map().getRoom(roomID);
-						if(db) R=CMLib.coffeeMaker().makeNewRoomContent(R);
+						if(db) R=CMLib.coffeeMaker().makeNewRoomContent(R,false);
 						Vector<CatalogLibrary.RoomContent> contents=CMLib.catalog().roomContent(R);
 						for(CatalogLibrary.RoomContent content : contents)
 						{
@@ -498,7 +498,7 @@ public class Catalog extends StdCommand
 					{
 						roomID=(String)rooms.nextElement();
 						R=CMLib.map().getRoom(roomID);
-						if(db) R=CMLib.coffeeMaker().makeNewRoomContent(R);
+						if(db) R=CMLib.coffeeMaker().makeNewRoomContent(R,false);
 						Vector<CatalogLibrary.RoomContent> contents=CMLib.catalog().roomContent(R);
 						for(CatalogLibrary.RoomContent content : contents)
 						{
@@ -542,7 +542,7 @@ public class Catalog extends StdCommand
 						for(;rooms.hasMoreElements();)
 						{
 							roomID=(String)rooms.nextElement();
-							R=CMLib.coffeeMaker().makeNewRoomContent(CMLib.map().getRoom(roomID));
+							R=CMLib.coffeeMaker().makeNewRoomContent(CMLib.map().getRoom(roomID),false);
 							Vector<CatalogLibrary.RoomContent> contents=CMLib.catalog().roomContent(R);
 							boolean dirty=false;
 							for(CatalogLibrary.RoomContent content : contents)
@@ -577,8 +577,8 @@ public class Catalog extends StdCommand
 							{
 								CMLib.catalog().updateRoomContent(roomID, contents);
 								CMLib.map().resetRoom(CMLib.map().getRoom(roomID), true);
-								R.destroy();
 							}
+							R.destroy();
 						}
 					}
 				}

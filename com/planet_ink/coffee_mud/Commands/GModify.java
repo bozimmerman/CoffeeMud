@@ -605,7 +605,7 @@ public class GModify extends StdCommand
 	            int oldFlag=A.getAreaState();
 	            if(changes.size()==0)
 	            {
-	                R=CMLib.coffeeMaker().makeNewRoomContent(R);
+	                R=CMLib.coffeeMaker().makeNewRoomContent(R,false);
 		            if(R!=null) A.setAreaState(Area.STATE_FROZEN);
 	            }
 	            else

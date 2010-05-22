@@ -69,7 +69,7 @@ public class MUD extends Thread implements MudHost
     private int			 	port=5555;
     private final long 		startupTime = System.currentTimeMillis();
     
-    private static boolean 		   		bringDown=false;
+    private static boolean 		   	   bringDown=false;
     private static String 			   execExternalCommand=null;
     private static I3Server 		   i3server=null;
     private static CM1Server 		   cm1server=null;

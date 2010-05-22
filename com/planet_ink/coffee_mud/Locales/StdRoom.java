@@ -1529,6 +1529,10 @@ public class StdRoom implements Room
 	{
 		inhabitants.addElement(mob);
 	}
+	public Enumeration<MOB> inhabitants()
+	{ 
+		return inhabitants.elements();
+	}
 	public int numInhabitants()
 	{
 		return inhabitants.size();

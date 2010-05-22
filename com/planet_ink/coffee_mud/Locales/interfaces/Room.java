@@ -221,6 +221,7 @@ public interface Room extends PhysicalAgent, ItemPossessor
 
 	public MOB fetchInhabitant(String inhabitantID);
 	public List<MOB> fetchInhabitants(String inhabitantID);
+	public Enumeration<MOB> inhabitants();
 	public void addInhabitant(MOB mob);
 	public void delInhabitant(MOB mob);
 	public int numInhabitants();

@@ -1158,14 +1158,14 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			Log.debugOut("CoffeeMaker",str.toString());
 	}
 
-    public Room makeNewRoomContent(Room room)
+    public Room makeNewRoomContent(Room room, boolean makeLive)
     {
         if(room==null) return null;
 		room=CMLib.map().getRoom(room);
         Room R=CMClass.getLocale(room.ID());
         if(R==null) return null;
         R.setRoomID(room.roomID());
-        CMLib.database().DBReadContent(R,null);
+        CMLib.database().DBReadContent(R,null,makeLive);
         return R;
     }
 
@@ -1261,7 +1261,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
     							    Hashtable found)
 	{
 		StringBuffer buf=new StringBuffer("");
-        room=makeNewRoomContent(room);
+        room=makeNewRoomContent(room,false);
 		if(room==null) return buf;
 		Vector mobs=new Vector();
 		for(int i=0;i<room.numInhabitants();i++)
@@ -1461,7 +1461,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 									 int type) // 0=item, 1=weapon, 2=armor
 	{
 		StringBuffer buf=new StringBuffer("");
-        room=makeNewRoomContent(room);
+        room=makeNewRoomContent(room,false);
 		if(room==null) return buf;
 		Vector items=new Vector();
 		for(int i=0;i<room.numItems();i++)
@@ -1509,7 +1509,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(room==null) return buf;
 		// do this quick before a tick messes it up!
 		Vector inhabs=new Vector();
-        Room croom=makeNewRoomContent(room);
+        Room croom=makeNewRoomContent(room,false);
 		if(andContent)
 		for(int i=0;i<croom.numInhabitants();i++)
 			inhabs.addElement(croom.fetchInhabitant(i));

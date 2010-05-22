@@ -74,7 +74,7 @@ public interface GenericBuilder extends CMLibrary
     public StringBuffer getAreaXML(Area area,  Session S, HashSet custom, HashSet files, boolean andRooms);
     public StringBuffer logTextDiff(String e1, String e2);
     public void logDiff(Environmental E1, Environmental E2);
-    public Room makeNewRoomContent(Room room);
+    public Room makeNewRoomContent(Room room, boolean makeLive);
     public StringBuffer getRoomMobs(Room room, HashSet custom, HashSet files, Hashtable found);
     public StringBuffer getMobXML(MOB mob);
     public StringBuffer getMobsXML(Vector mobs, HashSet custom, HashSet files, Hashtable found);
