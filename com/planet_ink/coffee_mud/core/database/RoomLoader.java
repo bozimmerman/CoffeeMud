@@ -567,6 +567,7 @@ public class RoomLoader
                     	((MOB)P).recoverPhyStats();
                     	((MOB)P).recoverMaxState();
                     	((MOB)P).recoverCharStats();
+                    	((MOB)P).resetToMaxState();
                     }
                 }
     		}

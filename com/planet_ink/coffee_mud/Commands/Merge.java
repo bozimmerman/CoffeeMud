@@ -527,8 +527,19 @@ public class Merge extends StdCommand
     		{"ITEMS",Integer.valueOf(CMClass.OBJECT_ITEM)},
     		{"WEAPON",Integer.valueOf(CMClass.OBJECT_WEAPON)},
     		{"ARMOR",Integer.valueOf(CMClass.OBJECT_ARMOR)},
-        });
-    	
+    });
+    
+    private boolean amMerging(Integer doType, Environmental E)
+    {
+    	if(doType==null) return true;
+    	if(doType==CMClass.OBJECT_LOCALE) return true;
+    	if(doType==CMClass.OBJECT_MOB) return E instanceof MOB;
+    	if(doType==CMClass.OBJECT_ITEM) return E instanceof Item;
+    	if(doType==CMClass.OBJECT_WEAPON) return E instanceof Weapon;
+    	if(doType==CMClass.OBJECT_ARMOR) return E instanceof Armor;
+    	return false;
+    }
+    
 	public boolean doArchonDBCompare(MOB mob, String scope, String firstWord, Vector commands)
 	{
 		Integer doType = OBJECT_TYPES.get(firstWord.toUpperCase());
@@ -625,6 +636,9 @@ public class Merge extends StdCommand
 			}
 			synchronized(("SYNC"+dbR.roomID()).intern())
 			{
+				boolean updateMobs=false;
+				boolean updateItems=false;
+				boolean updateRoom=false;
 				R=CMLib.map().getRoom(R);
 				CMLib.map().resetRoom(R);
 				List<MOB> mobSetL=new Vector<MOB>();
@@ -644,8 +658,12 @@ public class Merge extends StdCommand
 					String rName=dbM.Name()+"."+ct;
 					MOB M=R.fetchInhabitant(rName);
 					if(M==null)
-						Log.sysOut("Compare","MOB: "+dbR.roomID()+"."+rName+" not in local room");
+					{
+						if(amMerging(doType,dbM))
+							Log.sysOut("Compare","MOB: "+dbR.roomID()+"."+rName+" not in local room");
+					}
 					else
+					if(amMerging(doType,dbM))
 					{
 						doneM.add(M);
 						if(!dbM.sameAs(M))
@@ -656,7 +674,7 @@ public class Merge extends StdCommand
 				for(Enumeration<MOB> r=R.inhabitants();r.hasMoreElements();)
 				{
 					MOB M=r.nextElement();
-					if((!doneM.contains(M))&&(M.isMonster()))
+					if(amMerging(doType,M)&&(!doneM.contains(M))&&(M.isMonster()))
 						Log.sysOut("Compare","MOB: "+dbR.roomID()+"."+M.Name()+" not in database");
 				}
 				
@@ -677,8 +695,12 @@ public class Merge extends StdCommand
 					String rName=dbI.Name()+"."+ct;
 					Item I=R.findItem(rName);
 					if(I==null)
-						Log.sysOut("Compare","Item: "+dbR.roomID()+"."+rName+" not in local room");
+					{
+						if(amMerging(doType,dbI))
+							Log.sysOut("Compare","Item: "+dbR.roomID()+"."+rName+" not in local room");
+					}
 					else
+					if(amMerging(doType,dbI))
 					{
 						doneI.add(I);
 						if(!dbI.sameAs(I))
@@ -689,9 +711,12 @@ public class Merge extends StdCommand
 				for(Enumeration<Item> i=R.items();i.hasMoreElements();)
 				{
 					Item I=i.nextElement();
-					if(!doneI.contains(I))
+					if(amMerging(doType,I)&&(!doneI.contains(I)))
 						Log.sysOut("Compare","Item: "+dbR.roomID()+"."+I.Name()+" not in database");
 				}
+				if(updateRoom) CMLib.database().DBUpdateRoom(R);
+				if(updateItems) CMLib.database().DBUpdateItems(R);
+				if(updateMobs) CMLib.database().DBUpdateMOBs(R);
 			}
 			dbR.destroy();
 		}
