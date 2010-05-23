@@ -169,49 +169,52 @@ public class CMParms
     {
         Vector<String> commands=new Vector<String>();
         if(str==null) return commands;
-        str=str.trim();
-        while(!str.equals(""))
-        {
-            int spaceIndex=str.indexOf(' ');
-            int strIndex=str.indexOf("\"");
-            String CMD="";
-            if((strIndex>=0)&&((strIndex<spaceIndex)||(spaceIndex<0)))
-            {
-                int endStrIndex=str.indexOf("\"",strIndex+1);
-                if(endStrIndex>strIndex)
-                {
-                    CMD=str.substring(strIndex+1,endStrIndex).trim();
-                    str=str.substring(endStrIndex+1).trim();
-                }
-                else
-                {
-                    CMD=str.substring(strIndex+1).trim();
-                    str="";
-                }
-            }
-            else
-            if(spaceIndex>=0)
-            {
-                CMD=str.substring(0,spaceIndex).trim();
-                str=str.substring(spaceIndex+1).trim();
-            }
-            else
-            {
-                CMD=str.trim();
-                str="";
-            }
-            if(!CMD.equals(""))
-            {
-                commands.addElement(CMD);
-                if((upTo>=0)&&(commands.size()>=upTo))
-                {
-                    if(str.length()>0)
-                        commands.addElement(str);
-                    break;
-                }
-
-            }
-        }
+        StringBuilder s=new StringBuilder();
+        char[] cs=str.toCharArray();
+        int state=0;
+        for(char c : cs)
+	    	switch(state)
+	    	{
+	    	case 0:
+	    	{
+	    		if(c=='\"')
+	    			state=2;
+	    		else
+	    		if(!Character.isWhitespace(c))
+	    		{
+	    			s.append(c);
+	    			state=1;
+	    		}
+	    		break;
+	    	}
+	    	case 1:
+	    	{
+	    		if(Character.isWhitespace(c))
+	    		{
+	    			if(s.length()>0)
+		    			commands.add(s.toString());
+	    			s.setLength(0);
+	    			state=0;
+	    		}
+	    		else
+	    			s.append(c);
+	    		break;
+	    	}
+	    	case 2:
+	    	{
+	    		if(c=='\"')
+	    		{
+	    			commands.add(s.toString());
+	    			s.setLength(0);
+	    			state=0;
+	    		}
+	    		else
+	    			s.append(c);
+	    		break;
+	    	}
+	    	}
+        if(s.length()>0)
+        	commands.add(s.toString());
         return commands;
     }
 

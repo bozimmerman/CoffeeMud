@@ -57,28 +57,30 @@ public class DBInterface implements DatabaseEngine
     ClanLoader ClanLoader=null;
     DBConnector DB=null;
     
-    public DBInterface(DBConnector DB)
+    public DBInterface(DBConnector DB, List<String> privacyV)
     {
     	this.DB=DB;
     	DBConnector oldBaseDB=DB;
     	DatabaseEngine baseEngine=(DatabaseEngine)CMLib.library(MudHost.MAIN_HOST,CMLib.LIBRARY_DATABASE);
-    	if((baseEngine!=null)&&(baseEngine.getConnector()!=DB)&&(baseEngine.isConnected()))
+    	if((privacyV!=null)&&(baseEngine!=null)&&(baseEngine.getConnector()!=DB)&&(baseEngine.isConnected()))
     	    oldBaseDB=baseEngine.getConnector();
-        List<String> privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(),true);
-        this.GAbilityLoader=new GAbilityLoader(privacyV.contains("ABILITY")?DB:oldBaseDB);
-        this.GCClassLoader=new GCClassLoader(privacyV.contains("CHARCLASS")?DB:oldBaseDB);
-        this.GRaceLoader=new GRaceLoader(privacyV.contains("RACE")?DB:oldBaseDB);
-    	this.MOBloader=new MOBloader(privacyV.contains("PLAYERS")?DB:oldBaseDB);
-    	this.RoomLoader=new RoomLoader(privacyV.contains("MAP")?DB:oldBaseDB);
-    	this.DataLoader=new DataLoader(privacyV.contains("PLAYERS")?DB:oldBaseDB);
-    	this.StatLoader=new StatLoader(privacyV.contains("STATS")?DB:oldBaseDB);
-    	this.PollLoader=new PollLoader(privacyV.contains("POLLS")?DB:oldBaseDB);
-    	this.VFSLoader=new VFSLoader(privacyV.contains("DBVFS")?DB:oldBaseDB);
-    	this.JournalLoader=new JournalLoader(privacyV.contains("JOURNALS")?DB:oldBaseDB);
-    	this.QuestLoader=new QuestLoader(privacyV.contains("QUEST")?DB:oldBaseDB);
-    	this.ClanLoader=new ClanLoader(privacyV.contains("CLANS")?DB:oldBaseDB);
+        this.GAbilityLoader=new GAbilityLoader((privacyV==null)||privacyV.contains("ABILITY")?DB:oldBaseDB);
+        this.GCClassLoader=new GCClassLoader((privacyV==null)||privacyV.contains("CHARCLASS")?DB:oldBaseDB);
+        this.GRaceLoader=new GRaceLoader((privacyV==null)||privacyV.contains("RACE")?DB:oldBaseDB);
+    	this.MOBloader=new MOBloader((privacyV==null)||privacyV.contains("PLAYERS")?DB:oldBaseDB);
+    	this.RoomLoader=new RoomLoader((privacyV==null)||privacyV.contains("MAP")?DB:oldBaseDB);
+    	this.DataLoader=new DataLoader((privacyV==null)||privacyV.contains("PLAYERS")?DB:oldBaseDB);
+    	this.StatLoader=new StatLoader((privacyV==null)||privacyV.contains("STATS")?DB:oldBaseDB);
+    	this.PollLoader=new PollLoader((privacyV==null)||privacyV.contains("POLLS")?DB:oldBaseDB);
+    	this.VFSLoader=new VFSLoader((privacyV==null)||privacyV.contains("DBVFS")?DB:oldBaseDB);
+    	this.JournalLoader=new JournalLoader((privacyV==null)||privacyV.contains("JOURNALS")?DB:oldBaseDB);
+    	this.QuestLoader=new QuestLoader((privacyV==null)||privacyV.contains("QUEST")?DB:oldBaseDB);
+    	this.ClanLoader=new ClanLoader((privacyV==null)||privacyV.contains("CLANS")?DB:oldBaseDB);
     }
-    public CMObject newInstance(){return new DBInterface(DB);}
+    public CMObject newInstance()
+    {
+    	return new DBInterface(DB, CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(),true));
+    }
     public void initializeClass(){}
     public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}

@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -529,7 +530,7 @@ public class Merge extends StdCommand
     		{"ARMOR",Integer.valueOf(CMClass.OBJECT_ARMOR)},
     });
     
-    private boolean amMerging(Integer doType, Environmental E)
+    private boolean amMergingType(Integer doType, Environmental E)
     {
     	if(doType==null) return true;
     	if(doType==CMClass.OBJECT_LOCALE) return true;
@@ -540,7 +541,76 @@ public class Merge extends StdCommand
     	return false;
     }
     
-	public boolean doArchonDBCompare(MOB mob, String scope, String firstWord, Vector commands)
+    private boolean amMerging(Integer doType, MaskingLibrary.CompiledZapperMask mask, Environmental E)
+    {
+    	if(amMergingType(doType,E))
+    	{
+    		if(mask==null) return true;
+    		return CMLib.masking().maskCheck(mask, E, true);
+    	}
+    	return false;
+    }
+    
+    public boolean dbMerge(MOB mob, String name, Modifiable dbM, Modifiable M, Set<String> ignores) throws java.io.IOException
+    {
+    	if((M instanceof Physical) && (dbM instanceof Physical))
+    	{
+    		Physical PM=(Physical)M;
+    		Physical dbPM=(Physical)dbM;
+        	PM.basePhyStats().setDisposition(CMath.unsetb(PM.basePhyStats().disposition(),PhyStats.IS_CATALOGED));
+        	dbPM.basePhyStats().setDisposition(CMath.unsetb(dbPM.basePhyStats().disposition(),PhyStats.IS_CATALOGED));
+	        PM.image();
+	        dbPM.image();
+    	}
+        
+    	String[] statCodes = dbM.getStatCodes();
+        int showFlag=-1;
+        if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+            showFlag=-999;
+        boolean ok=false;
+        boolean didSomething=false;
+        while(!ok)
+        {
+            int showNumber=0;
+            mob.tell(name);
+            for(int i=0;i<statCodes.length;i++)
+            {
+            	String statCode = M.getStatCodes()[i];
+            	if(ignores.contains(statCode)||((M instanceof MOB)&&statCode.equalsIgnoreCase("INVENTORY"))) 
+            		continue;
+            	String promptStr = CMStrings.capitalizeAndLower(M.getStatCodes()[i]);
+            	String dbVal = dbM.getStat(statCode);
+            	String loVal = M.getStat(statCode);
+            	if(dbVal.equals(loVal))
+            		continue;
+            	++showNumber;
+                if((showFlag>0)&&(showFlag!=showNumber)) continue;
+                mob.tell("^H"+showNumber+". "+promptStr+"\n\rValue: ^W'"+loVal+"'\n\r^HDBVal: ^N'"+dbVal+"'");
+                if((showFlag!=showNumber)&&(showFlag>-999)) continue;
+                String res=mob.session().choose("D)atabase Value, E)dit Value, or C)ancel: ","DEC", "C");
+                if(res.trim().equalsIgnoreCase("C")) continue;
+                didSomething=true;
+                if(res.trim().equalsIgnoreCase("D"))
+            	{
+                	M.setStat(statCode,dbVal);
+            		continue;
+            	}
+                M.setStat(statCode,CMLib.genEd().prompt(mob,M.getStat(statCode),++showNumber,showFlag,promptStr));
+            }
+            if(showNumber==0) return didSomething;
+            if(showFlag<-900){ ok=true; break;}
+            if(showFlag>0){ showFlag=-1; continue;}
+            showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
+            if(showFlag<=0)
+            {
+                showFlag=-1;
+                ok=true;
+            }
+        }
+    	return didSomething;
+    }
+    
+	public boolean doArchonDBCompare(MOB mob, String scope, String firstWord, Vector commands) throws java.io.IOException
 	{
 		Integer doType = OBJECT_TYPES.get(firstWord.toUpperCase());
 		if(doType==null) doType = OBJECT_TYPES.get(firstWord.toUpperCase()+"S");
@@ -557,6 +627,10 @@ public class Merge extends StdCommand
         String dbPass=CMParms.getParmStr(theRest,"DBPASS","");
         int dbConns=CMParms.getParmInt(theRest,"DBCONNECTIONS",3);
         boolean dbReuse=CMParms.getParmBool(theRest,"DBREUSE",true);
+        String ignore=CMParms.getParmStr(theRest,"IGNORE","");
+        String maskStr=CMParms.getParmStr(theRest,"MASK","");
+        Set<String> ignores=new SHashSet(CMParms.parseCommas(ignore.toUpperCase(),true));
+        MaskingLibrary.CompiledZapperMask mask=CMLib.masking().maskCompile(maskStr);
         if(dbClass.length()==0)
         {
         	mob.tell("This command requires DBCLASS= to be set.");
@@ -580,7 +654,7 @@ public class Merge extends StdCommand
         
         dbConnector=new DBConnector(dbClass,dbService,dbUser,dbPass,dbConns,dbReuse,false,false);
         dbConnector.reconnect();
-		DBInterface dbInterface = new DBInterface(dbConnector);
+		DBInterface dbInterface = new DBInterface(dbConnector,null);
 		
 		DBConnection DBTEST=dbConnector.DBFetch();
 		if(DBTEST!=null) dbConnector.DBDone(DBTEST);
@@ -609,7 +683,7 @@ public class Merge extends StdCommand
     		return false;
 		}
 		for(Room R : rooms)
-	        CMLib.database().DBReadContent(R,null,false);
+			dbInterface.DBReadContent(R,null,false);
 		mob.tell("Data loaded, starting scan.");
 		Comparator<MOB> convM=new Comparator<MOB>() {
 			public int compare(MOB arg0, MOB arg1) {
@@ -630,12 +704,15 @@ public class Merge extends StdCommand
 			if(R==null)
 			{
 				if(doType.intValue()==CMClass.OBJECT_LOCALE)
-					Log.sysOut("Compare",dbR.roomID()+" not in database");
+					Log.sysOut("Merge",dbR.roomID()+" not in database");
 				// import, including exits!
 				continue;
 			}
 			synchronized(("SYNC"+dbR.roomID()).intern())
 			{
+				int oldFlags=R.getArea().getAreaState();
+				R.getArea().setAreaState(Area.STATE_FROZEN);
+				
 				boolean updateMobs=false;
 				boolean updateItems=false;
 				boolean updateRoom=false;
@@ -656,26 +733,129 @@ public class Merge extends StdCommand
 					else
 						ct++;
 					String rName=dbM.Name()+"."+ct;
-					MOB M=R.fetchInhabitant(rName);
+					MOB M=null;
+					int ctr=ct;
+					for(Enumeration<MOB> m = R.inhabitants();m.hasMoreElements();)
+					{
+						MOB M1=m.nextElement();
+						if(M1.Name().equalsIgnoreCase(dbM.Name())&&((--ctr)<=0))
+						{ M=M1; break;}
+					}
 					if(M==null)
 					{
-						if(amMerging(doType,dbM))
-							Log.sysOut("Compare","MOB: "+dbR.roomID()+"."+rName+" not in local room");
+						if(amMerging(doType,mask,dbM)&&(!ignore.contains("MISSING")))
+						{
+							if(mob.session().confirm("MOB: "+dbR.roomID()+"."+rName+" not in local room.\n\rWould you like to add it (y/N)?", "N"))
+							{
+								M=(MOB)dbM.copyOf();
+								M.bringToLife(R, true);
+								doneM.add(M);
+								updateMobs=true;
+								Log.sysOut("Merge",mob.Name()+" added mob "+dbR.roomID()+"."+rName);
+							}
+						}
 					}
 					else
-					if(amMerging(doType,dbM))
 					{
 						doneM.add(M);
-						if(!dbM.sameAs(M))
-							Log.sysOut("Compare","MOB: "+dbR.roomID()+"."+rName+" not same as database");
+						if(amMerging(doType,mask,dbM))
+						{
+							if(!dbM.sameAs(M))
+							{
+								MOB oldM=(MOB)M.copyOf();
+								if((dbMerge(mob,"^MMOB "+dbR.roomID()+"."+rName+"^N",dbM,M, ignores))
+								&&(!oldM.sameAs(M)))
+								{
+									Log.sysOut("Merge",mob.Name()+" modified mob "+dbR.roomID()+"."+rName);
+									updateMobs=true;
+								}
+							}
+						}
+						STreeSet<Item> itemSetL=new STreeSet<Item>(convI);
+						for(Enumeration<Item> e=dbM.items();e.hasMoreElements();)
+							itemSetL.add(e.nextElement());
+						Item[] itemSet=itemSetL.toArray(new Item[0]);
+						Arrays.sort(itemSet, convI);
+						String lastIName="";
+						int ict=1;
+						HashSet<Item> doneI=new HashSet<Item>();
+						for(Item dbI : itemSet)
+						{
+							if(!lastIName.equals(dbI.Name()))
+								ict=1;
+							else
+								ict++;
+							String rIName=dbI.Name()+"."+ict;
+							Item I=null;
+							ctr=ict;
+							for(Enumeration<Item> i = M.items();i.hasMoreElements();)
+							{
+								Item I1=i.nextElement();
+								if(I1.Name().equalsIgnoreCase(dbI.Name())&&((--ctr)<=0))
+								{ I=I1; break;}
+							}
+							if(I==null)
+							{
+								if(amMerging(doType,mask,dbI)&&(!ignore.contains("MISSING")))
+								{
+									if(mob.session().confirm("Item: "+dbR.roomID()+"."+dbM.Name()+"."+rIName+" not in local room.\n\rWould you like to add it (y/N)?", "N"))
+									{
+										I=(Item)dbI.copyOf();
+										M.addItem(I);
+										doneI.add(I);
+										Item cI=(dbI.container()==null)?null:M.findItem(dbI.container().Name());
+										if(cI instanceof Container)
+											I.setContainer((Container)cI);
+										updateMobs=true;
+										Log.sysOut("Merge",mob.Name()+" added item "+dbR.roomID()+"."+dbM.Name()+"."+rIName);
+									}
+								}
+							}
+							else
+							if(amMerging(doType,mask,dbI))
+							{
+								doneI.add(I);
+								if(!dbI.sameAs(I))
+								{
+									Item oldI=(Item)I.copyOf();
+									if((dbMerge(mob,"^IITEM ^M"+dbR.roomID()+"."+dbM.Name()+"."+rIName+"^N",dbI,I, ignores))
+									&&(!oldI.sameAs(I)))
+									{
+										Log.sysOut("Merge",mob.Name()+" modified item "+dbR.roomID()+"."+dbM.Name()+"."+rIName);
+										updateMobs=true;
+									}
+								}
+							}
+							lastIName=dbI.Name();
+						}
+						for(Enumeration<Item> i=M.items();i.hasMoreElements();)
+						{
+							Item I=i.nextElement();
+							if(amMerging(doType,mask,I)&&(!doneI.contains(I))&&(!ignore.contains("EXTRA")))
+							{
+								if(mob.session().confirm("Item: "+R.roomID()+"."+M.Name()+"."+I.Name()+" not in database.\n\rWould you like to delete it (y/N)?", "N"))
+								{
+									M.delItem(I);
+									updateMobs=true;
+									Log.sysOut("Merge",mob.Name()+" deleted item "+R.roomID()+"."+M.Name()+"."+I.Name());
+								}
+							}
+						}
 					}
 					lastName=dbM.Name();
 				}
 				for(Enumeration<MOB> r=R.inhabitants();r.hasMoreElements();)
 				{
 					MOB M=r.nextElement();
-					if(amMerging(doType,M)&&(!doneM.contains(M))&&(M.isMonster()))
-						Log.sysOut("Compare","MOB: "+dbR.roomID()+"."+M.Name()+" not in database");
+					if(amMerging(doType,mask,M)&&(!doneM.contains(M))&&(M.isMonster())&&(!ignore.contains("EXTRA")))
+					{
+						if(mob.session().confirm("MOB: "+R.roomID()+"."+M.Name()+" not in database.\n\rWould you like to delete it (y/N)?", "N"))
+						{
+							R.delInhabitant(M);
+							updateMobs=true;
+							Log.sysOut("Merge",mob.Name()+" deleted mob "+R.roomID()+"."+M.Name());
+						}
+					}
 				}
 				
 				STreeSet<Item> itemSetL=new STreeSet<Item>(convI);
@@ -693,30 +873,66 @@ public class Merge extends StdCommand
 					else
 						ct++;
 					String rName=dbI.Name()+"."+ct;
-					Item I=R.findItem(rName);
+					Item I=null;
+					int ctr=ct;
+					for(Enumeration<Item> i = R.items();i.hasMoreElements();)
+					{
+						Item I1=i.nextElement();
+						if(I1.Name().equalsIgnoreCase(dbI.Name())&&((--ctr)<=0))
+						{ I=I1; break;}
+					}
 					if(I==null)
 					{
-						if(amMerging(doType,dbI))
-							Log.sysOut("Compare","Item: "+dbR.roomID()+"."+rName+" not in local room");
+						if(amMerging(doType,mask,dbI)&&(!ignore.contains("MISSING")))
+						{
+							if(mob.session().confirm("Item: "+dbR.roomID()+"."+rName+" not in local room.\n\rWould you like to add it (y/N)?", "N"))
+							{
+								I=(Item)dbI.copyOf();
+								R.addItem(I);
+								doneI.add(I);
+								Item cI=(dbI.container()==null)?null:R.findItem(dbI.container().Name());
+								if(cI instanceof Container)
+									I.setContainer((Container)cI);
+								updateItems=true;
+								Log.sysOut("Merge",mob.Name()+" added item "+dbR.roomID()+"."+rName);
+							}
+						}
 					}
 					else
-					if(amMerging(doType,dbI))
+					if(amMerging(doType,mask,dbI))
 					{
 						doneI.add(I);
 						if(!dbI.sameAs(I))
-							Log.sysOut("Compare","Item: "+dbR.roomID()+"."+rName+" not same as database");
+						{
+							Item oldI=(Item)I.copyOf();
+							if((dbMerge(mob,"^IITEM "+dbR.roomID()+"."+rName+"^N",dbI,I, ignores))
+							&&(!oldI.sameAs(I)))
+							{
+								Log.sysOut("Merge",mob.Name()+" modified item "+dbR.roomID()+"."+rName);
+								updateItems=true;
+							}
+						}
 					}
 					lastName=dbI.Name();
 				}
 				for(Enumeration<Item> i=R.items();i.hasMoreElements();)
 				{
 					Item I=i.nextElement();
-					if(amMerging(doType,I)&&(!doneI.contains(I)))
-						Log.sysOut("Compare","Item: "+dbR.roomID()+"."+I.Name()+" not in database");
+					if(amMerging(doType,mask,I)&&(!doneI.contains(I))&&(!ignore.contains("EXTRA")))
+					{
+						if(mob.session().confirm("Item: "+R.roomID()+"."+I.Name()+" not in database.\n\rWould you like to delete it (y/N)?", "N"))
+						{
+							R.delItem(I);
+							updateItems=true;
+							Log.sysOut("Merge",mob.Name()+" deleted item "+R.roomID()+"."+I.Name());
+						}
+					}
 				}
 				if(updateRoom) CMLib.database().DBUpdateRoom(R);
 				if(updateItems) CMLib.database().DBUpdateItems(R);
 				if(updateMobs) CMLib.database().DBUpdateMOBs(R);
+				CMLib.map().resetRoom(R);
+				R.getArea().setAreaState(oldFlags);
 			}
 			dbR.destroy();
 		}

@@ -189,7 +189,7 @@ public class MUD extends Thread implements MudHost
             CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: connecting to database");
 			currentDBconnector=new DBConnector(dbClass,dbService,dbUser,dbPass,dbConns,dbReuse,useQue,useQueStart);
 			currentDBconnector.reconnect();
-	        CMLib.registerLibrary(new DBInterface(currentDBconnector));
+	        CMLib.registerLibrary(new DBInterface(currentDBconnector,CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(),true)));
 
 			DBConnection DBTEST=currentDBconnector.DBFetch();
 			if(DBTEST!=null) currentDBconnector.DBDone(DBTEST);
@@ -1146,7 +1146,7 @@ public class MUD extends Thread implements MudHost
             }
             
             DBConnector currentDBconnector=new DBConnector();
-            CMLib.registerLibrary(new DBInterface(currentDBconnector));
+            CMLib.registerLibrary(new DBInterface(currentDBconnector,CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(),true)));
             CMLib.registerLibrary(new ProcessHTTPrequest(null,null,null,true));
             CMProps.setVar(CMProps.SYSTEM_MUDVER,HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR);
             
