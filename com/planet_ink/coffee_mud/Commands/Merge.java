@@ -557,8 +557,13 @@ public class Merge extends StdCommand
     	{
     		Physical PM=(Physical)M;
     		Physical dbPM=(Physical)dbM;
-        	PM.basePhyStats().setDisposition(CMath.unsetb(PM.basePhyStats().disposition(),PhyStats.IS_CATALOGED));
-        	dbPM.basePhyStats().setDisposition(CMath.unsetb(dbPM.basePhyStats().disposition(),PhyStats.IS_CATALOGED));
+    		if(CMLib.flags().isCataloged(PM))
+    		{
+    			mob.tell("^H**Warning: Changes will remove this object from the catalog.");
+	        	PM.basePhyStats().setDisposition(CMath.unsetb(PM.basePhyStats().disposition(),PhyStats.IS_CATALOGED));
+    		}
+    		if(CMLib.flags().isCataloged(dbPM))
+	        	dbPM.basePhyStats().setDisposition(CMath.unsetb(dbPM.basePhyStats().disposition(),PhyStats.IS_CATALOGED));
 	        PM.image();
 	        dbPM.image();
     	}
