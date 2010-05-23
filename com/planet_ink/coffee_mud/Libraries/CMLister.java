@@ -193,7 +193,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 				}
                 if((compress)&&(item instanceof Physical)) 
                 	say.append(CMLib.flags().colorCodes((Physical)item,mob)+"^I");
-                say.append(CMStrings.endWithAPeriod(itemSeenString(mob,item,useName,longLook,sysmsgs)));
+                say.append(itemSeenString(mob,item,useName,longLook,sysmsgs));
 				if(tag!=null)
 				    say.append("^</"+tag+"^>");
 				if((!compress)&&(item instanceof Physical)) 
