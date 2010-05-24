@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.database.DBConnection;
 import com.planet_ink.coffee_mud.core.database.DBConnector;
 import com.planet_ink.coffee_mud.core.database.DBInterface;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -551,7 +552,7 @@ public class Merge extends StdCommand
     	return false;
     }
     
-    public boolean dbMerge(MOB mob, String name, Modifiable dbM, Modifiable M, Set<String> ignores) throws java.io.IOException
+    public boolean dbMerge(MOB mob, String name, Modifiable dbM, Modifiable M, Set<String> ignores) throws java.io.IOException, CMException
     {
     	if((M instanceof Physical) && (dbM instanceof Physical))
     	{
@@ -592,8 +593,9 @@ public class Merge extends StdCommand
                 if((showFlag>0)&&(showFlag!=showNumber)) continue;
                 mob.tell("^H"+showNumber+". "+promptStr+"\n\rValue: ^W'"+loVal+"'\n\r^HDBVal: ^N'"+dbVal+"'");
                 if((showFlag!=showNumber)&&(showFlag>-999)) continue;
-                String res=mob.session().choose("D)atabase Value, E)dit Value, or C)ancel: ","DEC", "C");
-                if(res.trim().equalsIgnoreCase("C")) continue;
+                String res=mob.session().choose("D)atabase Value, E)dit Value, or N)o Change, or Q)uit All: ","DENQ", "N");
+                if(res.trim().equalsIgnoreCase("N")) continue;
+                if(res.trim().equalsIgnoreCase("Q")) throw new CMException("Cancelled by user.");
                 didSomething=true;
                 if(res.trim().equalsIgnoreCase("D"))
             	{
@@ -702,7 +704,7 @@ public class Merge extends StdCommand
 				return(x!=0)?x:arg0.Name().compareTo(arg1.Name());
 			}
 		};
-		
+		try {
 		for(Room dbR : rooms)
 		{
 			Room R=CMLib.map().getRoom(dbR.roomID());
@@ -941,8 +943,11 @@ public class Merge extends StdCommand
 			}
 			dbR.destroy();
 		}
-		dbInterface.shutdown();
 		mob.tell("Done");
+		}catch(CMException cme){
+			mob.tell("Cancelled.");
+		}
+		dbInterface.shutdown();
 		return true;
 	}
 	
