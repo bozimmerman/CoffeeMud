@@ -37,7 +37,7 @@ import java.util.*;
 public class StdWand extends StdItem implements Wand
 {
 	public String ID(){	return "StdWand";}
-	protected String secretWord=CMProps.getSListVar(CMProps.SYSTEML_MAGIC_WORDS)[CMLib.dice().roll(1,CMProps.getSListVar(CMProps.SYSTEML_MAGIC_WORDS).length,0)-1];
+	protected String secretWord=CMProps.getSLstFileVar(CMProps.SYSTEMLF_MAGIC_WORDS)[CMLib.dice().roll(1,CMProps.getSLstFileVar(CMProps.SYSTEMLF_MAGIC_WORDS).length,0)-1];
 
 	public StdWand()
 	{
@@ -92,7 +92,7 @@ public class StdWand extends StdItem implements Wand
 	{
 		int hash=from.hashCode();
 		if(hash<0) hash=hash*-1;
-		return CMProps.getSListVar(CMProps.SYSTEML_MAGIC_WORDS)[hash%CMProps.getSListVar(CMProps.SYSTEML_MAGIC_WORDS).length];
+		return CMProps.getSLstFileVar(CMProps.SYSTEMLF_MAGIC_WORDS)[hash%CMProps.getSLstFileVar(CMProps.SYSTEMLF_MAGIC_WORDS).length];
 	}
 
 	public void setSpell(Ability theSpell)

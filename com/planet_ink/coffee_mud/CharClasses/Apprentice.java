@@ -66,8 +66,6 @@ public class Apprentice extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Climb",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"ClanCrafting",false);
 		
-		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"SmokeRings",false,"+CHA 5");
-		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Butchering",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Chopping",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Digging",false);
@@ -77,7 +75,6 @@ public class Apprentice extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Hunting",false,"+WIS 8");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Mining",false);
 		
-		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"FireBuilding",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Searching",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Blacksmithing",false,"+STR 10");

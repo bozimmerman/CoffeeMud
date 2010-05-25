@@ -900,12 +900,12 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		return null;
 	}
 
-    private int[] damageThresholds(){return CMProps.getI1ListVar(CMProps.SYSTEML_DAMAGE_WORDS_THRESHOLDS);}
-    private String[][] hitWords(){ return CMProps.getS2ListVar(CMProps.SYSTEML_DAMAGE_WORDS); }
-    private String[] armorDescs(){return CMProps.getSListVar(CMProps.SYSTEML_ARMOR_DESCS);}
-    private String[] prowessDescs(){return CMProps.getSListVar(CMProps.SYSTEML_PROWESS_DESCS);}
-    private String[] missWeaponDescs(){return CMProps.getSListVar(CMProps.SYSTEML_WEAPON_MISS_DESCS);}
-    private String[] missDescs(){return CMProps.getSListVar(CMProps.SYSTEML_MISS_DESCS);}
+    private int[] damageThresholds(){return CMProps.getI1LstFileVar(CMProps.SYSTEMLF_DAMAGE_WORDS_THRESHOLDS);}
+    private String[][] hitWords(){ return CMProps.getS2LstFileVar(CMProps.SYSTEMLF_DAMAGE_WORDS); }
+    private String[] armorDescs(){return CMProps.getSLstFileVar(CMProps.SYSTEMLF_ARMOR_DESCS);}
+    private String[] prowessDescs(){return CMProps.getSLstFileVar(CMProps.SYSTEMLF_PROWESS_DESCS);}
+    private String[] missWeaponDescs(){return CMProps.getSLstFileVar(CMProps.SYSTEMLF_WEAPON_MISS_DESCS);}
+    private String[] missDescs(){return CMProps.getSLstFileVar(CMProps.SYSTEMLF_MISS_DESCS);}
 
     public String standardHitWord(int type, int damage)
     {
@@ -953,7 +953,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
     public String armorStr(MOB mob)
     {
     	int armor = -adjustedArmor(mob);
-        int ARMOR_CEILING=CMProps.getIListVar(CMProps.SYSTEML_ARMOR_DESCS_CEILING);
+        int ARMOR_CEILING=CMProps.getILstFileVar(CMProps.SYSTEMLF_ARMOR_DESCS_CEILING);
         return (armor<0)?armorDescs()[0]:(
                (armor>=ARMOR_CEILING)?armorDescs()[armorDescs().length-1]+(CMStrings.repeat("!",(armor-ARMOR_CEILING)/100))+" ("+armor+")":(
                        armorDescs()[(int)Math.round(Math.floor(CMath.mul(CMath.div(armor,ARMOR_CEILING),armorDescs().length)))]+" ("+armor+")"));
@@ -962,7 +962,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
     public String fightingProwessStr(MOB mob)
     {
     	int prowess = adjustedAttackBonus(mob,null) - ATTACK_ADJUSTMENT;
-        int PROWESS_CEILING=CMProps.getIListVar(CMProps.SYSTEML_PROWESS_DESCS_CEILING);
+        int PROWESS_CEILING=CMProps.getILstFileVar(CMProps.SYSTEMLF_PROWESS_DESCS_CEILING);
         return (prowess<0)?prowessDescs()[0]:(
                (prowess>=PROWESS_CEILING)?prowessDescs()[prowessDescs().length-1]+(CMStrings.repeat("!",(prowess-PROWESS_CEILING)/100))+" ("+prowess+")":(
                 prowessDescs()[(int)Math.round(Math.floor(CMath.mul(CMath.div(prowess,PROWESS_CEILING),prowessDescs().length)))]+" ("+prowess+")"));
@@ -1011,7 +1011,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         }
     }
 
-    public String[] healthDescs(){return CMProps.getSListVar(CMProps.SYSTEML_HEALTH_CHART);}
+    public String[] healthDescs(){return CMProps.getSLstFileVar(CMProps.SYSTEMLF_HEALTH_CHART);}
     public String standardMobCondition(MOB viewer,MOB mob)
     {
         int pct=(int)Math.round(Math.floor((CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()))*10));

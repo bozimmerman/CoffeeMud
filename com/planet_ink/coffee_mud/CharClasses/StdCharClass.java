@@ -67,10 +67,10 @@ public class StdCharClass implements CharClass
 	public boolean raceless(){return false;}
 	public boolean leveless(){return false;}
 	public boolean expless(){return false;}
-	public int maxNonCraftingSkills() { return 5;}
-	public int maxCraftingSkills() { return 2;}
-	public int maxCommonSkills() { return 0;}
-	public int maxLanguages() { return 3;}
+	public int maxNonCraftingSkills() { return CMProps.getIntVar(CMProps.SYSTEMI_MAXNONCRAFTINGSKILLS); }
+	public int maxCraftingSkills() { return CMProps.getIntVar(CMProps.SYSTEMI_MAXCRAFTINGSKILLS); }
+	public int maxCommonSkills() { return CMProps.getIntVar(CMProps.SYSTEMI_MAXCOMMONSKILLS); }
+	public int maxLanguages() { return CMProps.getIntVar(CMProps.SYSTEMI_MAXLANGUAGES); }
     private static final Vector empty=new Vector();
     public List<String> getSecurityGroups(int classLevel){return empty;}
     public CMObject newInstance(){return this;}
@@ -84,11 +84,18 @@ public class StdCharClass implements CharClass
     }
     public void initializeClass()
     {
+    	// universally available common skills --exempt from max/mins by being class skills
+        CMLib.ableMapper().addCharAbilityMapping(ID(),1,"SmokeRings",false,"+CHA 5");
+        CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Bandaging",false);
+        CMLib.ableMapper().addCharAbilityMapping(ID(),3,"FireBuilding",false);
+        CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Searching",false);
+        
+        // universally available languages --exempt from max/mins by being class skills
+        CMLib.ableMapper().addCharAbilityMapping(ID(),1,"UnderCommon",false);
+        CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Common",false); // usually added by races.
+        
         if(!ID().equals("StdCharClass")) return;
-        CMLib.ableMapper().addCharAbilityMapping("All",1,"Searching",false);
-        CMLib.ableMapper().addCharAbilityMapping("All",1,"SmokeRings",false,"+CHA 5");
-        CMLib.ableMapper().addCharAbilityMapping("All",1,"Bandaging",false);
-        CMLib.ableMapper().addCharAbilityMapping("All",1,"FireBuilding",false);
+        
         CMLib.ableMapper().addCharAbilityMapping("All",1,"Herbology",false);
         CMLib.ableMapper().addCharAbilityMapping("All",1,"Fishing",false,"+WIS 8");
         CMLib.ableMapper().addCharAbilityMapping("All",1,"Foraging",false);
@@ -797,7 +804,7 @@ public class StdCharClass implements CharClass
 	    &&(!msg.source().isMonster()))
 	    &&(!CMLib.utensils().armorCheck(msg.source(),(Item)msg.target(),allowedArmorLevel())))
 	    {
-	    	final String[] choices=CMProps.getSListVar(CMProps.SYSTEML_ARMOR_MISFITS);
+	    	final String[] choices=CMProps.getSLstFileVar(CMProps.SYSTEMLF_ARMOR_MISFITS);
 	    	String choice=choices[CMLib.dice().roll(1,choices.length,-1)];
 	        msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),null,CMMsg.TYP_OK_VISUAL,choice,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 	    }

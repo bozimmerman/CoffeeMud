@@ -70,10 +70,10 @@ public class GenCharClass extends StdCharClass
     public int getManaDie(){return manaDie;}
     public int getLevelCap() {return levelCap;}
     
-	protected int maxNonCraftingSkills=0;
-	protected int maxCraftingSkills=0;
-	protected int maxCommonSkills=0;
-	protected int maxLanguages=0;
+	protected int maxNonCraftingSkills=CMProps.getIntVar(CMProps.SYSTEMI_MAXNONCRAFTINGSKILLS);;
+	protected int maxCraftingSkills=CMProps.getIntVar(CMProps.SYSTEMI_MAXCRAFTINGSKILLS);;
+	protected int maxCommonSkills=CMProps.getIntVar(CMProps.SYSTEMI_MAXCOMMONSKILLS);;
+	protected int maxLanguages=CMProps.getIntVar(CMProps.SYSTEMI_MAXLANGUAGES);;
 	
 	public int maxNonCraftingSkills() { return maxNonCraftingSkills;}
 	public int maxCraftingSkills() { return maxCraftingSkills;}

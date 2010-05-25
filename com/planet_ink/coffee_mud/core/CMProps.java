@@ -203,7 +203,11 @@ public class CMProps extends Properties
     public static final int SYSTEMI_EXVIEW=62;
     public static final int SYSTEMI_MUDSTATE=63;
     public static final int SYSTEMI_OBJSPERTHREAD=64;
-    public static final int NUMI_SYSTEM=65;
+    public static final int SYSTEMI_MAXCOMMONSKILLS=65;
+    public static final int SYSTEMI_MAXCRAFTINGSKILLS=66;
+    public static final int SYSTEMI_MAXNONCRAFTINGSKILLS=67;
+    public static final int SYSTEMI_MAXLANGUAGES=68;
+    public static final int NUMI_SYSTEM=69;
 
     public static final int SYSTEMB_MOBCOMPRESS=0;
     public static final int SYSTEMB_ITEMDCOMPRESS=1;
@@ -220,19 +224,21 @@ public class CMProps extends Properties
     public static final int SYSTEMB_CATALOGNOCACHE=12;
     public static final int NUMB_SYSTEM=13;
 
-    public static final int SYSTEML_DAMAGE_WORDS_THRESHOLDS=0;
-    public static final int SYSTEML_DAMAGE_WORDS=1;
-    public static final int SYSTEML_HEALTH_CHART=2;
-    public static final int SYSTEML_MISS_DESCS=3;
-    public static final int SYSTEML_WEAPON_MISS_DESCS=4;
-    public static final int SYSTEML_PROWESS_DESCS_CEILING=5;
-    public static final int SYSTEML_PROWESS_DESCS=6;
-    public static final int SYSTEML_ARMOR_DESCS_CEILING=7;
-    public static final int SYSTEML_ARMOR_DESCS=8;
-    public static final int SYSTEML_EXP_CHART=9;
-    public static final int SYSTEML_ARMOR_MISFITS=10;
-    public static final int SYSTEML_MAGIC_WORDS=11;
-    public static final String[] SYSTEML_KEYS={
+    public static final int NUML_SYSTEM=0;
+
+    public static final int SYSTEMLF_DAMAGE_WORDS_THRESHOLDS=0;
+    public static final int SYSTEMLF_DAMAGE_WORDS=1;
+    public static final int SYSTEMLF_HEALTH_CHART=2;
+    public static final int SYSTEMLF_MISS_DESCS=3;
+    public static final int SYSTEMLF_WEAPON_MISS_DESCS=4;
+    public static final int SYSTEMLF_PROWESS_DESCS_CEILING=5;
+    public static final int SYSTEMLF_PROWESS_DESCS=6;
+    public static final int SYSTEMLF_ARMOR_DESCS_CEILING=7;
+    public static final int SYSTEMLF_ARMOR_DESCS=8;
+    public static final int SYSTEMLF_EXP_CHART=9;
+    public static final int SYSTEMLF_ARMOR_MISFITS=10;
+    public static final int SYSTEMLF_MAGIC_WORDS=11;
+    public static final String[] SYSTEMLF_KEYS={
                                     "DAMAGE_WORDS_THRESHOLDS",
                                     "DAMAGE_WORDS",
                                     "HEALTH_CHART",
@@ -246,15 +252,16 @@ public class CMProps extends Properties
                                     "ARMOR_MISFITS",
                                     "MAGIC_WORDS"
     };
-    public static final int NUML_SYSTEM=12;
+    public static final int NUMLF_SYSTEM=12;
 
     protected String[] 		sysVars=new String[NUM_SYSTEM];
     protected Integer[] 	sysInts=new Integer[NUMI_SYSTEM];
     protected Boolean[] 	sysBools=new Boolean[NUMB_SYSTEM];
-    protected Vector<String>sayFilter=new Vector<String>();
-    protected Vector<String>channelFilter=new Vector<String>();
-    protected Vector<String>emoteFilter=new Vector<String>();
-    protected Object[] 		listData=new Object[NUML_SYSTEM];
+    protected String[][]	sysLists=new String[NUML_SYSTEM][];
+    protected Object[] 		sysLstFileLists=new Object[NUMLF_SYSTEM];
+    protected List<String>	sayFilter=new Vector<String>();
+    protected List<String>	channelFilter=new Vector<String>();
+    protected List<String>	emoteFilter=new Vector<String>();
     protected DVector 		newusersByIP=new DVector(2);
     protected DVector 		skillMaxManaExceptions=new DVector(2);
     protected DVector 		skillMinManaExceptions=new DVector(2);
@@ -518,6 +525,12 @@ public class CMProps extends Properties
     	catch(Throwable t) { return -1; }
     }
 
+    public static String[] getListVar(int varNum)
+    {
+    	try { return p().sysLists[varNum]; } 
+    	catch(Throwable t) { return new String[0]; }
+    }
+
     public static boolean getBoolVar0(int varNum)
     {
         if((varNum<0)||(varNum>=NUMB_SYSTEM)) return false;
@@ -561,6 +574,25 @@ public class CMProps extends Properties
         if((varNum<0)||(varNum>=NUMI_SYSTEM)) return ;
         if((val==null)||(val.length()==0)) val=""+defaultValue;
         p().sysInts[varNum]=Integer.valueOf(CMath.s_int(val));
+    }
+
+    public static void setListVar(int varNum, String[] var)
+    {
+        if((varNum<0)||(varNum>=NUML_SYSTEM)) return ;
+        if(var==null) var=new String[0];
+        p().sysLists[varNum]=var;
+    }
+
+    public static void addListVar(int varNum, String var)
+    {
+        if((varNum<0)||(varNum>=NUML_SYSTEM)) return ;
+        if(var==null) return;
+        CMProps prop=p();
+        if(prop.sysLists[varNum]==null)
+        	setListVar(varNum, new String[0]);
+        String[] list=prop.sysLists[varNum];
+        prop.sysLists[varNum]=Arrays.copyOf(list, list.length+1);
+        list[list.length-1]=var;
     }
 
     public static void setVar(int varNum, String val, boolean upperFy)
@@ -659,7 +691,7 @@ public class CMProps extends Properties
     	return endVal;
     }
 
-    public static String getListValue(String key) 
+    public static String getLstFileValue(String key) 
     {
         final String listFileName=CMProps.p().getProperty("LISTFILE");
         synchronized(listFileName.intern())
@@ -681,48 +713,48 @@ public class CMProps extends Properties
         }
     }
 
-    public static int getIListVar(int var)
+    public static int getILstFileVar(int var)
     {
-        if((var<0)||(var>=NUML_SYSTEM)) return -1;
-        if(p().listData[var]==null)
-            p().listData[var]=new int[]{(CMath.s_int(getListValue(SYSTEML_KEYS[var])))};
-        return ((int[])p().listData[var])[0];
+        if((var<0)||(var>=NUMLF_SYSTEM)) return -1;
+        if(p().sysLstFileLists[var]==null)
+            p().sysLstFileLists[var]=new int[]{(CMath.s_int(getLstFileValue(SYSTEMLF_KEYS[var])))};
+        return ((int[])p().sysLstFileLists[var])[0];
     }
 
-    public static int[] getI1ListVar(int var)
+    public static int[] getI1LstFileVar(int var)
     {
-        if((var<0)||(var>=NUML_SYSTEM)) return new int[0];
-        if(p().listData[var]==null)
+        if((var<0)||(var>=NUMLF_SYSTEM)) return new int[0];
+        if(p().sysLstFileLists[var]==null)
         {
-            Vector<String> V=CMParms.parseCommas(getListValue(SYSTEML_KEYS[var]), true);
+            Vector<String> V=CMParms.parseCommas(getLstFileValue(SYSTEMLF_KEYS[var]), true);
             int[] set=new int[V.size()];
             for(int v=0;v<V.size();v++)
                 set[v]=CMath.s_int((String)V.elementAt(v));
-            p().listData[var]=set;
+            p().sysLstFileLists[var]=set;
         }
-        return ((int[])p().listData[var]);
+        return ((int[])p().sysLstFileLists[var]);
     }
 
-    public static String[] getSListVar(int var)
+    public static String[] getSLstFileVar(int var)
     {
-        if((var<0)||(var>=NUML_SYSTEM)) return new String[0];
-        if(p().listData[var]==null)
-            p().listData[var]=CMParms.toStringArray(CMParms.parseCommas(getListValue(SYSTEML_KEYS[var]),true));
-        return (String[])p().listData[var];
+        if((var<0)||(var>=NUMLF_SYSTEM)) return new String[0];
+        if(p().sysLstFileLists[var]==null)
+            p().sysLstFileLists[var]=CMParms.toStringArray(CMParms.parseCommas(getLstFileValue(SYSTEMLF_KEYS[var]),true));
+        return (String[])p().sysLstFileLists[var];
     }
 
-    public static String[][] getS2ListVar(int var)
+    public static String[][] getS2LstFileVar(int var)
     {
-        if((var<0)||(var>=NUML_SYSTEM)) return new String[0][0];
-        if(p().listData[var]==null)
+        if((var<0)||(var>=NUMLF_SYSTEM)) return new String[0][0];
+        if(p().sysLstFileLists[var]==null)
         {
-            Vector<String> V=CMParms.parseSemicolons(getListValue(SYSTEML_KEYS[var]),true);
+            Vector<String> V=CMParms.parseSemicolons(getLstFileValue(SYSTEMLF_KEYS[var]),true);
             String[][] set=new String[V.size()][];
             for(int v=0;v<V.size();v++)
                 set[v]=CMParms.toStringArray(CMParms.parseCommas((String)V.elementAt(v),true));
-            p().listData[var]=set;
+            p().sysLstFileLists[var]=set;
         }
-        return (String[][])p().listData[var];
+        return (String[][])p().sysLstFileLists[var];
     }
 
     public void resetSystemVars()
@@ -781,7 +813,7 @@ public class CMProps extends Properties
         setVar(SYSTEM_INVRESETRATE,getStr("INVRESETRATE"));
         setVar(SYSTEM_AUCTIONRATES,getStr("AUCTIONRATES","0,10,0.1%,10%,5%,1,168"));
         setUpLowVar(SYSTEM_DEFAULTPROMPT,getStr("DEFAULTPROMPT"));
-        listData=new Object[NUML_SYSTEM];
+        sysLstFileLists=new Object[NUMLF_SYSTEM];
         setVar(SYSTEM_EMOTEFILTER,getStr("EMOTEFILTER"));
         p().emoteFilter=CMParms.parse((getStr("EMOTEFILTER")).toUpperCase());
         setVar(SYSTEM_SAYFILTER,getStr("SAYFILTER"));
@@ -902,6 +934,10 @@ public class CMProps extends Properties
         setIntVar(SYSTEMI_RECOVERRATE,getStr("RECOVERRATE"),1);
         setIntVar(SYSTEMI_COMMONACCOUNTSYSTEM,getStr("COMMONACCOUNTSYSTEM"),1);
         setIntVar(SYSTEMI_OBJSPERTHREAD,getStr("OBJSPERTHREAD"));
+        setIntVar(SYSTEMI_MAXCOMMONSKILLS,getStr("MAXCOMMONSKILLS"),0);
+        setIntVar(SYSTEMI_MAXCRAFTINGSKILLS,getStr("MAXCRAFTINGSKILLS"),2);
+        setIntVar(SYSTEMI_MAXNONCRAFTINGSKILLS,getStr("MAXNONCRAFTINGSKILLS"),5);
+        setIntVar(SYSTEMI_MAXLANGUAGES,getStr("MAXLANGUAGES"),3);
 
         V=CMParms.parseCommas(getStr("INJURYSYSTEM"),true);
 
@@ -952,7 +988,7 @@ public class CMProps extends Properties
         setUpLowVar(SYSTEM_FORMULA_CHANCEWEAPONCRIT, getStr("FORMULA_CHANCEWEAPONCRIT","((((@x2-10+((@x8-@x9)<10))/2.5)>0 * ((@x3-10+((@x8-@x9)<10))/2.5)>0 * ((@x3-10+((@x8-@x9)<10))/2.5)))"));
         setUpLowVar(SYSTEM_FORMULA_DAMAGEWEAPONCRIT, getStr("FORMULA_DAMAGEWEAPONCRIT","(@x1 * (((@x2-10+((@x8-@x9)<10))/2.5)>0 * ((@x3-10+((@x8-@x9)<10))/2.5)>0 * ((@x3-10+((@x8-@x9)<10))/2.5))/50.0)+(@x4/2)"));
         setUpLowVar(SYSTEM_FORMULA_NPCHITPOINTS, getStr("FORMULA_NPCHITPOINTS","3 + @x1 + (@x1 * @x2)"));
-        
+
         Directions.instance().reInitialize(getInt("DIRECTIONS"));
         
         resetSecurityVars();
@@ -980,7 +1016,7 @@ public class CMProps extends Properties
 
     public static String applyINIFilter(String msg, int whichFilter)
     {
-        Vector<String> filter=null;
+        List<String> filter=null;
         switch(whichFilter)
         {
         case SYSTEM_EMOTEFILTER: filter=p().emoteFilter; break;
@@ -994,12 +1030,10 @@ public class CMProps extends Properties
         int len=0;
         StringBuffer newMsg=null;
         String upp=msg.toUpperCase();
-        String filterStr=null;
         final char[] filterPattern={'%','#','@','*','!','$','&','?'};
         int fpIndex=0;
-        for(int f=0;f<filter.size();f++)
+        for(String filterStr : filter)
         {
-        	filterStr=(String)filter.elementAt(f);
         	if(filterStr.length()==0) continue;
             fdex=upp.indexOf(filterStr);
             int ctr=0;

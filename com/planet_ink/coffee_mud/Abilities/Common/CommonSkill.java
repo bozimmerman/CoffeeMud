@@ -303,9 +303,11 @@ public class CommonSkill extends StdAbility
 		if(student==null) return null;
 		CharClass C=student.charStats().getCurrentClass();
 		boolean crafting = ((classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL);
+		
 		int[] remaining = {C.maxCommonSkills(), crafting?C.maxCraftingSkills():C.maxNonCraftingSkills()};
 		if(remaining[0]==0) remaining[0]=Integer.MAX_VALUE;
 		if(remaining[1]==0) remaining[1]=Integer.MAX_VALUE;
+		
 		DVector culturalAbilitiesDV = student.baseCharStats().getMyRace().culturalAbilities();
 		HashSet culturalAbilities=new HashSet();
 		for(int i=0;i<culturalAbilitiesDV.size();i++)
