@@ -312,7 +312,7 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		return new ReadOnlyList<String>(tellStack);
 	}
-    public RoomnumberSet roomSet()
+    private RoomnumberSet roomSet()
     {
         if(visitedRoomSet==null)
             visitedRoomSet=((RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet"));
@@ -606,7 +606,7 @@ public class DefaultPlayerStats implements PlayerStats
         	levelInfo.addElement(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"");
         String roomSetStr = CMLib.xml().getValFromPieces(xml,"AREAS");
         if(roomSetStr!=null)
-	        roomSet().parseXML("<AREAS>"+str+"</AREAS>");
+	        roomSet().parseXML("<AREAS>"+roomSetStr+"</AREAS>");
         else
 	        roomSet().parseXML("<AREAS />");
         String[] codes=getStatCodes();
