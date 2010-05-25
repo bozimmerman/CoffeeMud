@@ -44,12 +44,13 @@ public class Prayer_AuraHeal extends Prayer
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALINGMAGIC;}
+	private int ratingTickDown=4;
 
     public Prayer_AuraHeal()
     {
         super();
 
-        tickDown = 4;
+        ratingTickDown = 4;
     }
 
 	public void unInvoke()
@@ -70,8 +71,8 @@ public class Prayer_AuraHeal extends Prayer
 		if((affected==null)||(!(affected instanceof Room)))
 			return super.tick(ticking,tickID);
 
-		if((--tickDown)>=0) return super.tick(ticking,tickID);
-		tickDown=4;
+		if((--ratingTickDown)>=0) return super.tick(ticking,tickID);
+		ratingTickDown=4;
 
 		HashSet H=null;
 		if((invoker()!=null)&&(invoker().location()==affected))

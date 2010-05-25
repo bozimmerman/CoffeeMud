@@ -44,12 +44,13 @@ public class Prayer_AuraHarm extends Prayer
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
+	private int damageTickDown=4;
 
     public Prayer_AuraHarm()
     {
         super();
 
-        tickDown = 4;
+        damageTickDown = 4;
     }
 
 
@@ -71,8 +72,8 @@ public class Prayer_AuraHarm extends Prayer
 		if((affected==null)||(!(affected instanceof Room)))
 			return super.tick(ticking,tickID);
 
-		if((--tickDown)>=0) return super.tick(ticking,tickID);
-		tickDown=4;
+		if((--damageTickDown)>=0) return super.tick(ticking,tickID);
+		damageTickDown=4;
 
 		HashSet H=null;
 		if((invoker()!=null)&&(invoker().location()==affected))

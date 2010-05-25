@@ -44,12 +44,13 @@ public class Prayer_AuraFear extends Prayer
 	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ROOMS|Ability.CAN_ITEMS;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
+	private int ratingTickDown=4;
 
     public Prayer_AuraFear()
     {
         super();
 
-        tickDown = 4;
+        ratingTickDown = 4;
     }
 
 
@@ -70,9 +71,9 @@ public class Prayer_AuraFear extends Prayer
 		if(affected==null)
 			return super.tick(ticking,tickID);
 
-		if((--tickDown)>=0)
+		if((--ratingTickDown)>=0)
 		    return super.tick(ticking,tickID);
-		tickDown=4;
+		ratingTickDown=4;
 		Room R=CMLib.map().roomLocation(affected);
 		if(R==null)
 		    return super.tick(ticking,tickID);
