@@ -646,7 +646,7 @@ public class Socials extends StdLibrary implements SocialsList
 		for (String key : soc.keySet())
 		{
 		    List<Social> V=soc.get(key);
-			if(i==index) return V;
+			if((i++)==index) return V;
 		}
 		return null;
 	}
