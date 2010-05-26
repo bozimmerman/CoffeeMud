@@ -724,7 +724,6 @@ public class DefaultCharStats implements CharStats
 				return Integer.toString(getStat(i));
 		return null;
 	}
-
 	
 	public String[] getStatCodes() { return CharStats.CODES.NAMES();}
 	public boolean isStat(String code) { return CMParms.containsIgnoreCase(getStatCodes(),code);}
