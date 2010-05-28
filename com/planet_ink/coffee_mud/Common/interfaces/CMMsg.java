@@ -1,6 +1,8 @@
 package com.planet_ink.coffee_mud.Common.interfaces;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -926,6 +928,60 @@ public interface CMMsg extends CMCommon
         "TOUCH","MOVE","EYES","MOUTH","SOUND","GENERAL","MAGIC","DELICATE","MALICIOUS","CHANNEL","OPTIMIZE"
     };
 
+    /**
+     * An accessor for safely converting raw message codes into friendlier 
+     * description codes, and back again.
+     * @author bzimmerman
+     */
+    public static final class Desc
+    {
+        protected static final Map<String,Integer> 	MSGTYPE_DESCS=new Hashtable<String,Integer>();
+        protected static final Map<Integer,String> 	MSGDESC_TYPES=new Hashtable<Integer,String>();
+
+        /**
+         * Returns a map of description code strings, to their raw message code
+         * masks/minor values.
+         * @return the map
+         */
+        public static Map<String,Integer> getMSGTYPE_DESCS()
+        {
+            if(MSGTYPE_DESCS.size()!=0) return MSGTYPE_DESCS;
+        	synchronized(MSGTYPE_DESCS)
+        	{
+    	        if(MSGTYPE_DESCS.size()!=0) return MSGTYPE_DESCS;
+    	        for(int i=0;i<TYPE_DESCS.length;i++)
+    	            MSGTYPE_DESCS.put(TYPE_DESCS[i],Integer.valueOf(i));
+    	        for(int i=0;i<MASK_DESCS.length;i++)
+    	            MSGTYPE_DESCS.put(MASK_DESCS[i],Integer.valueOf((int)CMath.pow(2,11+i)));
+    	        for(int i=0;i<CMMsg.MISC_DESCS.length;i++)
+    	        	for(int i2=((Integer)MISC_DESCS[i][1]).intValue(); i2 < ((Integer)MISC_DESCS[i][2]).intValue(); i2++)
+	    	            MSGTYPE_DESCS.put((String)MISC_DESCS[i][0],Integer.valueOf(i2));
+        	}
+            return MSGTYPE_DESCS;
+        }
+
+        /**
+         * Returns a map of raw message code mask/minor values to strings
+         * @return the map
+         */
+        public static Map<Integer,String> getMSGDESC_TYPES()
+        {
+            if(MSGDESC_TYPES.size()!=0) return MSGDESC_TYPES;
+        	synchronized(MSGDESC_TYPES)
+        	{
+    	        if(MSGDESC_TYPES.size()!=0) return MSGDESC_TYPES;
+    	        for(int i=0;i<CMMsg.TYPE_DESCS.length;i++)
+    	        	MSGDESC_TYPES.put(Integer.valueOf(i),CMMsg.TYPE_DESCS[i]);
+    	        for(int i=0;i<CMMsg.MASK_DESCS.length;i++)
+    	        	MSGDESC_TYPES.put(Integer.valueOf((int)CMath.pow(2,11+i)),CMMsg.MASK_DESCS[i]);
+    	        for(int i=0;i<CMMsg.MISC_DESCS.length;i++)
+    	        	for(int i2=((Integer)MISC_DESCS[i][1]).intValue(); i2 < ((Integer)MISC_DESCS[i][2]).intValue(); i2++)
+    	        		MSGDESC_TYPES.put(Integer.valueOf(i2),(String)MISC_DESCS[i][0]);
+        	}
+            return MSGDESC_TYPES;
+        }
+    }
+    
 	// helpful message groupings
     /** Useful MAJOR_MASK shortcut combining other MASK_ constants related to casting verbal magic */
 	public static final int MSK_CAST_VERBAL=MASK_SOUND|MASK_MOUTH|MASK_MAGIC;

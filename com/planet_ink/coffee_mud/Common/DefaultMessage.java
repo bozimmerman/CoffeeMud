@@ -246,7 +246,7 @@ public class DefaultMessage implements CMMsg
     protected static boolean matches(int code1, int code2){return ((code1&CMMsg.MINOR_MASK)==code2)||((code1&CMMsg.MAJOR_MASK)==code2);}
     protected static boolean matches(int code1, String code2)
     {
-        Integer I=CMClass.getMSGTYPE_DESCS().get(code2.toUpperCase());
+        Integer I=Desc.getMSGTYPE_DESCS().get(code2.toUpperCase());
         if(I==null)
         {
             code2=code2.toUpperCase();

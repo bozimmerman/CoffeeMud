@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.core.intermud.cm1.commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.intermud.cm1.RequestHandler;
+import com.planet_ink.coffee_mud.core.intermud.cm1.commands.Listen.ListenCriterium;
 import com.planet_ink.coffee_mud.core.intermud.cm1.commands.Listen.Listener;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -114,7 +115,13 @@ public class Monitor extends Listen
 				}
 			}
 			else
+			{
+				Listener newListener = new Listener(name,crit.toArray(new ListenCriterium[0]));
+				CMLib.commands().addGlobalMonitor(newListener);
+				req.addDependent(newListener.channelName, newListener);
+				listeners.add(newListener);
 				req.sendMsg("[OK]");
+			}
 		}
 		catch(Exception ioe)
 		{

@@ -45,7 +45,7 @@ public class CMClass extends ClassLoader
 {
 	protected static boolean debugging=false;
     protected static final Map<String,Class<?>> classes=new Hashtable<String,Class<?>>();
-    protected static final Map<String,Integer> 	MSGTYPE_DESCS=new Hashtable<String,Integer>();
+    
     private static CMClass[] clss=new CMClass[256];
     public CMClass()
     {
@@ -1804,22 +1804,6 @@ public class CMClass extends ClassLoader
         if(tCode==MudHost.MAIN_HOST)
             classLoaderSync[0]=true;
         return true;
-    }
-	
-    public static Map<String,Integer> getMSGTYPE_DESCS()
-    {
-        if(MSGTYPE_DESCS.size()!=0) return MSGTYPE_DESCS;
-    	synchronized(MSGTYPE_DESCS)
-    	{
-	        if(MSGTYPE_DESCS.size()!=0) return MSGTYPE_DESCS;
-	        for(int i=0;i<CMMsg.TYPE_DESCS.length;i++)
-	            MSGTYPE_DESCS.put(CMMsg.TYPE_DESCS[i],Integer.valueOf(i));
-	        for(int i=0;i<CMMsg.MASK_DESCS.length;i++)
-	            MSGTYPE_DESCS.put(CMMsg.MASK_DESCS[i],Integer.valueOf((int)CMath.pow(2,11+i)));
-	        for(int i=0;i<CMMsg.MISC_DESCS.length;i++)
-	            MSGTYPE_DESCS.put((String)CMMsg.MISC_DESCS[i][0],(Integer)CMMsg.MISC_DESCS[i][1]);
-    	}
-        return MSGTYPE_DESCS;
     }
     
     protected static class JScriptLib extends ScriptableObject

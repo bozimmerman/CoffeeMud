@@ -11,7 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -83,7 +83,7 @@ public class Listen extends CM1Command
 				this.parm=(parm==null)?"":parm.toUpperCase().trim();
 				if(CMParms.indexOf(CMMsg.MASK_DESCS,this.parm)>=0)
 				{
-					Integer I=CMClass.getMSGTYPE_DESCS().get(this.parm);
+					Integer I=CMMsg.Desc.getMSGTYPE_DESCS().get(this.parm);
 					if(I!=null) 
 						parmInt=I.intValue();
 					else
@@ -109,9 +109,6 @@ public class Listen extends CM1Command
 		public Listener(String channelName, ListenCriterium[] crits)
 		{
 			this.channelName=channelName.toUpperCase().trim();
-			CMLib.commands().addGlobalMonitor(this);
-			req.addDependent(this.channelName, this);
-			listeners.add(this);
 			this.crits=crits;
 		}
 
@@ -146,8 +143,16 @@ public class Listen extends CM1Command
 		{
 			for(ListenCriterium crit : crits)
 				if(!doesMonitor(crit,room,msg))
-					return true;
-			return false;
+					return false;
+			return true;
+		}
+		
+		private String minorDesc(int code)
+		{
+			String desc = CMMsg.Desc.getMSGDESC_TYPES().get(Integer.valueOf(code));
+			if(desc==null) desc = "?";
+			return desc;
+			
 		}
 		
 		public String messageToString(final CMMsg msg)
@@ -165,17 +170,17 @@ public class Listen extends CM1Command
 			{
 				StringBuilder str=new StringBuilder("");
 				str.append('\"').append(msg.source().Name()).append('\"').append(' ');
-				str.append(CMMsg.TYPE_DESCS[msg.sourceMinor()]);
+				str.append(minorDesc(msg.sourceMinor())).append(' ');
 				if(msg.target()!=null)
 					str.append('\"').append(msg.target().Name()).append('\"').append(' ');
 				else
 					str.append("NULL ");
-				str.append(CMMsg.TYPE_DESCS[msg.targetMinor()]);
+				str.append(minorDesc(msg.targetMinor())).append(' ');
 				if(msg.tool()!=null)
 					str.append('\"').append(msg.tool().Name()).append('\"').append(' ');
 				else
 					str.append("NULL ");
-				str.append(CMMsg.TYPE_DESCS[msg.othersMinor()]);
+				str.append(minorDesc(msg.othersMinor())).append(' ');
 				str.append(Integer.toString(msg.value())).append(' ');
 				str.append(CMLib.coffeeFilter().fullOutFilter(null, CMLib.map().deity(), msg.source(), msg.target(), msg.tool(), msg.othersMessage(), false));
 				return str.toString();
@@ -286,9 +291,16 @@ public class Listen extends CM1Command
 					rest=rest.substring(x+1).trim();
 			}
 			else
-				codeStr=null;
-			if((codeStr==null)||(STATTYPE.valueOf(codeStr)==null))
+			if(rest.trim().length()>0)
 			{
+				codeStr=rest.toUpperCase().trim();
+				rest="";
+			}
+			else
+				codeStr=null;
+			try{
+				STATTYPE.valueOf(codeStr);
+			} catch(Exception iox) {
 				req.sendMsg("[FAIL "+codeStr+" NOT "+CMParms.toStringList(STATTYPE.values())+"]");
 				return null;
 			}
@@ -297,10 +309,23 @@ public class Listen extends CM1Command
 			if(x>0)
 			{
 				parm=rest.substring(0,x).trim();
-				if(STATTYPE.valueOf(parm.toUpperCase().trim())!=null)
+				try{
+					STATTYPE.valueOf(parm.toUpperCase().trim());
 					parm="";
-				else
+				}catch(java.lang.IllegalArgumentException ix) {
 					rest=rest.substring(x+1).trim();
+				}
+			}
+			else
+			if(rest.trim().length()>0)
+			{
+				try{
+					STATTYPE.valueOf(rest.toUpperCase().trim());
+					parm="";
+				}catch(java.lang.IllegalArgumentException ix) {
+					parm=rest;
+					rest="";
+				}
 			}
 			else
 			{
@@ -352,7 +377,13 @@ public class Listen extends CM1Command
 			if(crit.size()==0)
 				req.sendMsg("[FAIL NOT "+CMParms.toStringList(STATTYPE.values())+"]");
 			else
+			{
+				Listener newListener = new Listener(name,crit.toArray(new ListenCriterium[0]));
+				CMLib.commands().addGlobalMonitor(newListener);
+				req.addDependent(newListener.channelName, newListener);
+				listeners.add(newListener);
 				req.sendMsg("[OK]");
+			}
 		}
 		catch(Exception ioe)
 		{
