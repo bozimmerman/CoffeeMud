@@ -7,7 +7,7 @@
 #
 # The entries under the [EACH] and [ALL] sections are formatted as follows:
 # [QUAL_LVL] [ABIL_ID] (AUTOGAIN) (PROF=[AMT]) (REQUIRES=[ABIL_ID]...) (MASK=[ZAPPERMASK])
-# AUTOGAIN, REQUIRES= and MASK= sections are optional. The REQUIRES section is a space 
+# AUTOGAIN, PROF=, REQUIRES= and MASK= sections are optional. The REQUIRES section is a space 
 # delimited list of Ability IDs of skills requires to learn the skill in question.  The ID
 # may optionally be followed by a number is parenthesis, e.g. Skill_Write(75) to 
 # require a certain proficiency to learn the skill.  MASK= is a zapper mask denoting
