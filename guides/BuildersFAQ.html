@@ -435,15 +435,10 @@ Regional Awareness skill. It is restricted
 in the base distribution, but can easily be made generally available to
 all players.&nbsp;</p>
       <p>If you want to do this
-programmatically, just open up the file
-com/planet_ink/coffee_mud/CharClasses/StdCharClass.java amd find the
-method called "public StdCharClass()" and add the following line to the
+programmatically, just open up the file resources/skills/allqualifylist.txt
+and add a line like:</p>
 list therein:</p>
-      <pre>CMLib.ableMapper().addCharAbilityMapping("All",1,"Skill_RegionalAwareness",false);<br /></pre>
-      <p>After doing the above,
-you'll need to recompile
-StdCharClass.java before rebooting your mud. See the Programmer's Guide
-for more information on rebuilding CoffeeMud.</p>
+      <pre>1 Skill_RegionalAwareness<br /></pre>
       <p>If you want to do this
 through the MUDGrinder, you'll have to modify each and every one of
 your character classes, and qualify them all for

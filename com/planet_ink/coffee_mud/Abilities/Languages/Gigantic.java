@@ -38,12 +38,9 @@ public class Gigantic extends StdLanguage
 	public String ID() { return "Gigantic"; }
 	public String name(){ return "Gigantic";}
 	public static List<String[]> wordLists=null;
-	private static boolean mapped=false;
 	public Gigantic()
 	{
 		super();
-		if(!mapped){mapped=true;
-					CMLib.ableMapper().addCharAbilityMapping("All",1,ID(),false);}
 	}
 	public List<String[]> translationVector(String language)
 	{

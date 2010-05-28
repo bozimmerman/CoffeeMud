@@ -39,13 +39,10 @@ public class Undercommon extends StdLanguage
 	public String ID() { return "Undercommon"; }
 	public String name(){ return "Undercommon";}
 	public static List<String[]> wordLists=null;
-	private static boolean mapped=false;
 	private static Drowish drowish = new Drowish();
 	public Undercommon()
 	{
 		super();
-		if(!mapped){mapped=true;
-					CMLib.ableMapper().addCharAbilityMapping("All",1,ID(),false);}
 	}
 	public List<String[]> translationVector(String language)
 	{

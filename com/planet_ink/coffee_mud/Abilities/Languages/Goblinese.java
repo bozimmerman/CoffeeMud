@@ -38,12 +38,9 @@ public class Goblinese extends StdLanguage
 	public String ID() { return "Goblinese"; }
 	public String name(){ return "Goblinese";}
 	public static List<String[]> wordLists=null;
-	private static boolean mapped=false;
 	public Goblinese()
 	{
 		super();
-		if(!mapped){mapped=true;
-					CMLib.ableMapper().addCharAbilityMapping("All",1,ID(),false);}
 	}
 	public List<String[]> translationVector(String language)
 	{

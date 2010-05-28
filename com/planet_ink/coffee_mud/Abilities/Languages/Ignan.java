@@ -22,12 +22,9 @@ public class Ignan extends StdLanguage
 	public String ID() { return "Ignan"; }
 	public String name(){ return "Ignan";}
 	public static List<String[]> wordLists=null;
-	private static boolean mapped=false;
 	public Ignan()
 	{
 		super();
-		if(!mapped){mapped=true;
-					CMLib.ableMapper().addCharAbilityMapping("All",1,ID(),false);}
 	}
 	public CMObject newInstance()
     {	

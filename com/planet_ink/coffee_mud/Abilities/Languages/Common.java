@@ -39,12 +39,9 @@ public class Common extends StdLanguage
 	public String name(){ return "Common";}
 	public boolean isAutoInvoked(){return false;}
 	public boolean canBeUninvoked(){return canBeUninvoked;}
-	private static boolean mapped=false;
 	public Common()
 	{
 		super();
-		if(!mapped){mapped=true;
-					CMLib.ableMapper().addCharAbilityMapping("All",1,ID(),100,true);}
 		proficiency=100;
 	}
 	public int proficiency(){return 100;}

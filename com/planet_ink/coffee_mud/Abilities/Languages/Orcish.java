@@ -38,12 +38,9 @@ public class Orcish extends StdLanguage
 	public String ID() { return "Orcish"; }
 	public String name(){ return "Orcish";}
 	public static List<String[]> wordLists=null;
-	private static boolean mapped=false;
 	public Orcish()
 	{
 		super();
-		if(!mapped){mapped=true;
-					CMLib.ableMapper().addCharAbilityMapping("All",1,ID(),false);}
 	}
 	public List<String[]> translationVector(String language)
 	{

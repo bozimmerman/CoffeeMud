@@ -38,12 +38,9 @@ public class Fey extends StdLanguage
 	public String ID() { return "Fey"; }//Based on Gevey from http://www.kalieda.org/gevey/lexicon.html
 	public String name(){ return "Fey";}
 	public static List<String[]> wordLists=null;	
-	private static boolean mapped=false;
 	public Fey()
 	{
 		super();
-		if(!mapped){mapped=true;
-					CMLib.ableMapper().addCharAbilityMapping("All",1,ID(),false);}
 	}
 	public CMObject newInstance()
     {	

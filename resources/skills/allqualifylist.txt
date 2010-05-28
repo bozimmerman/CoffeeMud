@@ -6,18 +6,18 @@
 # each and every class individually, and is not subject to pool-related rules.
 #
 # The entries under the [EACH] and [ALL] sections are formatted as follows:
-# [QUALIFYING LEVEL] [ABILITY ID] (AUTOGAIN) (REQUIRES=[SKILL_ID] [SKILL_ID]) (MASK=[ZAPPERMASK])
+# [QUAL_LVL] [ABIL_ID] (AUTOGAIN) (PROF=[AMT]) (REQUIRES=[ABIL_ID]...) (MASK=[ZAPPERMASK])
 # AUTOGAIN, REQUIRES= and MASK= sections are optional. The REQUIRES section is a space 
 # delimited list of Ability IDs of skills requires to learn the skill in question.  The ID
 # may optionally be followed by a number is parenthesis, e.g. Skill_Write(75) to 
 # require a certain proficiency to learn the skill.  MASK= is a zapper mask denoting
 # what sort of person/mob qualifies for the skill.  See AHELP ZAPPERMASK for more info.
 # The AUTOGAIN tag, if found, denotes that the skill is automatically gained when the
-# level is reached. 
+# level is reached.  The PROF= tag can be used to set a default proficiency.
 
 [EACH]
 1 UnderCommon
-1 Common
+1 Common PROFICIENCY=100
 1 SmokeRings MASK=+CHA 5
 1 Bandaging
 3 FireBuilding
@@ -31,6 +31,18 @@
 1 Digging
 1 Drilling
 1 Shearing
+
+1 Draconic
+1 Drowish
+1 Dwarven
+1 Elvish
+1 Fey
+1 Gigantic
+1 Gnomish
+1 Goblinese
+1 Ignan
+1 Orcish
+1 SignLanguage
 
 2 Butchering
 2 Chopping

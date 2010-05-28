@@ -38,12 +38,9 @@ public class Dwarven extends StdLanguage
 	public String ID() { return "Dwarven"; }
 	public String name(){ return "Dwarven";}
 	public static List<String[]> wordLists=null;
-	private static boolean mapped=false;
 	public Dwarven()
 	{
 		super();
-		if(!mapped){mapped=true;
-					CMLib.ableMapper().addCharAbilityMapping("All",1,ID(),false);}
 	}
 
 	public List<String[]> translationVector(String language)
