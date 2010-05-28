@@ -5983,7 +5983,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         return true;
     }
 
-    protected boolean modifyComponent(MOB mob, Vector<AbilityComponent> components, int componentIndex)
+    protected boolean modifyComponent(MOB mob, List<AbilityComponent> components, int componentIndex)
     throws IOException
     {
         DVector decoded=CMLib.ableMapper().getAbilityComponentDecodedDVector(components,componentIndex);
@@ -6025,7 +6025,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         int showFlag=-1;
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
-        Vector<AbilityComponent> codedDV=CMLib.ableMapper().getAbilityComponentDVector(componentID);
+        List<AbilityComponent> codedDV=CMLib.ableMapper().getAbilityComponentDVector(componentID);
         if(codedDV!=null)
         while((mob.session()!=null)&&(!mob.session().killFlag())&&(!ok))
         {
@@ -6039,7 +6039,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                     if((showFlag!=showNumber)&&(showFlag>-999)) continue;
                     if(!modifyComponent(mob,codedDV,v))
                     {
-                        codedDV.removeElementAt(v);
+                        codedDV.remove(v);
                         v--;
                     }
                 }
@@ -6052,7 +6052,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                     CMLib.ableMapper().addBlankAbilityComponent(codedDV);
                     boolean success=modifyComponent(mob,codedDV,codedDV.size()-1);
                     if(!success)
-                        codedDV.removeElementAt(codedDV.size()-1);
+                        codedDV.remove(codedDV.size()-1);
                     else
                     if(showFlag<=-999)
                         continue;

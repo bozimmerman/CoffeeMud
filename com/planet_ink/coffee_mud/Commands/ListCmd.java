@@ -1450,12 +1450,12 @@ public class ListCmd extends StdCommand
 		return -1;
 	}
 
-    public String listComponents(){
+    public String listComponents()
+    {
         StringBuffer buf=new StringBuffer("^xAll Defined Spells and required components: ^N\n\r");
-        for(Enumeration e=CMLib.ableMapper().getAbilityComponentMap().keys();e.hasMoreElements();)
+        for(String ID : CMLib.ableMapper().getAbilityComponentMap().keySet())
         {
-            String ID=(String)e.nextElement();
-            Vector<AbilityComponent> DV=(Vector<AbilityComponent>)CMLib.ableMapper().getAbilityComponentMap().get(ID);
+            List<AbilityComponent> DV=CMLib.ableMapper().getAbilityComponentMap().get(ID);
             if(DV!=null)
                 buf.append(CMStrings.padRight(ID,20)+": "+CMLib.ableMapper().getAbilityComponentDesc(null,ID)+"\n\r");
         }
