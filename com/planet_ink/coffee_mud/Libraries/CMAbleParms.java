@@ -43,7 +43,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 {
     public String ID(){return "CMAbleParms";}
     
-    protected Hashtable DEFAULT_EDITORS = null; 
+    protected Map<String,AbilityParmEditor> DEFAULT_EDITORS = null; 
     
     public CMAbleParms()
     {
@@ -360,7 +360,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 	protected boolean fixDataColumn(DVector dataRow, int rowShow) throws CMException
     {
         Item classModelI = getSampleItem(dataRow);
-        Hashtable editors = getEditors();
+        Map<String,AbilityParmEditor> editors = getEditors();
         if(classModelI == null) {
             Log.errOut("CMAbleParms","Data row "+rowShow+" discarded due to null/empty classID");
             return false;
@@ -443,7 +443,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             Log.errOut("CMAbleParms","File: "+recipeFilename+": "+e.getMessage());
             return;
         }
-        Hashtable editors = getEditors();
+        Map<String,AbilityParmEditor> editors = getEditors();
         DVector editRow = null;
         int[] showNumber = {0};
         int showFlag =-999;
@@ -474,7 +474,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
     
     protected void calculateRecipeCols(int[] lengths, String[] headers, Vector rowsV)
     {
-        Hashtable editors = getEditors();
+    	Map<String,AbilityParmEditor> editors = getEditors();
         DVector dataRow = null;
         for(int r=0;r<rowsV.size();r++) {
             dataRow=(DVector)rowsV.elementAt(r);
@@ -556,7 +556,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
     
 	public void modifyRecipesList(MOB mob, String recipeFilename, String recipeFormat) throws java.io.IOException
     {
-        Hashtable editors = getEditors();
+        Map<String,AbilityParmEditor> editors = getEditors();
         AbilityRecipeData recipe = parseRecipe(recipeFilename, recipeFormat);
         if(recipe.parseError() != null)
         {
@@ -680,12 +680,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
     }
     
     
-    public synchronized Hashtable getEditors()
+    public synchronized Map<String,AbilityParmEditor> getEditors()
     {
         if(DEFAULT_EDITORS != null)
             return DEFAULT_EDITORS;
         
-        Vector V=new XVector(new Object[] {
+        Vector<AbilityParmEditorImpl> V=new XVector<AbilityParmEditorImpl>(new AbilityParmEditorImpl[] {
                 new AbilityParmEditorImpl("SPELL_ID","The Spell ID",PARMTYPE_CHOICES) {
                     public void createChoices() { createChoices(CMClass.abilities());}
                     public String defaultValue(){ return "Spell_ID";}
@@ -1517,7 +1517,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 },
                 
         });
-        DEFAULT_EDITORS = new Hashtable();
+        DEFAULT_EDITORS = new Hashtable<String,AbilityParmEditor>();
         for(int v=0;v<V.size();v++) {
             AbilityParmEditor A = (AbilityParmEditor)V.elementAt(v);
             DEFAULT_EDITORS.put(A.ID(),A);
