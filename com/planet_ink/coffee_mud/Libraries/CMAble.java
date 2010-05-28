@@ -273,30 +273,31 @@ public class CMAble extends StdLibrary implements AbilityMapper
         return V.contains(Integer.valueOf(acode));
     }
 
-    public DVector getClassAllowsList(String classID)
+    public List<QualifyingID> getClassAllowsList(String classID)
     {
-        DVector ABLES=getUpToLevelListings(classID,CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL),false,false);
+    	List<AbilityMapping> ABLES=getUpToLevelListings(classID,CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL),false,false);
         SHashtable alreadyDone=new SHashtable();
-        DVector DV=new DVector(2);
-    	AbilityMapping able=null;
+        List<QualifyingID> DV=new Vector<QualifyingID>(2);
         List<String> V2=null;
         Integer Ix=null;
-        for(int a=0;a<ABLES.size();a++)
+        for(AbilityMapping able : ABLES)
         {
             if((V2==null)||(V2.size()==0)) continue;
-            able=(AbilityMapping)ABLES.elementAt(a,2);
-            for(Iterator<String> i=getAbilityAllowsList((String)ABLES.elementAt(a,1));i.hasNext();)
+            for(Iterator<String> i=getAbilityAllowsList(able.ID);i.hasNext();)
             {
             	String s = i.next();
             	Ix=(Integer)alreadyDone.get(s);
             	if(Ix==null)
             	{
 	                alreadyDone.put(s, Integer.valueOf(DV.size()));
-	                DV.addElement(s,Integer.valueOf(able.qualLevel));
+	                DV.add(new QualifyingID(s,able.qualLevel));
             	}
             	else
-            	if(((Integer)DV.elementAt(Ix.intValue(),2)).intValue()>able.qualLevel)
-            		DV.setElementAt(Ix.intValue(),2,Integer.valueOf(able.qualLevel));
+            	{
+            		QualifyingID Q=DV.get(Ix.intValue());
+	            	if((Q!=null)&&(Q.qualifyingLevel>able.qualLevel))
+	            		Q.qualifyingLevel=able.qualLevel;
+            	}
             }
         }
         return DV;
@@ -358,7 +359,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			completeAbleMap.put(ID,ableMap);
 		}
 		
-		AbilityMapping able=new AbilityMapping();
+		AbilityMapping able=new AbilityMapping(ID);
 		able.abilityName=ability;
 		able.qualLevel=qualLevel;
 		able.autoGain=autoGain;
@@ -535,9 +536,9 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return V;
 	}
-	public DVector getUpToLevelListings(String ID, int level, boolean ignoreAll, boolean gainedOnly)
+	public List<AbilityMapping> getUpToLevelListings(String ID, int level, boolean ignoreAll, boolean gainedOnly)
 	{
-		DVector DV=new DVector(2);
+		List<AbilityMapping> DV=new Vector<AbilityMapping>();
         CharClass C=CMClass.getCharClass(ID);
         if((C!=null)&&(C.getLevelCap()>=0)&&(level>C.getLevelCap()))
         	level=C.getLevelCap();
@@ -550,7 +551,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 				AbilityMapping able=(AbilityMapping)ableMap.get(key);
 				if((able.qualLevel<=level)
 				&&((!gainedOnly)||(able.autoGain)))
-					DV.addElement(key,able);
+					DV.add(able);
 			}
 		}
 		if((completeAbleMap.containsKey("All"))&&(!ignoreAll))
@@ -561,9 +562,18 @@ public class CMAble extends StdLibrary implements AbilityMapper
 				String key=(String)e.nextElement();
 				AbilityMapping able=(AbilityMapping)ableMap.get(key);
 				if((able.qualLevel<=level)
-				&&(!DV.contains(key))
 				&&((!gainedOnly)||(able.autoGain)))
-					DV.addElement(key,able);
+				{
+					boolean found=false;
+					for(AbilityMapping A : DV)
+						if(A.ID.equalsIgnoreCase(key))
+						{
+							found=true;
+							break;
+						}
+					if(!found)
+						DV.add(able);
+				}
 			}
 		}
 		return DV;

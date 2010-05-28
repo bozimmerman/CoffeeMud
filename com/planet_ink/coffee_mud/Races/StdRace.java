@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Races;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -937,13 +938,13 @@ public class StdRace implements Race
 
 		race1.racialAbilities(null);
 		race2.racialAbilities(null);
-		DVector dvata1=CMLib.ableMapper().getUpToLevelListings(race1.ID(),Integer.MAX_VALUE,true,false);
-		DVector dvata2=CMLib.ableMapper().getUpToLevelListings(race2.ID(),Integer.MAX_VALUE,true,false);
+		List<AbilityMapping> dvata1=CMLib.ableMapper().getUpToLevelListings(race1.ID(),Integer.MAX_VALUE,true,false);
+		List<AbilityMapping> dvata2=CMLib.ableMapper().getUpToLevelListings(race2.ID(),Integer.MAX_VALUE,true,false);
 		// kill half of them.
 		for(int i=1;i<dvata1.size();i++)
-			dvata1.removeElementAt(i);
+			dvata1.remove(i);
 		for(int i=1;i<dvata2.size();i++)
-			dvata2.removeElementAt(i);
+			dvata2.remove(i);
 
 		if((dvata1.size()+dvata2.size())>0)
 			GR.setStat("NUMRABLE",""+(dvata1.size()+dvata2.size()));
@@ -951,17 +952,17 @@ public class StdRace implements Race
 			GR.setStat("NUMRABLE","");
 		for(int i=0;i<dvata1.size();i++)
 		{
-			GR.setStat("GETRABLE"+i,(String)dvata1.elementAt(i,1));
-			GR.setStat("GETRABLELVL"+i,""+CMLib.ableMapper().getQualifyingLevel(race1.ID(),false,(String)dvata1.elementAt(i,1)));
-			GR.setStat("GETRABLEQUAL"+i,""+(!CMLib.ableMapper().getDefaultGain(race1.ID(),false,(String)dvata1.elementAt(i,1))));
-			GR.setStat("GETRABLEPROF"+i,""+CMLib.ableMapper().getDefaultProficiency(race1.ID(),false,(String)dvata1.elementAt(i,1)));
+			GR.setStat("GETRABLE"+i,(String)dvata1.get(i).ID);
+			GR.setStat("GETRABLELVL"+i,""+CMLib.ableMapper().getQualifyingLevel(race1.ID(),false,(String)dvata1.get(i).ID));
+			GR.setStat("GETRABLEQUAL"+i,""+(!CMLib.ableMapper().getDefaultGain(race1.ID(),false,(String)dvata1.get(i).ID)));
+			GR.setStat("GETRABLEPROF"+i,""+CMLib.ableMapper().getDefaultProficiency(race1.ID(),false,(String)dvata1.get(i).ID));
 		}
 		for(int i=0;i<dvata2.size();i++)
 		{
-			GR.setStat("GETRABLE"+(i+dvata1.size()),(String)dvata2.elementAt(i,1));
-			GR.setStat("GETRABLELVL"+(i+dvata1.size()),""+CMLib.ableMapper().getQualifyingLevel(race2.ID(),false,(String)dvata2.elementAt(i,1)));
-			GR.setStat("GETRABLEQUAL"+(i+dvata1.size()),""+(!CMLib.ableMapper().getDefaultGain(race2.ID(),false,(String)dvata2.elementAt(i,1))));
-			GR.setStat("GETRABLEPROF"+(i+dvata1.size()),""+CMLib.ableMapper().getDefaultProficiency(race2.ID(),false,(String)dvata2.elementAt(i,1)));
+			GR.setStat("GETRABLE"+(i+dvata1.size()),(String)dvata2.get(i).ID);
+			GR.setStat("GETRABLELVL"+(i+dvata1.size()),""+CMLib.ableMapper().getQualifyingLevel(race2.ID(),false,(String)dvata2.get(i).ID));
+			GR.setStat("GETRABLEQUAL"+(i+dvata1.size()),""+(!CMLib.ableMapper().getDefaultGain(race2.ID(),false,(String)dvata2.get(i).ID)));
+			GR.setStat("GETRABLEPROF"+(i+dvata1.size()),""+CMLib.ableMapper().getDefaultProficiency(race2.ID(),false,(String)dvata2.get(i).ID));
 		}
 
 		List<Ability> data=new Vector<Ability>();
@@ -1030,11 +1031,11 @@ public class StdRace implements Race
 			level=Integer.valueOf(Integer.MAX_VALUE);
 		if(racialAbilityMap.containsKey(level))
 			return racialAbilityMap.get(level);
-		DVector V=CMLib.ableMapper().getUpToLevelListings(ID(),level.intValue(),true,(mob!=null));
+		List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),level.intValue(),true,(mob!=null));
 		List<Ability> finalV=new Vector();
-		for(int v=0;v<V.size();v++)
+		for(AbilityMapper.AbilityMapping able : V)
 		{
-			Ability A=CMClass.getAbility((String)V.elementAt(v,1));
+			Ability A=CMClass.getAbility(able.ID);
 			if(A!=null)
 			{
 				A.setProficiency(CMLib.ableMapper().getDefaultProficiency(ID(),false,A.ID()));

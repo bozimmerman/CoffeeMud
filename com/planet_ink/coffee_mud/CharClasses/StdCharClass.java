@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -603,12 +604,12 @@ public class StdCharClass implements CharClass
         affectCharState(fakeMOB,CS);
         CR.setStat("ASTATE",CMLib.coffeeMaker().getCharStateStr(CS));
 
-        DVector data1=CMLib.ableMapper().getUpToLevelListings(ID(),Integer.MAX_VALUE,true,false);
+        List<AbilityMapper.AbilityMapping> data1=CMLib.ableMapper().getUpToLevelListings(ID(),Integer.MAX_VALUE,true,false);
         String aID=null;
         DVector completeSet=new DVector(9);
-        for(int i=0;i<data1.size();i++)
+        for(AbilityMapper.AbilityMapping able : data1)
         {
-            aID=(String)data1.elementAt(i,1);
+            aID=able.ID;
             completeSet.addElement(aID,
                                    Integer.valueOf(CMLib.ableMapper().getQualifyingLevel(ID(),false,aID)),
                                    Integer.valueOf(CMLib.ableMapper().getDefaultProficiency(ID(),false,aID)),

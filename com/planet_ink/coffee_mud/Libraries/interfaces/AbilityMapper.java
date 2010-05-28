@@ -36,6 +36,22 @@ import java.util.*;
  */
 public interface AbilityMapper extends CMLibrary
 {
+    public static class QualifyingID
+    {
+    	public String ID;
+    	public int qualifyingLevel;
+    	public QualifyingID(String id, int level)
+    	{ ID=id; qualifyingLevel=level;}
+    }
+    
+    public static class AbilityPreReq
+    {
+    	public String[] abilityIDs;
+    	public int proficiency;
+    	public AbilityPreReq(int prof, String[] ids)
+    	{ abilityIDs=ids; proficiency=prof;}
+    }
+    
     public static class AbilityMapping
     {
     	public static final int COST_PRAC=0;
@@ -43,6 +59,7 @@ public interface AbilityMapper extends CMLibrary
     	public static final int COST_MANA=2;
     	public static final int COST_PRACPRAC=3;
     	public static final int COST_NUM=4;
+    	public String ID="";
         public String abilityName="";
         public int qualLevel=-1;
         public boolean autoGain=false;
@@ -54,6 +71,7 @@ public interface AbilityMapper extends CMLibrary
         public String extraMask="";
         public String originalSkillPreReqList="";
         public Integer[] costOverrides=new Integer[COST_NUM];
+        public AbilityMapping(String id){ ID=id;}
     }
     
     public void addCharAbilityMapping(String ID, int qualLevel, String ability, boolean autoGain);
@@ -93,16 +111,14 @@ public interface AbilityMapper extends CMLibrary
 	public boolean availableToTheme(String abilityID, int theme, boolean publicly);
 	public int numMappedAbilities();
 	public Iterator<String> getAbilityAllowsList(String ableID);
-    public DVector getClassAllowsList(String ID);
+    public List<QualifyingID> getClassAllowsList(String ID);
     public List<String> getLevelListings(String ID, boolean checkAll, int level);
-    public DVector getUpToLevelListings(String ID, int level, boolean ignoreAll, boolean gainedOnly);
+    public List<AbilityMapping> getUpToLevelListings(String ID, int level, boolean ignoreAll, boolean gainedOnly);
     public int getQualifyingLevel(String ID, boolean checkAll, String ability);
     public int qualifyingLevel(MOB student, Ability A);
     public String getExtraMask(String ID, boolean checkAll, String ability);
 	public String getApplicableMask(MOB student, Ability A);
-	public DVector getPreReqs(String ID, boolean checkAll, String ability);
 	public DVector getUnmetPreRequisites(MOB student, Ability A);
-	public DVector getApplicablePreRequisites(MOB mob, Ability A);
 	public DVector getCommonPreRequisites(Ability A);
 	public String getCommonExtraMask(Ability A);
 	public String formatPreRequisites(DVector preReqs);
@@ -141,12 +157,4 @@ public interface AbilityMapper extends CMLibrary
     public DVector getAbilityComponentDecodedDVector(Vector<AbilityComponent> codedDV, int r);
     public void addBlankAbilityComponent(Vector<AbilityComponent> codedDV);
     public boolean isDomainIncludedInAnyAbility(int domain, int acode);
-    
-    public static class AbilityPreReq
-    {
-    	public String[] abilityIDs;
-    	public int proficiency;
-    	public AbilityPreReq(int prof, String[] ids)
-    	{ abilityIDs=ids; proficiency=prof;}
-    }
 }

@@ -53,7 +53,7 @@ public class WillQualify  extends Skills
 		int highestLevel = maxLevel;
 		StringBuffer msg = new StringBuffer("");
 		int col = 0;
-        DVector DV=CMLib.ableMapper().getClassAllowsList(Class);
+        List<AbilityMapper.QualifyingID> DV=CMLib.ableMapper().getClassAllowsList(Class);
 		for (int l = 0; l <= highestLevel; l++) 
 		{
 			StringBuffer thisLine = new StringBuffer("");
@@ -81,10 +81,10 @@ public class WillQualify  extends Skills
 			}
 			ExpertiseLibrary.ExpertiseDefinition E=null;
 			Integer qualLevel=null;
-			for(int d=0;d<DV.size();d++)
+			for(AbilityMapper.QualifyingID qID : DV)
 			{
-				qualLevel=(Integer)DV.elementAt(d,2);
-				E=CMLib.expertises().getDefinition((String)DV.elementAt(d,1));
+				qualLevel=qID.qualifyingLevel;
+				E=CMLib.expertises().getDefinition(qID.ID);
 				if(E!=null)
 				{
 	            	int minLevel=E.getMinimumLevel();

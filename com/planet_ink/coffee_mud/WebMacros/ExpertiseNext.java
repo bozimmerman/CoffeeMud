@@ -7,6 +7,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.QualifyingID;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -89,15 +90,15 @@ public class ExpertiseNext extends StdWebMacro
             {
                 expertsAllows=new Hashtable();
                 httpReq.getRequestObjects().put("ALLOWS-"+className.toUpperCase().trim(),expertsAllows);
-                DVector DV=CMLib.ableMapper().getClassAllowsList(className);
+                List<QualifyingID> DV=CMLib.ableMapper().getClassAllowsList(className);
                 if(DV!=null)
-                	for(int v=0;v<DV.size();v++)
+                	for(QualifyingID qID : DV)
                 	{
-                		String xpertise=(String)DV.elementAt(v,1);
+                		String xpertise=qID.ID;
             			E=(ExpertiseLibrary.ExpertiseDefinition)CMLib.expertises().getDefinition(xpertise);
             			if(E!=null)
             			{
-            				qualLevel=(Integer)DV.elementAt(v,2);
+            				qualLevel=qID.qualifyingLevel;
                         	int minLevel=E.getMinimumLevel();
                         	if((qualLevel!=null)&&(minLevel<qualLevel.intValue()))
                         		minLevel=qualLevel.intValue();

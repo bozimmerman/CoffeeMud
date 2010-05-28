@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -32,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class Monk extends StdCharClass
 {
 	public String ID(){return "Monk";}
@@ -263,13 +263,13 @@ public class Monk extends StdCharClass
 		super.grantAbilities(mob,isBorrowedClass);
 		if(mob.playerStats()==null)
 		{
-			DVector V=CMLib.ableMapper().getUpToLevelListings(ID(),
+			List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),
 												mob.charStats().getClassLevel(ID()),
 												false,
 												false);
-			for(Enumeration a=V.getDimensionVector(1).elements();a.hasMoreElements();)
+			for(AbilityMapper.AbilityMapping able : V)
 			{
-				Ability A=CMClass.getAbility((String)a.nextElement());
+				Ability A=CMClass.getAbility(able.ID);
 				if((A!=null)
 				&&((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_COMMON_SKILL)
 				&&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))

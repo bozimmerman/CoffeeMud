@@ -103,14 +103,14 @@ public class CharClassData extends StdWebMacro
         }
         else
         {
-            DVector data1=CMLib.ableMapper().getUpToLevelListings(E.ID(),Integer.MAX_VALUE,true,false);
+        	List<AbilityMapper.AbilityMapping> data1=CMLib.ableMapper().getUpToLevelListings(E.ID(),Integer.MAX_VALUE,true,false);
             DVector sortedData1=new DVector(2);
             String aID=null;
             int minLvl=Integer.MAX_VALUE;
             int maxLvl=Integer.MIN_VALUE;
-            for(int i=0;i<data1.size();i++)
+            for(AbilityMapper.AbilityMapping able : data1)
             {
-                aID=(String)data1.elementAt(i,1);
+                aID=able.ID;
                 int qlvl=CMLib.ableMapper().getQualifyingLevel(E.ID(), false, aID);
                 if(qlvl>maxLvl) maxLvl=qlvl;
                 if(qlvl<minLvl) minLvl=qlvl;

@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.DefaultTimeClock;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -633,11 +634,11 @@ public class GenCharClass extends StdCharClass
 	protected Vector getAbleSet()
 	{
 		Vector VA=new Vector(9);
-		DVector V=CMLib.ableMapper().getUpToLevelListings(ID(),Integer.MAX_VALUE,true,false);
-		for(int v=0;v<V.size();v++)
+		List<AbilityMapper.AbilityMapping> V=CMLib.ableMapper().getUpToLevelListings(ID(),Integer.MAX_VALUE,true,false);
+		for(AbilityMapper.AbilityMapping able : V)
 		{
-			String AID=(String)V.elementAt(v,1);
-			AbilityMapper.AbilityMapping newMAP=new AbilityMapper.AbilityMapping();
+			String AID=able.ID;
+			AbilityMapper.AbilityMapping newMAP=new AbilityMapper.AbilityMapping(AID);
 			newMAP.abilityName = AID;
 			newMAP.qualLevel = CMLib.ableMapper().getQualifyingLevel(ID(),false,AID); 
 			newMAP.defaultProficiency = CMLib.ableMapper().getDefaultProficiency(ID(),false,AID);

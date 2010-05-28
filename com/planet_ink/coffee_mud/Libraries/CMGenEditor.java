@@ -5467,7 +5467,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             return null;
         }
 
-    	AbilityMapper.AbilityMapping aMAP=new AbilityMapper.AbilityMapping();
+    	AbilityMapper.AbilityMapping aMAP=new AbilityMapper.AbilityMapping(ableID);
         if(origLevelIndex<0)
         {
         	aMAP.abilityName=ableID;
@@ -5544,7 +5544,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 Ability A=CMClass.getAbility(E.getStat("GETCABLE"+v));
                 if(A!=null)
                 {
-                	AbilityMapper.AbilityMapping aMAP=new AbilityMapper.AbilityMapping();
+                	AbilityMapper.AbilityMapping aMAP=new AbilityMapper.AbilityMapping(A.ID());
                 	aMAP.abilityName=A.ID();
                 	aMAP.autoGain=CMath.s_bool(E.getStat("GETCABLEGAIN"+v));
                     aMAP.defaultProficiency=CMath.s_int(E.getStat("GETCABLEPROF"+v));
