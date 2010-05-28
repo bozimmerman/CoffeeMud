@@ -65,7 +65,7 @@ public interface AbilityParameters extends CMLibrary
     public void modifyRecipesList(MOB mob, String recipeFilename, String recipeFormat) throws java.io.IOException;
     public void testRecipeParsing(String recipeFilename, String recipeFormat, boolean save);
     public AbilityRecipeData parseRecipe(String recipeFilename, String recipeFormat);
-    public Hashtable getEditors();
+    public Map<String,AbilityParmEditor> getEditors();
     public void resaveRecipeFile(MOB mob, String recipeFilename, Vector rowsV, Vector columnsV, boolean saveVFS);
     public StringBuffer getRecipeList(ItemCraftor iA);
     
