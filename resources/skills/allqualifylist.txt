@@ -17,7 +17,7 @@
 
 [EACH]
 1 UnderCommon
-1 Common PROFICIENCY=100
+1 Common PROF=100
 1 SmokeRings MASK=+CHA 5
 1 Bandaging
 3 FireBuilding
