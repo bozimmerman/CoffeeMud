@@ -58,8 +58,7 @@ public class CM1Server extends Thread
 		name=serverName;
 		this.port=serverPort;
 		shutdownRequested = false;
-		threadPool = new ThreadPoolExecutor(0, 3, 30, TimeUnit.SECONDS, new UniqueEntryBlockingQueue<Runnable>(1024));
-		threadPool.setThreadFactory(new CMThreadFactory(serverName));
+		threadPool = new ThreadPoolExecutor(0, 3, 30, TimeUnit.SECONDS, new UniqueEntryBlockingQueue<Runnable>(512));
 	}
 	
 	public void run()
@@ -68,6 +67,7 @@ public class CM1Server extends Thread
 		{
 			try
 			{
+				threadPool.setThreadFactory(new CMThreadFactory(name));
 				servChan = ServerSocketChannel.open();
 				ServerSocket serverSocket = servChan.socket();
 				servSelector = Selector.open();
@@ -78,47 +78,57 @@ public class CM1Server extends Thread
 				shutdownRequested = false;
 				while (!shutdownRequested)
 				{
-				   int n = servSelector.select();
-				   if (n == 0) continue;
-				   
-				   Iterator<SelectionKey> it = servSelector.selectedKeys().iterator();
-				   while (it.hasNext()) 
-				   {
-				      SelectionKey key = it.next();
-				      if (key.isAcceptable()) 
-				      {
-				         ServerSocketChannel server = (ServerSocketChannel) key.channel();
-				         SocketChannel channel = server.accept();
-				         if (channel != null) 
-				         {
-				            RequestHandler handler=new RequestHandler(channel);
-				            channel.configureBlocking (false);
-				            channel.register (servSelector, SelectionKey.OP_READ, handler);
-				            handlers.put(channel,handler);
-					        handler.sendMsg("CONNECTED TO "+name.toUpperCase());
-				         } 
-				         //sayHello (channel);
-				      }
-				      if (key.isReadable()) 
-				      {
-				    	  RequestHandler handler = (RequestHandler)key.attachment();
-				  		  threadPool.execute(handler);
-				      }
-				      it.remove();
-				    }
-					for(SocketChannel schan : handlers.keySet())
-						try
-						{
-							RequestHandler handler=handlers.get(schan);
-							if((handler!=null)&&(handler.needsClosing()))
-								handler.shutdown();
-						}
-						catch(Exception e){}
+					try
+					{
+					   int n = servSelector.select();
+					   if (n == 0) continue;
+					   
+					   Iterator<SelectionKey> it = servSelector.selectedKeys().iterator();
+					   while (it.hasNext()) 
+					   {
+					      SelectionKey key = it.next();
+					      if (key.isAcceptable()) 
+					      {
+					         ServerSocketChannel server = (ServerSocketChannel) key.channel();
+					         SocketChannel channel = server.accept();
+					         if (channel != null) 
+					         {
+					            RequestHandler handler=new RequestHandler(channel);
+					            channel.configureBlocking (false);
+					            channel.register (servSelector, SelectionKey.OP_READ, handler);
+					            handlers.put(channel,handler);
+						        handler.sendMsg("CONNECTED TO "+name.toUpperCase());
+					         } 
+					         //sayHello (channel);
+					      }
+					      try
+					      {
+						      if (key.isReadable()) 
+						      {
+						    	  RequestHandler handler = (RequestHandler)key.attachment();
+						    	  if((!handler.isRunning())&&(!handler.needsClosing()))
+							  		  threadPool.execute(handler);
+						      }
+					      }
+					      finally
+					      {
+						      it.remove();
+					      }
+					    }
+						for(SocketChannel schan : handlers.keySet())
+							try
+							{
+								RequestHandler handler=handlers.get(schan);
+								if((handler!=null)&&(handler.needsClosing()))
+									handler.shutdown();
+							}
+							catch(Exception e){}
+					}
+					catch(CancelledKeyException t)
+					{
+						// ignore
+					}
 				}
-			}
-			catch(CancelledKeyException t)
-			{
-				// ignore
 			}
 			catch(Throwable t)
 			{
@@ -139,6 +149,7 @@ public class CM1Server extends Thread
 					catch(Exception e){}
 				handlers.clear();
 				threadPool.shutdown();
+				Log.errOut("BLAH",new Exception());
 				Log.sysOut("CM1Server","Shutdown complete");
 			}
 		}

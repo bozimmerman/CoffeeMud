@@ -89,6 +89,7 @@ public class RequestHandler implements Runnable
 	public void logout() { target=null; user=null;}
 	public void addDependent(String s, Object O){ dependents.put(s,O); }
 	public void delDependent(String s){ dependents.remove(s); }
+	public boolean isRunning() { return isRunning;}
 	
 	public boolean needsClosing()
 	{
