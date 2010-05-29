@@ -2280,3 +2280,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 11.MERGE command can now be used to merge different database instances of areas/rooms/etc..
 12.New Ability INI entries: MAXCOMMONSKILLS, MAXCRAFTINGSKILLS, MAXNONCRAFTINGSKILLS, MAXLANGUAGES
 13.New all-skills configuration file: /resources/skills/allqualifylist
+14.New IP service (CM1Server) -- a new, more formal-syntax mud interface (for various purposes)
