@@ -58,7 +58,7 @@ public class CM1Server extends Thread
 		name=serverName;
 		this.port=serverPort;
 		shutdownRequested = false;
-		threadPool = new ThreadPoolExecutor(0, 3, 30, TimeUnit.SECONDS, new UniqueEntryBlockingQueue<Runnable>(256));
+		threadPool = new ThreadPoolExecutor(0, 3, 30, TimeUnit.SECONDS, new UniqueEntryBlockingQueue<Runnable>(1024));
 		threadPool.setThreadFactory(new CMThreadFactory(serverName));
 	}
 	
@@ -75,6 +75,7 @@ public class CM1Server extends Thread
 				Log.sysOut("CM1Server","Started "+name+" on port "+port);
 				servChan.configureBlocking (false);
 				servChan.register (servSelector, SelectionKey.OP_ACCEPT);
+				shutdownRequested = false;
 				while (!shutdownRequested)
 				{
 				   int n = servSelector.select();

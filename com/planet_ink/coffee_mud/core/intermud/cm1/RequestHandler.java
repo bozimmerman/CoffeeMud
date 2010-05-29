@@ -125,6 +125,7 @@ public class RequestHandler implements Runnable
 	    			for(int i=0;i<buffer.limit();i++)
 	    				if((containIndex=CMParms.containIndex(buffer, markBlocks, i))>=0)
 	    				{
+	    					int containIndexLength = markBlocks[containIndex].length;
 	    					workingBuffers.remove(buffer);
 	    					if(i>0)
 	    					{
@@ -133,11 +134,11 @@ public class RequestHandler implements Runnable
 	    						prevBuf.flip();
 	    						workingBuffers.add(prevBuf);
 	    					}
-	    					if(((buffer.position() + markBlocks[containIndex].length)>=buffer.limit())
-	    					||((buffer.position() + markBlocks[containIndex].length)>=buffer.capacity()))
+	    					if(((i + containIndexLength)>=buffer.limit())
+	    					||((i + containIndexLength)>=buffer.capacity()))
 	    						buffer.position(buffer.limit());
 	    					else
-		    					buffer.position(i + markBlocks[containIndex].length);
+		    					buffer.position(i + containIndexLength);
 	    					if(buffer.remaining()>0)
 	    					{
 	    						buffer = ByteBuffer.allocate(BUFFER_SIZE);
@@ -181,6 +182,10 @@ public class RequestHandler implements Runnable
 	    		buffer.flip();
 	    		try{Thread.sleep(1);}catch(Exception e){}
 			}
+			catch(IOException ioe)
+			{
+				Log.errOut("CM1Hndlr",runnableName+": "+ioe.getMessage());
+			}
 			catch(Exception e)
 			{
 				Log.errOut("CM1Hndlr",runnableName+": "+e.getMessage());
@@ -196,11 +201,14 @@ public class RequestHandler implements Runnable
 	
 	public void setEndOfLine(String... msgs)
 	{
-		byte[][] newBlocks=new byte[msgs.length][];
-		int i=0;
-		for(String s : msgs)
-			newBlocks[i++]=s.getBytes();
-		markBlocks=newBlocks;
+		synchronized(this)
+		{
+			byte[][] newBlocks=new byte[msgs.length][];
+			int i=0;
+			for(String s : msgs)
+				newBlocks[i++]=s.getBytes();
+			markBlocks=newBlocks;
+		}
 	}
 	
 	public void execute(String line)
