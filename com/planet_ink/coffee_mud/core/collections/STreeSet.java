@@ -77,6 +77,13 @@ public class STreeSet<K> implements Serializable, Iterable<K>, Collection<K>, Na
 				T.add(E.nextElement());
 	}
 	
+	public void addAll(K[] E)
+	{
+		if(E!=null)
+			for(K e : E)
+				T.add(e);
+	}
+	
 	public void addAll(Iterator<K> E)
 	{
 		if(E!=null)

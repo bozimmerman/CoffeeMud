@@ -48,6 +48,13 @@ public class GetStat extends CM1Command
 	
 	protected static final String[] STATTYPES={"SESSION","MOB","CHAR","STATE","PHYSICAL","BASECHAR","MAXSTATE","BASESTATE","BASEPHYSICAL","PLAYERSTATS", "ITEM", "EXIT", "ROOM", "AREA"};
 	protected static final String[] TYPESTYPE={"P",		 "MP", "MP",  "MP",   "MPIREA",  "MP",      "MP",      "MP",       "MPIREA",      "P",           "I",    "E",    "R",    "A"};
+	
+	protected static final String[] PHYSSTATS={"EFFECT"};
+	protected static final String[] PHYASTATS={"BEHAVIOR"};
+	protected static final String[] MOBASTATS={"ABILITY","FACTION","EXPERTISE","FOLLOWER"};
+	protected static final String[] ITEMSTATS={"ITEM"};
+	protected static final String[] ROOMSTATS={"MOB"};
+	
 	public char getTypeCode(Physical P)
 	{
 		if(P instanceof MOB) return ((MOB)P).isMonster()?'M':'P';
@@ -112,13 +119,28 @@ public class GetStat extends CM1Command
 
 	public String[] getStatCodes(Physical P, Modifiable m)
 	{
+		SLinkedList<String> codes;
 		if(!UseGenBuilder(P,m))
-			return m.getStatCodes();
+			codes=new SLinkedList<String>(m.getStatCodes());
+		else
 		if(m instanceof MOB)
-			return GenericBuilder.GENMOBCODES;
+			codes=new SLinkedList<String>(GenericBuilder.GENMOBCODES);
+		else
 		if(m instanceof Item)
-			return GenericBuilder.GENITEMCODES;
-		return null;
+			codes=new SLinkedList<String>(GenericBuilder.GENITEMCODES);
+		else
+			return new String[0];
+		if(m instanceof Physical)
+			codes.addAll(PHYSSTATS);
+		if(m instanceof PhysicalAgent)
+			codes.addAll(PHYASTATS);
+		if(m instanceof MOB)
+			codes.addAll(MOBASTATS);
+		if(m instanceof ItemPossessor)
+			codes.addAll(ITEMSTATS);
+		if(m instanceof Room)
+			codes.addAll(ROOMSTATS);
+		return codes.toArray(new String[0]);
 	}
 
 	public boolean isAStat(Physical P, Modifiable m, String stat)
@@ -174,11 +196,24 @@ public class GetStat extends CM1Command
 			}
 			String stat = "";
 			String type = parameters.toUpperCase().trim();
+			String rest = "";
+			//char adjuster=' ';
 			int x=parameters.indexOf(' ');
 			if(x>0)
 			{
 				type=parameters.substring(0,x).toUpperCase().trim();
 				stat=parameters.substring(x+1).toUpperCase().trim();
+				x=stat.lastIndexOf(' ');
+				if(x>0)
+				{
+					rest=stat.substring(x+1).trim();
+					stat=stat.substring(0,x);
+				}
+				if((stat.length()>0)&&(!Character.isLetter(stat.charAt(0))))
+				{
+				//	adjuster=stat.charAt(0);
+					stat=stat.substring(1);
+				}
 			}
 			Modifiable mod=getModifiable(type,P);
 			if(mod==null)
@@ -191,6 +226,155 @@ public class GetStat extends CM1Command
 				req.sendMsg("[FAIL USAGE: GETSTAT "+type+" "+CMParms.toStringList(getStatCodes(P,mod))+"]");
 				return;
 			}
+			if(mod instanceof Physical)
+				switch(CMParms.indexOf(PHYSSTATS, stat))
+				{
+					case -1: break;
+					case 0: 
+					{
+						if(rest.trim().length()==0)
+							req.sendMsg("[OK "+((Physical)mod).numEffects()+"]");
+						else
+						{
+							Ability A=((Physical)mod).fetchEffect(CMath.s_int(rest));
+							if(A==null)
+								req.sendMsg("[FAIL NO EFFECT "+rest+"]"); 
+							else
+								req.sendMsg("[OK "+A.ID()+" "+A.text()+"]"); 
+						}
+						return;
+					}
+				}
+			if(mod instanceof PhysicalAgent)
+				switch(CMParms.indexOf(PHYASTATS, stat))
+				{
+					case -1: break;
+					case 0: 
+					{
+						if(rest.trim().length()==0)
+							req.sendMsg("[OK "+((PhysicalAgent)mod).numBehaviors()+"]");
+						else
+						{
+							Behavior A=((PhysicalAgent)mod).fetchBehavior(CMath.s_int(rest));
+							if(A==null)
+								req.sendMsg("[FAIL NO BEHAVIOR "+rest+"]"); 
+							else
+								req.sendMsg("[OK "+A.ID()+" "+A.getParms()+"]");
+						}
+						return;
+					}
+				}
+			if(mod instanceof MOB)
+				switch(CMParms.indexOf(MOBASTATS, stat))
+				{
+					case -1: break;
+					case 0: 
+					{
+						if(rest.trim().length()==0)
+							req.sendMsg("[OK "+((MOB)mod).numAbilities()+"]");
+						else
+						{
+							Ability A=((MOB)mod).fetchAbility(CMath.s_int(rest));
+							if(A==null)
+								req.sendMsg("[FAIL NO ABILITY "+rest+"]"); 
+							else
+								req.sendMsg("[OK "+A.ID()+" "+A.proficiency()+" "+A.text()+"]");
+						}
+						return;
+					}
+					case 1: 
+					{
+						if(rest.trim().length()==0)
+						{
+							StringBuilder factions=new StringBuilder("");
+							for(Enumeration<String> f=((MOB)mod).fetchFactions();f.hasMoreElements();)
+								factions.append(' ').append(f);
+							req.sendMsg("[OK"+factions.toString()+"]");
+						}
+						else
+						{
+							Faction F=CMLib.factions().getFaction(rest);
+							if(F==null)
+								req.sendMsg("[FAIL "+rest+" NOT EXIST]");
+							else
+							{
+								int f=((MOB)mod).fetchFaction(F.factionID());
+								if(f==Integer.MAX_VALUE)
+									req.sendMsg("[FAIL NO FACTION "+F.factionID()+"]"); 
+								else
+									req.sendMsg("[OK "+f+"]");
+							}
+						}
+						return;
+					}
+					case 2: 
+					{
+						if(rest.trim().length()==0)
+							req.sendMsg("[OK "+((MOB)mod).numExpertises()+"]");
+						else
+						{
+							String s=((MOB)mod).fetchExpertise(CMath.s_int(rest));
+							if(s==null)
+								req.sendMsg("[FAIL NO EXPERTISE "+rest+"]"); 
+							else
+								req.sendMsg("[OK "+s+"]");
+						}
+						return;
+					}
+					case 3: 
+					{
+						if(rest.trim().length()==0)
+							req.sendMsg("[OK "+((MOB)mod).numFollowers()+"]");
+						else
+						{
+							MOB M=((MOB)mod).fetchFollower(CMath.s_int(rest));
+							if(M==null)
+								req.sendMsg("[FAIL NO FOLLOWER "+rest+"]"); 
+							else
+								req.sendMsg("[OK "+M.Name()+"]");
+						}
+						return;
+					}
+				}
+			if(mod instanceof ItemPossessor)
+				switch(CMParms.indexOf(ITEMSTATS, stat))
+				{
+					case -1: break;
+					case 0: 
+					{
+						if(rest.trim().length()==0)
+							req.sendMsg("[OK "+((ItemPossessor)mod).numItems()+"]");
+						else
+						{
+							Item I=((ItemPossessor)mod).getItem(CMath.s_int(rest));
+							if(I==null)
+								req.sendMsg("[FAIL NO ITEM "+rest+"]"); 
+							else
+								req.sendMsg("[OK "+I.Name()+"]");
+						}
+						return;
+					}
+				}
+			if(mod instanceof Room)
+				switch(CMParms.indexOf(ROOMSTATS, stat))
+				{
+					case -1: break;
+					case 0: 
+					{
+						if(rest.trim().length()==0)
+							req.sendMsg("[OK "+((Room)mod).numInhabitants()+"]");
+						else
+						{
+							MOB M=((Room)mod).fetchInhabitant(CMath.s_int(rest));
+							if(M==null)
+								req.sendMsg("[FAIL NO MOB "+rest+"]"); 
+							else
+								req.sendMsg("[OK "+M.Name()+"]");
+						}
+						return;
+					}
+				}
+			
 			if(!UseGenBuilder(P,mod))
 				req.sendMsg("[OK "+mod.getStat(stat)+"]");
 			else

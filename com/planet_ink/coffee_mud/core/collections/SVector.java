@@ -84,6 +84,13 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, Lis
 				V.add(E.nextElement());
 	}
 	
+	public void addAll(T[] E)
+	{
+		if(E!=null)
+			for(T e : E)
+				V.add(e);
+	}
+	
 	public void addAll(Iterator<T> E)
 	{
 		if(E!=null)

@@ -73,6 +73,13 @@ public class XVector<T> extends Vector<T>
 				add(E.nextElement());
 	}
 	
+	public void addAll(T[] E)
+	{
+		if(E!=null)
+			for(T e : E)
+				add(e);
+	}
+	
 	public void addAll(Iterator<T> E)
 	{
 		if(E!=null)

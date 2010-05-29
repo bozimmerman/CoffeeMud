@@ -182,7 +182,7 @@ public class Listen extends CM1Command
 					str.append("NULL ");
 				str.append(minorDesc(msg.othersMinor())).append(' ');
 				str.append(Integer.toString(msg.value())).append(' ');
-				str.append(CMLib.coffeeFilter().fullOutFilter(null, CMLib.map().deity(), msg.source(), msg.target(), msg.tool(), msg.othersMessage(), false));
+				str.append(CMStrings.removeColors(CMLib.coffeeFilter().fullOutFilter(null, CMLib.map().deity(), msg.source(), msg.target(), msg.tool(), msg.othersMessage(), false)));
 				return str.toString();
 			}
 			}

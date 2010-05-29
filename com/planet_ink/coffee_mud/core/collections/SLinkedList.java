@@ -67,6 +67,13 @@ public class SLinkedList<K> implements Serializable, Cloneable, Iterable<K>, Col
 				L.add(E.nextElement());
 	}
 	
+	public void addAll(K[] E)
+	{
+		if(E!=null)
+			for(K e : E)
+				L.add(e);
+	}
+	
 	public void addAll(Iterator<K> E)
 	{
 		if(E!=null)
