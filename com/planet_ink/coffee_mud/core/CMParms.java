@@ -25,121 +25,134 @@ public class CMParms
 {
     private CMParms(){super();}
     private static CMParms inst=new CMParms();
-    public static CMParms instance(){return inst;}
+    public final static CMParms instance(){return inst;}
 
-    public static String combine(List<?> commands)
+    public final static String combine(final List<?> commands)
     {
-    	StringBuilder combined=new StringBuilder("");
+    	final StringBuilder combined=new StringBuilder("");
         if(commands!=null)
         for(Object o : commands)
             combined.append(o.toString()+" ");
         return combined.toString().trim();
     }
 
-    public static String combine(List<?> commands, int startAt)
+    public final static String combine(final List<?> commands, final int startAt)
     {
-    	StringBuilder combined=new StringBuilder("");
+    	final StringBuilder combined=new StringBuilder("");
         if(commands!=null)
         for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
             combined.append(commands.get(commandIndex).toString()+" ");
         return combined.toString().trim();
     }
 
-    public static String combine(List<?> commands, int startAt, int endAt)
+    public final static String combine(final List<?> commands, final int startAt, final int endAt)
     {
-    	StringBuilder combined=new StringBuilder("");
+    	final StringBuilder combined=new StringBuilder("");
         if(commands!=null)
         for(int commandIndex=startAt;commandIndex<endAt;commandIndex++)
         	combined.append(commands.get(commandIndex).toString()+" ");
         return combined.toString().trim();
     }
 
-    public static String combineWith(List<?> commands, char withChar, int startAt, int endAt)
+    public final static String combineWith(final List<?> commands, final char withChar, final int startAt, final int endAt)
     {
-    	StringBuilder combined=new StringBuilder("");
+    	final StringBuilder combined=new StringBuilder("");
         if(commands!=null)
         for(int commandIndex=startAt;commandIndex<endAt;commandIndex++)
         	combined.append(commands.get(commandIndex).toString()+withChar);
         return combined.toString().trim();
     }
 
-    public static String combineWithQuotes(List<?> commands, int startAt, int endAt)
+    public final static String combineWithQuotes(final List<?> commands, final int startAt, final int endAt)
     {
-        StringBuffer Combined=new StringBuffer("");
+    	final StringBuffer Combined=new StringBuffer("");
         if(commands!=null)
-        for(int commandIndex=startAt;commandIndex<endAt;commandIndex++)
         {
-            String s=commands.get(commandIndex).toString();
-            if(s.indexOf(' ')>=0) s="\""+s+"\"";
-            Combined.append(s+" ");
+        	String s;
+	        for(int commandIndex=startAt;commandIndex<endAt;commandIndex++)
+	        {
+	            s=commands.get(commandIndex).toString();
+	            if(s.indexOf(' ')>=0) s="\""+s+"\"";
+	            Combined.append(s+" ");
+	        }
         }
         return Combined.toString().trim();
     }
     
-    public static String combineAfterIndexWithQuotes(Vector<?> commands, String match)
+    public final static String combineAfterIndexWithQuotes(final Vector<?> commands, final String match)
     {
-        StringBuffer Combined=new StringBuffer("");
+    	final StringBuffer Combined=new StringBuffer("");
         if(commands!=null)
-        for(int commandIndex=0;commandIndex<0;commandIndex++)
         {
-            String s=(String)commands.elementAt(commandIndex);
-            if(s.indexOf(' ')>=0) s="\""+s+"\"";
-            Combined.append(s+" ");
+        	String s;
+	        for(int commandIndex=0;commandIndex<0;commandIndex++)
+	        {
+	            s=(String)commands.elementAt(commandIndex);
+	            if(s.indexOf(' ')>=0) s="\""+s+"\"";
+	            Combined.append(s+" ");
+	        }
         }
         return Combined.toString().trim();
     }
 
-    public static String combineWithQuotes(List<?> commands, int startAt)
+    public final static String combineWithQuotes(final List<?> commands, final int startAt)
     {
-        StringBuffer Combined=new StringBuffer("");
+    	final StringBuffer Combined=new StringBuffer("");
         if(commands!=null)
-        for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
         {
-            String s=commands.get(commandIndex).toString();
-            if(s.indexOf(' ')>=0) s="\""+s+"\"";
-            Combined.append(s+" ");
+        	String s;
+	        for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
+	        {
+	            s=commands.get(commandIndex).toString();
+	            if(s.indexOf(' ')>=0) s="\""+s+"\"";
+	            Combined.append(s+" ");
+	        }
         }
         return Combined.toString().trim();
     }
 
-    public static String combineWithTabs(List<?> commands, int startAt)
+    public final static String combineWithTabs(final List<?> commands, final int startAt)
     {
         return combineWithX(commands,"\t",startAt);
     }
 
-    public static String combineWithX(List<?> commands, String X, int startAt)
+    public final static String combineWithX(final List<?> commands, final String X, final int startAt)
     {
-        StringBuffer Combined=new StringBuffer("");
+    	final StringBuffer Combined=new StringBuffer("");
         if(commands!=null)
-        for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
         {
-            String s=commands.get(commandIndex).toString();
-            Combined.append(s+X);
+        	String s;
+	        for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
+	        {
+	            s=commands.get(commandIndex).toString();
+	            Combined.append(s+X);
+	        }
         }
         return Combined.toString().trim();
     }
 
-    public static String combine(Set<?> flags)
+    public final static String combine(final Set<?> flags)
     {
-        StringBuffer combined=new StringBuffer("");
+    	final StringBuffer combined=new StringBuffer("");
         if(flags!=null)
         for(Iterator<?> i=flags.iterator();i.hasNext();)
             combined.append(i.next().toString()+" ");
         return combined.toString().trim();
     }
 
-    public static Vector<String> parse(String str)
+    public final static Vector<String> parse(final String str)
     {   return parse(str,-1);   }
 
-    public static Vector<String> paramParse(String str)
+    public final static Vector<String> paramParse(final String str)
     {
-        Vector<String> commands=parse(str);
+    	final Vector<String> commands=parse(str);
+    	String s;
         for(int i=0;i<commands.size();i++)
         {
-            String s=(String)commands.elementAt(i);
+            s=(String)commands.elementAt(i);
             if(s.startsWith("=")&&(s.length()>1)&&(i>0))
             {
-                String prev=(String)commands.elementAt(i-1);
+            	final String prev=(String)commands.elementAt(i-1);
                 commands.setElementAt(prev+s,i-1);
                 commands.removeElementAt(i);
                 i--;
@@ -147,15 +160,15 @@ public class CMParms
             else
             if(s.endsWith("=")&&(s.length()>1)&&(i<(commands.size()-1)))
             {
-                String next=(String)commands.elementAt(i+1);
+            	final String next=(String)commands.elementAt(i+1);
                 commands.setElementAt(s+next,i);
                 commands.removeElementAt(i+1);
             }
             else
             if(s.equals("=")&&((i>0)&&(i<(commands.size()-1))))
             {
-                String prev=(String)commands.elementAt(i-1);
-                String next=(String)commands.elementAt(i+1);
+            	final String prev=(String)commands.elementAt(i-1);
+            	final String next=(String)commands.elementAt(i+1);
                 commands.setElementAt(prev+"="+next,i-1);
                 commands.removeElementAt(i);
                 commands.removeElementAt(i+1);
@@ -165,12 +178,12 @@ public class CMParms
         return commands;
     }
 
-    public static Vector<String> parse(String str, int upTo)
+    public final static Vector<String> parse(final String str, final int upTo)
     {
-        Vector<String> commands=new Vector<String>();
+    	final Vector<String> commands=new Vector<String>();
         if(str==null) return commands;
-        StringBuilder s=new StringBuilder();
-        char[] cs=str.toCharArray();
+        final StringBuilder s=new StringBuilder();
+        final char[] cs=str.toCharArray();
         int state=0;
         for(char c : cs)
 	    	switch(state)
@@ -218,33 +231,34 @@ public class CMParms
         return commands;
     }
 
-    public static Vector<String> parseCommas(String s, boolean ignoreNulls)
+    public final static Vector<String> parseCommas(final String s, final boolean ignoreNulls)
     {
     	return parseAny(s,',',ignoreNulls);
     }
 
-    public static Vector<String> parseCommandFlags(String s, String[] flags)
+    public final static Vector<String> parseCommandFlags(final String s, final String[] flags)
     {
         if((s==null)||(s.length()==0)) return new Vector<String>(1);
-        Vector<String> V=parseCommas(s,true);
-        Vector<String> finalV=new Vector<String>(V.size());
+        final Vector<String> V=parseCommas(s,true);
+        final Vector<String> finalV=new Vector<String>(V.size());
+        int index;
         for(String flag : V)
         {
-        	int index=CMParms.indexOfIgnoreCase(flags, flag);
+        	index=CMParms.indexOfIgnoreCase(flags, flag);
         	if(index>=0)
         		finalV.addElement(flags[index]);
         }
         return V;
     }
 
-    public static Vector<String> parseTabs(String s, boolean ignoreNulls)
+    public final static Vector<String> parseTabs(final String s, final boolean ignoreNulls)
     {
     	return parseAny(s,'\t',ignoreNulls);
     }
 
-    public static Vector<String> parseAny(String s, String delimeter, boolean ignoreNulls)
+    public final static Vector<String> parseAny(final String s, final String delimeter, final boolean ignoreNulls)
     {
-    	Vector<String> V=new Vector<String>(1);
+    	final Vector<String> V=new Vector<String>(1);
         if((s==null)||(s.length()==0)) return V;
         if((delimeter==null)||(delimeter.length()==0))
         {
@@ -252,7 +266,7 @@ public class CMParms
         	return V;
         }
     	int last=0;
-    	char firstChar=delimeter.charAt(0);
+    	final char firstChar=delimeter.charAt(0);
     	for(int i=0;i<s.length()-delimeter.length()+1;i++)
     		if((s.charAt(i)==firstChar)
     		&&(s.substring(i,i+delimeter.length()).equals(delimeter)))
@@ -263,14 +277,15 @@ public class CMParms
     			if(!ignoreNulls||(sub.length()>0))
 	    			V.add(sub);
     		}
-    	String sub = (last>=s.length())?"":s.substring(last,s.length()).trim();
+    	final String sub = (last>=s.length())?"":s.substring(last,s.length()).trim();
 		if(!ignoreNulls||(sub.length()>0))
 			V.add(sub);
         return V;
     }
-    public static Vector<String> parseAnyWords(String s, String delimeter, boolean ignoreNulls)
+    
+    public final static Vector<String> parseAnyWords(final String s, final String delimeter, final boolean ignoreNulls)
     {
-    	Vector<String> V=new Vector<String>(1);
+    	final Vector<String> V=new Vector<String>(1);
         if((s==null)||(s.length()==0)) return V;
         if((delimeter==null)||(delimeter.length()==0))
         {
@@ -278,84 +293,90 @@ public class CMParms
         	return V;
         }
     	int last=0;
-    	delimeter=delimeter.toUpperCase();
-    	char firstChar=delimeter.charAt(0);
-    	String tests=s.toUpperCase();
-    	for(int i=0;i<tests.length()-delimeter.length()+1;i++)
+    	final String upDelimeter=delimeter.toUpperCase();
+    	final char firstChar=upDelimeter.charAt(0);
+    	final String tests=s.toUpperCase();
+    	for(int i=0;i<tests.length()-upDelimeter.length()+1;i++)
     		if((tests.charAt(i)==firstChar)
-    		&&(tests.substring(i,i+delimeter.length()).equals(delimeter)))
+    		&&(tests.substring(i,i+upDelimeter.length()).equals(upDelimeter)))
     		{
     			String sub=s.substring(last,i).trim();
-    			last=i+delimeter.length();
-    			i+=delimeter.length()-1;
+    			last=i+upDelimeter.length();
+    			i+=upDelimeter.length()-1;
     			if(!ignoreNulls||(sub.length()>0))
 	    			V.add(sub);
     		}
-    	String sub = (last>=s.length())?"":s.substring(last,s.length()).trim();
+    	final String sub = (last>=s.length())?"":s.substring(last,s.length()).trim();
 		if(!ignoreNulls||(sub.length()>0))
 			V.add(sub);
         return V;
     }
 
-    public static Vector<String> parseAny(String s, char delimiter, boolean ignoreNulls)
+    public final static Vector<String> parseAny(final String s, final char delimiter, final boolean ignoreNulls)
     {
-    	Vector<String> V=new Vector<String>(1);
+    	final Vector<String> V=new Vector<String>(1);
         if((s==null)||(s.length()==0)) return V;
     	int last=0;
+    	String sub;
     	for(int i=0;i<s.length();i++)
     		if(s.charAt(i)==delimiter)
     		{
-    			String sub=s.substring(last,i).trim();
+    			sub=s.substring(last,i).trim();
     			last=i+1;
     			if(!ignoreNulls||(sub.length()>0))
 	    			V.add(sub);
     		}
-    	String sub = (last>=s.length())?"":s.substring(last,s.length()).trim();
+    	sub = (last>=s.length())?"":s.substring(last,s.length()).trim();
 		if(!ignoreNulls||(sub.length()>0))
 			V.add(sub);
         return V;
     }
-    public static Vector<String> parseSquiggles(String s)
+    
+    public final static Vector<String> parseSquiggles(final String s)
     {
     	return parseAny(s,'~',false);
     }
-    public static Vector<String> parseSentences(String s)
+    
+    public final static Vector<String> parseSentences(final String s)
     {
-    	Vector<String> V=new Vector<String>(1);
+    	final Vector<String> V=new Vector<String>(1);
         if((s==null)||(s.length()==0)) return V;
     	int last=0;
+    	String sub;
     	for(int i=0;i<s.length();i++)
     		if(s.charAt(i)=='.')
     		{
-    			String sub=s.substring(last,i+1).trim();
+    			sub=s.substring(last,i+1).trim();
     			last=i+1;
     			V.add(sub);
     		}
-    	String sub = (last>=s.length())?"":s.substring(last,s.length()).trim();
+    	sub = (last>=s.length())?"":s.substring(last,s.length()).trim();
 		if(sub.length()>0)
 			V.add(sub);
         return V;
     }
 
-    public static Vector<String> parseSquiggleDelimited(String s, boolean ignoreNulls)
+    public final static Vector<String> parseSquiggleDelimited(final String s, final boolean ignoreNulls)
     {
     	return parseAny(s,'~',ignoreNulls);
     }
 
-    public static Vector<String> parseSemicolons(String s, boolean ignoreNulls)
+    public final static Vector<String> parseSemicolons(final String s, final boolean ignoreNulls)
     {
     	return parseAny(s,';',ignoreNulls);
     }
 
-    public static Vector<String> parseSpaces(String s, boolean ignoreNulls)
+    public final static Vector<String> parseSpaces(final String s, final boolean ignoreNulls)
     {
     	return parseAny(s,' ',ignoreNulls);
     }
 
-    public static int numBits(String s)
-    { return ((Integer)getBitWork(s,Integer.MAX_VALUE,2)).intValue(); }
+    public final static int numBits(final String s)
+    { 
+    	return ((Integer)getBitWork(s,Integer.MAX_VALUE,2)).intValue(); 
+    }
 
-    public static String cleanBit(String s)
+    public final static String cleanBit(String s)
     {
         if(s.length()==0) 
             return s;
@@ -376,24 +397,25 @@ public class CMParms
         }
         return s.replace('\'','`');
     }
-    public static String getCleanBit(String s, int which)
+    
+    public final static String getCleanBit(final String s, final int which)
     { return cleanBit(getBit(s,which));}
 
-    public static String getPastBitClean(String s, int which)
+    public final static String getPastBitClean(final String s, final int which)
     { return cleanBit(getPastBit(s,which));}
 
-    public static String getPastBit(String s, int which)
+    public final static String getPastBit(final String s, final int which)
     { return (String)getBitWork(s,which,1); }
 
-    public static String getBit(String s, int which)
+    public final static String getBit(final String s, final int which)
     { return (String)getBitWork(s,which,0); }
 
-    public static Object getBitWork(String s, int which, int op)
+    public final static Object getBitWork(final String s, final int which, final int op)
     {
         int currOne=0;
         int start=-1;
         char q=' ';
-        char[] cs=s.toCharArray();
+        final char[] cs=s.toCharArray();
         for(int c=0;c<cs.length;c++)
             switch(start)
             {
@@ -451,7 +473,7 @@ public class CMParms
         }
     }
 
-    public static String getParmStr(String text, String key, String defaultVal)
+    public final static String getParmStr(String text, final String key, final String defaultVal)
     {
         int x=text.toUpperCase().indexOf(key.toUpperCase());
         while(x>=0)
@@ -466,7 +488,7 @@ public class CMParms
                 }
                 if(x<text.length())
                 {
-                    boolean endWithQuote=false;
+                	boolean endWithQuote=false;
                     while((x<text.length())&&(!Character.isLetterOrDigit(text.charAt(x))))
                     {
                         if(text.charAt(x)=='\"')
@@ -497,9 +519,9 @@ public class CMParms
         return defaultVal;
     }
 
-    private static int[] makeIntArray(int x, int y){ int[] xy=new int[2]; xy[0]=x;xy[1]=y;return xy;}
+    private static int[] makeIntArray(final int x, final int y){ int[] xy=new int[2]; xy[0]=x;xy[1]=y;return xy;}
 
-    public static int[] getParmCompare(String text, String key, int value)
+    public final static int[] getParmCompare(String text, final String key, final int value)
     {
         int x=text.toUpperCase().indexOf(key.toUpperCase());
         while(x>=0)
@@ -514,7 +536,7 @@ public class CMParms
                     x++;
                 if(x<text.length()-1)
                 {
-					char comp=text.charAt(x);
+                	final char comp=text.charAt(x);
 					boolean andEqual=(text.charAt(x)=='=');
 					if(text.charAt(x+1)=='='){ x++; andEqual=true;}
 					if(x<text.length()-1)
@@ -548,10 +570,10 @@ public class CMParms
         return makeIntArray('\0',0);
     }
 
-    private static int strIndex(Vector<String> V, String str, int start)
+    private static int strIndex(final Vector<String> V, final String str, final int start)
     {
         if(str.indexOf(' ')<0) return V.indexOf(str,start);
-        Vector<String> V2=CMParms.parse(str);
+        final Vector<String> V2=CMParms.parse(str);
         if(V2.size()==0) return -1;
         int x=V.indexOf(V2.firstElement(),start);
         boolean found=false;
@@ -566,9 +588,9 @@ public class CMParms
         if(found) return x;
         return -1;
     }
-    private static int stringContains(Vector<String> V, char combiner, StringBuffer buf, int lastIndex)
+    private static int stringContains(final Vector<String> V, final char combiner, final StringBuffer buf, int lastIndex)
     {
-        String str=buf.toString().trim();
+    	final String str=buf.toString().trim();
         if(str.length()==0) return lastIndex;
         buf.setLength(0);
         switch(combiner)
@@ -592,9 +614,9 @@ public class CMParms
         }
         return -1;
     }
-    private static int stringContains(Vector<String> V, char[] str, int[] index, int depth)
+    private static int stringContains(final Vector<String> V, final char[] str, final int[] index, final int depth)
     {
-        StringBuffer buf=new StringBuffer("");
+    	final StringBuffer buf=new StringBuffer("");
         int lastIndex=0;
         boolean quoteMode=false;
         char combiner='&';
@@ -680,14 +702,15 @@ public class CMParms
         return stringContains(V,combiner,buf,lastIndex);
     }
 
-    public static Hashtable<String,String> parseEQParms(String str, String[] parmList)
+    public final static Hashtable<String,String> parseEQParms(final String str, final String[] parmList)
     {
-        Hashtable<String,String> h=new Hashtable<String,String>();
+    	final Hashtable<String,String> h=new Hashtable<String,String>();
         int lastEQ=-1;
         String lastParm=null;
+        char c;
         for(int x=0;x<str.length();x++)
         {
-            char c=Character.toUpperCase(str.charAt(x));
+            c=Character.toUpperCase(str.charAt(x));
             if(Character.isLetter(c))
                 for(int p=0;p<parmList.length;p++)
                     if((Character.toUpperCase(parmList[p].charAt(0)) == c)
@@ -723,15 +746,15 @@ public class CMParms
         return h;
     }
 
-    public static Hashtable<String,String> parseEQParms(String parms)
+    public final static Hashtable<String,String> parseEQParms(final String parms)
     {
-        Hashtable<String,String> h=new Hashtable<String,String>();
+    	final Hashtable<String,String> h=new Hashtable<String,String>();
         int state=0;
         int start=-1;
         String parmName=null;
         int lastPossibleStart=-1;
         boolean lastWasWhitespace=false;
-        StringBuffer str=new StringBuffer(parms);
+        final StringBuffer str=new StringBuffer(parms);
         for(int x=0;x<=str.length();x++)
         {
         	char c=(x==str.length())?'\n':str.charAt(x);
@@ -827,17 +850,17 @@ public class CMParms
         return h;
     }
 
-    public static Hashtable<String,String> parseEQParms(List<String> parms, int start, int end)
+    public final static Hashtable<String,String> parseEQParms(final List<String> parms, final int start, final int end)
     {
-        Hashtable<String,String> h=new Hashtable<String,String>();
+    	final Hashtable<String,String> h=new Hashtable<String,String>();
     	for(Object O : parms)
     		h.putAll(parseEQParms((String)O));
         return h;
     }
     
-    public static List<List<String>> parseDoubleDelimited(String text, char delim1, char delim2)
+    public final static List<List<String>> parseDoubleDelimited(String text, final char delim1, final char delim2)
     {
-    	List<String> preparseV=new Vector<String>();
+    	final List<String> preparseV=new Vector<String>();
         int y=0;
         while((text!=null)&&(text.length()>0))
         {
@@ -858,10 +881,10 @@ public class CMParms
             if(script.length()>0)
             	preparseV.add(script);
         }
-        List<List<String>> parsedV=new Vector<List<String>>();
+        final List<List<String>> parsedV=new Vector<List<String>>();
         for(String s : preparseV)
         {
-        	List<String> groupV=new Vector<String>();
+        	final List<String> groupV=new Vector<String>();
             while(s.length()>0)
             {
                 y=-1;
@@ -897,9 +920,9 @@ public class CMParms
         return parsedV;
     }
     
-    public static int stringContains(String str1, String str2)
+    public final static int stringContains(final String str1, final String str2)
     {
-        StringBuffer buf1=new StringBuffer(str1.toLowerCase());
+    	final StringBuffer buf1=new StringBuffer(str1.toLowerCase());
         for(int i=buf1.length()-1;i>=0;i--)
             if((buf1.charAt(i)!=' ')
             &&(buf1.charAt(i)!='\'')
@@ -907,11 +930,11 @@ public class CMParms
             &&(buf1.charAt(i)!='`')
             &&(!Character.isLetterOrDigit(buf1.charAt(i))))
                 buf1.setCharAt(i,' ');
-        Vector<String> V=CMParms.parse(buf1.toString());
+        final Vector<String> V=CMParms.parse(buf1.toString());
         return stringContains(V,str2.toCharArray(),new int[]{0},0);
     }
 
-    public static int getParmPlus(String text, String key)
+    public final static int getParmPlus(String text, final String key)
     {
         int x=text.toUpperCase().indexOf(key.toUpperCase());
         while(x>=0)
@@ -948,7 +971,7 @@ public class CMParms
         return 0;
     }
 
-    public static double getParmDoublePlus(String text, String key)
+    public final static double getParmDoublePlus(String text, final String key)
     {
         int x=text.toUpperCase().indexOf(key.toUpperCase());
         while(x>=0)
@@ -994,7 +1017,7 @@ public class CMParms
         return 0.0;
     }
 
-    public static double getParmDouble(String text, String key, double defaultValue)
+    public final static double getParmDouble(String text, final String key, final double defaultValue)
     {
         int x=text.toUpperCase().indexOf(key.toUpperCase());
         while(x>=0)
@@ -1030,7 +1053,7 @@ public class CMParms
     }
 
 
-    public static int getParmInt(String text, String key, int defaultValue)
+    public final static int getParmInt(String text, final String key, final int defaultValue)
     {
         int x=text.toUpperCase().indexOf(key.toUpperCase());
         while(x>=0)
@@ -1064,9 +1087,10 @@ public class CMParms
         return defaultValue;
     }
 
-    public static boolean getParmBool(String text, String key, boolean defaultValue)
+    public final static boolean getParmBool(String text, final String key, final boolean defaultValue)
     {
         int x=text.toUpperCase().indexOf(key.toUpperCase());
+        String s;
         while(x>=0)
         {
             if((x==0)||(!Character.isLetter(text.charAt(x-1))))
@@ -1075,7 +1099,7 @@ public class CMParms
                     x++;
                 if((x<text.length())&&(text.charAt(x)=='='))
                 {
-                	String s=text.substring(x+1).trim();
+                	s=text.substring(x+1).trim();
                 	if(Character.toUpperCase(s.charAt(0))=='T') return true;
                 	if(Character.toUpperCase(s.charAt(0))=='T') return false;
                 }
@@ -1085,77 +1109,78 @@ public class CMParms
         return defaultValue;
     }
 
-    public static String[] toStringArray(List<?> V)
+    public final static String[] toStringArray(final List<?> V)
     {
         if((V==null)||(V.size()==0)){
             String[] s=new String[0];
             return s;
         }
-        String[] s=new String[V.size()];
+        final String[] s=new String[V.size()];
         for(int v=0;v<V.size();v++)
             s[v]=V.get(v).toString();
         return s;
     }
 
-    public static String[] toStringArray(Object[] O)
+    public final static String[] toStringArray(final Object[] O)
     {
     	if(O==null) return new String[0];
-        String[] s=new String[O.length];
+    	final String[] s=new String[O.length];
         for(int o=0;o<O.length;o++)
         	s[o]=(O[o]!=null)?O[o].toString():"";
         return s;
     }
 
-    public static long[] toLongArray(List<?> V)
+    public final static long[] toLongArray(final List<?> V)
     {
         if((V==null)||(V.size()==0)){
             long[] s=new long[0];
             return s;
         }
-        long[] s=new long[V.size()];
+        final long[] s=new long[V.size()];
         for(int v=0;v<V.size();v++)
             s[v]=CMath.s_long(V.get(v).toString());
         return s;
     }
-    public static int[] toIntArray(List<?> V)
+    
+    public final static int[] toIntArray(final List<?> V)
     {
         if((V==null)||(V.size()==0)){
             int[] s=new int[0];
             return s;
         }
-        int[] s=new int[V.size()];
+        final int[] s=new int[V.size()];
         for(int v=0;v<V.size();v++)
             s[v]=CMath.s_int(V.get(v).toString());
         return s;
     }
 
-    public static String toSemicolonList(byte[] bytes)
+    public final static String toSemicolonList(final byte[] bytes)
     {
-        StringBuffer str=new StringBuffer("");
+    	final StringBuffer str=new StringBuffer("");
         for(int b=0;b<bytes.length;b++)
             str.append(Byte.toString(bytes[b])+(b<(bytes.length-1)?";":""));
         return str.toString();
     }
 
-    public static String toSemicolonList(String[] bytes)
+    public final static String toSemicolonList(final String[] bytes)
     {
-        StringBuffer str=new StringBuffer("");
+    	final StringBuffer str=new StringBuffer("");
         for(int b=0;b<bytes.length;b++)
             str.append(bytes[b]+(b<(bytes.length-1)?";":""));
         return str.toString();
     }
 
-    public static String toSemicolonList(Object[] bytes)
+    public final static String toSemicolonList(final Object[] bytes)
     {
-        StringBuffer str=new StringBuffer("");
+    	final StringBuffer str=new StringBuffer("");
         for(int b=0;b<bytes.length;b++)
             str.append(bytes[b]+(b<(bytes.length-1)?";":""));
         return str.toString();
     }
 
-    public static String toSemicolonList(Enumeration<?> bytes)
+    public final static String toSemicolonList(final Enumeration<?> bytes)
     {
-        StringBuffer str=new StringBuffer("");
+    	final StringBuffer str=new StringBuffer("");
         Object o;
         for(;bytes.hasMoreElements();)
         {
@@ -1165,22 +1190,22 @@ public class CMParms
         return str.toString();
     }
     
-    public static String toSemicolonList(List<?> bytes)
+    public final static String toSemicolonList(final List<?> bytes)
     {
-        StringBuffer str=new StringBuffer("");
+    	final StringBuffer str=new StringBuffer("");
         for(int b=0;b<bytes.size();b++)
             str.append(bytes.get(b)+(b<(bytes.size()-1)?";":""));
         return str.toString();
     }
 
-    public static String toSafeSemicolonList(List<?> list)
+    public final static String toSafeSemicolonList(final List<?> list)
     {
         return toSafeSemicolonList(list.toArray());
     }
     
-    public static String toSafeSemicolonList(Object[] list)
+    public final static String toSafeSemicolonList(final Object[] list)
     {
-        StringBuffer buf1=new StringBuffer("");
+    	final StringBuffer buf1=new StringBuffer("");
         StringBuffer s=null;
         for(int l=0;l<list.length;l++)
         {
@@ -1201,12 +1226,12 @@ public class CMParms
         return buf1.toString();
     }
 
-    public static Vector<String> parseSafeSemicolonList(String list, boolean ignoreNulls)
+    public final static Vector<String> parseSafeSemicolonList(final String list, final boolean ignoreNulls)
     {
     	if(list==null) return new Vector<String>();
-        StringBuffer buf1=new StringBuffer(list);
+    	final StringBuffer buf1=new StringBuffer(list);
         int lastDex=0;
-        Vector<String> V=new Vector<String>();
+        final Vector<String> V=new Vector<String>();
         for(int l=0;l<buf1.length();l++)
             switch(buf1.charAt(l))
             {
@@ -1224,12 +1249,12 @@ public class CMParms
         return V;
     }
 
-    public static byte[] fromByteList(String str)
+    public final static byte[] fromByteList(final String str)
     {
-        Vector<String> V=CMParms.parseSemicolons(str,true);
+    	final Vector<String> V=CMParms.parseSemicolons(str,true);
         if(V.size()>0)
         {
-            byte[] bytes=new byte[V.size()];
+        	final byte[] bytes=new byte[V.size()];
             for(int b=0;b<V.size();b++)
                 bytes[b]=Byte.parseByte((String)V.elementAt(b));
             return bytes;
@@ -1237,48 +1262,48 @@ public class CMParms
         return new byte[0];
     }
 
-    public static String[] toStringArray(Set<?> V)
+    public final static String[] toStringArray(final Set<?> V)
     {
         if((V==null)||(V.size()==0)){
             String[] s=new String[0];
             return s;
         }
-        String[] s=new String[V.size()];
+        final String[] s=new String[V.size()];
         int v=0;
         for(Iterator<?> i=V.iterator();i.hasNext();)
             s[v++]=(i.next()).toString();
         return s;
     }
 
-    public static String toStringList(String[] V)
+    public final static String toStringList(final String[] V)
     {
         if((V==null)||(V.length==0)){
             return "";
         }
-        StringBuffer s=new StringBuffer("");
+        final StringBuffer s=new StringBuffer("");
         for(int v=0;v<V.length;v++)
             s.append(", "+V[v]);
         if(s.length()==0) return "";
         return s.toString().substring(2);
     }
 
-    public static String toStringList(Object[] V)
+    public final static String toStringList(final Object[] V)
     {
         if((V==null)||(V.length==0)){
             return "";
         }
-        StringBuffer s=new StringBuffer("");
+        final StringBuffer s=new StringBuffer("");
         for(int v=0;v<V.length;v++)
             s.append(", "+V[v]);
         if(s.length()==0) return "";
         return s.toString().substring(2);
     }
 
-    public static String toStringList(Enumeration<?> e)
+    public final static String toStringList(final Enumeration<?> e)
     {
         if(!e.hasMoreElements()) return "";
-        StringBuffer s=new StringBuffer("");
-        Object o=null;
+        final StringBuffer s=new StringBuffer("");
+        Object o;
         for(;e.hasMoreElements();)
         {
             o=e.nextElement();
@@ -1288,11 +1313,11 @@ public class CMParms
         return s.toString().substring(2);
     }
 
-    public static String toEnvironmentalStringList(Enumeration<?> e)
+    public final static String toEnvironmentalStringList(final Enumeration<?> e)
     {
         if(!e.hasMoreElements()) return "";
-        StringBuffer s=new StringBuffer("");
-        Environmental o=null;
+        final StringBuffer s=new StringBuffer("");
+        Environmental o;
         for(;e.hasMoreElements();)
         {
         	o=(Environmental)e.nextElement();
@@ -1302,11 +1327,11 @@ public class CMParms
         return s.toString().substring(2);
     }
 
-    public static String toCMObjectStringList(Enumeration<? extends CMObject> e)
+    public final static String toCMObjectStringList(final Enumeration<? extends CMObject> e)
     {
         if(!e.hasMoreElements()) return "";
-        StringBuffer s=new StringBuffer("");
-        CMObject o=null;
+        final StringBuffer s=new StringBuffer("");
+        CMObject o;
         for(;e.hasMoreElements();)
         {
         	o=(CMObject)e.nextElement();
@@ -1316,72 +1341,72 @@ public class CMParms
         return s.toString().substring(2);
     }
 
-    public static String toStringList(long[] V)
+    public final static String toStringList(final long[] V)
     {
         if((V==null)||(V.length==0)){
             return "";
         }
-        StringBuffer s=new StringBuffer("");
+        final StringBuffer s=new StringBuffer("");
         for(int v=0;v<V.length;v++)
             s.append(", "+V[v]);
         if(s.length()==0) return "";
         return s.toString().substring(2);
     }
 
-    public static String toStringList(boolean[] V)
+    public final static String toStringList(final boolean[] V)
     {
         if((V==null)||(V.length==0)){
             return "";
         }
-        StringBuffer s=new StringBuffer("");
+        final StringBuffer s=new StringBuffer("");
         for(int v=0;v<V.length;v++)
             s.append(", "+V[v]);
         if(s.length()==0) return "";
         return s.toString().substring(2);
     }
 
-    public static String toStringList(byte[] V)
+    public final static String toStringList(final byte[] V)
     {
         if((V==null)||(V.length==0)){
             return "";
         }
-        StringBuffer s=new StringBuffer("");
+        final StringBuffer s=new StringBuffer("");
         for(int v=0;v<V.length;v++)
             s.append(", "+((int)V[v]));
         if(s.length()==0) return "";
         return s.toString().substring(2);
     }
 
-    public static String toStringList(char[] V)
+    public final static String toStringList(final char[] V)
     {
         if((V==null)||(V.length==0)){
             return "";
         }
-        StringBuffer s=new StringBuffer("");
+        final StringBuffer s=new StringBuffer("");
         for(int v=0;v<V.length;v++)
             s.append(", "+((long)V[v]));
         if(s.length()==0) return "";
         return s.toString().substring(2);
     }
 
-    public static String toStringList(int[] V)
+    public final static String toStringList(final int[] V)
     {
         if((V==null)||(V.length==0)){
             return "";
         }
-        StringBuffer s=new StringBuffer("");
+        final StringBuffer s=new StringBuffer("");
         for(int v=0;v<V.length;v++)
             s.append(", "+V[v]);
         if(s.length()==0) return "";
         return s.toString().substring(2);
     }
 
-    public static String toStringList(double[] V)
+    public final static String toStringList(final double[] V)
     {
         if((V==null)||(V.length==0)){
             return "";
         }
-        StringBuffer s=new StringBuffer("");
+        final StringBuffer s=new StringBuffer("");
         for(int v=0;v<V.length;v++)
             s.append(", "+V[v]);
         if(s.length()==0) return "";
@@ -1389,56 +1414,56 @@ public class CMParms
     }
 
 
-    public static String toStringList(List<?> V)
+    public final static String toStringList(final List<?> V)
     {
         if((V==null)||(V.size()==0)){
             return "";
         }
-        StringBuffer s=new StringBuffer("");
+        final StringBuffer s=new StringBuffer("");
         for(int v=0;v<V.size();v++)
             s.append(", "+V.get(v).toString());
         if(s.length()==0) return "";
         return s.toString().substring(2);
     }
 
-    public static String toStringList(Set<?> V)
+    public final static String toStringList(final Set<?> V)
     {
         if((V==null)||(V.size()==0)){
             return "";
         }
-        StringBuffer s=new StringBuffer("");
+        final StringBuffer s=new StringBuffer("");
         for(Iterator<?> i=V.iterator();i.hasNext();)
             s.append(", "+i.next().toString());
         if(s.length()==0) return "";
         return s.toString().substring(2);
     }
 
-    public static String[] appendToArray(String[] front, String[] back)
+    public final static String[] appendToArray(final String[] front, final String[] back)
     {
     	if(back==null) return front;
     	if(front==null) return back;
     	if(back.length==0) return front;
-    	String[] newa = Arrays.copyOf(front, front.length + back.length);
+    	final String[] newa = Arrays.copyOf(front, front.length + back.length);
     	for(int i=0;i<back.length;i++)
     		newa[newa.length-1-i]=back[back.length-1-i];
     	return newa;
     }
     
-    public static String toStringList(Map<String,?> V)
+    public final static String toStringList(final Map<String,?> V)
     {
         if((V==null)||(V.size()==0)){
             return "";
         }
-        StringBuffer s=new StringBuffer("");
+        final StringBuffer s=new StringBuffer("");
         for(String KEY : V.keySet())
             s.append(KEY+"="+(V.get(KEY).toString())+"/");
         return s.toString();
     }
 
 
-    public static Vector<Object> copyFlattenVector(List<?> V)
+    public final static Vector<Object> copyFlattenVector(final List<?> V)
     {
-        Vector<Object> V2=new Vector<Object>();
+    	final Vector<Object> V2=new Vector<Object>();
         for(int v=0;v<V.size();v++)
         {
             Object h=V.get(v);
@@ -1450,7 +1475,7 @@ public class CMParms
         return V2;
     }
 
-    public static int indexOf(String[] supported, String expertise)
+    public final static int indexOf(final String[] supported, final String expertise)
     {
         if(supported==null) return -1;
         if(expertise==null) return -1;
@@ -1459,7 +1484,7 @@ public class CMParms
                 return i;
         return -1;
     }
-    public static int indexOfIgnoreCase(Enumeration<?> supported, String key)
+    public final static int indexOfIgnoreCase(final Enumeration<?> supported, final String key)
     {
         if(supported==null) return -1;
         int index = -1;
@@ -1471,7 +1496,7 @@ public class CMParms
         }
         return -1;
     }
-    public static int indexOf(int[] supported, int x)
+    public final static int indexOf(final int[] supported, final int x)
     {
         if(supported==null) return -1;
         for(int i=0;i<supported.length;i++)
@@ -1479,7 +1504,7 @@ public class CMParms
                 return i;
         return -1;
     }
-    public static int indexOf(long[] supported, long x)
+    public final static int indexOf(final long[] supported, final long x)
     {
         if(supported==null) return -1;
         for(int i=0;i<supported.length;i++)
@@ -1487,7 +1512,7 @@ public class CMParms
                 return i;
         return -1;
     }
-    public static int indexOf(Enumeration<?> supported, Object key)
+    public final static int indexOf(final Enumeration<?> supported, final Object key)
     {
         if(supported==null) return -1;
         int index = -1;
@@ -1499,7 +1524,7 @@ public class CMParms
         }
         return -1;
     }
-    public static int indexOfIgnoreCase(Iterator<?> supported, String key)
+    public final static int indexOfIgnoreCase(final Iterator<?> supported, final String key)
     {
         if(supported==null) return -1;
         int index = -1;
@@ -1511,7 +1536,7 @@ public class CMParms
         }
         return -1;
     }
-    public static int indexOf(Iterator<?> supported, Object key)
+    public final static int indexOf(final Iterator<?> supported, final Object key)
     {
         if(supported==null) return -1;
         int index = -1;
@@ -1523,7 +1548,7 @@ public class CMParms
         }
         return -1;
     }
-    public static int indexOfIgnoreCase(String[] supported, String expertise)
+    public final static int indexOfIgnoreCase(final String[] supported, final String expertise)
     {
         if(supported==null) return -1;
         if(expertise==null) return -1;
@@ -1533,16 +1558,16 @@ public class CMParms
         return -1;
     }
     
-    public static boolean contains(String[] supported, String expertise)
+    public final static boolean contains(final String[] supported, final String expertise)
     { return indexOf(supported,expertise)>=0;}
-    public static boolean contains(char[] supported, char c)
+    public final static boolean contains(final char[] supported, final char c)
     {	for(char c2 : supported) if(c2==c) return true; return false;}
-    public static boolean contains(byte[] supported, byte b)
+    public final static boolean contains(final byte[] supported, final byte b)
     {	for(byte b2 : supported) if(b2==b) return true; return false; }
-    public static boolean containsIgnoreCase(String[] supported, String expertise)
+    public final static boolean containsIgnoreCase(final String[] supported, final String expertise)
     { return indexOfIgnoreCase(supported,expertise)>=0;}
 
-    public static int indexOf(Object[] supported, Object expertise)
+    public final static int indexOf(final Object[] supported, final Object expertise)
     {
         if(supported==null) return -1;
         if(expertise==null) return -1;
@@ -1551,18 +1576,18 @@ public class CMParms
                 return i;
         return -1;
     }
-    public static boolean contains(Object[] supported, Object expertise)
+    public final static boolean contains(final Object[] supported, final Object expertise)
     { return indexOf(supported,expertise)>=0;}
-    public static boolean contains(int[] supported, int x)
+    public final static boolean contains(final int[] supported, final int x)
     { return indexOf(supported,x)>=0;}
-    public static boolean contains(ByteBuffer buf, byte[] bytes, int pos)
+    public final static boolean contains(final ByteBuffer buf, final byte[] bytes, final int pos)
     { 
     	for(int i=0;i<bytes.length && (i+pos)<buf.limit();i++)
     		if(buf.get(pos+i)!=bytes[i])
     			return false;
     	return true;
     }
-    public static int containIndex(ByteBuffer buf, byte[][] bytes, int pos)
+    public final static int containIndex(final ByteBuffer buf, final byte[][] bytes, final int pos)
     { 
     	for(int x=0;x<bytes.length;x++)
     		if(contains(buf,bytes[x],pos))
@@ -1570,7 +1595,7 @@ public class CMParms
     	return -1;
     }
 
-    public static int startsWith(String[] supported, String expertise)
+    public final static int startsWith(final String[] supported, final String expertise)
     {
         if(supported==null) return 0;
         if(expertise==null) return -1;
@@ -1580,7 +1605,7 @@ public class CMParms
         return -1;
     }
 
-    public static int startsWithIgnoreCase(String[] supported, String expertise)
+    public final static int startsWithIgnoreCase(final String[] supported, final String expertise)
     {
         if(supported==null) return 0;
         if(expertise==null) return -1;
@@ -1590,17 +1615,17 @@ public class CMParms
         return -1;
     }
 
-    public static boolean startsAnyWith(String[] supported, String expertise)
+    public final static boolean startsAnyWith(final String[] supported, final String expertise)
     {
     	return startsWith(supported,expertise)>=0;
     }
 
-    public static boolean startsAnyWithIgnoreCase(String[] supported, String expertise)
+    public final static boolean startsAnyWithIgnoreCase(final String[] supported, final String expertise)
     {
     	return startsWithIgnoreCase(supported,expertise)>=0;
     }
 
-    public static int endsWith(String[] supported, String expertise)
+    public final static int endsWith(final String[] supported, final String expertise)
     {
         if(supported==null) return 0;
         if(expertise==null) return -1;
@@ -1610,7 +1635,7 @@ public class CMParms
         return -1;
     }
 
-    public static int endsWithIgnoreCase(String[] supported, String expertise)
+    public final static int endsWithIgnoreCase(final String[] supported, final String expertise)
     {
         if(supported==null) return 0;
         if(expertise==null) return -1;
@@ -1620,12 +1645,12 @@ public class CMParms
         return -1;
     }
 
-    public static boolean endsAnyWith(String[] supported, String expertise)
+    public final static boolean endsAnyWith(final String[] supported, final String expertise)
     {
     	return endsWith(supported,expertise)>=0;
     }
 
-    public static boolean endsAnyWithIgnoreCase(String[] supported, String expertise)
+    public final static boolean endsAnyWithIgnoreCase(final String[] supported, final String expertise)
     {
     	return endsWithIgnoreCase(supported,expertise)>=0;
     }

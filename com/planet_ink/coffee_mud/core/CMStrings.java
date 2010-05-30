@@ -20,10 +20,10 @@ public class CMStrings
 {
     private CMStrings(){super();}
     private static CMStrings inst=new CMStrings();
-    public static CMStrings instance(){return inst;}
+    public final static CMStrings instance(){return inst;}
     
     public final static String SPACES="                                                                     ";
-    public static String repeat(String str1, int times)
+    public final static String repeat(final String str1, final int times)
     {
         if(times<=0) return "";
         StringBuffer str=new StringBuffer("");
@@ -32,7 +32,7 @@ public class CMStrings
         return str.toString();
     }
     
-    public static boolean isUpperCase(String str) 
+    public final static boolean isUpperCase(final String str) 
     {
     	for(int c=0;c<str.length();c++)
     		if(!Character.isUpperCase(str.charAt(c)))
@@ -40,7 +40,7 @@ public class CMStrings
     	return true;
     }
     
-    public static boolean isLowerCase(String str) 
+    public final static boolean isLowerCase(final String str) 
     {
     	for(int c=0;c<str.length();c++)
     		if(!Character.isLowerCase(str.charAt(c)))
@@ -48,7 +48,7 @@ public class CMStrings
     	return true;
     }
     
-    public static String endWithAPeriod(String str)
+    public final static String endWithAPeriod(final String str)
     {
         if((str==null)||(str.length()==0)) return str;
         int x=str.length()-1;
@@ -62,7 +62,7 @@ public class CMStrings
         return str.substring(0,x+1)+". "+str.substring(x+1).trim();
     }
     
-    public static String bytesToStr(byte[] b)
+    public final static String bytesToStr(final byte[] b)
     { 
     	if(b==null) 
     		return "";
@@ -76,7 +76,7 @@ public class CMStrings
     	}
     }
     
-    public static byte[] strToBytes(String str)
+    public final static byte[] strToBytes(final String str)
     { 
     	try
     	{ 
@@ -88,12 +88,31 @@ public class CMStrings
     	}
     }
     
-    public static boolean isVowel(char c)
+    public final static boolean isVowel(final char c)
     { 
     	return (("aeiou").indexOf(Character.toLowerCase(c))>=0);
     }
     
-    public static String replaceAll(String str, String thisStr, String withThisStr)
+    public final static String replaceAllofAny(final String str, final char[] theseChars, final char with)
+    {
+        if((str==null)
+        ||(theseChars==null)
+        ||(str.length()==0)
+        ||(!containsAny(str,theseChars)))
+            return str;
+        char[] newChars = null;
+        for(int i=str.length()-1;i>=0;i--)
+        	if(contains(theseChars,str.charAt(i)))
+	        {
+	        	if(newChars==null) newChars=str.toCharArray();
+	        	newChars[i]=with;
+	        }
+        if(newChars != null)
+        	return new String(newChars);
+        return str;
+    }
+    
+    public final static String replaceAll(String str, final String thisStr, final String withThisStr)
     {
         if((str==null)
         ||(thisStr==null)
@@ -108,7 +127,7 @@ public class CMStrings
         return str;
     }
     
-    public static String replaceWord(String str, String thisStr, String withThisStr)
+    public final static String replaceWord(String str, final String thisStr, final String withThisStr)
     {
         if((str==null)
         ||(thisStr==null)
@@ -116,7 +135,7 @@ public class CMStrings
         ||(str.length()==0)
         ||(thisStr.length()==0))
             return str;
-        withThisStr=withThisStr.toUpperCase();
+        final String uppercaseWithThisStr=withThisStr.toUpperCase();
         for(int i=str.length()-1;i>=0;i--)
         {
             if((str.charAt(i)==thisStr.charAt(0))
@@ -126,21 +145,21 @@ public class CMStrings
                 {
                 	String oldWord=str.substring(i,i+thisStr.length());
                 	if(oldWord.toUpperCase().equals(oldWord)) 
-                        str=str.substring(0,i)+withThisStr+str.substring(i+thisStr.length());
+                        str=str.substring(0,i)+uppercaseWithThisStr+str.substring(i+thisStr.length());
                 	else
                 	if(oldWord.toLowerCase().equals(oldWord))
-                        str=str.substring(0,i)+withThisStr.toLowerCase()+str.substring(i+thisStr.length());
+                        str=str.substring(0,i)+uppercaseWithThisStr.toLowerCase()+str.substring(i+thisStr.length());
                 	else
                 	if((oldWord.length()>0)&&(Character.isUpperCase(oldWord.charAt(0)))) 
-                        str=str.substring(0,i)+withThisStr.charAt(0)+withThisStr.substring(1).toLowerCase()+str.substring(i+thisStr.length());
+                        str=str.substring(0,i)+uppercaseWithThisStr.charAt(0)+uppercaseWithThisStr.substring(1).toLowerCase()+str.substring(i+thisStr.length());
                 	else
-                        str=str.substring(0,i)+withThisStr.toLowerCase()+str.substring(i+thisStr.length());
+                        str=str.substring(0,i)+uppercaseWithThisStr.toLowerCase()+str.substring(i+thisStr.length());
                 }
         }
         return str;
     }
     
-    public static String replaceFirstWord(String str, String thisStr, String withThisStr)
+    public final static String replaceFirstWord(String str, final String thisStr, final String withThisStr)
     {
         if((str==null)
         ||(thisStr==null)
@@ -148,7 +167,7 @@ public class CMStrings
         ||(str.length()==0)
         ||(thisStr.length()==0))
             return str;
-        withThisStr=withThisStr.toUpperCase();
+        String uppercaseWithThisStr=withThisStr.toUpperCase();
         for(int i=str.length()-1;i>=0;i--)
         {
             if((str.charAt(i)==thisStr.charAt(0))
@@ -158,21 +177,21 @@ public class CMStrings
                 {
                 	String oldWord=str.substring(i,i+thisStr.length());
                 	if(oldWord.toUpperCase().equals(oldWord)) 
-                        return str.substring(0,i)+withThisStr+str.substring(i+thisStr.length());
+                        return str.substring(0,i)+uppercaseWithThisStr+str.substring(i+thisStr.length());
                 	else
                 	if(oldWord.toLowerCase().equals(oldWord))
-                		return str.substring(0,i)+withThisStr.toLowerCase()+str.substring(i+thisStr.length());
+                		return str.substring(0,i)+uppercaseWithThisStr.toLowerCase()+str.substring(i+thisStr.length());
                 	else
                 	if((oldWord.length()>0)&&(Character.isUpperCase(oldWord.charAt(0)))) 
-                		return str.substring(0,i)+withThisStr.charAt(0)+withThisStr.substring(1).toLowerCase()+str.substring(i+thisStr.length());
+                		return str.substring(0,i)+uppercaseWithThisStr.charAt(0)+uppercaseWithThisStr.substring(1).toLowerCase()+str.substring(i+thisStr.length());
                 	else
-                		return str.substring(0,i)+withThisStr.toLowerCase()+str.substring(i+thisStr.length());
+                		return str.substring(0,i)+uppercaseWithThisStr.toLowerCase()+str.substring(i+thisStr.length());
                 }
         }
         return str;
     }
     
-    public static String replaceFirst(String str, String thisStr, String withThisStr)
+    public final static String replaceFirst(String str, final String thisStr, final String withThisStr)
     {
         if((str==null)
         ||(thisStr==null)
@@ -190,7 +209,7 @@ public class CMStrings
         return str;
     }
     
-    public static String capitalizeAndLower(String name)
+    public final static String capitalizeAndLower(final String name)
     {
         if((name==null)||(name.length()==0)) return "";
         char[] c=name.toCharArray();
@@ -212,7 +231,7 @@ public class CMStrings
         return new String(c).trim();
     }
     
-    public static String capitalizeFirstLetter(String name)
+    public final static String capitalizeFirstLetter(final String name)
     {
         if((name==null)||(name.length()==0)) 
         	return "";
@@ -229,7 +248,7 @@ public class CMStrings
         return new String(c).trim();
     }
     
-    public static String lastWordIn(String thisStr)
+    public final static String lastWordIn(final String thisStr)
     {
         int x=thisStr.lastIndexOf(' ');
         if(x>=0)
@@ -237,7 +256,7 @@ public class CMStrings
         return thisStr;
     }
     
-    public static String getSayFromMessage(String msg)
+    public final static String getSayFromMessage(final String msg)
     {
         if(msg==null) return null;
         int start=msg.indexOf('\'');
@@ -246,17 +265,17 @@ public class CMStrings
             return msg.substring(start+1,end);
         return null;
     }
-    public static String substituteSayInMessage(String affmsg, String msg)
+    public final static String substituteSayInMessage(final String affmsg, final String msg)
     {
         if(affmsg==null) return null;
-        int start=affmsg.indexOf('\'');
-        int end=affmsg.lastIndexOf('\'');
+        final int start=affmsg.indexOf('\'');
+        final int end=affmsg.lastIndexOf('\'');
         if((start>0)&&(end>start))
             return affmsg.substring(0,start+1)+msg+affmsg.substring(end);
         return affmsg;
     }
 
-    public static boolean containsIgnoreCase(String[] strs, String str)
+    public final static boolean containsIgnoreCase(final String[] strs, final String str)
     {
     	if((str==null)||(strs==null)) return false;
     	for(int s=0;s<strs.length;s++)
@@ -265,7 +284,7 @@ public class CMStrings
     	return false;
     }
     
-    public static boolean compareStringArrays(String[] A1, String[] A2)
+    public final static boolean compareStringArrays(final String[] A1, final String[] A2)
     {
         if(((A1==null)||(A1.length==0))
         &&((A2==null)||(A2.length==0)))
@@ -283,7 +302,7 @@ public class CMStrings
         return true;
     }
     
-    public static boolean contains(String[] strs, String str)
+    public final static boolean contains(final String[] strs, final String str)
     {
     	if((str==null)||(strs==null)) return false;
     	for(int s=0;s<strs.length;s++)
@@ -292,10 +311,27 @@ public class CMStrings
     	return false;
     }
     
-    public static String removeColors(String s)
+    public final static boolean contains(final char[] anycs, final char c)
+    {
+    	for(char c1 : anycs)
+    		if(c1==c)
+    			return true;
+    	return false;
+    }
+    
+    public final static boolean containsAny(final String str, final char[] anycs)
+    {
+    	if((str==null)||(anycs==null)) return false;
+    	for(int i=0;i<str.length();i++)
+    		if(contains(anycs,str.charAt(i)))
+    			return true;
+    	return false;
+    }
+    
+    public final static String removeColors(final String s)
     {
         if(s==null) return "";
-        StringBuffer str=new StringBuffer(s);
+        final StringBuffer str=new StringBuffer(s);
         int colorStart=-1;
         for(int i=0;i<str.length();i++)
         {
@@ -359,7 +395,7 @@ public class CMStrings
         return str.toString();
     }
     
-    public static int lengthMinusColors(String thisStr)
+    public final static int lengthMinusColors(final String thisStr)
     {
         if(thisStr==null) 
         	return 0;
@@ -400,7 +436,7 @@ public class CMStrings
         return size;
     }
     
-    public static Hashtable<Object,Integer> makeNumericHash(Object[] obj)
+    public final static Hashtable<Object,Integer> makeNumericHash(final Object[] obj)
     {
     	Hashtable<Object,Integer> H=new Hashtable<Object,Integer>();
     	for(int i=0;i<obj.length;i++)
@@ -408,76 +444,76 @@ public class CMStrings
     	return H;
     }
     
-    public static String padCenter(String thisStr, int thisMuch)
+    public final static String padCenter(final String thisStr, final int thisMuch)
     {
-        int lenMinusColors=lengthMinusColors(thisStr);
+    	final int lenMinusColors=lengthMinusColors(thisStr);
         if(lenMinusColors>thisMuch)
             return removeColors(thisStr).substring(0,thisMuch);
-        int size=(thisMuch-lenMinusColors)/2;
+        final int size=(thisMuch-lenMinusColors)/2;
         int rest=thisMuch-lenMinusColors-size;
         if(rest<0) rest=0;
         return SPACES.substring(0,size)+thisStr+SPACES.substring(0,rest);
     }
-    public static String padLeft(String thisStr, int thisMuch)
+    public final static String padLeft(final String thisStr, final int thisMuch)
     {
-        int lenMinusColors=lengthMinusColors(thisStr);
+    	final int lenMinusColors=lengthMinusColors(thisStr);
         if(lenMinusColors>thisMuch)
             return removeColors(thisStr).substring(0,thisMuch);
         return SPACES.substring(0,thisMuch-lenMinusColors)+thisStr;
     }
-    public static String padLeft(String thisStr, String colorPrefix, int thisMuch)
+    public final static String padLeft(final String thisStr, final String colorPrefix, final int thisMuch)
     {
-        int lenMinusColors=lengthMinusColors(thisStr);
+    	final int lenMinusColors=lengthMinusColors(thisStr);
         if(lenMinusColors>thisMuch)
             return colorPrefix+removeColors(thisStr).substring(0,thisMuch);
         return SPACES.substring(0,thisMuch-lenMinusColors)+colorPrefix+thisStr;
     }
-    public static String padRight(String thisStr, int thisMuch)
+    public final static String padRight(final String thisStr, final int thisMuch)
     {
-        int lenMinusColors=lengthMinusColors(thisStr);
+    	final int lenMinusColors=lengthMinusColors(thisStr);
         if(lenMinusColors>thisMuch)
             return removeColors(thisStr).substring(0,thisMuch);
         return thisStr+SPACES.substring(0,thisMuch-lenMinusColors);
     }
-    public static String limit(String thisStr, int thisMuch)
+    public final static String limit(final String thisStr, final int thisMuch)
     {
-        int lenMinusColors=lengthMinusColors(thisStr);
+    	final int lenMinusColors=lengthMinusColors(thisStr);
         if(lenMinusColors>thisMuch)
             return removeColors(thisStr).substring(0,thisMuch);
         return thisStr;
     }
-    public static String padRight(String thisStr, String colorSuffix, int thisMuch)
+    public final static String padRight(final String thisStr, final String colorSuffix, final int thisMuch)
     {
-        int lenMinusColors=lengthMinusColors(thisStr);
+    	final int lenMinusColors=lengthMinusColors(thisStr);
         if(lenMinusColors>thisMuch)
             return removeColors(thisStr).substring(0,thisMuch)+colorSuffix;
         return thisStr+colorSuffix+SPACES.substring(0,thisMuch-lenMinusColors);
     }
-    public static String padRightPreserve(String thisStr, int thisMuch)
+    public final static String padRightPreserve(final String thisStr, final int thisMuch)
     {
-        int lenMinusColors=lengthMinusColors(thisStr);
+    	final int lenMinusColors=lengthMinusColors(thisStr);
         if(lenMinusColors>thisMuch)
             return removeColors(thisStr);
         return thisStr+SPACES.substring(0,thisMuch-lenMinusColors);
     }
-    public static String centerPreserve(String thisStr, int thisMuch)
+    public final static String centerPreserve(final String thisStr, final int thisMuch)
     {
-        int lenMinusColors=lengthMinusColors(thisStr);
+    	final int lenMinusColors=lengthMinusColors(thisStr);
         if(lenMinusColors>thisMuch)
             return removeColors(thisStr);
-        int left=(thisMuch-lenMinusColors)/2;
-        int right=((left+left+lenMinusColors)<thisMuch)?left+1:left;
+        final int left=(thisMuch-lenMinusColors)/2;
+        final int right=((left+left+lenMinusColors)<thisMuch)?left+1:left;
         return SPACES.substring(0,left)+thisStr+SPACES.substring(0,right);
     }
-    public static String padLeftPreserve(String thisStr, int thisMuch)
+    public final static String padLeftPreserve(final String thisStr, final int thisMuch)
     {
-        int lenMinusColors=lengthMinusColors(thisStr);
+    	final int lenMinusColors=lengthMinusColors(thisStr);
         if(lenMinusColors>thisMuch)
             return removeColors(thisStr);
         return SPACES.substring(0,thisMuch-lenMinusColors)+thisStr;
     }
     
-    public static String sameCase(String str, char c)
+    public final static String sameCase(final String str, final char c)
     {
         if(Character.isUpperCase(c))
             return str.toUpperCase();
@@ -510,9 +546,9 @@ public class CMStrings
 		public String	value	= "";
 		public double 	numValue  = 0.0;
 
-		public static StringExpToken token(int type, String value) throws Exception
+		public final static StringExpToken token(final int type, final String value) throws Exception
 		{
-			StringExpToken token = new StringExpToken();
+			final StringExpToken token = new StringExpToken();
 			token.type = type;
 			token.value = value;
 			if((value.length()>0)&&(Character.isDigit(value.charAt(0))))
@@ -522,7 +558,7 @@ public class CMStrings
 		private StringExpToken() { }
 	}
 
-	private static StringExpToken nextToken(List<StringExpToken> tokens, int[] index) {
+	private static StringExpToken nextToken(final List<StringExpToken> tokens, final int[] index) {
 		if(index[0]>=tokens.size()) return null;
 		return (StringExpToken)tokens.get(index[0]++);
 	}
@@ -537,7 +573,7 @@ public class CMStrings
 	private static final int	STRING_EXP_TOKEN_NUMCONST	= 8;
 	private static final int	STRING_EXP_TOKEN_UKNCONST	= 9;
 
-	private static StringExpToken makeTokenType(String token, Map<String,Object> variables, boolean emptyVars) throws Exception
+	private static StringExpToken makeTokenType(String token, final Map<String,Object> variables, final boolean emptyVars) throws Exception
 	{
 		if ((token == null)||(token.length()==0))
 			return null;
@@ -579,10 +615,10 @@ public class CMStrings
 		return StringExpToken.token(STRING_EXP_TOKEN_EVALUATOR, token);
 	}
 
-	private static StringExpToken nextStringToken(String expression, int[] index, Map<String,Object> variables, boolean emptyVars) throws Exception
+	private static StringExpToken nextStringToken(final String expression, final int[] index, final Map<String,Object> variables, final boolean emptyVars) throws Exception
 	{
 		int[] stateBlock = STRING_EXP_SM[1];
-		StringBuffer token = new StringBuffer("");
+		final StringBuffer token = new StringBuffer("");
 		while (index[0] < expression.length())
 		{
 			char c = expression.charAt(index[0]);
@@ -662,9 +698,9 @@ public class CMStrings
 	 * case STRING_EXP_TOKEN_EVALUATOR: case STRING_EXP_TOKEN_OPENPAREN: case STRING_EXP_TOKEN_CLOSEPAREN: case STRING_EXP_TOKEN_WORD: case
 	 * STRING_EXP_TOKEN_CONST: case STRING_EXP_TOKEN_COMBINER:
 	 */
-	public static String matchSimpleConst(List<StringExpToken> tokens, int[] index, Map<String,Object> variables) throws Exception
+	public final static String matchSimpleConst(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
 	{
-		int[] i = (int[]) index.clone();
+		final int[] i = (int[]) index.clone();
 		StringExpToken token = nextToken(tokens, i);
 		if (token == null)
 			return null;
@@ -675,10 +711,10 @@ public class CMStrings
 		return token.value;
 	}
 
-	public static Double matchSimpleNumber(List<StringExpToken> tokens, int[] index, Map<String,Object> variables) throws Exception
+	public final static Double matchSimpleNumber(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
 	{
-		int[] i = (int[]) index.clone();
-		StringExpToken token = nextToken(tokens, i);
+		final int[] i = (int[]) index.clone();
+		final StringExpToken token = nextToken(tokens, i);
 		if (token == null)
 			return null;
 		if((token.type != STRING_EXP_TOKEN_NUMCONST)
@@ -688,7 +724,7 @@ public class CMStrings
 		return Double.valueOf(token.numValue);
 	}
 	
-	public static String matchCombinedString(List<StringExpToken> tokens, int[] index, Map<String,Object> variables) throws Exception
+	public final static String matchCombinedString(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
 	{
 		int[] i = (int[]) index.clone();
 		StringExpToken token = nextToken(tokens, i);
@@ -696,7 +732,7 @@ public class CMStrings
 			return null;
 		if (token.type == STRING_EXP_TOKEN_OPENPAREN)
 		{
-			String testInside = matchCombinedString(tokens, i, variables);
+			final String testInside = matchCombinedString(tokens, i, variables);
 			if (testInside != null)
 			{
 				token = nextToken(tokens, i);
@@ -707,10 +743,10 @@ public class CMStrings
 			}
 		}
 		i = (int[]) index.clone();
-		String leftValue = matchSimpleConst(tokens, i, variables);
+		final String leftValue = matchSimpleConst(tokens, i, variables);
 		if (leftValue == null)
 			return null;
-		int[] i2 = (int[]) i.clone();
+		final int[] i2 = (int[]) i.clone();
 		token = nextToken(tokens, i2);
 		if ((token == null) || (token.type != STRING_EXP_TOKEN_COMBINER))
 		{
@@ -720,14 +756,14 @@ public class CMStrings
 		if(!token.value.equals("+")) 
 			throw new Exception("Can't combine a string using '"+token.value+"'");
 		i[0] = i2[0];
-		String rightValue = matchCombinedString(tokens, i, variables);
+		final String rightValue = matchCombinedString(tokens, i, variables);
 		if (rightValue == null)
 			return null;
 		index[0] = i[0];
 		return leftValue + rightValue;
 	}
 
-	public static Double matchCombinedNum(List<StringExpToken> tokens, int[] index, Map<String,Object> variables) throws Exception
+	public final static Double matchCombinedNum(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
 	{
 		int[] i = (int[]) index.clone();
 		StringExpToken token = nextToken(tokens, i);
@@ -735,7 +771,7 @@ public class CMStrings
 			return null;
 		if (token.type == STRING_EXP_TOKEN_OPENPAREN)
 		{
-			Double testInside = matchCombinedNum(tokens, i, variables);
+			final Double testInside = matchCombinedNum(tokens, i, variables);
 			if (testInside != null)
 			{
 				token = nextToken(tokens, i);
@@ -746,10 +782,10 @@ public class CMStrings
 			}
 		}
 		i = (int[]) index.clone();
-		Double leftValue = matchSimpleNumber(tokens, i, variables);
+		final Double leftValue = matchSimpleNumber(tokens, i, variables);
 		if (leftValue == null)
 			return null;
-		int[] i2 = (int[]) i.clone();
+		final int[] i2 = (int[]) i.clone();
 		token = nextToken(tokens, i2);
 		if ((token == null) || (token.type != STRING_EXP_TOKEN_COMBINER))
 		{
@@ -757,7 +793,7 @@ public class CMStrings
 			return leftValue;
 		}
 		i[0] = i2[0];
-		Double rightValue = matchCombinedNum(tokens, i, variables);
+		final Double rightValue = matchCombinedNum(tokens, i, variables);
 		if (rightValue == null)
 			return null;
 		index[0] = i[0];
@@ -794,7 +830,7 @@ public class CMStrings
 			throw new Exception("Unknown math combiner "+token.value);
 	}
 	
-	public static Boolean matchStringEvaluation(List<StringExpToken> tokens, int[] index, Map<String,Object> variables) throws Exception
+	public final static Boolean matchStringEvaluation(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
 	{
 		int[] i = (int[]) index.clone();
 		StringExpToken token = nextToken(tokens, i);
@@ -802,7 +838,7 @@ public class CMStrings
 			return null;
 		if(token.type == STRING_EXP_TOKEN_NOT)
 		{
-			Boolean testInside = matchExpression(tokens, i, variables);
+			final Boolean testInside = matchExpression(tokens, i, variables);
 			if (testInside != null)
 			{
 				index[0] = i[0];
@@ -812,7 +848,7 @@ public class CMStrings
 		else
 		if (token.type == STRING_EXP_TOKEN_OPENPAREN)
 		{
-			Boolean testInside = matchStringEvaluation(tokens, i, variables);
+			final Boolean testInside = matchStringEvaluation(tokens, i, variables);
 			if (testInside != null)
 			{
 				token = nextToken(tokens, i);
@@ -823,7 +859,7 @@ public class CMStrings
 			}
 		}
 		i = (int[]) index.clone();
-		String leftValue = matchCombinedString(tokens, i, variables);
+		final String leftValue = matchCombinedString(tokens, i, variables);
 		if (leftValue == null)
 			return null;
 		token = nextToken(tokens, i);
@@ -831,11 +867,11 @@ public class CMStrings
 			return null;
 		if (token.type != STRING_EXP_TOKEN_EVALUATOR)
 			return null;
-		String rightValue = matchCombinedString(tokens, i, variables);
+		final String rightValue = matchCombinedString(tokens, i, variables);
 		if (rightValue == null)
 			return null;
-		int compare = leftValue.compareToIgnoreCase(rightValue);
-		Boolean result = null;
+		final int compare = leftValue.compareToIgnoreCase(rightValue);
+		final Boolean result;
 		if (token.value.equals(">"))
 			result = new Boolean(compare > 0);
 		else if (token.value.equals(">="))
@@ -861,7 +897,7 @@ public class CMStrings
 		return result;
 	}
 
-	public static Boolean matchNumEvaluation(List<StringExpToken> tokens, int[] index, Map<String,Object> variables) throws Exception
+	public final static Boolean matchNumEvaluation(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
 	{
 		int[] i = (int[]) index.clone();
 		StringExpToken token = nextToken(tokens, i);
@@ -869,7 +905,7 @@ public class CMStrings
 			return null;
 		if(token.type == STRING_EXP_TOKEN_NOT)
 		{
-			Boolean testInside = matchExpression(tokens, i, variables);
+			final Boolean testInside = matchExpression(tokens, i, variables);
 			if (testInside != null)
 			{
 				index[0] = i[0];
@@ -879,7 +915,7 @@ public class CMStrings
 		else
 		if (token.type == STRING_EXP_TOKEN_OPENPAREN)
 		{
-			Boolean testInside = matchNumEvaluation(tokens, i, variables);
+			final Boolean testInside = matchNumEvaluation(tokens, i, variables);
 			if (testInside != null)
 			{
 				token = nextToken(tokens, i);
@@ -890,7 +926,7 @@ public class CMStrings
 			}
 		}
 		i = (int[]) index.clone();
-		Double leftValue = matchCombinedNum(tokens, i, variables);
+		final Double leftValue = matchCombinedNum(tokens, i, variables);
 		if (leftValue == null)
 			return null;
 		token = nextToken(tokens, i);
@@ -898,10 +934,10 @@ public class CMStrings
 			return null;
 		if (token.type != STRING_EXP_TOKEN_EVALUATOR)
 			return null;
-		Double rightValue = matchCombinedNum(tokens, i, variables);
+		final Double rightValue = matchCombinedNum(tokens, i, variables);
 		if (rightValue == null)
 			return null;
-		Boolean result = null;
+		final Boolean result;
 		if (token.value.equals(">"))
 			result = new Boolean(leftValue.doubleValue() > rightValue.doubleValue());
 		else if (token.value.equals(">="))
@@ -927,7 +963,7 @@ public class CMStrings
 		return result;
 	}
 	
-	public static Boolean matchExpression(List<StringExpToken> tokens, int[] index, Map<String,Object> variables) throws Exception
+	public final static Boolean matchExpression(final List<StringExpToken> tokens, final int[] index, final Map<String,Object> variables) throws Exception
 	{
 		int[] i = (int[]) index.clone();
 		StringExpToken token = nextToken(tokens, i);
@@ -936,7 +972,7 @@ public class CMStrings
 		Boolean leftExpression = null;
 		if(token.type == STRING_EXP_TOKEN_NOT)
 		{
-			Boolean testInside = matchExpression(tokens, i, variables);
+			final Boolean testInside = matchExpression(tokens, i, variables);
 			if (testInside != null)
 			{
 				index[0] = i[0];
@@ -946,7 +982,7 @@ public class CMStrings
 		else
 		if (token.type == STRING_EXP_TOKEN_OPENPAREN)
 		{
-			Boolean testInside = matchExpression(tokens, i, variables);
+			final Boolean testInside = matchExpression(tokens, i, variables);
 			if (testInside != null)
 			{
 				token = nextToken(tokens, i);
@@ -963,7 +999,7 @@ public class CMStrings
 			if(leftExpression == null) leftExpression = matchNumEvaluation(tokens, i, variables);
 		}
 		if (leftExpression == null) return null;
-		int[] i2 = (int[]) i.clone();
+		final int[] i2 = (int[]) i.clone();
 		token = nextToken(tokens, i2);
 		if ((token == null) || (token.type != STRING_EXP_TOKEN_WORD))
 		{
@@ -971,10 +1007,10 @@ public class CMStrings
 			return leftExpression;
 		}
 		i[0] = i2[0];
-		Boolean rightExpression = matchExpression(tokens, i, variables);
+		final Boolean rightExpression = matchExpression(tokens, i, variables);
 		if (rightExpression == null)
 			return null;
-		Boolean result = null;
+		final Boolean result;
 		if (token.value.equalsIgnoreCase("AND"))
 			result = new Boolean(leftExpression.booleanValue() && rightExpression.booleanValue());
 		else if (token.value.startsWith("&"))
@@ -991,9 +1027,9 @@ public class CMStrings
 		return result;
 	}
 
-	public static boolean parseStringExpression(String expression, Map<String,Object> variables, boolean emptyVarsOK) throws Exception
+	public final static boolean parseStringExpression(final String expression, final Map<String,Object> variables, final boolean emptyVarsOK) throws Exception
 	{
-		Vector<StringExpToken> tokens = new Vector<StringExpToken>();
+		final Vector<StringExpToken> tokens = new Vector<StringExpToken>();
 		int[] i = { 0 };
 		StringExpToken token = nextStringToken(expression,i,variables, emptyVarsOK);
 		while(token != null) {
@@ -1002,7 +1038,7 @@ public class CMStrings
 		}
 		if(tokens.size()==0) return true;
 		i = new int[]{ 0 };
-		Boolean value = matchExpression(tokens, i, variables);
+		final Boolean value = matchExpression(tokens, i, variables);
 		if (value == null) throw new Exception("Parse error on following statement: " + expression);
 		return value.booleanValue();
 	}

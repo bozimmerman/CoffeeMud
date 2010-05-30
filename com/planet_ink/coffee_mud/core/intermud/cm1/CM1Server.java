@@ -47,18 +47,43 @@ public class CM1Server extends Thread
 						servChan = null;
 	private SHashtable<SocketChannel,RequestHandler> 
 						handlers = new SHashtable<SocketChannel,RequestHandler>();
+	private String		iniFile;
+	private CMProps 	page;
 	private ThreadPoolExecutor 
 						threadPool;
 	
 	
 	
-	public CM1Server(String serverName, int serverPort)
+	public CM1Server(String serverName, String iniFile)
 	{
-		super(serverName+"@"+serverPort);
-		name=serverName;
-		this.port=serverPort;
+		super(serverName);
+		if(!loadPropPage(iniFile))
+			throw new IllegalArgumentException();
+		int serverPort = page.getInt("PORT");
+		this.iniFile=iniFile;
+		name=serverName+"@"+serverPort;
+		setName(name);
+		port=serverPort;
 		shutdownRequested = false;
-		threadPool = new ThreadPoolExecutor(0, 3, 30, TimeUnit.SECONDS, new UniqueEntryBlockingQueue<Runnable>(512));
+		int maxThreads = page.getInt("MAXTHREADS");
+		int queueSize = page.getInt("QUEUESIZE");
+		threadPool = new ThreadPoolExecutor(0, maxThreads, 30, TimeUnit.SECONDS, new UniqueEntryBlockingQueue<Runnable>(queueSize));
+	}
+	
+	public String getINIFilename() { return iniFile;}
+	
+	protected boolean loadPropPage(String iniFile)
+	{
+		if (page==null || !page.isLoaded())
+		{
+			page=new CMProps (iniFile);
+			if(!page.isLoaded())
+			{
+				Log.errOut(getName(),"failed to load " + iniFile);
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	public void run()
@@ -71,7 +96,10 @@ public class CM1Server extends Thread
 				servChan = ServerSocketChannel.open();
 				ServerSocket serverSocket = servChan.socket();
 				servSelector = Selector.open();
-				serverSocket.bind (new InetSocketAddress (port));
+				if((page.getStr("BIND")!=null)&&(page.getStr("BIND").trim().length()>0))
+					serverSocket.bind (new InetSocketAddress(InetAddress.getByName(page.getStr("BIND")),port));
+				else
+					serverSocket.bind (new InetSocketAddress (port));
 				Log.sysOut("CM1Server","Started "+name+" on port "+port);
 				servChan.configureBlocking (false);
 				servChan.register (servSelector, SelectionKey.OP_ACCEPT);
@@ -93,7 +121,7 @@ public class CM1Server extends Thread
 					         SocketChannel channel = server.accept();
 					         if (channel != null) 
 					         {
-					            RequestHandler handler=new RequestHandler(channel);
+					            RequestHandler handler=new RequestHandler(channel,page.getInt("IDLETIMEOUTMINS"));
 					            channel.configureBlocking (false);
 					            channel.register (servSelector, SelectionKey.OP_READ, handler);
 					            handlers.put(channel,handler);

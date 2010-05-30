@@ -69,16 +69,16 @@ public class MUD extends Thread implements MudHost
     private int			 	port=5555;
     private final long 		startupTime = System.currentTimeMillis();
     
-    private static boolean 		   	   bringDown=false;
-    private static String 			   execExternalCommand=null;
-    private static I3Server 		   i3server=null;
-    private static CM1Server 		   cm1server=null;
-    private static IMC2Driver 		   imc2server=null;
-    private static Vector<HTTPserver>  webServers=new Vector<HTTPserver>();
-    private static SMTPserver 		   smtpServerThread=null;
-    private static DVector 			   accessed=new DVector(2);
-    private static Vector<String>	   autoblocked=new Vector<String>();
-    private static Vector<DBConnector> databases=new Vector<DBConnector>();
+    private static boolean 		   	bringDown=false;
+    private static String 			execExternalCommand=null;
+    private static I3Server 		i3server=null;
+    private static IMC2Driver 		imc2server=null;
+    private static List<HTTPserver>	webServers=new Vector<HTTPserver>();
+    private static SMTPserver 		smtpServerThread=null;
+    private static DVector 			accessed=new DVector(2);
+    private static List<String>	   	autoblocked=new Vector<String>();
+    private static List<DBConnector>databases=new Vector<DBConnector>();
+    private static List<CM1Server>	cm1Servers=new Vector<CM1Server>();
     
 
 	public MUD(String name)
@@ -196,7 +196,7 @@ public class MUD extends Thread implements MudHost
 			if((currentDBconnector.amIOk())&&(CMLib.database().isConnected()))
 			{
 				Log.sysOut(Thread.currentThread().getName(),"Connected to "+currentDBconnector.service());
-				databases.addElement(currentDBconnector);
+				databases.add(currentDBconnector);
 			}
 			else
 			{
@@ -235,16 +235,16 @@ public class MUD extends Thread implements MudHost
 		        String serverName=(String)serverNames.elementAt(s);
     			HTTPserver webServerThread = new HTTPserver(CMLib.mud(0),serverName,0);
     			webServerThread.start();
-    			webServers.addElement(webServerThread);
+    			webServers.add(webServerThread);
     			int numToDo=webServerThread.totalPorts();
     			while((--numToDo)>0)
     			{
     				webServerThread = new HTTPserver(CMLib.mud(0),"pub",numToDo);
     				webServerThread.start();
-    				webServers.addElement(webServerThread);
+    				webServers.add(webServerThread);
     			}
 		    }
-			CMLib.registerLibrary(new ProcessHTTPrequest(null,(webServers.size()>0)?(HTTPserver)webServers.firstElement():null,null,true));
+			CMLib.registerLibrary(new ProcessHTTPrequest(null,(webServers.size()>0)?(HTTPserver)webServers.get(0):null,null,true));
 		}
 
 		if(page.getPrivateStr("RUNSMTPSERVER").equalsIgnoreCase("true"))
@@ -398,7 +398,7 @@ public class MUD extends Thread implements MudHost
 
         
         for(int i=0;i<CMLib.hosts().size();i++)
-            ((MudHost)CMLib.hosts().elementAt(i)).setAcceptConnections(true);
+            ((MudHost)CMLib.hosts().get(i)).setAcceptConnections(true);
         Log.sysOut(Thread.currentThread().getName(),"Initialization complete.");
 		CMProps.setBoolVar(CMProps.SYSTEMB_MUDSTARTED,true);
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"OK");
@@ -449,7 +449,7 @@ public class MUD extends Thread implements MudHost
                     else
                     if(numAtThisAddress>=maxAtThisAddress)
                     {
-                        autoblocked.addElement(address.toUpperCase());
+                        autoblocked.add(address.toUpperCase());
                         proceed=2;
                     }
                 }catch(java.lang.ArrayIndexOutOfBoundsException e){}
@@ -629,7 +629,7 @@ public class MUD extends Thread implements MudHost
         CMLib.threads().suspendAll();
 		if(S!=null)S.print("Closing MUD listeners to new connections...");
 		for(int i=0;i<CMLib.hosts().size();i++)
-            ((MudHost)CMLib.hosts().elementAt(i)).setAcceptConnections(false);
+            ((MudHost)CMLib.hosts().get(i)).setAcceptConnections(false);
 		Log.sysOut(Thread.currentThread().getName(),"New Connections are now closed");
 		if(S!=null)S.println("Done.");
 
@@ -742,14 +742,20 @@ public class MUD extends Thread implements MudHost
 
 		}
 
-		if(cm1server!=null)
+		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...CM1Servers");
+		for(CM1Server cm1server : cm1Servers)
 		{
-			CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...CM1Server");
-			cm1server.shutdown();
-			cm1server=null;
-			if(S!=null)S.println("CM1Server stopped");
-			Log.sysOut(Thread.currentThread().getName(),"CM1Server stopped");
+			try
+			{
+				cm1server.shutdown();
+			}
+			finally
+			{
+				if(S!=null)S.println(cm1server.getName()+" stopped");
+				Log.sysOut(Thread.currentThread().getName(),cm1server.getName()+" stopped");
+			}
 		}
+		cm1Servers.clear();
 
 		if(i3server!=null)
 		{
@@ -813,7 +819,7 @@ public class MUD extends Thread implements MudHost
 
 		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...closing db connections");
 		for(int d=0;d<databases.size();d++)
-			((DBConnector)databases.elementAt(d)).killConnections();
+			((DBConnector)databases.get(d)).killConnections();
 		if(S!=null)S.println("Database connections closed");
 		Log.sysOut(Thread.currentThread().getName(),"Database connections closed.");
 
@@ -848,7 +854,7 @@ public class MUD extends Thread implements MudHost
 
 		for(int i=0;i<webServers.size();i++)
 		{
-			HTTPserver webServerThread=(HTTPserver)webServers.elementAt(i);
+			HTTPserver webServerThread=(HTTPserver)webServers.get(i);
 			CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down web server "+webServerThread.getName()+"...");
 			webServerThread.shutdown(S);
 			Log.sysOut(Thread.currentThread().getName(),"Web server "+webServerThread.getName()+" stopped.");
@@ -876,10 +882,10 @@ public class MUD extends Thread implements MudHost
 		execExternalCommand=externalCommand;
 		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutdown: you are the special lucky chosen one!");
 		for(int m=CMLib.hosts().size()-1;m>=0;m--)
-            if(CMLib.hosts().elementAt(m) instanceof Thread)
+            if(CMLib.hosts().get(m) instanceof Thread)
             {
                 try{
-        			CMLib.killThread((Thread)CMLib.hosts().elementAt(m),100,1);
+        			CMLib.killThread((Thread)CMLib.hosts().get(m),100,1);
                 } catch(Throwable t){}
             }
 		if(!keepItDown)
@@ -933,22 +939,30 @@ public class MUD extends Thread implements MudHost
 	{
         char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		CMProps page=CMProps.instance();
+		CM1Server cm1server = null;
 		try
 		{
-			if(page.getBoolean("RUNCM1SERVER")&&(tCode==MAIN_HOST))
+			if(page.getBoolean("RUNCM1SERVER"))
 			{
-				if(cm1server!=null) cm1server.shutdown();
-				cm1server=null;
-				int cm1port=page.getInt("CM1PORT");
-				if(cm1port==0) cm1port=27733;
-				cm1server=new CM1Server("CM1Server"+tCode,cm1port);
+				String iniFile = page.getStr("CM1CONFIG");
+				for(CM1Server s : cm1Servers)
+					if(s.getINIFilename().equalsIgnoreCase(iniFile))
+					{
+						s.shutdown();
+						cm1Servers.remove(s);
+					}
+				cm1server=new CM1Server("CM1Server"+tCode,iniFile);
 				cm1server.start();
+				cm1Servers.add(cm1server);
 			}
 		}
 		catch(Exception e)
 		{
-			if(cm1server!=null) cm1server.shutdown();
-			cm1server=null;
+			if(cm1server!=null)
+			{
+				cm1server.shutdown();
+				cm1Servers.remove(cm1server);
+			}
 		}
 	}
 	
@@ -1178,20 +1192,20 @@ public class MUD extends Thread implements MudHost
 						mud.port=CMath.s_int(ports.substring(0,pdex));
 						ports=ports.substring(pdex+1);
 						mud.start();
-                        CMLib.hosts().addElement(mud);
+                        CMLib.hosts().add(mud);
 						pdex=ports.indexOf(',');
 					}
 					MUD mud=new MUD("MUD@"+ports);
 					mud.acceptConnections=false;
 					mud.port=CMath.s_int(ports);
 					mud.start();
-                    CMLib.hosts().addElement(mud);
+                    CMLib.hosts().add(mud);
 				}
 
 				StringBuffer str=new StringBuffer("");
 				for(int m=0;m<CMLib.hosts().size();m++)
 				{
-					MudHost mud=(MudHost)CMLib.hosts().elementAt(m);
+					MudHost mud=(MudHost)CMLib.hosts().get(m);
 					str.append(" "+mud.getPort());
 				}
 				CMProps.setVar(CMProps.SYSTEM_MUDPORTS,str.toString());
@@ -1207,9 +1221,9 @@ public class MUD extends Thread implements MudHost
                 {
                     Thread joinable=null;
                     for(int i=0;i<CMLib.hosts().size();i++)
-                        if(CMLib.hosts().elementAt(i) instanceof Thread)
+                        if(CMLib.hosts().get(i) instanceof Thread)
                         {
-                            joinable=(Thread)CMLib.hosts().elementAt(i);
+                            joinable=(Thread)CMLib.hosts().get(i);
                             break;
                         }
                     if(joinable!=null)
@@ -1229,7 +1243,7 @@ public class MUD extends Thread implements MudHost
     {
     	Vector<Thread> V=new Vector<Thread>();
     	for(int w=0;w<webServers.size();w++)
-    		V.addAll(((HTTPserver)webServers.elementAt(w)).getOverdueThreads());
+    		V.addAll(((HTTPserver)webServers.get(w)).getOverdueThreads());
     	return V;
     }
 

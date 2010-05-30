@@ -900,7 +900,7 @@ public class ServiceEngine implements ThreadEngine
         thread.status("Checking mud threads");
         for(int m=0;m<CMLib.hosts().size();m++)
         {
-            List<Thread> badThreads=((MudHost)CMLib.hosts().elementAt(m)).getOverdueThreads();
+            List<Thread> badThreads=((MudHost)CMLib.hosts().get(m)).getOverdueThreads();
             if(badThreads.size()>0)
             {
                 for(int b=0;b<badThreads.size();b++)

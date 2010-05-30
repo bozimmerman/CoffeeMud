@@ -50,19 +50,25 @@ public class RequestHandler implements Runnable
 	private List<ByteBuffer>	 workingBuffers = new SLinkedList<ByteBuffer>();
 	private Map<String,Object> 	 dependents = new STreeMap<String,Object>();
 	private byte[][]			 markBlocks = DEFAULT_MARK_BLOCKS;
+	private long				 MAX_IDLE_MILLIS = 10 * 60 * 1000;
 	private static final int 	 BUFFER_SIZE=4096;
 	private static final long 	 MAXIMUM_BYTES=1024 * 1024 * 2;
 	private static final byte[][]DEFAULT_MARK_BLOCKS = {{'\n','\r'},{'\r','\n'},{'\n'},{'\r'}};
+	private static final char[]  DEFAULT_CRLF = {'\n','\r'};
 	
-	public RequestHandler(SocketChannel chan) throws IOException
+	public RequestHandler(SocketChannel chan, int maxIdleMillis) throws IOException
 	{
 		super();
 		runnableName="CM1ReqHndler#"+counter.incrementAndGet();
+		if(maxIdleMillis>0)
+			MAX_IDLE_MILLIS = ((long)maxIdleMillis) * 60 * 1000;
 		this.chan=chan;
 	}
 	
 	public void sendMsg(String msg) throws IOException 
 	{
+		if((msg.startsWith("[OK")||msg.startsWith("[FAIL")||msg.startsWith("[MESSAGE")))
+			msg = CMStrings.replaceAllofAny(msg,DEFAULT_CRLF,' ');
 		byte[] bytes = (msg+"\r\n").getBytes();
 		ByteBuffer buf = ByteBuffer.wrap(bytes);
 		while(chan.isConnected() && chan.isOpen() && (chan.write(buf)>0))try{Thread.sleep(1);}catch(Exception e){}
@@ -95,7 +101,7 @@ public class RequestHandler implements Runnable
 	{
 		if(closeMe)
 			return true;
-		if((System.currentTimeMillis() - idleTime) > 10 * 60 * 1000)
+		if((System.currentTimeMillis() - idleTime) > MAX_IDLE_MILLIS)
 			return true;
 		if((!chan.isOpen()) || (!chan.isConnected()) || (!chan.isRegistered()))
 			return true;

@@ -34,31 +34,30 @@ public class Directions
     public Directions(){
         super();
         char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
-        if(dirs==null) dirs=new Directions[256];
         if(dirs[c]==null) dirs[c]=this;
     }
     private static Directions d(){ return dirs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
     public static Directions d(char c){return dirs[c];}
     public static Directions instance(){
-        Directions d=d();
-        if(d==null) d=new Directions();
+    	final Directions d=d();
+        if(d==null) return new Directions();
         return d;
     }
-    private static Directions[] dirs=new Directions[256];
+    private static final Directions[] dirs=new Directions[256];
     
     private int[] DIRECTIONS_BASE={NORTH,SOUTH,EAST,WEST};
     private String DIRECTIONS_DESC="N, S, E, W, U, D, or V";
     private int NUM_DIRECTIONS=7;
 
-	public static int NUM_DIRECTIONS(){
+	public static final int NUM_DIRECTIONS(){
         return d().NUM_DIRECTIONS;
     };
 	
-    public static int[] DIRECTIONS_BASE(){
+    public static final int[] DIRECTIONS_BASE(){
         return d().DIRECTIONS_BASE;
     };
     
-    public static String DIRECTIONS_DESC(){
+    public static final String DIRECTIONS_DESC(){
         return d().DIRECTIONS_DESC;
     };
     
@@ -77,7 +76,7 @@ public class Directions
 	public static final int SOUTHWEST=10;
 	
 	public static final String[] DIRECTION_CHARS={"N","S","E","W","U","D","V","NE","NW","SE","SW"};
-	public static String[][] DIRECTIONS_FULL_CHART={
+	public static final String[][] DIRECTIONS_FULL_CHART={
 	    {"UP",""+UP},
 	    {"ABOVE",""+UP},
 	    {"NORTH",""+NORTH},
@@ -100,12 +99,12 @@ public class Directions
 	    {"VORTEX",""+GATE}
 	};
 											   
-	public static String getDirectionName(String theDir)
+	public static final String getDirectionName(final String theDir)
 	{
 		return getDirectionName(getDirectionCode(theDir));
 	}
 
-	public void reInitialize(int dirs)
+	public final void reInitialize(final int dirs)
 	{
 	    NUM_DIRECTIONS=dirs;
 	    if(dirs<11)
@@ -132,7 +131,7 @@ public class Directions
 	    }
 	}
 	
-	public static String getDirectionName(int code)
+	public static final String getDirectionName(final int code)
 	{
 		switch(code)
 		{
@@ -162,38 +161,38 @@ public class Directions
 		return "";
 	}
 
-	public static String getDirectionChar(int code)
+	public static final String getDirectionChar(final int code)
 	{
 		if(code<NUM_DIRECTIONS())
 			return DIRECTION_CHARS[code];
 		return " ";
 	}
 
-	public static int getDirectionCode(String theDir)
+	public static final int getDirectionCode(final String theDir)
 	{
-	    int code=getGoodDirectionCode(theDir);
+		final int code=getGoodDirectionCode(theDir);
 	    if(code<0)
 	    {
-			theDir=theDir.toUpperCase();
+	    	final String upDir=theDir.toUpperCase();
 			for(int i=0;i<NUM_DIRECTIONS();i++)
-			    if(theDir.startsWith(DIRECTION_CHARS[i]))
+			    if(upDir.startsWith(DIRECTION_CHARS[i]))
 			        return i;
 	    }
 		return code;
 	}
 	
-	public static int getGoodDirectionCode(String theDir)
+	public static final int getGoodDirectionCode(final String theDir)
 	{
 	    if(theDir.length()==0) return -1;
-	    theDir=theDir.toUpperCase();
+	    final String upDir=theDir.toUpperCase();
 	    for(int i=0;i<DIRECTIONS_FULL_CHART.length;i++)
-	        if((DIRECTIONS_FULL_CHART[i][0].startsWith(theDir))
+	        if((DIRECTIONS_FULL_CHART[i][0].startsWith(upDir))
 	        &&(CMath.s_int(DIRECTIONS_FULL_CHART[i][1])<NUM_DIRECTIONS()))
 	            return CMath.s_int(DIRECTIONS_FULL_CHART[i][1]); 
 		return -1;
 	}
 	
-	public static int[] adjustXYByDirections(int x, int y, int direction)
+	public static final int[] adjustXYByDirections(int x, int y, final int direction)
 	{
 		switch(direction)
 		{
@@ -206,20 +205,20 @@ public class Directions
 		case Directions.SOUTHEAST: x++; y++; break;
 		case Directions.SOUTHWEST: x--; y++; break;
 		}
-		int[] xy=new int[2];
+		final int[] xy=new int[2];
 		xy[0]=x;
 		xy[1]=y;
 		return xy;
 	}
 	
 
-	public static String getFromDirectionName(String theDir)
+	public static final String getFromDirectionName(final String theDir)
 	{
-		int code=getDirectionCode(theDir);
+		final int code=getDirectionCode(theDir);
 		return getFromDirectionName(code);
 	}
 	
-	public static String getFromDirectionName(int code)
+	public static final String getFromDirectionName(final int code)
 	{
 		switch(code)
 		{
@@ -249,7 +248,7 @@ public class Directions
 		return "";
 	}
 	
-	public static String getInDirectionName(int code)
+	public static final String getInDirectionName(final int code)
 	{
 		switch(code)
 		{
@@ -279,7 +278,7 @@ public class Directions
 		return "";
 	}
 	
-	public static int getOpDirectionCode(int code)
+	public static final int getOpDirectionCode(final int code)
 	{
 		switch(code)
 		{
@@ -308,7 +307,7 @@ public class Directions
 		}
 		return -1;
 	}
-	public static int getOpDirectionCode(String theDir)
+	public static final int getOpDirectionCode(final String theDir)
 	{
 		int code=getDirectionCode(theDir);
 		return getOpDirectionCode(code);

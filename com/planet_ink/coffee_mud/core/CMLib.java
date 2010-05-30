@@ -39,22 +39,21 @@ import org.mozilla.javascript.ScriptableObject;
 */
 public class CMLib
 {
-    public String getClassName(){return "CMLib";}
+    public final String getClassName(){return "CMLib";}
 	private static final long serialVersionUID=42;
     private static final SVector<MudHost> mudThreads=new SVector<MudHost>();
-    private static CMLib[] libs=new CMLib[256];
+    private static final CMLib[] libs=new CMLib[256];
     public CMLib(){
         super();
-        char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
-        if(libs==null) libs=new CMLib[256];
+        final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
         if(libs[c]==null) libs[c]=this;
     }
-    private static CMLib l(){ return libs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
-    public static CMLib l(char c){return libs[c];}
-    public static CMLib instance(){return l();}
+    private static final CMLib l(){ return libs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
+    public static final CMLib l(final char c){return libs[c];}
+    public static final CMLib instance(){return l();}
     
     private final CMLibrary[] 	libraries=new CMLibrary[LIBRARY_TOTAL];
-    private boolean[] 			registered=new boolean[LIBRARY_TOTAL];
+    private final boolean[]		registered=new boolean[LIBRARY_TOTAL];
 
     public static final int LIBRARY_DATABASE=0;
     public static final int LIBRARY_THREADS=1;
@@ -113,16 +112,16 @@ public class CMLib
         "TIME","COLOR","LOGIN","TIMS","LEVELS","EXPERTISES","MATERIALS","LEGAL",
         "LANGUAGE","CATALOG","PLAYERS","TITLES","ABLEPARMS","GENEDITOR","AREAGEN"};
 
-    public static CMath math(){return CMath.instance();}
-    public static CMParms parms(){return CMParms.instance();}
-    public static CMStrings strings(){return CMStrings.instance();}
-    public static CMClass classes(){return CMClass.instance();}
-    public static CMSecurity security(){return CMSecurity.instance();}
-    public static Directions directions(){return Directions.instance();}
-    public static Log log(){return Log.instance();}
-    public static SVector<MudHost> hosts(){return mudThreads;}
+    public static final CMath math(){return CMath.instance();}
+    public static final CMParms parms(){return CMParms.instance();}
+    public static final CMStrings strings(){return CMStrings.instance();}
+    public static final CMClass classes(){return CMClass.instance();}
+    public static final CMSecurity security(){return CMSecurity.instance();}
+    public static final Directions directions(){return Directions.instance();}
+    public static final Log log(){return Log.instance();}
+    public static final List<MudHost> hosts(){return mudThreads;}
     
-    public static MudHost mud(int port)
+    public static final MudHost mud(int port)
     {
         if(mudThreads.size()==0)
             return null;
@@ -135,68 +134,68 @@ public class CMLib
                 return (MudHost)mudThreads.elementAt(i);
         return null;
     }
-    public static Resources resources(){return Resources.instance();}
-    public static CMProps props(){return CMProps.instance();}
-    public static Enumeration<CMLibrary> libraries(){
-        Vector<CMLibrary> V=new Vector<CMLibrary>();
+    public static final Resources resources(){return Resources.instance();}
+    public static final CMProps props(){return CMProps.instance();}
+    public static final Enumeration<CMLibrary> libraries(){
+    	final Vector<CMLibrary> V=new Vector<CMLibrary>();
         for(int l=0;l<CMLib.LIBRARY_TOTAL;l++)
             if(l().libraries[l]!=null)
-                V.addElement(l().libraries[l]);
+                V.add(l().libraries[l]);
         return V.elements();
     }
-    public static CMFile newFile(String currentPath, String filename, boolean pleaseLogErrors)
+    public static final CMFile newFile(final String currentPath, final String filename, final boolean pleaseLogErrors)
     { return new CMFile(currentPath,filename,null,pleaseLogErrors,false); }
 
-    public static DatabaseEngine database(){return (DatabaseEngine)l().libraries[LIBRARY_DATABASE];}
-    public static ThreadEngine threads(){return (ThreadEngine)l().libraries[LIBRARY_THREADS];}
-    public static I3Interface intermud(){return (I3Interface)l().libraries[LIBRARY_INTERMUD];}
-    public static ItemBalanceLibrary itemBuilder(){return (ItemBalanceLibrary)l().libraries[LIBRARY_TIMS];}
-    public static ExternalHTTPRequests httpUtils(){return (ExternalHTTPRequests)l().libraries[LIBRARY_HTTP];}
-    public static ListingLibrary lister(){return (ListingLibrary)l().libraries[LIBRARY_LISTER];}
-    public static MoneyLibrary beanCounter(){return (MoneyLibrary)l().libraries[LIBRARY_MONEY];}
-    public static ShoppingLibrary coffeeShops(){return (ShoppingLibrary)l().libraries[LIBRARY_SHOPS];}
-    public static MaterialLibrary materials(){return (MaterialLibrary)l().libraries[LIBRARY_MATERIALS];}
-    public static CombatLibrary combat(){return (CombatLibrary)l().libraries[LIBRARY_COMBAT];}
-    public static HelpLibrary help(){return (HelpLibrary)l().libraries[LIBRARY_HELP];}
-    public static TrackingLibrary tracking(){return (TrackingLibrary)l().libraries[LIBRARY_TRACKING];}
-    public static LegalLibrary law(){return (LegalLibrary)l().libraries[LIBRARY_LEGAL];}
-    public static MaskingLibrary masking(){return (MaskingLibrary)l().libraries[LIBRARY_MASKING];}
-    public static ChannelsLibrary channels(){return (ChannelsLibrary)l().libraries[LIBRARY_CHANNELS];}
-    public static CommonCommands commands(){return (CommonCommands)l().libraries[LIBRARY_COMMANDS];}
-    public static EnglishParsing english(){return (EnglishParsing)l().libraries[LIBRARY_ENGLISH];}
-    public static SlaveryLibrary slavery(){return (SlaveryLibrary)l().libraries[LIBRARY_SLAVERY];}
-    public static JournalsLibrary journals(){return (JournalsLibrary)l().libraries[LIBRARY_JOURNALS];}
-    public static TelnetFilter coffeeFilter(){return (TelnetFilter)l().libraries[LIBRARY_TELNET];}
-    public static GenericBuilder coffeeMaker(){return (GenericBuilder)l().libraries[LIBRARY_OBJBUILDERS];}
-    public static SessionsList sessions(){return (SessionsList)l().libraries[LIBRARY_SESSIONS];}
-    public static CMFlagLibrary flags(){return (CMFlagLibrary)l().libraries[LIBRARY_FLAGS];}
-    public static XMLLibrary xml(){return (XMLLibrary)l().libraries[LIBRARY_XML];}
-    public static SocialsList socials(){return (SocialsList)l().libraries[LIBRARY_SOCIALS];}
-    public static CMMiscUtils utensils(){return (CMMiscUtils)l().libraries[LIBRARY_UTENSILS];}
-    public static StatisticsLibrary coffeeTables(){return (StatisticsLibrary)l().libraries[LIBRARY_STATS];}
-    public static ExpLevelLibrary leveler(){return (ExpLevelLibrary)l().libraries[LIBRARY_LEVELS];}
-    public static WorldMap map(){return (WorldMap)l().libraries[LIBRARY_MAP];}
-    public static QuestManager quests(){return (QuestManager)l().libraries[LIBRARY_QUEST];}
-    public static AreaGenerationLibrary percolator(){return (AreaGenerationLibrary)l().libraries[LIBRARY_AREAGEN];}
-    public static AbilityMapper ableMapper(){return (AbilityMapper)l().libraries[LIBRARY_ABLEMAP];}
-    public static TextEncoders encoder(){return (TextEncoders)l().libraries[LIBRARY_ENCODER];}
-    public static SMTPLibrary smtp(){return (SMTPLibrary)l().libraries[LIBRARY_SMTP];}
-    public static LanguageLibrary lang(){return (LanguageLibrary)l().libraries[LIBRARY_LANGUAGE];}
-    public static DiceLibrary dice(){return (DiceLibrary)l().libraries[LIBRARY_DICE];}
-    public static FactionManager factions(){return (FactionManager)l().libraries[LIBRARY_FACTIONS];}
-    public static ClanManager clans(){return (ClanManager)l().libraries[LIBRARY_CLANS];}
-    public static PollManager polls(){return (PollManager)l().libraries[LIBRARY_POLLS];}
-    public static TimeManager time(){return (TimeManager)l().libraries[LIBRARY_TIME];}
-    public static ColorLibrary color(){return (ColorLibrary)l().libraries[LIBRARY_COLOR];}
-    public static CharCreationLibrary login(){return (CharCreationLibrary)l().libraries[LIBRARY_LOGIN];}
-    public static ExpertiseLibrary expertises(){return (ExpertiseLibrary)l().libraries[LIBRARY_EXPERTISES];}
-    public static PlayerLibrary players(){return (PlayerLibrary)l().libraries[LIBRARY_PLAYERS];}
-    public static CatalogLibrary catalog(){return (CatalogLibrary)l().libraries[LIBRARY_CATALOG];}
-    public static AutoTitlesLibrary titles(){return (AutoTitlesLibrary)l().libraries[LIBRARY_TITLES];}
-    public static AbilityParameters ableParms(){return (AbilityParameters)l().libraries[LIBRARY_ABLEPARMS];}
-    public static GenericEditor genEd(){return (GenericEditor)l().libraries[LIBRARY_GENEDITOR];}
+    public static final DatabaseEngine database(){return (DatabaseEngine)l().libraries[LIBRARY_DATABASE];}
+    public static final ThreadEngine threads(){return (ThreadEngine)l().libraries[LIBRARY_THREADS];}
+    public static final I3Interface intermud(){return (I3Interface)l().libraries[LIBRARY_INTERMUD];}
+    public static final ItemBalanceLibrary itemBuilder(){return (ItemBalanceLibrary)l().libraries[LIBRARY_TIMS];}
+    public static final ExternalHTTPRequests httpUtils(){return (ExternalHTTPRequests)l().libraries[LIBRARY_HTTP];}
+    public static final ListingLibrary lister(){return (ListingLibrary)l().libraries[LIBRARY_LISTER];}
+    public static final MoneyLibrary beanCounter(){return (MoneyLibrary)l().libraries[LIBRARY_MONEY];}
+    public static final ShoppingLibrary coffeeShops(){return (ShoppingLibrary)l().libraries[LIBRARY_SHOPS];}
+    public static final MaterialLibrary materials(){return (MaterialLibrary)l().libraries[LIBRARY_MATERIALS];}
+    public static final CombatLibrary combat(){return (CombatLibrary)l().libraries[LIBRARY_COMBAT];}
+    public static final HelpLibrary help(){return (HelpLibrary)l().libraries[LIBRARY_HELP];}
+    public static final TrackingLibrary tracking(){return (TrackingLibrary)l().libraries[LIBRARY_TRACKING];}
+    public static final LegalLibrary law(){return (LegalLibrary)l().libraries[LIBRARY_LEGAL];}
+    public static final MaskingLibrary masking(){return (MaskingLibrary)l().libraries[LIBRARY_MASKING];}
+    public static final ChannelsLibrary channels(){return (ChannelsLibrary)l().libraries[LIBRARY_CHANNELS];}
+    public static final CommonCommands commands(){return (CommonCommands)l().libraries[LIBRARY_COMMANDS];}
+    public static final EnglishParsing english(){return (EnglishParsing)l().libraries[LIBRARY_ENGLISH];}
+    public static final SlaveryLibrary slavery(){return (SlaveryLibrary)l().libraries[LIBRARY_SLAVERY];}
+    public static final JournalsLibrary journals(){return (JournalsLibrary)l().libraries[LIBRARY_JOURNALS];}
+    public static final TelnetFilter coffeeFilter(){return (TelnetFilter)l().libraries[LIBRARY_TELNET];}
+    public static final GenericBuilder coffeeMaker(){return (GenericBuilder)l().libraries[LIBRARY_OBJBUILDERS];}
+    public static final SessionsList sessions(){return (SessionsList)l().libraries[LIBRARY_SESSIONS];}
+    public static final CMFlagLibrary flags(){return (CMFlagLibrary)l().libraries[LIBRARY_FLAGS];}
+    public static final XMLLibrary xml(){return (XMLLibrary)l().libraries[LIBRARY_XML];}
+    public static final SocialsList socials(){return (SocialsList)l().libraries[LIBRARY_SOCIALS];}
+    public static final CMMiscUtils utensils(){return (CMMiscUtils)l().libraries[LIBRARY_UTENSILS];}
+    public static final StatisticsLibrary coffeeTables(){return (StatisticsLibrary)l().libraries[LIBRARY_STATS];}
+    public static final ExpLevelLibrary leveler(){return (ExpLevelLibrary)l().libraries[LIBRARY_LEVELS];}
+    public static final WorldMap map(){return (WorldMap)l().libraries[LIBRARY_MAP];}
+    public static final QuestManager quests(){return (QuestManager)l().libraries[LIBRARY_QUEST];}
+    public static final AreaGenerationLibrary percolator(){return (AreaGenerationLibrary)l().libraries[LIBRARY_AREAGEN];}
+    public static final AbilityMapper ableMapper(){return (AbilityMapper)l().libraries[LIBRARY_ABLEMAP];}
+    public static final TextEncoders encoder(){return (TextEncoders)l().libraries[LIBRARY_ENCODER];}
+    public static final SMTPLibrary smtp(){return (SMTPLibrary)l().libraries[LIBRARY_SMTP];}
+    public static final LanguageLibrary lang(){return (LanguageLibrary)l().libraries[LIBRARY_LANGUAGE];}
+    public static final DiceLibrary dice(){return (DiceLibrary)l().libraries[LIBRARY_DICE];}
+    public static final FactionManager factions(){return (FactionManager)l().libraries[LIBRARY_FACTIONS];}
+    public static final ClanManager clans(){return (ClanManager)l().libraries[LIBRARY_CLANS];}
+    public static final PollManager polls(){return (PollManager)l().libraries[LIBRARY_POLLS];}
+    public static final TimeManager time(){return (TimeManager)l().libraries[LIBRARY_TIME];}
+    public static final ColorLibrary color(){return (ColorLibrary)l().libraries[LIBRARY_COLOR];}
+    public static final CharCreationLibrary login(){return (CharCreationLibrary)l().libraries[LIBRARY_LOGIN];}
+    public static final ExpertiseLibrary expertises(){return (ExpertiseLibrary)l().libraries[LIBRARY_EXPERTISES];}
+    public static final PlayerLibrary players(){return (PlayerLibrary)l().libraries[LIBRARY_PLAYERS];}
+    public static final CatalogLibrary catalog(){return (CatalogLibrary)l().libraries[LIBRARY_CATALOG];}
+    public static final AutoTitlesLibrary titles(){return (AutoTitlesLibrary)l().libraries[LIBRARY_TITLES];}
+    public static final AbilityParameters ableParms(){return (AbilityParameters)l().libraries[LIBRARY_ABLEPARMS];}
+    public static final GenericEditor genEd(){return (GenericEditor)l().libraries[LIBRARY_GENEDITOR];}
 
-    public static int convertToLibraryCode(Object O)
+    public static final int convertToLibraryCode(final Object O)
     {
         if(O instanceof DatabaseEngine) return LIBRARY_DATABASE;
         if(O instanceof ThreadEngine) return LIBRARY_THREADS;
@@ -249,13 +248,13 @@ public class CMLib
         return -1;
     }
 
-    public static void registerLibrary(CMLibrary O)
+    public static final void registerLibrary(final CMLibrary O)
     {
-        int code=convertToLibraryCode(O);
+    	final int code=convertToLibraryCode(O);
         if(code>=0)
         {
             if(l()==null) new CMLib();
-            Vector<String> privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(), true);
+            final List<String> privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(), true);
             if((!privacyV.contains(LIBRARY_DESCS[code])
             &&(libs[MudHost.MAIN_HOST]!=l())))
             {
@@ -271,7 +270,7 @@ public class CMLib
     }
     
     @SuppressWarnings("deprecation")
-	public static void killThread(Thread t, long sleepTime, int attempts)
+	public static final void killThread(final Thread t, final long sleepTime, final int attempts)
     {
 		try{
 			if(t==null) return;
@@ -285,14 +284,15 @@ public class CMLib
 
     }
     
-    public static boolean s_sleep(long millis) {
+    public static final boolean s_sleep(final long millis) {
     	try{ Thread.sleep(millis); } catch(java.lang.InterruptedException ex) { return false;}
     	return true;
     }
 
-    public static void propertiesLoaded() {
-        CMLib lib=l();
-        Vector<String> privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(), true);
+    public static final void propertiesLoaded() 
+    {
+    	final CMLib lib=l();
+    	final List<String> privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(), true);
         for(int l=0;l<lib.libraries.length;l++)
             if((!privacyV.contains(LIBRARY_DESCS[l])&&(libs[MudHost.MAIN_HOST]!=lib)))
             {}
@@ -306,9 +306,10 @@ public class CMLib
         Wearable.CODES.reset();
     }
     
-    public static void activateLibraries() {
-        CMLib lib=l();
-        Vector<String> privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(), true);
+    public static final void activateLibraries() 
+    {
+    	final CMLib lib=l();
+    	final List<String> privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(), true);
         for(int l=0;l<lib.libraries.length;l++)
             if((!privacyV.contains(LIBRARY_DESCS[l])&&(libs[MudHost.MAIN_HOST]!=lib)))
             {
@@ -322,14 +323,14 @@ public class CMLib
                 lib.libraries[l].activate();
     }
     
-    public static CMLibrary library(char tcode, int lcode) {
+    public final static CMLibrary library(final char tcode, final int lcode) {
         if(libs[tcode]!=null)
             return libs[tcode].libraries[lcode];
         return null;
     }
     
-    public static Enumeration<CMLibrary> libraries(int code) {
-        Vector<CMLibrary> V=new Vector<CMLibrary>();
+    public final static Enumeration<CMLibrary> libraries(final int code) {
+    	final Vector<CMLibrary> V=new Vector<CMLibrary>();
         for(int l=0;l<libs.length;l++)
             if((libs[l]!=null)
             &&(libs[l].libraries[code]!=null)
@@ -338,22 +339,22 @@ public class CMLib
         return V.elements();
     }
     
-    public static void registerLibraries(Enumeration<CMLibrary> e)
+    public static final void registerLibraries(final Enumeration<CMLibrary> e)
     {
         for(;e.hasMoreElements();)
             registerLibrary((CMLibrary)e.nextElement());
     }
     
-    public static int countRegistered()
+    public static final int countRegistered()
     {
         int x=0;
         for(int i=0;i<l().registered.length;i++)
             if(l().registered[i]) x++;
         return x;
     }
-    public static String unregistered()
+    public static final String unregistered()
     {
-        StringBuffer str=new StringBuffer("");
+    	final StringBuffer str=new StringBuffer("");
         for(int i=0;i<l().registered.length;i++)
             if(!l().registered[i]) str.append(""+i+", ");
         return str.toString();

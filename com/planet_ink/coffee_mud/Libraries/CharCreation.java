@@ -1334,7 +1334,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     	
     	MudHost host = null;
     	if(CMLib.hosts().size()>0)
-    		host = (MudHost)CMLib.hosts().firstElement();
+    		host = (MudHost)CMLib.hosts().get(0);
     	if(host != null)
     	{
         	rpt.append("\r\n"); rpt.append("UPTIME");

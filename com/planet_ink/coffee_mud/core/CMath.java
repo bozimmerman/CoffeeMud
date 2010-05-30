@@ -25,8 +25,8 @@ import java.io.*;
 public class CMath
 {
     private CMath(){super();}
-    private static CMath inst=new CMath();
-    public static CMath instance(){return inst;}
+    private static final CMath inst=new CMath();
+    public static final CMath instance(){return inst;}
     private static final String[] ROMAN_HUNDREDS={"C","CC","CCC","CD","D","DC","DCC","DCCC","CM","P"};
     private static final String[] ROMAN_TENS={"X","XX","XXX","XL","L","LX","LXX","LXXX","XC","C"};
     private static final String[] ROMAN_ONES={"I","II","III","IV","V","VI","VII","VIII","IX","X"};
@@ -41,9 +41,9 @@ public class CMath
      *
      * @return String Converted integer
      */
-    public static String convertToRoman(int i)
+    public final static String convertToRoman(int i)
     {
-        StringBuffer roman=new StringBuffer("");
+    	final StringBuffer roman=new StringBuffer("");
         if(i>1000)
         {
             roman.append("Y");
@@ -75,7 +75,7 @@ public class CMath
      * @param s the roman numeral string
      * @return the int
      */
-    public static int convertFromRoman(String s)
+    public final static int convertFromRoman(final String s)
     {
         int x=0;
         while(s.startsWith("Y"))
@@ -106,11 +106,11 @@ public class CMath
      * @param num the number
      * @return the st,nd,rd appendage only
      */
-    public static String numAppendage(int num)
+    public final static String numAppendage(final int num)
 	{
         if((num<11)||(num>13))
         {
-            String strn=""+num;
+        	final String strn=""+num;
             switch(strn.charAt(strn.length()-1))
             {
             case '1': return "st";
@@ -126,20 +126,20 @@ public class CMath
      * @param c the char
      * @return true if is roman
      */
-    public static boolean isRomanDigit(char c){ return ROMAN_ALL.indexOf(c)>=0;}
+    public final static boolean isRomanDigit(final char c){ return ROMAN_ALL.indexOf(c)>=0;}
 
     /**
      * Returns true if the string is a roman numeral
      * @param s the string to test
      * @return true if a roman numeral, false otherwise
      */
-    public static boolean isRomanNumeral(String s)
+    public final static boolean isRomanNumeral(final String s)
     {
         if(s==null) return false;
-        s=s.toUpperCase().trim();
-        if(s.length()==0) return false;
-        for(int c=0;c<s.length();c++)
-            if(!isRomanDigit(s.charAt(c)))
+        final String ups=s.toUpperCase().trim();
+        if(ups.length()==0) return false;
+        for(int c=0;c<ups.length();c++)
+            if(!isRomanDigit(ups.charAt(c)))
                 return false;
         return true;
     }
@@ -150,9 +150,9 @@ public class CMath
      * @param y the second number
      * @return the absolute difference (x-y)*(-1 if <)
      */
-    public static long absDiff(long x, long y)
+    public final static long absDiff(final long x, final long y)
     {
-        long d=x-y;
+    	final long d=x-y;
         if(d<0) return d*-1;
         return d;
     }
@@ -162,15 +162,16 @@ public class CMath
      * @param s the string to test
      * @return true if a number, false otherwise
      */
-    public static boolean isNumber(String s)
+    public final static boolean isNumber(final String s)
     {
         if(s==null) return false;
-        s=s.trim();
-        if(s.length()==0) return false;
-        if((s.length()>1)&&(s.startsWith("-")))
-            s=s.substring(1);
-        for(int i=0;i<s.length();i++)
-            if("0123456789.,".indexOf(s.charAt(i))<0)
+        final String ups=s.trim();
+        if(ups.length()==0) return false;
+        int start=0;
+        if(ups.startsWith("-"))
+            start=1;
+        for(int i=start;i<ups.length();i++)
+            if("0123456789.,".indexOf(ups.charAt(i))<0)
                 return false;
         return true;
     }
@@ -182,7 +183,7 @@ public class CMath
      * @param b the divisor
      * @return the quotient
      */
-    public static double div(double a, double b)
+    public final static double div(final double a, final double b)
     {
         return a/b;
     }
@@ -193,7 +194,7 @@ public class CMath
      * @param b the divisor
      * @return the quotient
      */
-    public static double div(double a, int b)
+    public final static double div(final double a, final int b)
     {
         return a/((double)b);
     }
@@ -204,7 +205,7 @@ public class CMath
      * @param b the divisor
      * @return the quotient
      */
-    public static double div(int a, double b)
+    public final static double div(final int a, final double b)
     {
         return ((double)a)/b;
     }
@@ -215,7 +216,7 @@ public class CMath
      * @param b the divisor
      * @return the quotient
      */
-    public static double div(double a, long b)
+    public final static double div(final double a, final long b)
     {
         return a/((double)b);
     }
@@ -226,7 +227,7 @@ public class CMath
      * @param b the divisor
      * @return the quotient
      */
-    public static double div(long a, double b)
+    public final static double div(final long a, final double b)
     {
         return ((double)a)/b;
     }
@@ -237,7 +238,7 @@ public class CMath
      * @param b the second number
      * @return the retult of multiplying a and b
      */
-    public static double mul(double a, double b)
+    public final static double mul(final double a, final double b)
     {
         return a*b;
     }
@@ -248,7 +249,7 @@ public class CMath
      * @param b the second number
      * @return the retult of multiplying a and b
      */
-    public static double mul(double a, int b)
+    public final static double mul(final double a, final int b)
     {
         return a*((double)b);
     }
@@ -259,7 +260,7 @@ public class CMath
      * @param b the second number
      * @return the retult of multiplying a and b
      */
-    public static double mul(int a, double b)
+    public final static double mul(final int a, final double b)
     {
         return ((double)a)*b;
     }
@@ -270,7 +271,7 @@ public class CMath
      * @param b the second number
      * @return the retult of multiplying a and b
      */
-    public static double mul(double a, long b)
+    public final static double mul(final double a, final long b)
     {
         return a*((double)b);
     }
@@ -281,7 +282,7 @@ public class CMath
      * @param b the second number
      * @return the retult of multiplying a and b
      */
-    public static double mul(long a, double b)
+    public final static double mul(final long a, final double b)
     {
         return ((double)a)*b;
     }
@@ -292,7 +293,7 @@ public class CMath
      * @param b the second number
      * @return the retult of multiplying a and b
      */
-    public static long mul(long a, long b)
+    public final static long mul(final long a, final long b)
     {
         return a*b;
     }
@@ -303,7 +304,7 @@ public class CMath
      * @param b the second number
      * @return the retult of multiplying a and b
      */
-    public static int mul(int a, int b)
+    public final static int mul(final int a, final int b)
     {
         return a*b;
     }
@@ -314,7 +315,7 @@ public class CMath
      * @param b the divisor
      * @return the quotient
      */
-    public static double div(long a, long b)
+    public final static double div(final long a, final long b)
     {
         return ((double)a)/((double)b);
     }
@@ -325,7 +326,7 @@ public class CMath
      * @param b the divisor
      * @return the quotient
      */
-    public static double div(int a, int b)
+    public final static double div(final int a, final int b)
     {
         return ((double)a)/((double)b);
     }
@@ -336,7 +337,7 @@ public class CMath
      * @param y the power
      * @return x to the y power, rounded off
      */
-    public static long pow(long x, long y)
+    public final static long pow(final long x, final long y)
     {
         return Math.round(Math.pow(((double)x),((double)y)));
     }
@@ -345,7 +346,7 @@ public class CMath
      * @param x the number to square
      * @return x, squared, and rounded off.
      */
-    public static int squared(int x)
+    public final static int squared(final int x)
     {
         return (int)Math.round(Math.pow(((double)x),2.0));
     }
@@ -356,7 +357,7 @@ public class CMath
      * @param bitmask the bit mask
      * @return true if the bits are set, false otherwise
      */
-    public static boolean bset(short num, short bitmask)
+    public final static boolean bset(final short num, final short bitmask)
     {
         return ((num&bitmask)==bitmask);
     }
@@ -367,7 +368,7 @@ public class CMath
      * @param bitmask the bit mask
      * @return true if the bits are set, false otherwise
      */
-    public static boolean bset(int num, int bitmask)
+    public final static boolean bset(final int num, final int bitmask)
     {
         return ((num&bitmask)==bitmask);
     }
@@ -378,7 +379,7 @@ public class CMath
      * @param bitmask the bit mask
      * @return true if the bits are set, false otherwise
      */
-    public static boolean bset(long num, long bitmask)
+    public final static boolean bset(final long num, final long bitmask)
     {
         return ((num&bitmask)==bitmask);
     }
@@ -389,7 +390,7 @@ public class CMath
      * @param bitmask the bit mask
      * @return true if the bits are set, false otherwise
      */
-    public static boolean bset(long num, int bitmask)
+    public final static boolean bset(final long num, final int bitmask)
     {
         return ((num&bitmask)==bitmask);
     }
@@ -400,7 +401,7 @@ public class CMath
      * @param bitmask the bitmask
      * @return the number | the bitmask
      */
-    public static int setb(int num, int bitmask)
+    public final static int setb(final int num, final int bitmask)
     {
         return num|bitmask;
     }
@@ -412,7 +413,7 @@ public class CMath
      * @param bitmask the bitmask of bits to check
      * @return true if any bits from the mask are set
      */
-    public static boolean banyset(int num, int bitmask)
+    public final static boolean banyset(final int num, final int bitmask)
     {
         return ((num&bitmask)>0);
     }
@@ -424,7 +425,7 @@ public class CMath
      * @param bitmask the bitmask of bits to check
      * @return true if any bits from the mask are set
      */
-    public static boolean banyset(long num, long bitmask)
+    public final static boolean banyset(final long num, final long bitmask)
     {
         return ((num&bitmask)>0);
     }
@@ -436,7 +437,7 @@ public class CMath
      * @param bitmask the bitmask of bits to check
      * @return true if any bits from the mask are set
      */
-    public static boolean banyset(long num, int bitmask)
+    public final static boolean banyset(final long num, final int bitmask)
     {
         return ((num&bitmask)>0);
     }
@@ -447,7 +448,7 @@ public class CMath
      * @param bitmask the bitmask
      * @return the number | the bitmask
      */
-    public static long setb(long num, int bitmask)
+    public final static long setb(final long num, final int bitmask)
     {
         return num|bitmask;
     }
@@ -458,7 +459,7 @@ public class CMath
      * @param bitmask the bitmask
      * @return the number | the bitmask
      */
-    public static long setb(long num, long bitmask)
+    public final static long setb(final long num, final long bitmask)
     {
         return num|bitmask;
     }
@@ -469,7 +470,7 @@ public class CMath
      * @param bitmask the given bitmask
      * @return the number without the bitmasks bits turned on.
      */
-    public static int unsetb(int num, int bitmask) { return num & (~bitmask);}
+    public final static int unsetb(final int num, final int bitmask) { return num & (~bitmask);}
     /**
      * Unsets those bits in the given number which are
      * turned ON in the given bitmask.
@@ -477,7 +478,7 @@ public class CMath
      * @param bitmask the given bitmask
      * @return the number without the bitmasks bits turned on.
      */
-    public static long unsetb(long num, long bitmask) { return num & (~bitmask);}
+    public final static long unsetb(final long num, final long bitmask) { return num & (~bitmask);}
     /**
      * Unsets those bits in the given number which are
      * turned ON in the given bitmask.
@@ -485,7 +486,7 @@ public class CMath
      * @param bitmask the given bitmask
      * @return the number without the bitmasks bits turned on.
      */
-    public static long unsetb(long num, int bitmask) { return num & (~bitmask);}
+    public final static long unsetb(final long num, final int bitmask) { return num & (~bitmask);}
     /**
      * Returns true if the bitnumberth bit (0...) is set 
      * in the given number
@@ -493,7 +494,7 @@ public class CMath
      * @param bitnumber the bit to check (0,1,2...)
      * @return true if the given bitnumberth bit is set
      */
-    public static boolean isSet(int number, int bitnumber)
+    public final static boolean isSet(final int number, final int bitnumber)
     {
     	int mask=(int)pow(2,bitnumber);
     	return ((number&mask)==mask);
@@ -505,12 +506,12 @@ public class CMath
      * @param s the string to check
      * @return true if it is a percentage, false otherwise
      */
-    public static boolean isPct(String s)
+    public final static boolean isPct(final String s)
     {
         if(s==null) return false;
-        s=s.trim();
-        if(!s.endsWith("%")) return false;
-        return CMath.isNumber(s.substring(0,s.length()-1));
+        final String ts=s.trim();
+        if(!ts.endsWith("%")) return false;
+        return CMath.isNumber(ts.substring(0,ts.length()-1));
     }
     /**
      * Converts the given string to a floating
@@ -521,7 +522,7 @@ public class CMath
      * @param s the string to convert
      * @return the string converted to a real number 
      */
-    public static double s_pct(String s)
+    public final static double s_pct(String s)
     {
     	if(s==null) return 0.0;
     	while(s.trim().endsWith("%")) s=s.trim().substring(0,s.length()-1).trim();
@@ -533,12 +534,11 @@ public class CMath
      * @param d the number to convert
      * @return the percentage string.
      */
-    public static String toPct(double d)
+    public final static String toPct(final double d)
     {
-        String s=twoPlaces.format(d);
+    	final String s=twoPlaces.format(d);
         if(s.endsWith("%%")) return s.substring(0,s.length()-1);
         return s;
-
     }
     
     /**
@@ -547,7 +547,7 @@ public class CMath
      * @param s the string number
      * @return the percentage %
      */
-    public static String toPct(String s) { return toPct(s_pct(s)); }
+    public final static String toPct(final String s) { return toPct(s_pct(s)); }
 
     /**
      * Returns true if the bitnumberth bit (0...) is set 
@@ -556,7 +556,7 @@ public class CMath
      * @param bitnumber the bit to check (0,1,2...)
      * @return true if the given bitnumberth bit is set
      */
-    public static boolean isSet(long number, int bitnumber)
+    public final static boolean isSet(final long number, final int bitnumber)
     {
         if((number&(pow(2,bitnumber)))==(pow(2,bitnumber)))
             return true;
@@ -572,7 +572,7 @@ public class CMath
      * @param st the possible math expression
      * @return true if it is a math expression
      */
-    public static boolean isMathExpression(String st){
+    public final static boolean isMathExpression(final String st){
         if((st==null)||(st.length()==0)) return false;
         try{ parseMathExpression(st);}catch(Exception e){ return false;}
         return true;
@@ -587,7 +587,7 @@ public class CMath
      * @param vars the 0 based variables
      * @return true if it is a math expression
      */
-    public static boolean isMathExpression(String st, double[] vars){
+    public final static boolean isMathExpression(final String st, final double[] vars){
         if((st==null)||(st.length()==0)) return false;
         try{ parseMathExpression(st,vars);}catch(Exception e){ return false;}
         return true;
@@ -601,7 +601,8 @@ public class CMath
      * @param st a full math expression string
      * @return the result of the expression
      */
-    public static double s_parseMathExpression(String st){ try{ return parseMathExpression(st);}catch(Exception e){ return 0.0;}}
+    public final static double s_parseMathExpression(final String st)
+    { try{ return parseMathExpression(st);}catch(Exception e){ return 0.0;}}
     /**
      * Returns the result of evaluating the given math
      * expression.  An expression can be a double or int
@@ -614,7 +615,8 @@ public class CMath
      * @param vars the 0 based variables
      * @return the result of the expression
      */
-    public static double s_parseMathExpression(String st, double[] vars){ try{ return parseMathExpression(st,vars);}catch(Exception e){ return 0.0;}}
+    public final static double s_parseMathExpression(final String st, final double[] vars)
+    { try{ return parseMathExpression(st,vars);}catch(Exception e){ return 0.0;}}
     /**
      * Returns the result of evaluating the given math
      * expression.  An expression can be a double or int
@@ -625,7 +627,8 @@ public class CMath
      * @param st a full math expression string
      * @return the result of the expression
      */
-    public static long s_parseLongExpression(String st){ try{ return parseLongExpression(st);}catch(Exception e){ return 0;}}
+    public final static long s_parseLongExpression(final String st)
+    { try{ return parseLongExpression(st);}catch(Exception e){ return 0;}}
     /**
      * Returns the result of evaluating the given math
      * expression.  An expression can be a double or int
@@ -639,7 +642,8 @@ public class CMath
      * @param vars the 0 based variables
      * @return the result of the expression
      */
-    public static long s_parseLongExpression(String st, double[] vars){ try{ return parseLongExpression(st,vars);}catch(Exception e){ return 0;}}
+    public final static long s_parseLongExpression(final String st, final double[] vars)
+    { try{ return parseLongExpression(st,vars);}catch(Exception e){ return 0;}}
     /**
      * Returns the result of evaluating the given math
      * expression.  An expression can be a double or int
@@ -650,7 +654,8 @@ public class CMath
      * @param st a full math expression string
      * @return the result of the expression
      */
-    public static int s_parseIntExpression(String st){ try{ return parseIntExpression(st);}catch(Exception e){ return 0;}}
+    public final static int s_parseIntExpression(final String st)
+    { try{ return parseIntExpression(st);}catch(Exception e){ return 0;}}
     /**
      * Returns the result of evaluating the given math
      * expression.  An expression can be a double or int
@@ -664,9 +669,10 @@ public class CMath
      * @param vars the 0 based variables
      * @return the result of the expression
      */
-    public static int s_parseIntExpression(String st, double[] vars){ try{ return parseIntExpression(st,vars);}catch(Exception e){ return 0;}}
+    public final static int s_parseIntExpression(final String st, final double[] vars)
+    { try{ return parseIntExpression(st,vars);}catch(Exception e){ return 0;}}
 
-    private static double parseMathExpression(StreamTokenizer st, boolean inParen, double[] vars, double previous)
+    private final static double parseMathExpression(final StreamTokenizer st, final boolean inParen, final double[] vars, final double previous)
         throws ArithmeticException
     {
         if(!inParen) {
@@ -760,7 +766,7 @@ public class CMath
     	public static final int OPERATION_OPERATION=2;
     	public static final int OPERATION_LIST=3;
     	public static final int OPERATION_PREVIOUSVALUE=4;
-    	public int type = -1;
+    	public final int type;
     	public int variableIndex = 0;
     	public double value = 0.0;
     	public char operation = ' ';
@@ -779,7 +785,7 @@ public class CMath
      * @return the pre-compiled expression
      * @throws ArithmeticException
      */
-    public static LinkedList<CompiledOperation> compileMathExpression(String formula)
+    public final static LinkedList<CompiledOperation> compileMathExpression(final String formula)
     {return compileMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false);}
     
     /**
@@ -790,7 +796,7 @@ public class CMath
      * @return the pre-compiled expression
      * @throws ArithmeticException
      */
-    private static LinkedList<CompiledOperation> compileMathExpression(StreamTokenizer st, boolean inParen)
+    private final static LinkedList<CompiledOperation> compileMathExpression(final StreamTokenizer st, final boolean inParen)
     	throws ArithmeticException
 	{
 	    if(!inParen) {
@@ -798,7 +804,7 @@ public class CMath
 	        st.ordinaryChar('x');
 	        st.ordinaryChar('X');
 	    }
-	    LinkedList<CompiledOperation> list = new LinkedList<CompiledOperation>();
+	    final LinkedList<CompiledOperation> list = new LinkedList<CompiledOperation>();
 	    
 	    try{
 	        int c=st.nextToken();
@@ -883,7 +889,7 @@ public class CMath
      * @param vars the variable values
      * @return the final value
      */
-    public static double parseMathExpression(LinkedList<CompiledOperation> list, double[] vars, double previous)
+    public final static double parseMathExpression(final LinkedList<CompiledOperation> list, final double[] vars, final double previous)
 	{
         double finalValue=0.0;
         double curValue=0.0;
@@ -925,7 +931,7 @@ public class CMath
      * @param formula a full math expression string
      * @return the result of the expression
      */
-    public static long parseLongExpression(String formula)
+    public final static long parseLongExpression(final String formula)
     {return Math.round(parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,null,0));}
     /**
      * Returns the result of evaluating the given math
@@ -940,7 +946,7 @@ public class CMath
      * @param vars the 0 based variables
      * @return the result of the expression
      */
-    public static long parseLongExpression(String formula, double[] vars)
+    public final static long parseLongExpression(final String formula, final double[] vars)
     {return Math.round(parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,vars,0));}
 
     /**
@@ -953,7 +959,7 @@ public class CMath
      * @param formula a full math expression string
      * @return the result of the expression
      */
-    public static int parseIntExpression(String formula) throws ArithmeticException
+    public final static int parseIntExpression(final String formula) throws ArithmeticException
     {return (int)Math.round(parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,null,0));}
     /**
      * Returns the result of evaluating the given math
@@ -968,7 +974,7 @@ public class CMath
      * @param vars the 0 based variables
      * @return the result of the expression
      */
-    public static int parseIntExpression(String formula, double[] vars) throws ArithmeticException
+    public final static int parseIntExpression(final String formula, final double[] vars) throws ArithmeticException
     {return (int)Math.round(parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,vars,0));}
     /**
      * Returns the result of evaluating the given math
@@ -979,7 +985,7 @@ public class CMath
      * @param formula a full math expression string
      * @return the result of the expression
      */
-    public static double parseMathExpression(String formula) throws ArithmeticException
+    public final static double parseMathExpression(String formula) throws ArithmeticException
     {return parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,null,0);}
     /**
      * Returns the result of evaluating the given math
@@ -993,7 +999,7 @@ public class CMath
      * @param vars the 0 based variables
      * @return the result of the expression
      */
-    public static double parseMathExpression(String formula, double[] vars) throws ArithmeticException
+    public final static double parseMathExpression(final String formula, final double[] vars) throws ArithmeticException
     {return parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,vars,0);}
 
 
@@ -1004,12 +1010,10 @@ public class CMath
      * @param LONG String to convert
      * @return long Long value of the string
      */
-    public static long s_long(String LONG)
+    public final static long s_long(final String LONG)
     {
-        long slong=0;
-        try{ slong=Long.parseLong(LONG); }
+        try{ return Long.parseLong(LONG); }
         catch(Exception e){ return 0;}
-        return slong;
     }
 
     /**
@@ -1019,12 +1023,10 @@ public class CMath
      * @param FLOAT String to convert
      * @return Float value of the string
      */
-    public static float s_float(String FLOAT)
+    public final static float s_float(final String FLOAT)
     {
-        float sfloat=(float)0.0;
-        try{ sfloat=Float.parseFloat(FLOAT); }
+        try{ return Float.parseFloat(FLOAT); }
         catch(Exception e){ return 0;}
-        return sfloat;
     }
 
     /**
@@ -1034,12 +1036,10 @@ public class CMath
      * @param DOUBLE String to convert
      * @return double Double value of the string
      */
-    public static double s_double(String DOUBLE)
+    public final static double s_double(final String DOUBLE)
     {
-        double sdouble=0;
-        try{ sdouble=Double.parseDouble(DOUBLE); }
-        catch(Exception e){ return 0;}
-        return sdouble;
+        try{ return Double.parseDouble(DOUBLE); }
+        catch(Exception e){ return 0.0;}
     }
 
 
@@ -1049,7 +1049,7 @@ public class CMath
      * @param val the number
      * @return the absolute value of the number
      */
-    public static int abs(int val)
+    public final static int abs(final int val)
     {
         if(val>=0) return val;
         return val*-1;
@@ -1061,7 +1061,7 @@ public class CMath
      * @param val the number
      * @return the absolute value of the number
      */
-    public static long abs(long val)
+    public final static long abs(final long val)
     {
         if(val>=0) return val;
         return val*-1;
@@ -1074,7 +1074,7 @@ public class CMath
      * @param BOOL Boolean value of string
      * @return int Boolean value of the string
      */
-    public static boolean s_bool(String BOOL)
+    public final static boolean s_bool(final String BOOL)
     {
         return Boolean.valueOf(BOOL).booleanValue();
     }
@@ -1086,7 +1086,7 @@ public class CMath
      * @param BOOL Boolean value of string
      * @return whether it is a boolean
      */
-    public static boolean isBool(String BOOL)
+    public final static boolean isBool(final String BOOL)
     {
         return BOOL.equalsIgnoreCase("true")||BOOL.equalsIgnoreCase("false");
     }
@@ -1098,12 +1098,10 @@ public class CMath
      * @param INT Integer value of string
      * @return int Integer value of the string
      */
-    public static int s_int(String INT)
+    public final static int s_int(final String INT)
     {
-        int sint=0;
-        try{ sint=Integer.parseInt(INT); }
+        try{ return Integer.parseInt(INT); }
         catch(Exception e){ return 0;}
-        return sint;
     }
     /**
      * Returns the short value of a string without crashing
@@ -1112,12 +1110,10 @@ public class CMath
      * @param SHORT Short value of string
      * @return short Short value of the string
      */
-    public static short s_short(String SHORT)
+    public final static short s_short(final String SHORT)
     {
-    	short sint=0;
-        try{ sint=Short.parseShort(SHORT); }
+        try{ return Short.parseShort(SHORT); }
         catch(Exception e){ return 0;}
-        return sint;
     }
 
     /**
@@ -1127,7 +1123,7 @@ public class CMath
      * @param LONG Long value of string
      * @return whether it is a long
      */
-    public static boolean isLong(String LONG){return isInteger(LONG);}
+    public final static boolean isLong(final String LONG){return isInteger(LONG);}
     
     /**
      * Returns whether the given string is a int value
@@ -1136,7 +1132,7 @@ public class CMath
      * @param INT Integer value of string
      * @return whether it is a int
      */
-    public static boolean isInteger(String INT)
+    public final static boolean isInteger(final String INT)
     {
         if(INT==null) return false;
         if(INT.length()==0) return false;
@@ -1159,7 +1155,7 @@ public class CMath
      * @param DBL float value of string
      * @return whether it is a float
      */
-    public static boolean isFloat(String DBL){return isDouble(DBL);}
+    public final static boolean isFloat(final String DBL){return isDouble(DBL);}
     
     /**
      * Returns a int representing either the given value, or 
@@ -1171,7 +1167,7 @@ public class CMath
      * @param val the expression, or list of string values
      * @return the int value, or 0
      */
-    public static int s_parseBitIntExpression(String[] bits, String val)
+    public final static int s_parseBitIntExpression(final String[] bits, final String val)
     {
     	return (int)s_parseBitLongExpression(bits,val);
     }
@@ -1186,11 +1182,11 @@ public class CMath
      * @param val the expression, or list of string values
      * @return the long value, or 0
      */
-    public static long s_parseBitLongExpression(String[] bits, String val)
+    public final static long s_parseBitLongExpression(final String[] bits, String val)
     {
     	if((val==null)||(val.trim().length()==0)||(CMath.isMathExpression(val)))
     		return CMath.s_parseLongExpression(val);
-    	StringTokenizer tokens=new StringTokenizer(val,",");
+    	final StringTokenizer tokens=new StringTokenizer(val,",");
     	long l=0;
     	while(tokens.hasMoreElements())
     	{
@@ -1214,7 +1210,7 @@ public class CMath
      * only.
      * @param rand the random object to use
      */
-    public static void setRand(Random rand)
+    public final static void setRand(final Random rand)
     {
     	CMath.rand = rand;
     }
@@ -1229,7 +1225,7 @@ public class CMath
      * @param val the expression, or list of string values
      * @return the long value, or 0
      */
-    public static long s_parseListLongExpression(String[] descs, String val)
+    public final static long s_parseListLongExpression(final String[] descs, final String val)
     {
     	if((val==null)||(val.trim().length()==0)||(CMath.isMathExpression(val)))
     		return CMath.s_parseLongExpression(val);
@@ -1249,7 +1245,7 @@ public class CMath
      * @param val the expression, or list of string values
      * @return the int value, or 0
      */
-    public static int s_parseListIntExpression(String[] descs, String val)
+    public final static int s_parseListIntExpression(final String[] descs, final String val)
     { return (int)s_parseListLongExpression(descs,val);}
     
     /**
@@ -1259,7 +1255,7 @@ public class CMath
      * @param DBL double value of string
      * @return whether it is a double
      */
-    public static boolean isDouble(String DBL)
+    public final static boolean isDouble(final String DBL)
     {
         if(DBL==null) return false;
         if(DBL.length()==0) return false;
@@ -1290,68 +1286,68 @@ public class CMath
      * @param d the real number
      * @return the rounded number as a long
      */
-    public long round(double d){return Math.round(d);}
+    public final static long round(final double d){return Math.round(d);}
     /**
      * @see java.lang.Math#round(float)
      * @param d the real number
      * @return the rounded number as a long
      */
-    public long round(float d){return Math.round(d);}
+    public final static long round(final float d){return Math.round(d);}
     /**
      * @see java.lang.Math#abs(double)
      * @param d the real number
      * @return the absolute value of the number
      */
-    public double abs(double d){return Math.abs(d);}
+    public final static double abs(final double d){return Math.abs(d);}
     /**
      * @see java.lang.Math#abs(float)
      * @param d the real number
      * @return the absolute value of the number
      */
-    public float abs(float d){return Math.abs(d);}
+    public final static float abs(final float d){return Math.abs(d);}
     /**
      * @see java.lang.Math#random()
      * @return a random number
      */
-    public double random(){return rand.nextDouble();}
+    public final static double random(){return rand.nextDouble();}
     /**
      * @see java.lang.Math#floor(double)
      * @see CMath#ceiling(double)
      * @param d the number to get the floor of
      * @return the floor of the given number
      */
-    public double floor(double d){return Math.floor(d);}
+    public final static double floor(final double d){return Math.floor(d);}
     /**
      * @see java.lang.Math#floor(double)
      * @see CMath#ceiling(double)
      * @param d the number to get the floor of
      * @return the floor of the given number
      */
-    public float floor(float d){return (float)Math.floor(d);}
+    public final static float floor(final float d){return (float)Math.floor(d);}
     /**
      * @see java.lang.Math#ceil(double)
      * @see CMath#floor(double)
      * @param d the number to get the ceiling of
      * @return the ceiling of the given number
      */
-    public double ceiling(double d){return Math.ceil(d);}
+    public final static double ceiling(final double d){return Math.ceil(d);}
     /**
      * @see java.lang.Math#ceil(double)
      * @see CMath#floor(float)
      * @param d the number to get the ceiling of
      * @return the ceiling of the given number
      */
-    public float ceiling(float d){return (float)Math.ceil(d);}
+    public final static float ceiling(final float d){return (float)Math.ceil(d);}
     /**
      * @see java.lang.Math#sqrt(double)
      * @param d the number to get the square root of
      * @return the square root of the given number
      */
-    public double sqrt(double d){return Math.sqrt(d);}
+    public final static double sqrt(final double d){return Math.sqrt(d);}
     /**
      * @see java.lang.Math#sqrt(double)
      * @param d the number to get the square root of
      * @return the square root of the given number
      */
-    public float sqrt(float d){return (float)Math.sqrt(d);}
+    public final static float sqrt(final float d){return (float)Math.sqrt(d);}
 }

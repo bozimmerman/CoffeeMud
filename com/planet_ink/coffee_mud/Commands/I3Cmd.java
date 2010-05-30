@@ -108,7 +108,7 @@ public class I3Cmd extends StdCommand
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"I3")){ i3Error(mob); return false;}
 			try {
-				mob.tell(CMLib.hosts().elementAt(0).executeCommand("START I3"));
+				mob.tell(CMLib.hosts().get(0).executeCommand("START I3"));
 			}catch(Exception e){ Log.errOut("I3Cmd",e);}
 		}
 		else

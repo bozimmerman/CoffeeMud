@@ -80,7 +80,7 @@ public class IMC2 extends StdCommand
 		if(str.equalsIgnoreCase("restart") && CMSecurity.isAllowed(mob,mob.location(),"IMC2"))
 		{
 			try {
-				mob.tell(CMLib.hosts().elementAt(0).executeCommand("START IMC2"));
+				mob.tell(CMLib.hosts().get(0).executeCommand("START IMC2"));
 			}catch(Exception e){ Log.errOut("IMC2Cmd",e);}
 		}
 		else

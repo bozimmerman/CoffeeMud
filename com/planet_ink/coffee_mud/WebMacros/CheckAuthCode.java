@@ -63,19 +63,19 @@ public class CheckAuthCode extends StdWebMacro
 			auths.put("ANYMODAREAS",""+((subOp&&(CMSecurity.isAllowedAnywhere(mob,"CMDROOMS")||CMSecurity.isAllowedAnywhere(mob,"CMDAREAS")))
 														   ||CMSecurity.isAllowedEverywhere(mob,"CMDROOMS")||CMSecurity.isAllowedEverywhere(mob,"CMDAREAS")));
 			auths.put("ALLMODAREAS",""+(CMSecurity.isAllowedEverywhere(mob,"CMDROOMS")||CMSecurity.isAllowedEverywhere(mob,"CMDAREAS")));
-            Vector dirs=CMSecurity.getAccessibleDirs(mob,mob.location());
+			final List<String> dirs=CMSecurity.getAccessibleDirs(mob,mob.location());
 	        auths.put("ANYFILEBROWSE",""+(dirs.size()>0));
             if(dirs.size()>0)
             {
                 int maxLen=Integer.MAX_VALUE;
                 int maxOne=-1;
                 for(int v=0;v<dirs.size();v++)
-                    if(((String)dirs.elementAt(v)).length()<maxLen)
+                    if(((String)dirs.get(v)).length()<maxLen)
                     {
-                        maxLen=((String)dirs.elementAt(v)).length();
+                        maxLen=((String)dirs.get(v)).length();
                         maxOne=v;
                     }
-                String winner=(String)dirs.elementAt(maxOne);
+                String winner=(String)dirs.get(maxOne);
                 httpReq.addRequestParameters("BESTFILEBROWSE",winner);
             }
             else

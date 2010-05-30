@@ -35,10 +35,10 @@ import java.util.*;
 */
 public class Resources
 {
-    private static Resources[] rscs=new Resources[256];
-    private static boolean 	   compress=false;
+    private static final Resources[] rscs=new Resources[256];
+    private static boolean 	 compress=false;
     
-	private STreeMap<String,Object> resources=new STreeMap<String,Object>(new Comparator<String>(){
+	private final Map<String,Object> resources=new STreeMap<String,Object>(new Comparator<String>(){
 		public int compare(String o1, String o2) {
 			if(o1==null)
 			{
@@ -61,33 +61,32 @@ public class Resources
     public Resources()
     {
         super();
-        char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
-        if(rscs==null) rscs=new Resources[256];
+        final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
         if(rscs[c]==null) rscs[c]=this;
     }
-    public static Resources instance()
+    public static final Resources instance()
     {
-        Resources r=r();
-        if(r==null) r=new Resources();
+    	final Resources r=r();
+        if(r==null) return new Resources();
         return r;
     }
-    public static Resources instance(char c){ return rscs[c];}
-    private static Resources r(){ return rscs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
+    public static final Resources instance(final char c){ return rscs[c];}
+    private static final Resources r(){ return rscs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
     
-    public static Resources newResources(){ return new Resources();}
+    public static final Resources newResources(){ return new Resources();}
 
-    public static void clearResources(){r()._clearResources();}
-    public static void removeResource(String ID){ r()._removeResource(ID);}
-    public static Iterator<String> findResourceKeys(String srch){return r()._findResourceKeys(srch);}
-    public static Object getResource(String ID){return r()._getResource(ID);}
-    public static void submitResource(String ID, Object obj){r()._submitResource(ID,obj);}
-    public static boolean isFileResource(String filename){return r()._isFileResource(filename);}
-    public static StringBuffer getFileResource(String filename, boolean reportErrors){return r()._getFileResource(filename,reportErrors);}
-    public static boolean saveFileResource(String filename, MOB whom, StringBuffer myRsc){return r()._saveFileResource(filename,whom,myRsc);}
-    public static boolean updateFileResource(String filename, Object obj){return r()._updateFileResource(filename,obj);}
-    public static boolean findRemoveProperty(CMFile F, String match){return r()._findRemoveProperty(F,match);}
+    public static final void clearResources(){r()._clearResources();}
+    public static final void removeResource(final String ID){ r()._removeResource(ID);}
+    public static final Iterator<String> findResourceKeys(final String srch){return r()._findResourceKeys(srch);}
+    public static final Object getResource(final String ID){return r()._getResource(ID);}
+    public static final void submitResource(final String ID, final Object obj){r()._submitResource(ID,obj);}
+    public static final boolean isFileResource(final String filename){return r()._isFileResource(filename);}
+    public static final StringBuffer getFileResource(final String filename, final boolean reportErrors){return r()._getFileResource(filename,reportErrors);}
+    public static final boolean saveFileResource(final String filename, final MOB whom, final StringBuffer myRsc){return r()._saveFileResource(filename,whom,myRsc);}
+    public static final boolean updateFileResource(final String filename, final Object obj){return r()._updateFileResource(filename,obj);}
+    public static final boolean findRemoveProperty(final CMFile F, final String match){return r()._findRemoveProperty(F,match);}
 
-    public static String getLineMarker(StringBuffer buf)
+    public static final String getLineMarker(final StringBuffer buf)
     {
         for(int i=0;i<buf.length()-1;i++)
             switch(buf.charAt(i))
@@ -104,11 +103,11 @@ public class Resources
         return "\n\r";
     }
     
-    public static List<String> getFileLineVector(StringBuffer buf)
+    public static final List<String> getFileLineVector(final StringBuffer buf)
     {
-        Vector<String> V=new Vector<String>();
+    	final Vector<String> V=new Vector<String>();
         if(buf==null) return V;
-        StringBuffer str=new StringBuffer("");
+        final StringBuffer str=new StringBuffer("");
         for(int i=0;i<buf.length();i++)
         {
             if(((buf.charAt(i)=='\n')&&(i<buf.length()-1)&&(buf.charAt(i+1)=='\r'))
@@ -134,18 +133,18 @@ public class Resources
         return V;
     }
 
-    public static String buildResourcePath(String path)
+    public static final String buildResourcePath(final String path)
     {
         if((path==null)||(path.length()==0)) return "resources/";
         return "resources/"+path+"/";
     }
 
-    public static void updateMultiList(String filename, Map<String, List<String>> lists)
+    public static final void updateMultiList(final String filename, final Map<String, List<String>> lists)
     {
-        StringBuffer str=new StringBuffer("");
+    	final StringBuffer str=new StringBuffer("");
         for(String ml : lists.keySet())
         {
-            List<String> V=lists.get(ml);
+        	final List<String> V=lists.get(ml);
             str.append(ml+"\r\n");
             if(V!=null)
             for(int v=0;v<V.size();v++)
@@ -155,9 +154,9 @@ public class Resources
         new CMFile(filename,null,false).saveText(str);
     }
 
-    public static Map<String, List<String>> getMultiLists(String filename)
+    public static final Map<String, List<String>> getMultiLists(final String filename)
     {
-        Hashtable<String,List<String>> oldH=new Hashtable<String,List<String>>();
+    	final Hashtable<String,List<String>> oldH=new Hashtable<String,List<String>>();
         List<String> V=new Vector<String>();
         try{
             V=getFileLineVector(new CMFile("resources/"+filename,null,false).text());
@@ -185,22 +184,22 @@ public class Resources
         return oldH;
     }
 
-    public static String makeFileResourceName(String filename)
+    public static final String makeFileResourceName(final String filename)
     {
         return "resources/"+filename;
     }
 
-    public static void setCompression(boolean truefalse)
+    public static final void setCompression(final boolean truefalse)
     {   compress=truefalse;}
 
-    public static boolean _compressed(){return compress;}
+    public static final boolean _compressed(){return compress;}
 
-	public void _clearResources()
+	public final void _clearResources()
 	{
 		resources.clear();
 	}
 
-	public Iterator<String> _findResourceKeys(final String srch)
+	public final Iterator<String> _findResourceKeys(final String srch)
 	{
 		final String lowerSrch=srch.toLowerCase();
 		final boolean allOfThem=(lowerSrch.length()==0);
@@ -211,9 +210,9 @@ public class Resources
 		});
 	}
 
-	public Object _getResource(String ID)
+	public final Object _getResource(final String ID)
 	{
-		Object O = resources.get(ID);
+		final Object O = resources.get(ID);
 		if(O!=null)
 		{
 			if(compress && (O instanceof CompressedResource))
@@ -224,7 +223,7 @@ public class Resources
 	}
 
 	@SuppressWarnings("unchecked")
-	public static Object prepareObject(Object obj)
+	public static final Object prepareObject(final Object obj)
 	{
         if(obj instanceof Vector) ((Vector)obj).trimToSize();
         if(obj instanceof DVector) ((DVector)obj).trimToSize();
@@ -234,9 +233,9 @@ public class Resources
 		return obj;
 	}
 
-	public Object _submitResource(String ID, Object obj)
+	public final Object _submitResource(final String ID, final Object obj)
 	{
-        Object prepared=prepareObject(obj);
+		final Object prepared=prepareObject(obj);
         if(prepared != obj)
         	resources.put(ID,new CompressedResource((byte[])prepared));
         else
@@ -244,17 +243,17 @@ public class Resources
         return prepared;
 	}
 
-	private Object _updateResource(String ID, Object obj)
+	private final Object _updateResource(final String ID, final Object obj)
 	{
 		return _submitResource(ID, obj);
 	}
 
-	public void _removeResource(String ID)
+	public final void _removeResource(final String ID)
 	{
 		resources.remove(ID);
 	}
 
-	public boolean _isFileResource(String filename)
+	public final boolean _isFileResource(final String filename)
 	{
 	    if(_getResource(filename)!=null) return true;
 	    if(new CMFile(makeFileResourceName(filename),null,false).exists())
@@ -262,7 +261,7 @@ public class Resources
 	    return false;
 	}
 
-	public StringBuffer _toStringBuffer(Object o)
+	public final StringBuffer _toStringBuffer(final Object o)
 	{
 		if(o!=null)
 		{
@@ -271,11 +270,14 @@ public class Resources
 			else
 			if(o instanceof String)
 				return new StringBuffer((String)o);
+			else
+			if(o instanceof StringBuilder)
+				return new StringBuffer((StringBuilder)o);
 		}
 		return null;
 	}
 	
-	public StringBuffer _getFileResource(String filename, boolean reportErrors)
+	public final StringBuffer _getFileResource(final String filename, final boolean reportErrors)
 	{
 		Object rsc=_getResource(filename);
 		if(rsc != null)
@@ -286,17 +288,17 @@ public class Resources
 		return buf;
 	}
 
-    public boolean _updateFileResource(String filename, Object obj)
+    public final boolean _updateFileResource(final String filename, final Object obj)
     {
     	if(!CMProps.getBoolVar(CMProps.SYSTEMB_FILERESOURCENOCACHE))
 	    	_updateResource(CMFile.vfsifyFilename(filename), obj);
     	return _saveFileResource(filename,null,_toStringBuffer(obj));
     }
 
-	public boolean _saveFileResource(String filename, MOB whom, StringBuffer myRsc)
+	public final boolean _saveFileResource(String filename, final MOB whom, final StringBuffer myRsc)
 	{
-        boolean vfsFile=filename.trim().startsWith("::");
-        boolean localFile=filename.trim().startsWith("//");
+		final boolean vfsFile=filename.trim().startsWith("::");
+		final boolean localFile=filename.trim().startsWith("//");
         filename=CMFile.vfsifyFilename(filename);
         if(!filename.startsWith("resources/"))
             filename="resources/"+filename;
@@ -304,10 +306,10 @@ public class Resources
         return new CMFile(filename,whom,false).saveRaw(myRsc);
 	}
 
-    public boolean _findRemoveProperty(CMFile F, String match)
+    public final boolean _findRemoveProperty(final CMFile F, final String match)
     {
-        boolean removed=false;
-        StringBuffer text=F.textUnformatted();
+    	boolean removed=false;
+    	final StringBuffer text=F.textUnformatted();
         int x=text.toString().toUpperCase().indexOf(match.toUpperCase());
         while(x>=0)
         {

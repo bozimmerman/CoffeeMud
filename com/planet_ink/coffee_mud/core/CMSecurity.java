@@ -56,34 +56,33 @@ cmditems, cmdmobs, cmdrooms, sessions, cmdareas, listadmin, stat
 @SuppressWarnings("unchecked")
 public class CMSecurity
 {
-    protected final long 			 startTime=System.currentTimeMillis();
-    protected static HashSet<String> disVars=new HashSet<String>();
-    protected static HashSet<String> dbgVars=new HashSet<String>();
-    protected static HashSet<String> saveFlags=new HashSet<String>();
-    protected static boolean 		 debuggingEverything=false;
-    protected Hashtable<String,HashSet<String>> groups=new Hashtable<String,HashSet<String>>();
+    protected final long 			 	startTime=System.currentTimeMillis();
+    protected final static Set<String> 	disVars=new HashSet<String>();
+    protected final static Set<String> 	dbgVars=new HashSet<String>();
+    protected final static Set<String> 	saveFlags=new HashSet<String>();
+    protected final Map<String,Set<String>> groups=new Hashtable<String,Set<String>>();
     protected MaskingLibrary.CompiledZapperMask compiledSysop=null;
-
+    protected static boolean 		debuggingEverything=false;
+    private final static CMSecurity[] secs=new CMSecurity[256];
     
-    private static CMSecurity[] secs=new CMSecurity[256];
     public CMSecurity()
     {
         super();
         char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
-        if(secs==null) secs=new CMSecurity[256];
         if(secs[c]==null) secs[c]=this;
     }
-    public static CMSecurity instance()
+    public static final CMSecurity instance()
     {
-        CMSecurity p=i();
-        if(p==null) p=new CMSecurity();
+    	final CMSecurity p=i();
+        if(p==null) return new CMSecurity();
         return p;
     }
-    public static CMSecurity instance(char c){ return secs[c];}
-    private static CMSecurity i(){ return secs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}  
+    public static final CMSecurity instance(char c){ return secs[c];}
+    private static final CMSecurity i(){ return secs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}  
     
-    public void markShared() {
-        char threadCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
+    public final void markShared() 
+    {
+    	final char threadCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
         if(threadCode==MudHost.MAIN_HOST)
             return;
         if(secs[MudHost.MAIN_HOST]==null)
@@ -92,7 +91,7 @@ public class CMSecurity
             secs[threadCode]=secs[MudHost.MAIN_HOST];
     }
     
-	public static void setSysOp(String zapCheck)
+	public static final void setSysOp(String zapCheck)
 	{
 		if((zapCheck==null)||(zapCheck.trim().length()==0))
 			zapCheck="-ANYCLASS +Archon";
@@ -100,9 +99,9 @@ public class CMSecurity
 	}
 
 	
-	public static void clearGroups(){ instance().groups.clear();}
+	public static final void clearGroups(){ instance().groups.clear();}
 	
-	public static void parseGroups(Properties page)
+	public static final void parseGroups(final Properties page)
 	{
 		clearGroups();
 		if(page==null) return;
@@ -116,7 +115,7 @@ public class CMSecurity
 		}
 	}
 	
-	public static void addGroup(String name, HashSet<String> set)
+	public static final void addGroup(String name, final Set<String> set)
 	{
 		name=name.toUpperCase().trim();
 		if(instance().groups.containsKey(name)) 
@@ -124,22 +123,22 @@ public class CMSecurity
         i().groups.put(name,set);
 	}
 	
-	public static void addGroup(String name, Vector<String> set)
+	public static final void addGroup(String name, final List<String> set)
 	{
-		HashSet<String> H=new HashSet<String>();
+		final Set<String> H=new HashSet<String>();
 		for(int v=0;v<set.size();v++)
 		{
-			String s=(String)set.elementAt(v);
+			String s=(String)set.get(v);
 			H.add(s.trim().toUpperCase());
 		}
 		addGroup(name,H);
 	}
-	public static void addGroup(String name, String set)
+	public static final void addGroup(String name, final String set)
 	{
 		addGroup(name,CMParms.parseCommas(set,true));
 	}
 	
-	public static boolean isASysOp(MOB mob)
+	public static final boolean isASysOp(final MOB mob)
 	{
 		return CMLib.masking().maskCheck(i().compiledSysop,mob,true)
 				||((mob.soulMate()!=null)
@@ -147,13 +146,13 @@ public class CMSecurity
 					&&(isASysOp(mob.soulMate())));
 	}
 	
-	public static boolean isASysOp(PlayerLibrary.ThinPlayer mob)
+	public static final boolean isASysOp(final PlayerLibrary.ThinPlayer mob)
 	{
 		return CMLib.masking().maskCheck(i().compiledSysop,mob);
 	}
 	
 	
-	public static boolean isStaff(MOB mob)
+	public static final boolean isStaff(final MOB mob)
 	{
 		if(isASysOp(mob)) return true;
 		if(mob==null) return false;
@@ -166,10 +165,10 @@ public class CMSecurity
 		return true;
 	}
     
-    public static Vector<String> getAccessibleDirs(MOB mob, Room room)
+    public static final List<String> getAccessibleDirs(final MOB mob, final Room room)
     {
-        Vector<String> DIRSV=new Vector<String>();
-        if(isASysOp(mob)){ DIRSV.addElement("/"); return DIRSV; }
+    	final List<String> DIRSV=new Vector<String>();
+        if(isASysOp(mob)){ DIRSV.add("/"); return DIRSV; }
         if(mob==null) return DIRSV;
         if((mob.playerStats()==null)
         ||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
@@ -188,10 +187,10 @@ public class CMSecurity
                 {
                     if(!subop)
                         continue;
-                    DIRSV.addElement("//"+set.substring(4).trim());
+                    DIRSV.add("//"+set.substring(4).trim());
                 }
                 else
-                    DIRSV.addElement("//"+set);
+                    DIRSV.add("//"+set);
             }
             else
             if(set.startsWith("VFS:"))
@@ -200,14 +199,14 @@ public class CMSecurity
                 if(set.startsWith("AREA "))
                 {
                     if(!subop) continue;
-                    DIRSV.addElement("::"+set.substring(4).trim());
+                    DIRSV.add("::"+set.substring(4).trim());
                 }
                 else
-                    DIRSV.addElement("::"+set);
+                    DIRSV.add("::"+set);
             }
             else
             {
-                HashSet<String> H=i().groups.get(set);
+                Set<String> H=i().groups.get(set);
                 if(H==null) continue;
                 for(Iterator<String> i=H.iterator();i.hasNext();)
                 {
@@ -219,10 +218,10 @@ public class CMSecurity
                         {
                             if(!subop)
                                 continue;
-                            DIRSV.addElement("//"+set.substring(4).trim());
+                            DIRSV.add("//"+set.substring(4).trim());
                         }
                         else
-                            DIRSV.addElement("//"+set);
+                            DIRSV.add("//"+set);
                     }
                     else
                     if(set.startsWith("VFS:"))
@@ -231,10 +230,10 @@ public class CMSecurity
                         if(set.startsWith("AREA "))
                         {
                             if(!subop) continue;
-                            DIRSV.addElement("::"+set.substring(4).trim());
+                            DIRSV.add("::"+set.substring(4).trim());
                         }
                         else
-                            DIRSV.addElement("::"+set);
+                            DIRSV.add("::"+set);
                     }
                 }
             }
@@ -242,7 +241,7 @@ public class CMSecurity
         String dir=null;
         for(int d=0;d<DIRSV.size();d++)
         {
-            dir=(String)DIRSV.elementAt(d);
+            dir=(String)DIRSV.get(d);
             if(dir.startsWith("//"))
             {
                 dir=dir.substring(2);
@@ -278,22 +277,22 @@ public class CMSecurity
                             }
                     }
                 }
-                DIRSV.setElementAt("//"+path,d);
+                DIRSV.set(d,"//"+path);
             }
         }
         return DIRSV;
     }
     
-	public static boolean hasAccessibleDir(MOB mob, Room room)
+	public static final boolean hasAccessibleDir(final MOB mob, final Room room)
     {
         if(isASysOp(mob)) return true;
         if(mob==null) return false;
 		if((mob.playerStats()==null)
 		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
 			return false;
-        boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
+		final boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
         String set=null;
-		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
+        final Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
 				 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
 		for(Iterator<String> g=new MultiIterator<String>(allGroups);g.hasNext();)
 		{
@@ -315,7 +314,7 @@ public class CMSecurity
             }
             else
             {
-                HashSet<String> H=i().groups.get(set);
+            	final Set<String> H=i().groups.get(set);
                 if(H==null) continue;
                 for(Iterator<String> i=H.iterator();i.hasNext();)
                 {
@@ -344,7 +343,7 @@ public class CMSecurity
         return false;
     }
     
-    public static boolean canTraverseDir(MOB mob, Room room, String path)
+    public static final boolean canTraverseDir(MOB mob, Room room, String path)
     {
         if(isASysOp(mob)) return true;
         if(mob==null) return false;
@@ -353,14 +352,14 @@ public class CMSecurity
 			return false;
         path=CMFile.vfsifyFilename(path.trim()).toUpperCase();
         if(path.equals("/")||path.equals(".")) path="";
-        String areaPath=("AREA "+path).trim();
-        String pathSlash=path+"/";
+        final String areaPath=("AREA "+path).trim();
+        final String pathSlash=path+"/";
         boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
         String set=null;
         String setSlash=null;
 		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
 				 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
-		for(Iterator<String> g=new MultiIterator<String>(allGroups);g.hasNext();)
+		for(final Iterator<String> g=new MultiIterator<String>(allGroups);g.hasNext();)
 		{
 			set=((String)g.next()).toUpperCase();
             if(set.startsWith("FS:"))
@@ -370,7 +369,7 @@ public class CMSecurity
                 set=set.substring(4).trim();
             else
             {
-                HashSet<String> H=i().groups.get(set);
+                Set<String> H=i().groups.get(set);
                 if(H==null) continue;
                 for(Iterator<String> i=H.iterator();i.hasNext();)
                 {
@@ -408,7 +407,7 @@ public class CMSecurity
         return false;
     }
     
-    public static boolean canAccessFile(MOB mob, Room room, String path, boolean isVFS)
+    public static final boolean canAccessFile(final MOB mob, final Room room, String path, final boolean isVFS)
     {
         if(mob==null) return false;
         if(isASysOp(mob)) return true;
@@ -417,12 +416,12 @@ public class CMSecurity
 			return false;
         path=CMFile.vfsifyFilename(path.trim()).toUpperCase();
         if(path.equals("/")||path.equals(".")) path="";
-        boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
+        final boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
         String setSlash=null;
         String set=null;
 		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
 				 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
-		for(Iterator<String> g=new MultiIterator<String>(allGroups);g.hasNext();)
+		for(final Iterator<String> g=new MultiIterator<String>(allGroups);g.hasNext();)
 		{
 			set=((String)g.next()).toUpperCase();
             if(set.startsWith("FS:"))
@@ -435,7 +434,7 @@ public class CMSecurity
             }
             else
             {
-                HashSet<String> H=i().groups.get(set);
+            	final Set<String> H=i().groups.get(set);
                 if(H==null) continue;
                 for(Iterator<String> i=H.iterator();i.hasNext();)
                 {
@@ -474,20 +473,19 @@ public class CMSecurity
         return false;
     }
 	
-	public static Iterator<String> getSecurityCodes(MOB mob, Room room)
+	public static final Iterator<String> getSecurityCodes(final MOB mob, final Room room)
 	{
         if((mob==null)||(mob.playerStats()==null)) return EmptyIterator.STRINSTANCE;
-        List<String> codes = mob.playerStats().getSecurityGroups();
-        MultiIterator<String> it=new MultiIterator<String>();
+        final List<String> codes = mob.playerStats().getSecurityGroups();
+        final MultiIterator<String> it=new MultiIterator<String>();
         it.add(codes.iterator());
         it.add(mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator());
-		HashSet<String> tried=new HashSet<String>();
-		ArrayList<String> misc=new ArrayList<String>();
-		for(Enumeration<String> e=i().groups.keys();e.hasMoreElements();)
+        final Set<String> tried=new HashSet<String>();
+        final List<String> misc=new ArrayList<String>();
+		for(final String key : i().groups.keySet())
 		{
-			String key=(String)e.nextElement();
 			misc.add(key);
-			HashSet<String> H=i().groups.get(key);
+			Set<String> H=i().groups.get(key);
 			for(Iterator<String> i=H.iterator();i.hasNext();)
 			{
 				String s=(String)i.next();
@@ -509,7 +507,7 @@ public class CMSecurity
 	}
 	
 	
-	public static boolean isAllowedStartsWith(MOB mob, Room room, String code)
+	public static final boolean isAllowedStartsWith(final MOB mob, final Room room, final String code)
 	{
         if(mob==null) return false;
         if(isASysOp(mob)) return true;
@@ -519,14 +517,14 @@ public class CMSecurity
 		boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
 		
         String set=null;
-		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
+        final Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
 				 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
-		for(Iterator<String> g=new MultiIterator<String>(allGroups);g.hasNext();)
+		for(final Iterator<String> g=new MultiIterator<String>(allGroups);g.hasNext();)
 		{
 			set=(String)g.next();
 			if(set.startsWith(code)||(subop&&set.startsWith("AREA "+code)))
 			   return true;
-			HashSet<String> H=i().groups.get(set);
+			final Set<String> H=i().groups.get(set);
 			if(H!=null)
 			{
 				for(Iterator<String> i=H.iterator();i.hasNext();)
@@ -542,24 +540,24 @@ public class CMSecurity
 		return false;
 	}
 	
-	public static boolean isAllowed(MOB mob, Room room, String code)
+	public static final boolean isAllowed(final MOB mob, final Room room, final String code)
 	{
         if(mob==null) return false;
         if(isASysOp(mob)) return true;
 		if((mob.playerStats()==null)
 		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
 			return false;
-		boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
+		final boolean subop=((room!=null)&&(room.getArea()!=null)&&(room.getArea().amISubOp(mob.Name())));
 		
         String set=null;
-		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
+        final Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
 				 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
-		for(Iterator<String> g=new MultiIterator<String>(allGroups);g.hasNext();)
+		for(final Iterator<String> g=new MultiIterator<String>(allGroups);g.hasNext();)
 		{
 			set=(String)g.next();
 			if(set.equals(code)||((subop)&&(set.equals("AREA "+code))))
 			   return true;
-			HashSet<String> H=i().groups.get(set);
+			final Set<String> H=i().groups.get(set);
 			if(H!=null)
 			{
 				if(H.contains(code))
@@ -571,7 +569,7 @@ public class CMSecurity
 		return false;
 	}
 	
-	public static boolean isAllowedStartsWith(MOB mob, String code)
+	public static final boolean isAllowedStartsWith(final MOB mob, final String code)
 	{
         if(mob==null) return false;
         if(isASysOp(mob)) return true;
@@ -580,25 +578,22 @@ public class CMSecurity
 			return false;
 		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
 							 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
-		for(Iterator<String> g=new MultiIterator<String>(allGroups);g.hasNext();)
+		for(final Iterator<String> g=new MultiIterator<String>(allGroups);g.hasNext();)
 		{
-			String set=(String)g.next();
+			final String set=(String)g.next();
 			if(set.startsWith(code))
 			   return true;
-			HashSet<String> H=i().groups.get(set);
+			final Set<String> H=i().groups.get(set);
 			if(H!=null)
 			{
-				for(Iterator<String> i=H.iterator();i.hasNext();)
-				{
-					String s=(String)i.next();
-					if(s.startsWith(code))
+				for(final Iterator<String> i=H.iterator();i.hasNext();)
+					if(i.next().startsWith(code))
 						return true;
-				}
 			}
 		}
 		for(Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 		{
-			boolean subop=((Area)e.nextElement()).amISubOp(mob.Name());
+			final boolean subop=((Area)e.nextElement()).amISubOp(mob.Name());
 			if(!subop) continue;
 		
 	        String set=null;
@@ -609,22 +604,17 @@ public class CMSecurity
 				set=(String)g.next();
 				if(set.startsWith("AREA "+code))
 				   return true;
-				HashSet<String> H=i().groups.get(set);
-				if(H!=null)
-				{
-					for(Iterator<String> i=H.iterator();i.hasNext();)
-					{
-						String s=(String)i.next();
-						if(subop&&s.startsWith("AREA "+code))
+				final Set<String> H=i().groups.get(set);
+				if((H!=null)&&(subop))
+					for(final Iterator<String> i=H.iterator();i.hasNext();)
+						if(i.next().startsWith("AREA "+code))
 							return true;
-					}
-				}
 			}
 		}
 		return false;
 	}
 	
-	public static boolean isAllowedEverywhere(MOB mob, String code)
+	public static final boolean isAllowedEverywhere(final MOB mob, final String code)
 	{
         if(mob==null) return false;
         if(isASysOp(mob)) return true;
@@ -632,13 +622,13 @@ public class CMSecurity
 		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
 			return false;
         String set=null;
-		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
+        final Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
 				 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
-		for(Iterator<String> g=new MultiIterator<String>(allGroups);g.hasNext();)
+		for(final Iterator<String> g=new MultiIterator<String>(allGroups);g.hasNext();)
 		{
 			set=(String)g.next();
 			if(set.equals(code)) return true;
-			HashSet<String> H=i().groups.get(set);
+			final Set<String> H=i().groups.get(set);
 			if(H!=null)
 			{
 				if(H.contains(code))
@@ -648,7 +638,7 @@ public class CMSecurity
 		return false;
 	}
 	
-	public static boolean isAllowedAnywhere(MOB mob, String code)
+	public static final boolean isAllowedAnywhere(final MOB mob, final String code)
 	{
         if(mob==null) return false;
         if(isASysOp(mob)) return true;
@@ -656,23 +646,23 @@ public class CMSecurity
 		||((mob.soulMate()!=null)&&(!CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS)))) 
 			return false;
         String set=null;
-		Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
+        Iterator[] allGroups={mob.playerStats().getSecurityGroups().iterator(),
 				 mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()).iterator()};
-		for(Iterator<String> g=new MultiIterator<String>(allGroups);g.hasNext();)
+		for(final Iterator<String> g=new MultiIterator<String>(allGroups);g.hasNext();)
 		{
 			set=(String)g.next();
 			if(set.equals(code))
 			   return true;
-			HashSet<String> H=i().groups.get(set);
+			final Set<String> H=i().groups.get(set);
 			if(H!=null)
 			{
 				if(H.contains(code))
 					return true;
 			}
 		}
-		for(Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
+		for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 		{
-			boolean subop=((Area)e.nextElement()).amISubOp(mob.Name());
+			final boolean subop=((Area)e.nextElement()).amISubOp(mob.Name());
 			if(!subop) continue;
 		
 			allGroups=new Iterator[]{mob.playerStats().getSecurityGroups().iterator(),
@@ -681,7 +671,7 @@ public class CMSecurity
 			{
 				set=(String)g.next();
 				if(set.equals("AREA "+code)) return true;
-				HashSet<String> H=i().groups.get(set);
+				final Set<String> H=i().groups.get(set);
 				if(H!=null)
 				{
 					if(H.contains("AREA "+code))
@@ -693,27 +683,26 @@ public class CMSecurity
 	}
 	
 	
-	public static boolean isDebugging(String key)
+	public static final boolean isDebugging(final String key)
 	{ return ((dbgVars.size()>0)&&dbgVars.contains(key))||debuggingEverything;}
 	
-	public static boolean isDisabled(String key)
+	public static final boolean isDisabled(final String key)
 	{ return (disVars.size()>0)&&disVars.contains(key);}
 	
-	public static boolean isSaveFlag(String key)
+	public static final boolean isSaveFlag(final String key)
 	{ return (saveFlags.size()>0)&&saveFlags.contains(key);}
     
-    public static void approveJScript(String approver, long hashCode)
+    public static final void approveJScript(final String approver, final long hashCode)
     {
         if(CMProps.getIntVar(CMProps.SYSTEMI_JSCRIPTS)!=1)
             return;
-        Hashtable<Long,String> approved=CMSecurity.getApprovedJScriptTable();
+        final Map<Long,String> approved=CMSecurity.getApprovedJScriptTable();
         if(approved.containsKey(Long.valueOf(hashCode)))
             approved.remove(Long.valueOf(hashCode));
         approved.put(Long.valueOf(hashCode),approver);
-        StringBuffer newApproved=new StringBuffer("");
-        for(Enumeration<Long> e=approved.keys();e.hasMoreElements();)
+        final StringBuffer newApproved=new StringBuffer("");
+        for(final Long L : approved.keySet())
         {
-            Long L=(Long)e.nextElement();
             Object O=approved.get(L);
             if(O instanceof String)
                 newApproved.append(L.toString()+"="+((String)O)+"\n");
@@ -721,9 +710,9 @@ public class CMSecurity
         Resources.saveFileResource("::jscripts.ini",null,newApproved);
     }
     
-    public static Hashtable<Long,String> getApprovedJScriptTable()
+    public static final Map<Long,String> getApprovedJScriptTable()
     {
-        Hashtable<Long,String> approved=(Hashtable<Long, String>)Resources.getResource("APPROVEDJSCRIPTS");
+        Map<Long,String> approved=(Map<Long, String>)Resources.getResource("APPROVEDJSCRIPTS");
         if(approved==null)
         {
             approved=new Hashtable<Long,String>();
@@ -743,15 +732,15 @@ public class CMSecurity
         return approved;
     }
     
-    public static boolean isApprovedJScript(StringBuffer script)
+    public static final boolean isApprovedJScript(final StringBuffer script)
     {
         if(CMProps.getIntVar(CMProps.SYSTEMI_JSCRIPTS)==2)
             return true;
         if(CMProps.getIntVar(CMProps.SYSTEMI_JSCRIPTS)==0)
             return false;
-        Hashtable<Long,String> approved=CMSecurity.getApprovedJScriptTable();
-        Long hashCode=Long.valueOf(script.toString().hashCode());
-        Object approver=approved.get(hashCode);
+        Map<Long,String> approved=CMSecurity.getApprovedJScriptTable();
+        final Long hashCode=Long.valueOf(script.toString().hashCode());
+        final Object approver=approved.get(hashCode);
         if(approver==null)
         {
             approved.put(hashCode,script.toString());
@@ -760,23 +749,24 @@ public class CMSecurity
         return approver instanceof String;
     }
 	
-	public static void setDebugVars(String vars)
+	public static final void setDebugVars(final String vars)
 	{
-		Vector<String> V=CMParms.parseCommas(vars.toUpperCase(),true);
+		final List<String> V=CMParms.parseCommas(vars.toUpperCase(),true);
 		dbgVars.clear();
 		for(int v=0;v<V.size();v++)
-			dbgVars.add(((String)V.elementAt(v)).trim());
+			dbgVars.add(((String)V.get(v)).trim());
 		debuggingEverything = dbgVars.contains("EVERYTHING");
 	}
 	
-	public static void setDisableVars(String vars)
+	public static final void setDisableVars(final String vars)
 	{
-		Vector<String> V=CMParms.parseCommas(vars.toUpperCase(),true);
+		final List<String> V=CMParms.parseCommas(vars.toUpperCase(),true);
 		disVars.clear();
 		for(int v=0;v<V.size();v++)
-			disVars.add((String)V.elementAt(v));
+			disVars.add((String)V.get(v));
 	}
-	public static void setDisableVar(String var, boolean delete)
+	
+	public static final void setDisableVar(final String var, final boolean delete)
 	{
 		if((var!=null)&&(delete)&&(disVars.size()>0))
 			disVars.remove(var);
@@ -784,14 +774,16 @@ public class CMSecurity
 		if((var!=null)&&(!delete))
 			disVars.add(var);
 	}
-	public static void setSaveFlags(String flags)
+	
+	public static final void setSaveFlags(final String flags)
 	{
-		Vector<String> V=CMParms.parseCommas(flags.toUpperCase(),true);
+		final List<String> V=CMParms.parseCommas(flags.toUpperCase(),true);
 		saveFlags.clear();
 		for(int v=0;v<V.size();v++)
-		    saveFlags.add(V.elementAt(v));
+		    saveFlags.add(V.get(v));
 	}
-	public static void setSaveFlag(String flag, boolean delete)
+	
+	public static final void setSaveFlag(final String flag, final boolean delete)
 	{
 		if((flag!=null)&&(delete)&&(saveFlags.size()>0))
 		    saveFlags.remove(flag);
@@ -800,39 +792,39 @@ public class CMSecurity
 		    saveFlags.add(flag);
 	}
 	
-	public static long getStartTime(){return i().startTime;}
+	public static final long getStartTime(){return i().startTime;}
 	
-    public static boolean isBanned(String login)
+    public static final boolean isBanned(final String login)
     {
         if((login==null)||(login.length()<=0))
             return false;
-        login=login.toUpperCase();
-        List<String> banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
+        final String uplogin=login.toUpperCase();
+        final List<String> banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
         if((banned!=null)&&(banned.size()>0))
         for(int b=0;b<banned.size();b++)
         {
             String str=(String)banned.get(b);
             if(str.length()>0)
             {
-                if(str.equals("*")||((str.indexOf('*')<0))&&(str.equals(login))) return true;
+                if(str.equals("*")||((str.indexOf('*')<0))&&(str.equals(uplogin))) return true;
                 else
-                if(str.startsWith("*")&&str.endsWith("*")&&(login.indexOf(str.substring(1,str.length()-1))>=0)) return true;
+                if(str.startsWith("*")&&str.endsWith("*")&&(uplogin.indexOf(str.substring(1,str.length()-1))>=0)) return true;
                 else
-                if(str.startsWith("*")&&(login.endsWith(str.substring(1)))) return true;
+                if(str.startsWith("*")&&(uplogin.endsWith(str.substring(1)))) return true;
                 else
-                if(str.endsWith("*")&&(login.startsWith(str.substring(0,str.length()-1)))) return true;
+                if(str.endsWith("*")&&(uplogin.startsWith(str.substring(0,str.length()-1)))) return true;
             }
         }
         return false;
     }
 
     
-    public static void unban(String unBanMe)
+    public static final void unban(final String unBanMe)
     {
         if((unBanMe==null)||(unBanMe.length()<=0))
             return;
-        StringBuffer newBanned=new StringBuffer("");
-        List<String> banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
+        final StringBuffer newBanned=new StringBuffer("");
+        final List<String> banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
         if((banned!=null)&&(banned.size()>0))
         {
             for(int b=0;b<banned.size();b++)
@@ -845,10 +837,10 @@ public class CMSecurity
         }
     }
     
-    public static void unban(int unBanMe)
+    public static final void unban(final int unBanMe)
     {
-        StringBuffer newBanned=new StringBuffer("");
-        List<String> banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
+    	final StringBuffer newBanned=new StringBuffer("");
+    	final List<String> banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
         if((banned!=null)&&(banned.size()>0))
         {
             for(int b=0;b<banned.size();b++)
@@ -861,11 +853,11 @@ public class CMSecurity
         }
     }
     
-    public static int ban(String banMe)
+    public static final int ban(final String banMe)
     {
         if((banMe==null)||(banMe.length()<=0))
             return -1;
-        List<String> banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
+        final List<String> banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
         if((banned!=null)&&(banned.size()>0))
         for(int b=0;b<banned.size();b++)
         {
@@ -873,7 +865,7 @@ public class CMSecurity
             if(B.equals(banMe))
                 return b;
         }
-        StringBuffer str=Resources.getFileResource("banned.ini",false);
+        final StringBuffer str=Resources.getFileResource("banned.ini",false);
         if(banMe.trim().length()>0) str.append(banMe+"\n");
         Resources.updateFileResource("::banned.ini",str);
         return -1;

@@ -37,22 +37,21 @@ import java.io.ByteArrayInputStream;
 */
 public class CMProps extends Properties
 {
-    private static CMProps[] props=new CMProps[256];
+    private static final CMProps[] props=new CMProps[256];
     public CMProps()
     {
     	super();
-    	char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
-    	if(props==null) props=new CMProps[256];
+    	final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
 	    if(props[c]==null) props[c]=this;
     }
-    public static CMProps instance()
+    public static final CMProps instance()
     {
-        CMProps p=p();
-        if(p==null) p=new CMProps();
+    	final CMProps p=p();
+        if(p==null) return new CMProps();
         return p;
     }
-    public static CMProps instance(char c){ return props[c];}
-    private static CMProps p(){ return props[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
+    public static final CMProps instance(char c){ return props[c];}
+    private static final CMProps p(){ return props[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
 
 	public static final long serialVersionUID=0;
     public static final int SYSTEM_PKILL=0;
@@ -254,28 +253,28 @@ public class CMProps extends Properties
     };
     public static final int NUMLF_SYSTEM=12;
 
-    protected String[] 		sysVars=new String[NUM_SYSTEM];
-    protected Integer[] 	sysInts=new Integer[NUMI_SYSTEM];
-    protected Boolean[] 	sysBools=new Boolean[NUMB_SYSTEM];
-    protected String[][]	sysLists=new String[NUML_SYSTEM][];
-    protected Object[] 		sysLstFileLists=new Object[NUMLF_SYSTEM];
-    protected List<String>	sayFilter=new Vector<String>();
-    protected List<String>	channelFilter=new Vector<String>();
-    protected List<String>	emoteFilter=new Vector<String>();
-    protected DVector 		newusersByIP=new DVector(2);
-    protected DVector 		skillMaxManaExceptions=new DVector(2);
-    protected DVector 		skillMinManaExceptions=new DVector(2);
-    protected String[][] 	statCodeExtensions = null;
-    protected int 			pkillLevelDiff=26;
-    protected boolean 		loaded=false;
-    protected long 			TIME_TICK=4000;
-    protected long 			MILLIS_PER_MUDHOUR=600000;
-    protected long 			TICKS_PER_RLMIN=(int)Math.round(60000.0/(double)TIME_TICK);
-    protected double 		TIME_TICK_DOUBLE=(double)TIME_TICK;
+    protected final String[] 	sysVars=new String[NUM_SYSTEM];
+    protected final Integer[] 	sysInts=new Integer[NUMI_SYSTEM];
+    protected final Boolean[] 	sysBools=new Boolean[NUMB_SYSTEM];
+    protected final String[][]	sysLists=new String[NUML_SYSTEM][];
+    protected final Object[] 	sysLstFileLists=new Object[NUMLF_SYSTEM];
+    protected final List<String>sayFilter=new Vector<String>();
+    protected final List<String>channelFilter=new Vector<String>();
+    protected final List<String>emoteFilter=new Vector<String>();
+    protected final DVector 	newusersByIP=new DVector(2);
+    protected final DVector 	skillMaxManaExceptions=new DVector(2);
+    protected final DVector 	skillMinManaExceptions=new DVector(2);
+    protected String[][] 		statCodeExtensions = null;
+    protected int 				pkillLevelDiff=26;
+    protected boolean 			loaded=false;
+    protected long 				TIME_TICK=4000;
+    protected long 				MILLIS_PER_MUDHOUR=600000;
+    protected long 				TICKS_PER_RLMIN=(int)Math.round(60000.0/(double)TIME_TICK);
+    protected double 			TIME_TICK_DOUBLE=(double)TIME_TICK;
 
 	public CMProps(InputStream in)
 	{
-    	char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
+		final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
 	    if(props[c]==null) props[c]=this;
 		try
 		{
@@ -290,11 +289,11 @@ public class CMProps extends Properties
 	
 	public CMProps(String filename)
 	{
-    	char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
+		final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
 	    if(props[c]==null) props[c]=this;
 		try
 		{
-			CMFile F=new CMFile(filename,null,false);
+			final CMFile F=new CMFile(filename,null,false);
 			if(F.exists())
 			{
 				this.load(new ByteArrayInputStream(F.textUnformatted().toString().getBytes()));
@@ -309,7 +308,7 @@ public class CMProps extends Properties
 		}
 	}
 
-    public boolean load(String filename)
+    public final boolean load(String filename)
     {
         try
         {
@@ -323,10 +322,10 @@ public class CMProps extends Properties
         return loaded;
     }
 
-	public CMProps(Properties p, String filename)
+	public CMProps(final Properties p, final String filename)
 	{
 		super(p);
-    	char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
+		final char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
 	    if(props[c]==null) props[c]=this;
 
 		try
@@ -340,7 +339,7 @@ public class CMProps extends Properties
 		}
 	}
 
-	public static CMProps loadPropPage(String iniFile)
+	public static final CMProps loadPropPage(final String iniFile)
 	{
         CMProps page=null;
 		if (page==null || !page.loaded)
@@ -363,9 +362,9 @@ public class CMProps extends Properties
     * @param tagToGet   the property tag to retreive.
     * @return String   the value of the .ini file tag
     */
-    public String getPrivateStr(String tagToGet)
+    public final String getPrivateStr(final String tagToGet)
     {
-        String s=getProperty(tagToGet);
+    	final String s=getProperty(tagToGet);
         if(s==null) return "";
         return s;
     }
@@ -376,7 +375,7 @@ public class CMProps extends Properties
     * @param tagToGet   the property tag to retreive.
     * @return String   the value of the .ini file tag
     */
-    public String getRawPrivateStr(String tagToGet)
+    public final String getRawPrivateStr(final String tagToGet)
     {
         return getProperty(tagToGet);
     }
@@ -387,9 +386,9 @@ public class CMProps extends Properties
 	* @param tagToGet	the property tag to retreive.
 	* @return String	the value of the .ini file tag
 	*/
-	public String getStr(String tagToGet)
+	public final String getStr(final String tagToGet)
 	{
-		String thisTag=this.getProperty(tagToGet);
+		final String thisTag=this.getProperty(tagToGet);
 		if((thisTag==null)&&(props[MudHost.MAIN_HOST]!=null)&&(props[MudHost.MAIN_HOST]!=this))
 			return props[MudHost.MAIN_HOST].getStr(tagToGet);
 		if(thisTag==null) return "";
@@ -402,7 +401,7 @@ public class CMProps extends Properties
 	* @param tagToGet	the property tag to retreive.
 	* @return String	the value of the .ini file tag
 	*/
-	public String getStr(String tagToGet, String defaultVal)
+	public final String getStr(final String tagToGet, final String defaultVal)
 	{
 		String thisTag=this.getProperty(tagToGet);
 		if((thisTag==null)&&(props[MudHost.MAIN_HOST]!=null)&&(props[MudHost.MAIN_HOST]!=this))
@@ -417,13 +416,13 @@ public class CMProps extends Properties
 	* @param tagStartersToGet	the property tag to retreive.
 	* @return String	the value of the .ini file tag
 	*/
-	public String[][] getStrsStarting(String tagStartersToGet)
+	public final String[][] getStrsStarting(String tagStartersToGet)
 	{
-		DVector strBag = new DVector(2);
+		final DVector strBag = new DVector(2);
 		tagStartersToGet = tagStartersToGet.toUpperCase();
 		for(Enumeration<?> e=propertyNames(); e.hasMoreElements();)
 		{
-			String propName = (String)e.nextElement();
+			final String propName = (String)e.nextElement();
 			if(propName.toUpperCase().startsWith(tagStartersToGet))
 			{
 				String subPropName = propName.substring(tagStartersToGet.length()).toUpperCase();
@@ -434,7 +433,7 @@ public class CMProps extends Properties
 					strBag.addElement(subPropName,thisTag);
 			}
 		}
-		String[][] strArray = new String[strBag.size()][2];
+		final String[][] strArray = new String[strBag.size()][2];
 		for(int s = 0; s < strBag.size(); s++)
 		{
 			strArray[s][0] = (String)strBag.elementAt(s,1);
@@ -449,9 +448,9 @@ public class CMProps extends Properties
     * @param tagToGet   the property tag to retreive.
     * @return int   the value of the .ini file tag
     */
-	public boolean getBoolean(String tagToGet)
+	public final boolean getBoolean(final String tagToGet)
 	{
-		String thisVal=getStr(tagToGet);
+		final String thisVal=getStr(tagToGet);
 		if(thisVal.toUpperCase().startsWith("T"))
 			return true;
 		return false;
@@ -463,7 +462,7 @@ public class CMProps extends Properties
 	* @param tagToGet	the property tag to retreive.
 	* @return int	the value of the .ini file tag
 	*/
-	public double getDouble(String tagToGet)
+	public final double getDouble(final String tagToGet)
 	{
 		try
 		{
@@ -481,7 +480,7 @@ public class CMProps extends Properties
 	* @param tagToGet	the property tag to retreive.
 	* @return int	the value of the .ini file tag
 	*/
-	public int getInt(String tagToGet)
+	public final int getInt(final String tagToGet)
 	{
 		try
 		{
@@ -499,7 +498,7 @@ public class CMProps extends Properties
 	* @param tagToGet	the property tag to retreive.
 	* @return long the value of the .ini file tag
 	*/
-	public long getLong(String tagToGet)
+	public final long getLong(final String tagToGet)
 	{
 		try
 		{
@@ -511,79 +510,79 @@ public class CMProps extends Properties
 		}
 	}
 	
-    public static int getPKillLevelDiff(){return p().pkillLevelDiff;}
+    public static final int getPKillLevelDiff(){return p().pkillLevelDiff;}
 
-    public static String getVar(int varNum)
+    public static final String getVar(final int varNum)
     {
     	try { return p().sysVars[varNum];} 
     	catch(Throwable t) { return ""; }
     }
 
-    public static int getIntVar(int varNum)
+    public static final int getIntVar(final int varNum)
     {
     	try { return p().sysInts[varNum].intValue(); } 
     	catch(Throwable t) { return -1; }
     }
 
-    public static String[] getListVar(int varNum)
+    public static final String[] getListVar(final int varNum)
     {
     	try { return p().sysLists[varNum]; } 
     	catch(Throwable t) { return new String[0]; }
     }
 
-    public static boolean getBoolVar0(int varNum)
+    public static final boolean getBoolVar0(final int varNum)
     {
         if((varNum<0)||(varNum>=NUMB_SYSTEM)) return false;
         if(instance(MudHost.MAIN_HOST).sysBools[varNum]==null) return false;
         return instance(MudHost.MAIN_HOST).sysBools[varNum].booleanValue();
     }
 
-    public static boolean getBoolVar(int varNum)
+    public static final boolean getBoolVar(final int varNum)
     {
     	try { return p().sysBools[varNum].booleanValue(); } 
     	catch(Throwable t) { return false; }
     }
 
-    public static void setBoolVar(int varNum, boolean val)
+    public static final void setBoolVar(final int varNum, final boolean val)
     {
         if((varNum<0)||(varNum>=NUMB_SYSTEM)) return ;
         p().sysBools[varNum]=Boolean.valueOf(val);
     }
 
-    public static void setBoolVar0(int varNum, boolean val)
+    public static final void setBoolVar0(final int varNum, final boolean val)
     {
         if((varNum<0)||(varNum>=NUMB_SYSTEM)) return ;
         instance(MudHost.MAIN_HOST).sysBools[varNum]=Boolean.valueOf(val);
     }
 
-    public static void setIntVar(int varNum, int val)
+    public static final void setIntVar(final int varNum, final int val)
     {
         if((varNum<0)||(varNum>=NUMI_SYSTEM)) return ;
         p().sysInts[varNum]=Integer.valueOf(val);
     }
 
-    public static void setIntVar(int varNum, String val)
+    public static final void setIntVar(final int varNum, String val)
     {
         if((varNum<0)||(varNum>=NUMI_SYSTEM)) return ;
         if(val==null) val="0";
         p().sysInts[varNum]=Integer.valueOf(CMath.s_int(val));
     }
 
-    public static void setIntVar(int varNum, String val, int defaultValue)
+    public static final void setIntVar(final int varNum, String val, final int defaultValue)
     {
         if((varNum<0)||(varNum>=NUMI_SYSTEM)) return ;
         if((val==null)||(val.length()==0)) val=""+defaultValue;
         p().sysInts[varNum]=Integer.valueOf(CMath.s_int(val));
     }
 
-    public static void setListVar(int varNum, String[] var)
+    public static final void setListVar(final int varNum, String[] var)
     {
         if((varNum<0)||(varNum>=NUML_SYSTEM)) return ;
         if(var==null) var=new String[0];
         p().sysLists[varNum]=var;
     }
 
-    public static void addListVar(int varNum, String var)
+    public static final void addListVar(final int varNum, String var)
     {
         if((varNum<0)||(varNum>=NUML_SYSTEM)) return ;
         if(var==null) return;
@@ -595,19 +594,19 @@ public class CMProps extends Properties
         list[list.length-1]=var;
     }
 
-    public static void setVar(int varNum, String val, boolean upperFy)
+    public static final void setVar(final int varNum, String val, final boolean upperFy)
     {
         if(val==null) val="";
         setUpLowVar(varNum,upperFy?val.toUpperCase():val);
     }
 
-    public static void setVar(int varNum, String val)
+    public static final void setVar(final int varNum, String val)
     {
         if(val==null) val="";
         setUpLowVar(varNum,val.toUpperCase());
     }
     
-    private static void setUpLowVar(CMProps props, int varNum, String val)
+    private static final void setUpLowVar(final CMProps props, final int varNum, String val)
     {
         if((varNum<0)||(varNum>=NUM_SYSTEM)) return ;
         if(val==null) val="";
@@ -616,26 +615,26 @@ public class CMProps extends Properties
         {
         case SYSTEM_PKILL:
             {
-                int x=val.indexOf('-');
+            	final int x=val.indexOf('-');
                 if(x>0)
                     props.pkillLevelDiff=CMath.s_int(val.substring(x+1));
             }
             break;
         }
     }
-    public static void setUpLowVar(int varNum, String val)
+    public static final void setUpLowVar(final int varNum, final String val)
     { setUpLowVar(p(),varNum,val); }
-    public static void setUpAllLowVar(int varNum, String val)
+    public static final void setUpAllLowVar(final int varNum, final String val)
     { 
         for(int p=0;p<props.length;p++)
             if(props[p]!=null)
                setUpLowVar(props[p],varNum,val);
     }
 
-    public static int getCountNewUserByIP(String address)
+    public static final int getCountNewUserByIP(final String address)
     {
-        int count=0;
-        DVector DV=p().newusersByIP;
+    	int count=0;
+        final DVector DV=p().newusersByIP;
         synchronized(DV)
         {
             for(int i=DV.size()-1;i>=0;i--)
@@ -649,35 +648,35 @@ public class CMProps extends Properties
         }
         return count;
     }
-    public static void addNewUserByIP(String address)
+    public static final void addNewUserByIP(final String address)
     {
-        DVector DV=p().newusersByIP;
+    	final DVector DV=p().newusersByIP;
         synchronized(DV)
         {
         	DV.addElement(address,Long.valueOf(System.currentTimeMillis()+TimeManager.MILI_DAY));
         }
     }
 
-    public static int getMinManaException(String skillID)
+    public static final int getMinManaException(final String skillID)
     {
-        DVector DV=p().skillMinManaExceptions;
-    	int x=DV.indexOf(skillID.toUpperCase());
+    	final DVector DV=p().skillMinManaExceptions;
+    	final int x=DV.indexOf(skillID.toUpperCase());
     	if(x<0) return Integer.MIN_VALUE;
     	return ((Integer)DV.elementAt(x,2)).intValue();
     }
-    public static int getMaxManaException(String skillID)
+    public static final int getMaxManaException(final String skillID)
     {
-        DVector DV=p().skillMaxManaExceptions;
+    	final DVector DV=p().skillMaxManaExceptions;
     	int x=DV.indexOf(skillID.toUpperCase());
     	if(x<0) return Integer.MIN_VALUE;
     	return ((Integer)DV.elementAt(x,2)).intValue();
     }
 
-    private static int setExceptionSkillCosts(String val, DVector set)
+    private static final int setExceptionSkillCosts(final String val, final DVector set)
     {
     	if(val==null) return 0;
     	set.clear();
-    	Vector<String> V=CMParms.parseCommas(val,true);
+    	final Vector<String> V=CMParms.parseCommas(val,true);
     	String s=null;
     	int endVal=0;
     	for(int v=0;v<V.size();v++)
@@ -691,7 +690,7 @@ public class CMProps extends Properties
     	return endVal;
     }
 
-    public static String getLstFileValue(String key) 
+    public static final String getLstFileValue(final String key) 
     {
         final String listFileName=CMProps.p().getProperty("LISTFILE");
         synchronized(listFileName.intern())
@@ -700,7 +699,7 @@ public class CMProps extends Properties
             if(rawListData==null)
             {
                 rawListData=new Properties();
-                CMFile F=new CMFile(listFileName,null,true);
+                final CMFile F=new CMFile(listFileName,null,true);
                 if(F.exists())
                 {
                     try{
@@ -713,7 +712,7 @@ public class CMProps extends Properties
         }
     }
 
-    public static int getILstFileVar(int var)
+    public static final int getILstFileVar(final int var)
     {
         if((var<0)||(var>=NUMLF_SYSTEM)) return -1;
         if(p().sysLstFileLists[var]==null)
@@ -721,13 +720,13 @@ public class CMProps extends Properties
         return ((int[])p().sysLstFileLists[var])[0];
     }
 
-    public static int[] getI1LstFileVar(int var)
+    public static final int[] getI1LstFileVar(final int var)
     {
         if((var<0)||(var>=NUMLF_SYSTEM)) return new int[0];
         if(p().sysLstFileLists[var]==null)
         {
-            Vector<String> V=CMParms.parseCommas(getLstFileValue(SYSTEMLF_KEYS[var]), true);
-            int[] set=new int[V.size()];
+        	final Vector<String> V=CMParms.parseCommas(getLstFileValue(SYSTEMLF_KEYS[var]), true);
+        	final int[] set=new int[V.size()];
             for(int v=0;v<V.size();v++)
                 set[v]=CMath.s_int((String)V.elementAt(v));
             p().sysLstFileLists[var]=set;
@@ -735,7 +734,7 @@ public class CMProps extends Properties
         return ((int[])p().sysLstFileLists[var]);
     }
 
-    public static String[] getSLstFileVar(int var)
+    public static final String[] getSLstFileVar(final int var)
     {
         if((var<0)||(var>=NUMLF_SYSTEM)) return new String[0];
         if(p().sysLstFileLists[var]==null)
@@ -743,7 +742,7 @@ public class CMProps extends Properties
         return (String[])p().sysLstFileLists[var];
     }
 
-    public static String[][] getS2LstFileVar(int var)
+    public static final String[][] getS2LstFileVar(final int var)
     {
         if((var<0)||(var>=NUMLF_SYSTEM)) return new String[0][0];
         if(p().sysLstFileLists[var]==null)
@@ -757,7 +756,7 @@ public class CMProps extends Properties
         return (String[][])p().sysLstFileLists[var];
     }
 
-    public void resetSystemVars()
+    public final void resetSystemVars()
     {
         if(CMLib.lang()!=null)
             CMLib.lang().setLocale(getStr("LANGUAGE"),getStr("COUNTRY"));
@@ -813,13 +812,17 @@ public class CMProps extends Properties
         setVar(SYSTEM_INVRESETRATE,getStr("INVRESETRATE"));
         setVar(SYSTEM_AUCTIONRATES,getStr("AUCTIONRATES","0,10,0.1%,10%,5%,1,168"));
         setUpLowVar(SYSTEM_DEFAULTPROMPT,getStr("DEFAULTPROMPT"));
-        sysLstFileLists=new Object[NUMLF_SYSTEM];
+        for(int i=0;i<NUMLF_SYSTEM;i++)
+        	sysLstFileLists[i]=null;
         setVar(SYSTEM_EMOTEFILTER,getStr("EMOTEFILTER"));
-        p().emoteFilter=CMParms.parse((getStr("EMOTEFILTER")).toUpperCase());
+        p().emoteFilter.clear();
+        p().emoteFilter.addAll(CMParms.parse((getStr("EMOTEFILTER")).toUpperCase()));
         setVar(SYSTEM_SAYFILTER,getStr("SAYFILTER"));
-        p().sayFilter=CMParms.parse((getStr("SAYFILTER")).toUpperCase());
+        p().sayFilter.clear();
+        p().sayFilter.addAll(CMParms.parse((getStr("SAYFILTER")).toUpperCase()));
         setVar(SYSTEM_CHANNELFILTER,getStr("CHANNELFILTER"));
-        p().channelFilter=CMParms.parse((getStr("CHANNELFILTER")).toUpperCase());
+        p().channelFilter.clear();
+        p().channelFilter.addAll(CMParms.parse((getStr("CHANNELFILTER")).toUpperCase()));
         setVar(SYSTEM_CLANTROPAREA,getStr("CLANTROPAREA"));
         setVar(SYSTEM_CLANTROPCP,getStr("CLANTROPCP"));
         setVar(SYSTEM_CLANTROPEXP,getStr("CLANTROPEXP"));
@@ -1005,7 +1008,8 @@ public class CMProps extends Properties
         CMLib.propertiesLoaded();
     }
     
-    public void resetSecurityVars() {
+    public final void resetSecurityVars() 
+    {
         String disable=getStr("DISABLE");
         if(getVar(SYSTEM_MULTICLASS).equalsIgnoreCase("DISABLED"))
             disable+=", CLASSES";
@@ -1032,7 +1036,7 @@ public class CMProps extends Properties
         String upp=msg.toUpperCase();
         final char[] filterPattern={'%','#','@','*','!','$','&','?'};
         int fpIndex=0;
-        for(String filterStr : filter)
+        for(final String filterStr : filter)
         {
         	if(filterStr.length()==0) continue;
             fdex=upp.indexOf(filterStr);
@@ -1074,7 +1078,7 @@ public class CMProps extends Properties
     // this is the sound support method.
     // it builds a valid MSP sound code from built-in web server
     // info, and the info provided.
-    public static String msp(String soundName, int volume, int priority)
+    public static final String msp(final String soundName, final int volume, final int priority)
     {
         if((soundName==null)||(soundName.length()==0)||CMSecurity.isDisabled("MSP")) return "";
         if(getVar(SYSTEM_MSPPATH).length()>0)
@@ -1082,7 +1086,7 @@ public class CMProps extends Properties
         return " !!SOUND("+soundName+" V="+volume+" P="+priority+") ";
     }
 
-    public static String[] mxpImagePath(String fileName)
+    public static final String[] mxpImagePath(String fileName)
     {
         if((fileName==null)||(fileName.trim().length()==0))
             return new String[]{"",""};
@@ -1107,44 +1111,44 @@ public class CMProps extends Properties
         return new String[]{getVar(SYSTEM_MXPIMAGEPATH)+"/"+preFilename,fileName};
     }
 
-    public static String mxpImage(Environmental E, String parms)
+    public static final String mxpImage(final Environmental E, final String parms)
     {
         if((getVar(SYSTEM_MXPIMAGEPATH).length()==0)
         ||(CMSecurity.isDisabled("MXP")))
             return "";
-        String image=E.image();
+        final String image=E.image();
         if(image.length()==0) return "";
-        String[] fixedFilenames=mxpImagePath(image);
+        final String[] fixedFilenames=mxpImagePath(image);
         if(fixedFilenames[0].length()==0) return "";
         return "^<IMAGE '"+fixedFilenames[1]+"' URL=\""+fixedFilenames[0]+"\" "+parms+"^>^N";
     }
 
-    public static String mxpImage(Environmental E, String parms, String pre, String post)
+    public static final String mxpImage(final Environmental E, final String parms, final String pre, final String post)
     {
         if((getVar(SYSTEM_MXPIMAGEPATH).length()==0)
         ||(CMSecurity.isDisabled("MXP")))
             return "";
-        String image=E.image();
+        final String image=E.image();
         if(image.length()==0) return "";
-        String[] fixedFilenames=mxpImagePath(image);
+        final String[] fixedFilenames=mxpImagePath(image);
         if(fixedFilenames[0].length()==0) return "";
         return pre+"^<IMAGE '"+fixedFilenames[1]+"' URL=\""+fixedFilenames[0]+"\" "+parms+"^>^N"+post;
     }
 
     @SuppressWarnings("unchecked")
-	public static String getHashedMXPImage(String key)
+	public static final String getHashedMXPImage(final String key)
     {
-        Hashtable<String,String> H=(Hashtable)Resources.getResource("MXP_IMAGES");
+        Map<String,String> H=(Map)Resources.getResource("MXP_IMAGES");
         if(H==null) getDefaultMXPImage(null);
-        H=(Hashtable)Resources.getResource("MXP_IMAGES");
+        H=(Map)Resources.getResource("MXP_IMAGES");
         if(H==null) return "";
         return getHashedMXPImage(H,key);
 
     }
-    public static String getHashedMXPImage(Hashtable<String, String> H, String key)
+    public static final String getHashedMXPImage(final Map<String, String> H, final String key)
     {
         if(H==null) return "";
-        String s=(String)H.get(key);
+        final String s=(String)H.get(key);
         if(s==null) return null;
         if(s.trim().length()==0) return null;
         if(s.equalsIgnoreCase("NULL")) return "";
@@ -1152,12 +1156,12 @@ public class CMProps extends Properties
     }
 
     @SuppressWarnings("unchecked")
-    public static String getDefaultMXPImage(Object O)
+    public static final String getDefaultMXPImage(final Object O)
     {
         if((getVar(SYSTEM_MXPIMAGEPATH).length()==0)
         ||(CMSecurity.isDisabled("MXP")))
             return "";
-        Hashtable<String,String> H=(Hashtable)Resources.getResource("PARSED: mxp_images.ini");
+        Map<String,String> H=(Map)Resources.getResource("PARSED: mxp_images.ini");
         if(H==null)
         {
             H=new Hashtable<String,String>();
@@ -1459,39 +1463,39 @@ public class CMProps extends Properties
         return image;
     }
 
-    public static long getTickMillis()
+    public static final long getTickMillis()
     {
     	return p().TIME_TICK;
     }
     
-    public static double getTickMillisD()
+    public static final double getTickMillisD()
     {
     	return p().TIME_TICK_DOUBLE;
     }
     
-    public static long getMillisPerMudHour()
+    public static final long getMillisPerMudHour()
     {
     	return p().MILLIS_PER_MUDHOUR;
     }
     
-    public static long getTicksPerMinute()
+    public static final long getTicksPerMinute()
     {
     	return p().TICKS_PER_RLMIN;
     }
     
-    public static String msp(String soundName, int priority)
+    public static final String msp(final String soundName, final int priority)
     { return msp(soundName,50,CMLib.dice().roll(1,50,priority));}
 
-    public static boolean isTheme(int i)
+    public static final boolean isTheme(final int i)
     {
         return (getIntVar(SYSTEMI_MUDTHEME)&i)>0;
     }
 
-    public static List<String> loadEnumerablePage(String iniFile)
+    public static final List<String> loadEnumerablePage(final String iniFile)
     {
-        StringBuffer str=new CMFile(iniFile,null,true).text();
+    	final StringBuffer str=new CMFile(iniFile,null,true).text();
         if((str==null)||(str.length()==0)) return new Vector<String>();
-        List<String> page=Resources.getFileLineVector(str);
+        final List<String> page=Resources.getFileLineVector(str);
         for(int p=0;p<(page.size()-1);p++)
         {
             String s=((String)page.get(p)).trim();
@@ -1507,7 +1511,8 @@ public class CMProps extends Properties
         return page;
     }
     
-    public static String getStatCodeExtensionValue(String[] codes, String[] xtraValues, String code) {
+    public static final String getStatCodeExtensionValue(final String[] codes, final String[] xtraValues, final String code) 
+    {
         if(xtraValues!=null)
             for(int x=0;x<xtraValues.length;x++)
                 if(codes[codes.length-x-1].equalsIgnoreCase(code))
@@ -1515,65 +1520,66 @@ public class CMProps extends Properties
         return "";
     }
 
-    public static void setStatCodeExtensionValue(String[] codes, String[] xtraValues, String code, String val) {
+    public static void setStatCodeExtensionValue(final String[] codes, final String[] xtraValues, final String code, final String val) 
+    {
         if(xtraValues!=null)
             for(int x=0;x<xtraValues.length;x++)
                 if(codes[codes.length-x-1].equalsIgnoreCase(code))
                     xtraValues[xtraValues.length-x-1]=val; 
     }
 
-    public static Vector<String> getStatCodeExtensions(Class<?> C, String ID)
+    public static final List<String> getStatCodeExtensions(Class<?> C, final String ID)
     {
-    	String[][] statCodeExtensions = p().statCodeExtensions;
+    	final String[][] statCodeExtensions = p().statCodeExtensions;
     	if( statCodeExtensions == null) return null;
-    	Vector<String> V=new Vector<String>();
+    	final List<String> V=new Vector<String>();
         String myClassName=ID;
-    	V.addElement(myClassName.toUpperCase());
+    	V.add(myClassName.toUpperCase());
         for(;C!=null;C=C.getSuperclass())
         {
             myClassName=C.getName();
             int x=myClassName.lastIndexOf('.');
             if(x>=0)
-                V.addElement(myClassName.substring(x+1).toUpperCase());
+                V.add(myClassName.substring(x+1).toUpperCase());
             else
-                V.addElement(myClassName.toUpperCase());
+                V.add(myClassName.toUpperCase());
         }
-        for(Enumeration<String> v=V.elements();v.hasMoreElements();)
+        for(final Iterator<String> v=V.iterator();v.hasNext();)
         {
-        	myClassName = (String)v.nextElement();
+        	myClassName = (String)v.next();
         	for(int i=0;i<statCodeExtensions.length;i++)
         		if(statCodeExtensions[i][0].equals(myClassName))
         			return CMParms.parseCommas(statCodeExtensions[i][1],true);
         }
     	return null;
     }
-    public static Vector<String> getStatCodeExtentions(CMObject O)
+    
+    public static final List<String> getStatCodeExtentions(final CMObject O)
     {
     	return getStatCodeExtensions(O.getClass(),O.ID());
     }
 
-    
-    public static String[] getExtraStatCodesHolder(CMObject O)
+    public static final String[] getExtraStatCodesHolder(final CMObject O)
     {
-    	Vector<String> addedStatCodesV = getStatCodeExtentions(O);
+    	final List<String> addedStatCodesV = getStatCodeExtentions(O);
     	if(addedStatCodesV == null) return null;
-    	String[] statHolder= new String[addedStatCodesV.size()];
+    	final String[] statHolder= new String[addedStatCodesV.size()];
     	for(int s=0;s<statHolder.length;s++)
     		statHolder[s]="";
     	return statHolder;
     }
 
-    public static String[] getStatCodesList(String[] baseStatCodes, CMObject O)
+    public static final String[] getStatCodesList(final String[] baseStatCodes, final CMObject O)
     {
-    	Vector<String> addedStatCodesV = getStatCodeExtentions(O);
+    	final List<String> addedStatCodesV = getStatCodeExtentions(O);
     	if(addedStatCodesV == null)
     		return baseStatCodes;
 
-		String[] newStatCodes = new String[baseStatCodes.length + addedStatCodesV.size()];
+    	final String[] newStatCodes = new String[baseStatCodes.length + addedStatCodesV.size()];
 		for(int x=0;x<baseStatCodes.length;x++)
 			newStatCodes[x] = baseStatCodes[x];
 		for(int x=0;x<addedStatCodesV.size();x++)
-			newStatCodes[x+baseStatCodes.length] = (String)addedStatCodesV.elementAt(x);
+			newStatCodes[x+baseStatCodes.length] = (String)addedStatCodesV.get(x);
 		return newStatCodes;
     }
 }
