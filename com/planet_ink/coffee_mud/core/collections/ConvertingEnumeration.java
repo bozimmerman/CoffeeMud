@@ -29,6 +29,12 @@ public class ConvertingEnumeration<K, L> implements Enumeration<L>
 		converter=conv;
     }
     
+	public ConvertingEnumeration(Iterator<K> eset, Converter<K, L> conv) 
+    {
+		enumer=new IteratorEnumeration<K>(eset);
+		converter=conv;
+    }
+	
 	public void setConverter(Converter<K, L> conv) 
     {
     	converter=conv;

@@ -15,7 +15,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-public class Pair<T,K> 
+public final class Pair<T,K> 
 {
 	public T first;
 	public K second;
@@ -24,13 +24,11 @@ public class Pair<T,K>
 		first=frst;
 		second=scnd;
 	}
-	public final FirstConverter getFirstConverter(){return new FirstConverter();}
-	private class FirstConverter implements Converter<Pair<T,K>,T> 
+	public static final class FirstConverter<T,K> implements Converter<Pair<T,K>,T> 
 	{
 		public T convert(Pair<T, K> obj) { return obj.first;}
 	}
-	public final SecondConverter getSecondConverter(){return new SecondConverter();}
-	private class SecondConverter implements Converter<Pair<T,K>,K> 
+	public static final class SecondConverter<T,K> implements Converter<Pair<T,K>,K> 
 	{
 		public K convert(Pair<T, K> obj) { return obj.second;}
 	}

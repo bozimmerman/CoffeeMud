@@ -37,7 +37,7 @@ import java.util.*;
 public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 {
     public String ID(){return "AutoTitles";}
-    private DVector autoTitles=null;
+    private TriadSVector<String,String,MaskingLibrary.CompiledZapperMask> autoTitles=null;
 
     public String evaluateAutoTitle(String row, boolean addIfPossible)
     {
@@ -55,35 +55,37 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
         if(addIfPossible)
         {
             if(autoTitles==null) reloadAutoTitles();
-            if(autoTitles.contains(title))
-                return "Error: Duplicate title: "+title+"="+mask+"!";
-            autoTitles.addElement(title,mask,CMLib.masking().maskCompile(mask));
+            for(Triad<String,String,MaskingLibrary.CompiledZapperMask> triad : autoTitles)
+            	if(triad.first.equalsIgnoreCase(title))
+	                return "Error: Duplicate title: "+title+"="+mask+"!";
+            autoTitles.add(new Triad(title,mask,CMLib.masking().maskCompile(mask)));
         }
         return null;
     }
     public boolean isExistingAutoTitle(String title)
     {
         if(autoTitles==null) reloadAutoTitles();
-        for(int v=0;v<autoTitles.size();v++)
-            if(((String)autoTitles.elementAt(v,1)).toUpperCase().equalsIgnoreCase(title.trim()))
+        title=title.trim();
+        for(Triad<String,String,MaskingLibrary.CompiledZapperMask> triad : autoTitles)
+            if(triad.first.equalsIgnoreCase(title))
                 return true;
         return false;
     }
 
-    public Enumeration autoTitles()
+    public Enumeration<String> autoTitles()
     {
         if(autoTitles==null) reloadAutoTitles();
-        return autoTitles.getDimensionVector(1).elements();
+        return autoTitles.firstElements();
     }
 
     public String getAutoTitleMask(String title)
     {
         if(autoTitles==null) reloadAutoTitles();
-        int x=autoTitles.indexOf(title);
-        if(x<0) return "";
-        return (String)autoTitles.elementAt(x,2);
+        for(Triad<String,String,MaskingLibrary.CompiledZapperMask> triad : autoTitles)
+        	if(triad.first.equalsIgnoreCase(title))
+        		return triad.second;
+        return "";
     }
-
 
     public boolean evaluateAutoTitles(MOB mob)
     {
@@ -98,10 +100,10 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
         boolean somethingDone=false;
         synchronized(ptV)
         {
-	        for(int t=0;t<autoTitles.size();t++)
+            for(Triad<String,String,MaskingLibrary.CompiledZapperMask> triad : autoTitles)
 	        {
-	            mask=(MaskingLibrary.CompiledZapperMask)autoTitles.elementAt(t,3);
-	            title=(String)autoTitles.elementAt(t,1);
+	            mask=triad.third;
+	            title=triad.first;
 	            pdex=ptV.indexOf(title);
 	            if(pdex<0)
 	            {
@@ -175,7 +177,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
 
     public void reloadAutoTitles()
     {
-        autoTitles=new DVector(3);
+        autoTitles=new TriadSVector<String,String,MaskingLibrary.CompiledZapperMask>();
         List<String> V=Resources.getFileLineVector(Resources.getFileResource("titles.txt",true));
         String WKID=null;
         for(int v=0;v<V.size();v++)

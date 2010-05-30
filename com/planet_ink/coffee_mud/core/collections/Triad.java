@@ -15,16 +15,26 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-public class Triad<T,K,L> extends Pair<T,K> 
+public final class Triad<T,K,L> 
 {
+	public T first;
+	public K second;
 	public L third;
 	public Triad(T frst, K scnd, L thrd)
 	{
-		super(frst,scnd);
+		first=frst;
+		second=scnd;
 		third=thrd;
 	}
-	public final ThirdConverter getThirdConverter(){return new ThirdConverter();}
-	private class ThirdConverter implements Converter<Triad<T,K,L>,L>
+	public static final class FirstConverter<T,K,L> implements Converter<Triad<T,K,L>,T> 
+	{
+		public T convert(Triad<T, K,L> obj) { return obj.first;}
+	}
+	public static final class SecondConverter<T,K,L> implements Converter<Triad<T,K,L>,K> 
+	{
+		public K convert(Triad<T, K, L> obj) { return obj.second;}
+	}
+	public static final class ThirdConverter<T,K,L> implements Converter<Triad<T,K,L>,L>
 	{
 		public L convert(Triad<T, K, L> obj) { return obj.third;}
 	}
