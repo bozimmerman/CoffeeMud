@@ -103,15 +103,10 @@ public class Monitor extends Listen
 				if(msgs.size()==0)
 					req.sendMsg("[FAIL NONE]");
 				else
-				if(msgs.size()==1)
-					req.sendMsg("[OK "+msgs.get(0)+"]");
-				else
 				{
-					String eob="/BLOCK:"+Math.random();
-					req.sendMsg("[BLOCK "+eob+"]");
+					req.sendMsg("[OK "+msgs.size()+"]");
 					for(String s : msgs)
 						req.sendMsg("[MESSAGE "+s+"]");
-					req.sendMsg(eob);
 				}
 			}
 			else
