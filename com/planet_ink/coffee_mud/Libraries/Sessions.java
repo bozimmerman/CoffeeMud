@@ -1,15 +1,11 @@
 package com.planet_ink.coffee_mud.Libraries;
-import java.util.Enumeration;
-import java.util.Vector;
-import com.planet_ink.coffee_mud.Common.interfaces.Session;
-import com.planet_ink.coffee_mud.Libraries.interfaces.SessionsList;
-import com.planet_ink.coffee_mud.Libraries.interfaces.ThreadEngine;
-import com.planet_ink.coffee_mud.core.CMLib;
-import com.planet_ink.coffee_mud.core.CMSecurity;
-import com.planet_ink.coffee_mud.core.collections.DVector;
-import com.planet_ink.coffee_mud.core.collections.SVector;
-import com.planet_ink.coffee_mud.core.Log;
-import com.planet_ink.coffee_mud.core.interfaces.MudHost;
+import java.util.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
 
 /* 
    Copyright 2000-2010 Bo Zimmerman
@@ -30,31 +26,79 @@ public class Sessions extends StdLibrary implements SessionsList
 {
     public String ID(){return "Sessions";}
     private ThreadEngine.SupportThread thread=null;
-    public SVector<Session> all=new SVector<Session>();
+    public SLinkedList<Session> all=new SLinkedList<Session>();
+    private final static Filterer<Session> localOnlineFilter=new Filterer<Session>(){
+		public boolean passesFilter(Session obj) { 
+			if((obj!=null) && (!obj.killFlag()) && (obj.getStatus()==Session.STATUS_OK))
+			{
+				MOB M=obj.mob();
+				return ((M!=null)&&M.amActive()&&(CMLib.flags().isInTheGame(M,true)));
+			}
+			return false;
+		}
+    };
     
     public ThreadEngine.SupportThread getSupportThread() { return thread;}
     
-	public Session elementAt(int x)
-	{
-		return (Session)all.elementAt(x);
-	}
-	public int size()
-	{
-		return all.size();
-	}
-	public void addElement(Session S)
-	{
-		all.addElement(S);
-	}
-	public void removeElementAt(int x)
-	{
-		all.removeElementAt(x);
-	}
-	public void removeElement(Session S)
-	{
-		all.removeElement(S);
-	}
-    public Enumeration<Session> sessions() { return all.elements();}
+    public Iterator<Session> all(){return all.iterator();}
+    public Iterable<Session> allIterable(){return all;}
+    public Iterator<Session> localOnline(){
+    	return new FilteredIterator<Session>(all.iterator(),localOnlineFilter);
+    }
+    public Iterable<Session> localOnlineIterable(){
+    	return new FilteredIterable<Session>(all,localOnlineFilter);
+    }
+    
+    public int getCountAll()
+    {
+    	return getCount(all());
+    }
+    
+    public int getCountLocalOnline()
+    {
+    	return getCount(localOnline());
+    }
+    
+    protected int getCount(Iterator<Session> i)
+    {
+    	int xt=0;
+    	for(;i.hasNext();)
+    	{
+    		i.next();
+    		xt++;
+    	}
+    	return xt;
+    }
+    
+    public Session getAllSessionAt(int index)
+    {
+    	return getAllSessionAt(all(),index);
+    }
+    
+    protected Session getAllSessionAt(Iterator<Session> i, int index)
+    {
+    	int xt=0;
+    	Session S;
+    	for(;i.hasNext();)
+    	{
+    		S=i.next();
+    		if(xt==index)
+    			return S;
+    		xt++;
+    	}
+    	return null;
+    }
+    
+    public synchronized void add(Session s)
+    {
+    	if(!all.contains(s))
+    		all.add(s);
+    }
+    
+    public synchronized void remove(Session s)
+    {
+		all.remove(s);
+    }
     
     public void stopSessionAtAllCosts(Session S)
     {
@@ -68,7 +112,7 @@ public class Sessions extends StdLibrary implements SessionsList
             S.kill(true,true,true);
             try{Thread.sleep(100);}catch(Exception e){}
         }
-        removeElement(S);
+        remove(S);
     }
     public boolean activate() {
         if(thread==null)
@@ -84,25 +128,32 @@ public class Sessions extends StdLibrary implements SessionsList
         return true;
     }
     
-    public Session findPlayerOnline(String srchStr, boolean exactOnly)
+    public MOB findPlayerOnline(String srchStr, boolean exactOnly)
+    {
+    	Session S=findPlayerSessionOnline(srchStr, exactOnly);
+    	if(S==null) return null;
+    	return S.mob();
+    }
+    
+    public Session findPlayerSessionOnline(String srchStr, boolean exactOnly)
     {
         // then look for players
-		for(Session thisSession : all)
-		{
-			if((thisSession.mob()!=null) && (!thisSession.killFlag())
-			&&(thisSession.mob().location()!=null)
-			&&(thisSession.mob().name().equalsIgnoreCase(srchStr)))
-				return thisSession;
-		}
+		for(Session S : localOnlineIterable())
+			if(S.mob().Name().equalsIgnoreCase(srchStr))
+				return S;
+		for(Session S : localOnlineIterable())
+			if(S.mob().name().equalsIgnoreCase(srchStr))
+				return S;
 		// keep looking for players
 		if(!exactOnly)
-			for(Session thisSession : all)
-			{
-				if((thisSession.mob()!=null)&&(!thisSession.killFlag())
-				&&(thisSession.mob().location()!=null)
-				&&(CMLib.english().containsString(thisSession.mob().name(),srchStr)))
-					return thisSession;
-			}
+		{
+			for(Session S : localOnlineIterable())
+				if(CMLib.english().containsString(S.mob().Name(),srchStr))
+					return S;
+			for(Session S : localOnlineIterable())
+				if(CMLib.english().containsString(S.mob().name(),srchStr))
+					return S;
+		}
 		return null;
     }
     

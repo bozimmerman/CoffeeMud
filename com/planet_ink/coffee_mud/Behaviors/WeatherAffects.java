@@ -319,9 +319,8 @@ public class WeatherAffects extends PuddleMaker
                 break;
             }
 
-            for(int s=0;s<CMLib.sessions().size();s++)
+    		for(Session S : CMLib.sessions().localOnlineIterable())
             {
-                Session S=CMLib.sessions().elementAt(s);
                 if((S.mob()==null)
                 ||(S.mob().location()==null)
                 ||(S.mob().location().getArea()!=A)
@@ -415,9 +414,8 @@ public class WeatherAffects extends PuddleMaker
         if((rumbleDown--)==1)
         {
             resetRumbleTicks();
-            for(int s=0;s<CMLib.sessions().size();s++)
+    		for(Session S : CMLib.sessions().localOnlineIterable())
             {
-                Session S=CMLib.sessions().elementAt(s);
                 if((S.mob()==null)
                 ||(S.mob().location()==null)
                 ||(S.mob().location().getArea()!=A)
@@ -487,9 +485,8 @@ public class WeatherAffects extends PuddleMaker
             if(C.weatherType(null)==Climate.WEATHER_THUNDERSTORM)
             {
                 boolean playerAround=false;
-                for(int s=0;s<CMLib.sessions().size();s++)
+        		for(Session S : CMLib.sessions().localOnlineIterable())
                 {
-                    Session S=CMLib.sessions().elementAt(s);
                     if((S.mob()==null)
                     ||(S.mob().location()==null)
                     ||(S.mob().location().getArea()!=A)
@@ -539,9 +536,8 @@ public class WeatherAffects extends PuddleMaker
             ||(C.weatherType(null)==Climate.WEATHER_WINDY))
             {
                 boolean playerAround=false;
-                for(int s=0;s<CMLib.sessions().size();s++)
+        		for(Session S : CMLib.sessions().localOnlineIterable())
                 {
-                    Session S=CMLib.sessions().elementAt(s);
                     if((S.mob()==null)
                     ||(S.mob().location()==null)
                     ||(S.mob().location().getArea()!=A)
@@ -593,9 +589,8 @@ public class WeatherAffects extends PuddleMaker
             {
                 Vector choices=new Vector();
                 Room R=null;
-                for(int s=0;s<CMLib.sessions().size();s++)
+        		for(Session S : CMLib.sessions().localOnlineIterable())
                 {
-                    Session S=CMLib.sessions().elementAt(s);
                     if((S.mob()==null)
                     ||(S.mob().location()==null)
                     ||(S.mob().location().getArea()!=A)
@@ -627,9 +622,8 @@ public class WeatherAffects extends PuddleMaker
             {
                 Vector choices=new Vector();
                 Room R=null;
-                for(int s=0;s<CMLib.sessions().size();s++)
+        		for(Session S : CMLib.sessions().localOnlineIterable())
                 {
-                    Session S=CMLib.sessions().elementAt(s);
                     if((S.mob()==null)
                     ||(S.mob().location()==null)
                     ||(S.mob().location().getArea()!=A)
@@ -696,9 +690,8 @@ public class WeatherAffects extends PuddleMaker
             {
                 Vector choices=new Vector();
                 Room R=null;
-                for(int s=0;s<CMLib.sessions().size();s++)
+        		for(Session S : CMLib.sessions().localOnlineIterable())
                 {
-                    Session S=CMLib.sessions().elementAt(s);
                     if((S.mob()==null)
                     ||(S.mob().location()==null)
                     ||(S.mob().location().getArea()!=A)
@@ -728,9 +721,8 @@ public class WeatherAffects extends PuddleMaker
         if((rustDown--)==1)
         {
             resetRustTicks();
-            for(int s=0;s<CMLib.sessions().size();s++)
+    		for(Session S : CMLib.sessions().localOnlineIterable())
             {
-                Session S=CMLib.sessions().elementAt(s);
                 if((S.mob()==null)
                 ||(S.mob().location()==null)
                 ||(S.mob().location().getArea()!=A)

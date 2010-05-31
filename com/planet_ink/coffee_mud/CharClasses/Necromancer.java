@@ -210,9 +210,9 @@ public class Necromancer extends Cleric
 			MOB M=null;
 			Room deathRoom=aChar.location();
 			if((deathRoom!=null)&&(deathRoom.getArea()!=null))
-			for(Enumeration e=CMLib.sessions().sessions();e.hasMoreElements();)
+			for(Session S : CMLib.sessions().localOnlineIterable())
 			{
-				M=((Session)e.nextElement()).mob();
+				M=S.mob();
 				if((M!=null)
 				&&(M.baseCharStats().getCurrentClass()==this)
 				&&(aChar!=M)

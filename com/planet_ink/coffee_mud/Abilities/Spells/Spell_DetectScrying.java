@@ -75,12 +75,9 @@ public class Spell_DetectScrying extends Spell
 				mob.location().send(mob,msg);
 				StringBuffer str=new StringBuffer("");
 				if(target.session()!=null)
-				for(int s1=0;s1<CMLib.sessions().size();s1++)
-				{
-					Session S1=CMLib.sessions().elementAt(s1);
-					if(target.session().amBeingSnoopedBy(S1))
-						str.append(S1.mob().name()+" is snooping on <T-NAME>.  ");
-				}
+					for(Session S1 : CMLib.sessions().localOnlineIterable())
+						if(target.session().amBeingSnoopedBy(S1))
+							str.append(S1.mob().name()+" is snooping on <T-NAME>.  ");
 				Ability A=target.fetchEffect("Spell_Scry");
 				if((A!=null)&&(A.invoker()!=null))
 					str.append(A.invoker().name()+" is scrying on <T-NAME>.");

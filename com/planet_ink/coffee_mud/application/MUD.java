@@ -493,7 +493,7 @@ public class MUD extends Thread implements MudHost
                 Session S=(Session)CMClass.getCommon("DefaultSession");
                 S.initializeSession(sock, introText != null ? introText.toString() : null);
                 S.start();
-                CMLib.sessions().addElement(S);
+                CMLib.sessions().add(S);
                 sock = null;
             }
         }
@@ -637,29 +637,28 @@ public class MUD extends Thread implements MudHost
 		{
 			if(S!=null)S.print("Saving players...");
 			CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Saving players...");
-            if(CMLib.sessions()!=null)
-                for(int s=0;s<CMLib.sessions().size();s++)
+	        for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.LIBRARY_SESSIONS);e.hasMoreElements();)
+	        {
+	            SessionsList list=((SessionsList)e.nextElement());
+	    		for(Session S2 : list.allIterable())
                 {
-                    Session S2=CMLib.sessions().elementAt(s);
-                    if(S2!=null)
-                    {
-                    	MOB M = S2.mob();
-                    	if((M!=null)&&(M.playerStats()!=null))
-                    	{
-	                        M.playerStats().setLastDateTime(System.currentTimeMillis());
-	                        // important! shutdown their affects!
-	                        for(int a=M.numAllEffects()-1;a>=0;a--)
-	                        {
-	                        	Ability A=M.fetchEffect(a);
-	                        	try {
-		                        	if((A!=null)&&(A.canBeUninvoked()))
-		                        		A.unInvoke();
-		                        	M.delEffect(A);
-	                        	} catch(Exception e) {Log.errOut("MUD",e);}
-	                        }
-                    	}
-                    }
+                	MOB M = S2.mob();
+                	if((M!=null)&&(M.playerStats()!=null))
+                	{
+                        M.playerStats().setLastDateTime(System.currentTimeMillis());
+                        // important! shutdown their affects!
+                        for(int a=M.numAllEffects()-1;a>=0;a--)
+                        {
+                        	Ability A=M.fetchEffect(a);
+                        	try {
+	                        	if((A!=null)&&(A.canBeUninvoked()))
+	                        		A.unInvoke();
+	                        	M.delEffect(A);
+                        	} catch(Exception ex) {Log.errOut("MUD",ex);}
+                        }
+                	}
                 }
+            }
             for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.LIBRARY_PLAYERS);e.hasMoreElements();)
                 ((PlayerLibrary)e.nextElement()).savePlayers();
 			if(S!=null)S.println("done");
@@ -780,11 +779,10 @@ public class MUD extends Thread implements MudHost
         for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.LIBRARY_SESSIONS);e.hasMoreElements();)
         {
             SessionsList list=((SessionsList)e.nextElement());
-    		while(list.size()>0)
+    		for(Session S2 : list.allIterable())
     		{
-    			Session S2=list.elementAt(0);
     			if((S!=null)&&(S2==S))
-                    list.removeElementAt(0);
+                    list.remove(S2);
     			else
     			{
     				CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Stopping session "+S2.getAddress());

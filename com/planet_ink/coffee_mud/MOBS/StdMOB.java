@@ -2730,13 +2730,9 @@ public class StdMOB implements MOB
 	{
 	    try
 	    {
-	        Session S=null;
-		    for(int s=0;s<CMLib.sessions().size();s++)
-		    {
-		        S=CMLib.sessions().elementAt(s);
+			for(Session S : CMLib.sessions().allIterable())
 		        if((S.mob()!=null)&&(S.mob().soulMate()==this))
 		            return true;
-		    }
 	    }
 	    catch(Exception e){}
 	    return false;

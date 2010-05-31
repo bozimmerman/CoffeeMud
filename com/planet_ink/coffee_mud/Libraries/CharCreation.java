@@ -584,15 +584,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     			continue;
     		}
     		int numAccountOnline=0;
-    		for(int si=0;si<CMLib.sessions().size();si++)
-    		{
-    			Session S=CMLib.sessions().elementAt(si);
-    			if((S!=null)
-    			&&(S.mob()!=null)
+    	    for(Session S : CMLib.sessions().allIterable())
+    			if((S.mob()!=null)
     			&&(S.mob().playerStats()!=null)
     			&&(S.mob().playerStats().getAccount()==acct))
     				numAccountOnline++;
-    		}
             if((CMProps.getIntVar(CMProps.SYSTEMI_MAXCONNSPERACCOUNT)>0)
             &&(numAccountOnline>=CMProps.getIntVar(CMProps.SYSTEMI_MAXCONNSPERACCOUNT))
             &&(!CMSecurity.isDisabled("MAXCONNSPERACCOUNT"))
@@ -1267,12 +1263,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             session.kill(false,false,false);
             return LoginResult.NO_LOGIN;
         }
-        for(int s=0;s<CMLib.sessions().size();s++)
+	    for(Session S : CMLib.sessions().allIterable())
         {
-            Session thisSession=CMLib.sessions().elementAt(s);
-        	MOB M=thisSession.mob();
+        	MOB M=S.mob();
             if((M!=null)
-            &&(thisSession!=session)
+            &&(S!=session)
             &&(M==player.loadedMOB))
             {
                 Room oldRoom=M.location();
@@ -1281,8 +1276,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                         oldRoom.delInhabitant(M);
                 session.setMob(M);
                 M.setSession(session);
-                thisSession.setMob(null);
-                thisSession.kill(false,false,false);
+                S.setMob(null);
+                S.kill(false,false,false);
                 Log.sysOut("FrontDoor","Session swap for "+session.mob().Name()+".");
                 reloadTerminal(session.mob());
                 session.mob().bringToLife(oldRoom,false);
@@ -1295,22 +1290,18 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     public void notifyFriends(MOB mob, String message)
     {
     	try {
-	        for(int s=0;s<CMLib.sessions().size();s++)
+    	    for(Session S : CMLib.sessions().localOnlineIterable())
 	        {
-	            Session sessionS=CMLib.sessions().elementAt(s);
-	            if(sessionS!=null)
+            	MOB listenerM=S.mob();
+	            if((listenerM!=null)
+	            &&(listenerM!=mob)
+	            &&((!CMLib.flags().isCloaked(mob))||(CMSecurity.isASysOp(listenerM)))
+	            &&(CMath.bset(listenerM.getBitmap(),MOB.ATT_AUTONOTIFY)))
 	            {
-	            	MOB listenerM=sessionS.mob();
-		            if((listenerM!=null)
-		            &&(listenerM!=mob)
-		            &&((!CMLib.flags().isCloaked(mob))||(CMSecurity.isASysOp(listenerM)))
-		            &&(CMath.bset(listenerM.getBitmap(),MOB.ATT_AUTONOTIFY)))
-		            {
-		            	PlayerStats listenerPStats=listenerM.playerStats();
-			            if((listenerPStats!=null)
-			            &&((listenerPStats.getFriends().contains(mob.Name())||listenerPStats.getFriends().contains("All"))))
-			            	listenerM.tell(message);
-		            }
+	            	PlayerStats listenerPStats=listenerM.playerStats();
+		            if((listenerPStats!=null)
+		            &&((listenerPStats.getFriends().contains(mob.Name())||listenerPStats.getFriends().contains("All"))))
+		            	listenerM.tell(message);
 	            }
 	        }
     	} catch(Exception e){}
@@ -1320,7 +1311,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     {
     	StringBuffer rpt = new StringBuffer("\r\nMSSP-REPLY-START");
     	rpt.append("\r\n"); rpt.append("PLAYERS");
-    	rpt.append("\t"); rpt.append(Integer.toString(CMLib.sessions().size()));
+    	rpt.append("\t"); rpt.append(Integer.toString(CMLib.sessions().getCountLocalOnline()));
     	rpt.append("\r\n"); rpt.append("STATUS");
     	rpt.append("\t");
     	switch(CMProps.getIntVar(CMProps.SYSTEMI_MUDSTATE))
@@ -1643,12 +1634,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         // count number of multiplays
         int numAtAddress=0;
         try{
-        for(int s=0;s<CMLib.sessions().size();s++)
-        {
-            if((CMLib.sessions().elementAt(s)!=session)
-            &&(session.getAddress().equalsIgnoreCase((CMLib.sessions().elementAt(s).getAddress()))))
-                numAtAddress++;
-        }
+		    for(Session S : CMLib.sessions().allIterable())
+	            if((S!=session)&&(session.getAddress().equalsIgnoreCase(S.getAddress())))
+	                numAtAddress++;
         }catch(Exception e){}
 
         if((CMProps.getIntVar(CMProps.SYSTEMI_MAXCONNSPERIP)>0)

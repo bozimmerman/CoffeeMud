@@ -86,10 +86,9 @@ public class Save extends StdCommand
 				mob.tell("You are not allowed to save players.");
 				return false;
 			}
-			for(int s=0;s<CMLib.sessions().size();s++)
+			for(Session S : CMLib.sessions().allIterable())
 			{
-				Session session=CMLib.sessions().elementAt(s);
-				MOB M=session.mob();
+				MOB M=S.mob();
 				if(M!=null)
 				{
 					CMLib.database().DBUpdatePlayer(M);

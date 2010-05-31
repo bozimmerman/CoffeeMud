@@ -460,17 +460,12 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
     public MOB getMobPossessingAnother(MOB mob)
     {
         if(mob==null) return null;
-        Session S=null;
         MOB M=null;
-        for(int s=0;s<CMLib.sessions().size();s++)
+		for(Session S : CMLib.sessions().localOnlineIterable())
         {
-            S=CMLib.sessions().elementAt(s);
-            if(S!=null)
-            {
-                M=S.mob();
-                if((M!=null)&&(M.soulMate()==mob))
-                    return M;
-            }
+            M=S.mob();
+            if((M!=null)&&(M.soulMate()==mob))
+                return M;
         }
         return null;
     }

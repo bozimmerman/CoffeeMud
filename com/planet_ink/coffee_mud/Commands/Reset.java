@@ -205,12 +205,9 @@ public class Reset extends StdCommand
 	{
 		if((mob==null)||(R==null)) return null;
 		StringBuffer warning=new StringBuffer("");
-		for(int s=0;s<CMLib.sessions().size();s++)
-		{
-			Session S=CMLib.sessions().elementAt(s);
+		for(Session S : CMLib.sessions().localOnlineIterable())
 			if((S!=null)&&(S.mob()!=null)&&(S.mob()!=mob)&&(S.mob().location()==R))
 				warning.append("A player, '"+S.mob().Name()+"' is in "+CMLib.map().getExtendedRoomID(R)+"\n\r");
-		}
 		Item I=null;
 		for(int i=0;i<R.numItems();i++)
 		{
@@ -316,13 +313,9 @@ public class Reset extends StdCommand
             String warning=resetWarning(mob, mob.location());
             if((mob.session()==null)||(warning==null)||(mob.session().confirm(warning + "\n\rReset the contents of the room '"+mob.location().roomTitle(mob)+"', OK (Y/n)?","Y")))
             {
-                Session S=null;
-                for(int x=0;x<CMLib.sessions().size();x++)
-                {
-                    S=CMLib.sessions().elementAt(x);
+        		for(Session S : CMLib.sessions().localOnlineIterable())
                     if((S!=null)&&(S.mob()!=null)&&(S.mob().location()!=null)&&(S.mob().location()==mob.location()))
                         S.mob().tell(mob,null,null,"<S-NAME> order(s) this room to normalcy.");
-                }
     			CMLib.map().resetRoom(mob.location(), true);
                 mob.tell("Done.");
             }
@@ -339,13 +332,9 @@ public class Reset extends StdCommand
 				if(warning!=null) mob.tell(warning);
 				if((mob.session()==null)||(mob.session().confirm("Reset the contents of the area '"+A.name()+"', OK (Y/n)?","Y")))
 				{
-					Session S=null;
-					for(int x=0;x<CMLib.sessions().size();x++)
-					{
-						S=CMLib.sessions().elementAt(x);
+					for(Session S : CMLib.sessions().localOnlineIterable())
 						if((S!=null)&&(S.mob()!=null)&&(S.mob().location()!=null)&&(A.inMyMetroArea(S.mob().location().getArea())))
 	                        S.mob().tell(mob,null,null,"<S-NAME> order(s) this area to normalcy.");
-					}
 					CMLib.map().resetArea(A);
 		            mob.tell("Done.");
 				}

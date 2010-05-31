@@ -38,12 +38,9 @@ public class PlayerList extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		StringBuffer s = new StringBuffer("");
-		for(int i=0;i<CMLib.sessions().size();i++)
+		for(Session S : CMLib.sessions().allIterable())
 		{
-			Session session=CMLib.sessions().elementAt(i);
-			// list entry with style sheet class
-			
-			MOB m = session.mob();
+			MOB m = S.mob();
 			if((m!=null)&&(CMLib.flags().isCloaked(m))) continue;
 			
 			s.append("<li class=\"cmPlayerListEntry");
@@ -52,7 +49,8 @@ public class PlayerList extends StdWebMacro
 				m=m.soulMate();
 
 			if ( (m!=null) && (m.name() != null)
-				&& (m.name().length() > 0) )
+				&& (m.name().length() > 0) 
+				&& (S.getStatus()<Session.STATUS_LOGOUT))
 			{
 				// jef: nb - only shows full sysops, not subops
 				if ( CMSecurity.isASysOp(m) )
@@ -62,7 +60,8 @@ public class PlayerList extends StdWebMacro
 				s.append(" ");
 				if (m.charStats().getMyRace()!= null && m.charStats().raceName()!=null
 					&& m.charStats().raceName().length() > 0
-					&& !m.charStats().raceName().equals("MOB"))
+					&& !m.charStats().raceName().equals("MOB")
+					&& (S.getStatus()==Session.STATUS_OK))
 				{
 					s.append("(");
 					if(!CMSecurity.isDisabled("RACES"))

@@ -3471,17 +3471,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         }
         if(allowedToRun)
         {
-            int numElligiblePlayers=CMLib.sessions().size();
-            if(playerMask.length()>0)
-            {
-                numElligiblePlayers=0;
-                for(int s=CMLib.sessions().size()-1;s>=0;s--)
-                {
-                    Session S=CMLib.sessions().elementAt(s);
-                    if((S.mob()!=null)&&(CMLib.masking().maskCheck(playerMask,S.mob(),true)))
-                        numElligiblePlayers++;
-                }
-            }
+            int numElligiblePlayers=0;
+            boolean isMask=(playerMask.length()>0);
+            for(Session S : CMLib.sessions().localOnlineIterable())
+                if((S.mob()!=null)&&((!isMask) || CMLib.masking().maskCheck(playerMask,S.mob(),true)))
+                    numElligiblePlayers++;
         	ticksRemaining=-1;
             if((numElligiblePlayers>=minPlayers)||(duration()==0))
                 return startQuestInternal();

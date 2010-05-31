@@ -114,9 +114,8 @@ public class Announce extends StdCommand
                 else
                     text=CMParms.combine(commands,1);
                     
-				for(int s=0;s<CMLib.sessions().size();s++)
+				for(Session S : CMLib.sessions().localOnlineIterable())
 				{
-					Session S=CMLib.sessions().elementAt(s);
 					if((S.mob()!=null)
 					&&(S.mob().location()!=null)
 					&&(CMSecurity.isAllowed(mob,S.mob().location(),"ANNOUNCE")))
@@ -127,9 +126,8 @@ public class Announce extends StdCommand
 			{
 				boolean found=false;
                 String name=(String)commands.elementAt(1);
-				for(int s=0;s<CMLib.sessions().size();s++)
+				for(Session S : CMLib.sessions().localOnlineIterable())
 				{
-					Session S=CMLib.sessions().elementAt(s);
 					if((S.mob()!=null)
 					&&(S.mob().location()!=null)
 					&&(CMSecurity.isAllowed(mob,S.mob().location(),"ANNOUNCE"))

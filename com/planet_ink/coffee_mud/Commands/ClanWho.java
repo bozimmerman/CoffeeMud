@@ -51,15 +51,14 @@ public class ClanWho extends Who
 			return false;
 		}
 		StringBuffer msg=new StringBuffer("");
-		for(int s=0;s<CMLib.sessions().size();s++)
+		for(Session S : CMLib.sessions().localOnlineIterable())
 		{
-			Session thisSession=CMLib.sessions().elementAt(s);
-			MOB mob2=thisSession.mob();
+			MOB mob2=S.mob();
 			if((mob2!=null)&&(mob2.soulMate()!=null))
 				mob2=mob2.soulMate();
 
 			if((mob2!=null)
-			&&(!thisSession.killFlag())
+			&&(!S.killFlag())
 			&&((((mob2.phyStats().disposition()&PhyStats.IS_CLOAKED)==0)
 					||((CMSecurity.isAllowedAnywhere(mob,"CLOAK")||CMSecurity.isAllowedAnywhere(mob,"WIZINV"))&&(mob.phyStats().level()>=mob2.phyStats().level()))))
 			&&(mob2.getClanID().equals(mob.getClanID()))

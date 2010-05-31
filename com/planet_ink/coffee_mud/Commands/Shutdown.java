@@ -61,8 +61,8 @@ public class Shutdown extends StdCommand
 		&&(!mob.session().confirm("Shutdown "+CMProps.getVar(CMProps.SYSTEM_MUDNAME)+" (y/N)?","N")))
 			return false;
 		
-		for(int s=0;s<CMLib.sessions().size();s++)
-			CMLib.sessions().elementAt(s).colorOnlyPrintln("\n\r\n\r^x"+CMProps.getVar(CMProps.SYSTEM_MUDNAME)+" is now shutting down!^.^?\n\r");
+		for(Session S : CMLib.sessions().allIterable())
+			S.colorOnlyPrintln("\n\r\n\r^x"+CMProps.getVar(CMProps.SYSTEM_MUDNAME)+" is now shutting down!^.^?\n\r");
 
 		if(keepItDown)
 			Log.errOut("CommandProcessor",mob.Name()+" starts system shutdown...");

@@ -1502,9 +1502,9 @@ public class CMMap extends StdLibrary implements WorldMap
                 if(searchPlayers)
                 {
 	                // then look for players
-	                Session sess=CMLib.sessions().findPlayerOnline(srchStr,false);
-	                if((sess!=null) && (sess.mob()!=null) && (sess.mob()!=null))
-	                	room=addWorldRoomsLiberally(rooms,sess.mob().location());
+	                MOB M=CMLib.sessions().findPlayerOnline(srchStr,false);
+	                if(M!=null)
+	                	room=addWorldRoomsLiberally(rooms,M.location());
                 }
                 if(enforceTimeLimit(startTime,maxSeconds)) return returnResponse(rooms,room);
                 
@@ -1579,13 +1579,11 @@ public class CMMap extends StdLibrary implements WorldMap
     protected DVector getAllPlayersHere(Area area, boolean includeLocalFollowers)
     {
         DVector playersHere=new DVector(2);
-        Session S=null;
         MOB M=null;
         Room R=null;
-        for(int s=CMLib.sessions().size()-1;s>=0;s--)
+		for(Session S : CMLib.sessions().localOnlineIterable())
         {
-            S=CMLib.sessions().elementAt(s);
-            M=(S!=null)?S.mob():null;
+            M=S.mob();
             R=(M!=null)?M.location():null;
             if((R!=null)&&(R.getArea()==area)&&(M!=null))
             {

@@ -60,14 +60,13 @@ public class WhoIs extends Who
 		}
 
 		StringBuffer msg=new StringBuffer("");
-		for(int s=0;s<CMLib.sessions().size();s++)
+		for(Session S : CMLib.sessions().localOnlineIterable())
 		{
-			Session thisSession=CMLib.sessions().elementAt(s);
-			MOB mob2=thisSession.mob();
+			MOB mob2=S.mob();
 			if((mob2!=null)
-			&&(!thisSession.killFlag())
-			&&((((mob2.phyStats().disposition()&PhyStats.IS_CLOAKED)==0)
-				||((CMSecurity.isAllowedAnywhere(mob,"CLOAK")||CMSecurity.isAllowedAnywhere(mob,"WIZINV"))&&(mob.phyStats().level()>=mob2.phyStats().level()))))
+			&&(((mob2.phyStats().disposition()&PhyStats.IS_CLOAKED)==0)
+				||((CMSecurity.isAllowedAnywhere(mob,"CLOAK")||CMSecurity.isAllowedAnywhere(mob,"WIZINV"))
+					&&(mob.phyStats().level()>=mob2.phyStats().level())))
 			&&(mob2.phyStats().level()>0)
 			&&(mob2.name().toUpperCase().startsWith(mobName.toUpperCase())))
 				msg.append(showWhoShort(mob2));

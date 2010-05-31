@@ -421,11 +421,10 @@ public class Factions extends StdLibrary implements FactionManager
     
 	public boolean tick(Tickable ticking, int tickID)
 	{
-        if(CMLib.sessions().size()==0) 
+        if(!CMLib.sessions().all().hasNext()) 
             return true;
 	    try
 	    {
-		    Session S=null;
 		    MOB mob=null;
 		    Faction F=null;
 		    Faction.FactionChangeEvent CE=null;
@@ -443,9 +442,8 @@ public class Factions extends StdLibrary implements FactionManager
             }
             Room R;
             Faction[] Fs;
-		    for(int s=0;s<CMLib.sessions().size();s++)
+		    for(Session S : CMLib.sessions().allIterable())
 		    {
-		        S=CMLib.sessions().elementAt(s);
 		        mob=(!S.killFlag())?S.mob():null;
 		        R=(mob==null)?null:mob.location();
 		        if(R!=null)

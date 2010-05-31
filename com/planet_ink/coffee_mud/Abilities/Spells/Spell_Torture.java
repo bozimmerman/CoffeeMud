@@ -61,8 +61,8 @@ public class Spell_Torture extends Spell
 	{
 		if((text().length()>0)&&(!text().equalsIgnoreCase("HITONLY")))
         {
-		    for(int s=0;s<CMLib.sessions().size();s++)
-		        CMLib.sessions().elementAt(s).println(text());
+			for(Session S : CMLib.sessions().localOnlineIterable())
+		        S.println(text());
 		    setMiscText("");
 		    return;
         }

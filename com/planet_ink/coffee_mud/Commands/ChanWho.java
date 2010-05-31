@@ -73,13 +73,12 @@ public class ChanWho extends StdCommand
 		String head="^x\n\rListening on "+channel+":^?^.^N\n\r";
 		StringBuffer buf=new StringBuffer("");
         boolean areareq=CMLib.channels().getChannelFlags(channelInt).contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
-		for(int s=0;s<CMLib.sessions().size();s++)
+		for(Session S : CMLib.sessions().localOnlineIterable())
 		{
-			Session ses=CMLib.sessions().elementAt(s);
-			MOB mob2=ses.mob();
+			MOB mob2=S.mob();
 			if((mob2!=null)&&(mob2.soulMate()!=null))
 				mob2=mob2.soulMate();
-			if((CMLib.channels().mayReadThisChannel(mob,areareq,ses,channelInt))
+			if((CMLib.channels().mayReadThisChannel(mob,areareq,S,channelInt))
 			&&(mob2!=null)
 			&&(CMLib.flags().isInTheGame(mob2,true))
 			&&((((mob2.phyStats().disposition()&PhyStats.IS_CLOAKED)==0)

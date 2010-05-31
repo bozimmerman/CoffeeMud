@@ -131,16 +131,7 @@ public class IMudInterface implements ImudServices, Serializable
 
 	protected MOB findSessMob(String mobName)
 	{
-		for(int s=0;s<CMLib.sessions().size();s++)
-		{
-			Session ses=CMLib.sessions().elementAt(s);
-			if((!ses.killFlag())&&(ses.mob()!=null)
-			&&(!ses.mob().amDead())
-			&&(ses.mob().Name().equalsIgnoreCase(mobName))
-			&&(ses.mob().location()!=null))
-				return ses.mob();
-		}
-		return null;
+		return CMLib.sessions().findPlayerOnline(mobName, true);
 	}
 
 	public String fixColors(String str)
@@ -276,13 +267,13 @@ public class IMudInterface implements ImudServices, Serializable
 				}
 		        CMLib.commands().monitorGlobalMessage(mob.location(), msg);
 				CMLib.channels().channelQueUp(channelInt,msg);
-				for(int s=0;s<CMLib.sessions().size();s++)
+				for(Session S : CMLib.sessions().localOnlineIterable())
 				{
-					Session ses=CMLib.sessions().elementAt(s);
-					if((CMLib.channels().mayReadThisChannel(mob,false,ses,channelInt))
-                    &&(ses.mob().location()!=null)
-					&&(ses.mob().location().okMessage(ses.mob(),msg)))
-						ses.mob().executeMsg(ses.mob(),msg);
+					MOB M=S.mob();
+					if((CMLib.channels().mayReadThisChannel(mob,false,S,channelInt))
+                    &&(M.location()!=null)
+					&&(M.location().okMessage(M,msg)))
+						M.executeMsg(M,msg);
 				}
                 destroymob(mob);
                 if((targetMOB!=null)&&(killtargetmob)) destroymob(targetMOB);
@@ -381,12 +372,13 @@ public class IMudInterface implements ImudServices, Serializable
 				wkr.channel=wk.channel;
 				int channelInt=CMLib.channels().getChannelIndex(wk.channel);
 				Vector whoV=new Vector();
-				for(int s=0;s<CMLib.sessions().size();s++)
+				for(Session S : CMLib.sessions().localOnlineIterable())
 				{
-					Session ses=CMLib.sessions().elementAt(s);
-					if((CMLib.channels().mayReadThisChannel(ses.mob(),false,ses,channelInt))
-                    &&((ses.mob()==null)||(!CMLib.flags().isCloaked(ses.mob()))))
-						whoV.addElement(ses.mob().name());
+					MOB M=S.mob();
+					if((CMLib.channels().mayReadThisChannel(M,false,S,channelInt))
+                    &&(M!=null)
+                    &&(!CMLib.flags().isCloaked(M)))
+						whoV.addElement(M.name());
 				}
 				wkr.who=whoV;
 				try{
@@ -419,20 +411,19 @@ public class IMudInterface implements ImudServices, Serializable
 				wkr.target_name=wk.sender_name;
 				wkr.target_mud=wk.sender_mud;
 				Vector whoV=new Vector();
-				for(int s=0;s<CMLib.sessions().size();s++)
+				for(Session S : CMLib.sessions().localOnlineIterable())
 				{
-					Session ses=CMLib.sessions().elementAt(s);
-					MOB smob=ses.mob();
+					MOB smob=S.mob();
 					if((smob!=null)&&(smob.soulMate()!=null))
 						smob=smob.soulMate();
-					if((!ses.killFlag())&&(smob!=null)
+					if((!S.killFlag())&&(smob!=null)
 					&&(!smob.amDead())
 					&&(CMLib.flags().isInTheGame(smob,true))
 					&&(!CMLib.flags().isCloaked(smob)))
 					{
 						Vector whoV2=new Vector();
 						whoV2.addElement(smob.name());
-						whoV2.addElement(Integer.valueOf((int)(ses.getIdleMillis()/1000)));
+						whoV2.addElement(Integer.valueOf((int)(S.getIdleMillis()/1000)));
 						whoV2.addElement(smob.charStats().displayClassLevel(smob,true));
 						whoV.addElement(whoV2);
 					}

@@ -2995,12 +2995,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(lastKnownLocation!=null)
                 {
                     int num=0;
-                    for(int s=0;s<CMLib.sessions().size();s++)
-                    {
-                        Session S=CMLib.sessions().elementAt(s);
-                        if((S!=null)&&(S.mob()!=null)&&(S.mob().location()!=null)&&(S.mob().location().getArea()==lastKnownLocation.getArea()))
+            		for(Session S : CMLib.sessions().localOnlineIterable())
+                        if((S.mob().location()!=null)&&(S.mob().location().getArea()==lastKnownLocation.getArea()))
                             num++;
-                    }
                     returnable=simpleEval(scripted,""+num,arg2,arg1,"NUMPCSAREA");
                 }
                 break;
@@ -5104,12 +5101,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(lastKnownLocation!=null)
                 {
                     int num=0;
-                    for(int s=0;s<CMLib.sessions().size();s++)
-                    {
-                        Session S=CMLib.sessions().elementAt(s);
-                        if((S!=null)&&(S.mob()!=null)&&(S.mob().location()!=null)&&(S.mob().location().getArea()==lastKnownLocation.getArea()))
+            		for(Session S : CMLib.sessions().localOnlineIterable())
+                        if((S.mob().location()!=null)&&(S.mob().location().getArea()==lastKnownLocation.getArea()))
                             num++;
-                    }
                     results.append(""+num);
                 }
                 break;

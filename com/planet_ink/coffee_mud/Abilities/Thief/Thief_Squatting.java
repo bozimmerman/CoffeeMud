@@ -145,9 +145,8 @@ public class Thief_Squatting extends ThiefSkill
 			}
 			else
 			{
-				for(int s=0;s<CMLib.sessions().size();s++)
+				for(Session S : CMLib.sessions().localOnlineIterable())
 				{
-					Session S=CMLib.sessions().elementAt(s);
 					if((S.mob()!=null)
 					&&(S.mob()!=mob)
 					&&(S.mob().getClanID().equals(C.clanID())))

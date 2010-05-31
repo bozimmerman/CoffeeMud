@@ -94,20 +94,16 @@ public class DumpFile extends StdCommand
 		}
 		if (fileText.length() > 0)
 		{
-			for(int s=0;s<CMLib.sessions().size();s++)
+			for(Session S : CMLib.sessions().localOnlineIterable())
 			{
-				Session thisSession=CMLib.sessions().elementAt(s);
-
-				if (thisSession==null) continue;
-				if (thisSession.killFlag() || (thisSession.mob()==null)) continue;
-				if(!CMSecurity.isAllowed(mob,thisSession.mob().location(),"DUMPFILE"))
+				if(!CMSecurity.isAllowed(mob,S.mob().location(),"DUMPFILE"))
 					continue;
-				if (allFlag || thisSession.mob().name().equalsIgnoreCase(targetName))
+				if (allFlag || S.mob().name().equalsIgnoreCase(targetName))
 				{
 					if (rawMode)
-						thisSession.rawPrintln(fileText.toString());
+						S.rawPrintln(fileText.toString());
 					else
-						thisSession.colorOnlyPrintln(fileText.toString());
+						S.colorOnlyPrintln(fileText.toString());
 					++numSessions;
 				}
 			}

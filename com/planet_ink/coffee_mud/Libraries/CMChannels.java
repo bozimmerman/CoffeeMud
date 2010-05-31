@@ -323,10 +323,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		List<Session> invalid=null;
 	    if(mySession!=null)
 	    {
-		    Session S=null;
-		    for(int s=0;s<CMLib.sessions().size();s++)
+			for(Session S : CMLib.sessions().allIterable())
 		    {
-		        S=CMLib.sessions().elementAt(s);
 		        if((S!=mySession)
 		        &&(S.mob()!=null)
 		        &&(mySession.amBeingSnoopedBy(S))
@@ -543,11 +541,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
         {
             boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
             channelQueUp(channelInt,msg);
-            for(int s=0;s<CMLib.sessions().size();s++)
-            {
-                Session ses=CMLib.sessions().elementAt(s);
-                channelTo(ses,areareq,channelInt,msg,mob);
-            }
+    		for(Session S : CMLib.sessions().localOnlineIterable())
+                channelTo(S,areareq,channelInt,msg,mob);
         }
         if((CMLib.intermud().i3online()&&(CMLib.intermud().isI3channel(channelName)))
         ||(CMLib.intermud().imc2online()&&(CMLib.intermud().isIMC2channel(channelName))))

@@ -39,15 +39,12 @@ public class NumPlayers extends StdWebMacro
 	{
 		java.util.Map<String,String> parms=parseParms(parm);
 		if(parms.containsKey("ALL"))
-			return ""+CMLib.sessions().size();
+			return ""+CMLib.sessions().getCountLocalOnline();
 
 		int numPlayers=0;
-		for(int s=0;s<CMLib.sessions().size();s++)
-		{
-			Session S=CMLib.sessions().elementAt(s);
+		for(Session S : CMLib.sessions().localOnlineIterable())
 			if((S.mob()!=null)&&(!CMLib.flags().isCloaked(S.mob())))
 			   numPlayers++;
-		}
 		return Integer.toString(numPlayers);
 	}
 

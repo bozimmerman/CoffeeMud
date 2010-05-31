@@ -352,11 +352,8 @@ public class Conquerable extends Arrest
     
     protected void announceToArea(Area area, String clanID, int amount)
     {
-        Session S=null;
-        for(int s=CMLib.sessions().size()-1;s>=0;s--)
+		for(Session S : CMLib.sessions().localOnlineIterable())
         {
-            S=CMLib.sessions().elementAt(s);
-            if(S==null) continue;
             if((S.mob()!=null)
             &&(S.mob().location()!=null)
             &&(area.inMyMetroArea(S.mob().location().getArea())))

@@ -110,13 +110,10 @@ public class Transfer extends At
         else
         {
 			if(!allFlag)
-				for(int s=0;s<CMLib.sessions().size();s++)
-				{
-					Session S=CMLib.sessions().elementAt(s);
-					MOB M=S.mob();
-					if((M!=null)&&(M.Name().equalsIgnoreCase(mobname)))
-						V.addElement(M);
-				}
+			{
+				MOB M=CMLib.sessions().findPlayerOnline(mobname,true);
+				if(M!=null) V.add(M);
+			}
 			if(V.size()==0)
 				for(Enumeration<Room> r=mob.location().getArea().getProperMap();r.hasMoreElements();)
 				{

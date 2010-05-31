@@ -39,12 +39,12 @@ public class Snoop extends StdCommand
 	private final String[] access={"SNOOP"};
 	public String[] getAccessWords(){return access;}
 	
-	protected Vector snoopingOn(Session S)
+	protected List<Session> snoopingOn(Session S)
 	{
-		Vector V=new Vector();
-		for(int s=0;s<CMLib.sessions().size();s++)
-			if(CMLib.sessions().elementAt(s).amBeingSnoopedBy(S))
-				V.addElement(CMLib.sessions().elementAt(s));
+		List<Session> V=new Vector();
+		for(Session S2 : CMLib.sessions().allIterable())
+			if(S2.amBeingSnoopedBy(S))
+				V.add(S2);
 		return V;
 	}
 	
@@ -55,9 +55,7 @@ public class Snoop extends StdCommand
 		commands.removeElementAt(0);
 		if(mob.session()==null) return false;
 		boolean doneSomething=false;
-		for(int s=0;s<CMLib.sessions().size();s++)
-		{
-			Session S=CMLib.sessions().elementAt(s);
+		for(Session S : CMLib.sessions().allIterable())
 			if(S.amBeingSnoopedBy(mob.session()))
 			{
 				if(S.mob()!=null)
@@ -67,7 +65,6 @@ public class Snoop extends StdCommand
 				doneSomething=true;
 				S.stopBeingSnoopedBy(mob.session());
 			}
-		}
 		if(commands.size()==0)
 		{
 			if(!doneSomething)
@@ -76,22 +73,17 @@ public class Snoop extends StdCommand
 		}
 		String whom=CMParms.combine(commands,0);
 		Session SnoopOn=null;
-		for(int s=0;s<CMLib.sessions().size();s++)
+		Session S=CMLib.sessions().findPlayerSessionOnline(whom,false);
+		if(S!=null)
 		{
-			Session S=CMLib.sessions().elementAt(s);
-			if((S.mob()!=null)
-		    &&((CMLib.english().containsString(S.mob().name(),whom))
-				   ||(CMLib.english().containsString(S.mob().Name(),whom))))
+			if(S==mob.session())
 			{
-				if(S==mob.session())
-				{
-					mob.tell("no.");
-					return false;
-				}
-				else
-				if(CMSecurity.isAllowed(mob,S.mob().location(),"SNOOP"))
-					SnoopOn=S;
+				mob.tell("no.");
+				return false;
 			}
+			else
+			if(CMSecurity.isAllowed(mob,S.mob().location(),"SNOOP"))
+				SnoopOn=S;
 		}
 		if(SnoopOn==null)
 			mob.tell("You can't find anyone to snoop on by that name.");
@@ -112,10 +104,10 @@ public class Snoop extends StdCommand
 					mob.tell("This would create a snoop loop!");
 					return false;
 				}
-				Vector V=snoopingOn((Session)snoop.elementAt(v));
+				List<Session> V=snoopingOn((Session)snoop.elementAt(v));
 				for(int v2=0;v2<V.size();v2++)
 				{
-					Session S2=(Session)V.elementAt(v2);
+					Session S2=(Session)V.get(v2);
 					if(!snoop.contains(S2))
 						snoop.addElement(S2);
 				}

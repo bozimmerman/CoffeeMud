@@ -50,9 +50,8 @@ public class Boot extends StdCommand
 		}
 		String whom=CMParms.combine(commands,0);
 		boolean boot=false;
-		for(int s=0;s<CMLib.sessions().size();s++)
+		for(Session S : CMLib.sessions().allIterable())
 		{
-			Session S=CMLib.sessions().elementAt(s);
 			if(((S.mob()!=null)&&(CMLib.english().containsString(S.mob().name(),whom)))
 			||(S.getAddress().equalsIgnoreCase(whom)))
 			{

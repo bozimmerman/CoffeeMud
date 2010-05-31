@@ -51,9 +51,8 @@ public class WizEmote extends StdCommand
 			Clan C=CMLib.clans().findClan(who);
 			if(who.toUpperCase().equals("ALL"))
 			{
-				for(int s=0;s<CMLib.sessions().size();s++)
+				for(Session S : CMLib.sessions().localOnlineIterable())
 				{
-					Session S=CMLib.sessions().elementAt(s);
 					if((S.mob()!=null)
 					&&(S.mob().location()!=null)
 					&&(CMSecurity.isAllowed(mob,S.mob().location(),"WIZEMOTE")))
@@ -63,9 +62,8 @@ public class WizEmote extends StdCommand
 			else
             if(R!=null)
             {
-                for(int s=0;s<CMLib.sessions().size();s++)
+				for(Session S : CMLib.sessions().localOnlineIterable())
                 {
-                    Session S=CMLib.sessions().elementAt(s);
                     if((S.mob()!=null)
                     &&(S.mob().location()==R)
                     &&(CMSecurity.isAllowed(mob,R,"WIZEMOTE")))
@@ -75,9 +73,8 @@ public class WizEmote extends StdCommand
             else
             if(A!=null)
             {
-                for(int s=0;s<CMLib.sessions().size();s++)
+				for(Session S : CMLib.sessions().localOnlineIterable())
                 {
-                    Session S=CMLib.sessions().elementAt(s);
                     if((S.mob()!=null)
                     &&(S.mob().location()!=null)
                     &&(A.inMyMetroArea(S.mob().location().getArea()))
@@ -88,9 +85,8 @@ public class WizEmote extends StdCommand
             else
             if(C!=null)
             {
-                for(int s=0;s<CMLib.sessions().size();s++)
+				for(Session S : CMLib.sessions().localOnlineIterable())
                 {
-                    Session S=CMLib.sessions().elementAt(s);
                     if((S.mob()!=null)
                     &&(S.mob().getClanID().equals(C.clanID()))
                     &&(CMSecurity.isAllowed(mob,S.mob().location(),"WIZEMOTE")))
@@ -100,9 +96,8 @@ public class WizEmote extends StdCommand
             else
 			{
 				boolean found=false;
-				for(int s=0;s<CMLib.sessions().size();s++)
+				for(Session S : CMLib.sessions().localOnlineIterable())
 				{
-					Session S=CMLib.sessions().elementAt(s);
 					if((S.mob()!=null)
 					&&(S.mob().location()!=null)
 					&&(CMSecurity.isAllowed(mob,S.mob().location(),"WIZEMOTE"))

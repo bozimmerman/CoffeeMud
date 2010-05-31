@@ -414,7 +414,7 @@ public class DefaultSession extends Thread implements Session
     protected void errorOut(Exception t)
 	{
 		Log.errOut("Session",t);
-		CMLib.sessions().removeElement(this);
+		CMLib.sessions().remove(this);
 		killFlag=true;
 	}
 
@@ -1275,7 +1275,7 @@ public class DefaultSession extends Thread implements Session
 			removeMOBFromGame(false);
         if(dropSession) {
             status=Session.STATUS_LOGOUT3;
-            CMLib.sessions().removeElement(this);
+            CMLib.sessions().remove(this);
             status=Session.STATUS_LOGOUT4;
             closeSocks();
 		}
@@ -1652,7 +1652,7 @@ public class DefaultSession extends Thread implements Session
 
 
 		status=Session.STATUS_LOGOUT5;
-		CMLib.sessions().removeElement(this);
+		CMLib.sessions().remove(this);
 
 		//finally
 		//{

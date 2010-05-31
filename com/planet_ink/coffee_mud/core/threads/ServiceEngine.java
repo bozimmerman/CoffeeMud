@@ -212,9 +212,8 @@ public class ServiceEngine implements ThreadEngine
 		long topMOBMillis=0;
 		long topMOBTicks=0;
 		MOB topMOBClient=null;
-		for(int s=0;s<CMLib.sessions().size();s++)
+		for(Session S : CMLib.sessions().localOnlineIterable())
 		{
-			Session S=CMLib.sessions().elementAt(s);
 			totalMOBMillis+=S.getTotalMillis();
 			totalMOBTicks+=S.getTotalTicks();
 			if(S.getTotalMillis()>topMOBMillis)

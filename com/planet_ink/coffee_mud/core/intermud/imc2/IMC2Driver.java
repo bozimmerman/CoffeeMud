@@ -129,8 +129,8 @@ public final class IMC2Driver extends Thread {
     {
 		if(name.equalsIgnoreCase("all"))
 		{
-			for(int s=0;s<CMLib.sessions().size();s++)
-				CMLib.sessions().elementAt(s).println(text);
+		    for(Session S : CMLib.sessions().localOnlineIterable())
+				S.println(text);
 		}
 		else
 		{
@@ -1045,7 +1045,7 @@ public final class IMC2Driver extends Thread {
 		MOB mob=CMClass.getMOB("StdMOB");
 		mob.setName(from);
 		mob.setLocation(CMClass.getLocale("StdRoom"));
-		MOB smob=findSessMob(d.name);
+		MOB smob=CMLib.sessions().findPlayerOnline(d.name,true);
 		if(smob!=null)
 			CMLib.commands().postSay(mob,smob,text,true,true);
         Room R=mob.location();
@@ -1053,20 +1053,6 @@ public final class IMC2Driver extends Thread {
         if(R!=null) R.destroy();
     }
 
-	protected MOB findSessMob(String mobName)
-	{
-		for(int s=0;s<CMLib.sessions().size();s++)
-		{
-			Session ses=CMLib.sessions().elementAt(s);
-			if((!ses.killFlag())&&(ses.mob()!=null)
-			&&(!ses.mob().amDead())
-			&&(ses.mob().Name().equalsIgnoreCase(mobName))
-			&&(ses.mob().location()!=null))
-				return ses.mob();
-		}
-		return null;
-	}
-	
 	public REMOTEINFO getIMC2Mud(String named)
 	{
 		Hashtable l=query_muds();
@@ -1116,14 +1102,11 @@ public final class IMC2Driver extends Thread {
 		msg=CMClass.getMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str);
 
 		CMLib.channels().channelQueUp(channelInt,msg);
-		for(int s=0;s<CMLib.sessions().size();s++)
-		{
-			Session ses=CMLib.sessions().elementAt(s);
-			if((CMLib.channels().mayReadThisChannel(mob,false,ses,channelInt))
-            &&(ses.mob().location()!=null)
-			&&(ses.mob().location().okMessage(ses.mob(),msg)))
-				ses.mob().executeMsg(ses.mob(),msg);
-		}
+	    for(Session S : CMLib.sessions().localOnlineIterable())
+			if((CMLib.channels().mayReadThisChannel(mob,false,S,channelInt))
+            &&(S.mob().location()!=null)
+			&&(S.mob().location().okMessage(S.mob(),msg)))
+				S.mob().executeMsg(S.mob(),msg);
 
         LinkedList l = (LinkedList) chanhist.get(channel);
         if(l == null)

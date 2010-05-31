@@ -1,10 +1,10 @@
 package com.planet_ink.coffee_mud.Libraries.interfaces;
 
-import java.util.Enumeration;
-import java.util.Vector;
-import com.planet_ink.coffee_mud.Common.interfaces.Session;
-import com.planet_ink.coffee_mud.core.collections.SVector;
-import com.planet_ink.coffee_mud.core.interfaces.CMObject;
+import java.util.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 /* 
 Copyright 2000-2010 Bo Zimmerman
 
@@ -23,12 +23,16 @@ limitations under the License.
 
 public interface SessionsList extends CMLibrary, Runnable
 {
-    public Session elementAt(int x);
-    public int size();
-    public void addElement(Session S);
-    public void removeElementAt(int x);
-    public void removeElement(Session S);
     public void stopSessionAtAllCosts(Session S);
-    public Session findPlayerOnline(String srchStr, boolean exactOnly);
-    public Enumeration<Session> sessions();
+    public Session findPlayerSessionOnline(String srchStr, boolean exactOnly);
+    public MOB findPlayerOnline(String srchStr, boolean exactOnly);
+    public Iterator<Session> all();
+    public Iterable<Session> allIterable();
+    public Iterator<Session> localOnline();
+    public Iterable<Session> localOnlineIterable();
+    public int getCountLocalOnline();
+    public int getCountAll();
+    public Session getAllSessionAt(int index);
+    public void add(Session s);
+    public void remove(Session s);
 }

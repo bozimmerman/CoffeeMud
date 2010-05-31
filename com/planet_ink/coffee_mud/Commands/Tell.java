@@ -79,33 +79,10 @@ public class Tell extends StdCommand
 			return false;
 		}
 		
-		MOB target=null;
+		MOB targetM=null;
 		String targetName=((String)commands.elementAt(0)).toUpperCase();
-		for(int s=0;s<CMLib.sessions().size();s++)
-		{
-			Session thisSession=CMLib.sessions().elementAt(s);
-			if((thisSession.mob()!=null)
-			   &&(!thisSession.killFlag())
-			   &&((thisSession.mob().name().equalsIgnoreCase(targetName))
-				  ||(thisSession.mob().Name().equalsIgnoreCase(targetName))))
-			{
-				target=thisSession.mob();
-				break;
-			}
-		}
-		if(target==null)
-		for(int s=0;s<CMLib.sessions().size();s++)
-		{
-			Session thisSession=CMLib.sessions().elementAt(s);
-			if((thisSession.mob()!=null)
-			   &&(!thisSession.killFlag())
-			   &&((CMLib.english().containsString(thisSession.mob().name(),targetName))
-				  ||(CMLib.english().containsString(thisSession.mob().Name(),targetName))))
-			{
-				target=thisSession.mob();
-				break;
-			}
-		}
+		targetM=CMLib.sessions().findPlayerOnline(targetName,true);
+		if(targetM==null) targetM=CMLib.sessions().findPlayerOnline(targetName,false);
 		for(int i=1;i<commands.size();i++)
 		{
 			String s=(String)commands.elementAt(i);
@@ -119,7 +96,7 @@ public class Tell extends StdCommand
 			return false;
 		}
 		combinedCommands=CMProps.applyINIFilter(combinedCommands,CMProps.SYSTEM_SAYFILTER);
-		if(target==null)
+		if(targetM==null)
 		{
 			if(targetName.indexOf('@')>=0)
 			{
@@ -135,23 +112,23 @@ public class Tell extends StdCommand
 			return false;
 		}
 		
-		if(CMath.bset(target.getBitmap(),MOB.ATT_QUIET))
+		if(CMath.bset(targetM.getBitmap(),MOB.ATT_QUIET))
 		{
 			mob.tell("That person can not hear you.");
 			return false;
 		}
 		
 		
-		Session ts=target.session();
+		Session ts=targetM.session();
 		try{
             if(ts!=null) ts.snoopSuspension(1);
-            CMLib.commands().postSay(mob,target,combinedCommands,true,true);
+            CMLib.commands().postSay(mob,targetM,combinedCommands,true,true);
 		} finally {
 		    if(ts!=null) ts.snoopSuspension(-1);
 		}
         
-		if((target.session()!=null)&&(target.session().afkFlag()))
-			mob.tell(target.session().afkMessage());
+		if((targetM.session()!=null)&&(targetM.session().afkFlag()))
+			mob.tell(targetM.session().afkMessage());
 		return false;
 	}
 	// the reason this is not 0ed is because of combat -- we want the players to use SAY, and pay for it when coordinating.

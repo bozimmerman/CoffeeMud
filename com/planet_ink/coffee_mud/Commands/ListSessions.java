@@ -54,24 +54,23 @@ public class ListSessions extends StdCommand
 		lines.append(CMStrings.padRight("IP",17)+"| ");
 		lines.append(CMStrings.padRight("Idle",17)+"^.^N\n\r");
 		Vector broken=new Vector();
-		for(int s=0;s<CMLib.sessions().size();s++)
+		for(Session S : CMLib.sessions().allIterable())
 		{
-			Session thisSession=CMLib.sessions().elementAt(s);
 			String[] set=new String[6];
-            set[0]=CMStrings.padRight(""+s,3)+"| ";
-			set[1]=(thisSession.killFlag()?"^H":"")+CMStrings.padRight(Session.STATUS_STR[thisSession.getStatus()],9)+(thisSession.killFlag()?"^?":"")+"| ";
-			if (thisSession.mob() != null)
+            set[0]=CMStrings.padRight(""+broken.size(),3)+"| ";
+			set[1]=(S.killFlag()?"^H":"")+CMStrings.padRight(Session.STATUS_STR[S.getStatus()],9)+(S.killFlag()?"^?":"")+"| ";
+			if (S.mob() != null)
 			{
-				set[2]=CMStrings.padRight(((thisSession.mob().session()==thisSession)?"Yes":"^HNO!^?"),5)+"| ";
-				set[3]="^!"+CMStrings.padRight("^<LSTUSER^>"+thisSession.mob().Name()+"^</LSTUSER^>",17)+"^?| ";
+				set[2]=CMStrings.padRight(((S.mob().session()==S)?"Yes":"^HNO!^?"),5)+"| ";
+				set[3]="^!"+CMStrings.padRight("^<LSTUSER^>"+S.mob().Name()+"^</LSTUSER^>",17)+"^?| ";
 			}
 			else
 			{
 				set[2]=CMStrings.padRight("N/A",5)+"| ";
 				set[3]=CMStrings.padRight("NAMELESS",17)+"| ";
 			}
-			set[4]=CMStrings.padRight(thisSession.getAddress(),17)+"| ";
-			set[5]=CMStrings.padRight(CMLib.english().returnTime(thisSession.getIdleMillis(),0)+"",17);
+			set[4]=CMStrings.padRight(S.getAddress(),17)+"| ";
+			set[5]=CMStrings.padRight(CMLib.english().returnTime(S.getIdleMillis(),0)+"",17);
 			broken.addElement(set);
 		}
 		Vector sorted=null;

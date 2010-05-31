@@ -114,14 +114,9 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
         if(type==STAT_SPECIAL_NUMONLINE)
         {
             int ct=0;
-            for(int s=0;s<CMLib.sessions().size();s++)
-            {
-                Session S=CMLib.sessions().elementAt(s);
-                if((S!=null)&&(S.mob()!=null)
-                &&(S.mob().location()!=null)
-                &&(S.mob().location().isInhabitant(S.mob())))
-                   ct++;
-            }
+            for(Session S : CMLib.sessions().localOnlineIterable())
+            	if(S!=null) 
+            		ct++;
             numberOnlineCounter++;
             numberOnlineTotal+=ct;
             if(ct>highestOnline)

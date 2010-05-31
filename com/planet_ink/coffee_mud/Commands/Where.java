@@ -90,17 +90,16 @@ public class Where extends StdCommand
 			String who=CMParms.combineWithQuotes(commands,1);
 			if(who.length()==0)
 			{
-				for(int s=0;s<CMLib.sessions().size();s++)
+				for(Session S : CMLib.sessions().localOnlineIterable())
 				{
-					Session thisSession=CMLib.sessions().elementAt(s);
-					MOB mob2=thisSession.mob();
+					MOB mob2=S.mob();
 					if(canShowTo(mob,mob2))
 					{
 						lines.append("^!"+CMStrings.padRight(mob2.Name(),17)+"^N| ");
-						if(thisSession.mob().location() != null )
+						if(S.mob().location() != null )
 						{
-							lines.append(thisSession.mob().location().displayText());
-							lines.append(" (^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(thisSession.mob().location())+"^</LSTROOMID^>)");
+							lines.append(S.mob().location().displayText());
+							lines.append(" (^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(S.mob().location())+"^</LSTROOMID^>)");
 						}
 						else
 							lines.append("^!(no location)^?");

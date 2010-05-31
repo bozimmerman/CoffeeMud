@@ -110,19 +110,16 @@ public class Who extends StdCommand
 	public String getWho(MOB mob, Set<String> friends, String mobName)
 	{
 		StringBuffer msg=new StringBuffer("");
-		for(int s=0;s<CMLib.sessions().size();s++)
+		for(Session S : CMLib.sessions().localOnlineIterable())
 		{
-			Session thisSession=CMLib.sessions().elementAt(s);
-			MOB mob2=thisSession.mob();
+			MOB mob2=S.mob();
 			if((mob2!=null)&&(mob2.soulMate()!=null))
 				mob2=mob2.soulMate();
 
 			if((mob2!=null)
-			&&(!thisSession.killFlag())
 			&&((((mob2.phyStats().disposition()&PhyStats.IS_CLOAKED)==0)
 				||((CMSecurity.isAllowedAnywhere(mob,"CLOAK")||CMSecurity.isAllowedAnywhere(mob,"WIZINV"))&&(mob.phyStats().level()>=mob2.phyStats().level()))))
 			&&((friends==null)||(friends.contains(mob2.Name())||(friends.contains("All"))))
-			&&(CMLib.flags().isInTheGame(mob2,true))
 			&&(mob2.phyStats().level()>0))
 				msg.append(showWhoShort(mob2));
 		}
@@ -176,10 +173,9 @@ public class Who extends StdCommand
         ||mobName.equalsIgnoreCase("playerkill")))
         {
             friends=new HashSet();
-            for(int s=0;s<CMLib.sessions().size();s++)
+    		for(Session S : CMLib.sessions().allIterable())
             {
-                Session thisSession=CMLib.sessions().elementAt(s);
-                MOB mob2=thisSession.mob();
+                MOB mob2=S.mob();
                 if((mob2!=null)&&(CMath.bset(mob2.getBitmap(),MOB.ATT_PLAYERKILL)))
                     friends.add(mob2.Name());
             }

@@ -153,12 +153,9 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
            deadMOB=getPlayer(deadMOB.Name());
            delPlayer(deadMOB);
         }
-        for(int s=0;s<CMLib.sessions().size();s++)
-        {
-            Session S=CMLib.sessions().elementAt(s);
+	    for(Session S : CMLib.sessions().allIterable())
             if((!S.killFlag())&&(S.mob()!=null)&&(S.mob().Name().equals(deadMOB.Name())))
                deadMOB=S.mob();
-        }
         CMMsg msg=CMClass.getMsg(deadMOB,null,CMMsg.MSG_RETIRE,(quiet)?null:"A horrible death cry is heard throughout the land.");
         Room deadLoc=deadMOB.location();
         if(deadLoc!=null)

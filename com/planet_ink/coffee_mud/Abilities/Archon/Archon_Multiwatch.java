@@ -183,9 +183,8 @@ public class Archon_Multiwatch extends ArchonSkill
 			DATA.clear();
 			IPS.clear();
 			Hashtable<String,List<MOB>> ipes=new Hashtable<String,List<MOB>>();
-			for(int s=0;s<CMLib.sessions().size();s++)
+			for(Session S : CMLib.sessions().localOnlineIterable())
 			{
-				Session S=CMLib.sessions().elementAt(s);
 				if((S.getAddress().length()>0)
 				&&(S.mob()!=null))
 				{
@@ -228,9 +227,8 @@ public class Archon_Multiwatch extends ArchonSkill
 		if(CMParms.combine(commands,0).equalsIgnoreCase("stop"))
 		{
             boolean foundLegacy=false;
-            for(int s=0;s<CMLib.sessions().size();s++)
+			for(Session S : CMLib.sessions().localOnlineIterable())
             {
-                Session S=CMLib.sessions().elementAt(s);
                 if((S!=null)&&(S.mob()!=null)&&(S.mob().fetchEffect(ID())!=null))
                 { foundLegacy=true; break;}
             }
@@ -249,9 +247,8 @@ public class Archon_Multiwatch extends ArchonSkill
 					if(A!=null) M.delEffect(A);
 				}
 			}
-            for(int s=0;s<CMLib.sessions().size();s++)
+			for(Session S : CMLib.sessions().localOnlineIterable())
             {
-                Session S=CMLib.sessions().elementAt(s);
                 if((S!=null)&&(S.mob()!=null))
                 {
                     MOB M=S.mob();
