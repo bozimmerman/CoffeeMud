@@ -83,6 +83,8 @@ public class Decay extends ActiveTicker
 					if(mob.amDead()) mob.setLocation(null);
 					mob.destroy();
 					room.recoverRoomStats();
+					if(answer.trim().length()>0)
+						room.showHappens(CMMsg.MSG_OK_VISUAL,mob.name()+" "+answer.trim());
 				}
 			}
 			else
