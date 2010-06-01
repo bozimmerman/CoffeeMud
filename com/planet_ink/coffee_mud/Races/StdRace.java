@@ -1107,16 +1107,16 @@ public class StdRace implements Race
 		||(sensesChgDesc==null))
 		{
 			StringBuilder str=new StringBuilder("");
+			Session sess = (Session)CMClass.getCommon("DefaultSession");
 			MOB mob=CMClass.getMOB("StdMOB");
-			mob.setSession(null);
+			mob.setSession(sess);
 			mob.baseCharStats().setMyRace(this);
 			startRacing(mob,false);
-			mob.recoverCharStats();
 			mob.recoverCharStats();
 			mob.recoverPhyStats();
 			mob.recoverMaxState();
 			MOB mob2=CMClass.getMOB("StdMOB");
-			mob2.setSession(null);
+			mob2.setSession(sess);
 			mob2.baseCharStats().setMyRace(new StdRace());
 			mob2.recoverCharStats();
 			mob2.recoverPhyStats();
