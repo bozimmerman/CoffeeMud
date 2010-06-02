@@ -1,10 +1,4 @@
-spellname                          56
-magic missle                       49
-compressed                         37
-lantern                            28
-ooc                                26
 races                              26
-zchat                              26
 injuries                           24
 drinking                           24
 ignan                              24
@@ -400,7 +394,6 @@ drudic pass                        4
 scales                             4
 timer                              4
 permanancy                         4
-autocompressed                     4
 mass forgive                       4
 awarness                           4
 donation                           4
