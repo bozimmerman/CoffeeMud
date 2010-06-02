@@ -2281,3 +2281,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 12.New Ability INI entries: MAXCOMMONSKILLS, MAXCRAFTINGSKILLS, MAXNONCRAFTINGSKILLS, MAXLANGUAGES
 13.New all-skills configuration file: /resources/skills/allqualifylist
 14.New IP service (CM1Server) -- a new, more formal-syntax mud interface -- see guides/CM1ServerGuide.html
+15.New DISABLE flag: LOGOUTS (keeps characters in game world even if they log out)

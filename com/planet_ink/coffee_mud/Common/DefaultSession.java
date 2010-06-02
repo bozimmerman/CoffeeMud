@@ -1396,7 +1396,8 @@ public class DefaultSession extends Thread implements Session
             }
             if(inTheGame)
 	            CMLib.database().DBUpdateFollowers(M);
-            M.removeFromGame(true,killSession);
+            if(!CMSecurity.isDisabled("LOGOUTS"))
+	            M.removeFromGame(true,killSession);
         }
 	}
 	public int getStatus(){return status;}
@@ -1636,9 +1637,12 @@ public class DefaultSession extends Thread implements Session
 		}
 		status=Session.STATUS_LOGOUT3;
 
-		if(mob!=null) mob.removeFromGame(true,true);
-		if(mob!=null) mob.setSession(null);
-		mob=null;
+		if((mob!=null)&&(!CMSecurity.isDisabled("LOGOUTS")))
+		{
+			mob.removeFromGame(true,true);
+			mob.setSession(null);
+			mob=null;
+		}
 		Log.sysOut("Session","Disconnect: "+getAddress()+" ("+CMLib.time().date2ShortEllapsedTime(getMillisOnline())+")");
 
 		status=Session.STATUS_LOGOUT4;
