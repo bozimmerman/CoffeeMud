@@ -39,8 +39,8 @@ public class MindFlayer extends Humanoid
 	protected static List<RawMaterial> resources=new Vector<RawMaterial>();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 	public String racialCategory(){return "Illithid";}
-	private String[]culturalAbilityNames={"Spell_MindFog","Spell_Charm"};
-	private int[]culturalAbilityProficiencies={100,50};
+	private String[]culturalAbilityNames={"Spell_MindFog","Spell_Charm","Undercommon"};
+	private int[]culturalAbilityProficiencies={100,50,25};
 	public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
     private String[]racialAbilityNames={"Spell_DetectSentience","Spell_CombatPrecognition"};

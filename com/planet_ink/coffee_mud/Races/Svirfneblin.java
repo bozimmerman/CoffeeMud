@@ -44,8 +44,8 @@ public class Svirfneblin extends StdRace
 	public int weightVariance(){return 50;}
 	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Gnome";}
-	private String[]culturalAbilityNames={"Gnomish","Digging"};
-	private int[]culturalAbilityProficiencies={100,50};
+	private String[]culturalAbilityNames={"Gnomish","Digging","Undercommon"};
+	private int[]culturalAbilityProficiencies={100,50,25};
 	public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 

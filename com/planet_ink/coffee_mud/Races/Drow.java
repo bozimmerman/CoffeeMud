@@ -42,8 +42,8 @@ public class Drow extends Elf
 	public int weightVariance(){return 80;}
 	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Elf";}
-	private String[]culturalAbilityNames={"Drowish","Spell_Darkness", "Spell_FaerieFire"};
-	private int[]culturalAbilityProficiencies={75,25,25};
+	private String[]culturalAbilityNames={"Drowish","Spell_Darkness", "Spell_FaerieFire","Undercommon"};
+	private int[]culturalAbilityProficiencies={75,25,25,25};
 	public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 

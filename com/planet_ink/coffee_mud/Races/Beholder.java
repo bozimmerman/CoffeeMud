@@ -51,6 +51,10 @@ public class Beholder extends StdRace
 	public int[] racialAbilityLevels(){return racialAbilityLevels;}
 	public int[] racialAbilityProficiencies(){return racialAbilityProficiencies;}
 	public boolean[] racialAbilityQuals(){return racialAbilityQuals;}
+	private String[]culturalAbilityNames={"Undercommon"};
+	private int[]culturalAbilityProficiencies={100};
+	public String[] culturalAbilityNames(){return culturalAbilityNames;}
+	public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={-1,10,-1,1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};

@@ -1,20 +1,13 @@
 races                              26
-injuries                           24
 drinking                           24
-ignan                              24
-paran                              23
-song of mana                       23
 talk                               22
-kortamus                           21
 bandage                            21
-lorti                              20
 clantalk                           20
 firebuilding                       20
 prisoner                           20
 information                        19
 daycare                            18
 mayor                              18
-malla                              17
 junk                               17
 objects                            17
 trash                              17
@@ -298,7 +291,6 @@ enchant wands                      5
 combat fluidity                    4
 looting                            4
 disentigrate                       4
-song of death                      4
 christan                           4
 hostile                            4
 repair aura                        4
@@ -439,7 +431,6 @@ clairaudience                      3
 new player                         3
 forgiveness                        3
 wordwrap                           3
-song of friendship                 3
 bazar                              3
 java                               3
 permanence                         3
@@ -553,7 +544,6 @@ server                             3
 xanxir                             3
 bathing                            3
 lamia                              3
-song of thanks                     3
 ranged in                          3
 sleep spell                        3
 area aris                          3
@@ -640,7 +630,6 @@ bovine                             3
 portcullis                         3
 uptime                             3
 magic shine                        3
-song of babble                     3
 southbounder                       3
 gather                             3
 smoking                            3
@@ -1499,7 +1488,6 @@ cub                                2
 dirty                              2
 wexamine                           2
 summon nexus                       2
-song of valor                      2
 murkmire                           2
 ignalist                           2
 clanenchanting                     2
@@ -1963,7 +1951,6 @@ dehydration                        1
 the museuem                        1
 rejoicing singi                    1
 hide door                          1
-song of armor                      1
 butcc                              1
 guild applicant                    1
 animal naming                      1
@@ -2417,7 +2404,6 @@ song wriet                         1
 conterbalance crafting i           1
 underdrak                          1
 re align                           1
-song of revilation                 1
 river of dis                       1
 mounted combatsc                   1
 visibilty                          1
@@ -2519,7 +2505,6 @@ ims southbounder                   1
 plant masterring                   1
 three-sectioned s                  1
 faery fire                         1
-song of pro                        1
 calhall                            1
 philosophy spell                   1
 reduced enchantment vii            1
@@ -3115,7 +3100,6 @@ aelin spire                        1
 reduced conj                       1
 realtor                            1
 conssstitution                     1
-song of                            1
 master fletching                   1
 cage buildeing                     1
 christened                         1
@@ -3445,7 +3429,6 @@ greater curse                      1
 potteryu                           1
 mpjunk                             1
 philsophy                          1
-song of awar                       1
 spellbindig                        1
 auciton                            1
 select                             1
@@ -3674,7 +3657,6 @@ addlimb                            1
 heroes note                        1
 dual wep spec                      1
 racketeer all                      1
-the song of babble                 1
 experitses                         1
 dect                               1
 blindf                             1
@@ -3733,7 +3715,6 @@ caged animal                       1
 aberra                             1
 tryed o`hara                       1
 hidwe                              1
-song of revalation                 1
 i need help                        1
 disintegration                     1
 somgs                              1
@@ -4078,7 +4059,6 @@ the dragon spire                   1
 scavenger sticker                  1
 archer                             1
 summon demon                       1
-song of man                        1
 clan apply                         1
 social bbl                         1
 reclaim                            1
@@ -4205,7 +4185,6 @@ swordstricking                     1
 sonjay                             1
 nosteal                            1
 counterbalanced crafting           1
-song of lightness                  1
 atlantix                           1
 trashan                            1
 koramus                            1
@@ -5308,7 +5287,6 @@ divided cast                       1
 newbe                              1
 earth elemental                    1
 moobility                          1
-song of seeing                     1
 tamborine                          1
 specist                            1
 stone room                         1
@@ -5459,7 +5437,6 @@ variables                          1
 wet land                           1
 cross bre                          1
 read migc                          1
-care to enlighten me? instead of amking me load up my own localserver and seeing?
 deeds                              1
 jewel list                         1
 call lightning                     1
@@ -6161,7 +6138,6 @@ egg                                1
 hadley hope                        1
 sub issue boots                    1
 blacksmithy                        1
-song of revelation                 1
 embaress                           1
 ice flow                           1
 drive                              1
@@ -7017,7 +6993,6 @@ bag of holding                     1
 reduce enchanting ii               1
 baby gender                        1
 prayer rock flesh                  1
-@                                  1
 conquer 2                          1
 piercing spec                      1
 spell convert                      1
@@ -7025,23 +7000,17 @@ scrimshawing scrimshawing          1
 fire buildeing                     1
 tempotake all corpse               1
 change recall point                1
-/                                  1
 extende                            1
 sneka attack                       1
 dwarven city                       1
 extendd                            1
 humans                             1
-song of bable                      1
-thanks and death`                  1
-&                                  1
 sheer                              1
-%                                  1
 sheep                              1
 revooke                            1
 azix                               1
 fine sculp                         1
 return.2                           1
-`wizards chest`                    1
 giligans                           1
 aprentise                          1
 socialssocials                     1

@@ -319,6 +319,7 @@ public class StdRace implements Race
 								if(A==null){ A=CMClass.getAbility("Common"); if(A!=null)mob.addAbility(A);}
 								if(A!=null) A.setProficiency(100);
 							}
+							break;
 						}
 					}
 				}

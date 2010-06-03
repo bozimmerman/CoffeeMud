@@ -293,12 +293,13 @@ public class Druid extends StdCharClass
 			&& !(mob.charStats().getMyRace().racialCategory().equals("Elf"))
 			&& !(mob.charStats().getMyRace().racialCategory().equals("Vegetation"))
 			&& !(mob.charStats().getMyRace().racialCategory().equals("Dwarf"))
+			&& !(mob.charStats().getMyRace().racialCategory().equals("Duergar"))
 			&& !(mob.charStats().getMyRace().racialCategory().equals("Giant-kin"))
 			&& !(mob.charStats().getMyRace().racialCategory().equals("Golbinoids"))
 			&& !(mob.charStats().getMyRace().racialCategory().equals("HalfElf")))
 			{
 				if(!quiet)
-					mob.tell("You must be Human, Elf, Dwarf, Golbinoid, Giant-kin, or Half Elf to be a Druid");
+					mob.tell("You must be Human, Elf, Duergar, Dwarf, Golbinoid, Giant-kin, or Half Elf to be a Druid");
 				return false;
 			}
 		}

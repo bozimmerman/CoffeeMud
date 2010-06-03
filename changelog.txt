@@ -2268,17 +2268,18 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 # Build 5.6.2 Release 4/25/2010 * Bug Fix build only
 # Build 5.6.3 Release ?/?/2010
  1.Can now enter I3 RESTART or IMC2 RESTART to reconnect to the intermuds
- 2.New language: Undercommon
- 3.New property/skill: TemporaryAffects (for timer-dependent behaviors/properties)
- 4.New property: Prop_LanguageSpeaker
- 5.New INI entry: WIZLISTMASK -- WIZLIST command modified to support it.
+ 2.Language: Undercommon
+ 3.Property/skill: TemporaryAffects (for timer-dependent behaviors/properties)
+ 4.Property: Prop_LanguageSpeaker
+ 5.INI entry: WIZLISTMASK -- WIZLIST command modified to support it.
  6.MUDGrinder Map editor now has a Scripts editor button on the map screen.
  7.Internal: Lots of refactoring done. Lots.
- 8.New INI entries: OBJSPERTHREAD, TICKTIME, MILLISPERMUDHOUR -- control time and thread spawning!
+ 8.INI entries: OBJSPERTHREAD, TICKTIME, MILLISPERMUDHOUR -- control time and thread spawning!
  9.Web & SMTP server INI files have some tweeking options for performance (MAXTHREADS/REQUESTTIMEOUTMINS)
-10.New Scriptable Command: MPPOSSESS
+10.Scriptable Command: MPPOSSESS
 11.MERGE command can now be used to merge different database instances of areas/rooms/etc..
-12.New Ability INI entries: MAXCOMMONSKILLS, MAXCRAFTINGSKILLS, MAXNONCRAFTINGSKILLS, MAXLANGUAGES
-13.New all-skills configuration file: /resources/skills/allqualifylist
-14.New IP service (CM1Server) -- a new, more formal-syntax mud interface -- see guides/CM1ServerGuide.html
-15.New DISABLE flag: LOGOUTS (keeps characters in game world even if they log out)
+12.Ability INI entries: MAXCOMMONSKILLS, MAXCRAFTINGSKILLS, MAXNONCRAFTINGSKILLS, MAXLANGUAGES
+13.Added an all-skills configuration file: /resources/skills/allqualifylist
+14.IP service (CM1Server) -- a new, more formal-syntax mud interface -- see guides/CM1ServerGuide.html
+15.DISABLE flag: LOGOUTS (keeps characters in game world even if they log out)
+16.Another playable race: Duergar
