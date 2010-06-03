@@ -165,7 +165,7 @@ public class Monk extends StdCharClass
 			if(!(mob.charStats().getMyRace().racialCategory().equals("Human"))
 			&& !(mob.charStats().getMyRace().racialCategory().equals("Humanoid"))
 			&& !(mob.charStats().getMyRace().racialCategory().equals("Elf"))
-			&& !(mob.charStats().getMyRace().racialCategory().equals("Goblinoids")))
+			&& !(mob.charStats().getMyRace().racialCategory().equals("Goblinoid")))
 			{
 				if(!quiet)
 					mob.tell("You must be Human, Elf, Goblinoid, or Half Elf to be a Monk");

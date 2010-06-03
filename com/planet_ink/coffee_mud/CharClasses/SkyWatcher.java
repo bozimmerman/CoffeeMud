@@ -222,11 +222,12 @@ public class SkyWatcher extends StdCharClass
 					mob.tell("You need at least a 9 Intelligence to become a SkyWatcher.");
 				return false;
 			}
-			if(!(mob.charStats().getMyRace().racialCategory().equals("Human"))
-			&& !(mob.charStats().getMyRace().racialCategory().equals("Humanoid"))
-			&& !(mob.charStats().getMyRace().racialCategory().equals("Elf"))
-			&& !(mob.charStats().getMyRace().racialCategory().equals("Dwarf"))
-			&& !(mob.charStats().getMyRace().racialCategory().equals("Giant-kin")))
+			if(	  (!(mob.charStats().getMyRace().racialCategory().equals("Human"))
+				&& !(mob.charStats().getMyRace().racialCategory().equals("Humanoid"))
+				&& !(mob.charStats().getMyRace().racialCategory().equals("Elf"))
+				&& !(mob.charStats().getMyRace().racialCategory().equals("Dwarf"))
+				&& !(mob.charStats().getMyRace().racialCategory().equals("Giant-kin")))
+			||(mob.charStats().getMyRace().ID().equals("Duergar")))
 			{
 				if(!quiet)
 					mob.tell("You must be Human, Elf, Dwarf, Giant-kin, or Half Elf to be a SkyWatcher");
