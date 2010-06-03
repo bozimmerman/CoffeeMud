@@ -1,30 +1,21 @@
 races                              26
-drinking                           24
 talk                               22
-bandage                            21
 clantalk                           20
-firebuilding                       20
-prisoner                           20
-information                        19
-daycare                            18
 mayor                              18
 junk                               17
 objects                            17
 trash                              17
-ruined                             16
 exchange                           16
 valley of titans                   16
 answer                             15
 zac                                15
 subclass                           15
-jail key                           15
 counterbalance                     15
 arena                              15
 injury                             15
 sleeping bag                       14
 macro                              14
 advice                             14
-half elf                           14
 goblin mountain                    14
 infected wounds                    13
 music                              13
@@ -38,10 +29,8 @@ take                               13
 guilds                             13
 coins                              12
 multiclassing                      12
-bella                              12
 rez                                12
 area plains                        12
-dispell                            12
 lethal                             12
 goblin mountains                   12
 bot                                11
