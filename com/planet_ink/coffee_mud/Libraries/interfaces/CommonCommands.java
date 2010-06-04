@@ -51,6 +51,7 @@ public interface CommonCommands extends CMLibrary
     public void postSheath(MOB mob, boolean ifPossible);
     public void postDraw(MOB mob, boolean doHold, boolean ifNecessary);
     public void postStand(MOB mob, boolean ifNecessary);
+	public void postSleep(MOB mob);
     public void postFollow(MOB follower, MOB leader, boolean quiet);
     public void postSay(MOB mob, MOB target, String text, boolean isPrivate, boolean tellFlag);
     public void postSay(MOB mob, MOB target,String text);

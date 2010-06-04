@@ -1637,11 +1637,20 @@ public class DefaultSession extends Thread implements Session
 		}
 		status=Session.STATUS_LOGOUT3;
 
-		if((mob!=null)&&(!CMSecurity.isDisabled("LOGOUTS")))
+		if(mob!=null)
 		{
-			mob.removeFromGame(true,true);
-			mob.setSession(null);
-			mob=null;
+			if(CMSecurity.isDisabled("LOGOUTS"))
+			{
+				CMLib.commands().postSleep(mob);
+				mob.basePhyStats().setDisposition(mob.basePhyStats().disposition()|PhyStats.IS_SLEEPING);
+				mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SLEEPING);
+			}
+			else
+			{
+				mob.removeFromGame(true,true);
+				mob.setSession(null);
+				mob=null;
+			}
 		}
 		Log.sysOut("Session","Disconnect: "+getAddress()+" ("+CMLib.time().date2ShortEllapsedTime(getMillisOnline())+")");
 

@@ -2612,8 +2612,8 @@ public class StdMOB implements MOB
                      	&&(CMLib.dice().rollPercentage()==1))
                      	{
 							location().show(this,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) asleep from exhaustion!!");
-							basePhyStats().setDisposition(PhyStats.IS_SLEEPING);
-							phyStats().setDisposition(PhyStats.IS_SLEEPING);
+							basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_SLEEPING);
+							phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_SLEEPING);
                      	}
 					}
 				}

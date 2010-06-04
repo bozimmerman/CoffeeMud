@@ -227,6 +227,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			forceStandardCommand(mob,"Stand",new XVector("STAND"));
 	}
 
+	public void postSleep(MOB mob)
+	{
+		forceStandardCommand(mob,"Sleep",new XVector("SLEEP"));
+	}
+
 	public void postFollow(MOB follower, MOB leader, boolean quiet)
 	{
 		if(leader!=null)
