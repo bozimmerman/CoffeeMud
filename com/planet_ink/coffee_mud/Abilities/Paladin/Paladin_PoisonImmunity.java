@@ -32,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Paladin_PoisonImmunity extends Paladin
+public class Paladin_PoisonImmunity extends PaladinSkill
 {
 	public String ID() { return "Paladin_PoisonImmunity"; }
 	public String name(){ return "Poison Immunity";}

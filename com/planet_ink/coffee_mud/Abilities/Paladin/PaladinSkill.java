@@ -34,10 +34,10 @@ import java.util.*;
 */
 
 @SuppressWarnings("unchecked")
-public class Paladin extends StdAbility
+public class PaladinSkill extends StdAbility
 {
-	public String ID() { return "Paladin"; }
-	public String name(){ return "Paladin's Amazement";}
+	public String ID() { return "PaladinSkill"; }
+	public String name(){ return "Paladin Skill";}
 	public String displayText(){return "";}
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	public boolean isAutoInvoked(){return true;}

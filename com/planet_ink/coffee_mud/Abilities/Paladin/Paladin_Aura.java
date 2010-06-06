@@ -36,7 +36,7 @@ import java.util.*;
 */
 
 @SuppressWarnings("unchecked")
-public class Paladin_Aura extends Paladin
+public class Paladin_Aura extends PaladinSkill
 {
 	public String ID() { return "Paladin_Aura"; }
 	public String name(){ return "Paladin`s Aura";}

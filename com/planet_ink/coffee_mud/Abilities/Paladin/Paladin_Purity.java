@@ -35,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Paladin_Purity extends Paladin
+public class Paladin_Purity extends PaladinSkill
 {
 	public String ID() { return "Paladin_Purity"; }
 	public String name(){ return "Paladin`s Purity";}

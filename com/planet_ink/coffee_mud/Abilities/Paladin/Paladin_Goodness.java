@@ -33,7 +33,7 @@ import java.util.*;
 */
 
 @SuppressWarnings("unchecked")
-public class Paladin_Goodness extends Paladin
+public class Paladin_Goodness extends PaladinSkill
 {
 	public String ID() { return "Paladin_Goodness"; }
 	public String name(){ return "Paladin`s Goodness";}

@@ -32,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Paladin_ImprovedResists extends Paladin
+public class Paladin_ImprovedResists extends PaladinSkill
 {
 	public String ID() { return "Paladin_ImprovedResists"; }
 	public String name(){ return "Paladin`s Resistance";}
