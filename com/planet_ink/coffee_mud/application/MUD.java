@@ -329,7 +329,8 @@ public class MUD extends Thread implements MudHost
     		Log.sysOut(Thread.currentThread().getName(),"Loading map...");
     		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: loading rooms....");
     		CMLib.database().DBReadAllRooms(null);
-    		Log.sysOut(Thread.currentThread().getName(),"Finalizing map objects...");
+    		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: preparing map....");
+    		Log.sysOut(Thread.currentThread().getName(),"Preparing map...");
     		CMLib.database().DBReadArtifacts();
     		for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
     		{

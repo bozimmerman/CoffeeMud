@@ -1400,7 +1400,7 @@ the base distribution of CoffeeMud operate on a single default time
 interval, usually of 4000 milliseconds, as defined by
 CMProps.getTickMillis() and ultimately from the coffeemud.ini file. For
 this reason, a different version of the <code>startTickDown()</code>
-method is called which does not include the TIME_TICK parameter,
+method is called which does not include the time parameter,
 utilizing the standard delay instead:</p>
       <pre>CMClass.ThreadEngine().startTickDown(theEnvObject,Host.MY_TICK_ID,NUM_TICKS);<br /></pre>
       <p>Stopping any of these tick calls can be done by simply
