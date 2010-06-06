@@ -670,6 +670,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
         if(thisTag==null){thisTag=rHelpFile.getProperty("POWER_"+helpStr); if(thisTag!=null) helpStr="POWER_"+helpStr;}
         if(thisTag==null){thisTag=rHelpFile.getProperty("SKILL_"+helpStr); if(thisTag!=null) helpStr="SKILL_"+helpStr;}
         if(thisTag==null){thisTag=rHelpFile.getProperty("PROP_"+helpStr); if(thisTag!=null) helpStr="PROP_"+helpStr;}
+        
         found=((thisTag!=null)&&(thisTag.length()>0));
 
 		if(!found)
@@ -866,7 +867,18 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		}
 		
 		if((thisTag==null)||(thisTag.length()==0))
+		{
+			if(helpStr.indexOf(' ')>=0) helpStr=helpStr.replace(' ','_');
+	        if(helpStr.endsWith("_SPELL")) return getHelpText(helpStr.substring(0,helpStr.length()-6),rHelpFile,forMOB,noFix);
+	        if(helpStr.endsWith("_PRAYER")) return getHelpText(helpStr.substring(0,helpStr.length()-7),rHelpFile,forMOB,noFix);
+	        if(helpStr.endsWith("_SONG")) return getHelpText(helpStr.substring(0,helpStr.length()-5),rHelpFile,forMOB,noFix);
+	        if(helpStr.endsWith("_DANCE")) return getHelpText(helpStr.substring(0,helpStr.length()-6),rHelpFile,forMOB,noFix);
+	        if(helpStr.endsWith("_PLAY")) return getHelpText(helpStr.substring(0,helpStr.length()-5),rHelpFile,forMOB,noFix);
+	        if(helpStr.endsWith("_CHANT")) return getHelpText(helpStr.substring(0,helpStr.length()-6),rHelpFile,forMOB,noFix);
+	        if(helpStr.endsWith("_SKILL")) return getHelpText(helpStr.substring(0,helpStr.length()-6),rHelpFile,forMOB,noFix);
+	        if(helpStr.endsWith("_POWER")) return getHelpText(helpStr.substring(0,helpStr.length()-6),rHelpFile,forMOB,noFix);
 			return null;
+		}
 		if(noFix) return new StringBuilder(thisTag);
 		return new StringBuilder(fixHelp(helpStr,thisTag,forMOB));
 	}

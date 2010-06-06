@@ -1,45 +1,10 @@
-races                              26
-talk                               22
-clantalk                           20
-mayor                              18
-junk                               17
-objects                            17
-trash                              17
-exchange                           16
-valley of titans                   16
-answer                             15
-zac                                15
-subclass                           15
 counterbalance                     15
 arena                              15
-injury                             15
 sleeping bag                       14
-macro                              14
-advice                             14
-goblin mountain                    14
-infected wounds                    13
-music                              13
-disintigrate                       13
-i2chat                             13
-ressurect                          13
-prisoner`s geas                    13
-fey                                13
-followers                          13
-take                               13
 guilds                             13
-coins                              12
-multiclassing                      12
-rez                                12
-area plains                        12
 lethal                             12
-goblin mountains                   12
 bot                                11
-mother goose                       11
-wizard chest                       11
-dieties                            11
-local                              11
 horse                              11
-dispell magic                      11
 energy drain                       11
 cloth                              10
 limbs                              10
@@ -47,15 +12,11 @@ kings                              10
 creator                            10
 lightningbreath                    10
 trigger                            10
-colorlist                          10
-put out                            10
 ambassador                         10
 mccp                               10
 property                           10
 lethal crafting iv                 10
-song break                         10
 hibernate                          10
-well dressed                       9
 backpack                           9
 invulnerability globe              9
 magic aura                         9
@@ -63,11 +24,8 @@ supple                             9
 enchant item                       9
 durable                            9
 directions                         9
-pulse                              9
-holy reclaimers                    9
 crown                              9
 identify item                      9
-friends spell                      9
 cities                             9
 ships                              9
 smurf village                      9
@@ -86,7 +44,6 @@ counterbalanced                    8
 artisans                           8
 valley of dawn                     8
 study                              8
-prisoners geas                     8
 missing                            8
 fourth attack                      8
 quote                              8
@@ -212,7 +169,6 @@ moods                              5
 midn                               5
 cheetaburst                        5
 berserk                            5
-valley of titan                    5
 migraine headaches                 5
 combat fluidity i                  5
 sex change                         5
@@ -222,7 +178,6 @@ eagle sight                        5
 cemetary                           5
 dazzling caltrops                  5
 coffeemud                          5
-hold spell                         5
 promt                              5
 thrown                             5
 regrow                             5
@@ -394,7 +349,6 @@ setrecall                          4
 transmutation                      4
 mider`nir                          4
 ixpin                              4
-clog dance                         4
 sacrafice                          4
 artisian                           4
 ingenious engineer                 3
@@ -457,7 +411,6 @@ handcuffing                        3
 arcadium                           3
 mcp                                3
 soil                               3
-war dance                          3
 make fire                          3
 quality crafting iv                3
 disent                             3
@@ -534,7 +487,6 @@ xanxir                             3
 bathing                            3
 lamia                              3
 ranged in                          3
-sleep spell                        3
 area aris                          3
 pro,pt                             3
 sheild                             3
@@ -611,7 +563,6 @@ destroy weapon                     3
 destroy item                       3
 flags                              3
 fire making                        3
-memorize skill                     3
 i2                                 3
 picklock                           3
 art musseum                        3
@@ -910,7 +861,6 @@ kortam                             2
 stealing                           2
 spell mage armour                  2
 aarokocran city                    2
-sleep skill                        2
 weild                              2
 minor globe                        2
 gang land                          2
@@ -1086,7 +1036,6 @@ magic miss&                        2
 chilling touch                     2
 speedwalk                          2
 cannabit                           2
-light spell                        2
 tipsy                              2
 mage tower                         2
 switch                             2
@@ -1255,7 +1204,6 @@ practise                           2
 bind person                        2
 duration                           2
 animal selling                     2
-attack skill                       2
 xp                                 2
 flask                              2
 aura of mobility                   2
@@ -1459,7 +1407,6 @@ leathal crafting iii               2
 locate item                        2
 abandoned warehouse                2
 itantan see                        2
-knock spell                        2
 alien spire                        2
 dragon-elf                         2
 improved pick                      2
@@ -1640,7 +1587,6 @@ high fi                            1
 draikry                            1
 zacs email                         1
 clanecreate                        1
-lone song                          1
 standardroom                       1
 iitation                           1
 commnand                           1
@@ -1765,7 +1711,6 @@ papermaning                        1
 jewel mount                        1
 conquere                           1
 multiple players                   1
-destroy spell                      1
 alignments                         1
 froup                              1
 identify&                          1
@@ -1987,7 +1932,6 @@ beast m                            1
 master costume list                1
 closs                              1
 fortafiy                           1
-revoke spell                       1
 antidot                            1
 detection invis                    1
 disguise sex                       1
@@ -2002,7 +1946,6 @@ dispel evil?                       1
 mourge                             1
 skiwalker                          1
 papa smurf                         1
-courante dance                     1
 rise                               1
 prayer edict                       1
 foodprep list                      1
@@ -2063,8 +2006,6 @@ stone shield                       1
 kicj                               1
 grab                               1
 summon p,lants                     1
-haste spell                        1
-butoh dance                        1
 gratzs                             1
 edge weapon specia                 1
 tange                              1
@@ -2495,7 +2436,6 @@ plant masterring                   1
 three-sectioned s                  1
 faery fire                         1
 calhall                            1
-philosophy spell                   1
 reduced enchantment vii            1
 bandeging                          1
 aerea                              1
@@ -2795,7 +2735,6 @@ descento to hell                   1
 clan dark                          1
 decrease gravity                   1
 $break                             1
-dragonbreath spell                 1
 crating i                          1
 channel advice                     1
 well dress                         1
@@ -3080,7 +3019,6 @@ holdsocials                        1
 resist blind                       1
 swiping                            1
 clanitems                          1
-learn skill                        1
 plantsense                         1
 animste item                       1
 reset recall                       1
@@ -3249,7 +3187,6 @@ notd                               1
 breath fire                        1
 inebriate                          1
 cook list                          1
-sense chant                        1
 farkness                           1
 sanctury                           1
 wedd                               1
@@ -3445,7 +3382,6 @@ causefatig                         1
 room name                          1
 incant                             1
 rem curse                          1
-break song                         1
 peoction undead                    1
 cause snick                        1
 nature lore o                      1
@@ -3517,7 +3453,6 @@ heat aura                          1
 lethal crating iii                 1
 magical chest                      1
 troll$                             1
-dexterity song                     1
 clancommand                        1
 hobgoblin mines                    1
 reduced enchantment viii           1
@@ -3530,7 +3465,6 @@ mblack                             1
 befrind                            1
 armor otimizing i                  1
 cmdmob                             1
-tap dance                          1
 prpmt                              1
 embor                              1
 choose form                        1
@@ -3572,7 +3506,6 @@ lante                              1
 experiences                        1
 emoes                              1
 channs                             1
-time song                          1
 shrik mouth                        1
 exquis                             1
 dwarv m                            1
@@ -3616,7 +3549,6 @@ disenchant wa                      1
 jailers key                        1
 thurstless                         1
 holy prot                          1
-identify spell                     1
 shopkeepers                        1
 sharing                            1
 ranged evok                        1
@@ -3755,7 +3687,6 @@ surrnder                           1
 amorax                             1
 beldin`s lair                      1
 pshapeshift                        1
-qual chant                         1
 thalmia                            1
 annull                             1
 favoured enemy                     1
@@ -4151,7 +4082,6 @@ make`                              1
 tailr                              1
 animal rage                        1
 circule                            1
-awe spell                          1
 smurvville                         1
 survival                           1
 proficency                         1
@@ -4234,7 +4164,6 @@ servieces                          1
 the desent to hell                 1
 angellic                           1
 proving                            1
-sheild spell                       1
 hartlan                            1
 practiceing                        1
 chainlightning                     1
@@ -4283,7 +4212,6 @@ fists of iron                      1
 summon camanpion                   1
 pregmant                           1
 wool                               1
-breath spell                       1
 atutoassit                         1
 citizensip                         1
 southpoint                         1
@@ -5176,7 +5104,6 @@ creation prayers                   1
 chiquala                           1
 abarrus                            1
 alter alignment                    1
-dispel spell                       1
 paraliyze                          1
 itenidentifier                     1
 detect alignment                   1
@@ -5223,7 +5150,6 @@ trativ                             1
 spell sheild                       1
 itchy                              1
 hardeb skin                        1
-delude spell                       1
 doppleg                            1
 unbindind                          1
 sancturay                          1
@@ -5238,7 +5164,6 @@ clanalign                          1
 searchingl                         1
 gnomevil                           1
 dwarven mount                      1
-gain spell                         1
 disintgrate                        1
 raactice                           1
 resart                             1
@@ -5781,7 +5706,6 @@ emboidering                        1
 moey                               1
 (know bliss)                       1
 goblinoids                         1
-flaemco dance                      1
 function                           1
 nultclass                          1
 mbla                               1
@@ -5924,7 +5848,6 @@ burglsars                          1
 aeliean spire                      1
 glace blowing                      1
 destruction                        1
-alignment spell                    1
 artisam                            1
 quick crafting i                   1
 natural comunion                   1
@@ -5939,7 +5862,6 @@ ache                               1
 autobury                           1
 movemtn                            1
 gemdigging                         1
-friend spell                       1
 alternate sub                      1
 maon dor                           1
 clanassigne                        1
@@ -6008,7 +5930,6 @@ invis to unde                      1
 shadey grove                       1
 ear piercing                       1
 mobileportal                       1
-minor song                         1
 hoan doar                          1
 spells abj                         1
 light craftin                      1
@@ -6309,7 +6230,6 @@ wirte                              1
 city of titans                     1
 chage weather                      1
 befeiend                           1
-25                                 1
 quick workder                      1
 protection udead                   1
 sanctaur                           1
@@ -6318,7 +6238,6 @@ wiszard lock                       1
 tzbrakas academy                   1
 quality craftin ii                 1
 flaming entanglment                1
-social dance                       1
 summon ants                        1
 trascan                            1
 notification                       1
@@ -6686,7 +6605,6 @@ sond dex                           1
 built fire                         1
 cpmbat                             1
 blacksni5thing                     1
-mana song                          1
 shaqpe shift                       1
 shalpe                             1
 critical attack                    1
@@ -6768,7 +6686,6 @@ gain skilllls                      1
 evocer                             1
 sing nothing                       1
 the lost city of xinsto            1
-chanhelp chant                     1
 axkixk                             1
 mobillity                          1
 cambat fiuifity i                  1
@@ -6778,7 +6695,6 @@ summom companion                   1
 train hit point                    1
 aritis                             1
 archonlist                         1
-invisibility spell                 1
 wyvern`s towerr                    1
 scuplt                             1
 protect undead                     1
