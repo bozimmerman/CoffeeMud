@@ -35,7 +35,7 @@ public interface TrackingLibrary extends CMLibrary
     public List<Room> findBastardTheBestWay(Room location, List<Room> destRooms, TrackingFlags flags, int maxRadius);
     public int trackNextDirectionFromHere(List<Room> theTrail, Room location, boolean openOnly);
     public void stopTracking(MOB mob);
-    public int radiatesFromDir(Room room, Vector<Room> rooms);
+    public int radiatesFromDir(Room room, List<Room> rooms);
     public void getRadiantRooms(Room room, List<Room> rooms, TrackingFlags flags, Room radiateTo, int maxDepth, Set<Room> ignoreRooms);
 	public List<Room> getRadiantRooms(Room room, TrackingFlags flags, int maxDepth);
     public boolean beMobile(MOB mob,
@@ -44,7 +44,7 @@ public interface TrackingLibrary extends CMLibrary
                             boolean roomprefer, 
                             boolean roomobject,
                             long[] status,
-                            Vector<Room> rooms);
+                            List<Room> rooms);
     public void wanderAway(MOB M, boolean mindPCs, boolean andGoHome);
     public void wanderFromTo(MOB M, Room toHere, boolean mindPCs);
     public void wanderIn(MOB M, Room toHere);

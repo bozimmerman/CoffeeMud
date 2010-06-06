@@ -69,6 +69,36 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		return true;
 	}
 
+    public Object unforcedInternalCommand(MOB mob, String command, Object... parms)
+    {
+		try
+		{
+			Command C=CMClass.getCommand(command);
+			if(C!=null)
+				return C.executeInternal(mob,0,parms);
+		}
+		catch(IOException e)
+		{
+			Log.errOut("CommonMsgs",e);
+		}
+		return false;
+    }
+    
+    public Object forceInternalCommand(MOB mob, String command, Object... parms)
+	{
+		try
+		{
+			Command C=CMClass.getCommand(command);
+			if(C!=null)
+				return C.executeInternal(mob,Command.METAFLAG_FORCED,parms);
+		}
+		catch(IOException e)
+		{
+			Log.errOut("CommonMsgs",e);
+		}
+		return false;
+	}
+
 	public boolean forceStandardCommand(MOB mob, String command, Vector parms)
 	{
 		try

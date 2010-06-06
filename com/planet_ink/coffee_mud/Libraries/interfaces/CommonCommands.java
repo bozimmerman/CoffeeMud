@@ -38,6 +38,8 @@ public interface CommonCommands extends CMLibrary
     public void monitorGlobalMessage(Room room, CMMsg msg);
     public void addGlobalMonitor(MsgMonitor M);
     public boolean forceStandardCommand(MOB mob, String command, Vector parms);
+    public Object forceInternalCommand(MOB mob, String command, Object... parms);
+    public Object unforcedInternalCommand(MOB mob, String command, Object... parms);
     public StringBuilder getScore(MOB mob);
     public StringBuilder getEquipment(MOB viewer, MOB mob);
     public StringBuilder getInventory(MOB viewer, MOB mob);

@@ -64,12 +64,12 @@ public class TrailTo extends StdCommand
                 if(!s.startsWith("=")) continue;
                 s=s.substring(1);
                 commands.removeElementAt(c);
-                Vector roomList=CMParms.parseCommas(s,true);
-                ignoreRooms=new HashSet();
+                List<String> roomList=CMParms.parseCommas(s,true);
+                ignoreRooms=new HashSet<Room>();
                 for(int v=0;v<roomList.size();v++)
                 {
-                    Room R=CMLib.map().getRoom((String)roomList.elementAt(v));
-                    if(R==null){ return "Ignored room "+((String)roomList.elementAt(v))+" is unknown!";}
+                    Room R=CMLib.map().getRoom(roomList.get(v));
+                    if(R==null){ return "Ignored room "+roomList.get(v)+" is unknown!";}
                     if(!ignoreRooms.contains(R))ignoreRooms.add(R);
                 }
             }
@@ -106,9 +106,9 @@ public class TrailTo extends StdCommand
 		if(where.equalsIgnoreCase("everyarea"))
 		{
 			StringBuffer str=new StringBuffer("");
-			for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
+			for(Enumeration<Area> a=CMLib.map().sortedAreas();a.hasMoreElements();)
 			{
-				Area A=(Area)a.nextElement();
+				Area A=a.nextElement();
 				String trail = CMLib.tracking().getTrailToDescription(R1,set,A.name(),areaNames,confirm,radius,ignoreRooms,5);
 				str.append(CMStrings.padRightPreserve(A.name(),30)+": "+trail+"\n\r");
 			}
@@ -121,7 +121,7 @@ public class TrailTo extends StdCommand
 			StringBuffer str=new StringBuffer("");
 			try
 			{
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+				for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if((R!=R1)&&(R.roomID().length()>0))

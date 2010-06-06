@@ -33,56 +33,55 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public class MUDTracker extends StdLibrary implements TrackingLibrary
 {
     public String ID(){return "MUDTracker";}
     public List<Room> findBastardTheBestWay(Room location,
-							            Room destRoom,
-							            TrackingFlags flags,
-							            int maxRadius)
+								            Room destRoom,
+								            TrackingFlags flags,
+								            int maxRadius)
     {
     	return findBastardTheBestWay(location,destRoom,flags,maxRadius,null);
     }
-    public Vector findBastardTheBestWay(Room location,
-                                        Room destRoom,
-                                        TrackingFlags flags,
-                                        int maxRadius,
-                                        Vector<Room> radiant)
+    public List<Room> findBastardTheBestWay(Room location,
+	                                        Room destRoom,
+	                                        TrackingFlags flags,
+	                                        int maxRadius,
+	                                        List<Room> radiant)
    {
         if((radiant==null)||(radiant.size()==0)){
-        	radiant=new Vector();
+        	radiant=new Vector<Room>();
             getRadiantRooms(location,radiant,flags,destRoom,maxRadius,null);
             if(!radiant.contains(location))
-                radiant.insertElementAt(location,0);
+                radiant.add(0,location);
         }
         else
         {
-        	Vector radiant2=new Vector(radiant.size());
+        	List<Room> radiant2=new Vector<Room>(radiant.size());
         	int r=0;
         	boolean foundLocation=false;
-        	Object O;
+        	Room O;
         	for(;r<radiant.size();r++)
 			{
-        		O=radiant.elementAt(r);
-        		radiant2.addElement(O);
+        		O=radiant.get(r);
+        		radiant2.add(O);
         		if((!foundLocation)&&(O==location))
         			foundLocation=true;
         		if(O==destRoom) break;
 			}
     		if(!foundLocation)
     		{
-                radiant.insertElementAt(location,0);
-                radiant2.insertElementAt(location,0);
+                radiant.add(0,location);
+                radiant2.add(0,location);
     		}
         	if(r>=radiant.size()) return null;
         	radiant=radiant2;
         }
-        if((radiant.size()>0)&&(destRoom==radiant.lastElement()))
+        if((radiant.size()>0)&&(destRoom==radiant.get(radiant.size()-1)))
         {
-            Vector thisTrail=new Vector();
-            HashSet tried=new HashSet();
-            thisTrail.addElement(destRoom);
+            List<Room> thisTrail=new Vector<Room>();
+            HashSet<Room> tried=new HashSet<Room>();
+            thisTrail.add(destRoom);
             tried.add(destRoom);
             Room R=null;
             int index=radiant.size()-2;
@@ -92,10 +91,10 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
                 int best=-1;
                 for(int i=index;i>=0;i--)
                 {
-                    R=(Room)radiant.elementAt(i);
+                    R=(Room)radiant.get(i);
                     for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
                     {
-                        if((R.getRoomInDir(d)==thisTrail.lastElement())
+                        if((R.getRoomInDir(d)==thisTrail.get(thisTrail.size()-1))
                         &&(R.getExitInDir(d)!=null)
                         &&(!tried.contains(R)))
                             best=i;
@@ -103,8 +102,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
                 }
                 if(best>=0)
                 {
-                    R=(Room)radiant.elementAt(best);
-                    thisTrail.addElement(R);
+                    R=(Room)radiant.get(best);
+                    thisTrail.add(R);
                     tried.add(R);
                     if(R==location) break;
                     index=best-1;
@@ -123,18 +122,18 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 
 
 	public List<Room> findBastardTheBestWay(Room location,
-									    List<Room> destRooms,
-									    TrackingFlags flags,
-									    int maxRadius)
+										    List<Room> destRooms,
+										    TrackingFlags flags,
+										    int maxRadius)
 	{
 
 		List<Room> finalTrail=null;
         Room destRoom=null;
         int pick=0;
-        Vector radiant=null;
+        List<Room> radiant=null;
         if(destRooms.size()>1)
         {
-        	radiant=new Vector();
+        	radiant=new Vector<Room>();
             getRadiantRooms(location,radiant,flags,null,maxRadius,null);
         }
         for(int i=0;(i<5)&&(destRooms.size()>0);i++)
@@ -142,7 +141,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
             pick=CMLib.dice().roll(1,destRooms.size(),-1);
             destRoom=(Room)destRooms.get(pick);
             destRooms.remove(pick);
-            Vector thisTrail=findBastardTheBestWay(location,destRoom,flags,maxRadius,radiant);
+            List<Room> thisTrail=findBastardTheBestWay(location,destRoom,flags,maxRadius,radiant);
             if((thisTrail!=null)
             &&((finalTrail==null)||(thisTrail.size()<finalTrail.size())))
                 finalTrail=thisTrail;
@@ -192,13 +191,10 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return winningDirection;
 	}
 
-	public int radiatesFromDir(Room room, Vector<Room> rooms)
+	public int radiatesFromDir(Room room, List<Room> rooms)
 	{
-	    Room R=null;
-		for(int i=0;i<rooms.size();i++)
+		for(Room R : rooms)
 		{
-			R=(Room)rooms.elementAt(i);
-
 			if(R==room) return -1;
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				if(R.getRoomInDir(d)==room)
@@ -211,7 +207,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 								  TrackingFlags flags,
 								  int maxDepth)
 	{
-		Vector V=new Vector();
+		List<Room> V=new Vector<Room>();
 		getRadiantRooms(room,V,flags,null,maxDepth,null);
 		return V;
 	}
@@ -225,10 +221,10 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		int depth=0;
 		if(room==null) return;
 		if(rooms.contains(room)) return;
-		HashSet H=new HashSet(1000);
+		HashSet<Room> H=new HashSet<Room>(1000);
 		rooms.add(room);
-		if(rooms instanceof Vector)
-			((Vector)rooms).ensureCapacity(200);
+		if(rooms instanceof Vector<?>)
+			((Vector<Room>)rooms).ensureCapacity(200);
 		for(int r=0;r<rooms.size();r++)
 			H.add(rooms.get(r));
 		int min=0;
@@ -302,7 +298,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
                             boolean roomprefer,
                             boolean roomobject,
                             long[] status,
-                            Vector rooms)
+                            List<Room> rooms)
     {
         return beMobile(mob,dooropen,wander,roomprefer,roomobject,true,status,rooms);
 
@@ -314,7 +310,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
                              boolean roomobject,
                              boolean sneakIfAble,
                              long[] status,
-                             Vector<Room> rooms)
+                             List<Room> rooms)
 	{
         if(status!=null)status[0]=Tickable.STATUS_MISC7+0;
 
@@ -475,7 +471,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		{
             if(status!=null)status[0]=Tickable.STATUS_MISC7+17;
 			Ability A=mob.fetchAbility("Skill_Swim");
-			Vector V=new Vector();
+			Vector<String> V=new Vector<String>();
 			V.add(Directions.getDirectionName(direction));
 			if(A.proficiency()<50)	A.setProficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
 			CharState oldState=(CharState)mob.curState().copyOf();
@@ -492,7 +488,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
             if(status!=null)status[0]=Tickable.STATUS_MISC7+18;
 			Ability A=mob.fetchAbility("Skill_Climb");
 			if(A==null )A=mob.fetchAbility("Power_SuperClimb");
-			Vector V=new Vector();
+			Vector<String> V=new Vector<String>();
 			V.add(Directions.getDirectionName(direction));
 			if(A.proficiency()<50)	A.setProficiency(CMLib.dice().roll(1,50,A.adjustedLevel(mob,0)*15));
 			CharState oldState=(CharState)mob.curState().copyOf();
@@ -505,7 +501,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		{
             if(status!=null)status[0]=Tickable.STATUS_MISC7+19;
 			Ability A=mob.fetchAbility("Thief_Sneak");
-			Vector V=new Vector();
+			Vector<String> V=new Vector<String>();
 			V.add(Directions.getDirectionName(direction));
 			if(A.proficiency()<50)
 			{
@@ -612,7 +608,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			Command C=CMClass.getCommand("Go");
 			if(C!=null)
 			{
-				Vector V=new Vector();
+				Vector<Object> V=new Vector<Object>();
 				V.addElement(Integer.valueOf(directionCode));
 				V.addElement(Boolean.valueOf(flee));
 				V.addElement(Boolean.valueOf(nolook));
@@ -719,7 +715,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 
 	public List<List<Integer>> findAllTrails(Room from, List<Room> tos, List<Room> radiantTrail)
 	{
-		Vector finalSets=new Vector();
+		List<List<Integer>> finalSets=new Vector<List<Integer>>();
 		if(from==null) return finalSets;
 		Room to=null;
 		for(int t=0;t<tos.size();t++)
@@ -730,7 +726,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return finalSets;
 	}
 	
-	protected int getRoomDirection(Room R, Room toRoom, Vector<Room> ignore)
+	protected int getRoomDirection(Room R, Room toRoom, List<Room> ignore)
 	{
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			if((R.getRoomInDir(d)==toRoom)
@@ -744,17 +740,17 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	{
 		Room R2=CMLib.map().getRoom(where);
 		if(R2==null)
-			for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
+			for(Enumeration<Area> a=CMLib.map().sortedAreas();a.hasMoreElements();)
 			{
-				Area A=(Area)a.nextElement();
+				Area A=a.nextElement();
 				if(A.name().equalsIgnoreCase(where))
 				{
 					if(set.size()==0)
 					{
 						int lowest=Integer.MAX_VALUE;
-						for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+						for(Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
 						{
-							Room R=(Room)r.nextElement();
+							Room R=r.nextElement();
 							int x=R.roomID().indexOf('#');
 							if((x>=0)&&(CMath.s_int(R.roomID().substring(x+1))<lowest))
 								lowest=CMath.s_int(R.roomID().substring(x+1));
@@ -790,9 +786,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 		if(foundAt<0) return "You can't get to '"+R2.roomID()+"' from here.";
 		Room checkR=R2;
-		Vector trailV=new Vector();
-		trailV.addElement(R2);
-        HashSet areasDone=new HashSet();
+		List<Room> trailV=new Vector<Room>();
+		trailV.add(R2);
+        HashSet<Area> areasDone=new HashSet<Area>();
 		boolean didSomething=false;
 		long startTime = System.currentTimeMillis();
 		while(checkR!=R1)
@@ -806,7 +802,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				Room R=(Room)set.get(r);
 				if(getRoomDirection(R,checkR,trailV)>=0)
 				{
-					trailV.addElement(R);
+					trailV.add(R);
                     if(!areasDone.contains(R.getArea()))
                         areasDone.add(R.getArea());
 					foundAt=r;
@@ -818,58 +814,58 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			if(!didSomething)
 				return "You can't get there from here.";
 		}
-		Vector theDirTrail=new Vector();
-		Vector empty=new Vector();
+		List<String> theDirTrail=new Vector<String>();
+		List<Room> empty=new Vector<Room>();
 		for(int s=trailV.size()-1;s>=1;s--)
 		{
-			Room R=(Room)trailV.elementAt(s);
-			Room RA=(Room)trailV.elementAt(s-1);
-			theDirTrail.addElement(Character.toString(Directions.getDirectionName(getRoomDirection(R,RA,empty)).charAt(0))+" ");
+			Room R=trailV.get(s);
+			Room RA=trailV.get(s-1);
+			theDirTrail.add(Directions.getDirectionChar(getRoomDirection(R,RA,empty))+" ");
 		}
 		StringBuffer theTrail=new StringBuffer("");
 		if(confirm)	theTrail.append("\n\r"+CMStrings.padRight("Trail",30)+": ");
-		char lastDir='\0';
+		String lastDir="";
 		int lastNum=0;
 		while(theDirTrail.size()>0)
 		{
-			String s=(String)theDirTrail.elementAt(0);
+			String s=(String)theDirTrail.get(0);
 			if(lastNum==0)
 			{
-				lastDir=s.charAt(0);
+				lastDir=s;
 				lastNum=1;
 			}
 			else
-			if(s.charAt(0)==lastDir)
+			if(s.equalsIgnoreCase(lastDir))
 				lastNum++;
 			else
 			{
 				if(lastNum==1)
-					theTrail.append(Character.toString(lastDir)+" ");
+					theTrail.append(lastDir+" ");
 				else
-					theTrail.append(Integer.toString(lastNum)+Character.toString(lastDir)+" ");
-				lastDir=s.charAt(0);
+					theTrail.append(Integer.toString(lastNum)+lastDir+" ");
+				lastDir=s;
 				lastNum=1;
 			}
-			theDirTrail.removeElementAt(0);
+			theDirTrail.remove(0);
 		}
 		if(lastNum==1)
-			theTrail.append(Character.toString(lastDir));
+			theTrail.append(lastDir);
 		else
 		if(lastNum>0)
-			theTrail.append(Integer.toString(lastNum)+Character.toString(lastDir));
+			theTrail.append(Integer.toString(lastNum)+lastDir);
 
 		if((confirm)&&(trailV.size()>1))
 		{
 			for(int i=0;i<trailV.size();i++)
 			{
-				Room R=(Room)trailV.elementAt(i);
+				Room R=(Room)trailV.get(i);
 				if(R.roomID().length()==0)
 				{
 					theTrail.append("*");
 					break;
 				}
 			}
-			Room R=(Room)trailV.elementAt(1);
+			Room R=(Room)trailV.get(1);
 			theTrail.append("\n\r"+CMStrings.padRight("From",30)+": "+Directions.getDirectionName(getRoomDirection(R,R2,empty))+" <- "+R.roomID());
 			theTrail.append("\n\r"+CMStrings.padRight("Room",30)+": "+R.displayText()+"/"+R.description());
 			theTrail.append("\n\r\n\r");
@@ -877,9 +873,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
         if((areaNames)&&(areasDone.size()>0))
         {
             theTrail.append("\n\r"+CMStrings.padRight("Areas",30)+":");
-            for(Iterator i=areasDone.iterator();i.hasNext();)
+            for(Iterator<Area> i=areasDone.iterator();i.hasNext();)
             {
-                Area A=(Area)i.next();
+                Area A=i.next();
                 theTrail.append(" \""+A.name()+"\",");
             }
         }
