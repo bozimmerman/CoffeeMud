@@ -85,7 +85,7 @@ public interface MudHost
      * Return any internal threads that are a source of troubles
      * @return a list of threads that need service or killing
      */
-    public List<Thread> getOverdueThreads();
+    public List<Runnable> getOverdueThreads();
     
     /**
      * Return the viewable name of the language supported by this host.

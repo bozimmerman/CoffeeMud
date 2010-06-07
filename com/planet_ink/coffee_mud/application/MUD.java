@@ -1238,9 +1238,9 @@ public class MUD extends Thread implements MudHost
 		}
 	}
 
-    public List<Thread> getOverdueThreads()
+    public List<Runnable> getOverdueThreads()
     {
-    	Vector<Thread> V=new Vector<Thread>();
+    	Vector<Runnable> V=new Vector<Runnable>();
     	for(int w=0;w<webServers.size();w++)
     		V.addAll(((HTTPserver)webServers.get(w)).getOverdueThreads());
     	return V;

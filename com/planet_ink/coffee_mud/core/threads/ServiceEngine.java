@@ -899,20 +899,19 @@ public class ServiceEngine implements ThreadEngine
         thread.status("Checking mud threads");
         for(int m=0;m<CMLib.hosts().size();m++)
         {
-            List<Thread> badThreads=((MudHost)CMLib.hosts().get(m)).getOverdueThreads();
-            if(badThreads.size()>0)
-            {
-                for(int b=0;b<badThreads.size();b++)
+            List<Runnable> badThreads=((MudHost)CMLib.hosts().get(m)).getOverdueThreads();
+            for(Runnable T : badThreads)
+                if(T instanceof Thread)
                 {
-                    Thread T=(Thread)badThreads.get(b);
-                    String threadName=T.getName();
-                    if(T instanceof Tickable)
-                        threadName=((Tickable)T).name()+" ("+((Tickable)T).ID()+"): "+((Tickable)T).getTickStatus();
-                    thread.status("Killing "+threadName);
-                    Log.errOut("Killing stray thread: "+threadName);
-                    CMLib.killThread(T,100,1);
+                	String threadName=((Thread)T).getName();
+	                if(T instanceof Tickable)
+	                    threadName=((Tickable)T).name()+" ("+((Tickable)T).ID()+"): "+((Tickable)T).getTickStatus();
+	                thread.status("Killing "+threadName);
+	                Log.errOut("Killing stray thread: "+threadName);
+	                CMLib.killThread((Thread)T,100,1);
                 }
-            }
+                else
+	                Log.errOut("Unable to kill stray runnable: "+T.toString());
         }
         
         thread.status("Done checking threads");

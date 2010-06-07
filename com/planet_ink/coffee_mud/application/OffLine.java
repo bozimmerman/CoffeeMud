@@ -471,7 +471,7 @@ public class OffLine extends Thread implements MudHost
     }
     public void setAcceptConnections(boolean truefalse){ acceptConnections=truefalse;}
     public boolean isAcceptingConnections(){ return acceptConnections;}
-    public List<Thread> getOverdueThreads(){return new Vector<Thread>();}
+    public List<Runnable> getOverdueThreads(){return new Vector<Runnable>();}
     public long getUptimeSecs() { return (System.currentTimeMillis()-startupTime)/1000;}
     public String getLanguage() { return "English";}
 

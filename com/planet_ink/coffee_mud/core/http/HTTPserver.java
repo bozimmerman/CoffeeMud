@@ -392,9 +392,9 @@ public class HTTPserver extends Thread implements MudHost
     	return "English";
     }
 
-    public List<Thread> getOverdueThreads()
+    public List<Runnable> getOverdueThreads()
     {
-    	Vector V=new Vector();
+    	Vector<Runnable> V=new Vector();
     	long time=System.currentTimeMillis();
     	synchronized(activeRequests)
     	{
@@ -404,7 +404,7 @@ public class HTTPserver extends Thread implements MudHost
 	    		long pTime=((Long)activeRequests.elementAt(a,2)).longValue();
 	    		if((time-pTime)>(60*1000*60))
 	    		{
-	    			V.addElement(P);
+	    			V.add(P);
 	    			activeRequests.removeElementsAt(a);
 	    		}
 	    	}
