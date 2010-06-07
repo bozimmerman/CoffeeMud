@@ -58,6 +58,7 @@ public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
 	protected String command = null;
 	protected String request = null;
 	protected String requestMain = null;
+	protected String lastFoundMacro = null;
 
 	protected String requestParametersEncoded = null;	// I keep the encoded form
 	// I've called it Table to distinguish it from Encoded string...
@@ -468,6 +469,7 @@ public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
 			if(((x-i)>CMClass.longestWebMacro)&&(!extend))
 				break;
 		}
+		lastFoundMacro=foundMacro;
 		return foundMacro;
 	}
 	protected int myBack(StringBuffer s, int i)
@@ -620,6 +622,11 @@ public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
 			return "[error]";
 		}
 		return null;
+	}
+	
+	public String toString()
+	{
+		return runnableName+": "+request+": "+lastFoundMacro;
 	}
 
 	protected int myElse(StringBuffer s, int i, int end)
