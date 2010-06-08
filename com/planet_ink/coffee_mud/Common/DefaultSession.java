@@ -939,7 +939,7 @@ public class DefaultSession extends Thread implements Session
             if((terminalType.equalsIgnoreCase("zmud"))&&(last==Session.TELNET_ECHO))
                 setClientTelnetMode(Session.TELNET_ECHO,false);
             if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Got DO "+Session.TELNET_DESCS[last]);
-            if((last==TELNET_COMPRESS2)&&(serverTelnetMode(last))&&(!terminalType.equals("UNKNOWN")))
+            if((last==TELNET_COMPRESS2)&&(serverTelnetMode(last)))
             {
             	setClientTelnetMode(last,true);
             	if(connectionComplete)
