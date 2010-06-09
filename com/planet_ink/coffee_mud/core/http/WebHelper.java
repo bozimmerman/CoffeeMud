@@ -53,7 +53,7 @@ public class WebHelper
 		}
 
 		s.append("<br><hr><i>");
-		s.append(HTTPserver.ServerVersionString);
+		s.append(HTTPserver.getServerVersionString());
 		s.append("</i></body></html>");
 
 		return s.toString().getBytes();

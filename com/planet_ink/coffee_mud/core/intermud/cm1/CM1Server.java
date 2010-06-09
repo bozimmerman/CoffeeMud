@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.core.intermud.cm1;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.threads.CMThreadFactory;
+import com.planet_ink.coffee_mud.core.threads.CMThreadPoolExecutor;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -49,7 +50,7 @@ public class CM1Server extends Thread
 						handlers = new SHashtable<SocketChannel,RequestHandler>();
 	private String		iniFile;
 	private CMProps 	page;
-	private ThreadPoolExecutor 
+	private CMThreadPoolExecutor 
 						threadPool;
 	
 	
@@ -67,7 +68,7 @@ public class CM1Server extends Thread
 		shutdownRequested = false;
 		int maxThreads = page.getInt("MAXTHREADS");
 		int queueSize = page.getInt("QUEUESIZE");
-		threadPool = new ThreadPoolExecutor(0, maxThreads, 30, TimeUnit.SECONDS, new UniqueEntryBlockingQueue<Runnable>(queueSize));
+		threadPool = new CMThreadPoolExecutor(name,0, maxThreads, 30, TimeUnit.SECONDS, 30, queueSize);
 	}
 	
 	public String getINIFilename() { return iniFile;}
@@ -177,7 +178,6 @@ public class CM1Server extends Thread
 					catch(Exception e){}
 				handlers.clear();
 				threadPool.shutdown();
-				Log.errOut("BLAH",new Exception());
 				Log.sysOut("CM1Server","Shutdown complete");
 			}
 		}

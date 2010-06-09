@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.core.http;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.intermud.IMudClient;
+import com.planet_ink.coffee_mud.core.threads.CMRunnable;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -41,36 +42,36 @@ import com.planet_ink.coffee_mud.core.exceptions.*;
 */
 
 @SuppressWarnings("unchecked")
-public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
+public class ProcessHTTPrequest implements CMRunnable, ExternalHTTPRequests
 {
     public String ID(){return "ProcessHTTPrequest";}
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new ProcessHTTPrequest();}}
     public void initializeClass(){}
     public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-	private CMProps page;
-	private Socket sock;
     public void propertiesLoaded(){}
 
+	private CMProps page;
+	private Socket sock;
 	private static long instanceCnt = 0;
 	private long processStartTime=0;
 
-	protected String command = null;
-	protected String request = null;
-	protected String requestMain = null;
-	protected String lastFoundMacro = null;
+	private String command = null;
+	private String request = null;
+	private String requestMain = null;
+	private String lastFoundMacro = null;
 
-	protected String requestParametersEncoded = null;	// I keep the encoded form
+	private String requestParametersEncoded = null;	// I keep the encoded form
 	// I've called it Table to distinguish it from Encoded string...
 	private Hashtable requestParametersTable = null;
 
 	// default mime type
-	protected String mimetype = "text/html";
+	private String mimetype = "text/html";
 	private final static String mimePrefix = "MIME";
 
-	protected boolean headersOnly = false;
+	private boolean headersOnly = false;
 
-	protected boolean isAdminServer = false;
+	private boolean isAdminServer = false;
 
 	// these are all the HTTP states this class can return
 	private final static String S_200 = "200 OK";
@@ -88,12 +89,14 @@ public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
 	// not sure which order is expected - I think the first
 	private final static String cr = "\r\n";
 	//private final static String cr = "\n\r";
-	protected String runnableName = "";
-	protected String status = S_500;
-	protected String statusExtra = "...";
-	HTTPserver webServer;
-
-	public boolean virtualPage;
+	private String runnableName = "";
+	private String status = S_500;
+	private String statusExtra = "...";
+	private HTTPserver webServer;
+	private FileGrabber pageGrabber;
+	private FileGrabber templateGrabber;
+	private boolean virtualPage;
+	private boolean completed=false;
 
 	private Hashtable objects=null;
 
@@ -104,6 +107,9 @@ public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
         webServer = null;
         sock = null;
         isAdminServer = true;
+        pageGrabber=new FileGrabber(null);
+        templateGrabber=new FileGrabber(null);
+        processStartTime=System.currentTimeMillis();
     }
 	public ProcessHTTPrequest(Socket a_sock,
 							  HTTPserver a_webServer,
@@ -120,13 +126,17 @@ public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
 		webServer = a_webServer;
 		sock = a_sock;
 		isAdminServer = a_isAdminServer;
-
-		if (page != null && sock != null && a_webServer != null)
-        {
-            synchronized(a_webServer.activeRequests){
-    		    a_webServer.activeRequests.addElement(this,Long.valueOf(System.currentTimeMillis()));
-            }
-        }
+		if(webServer!=null)
+		{
+			pageGrabber=webServer.getPageGrabber();
+	        templateGrabber=webServer.getTemplateGrabber();
+		}
+		else
+		{
+	        pageGrabber=new FileGrabber(null);
+	        templateGrabber=new FileGrabber(null);
+		}
+        processStartTime=System.currentTimeMillis();
 	}
 	public boolean readyToRun()
 	{
@@ -140,10 +150,11 @@ public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
     public boolean activate(){ return true;}
     public boolean shutdown(){ return true;}
     public ThreadEngine.SupportThread getSupportThread() { return null;}
+    public boolean isCompleted(){ return completed;}
     
 	public CMFile grabFile(String fn)
 	{
-		GrabbedFile GF=getWebServer().pageGrabber.grabFile(fn);
+		GrabbedFile GF=pageGrabber.grabFile(fn);
 		if(GF==null) return null;
 		switch(GF.state)
 		{
@@ -680,7 +691,7 @@ public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
         String redirectTo = null;
         boolean analLogging=CMSecurity.isDebugging("HTTPERREXT");
         if((webServer!=null)
-        &&(!webServer.isAdminServer)
+        &&(!isAdminServer)
         &&(processStartTime>0)
         &&(System.currentTimeMillis()-processStartTime)>(120*1000))
         {
@@ -814,7 +825,7 @@ public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
                                     ldex+=s3.length();
                                 }
                                 if((webServer!=null)
-                                &&(!webServer.isAdminServer)
+                                &&(!isAdminServer)
 						        &&(processStartTime>0)
                                 &&(System.currentTimeMillis()-processStartTime)>(120*1000))
                                 {
@@ -907,10 +918,12 @@ public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
 
 	public void run()
 	{
+		try
+		{
+			processStartTime=System.currentTimeMillis();
         try
         {
 		String hdrRedirectTo = null;
-		processStartTime=System.currentTimeMillis();
 
 		DataOutputStream sout = null;
 		ByteArrayOutputStream bout=null;
@@ -961,7 +974,7 @@ public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
                     filename=W.getFilename(this,filename);
                 }
                 else
-    				requestedFile = webServer.pageGrabber.grabFile(filename);
+    				requestedFile = pageGrabber.grabFile(filename);
 
                 if(W!=null) contentHeader=W.getSpecialContentHeader(filename);
 
@@ -974,7 +987,7 @@ public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
 						if (!filename.endsWith( "/" ))
 							filename += '/';
 						filename += page.getStr("DEFAULTFILE");
-						requestedFile = webServer.pageGrabber.grabFile(filename);
+						requestedFile = pageGrabber.grabFile(filename);
 						if (requestedFile.state != GrabbedFile.STATE_OK)
 						{
 							status = S_401;
@@ -1047,7 +1060,9 @@ public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
 			if (!processOK || replyData == null)
 			{
 			    if(totalRequest.equalsIgnoreCase("MUD"))
+			    {
 			        return;
+			    }
 			    
 				//mimetype = "text/html";
 				mimetype = getMimeType(page.getStr("VIRTUALPAGEEXTENSION"));
@@ -1061,7 +1076,7 @@ public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
 				{
 					//requestedFile = new File("web" + CMFile.pathSeparator + "error" + page.getStr("VIRTUALPAGEEXTENSION") );
 					///requestedFile = new File(webServer.getServerTemplateDir() + CMFile.pathSeparator + "error" + page.getStr("VIRTUALPAGEEXTENSION") );
-					requestedFile = webServer.templateGrabber.grabFile("error" + page.getStr("VIRTUALPAGEEXTENSION"));
+					requestedFile = templateGrabber.grabFile("error" + page.getStr("VIRTUALPAGEEXTENSION"));
 
 					if (requestedFile.state == GrabbedFile.STATE_OK)
 					{
@@ -1119,7 +1134,7 @@ public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
 			}
 
 
-			sout.writeBytes("Server: " + HTTPserver.ServerVersionString + cr);
+			sout.writeBytes("Server: " + HTTPserver.getServerVersionString() + cr);
 			sout.writeBytes("MIME-Version: 1.0" + cr);
 			if(contentHeader!=null)
 				sout.writeBytes(contentHeader);
@@ -1190,12 +1205,12 @@ public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
         catch (Throwable t) {
             Log.errOut("ProcessHTTPrequest", t);
         }
-        finally
-        {
-            synchronized(this.webServer.activeRequests){
-                webServer.activeRequests.removeElement(this);
-            }
-        }
+        
+		}
+		finally
+		{
+	    	completed=true;
+		}
 	}
 	public String getHTTPclientIP()
 	{
@@ -1217,7 +1232,7 @@ public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
 	{
 		try
 		{
-			GrabbedFile requestedFile = webServer.pageGrabber.grabFile(filename);
+			GrabbedFile requestedFile = pageGrabber.grabFile(filename);
 			if((requestedFile==null)
 			||(requestedFile.state!=GrabbedFile.STATE_OK))
 				return "";
@@ -1517,9 +1532,10 @@ public class ProcessHTTPrequest implements Runnable, ExternalHTTPRequests
         public String toJavaString(Object O){return Context.toString(O);}
     }
 
-	public String ServerVersionString(){return HTTPserver.ServerVersionString;}
+	public String getServerVersionString(){return HTTPserver.getServerVersionString();}
     public int getWebServerPort(){return getWebServer().getPort();}
 	public String getWebServerPortStr(){return getWebServer().getPortStr();}
 	public String getWebServerPartialName(){ return getWebServer().getPartialName();}
 	public MudHost getMUD(){return getWebServer().getMUD();}
+	public long activeTimeMillis() { return System.currentTimeMillis()-processStartTime; }
 }

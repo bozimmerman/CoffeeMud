@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.core.smtp;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.threads.CMThreadFactory;
+import com.planet_ink.coffee_mud.core.threads.CMThreadPoolExecutor;
 import com.planet_ink.coffee_mud.core.threads.ServiceEngine;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -67,15 +68,14 @@ public class SMTPserver extends Thread implements Tickable
 	private int			maxThreads = 3;
 	private int			threadTimeoutMins = 10;
 	private HashSet<String> oldEmailComplaints=new HashSet<String>();
-	private ThreadPoolExecutor  threadPool;
+	private CMThreadPoolExecutor  threadPool;
 
     public SMTPserver()
     {
     	super("SMTP"); 
     	mud=null;
     	isOK=false;
-		threadPool = new ThreadPoolExecutor(0, 3, 30, TimeUnit.SECONDS, new UniqueEntryBlockingQueue<Runnable>(256));
-		threadPool.setKeepAliveTime(5, TimeUnit.MINUTES);
+		threadPool = new CMThreadPoolExecutor("SMTP", 0, 3, 30, TimeUnit.SECONDS, 5, 256);
 		threadPool.setThreadFactory(new CMThreadFactory("SMTP"));
     	setDaemon(true);
     }
@@ -89,8 +89,7 @@ public class SMTPserver extends Thread implements Tickable
 			isOK = false;
 		else
 			isOK = true;
-		threadPool = new ThreadPoolExecutor(0, maxThreads, 30, TimeUnit.SECONDS, new UniqueEntryBlockingQueue<Runnable>(256));
-		threadPool.setKeepAliveTime(threadTimeoutMins, TimeUnit.MINUTES);
+		threadPool = new CMThreadPoolExecutor("SMTP", 0, maxThreads, 30, TimeUnit.SECONDS, threadTimeoutMins,256);
 		setDaemon(true);
 	}
 

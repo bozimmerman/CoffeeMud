@@ -40,13 +40,24 @@ public class CMThreadFactory implements ThreadFactory
 {
 	private String serverName="";
 	private AtomicInteger counter=new AtomicInteger();
+	private SLinkedList<Thread> active = new SLinkedList<Thread>();
 	
 	public CMThreadFactory(String serverName)
 	{
 		this.serverName=serverName;
 	}
+	public void setServerName(String newName)
+	{
+		this.serverName=newName;
+	}
 	public Thread newThread(Runnable r) 
 	{
-	    return new Thread(r,serverName+"#"+counter.addAndGet(1));
+		Thread t = new Thread(r,serverName+"#"+counter.addAndGet(1));
+		active.add(t);
+	    return t;
+	}
+	public Collection<Thread> getThreads() 
+	{ 
+		return active;
 	}
 }

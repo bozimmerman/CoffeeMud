@@ -41,7 +41,7 @@ public interface ExternalHTTPRequests extends CMLibrary
         throws HTTPRedirectException;
     public StringBuffer doVirtualPage(StringBuffer s) 
         throws HTTPRedirectException;
-	public String ServerVersionString();
+	public String getServerVersionString();
 	public String getWebServerPortStr();
     public int getWebServerPort();
 	public String getHTTPstatus();

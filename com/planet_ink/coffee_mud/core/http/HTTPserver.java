@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.core.http;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.threads.CMThreadFactory;
+import com.planet_ink.coffee_mud.core.threads.CMThreadPoolExecutor;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -41,40 +42,36 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings("unchecked")
 public class HTTPserver extends Thread implements MudHost
 {
-    protected CMProps page=null;
-
-    protected static final float HOST_VERSION_MAJOR=(float)1.0;
-    protected static final float HOST_VERSION_MINOR=(float)0.3;
-    protected static CMProps webCommon=null;
+    private static final float HOST_VERSION_MAJOR=(float)1.0;
+    private static final float HOST_VERSION_MINOR=(float)0.3;
+    private static final String[] STATUS_STRINGS={"waiting","processing","done"};
+    private static CMProps webCommon=null;
 
 	// this gets sent in HTTP response
 	//  also used by @WEBSERVERVERSION@
-	public final static String ServerVersionString = "CoffeeMud HTTPserver/" + HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR;
+    public final static String getServerVersionString()
+    {
+    	return "CoffeeMud HTTPserver/" + HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR; 
+    }
 
-    protected boolean isOK = false;
-    protected final long startupTime = System.currentTimeMillis();
-
-    protected boolean isAdminServer = false;
-
-    protected ServerSocket servsock=null;
-
-	private MudHost mud;
-	protected String partialName;
-    private static final String[] STATUS_STRINGS={"waiting","processing","done"};
-    private int state=0;
-    private int myPort=27744;
-    private int myServerNumber=0;
-    private boolean acceptConnections=true;
-    private int maxThreads = 10;
-    private int maxTimeoutMins = 45;
-
-    protected String serverDir = null;
-    protected String serverTemplateDir = null;
-
-    protected FileGrabber pageGrabber=new FileGrabber(this);
-    protected FileGrabber templateGrabber=new FileGrabber(this);
-    public DVector activeRequests=new DVector(2);
-	private ThreadPoolExecutor threadPool;
+	private final long 	startupTime = System.currentTimeMillis();
+	private CMProps 	page=null;
+	private boolean 	isOK = false;
+    private boolean 	isAdminServer = false;
+    private ServerSocket servsock=null;
+	private MudHost 	mud;
+	private String 		partialName;
+    private int 		state=0;
+    private int 		myPort=27744;
+    private int 		myServerNumber=0;
+    private boolean 	acceptConnections=true;
+    private int 		maxThreads = 10;
+    private int 		maxTimeoutMins = 45;
+    private String 		serverDir = null;
+    private String 		serverTemplateDir = null;
+    private FileGrabber	pageGrabber=new FileGrabber(this);
+    private FileGrabber	templateGrabber=new FileGrabber(this);
+	private CMThreadPoolExecutor threadPool;
 
 	public HTTPserver(MudHost a_mud, String a_name, int num)
 	{
@@ -87,9 +84,7 @@ public class HTTPserver extends Thread implements MudHost
 			isOK = false;
 		else
 			isOK = true;
-		threadPool = new ThreadPoolExecutor(0, maxThreads, 30, TimeUnit.SECONDS, new UniqueEntryBlockingQueue<Runnable>(256));
-		threadPool.setKeepAliveTime(maxTimeoutMins, TimeUnit.MINUTES);
-		threadPool.setThreadFactory(new CMThreadFactory("HTTP-"+a_name+((num>0)?""+(num+1):"")));
+		threadPool = new CMThreadPoolExecutor("HTTP-"+a_name+((num>0)?""+(num+1):""),0, maxThreads, 30, TimeUnit.SECONDS, maxTimeoutMins, 256);
 	}
 
 	public String getPartialName()	{return partialName;}
@@ -97,6 +92,8 @@ public class HTTPserver extends Thread implements MudHost
 	public String getServerDir() {return serverDir;}
 	public String getServerTemplateDir() {return serverTemplateDir;}
     public long getUptimeSecs() { return (System.currentTimeMillis()-startupTime)/1000;}
+    public FileGrabber getPageGrabber() { return pageGrabber;}
+    public FileGrabber getTemplateGrabber() { return templateGrabber;}
 
 	public Properties getCommonPropPage()
 	{
@@ -282,8 +279,7 @@ public class HTTPserver extends Thread implements MudHost
 
 
 			serverOK = true;
-
-			while(true)
+			while(isOK)
 			{
                 state=0;
 				sock=servsock.accept();
@@ -324,6 +320,7 @@ public class HTTPserver extends Thread implements MudHost
 	public void shutdown(Session S)
 	{
 		Log.sysOut(getName(),"Shutting down.");
+		isOK=false;
 		if (S != null)
 			S.println( getName() + " shutting down.");
 		if(threadPool.getActiveCount()>0)
@@ -395,20 +392,7 @@ public class HTTPserver extends Thread implements MudHost
     public List<Runnable> getOverdueThreads()
     {
     	Vector<Runnable> V=new Vector();
-    	long time=System.currentTimeMillis();
-    	synchronized(activeRequests)
-    	{
-	    	for(int a=activeRequests.size()-1;a>=0;a--)
-	    	{
-	    		ProcessHTTPrequest P=(ProcessHTTPrequest)activeRequests.elementAt(a, 1);
-	    		long pTime=((Long)activeRequests.elementAt(a,2)).longValue();
-	    		if((time-pTime)>(60*1000*60))
-	    		{
-	    			V.add(P);
-	    			activeRequests.removeElementsAt(a);
-	    		}
-	    	}
-    	}
+    	V.addAll(threadPool.getTimeoutOutRuns());
     	return V;
     }
 

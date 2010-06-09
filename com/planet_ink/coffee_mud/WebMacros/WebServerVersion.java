@@ -38,7 +38,7 @@ public class WebServerVersion extends StdWebMacro
 	{
 //		return httpReq.getWebServer().ServerVersionString;
 		// it's static
-		return httpReq.ServerVersionString();
+		return httpReq.getServerVersionString();
 	}
 
 }
