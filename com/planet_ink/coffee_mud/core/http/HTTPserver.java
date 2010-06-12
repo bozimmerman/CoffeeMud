@@ -267,6 +267,7 @@ public class HTTPserver extends Thread implements MudHost
 			}
 		}
 
+		serverOK = true;
 		try
 		{
 			Vector allports=CMParms.parseCommas(page.getStr("PORT"),true);
@@ -276,27 +277,26 @@ public class HTTPserver extends Thread implements MudHost
 			Log.sysOut(getName(),"Started on port: "+myPort);
 			if (bindAddr != null)
 				Log.sysOut(getName(),"Bound to: "+bindAddr.toString());
-
-
-			serverOK = true;
-			while(isOK)
+		}
+		catch(Throwable t)
+		{
+			Log.errOut(getName(),t.getMessage());
+			serverOK=false;
+			isOK=false;
+		}
+		while(isOK && serverOK)
+		{
+			try
 			{
                 state=0;
 				sock=servsock.accept();
 				acceptConnection(sock);
-				sock = null;
 			}
-		}
-		catch(Exception e)
-		{
-			// jef: if we've been interrupted, servsock will be null
-			//   and serverOK will be true
-			Log.errOut(getName(),e.getMessage());
-
-
-			// jef: this prevents initHost() from running if run() has failed (eg socket in use)
-			if (!serverOK)
-				isOK = false;
+			catch(Throwable t)
+			{
+				Log.errOut(getName(),t.getMessage());
+			}
+			sock = null;
 		}
         state=2;
 		try
