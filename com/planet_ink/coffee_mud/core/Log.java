@@ -36,7 +36,7 @@ import java.util.*;
 public class Log
 {
     /** final date format for headers */
-    public static final SimpleDateFormat dateFormat=new SimpleDateFormat("yyyyMMdd.HHmm.ssSS");
+    public static final SimpleDateFormat dateFormat=new SimpleDateFormat("yyyyMMdd.HHmm.ss");
     /** SPACES for headers */
     private static final String SPACES="                                                                                               ";
 	/**	always to "log" */
@@ -464,9 +464,9 @@ public class Log
     private static final String getLogHeader(final String Type, final String Module, final String Message)
     {
     	final String date=dateFormat.format(Calendar.getInstance().getTime());
-    	final StringBuffer Header=new StringBuffer((date+SPACES).substring(0,20));
+    	final StringBuffer Header=new StringBuffer((date+SPACES).substring(0,18));
         Header.append((Type+SPACES).substring(0,6));
-        Header.append((Module+SPACES).substring(0,13));
+        Header.append((Module+SPACES).substring(0,15));
         Header.append(Message);
         return Header.toString();
     }

@@ -75,7 +75,7 @@ public class HTTPserver extends Thread implements MudHost
 
 	public HTTPserver(MudHost a_mud, String a_name, int num)
 	{
-		super("HTTP-"+a_name+((num>0)?""+(num+1):""));
+		super("HTTP"+a_name+((num>0)?""+(num+1):""));
 		partialName = a_name;		//name without prefix
 		mud = a_mud;
 		myServerNumber=num;
@@ -84,7 +84,7 @@ public class HTTPserver extends Thread implements MudHost
 			isOK = false;
 		else
 			isOK = true;
-		threadPool = new CMThreadPoolExecutor("HTTP-"+a_name+((num>0)?""+(num+1):""),0, maxThreads, 30, TimeUnit.SECONDS, maxTimeoutMins, 256);
+		threadPool = new CMThreadPoolExecutor("HTTP"+a_name+((num>0)?""+(num+1):""),0, maxThreads, 30, TimeUnit.SECONDS, maxTimeoutMins, 256);
 	}
 
 	public String getPartialName()	{return partialName;}
