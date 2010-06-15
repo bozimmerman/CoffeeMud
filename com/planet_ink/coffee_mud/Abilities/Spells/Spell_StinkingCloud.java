@@ -183,7 +183,7 @@ public class Spell_StinkingCloud extends Spell
 					if((msg.value()<=0)&&(msg2.value()<=0)&&(target.location()==mob.location()))
 					{
 						castingLocation=mob.location();
-						success=maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)*10),-1);
+						success=maliciousAffect(mob,target,asLevel,0,-1);
 						target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) enveloped in the stinking cloud!");
 					}
 				}
