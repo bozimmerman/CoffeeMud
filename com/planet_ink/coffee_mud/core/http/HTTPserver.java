@@ -294,7 +294,8 @@ public class HTTPserver extends Thread implements MudHost
 			}
 			catch(Throwable t)
 			{
-				Log.errOut(getName(),t.getMessage());
+				if((t!=null)&&(t.getMessage()!=null)&&(!t.getMessage().equals("null")))
+					Log.errOut(getName(),t.getMessage());
 			}
 			sock = null;
 		}
