@@ -55,22 +55,22 @@ public class HTTPserver extends Thread implements MudHost
     }
 
 	private final long 	startupTime = System.currentTimeMillis();
-	private CMProps 	page=null;
-	private boolean 	isOK = false;
-    private boolean 	isAdminServer = false;
+	private CMProps 	 page=null;
+	private boolean 	 isOK = false;
+    private boolean 	 isAdminServer = false;
     private ServerSocket servsock=null;
-	private MudHost 	mud;
-	private String 		partialName;
-    private int 		state=0;
-    private int 		myPort=27744;
-    private int 		myServerNumber=0;
-    private boolean 	acceptConnections=true;
-    private int 		maxThreads = 10;
-    private int 		maxTimeoutMins = 45;
-    private String 		serverDir = null;
-    private String 		serverTemplateDir = null;
-    private FileGrabber	pageGrabber=new FileGrabber(this);
-    private FileGrabber	templateGrabber=new FileGrabber(this);
+	private MudHost 	 mud;
+	private String 		 partialName;
+    private int 		 state=0;
+    private int 		 myPort=27744;
+    private int 		 myServerNumber=0;
+    private boolean 	 acceptConnections=true;
+    private int 		 maxThreads = 10;
+    private int 		 maxTimeoutMins = 45;
+    private String 		 serverDir = null;
+    private String 		 serverTemplateDir = null;
+    private FileGrabber	 pageGrabber=new FileGrabber(this);
+    private FileGrabber	 templateGrabber=new FileGrabber(this);
 	private CMThreadPoolExecutor threadPool;
 
 	public HTTPserver(MudHost a_mud, String a_name, int num)
@@ -280,10 +280,11 @@ public class HTTPserver extends Thread implements MudHost
 		}
 		catch(Throwable t)
 		{
-			Log.errOut(getName(),t.getMessage());
+			Log.errOut(getName(),t);
 			serverOK=false;
 			isOK=false;
 		}
+		
 		while(isOK && serverOK)
 		{
 			try
@@ -291,11 +292,20 @@ public class HTTPserver extends Thread implements MudHost
                 state=0;
 				sock=servsock.accept();
 				acceptConnection(sock);
-			}
-			catch(Throwable t)
+			} 
+			catch(Throwable t) 
 			{
 				if((t!=null)&&(t.getMessage()!=null)&&(!t.getMessage().equals("null")))
 					Log.errOut(getName(),t.getMessage());
+				try 
+				{
+					if(servsock.isClosed())
+					{
+						Log.sysOut(getName(),"Reconnecting.");
+						servsock=new ServerSocket(myPort, q_len, bindAddr);
+					}
+				} 
+				catch(Throwable e) { Log.errOut(getName(),e); }
 			}
 			sock = null;
 		}
