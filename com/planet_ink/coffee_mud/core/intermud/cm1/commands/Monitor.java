@@ -104,7 +104,7 @@ public class Monitor extends Listen
 					req.sendMsg("[FAIL NONE]");
 				else
 				{
-					req.sendMsg("[OK "+msgs.size()+"]");
+					req.sendMsg("[OK /MESSAGES:"+msgs.size()+"]");
 					for(String s : msgs)
 						req.sendMsg("[MESSAGE "+s+"]");
 				}

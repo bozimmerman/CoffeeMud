@@ -216,7 +216,7 @@ public class Paladin extends StdCharClass
 				return false;
 			}
 	
-			if(!(mob.charStats().getMyRace().ID().equals("Human")))
+			if(!(mob.baseCharStats().getMyRace().ID().equals("Human")))
 			{
 				if(!quiet)
 					mob.tell("You need to be Human to become a Paladin.");

@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 
@@ -198,9 +199,10 @@ public class Healer extends Cleric
 				mob.tell("You need at least a 9 Charisma to become a Healer.");
 			return false;
 		}
-		if((mob.charStats().getMyRace().ID().equals("Duergar"))
-		||(mob.charStats().getMyRace().ID().equals("Drow"))
-		||(mob.charStats().getMyRace().racialCategory().equals("Goblinoid")))
+		Race R=mob.baseCharStats().getMyRace();
+		if((R.ID().equals("Duergar"))
+		||(R.ID().equals("Drow"))
+		||(R.racialCategory().equals("Goblinoid")))
 		{
 			if(!quiet)
 				mob.tell("Your dark heart will not permit you to be a "+name()+".");

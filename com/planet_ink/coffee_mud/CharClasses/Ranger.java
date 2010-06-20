@@ -193,10 +193,11 @@ public class Ranger extends StdCharClass
 					mob.tell("You need at least a 9 Intelligence to become a Ranger.");
 				return false;
 			}
-			if(!(mob.charStats().getMyRace().racialCategory().equals("Human"))
-			&& !(mob.charStats().getMyRace().racialCategory().equals("Humanoid"))
-			&& !(mob.charStats().getMyRace().racialCategory().equals("Troll-kin"))
-			&& !(mob.charStats().getMyRace().racialCategory().equals("Elf")))
+			Race R=mob.baseCharStats().getMyRace();
+			if(!(R.racialCategory().equals("Human"))
+			&& !(R.racialCategory().equals("Humanoid"))
+			&& !(R.racialCategory().equals("Troll-kin"))
+			&& !(R.racialCategory().equals("Elf")))
 			{
 				if(!quiet)
 					mob.tell("You need to be Human, Elf, or Half Elf to be a Ranger.");

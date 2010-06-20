@@ -188,12 +188,13 @@ public class Beastmaster extends StdCharClass
 					mob.tell("You need at least a 9 Dexterity to become a Beastmaster.");
 				return false;
 			}
-			if(	  (!(mob.charStats().getMyRace().racialCategory().equals("Human"))
-				&& !(mob.charStats().getMyRace().racialCategory().equals("Humanoid"))
-				&& !(mob.charStats().getMyRace().racialCategory().equals("Elf"))
-				&& !(mob.charStats().getMyRace().racialCategory().equals("Dwarf"))
-				&& !(mob.charStats().getMyRace().racialCategory().equals("Giant-kin")))
-			||(mob.charStats().getMyRace().ID().equals("Duergar")))
+			Race R=mob.baseCharStats().getMyRace();
+			if(	  (!(R.racialCategory().equals("Human"))
+				&& !(R.racialCategory().equals("Humanoid"))
+				&& !(R.racialCategory().equals("Elf"))
+				&& !(R.racialCategory().equals("Dwarf"))
+				&& !(R.racialCategory().equals("Giant-kin")))
+			||(R.ID().equals("Duergar")))
 			{
 				if(!quiet)
 					mob.tell("You must be Human, Elf, Dwarf, Giant-kin, or Half Elf to be a Beastmaster");

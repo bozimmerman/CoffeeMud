@@ -170,9 +170,10 @@ public class Purist extends Cleric
 				mob.tell("You need at least a 9 Charisma to become a Purist.");
 			return false;
 		}
-		if((mob.charStats().getMyRace().ID().equals("Duergar"))
-		||(mob.charStats().getMyRace().ID().equals("Drow"))
-		||(mob.charStats().getMyRace().racialCategory().equals("Goblinoid")))
+		Race R=mob.baseCharStats().getMyRace();
+		if((R.ID().equals("Duergar"))
+		||(R.ID().equals("Drow"))
+		||(R.racialCategory().equals("Goblinoid")))
 		{
 			if(!quiet)
 				mob.tell("Your dark heart will not permit you to be a "+name()+".");

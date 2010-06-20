@@ -211,14 +211,15 @@ public class Delver extends StdCharClass
 					mob.tell("You need at least a 9 Strength to become a Delver.");
 				return false;
 			}
-			if(!(mob.charStats().getMyRace().racialCategory().equals("Human"))
-			&& !(mob.charStats().getMyRace().racialCategory().equals("Humanoid"))
-			&& !(mob.charStats().getMyRace().racialCategory().equals("Dwarf"))
-			&& !(mob.charStats().getMyRace().racialCategory().equals("Gnome"))
-			&& !(mob.charStats().getMyRace().racialCategory().equals("Goblinoids"))
-			&& !(mob.charStats().getMyRace().racialCategory().equals("Troll-kin"))
-			&& !(mob.charStats().getMyRace().racialCategory().equals("HalfElf"))
-			&& !(mob.charStats().getMyRace().racialCategory().equals("Halfling")))
+			Race R=mob.baseCharStats().getMyRace();
+			if(!(R.racialCategory().equals("Human"))
+			&& !(R.racialCategory().equals("Humanoid"))
+			&& !(R.racialCategory().equals("Dwarf"))
+			&& !(R.racialCategory().equals("Gnome"))
+			&& !(R.racialCategory().equals("Goblinoids"))
+			&& !(R.racialCategory().equals("Troll-kin"))
+			&& !(R.racialCategory().equals("HalfElf"))
+			&& !(R.racialCategory().equals("Halfling")))
 			{
 				if(!quiet)
 					mob.tell("You must be Human, Halfling, Dwarf, Goblin, or Half Elf to be a Delver");

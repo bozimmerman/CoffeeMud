@@ -291,13 +291,14 @@ public class Bard extends StdCharClass
 	{
 		if(mob != null)
 		{
-			if(   (!(mob.charStats().getMyRace().racialCategory().equals("Human"))
-				&& !(mob.charStats().getMyRace().racialCategory().equals("Humanoid"))
-				&& !(mob.charStats().getMyRace().racialCategory().equals("Elf"))
-				&& !(mob.charStats().getMyRace().racialCategory().equals("Dwarf"))
-				&& !(mob.charStats().getMyRace().racialCategory().equals("Halfling"))
-				&& !(mob.charStats().getMyRace().racialCategory().equals("Elf-kin")))
-			||(mob.charStats().getMyRace().ID().equals("Duergar")))
+			Race R=mob.baseCharStats().getMyRace();
+			if(   (!(R.racialCategory().equals("Human"))
+				&& !(R.racialCategory().equals("Humanoid"))
+				&& !(R.racialCategory().equals("Elf"))
+				&& !(R.racialCategory().equals("Dwarf"))
+				&& !(R.racialCategory().equals("Halfling"))
+				&& !(R.racialCategory().equals("Elf-kin")))
+			||(R.ID().equals("Duergar")))
 			{
 				if(!quiet)
 					mob.tell("You must be Human, Elf, Dwarf, Halfling, Elf-kin, or Half Elf to be a Bard");

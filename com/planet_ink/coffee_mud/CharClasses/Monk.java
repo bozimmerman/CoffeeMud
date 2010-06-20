@@ -155,17 +155,17 @@ public class Monk extends StdCharClass
 					mob.tell("You need at least a 9 Strength to become a Monk.");
 				return false;
 			}
-	
 			if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<=8)
 			{
 				if(!quiet)
 					mob.tell("You need at least a 9 Dexterity to become a Monk.");
 				return false;
 			}
-			if(!(mob.charStats().getMyRace().racialCategory().equals("Human"))
-			&& !(mob.charStats().getMyRace().racialCategory().equals("Humanoid"))
-			&& !(mob.charStats().getMyRace().racialCategory().equals("Elf"))
-			&& !(mob.charStats().getMyRace().racialCategory().equals("Goblinoid")))
+			Race R=mob.baseCharStats().getMyRace();
+			if(!(R.racialCategory().equals("Human"))
+			&& !(R.racialCategory().equals("Humanoid"))
+			&& !(R.racialCategory().equals("Elf"))
+			&& !(R.racialCategory().equals("Goblinoid")))
 			{
 				if(!quiet)
 					mob.tell("You must be Human, Elf, Goblinoid, or Half Elf to be a Monk");

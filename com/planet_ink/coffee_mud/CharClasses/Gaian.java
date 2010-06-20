@@ -201,13 +201,14 @@ public class Gaian extends StdCharClass
 					mob.tell("You need at least a 9 Wisdom to become a Gaian.");
 				return false;
 			}
-			if(   (!(mob.charStats().getMyRace().racialCategory().equals("Human"))
-				&& !(mob.charStats().getMyRace().racialCategory().equals("Elf"))
-				&& !(mob.charStats().getMyRace().racialCategory().equals("Vegetation"))
-				&& !(mob.charStats().getMyRace().racialCategory().equals("Humanoid"))
-				&& !(mob.charStats().getMyRace().racialCategory().equals("Halfling"))
-				&& !(mob.charStats().getMyRace().racialCategory().equals("Dwarf")))
-			||(mob.charStats().getMyRace().ID().equals("Duergar")))
+			Race R=mob.baseCharStats().getMyRace();
+			if(   (!(R.racialCategory().equals("Human"))
+				&& !(R.racialCategory().equals("Elf"))
+				&& !(R.racialCategory().equals("Vegetation"))
+				&& !(R.racialCategory().equals("Humanoid"))
+				&& !(R.racialCategory().equals("Halfling"))
+				&& !(R.racialCategory().equals("Dwarf")))
+			||(R.ID().equals("Duergar")))
 			{
 				if(!quiet)
 					mob.tell("You must be Human, Elf, Dwarf, Halfling, or Half Elf to be a Gaian");

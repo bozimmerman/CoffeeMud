@@ -345,15 +345,16 @@ public class Mage extends StdCharClass
 					mob.tell("You need at least a 9 Intelligence to become a Mage.");
 				return false;
 			}
-			if(!(mob.charStats().getMyRace().racialCategory().equals("Human"))
-			&& !(mob.charStats().getMyRace().racialCategory().equals("Elf"))
-			&& !(mob.charStats().getMyRace().racialCategory().equals("Gith"))
-			&& !(mob.charStats().getMyRace().racialCategory().equals("Dragon"))
-			&& !(mob.charStats().getMyRace().racialCategory().equals("Humanoid"))
-			&& !(mob.charStats().getMyRace().racialCategory().equals("Illithid"))
-			&& !(mob.charStats().getMyRace().racialCategory().equals("Gnome"))
-			&& !(mob.charStats().getMyRace().racialCategory().equals("Fairy-kin"))
-			&& !(mob.charStats().getMyRace().racialCategory().equals("HalfElf")))
+			Race R=mob.baseCharStats().getMyRace();
+			if(!(R.racialCategory().equals("Human"))
+			&& !(R.racialCategory().equals("Elf"))
+			&& !(R.racialCategory().equals("Gith"))
+			&& !(R.racialCategory().equals("Dragon"))
+			&& !(R.racialCategory().equals("Humanoid"))
+			&& !(R.racialCategory().equals("Illithid"))
+			&& !(R.racialCategory().equals("Gnome"))
+			&& !(R.racialCategory().equals("Fairy-kin"))
+			&& !(R.racialCategory().equals("HalfElf")))
 			{
 				if(!quiet)
 					mob.tell("You need to be Human, Elf, Gnome, or Half Elf to be a Mage.");

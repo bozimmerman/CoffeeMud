@@ -160,9 +160,10 @@ public class Charlatan extends StdCharClass
 					mob.tell("You need at least a 9 Wisdom to become a Charlatan.");
 				return false;
 			}
-			if((!(mob.charStats().getMyRace().racialCategory().equals("Human")))
-			&&(!(mob.charStats().getMyRace().racialCategory().equals("Humanoid")))
-			&&(!(mob.charStats().getMyRace().ID().equals("HalfElf"))))
+			Race R=mob.baseCharStats().getMyRace();
+			if((!(R.racialCategory().equals("Human")))
+			&&(!(R.racialCategory().equals("Humanoid")))
+			&&(!(R.ID().equals("HalfElf"))))
 			{
 				if(!quiet)
 					mob.tell("You must be Human, or Half Elf to be a Charlatan");
