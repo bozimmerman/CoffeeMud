@@ -3,6 +3,9 @@ import java.util.*;
 import java.io.*;
 import java.net.*;
 import java.util.regex.*;
+
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.ScriptableObject;
 /*
 Copyright 2000-2010 Bo Zimmerman
 
@@ -23,13 +26,25 @@ limitations under the License.
  * @author Bo Zimmerman
  *
  */
+@SuppressWarnings("unused")
 public class AutoPlayTester
 {
-	private BufferedReader 			in = null;
-	private BufferedWriter		 	out = null;
-	private LinkedList<String> 		buffer = new LinkedList<String>();
-	@SuppressWarnings("unused")
-	private boolean 				mudUsesAccountSystem=false;
+	private BufferedReader 		in = null;
+	private BufferedWriter		out = null;
+	private LinkedList<String> 	buffer = new LinkedList<String>();
+	private String 				name="boobie";
+	private String 				host="localhost";
+	private int 				port = 5555;
+	private String				filename="/resources/autoplayer/apprentice.js";
+	private boolean 			mudUsesAccountSystem=false;
+	
+	public AutoPlayTester(String host, int port, String charName, String script)
+	{
+		this.host=host;
+		this.port=port;
+		this.name=charName;
+		this.filename=script;
+	}
 	
 	public LinkedList<String> bufferFill() throws IOException
 	{
@@ -107,7 +122,7 @@ public class AutoPlayTester
 		out.flush();
 	}
 	
-	public boolean login(String host, int port, String username)
+	public boolean login()
 	{
 		try
 		{
@@ -118,8 +133,6 @@ public class AutoPlayTester
 			String s = waitFor("(?>Name|Account name).*");
 			if(!s.toLowerCase().startsWith("Name"))
 				mudUsesAccountSystem = true;
-			writeln("Zac");
-			s=waitFor("(?>Password.*|(.+does not exist.))");
 		}
 		catch(java.io.IOException e)
 		{
@@ -127,19 +140,66 @@ public class AutoPlayTester
 		}
 		return false;
 	}
+
+	public void run()
+	{
+        Context cx = Context.enter();
+        try
+        {
+            JScriptEvent scope = new JScriptEvent(this);
+            cx.initStandardObjects(scope);
+            scope.defineFunctionProperties(JScriptEvent.functions, JScriptEvent.class,
+                                           ScriptableObject.DONTENUM);
+            cx.evaluateString(scope, "","<cmd>", 1, null);
+        }
+        catch(Exception e)
+        {
+            System.err.println("JSCRIPT Error: "+e.getMessage());
+        }
+        Context.exit();
+	}
 	
+    protected static class JScriptEvent extends ScriptableObject
+    {
+        public String getClassName(){ return "JScriptEvent";}
+        static final long serialVersionUID=43;
+        protected AutoPlayTester testObj;
+        public static final String[] functions={ "tester", "toJavaString", "writeLine"};
+        public AutoPlayTester tester() { return testObj;}
+        public String toJavaString(Object O){return Context.toString(O);}
+        public boolean writeLine(Object O) 
+        {
+        	try {
+	        	testObj.writeln(toJavaString(O));
+	        	return true;
+        	} catch(Exception e) { return false; }
+        }
+        
+        public JScriptEvent(AutoPlayTester testObj)
+        {
+        	this.testObj=testObj;
+        }
+    }
+    
+    public final static int s_int(final String INT)
+    {
+        try{ return Integer.parseInt(INT); }
+        catch(Exception e){ return 0;}
+    }
+    
 	public static void main(String[] args)
 	{
 		System.out.println("Not yet implemented.");
-		AutoPlayTester player = new AutoPlayTester();
-		String name="boobie";
-		String host="localhost";
-		int port = 5555;
-		if(!player.login(host,port,name))
-			System.err.println("Failed login");
-		else
+		if(args.length<4)
 		{
-			
+			System.out.println("AutoPlayTester");
+			System.out.println("AutoPlayTester [host] [port] [character name] [script path]");
+			System.exit(-1);
 		}
+		StringBuilder path=new StringBuilder(args[3]);
+		for(int i=4;i<args.length;i++)
+			path.append(" ").append(args[i]);
+		AutoPlayTester player = new AutoPlayTester(args[0],s_int(args[1]),args[2],path.toString());
+		player.run();
 	}
 }
