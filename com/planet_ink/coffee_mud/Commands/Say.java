@@ -95,6 +95,9 @@ public class Say extends StdCommand
 				for(int i=0;i<impossibleTargets.length;i++)
 					if(impossibleTargets[i].startsWith(whom))
 					{ whom=""; break;}
+			if(whom.equalsIgnoreCase("self"))
+				target=mob;
+			else
 			if(whom.length()>0)
 			{
 				target=R.fetchFromRoomFavorMOBs(null,whom);
