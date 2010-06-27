@@ -455,7 +455,9 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			if(wclass==Weapon.CLASS_EDGED){ baseattack=10; basematerial=RawMaterial.MATERIAL_METAL;}
 			if(wclass==Weapon.CLASS_DAGGER){ baseattack=10; basematerial=RawMaterial.MATERIAL_METAL;}
 			if(wclass==Weapon.CLASS_SWORD){ basematerial=RawMaterial.MATERIAL_METAL;}
-			int weight = 8;
+			int weight = I.basePhyStats().weight();
+			if(weight<1) weight=8;
+			if(weight>40) weight=40;
 			if(basereach>maxreach) maxreach=basereach;
 			if(reach<basereach)
 			{
