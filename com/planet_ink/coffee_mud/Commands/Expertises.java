@@ -44,31 +44,38 @@ public class Expertises extends StdCommand
 	{
 		StringBuffer msg=new StringBuffer("");
 		msg.append("\n\r^HYour expertises:^? \n\r");
-		ExpertiseLibrary.ExpertiseDefinition def=null;
 		int col=0;
         int colWidth=25;
-        String exper=null;
-		for(Enumeration e=mob.uniqueExpertises();e.hasMoreElements();)
+        XVector<String> expers=new XVector<String>();
+		for(Enumeration<String> e=mob.uniqueExpertises();e.hasMoreElements();)
 		{
-			exper=(String)e.nextElement();
-			def=CMLib.expertises().getDefinition(exper);
+			String exper=e.nextElement();
+			ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(exper);
             if(def==null)
-                msg.append(CMStrings.padRight("?"+exper+"^?",colWidth));
+            	expers.add("?"+exper+"^?");
             else
-            if(def.name.length()>=colWidth)
+            	expers.add(def.name);
+		}
+		expers.sort();
+		for(String expName : expers)
+		{
+            if(expName.startsWith("?"))
+                msg.append(CMStrings.padRight(expName,colWidth));
+            else
+            if(expName.length()>=colWidth)
             {
             	if(col>=2)
             	{
 	                msg.append("\n\r");
 	                col=0;
             	}
-    			msg.append(CMStrings.padRightPreserve("^<HELP^>"+def.name+"^</HELP^>",colWidth));
-                int spaces=(colWidth*2)-def.name.length();
+    			msg.append(CMStrings.padRightPreserve("^<HELP^>"+expName+"^</HELP^>",colWidth));
+                int spaces=(colWidth*2)-expName.length();
                 for(int i=0;i<spaces;i++) msg.append(" ");
                 col++;
             }
             else
-                msg.append(CMStrings.padRight("^<HELP^>"+def.name+"^</HELP^>",colWidth));
+                msg.append(CMStrings.padRight("^<HELP^>"+expName+"^</HELP^>",colWidth));
 			if((++col)>=3)
 			{
 				msg.append("\n\r");

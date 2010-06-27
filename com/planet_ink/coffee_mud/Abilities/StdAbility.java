@@ -143,7 +143,7 @@ public class StdAbility implements Ability
 
     protected synchronized int expertise(MOB mob, int code)
     {
-    	if((mob!=null)&&(this.isNowAnAutoEffect()||(this.canBeUninvoked())))
+    	if((mob!=null)&&(this.isNowAnAutoEffect()||(this.canBeUninvoked())||this.isAutoInvoked()))
     	{
 	    	if(expertise!=null) return expertise[code];
 			expertise=new short[ExpertiseLibrary.NUM_XFLAGS];

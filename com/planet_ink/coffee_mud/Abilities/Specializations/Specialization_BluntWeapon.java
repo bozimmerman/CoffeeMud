@@ -40,7 +40,7 @@ public class Specialization_BluntWeapon extends Specialization_Weapon
 	public Specialization_BluntWeapon()
 	{
 		super();
-		weaponType=Weapon.CLASS_BLUNT;
-		secondWeaponType=Weapon.CLASS_STAFF;
+		weaponClass=Weapon.CLASS_BLUNT;
+		secondWeaponClass=Weapon.CLASS_STAFF;
 	}
 }

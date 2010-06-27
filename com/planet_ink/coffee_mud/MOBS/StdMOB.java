@@ -66,6 +66,7 @@ public class StdMOB implements MOB
 	protected String 	imageName=null;
 	protected byte[] 	miscText=null;
     protected String[] 	xtraValues=null;
+    protected int		possibleWeaponIndex=-1;
 
 	protected long 		tickStatus=Tickable.STATUS_NOT;
 
@@ -3545,12 +3546,19 @@ public class StdMOB implements MOB
 
 	public Item fetchWieldedItem()
 	{
-		for(int i=0;i<numItems();i++)
+		if((possibleWeaponIndex>=0)&&(possibleWeaponIndex<numItems()))
 		{
-			Item thisItem=getItem(i);
+			Item thisItem=getItem(possibleWeaponIndex);
 			if((thisItem!=null)&&(thisItem.amWearingAt(Wearable.WORN_WIELD)))
 				return thisItem;
 		}
+		for(possibleWeaponIndex=0;possibleWeaponIndex<numItems();possibleWeaponIndex++)
+		{
+			Item thisItem=getItem(possibleWeaponIndex);
+			if((thisItem!=null)&&(thisItem.amWearingAt(Wearable.WORN_WIELD)))
+				return thisItem;
+		}
+		possibleWeaponIndex=-1;
 		return null;
 	}
 

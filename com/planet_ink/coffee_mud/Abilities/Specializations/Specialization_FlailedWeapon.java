@@ -40,6 +40,6 @@ public class Specialization_FlailedWeapon extends Specialization_Weapon
 	public Specialization_FlailedWeapon()
 	{
 		super();
-		weaponType=Weapon.CLASS_FLAILED;
+		weaponClass=Weapon.CLASS_FLAILED;
 	}
 }

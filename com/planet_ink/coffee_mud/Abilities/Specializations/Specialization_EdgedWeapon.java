@@ -40,7 +40,7 @@ public class Specialization_EdgedWeapon extends Specialization_Weapon
 	public Specialization_EdgedWeapon()
 	{
 		super();
-		weaponType=Weapon.CLASS_EDGED;
-		secondWeaponType=Weapon.CLASS_DAGGER;
+		weaponClass=Weapon.CLASS_EDGED;
+		secondWeaponClass=Weapon.CLASS_DAGGER;
 	}
 }

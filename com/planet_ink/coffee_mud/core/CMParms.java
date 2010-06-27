@@ -1353,6 +1353,18 @@ public class CMParms
         return s.toString().substring(2);
     }
 
+    public final static String toStringList(final short[] V)
+    {
+        if((V==null)||(V.length==0)){
+            return "";
+        }
+        final StringBuffer s=new StringBuffer("");
+        for(int v=0;v<V.length;v++)
+            s.append(", "+V[v]);
+        if(s.length()==0) return "";
+        return s.toString().substring(2);
+    }
+
     public final static String toStringList(final boolean[] V)
     {
         if((V==null)||(V.length==0)){

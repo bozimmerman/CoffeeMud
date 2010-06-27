@@ -39,6 +39,6 @@ public class Specialization_Sword extends Specialization_Weapon
 	public Specialization_Sword()
 	{
 		super();
-		weaponType=Weapon.CLASS_SWORD;
+		weaponClass=Weapon.CLASS_SWORD;
 	}
 }

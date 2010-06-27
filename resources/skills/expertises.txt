@@ -124,7 +124,7 @@ AXEPIERCE@x1=Axe Piercing @x2,10,X2,-SKILL +Specialization_Axe,-MAXCLASSLEVEL +>
 HELP_=<EXPERTISE>The ability to do more damage when using a piercing-type axe.
 
 UNARMEDSTRIKE@x1=Unarmed Striking @x2,10,LEVEL,-SKILL +Specialization_Natural +Druid_Bite +Druid_Rend,-MAXCLASSLEVEL +>={24+(5*@x1)},+DEX {15+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to hit more often when using unarmed.
+HELP_=<EXPERTISE>The ability to hit more often when unarmed.
 
 UNARMEDSLICE@x1=Unarmed Slicing @x2,10,X1,-SKILL +Specialization_Natural,-MAXCLASSLEVEL +>={27+(5*@x1)},+STR {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to do more damage when using a slashing/slicing-type unarmed attack.

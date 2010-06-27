@@ -40,6 +40,6 @@ public class Specialization_Hammer extends Specialization_Weapon
 	public Specialization_Hammer()
 	{
 		super();
-		weaponType=Weapon.CLASS_HAMMER;
+		weaponClass=Weapon.CLASS_HAMMER;
 	}
 }

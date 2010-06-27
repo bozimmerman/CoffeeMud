@@ -40,7 +40,7 @@ public class Specialization_Axe extends Specialization_Weapon
 	public Specialization_Axe()
 	{
 		super();
-		weaponType=Weapon.CLASS_AXE;
+		weaponClass=Weapon.CLASS_AXE;
 	}
 	private final static String[] EXPERTISES={"AXESTRIKE","AXESLICE","AXEPIERCE"};
 	private final static String[] EXPERTISE_NAMES={"Axe Striking","Axe Slicing","Axe Piercing"};

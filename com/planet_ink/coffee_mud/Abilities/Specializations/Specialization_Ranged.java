@@ -40,8 +40,8 @@ public class Specialization_Ranged extends Specialization_Weapon
 	public Specialization_Ranged()
 	{
 		super();
-		weaponType=Weapon.CLASS_RANGED;
-		secondWeaponType=Weapon.CLASS_THROWN;
+		weaponClass=Weapon.CLASS_RANGED;
+		secondWeaponClass=Weapon.CLASS_THROWN;
 	}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)

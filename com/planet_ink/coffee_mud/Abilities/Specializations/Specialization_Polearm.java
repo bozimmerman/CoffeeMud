@@ -40,6 +40,6 @@ public class Specialization_Polearm extends Specialization_Weapon
 	public Specialization_Polearm()
 	{
 		super();
-		weaponType=Weapon.CLASS_POLEARM;
+		weaponClass=Weapon.CLASS_POLEARM;
 	}
 }

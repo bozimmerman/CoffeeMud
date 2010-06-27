@@ -40,6 +40,6 @@ public class Specialization_Staff extends Specialization_Weapon
 	public Specialization_Staff()
 	{
 		super();
-		weaponType=Weapon.CLASS_STAFF;
+		weaponClass=Weapon.CLASS_STAFF;
 	}
 }

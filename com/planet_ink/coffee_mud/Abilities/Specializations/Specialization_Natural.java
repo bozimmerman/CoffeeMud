@@ -40,17 +40,18 @@ public class Specialization_Natural extends Specialization_Weapon
 	public Specialization_Natural()
 	{
 		super();
-		weaponType=Weapon.CLASS_NATURAL;
+		weaponClass=Weapon.CLASS_NATURAL;
 	}
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((activated)
-		&&(CMLib.dice().rollPercentage()<25)
+		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
+		&&(CMLib.dice().rollPercentage()<10)
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))
-		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		&&((!(msg.tool() instanceof Weapon))||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL)))
 			helpProficiency((MOB)affected);
+		super.executeMsg(myHost, msg);
 	}
 
 

@@ -44,8 +44,8 @@ public class Specialization_Weapon extends StdAbility
 	public boolean canBeUninvoked(){return false;}
 
 	protected boolean activated=false;
-	protected int weaponType=-1;
-	protected int secondWeaponType=-1;
+	protected int weaponClass=-1;
+	protected int secondWeaponClass=-1;
     
 	protected short[] bonuses=null;
 	protected int numExpertises=-1;
@@ -81,20 +81,22 @@ public class Specialization_Weapon extends StdAbility
 	{
 		if((activated)
 		&&(msg.source()==affected)
-		&&(msg.tool() instanceof Weapon)
 		&&(msg.target() instanceof MOB)
-		&&((((Weapon)msg.tool()).weaponClassification()==weaponType)
- 		 ||(weaponType<0)
-		 ||(((Weapon)msg.tool()).weaponClassification()==secondWeaponType)))
+		&&(msg.tool() instanceof Weapon))
 		{
-			if((msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)&&(CMLib.dice().rollPercentage()<25))
-				helpProficiency((MOB)affected);
-			else
-			if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
-			&&(msg.tool() instanceof Weapon)
-			&&(!((Weapon)msg.tool()).amWearingAt(Wearable.IN_INVENTORY))
-			&&(msg.value()>0))
-				msg.setValue(msg.value()+(this.getDamageBonus(msg.source(),((Weapon)msg.tool()).weaponType())));
+			Weapon w=(Weapon)msg.tool();
+			if((w.weaponClassification()==weaponClass)
+			||(weaponClass<0)
+			||(w.weaponClassification()==secondWeaponClass))
+			{
+				if((msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)&&(CMLib.dice().rollPercentage()<10))
+					helpProficiency((MOB)affected);
+				else
+				if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
+				&&((w.weaponClassification()==Weapon.CLASS_NATURAL)||(!w.amWearingAt(Wearable.IN_INVENTORY)))
+				&&(msg.value()>0))
+					msg.setValue(msg.value()+(this.getDamageBonus(msg.source(),w.weaponType())));
+			}
 		}
 	}
 
@@ -107,9 +109,9 @@ public class Specialization_Weapon extends StdAbility
 		{
 			Item myWeapon=((MOB)affected).fetchWieldedItem();
 			if((myWeapon instanceof Weapon)
-			&&((((Weapon)myWeapon).weaponClassification()==weaponType)
- 			 ||(weaponType<0)
-			 ||(((Weapon)myWeapon).weaponClassification()==secondWeaponType)))
+			&&((((Weapon)myWeapon).weaponClassification()==weaponClass)
+ 			 ||(weaponClass<0)
+			 ||(((Weapon)myWeapon).weaponClassification()==secondWeaponClass)))
 			{
 				activated=true;
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()
