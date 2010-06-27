@@ -129,7 +129,11 @@ public class AHelp extends StdCommand
 			}
 		}
 		else
-			thisTag=new StringBuffer(CMLib.help().getHelpText(helpStr,CMLib.help().getArcHelpFile(),mob).toString());
+		{
+			StringBuilder text = CMLib.help().getHelpText(helpStr,CMLib.help().getArcHelpFile(),mob);
+			if(text != null)
+				thisTag=new StringBuffer(text.toString());
+		}
 		if(thisTag==null)
 		{
 			mob.tell("No archon help is available on "+helpStr+" .\n\rEnter 'COMMANDS' for a command list, or 'TOPICS' for a complete list.");

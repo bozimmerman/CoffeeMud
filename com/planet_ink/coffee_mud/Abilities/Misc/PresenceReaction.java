@@ -43,8 +43,8 @@ public class PresenceReaction extends StdAbility
 	protected boolean startedManaging=false;
 	protected String previousMood = null;
 	protected String reactToName=null;
-	protected Vector<Object[]> unmanagedYet=new Vector<Object[]>();
-	protected Vector<CMObject> managed = new Vector<CMObject>();
+	protected SLinkedList<Object[]> unmanagedYet=new SLinkedList<Object[]>();
+	protected SLinkedList<CMObject> managed = new SLinkedList<CMObject>();
 
 	public PresenceReaction()
 	{
@@ -61,8 +61,8 @@ public class PresenceReaction extends StdAbility
 		reactToM=null;
 		affected=null;
 		invoker=null;
-		unmanagedYet=new Vector<Object[]>();
-		managed = new Vector<CMObject>();
+		unmanagedYet=new SLinkedList<Object[]>();
+		managed = new SLinkedList<CMObject>();
 	}
 
 	public void addAffectOrBehavior(String substr)
@@ -80,7 +80,7 @@ public class PresenceReaction extends StdAbility
 			{
 				B.setSavable(false);
 				Object[] SET=new Object[]{B,substr.substring(x+1)};
-				unmanagedYet.addElement(SET);
+				unmanagedYet.add(SET);
 				return;
 			}
 			Ability A=CMClass.getAbility(nam);
@@ -89,14 +89,14 @@ public class PresenceReaction extends StdAbility
 				A.setSavable(false);
 				A.makeNonUninvokable();
 				Object[] SET=new Object[]{A,substr.substring(x+1)};
-				unmanagedYet.addElement(SET);
+				unmanagedYet.add(SET);
 				return;
 			}
 			Command C=CMClass.getCommand(nam);
 			if(C!=null)
 			{
 				Object[] SET=new Object[]{C,substr.substring(x+1)};
-				unmanagedYet.addElement(SET);
+				unmanagedYet.add(SET);
 			}
 		}
 	}
@@ -184,10 +184,10 @@ public class PresenceReaction extends StdAbility
 		if(unmanagedYet.size()==0) 
 			return false;
 		boolean didAnything=false;
-		Vector<Object[]> commands = new Vector<Object[]>();
+		SLinkedList<Object[]> commands = new SLinkedList<Object[]>();
 		while(unmanagedYet.size()>0)
 		{
-			Object[] thing=unmanagedYet.remove(0);
+			Object[] thing=unmanagedYet.removeFirst();
 			if(thing[0] instanceof Ability)
 			{
 				if(((Ability)thing[0]).ID().equalsIgnoreCase("Mood"))
@@ -236,7 +236,7 @@ public class PresenceReaction extends StdAbility
 		initializeManagedObjects(affected);
 		while(unmanagedYet.size()>0)
 		{
-			Object[] thing=unmanagedYet.remove(0);
+			Object[] thing=unmanagedYet.removeFirst();
 			if(thing[0] instanceof Command)
 			{
 				Command C=(Command)thing[0];
