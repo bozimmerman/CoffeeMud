@@ -80,22 +80,12 @@ public class Fighter_CatchProjectile extends FighterSkill
 			else
 			if(((Weapon)w).requiresAmmunition())
 			{
-				Item neww=CMClass.getItem("GenAmmunition");
+				
 				String ammo=((Weapon)w).ammunitionType();
 				if(ammo.length()==0) return true;
 				if(ammo.endsWith("s"))
 					ammo=ammo.substring(0,ammo.length()-1);
-				if(("aeiouAEIOU").indexOf(ammo.charAt(0))>=0)
-					ammo="an "+ammo;
-				else
-					ammo="a "+ammo;
-				neww.setName(ammo);
-				neww.setDisplayText(ammo+" sits here.");
-				((Ammunition)neww).setAmmunitionType(ammo);
-				neww.setUsesRemaining(1);
-				neww.basePhyStats().setWeight(1);
-				neww.setBaseValue(0);
-				neww.recoverPhyStats();
+				Item neww=CMLib.coffeeMaker().makeAmmunition(ammo,1);
 				w=neww;
 				mob.location().addItem(neww,ItemPossessor.Expire.Player_Drop);
 			}

@@ -2046,6 +2046,135 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		return false;
 	}
 	
+	public List<String> getAllGenStats(Physical P)
+	{
+		STreeSet<String> set=new STreeSet<String>();
+		set.addAll(Arrays.asList(P.getStatCodes()));
+		set.addAll(Arrays.asList(P.basePhyStats().getStatCodes()));
+		if(P instanceof MOB)
+		{
+			set.addAll(Arrays.asList(((MOB)P).baseCharStats().getStatCodes()));
+			if(((MOB)P).playerStats()!=null)
+				set.addAll(Arrays.asList(((MOB)P).playerStats().getStatCodes()));
+			set.addAll(Arrays.asList(CoffeeMaker.GENMOBCODES));
+		}
+		else
+		if(P instanceof Item)
+			set.addAll(Arrays.asList(CoffeeMaker.GENITEMCODES));
+		return set.toVector();
+	}
+	
+	public boolean isAnyGenStat(Physical P, String stat)
+	{
+		if(P.isStat(stat)) return true;
+		if(P.basePhyStats().isStat(stat)) return true;
+		if(P instanceof MOB)
+		{
+			if(((MOB)P).baseCharStats().isStat(stat))
+				return true;
+			if(((MOB)P).playerStats()!=null)
+				return ((MOB)P).playerStats().isStat(stat);
+			if(getGenMobCodeNum(stat)>=0)
+				return true;
+		}
+		else
+		if(P instanceof Item)
+			if(getGenItemCodeNum(stat)>=0)
+				return true;
+		return false;
+	}
+	
+	public String getAnyGenStat(Physical P, String stat)
+	{
+		if(P.isStat(stat)) 
+			return P.getStat(stat);
+		if(P.basePhyStats().isStat(stat)) 
+			return P.basePhyStats().getStat(stat);
+		if(P instanceof MOB)
+		{
+			if(((MOB)P).baseCharStats().isStat(stat))
+				return ((MOB)P).baseCharStats().getStat(stat);
+			if(((MOB)P).playerStats()!=null)
+				return ((MOB)P).playerStats().getStat(stat);
+			if(getGenMobCodeNum(stat)>=0)
+				return getGenMobStat((MOB)P, stat);
+		}
+		else
+		if(P instanceof Item)
+			if(getGenItemCodeNum(stat)>=0)
+				return getGenItemStat((Item)P, stat);
+		return "";
+	}
+	
+	public void setAnyGenStat(Physical P, String stat, String value)
+	{
+		setAnyGenStat(P,stat,value,false);
+	}
+	
+	public void setAnyGenStat(Physical P, String stat, String value, boolean supportPlusMinusPrefix)
+	{
+		if(supportPlusMinusPrefix
+		&&(value.trim().length()>0)
+		&&("+-".indexOf(value.trim().charAt(0))>=0))
+		{
+			char plusMinus=value.trim().charAt(0);
+			String oldVal=getAnyGenStat(P, stat);
+			if((oldVal!=null)
+			&&(CMath.isNumber(oldVal))
+			&&(CMath.isNumber(value.trim().substring(1).trim())))
+			{
+				value=value.trim().substring(1).trim();
+				if(CMath.isInteger(oldVal))
+				{
+					if(plusMinus=='+')
+						value=Integer.toString(CMath.s_int(oldVal) + CMath.s_int(value));
+					else
+						value=Integer.toString(CMath.s_int(oldVal) - CMath.s_int(value));
+				}
+				else
+				if(plusMinus=='+')
+					value=Double.toString(CMath.s_double(oldVal) + CMath.s_double(value));
+				else
+					value=Double.toString(CMath.s_double(oldVal) - CMath.s_double(value));
+			}
+		}
+		if(P.isStat(stat))
+		{
+			P.setStat(stat, value);
+			return;
+		}
+		if(P.basePhyStats().isStat(stat)) 
+		{
+			P.basePhyStats().setStat(stat, value);
+			return;
+		}
+		if(P instanceof MOB)
+		{
+			if(((MOB)P).baseCharStats().isStat(stat))
+			{
+				((MOB)P).baseCharStats().setStat(stat, value);
+				return;
+			}
+			if(((MOB)P).playerStats()!=null)
+			{
+				((MOB)P).playerStats().setStat(stat, value);
+				return;
+			}
+			if(getGenMobCodeNum(stat)>=0)
+			{
+				setGenMobStat((MOB)P, stat, value);
+				return;
+			}
+		}
+		else
+		if(P instanceof Item)
+			if(getGenItemCodeNum(stat)>=0)
+			{
+				setGenItemStat((Item)P, stat, value);
+				return;
+			}
+	}
+	
 	public void setGenPropertiesStr(Environmental E, List<XMLpiece> buf)
 	{
 		if(buf==null)
@@ -3051,6 +3180,22 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 	}
 
+	public Ammunition makeAmmunition(String ammunitionType, int number)
+	{
+		Item neww=CMClass.getBasicItem("GenAmmunition");
+		String ammo=ammunitionType;
+		if(ammo.length()==0) return null;
+		ammo=CMLib.english().startWithAorAn(ammo);
+		neww.setName(ammo);
+		neww.setDisplayText(ammo+" sits here.");
+		((Ammunition)neww).setAmmunitionType(ammo);
+		neww.setUsesRemaining(number);
+		neww.basePhyStats().setWeight(number);
+		neww.setBaseValue(0);
+		neww.recoverPhyStats();
+		return (Ammunition)neww;
+	}
+	
 	public int getGenItemCodeNum(String code)
 	{
 		if(GENITEMCODESHASH.size()==0)

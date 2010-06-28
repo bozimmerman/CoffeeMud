@@ -88,6 +88,7 @@ public interface GenericBuilder extends CMLibrary
     public StringBuffer getItemsXML(List<Item> items, Hashtable found, HashSet files, int type);
     public StringBuffer getItemXML(Item item);
     public StringBuffer getRoomXML(Room room,  HashSet custom, HashSet files, boolean andContent);
+	public Ammunition makeAmmunition(String ammunitionType, int number);
     public void setPropertiesStr(Environmental E, String buf, boolean fromTop);
     public void recoverPhysical(Physical P);
     public void setPropertiesStr(Environmental E, List<XMLpiece> V, boolean fromTop);
@@ -112,6 +113,11 @@ public interface GenericBuilder extends CMLibrary
     public void setEnvProperties(Environmental E, List<XMLpiece> buf);
     public String identifier(Environmental E, Environmental parent);
     public void setExtraEnvProperties(Environmental E, List<XMLpiece> buf);
+	public void setAnyGenStat(Physical P, String stat, String value, boolean supportPlusMinusPrefix);
+	public void setAnyGenStat(Physical P, String stat, String value);
+	public String getAnyGenStat(Physical P, String stat);
+	public List<String> getAllGenStats(Physical P);
+	public boolean isAnyGenStat(Physical P, String stat);
     public int getGenItemCodeNum(String code);
     public String getGenItemStat(Item I, String code);
     public void setGenItemStat(Item I, String code, String val);
